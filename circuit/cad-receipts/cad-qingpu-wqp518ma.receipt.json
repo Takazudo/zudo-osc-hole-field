@@ -1,0 +1,93 @@
+{
+  "receipt_version": 1,
+  "identity": {
+    "asset_id": "cad-qingpu-wqp518ma",
+    "record_id": null,
+    "manufacturer": "Qingpu",
+    "mpn": "WQP518MA",
+    "package": "threaded 3.5 mm mono jack",
+    "variant_notes": "Thonk lists WQP518MA as footprint-compatible with PJ398SM; nut variant unselected."
+  },
+  "acquisition": {
+    "provider": "Thonk product page and KiCad 10.0.6 stock library",
+    "library_release_tag": "KiCad 10.0.6",
+    "source_url": "https://www.thonk.co.uk/shop/thonkiconn/",
+    "acquired_on": "2026-09-28",
+    "original_filenames": [
+      "Thonkiconn_Jack_Datasheet-new.jpg",
+      "KiCad10_PJ398SM_stock.kicad_mod"
+    ],
+    "sha256": {
+      "circuit/sources/jack/Thonkiconn_Jack_Datasheet-new.jpg": "fae736d9826acd87360abe74ec0cffc51388e491647030139d2479617b482413",
+      "circuit/sources/jack/KiCad10_PJ398SM_stock.kicad_mod": "5376e66b7c11f78d21d2c32579550e828919b70c90ac00bffe75dcb4d81f62ee"
+    }
+  },
+  "representation": {
+    "files": [
+      "footprints/kicad/zudo-osc-hole-field.pretty/Jack_3.5mm_QingPu_WQP518MA.kicad_mod",
+      "symbols/src/WQP518MA.kicad_sym"
+    ],
+    "formats": [
+      "kicad_mod",
+      "kicad_sym"
+    ],
+    "units": "mm",
+    "original_paths": [
+      "circuit/sources/jack/Thonkiconn_Jack_Datasheet-new.jpg",
+      "circuit/sources/jack/KiCad10_PJ398SM_stock.kicad_mod"
+    ]
+  },
+  "fidelity": {
+    "class": "derived",
+    "reason": "WQP518MA footprint compatibility is stated by Thonk; terminal and housing drawing names PJ398SM. Pad drills are inherited from KiCad stock, not dimensioned by the drawing.",
+    "evidence": [
+      "Thonk product page: WQP518MA and PJ398SM footprint is the same.",
+      "Thonk drawing PCB LAYOUT and top/side views."
+    ]
+  },
+  "derivation": {
+    "derived": true,
+    "input_sha256": {
+      "circuit/sources/jack/Thonkiconn_Jack_Datasheet-new.jpg": "fae736d9826acd87360abe74ec0cffc51388e491647030139d2479617b482413",
+      "circuit/sources/jack/KiCad10_PJ398SM_stock.kicad_mod": "5376e66b7c11f78d21d2c32579550e828919b70c90ac00bffe75dcb4d81f62ee"
+    },
+    "tool": "manual drawing audit and scripts/libgen/gen_courtyards.py",
+    "tool_version": "1",
+    "parameters": {
+      "operations": [
+        "move origin from sleeve pad to barrel axis, +6.48 mm along KiCad Y",
+        "retain KiCad stock circular drills and pads, pending supplier drill approval",
+        "draw 9 x 10.5 mm housing from PJ398SM drawing"
+      ]
+    },
+    "output_sha256": {
+      "footprints/kicad/zudo-osc-hole-field.pretty/Jack_3.5mm_QingPu_WQP518MA.kicad_mod": "5b120b99f79738365ae6a9dba3111ac4cf26dcb42a2a509ef8e7b9165b7a18d4",
+      "symbols/src/WQP518MA.kicad_sym": "47253f15254ef6115cf826cbcd591ab9ec21cacabc02cf6f094e553eb0a3c1bf"
+    }
+  },
+  "cad_use": {
+    "symbol": "zudo-osc-hole-field:WQP518MA",
+    "footprint": "zudo-osc-hole-field:Jack_3.5mm_QingPu_WQP518MA",
+    "model_path": null,
+    "transform": {
+      "offset": null,
+      "rotation": null,
+      "scale": null
+    },
+    "seating_plane": null
+  },
+  "checks": {
+    "performed": [
+      "Compared drawing terminal pitch and body envelope with stock footprint."
+    ],
+    "remaining_physical_checks": [
+      "Confirm circular drill allowance against actual pins; dimensioned drawing specifies pin widths, not drills.",
+      "Measure WQP518MA lot, mating nut, panel clamp, and LED optical path on coupon."
+    ]
+  },
+  "publication": {
+    "preview_selected": false,
+    "download_published": false,
+    "permitted_scope": null
+  }
+}
