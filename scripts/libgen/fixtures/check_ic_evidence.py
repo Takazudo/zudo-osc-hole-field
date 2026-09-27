@@ -20,7 +20,7 @@ def main():
   if row is None or row['mpn']!=mpn:errors.append(f'{id}: capture row missing or mismatched');continue
   if not exists:
    blocked+=1
-   if id!='signal_diode' or not row['status'].startswith('BLOCKED'):errors.append(f'{id}: unexpected uncaptured part')
+   errors.append(f'{id}: uncaptured selected part')
    continue
   captured+=1
   if row['status']!='CAPTURED DRAFT':errors.append(f'{id}: captured status drift')
@@ -28,6 +28,13 @@ def main():
   path=ROOT/'design/standard/pin-maps'/(id+'.json')
   if not path.is_file():errors.append(f'{id}: pin map missing');continue
   data=json.loads(path.read_text());source=data['source'];pins=data['pins']
+  if id=='signal_diode':
+   identity=data.get('identity_source',{})
+   identity_path=ROOT/identity.get('retained_path','__missing__')
+   if identity.get('authority')!='MANUFACTURER_PRIMARY' or not identity_path.is_file() or source_hash(identity_path)!=identity.get('sha256'):
+    errors.append('signal_diode: exact Nexperia OPN identity receipt missing or hash drift')
+   elif not all(token in identity_path.read_text() for token in ('BAS16GW-QX','934669623115','SOD123')):
+    errors.append('signal_diode: retained OPN/package row not found')
   if data['identity']['mpn']!=mpn:errors.append(f'{id}: pin-map identity mismatch')
   symbol_name=data['cad']['symbol'].split(':',1)[1];foot_name=data['cad']['footprint'].split(':',1)[1]
   symbol_path=ROOT/'symbols/src'/(symbol_name+'.kicad_sym');fp_path=ROOT/'footprints/kicad'/(LIB+'.pretty')/(foot_name+'.kicad_mod')
@@ -48,7 +55,7 @@ def main():
     if x['verdict']!='UNSOURCED':errors.append(f'{id}: unresolved source has promoted pin row')
   checked+=1
  if capture['captured_count']!=captured or capture['blocked_count']!=blocked:errors.append('capture count mismatch')
- if captured!=35 or blocked!=1:errors.append(f'expected explicit 35/36 coverage, found {captured}/{len(parts)}')
+ if captured!=36 or blocked!=0:errors.append(f'expected 36/36 coverage after source-backed diode correction, found {captured}/{len(parts)}')
  if errors:
   for e in errors:print('FAIL:',e,file=sys.stderr)
   return 1

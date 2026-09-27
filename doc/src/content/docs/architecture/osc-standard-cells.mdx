@@ -1,0 +1,640 @@
+---
+title: "OSC-ES-1 reusable standard cells"
+description: "Nineteen proposed circuit cells, terminal nets, current worksheet, and isolated KiCad checks."
+sidebar_position: 31
+---
+
+These 19 cells implement **OSC-ES-1, PROPOSAL (planning, owner-delegated)**. Every schematic is an **unvalidated draft**. `design/standard/electrical-standard.json` supplies values, roles and topology. `design/spec/cells/*.py` exposes `build(panel_uid, nets)`; the UID comes from the fixed placement lockfile and `nets` maps standard port names to module nets. Each complete IC package, including unused sections and its power unit, is represented in the returned Parts.
+
+The generated harness under `schematic/cells/` has zero KiCad 10 ERC errors and six documented LED pin-type warnings; `schematic/reports/cells-erc-notes.md` explains them. Its exported netlist matches the spec at every pin. Test-only port sources and loads are not module design parts. These checks establish connectivity consistency, not correct analog behavior or physical safety.
+
+The proposed signal diode is **Nexperia BAS16GW-QX**, replacing an unsupported `1N4148W,115` identity. Nexperia’s [exact OPN record](https://www.nexperia.com/chemical-content/BAS16GW-Q.html?identifier=BAS16GW-Q) names BAS16GW-QX in SOD123; the retained BAS16GW-Q datasheet gives pin 1 cathode and pin 2 anode. Bridge brightness and physical qualification remain open.
+
+The preliminary −12 V demand remains **712.655 mA versus a 640 mA ceiling**. Current figures below are partial planning allocations, not cell maxima or a passing instrument budget. Exact value-specific passive sourcing, package sharing, output loads, rail startup, and supplier allocation remain open.
+
+## Input Fault Switch (`input_fault_switch`)
+
+Status: **NEEDS BENCH**. Model check: **NOT RUN**.
+
+```mermaid
+flowchart LR
+  N0["JACK"]
+  N1["ADG5412F"]
+  N2["PROTECTED"]
+  N0 --> N1
+  N1 --> N2
+```
+
+| Ref | Selected role | Value | Terminal → cell net |
+| --- | --- | --- | --- |
+| `U` | `fault_switch` | per selected part | `S`→`JACK`, `D`→`PROTECTED`, `IN`→`ENABLE`, `VDD`→`+12V`, `VSS`→`-12V`, `GND`→`AGND` |
+| `R_EN` | `r_general` | 100000 ohm | `1`→`ENABLE`, `2`→`AGND` |
+| `R_DRIVE` | `r_general` | 1000 ohm | `1`→`+5V`, `2`→`ENABLE` |
+
+**Known planning allocation:** +12 V 1.3 mA; −12 V 0.7 mA; +5 V 0 mA. This is incomplete where device, signal and load currents are unquantified.
+
+**Unquantified:** 1 kohm enable-feed +5 V current and switching/fault currents.
+
+**Full-cell simulation: NOT RUN** — No retained usable vendor/validated circuit model for the full cell; ideal checks cover only named topology cases. No hardware claim.
+
+- Powered-off isolation replaces a naked rail-clamp path. GND must stay connected with patch sleeves. No ±55 V system rating is inferred; project fault range is ±12 V.
+- Fault switch uses ±12 V rails; ±15 V datasheet tables are planning references, not guaranteed ±12 V performance. Drain clamps/current limiting below remain mandatory.
+- Do not tie enable directly to +12 V. Require #24 power-sequence analysis for missing-rail and ground-loss cases.
+
+## High Impedance Input (`high_impedance_input`)
+
+Status: **NEEDS BENCH**. Model check: **NOT RUN**.
+
+```mermaid
+flowchart LR
+  N0["PROTECTED"]
+  N1["10k limiter + BAT54S"]
+  N2["CV buffer"]
+  N3["BUFFERED"]
+  N0 --> N1
+  N1 --> N2
+  N2 --> N3
+```
+
+| Ref | Selected role | Value | Terminal → cell net |
+| --- | --- | --- | --- |
+| `R_PD` | `r_general` | 100000 ohm | `1`→`PROTECTED`, `2`→`AGND` |
+| `R_LIMIT` | `r_general` | 10000 ohm | `1`→`PROTECTED`, `2`→`SENSE` |
+| `D` | `clamp_diode` | per selected part | `A`→`-12V`, `MID`→`SENSE`, `K`→`+12V` |
+| `A` | `opamp role: cv` | per selected part | `IN+`→`SENSE`, `IN-`→`BUFFERED`, `OUT`→`BUFFERED`, `V+`→`+12V`, `V-`→`-12V` |
+
+**Known planning allocation:** +12 V 1 mA; −12 V 1 mA; +5 V 0 mA. This is incomplete where device, signal and load currents are unquantified.
+
+**Unquantified:** D: clamp_diode.
+
+**Full-cell simulation: NOT RUN** — No retained usable vendor/validated circuit model for the full cell; ideal checks cover only named topology cases. No hardware claim.
+
+- 100 kohm nominal at drain; switch on resistance adds series error. No independent 10 kohm pot may load the jack.
+- Clamp leakage and input current, especially hot, remain part of the input error budget.
+- Nominal accuracy limited to ±5 V; ±12 V is a continuous survival requirement, not a linear input range.
+
+## Summing Node Input (`summing_node_input`)
+
+Status: **NEEDS BENCH**. Model check: **NOT RUN**.
+
+```mermaid
+flowchart LR
+  N0["PROTECTED"]
+  N1["100k input + clamp"]
+  N2["SUM"]
+  N0 --> N1
+  N1 --> N2
+```
+
+| Ref | Selected role | Value | Terminal → cell net |
+| --- | --- | --- | --- |
+| `R_IN` | `r_precision` | 100000 ohm | `1`→`PROTECTED`, `2`→`SUM` |
+| `D` | `clamp_diode` | per selected part | `A`→`-12V`, `MID`→`SUM`, `K`→`+12V` |
+
+**Known planning allocation:** +12 V 0 mA; −12 V 0 mA; +5 V 0 mA. This is incomplete where device, signal and load currents are unquantified.
+
+**Unquantified:** D: clamp_diode.
+
+**Full-cell simulation: NOT RUN** — No retained usable vendor/validated circuit model for the full cell; ideal checks cover only named topology cases. No hardware claim.
+
+- The input resistor limits current, and the upstream fault switch isolates an unpowered circuit. Bare 100 kohm resistance alone is not power-off isolation.
+- Do not also add a 100 kohm pulldown at PROTECTED on this variant: it would halve input impedance.
+
+## General Output (`general_output`)
+
+Status: **NEEDS BENCH**. Model check: **NOT RUN**.
+
+```mermaid
+flowchart LR
+  N0["SIGNAL"]
+  N1["local feedback buffer"]
+  N2["499Ω + 499Ω"]
+  N3["JACK"]
+  N0 --> N1
+  N1 --> N2
+  N2 --> N3
+```
+
+| Ref | Selected role | Value | Terminal → cell net |
+| --- | --- | --- | --- |
+| `A` | `opamp role: audio` | per selected part | `IN+`→`SIGNAL`, `IN-`→`DRIVE`, `OUT`→`DRIVE`, `V+`→`+12V`, `V-`→`-12V` |
+| `R_ISO_A` | `r_power` | 499 ohm | `1`→`DRIVE`, `2`→`ISO_MID` |
+| `R_ISO_B` | `r_power` | 499 ohm | `1`→`ISO_MID`, `2`→`JACK` |
+
+**Known planning allocation:** +12 V 1.5 mA; −12 V 1.5 mA; +5 V 0 mA. This is incomplete where device, signal and load currents are unquantified.
+
+**Full-cell simulation: NOT RUN** — No retained usable vendor/validated circuit model for the full cell; ideal checks cover only named topology cases. No hardware claim.
+
+- 998 ohm gives 0.990119 gain into 100 kohm; nominal ±5 V specified unloaded.
+- Each project-output pair at opposite ±12 V has 12.024 mA maximum ideal current and 0.0722 W per 499 ohm resistor. Ground short at 12 V is also 0.0722 W per 499 ohm resistor.
+- No simultaneous-all-output-short supply claim. Test sustained one-channel short and paired outputs per IC, including junction temperature.
+
+## Precision Output (`precision_output`)
+
+Status: **NEEDS BENCH**. Model check: **NOT RUN**.
+
+```mermaid
+flowchart LR
+  N0["SIGNAL"]
+  N1["precision buffer"]
+  N2["499Ω + 499Ω"]
+  N3["JACK"]
+  N4["10k DC feedback"]
+  N0 --> N1
+  N1 --> N2
+  N2 --> N3
+  N3 --> N4
+```
+
+| Ref | Selected role | Value | Terminal → cell net |
+| --- | --- | --- | --- |
+| `A` | `opamp role: precision` | per selected part | `IN+`→`SIGNAL`, `IN-`→`FB`, `OUT`→`DRIVE`, `V+`→`+12V`, `V-`→`-12V` |
+| `R_ISO_A` | `r_power` | 499 ohm | `1`→`DRIVE`, `2`→`ISO_MID` |
+| `R_ISO_B` | `r_power` | 499 ohm | `1`→`ISO_MID`, `2`→`JACK` |
+| `R_FB` | `r_general` | 10000 ohm | `1`→`JACK`, `2`→`FB` |
+| `C_FAST` | `c_small` | 1e-10 F | `1`→`DRIVE`, `2`→`FB` |
+
+**Known planning allocation:** +12 V 6.5 mA; −12 V 6.5 mA; +5 V 0 mA. This is incomplete where device, signal and load currents are unquantified.
+
+**Full-cell simulation: NOT RUN** — No retained usable vendor/validated circuit model for the full cell; ideal checks cover only named topology cases. No hardware claim.
+
+**Diagnostic ideal-model sweep:** 12 load/cable combinations were run with a zero-delay 100000 V/V source; six exceed the 10% step-overshoot target. At 10 kΩ and 5 nF the model peaks at +9.727 V and −9.705 V for ±5 V steps (47.265% of the 10 V step). This is a model failure, not a prediction of OPA4197 hardware. A validated vendor model and cable/bench sweep remain **NOT RUN**. The 100 pF proposal is unchanged.
+
+- Default 100–470 ohm changed to 998 ohm to bound output faults. 100 pF is a chosen starting compensation value, not a stability proof.
+- DC load-induced error target less than =1 mV for -5/0/+5 V, no load to 10 kohm; full static path error target less than =2 mV after factory calibration.
+- Test open/10k/100k and 0/100p/1n/5n F cable loads, ±5 V steps and output contention. Require no sustained oscillation; less than =10% overshoot and settle within 1 mV by 1 ms.
+
+## Remote Buffer (`remote_buffer`)
+
+Status: **NEEDS BENCH**. Model check: **NOT RUN**.
+
+```mermaid
+flowchart LR
+  N0["SIGNAL"]
+  N1["local buffer"]
+  N2["100Ω isolation"]
+  N3["REMOTE"]
+  N0 --> N1
+  N1 --> N2
+  N2 --> N3
+```
+
+| Ref | Selected role | Value | Terminal → cell net |
+| --- | --- | --- | --- |
+| `A` | `opamp role: audio` | per selected part | `IN+`→`SIGNAL`, `IN-`→`FB`, `OUT`→`DRIVE`, `V+`→`+12V`, `V-`→`-12V` |
+| `R_ISO` | `r_general` | 100 ohm | `1`→`DRIVE`, `2`→`REMOTE` |
+| `R_FB` | `r_general` | 10000 ohm | `1`→`REMOTE`, `2`→`FB` |
+| `C_FAST` | `c_small` | 1e-10 F | `1`→`DRIVE`, `2`→`FB` |
+
+**Known planning allocation:** +12 V 1 mA; −12 V 1 mA; +5 V 0 mA. This is incomplete where device, signal and load currents are unquantified.
+
+**Full-cell simulation: NOT RUN** — No retained usable vendor/validated circuit model for the full cell; ideal checks cover only named topology cases. No hardware claim.
+
+- Internal harness only, never an exposed jack output. Cable less than =300 mm and less than =1 nF design envelope; qualify actual harness.
+- CV/reference drives may use cv role; no shared driver exceeding 2 mA DC load.
+
+## Bipolar Attenuverter (`bipolar_attenuverter`)
+
+Status: **NEEDS BENCH**. Model check: **PASS - IDEAL MODEL ONLY**.
+
+```mermaid
+flowchart LR
+  N0["BUFFERED_INPUT"]
+  N1["10k panel pot"]
+  N2["wiper buffer + summer"]
+  N3["OUT"]
+  N0 --> N1
+  N1 --> N2
+  N2 --> N3
+```
+
+| Ref | Selected role | Value | Terminal → cell net |
+| --- | --- | --- | --- |
+| `RV` | `pot_103` | per selected part | `CCW`→`AGND`, `CW`→`REMOTE_INPUT`, `WIPER`→`W` |
+| `R_W` | `r_general` | 1000 ohm | `1`→`W`, `2`→`W_SENSE` |
+| `R_FAIL` | `r_general` | 1e+07 ohm | `1`→`W_SENSE`, `2`→`AGND` |
+| `R_IN` | `r_precision` | 100000 ohm | `1`→`BUFFERED_INPUT`, `2`→`SUM` |
+| `R_FB` | `r_precision` | 100000 ohm | `1`→`OUT`, `2`→`SUM` |
+| `C_FB` | `c_small` | 1e-11 F | `1`→`OUT`, `2`→`SUM` |
+| `A` | `opamp role: audio` | per selected part | `IN+`→`W_SENSE`, `IN-`→`SUM`, `OUT`→`OUT`, `V+`→`+12V`, `V-`→`-12V` |
+
+**Known planning allocation:** +12 V 1 mA; −12 V 1 mA; +5 V 0 mA. This is incomplete where device, signal and load currents are unquantified.
+
+**Ideal ngspice result:** v(out0) = -4.99999, v(out05) = 0, v(out1) = 4.99999. This tests only the named ideal topology and generic device models; no vendor or hardware behavior is qualified.
+
+- 47 pots retain 10 kohm. Buffered source avoids the former 10 kohm jack load. Wiper failure tends toward negative endpoint; not safety zero.
+- 10 Mohm fail resistor slightly curves law; endpoint/centre gain tolerance target 0.5%, centre trim is by knob setting.
+- For CV-only instance use cv role; precision AO uses precision role.
+
+## Dc Control Source (`dc_control_source`)
+
+Status: **NEEDS BENCH**. Model check: **NOT RUN**.
+
+```mermaid
+flowchart LR
+  N0["buffered ±5V refs"]
+  N1["100k panel pot"]
+  N2["CV follower"]
+  N3["OUT"]
+  N0 --> N1
+  N1 --> N2
+  N2 --> N3
+```
+
+| Ref | Selected role | Value | Terminal → cell net |
+| --- | --- | --- | --- |
+| `RV` | `pot_104` | per selected part | `CCW`→`REF_LOW`, `CW`→`REF_HIGH`, `WIPER`→`W` |
+| `R_W` | `r_general` | 1000 ohm | `1`→`W`, `2`→`W_SENSE` |
+| `R_FAIL` | `r_general` | 1e+07 ohm | `1`→`W_SENSE`, `2`→`AGND` |
+| `C_W` | `c_small` | 1e-08 F | `1`→`W_SENSE`, `2`→`AGND` |
+| `A` | `opamp role: cv` | per selected part | `IN+`→`W_SENSE`, `IN-`→`OUT`, `OUT`→`OUT`, `V+`→`+12V`, `V-`→`-12V` |
+
+**Known planning allocation:** +12 V 1.125 mA; −12 V 1.125 mA; +5 V 0 mA. This is incomplete where device, signal and load currents are unquantified.
+
+**Full-cell simulation: NOT RUN** — No retained usable vendor/validated circuit model for the full cell; ideal checks cover only named topology cases. No hardware claim.
+
+- 48 pots become 100 kohm B104 in unchanged mechanical family. 0.1 mA each across ±5 V; total 4.8 mA on each analog rail.
+- At most six pots per pair of local reference buffers; Kelvin reference return accompanies harness.
+- 10 nF wiper filter gives variable time constant up to approximately 0.26 ms. Do not use for audio.
+
+## Level Attenuator (`level_attenuator`)
+
+Status: **NEEDS BENCH**. Model check: **NOT RUN**.
+
+```mermaid
+flowchart LR
+  N0["REMOTE_INPUT"]
+  N1["10k panel pot"]
+  N2["audio follower"]
+  N3["OUT"]
+  N0 --> N1
+  N1 --> N2
+  N2 --> N3
+```
+
+| Ref | Selected role | Value | Terminal → cell net |
+| --- | --- | --- | --- |
+| `RV` | `pot_103` | per selected part | `CCW`→`AGND`, `CW`→`REMOTE_INPUT`, `WIPER`→`W` |
+| `R_W` | `r_general` | 1000 ohm | `1`→`W`, `2`→`W_SENSE` |
+| `R_FAIL` | `r_general` | 1e+07 ohm | `1`→`W_SENSE`, `2`→`AGND` |
+| `A` | `opamp role: audio` | per selected part | `IN+`→`W_SENSE`, `IN-`→`OUT`, `OUT`→`OUT`, `V+`→`+12V`, `V-`→`-12V` |
+
+**Known planning allocation:** +12 V 1 mA; −12 V 1 mA; +5 V 0 mA. This is incomplete where device, signal and load currents are unquantified.
+
+**Full-cell simulation: NOT RUN** — No retained usable vendor/validated circuit model for the full cell; ideal checks cover only named topology cases. No hardware claim.
+
+- 4 pots retain 10 kohm; nominal gain 0..1. MIX4 SUM GAIN remains a DC-source role, not an audio level pot.
+
+## Reference Generator (`reference_generator`)
+
+Status: **NEEDS BENCH**. Model check: **NOT RUN**.
+
+```mermaid
+flowchart LR
+  N0["+12V"]
+  N1["REF5050"]
+  N2["buffered ±5V and gate refs"]
+  N0 --> N1
+  N1 --> N2
+```
+
+| Ref | Selected role | Value | Terminal → cell net |
+| --- | --- | --- | --- |
+| `U` | `reference` | per selected part | `VIN`→`+12V`, `GND`→`AGND`, `OUT`→`RAW_5V`, `TRIM`→`NC`, `TEMP`→`NC` |
+| `C_IN` | `c_bypass` | 1e-07 F | `1`→`+12V`, `2`→`AGND` |
+| `C_OUT` | `c_bypass` | 1e-06 F | `1`→`RAW_5V`, `2`→`AGND` |
+| `A1` | `opamp role: precision` | per selected part | `IN+`→`RAW_5V`, `IN-`→`REF_5V`, `OUT`→`REF_5V`, `V+`→`+12V`, `V-`→`-12V` |
+| `R_INV` | `r_precision` | 10000 ohm | `1`→`REF_5V`, `2`→`INV` |
+| `R_FB` | `r_precision` | 10000 ohm | `1`→`REF_N5V`, `2`→`INV` |
+| `A2` | `opamp role: precision` | per selected part | `IN+`→`AGND`, `IN-`→`INV`, `OUT`→`REF_N5V`, `V+`→`+12V`, `V-`→`-12V` |
+| `R_GTOP` | `r_precision` | 22000 ohm | `1`→`REF_5V`, `2`→`GATE_RAW` |
+| `R_GBOT` | `r_precision` | 100000 ohm | `1`→`GATE_RAW`, `2`→`AGND` |
+| `A3` | `opamp role: precision` | per selected part | `IN+`→`GATE_RAW`, `IN-`→`GATE_REF`, `OUT`→`GATE_REF`, `V+`→`+12V`, `V-`→`-12V` |
+
+**Known planning allocation:** +12 V 18 mA; −12 V 18 mA; +5 V 0 mA. This is incomplete where device, signal and load currents are unquantified.
+
+**Unquantified:** U: reference, REF5050 supply current, reference load and output drive.
+
+**Full-cell simulation: NOT RUN** — No retained usable vendor/validated circuit model for the full cell; ideal checks cover only named topology cases. No hardware claim.
+
+- 1 uF capacitor uses X7R value variant of c_bypass series, with effective C checked against manufacturer stability guidance in #15.
+- REF5050 trim left open; factory adjusts octave scaling downstream. Use 100 nF local bypass on each amplifier rail in addition to explicit caps.
+- Raw reference buffers and local fan-out are separate allocations. Buffered ±5 V fan-out pairs use cv role and serve at most six 100 kohm pots per pair.
+
+## Octave Reference (`octave_reference`)
+
+Status: **NEEDS BENCH**. Model check: **NOT RUN**.
+
+```mermaid
+flowchart LR
+  N0["buffered endpoints"]
+  N1["five 10k resistors"]
+  N2["six buffered octave taps"]
+  N0 --> N1
+  N1 --> N2
+```
+
+| Ref | Selected role | Value | Terminal → cell net |
+| --- | --- | --- | --- |
+| `R1` | `r_precision` | 10000 ohm | `1`→`T0`, `2`→`T1` |
+| `R2` | `r_precision` | 10000 ohm | `1`→`T1`, `2`→`T2` |
+| `R3` | `r_precision` | 10000 ohm | `1`→`T2`, `2`→`T3` |
+| `R4` | `r_precision` | 10000 ohm | `1`→`T3`, `2`→`T4` |
+| `R5` | `r_precision` | 10000 ohm | `1`→`T4`, `2`→`T5` |
+| `A0` | `opamp role: precision` | per selected part | `IN+`→`T0`, `IN-`→`OCT0`, `OUT`→`OCT0`, `V+`→`+12V`, `V-`→`-12V` |
+| `A1` | `opamp role: precision` | per selected part | `IN+`→`T1`, `IN-`→`OCT1`, `OUT`→`OCT1`, `V+`→`+12V`, `V-`→`-12V` |
+| `A2` | `opamp role: precision` | per selected part | `IN+`→`T2`, `IN-`→`OCT2`, `OUT`→`OCT2`, `V+`→`+12V`, `V-`→`-12V` |
+| `A3` | `opamp role: precision` | per selected part | `IN+`→`T3`, `IN-`→`OCT3`, `OUT`→`OCT3`, `V+`→`+12V`, `V-`→`-12V` |
+| `A4` | `opamp role: precision` | per selected part | `IN+`→`T4`, `IN-`→`OCT4`, `OUT`→`OCT4`, `V+`→`+12V`, `V-`→`-12V` |
+| `A5` | `opamp role: precision` | per selected part | `IN+`→`T5`, `IN-`→`OCT5`, `OUT`→`OCT5`, `V+`→`+12V`, `V-`→`-12V` |
+| `R_GAIN` | `r_precision` | 10000 ohm | `1`→`AGND`, `2`→`GAIN_SUM` |
+| `R_FIXED` | `r_precision` | 19100 ohm | `1`→`GAIN_SUM`, `2`→`GAIN_TRIM` |
+| `RV_GAIN` | `trim_102` | per selected part | `END1`→`GAIN_TRIM`, `WIPER`→`TOP`, `END2`→`TOP` |
+| `TOPDRV` | `opamp role: precision` | per selected part | `IN+`→`ONE_V`, `IN-`→`GAIN_SUM`, `OUT`→`TOP`, `V+`→`+12V`, `V-`→`-12V` |
+| `R_ONE_TOP` | `r_precision` | 20000 ohm | `1`→`REF_5V`, `2`→`ONE_MID` |
+| `R_ONE_BOT` | `r_precision` | 10000 ohm | `1`→`ONE_RAW`, `2`→`AGND` |
+| `ONE` | `opamp role: precision` | per selected part | `IN+`→`ONE_RAW`, `IN-`→`ONE_V`, `OUT`→`ONE_V`, `V+`→`+12V`, `V-`→`-12V` |
+| `R_N2_IN` | `r_precision` | 10000 ohm | `1`→`ONE_V`, `2`→`N2_SUM` |
+| `R_N2_FB` | `r_precision` | 20000 ohm | `1`→`BOTTOM`, `2`→`N2_SUM` |
+| `BOTDRV` | `opamp role: precision` | per selected part | `IN+`→`AGND`, `IN-`→`N2_SUM`, `OUT`→`BOTTOM`, `V+`→`+12V`, `V-`→`-12V` |
+| `R_ONE_TOP_B` | `r_precision` | 20000 ohm | `1`→`ONE_MID`, `2`→`ONE_RAW` |
+
+**Known planning allocation:** +12 V 54 mA; −12 V 54 mA; +5 V 0 mA. This is incomplete where device, signal and load currents are unquantified.
+
+**Full-cell simulation: NOT RUN** — No retained usable vendor/validated circuit model for the full cell; ideal checks cover only named topology cases. No hardware claim.
+
+- Shared ladder on one local reference island; only buffered tap voltages cross harness.
+- Five resistors at 0.1% cannot guarantee 1 mV octave accuracy. Factory measure every step; accept less than =2 mV deviation per step after span adjustment or change resistor matching under #29.
+- R_FIXED 19.1 kohm + 1 kohm trim gives gain 2.91..3.01; nominal +3 V is reachable. Lower endpoint error is measured, not silently trimmed away.
+
+## Gate Trigger Input (`gate_trigger_input`)
+
+Status: **NEEDS BENCH**. Model check: **PASS - IDEAL MODEL ONLY**.
+
+```mermaid
+flowchart LR
+  N0["BUFFERED"]
+  N1["biased comparator"]
+  N2["Schmitt inverter"]
+  N3["GATE_HIGH"]
+  N0 --> N1
+  N1 --> N2
+  N2 --> N3
+```
+
+| Ref | Selected role | Value | Terminal → cell net |
+| --- | --- | --- | --- |
+| `R_SHIFT_IN` | `r_precision` | 100000 ohm | `1`→`BUFFERED`, `2`→`GATE_SENSE` |
+| `R_SHIFT_REF` | `r_precision` | 33200 ohm | `1`→`REF_5V`, `2`→`GATE_SENSE` |
+| `R_REF` | `r_precision` | 10000 ohm | `1`→`GATE_REF`, `2`→`THRESH` |
+| `R_HYS` | `r_precision` | 390000 ohm | `1`→`CMP_OUT`, `2`→`THRESH` |
+| `R_PULL` | `r_general` | 4700 ohm | `1`→`+5V`, `2`→`CMP_OUT` |
+| `U` | `comparator` | per selected part | `PLUS`→`THRESH`, `MINUS`→`GATE_SENSE`, `OUT`→`CMP_OUT`, `VCC`→`+12V`, `GND`→`AGND` |
+| `U_INV` | `schmitt` | per selected part | `IN`→`CMP_OUT`, `OUT`→`GATE_HIGH`, `VCC`→`+5V`, `GND`→`AGND` |
+
+**Known planning allocation:** +12 V 1 mA; −12 V 0 mA; +5 V 0 mA. This is incomplete where device, signal and load currents are unquantified.
+
+**Unquantified:** U_INV: schmitt.
+
+**Ideal ngspice result:** rising = 1.47196, falling = 0.971509. This tests only the named ideal topology and generic device models; no vendor or hardware behavior is qualified.
+
+- Ideal thresholds including 4.7 kohm pull-up are calculated by check_standard.py (about 1.47 V rising, 0.97 V falling); comparator offset, VOL and rail/reference tolerances widen them.
+- Acceptance windows rising 1.35..1.65 V, falling 0.85..1.15 V. Trigger semantics are rising edge, not sustained gate.
+- Module uses CD74HC221M96 for SH acquisition; do not interpret button contact bounce as repeated sample events.
+
+## Magnitude Indicator (`magnitude_indicator`)
+
+Status: **NEEDS BENCH**. Model check: **PASS - IDEAL MODEL ONLY**.
+
+```mermaid
+flowchart LR
+  N0["MONITOR"]
+  N1["bridge driver"]
+  N2["4-diode rectifier"]
+  N3["white LED"]
+  N0 --> N1
+  N1 --> N2
+  N2 --> N3
+```
+
+| Ref | Selected role | Value | Terminal → cell net |
+| --- | --- | --- | --- |
+| `A` | `opamp role: indicator` | per selected part | `IN+`→`MONITOR`, `IN-`→`SENSE`, `OUT`→`DRIVE`, `V+`→`+12V`, `V-`→`-12V` |
+| `R_SENSE` | `r_general` | 4990 ohm | `1`→`SENSE`, `2`→`AGND` |
+| `D1` | `signal_diode` | per selected part | `A`→`DRIVE`, `K`→`LED_A` |
+| `D2` | `signal_diode` | per selected part | `A`→`SENSE`, `K`→`LED_A` |
+| `D3` | `signal_diode` | per selected part | `A`→`LED_K`, `K`→`DRIVE` |
+| `D4` | `signal_diode` | per selected part | `A`→`LED_K`, `K`→`SENSE` |
+| `LED` | `led_white` | per selected part | `A`→`LED_A`, `K`→`LED_K` |
+
+**Known planning allocation:** +12 V 2.25 mA; −12 V 2.25 mA; +5 V 0 mA. This is incomplete where device, signal and load currents are unquantified.
+
+**Unquantified:** D1: signal_diode, D2: signal_diode, D3: signal_diode, D4: signal_diode, LED: led_white.
+
+**Ideal ngspice result:** @dledp[id] = 0.00100199, @dledn[id] = 0.00100199. This tests only the named ideal topology and generic device models; no vendor or hardware behavior is qualified.
+
+- One amplifier per indicator, 92 sites. About 1.002 mA at ±5 V. LED is isolated from signal source by high-impedance amplifier input.
+- At larger magnitudes amplifier clips: brightness may saturate and is not a calibrated voltmeter. At audio rates the eye averages rectified current. No polarity or plug detection.
+- Only already buffered nodes may feed MONITOR. Hold/timing/integrator/storage nodes are forbidden.
+
+## Clip Detector (`clip_detector`)
+
+Status: **NEEDS BENCH**. Model check: **PASS - IDEAL MODEL ONLY**.
+
+```mermaid
+flowchart LR
+  N0["MONITOR"]
+  N1["divide by two"]
+  N2["±5V window comparators"]
+  N3["red LED"]
+  N0 --> N1
+  N1 --> N2
+  N2 --> N3
+```
+
+| Ref | Selected role | Value | Terminal → cell net |
+| --- | --- | --- | --- |
+| `A` | `opamp role: indicator` | per selected part | `IN+`→`MONITOR`, `IN-`→`BUF`, `OUT`→`BUF`, `V+`→`+12V`, `V-`→`-12V` |
+| `R_TOP` | `r_precision` | 100000 ohm | `1`→`BUF`, `2`→`HALF` |
+| `R_BOT` | `r_precision` | 100000 ohm | `1`→`HALF`, `2`→`AGND` |
+| `UP` | `comparator` | per selected part | `PLUS`→`REF_5V`, `MINUS`→`HALF`, `OUT`→`CLIP_N`, `VCC`→`+12V`, `GND`→`-12V` |
+| `UN` | `comparator` | per selected part | `PLUS`→`HALF`, `MINUS`→`REF_N5V`, `OUT`→`CLIP_N`, `VCC`→`+12V`, `GND`→`-12V` |
+| `R_LED` | `r_general` | 22100 ohm | `1`→`+12V`, `2`→`LED_A` |
+| `LED` | `led_red` | per selected part | `A`→`LED_A`, `K`→`CLIP_N` |
+
+**Known planning allocation:** +12 V 4.1 mA; −12 V 4.1 mA; +5 V 0 mA. This is incomplete where device, signal and load currents are unquantified.
+
+**Unquantified:** LED: led_red.
+
+**Ideal ngspice result:** negative = -10, positive = 10. This tests only the named ideal topology and generic device models; no vendor or hardware behavior is qualified.
+
+- 10 sites; trip at nominal ±10 V on internal pre-attenuation node. About 1 mA LED current when CLIP_N approaches -12 V.
+- No hysteresis or hold capacitor fitted: intentional immediate clip indication; threshold flicker is allowed.
+- Monitor after a dedicated buffer; mixer detector before output level/VCA, AO detector before output isolation.
+
+## Stage Indicator (`stage_indicator`)
+
+Status: **NEEDS BENCH**. Model check: **PASS - IDEAL MODEL ONLY**.
+
+```mermaid
+flowchart LR
+  N0["ENV_BUFFERED"]
+  N1["divider + stage mute"]
+  N2["current sink"]
+  N3["white LED"]
+  N0 --> N1
+  N1 --> N2
+  N2 --> N3
+```
+
+| Ref | Selected role | Value | Terminal → cell net |
+| --- | --- | --- | --- |
+| `R_TOP` | `r_general` | 150000 ohm | `1`→`ENV_BUFFERED`, `2`→`COMMAND` |
+| `R_BOT` | `r_general` | 10000 ohm | `1`→`COMMAND`, `2`→`AGND` |
+| `A` | `opamp role: indicator` | per selected part | `IN+`→`COMMAND`, `IN-`→`EMITTER`, `OUT`→`BASE_DRIVE`, `V+`→`+12V`, `V-`→`-12V` |
+| `R_BASE` | `r_general` | 10000 ohm | `1`→`BASE_DRIVE`, `2`→`BASE` |
+| `Q` | `npn` | per selected part | `B`→`BASE`, `E`→`EMITTER`, `C`→`LED_K` |
+| `R_SENSE` | `r_general` | 1000 ohm | `1`→`EMITTER`, `2`→`AGND` |
+| `LED` | `led_white` | per selected part | `A`→`+5V`, `K`→`LED_K` |
+| `QMUTE` | `mosfet` | per selected part | `G`→`NOT_OWN_STAGE`, `D`→`COMMAND`, `S`→`AGND` |
+| `R_GATE` | `r_general` | 100000 ohm | `1`→`NOT_OWN_STAGE`, `2`→`+5V` |
+| `D_BE` | `signal_diode` | per selected part | `A`→`EMITTER`, `K`→`BASE` |
+
+**Known planning allocation:** +12 V 1 mA; −12 V 1 mA; +5 V 0.55 mA. This is incomplete where device, signal and load currents are unquantified.
+
+**Unquantified:** Q: npn, LED: led_white, QMUTE: mosfet, D_BE: signal_diode.
+
+**Ideal ngspice result:** @dledon[id] = 0.000495038, @dledoff[id] = 4.94872e-08. This tests only the named ideal topology and generic device models; no vendor or hardware behavior is qualified.
+
+- 12 sites, one amplifier each (planning table counted only six amplifiers; budget corrects it). ENV 8 V -greater than  COMMAND 0.5 V -greater than  0.5 mA.
+- Off in idle and sustain. Stage command logic defaults to mute at startup. Monitors buffered ENV, never integrator.
+
+## Switch Button Input (`switch_button_input`)
+
+Status: **NEEDS BENCH**. Model check: **NOT RUN**.
+
+```mermaid
+flowchart LR
+  N0["CONTACT"]
+  N1["pull-up + RC"]
+  N2["Schmitt inverter"]
+  N3["ACTIVE"]
+  N0 --> N1
+  N1 --> N2
+  N2 --> N3
+```
+
+| Ref | Selected role | Value | Terminal → cell net |
+| --- | --- | --- | --- |
+| `R_PULL` | `r_general` | 10000 ohm | `1`→`+5V`, `2`→`CONTACT` |
+| `R_SER` | `r_general` | 1000 ohm | `1`→`CONTACT`, `2`→`DEBOUNCE` |
+| `C_DB` | `c_bypass` | 1e-07 F | `1`→`DEBOUNCE`, `2`→`AGND` |
+| `U` | `schmitt` | per selected part | `IN`→`DEBOUNCE`, `OUT`→`ACTIVE`, `VCC`→`+5V`, `GND`→`AGND` |
+
+**Known planning allocation:** +12 V 0 mA; −12 V 0 mA; +5 V 0 mA. This is incomplete where device, signal and load currents are unquantified.
+
+**Unquantified:** U: schmitt.
+
+**Full-cell simulation: NOT RUN** — No retained usable vendor/validated circuit model for the full cell; ideal checks cover only named topology cases. No hardware claim.
+
+- Button/toggle carries logic/return only. 1 ms nominal pull-up time is a starting filter; qualify actual bounce in #18/#31.
+- A/B routes logic to local selection or buffered audio only; never connect two raw jacks through an unprotected switch.
+
+## Decoupling Bulk (`decoupling_bulk`)
+
+Status: **NEEDS BENCH**. Model check: **NOT RUN**.
+
+```mermaid
+flowchart LR
+  N0["rail"]
+  N1["100nF local + 4.7µF bulk"]
+  N2["analog return"]
+  N0 --> N1
+  N1 --> N2
+```
+
+| Ref | Selected role | Value | Terminal → cell net |
+| --- | --- | --- | --- |
+| `C_P` | `c_bypass` | 1e-07 F | `1`→`+12V`, `2`→`AGND` |
+| `C_N` | `c_bypass` | 1e-07 F | `1`→`-12V`, `2`→`AGND` |
+| `C_BOARD` | `c_bulk` | 4.7e-06 F | `1`→`RAIL`, `2`→`AGND` |
+| `R_BLEED` | `r_general` | 2200 ohm | `1`→`RAIL`, `2`→`AGND` |
+
+**Known planning allocation:** +12 V 0 mA; −12 V 0 mA; +5 V 0 mA. This is incomplete where device, signal and load currents are unquantified.
+
+**Unquantified:** RAIL binding and per-board/whole-instrument bleeder allocation.
+
+**Full-cell simulation: NOT RUN** — No retained usable vendor/validated circuit model for the full cell; ideal checks cover only named topology cases. No hardware claim.
+
+- Instrument nominal ceilings: 150 uF on each ±12 V rail, 100 uF on +5 V, including ceramic bypass, references, regulators and bulk. Use +20% tolerance for inrush.
+- No bulk multiplier by module; #24 and #35 must maintain capacitor ledger. No extra 10/47/100 uF per module by habit.
+- R_BLEED uses 0.125 W minimum for ±12 V (65.5 mW nominal); +5 V dissipates 11.4 mW. Backfeed voltage remains a measured gate.
+
+## Trimmer (`trimmer`)
+
+Status: **NEEDS BENCH**. Model check: **NOT RUN**.
+
+```mermaid
+flowchart LR
+  N0["LIMITED_LOW"]
+  N1["10k strapped trimmer"]
+  N2["100k limiter"]
+  N3["CAL_SUM"]
+  N0 --> N1
+  N1 --> N2
+  N2 --> N3
+```
+
+| Ref | Selected role | Value | Terminal → cell net |
+| --- | --- | --- | --- |
+| `RV` | `trim_103` | per selected part | `END1`→`LIMITED_LOW`, `WIPER`→`CAL`, `END2`→`CAL` |
+| `R_LIMIT` | `r_precision` | 100000 ohm | `1`→`CAL`, `2`→`CAL_SUM` |
+
+**Known planning allocation:** +12 V 0 mA; −12 V 0 mA; +5 V 0 mA. This is incomplete where device, signal and load currents are unquantified.
+
+**Full-cell simulation: NOT RUN** — No retained usable vendor/validated circuit model for the full cell; ideal checks cover only named topology cases. No hardware claim.
+
+- Factory assembled SMD only, accessible probe/adjustment path after assembly. No owner soldering or cut traces.
+- Module selects scaling around these fixed values in its spec; no trimmer wired unbounded across rails.
+- Record serial, warm-up 20 min, rails, ambient, meter, setting and every measured endpoint; repeat pitch checks over intended temperature.
+
+## Slew Island (`slew_island`)
+
+Status: **NEEDS BENCH**. Model check: **NOT RUN**.
+
+```mermaid
+flowchart LR
+  N0["HELD_BUFFERED"]
+  N1["precision pre-buffer"]
+  N2["2.2k + 500k rheostat"]
+  N3["five 100nF caps"]
+  N4["precision post-buffer"]
+  N0 --> N1
+  N1 --> N2
+  N2 --> N3
+  N3 --> N4
+```
+
+| Ref | Selected role | Value | Terminal → cell net |
+| --- | --- | --- | --- |
+| `PRE` | `opamp role: precision` | per selected part | `IN+`→`HELD_BUFFERED`, `IN-`→`PRE_OUT`, `OUT`→`PRE_OUT`, `V+`→`+12V`, `V-`→`-12V` |
+| `R_MIN` | `r_general` | 2200 ohm | `1`→`PRE_OUT`, `2`→`POT_IN` |
+| `RV` | `pot_504` | per selected part | `END1`→`POT_IN`, `WIPER`→`STORAGE`, `END2`→`STORAGE` |
+| `C1` | `c_slew` | 1e-07 F | `1`→`STORAGE`, `2`→`AGND` |
+| `C2` | `c_slew` | 1e-07 F | `1`→`STORAGE`, `2`→`AGND` |
+| `C3` | `c_slew` | 1e-07 F | `1`→`STORAGE`, `2`→`AGND` |
+| `C4` | `c_slew` | 1e-07 F | `1`→`STORAGE`, `2`→`AGND` |
+| `C5` | `c_slew` | 1e-07 F | `1`→`STORAGE`, `2`→`AGND` |
+| `POST` | `opamp role: precision` | per selected part | `IN+`→`STORAGE`, `IN-`→`SLEW_OUT`, `OUT`→`SLEW_OUT`, `V+`→`+12V`, `V-`→`-12V` |
+
+**Known planning allocation:** +12 V 12 mA; −12 V 12 mA; +5 V 0 mA. This is incomplete where device, signal and load currents are unquantified.
+
+**Full-cell simulation: NOT RUN** — No retained usable vendor/validated circuit model for the full cell; ideal checks cover only named topology cases. No hardware claim.
+
+- Pot UID, RC bank, pre/post amplifiers form one declared board island. LF398 and 10 nF hold cap form a separate local core island.
+- Nominal tau 1.1..251.1 ms; no true bypass, linear ramp or 25-second claim.
+- Separate output amplifier is conservatively reserved; #22 may fold POST into precision_output only with explicit equivalent feedback/stability validation.
+
+## Verification limits
+
+The exact OPA4197 compensation and 998 Ω dual-feedback cable-load stability sweep (open/100 kΩ/10 kΩ, 0/100 pF/1 nF/5 nF, ±5 V steps) is **NOT RUN**: a validated OPA4197 model and physical cable behavior are unavailable. The remote driver cable stability check is **NOT RUN** for the same model and harness-parasitic gap. Resistor-chain fault power is an arithmetic planning check, not thermal qualification. The sample-and-hold slew and reference outputs require measured calibration and hot/cold data. No cell is released for fabrication.

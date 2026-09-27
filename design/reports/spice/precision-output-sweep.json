@@ -1,0 +1,130 @@
+{
+  "schema_version": 1,
+  "status": "DIAGNOSTIC MODEL ONLY - NOT HARDWARE QUALIFICATION",
+  "amplifier": "ideal zero-delay dependent source, open-loop gain 100000 V/V; no OPA4197 frequency, slew, output-current or saturation behavior",
+  "conditions": "100 pF local feedback; two 499 \u03a9 isolation resistors; 10 k\u03a9 remote DC feedback; \u00b15 V steps; 0/100 pF/1 nF/5 nF cable; open/100 k\u03a9/10 k\u03a9 loads",
+  "target": "at most 10% overshoot, settle within 1 mV by 1 ms, no sustained oscillation",
+  "vendor_model": "NOT RUN - validated OPA4197 dynamic macromodel unavailable",
+  "cases": [
+    {
+      "load": "open",
+      "cable_capacitance": "0",
+      "positive_peak_V": 4.99995,
+      "negative_peak_V": -4.99995,
+      "positive_settled_V": 4.99995,
+      "negative_settled_V": -4.99995,
+      "step_overshoot_percent": 0,
+      "model_target_10_percent": "PASS - IDEAL MODEL ONLY"
+    },
+    {
+      "load": "open",
+      "cable_capacitance": "100p",
+      "positive_peak_V": 5.496942,
+      "negative_peak_V": -5.490301,
+      "positive_settled_V": 4.99995,
+      "negative_settled_V": -4.99995,
+      "step_overshoot_percent": 4.969,
+      "model_target_10_percent": "PASS - IDEAL MODEL ONLY"
+    },
+    {
+      "load": "open",
+      "cable_capacitance": "1n",
+      "positive_peak_V": 7.627799,
+      "negative_peak_V": -7.705964,
+      "positive_settled_V": 4.99995,
+      "negative_settled_V": -4.99995,
+      "step_overshoot_percent": 27.06,
+      "model_target_10_percent": "FAIL"
+    },
+    {
+      "load": "open",
+      "cable_capacitance": "5n",
+      "positive_peak_V": 10.09414,
+      "negative_peak_V": -10.06587,
+      "positive_settled_V": 4.99995,
+      "negative_settled_V": -4.99995,
+      "step_overshoot_percent": 50.941,
+      "model_target_10_percent": "FAIL"
+    },
+    {
+      "load": "100k",
+      "cable_capacitance": "0",
+      "positive_peak_V": 4.99995,
+      "negative_peak_V": -4.99995,
+      "positive_settled_V": 4.99995,
+      "negative_settled_V": -4.99995,
+      "step_overshoot_percent": 0,
+      "model_target_10_percent": "PASS - IDEAL MODEL ONLY"
+    },
+    {
+      "load": "100k",
+      "cable_capacitance": "100p",
+      "positive_peak_V": 5.440534,
+      "negative_peak_V": -5.431272,
+      "positive_settled_V": 4.99995,
+      "negative_settled_V": -4.99995,
+      "step_overshoot_percent": 4.405,
+      "model_target_10_percent": "PASS - IDEAL MODEL ONLY"
+    },
+    {
+      "load": "100k",
+      "cable_capacitance": "1n",
+      "positive_peak_V": 7.580003,
+      "negative_peak_V": -7.653724,
+      "positive_settled_V": 4.99995,
+      "negative_settled_V": -4.99995,
+      "step_overshoot_percent": 26.537,
+      "model_target_10_percent": "FAIL"
+    },
+    {
+      "load": "100k",
+      "cable_capacitance": "5n",
+      "positive_peak_V": 10.05646,
+      "negative_peak_V": -10.02892,
+      "positive_settled_V": 4.99995,
+      "negative_settled_V": -4.99995,
+      "step_overshoot_percent": 50.565,
+      "model_target_10_percent": "FAIL"
+    },
+    {
+      "load": "10k",
+      "cable_capacitance": "0",
+      "positive_peak_V": 4.999945,
+      "negative_peak_V": -4.999945,
+      "positive_settled_V": 4.999945,
+      "negative_settled_V": -4.999945,
+      "step_overshoot_percent": 0,
+      "model_target_10_percent": "PASS - IDEAL MODEL ONLY"
+    },
+    {
+      "load": "10k",
+      "cable_capacitance": "100p",
+      "positive_peak_V": 4.999945,
+      "negative_peak_V": -4.999945,
+      "positive_settled_V": 4.999945,
+      "negative_settled_V": -4.999945,
+      "step_overshoot_percent": 0,
+      "model_target_10_percent": "PASS - IDEAL MODEL ONLY"
+    },
+    {
+      "load": "10k",
+      "cable_capacitance": "1n",
+      "positive_peak_V": 7.168473,
+      "negative_peak_V": -7.204287,
+      "positive_settled_V": 4.999945,
+      "negative_settled_V": -4.999945,
+      "step_overshoot_percent": 22.043,
+      "model_target_10_percent": "FAIL"
+    },
+    {
+      "load": "10k",
+      "cable_capacitance": "5n",
+      "positive_peak_V": 9.726537,
+      "negative_peak_V": -9.705356,
+      "positive_settled_V": 4.999945,
+      "negative_settled_V": -4.999945,
+      "step_overshoot_percent": 47.265,
+      "model_target_10_percent": "FAIL"
+    }
+  ]
+}

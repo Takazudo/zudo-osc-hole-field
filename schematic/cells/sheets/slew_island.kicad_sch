@@ -1,0 +1,1015 @@
+(kicad_sch
+  (version 20260306)
+  (generator "zudo_schgen")
+  (generator_version "10.0")
+  (uuid "6a4b619e-c7ef-5833-8886-fc08f13f692f")
+  (paper "A3")
+  (lib_symbols
+    (symbol "Fixture:PWR_FLAG"
+        (power global)
+        (pin_numbers
+          (hide yes)
+        )
+        (pin_names
+          (offset 0)
+          (hide yes)
+        )
+        (exclude_from_sim no)
+        (in_bom yes)
+        (on_board yes)
+        (in_pos_files yes)
+        (duplicate_pin_numbers_are_jumpers no)
+        (property "Reference" "#FLG"
+          (at 0 1.905 0)
+          (show_name no)
+          (do_not_autoplace no)
+          (hide yes)
+          (effects
+            (font
+              (size 1.27 1.27)
+            )
+          )
+        )
+        (property "Value" "PWR_FLAG"
+          (at 0 3.81 0)
+          (show_name no)
+          (do_not_autoplace no)
+          (effects
+            (font
+              (size 1.27 1.27)
+            )
+          )
+        )
+        (property "Footprint" ""
+          (at 0 0 0)
+          (show_name no)
+          (do_not_autoplace no)
+          (hide yes)
+          (effects
+            (font
+              (size 1.27 1.27)
+            )
+          )
+        )
+        (property "Datasheet" ""
+          (at 0 0 0)
+          (show_name no)
+          (do_not_autoplace no)
+          (hide yes)
+          (effects
+            (font
+              (size 1.27 1.27)
+            )
+          )
+        )
+        (property "Description" "Special symbol for telling ERC where power comes from"
+          (at 0 0 0)
+          (show_name no)
+          (do_not_autoplace no)
+          (hide yes)
+          (effects
+            (font
+              (size 1.27 1.27)
+            )
+          )
+        )
+        (property "ki_keywords" "flag power"
+          (at 0 0 0)
+          (show_name no)
+          (do_not_autoplace no)
+          (hide yes)
+          (effects
+            (font
+              (size 1.27 1.27)
+            )
+          )
+        )
+        (symbol "PWR_FLAG_0_0"
+          (pin power_out line
+            (at 0 0 90)
+            (length 0)
+            (name ""
+              (effects
+                (font
+                  (size 1.27 1.27)
+                )
+              )
+            )
+            (number "1"
+              (effects
+                (font
+                  (size 1.27 1.27)
+                )
+              )
+            )
+          )
+        )
+        (symbol "PWR_FLAG_0_1"
+          (polyline
+            (pts
+              (xy 0 0) (xy 0 1.27) (xy -1.016 1.905) (xy 0 2.54) (xy 1.016 1.905) (xy 0 1.27)
+            )
+            (stroke
+              (width 0)
+              (type default)
+            )
+            (fill
+              (type none)
+            )
+          )
+        )
+        (embedded_fonts no)
+      )
+    (symbol "zudo-osc-hole-field:1206CG104J500NT"
+      (in_bom yes) (on_board yes)
+      (property "Reference" "C" (at 0 5.08 0) (effects (font (size 1.27 1.27))))
+      (property "Value" "1206CG104J500NT" (at 0 -5.08 0) (effects (font (size 1.27 1.27))))
+      (property "Footprint" "zudo-osc-hole-field:C1206" (at 0 0 0) (effects (font (size 1.27 1.27)) (hide yes)))
+      (property "Datasheet" "" (at 0 0 0) (effects (font (size 1.27 1.27)) (hide yes)))
+      (property "MPN" "1206CG104J500NT" (at 0 0 0) (effects (font (size 1.27 1.27)) (hide yes)))
+      (property "Manufacturer" "Fenghua Advanced Technology" (at 0 0 0) (effects (font (size 1.27 1.27)) (hide yes)))
+      (property "LCSC" "C46348" (at 0 0 0) (effects (font (size 1.27 1.27)) (hide yes)))
+      (symbol "1206CG104J500NT_0_1"
+       (rectangle (start -2.54 3.81) (end 2.54 -3.81) (stroke (width 0.254) (type default)) (fill (type background)))
+       (pin passive line (at -5.08 0 0) (length 2.54) (name "" (effects (font (size 1.27 1.27)))) (number "1" (effects (font (size 1.27 1.27)))))
+       (pin passive line (at 5.08 0 180) (length 2.54) (name "" (effects (font (size 1.27 1.27)))) (number "2" (effects (font (size 1.27 1.27)))))
+      )
+     )
+    (symbol "zudo-osc-hole-field:OPA4197IPWR"
+      (property "LCSC" "C2057327" (at 0 0 0) (effects (font (size 1.27 1.27)) (hide yes)))
+      (property "Manufacturer" "Texas Instruments" (at 0 0 0) (effects (font (size 1.27 1.27)) (hide yes)))
+      (property "MPN" "OPA4197IPWR" (at 0 0 0) (effects (font (size 1.27 1.27)) (hide yes)))
+        (exclude_from_sim no)
+        (in_bom yes)
+        (on_board yes)
+        (in_pos_files yes)
+        (duplicate_pin_numbers_are_jumpers no)
+        (property "Reference" "U"
+          (at 0 3.81 0)
+          (show_name no)
+          (do_not_autoplace no)
+          (effects
+            (font
+              (size 1.27 1.27)
+            )
+            (justify left)
+          )
+        )
+        (property "Value" "OPA4197IPWR"
+          (at 0 -3.81 0)
+          (show_name no)
+          (do_not_autoplace no)
+          (effects
+            (font
+              (size 1.27 1.27)
+            )
+            (justify left)
+          )
+        )
+        (property "Footprint" "zudo-osc-hole-field:TSSOP-14_4.4x5mm_P0.65mm"
+          (at 0 0 0)
+          (show_name no)
+          (do_not_autoplace no)
+          (hide yes)
+          (effects
+            (font
+              (size 1.27 1.27)
+            )
+          )
+        )
+        (property "Datasheet" "https://www.ti.com/lit/ds/symlink/opa4197.pdf"
+          (at 0 0 0)
+          (show_name no)
+          (do_not_autoplace no)
+          (hide yes)
+          (effects
+            (font
+              (size 1.27 1.27)
+            )
+          )
+        )
+        (property "Description" "Quad 36V, Precision, Rail-to-Rail Input/Output, Low Offset Voltage, Operational Amplifier, TSSOP-14"
+          (at 0 0 0)
+          (show_name no)
+          (do_not_autoplace no)
+          (hide yes)
+          (effects
+            (font
+              (size 1.27 1.27)
+            )
+          )
+        )
+        (property "ki_locked" ""
+          (at 0 0 0)
+          (show_name no)
+          (do_not_autoplace no)
+          (effects
+            (font
+              (size 1.27 1.27)
+            )
+          )
+        )
+        (property "ki_keywords" "quad opamp rtor"
+          (at 0 0 0)
+          (show_name no)
+          (do_not_autoplace no)
+          (hide yes)
+          (effects
+            (font
+              (size 1.27 1.27)
+            )
+          )
+        )
+        (property "ki_fp_filters" "TSSOP*4.4x5mm*P0.65mm*"
+          (at 0 0 0)
+          (show_name no)
+          (do_not_autoplace no)
+          (hide yes)
+          (effects
+            (font
+              (size 1.27 1.27)
+            )
+          )
+        )
+        (symbol "OPA4197IPWR_1_1"
+          (polyline
+            (pts
+              (xy -5.08 5.08) (xy 5.08 0) (xy -5.08 -5.08) (xy -5.08 5.08)
+            )
+            (stroke
+              (width 0.254)
+              (type default)
+            )
+            (fill
+              (type background)
+            )
+          )
+          (pin output line
+            (at 7.62 0 180)
+            (length 2.54)
+            (name ""
+              (effects
+                (font
+                  (size 1.27 1.27)
+                )
+              )
+            )
+            (number "1"
+              (effects
+                (font
+                  (size 1.27 1.27)
+                )
+              )
+            )
+          )
+          (pin input line
+            (at -7.62 -2.54 0)
+            (length 2.54)
+            (name "-"
+              (effects
+                (font
+                  (size 1.27 1.27)
+                )
+              )
+            )
+            (number "2"
+              (effects
+                (font
+                  (size 1.27 1.27)
+                )
+              )
+            )
+          )
+          (pin input line
+            (at -7.62 2.54 0)
+            (length 2.54)
+            (name "+"
+              (effects
+                (font
+                  (size 1.27 1.27)
+                )
+              )
+            )
+            (number "3"
+              (effects
+                (font
+                  (size 1.27 1.27)
+                )
+              )
+            )
+          )
+        )
+        (symbol "OPA4197IPWR_2_1"
+          (polyline
+            (pts
+              (xy -5.08 5.08) (xy 5.08 0) (xy -5.08 -5.08) (xy -5.08 5.08)
+            )
+            (stroke
+              (width 0.254)
+              (type default)
+            )
+            (fill
+              (type background)
+            )
+          )
+          (pin input line
+            (at -7.62 2.54 0)
+            (length 2.54)
+            (name "+"
+              (effects
+                (font
+                  (size 1.27 1.27)
+                )
+              )
+            )
+            (number "5"
+              (effects
+                (font
+                  (size 1.27 1.27)
+                )
+              )
+            )
+          )
+          (pin input line
+            (at -7.62 -2.54 0)
+            (length 2.54)
+            (name "-"
+              (effects
+                (font
+                  (size 1.27 1.27)
+                )
+              )
+            )
+            (number "6"
+              (effects
+                (font
+                  (size 1.27 1.27)
+                )
+              )
+            )
+          )
+          (pin output line
+            (at 7.62 0 180)
+            (length 2.54)
+            (name ""
+              (effects
+                (font
+                  (size 1.27 1.27)
+                )
+              )
+            )
+            (number "7"
+              (effects
+                (font
+                  (size 1.27 1.27)
+                )
+              )
+            )
+          )
+        )
+        (symbol "OPA4197IPWR_3_1"
+          (polyline
+            (pts
+              (xy -5.08 5.08) (xy 5.08 0) (xy -5.08 -5.08) (xy -5.08 5.08)
+            )
+            (stroke
+              (width 0.254)
+              (type default)
+            )
+            (fill
+              (type background)
+            )
+          )
+          (pin output line
+            (at 7.62 0 180)
+            (length 2.54)
+            (name ""
+              (effects
+                (font
+                  (size 1.27 1.27)
+                )
+              )
+            )
+            (number "8"
+              (effects
+                (font
+                  (size 1.27 1.27)
+                )
+              )
+            )
+          )
+          (pin input line
+            (at -7.62 -2.54 0)
+            (length 2.54)
+            (name "-"
+              (effects
+                (font
+                  (size 1.27 1.27)
+                )
+              )
+            )
+            (number "9"
+              (effects
+                (font
+                  (size 1.27 1.27)
+                )
+              )
+            )
+          )
+          (pin input line
+            (at -7.62 2.54 0)
+            (length 2.54)
+            (name "+"
+              (effects
+                (font
+                  (size 1.27 1.27)
+                )
+              )
+            )
+            (number "10"
+              (effects
+                (font
+                  (size 1.27 1.27)
+                )
+              )
+            )
+          )
+        )
+        (symbol "OPA4197IPWR_4_1"
+          (polyline
+            (pts
+              (xy -5.08 5.08) (xy 5.08 0) (xy -5.08 -5.08) (xy -5.08 5.08)
+            )
+            (stroke
+              (width 0.254)
+              (type default)
+            )
+            (fill
+              (type background)
+            )
+          )
+          (pin input line
+            (at -7.62 2.54 0)
+            (length 2.54)
+            (name "+"
+              (effects
+                (font
+                  (size 1.27 1.27)
+                )
+              )
+            )
+            (number "12"
+              (effects
+                (font
+                  (size 1.27 1.27)
+                )
+              )
+            )
+          )
+          (pin input line
+            (at -7.62 -2.54 0)
+            (length 2.54)
+            (name "-"
+              (effects
+                (font
+                  (size 1.27 1.27)
+                )
+              )
+            )
+            (number "13"
+              (effects
+                (font
+                  (size 1.27 1.27)
+                )
+              )
+            )
+          )
+          (pin output line
+            (at 7.62 0 180)
+            (length 2.54)
+            (name ""
+              (effects
+                (font
+                  (size 1.27 1.27)
+                )
+              )
+            )
+            (number "14"
+              (effects
+                (font
+                  (size 1.27 1.27)
+                )
+              )
+            )
+          )
+        )
+        (symbol "OPA4197IPWR_5_1"
+          (pin power_in line
+            (at -2.54 7.62 270)
+            (length 3.81)
+            (name "V+"
+              (effects
+                (font
+                  (size 1.27 1.27)
+                )
+              )
+            )
+            (number "4"
+              (effects
+                (font
+                  (size 1.27 1.27)
+                )
+              )
+            )
+          )
+          (pin power_in line
+            (at -2.54 -7.62 90)
+            (length 3.81)
+            (name "V-"
+              (effects
+                (font
+                  (size 1.27 1.27)
+                )
+              )
+            )
+            (number "11"
+              (effects
+                (font
+                  (size 1.27 1.27)
+                )
+              )
+            )
+          )
+        )
+        (embedded_fonts no)
+      )
+    (symbol "zudo-osc-hole-field:PTV09A-4020F-B504"
+        (in_bom yes) (on_board yes)
+        (property "Reference" "RV" (at 0 12.7 0) (effects (font (size 1.27 1.27))))
+        (property "Value" "PTV09A-4020F-B504" (at 0 -12.7 0) (effects (font (size 1.27 1.27))))
+        (property "Footprint" "zudo-osc-hole-field:PTV09A-4020F" (at 0 -15.24 0) (effects (font (size 1.27 1.27)) hide))
+        (property "Datasheet" "https://www.bourns.com/docs/product-datasheets/PTV09.pdf" (at 0 -17.78 0) (effects (font (size 1.27 1.27)) hide))
+        (property "MPN" "PTV09A-4020F-B504" (at 0 -20.32 0) (effects (font (size 1.27 1.27)) hide))
+        (property "Manufacturer" "Bourns" (at 0 -22.86 0) (effects (font (size 1.27 1.27)) hide))
+        (property "LCSC" "C5154140" (at 0 -25.4 0) (effects (font (size 1.27 1.27)) hide))
+        (symbol "PTV09A-4020F-B504_0_1"
+          (rectangle (start -5.08 8.89) (end 5.08 -8.89) (stroke (width 0.254) (type default)) (fill (type background)))
+          (pin passive line (at -7.62 7.62 0) (length 2.54) (name "CCW" (effects (font (size 1.0 1.0)))) (number "1" (effects (font (size 1.0 1.0)))))
+          (pin passive line (at -7.62 5.08 0) (length 2.54) (name "WIPER" (effects (font (size 1.0 1.0)))) (number "2" (effects (font (size 1.0 1.0)))))
+          (pin passive line (at -7.62 2.54 0) (length 2.54) (name "CW" (effects (font (size 1.0 1.0)))) (number "3" (effects (font (size 1.0 1.0)))))
+          (pin passive line (at -7.62 0.0 0) (length 2.54) (name "MOUNT" (effects (font (size 1.0 1.0)))) (number "4" (effects (font (size 1.0 1.0)))))
+          (pin passive line (at -7.62 -2.54 0) (length 2.54) (name "MOUNT" (effects (font (size 1.0 1.0)))) (number "5" (effects (font (size 1.0 1.0)))))
+        )
+      )
+    (symbol "zudo-osc-hole-field:RC0603FR-07100KL"
+      (in_bom yes) (on_board yes)
+      (property "Reference" "R" (at 0 5.08 0) (effects (font (size 1.27 1.27))))
+      (property "Value" "RC0603FR-07100KL" (at 0 -5.08 0) (effects (font (size 1.27 1.27))))
+      (property "Footprint" "zudo-osc-hole-field:R0603" (at 0 0 0) (effects (font (size 1.27 1.27)) (hide yes)))
+      (property "Datasheet" "" (at 0 0 0) (effects (font (size 1.27 1.27)) (hide yes)))
+      (property "MPN" "RC0603FR-07100KL" (at 0 0 0) (effects (font (size 1.27 1.27)) (hide yes)))
+      (property "Manufacturer" "Yageo" (at 0 0 0) (effects (font (size 1.27 1.27)) (hide yes)))
+      (property "LCSC" "" (at 0 0 0) (effects (font (size 1.27 1.27)) (hide yes)))
+      (symbol "RC0603FR-07100KL_0_1"
+       (rectangle (start -2.54 3.81) (end 2.54 -3.81) (stroke (width 0.254) (type default)) (fill (type background)))
+       (pin passive line (at -5.08 0 0) (length 2.54) (name "" (effects (font (size 1.27 1.27)))) (number "1" (effects (font (size 1.27 1.27)))))
+       (pin passive line (at 5.08 0 180) (length 2.54) (name "" (effects (font (size 1.27 1.27)))) (number "2" (effects (font (size 1.27 1.27)))))
+      )
+     )
+  )
+  (symbol (lib_id "zudo-osc-hole-field:OPA4197IPWR") (at 50.8 50.8 0) (unit 1)
+    (exclude_from_sim no) (in_bom yes) (on_board yes) (dnp no)
+    (uuid "3f4f8cc5-255d-5354-8701-bc0aa275b195")
+    (property "Reference" "U1901" (at 53.8 47.8 0) (effects (font (size 1.27 1.27))))
+    (property "Value" "OPA4197IPWR" (at 53.8 53.8 0) (effects (font (size 1.27 1.27))))
+    (property "Footprint" "zudo-osc-hole-field:TSSOP-14_4.4x5mm_P0.65mm" (at 50.8 50.8 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "Datasheet" "" (at 50.8 50.8 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "MPN" "OPA4197IPWR" (at 50.8 50.8 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "Manufacturer" "Texas Instruments" (at 50.8 50.8 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "LCSC" "C2057327" (at 50.8 50.8 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "Block" "${SHEETNAME}" (at 50.8 50.8 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "Role" "slew_island:PRE" (at 50.8 50.8 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "PanelUid" "C:H1.SLEW" (at 50.8 50.8 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "Island" "" (at 50.8 50.8 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "Sensitive" "" (at 50.8 50.8 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (pin "1" (uuid "ea840aa1-791a-55b7-becc-a602e10085bd"))
+    (pin "2" (uuid "3ba4d4f3-3597-531c-85a5-403f93b1c47e"))
+    (pin "3" (uuid "f670c0a7-94dd-54d6-a635-ad0102618fd2"))
+    (instances (project "osc-standard-cells"
+      (path "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/fcc00006-3b40-58c0-9a4a-f3ecd4ae2bac" (reference "U1901") (unit 1))
+    ))
+  )
+  (label "C5195c0_PRE_OUT" (at 58.42 50.8 180) (effects (font (size 1.27 1.27)) (justify left)) (uuid "c2edebaf-fb2d-5ef8-b85a-9b52b726e5f5"))
+  (label "C5195c0_PRE_OUT" (at 43.18 53.34 0) (effects (font (size 1.27 1.27)) (justify right)) (uuid "2a194d1c-c288-5871-a7a1-0044d700aaf2"))
+  (label "C5195c0_HELD_BUFFERED" (at 43.18 48.26 0) (effects (font (size 1.27 1.27)) (justify right)) (uuid "57764a56-72aa-5c0a-8fc8-b160ccfc1d3b"))
+  (symbol (lib_id "zudo-osc-hole-field:OPA4197IPWR") (at 101.6 50.8 0) (unit 2)
+    (exclude_from_sim no) (in_bom yes) (on_board yes) (dnp no)
+    (uuid "b1198624-ef0c-586b-a372-e661da241150")
+    (property "Reference" "U1901" (at 104.6 47.8 0) (effects (font (size 1.27 1.27))))
+    (property "Value" "OPA4197IPWR" (at 104.6 53.8 0) (effects (font (size 1.27 1.27))))
+    (property "Footprint" "zudo-osc-hole-field:TSSOP-14_4.4x5mm_P0.65mm" (at 101.6 50.8 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "Datasheet" "" (at 101.6 50.8 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "MPN" "OPA4197IPWR" (at 101.6 50.8 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "Manufacturer" "Texas Instruments" (at 101.6 50.8 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "LCSC" "C2057327" (at 101.6 50.8 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "Block" "${SHEETNAME}" (at 101.6 50.8 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "Role" "slew_island:PRE" (at 101.6 50.8 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "PanelUid" "C:H1.SLEW" (at 101.6 50.8 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "Island" "" (at 101.6 50.8 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "Sensitive" "" (at 101.6 50.8 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (pin "5" (uuid "6f54d664-4be6-51de-ba84-e2f37c4c9cdb"))
+    (pin "6" (uuid "dbe9725e-7864-5953-b280-c88ba059bfb7"))
+    (pin "7" (uuid "4ae127a0-7873-5e89-9686-3b68e8ce6d73"))
+    (instances (project "osc-standard-cells"
+      (path "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/fcc00006-3b40-58c0-9a4a-f3ecd4ae2bac" (reference "U1901") (unit 2))
+    ))
+  )
+  (no_connect (at 93.98 48.26) (uuid "8cd45e49-2596-5405-ad18-204f1df58cf6"))
+  (no_connect (at 93.98 53.34) (uuid "83beed43-ab3f-55f9-a0f9-fdcafc9feb00"))
+  (no_connect (at 109.22 50.8) (uuid "f4637579-e24d-5c2d-a597-027a8cbe7647"))
+  (symbol (lib_id "zudo-osc-hole-field:OPA4197IPWR") (at 152.4 50.8 0) (unit 3)
+    (exclude_from_sim no) (in_bom yes) (on_board yes) (dnp no)
+    (uuid "375c395a-c91e-5e0a-ba2d-3fb2717e44be")
+    (property "Reference" "U1901" (at 155.4 47.8 0) (effects (font (size 1.27 1.27))))
+    (property "Value" "OPA4197IPWR" (at 155.4 53.8 0) (effects (font (size 1.27 1.27))))
+    (property "Footprint" "zudo-osc-hole-field:TSSOP-14_4.4x5mm_P0.65mm" (at 152.4 50.8 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "Datasheet" "" (at 152.4 50.8 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "MPN" "OPA4197IPWR" (at 152.4 50.8 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "Manufacturer" "Texas Instruments" (at 152.4 50.8 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "LCSC" "C2057327" (at 152.4 50.8 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "Block" "${SHEETNAME}" (at 152.4 50.8 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "Role" "slew_island:PRE" (at 152.4 50.8 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "PanelUid" "C:H1.SLEW" (at 152.4 50.8 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "Island" "" (at 152.4 50.8 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "Sensitive" "" (at 152.4 50.8 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (pin "8" (uuid "113c0e1e-f1ac-54a6-9879-3355fad9bde7"))
+    (pin "9" (uuid "f18763b3-0afb-59ba-96a9-4a20856193c1"))
+    (pin "10" (uuid "af2b0860-b9d6-58e4-b6ee-7e6aa7c981d9"))
+    (instances (project "osc-standard-cells"
+      (path "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/fcc00006-3b40-58c0-9a4a-f3ecd4ae2bac" (reference "U1901") (unit 3))
+    ))
+  )
+  (no_connect (at 160.02 50.8) (uuid "5a8b2a1c-12b9-5172-b5aa-b2bd2e258130"))
+  (no_connect (at 144.78 53.34) (uuid "dd4562a0-aaa0-5707-8642-f779ce36288f"))
+  (no_connect (at 144.78 48.26) (uuid "5ac3a870-f7c8-5057-a517-aafe16dfc6e2"))
+  (symbol (lib_id "zudo-osc-hole-field:OPA4197IPWR") (at 203.2 50.8 0) (unit 4)
+    (exclude_from_sim no) (in_bom yes) (on_board yes) (dnp no)
+    (uuid "413e2843-32ba-52e5-97fa-0b7778f0188e")
+    (property "Reference" "U1901" (at 206.2 47.8 0) (effects (font (size 1.27 1.27))))
+    (property "Value" "OPA4197IPWR" (at 206.2 53.8 0) (effects (font (size 1.27 1.27))))
+    (property "Footprint" "zudo-osc-hole-field:TSSOP-14_4.4x5mm_P0.65mm" (at 203.2 50.8 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "Datasheet" "" (at 203.2 50.8 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "MPN" "OPA4197IPWR" (at 203.2 50.8 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "Manufacturer" "Texas Instruments" (at 203.2 50.8 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "LCSC" "C2057327" (at 203.2 50.8 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "Block" "${SHEETNAME}" (at 203.2 50.8 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "Role" "slew_island:PRE" (at 203.2 50.8 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "PanelUid" "C:H1.SLEW" (at 203.2 50.8 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "Island" "" (at 203.2 50.8 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "Sensitive" "" (at 203.2 50.8 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (pin "12" (uuid "d8efa449-594f-50f9-a031-47b5eb3e0710"))
+    (pin "13" (uuid "9578b1ac-7001-57ba-8ea2-ce949eda8a18"))
+    (pin "14" (uuid "8e1e2bc0-b5a0-5d1d-89d5-cb4ebda1696c"))
+    (instances (project "osc-standard-cells"
+      (path "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/fcc00006-3b40-58c0-9a4a-f3ecd4ae2bac" (reference "U1901") (unit 4))
+    ))
+  )
+  (no_connect (at 195.58 48.26) (uuid "c4a9189f-e4e1-551b-848d-7e5f5407d5c1"))
+  (no_connect (at 195.58 53.34) (uuid "506e1be4-9217-5398-84d4-c659fcfb486f"))
+  (no_connect (at 210.82 50.8) (uuid "6951ff3c-4c48-520d-8802-233cfab479b6"))
+  (symbol (lib_id "zudo-osc-hole-field:OPA4197IPWR") (at 254 50.8 0) (unit 5)
+    (exclude_from_sim no) (in_bom yes) (on_board yes) (dnp no)
+    (uuid "a7364ec6-c98a-53d4-bec8-9ec5e7dc313d")
+    (property "Reference" "U1901" (at 257 47.8 0) (effects (font (size 1.27 1.27))))
+    (property "Value" "OPA4197IPWR" (at 257 53.8 0) (effects (font (size 1.27 1.27))))
+    (property "Footprint" "zudo-osc-hole-field:TSSOP-14_4.4x5mm_P0.65mm" (at 254 50.8 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "Datasheet" "" (at 254 50.8 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "MPN" "OPA4197IPWR" (at 254 50.8 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "Manufacturer" "Texas Instruments" (at 254 50.8 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "LCSC" "C2057327" (at 254 50.8 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "Block" "${SHEETNAME}" (at 254 50.8 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "Role" "slew_island:PRE" (at 254 50.8 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "PanelUid" "C:H1.SLEW" (at 254 50.8 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "Island" "" (at 254 50.8 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "Sensitive" "" (at 254 50.8 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (pin "4" (uuid "2969be84-bf73-531e-a3d1-4f2ba181e8f3"))
+    (pin "11" (uuid "75318dc7-b184-5013-8966-9707f1509123"))
+    (instances (project "osc-standard-cells"
+      (path "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/fcc00006-3b40-58c0-9a4a-f3ecd4ae2bac" (reference "U1901") (unit 5))
+    ))
+  )
+  (global_label "+12V" (shape passive) (at 251.46 43.18 90) (effects (font (size 1.27 1.27)) (justify left)) (uuid "e3185dbe-571c-5f50-a69c-26e6c0ffd5fa"))
+  (global_label "-12V" (shape passive) (at 251.46 58.42 270) (effects (font (size 1.27 1.27)) (justify right)) (uuid "69d5f5e6-b587-5ba8-8b13-9d52dda130ff"))
+  (symbol (lib_id "zudo-osc-hole-field:RC0603FR-07100KL") (at 304.8 50.8 0) (unit 0)
+    (exclude_from_sim no) (in_bom yes) (on_board yes) (dnp no)
+    (uuid "76146440-b7b6-5161-8306-afb40cef5340")
+    (property "Reference" "R1902" (at 307.8 47.8 0) (effects (font (size 1.27 1.27))))
+    (property "Value" "2200 Ω" (at 307.8 53.8 0) (effects (font (size 1.27 1.27))))
+    (property "Footprint" "zudo-osc-hole-field:R0603" (at 304.8 50.8 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "Datasheet" "" (at 304.8 50.8 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "MPN" "" (at 304.8 50.8 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "Manufacturer" "" (at 304.8 50.8 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "LCSC" "" (at 304.8 50.8 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "Block" "${SHEETNAME}" (at 304.8 50.8 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "Role" "slew_island:R_MIN" (at 304.8 50.8 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "PanelUid" "C:H1.SLEW" (at 304.8 50.8 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "Island" "" (at 304.8 50.8 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "Sensitive" "" (at 304.8 50.8 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (pin "1" (uuid "77366e25-4b99-5955-9650-39950082c4ea"))
+    (pin "2" (uuid "01dc9e4b-d847-501e-991f-9e2d09b1d8ba"))
+    (instances (project "osc-standard-cells"
+      (path "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/fcc00006-3b40-58c0-9a4a-f3ecd4ae2bac" (reference "R1902") (unit 0))
+    ))
+  )
+  (label "C5195c0_PRE_OUT" (at 299.72 50.8 0) (effects (font (size 1.27 1.27)) (justify right)) (uuid "9b27c499-3106-5265-b3d7-e9ff3dfa1af7"))
+  (label "C5195c0_POT_IN" (at 309.88 50.8 180) (effects (font (size 1.27 1.27)) (justify left)) (uuid "95e2725c-18d4-5d48-8400-1e3d5b678035"))
+  (symbol (lib_id "zudo-osc-hole-field:PTV09A-4020F-B504") (at 355.6 50.8 0) (unit 0)
+    (exclude_from_sim no) (in_bom yes) (on_board yes) (dnp no)
+    (uuid "2a4ff012-975d-5954-8c86-52b12e794773")
+    (property "Reference" "RV1903" (at 358.6 47.8 0) (effects (font (size 1.27 1.27))))
+    (property "Value" "PTV09A-4020F-B504" (at 358.6 53.8 0) (effects (font (size 1.27 1.27))))
+    (property "Footprint" "zudo-osc-hole-field:PTV09A-4020F" (at 355.6 50.8 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "Datasheet" "" (at 355.6 50.8 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "MPN" "PTV09A-4020F-B504" (at 355.6 50.8 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "Manufacturer" "Bourns" (at 355.6 50.8 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "LCSC" "C5154140" (at 355.6 50.8 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "Block" "${SHEETNAME}" (at 355.6 50.8 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "Role" "slew_island:RV" (at 355.6 50.8 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "PanelUid" "C:H1.SLEW" (at 355.6 50.8 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "Island" "" (at 355.6 50.8 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "Sensitive" "" (at 355.6 50.8 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (pin "1" (uuid "5f20ff64-befa-5ea1-818d-6e936fb39ad1"))
+    (pin "2" (uuid "3633004c-1343-598e-92ae-2bff108777ba"))
+    (pin "3" (uuid "21933718-37db-502a-8bd6-6c3618759bb8"))
+    (pin "4" (uuid "f8def1ab-3ec9-5616-aba4-314b38dfdf48"))
+    (pin "5" (uuid "3416d514-9d09-5088-a132-698050c5340e"))
+    (instances (project "osc-standard-cells"
+      (path "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/fcc00006-3b40-58c0-9a4a-f3ecd4ae2bac" (reference "RV1903") (unit 0))
+    ))
+  )
+  (label "C5195c0_POT_IN" (at 347.98 43.18 0) (effects (font (size 1.27 1.27)) (justify right)) (uuid "9e71d546-8859-5c3f-8a26-40759712685b"))
+  (label "C5195c0_STORAGE" (at 347.98 45.72 0) (effects (font (size 1.27 1.27)) (justify right)) (uuid "6b53af83-1f17-5fdb-b529-d8f1eca5912b"))
+  (label "C5195c0_STORAGE" (at 347.98 48.26 0) (effects (font (size 1.27 1.27)) (justify right)) (uuid "fb533e27-f1f5-5ea7-9611-734ae4cd9458"))
+  (no_connect (at 347.98 50.8) (uuid "50b8a33e-0293-5ec7-9efe-b87a975fff45"))
+  (no_connect (at 347.98 53.34) (uuid "09373067-736c-515e-ba45-0ac404f40e22"))
+  (symbol (lib_id "zudo-osc-hole-field:1206CG104J500NT") (at 50.8 76.2 0) (unit 0)
+    (exclude_from_sim no) (in_bom yes) (on_board yes) (dnp no)
+    (uuid "80744fa4-4e58-5593-abea-172046e8b792")
+    (property "Reference" "C1904" (at 53.8 73.2 0) (effects (font (size 1.27 1.27))))
+    (property "Value" "1e-07 F" (at 53.8 79.2 0) (effects (font (size 1.27 1.27))))
+    (property "Footprint" "zudo-osc-hole-field:C1206" (at 50.8 76.2 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "Datasheet" "" (at 50.8 76.2 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "MPN" "1206CG104J500NT" (at 50.8 76.2 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "Manufacturer" "Fenghua Advanced Technology" (at 50.8 76.2 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "LCSC" "C46348" (at 50.8 76.2 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "Block" "${SHEETNAME}" (at 50.8 76.2 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "Role" "slew_island:C1" (at 50.8 76.2 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "PanelUid" "C:H1.SLEW" (at 50.8 76.2 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "Island" "" (at 50.8 76.2 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "Sensitive" "" (at 50.8 76.2 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (pin "1" (uuid "c6195704-133c-59ed-8010-95f28a001710"))
+    (pin "2" (uuid "e1f8d95c-20d0-5567-bd24-cf67f812c9ed"))
+    (instances (project "osc-standard-cells"
+      (path "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/fcc00006-3b40-58c0-9a4a-f3ecd4ae2bac" (reference "C1904") (unit 0))
+    ))
+  )
+  (label "C5195c0_STORAGE" (at 45.72 76.2 0) (effects (font (size 1.27 1.27)) (justify right)) (uuid "a96301a2-ab5d-5665-a914-81e1b84cc65f"))
+  (global_label "AGND" (shape passive) (at 55.88 76.2 180) (effects (font (size 1.27 1.27)) (justify left)) (uuid "fee14c22-dbfd-5110-96c1-811445f8385a"))
+  (symbol (lib_id "zudo-osc-hole-field:1206CG104J500NT") (at 101.6 76.2 0) (unit 0)
+    (exclude_from_sim no) (in_bom yes) (on_board yes) (dnp no)
+    (uuid "a5e82e24-26ef-55d9-ae9a-b27f191196e4")
+    (property "Reference" "C1905" (at 104.6 73.2 0) (effects (font (size 1.27 1.27))))
+    (property "Value" "1e-07 F" (at 104.6 79.2 0) (effects (font (size 1.27 1.27))))
+    (property "Footprint" "zudo-osc-hole-field:C1206" (at 101.6 76.2 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "Datasheet" "" (at 101.6 76.2 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "MPN" "1206CG104J500NT" (at 101.6 76.2 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "Manufacturer" "Fenghua Advanced Technology" (at 101.6 76.2 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "LCSC" "C46348" (at 101.6 76.2 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "Block" "${SHEETNAME}" (at 101.6 76.2 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "Role" "slew_island:C2" (at 101.6 76.2 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "PanelUid" "C:H1.SLEW" (at 101.6 76.2 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "Island" "" (at 101.6 76.2 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "Sensitive" "" (at 101.6 76.2 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (pin "1" (uuid "241ecdce-90d4-5935-8499-fd5cdcce0787"))
+    (pin "2" (uuid "068a0a7e-c154-5a72-9578-8ee260f1b0b3"))
+    (instances (project "osc-standard-cells"
+      (path "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/fcc00006-3b40-58c0-9a4a-f3ecd4ae2bac" (reference "C1905") (unit 0))
+    ))
+  )
+  (label "C5195c0_STORAGE" (at 96.52 76.2 0) (effects (font (size 1.27 1.27)) (justify right)) (uuid "3a77614a-5c61-59c7-ab43-9c68da8ff2c9"))
+  (global_label "AGND" (shape passive) (at 106.68 76.2 180) (effects (font (size 1.27 1.27)) (justify left)) (uuid "aaa13188-738f-5dc9-a85b-a90c17aff7e5"))
+  (symbol (lib_id "zudo-osc-hole-field:1206CG104J500NT") (at 152.4 76.2 0) (unit 0)
+    (exclude_from_sim no) (in_bom yes) (on_board yes) (dnp no)
+    (uuid "396c9dc6-2a32-5fe5-b800-7777af1f0fc5")
+    (property "Reference" "C1906" (at 155.4 73.2 0) (effects (font (size 1.27 1.27))))
+    (property "Value" "1e-07 F" (at 155.4 79.2 0) (effects (font (size 1.27 1.27))))
+    (property "Footprint" "zudo-osc-hole-field:C1206" (at 152.4 76.2 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "Datasheet" "" (at 152.4 76.2 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "MPN" "1206CG104J500NT" (at 152.4 76.2 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "Manufacturer" "Fenghua Advanced Technology" (at 152.4 76.2 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "LCSC" "C46348" (at 152.4 76.2 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "Block" "${SHEETNAME}" (at 152.4 76.2 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "Role" "slew_island:C3" (at 152.4 76.2 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "PanelUid" "C:H1.SLEW" (at 152.4 76.2 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "Island" "" (at 152.4 76.2 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "Sensitive" "" (at 152.4 76.2 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (pin "1" (uuid "a9ad4b9c-b3fe-5bd9-9d23-103ed72dff9e"))
+    (pin "2" (uuid "7c465d56-f466-5094-9ee6-14ebf29225e0"))
+    (instances (project "osc-standard-cells"
+      (path "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/fcc00006-3b40-58c0-9a4a-f3ecd4ae2bac" (reference "C1906") (unit 0))
+    ))
+  )
+  (label "C5195c0_STORAGE" (at 147.32 76.2 0) (effects (font (size 1.27 1.27)) (justify right)) (uuid "822f31be-8298-59b4-ba3c-0f9d30a1ac14"))
+  (global_label "AGND" (shape passive) (at 157.48 76.2 180) (effects (font (size 1.27 1.27)) (justify left)) (uuid "95383e90-3b89-5db9-a6f2-65c3c32434a0"))
+  (symbol (lib_id "zudo-osc-hole-field:1206CG104J500NT") (at 203.2 76.2 0) (unit 0)
+    (exclude_from_sim no) (in_bom yes) (on_board yes) (dnp no)
+    (uuid "dbe6e3ff-2b95-5a19-8f25-3faabdea11dd")
+    (property "Reference" "C1907" (at 206.2 73.2 0) (effects (font (size 1.27 1.27))))
+    (property "Value" "1e-07 F" (at 206.2 79.2 0) (effects (font (size 1.27 1.27))))
+    (property "Footprint" "zudo-osc-hole-field:C1206" (at 203.2 76.2 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "Datasheet" "" (at 203.2 76.2 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "MPN" "1206CG104J500NT" (at 203.2 76.2 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "Manufacturer" "Fenghua Advanced Technology" (at 203.2 76.2 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "LCSC" "C46348" (at 203.2 76.2 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "Block" "${SHEETNAME}" (at 203.2 76.2 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "Role" "slew_island:C4" (at 203.2 76.2 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "PanelUid" "C:H1.SLEW" (at 203.2 76.2 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "Island" "" (at 203.2 76.2 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "Sensitive" "" (at 203.2 76.2 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (pin "1" (uuid "a7a30f89-ff7b-5785-9561-10ce583592f7"))
+    (pin "2" (uuid "33ce51e5-6f64-588c-b3d8-5f0640c5ae27"))
+    (instances (project "osc-standard-cells"
+      (path "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/fcc00006-3b40-58c0-9a4a-f3ecd4ae2bac" (reference "C1907") (unit 0))
+    ))
+  )
+  (label "C5195c0_STORAGE" (at 198.12 76.2 0) (effects (font (size 1.27 1.27)) (justify right)) (uuid "59f111f0-9dc1-53ce-8691-738d1722ccab"))
+  (global_label "AGND" (shape passive) (at 208.28 76.2 180) (effects (font (size 1.27 1.27)) (justify left)) (uuid "dcca9476-a93f-5c5c-a65b-a8bb8663a441"))
+  (symbol (lib_id "zudo-osc-hole-field:1206CG104J500NT") (at 254 76.2 0) (unit 0)
+    (exclude_from_sim no) (in_bom yes) (on_board yes) (dnp no)
+    (uuid "ee8a4de8-0a0c-5559-840f-9e6447a223c3")
+    (property "Reference" "C1908" (at 257 73.2 0) (effects (font (size 1.27 1.27))))
+    (property "Value" "1e-07 F" (at 257 79.2 0) (effects (font (size 1.27 1.27))))
+    (property "Footprint" "zudo-osc-hole-field:C1206" (at 254 76.2 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "Datasheet" "" (at 254 76.2 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "MPN" "1206CG104J500NT" (at 254 76.2 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "Manufacturer" "Fenghua Advanced Technology" (at 254 76.2 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "LCSC" "C46348" (at 254 76.2 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "Block" "${SHEETNAME}" (at 254 76.2 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "Role" "slew_island:C5" (at 254 76.2 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "PanelUid" "C:H1.SLEW" (at 254 76.2 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "Island" "" (at 254 76.2 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "Sensitive" "" (at 254 76.2 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (pin "1" (uuid "346d1296-fd67-58fe-975d-ee5696cc9c11"))
+    (pin "2" (uuid "1ab02eec-fbbc-5f2f-9b76-85c3ff434a53"))
+    (instances (project "osc-standard-cells"
+      (path "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/fcc00006-3b40-58c0-9a4a-f3ecd4ae2bac" (reference "C1908") (unit 0))
+    ))
+  )
+  (label "C5195c0_STORAGE" (at 248.92 76.2 0) (effects (font (size 1.27 1.27)) (justify right)) (uuid "ad2eb5b8-9b4b-584c-a5e6-4dfd9bcdf7b6"))
+  (global_label "AGND" (shape passive) (at 259.08 76.2 180) (effects (font (size 1.27 1.27)) (justify left)) (uuid "3888496d-0336-599f-868e-08063e57a508"))
+  (symbol (lib_id "zudo-osc-hole-field:OPA4197IPWR") (at 304.8 76.2 0) (unit 1)
+    (exclude_from_sim no) (in_bom yes) (on_board yes) (dnp no)
+    (uuid "9f88d763-1063-5611-97ea-df24218f727f")
+    (property "Reference" "U1909" (at 307.8 73.2 0) (effects (font (size 1.27 1.27))))
+    (property "Value" "OPA4197IPWR" (at 307.8 79.2 0) (effects (font (size 1.27 1.27))))
+    (property "Footprint" "zudo-osc-hole-field:TSSOP-14_4.4x5mm_P0.65mm" (at 304.8 76.2 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "Datasheet" "" (at 304.8 76.2 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "MPN" "OPA4197IPWR" (at 304.8 76.2 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "Manufacturer" "Texas Instruments" (at 304.8 76.2 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "LCSC" "C2057327" (at 304.8 76.2 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "Block" "${SHEETNAME}" (at 304.8 76.2 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "Role" "slew_island:POST" (at 304.8 76.2 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "PanelUid" "C:H1.SLEW" (at 304.8 76.2 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "Island" "" (at 304.8 76.2 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "Sensitive" "" (at 304.8 76.2 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (pin "1" (uuid "c5f5e835-feec-5037-9f39-5ab378969117"))
+    (pin "2" (uuid "c1bae137-78d6-5c8f-a096-e6bece904049"))
+    (pin "3" (uuid "1ef3188e-a554-5abf-bf02-f8fba0cd12e1"))
+    (instances (project "osc-standard-cells"
+      (path "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/fcc00006-3b40-58c0-9a4a-f3ecd4ae2bac" (reference "U1909") (unit 1))
+    ))
+  )
+  (label "C5195c0_SLEW_OUT" (at 312.42 76.2 180) (effects (font (size 1.27 1.27)) (justify left)) (uuid "7462d5ed-2d73-5b1a-8bae-2d9e2f90eb22"))
+  (label "C5195c0_SLEW_OUT" (at 297.18 78.74 0) (effects (font (size 1.27 1.27)) (justify right)) (uuid "6dabbad6-ca94-5ec7-b7bd-d3ee03c6244e"))
+  (label "C5195c0_STORAGE" (at 297.18 73.66 0) (effects (font (size 1.27 1.27)) (justify right)) (uuid "86a0d398-f3e0-5349-9236-418f88ae2820"))
+  (symbol (lib_id "zudo-osc-hole-field:OPA4197IPWR") (at 355.6 76.2 0) (unit 2)
+    (exclude_from_sim no) (in_bom yes) (on_board yes) (dnp no)
+    (uuid "d1688d82-7e07-5684-af64-e343852c80da")
+    (property "Reference" "U1909" (at 358.6 73.2 0) (effects (font (size 1.27 1.27))))
+    (property "Value" "OPA4197IPWR" (at 358.6 79.2 0) (effects (font (size 1.27 1.27))))
+    (property "Footprint" "zudo-osc-hole-field:TSSOP-14_4.4x5mm_P0.65mm" (at 355.6 76.2 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "Datasheet" "" (at 355.6 76.2 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "MPN" "OPA4197IPWR" (at 355.6 76.2 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "Manufacturer" "Texas Instruments" (at 355.6 76.2 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "LCSC" "C2057327" (at 355.6 76.2 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "Block" "${SHEETNAME}" (at 355.6 76.2 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "Role" "slew_island:POST" (at 355.6 76.2 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "PanelUid" "C:H1.SLEW" (at 355.6 76.2 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "Island" "" (at 355.6 76.2 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "Sensitive" "" (at 355.6 76.2 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (pin "5" (uuid "2538e12d-adce-5977-8a65-d92b24ae9770"))
+    (pin "6" (uuid "d0bf1e73-767c-5da1-ac34-a95a19324238"))
+    (pin "7" (uuid "da152ae5-440b-5c31-be16-2841dd9b0fcc"))
+    (instances (project "osc-standard-cells"
+      (path "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/fcc00006-3b40-58c0-9a4a-f3ecd4ae2bac" (reference "U1909") (unit 2))
+    ))
+  )
+  (no_connect (at 347.98 73.66) (uuid "a6cc1369-53c9-5c7a-b2f9-e45a0dc29bd5"))
+  (no_connect (at 347.98 78.74) (uuid "b060082b-1fd3-5ee0-bc46-78b17dad23fa"))
+  (no_connect (at 363.22 76.2) (uuid "11b1c1c1-da90-52ad-aafc-4f93be18d45c"))
+  (symbol (lib_id "zudo-osc-hole-field:OPA4197IPWR") (at 50.8 101.6 0) (unit 3)
+    (exclude_from_sim no) (in_bom yes) (on_board yes) (dnp no)
+    (uuid "2768fa9d-0b5a-550d-960c-889c9f09a91b")
+    (property "Reference" "U1909" (at 53.8 98.6 0) (effects (font (size 1.27 1.27))))
+    (property "Value" "OPA4197IPWR" (at 53.8 104.6 0) (effects (font (size 1.27 1.27))))
+    (property "Footprint" "zudo-osc-hole-field:TSSOP-14_4.4x5mm_P0.65mm" (at 50.8 101.6 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "Datasheet" "" (at 50.8 101.6 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "MPN" "OPA4197IPWR" (at 50.8 101.6 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "Manufacturer" "Texas Instruments" (at 50.8 101.6 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "LCSC" "C2057327" (at 50.8 101.6 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "Block" "${SHEETNAME}" (at 50.8 101.6 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "Role" "slew_island:POST" (at 50.8 101.6 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "PanelUid" "C:H1.SLEW" (at 50.8 101.6 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "Island" "" (at 50.8 101.6 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "Sensitive" "" (at 50.8 101.6 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (pin "8" (uuid "fb1d01d5-6e8c-5547-96cc-b0ff93801000"))
+    (pin "9" (uuid "b0207934-fe0d-5a71-90c4-f870a4b48c10"))
+    (pin "10" (uuid "758e310e-3e4d-5dc2-8006-88f42595aa07"))
+    (instances (project "osc-standard-cells"
+      (path "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/fcc00006-3b40-58c0-9a4a-f3ecd4ae2bac" (reference "U1909") (unit 3))
+    ))
+  )
+  (no_connect (at 58.42 101.6) (uuid "107131a2-e868-53e3-956a-786c9c9917d2"))
+  (no_connect (at 43.18 104.14) (uuid "095876a4-6aa4-5666-977c-7614fa691dca"))
+  (no_connect (at 43.18 99.06) (uuid "9beac8eb-5acf-51eb-91b9-402a006d78a3"))
+  (symbol (lib_id "zudo-osc-hole-field:OPA4197IPWR") (at 101.6 101.6 0) (unit 4)
+    (exclude_from_sim no) (in_bom yes) (on_board yes) (dnp no)
+    (uuid "cd298753-c08b-5cf1-93b1-7d67002b25ab")
+    (property "Reference" "U1909" (at 104.6 98.6 0) (effects (font (size 1.27 1.27))))
+    (property "Value" "OPA4197IPWR" (at 104.6 104.6 0) (effects (font (size 1.27 1.27))))
+    (property "Footprint" "zudo-osc-hole-field:TSSOP-14_4.4x5mm_P0.65mm" (at 101.6 101.6 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "Datasheet" "" (at 101.6 101.6 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "MPN" "OPA4197IPWR" (at 101.6 101.6 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "Manufacturer" "Texas Instruments" (at 101.6 101.6 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "LCSC" "C2057327" (at 101.6 101.6 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "Block" "${SHEETNAME}" (at 101.6 101.6 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "Role" "slew_island:POST" (at 101.6 101.6 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "PanelUid" "C:H1.SLEW" (at 101.6 101.6 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "Island" "" (at 101.6 101.6 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "Sensitive" "" (at 101.6 101.6 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (pin "12" (uuid "f7ea9fce-5492-5fc0-8571-6ca19a5fb7a7"))
+    (pin "13" (uuid "84beb76f-ce81-5d4d-96b1-566c61996ed9"))
+    (pin "14" (uuid "e21140f9-c233-59f7-bac5-bb01504c64eb"))
+    (instances (project "osc-standard-cells"
+      (path "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/fcc00006-3b40-58c0-9a4a-f3ecd4ae2bac" (reference "U1909") (unit 4))
+    ))
+  )
+  (no_connect (at 93.98 99.06) (uuid "caf59994-0409-5168-bab7-2d69f16f8f64"))
+  (no_connect (at 93.98 104.14) (uuid "077db12a-9b74-55b8-9113-1a571f029057"))
+  (no_connect (at 109.22 101.6) (uuid "1f0e3940-3fd7-59cc-9ded-ff894dcb5164"))
+  (symbol (lib_id "zudo-osc-hole-field:OPA4197IPWR") (at 152.4 101.6 0) (unit 5)
+    (exclude_from_sim no) (in_bom yes) (on_board yes) (dnp no)
+    (uuid "2e6b8c2e-37c1-5586-b7a5-7b4834110f79")
+    (property "Reference" "U1909" (at 155.4 98.6 0) (effects (font (size 1.27 1.27))))
+    (property "Value" "OPA4197IPWR" (at 155.4 104.6 0) (effects (font (size 1.27 1.27))))
+    (property "Footprint" "zudo-osc-hole-field:TSSOP-14_4.4x5mm_P0.65mm" (at 152.4 101.6 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "Datasheet" "" (at 152.4 101.6 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "MPN" "OPA4197IPWR" (at 152.4 101.6 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "Manufacturer" "Texas Instruments" (at 152.4 101.6 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "LCSC" "C2057327" (at 152.4 101.6 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "Block" "${SHEETNAME}" (at 152.4 101.6 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "Role" "slew_island:POST" (at 152.4 101.6 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "PanelUid" "C:H1.SLEW" (at 152.4 101.6 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "Island" "" (at 152.4 101.6 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "Sensitive" "" (at 152.4 101.6 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (pin "4" (uuid "6674765b-6b4d-557a-b877-547cd17764ba"))
+    (pin "11" (uuid "ea8d704b-3a79-599a-879f-b698c465030a"))
+    (instances (project "osc-standard-cells"
+      (path "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/fcc00006-3b40-58c0-9a4a-f3ecd4ae2bac" (reference "U1909") (unit 5))
+    ))
+  )
+  (global_label "+12V" (shape passive) (at 149.86 93.98 90) (effects (font (size 1.27 1.27)) (justify left)) (uuid "3366952b-0623-5552-bb27-fa6fdc5c880a"))
+  (global_label "-12V" (shape passive) (at 149.86 109.22 270) (effects (font (size 1.27 1.27)) (justify right)) (uuid "cb46120f-8050-5503-b9f7-33c54eb33ab5"))
+  (symbol (lib_id "Fixture:PWR_FLAG") (at 203.2 101.6 0) (unit 0)
+    (exclude_from_sim no) (in_bom yes) (on_board yes) (dnp no)
+    (uuid "d5b3ec3c-3b4e-5151-a50d-ce120c0b5a30")
+    (property "Reference" "#FLG1910" (at 206.2 98.6 0) (effects (font (size 1.27 1.27))))
+    (property "Value" "PORT_SOURCE" (at 206.2 104.6 0) (effects (font (size 1.27 1.27))))
+    (property "Footprint" "" (at 203.2 101.6 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "Datasheet" "" (at 203.2 101.6 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "MPN" "" (at 203.2 101.6 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "Manufacturer" "" (at 203.2 101.6 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "LCSC" "" (at 203.2 101.6 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "Block" "${SHEETNAME}" (at 203.2 101.6 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "Role" "" (at 203.2 101.6 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "PanelUid" "" (at 203.2 101.6 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "Island" "" (at 203.2 101.6 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "Sensitive" "" (at 203.2 101.6 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (pin "1" (uuid "274f2ee2-a3f4-5de8-9e68-028ccf2554fc"))
+    (instances (project "osc-standard-cells"
+      (path "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/fcc00006-3b40-58c0-9a4a-f3ecd4ae2bac" (reference "#FLG1910") (unit 0))
+    ))
+  )
+  (label "C5195c0_HELD_BUFFERED" (at 203.2 101.6 270) (effects (font (size 1.27 1.27)) (justify right)) (uuid "dd166a35-a33f-5173-ac1c-7a77670d520e"))
+  (embedded_fonts no)
+)

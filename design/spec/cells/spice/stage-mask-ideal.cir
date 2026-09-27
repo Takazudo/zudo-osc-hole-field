@@ -1,0 +1,30 @@
+OSC-ES-1 stage masking with generic BJT, LED and ideal amplifier only
+Venv env 0 DC 8
+Vrail five 0 DC 5
+Vown own 0 DC 0
+Vother other 0 DC 5
+Rtopon env cmdon 150k
+Rboton cmdon 0 10k
+Rtopoff env cmdoff 150k
+Rbotoff cmdoff 0 10k
+Sown cmdon 0 own 0 SWMASK
+Sother cmdoff 0 other 0 SWMASK
+Eampon driveon 0 cmdon emon 1e5
+Eampoff driveoff 0 cmdoff emoff 1e5
+Rbaseon driveon bon 10k
+Rbaseoff driveoff boff 10k
+Qon con bon emon QNPN
+Qoff coff boff emoff QNPN
+Rsenon emon 0 1k
+Rsenoff emoff 0 1k
+Dledon five con DWHITE
+Dledoff five coff DWHITE
+.model SWMASK SW(Ron=1 Roff=1e12 Vt=2.5 Vh=0)
+.model QNPN NPN(Is=1e-14 Bf=100)
+.model DWHITE D(Is=1e-18 N=3)
+.control
+op
+print v(cmdon) v(cmdoff) @Dledon[id] @Dledoff[id]
+quit
+.endc
+.end

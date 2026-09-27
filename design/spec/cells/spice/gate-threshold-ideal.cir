@@ -1,0 +1,23 @@
+OSC-ES-1 biased comparator threshold incl loaded 4.7k pullup, ideal output states
+Vrail five 0 DC 5
+Vinput input 0 DC 0
+Rdivtop five gate_ref 22k
+Rdivbottom gate_ref 0 100k
+Eref gate_ref_buf 0 gate_ref 0 1
+Rsensein input sense 100k
+Rsenseref five sense 33.2k
+Rthrefhi gate_ref_buf thresh_hi 10k
+Rhysthi cmp_hi thresh_hi 390k
+Rpull five cmp_hi 4.7k
+Rthreflo gate_ref_buf thresh_lo 10k
+Rhystlo cmp_lo thresh_lo 390k
+Vlow cmp_lo 0 DC 0
+Bdiffhi dhi 0 V=V(sense)-V(thresh_hi)
+Bdifflo dlo 0 V=V(sense)-V(thresh_lo)
+.control
+dc Vinput 0 3 0.01
+meas dc rising WHEN v(dhi)=0
+meas dc falling WHEN v(dlo)=0
+quit
+.endc
+.end
