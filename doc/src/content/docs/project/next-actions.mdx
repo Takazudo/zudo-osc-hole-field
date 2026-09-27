@@ -1,61 +1,34 @@
 ---
 title: "Open questions and next actions"
-description: "A concise handoff of current uncertainties, dependencies, and the next concrete work."
-sidebar_position: 2
+description: "A continuation point for the schematic and PCB draft work and the mechanical and bench gates that remain open."
+sidebar_position: 10
 ---
 
-This is the continuation point for the project. Keep it short enough that a new session can identify what to do next without rereading the whole archive. The project has just been created: no design work, component research or verification has been done yet.
+This project is in the R21 design handoff phase. The epic turns the imported layout and module contracts into an evidence-backed project record, generated schematic drafts, board drafts, and honest status pages. Those artifacts organize engineering work; they do not establish circuit performance or manufacturing readiness.
 
-## Current snapshot
+## Work this epic performs
 
-| Field | Entry |
-|---|---|
-| Snapshot date | Not entered |
-| Current project goal | Not entered; see the [project brief](./index.mdx) |
-| Design revision considered current | None exists yet |
-| Latest completed result and its evidence | None |
-| Most consequential remaining uncertainty | What the project is for; the brief is empty |
-| Next result to produce | A filled project brief |
+1. Resolve the instrument-wide electrical standard, exact panel-hardware evidence, and the real supply interface before downstream circuits depend on them.
+2. Capture module circuits from named topologies, record consequential choices, and generate the master schematic from the circuit specification.
+3. Integrate the module sheets, compare the generated design against its contracts, and reconcile the rail budget and board partition from actual circuit and mechanical evidence.
+4. Generate per-board schematic and PCB drafts, route and check them with the pinned KiCad 10 oracle, and publish status pages that distinguish completed checks from open work.
+5. Keep generated outputs reproducible from their source specifications. A clean ERC or DRC result describes rule checking only; it does not establish that a circuit works or a board fits.
 
-## Open questions
+## Gates that remain open after the design epic
 
-| Question ID | Exact question | Why the answer matters | Evidence needed | Owner or next task |
-|---|---|---|---|---|
-| Not assigned | What should this circuit do, for whom, and under which constraints? | Every later choice depends on it | The owner's description | Next action 1 |
+| Gate | Evidence still needed | Current boundary |
+|---|---|---|
+| Mechanical fit | Factory-built coupon or equivalent measured stack for the jack shoulder and nuts, pots and shafts, octave selector, toggle levers, button/plunger reach, LED optical path, connectors, panel, and board planes | Preview geometry and catalogue dimensions are not an installed fit result |
+| Sample-and-hold and slew | Coupon measurements for acquisition, hold drift, capture window, lag response, and tail under documented conditions | The SLEW proposal and ideal model do not establish a 25-second response or long-term hold performance |
+| Oscillator | Build and characterize one complete oscillator, including reference, octave selection, shaping, FM/sync, and calibration, before any replication claim | The five oscillator instances are functional scope, not a validated circuit |
+| Electrical integration | Measured or source-supported loads, rail budget, protection, startup behavior, and cross-board return paths | Reusing zudo-pd is design intent; the exact installed supply state and instrument load are not qualified |
+| Manufacturing | Accepted external assembly scope, exact released design revision, and owner review of the eventual release package | No fabrication order or manufacturing release is authorized by this handoff |
 
-Classify the needed work in plain language: source research, identity resolution, calculation, design choice, asset audit, supplier information, or physical measurement. This makes it clear whether another web lookup can answer the question or a bench test is required.
+The [release gates](../verification/osc-release-gates.mdx) and [S&H test plan](../verification/osc-slew-test-plan.mdx) hold the specific criteria. Record each result against its board revision, population, setup, and observed conditions. If a tool or physical test cannot run, report it as `NOT RUN` with the reason.
 
-## Next actions
+## Immediate continuation
 
-| Priority | Bounded action | Depends on | Concrete output | Completion condition |
-|---|---|---|---|---|
-| 1 | Fill the project brief from the owner's intent | The owner's description | An updated [project brief](./index.mdx) | Purpose and constraints are entered; unknowns are marked as unknown |
-| 2 | Draft the functional blocks and operating states | Action 1 | An updated [architecture overview](../architecture/overview.mdx) | Blocks are described by responsibility, without unselected part numbers |
-| 3 | Choose the first component question to research | Action 2 | A research page in [Research](../research/index.mdx) and an updated table here | One bounded research question with its criteria |
-
-Prefer actions with a visible result, such as retaining an exact document, mapping one connector, checking a model dimension, or producing one test report. “Investigate everything” gives the next agent no stopping point.
-
-## Blocked work
-
-| Blocked task | Missing prerequisite | Work that can continue meanwhile | Revisit when |
-|---|---|---|---|
-| No task entered | Not entered | Not entered | Not entered |
-
-Record the actual blocker. A failed download, missing hardware, unconfirmed identity, undecided requirement, and unavailable tool are different problems and require different follow-up.
-
-## Recently resolved or reopened
-
-| Question or action | New state | Evidence or decision reference | Pages or records updated |
-|---|---|---|---|
-| No entry | Not entered | Not entered | Not entered |
-
-Move a question here only with its supporting reference. A newer analysis can reopen a previously settled point; preserve both the earlier basis and the reason it no longer closes the question.
-
-## Handoff to the next session
-
-Read the [project brief](./index.mdx) and this page, run `pnpm circuit:check`, then start next action 1. The expected artifact is a filled brief. For a larger delegation, copy the task-request template described in [How we work](./how-we-work.mdx).
-
-When updating this page, remove stale imperative tasks that are already completed, keep historical work in its original decision or verification record, and carry forward only unresolved dependencies.
+Continue with the open electrical-standard and panel-hardware evidence work, then capture and integrate circuits against the R21 contracts. Keep component candidates out of the inventory until exact identity and selection are resolved. Use [the local R21 sequence](./osc-next-actions.mdx) for the detailed mechanical-coupon, circuit-capture, and verification order.
 
 {/* osc-hole-field-r21-handoff:start */}
 

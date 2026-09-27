@@ -1,0 +1,35 @@
+---
+title: "R21 handoff corrections"
+description: "Resolves stale handoff instructions and planning findings that could otherwise mislead later circuit or board work."
+sidebar_position: 40
+---
+
+The pristine R21 package remains preserved under `_temp-resource/1-osc-hole-field/`. Its contents are source material. The corrections below record findings from the planning review and identify which repository artifacts govern current work.
+
+## The initializer cannot target this repository
+
+The official initializer is create-only and refuses a non-empty destination, including this repository because it already contains `.git`. The handoff's `bootstrap_project.py` wrapper therefore cannot scaffold this repository as shipped. The project was scaffolded in a fresh directory before its files were copied into the repository. Use the [runtime integration record](./osc-documentation-integration.mdx) for the adopted ownership and workflow.
+
+## A local package tarball fallback is obsolete
+
+The planning-time registry check found both `create-zudo-circuit-doc` and `@takazudo/zudo-circuit-doc` published at version 0.1.0. The earlier tarball fallback was unnecessary for this project; use the versioned published package pair already declared by the repository.
+
+## The importer's HTML comments break MDX
+
+The original resource installer appends HTML comment markers to MDX pages. Those markers are not valid MDX syntax for this site and caused the build to fail. Managed page blocks in this repository use JSX comments (`{/* ... */}`), and their contents must remain intact when the pages are edited.
+
+## Preview IC rectangles are not a sizing basis
+
+The handoff preview contains 47 IC rectangles. The planning estimate for the captured module circuits was roughly 150 IC packages, so the preview represents only about a third of that estimate. The estimate itself is still provisional; neither figure is a final parts count. Do not size boards, rails, thermal paths, or assembly from preview rectangles.
+
+## One LM13700 per filter is insufficient for the proposed topology
+
+Under the recorded state-variable proposal, each filter needs four OTA cells: two integrators, one voltage-controlled resonance path, and one parallel dry-output VCA. The planning allocation treats one LM13700 as a dual-OTA package, so one package per filter cannot meet that proposed contract; the estimate is two packages per filter if that topology is retained. This is topology arithmetic, not a selected BOM or validated filter circuit. Review the [LM13700 candidate page](./part-ti-lm13700.mdx), the final filter design, and the unresolved GAIN behavior before capture is treated as settled.
+
+## The review CSV and legacy panel JSON are not coordinate authorities
+
+`project/osc-hole-field/workbench/layout/placements-review.csv` is a stale workbench report that omits the two R21 SLEW controls. `project/osc-hole-field/workbench/reference/panel.json` describes the older R17 panel and layout. The current design's generated `design/grid/placements.lock.json` governs fixed hardware coordinates; `project/osc-hole-field/workbench/layout/grid.json` is the source from which the lock is derived. Use [Grid and artifact authority](../architecture/osc-grid-authority.mdx) for the update path.
+
+## The zudo-pd Board P + Board B source is newer than the old local checkout
+
+The Board P + Board B pair referenced by the handoff exists in the [zudo-pd board documentation at the pinned commit](https://github.com/Takazudo/zudo-pd/blob/f25194fa73ded724e82d4561307c106480fbd9ce/boards/README.md). An older local checkout at `797a221` contains an earlier board set and does not contain that pair. Read the pinned remote revision as a read-only reference; this does not establish that the hardware was ordered, assembled, or verified in this project.
