@@ -1,0 +1,56 @@
+{
+  "scope": "Arithmetic from proposed nominal values, not evidence-contract PASS facts",
+  "formula": "tau=(Rmin+Rpot)*C_slew; t10_90=ln(9)*tau; settle5V_10mV=ln(500)*tau",
+  "assumptions": {
+    "Rmin_ohm": 2200,
+    "Rpot_nominal_ohm": 500000,
+    "Rpot_fractional_tolerance": 0.2,
+    "C_nominal_F": 5e-07,
+    "C_fractional_tolerance": 0.05,
+    "Rmin_fractional_tolerance": 0.01
+  },
+  "nominal": [
+    {
+      "pot_fraction": 0,
+      "tau_s": 0.0010999999999999998,
+      "t10_90_s": 0.002416947035069841,
+      "settle5V10mV_s": 0.00683606890826441
+    },
+    {
+      "pot_fraction": 0.25,
+      "tau_s": 0.0636,
+      "t10_90_s": 0.13974348311858356,
+      "settle5V10mV_s": 0.3952490750596514
+    },
+    {
+      "pot_fraction": 0.5,
+      "tau_s": 0.1261,
+      "t10_90_s": 0.2770700192020973,
+      "settle5V10mV_s": 0.7836620812110383
+    },
+    {
+      "pot_fraction": 0.75,
+      "tau_s": 0.1886,
+      "t10_90_s": 0.414396555285611,
+      "settle5V10mV_s": 1.1720750873624253
+    },
+    {
+      "pot_fraction": 1,
+      "tau_s": 0.2511,
+      "t10_90_s": 0.5517230913691247,
+      "settle5V10mV_s": 1.5604880935138121
+    }
+  ],
+  "max_setting_tau_corner_s": [
+    0.19103454999999997,
+    0.31616655
+  ],
+  "LF398_10nF_droop_V_s": {
+    "typ25C_30pA": 0.003,
+    "max25C_200pA": 0.02,
+    "conditions": "LF398-N section6.6, hold mode, TJ25C, referenced supply/input conditions; not a circuit guarantee"
+  },
+  "OPA4197_PW_high_temperature_bias_screen_V": 0.007532999999999999,
+  "input_step_16V_initial_current_A": 0.007272727272727273,
+  "RC_step_energy_16V_J": 6.4e-05
+}

@@ -1,0 +1,36 @@
+---
+title: "Integrating the official circuit documentation runtime"
+sidebar_position: 18
+---
+
+## Reviewed upstream
+
+Repository: [zudo-circuit-doc](https://github.com/Takazudo/zudo-circuit-doc), reviewed commit `5d0e2b630776489d394be341586b889dfe0d1cb8`. Source package version: `0.1.0`. Read the [initializer README](https://github.com/Takazudo/zudo-circuit-doc/blob/5d0e2b630776489d394be341586b889dfe0d1cb8/packages/create-zudo-circuit-doc/README.md) and [generated-host workflow](https://github.com/Takazudo/zudo-circuit-doc/blob/5d0e2b630776489d394be341586b889dfe0d1cb8/packages/create-zudo-circuit-doc/templates/default/circuit/WORKFLOW.md), not only the monorepo contributor guide.
+
+The lamp's project-local generator established the evidence-first pattern. The new project should use `@takazudo/zudo-circuit-doc` for that machinery; do not copy `doc/component-docs` from the lamp and maintain a second incompatible generator.
+
+## Correct file ownership
+
+Authored project intent, architecture, research, decisions and verification are supplied in this overlay. `doc/src/content/docs/components/**`, `circuit/generated/preflight.json`, and `doc/public/assets/component-previews/**` belong to the generator and are deliberately absent from the payload. The existing R20 handcrafted component pages are not installed there.
+
+The workbench and pictures are ordinary reviewed public assets. The installer appends their exact paths to `circuit/publication/assets.json`, preserving existing entries. No upstream package, version pin, workflow or evidence schema is overwritten.
+
+## Promote evidence, not appearances
+
+Create exact owner bundles with `pnpm exec zudo-circuit-doc new-component <suffix>`. Complete manifest, sources, facts, coverage, routing, interactions, pin-map and SKILL, then inventory, direct routing, selection and count locks. The manual inventory's declared placements are not a binding to a schematic.
+
+Keep six native verdicts distinct. A downloaded distributor listing confirms order identity, not manufacturer performance. A source URL without bytes is unavailable. Use the runtime's zero-hash sentinel only inside a genuinely unavailable source record; do not create a made-up digest. Original files must be downloaded/hash-locked locally before primary PASS promotion.
+
+## Commands after import
+
+```sh
+pnpm circuit:doctor
+pnpm circuit:check
+pnpm circuit:generate
+pnpm check
+pnpm build
+pnpm check:site
+pnpm dev
+```
+
+The build should remain offline after dependency installation. Online evidence acquisition is a separate explicit operation. Exit 4 for a missing optional tool is NOT RUN, not PASS. Report the exact check scope and current source revision.

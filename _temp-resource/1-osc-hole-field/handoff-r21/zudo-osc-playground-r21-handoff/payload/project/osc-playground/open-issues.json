@@ -1,0 +1,100 @@
+[
+  {
+    "id": "G01",
+    "domain": "MECHANICAL",
+    "title": "Jack / nut / panel stack",
+    "status": "OPEN",
+    "resolution_required": "Exact jack lot, EARS nut dimensions/thread, panel thickness, shoulder plane, accessible plug mouth. Fit coupon and insertion-load support. Do not raise entire panel for OCT."
+  },
+  {
+    "id": "G02",
+    "domain": "MECHANICAL",
+    "title": "OCT / pots / toggle / buttons",
+    "status": "OPEN",
+    "resolution_required": "Use full pin and body models, shaft datum, nut engagement, swept lever and plunger reach. Qualify board-to-panel depths before routing."
+  },
+  {
+    "id": "G03",
+    "domain": "ELECTRICAL",
+    "title": "Complete one oscillator",
+    "status": "OPEN",
+    "resolution_required": "Core, power pins, waveform/sine shaping, octave reference, FM/sync ranges and calibration across temperature. Confirm factory programming/calibration or no-firmware design."
+  },
+  {
+    "id": "G04",
+    "domain": "ELECTRICAL",
+    "title": "S&H capture and hold accuracy",
+    "status": "OPEN",
+    "resolution_required": "LF398M candidate has leakage and offset. Characterize 10 nF and 100 nF storage caps with suitable sample pulse; define acceptable droop vs price before selecting. No ADDAC accuracy claim."
+  },
+  {
+    "id": "G05",
+    "domain": "ELECTRICAL",
+    "title": "SLEW range and hot leakage",
+    "status": "OPEN",
+    "resolution_required": "Measure lag curve at five knob settings, high-Z leakage, fast endpoint, full-scale jumps, CW direction. 0.5 µF/500 kΩ is proposal; 25 s ADDAC range not implemented."
+  },
+  {
+    "id": "G06",
+    "domain": "ELECTRICAL",
+    "title": "VCF dry path / gain topology",
+    "status": "OPEN",
+    "resolution_required": "Explicitly freeze which LP/BP/HP paths respond to GAIN and RES; qualify self-oscillation and VCA feedthrough."
+  },
+  {
+    "id": "G07",
+    "domain": "ELECTRICAL",
+    "title": "AR electrical semantics",
+    "status": "OPEN",
+    "resolution_required": "SIG thresholds/edge/gate/follower scope, CV timing law, EOC/STG pulse/gate behavior, retriggers and curve; UI engine does not define analogue component values."
+  },
+  {
+    "id": "G08",
+    "domain": "ELECTRICAL",
+    "title": "Protection / loading / output shorting",
+    "status": "OPEN",
+    "resolution_required": "All inputs: negative/high signal and power-off backfeed. All outputs: short and output-output patch; precision outputs maintain stable load-error budget."
+  },
+  {
+    "id": "G09",
+    "domain": "MECHANICAL/ELECTRICAL",
+    "title": "Connectors and local circuits",
+    "status": "OPEN",
+    "resolution_required": "Pin maps, keyed mates, returns, current ratings, assembled stack and cable bend. No raw hold, oscillator timing or high-Z lag node through harnesses."
+  },
+  {
+    "id": "G10",
+    "domain": "POWER",
+    "title": "Exact zudo-pd integration",
+    "status": "OPEN",
+    "resolution_required": "Retain source SHA/assembly/NVM. 15 V-only before energization if SMAJ16A is fitted. Budget real rail load, startup/undervoltage/heat/ripple and clearance."
+  },
+  {
+    "id": "G11",
+    "domain": "MANUFACTURING",
+    "title": "Factory assembly and final integration",
+    "status": "OPEN",
+    "resolution_required": "Confirm all THT/SMD, part procurement, solder profile, supports, LED optics, buttons, connector halves and any final jig/solder operations. No delegated home rework."
+  },
+  {
+    "id": "G12",
+    "domain": "CAD/RELEASE",
+    "title": "Native KiCad authority",
+    "status": "OPEN",
+    "resolution_required": "Source-backed pin/symbol/pad maps, full netlist, design rules, native ERC/DRC, exact assembly models and reviewed DNP. No manufacturing export from the preview."
+  },
+  {
+    "id": "G13",
+    "domain": "DOCUMENTATION",
+    "title": "Promote real evidence",
+    "status": "OPEN",
+    "resolution_required": "Acquire/hash sources into exact-component owner bundles, resolve unavailable docs, add pin maps and routing cases, then generated catalogue. Do not mark a URL as downloaded."
+  },
+  {
+    "id": "G14",
+    "domain": "PRODUCT",
+    "title": "Output monitoring connection",
+    "status": "OPEN",
+    "resolution_required": "No new output module is added. Plan safe attenuation/measurement connection to a user audio interface for test; raw synth outputs are not a headphone driver."
+  }
+]

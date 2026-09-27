@@ -1,0 +1,55 @@
+{
+  "baseline": "R20 original grid, retained byte copy in reference/r20-grid.json",
+  "revision": "R21",
+  "unchanged_jacks": 180,
+  "unchanged_controls": 142,
+  "added_controls": [
+    {
+      "uid": "C:H1.SLEW",
+      "id": "H1.SLEW",
+      "block": "H1",
+      "key": "SLEW",
+      "label": "SLEW",
+      "col": 7,
+      "row": 6,
+      "field": "controls",
+      "kind": "pot",
+      "accent": true,
+      "component": "bourns-ptv09a-4020f-b504",
+      "diameter_mm": 6,
+      "default_value": 0.0
+    },
+    {
+      "uid": "C:H2.SLEW",
+      "id": "H2.SLEW",
+      "block": "H2",
+      "key": "SLEW",
+      "label": "SLEW",
+      "col": 7,
+      "row": 7,
+      "field": "controls",
+      "kind": "pot",
+      "accent": true,
+      "component": "bourns-ptv09a-4020f-b504",
+      "diameter_mm": 6,
+      "default_value": 0.0
+    }
+  ],
+  "removed_controls": [],
+  "new_jacks": [],
+  "notes": [
+    "Only H1.SLEW and H2.SLEW added in the two empty control cells.",
+    "No default noise connections, bypass switches, new CV inputs or extra output jacks.",
+    "RC glide values are prototype proposals; not ADDAC215 circuit or performance claims."
+  ],
+  "counts": {
+    "jacks": 180,
+    "pots": 101,
+    "octave": 5,
+    "toggles": 30,
+    "buttons": 8,
+    "magnitude_leds": 92,
+    "clip_leds": 10,
+    "stage_leds": 12
+  }
+}

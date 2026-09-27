@@ -1,0 +1,18 @@
+---
+title: "OSC \u2014 circuit task"
+sidebar_position: 40
+---
+
+## Functional contract
+
+Independent ADDAC701-inspired oscillator. Six-position octave control; continuous TUNE/FINE; LFO/VCO range, FM/PWM and soft/off/hard sync targets. Four raw waveforms.
+
+## Work before schematic lock
+
+AS3340D plus required sine shaping is a candidate, not a complete core. Resolve V/oct scale/offset, octave ladder, switch bounce, FM topology, hard/soft sync, pulse and sine amplitudes, LFO limits, startup and factory calibration. No through-zero assumption.
+
+All corresponding port/control cells are in the canonical grid. Read the generated per-instance entries in `project/osc-playground/block-contracts.json`; do not infer pinout or voltages from those visual labels.
+
+## Deliverable
+
+A reviewed one-channel schematic, explicit signal/CV ranges, chosen exact parts and pin maps, corner calculations, simulation/bench plan, power budget and factory test procedure. Replication count follows the current spec, not historical panel versions. Never patch independent blocks internally just to simplify testing; use external test cables or clearly temporary fixtures.

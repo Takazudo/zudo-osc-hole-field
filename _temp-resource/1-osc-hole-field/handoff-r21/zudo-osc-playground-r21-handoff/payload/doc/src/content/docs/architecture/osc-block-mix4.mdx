@@ -1,0 +1,18 @@
+---
+title: "MIX4 \u2014 circuit task"
+sidebar_position: 43
+---
+
+## Functional contract
+
+Four attenuverters feed summing stage then VCA. ATTEN CV through CV± combines with manual SUM GAIN.
+
+## Work before schematic lock
+
+ATTEN is control, not a fifth audio input. Preserve pre-VCA overload detection when final output is attenuated. Define VCA gain law and allowed input/CV ranges.
+
+All corresponding port/control cells are in the canonical grid. Read the generated per-instance entries in `project/osc-playground/block-contracts.json`; do not infer pinout or voltages from those visual labels.
+
+## Deliverable
+
+A reviewed one-channel schematic, explicit signal/CV ranges, chosen exact parts and pin maps, corner calculations, simulation/bench plan, power budget and factory test procedure. Replication count follows the current spec, not historical panel versions. Never patch independent blocks internally just to simplify testing; use external test cables or clearly temporary fixtures.

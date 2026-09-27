@@ -1,0 +1,93 @@
+{
+  "range": {
+    "title": "OSC range",
+    "positions": [
+      "LFO",
+      "VCO"
+    ],
+    "state_keys": [
+      "slow",
+      "fast"
+    ],
+    "default": 1,
+    "explanations": [
+      "Low-frequency oscillator range.",
+      "Audio oscillator range."
+    ],
+    "component": "dailywell-2ms1-c908280"
+  },
+  "sync": {
+    "title": "OSC sync",
+    "positions": [
+      "SOFT",
+      "OFF",
+      "HARD"
+    ],
+    "state_keys": [
+      "soft",
+      "off",
+      "hard"
+    ],
+    "default": 1,
+    "explanations": [
+      "Soft-sync response target; exact core behaviour remains to be designed.",
+      "Ignore the external SYNC CV input.",
+      "Hard-reset synchronisation target."
+    ],
+    "component": "dailywell-2ms3-c19270342"
+  },
+  "mode": {
+    "title": "AR operating mode",
+    "positions": [
+      "ASR",
+      "AR",
+      "LOOP"
+    ],
+    "state_keys": [
+      "asr",
+      "ar",
+      "loop"
+    ],
+    "default": 1,
+    "explanations": [
+      "Rise, sustain while the gate is high, then release.",
+      "One attack/release contour per accepted trigger.",
+      "Repeat the rise/fall contour."
+    ],
+    "component": "dailywell-2ms3-c19270342"
+  },
+  "shape": {
+    "title": "AR curve",
+    "positions": [
+      "LINEAR",
+      "CURVED"
+    ],
+    "state_keys": [
+      "linear",
+      "curved"
+    ],
+    "default": 0,
+    "explanations": [
+      "Straight rise and fall segments.",
+      "Logarithmic rise and exponential fall target."
+    ],
+    "component": "dailywell-2ms1-c908280"
+  },
+  "stage": {
+    "title": "AR stage gate",
+    "positions": [
+      "RISE",
+      "FALL"
+    ],
+    "state_keys": [
+      "rise",
+      "fall"
+    ],
+    "default": 0,
+    "explanations": [
+      "STG gate is active during rise.",
+      "STG gate is active during fall."
+    ],
+    "component": "dailywell-2ms1-c908280"
+  }
+}
