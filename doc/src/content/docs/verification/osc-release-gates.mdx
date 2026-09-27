@@ -1,0 +1,26 @@
+---
+title: "Readiness gates — no premature manufacturing release"
+sidebar_position: 20
+---
+
+## What is complete in this handoff
+
+A grid-based panel proposal, interactive flat/3D previews, two new SLEW positions, nominal lag calculations, behavioral tests, complete module inventory and a local-agent plan. These establish intent and software consistency only.
+
+## What blocks routing or an order
+
+| Gate | Evidence required |
+|---|---|
+| Mechanical stack | Exact jack/nut/panel fit; OCT/pot/toggle/button reach; supports; connector mates and access |
+| Circuit capture | Complete values/net graph, qualified supply arrangements, clear defaults, protections and gains |
+| S&H/SLEW | Acquisition, stored-target drift, output settling, hot bias/leakage, fast endpoint and retriggers |
+| Power | Exact as-built P/B revision, programmed PD state, load/thermal/ripple/startup tests |
+| CAD | Exact symbols/pads/models; native ERC/DRC; return paths; no false geometry scaling |
+| Assembly | Factory accepts every part, profile, connector, programming and final integration operation |
+| Publication | Evidence receipts, exact verdicts, native checks, generated pages and allowlist consistent |
+
+`project/osc-hole-field/open-issues.json` is the actionable list. Closing it requires evidence, not changing a status string. A native DRC pass cannot establish electrical behavior. An exact package image cannot establish shaft reach.
+
+## Manufacturing release directory
+
+Keep a separate release gate. No file in this handoff is an order-ready Gerber, BOM or CPL. Do not upload old prototype review files to a fabricator. Generate manufacturing outputs only from a checked native KiCad revision and retain source/export hashes, assembly notes and reviewer decisions.

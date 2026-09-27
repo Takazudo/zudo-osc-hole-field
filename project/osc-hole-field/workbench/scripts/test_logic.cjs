@@ -1,0 +1,20 @@
+const fs=require('fs'),path=require('path'),assert=require('node:assert/strict');
+const root=path.resolve(__dirname,'..');const A=require(path.join(root,'src/ar-engine.js'));
+const tests=[];function test(name,fn){fn();tests.push({test:name,pass:true});}
+test('RISE lamp follows only rise',()=>assert.deepEqual(A.lamps('rise',.4),{rise:.4,fall:0}));
+test('FALL lamp follows only fall',()=>assert.deepEqual(A.lamps('fall',.6),{rise:0,fall:.6}));
+test('Sustain is not misreported as active rise',()=>assert.deepEqual(A.lamps('sustain',1),{rise:0,fall:0}));
+test('Idle is dark',()=>assert.deepEqual(A.lamps('idle',0),{rise:0,fall:0}));
+test('AR completes',()=>{let v=new A.Voice();v.trigger();v.advance(3,{mode:'AR',rise:1,fall:1,curved:false});assert.equal(v.phase,'idle');assert.equal(v.level,0);});
+test('ASR sustains at held gate',()=>{let v=new A.Voice();v.setGate(true);v.advance(2,{mode:'ASR',rise:1,fall:1,curved:false});assert.equal(v.phase,'sustain');assert.equal(v.level,1);});
+test('ASR releases after gate low',()=>{let v=new A.Voice();v.setGate(true);v.advance(2,{mode:'ASR',rise:1,fall:1,curved:false});v.setGate(false);v.advance(2,{mode:'ASR',rise:1,fall:1,curved:false});assert.equal(v.phase,'idle');});
+test('Loop starts without trigger',()=>{let v=new A.Voice();v.advance(.2,{mode:'LOOP',rise:1,fall:1,curved:false});assert.equal(v.phase,'rise');assert(v.level>0);});
+require(path.join(root,'src/render.js'));const D=JSON.parse(fs.readFileSync(path.join(root,'layout/grid.json')));let s={px:17,py:14,labelModule:1.6,labelJack:1.6,labelKnob:1.5,labelSwitch:.85,separatorGap:.5,headings:true,values:{},icons:{},signalValues:{},stageLevels:{},ledStyle:'line'};
+test('Renderer dimensions',()=>assert.deepEqual(GridRenderer.dims(s),{w:318,h:298,jtop:22,ctop:178,div:166,margin:6}));
+test('Physical mapping first jack',()=>assert.deepEqual(GridRenderer.pos(D.ports[0],s),{x:14.5,y:29}));
+test('Square-cell dimensions',()=>{let d=GridRenderer.dims({...s,py:17});assert.equal(d.h,352);assert.equal(d.w,318);});
+test('Renderer has one unique item per component',()=>{let svg=GridRenderer.render(D,s).svg;assert.equal((svg.match(/class="item /g)||[]).length,324);});
+test('A/B defaults to A',()=>assert.equal(GridRenderer.state(D.controls.find(q=>q.id==='X1.SELECT'),s),0));
+test('AR MODE defaults to AR',()=>assert.equal(GridRenderer.state(D.controls.find(q=>q.id==='E1.MODE'),s),1));
+test('OCT defaults to offset zero index',()=>assert.equal(GridRenderer.state(D.controls.find(q=>q.id==='O1.OCT'),s),2));
+fs.writeFileSync(path.join(root,'reports/logic-tests.json'),JSON.stringify({scope:'Ideal UI math; not analogue circuit simulation',passed:tests.length,total:tests.length,checks:tests},null,2));console.log(tests.length,'logic tests passed');

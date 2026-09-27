@@ -1,0 +1,22 @@
+---
+title: "Board partition and panel stack"
+sidebar_position: 21
+---
+
+## Panel first, not panel after PCB
+
+One flat front panel defines the user-facing datum. A jack's shoulder and threaded bushing must reach the normal panel hole and be secured by the exact dress nut. No recessed socket requiring a plug-sized hole is accepted. Pot shafts, OCT bodies, toggle bushings and buttons have independent mounting-height contracts.
+
+Split compatible families into interface boards and connect them to a rear core using factory-populated mating parts or factory-terminated harnesses. Connector friction and solder joints are not structural support for patch insertion, knob torque or trigger pressing.
+
+The 3D illustration contains jack, OCT, pot, toggle and trigger domains. R21 adds the two-pot SLEW board so its high-impedance lag circuit stays local. Merge or split boards only after demonstrating the full mechanical and electrical interface. A large number of boards is not a requirement in itself.
+
+## What is not locked
+
+The 24 mm core plane and deeper power pocket are inherited design targets. No assembled shell thickness, standoff length or plate aperture is released. The preview's jack-nut envelope, caps/plungers, lever projection and generic IC blocks are not approved manufacturing models.
+
+The records in `project/osc-hole-field/board-contracts.json` list the missing contracts. Resolve exact shoulder/bushing/shaft datums, tolerances, component solder tails, 3D collision checks, insertion/removal sequence, support screws, tools and harness bending before routing.
+
+## Sensitive nodes
+
+Never run the LF398 hold capacitor node, oscillator timing capacitor, envelope integrator node or SLEW storage node through an arbitrary connector. Place their active circuits nearby; cross board boundaries with buffered audio/CV, logic and suitably decoupled supply/returns.

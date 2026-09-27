@@ -1,0 +1,18 @@
+---
+title: "MULT — circuit task"
+sidebar_position: 47
+---
+
+## Functional contract
+
+One high-impedance input, three individually buffered outputs.
+
+## Work before schematic lock
+
+Two copies of this function only, not four 1:4 MULTs. Precision error/stability/output isolation must be budgeted; output resistor outside feedback gives load error.
+
+All corresponding port/control cells are in the canonical grid. Read the generated per-instance entries in `project/osc-hole-field/block-contracts.json`; do not infer pinout or voltages from those visual labels.
+
+## Deliverable
+
+A reviewed one-channel schematic, explicit signal/CV ranges, chosen exact parts and pin maps, corner calculations, simulation/bench plan, power budget and factory test procedure. Replication count follows the current spec, not historical panel versions. Never patch independent blocks internally just to simplify testing; use external test cables or clearly temporary fixtures.

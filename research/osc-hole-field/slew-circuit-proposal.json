@@ -1,0 +1,40 @@
+{
+  "status": "PROPOSED topology / no fabrication authority",
+  "per_channel": {
+    "input": "BUFFERED_RAW_HELD from LF398 OUTPUT, never Ch pin",
+    "pre_buffer": "unity-gain OPA4197 channel",
+    "series_r_ohm": 2200,
+    "variable_r_ohm": [
+      0,
+      500000
+    ],
+    "rheostat_wiring": "Short wiper to far end terminal for open-wiper fail-to-max resistance; verify actual CW pin mapping from drawing",
+    "lag_cap_F": 5e-07,
+    "lag_cap_realization": "5 × 100 nF C0G candidate C46348, in parallel to analogue GND",
+    "post_buffer": "unity-gain OPA4197 channel, followed by engineered output protection/isolation",
+    "output": "existing Hn.OUT only",
+    "indicator": "buffered magnitude of the final slewed OUT; do not load hold/lag nodes"
+  },
+  "rails_proposed_V": [
+    -12,
+    12
+  ],
+  "buffer_count_two_channels": 4,
+  "dedicated_quad_count": 1,
+  "storage_cap_not_changed_F": 1e-08,
+  "test_alternate_storage_cap_F": 1e-07,
+  "nominal_only": {
+    "tau_min_s": 0.0011,
+    "tau_max_s": 0.2511,
+    "t10_90_max_s": 0.5517230913691247,
+    "settle_5V_to_10mV_max_s": 1.5604880935138121
+  },
+  "hazards": [
+    "No zero-slew bypass at the clockwise/counterclockwise endpoint.",
+    "No 25 s range or finite-time linear ramp claim.",
+    "LF398 hold error/droop and OPA bias/offset not modeled by the preview.",
+    "PCB contamination leakage and exact C0G insulation resistance affect the DC endpoint.",
+    "5 parallel capacitors do not automatically average tolerance or leakage.",
+    "Output protection, reset, clamps, bypassing and supply budget not specified by this subgraph."
+  ]
+}
