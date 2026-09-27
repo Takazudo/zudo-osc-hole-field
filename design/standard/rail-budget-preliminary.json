@@ -1,0 +1,571 @@
+{
+  "schema_version": 1,
+  "standard_id": "OSC-ES-1",
+  "authority": "PROPOSAL (planning, owner-delegated)",
+  "status": "Preliminary count model, not netlist or measured demand",
+  "source": "research/osc-hole-field/planning-exploration/02-handoff-blocks-electrical.md#size-estimate-about-320-op-amp-sections-150-ics-3700-smd-placements",
+  "source_uncertainty_percent": 30,
+  "baseline_signal_sections": 225,
+  "baseline_indicator_sections": 98,
+  "modules": [
+    {
+      "family": "OSC",
+      "instances": 5,
+      "planning_sections_per_instance": 9,
+      "sections_per_instance": {
+        "audio": 4,
+        "cv": 3,
+        "precision": 2
+      },
+      "quads_by_role": {
+        "audio": 5,
+        "cv": 5,
+        "precision": 5
+      },
+      "input_jacks": 20,
+      "fault_switch_packages": 5
+    },
+    {
+      "family": "VCF",
+      "instances": 3,
+      "planning_sections_per_instance": 12,
+      "sections_per_instance": {
+        "audio": 8,
+        "cv": 4,
+        "precision": 0
+      },
+      "quads_by_role": {
+        "audio": 6,
+        "cv": 3,
+        "precision": 0
+      },
+      "input_jacks": 12,
+      "fault_switch_packages": 3
+    },
+    {
+      "family": "MIX5",
+      "instances": 2,
+      "planning_sections_per_instance": 7,
+      "sections_per_instance": {
+        "audio": 7,
+        "cv": 0,
+        "precision": 0
+      },
+      "quads_by_role": {
+        "audio": 4,
+        "cv": 0,
+        "precision": 0
+      },
+      "input_jacks": 10,
+      "fault_switch_packages": 4
+    },
+    {
+      "family": "MIX4",
+      "instances": 2,
+      "planning_sections_per_instance": 8,
+      "sections_per_instance": {
+        "audio": 7,
+        "cv": 1,
+        "precision": 0
+      },
+      "quads_by_role": {
+        "audio": 4,
+        "cv": 2,
+        "precision": 0
+      },
+      "input_jacks": 10,
+      "fault_switch_packages": 4
+    },
+    {
+      "family": "AR",
+      "instances": 6,
+      "planning_sections_per_instance": 8,
+      "sections_per_instance": {
+        "audio": 0,
+        "cv": 8,
+        "precision": 0
+      },
+      "quads_by_role": {
+        "audio": 0,
+        "cv": 12,
+        "precision": 0
+      },
+      "input_jacks": 18,
+      "fault_switch_packages": 6
+    },
+    {
+      "family": "FOLD",
+      "instances": 2,
+      "planning_sections_per_instance": 11,
+      "sections_per_instance": {
+        "audio": 9,
+        "cv": 2,
+        "precision": 0
+      },
+      "quads_by_role": {
+        "audio": 6,
+        "cv": 2,
+        "precision": 0
+      },
+      "input_jacks": 6,
+      "fault_switch_packages": 2
+    },
+    {
+      "family": "AO",
+      "instances": 6,
+      "planning_sections_per_instance": 3,
+      "sections_per_instance": {
+        "audio": 0,
+        "cv": 0,
+        "precision": 3
+      },
+      "quads_by_role": {
+        "audio": 0,
+        "cv": 0,
+        "precision": 6
+      },
+      "input_jacks": 12,
+      "fault_switch_packages": 6
+    },
+    {
+      "family": "MULT",
+      "instances": 2,
+      "planning_sections_per_instance": 4,
+      "sections_per_instance": {
+        "audio": 0,
+        "cv": 0,
+        "precision": 4
+      },
+      "quads_by_role": {
+        "audio": 0,
+        "cv": 0,
+        "precision": 2
+      },
+      "input_jacks": 2,
+      "fault_switch_packages": 2
+    },
+    {
+      "family": "SH",
+      "instances": 2,
+      "planning_sections_per_instance": 3,
+      "sections_per_instance": {
+        "audio": 0,
+        "cv": 0,
+        "precision": 3
+      },
+      "quads_by_role": {
+        "audio": 0,
+        "cv": 0,
+        "precision": 2
+      },
+      "input_jacks": 4,
+      "fault_switch_packages": 2
+    },
+    {
+      "family": "SWITCH",
+      "instances": 2,
+      "planning_sections_per_instance": 3,
+      "sections_per_instance": {
+        "audio": 0,
+        "cv": 0,
+        "precision": 3
+      },
+      "quads_by_role": {
+        "audio": 0,
+        "cv": 0,
+        "precision": 2
+      },
+      "input_jacks": 4,
+      "fault_switch_packages": 2
+    },
+    {
+      "family": "NOISE",
+      "instances": 1,
+      "planning_sections_per_instance": 6,
+      "sections_per_instance": {
+        "audio": 6,
+        "cv": 0,
+        "precision": 0
+      },
+      "quads_by_role": {
+        "audio": 2,
+        "cv": 0,
+        "precision": 0
+      },
+      "input_jacks": 0,
+      "fault_switch_packages": 0
+    }
+  ],
+  "additional_allocations": [
+    {
+      "id": "protected_input_buffers",
+      "role": "cv",
+      "sections": 98,
+      "packages": 25,
+      "basis": "One section per input; conservative addition even when capture later reuses a baseline buffer."
+    },
+    {
+      "id": "dc_wiper_buffers",
+      "role": "cv",
+      "sections": 48,
+      "packages": 12,
+      "basis": "One section per DC pot; baseline overlap is deliberately not subtracted."
+    },
+    {
+      "id": "reference_master_and_octave",
+      "role": "precision",
+      "sections": 16,
+      "packages": 4,
+      "basis": "Three master, nine ladder, four reserved selected-tap/precision routing sections. #29 must revise if separate octave ladders are chosen."
+    },
+    {
+      "id": "reference_fanout",
+      "role": "cv",
+      "sections": 16,
+      "packages": 4,
+      "basis": "Eight pairs, maximum six DC pots per pair."
+    },
+    {
+      "id": "remote_signal_drivers",
+      "role": "audio",
+      "sections": 47,
+      "packages": 12,
+      "basis": "One internal cable driver per attenuverter, separate from protected input buffer."
+    },
+    {
+      "id": "level_remote_drivers",
+      "role": "audio",
+      "sections": 4,
+      "packages": 1,
+      "basis": "Four buffered audio level pots."
+    },
+    {
+      "id": "magnitude_indicators",
+      "role": "indicator",
+      "sections": 92,
+      "packages": 23,
+      "basis": "One rectifier amplifier each."
+    },
+    {
+      "id": "stage_indicators",
+      "role": "indicator",
+      "sections": 12,
+      "packages": 3,
+      "basis": "One per stage, replacing six-section original estimate."
+    },
+    {
+      "id": "clip_monitor_buffers",
+      "role": "indicator",
+      "sections": 10,
+      "packages": 3,
+      "basis": "One buffer per window detector."
+    }
+  ],
+  "whole_quad_packages_by_role": {
+    "audio": 40,
+    "cv": 65,
+    "precision": 21,
+    "indicator": 29
+  },
+  "loads": [
+    {
+      "id": "opamp_audio",
+      "quantity": 40,
+      "typical_unit_mA": {
+        "+12V": 0.56,
+        "-12V": 0.56,
+        "+5V": 0
+      },
+      "planning_unit_mA": {
+        "+12V": 1.0,
+        "-12V": 1.0,
+        "+5V": 0
+      },
+      "basis": "Whole quad packages including unused channels. Source OPA4197 p8 or OPA4196 p8; full-temperature Iq maxima. No output current included here."
+    },
+    {
+      "id": "opamp_cv",
+      "quantity": 65,
+      "typical_unit_mA": {
+        "+12V": 0.56,
+        "-12V": 0.56,
+        "+5V": 0
+      },
+      "planning_unit_mA": {
+        "+12V": 1.0,
+        "-12V": 1.0,
+        "+5V": 0
+      },
+      "basis": "Whole quad packages including unused channels. Source OPA4197 p8 or OPA4196 p8; full-temperature Iq maxima. No output current included here."
+    },
+    {
+      "id": "opamp_precision",
+      "quantity": 21,
+      "typical_unit_mA": {
+        "+12V": 4,
+        "-12V": 4,
+        "+5V": 0
+      },
+      "planning_unit_mA": {
+        "+12V": 6.0,
+        "-12V": 6.0,
+        "+5V": 0
+      },
+      "basis": "Whole quad packages including unused channels. Source OPA4197 p8 or OPA4196 p8; full-temperature Iq maxima. No output current included here."
+    },
+    {
+      "id": "opamp_indicator",
+      "quantity": 29,
+      "typical_unit_mA": {
+        "+12V": 0.56,
+        "-12V": 0.56,
+        "+5V": 0
+      },
+      "planning_unit_mA": {
+        "+12V": 1.0,
+        "-12V": 1.0,
+        "+5V": 0
+      },
+      "basis": "Whole quad packages including unused channels. Source OPA4197 p8 or OPA4196 p8; full-temperature Iq maxima. No output current included here."
+    },
+    {
+      "id": "fault_switches",
+      "quantity": 36,
+      "typical_unit_mA": {
+        "+12V": 0.9,
+        "-12V": 0.5,
+        "+5V": 0
+      },
+      "planning_unit_mA": {
+        "+12V": 1.3,
+        "-12V": 0.7,
+        "+5V": 0
+      },
+      "basis": "ADG5412F Rev C Table 1 p4 ±15 V normal-mode table; extrapolation allowance at project ±12 V, not guaranteed at this voltage."
+    },
+    {
+      "id": "ota",
+      "quantity": 16,
+      "typical_unit_mA": {
+        "+12V": 4,
+        "-12V": 4,
+        "+5V": 0
+      },
+      "planning_unit_mA": {
+        "+12V": 6,
+        "-12V": 6,
+        "+5V": 0
+      },
+      "basis": "Planning source has 16 LM13700 packages. 6 mA allowance including bias currents; module evidence must replace estimate."
+    },
+    {
+      "id": "vco",
+      "quantity": 5,
+      "typical_unit_mA": {
+        "+12V": 6,
+        "-12V": 8,
+        "+5V": 0
+      },
+      "planning_unit_mA": {
+        "+12V": 8,
+        "-12V": 10,
+        "+5V": 0
+      },
+      "basis": "Planning AS3340D estimate increased; exact negative supply circuit and thermal current await #29."
+    },
+    {
+      "id": "sample_hold",
+      "quantity": 2,
+      "typical_unit_mA": {
+        "+12V": 4.5,
+        "-12V": 4.5,
+        "+5V": 0
+      },
+      "planning_unit_mA": {
+        "+12V": 6,
+        "-12V": 6,
+        "+5V": 0
+      },
+      "basis": "LF398 per planning table; 6 mA allowance, not a maximum claim."
+    },
+    {
+      "id": "comparators",
+      "quantity": 26,
+      "typical_unit_mA": {
+        "+12V": 0.6,
+        "-12V": 0.1,
+        "+5V": 0
+      },
+      "planning_unit_mA": {
+        "+12V": 1,
+        "-12V": 1,
+        "+5V": 0
+      },
+      "basis": "26 dual packages from planning table. Conservatively reserve 1 mA on both rails even though single-supply gate comparators draw no -12 V current. Exact LM393B current and final count await #15/#33."
+    },
+    {
+      "id": "dc_pots",
+      "quantity": 48,
+      "typical_unit_mA": {
+        "+12V": 0.1,
+        "-12V": 0.1,
+        "+5V": 0
+      },
+      "planning_unit_mA": {
+        "+12V": 0.125,
+        "-12V": 0.125,
+        "+5V": 0
+      },
+      "basis": "10 V / 100 kohm nominal; -20% pot tolerance -> 0.125 mA. Charges reference buffer output load separately from its Iq."
+    },
+    {
+      "id": "magnitude_leds",
+      "quantity": 92,
+      "typical_unit_mA": {
+        "+12V": 0.25,
+        "-12V": 0.25,
+        "+5V": 0
+      },
+      "planning_unit_mA": {
+        "+12V": 1.25,
+        "-12V": 1.25,
+        "+5V": 0
+      },
+      "basis": "Typical 25% brightness; budget 1.25 mA per channel per analog rail, allowing >5 V saturation/headroom spread. Per-rail extremes need not occur simultaneously."
+    },
+    {
+      "id": "clip_leds",
+      "quantity": 10,
+      "typical_unit_mA": {
+        "+12V": 0.25,
+        "-12V": 0.25,
+        "+5V": 0
+      },
+      "planning_unit_mA": {
+        "+12V": 1.1,
+        "-12V": 1.1,
+        "+5V": 0
+      },
+      "basis": "Analog window outputs sink to -12 V from +12 V, hence both rails, at 24 V across 22.1 kohm plus LED."
+    },
+    {
+      "id": "stage_leds",
+      "quantity": 12,
+      "typical_unit_mA": {
+        "+12V": 0,
+        "-12V": 0,
+        "+5V": 0.25
+      },
+      "planning_unit_mA": {
+        "+12V": 0,
+        "-12V": 0,
+        "+5V": 0.55
+      },
+      "basis": "0.5 mA at ENV=8 V, rounded up."
+    },
+    {
+      "id": "output_loads",
+      "quantity": 82,
+      "typical_unit_mA": {
+        "+12V": 0.05,
+        "-12V": 0.05,
+        "+5V": 0
+      },
+      "planning_unit_mA": {
+        "+12V": 0.5,
+        "-12V": 0.5,
+        "+5V": 0
+      },
+      "basis": "All 82 jacks at ±5 V into 10 kohm, per-rail envelope; conservative includes gate outputs on analog buffers. Short-circuit demand handled separately."
+    },
+    {
+      "id": "internal_signal_loads",
+      "quantity": 1,
+      "typical_unit_mA": {
+        "+12V": 15,
+        "-12V": 15,
+        "+5V": 0
+      },
+      "planning_unit_mA": {
+        "+12V": 40,
+        "-12V": 40,
+        "+5V": 0
+      },
+      "basis": "51 x 10 kohm signal pots up to 0.5 mA each plus feedback networks and residual internal loads. Must be replaced from actual netlist."
+    },
+    {
+      "id": "reference_expo_and_ladder",
+      "quantity": 1,
+      "typical_unit_mA": {
+        "+12V": 15,
+        "-12V": 15,
+        "+5V": 0
+      },
+      "planning_unit_mA": {
+        "+12V": 25,
+        "-12V": 25,
+        "+5V": 0
+      },
+      "basis": "Inherited reference/exponential converter allowance; pot currents and reference amplifier Iq separately charged."
+    },
+    {
+      "id": "logic_pullups_noise_and_reserve",
+      "quantity": 1,
+      "typical_unit_mA": {
+        "+12V": 0,
+        "-12V": 0,
+        "+5V": 50
+      },
+      "planning_unit_mA": {
+        "+12V": 0,
+        "-12V": 0,
+        "+5V": 130
+      },
+      "basis": "HC logic, monostable, comparator pullups, NOISE2, optional regulator and control contacts; module-level allocation pending."
+    },
+    {
+      "id": "rail_bleeders",
+      "quantity": 1,
+      "typical_unit_mA": {
+        "+12V": 5.454545454545454,
+        "-12V": 5.454545454545454,
+        "+5V": 2.2727272727272725
+      },
+      "planning_unit_mA": {
+        "+12V": 5.454545454545454,
+        "-12V": 5.454545454545454,
+        "+5V": 2.2727272727272725
+      },
+      "basis": "One 2.2 kohm bleeder per instrument rail; nominal voltage arithmetic."
+    }
+  ],
+  "rails": {
+    "+12V": {
+      "supply_target_mA": 1200,
+      "ceiling_mA": 960.0,
+      "typical_estimate_mA": 379.894545,
+      "planning_estimate_mA": 724.254545,
+      "headroom_mA": 235.745455,
+      "within_ceiling": true
+    },
+    "-12V": {
+      "supply_target_mA": 800,
+      "ceiling_mA": 640.0,
+      "typical_estimate_mA": 362.494545,
+      "planning_estimate_mA": 712.654545,
+      "headroom_mA": -72.654545,
+      "within_ceiling": false
+    },
+    "+5V": {
+      "supply_target_mA": 500,
+      "ceiling_mA": 400.0,
+      "typical_estimate_mA": 55.272727,
+      "planning_estimate_mA": 138.872727,
+      "headroom_mA": 261.127273,
+      "within_ceiling": true
+    }
+  },
+  "ceiling_resolution": "The deliberately conservative count model exceeds -12 V ceiling. #34 must remove duplicated input/wiper stages by composing cells, use OPA4196 for non-dynamic precision buffers after error/stability analysis, or revise LED current; do not raise the supply ceiling or discard unused-package current. No partition proceeds before a captured-netlist budget <= ceilings.",
+  "fault_case": "One output short or paired-output contention adds up to 24.05 mA per involved rail above normal load. All outputs shorted is not a valid normal-use current budget; IC thermal survival still required.",
+  "startup": "NOT VERIFIED. Capacitance ledger and supply startup measurements remain mandatory."
+}

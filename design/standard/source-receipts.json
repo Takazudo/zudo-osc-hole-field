@@ -1,0 +1,114 @@
+{
+  "schema_version": 1,
+  "status": "Planning source receipts, not component owner bundles",
+  "sources": [
+    {
+      "id": "opa4196",
+      "manufacturer": "Texas Instruments",
+      "exact_mpns": [
+        "OPA4196IDR"
+      ],
+      "document_number": "SBOS869",
+      "revision_date": "July 2017",
+      "url": "https://www.ti.com/lit/ds/symlink/opa4196.pdf",
+      "retrieved_date": "2026-09-28",
+      "authority": "MANUFACTURER_PRIMARY",
+      "availability": "AVAILABLE",
+      "sha256": "d89dd6009d109bf18b349e77ff46e4df60bf7d4faaefd4c3ebe6ec0e2fc7793d",
+      "cache_path": ".circuit-cache/sources/electrical-standard/opa4196.pdf",
+      "physical_pdf_page_index": 7,
+      "printed_page_label": "8",
+      "locator": "Electrical characteristics / POWER SUPPLY / IQ",
+      "extract": "140 uA typical; 200 uA maximum at 25 C; 250 uA maximum over temperature.",
+      "conditions": "No-load quiescent current per section; full temperature -40..125 C. Read supply conditions from retained table; current budget adds loads separately.",
+      "scope": "Planning evidence only; exact package pin map/ordering audit deferred to #15, component owner promotion #21."
+    },
+    {
+      "id": "opa4197",
+      "manufacturer": "Texas Instruments",
+      "exact_mpns": [
+        "OPA4197IPWR"
+      ],
+      "document_number": "SBOS737C",
+      "revision_date": "March 2018",
+      "url": "https://www.ti.com/lit/ds/symlink/opa4197.pdf",
+      "retrieved_date": "2026-09-28",
+      "authority": "MANUFACTURER_PRIMARY",
+      "availability": "AVAILABLE",
+      "sha256": "27653a7d5e965cbb2d23f7998919ebd774efd5cd3e126b8f0881469ae91166fd",
+      "cache_path": ".circuit-cache/sources/electrical-standard/opa4197.pdf",
+      "physical_pdf_page_index": 7,
+      "printed_page_label": "8",
+      "locator": "Electrical characteristics / POWER SUPPLY / IQ",
+      "extract": "1 mA typical; 1.3 mA maximum at 25 C; 1.5 mA maximum over temperature.",
+      "conditions": "No-load quiescent current per section; full temperature -40..125 C. Read supply conditions from retained table; current budget adds loads separately.",
+      "scope": "Planning evidence only; exact package pin map/ordering audit deferred to #15, component owner promotion #21."
+    },
+    {
+      "id": "opa4171",
+      "manufacturer": "Texas Instruments",
+      "exact_mpns": [
+        "OPA4171AIPWR"
+      ],
+      "document_number": "SBOS516H",
+      "revision_date": "June 2024",
+      "url": "https://www.ti.com/lit/ds/symlink/opa4171.pdf",
+      "retrieved_date": "2026-09-28",
+      "authority": "MANUFACTURER_PRIMARY",
+      "availability": "AVAILABLE",
+      "sha256": "fb84f841f3055f25accb0cc0dde8df93e4334a9b4deddc376e8217f0e9cbc538",
+      "cache_path": ".circuit-cache/sources/electrical-standard/opa4171.pdf",
+      "physical_pdf_page_index": 8,
+      "printed_page_label": "9",
+      "locator": "Electrical characteristics / POWER SUPPLY / IQ",
+      "extract": "475 uA typical; 595 uA maximum at 25 C; 650 uA maximum over temperature.",
+      "conditions": "No-load quiescent current per section; full temperature -40..125 C. Read supply conditions from retained table; current budget adds loads separately.",
+      "scope": "Planning evidence only; exact package pin map/ordering audit deferred to #15, component owner promotion #21."
+    },
+    {
+      "id": "tl074h",
+      "manufacturer": "Texas Instruments",
+      "exact_mpns": [
+        "TL074HIDR"
+      ],
+      "document_number": "SLOS080W",
+      "revision_date": "July 2025",
+      "url": "https://www.ti.com/lit/ds/symlink/tl074h.pdf",
+      "retrieved_date": "2026-09-28",
+      "authority": "MANUFACTURER_PRIMARY",
+      "availability": "AVAILABLE",
+      "sha256": "13366ea85bacfe27406b66acc57e9163a5e4bc5138c319591f19dbe957fdc54f",
+      "cache_path": ".circuit-cache/sources/electrical-standard/tl074h.pdf",
+      "physical_pdf_page_index": 13,
+      "printed_page_label": "14",
+      "locator": "5.7 Electrical characteristics TL07xH / POWER SUPPLY / IQ",
+      "extract": "937.5 uA typical; 1125 uA maximum at 25 C; 1130 uA maximum over temperature.",
+      "conditions": "No-load quiescent current per section; full temperature -40..125 C. Read supply conditions from retained table; current budget adds loads separately.",
+      "scope": "Planning evidence only; exact package pin map/ordering audit deferred to #15, component owner promotion #21."
+    },
+    {
+      "id": "adg5412f",
+      "manufacturer": "Analog Devices",
+      "exact_mpns": [
+        "ADG5412FBRUZ"
+      ],
+      "document_number": "ADG5412F/ADG5413F",
+      "revision": "C",
+      "url": "https://www.analog.com/media/en/technical-documentation/data-sheets/adg5412f_5413f.pdf",
+      "retrieved_date": "2026-09-28",
+      "authority": "MANUFACTURER_PRIMARY",
+      "availability": "SOURCE UNAVAILABLE",
+      "sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+      "physical_pdf_page_index": 3,
+      "printed_page_label": "4",
+      "locator": "Table 1 POWER REQUIREMENTS; web PDF preview inspected, local byte retrieval failed",
+      "extract": "Local urllib timed out twice; curl HTTP/2 INTERNAL_ERROR. No verified local PDF bytes or hash. Web preview shows normal-mode supply currents.",
+      "planning_assumptions": {
+        "IDD_mA": 1.3,
+        "ISS_mA": 0.7,
+        "conditions": "Table 1 at VDD=16.5 V,VSS=-16.5 V, -40..125 C; not a guaranteed \u00b112 V maximum"
+      },
+      "scope": "UNSOURCED in the retained-byte evidence lane. #15 must reacquire primary bytes and confirm actual \u00b112 V application before promotion."
+    }
+  ]
+}
