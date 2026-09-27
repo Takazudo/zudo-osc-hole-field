@@ -20,6 +20,7 @@ class BoardDefinition:
     placement_uids: tuple[str, ...]
     netlist: str
     schematic: str
+    regions: tuple[dict, ...] = ()
 
 
 def _point(raw, name):
@@ -31,7 +32,7 @@ def _point(raw, name):
 def load_definition(path: Path) -> BoardDefinition:
     data=json.loads(path.read_text())
     required={'schema_version','board_id','outline','corner_radius_mm','layers','thickness_mm','stackup','mounting_holes','keepouts','domains','placement_uids','netlist','schematic'}
-    if set(data)!=required or data['schema_version']!=1:raise ValueError('board definition keys/version mismatch')
+    if set(data) not in (required,required|{'regions'}) or data['schema_version']!=1:raise ValueError('board definition keys/version mismatch')
     board_id=data['board_id']
     if not isinstance(board_id,str) or not board_id or any(c not in 'abcdefghijklmnopqrstuvwxyz0123456789-' for c in board_id):raise ValueError('invalid board_id')
     if path.stem!=board_id:raise ValueError('board_id must match filename')
@@ -63,7 +64,18 @@ def load_definition(path: Path) -> BoardDefinition:
         if not isinstance(k['layers'],list) or not k['layers'] or any(x not in copper for x in k['layers']):raise ValueError('keepout layer unavailable in stackup')
     for key in ('netlist','schematic'):
         if not isinstance(data[key],str) or not data[key] or Path(data[key]).is_absolute() or '..' in Path(data[key]).parts:raise ValueError(f'invalid {key} path')
-    return BoardDefinition(board_id,outline,float(radius),layers,float(thick),tuple(stack),tuple(data['mounting_holes']),tuple(data['keepouts']),tuple(data['domains']),tuple(data['placement_uids']),data['netlist'],data['schematic'])
+    regions=data.get('regions',[])
+    if not isinstance(regions,list):raise ValueError('regions must be a list')
+    for region in regions:
+        keys={'instance','family','rect','side','edge_clearance_mm','mounting_clearance_mm'}
+        if not isinstance(region,dict) or set(region)!=keys:raise ValueError('invalid region keys')
+        if any(not isinstance(region[k],str) or not region[k] for k in ('instance','family')):raise ValueError('invalid region identity')
+        if region['side'] not in ('F.Cu','B.Cu'):raise ValueError('invalid region side')
+        box=region['rect']
+        if not isinstance(box,list) or len(box)!=4 or any(isinstance(x,bool) or not isinstance(x,(int,float)) for x in box) or box[0]>=box[2] or box[1]>=box[3]:raise ValueError('invalid region rect')
+        for key in ('edge_clearance_mm','mounting_clearance_mm'):
+            if isinstance(region[key],bool) or not isinstance(region[key],(int,float)) or region[key]<0:raise ValueError('invalid '+key)
+    return BoardDefinition(board_id,outline,float(radius),layers,float(thick),tuple(stack),tuple(data['mounting_holes']),tuple(data['keepouts']),tuple(data['domains']),tuple(data['placement_uids']),data['netlist'],data['schematic'],tuple(regions))
 
 
 def load_lock(path: Path):
