@@ -1,0 +1,92 @@
+[
+  {
+    "id": "E01",
+    "authority": "PROPOSAL (planning, owner-delegated)",
+    "date": "2026-09-28",
+    "topic": "Signal levels and impedance",
+    "decision": "Adopt the signal table and all fourteen explicit default dispositions in OSC-ES-1.",
+    "rationale": "No inferred Eurorack conformance, no jack normalization, no qualified electrical values.",
+    "standard": "design/standard/electrical-standard.json",
+    "status": "accepted for draft capture; not hardware qualification"
+  },
+  {
+    "id": "E02",
+    "authority": "PROPOSAL (planning, owner-delegated)",
+    "date": "2026-09-28",
+    "topic": "Named amplifier roles",
+    "decision": "Audio/CV/indicator use OPA4196IDR; precision uses OPA4197IPWR. Roles are data references with explicit package contracts.",
+    "rationale": "Reject TL074 everywhere for current; reject TL074H/OPA4171 on the bulk roles because even this lower-current model exceeds -12 V ceiling.",
+    "standard": "design/standard/electrical-standard.json",
+    "status": "accepted for draft capture; not hardware qualification"
+  },
+  {
+    "id": "E03",
+    "authority": "PROPOSAL (planning, owner-delegated)",
+    "date": "2026-09-28",
+    "topic": "Input and output protection",
+    "decision": "ADG5412FBRUZ source-facing isolation on all inputs; 998 ohm output isolation in two 499 ohm 0.5 W resistors; dual feedback for precision.",
+    "rationale": "Bare input rail clamps can phantom-power rails; 100\u2013470 ohm precision isolation increases fault current. Bench qualification remains open.",
+    "standard": "design/standard/electrical-standard.json",
+    "status": "accepted for draft capture; not hardware qualification"
+  },
+  {
+    "id": "E04",
+    "authority": "PROPOSAL (planning, owner-delegated)",
+    "date": "2026-09-28",
+    "topic": "Indicators",
+    "decision": "92 one-opamp bridge magnitude drivers, 12 current-source stage drivers, 10 buffered analog window detectors.",
+    "rationale": "Do not place any lamp driver on a hold/timing/storage node; do not route negative-rail comparator outputs to logic.",
+    "standard": "design/standard/electrical-standard.json",
+    "status": "accepted for draft capture; not hardware qualification"
+  },
+  {
+    "id": "E05",
+    "authority": "PROPOSAL (planning, owner-delegated)",
+    "date": "2026-09-28",
+    "topic": "Pot values",
+    "decision": "47 attenuverters and four audio levels stay 10 kohm behind buffers; 48 DC sources become 100 kohm; two slew pots stay 500 kohm.",
+    "rationale": "Reject direct 10 kohm jack loading and 48 mA reference-pot load; preserve Bourns PTV09A-4020F mechanics.",
+    "standard": "design/standard/electrical-standard.json",
+    "status": "accepted for draft capture; not hardware qualification"
+  },
+  {
+    "id": "E06",
+    "authority": "PROPOSAL (planning, owner-delegated)",
+    "date": "2026-09-28",
+    "topic": "References and remote controls",
+    "decision": "REF5050AIDR with buffered \u00b15 V, locally buffered octave ladder and bounded harness contract; declare local timing islands.",
+    "rationale": "No raw ladder, summing node, timing capacitor or storage node may cross a board connector.",
+    "standard": "design/standard/electrical-standard.json",
+    "status": "accepted for draft capture; not hardware qualification"
+  },
+  {
+    "id": "E07",
+    "authority": "PROPOSAL (planning, owner-delegated)",
+    "date": "2026-09-28",
+    "topic": "Factory calibration",
+    "decision": "Factory-fitted SMD trimmers with end-strapped wipers and bounded ranges; measured load and octave error targets.",
+    "rationale": "No owner soldering; 0.1% individual resistors do not certify pitch accuracy.",
+    "standard": "design/standard/electrical-standard.json",
+    "status": "accepted for draft capture; not hardware qualification"
+  },
+  {
+    "id": "E08",
+    "authority": "PROPOSAL (planning, owner-delegated)",
+    "date": "2026-09-28",
+    "topic": "Capacitance and current ceilings",
+    "decision": "100 nF per supply pin, 4.7 uF per board rail, total 150/150/100 uF nominal ceilings; current ceilings stay 960/640/400 mA.",
+    "rationale": "Negative rail estimate is 712.655 mA; #34 must remove at least 72.655 mA through explicit circuit/role decisions before partition. Startup remains unqualified.",
+    "standard": "design/standard/electrical-standard.json",
+    "status": "accepted for draft capture; not hardware qualification"
+  },
+  {
+    "id": "E09",
+    "authority": "PROPOSAL (planning, owner-delegated)",
+    "date": "2026-09-28",
+    "topic": "Exact shared shortlist",
+    "decision": "Use parts-shortlist.json as the downstream design selection; unknown stock/factory routes remain UNVERIFIED.",
+    "rationale": "No component owner promotion or order BOM; #15 retains exact data, #21 promotes evidence, #34 replaces count estimates.",
+    "standard": "design/standard/electrical-standard.json",
+    "status": "accepted for draft capture; not hardware qualification"
+  }
+]

@@ -1,0 +1,2406 @@
+{
+  "schema_version": 1,
+  "standard_id": "OSC-ES-1",
+  "date": "2026-09-28",
+  "authority": "PROPOSAL (planning, owner-delegated)",
+  "status": "Unvalidated electrical design proposal; no fabrication authority",
+  "decision_record": "project/osc-hole-field/electrical-decisions.json",
+  "roles": {
+    "audio": {
+      "part_id": "op_audio",
+      "package": "SOIC-14",
+      "units_per_package": 4,
+      "rails": [
+        "+12V",
+        "-12V"
+      ],
+      "pin_contract": "standard quad: outputs 1/7/8/14, V+ 4, V- 11; exact manufacturer map must be retained in #15",
+      "alternates": [],
+      "swap_policy": "Same role package and pin map required; any different package needs explicit role/footprint migration. No automatic substitute."
+    },
+    "cv": {
+      "part_id": "op_audio",
+      "package": "SOIC-14",
+      "units_per_package": 4,
+      "rails": [
+        "+12V",
+        "-12V"
+      ],
+      "pin_contract": "standard quad: outputs 1/7/8/14, V+ 4, V- 11; exact manufacturer map must be retained in #15",
+      "alternates": [],
+      "swap_policy": "Same role package and pin map required; any different package needs explicit role/footprint migration. No automatic substitute."
+    },
+    "indicator": {
+      "part_id": "op_audio",
+      "package": "SOIC-14",
+      "units_per_package": 4,
+      "rails": [
+        "+12V",
+        "-12V"
+      ],
+      "pin_contract": "standard quad: outputs 1/7/8/14, V+ 4, V- 11; exact manufacturer map must be retained in #15",
+      "alternates": [],
+      "swap_policy": "Same role package and pin map required; any different package needs explicit role/footprint migration. No automatic substitute."
+    },
+    "precision": {
+      "part_id": "op_precision",
+      "package": "TSSOP-14",
+      "units_per_package": 4,
+      "rails": [
+        "+12V",
+        "-12V"
+      ],
+      "pin_contract": "standard quad: outputs 1/7/8/14, V+ 4, V- 11; exact manufacturer map must be retained in #15",
+      "alternates": [],
+      "swap_policy": "Same role package and pin map required; any different package needs explicit role/footprint migration. No automatic substitute.",
+      "allocation_note": "Budget baseline precision slots include pitch/MULT/SH input paths where specified. Additional protected-input count is a conservative cv-role reserve; #33 must remap each actual cell to its true role and board package rather than treating the rough count split as a netlist."
+    }
+  },
+  "signals": {
+    "rails_V": {
+      "+12V": 12,
+      "-12V": -12,
+      "+5V": 5
+    },
+    "audio_nominal_V": [
+      -5,
+      5
+    ],
+    "bipolar_cv_nominal_V": [
+      -5,
+      5
+    ],
+    "input_continuous_fault_V": [
+      -12,
+      12
+    ],
+    "envelope_V": [
+      0,
+      8
+    ],
+    "bipolar_envelope_V": [
+      -5,
+      5
+    ],
+    "bipolar_envelope_equation": "BIP = 1.25*ENV - 5 V",
+    "pitch_V_per_octave": 1,
+    "pitch_resistor_tolerance_percent": 0.1,
+    "gate_output_nominal_V": [
+      0,
+      5
+    ],
+    "input_nominal_ohm": 100000,
+    "input_tolerance_percent": 5,
+    "minimum_output_load_ohm": 10000,
+    "nominal_output_load_ohm": 100000,
+    "precision_load_error_max_V": 0.001,
+    "clip_internal_threshold_V": [
+      -10,
+      10
+    ],
+    "magnitude_5V_current_A": 0.001002004008016032,
+    "no_inter_module_normals": true,
+    "jack_switch_contacts": "unused",
+    "output_series_ohm": 998
+  },
+  "pot_roles": [
+    {
+      "role": "bipolar_attenuverter",
+      "count": 47,
+      "part_id": "pot_103",
+      "ohm": 10000
+    },
+    {
+      "role": "dc_control_source",
+      "count": 48,
+      "part_id": "pot_104",
+      "ohm": 100000
+    },
+    {
+      "role": "level_attenuator",
+      "count": 4,
+      "part_id": "pot_103",
+      "ohm": 10000
+    },
+    {
+      "role": "slew_island",
+      "count": 2,
+      "part_id": "pot_504",
+      "ohm": 500000
+    }
+  ],
+  "remote_controls": {
+    "max_harness_length_m": 0.3,
+    "max_harness_capacitance_F": 1e-09,
+    "allowed": [
+      "buffered signal",
+      "buffered reference",
+      "analog return",
+      "wiper into high-impedance input",
+      "conditioned logic and logic return"
+    ],
+    "forbidden": [
+      "raw jack driving 10 kohm pot",
+      "op-amp summing node",
+      "unbuffered reference tap",
+      "LF398 hold node",
+      "oscillator timing node",
+      "envelope integrator",
+      "slew storage node"
+    ],
+    "island_contract": {
+      "required_fields": [
+        "island_id",
+        "panel_uids",
+        "component_refs",
+        "local_nets",
+        "allowed_crossing_nets"
+      ],
+      "constraint": "Every component/panel UID/local net in an island must share one physical board. Partition verifier rejects any local net crossing."
+    },
+    "fixed_geometry": "No panel control or jack coordinates change. Signals needing local timing stay on circuit board; RANGE changes buffered CV or local switch command."
+  },
+  "calibration": {
+    "assembly": "Factory-only soldering and socket population; factory adjustment through accessible test points.",
+    "warmup_minutes": 20,
+    "precision_output_load_error_V": 0.001,
+    "static_precision_error_V": 0.002,
+    "octave_step_error_V": 0.002,
+    "pitch_tracking_target_cents": 5,
+    "pitch_tracking_scope": "0..5 V at 25 C after factory calibration; target only, not guaranteed by resistor tolerance. #29 defines sweep and temperature characterization.",
+    "sample_hold": "No long-hold pitch accuracy promise; characterize droop separately from output load error.",
+    "pitch_voltage_error_caveat": "5 cents at 1 V/oct equals 4.166667 mV; oscillator exponential/core error and temperature must share this total budget. A 2 mV octave-step target alone does not prove five-octave tracking."
+  },
+  "capacitance": {
+    "nominal_ceiling_uF": {
+      "+12V": 150,
+      "-12V": 150,
+      "+5V": 100
+    },
+    "worst_tolerance_fraction": 0.2,
+    "per_ic_pin_nF": 100,
+    "per_board_rail_bulk_uF": 4.7,
+    "rail_bleeder_ohm": 2200,
+    "startup_status": "NEEDS BENCH; legacy supply startup unresolved"
+  },
+  "cells": [
+    {
+      "id": "input_fault_switch",
+      "authority": "PROPOSAL (planning, owner-delegated)",
+      "verification_status": "NEEDS BENCH",
+      "parts": [
+        {
+          "ref": "U",
+          "part_id": "fault_switch",
+          "terminals": {
+            "S": "JACK",
+            "D": "PROTECTED",
+            "IN": "ENABLE",
+            "VDD": "+12V",
+            "VSS": "-12V",
+            "GND": "AGND"
+          }
+        },
+        {
+          "ref": "R_EN",
+          "part_id": "r_general",
+          "value": 100000,
+          "unit": "ohm",
+          "terminals": {
+            "1": "ENABLE",
+            "2": "AGND"
+          }
+        },
+        {
+          "ref": "R_DRIVE",
+          "part_id": "r_general",
+          "value": 1000,
+          "unit": "ohm",
+          "terminals": {
+            "1": "+5V",
+            "2": "ENABLE"
+          }
+        }
+      ],
+      "connections": [
+        "One channel per input jack; source S always faces patch cable; drain D always faces local circuit.",
+        "Unused source/drain grounded, unused IN grounded, FF explicitly no-connect."
+      ],
+      "notes": [
+        "Powered-off isolation replaces a naked rail-clamp path. GND must stay connected with patch sleeves. No \u00b155 V system rating is inferred; project fault range is \u00b112 V.",
+        "Fault switch uses \u00b112 V rails; \u00b115 V datasheet tables are planning references, not guaranteed \u00b112 V performance. Drain clamps/current limiting below remain mandatory.",
+        "Do not tie enable directly to +12 V. Require #24 power-sequence analysis for missing-rail and ground-loss cases."
+      ],
+      "uses": [],
+      "verification": [
+        "Capture/ERC and ideal/vendor simulation in #18; physical validation remains open."
+      ]
+    },
+    {
+      "id": "high_impedance_input",
+      "authority": "PROPOSAL (planning, owner-delegated)",
+      "verification_status": "NEEDS BENCH",
+      "parts": [
+        {
+          "ref": "R_PD",
+          "part_id": "r_general",
+          "value": 100000,
+          "unit": "ohm",
+          "terminals": {
+            "1": "PROTECTED",
+            "2": "AGND"
+          }
+        },
+        {
+          "ref": "R_LIMIT",
+          "part_id": "r_general",
+          "value": 10000,
+          "unit": "ohm",
+          "terminals": {
+            "1": "PROTECTED",
+            "2": "SENSE"
+          }
+        },
+        {
+          "ref": "D",
+          "part_id": "clamp_diode",
+          "terminals": {
+            "A": "-12V",
+            "MID": "SENSE",
+            "K": "+12V"
+          }
+        },
+        {
+          "ref": "A",
+          "opamp_role": "cv",
+          "terminals": {
+            "IN+": "SENSE",
+            "IN-": "BUFFERED",
+            "OUT": "BUFFERED",
+            "V+": "+12V",
+            "V-": "-12V"
+          }
+        }
+      ],
+      "connections": [
+        "JACK -> input_fault_switch -> PROTECTED.",
+        "Precision pitch/MULT/SH input selects precision role; audio input selects audio role."
+      ],
+      "notes": [
+        "100 kohm nominal at drain; switch on resistance adds series error. No independent 10 kohm pot may load the jack.",
+        "Clamp leakage and input current, especially hot, remain part of the input error budget.",
+        "Nominal accuracy limited to \u00b15 V; \u00b112 V is a continuous survival requirement, not a linear input range."
+      ],
+      "uses": [
+        "input_fault_switch"
+      ],
+      "verification": [
+        "Capture/ERC and ideal/vendor simulation in #18; physical validation remains open."
+      ]
+    },
+    {
+      "id": "summing_node_input",
+      "authority": "PROPOSAL (planning, owner-delegated)",
+      "verification_status": "NEEDS BENCH",
+      "parts": [
+        {
+          "ref": "R_IN",
+          "part_id": "r_precision",
+          "value": 100000,
+          "unit": "ohm",
+          "terminals": {
+            "1": "PROTECTED",
+            "2": "SUM"
+          }
+        },
+        {
+          "ref": "D",
+          "part_id": "clamp_diode",
+          "terminals": {
+            "A": "-12V",
+            "MID": "SUM",
+            "K": "+12V"
+          }
+        }
+      ],
+      "connections": [
+        "JACK -> input_fault_switch -> PROTECTED -> R_IN -> virtual ground SUM.",
+        "Parent summer provides feedback resistor 100 kohm per unity input and 10 pF C0G in parallel; amplifier role audio or cv by parent."
+      ],
+      "notes": [
+        "The input resistor limits current, and the upstream fault switch isolates an unpowered circuit. Bare 100 kohm resistance alone is not power-off isolation.",
+        "Do not also add a 100 kohm pulldown at PROTECTED on this variant: it would halve input impedance."
+      ],
+      "uses": [
+        "input_fault_switch"
+      ],
+      "verification": [
+        "Capture/ERC and ideal/vendor simulation in #18; physical validation remains open."
+      ]
+    },
+    {
+      "id": "general_output",
+      "authority": "PROPOSAL (planning, owner-delegated)",
+      "verification_status": "NEEDS BENCH",
+      "parts": [
+        {
+          "ref": "A",
+          "opamp_role": "audio",
+          "terminals": {
+            "IN+": "SIGNAL",
+            "IN-": "DRIVE",
+            "OUT": "DRIVE",
+            "V+": "+12V",
+            "V-": "-12V"
+          }
+        },
+        {
+          "ref": "R_ISO_A",
+          "part_id": "r_power",
+          "value": 499,
+          "unit": "ohm",
+          "terminals": {
+            "1": "DRIVE",
+            "2": "ISO_MID"
+          }
+        },
+        {
+          "ref": "R_ISO_B",
+          "part_id": "r_power",
+          "value": 499,
+          "unit": "ohm",
+          "terminals": {
+            "1": "ISO_MID",
+            "2": "JACK"
+          }
+        }
+      ],
+      "connections": [
+        "Local feedback before the resistor. For DC/gates select cv role."
+      ],
+      "notes": [
+        "998 ohm gives 0.990119 gain into 100 kohm; nominal \u00b15 V specified unloaded.",
+        "Each project-output pair at opposite \u00b112 V has 12.024 mA maximum ideal current and 0.0722 W per 499 ohm resistor. Ground short at 12 V is also 0.0722 W per 499 ohm resistor.",
+        "No simultaneous-all-output-short supply claim. Test sustained one-channel short and paired outputs per IC, including junction temperature.",
+        "Two series 499 ohm / 0.5 W resistors realize 998 ohm nominal. A continuous external \u00b112 V fault against the opposite output rail gives 24.05 mA and 0.289 W per resistor at nominal rails; qualify IC thermal dissipation."
+      ],
+      "uses": [],
+      "verification": [
+        "Capture/ERC and ideal/vendor simulation in #18; physical validation remains open."
+      ]
+    },
+    {
+      "id": "precision_output",
+      "authority": "PROPOSAL (planning, owner-delegated)",
+      "verification_status": "NEEDS BENCH",
+      "parts": [
+        {
+          "ref": "A",
+          "opamp_role": "precision",
+          "terminals": {
+            "IN+": "SIGNAL",
+            "IN-": "FB",
+            "OUT": "DRIVE",
+            "V+": "+12V",
+            "V-": "-12V"
+          }
+        },
+        {
+          "ref": "R_ISO_A",
+          "part_id": "r_power",
+          "value": 499,
+          "unit": "ohm",
+          "terminals": {
+            "1": "DRIVE",
+            "2": "ISO_MID"
+          }
+        },
+        {
+          "ref": "R_ISO_B",
+          "part_id": "r_power",
+          "value": 499,
+          "unit": "ohm",
+          "terminals": {
+            "1": "ISO_MID",
+            "2": "JACK"
+          }
+        },
+        {
+          "ref": "R_FB",
+          "part_id": "r_general",
+          "value": 10000,
+          "unit": "ohm",
+          "terminals": {
+            "1": "JACK",
+            "2": "FB"
+          }
+        },
+        {
+          "ref": "C_FAST",
+          "part_id": "c_small",
+          "value": 1e-10,
+          "unit": "F",
+          "terminals": {
+            "1": "DRIVE",
+            "2": "FB"
+          }
+        }
+      ],
+      "connections": [
+        "DC feedback senses JACK through R_FB; high-frequency feedback returns locally via C_FAST."
+      ],
+      "notes": [
+        "Default 100\u2013470 ohm changed to 998 ohm to bound output faults. 100 pF is a chosen starting compensation value, not a stability proof.",
+        "DC load-induced error target <=1 mV for -5/0/+5 V, no load to 10 kohm; full static path error target <=2 mV after factory calibration.",
+        "Test open/10k/100k and 0/100p/1n/5n F cable loads, \u00b15 V steps and output contention. Require no sustained oscillation; <=10% overshoot and settle within 1 mV by 1 ms.",
+        "Feedback stays on the jack board with output cell; no long unsensed feedback net across connectors.",
+        "Two series 499 ohm / 0.5 W resistors realize 998 ohm nominal. A continuous external \u00b112 V fault against the opposite output rail gives 24.05 mA and 0.289 W per resistor at nominal rails; qualify IC thermal dissipation."
+      ],
+      "uses": [],
+      "verification": [
+        "SPICE stability sweep and loop assessment in #18; vendor models and physical cable tests required."
+      ]
+    },
+    {
+      "id": "remote_buffer",
+      "authority": "PROPOSAL (planning, owner-delegated)",
+      "verification_status": "NEEDS BENCH",
+      "parts": [
+        {
+          "ref": "A",
+          "opamp_role": "audio",
+          "terminals": {
+            "IN+": "SIGNAL",
+            "IN-": "FB",
+            "OUT": "DRIVE",
+            "V+": "+12V",
+            "V-": "-12V"
+          }
+        },
+        {
+          "ref": "R_ISO",
+          "part_id": "r_general",
+          "value": 100,
+          "unit": "ohm",
+          "terminals": {
+            "1": "DRIVE",
+            "2": "REMOTE"
+          }
+        },
+        {
+          "ref": "R_FB",
+          "part_id": "r_general",
+          "value": 10000,
+          "unit": "ohm",
+          "terminals": {
+            "1": "REMOTE",
+            "2": "FB"
+          }
+        },
+        {
+          "ref": "C_FAST",
+          "part_id": "c_small",
+          "value": 1e-10,
+          "unit": "F",
+          "terminals": {
+            "1": "DRIVE",
+            "2": "FB"
+          }
+        }
+      ],
+      "connections": [
+        "Feedback sensed locally after isolation; remote destination high impedance except the assigned 10 kohm pot."
+      ],
+      "notes": [
+        "Internal harness only, never an exposed jack output. Cable <=300 mm and <=1 nF design envelope; qualify actual harness.",
+        "CV/reference drives may use cv role; no shared driver exceeding 2 mA DC load."
+      ],
+      "uses": [],
+      "verification": [
+        "Capture/ERC and ideal/vendor simulation in #18; physical validation remains open."
+      ]
+    },
+    {
+      "id": "bipolar_attenuverter",
+      "authority": "PROPOSAL (planning, owner-delegated)",
+      "verification_status": "NEEDS BENCH",
+      "parts": [
+        {
+          "ref": "RV",
+          "part_id": "pot_103",
+          "terminals": {
+            "CCW": "AGND",
+            "CW": "REMOTE_INPUT",
+            "WIPER": "W"
+          }
+        },
+        {
+          "ref": "R_W",
+          "part_id": "r_general",
+          "value": 1000,
+          "unit": "ohm",
+          "terminals": {
+            "1": "W",
+            "2": "W_SENSE"
+          }
+        },
+        {
+          "ref": "R_FAIL",
+          "part_id": "r_general",
+          "value": 10000000,
+          "unit": "ohm",
+          "terminals": {
+            "1": "W_SENSE",
+            "2": "AGND"
+          }
+        },
+        {
+          "ref": "R_IN",
+          "part_id": "r_precision",
+          "value": 100000,
+          "unit": "ohm",
+          "terminals": {
+            "1": "BUFFERED_INPUT",
+            "2": "SUM"
+          }
+        },
+        {
+          "ref": "R_FB",
+          "part_id": "r_precision",
+          "value": 100000,
+          "unit": "ohm",
+          "terminals": {
+            "1": "OUT",
+            "2": "SUM"
+          }
+        },
+        {
+          "ref": "C_FB",
+          "part_id": "c_small",
+          "value": 1e-11,
+          "unit": "F",
+          "terminals": {
+            "1": "OUT",
+            "2": "SUM"
+          }
+        },
+        {
+          "ref": "A",
+          "opamp_role": "audio",
+          "terminals": {
+            "IN+": "W_SENSE",
+            "IN-": "SUM",
+            "OUT": "OUT",
+            "V+": "+12V",
+            "V-": "-12V"
+          }
+        }
+      ],
+      "connections": [
+        "JACK -> high_impedance_input -> BUFFERED_INPUT -> remote_buffer -> REMOTE_INPUT.",
+        "Vout = 2*Vwiper - Vbuffered_input. CW is positive, CCW negative; swap only terminal assignment after mechanical audit."
+      ],
+      "notes": [
+        "47 pots retain 10 kohm. Buffered source avoids the former 10 kohm jack load. Wiper failure tends toward negative endpoint; not safety zero.",
+        "10 Mohm fail resistor slightly curves law; endpoint/centre gain tolerance target 0.5%, centre trim is by knob setting.",
+        "For CV-only instance use cv role; precision AO uses precision role."
+      ],
+      "uses": [
+        "high_impedance_input",
+        "remote_buffer"
+      ],
+      "verification": [
+        "Capture/ERC and ideal/vendor simulation in #18; physical validation remains open."
+      ]
+    },
+    {
+      "id": "dc_control_source",
+      "authority": "PROPOSAL (planning, owner-delegated)",
+      "verification_status": "NEEDS BENCH",
+      "parts": [
+        {
+          "ref": "RV",
+          "part_id": "pot_104",
+          "terminals": {
+            "CCW": "REF_LOW",
+            "CW": "REF_HIGH",
+            "WIPER": "W"
+          }
+        },
+        {
+          "ref": "R_W",
+          "part_id": "r_general",
+          "value": 1000,
+          "unit": "ohm",
+          "terminals": {
+            "1": "W",
+            "2": "W_SENSE"
+          }
+        },
+        {
+          "ref": "R_FAIL",
+          "part_id": "r_general",
+          "value": 10000000,
+          "unit": "ohm",
+          "terminals": {
+            "1": "W_SENSE",
+            "2": "AGND"
+          }
+        },
+        {
+          "ref": "C_W",
+          "part_id": "c_small",
+          "value": 1e-08,
+          "unit": "F",
+          "terminals": {
+            "1": "W_SENSE",
+            "2": "AGND"
+          }
+        },
+        {
+          "ref": "A",
+          "opamp_role": "cv",
+          "terminals": {
+            "IN+": "W_SENSE",
+            "IN-": "OUT",
+            "OUT": "OUT",
+            "V+": "+12V",
+            "V-": "-12V"
+          }
+        }
+      ],
+      "connections": [
+        "Bipolar endpoints -5/+5 V; unipolar endpoints AGND/+5 V. Module maps normalized 0..1 or -1..1 to named function using explicit gain."
+      ],
+      "notes": [
+        "48 pots become 100 kohm B104 in unchanged mechanical family. 0.1 mA each across \u00b15 V; total 4.8 mA on each analog rail.",
+        "At most six pots per pair of local reference buffers; Kelvin reference return accompanies harness.",
+        "10 nF wiper filter gives variable time constant up to approximately 0.26 ms. Do not use for audio."
+      ],
+      "uses": [
+        "reference_generator"
+      ],
+      "verification": [
+        "Capture/ERC and ideal/vendor simulation in #18; physical validation remains open."
+      ]
+    },
+    {
+      "id": "level_attenuator",
+      "authority": "PROPOSAL (planning, owner-delegated)",
+      "verification_status": "NEEDS BENCH",
+      "parts": [
+        {
+          "ref": "RV",
+          "part_id": "pot_103",
+          "terminals": {
+            "CCW": "AGND",
+            "CW": "REMOTE_INPUT",
+            "WIPER": "W"
+          }
+        },
+        {
+          "ref": "R_W",
+          "part_id": "r_general",
+          "value": 1000,
+          "unit": "ohm",
+          "terminals": {
+            "1": "W",
+            "2": "W_SENSE"
+          }
+        },
+        {
+          "ref": "R_FAIL",
+          "part_id": "r_general",
+          "value": 10000000,
+          "unit": "ohm",
+          "terminals": {
+            "1": "W_SENSE",
+            "2": "AGND"
+          }
+        },
+        {
+          "ref": "A",
+          "opamp_role": "audio",
+          "terminals": {
+            "IN+": "W_SENSE",
+            "IN-": "OUT",
+            "OUT": "OUT",
+            "V+": "+12V",
+            "V-": "-12V"
+          }
+        }
+      ],
+      "connections": [
+        "Buffered module audio -> remote_buffer -> REMOTE_INPUT; output feeds general_output."
+      ],
+      "notes": [
+        "4 pots retain 10 kohm; nominal gain 0..1. MIX4 SUM GAIN remains a DC-source role, not an audio level pot."
+      ],
+      "uses": [
+        "remote_buffer"
+      ],
+      "verification": [
+        "Capture/ERC and ideal/vendor simulation in #18; physical validation remains open."
+      ]
+    },
+    {
+      "id": "reference_generator",
+      "authority": "PROPOSAL (planning, owner-delegated)",
+      "verification_status": "NEEDS BENCH",
+      "parts": [
+        {
+          "ref": "U",
+          "part_id": "reference",
+          "terminals": {
+            "VIN": "+12V",
+            "GND": "AGND",
+            "OUT": "RAW_5V",
+            "TRIM": "NC",
+            "TEMP": "NC"
+          }
+        },
+        {
+          "ref": "C_IN",
+          "part_id": "c_bypass",
+          "value": 1e-07,
+          "unit": "F",
+          "terminals": {
+            "1": "+12V",
+            "2": "AGND"
+          }
+        },
+        {
+          "ref": "C_OUT",
+          "part_id": "c_bypass",
+          "value": 1e-06,
+          "unit": "F",
+          "terminals": {
+            "1": "RAW_5V",
+            "2": "AGND"
+          }
+        },
+        {
+          "ref": "A1",
+          "opamp_role": "precision",
+          "terminals": {
+            "IN+": "RAW_5V",
+            "IN-": "REF_5V",
+            "OUT": "REF_5V",
+            "V+": "+12V",
+            "V-": "-12V"
+          }
+        },
+        {
+          "ref": "R_INV",
+          "part_id": "r_precision",
+          "value": 10000,
+          "unit": "ohm",
+          "terminals": {
+            "1": "REF_5V",
+            "2": "INV"
+          }
+        },
+        {
+          "ref": "R_FB",
+          "part_id": "r_precision",
+          "value": 10000,
+          "unit": "ohm",
+          "terminals": {
+            "1": "REF_N5V",
+            "2": "INV"
+          }
+        },
+        {
+          "ref": "A2",
+          "opamp_role": "precision",
+          "terminals": {
+            "IN+": "AGND",
+            "IN-": "INV",
+            "OUT": "REF_N5V",
+            "V+": "+12V",
+            "V-": "-12V"
+          }
+        },
+        {
+          "ref": "R_GTOP",
+          "part_id": "r_precision",
+          "value": 22000,
+          "unit": "ohm",
+          "terminals": {
+            "1": "REF_5V",
+            "2": "GATE_RAW"
+          }
+        },
+        {
+          "ref": "R_GBOT",
+          "part_id": "r_precision",
+          "value": 100000,
+          "unit": "ohm",
+          "terminals": {
+            "1": "GATE_RAW",
+            "2": "AGND"
+          }
+        },
+        {
+          "ref": "A3",
+          "opamp_role": "precision",
+          "terminals": {
+            "IN+": "GATE_RAW",
+            "IN-": "GATE_REF",
+            "OUT": "GATE_REF",
+            "V+": "+12V",
+            "V-": "-12V"
+          }
+        }
+      ],
+      "connections": [
+        "REF_5V = +5 V, REF_N5V = -5 V, GATE_REF = 5*100/122 V.",
+        "Distribute through local remote_buffer cells; REF5050 does not source all pots.",
+        "No physical \u00b110 V reference: clip compares buffered node/2 against \u00b15 V."
+      ],
+      "notes": [
+        "1 uF capacitor uses X7R value variant of c_bypass series, with effective C checked against manufacturer stability guidance in #15.",
+        "REF5050 trim left open; factory adjusts octave scaling downstream. Use 100 nF local bypass on each amplifier rail in addition to explicit caps.",
+        "Raw reference buffers and local fan-out are separate allocations. Buffered \u00b15 V fan-out pairs use cv role and serve at most six 100 kohm pots per pair."
+      ],
+      "uses": [
+        "remote_buffer"
+      ],
+      "verification": [
+        "Capture/ERC and ideal/vendor simulation in #18; physical validation remains open."
+      ]
+    },
+    {
+      "id": "octave_reference",
+      "authority": "PROPOSAL (planning, owner-delegated)",
+      "verification_status": "NEEDS BENCH",
+      "parts": [
+        {
+          "ref": "R1",
+          "part_id": "r_precision",
+          "value": 10000,
+          "unit": "ohm",
+          "terminals": {
+            "1": "T0",
+            "2": "T1"
+          }
+        },
+        {
+          "ref": "R2",
+          "part_id": "r_precision",
+          "value": 10000,
+          "unit": "ohm",
+          "terminals": {
+            "1": "T1",
+            "2": "T2"
+          }
+        },
+        {
+          "ref": "R3",
+          "part_id": "r_precision",
+          "value": 10000,
+          "unit": "ohm",
+          "terminals": {
+            "1": "T2",
+            "2": "T3"
+          }
+        },
+        {
+          "ref": "R4",
+          "part_id": "r_precision",
+          "value": 10000,
+          "unit": "ohm",
+          "terminals": {
+            "1": "T3",
+            "2": "T4"
+          }
+        },
+        {
+          "ref": "R5",
+          "part_id": "r_precision",
+          "value": 10000,
+          "unit": "ohm",
+          "terminals": {
+            "1": "T4",
+            "2": "T5"
+          }
+        },
+        {
+          "ref": "A0",
+          "opamp_role": "precision",
+          "terminals": {
+            "IN+": "T0",
+            "IN-": "OCT0",
+            "OUT": "OCT0",
+            "V+": "+12V",
+            "V-": "-12V"
+          }
+        },
+        {
+          "ref": "A1",
+          "opamp_role": "precision",
+          "terminals": {
+            "IN+": "T1",
+            "IN-": "OCT1",
+            "OUT": "OCT1",
+            "V+": "+12V",
+            "V-": "-12V"
+          }
+        },
+        {
+          "ref": "A2",
+          "opamp_role": "precision",
+          "terminals": {
+            "IN+": "T2",
+            "IN-": "OCT2",
+            "OUT": "OCT2",
+            "V+": "+12V",
+            "V-": "-12V"
+          }
+        },
+        {
+          "ref": "A3",
+          "opamp_role": "precision",
+          "terminals": {
+            "IN+": "T3",
+            "IN-": "OCT3",
+            "OUT": "OCT3",
+            "V+": "+12V",
+            "V-": "-12V"
+          }
+        },
+        {
+          "ref": "A4",
+          "opamp_role": "precision",
+          "terminals": {
+            "IN+": "T4",
+            "IN-": "OCT4",
+            "OUT": "OCT4",
+            "V+": "+12V",
+            "V-": "-12V"
+          }
+        },
+        {
+          "ref": "A5",
+          "opamp_role": "precision",
+          "terminals": {
+            "IN+": "T5",
+            "IN-": "OCT5",
+            "OUT": "OCT5",
+            "V+": "+12V",
+            "V-": "-12V"
+          }
+        },
+        {
+          "ref": "R_GAIN",
+          "part_id": "r_precision",
+          "value": 10000,
+          "unit": "ohm",
+          "terminals": {
+            "1": "AGND",
+            "2": "GAIN_SUM"
+          }
+        },
+        {
+          "ref": "R_FIXED",
+          "part_id": "r_precision",
+          "value": 19100,
+          "unit": "ohm",
+          "terminals": {
+            "1": "GAIN_SUM",
+            "2": "GAIN_TRIM"
+          }
+        },
+        {
+          "ref": "RV_GAIN",
+          "part_id": "trim_102",
+          "terminals": {
+            "END1": "GAIN_TRIM",
+            "WIPER": "TOP",
+            "END2": "TOP"
+          }
+        },
+        {
+          "ref": "TOPDRV",
+          "opamp_role": "precision",
+          "terminals": {
+            "IN+": "ONE_V",
+            "IN-": "GAIN_SUM",
+            "OUT": "TOP",
+            "V+": "+12V",
+            "V-": "-12V"
+          }
+        },
+        {
+          "ref": "R_ONE_TOP",
+          "part_id": "r_precision",
+          "value": 20000,
+          "unit": "ohm",
+          "terminals": {
+            "1": "REF_5V",
+            "2": "ONE_MID"
+          }
+        },
+        {
+          "ref": "R_ONE_BOT",
+          "part_id": "r_precision",
+          "value": 10000,
+          "unit": "ohm",
+          "terminals": {
+            "1": "ONE_RAW",
+            "2": "AGND"
+          }
+        },
+        {
+          "ref": "ONE",
+          "opamp_role": "precision",
+          "terminals": {
+            "IN+": "ONE_RAW",
+            "IN-": "ONE_V",
+            "OUT": "ONE_V",
+            "V+": "+12V",
+            "V-": "-12V"
+          }
+        },
+        {
+          "ref": "R_N2_IN",
+          "part_id": "r_precision",
+          "value": 10000,
+          "unit": "ohm",
+          "terminals": {
+            "1": "ONE_V",
+            "2": "N2_SUM"
+          }
+        },
+        {
+          "ref": "R_N2_FB",
+          "part_id": "r_precision",
+          "value": 20000,
+          "unit": "ohm",
+          "terminals": {
+            "1": "BOTTOM",
+            "2": "N2_SUM"
+          }
+        },
+        {
+          "ref": "BOTDRV",
+          "opamp_role": "precision",
+          "terminals": {
+            "IN+": "AGND",
+            "IN-": "N2_SUM",
+            "OUT": "BOTTOM",
+            "V+": "+12V",
+            "V-": "-12V"
+          }
+        },
+        {
+          "ref": "R_ONE_TOP_B",
+          "part_id": "r_precision",
+          "value": 20000,
+          "unit": "ohm",
+          "terminals": {
+            "1": "ONE_MID",
+            "2": "ONE_RAW"
+          }
+        }
+      ],
+      "connections": [
+        "T0 is BOTTOM (-2 V), T5 is TOP (adjustable around +3 V); T1..T4 are local ladder nodes.",
+        "Each tap is buffered before the six-position panel selector; selected wiper returns into a precision buffer with 10 Mohm pulldown.",
+        "Nominal T0..T5 = -2,-1,0,1,2,3 V."
+      ],
+      "notes": [
+        "Shared ladder on one local reference island; only buffered tap voltages cross harness.",
+        "Five resistors at 0.1% cannot guarantee 1 mV octave accuracy. Factory measure every step; accept <=2 mV deviation per step after span adjustment or change resistor matching under #29.",
+        "R_FIXED 19.1 kohm + 1 kohm trim gives gain 2.91..3.01; nominal +3 V is reachable. Lower endpoint error is measured, not silently trimmed away.",
+        "R_ONE_TOP is two 20 kohm 0.1% series resistors; T0..T5 buffers plus ONE/TOPDRV/BOTDRV total nine precision sections. Budget reserves 16 sections for master references, this cell and selected-wiper receiver sharing; the per-module baseline also includes pitch paths."
+      ],
+      "uses": [
+        "reference_generator"
+      ],
+      "verification": [
+        "Capture/ERC and ideal/vendor simulation in #18; physical validation remains open."
+      ]
+    },
+    {
+      "id": "gate_trigger_input",
+      "authority": "PROPOSAL (planning, owner-delegated)",
+      "verification_status": "NEEDS BENCH",
+      "parts": [
+        {
+          "ref": "R_SHIFT_IN",
+          "part_id": "r_precision",
+          "value": 100000,
+          "unit": "ohm",
+          "terminals": {
+            "1": "BUFFERED",
+            "2": "GATE_SENSE"
+          }
+        },
+        {
+          "ref": "R_SHIFT_REF",
+          "part_id": "r_precision",
+          "value": 33200,
+          "unit": "ohm",
+          "terminals": {
+            "1": "REF_5V",
+            "2": "GATE_SENSE"
+          }
+        },
+        {
+          "ref": "R_REF",
+          "part_id": "r_precision",
+          "value": 10000,
+          "unit": "ohm",
+          "terminals": {
+            "1": "GATE_REF",
+            "2": "THRESH"
+          }
+        },
+        {
+          "ref": "R_HYS",
+          "part_id": "r_precision",
+          "value": 390000,
+          "unit": "ohm",
+          "terminals": {
+            "1": "CMP_OUT",
+            "2": "THRESH"
+          }
+        },
+        {
+          "ref": "R_PULL",
+          "part_id": "r_general",
+          "value": 4700,
+          "unit": "ohm",
+          "terminals": {
+            "1": "+5V",
+            "2": "CMP_OUT"
+          }
+        },
+        {
+          "ref": "U",
+          "part_id": "comparator",
+          "terminals": {
+            "PLUS": "THRESH",
+            "MINUS": "GATE_SENSE",
+            "OUT": "CMP_OUT",
+            "VCC": "+12V",
+            "GND": "AGND"
+          }
+        },
+        {
+          "ref": "U_INV",
+          "part_id": "schmitt",
+          "terminals": {
+            "IN": "CMP_OUT",
+            "OUT": "GATE_HIGH",
+            "VCC": "+5V",
+            "GND": "AGND"
+          }
+        }
+      ],
+      "connections": [
+        "JACK -> high_impedance_input -> BUFFERED.",
+        "Comparator runs from +12 V/GND, not \u00b112 V: its open collector low must be 0 V for HC logic.",
+        "Biased divider keeps comparator input positive for bipolar jack signals. GATE_HIGH rises with the jack."
+      ],
+      "notes": [
+        "Ideal thresholds including 4.7 kohm pull-up are calculated by check_standard.py (about 1.47 V rising, 0.97 V falling); comparator offset, VOL and rail/reference tolerances widen them.",
+        "Acceptance windows rising 1.35..1.65 V, falling 0.85..1.15 V. Trigger semantics are rising edge, not sustained gate.",
+        "Module uses CD74HC221M96 for SH acquisition; do not interpret button contact bounce as repeated sample events."
+      ],
+      "uses": [
+        "high_impedance_input",
+        "reference_generator"
+      ],
+      "verification": [
+        "Capture/ERC and ideal/vendor simulation in #18; physical validation remains open."
+      ]
+    },
+    {
+      "id": "magnitude_indicator",
+      "authority": "PROPOSAL (planning, owner-delegated)",
+      "verification_status": "NEEDS BENCH",
+      "parts": [
+        {
+          "ref": "A",
+          "opamp_role": "indicator",
+          "terminals": {
+            "IN+": "MONITOR",
+            "IN-": "SENSE",
+            "OUT": "DRIVE",
+            "V+": "+12V",
+            "V-": "-12V"
+          }
+        },
+        {
+          "ref": "R_SENSE",
+          "part_id": "r_general",
+          "value": 4990,
+          "unit": "ohm",
+          "terminals": {
+            "1": "SENSE",
+            "2": "AGND"
+          }
+        },
+        {
+          "ref": "D1",
+          "part_id": "signal_diode",
+          "terminals": {
+            "A": "DRIVE",
+            "K": "LED_A"
+          }
+        },
+        {
+          "ref": "D2",
+          "part_id": "signal_diode",
+          "terminals": {
+            "A": "SENSE",
+            "K": "LED_A"
+          }
+        },
+        {
+          "ref": "D3",
+          "part_id": "signal_diode",
+          "terminals": {
+            "A": "LED_K",
+            "K": "DRIVE"
+          }
+        },
+        {
+          "ref": "D4",
+          "part_id": "signal_diode",
+          "terminals": {
+            "A": "LED_K",
+            "K": "SENSE"
+          }
+        },
+        {
+          "ref": "LED",
+          "part_id": "led_white",
+          "terminals": {
+            "A": "LED_A",
+            "K": "LED_K"
+          }
+        }
+      ],
+      "connections": [
+        "LED lies on DC diagonal of a four-diode bridge; DRIVE and SENSE are AC corners.",
+        "Feedback forces SENSE approximately equal MONITOR; LED current = abs(MONITOR)/4990."
+      ],
+      "notes": [
+        "One amplifier per indicator, 92 sites. About 1.002 mA at \u00b15 V. LED is isolated from signal source by high-impedance amplifier input.",
+        "At larger magnitudes amplifier clips: brightness may saturate and is not a calibrated voltmeter. At audio rates the eye averages rectified current. No polarity or plug detection.",
+        "Only already buffered nodes may feed MONITOR. Hold/timing/integrator/storage nodes are forbidden.",
+        "Driver stays with LED on its board; only buffered MONITOR plus adjacent analog return cross a connector."
+      ],
+      "uses": [],
+      "verification": [
+        "Capture/ERC and ideal/vendor simulation in #18; physical validation remains open."
+      ]
+    },
+    {
+      "id": "clip_detector",
+      "authority": "PROPOSAL (planning, owner-delegated)",
+      "verification_status": "NEEDS BENCH",
+      "parts": [
+        {
+          "ref": "A",
+          "opamp_role": "indicator",
+          "terminals": {
+            "IN+": "MONITOR",
+            "IN-": "BUF",
+            "OUT": "BUF",
+            "V+": "+12V",
+            "V-": "-12V"
+          }
+        },
+        {
+          "ref": "R_TOP",
+          "part_id": "r_precision",
+          "value": 100000,
+          "unit": "ohm",
+          "terminals": {
+            "1": "BUF",
+            "2": "HALF"
+          }
+        },
+        {
+          "ref": "R_BOT",
+          "part_id": "r_precision",
+          "value": 100000,
+          "unit": "ohm",
+          "terminals": {
+            "1": "HALF",
+            "2": "AGND"
+          }
+        },
+        {
+          "ref": "UP",
+          "part_id": "comparator",
+          "terminals": {
+            "PLUS": "REF_5V",
+            "MINUS": "HALF",
+            "OUT": "CLIP_N",
+            "VCC": "+12V",
+            "GND": "-12V"
+          }
+        },
+        {
+          "ref": "UN",
+          "part_id": "comparator",
+          "terminals": {
+            "PLUS": "HALF",
+            "MINUS": "REF_N5V",
+            "OUT": "CLIP_N",
+            "VCC": "+12V",
+            "GND": "-12V"
+          }
+        },
+        {
+          "ref": "R_LED",
+          "part_id": "r_general",
+          "value": 22100,
+          "unit": "ohm",
+          "terminals": {
+            "1": "+12V",
+            "2": "LED_A"
+          }
+        },
+        {
+          "ref": "LED",
+          "part_id": "led_red",
+          "terminals": {
+            "A": "LED_A",
+            "K": "CLIP_N"
+          }
+        }
+      ],
+      "connections": [
+        "Comparators wired-OR to CLIP_N; negative rail is the low level. This output is analog LED drive only and must not touch 5 V logic."
+      ],
+      "notes": [
+        "10 sites; trip at nominal \u00b110 V on internal pre-attenuation node. About 1 mA LED current when CLIP_N approaches -12 V.",
+        "No hysteresis or hold capacitor fitted: intentional immediate clip indication; threshold flicker is allowed.",
+        "Monitor after a dedicated buffer; mixer detector before output level/VCA, AO detector before output isolation.",
+        "Changing op-amp or load requires checking actual headroom against 10 V; threshold remains PROPOSAL."
+      ],
+      "uses": [
+        "reference_generator"
+      ],
+      "verification": [
+        "Capture/ERC and ideal/vendor simulation in #18; physical validation remains open."
+      ]
+    },
+    {
+      "id": "stage_indicator",
+      "authority": "PROPOSAL (planning, owner-delegated)",
+      "verification_status": "NEEDS BENCH",
+      "parts": [
+        {
+          "ref": "R_TOP",
+          "part_id": "r_general",
+          "value": 150000,
+          "unit": "ohm",
+          "terminals": {
+            "1": "ENV_BUFFERED",
+            "2": "COMMAND"
+          }
+        },
+        {
+          "ref": "R_BOT",
+          "part_id": "r_general",
+          "value": 10000,
+          "unit": "ohm",
+          "terminals": {
+            "1": "COMMAND",
+            "2": "AGND"
+          }
+        },
+        {
+          "ref": "A",
+          "opamp_role": "indicator",
+          "terminals": {
+            "IN+": "COMMAND",
+            "IN-": "EMITTER",
+            "OUT": "BASE_DRIVE",
+            "V+": "+12V",
+            "V-": "-12V"
+          }
+        },
+        {
+          "ref": "R_BASE",
+          "part_id": "r_general",
+          "value": 10000,
+          "unit": "ohm",
+          "terminals": {
+            "1": "BASE_DRIVE",
+            "2": "BASE"
+          }
+        },
+        {
+          "ref": "Q",
+          "part_id": "npn",
+          "terminals": {
+            "B": "BASE",
+            "E": "EMITTER",
+            "C": "LED_K"
+          }
+        },
+        {
+          "ref": "R_SENSE",
+          "part_id": "r_general",
+          "value": 1000,
+          "unit": "ohm",
+          "terminals": {
+            "1": "EMITTER",
+            "2": "AGND"
+          }
+        },
+        {
+          "ref": "LED",
+          "part_id": "led_white",
+          "terminals": {
+            "A": "+5V",
+            "K": "LED_K"
+          }
+        },
+        {
+          "ref": "QMUTE",
+          "part_id": "mosfet",
+          "terminals": {
+            "G": "NOT_OWN_STAGE",
+            "D": "COMMAND",
+            "S": "AGND"
+          }
+        },
+        {
+          "ref": "R_GATE",
+          "part_id": "r_general",
+          "value": 100000,
+          "unit": "ohm",
+          "terminals": {
+            "1": "NOT_OWN_STAGE",
+            "2": "+5V"
+          }
+        },
+        {
+          "ref": "D_BE",
+          "part_id": "signal_diode",
+          "terminals": {
+            "A": "EMITTER",
+            "K": "BASE"
+          }
+        }
+      ],
+      "connections": [
+        "NOT_OWN_STAGE is 5 V except while that particular attack or release stage is active."
+      ],
+      "notes": [
+        "12 sites, one amplifier each (planning table counted only six amplifiers; budget corrects it). ENV 8 V -> COMMAND 0.5 V -> 0.5 mA.",
+        "Off in idle and sustain. Stage command logic defaults to mute at startup. Monitors buffered ENV, never integrator."
+      ],
+      "uses": [],
+      "verification": [
+        "Capture/ERC and ideal/vendor simulation in #18; physical validation remains open."
+      ]
+    },
+    {
+      "id": "switch_button_input",
+      "authority": "PROPOSAL (planning, owner-delegated)",
+      "verification_status": "NEEDS BENCH",
+      "parts": [
+        {
+          "ref": "R_PULL",
+          "part_id": "r_general",
+          "value": 10000,
+          "unit": "ohm",
+          "terminals": {
+            "1": "+5V",
+            "2": "CONTACT"
+          }
+        },
+        {
+          "ref": "R_SER",
+          "part_id": "r_general",
+          "value": 1000,
+          "unit": "ohm",
+          "terminals": {
+            "1": "CONTACT",
+            "2": "DEBOUNCE"
+          }
+        },
+        {
+          "ref": "C_DB",
+          "part_id": "c_bypass",
+          "value": 1e-07,
+          "unit": "F",
+          "terminals": {
+            "1": "DEBOUNCE",
+            "2": "AGND"
+          }
+        },
+        {
+          "ref": "U",
+          "part_id": "schmitt",
+          "terminals": {
+            "IN": "DEBOUNCE",
+            "OUT": "ACTIVE",
+            "VCC": "+5V",
+            "GND": "AGND"
+          }
+        }
+      ],
+      "connections": [
+        "Contact shorts CONTACT to AGND. Repeat per toggle throw, each rotary function is voltage selection instead."
+      ],
+      "notes": [
+        "Button/toggle carries logic/return only. 1 ms nominal pull-up time is a starting filter; qualify actual bounce in #18/#31.",
+        "A/B routes logic to local selection or buffered audio only; never connect two raw jacks through an unprotected switch."
+      ],
+      "uses": [],
+      "verification": [
+        "Capture/ERC and ideal/vendor simulation in #18; physical validation remains open."
+      ]
+    },
+    {
+      "id": "decoupling_bulk",
+      "authority": "PROPOSAL (planning, owner-delegated)",
+      "verification_status": "NEEDS BENCH",
+      "parts": [
+        {
+          "ref": "C_P",
+          "part_id": "c_bypass",
+          "value": 1e-07,
+          "unit": "F",
+          "terminals": {
+            "1": "+12V",
+            "2": "AGND"
+          }
+        },
+        {
+          "ref": "C_N",
+          "part_id": "c_bypass",
+          "value": 1e-07,
+          "unit": "F",
+          "terminals": {
+            "1": "-12V",
+            "2": "AGND"
+          }
+        },
+        {
+          "ref": "C_BOARD",
+          "part_id": "c_bulk",
+          "value": 4.7e-06,
+          "unit": "F",
+          "terminals": {
+            "1": "RAIL",
+            "2": "AGND"
+          }
+        },
+        {
+          "ref": "R_BLEED",
+          "part_id": "r_general",
+          "value": 2200,
+          "unit": "ohm",
+          "terminals": {
+            "1": "RAIL",
+            "2": "AGND"
+          }
+        }
+      ],
+      "connections": [
+        "100 nF per IC supply pin to local return; +5 V logic gets 100 nF VCC to DGND.",
+        "4.7 uF maximum per powered board per rail as starting allocation. R_BLEED appears once per whole instrument rail, not once per IC/board."
+      ],
+      "notes": [
+        "Instrument nominal ceilings: 150 uF on each \u00b112 V rail, 100 uF on +5 V, including ceramic bypass, references, regulators and bulk. Use +20% tolerance for inrush.",
+        "No bulk multiplier by module; #24 and #35 must maintain capacitor ledger. No extra 10/47/100 uF per module by habit.",
+        "R_BLEED uses 0.125 W minimum for \u00b112 V (65.5 mW nominal); +5 V dissipates 11.4 mW. Backfeed voltage remains a measured gate.",
+        "Small capacitance does not qualify the supply: the 4.5 A/2 ms vs 3 A source startup case remains OPEN."
+      ],
+      "uses": [],
+      "verification": [
+        "Capture/ERC and ideal/vendor simulation in #18; physical validation remains open."
+      ]
+    },
+    {
+      "id": "trimmer",
+      "authority": "PROPOSAL (planning, owner-delegated)",
+      "verification_status": "NEEDS BENCH",
+      "parts": [
+        {
+          "ref": "RV",
+          "part_id": "trim_103",
+          "terminals": {
+            "END1": "LIMITED_LOW",
+            "WIPER": "CAL",
+            "END2": "CAL"
+          }
+        },
+        {
+          "ref": "R_LIMIT",
+          "part_id": "r_precision",
+          "value": 100000,
+          "unit": "ohm",
+          "terminals": {
+            "1": "CAL",
+            "2": "CAL_SUM"
+          }
+        }
+      ],
+      "connections": [
+        "10 kohm adjustment in series with 100 kohm limiting resistor; wiper strapped to an end.",
+        "Octave span explicitly uses trim_102 in octave_reference instead."
+      ],
+      "notes": [
+        "Factory assembled SMD only, accessible probe/adjustment path after assembly. No owner soldering or cut traces.",
+        "Module selects scaling around these fixed values in its spec; no trimmer wired unbounded across rails.",
+        "Record serial, warm-up 20 min, rails, ambient, meter, setting and every measured endpoint; repeat pitch checks over intended temperature."
+      ],
+      "uses": [],
+      "verification": [
+        "Capture/ERC and ideal/vendor simulation in #18; physical validation remains open."
+      ]
+    },
+    {
+      "id": "slew_island",
+      "authority": "PROPOSAL (planning, owner-delegated)",
+      "verification_status": "NEEDS BENCH",
+      "parts": [
+        {
+          "ref": "PRE",
+          "opamp_role": "precision",
+          "terminals": {
+            "IN+": "HELD_BUFFERED",
+            "IN-": "PRE_OUT",
+            "OUT": "PRE_OUT",
+            "V+": "+12V",
+            "V-": "-12V"
+          }
+        },
+        {
+          "ref": "R_MIN",
+          "part_id": "r_general",
+          "value": 2200,
+          "unit": "ohm",
+          "terminals": {
+            "1": "PRE_OUT",
+            "2": "POT_IN"
+          }
+        },
+        {
+          "ref": "RV",
+          "part_id": "pot_504",
+          "terminals": {
+            "END1": "POT_IN",
+            "WIPER": "STORAGE",
+            "END2": "STORAGE"
+          }
+        },
+        {
+          "ref": "C1",
+          "part_id": "c_slew",
+          "value": 1e-07,
+          "unit": "F",
+          "terminals": {
+            "1": "STORAGE",
+            "2": "AGND"
+          }
+        },
+        {
+          "ref": "C2",
+          "part_id": "c_slew",
+          "value": 1e-07,
+          "unit": "F",
+          "terminals": {
+            "1": "STORAGE",
+            "2": "AGND"
+          }
+        },
+        {
+          "ref": "C3",
+          "part_id": "c_slew",
+          "value": 1e-07,
+          "unit": "F",
+          "terminals": {
+            "1": "STORAGE",
+            "2": "AGND"
+          }
+        },
+        {
+          "ref": "C4",
+          "part_id": "c_slew",
+          "value": 1e-07,
+          "unit": "F",
+          "terminals": {
+            "1": "STORAGE",
+            "2": "AGND"
+          }
+        },
+        {
+          "ref": "C5",
+          "part_id": "c_slew",
+          "value": 1e-07,
+          "unit": "F",
+          "terminals": {
+            "1": "STORAGE",
+            "2": "AGND"
+          }
+        },
+        {
+          "ref": "POST",
+          "opamp_role": "precision",
+          "terminals": {
+            "IN+": "STORAGE",
+            "IN-": "SLEW_OUT",
+            "OUT": "SLEW_OUT",
+            "V+": "+12V",
+            "V-": "-12V"
+          }
+        }
+      ],
+      "connections": [
+        "PRE_OUT -> 2.2 kohm -> 0..500 kohm rheostat -> STORAGE; five 100 nF C0G to ground.",
+        "SLEW_OUT -> precision_output; no direct storage-node indicator or connector."
+      ],
+      "notes": [
+        "Pot UID, RC bank, pre/post amplifiers form one declared board island. LF398 and 10 nF hold cap form a separate local core island.",
+        "Nominal tau 1.1..251.1 ms; no true bypass, linear ramp or 25-second claim.",
+        "Separate output amplifier is conservatively reserved; #22 may fold POST into precision_output only with explicit equivalent feedback/stability validation."
+      ],
+      "uses": [
+        "precision_output"
+      ],
+      "verification": [
+        "Capture/ERC and ideal/vendor simulation in #18; physical validation remains open."
+      ]
+    }
+  ],
+  "release_gates": [
+    "Power-off and missing-rail input injection, all 98 inputs and single-channel \u00b112 V faults, with GND connected. Record drain leakage, rail lift, latch-up, recovery and temperature; no zero-backfeed assertion.",
+    "Output short/output-output patch thermal test; two 499 ohm / 0.5 W resistors provide 1 W total nominal isolation resistance rating; derating and IC temperature remain unqualified.",
+    "Compensated output and harness stability across 0..5 nF loads.",
+    "Magnitude LED headroom/visual visibility, stage shutoff, clip threshold under load.",
+    "Exact-part sources, pin maps, availability and factory assembly acceptance.",
+    "Actual netlist current/capacitance ledger in #33/#34; startup and physical bench qualification still open."
+  ],
+  "defaults_disposition": [
+    {
+      "item": "Rails",
+      "disposition": "adopted",
+      "decision": "+12/-12 V analog, +5 V logic"
+    },
+    {
+      "item": "Audio",
+      "disposition": "adopted",
+      "decision": "\u00b15 V nominal unloaded"
+    },
+    {
+      "item": "Bipolar CV",
+      "disposition": "adopted",
+      "decision": "\u00b15 V nominal; \u00b112 V continuous survival, not linear operation"
+    },
+    {
+      "item": "Envelope",
+      "disposition": "adopted",
+      "decision": "ENV 0..8 V; BIP = 1.25*ENV - 5 V"
+    },
+    {
+      "item": "Pitch",
+      "disposition": "adopted",
+      "decision": "1.000 V/oct, 0.1% resistors and factory calibration; ratio tolerance alone does not guarantee tracking"
+    },
+    {
+      "item": "Gate outputs",
+      "disposition": "adopted",
+      "decision": "0/5 V nominal through buffered general output"
+    },
+    {
+      "item": "Gate inputs",
+      "disposition": "adopted",
+      "decision": "Approximately 1.5/1.0 V; biased divider and actual pullup included in calculation"
+    },
+    {
+      "item": "Input impedance",
+      "disposition": "adopted",
+      "decision": "100 kohm nominal including protected, buffered attenuverters"
+    },
+    {
+      "item": "General output",
+      "disposition": "adopted",
+      "decision": "Nominal 1 kohm external feedback isolation, realized as 2 x 499 ohm / 0.5 W"
+    },
+    {
+      "item": "Precision output",
+      "disposition": "replaced",
+      "decision": "998 ohm inside dual feedback with 10 kohm / 100 pF; higher resistance bounds fault current"
+    },
+    {
+      "item": "Input protection",
+      "disposition": "replaced",
+      "decision": "ADG5412F source isolation plus current limit/clamp. Bare rail clamp can backfeed an unpowered supply"
+    },
+    {
+      "item": "Magnitude full scale",
+      "disposition": "adopted",
+      "decision": "5 V / 4.99 kohm = 1.002 mA; buffer/bridge current drive"
+    },
+    {
+      "item": "Clip threshold",
+      "disposition": "adopted",
+      "decision": "\u00b110 V at pre-attenuation internal node via divide-by-two window"
+    },
+    {
+      "item": "Rail ceiling",
+      "disposition": "adopted",
+      "decision": "960/640/400 mA. Preliminary negative rail exceeds ceiling; #34 must reduce current before partition"
+    }
+  ],
+  "pot_bindings": [
+    {
+      "panel_uid": "C:O1.TUNE",
+      "role": "dc_control_source",
+      "part_id": "pot_104"
+    },
+    {
+      "panel_uid": "C:O1.FINE",
+      "role": "dc_control_source",
+      "part_id": "pot_104"
+    },
+    {
+      "panel_uid": "C:O1.FM\u00b1",
+      "role": "bipolar_attenuverter",
+      "part_id": "pot_103"
+    },
+    {
+      "panel_uid": "C:O1.PW",
+      "role": "dc_control_source",
+      "part_id": "pot_104"
+    },
+    {
+      "panel_uid": "C:O1.PWM\u00b1",
+      "role": "bipolar_attenuverter",
+      "part_id": "pot_103"
+    },
+    {
+      "panel_uid": "C:O2.TUNE",
+      "role": "dc_control_source",
+      "part_id": "pot_104"
+    },
+    {
+      "panel_uid": "C:O2.FINE",
+      "role": "dc_control_source",
+      "part_id": "pot_104"
+    },
+    {
+      "panel_uid": "C:O2.FM\u00b1",
+      "role": "bipolar_attenuverter",
+      "part_id": "pot_103"
+    },
+    {
+      "panel_uid": "C:O2.PW",
+      "role": "dc_control_source",
+      "part_id": "pot_104"
+    },
+    {
+      "panel_uid": "C:O2.PWM\u00b1",
+      "role": "bipolar_attenuverter",
+      "part_id": "pot_103"
+    },
+    {
+      "panel_uid": "C:O3.TUNE",
+      "role": "dc_control_source",
+      "part_id": "pot_104"
+    },
+    {
+      "panel_uid": "C:O3.FINE",
+      "role": "dc_control_source",
+      "part_id": "pot_104"
+    },
+    {
+      "panel_uid": "C:O3.FM\u00b1",
+      "role": "bipolar_attenuverter",
+      "part_id": "pot_103"
+    },
+    {
+      "panel_uid": "C:O3.PW",
+      "role": "dc_control_source",
+      "part_id": "pot_104"
+    },
+    {
+      "panel_uid": "C:O3.PWM\u00b1",
+      "role": "bipolar_attenuverter",
+      "part_id": "pot_103"
+    },
+    {
+      "panel_uid": "C:O4.TUNE",
+      "role": "dc_control_source",
+      "part_id": "pot_104"
+    },
+    {
+      "panel_uid": "C:O4.FINE",
+      "role": "dc_control_source",
+      "part_id": "pot_104"
+    },
+    {
+      "panel_uid": "C:O4.FM\u00b1",
+      "role": "bipolar_attenuverter",
+      "part_id": "pot_103"
+    },
+    {
+      "panel_uid": "C:O4.PW",
+      "role": "dc_control_source",
+      "part_id": "pot_104"
+    },
+    {
+      "panel_uid": "C:O4.PWM\u00b1",
+      "role": "bipolar_attenuverter",
+      "part_id": "pot_103"
+    },
+    {
+      "panel_uid": "C:O5.TUNE",
+      "role": "dc_control_source",
+      "part_id": "pot_104"
+    },
+    {
+      "panel_uid": "C:O5.FINE",
+      "role": "dc_control_source",
+      "part_id": "pot_104"
+    },
+    {
+      "panel_uid": "C:O5.FM\u00b1",
+      "role": "bipolar_attenuverter",
+      "part_id": "pot_103"
+    },
+    {
+      "panel_uid": "C:O5.PW",
+      "role": "dc_control_source",
+      "part_id": "pot_104"
+    },
+    {
+      "panel_uid": "C:O5.PWM\u00b1",
+      "role": "bipolar_attenuverter",
+      "part_id": "pot_103"
+    },
+    {
+      "panel_uid": "C:F1.FREQ",
+      "role": "dc_control_source",
+      "part_id": "pot_104"
+    },
+    {
+      "panel_uid": "C:F1.RES",
+      "role": "dc_control_source",
+      "part_id": "pot_104"
+    },
+    {
+      "panel_uid": "C:F1.FREQ\u00b1",
+      "role": "bipolar_attenuverter",
+      "part_id": "pot_103"
+    },
+    {
+      "panel_uid": "C:F1.RES\u00b1",
+      "role": "bipolar_attenuverter",
+      "part_id": "pot_103"
+    },
+    {
+      "panel_uid": "C:F1.GAIN",
+      "role": "dc_control_source",
+      "part_id": "pot_104"
+    },
+    {
+      "panel_uid": "C:F1.GAIN\u00b1",
+      "role": "bipolar_attenuverter",
+      "part_id": "pot_103"
+    },
+    {
+      "panel_uid": "C:F2.FREQ",
+      "role": "dc_control_source",
+      "part_id": "pot_104"
+    },
+    {
+      "panel_uid": "C:F2.RES",
+      "role": "dc_control_source",
+      "part_id": "pot_104"
+    },
+    {
+      "panel_uid": "C:F2.FREQ\u00b1",
+      "role": "bipolar_attenuverter",
+      "part_id": "pot_103"
+    },
+    {
+      "panel_uid": "C:F2.RES\u00b1",
+      "role": "bipolar_attenuverter",
+      "part_id": "pot_103"
+    },
+    {
+      "panel_uid": "C:F2.GAIN",
+      "role": "dc_control_source",
+      "part_id": "pot_104"
+    },
+    {
+      "panel_uid": "C:F2.GAIN\u00b1",
+      "role": "bipolar_attenuverter",
+      "part_id": "pot_103"
+    },
+    {
+      "panel_uid": "C:F3.FREQ",
+      "role": "dc_control_source",
+      "part_id": "pot_104"
+    },
+    {
+      "panel_uid": "C:F3.RES",
+      "role": "dc_control_source",
+      "part_id": "pot_104"
+    },
+    {
+      "panel_uid": "C:F3.FREQ\u00b1",
+      "role": "bipolar_attenuverter",
+      "part_id": "pot_103"
+    },
+    {
+      "panel_uid": "C:F3.RES\u00b1",
+      "role": "bipolar_attenuverter",
+      "part_id": "pot_103"
+    },
+    {
+      "panel_uid": "C:F3.GAIN",
+      "role": "dc_control_source",
+      "part_id": "pot_104"
+    },
+    {
+      "panel_uid": "C:F3.GAIN\u00b1",
+      "role": "bipolar_attenuverter",
+      "part_id": "pot_103"
+    },
+    {
+      "panel_uid": "C:M5A.1\u00b1",
+      "role": "bipolar_attenuverter",
+      "part_id": "pot_103"
+    },
+    {
+      "panel_uid": "C:M5A.2\u00b1",
+      "role": "bipolar_attenuverter",
+      "part_id": "pot_103"
+    },
+    {
+      "panel_uid": "C:M5A.3\u00b1",
+      "role": "bipolar_attenuverter",
+      "part_id": "pot_103"
+    },
+    {
+      "panel_uid": "C:M5A.4\u00b1",
+      "role": "bipolar_attenuverter",
+      "part_id": "pot_103"
+    },
+    {
+      "panel_uid": "C:M5A.5\u00b1",
+      "role": "bipolar_attenuverter",
+      "part_id": "pot_103"
+    },
+    {
+      "panel_uid": "C:M5A.LEVEL",
+      "role": "level_attenuator",
+      "part_id": "pot_103"
+    },
+    {
+      "panel_uid": "C:M5B.1\u00b1",
+      "role": "bipolar_attenuverter",
+      "part_id": "pot_103"
+    },
+    {
+      "panel_uid": "C:M5B.2\u00b1",
+      "role": "bipolar_attenuverter",
+      "part_id": "pot_103"
+    },
+    {
+      "panel_uid": "C:M5B.3\u00b1",
+      "role": "bipolar_attenuverter",
+      "part_id": "pot_103"
+    },
+    {
+      "panel_uid": "C:M5B.4\u00b1",
+      "role": "bipolar_attenuverter",
+      "part_id": "pot_103"
+    },
+    {
+      "panel_uid": "C:M5B.5\u00b1",
+      "role": "bipolar_attenuverter",
+      "part_id": "pot_103"
+    },
+    {
+      "panel_uid": "C:M5B.LEVEL",
+      "role": "level_attenuator",
+      "part_id": "pot_103"
+    },
+    {
+      "panel_uid": "C:M4A.1\u00b1",
+      "role": "bipolar_attenuverter",
+      "part_id": "pot_103"
+    },
+    {
+      "panel_uid": "C:M4A.2\u00b1",
+      "role": "bipolar_attenuverter",
+      "part_id": "pot_103"
+    },
+    {
+      "panel_uid": "C:M4A.3\u00b1",
+      "role": "bipolar_attenuverter",
+      "part_id": "pot_103"
+    },
+    {
+      "panel_uid": "C:M4A.4\u00b1",
+      "role": "bipolar_attenuverter",
+      "part_id": "pot_103"
+    },
+    {
+      "panel_uid": "C:M4A.CV\u00b1",
+      "role": "bipolar_attenuverter",
+      "part_id": "pot_103"
+    },
+    {
+      "panel_uid": "C:M4A.LEVEL",
+      "role": "dc_control_source",
+      "part_id": "pot_104"
+    },
+    {
+      "panel_uid": "C:M4B.1\u00b1",
+      "role": "bipolar_attenuverter",
+      "part_id": "pot_103"
+    },
+    {
+      "panel_uid": "C:M4B.2\u00b1",
+      "role": "bipolar_attenuverter",
+      "part_id": "pot_103"
+    },
+    {
+      "panel_uid": "C:M4B.3\u00b1",
+      "role": "bipolar_attenuverter",
+      "part_id": "pot_103"
+    },
+    {
+      "panel_uid": "C:M4B.4\u00b1",
+      "role": "bipolar_attenuverter",
+      "part_id": "pot_103"
+    },
+    {
+      "panel_uid": "C:M4B.CV\u00b1",
+      "role": "bipolar_attenuverter",
+      "part_id": "pot_103"
+    },
+    {
+      "panel_uid": "C:M4B.LEVEL",
+      "role": "dc_control_source",
+      "part_id": "pot_104"
+    },
+    {
+      "panel_uid": "C:W2.FOLD",
+      "role": "dc_control_source",
+      "part_id": "pot_104"
+    },
+    {
+      "panel_uid": "C:W2.FOLD\u00b1",
+      "role": "bipolar_attenuverter",
+      "part_id": "pot_103"
+    },
+    {
+      "panel_uid": "C:W2.BIAS",
+      "role": "dc_control_source",
+      "part_id": "pot_104"
+    },
+    {
+      "panel_uid": "C:W2.LEVEL",
+      "role": "level_attenuator",
+      "part_id": "pot_103"
+    },
+    {
+      "panel_uid": "C:W1.FOLD",
+      "role": "dc_control_source",
+      "part_id": "pot_104"
+    },
+    {
+      "panel_uid": "C:W1.FOLD\u00b1",
+      "role": "bipolar_attenuverter",
+      "part_id": "pot_103"
+    },
+    {
+      "panel_uid": "C:W1.BIAS",
+      "role": "dc_control_source",
+      "part_id": "pot_104"
+    },
+    {
+      "panel_uid": "C:W1.LEVEL",
+      "role": "level_attenuator",
+      "part_id": "pot_103"
+    },
+    {
+      "panel_uid": "C:E1.RISE",
+      "role": "dc_control_source",
+      "part_id": "pot_104"
+    },
+    {
+      "panel_uid": "C:E1.FALL",
+      "role": "dc_control_source",
+      "part_id": "pot_104"
+    },
+    {
+      "panel_uid": "C:A01.ATTEN",
+      "role": "bipolar_attenuverter",
+      "part_id": "pot_103"
+    },
+    {
+      "panel_uid": "C:A01.OFFSET",
+      "role": "dc_control_source",
+      "part_id": "pot_104"
+    },
+    {
+      "panel_uid": "C:E2.RISE",
+      "role": "dc_control_source",
+      "part_id": "pot_104"
+    },
+    {
+      "panel_uid": "C:E2.FALL",
+      "role": "dc_control_source",
+      "part_id": "pot_104"
+    },
+    {
+      "panel_uid": "C:A02.ATTEN",
+      "role": "bipolar_attenuverter",
+      "part_id": "pot_103"
+    },
+    {
+      "panel_uid": "C:A02.OFFSET",
+      "role": "dc_control_source",
+      "part_id": "pot_104"
+    },
+    {
+      "panel_uid": "C:E3.RISE",
+      "role": "dc_control_source",
+      "part_id": "pot_104"
+    },
+    {
+      "panel_uid": "C:E3.FALL",
+      "role": "dc_control_source",
+      "part_id": "pot_104"
+    },
+    {
+      "panel_uid": "C:A03.ATTEN",
+      "role": "bipolar_attenuverter",
+      "part_id": "pot_103"
+    },
+    {
+      "panel_uid": "C:A03.OFFSET",
+      "role": "dc_control_source",
+      "part_id": "pot_104"
+    },
+    {
+      "panel_uid": "C:E4.RISE",
+      "role": "dc_control_source",
+      "part_id": "pot_104"
+    },
+    {
+      "panel_uid": "C:E4.FALL",
+      "role": "dc_control_source",
+      "part_id": "pot_104"
+    },
+    {
+      "panel_uid": "C:A04.ATTEN",
+      "role": "bipolar_attenuverter",
+      "part_id": "pot_103"
+    },
+    {
+      "panel_uid": "C:A04.OFFSET",
+      "role": "dc_control_source",
+      "part_id": "pot_104"
+    },
+    {
+      "panel_uid": "C:E5.RISE",
+      "role": "dc_control_source",
+      "part_id": "pot_104"
+    },
+    {
+      "panel_uid": "C:E5.FALL",
+      "role": "dc_control_source",
+      "part_id": "pot_104"
+    },
+    {
+      "panel_uid": "C:A05.ATTEN",
+      "role": "bipolar_attenuverter",
+      "part_id": "pot_103"
+    },
+    {
+      "panel_uid": "C:A05.OFFSET",
+      "role": "dc_control_source",
+      "part_id": "pot_104"
+    },
+    {
+      "panel_uid": "C:E6.RISE",
+      "role": "dc_control_source",
+      "part_id": "pot_104"
+    },
+    {
+      "panel_uid": "C:E6.FALL",
+      "role": "dc_control_source",
+      "part_id": "pot_104"
+    },
+    {
+      "panel_uid": "C:A06.ATTEN",
+      "role": "bipolar_attenuverter",
+      "part_id": "pot_103"
+    },
+    {
+      "panel_uid": "C:A06.OFFSET",
+      "role": "dc_control_source",
+      "part_id": "pot_104"
+    },
+    {
+      "panel_uid": "C:H1.SLEW",
+      "role": "slew_island",
+      "part_id": "pot_504"
+    },
+    {
+      "panel_uid": "C:H2.SLEW",
+      "role": "slew_island",
+      "part_id": "pot_504"
+    }
+  ],
+  "passive_policy": {
+    "resistors": {
+      "r_general": {
+        "tolerance_percent": 1,
+        "minimum_power_W": 0.1,
+        "minimum_working_voltage_V": 50
+      },
+      "r_precision": {
+        "tolerance_percent": 0.1,
+        "target_tempco_ppm_per_K": 25,
+        "minimum_power_W": 0.1,
+        "minimum_working_voltage_V": 50
+      },
+      "r_power": {
+        "tolerance_percent": 1,
+        "minimum_power_W": 0.5,
+        "minimum_working_voltage_V": 50,
+        "realization": "Two 499 ohm parts in series per exposed output"
+      }
+    },
+    "capacitors": {
+      "signal_compensation_and_storage": {
+        "dielectric": "C0G",
+        "tolerance_percent": 5,
+        "minimum_voltage_V": 50
+      },
+      "bypass": {
+        "dielectric": "X7R",
+        "tolerance_percent": 10,
+        "minimum_voltage_V": 50
+      },
+      "bulk": {
+        "dielectric": "X5R or X7R",
+        "tolerance_percent": 20,
+        "minimum_voltage_V": 25
+      }
+    },
+    "meaning": "These are project selection targets, not verified ratings of an unretained exact variant. #15/#21 must match every fitted value and rating to its own complete MPN; no substitution of dielectric on storage nodes."
+  }
+}
