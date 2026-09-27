@@ -1,0 +1,18 @@
+---
+title: "VCF — circuit task"
+sidebar_position: 41
+---
+
+## Functional contract
+
+Parallel dry VCA OUT plus LP/BP/HP outputs. Frequency/resonance/gain controls and corresponding CV depth. No selector required.
+
+## Work before schematic lock
+
+Write a signal diagram deciding whether GAIN also scales LP/BP/HP. R21 baseline proposal: LP/BP/HP upstream of dry OUT VCA; do not silently change this. Qualify resonance/self-oscillation/stability and overload.
+
+All corresponding port/control cells are in the canonical grid. Read the generated per-instance entries in `project/osc-hole-field/block-contracts.json`; do not infer pinout or voltages from those visual labels.
+
+## Deliverable
+
+A reviewed one-channel schematic, explicit signal/CV ranges, chosen exact parts and pin maps, corner calculations, simulation/bench plan, power budget and factory test procedure. Replication count follows the current spec, not historical panel versions. Never patch independent blocks internally just to simplify testing; use external test cables or clearly temporary fixtures.

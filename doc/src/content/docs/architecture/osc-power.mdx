@@ -1,0 +1,16 @@
+---
+title: "Power reuse and startup boundary"
+sidebar_position: 24
+---
+
+## Reuse existing work deliberately
+
+Use the user's [zudo-pd](https://github.com/Takazudo/zudo-pd) Board P + Board B as the intended supply, not the scope project's USB 5 V circuit. Read the current exact board source, assembled revision, net contract and qualification reports locally before integration.
+
+The new Board P documentation identifies SMAJ16A and a required verified 15 V-only PD configuration. When that revision is used, first power/program from a current-limited 5 V-only source with the downstream board disconnected. Retain NVM readback and verify that no 20 V request is enabled before allowing a higher-voltage source. A silkscreen label or default controller name does not prove its programmed state.
+
+## Budget from the captured circuit
+
+Sum quiescent and maximum loads per rail, including 104 white magnitude/stage emitters as applicable, ten clip emitters, all drivers, buffers, oscillators and transient loads. Choose useful low LED drive current from samples, not a catalogue test current. Separate signal grounds/returns carefully; do not infer quiet analogue rails from a power-budget margin.
+
+Keep the power assembly in its own mounting pocket and check ripple coupling, thermal rise, connector orientation, access and service removal. No claimed instrument depth is finalized until the actual populated supply and harness are in the mechanical model.

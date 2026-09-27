@@ -1,0 +1,58 @@
+{
+  "datum": "Panel rear plane z=0, positive toward user; negative into case",
+  "status": "All numeric mounting depths inherited from preview are proposals",
+  "domains": [
+    {
+      "id": "J",
+      "role": "180 jacks and input/output circuitry as appropriate",
+      "constraints": "Threaded bushings clamp to flat panel; mechanically supported. Exact nut/shoulder and PCB plane first."
+    },
+    {
+      "id": "OP/MP/EP",
+      "role": "Small pot banks",
+      "constraints": "Exact PTV09 body, rear-facing pins, visible shaft reach and adequate supports; user capless reference."
+    },
+    {
+      "id": "O",
+      "role": "Five octave switches",
+      "constraints": "Actual SRBV160803 bodies and mounted bushing datum; separate depth permissible; avoid adjacent controls."
+    },
+    {
+      "id": "OS/ES/US",
+      "role": "Toggle strips",
+      "constraints": "Exact maintained states; common T1 family; supports carry operating loads."
+    },
+    {
+      "id": "ET/UT",
+      "role": "Eight buttons",
+      "constraints": "Qualified switch/plunger travel and plane, not an invisible short tactile part."
+    },
+    {
+      "id": "UP",
+      "role": "Two SLEW pots and local pre/post buffer + C0G lag networks",
+      "constraints": "Both high-Z nodes local; separate buffered input and output connections. New board in R21 3D is provisional."
+    },
+    {
+      "id": "K",
+      "role": "Core and signal circuits",
+      "constraints": "Low-profile packages; only buffered/control signals cross board connections."
+    },
+    {
+      "id": "P/B",
+      "role": "Reused power assembly",
+      "constraints": "Mount in own pocket, source-locked to real as-built revision/configuration; do not inherit a claimed full shell depth."
+    }
+  ],
+  "interface_fields_to_complete": [
+    "board pair",
+    "exact connector MPNs including mate",
+    "manufacturer pin numbers",
+    "net and direction",
+    "maximum steady and transient voltage",
+    "current/return capacity",
+    "default/power-off behavior",
+    "mating depth",
+    "mechanical supports",
+    "factory assembly procedure"
+  ]
+}

@@ -1,0 +1,3458 @@
+[
+  {
+    "id": "O1",
+    "family": "OSC",
+    "name": "OSC 1",
+    "ports": [
+      {
+        "id": "O1.1V",
+        "key": "1V",
+        "label": "1V/OCT",
+        "direction": "in",
+        "col": 0,
+        "row": 0,
+        "led": false,
+        "clip": false
+      },
+      {
+        "id": "O1.FM",
+        "key": "FM",
+        "label": "FM",
+        "direction": "in",
+        "col": 0,
+        "row": 1,
+        "led": false,
+        "clip": false
+      },
+      {
+        "id": "O1.PWM",
+        "key": "PWM",
+        "label": "PWM",
+        "direction": "in",
+        "col": 0,
+        "row": 2,
+        "led": false,
+        "clip": false
+      },
+      {
+        "id": "O1.SYNC",
+        "key": "SYNC",
+        "label": "SYNC CV",
+        "direction": "in",
+        "col": 0,
+        "row": 3,
+        "led": false,
+        "clip": false
+      },
+      {
+        "id": "O1.SIN",
+        "key": "SIN",
+        "label": "SIN",
+        "direction": "out",
+        "col": 0,
+        "row": 4,
+        "led": false,
+        "clip": false
+      },
+      {
+        "id": "O1.TRI",
+        "key": "TRI",
+        "label": "TRI",
+        "direction": "out",
+        "col": 0,
+        "row": 5,
+        "led": false,
+        "clip": false
+      },
+      {
+        "id": "O1.SAW",
+        "key": "SAW",
+        "label": "SAW",
+        "direction": "out",
+        "col": 0,
+        "row": 6,
+        "led": false,
+        "clip": false
+      },
+      {
+        "id": "O1.PUL",
+        "key": "PUL",
+        "label": "PUL",
+        "direction": "out",
+        "col": 0,
+        "row": 7,
+        "led": false,
+        "clip": false
+      }
+    ],
+    "controls": [
+      {
+        "id": "O1.OCT",
+        "key": "OCT",
+        "label": "OCT",
+        "kind": "octave",
+        "col": 0,
+        "row": 0,
+        "component": "alps-srbv160803"
+      },
+      {
+        "id": "O1.VCO/LFO",
+        "key": "VCO/LFO",
+        "label": "RANGE",
+        "kind": "switch",
+        "col": 0,
+        "row": 1,
+        "component": "dailywell-2ms1"
+      },
+      {
+        "id": "O1.SYNC",
+        "key": "SYNC",
+        "label": "SYNC",
+        "kind": "switch",
+        "col": 0,
+        "row": 2,
+        "component": "dailywell-2ms3"
+      },
+      {
+        "id": "O1.TUNE",
+        "key": "TUNE",
+        "label": "TUNE",
+        "kind": "pot",
+        "col": 0,
+        "row": 3,
+        "component": "bourns-ptv09a-4020f-b103"
+      },
+      {
+        "id": "O1.FINE",
+        "key": "FINE",
+        "label": "FINE",
+        "kind": "pot",
+        "col": 0,
+        "row": 4,
+        "component": "bourns-ptv09a-4020f-b103"
+      },
+      {
+        "id": "O1.FM±",
+        "key": "FM±",
+        "label": "FM ±",
+        "kind": "pot",
+        "col": 0,
+        "row": 5,
+        "component": "bourns-ptv09a-4020f-b103"
+      },
+      {
+        "id": "O1.PW",
+        "key": "PW",
+        "label": "PW",
+        "kind": "pot",
+        "col": 0,
+        "row": 6,
+        "component": "bourns-ptv09a-4020f-b103"
+      },
+      {
+        "id": "O1.PWM±",
+        "key": "PWM±",
+        "label": "PWM ±",
+        "kind": "pot",
+        "col": 0,
+        "row": 7,
+        "component": "bourns-ptv09a-4020f-b103"
+      }
+    ],
+    "behavior": "Independent ADDAC701-inspired oscillator. Six-position octave control; continuous TUNE/FINE; LFO/VCO range, FM/PWM and soft/off/hard sync targets. Four raw waveforms.",
+    "engineering_to_finish": "AS3340D plus required sine shaping is a candidate, not a complete core. Resolve V/oct scale/offset, octave ladder, switch bounce, FM topology, hard/soft sync, pulse and sine amplitudes, LFO limits, startup and factory calibration. No through-zero assumption."
+  },
+  {
+    "id": "O2",
+    "family": "OSC",
+    "name": "OSC 2",
+    "ports": [
+      {
+        "id": "O2.1V",
+        "key": "1V",
+        "label": "1V/OCT",
+        "direction": "in",
+        "col": 1,
+        "row": 0,
+        "led": false,
+        "clip": false
+      },
+      {
+        "id": "O2.FM",
+        "key": "FM",
+        "label": "FM",
+        "direction": "in",
+        "col": 1,
+        "row": 1,
+        "led": false,
+        "clip": false
+      },
+      {
+        "id": "O2.PWM",
+        "key": "PWM",
+        "label": "PWM",
+        "direction": "in",
+        "col": 1,
+        "row": 2,
+        "led": false,
+        "clip": false
+      },
+      {
+        "id": "O2.SYNC",
+        "key": "SYNC",
+        "label": "SYNC CV",
+        "direction": "in",
+        "col": 1,
+        "row": 3,
+        "led": false,
+        "clip": false
+      },
+      {
+        "id": "O2.SIN",
+        "key": "SIN",
+        "label": "SIN",
+        "direction": "out",
+        "col": 1,
+        "row": 4,
+        "led": false,
+        "clip": false
+      },
+      {
+        "id": "O2.TRI",
+        "key": "TRI",
+        "label": "TRI",
+        "direction": "out",
+        "col": 1,
+        "row": 5,
+        "led": false,
+        "clip": false
+      },
+      {
+        "id": "O2.SAW",
+        "key": "SAW",
+        "label": "SAW",
+        "direction": "out",
+        "col": 1,
+        "row": 6,
+        "led": false,
+        "clip": false
+      },
+      {
+        "id": "O2.PUL",
+        "key": "PUL",
+        "label": "PUL",
+        "direction": "out",
+        "col": 1,
+        "row": 7,
+        "led": false,
+        "clip": false
+      }
+    ],
+    "controls": [
+      {
+        "id": "O2.OCT",
+        "key": "OCT",
+        "label": "OCT",
+        "kind": "octave",
+        "col": 1,
+        "row": 0,
+        "component": "alps-srbv160803"
+      },
+      {
+        "id": "O2.VCO/LFO",
+        "key": "VCO/LFO",
+        "label": "RANGE",
+        "kind": "switch",
+        "col": 1,
+        "row": 1,
+        "component": "dailywell-2ms1"
+      },
+      {
+        "id": "O2.SYNC",
+        "key": "SYNC",
+        "label": "SYNC",
+        "kind": "switch",
+        "col": 1,
+        "row": 2,
+        "component": "dailywell-2ms3"
+      },
+      {
+        "id": "O2.TUNE",
+        "key": "TUNE",
+        "label": "TUNE",
+        "kind": "pot",
+        "col": 1,
+        "row": 3,
+        "component": "bourns-ptv09a-4020f-b103"
+      },
+      {
+        "id": "O2.FINE",
+        "key": "FINE",
+        "label": "FINE",
+        "kind": "pot",
+        "col": 1,
+        "row": 4,
+        "component": "bourns-ptv09a-4020f-b103"
+      },
+      {
+        "id": "O2.FM±",
+        "key": "FM±",
+        "label": "FM ±",
+        "kind": "pot",
+        "col": 1,
+        "row": 5,
+        "component": "bourns-ptv09a-4020f-b103"
+      },
+      {
+        "id": "O2.PW",
+        "key": "PW",
+        "label": "PW",
+        "kind": "pot",
+        "col": 1,
+        "row": 6,
+        "component": "bourns-ptv09a-4020f-b103"
+      },
+      {
+        "id": "O2.PWM±",
+        "key": "PWM±",
+        "label": "PWM ±",
+        "kind": "pot",
+        "col": 1,
+        "row": 7,
+        "component": "bourns-ptv09a-4020f-b103"
+      }
+    ],
+    "behavior": "Independent ADDAC701-inspired oscillator. Six-position octave control; continuous TUNE/FINE; LFO/VCO range, FM/PWM and soft/off/hard sync targets. Four raw waveforms.",
+    "engineering_to_finish": "AS3340D plus required sine shaping is a candidate, not a complete core. Resolve V/oct scale/offset, octave ladder, switch bounce, FM topology, hard/soft sync, pulse and sine amplitudes, LFO limits, startup and factory calibration. No through-zero assumption."
+  },
+  {
+    "id": "O3",
+    "family": "OSC",
+    "name": "OSC 3",
+    "ports": [
+      {
+        "id": "O3.1V",
+        "key": "1V",
+        "label": "1V/OCT",
+        "direction": "in",
+        "col": 2,
+        "row": 0,
+        "led": false,
+        "clip": false
+      },
+      {
+        "id": "O3.FM",
+        "key": "FM",
+        "label": "FM",
+        "direction": "in",
+        "col": 2,
+        "row": 1,
+        "led": false,
+        "clip": false
+      },
+      {
+        "id": "O3.PWM",
+        "key": "PWM",
+        "label": "PWM",
+        "direction": "in",
+        "col": 2,
+        "row": 2,
+        "led": false,
+        "clip": false
+      },
+      {
+        "id": "O3.SYNC",
+        "key": "SYNC",
+        "label": "SYNC CV",
+        "direction": "in",
+        "col": 2,
+        "row": 3,
+        "led": false,
+        "clip": false
+      },
+      {
+        "id": "O3.SIN",
+        "key": "SIN",
+        "label": "SIN",
+        "direction": "out",
+        "col": 2,
+        "row": 4,
+        "led": false,
+        "clip": false
+      },
+      {
+        "id": "O3.TRI",
+        "key": "TRI",
+        "label": "TRI",
+        "direction": "out",
+        "col": 2,
+        "row": 5,
+        "led": false,
+        "clip": false
+      },
+      {
+        "id": "O3.SAW",
+        "key": "SAW",
+        "label": "SAW",
+        "direction": "out",
+        "col": 2,
+        "row": 6,
+        "led": false,
+        "clip": false
+      },
+      {
+        "id": "O3.PUL",
+        "key": "PUL",
+        "label": "PUL",
+        "direction": "out",
+        "col": 2,
+        "row": 7,
+        "led": false,
+        "clip": false
+      }
+    ],
+    "controls": [
+      {
+        "id": "O3.OCT",
+        "key": "OCT",
+        "label": "OCT",
+        "kind": "octave",
+        "col": 2,
+        "row": 0,
+        "component": "alps-srbv160803"
+      },
+      {
+        "id": "O3.VCO/LFO",
+        "key": "VCO/LFO",
+        "label": "RANGE",
+        "kind": "switch",
+        "col": 2,
+        "row": 1,
+        "component": "dailywell-2ms1"
+      },
+      {
+        "id": "O3.SYNC",
+        "key": "SYNC",
+        "label": "SYNC",
+        "kind": "switch",
+        "col": 2,
+        "row": 2,
+        "component": "dailywell-2ms3"
+      },
+      {
+        "id": "O3.TUNE",
+        "key": "TUNE",
+        "label": "TUNE",
+        "kind": "pot",
+        "col": 2,
+        "row": 3,
+        "component": "bourns-ptv09a-4020f-b103"
+      },
+      {
+        "id": "O3.FINE",
+        "key": "FINE",
+        "label": "FINE",
+        "kind": "pot",
+        "col": 2,
+        "row": 4,
+        "component": "bourns-ptv09a-4020f-b103"
+      },
+      {
+        "id": "O3.FM±",
+        "key": "FM±",
+        "label": "FM ±",
+        "kind": "pot",
+        "col": 2,
+        "row": 5,
+        "component": "bourns-ptv09a-4020f-b103"
+      },
+      {
+        "id": "O3.PW",
+        "key": "PW",
+        "label": "PW",
+        "kind": "pot",
+        "col": 2,
+        "row": 6,
+        "component": "bourns-ptv09a-4020f-b103"
+      },
+      {
+        "id": "O3.PWM±",
+        "key": "PWM±",
+        "label": "PWM ±",
+        "kind": "pot",
+        "col": 2,
+        "row": 7,
+        "component": "bourns-ptv09a-4020f-b103"
+      }
+    ],
+    "behavior": "Independent ADDAC701-inspired oscillator. Six-position octave control; continuous TUNE/FINE; LFO/VCO range, FM/PWM and soft/off/hard sync targets. Four raw waveforms.",
+    "engineering_to_finish": "AS3340D plus required sine shaping is a candidate, not a complete core. Resolve V/oct scale/offset, octave ladder, switch bounce, FM topology, hard/soft sync, pulse and sine amplitudes, LFO limits, startup and factory calibration. No through-zero assumption."
+  },
+  {
+    "id": "O4",
+    "family": "OSC",
+    "name": "OSC 4",
+    "ports": [
+      {
+        "id": "O4.1V",
+        "key": "1V",
+        "label": "1V/OCT",
+        "direction": "in",
+        "col": 3,
+        "row": 0,
+        "led": false,
+        "clip": false
+      },
+      {
+        "id": "O4.FM",
+        "key": "FM",
+        "label": "FM",
+        "direction": "in",
+        "col": 3,
+        "row": 1,
+        "led": false,
+        "clip": false
+      },
+      {
+        "id": "O4.PWM",
+        "key": "PWM",
+        "label": "PWM",
+        "direction": "in",
+        "col": 3,
+        "row": 2,
+        "led": false,
+        "clip": false
+      },
+      {
+        "id": "O4.SYNC",
+        "key": "SYNC",
+        "label": "SYNC CV",
+        "direction": "in",
+        "col": 3,
+        "row": 3,
+        "led": false,
+        "clip": false
+      },
+      {
+        "id": "O4.SIN",
+        "key": "SIN",
+        "label": "SIN",
+        "direction": "out",
+        "col": 3,
+        "row": 4,
+        "led": false,
+        "clip": false
+      },
+      {
+        "id": "O4.TRI",
+        "key": "TRI",
+        "label": "TRI",
+        "direction": "out",
+        "col": 3,
+        "row": 5,
+        "led": false,
+        "clip": false
+      },
+      {
+        "id": "O4.SAW",
+        "key": "SAW",
+        "label": "SAW",
+        "direction": "out",
+        "col": 3,
+        "row": 6,
+        "led": false,
+        "clip": false
+      },
+      {
+        "id": "O4.PUL",
+        "key": "PUL",
+        "label": "PUL",
+        "direction": "out",
+        "col": 3,
+        "row": 7,
+        "led": false,
+        "clip": false
+      }
+    ],
+    "controls": [
+      {
+        "id": "O4.OCT",
+        "key": "OCT",
+        "label": "OCT",
+        "kind": "octave",
+        "col": 3,
+        "row": 0,
+        "component": "alps-srbv160803"
+      },
+      {
+        "id": "O4.VCO/LFO",
+        "key": "VCO/LFO",
+        "label": "RANGE",
+        "kind": "switch",
+        "col": 3,
+        "row": 1,
+        "component": "dailywell-2ms1"
+      },
+      {
+        "id": "O4.SYNC",
+        "key": "SYNC",
+        "label": "SYNC",
+        "kind": "switch",
+        "col": 3,
+        "row": 2,
+        "component": "dailywell-2ms3"
+      },
+      {
+        "id": "O4.TUNE",
+        "key": "TUNE",
+        "label": "TUNE",
+        "kind": "pot",
+        "col": 3,
+        "row": 3,
+        "component": "bourns-ptv09a-4020f-b103"
+      },
+      {
+        "id": "O4.FINE",
+        "key": "FINE",
+        "label": "FINE",
+        "kind": "pot",
+        "col": 3,
+        "row": 4,
+        "component": "bourns-ptv09a-4020f-b103"
+      },
+      {
+        "id": "O4.FM±",
+        "key": "FM±",
+        "label": "FM ±",
+        "kind": "pot",
+        "col": 3,
+        "row": 5,
+        "component": "bourns-ptv09a-4020f-b103"
+      },
+      {
+        "id": "O4.PW",
+        "key": "PW",
+        "label": "PW",
+        "kind": "pot",
+        "col": 3,
+        "row": 6,
+        "component": "bourns-ptv09a-4020f-b103"
+      },
+      {
+        "id": "O4.PWM±",
+        "key": "PWM±",
+        "label": "PWM ±",
+        "kind": "pot",
+        "col": 3,
+        "row": 7,
+        "component": "bourns-ptv09a-4020f-b103"
+      }
+    ],
+    "behavior": "Independent ADDAC701-inspired oscillator. Six-position octave control; continuous TUNE/FINE; LFO/VCO range, FM/PWM and soft/off/hard sync targets. Four raw waveforms.",
+    "engineering_to_finish": "AS3340D plus required sine shaping is a candidate, not a complete core. Resolve V/oct scale/offset, octave ladder, switch bounce, FM topology, hard/soft sync, pulse and sine amplitudes, LFO limits, startup and factory calibration. No through-zero assumption."
+  },
+  {
+    "id": "O5",
+    "family": "OSC",
+    "name": "OSC 5",
+    "ports": [
+      {
+        "id": "O5.1V",
+        "key": "1V",
+        "label": "1V/OCT",
+        "direction": "in",
+        "col": 4,
+        "row": 0,
+        "led": false,
+        "clip": false
+      },
+      {
+        "id": "O5.FM",
+        "key": "FM",
+        "label": "FM",
+        "direction": "in",
+        "col": 4,
+        "row": 1,
+        "led": false,
+        "clip": false
+      },
+      {
+        "id": "O5.PWM",
+        "key": "PWM",
+        "label": "PWM",
+        "direction": "in",
+        "col": 4,
+        "row": 2,
+        "led": false,
+        "clip": false
+      },
+      {
+        "id": "O5.SYNC",
+        "key": "SYNC",
+        "label": "SYNC CV",
+        "direction": "in",
+        "col": 4,
+        "row": 3,
+        "led": false,
+        "clip": false
+      },
+      {
+        "id": "O5.SIN",
+        "key": "SIN",
+        "label": "SIN",
+        "direction": "out",
+        "col": 4,
+        "row": 4,
+        "led": false,
+        "clip": false
+      },
+      {
+        "id": "O5.TRI",
+        "key": "TRI",
+        "label": "TRI",
+        "direction": "out",
+        "col": 4,
+        "row": 5,
+        "led": false,
+        "clip": false
+      },
+      {
+        "id": "O5.SAW",
+        "key": "SAW",
+        "label": "SAW",
+        "direction": "out",
+        "col": 4,
+        "row": 6,
+        "led": false,
+        "clip": false
+      },
+      {
+        "id": "O5.PUL",
+        "key": "PUL",
+        "label": "PUL",
+        "direction": "out",
+        "col": 4,
+        "row": 7,
+        "led": false,
+        "clip": false
+      }
+    ],
+    "controls": [
+      {
+        "id": "O5.OCT",
+        "key": "OCT",
+        "label": "OCT",
+        "kind": "octave",
+        "col": 4,
+        "row": 0,
+        "component": "alps-srbv160803"
+      },
+      {
+        "id": "O5.VCO/LFO",
+        "key": "VCO/LFO",
+        "label": "RANGE",
+        "kind": "switch",
+        "col": 4,
+        "row": 1,
+        "component": "dailywell-2ms1"
+      },
+      {
+        "id": "O5.SYNC",
+        "key": "SYNC",
+        "label": "SYNC",
+        "kind": "switch",
+        "col": 4,
+        "row": 2,
+        "component": "dailywell-2ms3"
+      },
+      {
+        "id": "O5.TUNE",
+        "key": "TUNE",
+        "label": "TUNE",
+        "kind": "pot",
+        "col": 4,
+        "row": 3,
+        "component": "bourns-ptv09a-4020f-b103"
+      },
+      {
+        "id": "O5.FINE",
+        "key": "FINE",
+        "label": "FINE",
+        "kind": "pot",
+        "col": 4,
+        "row": 4,
+        "component": "bourns-ptv09a-4020f-b103"
+      },
+      {
+        "id": "O5.FM±",
+        "key": "FM±",
+        "label": "FM ±",
+        "kind": "pot",
+        "col": 4,
+        "row": 5,
+        "component": "bourns-ptv09a-4020f-b103"
+      },
+      {
+        "id": "O5.PW",
+        "key": "PW",
+        "label": "PW",
+        "kind": "pot",
+        "col": 4,
+        "row": 6,
+        "component": "bourns-ptv09a-4020f-b103"
+      },
+      {
+        "id": "O5.PWM±",
+        "key": "PWM±",
+        "label": "PWM ±",
+        "kind": "pot",
+        "col": 4,
+        "row": 7,
+        "component": "bourns-ptv09a-4020f-b103"
+      }
+    ],
+    "behavior": "Independent ADDAC701-inspired oscillator. Six-position octave control; continuous TUNE/FINE; LFO/VCO range, FM/PWM and soft/off/hard sync targets. Four raw waveforms.",
+    "engineering_to_finish": "AS3340D plus required sine shaping is a candidate, not a complete core. Resolve V/oct scale/offset, octave ladder, switch bounce, FM topology, hard/soft sync, pulse and sine amplitudes, LFO limits, startup and factory calibration. No through-zero assumption."
+  },
+  {
+    "id": "F1",
+    "family": "VCF",
+    "name": "FILTER 1",
+    "ports": [
+      {
+        "id": "F1.IN",
+        "key": "IN",
+        "label": "IN",
+        "direction": "in",
+        "col": 5,
+        "row": 0,
+        "led": true,
+        "clip": false
+      },
+      {
+        "id": "F1.FREQ",
+        "key": "FREQ",
+        "label": "FREQ CV",
+        "direction": "in",
+        "col": 5,
+        "row": 1,
+        "led": true,
+        "clip": false
+      },
+      {
+        "id": "F1.RES",
+        "key": "RES",
+        "label": "RES CV",
+        "direction": "in",
+        "col": 5,
+        "row": 2,
+        "led": true,
+        "clip": false
+      },
+      {
+        "id": "F1.GAIN",
+        "key": "GAIN",
+        "label": "GAIN CV",
+        "direction": "in",
+        "col": 5,
+        "row": 3,
+        "led": true,
+        "clip": false
+      },
+      {
+        "id": "F1.LP",
+        "key": "LP",
+        "label": "LP",
+        "direction": "out",
+        "col": 5,
+        "row": 4,
+        "led": false,
+        "clip": false
+      },
+      {
+        "id": "F1.BP",
+        "key": "BP",
+        "label": "BP",
+        "direction": "out",
+        "col": 5,
+        "row": 5,
+        "led": false,
+        "clip": false
+      },
+      {
+        "id": "F1.HP",
+        "key": "HP",
+        "label": "HP",
+        "direction": "out",
+        "col": 5,
+        "row": 6,
+        "led": false,
+        "clip": false
+      },
+      {
+        "id": "F1.OUT",
+        "key": "OUT",
+        "label": "OUT",
+        "direction": "out",
+        "col": 5,
+        "row": 7,
+        "led": false,
+        "clip": false
+      }
+    ],
+    "controls": [
+      {
+        "id": "F1.FREQ",
+        "key": "FREQ",
+        "label": "FREQ",
+        "kind": "pot",
+        "col": 5,
+        "row": 0,
+        "component": "bourns-ptv09a-4020f-b103"
+      },
+      {
+        "id": "F1.RES",
+        "key": "RES",
+        "label": "RES",
+        "kind": "pot",
+        "col": 5,
+        "row": 1,
+        "component": "bourns-ptv09a-4020f-b103"
+      },
+      {
+        "id": "F1.FREQ±",
+        "key": "FREQ±",
+        "label": "FREQ±",
+        "kind": "pot",
+        "col": 5,
+        "row": 2,
+        "component": "bourns-ptv09a-4020f-b103"
+      },
+      {
+        "id": "F1.RES±",
+        "key": "RES±",
+        "label": "RES±",
+        "kind": "pot",
+        "col": 5,
+        "row": 3,
+        "component": "bourns-ptv09a-4020f-b103"
+      },
+      {
+        "id": "F1.GAIN",
+        "key": "GAIN",
+        "label": "GAIN",
+        "kind": "pot",
+        "col": 5,
+        "row": 4,
+        "component": "bourns-ptv09a-4020f-b103"
+      },
+      {
+        "id": "F1.GAIN±",
+        "key": "GAIN±",
+        "label": "GAIN±",
+        "kind": "pot",
+        "col": 5,
+        "row": 5,
+        "component": "bourns-ptv09a-4020f-b103"
+      }
+    ],
+    "behavior": "Parallel dry VCA OUT plus LP/BP/HP outputs. Frequency/resonance/gain controls and corresponding CV depth. No selector required.",
+    "engineering_to_finish": "Write a signal diagram deciding whether GAIN also scales LP/BP/HP. R21 baseline proposal: LP/BP/HP upstream of dry OUT VCA; do not silently change this. Qualify resonance/self-oscillation/stability and overload."
+  },
+  {
+    "id": "F2",
+    "family": "VCF",
+    "name": "FILTER 2",
+    "ports": [
+      {
+        "id": "F2.IN",
+        "key": "IN",
+        "label": "IN",
+        "direction": "in",
+        "col": 6,
+        "row": 0,
+        "led": true,
+        "clip": false
+      },
+      {
+        "id": "F2.FREQ",
+        "key": "FREQ",
+        "label": "FREQ CV",
+        "direction": "in",
+        "col": 6,
+        "row": 1,
+        "led": true,
+        "clip": false
+      },
+      {
+        "id": "F2.RES",
+        "key": "RES",
+        "label": "RES CV",
+        "direction": "in",
+        "col": 6,
+        "row": 2,
+        "led": true,
+        "clip": false
+      },
+      {
+        "id": "F2.GAIN",
+        "key": "GAIN",
+        "label": "GAIN CV",
+        "direction": "in",
+        "col": 6,
+        "row": 3,
+        "led": true,
+        "clip": false
+      },
+      {
+        "id": "F2.LP",
+        "key": "LP",
+        "label": "LP",
+        "direction": "out",
+        "col": 6,
+        "row": 4,
+        "led": false,
+        "clip": false
+      },
+      {
+        "id": "F2.BP",
+        "key": "BP",
+        "label": "BP",
+        "direction": "out",
+        "col": 6,
+        "row": 5,
+        "led": false,
+        "clip": false
+      },
+      {
+        "id": "F2.HP",
+        "key": "HP",
+        "label": "HP",
+        "direction": "out",
+        "col": 6,
+        "row": 6,
+        "led": false,
+        "clip": false
+      },
+      {
+        "id": "F2.OUT",
+        "key": "OUT",
+        "label": "OUT",
+        "direction": "out",
+        "col": 6,
+        "row": 7,
+        "led": false,
+        "clip": false
+      }
+    ],
+    "controls": [
+      {
+        "id": "F2.FREQ",
+        "key": "FREQ",
+        "label": "FREQ",
+        "kind": "pot",
+        "col": 6,
+        "row": 0,
+        "component": "bourns-ptv09a-4020f-b103"
+      },
+      {
+        "id": "F2.RES",
+        "key": "RES",
+        "label": "RES",
+        "kind": "pot",
+        "col": 6,
+        "row": 1,
+        "component": "bourns-ptv09a-4020f-b103"
+      },
+      {
+        "id": "F2.FREQ±",
+        "key": "FREQ±",
+        "label": "FREQ±",
+        "kind": "pot",
+        "col": 6,
+        "row": 2,
+        "component": "bourns-ptv09a-4020f-b103"
+      },
+      {
+        "id": "F2.RES±",
+        "key": "RES±",
+        "label": "RES±",
+        "kind": "pot",
+        "col": 6,
+        "row": 3,
+        "component": "bourns-ptv09a-4020f-b103"
+      },
+      {
+        "id": "F2.GAIN",
+        "key": "GAIN",
+        "label": "GAIN",
+        "kind": "pot",
+        "col": 6,
+        "row": 4,
+        "component": "bourns-ptv09a-4020f-b103"
+      },
+      {
+        "id": "F2.GAIN±",
+        "key": "GAIN±",
+        "label": "GAIN±",
+        "kind": "pot",
+        "col": 6,
+        "row": 5,
+        "component": "bourns-ptv09a-4020f-b103"
+      }
+    ],
+    "behavior": "Parallel dry VCA OUT plus LP/BP/HP outputs. Frequency/resonance/gain controls and corresponding CV depth. No selector required.",
+    "engineering_to_finish": "Write a signal diagram deciding whether GAIN also scales LP/BP/HP. R21 baseline proposal: LP/BP/HP upstream of dry OUT VCA; do not silently change this. Qualify resonance/self-oscillation/stability and overload."
+  },
+  {
+    "id": "F3",
+    "family": "VCF",
+    "name": "FILTER 3",
+    "ports": [
+      {
+        "id": "F3.IN",
+        "key": "IN",
+        "label": "IN",
+        "direction": "in",
+        "col": 7,
+        "row": 0,
+        "led": true,
+        "clip": false
+      },
+      {
+        "id": "F3.FREQ",
+        "key": "FREQ",
+        "label": "FREQ CV",
+        "direction": "in",
+        "col": 7,
+        "row": 1,
+        "led": true,
+        "clip": false
+      },
+      {
+        "id": "F3.RES",
+        "key": "RES",
+        "label": "RES CV",
+        "direction": "in",
+        "col": 7,
+        "row": 2,
+        "led": true,
+        "clip": false
+      },
+      {
+        "id": "F3.GAIN",
+        "key": "GAIN",
+        "label": "GAIN CV",
+        "direction": "in",
+        "col": 7,
+        "row": 3,
+        "led": true,
+        "clip": false
+      },
+      {
+        "id": "F3.LP",
+        "key": "LP",
+        "label": "LP",
+        "direction": "out",
+        "col": 7,
+        "row": 4,
+        "led": false,
+        "clip": false
+      },
+      {
+        "id": "F3.BP",
+        "key": "BP",
+        "label": "BP",
+        "direction": "out",
+        "col": 7,
+        "row": 5,
+        "led": false,
+        "clip": false
+      },
+      {
+        "id": "F3.HP",
+        "key": "HP",
+        "label": "HP",
+        "direction": "out",
+        "col": 7,
+        "row": 6,
+        "led": false,
+        "clip": false
+      },
+      {
+        "id": "F3.OUT",
+        "key": "OUT",
+        "label": "OUT",
+        "direction": "out",
+        "col": 7,
+        "row": 7,
+        "led": false,
+        "clip": false
+      }
+    ],
+    "controls": [
+      {
+        "id": "F3.FREQ",
+        "key": "FREQ",
+        "label": "FREQ",
+        "kind": "pot",
+        "col": 7,
+        "row": 0,
+        "component": "bourns-ptv09a-4020f-b103"
+      },
+      {
+        "id": "F3.RES",
+        "key": "RES",
+        "label": "RES",
+        "kind": "pot",
+        "col": 7,
+        "row": 1,
+        "component": "bourns-ptv09a-4020f-b103"
+      },
+      {
+        "id": "F3.FREQ±",
+        "key": "FREQ±",
+        "label": "FREQ±",
+        "kind": "pot",
+        "col": 7,
+        "row": 2,
+        "component": "bourns-ptv09a-4020f-b103"
+      },
+      {
+        "id": "F3.RES±",
+        "key": "RES±",
+        "label": "RES±",
+        "kind": "pot",
+        "col": 7,
+        "row": 3,
+        "component": "bourns-ptv09a-4020f-b103"
+      },
+      {
+        "id": "F3.GAIN",
+        "key": "GAIN",
+        "label": "GAIN",
+        "kind": "pot",
+        "col": 7,
+        "row": 4,
+        "component": "bourns-ptv09a-4020f-b103"
+      },
+      {
+        "id": "F3.GAIN±",
+        "key": "GAIN±",
+        "label": "GAIN±",
+        "kind": "pot",
+        "col": 7,
+        "row": 5,
+        "component": "bourns-ptv09a-4020f-b103"
+      }
+    ],
+    "behavior": "Parallel dry VCA OUT plus LP/BP/HP outputs. Frequency/resonance/gain controls and corresponding CV depth. No selector required.",
+    "engineering_to_finish": "Write a signal diagram deciding whether GAIN also scales LP/BP/HP. R21 baseline proposal: LP/BP/HP upstream of dry OUT VCA; do not silently change this. Qualify resonance/self-oscillation/stability and overload."
+  },
+  {
+    "id": "M5A",
+    "family": "MIX5",
+    "name": "MIX5 A",
+    "ports": [
+      {
+        "id": "M5A.1",
+        "key": "1",
+        "label": "1",
+        "direction": "in",
+        "col": 8,
+        "row": 0,
+        "led": true,
+        "clip": false
+      },
+      {
+        "id": "M5A.2",
+        "key": "2",
+        "label": "2",
+        "direction": "in",
+        "col": 8,
+        "row": 1,
+        "led": true,
+        "clip": false
+      },
+      {
+        "id": "M5A.3",
+        "key": "3",
+        "label": "3",
+        "direction": "in",
+        "col": 8,
+        "row": 2,
+        "led": true,
+        "clip": false
+      },
+      {
+        "id": "M5A.4",
+        "key": "4",
+        "label": "4",
+        "direction": "in",
+        "col": 8,
+        "row": 3,
+        "led": true,
+        "clip": false
+      },
+      {
+        "id": "M5A.5",
+        "key": "5",
+        "label": "5",
+        "direction": "in",
+        "col": 8,
+        "row": 4,
+        "led": true,
+        "clip": false
+      },
+      {
+        "id": "M5A.SUM",
+        "key": "SUM",
+        "label": "SUM",
+        "direction": "out",
+        "col": 8,
+        "row": 5,
+        "led": true,
+        "clip": true
+      }
+    ],
+    "controls": [
+      {
+        "id": "M5A.1±",
+        "key": "1±",
+        "label": "1 ±",
+        "kind": "pot",
+        "col": 8,
+        "row": 0,
+        "component": "bourns-ptv09a-4020f-b103"
+      },
+      {
+        "id": "M5A.2±",
+        "key": "2±",
+        "label": "2 ±",
+        "kind": "pot",
+        "col": 8,
+        "row": 1,
+        "component": "bourns-ptv09a-4020f-b103"
+      },
+      {
+        "id": "M5A.3±",
+        "key": "3±",
+        "label": "3 ±",
+        "kind": "pot",
+        "col": 8,
+        "row": 2,
+        "component": "bourns-ptv09a-4020f-b103"
+      },
+      {
+        "id": "M5A.4±",
+        "key": "4±",
+        "label": "4 ±",
+        "kind": "pot",
+        "col": 8,
+        "row": 3,
+        "component": "bourns-ptv09a-4020f-b103"
+      },
+      {
+        "id": "M5A.5±",
+        "key": "5±",
+        "label": "5 ±",
+        "kind": "pot",
+        "col": 8,
+        "row": 4,
+        "component": "bourns-ptv09a-4020f-b103"
+      },
+      {
+        "id": "M5A.LEVEL",
+        "key": "LEVEL",
+        "label": "LEVEL",
+        "kind": "pot",
+        "col": 8,
+        "row": 5,
+        "component": "bourns-ptv09a-4020f-b103"
+      }
+    ],
+    "behavior": "Five independent bipolar attenuverters feeding a mono sum, then manual LEVEL.",
+    "engineering_to_finish": "Resolve gain normalization/headroom; not automatically divide by five. Indicator at each input and SUM; clip must reflect internal overload, not only attenuated output."
+  },
+  {
+    "id": "M5B",
+    "family": "MIX5",
+    "name": "MIX5 B",
+    "ports": [
+      {
+        "id": "M5B.1",
+        "key": "1",
+        "label": "1",
+        "direction": "in",
+        "col": 9,
+        "row": 0,
+        "led": true,
+        "clip": false
+      },
+      {
+        "id": "M5B.2",
+        "key": "2",
+        "label": "2",
+        "direction": "in",
+        "col": 9,
+        "row": 1,
+        "led": true,
+        "clip": false
+      },
+      {
+        "id": "M5B.3",
+        "key": "3",
+        "label": "3",
+        "direction": "in",
+        "col": 9,
+        "row": 2,
+        "led": true,
+        "clip": false
+      },
+      {
+        "id": "M5B.4",
+        "key": "4",
+        "label": "4",
+        "direction": "in",
+        "col": 9,
+        "row": 3,
+        "led": true,
+        "clip": false
+      },
+      {
+        "id": "M5B.5",
+        "key": "5",
+        "label": "5",
+        "direction": "in",
+        "col": 9,
+        "row": 4,
+        "led": true,
+        "clip": false
+      },
+      {
+        "id": "M5B.SUM",
+        "key": "SUM",
+        "label": "SUM",
+        "direction": "out",
+        "col": 9,
+        "row": 5,
+        "led": true,
+        "clip": true
+      }
+    ],
+    "controls": [
+      {
+        "id": "M5B.1±",
+        "key": "1±",
+        "label": "1 ±",
+        "kind": "pot",
+        "col": 9,
+        "row": 0,
+        "component": "bourns-ptv09a-4020f-b103"
+      },
+      {
+        "id": "M5B.2±",
+        "key": "2±",
+        "label": "2 ±",
+        "kind": "pot",
+        "col": 9,
+        "row": 1,
+        "component": "bourns-ptv09a-4020f-b103"
+      },
+      {
+        "id": "M5B.3±",
+        "key": "3±",
+        "label": "3 ±",
+        "kind": "pot",
+        "col": 9,
+        "row": 2,
+        "component": "bourns-ptv09a-4020f-b103"
+      },
+      {
+        "id": "M5B.4±",
+        "key": "4±",
+        "label": "4 ±",
+        "kind": "pot",
+        "col": 9,
+        "row": 3,
+        "component": "bourns-ptv09a-4020f-b103"
+      },
+      {
+        "id": "M5B.5±",
+        "key": "5±",
+        "label": "5 ±",
+        "kind": "pot",
+        "col": 9,
+        "row": 4,
+        "component": "bourns-ptv09a-4020f-b103"
+      },
+      {
+        "id": "M5B.LEVEL",
+        "key": "LEVEL",
+        "label": "LEVEL",
+        "kind": "pot",
+        "col": 9,
+        "row": 5,
+        "component": "bourns-ptv09a-4020f-b103"
+      }
+    ],
+    "behavior": "Five independent bipolar attenuverters feeding a mono sum, then manual LEVEL.",
+    "engineering_to_finish": "Resolve gain normalization/headroom; not automatically divide by five. Indicator at each input and SUM; clip must reflect internal overload, not only attenuated output."
+  },
+  {
+    "id": "M4A",
+    "family": "MIX4",
+    "name": "MIX4 A",
+    "ports": [
+      {
+        "id": "M4A.1",
+        "key": "1",
+        "label": "1",
+        "direction": "in",
+        "col": 10,
+        "row": 0,
+        "led": true,
+        "clip": false
+      },
+      {
+        "id": "M4A.2",
+        "key": "2",
+        "label": "2",
+        "direction": "in",
+        "col": 10,
+        "row": 1,
+        "led": true,
+        "clip": false
+      },
+      {
+        "id": "M4A.3",
+        "key": "3",
+        "label": "3",
+        "direction": "in",
+        "col": 10,
+        "row": 2,
+        "led": true,
+        "clip": false
+      },
+      {
+        "id": "M4A.4",
+        "key": "4",
+        "label": "4",
+        "direction": "in",
+        "col": 10,
+        "row": 3,
+        "led": true,
+        "clip": false
+      },
+      {
+        "id": "M4A.ATTEN",
+        "key": "ATTEN",
+        "label": "ATTEN",
+        "direction": "in",
+        "col": 10,
+        "row": 4,
+        "led": true,
+        "clip": false
+      },
+      {
+        "id": "M4A.SUM",
+        "key": "SUM",
+        "label": "SUM",
+        "direction": "out",
+        "col": 10,
+        "row": 5,
+        "led": true,
+        "clip": true
+      }
+    ],
+    "controls": [
+      {
+        "id": "M4A.1±",
+        "key": "1±",
+        "label": "1 ±",
+        "kind": "pot",
+        "col": 10,
+        "row": 0,
+        "component": "bourns-ptv09a-4020f-b103"
+      },
+      {
+        "id": "M4A.2±",
+        "key": "2±",
+        "label": "2 ±",
+        "kind": "pot",
+        "col": 10,
+        "row": 1,
+        "component": "bourns-ptv09a-4020f-b103"
+      },
+      {
+        "id": "M4A.3±",
+        "key": "3±",
+        "label": "3 ±",
+        "kind": "pot",
+        "col": 10,
+        "row": 2,
+        "component": "bourns-ptv09a-4020f-b103"
+      },
+      {
+        "id": "M4A.4±",
+        "key": "4±",
+        "label": "4 ±",
+        "kind": "pot",
+        "col": 10,
+        "row": 3,
+        "component": "bourns-ptv09a-4020f-b103"
+      },
+      {
+        "id": "M4A.CV±",
+        "key": "CV±",
+        "label": "CV ±",
+        "kind": "pot",
+        "col": 10,
+        "row": 4,
+        "component": "bourns-ptv09a-4020f-b103"
+      },
+      {
+        "id": "M4A.LEVEL",
+        "key": "LEVEL",
+        "label": "SUM GAIN",
+        "kind": "pot",
+        "col": 10,
+        "row": 5,
+        "component": "bourns-ptv09a-4020f-b103"
+      }
+    ],
+    "behavior": "Four attenuverters feed summing stage then VCA. ATTEN CV through CV± combines with manual SUM GAIN.",
+    "engineering_to_finish": "ATTEN is control, not a fifth audio input. Preserve pre-VCA overload detection when final output is attenuated. Define VCA gain law and allowed input/CV ranges."
+  },
+  {
+    "id": "M4B",
+    "family": "MIX4",
+    "name": "MIX4 B",
+    "ports": [
+      {
+        "id": "M4B.1",
+        "key": "1",
+        "label": "1",
+        "direction": "in",
+        "col": 11,
+        "row": 0,
+        "led": true,
+        "clip": false
+      },
+      {
+        "id": "M4B.2",
+        "key": "2",
+        "label": "2",
+        "direction": "in",
+        "col": 11,
+        "row": 1,
+        "led": true,
+        "clip": false
+      },
+      {
+        "id": "M4B.3",
+        "key": "3",
+        "label": "3",
+        "direction": "in",
+        "col": 11,
+        "row": 2,
+        "led": true,
+        "clip": false
+      },
+      {
+        "id": "M4B.4",
+        "key": "4",
+        "label": "4",
+        "direction": "in",
+        "col": 11,
+        "row": 3,
+        "led": true,
+        "clip": false
+      },
+      {
+        "id": "M4B.ATTEN",
+        "key": "ATTEN",
+        "label": "ATTEN",
+        "direction": "in",
+        "col": 11,
+        "row": 4,
+        "led": true,
+        "clip": false
+      },
+      {
+        "id": "M4B.SUM",
+        "key": "SUM",
+        "label": "SUM",
+        "direction": "out",
+        "col": 11,
+        "row": 5,
+        "led": true,
+        "clip": true
+      }
+    ],
+    "controls": [
+      {
+        "id": "M4B.1±",
+        "key": "1±",
+        "label": "1 ±",
+        "kind": "pot",
+        "col": 11,
+        "row": 0,
+        "component": "bourns-ptv09a-4020f-b103"
+      },
+      {
+        "id": "M4B.2±",
+        "key": "2±",
+        "label": "2 ±",
+        "kind": "pot",
+        "col": 11,
+        "row": 1,
+        "component": "bourns-ptv09a-4020f-b103"
+      },
+      {
+        "id": "M4B.3±",
+        "key": "3±",
+        "label": "3 ±",
+        "kind": "pot",
+        "col": 11,
+        "row": 2,
+        "component": "bourns-ptv09a-4020f-b103"
+      },
+      {
+        "id": "M4B.4±",
+        "key": "4±",
+        "label": "4 ±",
+        "kind": "pot",
+        "col": 11,
+        "row": 3,
+        "component": "bourns-ptv09a-4020f-b103"
+      },
+      {
+        "id": "M4B.CV±",
+        "key": "CV±",
+        "label": "CV ±",
+        "kind": "pot",
+        "col": 11,
+        "row": 4,
+        "component": "bourns-ptv09a-4020f-b103"
+      },
+      {
+        "id": "M4B.LEVEL",
+        "key": "LEVEL",
+        "label": "SUM GAIN",
+        "kind": "pot",
+        "col": 11,
+        "row": 5,
+        "component": "bourns-ptv09a-4020f-b103"
+      }
+    ],
+    "behavior": "Four attenuverters feed summing stage then VCA. ATTEN CV through CV± combines with manual SUM GAIN.",
+    "engineering_to_finish": "ATTEN is control, not a fifth audio input. Preserve pre-VCA overload detection when final output is attenuated. Define VCA gain law and allowed input/CV ranges."
+  },
+  {
+    "id": "W2",
+    "family": "FOLD",
+    "name": "FOLD 2",
+    "ports": [
+      {
+        "id": "W2.IN",
+        "key": "IN",
+        "label": "IN",
+        "direction": "in",
+        "col": 8,
+        "row": 6,
+        "led": true,
+        "clip": false
+      },
+      {
+        "id": "W2.FOLD",
+        "key": "FOLD",
+        "label": "FOLD CV",
+        "direction": "in",
+        "col": 9,
+        "row": 6,
+        "led": true,
+        "clip": false
+      },
+      {
+        "id": "W2.BIAS",
+        "key": "BIAS",
+        "label": "BIAS CV",
+        "direction": "in",
+        "col": 8,
+        "row": 7,
+        "led": true,
+        "clip": false
+      },
+      {
+        "id": "W2.OUT",
+        "key": "OUT",
+        "label": "OUT",
+        "direction": "out",
+        "col": 9,
+        "row": 7,
+        "led": false,
+        "clip": false
+      }
+    ],
+    "controls": [
+      {
+        "id": "W2.FOLD",
+        "key": "FOLD",
+        "label": "FOLD",
+        "kind": "pot",
+        "col": 8,
+        "row": 6,
+        "component": "bourns-ptv09a-4020f-b103"
+      },
+      {
+        "id": "W2.FOLD±",
+        "key": "FOLD±",
+        "label": "FOLD ±",
+        "kind": "pot",
+        "col": 9,
+        "row": 6,
+        "component": "bourns-ptv09a-4020f-b103"
+      },
+      {
+        "id": "W2.BIAS",
+        "key": "BIAS",
+        "label": "BIAS",
+        "kind": "pot",
+        "col": 8,
+        "row": 7,
+        "component": "bourns-ptv09a-4020f-b103"
+      },
+      {
+        "id": "W2.LEVEL",
+        "key": "LEVEL",
+        "label": "LEVEL",
+        "kind": "pot",
+        "col": 9,
+        "row": 7,
+        "component": "bourns-ptv09a-4020f-b103"
+      }
+    ],
+    "behavior": "IN -> fold/bias shaping -> level -> OUT. FOLD CV and BIAS CV as drawn.",
+    "engineering_to_finish": "FOLD± affects FOLD CV. BIAS CV amount fixed unless a user-approved control is added; no undocumented knob. Define transfer curve, amplitude/offset limit and non-oscillatory behavior."
+  },
+  {
+    "id": "W1",
+    "family": "FOLD",
+    "name": "FOLD 1",
+    "ports": [
+      {
+        "id": "W1.IN",
+        "key": "IN",
+        "label": "IN",
+        "direction": "in",
+        "col": 10,
+        "row": 6,
+        "led": true,
+        "clip": false
+      },
+      {
+        "id": "W1.FOLD",
+        "key": "FOLD",
+        "label": "FOLD CV",
+        "direction": "in",
+        "col": 11,
+        "row": 6,
+        "led": true,
+        "clip": false
+      },
+      {
+        "id": "W1.BIAS",
+        "key": "BIAS",
+        "label": "BIAS CV",
+        "direction": "in",
+        "col": 10,
+        "row": 7,
+        "led": true,
+        "clip": false
+      },
+      {
+        "id": "W1.OUT",
+        "key": "OUT",
+        "label": "OUT",
+        "direction": "out",
+        "col": 11,
+        "row": 7,
+        "led": false,
+        "clip": false
+      }
+    ],
+    "controls": [
+      {
+        "id": "W1.FOLD",
+        "key": "FOLD",
+        "label": "FOLD",
+        "kind": "pot",
+        "col": 10,
+        "row": 6,
+        "component": "bourns-ptv09a-4020f-b103"
+      },
+      {
+        "id": "W1.FOLD±",
+        "key": "FOLD±",
+        "label": "FOLD ±",
+        "kind": "pot",
+        "col": 11,
+        "row": 6,
+        "component": "bourns-ptv09a-4020f-b103"
+      },
+      {
+        "id": "W1.BIAS",
+        "key": "BIAS",
+        "label": "BIAS",
+        "kind": "pot",
+        "col": 10,
+        "row": 7,
+        "component": "bourns-ptv09a-4020f-b103"
+      },
+      {
+        "id": "W1.LEVEL",
+        "key": "LEVEL",
+        "label": "LEVEL",
+        "kind": "pot",
+        "col": 11,
+        "row": 7,
+        "component": "bourns-ptv09a-4020f-b103"
+      }
+    ],
+    "behavior": "IN -> fold/bias shaping -> level -> OUT. FOLD CV and BIAS CV as drawn.",
+    "engineering_to_finish": "FOLD± affects FOLD CV. BIAS CV amount fixed unless a user-approved control is added; no undocumented knob. Define transfer curve, amplitude/offset limit and non-oscillatory behavior."
+  },
+  {
+    "id": "E1",
+    "family": "AR",
+    "name": "ENV 1",
+    "ports": [
+      {
+        "id": "E1.SIG",
+        "key": "SIG",
+        "label": "SIG",
+        "direction": "in",
+        "col": 12,
+        "row": 0,
+        "led": true,
+        "clip": false
+      },
+      {
+        "id": "E1.RISE",
+        "key": "RISE",
+        "label": "RISE",
+        "direction": "in",
+        "col": 12,
+        "row": 1,
+        "led": true,
+        "clip": false
+      },
+      {
+        "id": "E1.FALL",
+        "key": "FALL",
+        "label": "FALL",
+        "direction": "in",
+        "col": 12,
+        "row": 2,
+        "led": true,
+        "clip": false
+      },
+      {
+        "id": "E1.ENV",
+        "key": "ENV",
+        "label": "ENV",
+        "direction": "out",
+        "col": 12,
+        "row": 3,
+        "led": false,
+        "clip": false
+      },
+      {
+        "id": "E1.BIP",
+        "key": "BIP",
+        "label": "BIP",
+        "direction": "out",
+        "col": 12,
+        "row": 4,
+        "led": false,
+        "clip": false
+      },
+      {
+        "id": "E1.EOC",
+        "key": "EOC",
+        "label": "EOC",
+        "direction": "out",
+        "col": 12,
+        "row": 5,
+        "led": false,
+        "clip": false
+      },
+      {
+        "id": "E1.STG",
+        "key": "STG",
+        "label": "STG",
+        "direction": "out",
+        "col": 12,
+        "row": 6,
+        "led": false,
+        "clip": false
+      }
+    ],
+    "controls": [
+      {
+        "id": "E1.MODE",
+        "key": "MODE",
+        "label": "MODE",
+        "kind": "switch",
+        "col": 12,
+        "row": 0,
+        "component": "dailywell-2ms3"
+      },
+      {
+        "id": "E1.SHAPE",
+        "key": "SHAPE",
+        "label": "SHAPE",
+        "kind": "switch",
+        "col": 12,
+        "row": 1,
+        "component": "dailywell-2ms1"
+      },
+      {
+        "id": "E1.STAGE",
+        "key": "STAGE",
+        "label": "STAGE",
+        "kind": "switch",
+        "col": 12,
+        "row": 2,
+        "component": "dailywell-2ms1"
+      },
+      {
+        "id": "E1.TRIG",
+        "key": "TRIG",
+        "label": "TRIG",
+        "kind": "button",
+        "col": 12,
+        "row": 3,
+        "component": "omron-b3f1020"
+      },
+      {
+        "id": "E1.RISE",
+        "key": "RISE",
+        "label": "RISE",
+        "kind": "pot",
+        "col": 12,
+        "row": 4,
+        "component": "bourns-ptv09a-4020f-b103"
+      },
+      {
+        "id": "E1.FALL",
+        "key": "FALL",
+        "label": "FALL",
+        "kind": "pot",
+        "col": 12,
+        "row": 5,
+        "component": "bourns-ptv09a-4020f-b103"
+      }
+    ],
+    "behavior": "ASR/AR/LOOP; linear/curved; stage gate selection rise/fall; manual trigger. RISE/FALL pots with stage-gated ENV-strength lamps; ENV/BIP/EOC/STG outputs.",
+    "engineering_to_finish": "Freeze SIG semantics and retrigger behavior in a truth table. The UI is ideal behavior only. Define trigger thresholds, EOC pulse duration, bipolar output scale and CV law. Never load timing capacitor with indicator."
+  },
+  {
+    "id": "A01",
+    "family": "AO",
+    "name": "OFFSET 1",
+    "ports": [
+      {
+        "id": "A01.IN",
+        "key": "IN",
+        "label": "IN",
+        "direction": "in",
+        "col": 12,
+        "row": 7,
+        "led": true,
+        "clip": false
+      },
+      {
+        "id": "A01.OFFSET",
+        "key": "OFFSET",
+        "label": "OFFSET",
+        "direction": "in",
+        "col": 12,
+        "row": 8,
+        "led": true,
+        "clip": false
+      },
+      {
+        "id": "A01.OUT",
+        "key": "OUT",
+        "label": "OUT",
+        "direction": "out",
+        "col": 12,
+        "row": 9,
+        "led": true,
+        "clip": true
+      }
+    ],
+    "controls": [
+      {
+        "id": "A01.ATTEN",
+        "key": "ATTEN",
+        "label": "ATTEN ±",
+        "kind": "pot",
+        "col": 12,
+        "row": 6,
+        "component": "bourns-ptv09a-4020f-b103"
+      },
+      {
+        "id": "A01.OFFSET",
+        "key": "OFFSET",
+        "label": "OFFSET",
+        "kind": "pot",
+        "col": 12,
+        "row": 7,
+        "component": "bourns-ptv09a-4020f-b103"
+      }
+    ],
+    "behavior": "OUT = gain * IN + manual offset + OFFSET CV, gain -1..+1 as intent.",
+    "engineering_to_finish": "Final offset range and headroom are not guaranteed by preview +/-5 V controls or +/-10 V clip demo. Buffer all outputs and detect overload."
+  },
+  {
+    "id": "E2",
+    "family": "AR",
+    "name": "ENV 2",
+    "ports": [
+      {
+        "id": "E2.SIG",
+        "key": "SIG",
+        "label": "SIG",
+        "direction": "in",
+        "col": 13,
+        "row": 0,
+        "led": true,
+        "clip": false
+      },
+      {
+        "id": "E2.RISE",
+        "key": "RISE",
+        "label": "RISE",
+        "direction": "in",
+        "col": 13,
+        "row": 1,
+        "led": true,
+        "clip": false
+      },
+      {
+        "id": "E2.FALL",
+        "key": "FALL",
+        "label": "FALL",
+        "direction": "in",
+        "col": 13,
+        "row": 2,
+        "led": true,
+        "clip": false
+      },
+      {
+        "id": "E2.ENV",
+        "key": "ENV",
+        "label": "ENV",
+        "direction": "out",
+        "col": 13,
+        "row": 3,
+        "led": false,
+        "clip": false
+      },
+      {
+        "id": "E2.BIP",
+        "key": "BIP",
+        "label": "BIP",
+        "direction": "out",
+        "col": 13,
+        "row": 4,
+        "led": false,
+        "clip": false
+      },
+      {
+        "id": "E2.EOC",
+        "key": "EOC",
+        "label": "EOC",
+        "direction": "out",
+        "col": 13,
+        "row": 5,
+        "led": false,
+        "clip": false
+      },
+      {
+        "id": "E2.STG",
+        "key": "STG",
+        "label": "STG",
+        "direction": "out",
+        "col": 13,
+        "row": 6,
+        "led": false,
+        "clip": false
+      }
+    ],
+    "controls": [
+      {
+        "id": "E2.MODE",
+        "key": "MODE",
+        "label": "MODE",
+        "kind": "switch",
+        "col": 13,
+        "row": 0,
+        "component": "dailywell-2ms3"
+      },
+      {
+        "id": "E2.SHAPE",
+        "key": "SHAPE",
+        "label": "SHAPE",
+        "kind": "switch",
+        "col": 13,
+        "row": 1,
+        "component": "dailywell-2ms1"
+      },
+      {
+        "id": "E2.STAGE",
+        "key": "STAGE",
+        "label": "STAGE",
+        "kind": "switch",
+        "col": 13,
+        "row": 2,
+        "component": "dailywell-2ms1"
+      },
+      {
+        "id": "E2.TRIG",
+        "key": "TRIG",
+        "label": "TRIG",
+        "kind": "button",
+        "col": 13,
+        "row": 3,
+        "component": "omron-b3f1020"
+      },
+      {
+        "id": "E2.RISE",
+        "key": "RISE",
+        "label": "RISE",
+        "kind": "pot",
+        "col": 13,
+        "row": 4,
+        "component": "bourns-ptv09a-4020f-b103"
+      },
+      {
+        "id": "E2.FALL",
+        "key": "FALL",
+        "label": "FALL",
+        "kind": "pot",
+        "col": 13,
+        "row": 5,
+        "component": "bourns-ptv09a-4020f-b103"
+      }
+    ],
+    "behavior": "ASR/AR/LOOP; linear/curved; stage gate selection rise/fall; manual trigger. RISE/FALL pots with stage-gated ENV-strength lamps; ENV/BIP/EOC/STG outputs.",
+    "engineering_to_finish": "Freeze SIG semantics and retrigger behavior in a truth table. The UI is ideal behavior only. Define trigger thresholds, EOC pulse duration, bipolar output scale and CV law. Never load timing capacitor with indicator."
+  },
+  {
+    "id": "A02",
+    "family": "AO",
+    "name": "OFFSET 2",
+    "ports": [
+      {
+        "id": "A02.IN",
+        "key": "IN",
+        "label": "IN",
+        "direction": "in",
+        "col": 13,
+        "row": 7,
+        "led": true,
+        "clip": false
+      },
+      {
+        "id": "A02.OFFSET",
+        "key": "OFFSET",
+        "label": "OFFSET",
+        "direction": "in",
+        "col": 13,
+        "row": 8,
+        "led": true,
+        "clip": false
+      },
+      {
+        "id": "A02.OUT",
+        "key": "OUT",
+        "label": "OUT",
+        "direction": "out",
+        "col": 13,
+        "row": 9,
+        "led": true,
+        "clip": true
+      }
+    ],
+    "controls": [
+      {
+        "id": "A02.ATTEN",
+        "key": "ATTEN",
+        "label": "ATTEN ±",
+        "kind": "pot",
+        "col": 13,
+        "row": 6,
+        "component": "bourns-ptv09a-4020f-b103"
+      },
+      {
+        "id": "A02.OFFSET",
+        "key": "OFFSET",
+        "label": "OFFSET",
+        "kind": "pot",
+        "col": 13,
+        "row": 7,
+        "component": "bourns-ptv09a-4020f-b103"
+      }
+    ],
+    "behavior": "OUT = gain * IN + manual offset + OFFSET CV, gain -1..+1 as intent.",
+    "engineering_to_finish": "Final offset range and headroom are not guaranteed by preview +/-5 V controls or +/-10 V clip demo. Buffer all outputs and detect overload."
+  },
+  {
+    "id": "E3",
+    "family": "AR",
+    "name": "ENV 3",
+    "ports": [
+      {
+        "id": "E3.SIG",
+        "key": "SIG",
+        "label": "SIG",
+        "direction": "in",
+        "col": 14,
+        "row": 0,
+        "led": true,
+        "clip": false
+      },
+      {
+        "id": "E3.RISE",
+        "key": "RISE",
+        "label": "RISE",
+        "direction": "in",
+        "col": 14,
+        "row": 1,
+        "led": true,
+        "clip": false
+      },
+      {
+        "id": "E3.FALL",
+        "key": "FALL",
+        "label": "FALL",
+        "direction": "in",
+        "col": 14,
+        "row": 2,
+        "led": true,
+        "clip": false
+      },
+      {
+        "id": "E3.ENV",
+        "key": "ENV",
+        "label": "ENV",
+        "direction": "out",
+        "col": 14,
+        "row": 3,
+        "led": false,
+        "clip": false
+      },
+      {
+        "id": "E3.BIP",
+        "key": "BIP",
+        "label": "BIP",
+        "direction": "out",
+        "col": 14,
+        "row": 4,
+        "led": false,
+        "clip": false
+      },
+      {
+        "id": "E3.EOC",
+        "key": "EOC",
+        "label": "EOC",
+        "direction": "out",
+        "col": 14,
+        "row": 5,
+        "led": false,
+        "clip": false
+      },
+      {
+        "id": "E3.STG",
+        "key": "STG",
+        "label": "STG",
+        "direction": "out",
+        "col": 14,
+        "row": 6,
+        "led": false,
+        "clip": false
+      }
+    ],
+    "controls": [
+      {
+        "id": "E3.MODE",
+        "key": "MODE",
+        "label": "MODE",
+        "kind": "switch",
+        "col": 14,
+        "row": 0,
+        "component": "dailywell-2ms3"
+      },
+      {
+        "id": "E3.SHAPE",
+        "key": "SHAPE",
+        "label": "SHAPE",
+        "kind": "switch",
+        "col": 14,
+        "row": 1,
+        "component": "dailywell-2ms1"
+      },
+      {
+        "id": "E3.STAGE",
+        "key": "STAGE",
+        "label": "STAGE",
+        "kind": "switch",
+        "col": 14,
+        "row": 2,
+        "component": "dailywell-2ms1"
+      },
+      {
+        "id": "E3.TRIG",
+        "key": "TRIG",
+        "label": "TRIG",
+        "kind": "button",
+        "col": 14,
+        "row": 3,
+        "component": "omron-b3f1020"
+      },
+      {
+        "id": "E3.RISE",
+        "key": "RISE",
+        "label": "RISE",
+        "kind": "pot",
+        "col": 14,
+        "row": 4,
+        "component": "bourns-ptv09a-4020f-b103"
+      },
+      {
+        "id": "E3.FALL",
+        "key": "FALL",
+        "label": "FALL",
+        "kind": "pot",
+        "col": 14,
+        "row": 5,
+        "component": "bourns-ptv09a-4020f-b103"
+      }
+    ],
+    "behavior": "ASR/AR/LOOP; linear/curved; stage gate selection rise/fall; manual trigger. RISE/FALL pots with stage-gated ENV-strength lamps; ENV/BIP/EOC/STG outputs.",
+    "engineering_to_finish": "Freeze SIG semantics and retrigger behavior in a truth table. The UI is ideal behavior only. Define trigger thresholds, EOC pulse duration, bipolar output scale and CV law. Never load timing capacitor with indicator."
+  },
+  {
+    "id": "A03",
+    "family": "AO",
+    "name": "OFFSET 3",
+    "ports": [
+      {
+        "id": "A03.IN",
+        "key": "IN",
+        "label": "IN",
+        "direction": "in",
+        "col": 14,
+        "row": 7,
+        "led": true,
+        "clip": false
+      },
+      {
+        "id": "A03.OFFSET",
+        "key": "OFFSET",
+        "label": "OFFSET",
+        "direction": "in",
+        "col": 14,
+        "row": 8,
+        "led": true,
+        "clip": false
+      },
+      {
+        "id": "A03.OUT",
+        "key": "OUT",
+        "label": "OUT",
+        "direction": "out",
+        "col": 14,
+        "row": 9,
+        "led": true,
+        "clip": true
+      }
+    ],
+    "controls": [
+      {
+        "id": "A03.ATTEN",
+        "key": "ATTEN",
+        "label": "ATTEN ±",
+        "kind": "pot",
+        "col": 14,
+        "row": 6,
+        "component": "bourns-ptv09a-4020f-b103"
+      },
+      {
+        "id": "A03.OFFSET",
+        "key": "OFFSET",
+        "label": "OFFSET",
+        "kind": "pot",
+        "col": 14,
+        "row": 7,
+        "component": "bourns-ptv09a-4020f-b103"
+      }
+    ],
+    "behavior": "OUT = gain * IN + manual offset + OFFSET CV, gain -1..+1 as intent.",
+    "engineering_to_finish": "Final offset range and headroom are not guaranteed by preview +/-5 V controls or +/-10 V clip demo. Buffer all outputs and detect overload."
+  },
+  {
+    "id": "E4",
+    "family": "AR",
+    "name": "ENV 4",
+    "ports": [
+      {
+        "id": "E4.SIG",
+        "key": "SIG",
+        "label": "SIG",
+        "direction": "in",
+        "col": 15,
+        "row": 0,
+        "led": true,
+        "clip": false
+      },
+      {
+        "id": "E4.RISE",
+        "key": "RISE",
+        "label": "RISE",
+        "direction": "in",
+        "col": 15,
+        "row": 1,
+        "led": true,
+        "clip": false
+      },
+      {
+        "id": "E4.FALL",
+        "key": "FALL",
+        "label": "FALL",
+        "direction": "in",
+        "col": 15,
+        "row": 2,
+        "led": true,
+        "clip": false
+      },
+      {
+        "id": "E4.ENV",
+        "key": "ENV",
+        "label": "ENV",
+        "direction": "out",
+        "col": 15,
+        "row": 3,
+        "led": false,
+        "clip": false
+      },
+      {
+        "id": "E4.BIP",
+        "key": "BIP",
+        "label": "BIP",
+        "direction": "out",
+        "col": 15,
+        "row": 4,
+        "led": false,
+        "clip": false
+      },
+      {
+        "id": "E4.EOC",
+        "key": "EOC",
+        "label": "EOC",
+        "direction": "out",
+        "col": 15,
+        "row": 5,
+        "led": false,
+        "clip": false
+      },
+      {
+        "id": "E4.STG",
+        "key": "STG",
+        "label": "STG",
+        "direction": "out",
+        "col": 15,
+        "row": 6,
+        "led": false,
+        "clip": false
+      }
+    ],
+    "controls": [
+      {
+        "id": "E4.MODE",
+        "key": "MODE",
+        "label": "MODE",
+        "kind": "switch",
+        "col": 15,
+        "row": 0,
+        "component": "dailywell-2ms3"
+      },
+      {
+        "id": "E4.SHAPE",
+        "key": "SHAPE",
+        "label": "SHAPE",
+        "kind": "switch",
+        "col": 15,
+        "row": 1,
+        "component": "dailywell-2ms1"
+      },
+      {
+        "id": "E4.STAGE",
+        "key": "STAGE",
+        "label": "STAGE",
+        "kind": "switch",
+        "col": 15,
+        "row": 2,
+        "component": "dailywell-2ms1"
+      },
+      {
+        "id": "E4.TRIG",
+        "key": "TRIG",
+        "label": "TRIG",
+        "kind": "button",
+        "col": 15,
+        "row": 3,
+        "component": "omron-b3f1020"
+      },
+      {
+        "id": "E4.RISE",
+        "key": "RISE",
+        "label": "RISE",
+        "kind": "pot",
+        "col": 15,
+        "row": 4,
+        "component": "bourns-ptv09a-4020f-b103"
+      },
+      {
+        "id": "E4.FALL",
+        "key": "FALL",
+        "label": "FALL",
+        "kind": "pot",
+        "col": 15,
+        "row": 5,
+        "component": "bourns-ptv09a-4020f-b103"
+      }
+    ],
+    "behavior": "ASR/AR/LOOP; linear/curved; stage gate selection rise/fall; manual trigger. RISE/FALL pots with stage-gated ENV-strength lamps; ENV/BIP/EOC/STG outputs.",
+    "engineering_to_finish": "Freeze SIG semantics and retrigger behavior in a truth table. The UI is ideal behavior only. Define trigger thresholds, EOC pulse duration, bipolar output scale and CV law. Never load timing capacitor with indicator."
+  },
+  {
+    "id": "A04",
+    "family": "AO",
+    "name": "OFFSET 4",
+    "ports": [
+      {
+        "id": "A04.IN",
+        "key": "IN",
+        "label": "IN",
+        "direction": "in",
+        "col": 15,
+        "row": 7,
+        "led": true,
+        "clip": false
+      },
+      {
+        "id": "A04.OFFSET",
+        "key": "OFFSET",
+        "label": "OFFSET",
+        "direction": "in",
+        "col": 15,
+        "row": 8,
+        "led": true,
+        "clip": false
+      },
+      {
+        "id": "A04.OUT",
+        "key": "OUT",
+        "label": "OUT",
+        "direction": "out",
+        "col": 15,
+        "row": 9,
+        "led": true,
+        "clip": true
+      }
+    ],
+    "controls": [
+      {
+        "id": "A04.ATTEN",
+        "key": "ATTEN",
+        "label": "ATTEN ±",
+        "kind": "pot",
+        "col": 15,
+        "row": 6,
+        "component": "bourns-ptv09a-4020f-b103"
+      },
+      {
+        "id": "A04.OFFSET",
+        "key": "OFFSET",
+        "label": "OFFSET",
+        "kind": "pot",
+        "col": 15,
+        "row": 7,
+        "component": "bourns-ptv09a-4020f-b103"
+      }
+    ],
+    "behavior": "OUT = gain * IN + manual offset + OFFSET CV, gain -1..+1 as intent.",
+    "engineering_to_finish": "Final offset range and headroom are not guaranteed by preview +/-5 V controls or +/-10 V clip demo. Buffer all outputs and detect overload."
+  },
+  {
+    "id": "E5",
+    "family": "AR",
+    "name": "ENV 5",
+    "ports": [
+      {
+        "id": "E5.SIG",
+        "key": "SIG",
+        "label": "SIG",
+        "direction": "in",
+        "col": 16,
+        "row": 0,
+        "led": true,
+        "clip": false
+      },
+      {
+        "id": "E5.RISE",
+        "key": "RISE",
+        "label": "RISE",
+        "direction": "in",
+        "col": 16,
+        "row": 1,
+        "led": true,
+        "clip": false
+      },
+      {
+        "id": "E5.FALL",
+        "key": "FALL",
+        "label": "FALL",
+        "direction": "in",
+        "col": 16,
+        "row": 2,
+        "led": true,
+        "clip": false
+      },
+      {
+        "id": "E5.ENV",
+        "key": "ENV",
+        "label": "ENV",
+        "direction": "out",
+        "col": 16,
+        "row": 3,
+        "led": false,
+        "clip": false
+      },
+      {
+        "id": "E5.BIP",
+        "key": "BIP",
+        "label": "BIP",
+        "direction": "out",
+        "col": 16,
+        "row": 4,
+        "led": false,
+        "clip": false
+      },
+      {
+        "id": "E5.EOC",
+        "key": "EOC",
+        "label": "EOC",
+        "direction": "out",
+        "col": 16,
+        "row": 5,
+        "led": false,
+        "clip": false
+      },
+      {
+        "id": "E5.STG",
+        "key": "STG",
+        "label": "STG",
+        "direction": "out",
+        "col": 16,
+        "row": 6,
+        "led": false,
+        "clip": false
+      }
+    ],
+    "controls": [
+      {
+        "id": "E5.MODE",
+        "key": "MODE",
+        "label": "MODE",
+        "kind": "switch",
+        "col": 16,
+        "row": 0,
+        "component": "dailywell-2ms3"
+      },
+      {
+        "id": "E5.SHAPE",
+        "key": "SHAPE",
+        "label": "SHAPE",
+        "kind": "switch",
+        "col": 16,
+        "row": 1,
+        "component": "dailywell-2ms1"
+      },
+      {
+        "id": "E5.STAGE",
+        "key": "STAGE",
+        "label": "STAGE",
+        "kind": "switch",
+        "col": 16,
+        "row": 2,
+        "component": "dailywell-2ms1"
+      },
+      {
+        "id": "E5.TRIG",
+        "key": "TRIG",
+        "label": "TRIG",
+        "kind": "button",
+        "col": 16,
+        "row": 3,
+        "component": "omron-b3f1020"
+      },
+      {
+        "id": "E5.RISE",
+        "key": "RISE",
+        "label": "RISE",
+        "kind": "pot",
+        "col": 16,
+        "row": 4,
+        "component": "bourns-ptv09a-4020f-b103"
+      },
+      {
+        "id": "E5.FALL",
+        "key": "FALL",
+        "label": "FALL",
+        "kind": "pot",
+        "col": 16,
+        "row": 5,
+        "component": "bourns-ptv09a-4020f-b103"
+      }
+    ],
+    "behavior": "ASR/AR/LOOP; linear/curved; stage gate selection rise/fall; manual trigger. RISE/FALL pots with stage-gated ENV-strength lamps; ENV/BIP/EOC/STG outputs.",
+    "engineering_to_finish": "Freeze SIG semantics and retrigger behavior in a truth table. The UI is ideal behavior only. Define trigger thresholds, EOC pulse duration, bipolar output scale and CV law. Never load timing capacitor with indicator."
+  },
+  {
+    "id": "A05",
+    "family": "AO",
+    "name": "OFFSET 5",
+    "ports": [
+      {
+        "id": "A05.IN",
+        "key": "IN",
+        "label": "IN",
+        "direction": "in",
+        "col": 16,
+        "row": 7,
+        "led": true,
+        "clip": false
+      },
+      {
+        "id": "A05.OFFSET",
+        "key": "OFFSET",
+        "label": "OFFSET",
+        "direction": "in",
+        "col": 16,
+        "row": 8,
+        "led": true,
+        "clip": false
+      },
+      {
+        "id": "A05.OUT",
+        "key": "OUT",
+        "label": "OUT",
+        "direction": "out",
+        "col": 16,
+        "row": 9,
+        "led": true,
+        "clip": true
+      }
+    ],
+    "controls": [
+      {
+        "id": "A05.ATTEN",
+        "key": "ATTEN",
+        "label": "ATTEN ±",
+        "kind": "pot",
+        "col": 16,
+        "row": 6,
+        "component": "bourns-ptv09a-4020f-b103"
+      },
+      {
+        "id": "A05.OFFSET",
+        "key": "OFFSET",
+        "label": "OFFSET",
+        "kind": "pot",
+        "col": 16,
+        "row": 7,
+        "component": "bourns-ptv09a-4020f-b103"
+      }
+    ],
+    "behavior": "OUT = gain * IN + manual offset + OFFSET CV, gain -1..+1 as intent.",
+    "engineering_to_finish": "Final offset range and headroom are not guaranteed by preview +/-5 V controls or +/-10 V clip demo. Buffer all outputs and detect overload."
+  },
+  {
+    "id": "E6",
+    "family": "AR",
+    "name": "ENV 6",
+    "ports": [
+      {
+        "id": "E6.SIG",
+        "key": "SIG",
+        "label": "SIG",
+        "direction": "in",
+        "col": 17,
+        "row": 0,
+        "led": true,
+        "clip": false
+      },
+      {
+        "id": "E6.RISE",
+        "key": "RISE",
+        "label": "RISE",
+        "direction": "in",
+        "col": 17,
+        "row": 1,
+        "led": true,
+        "clip": false
+      },
+      {
+        "id": "E6.FALL",
+        "key": "FALL",
+        "label": "FALL",
+        "direction": "in",
+        "col": 17,
+        "row": 2,
+        "led": true,
+        "clip": false
+      },
+      {
+        "id": "E6.ENV",
+        "key": "ENV",
+        "label": "ENV",
+        "direction": "out",
+        "col": 17,
+        "row": 3,
+        "led": false,
+        "clip": false
+      },
+      {
+        "id": "E6.BIP",
+        "key": "BIP",
+        "label": "BIP",
+        "direction": "out",
+        "col": 17,
+        "row": 4,
+        "led": false,
+        "clip": false
+      },
+      {
+        "id": "E6.EOC",
+        "key": "EOC",
+        "label": "EOC",
+        "direction": "out",
+        "col": 17,
+        "row": 5,
+        "led": false,
+        "clip": false
+      },
+      {
+        "id": "E6.STG",
+        "key": "STG",
+        "label": "STG",
+        "direction": "out",
+        "col": 17,
+        "row": 6,
+        "led": false,
+        "clip": false
+      }
+    ],
+    "controls": [
+      {
+        "id": "E6.MODE",
+        "key": "MODE",
+        "label": "MODE",
+        "kind": "switch",
+        "col": 17,
+        "row": 0,
+        "component": "dailywell-2ms3"
+      },
+      {
+        "id": "E6.SHAPE",
+        "key": "SHAPE",
+        "label": "SHAPE",
+        "kind": "switch",
+        "col": 17,
+        "row": 1,
+        "component": "dailywell-2ms1"
+      },
+      {
+        "id": "E6.STAGE",
+        "key": "STAGE",
+        "label": "STAGE",
+        "kind": "switch",
+        "col": 17,
+        "row": 2,
+        "component": "dailywell-2ms1"
+      },
+      {
+        "id": "E6.TRIG",
+        "key": "TRIG",
+        "label": "TRIG",
+        "kind": "button",
+        "col": 17,
+        "row": 3,
+        "component": "omron-b3f1020"
+      },
+      {
+        "id": "E6.RISE",
+        "key": "RISE",
+        "label": "RISE",
+        "kind": "pot",
+        "col": 17,
+        "row": 4,
+        "component": "bourns-ptv09a-4020f-b103"
+      },
+      {
+        "id": "E6.FALL",
+        "key": "FALL",
+        "label": "FALL",
+        "kind": "pot",
+        "col": 17,
+        "row": 5,
+        "component": "bourns-ptv09a-4020f-b103"
+      }
+    ],
+    "behavior": "ASR/AR/LOOP; linear/curved; stage gate selection rise/fall; manual trigger. RISE/FALL pots with stage-gated ENV-strength lamps; ENV/BIP/EOC/STG outputs.",
+    "engineering_to_finish": "Freeze SIG semantics and retrigger behavior in a truth table. The UI is ideal behavior only. Define trigger thresholds, EOC pulse duration, bipolar output scale and CV law. Never load timing capacitor with indicator."
+  },
+  {
+    "id": "A06",
+    "family": "AO",
+    "name": "OFFSET 6",
+    "ports": [
+      {
+        "id": "A06.IN",
+        "key": "IN",
+        "label": "IN",
+        "direction": "in",
+        "col": 17,
+        "row": 7,
+        "led": true,
+        "clip": false
+      },
+      {
+        "id": "A06.OFFSET",
+        "key": "OFFSET",
+        "label": "OFFSET",
+        "direction": "in",
+        "col": 17,
+        "row": 8,
+        "led": true,
+        "clip": false
+      },
+      {
+        "id": "A06.OUT",
+        "key": "OUT",
+        "label": "OUT",
+        "direction": "out",
+        "col": 17,
+        "row": 9,
+        "led": true,
+        "clip": true
+      }
+    ],
+    "controls": [
+      {
+        "id": "A06.ATTEN",
+        "key": "ATTEN",
+        "label": "ATTEN ±",
+        "kind": "pot",
+        "col": 17,
+        "row": 6,
+        "component": "bourns-ptv09a-4020f-b103"
+      },
+      {
+        "id": "A06.OFFSET",
+        "key": "OFFSET",
+        "label": "OFFSET",
+        "kind": "pot",
+        "col": 17,
+        "row": 7,
+        "component": "bourns-ptv09a-4020f-b103"
+      }
+    ],
+    "behavior": "OUT = gain * IN + manual offset + OFFSET CV, gain -1..+1 as intent.",
+    "engineering_to_finish": "Final offset range and headroom are not guaranteed by preview +/-5 V controls or +/-10 V clip demo. Buffer all outputs and detect overload."
+  },
+  {
+    "id": "B1",
+    "family": "MULT",
+    "name": "MULT 1",
+    "ports": [
+      {
+        "id": "B1.IN",
+        "key": "IN",
+        "label": "IN",
+        "direction": "in",
+        "col": 0,
+        "row": 8,
+        "led": true,
+        "clip": false
+      },
+      {
+        "id": "B1.1",
+        "key": "1",
+        "label": "1",
+        "direction": "out",
+        "col": 1,
+        "row": 8,
+        "led": false,
+        "clip": false
+      },
+      {
+        "id": "B1.2",
+        "key": "2",
+        "label": "2",
+        "direction": "out",
+        "col": 0,
+        "row": 9,
+        "led": false,
+        "clip": false
+      },
+      {
+        "id": "B1.3",
+        "key": "3",
+        "label": "3",
+        "direction": "out",
+        "col": 1,
+        "row": 9,
+        "led": false,
+        "clip": false
+      }
+    ],
+    "controls": [],
+    "behavior": "One high-impedance input, three individually buffered outputs.",
+    "engineering_to_finish": "Two copies of this function only, not four 1:4 MULTs. Precision error/stability/output isolation must be budgeted; output resistor outside feedback gives load error."
+  },
+  {
+    "id": "B2",
+    "family": "MULT",
+    "name": "MULT 2",
+    "ports": [
+      {
+        "id": "B2.IN",
+        "key": "IN",
+        "label": "IN",
+        "direction": "in",
+        "col": 2,
+        "row": 8,
+        "led": true,
+        "clip": false
+      },
+      {
+        "id": "B2.1",
+        "key": "1",
+        "label": "1",
+        "direction": "out",
+        "col": 3,
+        "row": 8,
+        "led": false,
+        "clip": false
+      },
+      {
+        "id": "B2.2",
+        "key": "2",
+        "label": "2",
+        "direction": "out",
+        "col": 2,
+        "row": 9,
+        "led": false,
+        "clip": false
+      },
+      {
+        "id": "B2.3",
+        "key": "3",
+        "label": "3",
+        "direction": "out",
+        "col": 3,
+        "row": 9,
+        "led": false,
+        "clip": false
+      }
+    ],
+    "controls": [],
+    "behavior": "One high-impedance input, three individually buffered outputs.",
+    "engineering_to_finish": "Two copies of this function only, not four 1:4 MULTs. Precision error/stability/output isolation must be budgeted; output resistor outside feedback gives load error."
+  },
+  {
+    "id": "H1",
+    "family": "SH",
+    "name": "S&H 1",
+    "ports": [
+      {
+        "id": "H1.TRIGGER",
+        "key": "TRIGGER",
+        "label": "TRIGGER",
+        "direction": "in",
+        "col": 4,
+        "row": 8,
+        "led": true,
+        "clip": false
+      },
+      {
+        "id": "H1.IN",
+        "key": "IN",
+        "label": "IN",
+        "direction": "in",
+        "col": 5,
+        "row": 8,
+        "led": true,
+        "clip": false
+      },
+      {
+        "id": "H1.OUT",
+        "key": "OUT",
+        "label": "OUT",
+        "direction": "out",
+        "col": 6,
+        "row": 8,
+        "led": true,
+        "clip": false
+      }
+    ],
+    "controls": [
+      {
+        "id": "H1.SAMPLE",
+        "key": "SAMPLE",
+        "label": "SAMPLE",
+        "kind": "button",
+        "col": 5,
+        "row": 6,
+        "component": "omron-b3f1020"
+      },
+      {
+        "id": "H1.SLEW",
+        "key": "SLEW",
+        "label": "SLEW",
+        "kind": "pot",
+        "col": 7,
+        "row": 6,
+        "component": "bourns-ptv09a-4020f-b504"
+      }
+    ],
+    "behavior": "Condition positive trigger edge into a finite sample pulse; captured target -> separate post-hold lag -> OUT. One SAMPLE button and one SLEW pot per channel.",
+    "engineering_to_finish": "No through gate tracking as default, no hidden clock/noise, no slew CV. Hold cap and lag cap different nodes. LF398 leakage/offset and acquisition must be qualified; final OUT LED sees glide."
+  },
+  {
+    "id": "X1",
+    "family": "SWITCH",
+    "name": "SWITCH 1",
+    "ports": [
+      {
+        "id": "X1.IN-A",
+        "key": "IN-A",
+        "label": "IN-A",
+        "direction": "in",
+        "col": 7,
+        "row": 8,
+        "led": true,
+        "clip": false
+      },
+      {
+        "id": "X1.IN-B",
+        "key": "IN-B",
+        "label": "IN-B",
+        "direction": "in",
+        "col": 8,
+        "row": 8,
+        "led": true,
+        "clip": false
+      },
+      {
+        "id": "X1.OUT",
+        "key": "OUT",
+        "label": "OUT",
+        "direction": "out",
+        "col": 9,
+        "row": 8,
+        "led": true,
+        "clip": false
+      }
+    ],
+    "controls": [
+      {
+        "id": "X1.SELECT",
+        "key": "SELECT",
+        "label": "A / B",
+        "kind": "switch",
+        "col": 5,
+        "row": 7,
+        "component": "dailywell-2ms1"
+      }
+    ],
+    "behavior": "Manual maintained A/B selector with IN-A, IN-B, OUT.",
+    "engineering_to_finish": "Not a crossfader, sequential switch or clocked switch. Prevent output-output shorts during possible contact overlap; buffer/protect. Clicks are possible."
+  },
+  {
+    "id": "H2",
+    "family": "SH",
+    "name": "S&H 2",
+    "ports": [
+      {
+        "id": "H2.TRIGGER",
+        "key": "TRIGGER",
+        "label": "TRIGGER",
+        "direction": "in",
+        "col": 4,
+        "row": 9,
+        "led": true,
+        "clip": false
+      },
+      {
+        "id": "H2.IN",
+        "key": "IN",
+        "label": "IN",
+        "direction": "in",
+        "col": 5,
+        "row": 9,
+        "led": true,
+        "clip": false
+      },
+      {
+        "id": "H2.OUT",
+        "key": "OUT",
+        "label": "OUT",
+        "direction": "out",
+        "col": 6,
+        "row": 9,
+        "led": true,
+        "clip": false
+      }
+    ],
+    "controls": [
+      {
+        "id": "H2.SAMPLE",
+        "key": "SAMPLE",
+        "label": "SAMPLE",
+        "kind": "button",
+        "col": 6,
+        "row": 6,
+        "component": "omron-b3f1020"
+      },
+      {
+        "id": "H2.SLEW",
+        "key": "SLEW",
+        "label": "SLEW",
+        "kind": "pot",
+        "col": 7,
+        "row": 7,
+        "component": "bourns-ptv09a-4020f-b504"
+      }
+    ],
+    "behavior": "Condition positive trigger edge into a finite sample pulse; captured target -> separate post-hold lag -> OUT. One SAMPLE button and one SLEW pot per channel.",
+    "engineering_to_finish": "No through gate tracking as default, no hidden clock/noise, no slew CV. Hold cap and lag cap different nodes. LF398 leakage/offset and acquisition must be qualified; final OUT LED sees glide."
+  },
+  {
+    "id": "X2",
+    "family": "SWITCH",
+    "name": "SWITCH 2",
+    "ports": [
+      {
+        "id": "X2.IN-A",
+        "key": "IN-A",
+        "label": "IN-A",
+        "direction": "in",
+        "col": 7,
+        "row": 9,
+        "led": true,
+        "clip": false
+      },
+      {
+        "id": "X2.IN-B",
+        "key": "IN-B",
+        "label": "IN-B",
+        "direction": "in",
+        "col": 8,
+        "row": 9,
+        "led": true,
+        "clip": false
+      },
+      {
+        "id": "X2.OUT",
+        "key": "OUT",
+        "label": "OUT",
+        "direction": "out",
+        "col": 9,
+        "row": 9,
+        "led": true,
+        "clip": false
+      }
+    ],
+    "controls": [
+      {
+        "id": "X2.SELECT",
+        "key": "SELECT",
+        "label": "A / B",
+        "kind": "switch",
+        "col": 6,
+        "row": 7,
+        "component": "dailywell-2ms1"
+      }
+    ],
+    "behavior": "Manual maintained A/B selector with IN-A, IN-B, OUT.",
+    "engineering_to_finish": "Not a crossfader, sequential switch or clocked switch. Prevent output-output shorts during possible contact overlap; buffer/protect. Clicks are possible."
+  },
+  {
+    "id": "N1",
+    "family": "NOISE",
+    "name": "Noise",
+    "ports": [
+      {
+        "id": "N1.WHITE",
+        "key": "WHITE",
+        "label": "WHITE",
+        "direction": "out",
+        "col": 10,
+        "row": 8,
+        "led": false,
+        "clip": false
+      },
+      {
+        "id": "N1.PINK",
+        "key": "PINK",
+        "label": "PINK",
+        "direction": "out",
+        "col": 11,
+        "row": 8,
+        "led": false,
+        "clip": false
+      },
+      {
+        "id": "N1.BLUE",
+        "key": "BLUE",
+        "label": "BLUE",
+        "direction": "out",
+        "col": 10,
+        "row": 9,
+        "led": false,
+        "clip": false
+      },
+      {
+        "id": "N1.BROWN",
+        "key": "BROWN",
+        "label": "BROWN",
+        "direction": "out",
+        "col": 11,
+        "row": 9,
+        "led": false,
+        "clip": false
+      }
+    ],
+    "controls": [],
+    "behavior": "White, pink, blue, brown, separately buffered outputs from shared source basis.",
+    "engineering_to_finish": "NOISE2 is a programmed digital pseudo-random source candidate. Four colors are not independent random generators. Blue/brown shaping is finite-band; no stability/DC/runaway claims."
+  }
+]

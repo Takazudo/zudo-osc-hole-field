@@ -1,0 +1,18 @@
+---
+title: "FOLD — circuit task"
+sidebar_position: 45
+---
+
+## Functional contract
+
+IN -> fold/bias shaping -> level -> OUT. FOLD CV and BIAS CV as drawn.
+
+## Work before schematic lock
+
+FOLD± affects FOLD CV. BIAS CV amount fixed unless a user-approved control is added; no undocumented knob. Define transfer curve, amplitude/offset limit and non-oscillatory behavior.
+
+All corresponding port/control cells are in the canonical grid. Read the generated per-instance entries in `project/osc-hole-field/block-contracts.json`; do not infer pinout or voltages from those visual labels.
+
+## Deliverable
+
+A reviewed one-channel schematic, explicit signal/CV ranges, chosen exact parts and pin maps, corner calculations, simulation/bench plan, power budget and factory test procedure. Replication count follows the current spec, not historical panel versions. Never patch independent blocks internally just to simplify testing; use external test cables or clearly temporary fixtures.

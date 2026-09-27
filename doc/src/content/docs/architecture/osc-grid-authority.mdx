@@ -1,0 +1,29 @@
+---
+title: "Grid and artifact authority"
+sidebar_position: 22
+---
+
+## Single source
+
+`project/osc-hole-field/workbench/layout/grid.json` is the authoring authority for cells. `scripts/prepare_data.py` regenerates it from an explicit register. `src/render.js` defines the physical mapping, shared by the 2D and 3D views. The archived `reference/r20-grid.json` is comparison evidence only.
+
+R21 preserves every R20 jack record and every pre-existing control record. Added control IDs are `H1.SLEW` at zero-based column 7,row 6 and `H2.SLEW` at 7,7. At the compact pitch their centres are (133.5,269) mm and (133.5,283) mm. All 144 lower cells are occupied.
+
+FOLD 2 remains left of FOLD 1. MULTs are two one-input/three-output blocks, not historical four one-input/four-output blocks. Filters precede mixers in the main bank. Six OFFSET sections are aligned beneath their six ENV columns.
+
+## Edit and regeneration
+
+```sh
+cd project/osc-hole-field/workbench
+python3 scripts/prepare_data.py
+python3 scripts/build.py
+node scripts/render_static.cjs
+python3 scripts/export_proofs.py
+python3 scripts/validate.py
+node scripts/test_logic.cjs
+node scripts/test_slew.cjs
+```
+
+The Python rendering step needs CairoSVG, Pillow and PyMuPDF; logic/data checks use Python/Node without the documentation runtime. Browser checks need Playwright and Chromium. The official documentation build has its own pinned Node/pnpm requirements.
+
+`doc/public/assets/osc-hole-field/` holds published copies. Re-publish intentionally after changing the workbench, update the allowlist when adding a file, and never hand-edit generated `components/` pages.

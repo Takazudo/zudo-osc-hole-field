@@ -1,0 +1,16 @@
+---
+title: "Module contracts and circuit capture plan"
+sidebar_position: 23
+---
+
+## Functional reference
+
+`project/osc-hole-field/block-contracts.json` enumerates every block's ports and controls, behavior and unresolved circuit decisions. It is the handoff specification, not a netlist. `kicad-sheet-plan.json` assigns sheet responsibilities for local capture.
+
+The five oscillator circuits must be independently usable as oscillators or LFOs. The MIX4 ATTEN connection controls post-sum gain, not an extra audio input. The AO OFFSET jack is an additive CV input. The A/B cells are manual selectors, not clocked sequential switches. AR lamps follow the envelope only during their own active stage; a high ASR sustain does not imply RISE is still active.
+
+## Freeze before circuit values
+
+Document each block's nominal signal amplitude, input impedance, output load, gain range, CV law, overload behavior, power-off patch behavior and calibration method. For the VCF/VCA, explicitly decide which output paths GAIN controls; the current proposal preserves a dry VCA OUT and parallel LP/BP/HP. For AR, define exact SIG/retrigger/EOC/STG behavior before choosing a timing circuit.
+
+The 3D IC population is an area estimate. It does not determine actual op-amp counts, resistor values, transistor bias or thermal load. Create a complete one-channel circuit, simulate/test it, then replicate. Shared IC channels need a package-level unused-channel policy and bypassing.

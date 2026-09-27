@@ -1,0 +1,79 @@
+{
+  "scope": "Ideal first-order model only; not SPICE, LF398 droop, real protection, or hardware tests",
+  "passed": 18,
+  "total": 18,
+  "tests": [
+    {
+      "name": "No sample gives an explicitly invalid target",
+      "pass": true
+    },
+    {
+      "name": "Minimum tau is 1.1 ms, not hard bypass",
+      "pass": true
+    },
+    {
+      "name": "Maximum tau is 251.1 ms",
+      "pass": true
+    },
+    {
+      "name": "Sample does not instantaneously step the output",
+      "pass": true
+    },
+    {
+      "name": "One tau reaches 63.212 percent",
+      "pass": true
+    },
+    {
+      "name": "Negative input glides symmetrically",
+      "pass": true
+    },
+    {
+      "name": "Direction changes from the present output",
+      "pass": true
+    },
+    {
+      "name": "Two channels remain independent",
+      "pass": true
+    },
+    {
+      "name": "Changing SLEW does not capture a new target",
+      "pass": true
+    },
+    {
+      "name": "Changing SLEW preserves continuous output",
+      "pass": true
+    },
+    {
+      "name": "Advancement is partition invariant",
+      "pass": true
+    },
+    {
+      "name": "Long paused frame remains stable",
+      "pass": true
+    },
+    {
+      "name": "Nonfinite sample rejected",
+      "pass": true
+    },
+    {
+      "name": "Negative dt rejected",
+      "pass": true
+    },
+    {
+      "name": "Nonfinite slew rejected",
+      "pass": true
+    },
+    {
+      "name": "Finite slew clamps at endpoints",
+      "pass": true
+    },
+    {
+      "name": "Output converges without overshoot",
+      "pass": true
+    },
+    {
+      "name": "Five-volt step to ten millivolt error",
+      "pass": true
+    }
+  ]
+}
