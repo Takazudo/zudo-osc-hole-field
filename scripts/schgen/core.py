@@ -188,7 +188,11 @@ def _header(sheet_key, symbols, paper="A3"):
 def _label(net, x, y, angle, key, global_net):
     kind = 'global_label' if global_net else 'label'
     shape = ' (shape passive)' if global_net else ''
-    return f'  ({kind} {q(net)}{shape} (at {x:g} {y:g} {angle:g}) (effects (font (size 1.27 1.27)) (justify left)) (uuid {q(uid(key))}))'
+    # The connection point of a left-facing pin is left of its symbol body.
+    # Right justification keeps the label text outside that body instead of
+    # drawing it over the pin number and the symbol outline.
+    justify = 'right' if angle % 360 in (0, 270) else 'left'
+    return f'  ({kind} {q(net)}{shape} (at {x:g} {y:g} {angle:g}) (effects (font (size 1.27 1.27)) (justify {justify})) (uuid {q(uid(key))}))'
 
 
 def _nc(x, y, key):
