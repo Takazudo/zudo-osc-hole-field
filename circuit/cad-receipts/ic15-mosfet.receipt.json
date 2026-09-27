@@ -1,0 +1,88 @@
+{
+  "receipt_version": 1,
+  "identity": {
+    "asset_id": "ic15-mosfet",
+    "record_id": null,
+    "manufacturer": "Nexperia",
+    "mpn": "2N7002,215",
+    "package": "SOT-23",
+    "variant_notes": "AVAILABLE"
+  },
+  "acquisition": {
+    "provider": "KiCad 10 stock symbol and retained manufacturer/creator document",
+    "source_url": "https://assets.nexperia.com/documents/data-sheet/2N7002.pdf",
+    "acquired_on": "2026-09-28",
+    "original_filenames": [
+      "2N7002_215.stock.kicad_sympart",
+      "2N7002_215.parent.kicad_sympart",
+      "2N7002.pdf"
+    ],
+    "sha256": {
+      "circuit/sources/ic-library/cad/2N7002_215.stock.kicad_sympart": "dc3a3fdbeed7f8410b96ec22656356b7ffaf1194b016aaf83747048840b84386",
+      "circuit/sources/ic-library/cad/2N7002_215.parent.kicad_sympart": "debb1ad5479f32f44bd35b01f4ebf0faff39d6694a1c2b5fcd8a545d611151e1",
+      "circuit/sources/ic-library/2N7002.pdf": "cc9c275457670c3cbbf2e56f5a75c800d3b5f0b396fabc798cf18cb639646475"
+    }
+  },
+  "representation": {
+    "files": [
+      "symbols/src/2N7002_215.kicad_sym"
+    ],
+    "formats": [
+      "kicad_sym"
+    ],
+    "units": "KiCad schematic units",
+    "original_paths": [
+      "circuit/sources/ic-library/cad/2N7002_215.stock.kicad_sympart",
+      "circuit/sources/ic-library/cad/2N7002_215.parent.kicad_sympart",
+      "circuit/sources/ic-library/2N7002.pdf"
+    ]
+  },
+  "fidelity": {
+    "class": "derived",
+    "reason": "Source pin functions audited against the retained document; KiCad stock or custom graphics normalized for this draft identity.",
+    "evidence": [
+      "AVAILABLE",
+      "https://assets.nexperia.com/documents/data-sheet/2N7002.pdf"
+    ]
+  },
+  "derivation": {
+    "derived": true,
+    "input_sha256": {
+      "circuit/sources/ic-library/cad/2N7002_215.stock.kicad_sympart": "dc3a3fdbeed7f8410b96ec22656356b7ffaf1194b016aaf83747048840b84386",
+      "circuit/sources/ic-library/cad/2N7002_215.parent.kicad_sympart": "debb1ad5479f32f44bd35b01f4ebf0faff39d6694a1c2b5fcd8a545d611151e1",
+      "circuit/sources/ic-library/2N7002.pdf": "cc9c275457670c3cbbf2e56f5a75c800d3b5f0b396fabc798cf18cb639646475"
+    },
+    "tool": "scripts/libgen/fixtures/build_ic_assets.py, build_ic_custom.py, or build_passive_symbols.py",
+    "tool_version": "1",
+    "parameters": {
+      "normalization": "exact MPN/manufacturer/LCSC fields, local footprint reference; alias parent units expanded where required"
+    },
+    "output_sha256": {
+      "symbols/src/2N7002_215.kicad_sym": "206b56842ab632bebdcb36a9d577b37501cc3266d076810e24044d27eeaa8bc0"
+    }
+  },
+  "cad_use": {
+    "symbol": "zudo-osc-hole-field:2N7002_215",
+    "footprint": "zudo-osc-hole-field:SOT-23",
+    "model_path": null,
+    "transform": {
+      "offset": null,
+      "rotation": null,
+      "scale": null
+    },
+    "seating_plane": null
+  },
+  "checks": {
+    "performed": [
+      "Issue-15 all-unit KiCad 10 ERC fixture and project library checker"
+    ],
+    "remaining_physical_checks": [
+      "Confirm exact package drawing/lot, actual circuit net mapping, electrical suitability and procurement before board release."
+    ]
+  },
+  "publication": {
+    "preview_selected": false,
+    "download_published": false,
+    "permitted_scope": null
+  }
+}

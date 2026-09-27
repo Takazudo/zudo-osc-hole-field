@@ -1,0 +1,88 @@
+{
+  "receipt_version": 1,
+  "identity": {
+    "asset_id": "ic15-comparator",
+    "record_id": null,
+    "manufacturer": "Texas Instruments",
+    "mpn": "LM393BIDR",
+    "package": "SOIC-8",
+    "variant_notes": "AVAILABLE"
+  },
+  "acquisition": {
+    "provider": "KiCad 10 stock symbol and retained manufacturer/creator document",
+    "source_url": "https://www.ti.com/lit/ds/symlink/lm393b.pdf",
+    "acquired_on": "2026-09-28",
+    "original_filenames": [
+      "LM393BIDR.stock.kicad_sympart",
+      "LM393BIDR.parent.kicad_sympart",
+      "LM393B.pdf"
+    ],
+    "sha256": {
+      "circuit/sources/ic-library/cad/LM393BIDR.stock.kicad_sympart": "39fff8aae937018b5d5a89b425a4d87db50f6f5822edc3fb0ccd2d794e99832b",
+      "circuit/sources/ic-library/cad/LM393BIDR.parent.kicad_sympart": "7c839ff834fe452cbe11625324407e6925b7115b1160b19a968f490dcd250f9a",
+      "circuit/sources/ic-library/LM393B.pdf": "f28830c2f4cbd9ef6a1cd6788a840fa2b92caafee366d53385f88d1cf24e9456"
+    }
+  },
+  "representation": {
+    "files": [
+      "symbols/src/LM393BIDR.kicad_sym"
+    ],
+    "formats": [
+      "kicad_sym"
+    ],
+    "units": "KiCad schematic units",
+    "original_paths": [
+      "circuit/sources/ic-library/cad/LM393BIDR.stock.kicad_sympart",
+      "circuit/sources/ic-library/cad/LM393BIDR.parent.kicad_sympart",
+      "circuit/sources/ic-library/LM393B.pdf"
+    ]
+  },
+  "fidelity": {
+    "class": "derived",
+    "reason": "Source pin functions audited against the retained document; KiCad stock or custom graphics normalized for this draft identity.",
+    "evidence": [
+      "AVAILABLE",
+      "https://www.ti.com/lit/ds/symlink/lm393b.pdf"
+    ]
+  },
+  "derivation": {
+    "derived": true,
+    "input_sha256": {
+      "circuit/sources/ic-library/cad/LM393BIDR.stock.kicad_sympart": "39fff8aae937018b5d5a89b425a4d87db50f6f5822edc3fb0ccd2d794e99832b",
+      "circuit/sources/ic-library/cad/LM393BIDR.parent.kicad_sympart": "7c839ff834fe452cbe11625324407e6925b7115b1160b19a968f490dcd250f9a",
+      "circuit/sources/ic-library/LM393B.pdf": "f28830c2f4cbd9ef6a1cd6788a840fa2b92caafee366d53385f88d1cf24e9456"
+    },
+    "tool": "scripts/libgen/fixtures/build_ic_assets.py, build_ic_custom.py, or build_passive_symbols.py",
+    "tool_version": "1",
+    "parameters": {
+      "normalization": "exact MPN/manufacturer/LCSC fields, local footprint reference; alias parent units expanded where required"
+    },
+    "output_sha256": {
+      "symbols/src/LM393BIDR.kicad_sym": "494a41b90d7104a88f53459f8c8b734113cac2724c04f868db45b9ed1643a30b"
+    }
+  },
+  "cad_use": {
+    "symbol": "zudo-osc-hole-field:LM393BIDR",
+    "footprint": "zudo-osc-hole-field:SOIC-8_3.9x4.9mm_P1.27mm",
+    "model_path": null,
+    "transform": {
+      "offset": null,
+      "rotation": null,
+      "scale": null
+    },
+    "seating_plane": null
+  },
+  "checks": {
+    "performed": [
+      "Issue-15 all-unit KiCad 10 ERC fixture and project library checker"
+    ],
+    "remaining_physical_checks": [
+      "Confirm exact package drawing/lot, actual circuit net mapping, electrical suitability and procurement before board release."
+    ]
+  },
+  "publication": {
+    "preview_selected": false,
+    "download_published": false,
+    "permitted_scope": null
+  }
+}

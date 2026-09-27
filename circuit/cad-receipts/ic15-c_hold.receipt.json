@@ -1,0 +1,80 @@
+{
+  "receipt_version": 1,
+  "identity": {
+    "asset_id": "ic15-c_hold",
+    "record_id": null,
+    "manufacturer": "KEMET",
+    "mpn": "C0805C103J5GACTU",
+    "package": "0805",
+    "variant_notes": "AVAILABLE"
+  },
+  "acquisition": {
+    "provider": "KiCad 10 stock symbol and retained manufacturer/creator document",
+    "source_url": "https://search.kemet.com/download/specsheet/C0805C103J5GACTU",
+    "acquired_on": "2026-09-28",
+    "original_filenames": [
+      "C0805C103.pdf"
+    ],
+    "sha256": {
+      "circuit/sources/ic-library/C0805C103.pdf": "6d0b7656a31b01c196d2aa1fba3fcb6f49f175a0cda39d3c93fed20e91c1670f"
+    }
+  },
+  "representation": {
+    "files": [
+      "symbols/src/C0805C103J5GACTU.kicad_sym"
+    ],
+    "formats": [
+      "kicad_sym"
+    ],
+    "units": "KiCad schematic units",
+    "original_paths": [
+      "circuit/sources/ic-library/C0805C103.pdf"
+    ]
+  },
+  "fidelity": {
+    "class": "derived",
+    "reason": "Source pin functions audited against the retained document; KiCad stock or custom graphics normalized for this draft identity.",
+    "evidence": [
+      "AVAILABLE",
+      "https://search.kemet.com/download/specsheet/C0805C103J5GACTU"
+    ]
+  },
+  "derivation": {
+    "derived": true,
+    "input_sha256": {
+      "circuit/sources/ic-library/C0805C103.pdf": "6d0b7656a31b01c196d2aa1fba3fcb6f49f175a0cda39d3c93fed20e91c1670f"
+    },
+    "tool": "scripts/libgen/fixtures/build_ic_assets.py, build_ic_custom.py, or build_passive_symbols.py",
+    "tool_version": "1",
+    "parameters": {
+      "normalization": "exact MPN/manufacturer/LCSC fields, local footprint reference; alias parent units expanded where required"
+    },
+    "output_sha256": {
+      "symbols/src/C0805C103J5GACTU.kicad_sym": "4385b9725d1e1be4b2b6a7835980b17795e20f3bfd5779f58a6cda6bd45ece9c"
+    }
+  },
+  "cad_use": {
+    "symbol": "zudo-osc-hole-field:C0805C103J5GACTU",
+    "footprint": "zudo-osc-hole-field:C0805",
+    "model_path": null,
+    "transform": {
+      "offset": null,
+      "rotation": null,
+      "scale": null
+    },
+    "seating_plane": null
+  },
+  "checks": {
+    "performed": [
+      "Issue-15 all-unit KiCad 10 ERC fixture and project library checker"
+    ],
+    "remaining_physical_checks": [
+      "Confirm exact package drawing/lot, actual circuit net mapping, electrical suitability and procurement before board release."
+    ]
+  },
+  "publication": {
+    "preview_selected": false,
+    "download_published": false,
+    "permitted_scope": null
+  }
+}

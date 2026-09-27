@@ -1,0 +1,80 @@
+{
+  "receipt_version": 1,
+  "identity": {
+    "asset_id": "ic15-vco",
+    "record_id": null,
+    "manufacturer": "ALFA RPAR",
+    "mpn": "AS3340D",
+    "package": "SOIC-16",
+    "variant_notes": "SOURCE UNAVAILABLE"
+  },
+  "acquisition": {
+    "provider": "KiCad 10 stock symbol; manufacturer document unavailable",
+    "source_url": "http://www.alfarzpp.lv/ (manufacturer PDF location not recovered; mirrors do not establish primary bytes)",
+    "acquired_on": "2026-09-28",
+    "original_filenames": [
+      "AS3340D.stock.kicad_sympart"
+    ],
+    "sha256": {
+      "circuit/sources/ic-library/cad/AS3340D.stock.kicad_sympart": "0754f5d7caf7b04caa2d469c64a33137b7bd2d652f32fd0cc3198e5e93f843c0"
+    }
+  },
+  "representation": {
+    "files": [
+      "symbols/src/AS3340D.kicad_sym"
+    ],
+    "formats": [
+      "kicad_sym"
+    ],
+    "units": "KiCad schematic units",
+    "original_paths": [
+      "circuit/sources/ic-library/cad/AS3340D.stock.kicad_sympart"
+    ]
+  },
+  "fidelity": {
+    "class": "derived",
+    "reason": "Stock pin graphics or custom unit layout normalized for the exact draft identity; unsupported manufacturer facts remain UNSOURCED.",
+    "evidence": [
+      "SOURCE UNAVAILABLE",
+      "http://www.alfarzpp.lv/ (manufacturer PDF location not recovered; mirrors do not establish primary bytes)"
+    ]
+  },
+  "derivation": {
+    "derived": true,
+    "input_sha256": {
+      "circuit/sources/ic-library/cad/AS3340D.stock.kicad_sympart": "0754f5d7caf7b04caa2d469c64a33137b7bd2d652f32fd0cc3198e5e93f843c0"
+    },
+    "tool": "scripts/libgen/fixtures/build_ic_assets.py, build_ic_custom.py, or build_passive_symbols.py",
+    "tool_version": "1",
+    "parameters": {
+      "normalization": "exact MPN/manufacturer/LCSC fields, local footprint reference; alias parent units expanded where required"
+    },
+    "output_sha256": {
+      "symbols/src/AS3340D.kicad_sym": "1d7b4b51c377e846cf147e8f35ef2e241fe59e47da5f844ce9cc535be8a4fe14"
+    }
+  },
+  "cad_use": {
+    "symbol": "zudo-osc-hole-field:AS3340D",
+    "footprint": "zudo-osc-hole-field:SOIC-16_3.9x9.9mm_P1.27mm",
+    "model_path": null,
+    "transform": {
+      "offset": null,
+      "rotation": null,
+      "scale": null
+    },
+    "seating_plane": null
+  },
+  "checks": {
+    "performed": [
+      "Issue-15 all-unit KiCad 10 ERC fixture and project library checker"
+    ],
+    "remaining_physical_checks": [
+      "Confirm exact package drawing/lot, actual circuit net mapping, electrical suitability and procurement before board release."
+    ]
+  },
+  "publication": {
+    "preview_selected": false,
+    "download_published": false,
+    "permitted_scope": null
+  }
+}

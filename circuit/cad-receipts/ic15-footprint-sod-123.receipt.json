@@ -1,0 +1,83 @@
+{
+  "receipt_version": 1,
+  "identity": {
+    "asset_id": "ic15-footprint-sod-123",
+    "record_id": null,
+    "manufacturer": null,
+    "mpn": null,
+    "package": "SOD-123",
+    "variant_notes": "Generic KiCad 10 package footprint, not exact vendor land-pattern qualification."
+  },
+  "acquisition": {
+    "provider": "KiCad 10.0.6 stock library",
+    "source_url": "KiCad 10.0.6 pinned oracle, scripts/kicad/run.sh",
+    "acquired_on": "2026-09-28",
+    "original_filenames": [
+      "SOD-123.stock.kicad_mod"
+    ],
+    "sha256": {
+      "circuit/sources/ic-library/cad/SOD-123.stock.kicad_mod": "fd16785935b01254e1076f490e12f0f096da73cf087adefce51225585c62557a"
+    }
+  },
+  "representation": {
+    "files": [
+      "footprints/kicad/zudo-osc-hole-field.pretty/SOD-123.kicad_mod"
+    ],
+    "formats": [
+      "kicad_mod"
+    ],
+    "units": "mm",
+    "original_paths": [
+      "circuit/sources/ic-library/cad/SOD-123.stock.kicad_mod"
+    ]
+  },
+  "fidelity": {
+    "class": "family",
+    "reason": "Generic package source; device-specific package dimensions and reflow rules require checking against the exact manufacturer drawing.",
+    "evidence": [
+      "KiCad 10.0.6 pinned stock library source retained with SHA-256."
+    ]
+  },
+  "derivation": {
+    "derived": true,
+    "input_sha256": {
+      "circuit/sources/ic-library/cad/SOD-123.stock.kicad_mod": "fd16785935b01254e1076f490e12f0f096da73cf087adefce51225585c62557a"
+    },
+    "tool": "scripts/libgen/fixtures/import_ic_stock.py and build_ic_assets.py; scripts/libgen/gen_courtyards.py",
+    "tool_version": "1",
+    "parameters": {
+      "operations": [
+        "set project footprint name",
+        "remove stock 3D model reference",
+        "generate project courtyard"
+      ]
+    },
+    "output_sha256": {
+      "footprints/kicad/zudo-osc-hole-field.pretty/SOD-123.kicad_mod": "89848ab5a19057b7ba0cfcbee3f91d3b6e0df9b7f15a3cc5e7abbb627701af02"
+    }
+  },
+  "cad_use": {
+    "symbol": null,
+    "footprint": "zudo-osc-hole-field:SOD-123",
+    "model_path": null,
+    "transform": {
+      "offset": null,
+      "rotation": null,
+      "scale": null
+    },
+    "seating_plane": null
+  },
+  "checks": {
+    "performed": [
+      "Project library and courtyard checks"
+    ],
+    "remaining_physical_checks": [
+      "Audit against exact package drawing before fabrication."
+    ]
+  },
+  "publication": {
+    "preview_selected": false,
+    "download_published": false,
+    "permitted_scope": null
+  }
+}

@@ -1,0 +1,83 @@
+{
+  "receipt_version": 1,
+  "identity": {
+    "asset_id": "ic15-footprint-r-0805-2012metric",
+    "record_id": null,
+    "manufacturer": null,
+    "mpn": null,
+    "package": "R_0805_2012Metric",
+    "variant_notes": "Generic KiCad 10 package footprint, not exact vendor land-pattern qualification."
+  },
+  "acquisition": {
+    "provider": "KiCad 10.0.6 stock library",
+    "source_url": "KiCad 10.0.6 pinned oracle, scripts/kicad/run.sh",
+    "acquired_on": "2026-09-28",
+    "original_filenames": [
+      "R_0805_2012Metric.stock.kicad_mod"
+    ],
+    "sha256": {
+      "circuit/sources/ic-library/cad/R_0805_2012Metric.stock.kicad_mod": "f050b6a50cc7e6f86291fb7aa8f87b0d02255e21cfbddf291cdccc87e5889794"
+    }
+  },
+  "representation": {
+    "files": [
+      "footprints/kicad/zudo-osc-hole-field.pretty/R_0805_2012Metric.kicad_mod"
+    ],
+    "formats": [
+      "kicad_mod"
+    ],
+    "units": "mm",
+    "original_paths": [
+      "circuit/sources/ic-library/cad/R_0805_2012Metric.stock.kicad_mod"
+    ]
+  },
+  "fidelity": {
+    "class": "family",
+    "reason": "Generic package source; device-specific package dimensions and reflow rules require checking against the exact manufacturer drawing.",
+    "evidence": [
+      "KiCad 10.0.6 pinned stock library source retained with SHA-256."
+    ]
+  },
+  "derivation": {
+    "derived": true,
+    "input_sha256": {
+      "circuit/sources/ic-library/cad/R_0805_2012Metric.stock.kicad_mod": "f050b6a50cc7e6f86291fb7aa8f87b0d02255e21cfbddf291cdccc87e5889794"
+    },
+    "tool": "scripts/libgen/fixtures/import_ic_stock.py and build_ic_assets.py; scripts/libgen/gen_courtyards.py",
+    "tool_version": "1",
+    "parameters": {
+      "operations": [
+        "set project footprint name",
+        "remove stock 3D model reference",
+        "generate project courtyard"
+      ]
+    },
+    "output_sha256": {
+      "footprints/kicad/zudo-osc-hole-field.pretty/R_0805_2012Metric.kicad_mod": "e9d6399704bb11a075dd7ee6494bc8b6285f8c3f6439986f93f209281450b305"
+    }
+  },
+  "cad_use": {
+    "symbol": null,
+    "footprint": "zudo-osc-hole-field:R_0805_2012Metric",
+    "model_path": null,
+    "transform": {
+      "offset": null,
+      "rotation": null,
+      "scale": null
+    },
+    "seating_plane": null
+  },
+  "checks": {
+    "performed": [
+      "Project library and courtyard checks"
+    ],
+    "remaining_physical_checks": [
+      "Audit against exact package drawing before fabrication."
+    ]
+  },
+  "publication": {
+    "preview_selected": false,
+    "download_published": false,
+    "permitted_scope": null
+  }
+}

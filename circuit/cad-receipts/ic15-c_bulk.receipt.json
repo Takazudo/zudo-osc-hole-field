@@ -1,0 +1,80 @@
+{
+  "receipt_version": 1,
+  "identity": {
+    "asset_id": "ic15-c_bulk",
+    "record_id": null,
+    "manufacturer": "Murata",
+    "mpn": "GRM21BR61E475KA12L",
+    "package": "0805",
+    "variant_notes": "SOURCE UNAVAILABLE"
+  },
+  "acquisition": {
+    "provider": "KiCad 10 stock symbol; manufacturer document unavailable",
+    "source_url": "https://search.murata.co.jp/Ceramy/image/img/A01X/G101/ENG/GRM21BR61E475KA12-01A.pdf (HTTP 404 during retrieval)",
+    "acquired_on": "2026-09-28",
+    "original_filenames": [
+      "build_passive_symbols.py"
+    ],
+    "sha256": {
+      "scripts/libgen/fixtures/build_passive_symbols.py": "9bc2acc4796c831429825a2392a703aa044e8cd90fa0bafd4548ea0a0a5a4c35"
+    }
+  },
+  "representation": {
+    "files": [
+      "symbols/src/GRM21BR61E475KA12L.kicad_sym"
+    ],
+    "formats": [
+      "kicad_sym"
+    ],
+    "units": "KiCad schematic units",
+    "original_paths": [
+      "scripts/libgen/fixtures/build_passive_symbols.py"
+    ]
+  },
+  "fidelity": {
+    "class": "derived",
+    "reason": "Stock pin graphics or custom unit layout normalized for the exact draft identity; unsupported manufacturer facts remain UNSOURCED.",
+    "evidence": [
+      "SOURCE UNAVAILABLE",
+      "https://search.murata.co.jp/Ceramy/image/img/A01X/G101/ENG/GRM21BR61E475KA12-01A.pdf (HTTP 404 during retrieval)"
+    ]
+  },
+  "derivation": {
+    "derived": true,
+    "input_sha256": {
+      "scripts/libgen/fixtures/build_passive_symbols.py": "9bc2acc4796c831429825a2392a703aa044e8cd90fa0bafd4548ea0a0a5a4c35"
+    },
+    "tool": "scripts/libgen/fixtures/build_ic_assets.py, build_ic_custom.py, or build_passive_symbols.py",
+    "tool_version": "1",
+    "parameters": {
+      "normalization": "exact MPN/manufacturer/LCSC fields, local footprint reference; alias parent units expanded where required"
+    },
+    "output_sha256": {
+      "symbols/src/GRM21BR61E475KA12L.kicad_sym": "75c22766661ee07f1ad7ac5b28c39b0939733a7b94ffd2f1076de403a8061dc3"
+    }
+  },
+  "cad_use": {
+    "symbol": "zudo-osc-hole-field:GRM21BR61E475KA12L",
+    "footprint": "zudo-osc-hole-field:C0805",
+    "model_path": null,
+    "transform": {
+      "offset": null,
+      "rotation": null,
+      "scale": null
+    },
+    "seating_plane": null
+  },
+  "checks": {
+    "performed": [
+      "Issue-15 all-unit KiCad 10 ERC fixture and project library checker"
+    ],
+    "remaining_physical_checks": [
+      "Confirm exact package drawing/lot, actual circuit net mapping, electrical suitability and procurement before board release."
+    ]
+  },
+  "publication": {
+    "preview_selected": false,
+    "download_published": false,
+    "permitted_scope": null
+  }
+}

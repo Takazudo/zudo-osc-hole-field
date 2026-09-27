@@ -1,0 +1,88 @@
+{
+  "receipt_version": 1,
+  "identity": {
+    "asset_id": "ic15-op_audio",
+    "record_id": null,
+    "manufacturer": "Texas Instruments",
+    "mpn": "OPA4196IDR",
+    "package": "SOIC-14",
+    "variant_notes": "AVAILABLE"
+  },
+  "acquisition": {
+    "provider": "KiCad 10 stock symbol and retained manufacturer/creator document",
+    "source_url": "https://www.ti.com/lit/ds/symlink/opa4196.pdf",
+    "acquired_on": "2026-09-28",
+    "original_filenames": [
+      "OPA4196IDR.stock.kicad_sympart",
+      "OPA4196IDR.parent.kicad_sympart",
+      "OPA4196.pdf"
+    ],
+    "sha256": {
+      "circuit/sources/ic-library/cad/OPA4196IDR.stock.kicad_sympart": "cd4fd0eec8ded246dc6b3fbd28ae4423d6b54742475fe21077a68cb8e315d453",
+      "circuit/sources/ic-library/cad/OPA4196IDR.parent.kicad_sympart": "51aa3c12f10254a0aaa0d885b74df67980e7903b99fc9459ca9ce0c5f616d7be",
+      "circuit/sources/ic-library/OPA4196.pdf": "d89dd6009d109bf18b349e77ff46e4df60bf7d4faaefd4c3ebe6ec0e2fc7793d"
+    }
+  },
+  "representation": {
+    "files": [
+      "symbols/src/OPA4196IDR.kicad_sym"
+    ],
+    "formats": [
+      "kicad_sym"
+    ],
+    "units": "KiCad schematic units",
+    "original_paths": [
+      "circuit/sources/ic-library/cad/OPA4196IDR.stock.kicad_sympart",
+      "circuit/sources/ic-library/cad/OPA4196IDR.parent.kicad_sympart",
+      "circuit/sources/ic-library/OPA4196.pdf"
+    ]
+  },
+  "fidelity": {
+    "class": "derived",
+    "reason": "Source pin functions audited against the retained document; KiCad stock or custom graphics normalized for this draft identity.",
+    "evidence": [
+      "AVAILABLE",
+      "https://www.ti.com/lit/ds/symlink/opa4196.pdf"
+    ]
+  },
+  "derivation": {
+    "derived": true,
+    "input_sha256": {
+      "circuit/sources/ic-library/cad/OPA4196IDR.stock.kicad_sympart": "cd4fd0eec8ded246dc6b3fbd28ae4423d6b54742475fe21077a68cb8e315d453",
+      "circuit/sources/ic-library/cad/OPA4196IDR.parent.kicad_sympart": "51aa3c12f10254a0aaa0d885b74df67980e7903b99fc9459ca9ce0c5f616d7be",
+      "circuit/sources/ic-library/OPA4196.pdf": "d89dd6009d109bf18b349e77ff46e4df60bf7d4faaefd4c3ebe6ec0e2fc7793d"
+    },
+    "tool": "scripts/libgen/fixtures/build_ic_assets.py, build_ic_custom.py, or build_passive_symbols.py",
+    "tool_version": "1",
+    "parameters": {
+      "normalization": "exact MPN/manufacturer/LCSC fields, local footprint reference; alias parent units expanded where required"
+    },
+    "output_sha256": {
+      "symbols/src/OPA4196IDR.kicad_sym": "f65d6c9565334174ddac1eccd509e503aebacaef820e4c6be449da8f7d7cf341"
+    }
+  },
+  "cad_use": {
+    "symbol": "zudo-osc-hole-field:OPA4196IDR",
+    "footprint": "zudo-osc-hole-field:SOIC-14_3.9x8.7mm_P1.27mm",
+    "model_path": null,
+    "transform": {
+      "offset": null,
+      "rotation": null,
+      "scale": null
+    },
+    "seating_plane": null
+  },
+  "checks": {
+    "performed": [
+      "Issue-15 all-unit KiCad 10 ERC fixture and project library checker"
+    ],
+    "remaining_physical_checks": [
+      "Confirm exact package drawing/lot, actual circuit net mapping, electrical suitability and procurement before board release."
+    ]
+  },
+  "publication": {
+    "preview_selected": false,
+    "download_published": false,
+    "permitted_scope": null
+  }
+}
