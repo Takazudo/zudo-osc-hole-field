@@ -1,0 +1,154 @@
+{
+  "schema_version": 1,
+  "exact_mpn": "SRBV160803",
+  "authority": "Alps Alpine SRBV catalogue drawing No.7; product list exact row.",
+  "source": {
+    "file": "design/mechanical/sources/alps-srbv.pdf",
+    "sha256": "4389058192ce8e89188d5c1c0f23de85945916542cd477ba04f3c75ac9f69ec8",
+    "url": "https://tech.alpsalpine.com/cms.media/product_catalog_sw_04_srbv_en_7f096645b6.pdf"
+  },
+  "facts": {
+    "mounting_surface_to_shaft_end": {
+      "value": null,
+      "unit": "mm",
+      "source_locator": null,
+      "status": "UNSOURCED",
+      "note": "L=15 mm is measured from the drawing actuator datum; full installed PCB-to-tip requires stack validation."
+    },
+    "actuator_length_L": {
+      "value": 15,
+      "unit": "mm",
+      "source_locator": "physical PDF page 0 product list SRBV160803; page 3 Drawing No.7 L table",
+      "status": "SOURCE",
+      "note": ""
+    },
+    "shaft_diameter": {
+      "value": null,
+      "unit": "mm",
+      "source_locator": null,
+      "status": "UNSOURCED",
+      "note": "Drawing No.7 dimensions show the M9×0.75 bushing and flattened actuator but no directly stated actuator diameter tolerance."
+    },
+    "body_height": {
+      "value": 7.5,
+      "unit": "mm",
+      "source_locator": "physical PDF page 0 product list 16.2×18.5×7.5; page 3 Drawing No.7 side view",
+      "status": "SOURCE",
+      "note": ""
+    },
+    "recommended_panel_hole": {
+      "value": null,
+      "unit": "mm",
+      "source_locator": null,
+      "status": "UNSOURCED",
+      "note": "M9×0.75 bushing is shown, but no recommended panel hole or tolerance is given."
+    },
+    "seated_height": {
+      "value": null,
+      "unit": "mm",
+      "source_locator": null,
+      "status": "UNSOURCED",
+      "note": "Board-to-panel seating and nut/cap fit await mechanical coupon."
+    },
+    "support_beyond_solder_joints": {
+      "value": "M9×0.75 panel bushing and two Ø2 mounting features are depicted; removal or trimming of the latter is not authorized by the drawing.",
+      "unit": "NONE",
+      "source_locator": "physical PDF page 3 Drawing No.7 side view and mounting-hole drawing",
+      "status": "SOURCE",
+      "note": ""
+    },
+    "positions": {
+      "value": 6,
+      "unit": "count",
+      "source_locator": "physical PDF page 0 SRBV160803 row; page 3 Drawing No.7 circuit diagram",
+      "status": "SOURCE",
+      "note": ""
+    },
+    "detent_angle": {
+      "value": {
+        "nominal": 30,
+        "tolerance": 3
+      },
+      "unit": "degree",
+      "source_locator": "physical PDF page 0 SRBV160803 product row",
+      "status": "SOURCE",
+      "note": ""
+    },
+    "body_width": {
+      "value": 16.2,
+      "unit": "mm",
+      "source_locator": "physical PDF page 0 SRBV160803 product row",
+      "status": "SOURCE",
+      "note": ""
+    },
+    "body_length": {
+      "value": 18.5,
+      "unit": "mm",
+      "source_locator": "physical PDF page 0 SRBV160803 product row",
+      "status": "SOURCE",
+      "note": ""
+    },
+    "mounting_hole_spacing": {
+      "value": 16,
+      "unit": "mm",
+      "source_locator": "physical PDF page 3 Drawing No.7 mounting-hole dimensions",
+      "status": "SOURCE",
+      "note": ""
+    },
+    "mounting_hole_diameter": {
+      "value": 2,
+      "unit": "mm",
+      "source_locator": "physical PDF page 3 Drawing No.7 mounting-hole dimensions",
+      "status": "SOURCE",
+      "note": ""
+    },
+    "common_terminals": {
+      "value": [
+        1,
+        10
+      ],
+      "unit": "terminal",
+      "source_locator": "physical PDF page 3 Drawing No.7 circuit diagram viewed from A",
+      "status": "SOURCE",
+      "note": ""
+    },
+    "position_terminals": {
+      "value": [
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "unit": "terminal",
+      "source_locator": "physical PDF page 3 Drawing No.7 circuit diagram viewed from A",
+      "status": "SOURCE",
+      "note": ""
+    },
+    "dummy_terminals": {
+      "value": [
+        8,
+        9
+      ],
+      "unit": "terminal",
+      "source_locator": "physical PDF page 3 Drawing No.7 dummy terminals table",
+      "status": "SOURCE",
+      "note": ""
+    }
+  },
+  "lug_resolution": {
+    "status": "UNRESOLVED - mechanical interference",
+    "fixed_center_pitch_mm": 17,
+    "lug_center_spacing_between_neighbors_mm": 1,
+    "required_hole_diameter_mm": 2,
+    "hole_overlap_mm": 1,
+    "body_gap_mm": 0.8,
+    "courtyard_width_mm": 19.1,
+    "courtyard_overlap_mm": 2.1,
+    "decision": "Keep both drawing-required mounting features in footprint. A shared hole/slot cannot fit two solid mounting legs with centres only 1 mm apart. No source supports removing or bending legs; a manufacturer-approved modification or a different board/assembly solution needs owner review. Fixed shaft centres and part identity stay unchanged.",
+    "source_locator": "physical PDF page 3 Drawing No.7 mounting-hole dimensions; design/grid/placements.lock.json selector centres",
+    "tracking_issue": "https://github.com/Takazudo/zudo-osc-hole-field/issues/47"
+  },
+  "status": "Unvalidated draft; five-position-row fit BLOCKED"
+}

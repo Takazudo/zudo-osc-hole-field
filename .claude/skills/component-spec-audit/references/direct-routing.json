@@ -1,5 +1,22 @@
 {
   "schema_version": 1,
   "contract": "For each line, the validator constructs literal positive queries for exact MPN, exact LCSC, manufacturer plus MPN, and function plus MPN; every query must resolve directly and uniquely. The negative query must resolve no line.",
-  "cases": []
+  "cases": [
+    {
+      "line_id": "line-b103",
+      "negative": "unrelated supplier 999999 b103"
+    },
+    {
+      "line_id": "line-b104",
+      "negative": "unrelated supplier 999999 b104"
+    },
+    {
+      "line_id": "line-b504",
+      "negative": "unrelated supplier 999999 b504"
+    },
+    {
+      "line_id": "line-srbv",
+      "negative": "unrelated supplier 999999 srbv"
+    }
+  ]
 }

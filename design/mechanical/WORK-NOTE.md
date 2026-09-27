@@ -1,0 +1,9 @@
+# Panel control evidence work note
+
+Issue #12 covers the Bourns PTV09A-4020F B103/B104/B504 family and Alps Alpine SRBV160803 octave selector. The fixed R21 shaft positions come from `design/grid/placements.lock.json`; no positions changed. `design/standard/electrical-standard.json` OSC-ES-1 selects 51 B103, 48 B104, and two B504 roles by UID. B104 current sourcing and assembly availability remain UNVERIFIED.
+
+The retained Bourns PTV09 family PDF (rev. 01/25) and Alps SRBV catalogue (update 2510) are in `sources/` with SHA-256s in each owner bundle and CAD receipt. The Bourns PTV09A-4 drawing is explicitly horizontal/rear mount and bushingless. Its 20 mm `L` shaft dimension is **not** a qualified PCB-to-tip installed height. The common footprint uses the horizontal/rear family recommended PCB hole layout; mounting-leg transfer to the exact -4 body and panel reach remain physical checks. All 3D WRLs are coarse body envelopes, not exact vendor models.
+
+The Alps Drawing No.7 gives 10 electrical terminals: 1 and 10 are common, 2–7 are the six positions, 8/9 are dummy, plus two mounting features. At fixed 17 mm pitch, adjacent Ø2 mm mounting features on 16 mm centres have 1 mm centre separation and 1 mm physical overlap. The footprint retains both features, so its five-up KiCad DRC intentionally fails. The mechanical gate is **OPEN**, tracked in [issue #47](https://github.com/Takazudo/zudo-osc-hole-field/issues/47); no supported shared-hole or no-leg solution exists in the retained drawing. A manufacturer/owner-approved fastening change and physical coupon are needed before layout qualification.
+
+The pin maps bind symbol pins to footprint pads; board nets are `UNASSIGNED` until circuit capture. The manual inventory has zero declared schematic placements and does not verify population. Source drawings, generated previews, and DRC fixtures were reviewed; no physical sample or panel stack was tested. All CAD is an unvalidated draft.
