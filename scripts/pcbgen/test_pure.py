@@ -40,6 +40,12 @@ class UUIDTests(unittest.TestCase):
         self.assertNotEqual(stable_uuid('b','footprint:J101','root'),stable_uuid('b','outline','J101'))
         with self.assertRaises(ValueError):stable_uuid('','item','key')
 
+    def test_new_board_without_board_uuid_preserves_first_footprint_owner(self):
+        board='(kicad_pcb (paper "A4") (footprint "x" (uuid "22222222-2222-4222-8222-222222222222") (property "Reference" "C106")))'
+        out=normalize(board,'b',{'C106'},{},True)
+        self.assertIn(stable_uuid('b','footprint:C106','root'),out)
+        self.assertNotIn(stable_uuid('b','board','root'),out)
+
     def test_normalize_only_owned_objects(self):
         board='(kicad_pcb (paper "A4") (uuid "11111111-1111-4111-8111-111111111111")\n(footprint "x" (uuid "22222222-2222-4222-8222-222222222222") (property "Reference" "J101") (pad "1" (uuid "33333333-3333-4333-8333-333333333333")))\n(segment (uuid "44444444-4444-4444-8444-444444444444"))\n(gr_text "owner (silk)" (uuid "55555555-5555-4555-8555-555555555555"))\n)'
         out=normalize(board,'b',{'J101'},{},True)

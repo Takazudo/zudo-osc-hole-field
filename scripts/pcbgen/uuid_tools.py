@@ -39,9 +39,13 @@ def normalize(text: str, board_id: str, owned_refs: set[str], new_ids: dict[str,
     if n!=1:raise ValueError('board paper declaration missing')
     edits=[]
     if created:
-        m=UUID_RE.search(text)
-        if not m:raise ValueError('board UUID missing')
-        edits.append((m.start(1),m.end(1),stable_uuid(board_id,'board','root')))
+        # KiCad 10 boards may omit a board-level UUID. Never substitute the
+        # first footprint UUID for it; inspect only direct board children.
+        board_uuid=next(((a,b) for a,b in top_level_spans(text) if text[a:b].startswith('(uuid ')),None)
+        if board_uuid is not None:
+            a,b=board_uuid
+            m=UUID_RE.search(text,a,b)
+            if m:edits.append((m.start(1),m.end(1),stable_uuid(board_id,'board','root')))
     for start,end in top_level_spans(text):
         block=text[start:end]
         kind=re.match(r'\(([A-Za-z0-9_]+)',block)
