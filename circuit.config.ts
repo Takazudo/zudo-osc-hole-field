@@ -1,4 +1,5 @@
 import type { CircuitConfig } from "@takazudo/zudo-circuit-doc/config";
+import { DEFAULT_PREVIEW_RENDERER } from "@takazudo/zudo-circuit-doc/config";
 
 export default {
   configVersion: 1,
@@ -31,6 +32,15 @@ export default {
     selection: "circuit/publication/selection.json",
     assets: "circuit/publication/assets.json",
   },
-  cad: { enabled: false, libraryName: "zudo-osc-hole-field" },
+  cad: {
+    enabled: true,
+    libraryName: "zudo-osc-hole-field",
+    symbolLibraries: ["symbols/zudo-osc-hole-field.kicad_sym"],
+    footprintMasterRoot: "footprints/kicad/zudo-osc-hole-field.pretty",
+    footprintLibraryRoot: "footprints/kicad/zudo-osc-hole-field.pretty",
+    modelRoot: "footprints/kicad/zudo-osc-hole-field.3dshapes",
+    modelLocatorPrefix: "${KIPRJMOD}/../../footprints/kicad/zudo-osc-hole-field.3dshapes/",
+    previewRenderer: DEFAULT_PREVIEW_RENDERER,
+  },
   validation: {},
 } satisfies CircuitConfig;

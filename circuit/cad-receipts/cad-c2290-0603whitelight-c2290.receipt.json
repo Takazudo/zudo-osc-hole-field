@@ -1,0 +1,97 @@
+{
+  "receipt_version": 1,
+  "identity": {
+    "asset_id": "cad-c2290-0603whitelight-c2290",
+    "record_id": null,
+    "manufacturer": "KENTO",
+    "mpn": "KT-0603W",
+    "package": "LED0603-R-RD_WHITE",
+    "variant_notes": "KENTO KT-0603W, white 0603 LED; the imported footprint referenced an unavailable EASYEDA2KICAD model, so no 3D model is claimed."
+  },
+  "acquisition": {
+    "provider": "GitHub repository Takazudo/zudo-pd",
+    "library_release_tag": null,
+    "source_url": "https://github.com/Takazudo/zudo-pd/blob/f25194fa73ded724e82d4561307c106480fbd9ce/symbols/zudo-pd.kicad_sym",
+    "acquired_on": "2026-09-28",
+    "original_filenames": [
+      "zudo-pd.kicad_sym",
+      "LED0603-R-RD_WHITE.kicad_mod"
+    ],
+    "sha256": {
+      "symbols/zudo-pd.kicad_sym": "1d897bd28edfe611bd7b8f8583e54287480a24240db395cf1412c03e2d6afff1",
+      "footprints/kicad/zudo-power.pretty/LED0603-R-RD_WHITE.kicad_mod": "0fff86027a2fd4e2e60e759025c89875f71664a00d69d02d64adee53c528e9fc"
+    }
+  },
+  "representation": {
+    "files": [
+      "symbols/src/0603Whitelight_C2290.kicad_sym",
+      "footprints/kicad/zudo-osc-hole-field.pretty/LED0603-R-RD_WHITE.kicad_mod"
+    ],
+    "formats": [
+      "kicad_mod",
+      "kicad_sym"
+    ],
+    "units": "KiCad schematic units; footprint and model dimensions in mm",
+    "original_paths": [
+      "symbols/zudo-pd.kicad_sym",
+      "footprints/kicad/zudo-power.pretty/LED0603-R-RD_WHITE.kicad_mod"
+    ]
+  },
+  "fidelity": {
+    "class": "family",
+    "reason": "The symbol identifies the requested KENTO variant; the copied footprint is a generic 0603 LED package and the source commit contains no matching retained white LED model.",
+    "evidence": [
+      "Source bytes are pinned to zudo-pd commit f25194fa73ded724e82d4561307c106480fbd9ce.",
+      "The footprint is an imported package representation; exact manufacturer dimensional correspondence has not been independently established here."
+    ]
+  },
+  "derivation": {
+    "derived": true,
+    "input_sha256": {
+      "symbols/zudo-pd.kicad_sym": "1d897bd28edfe611bd7b8f8583e54287480a24240db395cf1412c03e2d6afff1",
+      "footprints/kicad/zudo-power.pretty/LED0603-R-RD_WHITE.kicad_mod": "0fff86027a2fd4e2e60e759025c89875f71664a00d69d02d64adee53c528e9fc"
+    },
+    "tool": "scripts/libgen/seed_assets.py and scripts/libgen/gen_courtyards.py",
+    "tool_version": "1",
+    "parameters": {
+      "source_commit": "f25194fa73ded724e82d4561307c106480fbd9ce",
+      "library_nickname": "zudo-osc-hole-field",
+      "operations": [
+        "extract one symbol",
+        "set local footprint nickname",
+        "normalize identity fields",
+        "generate courtyard",
+        "normalize STEP text line endings and trailing spaces"
+      ]
+    },
+    "output_sha256": {
+      "symbols/src/0603Whitelight_C2290.kicad_sym": "497424de5a6df3457e17d23ac2f6af38481480a0b97e58014db58c27501f0c98",
+      "footprints/kicad/zudo-osc-hole-field.pretty/LED0603-R-RD_WHITE.kicad_mod": "f0d28a2a17db8030e86b909282af76011477415d053fbdcdd9aaafa19afd8e83"
+    }
+  },
+  "cad_use": {
+    "symbol": "zudo-osc-hole-field:0603Whitelight_C2290",
+    "footprint": "zudo-osc-hole-field:LED0603-R-RD_WHITE",
+    "model_path": null,
+    "transform": {
+      "offset": null,
+      "rotation": null,
+      "scale": null
+    },
+    "seating_plane": null
+  },
+  "checks": {
+    "performed": [
+      "Source file SHA-256 values were calculated from f25194fa73ded724e82d4561307c106480fbd9ce Git objects.",
+      "Generated output SHA-256 values are checked by scripts/libgen/check_lib.py."
+    ],
+    "remaining_physical_checks": [
+      "Compare package dimensions, pin/pad numbering, orientation and seating against the exact manufacturer's drawing before using a board for fabrication."
+    ]
+  },
+  "publication": {
+    "preview_selected": false,
+    "download_published": false,
+    "permitted_scope": null
+  }
+}
