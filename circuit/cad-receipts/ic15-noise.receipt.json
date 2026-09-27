@@ -1,0 +1,80 @@
+{
+  "receipt_version": 1,
+  "identity": {
+    "asset_id": "ic15-noise",
+    "record_id": null,
+    "manufacturer": "Electric Druid",
+    "mpn": "NOISE2",
+    "package": "PDIP-8 programmed device",
+    "variant_notes": "AVAILABLE"
+  },
+  "acquisition": {
+    "provider": "KiCad 10 stock symbol and retained manufacturer/creator document",
+    "source_url": "https://electricdruid.net/datasheets/NOISE2Datasheet.pdf",
+    "acquired_on": "2026-09-28",
+    "original_filenames": [
+      "NOISE2.pdf"
+    ],
+    "sha256": {
+      "circuit/sources/ic-library/NOISE2.pdf": "24161c9363c1d2249d9447879d0e93c27aa6df384e6413cc5f8ea223149739a0"
+    }
+  },
+  "representation": {
+    "files": [
+      "symbols/src/NOISE2.kicad_sym"
+    ],
+    "formats": [
+      "kicad_sym"
+    ],
+    "units": "KiCad schematic units",
+    "original_paths": [
+      "circuit/sources/ic-library/NOISE2.pdf"
+    ]
+  },
+  "fidelity": {
+    "class": "derived",
+    "reason": "Source pin functions audited against the retained document; KiCad stock or custom graphics normalized for this draft identity.",
+    "evidence": [
+      "AVAILABLE",
+      "https://electricdruid.net/datasheets/NOISE2Datasheet.pdf"
+    ]
+  },
+  "derivation": {
+    "derived": true,
+    "input_sha256": {
+      "circuit/sources/ic-library/NOISE2.pdf": "24161c9363c1d2249d9447879d0e93c27aa6df384e6413cc5f8ea223149739a0"
+    },
+    "tool": "scripts/libgen/fixtures/build_ic_assets.py, build_ic_custom.py, or build_passive_symbols.py",
+    "tool_version": "1",
+    "parameters": {
+      "normalization": "exact MPN/manufacturer/LCSC fields, local footprint reference; alias parent units expanded where required"
+    },
+    "output_sha256": {
+      "symbols/src/NOISE2.kicad_sym": "ed6efac5bca560d7862ea8f04ebaf51564e1578da34fe3cb1785604129bb17bc"
+    }
+  },
+  "cad_use": {
+    "symbol": "zudo-osc-hole-field:NOISE2",
+    "footprint": "zudo-osc-hole-field:DIP-8_W7.62mm",
+    "model_path": null,
+    "transform": {
+      "offset": null,
+      "rotation": null,
+      "scale": null
+    },
+    "seating_plane": null
+  },
+  "checks": {
+    "performed": [
+      "Issue-15 all-unit KiCad 10 ERC fixture and project library checker"
+    ],
+    "remaining_physical_checks": [
+      "Confirm exact package drawing/lot, actual circuit net mapping, electrical suitability and procurement before board release."
+    ]
+  },
+  "publication": {
+    "preview_selected": false,
+    "download_published": false,
+    "permitted_scope": null
+  }
+}

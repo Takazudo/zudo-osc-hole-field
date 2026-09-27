@@ -1,0 +1,83 @@
+{
+  "receipt_version": 1,
+  "identity": {
+    "asset_id": "ic15-footprint-potentiometer-bourns-tc33x-vertical",
+    "record_id": null,
+    "manufacturer": null,
+    "mpn": null,
+    "package": "Potentiometer_Bourns_TC33X_Vertical",
+    "variant_notes": "Generic KiCad 10 package footprint, not exact vendor land-pattern qualification."
+  },
+  "acquisition": {
+    "provider": "KiCad 10.0.6 stock library",
+    "source_url": "KiCad 10.0.6 pinned oracle, scripts/kicad/run.sh",
+    "acquired_on": "2026-09-28",
+    "original_filenames": [
+      "Potentiometer_Bourns_TC33X_Vertical.stock.kicad_mod"
+    ],
+    "sha256": {
+      "circuit/sources/ic-library/cad/Potentiometer_Bourns_TC33X_Vertical.stock.kicad_mod": "25da5cc05391475f2d71b7eea43b0fa42d1e40627295503de5c353d327f10b1b"
+    }
+  },
+  "representation": {
+    "files": [
+      "footprints/kicad/zudo-osc-hole-field.pretty/Potentiometer_Bourns_TC33X_Vertical.kicad_mod"
+    ],
+    "formats": [
+      "kicad_mod"
+    ],
+    "units": "mm",
+    "original_paths": [
+      "circuit/sources/ic-library/cad/Potentiometer_Bourns_TC33X_Vertical.stock.kicad_mod"
+    ]
+  },
+  "fidelity": {
+    "class": "family",
+    "reason": "Generic package source; device-specific package dimensions and reflow rules require checking against the exact manufacturer drawing.",
+    "evidence": [
+      "KiCad 10.0.6 pinned stock library source retained with SHA-256."
+    ]
+  },
+  "derivation": {
+    "derived": true,
+    "input_sha256": {
+      "circuit/sources/ic-library/cad/Potentiometer_Bourns_TC33X_Vertical.stock.kicad_mod": "25da5cc05391475f2d71b7eea43b0fa42d1e40627295503de5c353d327f10b1b"
+    },
+    "tool": "scripts/libgen/fixtures/import_ic_stock.py and build_ic_assets.py; scripts/libgen/gen_courtyards.py",
+    "tool_version": "1",
+    "parameters": {
+      "operations": [
+        "set project footprint name",
+        "remove stock 3D model reference",
+        "generate project courtyard"
+      ]
+    },
+    "output_sha256": {
+      "footprints/kicad/zudo-osc-hole-field.pretty/Potentiometer_Bourns_TC33X_Vertical.kicad_mod": "f21f7dc38797a77839ca9a8af5f79774ea724cb1996e8e8ac8d0007831e3d851"
+    }
+  },
+  "cad_use": {
+    "symbol": null,
+    "footprint": "zudo-osc-hole-field:Potentiometer_Bourns_TC33X_Vertical",
+    "model_path": null,
+    "transform": {
+      "offset": null,
+      "rotation": null,
+      "scale": null
+    },
+    "seating_plane": null
+  },
+  "checks": {
+    "performed": [
+      "Project library and courtyard checks"
+    ],
+    "remaining_physical_checks": [
+      "Audit against exact package drawing before fabrication."
+    ]
+  },
+  "publication": {
+    "preview_selected": false,
+    "download_published": false,
+    "permitted_scope": null
+  }
+}

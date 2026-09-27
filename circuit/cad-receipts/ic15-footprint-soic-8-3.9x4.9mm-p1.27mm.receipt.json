@@ -1,0 +1,83 @@
+{
+  "receipt_version": 1,
+  "identity": {
+    "asset_id": "ic15-footprint-soic-8-3.9x4.9mm-p1.27mm",
+    "record_id": null,
+    "manufacturer": null,
+    "mpn": null,
+    "package": "SOIC-8_3.9x4.9mm_P1.27mm",
+    "variant_notes": "Generic KiCad 10 package footprint, not exact vendor land-pattern qualification."
+  },
+  "acquisition": {
+    "provider": "KiCad 10.0.6 stock library",
+    "source_url": "KiCad 10.0.6 pinned oracle, scripts/kicad/run.sh",
+    "acquired_on": "2026-09-28",
+    "original_filenames": [
+      "SOIC-8_3.9x4.9mm_P1.27mm.stock.kicad_mod"
+    ],
+    "sha256": {
+      "circuit/sources/ic-library/cad/SOIC-8_3.9x4.9mm_P1.27mm.stock.kicad_mod": "074ecb2092b24fa4b4b9cdd7c926fc587b0d7d6d21e7341e57935fd42d36894f"
+    }
+  },
+  "representation": {
+    "files": [
+      "footprints/kicad/zudo-osc-hole-field.pretty/SOIC-8_3.9x4.9mm_P1.27mm.kicad_mod"
+    ],
+    "formats": [
+      "kicad_mod"
+    ],
+    "units": "mm",
+    "original_paths": [
+      "circuit/sources/ic-library/cad/SOIC-8_3.9x4.9mm_P1.27mm.stock.kicad_mod"
+    ]
+  },
+  "fidelity": {
+    "class": "family",
+    "reason": "Generic package source; device-specific package dimensions and reflow rules require checking against the exact manufacturer drawing.",
+    "evidence": [
+      "KiCad 10.0.6 pinned stock library source retained with SHA-256."
+    ]
+  },
+  "derivation": {
+    "derived": true,
+    "input_sha256": {
+      "circuit/sources/ic-library/cad/SOIC-8_3.9x4.9mm_P1.27mm.stock.kicad_mod": "074ecb2092b24fa4b4b9cdd7c926fc587b0d7d6d21e7341e57935fd42d36894f"
+    },
+    "tool": "scripts/libgen/fixtures/import_ic_stock.py and build_ic_assets.py; scripts/libgen/gen_courtyards.py",
+    "tool_version": "1",
+    "parameters": {
+      "operations": [
+        "set project footprint name",
+        "remove stock 3D model reference",
+        "generate project courtyard"
+      ]
+    },
+    "output_sha256": {
+      "footprints/kicad/zudo-osc-hole-field.pretty/SOIC-8_3.9x4.9mm_P1.27mm.kicad_mod": "78e4cb1dceed398bb60317222135a8443152ae21b2fd4bc6a0496e1de61fe533"
+    }
+  },
+  "cad_use": {
+    "symbol": null,
+    "footprint": "zudo-osc-hole-field:SOIC-8_3.9x4.9mm_P1.27mm",
+    "model_path": null,
+    "transform": {
+      "offset": null,
+      "rotation": null,
+      "scale": null
+    },
+    "seating_plane": null
+  },
+  "checks": {
+    "performed": [
+      "Project library and courtyard checks"
+    ],
+    "remaining_physical_checks": [
+      "Audit against exact package drawing before fabrication."
+    ]
+  },
+  "publication": {
+    "preview_selected": false,
+    "download_published": false,
+    "permitted_scope": null
+  }
+}
