@@ -1,0 +1,80 @@
+{
+  "schema_version": 1,
+  "facts": [
+    {
+      "fact_id": "fact-2ms1-identity",
+      "record_id": "rec-dailywell-2ms1t1b1m2qes-5",
+      "source_id": "src-2ms1-lcsc",
+      "class": "PROJECT_STATE",
+      "value": {
+        "lcsc": "C908280",
+        "manufacturer": "Dailywell",
+        "mpn": "2MS1T1B1M2QES-5",
+        "variant": "Exact MPN and LCSC identity listing; through-hole toggle."
+      },
+      "unit": "NONE",
+      "conditions": "Exact candidate in the unvalidated project draft.",
+      "locator": "Identity section: Product heading and identity fields.",
+      "provenance": "DISTRIBUTOR-IDENTITY",
+      "verdict": "CONFIRMED - distributor identity only",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-2ms1-contact",
+      "record_id": "rec-dailywell-2ms1t1b1m2qes-5",
+      "source_id": "src-2ms1-official",
+      "class": "PROJECT_STATE",
+      "value": "Exact manufacturer-hosted pin/contact diagram was not retrieved; the retained mirror is not promoted to primary-source confirmation.",
+      "unit": "NONE",
+      "conditions": "Exact candidate in the unvalidated project draft.",
+      "locator": "Download Center section: Official 2M Series download endpoint; retained mirror pages 24–29 are available but are third-party hosted.",
+      "provenance": "UNVERIFIED",
+      "verdict": "UNSOURCED",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-2ms1-panel-fit",
+      "record_id": "rec-dailywell-2ms1t1b1m2qes-5",
+      "source_id": "src-2ms1-mirror",
+      "class": "PROJECT_STATE",
+      "value": "Panel reach, lever sweep, bushing stack and board-to-panel spacing remain physical coupon checks at the fixed R21 centres.",
+      "unit": "NONE",
+      "conditions": "Fixed R21 control centres; no toggle position or panel coordinate may move.",
+      "locator": "Drawing or catalog figure/table section: 2M family dimensions are retained, but installed panel stack and lever sweep are not measured; design/mechanical/facts/toggle.json.",
+      "provenance": "PROJECT-CHOICE",
+      "verdict": "NEEDS BENCH",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-2ms1-cad-fidelity",
+      "record_id": "rec-dailywell-2ms1t1b1m2qes-5",
+      "source_id": "src-2ms1-mirror",
+      "class": "PROJECT_STATE",
+      "value": "Existing CAD footprint is a derived 2M family representation and has not been qualified against a manufacturer-hosted exact-variant drawing.",
+      "unit": "NONE",
+      "conditions": "Exact candidate in the unvalidated project draft.",
+      "locator": "Drawing or catalog figure/table section: cad-dailywell-2ms1-t1b1m2 receipt; Dailywell series mirror input and exact C908280 listing.",
+      "provenance": "UNVERIFIED",
+      "verdict": "UNSOURCED",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-2ms1-manufacturer",
+      "record_id": "rec-dailywell-2ms1t1b1m2qes-5",
+      "source_id": "src-2ms1-official",
+      "class": "PROJECT_STATE",
+      "value": "Dailywell",
+      "unit": "NONE",
+      "conditions": "Manufacturer identity for this exact candidate in the unvalidated project draft.",
+      "locator": "Official Download Center section: the manufacturer PDF bytes were not retrieved.",
+      "provenance": "UNVERIFIED",
+      "verdict": "UNSOURCED",
+      "depends_on": [],
+      "expression": ""
+    }
+  ]
+}

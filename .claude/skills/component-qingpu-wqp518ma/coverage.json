@@ -1,0 +1,48 @@
+{
+  "schema_version": 1,
+  "coverage": [
+    {
+      "coverage_id": "cov-wqp-identity",
+      "record_id": "rec-wqp518ma",
+      "domain": "identity",
+      "status": "OPEN",
+      "reason": "The MPN appears on a distributor page, but the Qingpu/WQP manufacturer bridge and exact C9900052034 mapping remain unresolved.",
+      "fact_ids": [
+        "fact-wqp-listing-identity",
+        "fact-wqp-manufacturer-bridge",
+        "fact-wqp-c990-listing",
+        "fact-wqp-c990-equivalence"
+      ],
+      "blocking_fact_ids": [
+        "fact-wqp-manufacturer-bridge",
+        "fact-wqp-c990-equivalence"
+      ]
+    },
+    {
+      "coverage_id": "cov-wqp-pinout",
+      "record_id": "rec-wqp518ma",
+      "domain": "pinout",
+      "status": "OPEN",
+      "reason": "The retained family drawing and derived CAD do not establish exact WQP518MA terminal-to-pad identity.",
+      "fact_ids": [
+        "fact-wqp-pinout"
+      ],
+      "blocking_fact_ids": [
+        "fact-wqp-pinout"
+      ]
+    },
+    {
+      "coverage_id": "cov-wqp-mechanical",
+      "record_id": "rec-wqp518ma",
+      "domain": "mechanical_fit",
+      "status": "OPEN",
+      "reason": "The fixed panel stack requires a coupon measurement; do not infer fit from the family drawing.",
+      "fact_ids": [
+        "fact-wqp-panel-stack"
+      ],
+      "blocking_fact_ids": [
+        "fact-wqp-panel-stack"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,103 @@
+{
+  "schema_version": 1,
+  "facts": [
+    {
+      "fact_id": "fact-wqp-listing-identity",
+      "record_id": "rec-wqp518ma",
+      "source_id": "src-wqp-thonk",
+      "class": "PROJECT_STATE",
+      "value": "Thonk lists WQP518MA and WQP, but the exact handoff manufacturer string Qingpu is not established.",
+      "unit": "NONE",
+      "conditions": "Exact candidate in the unvalidated project draft.",
+      "locator": "Identity section: Product heading and item description for WQP518MA.",
+      "provenance": "UNVERIFIED",
+      "verdict": "UNSOURCED",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-wqp-manufacturer-bridge",
+      "record_id": "rec-wqp518ma",
+      "source_id": "src-wqp-thonk",
+      "class": "PROJECT_STATE",
+      "value": "The handoff manufacturer is Qingpu, while the retained listing names WQP; an exact manufacturer-name bridge is not established.",
+      "unit": "NONE",
+      "conditions": "Exact candidate in the unvalidated project draft.",
+      "locator": "Identity section: Product heading and producer statement; comparison with the issue handoff identity.",
+      "provenance": "UNVERIFIED",
+      "verdict": "UNSOURCED",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-wqp-c990-listing",
+      "record_id": "rec-wqp518ma",
+      "source_id": "src-wqp-c9900052034",
+      "class": "PROJECT_STATE",
+      "value": "The C9900052034 listing names WQP-WQP518MA and JLCPCB Assembly; it does not list the literal MPN WQP518MA.",
+      "unit": "NONE",
+      "conditions": "Exact candidate in the unvalidated project draft.",
+      "locator": "Identity section: JLCPCB listing identity fields and purchase restriction.",
+      "provenance": "UNVERIFIED",
+      "verdict": "UNSOURCED",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-wqp-c990-equivalence",
+      "record_id": "rec-wqp518ma",
+      "source_id": "src-wqp-c9900052034",
+      "class": "PROJECT_STATE",
+      "value": "Equivalence between the C9900052034 listing MPN WQP-WQP518MA and the inventory candidate WQP518MA is not established.",
+      "unit": "NONE",
+      "conditions": "Exact candidate in the unvalidated project draft.",
+      "locator": "Identity section: The listing MPN differs from the handoff MPN; no exact variant cross-reference is retained.",
+      "provenance": "UNVERIFIED",
+      "verdict": "UNSOURCED",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-wqp-pinout",
+      "record_id": "rec-wqp518ma",
+      "source_id": "src-wqp-family-drawing",
+      "class": "PROJECT_STATE",
+      "value": "The project CAD representation labels T as tip, TN as tip-normal, and S as sleeve; exact WQP518MA terminal mapping remains unconfirmed.",
+      "unit": "NONE",
+      "conditions": "Exact candidate in the unvalidated project draft.",
+      "locator": "Figure in retained image: Retained PJ398SM-family drawing and cad-qingpu-wqp518ma receipt; source does not confirm exact WQP drills or terminals.",
+      "provenance": "UNVERIFIED",
+      "verdict": "UNSOURCED",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-wqp-panel-stack",
+      "record_id": "rec-wqp518ma",
+      "source_id": "src-wqp-family-drawing",
+      "class": "PROJECT_STATE",
+      "value": "Mounted height, bushing thread, exact nut, panel-hole callout, clamp range, and board-to-panel distance require a physical coupon check.",
+      "unit": "NONE",
+      "conditions": "Fixed R21 grid; jack coordinates and the 6.15 mm LED offset stay unchanged.",
+      "locator": "Figure in retained image: Retained family drawing has no exact WQP518MA panel stack or hole tolerance; design/mechanical/facts/jack.json records the gaps.",
+      "provenance": "PROJECT-CHOICE",
+      "verdict": "NEEDS BENCH",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-wqp518ma-manufacturer",
+      "record_id": "rec-wqp518ma",
+      "source_id": "src-wqp-thonk",
+      "class": "PROJECT_STATE",
+      "value": "Qingpu",
+      "unit": "NONE",
+      "conditions": "Manufacturer identity for this exact candidate in the unvalidated project draft.",
+      "locator": "Product identity section: the retained listing does not state the handoff manufacturer string Qingpu.",
+      "provenance": "UNVERIFIED",
+      "verdict": "UNSOURCED",
+      "depends_on": [],
+      "expression": ""
+    }
+  ]
+}

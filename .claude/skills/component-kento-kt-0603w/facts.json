@@ -1,0 +1,94 @@
+{
+  "schema_version": 1,
+  "facts": [
+    {
+      "fact_id": "fact-kento-white-identity",
+      "record_id": "rec-kento-white",
+      "source_id": "src-kento-white-lcsc",
+      "class": "PROJECT_STATE",
+      "value": {
+        "lcsc": "C2290",
+        "manufacturer": "Hubei KENTO Elec",
+        "mpn": "KT-0603W",
+        "variant": "Exact MPN and LCSC identity listing; 0603 package category."
+      },
+      "unit": "NONE",
+      "conditions": "Exact candidate in the unvalidated project draft.",
+      "locator": "Identity section: Product heading and identity fields.",
+      "provenance": "DISTRIBUTOR-IDENTITY",
+      "verdict": "CONFIRMED - distributor identity only",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-kento-white-polarity",
+      "record_id": "rec-kento-white",
+      "source_id": "src-kento-white-lcsc",
+      "class": "PROJECT_STATE",
+      "value": "Exact manufacturer pad-to-polarity mapping is not established by retained manufacturer evidence; imported symbol labels remain provisional.",
+      "unit": "NONE",
+      "conditions": "Exact candidate in the unvalidated project draft.",
+      "locator": "Identity section: Distributor listing is identity evidence only; imported symbol labels are not promoted.",
+      "provenance": "UNVERIFIED",
+      "verdict": "UNSOURCED",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-kento-white-electrical",
+      "record_id": "rec-kento-white",
+      "source_id": "src-kento-white-lcsc",
+      "class": "PROJECT_STATE",
+      "value": "No manufacturer-primary electrical limits or optical bins are retained for this exact LED identity.",
+      "unit": "NONE",
+      "conditions": "Exact candidate in the unvalidated project draft.",
+      "locator": "Identity section: No exact manufacturer datasheet bytes are retained; the listing is identity authority only.",
+      "provenance": "UNVERIFIED",
+      "verdict": "UNSOURCED",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-kento-white-optical-fit",
+      "record_id": "rec-kento-white",
+      "source_id": "src-kento-white-window",
+      "class": "PROJECT_STATE",
+      "value": "The white emitter path through the proposed panel window has not been measured for brightness, cross-talk, viewing angle, or stack clearance.",
+      "unit": "NONE",
+      "conditions": "Fixed jack-adjacent LED feature centre at 6.15 mm offset; proposal only, no placement changes.",
+      "locator": "Project proposal section: Project LED-window proposal coupon_gate; no optical or assembled-stack test exists.",
+      "provenance": "PROJECT-CHOICE",
+      "verdict": "NEEDS BENCH",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-kento-white-cad-fidelity",
+      "record_id": "rec-kento-white",
+      "source_id": "src-kento-white-lcsc",
+      "class": "PROJECT_STATE",
+      "value": "Existing 0603 footprint and symbol are imported package-family assets and are not verified against an exact manufacturer drawing.",
+      "unit": "NONE",
+      "conditions": "Exact candidate in the unvalidated project draft.",
+      "locator": "Identity section: Existing CAD receipt for this MPN; no exact manufacturer dimensional and polarity drawing retained.",
+      "provenance": "UNVERIFIED",
+      "verdict": "UNSOURCED",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-kento-white-manufacturer",
+      "record_id": "rec-kento-white",
+      "source_id": "src-kento-white-lcsc",
+      "class": "PROJECT_STATE",
+      "value": "Hubei KENTO Elec",
+      "unit": "NONE",
+      "conditions": "Manufacturer identity for this exact candidate in the unvalidated project draft.",
+      "locator": "Product identity section: distributor identifies the name, but no manufacturer-primary source is retained.",
+      "provenance": "UNVERIFIED",
+      "verdict": "UNSOURCED",
+      "depends_on": [],
+      "expression": ""
+    }
+  ]
+}
