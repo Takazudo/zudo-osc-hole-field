@@ -1,0 +1,61 @@
+{
+  "schema_version": 1,
+  "oracle": "scripts/kicad/run.sh ngspice -b, pinned KiCad 10.0.6 image",
+  "status": "Model-limited checks only",
+  "model_calibration": {
+    "generic_pair_temperature_C": 27,
+    "sine_symmetry_wiper_V": 1.5,
+    "sine_level_rheostat_ohm": 5500,
+    "octave_span_rheostat_ohm": 900,
+    "meaning": "Chosen model settings, not measured factory trim positions"
+  },
+  "runs": [
+    {
+      "deck": "design/spec/modules/spice/oscillator-reference-ideal.cir",
+      "status": "PASS - model only",
+      "measures": {
+        "osc_oct0": -1.99999,
+        "osc_oct1": -0.999994,
+        "osc_oct2": 2.163264e-11,
+        "osc_oct3": 0.999994,
+        "osc_oct4": 1.999988,
+        "osc_oct5": 2.999982
+      },
+      "model_limit": "Ideal op-amps/reference; generic matched BJT pair if present. Not a manufacturer oscillator model or hardware result."
+    },
+    {
+      "deck": "design/spec/modules/spice/oscillator-sine-generic.cir",
+      "status": "PASS - model only",
+      "measures": {
+        "sine_max": 4.953444,
+        "sine_min": -4.965401,
+        "sine_mean": 0.01463937,
+        "generic_model_thd_percent": 2.03978
+      },
+      "model_limit": "Ideal op-amps/reference; generic matched BJT pair if present. Not a manufacturer oscillator model or hardware result."
+    },
+    {
+      "deck": "design/spec/modules/spice/oscillator-levels-ideal.cir",
+      "status": "PASS - model only",
+      "measures": {
+        "tri_max": 4.999982,
+        "tri_min": -4.999982,
+        "saw_max": 4.999989,
+        "saw_min": -4.999989
+      },
+      "model_limit": "Ideal op-amps/reference; generic matched BJT pair if present. Not a manufacturer oscillator model or hardware result."
+    }
+  ],
+  "not_run": [
+    {
+      "subject": "AS3340 exponential core, tracking, sync, PWM transients, startup and temperature",
+      "status": "NOT RUN",
+      "reason": "No retained vendor macro-model; ALFA data sheet gives reference topology and typical conditions, not a SPICE model."
+    },
+    {
+      "subject": "Cable stability, protection and buffered -5 V supply sequencing",
+      "status": "NOT RUN",
+      "reason": "Ideal amplifier models here do not establish device stability, rail behavior or fault survival."
+    }
+  ]
+}

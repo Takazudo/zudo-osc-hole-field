@@ -1,0 +1,48 @@
+---
+title: "Shared oscillator octave reference"
+sidebar_position: 32
+---
+
+> **Unvalidated draft — not bench tested.** One `octave_reference` sheet supplies O1–O5. This is an owner-delegated electrical proposal; tap arithmetic and an ideal SPICE model do not establish physical pitch accuracy.
+
+The source is `octave_family()` in `design/spec/modules/oscillator.py`, composed from the [standard reference and octave cells](./osc-electrical-standard.mdx). Only rails and the nine `OSC_REF*`/`OSC_OCT*` reference nets are global. Audio, timing and pitch summing nodes remain local to each oscillator instance.
+
+```mermaid
+flowchart LR
+    Ref[REF5050 5 V] --> Master[Precision plus/minus 5 V and gate reference]
+    Master --> Ends[Buffered minus 2 V / trimmed plus 3 V endpoints]
+    Ends --> Ladder[Five equal 10 kohm resistors]
+    Ladder --> Taps[Six precision tap buffers]
+    Taps --> Switch[Each fixed six-position rotary]
+    Switch --> Filter[1 kohm and 100 nF receiver]
+    Filter --> Buffer[Per-channel precision buffer]
+    Buffer --> Pitch[100 kohm to local pitch summer]
+```
+
+| Net | Connected pins | Value / note |
+| --- | --- | --- |
+| `OSC_REF5` | REF5050 output follower, ladder endpoint generators and control references | +5 V nominal |
+| `OSC_REFN5` | Equal-10 kΩ inverting reference amplifier and buffered destinations | −5 V nominal; local core supply buffers take their own load |
+| `OSC_GATE_REF` | Standard 22 kΩ/100 kΩ divider follower and sync comparators | Approximately 4.09836 V |
+| `OCT_BOTTOM` | −2 V endpoint buffer, first ladder resistor, lowest tap buffer | Actual alias joins `BOTTOM` and `T0`; no floating ladder endpoint |
+| `OCT_TOP` | Trimmed +3 V endpoint, last ladder resistor, highest tap buffer | Actual alias joins `TOP` and `T5` |
+| `OSC_OCT0`…`OSC_OCT5` | Six tap buffers and positions 1…6 of all five rotary switches | −2, −1, 0, +1, +2, +3 V nominal |
+| Local `OCT_SELECTED` | Each rotary's common pins 1 and 10 | Dummy/mounting pins explicitly unconnected |
+| Local `OCT_FILTER` | 1 kΩ receiver resistor, 100 nF to ground, 10 MΩ pulldown and amplifier input | Finite transition, no clickless promise |
+| Local `OCT_CV` | Precision receiver output and 100 kΩ pitch input | Per-instance voltage; never a shared oscillator signal |
+
+Five 10 kΩ / 0.1% resistors divide the −2…+3 V span. A 40 kΩ/10 kΩ divider and buffer produce +1 V from +5 V; 10 kΩ/20 kΩ inversion produces −2 V. The top-end amplifier uses 10 kΩ to ground and 19.1 kΩ plus a 1 kΩ trimmer in feedback. Setting the trimmer near 900 Ω gives nominal +3 V. All six taps are buffered before the panel selectors.
+
+A shared ladder reduces reference-current demand and differences between five independent references. It also creates a shared failure point. It does not cancel channel receiver errors, cable return offsets, switch contact resistance or core scale drift. No unbuffered ladder junction, high-impedance summing node or capacitor timing node crosses a board connector.
+
+The initial wiring envelope is at most 300 mm per harness, with an **aggregate direct cable capacitance of at most 1 nF per shared tap** (approximately 200 pF per branch when all five are connected). The 100 nF receiver capacitor is behind its 1 kΩ series resistor. Real cable, filter, simultaneous switching and reference-buffer stability must be checked together. Return wiring accompanies each reference group. A shared source does not eliminate return voltage error.
+
+Closed-contact filtering is approximately 100 µs before cable/source contributions. During an open contact the 10 MΩ return and 100 nF give approximately one second decay toward the zero-octave voltage; a brief break therefore tends to retain the previous selection. Mechanical bounce can still step the pitch. No switch-contact order or clickless transition is claimed.
+
+All reference circuitry belongs to `OSC_SHARED_REFERENCE`. It remains one local island; the panel rotary switches may be on different boards. The local receiver buffers belong to their oscillator cores. The spec explicitly joins both ladder endpoints to their drivers, and the unit test catches omission of those aliases.
+
+Calibrate the master reference and upper span after warm-up, then measure every adjacent step and both endpoints with representative harnesses and all five receivers present. The standard's maximum 2 mV step error is a target. A 0.1% resistor ladder and one span trim cannot correct arbitrary individual ratio errors; a failed step requires a reviewed matching/resistor decision before hardware approval. The oscillator scale and HF trims cannot conceal a bad ladder.
+
+The ideal-reference ngspice run produces the six recorded voltages in `design/reports/spice/oscillator.json`. It models ideal amplifier gain and an ideal 5 V reference; noise, mismatch, drift and cable stability are not verified. The shared current allocation is counted once: 15 mA typical planning and 26 mA upper planning on each analog rail, including three whole OPA4197 packages and a reference/distribution allowance. Those figures are not guaranteed maxima.
+
+See the [oscillator calibration and open gates](./osc-block-osc.mdx). No reference board or oscillator has been bench tested.
