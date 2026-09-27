@@ -1,0 +1,30 @@
+---
+title: "Hosting plan"
+description: "Records the intended documentation domain, inert Worker configuration, and owner-only steps deferred until deployment."
+sidebar_position: 50
+---
+
+## Current state
+
+The intended documentation domain is `zudo-osc-hole-field.zudolab.dev`. The committed site config records it as `siteUrl` in `doc/zfb.config.ts`, and the committed, inert `doc/wrangler.jsonc` describes an assets-only Worker with `custom_domain: true`.
+
+The configuration is inert. Nothing has been deployed, no domain has been activated for this site, and no repository secret or API token value is recorded here. Deployment is deferred to the separate hosting work; this page makes no deployment claim.
+
+## Deferred deployment recipe
+
+When the owner authorizes deployment, publish the built `doc/dist` output as an assets-only Worker and retain `custom_domain: true` for `zudo-osc-hole-field.zudolab.dev`. The custom-domain route provides the domain binding; the recipe has no separate manual DNS-record step.
+
+The repository workflow will read these GitHub repository secrets by name:
+
+| Secret name | Purpose |
+|---|---|
+| `CLOUDFLARE_API_TOKEN` | Scoped token used by the deployment workflow |
+| `CLOUDFLARE_ACCOUNT_ID` | Account identifier supplied to the deployment workflow |
+
+The token scope requested by this plan is:
+
+- Account `Workers Scripts: Edit`
+- Account `Account Settings: Read`
+- Zone `zudolab.dev`: `Workers Routes: Edit`, `DNS: Edit`, and `Zone: Read`
+
+Creating the token, setting either repository secret, and authorizing the first deployment are owner-only steps. This record contains names and permissions only; it contains no credential values or account identifier.

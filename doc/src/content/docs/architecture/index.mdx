@@ -4,8 +4,8 @@ description: "How the circuit is divided into functional blocks, interfaces and 
 sidebar_position: 1
 ---
 
-This section explains the circuit's structure: what each block is responsible for, how blocks connect, and which states the design moves through. It describes intent and rationale; exact component facts stay in the component evidence records.
+This section records the R21 module responsibilities, interface assumptions, placement authority, and proposed board structure. The [architecture overview](./overview.mdx) summarizes the instrument's functional blocks and open boundaries. Module pages describe the intended behavior and work required before circuit capture; they are not complete schematic designs.
 
-- [Architecture overview](./overview.mdx) is the current proposal. Nothing has been chosen yet.
+[Grid and artifact authority](./osc-grid-authority.mdx) identifies the fixed coordinate source, while [board partition and panel stack](./osc-board-stack.mdx) records mechanical assumptions that still need evidence. Exact component claims belong in the evidence records.
 
-When blocks or connectors are proposed, add an interfaces page by copying `circuit/templates/project-docs/architecture/interfaces.mdx` into this directory.
+<CategoryNav category="architecture" />
