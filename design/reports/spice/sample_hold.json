@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "module": "sample_hold",
+  "status": "Unvalidated ideal model; no IC, tolerance or physical qualification",
+  "oracle": "KiCad 10.0.6 pinned image, ngspice-44.2",
+  "deck": "design/spec/modules/spice/sample-hold-slew-ideal.cir",
+  "instances": "H1 and H2 share this topology; one representative deck run",
+  "cases": [
+    {
+      "position": "fast",
+      "r_min_ohm": 2200,
+      "r_pot_ohm": 0,
+      "c_lag_F": 5e-07,
+      "calculated_10_90_s": 0.002416947,
+      "ngspice_10_90_s": 0.00241688,
+      "relative_error_percent": 0.00277,
+      "status": "PASS - IDEAL RC MODEL ONLY"
+    },
+    {
+      "position": "center",
+      "r_min_ohm": 2200,
+      "r_pot_ohm": 250000,
+      "c_lag_F": 5e-07,
+      "calculated_10_90_s": 0.277070019,
+      "ngspice_10_90_s": 0.27707004,
+      "relative_error_percent": 1e-05,
+      "status": "PASS - IDEAL RC MODEL ONLY"
+    },
+    {
+      "position": "slow",
+      "r_min_ohm": 2200,
+      "r_pot_ohm": 500000,
+      "c_lag_F": 5e-07,
+      "calculated_10_90_s": 0.551723091,
+      "ngspice_10_90_s": 0.55172308,
+      "relative_error_percent": 0.0,
+      "status": "PASS - IDEAL RC MODEL ONLY"
+    }
+  ],
+  "not_run": [
+    {
+      "check": "LF398 acquisition, hold-step and hot droop",
+      "status": "NOT RUN",
+      "reason": "No validated LF398 model and physical capacitor/leakage characterization retained."
+    },
+    {
+      "check": "CD74HC221 70 \u00b5s pulse and trigger/button overlap",
+      "status": "NOT RUN",
+      "reason": "No validated timing/logic model or bench observation; 0.7 R C is a datasheet planning relation at 4.5 V."
+    },
+    {
+      "check": "OPA4197 output and remote cable stability",
+      "status": "NOT RUN",
+      "reason": "Issue #18 ideal output sweep failed overshoot target in 6/12 cases; vendor model and bench cable checks remain open."
+    }
+  ]
+}

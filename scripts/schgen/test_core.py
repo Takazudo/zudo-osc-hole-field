@@ -24,6 +24,28 @@ class GeneratorTests(unittest.TestCase):
             q=replace(next(x for x in family[0].parts if x.key=='R2'), panel_ref='J101')
             render((Family('bad',(p,q)),), (Instance('bad','BAD',1),), LIB)
 
+    def test_shared_sheet_accepts_exact_instance_panel_references(self):
+        families,instances=example()
+        f=families[0]
+        jack=next(p for p in f.parts if p.key=='J1')
+        exact=replace(jack,panel_refs={'SYN1':'J509','SYN2':'J510','SYN3':'J511'})
+        changed=replace(f,parts=tuple(exact if p.key=='J1' else p for p in f.parts),paper='A2')
+        generated=render((changed,),instances[:3],LIB)
+        sheet=generated['sheets/synthetic.kicad_sch']
+        self.assertIn('(reference "J509")',sheet)
+        self.assertIn('(reference "J510")',sheet)
+        self.assertIn('(paper "A2")',sheet)
+        with self.assertRaisesRegex(ValueError,'missing panel reference'):
+            missing=replace(changed,parts=tuple(replace(exact,panel_refs={'SYN1':'J509'}) if p.key=='J1' else p for p in changed.parts))
+            render((missing,),instances[:3],LIB)
+
+    def test_dnp_alternative_is_encoded_in_generated_schematic(self):
+        families,instances=example()
+        f=families[0]
+        altered=replace(f,parts=tuple(replace(p,dnp=True) if p.key=='R1' else p for p in f.parts))
+        sheet=render((altered,),instances[:3],LIB)['sheets/synthetic.kicad_sch']
+        self.assertIn('(dnp yes)',sheet)
+
     def test_multiunit_assignment_requires_every_unit(self):
         families,_=example()
         validate_family(families[0], LIB)

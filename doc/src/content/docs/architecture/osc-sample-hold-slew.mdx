@@ -1,45 +1,99 @@
 ---
-title: "S&H + SLEW — implementation proposal"
-description: "Proposes a post-hold slew path for both sample-and-hold channels and lists the tests needed to qualify it."
+title: "S&H + SLEW — captured pilot"
+description: "One reusable H1/H2 sample-and-hold sheet, its post-hold lag, verification and open gates."
 sidebar_position: 20
 ---
 
-## User-visible contract
+> **Unvalidated draft — not bench tested.** This is OSC-ES-1 **PROPOSAL (planning, owner-delegated)**. Generated KiCad connectivity and an ideal RC model were checked; no fabricated board, hold accuracy, protection, stability, rail budget or physical fit was validated.
 
-One SLEW pot per S&H, with the existing TRIGGER/IN/OUT jacks and SAMPLE button. Both rising and falling transitions are smoothed by that one amount. A new sample retargets the glide from its present output. Changing IN alone must not capture again. Channels remain independent. No noise normal, CV input, bypass switch, raw output, or alternating-trigger mode is added.
+## Contract and instance binding
 
-[ADDAC215](https://www.addacsystem.com/en/products/modules/addac200-series/addac215) provides the behavior reference: per-channel slew with one attack/decay control. Its source circuitry, long-time options, hold accuracy and extra features are not copied or promised.
+H1 and H2 are two instances of the **same generated `sample_hold.kicad_sch` family sheet**. KiCad gives each instance separate local nets and reference designators. The R21 handoff's sections `62_sample_hold` and `63_post_hold_slew` are circuit groups on this one A1 shared sheet: splitting them into two child pages with the present generator would require a cross-page global label and would incorrectly join H1 and H2 `RAW_HELD` outputs. No panel coordinates moved.
 
-![S&H and a separate post-hold slew path](/assets/osc-hole-field/slew-path.svg)
+| Function | H1 locked UID / ref | H2 locked UID / ref |
+| --- | --- | --- |
+| Trigger jack | `J:H1.TRIGGER` / `J509` | `J:H2.TRIGGER` / `J510` |
+| Signal input jack | `J:H1.IN` / `J609` | `J:H2.IN` / `J610` |
+| Sole output jack | `J:H1.OUT` / `J709` | `J:H2.OUT` / `J710` |
+| SAMPLE button | `C:H1.SAMPLE` / `SW607` | `C:H2.SAMPLE` / `SW707` |
+| SLEW pot | `C:H1.SLEW` / `RV807` | `C:H2.SLEW` / `RV808` |
+| Trigger magnitude LED | `L:H1.TRIGGER.mag` / `D509` | `L:H2.TRIGGER.mag` / `D510` |
+| Input magnitude LED | `L:H1.IN.mag` / `D609` | `L:H2.IN.mag` / `D610` |
+| Output magnitude LED | `L:H1.OUT.mag` / `D709` | `L:H2.OUT.mag` / `D710` |
 
-## Circuit boundary
+The source binding audit requires all sixteen UIDs once across the two instances. Every panel part carries its locked per-instance reference and a `PanelUid` sheet-name template; non-panel parts have no panel binding. The three indicators monitor already buffered nodes, and their drivers stay with their LED islands. Jack switch contacts are unused.
 
-Condition TRIGGER with input protection, threshold and hysteresis, then a finite acquisition pulse. The LF398 tracks while SAMPLE is asserted; capture happens over that real window, not an ideal zero-width edge. R20's 50–100 µs range is a test starting point, not a guaranteed rate. Specify behavior for pulses arriving while the non-retriggerable one-shot is busy.
-
-Keep `C_HOLD` at LF398's Ch pin separate from `C_SLEW`. Connect the buffered LF398 OUTPUT to a pre-lag buffer, a series resistor and rheostat, the lag capacitor, then a post-buffer and engineered output isolation. Never connect the pot, LED or load directly to Ch.
-
-```text
-IN -> conditioned LF398 + C_HOLD -> RAW_HELD -> pre-buffer -> Rmin + SLEW rheostat -> V_SLEW -> post-buffer -> OUT
-                                                                    V_SLEW -> C_SLEW -> analog GND
-TRIGGER -> conditioner -> bounded acquisition pulse -> LF398 logic
+```mermaid
+flowchart LR
+  IN[IN jack] --> FI[ADG5412F and protected input buffer]
+  FI --> SH[LF398 sample and hold]
+  SH --> CH[10 nF C0G hold node]
+  SH --> PRE[precision pre-buffer]
+  PRE --> RC[2.2 kΩ + B504 rheostat; 5 × 100 nF C0G]
+  RC --> POST[precision post-buffer]
+  POST --> PO[998 Ω precision output with dual feedback]
+  PO --> OUT[OUT jack]
+  TRIG[TRIGGER jack] --> GT[protected comparator and HC14]
+  BUTTON[SAMPLE button] --> DB[RC and HC14]
+  GT --> OR[diode OR]
+  DB --> OR
+  OR --> OS[CD74HC221 ~70 µs acquisition pulse]
+  OS --> SH
 ```
 
-## First low-complexity experiment
+Only `OUT` presents the slewed held value; there is no raw-held jack, hidden noise/clock normal, bypass switch, slew CV or gate-tracking mode. Changing IN alone must not capture. A new positive TRIGGER edge or SAMPLE press requests an acquisition pulse; the CD74HC221 is non-retriggerable while busy. That overlap policy is a source-based proposal, not a measured timing result.
 
-Use Bourns PTV09A-4020F-B504 (500 kΩ linear, same 4020F mechanics), Rmin = 2.2 kΩ and C_SLEW = 0.50 µF, provisionally five parallel 100 nF C0G parts per channel. This is a proposed electrical variant, not a reason to order B103 for the two new positions. Tie the wiper to the far track terminal so an intermittent wiper tends toward full track resistance rather than an open circuit; verify actual terminal numbers and CW-slower direction from the exact drawing.
+## Named net table
 
-Use four unity buffers for the two channels, initially one dedicated OPA4197IPWR. This replaces the two existing S&H post-buffer roles and adds two pre-lag buffers. With six MULT outputs, the coarse package budget becomes three quads total; routing/locality can change the final allocation.
+| Net | Connected pins | Value / note |
+| --- | --- | --- |
+| `TRIGGER_TIP` | Trigger jack T → source-facing ADG5412F S | Sleeve to analog return; TN deliberately no-connect. |
+| `IN_TIP` | IN jack T → second ADG5412F S | Same protected input topology; no pot loads the jack. |
+| `TRIGGER_BUFFERED` | protected input buffer OUT → LM393B biased comparator / trigger LED driver | Monitor is buffered; LM393B uses +12 V/GND and a 4.7 kΩ pull-up to +5 V. |
+| `IN_BUFFERED` | protected input buffer OUT → LF398 pin 1 / IN LED driver | LF398 logic and analog input stay separate. |
+| `TRIGGER_OR` | BAS16GW-QX cathodes pin 1 × 2 → 100 kΩ pulldown → CD74HC221 B1 pin 2 | Anodes pin 2 receive conditioned trigger and debounced button; approximately 0.7 V drop is an unverified logic margin. |
+| `SAMPLE_PULSE` | CD74HC221 Q1 pin 4 → LF398 LOGIC pin 11 | LF398 LOGIC REFERENCE pin 10 is AGND; TI says LOGIC high samples and low holds. |
+| `TIMING_RCX`, `TIMING_C` | CD74HC221 pins 15 and 14; 10 kΩ from +5 V to pin 15; 10 nF between 15 and 14 | TI SCHS166F physical p.0 / printed p.1 gives `tW ≈ 0.7 Rx Cx` at 4.5 V: 70 µs nominal starting point. |
+| `HOLD_CAP` | LF398 Ch pin 8 → fitted 10 nF C0G to AGND; parallel 100 nF C0805 option DNP | High-impedance **Sensitive** node; choose one population only. No LED, pot or output load attaches. |
+| `RAW_HELD` | LF398 OUT pin 7 → precision pre-buffer IN+ | Buffered cross-group signal, locally scoped per H1/H2 instance. No output jack. |
+| `SLEW_POT_IN`, `SLEW_STORAGE` | 2.2 kΩ → B504 pin 1; strapped wiper pin 2 and end pin 3 → five parallel 100 nF C0G parts → precision post-buffer IN+ | Storage and rheostat nodes **Sensitive**; 0.5 µF nominal. CW/CCW physical direction still needs drawing and bench confirmation. |
+| `SLEW_BUFFERED` | post-buffer OUT → precision output IN+ / OUT LED driver | Output LED shows the glide. |
+| `OUT_TIP` | precision output second 499 Ω resistor → OUT jack T; 10 kΩ DC feedback senses jack; 100 pF returns driver feedback | Source test says ideal-model overshoot exceeded the target in 6/12 cases; vendor and bench checks remain open. |
+| `+12V`, `-12V`, `+5V` | each IC supply pin → its own 100 nF local bypass → AGND | 33 fitted 100 nF positions per instance from the current package count. Three 4.7 µF bulk positions are DNP board-rail reservations until board partition and Murata sourcing are resolved. |
 
-The ideal relation is `dVout/dt = (Vheld - Vout) / ((Rmin + Rpot) × C_SLEW)`. It is a symmetric exponential lag, not a constant-volts-per-second linear slew.
+Every cell resolves audio/CV/indicator/precision amplifier roles through OSC-ES-1 data. The sample-and-hold IC is **TI LF398M/NOPB**, the comparator **LM393BIDR**, and the acquisition IC **CD74HC221M96**. Older handoff LM393DR and bare input-clamp defaults were superseded by OSC-ES-1. Signal diode selection is the issue-18 source-backed **Nexperia BAS16GW-QX** proposal. The exact 100 nF Fenghua capacitor source remains incomplete, and DigiKey's Murata bulk-capacitor lifecycle wording is only a distributor report.
 
-## Nominal response and meaning of FAST
+## Decisions and alternatives
 
-The proposed time constant varies from **1.1 ms to 251.1 ms**. Maximum 10–90% transition time is approximately **552 ms**; a 5 V step settles to within 10 mV in approximately **1.56 s** in the ideal model. These are calculated nominal responses, not bench data. Actual R tolerance, C tolerance, leakage, buffer error and stored-voltage drift change them.
+| Decision | Reason | Alternative left out |
+| --- | --- | --- |
+| Two source-facing ADG5412F channels before each input buffer | OSC-ES-1 power-off isolation proposal; bare rail clamps can backfeed an unpowered rail. | Naked jack-to-clamp path. |
+| LF398 at local 10 nF C0G Ch, with DNP 100 nF footprint | Handoff gives this value; a larger hold part is a test option, not a silent replacement. | Assuming the 100 nF option proves better long-hold behavior. |
+| CD74HC221 B1 positive-edge trigger, A1 low, reset high | Manufacturer truth table supports the B rising edge; 10 kΩ/10 nF gives ~70 µs at the datasheet's 4.5 V formula. | Free-running gate tracking or an unbounded sampling window. |
+| Two BAS16GW-QX diode OR inputs | Combines two conditioned 5 V logic sources before the one-shot without tying outputs together. | Directly shorting the HC14 outputs. Threshold and overlap behavior still need physical tests. |
+| Separate pre/post precision buffers around 2.2 kΩ + B504 + 0.5 µF | Keeps LF398 Ch isolated from the user pot and output load; fast endpoint is a finite lag. | Increasing the LF398 hold capacitor to create the glide. |
+| 998 Ω dual-feedback precision output | Bounds output-to-output/fault current under OSC-ES-1; the jack is the DC sense point. | Unsensed low series resistor. Stability is **not qualified**. |
+| LF398 OFFSET ADJUST pin 14 explicit no-connect in pilot | No source-backed, valued trim network is selected. Factory offset is a measured gate, not an implied calibration adjustment. | Inventing a trimmer value and asserting offset calibration. |
+| Per-IC bypass fitted; per-board bulk footprints DNP | OSC-ES-1 requires local 100 nF at every IC supply pin, while final board count and bulk sourcing are still open. | Assuming one bulk capacitor per module is already the final board-rail allocation. |
 
-The fast endpoint still has a finite lag. Do not label it OFF or claim a hard bypass. It has about 2.42 ms nominal 10–90% time. This range is aimed at a first glide prototype, not ADDAC's 25-second smoothing. A different range can use the same panel but requires another RC/current-control design decision and test.
+## Islands and calibration
 
-## Required tests
+`HOLD_LOCAL` includes LF398, both alternative hold footprints and `HOLD_CAP`. `TIMING_LOCAL` includes CD74HC221 timing parts. Each `C:<inst>.SLEW` island includes its pot, 2.2 kΩ minimum resistor, five-capacitor lag bank and both pre/post buffers. `SLEW_STORAGE`, `SLEW_POT_IN`, `HOLD_CAP` and the timing nodes are marked `Sensitive`; the lag and hold nodes must stay on their respective local board. The output cell and each indicator driver have separate local grouping. Buffered RAW_HELD, supplies and returns may be considered for board crossings only after the partition decision.
 
-Full-scale positive and negative steps, alternating/retriggered targets before settling, SLEW adjustment during a glide, fast-end noise, DC accuracy, hot leakage, cold startup, supply sequencing and unpowered patches. Test the buffer with actual output isolation and capacitive patch leads. Input-edge current through 2.2 kΩ can approach 7.27 mA for a 16 V jump; check output swing, transient drive and resistor/pot stresses.
+Factory calibration points still to define: LF398 input/output DC offset in sample and hold, 10 nF versus 100 nF hold error and droop, trigger threshold/hysteresis, acquisition pulse width and overlap, fast/centre/slow lag, and OUT load error. No trim network or accessible test-pad arrangement is released here.
 
-Put the rheostat, C_SLEW and its input/output buffers on the local SLEW interface board. High-impedance lag/storage nets must not cross a connector. Only buffered RAW_HELD, OUT, supplies and defined returns do so. The new small 3D board is an architectural reservation, not a released layout.
+## Checks and current boundary
+
+The generated master uses one `sample_hold.kicad_sch` sheet for H1 and H2. KiCad 10 ERC reports **zero errors and twelve LED pin-type warnings**, documented in `schematic/reports/sample_hold-erc-notes.md`. Exported KiCad pin nets match the source spec for both instances, and a deliberate hold-node mutation is detected twice. These checks do not establish protection or performance.
+
+The ngspice ideal RC deck uses unity pre/post buffers and a 0.5 µF equivalent capacitor. Its 10–90% times are **2.41688 ms fast, 277.07004 ms centre, and 551.72308 ms slow**, within 1% of `ln(9) × R × C`. This is a model result, not LF398 or OPA4197 behavior. LF398 acquisition/hold/droop, the CD74HC221 pulse, and output cable stability are **NOT RUN** without validated models and physical measurements.
+
+The per-instance partial current worksheet records **+12 V 34.5 mA typical planning subtotal / 54.85 mA upper planning subtotal** and **−12 V 33.1 / 52.65 mA**. +5 V logic/reference and several dynamic loads are unquantified, so complete typical and maximum currents on all three rails are **NOT ESTABLISHED** (`null` in the machine report). The +5 V known subtotal of zero is not a zero-current claim; the reference, HC14, HC221, pull-ups and switching need source-backed limits and measurement. The instrument's preliminary −12 V total still exceeds its ceiling by **72.655 mA**. No output or rail budget is passed.
+
+## Remaining bench and source gates
+
+- Verify positive-edge and manual-button capture, debouncing, diode-OR logic margin, non-retriggerable busy behavior and the actual 50–100 µs acquisition window at ±12 V operation.
+- Measure LF398 offset, charge injection, acquisition, hold step, 10 nF/100 nF droop across temperature, power-up state and unpowered input faults. The 10 nF handoff droop estimate is **not** a validated pilot result.
+- Measure slew in both directions at each knob point, hot leakage, settling into real capacitance, input transients and 2.2 kΩ / pot stress. Fast is not bypass; the proposal does **not** promise 25-second smoothing.
+- Qualify the OPA4197 998 Ω output against the 0/100 pF/1 nF/5 nF cable and open/100 kΩ/10 kΩ load matrix. The earlier ideal model **failed** six of twelve 10% overshoot cases; vendor-model and bench stability are **NOT RUN**.
+- Resolve exact value-specific passive MPNs, source gaps for the Fenghua cap, Murata bulk sourcing, factory-only assembly, panel/board stack and the −12 V rail deficit before any physical design release.

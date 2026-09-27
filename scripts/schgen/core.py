@@ -102,6 +102,8 @@ class Part:
     attributes: dict[str, str] = field(default_factory=dict)
     panel_ref: str = ''
     page: int = 1
+    panel_refs: dict[str, str] = field(default_factory=dict)
+    dnp: bool = False
 
 
 @dataclass(frozen=True)
@@ -110,6 +112,7 @@ class Family:
     parts: tuple[Part, ...]
     global_nets: tuple[str, ...] = ()
     sensitive_nets: tuple[str, ...] = ()
+    paper: str = 'A3'
 
 
 @dataclass(frozen=True)
@@ -120,6 +123,10 @@ class Instance:
 
 
 def designator(part: Part, instance: Instance) -> str:
+    if part.panel_refs:
+        if instance.name not in part.panel_refs:
+            raise ValueError(f'{part.key}: missing panel reference for {instance.name}')
+        return part.panel_refs[instance.name]
     if part.panel_ref:
         return part.panel_ref
     if instance.index < 1 or instance.index > 999 or part.ordinal < 1 or part.ordinal > 99:
@@ -204,7 +211,7 @@ def _symbol(p: Part, family: Family, instances: tuple[Instance, ...], library: d
     refs = [(f'/{root_id}/{sheet_ids[(i.name, p.page)]}', designator(p, i)) for i in instances]
     ref = refs[0][1]
     lines = [f'  (symbol (lib_id {q(p.symbol)}) (at {p.x:g} {p.y:g} {p.rotation}) (unit {p.unit})',
-             '    (exclude_from_sim no) (in_bom yes) (on_board yes) (dnp no)',
+             f'    (exclude_from_sim no) (in_bom yes) (on_board yes) (dnp {"yes" if p.dnp else "no"})',
              f'    (uuid {q(uid(f"part:{family.name}:{p.key}"))})',
              _prop('Reference', ref, p.x+3, p.y-3), _prop('Value', p.value or p.symbol.split(':')[-1], p.x+3, p.y+3),
              _prop('Footprint', p.footprint, p.x, p.y, True), _prop('Datasheet', '', p.x, p.y, True)]
@@ -249,7 +256,7 @@ def render(families: tuple[Family, ...], instances: tuple[Instance, ...], librar
             page_parts = tuple(p for p in f.parts if p.page == page)
             symbols = [library[name] for name in sorted({p.symbol for p in page_parts})]
             filename = f.name if page == 1 else f'{f.name}-p{page}'
-            lines = _header(f'child:{f.name}:p{page}', symbols)
+            lines = _header(f'child:{f.name}:p{page}', symbols, f.paper)
             for p in page_parts:
                 lines += _symbol(p, f, relevant, library, root_id, sheet_ids, project)
                 for pin in library[p.symbol].units[p.unit]:
