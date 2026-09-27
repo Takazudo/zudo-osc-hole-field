@@ -23,20 +23,10 @@ if ((${#test_files[@]} == 0)); then
 fi
 
 declare -A discovery_roots=()
-for root in "${test_roots[@]}"; do
-  discovery_roots["$root"]=1
-done
-
 for test_file in "${test_files[@]}"; do
-  root=${test_file%%/*}
-  directory=${test_file%/*}
-  while [[ "$directory" != "$root" ]]; do
-    if [[ ! -f "$directory/__init__.py" ]]; then
-      discovery_roots["$directory"]=1
-      break
-    fi
-    directory=${directory%/*}
-  done
+  # Discover only directories that contain tests. Python 3.13 exits 5 for
+  # an empty discovery root, even when another root has runnable tests.
+  discovery_roots["${test_file%/*}"]=1
 done
 
 mapfile -t ordered_discovery_roots < <(printf '%s\n' "${!discovery_roots[@]}" | sort)
