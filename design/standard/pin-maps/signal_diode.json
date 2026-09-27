@@ -3,15 +3,50 @@
   "role_id": "signal_diode",
   "identity": {
     "manufacturer": "Nexperia",
-    "mpn": "1N4148W,115",
-    "lcsc": ""
+    "mpn": "BAS16GW-QX",
+    "lcsc": "",
+    "status": "draft selected proposal"
   },
-  "status": "SOURCE UNAVAILABLE - exact manufacturer/MPN identity unconfirmed",
+  "cad": {
+    "symbol": "zudo-osc-hole-field:BAS16GW_QX",
+    "footprint": "zudo-osc-hole-field:SOD-123"
+  },
   "source": {
-    "availability": "SOURCE UNAVAILABLE",
-    "sha256": "0000000000000000000000000000000000000000000000000000000000000000",
-    "attempted": "Nexperia product search and https://assets.nexperia.com/documents/data-sheet/1N4148W.pdf on 2026-09-28; no exact Nexperia 1N4148W,115 primary document found"
+    "availability": "AVAILABLE",
+    "authority": "MANUFACTURER_PRIMARY",
+    "url": "https://assets.nexperia.com/documents/data-sheet/BAS16GW-Q.pdf",
+    "retained_path": "circuit/sources/ic-library/BAS16GW-Q.pdf",
+    "sha256": "36b9d598de374dbdcc666f0516477d958e02471b323842704249e0e447e2be6b",
+    "physical_pdf_page_index": 0,
+    "printed_page_label": "1",
+    "locator": "Table 2 Pinning information; Table 1 quick reference; Table 5 limiting values; exact OPN BAS16GW-QX from Nexperia chemical-content record"
   },
-  "pins": [],
-  "reason": "Cannot assign a source-backed pin map or exact footprint until manufacturer identity is established. Do not substitute another maker or BAS16 without revising the shortlist."
+  "pins": [
+    {
+      "datasheet_pin": "1",
+      "function": "K cathode",
+      "symbol_pin": "1",
+      "footprint_pad": "1",
+      "source_locator": "BAS16GW-Q.pdf physical PDF p.0, printed p.1, Table 2",
+      "verdict": "DRAFT - source-backed pin identity; board net unassigned"
+    },
+    {
+      "datasheet_pin": "2",
+      "function": "A anode",
+      "symbol_pin": "2",
+      "footprint_pad": "2",
+      "source_locator": "BAS16GW-Q.pdf physical PDF p.0, printed p.1, Table 2",
+      "verdict": "DRAFT - source-backed pin identity; board net unassigned"
+    }
+  ],
+  "nets": "Unassigned; cell harness only, no physical board binding.",
+  "identity_source": {
+    "authority": "MANUFACTURER_PRIMARY",
+    "availability": "AVAILABLE",
+    "url": "https://www.nexperia.com/chemical-content/BAS16GW-Q.html?identifier=BAS16GW-Q",
+    "retained_path": "circuit/sources/ic-library/BAS16GW-QX-chemical.html",
+    "sha256": "8cd1f913a81488831185205df86676af7b46f8bc6ea90cb015b3be1660eda073",
+    "locator": "12NC/OPN/Type No./Package/State/MSL table row",
+    "extract": "934669623115 | BAS16GW-QX | BAS16GW-Q | SOD123 (SOD2) | RFS | 1"
+  }
 }

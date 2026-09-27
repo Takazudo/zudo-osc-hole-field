@@ -3,8 +3,8 @@
   "date": "2026-09-28",
   "status": "capture-grade unvalidated draft",
   "shortlist_count": 36,
-  "captured_count": 35,
-  "blocked_count": 1,
+  "captured_count": 36,
+  "blocked_count": 0,
   "rows": [
     {
       "id": "op_audio",
@@ -92,9 +92,9 @@
     },
     {
       "id": "signal_diode",
-      "mpn": "1N4148W,115",
-      "status": "BLOCKED - EXACT IDENTITY",
-      "reason": "Nexperia primary documentation for 1N4148W,115 unavailable; no source-backed symbol/pin map can be assigned."
+      "mpn": "BAS16GW-QX",
+      "status": "CAPTURED DRAFT",
+      "reason": null
     },
     {
       "id": "clamp_diode",
@@ -225,6 +225,7 @@
   ],
   "boundaries": [
     "Existing panel LED and pot symbols count as already captured; this issue adds 30 new symbols.",
-    "Capture does not establish procurement, physical board fit, circuit performance or fabrication readiness."
+    "Capture does not establish procurement, physical board fit, circuit performance or fabrication readiness.",
+    "Issue #18 replaces unsupported 1N4148W,115 with manufacturer-backed BAS16GW-QX as a proposal; no physical or supplier allocation validation."
   ]
 }

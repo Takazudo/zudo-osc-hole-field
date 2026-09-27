@@ -1,0 +1,15 @@
+OSC-ES-1 clip divide-by-two window; ideal comparator threshold only
+Vmonitor mon 0 DC 0
+Vplus refp 0 DC 5
+Vminus refn 0 DC -5
+Rtop mon half 100k
+Rbottom half 0 100k
+Bupper u 0 V=V(half)-V(refp)
+Blower l 0 V=V(half)-V(refn)
+.control
+dc Vmonitor -12 12 0.01
+meas dc negative WHEN v(l)=0
+meas dc positive WHEN v(u)=0
+quit
+.endc
+.end

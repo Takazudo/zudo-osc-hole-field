@@ -1,0 +1,148 @@
+OSC-ES-1 dual feedback diagnostic; ideal zero-delay 100000 V/V source, not OPA4197
+
+Vsig1 sig1 0 PULSE(-5 5 0 1u 1u 500u 1m)
+Eamp1 drive1 0 sig1 fb1 1e5
+Risoa1 drive1 mid1 499
+Risob1 mid1 jack1 499
+Rfb1 jack1 fb1 10k
+Cfast1 drive1 fb1 100p
+Rload1 jack1 0 1e+12
+Vsig2 sig2 0 PULSE(-5 5 0 1u 1u 500u 1m)
+Eamp2 drive2 0 sig2 fb2 1e5
+Risoa2 drive2 mid2 499
+Risob2 mid2 jack2 499
+Rfb2 jack2 fb2 10k
+Cfast2 drive2 fb2 100p
+Rload2 jack2 0 1e+12
+Cload2 jack2 0 1e-10
+Vsig3 sig3 0 PULSE(-5 5 0 1u 1u 500u 1m)
+Eamp3 drive3 0 sig3 fb3 1e5
+Risoa3 drive3 mid3 499
+Risob3 mid3 jack3 499
+Rfb3 jack3 fb3 10k
+Cfast3 drive3 fb3 100p
+Rload3 jack3 0 1e+12
+Cload3 jack3 0 1e-09
+Vsig4 sig4 0 PULSE(-5 5 0 1u 1u 500u 1m)
+Eamp4 drive4 0 sig4 fb4 1e5
+Risoa4 drive4 mid4 499
+Risob4 mid4 jack4 499
+Rfb4 jack4 fb4 10k
+Cfast4 drive4 fb4 100p
+Rload4 jack4 0 1e+12
+Cload4 jack4 0 5e-09
+Vsig5 sig5 0 PULSE(-5 5 0 1u 1u 500u 1m)
+Eamp5 drive5 0 sig5 fb5 1e5
+Risoa5 drive5 mid5 499
+Risob5 mid5 jack5 499
+Rfb5 jack5 fb5 10k
+Cfast5 drive5 fb5 100p
+Rload5 jack5 0 100000
+Vsig6 sig6 0 PULSE(-5 5 0 1u 1u 500u 1m)
+Eamp6 drive6 0 sig6 fb6 1e5
+Risoa6 drive6 mid6 499
+Risob6 mid6 jack6 499
+Rfb6 jack6 fb6 10k
+Cfast6 drive6 fb6 100p
+Rload6 jack6 0 100000
+Cload6 jack6 0 1e-10
+Vsig7 sig7 0 PULSE(-5 5 0 1u 1u 500u 1m)
+Eamp7 drive7 0 sig7 fb7 1e5
+Risoa7 drive7 mid7 499
+Risob7 mid7 jack7 499
+Rfb7 jack7 fb7 10k
+Cfast7 drive7 fb7 100p
+Rload7 jack7 0 100000
+Cload7 jack7 0 1e-09
+Vsig8 sig8 0 PULSE(-5 5 0 1u 1u 500u 1m)
+Eamp8 drive8 0 sig8 fb8 1e5
+Risoa8 drive8 mid8 499
+Risob8 mid8 jack8 499
+Rfb8 jack8 fb8 10k
+Cfast8 drive8 fb8 100p
+Rload8 jack8 0 100000
+Cload8 jack8 0 5e-09
+Vsig9 sig9 0 PULSE(-5 5 0 1u 1u 500u 1m)
+Eamp9 drive9 0 sig9 fb9 1e5
+Risoa9 drive9 mid9 499
+Risob9 mid9 jack9 499
+Rfb9 jack9 fb9 10k
+Cfast9 drive9 fb9 100p
+Rload9 jack9 0 10000
+Vsig10 sig10 0 PULSE(-5 5 0 1u 1u 500u 1m)
+Eamp10 drive10 0 sig10 fb10 1e5
+Risoa10 drive10 mid10 499
+Risob10 mid10 jack10 499
+Rfb10 jack10 fb10 10k
+Cfast10 drive10 fb10 100p
+Rload10 jack10 0 10000
+Cload10 jack10 0 1e-10
+Vsig11 sig11 0 PULSE(-5 5 0 1u 1u 500u 1m)
+Eamp11 drive11 0 sig11 fb11 1e5
+Risoa11 drive11 mid11 499
+Risob11 mid11 jack11 499
+Rfb11 jack11 fb11 10k
+Cfast11 drive11 fb11 100p
+Rload11 jack11 0 10000
+Cload11 jack11 0 1e-09
+Vsig12 sig12 0 PULSE(-5 5 0 1u 1u 500u 1m)
+Eamp12 drive12 0 sig12 fb12 1e5
+Risoa12 drive12 mid12 499
+Risob12 mid12 jack12 499
+Rfb12 jack12 fb12 10k
+Cfast12 drive12 fb12 100p
+Rload12 jack12 0 10000
+Cload12 jack12 0 5e-09
+.control
+tran 1u 2m
+meas tran pmax1 MAX v(jack1) FROM=0 TO=450u
+meas tran nmin1 MIN v(jack1) FROM=500u TO=950u
+meas tran pset1 FIND v(jack1) AT=400u
+meas tran nset1 FIND v(jack1) AT=900u
+meas tran pmax2 MAX v(jack2) FROM=0 TO=450u
+meas tran nmin2 MIN v(jack2) FROM=500u TO=950u
+meas tran pset2 FIND v(jack2) AT=400u
+meas tran nset2 FIND v(jack2) AT=900u
+meas tran pmax3 MAX v(jack3) FROM=0 TO=450u
+meas tran nmin3 MIN v(jack3) FROM=500u TO=950u
+meas tran pset3 FIND v(jack3) AT=400u
+meas tran nset3 FIND v(jack3) AT=900u
+meas tran pmax4 MAX v(jack4) FROM=0 TO=450u
+meas tran nmin4 MIN v(jack4) FROM=500u TO=950u
+meas tran pset4 FIND v(jack4) AT=400u
+meas tran nset4 FIND v(jack4) AT=900u
+meas tran pmax5 MAX v(jack5) FROM=0 TO=450u
+meas tran nmin5 MIN v(jack5) FROM=500u TO=950u
+meas tran pset5 FIND v(jack5) AT=400u
+meas tran nset5 FIND v(jack5) AT=900u
+meas tran pmax6 MAX v(jack6) FROM=0 TO=450u
+meas tran nmin6 MIN v(jack6) FROM=500u TO=950u
+meas tran pset6 FIND v(jack6) AT=400u
+meas tran nset6 FIND v(jack6) AT=900u
+meas tran pmax7 MAX v(jack7) FROM=0 TO=450u
+meas tran nmin7 MIN v(jack7) FROM=500u TO=950u
+meas tran pset7 FIND v(jack7) AT=400u
+meas tran nset7 FIND v(jack7) AT=900u
+meas tran pmax8 MAX v(jack8) FROM=0 TO=450u
+meas tran nmin8 MIN v(jack8) FROM=500u TO=950u
+meas tran pset8 FIND v(jack8) AT=400u
+meas tran nset8 FIND v(jack8) AT=900u
+meas tran pmax9 MAX v(jack9) FROM=0 TO=450u
+meas tran nmin9 MIN v(jack9) FROM=500u TO=950u
+meas tran pset9 FIND v(jack9) AT=400u
+meas tran nset9 FIND v(jack9) AT=900u
+meas tran pmax10 MAX v(jack10) FROM=0 TO=450u
+meas tran nmin10 MIN v(jack10) FROM=500u TO=950u
+meas tran pset10 FIND v(jack10) AT=400u
+meas tran nset10 FIND v(jack10) AT=900u
+meas tran pmax11 MAX v(jack11) FROM=0 TO=450u
+meas tran nmin11 MIN v(jack11) FROM=500u TO=950u
+meas tran pset11 FIND v(jack11) AT=400u
+meas tran nset11 FIND v(jack11) AT=900u
+meas tran pmax12 MAX v(jack12) FROM=0 TO=450u
+meas tran nmin12 MIN v(jack12) FROM=500u TO=950u
+meas tran pset12 FIND v(jack12) AT=400u
+meas tran nset12 FIND v(jack12) AT=900u
+quit
+.endc
+.end
