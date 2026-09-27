@@ -78,7 +78,7 @@ Functional terminal connections and all constituent parts are in the JSON. Numer
 | Reference generator | REF5050AIDR, 100 nF input and 1 µF output; precision +5 V follower and −5 V inverter with equal 10 kΩ; gate reference uses 22 kΩ/100 kΩ divider and follower |
 | Octave reference | Five 10 kΩ / 0.1% series resistors between buffered −2/+3 V endpoints; all six taps buffered; +3 V gain uses 10 kΩ, 19.1 kΩ + 1 kΩ trimmer; −2 V uses 10 kΩ/20 kΩ inversion of buffered +1 V |
 | Gate/trigger input | Protected buffer; 100 kΩ input / 33.2 kΩ to +5 V biased divider; LM393BIDR on +12 V/GND, 10 kΩ reference, 390 kΩ hysteresis, 4.7 kΩ pull-up and SN74HC14 inversion |
-| Magnitude indicator | One indicator amplifier, four 1N4148W bridge diodes, white LED on bridge DC diagonal, 4.99 kΩ sense resistor; feedback senses bridge AC return |
+| Magnitude indicator | One indicator amplifier, four proposed Nexperia BAS16GW-QX bridge diodes, white LED on bridge DC diagonal, 4.99 kΩ sense resistor; feedback senses bridge AC return. Bridge transfer and LED current still need bench checks. |
 | Clip detector | Buffered monitor, 100 kΩ/100 kΩ divide-by-two; two LM393B comparators on ±12 V; ±5 V thresholds, open-collector wired-OR, red LED and 22.1 kΩ from +12 V |
 | Stage indicator | Buffered ENV through 150 kΩ/10 kΩ divider; amplifier/MMBT3904 sink with 1 kΩ emitter sense and 10 kΩ base resistor; reverse B–E diode; 2N7002 mutes command except own stage; 100 kΩ mute pull-up |
 | Switch/button input | 10 kΩ pull-up, 1 kΩ series, 100 nF filter and SN74HC14; contact to ground |
