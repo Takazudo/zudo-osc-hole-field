@@ -1,0 +1,58 @@
+{
+  "schema_version": 1,
+  "coverage": [
+    {
+      "coverage_id": "cov-dealon-identity",
+      "record_id": "rec-dealon-dw254p-2x8-l0",
+      "domain": "identity",
+      "status": "OPEN",
+      "reason": "The supplier listing confirms the order identity, but the manufacturer fact has no manufacturer-primary source.",
+      "fact_ids": [
+        "fact-dealon-identity",
+        "fact-dealon-manufacturer"
+      ],
+      "blocking_fact_ids": [
+        "fact-dealon-manufacturer"
+      ]
+    },
+    {
+      "coverage_id": "cov-dealon-pinout",
+      "record_id": "rec-dealon-dw254p-2x8-l0",
+      "domain": "pinout",
+      "status": "OPEN",
+      "reason": "Supply-side cable signals and net assignments have not been established.",
+      "fact_ids": [
+        "fact-dealon-pinout"
+      ],
+      "blocking_fact_ids": [
+        "fact-dealon-pinout"
+      ]
+    },
+    {
+      "coverage_id": "cov-dealon-mating",
+      "record_id": "rec-dealon-dw254p-2x8-l0",
+      "domain": "mechanical_fit",
+      "status": "OPEN",
+      "reason": "Mating connector and retention require a physical check.",
+      "fact_ids": [
+        "fact-dealon-mating-fit"
+      ],
+      "blocking_fact_ids": [
+        "fact-dealon-mating-fit"
+      ]
+    },
+    {
+      "coverage_id": "cov-dealon-cad",
+      "record_id": "rec-dealon-dw254p-2x8-l0",
+      "domain": "cad_geometry",
+      "status": "OPEN",
+      "reason": "The CAD asset remains family fidelity pending exact manufacturer drawing comparison.",
+      "fact_ids": [
+        "fact-dealon-cad-fidelity"
+      ],
+      "blocking_fact_ids": [
+        "fact-dealon-cad-fidelity"
+      ]
+    }
+  ]
+}

@@ -23,12 +23,19 @@ Four columns describe state. None of them is a grade, and there is deliberately 
 <EvidenceAnchor id="catalog-index" />
 
 <EvidenceTable label="parts-index">
-  | Part                                                                                | Record     | Function            | Fit    | Identity | Sources   | Open domains |
-  | ----------------------------------------------------------------------------------- | ---------- | ------------------- | ------ | -------- | --------- | ------------ |
-  | <EvidenceAnchor id="rec-b103" />[PTV09A-4020F-B103](/docs/components/records/b103/) | `rec-b103` | panel potentiometer | Fitted | VERIFIED | AVAILABLE | 0 of 2       |
-  | <EvidenceAnchor id="rec-b104" />[PTV09A-4020F-B104](/docs/components/records/b104/) | `rec-b104` | panel potentiometer | Fitted | VERIFIED | AVAILABLE | 0 of 2       |
-  | <EvidenceAnchor id="rec-b504" />[PTV09A-4020F-B504](/docs/components/records/b504/) | `rec-b504` | panel potentiometer | Fitted | VERIFIED | AVAILABLE | 0 of 2       |
-  | <EvidenceAnchor id="rec-srbv" />[SRBV160803](/docs/components/records/srbv/)        | `rec-srbv` | octave selector     | Fitted | VERIFIED | AVAILABLE | 1 of 2       |
+  | Part                                                                                                                        | Record                          | Function                                    | Fit    | Identity   | Sources            | Open domains |
+  | --------------------------------------------------------------------------------------------------------------------------- | ------------------------------- | ------------------------------------------- | ------ | ---------- | ------------------ | ------------ |
+  | <EvidenceAnchor id="rec-b103" />[PTV09A-4020F-B103](/docs/components/records/b103/)                                         | `rec-b103`                      | panel potentiometer                         | Fitted | VERIFIED   | AVAILABLE          | 0 of 2       |
+  | <EvidenceAnchor id="rec-b104" />[PTV09A-4020F-B104](/docs/components/records/b104/)                                         | `rec-b104`                      | panel potentiometer                         | Fitted | VERIFIED   | AVAILABLE          | 0 of 2       |
+  | <EvidenceAnchor id="rec-b504" />[PTV09A-4020F-B504](/docs/components/records/b504/)                                         | `rec-b504`                      | panel potentiometer                         | Fitted | VERIFIED   | AVAILABLE          | 0 of 2       |
+  | <EvidenceAnchor id="rec-srbv" />[SRBV160803](/docs/components/records/srbv/)                                                | `rec-srbv`                      | octave selector                             | Fitted | VERIFIED   | AVAILABLE          | 1 of 2       |
+  | <EvidenceAnchor id="rec-wqp518ma" />[WQP518MA](/docs/components/records/wqp518ma/)                                          | `rec-wqp518ma`                  | panel audio jack                            | Fitted | UNRESOLVED | AVAILABLE          | 3 of 3       |
+  | <EvidenceAnchor id="rec-dailywell-2ms1t1b1m2qes-5" />[2MS1T1B1M2QES-5](/docs/components/records/dailywell-2ms1t1b1m2qes-5/) | `rec-dailywell-2ms1t1b1m2qes-5` | two-position panel toggle                   | Fitted | UNRESOLVED | SOURCE UNAVAILABLE | 4 of 4       |
+  | <EvidenceAnchor id="rec-dailywell-2ms3t1b1m2qes" />[2MS3T1B1M2QES](/docs/components/records/dailywell-2ms3t1b1m2qes/)       | `rec-dailywell-2ms3t1b1m2qes`   | three-position panel toggle                 | Fitted | UNRESOLVED | SOURCE UNAVAILABLE | 4 of 4       |
+  | <EvidenceAnchor id="rec-omron-b3f-1020" />[B3F-1020](/docs/components/records/omron-b3f-1020/)                              | `rec-omron-b3f-1020`            | panel push button                           | Fitted | VERIFIED   | AVAILABLE          | 1 of 4       |
+  | <EvidenceAnchor id="rec-kento-white" />[KT-0603W](/docs/components/records/kento-white/)                                    | `rec-kento-white`               | white jack-adjacent panel indicator emitter | Fitted | UNRESOLVED | AVAILABLE          | 5 of 5       |
+  | <EvidenceAnchor id="rec-kento-red" />[KT-0603R](/docs/components/records/kento-red/)                                        | `rec-kento-red`                 | red jack-adjacent panel indicator emitter   | Fitted | UNRESOLVED | AVAILABLE          | 5 of 5       |
+  | <EvidenceAnchor id="rec-dealon-dw254p-2x8-l0" />[DW254P-2X8-L0](/docs/components/records/dealon-dw254p-2x8-l0/)             | `rec-dealon-dw254p-2x8-l0`      | supply-side power interconnect header       | Fitted | UNRESOLVED | AVAILABLE          | 4 of 4       |
 </EvidenceTable>
 
 ## Part entries
@@ -133,3 +140,176 @@ One entry per record, carrying the orderable identity and every board placement.
 **Open coverage domains:** 1 open of 2 published
 
 [SRBV160803 record details](/docs/components/records/srbv/) — [SRBV160803 raw agent resource](/docs/claude-skills/component-alps-alpine-srbv160803/)
+
+### WQP518MA
+
+| Field          | Recorded value                                                      |
+| -------------- | ------------------------------------------------------------------- |
+| Record ID      | `rec-wqp518ma`                                                      |
+| Kind           | standalone — audited in its own right                               |
+| Manufacturer   | Qingpu                                                              |
+| Function       | panel audio jack                                                    |
+| Package        | `threaded 3.5 mm mono panel jack; exact variant mapping unresolved` |
+| Inventory line | `line-wqp518ma`                                                     |
+| Owner skill    | `component-qingpu-wqp518ma`                                         |
+
+**Placements:** no placement published
+
+**Fit:** Fitted
+
+**Identity state:** UNRESOLVED
+
+**Source state:** AVAILABLE
+
+**Open coverage domains:** 3 open of 3 published
+
+[WQP518MA record details](/docs/components/records/wqp518ma/) — [WQP518MA raw agent resource](/docs/claude-skills/component-qingpu-wqp518ma/)
+
+### 2MS1T1B1M2QES-5
+
+| Field          | Recorded value                                |
+| -------------- | --------------------------------------------- |
+| Record ID      | `rec-dailywell-2ms1t1b1m2qes-5`               |
+| Kind           | standalone — audited in its own right         |
+| Manufacturer   | Dailywell                                     |
+| Function       | two-position panel toggle                     |
+| Orderable ID   | `C908280`                                     |
+| Package        | `T1 lever, B1 bushing, M2 PC terminals; SPDT` |
+| Inventory line | `line-2ms1`                                   |
+| Owner skill    | `component-dailywell-2ms1t1b1m2qes-5`         |
+
+**Placements:** no placement published
+
+**Fit:** Fitted
+
+**Identity state:** UNRESOLVED
+
+**Source state:** SOURCE UNAVAILABLE
+
+**Open coverage domains:** 4 open of 4 published
+
+[2MS1T1B1M2QES-5 record details](/docs/components/records/dailywell-2ms1t1b1m2qes-5/) — [2MS1T1B1M2QES-5 raw agent resource](/docs/claude-skills/component-dailywell-2ms1t1b1m2qes-5/)
+
+### 2MS3T1B1M2QES
+
+| Field          | Recorded value                                                                     |
+| -------------- | ---------------------------------------------------------------------------------- |
+| Record ID      | `rec-dailywell-2ms3t1b1m2qes`                                                      |
+| Kind           | standalone — audited in its own right                                              |
+| Manufacturer   | Dailywell                                                                          |
+| Function       | three-position panel toggle                                                        |
+| Package        | `T1 lever, B1 bushing, M2 PC terminals; SPDT; exact suffix equivalence unresolved` |
+| Inventory line | `line-2ms3`                                                                        |
+| Owner skill    | `component-dailywell-2ms3t1b1m2qes`                                                |
+
+**Placements:** no placement published
+
+**Fit:** Fitted
+
+**Identity state:** UNRESOLVED
+
+**Source state:** SOURCE UNAVAILABLE
+
+**Open coverage domains:** 4 open of 4 published
+
+[2MS3T1B1M2QES record details](/docs/components/records/dailywell-2ms3t1b1m2qes/) — [2MS3T1B1M2QES raw agent resource](/docs/claude-skills/component-dailywell-2ms3t1b1m2qes/)
+
+### B3F-1020
+
+| Field          | Recorded value                                                 |
+| -------------- | -------------------------------------------------------------- |
+| Record ID      | `rec-omron-b3f-1020`                                           |
+| Kind           | standalone — audited in its own right                          |
+| Manufacturer   | Omron                                                          |
+| Function       | panel push button                                              |
+| Orderable ID   | `C722171`                                                      |
+| Package        | `6 × 6 mm through-hole tactile switch; 5.0 mm actuator height` |
+| Inventory line | `line-b3f-1020`                                                |
+| Owner skill    | `component-omron-b3f-1020`                                     |
+
+**Placements:** no placement published
+
+**Fit:** Fitted
+
+**Identity state:** VERIFIED
+
+**Source state:** AVAILABLE
+
+**Open coverage domains:** 1 open of 4 published
+
+[B3F-1020 record details](/docs/components/records/omron-b3f-1020/) — [B3F-1020 raw agent resource](/docs/claude-skills/component-omron-b3f-1020/)
+
+### KT-0603W
+
+| Field          | Recorded value                              |
+| -------------- | ------------------------------------------- |
+| Record ID      | `rec-kento-white`                           |
+| Kind           | standalone — audited in its own right       |
+| Manufacturer   | Hubei KENTO Elec                            |
+| Function       | white jack-adjacent panel indicator emitter |
+| Orderable ID   | `C2290`                                     |
+| Package        | `0603 SMD LED`                              |
+| Inventory line | `line-kento-white`                          |
+| Owner skill    | `component-kento-kt-0603w`                  |
+
+**Placements:** no placement published
+
+**Fit:** Fitted
+
+**Identity state:** UNRESOLVED
+
+**Source state:** AVAILABLE
+
+**Open coverage domains:** 5 open of 5 published
+
+[KT-0603W record details](/docs/components/records/kento-white/) — [KT-0603W raw agent resource](/docs/claude-skills/component-kento-kt-0603w/)
+
+### KT-0603R
+
+| Field          | Recorded value                            |
+| -------------- | ----------------------------------------- |
+| Record ID      | `rec-kento-red`                           |
+| Kind           | standalone — audited in its own right     |
+| Manufacturer   | Hubei KENTO Elec                          |
+| Function       | red jack-adjacent panel indicator emitter |
+| Orderable ID   | `C2286`                                   |
+| Package        | `0603 SMD LED`                            |
+| Inventory line | `line-kento-red`                          |
+| Owner skill    | `component-kento-kt-0603r`                |
+
+**Placements:** no placement published
+
+**Fit:** Fitted
+
+**Identity state:** UNRESOLVED
+
+**Source state:** AVAILABLE
+
+**Open coverage domains:** 5 open of 5 published
+
+[KT-0603R record details](/docs/components/records/kento-red/) — [KT-0603R raw agent resource](/docs/claude-skills/component-kento-kt-0603r/)
+
+### DW254P-2X8-L0
+
+| Field          | Recorded value                                       |
+| -------------- | ---------------------------------------------------- |
+| Record ID      | `rec-dealon-dw254p-2x8-l0`                           |
+| Kind           | standalone — audited in its own right                |
+| Manufacturer   | DEALON                                               |
+| Function       | supply-side power interconnect header                |
+| Orderable ID   | `C4749189`                                           |
+| Package        | `right-angle 2×8 through-hole header, 2.54 mm pitch` |
+| Inventory line | `line-dealon-header`                                 |
+| Owner skill    | `component-dealon-dw254p-2x8-l0`                     |
+
+**Placements:** no placement published
+
+**Fit:** Fitted
+
+**Identity state:** UNRESOLVED
+
+**Source state:** AVAILABLE
+
+**Open coverage domains:** 4 open of 4 published
+
+[DW254P-2X8-L0 record details](/docs/components/records/dealon-dw254p-2x8-l0/) — [DW254P-2X8-L0 raw agent resource](/docs/claude-skills/component-dealon-dw254p-2x8-l0/)

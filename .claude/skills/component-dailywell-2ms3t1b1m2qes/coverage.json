@@ -1,0 +1,61 @@
+{
+  "schema_version": 1,
+  "coverage": [
+    {
+      "coverage_id": "cov-2ms3-identity",
+      "record_id": "rec-dailywell-2ms3t1b1m2qes",
+      "domain": "identity",
+      "status": "OPEN",
+      "reason": "The unsuffixed catalog identity has no exact supplier listing and the retained drawing is for the -5 variant.",
+      "fact_ids": [
+        "fact-2ms3-exact-mpn",
+        "fact-2ms3-suffix-equivalence",
+        "fact-2ms3-manufacturer"
+      ],
+      "blocking_fact_ids": [
+        "fact-2ms3-exact-mpn",
+        "fact-2ms3-suffix-equivalence",
+        "fact-2ms3-manufacturer"
+      ]
+    },
+    {
+      "coverage_id": "cov-2ms3-pinout",
+      "record_id": "rec-dailywell-2ms3t1b1m2qes",
+      "domain": "pinout",
+      "status": "OPEN",
+      "reason": "No manufacturer-hosted exact pin/contact source was retained for this unsuffixed candidate.",
+      "fact_ids": [
+        "fact-2ms3-contact"
+      ],
+      "blocking_fact_ids": [
+        "fact-2ms3-contact"
+      ]
+    },
+    {
+      "coverage_id": "cov-2ms3-mechanical",
+      "record_id": "rec-dailywell-2ms3t1b1m2qes",
+      "domain": "mechanical_fit",
+      "status": "OPEN",
+      "reason": "The suffix equivalence and mounted fit must be resolved without moving the fixed controls.",
+      "fact_ids": [
+        "fact-2ms3-panel-fit"
+      ],
+      "blocking_fact_ids": [
+        "fact-2ms3-panel-fit"
+      ]
+    },
+    {
+      "coverage_id": "cov-2ms3-cad",
+      "record_id": "rec-dailywell-2ms3t1b1m2qes",
+      "domain": "cad_geometry",
+      "status": "OPEN",
+      "reason": "Shared CAD geometry remains provisional from the suffixed drawing.",
+      "fact_ids": [
+        "fact-2ms3-cad-fidelity"
+      ],
+      "blocking_fact_ids": [
+        "fact-2ms3-cad-fidelity"
+      ]
+    }
+  ]
+}

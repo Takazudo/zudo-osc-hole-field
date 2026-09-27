@@ -1,0 +1,80 @@
+{
+  "schema_version": 1,
+  "facts": [
+    {
+      "fact_id": "fact-b3f-identity",
+      "record_id": "rec-omron-b3f-1020",
+      "source_id": "src-b3f-lcsc",
+      "class": "PROJECT_STATE",
+      "value": {
+        "lcsc": "C722171",
+        "manufacturer": "Omron",
+        "mpn": "B3F-1020",
+        "variant": "Exact MPN and LCSC identity listing; through-hole 6×6 mm tactile switch."
+      },
+      "unit": "NONE",
+      "conditions": "Exact candidate in the unvalidated project draft.",
+      "locator": "Identity section: Product heading and identity fields.",
+      "provenance": "DISTRIBUTOR-IDENTITY",
+      "verdict": "CONFIRMED - distributor identity only",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-b3f-contact-pairs",
+      "record_id": "rec-omron-b3f-1020",
+      "source_id": "src-b3f-omron",
+      "class": "PROJECT_STATE",
+      "value": "Terminals 4 and 3 are permanently paired; terminals 2 and 1 are permanently paired; pressing bridges the pairs.",
+      "unit": "NONE",
+      "conditions": "Exact candidate in the unvalidated project draft.",
+      "locator": "Printed p.4 figure: Printed p.4, B3F-1020 group, terminal arrangement/internal connections; printed p.3 contact form.",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-b3f-pcb-pattern",
+      "record_id": "rec-omron-b3f-1020",
+      "source_id": "src-b3f-omron",
+      "class": "PROJECT_STATE",
+      "value": "Manufacturer drawing specifies a 6.5 × 4.5 mm PCB hole pattern and 1.0 mm holes for the B3F-1020 group.",
+      "unit": "mm",
+      "conditions": "B3F-1020 group manufacturer drawing dimensions.",
+      "locator": "Printed p.4 figure: Printed p.4, B3F-1020 group, PCB Processing Dimensions.",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-b3f-panel-reach",
+      "record_id": "rec-omron-b3f-1020",
+      "source_id": "src-b3f-panel-proposal",
+      "class": "PROJECT_STATE",
+      "value": "The panel actuator, board-to-panel distance, overtravel stop and return force have not been bench-qualified.",
+      "unit": "NONE",
+      "conditions": "Fixed R21 push-button position; prevent panel load from reaching solder joints.",
+      "locator": "Project proposal section: Project mechanical proposal coupon_gate; no assembled panel trial retained.",
+      "provenance": "PROJECT-CHOICE",
+      "verdict": "NEEDS BENCH",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-b3f-1020-manufacturer",
+      "record_id": "rec-omron-b3f-1020",
+      "source_id": "src-b3f-omron",
+      "class": "PROJECT_STATE",
+      "value": "Omron",
+      "unit": "NONE",
+      "conditions": "Manufacturer identity for this exact candidate in the unvalidated project draft.",
+      "locator": "Datasheet title block: manufacturer identification.",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
+    }
+  ]
+}

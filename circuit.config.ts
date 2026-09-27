@@ -40,7 +40,12 @@ export default {
     footprintLibraryRoot: "footprints/kicad/zudo-osc-hole-field.pretty",
     modelRoot: "footprints/kicad/zudo-osc-hole-field.3dshapes",
     modelLocatorPrefix: "${KIPRJMOD}/../../footprints/kicad/zudo-osc-hole-field.3dshapes/",
-    previewRenderer: DEFAULT_PREVIEW_RENDERER,
+    previewRenderer: {
+      ...DEFAULT_PREVIEW_RENDERER,
+      image: "kicad/kicad@sha256:18693567392b80da435f9fa952ce3a3e534c66eb5a6033f5b9c80aa3b19dd3ec",
+      version: "10.0.6",
+      layers: ["F.Cu", "F.Silkscreen", "F.Fab", "F.CrtYd"],
+    },
   },
   validation: {},
 } satisfies CircuitConfig;
