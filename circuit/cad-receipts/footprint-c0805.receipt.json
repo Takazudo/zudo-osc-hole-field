@@ -1,0 +1,116 @@
+{
+  "receipt_version": 1,
+  "identity": {
+    "asset_id": "footprint-c0805",
+    "record_id": null,
+    "manufacturer": null,
+    "mpn": null,
+    "package": "C0805",
+    "variant_notes": "Generic footprint asset; no specific manufacturer or orderable MPN is assigned."
+  },
+  "acquisition": {
+    "provider": "GitHub repository Takazudo/zudo-pd",
+    "library_release_tag": null,
+    "source_url": "https://github.com/Takazudo/zudo-pd/blob/f25194fa73ded724e82d4561307c106480fbd9ce/footprints/kicad/zudo-power.pretty/C0805.kicad_mod",
+    "acquired_on": "2026-09-28",
+    "original_filenames": [
+      "C0805.kicad_mod",
+      "C0805_L2.0-W1.3-H1.3.step",
+      "C0805_L2.0-W1.3-H1.3.wrl"
+    ],
+    "sha256": {
+      "footprints/kicad/zudo-power.pretty/C0805.kicad_mod": "664ac8c1a8204cecf0141fd02bb967f3dd1569d121926c037017080adc589f46",
+      "footprints/kicad/zudo-pd.3dshapes/C0805_L2.0-W1.3-H1.3.step": "58551cc98ed0dcaf69b5dd8201a96f52391df738765988f5224072fbef4da10a",
+      "footprints/kicad/zudo-pd.3dshapes/C0805_L2.0-W1.3-H1.3.wrl": "31b2ac9a40994188ebd20202214e75f004b604b0068b3dea50d8cf7940cadb1a"
+    }
+  },
+  "representation": {
+    "files": [
+      "footprints/kicad/zudo-osc-hole-field.pretty/C0805.kicad_mod",
+      "footprints/kicad/zudo-osc-hole-field.3dshapes/C0805_L2.0-W1.3-H1.3.step",
+      "footprints/kicad/zudo-osc-hole-field.3dshapes/C0805_L2.0-W1.3-H1.3.wrl"
+    ],
+    "formats": [
+      "kicad_mod",
+      "step",
+      "wrl"
+    ],
+    "units": "KiCad schematic units; footprint and model dimensions in mm",
+    "original_paths": [
+      "footprints/kicad/zudo-power.pretty/C0805.kicad_mod",
+      "footprints/kicad/zudo-pd.3dshapes/C0805_L2.0-W1.3-H1.3.step",
+      "footprints/kicad/zudo-pd.3dshapes/C0805_L2.0-W1.3-H1.3.wrl"
+    ]
+  },
+  "fidelity": {
+    "class": "family",
+    "reason": "Generic mechanical or test footprint copied from the sibling library; no vendor-specific part identity is claimed.",
+    "evidence": [
+      "Source bytes are pinned to zudo-pd commit f25194fa73ded724e82d4561307c106480fbd9ce.",
+      "The footprint is an imported package representation; exact manufacturer dimensional correspondence has not been independently established here."
+    ]
+  },
+  "derivation": {
+    "derived": true,
+    "input_sha256": {
+      "footprints/kicad/zudo-power.pretty/C0805.kicad_mod": "664ac8c1a8204cecf0141fd02bb967f3dd1569d121926c037017080adc589f46",
+      "footprints/kicad/zudo-pd.3dshapes/C0805_L2.0-W1.3-H1.3.step": "58551cc98ed0dcaf69b5dd8201a96f52391df738765988f5224072fbef4da10a",
+      "footprints/kicad/zudo-pd.3dshapes/C0805_L2.0-W1.3-H1.3.wrl": "31b2ac9a40994188ebd20202214e75f004b604b0068b3dea50d8cf7940cadb1a"
+    },
+    "tool": "scripts/libgen/seed_assets.py and scripts/libgen/gen_courtyards.py",
+    "tool_version": "1",
+    "parameters": {
+      "source_commit": "f25194fa73ded724e82d4561307c106480fbd9ce",
+      "library_nickname": "zudo-osc-hole-field",
+      "operations": [
+        "extract one symbol",
+        "set local footprint nickname",
+        "normalize identity fields",
+        "generate courtyard",
+        "normalize STEP text line endings and trailing spaces"
+      ]
+    },
+    "output_sha256": {
+      "footprints/kicad/zudo-osc-hole-field.pretty/C0805.kicad_mod": "079221f3b848c9ed01e2841a98cdae63affc78d723ff7de3856e4e222fa25b64",
+      "footprints/kicad/zudo-osc-hole-field.3dshapes/C0805_L2.0-W1.3-H1.3.step": "58551cc98ed0dcaf69b5dd8201a96f52391df738765988f5224072fbef4da10a",
+      "footprints/kicad/zudo-osc-hole-field.3dshapes/C0805_L2.0-W1.3-H1.3.wrl": "31b2ac9a40994188ebd20202214e75f004b604b0068b3dea50d8cf7940cadb1a"
+    }
+  },
+  "cad_use": {
+    "symbol": null,
+    "footprint": "zudo-osc-hole-field:C0805",
+    "model_path": "${KIPRJMOD}/../../footprints/kicad/zudo-osc-hole-field.3dshapes/C0805_L2.0-W1.3-H1.3.wrl",
+    "transform": {
+      "offset": [
+        -1.41,
+        -0.0,
+        -0.0
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    "seating_plane": null
+  },
+  "checks": {
+    "performed": [
+      "Source file SHA-256 values were calculated from f25194fa73ded724e82d4561307c106480fbd9ce Git objects.",
+      "Generated output SHA-256 values are checked by scripts/libgen/check_lib.py."
+    ],
+    "remaining_physical_checks": [
+      "Compare package dimensions, pin/pad numbering, orientation and seating against the exact manufacturer's drawing before using a board for fabrication."
+    ]
+  },
+  "publication": {
+    "preview_selected": false,
+    "download_published": false,
+    "permitted_scope": null
+  }
+}

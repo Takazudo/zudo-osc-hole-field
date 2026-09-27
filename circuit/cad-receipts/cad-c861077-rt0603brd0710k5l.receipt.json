@@ -1,0 +1,123 @@
+{
+  "receipt_version": 1,
+  "identity": {
+    "asset_id": "cad-c861077-rt0603brd0710k5l",
+    "record_id": null,
+    "manufacturer": "YAGEO",
+    "mpn": "RT0603BRD0710K5L",
+    "package": "R0603",
+    "variant_notes": "0603 0.1% thin-film resistor; exact orderable identity comes from the pinned zudo-pd owner bundle."
+  },
+  "acquisition": {
+    "provider": "GitHub repository Takazudo/zudo-pd",
+    "library_release_tag": null,
+    "source_url": "https://github.com/Takazudo/zudo-pd/blob/f25194fa73ded724e82d4561307c106480fbd9ce/symbols/zudo-pd.kicad_sym",
+    "acquired_on": "2026-09-28",
+    "original_filenames": [
+      "zudo-pd.kicad_sym",
+      "R0603.kicad_mod",
+      "R0603.step",
+      "R0603.wrl"
+    ],
+    "sha256": {
+      "symbols/zudo-pd.kicad_sym": "1d897bd28edfe611bd7b8f8583e54287480a24240db395cf1412c03e2d6afff1",
+      "footprints/kicad/zudo-power.pretty/R0603.kicad_mod": "27f8887a5625d61c0c5d0d4c3873cba164a643a2b37eb635473bc0341af30a18",
+      "footprints/kicad/zudo-pd.3dshapes/R0603.step": "e52f17888a8c6c2cb8d56dccf25e2ed131a12a241311657622543c405e42826c",
+      "footprints/kicad/zudo-pd.3dshapes/R0603.wrl": "2a125409502d8eb68f2e196ab1c28b180e0918830445364f93a45d9461b4daad"
+    }
+  },
+  "representation": {
+    "files": [
+      "symbols/src/RT0603BRD0710K5L.kicad_sym",
+      "footprints/kicad/zudo-osc-hole-field.pretty/R0603.kicad_mod",
+      "footprints/kicad/zudo-osc-hole-field.3dshapes/R0603.step",
+      "footprints/kicad/zudo-osc-hole-field.3dshapes/R0603.wrl"
+    ],
+    "formats": [
+      "kicad_mod",
+      "kicad_sym",
+      "step",
+      "wrl"
+    ],
+    "units": "KiCad schematic units; footprint and model dimensions in mm",
+    "original_paths": [
+      "symbols/zudo-pd.kicad_sym",
+      "footprints/kicad/zudo-power.pretty/R0603.kicad_mod",
+      "footprints/kicad/zudo-pd.3dshapes/R0603.step",
+      "footprints/kicad/zudo-pd.3dshapes/R0603.wrl"
+    ]
+  },
+  "fidelity": {
+    "class": "family",
+    "reason": "The part identity is exact, but R0603 is a shared package-family footprint and has not been verified against each manufacturer's drawing.",
+    "evidence": [
+      "Source bytes are pinned to zudo-pd commit f25194fa73ded724e82d4561307c106480fbd9ce.",
+      "The footprint is an imported package representation; exact manufacturer dimensional correspondence has not been independently established here."
+    ]
+  },
+  "derivation": {
+    "derived": true,
+    "input_sha256": {
+      "symbols/zudo-pd.kicad_sym": "1d897bd28edfe611bd7b8f8583e54287480a24240db395cf1412c03e2d6afff1",
+      "footprints/kicad/zudo-power.pretty/R0603.kicad_mod": "27f8887a5625d61c0c5d0d4c3873cba164a643a2b37eb635473bc0341af30a18",
+      "footprints/kicad/zudo-pd.3dshapes/R0603.step": "e52f17888a8c6c2cb8d56dccf25e2ed131a12a241311657622543c405e42826c",
+      "footprints/kicad/zudo-pd.3dshapes/R0603.wrl": "2a125409502d8eb68f2e196ab1c28b180e0918830445364f93a45d9461b4daad"
+    },
+    "tool": "scripts/libgen/seed_assets.py and scripts/libgen/gen_courtyards.py",
+    "tool_version": "1",
+    "parameters": {
+      "source_commit": "f25194fa73ded724e82d4561307c106480fbd9ce",
+      "library_nickname": "zudo-osc-hole-field",
+      "operations": [
+        "extract one symbol",
+        "set local footprint nickname",
+        "normalize identity fields",
+        "generate courtyard",
+        "normalize STEP text line endings and trailing spaces"
+      ]
+    },
+    "output_sha256": {
+      "symbols/src/RT0603BRD0710K5L.kicad_sym": "60fc188f6c901c802348361ff6301b122477cbe4a331ecacbe631abce26ccba2",
+      "footprints/kicad/zudo-osc-hole-field.pretty/R0603.kicad_mod": "25cf0c8152ddf3adbf6c02140174cf5c53cfe865e425d689fb901c6ff1fab6d0",
+      "footprints/kicad/zudo-osc-hole-field.3dshapes/R0603.step": "d9f59b954308ad0e4a384ecd7f84ccaa42245b54e3fb6432fd6c24d212b67105",
+      "footprints/kicad/zudo-osc-hole-field.3dshapes/R0603.wrl": "2a125409502d8eb68f2e196ab1c28b180e0918830445364f93a45d9461b4daad"
+    }
+  },
+  "cad_use": {
+    "symbol": "zudo-osc-hole-field:RT0603BRD0710K5L",
+    "footprint": "zudo-osc-hole-field:R0603",
+    "model_path": "${KIPRJMOD}/../../footprints/kicad/zudo-osc-hole-field.3dshapes/R0603.wrl",
+    "transform": {
+      "offset": [
+        0.0,
+        -0.0,
+        -0.0
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        270.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    "seating_plane": null
+  },
+  "checks": {
+    "performed": [
+      "Source file SHA-256 values were calculated from f25194fa73ded724e82d4561307c106480fbd9ce Git objects.",
+      "Generated output SHA-256 values are checked by scripts/libgen/check_lib.py."
+    ],
+    "remaining_physical_checks": [
+      "Compare package dimensions, pin/pad numbering, orientation and seating against the exact manufacturer's drawing before using a board for fabrication."
+    ]
+  },
+  "publication": {
+    "preview_selected": false,
+    "download_published": false,
+    "permitted_scope": null
+  }
+}
