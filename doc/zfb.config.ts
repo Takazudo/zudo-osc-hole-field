@@ -7,6 +7,8 @@ import { zudoDoc } from "@takazudo/zudo-doc/config";
 // esbuild with `--platform=neutral`, a graph the circuit config never joins.
 const site = zudoDoc({
   siteName: "zudo-osc-hole-field",
+  siteUrl: "https://zudo-osc-hole-field.zudolab.dev",
+  githubUrl: "https://github.com/Takazudo/zudo-osc-hole-field",
   // Required by the v1 asset URLs (FOOTPRINT_ASSET_BASE / MODEL_ASSET_BASE
   // in the package are root-absolute) — this already is the default, kept
   // explicit so it is never accidentally changed.
