@@ -16,7 +16,7 @@ def box(name):
 
 def violations(name):
  p=OUT/f'{name}-drc.json'
- if not p.exists():raise RuntimeError(f'{p} missing; run test_panel_controls.py and oracle DRC first')
+ if not p.exists():raise RuntimeError(f'{p} missing; run build_panel_controls_fixture.py and oracle DRC first')
  j=json.loads(p.read_text())
  if j['kicad_version']!='10.0.6':raise AssertionError(f"oracle mismatch: {j['kicad_version']}")
  return Counter(x['type'] for x in j['violations'])
