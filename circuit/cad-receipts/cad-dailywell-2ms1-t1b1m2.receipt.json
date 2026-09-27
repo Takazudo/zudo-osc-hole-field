@@ -1,0 +1,103 @@
+{
+  "receipt_version": 1,
+  "identity": {
+    "asset_id": "cad-dailywell-2ms1-t1b1m2",
+    "record_id": null,
+    "manufacturer": "Dailywell",
+    "mpn": "2MS1T1B1M2QES-5",
+    "package": "SPDT T1 lever B1 bushing M2 PC terminals",
+    "variant_notes": "LCSC C908280 exact -5 identity; Dailywell series drawing omits -5 suffix."
+  },
+  "acquisition": {
+    "provider": "Dailywell-authored 2M catalog from exact JLC-linked PartGenie mirror, plus Dailywell series and Thonk DW2 PDFs",
+    "library_release_tag": null,
+    "source_url": "https://web-static.partgenie.ai/component/docs/e65bcfd3a61b885a18ddf818b9b40739_2304140030_Dailywell-2MS1T1B1M2QES-5_C908280.pdf",
+    "acquired_on": "2026-09-28",
+    "original_filenames": [
+      "Dailywell-2M-Series.pdf",
+      "DW2-2MS3T1B1M2QES.pdf",
+      "Dailywell-2MS1T1B1M2QES-5.pdf"
+    ],
+    "sha256": {
+      "circuit/sources/toggle-button/Dailywell-2M-Series.pdf": "a8c5687f9fd671b0299354f813d38ddd5241fda2afe89b4d18155f94bd6fac48",
+      "circuit/sources/toggle-button/DW2-2MS3T1B1M2QES.pdf": "1fa575eb2679dd10fffd94c1bb3dbaf8ecff15b528c2a971e2caf32effa73448",
+      "circuit/sources/toggle-button/Dailywell-2MS1T1B1M2QES-5.pdf": "ce4adeea24aba998ed0ef7ae47f70edfcfe4307874eb6caa65efc2b871cf6d44"
+    },
+    "source_urls": {
+      "circuit/sources/toggle-button/Dailywell-2M-Series.pdf": "https://static.chipdip.ru/lib/866/DOC027866893.pdf",
+      "circuit/sources/toggle-button/DW2-2MS3T1B1M2QES.pdf": "https://www.thonk.co.uk/wp-content/uploads/2017/05/DW2-SPDT-ON-OFF-ON-2MS3T1B1M2QES.pdf",
+      "circuit/sources/toggle-button/Dailywell-2MS1T1B1M2QES-5.pdf": "https://web-static.partgenie.ai/component/docs/e65bcfd3a61b885a18ddf818b9b40739_2304140030_Dailywell-2MS1T1B1M2QES-5_C908280.pdf"
+    }
+  },
+  "representation": {
+    "files": [
+      "footprints/kicad/zudo-osc-hole-field.pretty/Toggle_Dailywell_2MS_T1B1M2.kicad_mod",
+      "symbols/src/2MS1T1B1M2QES-5.kicad_sym"
+    ],
+    "formats": [
+      "kicad_mod",
+      "kicad_sym"
+    ],
+    "units": "mm",
+    "original_paths": [
+      "circuit/sources/toggle-button/Dailywell-2M-Series.pdf",
+      "circuit/sources/toggle-button/DW2-2MS3T1B1M2QES.pdf",
+      "circuit/sources/toggle-button/Dailywell-2MS1T1B1M2QES-5.pdf"
+    ]
+  },
+  "fidelity": {
+    "class": "derived",
+    "reason": "Dailywell series and DW2 drawings support shared M2 terminal pattern; copper annulus/courtyard are project-derived. The -5 suffix does not match every source title.",
+    "evidence": [
+      "Dailywell 2M series printed pages 25-27; Thonk DW2 Dailywell drawing printed page 1 of 1 and nut drawing.",
+      "Exact 2MS1 C908280-linked PDF retains Dailywell catalog printed pages 24-29, including panel mounting and M2 termination family geometry."
+    ]
+  },
+  "derivation": {
+    "derived": true,
+    "input_sha256": {
+      "circuit/sources/toggle-button/Dailywell-2M-Series.pdf": "a8c5687f9fd671b0299354f813d38ddd5241fda2afe89b4d18155f94bd6fac48",
+      "circuit/sources/toggle-button/DW2-2MS3T1B1M2QES.pdf": "1fa575eb2679dd10fffd94c1bb3dbaf8ecff15b528c2a971e2caf32effa73448",
+      "circuit/sources/toggle-button/Dailywell-2MS1T1B1M2QES-5.pdf": "ce4adeea24aba998ed0ef7ae47f70edfcfe4307874eb6caa65efc2b871cf6d44"
+    },
+    "tool": "Drawing audit and scripts/libgen/gen_courtyards.py",
+    "tool_version": "1",
+    "parameters": {
+      "operations": [
+        "anchor at actuator axis",
+        "use source PCB hole and terminal pitch",
+        "generate 0.25 mm courtyard",
+        "assign panel-facing pin orientation"
+      ]
+    },
+    "output_sha256": {
+      "footprints/kicad/zudo-osc-hole-field.pretty/Toggle_Dailywell_2MS_T1B1M2.kicad_mod": "ae87f624ef060cd74030c01f4741aaa9ebd6e3434495e44d750814e076125796",
+      "symbols/src/2MS1T1B1M2QES-5.kicad_sym": "f6941a5f6455e0fea459d68634b4cb8e7a55d76f36c4ce01e83c545c46092f4b"
+    }
+  },
+  "cad_use": {
+    "symbol": "zudo-osc-hole-field:2MS1T1B1M2QES-5",
+    "footprint": "zudo-osc-hole-field:Toggle_Dailywell_2MS_T1B1M2",
+    "model_path": null,
+    "transform": {
+      "offset": null,
+      "rotation": null,
+      "scale": null
+    },
+    "seating_plane": null
+  },
+  "checks": {
+    "performed": [
+      "Source bytes SHA-256 checked locally.",
+      "Footprint and symbol pass project library checks."
+    ],
+    "remaining_physical_checks": [
+      "Confirm installed lot pin orientation and panel reach on a coupon."
+    ]
+  },
+  "publication": {
+    "preview_selected": false,
+    "download_published": false,
+    "permitted_scope": null
+  }
+}

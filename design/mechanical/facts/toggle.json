@@ -1,0 +1,290 @@
+{
+  "schema_version": 1,
+  "status": "unvalidated draft",
+  "identities": [
+    {
+      "manufacturer": "Dailywell",
+      "mpn": "2MS1T1B1M2QES-5",
+      "count": 19,
+      "lcsc": "C908280",
+      "source_locator": "LCSC C908280 listing and Dailywell 2M Series printed pp.25-27; suffix -5 is not explained in the series catalog"
+    },
+    {
+      "manufacturer": "Dailywell",
+      "mpn": "2MS3T1B1M2QES",
+      "count": 11,
+      "lcsc": "",
+      "source_locator": "R21 design intent; Thonk DW2 title block p.1 instead says 2MS3T1B1M2QES-5",
+      "status": "EXACT SUFFIX OPEN"
+    }
+  ],
+  "sources": [
+    {
+      "id": "DAILYWELL-2M",
+      "path": "circuit/sources/toggle-button/Dailywell-2M-Series.pdf",
+      "sha256": "a8c5687f9fd671b0299354f813d38ddd5241fda2afe89b4d18155f94bd6fac48",
+      "physical_pdf_pages": [
+        1,
+        2,
+        3
+      ],
+      "printed_pages": [
+        25,
+        26,
+        27
+      ]
+    },
+    {
+      "id": "DW2",
+      "path": "circuit/sources/toggle-button/DW2-2MS3T1B1M2QES.pdf",
+      "sha256": "1fa575eb2679dd10fffd94c1bb3dbaf8ecff15b528c2a971e2caf32effa73448",
+      "physical_pdf_pages": [
+        0,
+        1
+      ],
+      "printed_pages": [
+        "1 of 1",
+        "1 of 1"
+      ]
+    },
+    {
+      "id": "DAILYWELL-2MS1-EXACT-LISTING",
+      "path": "circuit/sources/toggle-button/Dailywell-2MS1T1B1M2QES-5.pdf",
+      "sha256": "ce4adeea24aba998ed0ef7ae47f70edfcfe4307874eb6caa65efc2b871cf6d44",
+      "physical_pdf_pages": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "printed_pages": [
+        24,
+        25,
+        26,
+        27,
+        28,
+        29
+      ],
+      "scope": "Manufacturer-authored 2M catalog served by exact 2MS1 C908280 mirror; page content is family, not a standalone -5 drawing."
+    }
+  ],
+  "shared_footprint": {
+    "value": "zudo-osc-hole-field:Toggle_Dailywell_2MS_T1B1M2",
+    "status": "PROVISIONAL - M2 family geometry only; unsuffixed 2MS3 exact equivalence unproven",
+    "locator": "DAILYWELL-2MS1-EXACT-LISTING printed pp.25-26 SPDT pole/M2 family; DW2 physical p.0 P.C. MOUNTING for 2MS3T1B1M2QES-5",
+    "reason": "Both references indicate three-terminal M2 geometry, but the DW2 exact drawing has -5 suffix, and no manufacturer document proves that the unsuffixed handoff MPN is the same orderable mechanical variant."
+  },
+  "facts": {
+    "bushing_thread": {
+      "value": "10-48 UNS-2A",
+      "status": "DRAWING",
+      "locator": "DAILYWELL-2M printed p.26 B1 THD; DW2 physical p.0 side view"
+    },
+    "bushing_length_mm": {
+      "value": 5.59,
+      "status": "DRAWING",
+      "locator": "DAILYWELL-2M printed p.26 B1 THD; DW2 physical p.0 side view"
+    },
+    "bushing_outer_diameter_mm": {
+      "value": 6.0,
+      "status": "DRAWING",
+      "locator": "DAILYWELL-2M printed p.26 B1 THD"
+    },
+    "nut_across_flats_mm": {
+      "value": 7.0,
+      "status": "DRAWING",
+      "locator": "DAILYWELL-2MS1-EXACT-LISTING printed p.29 HARDWARE, MNU-2M01; DW2 physical p.1"
+    },
+    "nut_corner_envelope_mm": {
+      "value": 8.0,
+      "status": "DRAWING",
+      "locator": "DAILYWELL-2MS1-EXACT-LISTING printed p.29 HARDWARE, MNU-2M01; DW2 physical p.1"
+    },
+    "nut_thickness_mm": {
+      "value": 1.19,
+      "status": "DRAWING",
+      "locator": "DAILYWELL-2MS1-EXACT-LISTING printed p.29 HARDWARE, MNU-2M01; DW2 physical p.1"
+    },
+    "washer_outer_diameter_mm": {
+      "value": 7.87,
+      "status": "DRAWING",
+      "locator": "DW2 physical p.1, MNU-2M03, .310/7.87"
+    },
+    "washer_thickness_mm": {
+      "value": 0.46,
+      "status": "DRAWING",
+      "locator": "DW2 physical p.1, MNU-2M03, .018/0.46"
+    },
+    "body_width_mm": {
+      "value": 8.13,
+      "status": "DRAWING",
+      "locator": "DAILYWELL-2M printed p.25 SPDT pole options and DW2 physical p.0"
+    },
+    "body_depth_mm": {
+      "value": 5.08,
+      "status": "DRAWING",
+      "locator": "DAILYWELL-2M printed p.25 SPDT pole options and DW2 physical p.0"
+    },
+    "lever_diameter_mm": {
+      "value": 2.54,
+      "status": "DRAWING",
+      "locator": "DAILYWELL-2M printed p.26 T1 actuator; DW2 physical p.0"
+    },
+    "lever_length_reference_mm": {
+      "value": 9.4,
+      "status": "DRAWING",
+      "locator": "DAILYWELL-2M printed p.26 T1 actuator .370/9.40; this is not a measured installed sweep radius"
+    },
+    "actual_lever_sweep_angle_deg": {
+      "value": null,
+      "status": "UNSOURCED",
+      "reason": "No angular throw limit is dimensioned; artwork is not a measurement."
+    },
+    "actual_lever_sweep_envelope_mm": {
+      "value": null,
+      "status": "UNSOURCED",
+      "reason": "Requires throw angle, pivot datum and cap selection."
+    },
+    "pcb_hole_diameter_mm": {
+      "value": 1.09,
+      "status": "DRAWING",
+      "locator": "DW2 physical p.0 P.C. MOUNTING for 2MS3T1B1M2QES-5; used provisionally for 2MS1 M2 family pattern"
+    },
+    "pcb_terminal_pitch_mm": {
+      "value": 2.54,
+      "status": "DRAWING",
+      "locator": "DW2 physical p.0 P.C. MOUNTING for 2MS3T1B1M2QES-5; DAILYWELL-2M printed p.26 M2 termination family"
+    },
+    "recommended_panel_hole_diameter_mm": {
+      "value": 4.95,
+      "status": "DRAWING",
+      "locator": "DAILYWELL-2MS1-EXACT-LISTING printed p.29 PANEL MOUNTING, 10-48 bushing with locking ring; DW2 physical p.0 -5 panel mounting; unsuffixed 2MS3 applicability unproven"
+    },
+    "recommended_panel_hole_flat_mm": {
+      "value": 4.55,
+      "status": "DRAWING",
+      "locator": "DAILYWELL-2MS1-EXACT-LISTING printed p.29 PANEL MOUNTING, 10-48 bushing with locking ring; DW2 physical p.0 -5 panel mounting; unsuffixed 2MS3 applicability unproven"
+    },
+    "recommended_panel_hole_tolerance_mm": {
+      "value": null,
+      "status": "UNSOURCED",
+      "reason": "Panel mounting geometry has no explicit tolerance; drawing general tolerance does not establish board fabricator capability."
+    },
+    "seated_height_board_to_shoulder_mm": {
+      "value": null,
+      "status": "UNSOURCED",
+      "reason": "Drawing does not dimension actual seating plane after soldering."
+    },
+    "board_to_panel_distance_range_mm": {
+      "value": null,
+      "status": "UNSOURCED",
+      "reason": "Thread engagement and seated shoulder datum are unknown; 5.59 mm bushing length alone is insufficient."
+    }
+  },
+  "switch_function": {
+    "status": "DRAWING",
+    "locator": "DAILYWELL-2M printed p.25, SWITCH FUNCTION table; DW2 physical p.0, SWITCH FUNCTION table",
+    "left_lever_position": {
+      "terminal_pair": "2-3",
+      "two_position": "ON",
+      "three_position": "ON"
+    },
+    "centre_lever_position": {
+      "two_position": "not stable",
+      "three_position": "OPEN"
+    },
+    "right_lever_position": {
+      "terminal_pair": "2-1",
+      "two_position": "ON",
+      "three_position": "ON"
+    }
+  },
+  "orientation": {
+    "status": "PROJECT-CHOICE",
+    "rule": "Mount pad 3 at panel-left, pad 1 at panel-right; pin 2 is common. First printed position is panel-left.",
+    "uses": [
+      {
+        "use": "RANGE",
+        "count": 5,
+        "words_left_to_right": [
+          "LFO",
+          "VCO"
+        ],
+        "mpn": "2MS1T1B1M2QES-5"
+      },
+      {
+        "use": "SHAPE",
+        "count": 6,
+        "words_left_to_right": [
+          "LINEAR",
+          "CURVED"
+        ],
+        "mpn": "2MS1T1B1M2QES-5"
+      },
+      {
+        "use": "STAGE",
+        "count": 6,
+        "words_left_to_right": [
+          "RISE",
+          "FALL"
+        ],
+        "mpn": "2MS1T1B1M2QES-5"
+      },
+      {
+        "use": "A/B",
+        "count": 2,
+        "words_left_to_right": [
+          "A",
+          "B"
+        ],
+        "mpn": "2MS1T1B1M2QES-5"
+      },
+      {
+        "use": "SYNC",
+        "count": 5,
+        "words_left_to_right": [
+          "SOFT",
+          "OFF",
+          "HARD"
+        ],
+        "mpn": "2MS3T1B1M2QES"
+      },
+      {
+        "use": "MODE",
+        "count": 6,
+        "words_left_to_right": [
+          "ASR",
+          "AR",
+          "LOOP"
+        ],
+        "mpn": "2MS3T1B1M2QES"
+      }
+    ],
+    "source_locator": "design/grid/placements.lock.json and R21 panel wording in project/osc-hole-field/workbench; Dailywell printed p.25 POS.1/POS.3 contact table"
+  },
+  "grid_fit": {
+    "fixed_pitch_mm": [
+      17,
+      14
+    ],
+    "courtyard_mm": [
+      8.64,
+      6.5
+    ],
+    "nominal_courtyard_gap_mm": [
+      8.36,
+      7.5
+    ],
+    "status": "GEOMETRIC DRAFT",
+    "lever_sweep_note": "A full 9.4 mm radius around each axis would overlap by 1.8 mm at 17 mm pitch; this is a deliberately conservative bound, not an actual swept envelope. Physical lever sweep needs a coupon.",
+    "source_locator": "design/grid/placements.lock.json control grid and scripts/libgen/gen_courtyards.py generated outline"
+  },
+  "exact_identity_gate": {
+    "status": "OPEN",
+    "reason": "The retained Thonk DW2 drawing title block names 2MS3T1B1M2QES-5, while the handoff names 2MS3T1B1M2QES without suffix. The family catalog lists the unsuffixed MPN but does not establish -5 interchangeability.",
+    "evidence_needed": "Manufacturer part-number suffix key or exact unsuffixed drawing establishing terminal pattern, bushing, lever, nut and panel hole; alternatively select/order the drawn -5 variant explicitly after owner review.",
+    "consequence": "Three-position footprint and stack dimensions are provisional; do not qualify the board from these drawings alone."
+  }
+}
