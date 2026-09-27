@@ -1,0 +1,49 @@
+{
+  "receipt_version": 1,
+  "identity": {
+    "asset_id": "topic12-footprint-selector",
+    "record_id": null,
+    "manufacturer": "Alps Alpine",
+    "mpn": "SRBV160803",
+    "package": "SRBV160803",
+    "variant_notes": "Shaft-axis origin; footprint requires physical fit check."
+  },
+  "acquisition": {
+    "provider": "manufacturer PDF",
+    "source_url": "https://tech.alpsalpine.com/cms.media/product_catalog_sw_04_srbv_en_7f096645b6.pdf",
+    "acquired_on": "2026-09-28",
+    "sha256": {
+      "design/mechanical/sources/alps-srbv.pdf": "4389058192ce8e89188d5c1c0f23de85945916542cd477ba04f3c75ac9f69ec8"
+    }
+  },
+  "representation": {
+    "files": [
+      "footprints/kicad/zudo-osc-hole-field.pretty/SRBV160803.kicad_mod",
+      "footprints/kicad/zudo-osc-hole-field.3dshapes/SRBV160803.wrl"
+    ],
+    "formats": [
+      "kicad_mod",
+      "wrl"
+    ],
+    "units": "mm",
+    "original_paths": [
+      "design/mechanical/sources/alps-srbv.pdf"
+    ]
+  },
+  "fidelity": {
+    "class": "derived",
+    "reason": "Drawing-derived pad centers and holes. Selector lugs collide at fixed 17 mm pitch; no fit claim. WRL is only a coarse body envelope, not an exact vendor 3D model."
+  },
+  "derivation": {
+    "derived": true,
+    "input_sha256": {
+      "design/mechanical/sources/alps-srbv.pdf": "4389058192ce8e89188d5c1c0f23de85945916542cd477ba04f3c75ac9f69ec8"
+    },
+    "output_sha256": {
+      "footprints/kicad/zudo-osc-hole-field.pretty/SRBV160803.kicad_mod": "b6613efbd5faa94ff8cdc4148ac953b9416600a435211f298cd7427f8271d87b",
+      "footprints/kicad/zudo-osc-hole-field.3dshapes/SRBV160803.wrl": "7640ed641c55401fb6be5a1ea559e088c102d4c501b28cee1dc173593f993c9f"
+    },
+    "tool": "topic12 drawing audit and gen_courtyards",
+    "tool_version": "1"
+  }
+}

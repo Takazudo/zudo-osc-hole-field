@@ -9,4 +9,127 @@ Generated from the component evidence records — edit the records, not this pag
 
 Every component record this project publishes, in the order the bill of materials lists them, with each subordinate record directly after the part it belongs to. The identity, placement and state columns are projected from stored evidence; the record pages behind them carry the facts, sources and coverage themselves.
 
-No component record is published yet. Add the first exact component with Workflow B in `circuit/WORKFLOW.md`, then select it in `circuit/publication/selection.json`.
+## How to read this catalog
+
+Four columns describe state. None of them is a grade, and there is deliberately no column combining them — a part is not summarised into a verdict here or anywhere else in this section.
+
+- **Fit** — Whether the part is fitted in the as-built design, or is marked do-not-populate or hand-fit.
+- **Identity** — Whether the exact orderable part has been confirmed. Unresolved does not mean the wrong part is fitted; it means the confirmation is not on record, so a same-name part from another vendor may not be substituted on the strength of it.
+- **Sources** — Whether any document backing this line could be retrieved. A line whose sources are unavailable still publishes, so the gap stays visible rather than absent.
+- **Open domains** — How many of the record's published coverage domains are unresolved, out of how many were published at all. The denominator is the point: no open domains out of none published means nothing was checked, not that everything passed.
+
+## Parts at a glance
+
+<EvidenceAnchor id="catalog-index" />
+
+<EvidenceTable label="parts-index">
+  | Part                                                                                | Record     | Function            | Fit    | Identity | Sources   | Open domains |
+  | ----------------------------------------------------------------------------------- | ---------- | ------------------- | ------ | -------- | --------- | ------------ |
+  | <EvidenceAnchor id="rec-b103" />[PTV09A-4020F-B103](/docs/components/records/b103/) | `rec-b103` | panel potentiometer | Fitted | VERIFIED | AVAILABLE | 0 of 2       |
+  | <EvidenceAnchor id="rec-b104" />[PTV09A-4020F-B104](/docs/components/records/b104/) | `rec-b104` | panel potentiometer | Fitted | VERIFIED | AVAILABLE | 0 of 2       |
+  | <EvidenceAnchor id="rec-b504" />[PTV09A-4020F-B504](/docs/components/records/b504/) | `rec-b504` | panel potentiometer | Fitted | VERIFIED | AVAILABLE | 0 of 2       |
+  | <EvidenceAnchor id="rec-srbv" />[SRBV160803](/docs/components/records/srbv/)        | `rec-srbv` | octave selector     | Fitted | VERIFIED | AVAILABLE | 1 of 2       |
+</EvidenceTable>
+
+## Part entries
+
+One entry per record, carrying the orderable identity and every board placement. Each entry links to its record page, where the evidence itself is published, and to the raw agent resource that evidence is stored in.
+
+### PTV09A-4020F-B103
+
+| Field          | Recorded value                        |
+| -------------- | ------------------------------------- |
+| Record ID      | `rec-b103`                            |
+| Kind           | standalone — audited in its own right |
+| Manufacturer   | Bourns                                |
+| Function       | panel potentiometer                   |
+| Orderable ID   | `C5848782`                            |
+| Package        | `PTV09A-4020F`                        |
+| Inventory line | `line-b103`                           |
+| Owner skill    | `component-bourns-ptv09a-4020f-b103`  |
+
+**Placements:** no placement published
+
+**Fit:** Fitted
+
+**Identity state:** VERIFIED
+
+**Source state:** AVAILABLE
+
+**Open coverage domains:** 0 open of 2 published
+
+[PTV09A-4020F-B103 record details](/docs/components/records/b103/) — [PTV09A-4020F-B103 raw agent resource](/docs/claude-skills/component-bourns-ptv09a-4020f-b103/)
+
+### PTV09A-4020F-B104
+
+| Field          | Recorded value                        |
+| -------------- | ------------------------------------- |
+| Record ID      | `rec-b104`                            |
+| Kind           | standalone — audited in its own right |
+| Manufacturer   | Bourns                                |
+| Function       | panel potentiometer                   |
+| Package        | `PTV09A-4020F`                        |
+| Inventory line | `line-b104`                           |
+| Owner skill    | `component-bourns-ptv09a-4020f-b104`  |
+
+**Placements:** no placement published
+
+**Fit:** Fitted
+
+**Identity state:** VERIFIED
+
+**Source state:** AVAILABLE
+
+**Open coverage domains:** 0 open of 2 published
+
+[PTV09A-4020F-B104 record details](/docs/components/records/b104/) — [PTV09A-4020F-B104 raw agent resource](/docs/claude-skills/component-bourns-ptv09a-4020f-b104/)
+
+### PTV09A-4020F-B504
+
+| Field          | Recorded value                        |
+| -------------- | ------------------------------------- |
+| Record ID      | `rec-b504`                            |
+| Kind           | standalone — audited in its own right |
+| Manufacturer   | Bourns                                |
+| Function       | panel potentiometer                   |
+| Orderable ID   | `C5154140`                            |
+| Package        | `PTV09A-4020F`                        |
+| Inventory line | `line-b504`                           |
+| Owner skill    | `component-bourns-ptv09a-4020f-b504`  |
+
+**Placements:** no placement published
+
+**Fit:** Fitted
+
+**Identity state:** VERIFIED
+
+**Source state:** AVAILABLE
+
+**Open coverage domains:** 0 open of 2 published
+
+[PTV09A-4020F-B504 record details](/docs/components/records/b504/) — [PTV09A-4020F-B504 raw agent resource](/docs/claude-skills/component-bourns-ptv09a-4020f-b504/)
+
+### SRBV160803
+
+| Field          | Recorded value                        |
+| -------------- | ------------------------------------- |
+| Record ID      | `rec-srbv`                            |
+| Kind           | standalone — audited in its own right |
+| Manufacturer   | Alps Alpine                           |
+| Function       | octave selector                       |
+| Orderable ID   | `C470374`                             |
+| Package        | `SRBV160803`                          |
+| Inventory line | `line-srbv`                           |
+| Owner skill    | `component-alps-alpine-srbv160803`    |
+
+**Placements:** no placement published
+
+**Fit:** Fitted
+
+**Identity state:** VERIFIED
+
+**Source state:** AVAILABLE
+
+**Open coverage domains:** 1 open of 2 published
+
+[SRBV160803 record details](/docs/components/records/srbv/) — [SRBV160803 raw agent resource](/docs/claude-skills/component-alps-alpine-srbv160803/)

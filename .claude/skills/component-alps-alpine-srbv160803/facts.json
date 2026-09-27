@@ -1,0 +1,47 @@
+{
+  "schema_version": 1,
+  "facts": [
+    {
+      "fact_id": "fact-srbv-pin",
+      "record_id": "rec-srbv",
+      "source_id": "src-srbv",
+      "class": "PROJECT_STATE",
+      "value": "1/10 common; 2\u20137 positions; 8/9 dummy; MP1/MP2 mechanical",
+      "unit": "NONE",
+      "conditions": "viewed from direction A",
+      "locator": "Figure Drawing No.7, circuit diagram row C and dummy terminals table",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-srbv-manufacturer",
+      "record_id": "rec-srbv",
+      "source_id": "src-srbv",
+      "class": "PROJECT_STATE",
+      "value": "Alps Alpine",
+      "unit": "NONE",
+      "conditions": "manufacturer branding in retained PDF",
+      "locator": "PDF title block and product-list row for exact part family",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-srbv-mechanical-fit",
+      "record_id": "rec-srbv",
+      "source_id": "src-srbv",
+      "class": "PROJECT_STATE",
+      "value": "Adjacent \u00d82 mounting holes overlap at fixed 17 mm shaft pitch",
+      "unit": "NONE",
+      "conditions": "five selectors in one row",
+      "locator": "Figure Drawing No.7 mounting-hole spacing, 16 mm; project placement lock 17 mm pitch",
+      "provenance": "PROJECT-CHOICE",
+      "verdict": "NEEDS BENCH",
+      "depends_on": [],
+      "expression": ""
+    }
+  ]
+}

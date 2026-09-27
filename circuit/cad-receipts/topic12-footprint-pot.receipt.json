@@ -1,0 +1,49 @@
+{
+  "receipt_version": 1,
+  "identity": {
+    "asset_id": "topic12-footprint-pot",
+    "record_id": null,
+    "manufacturer": "Bourns",
+    "mpn": "PTV09A-4020F family",
+    "package": "PTV09A-4020F",
+    "variant_notes": "Shaft-axis origin; footprint requires physical fit check."
+  },
+  "acquisition": {
+    "provider": "manufacturer PDF",
+    "source_url": "https://www.bourns.com/docs/product-datasheets/PTV09.pdf",
+    "acquired_on": "2026-09-28",
+    "sha256": {
+      "design/mechanical/sources/bourns-ptv09.pdf": "411cdb6a62e61f9c5bc2df76ed64ee21d7bcfbee035c1ba36beff08c43f28558"
+    }
+  },
+  "representation": {
+    "files": [
+      "footprints/kicad/zudo-osc-hole-field.pretty/PTV09A-4020F.kicad_mod",
+      "footprints/kicad/zudo-osc-hole-field.3dshapes/PTV09A-4020F.wrl"
+    ],
+    "formats": [
+      "kicad_mod",
+      "wrl"
+    ],
+    "units": "mm",
+    "original_paths": [
+      "design/mechanical/sources/bourns-ptv09.pdf"
+    ]
+  },
+  "fidelity": {
+    "class": "derived",
+    "reason": "Drawing-derived pad centers and holes. Selector lugs collide at fixed 17 mm pitch; no fit claim. WRL is only a coarse body envelope, not an exact vendor 3D model."
+  },
+  "derivation": {
+    "derived": true,
+    "input_sha256": {
+      "design/mechanical/sources/bourns-ptv09.pdf": "411cdb6a62e61f9c5bc2df76ed64ee21d7bcfbee035c1ba36beff08c43f28558"
+    },
+    "output_sha256": {
+      "footprints/kicad/zudo-osc-hole-field.pretty/PTV09A-4020F.kicad_mod": "c0dafcafeba8f3570b1c395c12e844ab8d237bb54edfd65130cf98f25939c557",
+      "footprints/kicad/zudo-osc-hole-field.3dshapes/PTV09A-4020F.wrl": "89e65cf137214f11aeea69aa3d4c2c322f7a64bf88d424b9934abb3283349132"
+    },
+    "tool": "topic12 drawing audit and gen_courtyards",
+    "tool_version": "1"
+  }
+}
