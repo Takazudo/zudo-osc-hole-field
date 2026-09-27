@@ -1,0 +1,463 @@
+(kicad_sch
+  (version 20260306)
+  (generator "zudo_schgen")
+  (generator_version "10.0")
+  (uuid "d994c392-8cbb-57cd-af65-a77f0246f263")
+  (paper "A3")
+  (lib_symbols
+    (symbol "Fixture:GND"
+        (power global)
+        (pin_numbers
+          (hide yes)
+        )
+        (pin_names
+          (offset 0)
+          (hide yes)
+        )
+        (exclude_from_sim no)
+        (in_bom yes)
+        (on_board yes)
+        (in_pos_files yes)
+        (duplicate_pin_numbers_are_jumpers no)
+        (property "Reference" "#PWR"
+          (at 0 -6.35 0)
+          (show_name no)
+          (do_not_autoplace no)
+          (hide yes)
+          (effects
+            (font
+              (size 1.27 1.27)
+            )
+          )
+        )
+        (property "Value" "GND"
+          (at 0 -3.81 0)
+          (show_name no)
+          (do_not_autoplace no)
+          (effects
+            (font
+              (size 1.27 1.27)
+            )
+          )
+        )
+        (property "Footprint" ""
+          (at 0 0 0)
+          (show_name no)
+          (do_not_autoplace no)
+          (hide yes)
+          (effects
+            (font
+              (size 1.27 1.27)
+            )
+          )
+        )
+        (property "Datasheet" ""
+          (at 0 0 0)
+          (show_name no)
+          (do_not_autoplace no)
+          (hide yes)
+          (effects
+            (font
+              (size 1.27 1.27)
+            )
+          )
+        )
+        (property "Description" "Power symbol creates a global label with name \"GND\" , ground"
+          (at 0 0 0)
+          (show_name no)
+          (do_not_autoplace no)
+          (hide yes)
+          (effects
+            (font
+              (size 1.27 1.27)
+            )
+          )
+        )
+        (property "ki_keywords" "global power"
+          (at 0 0 0)
+          (show_name no)
+          (do_not_autoplace no)
+          (hide yes)
+          (effects
+            (font
+              (size 1.27 1.27)
+            )
+          )
+        )
+        (symbol "GND_0_1"
+          (polyline
+            (pts
+              (xy 0 0) (xy 0 -1.27) (xy 1.27 -1.27) (xy 0 -2.54) (xy -1.27 -1.27) (xy 0 -1.27)
+            )
+            (stroke
+              (width 0)
+              (type default)
+            )
+            (fill
+              (type none)
+            )
+          )
+        )
+        (symbol "GND_1_1"
+          (pin power_in line
+            (at 0 0 270)
+            (length 0)
+            (name ""
+              (effects
+                (font
+                  (size 1.27 1.27)
+                )
+              )
+            )
+            (number "1"
+              (effects
+                (font
+                  (size 1.27 1.27)
+                )
+              )
+            )
+          )
+        )
+        (embedded_fonts no)
+      )
+    (symbol "Fixture:PWR_FLAG"
+        (power global)
+        (pin_numbers
+          (hide yes)
+        )
+        (pin_names
+          (offset 0)
+          (hide yes)
+        )
+        (exclude_from_sim no)
+        (in_bom yes)
+        (on_board yes)
+        (in_pos_files yes)
+        (duplicate_pin_numbers_are_jumpers no)
+        (property "Reference" "#FLG"
+          (at 0 1.905 0)
+          (show_name no)
+          (do_not_autoplace no)
+          (hide yes)
+          (effects
+            (font
+              (size 1.27 1.27)
+            )
+          )
+        )
+        (property "Value" "PWR_FLAG"
+          (at 0 3.81 0)
+          (show_name no)
+          (do_not_autoplace no)
+          (effects
+            (font
+              (size 1.27 1.27)
+            )
+          )
+        )
+        (property "Footprint" ""
+          (at 0 0 0)
+          (show_name no)
+          (do_not_autoplace no)
+          (hide yes)
+          (effects
+            (font
+              (size 1.27 1.27)
+            )
+          )
+        )
+        (property "Datasheet" ""
+          (at 0 0 0)
+          (show_name no)
+          (do_not_autoplace no)
+          (hide yes)
+          (effects
+            (font
+              (size 1.27 1.27)
+            )
+          )
+        )
+        (property "Description" "Special symbol for telling ERC where power comes from"
+          (at 0 0 0)
+          (show_name no)
+          (do_not_autoplace no)
+          (hide yes)
+          (effects
+            (font
+              (size 1.27 1.27)
+            )
+          )
+        )
+        (property "ki_keywords" "flag power"
+          (at 0 0 0)
+          (show_name no)
+          (do_not_autoplace no)
+          (hide yes)
+          (effects
+            (font
+              (size 1.27 1.27)
+            )
+          )
+        )
+        (symbol "PWR_FLAG_0_0"
+          (pin power_out line
+            (at 0 0 90)
+            (length 0)
+            (name ""
+              (effects
+                (font
+                  (size 1.27 1.27)
+                )
+              )
+            )
+            (number "1"
+              (effects
+                (font
+                  (size 1.27 1.27)
+                )
+              )
+            )
+          )
+        )
+        (symbol "PWR_FLAG_0_1"
+          (polyline
+            (pts
+              (xy 0 0) (xy 0 1.27) (xy -1.016 1.905) (xy 0 2.54) (xy 1.016 1.905) (xy 0 1.27)
+            )
+            (stroke
+              (width 0)
+              (type default)
+            )
+            (fill
+              (type none)
+            )
+          )
+        )
+        (embedded_fonts no)
+      )
+    (symbol "Fixture:VCC"
+        (power global)
+        (pin_numbers
+          (hide yes)
+        )
+        (pin_names
+          (offset 0)
+          (hide yes)
+        )
+        (exclude_from_sim no)
+        (in_bom yes)
+        (on_board yes)
+        (in_pos_files yes)
+        (duplicate_pin_numbers_are_jumpers no)
+        (property "Reference" "#PWR"
+          (at 0 -3.81 0)
+          (show_name no)
+          (do_not_autoplace no)
+          (hide yes)
+          (effects
+            (font
+              (size 1.27 1.27)
+            )
+          )
+        )
+        (property "Value" "VCC"
+          (at 0 3.556 0)
+          (show_name no)
+          (do_not_autoplace no)
+          (effects
+            (font
+              (size 1.27 1.27)
+            )
+          )
+        )
+        (property "Footprint" ""
+          (at 0 0 0)
+          (show_name no)
+          (do_not_autoplace no)
+          (hide yes)
+          (effects
+            (font
+              (size 1.27 1.27)
+            )
+          )
+        )
+        (property "Datasheet" ""
+          (at 0 0 0)
+          (show_name no)
+          (do_not_autoplace no)
+          (hide yes)
+          (effects
+            (font
+              (size 1.27 1.27)
+            )
+          )
+        )
+        (property "Description" "Power symbol creates a global label with name \"VCC\""
+          (at 0 0 0)
+          (show_name no)
+          (do_not_autoplace no)
+          (hide yes)
+          (effects
+            (font
+              (size 1.27 1.27)
+            )
+          )
+        )
+        (property "ki_keywords" "global power"
+          (at 0 0 0)
+          (show_name no)
+          (do_not_autoplace no)
+          (hide yes)
+          (effects
+            (font
+              (size 1.27 1.27)
+            )
+          )
+        )
+        (symbol "VCC_0_1"
+          (polyline
+            (pts
+              (xy -0.762 1.27) (xy 0 2.54)
+            )
+            (stroke
+              (width 0)
+              (type default)
+            )
+            (fill
+              (type none)
+            )
+          )
+          (polyline
+            (pts
+              (xy 0 2.54) (xy 0.762 1.27)
+            )
+            (stroke
+              (width 0)
+              (type default)
+            )
+            (fill
+              (type none)
+            )
+          )
+          (polyline
+            (pts
+              (xy 0 0) (xy 0 2.54)
+            )
+            (stroke
+              (width 0)
+              (type default)
+            )
+            (fill
+              (type none)
+            )
+          )
+        )
+        (symbol "VCC_1_1"
+          (pin power_in line
+            (at 0 0 90)
+            (length 0)
+            (name ""
+              (effects
+                (font
+                  (size 1.27 1.27)
+                )
+              )
+            )
+            (number "1"
+              (effects
+                (font
+                  (size 1.27 1.27)
+                )
+              )
+            )
+          )
+        )
+        (embedded_fonts no)
+      )
+  )
+  (symbol (lib_id "Fixture:PWR_FLAG") (at 175.26 129.54 0) (unit 0)
+    (exclude_from_sim no) (in_bom yes) (on_board yes) (dnp no)
+    (uuid "097fafe9-d609-57be-bfbd-d6b226f8e0f8")
+    (property "Reference" "#FLG401" (at 178.26 126.54 0) (effects (font (size 1.27 1.27))))
+    (property "Value" "PWR_FLAG" (at 178.26 132.54 0) (effects (font (size 1.27 1.27))))
+    (property "Footprint" "" (at 175.26 129.54 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "Datasheet" "" (at 175.26 129.54 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "MPN" "" (at 175.26 129.54 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "Manufacturer" "" (at 175.26 129.54 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "LCSC" "" (at 175.26 129.54 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "Block" "${SHEETNAME}" (at 175.26 129.54 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "Role" "" (at 175.26 129.54 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "PanelUid" "" (at 175.26 129.54 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "Island" "" (at 175.26 129.54 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "Sensitive" "" (at 175.26 129.54 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (pin "1" (uuid "92551dfb-9c62-57d7-a1bf-c25c474d3a1a"))
+    (instances (project "zudo-osc-hole-field"
+      (path "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/49eabe32-ce4a-5fe8-a98c-a3dda1f52f26" (reference "#FLG401") (unit 0))
+    ))
+  )
+  (global_label "VCC" (shape passive) (at 175.26 129.54 270) (effects (font (size 1.27 1.27)) (justify left)) (uuid "e1846218-37ba-5065-91b3-883f28e0bf7b"))
+  (symbol (lib_id "Fixture:PWR_FLAG") (at 190.5 129.54 0) (unit 0)
+    (exclude_from_sim no) (in_bom yes) (on_board yes) (dnp no)
+    (uuid "183701b4-3201-5c69-9016-80259d07ae45")
+    (property "Reference" "#FLG402" (at 193.5 126.54 0) (effects (font (size 1.27 1.27))))
+    (property "Value" "PWR_FLAG" (at 193.5 132.54 0) (effects (font (size 1.27 1.27))))
+    (property "Footprint" "" (at 190.5 129.54 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "Datasheet" "" (at 190.5 129.54 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "MPN" "" (at 190.5 129.54 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "Manufacturer" "" (at 190.5 129.54 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "LCSC" "" (at 190.5 129.54 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "Block" "${SHEETNAME}" (at 190.5 129.54 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "Role" "" (at 190.5 129.54 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "PanelUid" "" (at 190.5 129.54 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "Island" "" (at 190.5 129.54 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "Sensitive" "" (at 190.5 129.54 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (pin "1" (uuid "c1d37b66-4715-5a6e-a469-d1c88e47ae79"))
+    (instances (project "zudo-osc-hole-field"
+      (path "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/49eabe32-ce4a-5fe8-a98c-a3dda1f52f26" (reference "#FLG402") (unit 0))
+    ))
+  )
+  (global_label "GND" (shape passive) (at 190.5 129.54 270) (effects (font (size 1.27 1.27)) (justify left)) (uuid "27b21766-f618-59f6-8daa-c6c8c7b375f1"))
+  (symbol (lib_id "Fixture:VCC") (at 175.26 139.7 0) (unit 1)
+    (exclude_from_sim no) (in_bom yes) (on_board yes) (dnp no)
+    (uuid "0b277703-1ada-5683-9863-9d650a6414d9")
+    (property "Reference" "#PWR403" (at 178.26 136.7 0) (effects (font (size 1.27 1.27))))
+    (property "Value" "VCC" (at 178.26 142.7 0) (effects (font (size 1.27 1.27))))
+    (property "Footprint" "" (at 175.26 139.7 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "Datasheet" "" (at 175.26 139.7 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "MPN" "" (at 175.26 139.7 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "Manufacturer" "" (at 175.26 139.7 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "LCSC" "" (at 175.26 139.7 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "Block" "${SHEETNAME}" (at 175.26 139.7 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "Role" "" (at 175.26 139.7 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "PanelUid" "" (at 175.26 139.7 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "Island" "" (at 175.26 139.7 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "Sensitive" "" (at 175.26 139.7 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (pin "1" (uuid "afe1151d-87e9-5f2c-8a57-fcb1e15b044c"))
+    (instances (project "zudo-osc-hole-field"
+      (path "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/49eabe32-ce4a-5fe8-a98c-a3dda1f52f26" (reference "#PWR403") (unit 1))
+    ))
+  )
+  (global_label "VCC" (shape passive) (at 175.26 139.7 270) (effects (font (size 1.27 1.27)) (justify left)) (uuid "ccf9be98-f5e9-53dd-a6bb-0d9d9bd592fd"))
+  (symbol (lib_id "Fixture:GND") (at 190.5 139.7 0) (unit 1)
+    (exclude_from_sim no) (in_bom yes) (on_board yes) (dnp no)
+    (uuid "d350c1c4-ed6d-5a19-8cde-e96b1a7f4207")
+    (property "Reference" "#PWR404" (at 193.5 136.7 0) (effects (font (size 1.27 1.27))))
+    (property "Value" "GND" (at 193.5 142.7 0) (effects (font (size 1.27 1.27))))
+    (property "Footprint" "" (at 190.5 139.7 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "Datasheet" "" (at 190.5 139.7 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "MPN" "" (at 190.5 139.7 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "Manufacturer" "" (at 190.5 139.7 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "LCSC" "" (at 190.5 139.7 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "Block" "${SHEETNAME}" (at 190.5 139.7 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "Role" "" (at 190.5 139.7 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "PanelUid" "" (at 190.5 139.7 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "Island" "" (at 190.5 139.7 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "Sensitive" "" (at 190.5 139.7 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (pin "1" (uuid "6b5f9e8e-c03e-5f74-b8ec-c8ccec523dda"))
+    (instances (project "zudo-osc-hole-field"
+      (path "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/49eabe32-ce4a-5fe8-a98c-a3dda1f52f26" (reference "#PWR404") (unit 1))
+    ))
+  )
+  (global_label "GND" (shape passive) (at 190.5 139.7 90) (effects (font (size 1.27 1.27)) (justify left)) (uuid "9f6dc44d-a7f9-55ca-87f3-3119fb84df52"))
+  (embedded_fonts no)
+)
