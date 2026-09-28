@@ -28,7 +28,7 @@ PIN_ALIASES={
  'comparator':{'PLUS':'3','MINUS':'2','OUT':'1','VCC':'8','GND':'4'},
  'schmitt':{'IN':'1','OUT':'2','VCC':'14','GND':'7'},
  'signal_diode':{'A':'2','K':'1'},
- 'led_white':{'A':'1','K':'2'},'led_red':{'A':'2','K':'1'},
+ 'led_white':{'A':'2','K':'1'},'led_red':{'A':'2','K':'1'},
  'npn':{'B':'1','E':'2','C':'3'},'mosfet':{'G':'1','S':'2','D':'3'},
  'pot_103':{'CCW':'1','WIPER':'2','CW':'3'},
  'pot_104':{'CCW':'1','WIPER':'2','CW':'3'},

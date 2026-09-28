@@ -45,7 +45,7 @@ class MultBuilder(Builder):
             attrs = {**part.attributes, 'PanelUid': '',
                      'Island': self.led_island if led else self.island}
             refs = {}
-            if panel and part.symbol.endswith('0603Whitelight_C2290'):
+            if panel and part.symbol.endswith('Kingbright_White_0402'):
                 panel_attrs, refs = self.panel_attributes(panel)
                 attrs.update(panel_attrs)
             if role and part.symbol.split(':')[-1].startswith('OPA'):

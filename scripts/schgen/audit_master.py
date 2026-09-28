@@ -122,7 +122,7 @@ def check(families,instances,netlist):
     # negative-rail bypass capacitors, two on each of ten offset/mixer instances.
     # #60 adds four mixer quads + eight bypasses, and two A/B remote
     # buffers (quad, two bypasses and two isolation resistors each).
-    expected_signal_refs=5723+20+4*3+2*5
+    expected_signal_refs=5723+20+4*3+2*5+12  # #61 stage LED series limiters
     if signal_ref_count!=expected_signal_refs:
         errors.append(f'signal/reference designator lock drift: {signal_ref_count} != {expected_signal_refs}')
     if len(refs)!=expected_signal_refs+len(power_refs):
