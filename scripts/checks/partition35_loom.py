@@ -10,6 +10,7 @@ ROOT=Path(__file__).resolve().parents[2]
 import sys
 sys.path.insert(0,str(ROOT))
 from scripts.checks.partition35_json import dumps
+from scripts.partition.model import JACK_BOARDS
 OUT=ROOT/'design/partition/loom-candidate.json'
 
 
@@ -59,13 +60,13 @@ def build():
                           'capacitance':'Whole-driver aggregate <=1 nF including all branches; assembled measurement NOT RUN.'})
     power_routes=[]
     power=src['load_distribution']
-    for board in ('J','P'):
-        for index,(x,net) in enumerate(zip(power['x_mm'],power['net_order'])):
-            y=power[board+'_pad_y_mm'];Y=power['K_'+board+'_pad_y_mm_by_wire'][index]
+    for board,branch in power['branches'].items():
+        for index,(x,net) in enumerate(zip(branch['x_mm'],power['net_order'])):
+            y=branch['pad_y_mm'];Y=branch['core_pad_y_mm'][index]
             da=-src['boards'][board]['face_z_mm']+src['boards'][board]['thickness_mm']+1
             db=-src['boards']['K']['face_z_mm']-1
-            points=[[x,y+(Y-y)*i/100+10*math.sin(math.pi*i/100)**2,da+(db-da)*i/100] for i in range(101)]
-            name='POWER-'+board+'-'+power['wire_labels'][index];radius=(db-da)**2/(20*math.pi**2);length=sum(math.dist(p,q) for p,q in zip(points,points[1:]))
+            points=[[x+branch.get('bow_x_mm',0)*math.sin(math.pi*i/100)**2,y+(Y-y)*i/100+10*math.sin(math.pi*i/100)**2,da+(db-da)*i/100] for i in range(101)]
+            name='POWER-'+board+'-'+power['wire_labels'][index];radius=(db-da)**2/(2*math.pi**2*math.hypot(10,branch.get('bow_x_mm',0)));length=sum(math.dist(p,q) for p,q in zip(points,points[1:]))
             if radius<power['minimum_bend_radius_mm']:errors.append('power wire bend too tight '+name)
             if length+10>power['max_wire_length_mm']:errors.append('power wire length exceeds loss budget '+name)
             r=power['diameter_max_mm']/2+.25
@@ -77,6 +78,9 @@ def build():
     support_volumes=[]
     for board,bs in src['boards'].items():
         for x,y in bs['supports_mm']:support_volumes.append((board+' edge support',[x-1.6,y-1.6,98 if board=='K' else 0,x+1.6,y+1.6,120]))
+    carrier=src['jack_split']['carrier']
+    for rect,z in [(carrier['rear_rect_mm'],carrier['rear_z_mm']),(carrier['front_lip_rect_mm'],carrier['front_lip_z_mm'])]+[(m['rect_mm'],m['z_mm']) for m in carrier['cross_members']]:
+        support_volumes.append(('J split seam carrier',[rect[0],rect[1],-z[1],rect[2],rect[3],-z[0]]))
     optical=json.loads((ROOT/'design/partition/stage-optical-candidate.json').read_text())
     for post in optical['support_posts']:
         x,y=post['center_mm'];support_volumes.append(('optical post/collar',[x-1.6,y-1.6,3.6,x+1.6,y+1.6,14.8]))

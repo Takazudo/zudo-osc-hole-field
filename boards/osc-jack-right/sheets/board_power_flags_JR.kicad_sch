@@ -1,0 +1,167 @@
+(kicad_sch
+  (version 20260306)
+  (generator "zudo_schgen")
+  (generator_version "10.0")
+  (uuid "75c1f5f3-75af-5bf9-8f9c-189ab0ef5ff8")
+  (paper "A0")
+  (lib_symbols
+    (symbol "Fixture:PWR_FLAG"
+        (power global)
+        (pin_numbers
+          (hide yes)
+        )
+        (pin_names
+          (offset 0)
+          (hide yes)
+        )
+        (exclude_from_sim no)
+        (in_bom yes)
+        (on_board yes)
+        (in_pos_files yes)
+        (duplicate_pin_numbers_are_jumpers no)
+        (property "Reference" "#FLG"
+          (at 0 1.905 0)
+          (show_name no)
+          (do_not_autoplace no)
+          (hide yes)
+          (effects
+            (font
+              (size 1.27 1.27)
+            )
+          )
+        )
+        (property "Value" "PWR_FLAG"
+          (at 0 3.81 0)
+          (show_name no)
+          (do_not_autoplace no)
+          (effects
+            (font
+              (size 1.27 1.27)
+            )
+          )
+        )
+        (property "Footprint" ""
+          (at 0 0 0)
+          (show_name no)
+          (do_not_autoplace no)
+          (hide yes)
+          (effects
+            (font
+              (size 1.27 1.27)
+            )
+          )
+        )
+        (property "Datasheet" ""
+          (at 0 0 0)
+          (show_name no)
+          (do_not_autoplace no)
+          (hide yes)
+          (effects
+            (font
+              (size 1.27 1.27)
+            )
+          )
+        )
+        (property "Description" "Special symbol for telling ERC where power comes from"
+          (at 0 0 0)
+          (show_name no)
+          (do_not_autoplace no)
+          (hide yes)
+          (effects
+            (font
+              (size 1.27 1.27)
+            )
+          )
+        )
+        (property "ki_keywords" "flag power"
+          (at 0 0 0)
+          (show_name no)
+          (do_not_autoplace no)
+          (hide yes)
+          (effects
+            (font
+              (size 1.27 1.27)
+            )
+          )
+        )
+        (symbol "PWR_FLAG_0_0"
+          (pin power_out line
+            (at 0 0 90)
+            (length 0)
+            (name ""
+              (effects
+                (font
+                  (size 1.27 1.27)
+                )
+              )
+            )
+            (number "1"
+              (effects
+                (font
+                  (size 1.27 1.27)
+                )
+              )
+            )
+          )
+        )
+        (symbol "PWR_FLAG_0_1"
+          (polyline
+            (pts
+              (xy 0 0) (xy 0 1.27) (xy -1.016 1.905) (xy 0 2.54) (xy 1.016 1.905) (xy 0 1.27)
+            )
+            (stroke
+              (width 0)
+              (type default)
+            )
+            (fill
+              (type none)
+            )
+          )
+        )
+        (embedded_fonts no)
+      )
+  )
+  (symbol (lib_id "Fixture:PWR_FLAG") (at 100 40 0) (unit 0)
+    (exclude_from_sim no) (in_bom no) (on_board no) (dnp no)
+    (uuid "e484679f-427e-568d-8715-ce7d20f15c5a")
+    (property "Reference" "#PWR1" (at 103 37 0) (effects (font (size 1.27 1.27))))
+    (property "Value" "PWR_FLAG" (at 103 43 0) (effects (font (size 1.27 1.27))))
+    (property "Footprint" "" (at 100 40 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "Datasheet" "" (at 100 40 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "MPN" "" (at 100 40 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "Manufacturer" "" (at 100 40 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "LCSC" "" (at 100 40 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "Block" "${SHEETNAME}" (at 100 40 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "Role" "" (at 100 40 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "PanelUid" "" (at 100 40 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "Island" "" (at 100 40 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "Sensitive" "" (at 100 40 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (pin "1" (uuid "44d6022c-227c-5c29-90ab-aa118850200e"))
+    (instances (project "osc-jack-right"
+      (path "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/640d1c2c-7a95-54b7-9603-7000d9123d8d" (reference "#PWR1") (unit 0))
+    ))
+  )
+  (global_label "+12V" (shape passive) (at 100 40 270) (effects (font (size 1.27 1.27)) (justify right)) (uuid "c44437be-72be-570c-a75c-49f6889a6e74"))
+  (symbol (lib_id "Fixture:PWR_FLAG") (at 165 40 0) (unit 0)
+    (exclude_from_sim no) (in_bom no) (on_board no) (dnp no)
+    (uuid "e4dbcef4-a566-5f85-8138-53aac133d759")
+    (property "Reference" "#PWR2" (at 168 37 0) (effects (font (size 1.27 1.27))))
+    (property "Value" "PWR_FLAG" (at 168 43 0) (effects (font (size 1.27 1.27))))
+    (property "Footprint" "" (at 165 40 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "Datasheet" "" (at 165 40 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "MPN" "" (at 165 40 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "Manufacturer" "" (at 165 40 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "LCSC" "" (at 165 40 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "Block" "${SHEETNAME}" (at 165 40 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "Role" "" (at 165 40 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "PanelUid" "" (at 165 40 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "Island" "" (at 165 40 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "Sensitive" "" (at 165 40 0) (effects (font (size 1.27 1.27)) (hide yes)))
+    (pin "1" (uuid "7f741f38-42d8-59fc-a5cf-9cc6d90f4869"))
+    (instances (project "osc-jack-right"
+      (path "/bc2f3430-15df-5411-9f37-d35d9a5f2f35/640d1c2c-7a95-54b7-9603-7000d9123d8d" (reference "#PWR2") (unit 0))
+    ))
+  )
+  (global_label "-12V" (shape passive) (at 165 40 270) (effects (font (size 1.27 1.27)) (justify right)) (uuid "fae9ccfd-9374-5941-b975-a8ba4d4b481f"))
+  (embedded_fonts no)
+)

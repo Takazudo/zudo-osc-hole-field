@@ -21,6 +21,27 @@ class PartitionTests(unittest.TestCase):
         from scripts.checks.partition35_json import dumps
         self.assertEqual(json.loads(dumps({'families':{3:{'pins':3}}})),{'families':{'3':{'pins':3}}})
 
+    def test_split_counts_and_all_nearby_bypasses(self):
+        report=partition35.read('design/partition/partition.json')
+        counts={b['board_key']:b['physical_package_count'] for b in report['boards']}
+        self.assertEqual((counts['JL'],counts['JR']),(1060,1031))
+        self.assertEqual((report['counts']['boards'],report['counts']['factory_load_side_wires'],report['counts']['load_side_copper_terminals']),(10,18,36))
+        floor=partition35.read('design/partition/floorplan-candidate.json')
+        self.assertEqual(len(floor['bypass_proximity']['pairs']),414)
+        self.assertLessEqual(floor['bypass_proximity']['maximum_supply_pad_distance_mm'],3)
+        self.assertTrue(all(r['same_face'] for r in floor['bypass_proximity']['pairs']))
+
+    def test_displaced_bypass_cannot_pass_geometry_gate(self):
+        from collections import defaultdict
+        from scripts.checks.partition35_floorplan import check_bypasses
+        floor=partition35.read('design/partition/floorplan-candidate.json')
+        nets=defaultdict(dict)
+        for unit in self.io['package_units']:nets[unit['ref']].update(unit['pins'])
+        cap=floor['bypass_proximity']['pairs'][0]['capacitor']
+        next(r for r in floor['placements'] if r['ref']==cap)['x_mm']+=20
+        _,errors=check_bypasses(self.parts,floor['placements'],nets)
+        self.assertIn('bypass supply-pad proximity failed '+cap,errors)
+
     def test_missing_duplicate_unknown_package_rejected(self):
         for rows in (self.rows[:-1],self.rows+[self.rows[0]],self.rows+[{'ref':'FICTION','board':'J'}]):
             self.assertTrue(partition35.validate_assignment(self.parts,rows,self.io))
@@ -54,7 +75,7 @@ class PartitionTests(unittest.TestCase):
             return row
         with patch.object(partition35,'read',altered):report,_=partition35.build()
         self.assertIn('GH return derating exceeded P',report['checks']['errors'])
-        self.assertIn('GH return derating exceeded J',report['checks']['errors'])
+        self.assertIn('GH return derating exceeded JL',report['checks']['errors'])
 
     def test_capacitance_is_consumed_from_current_report(self):
         original=partition35.read
@@ -66,7 +87,7 @@ class PartitionTests(unittest.TestCase):
         self.assertIn('bulk capacitance exceeds rail ceiling',report['checks']['errors'])
 
     def test_j_bulk_reserve_duplicate_source_geometry_must_match(self):
-        board=partition35.read('design/partition/partition-input.json')['boards']['J']
+        board=partition35.read('design/partition/partition-input.json')['boards']['JL']
         self.assertEqual(partition35.bulk_reserve_source_errors(board),[])
         board['board_bulk_reserve'][0]['rect'][0]+=.5
         self.assertIn('UNSELECTED-BULK-1 geometry differs between reserves and board_bulk_reserve',partition35.bulk_reserve_source_errors(board))

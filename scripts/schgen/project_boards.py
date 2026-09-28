@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Project the locked master packages and declared interfaces onto nine draft boards."""
+"""Project the locked master packages and declared interfaces onto source-defined draft boards."""
 from __future__ import annotations
 from collections import defaultdict
 from dataclasses import replace
@@ -46,10 +46,7 @@ def project(partition=None):
     if len(assignment) != len(partition['assignment']['components']):
         raise ValueError('duplicate assigned package')
     boards = {b['id']: b for b in partition['boards']}
-    short_to_id = {x['board']: x['board_id'] for x in (
-        {'board': 'J', 'board_id': 'osc-jack'}, {'board': 'P', 'board_id': 'osc-control'},
-        {'board': 'K', 'board_id': 'osc-core'}, {'board': 'EL', 'board_id': 'osc-stage-optical'},
-        *({'board': f'O{i}', 'board_id': f'osc-octave-{i}'} for i in range(1, 6)))}
+    short_to_id = {b['board_key']: b['id'] for b in partition['boards']}
     assert set(boards) == set(short_to_id.values())
     abstract = set(partition['assignment']['abstract_boundaries'])
     families = defaultdict(list)
@@ -87,7 +84,7 @@ def project(partition=None):
             attrs = {**part.attributes, 'BoardSide': item['side'], 'BoardAssignment': board,
                      'KiCadOrientationDeg': str(placement['kicad_orientation_deg']),
                      'FootprintOriginMm': f"{placement['x_mm']},{placement['y_mm']}"}
-            if board == 'J':
+            if board in ('JL','JR'):
                 # Multi-unit physical packages have unit-specific source roles.
                 # The board's one footprint cannot truthfully carry all of them.
                 for unit_field in ('Role','LogicalCellKey','Island'):

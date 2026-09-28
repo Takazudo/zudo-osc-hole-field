@@ -67,13 +67,15 @@ def assert_partition(partition, assignment):
         seen.update(h['header_ids'])
     if seen != set(connectors): raise ValueError('orphan/duplicated header in harness list')
     terminals = {t['reference']: t for t in partition['load_side_terminals']}
-    if len(terminals) != 24: raise ValueError('load terminal count differs from 24')
+    if len(terminals) != partition['counts']['load_side_copper_terminals']: raise ValueError('load terminal count differs from manifest')
     for w in partition['load_side_wires']:
         a, b = (terminals[r] for r in w['terminal_refs'])
         if a['net'] != b['net'] or a['net'] != w['net']:
             raise ValueError(f'{w["id"]}: wire net mismatch')
         edges[w['net']].add(frozenset((a['board'], b['board'])))
-    if len(partition['load_side_wires']) != 12: raise ValueError('load wire count differs from 12')
+    if len(partition['load_side_wires']) != partition['counts']['factory_load_side_wires']: raise ValueError('load wire count differs from manifest')
+    used_terminals=[r for w in partition['load_side_wires'] for r in w['terminal_refs']]
+    if Counter(used_terminals)!=Counter(terminals.keys()):raise ValueError('every load terminal must appear in exactly one wire')
     sensitive = {x['net'] for x in json.loads((ROOT/'design/reports/master-audit.json').read_text())['sensitive_nets']}
     for c in connectors.values():
         for net in c['pin_map'].values():
@@ -97,7 +99,7 @@ def verify(partition, board_netlists, master_netlist):
     projected = {}
     net_boards = defaultdict(set)
     refs = Counter()
-    board_by_id = {b['id']: short for short, b in [('J', {'id':'osc-jack'}),('P', {'id':'osc-control'}),('K', {'id':'osc-core'}),('EL', {'id':'osc-stage-optical'}),*((f'O{i}', {'id':f'osc-octave-{i}'}) for i in range(1,6))]}
+    board_by_id = {b['id']: b['board_key'] for b in partition['boards']}
     for board_id, data in board_netlists.items():
         board = board_by_id[board_id]
         comp = components(data)

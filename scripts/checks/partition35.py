@@ -11,6 +11,7 @@ import sys
 ROOT=Path(__file__).resolve().parents[2]
 sys.path.insert(0,str(ROOT))
 from scripts.checks.partition35_json import dumps
+from scripts.partition.model import JACK_BOARDS
 from scripts.checks.connector_packing35 import board_for
 from scripts.pcbgen.definition import load_definition
 
@@ -24,20 +25,23 @@ def subtract_rect(rect,cut):
     if a>=c or b>=d:return [rect]
     return [r for r in ((x0,y0,a,y1),(c,y0,x1,y1),(a,y0,c,b),(a,d,c,y1)) if r[0]<r[2] and r[1]<r[3]]
 
-def jack_reservation_keepouts(reserves,locations,terminals):
+def jack_reservation_keepouts(reserves,locations,terminals,board):
     """Retain the proposed source reserve except occupied jack/terminal envelopes."""
     exclusions=[]
     for p in locations.values():
-        if p['board']=='J' and p['fixed'] and p['ref'].startswith('J'):
+        if p['board']==board and p['fixed'] and p['ref'].startswith('J'):
             x0,y0,x1,y1=p['courtyard_mm'];exclusions.append((p['ref'],(x0-.05,y0-.05,x1+.05,y1+.05),'source fixed jack courtyard plus 0.05 mm native inflation'))
     for t in terminals:
-        if t['board']=='J':
+        if t['board']==board:
             x,y=t['center_mm'];w,h=t['maximum_courtyard_mm'];exclusions.append((t['reference'],(x-w/2,y-h/2,x+w/2,y+h/2),'source 5 x 5 mm load-land courtyard'))
     keepouts=[];receipt=[]
     for reserve in reserves:
         for side in reserve['sides']:
             original=tuple(reserve['rect']);pieces=[original];used=[]
-            for ref,cut,basis in sorted(exclusions):
+            cuts=list(exclusions)
+            if reserve['id'].startswith('future-'):
+                cuts += [(r['id'],tuple(r['rect']),'other explicit same-face reservation') for r in reserves if r['id']!=reserve['id'] and side in r['sides']]
+            for ref,cut,basis in sorted(cuts):
                 before=sum((q[2]-q[0])*(q[3]-q[1]) for q in pieces)
                 pieces=[piece for q in pieces for piece in subtract_rect(q,cut)]
                 after=sum((q[2]-q[0])*(q[3]-q[1]) for q in pieces)
@@ -48,15 +52,15 @@ def jack_reservation_keepouts(reserves,locations,terminals):
             receipt.append({'reserve_id':reserve['id'],'side':side,'original_rect_mm':list(original),'original_area_mm2':round(original_area,6),'removed_area_mm2':round(original_area-remaining,6),'remaining_area_mm2':round(remaining,6),'subtractions':used,'status':'PROPOSAL remaining allowance; #59 exact protection geometry OPEN'})
     return keepouts,receipt
 
-def jack_bulk_conflicts(reserves,locations,headers,terminals):
+def jack_bulk_conflicts(reserves,locations,headers,terminals,board):
     obstacles=[]
     for p in locations.values():
-        if p['board']=='J' and (p['side']=='B.Cu' or p['fixed'] and p['ref'].startswith('J')):
+        if p['board']==board and (p['side']=='B.Cu' or p['fixed'] and p['ref'].startswith('J')):
             obstacles.append((p['ref'],p['courtyard_mm']))
     for h in headers:
-        if h['board']=='J':obstacles.append((h['id'],h['native_cached_courtyard_envelope_mm']))
+        if h['board']==board:obstacles.append((h['id'],h['native_cached_courtyard_envelope_mm']))
     for t in terminals:
-        if t['board']=='J':
+        if t['board']==board:
             x,y=t['center_mm'];w,h=t['maximum_courtyard_mm'];obstacles.append((t['reference'],(x-w/2,y-h/2,x+w/2,y+h/2)))
     errors=[]
     for r in reserves:
@@ -129,7 +133,7 @@ def build():
                 r=pairrefs[net];direction=r['direction'];v=[-13.2,13.2];current=r['current_mA'].get('panel_connector_branch_bound',r['current_mA']['design_limit']);basis=r['current_mA']['status']
             row['pins'].append({'manufacturer_pin':pin,'net':net,'direction':direction,'max_steady_voltage_V':v,'transient_voltage_requirement_V':[-13.2,13.2] if net!='NC' else [0,0],'current_bound_mA':current,'current_basis':basis,'status':'DERIVED source mapping; electrical envelope PROPOSAL; fault isolation OPEN #59'})
         connector.append(row)
-    d=source['load_distribution'];boards=[];definitions={};supports=[];jack_reservation_receipt=[]
+    d=source['load_distribution'];boards=[];definitions={};supports=[];jack_reservation_receipt={}
     for b,s in source['boards'].items():
         selected=[p for p in parts if board_for(p)==b];uids=sorted(p['panel_uid'] for p in selected if p['panel_uid']);holes=[{'id':b+'-SUP-'+str(i+1),'center':xy,'diameter_mm':2.2} for i,xy in enumerate(s['supports_mm'])]
         if b in ('EL','P'):
@@ -145,11 +149,12 @@ def build():
                 if not pp:continue
                 rect=[min(q[0] for q in pp)-.30,min(q[1] for q in pp)-.30,max(q[2] for q in pp)+.30,max(q[3] for q in pp)+.30]
                 regions.append({'instance':instance,'family':b+'-'+instance,'rect':rect,'side':side,'edge_clearance_mm':.25,'mounting_clearance_mm':.25})
-        if b=='J':
-            terminal_sites=[{'reference':'TP'+str(990001+i*2),'board':'J','center_mm':[x,d['J_pad_y_mm']],'maximum_courtyard_mm':[5,5]} for i,x in enumerate(d['x_mm'])]
+        if b in JACK_BOARDS:
+            branch=d['branches'][b]
+            terminal_sites=[{'reference':b+'-POWER-'+str(i+1),'board':b,'center_mm':[x,branch['pad_y_mm']],'maximum_courtyard_mm':[5,5]} for i,x in enumerate(branch['x_mm'])]
             errors.extend(bulk_reserve_source_errors(s))
-            errors.extend(jack_bulk_conflicts(s.get('reserves',[]),loc,ports['headers'],terminal_sites))
-            keepouts,jack_reservation_receipt=jack_reservation_keepouts(s.get('reserves',[]),loc,terminal_sites)
+            errors.extend(jack_bulk_conflicts(s.get('reserves',[]),loc,ports['headers'],terminal_sites,b))
+            keepouts,jack_reservation_receipt[b]=jack_reservation_keepouts(s.get('reserves',[]),loc,terminal_sites,b)
         else:
             keepouts=[{'id':r['id'],'polygon':[[r['rect'][0],r['rect'][1]],[r['rect'][2],r['rect'][1]],[r['rect'][2],r['rect'][3]],[r['rect'][0],r['rect'][3]]],'layers':r['sides']} for r in s.get('reserves',[])]
         if b=='EL':
@@ -165,18 +170,20 @@ def build():
             x,y=hole['center'];r=1.6
             keepouts.append({'id':'COLLAR-'+hole['id'],'polygon':[[x-r,y-r],[x+r,y-r],[x+r,y+r],[x-r,y+r]],'layers':['F.Cu'] if b=='EL' else ['F.Cu','B.Cu']})
         definition={'schema_version':1,'board_id':s['id'],'outline':s['outline'],'corner_radius_mm':0,'layers':s['layers'],'thickness_mm':s['thickness_mm'],'stackup':stack,'mounting_holes':holes,'keepouts':keepouts,'domains':sorted({p['domain'] for p in lock if p['uid'] in uids}),'placement_uids':uids,'netlist':'schematic/boards/'+s['id']+'.net','schematic':'schematic/boards/'+s['id']+'.kicad_sch','regions':regions}
-        if b=='J':
+        if b in JACK_BOARDS:
             definition['routing']={'min_track_width_mm':.1,'net_classes':[
                 {'name':'Default','nets':[],'track_width_mm':.2,'clearance_mm':.2,'via_diameter_mm':.6,'via_drill_mm':.3},
                 {'name':'Rails','nets':['+12V','-12V','+5V'],'track_width_mm':.4,'clearance_mm':.25,'via_diameter_mm':.7,'via_drill_mm':.3},
                 {'name':'Ground','nets':['AGND'],'track_width_mm':.5,'clearance_mm':.25,'via_diameter_mm':.7,'via_drill_mm':.3}],
                 'zones':[{'name':'agnd_plane','net':'AGND','layers':['In1.Cu'],'clearance_mm':.25,'min_thickness_mm':.15,'pad_connection':'full'}]+[
                     {'name':rail+'_plane','net':rail,'layers':['In2.Cu'],'polygon':[[x0,20],[x1,20],[x1,164],[x0,164]],'clearance_mm':.25,'min_thickness_mm':.15,'pad_connection':'full'}
-                    for rail,x0,x1 in [('+12V',4,106),('-12V',106.5,209),('+5V',209.5,314)]]}
+                    for rail,x0,x1 in [(rail, min(p[0] for p in s['outline'])+i*(max(p[0] for p in s['outline'])-min(p[0] for p in s['outline']))/3+.25,
+                         min(p[0] for p in s['outline'])+(i+1)*(max(p[0] for p in s['outline'])-min(p[0] for p in s['outline']))/3-.25)
+                         for i,rail in enumerate(['+12V','-12V','+5V'])]]}
         definitions[s['id']]=definition
-        boards.append({**s,'board_key':b,'role':{'J':'jack input/output protection and local analogue interfaces','P':'all pots/toggles/buttons and complete slew/control circuits','K':'distinct rear signal core and conditional load-side power star','EL':'complete stage-indicator circuits'}.get(b,'one selected stepped octave adapter'),
+        boards.append({**s,'board_key':b,'role':{'JL':'left jack interfaces, whole local islands','JR':'right jack interfaces, whole local islands','P':'all pots/toggles/buttons and complete slew/control circuits','K':'distinct rear signal core and conditional load-side power star','EL':'complete stage-indicator circuits'}.get(b,'one selected stepped octave adapter'),
                        'facing_panel':'F.Cu','status':'PROPOSAL','supply_domain':'EXT','physical_package_count':len(selected),'fitted_package_count':sum(not p['dnp'] for p in selected),'definition':'design/boards/'+s['id']+'.json',
-                       'single_board_assembly': 'Standard PCBA eligible size envelope' if b in ('J','P','K','EL') else 'PROPOSAL one adapter per 70x70 mm factory handling panel, below250x250mm delivery cap; exact tabs/tooling #39, no order files',
+                       'single_board_assembly': 'Standard PCBA eligible size envelope' if b in (*JACK_BOARDS,'P','K','EL') else 'PROPOSAL one adapter per 70x70 mm factory handling panel, below250x250mm delivery cap; exact tabs/tooling #39, no order files',
                        'layer_reason':'Four layers: inner AGND plus rail planes; 2 oz plane-resistance requirement' if s['layers']==4 else 'EL 0.4 mm two-layer exception: complete sparse local LED loops, rear AGND fill and quiet signal returns' if b=='EL' else 'Passive selector adapter; two layers with local return fill; no sensitive storage circuit',
                        'field_status':{'id':'DERIVED','physical_package_count':'DERIVED','fitted_package_count':'DERIVED','outline':'PROPOSAL','face_z_mm':'PROPOSAL','thickness_mm':'PROPOSAL','layers':'PROPOSAL','copper_oz':'PROPOSAL'}})
         for h in holes:
@@ -185,8 +192,8 @@ def build():
     rwire=d['hot_resistance_requirement_ohm_per_m']*d['max_wire_length_mm']/1000+d['combined_termination_resistance_ohm'];rp=rwire+d['rail_plane_resistance_ceiling_ohm'];rg=rwire+d['return_plane_resistance_ceiling_ohm'];drop={rail:(amps*rp+d['single_return_max_A']*rg)*1000 for rail,amps in d['rail_max_A'].items()}
     if max(drop.values())>20:errors.append('load distribution exceeds 20 mV')
     wire_requirements=read('design/partition/harness-wire-evidence.json')['proposal']
-    branch={};looms={r['id']:r for r in loom['routes']}
-    for board in ('J','P'):
+    return_bounds={};looms={r['id']:r for r in loom['routes']}
+    for board in d['branches']:
         hs=[h for h in ports['harnesses'] if set(h['boards'])=={board,'K'}];n=sum(h['return_contacts'] for h in hs);minimum=min(looms[h['id']]['centreline_length_mm'] for h in hs)/1000*wire_requirements['wire_minimum_resistance_for_parallel_path_bounds_ohm_per_m'];maximum=max(looms[h['id']]['cut_length_max_mm'] for h in hs)/1000*wire_requirements['wire_hot_resistance_ceiling_ohm_per_m']+.1
         # Candidate GH return has zero contact/PCB resistance. All alternatives
         # have maximum wire/contact resistance AND the entire common PCB neck.
@@ -195,19 +202,23 @@ def build():
         alternative=d['return_plane_resistance_ceiling_ohm']+1/((n-1)/maximum+ground_count/rwire)
         amps=d['single_return_max_A']*alternative/(minimum+alternative)
         if amps>.5:errors.append('GH return derating exceeded '+board)
-        branch[board]={'return_contact_count':n,'minimum_single_path_ohm':minimum,'maximum_other_path_ohm':maximum,'dedicated_ground_wire_count':ground_count,'dedicated_ground_wire_max_ohm':rwire,'common_PCB_neck_max_ohm':d['return_plane_resistance_ceiling_ohm'],'all_alternative_returns_max_equivalent_ohm':alternative,'worst_single_contact_A':amps,'equal_sharing_assumed':False,'routing_acceptance':d['ground_routing_requirement'],'wire_lower_bound_status':'0.1 ohm/m is an assembled acceptance condition, not a manufacturer guaranteed minimum; cold resistance qualification #65','status':'DERIVED conditional all-mates-present normal case; patch fault/main-return-open OPEN #59/#65'}
+        return_bounds[board]={'return_contact_count':n,'minimum_single_path_ohm':minimum,'maximum_other_path_ohm':maximum,'dedicated_ground_wire_count':ground_count,'dedicated_ground_wire_max_ohm':rwire,'common_PCB_neck_max_ohm':d['return_plane_resistance_ceiling_ohm'],'all_alternative_returns_max_equivalent_ohm':alternative,'worst_single_contact_A':amps,'equal_sharing_assumed':False,'routing_acceptance':d['ground_routing_requirement'],'wire_lower_bound_status':'0.1 ohm/m is an assembled acceptance condition, not a manufacturer guaranteed minimum; cold resistance qualification #65','status':'DERIVED conditional all-mates-present normal case; patch fault/main-return-open OPEN #59/#65'}
     # The four J/P utility returns also connect two powered board grounds.
     # Bound either node's voltage using only its three dedicated main returns,
     # ignore all helpful GH returns, and give the far node zero impedance.
-    loop_hs=[h for h in ports['harnesses'] if set(h['boards'])=={'J','P'}]
+    loop_hs=[h for h in ports['harnesses'] if set(h['boards'])=={'JL','P'}]
     loop_min=min(looms[h['id']]['centreline_length_mm'] for h in loop_hs)/1000*wire_requirements['wire_minimum_resistance_for_parallel_path_bounds_ohm_per_m']
     node_max=d['return_plane_resistance_ceiling_ohm']+rwire/d['net_order'].count('AGND')
     loop_current=d['single_return_max_A']*node_max/(loop_min+node_max)
     if loop_current>.5:errors.append('GH return derating exceeded J/P utility')
-    branch['J/P utility']={'return_contact_count':len(loop_hs),'minimum_single_path_ohm':loop_min,'loaded_node_main_return_max_ohm':node_max,'worst_single_contact_A':loop_current,'equal_sharing_assumed':False,'status':'DERIVED conditional whole-domain absolute 4.6 A bound and all main returns present; zero far-node impedance; fault/patch returns OPEN #59/#65'}
-    powered=['J','P','K','EL'];bulk={rail:len(powered)*4.7 for rail in ('+12V','-12V','+5V')};fitted={rail:r['captured_fitted_nominal_uF'] for rail,r in read('design/power/supply-architecture.json')['implementation']['actual_fitted_capacitor_inventory'].items()};cap={rail:fitted[rail]+bulk[rail] for rail in bulk}
+    return_bounds['JL/P utility']={'return_contact_count':len(loop_hs),'minimum_single_path_ohm':loop_min,'loaded_node_main_return_max_ohm':node_max,'worst_single_contact_A':loop_current,'equal_sharing_assumed':False,'status':'DERIVED conditional whole-domain absolute 4.6 A bound and all main returns present; zero far-node impedance; fault/patch returns OPEN #59/#65'}
+    powered=[*JACK_BOARDS,'P','K','EL'];bulk={rail:len(powered)*4.7 for rail in ('+12V','-12V','+5V')};fitted={rail:r['captured_fitted_nominal_uF'] for rail,r in read('design/power/supply-architecture.json')['implementation']['actual_fitted_capacitor_inventory'].items()};cap={rail:fitted[rail]+bulk[rail] for rail in bulk}
     for rail,limit in [('+12V',150),('-12V',150),('+5V',100)]:
         if cap[rail]>limit:errors.append('bulk capacitance exceeds rail ceiling')
+    ramp_mA={rail:cap[rail]*1e-6*1.2*voltage/.010*1000 for rail,voltage in [('+12V',13.2),('-12V',13.2),('+5V',5.5)]}
+    ramp_total={rail:steady+ramp_mA[rail] for rail,steady in [('+12V',1700),('-12V',1600),('+5V',300)]}
+    for rail,limit in [('+12V',2000),('-12V',1900),('+5V',400)]:
+        if ramp_total[rail]>limit:errors.append('full capacitance ramp exceeds transient minimum '+rail)
     # Complete EL branch bound, including base drive and +20% bulk startup.
     # Values come from current source parts, not a remembered worksheet value.
     from design.spec.modules.envelope import family as envelope_family
@@ -229,10 +240,10 @@ def build():
     el_drop={rail:((current/1000)*(el_path/len(el_hs)+.001)+el_return*(el_path/sum(h['return_contacts'] for h in el_hs)+.0005))*1000 for rail,current in el_contract.items()}
     if max(el_drop.values())>20:errors.append('EL path drop exceeds 20mV')
     terminals=[];power_wires=[]
-    for b in ('J','P'):
-        for index,(x,net) in enumerate(zip(d['x_mm'],d['net_order'])):
+    for b,branch in d['branches'].items():
+        for index,(x,net) in enumerate(zip(branch['x_mm'],d['net_order'])):
             ends=[]
-            for board,y,side in [(b,d[b+'_pad_y_mm'],'B.Cu'),('K',d['K_'+b+'_pad_y_mm_by_wire'][index],'F.Cu')]:
+            for board,y,side in [(b,branch['pad_y_mm'],'B.Cu'),('K',branch['core_pad_y_mm'][index],'F.Cu')]:
                 ref='TP'+str(990001+len(terminals));ends.append(ref)
                 terminals.append({'reference':ref,'board':board,'net':net,'manufacturer_pin':'1','center_mm':[x,y],'side':side,'copper_land_mm':[4,4],'maximum_courtyard_mm':[5,5],'wire_end':'factory stripped bare end at solder land; first/last 3mm have no full-diameter insulation; solder/profile qualification #65','mask_margin_mm':.1,'paste':'none; factory hand/wave solder process','identity':'custom PCB solder terminal, not an orderable inlet','status':'PROPOSAL copper geometry; native footprint/symbol generation #36, assembled ampacity/strain relief #65'})
             power_wires.append({'id':'POWER-'+b+'-'+d['wire_labels'][index],'net':net,'terminal_refs':ends,'wire_mpn':d['wire'],'maximum_length_mm':125,'status':'PROPOSAL existing load-side nets only; physical continuity across CN301/XB301 remains absent'})
@@ -247,17 +258,18 @@ def build():
     report={'schema_version':1,'status':'CONDITIONAL UNVALIDATED DRAFT' if not errors else 'FAIL; no accepted partition','authority':'PROPOSAL (planning, owner-delegated)',
             'rotation_convention':'Source rotation_deg is clockwise after mirroring local X for B.Cu. Use explicit kicad_orientation_deg: F=-theta, B=180-theta. Native KiCad10.0.6 Flip(False) maps F angle0 to B angle180 and mirrors X.',
             'status_policy':'Every numeric/mechanical value is PROPOSAL unless its enclosing status or field_status explicitly says SOURCED or DERIVED. SOURCED nominal dimensions do not imply tolerance or installed fit.',
-            'boards':boards,'jack_reservation_receipt':jack_reservation_receipt,'assignment':{'rule':'Exact master physical package after AbstractBoundary filtering: jack ->J, control ->P, core ->K, stage_optical ->EL, each selector instance ->its O adapter. Whole package, bypass and island closure checked. Faces use floorplan-candidate per-reference map.','status':'DERIVED','components':assignment,'abstract_boundaries':['CN301','XB301'],'abstract_status':'Audit-only; NO physical footprint, NO BOM/orderable inlet, NO invented conductive bridge'},
+            'boards':boards,'jack_split':source['jack_split'],'jack_reservation_receipt':jack_reservation_receipt,'assignment':{'rule':'Exact master physical package after AbstractBoundary filtering: jack ->JL/JR by complete source module, control ->P, core ->K, stage_optical ->EL, each selector instance ->its O adapter. Whole package, bypass and island closure checked. Faces use floorplan-candidate per-reference map.','status':'DERIVED','components':assignment,'abstract_boundaries':['CN301','XB301'],'abstract_status':'Audit-only; NO physical footprint, NO BOM/orderable inlet, NO invented conductive bridge'},
             'load_side_terminals':terminals,'load_side_wires':power_wires,'connectors':connector,'harnesses':ports['harnesses'],'harness_geometry':'design/partition/loom-candidate.json','interfaces':interfaces,'supports':supports,
             'mechanical_datum_table':mechanical['datum_table'],'mechanical_report':'design/partition/mechanical-candidate.json','panel':read('design/panel/panel-params.json'),'optical_passages':optical['passages'],'K_service_apertures':ports['K_service_apertures'],'enclosure':source['enclosure'],
-            'power':{'status':'PROPOSAL conditional EXT requirements; physical source/inlet NOT SELECTED','required_continuous_mA':{'+12V':1700,'-12V':1600,'+5V':300},'required_transient_mA':{'+12V':2000,'-12V':1900,'+5V':400},'maximum_delivered_mA':{'+12V':2100,'-12V':2000,'+5V':500},'load_distribution':d,'worst_load_distribution_drop_mV':drop,'GH_normal_return_bounds':branch,'source_boundary':'No continuity across CN301/XB301 is created. Internal factory-soldered wires connect existing regulated load-side nets only. Source inlet retains separate #52 20 AWG contract.',
+            'power':{'status':'PROPOSAL conditional EXT requirements; physical source/inlet NOT SELECTED','required_continuous_mA':{'+12V':1700,'-12V':1600,'+5V':300},'required_transient_mA':{'+12V':2000,'-12V':1900,'+5V':400},'maximum_delivered_mA':{'+12V':2100,'-12V':2000,'+5V':500},'load_distribution':d,'worst_load_distribution_drop_mV':drop,'GH_normal_return_bounds':return_bounds,'source_boundary':'No continuity across CN301/XB301 is created. Internal factory-soldered wires connect existing regulated load-side nets only. Source inlet retains separate #52 20 AWG contract.',
                      'EL_rail_current_contract_mA':el_contract,'EL_source_derived_bounds_mA':{'+12V':analog,'-12V':analog,'+5V':digital},'EL_parallel_path_drop_mV':el_drop,'EL_return_sum_bound_mA':el_return*1000,'EL_basis':'Six OPA4196 quads: 6 mA Iq per analog rail; 12 stage LED hard bounds 4.63 mA each; 4.7uF/rail 10ms ramp and margin. 12 base paths each conservatively 26.4V/(10kohm*0.99)=2.667mA plus6mA Iq and7.445mA bulk ramp, below50mA/analog rail; +5V 55.56mA LEDs +0.667mA pullups +3.102mA bulk ramp below70mA. Stage resistor/reference draw included by 50/50/70 mA ceilings; measured dynamic/fault bound NOT RUN. Six parallel rail paths and twelve ground paths use maximum-path conductance, no equal-current assertion.',
-                     'capacitance_uF':{'fitted_nominal':fitted,'finite_bulk_reservations':{b:s['board_bulk_reserve'] for b,s in source['boards'].items() if 'board_bulk_reserve' in s},'new_reserved_board_bulk':bulk,'after_reserved_bulk':cap,'status':'DERIVED planning; 4.7 uF per each of 4 powered boards/rail, 150/150/100 nominal limits; +20% and >=10ms ramp retained; exact bulk/protection current/area source #59'},
+                     'capacitance_uF':{'fitted_nominal':fitted,'finite_bulk_reservations':{b:s['board_bulk_reserve'] for b,s in source['boards'].items() if 'board_bulk_reserve' in s},'new_reserved_board_bulk':bulk,'full_inventory_plus20percent_10ms_ramp_mA':ramp_mA,'continuous_requirement_plus_ramp_mA':ramp_total,'after_reserved_bulk':cap,'status':'DERIVED planning; 4.7 uF per each of 5 powered boards/rail, 150/150/100 nominal limits; +20% and >=10ms ramp retained; exact bulk/protection current/area source #59'},
                      'load_accounting':'All 650 ICs and every physical part assigned once; existing complete rail-ledger load IDs and oscillator fanout report retained without adding independent copies of shared worksheet reserves. J/P branch ampacity is conservatively bounded by the whole delivered-domain ceiling, not falsely summed as extra load.',
                      'reference_fanout':'design/reports/oscillator-reference-fanout.json','unresolved_protection':source['protection_obligations']},
-            'counts':{'physical_rows':len(parts),'fitted_rows':sum(not p['dnp'] for p in parts),'fitted_ICs':fitted_ics,'fixed_UIDs':438,'modules':33,'boards':9,'headers':len(connector),'harnesses':len(ports['harnesses']),'header_contacts':sum(h['contacts'] for h in ports['headers']),'wired_signal_conductors':sum(h['signal_count'] for h in ports['harnesses']),'wired_return_conductors':sum(h['return_contacts'] for h in ports['harnesses']),'rail_conductors_GH':18,'factory_load_side_wires':len(power_wires),'load_side_copper_terminals':len(terminals),'unwired_positions_across_all_harnesses_per_end':sum(h['unused_contacts'] for h in ports['harnesses']),'LED_identities':dict(led)},
-            'checks':{'errors':errors,'complete_assignment_island_sensitive_package_closure':'PASS' if not errors else 'FAIL','header_pad_edge_nominal':'PASS with0.05mm native-courtyard inflation envelope','native_footprint_transform_oracle':'design/partition/orientation-oracle.json; separate pinned gate','courtyard_capacity_proposal':floor['status'],'loom_corridor_proposal':loom['status'],'physical_fit':'NOT RUN #65 main assembly, #55 selector, #57 source; conditional hardware body datum/tolerance requirements remain','optical_hot_qualification':'NOT RUN #64','exact_power_off_protection':'OPEN #59','actual_board_placement_routing_DRC':'NOT RUN #38/#39/#42/#43; no PCB drawn in #35','panel_artwork_regeneration':'NOT RUN #37','mixed_face_placer':'REQUIRED #38: consume per-reference side map, allowing one module on both faces without splitting any island across boards'},
-            'downstream_dispositions':{'38':['osc-jack'],'39':['osc-control','osc-octave-1','osc-octave-2','osc-octave-3','osc-octave-4','osc-octave-5'],'40':[],'41':[],'42':['osc-stage-optical'],'43':['osc-core']}}
+            'counts':{'physical_rows':len(parts),'fitted_rows':sum(not p['dnp'] for p in parts),'fitted_ICs':fitted_ics,'fixed_UIDs':438,'modules':33,'boards':len(boards),'headers':len(connector),'harnesses':len(ports['harnesses']),'header_contacts':sum(h['contacts'] for h in ports['headers']),'wired_signal_conductors':sum(h['signal_count'] for h in ports['harnesses']),'wired_return_conductors':sum(h['return_contacts'] for h in ports['harnesses']),'rail_conductors_GH':18,'factory_load_side_wires':len(power_wires),'load_side_copper_terminals':len(terminals),'unwired_positions_across_all_harnesses_per_end':sum(h['unused_contacts'] for h in ports['harnesses']),'LED_identities':dict(led)},
+            'checks':{'errors':errors,'complete_assignment_island_sensitive_package_closure':'PASS' if not errors else 'FAIL','header_pad_edge_nominal':'PASS with0.05mm native-courtyard inflation envelope','native_footprint_transform_oracle':'design/partition/orientation-oracle.json; separate pinned gate','courtyard_capacity_proposal':floor['status'],'loom_corridor_proposal':loom['status'],'physical_fit':'NOT RUN #65 main assembly, #55 selector, #57 source; conditional hardware body datum/tolerance requirements remain','optical_hot_qualification':'NOT RUN #64','exact_power_off_protection':'OPEN #59','actual_board_placement_routing_DRC':'NOT RUN #38/#39/#42/#43; #66 generates source geometry/schematics only; original J routing timeout historical','panel_artwork_regeneration':'Regenerated by aggregate pipeline; fixed geometry unchanged; installed fit NOT RUN','J_bypass_proximity':floor['bypass_proximity'],
+                      'mixed_face_placer':'Merged #38 tooling consumes per-reference side/origin; native half-board placement/routing remains NOT RUN'},
+            'downstream_dispositions':{'38':['osc-jack-left','osc-jack-right'],'39':['osc-control','osc-octave-1','osc-octave-2','osc-octave-3','osc-octave-4','osc-octave-5'],'40':[],'41':[],'42':['osc-stage-optical'],'43':['osc-core']}}
     return report,definitions
 
 

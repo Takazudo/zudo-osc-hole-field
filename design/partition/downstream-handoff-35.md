@@ -1,5 +1,7 @@
 # Exact downstream issue amendments after #35
 
+**Historical nine-board handoff. Issue #66 supersedes J topology, counts and affected interfaces; use `downstream-handoff-66.md` and the current manifest.**
+
 These blocks replace the named issue's Goal/Board group text. Append the common contract to each issue, retaining unrelated original verification duties. Manager applies the shared GitHub edits after merging this branch. No remote issue was edited by the worker.
 
 ## Common contract for #36–#43

@@ -10,13 +10,15 @@ import sys
 ROOT=Path(__file__).resolve().parents[2]
 sys.path.insert(0,str(ROOT))
 from scripts.checks.partition35_json import dumps
+from scripts.partition.model import jack_board, JACK_BOARDS, source
 from scripts.pcbgen.netlist import TOKEN, parse, many, one
 from scripts.checks.partition35_diagnostic import footprint_geometry
 OUT=ROOT/'design/partition/connector-packing-candidate.json'
 
 
 def board_for(part):
-    return {'jack':'J','control':'P','core':'K','stage_optical':'EL'}.get(part['regions'][0],part['instance'])
+    if part['regions'][0]=='jack':return jack_board(part['instance'])
+    return {'control':'P','core':'K','stage_optical':'EL'}.get(part['regions'][0],part['instance'])
 
 
 def rect_collision(a,b,gap=.25):
@@ -54,7 +56,8 @@ def candidate():
     # free connectors, never the controls whose traces reach these sites.
     ps=[s for s in ps if not(s[0]>254 and s[1]>242)]
     ps +=[(142+17*i,y) for y in (234,248) for i in range(4)]+[(142,262)]
-    js=[(23+17*c,y) for y in (38,80,122,150) for c in range(17)]
+    js={'JL':[(x,y) for y in (38,80,122) for x in range(23,160,17)][:25],
+        'JR':[(x,y) for y in (38,80,122) for x in range(193,296,17)]+[(x,150) for x in (193,210,227,244,261,278)]}
     families={3:{'header':'BM03B-GHS-TBT(LF)(SN)','housing':'GHR-03V-S','bbox':[7.5,6.1]},
               7:{'header':'BM07B-GHS-TBT(LF)(SN)','housing':'GHR-07V-S','bbox':[12.5,6.1]},
               8:{'header':'BM08B-GHS-TBT(LF)(SN)','housing':'GHR-08V-S','bbox':[13.75,6.1]}}
@@ -62,7 +65,7 @@ def candidate():
         f['footprint']='zudo-osc-hole-field:JST_GH%d_BM_TopEntry'%n
         f['courtyard']=footprint_geometry(ROOT/'footprints/kicad/zudo-osc-hole-field.pretty'/('JST_GH%d_BM_TopEntry.kicad_mod'%n))['courtyard_bbox_mm']
         b=f['courtyard'];f['bbox']=[b[2]-b[0],b[3]-b[1]]
-    headers=[];harnesses=[];ji=0;pi=0;orphans=0
+    headers=[];harnesses=[];ji={b:0 for b in JACK_BOARDS};pi=0;orphans=0
     def add(hid,board,site,pins,n,base_angle=0):
         f=families[n];w,h=f['bbox'];x,y=site
         angle=base_angle+(180 if board=='K' else 0)
@@ -94,11 +97,12 @@ def candidate():
                 if site[0]>254 and site[1]>242:
                     ksite=(244,218+7*orphans);orphans+=1
                 locations={'P':site,'K':ksite}
-            elif pair==('J','P'):
+            elif pair==('JL','P'):
                 if index>=len(utility):raise ValueError('utility header site overflow')
-                locations={'P':utility[index],'J':js[ji]};ji+=1
-            elif pair==('J','K'):
-                locations={'J':js[ji],'K':js[ji]};ji+=1
+                locations={'P':utility[index],'JL':(utility[index][0],150)}
+            elif pair[1]=='K' and pair[0] in JACK_BOARDS:
+                jb=pair[0];site=js[jb][ji[jb]];ji[jb]+=1
+                locations={jb:site,'K':site}
             else:
                 selector=next(b for b in pair if b.startswith('O'))
                 shaft=lock['C:'+selector+'.OCT'];site=(shaft['x_mm'],shaft['y_mm']+(-3.5 if index==0 else 3.5))
@@ -127,7 +131,8 @@ def candidate():
             for ref,pad in pads_here:
                 if rect_collision(box,pad):errors.append(f'header/pad overlap {h["id"]} {ref}')
             l,t,r,b=box
-            if board=='J':inside=6.25<=l and r<=311.75 and 20.25<=t and b<=163.75
+            if board in JACK_BOARDS:
+                polygon=source()['boards'][board]['outline'];inside=min(p[0] for p in polygon)+.25<=l and r<=max(p[0] for p in polygon)-.25 and 20.25<=t and b<=163.75
             elif board=='P':inside=6.25<=l and r<=311.75 and 176.25<=t and b<=291.75 and (l>=94.25 or t>=194.25)
             elif board=='K':inside=6.25<=l and r<=311.75 and 8.25<=t and b<=291.75 and (r<=257.75 or b<=245.75)
             elif board=='EL':inside=210.25<=l and r<=316.75 and 164.25<=t and b<=276.75

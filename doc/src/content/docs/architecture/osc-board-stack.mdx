@@ -1,10 +1,10 @@
 ---
 title: "Board partition and panel stack"
-description: "Conditional nine-board partition, exact harness interfaces and the physical qualification boundary."
+description: "Conditional ten-board partition, exact harness interfaces and the physical qualification boundary."
 sidebar_position: 30
 ---
 
-## Conditional nine-board decision
+## Conditional ten-board decision
 
 The source decision is `design/partition/partition.json`, generated from `partition-input.json`, the native master netlist and retained component drawings. Authority is **PROPOSAL (planning, owner-delegated)**. Every schematic and board remains an **unvalidated draft**. No PCB is drawn or fabrication output produced by this decision.
 
@@ -12,7 +12,8 @@ All **438 panel centres and 33 modules remain fixed**. The partition assigns all
 
 | Board | Panel-frame outline, mm | F.Cu z, mm | Stack | Main assignment |
 | --- | --- | --- | --- | --- |
-| `osc-jack` / J | x4–314, y20–164 | −10 | 4 layers, 1.6 mm, 2 oz | 180 jacks, 102 indicators and complete local input/output circuits |
+| `osc-jack-left` / JL | x4–176.5, y20–164 | −10 | 4 layers, 1.6 mm, 2 oz | 100 jacks, 43 indicators; 1,060 whole master packages |
+| `osc-jack-right` / JR | x177.5–314, y20–164 | −10 | 4 layers, 1.6 mm, 2 oz | 80 jacks, 59 indicators; 1,031 whole master packages |
 | `osc-control` / P | (1,194), (94,194), (94,176), (317,176), (317,292), (1,292) | −11.8 | 4 layers, 1.6 mm, 2 oz | All 101 pots, 30 toggles, eight buttons, complete slew/control circuits |
 | `osc-stage-optical` / EL | x210–317, y164–277 | −4.2 | 2 layers, 0.4 mm, 1 oz | 12 stage LEDs and complete 138-part driver/local-net island set |
 | `osc-octave-1`…`5` | 19.8 × 21 at each fixed shaft; 6 mm wide tongue to y171 | −16 for O1/O3/O5; −29 for O2/O4 | 2 layers, 1.6 mm, 1 oz | One exact selector per adapter |
@@ -61,7 +62,7 @@ The design has 1,830 header contact positions. Across the whole harness set at e
 
 The retained Alpha Wire 6821 drawing specifies AWG26, 0.889 ±0.0508 mm insulation diameter, 38 Ω/1000 ft nominal resistance and a ten-diameter bend radius. The maximum diameter is 0.9398 mm and the conservative individual-wire bend requirement is 9.398 mm. Controlled flat ribbons maintain 1.25 mm conductor pitch. Combs anchored to the enclosure sit within 15 mm of each connector and at most 25 mm apart. The longest proposed cut is 204 mm; aggregate source-driver cable capacitance remains limited to 1 nF and requires assembled verification.
 
-`loom-candidate.json` checks all 195 ribbon corridors and twelve load-side power-wire curves against each other and the EXT reservation. Four J/P harnesses use separate broad loops in left-hand corridors. Free P connector sites were relocated away from the inlet pocket; no control moved.
+`loom-candidate.json` checks all 195 ribbon corridors and eighteen load-side power-wire curves against each other and the EXT reservation. Four J/P harnesses use separate broad loops in left-hand corridors. Free P connector sites were relocated away from the inlet pocket; no control moved.
 
 K includes 191 proposed Ø2.2 mm service apertures and collision-checked approaches for a 1.5 mm hook tool. These are a tooling proposal, not proof that the JST latch releases with that tool. Service is unpowered: disconnect the external source, verify discharge, remove the rear cover, release loom combs, unlatch all K mates through the access apertures, then remove K supports. Factory local backing is required for mating, especially on EL.
 
@@ -69,13 +70,13 @@ K includes 191 proposed Ø2.2 mm service apertures and collision-checked approac
 
 The selected architecture remains one **EXT requirement-only domain**, with no selected source or orderable inlet. Preserve x260–308/y248–293/z−85…−45 mm for its inlet, support and cable access. No rejected P+B trays return to this design. Continuous minima are 1700/1600/300 mA; transient minima 2000/1900/400 mA; delivered maxima 2100/2000/500 mA. The single-return envelope is 4.6 A.
 
-Twelve proposed factory-soldered Alpha Wire 5859 AWG14 conductors connect existing load-side rails/AGND between K and J/P. They do not bridge `CN301`/`XB301`, and they do not replace the separate source-inlet 20 AWG contract. Each has a 125 mm maximum length, a hot-resistance acceptance ceiling of 13 mΩ/m, combined termination allowance 0.2 mΩ, rail-plane ceiling 1 mΩ and return-plane ceiling 0.5 mΩ. At the delivered-current maxima, the worst shared-return distribution loss is **16.628 mV**, below the 20 mV allocation. Actual hot copper, solder-joint resistance and ampacity remain unmeasured.
+Eighteen proposed factory-soldered Alpha Wire 5859 AWG14 conductors connect existing load-side rails/AGND between K and JL/JR/P. They do not bridge `CN301`/`XB301`, and they do not replace the separate source-inlet 20 AWG contract. Each has a 125 mm maximum length, a hot-resistance acceptance ceiling of 13 mΩ/m, combined termination allowance 0.2 mΩ, rail-plane ceiling 1 mΩ and return-plane ceiling 0.5 mΩ. At the delivered-current maxima, the worst shared-return distribution loss is **16.628 mV**, below the 20 mV allocation. Actual hot copper, solder-joint resistance and ampacity remain unmeasured.
 
-GH contacts are rated 1 A at AWG26; the proposed assembled limit is 0.5 A/contact. Normal all-mates-present AGND bounds use the lowest possible resistance of one wire path and the highest allowed resistance of every other path plus the dedicated return. Three independent AWG14 ground wires per J/P are included. The complete combined branch-board plus K AGND spreading/neck must be no more than 0.5 mΩ, including vias. Conservatively, all alternative returns share that resistance while the candidate GH path has zero PCB/contact resistance. This is a routing extraction and hot measurement requirement for #38/#39/#43/#65. The AWG26 wire lower bound of 0.1 Ω/m is an acceptance condition across the qualified temperature range, not a manufacturer guarantee; cold qualification is NOT RUN. They give 0.443 A for J and 0.492 A for P (only 8.125 mA planning margin), plus 0.250 A for the J/P utility returns. Actual hot routing must meet the combined neck limit or the returns need redesign; they **do not assume equal sharing**. A missing main return, partial mating or external patch-ground fault is outside this normal result and remains open under #59/#65.
+GH contacts are rated 1 A at AWG26; the proposed assembled limit stays 0.5 A/contact. Adverse conductance bounds include three independent AWG14 AGND wires per branch and the entire combined branch-board plus K 0.5 mΩ hot spreading/neck allowance in the alternative paths. JL is 0.496114333 A, JR 0.492091887 A, P 0.491875226 A and JL/P utility 0.249524108 A. **JL has only 3.885667 mA conditional margin.** Wire resistance bounds and actual hot layout extraction/measurement must hold; no equal sharing, guaranteed cold operation or fault-return qualification is inferred. Main-return-open, partial mating and patch-ground faults remain #59/#65.
 
 EL uses six rail paths and twelve AGND paths. Conservative rail contracts are 50/50/70 mA, with a 170 mA total absolute return bound. They include all six quad packages, all 12 base resistors, the 12 current-limited LEDs, pullups and the ≥10 ms bulk ramp. Current may be unequal; voltage-drop bounds use the sum of the minimum path conductances.
 
-Four powered boards reserve 4.7 µF per rail in 12 finite 5×3 mm courtyard slots. These unselected bulk parts must meet the reserved height (EL at most 1.75 mm, other boards at most 5 mm) or trigger a partition replan. The generated supply report supplies the fitted totals; including 18.8 µF new bulk per rail gives 68.7/61.5/43.3 µF nominal, below 150/150/100 µF. Exact unplaced bulk/protection geometry remains conditional. All existing rail-ledger entries and reference fanout bounds remain counted once.
+Five powered boards reserve 4.7 µF per rail in 15 finite 5×3 mm courtyard slots. These unselected bulk parts must meet the reserved height (EL at most 1.75 mm, other boards at most 5 mm) or trigger a partition replan. The generated supply report supplies the fitted totals; including 23.5 µF new bulk per rail gives 73.4/66.2/48.0 µF nominal, below 150/150/100 µF. Exact unplaced bulk/protection geometry remains conditional. All existing rail-ledger entries and reference fanout bounds remain counted once.
 
 ## Alternatives and downstream ownership
 
@@ -83,6 +84,19 @@ The original one-core partition forced raw TIP nets across connectors or overfil
 
 An eight-board comparison distributing all core circuitry onto interface boards did not retain the distinct rear core required by D09. A shallow K plane forces crowded loops and crosses the rear selector envelopes. The deeper core is a proposal that makes controlled internal wiring possible; its enclosure depth still needs qualification.
 
-#38 owns J; #39 owns P and all five O adapters; #42 owns EL; #43 owns K. #40 and #41 verify their complete reassignment to P and then record **SKIP**. #36 projects the nine board schematics and checks joined net parity, including 390 headers and 24 custom load-side copper terminals. #37 regenerates the panel while preserving all centres/artwork. Exact issue amendments are retained in `design/partition/downstream-handoff-35.md`.
+#38 owns JL and JR; #39 owns P and all five O adapters; #42 owns EL; #43 owns K. #40 and #41 verify their complete reassignment to P and then record **SKIP**. #36 projects the ten board schematics and checks joined net parity, including 390 headers and 36 custom load-side copper terminals. #37 regenerates the panel while preserving all centres/artwork. Exact issue amendments are retained in `design/partition/downstream-handoff-66.md`.
 
 Physical gates stay open: **#65** main supports/seated hardware/loom/service/depth, **#55** selectors, **#57** source realization, **#59** 82 output / 16 precision-sense / 30 octave-receiver protection obligations, and **#64** optical/hot LED behavior. Routing, DRC and actual assembly are **NOT RUN** here.
+
+
+## Issue 66 split and local bypass evidence
+
+The rejected single J draft timed out before producing copper. Its PCB/render/reports are historical #38 evidence. The current source places complete modules on JL/JR at the x177 seam; x159 would split W2/X1/X2 packages and islands. All 438 UID x/y/hole sizes remain unchanged; only J ownership metadata changes.
+
+The J search grid is 0.10 mm, retaining 0.35 mm drawn courtyard and 0.30 mm edge constraints. Final master rows are JL 754 B/306 F and JR 527 B/504 F. All 414 J bypass capacitors stay on their owning IC face, aligned using actual supply/rail pads. Worst pad-centre distance is 2.8875 mm against a 3 mm project proposal. TI OPAx196/OPAx197 §10.1 supplies qualitative close-bypass guidance, not a numeric distance guarantee. Actual rail/AGND loop routing remains #38. Retained sources and conditions are in `design/partition/bypass-placement-evidence.json`.
+
+The pinned native oracle checks all 2,147 J package/header placements and both-face through-hole pad exclusions. Minimum native cached courtyard clearance is 0.260 mm: 0.350 mm drawn spacing minus 0.045 mm native inflation at each facing edge. The existing native limit stays 0.250 mm. This is geometry evidence, not half-board routing/DRC.
+
+The eight outer M2 supports remain. A proposed insulating seam carrier occupies rear x172–182/y20–164/z−13.6…−11.6 and front lips x175.2–178.8/y20–164/z−10…−9.5. Rear cross-members at y17–19 and y165–167 reach enclosure side seats. It creates no new panel or seam drills. Nominal pad/courtyard/loom checks pass; exact profile, fastening, stiffness and service fit remain NOT RUN #65.
+
+JL bulk slots are x122–127, JR x292–297, each at y145–148,149–152,153–156. Protection receipts subtract hardware, power lands, bulk and carrier; 330.6/774.0 mm² remain conditionally reserved on JL/JR. No exact #59 circuit fit follows from those areas. Full +20% fitted-plus-reserved capacitance ramp at ≥10 ms adds 116.2656/104.8608/31.68 mA; continuous requirement plus ramp remains below the source transient minima.

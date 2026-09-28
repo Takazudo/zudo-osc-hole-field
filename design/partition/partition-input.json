@@ -3,19 +3,19 @@
   "authority": "PROPOSAL (planning, owner-delegated)",
   "status": "UNVALIDATED DRAFT; source input, acceptance checks incomplete",
   "boards": {
-    "J": {
-      "id": "osc-jack",
+    "JL": {
+      "id": "osc-jack-left",
       "outline": [
         [
           4,
           20
         ],
         [
-          314,
+          176.5,
           20
         ],
         [
-          314,
+          176.5,
           164
         ],
         [
@@ -47,22 +47,6 @@
         [
           6.5,
           161.5
-        ],
-        [
-          311.5,
-          22.5
-        ],
-        [
-          311.5,
-          80
-        ],
-        [
-          311.5,
-          138
-        ],
-        [
-          311.5,
-          161.5
         ]
       ],
       "reserves": [
@@ -71,27 +55,39 @@
           "rect": [
             120,
             143,
-            310,
+            176.5,
             161
           ],
           "sides": [
             "B.Cu"
           ],
-          "status": "PROPOSAL #59 unknown geometry; actual THT exclusions remain"
+          "status": "PROPOSAL #59 unknown geometry; physical exclusions subtracted in receipt"
         },
         {
-          "id": "load-power",
+          "id": "seam-rear-carrier",
           "rect": [
-            139,
-            157,
-            196,
-            163
+            172,
+            20,
+            176.5,
+            164
           ],
           "sides": [
-            "F.Cu",
             "B.Cu"
           ],
-          "status": "PROPOSAL soldered load-side distribution, no CN301/XB301 bridge"
+          "status": "PROPOSAL #65 carrier"
+        },
+        {
+          "id": "seam-front-lip",
+          "rect": [
+            175.2,
+            20,
+            176.5,
+            164
+          ],
+          "sides": [
+            "F.Cu"
+          ],
+          "status": "PROPOSAL #65 lip"
         },
         {
           "id": "UNSELECTED-BULK-1",
@@ -133,28 +129,88 @@
           "status": "PROPOSAL finite reservation for UNSELECTED bulk part. Exact #59 part may require replan; no fitted zero-area component."
         },
         {
-          "id": "POWER-AGND-210-160",
+          "id": "POWER-JL-1",
           "rect": [
-            207,
+            37,
             157,
-            213,
+            43,
             163
           ],
           "sides": [
+            "F.Cu",
             "B.Cu"
-          ]
+          ],
+          "status": "PROPOSAL factory solder land"
         },
         {
-          "id": "POWER-AGND-227-160",
+          "id": "POWER-JL-2",
           "rect": [
-            224,
+            54,
             157,
-            230,
+            60,
             163
           ],
           "sides": [
+            "F.Cu",
             "B.Cu"
-          ]
+          ],
+          "status": "PROPOSAL factory solder land"
+        },
+        {
+          "id": "POWER-JL-3",
+          "rect": [
+            71,
+            157,
+            77,
+            163
+          ],
+          "sides": [
+            "F.Cu",
+            "B.Cu"
+          ],
+          "status": "PROPOSAL factory solder land"
+        },
+        {
+          "id": "POWER-JL-4",
+          "rect": [
+            88,
+            157,
+            94,
+            163
+          ],
+          "sides": [
+            "F.Cu",
+            "B.Cu"
+          ],
+          "status": "PROPOSAL factory solder land"
+        },
+        {
+          "id": "POWER-JL-5",
+          "rect": [
+            105,
+            157,
+            111,
+            163
+          ],
+          "sides": [
+            "F.Cu",
+            "B.Cu"
+          ],
+          "status": "PROPOSAL factory solder land"
+        },
+        {
+          "id": "POWER-JL-6",
+          "rect": [
+            122,
+            157,
+            128,
+            163
+          ],
+          "sides": [
+            "F.Cu",
+            "B.Cu"
+          ],
+          "status": "PROPOSAL factory solder land"
         }
       ],
       "board_bulk_reserve": [
@@ -190,6 +246,258 @@
             122,
             153,
             127,
+            156
+          ],
+          "nominal_uF": 4.7,
+          "maximum_height_mm": 5,
+          "side": "B.Cu",
+          "status": "PROPOSAL finite reservation for UNSELECTED bulk part. Exact #59 part may require replan; no fitted zero-area component."
+        }
+      ]
+    },
+    "JR": {
+      "id": "osc-jack-right",
+      "outline": [
+        [
+          177.5,
+          20
+        ],
+        [
+          314,
+          20
+        ],
+        [
+          314,
+          164
+        ],
+        [
+          177.5,
+          164
+        ]
+      ],
+      "face_z_mm": -10,
+      "thickness_mm": 1.6,
+      "layers": 4,
+      "copper_oz": 2,
+      "assembly_sides": [
+        "F.Cu",
+        "B.Cu"
+      ],
+      "supports_mm": [
+        [
+          311.5,
+          22.5
+        ],
+        [
+          311.5,
+          80
+        ],
+        [
+          311.5,
+          138
+        ],
+        [
+          311.5,
+          161.5
+        ]
+      ],
+      "reserves": [
+        {
+          "id": "future-output-protection",
+          "rect": [
+            177.5,
+            143,
+            310,
+            161
+          ],
+          "sides": [
+            "B.Cu"
+          ],
+          "status": "PROPOSAL #59 unknown geometry; physical exclusions subtracted in receipt"
+        },
+        {
+          "id": "seam-rear-carrier",
+          "rect": [
+            177.5,
+            20,
+            182,
+            164
+          ],
+          "sides": [
+            "B.Cu"
+          ],
+          "status": "PROPOSAL #65 carrier"
+        },
+        {
+          "id": "seam-front-lip",
+          "rect": [
+            177.5,
+            20,
+            178.8,
+            164
+          ],
+          "sides": [
+            "F.Cu"
+          ],
+          "status": "PROPOSAL #65 lip"
+        },
+        {
+          "id": "UNSELECTED-BULK-1",
+          "rect": [
+            292,
+            145,
+            297,
+            148
+          ],
+          "sides": [
+            "B.Cu"
+          ],
+          "status": "PROPOSAL finite reservation for UNSELECTED bulk part. Exact #59 part may require replan; no fitted zero-area component."
+        },
+        {
+          "id": "UNSELECTED-BULK-2",
+          "rect": [
+            292,
+            149,
+            297,
+            152
+          ],
+          "sides": [
+            "B.Cu"
+          ],
+          "status": "PROPOSAL finite reservation for UNSELECTED bulk part. Exact #59 part may require replan; no fitted zero-area component."
+        },
+        {
+          "id": "UNSELECTED-BULK-3",
+          "rect": [
+            292,
+            153,
+            297,
+            156
+          ],
+          "sides": [
+            "B.Cu"
+          ],
+          "status": "PROPOSAL finite reservation for UNSELECTED bulk part. Exact #59 part may require replan; no fitted zero-area component."
+        },
+        {
+          "id": "POWER-JR-1",
+          "rect": [
+            190,
+            157,
+            196,
+            163
+          ],
+          "sides": [
+            "F.Cu",
+            "B.Cu"
+          ],
+          "status": "PROPOSAL factory solder land"
+        },
+        {
+          "id": "POWER-JR-2",
+          "rect": [
+            207,
+            157,
+            213,
+            163
+          ],
+          "sides": [
+            "F.Cu",
+            "B.Cu"
+          ],
+          "status": "PROPOSAL factory solder land"
+        },
+        {
+          "id": "POWER-JR-3",
+          "rect": [
+            224,
+            157,
+            230,
+            163
+          ],
+          "sides": [
+            "F.Cu",
+            "B.Cu"
+          ],
+          "status": "PROPOSAL factory solder land"
+        },
+        {
+          "id": "POWER-JR-4",
+          "rect": [
+            241,
+            157,
+            247,
+            163
+          ],
+          "sides": [
+            "F.Cu",
+            "B.Cu"
+          ],
+          "status": "PROPOSAL factory solder land"
+        },
+        {
+          "id": "POWER-JR-5",
+          "rect": [
+            258,
+            157,
+            264,
+            163
+          ],
+          "sides": [
+            "F.Cu",
+            "B.Cu"
+          ],
+          "status": "PROPOSAL factory solder land"
+        },
+        {
+          "id": "POWER-JR-6",
+          "rect": [
+            275,
+            157,
+            281,
+            163
+          ],
+          "sides": [
+            "F.Cu",
+            "B.Cu"
+          ],
+          "status": "PROPOSAL factory solder land"
+        }
+      ],
+      "board_bulk_reserve": [
+        {
+          "net": "+12V",
+          "rect": [
+            292,
+            145,
+            297,
+            148
+          ],
+          "nominal_uF": 4.7,
+          "maximum_height_mm": 5,
+          "side": "B.Cu",
+          "status": "PROPOSAL finite reservation for UNSELECTED bulk part. Exact #59 part may require replan; no fitted zero-area component."
+        },
+        {
+          "net": "-12V",
+          "rect": [
+            292,
+            149,
+            297,
+            152
+          ],
+          "nominal_uF": 4.7,
+          "maximum_height_mm": 5,
+          "side": "B.Cu",
+          "status": "PROPOSAL finite reservation for UNSELECTED bulk part. Exact #59 part may require replan; no fitted zero-area component."
+        },
+        {
+          "net": "+5V",
+          "rect": [
+            292,
+            153,
+            297,
             156
           ],
           "nominal_uF": 4.7,
@@ -467,20 +775,6 @@
           "status": "PROPOSAL #59 exact geometry unknown"
         },
         {
-          "id": "load-power",
-          "rect": [
-            139,
-            165,
-            196,
-            179
-          ],
-          "sides": [
-            "F.Cu",
-            "B.Cu"
-          ],
-          "status": "PROPOSAL"
-        },
-        {
           "id": "UNSELECTED-BULK-1",
           "rect": [
             140,
@@ -520,7 +814,98 @@
           "status": "PROPOSAL finite reservation for UNSELECTED bulk part. Exact #59 part may require replan; no fitted zero-area component."
         },
         {
-          "id": "POWER-AGND-210-160",
+          "id": "POWER-JL-1",
+          "rect": [
+            37,
+            157,
+            43,
+            163
+          ],
+          "sides": [
+            "F.Cu"
+          ],
+          "status": "PROPOSAL factory solder land"
+        },
+        {
+          "id": "POWER-JL-2",
+          "rect": [
+            54,
+            157,
+            60,
+            163
+          ],
+          "sides": [
+            "F.Cu"
+          ],
+          "status": "PROPOSAL factory solder land"
+        },
+        {
+          "id": "POWER-JL-3",
+          "rect": [
+            71,
+            157,
+            77,
+            163
+          ],
+          "sides": [
+            "F.Cu"
+          ],
+          "status": "PROPOSAL factory solder land"
+        },
+        {
+          "id": "POWER-JL-4",
+          "rect": [
+            88,
+            157,
+            94,
+            163
+          ],
+          "sides": [
+            "F.Cu"
+          ],
+          "status": "PROPOSAL factory solder land"
+        },
+        {
+          "id": "POWER-JL-5",
+          "rect": [
+            105,
+            157,
+            111,
+            163
+          ],
+          "sides": [
+            "F.Cu"
+          ],
+          "status": "PROPOSAL factory solder land"
+        },
+        {
+          "id": "POWER-JL-6",
+          "rect": [
+            122,
+            157,
+            128,
+            163
+          ],
+          "sides": [
+            "F.Cu"
+          ],
+          "status": "PROPOSAL factory solder land"
+        },
+        {
+          "id": "POWER-JR-1",
+          "rect": [
+            190,
+            157,
+            196,
+            163
+          ],
+          "sides": [
+            "F.Cu"
+          ],
+          "status": "PROPOSAL factory solder land"
+        },
+        {
+          "id": "POWER-JR-2",
           "rect": [
             207,
             157,
@@ -529,10 +914,11 @@
           ],
           "sides": [
             "F.Cu"
-          ]
+          ],
+          "status": "PROPOSAL factory solder land"
         },
         {
-          "id": "POWER-AGND-227-160",
+          "id": "POWER-JR-3",
           "rect": [
             224,
             157,
@@ -541,10 +927,102 @@
           ],
           "sides": [
             "F.Cu"
-          ]
+          ],
+          "status": "PROPOSAL factory solder land"
         },
         {
-          "id": "POWER-AGND-210-179",
+          "id": "POWER-JR-4",
+          "rect": [
+            241,
+            157,
+            247,
+            163
+          ],
+          "sides": [
+            "F.Cu"
+          ],
+          "status": "PROPOSAL factory solder land"
+        },
+        {
+          "id": "POWER-JR-5",
+          "rect": [
+            258,
+            157,
+            264,
+            163
+          ],
+          "sides": [
+            "F.Cu"
+          ],
+          "status": "PROPOSAL factory solder land"
+        },
+        {
+          "id": "POWER-JR-6",
+          "rect": [
+            275,
+            157,
+            281,
+            163
+          ],
+          "sides": [
+            "F.Cu"
+          ],
+          "status": "PROPOSAL factory solder land"
+        },
+        {
+          "id": "POWER-P-1",
+          "rect": [
+            139,
+            172,
+            145,
+            178
+          ],
+          "sides": [
+            "F.Cu"
+          ],
+          "status": "PROPOSAL factory solder land"
+        },
+        {
+          "id": "POWER-P-2",
+          "rect": [
+            156,
+            172,
+            162,
+            178
+          ],
+          "sides": [
+            "F.Cu"
+          ],
+          "status": "PROPOSAL factory solder land"
+        },
+        {
+          "id": "POWER-P-3",
+          "rect": [
+            173,
+            172,
+            179,
+            178
+          ],
+          "sides": [
+            "F.Cu"
+          ],
+          "status": "PROPOSAL factory solder land"
+        },
+        {
+          "id": "POWER-P-4",
+          "rect": [
+            190,
+            172,
+            196,
+            178
+          ],
+          "sides": [
+            "F.Cu"
+          ],
+          "status": "PROPOSAL factory solder land"
+        },
+        {
+          "id": "POWER-P-5",
           "rect": [
             207,
             176,
@@ -553,10 +1031,11 @@
           ],
           "sides": [
             "F.Cu"
-          ]
+          ],
+          "status": "PROPOSAL factory solder land"
         },
         {
-          "id": "POWER-AGND-227-179",
+          "id": "POWER-P-6",
           "rect": [
             224,
             176,
@@ -565,7 +1044,8 @@
           ],
           "sides": [
             "F.Cu"
-          ]
+          ],
+          "status": "PROPOSAL factory solder land"
         }
       ],
       "board_bulk_reserve": [
@@ -995,14 +1475,6 @@
       "+5V": 0.5
     },
     "single_return_max_A": 4.6,
-    "x_mm": [
-      142,
-      159,
-      176,
-      193,
-      210,
-      227
-    ],
     "net_order": [
       "+12V",
       "-12V",
@@ -1011,10 +1483,6 @@
       "AGND",
       "AGND"
     ],
-    "J_pad_y_mm": 160,
-    "P_pad_y_mm": 179,
-    "K_J_pad_y_mm": 169,
-    "K_P_pad_y_mm": 175,
     "factory_solder_pad_mm": [
       4,
       4
@@ -1030,22 +1498,159 @@
       "AGND2",
       "AGND3"
     ],
-    "K_J_pad_y_mm_by_wire": [
-      169,
-      169,
-      169,
-      169,
-      160,
-      160
+    "ground_routing_requirement": "Combined J-or-P plus K AGND spreading/neck resistance <=0.5 mOhm, including vias and all shared necks. Worst-candidate GH path excludes this resistance; all alternative returns conservatively share it. Routing extraction and hot Kelvin measurement required #38/#39/#43/#65; not a measured layout-independent value.",
+    "branches": {
+      "JL": {
+        "x_mm": [
+          40,
+          57,
+          74,
+          91,
+          108,
+          125
+        ],
+        "pad_y_mm": 160,
+        "core_pad_y_mm": [
+          160,
+          160,
+          160,
+          160,
+          160,
+          160
+        ],
+        "bow_x_mm": 8
+      },
+      "JR": {
+        "x_mm": [
+          193,
+          210,
+          227,
+          244,
+          261,
+          278
+        ],
+        "pad_y_mm": 160,
+        "core_pad_y_mm": [
+          160,
+          160,
+          160,
+          160,
+          160,
+          160
+        ]
+      },
+      "P": {
+        "x_mm": [
+          142,
+          159,
+          176,
+          193,
+          210,
+          227
+        ],
+        "pad_y_mm": 179,
+        "core_pad_y_mm": [
+          175,
+          175,
+          175,
+          175,
+          179,
+          179
+        ]
+      }
+    }
+  },
+  "jack_split": {
+    "status": "PROPOSAL #66; source geometry only, routing #38 NOT RUN",
+    "seam_x_mm": 177,
+    "seam_gap_mm": 1,
+    "left_instances": [
+      "H1",
+      "H2",
+      "O1",
+      "O2",
+      "O3",
+      "O4",
+      "O5",
+      "F1",
+      "F2",
+      "F3",
+      "B1",
+      "B2",
+      "X1",
+      "X2",
+      "M5A",
+      "M5B",
+      "W2"
     ],
-    "K_P_pad_y_mm_by_wire": [
-      175,
-      175,
-      175,
-      175,
-      179,
-      179
+    "right_instances": [
+      "N1",
+      "E1",
+      "E2",
+      "E3",
+      "E4",
+      "E5",
+      "E6",
+      "M4A",
+      "M4B",
+      "W1",
+      "A01",
+      "A02",
+      "A03",
+      "A04",
+      "A05",
+      "A06"
     ],
-    "ground_routing_requirement": "Combined J-or-P plus K AGND spreading/neck resistance <=0.5 mOhm, including vias and all shared necks. Worst-candidate GH path excludes this resistance; all alternative returns conservatively share it. Routing extraction and hot Kelvin measurement required #38/#39/#43/#65; not a measured layout-independent value."
+    "carrier": {
+      "rear_rect_mm": [
+        172,
+        20,
+        182,
+        164
+      ],
+      "rear_z_mm": [
+        -13.6,
+        -11.6
+      ],
+      "front_lip_rect_mm": [
+        175.2,
+        20,
+        178.8,
+        164
+      ],
+      "front_lip_z_mm": [
+        -10,
+        -9.5
+      ],
+      "load_path": "Insulating rear cradle/front lips capture both board edges. Rear cross-members at y18 and y166 reach enclosure side-frame seats; no connector or solder structural load. Eight outer M2 posts remain. Exact profile, fastening, stiffness and insertion/disassembly coupon #65 NOT RUN.",
+      "status": "PROPOSAL envelope only; exact profile, fastening, stiffness and installed service #65 NOT RUN",
+      "cross_members": [
+        {
+          "rect_mm": [
+            -2,
+            17,
+            320,
+            19
+          ],
+          "z_mm": [
+            -13.6,
+            -11.6
+          ]
+        },
+        {
+          "rect_mm": [
+            -2,
+            165,
+            320,
+            167
+          ],
+          "z_mm": [
+            -13.6,
+            -11.6
+          ]
+        }
+      ]
+    },
+    "historical_board_id": "osc-jack"
   }
 }

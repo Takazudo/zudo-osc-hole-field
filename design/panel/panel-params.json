@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "status": "PROPOSAL \u2014 issue #35 conditional nine-board stack; unvalidated draft; panel regeneration delegated to #37",
+  "status": "PROPOSAL \u2014 issue #66 ten-board source replan; unvalidated draft; no panel coordinate/hole/artwork changes",
   "width_mm": 318,
   "height_mm": 298,
   "thickness_mm": 2.0,
@@ -33,7 +33,19 @@
     "panel_drill_count_for_supports": 0,
     "internal_EL_support_hole_count": 35,
     "internal_P_optical_post_clearance_count": 30,
-    "front_attachment": "PROPOSAL segmented enclosure clips within the 0..3 mm perimeter border only where clear of owner copper artwork, the imported Ø8.3 mm jack-nut trial envelope, and internal support-collar projections; no continuous solid lip or 35-post front-panel drill pattern. Exact clip profiles and installed fit remain OPEN #65. Existing artwork and all 438 fixed centres preserved.",
-    "qualification": "#37 fixed-panel geometry, artwork ownership and KiCad DRC reviewed; projected clip exclusions recorded. Installed clip/support fit NOT RUN #65; selector coupon NOT RUN #55; source realization NOT RUN #57; optical/hot qualification NOT RUN #64."
+    "front_attachment": "PROPOSAL segmented enclosure clips within the 0..3 mm perimeter border only where clear of owner copper artwork, the imported \u00d88.3 mm jack-nut trial envelope, and internal support-collar projections; no continuous solid lip or 35-post front-panel drill pattern. Exact clip profiles and installed fit remain OPEN #65. Existing artwork and all 438 fixed centres preserved.",
+    "qualification": "#37 fixed-panel geometry, artwork ownership and KiCad DRC reviewed; projected clip exclusions recorded. Installed clip/support fit NOT RUN #65; selector coupon NOT RUN #55; source realization NOT RUN #57; optical/hot qualification NOT RUN #64.",
+    "jack_split": {
+      "boards": [
+        "osc-jack-left",
+        "osc-jack-right"
+      ],
+      "seam_x_mm": 177,
+      "gap_mm": 1,
+      "outer_M2_supports": 8,
+      "new_panel_or_seam_drills": 0,
+      "carrier_source": "design/partition/partition-input.json:jack_split.carrier",
+      "qualification": "NOT RUN #65"
+    }
   }
 }

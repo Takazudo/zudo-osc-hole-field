@@ -48,7 +48,7 @@ class PanelFrameTests(unittest.TestCase):
 
     def test_domain_and_hole_proposals(self) -> None:
         cases = (
-            ("jacks", "O1", "jack", "J"),
+            ("jacks", "O1", "jack", "JL"),
             ("controls", "O1", "octave", "O"),
             ("controls", "O1", "switch", "P"),
             ("controls", "O1", "pot", "P"),
@@ -127,7 +127,7 @@ class PlacementLockTests(unittest.TestCase):
             (14.5, 29.0),
         )
         self.assertEqual(records["J:O1.1V"]["label"], "1V/OCT")
-        self.assertEqual(records["J:O1.1V"]["domain"], "J")
+        self.assertEqual(records["J:O1.1V"]["domain"], "JL")
         self.assertEqual(records["J:O1.1V"]["hole_d_mm"], 6.2)
         self.assertEqual(records["J:O1.1V"]["hole_status"], "PROPOSAL")
         self.assertEqual(records["C:H1.SLEW"]["domain"], "P")
