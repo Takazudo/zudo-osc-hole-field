@@ -17,7 +17,7 @@
     {"id":"osc-octave-5","outline":[[72.6,174.5],[79.5,174.5],[79.5,171],[85.5,171],[85.5,174.5],[92.4,174.5],[92.4,195.5],[72.6,195.5]],"face_z_mm":-16,"thickness_mm":1.6,"layers":2,"copper_oz":1,"assembly_sides":["F.Cu","B.Cu"],"supports_mm":[],"reserves":[],"board_key":"O5","role":"one selected stepped octave adapter","facing_panel":"F.Cu","status":"PROPOSAL","supply_domain":"EXT","physical_package_count":1,"fitted_package_count":1,"definition":"design/boards/osc-octave-5.json","single_board_assembly":"PROPOSAL one adapter per 70x70 mm factory handling panel, below250x250mm delivery cap; exact tabs/tooling #39, no order files","layer_reason":"Passive selector adapter; two layers with local return fill; no sensitive storage circuit","field_status":{"id":"DERIVED","physical_package_count":"DERIVED","fitted_package_count":"DERIVED","outline":"PROPOSAL","face_z_mm":"PROPOSAL","thickness_mm":"PROPOSAL","layers":"PROPOSAL","copper_oz":"PROPOSAL"}}
   ],
   "jack_split": {
-    "status": "PROPOSAL #66; source geometry only, routing #38 NOT RUN",
+    "status": "PROPOSAL #66 source geometry; #38 UNVALIDATED PARTIAL ROUTING CHECKPOINT, electrical acceptance OPEN",
     "seam_x_mm": 177,
     "seam_gap_mm": 1,
     "left_instances": ["H1","H2","O1","O2","O3","O4","O5","F1","F2","F3","B1","B2","X1","X2","M5A","M5B","W2"],
@@ -7126,7 +7126,8 @@
           "geometry": "Same outline, real source keepouts/reservations and all existing copper/hardware unchanged. Measure actual filled continuity. Prefer native surface-pour main-land and GH contact access through existing plated AGND sleeves/vias before using solder-land arrays.",
           "common_resistance_interpretation": "Combined branch+K common plane/spreading/shared neck including main-terminal transfer <=0.5 mOhm. Individual GH access paths are separately extracted and added to every alternative return in conductance-extrema bound; candidate own PCB/contact resistance remains zero."
         },
-        "actual_AGND_strategy": "Three source-defined25-via main-land arrays per half are required: surface ground pours left each main land attached only to its own isolated same-net zone. All lands, GH contacts and intended bypass returns must share the transitive native main AGND component; native AGND edge count must be zero. A pad+same-net-zone relation alone is insufficient."
+        "actual_AGND_strategy": "Three source-defined25-via main-land arrays per half are required: surface ground pours left each main land attached only to its own isolated same-net zone. All lands, GH contacts and intended bypass returns must share the transitive native main AGND component; native AGND edge count must be zero. A pad+same-net-zone relation alone is insufficient.",
+        "electrical_acceptance_status": "NOT ACCEPTED #38: complete native AGND/direct bypass topology is a draft checkpoint only. Authoritative common <=0.5mOhm and GH <=0.5A extraction, every fitted rail feed, actual rail <=1mOhm and hot distribution <=20mV remain unresolved; physical/process qualification NOT RUN #65."
       }
     },
     "worst_load_distribution_drop_mV": {

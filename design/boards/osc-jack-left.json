@@ -164,7 +164,8 @@
         "geometry": "Same outline, real source keepouts/reservations and all existing copper/hardware unchanged. Measure actual filled continuity. Prefer native surface-pour main-land and GH contact access through existing plated AGND sleeves/vias before using solder-land arrays.",
         "common_resistance_interpretation": "Combined branch+K common plane/spreading/shared neck including main-terminal transfer <=0.5 mOhm. Individual GH access paths are separately extracted and added to every alternative return in conductance-extrema bound; candidate own PCB/contact resistance remains zero."
       },
-      "actual_AGND_strategy": "Three source-defined25-via main-land arrays per half are required: surface ground pours left each main land attached only to its own isolated same-net zone. All lands, GH contacts and intended bypass returns must share the transitive native main AGND component; native AGND edge count must be zero. A pad+same-net-zone relation alone is insufficient."
+      "actual_AGND_strategy": "Three source-defined25-via main-land arrays per half are required: surface ground pours left each main land attached only to its own isolated same-net zone. All lands, GH contacts and intended bypass returns must share the transitive native main AGND component; native AGND edge count must be zero. A pad+same-net-zone relation alone is insufficient.",
+      "electrical_acceptance_status": "NOT ACCEPTED #38: complete native AGND/direct bypass topology is a draft checkpoint only. Authoritative common <=0.5mOhm and GH <=0.5A extraction, every fitted rail feed, actual rail <=1mOhm and hot distribution <=20mV remain unresolved; physical/process qualification NOT RUN #65."
     }
   }
 }
