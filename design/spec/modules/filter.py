@@ -40,7 +40,7 @@ class FilterBuilder(Builder):
         uid=(panel or 'J:{}.IN').format('F1')
         for p in cell_parts(id,uid,nets,ordinal_start=1,instance_tag=tag):
             attrs={**p.attributes,'PanelUid':'','Island':'FILTER_LEDS:${SHEETNAME}' if led else self.island};refs={}
-            if panel and (p.prefix=='RV' or (led and p.symbol.endswith('0603Whitelight_C2290'))):
+            if panel and (p.prefix=='RV' or (led and p.symbol.endswith('Kingbright_White_0402'))):
                 x,refs=self.panel_attributes(panel);attrs.update(x)
                 if not led:attrs['Island']=''
             self.parts.append(replace(p,attributes=attrs,panel_refs=refs))

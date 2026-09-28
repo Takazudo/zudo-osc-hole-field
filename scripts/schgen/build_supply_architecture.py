@@ -86,7 +86,7 @@ def build(config=None):
     transient = {r:math.ceil((continuous[r]+charge[r]+env['fault_increment_mA'][r])/100)*100 for r in RAILS}
     require(env['fault_increment_mA']['+12V'] >= 24/998*1000 and env['fault_increment_mA']['-12V'] >= 24/998*1000, 'conditional output fault allowance missing')
     maximum = req['maximum_delivered_current_mA']
-    require(all(maximum[r] >= transient[r] for r in RAILS), 'limiter cannot deliver required transient')
+    require(all(maximum[r] > transient[r] for r in RAILS), 'limiter has no window above required transient')
     return_A = sum(maximum.values())/1000
     rating = inlet['min_required_simultaneous_contact_rating_A']
     require(rating >= return_A and harness['ampacity_min_A_per_conductor'] >= return_A and inlet['max_each_return_conductor_current_A'] >= return_A, 'return contact/cable overload (no equal sharing assumption)')

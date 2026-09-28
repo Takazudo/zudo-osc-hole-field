@@ -1,0 +1,103 @@
+{
+  "schema_version": 1,
+  "facts": [
+    {
+      "fact_id": "fact-kingbright-white-identity",
+      "record_id": "rec-kingbright-white",
+      "source_id": "src-kingbright-white-datasheet",
+      "class": "PROJECT_STATE",
+      "value": "Kingbright APHHS1005QWF/D; 0402 top emitter; 0.5 mm package height",
+      "unit": "NONE",
+      "conditions": "Exact manufacturer part at 25 C unless stated otherwise",
+      "locator": "Page 1, Selection Guide table and Package Dimensions figure",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-kingbright-white-polarity",
+      "record_id": "rec-kingbright-white",
+      "source_id": "src-kingbright-white-datasheet",
+      "class": "PROJECT_STATE",
+      "value": "Pin 1 cathode; pin 2 anode",
+      "unit": "NONE",
+      "conditions": "Exact manufacturer part at 25 C unless stated otherwise",
+      "locator": "Page 1, Package Dimensions figure, polarity circuit symbol",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-kingbright-white-electrical",
+      "record_id": "rec-kingbright-white",
+      "source_id": "src-kingbright-white-datasheet",
+      "class": "ABSOLUTE_MAXIMUM",
+      "value": 30,
+      "unit": "mA",
+      "conditions": "Exact manufacturer part at 25 C unless stated otherwise",
+      "locator": "Page 2, Absolute Maximum Ratings table, DC Forward Current IF row",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-kingbright-white-land",
+      "record_id": "rec-kingbright-white",
+      "source_id": "src-kingbright-white-datasheet",
+      "class": "PROJECT_STATE",
+      "value": "Two 0.7 x 0.5 mm pads, separated by 0.2 mm; mask open area ratio 80%",
+      "unit": "NONE",
+      "conditions": "Exact manufacturer part at 25 C unless stated otherwise",
+      "locator": "Page 1, Recommended Soldering Pattern figure",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-kingbright-white-optical-fit",
+      "record_id": "rec-kingbright-white",
+      "source_id": "src-kingbright-white-datasheet",
+      "class": "PROJECT_STATE",
+      "value": "Window coupling, brightness at draft drive current, light bleed, and assembled height are unmeasured",
+      "unit": "NONE",
+      "conditions": "Fixed R21 optical windows; assembled stack unknown",
+      "locator": "Page 1, Selection Guide table, Iv at 20 mA row; project fit not measured",
+      "provenance": "PROJECT-CHOICE",
+      "verdict": "NEEDS BENCH",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-kingbright-white-current-limit",
+      "record_id": "rec-kingbright-white",
+      "source_id": "src-kingbright-white-datasheet",
+      "class": "PROJECT_STATE",
+      "value": "Maximum LED current under tolerance, startup and fault states remains unbounded by this datasheet",
+      "unit": "NONE",
+      "conditions": "Unvalidated draft driver, supply tolerance and resistor procurement",
+      "locator": "Page 2, Absolute Maximum Ratings table, DC Forward Current IF row; project drive requires separate analysis",
+      "provenance": "UNVERIFIED",
+      "verdict": "UNSOURCED",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-kingbright-white-manufacturer",
+      "record_id": "rec-kingbright-white",
+      "source_id": "src-kingbright-white-datasheet",
+      "class": "PROJECT_STATE",
+      "value": "Kingbright",
+      "unit": "NONE",
+      "conditions": "Exact named part in retained primary PDF",
+      "locator": "Page 1, title and Selection Guide table, exact part number row",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
+    }
+  ]
+}

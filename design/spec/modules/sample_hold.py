@@ -77,8 +77,8 @@ def family():
  add('input_fault_switch','J:H1.IN',{'JACK':'IN_TIP','PROTECTED':'IN_PROTECTED'},1)
  add('high_impedance_input','J:H1.IN',{'PROTECTED':'IN_PROTECTED','BUFFERED':'IN_BUFFERED'},1)
  add('switch_button_input','C:H1.SAMPLE',{'CONTACT':'CONTACT','ACTIVE':'BUTTON_ACTIVE'},1)
- add('magnitude_indicator','L:H1.TRIGGER.mag',{'MONITOR':'TRIGGER_BUFFERED'},1,island='L:${SHEETNAME}.TRIGGER.mag',panel_part=('0603Whitelight_C2290','L:{}.TRIGGER.mag'))
- add('magnitude_indicator','L:H1.IN.mag',{'MONITOR':'IN_BUFFERED'},1,island='L:${SHEETNAME}.IN.mag',panel_part=('0603Whitelight_C2290','L:{}.IN.mag'))
+ add('magnitude_indicator','L:H1.TRIGGER.mag',{'MONITOR':'TRIGGER_BUFFERED'},1,island='L:${SHEETNAME}.TRIGGER.mag',panel_part=('Kingbright_White_0402','L:{}.TRIGGER.mag'))
+ add('magnitude_indicator','L:H1.IN.mag',{'MONITOR':'IN_BUFFERED'},1,island='L:${SHEETNAME}.IN.mag',panel_part=('Kingbright_White_0402','L:{}.IN.mag'))
  manual('signal_diode','D_TRIGGER_OR','D',{'2':'TRIGGER_GATE','1':'TRIGGER_OR'},1)
  manual('signal_diode','D_BUTTON_OR','D',{'2':'BUTTON_ACTIVE','1':'TRIGGER_OR'},1)
  manual('r_general','R_OR_PD','R',{'1':'TRIGGER_OR','2':'AGND'},1,value='100 kΩ')
@@ -101,7 +101,7 @@ def family():
  add('slew_island','C:H1.SLEW',{'HELD_BUFFERED':'RAW_HELD','STORAGE':'SLEW_STORAGE','POT_IN':'SLEW_POT_IN','SLEW_OUT':'SLEW_BUFFERED'},2,island='C:${SHEETNAME}.SLEW',panel_part=('PTV09A-4020F-B504','C:{}.SLEW'))
  add('precision_output','J:H1.OUT',{'SIGNAL':'SLEW_BUFFERED','JACK':'OUT_TIP'},2,island='OUT_LOCAL')
  manual('jack','J_OUT','J',{'T':'OUT_TIP','S':'AGND','TN':None},2,panel='J:{}.OUT')
- add('magnitude_indicator','L:H1.OUT.mag',{'MONITOR':'SLEW_BUFFERED'},2,island='L:${SHEETNAME}.OUT.mag',panel_part=('0603Whitelight_C2290','L:{}.OUT.mag'))
+ add('magnitude_indicator','L:H1.OUT.mag',{'MONITOR':'SLEW_BUFFERED'},2,island='L:${SHEETNAME}.OUT.mag',panel_part=('Kingbright_White_0402','L:{}.OUT.mag'))
  # OSC-ES-1 calls for 100 nF at each IC supply pin. These are local to each
  # package; board-rail bulk remains a DNP reservation until partitioning.
  packages={p.key.rsplit('.',1)[0]:p.symbol.split(':')[-1] for p in parts if p.prefix=='U'}

@@ -422,7 +422,7 @@ flowchart LR
 | Ref | Selected role | Value | Terminal → cell net |
 | --- | --- | --- | --- |
 | `A` | `opamp role: indicator` | per selected part | `IN+`→`MONITOR`, `IN-`→`SENSE`, `OUT`→`DRIVE`, `V+`→`+12V`, `V-`→`-12V` |
-| `R_SENSE` | `r_general` | 4990 ohm | `1`→`SENSE`, `2`→`AGND` |
+| `R_SENSE` | `r_general` | 5600 ohm | `1`→`SENSE`, `2`→`AGND` |
 | `D1` | `signal_diode` | per selected part | `A`→`DRIVE`, `K`→`LED_A` |
 | `D2` | `signal_diode` | per selected part | `A`→`SENSE`, `K`→`LED_A` |
 | `D3` | `signal_diode` | per selected part | `A`→`LED_K`, `K`→`DRIVE` |
@@ -433,9 +433,9 @@ flowchart LR
 
 **Unquantified:** D1: signal_diode, D2: signal_diode, D3: signal_diode, D4: signal_diode, LED: led_white.
 
-**Ideal ngspice result:** @dledp[id] = 0.00100199, @dledn[id] = 0.00100199. This tests only the named ideal topology and generic device models; no vendor or hardware behavior is qualified.
+**Ideal ngspice result:** @dledp[id] = 0.000892846, @dledn[id] = 0.000892846. This tests only the named ideal topology and generic device models; no vendor or hardware behavior is qualified.
 
-- One amplifier per indicator, 92 sites. About 1.002 mA at ±5 V. LED is isolated from signal source by high-impedance amplifier input.
+- One amplifier per indicator, 92 sites. About 0.893 mA at ±5 V. LED is isolated from signal source by high-impedance amplifier input.
 - At larger magnitudes amplifier clips: brightness may saturate and is not a calibrated voltmeter. At audio rates the eye averages rectified current. No polarity or plug detection.
 - Only already buffered nodes may feed MONITOR. Hold/timing/integrator/storage nodes are forbidden.
 
@@ -497,7 +497,8 @@ flowchart LR
 | `R_BASE` | `r_general` | 10000 ohm | `1`→`BASE_DRIVE`, `2`→`BASE` |
 | `Q` | `npn` | per selected part | `B`→`BASE`, `E`→`EMITTER`, `C`→`LED_K` |
 | `R_SENSE` | `r_general` | 1000 ohm | `1`→`EMITTER`, `2`→`AGND` |
-| `LED` | `led_white` | per selected part | `A`→`+5V`, `K`→`LED_K` |
+| `R_LED_LIMIT` | `r_general` | 1200 ohm | `1`→`+5V`, `2`→`LED_A` |
+| `LED` | `led_white` | per selected part | `A`→`LED_A`, `K`→`LED_K` |
 | `QMUTE` | `mosfet` | per selected part | `G`→`NOT_OWN_STAGE`, `D`→`COMMAND`, `S`→`AGND` |
 | `R_GATE` | `r_general` | 100000 ohm | `1`→`NOT_OWN_STAGE`, `2`→`+5V` |
 | `D_BE` | `signal_diode` | per selected part | `A`→`EMITTER`, `K`→`BASE` |
@@ -510,6 +511,7 @@ flowchart LR
 
 - 12 sites, one amplifier each (planning table counted only six amplifiers; budget corrects it). ENV 8 V -greater than  COMMAND 0.5 V -greater than  0.5 mA.
 - Off in idle and sustain. Stage command logic defaults to mute at startup. Monitors buffered ENV, never integrator.
+- A 1.2 kohm nominal series resistor limits stage white-LED current. At 1% resistor tolerance and assumed +5 V upper bound 5.5 V, zero-V LED/transistor lower bound gives 4.630 mA and 25.46 mW in the resistor, below the exact LED 30 mA DC absolute maximum at 25 C and about 5 mA read conservatively from the manufacturer current derating curve at 85 C. Exact resistor thermal derating, regulated rail upper bound, and installed LED ambient remain qualification gates. At 0.5 mA, resistor drop is 0.6 V; high-VF headroom and low-current light output are unproven.
 
 ## Switch Button Input (`switch_button_input`)
 

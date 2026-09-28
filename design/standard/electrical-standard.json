@@ -1236,7 +1236,7 @@
         {
           "ref": "R_SENSE",
           "part_id": "r_general",
-          "value": 4990,
+          "value": 5600,
           "unit": "ohm",
           "terminals": {
             "1": "SENSE",
@@ -1286,13 +1286,14 @@
       ],
       "connections": [
         "LED lies on DC diagonal of a four-diode bridge; DRIVE and SENSE are AC corners.",
-        "Feedback forces SENSE approximately equal MONITOR; LED current = abs(MONITOR)/4990."
+        "Feedback forces SENSE approximately equal MONITOR; LED current = abs(MONITOR)/5600."
       ],
       "notes": [
-        "One amplifier per indicator, 92 sites. About 1.002 mA at \u00b15 V. LED is isolated from signal source by high-impedance amplifier input.",
+        "One amplifier per indicator, 92 sites. About 0.893 mA at \u00b15 V. LED is isolated from signal source by high-impedance amplifier input.",
         "At larger magnitudes amplifier clips: brightness may saturate and is not a calibrated voltmeter. At audio rates the eye averages rectified current. No polarity or plug detection.",
         "Only already buffered nodes may feed MONITOR. Hold/timing/integrator/storage nodes are forbidden.",
-        "Driver stays with LED on its board; only buffered MONITOR plus adjacent analog return cross a connector."
+        "Driver stays with LED on its board; only buffered MONITOR plus adjacent analog return cross a connector.",
+        "At assumed \u00b113.2 V rail extremes and 1% minimum 5.6 kohm sense resistor, the ideal zero-diode-drop branch bound is 4.762 mA, below the approximate 5 mA white-LED current derating at 85 C. Exact resistor tolerance/sourcing, loop faults and hot LED ambient remain unqualified."
       ],
       "uses": [],
       "verification": [
@@ -1458,10 +1459,20 @@
           }
         },
         {
+          "ref": "R_LED_LIMIT",
+          "part_id": "r_general",
+          "value": 1200,
+          "unit": "ohm",
+          "terminals": {
+            "1": "+5V",
+            "2": "LED_A"
+          }
+        },
+        {
           "ref": "LED",
           "part_id": "led_white",
           "terminals": {
-            "A": "+5V",
+            "A": "LED_A",
             "K": "LED_K"
           }
         },
@@ -1498,7 +1509,8 @@
       ],
       "notes": [
         "12 sites, one amplifier each (planning table counted only six amplifiers; budget corrects it). ENV 8 V -> COMMAND 0.5 V -> 0.5 mA.",
-        "Off in idle and sustain. Stage command logic defaults to mute at startup. Monitors buffered ENV, never integrator."
+        "Off in idle and sustain. Stage command logic defaults to mute at startup. Monitors buffered ENV, never integrator.",
+        "A 1.2 kohm nominal series resistor limits stage white-LED current. At 1% resistor tolerance and assumed +5 V upper bound 5.5 V, zero-V LED/transistor lower bound gives 4.630 mA and 25.46 mW in the resistor, below the exact LED 30 mA DC absolute maximum at 25 C and about 5 mA read conservatively from the manufacturer current derating curve at 85 C. Exact resistor thermal derating, regulated rail upper bound, and installed LED ambient remain qualification gates. At 0.5 mA, resistor drop is 0.6 V; high-VF headroom and low-current light output are unproven."
       ],
       "uses": [],
       "verification": [
@@ -1844,7 +1856,7 @@
     {
       "item": "Magnitude full scale",
       "disposition": "adopted",
-      "decision": "5 V / 4.99 kohm = 1.002 mA; buffer/bridge current drive"
+      "decision": "5 V / 5.6 kohm = 0.893 mA nominal; buffer/bridge current drive, with conservative hot-current screen pending physical validation"
     },
     {
       "item": "Clip threshold",
