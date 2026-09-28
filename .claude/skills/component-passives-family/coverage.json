@@ -1,0 +1,790 @@
+{
+  "schema_version": 1,
+  "coverage": [
+    {
+      "coverage_id": "cov-r-general-exact-orderable-identity",
+      "record_id": "rec-r-general",
+      "domain": "exact orderable identity",
+      "status": "COVERED",
+      "reason": "Manufacturer primary bytes identify the exact shortlist MPN/package; supplier stock remains separately open.",
+      "fact_ids": [
+        "fact-r-general-orderable-identity"
+      ],
+      "blocking_fact_ids": []
+    },
+    {
+      "coverage_id": "cov-r-general-pinout",
+      "record_id": "rec-r-general",
+      "domain": "pinout",
+      "status": "COVERED",
+      "reason": "The retained manufacturer document provides the listed pin-function table; no project nets are assigned.",
+      "fact_ids": [
+        "fact-r-general-pinout"
+      ],
+      "blocking_fact_ids": []
+    },
+    {
+      "coverage_id": "cov-r-general-electrical-limits",
+      "record_id": "rec-r-general",
+      "domain": "electrical limits",
+      "status": "COVERED",
+      "reason": "Retained source supports the specific listed product-family limits; conditions remain attached to each fact.",
+      "fact_ids": [
+        "fact-r-general-resistance"
+      ],
+      "blocking_fact_ids": []
+    },
+    {
+      "coverage_id": "cov-r-general-manufacturer-product-description",
+      "record_id": "rec-r-general",
+      "domain": "manufacturer product description",
+      "status": "COVERED",
+      "reason": "The retained manufacturer document identifies the named product and its documented role/description; this is not application qualification.",
+      "fact_ids": [
+        "fact-r-general-product-function"
+      ],
+      "blocking_fact_ids": []
+    },
+    {
+      "coverage_id": "cov-r-general-mechanical-fit",
+      "record_id": "rec-r-general",
+      "domain": "mechanical fit",
+      "status": "OPEN",
+      "reason": "The local family envelope and generic footprint are provisional; physical board fit and land-pattern suitability are not validated.",
+      "fact_ids": [
+        "fact-r-general-mechanical-fit"
+      ],
+      "blocking_fact_ids": [
+        "fact-r-general-mechanical-fit"
+      ]
+    },
+    {
+      "coverage_id": "cov-r-general-procurement",
+      "record_id": "rec-r-general",
+      "domain": "procurement",
+      "status": "OPEN",
+      "reason": "Supplier stock, lead time, consignment and assembly allocation remain unverified as of the dated shortlist.",
+      "fact_ids": [
+        "fact-r-general-procurement-status"
+      ],
+      "blocking_fact_ids": [
+        "fact-r-general-procurement-status"
+      ]
+    },
+    {
+      "coverage_id": "cov-c-bulk-exact-orderable-identity",
+      "record_id": "rec-c-bulk",
+      "domain": "exact orderable identity",
+      "status": "OPEN",
+      "reason": "The current exact MPN is a project-selected proposal but its full manufacturer orderable identity/package suffix is not confirmed by retained exact-part bytes.",
+      "fact_ids": [
+        "fact-c-bulk-orderable-identity"
+      ],
+      "blocking_fact_ids": [
+        "fact-c-bulk-orderable-identity"
+      ]
+    },
+    {
+      "coverage_id": "cov-c-bulk-pinout",
+      "record_id": "rec-c-bulk",
+      "domain": "pinout",
+      "status": "OPEN",
+      "reason": "The exact functional pinout is UNSOURCED from retained primary exact-part evidence.",
+      "fact_ids": [
+        "fact-c-bulk-pinout"
+      ],
+      "blocking_fact_ids": [
+        "fact-c-bulk-pinout"
+      ]
+    },
+    {
+      "coverage_id": "cov-c-bulk-electrical-limits",
+      "record_id": "rec-c-bulk",
+      "domain": "electrical limits",
+      "status": "OPEN",
+      "reason": "No exact-part electrical limits were promoted; source/identity gap remains open.",
+      "fact_ids": [
+        "fact-c-bulk-electrical-limits"
+      ],
+      "blocking_fact_ids": [
+        "fact-c-bulk-electrical-limits"
+      ]
+    },
+    {
+      "coverage_id": "cov-c-bulk-mechanical-fit",
+      "record_id": "rec-c-bulk",
+      "domain": "mechanical fit",
+      "status": "OPEN",
+      "reason": "The local family envelope and generic footprint are provisional; physical board fit and land-pattern suitability are not validated.",
+      "fact_ids": [
+        "fact-c-bulk-mechanical-fit"
+      ],
+      "blocking_fact_ids": [
+        "fact-c-bulk-mechanical-fit"
+      ]
+    },
+    {
+      "coverage_id": "cov-c-bulk-procurement",
+      "record_id": "rec-c-bulk",
+      "domain": "procurement",
+      "status": "OPEN",
+      "reason": "Supplier stock, lead time, consignment and assembly allocation remain unverified as of the dated shortlist.",
+      "fact_ids": [
+        "fact-c-bulk-procurement-status"
+      ],
+      "blocking_fact_ids": [
+        "fact-c-bulk-procurement-status"
+      ]
+    },
+    {
+      "coverage_id": "cov-c-bulk-manufacturer-lifecycle",
+      "record_id": "rec-c-bulk",
+      "domain": "manufacturer lifecycle",
+      "status": "OPEN",
+      "reason": "The distributor report is recorded, but manufacturer lifecycle confirmation remains UNSOURCED.",
+      "fact_ids": [
+        "fact-c-bulk-manufacturer-lifecycle"
+      ],
+      "blocking_fact_ids": [
+        "fact-c-bulk-manufacturer-lifecycle"
+      ]
+    },
+    {
+      "coverage_id": "cov-c-bypass-exact-orderable-identity",
+      "record_id": "rec-c-bypass",
+      "domain": "exact orderable identity",
+      "status": "OPEN",
+      "reason": "The current exact MPN is a project-selected proposal but its full manufacturer orderable identity/package suffix is not confirmed by retained exact-part bytes.",
+      "fact_ids": [
+        "fact-c-bypass-orderable-identity"
+      ],
+      "blocking_fact_ids": [
+        "fact-c-bypass-orderable-identity"
+      ]
+    },
+    {
+      "coverage_id": "cov-c-bypass-pinout",
+      "record_id": "rec-c-bypass",
+      "domain": "pinout",
+      "status": "OPEN",
+      "reason": "The exact functional pinout is UNSOURCED from retained primary exact-part evidence.",
+      "fact_ids": [
+        "fact-c-bypass-pinout"
+      ],
+      "blocking_fact_ids": [
+        "fact-c-bypass-pinout"
+      ]
+    },
+    {
+      "coverage_id": "cov-c-bypass-electrical-limits",
+      "record_id": "rec-c-bypass",
+      "domain": "electrical limits",
+      "status": "OPEN",
+      "reason": "No exact-part electrical limits were promoted; source/identity gap remains open.",
+      "fact_ids": [
+        "fact-c-bypass-electrical-limits"
+      ],
+      "blocking_fact_ids": [
+        "fact-c-bypass-electrical-limits"
+      ]
+    },
+    {
+      "coverage_id": "cov-c-bypass-mechanical-fit",
+      "record_id": "rec-c-bypass",
+      "domain": "mechanical fit",
+      "status": "OPEN",
+      "reason": "The local family envelope and generic footprint are provisional; physical board fit and land-pattern suitability are not validated.",
+      "fact_ids": [
+        "fact-c-bypass-mechanical-fit"
+      ],
+      "blocking_fact_ids": [
+        "fact-c-bypass-mechanical-fit"
+      ]
+    },
+    {
+      "coverage_id": "cov-c-bypass-procurement",
+      "record_id": "rec-c-bypass",
+      "domain": "procurement",
+      "status": "OPEN",
+      "reason": "Supplier stock, lead time, consignment and assembly allocation remain unverified as of the dated shortlist.",
+      "fact_ids": [
+        "fact-c-bypass-procurement-status"
+      ],
+      "blocking_fact_ids": [
+        "fact-c-bypass-procurement-status"
+      ]
+    },
+    {
+      "coverage_id": "cov-c-hold-exact-orderable-identity",
+      "record_id": "rec-c-hold",
+      "domain": "exact orderable identity",
+      "status": "COVERED",
+      "reason": "Manufacturer primary bytes identify the exact shortlist MPN/package; supplier stock remains separately open.",
+      "fact_ids": [
+        "fact-c-hold-orderable-identity"
+      ],
+      "blocking_fact_ids": []
+    },
+    {
+      "coverage_id": "cov-c-hold-pinout",
+      "record_id": "rec-c-hold",
+      "domain": "pinout",
+      "status": "COVERED",
+      "reason": "The retained manufacturer document provides the listed pin-function table; no project nets are assigned.",
+      "fact_ids": [
+        "fact-c-hold-pinout"
+      ],
+      "blocking_fact_ids": []
+    },
+    {
+      "coverage_id": "cov-c-hold-electrical-limits",
+      "record_id": "rec-c-hold",
+      "domain": "electrical limits",
+      "status": "COVERED",
+      "reason": "Retained source supports the specific listed product-family limits; conditions remain attached to each fact.",
+      "fact_ids": [
+        "fact-c-hold-capacitance"
+      ],
+      "blocking_fact_ids": []
+    },
+    {
+      "coverage_id": "cov-c-hold-manufacturer-product-description",
+      "record_id": "rec-c-hold",
+      "domain": "manufacturer product description",
+      "status": "COVERED",
+      "reason": "The retained manufacturer document identifies the named product and its documented role/description; this is not application qualification.",
+      "fact_ids": [
+        "fact-c-hold-product-function"
+      ],
+      "blocking_fact_ids": []
+    },
+    {
+      "coverage_id": "cov-c-hold-mechanical-fit",
+      "record_id": "rec-c-hold",
+      "domain": "mechanical fit",
+      "status": "OPEN",
+      "reason": "The local family envelope and generic footprint are provisional; physical board fit and land-pattern suitability are not validated.",
+      "fact_ids": [
+        "fact-c-hold-mechanical-fit"
+      ],
+      "blocking_fact_ids": [
+        "fact-c-hold-mechanical-fit"
+      ]
+    },
+    {
+      "coverage_id": "cov-c-hold-procurement",
+      "record_id": "rec-c-hold",
+      "domain": "procurement",
+      "status": "OPEN",
+      "reason": "Supplier stock, lead time, consignment and assembly allocation remain unverified as of the dated shortlist.",
+      "fact_ids": [
+        "fact-c-hold-procurement-status"
+      ],
+      "blocking_fact_ids": [
+        "fact-c-hold-procurement-status"
+      ]
+    },
+    {
+      "coverage_id": "cov-c-slew-exact-orderable-identity",
+      "record_id": "rec-c-slew",
+      "domain": "exact orderable identity",
+      "status": "OPEN",
+      "reason": "The current exact MPN is a project-selected proposal but its full manufacturer orderable identity/package suffix is not confirmed by retained exact-part bytes.",
+      "fact_ids": [
+        "fact-c-slew-orderable-identity"
+      ],
+      "blocking_fact_ids": [
+        "fact-c-slew-orderable-identity"
+      ]
+    },
+    {
+      "coverage_id": "cov-c-slew-pinout",
+      "record_id": "rec-c-slew",
+      "domain": "pinout",
+      "status": "OPEN",
+      "reason": "The exact functional pinout is UNSOURCED from retained primary exact-part evidence.",
+      "fact_ids": [
+        "fact-c-slew-pinout"
+      ],
+      "blocking_fact_ids": [
+        "fact-c-slew-pinout"
+      ]
+    },
+    {
+      "coverage_id": "cov-c-slew-electrical-limits",
+      "record_id": "rec-c-slew",
+      "domain": "electrical limits",
+      "status": "OPEN",
+      "reason": "No exact-part electrical limits were promoted; source/identity gap remains open.",
+      "fact_ids": [
+        "fact-c-slew-electrical-limits"
+      ],
+      "blocking_fact_ids": [
+        "fact-c-slew-electrical-limits"
+      ]
+    },
+    {
+      "coverage_id": "cov-c-slew-mechanical-fit",
+      "record_id": "rec-c-slew",
+      "domain": "mechanical fit",
+      "status": "OPEN",
+      "reason": "The local family envelope and generic footprint are provisional; physical board fit and land-pattern suitability are not validated.",
+      "fact_ids": [
+        "fact-c-slew-mechanical-fit"
+      ],
+      "blocking_fact_ids": [
+        "fact-c-slew-mechanical-fit"
+      ]
+    },
+    {
+      "coverage_id": "cov-c-slew-procurement",
+      "record_id": "rec-c-slew",
+      "domain": "procurement",
+      "status": "OPEN",
+      "reason": "Supplier stock, lead time, consignment and assembly allocation remain unverified as of the dated shortlist.",
+      "fact_ids": [
+        "fact-c-slew-procurement-status"
+      ],
+      "blocking_fact_ids": [
+        "fact-c-slew-procurement-status"
+      ]
+    },
+    {
+      "coverage_id": "cov-c-slew-exact-mpn-and-value",
+      "record_id": "rec-c-slew",
+      "domain": "exact MPN and value",
+      "status": "OPEN",
+      "reason": "The family sheet does not identify the complete exact MPN/value; this remains UNSOURCED.",
+      "fact_ids": [
+        "fact-c-slew-exact-value-identity"
+      ],
+      "blocking_fact_ids": [
+        "fact-c-slew-exact-value-identity"
+      ]
+    },
+    {
+      "coverage_id": "cov-c-small-exact-orderable-identity",
+      "record_id": "rec-c-small",
+      "domain": "exact orderable identity",
+      "status": "COVERED",
+      "reason": "Manufacturer primary bytes identify the exact shortlist MPN/package; supplier stock remains separately open.",
+      "fact_ids": [
+        "fact-c-small-orderable-identity"
+      ],
+      "blocking_fact_ids": []
+    },
+    {
+      "coverage_id": "cov-c-small-pinout",
+      "record_id": "rec-c-small",
+      "domain": "pinout",
+      "status": "COVERED",
+      "reason": "The retained manufacturer document provides the listed pin-function table; no project nets are assigned.",
+      "fact_ids": [
+        "fact-c-small-pinout"
+      ],
+      "blocking_fact_ids": []
+    },
+    {
+      "coverage_id": "cov-c-small-electrical-limits",
+      "record_id": "rec-c-small",
+      "domain": "electrical limits",
+      "status": "COVERED",
+      "reason": "Retained source supports the specific listed product-family limits; conditions remain attached to each fact.",
+      "fact_ids": [
+        "fact-c-small-capacitance"
+      ],
+      "blocking_fact_ids": []
+    },
+    {
+      "coverage_id": "cov-c-small-manufacturer-product-description",
+      "record_id": "rec-c-small",
+      "domain": "manufacturer product description",
+      "status": "COVERED",
+      "reason": "The retained manufacturer document identifies the named product and its documented role/description; this is not application qualification.",
+      "fact_ids": [
+        "fact-c-small-product-function"
+      ],
+      "blocking_fact_ids": []
+    },
+    {
+      "coverage_id": "cov-c-small-mechanical-fit",
+      "record_id": "rec-c-small",
+      "domain": "mechanical fit",
+      "status": "OPEN",
+      "reason": "The local family envelope and generic footprint are provisional; physical board fit and land-pattern suitability are not validated.",
+      "fact_ids": [
+        "fact-c-small-mechanical-fit"
+      ],
+      "blocking_fact_ids": [
+        "fact-c-small-mechanical-fit"
+      ]
+    },
+    {
+      "coverage_id": "cov-c-small-procurement",
+      "record_id": "rec-c-small",
+      "domain": "procurement",
+      "status": "OPEN",
+      "reason": "Supplier stock, lead time, consignment and assembly allocation remain unverified as of the dated shortlist.",
+      "fact_ids": [
+        "fact-c-small-procurement-status"
+      ],
+      "blocking_fact_ids": [
+        "fact-c-small-procurement-status"
+      ]
+    },
+    {
+      "coverage_id": "cov-r-ladder-exact-orderable-identity",
+      "record_id": "rec-r-ladder",
+      "domain": "exact orderable identity",
+      "status": "OPEN",
+      "reason": "The current exact MPN is a project-selected proposal but its full manufacturer orderable identity/package suffix is not confirmed by retained exact-part bytes.",
+      "fact_ids": [
+        "fact-r-ladder-orderable-identity"
+      ],
+      "blocking_fact_ids": [
+        "fact-r-ladder-orderable-identity"
+      ]
+    },
+    {
+      "coverage_id": "cov-r-ladder-pinout",
+      "record_id": "rec-r-ladder",
+      "domain": "pinout",
+      "status": "COVERED",
+      "reason": "The retained manufacturer document provides the listed pin-function table; no project nets are assigned.",
+      "fact_ids": [
+        "fact-r-ladder-pinout"
+      ],
+      "blocking_fact_ids": []
+    },
+    {
+      "coverage_id": "cov-r-ladder-electrical-limits",
+      "record_id": "rec-r-ladder",
+      "domain": "electrical limits",
+      "status": "OPEN",
+      "reason": "No exact-part electrical limits were promoted; source/identity gap remains open.",
+      "fact_ids": [
+        "fact-r-ladder-electrical-limits"
+      ],
+      "blocking_fact_ids": [
+        "fact-r-ladder-electrical-limits"
+      ]
+    },
+    {
+      "coverage_id": "cov-r-ladder-manufacturer-product-description",
+      "record_id": "rec-r-ladder",
+      "domain": "manufacturer product description",
+      "status": "COVERED",
+      "reason": "The retained manufacturer document identifies the named product and its documented role/description; this is not application qualification.",
+      "fact_ids": [
+        "fact-r-ladder-product-function"
+      ],
+      "blocking_fact_ids": []
+    },
+    {
+      "coverage_id": "cov-r-ladder-mechanical-fit",
+      "record_id": "rec-r-ladder",
+      "domain": "mechanical fit",
+      "status": "OPEN",
+      "reason": "The local family envelope and generic footprint are provisional; physical board fit and land-pattern suitability are not validated.",
+      "fact_ids": [
+        "fact-r-ladder-mechanical-fit"
+      ],
+      "blocking_fact_ids": [
+        "fact-r-ladder-mechanical-fit"
+      ]
+    },
+    {
+      "coverage_id": "cov-r-ladder-procurement",
+      "record_id": "rec-r-ladder",
+      "domain": "procurement",
+      "status": "OPEN",
+      "reason": "Supplier stock, lead time, consignment and assembly allocation remain unverified as of the dated shortlist.",
+      "fact_ids": [
+        "fact-r-ladder-procurement-status"
+      ],
+      "blocking_fact_ids": [
+        "fact-r-ladder-procurement-status"
+      ]
+    },
+    {
+      "coverage_id": "cov-r-power-exact-orderable-identity",
+      "record_id": "rec-r-power",
+      "domain": "exact orderable identity",
+      "status": "COVERED",
+      "reason": "Manufacturer primary bytes identify the exact shortlist MPN/package; supplier stock remains separately open.",
+      "fact_ids": [
+        "fact-r-power-orderable-identity"
+      ],
+      "blocking_fact_ids": []
+    },
+    {
+      "coverage_id": "cov-r-power-pinout",
+      "record_id": "rec-r-power",
+      "domain": "pinout",
+      "status": "COVERED",
+      "reason": "The retained manufacturer document provides the listed pin-function table; no project nets are assigned.",
+      "fact_ids": [
+        "fact-r-power-pinout"
+      ],
+      "blocking_fact_ids": []
+    },
+    {
+      "coverage_id": "cov-r-power-electrical-limits",
+      "record_id": "rec-r-power",
+      "domain": "electrical limits",
+      "status": "COVERED",
+      "reason": "Retained source supports the specific listed product-family limits; conditions remain attached to each fact.",
+      "fact_ids": [
+        "fact-r-power-resistance"
+      ],
+      "blocking_fact_ids": []
+    },
+    {
+      "coverage_id": "cov-r-power-manufacturer-product-description",
+      "record_id": "rec-r-power",
+      "domain": "manufacturer product description",
+      "status": "COVERED",
+      "reason": "The retained manufacturer document identifies the named product and its documented role/description; this is not application qualification.",
+      "fact_ids": [
+        "fact-r-power-product-function"
+      ],
+      "blocking_fact_ids": []
+    },
+    {
+      "coverage_id": "cov-r-power-mechanical-fit",
+      "record_id": "rec-r-power",
+      "domain": "mechanical fit",
+      "status": "OPEN",
+      "reason": "The local family envelope and generic footprint are provisional; physical board fit and land-pattern suitability are not validated.",
+      "fact_ids": [
+        "fact-r-power-mechanical-fit"
+      ],
+      "blocking_fact_ids": [
+        "fact-r-power-mechanical-fit"
+      ]
+    },
+    {
+      "coverage_id": "cov-r-power-procurement",
+      "record_id": "rec-r-power",
+      "domain": "procurement",
+      "status": "OPEN",
+      "reason": "Supplier stock, lead time, consignment and assembly allocation remain unverified as of the dated shortlist.",
+      "fact_ids": [
+        "fact-r-power-procurement-status"
+      ],
+      "blocking_fact_ids": [
+        "fact-r-power-procurement-status"
+      ]
+    },
+    {
+      "coverage_id": "cov-r-precision-exact-orderable-identity",
+      "record_id": "rec-r-precision",
+      "domain": "exact orderable identity",
+      "status": "COVERED",
+      "reason": "Manufacturer primary bytes identify the exact shortlist MPN/package; supplier stock remains separately open.",
+      "fact_ids": [
+        "fact-r-precision-orderable-identity"
+      ],
+      "blocking_fact_ids": []
+    },
+    {
+      "coverage_id": "cov-r-precision-pinout",
+      "record_id": "rec-r-precision",
+      "domain": "pinout",
+      "status": "COVERED",
+      "reason": "The retained manufacturer document provides the listed pin-function table; no project nets are assigned.",
+      "fact_ids": [
+        "fact-r-precision-pinout"
+      ],
+      "blocking_fact_ids": []
+    },
+    {
+      "coverage_id": "cov-r-precision-electrical-limits",
+      "record_id": "rec-r-precision",
+      "domain": "electrical limits",
+      "status": "COVERED",
+      "reason": "Retained source supports the specific listed product-family limits; conditions remain attached to each fact.",
+      "fact_ids": [
+        "fact-r-precision-resistance"
+      ],
+      "blocking_fact_ids": []
+    },
+    {
+      "coverage_id": "cov-r-precision-manufacturer-product-description",
+      "record_id": "rec-r-precision",
+      "domain": "manufacturer product description",
+      "status": "COVERED",
+      "reason": "The retained manufacturer document identifies the named product and its documented role/description; this is not application qualification.",
+      "fact_ids": [
+        "fact-r-precision-product-function"
+      ],
+      "blocking_fact_ids": []
+    },
+    {
+      "coverage_id": "cov-r-precision-mechanical-fit",
+      "record_id": "rec-r-precision",
+      "domain": "mechanical fit",
+      "status": "OPEN",
+      "reason": "The local family envelope and generic footprint are provisional; physical board fit and land-pattern suitability are not validated.",
+      "fact_ids": [
+        "fact-r-precision-mechanical-fit"
+      ],
+      "blocking_fact_ids": [
+        "fact-r-precision-mechanical-fit"
+      ]
+    },
+    {
+      "coverage_id": "cov-r-precision-procurement",
+      "record_id": "rec-r-precision",
+      "domain": "procurement",
+      "status": "OPEN",
+      "reason": "Supplier stock, lead time, consignment and assembly allocation remain unverified as of the dated shortlist.",
+      "fact_ids": [
+        "fact-r-precision-procurement-status"
+      ],
+      "blocking_fact_ids": [
+        "fact-r-precision-procurement-status"
+      ]
+    },
+    {
+      "coverage_id": "cov-trim-102-exact-orderable-identity",
+      "record_id": "rec-trim-102",
+      "domain": "exact orderable identity",
+      "status": "COVERED",
+      "reason": "Manufacturer primary bytes identify the exact shortlist MPN/package; supplier stock remains separately open.",
+      "fact_ids": [
+        "fact-trim-102-orderable-identity"
+      ],
+      "blocking_fact_ids": []
+    },
+    {
+      "coverage_id": "cov-trim-102-pinout",
+      "record_id": "rec-trim-102",
+      "domain": "pinout",
+      "status": "COVERED",
+      "reason": "The retained manufacturer document provides the listed pin-function table; no project nets are assigned.",
+      "fact_ids": [
+        "fact-trim-102-pinout"
+      ],
+      "blocking_fact_ids": []
+    },
+    {
+      "coverage_id": "cov-trim-102-electrical-limits",
+      "record_id": "rec-trim-102",
+      "domain": "electrical limits",
+      "status": "COVERED",
+      "reason": "Retained source supports the specific listed product-family limits; conditions remain attached to each fact.",
+      "fact_ids": [
+        "fact-trim-102-nominal-resistance"
+      ],
+      "blocking_fact_ids": []
+    },
+    {
+      "coverage_id": "cov-trim-102-manufacturer-product-description",
+      "record_id": "rec-trim-102",
+      "domain": "manufacturer product description",
+      "status": "COVERED",
+      "reason": "The retained manufacturer document identifies the named product and its documented role/description; this is not application qualification.",
+      "fact_ids": [
+        "fact-trim-102-product-function"
+      ],
+      "blocking_fact_ids": []
+    },
+    {
+      "coverage_id": "cov-trim-102-mechanical-fit",
+      "record_id": "rec-trim-102",
+      "domain": "mechanical fit",
+      "status": "OPEN",
+      "reason": "The local family envelope and generic footprint are provisional; physical board fit and land-pattern suitability are not validated.",
+      "fact_ids": [
+        "fact-trim-102-mechanical-fit"
+      ],
+      "blocking_fact_ids": [
+        "fact-trim-102-mechanical-fit"
+      ]
+    },
+    {
+      "coverage_id": "cov-trim-102-procurement",
+      "record_id": "rec-trim-102",
+      "domain": "procurement",
+      "status": "OPEN",
+      "reason": "Supplier stock, lead time, consignment and assembly allocation remain unverified as of the dated shortlist.",
+      "fact_ids": [
+        "fact-trim-102-procurement-status"
+      ],
+      "blocking_fact_ids": [
+        "fact-trim-102-procurement-status"
+      ]
+    },
+    {
+      "coverage_id": "cov-trim-103-exact-orderable-identity",
+      "record_id": "rec-trim-103",
+      "domain": "exact orderable identity",
+      "status": "COVERED",
+      "reason": "Manufacturer primary bytes identify the exact shortlist MPN/package; supplier stock remains separately open.",
+      "fact_ids": [
+        "fact-trim-103-orderable-identity"
+      ],
+      "blocking_fact_ids": []
+    },
+    {
+      "coverage_id": "cov-trim-103-pinout",
+      "record_id": "rec-trim-103",
+      "domain": "pinout",
+      "status": "COVERED",
+      "reason": "The retained manufacturer document provides the listed pin-function table; no project nets are assigned.",
+      "fact_ids": [
+        "fact-trim-103-pinout"
+      ],
+      "blocking_fact_ids": []
+    },
+    {
+      "coverage_id": "cov-trim-103-electrical-limits",
+      "record_id": "rec-trim-103",
+      "domain": "electrical limits",
+      "status": "COVERED",
+      "reason": "Retained source supports the specific listed product-family limits; conditions remain attached to each fact.",
+      "fact_ids": [
+        "fact-trim-103-nominal-resistance"
+      ],
+      "blocking_fact_ids": []
+    },
+    {
+      "coverage_id": "cov-trim-103-manufacturer-product-description",
+      "record_id": "rec-trim-103",
+      "domain": "manufacturer product description",
+      "status": "COVERED",
+      "reason": "The retained manufacturer document identifies the named product and its documented role/description; this is not application qualification.",
+      "fact_ids": [
+        "fact-trim-103-product-function"
+      ],
+      "blocking_fact_ids": []
+    },
+    {
+      "coverage_id": "cov-trim-103-mechanical-fit",
+      "record_id": "rec-trim-103",
+      "domain": "mechanical fit",
+      "status": "OPEN",
+      "reason": "The local family envelope and generic footprint are provisional; physical board fit and land-pattern suitability are not validated.",
+      "fact_ids": [
+        "fact-trim-103-mechanical-fit"
+      ],
+      "blocking_fact_ids": [
+        "fact-trim-103-mechanical-fit"
+      ]
+    },
+    {
+      "coverage_id": "cov-trim-103-procurement",
+      "record_id": "rec-trim-103",
+      "domain": "procurement",
+      "status": "OPEN",
+      "reason": "Supplier stock, lead time, consignment and assembly allocation remain unverified as of the dated shortlist.",
+      "fact_ids": [
+        "fact-trim-103-procurement-status"
+      ],
+      "blocking_fact_ids": [
+        "fact-trim-103-procurement-status"
+      ]
+    }
+  ]
+}

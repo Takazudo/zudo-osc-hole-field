@@ -1,0 +1,150 @@
+{
+  "schema_version": 1,
+  "facts": [
+    {
+      "fact_id": "fact-comparator-manufacturer",
+      "record_id": "rec-comparator",
+      "source_id": "src-comparator-datasheet",
+      "class": "PROJECT_STATE",
+      "value": "Texas Instruments",
+      "unit": "NONE",
+      "conditions": "Manufacturer of the project-selected exact shortlist identity.",
+      "locator": "src-comparator-datasheet: title block or OSC-ES-1 row parts[id=comparator].manufacturer",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-comparator-project-selection",
+      "record_id": "rec-comparator",
+      "source_id": "src-comparator-shortlist",
+      "class": "PROJECT_STATE",
+      "value": {
+        "manufacturer": "Texas Instruments",
+        "mpn": "LM393BIDR",
+        "package": "SOIC-8",
+        "lcsc": "not listed in the shortlist",
+        "roles": "gate, clip, envelope comparator",
+        "source_status": "UNVERIFIED"
+      },
+      "unit": "NONE",
+      "conditions": "OSC-ES-1 dated proposal row; exact source status and availability statements are not supplier allocation.",
+      "locator": "src-comparator-shortlist: JSON row parts[id=comparator]",
+      "provenance": "PROJECT-CHOICE",
+      "verdict": "NOT APPLICABLE",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-comparator-orderable-identity",
+      "record_id": "rec-comparator",
+      "source_id": "src-comparator-datasheet",
+      "class": "PROJECT_STATE",
+      "value": {
+        "manufacturer": "Texas Instruments",
+        "mpn": "LM393BIDR",
+        "package": "SOIC-8"
+      },
+      "unit": "NONE",
+      "conditions": "Exact complete orderable identifier in the selected package; does not establish supplier stock.",
+      "locator": "Section/table audit: src-comparator-datasheet: package/orderable addendum names exact MPN",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-comparator-pinout",
+      "record_id": "rec-comparator",
+      "source_id": "src-comparator-datasheet",
+      "class": "PROJECT_STATE",
+      "value": "pin 1 1OUT open collector -> pad 1; pin 2 1IN- -> pad 2; pin 3 1IN+ -> pad 3; pin 4 GND -> pad 4; pin 5 2IN+ -> pad 5; pin 6 2IN- -> pad 6; pin 7 2OUT open collector -> pad 7; pin 8 VCC -> pad 8",
+      "unit": "NONE",
+      "conditions": "No schematic or placement/net binding is claimed. Manufacturer pin functions are source-backed only when a retained primary document names the product family.",
+      "locator": "src-comparator-datasheet: Pin configuration/function table",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-comparator-input-offset-voltage",
+      "record_id": "rec-comparator",
+      "source_id": "src-comparator-datasheet",
+      "class": "GUARANTEED_ELECTRICAL",
+      "value": {
+        "typical_at_25C": 0.37,
+        "maximum_at_25C": 2.5,
+        "maximum_full_temperature": 4.0
+      },
+      "unit": "mV",
+      "conditions": "TA = 25 C typ/max; TA = -40..85 C full-temperature maximum; LM393B electrical-characteristics table.",
+      "locator": "src-comparator-datasheet: PDF page index 5, printed page 6, Electrical Characteristics, input offset voltage row",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-comparator-input-bias-current",
+      "record_id": "rec-comparator",
+      "source_id": "src-comparator-datasheet",
+      "class": "GUARANTEED_ELECTRICAL",
+      "value": {
+        "typical_at_25C": 3.5,
+        "maximum_at_25C": 25,
+        "maximum_full_temperature": 50
+      },
+      "unit": "nA",
+      "conditions": "TA = 25 C typ/max; TA = -40..85 C full-temperature maximum; LM393B electrical-characteristics table.",
+      "locator": "src-comparator-datasheet: PDF page index 5, printed page 6, Electrical Characteristics, input bias current row",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-comparator-product-function",
+      "record_id": "rec-comparator",
+      "source_id": "src-comparator-datasheet",
+      "class": "PROJECT_STATE",
+      "value": "Manufacturer source identifies LM393BIDR as the shortlisted gate, clip, envelope comparator device; this is not project suitability.",
+      "unit": "NONE",
+      "conditions": "Product family description only; no project application or electrical guarantee implied.",
+      "locator": "src-comparator-datasheet: document title block and product description",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-comparator-procurement-status",
+      "record_id": "rec-comparator",
+      "source_id": "src-comparator-shortlist",
+      "class": "PROJECT_STATE",
+      "value": "UNVERIFIED",
+      "unit": "NONE",
+      "conditions": "Time-stamped OSC-ES-1 state on 2026-09-28; current stock, lead time, consignment, and JLC assembly are not established.",
+      "locator": "src-comparator-shortlist: JSON row parts[id=comparator].sourcing.status/jlcpcb_assembly",
+      "provenance": "PROJECT-CHOICE",
+      "verdict": "UNSOURCED",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-comparator-mechanical-fit",
+      "record_id": "rec-comparator",
+      "source_id": "src-comparator-shortlist",
+      "class": "PROJECT_STATE",
+      "value": "Provisional package-family envelope only; board/land-pattern fit has not been physically checked.",
+      "unit": "NONE",
+      "conditions": "Selected footprint family and display envelope do not establish exact-part placement or solderability.",
+      "locator": "Section/table audit: src-comparator-shortlist: parts[id=comparator].package; CAD receipt is provisional family geometry",
+      "provenance": "PROJECT-CHOICE",
+      "verdict": "NEEDS BENCH",
+      "depends_on": [],
+      "expression": ""
+    }
+  ]
+}

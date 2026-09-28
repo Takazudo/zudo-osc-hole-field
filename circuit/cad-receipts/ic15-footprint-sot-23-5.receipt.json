@@ -2,7 +2,7 @@
   "receipt_version": 1,
   "identity": {
     "asset_id": "ic15-footprint-sot-23-5",
-    "record_id": null,
+    "record_id": "rec-regulator-3v3",
     "manufacturer": null,
     "mpn": null,
     "package": "SOT-23-5",
@@ -21,10 +21,12 @@
   },
   "representation": {
     "files": [
-      "footprints/kicad/zudo-osc-hole-field.pretty/SOT-23-5.kicad_mod"
+      "footprints/kicad/zudo-osc-hole-field.pretty/SOT-23-5.kicad_mod",
+      "footprints/kicad/zudo-osc-hole-field.3dshapes/IC_SOT-23-5.wrl"
     ],
     "formats": [
-      "kicad_mod"
+      "kicad_mod",
+      "wrl"
     ],
     "units": "mm",
     "original_paths": [
@@ -33,9 +35,11 @@
   },
   "fidelity": {
     "class": "family",
-    "reason": "Generic package source; device-specific package dimensions and reflow rules require checking against the exact manufacturer drawing.",
+    "reason": "Provisional family envelope: TI DBV0005A SOT-23-5 maxima 3.05 x 1.75 x 1.45 mm. No exact solderability or physical-fit verdict. It is a preview envelope, not an exact vendor 3D asset, seating model, fit check, or qualification.",
     "evidence": [
-      "KiCad 10.0.6 pinned stock library source retained with SHA-256."
+      "KiCad 10.0.6 pinned stock library source retained with SHA-256.",
+      "circuit/sources/ic-library/TLV755P.pdf SHA-256 7eb7bc6935bf6c1d247b2fce62c9e5a49a474fd94359ddc390a4baf0ac1f5293",
+      "scripts/libgen/gen_ic_package_envelopes.py SHA-256 5cf873088089601ce798b675ebad9815c5f3414e691dc84f9cd0afbb3d83fba2"
     ]
   },
   "derivation": {
@@ -43,41 +47,73 @@
     "input_sha256": {
       "circuit/sources/ic-library/cad/SOT-23-5.stock.kicad_mod": "455a3f7c3e5eb5b8847eaa5df23e18651e78ab9f75afd09a0883758a0d901761"
     },
-    "tool": "scripts/libgen/fixtures/import_ic_stock.py and build_ic_assets.py; scripts/libgen/gen_courtyards.py",
+    "tool": "scripts/libgen/gen_ic_package_envelopes.py and scripts/libgen/regen.sh",
     "tool_version": "1",
     "parameters": {
       "operations": [
         "set project footprint name",
         "remove stock 3D model reference",
         "generate project courtyard"
-      ]
+      ],
+      "package_envelope": {
+        "model": "IC_SOT-23-5.wrl",
+        "dimensions_mm": [
+          3.05,
+          1.75,
+          1.45
+        ],
+        "note": "Provisional family envelope: TI DBV0005A SOT-23-5 maxima 3.05 x 1.75 x 1.45 mm. No exact solderability or physical-fit verdict.",
+        "geometry_source_sha256": {
+          "circuit/sources/ic-library/TLV755P.pdf": "7eb7bc6935bf6c1d247b2fce62c9e5a49a474fd94359ddc390a4baf0ac1f5293"
+        },
+        "generator_sha256": "cbf1715d8857c826ebd111a26180e705f2c222c124b892ba0fb129591d57445e",
+        "operations": [
+          "generate provisional display cuboid from listed family bounds",
+          "add exactly one local WRL model reference to the generic footprint"
+        ]
+      }
     },
     "output_sha256": {
-      "footprints/kicad/zudo-osc-hole-field.pretty/SOT-23-5.kicad_mod": "08399045b99064d2387d44bf12a8bd36adc0b2324bddc455ace228b7662b0400"
+      "footprints/kicad/zudo-osc-hole-field.pretty/SOT-23-5.kicad_mod": "240ed37b4c210c621ae3f22f877d25da656a4a5bc3de6dd6f1bd2f5afdee5dd8",
+      "footprints/kicad/zudo-osc-hole-field.3dshapes/IC_SOT-23-5.wrl": "15ec88b0298bfb27fab185ed4537faf5679c77b2ba638d33297f35118ae4e7d8"
     }
   },
   "cad_use": {
     "symbol": null,
     "footprint": "zudo-osc-hole-field:SOT-23-5",
-    "model_path": null,
+    "model_path": "${KIPRJMOD}/../../footprints/kicad/zudo-osc-hole-field.3dshapes/IC_SOT-23-5.wrl",
     "transform": {
-      "offset": null,
-      "rotation": null,
-      "scale": null
+      "offset": [
+        0,
+        0,
+        0
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ]
     },
-    "seating_plane": null
+    "seating_plane": "F.Cu; envelope base at z=0"
   },
   "checks": {
     "performed": [
-      "Project library and courtyard checks"
+      "Project library and courtyard checks",
+      "Local WRL envelope generated and hash-bound; package preview check required"
     ],
     "remaining_physical_checks": [
-      "Audit against exact package drawing before fabrication."
+      "Audit against exact package drawing before fabrication.",
+      "Confirm exact device body/height, land pattern, seating plane, optical/mechanical path, and fit in the fixed layout; this family envelope establishes none of those."
     ]
   },
   "publication": {
-    "preview_selected": false,
+    "preview_selected": true,
     "download_published": false,
-    "permitted_scope": null
+    "permitted_scope": "Generated component preview only; no vendor model redistribution."
   }
 }

@@ -1,0 +1,77 @@
+{
+  "schema_version": 1,
+  "coverage": [
+    {
+      "coverage_id": "cov-nand-exact-orderable-identity",
+      "record_id": "rec-nand",
+      "domain": "exact orderable identity",
+      "status": "COVERED",
+      "reason": "Manufacturer primary bytes identify the exact shortlist MPN/package; supplier stock remains separately open.",
+      "fact_ids": [
+        "fact-nand-orderable-identity"
+      ],
+      "blocking_fact_ids": []
+    },
+    {
+      "coverage_id": "cov-nand-pinout",
+      "record_id": "rec-nand",
+      "domain": "pinout",
+      "status": "COVERED",
+      "reason": "The retained manufacturer document provides the listed pin-function table; no project nets are assigned.",
+      "fact_ids": [
+        "fact-nand-pinout"
+      ],
+      "blocking_fact_ids": []
+    },
+    {
+      "coverage_id": "cov-nand-electrical-limits",
+      "record_id": "rec-nand",
+      "domain": "electrical limits",
+      "status": "OPEN",
+      "reason": "No exact-part electrical limits were promoted; source/identity gap remains open.",
+      "fact_ids": [
+        "fact-nand-electrical-limits"
+      ],
+      "blocking_fact_ids": [
+        "fact-nand-electrical-limits"
+      ]
+    },
+    {
+      "coverage_id": "cov-nand-manufacturer-product-description",
+      "record_id": "rec-nand",
+      "domain": "manufacturer product description",
+      "status": "COVERED",
+      "reason": "The retained manufacturer document identifies the named product and its documented role/description; this is not application qualification.",
+      "fact_ids": [
+        "fact-nand-product-function"
+      ],
+      "blocking_fact_ids": []
+    },
+    {
+      "coverage_id": "cov-nand-mechanical-fit",
+      "record_id": "rec-nand",
+      "domain": "mechanical fit",
+      "status": "OPEN",
+      "reason": "The local family envelope and generic footprint are provisional; physical board fit and land-pattern suitability are not validated.",
+      "fact_ids": [
+        "fact-nand-mechanical-fit"
+      ],
+      "blocking_fact_ids": [
+        "fact-nand-mechanical-fit"
+      ]
+    },
+    {
+      "coverage_id": "cov-nand-procurement",
+      "record_id": "rec-nand",
+      "domain": "procurement",
+      "status": "OPEN",
+      "reason": "Supplier stock, lead time, consignment and assembly allocation remain unverified as of the dated shortlist.",
+      "fact_ids": [
+        "fact-nand-procurement-status"
+      ],
+      "blocking_fact_ids": [
+        "fact-nand-procurement-status"
+      ]
+    }
+  ]
+}

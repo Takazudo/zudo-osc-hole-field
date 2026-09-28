@@ -1,0 +1,130 @@
+{
+  "schema_version": 1,
+  "facts": [
+    {
+      "fact_id": "fact-matched-npn-manufacturer",
+      "record_id": "rec-matched-npn",
+      "source_id": "src-matched-npn-datasheet",
+      "class": "PROJECT_STATE",
+      "value": "Nexperia",
+      "unit": "NONE",
+      "conditions": "Manufacturer of the project-selected exact shortlist identity.",
+      "locator": "src-matched-npn-datasheet: title block or OSC-ES-1 row parts[id=matched_npn].manufacturer",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-matched-npn-project-selection",
+      "record_id": "rec-matched-npn",
+      "source_id": "src-matched-npn-shortlist",
+      "class": "PROJECT_STATE",
+      "value": {
+        "manufacturer": "Nexperia",
+        "mpn": "BCM847BS,115",
+        "package": "SOT-363",
+        "lcsc": "not listed in the shortlist",
+        "roles": "matched pair candidate",
+        "source_status": "UNVERIFIED"
+      },
+      "unit": "NONE",
+      "conditions": "OSC-ES-1 dated proposal row; exact source status and availability statements are not supplier allocation.",
+      "locator": "src-matched-npn-shortlist: JSON row parts[id=matched_npn]",
+      "provenance": "PROJECT-CHOICE",
+      "verdict": "NOT APPLICABLE",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-matched-npn-orderable-identity",
+      "record_id": "rec-matched-npn",
+      "source_id": "src-matched-npn-datasheet",
+      "class": "PROJECT_STATE",
+      "value": {
+        "manufacturer": "Nexperia",
+        "mpn": "BCM847BS,115",
+        "package": "SOT-363"
+      },
+      "unit": "NONE",
+      "conditions": "Exact complete orderable identifier in the selected package; does not establish supplier stock.",
+      "locator": "Section/table audit: src-matched-npn-datasheet: retained source does not establish complete exact MPN BCM847BS,115; see project shortlist selection",
+      "provenance": "UNVERIFIED",
+      "verdict": "UNSOURCED",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-matched-npn-pinout",
+      "record_id": "rec-matched-npn",
+      "source_id": "src-matched-npn-datasheet",
+      "class": "PROJECT_STATE",
+      "value": "pin 1 E1 -> pad 1; pin 2 B1 -> pad 2; pin 3 C2 -> pad 3; pin 4 E2 -> pad 4; pin 5 B2 -> pad 5; pin 6 C1 -> pad 6",
+      "unit": "NONE",
+      "conditions": "No schematic or placement/net binding is claimed. Manufacturer pin functions are source-backed only when a retained primary document names the product family.",
+      "locator": "src-matched-npn-datasheet: Pin configuration/function table",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-matched-npn-vbe-matching",
+      "record_id": "rec-matched-npn",
+      "source_id": "src-matched-npn-datasheet",
+      "class": "GUARANTEED_ELECTRICAL",
+      "value": {
+        "maximum_difference": 2
+      },
+      "unit": "mV",
+      "conditions": "BCM847BS per device; VCE=5 V; IC=2 mA; TAmb=25 C.",
+      "locator": "src-matched-npn-datasheet: PDF page index 0, printed page 1, Table 1 quick reference, VBE1-VBE2 matching row",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-matched-npn-product-function",
+      "record_id": "rec-matched-npn",
+      "source_id": "src-matched-npn-datasheet",
+      "class": "PROJECT_STATE",
+      "value": "Manufacturer source identifies BCM847BS,115 as the shortlisted matched pair candidate device; this is not project suitability.",
+      "unit": "NONE",
+      "conditions": "Product family description only; no project application or electrical guarantee implied.",
+      "locator": "src-matched-npn-datasheet: document title block and product description",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-matched-npn-procurement-status",
+      "record_id": "rec-matched-npn",
+      "source_id": "src-matched-npn-shortlist",
+      "class": "PROJECT_STATE",
+      "value": "UNVERIFIED",
+      "unit": "NONE",
+      "conditions": "Time-stamped OSC-ES-1 state on 2026-09-28; current stock, lead time, consignment, and JLC assembly are not established.",
+      "locator": "src-matched-npn-shortlist: JSON row parts[id=matched_npn].sourcing.status/jlcpcb_assembly",
+      "provenance": "PROJECT-CHOICE",
+      "verdict": "UNSOURCED",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-matched-npn-mechanical-fit",
+      "record_id": "rec-matched-npn",
+      "source_id": "src-matched-npn-shortlist",
+      "class": "PROJECT_STATE",
+      "value": "Provisional package-family envelope only; board/land-pattern fit has not been physically checked.",
+      "unit": "NONE",
+      "conditions": "Selected footprint family and display envelope do not establish exact-part placement or solderability.",
+      "locator": "Section/table audit: src-matched-npn-shortlist: parts[id=matched_npn].package; CAD receipt is provisional family geometry",
+      "provenance": "PROJECT-CHOICE",
+      "verdict": "NEEDS BENCH",
+      "depends_on": [],
+      "expression": ""
+    }
+  ]
+}

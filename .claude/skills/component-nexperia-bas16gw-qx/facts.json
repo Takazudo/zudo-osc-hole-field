@@ -1,0 +1,130 @@
+{
+  "schema_version": 1,
+  "facts": [
+    {
+      "fact_id": "fact-signal-diode-manufacturer",
+      "record_id": "rec-signal-diode",
+      "source_id": "src-signal-diode-datasheet",
+      "class": "PROJECT_STATE",
+      "value": "Nexperia",
+      "unit": "NONE",
+      "conditions": "Manufacturer of the project-selected exact shortlist identity.",
+      "locator": "src-signal-diode-datasheet: title block or OSC-ES-1 row parts[id=signal_diode].manufacturer",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-signal-diode-project-selection",
+      "record_id": "rec-signal-diode",
+      "source_id": "src-signal-diode-shortlist",
+      "class": "PROJECT_STATE",
+      "value": {
+        "manufacturer": "Nexperia",
+        "mpn": "BAS16GW-QX",
+        "package": "SOD-123",
+        "lcsc": "not listed in the shortlist",
+        "roles": "rectification, small signal",
+        "source_status": "MANUFACTURER IDENTITY CONFIRMED; ASSEMBLY UNVERIFIED"
+      },
+      "unit": "NONE",
+      "conditions": "OSC-ES-1 dated proposal row; exact source status and availability statements are not supplier allocation.",
+      "locator": "src-signal-diode-shortlist: JSON row parts[id=signal_diode]",
+      "provenance": "PROJECT-CHOICE",
+      "verdict": "NOT APPLICABLE",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-signal-diode-orderable-identity",
+      "record_id": "rec-signal-diode",
+      "source_id": "src-signal-diode-opn",
+      "class": "PROJECT_STATE",
+      "value": {
+        "manufacturer": "Nexperia",
+        "mpn": "BAS16GW-QX",
+        "package": "SOD-123"
+      },
+      "unit": "NONE",
+      "conditions": "Exact complete orderable identifier in the selected package; does not establish supplier stock.",
+      "locator": "src-signal-diode-opn: HTML OPN row confirms exact MPN/package",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-signal-diode-pinout",
+      "record_id": "rec-signal-diode",
+      "source_id": "src-signal-diode-datasheet",
+      "class": "PROJECT_STATE",
+      "value": "pin 1 K cathode -> pad 1; pin 2 A anode -> pad 2",
+      "unit": "NONE",
+      "conditions": "No schematic or placement/net binding is claimed. Manufacturer pin functions are source-backed only when a retained primary document names the product family.",
+      "locator": "src-signal-diode-datasheet: Table 2 Pinning information; Table 1 quick reference; Table 5 limiting values; exact OPN BAS16GW-QX from Nexperia chemical-content record",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-signal-diode-reverse-voltage",
+      "record_id": "rec-signal-diode",
+      "source_id": "src-signal-diode-datasheet",
+      "class": "GUARANTEED_ELECTRICAL",
+      "value": {
+        "maximum_repetitive_peak": 100
+      },
+      "unit": "V",
+      "conditions": "Tj = 25 C; Nexperia BAS16GW-Q product data sheet; exact BAS16GW-QX OPN is separately confirmed by manufacturer chemical-content row.",
+      "locator": "src-signal-diode-datasheet: PDF page index 0, printed page 1, Table 1 quick reference, VRRM/VR row",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-signal-diode-product-function",
+      "record_id": "rec-signal-diode",
+      "source_id": "src-signal-diode-datasheet",
+      "class": "PROJECT_STATE",
+      "value": "Manufacturer source identifies BAS16GW-QX as the shortlisted rectification, small signal device; this is not project suitability.",
+      "unit": "NONE",
+      "conditions": "Product family description only; no project application or electrical guarantee implied.",
+      "locator": "src-signal-diode-datasheet: document title block and product description",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-signal-diode-procurement-status",
+      "record_id": "rec-signal-diode",
+      "source_id": "src-signal-diode-shortlist",
+      "class": "PROJECT_STATE",
+      "value": "MANUFACTURER IDENTITY CONFIRMED; ASSEMBLY UNVERIFIED",
+      "unit": "NONE",
+      "conditions": "Time-stamped OSC-ES-1 state on 2026-09-28; current stock, lead time, consignment, and JLC assembly are not established.",
+      "locator": "src-signal-diode-shortlist: JSON row parts[id=signal_diode].sourcing.status/jlcpcb_assembly",
+      "provenance": "PROJECT-CHOICE",
+      "verdict": "UNSOURCED",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-signal-diode-mechanical-fit",
+      "record_id": "rec-signal-diode",
+      "source_id": "src-signal-diode-shortlist",
+      "class": "PROJECT_STATE",
+      "value": "Provisional package-family envelope only; board/land-pattern fit has not been physically checked.",
+      "unit": "NONE",
+      "conditions": "Selected footprint family and display envelope do not establish exact-part placement or solderability.",
+      "locator": "Section/table audit: src-signal-diode-shortlist: parts[id=signal_diode].package; CAD receipt is provisional family geometry",
+      "provenance": "PROJECT-CHOICE",
+      "verdict": "NEEDS BENCH",
+      "depends_on": [],
+      "expression": ""
+    }
+  ]
+}

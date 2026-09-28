@@ -1,0 +1,77 @@
+{
+  "schema_version": 1,
+  "coverage": [
+    {
+      "coverage_id": "cov-flipflop-exact-orderable-identity",
+      "record_id": "rec-flipflop",
+      "domain": "exact orderable identity",
+      "status": "COVERED",
+      "reason": "Manufacturer primary bytes identify the exact shortlist MPN/package; supplier stock remains separately open.",
+      "fact_ids": [
+        "fact-flipflop-orderable-identity"
+      ],
+      "blocking_fact_ids": []
+    },
+    {
+      "coverage_id": "cov-flipflop-pinout",
+      "record_id": "rec-flipflop",
+      "domain": "pinout",
+      "status": "COVERED",
+      "reason": "The retained manufacturer document provides the listed pin-function table; no project nets are assigned.",
+      "fact_ids": [
+        "fact-flipflop-pinout"
+      ],
+      "blocking_fact_ids": []
+    },
+    {
+      "coverage_id": "cov-flipflop-electrical-limits",
+      "record_id": "rec-flipflop",
+      "domain": "electrical limits",
+      "status": "OPEN",
+      "reason": "No exact-part electrical limits were promoted; source/identity gap remains open.",
+      "fact_ids": [
+        "fact-flipflop-electrical-limits"
+      ],
+      "blocking_fact_ids": [
+        "fact-flipflop-electrical-limits"
+      ]
+    },
+    {
+      "coverage_id": "cov-flipflop-manufacturer-product-description",
+      "record_id": "rec-flipflop",
+      "domain": "manufacturer product description",
+      "status": "COVERED",
+      "reason": "The retained manufacturer document identifies the named product and its documented role/description; this is not application qualification.",
+      "fact_ids": [
+        "fact-flipflop-product-function"
+      ],
+      "blocking_fact_ids": []
+    },
+    {
+      "coverage_id": "cov-flipflop-mechanical-fit",
+      "record_id": "rec-flipflop",
+      "domain": "mechanical fit",
+      "status": "OPEN",
+      "reason": "The local family envelope and generic footprint are provisional; physical board fit and land-pattern suitability are not validated.",
+      "fact_ids": [
+        "fact-flipflop-mechanical-fit"
+      ],
+      "blocking_fact_ids": [
+        "fact-flipflop-mechanical-fit"
+      ]
+    },
+    {
+      "coverage_id": "cov-flipflop-procurement",
+      "record_id": "rec-flipflop",
+      "domain": "procurement",
+      "status": "OPEN",
+      "reason": "Supplier stock, lead time, consignment and assembly allocation remain unverified as of the dated shortlist.",
+      "fact_ids": [
+        "fact-flipflop-procurement-status"
+      ],
+      "blocking_fact_ids": [
+        "fact-flipflop-procurement-status"
+      ]
+    }
+  ]
+}

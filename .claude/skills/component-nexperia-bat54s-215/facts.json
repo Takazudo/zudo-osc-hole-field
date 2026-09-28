@@ -1,0 +1,130 @@
+{
+  "schema_version": 1,
+  "facts": [
+    {
+      "fact_id": "fact-clamp-diode-manufacturer",
+      "record_id": "rec-clamp-diode",
+      "source_id": "src-clamp-diode-datasheet",
+      "class": "PROJECT_STATE",
+      "value": "Nexperia",
+      "unit": "NONE",
+      "conditions": "Manufacturer of the project-selected exact shortlist identity.",
+      "locator": "src-clamp-diode-datasheet: title block or OSC-ES-1 row parts[id=clamp_diode].manufacturer",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-clamp-diode-project-selection",
+      "record_id": "rec-clamp-diode",
+      "source_id": "src-clamp-diode-shortlist",
+      "class": "PROJECT_STATE",
+      "value": {
+        "manufacturer": "Nexperia",
+        "mpn": "BAT54S,215",
+        "package": "SOT-23",
+        "lcsc": "not listed in the shortlist",
+        "roles": "rail clamp pair",
+        "source_status": "UNVERIFIED"
+      },
+      "unit": "NONE",
+      "conditions": "OSC-ES-1 dated proposal row; exact source status and availability statements are not supplier allocation.",
+      "locator": "src-clamp-diode-shortlist: JSON row parts[id=clamp_diode]",
+      "provenance": "PROJECT-CHOICE",
+      "verdict": "NOT APPLICABLE",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-clamp-diode-orderable-identity",
+      "record_id": "rec-clamp-diode",
+      "source_id": "src-clamp-diode-datasheet",
+      "class": "PROJECT_STATE",
+      "value": {
+        "manufacturer": "Nexperia",
+        "mpn": "BAT54S,215",
+        "package": "SOT-23"
+      },
+      "unit": "NONE",
+      "conditions": "Exact complete orderable identifier in the selected package; does not establish supplier stock.",
+      "locator": "Section/table audit: src-clamp-diode-datasheet: retained source does not establish complete exact MPN BAT54S,215; see project shortlist selection",
+      "provenance": "UNVERIFIED",
+      "verdict": "UNSOURCED",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-clamp-diode-pinout",
+      "record_id": "rec-clamp-diode",
+      "source_id": "src-clamp-diode-datasheet",
+      "class": "PROJECT_STATE",
+      "value": "pin 1 A1 anode diode 1 -> pad 1; pin 2 K2 cathode diode 2 -> pad 2; pin 3 K1/A2 series common -> pad 3",
+      "unit": "NONE",
+      "conditions": "No schematic or placement/net binding is claimed. Manufacturer pin functions are source-backed only when a retained primary document names the product family.",
+      "locator": "src-clamp-diode-datasheet: Pin configuration/function table",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-clamp-diode-reverse-voltage",
+      "record_id": "rec-clamp-diode",
+      "source_id": "src-clamp-diode-datasheet",
+      "class": "GUARANTEED_ELECTRICAL",
+      "value": {
+        "maximum": 30
+      },
+      "unit": "V",
+      "conditions": "BAT54S Schottky diode; manufacturer quick-reference table.",
+      "locator": "src-clamp-diode-datasheet: PDF page index 0, printed page 1, Table 1, reverse voltage VR row",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-clamp-diode-product-function",
+      "record_id": "rec-clamp-diode",
+      "source_id": "src-clamp-diode-datasheet",
+      "class": "PROJECT_STATE",
+      "value": "Manufacturer source identifies BAT54S,215 as the shortlisted rail clamp pair device; this is not project suitability.",
+      "unit": "NONE",
+      "conditions": "Product family description only; no project application or electrical guarantee implied.",
+      "locator": "src-clamp-diode-datasheet: document title block and product description",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-clamp-diode-procurement-status",
+      "record_id": "rec-clamp-diode",
+      "source_id": "src-clamp-diode-shortlist",
+      "class": "PROJECT_STATE",
+      "value": "UNVERIFIED",
+      "unit": "NONE",
+      "conditions": "Time-stamped OSC-ES-1 state on 2026-09-28; current stock, lead time, consignment, and JLC assembly are not established.",
+      "locator": "src-clamp-diode-shortlist: JSON row parts[id=clamp_diode].sourcing.status/jlcpcb_assembly",
+      "provenance": "PROJECT-CHOICE",
+      "verdict": "UNSOURCED",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-clamp-diode-mechanical-fit",
+      "record_id": "rec-clamp-diode",
+      "source_id": "src-clamp-diode-shortlist",
+      "class": "PROJECT_STATE",
+      "value": "Provisional package-family envelope only; board/land-pattern fit has not been physically checked.",
+      "unit": "NONE",
+      "conditions": "Selected footprint family and display envelope do not establish exact-part placement or solderability.",
+      "locator": "Section/table audit: src-clamp-diode-shortlist: parts[id=clamp_diode].package; CAD receipt is provisional family geometry",
+      "provenance": "PROJECT-CHOICE",
+      "verdict": "NEEDS BENCH",
+      "depends_on": [],
+      "expression": ""
+    }
+  ]
+}

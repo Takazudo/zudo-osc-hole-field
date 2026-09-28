@@ -1,0 +1,77 @@
+{
+  "schema_version": 1,
+  "coverage": [
+    {
+      "coverage_id": "cov-pnp-exact-orderable-identity",
+      "record_id": "rec-pnp",
+      "domain": "exact orderable identity",
+      "status": "OPEN",
+      "reason": "The current exact MPN is a project-selected proposal but its full manufacturer orderable identity/package suffix is not confirmed by retained exact-part bytes.",
+      "fact_ids": [
+        "fact-pnp-orderable-identity"
+      ],
+      "blocking_fact_ids": [
+        "fact-pnp-orderable-identity"
+      ]
+    },
+    {
+      "coverage_id": "cov-pnp-pinout",
+      "record_id": "rec-pnp",
+      "domain": "pinout",
+      "status": "COVERED",
+      "reason": "The retained manufacturer document provides the listed pin-function table; no project nets are assigned.",
+      "fact_ids": [
+        "fact-pnp-pinout"
+      ],
+      "blocking_fact_ids": []
+    },
+    {
+      "coverage_id": "cov-pnp-electrical-limits",
+      "record_id": "rec-pnp",
+      "domain": "electrical limits",
+      "status": "COVERED",
+      "reason": "Retained source supports the specific listed product-family limits; conditions remain attached to each fact.",
+      "fact_ids": [
+        "fact-pnp-collector-emitter-voltage"
+      ],
+      "blocking_fact_ids": []
+    },
+    {
+      "coverage_id": "cov-pnp-manufacturer-product-description",
+      "record_id": "rec-pnp",
+      "domain": "manufacturer product description",
+      "status": "COVERED",
+      "reason": "The retained manufacturer document identifies the named product and its documented role/description; this is not application qualification.",
+      "fact_ids": [
+        "fact-pnp-product-function"
+      ],
+      "blocking_fact_ids": []
+    },
+    {
+      "coverage_id": "cov-pnp-mechanical-fit",
+      "record_id": "rec-pnp",
+      "domain": "mechanical fit",
+      "status": "OPEN",
+      "reason": "The local family envelope and generic footprint are provisional; physical board fit and land-pattern suitability are not validated.",
+      "fact_ids": [
+        "fact-pnp-mechanical-fit"
+      ],
+      "blocking_fact_ids": [
+        "fact-pnp-mechanical-fit"
+      ]
+    },
+    {
+      "coverage_id": "cov-pnp-procurement",
+      "record_id": "rec-pnp",
+      "domain": "procurement",
+      "status": "OPEN",
+      "reason": "Supplier stock, lead time, consignment and assembly allocation remain unverified as of the dated shortlist.",
+      "fact_ids": [
+        "fact-pnp-procurement-status"
+      ],
+      "blocking_fact_ids": [
+        "fact-pnp-procurement-status"
+      ]
+    }
+  ]
+}

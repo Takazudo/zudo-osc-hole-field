@@ -2,7 +2,7 @@
   "receipt_version": 1,
   "identity": {
     "asset_id": "ic15-footprint-sot-363-sc-70-6",
-    "record_id": null,
+    "record_id": "rec-matched-npn",
     "manufacturer": null,
     "mpn": null,
     "package": "SOT-363_SC-70-6",
@@ -21,10 +21,12 @@
   },
   "representation": {
     "files": [
-      "footprints/kicad/zudo-osc-hole-field.pretty/SOT-363_SC-70-6.kicad_mod"
+      "footprints/kicad/zudo-osc-hole-field.pretty/SOT-363_SC-70-6.kicad_mod",
+      "footprints/kicad/zudo-osc-hole-field.3dshapes/IC_SOT-363_SC-70-6.wrl"
     ],
     "formats": [
-      "kicad_mod"
+      "kicad_mod",
+      "wrl"
     ],
     "units": "mm",
     "original_paths": [
@@ -33,9 +35,11 @@
   },
   "fidelity": {
     "class": "family",
-    "reason": "Generic package source; device-specific package dimensions and reflow rules require checking against the exact manufacturer drawing.",
+    "reason": "Provisional family envelope: Nexperia SOT363-3 outline maxima 2.2 x 1.35 x 1.1 mm. No land-pattern or physical-fit verdict. It is a preview envelope, not an exact vendor 3D asset, seating model, fit check, or qualification.",
     "evidence": [
-      "KiCad 10.0.6 pinned stock library source retained with SHA-256."
+      "KiCad 10.0.6 pinned stock library source retained with SHA-256.",
+      "circuit/sources/ic-library/BCM847BS.pdf SHA-256 397d10c0be3226b032175a0c9856473c0042d3ca40ae14e8d78a2ebff83796a8",
+      "scripts/libgen/gen_ic_package_envelopes.py SHA-256 5cf873088089601ce798b675ebad9815c5f3414e691dc84f9cd0afbb3d83fba2"
     ]
   },
   "derivation": {
@@ -43,41 +47,73 @@
     "input_sha256": {
       "circuit/sources/ic-library/cad/SOT-363_SC-70-6.stock.kicad_mod": "0659d885e00b786968c3ba29152b808777240a91c1fb49ab8d814eb03530115c"
     },
-    "tool": "scripts/libgen/fixtures/import_ic_stock.py and build_ic_assets.py; scripts/libgen/gen_courtyards.py",
+    "tool": "scripts/libgen/gen_ic_package_envelopes.py and scripts/libgen/regen.sh",
     "tool_version": "1",
     "parameters": {
       "operations": [
         "set project footprint name",
         "remove stock 3D model reference",
         "generate project courtyard"
-      ]
+      ],
+      "package_envelope": {
+        "model": "IC_SOT-363_SC-70-6.wrl",
+        "dimensions_mm": [
+          2.2,
+          1.35,
+          1.1
+        ],
+        "note": "Provisional family envelope: Nexperia SOT363-3 outline maxima 2.2 x 1.35 x 1.1 mm. No land-pattern or physical-fit verdict.",
+        "geometry_source_sha256": {
+          "circuit/sources/ic-library/BCM847BS.pdf": "397d10c0be3226b032175a0c9856473c0042d3ca40ae14e8d78a2ebff83796a8"
+        },
+        "generator_sha256": "cbf1715d8857c826ebd111a26180e705f2c222c124b892ba0fb129591d57445e",
+        "operations": [
+          "generate provisional display cuboid from listed family bounds",
+          "add exactly one local WRL model reference to the generic footprint"
+        ]
+      }
     },
     "output_sha256": {
-      "footprints/kicad/zudo-osc-hole-field.pretty/SOT-363_SC-70-6.kicad_mod": "6d1b8528edab2523aaaaeab66bd4238a0039993e45751bd9d0da1f87333fdd9a"
+      "footprints/kicad/zudo-osc-hole-field.pretty/SOT-363_SC-70-6.kicad_mod": "6e4172f551a82e2c65842d333ba2dfef8c5bb208b71b844b797cb13d3aa56edc",
+      "footprints/kicad/zudo-osc-hole-field.3dshapes/IC_SOT-363_SC-70-6.wrl": "e3f33e51d45c83adc07cd03164aabd549d9e9e63c1f8906162fb841c096c35c6"
     }
   },
   "cad_use": {
     "symbol": null,
     "footprint": "zudo-osc-hole-field:SOT-363_SC-70-6",
-    "model_path": null,
+    "model_path": "${KIPRJMOD}/../../footprints/kicad/zudo-osc-hole-field.3dshapes/IC_SOT-363_SC-70-6.wrl",
     "transform": {
-      "offset": null,
-      "rotation": null,
-      "scale": null
+      "offset": [
+        0,
+        0,
+        0
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ]
     },
-    "seating_plane": null
+    "seating_plane": "F.Cu; envelope base at z=0"
   },
   "checks": {
     "performed": [
-      "Project library and courtyard checks"
+      "Project library and courtyard checks",
+      "Local WRL envelope generated and hash-bound; package preview check required"
     ],
     "remaining_physical_checks": [
-      "Audit against exact package drawing before fabrication."
+      "Audit against exact package drawing before fabrication.",
+      "Confirm exact device body/height, land pattern, seating plane, optical/mechanical path, and fit in the fixed layout; this family envelope establishes none of those."
     ]
   },
   "publication": {
-    "preview_selected": false,
+    "preview_selected": true,
     "download_published": false,
-    "permitted_scope": null
+    "permitted_scope": "Generated component preview only; no vendor model redistribution."
   }
 }

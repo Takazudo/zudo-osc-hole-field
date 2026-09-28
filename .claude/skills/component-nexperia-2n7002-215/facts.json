@@ -1,0 +1,130 @@
+{
+  "schema_version": 1,
+  "facts": [
+    {
+      "fact_id": "fact-mosfet-manufacturer",
+      "record_id": "rec-mosfet",
+      "source_id": "src-mosfet-datasheet",
+      "class": "PROJECT_STATE",
+      "value": "Nexperia",
+      "unit": "NONE",
+      "conditions": "Manufacturer of the project-selected exact shortlist identity.",
+      "locator": "src-mosfet-datasheet: title block or OSC-ES-1 row parts[id=mosfet].manufacturer",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-mosfet-project-selection",
+      "record_id": "rec-mosfet",
+      "source_id": "src-mosfet-shortlist",
+      "class": "PROJECT_STATE",
+      "value": {
+        "manufacturer": "Nexperia",
+        "mpn": "2N7002,215",
+        "package": "SOT-23",
+        "lcsc": "not listed in the shortlist",
+        "roles": "stage command mute",
+        "source_status": "UNVERIFIED"
+      },
+      "unit": "NONE",
+      "conditions": "OSC-ES-1 dated proposal row; exact source status and availability statements are not supplier allocation.",
+      "locator": "src-mosfet-shortlist: JSON row parts[id=mosfet]",
+      "provenance": "PROJECT-CHOICE",
+      "verdict": "NOT APPLICABLE",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-mosfet-orderable-identity",
+      "record_id": "rec-mosfet",
+      "source_id": "src-mosfet-datasheet",
+      "class": "PROJECT_STATE",
+      "value": {
+        "manufacturer": "Nexperia",
+        "mpn": "2N7002,215",
+        "package": "SOT-23"
+      },
+      "unit": "NONE",
+      "conditions": "Exact complete orderable identifier in the selected package; does not establish supplier stock.",
+      "locator": "Section/table audit: src-mosfet-datasheet: retained source does not establish complete exact MPN 2N7002,215; see project shortlist selection",
+      "provenance": "UNVERIFIED",
+      "verdict": "UNSOURCED",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-mosfet-pinout",
+      "record_id": "rec-mosfet",
+      "source_id": "src-mosfet-datasheet",
+      "class": "PROJECT_STATE",
+      "value": "pin 1 G -> pad 1; pin 2 S -> pad 2; pin 3 D -> pad 3",
+      "unit": "NONE",
+      "conditions": "No schematic or placement/net binding is claimed. Manufacturer pin functions are source-backed only when a retained primary document names the product family.",
+      "locator": "src-mosfet-datasheet: Pin configuration/function table",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-mosfet-drain-source-voltage",
+      "record_id": "rec-mosfet",
+      "source_id": "src-mosfet-datasheet",
+      "class": "GUARANTEED_ELECTRICAL",
+      "value": {
+        "maximum": 60
+      },
+      "unit": "V",
+      "conditions": "2N7002 maximum rating; 25 C <= Tj <= 150 C.",
+      "locator": "src-mosfet-datasheet: PDF page index 0, printed page 1, Table 1 quick reference, VDS row",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-mosfet-product-function",
+      "record_id": "rec-mosfet",
+      "source_id": "src-mosfet-datasheet",
+      "class": "PROJECT_STATE",
+      "value": "Manufacturer source identifies 2N7002,215 as the shortlisted stage command mute device; this is not project suitability.",
+      "unit": "NONE",
+      "conditions": "Product family description only; no project application or electrical guarantee implied.",
+      "locator": "src-mosfet-datasheet: document title block and product description",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-mosfet-procurement-status",
+      "record_id": "rec-mosfet",
+      "source_id": "src-mosfet-shortlist",
+      "class": "PROJECT_STATE",
+      "value": "UNVERIFIED",
+      "unit": "NONE",
+      "conditions": "Time-stamped OSC-ES-1 state on 2026-09-28; current stock, lead time, consignment, and JLC assembly are not established.",
+      "locator": "src-mosfet-shortlist: JSON row parts[id=mosfet].sourcing.status/jlcpcb_assembly",
+      "provenance": "PROJECT-CHOICE",
+      "verdict": "UNSOURCED",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-mosfet-mechanical-fit",
+      "record_id": "rec-mosfet",
+      "source_id": "src-mosfet-shortlist",
+      "class": "PROJECT_STATE",
+      "value": "Provisional package-family envelope only; board/land-pattern fit has not been physically checked.",
+      "unit": "NONE",
+      "conditions": "Selected footprint family and display envelope do not establish exact-part placement or solderability.",
+      "locator": "Section/table audit: src-mosfet-shortlist: parts[id=mosfet].package; CAD receipt is provisional family geometry",
+      "provenance": "PROJECT-CHOICE",
+      "verdict": "NEEDS BENCH",
+      "depends_on": [],
+      "expression": ""
+    }
+  ]
+}

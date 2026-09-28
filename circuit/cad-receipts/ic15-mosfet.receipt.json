@@ -2,7 +2,7 @@
   "receipt_version": 1,
   "identity": {
     "asset_id": "ic15-mosfet",
-    "record_id": null,
+    "record_id": "rec-mosfet",
     "manufacturer": "Nexperia",
     "mpn": "2N7002,215",
     "package": "SOT-23",
@@ -64,7 +64,7 @@
   "cad_use": {
     "symbol": "zudo-osc-hole-field:2N7002_215",
     "footprint": "zudo-osc-hole-field:SOT-23",
-    "model_path": null,
+    "model_path": "${KIPRJMOD}/../../footprints/kicad/zudo-osc-hole-field.3dshapes/IC_SOT-23.wrl",
     "transform": {
       "offset": null,
       "rotation": null,
@@ -77,11 +77,12 @@
       "Issue-15 all-unit KiCad 10 ERC fixture and project library checker"
     ],
     "remaining_physical_checks": [
-      "Confirm exact package drawing/lot, actual circuit net mapping, electrical suitability and procurement before board release."
+      "Confirm exact package drawing/lot, actual circuit net mapping, electrical suitability and procurement before board release.",
+      "Confirm exact body/height, land pattern, fixed-layout clearance, and electrical suitability before hardware use; catalogue family geometry is provisional."
     ]
   },
   "publication": {
-    "preview_selected": false,
+    "preview_selected": true,
     "download_published": false,
     "permitted_scope": null
   }

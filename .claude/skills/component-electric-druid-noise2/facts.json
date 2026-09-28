@@ -1,0 +1,130 @@
+{
+  "schema_version": 1,
+  "facts": [
+    {
+      "fact_id": "fact-noise-manufacturer",
+      "record_id": "rec-noise",
+      "source_id": "src-noise-datasheet",
+      "class": "PROJECT_STATE",
+      "value": "Electric Druid",
+      "unit": "NONE",
+      "conditions": "Manufacturer of the project-selected exact shortlist identity.",
+      "locator": "src-noise-datasheet: title block or OSC-ES-1 row parts[id=noise].manufacturer",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-noise-project-selection",
+      "record_id": "rec-noise",
+      "source_id": "src-noise-shortlist",
+      "class": "PROJECT_STATE",
+      "value": {
+        "manufacturer": "Electric Druid",
+        "mpn": "NOISE2",
+        "package": "PDIP-8 programmed device",
+        "lcsc": "not listed in the shortlist",
+        "roles": "noise source",
+        "source_status": "UNVERIFIED"
+      },
+      "unit": "NONE",
+      "conditions": "OSC-ES-1 dated proposal row; exact source status and availability statements are not supplier allocation.",
+      "locator": "src-noise-shortlist: JSON row parts[id=noise]",
+      "provenance": "PROJECT-CHOICE",
+      "verdict": "NOT APPLICABLE",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-noise-orderable-identity",
+      "record_id": "rec-noise",
+      "source_id": "src-noise-datasheet",
+      "class": "PROJECT_STATE",
+      "value": {
+        "manufacturer": "Electric Druid",
+        "mpn": "NOISE2",
+        "package": "PDIP-8 programmed device"
+      },
+      "unit": "NONE",
+      "conditions": "Exact complete orderable identifier in the selected package; does not establish supplier stock.",
+      "locator": "Section/table audit: src-noise-datasheet: package/orderable addendum names exact MPN",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-noise-pinout",
+      "record_id": "rec-noise",
+      "source_id": "src-noise-datasheet",
+      "class": "PROJECT_STATE",
+      "value": "pin 1 +5V supply -> pad 1; pin 2 unused digital input -> pad 2; pin 3 white digital output -> pad 3; pin 4 unused digital input -> pad 4; pin 5 unused digital input -> pad 5; pin 6 unused digital input -> pad 6; pin 7 pink analog output -> pad 7; pin 8 0V supply -> pad 8",
+      "unit": "NONE",
+      "conditions": "No schematic or placement/net binding is claimed. Manufacturer pin functions are source-backed only when a retained primary document names the product family.",
+      "locator": "src-noise-datasheet: Pin configuration/function table",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-noise-noise-output-rate",
+      "record_id": "rec-noise",
+      "source_id": "src-noise-datasheet",
+      "class": "GUARANTEED_ELECTRICAL",
+      "value": {
+        "approximate": 100
+      },
+      "unit": "kHz",
+      "conditions": "Manufacturer describes the generated pseudo-random output rate as around 100 kHz; this is not a guaranteed minimum or maximum.",
+      "locator": "Section/table audit: src-noise-datasheet: PDF page index 0, printed page 1, Introduction, LFSR output-rate paragraph",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-noise-product-function",
+      "record_id": "rec-noise",
+      "source_id": "src-noise-datasheet",
+      "class": "PROJECT_STATE",
+      "value": "Manufacturer source identifies NOISE2 as the shortlisted noise source device; this is not project suitability.",
+      "unit": "NONE",
+      "conditions": "Product family description only; no project application or electrical guarantee implied.",
+      "locator": "src-noise-datasheet: document title block and product description",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-noise-procurement-status",
+      "record_id": "rec-noise",
+      "source_id": "src-noise-shortlist",
+      "class": "PROJECT_STATE",
+      "value": "UNVERIFIED",
+      "unit": "NONE",
+      "conditions": "Time-stamped OSC-ES-1 state on 2026-09-28; current stock, lead time, consignment, and JLC assembly are not established.",
+      "locator": "src-noise-shortlist: JSON row parts[id=noise].sourcing.status/jlcpcb_assembly",
+      "provenance": "PROJECT-CHOICE",
+      "verdict": "UNSOURCED",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-noise-mechanical-fit",
+      "record_id": "rec-noise",
+      "source_id": "src-noise-shortlist",
+      "class": "PROJECT_STATE",
+      "value": "Provisional package-family envelope only; board/land-pattern fit has not been physically checked.",
+      "unit": "NONE",
+      "conditions": "Selected footprint family and display envelope do not establish exact-part placement or solderability.",
+      "locator": "Section/table audit: src-noise-shortlist: parts[id=noise].package; CAD receipt is provisional family geometry",
+      "provenance": "PROJECT-CHOICE",
+      "verdict": "NEEDS BENCH",
+      "depends_on": [],
+      "expression": ""
+    }
+  ]
+}

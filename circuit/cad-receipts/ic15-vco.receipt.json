@@ -2,14 +2,14 @@
   "receipt_version": 1,
   "identity": {
     "asset_id": "ic15-vco",
-    "record_id": null,
+    "record_id": "rec-vco",
     "manufacturer": "ALFA RPAR",
     "mpn": "AS3340D",
     "package": "SOIC-16",
-    "variant_notes": "AS3340D SOIC-16 covered by retained ALFA 2020 v7 pp1,2,6; footprint remains generic package geometry."
+    "variant_notes": "ALFA RPAR 2020 v.7 confirms AS3340D SOIC-16 and the 16-pin function table; generic footprint and provisional family WRL remain unqualified."
   },
   "acquisition": {
-    "provider": "KiCad 10 stock symbol, pin identities checked against ALFA primary PDF",
+    "provider": "KiCad 10 stock symbol; pin identities checked against retained ALFA RPAR primary PDF",
     "source_url": "https://www.alfatriode.lv/eng/sc/AS3340.pdf",
     "acquired_on": "2026-09-28",
     "original_filenames": [
@@ -36,10 +36,11 @@
   },
   "fidelity": {
     "class": "derived",
-    "reason": "Stock pin graphics or custom unit layout normalized for the exact draft identity; unsupported manufacturer facts remain UNSOURCED.",
+    "reason": "Stock symbol pins are normalized for the exact project identity and cross-checked against the retained ALFA RPAR 2020 v.7 pin table; electrical application claims remain open.",
     "evidence": [
       "circuit/sources/ic-library/AS3340.pdf sha256 66108a3ddcc78a158d66974a497801ce6a429d465b338f6c8d656fd7ddce815e",
-      "Physical PDF p1 / printed p2: all 16 pins; physical p5 / printed p6: SOIC-16 package"
+      "Physical PDF p.1 / printed p.2: all 16 AS3340 pins and functions",
+      "Physical PDF p.5 / printed p.6: AS3340D SOIC-16 package designation and outline"
     ]
   },
   "derivation": {
@@ -60,7 +61,7 @@
   "cad_use": {
     "symbol": "zudo-osc-hole-field:AS3340D",
     "footprint": "zudo-osc-hole-field:SOIC-16_3.9x9.9mm_P1.27mm",
-    "model_path": null,
+    "model_path": "${KIPRJMOD}/../../footprints/kicad/zudo-osc-hole-field.3dshapes/IC_SOIC-16_3.9x9.9.wrl",
     "transform": {
       "offset": null,
       "rotation": null,
@@ -70,15 +71,16 @@
   },
   "checks": {
     "performed": [
-      "Issue-15 all-unit KiCad 10 ERC fixture and project library checker",
-      "Issue #29 retained primary PDF identity/pin diagram visual audit; no pin-number correction required."
+      "Issue-15 KiCad 10 all-unit ERC fixture and project library checker",
+      "Issue-29 retained ALFA RPAR primary PDF visual review of identity/package and pin table; numeric symbol-to-pad assignments agree."
     ],
     "remaining_physical_checks": [
-      "Confirm exact package drawing/lot, actual circuit net mapping, electrical suitability and procurement before board release."
+      "Confirm exact land pattern and body height, fixed-layout clearance, oscillator electrical suitability, actual circuit net mapping, and procurement before board use.",
+      "The shared SOIC-16 WRL is provisional family geometry and establishes no exact-part fit or seating model."
     ]
   },
   "publication": {
-    "preview_selected": false,
+    "preview_selected": true,
     "download_published": false,
     "permitted_scope": null
   }

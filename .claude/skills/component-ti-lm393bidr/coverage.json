@@ -1,0 +1,76 @@
+{
+  "schema_version": 1,
+  "coverage": [
+    {
+      "coverage_id": "cov-comparator-exact-orderable-identity",
+      "record_id": "rec-comparator",
+      "domain": "exact orderable identity",
+      "status": "COVERED",
+      "reason": "Manufacturer primary bytes identify the exact shortlist MPN/package; supplier stock remains separately open.",
+      "fact_ids": [
+        "fact-comparator-orderable-identity"
+      ],
+      "blocking_fact_ids": []
+    },
+    {
+      "coverage_id": "cov-comparator-pinout",
+      "record_id": "rec-comparator",
+      "domain": "pinout",
+      "status": "COVERED",
+      "reason": "The retained manufacturer document provides the listed pin-function table; no project nets are assigned.",
+      "fact_ids": [
+        "fact-comparator-pinout"
+      ],
+      "blocking_fact_ids": []
+    },
+    {
+      "coverage_id": "cov-comparator-electrical-limits",
+      "record_id": "rec-comparator",
+      "domain": "electrical limits",
+      "status": "COVERED",
+      "reason": "Retained source supports the specific listed product-family limits; conditions remain attached to each fact.",
+      "fact_ids": [
+        "fact-comparator-input-offset-voltage",
+        "fact-comparator-input-bias-current"
+      ],
+      "blocking_fact_ids": []
+    },
+    {
+      "coverage_id": "cov-comparator-manufacturer-product-description",
+      "record_id": "rec-comparator",
+      "domain": "manufacturer product description",
+      "status": "COVERED",
+      "reason": "The retained manufacturer document identifies the named product and its documented role/description; this is not application qualification.",
+      "fact_ids": [
+        "fact-comparator-product-function"
+      ],
+      "blocking_fact_ids": []
+    },
+    {
+      "coverage_id": "cov-comparator-mechanical-fit",
+      "record_id": "rec-comparator",
+      "domain": "mechanical fit",
+      "status": "OPEN",
+      "reason": "The local family envelope and generic footprint are provisional; physical board fit and land-pattern suitability are not validated.",
+      "fact_ids": [
+        "fact-comparator-mechanical-fit"
+      ],
+      "blocking_fact_ids": [
+        "fact-comparator-mechanical-fit"
+      ]
+    },
+    {
+      "coverage_id": "cov-comparator-procurement",
+      "record_id": "rec-comparator",
+      "domain": "procurement",
+      "status": "OPEN",
+      "reason": "Supplier stock, lead time, consignment and assembly allocation remain unverified as of the dated shortlist.",
+      "fact_ids": [
+        "fact-comparator-procurement-status"
+      ],
+      "blocking_fact_ids": [
+        "fact-comparator-procurement-status"
+      ]
+    }
+  ]
+}

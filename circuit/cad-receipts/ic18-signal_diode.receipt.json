@@ -2,7 +2,7 @@
   "receipt_version": 1,
   "identity": {
     "asset_id": "ic18-signal_diode",
-    "record_id": null,
+    "record_id": "rec-signal-diode",
     "manufacturer": "Nexperia",
     "mpn": "BAS16GW-QX",
     "package": "SOD-123",
@@ -62,7 +62,7 @@
   "cad_use": {
     "symbol": "zudo-osc-hole-field:BAS16GW_QX",
     "footprint": "zudo-osc-hole-field:SOD-123",
-    "model_path": null,
+    "model_path": "${KIPRJMOD}/../../footprints/kicad/zudo-osc-hole-field.3dshapes/D_SOD-123.wrl",
     "transform": {
       "offset": null,
       "rotation": null,
@@ -75,11 +75,12 @@
       "Pin/pad map and KiCad library checker"
     ],
     "remaining_physical_checks": [
-      "Bridge current transfer, land pattern, sourcing and physical validation before release."
+      "Bridge current transfer, land pattern, sourcing and physical validation before release.",
+      "Confirm exact body/height, land pattern, fixed-layout clearance, and electrical suitability before hardware use; catalogue family geometry is provisional."
     ]
   },
   "publication": {
-    "preview_selected": false,
+    "preview_selected": true,
     "download_published": false,
     "permitted_scope": null
   }

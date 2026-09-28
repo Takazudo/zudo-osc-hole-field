@@ -1,0 +1,128 @@
+{
+  "schema_version": 1,
+  "facts": [
+    {
+      "fact_id": "fact-reference-manufacturer",
+      "record_id": "rec-reference",
+      "source_id": "src-reference-datasheet",
+      "class": "PROJECT_STATE",
+      "value": "Texas Instruments",
+      "unit": "NONE",
+      "conditions": "Manufacturer of the project-selected exact shortlist identity.",
+      "locator": "src-reference-datasheet: title block or OSC-ES-1 row parts[id=reference].manufacturer",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-reference-project-selection",
+      "record_id": "rec-reference",
+      "source_id": "src-reference-shortlist",
+      "class": "PROJECT_STATE",
+      "value": {
+        "manufacturer": "Texas Instruments",
+        "mpn": "REF5050AIDR",
+        "package": "SOIC-8",
+        "lcsc": "C27804",
+        "roles": "5 V precision reference",
+        "source_status": "LISTED; stock UNVERIFIED"
+      },
+      "unit": "NONE",
+      "conditions": "OSC-ES-1 dated proposal row; exact source status and availability statements are not supplier allocation.",
+      "locator": "src-reference-shortlist: JSON row parts[id=reference]",
+      "provenance": "PROJECT-CHOICE",
+      "verdict": "NOT APPLICABLE",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-reference-orderable-identity",
+      "record_id": "rec-reference",
+      "source_id": "src-reference-datasheet",
+      "class": "PROJECT_STATE",
+      "value": {
+        "manufacturer": "Texas Instruments",
+        "mpn": "REF5050AIDR",
+        "package": "SOIC-8"
+      },
+      "unit": "NONE",
+      "conditions": "Exact complete orderable identifier in the selected package; does not establish supplier stock.",
+      "locator": "Section/table audit: src-reference-datasheet: package/orderable addendum names exact MPN",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-reference-pinout",
+      "record_id": "rec-reference",
+      "source_id": "src-reference-datasheet",
+      "class": "PROJECT_STATE",
+      "value": "pin 1 DNC -> pad 1; pin 2 Vin -> pad 2; pin 3 Temp -> pad 3; pin 4 GND -> pad 4; pin 5 Trim/NR -> pad 5; pin 6 Vout -> pad 6; pin 7 NC -> pad 7; pin 8 DNC -> pad 8",
+      "unit": "NONE",
+      "conditions": "No schematic or placement/net binding is claimed. Manufacturer pin functions are source-backed only when a retained primary document names the product family.",
+      "locator": "src-reference-datasheet: Pin configuration/function table",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-reference-product-function",
+      "record_id": "rec-reference",
+      "source_id": "src-reference-datasheet",
+      "class": "PROJECT_STATE",
+      "value": "Manufacturer source identifies REF5050AIDR as the shortlisted 5 V precision reference device; this is not project suitability.",
+      "unit": "NONE",
+      "conditions": "Product family description only; no project application or electrical guarantee implied.",
+      "locator": "src-reference-datasheet: document title block and product description",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-reference-electrical-limits",
+      "record_id": "rec-reference",
+      "source_id": "src-reference-datasheet",
+      "class": "GUARANTEED_ELECTRICAL",
+      "value": "No exact-part electrical limits promoted from retained evidence.",
+      "unit": "NONE",
+      "conditions": "The task has not promoted a source-backed limit for this exact shortlist record.",
+      "locator": "src-reference-datasheet: exact component electrical-characteristics table not promoted",
+      "provenance": "UNVERIFIED",
+      "verdict": "UNSOURCED",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-reference-procurement-status",
+      "record_id": "rec-reference",
+      "source_id": "src-reference-shortlist",
+      "class": "PROJECT_STATE",
+      "value": "LISTED; stock UNVERIFIED",
+      "unit": "NONE",
+      "conditions": "Time-stamped OSC-ES-1 state on 2026-09-28; current stock, lead time, consignment, and JLC assembly are not established.",
+      "locator": "src-reference-shortlist: JSON row parts[id=reference].sourcing.status/jlcpcb_assembly",
+      "provenance": "PROJECT-CHOICE",
+      "verdict": "UNSOURCED",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-reference-mechanical-fit",
+      "record_id": "rec-reference",
+      "source_id": "src-reference-shortlist",
+      "class": "PROJECT_STATE",
+      "value": "Provisional package-family envelope only; board/land-pattern fit has not been physically checked.",
+      "unit": "NONE",
+      "conditions": "Selected footprint family and display envelope do not establish exact-part placement or solderability.",
+      "locator": "Section/table audit: src-reference-shortlist: parts[id=reference].package; CAD receipt is provisional family geometry",
+      "provenance": "PROJECT-CHOICE",
+      "verdict": "NEEDS BENCH",
+      "depends_on": [],
+      "expression": ""
+    }
+  ]
+}
