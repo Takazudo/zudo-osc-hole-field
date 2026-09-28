@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "manufacturer": "Texas Instruments / National Semiconductor",
+  "source_url": "https://www.ti.com/lit/zip/SNOM267",
+  "product_url": "https://www.ti.com/product/LM13700",
+  "retrieved_date": "2026-09-28",
+  "availability": "AVAILABLE",
+  "authority": "MANUFACTURER_PRIMARY",
+  "archive_sha256": "1289ea54f143164a6e3200486aa3f4210e72119451c9c5de13c2b7a87147f690",
+  "retained_file": "design/spec/modules/spice/filter-model/LM13700.MOD",
+  "sha256": "666df501773da5e65f7fd3b3c806b2c1ae7770784685dd8191a9df33b382f390",
+  "identity": "Manufacturer-hosted LM13700 single-amplifier macromodel; LM13700M/NOPB is the selected SOIC-16 device. The model does not distinguish order suffixes.",
+  "model_pin_order": [
+    "IABC",
+    "DIODE",
+    "IN+",
+    "IN-",
+    "OUT",
+    "V-",
+    "BUFFER_IN",
+    "BUFFER_OUT",
+    "V+"
+  ],
+  "limitations": [
+    "File warns that its single-pole model overestimates AC bandwidth and phase margin by more than twofold.",
+    "One amplifier is modeled; simulated supply current is half a full dual device.",
+    "No validation of actual board, package parasitics, production spread, or rail startup."
+  ],
+  "retention": "Model header explicitly permits copying/distribution, prohibits resale; header retained unchanged."
+}
