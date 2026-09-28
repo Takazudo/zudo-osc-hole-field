@@ -2,8 +2,8 @@
 import subprocess
 import unittest
 
-from ._builder import ROOT
-from .sweep_precision_vendor import model, verdict
+from design.spec.cells._builder import ROOT
+from design.spec.cells.sweep_precision_vendor import model, verdict
 
 
 class PrecisionVendorSweepGate(unittest.TestCase):
