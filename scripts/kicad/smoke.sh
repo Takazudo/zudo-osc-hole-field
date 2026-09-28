@@ -12,6 +12,7 @@ temp_relative=${temp_dir#"$repo_root"/}
 version=$(bash scripts/kicad/run.sh kicad-cli version)
 printf 'KiCad oracle: %s\n' "$version"
 
+bash scripts/geometry/check_kicad_references.sh
 bash scripts/kicad/run.sh python3 scripts/kicad/smoke/build_fixture.py "$temp_relative"
 bash scripts/kicad/run.sh kicad-cli sch erc \
   --format json --severity-all --exit-code-violations \
