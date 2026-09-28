@@ -11,9 +11,9 @@ report=json.load(open(sys.argv[1]))
 v=[v for sheet in report['sheets'] for v in sheet.get('violations',[])]
 errors=[x for x in v if x['severity']=='error']
 warnings=[x for x in v if x['severity']=='warning']
-if errors or len(warnings)!=12 or any(x['type']!='pin_to_pin' for x in warnings):
- raise SystemExit(f'pilot ERC: {len(errors)} errors, warnings={[x["type"] for x in warnings]}')
-print('PASS: pilot ERC zero errors, 12 documented LED pin-type warnings')
+if errors or len(warnings)!=24 or any(x['type']!='pin_to_pin' for x in warnings):
+ raise SystemExit(f'instrument ERC: {len(errors)} errors, warnings={[x["type"] for x in warnings]}')
+print('PASS: instrument ERC zero errors, 12 documented LED and 12 power-inlet pin-type warnings')
 PY
 bash scripts/kicad/run.sh kicad-cli sch export netlist --format kicadsexpr -o "$scratch/netlist.net" schematic/zudo-osc-hole-field.kicad_sch
 python3 scripts/schgen/verify_netlist.py "$scratch/netlist.net"

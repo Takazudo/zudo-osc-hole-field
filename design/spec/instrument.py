@@ -1,14 +1,11 @@
-"""Instrument assembly entry point; H1/H2 are the first captured draft family."""
+"""Instrument assembly entry point for captured draft families."""
 from design.spec.modules.sample_hold import specification as sample_hold_specification
 from design.spec.modules.oscillator import specification as oscillator_specification
-from scripts.schgen.core import Family, Instance, Part
+from design.spec.modules.power import specification as power_specification
 
 def specification():
     families,instances=sample_hold_specification()
     osc_families,osc_instances=oscillator_specification()
-    families=(*families,*osc_families)
-    instances=(*instances,*osc_instances)
-    # Reserved index allocation: pilot H1/H2=1/2, power=3; O1..O5=11..15, shared octave=16.
-    rails=('+12V','-12V','+5V','AGND')
-    flags=tuple(Part(f'RAIL_{i}','Fixture:PWR_FLAG','#FLG',i,0,50.8+i*25.4,50.8,{'1':net},value='HARNESS_SUPPLY') for i,net in enumerate(rails,1))
-    return (*families,Family('pilot_power',flags,global_nets=rails)),(*instances,Instance('pilot_power','PILOT_POWER',3))
+    power_families,power_instances=power_specification()
+    # Reserved index allocation: H1/H2=1/2, power=3; O1..O5=11..15, octave=16.
+    return (*families,*osc_families,*power_families),(*instances,*osc_instances,*power_instances)

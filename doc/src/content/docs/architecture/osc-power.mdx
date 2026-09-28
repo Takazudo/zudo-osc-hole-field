@@ -23,11 +23,27 @@ The intended source is zudo-pd Board P (USB-PD input) stacked on Board B (power 
 
 Connector pins are fixed: **1–2 −12 V; 3–8 ground; 9–10 +12 V; 11–12 +5 V; 13–14 CV bus; 15–16 gate bus**. Pins 13–16 are pass-through pins at the supply and must remain **unconnected on the synth**. No power-good signal is available. Every input protection switch and rail clamp must tolerate rails arriving in any order or missing while ground remains connected.
 
+## Captured synth-side inlet
+
+The generated `01_power_interfaces` sheet keeps the three incoming ribbon rails separate from the instrument rails. Each incoming rail passes through a TECHFUSE `mSMD110-33V` resettable fuse (1.10 A hold at 25 °C), then reaches the global instrument rail. A shunt unidirectional TVS goes from each instrument rail to ground: High Diode `SMAJ15A` on both 12 V rails, with its cathode on +12 V and its anode on −12 V; Brightking `SMAJ6.5A` on +5 V, cathode toward the rail. Each rail has local 100 nF + 1 µF filtering, a Yageo `RC0603FR-072K2L` 2.2 kΩ bleeder, and a test pad. Ground has its own pad. The exact candidate source files, hashes and limits are in `design/power/protection-source-lock.json`.
+
+```mermaid
+flowchart LR
+  IDC[2 × 8 keyed ribbon inlet] --> F[One 1.1 A PTC per rail]
+  F --> R[Global +12 V / −12 V / +5 V rails]
+  R --> TVS[Rail TVS to ground]
+  R --> C[100 nF + 1 µF to ground]
+  R --> B[2.2 kΩ bleeder and test pad]
+  IDC --> G[Six ground contacts to AGND and ground test pad]
+```
+
+The PTC sheet lists `R1max` as 0.250 Ω but does not establish the worst normal-operation voltage drop in this assembly, and it has no ambient derating chart. As an illustrative calculation, 0.96 A through 0.250 Ω would drop 0.24 V before cable/board losses; thermal hold current and voltage at the load are **NOT ESTABLISHED**. The TVS data are pulse-specific: SMAJ15A can clamp as high as 24.4 V and SMAJ6.5A as high as 11.2 V under their specified 10/1000 µs pulse. These values do **not** prove that a miswired cable is safe for the ICs. Fault-energy and shifted-cable tests remain mandatory. The six ground contacts are directly common; pins 13–16 are explicit no-connects.
+
 ## Synth-side design rules
 
-Keep the inlet and local per-rail filtering on the power-interface sheet. Use one 2.2 kΩ bleeder per instrument rail. Across the entire synth, nominal added bulk capacitance may be at most **150 µF on +12 V, 150 µF on −12 V, and 100 µF on +5 V**, including the 100 nF per IC supply-pin decouplers and initial 4.7 µF per board rail; use +20% capacitance tolerance in startup arithmetic. The partition and captured IC count are not complete, so the final capacitance total is **NOT ESTABLISHED**. Added capacitance can worsen the unqualified startup case.
+The inlet sheet contributes 1.1 µF nominal capacitance per rail, or 1.32 µF per rail at +20% tolerance. Bleeders draw about 5.455 mA on each 12 V rail and 2.273 mA on +5 V at nominal voltage; this load must be added to the finished budget. Across the entire synth, nominal added bulk capacitance may be at most **150 µF on +12 V, 150 µF on −12 V, and 100 µF on +5 V**, including the 100 nF per IC supply-pin decouplers and initial 4.7 µF per board rail; use +20% capacitance tolerance in startup arithmetic. The partition and captured IC count are not complete, so the final capacitance total is **NOT ESTABLISHED**. Added capacitance can worsen the unqualified startup case.
 
-The preliminary current model estimates 724.254545 mA on +12 V, 712.654545 mA on −12 V, and 138.872727 mA on +5 V. The negative-rail estimate exceeds its 640 mA project ceiling by **72.654545 mA**. These are planning estimates, not a captured whole-instrument maximum or a measured load. `design/power/rail-budget.json` is a template for the later master integration; its complete typical and maximum totals remain open.
+The earlier preliminary model estimates 724.254545 mA on +12 V, 712.654545 mA on −12 V, and 138.872727 mA on +5 V. Adding the nominal inlet bleeders illustrates 729.709090, 718.109090, and 141.145454 mA respectively; the negative-rail estimate is now **78.109090 mA over** its 640 mA project ceiling. These are planning estimates, not a captured whole-instrument maximum or a measured load. `design/power/rail-budget.json` is a template for the later master integration; its complete typical and maximum totals remain open.
 
 Reversed or offset ribbon insertion must not silently connect a rail to the wrong circuit. A shroud alone does not prove this. The protection topology, exact parts, fault-energy arithmetic, and an offset-cable test need to be reviewed against the paired supply before fabrication. The supply's output fuses and clamps are not proof that the synth survives every insertion fault.
 
