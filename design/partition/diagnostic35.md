@@ -1,8 +1,10 @@
-# Issue 35 partition blocker
+# Historical pre-60 partition blocker
 
 Authority: **PROPOSAL (planning, owner-delegated)**. Historical status: **BLOCKED at the pre-#60 snapshot**. Issue #60 subsequently resolved this source-cut prerequisite; retained numbers below describe the earlier netlist and are not current packing results. No board partition was selected by this diagnostic. All circuit/PCB materials remain unvalidated drafts.
 
-## Result
+Current decision: `partition.json`. The historical checker is not a current acceptance gate; its frozen native hash belongs to the pre-60 checkout.
+
+## Historical result
 
 The pre-partition confirmation establishes conditional electrical inputs. Applying the real netlist to the proposed physical boundary exposes a further constraint: broad module islands include their source-facing input protection. Moving a whole module island to the rear core makes its raw jack input cross a connector. Moving the whole island to the 306 × 140 mm jack board exceeds the available placement area. A separate optical board does not resolve that area deficit.
 

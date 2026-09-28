@@ -11,6 +11,7 @@ import sys
 
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0,str(ROOT))
+from scripts.checks.partition35_json import dumps
 from scripts.checks.partition35_diagnostic import footprint_geometry
 OUT = ROOT/'design/partition/stage-optical-candidate.json'
 SVG = ROOT/'design/partition/stage-optical-candidate.svg'
@@ -65,7 +66,7 @@ def build():
             if math.dist((px,py),near)<r:raise ValueError('rear post intersects connector')
         port_boxes.append({'id':port['id'],'xy_mm':box,'z_mm':[source['face_z_mm']-source['thickness_mm']-z,source['face_z_mm']-source['thickness_mm']]})
     panel_gap=source['panel_rear_z_mm']-(source['face_z_mm']+source['component_height_limit_front_mm'])
-    rear_gap=source['face_z_mm']-source['thickness_mm']-source['maximum_control_body_front_z_mm']
+    rear_gap=source['face_z_mm']-source['thickness_mm']-source['maximum_nonpassing_pot_body_front_z_mm']
     if panel_gap<0 or rear_gap<0:raise ValueError('negative nominal z clearance')
     occupied=sum(p['courtyard']['area_mm2'] for p in selected if not p['dnp'])
     hole_area=sum(math.pi*r*r for _,r,_ in circles)
@@ -76,14 +77,14 @@ def build():
     proposal=source['placement_proposal'];gap=proposal['courtyard_clearance_mm']
     obstacles=[(h['center_mm'],h['diameter_mm']/2) for h in holes]
     obstacles +=[(p['center_mm'],proposal['support_head_diameter_mm']/2) for p in posts]
-    placements=[];boxes=[]
+    placements=[];boxes=list(source.get("bulk_reservation_rectangles_mm",[]))
     def intersects(a,b):return a[0]<b[2]+gap and b[0]<a[2]+gap and a[1]<b[3]+gap and b[1]<a[3]+gap
     def legal(box):
-        if not(left+.25<=box[0] and box[2]<=right-.25 and top+.25<=box[1] and box[3]<=bottom-.25):return False
+        if not(left+.30<=box[0] and box[2]<=right-.30 and top+.30<=box[1] and box[3]<=bottom-.30):return False
         if any(intersects(box,b) for b in boxes):return False
         for (x,y),radius in obstacles:
-            near=(max(box[0],min(x,box[2])),max(box[1],min(y,box[3])))
-            if math.dist((x,y),near)<radius+gap:return False
+            # Match the current placer's conservative hole/collar bounding boxes.
+            if intersects(box,[x-radius,y-radius,x+radius,y+radius]):return False
         return True
     for part in selected:
         if not part['panel_uid']:continue
@@ -120,7 +121,7 @@ def build():
             'checks':{'roster_package_island_local_net':'PASS - source manifest','passage_count':{'switch':18,'button':6,'pot':18},
                       'nominal_passage_support_nonintersection':'PASS','rear_ports_vs_J_edge_and_control_field':'PASS - stated XY envelopes',
                       'tolerance_stack':'OPEN / NOT RUN','support_stiffness':'OPEN / NOT RUN','optical_performance':'NOT RUN',
-                      'panel_artwork_and_fasteners':'NOT RUN #37','power_signal_pin_loads':'OPEN pending #59/#62 and full partition'}}
+                      'panel_artwork_and_fasteners':'NOT RUN #37','power_signal_pin_loads':'See current partition power/path bounds; partial-power protection OPEN #59'}}
     # Dimensioned top view of proposed solid passages and fixed emitters.
     k=5;ox=35;oy=55
     def xy(x,y):return ox+(x-left)*k,oy+(y-top)*k
@@ -147,7 +148,7 @@ def build():
         drawing +=[f'<rect x="{x}" y="{y}" width="{w}" height="{h}" fill="none" stroke="#2754a2" stroke-dasharray="4 2"/>']
     drawing +=[f'<text x="25" y="{height-35}">White: 42 passages; gold: 35 posts; magenta: 12 fixed LEDs; grey: courtyard proposal.</text>',
                f'<text x="25" y="{height-17}">Blue: 6 rear GH8 envelopes. No routed PCB or physical fit result.</text>','</g></svg>']
-    return json.dumps(result,indent=2)+'\n','\n'.join(drawing)+'\n'
+    return dumps(result)+'\n','\n'.join(drawing)+'\n'
 
 
 def main():

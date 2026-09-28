@@ -1,3 +1,5 @@
+> Historical work note from the staged optical investigation. Current counts, exact connectors, geometry and gates are in `partition.json` and `mechanical-candidate.json`.
+
 # Stage optical source cut and physical candidate
 
 Authority: PROPOSAL (planning, owner-delegated). This is an intermediate issue #35 result, not an accepted full partition. Issues #61 and #62 are being integrated before final LED, fanout, connector and power checks.

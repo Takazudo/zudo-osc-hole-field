@@ -182,7 +182,7 @@ def build_report(netlist: Path) -> dict:
                         'pins': {p: n for (r, p), n in sorted(pin_nets.items()) if r == ref}})
     return {
         'schema_version': 1, 'issue': 35,
-        'status': 'BLOCKED - source-level I/O and island refinement required before partition selection',
+        'status': 'HISTORICAL REJECTION - pre-#60 candidates; superseded by design/partition/partition.json',
         'authority': 'PROPOSAL (planning, owner-delegated)',
         'scope': 'Diagnostic of two bounded J candidates and rear-core transfer; no partition selected and no PCB generated.',
         'source': {'kicad_version': '10.0.6', 'canonical_native_netlist_sha256': canonical_netlist_sha256(netlist),
@@ -210,19 +210,32 @@ def build_report(netlist: Path) -> dict:
 
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('netlist', type=Path)
+    parser.add_argument('netlist', type=Path, nargs='?')
+    parser.add_argument('--mark-historical', action='store_true', help='Annotate the retained pre-60 snapshot without recomputing its historical numbers')
     parser.add_argument('--check', action='store_true')
     args = parser.parse_args()
+    if args.mark_historical:
+        report=json.loads(REPORT.read_text())
+        report['status']='HISTORICAL REJECTION - pre-#60 candidates; superseded by design/partition/partition.json'
+        report['superseded_by']='design/partition/partition.json; #60 source cut and #35 conditional physical proposal'
+        REPORT.write_text(json.dumps(report,indent=2,ensure_ascii=False)+'\n')
+        print('Annotated historical snapshot only; no current partition gate evaluated')
+        return
+    if args.netlist is None:parser.error('historical native netlist is required')
+    retained=json.loads(REPORT.read_text())
+    if canonical_netlist_sha256(args.netlist)!=retained['source']['canonical_native_netlist_sha256']:
+        raise SystemExit('Historical snapshot requires its pre-60 netlist/checkout. Current gate: bash scripts/partition/regen.sh --check. This is not a current BLOCKED verdict.')
     report = build_report(args.netlist)
+    report['superseded_by']='design/partition/partition.json; #60 source cut and #35 conditional physical proposal'
     output = json.dumps(report, indent=2, ensure_ascii=False)+'\n'
     if args.check:
         if not REPORT.exists() or REPORT.read_text() != output:
-            raise SystemExit('FAIL: partition diagnostic drift; regenerate from the current native netlist')
-        print('PASS: diagnostic reproducibility only; issue #35 BLOCKED; no partition selected')
+            raise SystemExit('FAIL: partition diagnostic drift; reproduce in the pinned historical checkout')
+        print('PASS: historical diagnostic reproducibility only; current partition is tracked separately')
     else:
         REPORT.parent.mkdir(parents=True, exist_ok=True)
         REPORT.write_text(output)
-        print('WROTE: partition diagnostic; issue #35 BLOCKED; no partition selected')
+        print('WROTE: historical diagnostic only; no current partition verdict')
 
 
 if __name__ == '__main__':

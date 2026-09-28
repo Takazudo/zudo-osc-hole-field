@@ -53,18 +53,13 @@ HOLE_DIAMETERS_MM = {
     "button": 5.0,
 }
 
-# The ownership and dimensions below are provisional handoff-preview data.
-# Later mechanical decisions update these tables and regenerate the lock; the
-# coordinate and record-generation algorithms do not need to change.
+# Issue #35 conditional partition. Domains identify physical board ownership;
+# fixed x/y and owner styling remain supplied by the original grid.
 BOARD_DOMAIN_RULES = {
     "jacks": {"default": "J"},
     "controls": (
-        {"block_prefix": "O", "by_kind": {"octave": "O", "switch": "OS"}, "default": "OP"},
-        {"block_prefix": "E", "by_kind": {"switch": "ES", "button": "ET"}, "default": "EP"},
-        {"block_prefix": "A", "by_kind": {}, "default": "EP"},
-        {"block_prefix": "H", "by_kind": {"pot": "UP"}, "default": "UT"},
-        {"block_prefix": "X", "by_kind": {}, "default": "US"},
-        {"block_prefix": "", "by_kind": {}, "default": "MP"},
+        {"block_prefix": "O", "by_kind": {"octave": "O"}, "default": "P"},
+        {"block_prefix": "", "by_kind": {}, "default": "P"},
     ),
 }
 
@@ -154,7 +149,7 @@ def reference_designator(
 
 
 def board_domain(field: str, block: str, kind: str) -> str:
-    """Return the handoff-preview board domain for one hardware item."""
+    """Return the conditional physical board domain for one hardware item."""
 
     try:
         rules = BOARD_DOMAIN_RULES[field]

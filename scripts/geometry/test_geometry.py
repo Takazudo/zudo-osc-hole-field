@@ -50,16 +50,16 @@ class PanelFrameTests(unittest.TestCase):
         cases = (
             ("jacks", "O1", "jack", "J"),
             ("controls", "O1", "octave", "O"),
-            ("controls", "O1", "switch", "OS"),
-            ("controls", "O1", "pot", "OP"),
-            ("controls", "E1", "switch", "ES"),
-            ("controls", "E1", "button", "ET"),
-            ("controls", "E1", "pot", "EP"),
-            ("controls", "A01", "pot", "EP"),
-            ("controls", "H1", "pot", "UP"),
-            ("controls", "H1", "button", "UT"),
-            ("controls", "X1", "switch", "US"),
-            ("controls", "M5A", "pot", "MP"),
+            ("controls", "O1", "switch", "P"),
+            ("controls", "O1", "pot", "P"),
+            ("controls", "E1", "switch", "P"),
+            ("controls", "E1", "button", "P"),
+            ("controls", "E1", "pot", "P"),
+            ("controls", "A01", "pot", "P"),
+            ("controls", "H1", "pot", "P"),
+            ("controls", "H1", "button", "P"),
+            ("controls", "X1", "switch", "P"),
+            ("controls", "M5A", "pot", "P"),
         )
         for field, block, kind, expected in cases:
             with self.subTest(block=block, kind=kind):
@@ -130,7 +130,7 @@ class PlacementLockTests(unittest.TestCase):
         self.assertEqual(records["J:O1.1V"]["domain"], "J")
         self.assertEqual(records["J:O1.1V"]["hole_d_mm"], 6.2)
         self.assertEqual(records["J:O1.1V"]["hole_status"], "PROPOSAL")
-        self.assertEqual(records["C:H1.SLEW"]["domain"], "UP")
+        self.assertEqual(records["C:H1.SLEW"]["domain"], "P")
         self.assertEqual(records["C:H1.SLEW"]["hole_d_mm"], 6.3)
         self.assertEqual(records["L:M5A.SUM.mag"]["parent"], "J:M5A.SUM")
         self.assertEqual(records["L:M5A.SUM.clip"]["parent"], "J:M5A.SUM")

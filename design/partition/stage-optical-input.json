@@ -33,9 +33,8 @@
   "component_height_limit_front_mm": 1.75,
   "panel_rear_z_mm": -2,
   "minimum_nominal_front_gap_mm": 0.45,
-  "maximum_control_body_front_z_mm": -5.0,
   "minimum_nominal_rear_body_gap_mm": 0.4,
-  "body_datum_status": "REQUIREMENT ONLY: actual pot seating, body/tail datum and tolerances remain UNSOURCED; no installed fit result",
+  "body_datum_status": "REQUIREMENT ONLY: pot bodies outside the shaft apertures must end at or behind z=-5; toggles pass through full-body apertures. Actual pot seating/body/tail datum and tolerances remain UNSOURCED; installed fit NOT RUN #65",
   "passage_diameters_mm": {
     "switch": 11,
     "button": 9.5,
@@ -80,7 +79,7 @@
       ],
       "side": "B.Cu",
       "rotation_deg": 0,
-      "evidence": "design/partition/gh8-evidence.json",
+      "evidence": "design/connectors/jst-gh.json",
       "body_clearance_envelope_mm": [
         14,
         6,
@@ -97,7 +96,7 @@
         "7": "-12V",
         "8": "+5V"
       },
-      "power_return": "Pins2/4 common AGND; no equal sharing assumed; final reference/rail/fault load contract pending #62/#59; source must be off for service"
+      "power_return": "Pins 2/4 common AGND; no equal sharing. Actual per-path resistance/current bounds and partial power in partition report; source off for service."
     },
     {
       "id": "EL-E2",
@@ -108,7 +107,7 @@
       ],
       "side": "B.Cu",
       "rotation_deg": 0,
-      "evidence": "design/partition/gh8-evidence.json",
+      "evidence": "design/connectors/jst-gh.json",
       "body_clearance_envelope_mm": [
         14,
         6,
@@ -125,7 +124,7 @@
         "7": "-12V",
         "8": "+5V"
       },
-      "power_return": "Pins2/4 common AGND; no equal sharing assumed; final reference/rail/fault load contract pending #62/#59; source must be off for service"
+      "power_return": "Pins 2/4 common AGND; no equal sharing. Actual per-path resistance/current bounds and partial power in partition report; source off for service."
     },
     {
       "id": "EL-E3",
@@ -136,7 +135,7 @@
       ],
       "side": "B.Cu",
       "rotation_deg": 0,
-      "evidence": "design/partition/gh8-evidence.json",
+      "evidence": "design/connectors/jst-gh.json",
       "body_clearance_envelope_mm": [
         14,
         6,
@@ -153,7 +152,7 @@
         "7": "-12V",
         "8": "+5V"
       },
-      "power_return": "Pins2/4 common AGND; no equal sharing assumed; final reference/rail/fault load contract pending #62/#59; source must be off for service"
+      "power_return": "Pins 2/4 common AGND; no equal sharing. Actual per-path resistance/current bounds and partial power in partition report; source off for service."
     },
     {
       "id": "EL-E4",
@@ -164,7 +163,7 @@
       ],
       "side": "B.Cu",
       "rotation_deg": 0,
-      "evidence": "design/partition/gh8-evidence.json",
+      "evidence": "design/connectors/jst-gh.json",
       "body_clearance_envelope_mm": [
         14,
         6,
@@ -181,7 +180,7 @@
         "7": "-12V",
         "8": "+5V"
       },
-      "power_return": "Pins2/4 common AGND; no equal sharing assumed; final reference/rail/fault load contract pending #62/#59; source must be off for service"
+      "power_return": "Pins 2/4 common AGND; no equal sharing. Actual per-path resistance/current bounds and partial power in partition report; source off for service."
     },
     {
       "id": "EL-E5",
@@ -192,7 +191,7 @@
       ],
       "side": "B.Cu",
       "rotation_deg": 0,
-      "evidence": "design/partition/gh8-evidence.json",
+      "evidence": "design/connectors/jst-gh.json",
       "body_clearance_envelope_mm": [
         14,
         6,
@@ -209,7 +208,7 @@
         "7": "-12V",
         "8": "+5V"
       },
-      "power_return": "Pins2/4 common AGND; no equal sharing assumed; final reference/rail/fault load contract pending #62/#59; source must be off for service"
+      "power_return": "Pins 2/4 common AGND; no equal sharing. Actual per-path resistance/current bounds and partial power in partition report; source off for service."
     },
     {
       "id": "EL-E6",
@@ -220,7 +219,7 @@
       ],
       "side": "B.Cu",
       "rotation_deg": 0,
-      "evidence": "design/partition/gh8-evidence.json",
+      "evidence": "design/connectors/jst-gh.json",
       "body_clearance_envelope_mm": [
         14,
         6,
@@ -237,7 +236,7 @@
         "7": "-12V",
         "8": "+5V"
       },
-      "power_return": "Pins2/4 common AGND; no equal sharing assumed; final reference/rail/fault load contract pending #62/#59; source must be off for service"
+      "power_return": "Pins 2/4 common AGND; no equal sharing. Actual per-path resistance/current bounds and partial power in partition report; source off for service."
     }
   ],
   "fabrication": {
@@ -260,15 +259,14 @@
     "quote_status": "No quote or order requested"
   },
   "pending": [
-    "#61 compact LED geometry",
     "Final full-board/copper placement and routing",
     "Exact control-body/tail seating and tolerance evidence",
     "Support strength, optical brightness/crosstalk and installed actuator clearance",
-    "Final pin currents, rail drop, partial power and return integrity from #59/#62",
+    "Final pin currents, rail drop, partial power and return integrity from #59",
     "Panel artwork/fastener keepouts under #37"
   ],
   "passage_scope": "Every control shaft/body intersecting optical board: E1..E6 all controls plus A01..A06 ATTEN shafts at y269",
-  "population": "All126 current stage parts on F.Cu; sixGH8 headers on B.Cu; #61 will add12 current-limiting resistors and updateLED land patterns",
+  "population": "All 138 current stage parts on F.Cu; six exact GH8 headers on B.Cu; 12 Kingbright emitters and 12 source 1.2 kohm series resistors included",
   "placement_proposal": {
     "regions": [
       {
@@ -332,8 +330,29 @@
         "side": "F.Cu"
       }
     ],
-    "edge_clearance_mm": 0.25,
-    "courtyard_clearance_mm": 0.25,
+    "edge_clearance_mm": 0.3,
+    "courtyard_clearance_mm": 0.35,
     "support_head_diameter_mm": 3.2
-  }
+  },
+  "maximum_nonpassing_pot_body_front_z_mm": -5.0,
+  "bulk_reservation_rectangles_mm": [
+    [
+      210.5,
+      165,
+      215.5,
+      168
+    ],
+    [
+      210.5,
+      169,
+      215.5,
+      172
+    ],
+    [
+      210.5,
+      173,
+      215.5,
+      176
+    ]
+  ]
 }

@@ -105,7 +105,7 @@ class BoundaryTests(unittest.TestCase):
 
     def test_stage_optical_package_retains_its_bypasses(self):
         stage = [p for p in self.packages.values() if p['instance']=='E1' and p['regions']==['stage_optical']]
-        self.assertEqual(len(stage), 21)
+        self.assertEqual(len(stage), 23)
         amp = next(p for p in stage if p['symbol']=='OPA4196IDR')
         bypasses = [p for p in stage if p['decouples_ref']==amp['ref']]
         self.assertEqual(len(bypasses), 2)
