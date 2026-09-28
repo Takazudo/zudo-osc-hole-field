@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "kind": "REQUIREMENT ONLY",
+  "status": "NON-ORDERABLE / NOT-ENERGIZABLE",
+  "protection_implemented": false,
+  "orderable": false,
+  "energization_authorized": false,
+  "selected_protection_mpn": null,
+  "physical_source_selected": false,
+  "domain": "EXT",
+  "regulated_source_count": 1,
+  "parallel_regulated_outputs_permitted": false,
+  "fixed_module_count": 33,
+  "fixed_feature_count": 438,
+  "ordinary_powered_off_patching_permitted": true,
+  "external_source_or_interface_responsibilities": [
+    "Maximum delivered-current envelope including tolerance and fault let-through",
+    "Low-drop switching and reverse-current blocking on all three rails",
+    "Autonomous load-rail window monitoring without assumed upstream power-good",
+    "Coordinated all-rail shutdown and discharge with bounded injection",
+    "Inlet-return integrity independently observable from patch-sleeve return"
+  ],
+  "synth_draft_responsibilities": [
+    "One EXT domain and no parallel regulated outputs",
+    "Distinct raw and conditional load-side net semantics at unimplemented boundary",
+    "Every output, sense and reference injection path visibly unresolved until captured",
+    "No guessed orderable inlet or protection footprint",
+    "No protection function inferred from ideal source or ERC power flags"
+  ],
+  "circuit_evidence_issue": "https://github.com/Takazudo/zudo-osc-hole-field/issues/59",
+  "physical_qualification_issue": "https://github.com/Takazudo/zudo-osc-hole-field/issues/57",
+  "draft_gate_scope": "Contract consistency only; permits conditional partition with open reservations. Does not prove the current schematic implements this interface or make any board orderable."
+}
