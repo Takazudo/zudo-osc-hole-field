@@ -94,7 +94,15 @@ class BoundaryTests(unittest.TestCase):
         stage=[rows for rows in groups.values() if any(r['role']=='stage_indicator:A' for r in rows)]
         self.assertEqual(len(stage),1)
         self.assertEqual(sum(r['role']=='stage_indicator:A' for r in stage[0]),2)
-        self.assertTrue(all(r['region']=='control' for r in stage[0]))
+        self.assertTrue(all(r['region']=='stage_optical' for r in stage[0]))
         self.assertFalse(any(r['role']=='magnitude_indicator:A' for r in stage[0]))
+
+    def test_stage_optical_package_retains_its_bypasses(self):
+        stage = [p for p in self.packages.values() if p['instance']=='E1' and p['regions']==['stage_optical']]
+        self.assertEqual(len(stage), 21)
+        amp = next(p for p in stage if p['symbol']=='OPA4196IDR')
+        bypasses = [p for p in stage if p['decouples_ref']==amp['ref']]
+        self.assertEqual(len(bypasses), 2)
+        self.assertEqual({p['mpn'] for p in bypasses}, {'GRM188R71H104KA93D'})
 
 if __name__=='__main__':unittest.main()

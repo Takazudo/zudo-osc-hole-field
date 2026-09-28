@@ -44,6 +44,7 @@ LED_OFFSETS = {
 KICAD_OX, KICAD_OY = 100.0, 50.0
 
 PROPOSAL_STATUS = "PROPOSAL"
+LED_DOMAIN_OVERRIDES = {"stage": "EL"}
 HOLE_DIAMETERS_MM = {
     "jack": 6.2,
     "pot": 6.3,

@@ -1,6 +1,6 @@
 # Issue 35 partition blocker
 
-Authority: **PROPOSAL (planning, owner-delegated)**. Status: **BLOCKED**, pending source-level I/O/island refinement in issue #60. No board partition has been selected. All circuit/PCB materials remain unvalidated drafts.
+Authority: **PROPOSAL (planning, owner-delegated)**. Historical status: **BLOCKED at the pre-#60 snapshot**. Issue #60 subsequently resolved this source-cut prerequisite; retained numbers below describe the earlier netlist and are not current packing results. No board partition was selected by this diagnostic. All circuit/PCB materials remain unvalidated drafts.
 
 ## Result
 

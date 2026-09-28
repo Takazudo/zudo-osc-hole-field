@@ -1,0 +1,53 @@
+{
+  "schema_version": 1,
+  "status": "SOURCED dimensions/ratings; conditional partition candidate, not inventory promotion",
+  "manufacturer": "JST",
+  "header_mpn": "BM08B-GHS-TBT(LF)(SN)",
+  "socket_housing_mpn": "GHR-08V-S",
+  "crimp_contact_mpn": "SSHL-002T-P0.2",
+  "supplier_order_code": null,
+  "source": {
+    "url": "https://www.jst-mfg.com/product/pdf/eng/eGH.pdf",
+    "path": "design/partition/sources/jst-gh.pdf",
+    "sha256": "b1dcb317b6b9a4fbbedd2dbf42c64c95306a252d23de8933b85fcf161240b722",
+    "retrieved": "2026-09-28",
+    "revision": "No revision identifier printed on inspected pages1-3",
+    "physical_pdf_pages": [
+      0,
+      1,
+      2
+    ],
+    "printed_pages": [
+      "1",
+      "2",
+      "3"
+    ],
+    "locator": "Page1 Specifications; page2 top-entry assembly and contact table; page3 eight-circuit housing/header rows and pin1 diagrams"
+  },
+  "rated_current_A": 1.0,
+  "rating_condition": "AWG26, temperature rise included in -40..105C operating range",
+  "voltage_V": 50,
+  "initial_contact_resistance_max_ohm": 0.03,
+  "after_test_contact_resistance_max_ohm": 0.05,
+  "wire_awg_range": [
+    30,
+    26
+  ],
+  "wire_insulation_od_mm": [
+    0.76,
+    1.0
+  ],
+  "header_body_xy_mm": [
+    13.25,
+    4.25
+  ],
+  "mated_assembly_height_reference_mm": 7.3,
+  "mated_height_tolerance_mm": null,
+  "housing_width_mm": 11.25,
+  "header_contact_pitch_mm": 1.25,
+  "pin1": "Manufacturer mounting-surface drawing on page2 and header/housing drawing on page3; board footprint must retain numbering through bottom-side transform",
+  "pcb_land_pattern_depth_mm": 5.6,
+  "selected_design_current_A_per_contact": 0.5,
+  "derating_status": "PROPOSAL 50%; actual simultaneous-contact/ambient and fault-current qualification NOT RUN",
+  "assembly": "Factory reflow headers; factory crimp SSHL-002T-P0.2 on AWG26 copper, 0.76..1.0mm insulation; latch and continuity inspection required."
+}
