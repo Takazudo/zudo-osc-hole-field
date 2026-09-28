@@ -4,7 +4,7 @@ import json,re,subprocess,sys
 from ._builder import ROOT,CELLS
 DECKS={
  'bipolar_attenuverter':('attenuverter-ideal.cir',{'v(out0)':(-5,0.001),'v(out05)':(0,0.001),'v(out1)':(5,0.001)}),
- 'magnitude_indicator':('magnitude-bridge-ideal.cir',{'@dledp[id]':(5/4990,2e-6),'@dledn[id]':(5/4990,2e-6)}),
+ 'magnitude_indicator':('magnitude-bridge-ideal.cir',{'@dledp[id]':(5/5600,2e-6),'@dledn[id]':(5/5600,2e-6)}),
  'gate_trigger_input':('gate-threshold-ideal.cir',{'rising':(1.471965,0.002),'falling':(.971509,0.002)}),
  'clip_detector':('clip-window-ideal.cir',{'negative':(-10,.002),'positive':(10,.002)}),
  'stage_indicator':('stage-mask-ideal.cir',{'@dledon[id]':(.0005,2e-5),'@dledoff[id]':(0,1e-6)}),
