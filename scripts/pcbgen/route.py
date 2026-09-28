@@ -86,10 +86,11 @@ def memory_mb(raw):
     amount=float(match[1]);unit=match[2]
     return amount*{'B':1/1048576,'KiB':1/1024,'MiB':1,'GiB':1024,'TiB':1048576}[unit]
 
-def router(dsn,ses,work,threads,heap_mb,timeout_sec,image,fanout=True):
+def router(dsn,ses,work,threads,heap_mb,timeout_sec,image,fanout=True,ignored_classes=()):
     name=f'osc-route-{os.getpid()}'
     command=['docker','run','--rm','--name',name,'--network','none','--hostname','router','--cpus',str(threads),'--memory',f'{max(heap_mb+512,1024)}m','--user',f'{os.getuid()}:{os.getgid()}','-e','HOME=/tmp','-v',f'{work.resolve()}:/work','-w','/work','--entrypoint','java',image,f'-Xmx{heap_mb}m','-jar','/app/freerouting-executable.jar','--gui.enabled=false','--api_server.enabled=false','--user_data_path=/tmp','-de','/work/'+dsn.name,'-do','/work/'+ses.name,'-mt',str(threads),'-mp','20','--router.optimizer.enabled=false']
     if not fanout:command.append('--router.fanout.enabled=false')
+    if ignored_classes:command.extend(('-inc',','.join(ignored_classes)))
     started=time.monotonic();peak=0.0;timed_out=False;log_path=work/'freerouting-live.log'
     with log_path.open('w') as output:
         proc=subprocess.Popen(command,cwd=ROOT,stdout=output,stderr=subprocess.STDOUT)
@@ -120,9 +121,11 @@ def attach_native_ratsnest(board,report,result):
     result['drc_unrouted_name_sample_count']=len(sample)
     phase=result.get('after') or result.get('prepared') or result.get('before') or {}
     result['drc_unrouted_name_sample_truncated']=detail['native_unconnected_edges']>phase.get('unconnected_items',0)
-    if detail['native_unconnected_edges']:
-        result['unrouted_name_basis']='KiCad DRC JSON name sample only; see full native ratsnest edge count and bounded multi-pad candidate names in ratsnest.json'
-        result['unrouted_net_count']=None
+    result['drc_unrouted_net_name_sample']=sample
+    result['unrouted_net_names']=sorted(detail['native_open_edges_by_net'])
+    result['unrouted_net_count']=detail['native_open_net_count']
+    result['native_open_edges_by_net']=detail['native_open_edges_by_net']
+    result['unrouted_name_basis']=detail['named_edge_basis']
 
 def main():
     parser=argparse.ArgumentParser();parser.add_argument('board_id');parser.add_argument('--board',type=Path);parser.add_argument('--report',type=Path);parser.add_argument('--timeout-sec',type=int);parser.add_argument('--threads',type=int);parser.add_argument('--heap-mb',type=int);parser.add_argument('--no-fanout',action='store_true');parser.add_argument('--refresh-ratsnest-only',action='store_true')

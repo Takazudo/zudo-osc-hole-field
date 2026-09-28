@@ -92,6 +92,23 @@ class PartitionTests(unittest.TestCase):
         board['board_bulk_reserve'][0]['rect'][0]+=.5
         self.assertIn('UNSELECTED-BULK-1 geometry differs between reserves and board_bulk_reserve',partition35.bulk_reserve_source_errors(board))
 
+    def test_jr_native_fixed_led_and_header_exclusions(self):
+        report,definitions=partition35.build()
+        receipts=report['jack_reservation_receipt']['JR']
+        power={r['reserve_id']:r for r in receipts if r['side']=='F.Cu'}
+        for index,ref in enumerate(('D13101','D14101','D15101','D16101'),3):
+            self.assertIn(ref,{s['ref'] for s in power[f'POWER-JR-{index}']['subtractions']})
+        protection=next(r for r in receipts if r['reserve_id']=='future-output-protection' and r['side']=='B.Cu')
+        self.assertEqual(protection['original_area_mm2'],2385)
+        self.assertEqual(protection['remaining_area_mm2'],494.28)
+        self.assertTrue({'J900101','J900103','J900105','J900107','J900109','J900111'} <= {s['ref'] for s in protection['subtractions']})
+        self.assertEqual(len([r for r in definitions['osc-jack-right']['keepouts'] if r['id'].startswith('UNSELECTED-BULK-')]),3)
+        for board_id in ('osc-jack-left','osc-jack-right'):
+            for keepout in definitions[board_id]['keepouts']:
+                points=keepout['polygon']
+                self.assertGreater(max(p[0] for p in points)-min(p[0] for p in points),1e-7,keepout['id'])
+                self.assertGreater(max(p[1] for p in points)-min(p[1] for p in points),1e-7,keepout['id'])
+
     def test_exact_selector_contact_choice(self):
         gh=json.loads((ROOT/'design/connectors/jst-gh.json').read_text())
         bounds={p['positions']:p['header_courtyard_xy_mm'][2] for p in gh['sizes']}

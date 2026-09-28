@@ -78,7 +78,16 @@ def load_definition(path: Path) -> BoardDefinition:
             if isinstance(region[key],bool) or not isinstance(region[key],(int,float)) or region[key]<0:raise ValueError('invalid '+key)
     routing=data.get('routing')
     if routing is not None:
-        if not isinstance(routing,dict) or set(routing)!={'min_track_width_mm','net_classes','zones'}:raise ValueError('invalid routing keys')
+        if not isinstance(routing,dict) or not {'min_track_width_mm','net_classes','zones'}<=set(routing) or set(routing)-{'min_track_width_mm','net_classes','zones','load_terminal_transfer'}:raise ValueError('invalid routing keys')
+        if 'load_terminal_transfer' in routing:
+            transfer=routing['load_terminal_transfer']
+            if not isinstance(transfer,dict) or transfer.get('status','').split()[0]!='PROPOSAL':raise ValueError('terminal transfer must remain a proposal')
+            for key in ('minimum_finished_via_barrel_copper_mm','plane_copper_thickness_mm','array_pitch_mm','via_diameter_mm','via_drill_mm'):
+                if isinstance(transfer.get(key),bool) or not isinstance(transfer.get(key),(int,float)) or transfer[key]<=0:raise ValueError('invalid terminal transfer '+key)
+            for key in ('array_rows','array_columns'):
+                if isinstance(transfer.get(key),bool) or not isinstance(transfer.get(key),int) or transfer[key]<1:raise ValueError('invalid terminal array '+key)
+            if transfer['via_drill_mm']>=transfer['via_diameter_mm'] or transfer.get('nets')!=['AGND','+12V','-12V','+5V']:raise ValueError('invalid terminal transfer copper/net')
+            if not transfer.get('process_requirement') or not transfer.get('resistance_requirement'):raise ValueError('terminal transfer lacks manufacturing/resistance gate')
         if isinstance(routing['min_track_width_mm'],bool) or not isinstance(routing['min_track_width_mm'],(int,float)) or routing['min_track_width_mm']<=0:raise ValueError('invalid minimum track width')
         if not isinstance(routing['net_classes'],list) or not routing['net_classes']:raise ValueError('routing needs net classes')
         seen=set()

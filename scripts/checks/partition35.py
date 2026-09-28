@@ -23,22 +23,30 @@ def subtract_rect(rect,cut):
     x0,y0,x1,y1=rect;a,b,c,d=cut
     a=max(x0,a);b=max(y0,b);c=min(x1,c);d=min(y1,d)
     if a>=c or b>=d:return [rect]
-    return [r for r in ((x0,y0,a,y1),(c,y0,x1,y1),(a,y0,c,b),(a,d,c,y1)) if r[0]<r[2] and r[1]<r[3]]
+    # Floating-point subtraction can leave a ~1e-14 mm high sliver. KiCad
+    # rounds that to a zero-area DSN keepout, which the router then skips.
+    return [r for r in ((x0,y0,a,y1),(c,y0,x1,y1),(a,y0,c,b),(a,d,c,y1)) if r[2]-r[0]>1e-7 and r[3]-r[1]>1e-7]
 
-def jack_reservation_keepouts(reserves,locations,terminals,board):
-    """Retain the proposed source reserve except occupied jack/terminal envelopes."""
+def jack_reservation_keepouts(reserves,locations,headers,terminals,board):
+    """Retain gross reserves while excluding installed native-facing envelopes."""
     exclusions=[]
     for p in locations.values():
-        if p['board']==board and p['fixed'] and p['ref'].startswith('J'):
-            x0,y0,x1,y1=p['courtyard_mm'];exclusions.append((p['ref'],(x0-.05,y0-.05,x1+.05,y1+.05),'source fixed jack courtyard plus 0.05 mm native inflation'))
+        if p['board']==board and p['fixed'] and (p['ref'].startswith('J') or p['ref'].startswith('D')):
+            x0,y0,x1,y1=p['courtyard_mm']
+            sides=('F.Cu','B.Cu') if p['ref'].startswith('J') else (p['side'],)
+            exclusions.append((p['ref'],(x0-.05,y0-.05,x1+.05,y1+.05),sides,'source fixed hardware courtyard plus 0.05 mm native inflation'))
+    for h in headers:
+        if h['board']==board:
+            x0,y0,x1,y1=h['native_cached_courtyard_envelope_mm']
+            exclusions.append((h['pcb_reference'],(x0-.05,y0-.05,x1+.05,y1+.05),(h['side'],),'installed GH header native cached courtyard plus 0.05 mm margin'))
     for t in terminals:
         if t['board']==board:
-            x,y=t['center_mm'];w,h=t['maximum_courtyard_mm'];exclusions.append((t['reference'],(x-w/2,y-h/2,x+w/2,y+h/2),'source 5 x 5 mm load-land courtyard'))
+            x,y=t['center_mm'];w,h=t['maximum_courtyard_mm'];exclusions.append((t['reference'],(x-w/2,y-h/2,x+w/2,y+h/2),('F.Cu','B.Cu'),'source 5 x 5 mm load-land courtyard'))
     keepouts=[];receipt=[]
     for reserve in reserves:
         for side in reserve['sides']:
             original=tuple(reserve['rect']);pieces=[original];used=[]
-            cuts=list(exclusions)
+            cuts=[(ref,cut,basis) for ref,cut,sides,basis in exclusions if side in sides]
             if reserve['id'].startswith('future-'):
                 cuts += [(r['id'],tuple(r['rect']),'other explicit same-face reservation') for r in reserves if r['id']!=reserve['id'] and side in r['sides']]
             for ref,cut,basis in sorted(cuts):
@@ -95,6 +103,21 @@ def validate_assignment(parts,assignments,io):
     for p in parts:
         if p['decouples_ref'] and boards.get(p['decouples_ref'])!=boards.get(p['ref']):errors.append('split bypass '+p['ref'])
     return errors
+
+def jack_rail_polygons(board,distribution,board_key):
+    """Finite inner-plane tails reach the three unchanged load lands.
+
+    0.50 mm source gaps separate different rail polygons. Native 0.25 mm
+    clearances and zone fill remain the oracle for the resulting copper.
+    """
+    x0=min(p[0] for p in board['outline']);x3=max(p[0] for p in board['outline'])
+    x1=x0+(x3-x0)/3;x2=x0+2*(x3-x0)/3
+    lands=distribution['branches'][board_key]['x_mm'];left=lands[1]-2.5;right=lands[2]-2.5
+    return {
+        '+12V':[[x0+.25,20],[x1-.25,20],[x1-.25,145],[left-.5,145],[left-.5,163.75],[x0+.25,163.75]],
+        '-12V':[[x1+.25,20],[x2-.25,20],[x2-.25,157.5],[right,157.5],[right,163.75],[left,163.75],[left,145.5],[x1+.25,145.5]],
+        '+5V':[[x2+.25,20],[x3-.25,20],[x3-.25,163.75],[right+.5,163.75],[right+.5,158],[x2+.25,158]],
+    }
 
 
 def build():
@@ -154,7 +177,7 @@ def build():
             terminal_sites=[{'reference':b+'-POWER-'+str(i+1),'board':b,'center_mm':[x,branch['pad_y_mm']],'maximum_courtyard_mm':[5,5]} for i,x in enumerate(branch['x_mm'])]
             errors.extend(bulk_reserve_source_errors(s))
             errors.extend(jack_bulk_conflicts(s.get('reserves',[]),loc,ports['headers'],terminal_sites,b))
-            keepouts,jack_reservation_receipt[b]=jack_reservation_keepouts(s.get('reserves',[]),loc,terminal_sites,b)
+            keepouts,jack_reservation_receipt[b]=jack_reservation_keepouts(s.get('reserves',[]),loc,connector,terminal_sites,b)
         else:
             keepouts=[{'id':r['id'],'polygon':[[r['rect'][0],r['rect'][1]],[r['rect'][2],r['rect'][1]],[r['rect'][2],r['rect'][3]],[r['rect'][0],r['rect'][3]]],'layers':r['sides']} for r in s.get('reserves',[])]
         if b=='EL':
@@ -175,11 +198,12 @@ def build():
                 {'name':'Default','nets':[],'track_width_mm':.2,'clearance_mm':.2,'via_diameter_mm':.6,'via_drill_mm':.3},
                 {'name':'Rails','nets':['+12V','-12V','+5V'],'track_width_mm':.4,'clearance_mm':.25,'via_diameter_mm':.7,'via_drill_mm':.3},
                 {'name':'Ground','nets':['AGND'],'track_width_mm':.5,'clearance_mm':.25,'via_diameter_mm':.7,'via_drill_mm':.3}],
-                'zones':[{'name':'agnd_plane','net':'AGND','layers':['In1.Cu'],'clearance_mm':.25,'min_thickness_mm':.15,'pad_connection':'full'}]+[
-                    {'name':rail+'_plane','net':rail,'layers':['In2.Cu'],'polygon':[[x0,20],[x1,20],[x1,164],[x0,164]],'clearance_mm':.25,'min_thickness_mm':.15,'pad_connection':'full'}
-                    for rail,x0,x1 in [(rail, min(p[0] for p in s['outline'])+i*(max(p[0] for p in s['outline'])-min(p[0] for p in s['outline']))/3+.25,
-                         min(p[0] for p in s['outline'])+(i+1)*(max(p[0] for p in s['outline'])-min(p[0] for p in s['outline']))/3-.25)
-                         for i,rail in enumerate(['+12V','-12V','+5V'])]]}
+                'zones':[{'name':'agnd_plane','net':'AGND','layers':['In1.Cu'],'clearance_mm':.25,'min_thickness_mm':.15,'pad_connection':'full'},
+                    {'name':'agnd_surface','net':'AGND','layers':['F.Cu','B.Cu'],'clearance_mm':.25,'min_thickness_mm':.15,'pad_connection':'full'}]+[
+                    {'name':rail+'_plane','net':rail,'layers':['In2.Cu'],'polygon':polygon,'clearance_mm':.25,'min_thickness_mm':.15,'pad_connection':'full'}
+                    for rail,polygon in jack_rail_polygons(s,d,b).items()]}
+            if 'jack_terminal_transfer' in d:
+                definition['routing']['load_terminal_transfer']=d['jack_terminal_transfer']
         definitions[s['id']]=definition
         boards.append({**s,'board_key':b,'role':{'JL':'left jack interfaces, whole local islands','JR':'right jack interfaces, whole local islands','P':'all pots/toggles/buttons and complete slew/control circuits','K':'distinct rear signal core and conditional load-side power star','EL':'complete stage-indicator circuits'}.get(b,'one selected stepped octave adapter'),
                        'facing_panel':'F.Cu','status':'PROPOSAL','supply_domain':'EXT','physical_package_count':len(selected),'fitted_package_count':sum(not p['dnp'] for p in selected),'definition':'design/boards/'+s['id']+'.json',

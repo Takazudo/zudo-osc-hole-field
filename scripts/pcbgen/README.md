@@ -31,3 +31,23 @@ The default report is `reports/routing.json` beside the board, with routed/unrou
 `replicate.py` copies **local-net** tracks and vias from one `Block` to translated instances of the same region family. It matches source and target parts through their `Role`/footprint signatures, pin numbers, nets, and exact footprint/pad translations. Shared rail/ground tracks and already routed target nets are left alone. The remaining shared nets should then be routed by `route.sh`. Run it through `scripts/kicad/run.sh` with `--source` and optional `--targets`; it writes `reports/replication.json`. It refuses a placement that differs from the template.
 
 `bash scripts/pcbgen/test_route.sh --quick` builds and checks the two-layer, four-layer, six-instance replication, rerun, and timed-out barrier fixtures. `--dense` reproducibly builds the full 3 × 10 jack stress slice from retained copper sources, adds the explicit ground stitching, checks the complete DRC gate, repeats generation, and exercises missing-via and stale-geometry regressions. `--dense-route` performs a new bounded source-column/full-slice heuristic experiment and archives prior cache attempts. The accepted repair, measured failures, and ownership boundary are documented in [dense-evidence/README.md](fixtures/dense-evidence/README.md). The fixture uses audited jack footprints, one OPA4196 quad-amp **section** per synthetic indicator (one package per cell for independent routing stress), an LED and passives, and one 40-pin KiCad stock connector. It is deliberately a routing stress topology, not the proposed indicator circuit or a package-count decision. The pinned KiCad stock connector symbol fragment is retained in `fixtures/Conn_02x20_Odd_Even.kicad_sympart` (SHA-256 `247f848336a03a540f21f6ca8cd6fd064ef3f38b89cdef1e6d7a947aa7ae2d57`). `fixtures/dense-slice-report.json` records measured completion and resource results. Every autorouted PCB remains an unvalidated draft for human routing, thermal, mechanical, and fabrication review.
+
+## Draft ground extraction numerical setup
+
+Use a disposable local environment; the pinned KiCad oracle exports native
+geometry separately. Numerical extraction never changes a PCB or qualifies
+materials, soldering, temperature, or hardware.
+
+```sh
+python3 -m venv .circuit-cache/ground-solver-venv
+.circuit-cache/ground-solver-venv/bin/python -m pip install -r scripts/pcbgen/numerical-requirements.txt
+.circuit-cache/ground-solver-venv/bin/python -m unittest scripts.pcbgen.test_ground_access scripts.pcbgen.test_ground_annular
+```
+
+The pins are also installed before Python unit-test discovery in CI. The separate
+`power_locality_native_regression.py` runs explicitly through the pinned oracle in
+CI; it proves that a pad and orphan zone cannot pass a main-network audit. Full-board
+resistance solves run through `bash $HOME/.codex/scripts/heavy-guard.sh --` and
+retain the board/source hashes, finite interface definitions, material conditions,
+convergence limits, and exact failure reason. Native electrical connectivity,
+numerical screens, and physical qualification are distinct gates.
