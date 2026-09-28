@@ -112,7 +112,10 @@ class Builder:
             number=assigned[group]
             # Extra resistor banks use an explicit valid reference prefix rather
             # than expanding the generator's fixed 100-reference instance stride.
-            prefix=p.prefix if number<=99 else p.prefix+'B'
+            # Internal diodes/trimmers must not collide with fixed envelope
+            # D13xx / RV13xx panel references. Preserve panel references.
+            base_prefix=p.prefix+'O' if name=='oscillator' and p.prefix in ('D','RV') and not p.panel_refs else p.prefix
+            prefix=base_prefix if number<=99 else base_prefix+'B'
             number=(number-1)%99+1
             n=len(out);columns=8 if name=='octave_reference' else 17
             out.append(replace(p,prefix=prefix,ordinal=number,page=1,x=45.72+(n%columns)*63.5,y=66.04+(n//columns)*38.1))

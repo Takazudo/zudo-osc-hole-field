@@ -1,0 +1,378 @@
+{
+  "schema_version": 1,
+  "module": "envelope",
+  "authority": "PROPOSAL (planning, owner-delegated)",
+  "status": "Captured package planning worksheet; not measured current or guaranteed maximum",
+  "IC_packages_per_instance": {
+    "ADG5412FBRUZ": 5,
+    "CD74HC221M96": 1,
+    "LM13700M_NOPB": 1,
+    "LM393BIDR": 2,
+    "OPA4196IDR": 7,
+    "OPA4197IPWR": 3,
+    "REF5050AIDR": 1,
+    "SN74HC00DR": 17,
+    "SN74HC14DR": 2,
+    "SN74HC74DR": 9
+  },
+  "breakdown": [
+    {
+      "load": "OPA4196IDR",
+      "count": 7,
+      "typical_unit_mA": {
+        "+12V": 0.56,
+        "-12V": 0.56,
+        "+5V": 0
+      },
+      "planning_unit_mA": {
+        "+12V": 1.0,
+        "-12V": 1.0,
+        "+5V": 0
+      },
+      "basis": "Whole quad packages including unused channels. Source OPA4197 p8 or OPA4196 p8; full-temperature Iq maxima. No output current included here."
+    },
+    {
+      "load": "OPA4197IPWR",
+      "count": 3,
+      "typical_unit_mA": {
+        "+12V": 4,
+        "-12V": 4,
+        "+5V": 0
+      },
+      "planning_unit_mA": {
+        "+12V": 6.0,
+        "-12V": 6.0,
+        "+5V": 0
+      },
+      "basis": "Whole quad packages including unused channels. Source OPA4197 p8 or OPA4196 p8; full-temperature Iq maxima. No output current included here."
+    },
+    {
+      "load": "ADG5412FBRUZ",
+      "count": 5,
+      "typical_unit_mA": {
+        "+12V": 0.9,
+        "-12V": 0.5,
+        "+5V": 0
+      },
+      "planning_unit_mA": {
+        "+12V": 1.3,
+        "-12V": 0.7,
+        "+5V": 0
+      },
+      "basis": "ADG5412F Rev C Table 1 p4 \u00b115 V normal-mode table; extrapolation allowance at project \u00b112 V, not guaranteed at this voltage."
+    },
+    {
+      "load": "LM13700M_NOPB",
+      "count": 1,
+      "typical_unit_mA": {
+        "+12V": 4,
+        "-12V": 4,
+        "+5V": 0
+      },
+      "planning_unit_mA": {
+        "+12V": 6,
+        "-12V": 6,
+        "+5V": 0
+      },
+      "basis": "Planning source has 16 LM13700 packages. 6 mA allowance including bias currents; module evidence must replace estimate."
+    },
+    {
+      "load": "LM393BIDR",
+      "count": 2,
+      "typical_unit_mA": {
+        "+12V": 0.6,
+        "-12V": 0,
+        "+5V": 0
+      },
+      "planning_unit_mA": {
+        "+12V": 1,
+        "-12V": 0,
+        "+5V": 0
+      },
+      "basis": "Whole dual packages on +12V/AGND; inherited planning allowance, no -12V comparator current. Pullups separate."
+    },
+    {
+      "load": "SN74HC00DR",
+      "count": 17,
+      "typical_unit_mA": {
+        "+12V": 0,
+        "-12V": 0,
+        "+5V": 0.2
+      },
+      "planning_unit_mA": {
+        "+12V": 0,
+        "-12V": 0,
+        "+5V": 0.5
+      },
+      "basis": "Per-package planning reserve for static and clock/Schmitt dynamic current, not a guaranteed manufacturer maximum or simulated current; includes unused gates."
+    },
+    {
+      "load": "SN74HC74DR",
+      "count": 9,
+      "typical_unit_mA": {
+        "+12V": 0,
+        "-12V": 0,
+        "+5V": 0.2
+      },
+      "planning_unit_mA": {
+        "+12V": 0,
+        "-12V": 0,
+        "+5V": 0.5
+      },
+      "basis": "Per-package planning reserve for static and clock/Schmitt dynamic current, not a guaranteed manufacturer maximum or simulated current; includes unused gates."
+    },
+    {
+      "load": "SN74HC14DR",
+      "count": 2,
+      "typical_unit_mA": {
+        "+12V": 0,
+        "-12V": 0,
+        "+5V": 0.2
+      },
+      "planning_unit_mA": {
+        "+12V": 0,
+        "-12V": 0,
+        "+5V": 0.5
+      },
+      "basis": "Per-package planning reserve for static and clock/Schmitt dynamic current, not a guaranteed manufacturer maximum or simulated current; includes unused gates."
+    },
+    {
+      "load": "CD74HC221M96",
+      "count": 1,
+      "typical_unit_mA": {
+        "+12V": 0,
+        "-12V": 0,
+        "+5V": 0.2
+      },
+      "planning_unit_mA": {
+        "+12V": 0,
+        "-12V": 0,
+        "+5V": 0.5
+      },
+      "basis": "Per-package planning reserve for static and clock/Schmitt dynamic current, not a guaranteed manufacturer maximum or simulated current; includes unused gates."
+    },
+    {
+      "load": "Three magnitude LEDs",
+      "count": 3,
+      "typical_unit_mA": {
+        "+12V": 0.25,
+        "-12V": 0.25,
+        "+5V": 0
+      },
+      "planning_unit_mA": {
+        "+12V": 1.25,
+        "-12V": 1.25,
+        "+5V": 0
+      },
+      "basis": "Inherited OSC-ES-1 brightness/load allowance; buffered input monitors only."
+    },
+    {
+      "load": "Two stage LEDs",
+      "count": 2,
+      "typical_unit_mA": {
+        "+12V": 0,
+        "-12V": 0,
+        "+5V": 0.25
+      },
+      "planning_unit_mA": {
+        "+12V": 0,
+        "-12V": 0,
+        "+5V": 0.55
+      },
+      "basis": "0.5mA nominal at8V plus planning allowance; conservatively charges both although one-hot states permit only one."
+    },
+    {
+      "load": "Four external output loads",
+      "count": 4,
+      "typical_unit_mA": {
+        "+12V": 0.08,
+        "-12V": 0.08,
+        "+5V": 0
+      },
+      "planning_unit_mA": {
+        "+12V": 0.8,
+        "-12V": 0.8,
+        "+5V": 0
+      },
+      "basis": "8V into100k typical/10k planning applied conservatively to every output/rail. No simultaneous-short qualification."
+    },
+    {
+      "load": "Reference, rates, clamp and control reserve",
+      "count": 1,
+      "typical_unit_mA": {
+        "+12V": 6,
+        "-12V": 6,
+        "+5V": 0
+      },
+      "planning_unit_mA": {
+        "+12V": 12,
+        "-12V": 12,
+        "+5V": 0
+      },
+      "basis": "Includes two +/-5V offset tracks (2mA/rail), matched-pair converters, active hold/idle clamp transients and reference/feedback networks. Conservative overlap with OTA bias allowance retained; dynamic/temperature bounds unqualified."
+    },
+    {
+      "load": "Comparator pullups",
+      "count": 3,
+      "typical_unit_mA": {
+        "+12V": 0,
+        "-12V": 0,
+        "+5V": 0.5
+      },
+      "planning_unit_mA": {
+        "+12V": 0,
+        "-12V": 0,
+        "+5V": 1.0638297872340425
+      },
+      "basis": "Three 4.7k pullups; unused comparator output is unconnected."
+    },
+    {
+      "load": "Five control-contact pulls",
+      "count": 5,
+      "typical_unit_mA": {
+        "+12V": 0,
+        "-12V": 0,
+        "+5V": 0.25
+      },
+      "planning_unit_mA": {
+        "+12V": 0,
+        "-12V": 0,
+        "+5V": 0.5
+      },
+      "basis": "10k pulls, conservative five simultaneous contacts; includes button/toggle RC charging allowance only at nominal voltage."
+    },
+    {
+      "load": "Input isolation enables",
+      "count": 1,
+      "typical_unit_mA": {
+        "+12V": 0,
+        "-12V": 0,
+        "+5V": 0.15
+      },
+      "planning_unit_mA": {
+        "+12V": 0,
+        "-12V": 0,
+        "+5V": 0.25
+      },
+      "basis": "Three approximately5V/101k input isolator enables and input-current reserve."
+    }
+  ],
+  "instances": [
+    {
+      "instance": "E1",
+      "planning_typical_mA": {
+        "+12V": 32.69,
+        "-12V": 29.49,
+        "+5V": 9.2
+      },
+      "planning_upper_mA": {
+        "+12V": 58.45,
+        "-12V": 53.45,
+        "+5V": 21.541489
+      },
+      "guaranteed_maximum_mA": {
+        "+12V": null,
+        "-12V": null,
+        "+5V": null
+      }
+    },
+    {
+      "instance": "E2",
+      "planning_typical_mA": {
+        "+12V": 32.69,
+        "-12V": 29.49,
+        "+5V": 9.2
+      },
+      "planning_upper_mA": {
+        "+12V": 58.45,
+        "-12V": 53.45,
+        "+5V": 21.541489
+      },
+      "guaranteed_maximum_mA": {
+        "+12V": null,
+        "-12V": null,
+        "+5V": null
+      }
+    },
+    {
+      "instance": "E3",
+      "planning_typical_mA": {
+        "+12V": 32.69,
+        "-12V": 29.49,
+        "+5V": 9.2
+      },
+      "planning_upper_mA": {
+        "+12V": 58.45,
+        "-12V": 53.45,
+        "+5V": 21.541489
+      },
+      "guaranteed_maximum_mA": {
+        "+12V": null,
+        "-12V": null,
+        "+5V": null
+      }
+    },
+    {
+      "instance": "E4",
+      "planning_typical_mA": {
+        "+12V": 32.69,
+        "-12V": 29.49,
+        "+5V": 9.2
+      },
+      "planning_upper_mA": {
+        "+12V": 58.45,
+        "-12V": 53.45,
+        "+5V": 21.541489
+      },
+      "guaranteed_maximum_mA": {
+        "+12V": null,
+        "-12V": null,
+        "+5V": null
+      }
+    },
+    {
+      "instance": "E5",
+      "planning_typical_mA": {
+        "+12V": 32.69,
+        "-12V": 29.49,
+        "+5V": 9.2
+      },
+      "planning_upper_mA": {
+        "+12V": 58.45,
+        "-12V": 53.45,
+        "+5V": 21.541489
+      },
+      "guaranteed_maximum_mA": {
+        "+12V": null,
+        "-12V": null,
+        "+5V": null
+      }
+    },
+    {
+      "instance": "E6",
+      "planning_typical_mA": {
+        "+12V": 32.69,
+        "-12V": 29.49,
+        "+5V": 9.2
+      },
+      "planning_upper_mA": {
+        "+12V": 58.45,
+        "-12V": 53.45,
+        "+5V": 21.541489
+      },
+      "guaranteed_maximum_mA": {
+        "+12V": null,
+        "-12V": null,
+        "+5V": null
+      }
+    }
+  ],
+  "planning_upper_total_mA": {
+    "+12V": 350.7,
+    "-12V": 320.7,
+    "+5V": 129.248936
+  },
+  "guaranteed_maximum_status": "NOT ESTABLISHED - actual bias, timing, temperature, output loading, startup and faults unqualified",
+  "decoupling_nF_per_instance": 6400,
+  "note": "Expanded physical logic and buffering replace the rough two-logic-IC handoff estimate. No module bulk allocation; #33/#34 must reconcile actual captured package counts and bench currents."
+}
