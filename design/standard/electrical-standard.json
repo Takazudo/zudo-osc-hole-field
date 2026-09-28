@@ -2402,5 +2402,19 @@
       }
     },
     "meaning": "These are project selection targets, not verified ratings of an unretained exact variant. #15/#21 must match every fitted value and rating to its own complete MPN; no substitution of dielectric on storage nodes."
+  },
+  "supply_architecture": {
+    "authority": "PROPOSAL (planning, owner-delegated)",
+    "decision": "design/power/supply-architecture.json",
+    "selected_domain": "EXT",
+    "source_status": "External regulated requirement contract only; physical source and inlet NOT SELECTED",
+    "historical_ceilings_mA": {
+      "+12V": 960,
+      "-12V": 640,
+      "+5V": 400
+    },
+    "rationale": "Original single-source and two-source planning totals fail. Three sources fit a conditional allocation/reserved rear volume but do not establish voltage-loss or exact inlet/cable interface. #48 selects a requirement contract; original capacity comparisons remain visible.",
+    "capacitance_policy": "Unchanged 150/150/100 uF nominal +20%; selected source must ramp no faster than 10 ms and meet full-capacitance transient requirement. #52/#35 count actual decouplers and bulk.",
+    "qualification_issue": "https://github.com/Takazudo/zudo-osc-hole-field/issues/57"
   }
 }

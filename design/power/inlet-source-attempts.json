@@ -1,0 +1,61 @@
+{
+  "status": "SOURCE UNAVAILABLE: original bytes not retained; candidates NOT SELECTED",
+  "retrieval_date": "2026-09-28",
+  "qualification_issue": "https://github.com/Takazudo/zudo-osc-hole-field/issues/57",
+  "attempts": [
+    {
+      "id": "spec",
+      "url": "https://www.molex.com/content/dam/molex/molex-dot-com/products/automated/en-us/productspecificationpdf/430/43045/PS-43045-001.pdf",
+      "authority": "MANUFACTURER_PRIMARY",
+      "availability": "SOURCE UNAVAILABLE",
+      "sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+      "reason": "urllib read timed out after 30 seconds; no verified bytes. Manufacturer legacy spec URL also returned HTTP/2 internal error, then timed out via HTTP/1.1. Jameco mirror returned HTTP 403."
+    },
+    {
+      "id": "header",
+      "url": "https://www.molex.com/content/dam/molex/molex-dot-com/products/automated/en-us/salesdrawingpdf/430/43045/430450800_sd.pdf",
+      "authority": "MANUFACTURER_PRIMARY",
+      "availability": "SOURCE UNAVAILABLE",
+      "sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+      "reason": "urllib read timed out after 30 seconds; no verified bytes. Manufacturer legacy spec URL also returned HTTP/2 internal error, then timed out via HTTP/1.1. Jameco mirror returned HTTP 403."
+    },
+    {
+      "id": "housing",
+      "url": "https://www.molex.com/content/dam/molex/molex-dot-com/products/automated/en-us/salesdrawingpdf/430/43025/430250800_sd.pdf",
+      "authority": "MANUFACTURER_PRIMARY",
+      "availability": "SOURCE UNAVAILABLE",
+      "sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+      "reason": "urllib read timed out after 30 seconds; no verified bytes. Manufacturer legacy spec URL also returned HTTP/2 internal error, then timed out via HTTP/1.1. Jameco mirror returned HTTP 403."
+    },
+    {
+      "id": "contact",
+      "url": "https://www.molex.com/content/dam/molex/molex-dot-com/products/automated/en-us/salesdrawingpdf/430/43030/430300007_sd.pdf",
+      "authority": "MANUFACTURER_PRIMARY",
+      "availability": "SOURCE UNAVAILABLE",
+      "sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+      "reason": "urllib read timed out after 30 seconds; no verified bytes. Manufacturer legacy spec URL also returned HTTP/2 internal error, then timed out via HTTP/1.1. Jameco mirror returned HTTP 403."
+    }
+  ],
+  "catalog_observations": {
+    "status": "Browser text inspected; original HTML byte retention timed out. These notes are discovery evidence only, not source-qualified assembly ratings.",
+    "header": {
+      "url": "https://www.molex.com/en-us/products/part-detail/430450800",
+      "mpn": "43045-0800",
+      "observed_maximum_per_contact_A": 8.5,
+      "observed_maximum_voltage_V": 600,
+      "locator": "Physical Specifications and Electrical Specifications; current is a catalog maximum with no simultaneously-loaded application qualification."
+    },
+    "housing": {
+      "url": "https://www.molex.com/en-us/products/part-detail/430250800",
+      "mpn": "43025-0800",
+      "locator": "Physical Specifications: eight circuits, 3.00 mm pitch, polarized and locking; panel mount No. Mating-face pin numbering is not established here."
+    },
+    "contact": {
+      "url": "https://www.molex.com/en-us/products/part-detail/43030-0007",
+      "mpn": "43030-0007",
+      "observed_maximum_per_contact_A": 7,
+      "locator": "Physical/Electrical Specifications: tin female contact for 20/22/24 AWG, 1.85 mm max insulation; catalog maximum alone is not derated installed capacity."
+    }
+  },
+  "next_action": "#52 retain exact drawing and product/application rating evidence, promote selected identities via owner bundles/publication, or retain a visibly requirement-only interface with no orderable footprint. #57 validates assembled derating/fit."
+}
