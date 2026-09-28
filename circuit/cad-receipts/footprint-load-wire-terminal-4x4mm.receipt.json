@@ -1,0 +1,78 @@
+{
+  "receipt_version": 1,
+  "identity": {
+    "asset_id": "footprint-load-wire-terminal-4x4mm",
+    "record_id": null,
+    "manufacturer": null,
+    "mpn": null,
+    "package": "LoadWireTerminal_4x4mm",
+    "variant_notes": "Project-defined bare copper terminal, not an orderable inlet."
+  },
+  "acquisition": {
+    "provider": "Project partition proposal",
+    "library_release_tag": null,
+    "source_url": "design/partition/partition-input.json",
+    "acquired_on": "2026-09-28",
+    "original_filenames": [
+      "partition-input.json"
+    ],
+    "sha256": {
+      "design/partition/partition-input.json": "4eef068a0567792cd460eb29eb091e9c097a5fb3310cd8feaa0c38f58e038ac5"
+    }
+  },
+  "representation": {
+    "files": [
+      "footprints/kicad/zudo-osc-hole-field.pretty/LoadWireTerminal_4x4mm.kicad_mod"
+    ],
+    "formats": [
+      "kicad_mod"
+    ],
+    "units": "mm",
+    "original_paths": [
+      "design/partition/partition-input.json"
+    ]
+  },
+  "fidelity": {
+    "class": "derived",
+    "reason": "Exact project-proposed 4x4 mm copper land; physical solder/thermal/strain behavior NOT RUN.",
+    "evidence": [
+      "design/partition/partition-input.json"
+    ]
+  },
+  "derivation": {
+    "derived": true,
+    "input_sha256": {
+      "design/partition/partition-input.json": "4eef068a0567792cd460eb29eb091e9c097a5fb3310cd8feaa0c38f58e038ac5"
+    },
+    "tool": "scripts/schgen/project_boards.py and scripts/libgen/gen_courtyards.py",
+    "tool_version": "1",
+    "parameters": {
+      "copper_land_mm": [
+        4,
+        4
+      ],
+      "mask_margin_mm": 0.1
+    },
+    "output_sha256": {
+      "footprints/kicad/zudo-osc-hole-field.pretty/LoadWireTerminal_4x4mm.kicad_mod": "32c2a7cf4625774e1ae6fbe97c0cc558eecf0ef3b40486780afa7e2b01e51dcb"
+    }
+  },
+  "cad_use": {
+    "symbol": "zudo-osc-hole-field:TestPoint",
+    "footprint": "zudo-osc-hole-field:LoadWireTerminal_4x4mm",
+    "model_path": null
+  },
+  "checks": {
+    "performed": [
+      "KiCad parse and generated courtyard check"
+    ],
+    "remaining_physical_checks": [
+      "Factory solder profile, ampacity and strain relief #65 NOT RUN"
+    ]
+  },
+  "publication": {
+    "preview_selected": false,
+    "download_published": false,
+    "permitted_scope": null
+  }
+}
