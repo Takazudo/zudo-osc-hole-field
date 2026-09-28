@@ -1,6 +1,6 @@
 {
   "schema_version": 2,
-  "status": "UNVALIDATED DRAFT - summed known/report planning subtotals; complete typical and guaranteed maxima NOT ESTABLISHED",
+  "status": "UNVALIDATED DRAFT - reported/assumed typical and planning upper subtotals; complete typical and guaranteed maxima NOT ESTABLISHED",
   "source_lock": "design/power/zudo-pd-lock.json",
   "units": "mA",
   "rails": {
@@ -55,7 +55,8 @@
       "-12V": 1.32,
       "+5V": 1.32
     },
-    "other_inlet_current_mA": "NOT ESTABLISHED: TVS leakage and capacitor leakage over temperature"
+    "other_inlet_current_mA": "NOT ESTABLISHED: TVS leakage and capacitor leakage over temperature",
+    "bleeder_current_provenance": "Inherited unchanged from issue #24 power-interface rail-budget template at base commit 971945584c36cf6cb9272e0675b01afda966215d; fitted 2.2 kohm 1% rail bleeders in design/spec/modules/power.py. The worst-voltage/resistance allowance is a project calculation, not a measured inlet maximum."
   },
   "module_instance_count": 33,
   "shared_reference_count": 1,
@@ -65,7 +66,7 @@
       "instance": "H1",
       "family": "sample_hold",
       "source": "design/reports/current/sample_hold.json",
-      "typical_subtotal_mA": {
+      "reported_typical_subtotal_mA": {
         "+12V": 34.5,
         "-12V": 33.1,
         "+5V": 0.0
@@ -90,7 +91,7 @@
       "instance": "H2",
       "family": "sample_hold",
       "source": "design/reports/current/sample_hold.json",
-      "typical_subtotal_mA": {
+      "reported_typical_subtotal_mA": {
         "+12V": 34.5,
         "-12V": 33.1,
         "+5V": 0.0
@@ -115,7 +116,7 @@
       "instance": "O1",
       "family": "oscillator",
       "source": "design/reports/current/oscillator.json",
-      "typical_subtotal_mA": {
+      "reported_typical_subtotal_mA": {
         "+12V": 26.36,
         "-12V": 26.56,
         "+5V": 3.0
@@ -140,7 +141,7 @@
       "instance": "O2",
       "family": "oscillator",
       "source": "design/reports/current/oscillator.json",
-      "typical_subtotal_mA": {
+      "reported_typical_subtotal_mA": {
         "+12V": 26.36,
         "-12V": 26.56,
         "+5V": 3.0
@@ -165,7 +166,7 @@
       "instance": "O3",
       "family": "oscillator",
       "source": "design/reports/current/oscillator.json",
-      "typical_subtotal_mA": {
+      "reported_typical_subtotal_mA": {
         "+12V": 26.36,
         "-12V": 26.56,
         "+5V": 3.0
@@ -190,7 +191,7 @@
       "instance": "O4",
       "family": "oscillator",
       "source": "design/reports/current/oscillator.json",
-      "typical_subtotal_mA": {
+      "reported_typical_subtotal_mA": {
         "+12V": 26.36,
         "-12V": 26.56,
         "+5V": 3.0
@@ -215,7 +216,7 @@
       "instance": "O5",
       "family": "oscillator",
       "source": "design/reports/current/oscillator.json",
-      "typical_subtotal_mA": {
+      "reported_typical_subtotal_mA": {
         "+12V": 26.36,
         "-12V": 26.56,
         "+5V": 3.0
@@ -240,7 +241,7 @@
       "instance": "OCTAVE_REF",
       "family": "octave_reference",
       "source": "design/reports/current/oscillator.json",
-      "typical_subtotal_mA": {
+      "reported_typical_subtotal_mA": {
         "+12V": 15.0,
         "-12V": 15.0,
         "+5V": 0.0
@@ -265,7 +266,7 @@
       "instance": "F1",
       "family": "filter",
       "source": "design/reports/current/filter.json",
-      "typical_subtotal_mA": {
+      "reported_typical_subtotal_mA": {
         "+12V": 33.4,
         "-12V": 31.8,
         "+5V": 0.2
@@ -290,7 +291,7 @@
       "instance": "F2",
       "family": "filter",
       "source": "design/reports/current/filter.json",
-      "typical_subtotal_mA": {
+      "reported_typical_subtotal_mA": {
         "+12V": 33.4,
         "-12V": 31.8,
         "+5V": 0.2
@@ -315,7 +316,7 @@
       "instance": "F3",
       "family": "filter",
       "source": "design/reports/current/filter.json",
-      "typical_subtotal_mA": {
+      "reported_typical_subtotal_mA": {
         "+12V": 33.4,
         "-12V": 31.8,
         "+5V": 0.2
@@ -340,7 +341,7 @@
       "instance": "N1",
       "family": "noise",
       "source": "design/reports/current/noise.json",
-      "typical_subtotal_mA": {
+      "reported_typical_subtotal_mA": {
         "+12V": 2.44,
         "-12V": 2.44,
         "+5V": 5.0
@@ -365,7 +366,7 @@
       "instance": "E1",
       "family": "envelope",
       "source": "design/reports/current/envelope.json",
-      "typical_subtotal_mA": {
+      "reported_typical_subtotal_mA": {
         "+12V": 32.69,
         "-12V": 29.49,
         "+5V": 9.2
@@ -390,7 +391,7 @@
       "instance": "E2",
       "family": "envelope",
       "source": "design/reports/current/envelope.json",
-      "typical_subtotal_mA": {
+      "reported_typical_subtotal_mA": {
         "+12V": 32.69,
         "-12V": 29.49,
         "+5V": 9.2
@@ -415,7 +416,7 @@
       "instance": "E3",
       "family": "envelope",
       "source": "design/reports/current/envelope.json",
-      "typical_subtotal_mA": {
+      "reported_typical_subtotal_mA": {
         "+12V": 32.69,
         "-12V": 29.49,
         "+5V": 9.2
@@ -440,7 +441,7 @@
       "instance": "E4",
       "family": "envelope",
       "source": "design/reports/current/envelope.json",
-      "typical_subtotal_mA": {
+      "reported_typical_subtotal_mA": {
         "+12V": 32.69,
         "-12V": 29.49,
         "+5V": 9.2
@@ -465,7 +466,7 @@
       "instance": "E5",
       "family": "envelope",
       "source": "design/reports/current/envelope.json",
-      "typical_subtotal_mA": {
+      "reported_typical_subtotal_mA": {
         "+12V": 32.69,
         "-12V": 29.49,
         "+5V": 9.2
@@ -490,7 +491,7 @@
       "instance": "E6",
       "family": "envelope",
       "source": "design/reports/current/envelope.json",
-      "typical_subtotal_mA": {
+      "reported_typical_subtotal_mA": {
         "+12V": 32.69,
         "-12V": 29.49,
         "+5V": 9.2
@@ -515,7 +516,7 @@
       "instance": "B1",
       "family": "mult",
       "source": "design/reports/current/mult.json",
-      "typical_subtotal_mA": {
+      "reported_typical_subtotal_mA": {
         "+12V": 5.86,
         "-12V": 5.46,
         "+5V": 0.05
@@ -540,7 +541,7 @@
       "instance": "B2",
       "family": "mult",
       "source": "design/reports/current/mult.json",
-      "typical_subtotal_mA": {
+      "reported_typical_subtotal_mA": {
         "+12V": 5.86,
         "-12V": 5.46,
         "+5V": 0.05
@@ -565,7 +566,7 @@
       "instance": "X1",
       "family": "manual_ab",
       "source": "design/reports/current/manual_ab.json",
-      "typical_subtotal_mA": {
+      "reported_typical_subtotal_mA": {
         "+12V": 7.1605,
         "-12V": 6.3605,
         "+5V": 0.1
@@ -590,7 +591,7 @@
       "instance": "X2",
       "family": "manual_ab",
       "source": "design/reports/current/manual_ab.json",
-      "typical_subtotal_mA": {
+      "reported_typical_subtotal_mA": {
         "+12V": 7.1605,
         "-12V": 6.3605,
         "+5V": 0.1
@@ -615,7 +616,7 @@
       "instance": "M5A",
       "family": "mix5",
       "source": "design/reports/current/mix5.json",
-      "typical_subtotal_mA": {
+      "reported_typical_subtotal_mA": {
         "+12V": 18.42,
         "-12V": 15.42,
         "+5V": 0.25
@@ -640,7 +641,7 @@
       "instance": "M5B",
       "family": "mix5",
       "source": "design/reports/current/mix5.json",
-      "typical_subtotal_mA": {
+      "reported_typical_subtotal_mA": {
         "+12V": 18.42,
         "-12V": 15.42,
         "+5V": 0.25
@@ -665,7 +666,7 @@
       "instance": "M4A",
       "family": "mix4_vca",
       "source": "design/reports/current/mix4_vca.json",
-      "typical_subtotal_mA": {
+      "reported_typical_subtotal_mA": {
         "+12V": 22.98,
         "-12V": 19.98,
         "+5V": 0.25
@@ -690,7 +691,7 @@
       "instance": "M4B",
       "family": "mix4_vca",
       "source": "design/reports/current/mix4_vca.json",
-      "typical_subtotal_mA": {
+      "reported_typical_subtotal_mA": {
         "+12V": 22.98,
         "-12V": 19.98,
         "+5V": 0.25
@@ -715,7 +716,7 @@
       "instance": "W2",
       "family": "wavefolder",
       "source": "design/reports/current/wavefolder.json",
-      "typical_subtotal_mA": {
+      "reported_typical_subtotal_mA": {
         "+12V": 19.661134,
         "-12V": 17.611134,
         "+5V": 0.15
@@ -740,7 +741,7 @@
       "instance": "W1",
       "family": "wavefolder",
       "source": "design/reports/current/wavefolder.json",
-      "typical_subtotal_mA": {
+      "reported_typical_subtotal_mA": {
         "+12V": 19.661134,
         "-12V": 17.611134,
         "+5V": 0.15
@@ -765,7 +766,7 @@
       "instance": "A01",
       "family": "offset",
       "source": "design/reports/current/offset.json",
-      "typical_subtotal_mA": {
+      "reported_typical_subtotal_mA": {
         "+12V": 18.96,
         "-12V": 15.26,
         "+5V": 0.1
@@ -790,7 +791,7 @@
       "instance": "A02",
       "family": "offset",
       "source": "design/reports/current/offset.json",
-      "typical_subtotal_mA": {
+      "reported_typical_subtotal_mA": {
         "+12V": 18.96,
         "-12V": 15.26,
         "+5V": 0.1
@@ -815,7 +816,7 @@
       "instance": "A03",
       "family": "offset",
       "source": "design/reports/current/offset.json",
-      "typical_subtotal_mA": {
+      "reported_typical_subtotal_mA": {
         "+12V": 18.96,
         "-12V": 15.26,
         "+5V": 0.1
@@ -840,7 +841,7 @@
       "instance": "A04",
       "family": "offset",
       "source": "design/reports/current/offset.json",
-      "typical_subtotal_mA": {
+      "reported_typical_subtotal_mA": {
         "+12V": 18.96,
         "-12V": 15.26,
         "+5V": 0.1
@@ -865,7 +866,7 @@
       "instance": "A05",
       "family": "offset",
       "source": "design/reports/current/offset.json",
-      "typical_subtotal_mA": {
+      "reported_typical_subtotal_mA": {
         "+12V": 18.96,
         "-12V": 15.26,
         "+5V": 0.1
@@ -890,7 +891,7 @@
       "instance": "A06",
       "family": "offset",
       "source": "design/reports/current/offset.json",
-      "typical_subtotal_mA": {
+      "reported_typical_subtotal_mA": {
         "+12V": 18.96,
         "-12V": 15.26,
         "+5V": 0.1
@@ -912,20 +913,135 @@
       }
     }
   ],
-  "known_typical_subtotal_mA": {
+  "reported_assumed_typical_subtotal_mA": {
     "+12V": 781.957813,
     "-12V": 715.457813,
     "+5V": 80.272727
   },
-  "known_planning_upper_subtotal_mA": {
-    "+12V": 1404.543683,
-    "-12V": 1313.343683,
-    "+5V": 177.171661
+  "complete_typical_mA": {
+    "+12V": null,
+    "-12V": null,
+    "+5V": null
+  },
+  "reported_planning_upper_subtotal_mA": {
+    "+12V": 1404.819166,
+    "-12V": 1313.56866,
+    "+5V": 177.286445
   },
   "guaranteed_maximum_mA": {
     "+12V": null,
     "-12V": null,
     "+5V": null
+  },
+  "unestablished_maximum_instances": {
+    "+12V": [
+      "H1",
+      "H2",
+      "O1",
+      "O2",
+      "O3",
+      "O4",
+      "O5",
+      "OCTAVE_REF",
+      "F1",
+      "F2",
+      "F3",
+      "N1",
+      "E1",
+      "E2",
+      "E3",
+      "E4",
+      "E5",
+      "E6",
+      "B1",
+      "B2",
+      "X1",
+      "X2",
+      "M5A",
+      "M5B",
+      "M4A",
+      "M4B",
+      "W2",
+      "W1",
+      "A01",
+      "A02",
+      "A03",
+      "A04",
+      "A05",
+      "A06"
+    ],
+    "-12V": [
+      "H1",
+      "H2",
+      "O1",
+      "O2",
+      "O3",
+      "O4",
+      "O5",
+      "OCTAVE_REF",
+      "F1",
+      "F2",
+      "F3",
+      "N1",
+      "E1",
+      "E2",
+      "E3",
+      "E4",
+      "E5",
+      "E6",
+      "B1",
+      "B2",
+      "X1",
+      "X2",
+      "M5A",
+      "M5B",
+      "M4A",
+      "M4B",
+      "W2",
+      "W1",
+      "A01",
+      "A02",
+      "A03",
+      "A04",
+      "A05",
+      "A06"
+    ],
+    "+5V": [
+      "H1",
+      "H2",
+      "O1",
+      "O2",
+      "O3",
+      "O4",
+      "O5",
+      "OCTAVE_REF",
+      "F1",
+      "F2",
+      "F3",
+      "N1",
+      "E1",
+      "E2",
+      "E3",
+      "E4",
+      "E5",
+      "E6",
+      "B1",
+      "B2",
+      "X1",
+      "X2",
+      "M5A",
+      "M5B",
+      "M4A",
+      "M4B",
+      "W2",
+      "W1",
+      "A01",
+      "A02",
+      "A03",
+      "A04",
+      "A05",
+      "A06"
+    ]
   },
   "design_ceiling_mA": {
     "+12V": 960,
@@ -933,13 +1049,13 @@
     "+5V": 400
   },
   "planning_subtotal_margin_to_ceiling_mA": {
-    "+12V": -444.543683,
-    "-12V": -673.343683,
-    "+5V": 222.828339
+    "+12V": -444.819166,
+    "-12V": -673.56866,
+    "+5V": 222.713555
   },
   "planning_subtotal_overshoot_mA": {
-    "+12V": 444.543683,
-    "-12V": 673.343683,
+    "+12V": 444.819166,
+    "-12V": 673.56866,
     "+5V": 0
   },
   "largest_planning_contributors": {
@@ -1100,5 +1216,5 @@
       "+5V": 258.854546
     }
   },
-  "note": "No overlap removed without connectivity evidence. Planning upper is not a guaranteed or measured maximum; #34 owns rail closure and any overshoot resolution."
+  "note": "Typical subtotal uses nominal inlet bleeders; planning upper uses source-backed worst-voltage/resistance inlet bleeders. No overlap removed without connectivity evidence. Planning upper is not a guaranteed or measured maximum; #34 owns rail closure and any overshoot resolution."
 }

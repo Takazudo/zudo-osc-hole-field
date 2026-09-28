@@ -46,31 +46,41 @@ def build():
         for r in RAILS:
             if r not in typ or r not in upper:raise ValueError(f'missing {r} current in {path}: {inst.name}')
         maximum=next((row[k] for k in ('guaranteed_maximum_mA','guaranteed_maximum_mA_per_rail','complete_total_maximum_mA') if k in row),None)
-        if maximum is not None and (not isinstance(maximum,dict) or any(maximum[r] is not None for r in RAILS)):
-            raise ValueError(f'unexpected established maximum; review source {path}: {inst.name}')
+        if maximum is not None and (not isinstance(maximum,dict) or any(r not in maximum for r in RAILS)):
+            raise ValueError(f'invalid maximum field in {path}: {inst.name}')
+        maximum=maximum or {r:None for r in RAILS}
         records.append({'instance':inst.name,'family':inst.family,'source':str(path.relative_to(ROOT)),
-                        'typical_subtotal_mA':typ,'planning_upper_subtotal_mA':upper,
-                        'guaranteed_maximum_mA':{r:None for r in RAILS},
+                        'reported_typical_subtotal_mA':typ,'planning_upper_subtotal_mA':upper,
+                        'guaranteed_maximum_mA':maximum,
                         'partial':inst.family=='sample_hold',
                         'source_fields':{'typical':typ_key,'planning_upper':upper_key}})
     if len(records)!=34 or len({x['instance'] for x in records})!=34:
         raise ValueError('expected 33 modules plus one shared octave reference current row')
-    inlet=source['synth_inlet']['nominal_bleeder_current_mA']
-    totals={kind:{r:round(sum(x[key][r] for x in records)+inlet[r],6) for r in RAILS}
-            for kind,key in [('known_typical_subtotal_mA','typical_subtotal_mA'),
-                             ('known_planning_upper_subtotal_mA','planning_upper_subtotal_mA')]}
+    inlet_nominal=source['synth_inlet']['nominal_bleeder_current_mA']
+    inlet_upper=source['synth_inlet']['worst_voltage_and_resistance_bleeder_current_mA']
+    totals={
+        'reported_assumed_typical_subtotal_mA':
+            {r:round(sum(x['reported_typical_subtotal_mA'][r] for x in records)+inlet_nominal[r],6) for r in RAILS},
+        'reported_planning_upper_subtotal_mA':
+            {r:round(sum(x['planning_upper_subtotal_mA'][r] for x in records)+inlet_upper[r],6) for r in RAILS},
+    }
+    maximum={r:(round(sum(x['guaranteed_maximum_mA'][r] for x in records)+inlet_upper[r],6)
+                if all(x['guaranteed_maximum_mA'][r] is not None for x in records) else None) for r in RAILS}
+    incomplete_max={r:[x['instance'] for x in records if x['guaranteed_maximum_mA'][r] is None] for r in RAILS}
     ceilings={r:source['rails'][r]['design_ceiling_80_percent'] for r in RAILS}
-    margin={r:round(ceilings[r]-totals['known_planning_upper_subtotal_mA'][r],6) for r in RAILS}
+    margin={r:round(ceilings[r]-totals['reported_planning_upper_subtotal_mA'][r],6) for r in RAILS}
     contributors={r:sorted([{'instance':x['instance'],'mA':x['planning_upper_subtotal_mA'][r]}
                             for x in records],key=lambda x:(-x['mA'],x['instance']))[:10] for r in RAILS}
-    return {'schema_version':2,'status':'UNVALIDATED DRAFT - summed known/report planning subtotals; complete typical and guaranteed maxima NOT ESTABLISHED',
+    return {'schema_version':2,'status':'UNVALIDATED DRAFT - reported/assumed typical and planning upper subtotals; complete typical and guaranteed maxima NOT ESTABLISHED',
             'source_lock':source['source_lock'],'units':'mA','rails':source['rails'],
             'current_sources':[str(p.relative_to(ROOT)) for p in REPORTS.values()],
             'synth_inlet':source['synth_inlet'],'module_instance_count':33,
             'shared_reference_count':1,'power_sheet_count':1,
-            'instances':records,'known_typical_subtotal_mA':totals['known_typical_subtotal_mA'],
-            'known_planning_upper_subtotal_mA':totals['known_planning_upper_subtotal_mA'],
-            'guaranteed_maximum_mA':{r:None for r in RAILS},
+            'instances':records,'reported_assumed_typical_subtotal_mA':totals['reported_assumed_typical_subtotal_mA'],
+            'complete_typical_mA':{r:None for r in RAILS},
+            'reported_planning_upper_subtotal_mA':totals['reported_planning_upper_subtotal_mA'],
+            'guaranteed_maximum_mA':maximum,
+            'unestablished_maximum_instances':incomplete_max,
             'design_ceiling_mA':ceilings,'planning_subtotal_margin_to_ceiling_mA':margin,
             'planning_subtotal_overshoot_mA':{r:round(max(0,-margin[r]),6) for r in RAILS},
             'largest_planning_contributors':contributors,
@@ -79,7 +89,7 @@ def build():
                                   'all module reports leave guaranteed maxima unresolved',
                                   'power inlet TVS/capacitor leakage, startup, faults and external cable loads lack a complete bound'],
             'preliminary_model':source['preliminary_model'],
-            'note':'No overlap removed without connectivity evidence. Planning upper is not a guaranteed or measured maximum; #34 owns rail closure and any overshoot resolution.'}
+            'note':'Typical subtotal uses nominal inlet bleeders; planning upper uses source-backed worst-voltage/resistance inlet bleeders. No overlap removed without connectivity evidence. Planning upper is not a guaranteed or measured maximum; #34 owns rail closure and any overshoot resolution.'}
 
 
 def main():
@@ -88,7 +98,7 @@ def main():
     if args.check:
         if out.read_text()!=body:raise ValueError('rail-budget.json drift')
     else:out.write_text(body)
-    report=build();print('Known planning upper subtotal:',report['known_planning_upper_subtotal_mA'])
+    report=build();print('Reported planning upper subtotal:',report['reported_planning_upper_subtotal_mA'])
     print('Planning subtotal overshoot:',report['planning_subtotal_overshoot_mA'])
 
 if __name__=='__main__':main()

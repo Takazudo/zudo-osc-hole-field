@@ -174,7 +174,7 @@ def family():
     # the unqualified AS3340 pulse high level at +12 V.
     b.r('PUL_DIV_TOP','100 kΩ','PULSE_RAW','PULSE_HALF');b.r('PUL_DIV_BOT','100 kΩ','PULSE_HALF','AGND')
     b.r('REF25_TOP','100 kΩ','OSC_REF5','REF25');b.r('REF25_BOT','100 kΩ','REF25','AGND')
-    b.device('LM393BIDR','PULSE_CMP','U',{'1':'PULSE_LOGIC','2':'PULSE_HALF','3':'REF25','4':'AGND','5':None,'6':None,'7':None,'8':'+12V'})
+    b.device('LM393BIDR','PULSE_CMP','U',{'1':'PULSE_LOGIC','2':'PULSE_HALF','3':'REF25','4':'AGND','5':'AGND','6':'+5V','7':None,'8':'+12V'})
     b.r('PUL_PULL','4.7 kΩ','+5V','PULSE_LOGIC');b.amp('PUL_SCALE','audio','PULSE_LOGIC','PUL_SUM','PUL_SCALED');b.r('PUL_RF','100 kΩ','PUL_SCALED','PUL_SUM');b.r('PUL_RREF','100 kΩ','OSC_REF5','PUL_SUM')
     # Matched-pair soft saturation: approximately tanh(Vdiff/(2*VT)).
     b.r('SINE_ATTEN','68 kΩ','TRI_SCALED','SINE_BASE');b.r('SINE_BASE_GND','1 kΩ','SINE_BASE','AGND')

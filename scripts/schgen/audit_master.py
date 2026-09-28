@@ -22,6 +22,34 @@ FIXTURES={'PWR_FLAG':'PWR_FLAG','GND':'GND','VCC':'VCC',
           'LM2902':'LM2902','LM2903':'LM2903','R':'R','Conn_01x02':'Conn_01x02'}
 
 
+def unit_coverage_error(ref,entries,library):
+    """Return a missing/duplicate unit fault even if only one unit is present."""
+    symbol=entries[0][3]
+    expected={u for u,pins in library[symbol].units.items() if pins}
+    actual=[e[2] for e in entries]
+    if len(actual)!=len(set(actual)) or set(actual)!=expected:
+        return f'package unit mismatch {ref}: represented {sorted(actual)}, expected {sorted(expected)}'
+    return None
+
+
+def active_unit_termination_error(ref,parts):
+    floating=[p['unit'] for p in parts if p['pins'] and all(v is None for v in p['pins'].values())]
+    return f'all-NC active units {ref}: {floating}' if floating else None
+
+
+def coverage_errors(bound,placements,panel_count):
+    missing=sorted(set(placements)-set(bound))
+    extra=sorted(set(bound)-set(placements))
+    duplicate={k:v for k,v in bound.items() if len(v)!=1}
+    errors=[]
+    if missing:errors.append('unbound UIDs: '+', '.join(missing))
+    if extra:errors.append('extra UIDs: '+', '.join(extra))
+    if duplicate:errors.append('duplicate UID bindings: '+str(duplicate))
+    if len(bound)!=438 or panel_count!=438:
+        errors.append(f'panel count: {len(bound)} UIDs, {panel_count} parts; expected 438')
+    return errors
+
+
 def check(families,instances,netlist):
     errors=[]
     names=[i.name for i in instances]
@@ -73,35 +101,37 @@ def check(families,instances,netlist):
                     uid=p.attributes.get('PanelUid','').replace('${SHEETNAME}',inst.name)
                     members.append({'ref':ref,'pin':pin,'island':island,'panel_uid':uid})
             if not members:errors.append(f'sensitive net unused {inst.name}/{net}')
+            if any(not x['island'] for x in members):
+                errors.append(f'sensitive net member lacks island {inst.name}/{net}: {members}')
             panels=[x for x in members if x['panel_uid']]
             for part in panels:
                 if not part['island'] or any(x['island']!=part['island'] for x in members):
                     errors.append(f'sensitive panel net outside one island {inst.name}/{net}: {members}')
             sensitive.append({'net':net if net in f.global_nets else f'/{inst.name}/{net}',
                               'members':members,'islands':sorted({x['island'] for x in members})})
-    missing=sorted(set(placements)-set(bound));extra=sorted(set(bound)-set(placements))
-    duplicate={k:v for k,v in bound.items() if len(v)!=1}
-    if missing:errors.append('unbound UIDs: '+', '.join(missing))
-    if extra:errors.append('extra UIDs: '+', '.join(extra))
-    if duplicate:errors.append('duplicate UID bindings: '+str(duplicate))
-    if len(bound)!=438 or panel_count!=438:errors.append(f'panel count: {len(bound)} UIDs, {panel_count} parts; expected 438')
+    errors.extend(coverage_errors(bound,placements,panel_count))
+    if len(refs)!=5747:errors.append(f'designator lock drift: {len(refs)} != 5747')
     unit_audit=[]
     for ref,entries in sorted(refs.items()):
         symbols={e[3] for e in entries};units=[e[2] for e in entries]
-        if len(symbols)!=1 or len(units)!=len(set(units)):
-            errors.append(f'designator/unit conflict {ref}: {entries}')
+        stems={(e[0],e[1].rsplit('.',1)[0]) for e in entries}
+        if len(symbols)!=1 or len(units)!=len(set(units)) or len(stems)!=1:
+            errors.append(f'designator/package/unit conflict {ref}: {entries}')
         p=entries[0];symbol=p[3].split(':')[-1]
         if p[3].split(':')[-1] in ('PWR_FLAG','VCC','GND'):continue
         per_instance[p[0]]+=1;by_symbol[symbol]+=1
         prefix=''.join(c for c in ref if not c.isdigit()).rstrip('ABCDEFGHIJKLMNOPQRSTUVWXYZ') or ref[0]
         by_prefix[prefix]+=1
         if ref.startswith('U'):ic_by_part[symbol]+=1
-        if len(entries)>1:
-            units_expected={u for u,pins in library[p[3]].units.items() if pins}
-            if set(units)!=units_expected:errors.append(f'missing package unit {ref}: {sorted(set(units))} != {sorted(units_expected)}')
+        unit_fault=unit_coverage_error(ref,entries,library)
+        if unit_fault:errors.append(unit_fault)
+        termination_fault=active_unit_termination_error(ref,unit_packages[ref])
+        if termination_fault:errors.append(termination_fault)
+        if len({u for u,pins in library[p[3]].units.items() if pins})>1:
             unit_audit.append({'ref':ref,'symbol':symbol,'instance':p[0],
                                'units':sorted(units),
-                               'explicit_no_connect_pins':sum(v is None for q in unit_packages[ref] for v in q['pins'].values())})
+                               'explicit_no_connect_pins':sum(v is None for q in unit_packages[ref] for v in q['pins'].values()),
+                               'fully_no_connect_units':[q['unit'] for q in unit_packages[ref] if all(v is None for v in q['pins'].values())]})
     tree,end=parse(tokens(netlist))
     if end!=len(tokens(netlist)) or tree[0]!='export':errors.append('invalid KiCad netlist')
     nets=children(children(tree,'nets')[0],'net')
@@ -114,6 +144,7 @@ def check(families,instances,netlist):
            'instance_count':len(instances),'module_count':len(EXPECTED_MODULES),
            'panel_uid_count':len(bound),'designator_count':len(refs),
            'sensitive_nets':sensitive,
+           'internal_cross_island_sensitive_nets':[x['net'] for x in sensitive if len(x['islands'])>1],
            'islands':{k:sorted(set(v)) for k,v in sorted(islands.items())},
            'multi_unit_packages':unit_audit,
            'note':'Internal sensitive nets crossing named islands are listed; panel-connected sensitive nets must stay within one island. Explicit NC pins are counted but no electrical behavior is qualified.'}
