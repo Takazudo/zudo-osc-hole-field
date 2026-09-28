@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "status": "Template only; whole-instrument typical and maximum current NOT ESTABLISHED",
+  "source_lock": "design/power/zudo-pd-lock.json",
+  "units": "mA",
+  "rails": {
+    "+12V": {"supply_design_target": 1200, "design_ceiling_80_percent": 960, "measured_capacity": null},
+    "-12V": {"supply_design_target": 800, "design_ceiling_80_percent": 640, "measured_capacity": null},
+    "+5V": {"supply_design_target": 500, "design_ceiling_80_percent": 400, "measured_capacity": null}
+  },
+  "current_sources": [
+    "design/reports/current/sample_hold.json",
+    "design/reports/current/oscillator.json"
+  ],
+  "master_integration": {
+    "module_instance_counts": "Fill from design/spec/instrument.py after all families are captured",
+    "typical_mA": null,
+    "maximum_mA": null,
+    "margin_to_ceiling_mA": null,
+    "gate": "Open: incomplete module capture and missing manufacturer maximum-current data"
+  },
+  "preliminary_model": {
+    "source": "design/standard/rail-budget-preliminary.json",
+    "note": "Planning estimate only; must not be substituted for a captured-netlist maximum",
+    "estimated_mA": {"+12V": 724.254545, "-12V": 712.654545, "+5V": 138.872727},
+    "margin_to_ceiling_mA": {"+12V": 235.745455, "-12V": -72.654545, "+5V": 261.127273}
+  }
+}
