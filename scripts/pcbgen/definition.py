@@ -21,6 +21,7 @@ class BoardDefinition:
     netlist: str
     schematic: str
     regions: tuple[dict, ...] = ()
+    routing: dict | None = None
 
 
 def _point(raw, name):
@@ -32,7 +33,7 @@ def _point(raw, name):
 def load_definition(path: Path) -> BoardDefinition:
     data=json.loads(path.read_text())
     required={'schema_version','board_id','outline','corner_radius_mm','layers','thickness_mm','stackup','mounting_holes','keepouts','domains','placement_uids','netlist','schematic'}
-    if set(data) not in (required,required|{'regions'}) or data['schema_version']!=1:raise ValueError('board definition keys/version mismatch')
+    if not required.issubset(data) or set(data)-required-{'regions','routing'} or data['schema_version']!=1:raise ValueError('board definition keys/version mismatch')
     board_id=data['board_id']
     if not isinstance(board_id,str) or not board_id or any(c not in 'abcdefghijklmnopqrstuvwxyz0123456789-' for c in board_id):raise ValueError('invalid board_id')
     if path.stem!=board_id:raise ValueError('board_id must match filename')
@@ -75,7 +76,29 @@ def load_definition(path: Path) -> BoardDefinition:
         if not isinstance(box,list) or len(box)!=4 or any(isinstance(x,bool) or not isinstance(x,(int,float)) for x in box) or box[0]>=box[2] or box[1]>=box[3]:raise ValueError('invalid region rect')
         for key in ('edge_clearance_mm','mounting_clearance_mm'):
             if isinstance(region[key],bool) or not isinstance(region[key],(int,float)) or region[key]<0:raise ValueError('invalid '+key)
-    return BoardDefinition(board_id,outline,float(radius),layers,float(thick),tuple(stack),tuple(data['mounting_holes']),tuple(data['keepouts']),tuple(data['domains']),tuple(data['placement_uids']),data['netlist'],data['schematic'],tuple(regions))
+    routing=data.get('routing')
+    if routing is not None:
+        if not isinstance(routing,dict) or set(routing)!={'min_track_width_mm','net_classes','zones'}:raise ValueError('invalid routing keys')
+        if isinstance(routing['min_track_width_mm'],bool) or not isinstance(routing['min_track_width_mm'],(int,float)) or routing['min_track_width_mm']<=0:raise ValueError('invalid minimum track width')
+        if not isinstance(routing['net_classes'],list) or not routing['net_classes']:raise ValueError('routing needs net classes')
+        seen=set()
+        for cls in routing['net_classes']:
+            if not isinstance(cls,dict) or set(cls)!={'name','nets','track_width_mm','clearance_mm','via_diameter_mm','via_drill_mm'}:raise ValueError('invalid net class')
+            if not isinstance(cls['name'],str) or not cls['name'] or cls['name'] in seen:raise ValueError('duplicate/blank net class')
+            seen.add(cls['name'])
+            if not isinstance(cls['nets'],list) or any(not isinstance(n,str) or not n for n in cls['nets']):raise ValueError('invalid class nets')
+            for key in ('track_width_mm','clearance_mm','via_diameter_mm','via_drill_mm'):
+                if isinstance(cls[key],bool) or not isinstance(cls[key],(int,float)) or cls[key]<=0:raise ValueError('invalid '+key)
+            if cls['via_drill_mm']>=cls['via_diameter_mm']:raise ValueError('via drill must be smaller than diameter')
+        if not isinstance(routing['zones'],list):raise ValueError('invalid routing zones')
+        for zone in routing['zones']:
+            if not isinstance(zone,dict) or set(zone) not in ({'name','net','layers','clearance_mm','min_thickness_mm'},{'name','net','layers','clearance_mm','min_thickness_mm','pad_connection'}):raise ValueError('invalid routing zone')
+            if zone.get('pad_connection','thermal') not in ('thermal','full'):raise ValueError('invalid zone pad connection')
+            if not isinstance(zone['name'],str) or not zone['name'] or not isinstance(zone['net'],str) or not zone['net']:raise ValueError('invalid zone identity')
+            if not isinstance(zone['layers'],list) or not zone['layers'] or any(layer not in copper for layer in zone['layers']):raise ValueError('invalid zone layers')
+            for key in ('clearance_mm','min_thickness_mm'):
+                if isinstance(zone[key],bool) or not isinstance(zone[key],(int,float)) or zone[key]<=0:raise ValueError('invalid zone '+key)
+    return BoardDefinition(board_id,outline,float(radius),layers,float(thick),tuple(stack),tuple(data['mounting_holes']),tuple(data['keepouts']),tuple(data['domains']),tuple(data['placement_uids']),data['netlist'],data['schematic'],tuple(regions),routing)
 
 
 def load_lock(path: Path):
