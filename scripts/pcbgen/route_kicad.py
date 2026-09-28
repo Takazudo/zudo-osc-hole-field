@@ -46,7 +46,7 @@ def ensure_zones(board,board_id,definition):
                 board.Add(zone);new_ids[uid(zone)]=stable
             zone.SetLayer(board.GetLayerID(layer_name));zone.SetNet(net)
             poly=zone.Outline();idx=poly.NewOutline()
-            for x,y in definition.outline:
+            for x,y in spec.get('polygon',definition.outline):
                 px,py=to_kicad(x,y);poly.Append(vec(px,py),idx)
             zone.SetLocalClearance(pcbnew.FromMM(spec['clearance_mm']))
             zone.SetMinThickness(pcbnew.FromMM(spec['min_thickness_mm']))

@@ -18,6 +18,67 @@ from scripts.pcbgen.definition import load_definition
 def read(path):return json.loads((ROOT/path).read_text())
 def xy_digest(lock):return hashlib.sha256(json.dumps(sorted((p['uid'],p['x_mm'],p['y_mm']) for p in lock),separators=(',',':')).encode()).hexdigest()
 
+def subtract_rect(rect,cut):
+    x0,y0,x1,y1=rect;a,b,c,d=cut
+    a=max(x0,a);b=max(y0,b);c=min(x1,c);d=min(y1,d)
+    if a>=c or b>=d:return [rect]
+    return [r for r in ((x0,y0,a,y1),(c,y0,x1,y1),(a,y0,c,b),(a,d,c,y1)) if r[0]<r[2] and r[1]<r[3]]
+
+def jack_reservation_keepouts(reserves,locations,terminals):
+    """Retain the proposed source reserve except occupied jack/terminal envelopes."""
+    exclusions=[]
+    for p in locations.values():
+        if p['board']=='J' and p['fixed'] and p['ref'].startswith('J'):
+            x0,y0,x1,y1=p['courtyard_mm'];exclusions.append((p['ref'],(x0-.05,y0-.05,x1+.05,y1+.05),'source fixed jack courtyard plus 0.05 mm native inflation'))
+    for t in terminals:
+        if t['board']=='J':
+            x,y=t['center_mm'];w,h=t['maximum_courtyard_mm'];exclusions.append((t['reference'],(x-w/2,y-h/2,x+w/2,y+h/2),'source 5 x 5 mm load-land courtyard'))
+    keepouts=[];receipt=[]
+    for reserve in reserves:
+        for side in reserve['sides']:
+            original=tuple(reserve['rect']);pieces=[original];used=[]
+            for ref,cut,basis in sorted(exclusions):
+                before=sum((q[2]-q[0])*(q[3]-q[1]) for q in pieces)
+                pieces=[piece for q in pieces for piece in subtract_rect(q,cut)]
+                after=sum((q[2]-q[0])*(q[3]-q[1]) for q in pieces)
+                if before-after>1e-8:used.append({'ref':ref,'courtyard_mm':list(cut),'area_removed_mm2':round(before-after,6),'basis':basis})
+            original_area=(original[2]-original[0])*(original[3]-original[1]);remaining=sum((q[2]-q[0])*(q[3]-q[1]) for q in pieces)
+            for i,q in enumerate(pieces,1):
+                keepouts.append({'id':f"{reserve['id']}-{side.replace('.','')}-{i}",'polygon':[[q[0],q[1]],[q[2],q[1]],[q[2],q[3]],[q[0],q[3]]],'layers':[side]})
+            receipt.append({'reserve_id':reserve['id'],'side':side,'original_rect_mm':list(original),'original_area_mm2':round(original_area,6),'removed_area_mm2':round(original_area-remaining,6),'remaining_area_mm2':round(remaining,6),'subtractions':used,'status':'PROPOSAL remaining allowance; #59 exact protection geometry OPEN'})
+    return keepouts,receipt
+
+def jack_bulk_conflicts(reserves,locations,headers,terminals):
+    obstacles=[]
+    for p in locations.values():
+        if p['board']=='J' and (p['side']=='B.Cu' or p['fixed'] and p['ref'].startswith('J')):
+            obstacles.append((p['ref'],p['courtyard_mm']))
+    for h in headers:
+        if h['board']=='J':obstacles.append((h['id'],h['native_cached_courtyard_envelope_mm']))
+    for t in terminals:
+        if t['board']=='J':
+            x,y=t['center_mm'];w,h=t['maximum_courtyard_mm'];obstacles.append((t['reference'],(x-w/2,y-h/2,x+w/2,y+h/2)))
+    errors=[]
+    for r in reserves:
+        if not r['id'].startswith('UNSELECTED-BULK-'):continue
+        a=r['rect']
+        if abs((a[2]-a[0])-5)>1e-8 or abs((a[3]-a[1])-3)>1e-8:errors.append(r['id']+' lost its full 5 x 3 mm slot')
+        if a[0]<120 or a[1]<143 or a[2]>310 or a[3]>161:errors.append(r['id']+' leaves the J B-face protection/bulk reservation')
+        for ref,b in obstacles:
+            if a[0]<b[2]+.25 and a[2]>b[0]-.25 and a[1]<b[3]+.25 and a[3]>b[1]-.25:
+                errors.append(r['id']+' collides with '+ref)
+    return errors
+
+def bulk_reserve_source_errors(board):
+    named=[r for r in board.get('reserves',[]) if r['id'].startswith('UNSELECTED-BULK-')]
+    slots=board.get('board_bulk_reserve',[])
+    if len(named)!=len(slots):return ['bulk reserve count differs between reserves and board_bulk_reserve']
+    errors=[]
+    for index,(reserve,slot) in enumerate(zip(named,slots),1):
+        if reserve['id']!=f'UNSELECTED-BULK-{index}' or reserve['rect']!=slot['rect'] or slot['side'] not in reserve['sides']:
+            errors.append(f'UNSELECTED-BULK-{index} geometry differs between reserves and board_bulk_reserve')
+    return errors
+
 
 def validate_assignment(parts,assignments,io):
     errors=[];refs=Counter(r['ref'] for r in assignments)
@@ -68,7 +129,7 @@ def build():
                 r=pairrefs[net];direction=r['direction'];v=[-13.2,13.2];current=r['current_mA'].get('panel_connector_branch_bound',r['current_mA']['design_limit']);basis=r['current_mA']['status']
             row['pins'].append({'manufacturer_pin':pin,'net':net,'direction':direction,'max_steady_voltage_V':v,'transient_voltage_requirement_V':[-13.2,13.2] if net!='NC' else [0,0],'current_bound_mA':current,'current_basis':basis,'status':'DERIVED source mapping; electrical envelope PROPOSAL; fault isolation OPEN #59'})
         connector.append(row)
-    boards=[];definitions={};supports=[]
+    d=source['load_distribution'];boards=[];definitions={};supports=[];jack_reservation_receipt=[]
     for b,s in source['boards'].items():
         selected=[p for p in parts if board_for(p)==b];uids=sorted(p['panel_uid'] for p in selected if p['panel_uid']);holes=[{'id':b+'-SUP-'+str(i+1),'center':xy,'diameter_mm':2.2} for i,xy in enumerate(s['supports_mm'])]
         if b in ('EL','P'):
@@ -84,7 +145,13 @@ def build():
                 if not pp:continue
                 rect=[min(q[0] for q in pp)-.30,min(q[1] for q in pp)-.30,max(q[2] for q in pp)+.30,max(q[3] for q in pp)+.30]
                 regions.append({'instance':instance,'family':b+'-'+instance,'rect':rect,'side':side,'edge_clearance_mm':.25,'mounting_clearance_mm':.25})
-        keepouts=[{'id':r['id'],'polygon':[[r['rect'][0],r['rect'][1]],[r['rect'][2],r['rect'][1]],[r['rect'][2],r['rect'][3]],[r['rect'][0],r['rect'][3]]],'layers':r['sides']} for r in s.get('reserves',[])]
+        if b=='J':
+            terminal_sites=[{'reference':'TP'+str(990001+i*2),'board':'J','center_mm':[x,d['J_pad_y_mm']],'maximum_courtyard_mm':[5,5]} for i,x in enumerate(d['x_mm'])]
+            errors.extend(bulk_reserve_source_errors(s))
+            errors.extend(jack_bulk_conflicts(s.get('reserves',[]),loc,ports['headers'],terminal_sites))
+            keepouts,jack_reservation_receipt=jack_reservation_keepouts(s.get('reserves',[]),loc,terminal_sites)
+        else:
+            keepouts=[{'id':r['id'],'polygon':[[r['rect'][0],r['rect'][1]],[r['rect'][2],r['rect'][1]],[r['rect'][2],r['rect'][3]],[r['rect'][0],r['rect'][3]]],'layers':r['sides']} for r in s.get('reserves',[])]
         if b=='EL':
             # Source circles are represented by a circumscribed 64-gon for
             # conservative copper keepout, and an exact round NPTH/routed cut.
@@ -98,6 +165,14 @@ def build():
             x,y=hole['center'];r=1.6
             keepouts.append({'id':'COLLAR-'+hole['id'],'polygon':[[x-r,y-r],[x+r,y-r],[x+r,y+r],[x-r,y+r]],'layers':['F.Cu'] if b=='EL' else ['F.Cu','B.Cu']})
         definition={'schema_version':1,'board_id':s['id'],'outline':s['outline'],'corner_radius_mm':0,'layers':s['layers'],'thickness_mm':s['thickness_mm'],'stackup':stack,'mounting_holes':holes,'keepouts':keepouts,'domains':sorted({p['domain'] for p in lock if p['uid'] in uids}),'placement_uids':uids,'netlist':'schematic/boards/'+s['id']+'.net','schematic':'schematic/boards/'+s['id']+'.kicad_sch','regions':regions}
+        if b=='J':
+            definition['routing']={'min_track_width_mm':.1,'net_classes':[
+                {'name':'Default','nets':[],'track_width_mm':.2,'clearance_mm':.2,'via_diameter_mm':.6,'via_drill_mm':.3},
+                {'name':'Rails','nets':['+12V','-12V','+5V'],'track_width_mm':.4,'clearance_mm':.25,'via_diameter_mm':.7,'via_drill_mm':.3},
+                {'name':'Ground','nets':['AGND'],'track_width_mm':.5,'clearance_mm':.25,'via_diameter_mm':.7,'via_drill_mm':.3}],
+                'zones':[{'name':'agnd_plane','net':'AGND','layers':['In1.Cu'],'clearance_mm':.25,'min_thickness_mm':.15,'pad_connection':'full'}]+[
+                    {'name':rail+'_plane','net':rail,'layers':['In2.Cu'],'polygon':[[x0,20],[x1,20],[x1,164],[x0,164]],'clearance_mm':.25,'min_thickness_mm':.15,'pad_connection':'full'}
+                    for rail,x0,x1 in [('+12V',4,106),('-12V',106.5,209),('+5V',209.5,314)]]}
         definitions[s['id']]=definition
         boards.append({**s,'board_key':b,'role':{'J':'jack input/output protection and local analogue interfaces','P':'all pots/toggles/buttons and complete slew/control circuits','K':'distinct rear signal core and conditional load-side power star','EL':'complete stage-indicator circuits'}.get(b,'one selected stepped octave adapter'),
                        'facing_panel':'F.Cu','status':'PROPOSAL','supply_domain':'EXT','physical_package_count':len(selected),'fitted_package_count':sum(not p['dnp'] for p in selected),'definition':'design/boards/'+s['id']+'.json',
@@ -107,7 +182,7 @@ def build():
         for h in holes:
             if '-SERVICE-' in h['id'] or '-PASSAGE-' in h['id']:continue
             supports.append({'id':h['id'],'board':b,'position_mm':h['center'],'pcb_hole_mm':h['diameter_mm'],'post_diameter_mm':2,'collar_diameter_mm':3.2,'status':'PROPOSAL custom captive M2 shoulder support; exact fastener order codes/strength OPEN #65; selectors #55','load_path':'enclosure side carrier to board; panel clamp/bushing/body carrier reacts operation; no connector/solder structural load'})
-    d=source['load_distribution'];rwire=d['hot_resistance_requirement_ohm_per_m']*d['max_wire_length_mm']/1000+d['combined_termination_resistance_ohm'];rp=rwire+d['rail_plane_resistance_ceiling_ohm'];rg=rwire+d['return_plane_resistance_ceiling_ohm'];drop={rail:(amps*rp+d['single_return_max_A']*rg)*1000 for rail,amps in d['rail_max_A'].items()}
+    rwire=d['hot_resistance_requirement_ohm_per_m']*d['max_wire_length_mm']/1000+d['combined_termination_resistance_ohm'];rp=rwire+d['rail_plane_resistance_ceiling_ohm'];rg=rwire+d['return_plane_resistance_ceiling_ohm'];drop={rail:(amps*rp+d['single_return_max_A']*rg)*1000 for rail,amps in d['rail_max_A'].items()}
     if max(drop.values())>20:errors.append('load distribution exceeds 20 mV')
     wire_requirements=read('design/partition/harness-wire-evidence.json')['proposal']
     branch={};looms={r['id']:r for r in loom['routes']}
@@ -172,7 +247,7 @@ def build():
     report={'schema_version':1,'status':'CONDITIONAL UNVALIDATED DRAFT' if not errors else 'FAIL; no accepted partition','authority':'PROPOSAL (planning, owner-delegated)',
             'rotation_convention':'Source rotation_deg is clockwise after mirroring local X for B.Cu. Use explicit kicad_orientation_deg: F=-theta, B=180-theta. Native KiCad10.0.6 Flip(False) maps F angle0 to B angle180 and mirrors X.',
             'status_policy':'Every numeric/mechanical value is PROPOSAL unless its enclosing status or field_status explicitly says SOURCED or DERIVED. SOURCED nominal dimensions do not imply tolerance or installed fit.',
-            'boards':boards,'assignment':{'rule':'Exact master physical package after AbstractBoundary filtering: jack ->J, control ->P, core ->K, stage_optical ->EL, each selector instance ->its O adapter. Whole package, bypass and island closure checked. Faces use floorplan-candidate per-reference map.','status':'DERIVED','components':assignment,'abstract_boundaries':['CN301','XB301'],'abstract_status':'Audit-only; NO physical footprint, NO BOM/orderable inlet, NO invented conductive bridge'},
+            'boards':boards,'jack_reservation_receipt':jack_reservation_receipt,'assignment':{'rule':'Exact master physical package after AbstractBoundary filtering: jack ->J, control ->P, core ->K, stage_optical ->EL, each selector instance ->its O adapter. Whole package, bypass and island closure checked. Faces use floorplan-candidate per-reference map.','status':'DERIVED','components':assignment,'abstract_boundaries':['CN301','XB301'],'abstract_status':'Audit-only; NO physical footprint, NO BOM/orderable inlet, NO invented conductive bridge'},
             'load_side_terminals':terminals,'load_side_wires':power_wires,'connectors':connector,'harnesses':ports['harnesses'],'harness_geometry':'design/partition/loom-candidate.json','interfaces':interfaces,'supports':supports,
             'mechanical_datum_table':mechanical['datum_table'],'mechanical_report':'design/partition/mechanical-candidate.json','panel':read('design/panel/panel-params.json'),'optical_passages':optical['passages'],'K_service_apertures':ports['K_service_apertures'],'enclosure':source['enclosure'],
             'power':{'status':'PROPOSAL conditional EXT requirements; physical source/inlet NOT SELECTED','required_continuous_mA':{'+12V':1700,'-12V':1600,'+5V':300},'required_transient_mA':{'+12V':2000,'-12V':1900,'+5V':400},'maximum_delivered_mA':{'+12V':2100,'-12V':2000,'+5V':500},'load_distribution':d,'worst_load_distribution_drop_mV':drop,'GH_normal_return_bounds':branch,'source_boundary':'No continuity across CN301/XB301 is created. Internal factory-soldered wires connect existing regulated load-side nets only. Source inlet retains separate #52 20 AWG contract.',

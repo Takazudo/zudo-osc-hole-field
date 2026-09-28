@@ -191,15 +191,26 @@ def place(board_id,board_path=None,netlist_path=None,report_path=None):
   if ref in fixed:continue
   fp=board_refs.get(ref)
   if fp is None:raise ValueError(f'{ref}: board footprint missing')
+  source_origin=dict(c.fields).get('FootprintOriginMm','')
+  if source_origin:
+   sx,sy=(float(v) for v in source_origin.split(','))
+   pos=fp.GetPosition()
+   if abs(mm(pos.x)-100-sx)>1e-5 or abs(mm(pos.y)-50-sy)>1e-5:raise ValueError(f'{ref}: board differs from source footprint origin')
+   source_side=dict(c.fields).get('BoardSide','')
+   if source_side and str(fp.GetLayerName())!=source_side:raise ValueError(f'{ref}: board differs from source footprint face')
+   source_angle=dict(c.fields).get('KiCadOrientationDeg','')
+   if source_angle and abs((fp.GetOrientationDegrees()-float(source_angle)+180)%360-180)>1e-5:
+    raise ValueError(f'{ref}: board differs from source footprint angle')
   if fp.IsLocked() or not owned(board_id,fp):preserved.append(ref);continue
   block=normalize_block(c)
   if block not in regions:raise ValueError(f'{ref}: Block {block!r} has no region')
   free[block].append(c)
   region_sides={r.side for r in regions[block]}
-  if len(region_sides)!=1:raise ValueError(f'{block}: mixed-side regions are not supported for one cluster')
-  target=pcbnew.F_Cu if 'F.Cu' in region_sides else pcbnew.B_Cu
   requested=dict(c.fields).get('BoardSide','')
+  if len(region_sides)>1 and not requested:raise ValueError(f'{ref}: mixed-side cluster requires explicit BoardSide')
   if requested and requested not in region_sides:raise ValueError(f'{ref}: BoardSide conflicts with region')
+  selected_side=requested or next(iter(region_sides))
+  target=pcbnew.F_Cu if selected_side=='F.Cu' else pcbnew.B_Cu
   if fp.GetLayer()!=target:fp.Flip(fp.GetPosition(),False)
  eligible=set(c.ref for cs in free.values() for c in cs)
  obs=obstacles(board,eligible)
@@ -233,16 +244,27 @@ def place(board_id,board_path=None,netlist_path=None,report_path=None):
      own=owners.get(base_c.ref)
      anchor_ref=reference_map[key_by_ref[own]].ref if own and own in key_by_ref else None
      island=normalize_island(c,instance)
-     if island:
+     source_origin=dict(c.fields).get('FootprintOriginMm','')
+     if source_origin:
+      target_xy=tuple(float(v) for v in source_origin.split(','))
+     elif island:
       if island not in lock or island not in definition.placement_uids:raise ValueError(f'{c.ref}: Island {island!r} is not selected locked hardware')
       target_xy=(lock[island]['x_mm'],lock[island]['y_mm'])
      elif anchor_ref and anchor_ref in placed:
       target_xy=placed[anchor_ref][:2]
      else:
       first=current_regions[0].rect;target_xy=((first.x0+first.x1)/2,(first.y0+first.y1)/2)
-     if instance==base:
+     if source_origin:
+      x,y=(float(v) for v in source_origin.split(','));box=offsets(fp).shift(x,y)
+      chosen=next((ri for ri,region in enumerate(current_regions) if region.side==dict(c.fields).get('BoardSide') and is_clear(box,region.side,region,definition,obs)),None)
+      if chosen is None:
+       region=current_regions[0];needed=sum(offsets(board_refs[item.ref]).area for item in free[instance])
+       raise PlacementFailure(instance,region,f'{c.ref}: source courtyard/origin violates region or obstacle',needed,region_available(region,obs))
+      ri=chosen;region=current_regions[ri]
+     elif instance==base:
       shape=offsets(fp);chosen=None
       for ri,region in enumerate(current_regions):
+       if region.side != (dict(c.fields).get('BoardSide','') or region.side):continue
        for x,y in candidate_centres(region,shape,target_xy):
         box=shape.shift(x,y)
         if is_clear(box,region.side,region,definition,obs):chosen=(x,y,ri,box);break
@@ -283,7 +305,8 @@ def place(board_id,board_path=None,netlist_path=None,report_path=None):
  report['status']='PLACED DRAFT'
  owned_refs={ref for ref,fp in board_refs.items() if owned(board_id,fp)}
  pcbnew.SaveBoard(str(board_path),board)
- normalize_file(board_path,board_id,owned_refs,{},False)
+ owned_zone_ids={item_uuid(z) for z in board.Zones() if z.GetZoneName().startswith(f'pcbgen:{board_id}:')}
+ normalize_file(board_path,board_id,owned_refs,{},False,owned_zone_ids)
  report_path.write_text(json.dumps(report,indent=2,sort_keys=True)+'\n')
  print(f'{board_id}: placed {len(placed)} free footprints in {len(report["regions"])} regions; {len(preserved)} locked/unowned preserved; draft')
  return report

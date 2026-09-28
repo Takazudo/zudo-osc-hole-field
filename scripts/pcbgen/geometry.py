@@ -2,6 +2,12 @@
 from __future__ import annotations
 import math
 
+def staging_position(index):
+    """Temporary panel-frame position, bounded for a full projected board."""
+    if index < 0 or index >= 5000:
+        raise ValueError('staging index outside supported board capacity')
+    return 350+(index%50)*10, 10+(index//50)*10
+
 def outline_segments(points, radius):
     """Return ('line', start, end) or ('arc', start, mid, end) segments."""
     if radius==0:return [('line',p,points[(i+1)%len(points)]) for i,p in enumerate(points)]
