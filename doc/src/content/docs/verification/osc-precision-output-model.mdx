@@ -1,0 +1,20 @@
+---
+title: "Precision-output model sweep"
+description: "OPA4197 model result, fixed compensation, failure gate, and physical follow-up."
+---
+
+The OSC-ES-1 precision-output cell is an **unvalidated draft**. Its fixed proposal has two 499 Ω series output resistors, a 100 Ω resistor from JACK to the inverting input, and a 1 nF capacitor from the amplifier DRIVE to the inverting input. The output jack remains sensed locally on the jack board. These changes apply to every `precision_output` cell instance generated from the shared electrical standard. The 100 Ω and 1 nF values have **no selected exact orderable MPN** yet; the schematic preserves the values with blank MPN fields.
+
+## Model and method
+
+Texas Instruments' [OPAx197 PSpice model, SBOMA34D](https://www.ti.com/lit/zip/sboma34), `OPAx197.LIB` Final 1.3 dated 23 June 2022, explicitly says its generic single core applies to OPA197, OPA2197, and OPA4197. Its usage notes list gain and phase with load effects, output impedance, slew rate, settling, capacitive-load overshoot, and large-signal response. The model is a design aid supplied as-is. The selected exact device remains **Texas Instruments OPA4197IPWR, TSSOP-14**; the generic core is applicable for a bounded model check, not an exact-package or physical qualification.
+
+The generated report at `design/reports/spice/precision-output-vendor.json` records the ZIP SHA-256 `9e55fcaa23d54cee025dda3fa9872b11c41c531f82e0802c2b93d51e943666e5` and library SHA-256 `fc5b020e63346e511bd808bf41c856b0150b000bcf8a41fe00eeececb1f422a5`. The copyrighted model bytes are retained only in the ignored local `.circuit-cache/sources/opa197-model/` directory. The checker reacquires the ZIP from TI when absent and rejects a hash change. CI task #44 must run `python3 -m design.spec.cells.sweep_precision_vendor --check` with network access to TI or a preloaded verified cache; download or hash failure is a failed check, never a skipped pass.
+
+Each of twelve cases runs as a separate ngspice deck through the pinned KiCad 10.0.6 oracle in PSpice compatibility mode at 27 °C with ±12 V supplies and ±5 V steps over two cycles. Loads are open, 100 kΩ and 10 kΩ; cable capacitances are 0, 100 pF, 1 nF and 5 nF. The check exits nonzero if any case exceeds 10% overshoot, differs from its endpoint by more than 1 mV at 0.4 ms after either step (stricter than the 1 ms target), or has more than 1 mV peak-to-peak ripple in the late 0.15 ms window of either half cycle in either cycle. Missing measurements and ngspice errors also fail. `--fixture-original` runs the former 10 kΩ/100 pF network at open/5 nF and must exit 1, proving a supported failure reaches process status.
+
+**Result:** 12/12 model cases pass, 0 fail. Worst overshoot is 7.2559% at open/1 nF. Both endpoint errors are at most 0.023 mV at the sampled times; measured late-window ripple is 0 mV at report precision. The earlier zero-delay ideal-source diagnostic for the former 10 kΩ/100 pF circuit remains retained with six failures in twelve cases. It is a different circuit and a partial model, so its failures are not relabelled as a pass for that old network.
+
+## Remaining gates and rail ledger
+
+Physical cable and PCB parasitics, resistor and capacitor tolerance, temperature extremes, output-current behavior, short recovery, and package thermal behavior are **NOT RUN**. Build a populated output coupon and measure the same load/cable matrix, both step polarities, output-current peaks, and supply current at the final board revision before any hardware stability claim. The 1 nF feedback capacitor has no steady DC current; its transient charge/discharge current and any effect on the shared ±12 V budget are unquantified. The 100 Ω resistor is in the input feedback path and adds no nominal DC rail load beyond input bias. Rail-ledger task #34 must keep the existing output-load allocation provisional, account for transient output current when it has source or measurement support, and avoid treating this model result as a supply-current maximum.

@@ -428,7 +428,7 @@
         {
           "ref": "R_FB",
           "part_id": "r_general",
-          "value": 10000,
+          "value": 100,
           "unit": "ohm",
           "terminals": {
             "1": "JACK",
@@ -438,7 +438,7 @@
         {
           "ref": "C_FAST",
           "part_id": "c_small",
-          "value": 1e-10,
+          "value": 1e-09,
           "unit": "F",
           "terminals": {
             "1": "DRIVE",
@@ -447,18 +447,18 @@
         }
       ],
       "connections": [
-        "DC feedback senses JACK through R_FB; high-frequency feedback returns locally via C_FAST."
+        "DC feedback senses JACK through 100 ohm R_FB; 1 nF high-frequency feedback returns locally from DRIVE to FB."
       ],
       "notes": [
-        "Default 100\u2013470 ohm changed to 998 ohm to bound output faults. 100 pF is a chosen starting compensation value, not a stability proof.",
+        "Fixed 100 ohm JACK feedback and 1 nF local feedback are TI OPAx197 model-screened compensation choices, not hardware stability proof. Value-specific resistor and capacitor orderable identities remain unresolved.",
         "DC load-induced error target <=1 mV for -5/0/+5 V, no load to 10 kohm; full static path error target <=2 mV after factory calibration.",
-        "Test open/10k/100k and 0/100p/1n/5n F cable loads, \u00b15 V steps and output contention. Require no sustained oscillation; <=10% overshoot and settle within 1 mV by 1 ms.",
+        "TI-model sweep: open/10k/100k loads and 0/100p/1n/5n F cable loads, +/-5 V steps; require no sustained oscillation, <=10% overshoot and settle within 1 mV by 1 ms. Physical cable, PCB parasitics, component tolerances and temperature require qualification.",
         "Feedback stays on the jack board with output cell; no long unsensed feedback net across connectors.",
         "Two series 499 ohm / 0.5 W resistors realize 998 ohm nominal. A continuous external \u00b112 V fault against the opposite output rail gives 24.05 mA and 0.289 W per resistor at nominal rails; qualify IC thermal dissipation."
       ],
       "uses": [],
       "verification": [
-        "SPICE stability sweep and loop assessment in #18; vendor models and physical cable tests required."
+        "TI OPAx197 Final 1.3 model sweep in #49; physical cable and layout stability remain NOT RUN."
       ]
     },
     {

@@ -42,7 +42,8 @@ def run(check=False):
   if OUT.read_text()!=text:raise SystemExit('precision sweep report drift')
  else:OUT.parent.mkdir(parents=True,exist_ok=True);OUT.write_text(text)
  failures=sum(r['model_target_10_percent']=='FAIL' for r in rows)
- print(f'Diagnostic precision sweep: {len(rows)} cases, {failures} ideal-model overshoot failures; vendor/bench NOT RUN')
+ print(f'Historical ideal diagnostic: {len(rows)} cases, {failures} overshoot failures; revised TI model is checked separately, physical bench NOT RUN')
+ if failures:raise SystemExit(1)
 if __name__=='__main__':
  import sys
  run('--check' in sys.argv)

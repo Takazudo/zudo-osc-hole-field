@@ -150,7 +150,7 @@ Coverage is stated one domain at a time and is never rolled up. A domain marked 
 
 **Coverage ID:** `cov-op-precision-output-stability` · **Status:** OPEN
 
-**Reason:** The ideal diagnostic sweep contains failures and the vendor model/bench cable sweep is NOT RUN.
+**Reason:** TI OPAx197 Final 1.3 model passes 12/12 specified cases for the revised fixed network, but physical cable, board parasitics, tolerance and temperature stability remain NOT RUN.
 
 **Facts in this domain:**
 
@@ -331,13 +331,13 @@ A value this project recorded about how the part is used here — a chosen opera
 
   **Fact:** `fact-op-precision-output-stability`
 
-  **Value:** `bench`=NOT RUN; `diagnostic_cases`=12; `diagnostic_failures`=6; `vendor_model`=NOT RUN · **Unit:** `NONE`
+  **Value:** `bench`=NOT RUN; `previous_ideal_diagnostic_cases`=12; `previous_ideal_diagnostic_failures`=6; `vendor_model_cases`=12; `vendor_model_passes`=12 · **Unit:** `NONE`
 
-  **Conditions:** Diagnostic ideal zero-delay source sweep only; model is not an OPA4197 hardware prediction. 10% overshoot target; cable/load sweep.
+  **Conditions:** TI OPAx197 Final 1.3 generic core, PSpice mode in pinned KiCad 10.0.6 ngspice 44.2, 27 C, +/-12 V rails; fixed 100 ohm JACK feedback and 1 nF local feedback, two 499 ohm isolation resistors; +/-5 V steps and specified 12 load/cable cases. Model result only.
 
   **Verdict:** NEEDS BENCH · **Provenance:** PROJECT-CHOICE
 
-  **Evidence:** [Section/table audit: src-op-precision-output-model: JSON status/cases; worst 10 kohm plus 5 nF case is reported in architecture/osc-standard-cells.mdx](#src-op-precision-output-model)
+  **Evidence:** [Section/table audit: src-op-precision-vendor-model OPAx197.LIB Model Usage Notes rows 1(a), 1(g), 1(n)-1(q), 2; design/reports/spice/precision-output-vendor.json cases/pass\_count/fail\_count](#src-op-precision-vendor-model)
 </EvidenceFact>
 
 ## Pin maps
@@ -479,6 +479,26 @@ Every document cited above, with its identification, when it was retrieved, and 
 **Availability:** AVAILABLE
 
 **Document URL:** [https://github.com/Takazudo/zudo-osc-hole-field/blob/base/osc-hole-field/design/reports/spice/precision-output-sweep.json](https://github.com/Takazudo/zudo-osc-hole-field/blob/base/osc-hole-field/design/reports/spice/precision-output-sweep.json)
+
+### OPAx197 PSpice Model (Final 1.3)
+
+<EvidenceAnchor id="src-op-precision-vendor-model" />
+
+**Source ID:** `src-op-precision-vendor-model` · **Authority:** MANUFACTURER\_PRIMARY
+
+| Field           | Recorded value                  |
+| --------------- | ------------------------------- |
+| Document number | SBOMA34D                        |
+| Revision        | Final 1.3, 23JUN2022            |
+| Document date   | 2022-06-23                      |
+| Retrieved       | 2026-09-28                      |
+| Printed page    | not paginated (ZIP/OPAx197.LIB) |
+
+**Locator:** Section/table audit: ZIP entry OPAx197.LIB, header Model Usage Notes rows 1(a), 1(g), 1(n)-1(q), 2; .SUBCKT OPAx197. Library SHA-256 fc5b020e63346e511bd808bf41c856b0150b000bcf8a41fe00eeececb1f422a5
+
+**Availability:** AVAILABLE
+
+**Document URL:** [https://www.ti.com/lit/zip/sboma34](https://www.ti.com/lit/zip/sboma34)
 
 ## Legend
 

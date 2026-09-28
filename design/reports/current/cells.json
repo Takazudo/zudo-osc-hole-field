@@ -133,7 +133,9 @@
           "scope": "All 82 jacks at ±5 V into 10 kohm, per-rail envelope; conservative includes gate outputs on analog buffers. Short-circuit demand handled separately."
         }
       ],
-      "unquantified": [],
+      "unquantified": [
+        "1 nF local feedback charge and discharge current during large steps; 100 ohm jack-sense resistor adds no nominal DC rail load, but modelled transient supply current is not a guaranteed maximum"
+      ],
       "qualification": "Sum only after exact package sharing, loads, duty cycles, source facts and netlist are resolved; no passing instrument budget is claimed."
     },
     {

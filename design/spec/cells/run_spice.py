@@ -18,7 +18,12 @@ def measured(output,name):
 
 def build():
  rows=[]
+ vendor=json.loads((ROOT/'design/reports/spice/precision-output-vendor.json').read_text())
+ if vendor['fail_count'] or len(vendor['cases'])!=12:raise AssertionError('precision vendor model target failure; run sweep_precision_vendor for case details')
  for id in CELLS:
+  if id=='precision_output':
+   rows.append({'id':id,'status':'PASS - TI MODEL ONLY','cases':len(vendor['cases']),'failed_cases':vendor['fail_count'],'report':'design/reports/spice/precision-output-vendor.json','limit':'TI OPAx197 Final 1.3 is applicable to OPA4197, but tolerance, board/cable parasitics and physical stability remain NOT RUN.'})
+   continue
   if id not in DECKS:
    rows.append({'id':id,'status':'NOT RUN','reason':'No retained usable vendor/validated circuit model for the full cell; ideal checks cover only named topology cases. No hardware claim.'});continue
   name,expect=DECKS[id];deck='design/spec/cells/spice/'+name
@@ -30,7 +35,6 @@ def build():
    if abs(value-target)>tolerance:raise AssertionError(f'{deck}: {metric}={value}, target {target} ±{tolerance}')
    results[metric]={'value':value,'target':target,'tolerance':tolerance}
   rows.append({'id':id,'status':'PASS - IDEAL MODEL ONLY','deck':deck,'measurements':results,'limit':'Model transfer only; not vendor behavior, stability, tolerance, fault survival or bench qualification.'})
- rows.append({'id':'precision_output_stability','status':'NOT RUN','reason':'Validated OPA4197 macromodel with output impedance, compensation and tolerance behavior not retained. The open/100 kΩ/10 kΩ, 0/100 pF/1 nF/5 nF, ±5 V vendor-model sweep and physical cable measurements remain open despite the ideal diagnostic sweep.'})
  sweep=json.loads((ROOT/'design/reports/spice/precision-output-sweep.json').read_text())
  failed=sum(x['model_target_10_percent']=='FAIL' for x in sweep['cases'])
  rows.append({'id':'precision_output_ideal_sweep','status':'FAIL - IDEAL MODEL OVERSHOOT TARGET','cases':len(sweep['cases']),'failed_cases':failed,'report':'design/reports/spice/precision-output-sweep.json','limit':'Diagnostic zero-delay high-gain source only; failure does not predict vendor amplifier or hardware response.'})
@@ -43,5 +47,5 @@ def main(check=False):
   if not OUT.is_file() or OUT.read_text()!=body:raise SystemExit('SPICE report drift')
  else:
   OUT.parent.mkdir(parents=True,exist_ok=True);OUT.write_text(body)
- print('PASS: 5 ideal-model decks; 14 full-cell models NOT RUN; precision ideal sweep records 6 model-target failures; vendor/remote stability NOT RUN')
+ print('Recorded: 5 passing ideal-model decks; revised precision TI model 12/12 pass; historical ideal diagnostic 6/12 fail; physical/remote stability NOT RUN')
 if __name__=='__main__':main('--check' in sys.argv)

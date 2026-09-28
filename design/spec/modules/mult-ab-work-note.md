@@ -16,7 +16,7 @@ Capture the two B1/B2 precision 1-to-3 multiples and X1/X2 maintained manual A/B
 - MULT uses the high-impedance precision input cell and three OSC-ES-1 precision output cells, one OPA4197 quad per instance. The 1 mV open-to-10 kΩ output-load behavior and its 1.2 cent conversion are stated as targets/calculations, not results.
 - A/B inputs are isolated and buffered before separate 2.2 kΩ switch-contact resistors. A 10 MΩ resistor biases the common node. The 2MS1 pin/contact and lever-A mapping remains provisional because a manufacturer-primary contact drawing is unavailable in retained evidence; verify with a continuity coupon.
 - Switching clicks are accepted. No click-free behavior or 1 V/octave tolerance is claimed.
-- No usable retained OPA4197 model or switch transition model is available; module simulation is NOT RUN.
+- TI's verified OPAx197 Final 1.3 model is retained in the ignored local cache and screens the shared precision-output cell at 12/12 passing load/cable cases. A complete MULT simulation and a switch-transition model are still NOT RUN; the cell result does not establish full-module behavior.
 - Rail estimates use the preliminary standard load table and remain planning allowances. Guaranteed maximum rail currents, fault/clamp currents and overlap transients are not established.
 
 ## Verification
