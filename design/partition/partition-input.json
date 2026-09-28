@@ -1,0 +1,1051 @@
+{
+  "schema_version": 1,
+  "authority": "PROPOSAL (planning, owner-delegated)",
+  "status": "UNVALIDATED DRAFT; source input, acceptance checks incomplete",
+  "boards": {
+    "J": {
+      "id": "osc-jack",
+      "outline": [
+        [
+          4,
+          20
+        ],
+        [
+          314,
+          20
+        ],
+        [
+          314,
+          164
+        ],
+        [
+          4,
+          164
+        ]
+      ],
+      "face_z_mm": -10,
+      "thickness_mm": 1.6,
+      "layers": 4,
+      "copper_oz": 2,
+      "assembly_sides": [
+        "F.Cu",
+        "B.Cu"
+      ],
+      "supports_mm": [
+        [
+          6.5,
+          22.5
+        ],
+        [
+          6.5,
+          80
+        ],
+        [
+          6.5,
+          138
+        ],
+        [
+          6.5,
+          161.5
+        ],
+        [
+          311.5,
+          22.5
+        ],
+        [
+          311.5,
+          80
+        ],
+        [
+          311.5,
+          138
+        ],
+        [
+          311.5,
+          161.5
+        ]
+      ],
+      "reserves": [
+        {
+          "id": "future-output-protection",
+          "rect": [
+            120,
+            143,
+            310,
+            161
+          ],
+          "sides": [
+            "B.Cu"
+          ],
+          "status": "PROPOSAL #59 unknown geometry; actual THT exclusions remain"
+        },
+        {
+          "id": "load-power",
+          "rect": [
+            139,
+            157,
+            196,
+            163
+          ],
+          "sides": [
+            "F.Cu",
+            "B.Cu"
+          ],
+          "status": "PROPOSAL soldered load-side distribution, no CN301/XB301 bridge"
+        },
+        {
+          "id": "UNSELECTED-BULK-1",
+          "rect": [
+            125,
+            145,
+            130,
+            148
+          ],
+          "sides": [
+            "B.Cu"
+          ],
+          "status": "PROPOSAL finite reservation for UNSELECTED bulk part. Exact #59 part may require replan; no fitted zero-area component."
+        },
+        {
+          "id": "UNSELECTED-BULK-2",
+          "rect": [
+            125,
+            149,
+            130,
+            152
+          ],
+          "sides": [
+            "B.Cu"
+          ],
+          "status": "PROPOSAL finite reservation for UNSELECTED bulk part. Exact #59 part may require replan; no fitted zero-area component."
+        },
+        {
+          "id": "UNSELECTED-BULK-3",
+          "rect": [
+            125,
+            153,
+            130,
+            156
+          ],
+          "sides": [
+            "B.Cu"
+          ],
+          "status": "PROPOSAL finite reservation for UNSELECTED bulk part. Exact #59 part may require replan; no fitted zero-area component."
+        },
+        {
+          "id": "POWER-AGND-210-160",
+          "rect": [
+            207,
+            157,
+            213,
+            163
+          ],
+          "sides": [
+            "B.Cu"
+          ]
+        },
+        {
+          "id": "POWER-AGND-227-160",
+          "rect": [
+            224,
+            157,
+            230,
+            163
+          ],
+          "sides": [
+            "B.Cu"
+          ]
+        }
+      ],
+      "board_bulk_reserve": [
+        {
+          "net": "+12V",
+          "rect": [
+            125,
+            145,
+            130,
+            148
+          ],
+          "nominal_uF": 4.7,
+          "maximum_height_mm": 5,
+          "side": "B.Cu",
+          "status": "PROPOSAL finite reservation for UNSELECTED bulk part. Exact #59 part may require replan; no fitted zero-area component."
+        },
+        {
+          "net": "-12V",
+          "rect": [
+            125,
+            149,
+            130,
+            152
+          ],
+          "nominal_uF": 4.7,
+          "maximum_height_mm": 5,
+          "side": "B.Cu",
+          "status": "PROPOSAL finite reservation for UNSELECTED bulk part. Exact #59 part may require replan; no fitted zero-area component."
+        },
+        {
+          "net": "+5V",
+          "rect": [
+            125,
+            153,
+            130,
+            156
+          ],
+          "nominal_uF": 4.7,
+          "maximum_height_mm": 5,
+          "side": "B.Cu",
+          "status": "PROPOSAL finite reservation for UNSELECTED bulk part. Exact #59 part may require replan; no fitted zero-area component."
+        }
+      ]
+    },
+    "P": {
+      "id": "osc-control",
+      "outline": [
+        [
+          1,
+          194
+        ],
+        [
+          94,
+          194
+        ],
+        [
+          94,
+          176
+        ],
+        [
+          317,
+          176
+        ],
+        [
+          317,
+          292
+        ],
+        [
+          1,
+          292
+        ]
+      ],
+      "face_z_mm": -11.8,
+      "thickness_mm": 1.6,
+      "layers": 4,
+      "copper_oz": 2,
+      "assembly_sides": [
+        "F.Cu",
+        "B.Cu"
+      ],
+      "supports_mm": [
+        [
+          3.5,
+          196.5
+        ],
+        [
+          3.5,
+          238
+        ],
+        [
+          3.5,
+          289.5
+        ],
+        [
+          314.5,
+          196.5
+        ],
+        [
+          314.5,
+          238
+        ],
+        [
+          314.5,
+          289.5
+        ]
+      ],
+      "reserves": [
+        {
+          "id": "load-power",
+          "rect": [
+            139,
+            176.5,
+            196,
+            184
+          ],
+          "sides": [
+            "F.Cu",
+            "B.Cu"
+          ],
+          "status": "PROPOSAL"
+        },
+        {
+          "id": "UNSELECTED-BULK-1",
+          "rect": [
+            5.5,
+            246,
+            10.5,
+            249
+          ],
+          "sides": [
+            "B.Cu"
+          ],
+          "status": "PROPOSAL finite reservation for UNSELECTED bulk part. Exact #59 part may require replan; no fitted zero-area component."
+        },
+        {
+          "id": "UNSELECTED-BULK-2",
+          "rect": [
+            5.5,
+            260,
+            10.5,
+            263
+          ],
+          "sides": [
+            "B.Cu"
+          ],
+          "status": "PROPOSAL finite reservation for UNSELECTED bulk part. Exact #59 part may require replan; no fitted zero-area component."
+        },
+        {
+          "id": "UNSELECTED-BULK-3",
+          "rect": [
+            5.5,
+            274,
+            10.5,
+            277
+          ],
+          "sides": [
+            "B.Cu"
+          ],
+          "status": "PROPOSAL finite reservation for UNSELECTED bulk part. Exact #59 part may require replan; no fitted zero-area component."
+        },
+        {
+          "id": "POWER-AGND-210-179",
+          "rect": [
+            207,
+            176,
+            213,
+            182
+          ],
+          "sides": [
+            "B.Cu"
+          ]
+        },
+        {
+          "id": "POWER-AGND-227-179",
+          "rect": [
+            224,
+            176,
+            230,
+            182
+          ],
+          "sides": [
+            "B.Cu"
+          ]
+        }
+      ],
+      "board_bulk_reserve": [
+        {
+          "net": "+12V",
+          "rect": [
+            5.5,
+            246,
+            10.5,
+            249
+          ],
+          "nominal_uF": 4.7,
+          "maximum_height_mm": 5,
+          "side": "B.Cu",
+          "status": "PROPOSAL finite reservation for UNSELECTED bulk part. Exact #59 part may require replan; no fitted zero-area component."
+        },
+        {
+          "net": "-12V",
+          "rect": [
+            5.5,
+            260,
+            10.5,
+            263
+          ],
+          "nominal_uF": 4.7,
+          "maximum_height_mm": 5,
+          "side": "B.Cu",
+          "status": "PROPOSAL finite reservation for UNSELECTED bulk part. Exact #59 part may require replan; no fitted zero-area component."
+        },
+        {
+          "net": "+5V",
+          "rect": [
+            5.5,
+            274,
+            10.5,
+            277
+          ],
+          "nominal_uF": 4.7,
+          "maximum_height_mm": 5,
+          "side": "B.Cu",
+          "status": "PROPOSAL finite reservation for UNSELECTED bulk part. Exact #59 part may require replan; no fitted zero-area component."
+        }
+      ]
+    },
+    "K": {
+      "id": "osc-core",
+      "outline": [
+        [
+          4,
+          8
+        ],
+        [
+          314,
+          8
+        ],
+        [
+          314,
+          246
+        ],
+        [
+          258,
+          246
+        ],
+        [
+          258,
+          292
+        ],
+        [
+          4,
+          292
+        ]
+      ],
+      "face_z_mm": -100,
+      "thickness_mm": 1.6,
+      "layers": 4,
+      "copper_oz": 2,
+      "assembly_sides": [
+        "F.Cu",
+        "B.Cu"
+      ],
+      "supports_mm": [
+        [
+          6.5,
+          10.5
+        ],
+        [
+          311.5,
+          10.5
+        ],
+        [
+          6.5,
+          160
+        ],
+        [
+          311.5,
+          160
+        ],
+        [
+          6.5,
+          243
+        ],
+        [
+          311.5,
+          243
+        ],
+        [
+          6.5,
+          289.5
+        ],
+        [
+          255.5,
+          289.5
+        ]
+      ],
+      "reserves": [
+        {
+          "id": "future-rail-and-octave-protection",
+          "rect": [
+            180,
+            220,
+            256,
+            290
+          ],
+          "sides": [
+            "B.Cu"
+          ],
+          "status": "PROPOSAL #59 exact geometry unknown"
+        },
+        {
+          "id": "load-power",
+          "rect": [
+            139,
+            165,
+            196,
+            179
+          ],
+          "sides": [
+            "F.Cu",
+            "B.Cu"
+          ],
+          "status": "PROPOSAL"
+        },
+        {
+          "id": "UNSELECTED-BULK-1",
+          "rect": [
+            140,
+            288,
+            145,
+            291
+          ],
+          "sides": [
+            "B.Cu"
+          ],
+          "status": "PROPOSAL finite reservation for UNSELECTED bulk part. Exact #59 part may require replan; no fitted zero-area component."
+        },
+        {
+          "id": "UNSELECTED-BULK-2",
+          "rect": [
+            146,
+            288,
+            151,
+            291
+          ],
+          "sides": [
+            "B.Cu"
+          ],
+          "status": "PROPOSAL finite reservation for UNSELECTED bulk part. Exact #59 part may require replan; no fitted zero-area component."
+        },
+        {
+          "id": "UNSELECTED-BULK-3",
+          "rect": [
+            152,
+            288,
+            157,
+            291
+          ],
+          "sides": [
+            "B.Cu"
+          ],
+          "status": "PROPOSAL finite reservation for UNSELECTED bulk part. Exact #59 part may require replan; no fitted zero-area component."
+        },
+        {
+          "id": "POWER-AGND-210-160",
+          "rect": [
+            207,
+            157,
+            213,
+            163
+          ],
+          "sides": [
+            "F.Cu"
+          ]
+        },
+        {
+          "id": "POWER-AGND-227-160",
+          "rect": [
+            224,
+            157,
+            230,
+            163
+          ],
+          "sides": [
+            "F.Cu"
+          ]
+        },
+        {
+          "id": "POWER-AGND-210-179",
+          "rect": [
+            207,
+            176,
+            213,
+            182
+          ],
+          "sides": [
+            "F.Cu"
+          ]
+        },
+        {
+          "id": "POWER-AGND-227-179",
+          "rect": [
+            224,
+            176,
+            230,
+            182
+          ],
+          "sides": [
+            "F.Cu"
+          ]
+        }
+      ],
+      "board_bulk_reserve": [
+        {
+          "net": "+12V",
+          "rect": [
+            140,
+            288,
+            145,
+            291
+          ],
+          "nominal_uF": 4.7,
+          "maximum_height_mm": 5,
+          "side": "B.Cu",
+          "status": "PROPOSAL finite reservation for UNSELECTED bulk part. Exact #59 part may require replan; no fitted zero-area component."
+        },
+        {
+          "net": "-12V",
+          "rect": [
+            146,
+            288,
+            151,
+            291
+          ],
+          "nominal_uF": 4.7,
+          "maximum_height_mm": 5,
+          "side": "B.Cu",
+          "status": "PROPOSAL finite reservation for UNSELECTED bulk part. Exact #59 part may require replan; no fitted zero-area component."
+        },
+        {
+          "net": "+5V",
+          "rect": [
+            152,
+            288,
+            157,
+            291
+          ],
+          "nominal_uF": 4.7,
+          "maximum_height_mm": 5,
+          "side": "B.Cu",
+          "status": "PROPOSAL finite reservation for UNSELECTED bulk part. Exact #59 part may require replan; no fitted zero-area component."
+        }
+      ]
+    },
+    "EL": {
+      "id": "osc-stage-optical",
+      "outline": [
+        [
+          210,
+          164
+        ],
+        [
+          317,
+          164
+        ],
+        [
+          317,
+          277
+        ],
+        [
+          210,
+          277
+        ]
+      ],
+      "face_z_mm": -4.2,
+      "thickness_mm": 0.4,
+      "layers": 2,
+      "copper_oz": 1,
+      "assembly_sides": [
+        "F.Cu",
+        "B.Cu"
+      ],
+      "supports_mm": [],
+      "reserves": [
+        {
+          "id": "UNSELECTED-BULK-1",
+          "rect": [
+            210.5,
+            165,
+            215.5,
+            168
+          ],
+          "sides": [
+            "F.Cu"
+          ],
+          "status": "PROPOSAL finite reservation for UNSELECTED bulk part. Exact #59 part may require replan; no fitted zero-area component."
+        },
+        {
+          "id": "UNSELECTED-BULK-2",
+          "rect": [
+            210.5,
+            169,
+            215.5,
+            172
+          ],
+          "sides": [
+            "F.Cu"
+          ],
+          "status": "PROPOSAL finite reservation for UNSELECTED bulk part. Exact #59 part may require replan; no fitted zero-area component."
+        },
+        {
+          "id": "UNSELECTED-BULK-3",
+          "rect": [
+            210.5,
+            173,
+            215.5,
+            176
+          ],
+          "sides": [
+            "F.Cu"
+          ],
+          "status": "PROPOSAL finite reservation for UNSELECTED bulk part. Exact #59 part may require replan; no fitted zero-area component."
+        }
+      ],
+      "board_bulk_reserve": [
+        {
+          "net": "+12V",
+          "rect": [
+            210.5,
+            165,
+            215.5,
+            168
+          ],
+          "nominal_uF": 4.7,
+          "maximum_height_mm": 1.75,
+          "side": "F.Cu",
+          "status": "PROPOSAL finite reservation for UNSELECTED bulk part. Exact #59 part may require replan; no fitted zero-area component."
+        },
+        {
+          "net": "-12V",
+          "rect": [
+            210.5,
+            169,
+            215.5,
+            172
+          ],
+          "nominal_uF": 4.7,
+          "maximum_height_mm": 1.75,
+          "side": "F.Cu",
+          "status": "PROPOSAL finite reservation for UNSELECTED bulk part. Exact #59 part may require replan; no fitted zero-area component."
+        },
+        {
+          "net": "+5V",
+          "rect": [
+            210.5,
+            173,
+            215.5,
+            176
+          ],
+          "nominal_uF": 4.7,
+          "maximum_height_mm": 1.75,
+          "side": "F.Cu",
+          "status": "PROPOSAL finite reservation for UNSELECTED bulk part. Exact #59 part may require replan; no fitted zero-area component."
+        }
+      ]
+    },
+    "O1": {
+      "id": "osc-octave-1",
+      "outline": [
+        [
+          4.6,
+          174.5
+        ],
+        [
+          11.5,
+          174.5
+        ],
+        [
+          11.5,
+          171
+        ],
+        [
+          17.5,
+          171
+        ],
+        [
+          17.5,
+          174.5
+        ],
+        [
+          24.4,
+          174.5
+        ],
+        [
+          24.4,
+          195.5
+        ],
+        [
+          4.6,
+          195.5
+        ]
+      ],
+      "face_z_mm": -16,
+      "thickness_mm": 1.6,
+      "layers": 2,
+      "copper_oz": 1,
+      "assembly_sides": [
+        "F.Cu",
+        "B.Cu"
+      ],
+      "supports_mm": [],
+      "reserves": []
+    },
+    "O2": {
+      "id": "osc-octave-2",
+      "outline": [
+        [
+          21.6,
+          174.5
+        ],
+        [
+          28.5,
+          174.5
+        ],
+        [
+          28.5,
+          171
+        ],
+        [
+          34.5,
+          171
+        ],
+        [
+          34.5,
+          174.5
+        ],
+        [
+          41.4,
+          174.5
+        ],
+        [
+          41.4,
+          195.5
+        ],
+        [
+          21.6,
+          195.5
+        ]
+      ],
+      "face_z_mm": -29,
+      "thickness_mm": 1.6,
+      "layers": 2,
+      "copper_oz": 1,
+      "assembly_sides": [
+        "F.Cu",
+        "B.Cu"
+      ],
+      "supports_mm": [],
+      "reserves": []
+    },
+    "O3": {
+      "id": "osc-octave-3",
+      "outline": [
+        [
+          38.6,
+          174.5
+        ],
+        [
+          45.5,
+          174.5
+        ],
+        [
+          45.5,
+          171
+        ],
+        [
+          51.5,
+          171
+        ],
+        [
+          51.5,
+          174.5
+        ],
+        [
+          58.4,
+          174.5
+        ],
+        [
+          58.4,
+          195.5
+        ],
+        [
+          38.6,
+          195.5
+        ]
+      ],
+      "face_z_mm": -16,
+      "thickness_mm": 1.6,
+      "layers": 2,
+      "copper_oz": 1,
+      "assembly_sides": [
+        "F.Cu",
+        "B.Cu"
+      ],
+      "supports_mm": [],
+      "reserves": []
+    },
+    "O4": {
+      "id": "osc-octave-4",
+      "outline": [
+        [
+          55.6,
+          174.5
+        ],
+        [
+          62.5,
+          174.5
+        ],
+        [
+          62.5,
+          171
+        ],
+        [
+          68.5,
+          171
+        ],
+        [
+          68.5,
+          174.5
+        ],
+        [
+          75.4,
+          174.5
+        ],
+        [
+          75.4,
+          195.5
+        ],
+        [
+          55.6,
+          195.5
+        ]
+      ],
+      "face_z_mm": -29,
+      "thickness_mm": 1.6,
+      "layers": 2,
+      "copper_oz": 1,
+      "assembly_sides": [
+        "F.Cu",
+        "B.Cu"
+      ],
+      "supports_mm": [],
+      "reserves": []
+    },
+    "O5": {
+      "id": "osc-octave-5",
+      "outline": [
+        [
+          72.6,
+          174.5
+        ],
+        [
+          79.5,
+          174.5
+        ],
+        [
+          79.5,
+          171
+        ],
+        [
+          85.5,
+          171
+        ],
+        [
+          85.5,
+          174.5
+        ],
+        [
+          92.4,
+          174.5
+        ],
+        [
+          92.4,
+          195.5
+        ],
+        [
+          72.6,
+          195.5
+        ]
+      ],
+      "face_z_mm": -16,
+      "thickness_mm": 1.6,
+      "layers": 2,
+      "copper_oz": 1,
+      "assembly_sides": [
+        "F.Cu",
+        "B.Cu"
+      ],
+      "supports_mm": [],
+      "reserves": []
+    }
+  },
+  "enclosure": {
+    "inside_depth_mm": 120,
+    "internal_xy_mm": [
+      -2,
+      -2,
+      320,
+      300
+    ],
+    "status": "PROPOSAL; no selected case; #65 main stiffness/fit and #55/#57 selector/source fit NOT RUN",
+    "rear_clearance_from_K_B_face_mm": 18.4
+  },
+  "protection_obligations": {
+    "output": 82,
+    "precision_sense": 16,
+    "octave_receiver": 30,
+    "status": "OPEN #59"
+  },
+  "load_distribution": {
+    "status": "PROPOSAL load side only; does not bridge AbstractBoundary CN301/XB301",
+    "wire": "Alpha Wire 5859 BK005",
+    "source_pdf": "design/partition/sources/alpha-5859.pdf",
+    "nominal_dcr_ohm_per_m": 0.009186351706036745,
+    "hot_resistance_requirement_ohm_per_m": 0.013,
+    "max_wire_length_mm": 125,
+    "temperature_max_C": 70,
+    "resistance_tolerance_multiplier": 1.1,
+    "diameter_max_mm": 2.5907999999999998,
+    "minimum_bend_radius_mm": 25.907999999999998,
+    "combined_termination_resistance_ohm": 0.0002,
+    "rail_plane_resistance_ceiling_ohm": 0.001,
+    "return_plane_resistance_ceiling_ohm": 0.0005,
+    "rail_max_A": {
+      "+12V": 2.1,
+      "-12V": 2,
+      "+5V": 0.5
+    },
+    "single_return_max_A": 4.6,
+    "x_mm": [
+      142,
+      159,
+      176,
+      193,
+      210,
+      227
+    ],
+    "net_order": [
+      "+12V",
+      "-12V",
+      "+5V",
+      "AGND",
+      "AGND",
+      "AGND"
+    ],
+    "J_pad_y_mm": 160,
+    "P_pad_y_mm": 179,
+    "K_J_pad_y_mm": 169,
+    "K_P_pad_y_mm": 175,
+    "factory_solder_pad_mm": [
+      4,
+      4
+    ],
+    "pad_side": "B.Cu on J/P; F.Cu on K",
+    "normal_derating_requirement_A": 5,
+    "qualification": "Wire bundling, solder/strain relief, actual hot plane resistance and loss NOT RUN #65; source realization #57; no manufacturer amperage inferred from AWG.",
+    "wire_labels": [
+      "+12V",
+      "-12V",
+      "+5V",
+      "AGND1",
+      "AGND2",
+      "AGND3"
+    ],
+    "K_J_pad_y_mm_by_wire": [
+      169,
+      169,
+      169,
+      169,
+      160,
+      160
+    ],
+    "K_P_pad_y_mm_by_wire": [
+      175,
+      175,
+      175,
+      175,
+      179,
+      179
+    ],
+    "ground_routing_requirement": "Combined J-or-P plus K AGND spreading/neck resistance <=0.5 mOhm, including vias and all shared necks. Worst-candidate GH path excludes this resistance; all alternative returns conservatively share it. Routing extraction and hot Kelvin measurement required #38/#39/#43/#65; not a measured layout-independent value."
+  }
+}

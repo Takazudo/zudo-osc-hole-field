@@ -35,6 +35,7 @@ generators=(
   scripts/geometry/regen.sh
   scripts/libgen/regen.sh
   scripts/schgen/regen.sh
+  scripts/partition/regen.sh
   scripts/schgen/regen-boards.sh
   scripts/panel/regen.sh
 )

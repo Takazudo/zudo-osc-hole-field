@@ -168,6 +168,21 @@ def refine(family):
     result_family = replace(family, parts=tuple(positioned))
     if channel_signatures(family) != channel_signatures(result_family):
         raise ValueError(f'{family.name}: channel function changed during I/O packing')
+    # The fixed stage emitters overlap pot mounting holes on a common PCB.
+    # Their already dedicated complete amplifier package and bypasses therefore
+    # follow the whole stage circuit onto a distinct front optical plane.
+    stage_packages = {p.key.rsplit('.', 1)[0] for p in result_family.parts
+                      if p.prefix == 'U' and p.attributes.get('Role', '').startswith('stage_indicator:')}
+    optical = []
+    for p in result_family.parts:
+        stage = (p.attributes.get('Role', '').startswith('stage_indicator:')
+                 or p.prefix == 'U' and p.key.rsplit('.', 1)[0] in stage_packages
+                 or p.attributes.get('Decouples') in stage_packages)
+        if stage:
+            p = replace(p, attributes={**p.attributes, 'BoardRegion': 'stage_optical',
+                                      'Island': 'IO_STAGE_OPTICAL:${SHEETNAME}'})
+        optical.append(p)
+    result_family = replace(result_family, parts=tuple(optical))
     return result_family
 
 

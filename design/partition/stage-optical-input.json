@@ -1,0 +1,358 @@
+{
+  "schema_version": 1,
+  "status": "CONDITIONAL CANDIDATE; full partition NOT ACCEPTED",
+  "authority": "PROPOSAL (planning, owner-delegated)",
+  "all_unlabelled_dimensions_status": "PROPOSAL",
+  "board_id": "osc-stage-optical",
+  "outline": [
+    [
+      210,
+      164
+    ],
+    [
+      317,
+      164
+    ],
+    [
+      317,
+      277
+    ],
+    [
+      210,
+      277
+    ]
+  ],
+  "face_z_mm": -4.2,
+  "thickness_mm": 0.4,
+  "layers": 2,
+  "layer_exception": "0.4mm optical plane separates emitters and complete drivers from pot mounting holes while keeping SOIC1.75mm parts below panel; sparse LED circuit uses continuous rear AGND pour. Four-layer0.4mm fabrication not assumed.",
+  "assembly_sides": [
+    "F.Cu",
+    "B.Cu"
+  ],
+  "component_height_limit_front_mm": 1.75,
+  "panel_rear_z_mm": -2,
+  "minimum_nominal_front_gap_mm": 0.45,
+  "minimum_nominal_rear_body_gap_mm": 0.4,
+  "body_datum_status": "REQUIREMENT ONLY: pot bodies outside the shaft apertures must end at or behind z=-5; toggles pass through full-body apertures. Actual pot seating/body/tail datum and tolerances remain UNSOURCED; installed fit NOT RUN #65",
+  "passage_diameters_mm": {
+    "switch": 11,
+    "button": 9.5,
+    "pot": 6.3
+  },
+  "support": {
+    "type": "M2 enclosure-supported posts through shared control-board clearances; optical PCB is captive between insulating collars, no connector carries structural load",
+    "x_mm": [
+      227,
+      244,
+      261,
+      278,
+      295
+    ],
+    "y_mm": [
+      172,
+      193,
+      207,
+      221,
+      235,
+      249,
+      263
+    ],
+    "hole_mm": 2.2,
+    "post_diameter_mm": 2.0,
+    "collar_head_diameter_mm": 3.2,
+    "load_cases": [
+      "Factory mating/unmating requires local backup fixture; no force is reacted through0.4mm unsupported laminate",
+      "In-service harnesses clamped to enclosure within15mm of header;5N cable pull requirement bypasses PCB",
+      "Gravity,10g transport inertia and enclosure distortion: stiffness/tolerance verification NOT RUN",
+      "35 proposed posts limit nominal clear spans; no laminate elastic modulus, perforated-plate analysis or assembled-load test establishes stiffness yet. Do not infer strength from post count."
+    ],
+    "strength_status": "OPEN / NOT RUN #55; nominal passages do not establish stiffness or thread engagement"
+  },
+  "ports": [
+    {
+      "id": "EL-E1",
+      "instance": "E1",
+      "center_mm": [
+        218.5,
+        172
+      ],
+      "side": "B.Cu",
+      "rotation_deg": 0,
+      "evidence": "design/connectors/jst-gh.json",
+      "body_clearance_envelope_mm": [
+        14,
+        6,
+        8
+      ],
+      "wire_exit": "Toward rear through y166..178 corridor, then enclosure cable carrier beyond control tails; exact routes depend on core port locations",
+      "pins": {
+        "1": "/E1/ENV_BUFFER",
+        "2": "AGND",
+        "3": "/E1/NOT_RISE",
+        "4": "AGND",
+        "5": "/E1/NOT_FALL",
+        "6": "+12V",
+        "7": "-12V",
+        "8": "+5V"
+      },
+      "power_return": "Pins 2/4 common AGND; no equal sharing. Actual per-path resistance/current bounds and partial power in partition report; source off for service."
+    },
+    {
+      "id": "EL-E2",
+      "instance": "E2",
+      "center_mm": [
+        235.5,
+        172
+      ],
+      "side": "B.Cu",
+      "rotation_deg": 0,
+      "evidence": "design/connectors/jst-gh.json",
+      "body_clearance_envelope_mm": [
+        14,
+        6,
+        8
+      ],
+      "wire_exit": "Toward rear through y166..178 corridor, then enclosure cable carrier beyond control tails; exact routes depend on core port locations",
+      "pins": {
+        "1": "/E2/ENV_BUFFER",
+        "2": "AGND",
+        "3": "/E2/NOT_RISE",
+        "4": "AGND",
+        "5": "/E2/NOT_FALL",
+        "6": "+12V",
+        "7": "-12V",
+        "8": "+5V"
+      },
+      "power_return": "Pins 2/4 common AGND; no equal sharing. Actual per-path resistance/current bounds and partial power in partition report; source off for service."
+    },
+    {
+      "id": "EL-E3",
+      "instance": "E3",
+      "center_mm": [
+        252.5,
+        172
+      ],
+      "side": "B.Cu",
+      "rotation_deg": 0,
+      "evidence": "design/connectors/jst-gh.json",
+      "body_clearance_envelope_mm": [
+        14,
+        6,
+        8
+      ],
+      "wire_exit": "Toward rear through y166..178 corridor, then enclosure cable carrier beyond control tails; exact routes depend on core port locations",
+      "pins": {
+        "1": "/E3/ENV_BUFFER",
+        "2": "AGND",
+        "3": "/E3/NOT_RISE",
+        "4": "AGND",
+        "5": "/E3/NOT_FALL",
+        "6": "+12V",
+        "7": "-12V",
+        "8": "+5V"
+      },
+      "power_return": "Pins 2/4 common AGND; no equal sharing. Actual per-path resistance/current bounds and partial power in partition report; source off for service."
+    },
+    {
+      "id": "EL-E4",
+      "instance": "E4",
+      "center_mm": [
+        269.5,
+        172
+      ],
+      "side": "B.Cu",
+      "rotation_deg": 0,
+      "evidence": "design/connectors/jst-gh.json",
+      "body_clearance_envelope_mm": [
+        14,
+        6,
+        8
+      ],
+      "wire_exit": "Toward rear through y166..178 corridor, then enclosure cable carrier beyond control tails; exact routes depend on core port locations",
+      "pins": {
+        "1": "/E4/ENV_BUFFER",
+        "2": "AGND",
+        "3": "/E4/NOT_RISE",
+        "4": "AGND",
+        "5": "/E4/NOT_FALL",
+        "6": "+12V",
+        "7": "-12V",
+        "8": "+5V"
+      },
+      "power_return": "Pins 2/4 common AGND; no equal sharing. Actual per-path resistance/current bounds and partial power in partition report; source off for service."
+    },
+    {
+      "id": "EL-E5",
+      "instance": "E5",
+      "center_mm": [
+        286.5,
+        172
+      ],
+      "side": "B.Cu",
+      "rotation_deg": 0,
+      "evidence": "design/connectors/jst-gh.json",
+      "body_clearance_envelope_mm": [
+        14,
+        6,
+        8
+      ],
+      "wire_exit": "Toward rear through y166..178 corridor, then enclosure cable carrier beyond control tails; exact routes depend on core port locations",
+      "pins": {
+        "1": "/E5/ENV_BUFFER",
+        "2": "AGND",
+        "3": "/E5/NOT_RISE",
+        "4": "AGND",
+        "5": "/E5/NOT_FALL",
+        "6": "+12V",
+        "7": "-12V",
+        "8": "+5V"
+      },
+      "power_return": "Pins 2/4 common AGND; no equal sharing. Actual per-path resistance/current bounds and partial power in partition report; source off for service."
+    },
+    {
+      "id": "EL-E6",
+      "instance": "E6",
+      "center_mm": [
+        303.5,
+        172
+      ],
+      "side": "B.Cu",
+      "rotation_deg": 0,
+      "evidence": "design/connectors/jst-gh.json",
+      "body_clearance_envelope_mm": [
+        14,
+        6,
+        8
+      ],
+      "wire_exit": "Toward rear through y166..178 corridor, then enclosure cable carrier beyond control tails; exact routes depend on core port locations",
+      "pins": {
+        "1": "/E6/ENV_BUFFER",
+        "2": "AGND",
+        "3": "/E6/NOT_RISE",
+        "4": "AGND",
+        "5": "/E6/NOT_FALL",
+        "6": "+12V",
+        "7": "-12V",
+        "8": "+5V"
+      },
+      "power_return": "Pins 2/4 common AGND; no equal sharing. Actual per-path resistance/current bounds and partial power in partition report; source off for service."
+    }
+  ],
+  "fabrication": {
+    "service": "JLCPCB Standard PCBA",
+    "size_window_mm": [
+      [
+        70,
+        70
+      ],
+      [
+        460,
+        500
+      ]
+    ],
+    "published_assembly_thickness": "No limit; this is assembly eligibility only",
+    "source_url": "https://jlcpcb.com/capabilities/pcb-assembly-capabilities",
+    "thickness_source_url": "https://jlcpcb.com/quote/pcbOrderFaq/PCB%20Thickness",
+    "finish": "ENIG required for0.4mm two-layer draft",
+    "tooling": "Single board with removable manufacturing edge rails and factory support fixture; rail outline/process approval OPEN; no panelization assumed",
+    "quote_status": "No quote or order requested"
+  },
+  "pending": [
+    "Final full-board/copper placement and routing",
+    "Exact control-body/tail seating and tolerance evidence",
+    "Support strength, optical brightness/crosstalk and installed actuator clearance",
+    "Final pin currents, rail drop, partial power and return integrity from #59",
+    "Panel artwork/fastener keepouts under #37"
+  ],
+  "passage_scope": "Every control shaft/body intersecting optical board: E1..E6 all controls plus A01..A06 ATTEN shafts at y269",
+  "population": "All 138 current stage parts on F.Cu; six exact GH8 headers on B.Cu; 12 Kingbright emitters and 12 source 1.2 kohm series resistors included",
+  "placement_proposal": {
+    "regions": [
+      {
+        "instance": "E1",
+        "rect": [
+          220,
+          176,
+          232,
+          276
+        ],
+        "side": "F.Cu"
+      },
+      {
+        "instance": "E2",
+        "rect": [
+          237,
+          176,
+          249,
+          276
+        ],
+        "side": "F.Cu"
+      },
+      {
+        "instance": "E3",
+        "rect": [
+          254,
+          176,
+          266,
+          276
+        ],
+        "side": "F.Cu"
+      },
+      {
+        "instance": "E4",
+        "rect": [
+          271,
+          176,
+          283,
+          276
+        ],
+        "side": "F.Cu"
+      },
+      {
+        "instance": "E5",
+        "rect": [
+          288,
+          176,
+          300,
+          276
+        ],
+        "side": "F.Cu"
+      },
+      {
+        "instance": "E6",
+        "rect": [
+          305,
+          176,
+          317,
+          276
+        ],
+        "side": "F.Cu"
+      }
+    ],
+    "edge_clearance_mm": 0.3,
+    "courtyard_clearance_mm": 0.35,
+    "support_head_diameter_mm": 3.2
+  },
+  "maximum_nonpassing_pot_body_front_z_mm": -5.0,
+  "bulk_reservation_rectangles_mm": [
+    [
+      210.5,
+      165,
+      215.5,
+      168
+    ],
+    [
+      210.5,
+      169,
+      215.5,
+      172
+    ],
+    [
+      210.5,
+      173,
+      215.5,
+      176
+    ]
+  ]
+}

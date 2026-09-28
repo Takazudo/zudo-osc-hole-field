@@ -156,7 +156,7 @@ def build(families=None, instances=None, assignments=None, capacities=None):
         expected={unit for unit,pins in load_symbol(p['symbol']).units.items() if pins}
         if set(p['units'])!=expected or len(p['units'])!=len(set(p['units'])):
             errors.append(f"package unit coverage {p['ref']}: {p['units']} != {sorted(expected)}")
-        if not set(p['regions']) <= {'jack','control','core','selector_front','selector_rear'}:
+        if not set(p['regions']) <= {'jack','control','core','selector_front','selector_rear','stage_optical'}:
             errors.append(f"unknown source region {p['ref']}: {p['regions']}")
     regions={r['ref']:r['region'] for r in assignments}
     crossings=[];forbidden=[];local=[]
