@@ -239,9 +239,22 @@ def build(allocation=None):
         feed = assignment[instance]
         for rail in ('+12V', '-12V'):
             short_case[feed][rail] = round(short_case[feed][rail] + short_current, 6)
+    selected = json.loads((ROOT/'design/power/supply-architecture-input.json').read_text())
+    if set(selected['domains']) != {'EXT'} or set(selected['domains']['EXT']['module_instances']) != expected:
+        raise ValueError('selected EXT module allocation drift')
+    if set(selected['load_allocation']) != expected_load_ids or any(
+            selected['load_allocation'][load['id']] != {'domain':'EXT','rails':load['active_rails']}
+            for load in loads):
+        raise ValueError('selected EXT worksheet allocation drift')
     return {'schema_version': 1, 'status': 'UNVALIDATED DRAFT; conditional planning cases only',
             'source': str(INPUT.relative_to(ROOT)), 'worksheet_loads': loads,
             'physical_ic_packages': packages, 'physical_package_count': len(packages),
+            'selected_domain': {'id':'EXT','status':'REQUIREMENT ONLY / NON-ORDERABLE / NOT-ENERGIZABLE',
+                                'module_count':len(expected)-1,'shared_reference_count':1,
+                                'worksheet_load_count':len(loads),'physical_ic_package_count':len(packages),
+                                'raw_inlet_nets':['+12V_IN','-12V_IN','+5V_IN'],
+                                'conditional_load_rails':list(RAILS),'return_net':'AGND',
+                                'circuit_evidence_issue':'https://github.com/Takazudo/zudo-osc-hole-field/issues/59'},
             'module_feed_assignment': assignment, 'inlet_count_by_feed': source['inlet_count_by_feed'],
             'original_single_inlet_planning_mA': budget['reported_planning_upper_subtotal_mA'],
             'original_single_source_ceiling_mA': budget['design_ceiling_mA'],

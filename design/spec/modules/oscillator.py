@@ -103,7 +103,15 @@ class Builder:
             if p.prefix=='U':packages[p.key.rsplit('.',1)[0]]=p
         for key,p in packages.items():
             sym=p.symbol.split(':')[-1]
-            rails=('+5V',) if sym=='SN74HC14DR' else ('NOISE_VDD',) if sym=='NOISE2' else ('+12V',) if sym in ('LM393BIDR','REF5050AIDR') else ('+12V','VEE5') if sym=='AS3340D' else ('+12V','-12V')
+            if sym=='SN74HC14DR':rails=('+5V',)
+            elif sym=='NOISE2':rails=('NOISE_VDD',)
+            elif sym=='REF5050AIDR':rails=('+12V',)
+            elif sym=='LM393BIDR':
+                # Some capture cells power the comparator from +12/AGND,
+                # while offset/mixer instances actually use +12/-12.
+                rails=('+12V',) if p.pins['4']=='AGND' else ('+12V',p.pins['4'])
+            elif sym=='AS3340D':rails=('+12V','VEE5')
+            else:rails=('+12V','-12V')
             for j,rail in enumerate(rails):self.c('DEC_'+key+'_'+str(j),'100 nF',rail,'AGND')
         assigned={};counts=defaultdict(int);out=[]
         for p in self.parts:

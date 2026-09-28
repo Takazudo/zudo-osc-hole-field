@@ -1,0 +1,83 @@
+{
+  "schema_version": 1,
+  "status": "PASS: native raw/load nets distinct; requirement-only boundary remains UNIMPLEMENTED",
+  "netlist_boundary_components": {
+    "inlet": "CN301",
+    "unimplemented_boundary": "XB301"
+  },
+  "raw_net_nodes": {
+    "+12V_IN": [
+      [
+        "CN301",
+        "1"
+      ],
+      [
+        "XB301",
+        "1"
+      ]
+    ],
+    "-12V_IN": [
+      [
+        "CN301",
+        "2"
+      ],
+      [
+        "XB301",
+        "2"
+      ]
+    ],
+    "+5V_IN": [
+      [
+        "CN301",
+        "3"
+      ],
+      [
+        "XB301",
+        "3"
+      ]
+    ]
+  },
+  "load_rail_boundary_nodes": {
+    "+12V": [
+      "XB301",
+      "4"
+    ],
+    "-12V": [
+      "XB301",
+      "5"
+    ],
+    "+5V": [
+      "XB301",
+      "6"
+    ]
+  },
+  "agnd_inlet_and_boundary_nodes": [
+    [
+      "CN301",
+      "5"
+    ],
+    [
+      "CN301",
+      "6"
+    ],
+    [
+      "CN301",
+      "7"
+    ],
+    [
+      "CN301",
+      "8"
+    ],
+    [
+      "XB301",
+      "7"
+    ]
+  ],
+  "orderable_footprint": null,
+  "bom_entry": false,
+  "erc_power_output_meaning": "Abstract declaration for ERC only; no protected continuity or physical source is implemented",
+  "protection_implemented": false,
+  "energization_authorized": false,
+  "circuit_evidence_issue": "https://github.com/Takazudo/zudo-osc-hole-field/issues/59",
+  "physical_qualification_issue": "https://github.com/Takazudo/zudo-osc-hole-field/issues/57"
+}

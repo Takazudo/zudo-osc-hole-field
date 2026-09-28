@@ -2414,7 +2414,9 @@
       "+5V": 400
     },
     "rationale": "Original single-source and two-source planning totals fail. Three sources fit a conditional allocation/reserved rear volume but do not establish voltage-loss or exact inlet/cable interface. #48 selects a requirement contract; original capacity comparisons remain visible.",
-    "capacitance_policy": "Unchanged 150/150/100 uF nominal +20%; selected source must ramp no faster than 10 ms and meet full-capacitance transient requirement. #52/#35 count actual decouplers and bulk.",
+    "capacitance_policy": "Unchanged 150/150/100 uF nominal +20%; selected source must ramp no faster than 10 ms and meet full-capacitance transient requirement. #52 counts fitted direct-rail decouplers as 48.3/41.1/24.5 uF; #54/#35 must allocate the still-unplaced initial 4.7 uF per powered board/rail.",
+    "captured_interface": "OSC-EXT-PWR-8-R1 logical pins and an abstract, non-orderable, non-energizable EXT boundary; raw inlet nets remain distinct from conditional load rails. No protection circuit is implemented.",
+    "circuit_evidence_issue": "https://github.com/Takazudo/zudo-osc-hole-field/issues/59",
     "qualification_issue": "https://github.com/Takazudo/zudo-osc-hole-field/issues/57"
   }
 }

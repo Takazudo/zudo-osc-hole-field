@@ -31,6 +31,26 @@ class SupplyArchitectureTests(unittest.TestCase):
         self.assertEqual(r['selected_requirement']['minimum_continuous_mA'],{'+12V':1600,'-12V':1500,'+5V':300})
         self.assertTrue(all(v is None for v in r['measured_source_capacity_mA'].values()))
 
+    def test_abstract_boundary_and_historical_conflict_are_separate(self):
+        r=self.build()
+        self.assertIn('requirement-only specification separation',r['implementation']['status'])
+        self.assertEqual(r['implementation']['captured_inlet_footprint'],'')
+        self.assertEqual(r['implementation']['captured_boundary_footprint'],'')
+        self.assertTrue(r['implementation']['abstract_parts_have_no_footprint_or_bom'])
+        self.assertEqual(set(r['implementation']['historical_ptc_comparison']), {'+12V','-12V','+5V'})
+        self.assertTrue(all(not row['passes_required_current_and_protection_loss']
+                            for row in r['implementation']['historical_ptc_comparison'].values()))
+        self.assertIn('Open inlet AGND', ' '.join(r['implementation']['missing_circuit_proofs']))
+        self.assertEqual(r['implementation']['open_injection_obligations']['outputs'],82)
+        self.assertEqual(r['implementation']['open_injection_obligations']['precision_feedback'],16)
+        self.assertEqual(r['implementation']['open_injection_obligations']['octave_receivers'],30)
+        self.assertEqual(r['implementation']['patch_sleeves_on_agnd'],180)
+        self.assertEqual({rail: row['captured_fitted_nominal_uF'] for rail,row in r['implementation']['actual_fitted_capacitor_inventory'].items()},
+                         {'+12V':48.3,'-12V':41.1,'+5V':24.5})
+        self.assertEqual(r['implementation']['actual_fitted_capacitor_inventory']['-12V']['mapped_ic_supply_pin_count'],400)
+        self.assertEqual(r['implementation']['actual_fitted_capacitor_inventory']['-12V']['fitted_100nF_attributed_to_rail_count'],401)
+        self.assertEqual(r['implementation']['prospective_plus12_mA_excess_over_auxiliary_allocation'],25.5)
+
     def test_missing_module(self):
         self.reject(lambda c:c['domains']['EXT']['module_instances'].pop(), 'module allocation')
 

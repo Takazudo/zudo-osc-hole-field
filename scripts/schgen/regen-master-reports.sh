@@ -16,6 +16,10 @@ fi
 mkdir -p .circuit-cache/master-audit
 bash scripts/kicad/run.sh kicad-cli sch export netlist --format kicadsexpr \
   -o .circuit-cache/master-audit/netlist.net schematic/zudo-osc-hole-field.kicad_sch
+bash scripts/kicad/run.sh kicad-cli sch export bom \
+  -o .circuit-cache/master-audit/bom.csv schematic/zudo-osc-hole-field.kicad_sch
+python3 scripts/schgen/check_power_boundary.py .circuit-cache/master-audit/netlist.net \
+  --bom .circuit-cache/master-audit/bom.csv ${mode:+$mode}
 python3 scripts/schgen/verify_netlist.py .circuit-cache/master-audit/netlist.net
 python3 scripts/schgen/audit_master.py .circuit-cache/master-audit/netlist.net ${mode:+$mode}
 python3 scripts/schgen/build_master_budget.py ${mode:+$mode}

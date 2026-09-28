@@ -135,7 +135,7 @@ def check():
     print(f'CALCULATED slew tau: {slew["R_MIN"] * capacitance:.6f}..{(slew["R_MIN"] + 500000) * capacitance:.6f} s')
     assert {p['ref'] for p in cells['magnitude_indicator']['parts'] if p.get('part_id') == 'signal_diode'} == {'D1', 'D2', 'D3', 'D4'}
     print(f'PASS: {len(cells)} proposal cell definitions and {len(parts)} shortlist identities consistent; electrical qualification remains OPEN')
-    print('HISTORICAL DEFICIT: original -12 V estimate exceeds its ceiling by 72.655 mA; #48 external requirement supersedes source intent. Run scripts/schgen/build_supply_architecture.py --check; implementation #52 and physical qualification #57 remain open.')
+    print('HISTORICAL DEFICIT: original -12 V estimate exceeds its ceiling by 72.655 mA; #48 external requirement supersedes source intent. #52 captures a non-orderable boundary; exact circuit #59 and physical qualification #57 remain open.')
 
 
 if __name__ == '__main__':

@@ -8,7 +8,7 @@ OSC-ES-1 is **PROPOSAL (planning, owner-delegated)**. It fixes the design inputs
 
 The machine-readable authority is `design/standard/electrical-standard.json`; shared identities are in `design/standard/parts-shortlist.json`. E01–E09 are recorded separately in `project/osc-hole-field/electrical-decisions.json`. Existing owner decisions D01–D12 and the fixed panel positions are unchanged.
 
-**The historical preliminary −12 V estimate is 712.655 mA against a 640 mA ceiling.** The later captured ledger also fails the original source comparison. [Issue #48](../decisions/osc-supply-architecture.mdx) selects a conditional external-source requirement; #52 must implement it before partition. Original capacity deficits remain recorded, and physical qualification stays open in #57.
+**The historical preliminary −12 V estimate is 712.655 mA against a 640 mA ceiling.** The later captured ledger also fails the original source comparison. [Issue #48](../decisions/osc-supply-architecture.mdx) selects a conditional external-source requirement; #52 captures its logical inlet and non-orderable boundary for conditional partition. Exact circuit realization is open in #59. Original capacity deficits remain recorded, and physical qualification stays open in #57.
 
 ## Levels and loads
 
@@ -110,7 +110,7 @@ After 20 minutes of warm-up, record serial/revision, ambient temperature, rails,
 
 ## Rail and capacitor budgets
 
-Issue #48 supersedes the original source choice with the [single-domain external source requirement](../decisions/osc-supply-architecture.mdx). The old 960/640/400 mA ceilings remain historical pinned P+B comparisons. The selected contract requires 1600/1500/300 mA continuous and 1900/1800/400 mA transient delivery; these are required values, not available source capacity. The 150/150/100 µF capacitance limits remain unchanged; count their full +20% tolerance at a monotonic ramp no faster than 10 ms. #52 implements the power interface; #57 retains physical qualification.
+Issue #48 supersedes the original source choice with the [single-domain external source requirement](../decisions/osc-supply-architecture.mdx). The old 960/640/400 mA ceilings remain historical pinned P+B comparisons. The selected contract requires 1600/1500/300 mA continuous and 1900/1800/400 mA transient delivery; these are required values, not available source capacity. The 150/150/100 µF capacitance limits remain unchanged; count their full +20% tolerance at a monotonic ramp no faster than 10 ms. #52 captures only the non-orderable power boundary and verifies raw/load net separation; #59 owns exact protection circuits and #57 retains physical qualification.
 
 
 `rail-budget-preliminary.json` retains the 33-module, 225-signal-section planning table and splits it by role. It adds all 98 protected input buffers, 48 DC wiper buffers, 51 remote signal/level drivers, reference generation/fan-out, 92 magnitude drivers, twelve stage drivers and ten clip buffers. It rounds whole packages and charges unused sections. Some additions may overlap stages in the original rough estimate; only captured connectivity may remove that overlap.

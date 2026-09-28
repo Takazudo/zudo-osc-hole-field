@@ -5,9 +5,42 @@ import tempfile
 import unittest
 from scripts.pcbgen.definition import load_definition,load_lock,selected_hardware
 from scripts.pcbgen.geometry import outline_segments
+from scripts.pcbgen.netlist import Component,is_abstract_boundary,read_netlist
 from scripts.pcbgen.uuid_tools import stable_uuid,top_level_spans,normalize
 
 ROOT=Path(__file__).resolve().parents[2]
+
+class AbstractBoundaryTests(unittest.TestCase):
+    def test_netlisted_requirement_is_not_a_board_part(self):
+        fields=(('AbstractBoundary','true'),('Implementation','REQUIREMENT ONLY / NON-ORDERABLE / NOT-ENERGIZABLE'),('MPN',''))
+        abstract=Component('CN301','REQUIREMENT ONLY','','/POWER','/x','x',fields)
+        self.assertTrue(is_abstract_boundary(abstract))
+        with self.assertRaisesRegex(ValueError,'malformed abstract boundary'):
+            is_abstract_boundary(Component('CN301','REQUIREMENT ONLY','vendor:guessed','/POWER','/x','x',fields))
+        with self.assertRaisesRegex(ValueError,'malformed abstract boundary'):
+            is_abstract_boundary(Component('J101','jack','','/POWER','/x','x',fields))
+        with self.assertRaisesRegex(ValueError,'unmarked footprintless power boundary'):
+            is_abstract_boundary(Component('CN301','unknown','','/POWER','/x','x',()))
+
+    def test_board_reader_removes_abstract_pin_nodes(self):
+        sample='''(export (components
+          (comp (ref "CN301") (value "REQUIREMENT ONLY")
+            (sheetpath (names "/POWER") (tstamps "/x")) (tstamps "a")
+            (property (name "AbstractBoundary") (value "true"))
+            (property (name "Implementation") (value "REQUIREMENT ONLY / NON-ORDERABLE / NOT-ENERGIZABLE"))
+            (property (name "MPN")))
+          (comp (ref "R301") (value "2.2k") (footprint "zudo:r")
+            (sheetpath (names "/POWER") (tstamps "/x")) (tstamps "b")))
+          (nets (net (name "+12V_IN") (node (ref "CN301") (pin "1")))
+                (net (name "+12V") (node (ref "R301") (pin "1")))))'''
+        with tempfile.TemporaryDirectory() as tmp:
+            path=Path(tmp)/'native.net';path.write_text(sample)
+            components,nets=read_netlist(path)
+            self.assertEqual([c.ref for c in components],['R301'])
+            self.assertNotIn(('CN301','1'),nets)
+            self.assertEqual(nets[('R301','1')],'+12V')
+            native,_=read_netlist(path,include_abstract=True)
+            self.assertEqual({c.ref for c in native},{'CN301','R301'})
 
 class DefinitionTests(unittest.TestCase):
     def test_fixture_definition_and_fixed_coordinates(self):

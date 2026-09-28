@@ -10,7 +10,10 @@ import sys
 sys.dont_write_bytecode = True
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT))
-from scripts.schgen.build_rail_ledger import build as ledger_build, no_duplicate_keys
+from scripts.schgen.build_rail_ledger import build as ledger_build, no_duplicate_keys, RAIL_ALIASES
+from design.spec.instrument import specification
+from design.spec.modules.power import family as power_family
+from scripts.checks.protection58 import build as protection_audit_build
 RAILS = ('+12V', '-12V', '+5V')
 INPUT = ROOT / 'design/power/supply-architecture-input.json'
 OUTPUT = ROOT / 'design/power/supply-architecture.json'
@@ -129,9 +132,107 @@ def build(config=None):
     require(all(x['pcb_z_mm']-4-.5 > -45 for x in read('design/mechanical/selector-assembly.json')['instances']), 'selector reservation overlaps rear chamber')
     minimum = max(math.ceil(total[r]/candidate['planning_ceiling_mA'][r]) for r in RAILS)
     require(minimum == 3, 'minimum independent arithmetic candidate changed')
+    # Inspect the captured sheet instead of treating the contract as installed hardware.
+    power_parts = {part.key: part for part in power_family().parts}
+    legacy = read('design/power/protection-source-lock.json')['historical_ptc_limits']
+    actual_inlet = power_parts['INLET']
+    boundary = power_parts['BOUNDARY']
+    require(actual_inlet.symbol.endswith(':OSC_EXT_INLET_R1') and boundary.symbol.endswith(':OSC_EXT_BOUNDARY_R1'), 'selected abstract power sheet missing')
+    require(actual_inlet.pins == {'1':'+12V_IN','2':'-12V_IN','3':'+5V_IN','4':None,'5':'AGND','6':'AGND','7':'AGND','8':'AGND'}, 'logical inlet pin map drift')
+    require(boundary.pins == {'1':'+12V_IN','2':'-12V_IN','3':'+5V_IN','4':'+12V','5':'-12V','6':'+5V','7':'AGND'}, 'raw/load boundary net drift')
+    require(all(part.abstract and not part.footprint and not part.in_bom and part.on_board and
+                part.attributes.get('Implementation') == 'REQUIREMENT ONLY / NON-ORDERABLE / NOT-ENERGIZABLE'
+                for part in (actual_inlet, boundary)), 'abstract netlist-only boundary became orderable or disappeared from native netlist')
+    require(not any(part.key.startswith(('PTC_', 'TVS_', 'FLAG_')) for part in power_parts.values()), 'legacy protection or ERC power flag reused')
+    historical_path = {}
+    for key, rail in (('P12','+12V'), ('N12','-12V'), ('P5','+5V')):
+        historical_path[rail] = {
+                'historical_part': legacy['part'],
+                'hold_A_at_25C': legacy['hold_A_at_25C'],
+                'required_continuous_A': continuous[rail]/1000,
+                'r1max_ohm': legacy['r1max_ohm'],
+                'drop_at_required_continuous_V_using_r1max': round(continuous[rail]/1000*legacy['r1max_ohm'],6),
+                'passes_required_current_and_protection_loss':
+                    legacy['hold_A_at_25C'] >= continuous[rail]/1000 and
+                    continuous[rail]/1000*legacy['r1max_ohm'] <= harness['max_protection_drop_V'],
+            }
+    # These are fitted capacitor values visible in the master specification;
+    # board-level 4.7 uF reservoirs remain an explicit, unplaced reservation.
+    cap_values_uF = {'100 nF':.1, '1e-07 F':.1, '1 uF':1, '4.7 µF':4.7}
+    families, instances = specification()
+    by_family = {f.name:f for f in families}
+    jack_sleeves = [(instance.name,part.key) for instance in instances
+                    for part in by_family[instance.family].parts if part.prefix=='J' and part.pins.get('S')=='AGND']
+    require(len(jack_sleeves)==180, 'patch sleeve AGND coverage changed')
+    fitted_caps = {rail:[] for rail in RAILS}
+    for instance in instances:
+        for part in by_family[instance.family].parts:
+            if part.prefix != 'C' or part.dnp:
+                continue
+            # Charge filtered NOISE_VDD and locally buffered VEE5 capacitance
+            # to their upstream +5 and -12 planning domains conservatively.
+            cap_rails = [rail for rail in RAILS if any(RAIL_ALIASES.get(net,net)==rail
+                         for net in part.pins.values() if net is not None)]
+            for rail in cap_rails:
+                require(part.value in cap_values_uF, 'unparsed rail capacitor value: '+part.value)
+                fitted_caps[rail].append({'instance':instance.name,'key':part.key,'value':part.value,'nominal_uF':cap_values_uF[part.value]})
+    cap_inventory = {}
+    supply_pin_counts = {rail:0 for rail in RAILS}
+    for package in ledger['physical_ic_packages']:
+        for net in package['supply_pins'].values():
+            rail = RAIL_ALIASES.get(net,net)
+            if rail in supply_pin_counts:
+                supply_pin_counts[rail] += 1
+    for rail in RAILS:
+        nominal = round(sum(row['nominal_uF'] for row in fitted_caps[rail]),6)
+        remaining = round(req['nominal_capacitance_ceiling_uF'][rail]-nominal,6)
+        require(remaining >= 0, 'fitted rail capacitance exceeds ceiling')
+        hundred_nf = sum(row['value'] in ('100 nF','1e-07 F') for row in fitted_caps[rail])
+        require(hundred_nf >= supply_pin_counts[rail], '100 nF rail capacitor count below actual IC supply pin count: '+rail)
+        cap_inventory[rail] = {'captured_fitted_count':len(fitted_caps[rail]),'captured_fitted_nominal_uF':nominal,
+            'mapped_ic_supply_pin_count':supply_pin_counts[rail],
+            'fitted_100nF_attributed_to_rail_count':hundred_nf,
+            'per_pin_proximity_and_effective_C_status':'OPEN: count coverage only; package proximity, local VEE5 and effective ceramic capacitance require board audit',
+            'remaining_nominal_uF_before_unplaced_board_bulk':remaining,
+            'initial_bulk_uF_per_powered_board':4.7,
+            'maximum_additional_full_board_allocations_at_4p7uF':math.floor((remaining+1e-9)/4.7),
+            'board_bulk_status':'OPEN: board count and per-board/rail reservoir placement not established; no zero-capacitance assumption',
+            'full_ceiling_with_plus20percent_uF':round(req['nominal_capacitance_ceiling_uF'][rail]*1.2,6)}
+    protection = protection_audit_build()
+    require(protection['output_count'] == 82 and protection['precision_count'] == 16 and len(protection['reference_receivers']) == 30, 'unresolved injection inventory changed')
+    implementation = {
+        'status': 'PASS: requirement-only specification separation; native netlist audited separately; OPEN: protection circuit #59; NOT RUN: physical #57',
+        'captured_inlet_symbol': actual_inlet.symbol,
+        'captured_inlet_footprint': actual_inlet.footprint,
+        'captured_boundary_symbol': boundary.symbol,
+        'captured_boundary_footprint': boundary.footprint,
+        'abstract_parts_have_no_footprint_or_bom': True,
+        'native_netlist_inclusion_note':'KiCad instance on_board=yes retains abstract pin nodes in native netlist; blank footprint and in_bom=no mean no orderable PCB placement or BOM line.',
+        'raw_inlet_nets': ['+12V_IN','-12V_IN','+5V_IN'],
+        'conditional_load_nets': list(RAILS),
+        'agnd_common': True,
+        'patch_sleeves_on_agnd':len(jack_sleeves),
+        'selected_inlet_status': inlet['status'],
+        'historical_ptc_comparison': historical_path,
+        'actual_fitted_capacitor_inventory':cap_inventory,
+        'open_injection_obligations':{'outputs':82,'precision_feedback':16,'octave_receivers':30,
+            'status':'OPEN: no output/sense/reference isolation circuit selected'},
+        'unbooked_local_quad_sensitivity_mA':protection['normal_positive_Iq_mA_sensitivity_local'],
+        'auxiliary_allocation_plus12_mA':env['auxiliary_allowance_mA']['+12V'],
+        'prospective_plus12_mA_excess_over_auxiliary_allocation':round(max(0,protection['normal_positive_Iq_mA_sensitivity_local']-env['auxiliary_allowance_mA']['+12V']),6),
+        'missing_circuit_proofs': [
+            'Load-side three-rail monitors and fail-safe inhibited enables',
+            'Low-drop reverse-current blocking and coordinated shutdown/discharge on all rails',
+            'Any-order/missing-rail and powered-off patch output/sense/reference injection bounds',
+            'Open inlet AGND detection when a patch sleeve still provides a return path',
+            'Per-board bulk, selected protection auxiliary-current and capacitance demand, source/inlet limiter let-through and fault energy',
+            'Exact selected inlet drawing, rating, mating-face map and footprint',
+        ],
+    }
     return {'schema_version':1,'status':'PASS: conditional requirement arithmetic/allocation ONLY; hardware NOT SELECTED; unvalidated draft',
         'value_classification':'Computed report values DERIVED from authored PROPOSAL inputs and source-backed ledger; no measured/guaranteed capacity.',
         'input':'design/power/supply-architecture-input.json','contract':c,
+        'implementation': implementation,
         'allocation_counts':{'signal_modules':33,'shared_references':1,'worksheet_loads':len(loads),'physical_IC_packages':ledger['physical_package_count'],'fixed_panel_centres':438},
         'physical_IC_allocation':[{**p,'domain':'EXT','mapped_supply_nets':p['supply_pins']} for p in ledger['physical_ic_packages']],
         'original_single_source':{'planning_mA':ledger['original_single_inlet_planning_mA'],'ceilings_mA':ledger['original_single_source_ceiling_mA'],'excess_mA':ledger['original_single_source_excess_mA']},
@@ -143,7 +244,7 @@ def build(config=None):
             'protection_dissipation_allocation_W_per_rail':{r:round(continuous[r]/1000*harness['max_protection_drop_V'],6) for r in RAILS},
             'worst_return_path_transient_dissipation_W':round(return_A**2*conductor_R,6)},
         'guaranteed_whole_instrument_maximum_mA':{r:None for r in RAILS},'measured_source_capacity_mA':{r:None for r in RAILS},
-        'not_proven':['Exact orderable connector/mate drawing, simultaneous-contact derating and footprint are not selected or qualified.', 'Existing schematic has not yet implemented this requirement: #52 owns implementation.', 'Source realization, rail sequencing/backfeed/thermal/ripple, all-output faults, full-temperature maxima and physical fit remain NOT RUN in #57.']}
+        'not_proven':['Exact orderable connector/mate drawing, simultaneous-contact derating and footprint are not selected or qualified.', 'The requirement-only boundary separates raw and load nets but contains no protection circuit; #59 owns exact electrical realization.', 'Source realization, rail sequencing/backfeed/thermal/ripple, all-output faults, full-temperature maxima and physical fit remain NOT RUN in #57.']}
 
 
 def main():

@@ -75,7 +75,7 @@ def build():
             'source_lock':source['source_lock'],'units':'mA','rails':source['rails'],
             'current_sources':[str(p.relative_to(ROOT)) for p in REPORTS.values()],
             'synth_inlet':source['synth_inlet'],'module_instance_count':33,
-            'shared_reference_count':1,'power_sheet_count':1,
+            'shared_reference_count':1,'power_sheet_count':sum(i.name == 'POWER' for i in instances),
             'instances':records,'reported_assumed_typical_subtotal_mA':totals['reported_assumed_typical_subtotal_mA'],
             'complete_typical_mA':{r:None for r in RAILS},
             'reported_planning_upper_subtotal_mA':totals['reported_planning_upper_subtotal_mA'],
