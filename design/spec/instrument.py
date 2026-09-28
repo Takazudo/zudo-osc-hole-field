@@ -3,6 +3,8 @@ from design.spec.modules.sample_hold import specification as sample_hold_specifi
 from design.spec.modules.oscillator import specification as oscillator_specification
 from design.spec.modules.filter import specification as filter_specification
 from design.spec.modules.power import specification as power_specification
+from design.spec.modules.mult import specification as mult_specification
+from design.spec.modules.manual_ab import specification as manual_ab_specification
 
 
 def specification():
@@ -10,9 +12,11 @@ def specification():
     osc_families, osc_instances = oscillator_specification()
     filter_families, filter_instances = filter_specification()
     power_families, power_instances = power_specification()
+    mult_families, mult_instances = mult_specification()
+    manual_ab_families, manual_ab_instances = manual_ab_specification()
     # Reserved indices: H1/H2=1/2, power=3, O1..O5=11..15,
-    # octave reference=16, F1..F3=21..23.
+    # octave reference=16, F1..F3=21..23, B1/B2=31/32, X1/X2=33/34.
     return (
-        (*families, *osc_families, *filter_families, *power_families),
-        (*instances, *osc_instances, *filter_instances, *power_instances),
+        (*families, *osc_families, *filter_families, *power_families, *mult_families, *manual_ab_families),
+        (*instances, *osc_instances, *filter_instances, *power_instances, *mult_instances, *manual_ab_instances),
     )

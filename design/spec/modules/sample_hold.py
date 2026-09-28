@@ -117,12 +117,16 @@ def family():
  # This allows many local decouplers while preserving the generator's 1..99 range.
  allocated={};normalized=[];counters={}
  for p in parts:
-  package=p.key.rsplit('.',1)[0];group=(p.prefix,package)
+  # Non-panel diode references use a separate prefix namespace so fixed panel
+  # LED designators (for example D109) cannot collide with internal bridge
+  # diodes allocated from an instance index and ordinal.
+  prefix='DH' if p.prefix=='D' and not p.panel_refs else p.prefix
+  package=p.key.rsplit('.',1)[0];group=(prefix,package)
   if group not in allocated:
-   counters[p.prefix]=counters.get(p.prefix,0)+1
-   if counters[p.prefix]>99:raise ValueError(f'{p.prefix} ordinal capacity exceeded')
-   allocated[group]=counters[p.prefix]
-  normalized.append(replace(p,ordinal=allocated[group]))
+   counters[prefix]=counters.get(prefix,0)+1
+   if counters[prefix]>99:raise ValueError(f'{prefix} ordinal capacity exceeded')
+   allocated[group]=counters[prefix]
+  normalized.append(replace(p,prefix=prefix,ordinal=allocated[group]))
  # One shared sheet keeps RAW_HELD local to each KiCad sheet instance. Global
  # labels would short H1 and H2 outputs if used merely to span handoff pages.
  # The upper/lower circuit groups still implement handoff sections 62 and 63.
