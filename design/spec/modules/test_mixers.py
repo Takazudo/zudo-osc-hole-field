@@ -4,6 +4,7 @@ import unittest
 from scripts.schgen.core import designator
 from design.spec.modules import mix5,mix4_vca
 from design.spec.modules.build_mixer_current import build
+from design.spec.modules.run_mixer_spice import model_failures, exit_on_model_failures, mixer4, OFFSET_WIPER_V, TIA_TRIM_OHM
 
 
 class MixerContract(unittest.TestCase):
@@ -74,5 +75,20 @@ class MixerContract(unittest.TestCase):
             self.assertTrue(all(v is None for instance in report['instances']
                                 for v in instance['guaranteed_maximum_mA'].values()))
             self.assertGreater(report['decoupling_nF_per_instance'],0)
+
+    def test_mix4_model_calibration_and_original_failure_regression(self):
+        deck=mixer4(5,5)
+        self.assertIn('RPOT_TOP REF5 OFFSET_W 2300',deck)
+        self.assertIn('RPOT_BOTTOM OFFSET_W REFN5 7700',deck)
+        self.assertIn(f'RTRIM FB_TRIM OTA_CURRENT {TIA_TRIM_OHM:g}',deck)
+        self.assertIn('RFEED OFFSET_W OTA_OFFSET 1meg',deck)
+        self.assertIn('IABC P_12V CURRENT_SOURCE 0',mixer4(-5,5))
+        self.assertIn('R_IABC_LIMIT CURRENT_SOURCE IABC1 10k',deck)
+        baseline=[{'deck':'original-5-5v','command_V':5,'input_peak_each_V':5,
+                   'output_extrema_V':{'out_max':6.897454,'out_min':-11.91074}}]
+        # The original report must fail the same gate as new model data.
+        failures=model_failures(baseline)
+        self.assertIn('full-scale output exceeds ±10 V',failures[0])
+        with self.assertRaises(SystemExit):exit_on_model_failures(failures)
 
 if __name__=='__main__':unittest.main()

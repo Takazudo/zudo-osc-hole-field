@@ -38,7 +38,7 @@ Rail figures below are *family planning upper subtotals* in `+12/−12/+5` mA, n
 | Oscillator, `oscillator`; shared `octave_reference` | O1–O5; OCTAVE_REF | 0 | PASS | Ideal/generic shaper models only; AS3340 core **NOT RUN** (no retained usable model) | 254.50 / 250.00 / 30.00 | Tracking, sync, timing, shaping, supply sequence, reference calibration. |
 | Filter, `filter` | F1–F3 | 24 | PASS | LM13700 single-OTA model only | 174.60 / 167.40 / 0.90 | Stability, resonance/frequency calibration, real bias/current limits. |
 | MIX5, `mix5` | M5A–M5B | 28 | PASS | Ideal summer model only | 77.20 / 71.20 / 1.00 | Headroom, clip threshold, protection and cable stability. |
-| MIX4 VCA, `mix4_vca` | M4A–M4B | 28 | PASS | LM13700 model **failed** full-scale ±10 V target (+6.897/−11.911 V) | 91.20 / 85.20 / 1.00 | Gain/feedthrough trim, distortion, bias compliance, stability. |
+| MIX4 VCA, `mix4_vca` | M4A–M4B | 28 | PASS | Fixed in-range trim gives model +9.842/−9.877 V at full scale; half-command silence remains +0.503 V | 91.20 / 85.20 / 1.00 | Physical gain/feedthrough calibration, real headroom, distortion, bias compliance, stability. |
 | Envelope, `envelope` | E1–E6 | 60 | PASS | Bounded model only | 350.70 / 320.70 / 129.25 | Timing, gate behavior, transients and dynamic rail load. |
 | Wavefolder, `wavefolder` | W2, W1 | 12 | PASS | Bounded model only | 88.44 / 82.34 / 0.50 | Fold count, diode matching, servo and amplifier stability. |
 | Attenuator/offset, `offset` | A01–A06 | 48 | PASS | Ideal linear transfer only | 196.95 / 173.55 / 1.80 | ±15 V mathematical overload, clip threshold, precision and output stability. |
