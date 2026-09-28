@@ -1,0 +1,16 @@
+N1 WHITE small-signal shaping; ideal opamps
+VNOISE input 0 DC 0 AC 1
+RRECON input recon 1k
+CRECON recon 0 10n
+CAC recon ac 100n
+RBLEED ac 0 100k
+EINPUT buffered 0 ac buffered 1e6
+EOUT out 0 buffered out 1e6
+.control
+set wr_singlescale
+set wr_vecnames
+ac dec 100 1 100k
+wrdata .circuit-cache/noise-spice/white.txt db(v(out))
+quit
+.endc
+.end
