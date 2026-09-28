@@ -1,6 +1,7 @@
 """Pilot module source, binding, and storage-node contract tests."""
+import json
 import unittest
-from design.spec.modules.sample_hold import family,panel_bindings,specification
+from design.spec.modules.sample_hold import family,panel_bindings,specification,ROOT
 from design.spec.modules.build_sample_hold_current import build as current_report
 from scripts.schgen.core import designator
 
@@ -61,4 +62,18 @@ class SampleHoldContract(unittest.TestCase):
   self.assertTrue(all(not p.dnp and p.value=='100 nF' and p.attributes['Island'].startswith('DECOUP:') for p in caps))
   self.assertEqual(len(bulk),3)
   self.assertTrue(all(p.dnp and p.attributes['Island']=='BULK_TBD' for p in bulk))
+ def test_nonpanel_diodes_cannot_collide_with_locked_panel_references(self):
+  internal=[p for p in self.parts if p.prefix=='DH']
+  panel_leds=[p for p in self.parts if p.panel_refs and p.prefix=='D']
+  self.assertTrue(internal)
+  self.assertTrue(panel_leds)
+  self.assertFalse([p for p in self.parts if p.prefix=='D' and not p.panel_refs])
+  locked_refs={row['ref'] for row in json.loads((ROOT/'design/grid/placements.lock.json').read_text())['placements']}
+  conflicts=[]
+  for instance in self.instances:
+   for part in self.parts:
+    if not part.panel_refs:
+     ref=designator(part,instance)
+     if ref in locked_refs:conflicts.append((ref,instance.name,part.key))
+  self.assertEqual(conflicts,[])
 if __name__=='__main__':unittest.main()

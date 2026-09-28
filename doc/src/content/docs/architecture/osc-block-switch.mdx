@@ -1,19 +1,96 @@
 ---
-title: "SWITCH — circuit task"
-description: "Defines the two manual A/B selectors and the buffering and transition behavior still to be verified."
+title: "SWITCH — manual A/B selector"
+description: "Documents the two buffered maintained A/B selectors, provisional toggle contact mapping, loading and open switching tests."
 sidebar_position: 150
 ---
 
-## Functional contract
+> **Unvalidated draft — not bench tested.** X1 and X2 are two instances of one generated family. The selector is maintained and manual. Switching clicks are accepted; click-free behavior is not claimed. No board, physical switch orientation, fit or analog performance has been verified.
 
-Manual maintained A/B selector with IN-A, IN-B, OUT.
+## Function and signal path
 
-## Work before schematic lock
+Each source is isolated and buffered before it reaches the panel toggle. Separate 2.2 kΩ resistors limit current if both contacts overlap. A 10 MΩ resistor biases the switch common to AGND during a break-before-make gap. The common drives a precision output buffer. This is a two-position A/B selector, not a crossfader or a sequential/clocked switch.
 
-Not a crossfader, sequential switch or clocked switch. Prevent output-output shorts during possible contact overlap; buffer/protect. Clicks are possible.
+```mermaid
+flowchart LR
+  JA[IN-A jack] --> FA[ADG5412 source isolation]
+  FA --> PA[100 kΩ load, limiter and clamps]
+  PA --> BA[OPA4197 input buffer A]
+  JB[IN-B jack] --> FB[ADG5412 source isolation]
+  FB --> PB[100 kΩ load, limiter and clamps]
+  PB --> BB[OPA4197 input buffer B]
+  BA --> RA[2.2 kΩ overlap limiter]
+  BB --> RB[2.2 kΩ overlap limiter]
+  RA --> SA[provisional A contact]
+  RB --> SB[provisional B contact]
+  SA --> SW[maintained SPDT toggle]
+  SB --> SW
+  SW -->|common, pin 2| PULL[10 MΩ AGND bias]
+  SW --> OUT[OPA4197 precision output]
+  OUT --> COMP[998 Ω compensated output]
+  COMP --> JO[OUT jack]
+  BA --> MA[buffered input-A magnitude monitor]
+  BB --> MB[buffered input-B magnitude monitor]
+  OUT --> MO[buffered output magnitude monitor]
+```
 
-All corresponding port/control cells are in the canonical grid. Read the generated per-instance entries in `project/osc-hole-field/block-contracts.json`; do not infer pinout or voltages from those visual labels.
+`design/spec/modules/manual_ab.py` is the source for generated sheet `manual_ab`, instantiated as X1 (index 33) and X2 (index 34). The handoff's functional section is named `64_manual_ab`; the generated source sheet is `schematic/sheets/manual_ab.kicad_sch`.
 
-## Deliverable
+## Electrical targets and selector limits
 
-A reviewed one-channel schematic, explicit signal/CV ranges, chosen exact parts and pin maps, corner calculations, simulation/bench plan, power budget and factory test procedure. Replication count follows the current spec, not historical panel versions. Never patch independent blocks internally just to simplify testing; use external test cables or clearly temporary fixtures.
+| Property | Captured value or calculation | Status |
+| --- | --- | --- |
+| Input protection | One source-facing ADG5412 channel, 100 kΩ input load, 10 kΩ limiter and rail clamps per input | OSC-ES-1 proposal; input source impedance and fault behavior open |
+| Input and output amplifiers | OPA4197 precision role; two input buffers and one output buffer use three channels of one quad | C2057327 identity inherited; current stock unverified; no retained usable module model |
+| Overlap limiting | 2 × 2.2 kΩ between input buffers and toggle throws | If the buffered signals are +5 V and −5 V, resistor-only overlap current is 10 V / 4.4 kΩ ≈ 2.27 mA. This calculation does not establish switch contact or amplifier ratings. |
+| Survival-voltage arithmetic | Opposing ±12 V difference across 4.4 kΩ is 24 V / 4.4 kΩ ≈ 5.45 mA | Arithmetic only; ±12 V is a fault-survival condition, not a linear signal range or a continuous operating guarantee |
+| Mid-throw bias | 10 MΩ from toggle common to AGND | Prevents an intentionally floating amplifier input; resistor exact MPN is unresolved |
+| Bias-related signal loss | `10 MΩ / (10 MΩ + 2.2 kΩ) ≈ 0.99978`; about 1.1 mV at 5 V (0.022%) | Nominal resistor arithmetic; no tolerance or source error included |
+| Precision output load target | ≤1 mV change open-to-10 kΩ at −5 V, 0 V and +5 V | OSC-ES-1 bench target; stability and load behavior unverified |
+| Preliminary 1 V/octave error arithmetic | Two OPA4197 channels at 100 µV offset each + about 1.1 mV selector bias loss + 1 mV output-load target ≈ 2.3 mV, or ≈2.76 cents | Offset values use the datasheet's ±18 V, 25 °C conditions, not the project's ±12 V. Incomplete planning estimate, not a tolerance or tracking guarantee; ignores source impedance, switch on-resistance, clamp leakage, resistor tolerance and temperature |
+
+The 2.2 kΩ values and 10 MΩ common bias are design choices for this capture, not exact sourced orderable identities. The series resistors reduce source-to-source current if the switch bridges both throws. The bias resistor gives the output buffer a defined DC input between contacts, with a small calculated attenuation. A factory test must decide whether this loss and any source impedance are acceptable for the actual signal use.
+
+## Panel toggle identity and provisional contacts
+
+The lockfile assigns `C:X1.SELECT` to SW608 at `(99.5, 283.0) mm` and `C:X2.SELECT` to SW708 at `(116.5, 283.0) mm`. Their corresponding jacks remain at columns 7–9. The toggle coordinates are intentionally away from the jack columns and are not moved by this circuit capture.
+
+| Toggle pin | Captured net | Evidence status |
+| --- | --- | --- |
+| 2 | `SELECTOR_COMMON` | Provisional common assignment used by the schematic; verify on physical part |
+| 3 | `SELECT_A_CONTACT` | Provisional A-side assignment; lever orientation and default continuity need a coupon test |
+| 1 | `SELECT_B_CONTACT` | Provisional B-side assignment; lever orientation and default continuity need a coupon test |
+
+The locked exact identity is Dailywell `2MS1T1B1M2QES-5` (2-position SPDT, T1 lever, B1 bushing, M2 terminals). The retained supplier listing establishes the order identity. The manufacturer-primary pin/contact drawing was unavailable in the retained evidence, so the symbol's contact-side labels are not promoted as manufacturer-confirmed facts. A continuity coupon must confirm pin 2 common, which throw closes in each lever position, mechanical detents and the desired A-default before panel wiring. Do not substitute the three-position `2MS3` suffix.
+
+## Main nets
+
+| Net | Connected pins | Value / note |
+| --- | --- | --- |
+| `A_TIP`, `B_TIP` | Each jack `T`; its source-facing ADG5412 pin 3 | External sources enter separate protected paths; each jack normal remains NC |
+| `A_PROTECTED`, `B_PROTECTED` | Corresponding ADG5412 drain pin 2; high-impedance input `R_PD.1` and `R_LIMIT.1` | Local, protected input nodes |
+| `A_SENSE`, `B_SENSE` | Corresponding `R_LIMIT.2`; clamp bridge midpoint pin 3; OPA4197 quad pins 3 (A) and 5 (B) | High-impedance inputs; not routed through the panel toggle |
+| `A_BUFFER`, `B_BUFFER` | OPA4197 quad output pins 1 (A) and 7 (B); corresponding 2.2 kΩ series resistor and input magnitude-driver monitor | Buffered signals only feed the panel contacts and local magnitude monitors |
+| `SELECT_A_CONTACT`, `SELECT_B_CONTACT` | Series resistor terminal 2; provisional toggle pins 3 and 1 respectively | Contact-side mapping remains unverified |
+| `SELECTOR_COMMON` | Toggle pin 2 provisionally; 10 MΩ bias resistor; output-buffer OPA4197 quad pin 10 (non-inverting input) | Sensitive local node, held toward AGND during a contact gap |
+| `OUT_BUFFERED` | Output-buffer OPA4197 quad pin 8; output compensation network drive; output magnitude-driver monitor | Buffered node; used for the third A/B magnitude display |
+| `OUT_TIP` | Precision-output jack-side resistor; 10 kΩ feedback resistor; `J_OUT.T` | Compensated output measured for the open-to-10 kΩ target |
+| `+12V`, `-12V`, `+5V`, `AGND` | Amplifiers, isolation cells and analog returns | Only global family nets; selector signal nodes stay local |
+
+## Decisions and provenance
+
+- **From the R21 handoff:** two manual, maintained A/B selectors with locked panel bindings and a requested default A position. The actual lever-to-contact relationship still needs physical verification.
+- **From OSC-ES-1:** place source-facing ADG5412 isolation before the input limiter/clamp, buffer each input, and switch buffered signals. Routing the raw jacks to the toggle was rejected because it would place source-to-source contact overlap directly on the patch sources.
+- **Captured for this module:** add 2.2 kΩ per contact path to limit overlap current, use 10 MΩ from the common to AGND, and use the compensated precision output cell. A bare switch followed by an unbuffered output was rejected because it leaves contact overlap and a mid-throw open node unmanaged.
+- **Indicator routing:** all three magnitude cells read `A_BUFFER`, `B_BUFFER` or `OUT_BUFFERED`. Raw jack, protected-input and switch-contact nodes do not drive an indicator connector.
+- **Clicks:** switching transients are accepted by the task. No RC crossfade or click-suppression behavior is claimed or added.
+
+## Calibration, islands and open bench gates
+
+There are no trim parts. Before wiring the exact switch, use a coupon to verify common/throw continuity, physical A/B orientation, detents and the owner's desired A-default. Characterize each input path at −5 V, 0 V and +5 V, then both switch positions at no load, 100 kΩ and 10 kΩ output loads. Record selector loss, DC offset, open-to-10 kΩ change, settling, contact overlap, mid-throw behavior, click amplitude, oscillation/ringing and temperature dependence. Test source-to-source limiting, each input's ±12 V fault case, missing rails, startup, one output short and contact wear. Every one of these checks remains open.
+
+- `AB_CORE:${SHEETNAME}` groups the two input protection/buffer paths, the toggle, the 2.2 kΩ limiters, 10 MΩ bias and compensated output buffer. The toggle common and contact nets must remain on this local selector island.
+- `AB_LEDS:${SHEETNAME}` groups the three indicator drivers and locked `L:<instance>.IN-A.mag`, `.IN-B.mag` and `.OUT.mag` LEDs. Only the already-buffered monitor signals and analog return cross to the indicator island.
+- `A_PROTECTED`, `A_SENSE`, `B_PROTECTED`, `B_SENSE`, both selector contacts and `SELECTOR_COMMON` are sensitive local nets. None is global or exposed as a panel control connection.
+- Exact panel references come from the lockfile: X1 uses J809/J909/J1009, SW608 and D809/D909/D1009; X2 uses J810/J910/J1010, SW708 and D810/D910/D1010. No hardware location was changed.
+
+`design/reports/current/manual_ab.json` estimates per-instance typical current as 7.16 mA on +12 V, 6.36 mA on −12 V and 0.10 mA on +5 V; planning maxima are 13.85 mA, 12.65 mA and 0.15 mA. The planning maximum is not guaranteed; input fault current, contact overlap, simultaneous output shorts, startup, temperature and load transients remain unquantified. A usable retained OPA4197 model and a switch transition model are not available, so circuit simulation is **NOT RUN** for those reasons, as recorded in `design/reports/spice/manual_ab.json`. Generated schematic ERC and netlist checks establish capture consistency only, not switching performance or hardware validation.
