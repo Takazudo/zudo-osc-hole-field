@@ -1,0 +1,24 @@
+---
+title: "Rail budget escalation"
+description: "Issue #34 decision record for the unclosed analog supply margin"
+sidebar_position: 35
+---
+
+> **PROPOSAL (planning, owner-delegated) — unvalidated draft.** The supply's 1.2/0.8/0.5 A rail targets are design-locked assumptions, not measured capacity. The 80% ceilings are project margins, not safe-operating guarantees.
+
+## Decision
+
+Issue #34 takes its prescribed fourth case: retain the captured circuits and current reports, record that the single-feed budget cannot be closed from available evidence, and propose a **second supply feed for later design review**. The proposal is a tracking direction, not a schematic, cable, connector, order or approved topology. The board partition remains open under [tracking issue #48](https://github.com/Takazudo/zudo-osc-hole-field/issues/48).
+
+The captured planning upper subtotals are **1,404.819 / 1,313.569 / 177.286 mA** on +12/−12/+5 V against **960 / 640 / 400 mA** ceilings. The analog planning excesses are **444.819 / 673.569 mA**. Complete typical and guaranteed maximum currents remain **NOT ESTABLISHED**. See `design/power/rail-budget-resolution.md` and the reproducible `design/power/rail-options.json` for the source counts, exact conditional arithmetic and evidence limits.
+
+## Alternatives evaluated
+
+- **Precision op-amp family change:** OPA4197IPWR and OPA4196IDR retained TI data sheets, physical page index 7 / printed page 8, give 6 versus 1 mA whole-quad full-temperature maximum quiescent current at no output load. Converting all 77 precision quads would save at most 385 mA per analog rail in the current count model and still leave the −12 V planning subtotal at 928.569 mA. A blanket substitution lacks required noise, offset, stability and footprint review.
+- **Indicator dimming:** The 92 magnitude and 10 clip LEDs carry up to 126 mA per analog rail in the *planning allowance*. Extinguishing them all after the hypothetical op-amp change still leaves −12 V at 802.569 mA. A visible 0.6 mA diagnostic requires panel-window bench testing; no indicator current was reduced.
+- **DC-source pot impedance:** Even removing all 48 B104 pot planning loads gives at most 6 mA per analog rail, leaving −12 V at 796.569 mA after the previous impossible cases. Most pot loads are embedded in module reserves, so 6 mA is not a source-backed bookable saving. No pot or network changed.
+- **Package packing:** A read-only preparatory estimate totals 91.4 mA on −12 V across ADG, sample-and-hold op-amp and comparator package consolidation, but it overlaps the blanket op-amp scenario and does not establish whole-device maximum current. Even treating it as an extra double-counted saving leaves 65.169 mA negative-rail planning excess.
+
+## Consequences and review gate
+
+No OSC-ES-1 role, exact MPN, LED resistor, pot or module topology changed. Thus no new noise, offset or output-stability claim is made. A future substitution would need exact manufacturer performance/maximum-current evidence, updated library identity and pin map, module simulations and bench testing, then master regeneration and all hard-gate checks. A future second-feed design would need measured supply behavior, a complete rail budget, return-path and connector safety analysis, startup sequencing, protection and mechanical fit before board partition. Do not describe the present instrument as within its supply ceiling or electrically qualified.

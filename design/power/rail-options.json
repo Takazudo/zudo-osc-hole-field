@@ -1,0 +1,84 @@
+{
+  "schema_version": 1,
+  "status": "CONDITIONAL PLANNING SENSITIVITY ONLY; zero savings booked; no guaranteed maxima established",
+  "source_budget": "design/power/rail-budget.json",
+  "source_counts": "design/reports/netlist-stats.json and design/grid/placements.lock.json",
+  "source_opamp_maxima": "TI OPA4197 and OPA4196 retained PDFs, physical PDF page index 7, Power Supply IQ row; full-temperature per-amplifier maxima 1.5 mA and 0.25 mA, respectively (6 and 1 mA per quad).",
+  "source_led_and_pot_allowances": "design/standard/rail-budget-preliminary.json loads magnitude_leds, clip_leds and dc_pots; planning allowances, not manufacturer maxima.",
+  "captured_counts": {
+    "OPA4197IPWR_quads": 77,
+    "OPA4196IDR_quads": 170,
+    "B104_100k_DC_pots": 48,
+    "magnitude_LEDs": 92,
+    "clip_LEDs": 10,
+    "stage_LEDs": 12
+  },
+  "baseline_planning_upper_mA": {
+    "+12V": 1404.819166,
+    "-12V": 1313.56866,
+    "+5V": 177.286445
+  },
+  "ceilings_mA": {
+    "+12V": 960,
+    "-12V": 640,
+    "+5V": 400
+  },
+  "cases": [
+    {
+      "case": "1 all precision quads changed to low-Iq family",
+      "analog_rail_saving_mA": 385.0,
+      "remaining_mA": {
+        "+12V": 1019.819166,
+        "-12V": 928.56866,
+        "+5V": 177.286445
+      },
+      "qualification": "Impossible as a blanket role edit without offset/noise/stability review; this is a mathematical upper bound on Iq savings."
+    },
+    {
+      "case": "1 plus all analog indicator current set to zero",
+      "analog_rail_saving_mA": 511.0,
+      "remaining_mA": {
+        "+12V": 893.819166,
+        "-12V": 802.56866,
+        "+5V": 177.286445
+      },
+      "qualification": "Deliberately unusable visibility bound; indicator current allowances may be embedded in module reserves, so no saving is booked."
+    },
+    {
+      "case": "1 plus zero analog indicators plus all 48 DC pot current removed",
+      "analog_rail_saving_mA": 517.0,
+      "remaining_mA": {
+        "+12V": 887.819166,
+        "-12V": 796.56866,
+        "+5V": 177.286445
+      },
+      "qualification": "Deliberately overgenerous; B104 values are fixed 100k hardware and most pot currents are not separately disaggregated in module reports."
+    }
+  ],
+  "practical_indicator_dimming_diagnostic_mA_per_analog_rail": 64.8,
+  "non_additive_packing_stress_test": {
+    "exploratory_minus12_terms_mA": {
+      "ADG_package_consolidation": 43.4,
+      "sample_hold_opamp_packing": 38.0,
+      "comparator_package_consolidation": 10.0
+    },
+    "hypothetical_remaining_mA": {
+      "+12V": 796.419166,
+      "-12V": 705.16866,
+      "+5V": 177.286445
+    },
+    "qualification": "Deliberately overstated comparison only, not an option-1–3 budget subtraction: sample/hold opamp packing overlaps the all-precision migration; no package reallocation is generated."
+  },
+  "preparatory_packing_estimate_source": "Read-only preparatory count estimate retained and qualified in design/power/rail-budget-resolution.md; not manufacturer maxima or bookable savings. The sample/hold opamp term overlaps case 1.",
+  "booked_savings_mA": {
+    "+12V": 0,
+    "-12V": 0,
+    "+5V": 0
+  },
+  "guaranteed_maximum_mA": {
+    "+12V": null,
+    "-12V": null,
+    "+5V": null
+  },
+  "conclusion": "No supported option 1–3 establishes a <=640 mA -12 V maximum. Apply issue #34 fourth case: track a second-feed proposal and source/bench qualification before partition."
+}
