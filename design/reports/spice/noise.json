@@ -1,0 +1,85 @@
+{
+  "schema_version": 1,
+  "module": "noise",
+  "status": "PASS - small-signal filters only",
+  "oracle": "pinned KiCad 10 ngspice",
+  "runs": [
+    {
+      "colour": "WHITE",
+      "deck": "design/spec/modules/spice/noise-white-ac.cir",
+      "status": "PASS - ideal-amplifier AC model only",
+      "slope_band_Hz": [
+        100,
+        8000
+      ],
+      "slope_dB_per_decade": -0.443,
+      "gain_dB": {
+        "20": -2.192,
+        "100": -0.193,
+        "1000": -0.104,
+        "5000": -0.489,
+        "10000": -1.507,
+        "20000": -4.136
+      },
+      "noise_spectrum_included": false
+    },
+    {
+      "colour": "PINK",
+      "deck": "design/spec/modules/spice/noise-pink-ac.cir",
+      "status": "PASS - ideal-amplifier AC model only",
+      "slope_band_Hz": [
+        100,
+        8000
+      ],
+      "slope_dB_per_decade": -0.443,
+      "gain_dB": {
+        "20": -2.192,
+        "100": -0.193,
+        "1000": -0.104,
+        "5000": -0.489,
+        "10000": -1.507,
+        "20000": -4.136
+      },
+      "noise_spectrum_included": false
+    },
+    {
+      "colour": "BROWN",
+      "deck": "design/spec/modules/spice/noise-brown-ac.cir",
+      "status": "PASS - ideal-amplifier AC model only",
+      "slope_band_Hz": [
+        100,
+        5000
+      ],
+      "slope_dB_per_decade": -20.11,
+      "gain_dB": {
+        "20": 13.706,
+        "100": 3.735,
+        "1000": -16.069,
+        "5000": -30.453,
+        "10000": -37.471,
+        "20000": -46.1
+      },
+      "noise_spectrum_included": false
+    },
+    {
+      "colour": "BLUE",
+      "deck": "design/spec/modules/spice/noise-blue-ac.cir",
+      "status": "PASS - ideal-amplifier AC model only",
+      "slope_band_Hz": [
+        100,
+        5000
+      ],
+      "slope_dB_per_decade": 19.557,
+      "gain_dB": {
+        "20": -60.228,
+        "100": -44.23,
+        "1000": -24.16,
+        "5000": -10.983,
+        "10000": -7.172,
+        "20000": -6.961
+      },
+      "noise_spectrum_included": false
+    }
+  ],
+  "limits": "Input AC sources are flat; NOISE2 source spectra, quantization, random RMS, headroom and hardware stability are excluded. BLUE uses pink input; BROWN uses white input."
+}

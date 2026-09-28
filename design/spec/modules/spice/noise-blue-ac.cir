@@ -1,0 +1,21 @@
+N1 BLUE small-signal shaping; ideal opamps
+ESOURCE source 0 input source 1e6
+VNOISE input 0 DC 0 AC 1
+RRECON source recon 1k
+CRECON recon 0 10n
+CAC recon ac 100n
+RBLEED ac 0 100k
+EINPUT buffered 0 ac buffered 1e6
+CDIFF buffered series 100p
+RDIFF series sum 100k
+RFEEDBACK out sum 100k
+CFEEDBACK out sum 33p
+EOUT out 0 0 sum 1e6
+.control
+set wr_singlescale
+set wr_vecnames
+ac dec 100 1 100k
+wrdata .circuit-cache/noise-spice/blue.txt db(v(out))
+quit
+.endc
+.end

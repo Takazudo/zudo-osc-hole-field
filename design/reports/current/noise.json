@@ -1,0 +1,84 @@
+{
+  "schema_version": 1,
+  "module": "noise",
+  "authority": "PROPOSAL (planning, owner-delegated)",
+  "status": "Incomplete planning worksheet; NOISE2 current and guaranteed maxima unestablished",
+  "IC_packages_per_instance": {
+    "NOISE2": 1,
+    "OPA4196IDR": 4
+  },
+  "breakdown": [
+    {
+      "load": "OPA4196IDR whole quad package",
+      "count": 4,
+      "typical_unit_mA": {
+        "+12V": 0.56,
+        "-12V": 0.56,
+        "+5V": 0
+      },
+      "planning_unit_mA": {
+        "+12V": 1.0,
+        "-12V": 1.0,
+        "+5V": 0
+      },
+      "basis": "Whole quad packages including unused channels. Source OPA4197 p8 or OPA4196 p8; full-temperature Iq maxima. No output current included here."
+    },
+    {
+      "load": "Four external output loads",
+      "count": 4,
+      "typical_unit_mA": {
+        "+12V": 0.05,
+        "-12V": 0.05,
+        "+5V": 0
+      },
+      "planning_unit_mA": {
+        "+12V": 0.5,
+        "-12V": 0.5,
+        "+5V": 0
+      },
+      "basis": "Standard general output: nominal 5V/100k and planning 5V/10k per direction; shorts excluded."
+    },
+    {
+      "load": "NOISE2 filtered digital supply",
+      "count": 1,
+      "typical_unit_mA": {
+        "+12V": 0,
+        "-12V": 0,
+        "+5V": 5
+      },
+      "planning_unit_mA": {
+        "+12V": 0,
+        "-12V": 0,
+        "+5V": 10
+      },
+      "basis": "Explicit planning allowance, NOT manufacturer typical or maximum. The retained NOISE2 PDF does not establish supply current; measure it before rail closure."
+    }
+  ],
+  "instances": [
+    {
+      "instance": "N1",
+      "planning_typical_mA": {
+        "+12V": 2.44,
+        "-12V": 2.44,
+        "+5V": 5.0
+      },
+      "planning_upper_mA": {
+        "+12V": 6.0,
+        "-12V": 6.0,
+        "+5V": 10.0
+      },
+      "guaranteed_maximum_mA": {
+        "+12V": null,
+        "-12V": null,
+        "+5V": null
+      }
+    }
+  ],
+  "planning_upper_total_mA": {
+    "+12V": 6.0,
+    "-12V": 6.0,
+    "+5V": 10.0
+  },
+  "guaranteed_maximum_status": "NOT ESTABLISHED - NOISE2 supply current, signal drive, temperature, startup and fault loads unqualified",
+  "note": "NOISE2 filtered supply R=22\u03a9 would drop 0.22V at the assumed 10mA; measured current and minimum VDD are mandatory gates. No switch/LED load in this module."
+}

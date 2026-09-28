@@ -103,7 +103,7 @@ class Builder:
             if p.prefix=='U':packages[p.key.rsplit('.',1)[0]]=p
         for key,p in packages.items():
             sym=p.symbol.split(':')[-1]
-            rails=('+5V',) if sym=='SN74HC14DR' else ('+12V',) if sym in ('LM393BIDR','REF5050AIDR') else ('+12V','VEE5') if sym=='AS3340D' else ('+12V','-12V')
+            rails=('+5V',) if sym=='SN74HC14DR' else ('NOISE_VDD',) if sym=='NOISE2' else ('+12V',) if sym in ('LM393BIDR','REF5050AIDR') else ('+12V','VEE5') if sym=='AS3340D' else ('+12V','-12V')
             for j,rail in enumerate(rails):self.c('DEC_'+key+'_'+str(j),'100 nF',rail,'AGND')
         assigned={};counts=defaultdict(int);out=[]
         for p in self.parts:
