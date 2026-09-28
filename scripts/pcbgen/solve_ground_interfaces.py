@@ -80,7 +80,7 @@ def solve(mesh_path,output,pitch,source):
                 if node<0:continue
                 at=(data['x0_mm']+(col+.5)*pitch,data['y0_mm']+(row+.5)*pitch);found.append((math.dist((x,y),at),node,at,row,col))
         return sorted(found)[:limit]
-    
+
     def touches_other_plane_cells(layer,geometry,row,col):
         if geometry.is_empty:return False
         lo_x,lo_y,hi_x,hi_y=geometry.bounds
