@@ -80,11 +80,14 @@ Coverage is stated one domain at a time and is never rolled up. A domain marked 
 
 **Coverage ID:** `cov-srbv-mechanical-fit` · **Status:** OPEN
 
-**Reason:** No supported lug removal or shared-hole solution; collision at fixed centres.
+**Reason:** Stepped adapter draft avoids nominal conservative-envelope collisions; actual tolerances, carrier/shaft retention and installed fit require physical qualification issue #55.
 
 **Facts in this domain:**
 
 - [`fact-srbv-mechanical-fit`](#fact-srbv-mechanical-fit)
+- [`fact-srbv-envelope`](#fact-srbv-envelope)
+- [`fact-srbv-shaft`](#fact-srbv-shaft)
+- [`fact-srbv-hardware`](#fact-srbv-hardware)
 
 **Blocked by:** these facts must be resolved before the domain can close. Each is listed in full under Facts.
 
@@ -131,13 +134,55 @@ A value this project recorded about how the part is used here — a chosen opera
 
   **Fact:** `fact-srbv-mechanical-fit`
 
-  **Value:** Adjacent Ø2 mounting holes overlap at fixed 17 mm shaft pitch · **Unit:** `NONE`
+  **Value:** Conditional stepped 3+2 adapter assembly selected; installed fit unqualified · **Unit:** `NONE`
 
-  **Conditions:** five selectors in one row
+  **Conditions:** 0/180 degree bodies; fixed 17 mm pitch; PCB planes -16/-29 mm; physical gate issue #55
 
   **Verdict:** NEEDS BENCH · **Provenance:** PROJECT-CHOICE
 
-  **Evidence:** [`src-srbv`](#src-srbv) — Figure Drawing No.7 mounting-hole spacing, 16 mm; project placement lock 17 mm pitch
+  **Evidence:** [`src-srbv`](#src-srbv) — Figure Drawing No.7 plus design/mechanical/selector-assembly.json and selector-assembly-check.json
+</EvidenceFact>
+
+<EvidenceFact>
+  <EvidenceAnchor id="fact-srbv-envelope" />
+
+  **Fact:** `fact-srbv-envelope`
+
+  **Value:** Main body nominal 16.2 x 18.5 x 7.5 mm; 18.2 mm support span; shaft-centered body y=-10.5..+8 mm · **Unit:** `NONE`
+
+  **Conditions:** Nominal drawing callouts only; no unstated general tolerances or installed qualification inferred
+
+  **Verdict:** PASS - primary-source confirmed · **Provenance:** PRIMARY-SPEC
+
+  **Evidence:** [`src-srbv`](#src-srbv) — Figure Drawing No.7 all three dimension views; do not use a centered 16.2 x 18.5 box as a solid envelope
+</EvidenceFact>
+
+<EvidenceFact>
+  <EvidenceAnchor id="fact-srbv-shaft" />
+
+  **Fact:** `fact-srbv-shaft`
+
+  **Value:** Nominal shaft diameter 6 mm and flat dimension 4.5 mm; C1 chamfer · **Unit:** `NONE`
+
+  **Conditions:** Nominal drawing callouts only; no unstated general tolerances or installed qualification inferred
+
+  **Verdict:** PASS - primary-source confirmed · **Provenance:** PRIMARY-SPEC
+
+  **Evidence:** [`src-srbv-shaft`](#src-srbv-shaft) — Figure Operation Part Details (a)
+</EvidenceFact>
+
+<EvidenceFact>
+  <EvidenceAnchor id="fact-srbv-hardware" />
+
+  **Fact:** `fact-srbv-hardware`
+
+  **Value:** Included M9x0.75 nut, 11 mm AF x 2 mm; washer OD14/ID9.1 x 0.5 mm · **Unit:** `NONE`
+
+  **Conditions:** Nominal drawing callouts only; no unstated general tolerances or installed qualification inferred
+
+  **Verdict:** PASS - primary-source confirmed · **Provenance:** PRIMARY-SPEC
+
+  **Evidence:** [`src-srbv-hardware`](#src-srbv-hardware) — Figure Attached Parts
 </EvidenceFact>
 
 ## Pin maps
@@ -216,6 +261,46 @@ Every document cited above, with its identification, when it was retrieved, and 
 **Availability:** AVAILABLE
 
 **Document URL:** [https://tech.alpsalpine.com/cms.media/product\_catalog\_sw\_04\_srbv\_en\_7f096645b6.pdf](https://tech.alpsalpine.com/cms.media/product_catalog_sw_04_srbv_en_7f096645b6.pdf)
+
+### Alps Alpine SRBV160803 Operation Part Details (a)
+
+<EvidenceAnchor id="src-srbv-shaft" />
+
+**Source ID:** `src-srbv-shaft` · **Authority:** MANUFACTURER\_PRIMARY
+
+| Field           | Recorded value                        |
+| --------------- | ------------------------------------- |
+| Document number | SRBV160803 Operation Part Details (a) |
+| Revision        | not stated in source                  |
+| Document date   | not stated in source                  |
+| Retrieved       | 2026-09-28                            |
+| Printed page    | single-page image                     |
+
+**Locator:** Figure Operation Part Details (a) linked by exact SRBV160803 product page
+
+**Availability:** AVAILABLE
+
+**Document URL:** [https://tech.alpsalpine.com/cms.media/product\_detail\_fig\_srbv\_d\_13\_en\_67f206af61.gif](https://tech.alpsalpine.com/cms.media/product_detail_fig_srbv_d_13_en_67f206af61.gif)
+
+### Alps Alpine SRBV160803 Attached Parts
+
+<EvidenceAnchor id="src-srbv-hardware" />
+
+**Source ID:** `src-srbv-hardware` · **Authority:** MANUFACTURER\_PRIMARY
+
+| Field           | Recorded value            |
+| --------------- | ------------------------- |
+| Document number | SRBV160803 Attached Parts |
+| Revision        | not stated in source      |
+| Document date   | not stated in source      |
+| Retrieved       | 2026-09-28                |
+| Printed page    | single-page image         |
+
+**Locator:** Figure Attached Parts linked by exact SRBV160803 product page
+
+**Availability:** AVAILABLE
+
+**Document URL:** [https://tech.alpsalpine.com/cms.media/product\_detail\_fig\_srbv\_ap\_1\_en\_173ba8d251.gif](https://tech.alpsalpine.com/cms.media/product_detail_fig_srbv_ap_1_en_173ba8d251.gif)
 
 ## Legend
 

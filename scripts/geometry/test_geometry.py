@@ -66,7 +66,7 @@ class PanelFrameTests(unittest.TestCase):
                 self.assertEqual(board_domain(field, block, kind), expected)
         self.assertEqual(
             HOLE_DIAMETERS_MM,
-            {"jack": 6.2, "pot": 6.3, "octave": 6.3, "switch": 5.2, "button": 5.0},
+            {"jack": 6.2, "pot": 6.3, "octave": 7.0, "switch": 5.2, "button": 5.0},
         )
 
     def test_cell_coded_references_and_duplicate_led_slot(self) -> None:

@@ -7,6 +7,7 @@ used by the panel and board generators.
 
 from __future__ import annotations
 
+import json
 import re
 from collections.abc import Mapping
 from pathlib import Path
@@ -46,7 +47,7 @@ PROPOSAL_STATUS = "PROPOSAL"
 HOLE_DIAMETERS_MM = {
     "jack": 6.2,
     "pot": 6.3,
-    "octave": 6.3,
+    "octave": json.loads((REPO_ROOT / "design/mechanical/selector-assembly.json").read_text())["panel"]["aperture_diameter_mm"],
     "switch": 5.2,
     "button": 5.0,
 }

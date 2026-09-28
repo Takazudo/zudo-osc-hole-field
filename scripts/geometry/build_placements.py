@@ -227,11 +227,18 @@ def build_lock(root: Path = REPO_ROOT) -> dict[str, Any]:
 
     grid, grid_sha256 = _read_authority(root)
     _validate_grid_counts(grid)
+    assembly = json.loads((root / "design/mechanical/selector-assembly.json").read_text())
+    orientations = {item["uid"]: item for item in assembly["instances"]}
     blocks = grid.get("blocks", {})
     if not isinstance(blocks, dict):
         raise ValueError("grid blocks must be an object keyed by block id")
 
     source_items = [*grid["ports"], *grid["controls"]]
+    selector_uids = {item["uid"] for item in source_items if item["kind"] == "octave"}
+    if set(orientations) != selector_uids or len(assembly["instances"]) != 5:
+        raise ValueError("selector assembly must map each of the five octave UIDs once")
+    if any(item["rotation_deg"] not in (0, 180) for item in orientations.values()):
+        raise ValueError("unsupported selector assembly rotation")
     records: list[dict[str, Any]] = []
     seen_uids: set[str] = set()
     for item in source_items:
@@ -247,6 +254,13 @@ def build_lock(root: Path = REPO_ROOT) -> dict[str, Any]:
         except KeyError as exc:
             raise ValueError(f"grid block {block!r} has no family") from exc
         hardware = _hardware_record(item, family)
+        if uid in orientations:
+            orientation = orientations[uid]
+            if item["kind"] != "octave":
+                raise ValueError(f"selector assembly targets non-selector {uid}")
+            hardware["rot_deg"] = orientation["rotation_deg"]
+            hardware["assembly_pcb_z_mm"] = orientation["pcb_z_mm"]
+            hardware["assembly_group"] = orientation["adapter_group"]
         records.append(hardware)
         records.extend(_led_records(item, hardware))
 
