@@ -65,6 +65,12 @@ class PartitionTests(unittest.TestCase):
         with patch.object(partition35,'read',altered):report,_=partition35.build()
         self.assertIn('bulk capacitance exceeds rail ceiling',report['checks']['errors'])
 
+    def test_j_bulk_reserve_duplicate_source_geometry_must_match(self):
+        board=partition35.read('design/partition/partition-input.json')['boards']['J']
+        self.assertEqual(partition35.bulk_reserve_source_errors(board),[])
+        board['board_bulk_reserve'][0]['rect'][0]+=.5
+        self.assertIn('UNSELECTED-BULK-1 geometry differs between reserves and board_bulk_reserve',partition35.bulk_reserve_source_errors(board))
+
     def test_exact_selector_contact_choice(self):
         gh=json.loads((ROOT/'design/connectors/jst-gh.json').read_text())
         bounds={p['positions']:p['header_courtyard_xy_mm'][2] for p in gh['sizes']}

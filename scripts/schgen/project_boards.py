@@ -87,6 +87,11 @@ def project(partition=None):
             attrs = {**part.attributes, 'BoardSide': item['side'], 'BoardAssignment': board,
                      'KiCadOrientationDeg': str(placement['kicad_orientation_deg']),
                      'FootprintOriginMm': f"{placement['x_mm']},{placement['y_mm']}"}
+            if board == 'J':
+                # Multi-unit physical packages have unit-specific source roles.
+                # The board's one footprint cannot truthfully carry all of them.
+                for unit_field in ('Role','LogicalCellKey','Island'):
+                    attrs.pop(unit_field, None)
             slices[board].append(replace(part, pins=pins, panel_ref=ref, panel_refs={}, attributes=attrs))
         for board, parts in slices.items():
             board_id = short_to_id[board]
