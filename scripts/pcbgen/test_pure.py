@@ -79,9 +79,9 @@ class UUIDTests(unittest.TestCase):
     def test_pad_uuid_survives_unrelated_footprint_property(self):
         base='(kicad_pcb (paper "A4") (footprint "x" (uuid "22222222-2222-4222-8222-222222222222") (property "Reference" "C106") (pad "1" smd rect (uuid "33333333-3333-4333-8333-333333333333"))))'
         extra=base.replace('(pad "1"','(property "Role" "demo" (uuid "44444444-4444-4444-8444-444444444444")) (pad "1"')
-        expected=stable_uuid('b','footprint:C106','pad:1:0')
-        self.assertIn(expected,normalize(base,'b',{'C106'},{},True))
-        self.assertIn(expected,normalize(extra,'b',{'C106'},{},True))
+        expected=stable_uuid('osc-jack','footprint:C106','pad:1:0')
+        self.assertIn(expected,normalize(base,'osc-jack',{'C106'},{},True))
+        self.assertIn(expected,normalize(extra,'osc-jack',{'C106'},{},True))
 
     def test_stable_domain_separated_uuid(self):
         self.assertEqual(stable_uuid('b','footprint:J101','root'),stable_uuid('b','footprint:J101','root'))

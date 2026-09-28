@@ -64,20 +64,21 @@ def normalize(text: str, board_id: str, owned_refs: set[str], new_ids: dict[str,
             ref=REF_RE.search(block)
             if not ref or ref[1] not in owned_refs:continue
             pad_ids={};pad_ranks={}
-            for child_start,child_end in top_level_spans(block):
-                child=block[child_start:child_end]
-                pad=PAD_RE.match(child)
-                if not pad:continue
-                match=UUID_RE.search(child)
-                if match:
-                    rank=pad_ranks.get(pad[1],0);pad_ranks[pad[1]]=rank+1
-                    pad_ids[child_start+match.start(1)]=f'pad:{pad[1]}:{rank}'
+            if board_id=='osc-jack':
+                for child_start,child_end in top_level_spans(block):
+                    child=block[child_start:child_end]
+                    pad=PAD_RE.match(child)
+                    if not pad:continue
+                    match=UUID_RE.search(child)
+                    if match:
+                        rank=pad_ranks.get(pad[1],0);pad_ranks[pad[1]]=rank+1
+                        pad_ids[child_start+match.start(1)]=f'pad:{pad[1]}:{rank}'
             nonpad=0
             for n,m in enumerate(UUID_RE.finditer(block)):
                 if n==0:key='root'
                 elif m.start(1) in pad_ids:key=pad_ids[m.start(1)]
                 else:
-                    nonpad+=1;key=f'child:{nonpad}'
+                    nonpad+=1;key=f'child:{n}' if board_id!='osc-jack' else f'child:{nonpad}'
                 edits.append((start+m.start(1),start+m.end(1),stable_uuid(board_id,'footprint:'+ref[1],key)))
         else:
             m=UUID_RE.search(block)
