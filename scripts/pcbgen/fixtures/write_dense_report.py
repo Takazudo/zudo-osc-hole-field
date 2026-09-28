@@ -15,10 +15,20 @@ def read(name):
 def sha(path):
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
+def centres_sha():
+    lock = json.loads((ROOT/'design/grid/placements.lock.json').read_text())
+    centres = sorted((item['uid'], item['x_mm'], item['y_mm']) for item in lock['placements'])
+    if len(centres) != 438 or len({item[0] for item in centres}) != 438:
+        raise SystemExit('placement lock does not contain 438 unique hardware centres')
+    payload = json.dumps(centres, separators=(',', ':'), ensure_ascii=True).encode()
+    return hashlib.sha256(payload).hexdigest()
+
 receipt = read('verification.json')
 for relative, expected in receipt['sha256'].items():
     if sha(ROOT/relative) != expected:
         raise SystemExit(f'retained verification is stale: {relative}')
+if centres_sha() != receipt['placement_centres_sha256']:
+    raise SystemExit('retained verification is stale: hardware UID/x/y centres')
 summary = drc_summary(read('final-drc.json'))
 if not drc_passes(summary):
     raise SystemExit('retained final DRC does not satisfy the complete fixture gate')
@@ -33,7 +43,7 @@ result = {
     'final_drc': summary,
     'final_copper': read('final-stats.json'),
     'fixed_hardware_centres_unchanged': 30,
-    'placement_lock_sha256': sha(ROOT/'design/grid/placements.lock.json'),
+    'placement_centres_sha256': centres_sha(),
     'preexisting_copper_preserved': len(read('preservation.json')['preexisting_uuids']),
     'historical_attempts': 'dense-evidence/historical-attempts.json',
     'reconstruction_attempt': {
