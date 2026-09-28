@@ -1,0 +1,119 @@
+2026-09-28T06:44:17.186427468Z main ERROR Could not determine local host name
+java.net.UnknownHostException: jdk.internal.util.Exceptions$NonSocketInfo@62379589router: Temporary failure in name resolution
+	at java.base/java.net.InetAddress.getLocalHost(Unknown Source)
+	at org.apache.logging.log4j.core.util.NetUtils.getHostname(NetUtils.java:71)
+	at org.apache.logging.log4j.core.util.NetUtils.getLocalHostname(NetUtils.java:56)
+	at org.apache.logging.log4j.core.LoggerContext.lambda$setConfiguration$2(LoggerContext.java:691)
+	at java.base/java.util.concurrent.ConcurrentHashMap.computeIfAbsent(Unknown Source)
+	at org.apache.logging.log4j.core.LoggerContext.setConfiguration(LoggerContext.java:691)
+	at org.apache.logging.log4j.core.LoggerContext.reconfigure(LoggerContext.java:786)
+	at org.apache.logging.log4j.core.LoggerContext.reconfigure(LoggerContext.java:808)
+	at org.apache.logging.log4j.core.LoggerContext.start(LoggerContext.java:311)
+	at org.apache.logging.log4j.core.impl.Log4jContextFactory.getContext(Log4jContextFactory.java:264)
+	at org.apache.logging.log4j.core.impl.Log4jContextFactory.getContext(Log4jContextFactory.java:48)
+	at org.apache.logging.log4j.LogManager.getContext(LogManager.java:119)
+	at app.freerouting.Freerouting.main(Freerouting.java:1130)
+Caused by: java.net.UnknownHostException: router: Temporary failure in name resolution
+	at java.base/java.net.Inet6AddressImpl.lookupAllHostAddr(Native Method)
+	at java.base/java.net.Inet6AddressImpl.lookupAllHostAddr(Unknown Source)
+	at java.base/java.net.InetAddress$PlatformResolver.lookupByName(Unknown Source)
+	at java.base/java.net.InetAddress.getAddressesFromNameService(Unknown Source)
+	at java.base/java.net.InetAddress$NameServiceAddresses.get(Unknown Source)
+	at java.base/java.net.InetAddress.getAllByName0(Unknown Source)
+	... 13 more
+
+2026-09-28T06:44:17.197481639Z main ERROR Could not determine local host name
+java.net.UnknownHostException: jdk.internal.util.Exceptions$NonSocketInfo@1fa121e2router: Temporary failure in name resolution
+	at java.base/java.net.InetAddress.getLocalHost(Unknown Source)
+	at org.apache.logging.log4j.core.util.NetUtils.getHostname(NetUtils.java:71)
+	at org.apache.logging.log4j.core.util.NetUtils.getLocalHostname(NetUtils.java:56)
+	at org.apache.logging.log4j.core.LoggerContext.lambda$setConfiguration$2(LoggerContext.java:691)
+	at java.base/java.util.concurrent.ConcurrentHashMap.computeIfAbsent(Unknown Source)
+	at org.apache.logging.log4j.core.LoggerContext.setConfiguration(LoggerContext.java:691)
+	at org.apache.logging.log4j.core.LoggerContext.reconfigure(LoggerContext.java:786)
+	at org.apache.logging.log4j.core.LoggerContext.reconfigure(LoggerContext.java:808)
+	at app.freerouting.Freerouting.main(Freerouting.java:1130)
+Caused by: java.net.UnknownHostException: router: Temporary failure in name resolution
+	at java.base/java.net.Inet6AddressImpl.lookupAllHostAddr(Native Method)
+	at java.base/java.net.Inet6AddressImpl.lookupAllHostAddr(Unknown Source)
+	at java.base/java.net.InetAddress$PlatformResolver.lookupByName(Unknown Source)
+	at java.base/java.net.InetAddress.getAddressesFromNameService(Unknown Source)
+	at java.base/java.net.InetAddress$NameServiceAddresses.get(Unknown Source)
+	at java.base/java.net.InetAddress.getAllByName0(Unknown Source)
+	... 9 more
+
+2026-09-28T06:44:17.206230351Z main ERROR Could not determine local host name
+java.net.UnknownHostException: jdk.internal.util.Exceptions$NonSocketInfo@5dda768frouter: Temporary failure in name resolution
+	at java.base/java.net.InetAddress.getLocalHost(Unknown Source)
+	at org.apache.logging.log4j.core.util.NetUtils.getHostname(NetUtils.java:71)
+	at org.apache.logging.log4j.core.util.NetUtils.getLocalHostname(NetUtils.java:56)
+	at org.apache.logging.log4j.core.LoggerContext.lambda$setConfiguration$2(LoggerContext.java:691)
+	at java.base/java.util.concurrent.ConcurrentHashMap.computeIfAbsent(Unknown Source)
+	at org.apache.logging.log4j.core.LoggerContext.setConfiguration(LoggerContext.java:691)
+	at org.apache.logging.log4j.core.LoggerContext.reconfigure(LoggerContext.java:786)
+	at org.apache.logging.log4j.core.LoggerContext.reconfigure(LoggerContext.java:808)
+	at org.apache.logging.log4j.core.LoggerContext.start(LoggerContext.java:311)
+	at org.apache.logging.log4j.core.impl.Log4jContextFactory.getContext(Log4jContextFactory.java:160)
+	at org.apache.logging.log4j.core.impl.Log4jContextFactory.getContext(Log4jContextFactory.java:48)
+	at org.apache.logging.log4j.LogManager.getContext(LogManager.java:139)
+	at org.apache.logging.log4j.LogManager.getLogger(LogManager.java:557)
+	at app.freerouting.logger.FRLogger.traceEntry(FRLogger.java:164)
+	at app.freerouting.Freerouting.main(Freerouting.java:1133)
+Caused by: java.net.UnknownHostException: router: Temporary failure in name resolution
+	at java.base/java.net.Inet6AddressImpl.lookupAllHostAddr(Native Method)
+	at java.base/java.net.Inet6AddressImpl.lookupAllHostAddr(Unknown Source)
+	at java.base/java.net.InetAddress$PlatformResolver.lookupByName(Unknown Source)
+	at java.base/java.net.InetAddress.getAddressesFromNameService(Unknown Source)
+	at java.base/java.net.InetAddress$NameServiceAddresses.get(Unknown Source)
+	at java.base/java.net.InetAddress.getAllByName0(Unknown Source)
+	... 15 more
+
+2026-09-28 06:44:17.243 INFO   Freerouting v2.4.1 (build-date: 2026-09-03)
+2026-09-28 06:44:17.407 WARN   Analytics tracking: first delivery failure in this window - /v1/analytics/identify - UnknownHostException: api.freerouting.app. Further failures will be aggregated and reported every 60 minutes. → Action: DNS resolution failed. Verify that this host has network access and that api.freerouting.app is reachable (try: nslookup api.freerouting.app).
+2026-09-28 06:44:18.659 INFO   [84C581\2B6C51] Loading board file 'input.dsn'...
+2026-09-28 06:44:18.899 INFO   Layer 'In1.Cu' has been automatically configured as a dedicated power plane because it contains a large conduction area covering >50% of the board.
+2026-09-28 06:44:18.899 INFO   Layer 'In2.Cu' has been automatically configured as a dedicated power plane because it contains a large conduction area covering >50% of the board.
+2026-09-28 06:44:18.915 INFO   [84C581\2B6C51] Job '84C581\2B6C51' started at 2026-09-28T06:44:18.915785278Z.
+2026-09-28 06:44:19.216 INFO   [84C581\2B6C51] Fanout stage started on board '9149526206eb7eef00c079dee05c3db8' with 219 of 720 SMD pins needing fanout (501 already connected, 0 netless).
+2026-09-28 06:45:02.906 INFO   [84C581\2B6C51] Fanout pass #1 on board 'cf87452fc37507385bbfa4e233482fa4' completed in 43.45 seconds with 205 SMD pins fanouted, 12 not routed, 0 insert errors, +152 extra vias (0 SMD pins still to check in pass, ripup costs=100).
+2026-09-28 06:45:09.087 INFO   [84C581\2B6C51] Fanout pass #2 on board '4ac7cb1b6d8b63239592a6f2eb7523d1' completed in 6.13 seconds with 15 SMD pins fanouted, 10 not routed, 0 insert errors, +6 extra vias (0 SMD pins still to check in pass, ripup costs=200).
+2026-09-28 06:45:13.271 INFO   [84C581\2B6C51] Fanout pass #3 on board '1f736d7f91834b64d959c10938ba5bc7' completed in 4.13 seconds with 7 SMD pins fanouted, 10 not routed, 0 insert errors, +0 extra vias (0 SMD pins still to check in pass, ripup costs=300).
+2026-09-28 06:45:18.963 INFO   [84C581\2B6C51] Fanout pass #4 on board 'ea826b5d3bbc5c96b38a6c9ccfb2a0ef' completed in 5.63 seconds with 7 SMD pins fanouted, 10 not routed, 0 insert errors, +0 extra vias (0 SMD pins still to check in pass, ripup costs=400).
+2026-09-28 06:45:23.151 INFO   [84C581\2B6C51] Fanout pass #5 on board '5ea5b61d210293eb69cb807c41ff6f0b' completed in 4.14 seconds with 7 SMD pins fanouted, 10 not routed, 0 insert errors, +0 extra vias (0 SMD pins still to check in pass, ripup costs=500).
+2026-09-28 06:45:27.387 INFO   [84C581\2B6C51] Fanout pass #6 on board 'f12893631591749a49bc4bc9847d6841' completed in 4.18 seconds with 7 SMD pins fanouted, 10 not routed, 0 insert errors, +0 extra vias (0 SMD pins still to check in pass, ripup costs=600).
+2026-09-28 06:45:27.387 INFO   Fanout stopped after 6 passes: no progress for 3 consecutive passes.
+2026-09-28 06:45:28.377 INFO   [84C581\2B6C51] Fanout stage completed: started with 720 total SMD pins, completed in 68.98 seconds, escaped pins: 440/720 (61.1%), using 67.49 total CPU seconds, 396.80 GB total allocated, and 352.0 MB peak heap usage.
+2026-09-28 06:45:28.446 INFO   [84C581\2B6C51] Auto-routing stage started on board 'f12893631591749a49bc4bc9847d6841' for 101 unrouted items.
+2026-09-28 06:46:27.554 INFO   [84C581\2B6C51] Auto-routing pass #1 on board 'f12893631591749a49bc4bc9847d6841' was completed in 57.04 seconds with score 952.26 (20 unrouted and 0 violations), using 124.47 CPU seconds and the job allocated 711.65 GB of memory so far.
+2026-09-28 06:46:50.333 INFO   [84C581\2B6C51] Auto-routing pass #2 on board 'eb17b786d4771ec793bed7537076ff68' was completed in 20.28 seconds with score 973.74 (11 unrouted and 0 violations), using 148.06 CPU seconds and the job allocated 837.56 GB of memory so far.
+2026-09-28 06:47:04.712 INFO   [84C581\2B6C51] Auto-routing pass #3 on board '563dc45c88aa8566956bb22403200578' was completed in 11.96 seconds with score 983.28 (7 unrouted and 0 violations), using 160.20 CPU seconds and the job allocated 903.90 GB of memory so far.
+2026-09-28 06:47:14.852 INFO   [84C581\2B6C51] Auto-routing pass #4 on board 'ad99d94c6354d3be9ba5463b67e56e28' was completed in 7.71 seconds with score 988.06 (5 unrouted and 0 violations), using 170.44 CPU seconds and the job allocated 963.59 GB of memory so far.
+2026-09-28 06:47:22.127 INFO   [84C581\2B6C51] Auto-routing pass #5 on board 'df67464807bc2219ff13fa87ccca36c7' was completed in 4.90 seconds with score 988.06 (5 unrouted and 0 violations), using 178.82 CPU seconds and the job allocated 1014.57 GB of memory so far.
+2026-09-28 06:47:28.437 INFO   [84C581\2B6C51] Auto-routing pass #6 on board 'df67464807bc2219ff13fa87ccca36c7' was completed in 5.06 seconds with score 988.06 (5 unrouted and 0 violations), using 184.97 CPU seconds and the job allocated 1051.84 GB of memory so far.
+2026-09-28 06:47:37.086 INFO   [84C581\2B6C51] Auto-routing pass #7 on board 'df67464807bc2219ff13fa87ccca36c7' was completed in 7.40 seconds with score 988.06 (5 unrouted and 0 violations), using 192.02 CPU seconds and the job allocated 1091.32 GB of memory so far.
+2026-09-28 06:47:44.247 INFO   [84C581\2B6C51] Auto-routing pass #8 on board 'df67464807bc2219ff13fa87ccca36c7' was completed in 5.66 seconds with score 988.06 (5 unrouted and 0 violations), using 199.24 CPU seconds and the job allocated 1128.96 GB of memory so far.
+2026-09-28 06:47:50.845 INFO   [84C581\2B6C51] Auto-routing pass #9 on board 'df67464807bc2219ff13fa87ccca36c7' was completed in 5.32 seconds with score 988.06 (5 unrouted and 0 violations), using 206.51 CPU seconds and the job allocated 1170.70 GB of memory so far.
+2026-09-28 06:47:57.336 INFO   [84C581\2B6C51] Auto-routing pass #10 on board 'df67464807bc2219ff13fa87ccca36c7' was completed in 5.23 seconds with score 988.06 (5 unrouted and 0 violations), using 212.76 CPU seconds and the job allocated 1207.10 GB of memory so far.
+2026-09-28 06:48:04.241 INFO   [84C581\2B6C51] Auto-routing pass #11 on board 'df67464807bc2219ff13fa87ccca36c7' was completed in 5.45 seconds with score 988.06 (5 unrouted and 0 violations), using 219.94 CPU seconds and the job allocated 1247.05 GB of memory so far.
+2026-09-28 06:48:13.525 INFO   [84C581\2B6C51] Auto-routing pass #12 on board 'df67464807bc2219ff13fa87ccca36c7' was completed in 5.03 seconds with score 988.06 (5 unrouted and 0 violations), using 228.01 CPU seconds and the job allocated 1295.37 GB of memory so far.
+2026-09-28 06:48:19.708 INFO   [84C581\2B6C51] Auto-routing pass #13 on board 'df67464807bc2219ff13fa87ccca36c7' was completed in 4.91 seconds with score 988.06 (5 unrouted and 0 violations), using 234.27 CPU seconds and the job allocated 1333.34 GB of memory so far.
+2026-09-28 06:48:25.835 INFO   [84C581\2B6C51] Auto-routing pass #14 on board 'df67464807bc2219ff13fa87ccca36c7' was completed in 4.91 seconds with score 988.06 (5 unrouted and 0 violations), using 240.51 CPU seconds and the job allocated 1371.75 GB of memory so far.
+2026-09-28 06:48:32.025 INFO   [84C581\2B6C51] Auto-routing pass #15 on board 'df67464807bc2219ff13fa87ccca36c7' was completed in 4.98 seconds with score 988.06 (5 unrouted and 0 violations), using 246.71 CPU seconds and the job allocated 1409.85 GB of memory so far.
+2026-09-28 06:48:38.279 INFO   [84C581\2B6C51] Auto-routing pass #16 on board 'df67464807bc2219ff13fa87ccca36c7' was completed in 5.02 seconds with score 988.06 (5 unrouted and 0 violations), using 253.84 CPU seconds and the job allocated 1453.82 GB of memory so far.
+2026-09-28 06:48:46.414 INFO   [84C581\2B6C51] Auto-routing pass #17 on board 'df67464807bc2219ff13fa87ccca36c7' was completed in 6.86 seconds with score 988.06 (5 unrouted and 0 violations), using 259.90 CPU seconds and the job allocated 1489.90 GB of memory so far.
+2026-09-28 06:48:52.492 INFO   [84C581\2B6C51] Auto-routing pass #18 on board 'df67464807bc2219ff13fa87ccca36c7' was completed in 4.85 seconds with score 988.06 (5 unrouted and 0 violations), using 266.19 CPU seconds and the job allocated 1528.55 GB of memory so far.
+2026-09-28 06:48:52.630 INFO   [84C581\2B6C51] The router's best score (988.06) has not improved by more than 0.5 points since pass #8. Stopping the auto-router after 18 passes (5 items still unconnected).
+The following connections could not be routed -- please review your design (e.g. check pad clearances, trace width rules, and available routing space):
+  Net 'GND' (2 unrouted connections):
+    - D906-2  ->  C1907-2
+    - D1906-2  ->  C2907-2
+  Net '/C12/DRIVE' (1 unrouted connection):
+    - R1203-1  ->  via
+  Net '/C29/DRIVE' (1 unrouted connection):
+    - R2903-1  ->  R2905-1
+  Net '/C10/FB' (1 unrouted connection):
+    - R1003-2  ->  U1002-2
+2026-09-28 06:48:54.943 INFO   [84C581\2B6C51] Auto-routing stage completed: started with 242 unrouted nets, completed in 274.80 seconds, final score: 988.06 (5 unrouted and 0 violations), using 269.31 total CPU seconds, 1547.84 GB total allocated, and 425.2 MB peak heap usage.
+2026-09-28 06:48:54.995 INFO   [84C581\2B6C51] Job '84C581\2B6C51' finished with state: COMPLETED (elapsed: 4 minutes 36.08 seconds, finished at UTC: 2026-09-28T06:48:54.994449010Z).
+2026-09-28 06:48:55.284 INFO   Saving output file '/work/output.ses' (SES)...
+2026-09-28 06:48:55.286 INFO   Successfully saved output file '/work/output.ses' (92815 bytes).

@@ -28,7 +28,10 @@ def run(command,log=None,check=True):
 
 def drc(board,path):
     command=['bash','scripts/kicad/run.sh','kicad-cli','pcb','drc','--schematic-parity','--refill-zones','--format','json','--severity-all','-o',repo_relative(path),repo_relative(board)]
+    # A failed invocation must never reuse an earlier successful oracle report.
+    path.unlink(missing_ok=True)
     result=run(command,check=False)
+    if result.returncode:raise RuntimeError(f'KiCad DRC failed (exit {result.returncode})')
     if not path.exists():raise RuntimeError(f'KiCad DRC report missing (exit {result.returncode})')
     data=json.loads(path.read_text())
     if data.get('kicad_version')!='10.0.6':raise RuntimeError('wrong KiCad oracle version')
@@ -48,6 +51,10 @@ def drc_summary(data):
             'unconnected_items':len(data.get('unconnected_items',[])),
             'unrouted_nets':unrouted_names(data),
             'schematic_parity_issues':len(data.get('schematic_parity',[]))}
+
+def drc_passes(summary):
+    """Connectivity alone cannot establish the routing gate."""
+    return all(summary[key] == 0 for key in ('rule_errors', 'unconnected_items', 'schematic_parity_issues'))
 
 def project_settings(board,routing):
     project=board.with_suffix('.kicad_pro')
@@ -134,7 +141,7 @@ def main():
             stats=json.loads(stats_path.read_text())
             result['via_count']=stats['via_count'];result['via_nets']=stats['via_nets'];result['total_track_length_mm']=stats['total_track_length_mm']
             result['preexisting_tracks_preserved']=len(stats['track_uuids']);result['preexisting_zones_preserved']=stats['zone_count']
-            result['status']='UPDATED DRAFT' if not (result['after']['rule_errors'] or result['after']['unconnected_items'] or result['after']['schematic_parity_issues']) else 'INCOMPLETE DRAFT'
+            result['status']='UPDATED DRAFT' if drc_passes(result['after']) else 'INCOMPLETE DRAFT'
             exit_code=0 if result['status']=='UPDATED DRAFT' else 2
         elif complete:
             stats_path=work/'stats.json'
@@ -143,37 +150,54 @@ def main():
             result['via_count']=stats['via_count'];result['via_nets']=stats['via_nets'];result['total_track_length_mm']=stats['total_track_length_mm']
             result['preexisting_tracks_preserved']=len(stats['track_uuids'])
             result['preexisting_zones_preserved']=stats['zone_count']
-            result['status']='UNCHANGED DRAFT';result['after']=result['before'];exit_code=0
+            result['after']=result['before']
+            result['status']='UNCHANGED DRAFT' if drc_passes(result['after']) else 'INCOMPLETE DRAFT'
+            exit_code=0 if drc_passes(result['after']) else 2
         else:
             project_settings(board,definition.routing)
             dsn=work/'input.dsn';ses=work/'output.ses';ses.unlink(missing_ok=True)
             run(['bash','scripts/kicad/run.sh','python3','scripts/pcbgen/route_kicad.py','prepare',args.board_id,'--board',repo_relative(board),'--dsn',repo_relative(dsn)])
-            code,seconds,peak,log=router(dsn,ses,work,threads,heap,timeout,image,not args.no_fanout)
-            (work/'freerouting.log').write_text(log)
-            result['router_runtime_sec']=round(seconds,3);result['sampled_peak_memory_mb']=round(peak,2)
-            if code==124:
-                matched=sorted(set(re.findall(r"Net '([^']+)' \(\d+ unrouted connection",log)))
-                result['unrouted_net_names']=matched or result['before']['unrouted_nets']
-                result['unrouted_name_basis']='router final log' if matched else 'pre-route DRC snapshot; no imported session'
-                result['unrouted_net_count']=len(result['unrouted_net_names'])
-                result['routed_net_count']=None
-                result['status']='TIMEOUT DRAFT';exit_code=3
-            elif code or not ses.exists():
-                result['status']='ROUTER FAILED DRAFT';result['router_exit_code']=code
-                result['unrouted_net_names']=result['before']['unrouted_nets'];result['unrouted_net_count']=len(result['unrouted_net_names'])
-                result['unrouted_name_basis']='pre-route DRC snapshot; no imported session'
-                result['routed_net_count']=None;exit_code=2
-            else:
+            prepared=drc(board,work/'prepared-drc.json')
+            result['prepared']=drc_summary(prepared)
+            if drc_passes(result['prepared']):
                 stats_path=work/'stats.json'
-                run(['bash','scripts/kicad/run.sh','python3','scripts/pcbgen/route_kicad.py','finish',args.board_id,'--board',repo_relative(board),'--ses',repo_relative(ses),'--stats',repo_relative(stats_path)])
+                run(['bash','scripts/kicad/run.sh','python3','scripts/pcbgen/route_kicad.py','inspect',args.board_id,'--board',repo_relative(board),'--stats',repo_relative(stats_path)])
                 stats=json.loads(stats_path.read_text())
-                result.update({k:stats[k] for k in ('via_count','via_nets','total_track_length_mm','preexisting_tracks_preserved','preexisting_zones_preserved')})
-                after=drc(board,work/'post-drc.json');result['after']=drc_summary(after)
-                before_names=set(result['before']['unrouted_nets']);after_names=set(result['after']['unrouted_nets'])
-                result['routed_net_count']=len(before_names-after_names)
-                result['unrouted_net_count']=len(after_names);result['unrouted_net_names']=sorted(after_names)
-                result['status']='ROUTED DRAFT' if not (result['after']['rule_errors'] or result['after']['unconnected_items'] or result['after']['schematic_parity_issues']) else 'INCOMPLETE DRAFT'
-                exit_code=0 if result['status']=='ROUTED DRAFT' else 2
+                result.update({k:stats[k] for k in ('via_count','via_nets','total_track_length_mm')})
+                result['preexisting_tracks_preserved']=len(stats['track_uuids'])
+                result['preexisting_zones_preserved']=stats['zone_count']
+                result['after']=result['prepared']
+                result['routed_net_count']=len(result['before']['unrouted_nets'])
+                result['status']='ROUTED DRAFT'
+                result['router_skipped']='Prepared copper and refilled zones satisfy the complete gate'
+                exit_code=0
+            else:
+                code,seconds,peak,log=router(dsn,ses,work,threads,heap,timeout,image,not args.no_fanout)
+                (work/'freerouting.log').write_text(log)
+                result['router_runtime_sec']=round(seconds,3);result['sampled_peak_memory_mb']=round(peak,2)
+                if code==124:
+                    matched=sorted(set(re.findall(r"Net '([^']+)' \(\d+ unrouted connection",log)))
+                    result['unrouted_net_names']=matched or result['before']['unrouted_nets']
+                    result['unrouted_name_basis']='router final log' if matched else 'pre-route DRC snapshot; no imported session'
+                    result['unrouted_net_count']=len(result['unrouted_net_names'])
+                    result['routed_net_count']=None
+                    result['status']='TIMEOUT DRAFT';exit_code=3
+                elif code or not ses.exists():
+                    result['status']='ROUTER FAILED DRAFT';result['router_exit_code']=code
+                    result['unrouted_net_names']=result['before']['unrouted_nets'];result['unrouted_net_count']=len(result['unrouted_net_names'])
+                    result['unrouted_name_basis']='pre-route DRC snapshot; no imported session'
+                    result['routed_net_count']=None;exit_code=2
+                else:
+                    stats_path=work/'stats.json'
+                    run(['bash','scripts/kicad/run.sh','python3','scripts/pcbgen/route_kicad.py','finish',args.board_id,'--board',repo_relative(board),'--ses',repo_relative(ses),'--stats',repo_relative(stats_path)])
+                    stats=json.loads(stats_path.read_text())
+                    result.update({k:stats[k] for k in ('via_count','via_nets','total_track_length_mm','preexisting_tracks_preserved','preexisting_zones_preserved')})
+                    after=drc(board,work/'post-drc.json');result['after']=drc_summary(after)
+                    before_names=set(result['before']['unrouted_nets']);after_names=set(result['after']['unrouted_nets'])
+                    result['routed_net_count']=len(before_names-after_names)
+                    result['unrouted_net_count']=len(after_names);result['unrouted_net_names']=sorted(after_names)
+                    result['status']='ROUTED DRAFT' if drc_passes(result['after']) else 'INCOMPLETE DRAFT'
+                    exit_code=0 if result['status']=='ROUTED DRAFT' else 2
     except Exception as exc:
         result['status']='PIPELINE FAILED DRAFT';result['error']=str(exc);exit_code=2
     finally:

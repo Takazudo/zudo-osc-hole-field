@@ -41,10 +41,15 @@ PYREP
   fi
   python3 scripts/pcbgen/fixtures/assert_route_fixture.py
 elif [[ $mode == --dense ]]; then
+  exec bash "$HOME/.codex/scripts/heavy-guard.sh" -- bash scripts/pcbgen/test_dense.sh
+elif [[ $mode == --dense-route ]]; then
   python3 - <<'PYCLEAN'
 from pathlib import Path
-for name in ('four-layer-first-pass-routing.json','two-layer-routing.json','two-layer-freerouting.log'):
-    Path('.circuit-cache/router/dense',name).unlink(missing_ok=True)
+from datetime import datetime, timezone
+stamp=datetime.now(timezone.utc).strftime('%Y%m%dT%H%M%S%fZ')
+for case in ('dense', 'dense-source'):
+    path=Path('.circuit-cache/router')/case
+    if path.exists():path.rename(path.with_name(case+'-attempt-'+stamp))
 PYCLEAN
   python3 scripts/pcbgen/fixtures/build_dense_slice.py --source-column
   python3 scripts/pcbgen/fixtures/build_dense_slice.py
@@ -61,6 +66,7 @@ PY
   done
   source_status=0
   bash scripts/pcbgen/route.sh fixture-route-dense-source --board .circuit-cache/router/dense-source/fixture-route-dense-source.kicad_pcb --timeout-sec 120 --threads 4 --heap-mb 1536 || source_status=$?
+  [[ $source_status == 0 || $source_status == 2 ]] || exit "$source_status"
   # Connector inputs may remain open; local source nets must be complete before replication.
   python3 - <<'PY'
 import json
@@ -75,8 +81,8 @@ PY
   bash scripts/kicad/run.sh python3 scripts/pcbgen/route_kicad.py inspect fixture-route-dense --board .circuit-cache/router/dense/fixture-route-dense.kicad_pcb --stats .circuit-cache/router/dense/routing-work/preexisting-stats.json
   route_status=0
   bash scripts/pcbgen/route.sh fixture-route-dense --board .circuit-cache/router/dense/fixture-route-dense.kicad_pcb --timeout-sec 300 --threads 4 --heap-mb 1536 || route_status=$?
-  python3 scripts/pcbgen/fixtures/write_dense_report.py
+  echo "Diagnostic reports retained under .circuit-cache/router/dense; this does not replace the accepted fixture evidence."
   exit "$route_status"
 else
-  echo 'Usage: scripts/pcbgen/test_route.sh --quick|--dense' >&2;exit 2
+  echo 'Usage: scripts/pcbgen/test_route.sh --quick|--dense|--dense-route' >&2;exit 2
 fi
