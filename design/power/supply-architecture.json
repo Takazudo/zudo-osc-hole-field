@@ -2648,11 +2648,11 @@
       "fault_policy": "Source current limit and coordinated all-rail shutdown must prevent indefinite partial supply. Reverse-current blocking on all source outputs, active discharge under supervision and rail monitors at load are required; actual circuit and measured response remain #52/#57.",
       "voltage_band_note": "Shared AGND drop can raise one rail magnitude while reducing another. Check source maximum plus worst return shift against every upper load limit, not only subtraction at minimum.",
       "maximum_delivered_current_mA": {
-        "+12V": 2000,
-        "-12V": 1900,
+        "+12V": 2100,
+        "-12V": 2000,
         "+5V": 500
       },
-      "current_limit_contract": "Selected source or inlet must deliver minimum transient requirements yet bound each rail including tolerance to maximum_delivered_current_mA, then coordinate all-rail shutdown. Maximums are interface limits, not device ratings. Unbounded overshoot/fault energy cannot be admitted by the contact/cable checker; actual limiter dynamics require #52 circuit evidence and #57 tests."
+      "current_limit_contract": "Selected source or inlet must deliver minimum transient requirements with a positive planning window to maximum_delivered_current_mA, then bound each rail including tolerance to that maximum and coordinate all-rail shutdown. The 100 mA windows are proposals, not proven realizable limiter tolerances. Maximums are interface limits, not device ratings. Unbounded overshoot/fault energy cannot be admitted by the contact/cable checker; actual limiter dynamics require #52 circuit evidence and #57 tests."
     },
     "inlet": {
       "interface_id": "OSC-EXT-PWR-8-R1",
@@ -14729,18 +14729,18 @@
       "-12V": 1900,
       "+5V": 400
     },
-    "worst_single_return_contact_A": 4.4,
-    "worst_return_shift_V": 0.088,
+    "worst_single_return_contact_A": 4.6,
+    "worst_return_shift_V": 0.092,
     "max_conductor_path_ohm": 0.02,
     "worst_rail_plus_return_loss_V": {
-      "+12V": 0.188,
-      "-12V": 0.186,
-      "+5V": 0.158
+      "+12V": 0.194,
+      "-12V": 0.192,
+      "+5V": 0.162
     },
     "source_maximum_plus_return_shift_V": {
-      "+12V": 12.388,
-      "-12V": 12.288,
-      "+5V": 5.188
+      "+12V": 12.392,
+      "-12V": 12.292,
+      "+5V": 5.192
     },
     "required_continuous_output_power_W": 41.96,
     "protection_dissipation_allocation_W_per_rail": {
@@ -14748,7 +14748,7 @@
       "-12V": 0.064,
       "+5V": 0.012
     },
-    "worst_return_path_transient_dissipation_W": 0.3872
+    "worst_return_path_transient_dissipation_W": 0.4232
   },
   "guaranteed_whole_instrument_maximum_mA": {
     "+12V": null,

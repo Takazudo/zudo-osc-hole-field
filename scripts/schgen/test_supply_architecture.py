@@ -85,7 +85,8 @@ class SupplyArchitectureTests(unittest.TestCase):
         self.reject(lambda c:c['source_requirement']['voltage_magnitude_at_source_V'].update({'+5V':[5.05,5.15]}), 'voltage band')
 
     def test_current_limiter_not_minimum_source_rating(self):
-        self.reject(lambda c:c['source_requirement']['maximum_delivered_current_mA'].update({'+12V':1700}), 'limiter cannot deliver')
+        self.reject(lambda c:c['source_requirement']['maximum_delivered_current_mA'].update({'+12V':1700}), 'limiter has no window')
+        self.reject(lambda c:c['source_requirement']['maximum_delivered_current_mA'].update({'+12V':2000}), 'limiter has no window')
         self.reject(lambda c:c['source_requirement']['maximum_delivered_current_mA'].update({'+12V':4000}), 'return contact/cable overload')
 
     def test_negative_loss_is_not_a_saving(self):
