@@ -6,7 +6,11 @@ sidebar_position: 60
 
 > **Unvalidated draft — not bench tested.** The zudo-pd revision is **design-locked, not as-built**. The six source hashes in `design/power/zudo-pd-lock.json` were recomputed from commit `f25194fa73ded724e82d4561307c106480fbd9ce` and match issue #24. There is no evidence that those boards have been built, ordered, programmed, or measured.
 
-## Supply contract
+## Selected draft decision after issue #48
+
+The [supply architecture decision](../decisions/osc-supply-architecture.mdx) supersedes the supply intent below: one external regulated-source **requirement contract**, one `EXT` domain, 1.6/1.5/0.3 A required continuous delivery and 1.9/1.8/0.4 A required transient delivery. Physical source and orderable inlet/mate are **NOT SELECTED**; energization is not authorized. #52 implements this contract; the current single-inlet circuit and the remainder of this page document the historical design. Original targets and capacity deficits remain comparison evidence. Physical source realization, thermal/startup/programming, cable and power-off gates persist in [issue #57](https://github.com/Takazudo/zudo-osc-hole-field/issues/57). No bench gate is a prerequisite merely to draw the conditional CAD.
+
+## Historical pinned source contract
 
 The intended source is zudo-pd Board P (USB-PD input) stacked on Board B (power conversion). The synth uses a factory-made ribbon cable into the matching 2 × 8, 2.54 mm shrouded IDC header, DEALON `DW254P-2X8-L0` (`C4749189`). The supply's screw terminals are excluded because they provide a single ground pole and require hand wiring. Connector orientation, cable assembly, and offset/reversal protection remain physical qualification gates.
 

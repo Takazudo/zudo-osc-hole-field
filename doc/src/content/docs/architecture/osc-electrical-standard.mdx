@@ -8,13 +8,13 @@ OSC-ES-1 is **PROPOSAL (planning, owner-delegated)**. It fixes the design inputs
 
 The machine-readable authority is `design/standard/electrical-standard.json`; shared identities are in `design/standard/parts-shortlist.json`. E01–E09 are recorded separately in `project/osc-hole-field/electrical-decisions.json`. Existing owner decisions D01–D12 and the fixed panel positions are unchanged.
 
-**The preliminary −12 V estimate is 712.655 mA against a 640 mA ceiling.** Issue #34 must remove at least 72.655 mA before the partition decision. This is a recorded design deficit, not a passing power budget.
+**The historical preliminary −12 V estimate is 712.655 mA against a 640 mA ceiling.** The later captured ledger also fails the original source comparison. [Issue #48](../decisions/osc-supply-architecture.mdx) selects a conditional external-source requirement; #52 must implement it before partition. Original capacity deficits remain recorded, and physical qualification stays open in #57.
 
 ## Levels and loads
 
 | Planning default | Decision |
 | --- | --- |
-| Rails | Adopt +12 V / −12 V analog and +5 V logic from the pinned zudo-pd supply. |
+| Rails | Adopt +12 V / −12 V analog and +5 V logic under the #48 external-source requirement; the pinned source is retained as comparison. |
 | Audio | Adopt ±5 V, 10 Vpp nominal unloaded. |
 | Bipolar CV | Adopt ±5 V nominal. Every input must survive ±12 V continuously; linear operation at the fault limits is not required. |
 | Envelope | Adopt ENV 0…8 V and BIP −5…+5 V; `BIP = 1.25 × ENV − 5 V`. |
@@ -27,7 +27,7 @@ The machine-readable authority is `design/standard/electrical-standard.json`; sh
 | Input protection | Replace bare resistor/rail clamps with source-facing ADG5412F isolation, current limiting and drain-side clamps. |
 | Magnitude brightness | Adopt approximately 1 mA at 5 V magnitude: 5 V / 4.99 kΩ = 1.002 mA. |
 | Clip threshold | Adopt ±10 V on the internal node before level attenuation or VCA. |
-| Current ceilings | Adopt 960 / 640 / 400 mA for +12 / −12 / +5 V. The preliminary negative-rail deficit remains open. |
+| Current ceilings | Historical pinned-source ceilings: 960 / 640 / 400 mA. The #48 external contract requires 1600 / 1500 / 300 mA continuous delivery; physical capacity is unknown. |
 
 Nominal output loading is 100 kΩ; the design load envelope extends down to 10 kΩ. A 998 Ω general output loses 0.988% into 100 kΩ and 9.075% into 10 kΩ. Precision outputs instead sense the jack after the isolation resistor. Their **load-induced** DC error target is at most 1 mV between open circuit and 10 kΩ at −5, 0 and +5 V. The separate calibrated static path target is 2 mV. Neither target establishes sample-and-hold droop or oscillator tracking.
 
@@ -109,6 +109,9 @@ Trimmers are factory-fitted SMD components with bounded ranges and accessible ad
 After 20 minutes of warm-up, record serial/revision, ambient temperature, rails, instruments, settings and measured endpoints. Check precision outputs at three voltages and multiple loads; each octave step targets at most 2 mV error. A five-octave pitch sweep targets 5 cents at 25 °C after calibration, subject to the oscillator design in #29. Individual 0.1% resistors do not guarantee either target. Sample-and-hold droop needs its own acquisition, hold-time and temperature characterization.
 
 ## Rail and capacitor budgets
+
+Issue #48 supersedes the original source choice with the [single-domain external source requirement](../decisions/osc-supply-architecture.mdx). The old 960/640/400 mA ceilings remain historical pinned P+B comparisons. The selected contract requires 1600/1500/300 mA continuous and 1900/1800/400 mA transient delivery; these are required values, not available source capacity. The 150/150/100 µF capacitance limits remain unchanged; count their full +20% tolerance at a monotonic ramp no faster than 10 ms. #52 implements the power interface; #57 retains physical qualification.
+
 
 `rail-budget-preliminary.json` retains the 33-module, 225-signal-section planning table and splits it by role. It adds all 98 protected input buffers, 48 DC wiper buffers, 51 remote signal/level drivers, reference generation/fan-out, 92 magnitude drivers, twelve stage drivers and ten clip buffers. It rounds whole packages and charges unused sections. Some additions may overlap stages in the original rough estimate; only captured connectivity may remove that overlap.
 
