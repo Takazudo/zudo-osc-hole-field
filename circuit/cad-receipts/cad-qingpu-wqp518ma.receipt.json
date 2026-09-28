@@ -33,7 +33,7 @@
       "kicad_sym",
       "wrl"
     ],
-    "units": "mm",
+    "units": "Footprint dimensions in mm; WRL coordinate unit 0.1 inch (2.54 mm)",
     "original_paths": [
       "circuit/sources/jack/Thonkiconn_Jack_Datasheet-new.jpg",
       "circuit/sources/jack/KiCad10_PJ398SM_stock.kicad_mod"
@@ -73,14 +73,14 @@
       },
       "additional_input_sha256": {
         "design/mechanical/facts/jack.json": "d858de77f8333182e806b02d693200802de40b6892bd21e5b069844c9e115bf2",
-        "scripts/libgen/gen_component_envelopes.py": "18251a4ed8904c033b25b1545460cf42bc56239b0e210b3a000b4a750286b46f",
+        "scripts/libgen/gen_component_envelopes.py": "1249ae90b92c262656444ca3823e7372e9c506936f727a91ac6d9caffcdd3f09",
         "footprints/kicad/zudo-osc-hole-field.pretty/Jack_3.5mm_QingPu_WQP518MA.kicad_mod (pre-model)": "5b120b99f79738365ae6a9dba3111ac4cf26dcb42a2a509ef8e7b9165b7a18d4"
       }
     },
     "output_sha256": {
       "footprints/kicad/zudo-osc-hole-field.pretty/Jack_3.5mm_QingPu_WQP518MA.kicad_mod": "51a6cc131190b3b1f7f9aa925d4ce08e05a796f62dc8c00d3a89086354b80a20",
       "symbols/src/WQP518MA.kicad_sym": "47253f15254ef6115cf826cbcd591ab9ec21cacabc02cf6f094e553eb0a3c1bf",
-      "footprints/kicad/zudo-osc-hole-field.3dshapes/Jack_3.5mm_QingPu_WQP518MA.wrl": "49a449b901090733b39aa19e0c6027c7c62443f661edc047a68a6d1d0e7c593a"
+      "footprints/kicad/zudo-osc-hole-field.3dshapes/Jack_3.5mm_QingPu_WQP518MA.wrl": "da96487f1d0c1daf0433d20b1992dd7009cda51a0c2ebef3819dd26fa2c0b655"
     }
   },
   "cad_use": {
@@ -97,7 +97,8 @@
   "checks": {
     "performed": [
       "Compared drawing terminal pitch and body envelope with stock footprint.",
-      "Generated and hash-locked a source-bounded coarse WRL envelope; this is a catalogue visualization only."
+      "Generated and hash-locked a source-bounded coarse WRL envelope; this is a catalogue visualization only.",
+      "KiCad 10.0.6 native VRML export: x/y/z bounds and footprint model scale match the stated display envelope (scripts/libgen/fixtures/check_wrl_dimensions.py)."
     ],
     "remaining_physical_checks": [
       "Confirm circular drill allowance against actual pins; dimensioned drawing specifies pin widths, not drills.",

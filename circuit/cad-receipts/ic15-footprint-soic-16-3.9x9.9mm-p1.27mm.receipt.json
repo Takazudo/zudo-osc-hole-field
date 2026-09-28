@@ -28,7 +28,7 @@
       "kicad_mod",
       "wrl"
     ],
-    "units": "mm",
+    "units": "Footprint dimensions in mm; WRL coordinate unit 0.1 inch (2.54 mm)",
     "original_paths": [
       "circuit/sources/ic-library/cad/SOIC-16_3.9x9.9mm_P1.27mm.stock.kicad_mod"
     ]
@@ -41,7 +41,7 @@
       "circuit/sources/ic-library/AS3340.pdf SHA-256 66108a3ddcc78a158d66974a497801ce6a429d465b338f6c8d656fd7ddce815e",
       "circuit/sources/ic-library/LM13700.pdf SHA-256 8b2239a8b97659008b7373e29cf4401cacc76c377b50a6d0c90ed52ecfc7acee",
       "circuit/sources/ic-library/OPA4196.pdf SHA-256 d89dd6009d109bf18b349e77ff46e4df60bf7d4faaefd4c3ebe6ec0e2fc7793d",
-      "scripts/libgen/gen_ic_package_envelopes.py SHA-256 cbf1715d8857c826ebd111a26180e705f2c222c124b892ba0fb129591d57445e"
+      "scripts/libgen/gen_ic_package_envelopes.py SHA-256 6af3e9c2885882147a87a4332aa6ec5b9c4e7a373e85242a93d3dbfa79be8957"
     ]
   },
   "derivation": {
@@ -70,7 +70,7 @@
           "circuit/sources/ic-library/LM13700.pdf": "8b2239a8b97659008b7373e29cf4401cacc76c377b50a6d0c90ed52ecfc7acee",
           "circuit/sources/ic-library/OPA4196.pdf": "d89dd6009d109bf18b349e77ff46e4df60bf7d4faaefd4c3ebe6ec0e2fc7793d"
         },
-        "generator_sha256": "cbf1715d8857c826ebd111a26180e705f2c222c124b892ba0fb129591d57445e",
+        "generator_sha256": "6af3e9c2885882147a87a4332aa6ec5b9c4e7a373e85242a93d3dbfa79be8957",
         "operations": [
           "generate provisional display cuboid from listed family bounds",
           "add exactly one local WRL model reference to the generic footprint"
@@ -79,7 +79,7 @@
     },
     "output_sha256": {
       "footprints/kicad/zudo-osc-hole-field.pretty/SOIC-16_3.9x9.9mm_P1.27mm.kicad_mod": "ea0cf63ab646928b0d2d8674e20fb6b010be3ffbc01d658bcd965a9f0aefb90b",
-      "footprints/kicad/zudo-osc-hole-field.3dshapes/IC_SOIC-16_3.9x9.9.wrl": "78ad78ee7ef22d21a4aed0292daf2aa0de475637e4388aab34da05fcf35a4561"
+      "footprints/kicad/zudo-osc-hole-field.3dshapes/IC_SOIC-16_3.9x9.9.wrl": "fcc376e2aeb2c745467f05ca520f0182298652635eecda8f840518a96ce37bcc"
     }
   },
   "cad_use": {
@@ -108,7 +108,8 @@
   "checks": {
     "performed": [
       "Project library and courtyard checks",
-      "Local WRL envelope generated and hash-bound; package preview check required"
+      "Local WRL envelope generated and hash-bound; package preview check required",
+      "KiCad 10.0.6 native VRML export: x/y/z bounds and footprint model scale match the stated display envelope (scripts/libgen/fixtures/check_wrl_dimensions.py)."
     ],
     "remaining_physical_checks": [
       "Audit against exact package drawing before fabrication.",

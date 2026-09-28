@@ -31,7 +31,7 @@
       "kicad_sym",
       "wrl"
     ],
-    "units": "mm",
+    "units": "Footprint dimensions in mm; WRL coordinate unit 0.1 inch (2.54 mm)",
     "original_paths": [
       "circuit/sources/toggle-button/Omron-B3F.pdf"
     ]
@@ -69,14 +69,14 @@
       },
       "additional_input_sha256": {
         "design/mechanical/facts/button.json": "8699642a06486323e735b04635ab244da941d06a637fccffb60949b078b151eb",
-        "scripts/libgen/gen_component_envelopes.py": "18251a4ed8904c033b25b1545460cf42bc56239b0e210b3a000b4a750286b46f",
+        "scripts/libgen/gen_component_envelopes.py": "1249ae90b92c262656444ca3823e7372e9c506936f727a91ac6d9caffcdd3f09",
         "footprints/kicad/zudo-osc-hole-field.pretty/Button_Omron_B3F_6x6_P6.5x4.5.kicad_mod (pre-model)": "383bc0d9a6db5a2dae13909b9bd71a7ec5f053cc0449136af5f0cb92d993b778"
       }
     },
     "output_sha256": {
       "footprints/kicad/zudo-osc-hole-field.pretty/Button_Omron_B3F_6x6_P6.5x4.5.kicad_mod": "5308867a94916318f13100fe7a07505c1c2d41ea7fc35c63d5d5ce3fcbb30c52",
       "symbols/src/B3F-1020.kicad_sym": "c823dd05f5cc557f2c8987894026b54f78cee5e473c08d79bcc0d5a490ce901e",
-      "footprints/kicad/zudo-osc-hole-field.3dshapes/Button_Omron_B3F_6x6_P6.5x4.5.wrl": "25df831fa7bbea9840e8be0cd673fc7b3aa85e23db7cd0cc9fe23319a0753e49"
+      "footprints/kicad/zudo-osc-hole-field.3dshapes/Button_Omron_B3F_6x6_P6.5x4.5.wrl": "79b822728a292391be9a37f8988fcf91f45efbe9b81ef3d26b3a33903fe26ece"
     }
   },
   "cad_use": {
@@ -94,7 +94,8 @@
     "performed": [
       "Source bytes SHA-256 checked locally.",
       "Footprint and symbol pass project library checks.",
-      "Generated and hash-locked a source-bounded coarse WRL envelope; this is a catalogue visualization only."
+      "Generated and hash-locked a source-bounded coarse WRL envelope; this is a catalogue visualization only.",
+      "KiCad 10.0.6 native VRML export: x/y/z bounds and footprint model scale match the stated display envelope (scripts/libgen/fixtures/check_wrl_dimensions.py)."
     ],
     "remaining_physical_checks": [
       "Confirm installed lot pin orientation and panel reach on a coupon.",

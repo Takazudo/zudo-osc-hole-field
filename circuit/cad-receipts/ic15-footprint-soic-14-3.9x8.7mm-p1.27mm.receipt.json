@@ -28,7 +28,7 @@
       "kicad_mod",
       "wrl"
     ],
-    "units": "mm",
+    "units": "Footprint dimensions in mm; WRL coordinate unit 0.1 inch (2.54 mm)",
     "original_paths": [
       "circuit/sources/ic-library/cad/SOIC-14_3.9x8.7mm_P1.27mm.stock.kicad_mod"
     ]
@@ -39,7 +39,7 @@
     "evidence": [
       "KiCad 10.0.6 pinned stock library source retained with SHA-256.",
       "circuit/sources/ic-library/OPA4196.pdf SHA-256 d89dd6009d109bf18b349e77ff46e4df60bf7d4faaefd4c3ebe6ec0e2fc7793d",
-      "scripts/libgen/gen_ic_package_envelopes.py SHA-256 5cf873088089601ce798b675ebad9815c5f3414e691dc84f9cd0afbb3d83fba2"
+      "scripts/libgen/gen_ic_package_envelopes.py SHA-256 6af3e9c2885882147a87a4332aa6ec5b9c4e7a373e85242a93d3dbfa79be8957"
     ]
   },
   "derivation": {
@@ -66,7 +66,7 @@
         "geometry_source_sha256": {
           "circuit/sources/ic-library/OPA4196.pdf": "d89dd6009d109bf18b349e77ff46e4df60bf7d4faaefd4c3ebe6ec0e2fc7793d"
         },
-        "generator_sha256": "cbf1715d8857c826ebd111a26180e705f2c222c124b892ba0fb129591d57445e",
+        "generator_sha256": "6af3e9c2885882147a87a4332aa6ec5b9c4e7a373e85242a93d3dbfa79be8957",
         "operations": [
           "generate provisional display cuboid from listed family bounds",
           "add exactly one local WRL model reference to the generic footprint"
@@ -75,7 +75,7 @@
     },
     "output_sha256": {
       "footprints/kicad/zudo-osc-hole-field.pretty/SOIC-14_3.9x8.7mm_P1.27mm.kicad_mod": "d686d259c1e4bed4147735ed25de08a498e8626d082058f4f5e00168017b2337",
-      "footprints/kicad/zudo-osc-hole-field.3dshapes/IC_SOIC-14_3.9x8.7.wrl": "5d154c1b754459fedb80a41d55f1065de9430b85dbe119ff0adb29cc676c8305"
+      "footprints/kicad/zudo-osc-hole-field.3dshapes/IC_SOIC-14_3.9x8.7.wrl": "8b49acd6c9f185e6753b1ba8403150a5120b202ed4e67513f6592b6b46365ebc"
     }
   },
   "cad_use": {
@@ -104,7 +104,8 @@
   "checks": {
     "performed": [
       "Project library and courtyard checks",
-      "Local WRL envelope generated and hash-bound; package preview check required"
+      "Local WRL envelope generated and hash-bound; package preview check required",
+      "KiCad 10.0.6 native VRML export: x/y/z bounds and footprint model scale match the stated display envelope (scripts/libgen/fixtures/check_wrl_dimensions.py)."
     ],
     "remaining_physical_checks": [
       "Audit against exact package drawing before fabrication.",

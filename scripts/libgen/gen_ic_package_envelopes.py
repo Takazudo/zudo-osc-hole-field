@@ -17,6 +17,7 @@ ROOT = Path(__file__).resolve().parents[2]
 OUT = ROOT / "footprints/kicad/zudo-osc-hole-field.3dshapes"
 FOOTPRINTS = ROOT / "footprints/kicad/zudo-osc-hole-field.pretty"
 MODEL_PREFIX = "${KIPRJMOD}/../../footprints/kicad/zudo-osc-hole-field.3dshapes/"
+VRML_UNIT_MM = 2.54  # KiCad 10 VRML importer: one coordinate unit is 0.1 inch.
 
 # Footprint family -> model, provisional body maximum in mm, retained dimension
 # source paths, and the exact limits used. The SOIC-16 model covers the largest
@@ -84,7 +85,7 @@ def fmt(value: float) -> str:
 
 def render(name: str, dims: tuple[float, float, float], note: str) -> str:
     dx, dy, dz = dims
-    x, y = dx / 2, dy / 2
+    x, y, dz = dx / (2 * VRML_UNIT_MM), dy / (2 * VRML_UNIT_MM), dz / VRML_UNIT_MM
     points = [(-x, -y, 0), (x, -y, 0), (x, y, 0), (-x, y, 0),
               (-x, -y, dz), (x, -y, dz), (x, y, dz), (-x, y, dz)]
     point_text = ", ".join(" ".join(fmt(v) for v in point) for point in points)
