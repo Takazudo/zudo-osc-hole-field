@@ -6,7 +6,7 @@
   "source_opamp_maxima": "TI OPA4197 and OPA4196 retained PDFs, physical PDF page index 7, Power Supply IQ row; full-temperature per-amplifier maxima 1.5 mA and 0.25 mA, respectively (6 and 1 mA per quad).",
   "source_led_and_pot_allowances": "design/standard/rail-budget-preliminary.json loads magnitude_leds, clip_leds and dc_pots; planning allowances, not manufacturer maxima.",
   "captured_counts": {
-    "OPA4197IPWR_quads": 79,
+    "OPA4197IPWR_quads": 89,
     "OPA4196IDR_quads": 174,
     "B104_100k_DC_pots": 48,
     "magnitude_LEDs": 92,
@@ -14,8 +14,8 @@
     "stage_LEDs": 12
   },
   "baseline_planning_upper_mA": {
-    "+12V": 1420.819166,
-    "-12V": 1329.56866,
+    "+12V": 1505.819166,
+    "-12V": 1414.56866,
     "+5V": 177.286445
   },
   "ceilings_mA": {
@@ -26,30 +26,30 @@
   "cases": [
     {
       "case": "1 all precision quads changed to low-Iq family",
-      "analog_rail_saving_mA": 395.0,
+      "analog_rail_saving_mA": 445.0,
       "remaining_mA": {
-        "+12V": 1025.819166,
-        "-12V": 934.56866,
+        "+12V": 1060.819166,
+        "-12V": 969.56866,
         "+5V": 177.286445
       },
       "qualification": "Impossible as a blanket role edit without offset/noise/stability review; this is a mathematical upper bound on Iq savings."
     },
     {
       "case": "1 plus all analog indicator current set to zero",
-      "analog_rail_saving_mA": 521.0,
+      "analog_rail_saving_mA": 571.0,
       "remaining_mA": {
-        "+12V": 899.819166,
-        "-12V": 808.56866,
+        "+12V": 934.819166,
+        "-12V": 843.56866,
         "+5V": 177.286445
       },
       "qualification": "Deliberately unusable visibility bound; indicator current allowances may be embedded in module reserves, so no saving is booked."
     },
     {
       "case": "1 plus zero analog indicators plus all 48 DC pot current removed",
-      "analog_rail_saving_mA": 527.0,
+      "analog_rail_saving_mA": 577.0,
       "remaining_mA": {
-        "+12V": 893.819166,
-        "-12V": 802.56866,
+        "+12V": 928.819166,
+        "-12V": 837.56866,
         "+5V": 177.286445
       },
       "qualification": "Deliberately overgenerous; B104 values are fixed 100k hardware and most pot currents are not separately disaggregated in module reports."
@@ -63,8 +63,8 @@
       "comparator_package_consolidation": 10.0
     },
     "hypothetical_remaining_mA": {
-      "+12V": 802.419166,
-      "-12V": 711.16866,
+      "+12V": 837.419166,
+      "-12V": 746.16866,
       "+5V": 177.286445
     },
     "qualification": "Deliberately overstated comparison only, not an option-1–3 budget subtraction: sample/hold opamp packing overlaps the all-precision migration; no package reallocation is generated."

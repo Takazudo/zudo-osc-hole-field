@@ -143,20 +143,20 @@ def family():
         b.cell('remote_buffer',key,{'SIGNAL':key+'_BUFFER','REMOTE':key+'_REMOTE'})
         b.cell('bipolar_attenuverter',key,{'REMOTE_INPUT':key+'_REMOTE','BUFFERED_INPUT':key+'_BUFFER','OUT':key+'_DEPTH'},panel='C:{}.{}±'.format('{}',key))
     for key in ('TUNE','FINE','PW'):
-        b.cell('dc_control_source',key,{'REF_LOW':'AGND' if key=='PW' else 'OSC_REFN5','REF_HIGH':'OSC_REF5','OUT':key+'_MANUAL'},panel='C:{}.{}'.format('{}',key),role='precision' if key!='PW' else 'cv')
+        b.cell('dc_control_source',key,{'REF_LOW':'AGND' if key=='PW' else 'LOCAL_REFN5','REF_HIGH':'LOCAL_REF5','OUT':key+'_MANUAL'},panel='C:{}.{}'.format('{}',key),role='precision' if key!='PW' else 'cv')
     # All octave taps are shared buffered references; the selected contact is
     # filtered and rebuffered locally. Open contact tends to zero octaves.
     pins={'1':'OCT_SELECTED','10':'OCT_SELECTED','8':None,'9':None,'MP1':None,'MP2':None,**{str(i+2):f'OSC_OCT{i}' for i in range(6)}}
     b.device('SRBV160803','OCT_SELECTOR','SW',pins,panel='C:{}.OCT',island='')
     b.r('OCT_SER','1 kΩ','OCT_SELECTED','OCT_FILTER');b.r('OCT_PD','10 MΩ','OCT_FILTER','AGND');b.c('OCT_FILTER','100 nF','OCT_FILTER','AGND');b.amp('OCT_RECEIVER','precision','OCT_FILTER','OCT_CV','OCT_CV')
-    b.amp('LFO_OFFSET','cv','OSC_REFN5','LFO_FB','LFO_REF');b.r('LFO_RF','40 kΩ','LFO_REF','LFO_FB');b.r('LFO_RG','100 kΩ','LFO_FB','AGND')
+    b.amp('LFO_OFFSET','cv','LOCAL_REFN5','LFO_FB','LFO_REF');b.r('LFO_RF','40 kΩ','LFO_REF','LFO_FB');b.r('LFO_RG','100 kΩ','LFO_FB','AGND')
     b.device('2MS1T1B1M2QES-5','RANGE','SW',{'3':'LFO_REF','2':'RANGE_CV','1':'AGND'},panel='C:{}.VCO/LFO',island='')
     b.r('RANGE_PD','10 MΩ','RANGE_CV','AGND')
-    for key,value,net in [('PITCH','100 kΩ','1V_BUFFER'),('OCT','100 kΩ','OCT_CV'),('TUNE','250 kΩ','TUNE_MANUAL'),('FINE','5 MΩ','FINE_MANUAL'),('FM','200 kΩ','FM_DEPTH'),('RANGE','100 kΩ','RANGE_CV'),('BIAS','82.5 kΩ','OSC_REF5')]:b.r('PITCH_'+key,value,net,'EXPO_SUM')
-    b.trim('BASE_TRIM','10 kΩ','OSC_REFN5','BASE_ADJ','OSC_REF5');b.r('BASE_FEED','1 MΩ','BASE_ADJ','EXPO_SUM')
+    for key,value,net in [('PITCH','100 kΩ','1V_BUFFER'),('OCT','100 kΩ','OCT_CV'),('TUNE','250 kΩ','TUNE_MANUAL'),('FINE','5 MΩ','FINE_MANUAL'),('FM','200 kΩ','FM_DEPTH'),('RANGE','100 kΩ','RANGE_CV'),('BIAS','82.5 kΩ','LOCAL_REF5')]:b.r('PITCH_'+key,value,net,'EXPO_SUM')
+    b.trim('BASE_TRIM','10 kΩ','BASE_REFN5','BASE_ADJ','BASE_REF5');b.r('BASE_FEED','1 MΩ','BASE_ADJ','EXPO_SUM')
     # ALFA external -5 V recommendation avoids contradictory internal-zener
     # narrative versus VEE absolute limit. Driver/load sequencing remains a gate.
-    b.amp('VEE_DRIVER','precision','OSC_REFN5','VEE_FB','VEE_DRIVE');b.r('VEE_ISO','100 Ω','VEE_DRIVE','VEE5');b.r('VEE_FB','10 kΩ','VEE5','VEE_FB');b.c('VEE_FAST','100 pF','VEE_DRIVE','VEE_FB')
+    b.amp('VEE_DRIVER','precision','LOCAL_REFN5','VEE_FB','VEE_DRIVE');b.r('VEE_ISO','100 Ω','VEE_DRIVE','VEE5');b.r('VEE_FB','10 kΩ','VEE5','VEE_FB');b.c('VEE_FAST','100 pF','VEE_DRIVE','VEE_FB')
     b.device('AS3340D','CORE','U',{str(i):net for i,net in enumerate(['SCALE1','SCALE2','VEE5','PULSE_RAW','PWM_PIN','HARD_PIN','HF_PIN','SAW_RAW','SOFT_PIN','TRI_RAW','TIMING_CAP','AGND','LINEAR_REF','SCALE_PIN','EXPO_SUM','+12V'],1)})
     b.parts.append(Part('VEE_POWER_FLAG','Fixture:PWR_FLAG','#FLG',1,0,50.8,50.8,{'1':'VEE5'},value='LOCAL_BUFFER_SUPPLY',attributes={'Role':'oscillator:driven local -5 V declaration','MPN':'','Manufacturer':'','LCSC':'','PanelUid':'','Island':b.island}))
     b.r('RZ_FIXED','24 kΩ','SCALE1','RZ_TRIM');b.trim('RZ_TRIM','10 kΩ','RZ_TRIM','AGND')
@@ -166,29 +166,29 @@ def family():
     b.r('LINEAR_REFERENCE','1.2 MΩ','+12V','LINEAR_REF');b.r('LINEAR_FILTER','470 Ω','LINEAR_REF','LINEAR_FILTER');b.c('LINEAR_FILTER','10 nF','LINEAR_FILTER','AGND')
     b.trim('HF_TRIM','20 kΩ','HF_PIN','LINEAR_REF','AGND')
     b.r('PULSE_LOAD','51 kΩ','PULSE_RAW','AGND')
-    b.cell('gate_trigger_input','SYNC',{'BUFFERED':'SYNC_BUFFER','REF_5V':'OSC_REF5','GATE_REF':'OSC_GATE_REF','GATE_HIGH':'SYNC_GATE'})
+    b.cell('gate_trigger_input','SYNC',{'BUFFERED':'SYNC_BUFFER','REF_5V':'LOCAL_REF5','GATE_REF':'OSC_GATE_REF','GATE_HIGH':'SYNC_GATE'})
     b.device('2MS3T1B1M2QES','SYNC_SELECT','SW',{'2':'SYNC_GATE','3':'SOFT_DRIVE','1':'HARD_DRIVE'},panel='C:{}.SYNC',island='')
     for mode in ('SOFT','HARD'):
         b.r(mode+'_PD','100 kΩ',mode+'_DRIVE','AGND');b.r(mode+'_LIMIT','10 kΩ',mode+'_DRIVE',mode+'_EDGE');b.c(mode+'_AC','1 nF',mode+'_EDGE',mode+'_PIN')
     # PWM command .2 + .72*manual + .36*depth, then clamp near 0..4 V.
     b.amp('PWM_SUM','cv','AGND','PWM_SUM','PWM_NEG');b.r('PWM_FB','72 kΩ','PWM_NEG','PWM_SUM')
-    for name,value,net in [('MAN','100 kΩ','PW_MANUAL'),('CV','200 kΩ','PWM_DEPTH'),('OFFSET','1.8 MΩ','OSC_REF5')]:b.r('PWM_'+name,value,net,'PWM_SUM')
+    for name,value,net in [('MAN','100 kΩ','PW_MANUAL'),('CV','200 kΩ','PWM_DEPTH'),('OFFSET','1.8 MΩ','LOCAL_REF5')]:b.r('PWM_'+name,value,net,'PWM_SUM')
     b.amp('PWM_INVERT','cv','AGND','PWM_INV','PWM_DRIVE');b.r('PWM_INV_IN','100 kΩ','PWM_NEG','PWM_INV');b.r('PWM_INV_FB','100 kΩ','PWM_DRIVE','PWM_INV')
-    b.r('REF4_TOP','25 kΩ','OSC_REF5','REF4_RAW');b.r('REF4_BOT','100 kΩ','REF4_RAW','AGND');b.amp('REF4','cv','REF4_RAW','REF4','REF4')
+    b.r('REF4_TOP','25 kΩ','LOCAL_REF5','REF4_RAW');b.r('REF4_BOT','100 kΩ','REF4_RAW','AGND');b.amp('REF4','cv','REF4_RAW','REF4','REF4')
     b.r('PWM_LIMIT','10 kΩ','PWM_DRIVE','PWM_PIN');b.device('BAT54S_215','PWM_CLAMP','D',{'1':'AGND','3':'PWM_PIN','2':'REF4'})
     # Scale inferred raw 0..4 V triangle / 0..8 V saw at +12 V.
     for key,rinput,rtop in [('TRI','40 kΩ','250 kΩ'),('SAW','80 kΩ','125 kΩ')]:
-        b.r(key+'_BIAS_TOP',rtop,'OSC_REF5',key+'_BIAS');b.r(key+'_BIAS_BOT','100 kΩ',key+'_BIAS','AGND')
+        b.r(key+'_BIAS_TOP',rtop,'LOCAL_REF5',key+'_BIAS');b.r(key+'_BIAS_BOT','100 kΩ',key+'_BIAS','AGND')
         b.amp(key+'_SCALE','audio',key+'_BIAS',key+'_SUM',key+'_SCALED');b.r(key+'_IN',rinput,key+'_RAW',key+'_SUM');b.r(key+'_FB','100 kΩ',key+'_SCALED',key+'_SUM')
     # Pulse is squared in a 0/5 V domain so its amplitude does not depend on
     # the unqualified AS3340 pulse high level at +12 V.
     b.r('PUL_DIV_TOP','100 kΩ','PULSE_RAW','PULSE_HALF');b.r('PUL_DIV_BOT','100 kΩ','PULSE_HALF','AGND')
-    b.r('REF25_TOP','100 kΩ','OSC_REF5','REF25');b.r('REF25_BOT','100 kΩ','REF25','AGND')
+    b.r('REF25_TOP','100 kΩ','LOCAL_REF5','REF25');b.r('REF25_BOT','100 kΩ','REF25','AGND')
     b.device('LM393BIDR','PULSE_CMP','U',{'1':'PULSE_LOGIC','2':'PULSE_HALF','3':'REF25','4':'AGND','5':'AGND','6':'+5V','7':None,'8':'+12V'})
-    b.r('PUL_PULL','4.7 kΩ','+5V','PULSE_LOGIC');b.amp('PUL_SCALE','audio','PULSE_LOGIC','PUL_SUM','PUL_SCALED');b.r('PUL_RF','100 kΩ','PUL_SCALED','PUL_SUM');b.r('PUL_RREF','100 kΩ','OSC_REF5','PUL_SUM')
+    b.r('PUL_PULL','4.7 kΩ','+5V','PULSE_LOGIC');b.amp('PUL_SCALE','audio','PULSE_LOGIC','PUL_SUM','PUL_SCALED');b.r('PUL_RF','100 kΩ','PUL_SCALED','PUL_SUM');b.r('PUL_RREF','100 kΩ','LOCAL_REF5','PUL_SUM')
     # Matched-pair soft saturation: approximately tanh(Vdiff/(2*VT)).
     b.r('SINE_ATTEN','68 kΩ','TRI_SCALED','SINE_BASE');b.r('SINE_BASE_GND','1 kΩ','SINE_BASE','AGND')
-    b.trim('SINE_SYMMETRY','10 kΩ','OSC_REFN5','SINE_OFFSET','OSC_REF5');b.r('SINE_OFFSET','1 MΩ','SINE_OFFSET','SINE_BASE')
+    b.trim('SINE_SYMMETRY','10 kΩ','SINE_REFN5','SINE_OFFSET','SINE_REF5');b.r('SINE_OFFSET','1 MΩ','SINE_OFFSET','SINE_BASE')
     b.device('BCM847BS_115','SINE_PAIR','Q',{'1':'SINE_TAIL','2':'SINE_BASE','3':'SINE_C2','4':'SINE_TAIL','5':'AGND','6':'SINE_C1'})
     b.r('SINE_TAIL','10 kΩ','SINE_TAIL','-12V')
     for n in (1,2):b.r(f'SINE_COLLECTOR{n}','10 kΩ','+12V',f'SINE_C{n}')
@@ -198,6 +198,15 @@ def family():
     for key in ('SIN','TRI','SAW','PUL'):
         b.cell('general_output',key,{'SIGNAL':key+'_SCALED','JACK':key+'_TIP'})
         b.device('WQP518MA','J_'+key,'J',{'T':key+'_TIP','S':'AGND','TN':None},panel='J:{}.{}'.format('{}',key),island='')
+    # Three independent pairs preserve the full trimmer span at <=2 mA/output.
+    # Feedback is sensed locally after isolation; harness return is AGND.
+    for group in ('LOCAL', 'BASE', 'SINE'):
+        for polarity in ('5', 'N5'):
+            key=group+'_REF'+polarity
+            b.amp(key, 'precision', 'OSC_REF'+polarity, key+'_FB', key+'_DRIVE')
+            b.r(key+'_ISO', '100 Ω', key+'_DRIVE', key)
+            b.r(key+'_FB', '100 Ω', key, key+'_FB')
+            b.c(key+'_FAST', '1 nF', key+'_DRIVE', key+'_FB')
     return b.finish('oscillator',sensitive=('TIMING_CAP','EXPO_SUM','SCALE_PIN','SCALE1','SCALE2','LINEAR_REF','HF_PIN'))
 
 

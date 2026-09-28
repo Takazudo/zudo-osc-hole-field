@@ -115,8 +115,10 @@ def build(config=None):
         if 'N1' in modules:values['+5V']+=10
         # Add full allocated board capacitance rather than the old inlet-only 1 ms calculation.
         startup = {r:values[r]+candidate['capacitor_share_uF'][g][r]*1.2*req['required_load_voltage_magnitude_V'][r][1]/10+env['fault_increment_mA'][r] for r in RAILS}
-        require(all(startup[r] <= candidate['planning_ceiling_mA'][r] for r in RAILS), 'candidate per-domain current envelope fails')
-        candidate_rows[g] = {'normal_with_allowances_mA':{r:round(values[r],6) for r in RAILS}, 'conditional_10ms_start_and_one_fault_mA':{r:round(startup[r],6) for r in RAILS}, 'margin_to_pinned_ceiling_mA':{r:round(candidate['planning_ceiling_mA'][r]-startup[r],6) for r in RAILS}}
+        # Historical unselected comparison: retain overload as a rejected
+        # candidate, without raising limits or blocking the selected EXT audit.
+        candidate_pass=all(startup[r] <= candidate['planning_ceiling_mA'][r] for r in RAILS)
+        candidate_rows[g] = {'status':'PASS - arithmetic only' if candidate_pass else 'REJECTED - pinned current ceiling exceeded', 'normal_with_allowances_mA':{r:round(values[r],6) for r in RAILS}, 'conditional_10ms_start_and_one_fault_mA':{r:round(startup[r],6) for r in RAILS}, 'margin_to_pinned_ceiling_mA':{r:round(candidate['planning_ceiling_mA'][r]-startup[r],6) for r in RAILS}}
     for r in RAILS:
         require(math.isclose(sum(v[r] for v in candidate['capacitor_share_uF'].values()), req['nominal_capacitance_ceiling_uF'][r]), 'candidate capacitance share missing')
     width,height,depth = candidate['enclosure_inside_xyz_mm']; reservations=[]

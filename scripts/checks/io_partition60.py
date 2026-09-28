@@ -126,6 +126,14 @@ def crossing_kind(name, members, sensitive, nets=None):
     if any(m['role']=='remote_buffer:R_ISO' and m['pin']=='2' for m in members):return 'compensated remote buffer',None
     if any(m['role']=='internal_selector_buffer:R_ISO_B' and m['pin']=='2' for m in members):
         return 'isolated internal selector buffer',None
+    # #62 exact compensated outputs: trace the isolator input to the actual
+    # local amplifier output, rather than accepting a net-name convention.
+    for m in members:
+        if m['role'] not in ('oscillator:R_LOCAL_REF5_ISO','oscillator:R_LOCAL_REFN5_ISO') or m['pin']!='2' or nets is None:continue
+        expected=m['role'].replace(':R_',':').removesuffix('_ISO')
+        upstream=[ms for ms in nets.values() if any(q['ref']==m['ref'] and q['pin']=='1' for q in ms)]
+        if len(upstream)==1 and any(q['type']=='output' and q['ref'].startswith('U') and q['role']==expected for q in upstream[0]):
+            return 'compensated oscillator reference',None
     # A remote wiper is allowed only for the declared standard control cells;
     # a selector or signal switch requires source tracing, not a broad waiver.
     if any(m['uid'].startswith('C:') and m['pin']=='2' and m['role'].split(':')[0] in ('dc_control_source','bipolar_attenuverter','level_attenuator') for m in members):return 'wiper to high impedance receiver',None
@@ -165,7 +173,7 @@ def build(families=None, instances=None, assignments=None, capacities=None):
         else:
             driver_members=[m for m in members if m['type']=='output' and m['ref'].startswith('U')]
             if not driver_members:
-                driver_members=[m for m in members if (m['role']=='remote_buffer:R_ISO' or m['role']=='internal_selector_buffer:R_ISO_B') and m['pin']=='2'
+                driver_members=[m for m in members if (m['role']=='remote_buffer:R_ISO' or m['role']=='internal_selector_buffer:R_ISO_B' or m['role'] in ('oscillator:R_LOCAL_REF5_ISO','oscillator:R_LOCAL_REFN5_ISO')) and m['pin']=='2'
                                 or m['uid'].startswith('C:') and (m['pin']=='2' or m['role']=='oscillator:OCT_SELECTOR' and m['pin'] in ('1','10')
                                 or m['role']=='oscillator:SYNC_SELECT' and m['pin'] in ('1','3'))]
             drivers=sorted({m['region'] for m in driver_members})
@@ -176,7 +184,7 @@ def build(families=None, instances=None, assignments=None, capacities=None):
                        capacitance_F={'maximum':1e-9,'basis':'OSC-ES-1 remote_controls design envelope, physical stability NOT RUN'},
                        max_harness_length_m=.3, adjacent_return='AGND')
             if kind=='power/return':
-                contracts={'+12V':(12,1900,150e-6),'-12V':(-12,1800,150e-6),'+5V':(5,400,100e-6),'AGND':(0,4400,None)}
+                contracts={'+12V':(12,2000,150e-6),'-12V':(-12,1900,150e-6),'+5V':(5,400,100e-6),'AGND':(0,4400,None)}
                 voltage,current,capacitance=contracts[name]
                 row.update(direction={'source':'EXT conditional boundary/star','receivers':boards}, voltage_V={'nominal':voltage,'status':'conditional regulated rail'},current_mA={'whole_domain_transient_requirement':current,'status':'not a per-contact allocation'},capacitance_F={'whole_domain_nominal_ceiling':capacitance,'initial_bulk_per_powered_board':4.7e-6 if name!='AGND' else None,'status':'board count OPEN #35'})
             crossings.append(row)
@@ -233,6 +241,18 @@ def main():
     families,instances=specification();diff=verify(families,instances,args.netlist.read_text())
     if diff:raise SystemExit('\n'.join(diff))
     report=build(families,instances)
+    from design.spec.modules.check_oscillator_reference import build as reference_fanout
+    fanout=reference_fanout()
+    report['oscillator_reference_fanout']={'report':'design/reports/oscillator-reference-fanout.json','increment_over_issue60':fanout['increment_over_issue60'],'status':fanout['status']}
+    local={row['net']:row for row in fanout['local_outputs_per_oscillator']}
+    master={row['net']:row for row in fanout['master_sources']}
+    for crossing in report['allowed_crossings']:
+        net=crossing['net'];bits=net.strip('/').split('/')
+        if len(bits)==2 and bits[0] in ('O1','O2','O3','O4','O5') and bits[1] in local:
+            row=local[bits[1]]
+            crossing['current_mA'].update(normal_powered_output_bound=row['maximum_mA'],panel_connector_branch_bound=row['connector_branch_mA'],status='Conditional #62 powered load bound; physical harness loss and partial-power #59 OPEN')
+        elif net in master:
+            crossing['current_mA'].update(normal_powered_output_bound=master[net]['maximum_mA'],per_oscillator_input_bias_bound=master[net]['connector_input_bias_mA_per_oscillator'],status='Conditional #62 source load bound; partial-power #59 OPEN')
     report['native_netlist']={'oracle':'KiCad 10.0.6 via scripts/kicad/run.sh','sha256':canonical_netlist_sha256(args.netlist),'parity':'PASS'}
     # One physical/package/net record per line keeps this large machine
     # manifest reviewable without repeating hundreds of thousands of indent lines.
