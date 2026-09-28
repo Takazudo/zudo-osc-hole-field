@@ -84,7 +84,7 @@ def build():
             'design_ceiling_mA':ceilings,'planning_subtotal_margin_to_ceiling_mA':margin,
             'planning_subtotal_overshoot_mA':{r:round(max(0,-margin[r]),6) for r in RAILS},
             'largest_planning_contributors':contributors,
-            'incomplete_sources':['sample_hold H1/H2 0 mA known +5 V subtotal excludes REF5050, HC14/HC221 and dynamic/pull-up demand',
+            'incomplete_sources':['sample_hold H1/H2 known +12 V subtotal excludes REF5050 supply/reference demand; 0 mA known +5 V subtotal excludes HC14/HC221 and dynamic/pull-up demand',
                                   'NOISE2 current is an estimate, not a source-backed maximum',
                                   'all module reports leave guaranteed maxima unresolved',
                                   'power inlet TVS/capacitor leakage, startup, faults and external cable loads lack a complete bound'],

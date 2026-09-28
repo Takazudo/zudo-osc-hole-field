@@ -28,6 +28,8 @@ The [release gates](../verification/osc-release-gates.mdx) and [S&H test plan](.
 
 The [precision-output model sweep](../verification/osc-precision-output-model.mdx) now passes its twelve modeled cases for one fixed compensation network. Before layout or rail-budget sign-off, select exact 100 Ω and 1 nF passive identities, measure a populated output coupon over the same cable/load matrix, and capture transient supply current. Physical cable, tolerance, temperature and thermal checks remain `NOT RUN`.
 
+The [rail planning ledger](../architecture/osc-rail-ledger.mdx) records the actual S&H REF5050 +12 V connection, omitted +5 V logic allowance, all fitted IC supply pins and per-load feed assignments. Both provisional feeds exceed the inherited −12 V planning ceiling, so issue #48 must obtain source capacity and load evidence and re-plan the feed decision. Physical current, startup, short, cable and temperature qualification remain `NOT RUN`.
+
 ## Immediate continuation
 
 Continue with the open electrical-standard and panel-hardware evidence work, then capture and integrate circuits against the R21 contracts. Keep component candidates out of the inventory until exact identity and selection are resolved. Use [the local R21 sequence](./osc-next-actions.mdx) for the detailed mechanical-coupon, circuit-capture, and verification order.

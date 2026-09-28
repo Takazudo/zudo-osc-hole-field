@@ -158,11 +158,11 @@
         "-12V": "NOT ESTABLISHED - incomplete device/dynamic load data",
         "+5V": "NOT ESTABLISHED - incomplete device/dynamic load data"
       },
-      "plus_5V_note": "The 0 mA known subtotal is not a zero-current claim. REF5050, HC14, HC221, pull-up, reference-load and switching demand are unquantified.",
+      "plus_5V_note": "The 0 mA known +5 V subtotal is not a zero-current claim. HC14, HC221, pull-up and switching demand are unquantified. REF5050 input is on +12 V and is also absent from that rail subtotal.",
       "basis": "Per-instance whole-package count from generated family plus the preliminary per-package/LED/output-load worksheet. This is a planning subtotal, not guaranteed maximum demand.",
       "unquantified": [
-        "REF5050 input and buffered reference loads",
-        "SN74HC14 and CD74HC221 quiescent/dynamic current",
+        "REF5050 input and buffered reference loads on +12 V",
+        "SN74HC14 and CD74HC221 quiescent/dynamic current on +5 V",
         "gate comparator and button pull-up switching duty",
         "fault-switch enable feed and fault current",
         "actual LF398 acquisition and hold drive",
@@ -189,11 +189,11 @@
         "-12V": "NOT ESTABLISHED - incomplete device/dynamic load data",
         "+5V": "NOT ESTABLISHED - incomplete device/dynamic load data"
       },
-      "plus_5V_note": "The 0 mA known subtotal is not a zero-current claim. REF5050, HC14, HC221, pull-up, reference-load and switching demand are unquantified.",
+      "plus_5V_note": "The 0 mA known +5 V subtotal is not a zero-current claim. HC14, HC221, pull-up and switching demand are unquantified. REF5050 input is on +12 V and is also absent from that rail subtotal.",
       "basis": "Per-instance whole-package count from generated family plus the preliminary per-package/LED/output-load worksheet. This is a planning subtotal, not guaranteed maximum demand.",
       "unquantified": [
-        "REF5050 input and buffered reference loads",
-        "SN74HC14 and CD74HC221 quiescent/dynamic current",
+        "REF5050 input and buffered reference loads on +12 V",
+        "SN74HC14 and CD74HC221 quiescent/dynamic current on +5 V",
         "gate comparator and button pull-up switching duty",
         "fault-switch enable feed and fault current",
         "actual LF398 acquisition and hold drive",
@@ -202,5 +202,5 @@
       ]
     }
   ],
-  "whole_instrument_warning": "Preliminary -12 V demand remains 712.655 mA against 640 mA ceiling; issue #34 must reduce it."
+  "whole_instrument_warning": "The preliminary whole-instrument estimate is superseded by design/power/rail-budget.json; the S&H +12 V reference and +5 V logic draft allowances are recorded separately in design/power/rail-ledger.json. Guaranteed maxima remain unestablished."
 }

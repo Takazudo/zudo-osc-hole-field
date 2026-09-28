@@ -19,3 +19,4 @@ bash scripts/kicad/run.sh kicad-cli sch export netlist --format kicadsexpr \
 python3 scripts/schgen/verify_netlist.py .circuit-cache/master-audit/netlist.net
 python3 scripts/schgen/audit_master.py .circuit-cache/master-audit/netlist.net ${mode:+$mode}
 python3 scripts/schgen/build_master_budget.py ${mode:+$mode}
+python3 scripts/schgen/build_rail_ledger.py ${mode:+$mode}
