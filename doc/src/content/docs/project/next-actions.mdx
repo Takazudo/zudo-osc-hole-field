@@ -45,3 +45,7 @@ Continue with the open electrical-standard and panel-hardware evidence work, the
 ## Selector assembly continuation
 
 The [fixed-centre selector decision](../decisions/osc-selector-assembly.mdx) selects a conditional 3+2 stepped adapter assembly at unchanged x/y. Board partition and board drafting must consume its two PCB planes, carrier and extension reservations. Physical qualification remains NOT RUN in [issue #55](https://github.com/Takazudo/zudo-osc-hole-field/issues/55); completing draft issue #47 does not close that gate.
+
+## Protection architecture continuation
+
+The [issue #58 protection audit](../decisions/osc-protection-architecture.mdx) leaves the exact circuit gate **BLOCKED**. It inventories all 82 outputs, 16 feedback paths and 30 octave-reference receivers, records an output-isolation diagnostic and proves why rail-only sensing cannot detect a patch sleeve replacing a failed inlet return. #52/#54 may continue under the explicit NON-ORDERABLE / NOT-ENERGIZABLE contract and amended draft acceptance. Exact rail/control/return-integrity and signal-isolation evidence is tracked in [#59](https://github.com/Takazudo/zudo-osc-hole-field/issues/59), separately from #57’s physical tests. No complete protection circuit is selected.

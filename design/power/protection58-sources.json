@@ -1,0 +1,52 @@
+{
+  "schema_version": 1,
+  "sources": [
+    {
+      "candidate": "LM74502",
+      "selection": "NOT SELECTED",
+      "authority": "MANUFACTURER_PRIMARY",
+      "availability": "AVAILABLE",
+      "url": "https://www.ti.com/lit/ds/symlink/lm74502.pdf",
+      "retrieval_date": "2026-09-28",
+      "revision": "SNOSDE5A, December 2021, revised May 2022",
+      "file": "circuit/sources/protection-58/LM74502.pdf",
+      "sha256": "4badd940619090052b7260a88d7e32788f201d67ce97913b059ae6b1ed2d8bad",
+      "physical_pdf_page_index": 0,
+      "printed_page_label": "1",
+      "extract": "Controller explicitly lacks reverse-current blocking; back-to-back FET shutdown alone is not active reverse-current protection."
+    },
+    {
+      "candidate": "PSMN1R0-40YLD",
+      "selection": "NOT SELECTED",
+      "authority": "MANUFACTURER_PRIMARY",
+      "availability": "AVAILABLE",
+      "url": "https://assets.nexperia.com/documents/data-sheet/PSMN1R0-40YLD.pdf?download=1",
+      "retrieval_date": "2026-09-28",
+      "revision": "30 November 2017",
+      "file": "circuit/sources/protection-58/PSMN1R0-40YLD.pdf",
+      "sha256": "7cf543348691beaff6586f4cfa1efe388e7a7e7a1dd386e8e4cda04e615d8de4",
+      "physical_pdf_page_index": 5,
+      "printed_page_label": "6",
+      "extract": "RDSon max at Tj=150 C, ID=25 A: 1.93 milliohm at VGS=10 V; 2.45 milliohm at VGS=4.5 V. Gate charge and hot leakage are typical."
+    },
+    {
+      "candidate": "ADG5401FBCPZ-RL7",
+      "selection": "NOT SELECTED",
+      "authority": "MANUFACTURER_PRIMARY",
+      "availability": "SOURCE UNAVAILABLE",
+      "url": "https://www.analog.com/media/en/technical-documentation/data-sheets/adg5401f.pdf",
+      "retrieval_date": "2026-09-28",
+      "revision": "0, August 2020 (web inspection only)",
+      "file": null,
+      "sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+      "physical_pdf_page_index": 29,
+      "printed_page_label": "30",
+      "extract": "Official web PDF inspected; actual byte download failed HTTP/2 INTERNAL_ERROR and HTTP/1.1 timeout, including alternate case/query attempts. No retained-byte performance claim. Protected S/SFB and D-DFB fallback merit further investigation."
+    }
+  ],
+  "existing_evidence": [
+    ".claude/skills/component-adi-adg5412fbruz/sources.json",
+    ".claude/skills/component-ti-opa4197ipwr/sources.json",
+    "design/power/protection-source-lock.json"
+  ]
+}

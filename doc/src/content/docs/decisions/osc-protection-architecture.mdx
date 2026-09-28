@@ -1,0 +1,78 @@
+---
+title: "Protection architecture: unresolved circuit gate"
+description: "Issue 58 source audit, output-isolation diagnostic, and bounded replan for the EXT draft."
+sidebar_position: 16
+---
+
+**Exact circuit gate OPEN; conditional draft continuation permitted. No complete protection topology is selected.** Issue #58 establishes why the current circuit and the examined substitutions cannot yet satisfy the [external-source contract](./osc-supply-architecture.mdx). It does not establish that a compliant circuit is physically impossible. Issue #52 must not label a requirement-only power sheet as implemented protection. Physical source, inlet, and mate remain **NOT SELECTED**; every schematic and PCB remains an **unvalidated draft**.
+
+The retained report is `design/power/protection58-audit.json`, reproduced by `python3 scripts/checks/protection58.py --check`. Its successful exit checks the audit, **not protection**. The separate draft command `python3 scripts/checks/protection58.py --check --require-draft` checks the NON-ORDERABLE / NOT-ENERGIZABLE contract. The implementation command `python3 scripts/checks/protection58.py --check --require-closed` deliberately exits 1 while these circuit gates remain open. Exact circuit selection/capture is persistently tracked in [#59](https://github.com/Takazudo/zudo-osc-hole-field/issues/59). Physical tests stay **NOT RUN** in [#57](https://github.com/Takazudo/zudo-osc-hole-field/issues/57); missing circuit evidence cannot be deferred to that physical-test issue as though a design were already complete.
+
+## Series paths and exact-source exclusions
+
+The required continuous currents are +12 V: 1.6 A, −12 V: 1.5 A, and +5 V: 0.3 A. The external source/inlet owns the maximum delivered envelope of 2.0/1.9/0.5 A, including tolerance and bounded transient overshoot. Synth-side current sensing does not have to impose that limit again. This distinction preserves low-loss MOSFET options.
+
+| Rail | Resistance budget at continuous current for 40 mV | Budget at maximum delivered current | Legacy PTC worst specified drop at continuous current |
+|---|---:|---:|---:|
+| +12 V | 25 mΩ | 20 mΩ | 400 mV |
+| −12 V | 26.67 mΩ | 21.05 mΩ | 375 mV |
+| +5 V | 133.33 mΩ | 80 mΩ | 75 mV |
+
+The retained TECHFUSE mSMD110-33V, C70119, has 1.1 A hold at 25 °C and 0.250 Ω R1max. Its specified resistance envelope cannot guarantee the voltage budget on any rail; this is not a measured drop. The positive TPS25947 family’s 45 mΩ maximum would permit 72 mV at 1.6 A. LTC4214 would require at least 36.84 mΩ sensing to impose a 1.9 A analog limit itself, costing at least 55.26 mV at 1.5 A before MOSFET losses. That exclusion does **not** apply when the external source independently bounds current. See the retained #52 investigation for those candidate conditions.
+
+Nexperia PSMN1R0-40YLD provides an instructive counterexample to a universal loss-impossibility claim: its Table 7 specifies 2.45 mΩ maximum at 4.5 V gate drive, 150 °C junction, and 25 A test current. Two series devices would contribute 9.8/9.31/2.45 mV and 19.6/17.69/1.23 mW at 2.0/1.9/0.5 A, using that resistance. This is a resistance-only feasibility screen. It does not establish gate voltage, cutoff, linear-mode safe operating area during ramp, hot leakage, or installed temperature. The exact reel suffix, supplier identity, driver and package placement are unresolved; no MOSFET is selected. Source pinning is 1/2/3 source, 4 gate, mounting base drain; the LFPAK56/SOT1023 drawing is on physical page 9, printed 10.
+
+TI LM74502 was also acquired as actual primary PDF bytes. Its first page explicitly excludes reverse-current blocking. Back-to-back MOSFETs with a common gate conduct both ways while enabled; an enable pin and off-state body-diode arrangement do not supply the missing reverse-current detector. It is rejected as a complete autonomous rail solution. Neither a positive-rail controller nor its absolute negative-input rating defines a usable −12 V control reference. A negative-rail solution still needs a proven floating driver/control crossing or a dedicated negative controller, with all pin voltages bounded during any arrival order.
+
+`design/power/protection58-sources.json` locks acquired PDFs and failed acquisition attempts. These are research candidates, so no new orderable identities enter the inventory or publication selection.
+
+## Every exposed output and reference boundary
+
+The audit derives all **82** output jacks from the actual module specifications and binds them to the fixed panel lock. There are **66 general outputs** and **16 precision outputs**: H1/H2, six MULT outputs, X1/X2 and six OFFSET outputs. Each precision output has an additional direct 100 Ω jack-feedback branch; an output-path switch alone leaves that branch exposed. The audit lists each UID, module and tip net, plus all **30 octave-reference receiver connections** (six buffered taps into each of five oscillators). No exposed output is excused because its normal signal travels outward.
+
+All 180 sleeves remain AGND. The existing source-facing input switches protect a different boundary. Internal reference signals stay within EXT, but a disconnected receiver supply can still receive current through an octave tap or selected-wiper input. Board partition must identify both source-buffer and receiver pins, all partially disconnected connector states, and the receiver’s local supply validity. No live service is authorized. This does not prohibit ordinary powered-off patching at external jacks.
+
+## Examined paired ADG5412F output candidate
+
+The existing Analog Devices **ADG5412FBRUZ**, TSSOP-16, LCSC **C579073**, has retained Rev C evidence and pin mapping. One source-facing channel can isolate a general output; two independently source-facing channels are needed for each precision drive/sense pair. Both channels’ S pins face the jack, their D pins face the amplifier. IN must be driven by a proven local all-rail-valid signal, with a defined low state when the controller has no power. Existing tied-high inputs cannot be reused unchanged: VDD−VSS ≥8 V can permit conduction with only one 12 V rail present.
+
+The examined precision candidate is:
+
+- Main path: amplifier DRIVE → D1 → S1 → 499 Ω → 499 Ω → JACK.
+- Sense path: JACK → 2.74 kΩ → S2 → D2 → amplifier FB.
+- Local feedback: DRIVE → 10 MΩ and 10 nF in parallel → FB.
+
+The 2.74 kΩ resistor is on the jack side of S2 so it also limits transient current into the switch’s D-side clamp before detection opens the channel. A resistor downstream of D2 cannot limit that clamp current. The local DC feedback prevents a deliberately disabled sense channel from leaving the powered amplifier open-loop. These resistor/capacitor identities are **not selected**, and the topology is **not captured** in the instrument schematic.
+
+With a conservative 24.48 V differential and −1% resistance, the main-path prospective current is 24.78 mA, below the TSSOP’s 29 mA continuous limit at 125 °C; the revised sense path gives 9.02 mA, below the OPA4197’s 10 mA input absolute maximum. These comparisons are screening bounds, not functional guarantees at an absolute maximum or whole-package thermal proof. The original 100 Ω path has a prospective 120 mA at 12 V; it cannot establish a safe pre-isolation input-current bound.
+
+The pinned TI OPAx197 model was run through KiCad 10.0.6/ngspice for open/100 kΩ/10 kΩ loads and 0/100 pF/1 nF/5 nF cable loads. An explicitly **diagnostic**, continuously-on switch representation uses 16.5 Ω and 24 pF assumptions. All twelve cases meet the original model targets: worst overshoot 7.06%, settling error 0.198 mV at 400 µs, and late ripple 0.409 mVpp. Reproduce with `python3 scripts/checks/protection58_model.py`. This is not an ADI switch model and does not simulate leakage, enable transitions, charge injection, fault response, partial power, or temperature.
+
+The remaining evidence gaps prevent selection:
+
+- The resistance and timing tables use specified supply conditions including ±15 V; the project’s ±12 V dual supply is permitted operation but lacks those same guaranteed bounds. Floating-supply drain leakage is typical only. Grounded-off leakage limits do not cover finite discharge voltages or a collapsing rail. AGND at the device must remain present.
+- A main-path current calculation does not establish amplifier dissipation under an in-range externally forced output. Simultaneous package/channel loading, load faults and switching transients remain open.
+- The 98 output channels require at least 25 quads if packing is unrestricted, or 35 with module-local packing. The ±15 V table’s 1.3 mA normal positive-supply maximum implies 32.5 or 45.5 mA as a planning sensitivity, already exceeding the 20 mA protection auxiliary allowance before references and supervision. Thirty separately protected reference receivers add at least eight global or ten receiver-local quads. Existing unused input-switch channels may be reusable only after explicit pin, package, island and control reconciliation; no savings are booked here.
+- New decoupling, supply current, fault-mode current, leakage, noise and recalibration must be charged to the actual ledger. Each newly fitted quad needs local decoupling, consumes board area and control routing, and cannot move the 438 fixed hardware centres. Precision sense and its compensation remain local to the output amplifier/jack island.
+
+ADG5401FBCPZ-RL7 is an alternative with separate protected main/feedback channels and automatic D–DFB feedback closure. The official web PDF was inspected, but local byte acquisition failed; its source record remains **SOURCE UNAVAILABLE**, with a zero hash. Its guaranteed table conditions likewise do not fully specify project ±12 V dual operation, and floating-supply leakage is only typical. It is **not selected**. Its feedback resistance would also invalidate reuse of the old 100 Ω/1 nF model result.
+
+## Missing rails, lost return and revised draft contract
+
+A rail-voltage-only monitor has a concrete observability limit. Compare an intact 20 mΩ inlet return with a broken inlet return replaced by a 20 mΩ patch-sleeve path to the same source common. At 1 A net return, both give the same 20 mV AGND displacement and identical measured rail voltages. Any monitor using only those voltages makes the same decision in both cases. This proves only that **rail sensing alone cannot reject the replacement return**. It does not prove impossibility for a circuit that separately measures inlet-return integrity.
+
+A mechanical pilot or first-make/last-break contact could detect connector withdrawal if its exact contact sequence is proved. It does not detect a broken return wire while the connector remains latched. Pin 4 is NC in the current eight-position requirement; quietly treating it as power-good or a continuity pilot changes the interface without proving either failure case.
+
+The revised safe continuation contract is therefore **DRAFT ONLY / NOT ENERGIZABLE** until all of the following are established. It preserves one EXT source, all modules and hardware centres, original precision/protection targets, ordinary powered-off patching, and the ban on parallel regulated outputs:
+
+1. Keep the #48 minimum delivery and maximum delivered-current envelopes as external-source/inlet requirements. Require exact source-side limit and fault-energy evidence before energization; do not invent a synth-side series shunt obligation.
+2. Add an **observable return-integrity requirement**, independent of patch sleeves. A proposed implementation must instrument the inlet conductors before their AGND star bond, or prove a separate source/interface integrity mechanism. Do not select a new connector or assign pin 4 until the complete measurement/control topology exists. If a pilot is used, test withdrawal and conductor fracture separately.
+3. Require startup with all signal isolators disabled. Qualify all three raw/load rails with a control supply that survives every missing-rail case, then ramp the load rails and enable signals only after all monitored loads are valid. Define guaranteed trip windows wholly consistent with the unchanged load bands: +12 V 11.53–12.48 V, −12 V magnitude 11.74–12.37 V, +5 V 4.81–5.20 V. Include divider/reference offsets, temperature, ground displacement, hysteresis and delay; nominal thresholds alone are insufficient.
+4. For every one of six arrival orders and six failure orders, brownout and hiccup, disconnect signal paths, disconnect all rail paths, then discharge all loads to a bounded off-state without opening AGND. Specify worst detection/propagation/isolation/discharge times and maximum pin injection charge/energy. Do not infer safety from a state table. Exact timing and threshold values remain **UNSOURCED**, not invented requirements masquerading as a circuit.
+5. A return-open test must maintain apparently valid rails through an external patch return while opening each/all inlet returns. A separate test must open the device’s local GND. Loss of that reference invalidates the analog-switch guarantee; a mechanical latch cannot repair it.
+
+## Issue #52 handoff and replan
+
+#52 can complete the conditional draft work by exposing the unimplemented source/interface boundary, verifying actual EXT domain and connector/net semantics, and preserving the historical PTC mismatch visibly. #54 may then proceed with conditional partition and explicit open protection/package reservations. Neither may claim candidate topology installation or close the circuit implementation gate. Source uncertainty alone does not prevent this draft-only continuation. `design/power/downstream-amendments-58.md` gives the precise amended acceptance criteria; `design/power/protection58-draft-contract.json` is the machine-readable boundary. Continue with three bounded design deliverables: (a) exact positive/negative rail drivers, precise supervisors, all-rail latch/discharge and return-integrity sensing; (b) source-conditioned output and reference isolation, actual package reuse/allocation, current/capacitance/thermal ledger and full enabled/disabled/fault models; (c) regenerated implementation and netlist checks covering those circuits. No block diagram, successful schema check, or diagnostic amplifier simulation substitutes for those deliverables.
+
+Source acquisition retries belong to (a)/(b); source capacity and installed transient/thermal/fault/fit measurements remain in #57. This report completes the unsupported-evidence/fallback branch of #58: conditional draft acceptance can pass, while exact architecture selection remains OPEN in #59. It makes no implemented-protection or orderable-board claim.
