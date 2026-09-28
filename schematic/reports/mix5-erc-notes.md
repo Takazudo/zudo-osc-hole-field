@@ -4,4 +4,4 @@ KiCad 10.0.6 `kicad-cli sch erc --severity-all` on the generated root reports **
 
 Other-sheet warnings are enumerated by the root smoke test. The MIX5 result has no hardware, fault or stability pass.
 
-KiCad netlist export also prints `Warning: schematic has annotation errors` and exits 0. A temporary copy of the MIX5 child sheet with only locked `D906A`/`D1006A` changed to unique numeric references exported with no warning. This isolates the message to the suffix-A clip LED reference form. The temporary copy was removed; panel lock references remain authoritative, and exported netlist pin parity passes. Track this KiCad annotation compatibility issue separately rather than silently renaming fixed hardware.
+The earlier suffix-A clip LED references produced a KiCad annotation warning. The geometry source now assigns numeric references D9061 and D10061 to the same locked UIDs and coordinates. Full-instrument netlist export no longer emits the annotation warning; exported pin parity passes.

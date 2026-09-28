@@ -122,7 +122,7 @@ def reference_designator(
 
     Jack, control and indicator references have distinct prefixes or an
     explicit field offset. A clip LED shares a cell with its magnitude LED
-    and receives the stable ``A`` suffix.
+    and receives an additional numeric discriminator.
     """
 
     number = cell_number(col, row)
@@ -144,7 +144,7 @@ def reference_designator(
     if led_type not in LED_OFFSETS:
         raise ValueError(f"unknown LED type: {led_type!r}")
     if led_type == "clip":
-        return f"D{number}A"
+        return f"D{number}1"
     # Jack and control cell numbers overlap. Keep control LEDs in a separate
     # numeric range while preserving the cell number as the low three digits.
     field_offset = 0 if field == "jacks" else 10_000

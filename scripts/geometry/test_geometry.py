@@ -5,6 +5,7 @@ from __future__ import annotations
 from collections import Counter
 import copy
 from pathlib import Path
+import re
 import tempfile
 import unittest
 
@@ -76,7 +77,7 @@ class PanelFrameTests(unittest.TestCase):
             reference_designator("jacks", "led", 8, 5, led_type="mag"), "D906"
         )
         self.assertEqual(
-            reference_designator("jacks", "led", 8, 5, led_type="clip"), "D906A"
+            reference_designator("jacks", "led", 8, 5, led_type="clip"), "D9061"
         )
         self.assertEqual(
             reference_designator("controls", "led", 8, 5, led_type="stage"), "D10906"
@@ -103,6 +104,21 @@ class PlacementLockTests(unittest.TestCase):
         for field in ("uid", "slug", "ref"):
             values = [record[field] for record in records]
             self.assertEqual(len(values), len(set(values)), f"duplicate {field}")
+
+    def test_all_references_are_numeric_kicad_designators(self) -> None:
+        refs = [record["ref"] for record in self.placements]
+        invalid = [ref for ref in refs if re.fullmatch(r"[A-Z]+[0-9]+", ref) is None]
+        self.assertEqual(invalid, [])
+        self.assertEqual(len(refs), len(set(refs)))
+
+    def test_clip_led_references_are_numeric_and_unique(self) -> None:
+        refs = [record["ref"] for record in self.placements if record.get("led_type") == "clip"]
+        self.assertEqual(refs, [
+            "D9061", "D10061", "D11061", "D12061", "D13101",
+            "D14101", "D15101", "D16101", "D17101", "D18101",
+        ])
+        self.assertEqual(len(refs), len(set(refs)))
+        self.assertTrue(all(re.fullmatch(r"D[0-9]+", ref) for ref in refs))
 
     def test_sample_coordinates_labels_domains_and_holes(self) -> None:
         records = {record["uid"]: record for record in self.placements}
