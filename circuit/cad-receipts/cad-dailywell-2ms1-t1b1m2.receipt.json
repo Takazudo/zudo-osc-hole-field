@@ -40,7 +40,7 @@
       "kicad_sym",
       "wrl"
     ],
-    "units": "mm",
+    "units": "Footprint dimensions in mm; WRL coordinate unit 0.1 inch (2.54 mm)",
     "original_paths": [
       "circuit/sources/toggle-button/Dailywell-2M-Series.pdf",
       "circuit/sources/toggle-button/DW2-2MS3T1B1M2QES.pdf",
@@ -83,14 +83,14 @@
       },
       "additional_input_sha256": {
         "design/mechanical/facts/toggle.json": "a5031d9ac240913fe0004829566d482c281d35643148737bf307bc946f06afaa",
-        "scripts/libgen/gen_component_envelopes.py": "18251a4ed8904c033b25b1545460cf42bc56239b0e210b3a000b4a750286b46f",
+        "scripts/libgen/gen_component_envelopes.py": "1249ae90b92c262656444ca3823e7372e9c506936f727a91ac6d9caffcdd3f09",
         "footprints/kicad/zudo-osc-hole-field.pretty/Toggle_Dailywell_2MS_T1B1M2.kicad_mod (pre-model)": "ae87f624ef060cd74030c01f4741aaa9ebd6e3434495e44d750814e076125796"
       }
     },
     "output_sha256": {
       "footprints/kicad/zudo-osc-hole-field.pretty/Toggle_Dailywell_2MS_T1B1M2.kicad_mod": "11240c0c14b6378dc93f54d9146097b1b62384b0b9cab4b145dc1367be89daf4",
       "symbols/src/2MS1T1B1M2QES-5.kicad_sym": "f6941a5f6455e0fea459d68634b4cb8e7a55d76f36c4ce01e83c545c46092f4b",
-      "footprints/kicad/zudo-osc-hole-field.3dshapes/Toggle_Dailywell_2MS_T1B1M2.wrl": "929115903e0eef5c844280b2d589a301005ea5bc944ae5e195d408b6f08c0866"
+      "footprints/kicad/zudo-osc-hole-field.3dshapes/Toggle_Dailywell_2MS_T1B1M2.wrl": "b402986b45a069ada712d104e5eb36eb0611aca6941a3c2ad6f44624d5389fd6"
     }
   },
   "cad_use": {
@@ -108,7 +108,8 @@
     "performed": [
       "Source bytes SHA-256 checked locally.",
       "Footprint and symbol pass project library checks.",
-      "Generated and hash-locked a source-bounded coarse WRL envelope; this is a catalogue visualization only."
+      "Generated and hash-locked a source-bounded coarse WRL envelope; this is a catalogue visualization only.",
+      "KiCad 10.0.6 native VRML export: x/y/z bounds and footprint model scale match the stated display envelope (scripts/libgen/fixtures/check_wrl_dimensions.py)."
     ],
     "remaining_physical_checks": [
       "Confirm installed lot pin orientation and panel reach on a coupon.",

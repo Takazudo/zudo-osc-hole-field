@@ -5,7 +5,10 @@ These files are display envelopes only. They deliberately omit seats, terminals,
 levers, nuts, actuators, lens shape, and any feature not bounded by the retained
 sources. They do not qualify mechanical fit.
 """
+import argparse
 from pathlib import Path
+
+VRML_UNIT_MM = 2.54  # KiCad 10 VRML importer: one coordinate unit is 0.1 inch.
 
 ROOT = Path(__file__).resolve().parents[2]
 OUT = ROOT / "footprints/kicad/zudo-osc-hole-field.3dshapes"
@@ -24,8 +27,8 @@ def fmt(value):
 
 def render(name, dims, color, note):
     dx, dy, dz = dims
-    x, y = dx / 2, dy / 2
-    points = [(-x,-y,0),(x,-y,0),(x,y,0),(-x,y,0),(-x,-y,dz),(x,-y,dz),(x,y,dz),(-x,y,dz)]
+    x, y, z = dx / (2 * VRML_UNIT_MM), dy / (2 * VRML_UNIT_MM), dz / VRML_UNIT_MM
+    points = [(-x,-y,0),(x,-y,0),(x,y,0),(-x,y,0),(-x,-y,z),(x,-y,z),(x,y,z),(-x,y,z)]
     point_text = ", ".join(" ".join(fmt(v) for v in point) for point in points)
     return (
         "#VRML V2.0 utf8\n"
@@ -41,6 +44,24 @@ def render(name, dims, color, note):
         "}\n"
     )
 
-OUT.mkdir(parents=True, exist_ok=True)
-for filename, (dx, dy, dz, color, note) in MODELS.items():
-    (OUT / filename).write_text(render(filename, (dx, dy, dz), color, note), encoding="utf-8")
+def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--check", action="store_true")
+    args = parser.parse_args()
+    OUT.mkdir(parents=True, exist_ok=True)
+    stale = []
+    for filename, (dx, dy, dz, color, note) in MODELS.items():
+        path = OUT / filename
+        expected = render(filename, (dx, dy, dz), color, note)
+        if args.check:
+            if not path.exists() or path.read_text(encoding="utf-8") != expected:
+                stale.append(filename)
+        else:
+            path.write_text(expected, encoding="utf-8")
+    if stale:
+        raise SystemExit("stale component WRLs: " + ", ".join(stale))
+    print(f"{'PASS' if args.check else 'Generated'} {len(MODELS)} provisional component WRL envelopes")
+
+
+if __name__ == "__main__":
+    main()
