@@ -110,7 +110,16 @@ def check(families,instances,netlist):
             sensitive.append({'net':net if net in f.global_nets else f'/{inst.name}/{net}',
                               'members':members,'islands':sorted({x['island'] for x in members})})
     errors.extend(coverage_errors(bound,placements,panel_count))
-    if len(refs)!=5747:errors.append(f'designator lock drift: {len(refs)} != 5747')
+    power_refs={designator(p,inst) for inst in instances if inst.name=='POWER'
+                for p in family_by_name[inst.family].parts}
+    signal_ref_count=len(set(refs)-power_refs)
+    # The signal/reference lock includes 20 newly required bipolar LM393
+    # negative-rail bypass capacitors, two on each of ten offset/mixer instances.
+    expected_signal_refs=5723+20
+    if signal_ref_count!=expected_signal_refs:
+        errors.append(f'signal/reference designator lock drift: {signal_ref_count} != {expected_signal_refs}')
+    if len(refs)!=expected_signal_refs+len(power_refs):
+        errors.append(f'designator lock drift: {len(refs)} != {expected_signal_refs} + {len(power_refs)} actual power refs')
     unit_audit=[]
     for ref,entries in sorted(refs.items()):
         symbols={e[3] for e in entries};units=[e[2] for e in entries]

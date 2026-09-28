@@ -2749,13 +2749,29 @@
     "physical_checks": "NOT RUN: no populated hardware, external source or installed cable/thermal/fit/sequence setup."
   },
   "implementation": {
-    "status": "OPEN: selected EXT protection is not captured by the schematic",
-    "captured_inlet_symbol": "zudo-osc-hole-field:DW254P-2X8-L0",
-    "captured_inlet_footprint": "zudo-osc-hole-field:IDC-TH_16P-P2.54_321016RG0ABK00A01",
+    "status": "PASS: requirement-only specification separation; native netlist audited separately; OPEN: protection circuit #59; NOT RUN: physical #57",
+    "captured_inlet_symbol": "zudo-osc-hole-field:OSC_EXT_INLET_R1",
+    "captured_inlet_footprint": "",
+    "captured_boundary_symbol": "zudo-osc-hole-field:OSC_EXT_BOUNDARY_R1",
+    "captured_boundary_footprint": "",
+    "abstract_parts_have_no_footprint_or_bom": true,
+    "native_netlist_inclusion_note": "KiCad instance on_board=yes retains abstract pin nodes in native netlist; blank footprint and in_bom=no mean no orderable PCB placement or BOM line.",
+    "raw_inlet_nets": [
+      "+12V_IN",
+      "-12V_IN",
+      "+5V_IN"
+    ],
+    "conditional_load_nets": [
+      "+12V",
+      "-12V",
+      "+5V"
+    ],
+    "agnd_common": true,
+    "patch_sleeves_on_agnd": 180,
     "selected_inlet_status": "REQUIREMENT ONLY; orderable header, mate and contacts NOT SELECTED; no guessed footprint",
-    "historical_ptc_path": {
+    "historical_ptc_comparison": {
       "+12V": {
-        "captured_part": "TECHFUSE mSMD110-33V",
+        "historical_part": "TECHFUSE mSMD110-33V",
         "hold_A_at_25C": 1.1,
         "required_continuous_A": 1.6,
         "r1max_ohm": 0.25,
@@ -2763,7 +2779,7 @@
         "passes_required_current_and_protection_loss": false
       },
       "-12V": {
-        "captured_part": "TECHFUSE mSMD110-33V",
+        "historical_part": "TECHFUSE mSMD110-33V",
         "hold_A_at_25C": 1.1,
         "required_continuous_A": 1.5,
         "r1max_ohm": 0.25,
@@ -2771,7 +2787,7 @@
         "passes_required_current_and_protection_loss": false
       },
       "+5V": {
-        "captured_part": "TECHFUSE mSMD110-33V",
+        "historical_part": "TECHFUSE mSMD110-33V",
         "hold_A_at_25C": 1.1,
         "required_continuous_A": 0.3,
         "r1max_ohm": 0.25,
@@ -2779,12 +2795,59 @@
         "passes_required_current_and_protection_loss": false
       }
     },
+    "actual_fitted_capacitor_inventory": {
+      "+12V": {
+        "captured_fitted_count": 474,
+        "captured_fitted_nominal_uF": 48.3,
+        "mapped_ic_supply_pin_count": 448,
+        "fitted_100nF_attributed_to_rail_count": 473,
+        "per_pin_proximity_and_effective_C_status": "OPEN: count coverage only; package proximity, local VEE5 and effective ceramic capacitance require board audit",
+        "remaining_nominal_uF_before_unplaced_board_bulk": 101.7,
+        "initial_bulk_uF_per_powered_board": 4.7,
+        "maximum_additional_full_board_allocations_at_4p7uF": 21,
+        "board_bulk_status": "OPEN: board count and per-board/rail reservoir placement not established; no zero-capacitance assumption",
+        "full_ceiling_with_plus20percent_uF": 180.0
+      },
+      "-12V": {
+        "captured_fitted_count": 402,
+        "captured_fitted_nominal_uF": 41.1,
+        "mapped_ic_supply_pin_count": 400,
+        "fitted_100nF_attributed_to_rail_count": 401,
+        "per_pin_proximity_and_effective_C_status": "OPEN: count coverage only; package proximity, local VEE5 and effective ceramic capacitance require board audit",
+        "remaining_nominal_uF_before_unplaced_board_bulk": 108.9,
+        "initial_bulk_uF_per_powered_board": 4.7,
+        "maximum_additional_full_board_allocations_at_4p7uF": 23,
+        "board_bulk_status": "OPEN: board count and per-board/rail reservoir placement not established; no zero-capacitance assumption",
+        "full_ceiling_with_plus20percent_uF": 180.0
+      },
+      "+5V": {
+        "captured_fitted_count": 190,
+        "captured_fitted_nominal_uF": 24.5,
+        "mapped_ic_supply_pin_count": 186,
+        "fitted_100nF_attributed_to_rail_count": 188,
+        "per_pin_proximity_and_effective_C_status": "OPEN: count coverage only; package proximity, local VEE5 and effective ceramic capacitance require board audit",
+        "remaining_nominal_uF_before_unplaced_board_bulk": 75.5,
+        "initial_bulk_uF_per_powered_board": 4.7,
+        "maximum_additional_full_board_allocations_at_4p7uF": 16,
+        "board_bulk_status": "OPEN: board count and per-board/rail reservoir placement not established; no zero-capacitance assumption",
+        "full_ceiling_with_plus20percent_uF": 120.0
+      }
+    },
+    "open_injection_obligations": {
+      "outputs": 82,
+      "precision_feedback": 16,
+      "octave_receivers": 30,
+      "status": "OPEN: no output/sense/reference isolation circuit selected"
+    },
+    "unbooked_local_quad_sensitivity_mA": 45.5,
+    "auxiliary_allocation_plus12_mA": 20,
+    "prospective_plus12_mA_excess_over_auxiliary_allocation": 25.5,
     "missing_circuit_proofs": [
       "Load-side three-rail monitors and fail-safe inhibited enables",
       "Low-drop reverse-current blocking and coordinated shutdown/discharge on all rails",
       "Any-order/missing-rail and powered-off patch output/sense/reference injection bounds",
       "Open inlet AGND detection when a patch sleeve still provides a return path",
-      "Actual capacitor and auxiliary-current inventory, source/inlet limiter let-through and fault energy",
+      "Per-board bulk, selected protection auxiliary-current and capacitance demand, source/inlet limiter let-through and fault energy",
       "Exact selected inlet drawing, rating, mating-face map and footprint"
     ]
   },
@@ -14408,7 +14471,7 @@
   },
   "not_proven": [
     "Exact orderable connector/mate drawing, simultaneous-contact derating and footprint are not selected or qualified.",
-    "Existing schematic has not yet implemented this requirement: #52 owns implementation.",
+    "The requirement-only boundary separates raw and load nets but contains no protection circuit; #59 owns exact electrical realization.",
     "Source realization, rail sequencing/backfeed/thermal/ripple, all-output faults, full-temperature maxima and physical fit remain NOT RUN in #57."
   ]
 }

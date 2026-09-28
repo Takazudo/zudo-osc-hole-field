@@ -104,6 +104,9 @@ class Part:
     page: int = 1
     panel_refs: dict[str, str] = field(default_factory=dict)
     dnp: bool = False
+    in_bom: bool = True
+    on_board: bool = True
+    abstract: bool = False
 
 
 @dataclass(frozen=True)
@@ -145,6 +148,8 @@ def validate_family(family: Family, library: dict[str, LibrarySymbol]) -> None:
             raise ValueError(f'page must be positive: {p.key}')
         if p.rotation not in (0, 90, 180, 270):
             raise ValueError(f'rotation must be multiple of 90: {p.key}')
+        if p.abstract and (p.in_bom or p.footprint or p.attributes.get('Implementation') != 'REQUIREMENT ONLY / NON-ORDERABLE / NOT-ENERGIZABLE'):
+            raise ValueError(f'{p.key}: abstract boundary must be visibly non-orderable')
         sym = library[p.symbol]
         if p.unit not in sym.units:
             raise ValueError(f'bad unit: {p.key}')
@@ -211,7 +216,7 @@ def _symbol(p: Part, family: Family, instances: tuple[Instance, ...], library: d
     refs = [(f'/{root_id}/{sheet_ids[(i.name, p.page)]}', designator(p, i)) for i in instances]
     ref = refs[0][1]
     lines = [f'  (symbol (lib_id {q(p.symbol)}) (at {p.x:g} {p.y:g} {p.rotation}) (unit {p.unit})',
-             f'    (exclude_from_sim no) (in_bom yes) (on_board yes) (dnp {"yes" if p.dnp else "no"})',
+             f'    (exclude_from_sim no) (in_bom {"yes" if p.in_bom else "no"}) (on_board {"yes" if p.on_board else "no"}) (dnp {"yes" if p.dnp else "no"})',
              f'    (uuid {q(uid(f"part:{family.name}:{p.key}"))})',
              _prop('Reference', ref, p.x+3, p.y-3), _prop('Value', p.value or p.symbol.split(':')[-1], p.x+3, p.y+3),
              _prop('Footprint', p.footprint, p.x, p.y, True), _prop('Datasheet', '', p.x, p.y, True)]
@@ -219,6 +224,8 @@ def _symbol(p: Part, family: Family, instances: tuple[Instance, ...], library: d
     # Per-instance Block is encoded in KiCad's instance path, since shared child file has one property set.
     attrs['Block'] = '${SHEETNAME}'
     attrs['Sensitive'] = ','.join(sorted({net for net in p.pins.values() if net in family.sensitive_nets}))
+    if p.abstract:
+        attrs['AbstractBoundary'] = 'true'
     for name, value in attrs.items():
         lines.append(_prop(name, value, p.x, p.y, True))
     for pin in sym.units[p.unit]:

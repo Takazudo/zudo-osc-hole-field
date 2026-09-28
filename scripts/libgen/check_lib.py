@@ -17,6 +17,7 @@ FOOTPRINT_DIR = ROOT / "footprints" / "kicad" / f"{LIBRARY}.pretty"
 MODEL_DIR = ROOT / "footprints" / "kicad" / f"{LIBRARY}.3dshapes"
 RECEIPT_DIR = ROOT / "circuit" / "cad-receipts"
 MODEL_PREFIX = f"${{KIPRJMOD}}/../../footprints/kicad/{LIBRARY}.3dshapes/"
+ABSTRACT_REQUIREMENTS = {"OSC_EXT_INLET_R1", "OSC_EXT_BOUNDARY_R1"}
 
 from gen_courtyards import node_name, parse, rewrite, walk  # noqa: E402
 
@@ -82,7 +83,12 @@ def check_symbols(errors: list[str]) -> tuple[int, set[str]]:
                 fail(errors, f"{name}: {field} must contain the sourced component identity")
         footprint_values = property_values(symbol, "Footprint")
         if len(footprint_values) != 1 or not footprint_values[0].strip():
-            if name != "PWR_FLAG":
+            if name in ABSTRACT_REQUIREMENTS:
+                if property_values(symbol, "MPN") != ["NOT SELECTED"] or property_values(symbol, "Manufacturer") != ["Project requirement"]:
+                    fail(errors, f"{name}: abstract requirement identity changed")
+                if not direct_children(symbol, "in_bom") or direct_children(symbol, "in_bom")[0][1] != "no" or not direct_children(symbol, "on_board") or direct_children(symbol, "on_board")[0][1] != "no":
+                    fail(errors, f"{name}: abstract requirement cannot enter BOM or board")
+            elif name != "PWR_FLAG":
                 fail(errors, f"{name}: footprint reference must be present")
             continue
         footprint_ref = footprint_values[0]
@@ -204,7 +210,11 @@ def main() -> int:
     errors: list[str] = []
     symbol_count, _names = check_symbols(errors)
     footprint_count, _footprint_names, outputs = check_footprints(errors)
-    receipt_count = check_receipts(errors, outputs | {path.relative_to(ROOT).as_posix() for path in FRAGMENT_DIR.glob("*.kicad_sym")})
+    # These two project-authored contract symbols are deliberately not CAD
+    # acquisitions and have no physical asset to certify with a CAD receipt.
+    physical_symbols = {path.relative_to(ROOT).as_posix() for path in FRAGMENT_DIR.glob("*.kicad_sym")
+                        if path.stem not in ABSTRACT_REQUIREMENTS}
+    receipt_count = check_receipts(errors, outputs | physical_symbols)
     if errors:
         for error in errors:
             print(f"FAIL: {error}", file=sys.stderr)
