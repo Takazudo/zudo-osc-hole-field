@@ -1,0 +1,29 @@
+---
+title: "Oscillator reference fanout"
+description: "Local oscillator reference pairs, conditional current bounds and remaining physical gates."
+---
+
+Issue #62 replaces direct loading of the shared ±5 V references by three local pairs per oscillator. The LOCAL pair supplies TUNE, FINE, PW and fixed branches; BASE and SINE each supply one 10 kΩ trimmer. All five oscillator cores and their timing islands remain local. All 438 hardware centres remain fixed. These are unvalidated schematic drafts.
+
+The selected buffer is Texas Instruments **OPA4197IPWR**, TSSOP-14, LCSC **C2057327**. This is an explicit precision-role exception to the ordinary OSC-ES-1 cv-role fanout allocation: the same reference feeds pitch/base trim and the retained TI OPAx197 model covers compensation. Six added sections per oscillator produce two additional fitted quads, including powered grounded spare followers. Across the instrument, ten added packages have pins 4/11 on +12/−12 V and twenty attributed 100 nF bypasses to AGND.
+
+Each output uses 100 Ω series isolation, 100 Ω feedback from the local load node and 1 nF feedforward compensation. The source-derived report `design/reports/oscillator-reference-fanout.json` identifies every branch, physical driver and bypass. Source parameters live in `design/spec/modules/oscillator-reference.json`. Exact 100 Ω / 1 nF orderable identities remain a physical qualification gate.
+
+| Output per oscillator | Conditional maximum | Panel pots |
+| --- | ---: | ---: |
+| LOCAL +5 V | 1.366602 mA | 3 |
+| LOCAL −5 V | 0.253285 mA | 2 bipolar endpoints |
+| BASE +5 / −5 V | 1.357808 mA each | 0 |
+| SINE +5 / −5 V | 1.357808 mA each | 0 |
+
+The pair serves three distinct panel pots, below the six-pot maximum. Each trimmer retains its full ±5 V nominal span. Bounds include ±20% panel resistance, ±25% trimmer resistance, ±1% fixed resistance planning tolerance, ±5.025 V reference envelope, ±12.6 V bounded receiver nodes and worst wiper loading. Nonprecision receiver branches include a 1 µA project planning allowance; the retained LM393B full-temperature bias bound is 50 nA. These are conditional normal-operation calculations. Resistor dividers are evaluated through their full series path; other unknown receiver nodes use the rail envelope. Source-only oscillator inputs now comprise three high-impedance inputs per polarity per oscillator. The ten trimmers formerly drew 10 mA nominal or 13.333 mA at minimum resistance before the extra panel/fixed loads.
+
+The native I/O report includes panel connector branch bounds. Reference signal currents return through adjacent Kelvin AGND; no raw timing or summing node crosses a board. The arithmetic return bound deliberately sums magnitudes rather than taking cancellation credit. Connector resistance, common return movement, actual length ≤300 mm and capacitance ≤1 nF remain #35 layout requirements. The feedback sense point is local; it does not cancel connector or remote return voltage loss.
+
+Nominal TUNE remains ±5 V through 250 kΩ, or ±2 V pitch contribution at the 100 kΩ pitch scale. FINE remains ±5 V through 5 MΩ, or ±0.1 V pitch contribution. PW remains 0..5 V. BASE and SINE symmetry retain their original 10 kΩ elements and 1 MΩ feed resistors. Local closed-loop DC sensing cancels the isolation resistor drop. A 100 µV buffer offset produces approximately 100 µV endpoint movement, and the retained 5 nA full-temperature bias bound gives 0.5 µV across 100 Ω. The offset table is at ±18 V and 25 °C: these sensitivities do not establish an exact ±12 V or temperature guarantee. The master ±0.5% envelope is a planning assumption; factory tuning, octave calibration, reference drift and total tracking still require characterization against the existing 2 mV static and 5-cent tracking targets.
+
+The pinned TI OPAx197 macro-model passes twenty-four cases at ±11.4/12.6 V, resistor ±1%, compensation ±5%, zero/1 nF cable capacitance, and open/3 kΩ loads. A 3 kΩ load at ±5.025 V draws 1.675 mA, exceeding every computed branch. Settling error by 400 µs and late ripple remain below 1 mV; overshoot is below 10% of the step. `design/reports/spice/oscillator-reference-vendor.json` retains measurements and model digest. This nominal semiconductor model does not sweep semiconductor process or temperature. No typical short-circuit current is used as a precision output guarantee.
+
+The ledger adds **85 mA per analog rail**: 60 mA full-temperature package quiescent allowance plus 25 mA explicit reference-load allowance. Existing 12 mA local and 8 mA shared reserves remain intact. The per-rail calculation charges fixed, input and wiper currents to either rail independently; positive reference voltage does not imply exclusively positive-rail demand. Both conservative rail bounds remain below 5 mA per oscillator. Fitted bypass totals become 49.9 µF on +12 V and 42.7 µF on −12 V, within unchanged 150 µF nominal ceilings. The selected EXT arithmetic requires 1700/1600/300 mA continuous and 2000/1900/400 mA transient on +12/−12/+5 V, within unchanged current-limit and return/loss requirements. The unselected historical three-source allocation now fails domain A's −12 V ceiling by 15.344091 mA; its report preserves this rejection.
+
+Physical loaded swing, source startup, missing/late rails, unplugged reference receivers and powered-off injection are **NOT RUN**. Finite powered-node bounds do not apply while a receiver is off. Local resistors are isolation/compensation elements, not a qualified fault protection circuit. The report enumerates all 30 local fanout amplifier inputs connected to the shared source pair; #59 must assess their powered-off injection in addition to the existing 30 octave-tap receivers. Exact protection remains open in #59 and source/inlet qualification in #57. The existing AS3340 VEE driver and its load/sequence limits remain separate physical gates.
