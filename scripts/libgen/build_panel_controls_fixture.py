@@ -3,7 +3,8 @@
 
 Run through scripts/kicad/run.sh, then use the same oracle's kicad-cli pcb drc.
 The selector fixture intentionally retains the drawing-required mounting holes;
-its overlap is an unresolved design gate, not a passing assembly.
+its bore overlap rejects this coplanar arrangement. The selected stepped assembly
+is checked by fixtures/check_selector_assembly.sh.
 """
 from pathlib import Path
 import pcbnew

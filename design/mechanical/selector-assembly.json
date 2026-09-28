@@ -1,0 +1,251 @@
+{
+  "schema_version": 1,
+  "status": "CONDITIONAL UNVALIDATED DRAFT; physical qualification NOT RUN",
+  "identity": {
+    "manufacturer": "Alps Alpine",
+    "mpn": "SRBV160803",
+    "supplier": "LCSC",
+    "order_code": "C470374"
+  },
+  "source_pdf": "design/mechanical/sources/alps-srbv.pdf",
+  "source_pdf_sha256": "4389058192ce8e89188d5c1c0f23de85945916542cd477ba04f3c75ac9f69ec8",
+  "fixed_uid_xy_sha256": "8354aed4a72bf5357e1ccfb4da7c3234f139ba19f75a49d825d733c30a6da843",
+  "fixed_feature_count": 438,
+  "fixed_module_count": 33,
+  "decision": "Alternating 0/180 degree bodies on five independent adapters in two planes; retained legs and unchanged pads; two custom keyed shaft extensions, five custom re-indexable knobs, stepped bushing carrier.",
+  "frame": "Panel front x right, y down, z toward user; front surface z=0. Footprint local coordinates viewed from A, +y down. PCB component face is z datum.",
+  "instances": [
+    {
+      "uid": "C:O1.OCT",
+      "rotation_deg": 0,
+      "pcb_z_mm": -16,
+      "adapter_group": "front",
+      "extension_length_mm": 0,
+      "knob_index_correction_deg": 0
+    },
+    {
+      "uid": "C:O2.OCT",
+      "rotation_deg": 180,
+      "pcb_z_mm": -29,
+      "adapter_group": "rear",
+      "extension_length_mm": 13,
+      "knob_index_correction_deg": 180
+    },
+    {
+      "uid": "C:O3.OCT",
+      "rotation_deg": 0,
+      "pcb_z_mm": -16,
+      "adapter_group": "front",
+      "extension_length_mm": 0,
+      "knob_index_correction_deg": 0
+    },
+    {
+      "uid": "C:O4.OCT",
+      "rotation_deg": 180,
+      "pcb_z_mm": -29,
+      "adapter_group": "rear",
+      "extension_length_mm": 13,
+      "knob_index_correction_deg": 180
+    },
+    {
+      "uid": "C:O5.OCT",
+      "rotation_deg": 0,
+      "pcb_z_mm": -16,
+      "adapter_group": "front",
+      "extension_length_mm": 0,
+      "knob_index_correction_deg": 0
+    }
+  ],
+  "drawing": {
+    "physical_pdf_page_index": 3,
+    "locator": "Drawing No.7: all three dimensions views, mounting holes, circuit diagram",
+    "main_body_xy_mm": [
+      -8.1,
+      -10.5,
+      8.1,
+      8.0
+    ],
+    "conservative_body_support_xy_mm": [
+      -9.1,
+      -10.5,
+      9.1,
+      8.0
+    ],
+    "body_support_z_mm": [
+      -4,
+      7.5
+    ],
+    "bushing_diameter_mm": 9,
+    "bushing_length_mm": 7,
+    "shaft_length_from_body_face_mm": 15,
+    "shaft_length_tolerance_mm": 0.5,
+    "shaft_flat_length_mm": 7,
+    "mount_holes_xy_mm": [
+      [
+        -8,
+        -1.1
+      ],
+      [
+        8,
+        -1.1
+      ]
+    ],
+    "mount_hole_diameter_mm": 2,
+    "terminal_rows_y_mm": [
+      -9.15,
+      9.15
+    ],
+    "terminal_hole_diameter_mm": 0.9,
+    "uncertainty": "18.2 span retained as full-width conservative envelope; no exact solid contour inferred. 18.3 terminal rows centered on indicated shaft centerline by drawing symmetry (dimension to each row not individually toleranced). No general body, tail, hole-position or bushing tolerance given.",
+    "mount_pad_classification": "MP1/MP2 are mechanical features absent from electrical circuit; plating is unspecified. Retain PTH diameter 2.6 / drill 2.0, annular ring 0.3. No NPTH reclassification.",
+    "terminal_pad_diameter_mm": 1.55,
+    "mount_pad_diameter_mm": 2.6,
+    "terminal_tail_xy_mm": [
+      -5.45,
+      -9.6,
+      5.45,
+      9.6
+    ],
+    "terminal_tail_z_mm": [
+      -4,
+      0
+    ],
+    "terminal_tail_note": "Conservative terminal-tail keepout uses \u00d80.9 bores around terminal centers as an assembly allowance, not a claim of \u00d80.9 solid pins. Main asymmetric body ends at y=+8 but the terminal row is y=+9.15."
+  },
+  "carrier": {
+    "material": "machined insulating carrier; material and strength qualification open",
+    "plate_width_mm": 15,
+    "plate_length_mm": 15,
+    "plate_thickness_mm": 2,
+    "bushing_hole_diameter_mm": 9.5,
+    "hole_diameter_tolerance_mm": 0.1,
+    "plate_z_from_pcb_mm": [
+      7.5,
+      9.5
+    ],
+    "washer_z_from_pcb_mm": [
+      9.5,
+      10.0
+    ],
+    "nut_z_from_pcb_mm": [
+      10.0,
+      12.0
+    ],
+    "relief_slot_local_xy_mm": [
+      -2,
+      4.5,
+      2,
+      7.5
+    ],
+    "antirotation": "Open 4 mm wide radial relief clears the nominal 3 mm projecting feature without assigning an undocumented center or fit. Rear adapter orientation held by carrier capture; M9 nut/washer carry axial load. Relief is not a qualified key.",
+    "rail_panel_y_mm": [
+      170,
+      172
+    ],
+    "stem_width_mm": 3,
+    "rail_support": "Two insulating rails joined to enclosure side supports outside this row; no new panel hardware centers. Structural anchorage/load test remains open."
+  },
+  "adapter": {
+    "width_mm": 19.8,
+    "length_mm": 21,
+    "thickness_mm": 1.6,
+    "tongue_width_mm": 6,
+    "tongue_top_y_mm": -14,
+    "capture": "Insulating carrier captures top tongue; no reliance on solder joints for panel torque. Wire harness exits above row with strain relief. Connector and harness detailed design remains downstream."
+  },
+  "panel": {
+    "aperture_diameter_mm": 7.0,
+    "aperture_tolerance_mm": 0.1,
+    "thickness_mm": 2,
+    "status": "PROJECT CHOICE: front passes only nominal \u00d86 shaft/extension; M9 bushing mounts in distinct stepped carrier with \u00d89.5\u00b10.1 bore. Front panel thickness and installed fit remain unqualified.",
+    "artwork_clearance": "Original owner artwork retained. \u00d89.5 front attempt:40 copper-clearance errors and5 OCT clipping warnings; \u00d89.2:5 OCT clipping warnings. Final \u00d87 front aperture and \u00d88 knob preserve labels.",
+    "shaft_clearance_budget": {
+      "nominal_diametral_clearance_mm": 1.0,
+      "minimum_front_bore_mm": 6.9,
+      "shaft_or_extension_max_allowed_mm": 6.1,
+      "relative_axis_error_max_mm": 0.1,
+      "radial_wobble_allocation_mm": 0.2,
+      "remaining_radial_clearance_mm": 0.1,
+      "status": "Allocation: (6.9-6.1)/2-0.1-0.2=0.1 mm. Source only gives nominal \u00d86, so actual shaft tolerance/runout must meet these limits in #55."
+    }
+  },
+  "knob": {
+    "identity": "OSC-KNOB-8-R1 custom draft, no purchased MPN selected",
+    "diameter_mm": 8,
+    "z_mm": [
+      1,
+      10
+    ],
+    "shaft_bore_diameter_mm": 6.1,
+    "flat_depth_mm": 4.6,
+    "fit_allowance_mm": 0.1,
+    "indexing": "Re-indexable pointer collar clamped after continuity check at terminal 2; clockwise steps 2,3,4,5,6,7 give octaves -2,-1,0,1,2,3. Rotation changes angular origin, never pin numbering or chirality. Positive 180-degree correction for O2/O4.",
+    "diameter_tolerance_mm": 0.05,
+    "artwork_clearance": "Original OCT text is centered 5.12 mm below shaft. \u00d88 knob selected to avoid covering fixed legend; pointer collar/clamp dimensions and retention remain qualification."
+  },
+  "extension": {
+    "identity": "OSC-EXT-13-R1 custom keyed extension for O2/O4; material/retention unqualified",
+    "length_mm": 13,
+    "socket_outer_diameter_mm": 10,
+    "socket_z_from_pcb_mm": [
+      16,
+      22.5
+    ],
+    "stem_diameter_mm": 6,
+    "stem_z_from_pcb_mm": [
+      22.5,
+      35.5
+    ],
+    "socket_bore_diameter_mm": 6.1,
+    "socket_flat_depth_mm": 4.6,
+    "socket_min_engagement_mm": 5.0,
+    "retention": "Keyed socket with split clamp; screw design/torque and backlash remain qualification requirements. No adhesive or switch modification."
+  },
+  "tolerance_budget": {
+    "status": "Design allocation only; absent manufacturer limits require measurement before acceptance",
+    "body_and_tail_z_growth_mm": 0.5,
+    "relative_adapter_z_error_mm": 0.25,
+    "nominal_z_gap_mm": 1.5,
+    "allocated_min_z_gap_mm": 0.75,
+    "min_neighbor_xy_clearance_mm": 0.5,
+    "axis_position_error_per_part_mm": 0.1,
+    "tool_socket_outer_diameter_max_mm": 15
+  },
+  "electrical": {
+    "common_terminals": [
+      1,
+      10
+    ],
+    "clockwise_terminals": [
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "clockwise_octaves": [
+      -2,
+      -1,
+      0,
+      1,
+      2,
+      3
+    ],
+    "dummy_terminals": [
+      8,
+      9
+    ],
+    "mechanical_pads": [
+      "MP1",
+      "MP2"
+    ],
+    "nets": "UNASSIGNED; exact terminal continuity remains a physical gate"
+  },
+  "physical_qualification_issue": "https://github.com/Takazudo/zudo-osc-hole-field/issues/55",
+  "downstream_reservations": {
+    "O_board_group": "Five adapters in 3+2 planes; do not restore one coplanar strip",
+    "core_plane": "Rear envelopes z=-33..-21.5 cross provisional core z=-24; #35/#37 must carve the corresponding fixed XY keepouts",
+    "interfaces": "Harness connector/strain relief, enclosure anchorage, rail support and custom clamp detail remain explicit downstream design and physical-qualification work"
+  }
+}

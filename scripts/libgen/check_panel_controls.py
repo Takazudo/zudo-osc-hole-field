@@ -47,5 +47,5 @@ v=violations('selector')
 assert v['hole_to_hole']>=4,v
 assert v['courtyards_overlap']>=4,v
 print(f'pot 17 x 14 mm pitch: courtyard clearance X={17-pw:.2f} mm Y={14-ph:.2f} mm; KiCad DRC 0 violations')
-print(f'selector 17 mm pitch: drawing Ø2 hole centers 1 mm apart (1 mm physical overlap); courtyard overlap={sw-17:.2f} mm; KiCad DRC {sum(v.values())} violations ({dict(v)})')
-print('PASS: fixture detects the unresolved selector interference; selector fit remains BLOCKED')
+print(f'selector 17 mm pitch: drawing Ø2 hole centers 1 mm apart (1 mm bore overlap; solid-leg dimensions not established); courtyard overlap={sw-17:.2f} mm; KiCad DRC {sum(v.values())} violations ({dict(v)})')
+print('PASS: fixture detects the unresolved selector interference; original coplanar fixture remains rejected; selected stepped candidate is checked by fixtures/check_selector_assembly.sh')
