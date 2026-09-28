@@ -4,7 +4,7 @@ from pathlib import Path
 import tempfile
 import unittest
 from scripts.pcbgen.definition import load_definition,load_lock,selected_hardware
-from scripts.pcbgen.geometry import outline_segments
+from scripts.pcbgen.geometry import outline_segments,staging_position
 from scripts.pcbgen.netlist import Component,is_abstract_boundary,read_netlist
 from scripts.pcbgen.uuid_tools import stable_uuid,top_level_spans,normalize
 
@@ -61,6 +61,14 @@ class DefinitionTests(unittest.TestCase):
         with self.assertRaises(ValueError):selected_hardware(d,{'not-a-uid':{}})
 
 class GeometryTests(unittest.TestCase):
+    def test_full_board_staging_stays_in_kicad_coordinate_range(self):
+        # The former 5 mm lane overflowed signed pcbnew coordinates near ref 400.
+        self.assertGreater(50+10+2090*5,2147)
+        points=[staging_position(i) for i in range(2091)]
+        self.assertEqual(len(set(points)),2091)
+        self.assertTrue(all(0 < x+100 < 2147 and 0 < y+50 < 2147 for x,y in points))
+        with self.assertRaises(ValueError):staging_position(5000)
+
     def test_square_with_radius(self):
         pieces=outline_segments(((0,0),(20,0),(20,10),(0,10)),1)
         self.assertEqual(len(pieces),8)
@@ -68,6 +76,13 @@ class GeometryTests(unittest.TestCase):
         with self.assertRaises(ValueError):outline_segments(((0,0),(20,0),(20,10),(0,10)),6)
 
 class UUIDTests(unittest.TestCase):
+    def test_pad_uuid_survives_unrelated_footprint_property(self):
+        base='(kicad_pcb (paper "A4") (footprint "x" (uuid "22222222-2222-4222-8222-222222222222") (property "Reference" "C106") (pad "1" smd rect (uuid "33333333-3333-4333-8333-333333333333"))))'
+        extra=base.replace('(pad "1"','(property "Role" "demo" (uuid "44444444-4444-4444-8444-444444444444")) (pad "1"')
+        expected=stable_uuid('b','footprint:C106','pad:1:0')
+        self.assertIn(expected,normalize(base,'b',{'C106'},{},True))
+        self.assertIn(expected,normalize(extra,'b',{'C106'},{},True))
+
     def test_stable_domain_separated_uuid(self):
         self.assertEqual(stable_uuid('b','footprint:J101','root'),stable_uuid('b','footprint:J101','root'))
         self.assertNotEqual(stable_uuid('b','footprint:J101','root'),stable_uuid('b','outline','J101'))

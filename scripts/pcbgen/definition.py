@@ -92,10 +92,11 @@ def load_definition(path: Path) -> BoardDefinition:
             if cls['via_drill_mm']>=cls['via_diameter_mm']:raise ValueError('via drill must be smaller than diameter')
         if not isinstance(routing['zones'],list):raise ValueError('invalid routing zones')
         for zone in routing['zones']:
-            if not isinstance(zone,dict) or set(zone) not in ({'name','net','layers','clearance_mm','min_thickness_mm'},{'name','net','layers','clearance_mm','min_thickness_mm','pad_connection'}):raise ValueError('invalid routing zone')
+            if not isinstance(zone,dict) or set(zone)-{'name','net','layers','clearance_mm','min_thickness_mm','pad_connection','polygon'} or not {'name','net','layers','clearance_mm','min_thickness_mm'}.issubset(zone):raise ValueError('invalid routing zone')
             if zone.get('pad_connection','thermal') not in ('thermal','full'):raise ValueError('invalid zone pad connection')
             if not isinstance(zone['name'],str) or not zone['name'] or not isinstance(zone['net'],str) or not zone['net']:raise ValueError('invalid zone identity')
             if not isinstance(zone['layers'],list) or not zone['layers'] or any(layer not in copper for layer in zone['layers']):raise ValueError('invalid zone layers')
+            if 'polygon' in zone and (not isinstance(zone['polygon'],list) or len(zone['polygon'])<3 or len({_point(p,'routing zone polygon') for p in zone['polygon']})!=len(zone['polygon'])):raise ValueError('invalid routing zone polygon')
             for key in ('clearance_mm','min_thickness_mm'):
                 if isinstance(zone[key],bool) or not isinstance(zone[key],(int,float)) or zone[key]<=0:raise ValueError('invalid zone '+key)
     return BoardDefinition(board_id,outline,float(radius),layers,float(thick),tuple(stack),tuple(data['mounting_holes']),tuple(data['keepouts']),tuple(data['domains']),tuple(data['placement_uids']),data['netlist'],data['schematic'],tuple(regions),routing)

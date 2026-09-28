@@ -16,7 +16,7 @@ from scripts.geometry.panel_frame import to_kicad
 from scripts.pcbgen.definition import load_definition,load_lock,selected_hardware
 from scripts.pcbgen.netlist import read_netlist
 from scripts.pcbgen.uuid_tools import stable_uuid,normalize_file
-from scripts.pcbgen.geometry import outline_segments
+from scripts.pcbgen.geometry import outline_segments,staging_position
 
 LIB='zudo-osc-hole-field'
 
@@ -71,6 +71,7 @@ def sync(board_id:str,output:Path|None=None,netlist:Path|None=None):
         nets[name]=current
     cache={};new_ids={};owned_refs=set()
     for index,c in enumerate(sorted(components,key=lambda x:x.ref)):
+        fields=dict(c.fields)
         if ':' not in c.footprint:raise ValueError(f'{c.ref}: footprint lacks library nickname')
         library,name=c.footprint.split(':',1)
         fp=old_managed.get(c.ref)
@@ -89,8 +90,13 @@ def sync(board_id:str,output:Path|None=None,netlist:Path|None=None):
                 fp.SetOrientationDegrees(placement['rot_deg'])
                 fp.SetLocked(True)
             else:
-                # Temporary staging lane; later placer/owner may move these free parts.
-                fp.SetPosition(vec(*to_kicad(350,10+index*5)))
+                origin=fields.get('FootprintOriginMm','')
+                if origin:
+                    x,y=(float(v) for v in origin.split(','))
+                    fp.SetPosition(vec(*to_kicad(x,y)))
+                else:
+                    # Temporary staging remains bounded for unproposed boards.
+                    fp.SetPosition(vec(*to_kicad(*staging_position(index))))
             board.Add(fp)
         # KiCad 10 returns wxString wrappers; compare their text, not wrapper identity.
         elif str(fp.GetFPID().GetLibItemName())!=name or str(fp.GetFPID().GetLibNickname())!=library:
@@ -108,9 +114,13 @@ def sync(board_id:str,output:Path|None=None,netlist:Path|None=None):
         fp.SetSheetname(c.sheetname)
         fp.SetSheetfile(c.fields and dict(c.fields).get('Sheetfile',Path(definition.schematic).name) or Path(definition.schematic).name)
         for field_name,field_value in c.fields:
-            if field_name not in {'Reference','Value','Footprint','Datasheet','Sheetname','Sheetfile'}:
+            if field_name not in {'Reference','Value','Footprint','Datasheet','Sheetname','Sheetfile'} and not field_name.startswith('ki_'):
                 fp.SetField(field_name,field_value)
                 fp.GetField(field_name).SetVisible(False)
+        if board_id=='osc-jack':
+            for unit_field in ('Role','LogicalCellKey','Island'):
+                if unit_field not in fields and fp.HasField(unit_field):
+                    fp.SetField(unit_field,'')
         if c.ref in by_ref:
             p=by_ref[c.ref]
             fp.SetPosition(vec(*to_kicad(p['x_mm'],p['y_mm'])))
@@ -122,6 +132,12 @@ def sync(board_id:str,output:Path|None=None,netlist:Path|None=None):
         if requested_side:
             target_layer=pcbnew.F_Cu if requested_side=='F.Cu' else pcbnew.B_Cu
             if fp.GetLayer()!=target_layer:fp.Flip(fp.GetPosition(),False)
+        orientation=fields.get('KiCadOrientationDeg','')
+        if orientation:fp.SetOrientationDegrees(float(orientation))
+        if fields.get('FootprintOriginMm') and not fields.get('BoardRegion'):
+            fp.SetLocked(True)
+        if fields.get('Role')=='factory load-side solder terminal':
+            fp.SetAttributes(fp.GetAttributes()|pcbnew.FP_EXCLUDE_FROM_BOM)
         for pad in fp.Pads():
             net_name=pin_nets.get((c.ref,pad.GetNumber()))
             if net_name is None:pad.SetNetCode(0)
@@ -166,17 +182,25 @@ def sync(board_id:str,output:Path|None=None,netlist:Path|None=None):
     # Copper keepouts are rule-area zones. Names and UUIDs establish ownership;
     # all other zones, including hand-filled planes, are left untouched.
     keepout_prefix=f'pcbgen:{board_id}:keepout:'
+    existing_keepouts={}
     for zone in list(board.Zones()):
         name=zone.GetZoneName()
-        if name.startswith(keepout_prefix) and item_uuid(zone)==stable_uuid(board_id,'keepout',name[len(keepout_prefix):]):
-            board.Remove(zone)
+        if name.startswith(keepout_prefix):
+            if item_uuid(zone)!=stable_uuid(board_id,'keepout',name[len(keepout_prefix):]):
+                raise ValueError(f'unowned keepout name conflict: {name}')
+            existing_keepouts[name]=zone
     owned_zone_ids=set()
     for keepout in definition.keepouts:
         for layer_name in keepout['layers']:
             if layer_name not in {'F.Cu','B.Cu'} and not layer_name.startswith('In'):
                 raise ValueError(f"unsupported keepout layer {layer_name}")
             key=f"{keepout['id']}:{layer_name}"
-            zone=pcbnew.ZONE(board);zone.SetZoneName(keepout_prefix+key)
+            name=keepout_prefix+key
+            zone=existing_keepouts.pop(name,None)
+            if zone is None:
+                zone=pcbnew.ZONE(board);zone.SetZoneName(name);board.Add(zone)
+                new_ids[item_uuid(zone)]=stable_uuid(board_id,'keepout',key)
+            else:zone.RemoveAllContours()
             zone.SetLayer(board.GetLayerID(layer_name));zone.SetIsRuleArea(True)
             zone.SetDoNotAllowTracks(True);zone.SetDoNotAllowVias(True)
             zone.SetDoNotAllowPads(True);zone.SetDoNotAllowZoneFills(True)
@@ -184,10 +208,11 @@ def sync(board_id:str,output:Path|None=None,netlist:Path|None=None):
             poly=zone.Outline();index=poly.NewOutline()
             for x,y in keepout['polygon']:
                 px,py=to_kicad(x,y);poly.Append(vec(px,py),index)
-            board.Add(zone)
             stable=stable_uuid(board_id,'keepout',key)
-            new_ids[item_uuid(zone)]=stable;owned_zone_ids.add(stable)
+            owned_zone_ids.add(stable)
+    for zone in existing_keepouts.values():board.Remove(zone)
     pcbnew.SaveBoard(str(path),board)
+    owned_zone_ids.update(item_uuid(z) for z in board.Zones() if z.GetZoneName().startswith(f'pcbgen:{board_id}:'))
     normalize_file(path,board_id,owned_refs,new_ids,created,owned_zone_ids)
     print(f'{board_id}: {len(components)} footprints, {len(outlines)} outline edges; unowned board items retained; unvalidated draft')
     return path

@@ -109,8 +109,23 @@ def router(dsn,ses,work,threads,heap_mb,timeout_sec,image,fanout=True):
             if proc.poll() is None:proc.kill();proc.wait()
     return (124 if timed_out else proc.returncode),time.monotonic()-started,peak,log_path.read_text()
 
+def attach_native_ratsnest(board,report,result):
+    native=report.parent/'ratsnest.json'
+    run(['bash','scripts/kicad/run.sh','python3','scripts/pcbgen/ratsnest.py',repo_relative(board),repo_relative(native)])
+    detail=json.loads(native.read_text())
+    result['native_unconnected_edge_count']=detail['native_unconnected_edges']
+    result['native_ratsnest_report']=repo_relative(native)
+    result['multi_pad_candidate_net_count']=detail['multi_pad_candidate_net_count']
+    sample=result.get('unrouted_net_names',[])
+    result['drc_unrouted_name_sample_count']=len(sample)
+    phase=result.get('after') or result.get('prepared') or result.get('before') or {}
+    result['drc_unrouted_name_sample_truncated']=detail['native_unconnected_edges']>phase.get('unconnected_items',0)
+    if detail['native_unconnected_edges']:
+        result['unrouted_name_basis']='KiCad DRC JSON name sample only; see full native ratsnest edge count and bounded multi-pad candidate names in ratsnest.json'
+        result['unrouted_net_count']=None
+
 def main():
-    parser=argparse.ArgumentParser();parser.add_argument('board_id');parser.add_argument('--board',type=Path);parser.add_argument('--report',type=Path);parser.add_argument('--timeout-sec',type=int);parser.add_argument('--threads',type=int);parser.add_argument('--heap-mb',type=int);parser.add_argument('--no-fanout',action='store_true')
+    parser=argparse.ArgumentParser();parser.add_argument('board_id');parser.add_argument('--board',type=Path);parser.add_argument('--report',type=Path);parser.add_argument('--timeout-sec',type=int);parser.add_argument('--threads',type=int);parser.add_argument('--heap-mb',type=int);parser.add_argument('--no-fanout',action='store_true');parser.add_argument('--refresh-ratsnest-only',action='store_true')
     args=parser.parse_args()
     definition=load_definition(ROOT/'design/boards'/f'{args.board_id}.json')
     if not definition.routing:raise ValueError(f'{args.board_id}: routing definition missing')
@@ -118,6 +133,12 @@ def main():
     board.relative_to(ROOT)
     if not board.exists():raise FileNotFoundError(board)
     report=(args.report or board.parent/'reports/routing.json').resolve();report.relative_to(ROOT);report.parent.mkdir(parents=True,exist_ok=True)
+    if args.refresh_ratsnest_only:
+        if not report.exists():raise FileNotFoundError(report)
+        result=json.loads(report.read_text())
+        attach_native_ratsnest(board,report,result)
+        report.write_text(json.dumps(result,indent=2,sort_keys=True)+'\n')
+        return 0
     work=board.parent/'routing-work';work.mkdir(exist_ok=True)
     image,env_heap,env_timeout=read_env()
     threads=args.threads or max(1,min((os.cpu_count() or 2)//2,6))
@@ -211,6 +232,8 @@ def main():
             except Exception as metrics_error:
                 result['metrics_error']=str(metrics_error)
         result['runtime_sec']=round(time.monotonic()-started,3)
+        try:attach_native_ratsnest(board,report,result)
+        except Exception as native_error:result['native_ratsnest_error']=str(native_error)
         report.write_text(json.dumps(result,indent=2,sort_keys=True)+'\n')
         print(f"{args.board_id}: {result['status']}; report {repo_relative(report)}")
         if result.get('error'):print(result['error'],file=sys.stderr)

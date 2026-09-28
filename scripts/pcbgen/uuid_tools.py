@@ -7,6 +7,16 @@ from pathlib import Path
 NAMESPACE=uuid.UUID('c67dff75-aa94-4ed4-8e31-31f2e6948ccf')
 UUID_RE=re.compile(r'\(uuid\s+"([0-9a-fA-F-]{36})"\)')
 REF_RE=re.compile(r'\(property\s+"Reference"\s+"([^"]+)"')
+PAD_RE=re.compile(r'\(pad\s+"([^"]*)"')
+
+def replace_spans(text: str, edits: list[tuple[int,int,str]]) -> str:
+    """Apply nonoverlapping source-coordinate edits in one pass."""
+    chunks=[];cursor=0
+    for start,end,value in sorted(edits):
+        if start<cursor:raise ValueError('overlapping board normalization edits')
+        chunks.extend((text[cursor:start],value));cursor=end
+    chunks.append(text[cursor:])
+    return ''.join(chunks)
 
 def stable_uuid(board_id: str, kind: str, key: str) -> str:
     if not board_id or not kind or not key:raise ValueError('UUID key fields must be nonempty')
@@ -53,14 +63,27 @@ def normalize(text: str, board_id: str, owned_refs: set[str], new_ids: dict[str,
         if kind[1]=='footprint':
             ref=REF_RE.search(block)
             if not ref or ref[1] not in owned_refs:continue
+            pad_ids={};pad_ranks={}
+            for child_start,child_end in top_level_spans(block):
+                child=block[child_start:child_end]
+                pad=PAD_RE.match(child)
+                if not pad:continue
+                match=UUID_RE.search(child)
+                if match:
+                    rank=pad_ranks.get(pad[1],0);pad_ranks[pad[1]]=rank+1
+                    pad_ids[child_start+match.start(1)]=f'pad:{pad[1]}:{rank}'
+            nonpad=0
             for n,m in enumerate(UUID_RE.finditer(block)):
-                key='root' if n==0 else f'child:{n}'
+                if n==0:key='root'
+                elif m.start(1) in pad_ids:key=pad_ids[m.start(1)]
+                else:
+                    nonpad+=1;key=f'child:{nonpad}'
                 edits.append((start+m.start(1),start+m.end(1),stable_uuid(board_id,'footprint:'+ref[1],key)))
         else:
             m=UUID_RE.search(block)
             if m and m[1] in new_ids:
                 edits.append((start+m.start(1),start+m.end(1),new_ids[m[1]]))
-    for a,b,value in sorted(edits,reverse=True):text=text[:a]+value+text[b:]
+    text=replace_spans(text,edits)
     # pcbnew's footprint container iteration is not stable across process runs.
     # Sort only managed footprint blocks; preserve the bytes of each unowned block.
     slots=[]
@@ -70,8 +93,7 @@ def normalize(text: str, board_id: str, owned_refs: set[str], new_ids: dict[str,
             m=REF_RE.search(block)
             if m and m[1] in owned_refs:slots.append((a,b,m[1],block))
     ordered=sorted(slots,key=lambda x:x[2])
-    for (a,b,_,_),(src_a,src_b,ref,block) in reversed(list(zip(slots,ordered))):
-        text=text[:a]+block+text[b:]
+    text=replace_spans(text,[(a,b,source[3]) for (a,b,_,_),source in zip(slots,ordered)])
     if owned_zone_ids:
         slots=[]
         for a,b in top_level_spans(text):
@@ -80,8 +102,7 @@ def normalize(text: str, board_id: str, owned_refs: set[str], new_ids: dict[str,
                 m=UUID_RE.search(block)
                 if m and m[1] in owned_zone_ids:slots.append((a,b,m[1],block))
         ordered=sorted(slots,key=lambda x:x[2])
-        for (a,b,_,_),(src_a,src_b,uid,block) in reversed(list(zip(slots,ordered))):
-            text=text[:a]+block+text[b:]
+        text=replace_spans(text,[(a,b,source[3]) for (a,b,_,_),source in zip(slots,ordered)])
     return text
 
 def normalize_file(path: Path, board_id: str, owned_refs: set[str], new_ids: dict[str,str], created: bool, owned_zone_ids: set[str]|None=None):
