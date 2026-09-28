@@ -1,0 +1,418 @@
+{
+  "schema_version": 1,
+  "module": "wavefolder",
+  "authority": "PROPOSAL (planning, owner-delegated)",
+  "status": "Captured current planning; not a guaranteed maximum or hardware measurement",
+  "IC_packages_per_instance": {
+    "ADG5412FBRUZ": 3,
+    "LM13700M_NOPB": 1,
+    "OPA4196IDR": 7,
+    "OPA4197IPWR": 1,
+    "REF5050AIDR": 1
+  },
+  "breakdown": [
+    {
+      "load": "OPA4196IDR",
+      "count": 7,
+      "typical_unit_mA": {
+        "+12V": 0.56,
+        "-12V": 0.56,
+        "+5V": 0
+      },
+      "planning_unit_mA": {
+        "+12V": 1.0,
+        "-12V": 1.0,
+        "+5V": 0
+      },
+      "basis": "Whole quad packages including unused channels. Source OPA4197 p8 or OPA4196 p8; full-temperature Iq maxima. No output current included here."
+    },
+    {
+      "load": "OPA4197IPWR",
+      "count": 1,
+      "typical_unit_mA": {
+        "+12V": 4,
+        "-12V": 4,
+        "+5V": 0
+      },
+      "planning_unit_mA": {
+        "+12V": 6.0,
+        "-12V": 6.0,
+        "+5V": 0
+      },
+      "basis": "Whole quad packages including unused channels. Source OPA4197 p8 or OPA4196 p8; full-temperature Iq maxima. No output current included here."
+    },
+    {
+      "load": "ADG5412FBRUZ",
+      "count": 3,
+      "typical_unit_mA": {
+        "+12V": 0.9,
+        "-12V": 0.5,
+        "+5V": 0
+      },
+      "planning_unit_mA": {
+        "+12V": 1.3,
+        "-12V": 0.7,
+        "+5V": 0
+      },
+      "basis": "ADG5412F Rev C Table 1 p4 \u00b115 V normal-mode table; extrapolation allowance at project \u00b112 V, not guaranteed at this voltage."
+    },
+    {
+      "load": "LM13700M_NOPB",
+      "count": 1,
+      "typical_unit_mA": {
+        "+12V": 4,
+        "-12V": 4,
+        "+5V": 0
+      },
+      "planning_unit_mA": {
+        "+12V": 6,
+        "-12V": 6,
+        "+5V": 0
+      },
+      "basis": "Planning source has 16 LM13700 packages. 6 mA allowance including bias currents; module evidence must replace estimate."
+    },
+    {
+      "load": "REF5050 allocation",
+      "count": 1,
+      "typical_unit_mA": {
+        "+12V": 0.8,
+        "-12V": 0,
+        "+5V": 0
+      },
+      "planning_unit_mA": {
+        "+12V": 1.2,
+        "-12V": 0,
+        "+5V": 0
+      },
+      "basis": "Local reference supply allocation, not an established full-temperature maximum; buffer quads counted above."
+    },
+    {
+      "load": "Three magnitude LEDs",
+      "count": 3,
+      "typical_unit_mA": {
+        "+12V": 0.25,
+        "-12V": 0.25,
+        "+5V": 0
+      },
+      "planning_unit_mA": {
+        "+12V": 1.25,
+        "-12V": 1.25,
+        "+5V": 0
+      },
+      "basis": "OSC-ES-1 brightness/load envelope; no output indicator."
+    },
+    {
+      "load": "Offset trim track",
+      "count": 1,
+      "typical_unit_mA": {
+        "+12V": 1,
+        "-12V": 1,
+        "+5V": 0
+      },
+      "planning_unit_mA": {
+        "+12V": 1,
+        "-12V": 1,
+        "+5V": 0
+      },
+      "basis": "10V across10k =1mA drawn through each buffered reference rail."
+    },
+    {
+      "load": "Manual control tracks",
+      "count": 1,
+      "typical_unit_mA": {
+        "+12V": 0.15,
+        "-12V": 0.1,
+        "+5V": 0
+      },
+      "planning_unit_mA": {
+        "+12V": 0.15,
+        "-12V": 0.1,
+        "+5V": 0
+      },
+      "basis": "FOLD5V/100k plus BIAS10V/100k; nominal references, no allowance for resistor tolerance."
+    },
+    {
+      "load": "FOLD depth track/harness drive",
+      "count": 1,
+      "typical_unit_mA": {
+        "+12V": 0.25,
+        "-12V": 0.25,
+        "+5V": 0
+      },
+      "planning_unit_mA": {
+        "+12V": 1,
+        "-12V": 1,
+        "+5V": 0
+      },
+      "basis": "Up to10V differential across10k; local buffered harness stages already counted."
+    },
+    {
+      "load": "LEVEL track/harness drive",
+      "count": 1,
+      "typical_unit_mA": {
+        "+12V": 0.2,
+        "-12V": 0.2,
+        "+5V": 0
+      },
+      "planning_unit_mA": {
+        "+12V": 1,
+        "-12V": 1,
+        "+5V": 0
+      },
+      "basis": "Up to10V peak across10k planning envelope; no simultaneous fault claim."
+    },
+    {
+      "load": "PNP bias/command branch",
+      "count": 1,
+      "typical_unit_mA": {
+        "+12V": 0.2,
+        "-12V": 0.2,
+        "+5V": 0
+      },
+      "planning_unit_mA": {
+        "+12V": 1,
+        "-12V": 1,
+        "+5V": 0
+      },
+      "basis": "Nominal fullscale403uA;1mA reserve covers soft-clamp/reverse-BE command branch. Conservative overlap with OTA bias allowance retained."
+    },
+    {
+      "load": "Four diode clamp feeds",
+      "count": 4,
+      "typical_unit_mA": {
+        "+12V": 0.2,
+        "-12V": 0.2,
+        "+5V": 0
+      },
+      "planning_unit_mA": {
+        "+12V": 1,
+        "-12V": 1,
+        "+5V": 0
+      },
+      "basis": "Per stage10k feed: |drive|<=10V gives<=1mA in the passive clamp under the stated normal headroom envelope."
+    },
+    {
+      "load": "Four fold feedback paths",
+      "count": 4,
+      "typical_unit_mA": {
+        "+12V": 0.02,
+        "-12V": 0.02,
+        "+5V": 0
+      },
+      "planning_unit_mA": {
+        "+12V": 0.2,
+        "-12V": 0.2,
+        "+5V": 0
+      },
+      "basis": "At most20V differential/100k =0.2mA per feedback resistor; conservative planning condition, not amplifier short limit."
+    },
+    {
+      "load": "Other local signal/control resistor paths",
+      "count": 1,
+      "typical_unit_mA": {
+        "+12V": 0.7211336350512576,
+        "-12V": 0.7211336350512576,
+        "+5V": 0
+      },
+      "planning_unit_mA": {
+        "+12V": 5.769069080410061,
+        "-12V": 5.769069080410061,
+        "+5V": 0
+      },
+      "basis": "Sum20V/R over explicit captured resistor list, applied conservatively to both rails; typical allocation uses one eighth of this envelope. Does not include startup/fault currents."
+    },
+    {
+      "load": "Command clamp resistor",
+      "count": 1,
+      "typical_unit_mA": {
+        "+12V": 0.02,
+        "-12V": 0.02,
+        "+5V": 0
+      },
+      "planning_unit_mA": {
+        "+12V": 1.1,
+        "-12V": 1.1,
+        "+5V": 0
+      },
+      "basis": "10k with up to11V differential under bounded normal amplifier/reference envelope."
+    },
+    {
+      "load": "Offset/input low-side divider loads",
+      "count": 1,
+      "typical_unit_mA": {
+        "+12V": 0.02,
+        "-12V": 0.02,
+        "+5V": 0
+      },
+      "planning_unit_mA": {
+        "+12V": 0.05,
+        "-12V": 0.05,
+        "+5V": 0
+      },
+      "basis": "Low-side200ohm input divider and1k offset return are driven through their large upper resistors; separate small reserve avoids assuming20V across them."
+    },
+    {
+      "load": "External output load",
+      "count": 1,
+      "typical_unit_mA": {
+        "+12V": 0.05,
+        "-12V": 0.05,
+        "+5V": 0
+      },
+      "planning_unit_mA": {
+        "+12V": 0.5,
+        "-12V": 0.5,
+        "+5V": 0
+      },
+      "basis": "5V into100k typical/10k planning. Output shorts and control-step peaks unqualified."
+    },
+    {
+      "load": "Input isolation enables",
+      "count": 1,
+      "typical_unit_mA": {
+        "+12V": 0,
+        "-12V": 0,
+        "+5V": 0.15
+      },
+      "planning_unit_mA": {
+        "+12V": 0,
+        "-12V": 0,
+        "+5V": 0.25
+      },
+      "basis": "Three approximately5V/101k enable feeds plus digital-input reserve."
+    }
+  ],
+  "auxiliary_resistors": [
+    {
+      "role": "wavefolder:R_CONTROL_MANUAL",
+      "value_ohm": 100000.0
+    },
+    {
+      "role": "wavefolder:R_CONTROL_DEPTH",
+      "value_ohm": 100000.0
+    },
+    {
+      "role": "wavefolder:R_CONTROL_FB",
+      "value_ohm": 100000.0
+    },
+    {
+      "role": "wavefolder:R_CONTROL_INV_IN",
+      "value_ohm": 100000.0
+    },
+    {
+      "role": "wavefolder:R_CONTROL_INV_FB",
+      "value_ohm": 100000.0
+    },
+    {
+      "role": "wavefolder:R_REF25_TOP",
+      "value_ohm": 100000.0
+    },
+    {
+      "role": "wavefolder:R_REF25_BOTTOM",
+      "value_ohm": 100000.0
+    },
+    {
+      "role": "wavefolder:R_TARGET_IN",
+      "value_ohm": 100000.0
+    },
+    {
+      "role": "wavefolder:R_TARGET_FB",
+      "value_ohm": 100000.0
+    },
+    {
+      "role": "wavefolder:R_INPUT_ATTEN_TOP",
+      "value_ohm": 100000.0
+    },
+    {
+      "role": "wavefolder:R_OFFSET_FEED",
+      "value_ohm": 470000.0
+    },
+    {
+      "role": "wavefolder:R_PRE_GAIN_FIXED",
+      "value_ohm": 49900.0
+    },
+    {
+      "role": "wavefolder:R_DRIVE_SIGNAL",
+      "value_ohm": 100000.0
+    },
+    {
+      "role": "wavefolder:R_DRIVE_BIAS_MANUAL",
+      "value_ohm": 1000000.0
+    },
+    {
+      "role": "wavefolder:R_DRIVE_BIAS_BUFFER",
+      "value_ohm": 1000000.0
+    },
+    {
+      "role": "wavefolder:R_DRIVE_FB",
+      "value_ohm": 100000.0
+    },
+    {
+      "role": "wavefolder:R_DRIVE_INV_IN",
+      "value_ohm": 100000.0
+    },
+    {
+      "role": "wavefolder:R_DRIVE_INV_FB",
+      "value_ohm": 100000.0
+    },
+    {
+      "role": "wavefolder:R_OUTPUT_RF",
+      "value_ohm": 70000.0
+    },
+    {
+      "role": "wavefolder:R_OUTPUT_RG",
+      "value_ohm": 10000.0
+    },
+    {
+      "role": "wavefolder:R_AC_RETURN",
+      "value_ohm": 100000.0
+    }
+  ],
+  "instances": [
+    {
+      "instance": "W2",
+      "planning_typical_mA": {
+        "+12V": 19.661134,
+        "-12V": 17.611134,
+        "+5V": 0.15
+      },
+      "planning_upper_mA": {
+        "+12V": 44.219069,
+        "-12V": 41.169069,
+        "+5V": 0.25
+      },
+      "guaranteed_maximum_mA": {
+        "+12V": null,
+        "-12V": null,
+        "+5V": null
+      }
+    },
+    {
+      "instance": "W1",
+      "planning_typical_mA": {
+        "+12V": 19.661134,
+        "-12V": 17.611134,
+        "+5V": 0.15
+      },
+      "planning_upper_mA": {
+        "+12V": 44.219069,
+        "-12V": 41.169069,
+        "+5V": 0.25
+      },
+      "guaranteed_maximum_mA": {
+        "+12V": null,
+        "-12V": null,
+        "+5V": null
+      }
+    }
+  ],
+  "planning_upper_total_mA": {
+    "+12V": 88.438138,
+    "-12V": 82.338138,
+    "+5V": 0.5
+  },
+  "guaranteed_maximum_status": "NOT ESTABLISHED - actual device corners, dynamic controls, startup, output faults and physical board unqualified",
+  "decoupling_nF_per_instance": 2500,
+  "audio_coupling_nominal_nF_per_instance": 1000,
+  "note": "One active OTA section but whole dual package charged. Internal branch estimates replace a single preliminary lumped allowance. #33/#34 owns full-instrument current closure; no new module bulk."
+}
