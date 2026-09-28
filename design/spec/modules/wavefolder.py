@@ -2,6 +2,7 @@
 
 Index allocation W2=51, W1=52. No hardware or stability qualification claimed.
 """
+from design.spec.modules.io_partition import refined
 from collections import defaultdict
 from dataclasses import replace
 from design.spec.modules.oscillator import Builder,PLACEMENTS,RAILS
@@ -52,6 +53,7 @@ class WavefolderBuilder(Builder):
   return Family('wavefolder',tuple(out),global_nets=RAILS,sensitive_nets=SENSITIVE,paper='A0')
 
 
+@refined
 def family():
  panel_bindings();b=WavefolderBuilder()
  b.cell('reference_generator','LOCAL',{'REF_5V':'REF5','REF_N5V':'REFN5'})

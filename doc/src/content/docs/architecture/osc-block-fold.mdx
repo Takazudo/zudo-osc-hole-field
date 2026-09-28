@@ -300,3 +300,7 @@ matching and fold count; OTA/control offsets and gain; curve and temperature
 behavior; PNP/local-amplifier/remote-load stability; output peak/DC transient limits;
 protection/startup; AC capacitor and harness behavior; noise/distortion/bandwidth;
 board fit and Sensitive-node routing; and measured rail-current closure.
+
+## Source I/O allocation
+
+[Issue #60's source partition](./osc-io-partition.mdx) assigns raw jack, input isolation/clamp, local output feedback and magnitude drivers to the jack region, with complete fitted packages and local bypasses. The generated manifest is the current allocation authority; earlier broad module-island descriptions above describe the logical circuit grouping. Only checked buffered signals, conditioned logic, references, permitted wipers, and power/AGND are candidate connector nets. Physical boards and connector loads remain #35 work; this is an unvalidated draft.

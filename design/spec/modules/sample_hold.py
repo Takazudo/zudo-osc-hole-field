@@ -3,6 +3,7 @@
 The family contains the same source sheet for H1 and H2. Panel references are
 instance-specific; local net labels are scoped by KiCad's sheet instance path.
 """
+from design.spec.modules.io_partition import refined
 from dataclasses import replace
 from pathlib import Path
 import json,re
@@ -48,6 +49,7 @@ def part(id,key,prefix,ordinal,pins,page,*,value=None,mpn=None,panel=None,island
  attrs={'Role':'sample_hold:'+key,'MPN':record['mpn'] if mpn is None else mpn,'Manufacturer':record['manufacturer'] if mpn is None or mpn else '', 'LCSC':record.get('lcsc','') if mpn is None or mpn else '', 'PanelUid':panel.replace('{}','${SHEETNAME}') if panel else '', 'Island':island}
  return Part(key,sym.lib_id,prefix,ordinal,unit,50.8,50.8,pins,value=value or record['mpn'],footprint=footprint(sym),attributes=attrs,page=page,panel_refs=panel_refs(panel) if panel else {},dnp=dnp)
 
+@refined
 def family():
  panel_bindings();parts=[];ordinal=1
  def add(id,uid,nets,page,*,island='',panel_part=None):

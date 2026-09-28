@@ -66,9 +66,13 @@ The multiplication output paths use OSC-ES-1's compensated precision cell. The 9
 
 There are no adjustment components. Factory characterization should measure the input-to-output transfer at −5 V, 0 V and +5 V, separately for each output, at no load, 100 kΩ and 10 kΩ. Record DC offset, the open-to-10 kΩ change, the 1 V/octave error in cents, output settling and oscillation/ringing. Also test one-output shorts, paired outputs at opposite polarities, input ±12 V fault conditions, missing rails, startup, temperature and LED brightness. These are open bench gates, not completed tests.
 
-- `MULT_CORE:${SHEETNAME}` contains protection, the input buffer, all three precision outputs and their compensation parts.
-- `MULT_LEDS:${SHEETNAME}` contains the indicator driver and the locked `L:<instance>.IN.mag` LED. Only the already-buffered `IN_BUFFER` monitor and analog return may cross to that indicator island.
+- `IO_JACK:${SHEETNAME}` contains protection, the input buffer, all three precision outputs and their compensation parts.
+- `IO_JACK:${SHEETNAME}` contains the indicator driver and the locked `L:<instance>.IN.mag` LED. Only the already-buffered `IN_BUFFER` monitor and analog return may cross to that indicator island.
 - `IN_PROTECTED` and `IN_SENSE` are sensitive local nets. Neither is global or exposed to a panel control.
 - The panel references are resolved from the lockfile: B1 uses J109/J209/J110/J210 and D109; B2 uses J309/J409/J310/J410 and D309. No coordinate or placement was changed.
 
 The current worksheet at `design/reports/current/mult.json` estimates per-instance typical current as 5.86 mA on +12 V, 5.46 mA on −12 V and 0.05 mA on +5 V; planning maxima are 11.05 mA, 10.45 mA and 0.075 mA. These are not guaranteed limits; fault/clamp current, simultaneous output shorts, temperature and capacitive loads remain unquantified. OPA4197 does not have a retained usable vendor simulation model in this project, so module simulation is **NOT RUN** for that reason, as recorded in `design/reports/spice/mult.json`. KiCad ERC and exported-netlist checks cover capture connectivity only; they do not prove performance or hardware safety.
+
+## Source I/O allocation
+
+[Issue #60's source partition](./osc-io-partition.mdx) assigns raw jack, input isolation/clamp, local output feedback and magnitude drivers to the jack region, with complete fitted packages and local bypasses. The generated manifest is the current allocation authority; earlier broad module-island descriptions above describe the logical circuit grouping. Only checked buffered signals, conditioned logic, references, permitted wipers, and power/AGND are candidate connector nets. Physical boards and connector loads remain #35 work; this is an unvalidated draft.

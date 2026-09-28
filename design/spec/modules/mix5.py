@@ -5,6 +5,7 @@ inputs approximately ±10 V at the pre-level summer. This is not an
 implicit five-way average. The post-level inverter restores polarity.
 """
 from scripts.schgen.core import Instance
+from design.spec.modules.io_partition import refined
 from design.spec.modules.mixer_common import MixerBuilder, bindings, input_channel, output_channel
 
 INSTANCES=('M5A','M5B')
@@ -17,6 +18,7 @@ def panel_bindings():
     return rows
 
 
+@refined
 def family():
     panel_bindings();b=MixerBuilder('mix5',INSTANCES)
     b.cell('reference_generator','LOCAL',{'REF_5V':'REF5','REF_N5V':'REFN5'})

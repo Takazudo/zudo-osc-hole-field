@@ -2797,24 +2797,24 @@
     },
     "actual_fitted_capacitor_inventory": {
       "+12V": {
-        "captured_fitted_count": 474,
-        "captured_fitted_nominal_uF": 48.3,
-        "mapped_ic_supply_pin_count": 448,
-        "fitted_100nF_attributed_to_rail_count": 473,
+        "captured_fitted_count": 480,
+        "captured_fitted_nominal_uF": 48.9,
+        "mapped_ic_supply_pin_count": 454,
+        "fitted_100nF_attributed_to_rail_count": 479,
         "per_pin_proximity_and_effective_C_status": "OPEN: count coverage only; package proximity, local VEE5 and effective ceramic capacitance require board audit",
-        "remaining_nominal_uF_before_unplaced_board_bulk": 101.7,
+        "remaining_nominal_uF_before_unplaced_board_bulk": 101.1,
         "initial_bulk_uF_per_powered_board": 4.7,
         "maximum_additional_full_board_allocations_at_4p7uF": 21,
         "board_bulk_status": "OPEN: board count and per-board/rail reservoir placement not established; no zero-capacitance assumption",
         "full_ceiling_with_plus20percent_uF": 180.0
       },
       "-12V": {
-        "captured_fitted_count": 402,
-        "captured_fitted_nominal_uF": 41.1,
-        "mapped_ic_supply_pin_count": 400,
-        "fitted_100nF_attributed_to_rail_count": 401,
+        "captured_fitted_count": 408,
+        "captured_fitted_nominal_uF": 41.7,
+        "mapped_ic_supply_pin_count": 406,
+        "fitted_100nF_attributed_to_rail_count": 407,
         "per_pin_proximity_and_effective_C_status": "OPEN: count coverage only; package proximity, local VEE5 and effective ceramic capacitance require board audit",
-        "remaining_nominal_uF_before_unplaced_board_bulk": 108.9,
+        "remaining_nominal_uF_before_unplaced_board_bulk": 108.3,
         "initial_bulk_uF_per_powered_board": 4.7,
         "maximum_additional_full_board_allocations_at_4p7uF": 23,
         "board_bulk_status": "OPEN: board count and per-board/rail reservoir placement not established; no zero-capacitance assumption",
@@ -2855,7 +2855,7 @@
     "signal_modules": 33,
     "shared_references": 1,
     "worksheet_loads": 347,
-    "physical_IC_packages": 634,
+    "physical_IC_packages": 640,
     "fixed_panel_centres": 438
   },
   "physical_IC_allocation": [
@@ -6327,6 +6327,24 @@
       }
     },
     {
+      "ref": "U3305",
+      "instance": "X1",
+      "symbol": "OPA4197IPWR",
+      "supply_pins": {
+        "11": "-12V",
+        "4": "+12V"
+      },
+      "rails": [
+        "+12V",
+        "-12V"
+      ],
+      "domain": "EXT",
+      "mapped_supply_nets": {
+        "11": "-12V",
+        "4": "+12V"
+      }
+    },
+    {
       "ref": "U3401",
       "instance": "X2",
       "symbol": "ADG5412FBRUZ",
@@ -6388,6 +6406,24 @@
       "ref": "U3404",
       "instance": "X2",
       "symbol": "OPA4196IDR",
+      "supply_pins": {
+        "11": "-12V",
+        "4": "+12V"
+      },
+      "rails": [
+        "+12V",
+        "-12V"
+      ],
+      "domain": "EXT",
+      "mapped_supply_nets": {
+        "11": "-12V",
+        "4": "+12V"
+      }
+    },
+    {
+      "ref": "U3405",
+      "instance": "X2",
+      "symbol": "OPA4197IPWR",
       "supply_pins": {
         "11": "-12V",
         "4": "+12V"
@@ -13309,6 +13345,24 @@
       }
     },
     {
+      "ref": "U8117",
+      "instance": "M5A",
+      "symbol": "OPA4196IDR",
+      "supply_pins": {
+        "11": "-12V",
+        "4": "+12V"
+      },
+      "rails": [
+        "+12V",
+        "-12V"
+      ],
+      "domain": "EXT",
+      "mapped_supply_nets": {
+        "11": "-12V",
+        "4": "+12V"
+      }
+    },
+    {
       "ref": "U8201",
       "instance": "M5B",
       "symbol": "REF5050AIDR",
@@ -13589,6 +13643,24 @@
     },
     {
       "ref": "U8216",
+      "instance": "M5B",
+      "symbol": "OPA4196IDR",
+      "supply_pins": {
+        "11": "-12V",
+        "4": "+12V"
+      },
+      "rails": [
+        "+12V",
+        "-12V"
+      ],
+      "domain": "EXT",
+      "mapped_supply_nets": {
+        "11": "-12V",
+        "4": "+12V"
+      }
+    },
+    {
+      "ref": "U8217",
       "instance": "M5B",
       "symbol": "OPA4196IDR",
       "supply_pins": {
@@ -13939,6 +14011,24 @@
       }
     },
     {
+      "ref": "U8319",
+      "instance": "M4A",
+      "symbol": "OPA4196IDR",
+      "supply_pins": {
+        "11": "-12V",
+        "4": "+12V"
+      },
+      "rails": [
+        "+12V",
+        "-12V"
+      ],
+      "domain": "EXT",
+      "mapped_supply_nets": {
+        "11": "-12V",
+        "4": "+12V"
+      }
+    },
+    {
       "ref": "U8401",
       "instance": "M4B",
       "symbol": "REF5050AIDR",
@@ -14270,12 +14360,30 @@
         "11": "-12V",
         "4": "+12V"
       }
+    },
+    {
+      "ref": "U8419",
+      "instance": "M4B",
+      "symbol": "OPA4196IDR",
+      "supply_pins": {
+        "11": "-12V",
+        "4": "+12V"
+      },
+      "rails": [
+        "+12V",
+        "-12V"
+      ],
+      "domain": "EXT",
+      "mapped_supply_nets": {
+        "11": "-12V",
+        "4": "+12V"
+      }
     }
   ],
   "original_single_source": {
     "planning_mA": {
-      "+12V": 1404.819166,
-      "-12V": 1313.56866,
+      "+12V": 1420.819166,
+      "-12V": 1329.56866,
       "+5V": 177.286445
     },
     "ceilings_mA": {
@@ -14284,74 +14392,74 @@
       "+5V": 400
     },
     "excess_mA": {
-      "+12V": 444.819166,
-      "-12V": 673.56866,
+      "+12V": 460.819166,
+      "-12V": 689.56866,
       "+5V": 0
     }
   },
   "rejected_two_source_excess_mA": {
     "+12V": 0,
-    "-12V": 39.448182,
+    "-12V": 55.448182,
     "+5V": 0
   },
   "minimum_arithmetic_independent_sources": 3,
   "three_source_evaluation": {
     "A": {
       "normal_with_allowances_mA": {
-        "+12V": 486.624597,
-        "-12V": 464.124091,
+        "+12V": 493.624597,
+        "-12V": 471.124091,
         "+5V": 82.662511
       },
       "conditional_10ms_start_and_one_fault_mA": {
-        "+12V": 586.504597,
-        "-12V": 563.344091,
+        "+12V": 593.504597,
+        "-12V": 570.344091,
         "+5V": 103.462511
       },
       "margin_to_pinned_ceiling_mA": {
-        "+12V": 373.495403,
-        "-12V": 76.655909,
+        "+12V": 366.495403,
+        "-12V": 69.655909,
         "+5V": 296.537489
       }
     },
     "B": {
       "normal_with_allowances_mA": {
-        "+12V": 501.555028,
-        "-12V": 462.804522,
+        "+12V": 503.555028,
+        "-12V": 464.804522,
         "+5V": 76.970489
       },
       "conditional_10ms_start_and_one_fault_mA": {
-        "+12V": 601.435028,
-        "-12V": 562.024522,
+        "+12V": 603.435028,
+        "-12V": 564.024522,
         "+5V": 97.770489
       },
       "margin_to_pinned_ceiling_mA": {
-        "+12V": 358.564972,
-        "-12V": 77.975478,
+        "+12V": 356.564972,
+        "-12V": 75.975478,
         "+5V": 302.229511
       }
     },
     "C": {
       "normal_with_allowances_mA": {
-        "+12V": 499.099597,
-        "-12V": 460.999091,
+        "+12V": 506.099597,
+        "-12V": 467.999091,
         "+5V": 111.428467
       },
       "conditional_10ms_start_and_one_fault_mA": {
-        "+12V": 598.979597,
-        "-12V": 560.219091,
+        "+12V": 605.979597,
+        "-12V": 567.219091,
         "+5V": 132.228467
       },
       "margin_to_pinned_ceiling_mA": {
-        "+12V": 361.020403,
-        "-12V": 79.780909,
+        "+12V": 354.020403,
+        "-12V": 72.780909,
         "+5V": 267.771533
       }
     }
   },
   "selected_requirement": {
     "worksheet_mA": {
-      "+12V": 1399.089138,
-      "-12V": 1307.889138,
+      "+12V": 1415.089138,
+      "-12V": 1323.889138,
       "+5V": 174.898934
     },
     "allowances": {
@@ -14419,8 +14527,8 @@
       ]
     },
     "normal_with_allowances_mA": {
-      "+12V": 1433.819166,
-      "-12V": 1334.56866,
+      "+12V": 1449.819166,
+      "-12V": 1350.56866,
       "+5V": 224.286445
     },
     "minimum_continuous_mA": {

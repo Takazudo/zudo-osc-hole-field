@@ -12,6 +12,7 @@ import sys
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT))
 REPORT = ROOT / 'design/reports/pre-partition-confirm.json'
+CAPTURE_COMMIT = 'a594b96c81e9b7c2919dc761b68533af9f5d4c56'
 SOURCE_COMMIT = '4cc30612c4d9cd0597caae2eccd1967b8870c6b9'
 PREREQUISITES = {
     '#52': '1a2f33cf6e61cf89c7422a1a42122806f68e3033',
@@ -203,7 +204,13 @@ def check_report(capture_check: bool = False) -> None:
     # explicit mode compares the captured hashes and re-runs live CAD/source
     # checks while the project is still at the pre-partition boundary.
     if not capture_check:
-        erc_baseline = read_json('design/reports/master-erc-warning-baseline.json')
+        # Validate the committed #54 capture, not a later legitimate live ERC
+        # inventory. The recorded snapshot hash authenticates these bytes.
+        baseline_path = 'design/reports/master-erc-warning-baseline.json'
+        captured = subprocess.check_output(['git', 'show', f'{CAPTURE_COMMIT}:{baseline_path}'], cwd=ROOT)
+        require(hashlib.sha256(captured).hexdigest() == snapshot_hashes[baseline_path],
+                'historical ERC baseline does not match the #54 snapshot')
+        erc_baseline = json.loads(captured)
         erc_inventory_digest = hashlib.sha256(json.dumps(
             erc_baseline['warnings'], sort_keys=True, separators=(',', ':')
         ).encode()).hexdigest()

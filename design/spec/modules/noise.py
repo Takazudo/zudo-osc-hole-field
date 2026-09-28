@@ -2,6 +2,7 @@
 
 All filter poles and level trims are proposals, not measured transfer functions.
 """
+from design.spec.modules.io_partition import refined
 from dataclasses import replace
 import json
 from scripts.schgen.core import Family, Instance, Part
@@ -48,6 +49,7 @@ class NoiseBuilder(Builder):
         return replace(family, parts=parts)
 
 
+@refined
 def family():
     panel_bindings()
     b = NoiseBuilder()

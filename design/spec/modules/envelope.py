@@ -2,6 +2,7 @@
 
 Index allocation 41–46; only rails are global. No physical validation claimed.
 """
+from design.spec.modules.io_partition import refined
 from collections import defaultdict
 from dataclasses import replace
 from design.spec.modules.oscillator import Builder,PLACEMENTS,RAILS
@@ -131,6 +132,7 @@ class EnvelopeBuilder(Builder):
   return Family('envelope',tuple(out),global_nets=RAILS,sensitive_nets=SENSITIVE,paper='A0')
 
 
+@refined
 def family():
  panel_bindings();b=EnvelopeBuilder()
  b.cell('reference_generator','LOCAL',{'REF_5V':'REF5','REF_N5V':'REFN5','GATE_REF':'GATE_REF'})

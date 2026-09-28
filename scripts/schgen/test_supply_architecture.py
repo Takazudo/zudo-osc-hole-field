@@ -46,9 +46,9 @@ class SupplyArchitectureTests(unittest.TestCase):
         self.assertEqual(r['implementation']['open_injection_obligations']['octave_receivers'],30)
         self.assertEqual(r['implementation']['patch_sleeves_on_agnd'],180)
         self.assertEqual({rail: row['captured_fitted_nominal_uF'] for rail,row in r['implementation']['actual_fitted_capacitor_inventory'].items()},
-                         {'+12V':48.3,'-12V':41.1,'+5V':24.5})
-        self.assertEqual(r['implementation']['actual_fitted_capacitor_inventory']['-12V']['mapped_ic_supply_pin_count'],400)
-        self.assertEqual(r['implementation']['actual_fitted_capacitor_inventory']['-12V']['fitted_100nF_attributed_to_rail_count'],401)
+                         {'+12V':48.9,'-12V':41.7,'+5V':24.5})
+        self.assertEqual(r['implementation']['actual_fitted_capacitor_inventory']['-12V']['mapped_ic_supply_pin_count'],406)
+        self.assertEqual(r['implementation']['actual_fitted_capacitor_inventory']['-12V']['fitted_100nF_attributed_to_rail_count'],407)
         self.assertEqual(r['implementation']['prospective_plus12_mA_excess_over_auxiliary_allocation'],25.5)
 
     def test_missing_module(self):

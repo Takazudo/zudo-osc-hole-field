@@ -4,6 +4,7 @@ PROPOSAL: G06 GAIN affects dry OUT only; owner confirmation remains open.
 Component index reservation 21--23. All timing nodes are local and Sensitive.
 """
 from dataclasses import replace
+from design.spec.modules.io_partition import refined
 from collections import defaultdict
 import json
 from scripts.schgen.core import Family, Instance
@@ -66,6 +67,7 @@ class FilterBuilder(Builder):
         return Family('filter',tuple(out),global_nets=RAILS,sensitive_nets=SENSITIVE,paper='A0')
 
 
+@refined
 def family():
     panel_bindings();b=FilterBuilder()
     b.cell('reference_generator','LOCAL',{'REF_5V':'REF5','REF_N5V':'REFN5'})

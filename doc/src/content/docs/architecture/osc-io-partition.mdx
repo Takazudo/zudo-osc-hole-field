@@ -1,0 +1,44 @@
+---
+title: "Source I/O partition"
+description: "Checked source regions, complete package allocation and explicit remaining board/connector work for issue 60."
+sidebar_position: 175
+---
+
+**Unvalidated draft.** The source now supports a front I/O / rear processing cut without sending raw jack tips, precision feedback or declared Sensitive nodes through a connector. This establishes an electrical allocation candidate. It does not select a PCB outline, installed board plane, harness, or manufacturable stack.
+
+`design/spec/modules/io_partition.py` refines source cell ownership and repacks equivalent OPA4196IDR, OPA4197IPWR and SN74HC14DR channels by region. Channel signatures preserve each active function and its nets; unused sections remain terminated. Each physical package and each bypass is assigned once. The native KiCad export is compared pin by pin before `scripts/checks/io_partition60.py` generates `design/reports/io-partition.json`.
+
+| Region | Responsibility |
+| --- | --- |
+| Jack | All 180 jack tips, source-facing input switches, limiters/clamps, input buffers, local output isolation/feedback, magnitude/clip drivers and their bypasses |
+| Control | Panel contacts and their conditioning, high-impedance wipers, complete H1/H2 slew islands, ENV stage LEDs/drivers, and local A/B selector buffering |
+| Core | Timing, hold, integrator, summing and processing circuits, references and remaining bypasses |
+| Selector front/rear | The unchanged three-front/two-rear SRBV160803 adapter assignment; buffered taps and selected buffered voltage only |
+
+All 33 modules and 438 fixed UID x/y centres are retained. The R21 UID/XY digest remains `8354aed4a72bf5357e1ccfb4da7c3234f139ba19f75a49d825d733c30a6da843`. The checker rejects missing/duplicate assignments, split fitted packages, split islands, raw TIP crossings and Sensitive crossings. It also treats op-amp summing/feedback nodes as local even when an older family declaration omitted them. Switch-selected voltages qualify only when the source pins trace to buffered outputs or AGND.
+
+ENV magnitude and stage drivers now occupy separate complete packages and regions. Offset's existing Sensitive `OUT_INTERNAL` stays with the restore amplifier, local feedback, output cell and indicators at the jack region. A/B's Sensitive selector common stays at the control region and drives the added local follower with two 499 Ω isolation resistors; [the selector page](./osc-block-switch.mdx) records the 24-case TI-model screen and rejected ringing candidate.
+
+The manifest names 465 candidate crossing nets, their directions, voltage envelope, current planning requirement, capacitance/length envelope and adjacent return. Signal crossings inherit the OSC-ES-1 ≤300 mm / ≤1 nF envelope and 2 mA signal-driver planning limit. Power/AGND rows instead retain the actual EXT domain requirements. Connector-specific fanout/load sums, exact signal integrity and connector realization remain open to #35; generic bounds are not measured ratings.
+
+## Area and package accounting
+
+| Region | Fitted courtyard sum, mm² | Candidate gross area |
+| --- | ---: | --- |
+| Jack | 50,341.435 | Preview 306 × 140 mm, two faces: 85,680 mm² |
+| Core | 47,009.178 | No accepted outline |
+| Control | 23,475.853 | No accepted outline |
+| Selector front, three adapters | 1,199.289 | Existing selected adapter geometry; no aggregate usable-area assumption |
+| Selector rear, two adapters | 799.526 | Existing selected adapter geometry; no aggregate usable-area assumption |
+
+Jack opposite-face pad copper adds 1,918.520 mm², giving a necessary occupied-area bound of 52,259.955 mm². The remaining gross 33,420.045 mm² is **not usable placement area**: support, connectors, routing, other through-hole exclusions, board bulk and unresolved #59 protection must still be reserved. Courtyards have not been shrunk. Physical packing, installed fit, panel/control body coexistence and connector capacity are NOT RUN.
+
+Four added Texas Instruments OPA4196IDR / SOIC-14 quads (LCSC C2057385) separate mixer regions; two added OPA4197IPWR / TSSOP-14 quads (C2057327) provide the A/B control-region drivers. Existing exact owner pin maps establish channel equivalence. Their retained full-temperature zero-output-current limits are 1 mA and 6 mA per whole quad per analog rail, respectively. The generated ledger now has 640 fitted IC packages and 347 load rows; +16 mA planning quiescent current per analog rail is booked. Twelve actual 100 nF bypasses add 0.6 µF to each analog rail. There is no fictitious fitted protection part.
+
+The EXT source remains requirement-only, non-orderable and non-energizable: 1600/1500/300 mA continuous and 1900/1800/400 mA transient. Actual fitted nominal rail capacitance is 48.9/41.7/24.5 µF; 4.7 µF per powered board/rail remains unallocated pending #35. #59 remains OPEN for 82 outputs, 16 precision-sense paths and 30 octave receivers. #55/#57 physical qualification and #49 precision hardware stability remain NOT RUN.
+
+## Reproduction and handoff
+
+Regenerate with `bash scripts/checks/regen-all.sh`, then use `scripts/kicad/run.sh` to export the native master netlist. Run `python3 scripts/checks/io_partition60.py --netlist <export.net> --require-cut` to require the source boundary gate, and `--check` to compare the committed report. `bash scripts/schgen/smoke.sh` checks ERC and native connectivity; `python3 -m unittest scripts.checks.test_io_partition60` exercises the negative cases. `python3 -m design.spec.modules.run_manual_ab_spice` reruns the fixed A/B path matrix and exits nonzero on a failed model criterion.
+
+The #54 report remains its historical capture; its default checker authenticates the committed historical warning inventory. This report supersedes its live package/net/current snapshot for #35. The manager must update #35/#36 and PCB group requirements from this manifest before board-specific work. A complete partition is not accepted until actual usable regions, connector pin assignments and loads, support geometry and reservations are checked.
