@@ -35,14 +35,14 @@ flowchart LR
 | Input load | 100 kΩ nominal to AGND, followed by 10 kΩ series limiting and rail clamps | Source impedance and clamp leakage effects open |
 | Nominal linear input range | −5 V to +5 V | Project target; not measured |
 | Survival input range | ±12 V continuous fault planning | Survival is not a linear operating range; isolation and clamp tests open |
-| Output topology | OPA4197; 2 × 499 Ω / 0.5 W in series, with 10 kΩ DC feedback from the jack and 100 pF local high-frequency feedback | OSC-ES-1 proposal |
+| Output topology | OPA4197; 2 × 499 Ω / 0.5 W in series, with 100 Ω DC feedback from the jack and 1 nF local high-frequency feedback | OSC-ES-1 proposal; 12/12 TI-model cases pass, physical checks open |
 | Load-induced change | ≤1 mV from open circuit to 10 kΩ at −5 V, 0 V and +5 V | Required bench target; stability and load response unverified |
 | Datasheet offset reference | OPA4197 input offset maximum ±100 µV at the datasheet's stated ±18 V, 25 °C conditions | Conditions differ from the project's ±12 V rails; not promoted as a project guarantee |
-| Two-amplifier offset estimate | 100 µV input buffer + 100 µV output channel = 200 µV worst-direction sum; two 20 pA bias currents through 10 kΩ contribute about 0.4 µV | Planning arithmetic only; excludes source impedance, switch on-resistance, clamp leakage, resistor tolerance and temperature |
+| Two-amplifier offset estimate | 100 µV input buffer + 100 µV output channel = 200 µV worst-direction sum | Planning arithmetic only; bias-current contribution requires a net-by-net impedance calculation with the revised 100 Ω feedback path. Source impedance, switch on-resistance, clamp leakage, resistor tolerance and temperature are excluded. |
 | Output load target as fractional error | 1 mV / 5 V = 200 ppm = 0.02% at the ±5 V test point | Target, not a measured gain error |
-| 1 V/octave pitch conversion | 1 mV ≈ 1.2 cents; the 1 mV load target is ≈1.2 cents. Adding the preliminary 0.2004 mV offset/bias estimate gives ≈1.44 cents | Arithmetic at 1 V/octave; does not establish tracking or an accuracy limit |
+| 1 V/octave pitch conversion | 1 mV ≈ 1.2 cents; the 1 mV load target is ≈1.2 cents. Adding only the 0.2 mV preliminary offset estimate gives ≈1.44 cents | Arithmetic at 1 V/octave; excludes bias, tolerance and source effects and does not establish tracking or an accuracy limit |
 
-The multiplication output paths use OSC-ES-1's compensated precision cell. The 998 Ω resistance is outside the local amplifier drive node but inside the DC feedback loop through the jack; the 100 pF capacitor supplies a separate local high-frequency path. A plain output resistor outside feedback would attenuate a 10 kΩ load. The project has no per-output gain trim.
+The multiplication output paths use OSC-ES-1's compensated precision cell. The 998 Ω resistance is outside the local amplifier drive node but inside the DC feedback loop through the jack; the 1 nF capacitor supplies a separate local high-frequency path. A plain output resistor outside feedback would attenuate a 10 kΩ load. The project has no per-output gain trim. The 100 Ω and 1 nF exact passive identities remain open.
 
 ### Main nets
 
@@ -52,7 +52,7 @@ The multiplication output paths use OSC-ES-1's compensated precision cell. The 9
 | `IN_PROTECTED` | Input isolation switch drain pin 2; `R_PD.1`; `R_LIMIT.1` | Local protected node; `R_PD` is 100 kΩ to AGND |
 | `IN_SENSE` | `R_LIMIT.2`; clamp bridge midpoint pin 3; OPA4197 quad pin 3 (input-buffer non-inverting input) | High-impedance, clamped amplifier input; local only |
 | `IN_BUFFER` | OPA4197 quad pin 1 (input-buffer output), pins 5/10/12 (three output-channel non-inverting inputs), and magnitude-driver monitor input | Buffered source distributed only within this module |
-| `OUT_n_TIP` | Output channel jack pin through its two 499 Ω resistors; its 10 kΩ feedback resistor; `J_OUT_n.T` | `n` is 1, 2 or 3; load target is checked here |
+| `OUT_n_TIP` | Output channel jack pin through its two 499 Ω resistors; its 100 Ω feedback resistor; `J_OUT_n.T` | `n` is 1, 2 or 3; load target is checked here |
 | `+12V`, `-12V`, `+5V`, `AGND` | IC supplies, protection cells and analog returns | Only family global nets; all signal nets remain local per sheet instance |
 
 ## Decisions and provenance

@@ -26,8 +26,11 @@
     },
     {
       "id": "precision_output",
-      "status": "NOT RUN",
-      "reason": "No retained usable vendor/validated circuit model for the full cell; ideal checks cover only named topology cases. No hardware claim."
+      "status": "PASS - TI MODEL ONLY",
+      "cases": 12,
+      "failed_cases": 0,
+      "report": "design/reports/spice/precision-output-vendor.json",
+      "limit": "TI OPAx197 Final 1.3 is applicable to OPA4197, but tolerance, board/cable parasitics and physical stability remain NOT RUN."
     },
     {
       "id": "remote_buffer",
@@ -168,11 +171,6 @@
       "id": "slew_island",
       "status": "NOT RUN",
       "reason": "No retained usable vendor/validated circuit model for the full cell; ideal checks cover only named topology cases. No hardware claim."
-    },
-    {
-      "id": "precision_output_stability",
-      "status": "NOT RUN",
-      "reason": "Validated OPA4197 macromodel with output impedance, compensation and tolerance behavior not retained. The open/100 k\u03a9/10 k\u03a9, 0/100 pF/1 nF/5 nF, \u00b15 V vendor-model sweep and physical cable measurements remain open despite the ideal diagnostic sweep."
     },
     {
       "id": "precision_output_ideal_sweep",

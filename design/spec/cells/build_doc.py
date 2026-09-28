@@ -10,7 +10,7 @@ PATHS={
 'high_impedance_input':['PROTECTED','10k limiter + BAT54S','CV buffer','BUFFERED'],
 'summing_node_input':['PROTECTED','100k input + clamp','SUM'],
 'general_output':['SIGNAL','local feedback buffer','499Ω + 499Ω','JACK'],
-'precision_output':['SIGNAL','precision buffer','499Ω + 499Ω','JACK','10k DC feedback'],
+'precision_output':['SIGNAL','precision buffer','499Ω + 499Ω','JACK','100Ω DC feedback + 1nF local feedback'],
 'remote_buffer':['SIGNAL','local buffer','100Ω isolation','REMOTE'],
 'bipolar_attenuverter':['BUFFERED_INPUT','10k panel pot','wiper buffer + summer','OUT'],
 'dc_control_source':['buffered ±5V refs','100k panel pot','CV follower','OUT'],
@@ -54,12 +54,15 @@ def build():
   if id in ('bipolar_attenuverter','magnitude_indicator','gate_trigger_input','clip_detector','stage_indicator'):
    results=', '.join(f'{name} = {m["value"]:.6g}' for name,m in sim[id]['measurements'].items())
    lines += [f'**Ideal ngspice result:** {results}. This tests only the named ideal topology and generic device models; no vendor or hardware behavior is qualified.','']
-  else:lines+=['**Full-cell simulation: NOT RUN** — '+sim[id]['reason'],'']
+  elif 'reason' in sim[id]:lines+=['**Full-cell simulation: NOT RUN** — '+sim[id]['reason'],'']
+  else:lines+=['**Full-cell simulation:** '+sim[id]['status']+' — '+sim[id]['limit'],'']
   if id=='precision_output':
-   lines+=['**Diagnostic ideal-model sweep:** 12 load/cable combinations were run with a zero-delay 100000 V/V source; six exceed the 10% step-overshoot target. At 10 kΩ and 5 nF the model peaks at +9.727 V and −9.705 V for ±5 V steps (47.265% of the 10 V step). This is a model failure, not a prediction of OPA4197 hardware. A validated vendor model and cable/bench sweep remain **NOT RUN**. The 100 pF proposal is unchanged.','']
+   vendor=json.loads((ROOT/'design/reports/spice/precision-output-vendor.json').read_text())
+   worst=max(vendor['cases'],key=lambda case:case['overshoot_percent'])
+   lines += [f'**TI OPAx197 Final 1.3 model sweep:** {vendor["pass_count"]} of {len(vendor["cases"])} cases pass overshoot, settling and late-ripple checks. Worst overshoot is {worst["overshoot_percent"]:g}% at {worst["load"]} load and {worst["cable_capacitance"]} cable capacitance. The fixed proposal uses 100 Ω jack-sense feedback and 1 nF local feedback. The prior 10 kΩ/100 pF ideal diagnostic remains retained with six of twelve failures; it was a different circuit and an ideal source, so its results do not predict this TI model. Value-specific 100 Ω and 1 nF orderable identities are still open. Physical cable, PCB parasitics, temperature and tolerance checks are **NOT RUN**.','']
   for note in cell.get('notes',[])[:3]:lines += ['- '+note.replace('<','less than ').replace('>','greater than ')]
   lines.append('')
- lines += ['## Verification limits','','The exact OPA4197 compensation and 998 Ω dual-feedback cable-load stability sweep (open/100 kΩ/10 kΩ, 0/100 pF/1 nF/5 nF, ±5 V steps) is **NOT RUN**: a validated OPA4197 model and physical cable behavior are unavailable. The remote driver cable stability check is **NOT RUN** for the same model and harness-parasitic gap. Resistor-chain fault power is an arithmetic planning check, not thermal qualification. The sample-and-hold slew and reference outputs require measured calibration and hot/cold data. No cell is released for fabrication.','']
+ lines += ['## Verification limits','','The TI OPAx197 model includes OPA4197 and models output impedance, slew rate, settling and capacitive-load response. Its sweep is a model result for the stated fixed network, not a measurement or a guarantee across part and layout variation. Physical OPA4197 cable stability is **NOT RUN** pending a populated board/cable coupon; temperature, component tolerances, output-current and thermal checks are also open. The remote driver cable stability check is **NOT RUN** for its separate model/harness gap. Resistor-chain fault power is an arithmetic planning check, not thermal qualification. The sample-and-hold slew and reference outputs require measured calibration and hot/cold data. No cell is released for fabrication.','']
  return '\n'.join(lines)
 
 def main(check=False):

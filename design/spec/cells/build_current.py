@@ -31,6 +31,7 @@ def build():
   if cell['id']=='decoupling_bulk':unquantified.append('RAIL binding and per-board/whole-instrument bleeder allocation')
   if cell['id']=='input_fault_switch':unquantified.append('1 kohm enable-feed +5 V current and switching/fault currents')
   if cell['id']=='reference_generator':unquantified.append('REF5050 supply current, reference load and output drive')
+  if cell['id']=='precision_output':unquantified.append('1 nF local feedback charge and discharge current during large steps; 100 ohm jack-sense resistor adds no nominal DC rail load, but modelled transient supply current is not a guaranteed maximum')
   rows.append({'id':cell['id'],'status':'PLANNING PARTIAL - NOT A CELL MAXIMUM','known_planning_mA':{r:round(subtotal[r],6) for r in RAILS},'basis':basis,'unquantified':unquantified,'qualification':'Sum only after exact package sharing, loads, duty cycles, source facts and netlist are resolved; no passing instrument budget is claimed.'})
  return {'schema_version':1,'standard_id':'OSC-ES-1','authority':STANDARD['authority'],'status':'Unvalidated partial planning worksheet; not a maximum or a board budget','source':SOURCE,'rail_ceiling_warning':'-12 V preliminary estimate is 712.655 mA versus 640 mA ceiling; #34 reduction required.','cells':rows}
 

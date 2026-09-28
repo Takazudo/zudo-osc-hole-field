@@ -70,7 +70,7 @@ Functional terminal connections and all constituent parts are in the JSON. Exact
 | High-impedance input | 100 kΩ drain load, 10 kΩ input limiter, BAT54S clamp, unity buffer of appropriate role |
 | Summing-node input | 100 kΩ / 0.1% after fault switch; parent unity summer uses 100 kΩ feedback and 10 pF C0G |
 | General output | Unity buffer, two 499 Ω / 0.5 W in series after local feedback |
-| Precision output | Same resistor pair inside DC feedback; 10 kΩ jack-to-inverting-input path; 100 pF driver-to-inverting-input local feedback |
+| Precision output | Same resistor pair inside DC feedback; 100 Ω jack-to-inverting-input path; 1 nF driver-to-inverting-input local feedback. TI OPAx197 model passes 12/12 specified cases at 27 °C; physical stability remains open. |
 | Remote buffer | Internal harness driver with 100 Ω isolation, 10 kΩ feedback and 100 pF local feedback |
 | Bipolar attenuverter | Buffered signal drives 10 kΩ pot to ground; 1 kΩ wiper series, 10 MΩ fail resistor; equal 100 kΩ / 0.1% input/feedback and 10 pF; `OUT = 2 × WIPER − INPUT` |
 | DC source | 100 kΩ pot between buffered references; 1 kΩ wiper series, 10 MΩ return, 10 nF C0G and CV follower |

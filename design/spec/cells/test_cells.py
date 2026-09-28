@@ -54,6 +54,10 @@ class CellContract(unittest.TestCase):
   fb=next(p for p in parts if p.key.endswith('__A.1')).pins['2']
   self.assertIn('_JACK',jack);self.assertIn('_FB',fb)
   self.assertNotEqual(jack,fb)
+  feedback=next(p for p in parts if p.key.endswith('__R_FB.0'))
+  compensation=next(p for p in parts if p.key.endswith('__C_FAST.0'))
+  self.assertEqual((feedback.value,compensation.value),('100 Ω','1e-09 F'))
+  self.assertEqual((feedback.attributes['MPN'],compensation.attributes['MPN']),('',''))
  def test_wrong_value_does_not_inherit_representative_mpn(self):
   parts=cell_parts('input_fault_switch',representative_uid('input_fault_switch'))
   drive=next(p for p in parts if p.key.endswith('__R_DRIVE.0'))
