@@ -114,7 +114,17 @@ def cell_parts(cell_id,panel_uid,nets=None,*,ordinal_start=1,instance_tag=''):
   attributes={'Role':f'{cell_id}:{spec["ref"]}','PanelUid':panel_uid,'MPN':identity,'Manufacturer':record['manufacturer'] if identity else '', 'LCSC':record.get('lcsc','') if identity else ''}
   for unit in sorted(u for u,pins in symbol.units.items() if pins):
    pins={pin.number:assigned.get(pin.number) for pin in symbol.units[unit]}
-   # The selected active unit is 1; remaining sections are deliberate NCs.
+   # Keep unused active inputs in defined states. Spare OPA sections are
+   # grounded followers; unused comparator/Schmitt outputs remain explicit NC.
+   if spec.get('opamp_role') and unit in (2,3,4):
+    mapping={2:('7','6','5'),3:('8','9','10'),4:('14','13','12')}
+    out_pin,minus_pin,plus_pin=mapping[unit]
+    follower=namespace+'__'+re.sub('[^A-Za-z0-9_]','_',spec['ref'])+'_SPARE_'+str(unit)
+    pins={out_pin:follower,minus_pin:follower,plus_pin:'AGND'}
+   if part_id=='comparator' and unit==2:
+    pins={'5':'AGND','6':'+5V','7':None}
+   if part_id=='schmitt' and unit in (2,3,4,5,6):
+    pins={pin.number:'AGND' if pin.electrical=='input' else None for pin in symbol.units[unit]}
    if part_id=='fault_switch' and unit in (2,3,4):pins={n:net('AGND') for n in pins}
    x=50.8+((len(out))%7)*50.8;y=50.8+((len(out))//7)*25.4
    out.append(Part(f'{key}.{unit}',symbol.lib_id,prefix,ordinal,unit,x,y,pins,value=_value(spec) or record['mpn'],footprint=footprint,attributes=attributes))

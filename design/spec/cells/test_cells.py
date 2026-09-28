@@ -67,3 +67,38 @@ class CellContract(unittest.TestCase):
   self.assertGreater(1.471965,1.35);self.assertLess(1.471965,1.65)
   self.assertGreater(.971509,.85);self.assertLess(.971509,1.15)
 if __name__=='__main__':unittest.main()
+
+class UnusedActiveUnitContract(unittest.TestCase):
+ def test_selected_signal_units_keep_their_port_pins(self):
+  uid=representative_uid('high_impedance_input')
+  op=cell_parts('high_impedance_input',uid,{'PROTECTED':'P','BUFFERED':'B'})
+  active=next(p for p in op if p.symbol.endswith('OPA4196IDR') and p.unit==1)
+  self.assertEqual((active.pins['1'],active.pins['2']),('B','B'))
+  gate=cell_parts('gate_trigger_input',representative_uid('gate_trigger_input'),
+                  {'BUFFERED':'B','REF_5V':'R','GATE_REF':'G','GATE_HIGH':'H'})
+  schmitt=next(p for p in gate if p.symbol.endswith('SN74HC14DR') and p.unit==1)
+  self.assertEqual(schmitt.pins['2'],'H')
+  clip=cell_parts('clip_detector',representative_uid('clip_detector'),
+                  {'MONITOR':'M','REF_5V':'R','REF_N5V':'N'})
+  amp=next(p for p in clip if p.symbol.endswith('OPA4196IDR') and p.unit==1)
+  self.assertEqual(amp.pins['3'],'M')
+  comparators=[p for p in clip if p.symbol.endswith('LM393BIDR') and p.unit==1]
+  self.assertIn('R',{p.pins['3'] for p in comparators})
+  self.assertIn('N',{p.pins['2'] for p in comparators})
+
+ def test_spare_opamp_comparator_and_schmitt_inputs_are_defined(self):
+  op=cell_parts('high_impedance_input',representative_uid('high_impedance_input'))
+  for p in op:
+   if p.symbol.endswith(('OPA4196IDR','OPA4197IPWR')) and p.unit in (2,3,4):
+    self.assertIn('AGND',p.pins.values())
+    self.assertEqual(len({v for v in p.pins.values() if v!='AGND'}),1)
+    self.assertNotIn(None,p.pins.values())
+  for cell,role in [('clip_detector','LM393BIDR'),('switch_button_input','SN74HC14DR')]:
+   parts=cell_parts(cell,representative_uid(cell))
+   spare=[p for p in parts if p.symbol.endswith(role) and p.unit>1]
+   self.assertTrue(spare)
+   for p in spare:
+    if role=='LM393BIDR' and p.unit==2:
+     self.assertEqual(p.pins,{'5':'AGND','6':'+5V','7':None})
+    if role=='SN74HC14DR' and p.unit in (2,3,4,5,6):
+     self.assertEqual(sorted(v for v in p.pins.values() if v is not None),['AGND'])
