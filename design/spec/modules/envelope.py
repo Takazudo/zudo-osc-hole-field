@@ -32,7 +32,7 @@ class EnvelopeBuilder(Builder):
  def cell(self,id,tag,nets,*,panel=None,led=False):
   for p in cell_parts(id,(panel or 'J:{}.SIG').format('E1'),nets,ordinal_start=1,instance_tag=tag):
    attrs={**p.attributes,'PanelUid':'','Island':'ENV_LEDS:${SHEETNAME}' if led else self.island};refs={}
-   if panel and (p.prefix=='RV' or (led and p.symbol.endswith('0603Whitelight_C2290'))):
+   if panel and (p.prefix=='RV' or (led and p.symbol.endswith('Kingbright_White_0402'))):
     a,refs=self.panel_attributes(panel);attrs.update(a)
     if not led:attrs['Island']=''
    self.parts.append(replace(p,attributes=attrs,panel_refs=refs))

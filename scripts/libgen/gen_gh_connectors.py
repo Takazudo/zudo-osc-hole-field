@@ -65,7 +65,7 @@ def footprint(n,mpn,b):
 
 def model(b):
     # KiCad WRL coordinates are 2.54 mm per unit. This is a nominal bounding prism, not an exact solid.
-    x=b/5.08; ya=0.2/2.54; yb=4.45/2.54; z=4.05/2.54
+    x=b/5.08; ya=-4.45/2.54; yb=-0.2/2.54; z=4.05/2.54
     pts=[(-x,ya,0),(x,ya,0),(x,yb,0),(-x,yb,0),(-x,ya,z),(x,ya,z),(x,yb,z),(-x,yb,z)]
     return '#VRML V2.0 utf8\nShape { appearance Appearance { material Material { diffuseColor 0.94 0.91 0.83 } } geometry IndexedFaceSet { solid FALSE coord Coordinate { point [ '+', '.join(' '.join(f'{v:.6f}' for v in p) for p in pts)+' ] } coordIndex [ 0,1,2,3,-1,4,7,6,5,-1,0,4,5,1,-1,1,5,6,2,-1,2,6,7,3,-1,3,7,4,0,-1 ] } }\n'
 

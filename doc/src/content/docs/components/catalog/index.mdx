@@ -33,8 +33,8 @@ Four columns describe state. None of them is a grade, and there is deliberately 
   | <EvidenceAnchor id="rec-dailywell-2ms1t1b1m2qes-5" />[2MS1T1B1M2QES-5](/docs/components/records/dailywell-2ms1t1b1m2qes-5/) | `rec-dailywell-2ms1t1b1m2qes-5` | two-position panel toggle                   | Fitted          | UNRESOLVED | SOURCE UNAVAILABLE | 4 of 4       |
   | <EvidenceAnchor id="rec-dailywell-2ms3t1b1m2qes" />[2MS3T1B1M2QES](/docs/components/records/dailywell-2ms3t1b1m2qes/)       | `rec-dailywell-2ms3t1b1m2qes`   | three-position panel toggle                 | Fitted          | UNRESOLVED | SOURCE UNAVAILABLE | 4 of 4       |
   | <EvidenceAnchor id="rec-omron-b3f-1020" />[B3F-1020](/docs/components/records/omron-b3f-1020/)                              | `rec-omron-b3f-1020`            | panel push button                           | Fitted          | VERIFIED   | AVAILABLE          | 1 of 4       |
-  | <EvidenceAnchor id="rec-kento-white" />[KT-0603W](/docs/components/records/kento-white/)                                    | `rec-kento-white`               | white jack-adjacent panel indicator emitter | Fitted          | UNRESOLVED | AVAILABLE          | 5 of 5       |
-  | <EvidenceAnchor id="rec-kento-red" />[KT-0603R](/docs/components/records/kento-red/)                                        | `rec-kento-red`                 | red jack-adjacent panel indicator emitter   | Fitted          | UNRESOLVED | AVAILABLE          | 5 of 5       |
+  | <EvidenceAnchor id="rec-kingbright-white" />[APHHS1005QWF/D](/docs/components/records/kingbright-white/)                    | `rec-kingbright-white`          | white magnitude and stage indicator emitter | Fitted          | VERIFIED   | AVAILABLE          | 2 of 6       |
+  | <EvidenceAnchor id="rec-kingbright-red" />[APG1005SEC/E-T](/docs/components/records/kingbright-red/)                        | `rec-kingbright-red`            | red clip indicator emitter                  | Fitted          | VERIFIED   | AVAILABLE          | 2 of 6       |
   | <EvidenceAnchor id="rec-dealon-dw254p-2x8-l0" />[DW254P-2X8-L0](/docs/components/records/dealon-dw254p-2x8-l0/)             | `rec-dealon-dw254p-2x8-l0`      | supply-side power interconnect header       | Fitted          | UNRESOLVED | AVAILABLE          | 4 of 4       |
   | <EvidenceAnchor id="rec-op-audio" />[OPA4196IDR](/docs/components/records/op-audio/)                                        | `rec-op-audio`                  | audio; cv; indicator                        | Fitted          | VERIFIED   | AVAILABLE          | 3 of 7       |
   | <EvidenceAnchor id="rec-op-precision" />[OPA4197IPWR](/docs/components/records/op-precision/)                               | `rec-op-precision`              | precision                                   | Fitted          | VERIFIED   | AVAILABLE          | 3 of 7       |
@@ -263,55 +263,53 @@ One entry per record, carrying the orderable identity and every board placement.
 
 [B3F-1020 record details](/docs/components/records/omron-b3f-1020/) — [B3F-1020 raw agent resource](/docs/claude-skills/component-omron-b3f-1020/)
 
-### KT-0603W
+### APHHS1005QWF/D
 
 | Field          | Recorded value                              |
 | -------------- | ------------------------------------------- |
-| Record ID      | `rec-kento-white`                           |
+| Record ID      | `rec-kingbright-white`                      |
 | Kind           | standalone — audited in its own right       |
-| Manufacturer   | Hubei KENTO Elec                            |
-| Function       | white jack-adjacent panel indicator emitter |
-| Orderable ID   | `C2290`                                     |
-| Package        | `0603 SMD LED`                              |
-| Inventory line | `line-kento-white`                          |
-| Owner skill    | `component-kento-kt-0603w`                  |
+| Manufacturer   | Kingbright                                  |
+| Function       | white magnitude and stage indicator emitter |
+| Package        | `0402 top-emitting SMD LED`                 |
+| Inventory line | `line-kingbright-white`                     |
+| Owner skill    | `component-kingbright-aphhs1005qwf-d`       |
 
 **Placements:** no placement published
 
 **Fit:** Fitted
 
-**Identity state:** UNRESOLVED
+**Identity state:** VERIFIED
 
 **Source state:** AVAILABLE
 
-**Open coverage domains:** 5 open of 5 published
+**Open coverage domains:** 2 open of 6 published
 
-[KT-0603W record details](/docs/components/records/kento-white/) — [KT-0603W raw agent resource](/docs/claude-skills/component-kento-kt-0603w/)
+[APHHS1005QWF/D record details](/docs/components/records/kingbright-white/) — [APHHS1005QWF/D raw agent resource](/docs/claude-skills/component-kingbright-aphhs1005qwf-d/)
 
-### KT-0603R
+### APG1005SEC/E-T
 
-| Field          | Recorded value                            |
-| -------------- | ----------------------------------------- |
-| Record ID      | `rec-kento-red`                           |
-| Kind           | standalone — audited in its own right     |
-| Manufacturer   | Hubei KENTO Elec                          |
-| Function       | red jack-adjacent panel indicator emitter |
-| Orderable ID   | `C2286`                                   |
-| Package        | `0603 SMD LED`                            |
-| Inventory line | `line-kento-red`                          |
-| Owner skill    | `component-kento-kt-0603r`                |
+| Field          | Recorded value                        |
+| -------------- | ------------------------------------- |
+| Record ID      | `rec-kingbright-red`                  |
+| Kind           | standalone — audited in its own right |
+| Manufacturer   | Kingbright                            |
+| Function       | red clip indicator emitter            |
+| Package        | `0402 top-emitting SMD LED`           |
+| Inventory line | `line-kingbright-red`                 |
+| Owner skill    | `component-kingbright-apg1005sec-e-t` |
 
 **Placements:** no placement published
 
 **Fit:** Fitted
 
-**Identity state:** UNRESOLVED
+**Identity state:** VERIFIED
 
 **Source state:** AVAILABLE
 
-**Open coverage domains:** 5 open of 5 published
+**Open coverage domains:** 2 open of 6 published
 
-[KT-0603R record details](/docs/components/records/kento-red/) — [KT-0603R raw agent resource](/docs/claude-skills/component-kento-kt-0603r/)
+[APG1005SEC/E-T record details](/docs/components/records/kingbright-red/) — [APG1005SEC/E-T raw agent resource](/docs/claude-skills/component-kingbright-apg1005sec-e-t/)
 
 ### DW254P-2X8-L0
 

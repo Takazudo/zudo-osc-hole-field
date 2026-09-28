@@ -1,0 +1,9 @@
+# JST GH conditional harness candidate
+
+Issue #63 retains the JST eGH primary drawing and owns the exact BM top-entry 3-, 7-, and 8-contact header CAD and evidence. `jst-gh.json` is the machine-readable handoff to #35. The 7.3 mm mated height is a reference dimension, without an installed stack tolerance. The generated WRL is a nominal header body prism, with KiCad's model Y axis inverted relative to the mounting-surface footprint drawing; it is not a vendor solid or a housing/cable model.
+
+The drawing's top-entry PC layout gives 0.6 mm pad width, 1.25 mm pitch, 1.0 × 2.8 mm reinforcement lands, 1.35 mm from pin 1 centre to the reinforcement land's inner edge, 5.6 mm total vertical land span, and 3.9 mm from the signal-land bottom to reinforcement-land bottom. These imply 1.7 mm signal-land length. No drills occur in this SMT pattern. The project courtyard adds 0.25 mm beyond the outer pad or body bound.
+
+With the header centred on the adapter x axis, the unchanged selector mounting pad's inner copper edge is x=8−2.6/2=6.70 mm. The GH7 generated courtyard reaches x=6.35 mm, leaving 0.35 mm nominal x clearance. GH8 reaches x=6.97 mm after the courtyard generator's two-decimal rounding and overlaps copper by 0.27 mm. This is a nominal geometric comparison only; #35 owns connector y/rotation placement, routing, cable paths, support and packing.
+
+The GHR housing and SSHL contact symbols/footprints named `EXTERNAL_NOT_FOR_PCB` exist only to verify cavity/contact numbering through the evidence pin-map contract. They must never be placed on a board. Primary ratings cover 1 A with AWG26, 50 V and −40..+105 °C including current rise. Simultaneous-contact derating, crimp quality, pull retention, loom bend/strain relief, installed stack and physical fit remain OPEN / NOT RUN. No board or harness is qualified.
