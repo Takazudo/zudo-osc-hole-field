@@ -49,7 +49,7 @@ class EnvelopeContract(unittest.TestCase):
   self.assertEqual(len(contacts),6)
   self.assertTrue(all(p.attributes['Island']=='ENV_CORE:${SHEETNAME}' and not p.panel_refs for p in contacts))
   leds=[p for p in self.f.parts if p.panel_refs and p.attributes['PanelUid'].startswith('L:')]
-  self.assertEqual(len(leds),5);self.assertTrue(all(p.attributes['BoardRegion']==('control' if '.stage' in p.attributes['PanelUid'] else 'jack') for p in leds))
+  self.assertEqual(len(leds),5);self.assertTrue(all(p.attributes['BoardRegion']==('stage_optical' if '.stage' in p.attributes['PanelUid'] else 'jack') for p in leds))
   self.assertTrue(all(p.pins['TN'] is None for p in self.f.parts if p.symbol.endswith('WQP518MA')))
  def test_physical_logic_domains_and_stage_masks(self):
   for p in self.f.parts:
