@@ -1,0 +1,40 @@
+---
+title: "Fixed front panel and restylable PCB artwork"
+description: "The 318 × 298 mm unvalidated panel PCB, its locked holes and windows, and the proposal artwork."
+sidebar_position: 41
+---
+
+> **Unvalidated draft — not fabrication-ready.** No populated panel, optical coupon or mechanical stack has been measured. Do not order this PCB from the current files.
+
+![KiCad top render of the unvalidated fixed-hole panel](/assets/osc-hole-field/panel-kicad-top.png)
+
+The generated `boards/panel/panel.kicad_pcb` is one flat 318 × 298 mm PCB. The jack field is an 18 × 10 grid above an 18 × 8 control field; the gold divider is at panel y = 166 mm. `design/grid/placements.lock.json` alone sets **324 drilled centres** (180 jacks and 144 controls) and **114 undrilled indicator-window centres**. The oracle readback checks all 438 of 438 against that lock, including the separate clip windows and RISE/FALL indicators. No generator step moves a hardware centre.
+
+## Fixed geometry and proposal parameters
+
+| Item | Current value | Authority / status |
+| --- | --- | --- |
+| Panel extents | 318 × 298 mm | Fixed R21 layout |
+| Jack/control and window centres | 438 lockfile entries | Fixed; KiCad readback matches exactly |
+| Individual hole diameters | Per-lockfile proposal, informed by `design/mechanical/facts/` | **PROPOSAL** until the actual nut, shaft and seated parts are measured |
+| Optical window | Ø1.6 mm bare FR4, front/back mask opened, no drill or copper | **PROPOSAL**; visibility, bleed, registration and clearance need a coupon |
+| Board thickness | 2.0 mm | **PROPOSAL**; actual stacked hardware fit open |
+| Outline corner radius | 3.5 mm | **PROPOSAL** |
+| Mounting holes | Empty parameter list | **PROPOSAL**; the stack decision adds any required holes later |
+| Top finish | Black mask, white front silk, exposed ENIG gold accents | **PROPOSAL**; manufacturer process and actual colour unqualified |
+
+These values live in `design/panel/panel-params.json`. The board's physical stackup metadata records the proposed black mask, white silk and ENIG finish so KiCad's top renderer uses the same visual intent. The 2.0 mm thickness and material stack are assumptions, not a fabrication instruction.
+
+## Baseline artwork
+
+The artwork is derived from the imported R21 grid and art-only renderer. The new title is **ZUDO / OSC HOLE FIELD**. It has 180 jack labels, 142 control labels (the two A/B selectors use their heading), 71 toggle-position words, 65 icon/title headings, 155 exposed-gold accent brackets, 131 white brackets, relation lines beside mixer columns, a gold border and the y = 166 mm divider. Toggle words are raised to 1.0 mm height for silk minimums; silk strokes are at least 0.15 mm. Small gold separator strokes are widened to at least 0.2 mm copper and kept under mask.
+
+The R21 preview's review annotations and hardware pictures are excluded from fabrication layers. The KiCad stroke font has different bounds from the preview font, so the separator text clearance grows to 2.5 mm: 147 clipped separator segments remain, four fewer than the visual proof. Three jack labels (`1V/OCT`, `TRIGGER`, `BROWN`) sit 0.4 mm lower than the proof's y + 6.25 mm baseline to clear the exposed brackets. No hole or indicator centre changes. The whole-board top render, an oscillator jack close-up and an envelope-control close-up were inspected; labels, toggle words, heading icons, brackets, relation lines, and the divider are visible with no hardware pictures.
+
+## Restyling without losing edits
+
+Run `bash scripts/panel/regen.sh`, or the project-wide `bash scripts/checks/regen-all.sh`. The shell step derives art-only SVG from the imported renderer; `scripts/panel/gen_panel.py` runs under the pinned KiCad 10 oracle and writes the PCB. `scripts/panel/check_panel.py` reads the board back and writes the feature table. The generator assigns deterministic UUIDs to holes, windows, outline and artwork and places them in named geometry/front-layer groups.
+
+An added item without a generator UUID is owner work and stays on every regeneration. A generator-owned artwork item edited by the owner is compared with `boards/panel/reports/generated-manifest.json`; the changed item stays and is listed in the regeneration report. A scratch test added a silk note and edited a generated label, then confirmed both survived a byte-identical second run. The fixed holes and windows continue to follow the lockfile.
+
+The retained reports under `boards/panel/reports/` include the KiCad DRC JSON (**zero violations and zero unconnected items**), top PNG/SVG, feature table and regeneration manifest. These checks prove geometry and rule consistency in KiCad. They do not prove fit to the jack nut, selector mounting pins, indicator optics, ENIG appearance, legibility on a fabricated mask, or the eventual inter-board stack. The selector mounting-hole collision is tracked in [issue #47](https://github.com/Takazudo/zudo-osc-hole-field/issues/47).
