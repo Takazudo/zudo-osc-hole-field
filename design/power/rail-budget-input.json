@@ -1,0 +1,71 @@
+{
+  "schema_version": 1,
+  "source_lock": "design/power/zudo-pd-lock.json",
+  "units": "mA",
+  "rails": {
+    "+12V": {
+      "supply_design_target": 1200,
+      "design_ceiling_80_percent": 960,
+      "measured_capacity": null
+    },
+    "-12V": {
+      "supply_design_target": 800,
+      "design_ceiling_80_percent": 640,
+      "measured_capacity": null
+    },
+    "+5V": {
+      "supply_design_target": 500,
+      "design_ceiling_80_percent": 400,
+      "measured_capacity": null
+    }
+  },
+  "synth_inlet": {
+    "bleeder": "One Yageo 2.2 kohm 1% resistor from each rail to ground",
+    "nominal_bleeder_current_mA": {
+      "+12V": 5.454545,
+      "-12V": 5.454545,
+      "+5V": 2.272727
+    },
+    "worst_voltage_and_resistance_bleeder_current_mA": {
+      "+12V": 5.730028,
+      "-12V": 5.679522,
+      "+5V": 2.387511
+    },
+    "installed_local_filter_uF": {
+      "+12V": 1.1,
+      "-12V": 1.1,
+      "+5V": 1.1
+    },
+    "startup_arithmetic_filter_uF_plus_20_percent": {
+      "+12V": 1.32,
+      "-12V": 1.32,
+      "+5V": 1.32
+    },
+    "other_inlet_current_mA": "NOT ESTABLISHED: TVS leakage and capacitor leakage over temperature"
+  },
+  "preliminary_model": {
+    "source": "design/standard/rail-budget-preliminary.json",
+    "note": "Planning estimate only; must not be substituted for a captured-netlist maximum",
+    "estimated_mA": {
+      "+12V": 724.254545,
+      "-12V": 712.654545,
+      "+5V": 138.872727
+    },
+    "margin_to_ceiling_mA": {
+      "+12V": 235.745455,
+      "-12V": -72.654545,
+      "+5V": 261.127273
+    },
+    "illustration_after_nominal_inlet_bleeders_mA": {
+      "+12V": 729.70909,
+      "-12V": 718.10909,
+      "+5V": 141.145454
+    },
+    "illustrative_margin_after_bleeders_mA": {
+      "+12V": 230.29091,
+      "-12V": -78.10909,
+      "+5V": 258.854546
+    }
+  },
+  "note": "Source constants for captured master budget; generated rail-budget.json contains summed report values."
+}
