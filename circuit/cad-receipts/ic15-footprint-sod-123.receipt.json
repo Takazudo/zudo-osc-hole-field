@@ -2,7 +2,7 @@
   "receipt_version": 1,
   "identity": {
     "asset_id": "ic15-footprint-sod-123",
-    "record_id": null,
+    "record_id": "rec-signal-diode",
     "manufacturer": null,
     "mpn": null,
     "package": "SOD-123",
@@ -21,10 +21,12 @@
   },
   "representation": {
     "files": [
-      "footprints/kicad/zudo-osc-hole-field.pretty/SOD-123.kicad_mod"
+      "footprints/kicad/zudo-osc-hole-field.pretty/SOD-123.kicad_mod",
+      "footprints/kicad/zudo-osc-hole-field.3dshapes/D_SOD-123.wrl"
     ],
     "formats": [
-      "kicad_mod"
+      "kicad_mod",
+      "wrl"
     ],
     "units": "mm",
     "original_paths": [
@@ -33,9 +35,11 @@
   },
   "fidelity": {
     "class": "family",
-    "reason": "Generic package source; device-specific package dimensions and reflow rules require checking against the exact manufacturer drawing.",
+    "reason": "Provisional family envelope: Nexperia SOD123 outline maxima 2.80 x 1.70 x 1.30 mm. No placement, diode-transfer, or physical-fit verdict. It is a preview envelope, not an exact vendor 3D asset, seating model, fit check, or qualification.",
     "evidence": [
-      "KiCad 10.0.6 pinned stock library source retained with SHA-256."
+      "KiCad 10.0.6 pinned stock library source retained with SHA-256.",
+      "circuit/sources/ic-library/BAS16GW-Q.pdf SHA-256 36b9d598de374dbdcc666f0516477d958e02471b323842704249e0e447e2be6b",
+      "scripts/libgen/gen_ic_package_envelopes.py SHA-256 5cf873088089601ce798b675ebad9815c5f3414e691dc84f9cd0afbb3d83fba2"
     ]
   },
   "derivation": {
@@ -43,41 +47,73 @@
     "input_sha256": {
       "circuit/sources/ic-library/cad/SOD-123.stock.kicad_mod": "fd16785935b01254e1076f490e12f0f096da73cf087adefce51225585c62557a"
     },
-    "tool": "scripts/libgen/fixtures/import_ic_stock.py and build_ic_assets.py; scripts/libgen/gen_courtyards.py",
+    "tool": "scripts/libgen/gen_ic_package_envelopes.py and scripts/libgen/regen.sh",
     "tool_version": "1",
     "parameters": {
       "operations": [
         "set project footprint name",
         "remove stock 3D model reference",
         "generate project courtyard"
-      ]
+      ],
+      "package_envelope": {
+        "model": "D_SOD-123.wrl",
+        "dimensions_mm": [
+          2.8,
+          1.7,
+          1.3
+        ],
+        "note": "Provisional family envelope: Nexperia SOD123 outline maxima 2.80 x 1.70 x 1.30 mm. No placement, diode-transfer, or physical-fit verdict.",
+        "geometry_source_sha256": {
+          "circuit/sources/ic-library/BAS16GW-Q.pdf": "36b9d598de374dbdcc666f0516477d958e02471b323842704249e0e447e2be6b"
+        },
+        "generator_sha256": "cbf1715d8857c826ebd111a26180e705f2c222c124b892ba0fb129591d57445e",
+        "operations": [
+          "generate provisional display cuboid from listed family bounds",
+          "add exactly one local WRL model reference to the generic footprint"
+        ]
+      }
     },
     "output_sha256": {
-      "footprints/kicad/zudo-osc-hole-field.pretty/SOD-123.kicad_mod": "89848ab5a19057b7ba0cfcbee3f91d3b6e0df9b7f15a3cc5e7abbb627701af02"
+      "footprints/kicad/zudo-osc-hole-field.pretty/SOD-123.kicad_mod": "163732fa59fe99507f882db80a34ee17a997baec1df55939509fa78c709408d6",
+      "footprints/kicad/zudo-osc-hole-field.3dshapes/D_SOD-123.wrl": "b882b26d013e457ff67dfcebd0cb14d0a460829937e42a24710b8c1b32e0d40b"
     }
   },
   "cad_use": {
     "symbol": null,
     "footprint": "zudo-osc-hole-field:SOD-123",
-    "model_path": null,
+    "model_path": "${KIPRJMOD}/../../footprints/kicad/zudo-osc-hole-field.3dshapes/D_SOD-123.wrl",
     "transform": {
-      "offset": null,
-      "rotation": null,
-      "scale": null
+      "offset": [
+        0,
+        0,
+        0
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ]
     },
-    "seating_plane": null
+    "seating_plane": "F.Cu; envelope base at z=0"
   },
   "checks": {
     "performed": [
-      "Project library and courtyard checks"
+      "Project library and courtyard checks",
+      "Local WRL envelope generated and hash-bound; package preview check required"
     ],
     "remaining_physical_checks": [
-      "Audit against exact package drawing before fabrication."
+      "Audit against exact package drawing before fabrication.",
+      "Confirm exact device body/height, land pattern, seating plane, optical/mechanical path, and fit in the fixed layout; this family envelope establishes none of those."
     ]
   },
   "publication": {
-    "preview_selected": false,
+    "preview_selected": true,
     "download_published": false,
-    "permitted_scope": null
+    "permitted_scope": "Generated component preview only; no vendor model redistribution."
   }
 }

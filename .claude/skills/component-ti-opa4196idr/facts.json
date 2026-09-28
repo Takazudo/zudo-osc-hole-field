@@ -1,0 +1,150 @@
+{
+  "schema_version": 1,
+  "facts": [
+    {
+      "fact_id": "fact-op-audio-manufacturer",
+      "record_id": "rec-op-audio",
+      "source_id": "src-op-audio-datasheet",
+      "class": "PROJECT_STATE",
+      "value": "Texas Instruments",
+      "unit": "NONE",
+      "conditions": "Manufacturer of the project-selected exact shortlist identity.",
+      "locator": "src-op-audio-datasheet: title block or OSC-ES-1 row parts[id=op_audio].manufacturer",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-op-audio-project-selection",
+      "record_id": "rec-op-audio",
+      "source_id": "src-op-audio-shortlist",
+      "class": "PROJECT_STATE",
+      "value": {
+        "manufacturer": "Texas Instruments",
+        "mpn": "OPA4196IDR",
+        "package": "SOIC-14",
+        "lcsc": "C2057385",
+        "roles": "audio, cv, indicator",
+        "source_status": "LISTED; stock UNVERIFIED"
+      },
+      "unit": "NONE",
+      "conditions": "OSC-ES-1 dated proposal row; exact source status and availability statements are not supplier allocation.",
+      "locator": "src-op-audio-shortlist: JSON row parts[id=op_audio]",
+      "provenance": "PROJECT-CHOICE",
+      "verdict": "NOT APPLICABLE",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-op-audio-orderable-identity",
+      "record_id": "rec-op-audio",
+      "source_id": "src-op-audio-datasheet",
+      "class": "PROJECT_STATE",
+      "value": {
+        "manufacturer": "Texas Instruments",
+        "mpn": "OPA4196IDR",
+        "package": "SOIC-14"
+      },
+      "unit": "NONE",
+      "conditions": "Exact complete orderable identifier in the selected package; does not establish supplier stock.",
+      "locator": "Section/table audit: src-op-audio-datasheet: package/orderable addendum names exact MPN",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-op-audio-pinout",
+      "record_id": "rec-op-audio",
+      "source_id": "src-op-audio-datasheet",
+      "class": "PROJECT_STATE",
+      "value": "pin 1 OUT A -> pad 1; pin 2 IN- A -> pad 2; pin 3 IN+ A -> pad 3; pin 4 V+ -> pad 4; pin 5 IN+ B -> pad 5; pin 6 IN- B -> pad 6; pin 7 OUT B -> pad 7; pin 8 OUT C -> pad 8; pin 9 IN- C -> pad 9; pin 10 IN+ C -> pad 10; pin 11 V- -> pad 11; pin 12 IN+ D -> pad 12; pin 13 IN- D -> pad 13; pin 14 OUT D -> pad 14",
+      "unit": "NONE",
+      "conditions": "No schematic or placement/net binding is claimed. Manufacturer pin functions are source-backed only when a retained primary document names the product family.",
+      "locator": "src-op-audio-datasheet: Pin configuration/function table",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-op-audio-quiescent-current",
+      "record_id": "rec-op-audio",
+      "source_id": "src-op-audio-datasheet",
+      "class": "GUARANTEED_ELECTRICAL",
+      "value": {
+        "typical_at_25C": 140,
+        "maximum_at_25C": 200,
+        "maximum_full_temperature": 250
+      },
+      "unit": "uA per amplifier",
+      "conditions": "IO = 0 A; TA = 25 C for typ/max at 25 C; TA = -40..125 C for full-temperature maximum.",
+      "locator": "src-op-audio-datasheet: PDF page index 7, printed page 8, Section 6.7, POWER SUPPLY, IQ row",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-op-audio-product-function",
+      "record_id": "rec-op-audio",
+      "source_id": "src-op-audio-datasheet",
+      "class": "PROJECT_STATE",
+      "value": "Manufacturer source identifies OPA4196IDR as the shortlisted audio, cv, indicator device; this is not project suitability.",
+      "unit": "NONE",
+      "conditions": "Product family description only; no project application or electrical guarantee implied.",
+      "locator": "src-op-audio-datasheet: document title block and product description",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-op-audio-procurement-status",
+      "record_id": "rec-op-audio",
+      "source_id": "src-op-audio-shortlist",
+      "class": "PROJECT_STATE",
+      "value": "LISTED; stock UNVERIFIED",
+      "unit": "NONE",
+      "conditions": "Time-stamped OSC-ES-1 state on 2026-09-28; current stock, lead time, consignment, and JLC assembly are not established.",
+      "locator": "src-op-audio-shortlist: JSON row parts[id=op_audio].sourcing.status/jlcpcb_assembly",
+      "provenance": "PROJECT-CHOICE",
+      "verdict": "UNSOURCED",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-op-audio-mechanical-fit",
+      "record_id": "rec-op-audio",
+      "source_id": "src-op-audio-shortlist",
+      "class": "PROJECT_STATE",
+      "value": "Provisional package-family envelope only; board/land-pattern fit has not been physically checked.",
+      "unit": "NONE",
+      "conditions": "Selected footprint family and display envelope do not establish exact-part placement or solderability.",
+      "locator": "Section/table audit: src-op-audio-shortlist: parts[id=op_audio].package; CAD receipt is provisional family geometry",
+      "provenance": "PROJECT-CHOICE",
+      "verdict": "NEEDS BENCH",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-op-audio-negative-rail-budget",
+      "record_id": "rec-op-audio",
+      "source_id": "src-op-audio-rail-budget",
+      "class": "PROJECT_STATE",
+      "value": {
+        "preliminary_estimate_mA": 712.655,
+        "ceiling_mA": 640,
+        "deficit_mA": 72.655
+      },
+      "unit": "mA",
+      "conditions": "OSC-ES-1 preliminary 33-module role-count model; not netlist-derived or measured current demand.",
+      "locator": "Section/table audit: src-op-audio-rail-budget: JSON rail -12V conservative_estimate_mA / ceiling_mA / margin_mA",
+      "provenance": "PROJECT-CHOICE",
+      "verdict": "NEEDS BENCH",
+      "depends_on": [],
+      "expression": ""
+    }
+  ]
+}

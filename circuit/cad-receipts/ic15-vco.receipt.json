@@ -2,21 +2,23 @@
   "receipt_version": 1,
   "identity": {
     "asset_id": "ic15-vco",
-    "record_id": null,
+    "record_id": "rec-vco",
     "manufacturer": "ALFA RPAR",
     "mpn": "AS3340D",
     "package": "SOIC-16",
-    "variant_notes": "SOURCE UNAVAILABLE"
+    "variant_notes": "ALFA RPAR 2020 v.7 confirms AS3340D SOIC-16 and the 16-pin function table; generic footprint and provisional family WRL remain unqualified."
   },
   "acquisition": {
-    "provider": "KiCad 10 stock symbol; manufacturer document unavailable",
-    "source_url": "http://www.alfarzpp.lv/ (manufacturer PDF location not recovered; mirrors do not establish primary bytes)",
+    "provider": "KiCad 10 stock symbol; pin identities checked against retained ALFA RPAR primary PDF",
+    "source_url": "https://www.alfatriode.lv/eng/sc/AS3340.pdf",
     "acquired_on": "2026-09-28",
     "original_filenames": [
-      "AS3340D.stock.kicad_sympart"
+      "AS3340D.stock.kicad_sympart",
+      "AS3340.pdf"
     ],
     "sha256": {
-      "circuit/sources/ic-library/cad/AS3340D.stock.kicad_sympart": "0754f5d7caf7b04caa2d469c64a33137b7bd2d652f32fd0cc3198e5e93f843c0"
+      "circuit/sources/ic-library/cad/AS3340D.stock.kicad_sympart": "0754f5d7caf7b04caa2d469c64a33137b7bd2d652f32fd0cc3198e5e93f843c0",
+      "circuit/sources/ic-library/AS3340.pdf": "66108a3ddcc78a158d66974a497801ce6a429d465b338f6c8d656fd7ddce815e"
     }
   },
   "representation": {
@@ -28,21 +30,24 @@
     ],
     "units": "KiCad schematic units",
     "original_paths": [
-      "circuit/sources/ic-library/cad/AS3340D.stock.kicad_sympart"
+      "circuit/sources/ic-library/cad/AS3340D.stock.kicad_sympart",
+      "circuit/sources/ic-library/AS3340.pdf"
     ]
   },
   "fidelity": {
     "class": "derived",
-    "reason": "Stock pin graphics or custom unit layout normalized for the exact draft identity; unsupported manufacturer facts remain UNSOURCED.",
+    "reason": "Stock symbol pins are normalized for the exact project identity and cross-checked against the retained ALFA RPAR 2020 v.7 pin table; electrical application claims remain open.",
     "evidence": [
-      "SOURCE UNAVAILABLE",
-      "http://www.alfarzpp.lv/ (manufacturer PDF location not recovered; mirrors do not establish primary bytes)"
+      "circuit/sources/ic-library/AS3340.pdf sha256 66108a3ddcc78a158d66974a497801ce6a429d465b338f6c8d656fd7ddce815e",
+      "Physical PDF p.1 / printed p.2: all 16 AS3340 pins and functions",
+      "Physical PDF p.5 / printed p.6: AS3340D SOIC-16 package designation and outline"
     ]
   },
   "derivation": {
     "derived": true,
     "input_sha256": {
-      "circuit/sources/ic-library/cad/AS3340D.stock.kicad_sympart": "0754f5d7caf7b04caa2d469c64a33137b7bd2d652f32fd0cc3198e5e93f843c0"
+      "circuit/sources/ic-library/cad/AS3340D.stock.kicad_sympart": "0754f5d7caf7b04caa2d469c64a33137b7bd2d652f32fd0cc3198e5e93f843c0",
+      "circuit/sources/ic-library/AS3340.pdf": "66108a3ddcc78a158d66974a497801ce6a429d465b338f6c8d656fd7ddce815e"
     },
     "tool": "scripts/libgen/fixtures/build_ic_assets.py, build_ic_custom.py, or build_passive_symbols.py",
     "tool_version": "1",
@@ -50,13 +55,13 @@
       "normalization": "exact MPN/manufacturer/LCSC fields, local footprint reference; alias parent units expanded where required"
     },
     "output_sha256": {
-      "symbols/src/AS3340D.kicad_sym": "1d7b4b51c377e846cf147e8f35ef2e241fe59e47da5f844ce9cc535be8a4fe14"
+      "symbols/src/AS3340D.kicad_sym": "02e669ba9e7662e8259ba9c33c947f622ae37120fdbb360d9cb0d8ac17e8e8bc"
     }
   },
   "cad_use": {
     "symbol": "zudo-osc-hole-field:AS3340D",
     "footprint": "zudo-osc-hole-field:SOIC-16_3.9x9.9mm_P1.27mm",
-    "model_path": null,
+    "model_path": "${KIPRJMOD}/../../footprints/kicad/zudo-osc-hole-field.3dshapes/IC_SOIC-16_3.9x9.9.wrl",
     "transform": {
       "offset": null,
       "rotation": null,
@@ -66,14 +71,16 @@
   },
   "checks": {
     "performed": [
-      "Issue-15 all-unit KiCad 10 ERC fixture and project library checker"
+      "Issue-15 KiCad 10 all-unit ERC fixture and project library checker",
+      "Issue-29 retained ALFA RPAR primary PDF visual review of identity/package and pin table; numeric symbol-to-pad assignments agree."
     ],
     "remaining_physical_checks": [
-      "Confirm exact package drawing/lot, actual circuit net mapping, electrical suitability and procurement before board release."
+      "Confirm exact land pattern and body height, fixed-layout clearance, oscillator electrical suitability, actual circuit net mapping, and procurement before board use.",
+      "The shared SOIC-16 WRL is provisional family geometry and establishes no exact-part fit or seating model."
     ]
   },
   "publication": {
-    "preview_selected": false,
+    "preview_selected": true,
     "download_published": false,
     "permitted_scope": null
   }

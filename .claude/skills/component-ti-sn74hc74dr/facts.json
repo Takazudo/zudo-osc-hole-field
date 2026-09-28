@@ -1,0 +1,128 @@
+{
+  "schema_version": 1,
+  "facts": [
+    {
+      "fact_id": "fact-flipflop-manufacturer",
+      "record_id": "rec-flipflop",
+      "source_id": "src-flipflop-datasheet",
+      "class": "PROJECT_STATE",
+      "value": "Texas Instruments",
+      "unit": "NONE",
+      "conditions": "Manufacturer of the project-selected exact shortlist identity.",
+      "locator": "src-flipflop-datasheet: title block or OSC-ES-1 row parts[id=flipflop].manufacturer",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-flipflop-project-selection",
+      "record_id": "rec-flipflop",
+      "source_id": "src-flipflop-shortlist",
+      "class": "PROJECT_STATE",
+      "value": {
+        "manufacturer": "Texas Instruments",
+        "mpn": "SN74HC74DR",
+        "package": "SOIC-14",
+        "lcsc": "not listed in the shortlist",
+        "roles": "envelope state",
+        "source_status": "UNVERIFIED"
+      },
+      "unit": "NONE",
+      "conditions": "OSC-ES-1 dated proposal row; exact source status and availability statements are not supplier allocation.",
+      "locator": "src-flipflop-shortlist: JSON row parts[id=flipflop]",
+      "provenance": "PROJECT-CHOICE",
+      "verdict": "NOT APPLICABLE",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-flipflop-orderable-identity",
+      "record_id": "rec-flipflop",
+      "source_id": "src-flipflop-datasheet",
+      "class": "PROJECT_STATE",
+      "value": {
+        "manufacturer": "Texas Instruments",
+        "mpn": "SN74HC74DR",
+        "package": "SOIC-14"
+      },
+      "unit": "NONE",
+      "conditions": "Exact complete orderable identifier in the selected package; does not establish supplier stock.",
+      "locator": "Section/table audit: src-flipflop-datasheet: package/orderable addendum names exact MPN",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-flipflop-pinout",
+      "record_id": "rec-flipflop",
+      "source_id": "src-flipflop-datasheet",
+      "class": "PROJECT_STATE",
+      "value": "pin 1 1CLR active low -> pad 1; pin 2 1D data -> pad 2; pin 3 1CLK rising edge -> pad 3; pin 4 1PRE active low -> pad 4; pin 5 1Q -> pad 5; pin 6 1Q inverted -> pad 6; pin 7 GND -> pad 7; pin 8 2Q inverted -> pad 8; pin 9 2Q -> pad 9; pin 10 2PRE active low -> pad 10; pin 11 2CLK rising edge -> pad 11; pin 12 2D data -> pad 12; pin 13 2CLR active low -> pad 13; pin 14 VCC -> pad 14",
+      "unit": "NONE",
+      "conditions": "No schematic or placement/net binding is claimed. Manufacturer pin functions are source-backed only when a retained primary document names the product family.",
+      "locator": "src-flipflop-datasheet: Pin configuration/function table",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-flipflop-product-function",
+      "record_id": "rec-flipflop",
+      "source_id": "src-flipflop-datasheet",
+      "class": "PROJECT_STATE",
+      "value": "Manufacturer source identifies SN74HC74DR as the shortlisted envelope state device; this is not project suitability.",
+      "unit": "NONE",
+      "conditions": "Product family description only; no project application or electrical guarantee implied.",
+      "locator": "src-flipflop-datasheet: document title block and product description",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-flipflop-electrical-limits",
+      "record_id": "rec-flipflop",
+      "source_id": "src-flipflop-datasheet",
+      "class": "GUARANTEED_ELECTRICAL",
+      "value": "No exact-part electrical limits promoted from retained evidence.",
+      "unit": "NONE",
+      "conditions": "The task has not promoted a source-backed limit for this exact shortlist record.",
+      "locator": "src-flipflop-datasheet: exact component electrical-characteristics table not promoted",
+      "provenance": "UNVERIFIED",
+      "verdict": "UNSOURCED",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-flipflop-procurement-status",
+      "record_id": "rec-flipflop",
+      "source_id": "src-flipflop-shortlist",
+      "class": "PROJECT_STATE",
+      "value": "UNVERIFIED",
+      "unit": "NONE",
+      "conditions": "Time-stamped OSC-ES-1 state on 2026-09-28; current stock, lead time, consignment, and JLC assembly are not established.",
+      "locator": "src-flipflop-shortlist: JSON row parts[id=flipflop].sourcing.status/jlcpcb_assembly",
+      "provenance": "PROJECT-CHOICE",
+      "verdict": "UNSOURCED",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-flipflop-mechanical-fit",
+      "record_id": "rec-flipflop",
+      "source_id": "src-flipflop-shortlist",
+      "class": "PROJECT_STATE",
+      "value": "Provisional package-family envelope only; board/land-pattern fit has not been physically checked.",
+      "unit": "NONE",
+      "conditions": "Selected footprint family and display envelope do not establish exact-part placement or solderability.",
+      "locator": "Section/table audit: src-flipflop-shortlist: parts[id=flipflop].package; CAD receipt is provisional family geometry",
+      "provenance": "PROJECT-CHOICE",
+      "verdict": "NEEDS BENCH",
+      "depends_on": [],
+      "expression": ""
+    }
+  ]
+}

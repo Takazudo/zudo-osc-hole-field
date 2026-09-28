@@ -2,7 +2,7 @@
   "receipt_version": 1,
   "identity": {
     "asset_id": "ic15-nand",
-    "record_id": null,
+    "record_id": "rec-nand",
     "manufacturer": "Texas Instruments",
     "mpn": "SN74HC00DR",
     "package": "SOIC-14",
@@ -64,7 +64,7 @@
   "cad_use": {
     "symbol": "zudo-osc-hole-field:SN74HC00DR",
     "footprint": "zudo-osc-hole-field:SOIC-14_3.9x8.7mm_P1.27mm",
-    "model_path": null,
+    "model_path": "${KIPRJMOD}/../../footprints/kicad/zudo-osc-hole-field.3dshapes/IC_SOIC-14_3.9x8.7.wrl",
     "transform": {
       "offset": null,
       "rotation": null,
@@ -77,11 +77,12 @@
       "Issue-15 all-unit KiCad 10 ERC fixture and project library checker"
     ],
     "remaining_physical_checks": [
-      "Confirm exact package drawing/lot, actual circuit net mapping, electrical suitability and procurement before board release."
+      "Confirm exact package drawing/lot, actual circuit net mapping, electrical suitability and procurement before board release.",
+      "Confirm exact body/height, land pattern, fixed-layout clearance, and electrical suitability before hardware use; catalogue family geometry is provisional."
     ]
   },
   "publication": {
-    "preview_selected": false,
+    "preview_selected": true,
     "download_published": false,
     "permitted_scope": null
   }

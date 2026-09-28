@@ -2,7 +2,7 @@
   "receipt_version": 1,
   "identity": {
     "asset_id": "ic15-matched_npn",
-    "record_id": null,
+    "record_id": "rec-matched-npn",
     "manufacturer": "Nexperia",
     "mpn": "BCM847BS,115",
     "package": "SOT-363",
@@ -56,7 +56,7 @@
   "cad_use": {
     "symbol": "zudo-osc-hole-field:BCM847BS_115",
     "footprint": "zudo-osc-hole-field:SOT-363_SC-70-6",
-    "model_path": null,
+    "model_path": "${KIPRJMOD}/../../footprints/kicad/zudo-osc-hole-field.3dshapes/IC_SOT-363_SC-70-6.wrl",
     "transform": {
       "offset": null,
       "rotation": null,
@@ -69,11 +69,12 @@
       "Issue-15 all-unit KiCad 10 ERC fixture and project library checker"
     ],
     "remaining_physical_checks": [
-      "Confirm exact package drawing/lot, actual circuit net mapping, electrical suitability and procurement before board release."
+      "Confirm exact package drawing/lot, actual circuit net mapping, electrical suitability and procurement before board release.",
+      "Confirm exact body/height, land pattern, fixed-layout clearance, and electrical suitability before hardware use; catalogue family geometry is provisional."
     ]
   },
   "publication": {
-    "preview_selected": false,
+    "preview_selected": true,
     "download_published": false,
     "permitted_scope": null
   }

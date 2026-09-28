@@ -1,0 +1,131 @@
+{
+  "schema_version": 1,
+  "facts": [
+    {
+      "fact_id": "fact-fault-switch-manufacturer",
+      "record_id": "rec-fault-switch",
+      "source_id": "src-fault-switch-datasheet",
+      "class": "PROJECT_STATE",
+      "value": "Analog Devices",
+      "unit": "NONE",
+      "conditions": "Manufacturer of the project-selected exact shortlist identity.",
+      "locator": "src-fault-switch-datasheet: title block or OSC-ES-1 row parts[id=fault_switch].manufacturer",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-fault-switch-project-selection",
+      "record_id": "rec-fault-switch",
+      "source_id": "src-fault-switch-shortlist",
+      "class": "PROJECT_STATE",
+      "value": {
+        "manufacturer": "Analog Devices",
+        "mpn": "ADG5412FBRUZ",
+        "package": "TSSOP-16",
+        "lcsc": "C579073",
+        "roles": "jack input fault isolation",
+        "source_status": "LISTED; stock UNVERIFIED"
+      },
+      "unit": "NONE",
+      "conditions": "OSC-ES-1 dated proposal row; exact source status and availability statements are not supplier allocation.",
+      "locator": "src-fault-switch-shortlist: JSON row parts[id=fault_switch]",
+      "provenance": "PROJECT-CHOICE",
+      "verdict": "NOT APPLICABLE",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-fault-switch-orderable-identity",
+      "record_id": "rec-fault-switch",
+      "source_id": "src-fault-switch-datasheet",
+      "class": "PROJECT_STATE",
+      "value": {
+        "manufacturer": "Analog Devices",
+        "mpn": "ADG5412FBRUZ",
+        "package": "TSSOP-16"
+      },
+      "unit": "NONE",
+      "conditions": "Exact complete orderable identifier in the selected package; does not establish supplier stock.",
+      "locator": "Section/table audit: src-fault-switch-datasheet: package/orderable addendum names exact MPN",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-fault-switch-pinout",
+      "record_id": "rec-fault-switch",
+      "source_id": "src-fault-switch-datasheet",
+      "class": "PROJECT_STATE",
+      "value": "pin 1 IN1 logic -> pad 1; pin 2 D1 drain -> pad 2; pin 3 S1 protected source -> pad 3; pin 4 VSS negative supply -> pad 4; pin 5 GND reference -> pad 5; pin 6 S4 protected source -> pad 6; pin 7 D4 drain -> pad 7; pin 8 IN4 logic -> pad 8; pin 9 IN3 logic -> pad 9; pin 10 D3 drain -> pad 10; pin 11 S3 protected source -> pad 11; pin 12 FF fault flag, high normal/low fault -> pad 12; pin 13 VDD positive supply -> pad 13; pin 14 S2 protected source -> pad 14; pin 15 D2 drain -> pad 15; pin 16 IN2 logic -> pad 16",
+      "unit": "NONE",
+      "conditions": "No schematic or placement/net binding is claimed. Manufacturer pin functions are source-backed only when a retained primary document names the product family.",
+      "locator": "src-fault-switch-datasheet: Pin configuration/function table",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-fault-switch-source-pin-overvoltage-protection",
+      "record_id": "rec-fault-switch",
+      "source_id": "src-fault-switch-datasheet",
+      "class": "GUARANTEED_ELECTRICAL",
+      "value": {
+        "negative_limit": -55,
+        "positive_limit": 55
+      },
+      "unit": "V",
+      "conditions": "Manufacturer feature statement; source pins only. This is not a project-level +/-55 V system rating and does not validate the +/-12 V circuit behavior.",
+      "locator": "src-fault-switch-datasheet: PDF page index 0, printed page 1, Features; source-pin protection statement",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-fault-switch-product-function",
+      "record_id": "rec-fault-switch",
+      "source_id": "src-fault-switch-datasheet",
+      "class": "PROJECT_STATE",
+      "value": "Manufacturer source identifies ADG5412FBRUZ as the shortlisted jack input fault isolation device; this is not project suitability.",
+      "unit": "NONE",
+      "conditions": "Product family description only; no project application or electrical guarantee implied.",
+      "locator": "src-fault-switch-datasheet: document title block and product description",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-fault-switch-procurement-status",
+      "record_id": "rec-fault-switch",
+      "source_id": "src-fault-switch-shortlist",
+      "class": "PROJECT_STATE",
+      "value": "LISTED; stock UNVERIFIED",
+      "unit": "NONE",
+      "conditions": "Time-stamped OSC-ES-1 state on 2026-09-28; current stock, lead time, consignment, and JLC assembly are not established.",
+      "locator": "src-fault-switch-shortlist: JSON row parts[id=fault_switch].sourcing.status/jlcpcb_assembly",
+      "provenance": "PROJECT-CHOICE",
+      "verdict": "UNSOURCED",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-fault-switch-mechanical-fit",
+      "record_id": "rec-fault-switch",
+      "source_id": "src-fault-switch-shortlist",
+      "class": "PROJECT_STATE",
+      "value": "Provisional package-family envelope only; board/land-pattern fit has not been physically checked.",
+      "unit": "NONE",
+      "conditions": "Selected footprint family and display envelope do not establish exact-part placement or solderability.",
+      "locator": "Section/table audit: src-fault-switch-shortlist: parts[id=fault_switch].package; CAD receipt is provisional family geometry",
+      "provenance": "PROJECT-CHOICE",
+      "verdict": "NEEDS BENCH",
+      "depends_on": [],
+      "expression": ""
+    }
+  ]
+}

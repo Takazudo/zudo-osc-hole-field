@@ -1,0 +1,77 @@
+{
+  "schema_version": 1,
+  "coverage": [
+    {
+      "coverage_id": "cov-reference-exact-orderable-identity",
+      "record_id": "rec-reference",
+      "domain": "exact orderable identity",
+      "status": "COVERED",
+      "reason": "Manufacturer primary bytes identify the exact shortlist MPN/package; supplier stock remains separately open.",
+      "fact_ids": [
+        "fact-reference-orderable-identity"
+      ],
+      "blocking_fact_ids": []
+    },
+    {
+      "coverage_id": "cov-reference-pinout",
+      "record_id": "rec-reference",
+      "domain": "pinout",
+      "status": "COVERED",
+      "reason": "The retained manufacturer document provides the listed pin-function table; no project nets are assigned.",
+      "fact_ids": [
+        "fact-reference-pinout"
+      ],
+      "blocking_fact_ids": []
+    },
+    {
+      "coverage_id": "cov-reference-electrical-limits",
+      "record_id": "rec-reference",
+      "domain": "electrical limits",
+      "status": "OPEN",
+      "reason": "No exact-part electrical limits were promoted; source/identity gap remains open.",
+      "fact_ids": [
+        "fact-reference-electrical-limits"
+      ],
+      "blocking_fact_ids": [
+        "fact-reference-electrical-limits"
+      ]
+    },
+    {
+      "coverage_id": "cov-reference-manufacturer-product-description",
+      "record_id": "rec-reference",
+      "domain": "manufacturer product description",
+      "status": "COVERED",
+      "reason": "The retained manufacturer document identifies the named product and its documented role/description; this is not application qualification.",
+      "fact_ids": [
+        "fact-reference-product-function"
+      ],
+      "blocking_fact_ids": []
+    },
+    {
+      "coverage_id": "cov-reference-mechanical-fit",
+      "record_id": "rec-reference",
+      "domain": "mechanical fit",
+      "status": "OPEN",
+      "reason": "The local family envelope and generic footprint are provisional; physical board fit and land-pattern suitability are not validated.",
+      "fact_ids": [
+        "fact-reference-mechanical-fit"
+      ],
+      "blocking_fact_ids": [
+        "fact-reference-mechanical-fit"
+      ]
+    },
+    {
+      "coverage_id": "cov-reference-procurement",
+      "record_id": "rec-reference",
+      "domain": "procurement",
+      "status": "OPEN",
+      "reason": "Supplier stock, lead time, consignment and assembly allocation remain unverified as of the dated shortlist.",
+      "fact_ids": [
+        "fact-reference-procurement-status"
+      ],
+      "blocking_fact_ids": [
+        "fact-reference-procurement-status"
+      ]
+    }
+  ]
+}

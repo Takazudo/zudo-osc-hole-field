@@ -2,7 +2,7 @@
   "receipt_version": 1,
   "identity": {
     "asset_id": "ic15-reference",
-    "record_id": null,
+    "record_id": "rec-reference",
     "manufacturer": "Texas Instruments",
     "mpn": "REF5050AIDR",
     "package": "SOIC-8",
@@ -64,7 +64,7 @@
   "cad_use": {
     "symbol": "zudo-osc-hole-field:REF5050AIDR",
     "footprint": "zudo-osc-hole-field:SOIC-8_3.9x4.9mm_P1.27mm",
-    "model_path": null,
+    "model_path": "${KIPRJMOD}/../../footprints/kicad/zudo-osc-hole-field.3dshapes/IC_SOIC-8_3.9x4.9.wrl",
     "transform": {
       "offset": null,
       "rotation": null,
@@ -77,11 +77,12 @@
       "Issue-15 all-unit KiCad 10 ERC fixture and project library checker"
     ],
     "remaining_physical_checks": [
-      "Confirm exact package drawing/lot, actual circuit net mapping, electrical suitability and procurement before board release."
+      "Confirm exact package drawing/lot, actual circuit net mapping, electrical suitability and procurement before board release.",
+      "Confirm exact body/height, land pattern, fixed-layout clearance, and electrical suitability before hardware use; catalogue family geometry is provisional."
     ]
   },
   "publication": {
-    "preview_selected": false,
+    "preview_selected": true,
     "download_published": false,
     "permitted_scope": null
   }

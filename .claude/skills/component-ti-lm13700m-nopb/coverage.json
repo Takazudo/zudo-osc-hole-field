@@ -1,0 +1,77 @@
+{
+  "schema_version": 1,
+  "coverage": [
+    {
+      "coverage_id": "cov-ota-exact-orderable-identity",
+      "record_id": "rec-ota",
+      "domain": "exact orderable identity",
+      "status": "COVERED",
+      "reason": "Manufacturer primary bytes identify the exact shortlist MPN/package; supplier stock remains separately open.",
+      "fact_ids": [
+        "fact-ota-orderable-identity"
+      ],
+      "blocking_fact_ids": []
+    },
+    {
+      "coverage_id": "cov-ota-pinout",
+      "record_id": "rec-ota",
+      "domain": "pinout",
+      "status": "COVERED",
+      "reason": "The retained manufacturer document provides the listed pin-function table; no project nets are assigned.",
+      "fact_ids": [
+        "fact-ota-pinout"
+      ],
+      "blocking_fact_ids": []
+    },
+    {
+      "coverage_id": "cov-ota-electrical-limits",
+      "record_id": "rec-ota",
+      "domain": "electrical limits",
+      "status": "OPEN",
+      "reason": "No exact-part electrical limits were promoted; source/identity gap remains open.",
+      "fact_ids": [
+        "fact-ota-electrical-limits"
+      ],
+      "blocking_fact_ids": [
+        "fact-ota-electrical-limits"
+      ]
+    },
+    {
+      "coverage_id": "cov-ota-manufacturer-product-description",
+      "record_id": "rec-ota",
+      "domain": "manufacturer product description",
+      "status": "COVERED",
+      "reason": "The retained manufacturer document identifies the named product and its documented role/description; this is not application qualification.",
+      "fact_ids": [
+        "fact-ota-product-function"
+      ],
+      "blocking_fact_ids": []
+    },
+    {
+      "coverage_id": "cov-ota-mechanical-fit",
+      "record_id": "rec-ota",
+      "domain": "mechanical fit",
+      "status": "OPEN",
+      "reason": "The local family envelope and generic footprint are provisional; physical board fit and land-pattern suitability are not validated.",
+      "fact_ids": [
+        "fact-ota-mechanical-fit"
+      ],
+      "blocking_fact_ids": [
+        "fact-ota-mechanical-fit"
+      ]
+    },
+    {
+      "coverage_id": "cov-ota-procurement",
+      "record_id": "rec-ota",
+      "domain": "procurement",
+      "status": "OPEN",
+      "reason": "Supplier stock, lead time, consignment and assembly allocation remain unverified as of the dated shortlist.",
+      "fact_ids": [
+        "fact-ota-procurement-status"
+      ],
+      "blocking_fact_ids": [
+        "fact-ota-procurement-status"
+      ]
+    }
+  ]
+}

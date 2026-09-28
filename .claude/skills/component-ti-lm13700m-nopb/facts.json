@@ -1,0 +1,128 @@
+{
+  "schema_version": 1,
+  "facts": [
+    {
+      "fact_id": "fact-ota-manufacturer",
+      "record_id": "rec-ota",
+      "source_id": "src-ota-datasheet",
+      "class": "PROJECT_STATE",
+      "value": "Texas Instruments",
+      "unit": "NONE",
+      "conditions": "Manufacturer of the project-selected exact shortlist identity.",
+      "locator": "src-ota-datasheet: title block or OSC-ES-1 row parts[id=ota].manufacturer",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-ota-project-selection",
+      "record_id": "rec-ota",
+      "source_id": "src-ota-shortlist",
+      "class": "PROJECT_STATE",
+      "value": {
+        "manufacturer": "Texas Instruments",
+        "mpn": "LM13700M/NOPB",
+        "package": "SOIC-16",
+        "lcsc": "C1346265",
+        "roles": "VCA, filter, envelope, folder",
+        "source_status": "UNVERIFIED"
+      },
+      "unit": "NONE",
+      "conditions": "OSC-ES-1 dated proposal row; exact source status and availability statements are not supplier allocation.",
+      "locator": "src-ota-shortlist: JSON row parts[id=ota]",
+      "provenance": "PROJECT-CHOICE",
+      "verdict": "NOT APPLICABLE",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-ota-orderable-identity",
+      "record_id": "rec-ota",
+      "source_id": "src-ota-datasheet",
+      "class": "PROJECT_STATE",
+      "value": {
+        "manufacturer": "Texas Instruments",
+        "mpn": "LM13700M/NOPB",
+        "package": "SOIC-16"
+      },
+      "unit": "NONE",
+      "conditions": "Exact complete orderable identifier in the selected package; does not establish supplier stock.",
+      "locator": "Section/table audit: src-ota-datasheet: package/orderable addendum names exact MPN",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-ota-pinout",
+      "record_id": "rec-ota",
+      "source_id": "src-ota-datasheet",
+      "class": "PROJECT_STATE",
+      "value": "pin 1 amplifier 1 bias -> pad 1; pin 2 diode 1 bias -> pad 2; pin 3 input 1+ -> pad 3; pin 4 input 1- -> pad 4; pin 5 unbuffered output 1 -> pad 5; pin 6 V- -> pad 6; pin 7 buffer input 1 -> pad 7; pin 8 buffer output 1 -> pad 8; pin 9 buffer output 2 -> pad 9; pin 10 buffer input 2 -> pad 10; pin 11 V+ -> pad 11; pin 12 unbuffered output 2 -> pad 12; pin 13 input 2- -> pad 13; pin 14 input 2+ -> pad 14; pin 15 diode 2 bias -> pad 15; pin 16 amplifier 2 bias -> pad 16",
+      "unit": "NONE",
+      "conditions": "No schematic or placement/net binding is claimed. Manufacturer pin functions are source-backed only when a retained primary document names the product family.",
+      "locator": "src-ota-datasheet: Pin configuration/function table",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-ota-product-function",
+      "record_id": "rec-ota",
+      "source_id": "src-ota-datasheet",
+      "class": "PROJECT_STATE",
+      "value": "Manufacturer source identifies LM13700M/NOPB as the shortlisted VCA, filter, envelope, folder device; this is not project suitability.",
+      "unit": "NONE",
+      "conditions": "Product family description only; no project application or electrical guarantee implied.",
+      "locator": "src-ota-datasheet: document title block and product description",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-ota-electrical-limits",
+      "record_id": "rec-ota",
+      "source_id": "src-ota-datasheet",
+      "class": "GUARANTEED_ELECTRICAL",
+      "value": "No exact-part electrical limits promoted from retained evidence.",
+      "unit": "NONE",
+      "conditions": "The task has not promoted a source-backed limit for this exact shortlist record.",
+      "locator": "src-ota-datasheet: exact component electrical-characteristics table not promoted",
+      "provenance": "UNVERIFIED",
+      "verdict": "UNSOURCED",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-ota-procurement-status",
+      "record_id": "rec-ota",
+      "source_id": "src-ota-shortlist",
+      "class": "PROJECT_STATE",
+      "value": "UNVERIFIED",
+      "unit": "NONE",
+      "conditions": "Time-stamped OSC-ES-1 state on 2026-09-28; current stock, lead time, consignment, and JLC assembly are not established.",
+      "locator": "src-ota-shortlist: JSON row parts[id=ota].sourcing.status/jlcpcb_assembly",
+      "provenance": "PROJECT-CHOICE",
+      "verdict": "UNSOURCED",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-ota-mechanical-fit",
+      "record_id": "rec-ota",
+      "source_id": "src-ota-shortlist",
+      "class": "PROJECT_STATE",
+      "value": "Provisional package-family envelope only; board/land-pattern fit has not been physically checked.",
+      "unit": "NONE",
+      "conditions": "Selected footprint family and display envelope do not establish exact-part placement or solderability.",
+      "locator": "Section/table audit: src-ota-shortlist: parts[id=ota].package; CAD receipt is provisional family geometry",
+      "provenance": "PROJECT-CHOICE",
+      "verdict": "NEEDS BENCH",
+      "depends_on": [],
+      "expression": ""
+    }
+  ]
+}

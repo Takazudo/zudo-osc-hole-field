@@ -2,7 +2,7 @@
   "receipt_version": 1,
   "identity": {
     "asset_id": "ic15-regulator_3v3",
-    "record_id": null,
+    "record_id": "rec-regulator-3v3",
     "manufacturer": "Texas Instruments",
     "mpn": "TLV75533PDBVR",
     "package": "SOT-23-5",
@@ -64,7 +64,7 @@
   "cad_use": {
     "symbol": "zudo-osc-hole-field:TLV75533PDBVR",
     "footprint": "zudo-osc-hole-field:SOT-23-5",
-    "model_path": null,
+    "model_path": "${KIPRJMOD}/../../footprints/kicad/zudo-osc-hole-field.3dshapes/IC_SOT-23-5.wrl",
     "transform": {
       "offset": null,
       "rotation": null,
@@ -77,11 +77,12 @@
       "Issue-15 all-unit KiCad 10 ERC fixture and project library checker"
     ],
     "remaining_physical_checks": [
-      "Confirm exact package drawing/lot, actual circuit net mapping, electrical suitability and procurement before board release."
+      "Confirm exact package drawing/lot, actual circuit net mapping, electrical suitability and procurement before board release.",
+      "Confirm exact body/height, land pattern, fixed-layout clearance, and electrical suitability before hardware use; catalogue family geometry is provisional."
     ]
   },
   "publication": {
-    "preview_selected": false,
+    "preview_selected": true,
     "download_published": false,
     "permitted_scope": null
   }

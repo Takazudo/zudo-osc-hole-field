@@ -54,7 +54,7 @@ Every input jack first meets an ADG5412FBRUZ **source** terminal; the drain face
 
 For a buffered input, the drain has a 100 kΩ pulldown and a 10 kΩ resistor to the amplifier input, with BAT54S clamps at the amplifier side. For a summer, the drain feeds its 100 kΩ summing resistor; it does not also receive a 100 kΩ pulldown. Pitch-sensitive input leakage, switch resistance and hot Schottky leakage must be included in the final error calculation.
 
-The ADG5412F web preview was inspected, but local manufacturer PDF acquisition failed with transport errors. Its receipt remains `SOURCE UNAVAILABLE` with the zero-hash sentinel. Issue #15 must retain actual bytes and audit pin maps and ±12 V behavior. The preliminary current model uses the ±15 V table as an explicit assumption; it does not promote that table to a guaranteed ±12 V specification.
+Issue #15 retained the Analog Devices Rev. C manufacturer PDF at `circuit/sources/ic-library/ADG5412F.pdf` (SHA-256 `ea3d12f983fc79a728d302675a0428a6d244e95828154bc4c970d34e23195a96`) and audited the TSSOP pin map. The datasheet's source-pin protection specifications do not establish a system-level ±55 V rating. Project-supply fault behavior at ±12 V and the associated current budget remain unvalidated. The preliminary current model uses the ±15 V table as an explicit assumption; it does not promote that table to a guaranteed ±12 V specification.
 
 Both output types use two series 499 Ω / 0.5 W resistors. Two opposite project outputs at ±12 V have two such chains, giving about 12 mA. One output forced by an external opposite ±12 V source can put 24 V across its chain: 24.048 mA and 0.289 W per resistor. Resistor derating, amplifier dissipation and recovery remain tests. A shorted precision output can saturate its driver; restoration must recover without latch-up. No all-outputs-shorted supply guarantee is made.
 
@@ -62,7 +62,7 @@ G08 remains open for hardware. Test powered, unpowered, one rail missing and sta
 
 ## Reusable cell values
 
-Functional terminal connections and all constituent parts are in the JSON. Numerical pin maps belong to #15. All 19 cells remain `NEEDS BENCH`; #18 implements and simulates them.
+Functional terminal connections and all constituent parts are in the JSON. Exact-component records now project numerical pin maps from #15 and #29's retained manufacturer evidence. The retained ALFA RPAR 2020 v.7 datasheet confirms the AS3340D SOIC-16 identity and all 16 pin functions. Supplier availability, project net binding, oscillator electrical and supply suitability, calibration, and physical fit remain open. All 19 cells remain `NEEDS BENCH`; #18 implements and simulates them.
 
 | Cell | Fixed starting implementation |
 | --- | --- |
