@@ -215,7 +215,9 @@ def main():
                 stale.unlink()
         for path, data in generated.items():
             target = output/path; target.parent.mkdir(parents=True, exist_ok=True); target.write_text(data)
-        (output/f'{board_id}.kicad_pro').write_text(json.dumps({'meta': {'filename': f'{board_id}.kicad_pro', 'version': 1}, 'sheets': [], 'text_variables': {}}, indent=2)+'\n')
+        project_path=output/f'{board_id}.kicad_pro'
+        if not project_path.exists():
+            project_path.write_text(json.dumps({'meta': {'filename': f'{board_id}.kicad_pro', 'version': 1}, 'sheets': [], 'text_variables': {}}, indent=2)+'\n')
         (output/'sym-lib-table').write_text('(sym_lib_table\n  (version 7)\n  (lib (name "zudo-osc-hole-field") (type "KiCad") (uri "${KIPRJMOD}/../../symbols/zudo-osc-hole-field.kicad_sym") (options "") (descr ""))\n  (lib (name "Fixture") (type "KiCad") (uri "${KIPRJMOD}/../../scripts/schgen/fixtures/fixture.kicad_sym") (options "") (descr ""))\n)\n')
         (output/'fp-lib-table').write_text('(fp_lib_table\n  (version 7)\n  (lib (name "zudo-osc-hole-field") (type "KiCad") (uri "${KIPRJMOD}/../../footprints/kicad/zudo-osc-hole-field.pretty") (options "") (descr ""))\n)\n')
     report = ROOT/'design/reports/board-net-tokens.json'
