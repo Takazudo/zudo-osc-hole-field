@@ -23,7 +23,10 @@ def build():
     n_dc=stats['components_by_type']['PTV09A-4020F-B104']
     iq_precision=loads['opamp_precision']['planning_unit_mA']['-12V']
     iq_replacement=loads['opamp_audio']['planning_unit_mA']['-12V']
-    if (n_precision,n_dc,lamps)!= (77,48,Counter({'mag':92,'stage':12,'clip':10})):
+    # Issue #60 added two real precision and four audio quads while keeping
+    # the panel hardware fixed. Revisit this lock whenever package packing
+    # changes; the earlier issue #34 numbers remain historical evidence.
+    if (n_precision,stats['IC_count_by_part']['OPA4196IDR'],n_dc,lamps)!= (79,174,48,Counter({'mag':92,'stage':12,'clip':10})):
         raise ValueError('captured package/panel count changed; re-evaluate options')
     if (iq_precision,iq_replacement)!=(6.0,1.0):
         raise ValueError('source-backed whole-quad maximum Iq changed; re-evaluate')
@@ -59,7 +62,7 @@ def build():
             'preparatory_packing_estimate_source':'Read-only preparatory count estimate retained and qualified in design/power/rail-budget-resolution.md; not manufacturer maxima or bookable savings. The sample/hold opamp term overlaps case 1.',
             'booked_savings_mA':{r:0 for r in RAILS},
             'guaranteed_maximum_mA':budget['guaranteed_maximum_mA'],
-            'conclusion':'No supported option 1–3 establishes a <=640 mA -12 V maximum. Apply issue #34 fourth case: track a second-feed proposal and source/bench qualification before partition.'}
+            'conclusion':'No supported option 1–3 establishes a <=640 mA -12 V maximum for the inherited single-source ceiling. The selected conditional EXT requirement contract is in design/power/supply-architecture.json; source capacity and qualification remain unknown.'}
 
 
 def main():

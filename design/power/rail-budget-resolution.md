@@ -1,5 +1,7 @@
 # Issue #34 — rail budget resolution decision
 
+**Historical snapshot:** This issue #34 comparison used the then-captured 77 precision and 170 audio quads. Issue #60 added two precision and four audio quads for the reviewed I/O cut; `design/power/rail-options.json` now recomputes the sensitivity against 79/174 quads and the current ledger. Issue #48 selected a conditional external-source requirement contract; the second-feed proposal below is not the current topology or measured capacity.
+
 **Authority:** PROPOSAL (planning, owner-delegated). **Status:** Unvalidated draft; the design ceiling is an 80% project margin against unmeasured zudo-pd supply targets, not demonstrated source capacity. **Decision:** Issue #34 follows its fourth case. No source-backed option 1–3 establishes that this instrument can remain below all ceilings at guaranteed maximum load. Do not change the circuit, electrical standard, shortlist, supply ceiling or board partition to force an apparent pass. Propose a second supply feed for later engineering review; this document does not design one.
 
 ## Captured starting point
