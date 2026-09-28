@@ -1,0 +1,593 @@
+{
+  "schema_version": 1,
+  "module": "wavefolder",
+  "authority": "PROPOSAL (planning, owner-delegated)",
+  "status": "PASS - bounded model only",
+  "oracle": "KiCad10.0.6 pinned wrapper ngspice",
+  "model_offset_calibration_V": 0.332,
+  "source_sha256": {
+    "design/spec/modules/wavefolder.py": "7fef9b5d759c2e083d3cdda05dd878538a7e342c7776b944dee7d213b9023ab6",
+    "design/spec/modules/run_wavefolder_spice.py": "bf6a02d7e813baee442c57e464e05598a30184d6739ba19da5cfa367dda8a53a",
+    "design/spec/modules/spice/filter-model/LM13700.MOD": "666df501773da5e65f7fd3b3c806b2c1ae7770784685dd8191a9df33b382f390"
+  },
+  "dc_runs": [
+    {
+      "deck": "design/spec/modules/spice/wavefolder-dc-f0p25-bn5.cir",
+      "status": "PASS - model only",
+      "fold_manual_V": 0.25,
+      "bias_manual_V": -5,
+      "fold_depth_V": 0,
+      "bias_CV_V": 0,
+      "diode_mismatch": false,
+      "pre_AC_min_V": -2.33736935,
+      "pre_AC_max_V": -1.63990377,
+      "pre_AC_at_zero_input_V": -2.2894433,
+      "maximum_static_jack_DC_V": 0.0,
+      "command_V": 0.250018352,
+      "maximum_monitored_internal_voltage_V": 4.19850707,
+      "odd_symmetry_error_V": 4.5788866,
+      "turning_points": [
+        {
+          "input_V": 2.04,
+          "pre_AC_V": -2.33736935
+        }
+      ]
+    },
+    {
+      "deck": "design/spec/modules/spice/wavefolder-dc-f1p5-bn5.cir",
+      "status": "PASS - model only",
+      "fold_manual_V": 1.5,
+      "bias_manual_V": -5,
+      "fold_depth_V": 0,
+      "bias_CV_V": 0,
+      "diode_mismatch": false,
+      "pre_AC_min_V": -2.33736927,
+      "pre_AC_max_V": 2.43421121,
+      "pre_AC_at_zero_input_V": -2.11787341,
+      "maximum_static_jack_DC_V": 0.0,
+      "command_V": 1.4999911,
+      "maximum_monitored_internal_voltage_V": 2.89683884,
+      "odd_symmetry_error_V": 4.67852626,
+      "turning_points": [
+        {
+          "input_V": -3.55,
+          "pre_AC_V": 2.43421121
+        },
+        {
+          "input_V": 0.7,
+          "pre_AC_V": -2.33736927
+        },
+        {
+          "input_V": 4.19,
+          "pre_AC_V": 2.33736066
+        }
+      ]
+    },
+    {
+      "deck": "design/spec/modules/spice/wavefolder-dc-f3-bn5.cir",
+      "status": "PASS - model only",
+      "fold_manual_V": 3,
+      "bias_manual_V": -5,
+      "fold_depth_V": 0,
+      "bias_CV_V": 0,
+      "diode_mismatch": false,
+      "pre_AC_min_V": -2.56579029,
+      "pre_AC_max_V": 2.43418038,
+      "pre_AC_at_zero_input_V": -2.07646093,
+      "maximum_static_jack_DC_V": 0.0,
+      "command_V": 2.99998196,
+      "maximum_monitored_internal_voltage_V": 3.09128349,
+      "odd_symmetry_error_V": 4.94398247,
+      "turning_points": [
+        {
+          "input_V": -4.09,
+          "pre_AC_V": -2.56579029
+        },
+        {
+          "input_V": -1.77,
+          "pre_AC_V": 2.43418038
+        },
+        {
+          "input_V": 0.38,
+          "pre_AC_V": -2.33733321
+        },
+        {
+          "input_V": 2.15,
+          "pre_AC_V": 2.33735748
+        },
+        {
+          "input_V": 4.33,
+          "pre_AC_V": -2.43418785
+        }
+      ]
+    },
+    {
+      "deck": "design/spec/modules/spice/wavefolder-dc-f5-bn5.cir",
+      "status": "PASS - model only",
+      "fold_manual_V": 5,
+      "bias_manual_V": -5,
+      "fold_depth_V": 0,
+      "bias_CV_V": 0,
+      "diode_mismatch": false,
+      "pre_AC_min_V": -2.56579997,
+      "pre_AC_max_V": 2.77321139,
+      "pre_AC_at_zero_input_V": -2.31463667,
+      "maximum_static_jack_DC_V": 0.0,
+      "command_V": 4.99233124,
+      "maximum_monitored_internal_voltage_V": 4.999985,
+      "odd_symmetry_error_V": 5.1555872,
+      "turning_points": [
+        {
+          "input_V": -4.14,
+          "pre_AC_V": 2.77321139
+        },
+        {
+          "input_V": -2.66,
+          "pre_AC_V": -2.56579997
+        },
+        {
+          "input_V": -1.25,
+          "pre_AC_V": 2.43411389
+        },
+        {
+          "input_V": 0.07,
+          "pre_AC_V": -2.33728268
+        },
+        {
+          "input_V": 1.16,
+          "pre_AC_V": 2.33737255
+        },
+        {
+          "input_V": 2.48,
+          "pre_AC_V": -2.43412067
+        },
+        {
+          "input_V": 3.91,
+          "pre_AC_V": 2.56580578
+        }
+      ]
+    },
+    {
+      "deck": "design/spec/modules/spice/wavefolder-dc-f0p25-b0.cir",
+      "status": "PASS - model only",
+      "fold_manual_V": 0.25,
+      "bias_manual_V": 0,
+      "fold_depth_V": 0,
+      "bias_CV_V": 0,
+      "diode_mismatch": false,
+      "pre_AC_min_V": -1.80940603,
+      "pre_AC_max_V": 1.45032996,
+      "pre_AC_at_zero_input_V": -0.216702558,
+      "maximum_static_jack_DC_V": 0.0,
+      "command_V": 0.250018352,
+      "maximum_monitored_internal_voltage_V": 4.19850707,
+      "odd_symmetry_error_V": 0.433405116,
+      "turning_points": []
+    },
+    {
+      "deck": "design/spec/modules/spice/wavefolder-dc-f1p5-b0.cir",
+      "status": "PASS - model only",
+      "fold_manual_V": 1.5,
+      "bias_manual_V": 0,
+      "fold_depth_V": 0,
+      "bias_CV_V": 0,
+      "diode_mismatch": false,
+      "pre_AC_min_V": -2.33736131,
+      "pre_AC_max_V": 2.33736933,
+      "pre_AC_at_zero_input_V": -0.930921186,
+      "maximum_static_jack_DC_V": 0.0,
+      "command_V": 1.4999911,
+      "maximum_monitored_internal_voltage_V": 2.89683884,
+      "odd_symmetry_error_V": 1.861842372,
+      "turning_points": [
+        {
+          "input_V": -1.27,
+          "pre_AC_V": -2.33736131
+        },
+        {
+          "input_V": 2.2,
+          "pre_AC_V": 2.33736933
+        }
+      ]
+    },
+    {
+      "deck": "design/spec/modules/spice/wavefolder-dc-f3-b0.cir",
+      "status": "PASS - model only",
+      "fold_manual_V": 3,
+      "bias_manual_V": 0,
+      "fold_depth_V": 0,
+      "bias_CV_V": 0,
+      "diode_mismatch": false,
+      "pre_AC_min_V": -2.53044333,
+      "pre_AC_max_V": 2.43420353,
+      "pre_AC_at_zero_input_V": -1.04154164,
+      "maximum_static_jack_DC_V": 0.0,
+      "command_V": 2.99998196,
+      "maximum_monitored_internal_voltage_V": 2.999991,
+      "odd_symmetry_error_V": 2.08308328,
+      "turning_points": [
+        {
+          "input_V": -2.78,
+          "pre_AC_V": 2.43420353
+        },
+        {
+          "input_V": -0.62,
+          "pre_AC_V": -2.33736776
+        },
+        {
+          "input_V": 1.15,
+          "pre_AC_V": 2.33735265
+        },
+        {
+          "input_V": 3.31,
+          "pre_AC_V": -2.43418061
+        }
+      ]
+    },
+    {
+      "deck": "design/spec/modules/spice/wavefolder-dc-f5-b0.cir",
+      "status": "PASS - model only",
+      "fold_manual_V": 5,
+      "bias_manual_V": 0,
+      "fold_depth_V": 0,
+      "bias_CV_V": 0,
+      "diode_mismatch": false,
+      "pre_AC_min_V": -2.77324999,
+      "pre_AC_max_V": 2.77325121,
+      "pre_AC_at_zero_input_V": -0.00216798721,
+      "maximum_static_jack_DC_V": 0.0,
+      "command_V": 4.99233124,
+      "maximum_monitored_internal_voltage_V": 4.999985,
+      "odd_symmetry_error_V": 0.00433597442,
+      "turning_points": [
+        {
+          "input_V": -4.77,
+          "pre_AC_V": 2.77325121
+        },
+        {
+          "input_V": -3.28,
+          "pre_AC_V": -2.56578173
+        },
+        {
+          "input_V": -1.86,
+          "pre_AC_V": 2.43414973
+        },
+        {
+          "input_V": -0.54,
+          "pre_AC_V": -2.33735537
+        },
+        {
+          "input_V": 0.54,
+          "pre_AC_V": 2.33734262
+        },
+        {
+          "input_V": 1.86,
+          "pre_AC_V": -2.43412679
+        },
+        {
+          "input_V": 3.28,
+          "pre_AC_V": 2.56576677
+        },
+        {
+          "input_V": 4.77,
+          "pre_AC_V": -2.77324999
+        }
+      ]
+    },
+    {
+      "deck": "design/spec/modules/spice/wavefolder-dc-f0p25-b5.cir",
+      "status": "PASS - model only",
+      "fold_manual_V": 0.25,
+      "bias_manual_V": 5,
+      "fold_depth_V": 0,
+      "bias_CV_V": 0,
+      "diode_mismatch": false,
+      "pre_AC_min_V": 1.88125093,
+      "pre_AC_max_V": 2.33736932,
+      "pre_AC_at_zero_input_V": 2.33053188,
+      "maximum_static_jack_DC_V": 0.0,
+      "command_V": 0.250018352,
+      "maximum_monitored_internal_voltage_V": 4.19850707,
+      "odd_symmetry_error_V": 4.66106376,
+      "turning_points": [
+        {
+          "input_V": -0.77,
+          "pre_AC_V": 2.33736932
+        }
+      ]
+    },
+    {
+      "deck": "design/spec/modules/spice/wavefolder-dc-f1p5-b5.cir",
+      "status": "PASS - model only",
+      "fold_manual_V": 1.5,
+      "bias_manual_V": 5,
+      "fold_depth_V": 0,
+      "bias_CV_V": 0,
+      "diode_mismatch": false,
+      "pre_AC_min_V": -2.43420425,
+      "pre_AC_max_V": 2.33736058,
+      "pre_AC_at_zero_input_V": 2.31241158,
+      "maximum_static_jack_DC_V": 0.0,
+      "command_V": 1.4999911,
+      "maximum_monitored_internal_voltage_V": 2.89683884,
+      "odd_symmetry_error_V": 4.62482316,
+      "turning_points": [
+        {
+          "input_V": -3.27,
+          "pre_AC_V": -2.33736854
+        },
+        {
+          "input_V": 0.23,
+          "pre_AC_V": 2.33736058
+        },
+        {
+          "input_V": 4.48,
+          "pre_AC_V": -2.43420425
+        }
+      ]
+    },
+    {
+      "deck": "design/spec/modules/spice/wavefolder-dc-f3-b5.cir",
+      "status": "PASS - model only",
+      "fold_manual_V": 3,
+      "bias_manual_V": 5,
+      "fold_depth_V": 0,
+      "bias_CV_V": 0,
+      "diode_mismatch": false,
+      "pre_AC_min_V": -2.43418913,
+      "pre_AC_max_V": 2.56575652,
+      "pre_AC_at_zero_input_V": 2.29631385,
+      "maximum_static_jack_DC_V": 0.0,
+      "command_V": 2.99998196,
+      "maximum_monitored_internal_voltage_V": 2.999991,
+      "odd_symmetry_error_V": 4.5926277,
+      "turning_points": [
+        {
+          "input_V": -3.8,
+          "pre_AC_V": 2.43420666
+        },
+        {
+          "input_V": -1.62,
+          "pre_AC_V": -2.33733102
+        },
+        {
+          "input_V": 0.14,
+          "pre_AC_V": 2.3373543
+        },
+        {
+          "input_V": 2.29,
+          "pre_AC_V": -2.43418913
+        },
+        {
+          "input_V": 4.62,
+          "pre_AC_V": 2.56575652
+        }
+      ]
+    },
+    {
+      "deck": "design/spec/modules/spice/wavefolder-dc-f5-b5.cir",
+      "status": "PASS - model only",
+      "fold_manual_V": 5,
+      "bias_manual_V": 5,
+      "fold_depth_V": 0,
+      "bias_CV_V": 0,
+      "diode_mismatch": false,
+      "pre_AC_min_V": -2.77322753,
+      "pre_AC_max_V": 2.56580679,
+      "pre_AC_at_zero_input_V": 2.31504441,
+      "maximum_static_jack_DC_V": 0.0,
+      "command_V": 4.99233124,
+      "maximum_monitored_internal_voltage_V": 4.999985,
+      "odd_symmetry_error_V": 5.15406984,
+      "turning_points": [
+        {
+          "input_V": -3.91,
+          "pre_AC_V": -2.56579982
+        },
+        {
+          "input_V": -2.48,
+          "pre_AC_V": 2.43414321
+        },
+        {
+          "input_V": -1.16,
+          "pre_AC_V": -2.33736864
+        },
+        {
+          "input_V": -0.07,
+          "pre_AC_V": 2.33730747
+        },
+        {
+          "input_V": 1.25,
+          "pre_AC_V": -2.43414003
+        },
+        {
+          "input_V": 2.66,
+          "pre_AC_V": 2.56580679
+        },
+        {
+          "input_V": 4.14,
+          "pre_AC_V": -2.77322753
+        }
+      ]
+    },
+    {
+      "deck": "design/spec/modules/spice/wavefolder-control-limit-n5.cir",
+      "status": "PASS - model only",
+      "fold_manual_V": 5,
+      "bias_manual_V": -5,
+      "fold_depth_V": 5,
+      "bias_CV_V": -5,
+      "diode_mismatch": false,
+      "pre_AC_min_V": -4.11086072,
+      "pre_AC_max_V": 2.77302459,
+      "pre_AC_at_zero_input_V": -0.188229569,
+      "maximum_static_jack_DC_V": 0.0,
+      "command_V": 5.17626909,
+      "maximum_monitored_internal_voltage_V": 9.99997,
+      "odd_symmetry_error_V": 3.432644162,
+      "turning_points": [
+        {
+          "input_V": -3.42,
+          "pre_AC_V": 2.77302459
+        },
+        {
+          "input_V": -1.99,
+          "pre_AC_V": -2.56572296
+        },
+        {
+          "input_V": -0.63,
+          "pre_AC_V": 2.43420417
+        },
+        {
+          "input_V": 0.64,
+          "pre_AC_V": -2.33731304
+        },
+        {
+          "input_V": 1.69,
+          "pre_AC_V": 2.3373118
+        },
+        {
+          "input_V": 2.98,
+          "pre_AC_V": -2.43418417
+        },
+        {
+          "input_V": 4.36,
+          "pre_AC_V": 2.56580947
+        }
+      ]
+    },
+    {
+      "deck": "design/spec/modules/spice/wavefolder-control-limit-5.cir",
+      "status": "PASS - model only",
+      "fold_manual_V": 5,
+      "bias_manual_V": 5,
+      "fold_depth_V": 5,
+      "bias_CV_V": 5,
+      "diode_mismatch": false,
+      "pre_AC_min_V": -2.77316064,
+      "pre_AC_max_V": 4.3746319,
+      "pre_AC_at_zero_input_V": -0.0786656393,
+      "maximum_static_jack_DC_V": 0.0,
+      "command_V": 5.17626909,
+      "maximum_monitored_internal_voltage_V": 9.99997,
+      "odd_symmetry_error_V": 3.4725568609999997,
+      "turning_points": [
+        {
+          "input_V": -4.41,
+          "pre_AC_V": -2.56579494
+        },
+        {
+          "input_V": -3.03,
+          "pre_AC_V": 2.43412718
+        },
+        {
+          "input_V": -1.74,
+          "pre_AC_V": -2.33735741
+        },
+        {
+          "input_V": -0.69,
+          "pre_AC_V": 2.33735947
+        },
+        {
+          "input_V": 0.58,
+          "pre_AC_V": -2.43416123
+        },
+        {
+          "input_V": 1.95,
+          "pre_AC_V": 2.56568087
+        },
+        {
+          "input_V": 3.37,
+          "pre_AC_V": -2.77316064
+        }
+      ]
+    },
+    {
+      "deck": "design/spec/modules/spice/wavefolder-fold-mute.cir",
+      "status": "PASS - model only",
+      "fold_manual_V": 0,
+      "bias_manual_V": 0,
+      "fold_depth_V": -5,
+      "bias_CV_V": 0,
+      "diode_mismatch": false,
+      "pre_AC_min_V": -2.39816846e-06,
+      "pre_AC_max_V": 1.99570042e-06,
+      "pre_AC_at_zero_input_V": -2.12307083e-07,
+      "maximum_static_jack_DC_V": 0.0,
+      "command_V": -0.176274242,
+      "maximum_monitored_internal_voltage_V": 5.76347431,
+      "odd_symmetry_error_V": 4.24614166e-07,
+      "turning_points": []
+    },
+    {
+      "deck": "design/spec/modules/spice/wavefolder-diode-mismatch.cir",
+      "status": "PASS - model only",
+      "fold_manual_V": 5,
+      "bias_manual_V": 0,
+      "fold_depth_V": 0,
+      "bias_CV_V": 0,
+      "diode_mismatch": true,
+      "pre_AC_min_V": -2.77296117,
+      "pre_AC_max_V": 2.51494546,
+      "pre_AC_at_zero_input_V": -0.00216427593,
+      "maximum_static_jack_DC_V": 0.0,
+      "command_V": 4.99233124,
+      "maximum_monitored_internal_voltage_V": 4.999985,
+      "odd_symmetry_error_V": 0.470883991,
+      "turning_points": [
+        {
+          "input_V": -4.64,
+          "pre_AC_V": 2.51494546
+        },
+        {
+          "input_V": -3.19,
+          "pre_AC_V": -2.56557024
+        },
+        {
+          "input_V": -1.82,
+          "pre_AC_V": 2.17630563
+        },
+        {
+          "input_V": -0.54,
+          "pre_AC_V": -2.33701857
+        },
+        {
+          "input_V": 0.5,
+          "pre_AC_V": 2.07951426
+        },
+        {
+          "input_V": 1.78,
+          "pre_AC_V": -2.43395909
+        },
+        {
+          "input_V": 3.15,
+          "pre_AC_V": 2.30773848
+        },
+        {
+          "input_V": 4.59,
+          "pre_AC_V": -2.77296117
+        }
+      ]
+    }
+  ],
+  "transient": {
+    "deck": "design/spec/modules/spice/wavefolder-sine-transient.cir",
+    "status": "PASS - model only",
+    "input": "5V peak,100Hz sine; FOLD manual5V,BIAS manual2.5V,full LEVEL,100k load",
+    "window_s": [
+      0.7,
+      0.8
+    ],
+    "min_V": -2.61375474,
+    "max_V": 2.81316358,
+    "time_weighted_mean_V": -0.0011654972098874756
+  },
+  "limitations": [
+    "TI retained single-OTA macromodel; its header warns AC bandwidth/phase margin can be overestimated by more than2x.",
+    "Ideal amplifiers have no bandwidth/current/slew/phase model; only the bias-servo amplifier has a smooth +/-10.5V output bound. Normal-case internal headroom is checked separately; overload is not qualified.",
+    "Diode, Schottky and PNP parameters are generic fixtures, not vendor BAS16/BAT54/MMBT3906 models.",
+    "Control servo is connected from source parts but its real compensation/stability/offset/corner operation is unqualified.",
+    "DC curves refer to PRE_AC; steady jack DC is blocked by the1uF/100k highpass.",
+    "Protection, harness/cable stability, noise, temperature, actual current bounds and hardware behavior NOT RUN."
+  ]
+}

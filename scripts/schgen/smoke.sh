@@ -17,12 +17,12 @@ expected={'/H1/':6,'/H2/':6,**{f'/E{i}/':10 for i in range(1,7)},
           **{f'/X{i}/':6 for i in range(1,3)},
           **{f'/M5{suffix}/':14 for suffix in ('A','B')},
           **{f'/M4{suffix}/':14 for suffix in ('A','B')},
-          '/POWER/':12}
+          '/W2/':6,'/W1/':6,'/POWER/':12}
 actual={sheet['path']:len(sheet.get('violations',[])) for sheet in report['sheets']
         if sheet.get('violations')}
 if errors or actual!=expected or any(x['type']!='pin_to_pin' for x in warnings):
  raise SystemExit(f'instrument ERC: {len(errors)} errors, warning counts={actual}; expected={expected}')
-print('PASS: instrument ERC zero errors; 180 documented pin-type warnings across captured families')
+print('PASS: instrument ERC zero errors; 192 documented pin-type warnings across captured families')
 PY
 bash scripts/kicad/run.sh kicad-cli sch export netlist --format kicadsexpr -o "$scratch/netlist.net" schematic/zudo-osc-hole-field.kicad_sch
 python3 scripts/schgen/verify_netlist.py "$scratch/netlist.net"
