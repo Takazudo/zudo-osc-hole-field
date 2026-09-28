@@ -31,6 +31,14 @@ class SupplyArchitectureTests(unittest.TestCase):
         self.assertEqual(r['selected_requirement']['minimum_continuous_mA'],{'+12V':1600,'-12V':1500,'+5V':300})
         self.assertTrue(all(v is None for v in r['measured_source_capacity_mA'].values()))
 
+    def test_captured_legacy_protection_is_reported_as_open(self):
+        r=self.build()
+        self.assertTrue(r['implementation']['status'].startswith('OPEN:'))
+        self.assertEqual(set(r['implementation']['historical_ptc_path']), {'+12V','-12V','+5V'})
+        self.assertTrue(all(not row['passes_required_current_and_protection_loss']
+                            for row in r['implementation']['historical_ptc_path'].values()))
+        self.assertIn('Open inlet AGND', ' '.join(r['implementation']['missing_circuit_proofs']))
+
     def test_missing_module(self):
         self.reject(lambda c:c['domains']['EXT']['module_instances'].pop(), 'module allocation')
 

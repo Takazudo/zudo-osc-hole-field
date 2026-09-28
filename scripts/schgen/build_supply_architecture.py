@@ -11,6 +11,7 @@ sys.dont_write_bytecode = True
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT))
 from scripts.schgen.build_rail_ledger import build as ledger_build, no_duplicate_keys
+from design.spec.modules.power import family as power_family
 RAILS = ('+12V', '-12V', '+5V')
 INPUT = ROOT / 'design/power/supply-architecture-input.json'
 OUTPUT = ROOT / 'design/power/supply-architecture.json'
@@ -129,9 +130,43 @@ def build(config=None):
     require(all(x['pcb_z_mm']-4-.5 > -45 for x in read('design/mechanical/selector-assembly.json')['instances']), 'selector reservation overlaps rear chamber')
     minimum = max(math.ceil(total[r]/candidate['planning_ceiling_mA'][r]) for r in RAILS)
     require(minimum == 3, 'minimum independent arithmetic candidate changed')
+    # Inspect the captured sheet instead of treating the contract as installed hardware.
+    power_parts = {part.key: part for part in power_family().parts}
+    legacy = read('design/power/protection-source-lock.json')['historical_ptc_limits']
+    actual_inlet = power_parts['INLET']
+    legacy_path = {}
+    for key, rail in (('P12','+12V'), ('N12','-12V'), ('P5','+5V')):
+        ptc = power_parts.get('PTC_' + key)
+        if ptc is not None and ptc.symbol.endswith(':mSMD110-33V'):
+            legacy_path[rail] = {
+                'captured_part': legacy['part'],
+                'hold_A_at_25C': legacy['hold_A_at_25C'],
+                'required_continuous_A': continuous[rail]/1000,
+                'r1max_ohm': legacy['r1max_ohm'],
+                'drop_at_required_continuous_V_using_r1max': round(continuous[rail]/1000*legacy['r1max_ohm'],6),
+                'passes_required_current_and_protection_loss':
+                    legacy['hold_A_at_25C'] >= continuous[rail]/1000 and
+                    continuous[rail]/1000*legacy['r1max_ohm'] <= harness['max_protection_drop_V'],
+            }
+    implementation = {
+        'status': 'OPEN: selected EXT protection is not captured by the schematic',
+        'captured_inlet_symbol': actual_inlet.symbol,
+        'captured_inlet_footprint': actual_inlet.footprint,
+        'selected_inlet_status': inlet['status'],
+        'historical_ptc_path': legacy_path,
+        'missing_circuit_proofs': [
+            'Load-side three-rail monitors and fail-safe inhibited enables',
+            'Low-drop reverse-current blocking and coordinated shutdown/discharge on all rails',
+            'Any-order/missing-rail and powered-off patch output/sense/reference injection bounds',
+            'Open inlet AGND detection when a patch sleeve still provides a return path',
+            'Actual capacitor and auxiliary-current inventory, source/inlet limiter let-through and fault energy',
+            'Exact selected inlet drawing, rating, mating-face map and footprint',
+        ],
+    }
     return {'schema_version':1,'status':'PASS: conditional requirement arithmetic/allocation ONLY; hardware NOT SELECTED; unvalidated draft',
         'value_classification':'Computed report values DERIVED from authored PROPOSAL inputs and source-backed ledger; no measured/guaranteed capacity.',
         'input':'design/power/supply-architecture-input.json','contract':c,
+        'implementation': implementation,
         'allocation_counts':{'signal_modules':33,'shared_references':1,'worksheet_loads':len(loads),'physical_IC_packages':ledger['physical_package_count'],'fixed_panel_centres':438},
         'physical_IC_allocation':[{**p,'domain':'EXT','mapped_supply_nets':p['supply_pins']} for p in ledger['physical_ic_packages']],
         'original_single_source':{'planning_mA':ledger['original_single_inlet_planning_mA'],'ceilings_mA':ledger['original_single_source_ceiling_mA'],'excess_mA':ledger['original_single_source_excess_mA']},
