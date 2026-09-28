@@ -53,6 +53,8 @@ def assert_partition(partition, assignment):
     seen = set()
     edges = defaultdict(set)
     for h in partition['harnesses']:
+        if seen.intersection(h['header_ids']):
+            raise ValueError(f'{h["id"]}: header used by multiple harnesses')
         a, b = (connectors[x] for x in h['header_ids'])
         if a['board'] == b['board']: raise ValueError(f'{h["id"]}: same-board harness')
         if a['contacts'] != b['contacts']: raise ValueError(f'{h["id"]}: contact mismatch')
@@ -91,6 +93,7 @@ def verify(partition, board_netlists, master_netlist):
     edges = assert_partition(partition, assignment)
     master = exported_pin_nets(master_netlist)
     master = {key: net for key, net in master.items() if key[0] in assignment}
+    master_components = components(master_netlist)
     projected = {}
     net_boards = defaultdict(set)
     refs = Counter()
@@ -107,6 +110,19 @@ def verify(partition, board_netlists, master_netlist):
         expected_interfaces |= {t['reference'] for t in partition['load_side_terminals'] if t['board'] == board}
         if set(comp) != physical | expected_interfaces:
             raise ValueError(f'{board_id}: interface component set mismatch')
+        for ref in physical:
+            for field in ('value', 'footprint'):
+                if children(comp[ref], field) != children(master_components[ref], field):
+                    raise ValueError(f'{ref}: {field} differs from master')
+            def identity(node):
+                fields = children(node, 'fields')
+                if not fields: return {}
+                return {children(x, 'name')[0][1]: (x[-1] if len(x) > 2 else '')
+                        for x in children(fields[0], 'field') if children(x, 'name')}
+            old, new = identity(master_components[ref]), identity(comp[ref])
+            for field in ('MPN', 'Manufacturer', 'LCSC', 'PanelUid'):
+                if old.get(field) != new.get(field):
+                    raise ValueError(f'{ref}: {field} differs from master')
         for key, token in actual.items():
             ref, pin = key
             if ref in assignment:
@@ -137,6 +153,9 @@ def verify(partition, board_netlists, master_netlist):
             raise ValueError(f'{net}: declared harness/wire graph disconnects {sorted(boards-reached)}')
     return {'status': 'PASS - native joined pin/net and declared interface graph only; unvalidated draft',
             'physical_components': len(refs), 'physical_pins': len(projected),
+            'fitted_components': sum(x['fitted'] for x in assignment.values()),
+            'dnp_components': sum(not x['fitted'] for x in assignment.values()),
+            'fitted_ICs': sum(x['fitted'] and ref.startswith('U') for ref, x in assignment.items()),
             'master_nets': len(set(n for n in master.values() if n is not None)),
             'cross_board_nets': sum(len(v)>1 for v in net_boards.values()),
             'headers': len(partition['connectors']), 'harnesses': len(partition['harnesses']),

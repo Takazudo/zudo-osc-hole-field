@@ -205,6 +205,9 @@ def main():
             ins.append(Instance(ff.name, f'POWER_FLAGS_{short}', 998))
         generated = render(tuple(fs), tuple(ins), symbols, board_id)
         output = ROOT/'boards'/board_id
+        for stale in (output/'sheets').glob('*.kicad_sch'):
+            if f'sheets/{stale.name}' not in generated and '(generator "zudo_schgen")' in stale.read_text():
+                stale.unlink()
         for path, data in generated.items():
             target = output/path; target.parent.mkdir(parents=True, exist_ok=True); target.write_text(data)
         (output/f'{board_id}.kicad_pro').write_text(json.dumps({'meta': {'filename': f'{board_id}.kicad_pro', 'version': 1}, 'sheets': [], 'text_variables': {}}, indent=2)+'\n')
