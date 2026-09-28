@@ -91,7 +91,7 @@ All four waveforms then use the standard general-output buffer and two 499 Ω / 
 | `TRI_RAW`, `SAW_RAW`, `PULSE_RAW` | AS3340 pins 10, 8 and 4 | Internal waveforms, never jack tips directly |
 | `OCT_SELECTED` | Rotary common pins 1 and 10, local 1 kΩ receiver resistor | Only buffered tap voltages on panel wiring |
 
-All active oscillator circuitry is declared in `OSC_CORE:${SHEETNAME}`; timing, compensation and summing nodes are additionally sensitive. Panel contacts and pots are outside that island and carry buffered signals, references, return or high-impedance wipers. The actual board partition must preserve these local nets. Every IC supply pin has local 100 nF decoupling. No per-oscillator bulk capacitor is automatically added; the later board capacitor ledger owns bulk allocation.
+The timing and processing circuitry remains in `OSC_CORE:${SHEETNAME}`, while jack I/O is in `IO_JACK:${SHEETNAME}`; timing, compensation and summing nodes are additionally sensitive. Panel contacts and pots are outside that island and carry buffered signals, references, return or high-impedance wipers. The actual board partition must preserve these local nets. Every IC supply pin has local 100 nF decoupling. No per-oscillator bulk capacitor is automatically added; the later board capacitor ledger owns bulk allocation.
 
 ## Calibration without soldering
 
@@ -115,3 +115,7 @@ The generated master passes pinned KiCad 10 ERC with zero errors; oscillator and
 `design/reports/current/oscillator.json` counts actual whole packages: per oscillator, six OPA4196 quads, two OPA4197 quads, four ADG5412F quads, two LM393B duals, one HC14 and one AS3340D. The shared reference adds three OPA4197 quads and one REF5050. Upper **planning allowances** total +12 V **254.5 mA**, −12 V **250 mA**, +5 V **30 mA** for all five plus the single reference. Guaranteed maxima remain `NOT ESTABLISHED`: core supply conditions differ from the source table, and dynamic/fault loads are unqualified. Issue #33/#34 must use this capture-derived worksheet instead of the old nine-section-per-oscillator size estimate.
 
 Before hardware approval: resolve AS3340D factory sourcing, exact value-specific passive MPNs, the buffered negative supply under every rail sequence, thermal drift, frequency coverage, actual 12 V waveform levels, sine distortion, PWM endpoints, both sync modes, octave bounce, harness stability and output faults. No physical oscillator, factory assembly or complete supply budget has passed here.
+
+## Source I/O allocation
+
+[Issue #60's source partition](./osc-io-partition.mdx) assigns raw jack, input isolation/clamp, local output feedback and magnitude drivers to the jack region, with complete fitted packages and local bypasses. The generated manifest is the current allocation authority; earlier broad module-island descriptions above describe the logical circuit grouping. Only checked buffered signals, conditioned logic, references, permitted wipers, and power/AGND are candidate connector nets. Physical boards and connector loads remain #35 work; this is an unvalidated draft.

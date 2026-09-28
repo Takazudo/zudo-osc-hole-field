@@ -12,12 +12,12 @@ class RailLedger(unittest.TestCase):
 
     def test_complete_ledger_and_ref5050_pin(self):
         report = build(self.source)
-        self.assertEqual(report['physical_package_count'], 634)
+        self.assertEqual(report['physical_package_count'], 640)
         self.assertEqual(len(report['worksheet_loads']), 347)
         self.assertEqual(report['selected_domain']['id'], 'EXT')
         self.assertEqual(report['selected_domain']['module_count'], 33)
         self.assertEqual(report['selected_domain']['worksheet_load_count'], 347)
-        self.assertEqual(report['selected_domain']['physical_ic_package_count'], 634)
+        self.assertEqual(report['selected_domain']['physical_ic_package_count'], 640)
         self.assertEqual(report['original_single_source_ceiling_mA'], {'+12V': 960, '-12V': 640, '+5V': 400})
         for rail in ('+12V', '-12V', '+5V'):
             self.assertIsNone(report['guaranteed_whole_instrument_maximum_mA'][rail])

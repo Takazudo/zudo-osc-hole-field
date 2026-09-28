@@ -46,7 +46,7 @@ def build_one(name,family,instances):
                           'guaranteed_maximum_mA':{r:None for r in SUPPLIES}} for i in instances],
             'planning_upper_total_mA':{r:round(len(instances)*plan[r],4) for r in SUPPLIES},
             'guaranteed_maximum_status':'NOT ESTABLISHED: reference load, LED waveform, signal swings, OTA bias/servo, temperature, startup and faults need measurement.',
-            'decoupling_nF_per_instance':100*sum('_C_DEC_' in p.key for p in f.parts),
+            'decoupling_nF_per_instance':100*sum('C_DEC_' in p.key for p in f.parts),
             'note':'Packages include all physical amplifier channels and local 100 nF supply bypasses; no bulk capacitor or short-circuit allowance. Whole-instrument closure belongs to the power budget.'}
 
 

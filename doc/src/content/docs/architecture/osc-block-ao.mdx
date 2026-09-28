@@ -61,3 +61,7 @@ The planning worksheet `design/reports/current/offset.json` counts per cell thre
 ## Bench and partition gates
 
 Verify the actual B103/B104 endpoint and centre transfer, 100 kΩ input impedance and power-off patch behavior; probe remote-pot wiper failure, cable capacitance and op-amp stability; check sum clipping and recovery for all extreme combinations, jack loading and shorts; measure LED thresholds/brightness without disturbing the precision path; compare source-to-output cents error and drift over temperature; and measure reference/rail load at startup and steady state. Board partition must keep the sensitive summing/feedback nodes with their amplifiers and provide a documented interconnect for the buffered pot signals. The selector-hole conflict elsewhere on the panel and final mechanical stack also remain open.
+
+## Source I/O allocation
+
+[Issue #60's source partition](./osc-io-partition.mdx) assigns raw jack, input isolation/clamp, local output feedback and magnitude drivers to the jack region, with complete fitted packages and local bypasses. The generated manifest is the current allocation authority; earlier broad module-island descriptions above describe the logical circuit grouping. Only checked buffered signals, conditioned logic, references, permitted wipers, and power/AGND are candidate connector nets. Physical boards and connector loads remain #35 work; this is an unvalidated draft.

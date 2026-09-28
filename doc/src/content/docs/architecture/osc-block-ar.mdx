@@ -362,3 +362,7 @@ matching and temperature dependence; actual time endpoints and curved response;
 clamp/hold accuracy; EOC width and non-retriggerability; stage LED brightness;
 output protection, loading and cable stability; board fit/Sensitive-net routing
 and remote harnesses; and measured current before supply-budget closure.
+
+## Source I/O allocation
+
+[Issue #60's source partition](./osc-io-partition.mdx) assigns raw jack, input isolation/clamp, local output feedback and magnitude drivers to the jack region, with complete fitted packages and local bypasses. The generated manifest is the current allocation authority; earlier broad module-island descriptions above describe the logical circuit grouping. Only checked buffered signals, conditioned logic, references, permitted wipers, and power/AGND are candidate connector nets. Physical boards and connector loads remain #35 work; this is an unvalidated draft.

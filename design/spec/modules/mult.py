@@ -1,4 +1,5 @@
 """B1/B2 precision buffered one-to-three multiples; capture remains unvalidated."""
+from design.spec.modules.io_partition import refined
 from collections import defaultdict
 from dataclasses import replace
 
@@ -92,6 +93,7 @@ class MultBuilder(Builder):
                       sensitive_nets=('IN_PROTECTED', 'IN_SENSE'), paper='A0')
 
 
+@refined
 def family():
     panel_bindings()
     builder = MultBuilder()

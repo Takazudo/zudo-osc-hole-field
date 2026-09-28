@@ -3,6 +3,7 @@
 Reserved master indices: O1..O5 = 11..15; OCTAVE_REF = 16.
 ALFA 2020 v7 source/pin evidence: design/standard/pin-maps/vco.json.
 """
+from design.spec.modules.io_partition import refined
 from collections import defaultdict
 from dataclasses import replace
 import json, re
@@ -130,6 +131,7 @@ class Builder:
         return Family(name,tuple(out),global_nets=globals,sensitive_nets=sensitive,paper='A2' if name=='octave_reference' else 'A0')
 
 
+@refined
 def family():
     panel_bindings();b=Builder()
     for key in ('1V','FM','PWM','SYNC'):
