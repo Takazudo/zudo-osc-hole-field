@@ -1,19 +1,49 @@
 ---
-title: "MIX4 — circuit task"
-description: "Defines the two four-input mixer modules with voltage-controlled output gain and their open design requirements."
+title: "MIX4 VCA — captured draft"
+description: "Four-input mixer M4A/M4B with ATTEN CV and LM13700 VCA, OSC-ES-1 proposal"
 sidebar_position: 100
 ---
 
-## Functional contract
+> **Unvalidated draft — not bench tested.** The VCA model exposes a failed large-signal target and does not qualify the circuit. Hold procurement and fabrication until the electrical gates below close.
 
-Four attenuverters feed summing stage then VCA. ATTEN CV through CV± combines with manual SUM GAIN.
+M4A and M4B share `schematic/sheets/mix4_vca.kicad_sch`. Each instance binds six locked jacks, six controls and seven LEDs exactly once. Four jacks are DC-coupled audio inputs through source-facing ADG5412F protection, buffered B103 attenuverters and individual magnitude indicators. `ATTEN` is a **CV-only** jack, protected and buffered like an input; its magnitude indicator monitors the CV before the CV± depth pot. The fifth control path never enters the four-channel audio summer. Active roles use OSC-ES-1 OPA4196IDR for audio/CV/indicator stages, OPA4197IPWR for the local precision reference, LM393BIDR for the clip window, and LM13700M/NOPB for the VCA. Exact package and pin identities come from the retained library evidence; non-shortlist passive values keep blank MPN fields until sourced.
 
-## Work before schematic lock
+```mermaid
+flowchart LR
+  J["Four audio jacks"] --> P["Fault switches, clamp buffers"]
+  P --> A["Four B103 attenuverters"]
+  A --> S["Inverting 0.5-per-input summer"]
+  S --> V["LM13700 OTA and current-to-voltage stage"]
+  V --> O["998 Ω SUM output"]
+  S --> C["±10 V pre-VCA clip LED"]
+  CV["ATTEN CV jack"] --> CP["Fault switch, buffer and CV± pot"]
+  L["B104 LEVEL"] --> CMD["0..5 V command clamp and current servo"]
+  CP --> CMD
+  CMD --> V
+```
 
-ATTEN is control, not a fifth audio input. Preserve pre-VCA overload detection when final output is attenuated. Define VCA gain law and allowed input/CV ranges.
+| Net | Connected pins/functions | Value / note |
+| --- | --- | --- |
+| `n_TIP` | Audio jack tip to ADG source, `n=1..4` | Jack normal contact unused. |
+| `n_GAIN` | B103 attenuverter to 100 kΩ summer resistor and LED | Nominal bipolar input contribution. |
+| `SUM_NODE` | Four 100 kΩ inputs and 50 kΩ feedback | Sensitive local virtual ground. |
+| `SUM_PRELEVEL` | Summer output, pre-VCA clip cell, 100 kΩ OTA divider top | Requested ±10 V with four coherent ±5 V inputs. |
+| `ATTEN_TIP` | CV jack to ADG switch and protected high-impedance buffer | Not an audio-sum input. |
+| `CV_DEPTH` | B103 CV± output to 100 kΩ command summing input | Nominal ±5 V depth for ±5 V CV. |
+| `COMMAND` / `IABC1` | nominal 0..5 V Schottky clamp, PNP servo, 10 kΩ sense and collector limit | Requested 0..500 µA; max-safe behavior unqualified. |
+| `OTA_SIGNAL` / `OTA_CURRENT` | 100 kΩ / 100 Ω divider and OTA output to TIA | Sensitive, local to core island. |
+| `SUM_POSTVCA` | TIA output to SUM output and magnitude cell | Unity at +5 V is a calibration target, not a model pass. |
 
-All corresponding port/control cells are in the canonical grid. Read the generated per-instance entries in `project/osc-hole-field/block-contracts.json`; do not infer pinout or voltages from those visual labels.
+**Design choice:** 50 kΩ summer feedback limits four coherent ±5 V inputs to a requested ±10 V. Unity feedback would request ±20 V. DC coupling preserves audio and CV offsets. A linear bias-current command was chosen over an exponential response because LEVEL and ATTEN represent gain, not pitch. Negative command clips to zero rather than reversing gain. The clip window senses before the VCA so reduced gain cannot hide summer overload. Exact OTA gain, maximum usable gain and feedthrough remain bench calibration gates.
 
-## Deliverable
+Four 100 kΩ input resistors and 50 kΩ feedback request `SUM_PRELEVEL = -0.5 × sum(input gains)`. Four coherent +5 V inputs request −10 V pre-VCA. The clip LED monitors that node through the standard ±10 V window, independent of manual LEVEL and CV. `SUM` magnitude monitors the VCA output, then the standard output cell adds 998 Ω isolation.
 
-A reviewed one-channel schematic, explicit signal/CV ranges, chosen exact parts and pin maps, corner calculations, simulation/bench plan, power budget and factory test procedure. Replication count follows the current spec, not historical panel versions. Never patch independent blocks internally just to simplify testing; use external test cables or clearly temporary fixtures.
+The B104 LEVEL pot requests 0 to +5 V. The B103 CV± attenuverter contributes signed ATTEN CV to that command; the command is Schottky-limited near 0 to +5 V. Diode forward drop permits a small over/undershoot, so this is not a guaranteed hard limit. Negative combined control requests zero OTA bias; residual leakage must be measured. A 10 kΩ emitter sense resistor requests approximately 0 to 500 µA through the PNP servo; a 10 kΩ collector resistor limits a supply fault to approximately 1.7 mA under the simple 17 V worst-path estimate, below the LM13700 2 mA absolute bias-current rating. This is a **proposal**, not a guaranteed fault or temperature bound. The first OTA channel of LM13700M/NOPB receives the pre-VCA sum through a 100 kΩ / 100 Ω divider (about ±10 mV at ±10 V); its output drives an inverting current-to-voltage stage with 100 kΩ fixed plus 0–10 kΩ calibration trim. The nominal 25 °C `gm ≈ 19.2 × IABC` datasheet relation suggests approximately 104.2 kΩ feedback for unity at +5 V command. The 100–110 kΩ trim span therefore suggests approximately 0.96–1.06 maximum-command gain *in that small-signal equation*; real maximum gain and linearity are unqualified. This is a planning calculation, not a calibrated gain law. A 10 kΩ offset trim through 1 MΩ spans roughly ±5 mV of input correction for feedthrough. The second OTA channel has grounded inputs, bias held at −12 V through 100 kΩ, and explicit unused outputs/diode/buffer pins. Both unused Darlington buffers have grounded inputs.
+
+The retained manufacturer single-OTA macromodel (`design/spec/modules/spice/filter-model/LM13700.MOD`; manufacturer datasheet `circuit/sources/ic-library/LM13700.pdf`) and ideal amplifiers were run at 1 kHz with four coherent 1 V and 5 V peak inputs, and command 0/2.5/5 V. Bias current was imposed at 0/250/500 µA; the control servo was not modeled. At +5 V command with four 5 V inputs the fixture measured **+6.897/−11.911 V**, exceeding the ±10 V planning target. Even the four 1 V case had a large untrimmed DC shift (−0.682/−4.480 V). This is a **model failure** for headroom and untrimmed feedthrough, not a stability or linearity pass. The manufacturer model warns that its bandwidth and phase margin are optimistic by more than 2×. The model uses one OTA only and omits the complete dual package, real OPA4196 dynamics, control servo, clamp, temperature and loading. Model detail is in `design/reports/spice/mixers.json`.
+
+The current worksheet `design/reports/current/mix4_vca.json` counts one LM13700 package and all other physical packages, indicators, input switches and planning reserves. Its per-rail planning numbers are **not guaranteed maxima**. Each IC package has local 100 nF rail bypasses; the OTA signal/current/bias nodes remain marked Sensitive and local to each instance.
+
+**Islands and calibration:** `SUM_NODE`, `OTA_SIGNAL`, `OTA_CURRENT`, `IABC1` and `EMITTER` are Sensitive and stay inside the per-instance core island. Indicator drivers use a separate local LED island; panel hardware remains at locked coordinates. Calibrate the TIA trim for unity at +5 V command and the input offset trim for zero-signal feedthrough; record trim positions and reject units that cannot meet gain/offset limits.
+
+**Factory/bench gate:** calibrate LEVEL at +5 V for unity gain at a small signal, trim output offset/feedthrough at zero signal, then sweep positive and negative ATTEN CV and LEVEL against measured bias current and gain. Verify negative command truly closes the OTA, maximum bias stays below the safe operating bound at tolerance/temperature/fault corners, and four coherent ±5 V inputs do not exceed internal or output headroom. Measure distortion and feedthrough across audio band, overload recovery, pre-VCA clip threshold, cable/short stability, rail currents and power sequencing. Vendor-model closed-loop stability and these bench tests are **NOT RUN**.

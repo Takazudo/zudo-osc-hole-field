@@ -1,0 +1,101 @@
+{
+  "schema_version": 1,
+  "authority": "PROPOSAL - unvalidated",
+  "oracle": "KiCad 10.0.6 ngspice via scripts/kicad/run.sh",
+  "status": "Bounded ideal/Macromodel diagnostics only; no qualification",
+  "runs": [
+    {
+      "deck": "design/spec/modules/spice/mix5-ideal.cir",
+      "status": "PASS - ideal model only",
+      "result_V": {
+        "sum_prelevel": -9.99997,
+        "sum_out": 4.999975
+      },
+      "condition": "All five inputs +5 V, all input attenuverters at +1, LEVEL at midpoint. No saturation or tolerance modeled."
+    },
+    {
+      "deck": "design/spec/modules/spice/mix4-vendor-0-1v.cir",
+      "status": "MEASURED - vendor single OTA model only",
+      "command_V": 0,
+      "imposed_bias_uA": 0,
+      "input_peak_each_V": 1,
+      "output_extrema_V": {
+        "out_max": 4.700804e-08,
+        "out_min": -3.010701e-08
+      },
+      "condition": "Four coherent 1 kHz sine inputs; 100k/100 \u03a9 OTA input divider; ideal \u00b112 V amplifier stages and 104.2k TIA feedback."
+    },
+    {
+      "deck": "design/spec/modules/spice/mix4-vendor-0-5v.cir",
+      "status": "MEASURED - vendor single OTA model only",
+      "command_V": 0,
+      "imposed_bias_uA": 0,
+      "input_peak_each_V": 5,
+      "output_extrema_V": {
+        "out_max": 1.993205e-07,
+        "out_min": -1.817791e-07
+      },
+      "condition": "Four coherent 1 kHz sine inputs; 100k/100 \u03a9 OTA input divider; ideal \u00b112 V amplifier stages and 104.2k TIA feedback."
+    },
+    {
+      "deck": "design/spec/modules/spice/mix4-vendor-2p5-1v.cir",
+      "status": "MEASURED - vendor single OTA model only",
+      "command_V": 2.5,
+      "imposed_bias_uA": 250.0,
+      "input_peak_each_V": 1,
+      "output_extrema_V": {
+        "out_max": 0.1383373,
+        "out_min": -1.825814
+      },
+      "condition": "Four coherent 1 kHz sine inputs; 100k/100 \u03a9 OTA input divider; ideal \u00b112 V amplifier stages and 104.2k TIA feedback."
+    },
+    {
+      "deck": "design/spec/modules/spice/mix4-vendor-2p5-5v.cir",
+      "status": "MEASURED - vendor single OTA model only",
+      "command_V": 2.5,
+      "imposed_bias_uA": 250.0,
+      "input_peak_each_V": 5,
+      "output_extrema_V": {
+        "out_max": 4.041707,
+        "out_min": -5.67524
+      },
+      "condition": "Four coherent 1 kHz sine inputs; 100k/100 \u03a9 OTA input divider; ideal \u00b112 V amplifier stages and 104.2k TIA feedback."
+    },
+    {
+      "deck": "design/spec/modules/spice/mix4-vendor-5-1v.cir",
+      "status": "MEASURED - vendor single OTA model only",
+      "command_V": 5,
+      "imposed_bias_uA": 500,
+      "input_peak_each_V": 1,
+      "output_extrema_V": {
+        "out_max": -0.6823743,
+        "out_min": -4.480408
+      },
+      "condition": "Four coherent 1 kHz sine inputs; 100k/100 \u03a9 OTA input divider; ideal \u00b112 V amplifier stages and 104.2k TIA feedback."
+    },
+    {
+      "deck": "design/spec/modules/spice/mix4-vendor-5-5v.cir",
+      "status": "MODEL TARGET FAIL - exceeds \u00b110 V",
+      "command_V": 5,
+      "imposed_bias_uA": 500,
+      "input_peak_each_V": 5,
+      "output_extrema_V": {
+        "out_max": 6.897454,
+        "out_min": -11.91074
+      },
+      "condition": "Four coherent 1 kHz sine inputs; 100k/100 \u03a9 OTA input divider; ideal \u00b112 V amplifier stages and 104.2k TIA feedback."
+    }
+  ],
+  "not_run": [
+    {
+      "subject": "MIX4 complete VCA linearity, feedthrough, control servo, headroom, stability, negative CV and temperature",
+      "status": "NOT RUN",
+      "reason": "Retained LM13700 model is one OTA only and warns bandwidth/phase margin overestimate >2x; ideal amplifier and imposed bias fixtures omit real servo, saturation and package effects."
+    },
+    {
+      "subject": "MIX5 cable stability, short/fault protection, \u00b110 V internal headroom and clip window tolerance",
+      "status": "NOT RUN",
+      "reason": "No complete vendor models or hardware bench measurements for full signal chain."
+    }
+  ]
+}

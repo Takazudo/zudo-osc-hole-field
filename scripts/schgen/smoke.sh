@@ -11,9 +11,15 @@ report=json.load(open(sys.argv[1]))
 v=[v for sheet in report['sheets'] for v in sheet.get('violations',[])]
 errors=[x for x in v if x['severity']=='error']
 warnings=[x for x in v if x['severity']=='warning']
-if errors or len(warnings)!=48 or any(x['type']!='pin_to_pin' for x in warnings):
- raise SystemExit(f'instrument ERC: {len(errors)} errors, warnings={[x["type"] for x in warnings]}')
-print('PASS: instrument ERC zero errors, 12 H1/H2 LED, 24 filter LED and 12 power-inlet pin-type warnings')
+expected={'/H1/':6,'/H2/':6,**{f'/E{i}/':10 for i in range(1,7)},
+          **{f'/M5{suffix}/':14 for suffix in ('A','B')},
+          **{f'/M4{suffix}/':14 for suffix in ('A','B')},
+          **{f'/F{i}/':8 for i in range(1,4)},'/POWER/':12}
+actual={sheet['path']:len(sheet.get('violations',[])) for sheet in report['sheets']
+        if sheet.get('violations')}
+if errors or actual!=expected or any(x['type']!='pin_to_pin' for x in warnings):
+ raise SystemExit(f'instrument ERC: {len(errors)} errors, warning counts={actual}; expected={expected}')
+print('PASS: instrument ERC zero errors; 164 documented diode/pin-type warnings across the captured families')
 PY
 bash scripts/kicad/run.sh kicad-cli sch export netlist --format kicadsexpr -o "$scratch/netlist.net" schematic/zudo-osc-hole-field.kicad_sch
 python3 scripts/schgen/verify_netlist.py "$scratch/netlist.net"
