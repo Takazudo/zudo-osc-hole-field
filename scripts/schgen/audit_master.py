@@ -53,9 +53,12 @@ def coverage_errors(bound,placements,panel_count):
 def check(families,instances,netlist):
     errors=[]
     names=[i.name for i in instances]
-    expected=EXPECTED_MODULES|{'OCTAVE_REF','POWER'}
-    if len(instances)!=35 or set(names)!=expected or len(names)!=len(set(names)):
-        errors.append(f'instance roster: expected 35 {sorted(expected)}, got {names}')
+    signal_instances=[i for i in instances if i.name in EXPECTED_MODULES]
+    if (set(i.name for i in signal_instances)!=EXPECTED_MODULES or
+            len(signal_instances)!=len(EXPECTED_MODULES)):
+        errors.append(f'signal-module roster: expected exactly {len(EXPECTED_MODULES)} fixed modules {sorted(EXPECTED_MODULES)}, got {[i.name for i in signal_instances]}')
+    if len(names)!=len(set(names)):
+        errors.append(f'duplicate hierarchy instance name: {names}')
     if len({i.index for i in instances})!=len(instances):errors.append('duplicate instance index')
     library={}
     for f in families:
@@ -110,7 +113,9 @@ def check(families,instances,netlist):
             sensitive.append({'net':net if net in f.global_nets else f'/{inst.name}/{net}',
                               'members':members,'islands':sorted({x['island'] for x in members})})
     errors.extend(coverage_errors(bound,placements,panel_count))
-    power_refs={designator(p,inst) for inst in instances if inst.name=='POWER'
+    power_families={f.name for f in families if any(
+        p.attributes.get('Role','').startswith('power:') for p in f.parts)}
+    power_refs={designator(p,inst) for inst in instances if inst.family in power_families
                 for p in family_by_name[inst.family].parts}
     signal_ref_count=len(set(refs)-power_refs)
     # The signal/reference lock includes 20 newly required bipolar LM393
@@ -149,8 +154,14 @@ def check(families,instances,netlist):
     specified={ref for ref,entries in refs.items() if entries[0][3].split(':')[-1] not in ('PWR_FLAG','VCC','GND')}
     if exported!=specified:errors.append(f'component set drift: missing {sorted(specified-exported)[:20]}, extra {sorted(exported-specified)[:20]}')
     if errors:raise ValueError('\n'.join(errors))
+    module_instance_names=sorted(i.name for i in signal_instances)
+    power_instance_names=sorted(i.name for i in instances if i.family in power_families)
     audit={'schema_version':1,'status':'PASS - source/netlist connectivity gates only; unvalidated draft',
-           'instance_count':len(instances),'module_count':len(EXPECTED_MODULES),
+           'instance_count':len(instances),'module_count':len(module_instance_names),
+           'module_instances':module_instance_names,
+           'power_instance_count':len(power_instance_names),
+           'power_instances':power_instance_names,
+           'other_instance_count':len(instances)-len(module_instance_names)-len(power_instance_names),
            'panel_uid_count':len(bound),'designator_count':len(refs),
            'sensitive_nets':sensitive,
            'internal_cross_island_sensitive_nets':[x['net'] for x in sensitive if len(x['islands'])>1],
@@ -160,7 +171,11 @@ def check(families,instances,netlist):
     stats={'schema_version':1,'source':'KiCad 10.0.6 exported master netlist plus design/spec/instrument.py',
            'status':'PASS - connectivity statistics, not hardware validation',
            'family_count':len(families),'instance_count':len(instances),
-           'module_instance_count':len(EXPECTED_MODULES),'component_count':len(specified),
+           'module_instance_count':len(module_instance_names),
+           'power_instance_count':len(power_instance_names),
+           'other_instance_count':len(instances)-len(module_instance_names)-len(power_instance_names),
+           'module_instances':module_instance_names,'power_instances':power_instance_names,
+           'component_count':len(specified),
            'components_by_type':dict(sorted(by_symbol.items())),
            'components_by_prefix':dict(sorted(by_prefix.items())),
            'components_by_instance':dict(sorted(per_instance.items())),
@@ -182,6 +197,8 @@ def main():
         if args.check:
             if path.read_text()!=body:raise ValueError(f'drift: {path}')
         else:path.write_text(body)
-    print('PASS: 35 instances, 438 panel UIDs,',s['component_count'],'unique components,',s['net_count'],'nets,',len(a['sensitive_nets']),'sensitive nets')
+    print('PASS: source-defined hierarchy',a['instance_count'],'instances;',a['module_count'],'fixed signal modules;',
+          a['power_instance_count'],'power interface instances;',s['component_count'],'unique components;',
+          s['net_count'],'nets;',len(a['sensitive_nets']),'sensitive nets; 438 panel UIDs')
 
 if __name__=='__main__':main()
