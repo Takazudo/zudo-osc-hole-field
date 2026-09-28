@@ -1,0 +1,81 @@
+{
+  "receipt_version": 1,
+  "identity": {
+    "asset_id": "power-test-pad-d1-5mm",
+    "record_id": null,
+    "manufacturer": "Project CAD feature",
+    "mpn": "TEST_PAD_D1.5MM",
+    "package": "TestPad_D1.5mm",
+    "variant_notes": "Bare copper project test pad, not a purchased component or orderable MPN. Symbol is excluded from BOM."
+  },
+  "acquisition": {
+    "provider": "GitHub repository Takazudo/zudo-pd",
+    "library_release_tag": null,
+    "source_url": "https://github.com/Takazudo/zudo-pd/blob/f25194fa73ded724e82d4561307c106480fbd9ce/symbols/zudo-pd.kicad_sym",
+    "acquired_on": "2026-09-28",
+    "original_filenames": [
+      "zudo-pd.kicad_sym"
+    ],
+    "sha256": {
+      "symbols/zudo-pd.kicad_sym": "1d897bd28edfe611bd7b8f8583e54287480a24240db395cf1412c03e2d6afff1"
+    }
+  },
+  "representation": {
+    "files": [
+      "symbols/src/TestPoint.kicad_sym"
+    ],
+    "formats": [
+      "kicad_sym"
+    ],
+    "units": "KiCad schematic units",
+    "original_paths": [
+      "symbols/zudo-pd.kicad_sym"
+    ]
+  },
+  "fidelity": {
+    "class": "derived",
+    "reason": "The pinned sibling TestPoint graphical symbol is bound to this project existing D1.5mm test-pad footprint. No manufacturer component identity is claimed.",
+    "evidence": [
+      "Source commit f25194fa73ded724e82d4561307c106480fbd9ce",
+      "Existing test-pad footprint has separate CAD receipt."
+    ]
+  },
+  "derivation": {
+    "derived": true,
+    "input_sha256": {
+      "symbols/zudo-pd.kicad_sym": "1d897bd28edfe611bd7b8f8583e54287480a24240db395cf1412c03e2d6afff1"
+    },
+    "tool": "scripts/libgen/seed_assets.py extraction then local utility normalization",
+    "tool_version": "1",
+    "parameters": {
+      "identity": "Project-owned bare copper feature; MPN field is an internal feature code, not an orderable part"
+    },
+    "output_sha256": {
+      "symbols/src/TestPoint.kicad_sym": "fe0f85c2c76012e39aa739e6f33f53ef6dbe301ff5a33ffec05a62ca992c1b4c"
+    }
+  },
+  "cad_use": {
+    "symbol": "zudo-osc-hole-field:TestPoint",
+    "footprint": "zudo-osc-hole-field:TestPad_D1.5mm",
+    "model_path": null,
+    "transform": {
+      "offset": null,
+      "rotation": null,
+      "scale": null
+    },
+    "seating_plane": null
+  },
+  "checks": {
+    "performed": [
+      "Pinned symbol inspected; project library checker pending"
+    ],
+    "remaining_physical_checks": [
+      "Confirm probe access and board-side orientation after partition."
+    ]
+  },
+  "publication": {
+    "preview_selected": false,
+    "download_published": false,
+    "permitted_scope": null
+  }
+}

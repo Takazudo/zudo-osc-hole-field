@@ -1,17 +1,61 @@
 ---
-title: "Power reuse and startup boundary"
-description: "Describes the intended reuse of the separate zudo-pd supply and the power evidence still needed."
+title: "Power interface and zudo-pd source lock"
+description: "The proposed synth-side power contract, startup boundary, and open qualification gates."
 sidebar_position: 60
 ---
 
-## Reuse existing work deliberately
+> **Unvalidated draft — not bench tested.** The zudo-pd revision is **design-locked, not as-built**. The six source hashes in `design/power/zudo-pd-lock.json` were recomputed from commit `f25194fa73ded724e82d4561307c106480fbd9ce` and match issue #24. There is no evidence that those boards have been built, ordered, programmed, or measured.
 
-Use the user's [zudo-pd](https://github.com/Takazudo/zudo-pd) Board P + Board B as the intended supply, not the scope project's USB 5 V circuit. Read the current exact board source, assembled revision, net contract and qualification reports locally before integration.
+## Supply contract
 
-The new Board P documentation identifies SMAJ16A and a required verified 15 V-only PD configuration. When that revision is used, first power/program from a current-limited 5 V-only source with the downstream board disconnected. Retain NVM readback and verify that no 20 V request is enabled before allowing a higher-voltage source. A silkscreen label or default controller name does not prove its programmed state.
+The intended source is zudo-pd Board P (USB-PD input) stacked on Board B (power conversion). The synth uses a factory-made ribbon cable into the matching 2 × 8, 2.54 mm shrouded IDC header, DEALON `DW254P-2X8-L0` (`C4749189`). The supply's screw terminals are excluded because they provide a single ground pole and require hand wiring. Connector orientation, cable assembly, and offset/reversal protection remain physical qualification gates.
 
-## Budget from the captured circuit
+| Property | Design assumption at the locked source | Evidence state |
+| --- | --- | --- |
+| Rails | +12 V, −12 V, +5 V, ground | Design contract; output under load unmeasured |
+| Current capacity | +12 V 1.2 A; −12 V 0.8 A; +5 V 0.5 A | Supply design targets, not measured or guaranteed |
+| Synth design ceiling | +12 V 0.96 A; −12 V 0.64 A; +5 V 0.40 A | Project choice: 80% of targets, not measured capacity |
+| Voltage band to tolerate | +12 V 11.53–12.48 V; −12 V −11.74 to −12.37 V; +5 V 4.81–5.20 V | Design requirement; tolerance after cable/protection loss unmeasured |
+| Ripple | Below 1 mVp-p target | Unmeasured at source and synth |
+| Per-rail output protection | Resettable fuses with 1.5/1.5/1.1 A hold and output clamp diodes are on Board B | Design-source components; response to synth-side faults unmeasured |
+| Startup | Inverting converter may request about 4.5 A for 2 ms against a 3 A source | Analysis concern; startup, source trip, and retry unmeasured |
+| Sequencing | Three independent converters, no power-good output | Rail order and partial-rail behavior unmeasured |
 
-Sum quiescent and maximum loads per rail, including 104 white magnitude/stage emitters as applicable, ten clip emitters, all drivers, buffers, oscillators and transient loads. Choose useful low LED drive current from samples, not a catalogue test current. Separate signal grounds/returns carefully; do not infer quiet analogue rails from a power-budget margin.
+Connector pins are fixed: **1–2 −12 V; 3–8 ground; 9–10 +12 V; 11–12 +5 V; 13–14 CV bus; 15–16 gate bus**. Pins 13–16 are pass-through pins at the supply and must remain **unconnected on the synth**. No power-good signal is available. Every input protection switch and rail clamp must tolerate rails arriving in any order or missing while ground remains connected.
 
-Keep the power assembly in its own mounting pocket and check ripple coupling, thermal rise, connector orientation, access and service removal. No claimed instrument depth is finalized until the actual populated supply and harness are in the mechanical model.
+## Captured synth-side inlet
+
+The generated `01_power_interfaces` sheet keeps the three incoming ribbon rails separate from the instrument rails. Each incoming rail passes through a TECHFUSE `mSMD110-33V` resettable fuse (1.10 A hold at 25 °C), then reaches the global instrument rail. A shunt unidirectional TVS goes from each instrument rail to ground: High Diode `SMAJ15A` on both 12 V rails, with its cathode on +12 V and its anode on −12 V; Brightking `SMAJ6.5A` on +5 V, cathode toward the rail. Each rail has local 100 nF + 1 µF filtering, a Yageo `RC0603FR-072K2L` 2.2 kΩ bleeder, and a test pad. Ground has its own pad. The exact candidate source files, hashes and limits are in `design/power/protection-source-lock.json`.
+
+```mermaid
+flowchart LR
+  IDC[2 × 8 keyed ribbon inlet] --> F[One 1.1 A PTC per rail]
+  F --> R[Global +12 V / −12 V / +5 V rails]
+  R --> TVS[Rail TVS to ground]
+  R --> C[100 nF + 1 µF to ground]
+  R --> B[2.2 kΩ bleeder and test pad]
+  IDC --> G[Six ground contacts to AGND and ground test pad]
+```
+
+The PTC sheet lists `R1max` as 0.250 Ω but does not establish the worst normal-operation voltage drop in this assembly, and it has no ambient derating chart. As an illustrative calculation, 0.96 A through 0.250 Ω would drop 0.24 V before cable/board losses; thermal hold current and voltage at the load are **NOT ESTABLISHED**. The TVS data are pulse-specific: SMAJ15A can clamp as high as 24.4 V and SMAJ6.5A as high as 11.2 V under their specified 10/1000 µs pulse. These values do **not** prove that a miswired cable is safe for the ICs. Fault-energy and shifted-cable tests remain mandatory. The six ground contacts are directly common; pins 13–16 are explicit no-connects.
+
+## Synth-side design rules
+
+The inlet sheet contributes 1.1 µF nominal capacitance per rail, or 1.32 µF per rail at +20% tolerance. Bleeders draw about 5.455 mA on each 12 V rail and 2.273 mA on +5 V at nominal voltage; this load must be added to the finished budget. Across the entire synth, nominal added bulk capacitance may be at most **150 µF on +12 V, 150 µF on −12 V, and 100 µF on +5 V**, including the 100 nF per IC supply-pin decouplers and initial 4.7 µF per board rail; use +20% capacitance tolerance in startup arithmetic. The partition and captured IC count are not complete, so the final capacitance total is **NOT ESTABLISHED**. Added capacitance can worsen the unqualified startup case.
+
+The earlier preliminary model estimates 724.254545 mA on +12 V, 712.654545 mA on −12 V, and 138.872727 mA on +5 V. Adding the nominal inlet bleeders illustrates 729.709090, 718.109090, and 141.145454 mA respectively; the negative-rail estimate is now **78.109090 mA over** its 640 mA project ceiling. These are planning estimates, not a captured whole-instrument maximum or a measured load. `design/power/rail-budget.json` is a template for the later master integration; its complete typical and maximum totals remain open.
+
+Reversed or offset ribbon insertion must not silently connect a rail to the wrong circuit. A shroud alone does not prove this. The protection topology, exact parts, fault-energy arithmetic, and an offset-cable test need to be reviewed against the paired supply before fabrication. The supply's output fuses and clamps are not proof that the synth survives every insertion fault.
+
+## 15 V-only bring-up precondition
+
+The supply's USB-PD controller ships advertising a 20 V request at top priority, while its input bus has a 16 V clamp diode that conducts at a 20 V contract. Before connecting any 20 V-capable charger, program the controller memory for **5 V and 15 V only** and read back the programmed image. First power must come from a current-limited 5 V source with Board B disconnected. No programmed image or readback is retained; this is an **open bring-up gate**, not a claimed configuration.
+
+## Verification still required
+
+- Verify connector mate, keying, pin-1 mark, factory cable orientation, and survival or safe failure for shifted and reversed insertion.
+- Measure rail order, startup/retry, ripple at the synth, cable drop, current and thermal rise under the finished load.
+- Audit total added bulk capacitance and every IC's power-off or missing-rail behavior after board partitioning.
+- Confirm supply mounting-pocket access, depth, grounding and service removal with populated hardware.
+
+No fabricated or bench-tested instrument exists in this record. Schematic ERC and netlist parity, when run, check the captured connectivity only.

@@ -1,0 +1,80 @@
+{
+  "receipt_version": 1,
+  "identity": {
+    "asset_id": "power-bleeder-rc0603fr-072k2l",
+    "record_id": null,
+    "manufacturer": "Yageo",
+    "mpn": "RC0603FR-072K2L",
+    "package": "0603",
+    "variant_notes": "Exact 2.2 kOhm 1% 0.1 W 0603 identity; LCSC C114662 distributor identity."
+  },
+  "acquisition": {
+    "provider": "Yageo manufacturer specsheet and LCSC order identity",
+    "source_url": "https://yageogroup.com/component-documentation/download/specsheet/RC0603FR-072K2L",
+    "acquired_on": "2026-09-28",
+    "original_filenames": [
+      "RC0603FR-072K2L.pdf"
+    ],
+    "sha256": {
+      "circuit/sources/power/RC0603FR-072K2L.pdf": "0200f00e466cb9c7424ebcbac80c6011b60e09cf0365a76ceb8100a47d26436a"
+    }
+  },
+  "representation": {
+    "files": [
+      "symbols/src/RC0603FR-072K2L.kicad_sym"
+    ],
+    "formats": [
+      "kicad_sym"
+    ],
+    "units": "KiCad schematic units",
+    "original_paths": [
+      "circuit/sources/power/RC0603FR-072K2L.pdf"
+    ]
+  },
+  "fidelity": {
+    "class": "derived",
+    "reason": "Generic two-terminal 0603 symbol cloned from an existing Yageo resistor symbol; exact value, identity, 0.1 W rating and 0603 size read from the retained Yageo sheet. Footprint remains package-family fidelity.",
+    "evidence": [
+      "Yageo specsheet physical PDF p.0: exact MPN, 2.2 kOhm, 1%, 0.1 W at 70 C, 0603/1608.",
+      "LCSC C114662 listing identifies the same exact MPN."
+    ]
+  },
+  "derivation": {
+    "derived": true,
+    "input_sha256": {
+      "circuit/sources/power/RC0603FR-072K2L.pdf": "0200f00e466cb9c7424ebcbac80c6011b60e09cf0365a76ceb8100a47d26436a"
+    },
+    "tool": "manual substitution from symbols/src/RC0603FR-07100KL.kicad_sym",
+    "tool_version": "1",
+    "parameters": {
+      "normalization": "exact MPN, Yageo, C114662, manufacturer sheet URL, existing R0603 package"
+    },
+    "output_sha256": {
+      "symbols/src/RC0603FR-072K2L.kicad_sym": "ef010d3b7fe08b09572d25760118b3e114ef015e25295fea0924002f48a1e882"
+    }
+  },
+  "cad_use": {
+    "symbol": "zudo-osc-hole-field:RC0603FR-072K2L",
+    "footprint": "zudo-osc-hole-field:R0603",
+    "model_path": null,
+    "transform": {
+      "offset": null,
+      "rotation": null,
+      "scale": null
+    },
+    "seating_plane": null
+  },
+  "checks": {
+    "performed": [
+      "Manufacturer exact-specsheet identity and value readback; project library checker pending"
+    ],
+    "remaining_physical_checks": [
+      "Confirm R0603 land pattern, thermal derating and supply fault behavior before board release."
+    ]
+  },
+  "publication": {
+    "preview_selected": false,
+    "download_published": false,
+    "permitted_scope": null
+  }
+}

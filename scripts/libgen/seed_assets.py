@@ -35,6 +35,9 @@ PARTS = [
     {"symbol": "CL10A105KB8NNNC", "manufacturer": "Samsung Electro-Mechanics", "mpn": "CL10A105KB8NNNC", "lcsc": "C15849", "package": "C0603"},
     {"symbol": "CL31A106KBHNNNE", "manufacturer": "Samsung Electro-Mechanics", "mpn": "CL31A106KBHNNNE", "lcsc": "C13585", "package": "C1206"},
     {"symbol": "DW254P-2X8-L0", "manufacturer": "DEALON", "mpn": "DW254P-2X8-L0", "lcsc": "C4749189", "package": "IDC-TH_16P-P2.54_321016RG0ABK00A01"},
+    {"symbol": "mSMD110-33V", "manufacturer": "TECHFUSE", "mpn": "mSMD110-33V", "lcsc": "C70119", "package": "F1812"},
+    {"symbol": "SMAJ15A_C571368", "manufacturer": "High Diode", "mpn": "SMAJ15A", "lcsc": "C571368", "package": "D-FLAT_L4.3-W2.6-LS5.3-RD"},
+    {"symbol": "SMAJ6.5A_C87267", "manufacturer": "Brightking", "mpn": "SMAJ6.5A", "lcsc": "C87267", "package": "D-FLAT_L4.3-W2.6-LS5.3-RD"},
 ]
 
 for mpn, lcsc in [
@@ -71,6 +74,8 @@ FOOTPRINTS = [
     "LED0603-RD",
     "LED0603-R-RD_WHITE",
     "IDC-TH_16P-P2.54_321016RG0ABK00A01",
+    "F1812",
+    "D-FLAT_L4.3-W2.6-LS5.3-RD",
     "TestPad_D1.5mm",
     "MountingHole_M3",
     "Fiducial_1mm_Mask2mm",
@@ -83,6 +88,8 @@ MODEL_BASES = [
     "R0603",
     "LED0603-RD",
     "IDC-TH_16P-P2.54_321016RG0ABK00A01",
+    "F1812_L4.5-W3.2-H1.0",
+    "SMA_L4.2-W2.6-LS5.3-RD",
 ]
 
 FOOTPRINTS_WITH_MODELS = {
@@ -92,6 +99,8 @@ FOOTPRINTS_WITH_MODELS = {
     "R0603": "R0603",
     "LED0603-RD": "LED0603-RD",
     "IDC-TH_16P-P2.54_321016RG0ABK00A01": "IDC-TH_16P-P2.54_321016RG0ABK00A01",
+    "F1812": "F1812_L4.5-W3.2-H1.0",
+    "D-FLAT_L4.3-W2.6-LS5.3-RD": "SMA_L4.2-W2.6-LS5.3-RD",
 }
 
 
