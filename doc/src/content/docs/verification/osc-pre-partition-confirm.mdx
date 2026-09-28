@@ -1,0 +1,61 @@
+---
+title: OSC pre-partition confirmation
+description: Conditional source, selector, and master-netlist inputs for issue 35.
+---
+
+# OSC pre-partition confirmation
+
+**Decision:** proceed with issue #35 as a conditional partition exercise using one requirement-only `EXT` domain, the current native master netlist, and the selected five-up octave-selector arrangement. The circuit and all boards remain unvalidated drafts. This report does not select a physical power source or protection circuit, authorize energization, or close physical fit and qualification.
+
+The machine-readable record is `design/reports/pre-partition-confirm.json`. It captures the merged pre-partition source commit `4cc30612c4d9cd0597caae2eccd1967b8870c6b9` and its prerequisites:
+
+| Issue | Merged commit |
+| --- | --- |
+| #52 | `1a2f33cf6e61cf89c7422a1a42122806f68e3033` |
+| #47 | `95d44b47d4a8b17f7980ebb8073679a4212d44b4` |
+| #53 | `b27bc800219fe3b75ce6559fb763e38378ff1f9a` |
+| #56 | `4dd813760d00a1f2a7513713bda835975c93fcb6` |
+
+The report records commands, results, captured input hashes, and a canonical native netlist hash (`b467bf7f9742436f99b04daeea74b6e4cc887c8b7cb1972c92b46c3db47b5cf2`). Only the KiCad export-date field is normalized for that netlist hash; connectivity and all other exported bytes remain in the digest.
+
+## Master design and fixed panel
+
+The selected source topology contains **33 signal-module instances**, one `POWER` instance, and one shared `OCTAVE_REF` instance: **35 hierarchy instances** in total. The total and power hierarchy counts come from the selected source topology. The signal-module count is independently fixed at 33. All **438** locked panel UID centres remain unchanged; the lock digest is `8354aed4a72bf5357e1ccfb4da7c3234f139ba19f75a49d825d733c30a6da843`. All **180** panel jack sleeves remain on common AGND.
+
+Master accounting reports 5,758 unique designator references, 5,752 unique netlist components, 622 multi-unit packages across 2,880 represented symbol units, 634 fitted IC packages, 347 worksheet loads, 4,909 nets, 97 named islands, and 209 sensitive nets. The audit matches each package's represented units against its symbol definition and rejects missing/duplicate units or active all-NC units; 391 explicit no-connect pin markers remain represented. The master audit found no panel-connected sensitive net crossing named islands. Nine internal, non-panel cross-island nets are called out for issue #35 review: `/N1/NOISE_VDD`, `/N1/WHITE_RAW`, `/N1/PINK_RAW`, and `/A01/OUT_INTERNAL` through `/A06/OUT_INTERNAL`. Keep precision feedback and compensation local: all 16 feedback/compensation pairs remain inside their named module islands and are not global nets.
+
+Pinned KiCad 10.0.6 master ERC reports **zero errors** and 228 documented `pin_to_pin` warnings. The committed baseline compares canonical identities by sheet path, severity, type, description, and sorted item descriptions. It excludes unstable KiCad UUIDs and coordinates. The inventory digest is `5c7e96d055202f4597611325caba416e7d746ac1f2a1d0963ffeb4a19bdb2455`. Native netlist parity has zero differences and zero unconnected items. These are source/connectivity checks, not circuit validation.
+
+## Conditional source and rail input
+
+`EXT` is the sole selected **requirement domain**, serving all 33 signal modules and the shared `OCTAVE_REF`. There is no selected manufacturer, MPN, measured capacity, or energization authorization. Required delivery is 1,600/1,500/300 mA continuous and 1,900/1,800/400 mA transient on +12 V/−12 V/+5 V, bounded by interface maxima of 2,000/1,900/500 mA. These figures describe required capability; they do not assert available source capacity.
+
+The conditional inlet reservation is `OSC-EXT-PWR-8-R1`, box `[260, 248, -85, 308, 293, -45]` mm, with a 30 × 30 × 16 mm maximum body/mate envelope and 15 mm cable-bend/latch clearance. The logical pins are 1 `+12V_IN`, 2 `-12V_IN`, 3 `+5V_IN`, 4 NC, and 5–8 AGND. The Molex 43045-0800 header, 43025-0800 housing, and 43030-0007 contact are candidates only; no exact drawing, supplier order code, footprint, or assembled rating is selected. Hot-plugging is prohibited. The harness requirement is factory-crimped 20 AWG minimum, at most 300 mm, with a single return conductor assumed to carry the entire 4.4 A summed rail transient. Equal current sharing across the four return contacts is not assumed.
+
+The three internal P+B source pockets are rejected for this selected EXT topology. Existing attributed capacitance is 48.3/41.1/24.5 µF for +12 V/−12 V/+5 V. Reserve 4.7 µF per powered board per rail. Board count, local proximity/effective capacitance, and aggregate bulk reconciliation remain **OPEN**; no capacitance margin is claimed. See `design/power/downstream-handoff-52.md` for the detailed boundary contract and [supply architecture](../decisions/osc-supply-architecture).
+
+## Selector reservation
+
+The selected orderable identity is Alps Alpine **SRBV160803**, LCSC `C470374`. The fixture keeps all original panel centres and pads and alternates five independent adapters: O1/O3/O5 on the front plane and O2/O4 on the rear plane. The rear pair use 13 mm extensions and 180° pointer correction. Pinned KiCad 10.0.6 reports zero front, rear, and panel DRC violations and no conservative inter-selector keepout intersections. The nearest-neighbour courtyard projection gap is 0.25 mm; this is a drawing check, not proof of physical clearance.
+
+Rendered front and rear views were inspected. They show the intended three-front/two-rear arrangement. Physical fit, continuity, panel torque, carrier strength, tolerance stack-up, and user operation remain **NOT RUN** under [issue #55](https://github.com/Takazudo/zudo-osc-hole-field/issues/55).
+
+## Abstract power boundary and protection status
+
+Native netlist refs `CN301` and `XB301` remain abstract, non-orderable, and non-energizable. The raw rails `+12V_IN`, `-12V_IN`, and `+5V_IN` remain separate from conditional load rails `+12V`, `-12V`, and `+5V`. Logical inlet pin 4 is NC; pins 5–8 are AGND. Neither symbol has a footprint or BOM entry, and no conducting or protective function is inferred. The PCB netlist filter accepts only the exact `AbstractBoundary=true` marker, requirement-only status, blank MPN, blank footprint, and expected refs; malformed markers are rejected.
+
+The conditional contract audit passes, and `protection58.py --check --require-draft` passes. The separate implementation gate `--require-closed` remains **OPEN** as expected under [issue #59](https://github.com/Takazudo/zudo-osc-hole-field/issues/59). The partition reservation records 82 output paths, 16 precision-sense paths, and 30 octave-reference receivers. The 35-quadrant candidate implies 45.5 mA positive-rail sensitivity, 25.5 mA above the 20 mA auxiliary allocation. It remains an **OPEN partition reservation**, not a fitted zero-area component or proven clearance. The diagnostic output model is not physical evidence. Source/inlet/power physical qualification remains **NOT RUN** under [issue #57](https://github.com/Takazudo/zudo-osc-hole-field/issues/57).
+
+## Regression evidence and limits
+
+The retained dense fixture has **zero DRC rule errors, zero unconnected items, and zero schematic-parity findings**. It retains 159 silkscreen warnings: 80 `silk_over_copper` and 79 `silk_overlap`. Its deterministic replay preserves the fixed 30 fixture centres and the retained tracks/vias. The warnings are reported as retained fixture conditions, not as zero-warning DRC.
+
+Supported analog scripts completed under the pinned model oracle. The precision-output vendor model passes 12/12 modeled cases; the idealized diagnostic sweep has six overshoot failures in 12 cases. Neither result establishes board/cable stability, tolerance, temperature, or hardware behavior. Physical precision-output stability remains **NOT RUN** under [issue #49](https://github.com/Takazudo/zudo-osc-hole-field/issues/49). Other unknown analog behavior remains marked model-only or NOT RUN in its individual reports.
+
+The generated front/rear and dense-fixture images were inspected as visual checks only. They do not prove dimensions, electrical continuity, physical body/cable clearance, thermal behavior, or qualification. No fabrication release or order files were created.
+
+## Handoff to issue #35
+
+Use the current master netlist, `master-audit.json`, `netlist-stats.json`, `power-boundary.json`, supply architecture, rail ledger, and #52 downstream handoff as partition inputs. Keep all 438 centres and 33 signal modules fixed; filter only the validated abstract refs from board components, placement, BOM/CPL, and copper. Retain the per-board 4.7 µF/rail reservation until powered-board count is reconciled. Keep unresolved protection geometry, current, thermal, and routing closure open for affected boards until #59 resolves the circuit.
+
+The live input snapshot in the JSON is deliberately an **entry-phase record**, not a gate over later partition work. Run `python3 scripts/checks/prepartition54.py --capture-check` only while checking this pre-partition boundary. After issue #35 changes partition inputs, its reconciliation and associated board gates supersede the captured live hashes; after issue #37, the regenerated panel and board-level checks supersede the prior panel snapshot. The default `python3 scripts/checks/prepartition54.py` validates the durable report and provenance without comparing mutable downstream files.

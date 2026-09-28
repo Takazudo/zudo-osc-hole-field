@@ -5,26 +5,7 @@ bash scripts/schgen/regen.sh
 scratch=$(mktemp -d schematic/.schgen-smoke.XXXXXX)
 trap 'rm -rf -- "$scratch"' EXIT
 bash scripts/kicad/run.sh kicad-cli sch erc --format json --severity-all -o "$scratch/erc.json" schematic/zudo-osc-hole-field.kicad_sch
-python3 - "$scratch/erc.json" <<'PY'
-import json,sys
-report=json.load(open(sys.argv[1]))
-v=[v for sheet in report['sheets'] for v in sheet.get('violations',[])]
-errors=[x for x in v if x['severity']=='error']
-warnings=[x for x in v if x['severity']=='warning']
-expected={'/H1/':6,'/H2/':6,**{f'/E{i}/':10 for i in range(1,7)},
-          **{f'/F{i}/':8 for i in range(1,4)},
-          **{f'/B{i}/':2 for i in range(1,3)},
-          **{f'/X{i}/':6 for i in range(1,3)},
-          **{f'/A{i:02d}/':8 for i in range(1,7)},
-          **{f'/M5{suffix}/':14 for suffix in ('A','B')},
-          **{f'/M4{suffix}/':14 for suffix in ('A','B')},
-          '/W2/':6,'/W1/':6}
-actual={sheet['path']:len(sheet.get('violations',[])) for sheet in report['sheets']
-        if sheet.get('violations')}
-if errors or actual!=expected or any(x['type']!='pin_to_pin' for x in warnings):
- raise SystemExit(f'instrument ERC: {len(errors)} errors, warning counts={actual}; expected={expected}')
-print('PASS: instrument ERC zero errors; 228 documented pin-type warnings across captured families')
-PY
+python3 scripts/schgen/check_erc_warnings.py "$scratch/erc.json"
 bash scripts/kicad/run.sh kicad-cli sch export netlist --format kicadsexpr -o "$scratch/netlist.net" schematic/zudo-osc-hole-field.kicad_sch
 python3 scripts/schgen/verify_netlist.py "$scratch/netlist.net"
 python3 - "$scratch/netlist.net" <<'PY'
