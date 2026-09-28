@@ -8,6 +8,7 @@ used by the panel and board generators.
 from __future__ import annotations
 
 import json
+import sys
 import re
 from collections.abc import Mapping
 from pathlib import Path
@@ -15,6 +16,7 @@ from typing import Any
 
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
+sys.path.insert(0, str(REPO_ROOT))
 GRID_RELATIVE_PATH = Path("project/osc-hole-field/workbench/layout/grid.json")
 PROVENANCE_RELATIVE_PATH = Path("project/osc-hole-field/handoff/rename-provenance.json")
 PANEL_SVG_RELATIVE_PATH = Path("project/osc-hole-field/workbench/panels/panel.svg")
@@ -158,7 +160,8 @@ def board_domain(field: str, block: str, kind: str) -> str:
     if field == "jacks":
         if kind != "jack":
             raise ValueError(f"non-jack feature in jack field: {kind!r}")
-        return rules["default"]
+        from scripts.partition.model import jack_board
+        return jack_board(block)
 
     for rule in rules:
         if block.startswith(rule["block_prefix"]):

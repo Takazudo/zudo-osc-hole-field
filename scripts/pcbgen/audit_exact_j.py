@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Read-only native identity and source-coordinate audit for the jack draft."""
 from __future__ import annotations
-import hashlib,json,sys
+import argparse,hashlib,json,sys
 from pathlib import Path
 import pcbnew
 
@@ -11,10 +11,10 @@ from scripts.pcbgen.definition import load_definition,load_lock,selected_hardwar
 from scripts.pcbgen.netlist import read_netlist
 from scripts.pcbgen.uuid_tools import stable_uuid
 
-def audit():
-    board_id='osc-jack';definition=load_definition(ROOT/'design/boards/osc-jack.json')
+def audit(board_id):
+    definition=load_definition(ROOT/'design/boards'/f'{board_id}.json')
     components,_=read_netlist(ROOT/definition.netlist)
-    board=pcbnew.LoadBoard(str(ROOT/'boards/osc-jack/osc-jack.kicad_pcb'))
+    board=pcbnew.LoadBoard(str(ROOT/'boards'/board_id/f'{board_id}.kicad_pcb'))
     footprints={fp.GetReference():fp for fp in board.GetFootprints()}
     fixed=selected_hardware(definition,load_lock(ROOT/'design/grid/placements.lock.json'))
     errors=[]
@@ -52,7 +52,8 @@ def audit():
         'scope':'Native centre, face, angle, stable root UUID and fixed-lock checks only; physical fit and electrical routing not established.'}
 
 if __name__=='__main__':
-    result=audit();path=ROOT/'boards/osc-jack/reports/exact-placement.json';path.parent.mkdir(parents=True,exist_ok=True)
+    parser=argparse.ArgumentParser();parser.add_argument('board_id');args=parser.parse_args()
+    result=audit(args.board_id);path=ROOT/'boards'/args.board_id/'reports/exact-placement.json';path.parent.mkdir(parents=True,exist_ok=True)
     path.write_text(json.dumps(result,indent=2,sort_keys=True)+'\n')
     print(result['status'],result['netlisted_source_reference_count'],result['native_footprint_count'],len(result['errors']))
     raise SystemExit(0 if not result['errors'] else 1)
