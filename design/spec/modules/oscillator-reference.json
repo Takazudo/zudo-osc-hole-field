@@ -1,0 +1,41 @@
+{
+  "schema_version": 1,
+  "status": "PROPOSAL; unvalidated draft; normal powered operation only",
+  "groups": [
+    "LOCAL",
+    "BASE",
+    "SINE"
+  ],
+  "reference_abs_max_V": 5.025,
+  "supply_abs_min_V": 11.4,
+  "supply_abs_max_V": 12.6,
+  "reference_envelope_basis": "Planning +/-0.5% including master reference, inversion and local offset; not a guaranteed whole-chain accuracy.",
+  "fixed_resistance_tolerance_fraction": 0.01,
+  "pot_resistance_tolerance_fraction": 0.2,
+  "trim_resistance_tolerance_fraction": 0.25,
+  "input_bias_bound_A": 5e-09,
+  "driver_limit_mA": 2,
+  "maximum_panel_pots_per_pair": 6,
+  "isolation_ohm": 100,
+  "feedback_ohm": 100,
+  "compensation_F": 1e-09,
+  "harness_capacitance_max_F": 1e-09,
+  "harness_length_max_m": 0.3,
+  "role_choice": "Explicit oscillator exception to OSC-ES-1 ordinary cv fanout: precision OPA4197IPWR, TSSOP-14, Texas Instruments, LCSC C2057327. Pitch/base trim needs the retained precision model and offset budget.",
+  "evidence": [
+    "fact-op-precision-input-bias-current-full-temperature",
+    "fact-op-precision-input-offset-voltage",
+    "fact-op-precision-quiescent-current",
+    "fact-trim-103-nominal-resistance",
+    "fact-b104-resistance"
+  ],
+  "physical_gates": [
+    "Exact 100 ohm and 1 nF identities/tolerances",
+    "Loaded accuracy and stability at rail/temperature corners",
+    "Any-order and missing rails, powered-off reference injection: #59",
+    "Kelvin AGND return and connector resistance/voltage loss: #35",
+    "Physical source/inlet qualification: #57"
+  ],
+  "nonprecision_receiver_current_allowance_A": 1e-06,
+  "nonprecision_receiver_basis": "Conservative project planning allowance per powered nonprecision input/divider branch, not a guaranteed OPA4196 limit. Retained LM393B full-temperature input bias is 50 nA (fact-comparator-input-bias-current)."
+}

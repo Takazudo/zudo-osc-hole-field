@@ -25,8 +25,9 @@ def build():
     iq_replacement=loads['opamp_audio']['planning_unit_mA']['-12V']
     # Issue #60 added two real precision and four audio quads while keeping
     # the panel hardware fixed. Revisit this lock whenever package packing
-    # changes; the earlier issue #34 numbers remain historical evidence.
-    if (n_precision,stats['IC_count_by_part']['OPA4196IDR'],n_dc,lamps)!= (79,174,48,Counter({'mag':92,'stage':12,'clip':10})):
+    # changes; #62 adds ten precision fanout quads. The earlier issue #34
+    # numbers remain historical evidence.
+    if (n_precision,stats['IC_count_by_part']['OPA4196IDR'],n_dc,lamps)!= (89,174,48,Counter({'mag':92,'stage':12,'clip':10})):
         raise ValueError('captured package/panel count changed; re-evaluate options')
     if (iq_precision,iq_replacement)!=(6.0,1.0):
         raise ValueError('source-backed whole-quad maximum Iq changed; re-evaluate')

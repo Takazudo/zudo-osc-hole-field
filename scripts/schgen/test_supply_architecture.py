@@ -28,7 +28,7 @@ class SupplyArchitectureTests(unittest.TestCase):
     def test_requirements_are_not_capacity(self):
         r=self.build()
         self.assertEqual(r['minimum_arithmetic_independent_sources'],3)
-        self.assertEqual(r['selected_requirement']['minimum_continuous_mA'],{'+12V':1600,'-12V':1500,'+5V':300})
+        self.assertEqual(r['selected_requirement']['minimum_continuous_mA'],{'+12V':1700,'-12V':1600,'+5V':300})
         self.assertTrue(all(v is None for v in r['measured_source_capacity_mA'].values()))
 
     def test_abstract_boundary_and_historical_conflict_are_separate(self):
@@ -46,10 +46,16 @@ class SupplyArchitectureTests(unittest.TestCase):
         self.assertEqual(r['implementation']['open_injection_obligations']['octave_receivers'],30)
         self.assertEqual(r['implementation']['patch_sleeves_on_agnd'],180)
         self.assertEqual({rail: row['captured_fitted_nominal_uF'] for rail,row in r['implementation']['actual_fitted_capacitor_inventory'].items()},
-                         {'+12V':48.9,'-12V':41.7,'+5V':24.5})
-        self.assertEqual(r['implementation']['actual_fitted_capacitor_inventory']['-12V']['mapped_ic_supply_pin_count'],406)
-        self.assertEqual(r['implementation']['actual_fitted_capacitor_inventory']['-12V']['fitted_100nF_attributed_to_rail_count'],407)
+                         {'+12V':49.9,'-12V':42.7,'+5V':24.5})
+        self.assertEqual(r['implementation']['actual_fitted_capacitor_inventory']['-12V']['mapped_ic_supply_pin_count'],416)
+        self.assertEqual(r['implementation']['actual_fitted_capacitor_inventory']['-12V']['fitted_100nF_attributed_to_rail_count'],417)
         self.assertEqual(r['implementation']['prospective_plus12_mA_excess_over_auxiliary_allocation'],25.5)
+
+    def test_historical_candidate_overload_is_reported_without_raising_limits(self):
+        r=self.build();a=r['three_source_evaluation']['A']
+        self.assertEqual(a['status'],'REJECTED - pinned current ceiling exceeded')
+        self.assertAlmostEqual(a['margin_to_pinned_ceiling_mA']['-12V'],-15.344091)
+        self.assertEqual(r['selected_requirement']['minimum_transient_mA'],{'+12V':2000,'-12V':1900,'+5V':400})
 
     def test_missing_module(self):
         self.reject(lambda c:c['domains']['EXT']['module_instances'].pop(), 'module allocation')

@@ -21,6 +21,10 @@ def sheet(f, copies):
         # Core's negative load is sourced by a local op-amp from the -12 V rail.
         extras=[('AS3340D core',1,(5,8,0),(6.5,10,0),'ALFA v7 p4 +15 V typical table for positive current; negative current 8/10 mA remains a planning allowance at buffered -5 V, not a manufacturer maximum.'),('Four 10 kohm jack loads',4,(.05,.05,0),(.5,.5,0),'OSC-ES-1 output-load envelope, not short-circuit demand.'),('Internal resistive/reference/shaper load reserve',1,(5,5,0),(12,12,0),'Includes sine tail, feedback and 10 kohm audio pots; conservative estimate pending operating-point measurement.'),('5 V conditioning reserve',1,(0,0,3),(0,0,6),'HC14, comparator pullups and ADG enables; estimate, not a guaranteed maximum.')]
     else:extras=[('Shared reference and distribution reserve',1,(3,3,0),(8,8,0),'REF5050 and buffered tap/control loads; charged once for all five channels, excludes amplifier Iq above.')]
+    if f.name=='oscillator':
+        # Add explicit fanout load without claiming savings from prior reserves.
+        name,n,a,z,why=extras[2]
+        extras[2]=(name,n,(a[0]+5,a[1]+5,a[2]),(z[0]+5,z[1]+5,z[2]),why+' Issue #62 adds 5 mA per analog rail for bounded local reference output current; no credit against the original reserve.')
     for name,n,a,z,why in extras:
         ad=dict(zip(RAILS,a));zd=dict(zip(RAILS,z))
         for r in RAILS:typ[r]+=n*ad[r];upper[r]+=n*zd[r]
