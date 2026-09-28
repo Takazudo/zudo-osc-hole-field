@@ -20,6 +20,7 @@ fi
 
 if [[ $check_mode == true ]]; then
   python3 scripts/libgen/gen_selector_assembly.py --check
+  python3 scripts/libgen/gen_gh_connectors.py --check
   python3 scripts/libgen/build_symbol_lib.py --check
   python3 scripts/libgen/gen_courtyards.py --check
   python3 scripts/libgen/gen_component_envelopes.py --check
@@ -27,6 +28,7 @@ if [[ $check_mode == true ]]; then
 else
   python3 scripts/libgen/gen_selector_assembly.py
   python3 scripts/libgen/gen_selector_diagram.py
+  python3 scripts/libgen/gen_gh_connectors.py
   python3 scripts/libgen/build_symbol_lib.py
   python3 scripts/libgen/gen_courtyards.py
   python3 scripts/libgen/gen_component_envelopes.py
