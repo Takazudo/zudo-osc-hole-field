@@ -1,4 +1,5 @@
 """X1/X2 maintained buffered A/B selectors; contact mapping remains a bench gate."""
+from design.spec.modules.io_partition import refined
 from collections import defaultdict
 from dataclasses import replace
 
@@ -91,6 +92,7 @@ class ManualABBuilder(Builder):
                       sensitive_nets=SENSITIVE, paper='A0')
 
 
+@refined
 def family():
     panel_bindings()
     builder = ManualABBuilder()
@@ -120,8 +122,18 @@ def family():
                    panel='C:{}.SELECT', island=builder.island)
     builder.r('SELECT_COMMON_BIAS', '10 MΩ', 'SELECTOR_COMMON', 'AGND')
 
+    # SELECTOR_COMMON stays Sensitive and local. The downstream precision
+    # receiver is high impedance, so use the standard general-output topology
+    # as an INTERNAL harness driver: local unity feedback and two 499ohm
+    # isolation resistors. No exposed output or protection path is added.
+    builder.cell('general_output', 'SELECTED',
+                 {'SIGNAL': 'SELECTOR_COMMON', 'JACK': 'SELECTOR_REMOTE'}, role='precision')
+    for n, part in enumerate(builder.parts):
+        if '_SELECTED__' in part.key:
+            builder.parts[n] = replace(part, attributes={**part.attributes,
+                'Role':part.attributes['Role'].replace('general_output:', 'internal_selector_buffer:')})
     builder.cell('precision_output', 'OUT',
-                 {'SIGNAL': 'SELECTOR_COMMON', 'DRIVE': 'OUT_BUFFERED', 'JACK': 'OUT_TIP'})
+                 {'SIGNAL': 'SELECTOR_REMOTE', 'DRIVE': 'OUT_BUFFERED', 'JACK': 'OUT_TIP'})
     builder.device('WQP518MA', 'J_OUT', 'J', {'T': 'OUT_TIP', 'S': 'AGND', 'TN': None},
                    panel='J:{}.OUT', island='')
     builder.cell('magnitude_indicator', 'OUT', {'MONITOR': 'OUT_BUFFERED'},

@@ -57,11 +57,11 @@ class ManualABContract(unittest.TestCase):
         self.assertTrue(all(part.pins['TN'] is None for part in jacks))
         amps = [part for part in self.family.parts
                 if part.symbol.endswith('OPA4197IPWR') and part.unit in (1, 2, 3, 4)]
-        self.assertEqual(len(amps), 4)
+        self.assertEqual(len(amps), 8)
         positive_nets = [part.pins[{1: '3', 2: '5', 3: '10', 4: '12'}[part.unit]] for part in amps]
-        self.assertCountEqual(positive_nets, ['A_SENSE', 'B_SENSE', 'SELECTOR_COMMON', 'AGND'])
+        self.assertCountEqual(positive_nets, ['A_SENSE', 'B_SENSE', 'SELECTOR_COMMON', 'SELECTOR_REMOTE', *(['AGND']*4)])
         outputs = [part for part in self.family.parts
-                   if part.symbol.endswith('OPA4197IPWR') and part.pins.get('8') == 'OUT_BUFFERED']
+                   if part.symbol.endswith('OPA4197IPWR') and 'OUT_BUFFERED' in part.pins.values() and part.attributes.get('Role')=='precision_output:A']
         self.assertEqual(len(outputs), 1)
         indicators = [part for part in self.family.parts if part.symbol.endswith('OPA4196IDR')]
         monitored = {part.pins[number] for part in indicators
@@ -75,15 +75,15 @@ class ManualABContract(unittest.TestCase):
         for part in self.family.parts:
             if part.symbol.endswith(('OPA4196IDR', 'OPA4197IPWR')):
                 packages.setdefault((part.symbol, part.ordinal), set()).add(part.unit)
-        self.assertEqual(len([key for key in packages if key[0].endswith('OPA4197IPWR')]), 1)
+        self.assertEqual(len([key for key in packages if key[0].endswith('OPA4197IPWR')]), 2)
         self.assertEqual(len([key for key in packages if key[0].endswith('OPA4196IDR')]), 1)
         self.assertTrue(all(units == {1, 2, 3, 4, 5} for units in packages.values()))
         report = current_report()
         self.assertEqual(report['IC_packages_per_instance'], {
-            'ADG5412FBRUZ': 2, 'OPA4196IDR': 1, 'OPA4197IPWR': 1})
+            'ADG5412FBRUZ': 2, 'OPA4196IDR': 1, 'OPA4197IPWR': 2})
         row = report['instances'][0]
-        self.assertEqual(row['typical_mA_per_rail'], {'+12V': 7.1605, '-12V': 6.3605, '+5V': .1})
-        self.assertEqual(row['planning_maximum_mA_per_rail'], {'+12V': 13.8505, '-12V': 12.6505, '+5V': .15})
+        self.assertEqual(row['typical_mA_per_rail'], {'+12V': 11.1605, '-12V': 10.3605, '+5V': .1})
+        self.assertEqual(row['planning_maximum_mA_per_rail'], {'+12V': 19.8505, '-12V': 18.6505, '+5V': .15})
         self.assertTrue(all(value is None for value in row['guaranteed_maximum_mA_per_rail'].values()))
 
 

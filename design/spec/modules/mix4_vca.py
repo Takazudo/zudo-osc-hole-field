@@ -10,6 +10,7 @@ feedthrough, current limiting and temperature behavior need vendor-model
 and bench qualification.
 """
 from scripts.schgen.core import Instance
+from design.spec.modules.io_partition import refined
 from design.spec.modules.mixer_common import MixerBuilder, bindings, input_channel, output_channel
 from design.spec.cells._builder import CATALOG, SHORTLIST
 
@@ -23,6 +24,7 @@ def panel_bindings():
     return rows
 
 
+@refined
 def family():
     panel_bindings();b=MixerBuilder('mix4_vca',INSTANCES)
     b.cell('reference_generator','LOCAL',{'REF_5V':'REF5','REF_N5V':'REFN5'})

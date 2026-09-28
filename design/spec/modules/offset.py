@@ -4,6 +4,7 @@ Nominal transfer: OUT_INTERNAL = gain*IN + manual_offset + OFFSET_CV.
 The ±15 V mathematical sum is deliberately beyond available output headroom;
 clip reporting and bench-defined overload behaviour are part of this draft.
 """
+from design.spec.modules.io_partition import refined
 from collections import defaultdict
 from dataclasses import replace
 from scripts.schgen.core import Family, Instance
@@ -86,6 +87,7 @@ class OffsetBuilder(Builder):
                                       'OUT_INTERNAL','CLIP_HALF'))
 
 
+@refined
 def family():
     panel_bindings();b=OffsetBuilder()
     b.cell('reference_generator','LOCAL',{'REF_5V':'REF5','REF_N5V':'REFN5'})

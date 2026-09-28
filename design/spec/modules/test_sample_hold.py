@@ -59,7 +59,7 @@ class SampleHoldContract(unittest.TestCase):
   caps=[p for p in self.parts if p.key.startswith('C_DEC_')]
   bulk=[p for p in self.parts if p.key.startswith('C_BULK_')]
   self.assertEqual(len(caps),33)
-  self.assertTrue(all(not p.dnp and p.value=='100 nF' and p.attributes['Island'].startswith('DECOUP:') for p in caps))
+  self.assertTrue(all(not p.dnp and p.value=='100 nF' and p.attributes.get('Decouples') and p.attributes['BoardRegion'] == next(q.attributes['BoardRegion'] for q in self.parts if q.key.rsplit('.',1)[0] == p.attributes['Decouples']) for p in caps))
   self.assertEqual(len(bulk),3)
   self.assertTrue(all(p.dnp and p.attributes['Island']=='BULK_TBD' for p in bulk))
  def test_nonpanel_diodes_cannot_collide_with_locked_panel_references(self):
