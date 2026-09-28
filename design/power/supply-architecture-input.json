@@ -2643,11 +2643,11 @@
     "fault_policy": "Source current limit and coordinated all-rail shutdown must prevent indefinite partial supply. Reverse-current blocking on all source outputs, active discharge under supervision and rail monitors at load are required; actual circuit and measured response remain #52/#57.",
     "voltage_band_note": "Shared AGND drop can raise one rail magnitude while reducing another. Check source maximum plus worst return shift against every upper load limit, not only subtraction at minimum.",
     "maximum_delivered_current_mA": {
-      "+12V": 2000,
-      "-12V": 1900,
+      "+12V": 2100,
+      "-12V": 2000,
       "+5V": 500
     },
-    "current_limit_contract": "Selected source or inlet must deliver minimum transient requirements yet bound each rail including tolerance to maximum_delivered_current_mA, then coordinate all-rail shutdown. Maximums are interface limits, not device ratings. Unbounded overshoot/fault energy cannot be admitted by the contact/cable checker; actual limiter dynamics require #52 circuit evidence and #57 tests."
+    "current_limit_contract": "Selected source or inlet must deliver minimum transient requirements with a positive planning window to maximum_delivered_current_mA, then bound each rail including tolerance to that maximum and coordinate all-rail shutdown. The 100 mA windows are proposals, not proven realizable limiter tolerances. Maximums are interface limits, not device ratings. Unbounded overshoot/fault energy cannot be admitted by the contact/cable checker; actual limiter dynamics require #52 circuit evidence and #57 tests."
   },
   "inlet": {
     "interface_id": "OSC-EXT-PWR-8-R1",
