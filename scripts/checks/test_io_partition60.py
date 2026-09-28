@@ -32,6 +32,12 @@ class BoundaryTests(unittest.TestCase):
         for rows in (self.assignments[:-1],self.assignments+[self.assignments[0]],self.assignments+[{'ref':'FICTION','region':'jack'}]):
             self.assertTrue(assignment_errors(self.packages,rows))
 
+    def test_reference_isolator_requires_real_upstream_driver(self):
+        name='/O1/LOCAL_REF5';members=self.nets[name]
+        self.assertEqual(crossing_kind(name,members,self.sensitive,self.nets)[0],'compensated oscillator reference')
+        stripped={n:[m for m in rows if m['role']!='oscillator:LOCAL_REF5'] for n,rows in self.nets.items()}
+        self.assertIsNone(crossing_kind(name,members,self.sensitive,stripped)[0])
+
     def test_raw_tip_cannot_be_relabelled_as_buffered(self):
         name='/O1/1V_TIP';rows=self.nets[name]
         self.assertIsNone(crossing_kind(name,rows,self.sensitive)[0])

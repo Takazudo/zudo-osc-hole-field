@@ -39,7 +39,7 @@ def decks():
     lines+=generated+['Q1 SINE_C1 SINE_BASE SINE_TAIL GENERIC_PAIR','Q2 SINE_C2 0 SINE_TAIL GENERIC_PAIR','.model GENERIC_PAIR NPN(IS=1e-14 BF=300 VAF=100)','Rlevel SINE_GAIN_TRIM SINE_GAIN_SUM 5500','.tran 2u 10m','.measure tran sine_max MAX v(SIN_SCALED) FROM=5m TO=10m','.measure tran sine_min MIN v(SIN_SCALED) FROM=5m TO=10m','.measure tran sine_mean AVG v(SIN_SCALED) FROM=5m TO=10m','.four 1k v(SIN_SCALED)','.end']
     out['oscillator-sine-generic.cir']='\n'.join(lines)+'\n'
     sp=[p for p in f.parts if p.key.startswith(('R_TRI_','R_SAW_')) or p.attributes.get('LogicalCellKey','').startswith(('TRI_SCALE.','SAW_SCALE.'))]
-    lines=['Raw-output scaling: ideal 12 V core amplitudes assumed','Vref OSC_REF5 0 5','Vtri TRI_RAW 0 PWL('+' '.join(f'{i*.0005:g} {(0 if i%2==0 else 4)}' for i in range(7))+')','Vsaw SAW_RAW 0 PWL(0 0 .000999 8 .001 0 .001999 8 .002 0 .002999 8 .003 0)']+primitives(sp)+['.tran 1u 3m','.measure tran tri_max MAX v(TRI_SCALED) FROM=1m TO=3m','.measure tran tri_min MIN v(TRI_SCALED) FROM=1m TO=3m','.measure tran saw_max MAX v(SAW_SCALED) FROM=1m TO=3m','.measure tran saw_min MIN v(SAW_SCALED) FROM=1m TO=3m','.end']
+    lines=['Raw-output scaling: ideal 12 V core amplitudes assumed','Vref LOCAL_REF5 0 5','Vtri TRI_RAW 0 PWL('+' '.join(f'{i*.0005:g} {(0 if i%2==0 else 4)}' for i in range(7))+')','Vsaw SAW_RAW 0 PWL(0 0 .000999 8 .001 0 .001999 8 .002 0 .002999 8 .003 0)']+primitives(sp)+['.tran 1u 3m','.measure tran tri_max MAX v(TRI_SCALED) FROM=1m TO=3m','.measure tran tri_min MIN v(TRI_SCALED) FROM=1m TO=3m','.measure tran saw_max MAX v(SAW_SCALED) FROM=1m TO=3m','.measure tran saw_min MIN v(SAW_SCALED) FROM=1m TO=3m','.end']
     out['oscillator-levels-ideal.cir']='\n'.join(lines)+'\n'
     return out
 

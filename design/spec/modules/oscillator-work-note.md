@@ -15,3 +15,27 @@ Checks: `check_oscillator.sh` regenerates and checks full master ERC/netlist par
 Review corrections: explicitly tied the two ladder endpoints to their drivers; bounded sine trim range covers model output calibration; prevented positive and negative supply names from collapsing in generated SPICE; used explicit triangular PWL sources instead of zero-width PULSE defaults; corrected unpatched lower command frequency; fixed unittest discovery imports; reused exact known 1k/10k trimmer and matching 100k/100n/100p identities.
 
 Remaining: no AS3340 vendor model or bench unit; V/oct/temperature, sync, PWM limits, real waveform levels, factory sourcing, unmatched passive MPNs, output and harness stability, buffered VEE startup/fault behavior and actual maximum rail currents remain open. Shared full build is manager-owned. No browser, board placer, inventory, supplier action or shared issue tracker was changed.
+
+## Issue #62 local reference fanout (2026-09-28)
+
+Baseline circuit validation and full regeneration passed without tracked drift.
+Ten 10 kohm trimmers previously loaded the global pair directly (13.333 mA at
+minimum retained resistance, before panel and fixed loads). Three local precision
+pairs per oscillator now isolate panel/fixed, BASE trim and SINE trim loads. All
+original control values and sensitive/timing islands remain; 438 centres are fixed.
+
+Source: oscillator.py and oscillator-reference.json. The source-derived fanout
+report bounds all six outputs, shared source loads, connector branches, reverse
+current rail attribution, driver swing/headroom and exact package/bypass refs.
+Two added OPA4197IPWR quads per oscillator add 60 mA Iq per analog rail; a separate
+25 mA output reserve is additive to all previous reserves. No source limit changed.
+The historical three-source candidate A is now rejected at -15.344091 mA margin;
+the selected EXT requirements still pass all existing current/return/loss limits.
+
+Foreground review corrections: include nonprecision receiver-current allowance,
+book reversed current on the opposite rail, trace a real amplifier behind each
+allowed reference isolation resistor, refresh all dependent count/rail reports,
+and fix a pre-existing MDX less-than parsing error exposed by the required build.
+The retained TI model passes 24 powered load/passive/rail cases. Physical loaded
+precision/temperature, exact 100 ohm/1 nF identities, startup and partial-power are
+NOT RUN. #59 protection and #57 physical source qualification remain OPEN.

@@ -66,3 +66,7 @@ The bounded cable case is the 5 V into 10 kΩ output state already charged in th
 Physical current, startup, fault, cable drop and temperature qualification are **NOT RUN** because no populated instrument or source test record exists. The source decision needs issue #48 evidence; issue #49's precision output coupon must measure transient rail current. Any changed circuit or package population requires regenerating both ledgers before reviewing the allocation.
 
 Issue #60 adds four OPA4196IDR quads for mixer region separation and two OPA4197IPWR quads for the local A/B harness drivers. The current worksheets charge all sections, including unused ones: +16 mA planning quiescent current on each analog rail. Twelve fitted 100 nF bypasses add 0.6 µF per analog rail. The unchanged 1600/1500/300 mA EXT continuous requirement still covers the revised conditional ledger; measured capacity and #59 protection remain unknown/open. See [the I/O source partition](./osc-io-partition.mdx).
+
+## Oscillator reference fanout update (#62)
+
+The [local reference repair](./osc-reference-fanout.mdx) adds ten OPA4197IPWR packages and explicit output-load allowance, totaling +85 mA per analog rail over #60 with no reserve credits. EXT arithmetic now requires 1700/1600/300 mA continuous and 2000/1900/400 mA transient; maximum delivered current, return rating and voltage-loss limits are unchanged. The historical unselected three-source domain A is rejected at −15.344091 mA margin on −12 V. Source capacity and physical qualification remain unknown.
