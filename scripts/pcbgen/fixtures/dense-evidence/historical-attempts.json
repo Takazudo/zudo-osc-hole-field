@@ -1,0 +1,88 @@
+{
+  "best_saved_board": {
+    "completion": false,
+    "drc": {
+      "rule_errors": 0,
+      "rule_warnings": 159,
+      "schematic_parity_issues": 0,
+      "unconnected_items": 3,
+      "unrouted_nets": [
+        "GND"
+      ]
+    },
+    "preexisting_tracks_preserved": 1080,
+    "preexisting_zones_preserved": 2,
+    "router_runtime_sec": 275.425,
+    "sampled_peak_memory_mb": 849.3,
+    "status": "INCOMPLETE DRAFT",
+    "total_runtime_sec": 285.366,
+    "total_track_length_mm": 4825.4304,
+    "via_count": 208
+  },
+  "geometry": {
+    "connector_count": 1,
+    "footprints": 211,
+    "full_board_copper_layers": 4,
+    "indicator_cells": 30,
+    "jack_columns": 3,
+    "jack_pitch_x_mm": 17,
+    "jack_pitch_y_mm": 14,
+    "jack_rows": 10,
+    "selected_jacks": 30
+  },
+  "latest_attempt": {
+    "last_router_pass": {
+      "pass": 10,
+      "unrouted_items": 10
+    },
+    "router_runtime_sec": 122.05,
+    "sampled_peak_memory_mb": 733.8,
+    "status": "TIMEOUT DRAFT",
+    "time_limit_sec": 120,
+    "unrouted_name_basis": "pre-route DRC snapshot; no imported session",
+    "unrouted_nets": [
+      "GND"
+    ]
+  },
+  "open_gate": {
+    "next_action": "Review ground return and plane stitching near C1607 and J310, then reroute and repeat KiCad 10 DRC",
+    "observed": "Three GND unconnected items remain on the best saved four-layer board; no successful continuation SES",
+    "requirement": "Full dense slice: zero KiCad rule errors, zero unconnected items, zero schematic parity issues"
+  },
+  "placement": {
+    "placed_free_footprints": 181,
+    "status": "PLACED DRAFT"
+  },
+  "pre_route_vias": 30,
+  "qualification": "NOT RUN \u2014 routing and PCB remain unvalidated; mechanical, thermal and fabrication review are open",
+  "replication": {
+    "all_runs_reported": true,
+    "copied_tracks": 700,
+    "copied_vias": 20,
+    "row_templates": 10,
+    "target_columns": 2
+  },
+  "router_image": "ghcr.io/freerouting/freerouting@sha256:67794b10c4565c259461343cf6db4158e6a5c5baa7c2f93030d045974f313074",
+  "schema_version": 1,
+  "source_column": {
+    "local_cell_nets_complete": true,
+    "router_runtime_sec": 76.418,
+    "sampled_peak_memory_mb": 665.9,
+    "status": "INCOMPLETE DRAFT",
+    "unrouted_nets": [
+      "INPUT_10",
+      "INPUT_4"
+    ]
+  },
+  "status": "UNVALIDATED DRAFT",
+  "two_layer_diagnostic": {
+    "last_router_pass": {
+      "pass": 12,
+      "unrouted_items": 12
+    },
+    "router_runtime_sec": 300.601,
+    "sampled_peak_memory_mb": 806.4,
+    "status": "TIMEOUT DRAFT",
+    "time_limit_sec": 300
+  }
+}

@@ -75,7 +75,9 @@ def prepare(board_id,board_path,dsn):
     for item in board.GetTracks():item.SetLocked(True)
     if not pcbnew.ZONE_FILLER(board).Fill(board.Zones()):raise RuntimeError('zone refill failed')
     pcbnew.SaveBoard(str(board_path),board)
-    normalize_file(board_path,board_id,set(),new_ids,False,managed)
+    owned_refs={fp.GetReference() for fp in board.GetFootprints()
+                if uid(fp)==stable_uuid(board_id,'footprint:'+fp.GetReference(),'root')}
+    normalize_file(board_path,board_id,owned_refs,new_ids,False,managed)
     if not pcbnew.ExportSpecctraDSN(board,str(dsn)):raise RuntimeError('DSN export failed')
     print(f'{board_id}: draft zones/classes applied; {len(list(board.GetTracks()))} existing tracks fixed; DSN exported')
 
@@ -96,12 +98,14 @@ def finish(board_path,ses,stats_path):
     result=stats(board)
     result['preexisting_tracks_preserved']=len(before)
     result['preexisting_zones_preserved']=len(zones)
+    Path(stats_path).parent.mkdir(parents=True, exist_ok=True)
     Path(stats_path).write_text(json.dumps(result,indent=2,sort_keys=True)+'\n')
     print(f'SES imported; {result["track_count"]} tracks, {result["via_count"]} vias, {result["total_track_length_mm"]} mm; existing geometry preserved')
 
 def inspect(board_path,stats_path):
     board=pcbnew.LoadBoard(str(board_path));result=stats(board)
     result['zone_count']=len(list(board.Zones()))
+    Path(stats_path).parent.mkdir(parents=True, exist_ok=True)
     Path(stats_path).write_text(json.dumps(result,indent=2,sort_keys=True)+'\n')
 
 def main():

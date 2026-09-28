@@ -1,88 +1,212 @@
 {
-  "best_saved_board": {
-    "completion": false,
+  "final_copper": {
+    "total_track_length_mm": 4793.0596,
+    "track_count": 2001,
+    "via_count": 208,
+    "via_nets": [
+      "+12V",
+      "-12V",
+      "/C1/DRIVE",
+      "/C10/LED_A",
+      "/C11/DRIVE",
+      "/C12/DRIVE",
+      "/C13/DRIVE",
+      "/C17/FB",
+      "/C2/DRIVE",
+      "/C20/LED_A",
+      "/C21/DRIVE",
+      "/C22/DRIVE",
+      "/C23/DRIVE",
+      "/C27/FB",
+      "/C3/DRIVE",
+      "/C30/LED_A",
+      "/C7/FB",
+      "GND",
+      "INPUT_1",
+      "INPUT_10",
+      "INPUT_11",
+      "INPUT_12",
+      "INPUT_13",
+      "INPUT_14",
+      "INPUT_15",
+      "INPUT_16",
+      "INPUT_17",
+      "INPUT_18",
+      "INPUT_19",
+      "INPUT_2",
+      "INPUT_20",
+      "INPUT_21",
+      "INPUT_22",
+      "INPUT_23",
+      "INPUT_24",
+      "INPUT_25",
+      "INPUT_26",
+      "INPUT_27",
+      "INPUT_28",
+      "INPUT_29",
+      "INPUT_3",
+      "INPUT_30",
+      "INPUT_4",
+      "INPUT_5",
+      "INPUT_6",
+      "INPUT_7",
+      "INPUT_8",
+      "INPUT_9"
+    ],
+    "zone_count": 3
+  },
+  "final_drc": {
+    "rule_errors": 0,
+    "rule_warnings": 159,
+    "schematic_parity_issues": 0,
+    "unconnected_items": 0,
+    "unrouted_nets": []
+  },
+  "fixed_hardware_centres_unchanged": 30,
+  "fixture_gate": "PASS \u2014 KiCad rule/connectivity/parity checks only",
+  "geometry": {
+    "connector_count": 1,
+    "connector_pads": 40,
+    "copper_layers": 4,
+    "footprints": 211,
+    "indicator_cells": 30,
+    "jack_pitch_x_mm": 17,
+    "jack_pitch_y_mm": 14,
+    "selected_jacks": 30
+  },
+  "historical_attempts": "dense-evidence/historical-attempts.json",
+  "placement_lock_sha256": "e69bce774d2eb266fbcf02df0d042285f407e2d63886443d7e9f5595d64be85d",
+  "preexisting_copper_preserved": 1080,
+  "qualification": "NOT RUN \u2014 unvalidated synthetic draft; physical, electrical, thermal, mechanical and fabrication qualification remain open",
+  "reconstruction_attempt": {
     "drc": {
-      "rule_errors": 0,
+      "rule_errors": 3,
       "rule_warnings": 159,
       "schematic_parity_issues": 0,
-      "unconnected_items": 3,
+      "unconnected_items": 7,
       "unrouted_nets": [
         "GND"
       ]
     },
-    "preexisting_tracks_preserved": 1080,
-    "preexisting_zones_preserved": 2,
-    "router_runtime_sec": 275.425,
-    "sampled_peak_memory_mb": 849.3,
+    "router_image": "ghcr.io/freerouting/freerouting@sha256:67794b10c4565c259461343cf6db4158e6a5c5baa7c2f93030d045974f313074",
+    "router_runtime_sec": 266.266,
+    "sampled_peak_memory_mb": 734.7,
     "status": "INCOMPLETE DRAFT",
-    "total_runtime_sec": 285.366,
-    "total_track_length_mm": 4825.4304,
-    "via_count": 208
+    "time_limit_sec": 300
   },
-  "geometry": {
-    "connector_count": 1,
-    "footprints": 211,
-    "full_board_copper_layers": 4,
-    "indicator_cells": 30,
-    "jack_columns": 3,
-    "jack_pitch_x_mm": 17,
-    "jack_pitch_y_mm": 14,
-    "jack_rows": 10,
-    "selected_jacks": 30
+  "repair_attempts": "dense-evidence/repair-attempts.json",
+  "reproducibility": {
+    "board_sha256": "62bd821afd4850cc9614210c01272d03f6ef0a6fedbef275a5e6ff95e535272a",
+    "command": "bash scripts/pcbgen/test_route.sh --dense",
+    "result": "PASS \u2014 fresh source replay, repeated generation, full DRC, negative ground-via regression",
+    "router_invoked_for_replay": false,
+    "run_log": "dense-evidence/replay-run.txt",
+    "source_sha256": {
+      "copper.json": "4d5b857953c9fe7c646d4136588cf24863c28d1d1a5a7a309d4efa7e893edd47",
+      "preservation.json": "8545290db981b7aa236920ef450988260a4d4a0e4f0d1b70fc8957ca33a0d947",
+      "stitching.json": "5468f005e302060d292e35f2506c2ca24f9ac1b811dfeade55f6e8505afb2dea"
+    }
   },
-  "latest_attempt": {
-    "last_router_pass": {
-      "pass": 10,
-      "unrouted_items": 10
+  "schema_version": 2,
+  "source_column_attempt": {
+    "after": {
+      "rule_errors": 0,
+      "rule_warnings": 159,
+      "schematic_parity_issues": 0,
+      "unconnected_items": 2,
+      "unrouted_nets": [
+        "INPUT_10",
+        "INPUT_4"
+      ]
     },
-    "router_runtime_sec": 122.05,
-    "sampled_peak_memory_mb": 733.8,
-    "status": "TIMEOUT DRAFT",
-    "time_limit_sec": 120,
-    "unrouted_name_basis": "pre-route DRC snapshot; no imported session",
-    "unrouted_nets": [
-      "GND"
-    ]
-  },
-  "open_gate": {
-    "next_action": "Review ground return and plane stitching near C1607 and J310, then reroute and repeat KiCad 10 DRC",
-    "observed": "Three GND unconnected items remain on the best saved four-layer board; no successful continuation SES",
-    "requirement": "Full dense slice: zero KiCad rule errors, zero unconnected items, zero schematic parity issues"
-  },
-  "placement": {
-    "placed_free_footprints": 181,
-    "status": "PLACED DRAFT"
-  },
-  "pre_route_vias": 30,
-  "qualification": "NOT RUN \u2014 routing and PCB remain unvalidated; mechanical, thermal and fabrication review are open",
-  "replication": {
-    "all_runs_reported": true,
-    "copied_tracks": 700,
-    "copied_vias": 20,
-    "row_templates": 10,
-    "target_columns": 2
-  },
-  "router_image": "ghcr.io/freerouting/freerouting@sha256:67794b10c4565c259461343cf6db4158e6a5c5baa7c2f93030d045974f313074",
-  "schema_version": 1,
-  "source_column": {
-    "local_cell_nets_complete": true,
-    "router_runtime_sec": 76.418,
-    "sampled_peak_memory_mb": 665.9,
+    "before": {
+      "rule_errors": 0,
+      "rule_warnings": 159,
+      "schematic_parity_issues": 0,
+      "unconnected_items": 137,
+      "unrouted_nets": [
+        "+12V",
+        "-12V",
+        "/C1/DRIVE",
+        "/C1/FB",
+        "/C1/LED_A",
+        "/C10/DRIVE",
+        "/C10/FB",
+        "/C10/LED_A",
+        "/C2/DRIVE",
+        "/C2/FB",
+        "/C2/LED_A",
+        "/C3/DRIVE",
+        "/C3/FB",
+        "/C3/LED_A",
+        "/C4/DRIVE",
+        "/C4/FB",
+        "/C4/LED_A",
+        "/C5/DRIVE",
+        "/C5/FB",
+        "/C5/LED_A",
+        "/C6/DRIVE",
+        "/C6/FB",
+        "/C6/LED_A",
+        "/C7/DRIVE",
+        "/C7/FB",
+        "/C7/LED_A",
+        "/C8/DRIVE",
+        "/C8/FB",
+        "/C8/LED_A",
+        "/C9/DRIVE",
+        "/C9/FB",
+        "/C9/LED_A",
+        "GND",
+        "INPUT_1",
+        "INPUT_10",
+        "INPUT_2",
+        "INPUT_3",
+        "INPUT_4",
+        "INPUT_5",
+        "INPUT_6",
+        "INPUT_7",
+        "INPUT_8",
+        "INPUT_9"
+      ]
+    },
+    "board": ".circuit-cache/router/dense-source/fixture-route-dense-source.kicad_pcb",
+    "board_id": "fixture-route-dense-source",
+    "draft": true,
+    "fanout_enabled": true,
+    "heap_mb": 1536,
+    "preexisting_tracks_preserved": 0,
+    "preexisting_zones_preserved": 1,
+    "routed_net_count": 41,
+    "router_image": "ghcr.io/freerouting/freerouting@sha256:67794b10c4565c259461343cf6db4158e6a5c5baa7c2f93030d045974f313074",
+    "router_runtime_sec": 59.638,
+    "routing_spec_sha256": "0fad3e7eeac033c48eae90bd52371f2eee41a3db1767983a36377eda15e7850a",
+    "runtime_sec": 67.943,
+    "sampled_peak_memory_mb": 633.0,
+    "schema_version": 1,
     "status": "INCOMPLETE DRAFT",
-    "unrouted_nets": [
+    "thread_limit": 4,
+    "time_limit_sec": 120,
+    "total_track_length_mm": 1781.3247,
+    "unrouted_net_count": 2,
+    "unrouted_net_names": [
       "INPUT_10",
       "INPUT_4"
+    ],
+    "via_count": 66,
+    "via_nets": [
+      "+12V",
+      "-12V",
+      "/C1/DRIVE",
+      "/C10/LED_A",
+      "/C2/DRIVE",
+      "/C3/DRIVE",
+      "/C7/FB",
+      "GND",
+      "INPUT_1",
+      "INPUT_3",
+      "INPUT_6"
     ]
   },
-  "status": "UNVALIDATED DRAFT",
-  "two_layer_diagnostic": {
-    "last_router_pass": {
-      "pass": 12,
-      "unrouted_items": 12
-    },
-    "router_runtime_sec": 300.601,
-    "sampled_peak_memory_mb": 806.4,
-    "status": "TIMEOUT DRAFT",
-    "time_limit_sec": 300
-  }
+  "status": "UNVALIDATED DRAFT"
 }

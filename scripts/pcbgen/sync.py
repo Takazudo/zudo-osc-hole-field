@@ -92,7 +92,8 @@ def sync(board_id:str,output:Path|None=None,netlist:Path|None=None):
                 # Temporary staging lane; later placer/owner may move these free parts.
                 fp.SetPosition(vec(*to_kicad(350,10+index*5)))
             board.Add(fp)
-        elif fp.GetFPID().GetLibItemName()!=name or fp.GetFPID().GetLibNickname()!=library:
+        # KiCad 10 returns wxString wrappers; compare their text, not wrapper identity.
+        elif str(fp.GetFPID().GetLibItemName())!=name or str(fp.GetFPID().GetLibNickname())!=library:
             prior_position=fp.GetPosition();prior_orientation=fp.GetOrientationDegrees()
             board.Remove(fp)
             src=cache.get(c.footprint)
