@@ -35,5 +35,5 @@ python3 scripts/pcbgen/fixtures/canonicalize_dense.py "$board"
 after=$(sha256sum "$board" | cut -d' ' -f1)
 [[ $before == "$after" ]] || { echo 'Repeat generation changed board bytes' >&2; exit 1; }
 bash scripts/kicad/run.sh python3 scripts/pcbgen/fixtures/assert_dense_fixture.py "$board" "$dir/routing-work/pre-drc.json"
-bash scripts/kicad/run.sh python3 scripts/pcbgen/fixtures/test_dense_replay.py "$board"
+bash scripts/kicad/run.sh python3 scripts/pcbgen/fixtures/check_dense_replay.py "$board"
 echo 'PASS: fresh dense replay, complete DRC, byte-identical regeneration, preservation and negative regressions'
