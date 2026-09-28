@@ -1,0 +1,297 @@
+{
+  "schema_version": 1,
+  "module": "offset",
+  "authority": "PROPOSAL (planning, owner-delegated)",
+  "status": "Package and cell planning worksheet; not guaranteed maxima",
+  "IC_packages_per_instance": {
+    "ADG5412FBRUZ": 2,
+    "LM393BIDR": 2,
+    "OPA4196IDR": 1,
+    "OPA4197IPWR": 3,
+    "REF5050AIDR": 1
+  },
+  "breakdown": [
+    {
+      "load": "OPA4197IPWR",
+      "count": 3,
+      "typical_unit_mA": {
+        "+12V": 4,
+        "-12V": 4,
+        "+5V": 0
+      },
+      "planning_unit_mA": {
+        "+12V": 6.0,
+        "-12V": 6.0,
+        "+5V": 0
+      },
+      "basis": "Whole quad packages including unused channels. Source OPA4197 p8 or OPA4196 p8; full-temperature Iq maxima. No output current included here."
+    },
+    {
+      "load": "OPA4196IDR",
+      "count": 1,
+      "typical_unit_mA": {
+        "+12V": 0.56,
+        "-12V": 0.56,
+        "+5V": 0
+      },
+      "planning_unit_mA": {
+        "+12V": 1.0,
+        "-12V": 1.0,
+        "+5V": 0
+      },
+      "basis": "Whole quad packages including unused channels. Source OPA4197 p8 or OPA4196 p8; full-temperature Iq maxima. No output current included here."
+    },
+    {
+      "load": "ADG5412FBRUZ",
+      "count": 2,
+      "typical_unit_mA": {
+        "+12V": 0.9,
+        "-12V": 0.5,
+        "+5V": 0
+      },
+      "planning_unit_mA": {
+        "+12V": 1.3,
+        "-12V": 0.7,
+        "+5V": 0
+      },
+      "basis": "ADG5412F Rev C Table 1 p4 \u00b115 V normal-mode table; extrapolation allowance at project \u00b112 V, not guaranteed at this voltage."
+    },
+    {
+      "load": "LM393BIDR",
+      "count": 2,
+      "typical_unit_mA": {
+        "+12V": 0.6,
+        "-12V": 0.1,
+        "+5V": 0
+      },
+      "planning_unit_mA": {
+        "+12V": 1,
+        "-12V": 1,
+        "+5V": 0
+      },
+      "basis": "26 dual packages from planning table. Conservatively reserve 1 mA on both rails even though single-supply gate comparators draw no -12 V current. Exact LM393B current and final count await #15/#33."
+    },
+    {
+      "load": "three magnitude LEDs",
+      "count": 3,
+      "typical_unit_mA": {
+        "+12V": 0.25,
+        "-12V": 0.25,
+        "+5V": 0
+      },
+      "planning_unit_mA": {
+        "+12V": 1.25,
+        "-12V": 1.25,
+        "+5V": 0
+      },
+      "basis": "Typical 25% brightness; budget 1.25 mA per channel per analog rail, allowing >5 V saturation/headroom spread. Per-rail extremes need not occur simultaneously."
+    },
+    {
+      "load": "one clip LED",
+      "count": 1,
+      "typical_unit_mA": {
+        "+12V": 0.25,
+        "-12V": 0.25,
+        "+5V": 0
+      },
+      "planning_unit_mA": {
+        "+12V": 1.1,
+        "-12V": 1.1,
+        "+5V": 0
+      },
+      "basis": "Analog window outputs sink to -12 V from +12 V, hence both rails, at 24 V across 22.1 kohm plus LED."
+    },
+    {
+      "load": "one manual offset pot",
+      "count": 1,
+      "typical_unit_mA": {
+        "+12V": 0.1,
+        "-12V": 0.1,
+        "+5V": 0
+      },
+      "planning_unit_mA": {
+        "+12V": 0.125,
+        "-12V": 0.125,
+        "+5V": 0
+      },
+      "basis": "10 V / 100 kohm nominal; -20% pot tolerance -> 0.125 mA. Charges reference buffer output load separately from its Iq."
+    },
+    {
+      "load": "one external output load",
+      "count": 1,
+      "typical_unit_mA": {
+        "+12V": 0.05,
+        "-12V": 0.05,
+        "+5V": 0
+      },
+      "planning_unit_mA": {
+        "+12V": 0.5,
+        "-12V": 0.5,
+        "+5V": 0
+      },
+      "basis": "All 82 jacks at \u00b15 V into 10 kohm, per-rail envelope; conservative includes gate outputs on analog buffers. Short-circuit demand handled separately."
+    },
+    {
+      "load": "REF5050 local generator and rail ladder",
+      "count": 1,
+      "typical_unit_mA": {
+        "+12V": 2,
+        "-12V": 0.1,
+        "+5V": 0
+      },
+      "planning_unit_mA": {
+        "+12V": 3,
+        "-12V": 0.3,
+        "+5V": 0
+      },
+      "basis": "Provisional reserve for reference IC supply and finite resistor/driver current; REF5050 maximum at \u00b112 V and rail startup are not established by this worksheet."
+    },
+    {
+      "load": "two input-switch enable feeds",
+      "count": 1,
+      "typical_unit_mA": {
+        "+12V": 0,
+        "-12V": 0,
+        "+5V": 0.1
+      },
+      "planning_unit_mA": {
+        "+12V": 0,
+        "-12V": 0,
+        "+5V": 0.3
+      },
+      "basis": "Approximately two 5 V/101 k\u03a9 feeds plus digital-current reserve; fault and startup excluded."
+    },
+    {
+      "load": "internal command and feedback load",
+      "count": 1,
+      "typical_unit_mA": {
+        "+12V": 0.25,
+        "-12V": 0.25,
+        "+5V": 0
+      },
+      "planning_unit_mA": {
+        "+12V": 0.75,
+        "-12V": 0.75,
+        "+5V": 0
+      },
+      "basis": "Planning reserve for summing, feedback and level paths, not a measured operating point."
+    }
+  ],
+  "instances": [
+    {
+      "instance": "A01",
+      "planning_typical_mA": {
+        "+12V": 18.96,
+        "-12V": 15.26,
+        "+5V": 0.1
+      },
+      "planning_upper_mA": {
+        "+12V": 32.825,
+        "-12V": 28.925,
+        "+5V": 0.3
+      },
+      "guaranteed_maximum_mA": {
+        "+12V": null,
+        "-12V": null,
+        "+5V": null
+      }
+    },
+    {
+      "instance": "A02",
+      "planning_typical_mA": {
+        "+12V": 18.96,
+        "-12V": 15.26,
+        "+5V": 0.1
+      },
+      "planning_upper_mA": {
+        "+12V": 32.825,
+        "-12V": 28.925,
+        "+5V": 0.3
+      },
+      "guaranteed_maximum_mA": {
+        "+12V": null,
+        "-12V": null,
+        "+5V": null
+      }
+    },
+    {
+      "instance": "A03",
+      "planning_typical_mA": {
+        "+12V": 18.96,
+        "-12V": 15.26,
+        "+5V": 0.1
+      },
+      "planning_upper_mA": {
+        "+12V": 32.825,
+        "-12V": 28.925,
+        "+5V": 0.3
+      },
+      "guaranteed_maximum_mA": {
+        "+12V": null,
+        "-12V": null,
+        "+5V": null
+      }
+    },
+    {
+      "instance": "A04",
+      "planning_typical_mA": {
+        "+12V": 18.96,
+        "-12V": 15.26,
+        "+5V": 0.1
+      },
+      "planning_upper_mA": {
+        "+12V": 32.825,
+        "-12V": 28.925,
+        "+5V": 0.3
+      },
+      "guaranteed_maximum_mA": {
+        "+12V": null,
+        "-12V": null,
+        "+5V": null
+      }
+    },
+    {
+      "instance": "A05",
+      "planning_typical_mA": {
+        "+12V": 18.96,
+        "-12V": 15.26,
+        "+5V": 0.1
+      },
+      "planning_upper_mA": {
+        "+12V": 32.825,
+        "-12V": 28.925,
+        "+5V": 0.3
+      },
+      "guaranteed_maximum_mA": {
+        "+12V": null,
+        "-12V": null,
+        "+5V": null
+      }
+    },
+    {
+      "instance": "A06",
+      "planning_typical_mA": {
+        "+12V": 18.96,
+        "-12V": 15.26,
+        "+5V": 0.1
+      },
+      "planning_upper_mA": {
+        "+12V": 32.825,
+        "-12V": 28.925,
+        "+5V": 0.3
+      },
+      "guaranteed_maximum_mA": {
+        "+12V": null,
+        "-12V": null,
+        "+5V": null
+      }
+    }
+  ],
+  "planning_upper_total_mA": {
+    "+12V": 196.95,
+    "-12V": 173.55,
+    "+5V": 1.8
+  },
+  "guaranteed_maximum_status": "NOT ESTABLISHED - reference, LED, output, signal, temperature, fault and startup loads unqualified",
+  "note": "All whole OPA packages and both comparator packages per instance are counted. \u00b115 V mathematical sum exceeds available rail/output swing. #33/#34 must reconcile six-cell load with whole-instrument ceilings."
+}
