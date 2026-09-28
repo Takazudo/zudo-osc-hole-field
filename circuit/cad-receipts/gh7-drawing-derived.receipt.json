@@ -1,0 +1,61 @@
+{
+  "receipt_version": 1,
+  "identity": {
+    "asset_id": "gh7-drawing-derived",
+    "record_id": "rec-gh7-header",
+    "manufacturer": "JST",
+    "mpn": "BM07B-GHS-TBT(LF)(SN)",
+    "package": "JST_GH7_BM_TopEntry",
+    "variant_notes": "BM top-entry, exact position count"
+  },
+  "acquisition": {
+    "provider": "manufacturer primary PDF",
+    "source_url": "https://www.jst-mfg.com/product/pdf/eng/eGH.pdf",
+    "acquired_on": "2026-09-28",
+    "sha256": {
+      "design/connectors/sources/jst-gh.pdf": "b1dcb317b6b9a4fbbedd2dbf42c64c95306a252d23de8933b85fcf161240b722"
+    }
+  },
+  "representation": {
+    "files": [
+      "symbols/src/JST_GH7_BM.kicad_sym",
+      "footprints/kicad/zudo-osc-hole-field.pretty/JST_GH7_BM_TopEntry.kicad_mod",
+      "footprints/kicad/zudo-osc-hole-field.3dshapes/JST_GH7_BM_TopEntry.wrl"
+    ],
+    "formats": [
+      "kicad_sym",
+      "kicad_mod",
+      "wrl"
+    ],
+    "units": "footprint mm; WRL 2.54 mm per unit",
+    "original_paths": [
+      "design/connectors/sources/jst-gh.pdf"
+    ]
+  },
+  "fidelity": {
+    "class": "derived",
+    "reason": "Pads from JST reference PC layout; nominal body prism only. No housing/cable solid or installed fit."
+  },
+  "derivation": {
+    "derived": true,
+    "input_sha256": {
+      "design/connectors/sources/jst-gh.pdf": "b1dcb317b6b9a4fbbedd2dbf42c64c95306a252d23de8933b85fcf161240b722"
+    },
+    "output_sha256": {
+      "symbols/src/JST_GH7_BM.kicad_sym": "9d0a1dd606eff3f7c3f1938fa972a02cc6bce6456888ad7d2741b2c88912ad7e",
+      "footprints/kicad/zudo-osc-hole-field.pretty/JST_GH7_BM_TopEntry.kicad_mod": "e12c44cac03badb19ca799dc0a0f448143b1466daac1399d4db5662b67c4c979",
+      "footprints/kicad/zudo-osc-hole-field.3dshapes/JST_GH7_BM_TopEntry.wrl": "2adab0c60dc0807ffb83f63a0741b841030505fcef539bf41c289fe46efff147"
+    },
+    "tool": "scripts/libgen/gen_gh_connectors.py",
+    "tool_version": "1",
+    "parameters": {
+      "drawing_pages": [
+        1,
+        2,
+        5
+      ],
+      "mating_axis": "normal to PCB",
+      "model_scope": "nominal header body bounding prism"
+    }
+  }
+}

@@ -32,7 +32,10 @@
     "rec-pnp",
     "rec-mosfet",
     "rec-matched-npn",
-    "rec-r-general"
+    "rec-r-general",
+    "rec-gh3-header",
+    "rec-gh7-header",
+    "rec-gh8-header"
   ],
   "sourceIds": [
     "src-b103",
@@ -107,7 +110,10 @@
     "src-r-general-datasheet",
     "src-r-general-shortlist",
     "src-srbv-shaft",
-    "src-srbv-hardware"
+    "src-srbv-hardware",
+    "src-gh3-header",
+    "src-gh7-header",
+    "src-gh8-header"
   ],
   "linkableSourceIds": [
     "src-b103",
@@ -180,7 +186,10 @@
     "src-r-general-shortlist",
     "src-vco-datasheet",
     "src-srbv-shaft",
-    "src-srbv-hardware"
+    "src-srbv-hardware",
+    "src-gh3-header",
+    "src-gh7-header",
+    "src-gh8-header"
   ],
   "documentSelections": [
     {
@@ -342,12 +351,27 @@
       "recordId": "rec-r-general",
       "sourceId": "src-r-general-datasheet",
       "documentKind": "datasheet"
+    },
+    {
+      "recordId": "rec-gh3-header",
+      "sourceId": "src-gh3-header",
+      "documentKind": "drawing"
+    },
+    {
+      "recordId": "rec-gh7-header",
+      "sourceId": "src-gh7-header",
+      "documentKind": "drawing"
+    },
+    {
+      "recordId": "rec-gh8-header",
+      "sourceId": "src-gh8-header",
+      "documentKind": "drawing"
     }
   ],
   "expect": {
-    "records": 42,
-    "sources": 95,
+    "records": 49,
+    "sources": 102,
     "integrationRules": 0,
-    "packages": 19
+    "packages": 22
   }
 }

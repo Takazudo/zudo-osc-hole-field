@@ -1,0 +1,52 @@
+{
+  "receipt_version": 1,
+  "identity": {
+    "asset_id": "gh-contact-mapping",
+    "record_id": "rec-gh-contact",
+    "manufacturer": "JST",
+    "mpn": "SSHL-002T-P0.2",
+    "package": "JST_GH1_EXTERNAL_NOT_FOR_PCB",
+    "variant_notes": "External mapping aid; not a board footprint"
+  },
+  "acquisition": {
+    "provider": "manufacturer primary PDF",
+    "source_url": "https://www.jst-mfg.com/product/pdf/eng/eGH.pdf",
+    "acquired_on": "2026-09-28",
+    "sha256": {
+      "design/connectors/sources/jst-gh.pdf": "b1dcb317b6b9a4fbbedd2dbf42c64c95306a252d23de8933b85fcf161240b722"
+    }
+  },
+  "representation": {
+    "files": [
+      "symbols/src/JST_GH1_EXTERNAL_NOT_FOR_PCB.kicad_sym",
+      "footprints/kicad/zudo-osc-hole-field.pretty/JST_GH1_EXTERNAL_NOT_FOR_PCB.kicad_mod"
+    ],
+    "formats": [
+      "kicad_sym",
+      "kicad_mod"
+    ],
+    "units": "mm",
+    "original_paths": [
+      "design/connectors/sources/jst-gh.pdf"
+    ]
+  },
+  "fidelity": {
+    "class": "derived",
+    "reason": "Cavity mapping aid only, not physical PCB geometry; do not place on any board."
+  },
+  "derivation": {
+    "derived": true,
+    "input_sha256": {
+      "design/connectors/sources/jst-gh.pdf": "b1dcb317b6b9a4fbbedd2dbf42c64c95306a252d23de8933b85fcf161240b722"
+    },
+    "output_sha256": {
+      "symbols/src/JST_GH1_EXTERNAL_NOT_FOR_PCB.kicad_sym": "fa4d39200da0e48153b5a3dd07a0d80164cb42a27d5c38f75726f3fb877518cd",
+      "footprints/kicad/zudo-osc-hole-field.pretty/JST_GH1_EXTERNAL_NOT_FOR_PCB.kicad_mod": "100d49366f5b0b23622b350d85c77bf43dff9e61bd4026cd89982188ff9b9fec"
+    },
+    "tool": "scripts/libgen/gen_gh_connectors.py",
+    "tool_version": "1",
+    "parameters": {
+      "scope": "EXTERNAL NOT FOR PCB"
+    }
+  }
+}
