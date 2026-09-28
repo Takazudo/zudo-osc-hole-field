@@ -13,6 +13,10 @@ VRML_UNIT_MM = 2.54  # KiCad 10 VRML importer: one coordinate unit is 0.1 inch.
 ROOT = Path(__file__).resolve().parents[2]
 OUT = ROOT / "footprints/kicad/zudo-osc-hole-field.3dshapes"
 MODELS = {
+    "LED0402-Kingbright-White.wrl": (1.0, 0.5, 0.5, (0.8, 0.78, 0.5),
+        "Package-only cuboid for Kingbright APHHS1005QWF/D, exact 1.0 x 0.5 x 0.5 mm dimensions from DSAK0125 V.10B page 1; no lens or seating qualification."),
+    "LED0402-Kingbright-Red.wrl": (1.0, 0.5, 0.2, (0.75, 0.15, 0.12),
+        "Package-only cuboid for Kingbright APG1005SEC/E-T, exact 1.0 x 0.5 x 0.2 mm dimensions from DSAM9600 V.10A page 1; no lens or seating qualification."),
     "Jack_3.5mm_QingPu_WQP518MA.wrl": (9.0, 10.5, 9.0, (0.22, 0.22, 0.22),
         "Provisional family body envelope from retained PJ398SM drawing callouts 9 x 10.5 x 9 mm; no panel datum or exact WQP body claim."),
     "Toggle_Dailywell_2MS_T1B1M2.wrl": (8.13, 5.08, 5.08, (0.65, 0.65, 0.65),

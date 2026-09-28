@@ -1,0 +1,86 @@
+{
+  "receipt_version": 1,
+  "identity": {
+    "asset_id": "cad-kingbright-red-0402",
+    "record_id": "rec-kingbright-red",
+    "manufacturer": "Kingbright",
+    "mpn": "APG1005SEC/E-T",
+    "package": "0402 top-emitting SMD LED",
+    "variant_notes": "Conditional draft exact LED; assembled fit and optical output unvalidated."
+  },
+  "acquisition": {
+    "provider": "Kingbright primary datasheet",
+    "library_release_tag": null,
+    "source_url": "https://www.kingbrightusa.com/images/catalog/SPEC/APG1005SEC-E-T.pdf",
+    "acquired_on": "2026-09-28",
+    "original_filenames": [
+      "APG1005SEC-E-T.pdf"
+    ],
+    "sha256": {
+      "circuit/source-archive/kingbright/APG1005SEC-E-T.pdf": "19570994f99319c3b602ab3d854b1cb9e6c15a34aa69879e84d9a10594b8c03e"
+    }
+  },
+  "representation": {
+    "files": [
+      "symbols/src/Kingbright_Red_0402.kicad_sym",
+      "footprints/kicad/zudo-osc-hole-field.pretty/LED0402-Kingbright-Red.kicad_mod",
+      "footprints/kicad/zudo-osc-hole-field.3dshapes/LED0402-Kingbright-Red.wrl"
+    ],
+    "formats": [
+      "kicad_sym",
+      "kicad_mod",
+      "wrl"
+    ],
+    "units": "mm",
+    "original_paths": [
+      "circuit/source-archive/kingbright/APG1005SEC-E-T.pdf"
+    ]
+  },
+  "fidelity": {
+    "class": "derived",
+    "reason": "Project symbol and footprint transcribed from exact manufacturer page 1 land/polarity drawing; no exact 3D model is available.",
+    "evidence": [
+      "Retained exact manufacturer PDF with hash",
+      "Page 1 package and land drawing visually inspected."
+    ]
+  },
+  "derivation": {
+    "derived": true,
+    "input_sha256": {
+      "circuit/source-archive/kingbright/APG1005SEC-E-T.pdf": "19570994f99319c3b602ab3d854b1cb9e6c15a34aa69879e84d9a10594b8c03e"
+    },
+    "tool": "manual transcription; scripts/libgen/gen_courtyards.py; scripts/libgen/gen_component_envelopes.py",
+    "tool_version": "1",
+    "parameters": {
+      "pads": "0.7 x 0.5 mm; 0.2 mm gap; 1=K 2=A",
+      "courtyard": "project 0.25 mm margin",
+      "model": "package-only cuboid from exact primary dimensions"
+    },
+    "output_sha256": {
+      "symbols/src/Kingbright_Red_0402.kicad_sym": "aba63eebef413e663b1eba760f0921f949ce5a084574140a8fab7f6369fb4a84",
+      "footprints/kicad/zudo-osc-hole-field.pretty/LED0402-Kingbright-Red.kicad_mod": "4a16e45298e7f349499aaf1157d1ee422e4775819e21859d34767c241a1eb51b",
+      "footprints/kicad/zudo-osc-hole-field.3dshapes/LED0402-Kingbright-Red.wrl": "6a109b4dfed83ee0ef076f88aae38c0d37a915cd56b9b31d53a7e830ae8fd18f"
+    }
+  },
+  "cad_use": {
+    "symbol": "zudo-osc-hole-field:Kingbright_Red_0402",
+    "footprint": "zudo-osc-hole-field:LED0402-Kingbright-Red",
+    "model_path": "${KIPRJMOD}/../../footprints/kicad/zudo-osc-hole-field.3dshapes/LED0402-Kingbright-Red.wrl",
+    "transform": null,
+    "seating_plane": null
+  },
+  "checks": {
+    "performed": [
+      "PDF page 1 visual inspection",
+      "KiCad library hash check"
+    ],
+    "remaining_physical_checks": [
+      "Physical mounting, optical coupling and current under tolerance"
+    ]
+  },
+  "publication": {
+    "preview_selected": false,
+    "download_published": false,
+    "permitted_scope": null
+  }
+}

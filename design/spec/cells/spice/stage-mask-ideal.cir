@@ -17,8 +17,10 @@ Qon con bon emon QNPN
 Qoff coff boff emoff QNPN
 Rsenon emon 0 1k
 Rsenoff emoff 0 1k
-Dledon five con DWHITE
-Dledoff five coff DWHITE
+Rlimiton five anon 1.2k
+Dledon anon con DWHITE
+Rlimitoff five anoff 1.2k
+Dledoff anoff coff DWHITE
 .model SWMASK SW(Ron=1 Roff=1e12 Vt=2.5 Vh=0)
 .model QNPN NPN(Is=1e-14 Bf=100)
 .model DWHITE D(Is=1e-18 N=3)
