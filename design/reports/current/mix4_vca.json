@@ -1,0 +1,227 @@
+{
+  "schema_version": 1,
+  "module": "mix4_vca",
+  "authority": "PROPOSAL (planning, unvalidated)",
+  "status": "Captured package count and preliminary per-rail budget; not a hardware maximum",
+  "IC_packages_per_instance": {
+    "ADG5412FBRUZ": 5,
+    "LM13700M_NOPB": 1,
+    "LM393BIDR": 2,
+    "OPA4196IDR": 8,
+    "OPA4197IPWR": 1,
+    "REF5050AIDR": 1
+  },
+  "breakdown": [
+    {
+      "load": "OPA4196IDR",
+      "count": 8,
+      "typical_unit_mA": {
+        "+12V": 0.56,
+        "-12V": 0.56,
+        "+5V": 0
+      },
+      "planning_unit_mA": {
+        "+12V": 1.0,
+        "-12V": 1.0,
+        "+5V": 0
+      },
+      "basis": "Whole quad packages including unused channels. Source OPA4197 p8 or OPA4196 p8; full-temperature Iq maxima. No output current included here."
+    },
+    {
+      "load": "OPA4197IPWR",
+      "count": 1,
+      "typical_unit_mA": {
+        "+12V": 4,
+        "-12V": 4,
+        "+5V": 0
+      },
+      "planning_unit_mA": {
+        "+12V": 6.0,
+        "-12V": 6.0,
+        "+5V": 0
+      },
+      "basis": "Whole quad packages including unused channels. Source OPA4197 p8 or OPA4196 p8; full-temperature Iq maxima. No output current included here."
+    },
+    {
+      "load": "ADG5412FBRUZ",
+      "count": 5,
+      "typical_unit_mA": {
+        "+12V": 0.9,
+        "-12V": 0.5,
+        "+5V": 0
+      },
+      "planning_unit_mA": {
+        "+12V": 1.3,
+        "-12V": 0.7,
+        "+5V": 0
+      },
+      "basis": "ADG5412F Rev C Table 1 p4 \u00b115 V normal-mode table; extrapolation allowance at project \u00b112 V, not guaranteed at this voltage."
+    },
+    {
+      "load": "LM393BIDR",
+      "count": 2,
+      "typical_unit_mA": {
+        "+12V": 0.6,
+        "-12V": 0.1,
+        "+5V": 0
+      },
+      "planning_unit_mA": {
+        "+12V": 1,
+        "-12V": 1,
+        "+5V": 0
+      },
+      "basis": "26 dual packages from planning table. Conservatively reserve 1 mA on both rails even though single-supply gate comparators draw no -12 V current. Exact LM393B current and final count await #15/#33."
+    },
+    {
+      "load": "LM13700M_NOPB",
+      "count": 1,
+      "typical_unit_mA": {
+        "+12V": 4,
+        "-12V": 4,
+        "+5V": 0
+      },
+      "planning_unit_mA": {
+        "+12V": 6,
+        "-12V": 6,
+        "+5V": 0
+      },
+      "basis": "Planning source has 16 LM13700 packages. 6 mA allowance including bias currents; module evidence must replace estimate."
+    },
+    {
+      "load": "magnitude indicators",
+      "count": 6,
+      "typical_unit_mA": {
+        "+12V": 0.25,
+        "-12V": 0.25,
+        "+5V": 0
+      },
+      "planning_unit_mA": {
+        "+12V": 1.25,
+        "-12V": 1.25,
+        "+5V": 0
+      },
+      "basis": "Typical 25% brightness; budget 1.25 mA per channel per analog rail, allowing >5 V saturation/headroom spread. Per-rail extremes need not occur simultaneously."
+    },
+    {
+      "load": "pre-level clip LED",
+      "count": 1,
+      "typical_unit_mA": {
+        "+12V": 0.25,
+        "-12V": 0.25,
+        "+5V": 0
+      },
+      "planning_unit_mA": {
+        "+12V": 1.1,
+        "-12V": 1.1,
+        "+5V": 0
+      },
+      "basis": "Analog window outputs sink to -12 V from +12 V, hence both rails, at 24 V across 22.1 kohm plus LED."
+    },
+    {
+      "load": "SUM external load",
+      "count": 1,
+      "typical_unit_mA": {
+        "+12V": 0.05,
+        "-12V": 0.05,
+        "+5V": 0
+      },
+      "planning_unit_mA": {
+        "+12V": 0.5,
+        "-12V": 0.5,
+        "+5V": 0
+      },
+      "basis": "All 82 jacks at \u00b15 V into 10 kohm, per-rail envelope; conservative includes gate outputs on analog buffers. Short-circuit demand handled separately."
+    },
+    {
+      "load": "reference, signal pots, summer feedback, servo and trims",
+      "count": 1,
+      "typical_unit_mA": {
+        "+12V": 3,
+        "-12V": 3,
+        "+5V": 0
+      },
+      "planning_unit_mA": {
+        "+12V": 8,
+        "-12V": 8,
+        "+5V": 0
+      },
+      "basis": "Engineering allowance for REF5050 supply/load and resistor networks; no complete source-backed worst-case network bound. Includes OTA servo for MIX4."
+    },
+    {
+      "load": "fault-switch enable feeds",
+      "count": 4,
+      "typical_unit_mA": {
+        "+12V": 0,
+        "-12V": 0,
+        "+5V": 0.05
+      },
+      "planning_unit_mA": {
+        "+12V": 0,
+        "-12V": 0,
+        "+5V": 0.1
+      },
+      "basis": "Each +5 V / ~101 k\u03a9 enable feed is ~0.05 mA. Planning reserve includes input current and tolerance; no guaranteed maximum."
+    },
+    {
+      "load": "ATTEN fault-switch enable feed",
+      "count": 1,
+      "typical_unit_mA": {
+        "+12V": 0,
+        "-12V": 0,
+        "+5V": 0.05
+      },
+      "planning_unit_mA": {
+        "+12V": 0,
+        "-12V": 0,
+        "+5V": 0.1
+      },
+      "basis": "Same ADG enable network as each audio input."
+    }
+  ],
+  "instances": [
+    {
+      "instance": "M4A",
+      "planning_typical_mA": {
+        "+12V": 22.98,
+        "-12V": 19.98,
+        "+5V": 0.25
+      },
+      "planning_upper_mA": {
+        "+12V": 45.6,
+        "-12V": 42.6,
+        "+5V": 0.5
+      },
+      "guaranteed_maximum_mA": {
+        "+12V": null,
+        "-12V": null,
+        "+5V": null
+      }
+    },
+    {
+      "instance": "M4B",
+      "planning_typical_mA": {
+        "+12V": 22.98,
+        "-12V": 19.98,
+        "+5V": 0.25
+      },
+      "planning_upper_mA": {
+        "+12V": 45.6,
+        "-12V": 42.6,
+        "+5V": 0.5
+      },
+      "guaranteed_maximum_mA": {
+        "+12V": null,
+        "-12V": null,
+        "+5V": null
+      }
+    }
+  ],
+  "planning_upper_total_mA": {
+    "+12V": 91.2,
+    "-12V": 85.2,
+    "+5V": 1.0
+  },
+  "guaranteed_maximum_status": "NOT ESTABLISHED: reference load, LED waveform, signal swings, OTA bias/servo, temperature, startup and faults need measurement.",
+  "decoupling_nF_per_instance": 3300,
+  "note": "Packages include all physical amplifier channels and local 100 nF supply bypasses; no bulk capacitor or short-circuit allowance. Whole-instrument closure belongs to the power budget."
+}
