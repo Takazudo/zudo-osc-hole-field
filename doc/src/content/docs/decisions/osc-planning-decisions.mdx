@@ -1,0 +1,95 @@
+---
+title: "Epic planning recommendations"
+description: "Records the implementation recommendations delegated for the epic, with rejected alternatives, risks, and review points."
+sidebar_position: 20
+---
+
+## Authority and relationship to owner decisions
+
+Authority for every item on this page is **planning, delegated by the owner**. These recommendations organize implementation work and remain reviewable in the artifacts named below. The separate D01–D12 scope log is recorded in [R21 scope freeze](./osc-scope-freeze.mdx) and `project/osc-hole-field/decisions.json`, where owner decisions and engineering proposals retain their recorded authority and status.
+
+## Recommendations
+
+### 1. Use the official documentation runtime
+
+- **Recommendation:** Use the published `@takazudo/zudo-circuit-doc` packages at version 0.1.0.
+- **Rejected alternative:** Copy the model project's older project-local renderer and maintain a second generator.
+- **Risk:** A pinned early runtime may have constraints that need an upstream change rather than a local workaround.
+- **Review:** Confirm the scaffold remains based on the official package and that the documented project checks pass.
+
+### 2. Scaffold outside the repository, then copy in
+
+- **Recommendation:** Create the official scaffold in a fresh temporary directory and copy its files into the repository.
+- **Rejected alternative:** Run the initializer in the existing repository, or use the handoff's bootstrap wrapper against it.
+- **Risk:** A staging copy can omit a scaffold file or preserve a stale handoff name.
+- **Review:** Compare the scaffold record in `SCAFFOLD.md` and rerun the full project checks after import.
+
+### 3. Rename before importing the handoff
+
+- **Recommendation:** Use `zudo-osc-hole-field` as the only new project name, the `osc-hole-field` slug, the `zudo-osc-hole-field` library name, and the `ZUDO / OSC HOLE FIELD` panel legend; retain the `osc-` page prefix.
+- **Rejected alternative:** Import first and rename the payload and its references later.
+- **Risk:** Historical source files can retain the old conversation name and be mistaken for current identity.
+- **Review:** Run the final name audit across authored pages, published assets, and generator inputs.
+
+### 4. Record hosting configuration without deploying
+
+- **Recommendation:** Set the canonical `siteUrl` and commit an inert `doc/wrangler.jsonc`; keep deployment as separate work, with sitemap generation disabled because runtime 0.1.0 rejects that option.
+- **Rejected alternative:** Deploy the site as part of this engineering epic.
+- **Risk:** The config may be mistaken for proof that the Worker, domain, DNS, or secrets are active.
+- **Review:** Check the [hosting plan](../project/osc-hosting.mdx) and verify that no deployment or credential setup occurred.
+
+### 5. Use KiCad 10.0.6 as the single oracle
+
+- **Recommendation:** Generate and check KiCad 10 file formats through `scripts/kicad/run.sh` and its pinned image.
+- **Rejected alternative:** Use KiCad 9.0.9, which cannot open the sibling projects' KiCad 10 files.
+- **Risk:** Missing the pinned oracle blocks the check and can leave generated files unverified.
+- **Review:** Read `scripts/kicad/README.md` and retain the KiCad toolchain smoke-test result.
+
+### 6. Build purpose-specific generators
+
+- **Recommendation:** Use a standard-library Python schematic generator and `pcbnew` inside the pinned container for board generation.
+- **Rejected alternative:** Adopt evaluated third-party schematic tools that were stale, auto-placing, or lacked schematic output.
+- **Risk:** Custom generators carry ongoing maintenance and need explicit parity checks.
+- **Review:** Inspect the pilot module pull request and the generator tests before treating output as a design source.
+
+### 7. Keep one functional master schematic and project boards by projection
+
+- **Recommendation:** Generate one hierarchical master, record a partition map, and create per-board projects as projections of that master.
+- **Rejected alternative:** Hand-split circuits among separate board schematics.
+- **Risk:** The projection boundary can lose or duplicate connectivity unless the cross-board verifier checks it.
+- **Review:** Inspect the verifier's fault-injection results and compare each projection with the master netlist.
+
+### 8. Capture circuits as unvalidated drafts
+
+- **Recommendation:** Proceed from named reference topologies, record every engineering choice, and keep all circuits explicitly unvalidated.
+- **Rejected alternative:** Wait for factory coupons and a bench-validated oscillator before capturing any modules.
+- **Risk:** A paper design can contain functional, thermal, or startup errors that only simulation or bench work will reveal.
+- **Review:** Read the module pages and [release gates](../verification/osc-release-gates.mdx); do not promote a draft to a validated or released design.
+
+### 9. Decide the board partition from real evidence
+
+- **Recommendation:** Use the dedicated partition work to consider the actual netlist and component drawings, then choose the smallest board count that meets the measured datums.
+- **Rejected alternative:** Reuse the handoff's 13-domain preview as the final partition.
+- **Risk:** A partition chosen before netlist and height evidence can force connector or stack rework.
+- **Review:** Review [Board partition and panel stack](../architecture/osc-board-stack.mdx) against the finalized contracts and measured component envelopes.
+
+### 10. Route with the headless pipeline
+
+- **Recommendation:** Use the headless autorouter with zones and repeated-instance replication, and report completion by net name.
+- **Rejected alternative:** Leave boards unrouted or create a handwritten routing result.
+- **Risk:** Automated routes still need native rule checks and review for sensitive nets, return paths, and physical fit.
+- **Review:** Inspect routing reports, generated board diffs, and the pinned KiCad DRC results.
+
+### 11. Use the pinned zudo-pd supply interface as design intent
+
+- **Recommendation:** Refer to the zudo-pd design at its pinned commit, retain a 2 × 8 IDC inlet with the same pin map, label the supply `design-locked` rather than `as-built`, and keep the instrument design ceiling at 80% of the rail targets.
+- **Rejected alternative:** Use the supply's screw terminals as the synth connection.
+- **Risk:** The specific physical supply assembly may not have been ordered, and the instrument's load and rail budget remain to be verified.
+- **Review:** Check the exact pinned supply source, its connector map, and the integrated rail-budget report.
+
+### 12. Keep the pristine inputs in the repository until migration is confirmed
+
+- **Recommendation:** Retain the original R21 handoff and planning reports under `_temp-resource/1-osc-hole-field/` on the base branch until the final confirmation verifies their useful content has been migrated.
+- **Rejected alternative:** Point implementers to a synchronized external folder.
+- **Risk:** Removing the source bundle too early can break traceability; retaining it after migration leaves redundant resources.
+- **Review:** Use the final resource-migration audit to confirm every required source and decision has a durable project location before cleanup.

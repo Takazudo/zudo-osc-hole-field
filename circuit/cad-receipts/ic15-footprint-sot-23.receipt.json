@@ -1,0 +1,120 @@
+{
+  "receipt_version": 1,
+  "identity": {
+    "asset_id": "ic15-footprint-sot-23",
+    "record_id": "rec-clamp-diode",
+    "manufacturer": null,
+    "mpn": null,
+    "package": "SOT-23",
+    "variant_notes": "Generic KiCad 10 package footprint, not exact vendor land-pattern qualification."
+  },
+  "acquisition": {
+    "provider": "KiCad 10.0.6 stock library",
+    "source_url": "KiCad 10.0.6 pinned oracle, scripts/kicad/run.sh",
+    "acquired_on": "2026-09-28",
+    "original_filenames": [
+      "SOT-23.stock.kicad_mod"
+    ],
+    "sha256": {
+      "circuit/sources/ic-library/cad/SOT-23.stock.kicad_mod": "0d88c86c1b6d8c1aae4aa8c09386264c089d4451a128b6ccd63ed253f4300b15"
+    }
+  },
+  "representation": {
+    "files": [
+      "footprints/kicad/zudo-osc-hole-field.pretty/SOT-23.kicad_mod",
+      "footprints/kicad/zudo-osc-hole-field.3dshapes/IC_SOT-23.wrl"
+    ],
+    "formats": [
+      "kicad_mod",
+      "wrl"
+    ],
+    "units": "Footprint dimensions in mm; WRL coordinate unit 0.1 inch (2.54 mm)",
+    "original_paths": [
+      "circuit/sources/ic-library/cad/SOT-23.stock.kicad_mod"
+    ]
+  },
+  "fidelity": {
+    "class": "family",
+    "reason": "Provisional family envelope: Nexperia MMBT3904 SOT23 package-outline maxima 3.0 x 1.4 x 1.1 mm, reused only as a common-family display envelope. No exact-part fit verdict. It is a preview envelope, not an exact vendor 3D asset, seating model, fit check, or qualification.",
+    "evidence": [
+      "KiCad 10.0.6 pinned stock library source retained with SHA-256.",
+      "circuit/sources/ic-library/MMBT3904.pdf SHA-256 ade27b408c77a94ea4448c8473a9e80096dd60da3e1914e004c52344e9cd8d00",
+      "scripts/libgen/gen_ic_package_envelopes.py SHA-256 6af3e9c2885882147a87a4332aa6ec5b9c4e7a373e85242a93d3dbfa79be8957"
+    ]
+  },
+  "derivation": {
+    "derived": true,
+    "input_sha256": {
+      "circuit/sources/ic-library/cad/SOT-23.stock.kicad_mod": "0d88c86c1b6d8c1aae4aa8c09386264c089d4451a128b6ccd63ed253f4300b15"
+    },
+    "tool": "scripts/libgen/gen_ic_package_envelopes.py and scripts/libgen/regen.sh",
+    "tool_version": "1",
+    "parameters": {
+      "operations": [
+        "set project footprint name",
+        "remove stock 3D model reference",
+        "generate project courtyard"
+      ],
+      "package_envelope": {
+        "model": "IC_SOT-23.wrl",
+        "dimensions_mm": [
+          3.0,
+          1.4,
+          1.1
+        ],
+        "note": "Provisional family envelope: Nexperia MMBT3904 SOT23 package-outline maxima 3.0 x 1.4 x 1.1 mm, reused only as a common-family display envelope. No exact-part fit verdict.",
+        "geometry_source_sha256": {
+          "circuit/sources/ic-library/MMBT3904.pdf": "ade27b408c77a94ea4448c8473a9e80096dd60da3e1914e004c52344e9cd8d00"
+        },
+        "generator_sha256": "6af3e9c2885882147a87a4332aa6ec5b9c4e7a373e85242a93d3dbfa79be8957",
+        "operations": [
+          "generate provisional display cuboid from listed family bounds",
+          "add exactly one local WRL model reference to the generic footprint"
+        ]
+      }
+    },
+    "output_sha256": {
+      "footprints/kicad/zudo-osc-hole-field.pretty/SOT-23.kicad_mod": "d506ab85b553354a097c310d00106e1a8e7f5cc90c8d7643d956ae1a557c03ec",
+      "footprints/kicad/zudo-osc-hole-field.3dshapes/IC_SOT-23.wrl": "69a916d9a2d23c153530662a3b07b5c821e8da2c12d372b952306de822c2e715"
+    }
+  },
+  "cad_use": {
+    "symbol": null,
+    "footprint": "zudo-osc-hole-field:SOT-23",
+    "model_path": "${KIPRJMOD}/../../footprints/kicad/zudo-osc-hole-field.3dshapes/IC_SOT-23.wrl",
+    "transform": {
+      "offset": [
+        0,
+        0,
+        0
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ]
+    },
+    "seating_plane": "F.Cu; envelope base at z=0"
+  },
+  "checks": {
+    "performed": [
+      "Project library and courtyard checks",
+      "Local WRL envelope generated and hash-bound; package preview check required",
+      "KiCad 10.0.6 native VRML export: x/y/z bounds and footprint model scale match the stated display envelope (scripts/libgen/fixtures/check_wrl_dimensions.py)."
+    ],
+    "remaining_physical_checks": [
+      "Audit against exact package drawing before fabrication.",
+      "Confirm exact device body/height, land pattern, seating plane, optical/mechanical path, and fit in the fixed layout; this family envelope establishes none of those."
+    ]
+  },
+  "publication": {
+    "preview_selected": true,
+    "download_published": false,
+    "permitted_scope": "Generated component preview only; no vendor model redistribution."
+  }
+}

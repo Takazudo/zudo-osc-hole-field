@@ -1,0 +1,85 @@
+{
+  "status": "Sheet responsibilities, not an electrical netlist",
+  "library": "zudo_osc_playground",
+  "sheets": [
+    {
+      "name": "00_top",
+      "responsibility": "Explicit power, board boundaries, repeat instances and net naming"
+    },
+    {
+      "name": "01_power_interfaces",
+      "responsibility": "Frozen external zudo-pd output contract; connector/fuse/local bypass"
+    },
+    {
+      "name": "10_osc_channel",
+      "responsibility": "One OSC core plus waveform generation, input conditioning and calibration; instantiate five"
+    },
+    {
+      "name": "11_octave_reference",
+      "responsibility": "Stable octave ladder/reference and six-position switch decoding"
+    },
+    {
+      "name": "20_filter_vca",
+      "responsibility": "One multi-output filter / dry VCA; instantiate three"
+    },
+    {
+      "name": "30_mix5",
+      "responsibility": "One five-input attenuverting sum; instantiate two"
+    },
+    {
+      "name": "31_mix4_vca",
+      "responsibility": "One four-input sum + post-sum VCA and pre/post clip sensing; instantiate two"
+    },
+    {
+      "name": "40_envelope",
+      "responsibility": "One AR/ASR/loop generator; instantiate six"
+    },
+    {
+      "name": "41_env_stage_led",
+      "responsibility": "Buffered ENV with rise/fall-enable drivers"
+    },
+    {
+      "name": "50_folder",
+      "responsibility": "One wavefolder; instantiate two"
+    },
+    {
+      "name": "60_offset",
+      "responsibility": "One attenuverter + manual/CV offset; instantiate six"
+    },
+    {
+      "name": "61_mult",
+      "responsibility": "One precision 1-to-3 buffered multiple; instantiate two"
+    },
+    {
+      "name": "62_sample_hold",
+      "responsibility": "Two LF398 candidates, local storage, trigger conditioning and one-shots"
+    },
+    {
+      "name": "63_post_hold_slew",
+      "responsibility": "Two buffered RC lag cells on local pot-board island"
+    },
+    {
+      "name": "64_manual_ab",
+      "responsibility": "Two independent buffered/protected selector paths"
+    },
+    {
+      "name": "65_noise",
+      "responsibility": "Programmed source candidate + finite-band white/pink/blue/brown paths"
+    },
+    {
+      "name": "70_indicators",
+      "responsibility": "Magnitude detectors and clip thresholds, buffered inputs"
+    },
+    {
+      "name": "80_connectors",
+      "responsibility": "Per-board exact mate and signal/return maps; keep storage nodes local"
+    }
+  ],
+  "required_before_layout": [
+    "All used symbol pins mapped to exact footprint pad IDs",
+    "Every declared part obtains a complete MPN or explicit unresolved state",
+    "Actual mechanical stack and fastener datum, connector engagement",
+    "ERC complete with justified warnings; no blanket ignore",
+    "No unrouted PCB is called release"
+  ]
+}

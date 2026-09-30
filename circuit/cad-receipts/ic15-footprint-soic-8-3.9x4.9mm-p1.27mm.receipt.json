@@ -1,0 +1,120 @@
+{
+  "receipt_version": 1,
+  "identity": {
+    "asset_id": "ic15-footprint-soic-8-3.9x4.9mm-p1.27mm",
+    "record_id": "rec-comparator",
+    "manufacturer": null,
+    "mpn": null,
+    "package": "SOIC-8_3.9x4.9mm_P1.27mm",
+    "variant_notes": "Generic KiCad 10 package footprint, not exact vendor land-pattern qualification."
+  },
+  "acquisition": {
+    "provider": "KiCad 10.0.6 stock library",
+    "source_url": "KiCad 10.0.6 pinned oracle, scripts/kicad/run.sh",
+    "acquired_on": "2026-09-28",
+    "original_filenames": [
+      "SOIC-8_3.9x4.9mm_P1.27mm.stock.kicad_mod"
+    ],
+    "sha256": {
+      "circuit/sources/ic-library/cad/SOIC-8_3.9x4.9mm_P1.27mm.stock.kicad_mod": "074ecb2092b24fa4b4b9cdd7c926fc587b0d7d6d21e7341e57935fd42d36894f"
+    }
+  },
+  "representation": {
+    "files": [
+      "footprints/kicad/zudo-osc-hole-field.pretty/SOIC-8_3.9x4.9mm_P1.27mm.kicad_mod",
+      "footprints/kicad/zudo-osc-hole-field.3dshapes/IC_SOIC-8_3.9x4.9.wrl"
+    ],
+    "formats": [
+      "kicad_mod",
+      "wrl"
+    ],
+    "units": "Footprint dimensions in mm; WRL coordinate unit 0.1 inch (2.54 mm)",
+    "original_paths": [
+      "circuit/sources/ic-library/cad/SOIC-8_3.9x4.9mm_P1.27mm.stock.kicad_mod"
+    ]
+  },
+  "fidelity": {
+    "class": "family",
+    "reason": "Provisional family envelope: TI D0008A SOIC-8 package-outline maxima 5.00 x 3.98 x 1.75 mm. No land-pattern or physical-fit verdict. It is a preview envelope, not an exact vendor 3D asset, seating model, fit check, or qualification.",
+    "evidence": [
+      "KiCad 10.0.6 pinned stock library source retained with SHA-256.",
+      "circuit/sources/ic-library/LM393B.pdf SHA-256 f28830c2f4cbd9ef6a1cd6788a840fa2b92caafee366d53385f88d1cf24e9456",
+      "scripts/libgen/gen_ic_package_envelopes.py SHA-256 6af3e9c2885882147a87a4332aa6ec5b9c4e7a373e85242a93d3dbfa79be8957"
+    ]
+  },
+  "derivation": {
+    "derived": true,
+    "input_sha256": {
+      "circuit/sources/ic-library/cad/SOIC-8_3.9x4.9mm_P1.27mm.stock.kicad_mod": "074ecb2092b24fa4b4b9cdd7c926fc587b0d7d6d21e7341e57935fd42d36894f"
+    },
+    "tool": "scripts/libgen/gen_ic_package_envelopes.py and scripts/libgen/regen.sh",
+    "tool_version": "1",
+    "parameters": {
+      "operations": [
+        "set project footprint name",
+        "remove stock 3D model reference",
+        "generate project courtyard"
+      ],
+      "package_envelope": {
+        "model": "IC_SOIC-8_3.9x4.9.wrl",
+        "dimensions_mm": [
+          5.0,
+          3.98,
+          1.75
+        ],
+        "note": "Provisional family envelope: TI D0008A SOIC-8 package-outline maxima 5.00 x 3.98 x 1.75 mm. No land-pattern or physical-fit verdict.",
+        "geometry_source_sha256": {
+          "circuit/sources/ic-library/LM393B.pdf": "f28830c2f4cbd9ef6a1cd6788a840fa2b92caafee366d53385f88d1cf24e9456"
+        },
+        "generator_sha256": "6af3e9c2885882147a87a4332aa6ec5b9c4e7a373e85242a93d3dbfa79be8957",
+        "operations": [
+          "generate provisional display cuboid from listed family bounds",
+          "add exactly one local WRL model reference to the generic footprint"
+        ]
+      }
+    },
+    "output_sha256": {
+      "footprints/kicad/zudo-osc-hole-field.pretty/SOIC-8_3.9x4.9mm_P1.27mm.kicad_mod": "60fc4a5e63729c51bd1ddbc3dc6865f25ca972aea6ed7607bcd848a60925c9bf",
+      "footprints/kicad/zudo-osc-hole-field.3dshapes/IC_SOIC-8_3.9x4.9.wrl": "e91e487b55ddc9c5ec54d3ac4f670b05dcb6d635a06543cbeccd9ae7b12ecd43"
+    }
+  },
+  "cad_use": {
+    "symbol": null,
+    "footprint": "zudo-osc-hole-field:SOIC-8_3.9x4.9mm_P1.27mm",
+    "model_path": "${KIPRJMOD}/../../footprints/kicad/zudo-osc-hole-field.3dshapes/IC_SOIC-8_3.9x4.9.wrl",
+    "transform": {
+      "offset": [
+        0,
+        0,
+        0
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ]
+    },
+    "seating_plane": "F.Cu; envelope base at z=0"
+  },
+  "checks": {
+    "performed": [
+      "Project library and courtyard checks",
+      "Local WRL envelope generated and hash-bound; package preview check required",
+      "KiCad 10.0.6 native VRML export: x/y/z bounds and footprint model scale match the stated display envelope (scripts/libgen/fixtures/check_wrl_dimensions.py)."
+    ],
+    "remaining_physical_checks": [
+      "Audit against exact package drawing before fabrication.",
+      "Confirm exact device body/height, land pattern, seating plane, optical/mechanical path, and fit in the fixed layout; this family envelope establishes none of those."
+    ]
+  },
+  "publication": {
+    "preview_selected": true,
+    "download_published": false,
+    "permitted_scope": "Generated component preview only; no vendor model redistribution."
+  }
+}

@@ -1,0 +1,89 @@
+{
+  "schema_version": 1,
+  "facts": [
+    {
+      "fact_id": "fact-srbv-pin",
+      "record_id": "rec-srbv",
+      "source_id": "src-srbv",
+      "class": "PROJECT_STATE",
+      "value": "1/10 common; 2\u20137 positions; 8/9 dummy; MP1/MP2 mechanical",
+      "unit": "NONE",
+      "conditions": "viewed from direction A",
+      "locator": "Figure Drawing No.7, circuit diagram row C and dummy terminals table",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-srbv-manufacturer",
+      "record_id": "rec-srbv",
+      "source_id": "src-srbv",
+      "class": "PROJECT_STATE",
+      "value": "Alps Alpine",
+      "unit": "NONE",
+      "conditions": "manufacturer branding in retained PDF",
+      "locator": "PDF title block and product-list row for exact part family",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-srbv-mechanical-fit",
+      "record_id": "rec-srbv",
+      "source_id": "src-srbv",
+      "class": "PROJECT_STATE",
+      "value": "Conditional stepped 3+2 adapter assembly selected; installed fit unqualified",
+      "unit": "NONE",
+      "conditions": "0/180 degree bodies; fixed 17 mm pitch; PCB planes -16/-29 mm; physical gate issue #55",
+      "locator": "Figure Drawing No.7 plus design/mechanical/selector-assembly.json and selector-assembly-check.json",
+      "provenance": "PROJECT-CHOICE",
+      "verdict": "NEEDS BENCH",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-srbv-envelope",
+      "record_id": "rec-srbv",
+      "source_id": "src-srbv",
+      "class": "PROJECT_STATE",
+      "value": "Main body nominal 16.2 x 18.5 x 7.5 mm; 18.2 mm support span; shaft-centered body y=-10.5..+8 mm",
+      "unit": "NONE",
+      "conditions": "Nominal drawing callouts only; no unstated general tolerances or installed qualification inferred",
+      "locator": "Figure Drawing No.7 all three dimension views; do not use a centered 16.2 x 18.5 box as a solid envelope",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-srbv-shaft",
+      "record_id": "rec-srbv",
+      "source_id": "src-srbv-shaft",
+      "class": "PROJECT_STATE",
+      "value": "Nominal shaft diameter 6 mm and flat dimension 4.5 mm; C1 chamfer",
+      "unit": "NONE",
+      "conditions": "Nominal drawing callouts only; no unstated general tolerances or installed qualification inferred",
+      "locator": "Figure Operation Part Details (a)",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-srbv-hardware",
+      "record_id": "rec-srbv",
+      "source_id": "src-srbv-hardware",
+      "class": "PROJECT_STATE",
+      "value": "Included M9x0.75 nut, 11 mm AF x 2 mm; washer OD14/ID9.1 x 0.5 mm",
+      "unit": "NONE",
+      "conditions": "Nominal drawing callouts only; no unstated general tolerances or installed qualification inferred",
+      "locator": "Figure Attached Parts",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
+    }
+  ]
+}

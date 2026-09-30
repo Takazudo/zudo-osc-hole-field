@@ -1,0 +1,94 @@
+{
+  "schema_version": 1,
+  "board_id": "fixture-jacks",
+  "outline": [
+    [
+      8,
+      17
+    ],
+    [
+      38,
+      17
+    ],
+    [
+      38,
+      164
+    ],
+    [
+      8,
+      164
+    ]
+  ],
+  "corner_radius_mm": 0,
+  "layers": 2,
+  "thickness_mm": 1.6,
+  "stackup": [
+    {
+      "layer": "F.Cu",
+      "role": "panel-facing copper"
+    },
+    {
+      "layer": "dielectric",
+      "material": "FR-4",
+      "thickness_mm": 1.6
+    },
+    {
+      "layer": "B.Cu",
+      "role": "far-side copper"
+    }
+  ],
+  "mounting_holes": [
+    {
+      "id": "1",
+      "center": [
+        30,
+        25
+      ],
+      "diameter_mm": 3.2
+    }
+  ],
+  "keepouts": [
+    {
+      "id": "1",
+      "polygon": [
+        [
+          25,
+          40
+        ],
+        [
+          31,
+          40
+        ],
+        [
+          31,
+          46
+        ],
+        [
+          25,
+          46
+        ]
+      ],
+      "layers": [
+        "F.Cu",
+        "B.Cu"
+      ]
+    }
+  ],
+  "domains": [
+    "JL"
+  ],
+  "placement_uids": [
+    "J:O1.1V",
+    "J:O1.FM",
+    "J:O1.PWM",
+    "J:O1.SYNC",
+    "J:O1.SIN",
+    "J:O1.TRI",
+    "J:O1.SAW",
+    "J:O1.PUL",
+    "J:B1.IN",
+    "J:B1.2"
+  ],
+  "netlist": "boards/fixture-jacks/fixture-jacks.net",
+  "schematic": "boards/fixture-jacks/fixture-jacks.kicad_sch"
+}

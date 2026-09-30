@@ -1,0 +1,5 @@
+# MIX4 VCA ERC notes — unvalidated draft
+
+KiCad 10.0.6 `kicad-cli sch erc --severity-all` on the generated root reports **zero errors** and **14 `pin_to_pin` warnings per M4A/M4B sheet**. Six magnitude LEDs each contribute two `Unspecified`–`Passive` diode warnings (12 warnings). The SUM clip LED contributes one `Unspecified`–`Open collector` comparator output warning and one `Unspecified`–`Passive` resistor warning. The ATTEN magnitude indicator is included; the ATTEN jack remains CV-only. All OTA package pins, including the second channel and unused buffers, have explicit connections or no-connect flags. Netlist parity passes. The fixture asserts these exact warning types/counts; they are not a VCA electrical qualification.
+
+The earlier suffix-A clip LED references produced a KiCad annotation warning. The geometry source now assigns numeric references D11061 and D12061 to the same locked UIDs and coordinates. Full-instrument netlist export no longer emits the annotation warning; exported pin parity passes.

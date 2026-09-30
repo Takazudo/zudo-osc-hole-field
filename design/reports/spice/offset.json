@@ -1,0 +1,79 @@
+{
+  "schema_version": 1,
+  "module": "offset",
+  "status": "PASS - ideal linear transfer only",
+  "oracle": "pinned KiCad 10 ngspice",
+  "runs": [
+    {
+      "deck": "design/spec/modules/spice/offset-g-1-in+1-m+0-cv+0.cir",
+      "gain_setting": -1,
+      "input_V": 1,
+      "manual_V": 0,
+      "offset_CV_V": 0,
+      "expected_linear_V": -1,
+      "model_output_V": -0.999992,
+      "status": "PASS - ideal linear topology only"
+    },
+    {
+      "deck": "design/spec/modules/spice/offset-g+0-in+1-m+0-cv+0.cir",
+      "gain_setting": 0,
+      "input_V": 1,
+      "manual_V": 0,
+      "offset_CV_V": 0,
+      "expected_linear_V": 0,
+      "model_output_V": 0.0,
+      "status": "PASS - ideal linear topology only"
+    },
+    {
+      "deck": "design/spec/modules/spice/offset-g+1-in+1-m+0-cv+0.cir",
+      "gain_setting": 1,
+      "input_V": 1,
+      "manual_V": 0,
+      "offset_CV_V": 0,
+      "expected_linear_V": 1,
+      "model_output_V": 0.999992,
+      "status": "PASS - ideal linear topology only"
+    },
+    {
+      "deck": "design/spec/modules/spice/offset-g-1-in-5-m-5-cv-5.cir",
+      "gain_setting": -1,
+      "input_V": -5,
+      "manual_V": -5,
+      "offset_CV_V": -5,
+      "expected_linear_V": -5,
+      "model_output_V": -4.99998,
+      "status": "PASS - ideal linear topology only"
+    },
+    {
+      "deck": "design/spec/modules/spice/offset-g+1-in+5-m+5-cv+5.cir",
+      "gain_setting": 1,
+      "input_V": 5,
+      "manual_V": 5,
+      "offset_CV_V": 5,
+      "expected_linear_V": 15,
+      "model_output_V": 14.9999,
+      "status": "PASS - ideal linear topology only"
+    },
+    {
+      "deck": "design/spec/modules/spice/offset-g+1-in+1-m+2-cv-3.cir",
+      "gain_setting": 1,
+      "input_V": 1,
+      "manual_V": 2,
+      "offset_CV_V": -3,
+      "expected_linear_V": 0,
+      "model_output_V": -2e-06,
+      "status": "PASS - ideal linear topology only"
+    },
+    {
+      "deck": "design/spec/modules/spice/offset-g-0.5-in+4-m+1-cv-2.cir",
+      "gain_setting": -0.5,
+      "input_V": 4,
+      "manual_V": 1,
+      "offset_CV_V": -2,
+      "expected_linear_V": -3.0,
+      "model_output_V": -2.99998,
+      "status": "PASS - ideal linear topology only"
+    }
+  ],
+  "limits": "Ideal opamps have unlimited rails; \u00b115 V endpoint cases demonstrate the mathematical demand, not realizable output. Pot taper/contact, source impedance, tolerances, offset, drift and clipping are excluded."
+}

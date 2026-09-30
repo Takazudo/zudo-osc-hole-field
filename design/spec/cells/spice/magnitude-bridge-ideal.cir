@@ -1,0 +1,25 @@
+OSC-ES-1 bridge current, ideal amplifier and nominal diode models only
+Vplus monp 0 DC 5
+Vminus monn 0 DC -5
+Eampp drivep 0 monp sensep 1e5
+Eampn driven 0 monn sensen 1e5
+Rsenp sensep 0 5600
+Rsenn sensen 0 5600
+D1p drivep ledap Dfast
+D2p sensep ledap Dfast
+D3p ledkp drivep Dfast
+D4p ledkp sensep Dfast
+Dledp ledap ledkp Dwhite
+D1n driven ledan Dfast
+D2n sensen ledan Dfast
+D3n ledkn driven Dfast
+D4n ledkn sensen Dfast
+Dledn ledan ledkn Dwhite
+.model Dfast D(Is=1e-14 N=1.5)
+.model Dwhite D(Is=1e-18 N=3)
+.control
+op
+print v(sensep) v(sensen) i(Vplus) i(Vminus) @Dledp[id] @Dledn[id]
+quit
+.endc
+.end

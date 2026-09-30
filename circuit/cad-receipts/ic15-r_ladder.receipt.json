@@ -1,0 +1,81 @@
+{
+  "receipt_version": 1,
+  "identity": {
+    "asset_id": "ic15-r_ladder",
+    "record_id": "rec-r-ladder",
+    "manufacturer": "Vishay",
+    "mpn": "TNPW080510K0BEEA",
+    "package": "0805",
+    "variant_notes": "AVAILABLE"
+  },
+  "acquisition": {
+    "provider": "KiCad 10 stock symbol and retained manufacturer/creator document",
+    "source_url": "https://www.vishay.com/docs/28758/tnpw_e3.pdf",
+    "acquired_on": "2026-09-28",
+    "original_filenames": [
+      "TNPW0805.pdf"
+    ],
+    "sha256": {
+      "circuit/sources/ic-library/TNPW0805.pdf": "6f0508c568cb355aaf2accdd33fe3a780d3ea5ef207c4c9a71839a8acadc33a5"
+    }
+  },
+  "representation": {
+    "files": [
+      "symbols/src/TNPW080510K0BEEA.kicad_sym"
+    ],
+    "formats": [
+      "kicad_sym"
+    ],
+    "units": "KiCad schematic units",
+    "original_paths": [
+      "circuit/sources/ic-library/TNPW0805.pdf"
+    ]
+  },
+  "fidelity": {
+    "class": "derived",
+    "reason": "Source pin functions audited against the retained document; KiCad stock or custom graphics normalized for this draft identity.",
+    "evidence": [
+      "AVAILABLE",
+      "https://www.vishay.com/docs/28758/tnpw_e3.pdf"
+    ]
+  },
+  "derivation": {
+    "derived": true,
+    "input_sha256": {
+      "circuit/sources/ic-library/TNPW0805.pdf": "6f0508c568cb355aaf2accdd33fe3a780d3ea5ef207c4c9a71839a8acadc33a5"
+    },
+    "tool": "scripts/libgen/fixtures/build_ic_assets.py, build_ic_custom.py, or build_passive_symbols.py",
+    "tool_version": "1",
+    "parameters": {
+      "normalization": "exact MPN/manufacturer/LCSC fields, local footprint reference; alias parent units expanded where required"
+    },
+    "output_sha256": {
+      "symbols/src/TNPW080510K0BEEA.kicad_sym": "47355e5ad26fd1be3cb5228fcff76fcc1a5054af9b068770a8108e58ffc07063"
+    }
+  },
+  "cad_use": {
+    "symbol": "zudo-osc-hole-field:TNPW080510K0BEEA",
+    "footprint": "zudo-osc-hole-field:R_0805_2012Metric",
+    "model_path": null,
+    "transform": {
+      "offset": null,
+      "rotation": null,
+      "scale": null
+    },
+    "seating_plane": null
+  },
+  "checks": {
+    "performed": [
+      "Issue-15 all-unit KiCad 10 ERC fixture and project library checker"
+    ],
+    "remaining_physical_checks": [
+      "Confirm exact package drawing/lot, actual circuit net mapping, electrical suitability and procurement before board release.",
+      "Confirm exact body/height, land pattern, fixed-layout clearance, and electrical suitability before hardware use; catalogue family geometry is provisional."
+    ]
+  },
+  "publication": {
+    "preview_selected": false,
+    "download_published": false,
+    "permitted_scope": null
+  }
+}

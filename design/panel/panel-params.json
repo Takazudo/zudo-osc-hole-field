@@ -1,0 +1,51 @@
+{
+  "schema_version": 1,
+  "status": "PROPOSAL \u2014 issue #66 ten-board source replan; unvalidated draft; no panel coordinate/hole/artwork changes",
+  "width_mm": 318,
+  "height_mm": 298,
+  "thickness_mm": 2.0,
+  "corner_radius_mm": 3.5,
+  "mounting_holes": [],
+  "indicator_window": {
+    "method": "bare FR4 with front/back mask openings and no drill",
+    "diameter_mm": 1.6,
+    "status": "PROPOSAL",
+    "source": "design/mechanical/facts/led-window.json"
+  },
+  "artwork": {
+    "source": "project/osc-hole-field/workbench/src/render.js artOnly mode, grid.json and first icon per family",
+    "title": "ZUDO / OSC HOLE FIELD",
+    "gold": "F.Cu plus F.Mask opening; exposed ENIG proposal",
+    "dim_gold": "F.Cu under mask",
+    "white": "F.SilkS",
+    "switch_text_height_mm": 1.0,
+    "silk_min_text_height_mm": 1.0,
+    "silk_min_stroke_mm": 0.15,
+    "copper_min_clearance_to_hole_or_edge_mm": 0.2,
+    "mask_colour": "black",
+    "silk_colour": "white",
+    "surface_finish": "ENIG",
+    "status": "Baseline styling proposal; owner may restyle generator-owned art"
+  },
+  "partition_handoff": {
+    "status": "PROPOSAL",
+    "source": "design/partition/partition.json",
+    "panel_drill_count_for_supports": 0,
+    "internal_EL_support_hole_count": 35,
+    "internal_P_optical_post_clearance_count": 30,
+    "front_attachment": "PROPOSAL segmented enclosure clips within the 0..3 mm perimeter border only where clear of owner copper artwork, the imported \u00d88.3 mm jack-nut trial envelope, and internal support-collar projections; no continuous solid lip or 35-post front-panel drill pattern. Exact clip profiles and installed fit remain OPEN #65. Existing artwork and all 438 fixed centres preserved.",
+    "qualification": "#37 fixed-panel geometry, artwork ownership and KiCad DRC reviewed; projected clip exclusions recorded. Installed clip/support fit NOT RUN #65; selector coupon NOT RUN #55; source realization NOT RUN #57; optical/hot qualification NOT RUN #64.",
+    "jack_split": {
+      "boards": [
+        "osc-jack-left",
+        "osc-jack-right"
+      ],
+      "seam_x_mm": 177,
+      "gap_mm": 1,
+      "outer_M2_supports": 8,
+      "new_panel_or_seam_drills": 0,
+      "carrier_source": "design/partition/partition-input.json:jack_split.carrier",
+      "qualification": "NOT RUN #65"
+    }
+  }
+}

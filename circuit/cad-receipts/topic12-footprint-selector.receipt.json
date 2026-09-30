@@ -1,0 +1,63 @@
+{
+  "receipt_version": 1,
+  "identity": {
+    "asset_id": "topic12-footprint-selector",
+    "record_id": null,
+    "manufacturer": "Alps Alpine",
+    "mpn": "SRBV160803",
+    "package": "SRBV160803",
+    "variant_notes": "Shaft-axis origin; footprint requires physical fit check."
+  },
+  "acquisition": {
+    "provider": "manufacturer PDF",
+    "source_url": "https://tech.alpsalpine.com/cms.media/product_catalog_sw_04_srbv_en_7f096645b6.pdf",
+    "acquired_on": "2026-09-28",
+    "sha256": {
+      "design/mechanical/sources/alps-srbv.pdf": "4389058192ce8e89188d5c1c0f23de85945916542cd477ba04f3c75ac9f69ec8",
+      "design/mechanical/sources/alps-srbv-shaft.gif": "f2c0488b127d370b04736e1e7a73dc9e1fcc98cbc4cd154392875b836d0f4b19",
+      "design/mechanical/sources/alps-srbv-hardware.gif": "d0203cc23b8cd637e181a27081942db97fff017dd07ed6b17e7f28fff86f444d"
+    }
+  },
+  "representation": {
+    "files": [
+      "footprints/kicad/zudo-osc-hole-field.pretty/SRBV160803.kicad_mod",
+      "footprints/kicad/zudo-osc-hole-field.3dshapes/SRBV160803.wrl"
+    ],
+    "formats": [
+      "kicad_mod",
+      "wrl"
+    ],
+    "units": "Footprint mm; WRL coordinate unit 0.1 inch (2.54 mm)",
+    "original_paths": [
+      "design/mechanical/sources/alps-srbv.pdf",
+      "design/mechanical/sources/alps-srbv-shaft.gif",
+      "design/mechanical/sources/alps-srbv-hardware.gif"
+    ]
+  },
+  "fidelity": {
+    "class": "derived",
+    "reason": "Drawing-derived holes and unchanged PTH annular rings. Asymmetric body plus conservative 18.2 mm support/tail keepout; no exact vendor solid. Coplanar candidates rejected; stepped 3+2 assembly is a conditional draft."
+  },
+  "derivation": {
+    "derived": true,
+    "input_sha256": {
+      "design/mechanical/sources/alps-srbv.pdf": "4389058192ce8e89188d5c1c0f23de85945916542cd477ba04f3c75ac9f69ec8",
+      "design/mechanical/sources/alps-srbv-shaft.gif": "f2c0488b127d370b04736e1e7a73dc9e1fcc98cbc4cd154392875b836d0f4b19",
+      "design/mechanical/sources/alps-srbv-hardware.gif": "d0203cc23b8cd637e181a27081942db97fff017dd07ed6b17e7f28fff86f444d"
+    },
+    "output_sha256": {
+      "footprints/kicad/zudo-osc-hole-field.pretty/SRBV160803.kicad_mod": "f8206a956661f5ff94ab9779e59dab9553c2df72df49aaa4a2dfa64c82a6d81b",
+      "footprints/kicad/zudo-osc-hole-field.3dshapes/SRBV160803.wrl": "f8ecd991fa90bef7f09e714b897056e615fb35886e96ece57dd462cbd5dc2250"
+    },
+    "tool": "scripts/libgen/gen_selector_assembly.py; design/mechanical/selector-assembly.json; gen_courtyards.py",
+    "tool_version": "2",
+    "parameters": {
+      "specification_sha256": "b5715d25d4d4b44bc664eac9697d83c95741b02af9a906d0c849f40da7e560bb",
+      "drawing_view": "A; x right / y down; 3D Y inverted",
+      "support_envelope_fidelity": "conservative bound; not measured solid",
+      "installed_qualification": "NOT RUN",
+      "vrml_mm_per_unit": 2.54,
+      "vrml_units_reference": "https://dev-docs.kicad.org/en/file-formats/legacy-pcb/index.html"
+    }
+  }
+}

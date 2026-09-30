@@ -1,0 +1,623 @@
+{
+  "schema_version": 1,
+  "standard_id": "OSC-ES-1",
+  "authority": "PROPOSAL (planning, owner-delegated)",
+  "status": "Unvalidated partial planning worksheet; not a maximum or a board budget",
+  "source": "design/standard/rail-budget-preliminary.json",
+  "rail_ceiling_warning": "-12 V preliminary estimate is 712.655 mA versus 640 mA ceiling; #34 reduction required.",
+  "cells": [
+    {
+      "id": "input_fault_switch",
+      "status": "PLANNING PARTIAL - NOT A CELL MAXIMUM",
+      "known_planning_mA": {
+        "+12V": 1.3,
+        "-12V": 0.7,
+        "+5V": 0.0
+      },
+      "basis": [
+        {
+          "ref": "U",
+          "load_id": "fault_switches",
+          "planning_mA": {
+            "+12V": 1.3,
+            "-12V": 0.7,
+            "+5V": 0
+          },
+          "scope": "whole package allocation for isolated cell; shared packages must be reallocated in module budget"
+        }
+      ],
+      "unquantified": [
+        "1 kohm enable-feed +5 V current and switching/fault currents"
+      ],
+      "qualification": "Sum only after exact package sharing, loads, duty cycles, source facts and netlist are resolved; no passing instrument budget is claimed."
+    },
+    {
+      "id": "high_impedance_input",
+      "status": "PLANNING PARTIAL - NOT A CELL MAXIMUM",
+      "known_planning_mA": {
+        "+12V": 1.0,
+        "-12V": 1.0,
+        "+5V": 0.0
+      },
+      "basis": [
+        {
+          "ref": "A",
+          "load_id": "opamp_cv",
+          "planning_mA": {
+            "+12V": 1.0,
+            "-12V": 1.0,
+            "+5V": 0
+          },
+          "scope": "whole package allocation for isolated cell; shared packages must be reallocated in module budget"
+        }
+      ],
+      "unquantified": [
+        "D: clamp_diode"
+      ],
+      "qualification": "Sum only after exact package sharing, loads, duty cycles, source facts and netlist are resolved; no passing instrument budget is claimed."
+    },
+    {
+      "id": "summing_node_input",
+      "status": "PLANNING PARTIAL - NOT A CELL MAXIMUM",
+      "known_planning_mA": {
+        "+12V": 0.0,
+        "-12V": 0.0,
+        "+5V": 0.0
+      },
+      "basis": [],
+      "unquantified": [
+        "D: clamp_diode"
+      ],
+      "qualification": "Sum only after exact package sharing, loads, duty cycles, source facts and netlist are resolved; no passing instrument budget is claimed."
+    },
+    {
+      "id": "general_output",
+      "status": "PLANNING PARTIAL - NOT A CELL MAXIMUM",
+      "known_planning_mA": {
+        "+12V": 1.5,
+        "-12V": 1.5,
+        "+5V": 0.0
+      },
+      "basis": [
+        {
+          "ref": "A",
+          "load_id": "opamp_audio",
+          "planning_mA": {
+            "+12V": 1.0,
+            "-12V": 1.0,
+            "+5V": 0
+          },
+          "scope": "whole package allocation for isolated cell; shared packages must be reallocated in module budget"
+        },
+        {
+          "ref": "cell dynamic load",
+          "load_id": "output_loads",
+          "planning_mA": {
+            "+12V": 0.5,
+            "-12V": 0.5,
+            "+5V": 0
+          },
+          "scope": "All 82 jacks at ±5 V into 10 kohm, per-rail envelope; conservative includes gate outputs on analog buffers. Short-circuit demand handled separately."
+        }
+      ],
+      "unquantified": [],
+      "qualification": "Sum only after exact package sharing, loads, duty cycles, source facts and netlist are resolved; no passing instrument budget is claimed."
+    },
+    {
+      "id": "precision_output",
+      "status": "PLANNING PARTIAL - NOT A CELL MAXIMUM",
+      "known_planning_mA": {
+        "+12V": 6.5,
+        "-12V": 6.5,
+        "+5V": 0.0
+      },
+      "basis": [
+        {
+          "ref": "A",
+          "load_id": "opamp_precision",
+          "planning_mA": {
+            "+12V": 6.0,
+            "-12V": 6.0,
+            "+5V": 0
+          },
+          "scope": "whole package allocation for isolated cell; shared packages must be reallocated in module budget"
+        },
+        {
+          "ref": "cell dynamic load",
+          "load_id": "output_loads",
+          "planning_mA": {
+            "+12V": 0.5,
+            "-12V": 0.5,
+            "+5V": 0
+          },
+          "scope": "All 82 jacks at ±5 V into 10 kohm, per-rail envelope; conservative includes gate outputs on analog buffers. Short-circuit demand handled separately."
+        }
+      ],
+      "unquantified": [
+        "1 nF local feedback charge and discharge current during large steps; 100 ohm jack-sense resistor adds no nominal DC rail load, but modelled transient supply current is not a guaranteed maximum"
+      ],
+      "qualification": "Sum only after exact package sharing, loads, duty cycles, source facts and netlist are resolved; no passing instrument budget is claimed."
+    },
+    {
+      "id": "remote_buffer",
+      "status": "PLANNING PARTIAL - NOT A CELL MAXIMUM",
+      "known_planning_mA": {
+        "+12V": 1.0,
+        "-12V": 1.0,
+        "+5V": 0.0
+      },
+      "basis": [
+        {
+          "ref": "A",
+          "load_id": "opamp_audio",
+          "planning_mA": {
+            "+12V": 1.0,
+            "-12V": 1.0,
+            "+5V": 0
+          },
+          "scope": "whole package allocation for isolated cell; shared packages must be reallocated in module budget"
+        }
+      ],
+      "unquantified": [],
+      "qualification": "Sum only after exact package sharing, loads, duty cycles, source facts and netlist are resolved; no passing instrument budget is claimed."
+    },
+    {
+      "id": "bipolar_attenuverter",
+      "status": "PLANNING PARTIAL - NOT A CELL MAXIMUM",
+      "known_planning_mA": {
+        "+12V": 1.0,
+        "-12V": 1.0,
+        "+5V": 0.0
+      },
+      "basis": [
+        {
+          "ref": "A",
+          "load_id": "opamp_audio",
+          "planning_mA": {
+            "+12V": 1.0,
+            "-12V": 1.0,
+            "+5V": 0
+          },
+          "scope": "whole package allocation for isolated cell; shared packages must be reallocated in module budget"
+        }
+      ],
+      "unquantified": [],
+      "qualification": "Sum only after exact package sharing, loads, duty cycles, source facts and netlist are resolved; no passing instrument budget is claimed."
+    },
+    {
+      "id": "dc_control_source",
+      "status": "PLANNING PARTIAL - NOT A CELL MAXIMUM",
+      "known_planning_mA": {
+        "+12V": 1.125,
+        "-12V": 1.125,
+        "+5V": 0.0
+      },
+      "basis": [
+        {
+          "ref": "A",
+          "load_id": "opamp_cv",
+          "planning_mA": {
+            "+12V": 1.0,
+            "-12V": 1.0,
+            "+5V": 0
+          },
+          "scope": "whole package allocation for isolated cell; shared packages must be reallocated in module budget"
+        },
+        {
+          "ref": "cell dynamic load",
+          "load_id": "dc_pots",
+          "planning_mA": {
+            "+12V": 0.125,
+            "-12V": 0.125,
+            "+5V": 0
+          },
+          "scope": "10 V / 100 kohm nominal; -20% pot tolerance -> 0.125 mA. Charges reference buffer output load separately from its Iq."
+        }
+      ],
+      "unquantified": [],
+      "qualification": "Sum only after exact package sharing, loads, duty cycles, source facts and netlist are resolved; no passing instrument budget is claimed."
+    },
+    {
+      "id": "level_attenuator",
+      "status": "PLANNING PARTIAL - NOT A CELL MAXIMUM",
+      "known_planning_mA": {
+        "+12V": 1.0,
+        "-12V": 1.0,
+        "+5V": 0.0
+      },
+      "basis": [
+        {
+          "ref": "A",
+          "load_id": "opamp_audio",
+          "planning_mA": {
+            "+12V": 1.0,
+            "-12V": 1.0,
+            "+5V": 0
+          },
+          "scope": "whole package allocation for isolated cell; shared packages must be reallocated in module budget"
+        }
+      ],
+      "unquantified": [],
+      "qualification": "Sum only after exact package sharing, loads, duty cycles, source facts and netlist are resolved; no passing instrument budget is claimed."
+    },
+    {
+      "id": "reference_generator",
+      "status": "PLANNING PARTIAL - NOT A CELL MAXIMUM",
+      "known_planning_mA": {
+        "+12V": 18.0,
+        "-12V": 18.0,
+        "+5V": 0.0
+      },
+      "basis": [
+        {
+          "ref": "A1",
+          "load_id": "opamp_precision",
+          "planning_mA": {
+            "+12V": 6.0,
+            "-12V": 6.0,
+            "+5V": 0
+          },
+          "scope": "whole package allocation for isolated cell; shared packages must be reallocated in module budget"
+        },
+        {
+          "ref": "A2",
+          "load_id": "opamp_precision",
+          "planning_mA": {
+            "+12V": 6.0,
+            "-12V": 6.0,
+            "+5V": 0
+          },
+          "scope": "whole package allocation for isolated cell; shared packages must be reallocated in module budget"
+        },
+        {
+          "ref": "A3",
+          "load_id": "opamp_precision",
+          "planning_mA": {
+            "+12V": 6.0,
+            "-12V": 6.0,
+            "+5V": 0
+          },
+          "scope": "whole package allocation for isolated cell; shared packages must be reallocated in module budget"
+        }
+      ],
+      "unquantified": [
+        "U: reference",
+        "REF5050 supply current, reference load and output drive"
+      ],
+      "qualification": "Sum only after exact package sharing, loads, duty cycles, source facts and netlist are resolved; no passing instrument budget is claimed."
+    },
+    {
+      "id": "octave_reference",
+      "status": "PLANNING PARTIAL - NOT A CELL MAXIMUM",
+      "known_planning_mA": {
+        "+12V": 54.0,
+        "-12V": 54.0,
+        "+5V": 0.0
+      },
+      "basis": [
+        {
+          "ref": "A0",
+          "load_id": "opamp_precision",
+          "planning_mA": {
+            "+12V": 6.0,
+            "-12V": 6.0,
+            "+5V": 0
+          },
+          "scope": "whole package allocation for isolated cell; shared packages must be reallocated in module budget"
+        },
+        {
+          "ref": "A1",
+          "load_id": "opamp_precision",
+          "planning_mA": {
+            "+12V": 6.0,
+            "-12V": 6.0,
+            "+5V": 0
+          },
+          "scope": "whole package allocation for isolated cell; shared packages must be reallocated in module budget"
+        },
+        {
+          "ref": "A2",
+          "load_id": "opamp_precision",
+          "planning_mA": {
+            "+12V": 6.0,
+            "-12V": 6.0,
+            "+5V": 0
+          },
+          "scope": "whole package allocation for isolated cell; shared packages must be reallocated in module budget"
+        },
+        {
+          "ref": "A3",
+          "load_id": "opamp_precision",
+          "planning_mA": {
+            "+12V": 6.0,
+            "-12V": 6.0,
+            "+5V": 0
+          },
+          "scope": "whole package allocation for isolated cell; shared packages must be reallocated in module budget"
+        },
+        {
+          "ref": "A4",
+          "load_id": "opamp_precision",
+          "planning_mA": {
+            "+12V": 6.0,
+            "-12V": 6.0,
+            "+5V": 0
+          },
+          "scope": "whole package allocation for isolated cell; shared packages must be reallocated in module budget"
+        },
+        {
+          "ref": "A5",
+          "load_id": "opamp_precision",
+          "planning_mA": {
+            "+12V": 6.0,
+            "-12V": 6.0,
+            "+5V": 0
+          },
+          "scope": "whole package allocation for isolated cell; shared packages must be reallocated in module budget"
+        },
+        {
+          "ref": "TOPDRV",
+          "load_id": "opamp_precision",
+          "planning_mA": {
+            "+12V": 6.0,
+            "-12V": 6.0,
+            "+5V": 0
+          },
+          "scope": "whole package allocation for isolated cell; shared packages must be reallocated in module budget"
+        },
+        {
+          "ref": "ONE",
+          "load_id": "opamp_precision",
+          "planning_mA": {
+            "+12V": 6.0,
+            "-12V": 6.0,
+            "+5V": 0
+          },
+          "scope": "whole package allocation for isolated cell; shared packages must be reallocated in module budget"
+        },
+        {
+          "ref": "BOTDRV",
+          "load_id": "opamp_precision",
+          "planning_mA": {
+            "+12V": 6.0,
+            "-12V": 6.0,
+            "+5V": 0
+          },
+          "scope": "whole package allocation for isolated cell; shared packages must be reallocated in module budget"
+        }
+      ],
+      "unquantified": [],
+      "qualification": "Sum only after exact package sharing, loads, duty cycles, source facts and netlist are resolved; no passing instrument budget is claimed."
+    },
+    {
+      "id": "gate_trigger_input",
+      "status": "PLANNING PARTIAL - NOT A CELL MAXIMUM",
+      "known_planning_mA": {
+        "+12V": 1.0,
+        "-12V": 0.0,
+        "+5V": 0.0
+      },
+      "basis": [
+        {
+          "ref": "U",
+          "load_id": "comparators",
+          "planning_mA": {
+            "+12V": 1,
+            "-12V": 0,
+            "+5V": 0
+          },
+          "scope": "whole package allocation for isolated cell; shared packages must be reallocated in module budget"
+        }
+      ],
+      "unquantified": [
+        "U_INV: schmitt"
+      ],
+      "qualification": "Sum only after exact package sharing, loads, duty cycles, source facts and netlist are resolved; no passing instrument budget is claimed."
+    },
+    {
+      "id": "magnitude_indicator",
+      "status": "PLANNING PARTIAL - NOT A CELL MAXIMUM",
+      "known_planning_mA": {
+        "+12V": 2.25,
+        "-12V": 2.25,
+        "+5V": 0.0
+      },
+      "basis": [
+        {
+          "ref": "A",
+          "load_id": "opamp_indicator",
+          "planning_mA": {
+            "+12V": 1.0,
+            "-12V": 1.0,
+            "+5V": 0
+          },
+          "scope": "whole package allocation for isolated cell; shared packages must be reallocated in module budget"
+        },
+        {
+          "ref": "cell dynamic load",
+          "load_id": "magnitude_leds",
+          "planning_mA": {
+            "+12V": 1.25,
+            "-12V": 1.25,
+            "+5V": 0
+          },
+          "scope": "Typical 25% brightness; budget 1.25 mA per channel per analog rail, allowing >5 V saturation/headroom spread. Per-rail extremes need not occur simultaneously."
+        }
+      ],
+      "unquantified": [
+        "D1: signal_diode",
+        "D2: signal_diode",
+        "D3: signal_diode",
+        "D4: signal_diode",
+        "LED: led_white"
+      ],
+      "qualification": "Sum only after exact package sharing, loads, duty cycles, source facts and netlist are resolved; no passing instrument budget is claimed."
+    },
+    {
+      "id": "clip_detector",
+      "status": "PLANNING PARTIAL - NOT A CELL MAXIMUM",
+      "known_planning_mA": {
+        "+12V": 4.1,
+        "-12V": 4.1,
+        "+5V": 0.0
+      },
+      "basis": [
+        {
+          "ref": "A",
+          "load_id": "opamp_indicator",
+          "planning_mA": {
+            "+12V": 1.0,
+            "-12V": 1.0,
+            "+5V": 0
+          },
+          "scope": "whole package allocation for isolated cell; shared packages must be reallocated in module budget"
+        },
+        {
+          "ref": "UP",
+          "load_id": "comparators",
+          "planning_mA": {
+            "+12V": 1,
+            "-12V": 1,
+            "+5V": 0
+          },
+          "scope": "whole package allocation for isolated cell; shared packages must be reallocated in module budget"
+        },
+        {
+          "ref": "UN",
+          "load_id": "comparators",
+          "planning_mA": {
+            "+12V": 1,
+            "-12V": 1,
+            "+5V": 0
+          },
+          "scope": "whole package allocation for isolated cell; shared packages must be reallocated in module budget"
+        },
+        {
+          "ref": "cell dynamic load",
+          "load_id": "clip_leds",
+          "planning_mA": {
+            "+12V": 1.1,
+            "-12V": 1.1,
+            "+5V": 0
+          },
+          "scope": "Analog window outputs sink to -12 V from +12 V, hence both rails, at 24 V across 22.1 kohm plus LED."
+        }
+      ],
+      "unquantified": [
+        "LED: led_red"
+      ],
+      "qualification": "Sum only after exact package sharing, loads, duty cycles, source facts and netlist are resolved; no passing instrument budget is claimed."
+    },
+    {
+      "id": "stage_indicator",
+      "status": "PLANNING PARTIAL - NOT A CELL MAXIMUM",
+      "known_planning_mA": {
+        "+12V": 1.0,
+        "-12V": 1.0,
+        "+5V": 0.55
+      },
+      "basis": [
+        {
+          "ref": "A",
+          "load_id": "opamp_indicator",
+          "planning_mA": {
+            "+12V": 1.0,
+            "-12V": 1.0,
+            "+5V": 0
+          },
+          "scope": "whole package allocation for isolated cell; shared packages must be reallocated in module budget"
+        },
+        {
+          "ref": "cell dynamic load",
+          "load_id": "stage_leds",
+          "planning_mA": {
+            "+12V": 0,
+            "-12V": 0,
+            "+5V": 0.55
+          },
+          "scope": "0.5 mA at ENV=8 V, rounded up."
+        }
+      ],
+      "unquantified": [
+        "Q: npn",
+        "LED: led_white",
+        "QMUTE: mosfet",
+        "D_BE: signal_diode"
+      ],
+      "qualification": "Sum only after exact package sharing, loads, duty cycles, source facts and netlist are resolved; no passing instrument budget is claimed."
+    },
+    {
+      "id": "switch_button_input",
+      "status": "PLANNING PARTIAL - NOT A CELL MAXIMUM",
+      "known_planning_mA": {
+        "+12V": 0.0,
+        "-12V": 0.0,
+        "+5V": 0.0
+      },
+      "basis": [],
+      "unquantified": [
+        "U: schmitt"
+      ],
+      "qualification": "Sum only after exact package sharing, loads, duty cycles, source facts and netlist are resolved; no passing instrument budget is claimed."
+    },
+    {
+      "id": "decoupling_bulk",
+      "status": "PLANNING PARTIAL - NOT A CELL MAXIMUM",
+      "known_planning_mA": {
+        "+12V": 0.0,
+        "-12V": 0.0,
+        "+5V": 0.0
+      },
+      "basis": [],
+      "unquantified": [
+        "RAIL binding and per-board/whole-instrument bleeder allocation"
+      ],
+      "qualification": "Sum only after exact package sharing, loads, duty cycles, source facts and netlist are resolved; no passing instrument budget is claimed."
+    },
+    {
+      "id": "trimmer",
+      "status": "PLANNING PARTIAL - NOT A CELL MAXIMUM",
+      "known_planning_mA": {
+        "+12V": 0.0,
+        "-12V": 0.0,
+        "+5V": 0.0
+      },
+      "basis": [],
+      "unquantified": [],
+      "qualification": "Sum only after exact package sharing, loads, duty cycles, source facts and netlist are resolved; no passing instrument budget is claimed."
+    },
+    {
+      "id": "slew_island",
+      "status": "PLANNING PARTIAL - NOT A CELL MAXIMUM",
+      "known_planning_mA": {
+        "+12V": 12.0,
+        "-12V": 12.0,
+        "+5V": 0.0
+      },
+      "basis": [
+        {
+          "ref": "PRE",
+          "load_id": "opamp_precision",
+          "planning_mA": {
+            "+12V": 6.0,
+            "-12V": 6.0,
+            "+5V": 0
+          },
+          "scope": "whole package allocation for isolated cell; shared packages must be reallocated in module budget"
+        },
+        {
+          "ref": "POST",
+          "load_id": "opamp_precision",
+          "planning_mA": {
+            "+12V": 6.0,
+            "-12V": 6.0,
+            "+5V": 0
+          },
+          "scope": "whole package allocation for isolated cell; shared packages must be reallocated in module budget"
+        }
+      ],
+      "unquantified": [],
+      "qualification": "Sum only after exact package sharing, loads, duty cycles, source facts and netlist are resolved; no passing instrument budget is claimed."
+    }
+  ]
+}

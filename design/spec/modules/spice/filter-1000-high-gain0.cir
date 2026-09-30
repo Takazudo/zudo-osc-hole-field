@@ -1,0 +1,13 @@
+Filter response: vendor OTA, ideal opamps; fc command 1000, damping feedback 1.7
+.param ibfreq=2.45927799914e-05 ibres=7.74160122164e-05 ibdry=0
+.include "design/spec/modules/spice/filter-core-vendor.inc"
+.control
+set wr_singlescale
+set wr_vecnames
+op
+print v(BP_INT) v(LP_INT) v(HP_CORE)
+ac dec 100 2 200k
+wrdata .circuit-cache/filter-spice/filter-1000-high-gain0.txt db(v(LP_TIP)) db(v(BP_TIP)) db(v(HP_TIP)) db(v(OUT_TIP))
+quit
+.endc
+.end

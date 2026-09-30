@@ -1,0 +1,88 @@
+---
+title: "Project brief"
+description: "Purpose, fixed layout, module scope, constraints, and the current design boundary for zudo-osc-hole-field."
+sidebar_position: 1
+---
+
+`zudo-osc-hole-field` is a standalone, cable-patched analogue synthesizer built around visible, independent signal blocks. The R21 handoff fixes its user-facing grid and scope; it is pre-schematic and does not claim a fabrication-ready or bench-verified instrument.
+
+## Purpose and experience
+
+A user patches signals between the instrument's labelled 3.5 mm jacks and adjusts the controls on the corresponding modules. Every connection is made with a cable: there are no hidden inter-module normals, including a default noise feed to either sample-and-hold input. The intended experience is to make the signal path legible through separate blocks rather than concealed routing.
+
+The handoff does not define a target user, use environment, prototype quantity, budget, or acceptance criteria for a successful first prototype. Those remain owner questions. `Scope10` is a separate project and is outside this instrument's scope.
+
+The intended session is to supply power, patch a source into an independent block, adjust that block's controls, and observe its output before removing the patch leads and powering down. Manual patching between visible blocks is essential; performance goals such as precision tracking and through-zero FM remain later experiments rather than first-prototype claims.
+
+## Instrument scope
+
+| Area | R21 scope |
+|---|---|
+| Panel | One flat panel, 318 × 298 mm default; all jacks are above all controls |
+| Patch points | 180 jacks on an 18 × 10 grid |
+| Controls | 144 occupied cells on an 18 × 8 grid: 101 continuous pots, 5 six-position octave selectors, 19 two-position toggles, 11 three-position toggles, and 8 buttons |
+| Indicators | 114 LEDs: 92 magnitude, 12 envelope-stage, and 10 clip indicators |
+| Independent modules | 33 instances across 11 families, listed below |
+| Power intent | Owner-delegated #48 proposal: one external regulated-source requirement contract; physical source/inlet NOT SELECTED. Original pinned P+B comparison and physical qualification remain open |
+| Assembly | Electrical soldering and required programming are completed externally before delivery, and connectors arrive populated; the handoff does not establish an accepted factory scope |
+
+| Module family | Instances |
+|---|---:|
+| Oscillator | 5 |
+| Filter with parallel VCA output | 3 |
+| Five-input mixer | 2 |
+| Four-input mixer with VCA | 2 |
+| Attack-release envelope | 6 |
+| Wavefolder | 2 |
+| Attenuator/offset | 6 |
+| Buffered one-to-three multiple | 2 |
+| Sample-and-hold with output slew | 2 |
+| Manual A/B selector | 2 |
+| Four-output noise source | 1 |
+
+The two SLEW controls occupy R21 cells `[7,6]` and `[7,7]` (zero-based). The proposed path is a symmetric post-hold exponential lag; it adds no CV, bypass, or raw-output jack.
+
+## Fixed constraints and open parameters
+
+- The R21 hardware positions are fixed. The generated `design/grid/placements.lock.json` is the coordinate authority used by the design tooling; the workbench grid is its source. A fit problem must be reported with dimensions rather than solved by moving a control or jack.
+- The panel intent is black solder mask, exposed gold accents, and white silk, with black IN dress nuts and red OUT dress nuts. Styling remains owner-controlled.
+- Use panel-fastened jack bushings, and design the panel, exact component footprints, and board stack together before routing.
+- Preserve the R21 layout relationships: FOLD 2 stays left of FOLD 1, six OFFSET sections stay below the ENV columns, and both multiples remain one-input/three-output blocks.
+- Module inputs and outputs remain independent unless an explicit cable connects them. The S&H inputs have no default noise connection.
+- No qualified panel thickness, mounting datum, connector seating, or component height has been established.
+- The environment, operating temperature, quantity, budget, and prototype acceptance criteria are not specified in the R21 source.
+
+## Current design state
+
+| Item | State |
+|---|---|
+| Design input | R21 feature/layout handoff; pre-schematic and pre-layout |
+| Schematic | No complete instrument circuit is claimed; generator fixtures are not the instrument design |
+| PCB | No completed or mechanically qualified instrument board is claimed |
+| Firmware | No instrument firmware revision is specified |
+| Physical prototype | None documented |
+| Verification | No instrument bench result is documented |
+
+## Explicit claim boundary
+
+The current specification does not claim a fabrication-ready schematic, PCB, BOM/CPL, native ERC/DRC result, qualified panel and board stack, jack thread or connector fit, or button-plunger reach. It also does not claim ADDAC215-like precision, a 25-second slew, 20-minute sample hold, through-zero FM, clickless A/B switching, calibrated volts-per-octave tracking, a validated power or thermal budget, or surge protection. Those statements require circuit evidence, exact mechanical data, and bench results at the relevant revision.
+
+## How to read this project
+
+- [Next actions](./next-actions.mdx) describes the work and the gates that remain open.
+- [How we work](./how-we-work.mdx) explains the circuit evidence workflow and file ownership.
+- [Architecture](../architecture/index.mdx) describes module contracts, interfaces, and generated placement authority.
+- [Research](../research/index.mdx), [Decisions](../decisions/index.mdx), and [Verification](../verification/index.mdx) hold candidate research, decision records, and test plans.
+- The [component catalog](/docs/components/) is generated from component evidence records. The [hosting plan](./osc-hosting.mdx) documents the intended domain and deferred deployment steps.
+
+Exact component identity and manufacturer claims belong in component evidence bundles; this brief records project intent and current status.
+
+<CategoryNav category="project" />
+
+{/* osc-hole-field-r21-handoff:start */}
+
+## zudo-osc-hole-field handoff
+
+[OSC hole field R21 project brief](./osc-overview.mdx). Read this project-specific handoff after the canonical circuit workflow.
+
+{/* osc-hole-field-r21-handoff:end */}

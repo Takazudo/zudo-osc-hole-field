@@ -1,0 +1,146 @@
+{
+  "schema_version": 1,
+  "status": "candidate; unvalidated draft",
+  "identity": {
+    "manufacturer": "Omron",
+    "mpn": "B3F-1020",
+    "count": 8,
+    "supplier_order_code": "C722171",
+    "source_locator": "JLC exact candidate listing cited in R21 handoff; manufacturer geometry from OMRON-B3F"
+  },
+  "source": {
+    "id": "OMRON-B3F",
+    "path": "circuit/sources/toggle-button/Omron-B3F.pdf",
+    "sha256": "be9cf69e5f43fb7689448a2097c19858e5643c0e2e49cd77d018881543e27a1f",
+    "locator": "printed pp.1, 3-5; physical PDF pp.0, 2-4"
+  },
+  "facts": {
+    "body_dimensions_mm": {
+      "value": [
+        6.0,
+        6.0
+      ],
+      "tolerance_mm": 0.2,
+      "status": "DRAWING",
+      "locator": "OMRON-B3F printed p.4, B3F-1020 group, top view"
+    },
+    "pcb_hole_pattern_mm": {
+      "value": [
+        6.5,
+        4.5
+      ],
+      "tolerance_mm": 0.1,
+      "status": "DRAWING",
+      "locator": "OMRON-B3F printed p.4, B3F-1020 group, PCB Processing Dimensions top view"
+    },
+    "pcb_hole_diameter_mm": {
+      "value": 1.0,
+      "tolerance_mm": 0.1,
+      "status": "DRAWING",
+      "locator": "OMRON-B3F printed p.4, B3F-1020 group, four holes"
+    },
+    "plunger_axis_to_board_mm": {
+      "value": 5.0,
+      "tolerance_mm": 0.2,
+      "status": "DRAWING",
+      "locator": "OMRON-B3F printed p.4, B3F-1020 group, note under side view"
+    },
+    "plunger_top_diameter_mm": {
+      "value": 3.5,
+      "status": "DRAWING",
+      "locator": "OMRON-B3F printed p.4, B3F-1020 group, side view, 3.5 dia."
+    },
+    "pretravel_mm": {
+      "value": 0.25,
+      "plus_mm": 0.2,
+      "minus_mm": 0.1,
+      "status": "SPECIFICATION",
+      "locator": "OMRON-B3F printed p.3, Operating Characteristics, 6 x 6 mm models"
+    },
+    "full_plunger_stroke_mm": {
+      "value": null,
+      "status": "UNSOURCED",
+      "reason": "Pretravel is specified but full overtravel/stroke to stop is not."
+    },
+    "actuation_surface": {
+      "value": "flat 3.5 mm diameter plunger top on B3F-1020",
+      "status": "DRAWING",
+      "locator": "OMRON-B3F printed p.4, B3F-1020 side view; this is the component surface, not an approved exposed panel button"
+    },
+    "recommended_panel_hole_mm": {
+      "value": null,
+      "status": "UNSOURCED",
+      "reason": "Omron specifies PCB processing, not a panel hole or guide. R21 5 mm finger target is a trial proposal."
+    },
+    "board_to_panel_distance_mm": {
+      "value": null,
+      "status": "UNSOURCED",
+      "reason": "Panel actuator, overtravel stop, and PCB plane are undecided."
+    }
+  },
+  "electrical": {
+    "type": "normally-open momentary; 4-3 permanently paired, 2-1 permanently paired; press bridges pairs",
+    "status": "DRAWING",
+    "locator": "OMRON-B3F printed p.4, Terminal Arrangement/Internal Connections top view; printed p.3 Contact form SPST-NO"
+  },
+  "variants": [
+    {
+      "manufacturer_order_code": "B3F-1000",
+      "height_mm": 4.3,
+      "plunger": "flat",
+      "same_footprint": true,
+      "lcsc_order_code": null,
+      "source_locator": "OMRON-B3F printed pp.1,4, 6 x 6 mm model table and PCB processing; LCSC code UNSOURCED"
+    },
+    {
+      "manufacturer_order_code": "B3F-1020",
+      "height_mm": 5.0,
+      "plunger": "flat",
+      "same_footprint": true,
+      "lcsc_order_code": "C722171",
+      "source_locator": "OMRON-B3F printed pp.1,4; R21 handoff supplier identity"
+    },
+    {
+      "manufacturer_order_code": "B3F-1060",
+      "height_mm": 7.0,
+      "plunger": "flat extended",
+      "same_footprint": true,
+      "lcsc_order_code": null,
+      "source_locator": "OMRON-B3F printed pp.1,4, B3F-1060 group PCB processing; LCSC code UNSOURCED"
+    },
+    {
+      "manufacturer_order_code": "B3F-1050",
+      "height_mm": 7.3,
+      "plunger": "projected",
+      "same_footprint": true,
+      "lcsc_order_code": null,
+      "source_locator": "OMRON-B3F printed pp.1,5, B3F-1050 group PCB processing; LCSC code UNSOURCED"
+    },
+    {
+      "manufacturer_order_code": "B3F-1070",
+      "height_mm": 9.5,
+      "plunger": "flat extended",
+      "same_footprint": true,
+      "lcsc_order_code": null,
+      "source_locator": "OMRON-B3F printed pp.1,5, B3F-1070 group PCB processing; LCSC code UNSOURCED"
+    }
+  ],
+  "footprint_discrepancy": {
+    "status": "RESOLVED FROM DRAWING",
+    "imported_pattern_mm": [
+      7.3,
+      4.5
+    ],
+    "manufacturer_pattern_mm": [
+      6.5,
+      4.5
+    ],
+    "resolution": "Use manufacturer 6.5 x 4.5 mm pattern; no 7.3 mm imported-footprint reuse.",
+    "source_locator": "research/osc-hole-field/planning-exploration/03-handoff-parts-research.md section 4.3 (import), OMRON-B3F printed p.4 PCB Processing Dimensions (manufacturer)"
+  },
+  "coupon_gate": [
+    "Select exact height variant and panel actuator before board partition",
+    "Verify press access, overtravel stop and return without loading solder joints",
+    "Confirm installed plunger axis and board-to-panel distance"
+  ]
+}

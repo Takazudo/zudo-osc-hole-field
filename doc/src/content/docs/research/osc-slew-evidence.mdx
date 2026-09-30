@@ -1,0 +1,25 @@
+---
+title: "SLEW evidence and limitations"
+description: "Summarizes the sample-and-hold and slew evidence while keeping prototype expectations separate from measured performance."
+sidebar_position: 30
+---
+
+## Component candidates
+
+[Bourns PTV09A-4020F-B504 / C5154140](https://jlcpcb.com/partdetail/BOURNS-PTV09A_4020FB504/C5154140) is a concrete JLC catalogue identity for the 500 kΩ variant. The retrieved listing showed no stocked allocation and a minimum of ten. These may be cached values; recheck an actual order. The manufacturer [PTV09 drawing](https://www.bourns.com/docs/product-datasheets/PTV09.pdf) defines the shaft/body family. It does not establish installed panel height from the number 20 alone.
+
+[JLC C46348](https://jlcpcb.com/partdetail/47351-1206CG104J500NT/C46348) identifies FH 1206CG104J500NT and describes 100 nF/50 V/C0G/±5%/1206. Five in parallel give nominal 0.5 µF, not improved guaranteed percentage tolerance. Exact primary insulation-resistance and dimensional evidence remains to be acquired.
+
+[OPA4197 primary data](https://www.ti.com/lit/ds/symlink/opa4197.pdf), SBOS737C, describes the quad PW/TSSOP-14 variant and conditional input-bias limits. At a 502.2 kΩ source resistance, 15 nA would produce about 7.53 mV of bias error. That is a high-temperature PW-package screening calculation, not a room-temperature expectation. Board leakage and capacitor leakage add separately. Use the correct test conditions, not a generic 5 pA headline.
+
+## S&H accuracy is not inherited from the reference product
+
+[TI LF398-N data](https://www.ti.com/lit/gpn/lf398-n), SNOSBI3C §6.6 (printed page 7), lists 30 pA typical and 200 pA maximum storage leakage at TJ=25°C, with the stated supply/input conditions. At 10 nF, this corresponds to 3 mV/s typical and 20 mV/s at that maximum, before PCB/capacitor leakage. The footnote gives an approximate doubling per 11°C increase in junction temperature.
+
+The same LF398 table—not the LF198A table—has acquisition-time entries without a guaranteed maximum in that row. A headline “less than 10 µs” cannot be assigned to 10 nF at an arbitrary input/supply condition.
+
+**Do not promise ADDAC215's precision or long hold behavior.** Evaluate larger low-absorption storage capacitance (for example 100 nF), a longer capture pulse and a defined error target, or revisit the low-leakage discrete S&H alternative. Increasing the hold cap is an accuracy/acquisition experiment; it is not the SLEW control.
+
+## Source receipt boundary
+
+The source queue records primary/distributor/reference authority separately. In this environment the web and connector text could be read, but new original PDF/repo bytes could not be downloaded. The handoff does not contain fabricated source hashes or completed v1 evidence bundles. Local agents must reacquire, retain/hash and visually inspect the exact pages before promoting PASS claims. TI PDF screenshot extraction failed here; Bourns' dimensional screenshot was inspected.

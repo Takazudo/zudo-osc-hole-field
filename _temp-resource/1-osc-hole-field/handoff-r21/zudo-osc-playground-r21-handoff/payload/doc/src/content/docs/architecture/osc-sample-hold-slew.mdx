@@ -1,0 +1,44 @@
+---
+title: "S&H + SLEW \u2014 implementation proposal"
+sidebar_position: 20
+---
+
+## User-visible contract
+
+One SLEW pot per S&H, with the existing TRIGGER/IN/OUT jacks and SAMPLE button. Both rising and falling transitions are smoothed by that one amount. A new sample retargets the glide from its present output. Changing IN alone must not capture again. Channels remain independent. No noise normal, CV input, bypass switch, raw output, or alternating-trigger mode is added.
+
+[ADDAC215](https://www.addacsystem.com/en/products/modules/addac200-series/addac215) provides the behavior reference: per-channel slew with one attack/decay control. Its source circuitry, long-time options, hold accuracy and extra features are not copied or promised.
+
+![S&H and a separate post-hold slew path](/assets/osc-playground/slew-path.svg)
+
+## Circuit boundary
+
+Condition TRIGGER with input protection, threshold and hysteresis, then a finite acquisition pulse. The LF398 tracks while SAMPLE is asserted; capture happens over that real window, not an ideal zero-width edge. R20's 50–100 µs range is a test starting point, not a guaranteed rate. Specify behavior for pulses arriving while the non-retriggerable one-shot is busy.
+
+Keep `C_HOLD` at LF398's Ch pin separate from `C_SLEW`. Connect the buffered LF398 OUTPUT to a pre-lag buffer, a series resistor and rheostat, the lag capacitor, then a post-buffer and engineered output isolation. Never connect the pot, LED or load directly to Ch.
+
+```text
+IN -> conditioned LF398 + C_HOLD -> RAW_HELD -> pre-buffer -> Rmin + SLEW rheostat -> V_SLEW -> post-buffer -> OUT
+                                                                    V_SLEW -> C_SLEW -> analog GND
+TRIGGER -> conditioner -> bounded acquisition pulse -> LF398 logic
+```
+
+## First low-complexity experiment
+
+Use Bourns PTV09A-4020F-B504 (500 kΩ linear, same 4020F mechanics), Rmin = 2.2 kΩ and C_SLEW = 0.50 µF, provisionally five parallel 100 nF C0G parts per channel. This is a proposed electrical variant, not a reason to order B103 for the two new positions. Tie the wiper to the far track terminal so an intermittent wiper tends toward full track resistance rather than an open circuit; verify actual terminal numbers and CW-slower direction from the exact drawing.
+
+Use four unity buffers for the two channels, initially one dedicated OPA4197IPWR. This replaces the two existing S&H post-buffer roles and adds two pre-lag buffers. With six MULT outputs, the coarse package budget becomes three quads total; routing/locality can change the final allocation.
+
+The ideal relation is `dVout/dt = (Vheld - Vout) / ((Rmin + Rpot) × C_SLEW)`. It is a symmetric exponential lag, not a constant-volts-per-second linear slew.
+
+## Nominal response and meaning of FAST
+
+The proposed time constant varies from **1.1 ms to 251.1 ms**. Maximum 10–90% transition time is approximately **552 ms**; a 5 V step settles to within 10 mV in approximately **1.56 s** in the ideal model. These are calculated nominal responses, not bench data. Actual R tolerance, C tolerance, leakage, buffer error and stored-voltage drift change them.
+
+The fast endpoint still has a finite lag. Do not label it OFF or claim a hard bypass. It has about 2.42 ms nominal 10–90% time. This range is aimed at a first glide prototype, not ADDAC's 25-second smoothing. A different range can use the same panel but requires another RC/current-control design decision and test.
+
+## Required tests
+
+Full-scale positive and negative steps, alternating/retriggered targets before settling, SLEW adjustment during a glide, fast-end noise, DC accuracy, hot leakage, cold startup, supply sequencing and unpowered patches. Test the buffer with actual output isolation and capacitive patch leads. Input-edge current through 2.2 kΩ can approach 7.27 mA for a 16 V jump; check output swing, transient drive and resistor/pot stresses.
+
+Put the rheostat, C_SLEW and its input/output buffers on the local SLEW interface board. High-impedance lag/storage nets must not cross a connector. Only buffered RAW_HELD, OUT, supplies and defined returns do so. The new small 3D board is an architectural reservation, not a released layout.

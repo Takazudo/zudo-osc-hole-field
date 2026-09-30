@@ -1,0 +1,61 @@
+---
+title: "Open questions and next actions"
+description: "A continuation point for the schematic and PCB draft work and the mechanical and bench gates that remain open."
+sidebar_position: 10
+---
+
+This project is in the R21 design handoff phase. The epic turns the imported layout and module contracts into an evidence-backed project record, generated schematic drafts, board drafts, and honest status pages. Those artifacts organize engineering work; they do not establish circuit performance or manufacturing readiness.
+
+## Work this epic performs
+
+1. Resolve the instrument-wide electrical standard, exact panel-hardware evidence, and the real supply interface before downstream circuits depend on them.
+2. Capture module circuits from named topologies, record consequential choices, and generate the master schematic from the circuit specification.
+3. Integrate the module sheets, compare the generated design against its contracts, and reconcile the rail budget and board partition from actual circuit and mechanical evidence.
+4. Generate per-board schematic and PCB drafts, route and check them with the pinned KiCad 10 oracle, and publish status pages that distinguish completed checks from open work.
+5. Keep generated outputs reproducible from their source specifications. A clean ERC or DRC result describes rule checking only; it does not establish that a circuit works or a board fits.
+
+## Gates that remain open after the design epic
+
+| Gate | Evidence still needed | Current boundary |
+|---|---|---|
+| Mechanical fit | Factory-built coupon or equivalent measured stack for the jack shoulder and nuts, pots and shafts, octave selector, toggle levers, button/plunger reach, LED optical path, connectors, panel, and board planes | Preview geometry and catalogue dimensions are not an installed fit result |
+| Sample-and-hold and slew | Coupon measurements for acquisition, hold drift, capture window, lag response, and tail under documented conditions | The SLEW proposal and ideal model do not establish a 25-second response or long-term hold performance |
+| Oscillator | Build and characterize one complete oscillator, including reference, octave selection, shaping, FM/sync, and calibration, before any replication claim | The five oscillator instances are functional scope, not a validated circuit |
+| Electrical integration | Measured or source-supported loads, rail budget, protection, startup behavior, and cross-board return paths | The external-source requirement is a conditional draft; selected hardware, installed supply state and instrument load are not qualified |
+| Manufacturing | Accepted external assembly scope, exact released design revision, and owner review of the eventual release package | No fabrication order or manufacturing release is authorized by this handoff |
+
+The [release gates](../verification/osc-release-gates.mdx) and [S&H test plan](../verification/osc-slew-test-plan.mdx) hold the specific criteria. Record each result against its board revision, population, setup, and observed conditions. If a tool or physical test cannot run, report it as `NOT RUN` with the reason.
+
+The [precision-output model sweep](../verification/osc-precision-output-model.mdx) now passes its twelve modeled cases for one fixed compensation network. Before layout or rail-budget sign-off, select exact 100 Ω and 1 nF passive identities, measure a populated output coupon over the same cable/load matrix, and capture transient supply current. Physical cable, tolerance, temperature and thermal checks remain `NOT RUN`.
+
+The [rail planning ledger](../architecture/osc-rail-ledger.mdx) records the actual S&H REF5050 +12 V connection, omitted +5 V logic allowance, all fitted IC supply pins and per-load feed assignments. Both provisional feeds exceed the inherited −12 V planning ceiling. The [issue #48 decision](../decisions/osc-supply-architecture.mdx) selects one external-source requirement contract. #52 captures its non-orderable, non-energizable inlet/boundary and verifies raw/load net separation; actual protection circuits remain [open in #59](https://github.com/Takazudo/zudo-osc-hole-field/issues/59). Source and exact inlet/mate are NOT SELECTED; realization and physical qualification remain open in [issue #57](https://github.com/Takazudo/zudo-osc-hole-field/issues/57). Physical current, startup, short, cable and temperature qualification remain `NOT RUN`.
+
+## Immediate continuation
+
+Continue with the open electrical-standard and panel-hardware evidence work, then capture and integrate circuits against the R21 contracts. Keep component candidates out of the inventory until exact identity and selection are resolved. Use [the local R21 sequence](./osc-next-actions.mdx) for the detailed mechanical-coupon, circuit-capture, and verification order.
+
+{/* osc-hole-field-r21-handoff:start */}
+
+## zudo-osc-hole-field handoff
+
+[OSC hole field local next actions](./osc-next-actions.mdx). Read this project-specific handoff after the canonical circuit workflow.
+
+{/* osc-hole-field-r21-handoff:end */}
+
+## Selector assembly continuation
+
+The [fixed-centre selector decision](../decisions/osc-selector-assembly.mdx) selects a conditional 3+2 stepped adapter assembly at unchanged x/y. Board partition and board drafting must consume its two PCB planes, carrier and extension reservations. Physical qualification remains NOT RUN in [issue #55](https://github.com/Takazudo/zudo-osc-hole-field/issues/55); completing draft issue #47 does not close that gate.
+
+## Protection architecture continuation
+
+The [issue #58 protection audit](../decisions/osc-protection-architecture.mdx) leaves the exact circuit gate **BLOCKED**. It inventories all 82 outputs, 16 feedback paths and 30 octave-reference receivers, records an output-isolation diagnostic and proves why rail-only sensing cannot detect a patch sleeve replacing a failed inlet return. #52/#54 may continue under the explicit NON-ORDERABLE / NOT-ENERGIZABLE contract and amended draft acceptance. Exact rail/control/return-integrity and signal-isolation evidence is tracked in [#59](https://github.com/Takazudo/zudo-osc-hole-field/issues/59), separately from #57’s physical tests. No complete protection circuit is selected.
+
+## Compact LED continuation
+
+The [conditional compact LED decision](../decisions/osc-compact-led-61.mdx) sets exact white/red 0402 emitter identities at all 114 fixed windows and records the 2D courtyard/copper screen. Before #35's optical plane or any physical coupon is treated as qualified, measure installed LED temperature, light output and coupling; prove the 12 stage positions clear their pots on the selected separate plane. Before energizing the new 1.2 kΩ stage limiter, assign an exact resistor MPN and obtain its manufacturer power-derating evidence through the installed hot ambient, verify the +5 V upper bound and fault behavior, and verify the 92 magnitude LED loop/fault currents at hot ambient. Yageo RC0603FR-071K2L is a primary-documented candidate (1.2 kΩ ±1%, 0.1 W at 70 °C), but its retained one-page spec does not establish 85 °C power capability. These electrical and physical checks remain `NOT RUN`; the schematic and PCB remain unvalidated drafts.
+
+The [oscillator reference fanout](../architecture/osc-reference-fanout.mdx) now uses three local buffer pairs per oscillator and bounds every powered output below 2 mA. #35 must consume its generated connector-current and Kelvin-return requirements. Exact passive identities, loaded precision/temperature calibration, startup and partial-power behavior remain NOT RUN; #59 protection and #57 source qualification stay open.
+
+## Jack PCB routing continuation
+
+The [single-J native draft](../verification/osc-pcb-jack.mdx) is historical rejected evidence: 5,611 native open edges and no copper after bounded routing. Issue #66 replaces its source/schematic projection with `osc-jack-left` and `osc-jack-right`, preserving all fixed centres and same-face local bypass clusters. #38 must now generate and route each native half board, inspect short local return loops, and verify complete native ratsnest/DRC. Source capacity/parity does not establish routability. Physical #55/#57/#64/#65 remain NOT RUN; protection #59 remains OPEN.

@@ -1,0 +1,120 @@
+{
+  "receipt_version": 1,
+  "identity": {
+    "asset_id": "ic15-footprint-tssop-16-4.4x5mm-p0.65mm",
+    "record_id": "rec-fault-switch",
+    "manufacturer": null,
+    "mpn": null,
+    "package": "TSSOP-16_4.4x5mm_P0.65mm",
+    "variant_notes": "Generic KiCad 10 package footprint, not exact vendor land-pattern qualification."
+  },
+  "acquisition": {
+    "provider": "KiCad 10.0.6 stock library",
+    "source_url": "KiCad 10.0.6 pinned oracle, scripts/kicad/run.sh",
+    "acquired_on": "2026-09-28",
+    "original_filenames": [
+      "TSSOP-16_4.4x5mm_P0.65mm.stock.kicad_mod"
+    ],
+    "sha256": {
+      "circuit/sources/ic-library/cad/TSSOP-16_4.4x5mm_P0.65mm.stock.kicad_mod": "fbac79fc5f310754726589d67071a422c429216f843ecd6013bbe2e6a49e7064"
+    }
+  },
+  "representation": {
+    "files": [
+      "footprints/kicad/zudo-osc-hole-field.pretty/TSSOP-16_4.4x5mm_P0.65mm.kicad_mod",
+      "footprints/kicad/zudo-osc-hole-field.3dshapes/IC_TSSOP-16_4.4x5.0.wrl"
+    ],
+    "formats": [
+      "kicad_mod",
+      "wrl"
+    ],
+    "units": "Footprint dimensions in mm; WRL coordinate unit 0.1 inch (2.54 mm)",
+    "original_paths": [
+      "circuit/sources/ic-library/cad/TSSOP-16_4.4x5mm_P0.65mm.stock.kicad_mod"
+    ]
+  },
+  "fidelity": {
+    "class": "family",
+    "reason": "Provisional family envelope: ADG5412F RU-16 outline maxima 5.10 x 4.50 x 1.20 mm. No board-fit or system protection verdict. It is a preview envelope, not an exact vendor 3D asset, seating model, fit check, or qualification.",
+    "evidence": [
+      "KiCad 10.0.6 pinned stock library source retained with SHA-256.",
+      "circuit/sources/ic-library/ADG5412F.pdf SHA-256 ea3d12f983fc79a728d302675a0428a6d244e95828154bc4c970d34e23195a96",
+      "scripts/libgen/gen_ic_package_envelopes.py SHA-256 6af3e9c2885882147a87a4332aa6ec5b9c4e7a373e85242a93d3dbfa79be8957"
+    ]
+  },
+  "derivation": {
+    "derived": true,
+    "input_sha256": {
+      "circuit/sources/ic-library/cad/TSSOP-16_4.4x5mm_P0.65mm.stock.kicad_mod": "fbac79fc5f310754726589d67071a422c429216f843ecd6013bbe2e6a49e7064"
+    },
+    "tool": "scripts/libgen/gen_ic_package_envelopes.py and scripts/libgen/regen.sh",
+    "tool_version": "1",
+    "parameters": {
+      "operations": [
+        "set project footprint name",
+        "remove stock 3D model reference",
+        "generate project courtyard"
+      ],
+      "package_envelope": {
+        "model": "IC_TSSOP-16_4.4x5.0.wrl",
+        "dimensions_mm": [
+          5.1,
+          4.5,
+          1.2
+        ],
+        "note": "Provisional family envelope: ADG5412F RU-16 outline maxima 5.10 x 4.50 x 1.20 mm. No board-fit or system protection verdict.",
+        "geometry_source_sha256": {
+          "circuit/sources/ic-library/ADG5412F.pdf": "ea3d12f983fc79a728d302675a0428a6d244e95828154bc4c970d34e23195a96"
+        },
+        "generator_sha256": "6af3e9c2885882147a87a4332aa6ec5b9c4e7a373e85242a93d3dbfa79be8957",
+        "operations": [
+          "generate provisional display cuboid from listed family bounds",
+          "add exactly one local WRL model reference to the generic footprint"
+        ]
+      }
+    },
+    "output_sha256": {
+      "footprints/kicad/zudo-osc-hole-field.pretty/TSSOP-16_4.4x5mm_P0.65mm.kicad_mod": "33e27f56639b5b3bab24ea33e8b2c5723ca362a6e165f6f019bf98879ed545cd",
+      "footprints/kicad/zudo-osc-hole-field.3dshapes/IC_TSSOP-16_4.4x5.0.wrl": "abd26840ddd1d6f1400ff942d135e54cf05d1df9deb6ec6db852f8dd45e83f34"
+    }
+  },
+  "cad_use": {
+    "symbol": null,
+    "footprint": "zudo-osc-hole-field:TSSOP-16_4.4x5mm_P0.65mm",
+    "model_path": "${KIPRJMOD}/../../footprints/kicad/zudo-osc-hole-field.3dshapes/IC_TSSOP-16_4.4x5.0.wrl",
+    "transform": {
+      "offset": [
+        0,
+        0,
+        0
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ]
+    },
+    "seating_plane": "F.Cu; envelope base at z=0"
+  },
+  "checks": {
+    "performed": [
+      "Project library and courtyard checks",
+      "Local WRL envelope generated and hash-bound; package preview check required",
+      "KiCad 10.0.6 native VRML export: x/y/z bounds and footprint model scale match the stated display envelope (scripts/libgen/fixtures/check_wrl_dimensions.py)."
+    ],
+    "remaining_physical_checks": [
+      "Audit against exact package drawing before fabrication.",
+      "Confirm exact device body/height, land pattern, seating plane, optical/mechanical path, and fit in the fixed layout; this family envelope establishes none of those."
+    ]
+  },
+  "publication": {
+    "preview_selected": true,
+    "download_published": false,
+    "permitted_scope": "Generated component preview only; no vendor model redistribution."
+  }
+}

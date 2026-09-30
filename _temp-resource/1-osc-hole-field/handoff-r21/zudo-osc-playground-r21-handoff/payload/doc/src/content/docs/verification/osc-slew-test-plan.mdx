@@ -1,0 +1,25 @@
+---
+title: "S&H and slew bench plan"
+sidebar_position: 21
+---
+
+## Factory-built test coupon
+
+Provide a populated utility board with protected input/trigger connections, two S&H cells, manual buttons, SLEW pots, buffered output indicators and accessible test points: conditioned trigger, acquisition pulse, RAW_HELD (buffered), OUT, rails and GND. Do not expose the high-impedance storage node as a long unguarded test trace. A measurement probe there can dominate leakage.
+
+## Test matrix
+
+| Test | Record |
+|---|---|
+| Input steps ±1/±5 V, full proposed range | Captured value, offset, settling vs pulse width |
+| Pulses too short, long gates, bounce and repeated edges | One-shot behavior, missed/busy triggers, no accidental track-through |
+| Hold 1 s, 10 s, 60 s, warm/cold | Drift vs hold-cap value, temperature, cleanliness; define an acceptable target |
+| SLEW 0/25/50/75/100% both directions | 10–90%, 99%, 10 mV settling, asymmetry, endpoint errors |
+| Sample before previous glide completes | Output continuity and new target; no resets to zero |
+| Move SLEW during motion | No new capture or stored-target disturbance |
+| Open/wiper interruption, output short, adjacent channel activity | Recovery, independence, no destructive current path |
+| Cable capacitance and allowed loads | Stable output; precision resistor/feedback error budget |
+| Power on/off with input/trigger present | No harmful backfeed or uncontrolled output behavior |
+| LEDs disabled vs active | No hold/lag drift or pulse interference caused by detector loading |
+
+At 1 V/oct, 1 mV corresponds to 1.2 cents. Decide the permitted short/long-hold drift from musical use rather than claiming the reference module's specification. Values in the browser are ideal and cannot pass these tests.

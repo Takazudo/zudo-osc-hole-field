@@ -1,0 +1,58 @@
+{
+  "schema_version": 1,
+  "coverage": [
+    {
+      "coverage_id": "cov-2ms1-identity",
+      "record_id": "rec-dailywell-2ms1t1b1m2qes-5",
+      "domain": "identity",
+      "status": "OPEN",
+      "reason": "The exact MPN and supplier code are distributor-confirmed, but the manufacturer identity fact lacks retrieved manufacturer-primary bytes.",
+      "fact_ids": [
+        "fact-2ms1-identity",
+        "fact-2ms1-manufacturer"
+      ],
+      "blocking_fact_ids": [
+        "fact-2ms1-manufacturer"
+      ]
+    },
+    {
+      "coverage_id": "cov-2ms1-pinout",
+      "record_id": "rec-dailywell-2ms1t1b1m2qes-5",
+      "domain": "pinout",
+      "status": "OPEN",
+      "reason": "Exact pin/contact behavior is not promoted from the third-party-hosted mirror without manufacturer-hosted bytes.",
+      "fact_ids": [
+        "fact-2ms1-contact"
+      ],
+      "blocking_fact_ids": [
+        "fact-2ms1-contact"
+      ]
+    },
+    {
+      "coverage_id": "cov-2ms1-mechanical",
+      "record_id": "rec-dailywell-2ms1t1b1m2qes-5",
+      "domain": "mechanical_fit",
+      "status": "OPEN",
+      "reason": "Panel reach and mounted stack have not been bench checked at the locked positions.",
+      "fact_ids": [
+        "fact-2ms1-panel-fit"
+      ],
+      "blocking_fact_ids": [
+        "fact-2ms1-panel-fit"
+      ]
+    },
+    {
+      "coverage_id": "cov-2ms1-cad",
+      "record_id": "rec-dailywell-2ms1t1b1m2qes-5",
+      "domain": "cad_geometry",
+      "status": "OPEN",
+      "reason": "CAD is a derived family representation; exact variant geometry remains to be reviewed against a primary drawing.",
+      "fact_ids": [
+        "fact-2ms1-cad-fidelity"
+      ],
+      "blocking_fact_ids": [
+        "fact-2ms1-cad-fidelity"
+      ]
+    }
+  ]
+}

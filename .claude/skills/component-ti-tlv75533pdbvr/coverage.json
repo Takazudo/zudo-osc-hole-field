@@ -1,0 +1,75 @@
+{
+  "schema_version": 1,
+  "coverage": [
+    {
+      "coverage_id": "cov-regulator-3v3-exact-orderable-identity",
+      "record_id": "rec-regulator-3v3",
+      "domain": "exact orderable identity",
+      "status": "COVERED",
+      "reason": "Manufacturer primary bytes identify the exact shortlist MPN/package; supplier stock remains separately open.",
+      "fact_ids": [
+        "fact-regulator-3v3-orderable-identity"
+      ],
+      "blocking_fact_ids": []
+    },
+    {
+      "coverage_id": "cov-regulator-3v3-pinout",
+      "record_id": "rec-regulator-3v3",
+      "domain": "pinout",
+      "status": "COVERED",
+      "reason": "The retained manufacturer document provides the listed pin-function table; no project nets are assigned.",
+      "fact_ids": [
+        "fact-regulator-3v3-pinout"
+      ],
+      "blocking_fact_ids": []
+    },
+    {
+      "coverage_id": "cov-regulator-3v3-electrical-limits",
+      "record_id": "rec-regulator-3v3",
+      "domain": "electrical limits",
+      "status": "COVERED",
+      "reason": "Retained source supports the specific listed product-family limits; conditions remain attached to each fact.",
+      "fact_ids": [
+        "fact-regulator-3v3-input-voltage-range"
+      ],
+      "blocking_fact_ids": []
+    },
+    {
+      "coverage_id": "cov-regulator-3v3-manufacturer-product-description",
+      "record_id": "rec-regulator-3v3",
+      "domain": "manufacturer product description",
+      "status": "COVERED",
+      "reason": "The retained manufacturer document identifies the named product and its documented role/description; this is not application qualification.",
+      "fact_ids": [
+        "fact-regulator-3v3-product-function"
+      ],
+      "blocking_fact_ids": []
+    },
+    {
+      "coverage_id": "cov-regulator-3v3-mechanical-fit",
+      "record_id": "rec-regulator-3v3",
+      "domain": "mechanical fit",
+      "status": "OPEN",
+      "reason": "The local family envelope and generic footprint are provisional; physical board fit and land-pattern suitability are not validated.",
+      "fact_ids": [
+        "fact-regulator-3v3-mechanical-fit"
+      ],
+      "blocking_fact_ids": [
+        "fact-regulator-3v3-mechanical-fit"
+      ]
+    },
+    {
+      "coverage_id": "cov-regulator-3v3-procurement",
+      "record_id": "rec-regulator-3v3",
+      "domain": "procurement",
+      "status": "OPEN",
+      "reason": "Supplier stock, lead time, consignment and assembly allocation remain unverified as of the dated shortlist.",
+      "fact_ids": [
+        "fact-regulator-3v3-procurement-status"
+      ],
+      "blocking_fact_ids": [
+        "fact-regulator-3v3-procurement-status"
+      ]
+    }
+  ]
+}

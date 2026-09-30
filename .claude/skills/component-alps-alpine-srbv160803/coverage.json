@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "coverage": [
+    {
+      "coverage_id": "cov-srbv-pinout",
+      "record_id": "rec-srbv",
+      "domain": "pinout",
+      "status": "COVERED",
+      "reason": "Manufacturer drawing retained and audited.",
+      "fact_ids": [
+        "fact-srbv-pin",
+        "fact-srbv-manufacturer"
+      ],
+      "blocking_fact_ids": []
+    },
+    {
+      "coverage_id": "cov-srbv-mechanical-fit",
+      "record_id": "rec-srbv",
+      "domain": "mechanical_fit",
+      "status": "OPEN",
+      "reason": "Stepped adapter draft avoids nominal conservative-envelope collisions; actual tolerances, carrier/shaft retention and installed fit require physical qualification issue #55.",
+      "fact_ids": [
+        "fact-srbv-mechanical-fit",
+        "fact-srbv-envelope",
+        "fact-srbv-shaft",
+        "fact-srbv-hardware"
+      ],
+      "blocking_fact_ids": [
+        "fact-srbv-mechanical-fit"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,81 @@
+{
+  "schema_version": 1,
+  "status": "PROPOSAL harness material selection; assembled GH crimp and current derating NOT RUN",
+  "manufacturer": "Alpha Wire",
+  "mpn": "6821 BK005",
+  "role": "AWG26 internal GH signal/return loom; other source-mapped colors optional only after exact order-code audit",
+  "supplier_order_code": "NOT SELECTED; no availability/order assertion",
+  "source": {
+    "url": "https://www.alphawire.com/disteAPI/SpecPDF/DownloadProductSpecPdf?productPartNumber=6821",
+    "path": "design/partition/sources/alpha-6821.pdf",
+    "sha256": "efd1d9ca96295017e43bec8534016f8d5d30c11a1a28fc8d37b6cf35b892a80a",
+    "retrieved": "2026-09-28",
+    "physical_pdf_pages_zero_based": {
+      "construction": 1,
+      "properties": 4
+    }
+  },
+  "sourced": {
+    "awg": 26,
+    "stranding": "7/34 bare copper",
+    "diameter_in": 0.035,
+    "diameter_tolerance_in": 0.002,
+    "bend_radius_diameters": 10,
+    "dcr_ohm_per_1000ft_20C_nominal": 38,
+    "temperature_C": [
+      -40,
+      110
+    ],
+    "voltage_rating_Vrms": 300,
+    "ISO6722_voltage_Vrms": 60,
+    "max_pull_tension_lbf": 2.18
+  },
+  "derived": {
+    "diameter_mm": [
+      0.8382,
+      0.9398
+    ],
+    "minimum_bend_radius_using_max_OD_mm": 9.398,
+    "dcr_ohm_per_m_20C_nominal": 0.12467191601049868,
+    "GH_insulation_diameter_range_compatible": true
+  },
+  "proposal": {
+    "wire_temperature_max_C": 70,
+    "wire_resistance_multiplier_tolerance": 1.1,
+    "copper_temperature_coefficient_per_C": 0.00393,
+    "wire_hot_resistance_ceiling_ohm_per_m": 0.17,
+    "wire_minimum_resistance_for_parallel_path_bounds_ohm_per_m": 0.1,
+    "branch_current_derating_A": 0.5,
+    "parallel_return_analysis": "Use each path upper/lower resistance bound; never equal sharing. Resistance lower bound is an acceptance requirement, not manufacturer guaranteed minimum.",
+    "qualification": "#65 assembled contact/crimp/temperature/loom and cold minimum wire resistance; #59 main-return-open and patch-ground fault behavior"
+  },
+  "load_side_power_wire": {
+    "manufacturer": "Alpha Wire",
+    "mpn": "5859 BK005",
+    "source_url": "https://www.alphawire.com/disteAPI/SpecPDF/DownloadProductSpecPdf?productPartNumber=5859",
+    "source_path": "design/partition/sources/alpha-5859.pdf",
+    "sha256": "ff9da35e471778f26ffc849985f73e53516d8c6cc60d5505aa96f7d446a5be87",
+    "physical_pdf_pages_zero_based": {
+      "construction": 1,
+      "properties": 4
+    },
+    "status": "PROPOSAL material; retained manufacturer dimensions/electrical facts SOURCED; assembled ampacity NOT RUN #65",
+    "awg": 14,
+    "stranding": "19/27 silver plated copper",
+    "insulation": "PTFE",
+    "diameter_nominal_in": 0.095,
+    "diameter_tolerance_in": 0.007,
+    "diameter_max_mm": 2.5908,
+    "bend_radius_diameters": 10,
+    "nominal_dcr_ohm_per_1000ft_20C": 2.8,
+    "derived_nominal_dcr_ohm_per_m": 0.009186351706036745,
+    "voltage_Vrms": 600,
+    "temperature_range_C": [
+      -60,
+      200
+    ],
+    "proposal_hot_resistance_ohm_per_m": 0.013,
+    "proposal_current_A": 5,
+    "basis": "70 C conductor, copper coefficient0.00393/C and10% resistance allowance give0.01209ohm/m; use0.013 ceiling as acceptance requirement, not a sourced guaranteed maximum. No AWG-to-current-rating inference."
+  }
+}

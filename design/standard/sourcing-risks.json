@@ -1,0 +1,78 @@
+{
+  "schema_version": 1,
+  "date": "2026-09-28",
+  "status": "Draft sourcing audit; no factory allocation, purchase, quote, or supplier contact",
+  "factory_only_soldering": {
+    "required": true,
+    "status": "OWNER CONSTRAINT",
+    "reason": "All soldering and required programming must be completed externally before delivery; acceptance of consignment and programmed-device handling is unverified."
+  },
+  "risks": [
+    {
+      "id": "vco",
+      "mpn": "AS3340D",
+      "status": "OPEN",
+      "reason": "ALFA manufacturer PDF retained by #29 and AS3340D SOIC-16 pin table confirmed; factory sourcing/consignment route and exact allocation remain UNVERIFIED. Datasheet internal-zener narrative conflicts with -6 V VEE absolute limit; draft selects externally buffered -5 V and requires sequencing qualification.",
+      "source": "https://www.alfatriode.lv/eng/sc/AS3340.pdf",
+      "checked_date": "2026-09-28"
+    },
+    {
+      "id": "noise",
+      "mpn": "NOISE2",
+      "status": "OPEN",
+      "reason": "NOISE2 has no confirmed factory sourcing code; socket and programmed-device insertion route, consignment acceptance, retention and final electrical test remain unverified.",
+      "source": "https://electricdruid.net/datasheets/NOISE2Datasheet.pdf",
+      "assembly_proposal": "Factory solders a PDIP-8 socket; maker-programmed NOISE2 is inserted after soldering. Factory acceptance of an empty socket, programmed part insertion/consignment, retention and final electrical test are unconfirmed. Owner requires factory-only soldering."
+    },
+    {
+      "id": "toggle_three_position",
+      "mpn": "2MS3T1B1M2QES",
+      "status": "OPEN",
+      "reason": "No LCSC/JLC code or factory route; Thonk DW2 drawing title block names the -5 suffix while the handoff omits it. Exact equivalence remains unproven.",
+      "source": "design/mechanical/facts/toggle.json"
+    },
+    {
+      "id": "pot_104",
+      "mpn": "PTV09A-4020F-B104",
+      "status": "OPEN",
+      "reason": "Exact 100 kohm member has no confirmed supplier order code or factory allocation.",
+      "source": "design/standard/parts-shortlist.json"
+    },
+    {
+      "id": "signal_diode",
+      "mpn": "Nexperia BAS16GW-QX",
+      "status": "OPEN - QUALIFICATION",
+      "reason": "Exact Nexperia order identity, package and pin table now retained; substitution is a proposed circuit design change. Supplier allocation, bridge LED transfer over temperature, land pattern and physical qualification remain unverified.",
+      "source": "https://www.nexperia.com/chemical-content/BAS16GW-Q.html?identifier=BAS16GW-Q",
+      "checked_date": "2026-09-28"
+    },
+    {
+      "id": "c_bulk",
+      "mpn": "GRM21BR61E475KA12L",
+      "status": "OPEN - DISTRIBUTOR REPORT",
+      "reason": "DigiKey currently labels this exact Murata part obsolete/no longer manufactured; manufacturer lifecycle status was not independently confirmed. Manufacturer reference PDF URL did not yield retained bytes.",
+      "source": "https://www.digikey.com/en/products/detail/murata-electronics/GRM21BR61E475KA12L/702599",
+      "checked_date": "2026-09-28"
+    },
+    {
+      "id": "op_precision",
+      "mpn": "OPA4197IPWR",
+      "status": "OPEN",
+      "reason": "C2057327 is inherited from the handoff; previous pre-order indication does not establish current factory stock or allocation.",
+      "source": "design/standard/parts-shortlist.json"
+    },
+    {
+      "id": "c_slew",
+      "mpn": "1206CG104J500NT",
+      "status": "OPEN - EXACT EVIDENCE",
+      "reason": "Retained Fenghua high-voltage MLCC family PDF does not name the exact orderable MPN. Its value/dielectric and package need exact manufacturer confirmation.",
+      "source": "circuit/sources/ic-library/1206CG104J500NT.pdf"
+    },
+    {
+      "id": "all_selected_parts",
+      "status": "OPEN",
+      "reason": "LISTED supplier identity is not assembly allocation. Factory stock, consignment acceptance, and no-substitution BOM review are unverified for every selected row.",
+      "source": "design/standard/parts-shortlist.json"
+    }
+  ]
+}

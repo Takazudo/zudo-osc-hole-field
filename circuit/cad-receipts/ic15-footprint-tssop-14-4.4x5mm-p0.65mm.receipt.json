@@ -1,0 +1,120 @@
+{
+  "receipt_version": 1,
+  "identity": {
+    "asset_id": "ic15-footprint-tssop-14-4.4x5mm-p0.65mm",
+    "record_id": "rec-op-precision",
+    "manufacturer": null,
+    "mpn": null,
+    "package": "TSSOP-14_4.4x5mm_P0.65mm",
+    "variant_notes": "Generic KiCad 10 package footprint, not exact vendor land-pattern qualification."
+  },
+  "acquisition": {
+    "provider": "KiCad 10.0.6 stock library",
+    "source_url": "KiCad 10.0.6 pinned oracle, scripts/kicad/run.sh",
+    "acquired_on": "2026-09-28",
+    "original_filenames": [
+      "TSSOP-14_4.4x5mm_P0.65mm.stock.kicad_mod"
+    ],
+    "sha256": {
+      "circuit/sources/ic-library/cad/TSSOP-14_4.4x5mm_P0.65mm.stock.kicad_mod": "e4bf82cea6d3b3259ddf42469b1407628ad1181a28ae6f3f340190c0cca31ccd"
+    }
+  },
+  "representation": {
+    "files": [
+      "footprints/kicad/zudo-osc-hole-field.pretty/TSSOP-14_4.4x5mm_P0.65mm.kicad_mod",
+      "footprints/kicad/zudo-osc-hole-field.3dshapes/IC_TSSOP-14_4.4x5.0.wrl"
+    ],
+    "formats": [
+      "kicad_mod",
+      "wrl"
+    ],
+    "units": "Footprint dimensions in mm; WRL coordinate unit 0.1 inch (2.54 mm)",
+    "original_paths": [
+      "circuit/sources/ic-library/cad/TSSOP-14_4.4x5mm_P0.65mm.stock.kicad_mod"
+    ]
+  },
+  "fidelity": {
+    "class": "family",
+    "reason": "Provisional family envelope: TI PW0014A TSSOP-14 outline maxima 5.1 x 4.5 x 1.2 mm. No land-pattern or physical-fit verdict. It is a preview envelope, not an exact vendor 3D asset, seating model, fit check, or qualification.",
+    "evidence": [
+      "KiCad 10.0.6 pinned stock library source retained with SHA-256.",
+      "circuit/sources/ic-library/OPA4197.pdf SHA-256 27653a7d5e965cbb2d23f7998919ebd774efd5cd3e126b8f0881469ae91166fd",
+      "scripts/libgen/gen_ic_package_envelopes.py SHA-256 6af3e9c2885882147a87a4332aa6ec5b9c4e7a373e85242a93d3dbfa79be8957"
+    ]
+  },
+  "derivation": {
+    "derived": true,
+    "input_sha256": {
+      "circuit/sources/ic-library/cad/TSSOP-14_4.4x5mm_P0.65mm.stock.kicad_mod": "e4bf82cea6d3b3259ddf42469b1407628ad1181a28ae6f3f340190c0cca31ccd"
+    },
+    "tool": "scripts/libgen/gen_ic_package_envelopes.py and scripts/libgen/regen.sh",
+    "tool_version": "1",
+    "parameters": {
+      "operations": [
+        "set project footprint name",
+        "remove stock 3D model reference",
+        "generate project courtyard"
+      ],
+      "package_envelope": {
+        "model": "IC_TSSOP-14_4.4x5.0.wrl",
+        "dimensions_mm": [
+          5.1,
+          4.5,
+          1.2
+        ],
+        "note": "Provisional family envelope: TI PW0014A TSSOP-14 outline maxima 5.1 x 4.5 x 1.2 mm. No land-pattern or physical-fit verdict.",
+        "geometry_source_sha256": {
+          "circuit/sources/ic-library/OPA4197.pdf": "27653a7d5e965cbb2d23f7998919ebd774efd5cd3e126b8f0881469ae91166fd"
+        },
+        "generator_sha256": "6af3e9c2885882147a87a4332aa6ec5b9c4e7a373e85242a93d3dbfa79be8957",
+        "operations": [
+          "generate provisional display cuboid from listed family bounds",
+          "add exactly one local WRL model reference to the generic footprint"
+        ]
+      }
+    },
+    "output_sha256": {
+      "footprints/kicad/zudo-osc-hole-field.pretty/TSSOP-14_4.4x5mm_P0.65mm.kicad_mod": "de16d50ed6610086f0827082055257c9648031d8db6e7a7da797838f2c422ec6",
+      "footprints/kicad/zudo-osc-hole-field.3dshapes/IC_TSSOP-14_4.4x5.0.wrl": "31b8fecc1bd7a162193c4db1c5049ce8ef9ef21499d7bfce68e1fac99d032d65"
+    }
+  },
+  "cad_use": {
+    "symbol": null,
+    "footprint": "zudo-osc-hole-field:TSSOP-14_4.4x5mm_P0.65mm",
+    "model_path": "${KIPRJMOD}/../../footprints/kicad/zudo-osc-hole-field.3dshapes/IC_TSSOP-14_4.4x5.0.wrl",
+    "transform": {
+      "offset": [
+        0,
+        0,
+        0
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ]
+    },
+    "seating_plane": "F.Cu; envelope base at z=0"
+  },
+  "checks": {
+    "performed": [
+      "Project library and courtyard checks",
+      "Local WRL envelope generated and hash-bound; package preview check required",
+      "KiCad 10.0.6 native VRML export: x/y/z bounds and footprint model scale match the stated display envelope (scripts/libgen/fixtures/check_wrl_dimensions.py)."
+    ],
+    "remaining_physical_checks": [
+      "Audit against exact package drawing before fabrication.",
+      "Confirm exact device body/height, land pattern, seating plane, optical/mechanical path, and fit in the fixed layout; this family envelope establishes none of those."
+    ]
+  },
+  "publication": {
+    "preview_selected": true,
+    "download_published": false,
+    "permitted_scope": "Generated component preview only; no vendor model redistribution."
+  }
+}

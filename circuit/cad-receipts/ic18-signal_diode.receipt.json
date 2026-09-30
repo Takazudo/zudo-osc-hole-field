@@ -1,0 +1,87 @@
+{
+  "receipt_version": 1,
+  "identity": {
+    "asset_id": "ic18-signal_diode",
+    "record_id": "rec-signal-diode",
+    "manufacturer": "Nexperia",
+    "mpn": "BAS16GW-QX",
+    "package": "SOD-123",
+    "variant_notes": "Exact OPN from Nexperia chemical-content record"
+  },
+  "acquisition": {
+    "provider": "Nexperia manufacturer primary",
+    "source_url": "https://assets.nexperia.com/documents/data-sheet/BAS16GW-Q.pdf",
+    "acquired_on": "2026-09-28",
+    "original_filenames": [
+      "BAS16GW-Q.pdf",
+      "BAS16GW-QX-chemical.html"
+    ],
+    "sha256": {
+      "circuit/sources/ic-library/BAS16GW-Q.pdf": "36b9d598de374dbdcc666f0516477d958e02471b323842704249e0e447e2be6b",
+      "circuit/sources/ic-library/BAS16GW-QX-chemical.html": "8cd1f913a81488831185205df86676af7b46f8bc6ea90cb015b3be1660eda073"
+    }
+  },
+  "representation": {
+    "files": [
+      "symbols/src/BAS16GW_QX.kicad_sym"
+    ],
+    "formats": [
+      "kicad_sym"
+    ],
+    "units": "KiCad schematic units",
+    "original_paths": [
+      "circuit/sources/ic-library/BAS16GW-Q.pdf",
+      "circuit/sources/ic-library/BAS16GW-QX-chemical.html"
+    ]
+  },
+  "fidelity": {
+    "class": "derived",
+    "reason": "Symbol polarity follows Table 2 pinning; exact OPN is established separately by Nexperia chemical-content page.",
+    "evidence": [
+      "BAS16GW-Q.pdf p.0, Table 2",
+      "https://www.nexperia.com/chemical-content/BAS16GW-Q.html?identifier=BAS16GW-Q",
+      "circuit/sources/ic-library/BAS16GW-QX-chemical.html SHA-256 8cd1f913a81488831185205df86676af7b46f8bc6ea90cb015b3be1660eda073"
+    ]
+  },
+  "derivation": {
+    "derived": true,
+    "input_sha256": {
+      "circuit/sources/ic-library/BAS16GW-Q.pdf": "36b9d598de374dbdcc666f0516477d958e02471b323842704249e0e447e2be6b",
+      "circuit/sources/ic-library/BAS16GW-QX-chemical.html": "8cd1f913a81488831185205df86676af7b46f8bc6ea90cb015b3be1660eda073"
+    },
+    "tool": "issue-18 source-backed two-pin symbol capture",
+    "tool_version": "1",
+    "parameters": {
+      "pin_1": "K",
+      "pin_2": "A"
+    },
+    "output_sha256": {
+      "symbols/src/BAS16GW_QX.kicad_sym": "6d7907868e7d5e194695bc07faa8d5261c2e9a4ed915a1eb1418f9eafd87b19f"
+    }
+  },
+  "cad_use": {
+    "symbol": "zudo-osc-hole-field:BAS16GW_QX",
+    "footprint": "zudo-osc-hole-field:SOD-123",
+    "model_path": "${KIPRJMOD}/../../footprints/kicad/zudo-osc-hole-field.3dshapes/D_SOD-123.wrl",
+    "transform": {
+      "offset": null,
+      "rotation": null,
+      "scale": null
+    },
+    "seating_plane": null
+  },
+  "checks": {
+    "performed": [
+      "Pin/pad map and KiCad library checker"
+    ],
+    "remaining_physical_checks": [
+      "Bridge current transfer, land pattern, sourcing and physical validation before release.",
+      "Confirm exact body/height, land pattern, fixed-layout clearance, and electrical suitability before hardware use; catalogue family geometry is provisional."
+    ]
+  },
+  "publication": {
+    "preview_selected": true,
+    "download_published": false,
+    "permitted_scope": null
+  }
+}

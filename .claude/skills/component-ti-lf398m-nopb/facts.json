@@ -1,0 +1,167 @@
+{
+  "schema_version": 1,
+  "facts": [
+    {
+      "fact_id": "fact-sample-hold-manufacturer",
+      "record_id": "rec-sample-hold",
+      "source_id": "src-sample-hold-datasheet",
+      "class": "PROJECT_STATE",
+      "value": "Texas Instruments",
+      "unit": "NONE",
+      "conditions": "Manufacturer of the project-selected exact shortlist identity.",
+      "locator": "src-sample-hold-datasheet: title block or OSC-ES-1 row parts[id=sample_hold].manufacturer",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-sample-hold-project-selection",
+      "record_id": "rec-sample-hold",
+      "source_id": "src-sample-hold-shortlist",
+      "class": "PROJECT_STATE",
+      "value": {
+        "manufacturer": "Texas Instruments",
+        "mpn": "LF398M/NOPB",
+        "package": "SOIC-14",
+        "lcsc": "C1346172",
+        "roles": "sample and hold",
+        "source_status": "UNVERIFIED"
+      },
+      "unit": "NONE",
+      "conditions": "OSC-ES-1 dated proposal row; exact source status and availability statements are not supplier allocation.",
+      "locator": "src-sample-hold-shortlist: JSON row parts[id=sample_hold]",
+      "provenance": "PROJECT-CHOICE",
+      "verdict": "NOT APPLICABLE",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-sample-hold-orderable-identity",
+      "record_id": "rec-sample-hold",
+      "source_id": "src-sample-hold-datasheet",
+      "class": "PROJECT_STATE",
+      "value": {
+        "manufacturer": "Texas Instruments",
+        "mpn": "LF398M/NOPB",
+        "package": "SOIC-14"
+      },
+      "unit": "NONE",
+      "conditions": "Exact complete orderable identifier in the selected package; does not establish supplier stock.",
+      "locator": "Section/table audit: src-sample-hold-datasheet: package/orderable addendum names exact MPN",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-sample-hold-pinout",
+      "record_id": "rec-sample-hold",
+      "source_id": "src-sample-hold-datasheet",
+      "class": "PROJECT_STATE",
+      "value": "pin 1 analog input -> pad 1; pin 2 NC -> pad 2; pin 3 V- -> pad 3; pin 4 NC -> pad 4; pin 5 NC -> pad 5; pin 6 NC -> pad 6; pin 7 output -> pad 7; pin 8 hold capacitor -> pad 8; pin 9 NC -> pad 9; pin 10 logic reference -> pad 10; pin 11 logic input -> pad 11; pin 12 V+ -> pad 12; pin 13 NC -> pad 13; pin 14 offset adjust -> pad 14",
+      "unit": "NONE",
+      "conditions": "No schematic or placement/net binding is claimed. Manufacturer pin functions are source-backed only when a retained primary document names the product family.",
+      "locator": "src-sample-hold-datasheet: Pin configuration/function table",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-sample-hold-input-offset-voltage",
+      "record_id": "rec-sample-hold",
+      "source_id": "src-sample-hold-datasheet",
+      "class": "GUARANTEED_ELECTRICAL",
+      "value": {
+        "typical_at_25C": 2,
+        "maximum_at_25C": 7,
+        "maximum_full_temperature": 10
+      },
+      "unit": "mV",
+      "conditions": "LF398-N only; VS = +/-15 V; TA = TJ = 25 C for 2/7 mV and full temperature for 10 mV; Ch=0.01 uF, RL=10 kohm.",
+      "locator": "src-sample-hold-datasheet: PDF page index 6, printed page 7, Section 6.6, Electrical Characteristics LF398-N, input offset voltage row",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-sample-hold-input-bias-current",
+      "record_id": "rec-sample-hold",
+      "source_id": "src-sample-hold-datasheet",
+      "class": "GUARANTEED_ELECTRICAL",
+      "value": {
+        "typical_at_25C": 10,
+        "maximum_at_25C": 50,
+        "maximum_full_temperature": 100
+      },
+      "unit": "nA",
+      "conditions": "LF398-N only; VS = +/-15 V; TA = TJ = 25 C for 10/50 nA and full temperature for 100 nA; Ch=0.01 uF, RL=10 kohm.",
+      "locator": "src-sample-hold-datasheet: PDF page index 6, printed page 7, Section 6.6, Electrical Characteristics LF398-N, input bias current row",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-sample-hold-hold-step",
+      "record_id": "rec-sample-hold",
+      "source_id": "src-sample-hold-datasheet",
+      "class": "GUARANTEED_ELECTRICAL",
+      "value": {
+        "typical_at_25C": 1,
+        "maximum_at_25C": 2.5
+      },
+      "unit": "mV",
+      "conditions": "LF398-N; TA = 25 C; Ch = 0.01 uF; VOUT = 0 V.",
+      "locator": "src-sample-hold-datasheet: PDF page index 6, printed page 7, Section 6.6, HOLD step row",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-sample-hold-product-function",
+      "record_id": "rec-sample-hold",
+      "source_id": "src-sample-hold-datasheet",
+      "class": "PROJECT_STATE",
+      "value": "Manufacturer source identifies LF398M/NOPB as the shortlisted sample and hold device; this is not project suitability.",
+      "unit": "NONE",
+      "conditions": "Product family description only; no project application or electrical guarantee implied.",
+      "locator": "src-sample-hold-datasheet: document title block and product description",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-sample-hold-procurement-status",
+      "record_id": "rec-sample-hold",
+      "source_id": "src-sample-hold-shortlist",
+      "class": "PROJECT_STATE",
+      "value": "UNVERIFIED",
+      "unit": "NONE",
+      "conditions": "Time-stamped OSC-ES-1 state on 2026-09-28; current stock, lead time, consignment, and JLC assembly are not established.",
+      "locator": "src-sample-hold-shortlist: JSON row parts[id=sample_hold].sourcing.status/jlcpcb_assembly",
+      "provenance": "PROJECT-CHOICE",
+      "verdict": "UNSOURCED",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-sample-hold-mechanical-fit",
+      "record_id": "rec-sample-hold",
+      "source_id": "src-sample-hold-shortlist",
+      "class": "PROJECT_STATE",
+      "value": "Provisional package-family envelope only; board/land-pattern fit has not been physically checked.",
+      "unit": "NONE",
+      "conditions": "Selected footprint family and display envelope do not establish exact-part placement or solderability.",
+      "locator": "Section/table audit: src-sample-hold-shortlist: parts[id=sample_hold].package; CAD receipt is provisional family geometry",
+      "provenance": "PROJECT-CHOICE",
+      "verdict": "NEEDS BENCH",
+      "depends_on": [],
+      "expression": ""
+    }
+  ]
+}

@@ -1,0 +1,81 @@
+{
+  "receipt_version": 1,
+  "identity": {
+    "asset_id": "ic15-c_small",
+    "record_id": "rec-c-small",
+    "manufacturer": "KEMET",
+    "mpn": "C0603C101J5GACTU",
+    "package": "0603",
+    "variant_notes": "AVAILABLE"
+  },
+  "acquisition": {
+    "provider": "KiCad 10 stock symbol and retained manufacturer/creator document",
+    "source_url": "https://search.kemet.com/download/specsheet/C0603C101J5GACTU",
+    "acquired_on": "2026-09-28",
+    "original_filenames": [
+      "C0603C101.pdf"
+    ],
+    "sha256": {
+      "circuit/sources/ic-library/C0603C101.pdf": "1264bf36b455e746dc831ebba8a3696c328d574b9950d1c5e02ab95971e7d8d1"
+    }
+  },
+  "representation": {
+    "files": [
+      "symbols/src/C0603C101J5GACTU.kicad_sym"
+    ],
+    "formats": [
+      "kicad_sym"
+    ],
+    "units": "KiCad schematic units",
+    "original_paths": [
+      "circuit/sources/ic-library/C0603C101.pdf"
+    ]
+  },
+  "fidelity": {
+    "class": "derived",
+    "reason": "Source pin functions audited against the retained document; KiCad stock or custom graphics normalized for this draft identity.",
+    "evidence": [
+      "AVAILABLE",
+      "https://search.kemet.com/download/specsheet/C0603C101J5GACTU"
+    ]
+  },
+  "derivation": {
+    "derived": true,
+    "input_sha256": {
+      "circuit/sources/ic-library/C0603C101.pdf": "1264bf36b455e746dc831ebba8a3696c328d574b9950d1c5e02ab95971e7d8d1"
+    },
+    "tool": "scripts/libgen/fixtures/build_ic_assets.py, build_ic_custom.py, or build_passive_symbols.py",
+    "tool_version": "1",
+    "parameters": {
+      "normalization": "exact MPN/manufacturer/LCSC fields, local footprint reference; alias parent units expanded where required"
+    },
+    "output_sha256": {
+      "symbols/src/C0603C101J5GACTU.kicad_sym": "6a81dbabb90ae37411e622cc0296a9384ef48771b59ff1b0e8f2185f7346a694"
+    }
+  },
+  "cad_use": {
+    "symbol": "zudo-osc-hole-field:C0603C101J5GACTU",
+    "footprint": "zudo-osc-hole-field:C0603",
+    "model_path": "${KIPRJMOD}/../../footprints/kicad/zudo-osc-hole-field.3dshapes/C0603_L1.6-W0.8-H0.8.wrl",
+    "transform": {
+      "offset": null,
+      "rotation": null,
+      "scale": null
+    },
+    "seating_plane": null
+  },
+  "checks": {
+    "performed": [
+      "Issue-15 all-unit KiCad 10 ERC fixture and project library checker"
+    ],
+    "remaining_physical_checks": [
+      "Confirm exact package drawing/lot, actual circuit net mapping, electrical suitability and procurement before board release.",
+      "Confirm exact body/height, land pattern, fixed-layout clearance, and electrical suitability before hardware use; catalogue family geometry is provisional."
+    ]
+  },
+  "publication": {
+    "preview_selected": false,
+    "download_published": false,
+    "permitted_scope": null
+  }
+}

@@ -1,0 +1,204 @@
+{
+  "schema_version": 1,
+  "module": "filter",
+  "authority": "PROPOSAL (planning, owner-delegated)",
+  "oracle": "pinned KiCad 10.0.6 ngspice through scripts/kicad/run.sh",
+  "status": "PASS - bounded vendor-macromodel small-signal response; not hardware",
+  "runs": [
+    {
+      "deck": "design/spec/modules/spice/filter-100-low-gain1.cir",
+      "status": "PASS - model only",
+      "cutoff_command_Hz": 100,
+      "resonance_feedback_g": 0,
+      "dry_gain_command": 1,
+      "bias_currents_A": {
+        "integrator_each": 2.4592779991382606e-06,
+        "resonance": 0.0,
+        "dry": 0.0004032258064516129
+      },
+      "near_command_frequency_Hz": 100.237447,
+      "gain_dB_at_command": {
+        "LP": -6.46861627,
+        "BP": -6.22885155,
+        "HP": -5.98908682,
+        "OUT": 0.0142142171
+      },
+      "BP_peak_Hz": 97.9557639,
+      "BP_peak_dB": -6.22842297,
+      "model_boundary": "Vendor single-OTA macromodel, ideal op-amps, externally imposed bias currents, generic clamp diodes and chosen offset trim voltages."
+    },
+    {
+      "deck": "design/spec/modules/spice/filter-100-high-gain1.cir",
+      "status": "PASS - model only",
+      "cutoff_command_Hz": 100,
+      "resonance_feedback_g": 1.7,
+      "dry_gain_command": 1,
+      "bias_currents_A": {
+        "integrator_each": 2.4592779991382606e-06,
+        "resonance": 7.74160122164049e-05,
+        "dry": 0.0004032258064516129
+      },
+      "near_command_frequency_Hz": 100.237447,
+      "gain_dB_at_command": {
+        "LP": 9.36227434,
+        "BP": 9.60203911,
+        "HP": 9.84180384,
+        "OUT": 0.0142142171
+      },
+      "BP_peak_Hz": 97.9557639,
+      "BP_peak_dB": 9.70663169,
+      "model_boundary": "Vendor single-OTA macromodel, ideal op-amps, externally imposed bias currents, generic clamp diodes and chosen offset trim voltages."
+    },
+    {
+      "deck": "design/spec/modules/spice/filter-1000-low-gain1.cir",
+      "status": "PASS - model only",
+      "cutoff_command_Hz": 1000,
+      "resonance_feedback_g": 0,
+      "dry_gain_command": 1,
+      "bias_currents_A": {
+        "integrator_each": 2.4592779991382603e-05,
+        "resonance": 0.0,
+        "dry": 0.0004032258064516129
+      },
+      "near_command_frequency_Hz": 1002.37447,
+      "gain_dB_at_command": {
+        "LP": -6.4841019,
+        "BP": -6.22907774,
+        "HP": -5.97405367,
+        "OUT": 0.0142142172
+      },
+      "BP_peak_Hz": 979.557639,
+      "BP_peak_dB": -6.22830009,
+      "model_boundary": "Vendor single-OTA macromodel, ideal op-amps, externally imposed bias currents, generic clamp diodes and chosen offset trim voltages."
+    },
+    {
+      "deck": "design/spec/modules/spice/filter-1000-high-gain1.cir",
+      "status": "PASS - model only",
+      "cutoff_command_Hz": 1000,
+      "resonance_feedback_g": 1.7,
+      "dry_gain_command": 1,
+      "bias_currents_A": {
+        "integrator_each": 2.4592779991382603e-05,
+        "resonance": 7.74160122164049e-05,
+        "dry": 0.0004032258064516129
+      },
+      "near_command_frequency_Hz": 1002.37447,
+      "gain_dB_at_command": {
+        "LP": 9.35257197,
+        "BP": 9.6075964,
+        "HP": 9.86262047,
+        "OUT": 0.0142142172
+      },
+      "BP_peak_Hz": 979.557639,
+      "BP_peak_dB": 9.72589078,
+      "model_boundary": "Vendor single-OTA macromodel, ideal op-amps, externally imposed bias currents, generic clamp diodes and chosen offset trim voltages."
+    },
+    {
+      "deck": "design/spec/modules/spice/filter-10000-low-gain1.cir",
+      "status": "PASS - model only",
+      "cutoff_command_Hz": 10000,
+      "resonance_feedback_g": 0,
+      "dry_gain_command": 1,
+      "bias_currents_A": {
+        "integrator_each": 0.00024592779991382605,
+        "resonance": 0.0,
+        "dry": 0.0004032258064516129
+      },
+      "near_command_frequency_Hz": 10023.7447,
+      "gain_dB_at_command": {
+        "LP": -6.7683236,
+        "BP": -6.24075488,
+        "HP": -5.71319802,
+        "OUT": 0.0142142263
+      },
+      "BP_peak_Hz": 9572.60185,
+      "BP_peak_dB": -6.23145038,
+      "model_boundary": "Vendor single-OTA macromodel, ideal op-amps, externally imposed bias currents, generic clamp diodes and chosen offset trim voltages."
+    },
+    {
+      "deck": "design/spec/modules/spice/filter-10000-high-gain1.cir",
+      "status": "PASS - model only",
+      "cutoff_command_Hz": 10000,
+      "resonance_feedback_g": 1.7,
+      "dry_gain_command": 1,
+      "bias_currents_A": {
+        "integrator_each": 0.00024592779991382605,
+        "resonance": 7.74160122164049e-05,
+        "dry": 0.0004032258064516129
+      },
+      "near_command_frequency_Hz": 10023.7447,
+      "gain_dB_at_command": {
+        "LP": 8.52027628,
+        "BP": 9.04784013,
+        "HP": 9.57539697,
+        "OUT": 0.0142142263
+      },
+      "BP_peak_Hz": 9354.70283,
+      "BP_peak_dB": 9.54725211,
+      "model_boundary": "Vendor single-OTA macromodel, ideal op-amps, externally imposed bias currents, generic clamp diodes and chosen offset trim voltages."
+    },
+    {
+      "deck": "design/spec/modules/spice/filter-1000-low-gain0.cir",
+      "status": "PASS - model only",
+      "cutoff_command_Hz": 1000,
+      "resonance_feedback_g": 0,
+      "dry_gain_command": 0,
+      "bias_currents_A": {
+        "integrator_each": 2.4592779991382603e-05,
+        "resonance": 0.0,
+        "dry": 0.0
+      },
+      "near_command_frequency_Hz": 1002.37447,
+      "gain_dB_at_command": {
+        "LP": -6.4841019,
+        "BP": -6.22907774,
+        "HP": -5.97405367,
+        "OUT": -152.062193
+      },
+      "BP_peak_Hz": 979.557639,
+      "BP_peak_dB": -6.22830009,
+      "model_boundary": "Vendor single-OTA macromodel, ideal op-amps, externally imposed bias currents, generic clamp diodes and chosen offset trim voltages."
+    },
+    {
+      "deck": "design/spec/modules/spice/filter-1000-high-gain0.cir",
+      "status": "PASS - model only",
+      "cutoff_command_Hz": 1000,
+      "resonance_feedback_g": 1.7,
+      "dry_gain_command": 0,
+      "bias_currents_A": {
+        "integrator_each": 2.4592779991382603e-05,
+        "resonance": 7.74160122164049e-05,
+        "dry": 0.0
+      },
+      "near_command_frequency_Hz": 1002.37447,
+      "gain_dB_at_command": {
+        "LP": 9.35257197,
+        "BP": 9.6075964,
+        "HP": 9.86262047,
+        "OUT": -152.062193
+      },
+      "BP_peak_Hz": 979.557639,
+      "BP_peak_dB": 9.72589078,
+      "model_boundary": "Vendor single-OTA macromodel, ideal op-amps, externally imposed bias currents, generic clamp diodes and chosen offset trim voltages."
+    },
+    {
+      "deck": "design/spec/modules/spice/filter-self-oscillation-vendor.cir",
+      "status": "PASS - model only",
+      "test": "Self-oscillation after small input kick, 30..50ms observation window",
+      "measures_V": {
+        "bp_max": 1.145648,
+        "bp_min": -1.257074,
+        "lp_max": 1.626354,
+        "lp_min": -0.7891298
+      },
+      "limitations": "Ideal amplifiers, imposed bias currents and generic diode model; no hardware amplitude/stability claim."
+    }
+  ],
+  "G06_model_result": "Changing ideal dry bias current leaves LP/BP/HP response unchanged within 0.01 dB; OUT changes by >20 dB.",
+  "limitations": [
+    "Vendor explicitly warns bandwidth and phase-margin optimism greater than twofold.",
+    "Real exponential converter, PNP current servos, amplifier dynamics, tolerance/temperature, rail startup and power-off protection are NOT RUN by these AC decks.",
+    "Offset trimmer fixtures are +0.3 V for BP/LP/RES and -0.3 V for DRY; they are not hardware calibration values.",
+    "The single transient fixture only establishes bounded oscillation in this model; hardware amplitude, overload and recovery remain unverified."
+  ]
+}

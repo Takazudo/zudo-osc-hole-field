@@ -1,0 +1,130 @@
+{
+  "schema_version": 1,
+  "facts": [
+    {
+      "fact_id": "fact-pnp-manufacturer",
+      "record_id": "rec-pnp",
+      "source_id": "src-pnp-datasheet",
+      "class": "PROJECT_STATE",
+      "value": "Nexperia",
+      "unit": "NONE",
+      "conditions": "Manufacturer of the project-selected exact shortlist identity.",
+      "locator": "src-pnp-datasheet: title block or OSC-ES-1 row parts[id=pnp].manufacturer",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-pnp-project-selection",
+      "record_id": "rec-pnp",
+      "source_id": "src-pnp-shortlist",
+      "class": "PROJECT_STATE",
+      "value": {
+        "manufacturer": "Nexperia",
+        "mpn": "MMBT3906,215",
+        "package": "SOT-23",
+        "lcsc": "not listed in the shortlist",
+        "roles": "general transistor",
+        "source_status": "UNVERIFIED"
+      },
+      "unit": "NONE",
+      "conditions": "OSC-ES-1 dated proposal row; exact source status and availability statements are not supplier allocation.",
+      "locator": "src-pnp-shortlist: JSON row parts[id=pnp]",
+      "provenance": "PROJECT-CHOICE",
+      "verdict": "NOT APPLICABLE",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-pnp-orderable-identity",
+      "record_id": "rec-pnp",
+      "source_id": "src-pnp-datasheet",
+      "class": "PROJECT_STATE",
+      "value": {
+        "manufacturer": "Nexperia",
+        "mpn": "MMBT3906,215",
+        "package": "SOT-23"
+      },
+      "unit": "NONE",
+      "conditions": "Exact complete orderable identifier in the selected package; does not establish supplier stock.",
+      "locator": "Section/table audit: src-pnp-datasheet: retained source does not establish complete exact MPN MMBT3906,215; see project shortlist selection",
+      "provenance": "UNVERIFIED",
+      "verdict": "UNSOURCED",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-pnp-pinout",
+      "record_id": "rec-pnp",
+      "source_id": "src-pnp-datasheet",
+      "class": "PROJECT_STATE",
+      "value": "pin 1 B -> pad 1; pin 2 E -> pad 2; pin 3 C -> pad 3",
+      "unit": "NONE",
+      "conditions": "No schematic or placement/net binding is claimed. Manufacturer pin functions are source-backed only when a retained primary document names the product family.",
+      "locator": "src-pnp-datasheet: Pin configuration/function table",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-pnp-collector-emitter-voltage",
+      "record_id": "rec-pnp",
+      "source_id": "src-pnp-datasheet",
+      "class": "GUARANTEED_ELECTRICAL",
+      "value": {
+        "maximum": -40
+      },
+      "unit": "V",
+      "conditions": "MMBT3906; collector open base; maximum rating.",
+      "locator": "src-pnp-datasheet: PDF page index 0, printed page 1, Table 1 quick reference, VCEO row",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-pnp-product-function",
+      "record_id": "rec-pnp",
+      "source_id": "src-pnp-datasheet",
+      "class": "PROJECT_STATE",
+      "value": "Manufacturer source identifies MMBT3906,215 as the shortlisted general transistor device; this is not project suitability.",
+      "unit": "NONE",
+      "conditions": "Product family description only; no project application or electrical guarantee implied.",
+      "locator": "src-pnp-datasheet: document title block and product description",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-pnp-procurement-status",
+      "record_id": "rec-pnp",
+      "source_id": "src-pnp-shortlist",
+      "class": "PROJECT_STATE",
+      "value": "UNVERIFIED",
+      "unit": "NONE",
+      "conditions": "Time-stamped OSC-ES-1 state on 2026-09-28; current stock, lead time, consignment, and JLC assembly are not established.",
+      "locator": "src-pnp-shortlist: JSON row parts[id=pnp].sourcing.status/jlcpcb_assembly",
+      "provenance": "PROJECT-CHOICE",
+      "verdict": "UNSOURCED",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-pnp-mechanical-fit",
+      "record_id": "rec-pnp",
+      "source_id": "src-pnp-shortlist",
+      "class": "PROJECT_STATE",
+      "value": "Provisional package-family envelope only; board/land-pattern fit has not been physically checked.",
+      "unit": "NONE",
+      "conditions": "Selected footprint family and display envelope do not establish exact-part placement or solderability.",
+      "locator": "Section/table audit: src-pnp-shortlist: parts[id=pnp].package; CAD receipt is provisional family geometry",
+      "provenance": "PROJECT-CHOICE",
+      "verdict": "NEEDS BENCH",
+      "depends_on": [],
+      "expression": ""
+    }
+  ]
+}

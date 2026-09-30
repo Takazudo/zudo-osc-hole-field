@@ -1,0 +1,55 @@
+---
+title: "Fixed front panel and restylable PCB artwork"
+description: "The 318 × 298 × 2 mm unvalidated panel PCB, its locked apertures and indicator windows, and the proposal artwork."
+sidebar_position: 41
+---
+
+> **Unvalidated draft — not fabrication-ready.** No populated panel, optical coupon or mechanical stack has been measured. Do not order this PCB from the current files.
+
+![KiCad top render of the unvalidated fixed-hole panel](/assets/osc-hole-field/panel-kicad-top.png)
+
+The generated `boards/panel/panel.kicad_pcb` is one flat 318 × 298 × 2.0 mm PCB. The jack field is an 18 × 10 grid above an 18 × 8 control field; the gold divider is at panel y = 166 mm. `design/grid/placements.lock.json` alone sets all 438 fixed centres. The KiCad readback contains 324 drilled apertures and 114 undrilled indicator windows; no support or service aperture is added to the panel.
+
+## Geometry and status
+
+`SOURCED` means carried from the R21 design handoff or an exact retained manufacturer source. `DERIVED` means computed from a project source such as the placement lock or partition. `PROPOSAL` means a project-selected value that still needs its stated physical or manufacturing check.
+
+| Item | Current value | Status and qualification |
+| --- | --- | --- |
+| Panel extents | 318 × 298 mm | **SOURCED** from the fixed R21 panel frame; all x/y centres stay locked. |
+| Panel thickness | 2.0 mm | **PROPOSAL**; board setting and panel parameters agree. Stack and seating remain unmeasured. |
+| Outline corner radius | 3.5 mm | **PROPOSAL**. |
+| Jack apertures | 180 × Ø6.2 mm | **PROPOSAL**; actual jack variant, nut and seated fit remain open. |
+| Pot apertures | 101 × Ø6.3 mm | **PROPOSAL**; routed at the stated 6.3 mm threshold. |
+| Toggle apertures | 30 × Ø5.2 mm | **PROPOSAL**; drilled below 6.3 mm. |
+| Button apertures | 8 × Ø5.0 mm | **PROPOSAL**; drilled below 6.3 mm. |
+| Octave-selector apertures | 5 × Ø7.0 mm shaft-only | **PROPOSAL**; routed. The separate Ø9.5 mm M9 carrier bores are not panel holes; selector fit is NOT RUN #55. |
+| Indicator windows | 114 × Ø1.6 mm; bare FR4, front/back mask open, no drill | **PROPOSAL**; optical visibility, bleed and registration are NOT RUN #64. |
+| Front support drills | 0 | **DERIVED** from the #35 partition handoff. The panel mounting-hole list is empty. |
+| Panel artwork | Black mask, white silk, exposed ENIG accents | **PROPOSAL**; finish and printed appearance are unqualified. |
+
+The project machining rule is to route apertures **6.3 mm or larger** and drill smaller apertures to **+0.13/−0.08 mm**. This records the proposed process split; it is not a fabrication instruction. Aperture dimensions remain conditional on exact installed hardware and coupons.
+
+The 438 locked features comprise 180 jacks, 101 pots, 30 toggles, 8 buttons, 5 octave shafts and 114 indicator windows. The KiCad readback checks every UID and centre against the lock, plus each non-window aperture diameter. The 35 EL support holes, 30 P optical-post clearances, J/P/K edge supports and K's 191 Ø2.2 mm service-tool apertures belong to their internal PCBs. None is a front-panel drill. The conditional EXT power pocket is a separate enclosure reservation and adds no panel-face opening.
+
+The downstream board assignment keeps the 180 jacks and 102 non-stage indicator windows on J, the 139 pots/toggles/buttons on P, the five octave selectors on O1–O5, and the 12 stage indicator windows on EL. This is a board-ownership change only; no panel centre moves.
+
+The selector assembly keeps five Ø7 mm shaft-only front apertures. Its Ø9.5 mm M9 bushing bores sit in a separate carrier, following the [selected 3+2 assembly proposal](../decisions/osc-selector-assembly.mdx). Installed shaft, carrier and adapter fit remains NOT RUN #55.
+
+## Perimeter clip projection
+
+The current #35 proposal uses segmented enclosure clips in clear parts of the 0–3 mm perimeter border. It defines no continuous solid lip or exact clip profile. The selected clip segments must avoid the owner copper border and the projected hardware/support envelopes; installed clearance and tool access remain NOT RUN #65.
+
+The fixed artwork places 0.27 mm exposed-copper/mask border lines inside that band: the top line is at y = 2.2 mm, the bottom at y = 295.8 mm, the left at x = 2.2 mm and the right at x = 315.8 mm. A front-facing clip covering any of those line segments would obscure the artwork, so those segments are excluded from clip contact.
+
+P spans x = 1–317 mm. Its six Ø3.2 mm support collars are centred at x = 3.5 and 314.5 mm. Each collar reaches x = 1.9 or 316.1 mm, leaving 1.9 mm to the panel edge and projecting 1.1 mm into the 0–3 mm border. Clip placement must exclude those collar projections. At the outer jack columns x = 6.5 and 311.5 mm, the imported Ø8.3 mm nut trial envelopes begin 2.35 mm from their respective panel edges and project 0.65 mm into the border. That nut diameter is a trial assumption; the exact nut OD is UNSOURCED. The 0.65 mm figure is conditional geometry, not a measured hardware clearance.
+
+## Artwork and regeneration
+
+The baseline artwork comes from the imported R21 grid and art-only renderer. The title is **ZUDO / OSC HOLE FIELD**. It contains 180 jack labels, 142 control labels, 71 toggle-position words, 65 icon/title headings, 155 exposed-gold accent brackets, 131 white brackets, mixer relation marks, a gold border and the y = 166 mm divider. Toggle words are at least 1.0 mm high, silk strokes at least 0.15 mm, and copper strokes at least 0.2 mm.
+
+The panel regeneration retained 6,399 generated artwork primitives and all eight unowned drawing items; no managed artwork item was edited. The ownership probe also passed on a scratch board after adding an owner silk item and editing a generated label. The KiCad 10 top render was inspected against the prior layout: the 318 × 298 mm face, title, labels, brackets, divider and all fixed openings retain the same layout. The panel board itself is byte-identical across regeneration.
+
+Run `bash scripts/panel/regen.sh` for the panel outputs or `bash scripts/checks/regen-all.sh` for the complete aggregate. `scripts/panel/check_panel.py` verifies the exact 438 locked feature set, centres, NPTH versus undrilled window types, and aperture diameters. KiCad 10.0.6 panel DRC reported zero violations and zero unconnected items.
+
+These checks cover generated geometry and KiCad rules. They do not prove the jack nut/shoulder fit, selector seating, clip strength, case access, mask/ENIG appearance, indicator optics, or the final board stack. The panel remains an unvalidated draft; physical checks for #55, #65 and #64, and source realization under #57, remain NOT RUN. No fabrication files were generated.

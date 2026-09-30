@@ -1,0 +1,67 @@
+---
+title: "AO — attenuverter and offset draft"
+description: "Six independent precision attenuverter/offset cells with bounded headroom and open pitch-CV qualification."
+sidebar_position: 155
+---
+
+> **Unvalidated draft — not bench tested.** This capture is a proposed circuit, not a qualified pitch-CV processor or fabrication release.
+
+A01–A06 are independent from the six envelope columns above them. Each occupies three locked jacks (`IN`, `OFFSET`, `OUT`), two locked pots (`ATTEN ±`, manual `OFFSET`) and four locked LEDs (IN magnitude, OFFSET magnitude, OUT magnitude and OUT clip). All 54 UIDs are read from `design/grid/placements.lock.json`; no panel centre moved. The R21 handoff defines `OUT = gain × IN + manual offset + OFFSET CV`, with gain intended from −1 to +1. OSC-ES-1 selects B103 10 kΩ behind input/remote buffers, B104 100 kΩ between buffered ±5 V, protected 100 kΩ input cells, precision output isolation and pre-isolation ±10 V clip sensing.
+
+```mermaid
+flowchart LR
+  I[IN jack] --> IF[ADG5412F + clamp + precision buffer]
+  IF --> RB[remote buffer] --> AP[B103 attenuverter]
+  IF --> AP
+  O[OFFSET jack] --> OF[ADG5412F + clamp + precision buffer]
+  R[buffered ±5 V] --> MP[B104 manual offset]
+  AP --> SUM[100 kΩ matched inverting sum]
+  OF --> SUM
+  MP --> SUM
+  SUM --> INV[unity sign restore] --> PRE[OUT_INTERNAL]
+  PRE --> CL[±10 V clip detector]
+  PRE --> LED[OUT magnitude]
+  PRE --> OUT[precision output, 499 Ω + 499 Ω, jack sense] --> J[OUT jack]
+```
+
+## Captured net contract
+
+| Net | Connected pins | Value / note |
+| --- | --- | --- |
+| `IN_TIP`, `OFFSET_TIP` | Locked jack tip → ADG5412F source-facing switch → 10 kΩ/clamp input and 100 kΩ pulldown | Both inputs use the standard power-off isolation cell. Jack normal contacts are unused. |
+| `IN_BUFFER`, `OFFSET_BUFFER` | Precision OPA4197 followers | IN also drives an isolated remote buffer for the panel ATTEN pot. Both have separate magnitude bridges. |
+| `IN_REMOTE`, `ATTEN_OUT` | Remote buffer → B103 10 kΩ; wiper guarded by 1 kΩ and 10 MΩ fail resistor → precision attenuverter | With endpoint fraction α and matched 100 kΩ input/feedback, ideal `ATTEN_OUT = (2α−1) × IN_BUFFER`. The wiper is buffered; no op-amp summing node crosses the board interconnect. |
+| `REF5`, `REFN5`, `MANUAL_OFFSET` | REF5050 local ±5 V buffers → B104 100 kΩ → precision follower | Ideal manual range −5 to +5 V; reference tolerance and source load remain unqualified. |
+| `SUM_NEG`, `OUT_INTERNAL` | Three 100 kΩ inputs plus 100 kΩ feedback inverting summer → 100 kΩ unity inverter | The second stage restores the handoff sign. `OUT_INTERNAL` is the pre-isolation clip and magnitude monitor. |
+| `CLIP_HALF`, `OUT_TIP` | Half-scale comparator against buffered ±5 V; precision output cell drives the jack through 2 × 499 Ω and senses it by 10 kΩ / 100 pF | Ideal clip indication begins when the internal sum reaches ±10 V; threshold and load behavior need bench calibration. |
+
+Signal critical parts are in `AO_CORE:${SHEETNAME}`; indicator drivers/LEDs are in `AO_INDICATORS:${SHEETNAME}`. The analog summing and feedback nets, precision input sense, references and clip divider are local, with `ATTEN_SUM`, `SUM_NODE`, `RESTORE_NODE`, `OUT_INTERNAL` and `CLIP_HALF` marked sensitive. The two panel pots may be remote only through the standard buffered source/wiper arrangement. Every component has `Block`, `Role`, `MPN`, `Manufacturer`, `LCSC` and applicable `Island` metadata. Exact resistor values without a verified orderable identity remain unresolved MPNs rather than silent substitutes.
+
+## Range, headroom and error choice
+
+Nominal intended ranges are `IN = ±5 V`, `OFFSET CV = ±5 V`, manual offset `±5 V`, and `gain = −1..+1`. The mathematical sum reaches **±15 V** when all three contributions align; a ±12 V powered amplifier cannot reproduce that. The design retains the full controls and lights clip around ±10 V internally. At the extremes it must saturate; recovery, error sign, actual output swing into load and how the clip LED behaves during rail limiting are bench gates. The ideal SPICE transfer decks include ±15 V mathematical cases solely to check wiring algebra, with unlimited ideal op-amp rails. They do not claim a physical ±15 V output. A narrower manual ±2 V range was considered, but would change the handoff's useful offset role; ±5 V plus explicit clipping is the planning default. An unisolated ±10 V manual reference and a general output cell were rejected for headroom and pitch-CV error risk.
+
+Precision was chosen to keep pitch-CV use plausible, not qualified. At 1 V/oct, **1 mV = 1.2 cents**. A conditional room-temperature budget for a 1 V signal is:
+
+| Contribution | Assumption and worst illustrative term | Cents at 1 V |
+| --- | --- | ---: |
+| Matched 100 kΩ ratios at gain endpoint | Each 0.1% part may oppose its pair; attenuverter, summer and restore each contribute up to 0.2% ratio error, up to 6 mV combined. The +1 attenuverter endpoint partly cancels its own ratio, so this is conservative. | 7.2 |
+| OPA4197 offset in core signal path | Up to five effective 100 µV offsets, with noise gains up to 2: about 1 mV illustrative bound. The retained OPA4197 PDF specifies ±100 µV maxima at stated supply/common-mode conditions, not a whole-cell ±12 V guarantee. | 1.2 |
+| OPA4197 temperature drift | Five stages × 2.5 µV/°C × gain 2 × 50°C = 1.25 mV illustrative maximum at the source's stated conditions. | 1.5 |
+| Endpoint/contact, B103 taper, reference accuracy, resistor TCR, leakage, loading | No complete exact-part/temperature/assembly evidence. | **Unbounded here** |
+
+This is a **partial error budget**, not a claim that the cell stays within 9.9 cents. It also excludes the voltage of manual/offset CV contributions and jack/sense drop under load. Calibration must measure zero at ATTEN centre, ±1 endpoint gain, OFFSET CV unity, manual midpoint/endpoints, output DC and drift, and clip thresholds at ±10 V. An owner-defined cents tolerance is still required before accepting pitch-CV service.
+
+## Model and current evidence
+
+Seven ideal-opamp ngspice DC cases in `design/spec/modules/spice/offset-*.cir` check gain −1/0/+1, mixed offset/CV and the mathematical ±15 V extreme. Every modeled `OUT_INTERNAL` differs from the algebraic target by under 1 mV. Pot contact resistance, saturation, op-amp macromodel, output isolation, LEDs, temperature and recovery are not modeled. `design/reports/spice/offset.json` records the runs.
+
+The planning worksheet `design/reports/current/offset.json` counts per cell three whole OPA4197 packages, one OPA4196, two ADG5412F, two comparator packages, one REF5050, three magnitude LEDs, one clip LED, manual pot, input feeds and an output load. The six-cell **planning upper** is +12 V 196.95 mA, −12 V 173.55 mA and +5 V 1.8 mA. Guaranteed maxima are null. The amount is material to #33/#34 rail closure and could force topology/package consolidation; it is neither a measured current nor a supplier guarantee.
+
+## Bench and partition gates
+
+Verify the actual B103/B104 endpoint and centre transfer, 100 kΩ input impedance and power-off patch behavior; probe remote-pot wiper failure, cable capacitance and op-amp stability; check sum clipping and recovery for all extreme combinations, jack loading and shorts; measure LED thresholds/brightness without disturbing the precision path; compare source-to-output cents error and drift over temperature; and measure reference/rail load at startup and steady state. Board partition must keep the sensitive summing/feedback nodes with their amplifiers and provide a documented interconnect for the buffered pot signals. The selector-hole conflict elsewhere on the panel and final mechanical stack also remain open.
+
+## Source I/O allocation
+
+[Issue #60's source partition](./osc-io-partition.mdx) assigns raw jack, input isolation/clamp, local output feedback and magnitude drivers to the jack region, with complete fitted packages and local bypasses. The generated manifest is the current allocation authority; earlier broad module-island descriptions above describe the logical circuit grouping. Only checked buffered signals, conditioned logic, references, permitted wipers, and power/AGND are candidate connector nets. Physical boards and connector loads remain #35 work; this is an unvalidated draft.

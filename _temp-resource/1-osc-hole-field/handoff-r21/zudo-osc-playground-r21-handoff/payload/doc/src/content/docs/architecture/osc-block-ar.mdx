@@ -1,0 +1,18 @@
+---
+title: "AR \u2014 circuit task"
+sidebar_position: 44
+---
+
+## Functional contract
+
+ASR/AR/LOOP; linear/curved; stage gate selection rise/fall; manual trigger. RISE/FALL pots with stage-gated ENV-strength lamps; ENV/BIP/EOC/STG outputs.
+
+## Work before schematic lock
+
+Freeze SIG semantics and retrigger behavior in a truth table. The UI is ideal behavior only. Define trigger thresholds, EOC pulse duration, bipolar output scale and CV law. Never load timing capacitor with indicator.
+
+All corresponding port/control cells are in the canonical grid. Read the generated per-instance entries in `project/osc-playground/block-contracts.json`; do not infer pinout or voltages from those visual labels.
+
+## Deliverable
+
+A reviewed one-channel schematic, explicit signal/CV ranges, chosen exact parts and pin maps, corner calculations, simulation/bench plan, power budget and factory test procedure. Replication count follows the current spec, not historical panel versions. Never patch independent blocks internally just to simplify testing; use external test cables or clearly temporary fixtures.

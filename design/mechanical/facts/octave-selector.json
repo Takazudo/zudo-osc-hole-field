@@ -1,0 +1,152 @@
+{
+  "schema_version": 1,
+  "exact_mpn": "SRBV160803",
+  "authority": "Alps Alpine SRBV catalogue drawing No.7; product list exact row.",
+  "source": {
+    "file": "design/mechanical/sources/alps-srbv.pdf",
+    "sha256": "4389058192ce8e89188d5c1c0f23de85945916542cd477ba04f3c75ac9f69ec8",
+    "url": "https://tech.alpsalpine.com/cms.media/product_catalog_sw_04_srbv_en_7f096645b6.pdf"
+  },
+  "facts": {
+    "mounting_surface_to_shaft_end": {
+      "value": null,
+      "unit": "mm",
+      "source_locator": null,
+      "status": "UNSOURCED",
+      "note": "L=15 mm is measured from the drawing actuator datum; full installed PCB-to-tip requires stack validation."
+    },
+    "actuator_length_L": {
+      "value": 15,
+      "unit": "mm",
+      "source_locator": "physical PDF page 0 product list SRBV160803; page 3 Drawing No.7 L table",
+      "status": "SOURCE",
+      "note": ""
+    },
+    "shaft_diameter": {
+      "value": 6,
+      "unit": "mm",
+      "source_locator": "Exact SRBV160803 Operation Part Details (a); retained alps-srbv-shaft.gif",
+      "status": "SOURCE",
+      "note": "Nominal only; 4.5 mm flat dimension and C1 chamfer, no stated general tolerance."
+    },
+    "body_height": {
+      "value": 7.5,
+      "unit": "mm",
+      "source_locator": "physical PDF page 0 product list 16.2\u00d718.5\u00d77.5; page 3 Drawing No.7 side view",
+      "status": "SOURCE",
+      "note": ""
+    },
+    "recommended_panel_hole": {
+      "value": null,
+      "unit": "mm",
+      "source_locator": null,
+      "status": "UNSOURCED",
+      "note": "No manufacturer-recommended panel hole. Project selects carrier \u00d89.5 \u00b10.1 for nominal M9 bushing, and a separate front \u00d87.0 \u00b10.1 hole for only nominal \u00d86 shafts/extensions. Source does not give shaft tolerance; allocated maximum\u00d86.1 plus axis0.1 and radial wobble0.2 must be qualified in #55."
+    },
+    "seated_height": {
+      "value": null,
+      "unit": "mm",
+      "source_locator": null,
+      "status": "UNSOURCED",
+      "note": "Board-to-panel seating and nut/cap fit await mechanical coupon."
+    },
+    "support_beyond_solder_joints": {
+      "value": "M9x0.75 bushing plus two mounting features; source dimensions \u00d82 PCB holes, not \u00d82 solid legs. Retain all legs and original PTH pads.",
+      "unit": "NONE",
+      "source_locator": "physical PDF page 3 Drawing No.7 side view and mounting-hole drawing",
+      "status": "SOURCE",
+      "note": ""
+    },
+    "positions": {
+      "value": 6,
+      "unit": "count",
+      "source_locator": "physical PDF page 0 SRBV160803 row; page 3 Drawing No.7 circuit diagram",
+      "status": "SOURCE",
+      "note": ""
+    },
+    "detent_angle": {
+      "value": {
+        "nominal": 30,
+        "tolerance": 3
+      },
+      "unit": "degree",
+      "source_locator": "physical PDF page 0 SRBV160803 product row",
+      "status": "SOURCE",
+      "note": ""
+    },
+    "body_width": {
+      "value": 16.2,
+      "unit": "mm",
+      "source_locator": "physical PDF page 0 SRBV160803 product row",
+      "status": "SOURCE",
+      "note": ""
+    },
+    "body_length": {
+      "value": 18.5,
+      "unit": "mm",
+      "source_locator": "physical PDF page 0 SRBV160803 product row",
+      "status": "SOURCE",
+      "note": ""
+    },
+    "mounting_hole_spacing": {
+      "value": 16,
+      "unit": "mm",
+      "source_locator": "physical PDF page 3 Drawing No.7 mounting-hole dimensions",
+      "status": "SOURCE",
+      "note": ""
+    },
+    "mounting_hole_diameter": {
+      "value": 2,
+      "unit": "mm",
+      "source_locator": "physical PDF page 3 Drawing No.7 mounting-hole dimensions",
+      "status": "SOURCE",
+      "note": ""
+    },
+    "common_terminals": {
+      "value": [
+        1,
+        10
+      ],
+      "unit": "terminal",
+      "source_locator": "physical PDF page 3 Drawing No.7 circuit diagram viewed from A",
+      "status": "SOURCE",
+      "note": ""
+    },
+    "position_terminals": {
+      "value": [
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "unit": "terminal",
+      "source_locator": "physical PDF page 3 Drawing No.7 circuit diagram viewed from A",
+      "status": "SOURCE",
+      "note": ""
+    },
+    "dummy_terminals": {
+      "value": [
+        8,
+        9
+      ],
+      "unit": "terminal",
+      "source_locator": "physical PDF page 3 Drawing No.7 dummy terminals table",
+      "status": "SOURCE",
+      "note": ""
+    }
+  },
+  "lug_resolution": {
+    "status": "CONDITIONAL DRAFT SELECTED; physical qualification OPEN",
+    "fixed_center_pitch_mm": 17,
+    "same_orientation_bore_overlap_mm": 1,
+    "alternating_bore_web_mm": 0.416609,
+    "alternating_copper_overlap_mm": 0.183391,
+    "decision": "Coplanar candidates rejected. Select alternating 0/180 degree, 13 mm stepped 3+2 adapters and custom extensions. Hole overlap alone cannot prove solid-leg collision; complete 18.2 mm support envelope retained.",
+    "design_spec": "design/mechanical/selector-assembly.json",
+    "tracking_issue": "https://github.com/Takazudo/zudo-osc-hole-field/issues/47",
+    "physical_qualification_issue": "https://github.com/Takazudo/zudo-osc-hole-field/issues/55"
+  },
+  "status": "Unvalidated conditional draft; physical installed fit NOT RUN"
+}

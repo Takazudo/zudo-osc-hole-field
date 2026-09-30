@@ -1,0 +1,107 @@
+{
+  "schema_version": 1,
+  "status": "HISTORICAL pre-#62 fanout failure; resolved by local reference buffers in current source",
+  "source_domain": "EXT requirement only",
+  "nominal_reference_V": {
+    "OSC_REF5": 5,
+    "OSC_REFN5": -5
+  },
+  "actual_full_temperature_reference_bounds": "UNSOURCED in retained owner facts; #62 must establish or bound. Do not treat a generic +/-12V harness envelope as actual +/-5V reference accuracy.",
+  "minimum_identified_load": {
+    "trimmers": {
+      "count": 10,
+      "mpn": "TC33X-2-103E",
+      "nominal_ohm": 10000,
+      "tolerance_fraction": 0.25,
+      "source_fact_id": "fact-trim-103-nominal-resistance",
+      "nominal_mA_each_rail": 10,
+      "low_resistance_corner_mA_each_rail": 13.333333333333334
+    },
+    "panel_pots": {
+      "count_bipolar": 10,
+      "count_unipolar": 5,
+      "mpn": "PTV09A-4020F-B104",
+      "nominal_ohm": 100000,
+      "tolerance_fraction": 0.2,
+      "source_fact_id": "fact-b104-resistance",
+      "nominal_mA": {
+        "OSC_REF5": 1.25,
+        "OSC_REFN5": 1.0
+      },
+      "low_resistance_corner_mA": {
+        "OSC_REF5": 1.5625,
+        "OSC_REFN5": 1.25
+      }
+    },
+    "nominal_subtotal_mA": {
+      "OSC_REF5": 11.25,
+      "OSC_REFN5": 11.0
+    },
+    "low_resistance_subtotal_mA": {
+      "OSC_REF5": 14.895833333333334,
+      "OSC_REFN5": 14.583333333333334
+    },
+    "omitted_from_subtotal": "All fixed dividers, bias feeds, feedback branches, wiper receiver current, input bias, cable capacitance and dynamic/partial-power current; subtotal is a lower bound on full load, not an upper bound."
+  },
+  "standard_constraints": {
+    "shared_driver_dc_mA_max": 2,
+    "pots_per_local_fanout_pair_max": 6,
+    "source": "design/standard/electrical-standard.json remote-buffer/reference-generator notes"
+  },
+  "reference_sensitivity_not_guarantee": {
+    "magnitude_range_V": [
+      4.5,
+      5.5
+    ],
+    "purpose": "Deliberately broad +/-10% reference diagnostic; not manufacturer accuracy evidence",
+    "minimum_trim_only_mA_each_rail": 7.2,
+    "maximum_trim_only_mA_each_rail": 14.666666666666666
+  },
+  "driver_evidence": {
+    "manufacturer": "Texas Instruments",
+    "mpn": "OPA4197IPWR",
+    "source_url": "https://www.ti.com/lit/ds/symlink/opa4197.pdf",
+    "source_sha256": "27653a7d5e965cbb2d23f7998919ebd774efd5cd3e126b8f0881469ae91166fd",
+    "physical_pdf_pages": [
+      6,
+      7
+    ],
+    "printed_pages": [
+      "7",
+      "8"
+    ],
+    "locator": "6.7 Open-loop gain / OUTPUT; footnote1 simultaneous high-current channels",
+    "conclusion": "Published gain and swing limits use2k/10k loads; +/-65mA is typical short circuit at+/-18V, not guaranteed accuracy/headroom for this shared +/-5V fanout at actual load rails. No sourcing capability PASS inferred."
+  },
+  "harness_branch_boundary": "Panel branch nominal1.25/1mA is distinct from core-local ten-trimmer load. After #62 each actual driver and branch must include all resistor paths/tolerances and shared AGND movement; partial-power/source-off paths remain #59 OPEN.",
+  "original_direct_trimmer_refs": [
+    "RVO1106",
+    "RVO1110",
+    "RVO1206",
+    "RVO1210",
+    "RVO1306",
+    "RVO1310",
+    "RVO1406",
+    "RVO1410",
+    "RVO1506",
+    "RVO1510"
+  ],
+  "original_panel_pot_refs": [
+    "RV104",
+    "RV105",
+    "RV107",
+    "RV204",
+    "RV205",
+    "RV207",
+    "RV304",
+    "RV305",
+    "RV307",
+    "RV404",
+    "RV405",
+    "RV407",
+    "RV504",
+    "RV505",
+    "RV507"
+  ],
+  "superseded_by": "design/reports/oscillator-reference-fanout.json"
+}

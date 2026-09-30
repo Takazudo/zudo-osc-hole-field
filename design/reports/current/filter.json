@@ -1,0 +1,199 @@
+{
+  "schema_version": 1,
+  "module": "filter",
+  "authority": "PROPOSAL (planning, owner-delegated)",
+  "status": "Captured package planning worksheet; not hardware or a guaranteed maximum",
+  "IC_packages_per_instance": {
+    "ADG5412FBRUZ": 4,
+    "LM13700M_NOPB": 2,
+    "OPA4196IDR": 10,
+    "OPA4197IPWR": 2,
+    "REF5050AIDR": 1
+  },
+  "breakdown": [
+    {
+      "load": "OPA4196IDR",
+      "count": 10,
+      "typical_unit_mA": {
+        "+12V": 0.56,
+        "-12V": 0.56,
+        "+5V": 0
+      },
+      "planning_unit_mA": {
+        "+12V": 1.0,
+        "-12V": 1.0,
+        "+5V": 0
+      },
+      "basis": "Whole quad packages including unused channels. Source OPA4197 p8 or OPA4196 p8; full-temperature Iq maxima. No output current included here."
+    },
+    {
+      "load": "OPA4197IPWR",
+      "count": 2,
+      "typical_unit_mA": {
+        "+12V": 4,
+        "-12V": 4,
+        "+5V": 0
+      },
+      "planning_unit_mA": {
+        "+12V": 6.0,
+        "-12V": 6.0,
+        "+5V": 0
+      },
+      "basis": "Whole quad packages including unused channels. Source OPA4197 p8 or OPA4196 p8; full-temperature Iq maxima. No output current included here."
+    },
+    {
+      "load": "ADG5412FBRUZ",
+      "count": 4,
+      "typical_unit_mA": {
+        "+12V": 0.9,
+        "-12V": 0.5,
+        "+5V": 0
+      },
+      "planning_unit_mA": {
+        "+12V": 1.3,
+        "-12V": 0.7,
+        "+5V": 0
+      },
+      "basis": "ADG5412F Rev C Table 1 p4 \u00b115 V normal-mode table; extrapolation allowance at project \u00b112 V, not guaranteed at this voltage."
+    },
+    {
+      "load": "LM13700M_NOPB",
+      "count": 2,
+      "typical_unit_mA": {
+        "+12V": 4,
+        "-12V": 4,
+        "+5V": 0
+      },
+      "planning_unit_mA": {
+        "+12V": 6,
+        "-12V": 6,
+        "+5V": 0
+      },
+      "basis": "Planning source has 16 LM13700 packages. 6 mA allowance including bias currents; module evidence must replace estimate."
+    },
+    {
+      "load": "Four magnitude indicators",
+      "count": 4,
+      "typical_unit_mA": {
+        "+12V": 0.25,
+        "-12V": 0.25,
+        "+5V": 0
+      },
+      "planning_unit_mA": {
+        "+12V": 1.25,
+        "-12V": 1.25,
+        "+5V": 0
+      },
+      "basis": "OSC-ES-1 brightness envelope; per-rail peaks need not coincide."
+    },
+    {
+      "load": "Four external output loads",
+      "count": 4,
+      "typical_unit_mA": {
+        "+12V": 0.05,
+        "-12V": 0.05,
+        "+5V": 0
+      },
+      "planning_unit_mA": {
+        "+12V": 0.5,
+        "-12V": 0.5,
+        "+5V": 0
+      },
+      "basis": "5 V into 100k typical / 10k planning load; no simultaneous-short guarantee."
+    },
+    {
+      "load": "Reference/control/expo/feedback reserve",
+      "count": 1,
+      "typical_unit_mA": {
+        "+12V": 7,
+        "-12V": 7,
+        "+5V": 0
+      },
+      "planning_unit_mA": {
+        "+12V": 12,
+        "-12V": 12,
+        "+5V": 0
+      },
+      "basis": "Includes REF5050, four +/-5V offset trim tracks (4mA/rail), manual pots, signal pots, current converters/mirror and feedback networks. Conservative overlap with inherited OTA bias allowance is not subtracted. Replace with actual operating-point/bench bounds."
+    },
+    {
+      "load": "Input-isolator enable feeds",
+      "count": 1,
+      "typical_unit_mA": {
+        "+12V": 0,
+        "-12V": 0,
+        "+5V": 0.2
+      },
+      "planning_unit_mA": {
+        "+12V": 0,
+        "-12V": 0,
+        "+5V": 0.3
+      },
+      "basis": "Four enable feeds approximately 5V/101k each, plus digital input-current allowance; no other +5V consumer in this family."
+    }
+  ],
+  "instances": [
+    {
+      "instance": "F1",
+      "planning_typical_mA": {
+        "+12V": 33.4,
+        "-12V": 31.8,
+        "+5V": 0.2
+      },
+      "planning_upper_mA": {
+        "+12V": 58.2,
+        "-12V": 55.8,
+        "+5V": 0.3
+      },
+      "guaranteed_maximum_mA": {
+        "+12V": null,
+        "-12V": null,
+        "+5V": null
+      }
+    },
+    {
+      "instance": "F2",
+      "planning_typical_mA": {
+        "+12V": 33.4,
+        "-12V": 31.8,
+        "+5V": 0.2
+      },
+      "planning_upper_mA": {
+        "+12V": 58.2,
+        "-12V": 55.8,
+        "+5V": 0.3
+      },
+      "guaranteed_maximum_mA": {
+        "+12V": null,
+        "-12V": null,
+        "+5V": null
+      }
+    },
+    {
+      "instance": "F3",
+      "planning_typical_mA": {
+        "+12V": 33.4,
+        "-12V": 31.8,
+        "+5V": 0.2
+      },
+      "planning_upper_mA": {
+        "+12V": 58.2,
+        "-12V": 55.8,
+        "+5V": 0.3
+      },
+      "guaranteed_maximum_mA": {
+        "+12V": null,
+        "-12V": null,
+        "+5V": null
+      }
+    }
+  ],
+  "planning_upper_total_mA": {
+    "+12V": 174.6,
+    "-12V": 167.4,
+    "+5V": 0.9
+  },
+  "guaranteed_maximum_status": "NOT ESTABLISHED - actual bias, signal, temperature, converter, startup and fault loads unqualified",
+  "decoupling_nF_per_instance": 3700,
+  "note": "Two dual-OTA packages provide four actual OTA sections; whole amplifier packages and unused followers are charged. No per-module bulk allocation. #33/#34 owns whole-instrument closure."
+}

@@ -1,0 +1,189 @@
+{
+  "schema_version": 1,
+  "standard_id": "OSC-ES-1",
+  "status": "Model-only evidence; all cells remain NEEDS BENCH",
+  "oracle": "KiCad 10.0.6 pinned image, ngspice-44.2",
+  "cells": [
+    {
+      "id": "input_fault_switch",
+      "status": "NOT RUN",
+      "reason": "No retained usable vendor/validated circuit model for the full cell; ideal checks cover only named topology cases. No hardware claim."
+    },
+    {
+      "id": "high_impedance_input",
+      "status": "NOT RUN",
+      "reason": "No retained usable vendor/validated circuit model for the full cell; ideal checks cover only named topology cases. No hardware claim."
+    },
+    {
+      "id": "summing_node_input",
+      "status": "NOT RUN",
+      "reason": "No retained usable vendor/validated circuit model for the full cell; ideal checks cover only named topology cases. No hardware claim."
+    },
+    {
+      "id": "general_output",
+      "status": "NOT RUN",
+      "reason": "No retained usable vendor/validated circuit model for the full cell; ideal checks cover only named topology cases. No hardware claim."
+    },
+    {
+      "id": "precision_output",
+      "status": "PASS - TI MODEL ONLY",
+      "cases": 12,
+      "failed_cases": 0,
+      "report": "design/reports/spice/precision-output-vendor.json",
+      "limit": "TI OPAx197 Final 1.3 is applicable to OPA4197, but tolerance, board/cable parasitics and physical stability remain NOT RUN."
+    },
+    {
+      "id": "remote_buffer",
+      "status": "NOT RUN",
+      "reason": "No retained usable vendor/validated circuit model for the full cell; ideal checks cover only named topology cases. No hardware claim."
+    },
+    {
+      "id": "bipolar_attenuverter",
+      "status": "PASS - IDEAL MODEL ONLY",
+      "deck": "design/spec/cells/spice/attenuverter-ideal.cir",
+      "measurements": {
+        "v(out0)": {
+          "value": -4.99999,
+          "target": -5,
+          "tolerance": 0.001
+        },
+        "v(out05)": {
+          "value": 0.0,
+          "target": 0,
+          "tolerance": 0.001
+        },
+        "v(out1)": {
+          "value": 4.99999,
+          "target": 5,
+          "tolerance": 0.001
+        }
+      },
+      "limit": "Model transfer only; not vendor behavior, stability, tolerance, fault survival or bench qualification."
+    },
+    {
+      "id": "dc_control_source",
+      "status": "NOT RUN",
+      "reason": "No retained usable vendor/validated circuit model for the full cell; ideal checks cover only named topology cases. No hardware claim."
+    },
+    {
+      "id": "level_attenuator",
+      "status": "NOT RUN",
+      "reason": "No retained usable vendor/validated circuit model for the full cell; ideal checks cover only named topology cases. No hardware claim."
+    },
+    {
+      "id": "reference_generator",
+      "status": "NOT RUN",
+      "reason": "No retained usable vendor/validated circuit model for the full cell; ideal checks cover only named topology cases. No hardware claim."
+    },
+    {
+      "id": "octave_reference",
+      "status": "NOT RUN",
+      "reason": "No retained usable vendor/validated circuit model for the full cell; ideal checks cover only named topology cases. No hardware claim."
+    },
+    {
+      "id": "gate_trigger_input",
+      "status": "PASS - IDEAL MODEL ONLY",
+      "deck": "design/spec/cells/spice/gate-threshold-ideal.cir",
+      "measurements": {
+        "rising": {
+          "value": 1.471965,
+          "target": 1.471965,
+          "tolerance": 0.002
+        },
+        "falling": {
+          "value": 0.971509,
+          "target": 0.971509,
+          "tolerance": 0.002
+        }
+      },
+      "limit": "Model transfer only; not vendor behavior, stability, tolerance, fault survival or bench qualification."
+    },
+    {
+      "id": "magnitude_indicator",
+      "status": "PASS - IDEAL MODEL ONLY",
+      "deck": "design/spec/cells/spice/magnitude-bridge-ideal.cir",
+      "measurements": {
+        "@dledp[id]": {
+          "value": 0.0008928462,
+          "target": 0.0008928571428571428,
+          "tolerance": 2e-06
+        },
+        "@dledn[id]": {
+          "value": 0.0008928462,
+          "target": 0.0008928571428571428,
+          "tolerance": 2e-06
+        }
+      },
+      "limit": "Model transfer only; not vendor behavior, stability, tolerance, fault survival or bench qualification."
+    },
+    {
+      "id": "clip_detector",
+      "status": "PASS - IDEAL MODEL ONLY",
+      "deck": "design/spec/cells/spice/clip-window-ideal.cir",
+      "measurements": {
+        "negative": {
+          "value": -10.0,
+          "target": -10,
+          "tolerance": 0.002
+        },
+        "positive": {
+          "value": 10.0,
+          "target": 10,
+          "tolerance": 0.002
+        }
+      },
+      "limit": "Model transfer only; not vendor behavior, stability, tolerance, fault survival or bench qualification."
+    },
+    {
+      "id": "stage_indicator",
+      "status": "PASS - IDEAL MODEL ONLY",
+      "deck": "design/spec/cells/spice/stage-mask-ideal.cir",
+      "measurements": {
+        "@dledon[id]": {
+          "value": 0.0004950378,
+          "target": 0.0005,
+          "tolerance": 2e-05
+        },
+        "@dledoff[id]": {
+          "value": 4.948723e-08,
+          "target": 0,
+          "tolerance": 1e-06
+        }
+      },
+      "limit": "Model transfer only; not vendor behavior, stability, tolerance, fault survival or bench qualification."
+    },
+    {
+      "id": "switch_button_input",
+      "status": "NOT RUN",
+      "reason": "No retained usable vendor/validated circuit model for the full cell; ideal checks cover only named topology cases. No hardware claim."
+    },
+    {
+      "id": "decoupling_bulk",
+      "status": "NOT RUN",
+      "reason": "No retained usable vendor/validated circuit model for the full cell; ideal checks cover only named topology cases. No hardware claim."
+    },
+    {
+      "id": "trimmer",
+      "status": "NOT RUN",
+      "reason": "No retained usable vendor/validated circuit model for the full cell; ideal checks cover only named topology cases. No hardware claim."
+    },
+    {
+      "id": "slew_island",
+      "status": "NOT RUN",
+      "reason": "No retained usable vendor/validated circuit model for the full cell; ideal checks cover only named topology cases. No hardware claim."
+    },
+    {
+      "id": "precision_output_ideal_sweep",
+      "status": "FAIL - IDEAL MODEL OVERSHOOT TARGET",
+      "cases": 12,
+      "failed_cases": 6,
+      "report": "design/reports/spice/precision-output-sweep.json",
+      "limit": "Diagnostic zero-delay high-gain source only; failure does not predict vendor amplifier or hardware response."
+    },
+    {
+      "id": "remote_buffer_cable_stability",
+      "status": "NOT RUN",
+      "reason": "No validated OPA4196 model and 300 mm harness parasitic characterization retained; ideal unity source would not establish phase margin."
+    }
+  ]
+}

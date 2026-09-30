@@ -1,0 +1,85 @@
+{
+  "receipt_version": 1,
+  "identity": {
+    "asset_id": "ic15-op_precision",
+    "record_id": "rec-op-precision",
+    "manufacturer": "Texas Instruments",
+    "mpn": "OPA4197IPWR",
+    "package": "TSSOP-14",
+    "variant_notes": "AVAILABLE"
+  },
+  "acquisition": {
+    "provider": "KiCad 10 stock symbol and retained manufacturer/creator document",
+    "source_url": "https://www.ti.com/lit/ds/symlink/opa4197.pdf",
+    "acquired_on": "2026-09-28",
+    "original_filenames": [
+      "OPA4197IPWR.stock.kicad_sympart",
+      "OPA4197.pdf"
+    ],
+    "sha256": {
+      "circuit/sources/ic-library/cad/OPA4197IPWR.stock.kicad_sympart": "87569dbfd36e514e9ed68814ea7141f52516c395701c270a2484b85d640fc672",
+      "circuit/sources/ic-library/OPA4197.pdf": "27653a7d5e965cbb2d23f7998919ebd774efd5cd3e126b8f0881469ae91166fd"
+    }
+  },
+  "representation": {
+    "files": [
+      "symbols/src/OPA4197IPWR.kicad_sym"
+    ],
+    "formats": [
+      "kicad_sym"
+    ],
+    "units": "KiCad schematic units",
+    "original_paths": [
+      "circuit/sources/ic-library/cad/OPA4197IPWR.stock.kicad_sympart",
+      "circuit/sources/ic-library/OPA4197.pdf"
+    ]
+  },
+  "fidelity": {
+    "class": "derived",
+    "reason": "Source pin functions audited against the retained document; KiCad stock or custom graphics normalized for this draft identity.",
+    "evidence": [
+      "AVAILABLE",
+      "https://www.ti.com/lit/ds/symlink/opa4197.pdf"
+    ]
+  },
+  "derivation": {
+    "derived": true,
+    "input_sha256": {
+      "circuit/sources/ic-library/cad/OPA4197IPWR.stock.kicad_sympart": "87569dbfd36e514e9ed68814ea7141f52516c395701c270a2484b85d640fc672",
+      "circuit/sources/ic-library/OPA4197.pdf": "27653a7d5e965cbb2d23f7998919ebd774efd5cd3e126b8f0881469ae91166fd"
+    },
+    "tool": "scripts/libgen/fixtures/build_ic_assets.py, build_ic_custom.py, or build_passive_symbols.py",
+    "tool_version": "1",
+    "parameters": {
+      "normalization": "exact MPN/manufacturer/LCSC fields, local footprint reference; alias parent units expanded where required"
+    },
+    "output_sha256": {
+      "symbols/src/OPA4197IPWR.kicad_sym": "473d7079d093c326ac5814ef93c7d1c2220db1ed4ff7dc2a11f142226be18003"
+    }
+  },
+  "cad_use": {
+    "symbol": "zudo-osc-hole-field:OPA4197IPWR",
+    "footprint": "zudo-osc-hole-field:TSSOP-14_4.4x5mm_P0.65mm",
+    "model_path": "${KIPRJMOD}/../../footprints/kicad/zudo-osc-hole-field.3dshapes/IC_TSSOP-14_4.4x5.0.wrl",
+    "transform": {
+      "offset": null,
+      "rotation": null,
+      "scale": null
+    },
+    "seating_plane": null
+  },
+  "checks": {
+    "performed": [
+      "Issue-15 all-unit KiCad 10 ERC fixture and project library checker"
+    ],
+    "remaining_physical_checks": [
+      "Confirm exact package drawing/lot, actual circuit net mapping, electrical suitability and procurement before board release.",
+      "Confirm exact body/height, land pattern, fixed-layout clearance, and electrical suitability before hardware use; catalogue family geometry is provisional."
+    ]
+  },
+  "publication": {
+    "preview_selected": true,
+    "download_published": false,
+    "permitted_scope": null
+  }
+}

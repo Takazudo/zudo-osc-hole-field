@@ -1,0 +1,138 @@
+---
+title: "Electrical standard — OSC-ES-1"
+description: "Owner-delegated electrical proposal, reusable cell values, exact shared parts and preliminary rail budget."
+sidebar_position: 30
+---
+
+OSC-ES-1 is **PROPOSAL (planning, owner-delegated)**. It fixes the design inputs for schematic capture. It is an unvalidated draft: no circuit, protection, calibration, supply startup or factory route is qualified by this page.
+
+The machine-readable authority is `design/standard/electrical-standard.json`; shared identities are in `design/standard/parts-shortlist.json`. E01–E09 are recorded separately in `project/osc-hole-field/electrical-decisions.json`. Existing owner decisions D01–D12 and the fixed panel positions are unchanged.
+
+**The historical preliminary −12 V estimate is 712.655 mA against a 640 mA ceiling.** The later captured ledger also fails the original source comparison. [Issue #48](../decisions/osc-supply-architecture.mdx) selects a conditional external-source requirement; #52 captures its logical inlet and non-orderable boundary for conditional partition. Exact circuit realization is open in #59. Original capacity deficits remain recorded, and physical qualification stays open in #57.
+
+## Levels and loads
+
+| Planning default | Decision |
+| --- | --- |
+| Rails | Adopt +12 V / −12 V analog and +5 V logic under the #48 external-source requirement; the pinned source is retained as comparison. |
+| Audio | Adopt ±5 V, 10 Vpp nominal unloaded. |
+| Bipolar CV | Adopt ±5 V nominal. Every input must survive ±12 V continuously; linear operation at the fault limits is not required. |
+| Envelope | Adopt ENV 0…8 V and BIP −5…+5 V; `BIP = 1.25 × ENV − 5 V`. |
+| Pitch | Adopt 1.000 V/oct and 0.1% resistors; factory calibration and measured ratio errors are required. |
+| Gate outputs | Adopt nominal 0/+5 V through a CV buffer and general output cell. |
+| Gate inputs | Adopt approximately 1.5 V rising / 1.0 V falling. Actual ideal resistor-network results are 1.471965 V / 0.971509 V. |
+| Input impedance | Adopt 100 kΩ nominal, ±5% design target. Attenuverter pots see a buffer. |
+| General outputs | Adopt nominal 1 kΩ outside feedback, realized as two 499 Ω / 0.5 W resistors in series. |
+| Precision outputs | Replace 100–470 Ω with 998 Ω inside compensated feedback to reduce fault current. |
+| Input protection | Replace bare resistor/rail clamps with source-facing ADG5412F isolation, current limiting and drain-side clamps. |
+| Magnitude brightness | Adopt approximately 0.893 mA at 5 V magnitude: 5 V / 5.6 kΩ = 0.893 mA. |
+| Clip threshold | Adopt ±10 V on the internal node before level attenuation or VCA. |
+| Current ceilings | Historical pinned-source ceilings: 960 / 640 / 400 mA. The #48 external contract requires 1600 / 1500 / 300 mA continuous delivery; physical capacity is unknown. |
+
+Nominal output loading is 100 kΩ; the design load envelope extends down to 10 kΩ. A 998 Ω general output loses 0.988% into 100 kΩ and 9.075% into 10 kΩ. Precision outputs instead sense the jack after the isolation resistor. Their **load-induced** DC error target is at most 1 mV between open circuit and 10 kΩ at −5, 0 and +5 V. The separate calibrated static path target is 2 mV. Neither target establishes sample-and-hold droop or oscillator tracking.
+
+No jack switch contact creates a normal connection. Unpatched modules remain independent.
+
+## One role-to-part table
+
+| Role | Manufacturer and complete MPN | Package | Use |
+| --- | --- | --- | --- |
+| `audio` | Texas Instruments OPA4196IDR | SOIC-14 | Audio buffers, summing, shaping and remote signal drives |
+| `cv` | Texas Instruments OPA4196IDR | SOIC-14 | Control sources, gate-output buffers and reference fan-out |
+| `indicator` | Texas Instruments OPA4196IDR | SOIC-14 | Magnitude bridges, stage drivers and clip monitor buffers |
+| `precision` | Texas Instruments OPA4197IPWR | TSSOP-14 | Pitch, MULT, AO, S&H/slew and master reference paths |
+
+Cell code requests a role. The package, unit count and pin contract belong to that role; a family change requires compatible pins and package plus renewed stability/current checks. SOIC and TSSOP are not interchangeable footprints. No alternate is automatically approved.
+
+The [OPA4196 primary datasheet](https://www.ti.com/lit/ds/symlink/opa4196.pdf), SBOS869, printed page 8, gives 140 µA typical and 250 µA maximum per amplifier over −40…125 °C at no load. Its typical 2.5 MHz bandwidth and 5.5 V/µs falling slew rate support selecting it for a ±5 V audio draft; that is not a guaranteed distortion or bandwidth result for these cells. [OPA4197 SBOS737C](https://www.ti.com/lit/ds/symlink/opa4197.pdf), page 8, gives 1 mA typical and 1.5 mA maximum over temperature. Receipts retain hashes, conditions and physical PDF page indices.
+
+TL074 everywhere was rejected because the old estimate exceeded the negative-rail target at maximum current. TL074HIDR would add 140.8 mA across the 160 allocated audio amplifier sections relative to OPA4196 using their full-temperature Iq maxima. OPA4171AIPWR on the 376 allocated CV/indicator sections would add 150.4 mA. These comparisons include whole packages, including unused sections. The [TL074H](https://www.ti.com/lit/ds/symlink/tl074h.pdf) and [OPA4171](https://www.ti.com/lit/ds/symlink/opa4171.pdf) receipts document the rejected choices.
+
+## Protection and fault behavior
+
+Every input jack first meets an ADG5412FBRUZ **source** terminal; the drain faces the local circuit. The switch is enabled from +5 V through 1 kΩ with a 100 kΩ pulldown. Ground remains connected through the patch return. The [manufacturer describes power-off protection specifically at source pins](https://www.analog.com/en/products/adg5412f.html); reversing S and D defeats that design intent. A bare clamp to a supply rail was rejected because an incoming patch can energize an unpowered rail.
+
+For a buffered input, the drain has a 100 kΩ pulldown and a 10 kΩ resistor to the amplifier input, with BAT54S clamps at the amplifier side. For a summer, the drain feeds its 100 kΩ summing resistor; it does not also receive a 100 kΩ pulldown. Pitch-sensitive input leakage, switch resistance and hot Schottky leakage must be included in the final error calculation.
+
+Issue #15 retained the Analog Devices Rev. C manufacturer PDF at `circuit/sources/ic-library/ADG5412F.pdf` (SHA-256 `ea3d12f983fc79a728d302675a0428a6d244e95828154bc4c970d34e23195a96`) and audited the TSSOP pin map. The datasheet's source-pin protection specifications do not establish a system-level ±55 V rating. Project-supply fault behavior at ±12 V and the associated current budget remain unvalidated. The preliminary current model uses the ±15 V table as an explicit assumption; it does not promote that table to a guaranteed ±12 V specification.
+
+Both output types use two series 499 Ω / 0.5 W resistors. Two opposite project outputs at ±12 V have two such chains, giving about 12 mA. One output forced by an external opposite ±12 V source can put 24 V across its chain: 24.048 mA and 0.289 W per resistor. Resistor derating, amplifier dissipation and recovery remain tests. A shorted precision output can saturate its driver; restoration must recover without latch-up. No all-outputs-shorted supply guarantee is made.
+
+G08 remains open for hardware. Test powered, unpowered, one rail missing and startup; both input polarities; multiple simultaneously patched inputs; ground present; rail lift and drain leakage; one sustained output short and output-to-output contention. Protection does not imply zero leakage. The input switch is not a system-level ±55 V rating.
+
+## Reusable cell values
+
+Functional terminal connections and all constituent parts are in the JSON. Exact-component records now project numerical pin maps from #15 and #29's retained manufacturer evidence. The retained ALFA RPAR 2020 v.7 datasheet confirms the AS3340D SOIC-16 identity and all 16 pin functions. Supplier availability, project net binding, oscillator electrical and supply suitability, calibration, and physical fit remain open. All 19 cells remain `NEEDS BENCH`; #18 implements and simulates them.
+
+| Cell | Fixed starting implementation |
+| --- | --- |
+| Input fault switch | ADG5412FBRUZ, S toward jack, ±12 V supply, 1 kΩ enable feed and 100 kΩ pulldown |
+| High-impedance input | 100 kΩ drain load, 10 kΩ input limiter, BAT54S clamp, unity buffer of appropriate role |
+| Summing-node input | 100 kΩ / 0.1% after fault switch; parent unity summer uses 100 kΩ feedback and 10 pF C0G |
+| General output | Unity buffer, two 499 Ω / 0.5 W in series after local feedback |
+| Precision output | Same resistor pair inside DC feedback; 100 Ω jack-to-inverting-input path; 1 nF driver-to-inverting-input local feedback. TI OPAx197 model passes 12/12 specified cases at 27 °C; physical stability remains open. |
+| Remote buffer | Internal harness driver with 100 Ω isolation, 10 kΩ feedback and 100 pF local feedback |
+| Bipolar attenuverter | Buffered signal drives 10 kΩ pot to ground; 1 kΩ wiper series, 10 MΩ fail resistor; equal 100 kΩ / 0.1% input/feedback and 10 pF; `OUT = 2 × WIPER − INPUT` |
+| DC source | 100 kΩ pot between buffered references; 1 kΩ wiper series, 10 MΩ return, 10 nF C0G and CV follower |
+| Level attenuator | Buffered audio to 10 kΩ pot; 1 kΩ wiper series, 10 MΩ return and audio follower |
+| Reference generator | REF5050AIDR, 100 nF input and 1 µF output; precision +5 V follower and −5 V inverter with equal 10 kΩ; gate reference uses 22 kΩ/100 kΩ divider and follower |
+| Octave reference | Five 10 kΩ / 0.1% series resistors between buffered −2/+3 V endpoints; all six taps buffered; +3 V gain uses 10 kΩ, 19.1 kΩ + 1 kΩ trimmer; −2 V uses 10 kΩ/20 kΩ inversion of buffered +1 V |
+| Gate/trigger input | Protected buffer; 100 kΩ input / 33.2 kΩ to +5 V biased divider; LM393BIDR on +12 V/GND, 10 kΩ reference, 390 kΩ hysteresis, 4.7 kΩ pull-up and SN74HC14 inversion |
+| Magnitude indicator | One indicator amplifier, four proposed Nexperia BAS16GW-QX bridge diodes, white LED on bridge DC diagonal, 5.6 kΩ sense resistor; feedback senses bridge AC return. Bridge transfer and LED current still need bench checks. |
+| Clip detector | Buffered monitor, 100 kΩ/100 kΩ divide-by-two; two LM393B comparators on ±12 V; ±5 V thresholds, open-collector wired-OR, red LED and 22.1 kΩ from +12 V |
+| Stage indicator | Buffered ENV through 150 kΩ/10 kΩ divider; amplifier/MMBT3904 sink with 1 kΩ emitter sense and 10 kΩ base resistor; reverse B–E diode; 2N7002 mutes command except own stage; 100 kΩ mute pull-up |
+| Switch/button input | 10 kΩ pull-up, 1 kΩ series, 100 nF filter and SN74HC14; contact to ground |
+| Decoupling/bulk | 100 nF per IC supply pin; initial 4.7 µF per board/rail; one 2.2 kΩ bleeder per instrument rail |
+| Trimmer | TC33X-2-103E, 10 kΩ with end-strapped wiper and 100 kΩ limiting resistor; octave uses TC33X-2-102E separately |
+| Slew island | Precision pre/post buffers, 2.2 kΩ + 500 kΩ rheostat, five parallel 100 nF C0G capacitors; precision output after the island |
+
+The precision output's 100 pF is a selected starting value. Test 0, 100 pF, 1 nF and 5 nF cable loads, open/100 kΩ/10 kΩ resistance, and ±5 V steps. Targets: no sustained oscillation, at most 10% overshoot, settling within 1 mV by 1 ms. Component tolerances and amplifier models must be included; arithmetic alone does not test compensation.
+
+Gate thresholds include pull-up loading. Comparator supply choice matters: gate comparators run from +12 V/GND so their low output is suitable for 5 V logic. Clip comparators run from ±12 V and may sink toward −12 V; their outputs drive only the analog LED circuit. The acceptance windows for real gate thresholds are 1.35…1.65 V rising and 0.85…1.15 V falling.
+
+Magnitude LEDs show absolute magnitude or time-averaged rectified audio; brightness saturates when the driver loses headroom. The 92 magnitude drivers and ten clip monitor buffers may monitor only already buffered nodes. The twelve stage drivers follow ENV only during their own attack/release stage and are off during idle and sustain. Driver circuits stay with LEDs; a buffered monitor signal and return may cross boards. Oscillators and noise still have no LEDs.
+
+## Controls, references and local islands
+
+The 47 attenuverters and four audio level controls retain PTV09A-4020F-B103, 10 kΩ linear. Each signal source is buffered before reaching the pot, so the jack still sees approximately 100 kΩ. The 48 DC sources change to **PTV09A-4020F-B104, 100 kΩ linear**. Their combined worst nominal bipolar reference load falls from 48 mA to 4.8 mA per rail; the budget allows −20% resistance tolerance. The two slew controls retain PTV09A-4020F-B504, 500 kΩ. Exact B104 sourcing remains `UNVERIFIED`; body and shaft family do not change.
+
+DC pot endpoints are buffered −5/+5 V for bipolar controls or ground/+5 V for unipolar controls. A module must explicitly map that normalized voltage to its function. At most six pots share a local reference-buffer pair. The octave ladder sends only buffered tap voltages to the panel selector. At least nine precision sections implement the ladder and endpoint generation; the preliminary model separately reserves reference and selected-tap capacity.
+
+Remote control wiring is limited to buffered signals/references, returns, high-impedance wipers and conditioned logic. Its starting envelope is 300 mm and 1 nF. Raw jack sources, summing nodes, raw reference taps, hold capacitors, oscillator timing capacitors, envelope integrators and slew storage nodes stay local. RANGE selects control voltage or a local switch command rather than running a timing capacitor through the toggle harness.
+
+An island declares `island_id`, `panel_uids`, `component_refs`, `local_nets` and `allowed_crossing_nets`. Its panel hardware and listed circuit elements share one board. For each H1/H2 SLEW pot, the pot, 2.2 kΩ resistor, five-capacitor bank and pre/post buffers form that island. LF398 plus its separate 10 nF hold capacitor form a core island. Nominal slew time constants remain 1.1…251.1 ms; no zero-slew bypass or finite linear-ramp claim is added.
+
+## Calibration and factory assembly
+
+Trimmers are factory-fitted SMD components with bounded ranges and accessible adjustment/test points. Wipers strap to one end. No owner soldering, trace cutting or post-delivery component insertion is required. Socket population is a factory operation.
+
+After 20 minutes of warm-up, record serial/revision, ambient temperature, rails, instruments, settings and measured endpoints. Check precision outputs at three voltages and multiple loads; each octave step targets at most 2 mV error. A five-octave pitch sweep targets 5 cents at 25 °C after calibration, subject to the oscillator design in #29. Individual 0.1% resistors do not guarantee either target. Sample-and-hold droop needs its own acquisition, hold-time and temperature characterization.
+
+## Rail and capacitor budgets
+
+Issue #48 supersedes the original source choice with the [single-domain external source requirement](../decisions/osc-supply-architecture.mdx). The old 960/640/400 mA ceilings remain historical pinned P+B comparisons. The selected contract requires 1600/1500/300 mA continuous and 1900/1800/400 mA transient delivery; these are required values, not available source capacity. The 150/150/100 µF capacitance limits remain unchanged; count their full +20% tolerance at a monotonic ramp no faster than 10 ms. #52 captures only the non-orderable power boundary and verifies raw/load net separation; #59 owns exact protection circuits and #57 retains physical qualification.
+
+
+`rail-budget-preliminary.json` retains the 33-module, 225-signal-section planning table and splits it by role. It adds all 98 protected input buffers, 48 DC wiper buffers, 51 remote signal/level drivers, reference generation/fan-out, 92 magnitude drivers, twelve stage drivers and ten clip buffers. It rounds whole packages and charges unused sections. Some additions may overlap stages in the original rough estimate; only captured connectivity may remove that overlap.
+
+| Rail | Typical estimate | Conservative planning estimate | Design ceiling | Remaining margin |
+| --- | ---: | ---: | ---: | ---: |
+| +12 V | 379.895 mA | 724.255 mA | 960 mA | 235.745 mA |
+| −12 V | 362.495 mA | **712.655 mA** | 640 mA | **−72.655 mA** |
+| +5 V | 55.273 mA | 138.873 mA | 400 mA | 261.127 mA |
+
+Amplifier Iq uses the retained full-temperature maxima. Other ICs and internal loads include explicit planning allowances; this is not a guaranteed all-component worst case. The original count estimate carries roughly ±30% uncertainty. LED rail extremes are conservatively budgeted on both analog rails; those peaks need not occur simultaneously. Output loading includes all 82 outputs at 5 V into 10 kΩ.
+
+Issue #34 must choose a captured implementation that removes at least 72.655 mA from −12 V. First remove genuinely duplicated stages by cell composition. Then assess OPA4196 for precision buffers that do not need OPA4197 dynamics: moving fifteen whole quads would save 75 mA of maximum Iq, but requires renewed error/stability evidence and role/package migration. Lowering magnitude current is a further explicit product choice requiring visual evaluation. Do not raise the supply ceiling, ignore idle sections or call typical current a worst-case result. The resulting budget must pass before #35 partitions boards.
+
+Allocate 100 nF at every supply pin and initially 4.7 µF bulk per powered board and rail. Count every capacitor: total nominal synth-side limits are **150 µF on each analog rail and 100 µF on +5 V**, with +20% tolerance for startup calculations. The +12 V charge limit is consequently 2.16 mC; the same magnitude applies to −12 V. Local regulators and reference capacitors also consume this allowance. Bulk is allocated per board, not per module. Effective ceramic capacitance under DC bias still needs checking.
+
+This modest capacitance is not supply startup proof. The unresolved supply case of approximately 4.5 A for 2 ms against a 3 A source remains open for #24 and hardware measurements.
+
+## Sourcing and verification handoff
+
+The shortlist covers amplifier roles, LM393B comparators, HC logic, REF5050, an optional DNP 3.3 V regulator, LF398, LM13700, AS3340D, programmed NOISE2, diodes, individual transistors, a matched-pair candidate, trimmers, resistor/capacitor families, three pot values and LEDs. Never substitute an unprogrammed PIC for NOISE2. A matched transistor package alone does not establish exponential tracking performance.
+
+Exact LCSC identities viewed on 2026-09-28 include [OPA4196IDR C2057385](https://www.lcsc.com/product-detail/C2057385.html), [ADG5412FBRUZ C579073](https://www.lcsc.com/product-detail/C579073.html) and [REF5050AIDR C27804](https://www.lcsc.com/product-detail/C27804.html). These listings do not confirm JLCPCB assembly stock. Other codes are explicitly inherited from the handoff or blank; unknown sourcing is `UNVERIFIED`. B104, AS3340D, programmed NOISE2 and the three-position toggle require particular factory-route attention.
+
+`python3 design/standard/check_standard.py` checks proposal consistency and independently recomputes count, rail, threshold, gain, current and RC arithmetic. Its success means the files agree, including the negative-rail deficit. It does not run SPICE, ERC or a hardware test. Issue #18 performs cell-model/ERC work; #33/#34 replace planning current with netlist-derived demand. Exact-component inventory promotion remains in #21. Full site build is verified by the implementation manager on the merged base.

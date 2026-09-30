@@ -1,0 +1,22 @@
+AO ideal-opamp transfer model, no rail saturation
+VIN input 0 DC 4
+VMAN manual 0 DC 1
+VCV cv 0 DC -2
+EWIPER wiper 0 input 0 0.25
+RATTIN input att_sum 100k
+RATTFB att att_sum 100k
+EATT att 0 wiper att_sum 1e6
+RSUMA att sum_node 100k
+RSUMM manual sum_node 100k
+RSUMC cv sum_node 100k
+RSUMFB sum_neg sum_node 100k
+ESUM sum_neg 0 0 sum_node 1e6
+RRESTIN sum_neg restore_node 100k
+RRESTFB out restore_node 100k
+EREST out 0 0 restore_node 1e6
+.control
+op
+print v(att) v(sum_neg) v(out)
+quit
+.endc
+.end

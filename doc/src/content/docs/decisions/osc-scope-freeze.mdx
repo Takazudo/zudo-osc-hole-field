@@ -1,0 +1,17 @@
+---
+title: "R21 scope freeze and retained decisions"
+description: "Records the owner decisions that freeze the R21 layout scope and distinguish accepted choices from engineering proposals."
+sidebar_position: 10
+---
+
+## Ready for documentation
+
+The user-visible layout is now complete: 180 signal jacks and 144 occupied control cells. Both S&H cells have their requested SLEW knob. The current task ends open-ended panel brainstorming and starts disciplined documentation, evidence acquisition and circuit/PCB implementation.
+
+Preserve the grid, chosen finishes, independent blocks and factory-only soldering. Do not revive faders, eight AO cells, four large MULTs, coloured layout variants, a bent faceplate or a bank of scope displays. Do not silently delete CV inputs to save connector count.
+
+## Accepted versus proposed
+
+`decisions.json` separates user decisions from engineering proposals. The 500 kΩ/0.5 µF post-hold lag is a recommended test design; it is not a measured or user-certified final electrical range. Replacing it with a controlled-current slew topology is possible under the same knob, but needs an explicit new engineering decision and test record.
+
+All no-home-soldering work—including final inter-board soldering if any, calibrated firmware/programmed chips, rework, connectors and profile-sensitive THT components—must be included in the accepted manufacturing scope.

@@ -1,0 +1,90 @@
+{
+  "receipt_version": 1,
+  "identity": {
+    "asset_id": "footprint-testpad-d1-5mm",
+    "record_id": null,
+    "manufacturer": null,
+    "mpn": null,
+    "package": "TestPad_D1.5mm",
+    "variant_notes": "Generic footprint asset; no specific manufacturer or orderable MPN is assigned."
+  },
+  "acquisition": {
+    "provider": "GitHub repository Takazudo/zudo-pd",
+    "library_release_tag": null,
+    "source_url": "https://github.com/Takazudo/zudo-pd/blob/f25194fa73ded724e82d4561307c106480fbd9ce/footprints/kicad/zudo-power.pretty/TestPad_D1.5mm.kicad_mod",
+    "acquired_on": "2026-09-28",
+    "original_filenames": [
+      "TestPad_D1.5mm.kicad_mod"
+    ],
+    "sha256": {
+      "footprints/kicad/zudo-power.pretty/TestPad_D1.5mm.kicad_mod": "7d9cf31ecd851c892986eceb1e492b2e62cdd3e0af8be7b725df42e0223c23a5"
+    }
+  },
+  "representation": {
+    "files": [
+      "footprints/kicad/zudo-osc-hole-field.pretty/TestPad_D1.5mm.kicad_mod"
+    ],
+    "formats": [
+      "kicad_mod"
+    ],
+    "units": "KiCad schematic units; footprint and model dimensions in mm",
+    "original_paths": [
+      "footprints/kicad/zudo-power.pretty/TestPad_D1.5mm.kicad_mod"
+    ]
+  },
+  "fidelity": {
+    "class": "family",
+    "reason": "Generic mechanical or test footprint copied from the sibling library; no vendor-specific part identity is claimed.",
+    "evidence": [
+      "Source bytes are pinned to zudo-pd commit f25194fa73ded724e82d4561307c106480fbd9ce.",
+      "The footprint is an imported package representation; exact manufacturer dimensional correspondence has not been independently established here."
+    ]
+  },
+  "derivation": {
+    "derived": true,
+    "input_sha256": {
+      "footprints/kicad/zudo-power.pretty/TestPad_D1.5mm.kicad_mod": "7d9cf31ecd851c892986eceb1e492b2e62cdd3e0af8be7b725df42e0223c23a5"
+    },
+    "tool": "scripts/libgen/seed_assets.py and scripts/libgen/gen_courtyards.py",
+    "tool_version": "1",
+    "parameters": {
+      "source_commit": "f25194fa73ded724e82d4561307c106480fbd9ce",
+      "library_nickname": "zudo-osc-hole-field",
+      "operations": [
+        "extract one symbol",
+        "set local footprint nickname",
+        "normalize identity fields",
+        "generate courtyard",
+        "normalize STEP text line endings and trailing spaces"
+      ]
+    },
+    "output_sha256": {
+      "footprints/kicad/zudo-osc-hole-field.pretty/TestPad_D1.5mm.kicad_mod": "7d9cf31ecd851c892986eceb1e492b2e62cdd3e0af8be7b725df42e0223c23a5"
+    }
+  },
+  "cad_use": {
+    "symbol": null,
+    "footprint": "zudo-osc-hole-field:TestPad_D1.5mm",
+    "model_path": null,
+    "transform": {
+      "offset": null,
+      "rotation": null,
+      "scale": null
+    },
+    "seating_plane": null
+  },
+  "checks": {
+    "performed": [
+      "Source file SHA-256 values were calculated from f25194fa73ded724e82d4561307c106480fbd9ce Git objects.",
+      "Generated output SHA-256 values are checked by scripts/libgen/check_lib.py."
+    ],
+    "remaining_physical_checks": [
+      "Compare package dimensions, pin/pad numbering, orientation and seating against the exact manufacturer's drawing before using a board for fabrication."
+    ]
+  },
+  "publication": {
+    "preview_selected": false,
+    "download_published": false,
+    "permitted_scope": null
+  }
+}

@@ -1,0 +1,81 @@
+{
+  "receipt_version": 1,
+  "identity": {
+    "asset_id": "ic15-one_shot",
+    "record_id": "rec-one-shot",
+    "manufacturer": "Texas Instruments",
+    "mpn": "CD74HC221M96",
+    "package": "SOIC-16",
+    "variant_notes": "AVAILABLE"
+  },
+  "acquisition": {
+    "provider": "KiCad 10 stock symbol and retained manufacturer/creator document",
+    "source_url": "https://www.ti.com/lit/ds/symlink/cd74hc221.pdf",
+    "acquired_on": "2026-09-28",
+    "original_filenames": [
+      "CD74HC221.pdf"
+    ],
+    "sha256": {
+      "circuit/sources/ic-library/CD74HC221.pdf": "7f1f24f5229cfed79662b850f2aa6a92a1fcca9530d4c264b05af80638ad67e0"
+    }
+  },
+  "representation": {
+    "files": [
+      "symbols/src/CD74HC221M96.kicad_sym"
+    ],
+    "formats": [
+      "kicad_sym"
+    ],
+    "units": "KiCad schematic units",
+    "original_paths": [
+      "circuit/sources/ic-library/CD74HC221.pdf"
+    ]
+  },
+  "fidelity": {
+    "class": "derived",
+    "reason": "Source pin functions audited against the retained document; KiCad stock or custom graphics normalized for this draft identity.",
+    "evidence": [
+      "AVAILABLE",
+      "https://www.ti.com/lit/ds/symlink/cd74hc221.pdf"
+    ]
+  },
+  "derivation": {
+    "derived": true,
+    "input_sha256": {
+      "circuit/sources/ic-library/CD74HC221.pdf": "7f1f24f5229cfed79662b850f2aa6a92a1fcca9530d4c264b05af80638ad67e0"
+    },
+    "tool": "scripts/libgen/fixtures/build_ic_assets.py, build_ic_custom.py, or build_passive_symbols.py",
+    "tool_version": "1",
+    "parameters": {
+      "normalization": "exact MPN/manufacturer/LCSC fields, local footprint reference; alias parent units expanded where required"
+    },
+    "output_sha256": {
+      "symbols/src/CD74HC221M96.kicad_sym": "edb2cb35b79e748b6fb8e1563d898b3a0f72ea411aba812180cf7157811bbd73"
+    }
+  },
+  "cad_use": {
+    "symbol": "zudo-osc-hole-field:CD74HC221M96",
+    "footprint": "zudo-osc-hole-field:SOIC-16_3.9x9.9mm_P1.27mm",
+    "model_path": "${KIPRJMOD}/../../footprints/kicad/zudo-osc-hole-field.3dshapes/IC_SOIC-16_3.9x9.9.wrl",
+    "transform": {
+      "offset": null,
+      "rotation": null,
+      "scale": null
+    },
+    "seating_plane": null
+  },
+  "checks": {
+    "performed": [
+      "Issue-15 all-unit KiCad 10 ERC fixture and project library checker"
+    ],
+    "remaining_physical_checks": [
+      "Confirm exact package drawing/lot, actual circuit net mapping, electrical suitability and procurement before board release.",
+      "Confirm exact body/height, land pattern, fixed-layout clearance, and electrical suitability before hardware use; catalogue family geometry is provisional."
+    ]
+  },
+  "publication": {
+    "preview_selected": true,
+    "download_published": false,
+    "permitted_scope": null
+  }
+}

@@ -1,0 +1,2516 @@
+{
+  "schema_version": 1,
+  "status": "DRAFT allocation input; feed B is a proposed planning domain, not qualified hardware",
+  "module_feed_assignment": {
+    "A01": "A",
+    "A02": "B",
+    "A03": "A",
+    "A04": "B",
+    "A05": "A",
+    "A06": "B",
+    "B1": "A",
+    "B2": "B",
+    "E1": "B",
+    "E2": "B",
+    "E3": "A",
+    "E4": "B",
+    "E5": "A",
+    "E6": "B",
+    "F1": "A",
+    "F2": "B",
+    "F3": "A",
+    "H1": "A",
+    "H2": "B",
+    "M4A": "A",
+    "M4B": "B",
+    "M5A": "A",
+    "M5B": "B",
+    "N1": "A",
+    "O1": "A",
+    "O2": "A",
+    "O3": "B",
+    "O4": "A",
+    "O5": "B",
+    "OCTAVE_REF": "A",
+    "W1": "B",
+    "W2": "A",
+    "X1": "B",
+    "X2": "B"
+  },
+  "inlet_count_by_feed": {
+    "A": 1,
+    "B": 1
+  },
+  "required_draft_allowances": {
+    "H1:reference": {
+      "rail": "+12V",
+      "planning_mA": 2.0,
+      "basis": "Explicit draft allowance for one REF5050AIDR input on +12 V and its buffered reference load. Value is a design assumption, not a data-sheet maximum; inspect REF50 current over the selected condition and measure populated S&H.",
+      "sensitivity_multiplier": 2.0,
+      "guaranteed_maximum_mA": null
+    },
+    "H1:logic": {
+      "rail": "+5V",
+      "planning_mA": 4.0,
+      "basis": "Explicit draft allowance for two SN74HC14DR and one CD74HC221M96 package plus pull-up/dynamic logic demand on +5 V. Assumes bounded low switching duty; measure during trigger bursts.",
+      "sensitivity_multiplier": 2.0,
+      "guaranteed_maximum_mA": null
+    },
+    "H2:reference": {
+      "rail": "+12V",
+      "planning_mA": 2.0,
+      "basis": "Explicit draft allowance for one REF5050AIDR input on +12 V and its buffered reference load. Value is a design assumption, not a data-sheet maximum; inspect REF50 current over the selected condition and measure populated S&H.",
+      "sensitivity_multiplier": 2.0,
+      "guaranteed_maximum_mA": null
+    },
+    "H2:logic": {
+      "rail": "+5V",
+      "planning_mA": 4.0,
+      "basis": "Explicit draft allowance for two SN74HC14DR and one CD74HC221M96 package plus pull-up/dynamic logic demand on +5 V. Assumes bounded low switching duty; measure during trigger bursts.",
+      "sensitivity_multiplier": 2.0,
+      "guaranteed_maximum_mA": null
+    },
+    "inlet:A:+12V": {
+      "rail": "+12V",
+      "planning_mA": 0.1,
+      "basis": "Explicit draft 0.1 mA per-inlet TVS and capacitor leakage allowance at the declared nominal environment; no retained full-temperature leakage sum. Do not use as physical maximum.",
+      "sensitivity_multiplier": 10.0,
+      "guaranteed_maximum_mA": null
+    },
+    "inlet:A:-12V": {
+      "rail": "-12V",
+      "planning_mA": 0.1,
+      "basis": "Explicit draft 0.1 mA per-inlet TVS and capacitor leakage allowance at the declared nominal environment; no retained full-temperature leakage sum. Do not use as physical maximum.",
+      "sensitivity_multiplier": 10.0,
+      "guaranteed_maximum_mA": null
+    },
+    "inlet:A:+5V": {
+      "rail": "+5V",
+      "planning_mA": 0.1,
+      "basis": "Explicit draft 0.1 mA per-inlet TVS and capacitor leakage allowance at the declared nominal environment; no retained full-temperature leakage sum. Do not use as physical maximum.",
+      "sensitivity_multiplier": 10.0,
+      "guaranteed_maximum_mA": null
+    },
+    "inlet:B:+12V": {
+      "rail": "+12V",
+      "planning_mA": 0.1,
+      "basis": "Explicit draft 0.1 mA per-inlet TVS and capacitor leakage allowance at the declared nominal environment; no retained full-temperature leakage sum. Do not use as physical maximum.",
+      "sensitivity_multiplier": 10.0,
+      "guaranteed_maximum_mA": null
+    },
+    "inlet:B:-12V": {
+      "rail": "-12V",
+      "planning_mA": 0.1,
+      "basis": "Explicit draft 0.1 mA per-inlet TVS and capacitor leakage allowance at the declared nominal environment; no retained full-temperature leakage sum. Do not use as physical maximum.",
+      "sensitivity_multiplier": 10.0,
+      "guaranteed_maximum_mA": null
+    },
+    "inlet:B:+5V": {
+      "rail": "+5V",
+      "planning_mA": 0.1,
+      "basis": "Explicit draft 0.1 mA per-inlet TVS and capacitor leakage allowance at the declared nominal environment; no retained full-temperature leakage sum. Do not use as physical maximum.",
+      "sensitivity_multiplier": 10.0,
+      "guaranteed_maximum_mA": null
+    }
+  },
+  "case_envelope": {
+    "continuous_normal": {
+      "ambient_C": [
+        15,
+        30
+      ],
+      "rails_V": {
+        "+12V": 12,
+        "-12V": -12,
+        "+5V": 5
+      },
+      "external_load": "Existing worksheet output terms assume up to 5 V into 10 kohm per output and LED on-state terms as written; no duplicate cable/output reserve added.",
+      "NOISE2": "One fitted NOISE2 on filtered +5 V, 10 mA project planning allowance (2x the 5 mA illustrative typical); not manufacturer guaranteed. A 22 ohm feed implies 0.22 V drop at 10 mA.",
+      "state": "All worksheet upper terms summed simultaneously as a deliberately conservative conditional case. S&H and inlet additions shown separately."
+    },
+    "startup_ramp": {
+      "assumption": "Monotonic 0-to-nominal rail rise in no less than 1 ms, no downstream bulk beyond fitted inlet 1.32 uF per rail per inlet. This is a conditional capacitor charging calculation, not measured startup maximum.",
+      "increment_mA_per_inlet": {
+        "+12V": 15.84,
+        "-12V": 15.84,
+        "+5V": 6.6
+      },
+      "source": "C * dV/dt from design/power/rail-budget-input.json startup_arithmetic_filter_uF_plus_20_percent; excludes downstream decoupling and nonlinear loads."
+    },
+    "cable_10kohm": {
+      "assumption": "All standard outputs at 5 V into 10 kohm, already included in worksheet output rows; incremental current 0 mA. 499 ohm series output resistor and unloaded/short behavior are not generalized to every output.",
+      "increment_mA": {
+        "+12V": 0,
+        "-12V": 0,
+        "+5V": 0
+      }
+    },
+    "fault_short": {
+      "scope": "One S&H output shorted to AGND on each provisional feed; H1 and H2 use two fitted 499 ohm output isolation resistors in series.",
+      "conditional_resistor_path_current_mA": 12.024048,
+      "calculation": "12 V / (499 + 499) ohm = 12.024048 mA through each shorted output resistor path; applied conservatively to each analog rail for either waveform polarity, without subtracting the already budgeted 0.5 mA output allowance.",
+      "status": "CONDITIONAL resistor-path case only; op-amp supply transient, thermal/current limit, other outputs and external drive remain NOT ESTABLISHED."
+    }
+  },
+  "excluded_combinations": [
+    "Startup ramp faster than 1 ms or downstream distributed capacitor charging",
+    "Any shorted or externally driven patch cable, output contention, or \u00b112 V cable fault",
+    "Temperature outside 15\u201330 C and tolerance extremes not present in worksheet assumptions",
+    "Maximum simultaneous logic switching, LED PWM transients and relay/contact bounce",
+    "REF5050 reference and SH logic allowances above their draft planning values",
+    "More than one inlet per feed, cable voltage drop, shared return impedance or source-side sequencing"
+  ],
+  "unknown_maximum_reasons": [
+    "REF5050 supply and reference load at actual +12 V operating condition not bounded across temperature",
+    "SH HC14/HC221/pull-up transient and fault-switch demand not source- or bench-bounded",
+    "NOISE2 manufacturer supply maximum absent; 10 mA is an explicit project assumption",
+    "Inlet TVS/capacitor leakage across temperature and startup charge including all downstream capacitors not bounded",
+    "Output shorts, external drive, cable capacitance and transient op-amp supply current including issue #49 feedback network unquantified",
+    "Installed zudo-pd source capacity, connector/cable/return-path drop and startup/fault behavior unmeasured"
+  ],
+  "load_domain_assignment": {
+    "H1:0": {
+      "feed": "A",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "H1:1": {
+      "feed": "A",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "H1:2": {
+      "feed": "A",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "H1:3": {
+      "feed": "A",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "H1:4": {
+      "feed": "A",
+      "rails": [
+        "+12V"
+      ]
+    },
+    "H1:5": {
+      "feed": "A",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "H1:6": {
+      "feed": "A",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "H2:0": {
+      "feed": "B",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "H2:1": {
+      "feed": "B",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "H2:2": {
+      "feed": "B",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "H2:3": {
+      "feed": "B",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "H2:4": {
+      "feed": "B",
+      "rails": [
+        "+12V"
+      ]
+    },
+    "H2:5": {
+      "feed": "B",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "H2:6": {
+      "feed": "B",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "O1:0": {
+      "feed": "A",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "O1:1": {
+      "feed": "A",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "O1:2": {
+      "feed": "A",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "O1:3": {
+      "feed": "A",
+      "rails": [
+        "+12V"
+      ]
+    },
+    "O1:4": {
+      "feed": "A",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "O1:5": {
+      "feed": "A",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "O1:6": {
+      "feed": "A",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "O1:7": {
+      "feed": "A",
+      "rails": [
+        "+5V"
+      ]
+    },
+    "O2:0": {
+      "feed": "A",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "O2:1": {
+      "feed": "A",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "O2:2": {
+      "feed": "A",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "O2:3": {
+      "feed": "A",
+      "rails": [
+        "+12V"
+      ]
+    },
+    "O2:4": {
+      "feed": "A",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "O2:5": {
+      "feed": "A",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "O2:6": {
+      "feed": "A",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "O2:7": {
+      "feed": "A",
+      "rails": [
+        "+5V"
+      ]
+    },
+    "O3:0": {
+      "feed": "B",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "O3:1": {
+      "feed": "B",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "O3:2": {
+      "feed": "B",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "O3:3": {
+      "feed": "B",
+      "rails": [
+        "+12V"
+      ]
+    },
+    "O3:4": {
+      "feed": "B",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "O3:5": {
+      "feed": "B",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "O3:6": {
+      "feed": "B",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "O3:7": {
+      "feed": "B",
+      "rails": [
+        "+5V"
+      ]
+    },
+    "O4:0": {
+      "feed": "A",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "O4:1": {
+      "feed": "A",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "O4:2": {
+      "feed": "A",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "O4:3": {
+      "feed": "A",
+      "rails": [
+        "+12V"
+      ]
+    },
+    "O4:4": {
+      "feed": "A",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "O4:5": {
+      "feed": "A",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "O4:6": {
+      "feed": "A",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "O4:7": {
+      "feed": "A",
+      "rails": [
+        "+5V"
+      ]
+    },
+    "O5:0": {
+      "feed": "B",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "O5:1": {
+      "feed": "B",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "O5:2": {
+      "feed": "B",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "O5:3": {
+      "feed": "B",
+      "rails": [
+        "+12V"
+      ]
+    },
+    "O5:4": {
+      "feed": "B",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "O5:5": {
+      "feed": "B",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "O5:6": {
+      "feed": "B",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "O5:7": {
+      "feed": "B",
+      "rails": [
+        "+5V"
+      ]
+    },
+    "OCTAVE_REF:0": {
+      "feed": "A",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "OCTAVE_REF:1": {
+      "feed": "A",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "F1:0": {
+      "feed": "A",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "F1:1": {
+      "feed": "A",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "F1:2": {
+      "feed": "A",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "F1:3": {
+      "feed": "A",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "F1:4": {
+      "feed": "A",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "F1:5": {
+      "feed": "A",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "F1:6": {
+      "feed": "A",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "F1:7": {
+      "feed": "A",
+      "rails": [
+        "+5V"
+      ]
+    },
+    "F2:0": {
+      "feed": "B",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "F2:1": {
+      "feed": "B",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "F2:2": {
+      "feed": "B",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "F2:3": {
+      "feed": "B",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "F2:4": {
+      "feed": "B",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "F2:5": {
+      "feed": "B",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "F2:6": {
+      "feed": "B",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "F2:7": {
+      "feed": "B",
+      "rails": [
+        "+5V"
+      ]
+    },
+    "F3:0": {
+      "feed": "A",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "F3:1": {
+      "feed": "A",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "F3:2": {
+      "feed": "A",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "F3:3": {
+      "feed": "A",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "F3:4": {
+      "feed": "A",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "F3:5": {
+      "feed": "A",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "F3:6": {
+      "feed": "A",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "F3:7": {
+      "feed": "A",
+      "rails": [
+        "+5V"
+      ]
+    },
+    "N1:0": {
+      "feed": "A",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "N1:1": {
+      "feed": "A",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "N1:2": {
+      "feed": "A",
+      "rails": [
+        "+5V"
+      ]
+    },
+    "E1:0": {
+      "feed": "B",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "E1:1": {
+      "feed": "B",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "E1:2": {
+      "feed": "B",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "E1:3": {
+      "feed": "B",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "E1:4": {
+      "feed": "B",
+      "rails": [
+        "+12V"
+      ]
+    },
+    "E1:5": {
+      "feed": "B",
+      "rails": [
+        "+5V"
+      ]
+    },
+    "E1:6": {
+      "feed": "B",
+      "rails": [
+        "+5V"
+      ]
+    },
+    "E1:7": {
+      "feed": "B",
+      "rails": [
+        "+5V"
+      ]
+    },
+    "E1:8": {
+      "feed": "B",
+      "rails": [
+        "+5V"
+      ]
+    },
+    "E1:9": {
+      "feed": "B",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "E1:10": {
+      "feed": "B",
+      "rails": [
+        "+5V"
+      ]
+    },
+    "E1:11": {
+      "feed": "B",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "E1:12": {
+      "feed": "B",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "E1:13": {
+      "feed": "B",
+      "rails": [
+        "+5V"
+      ]
+    },
+    "E1:14": {
+      "feed": "B",
+      "rails": [
+        "+5V"
+      ]
+    },
+    "E1:15": {
+      "feed": "B",
+      "rails": [
+        "+5V"
+      ]
+    },
+    "E2:0": {
+      "feed": "B",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "E2:1": {
+      "feed": "B",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "E2:2": {
+      "feed": "B",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "E2:3": {
+      "feed": "B",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "E2:4": {
+      "feed": "B",
+      "rails": [
+        "+12V"
+      ]
+    },
+    "E2:5": {
+      "feed": "B",
+      "rails": [
+        "+5V"
+      ]
+    },
+    "E2:6": {
+      "feed": "B",
+      "rails": [
+        "+5V"
+      ]
+    },
+    "E2:7": {
+      "feed": "B",
+      "rails": [
+        "+5V"
+      ]
+    },
+    "E2:8": {
+      "feed": "B",
+      "rails": [
+        "+5V"
+      ]
+    },
+    "E2:9": {
+      "feed": "B",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "E2:10": {
+      "feed": "B",
+      "rails": [
+        "+5V"
+      ]
+    },
+    "E2:11": {
+      "feed": "B",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "E2:12": {
+      "feed": "B",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "E2:13": {
+      "feed": "B",
+      "rails": [
+        "+5V"
+      ]
+    },
+    "E2:14": {
+      "feed": "B",
+      "rails": [
+        "+5V"
+      ]
+    },
+    "E2:15": {
+      "feed": "B",
+      "rails": [
+        "+5V"
+      ]
+    },
+    "E3:0": {
+      "feed": "A",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "E3:1": {
+      "feed": "A",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "E3:2": {
+      "feed": "A",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "E3:3": {
+      "feed": "A",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "E3:4": {
+      "feed": "A",
+      "rails": [
+        "+12V"
+      ]
+    },
+    "E3:5": {
+      "feed": "A",
+      "rails": [
+        "+5V"
+      ]
+    },
+    "E3:6": {
+      "feed": "A",
+      "rails": [
+        "+5V"
+      ]
+    },
+    "E3:7": {
+      "feed": "A",
+      "rails": [
+        "+5V"
+      ]
+    },
+    "E3:8": {
+      "feed": "A",
+      "rails": [
+        "+5V"
+      ]
+    },
+    "E3:9": {
+      "feed": "A",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "E3:10": {
+      "feed": "A",
+      "rails": [
+        "+5V"
+      ]
+    },
+    "E3:11": {
+      "feed": "A",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "E3:12": {
+      "feed": "A",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "E3:13": {
+      "feed": "A",
+      "rails": [
+        "+5V"
+      ]
+    },
+    "E3:14": {
+      "feed": "A",
+      "rails": [
+        "+5V"
+      ]
+    },
+    "E3:15": {
+      "feed": "A",
+      "rails": [
+        "+5V"
+      ]
+    },
+    "E4:0": {
+      "feed": "B",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "E4:1": {
+      "feed": "B",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "E4:2": {
+      "feed": "B",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "E4:3": {
+      "feed": "B",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "E4:4": {
+      "feed": "B",
+      "rails": [
+        "+12V"
+      ]
+    },
+    "E4:5": {
+      "feed": "B",
+      "rails": [
+        "+5V"
+      ]
+    },
+    "E4:6": {
+      "feed": "B",
+      "rails": [
+        "+5V"
+      ]
+    },
+    "E4:7": {
+      "feed": "B",
+      "rails": [
+        "+5V"
+      ]
+    },
+    "E4:8": {
+      "feed": "B",
+      "rails": [
+        "+5V"
+      ]
+    },
+    "E4:9": {
+      "feed": "B",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "E4:10": {
+      "feed": "B",
+      "rails": [
+        "+5V"
+      ]
+    },
+    "E4:11": {
+      "feed": "B",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "E4:12": {
+      "feed": "B",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "E4:13": {
+      "feed": "B",
+      "rails": [
+        "+5V"
+      ]
+    },
+    "E4:14": {
+      "feed": "B",
+      "rails": [
+        "+5V"
+      ]
+    },
+    "E4:15": {
+      "feed": "B",
+      "rails": [
+        "+5V"
+      ]
+    },
+    "E5:0": {
+      "feed": "A",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "E5:1": {
+      "feed": "A",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "E5:2": {
+      "feed": "A",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "E5:3": {
+      "feed": "A",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "E5:4": {
+      "feed": "A",
+      "rails": [
+        "+12V"
+      ]
+    },
+    "E5:5": {
+      "feed": "A",
+      "rails": [
+        "+5V"
+      ]
+    },
+    "E5:6": {
+      "feed": "A",
+      "rails": [
+        "+5V"
+      ]
+    },
+    "E5:7": {
+      "feed": "A",
+      "rails": [
+        "+5V"
+      ]
+    },
+    "E5:8": {
+      "feed": "A",
+      "rails": [
+        "+5V"
+      ]
+    },
+    "E5:9": {
+      "feed": "A",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "E5:10": {
+      "feed": "A",
+      "rails": [
+        "+5V"
+      ]
+    },
+    "E5:11": {
+      "feed": "A",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "E5:12": {
+      "feed": "A",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "E5:13": {
+      "feed": "A",
+      "rails": [
+        "+5V"
+      ]
+    },
+    "E5:14": {
+      "feed": "A",
+      "rails": [
+        "+5V"
+      ]
+    },
+    "E5:15": {
+      "feed": "A",
+      "rails": [
+        "+5V"
+      ]
+    },
+    "E6:0": {
+      "feed": "B",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "E6:1": {
+      "feed": "B",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "E6:2": {
+      "feed": "B",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "E6:3": {
+      "feed": "B",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "E6:4": {
+      "feed": "B",
+      "rails": [
+        "+12V"
+      ]
+    },
+    "E6:5": {
+      "feed": "B",
+      "rails": [
+        "+5V"
+      ]
+    },
+    "E6:6": {
+      "feed": "B",
+      "rails": [
+        "+5V"
+      ]
+    },
+    "E6:7": {
+      "feed": "B",
+      "rails": [
+        "+5V"
+      ]
+    },
+    "E6:8": {
+      "feed": "B",
+      "rails": [
+        "+5V"
+      ]
+    },
+    "E6:9": {
+      "feed": "B",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "E6:10": {
+      "feed": "B",
+      "rails": [
+        "+5V"
+      ]
+    },
+    "E6:11": {
+      "feed": "B",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "E6:12": {
+      "feed": "B",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "E6:13": {
+      "feed": "B",
+      "rails": [
+        "+5V"
+      ]
+    },
+    "E6:14": {
+      "feed": "B",
+      "rails": [
+        "+5V"
+      ]
+    },
+    "E6:15": {
+      "feed": "B",
+      "rails": [
+        "+5V"
+      ]
+    },
+    "B1:0": {
+      "feed": "A",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "B1:1": {
+      "feed": "A",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "B1:2": {
+      "feed": "A",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "B1:3": {
+      "feed": "A",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "B1:4": {
+      "feed": "A",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "B1:5": {
+      "feed": "A",
+      "rails": [
+        "+5V"
+      ]
+    },
+    "B2:0": {
+      "feed": "B",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "B2:1": {
+      "feed": "B",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "B2:2": {
+      "feed": "B",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "B2:3": {
+      "feed": "B",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "B2:4": {
+      "feed": "B",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "B2:5": {
+      "feed": "B",
+      "rails": [
+        "+5V"
+      ]
+    },
+    "X1:0": {
+      "feed": "B",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "X1:1": {
+      "feed": "B",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "X1:2": {
+      "feed": "B",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "X1:3": {
+      "feed": "B",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "X1:4": {
+      "feed": "B",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "X1:5": {
+      "feed": "B",
+      "rails": [
+        "+5V"
+      ]
+    },
+    "X1:6": {
+      "feed": "B",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "X2:0": {
+      "feed": "B",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "X2:1": {
+      "feed": "B",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "X2:2": {
+      "feed": "B",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "X2:3": {
+      "feed": "B",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "X2:4": {
+      "feed": "B",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "X2:5": {
+      "feed": "B",
+      "rails": [
+        "+5V"
+      ]
+    },
+    "X2:6": {
+      "feed": "B",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "M5A:0": {
+      "feed": "A",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "M5A:1": {
+      "feed": "A",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "M5A:2": {
+      "feed": "A",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "M5A:3": {
+      "feed": "A",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "M5A:4": {
+      "feed": "A",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "M5A:5": {
+      "feed": "A",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "M5A:6": {
+      "feed": "A",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "M5A:7": {
+      "feed": "A",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "M5A:8": {
+      "feed": "A",
+      "rails": [
+        "+5V"
+      ]
+    },
+    "M5B:0": {
+      "feed": "B",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "M5B:1": {
+      "feed": "B",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "M5B:2": {
+      "feed": "B",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "M5B:3": {
+      "feed": "B",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "M5B:4": {
+      "feed": "B",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "M5B:5": {
+      "feed": "B",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "M5B:6": {
+      "feed": "B",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "M5B:7": {
+      "feed": "B",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "M5B:8": {
+      "feed": "B",
+      "rails": [
+        "+5V"
+      ]
+    },
+    "M4A:0": {
+      "feed": "A",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "M4A:1": {
+      "feed": "A",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "M4A:2": {
+      "feed": "A",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "M4A:3": {
+      "feed": "A",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "M4A:4": {
+      "feed": "A",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "M4A:5": {
+      "feed": "A",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "M4A:6": {
+      "feed": "A",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "M4A:7": {
+      "feed": "A",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "M4A:8": {
+      "feed": "A",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "M4A:9": {
+      "feed": "A",
+      "rails": [
+        "+5V"
+      ]
+    },
+    "M4A:10": {
+      "feed": "A",
+      "rails": [
+        "+5V"
+      ]
+    },
+    "M4B:0": {
+      "feed": "B",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "M4B:1": {
+      "feed": "B",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "M4B:2": {
+      "feed": "B",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "M4B:3": {
+      "feed": "B",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "M4B:4": {
+      "feed": "B",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "M4B:5": {
+      "feed": "B",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "M4B:6": {
+      "feed": "B",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "M4B:7": {
+      "feed": "B",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "M4B:8": {
+      "feed": "B",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "M4B:9": {
+      "feed": "B",
+      "rails": [
+        "+5V"
+      ]
+    },
+    "M4B:10": {
+      "feed": "B",
+      "rails": [
+        "+5V"
+      ]
+    },
+    "W2:0": {
+      "feed": "A",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "W2:1": {
+      "feed": "A",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "W2:2": {
+      "feed": "A",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "W2:3": {
+      "feed": "A",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "W2:4": {
+      "feed": "A",
+      "rails": [
+        "+12V"
+      ]
+    },
+    "W2:5": {
+      "feed": "A",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "W2:6": {
+      "feed": "A",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "W2:7": {
+      "feed": "A",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "W2:8": {
+      "feed": "A",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "W2:9": {
+      "feed": "A",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "W2:10": {
+      "feed": "A",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "W2:11": {
+      "feed": "A",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "W2:12": {
+      "feed": "A",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "W2:13": {
+      "feed": "A",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "W2:14": {
+      "feed": "A",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "W2:15": {
+      "feed": "A",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "W2:16": {
+      "feed": "A",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "W2:17": {
+      "feed": "A",
+      "rails": [
+        "+5V"
+      ]
+    },
+    "W1:0": {
+      "feed": "B",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "W1:1": {
+      "feed": "B",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "W1:2": {
+      "feed": "B",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "W1:3": {
+      "feed": "B",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "W1:4": {
+      "feed": "B",
+      "rails": [
+        "+12V"
+      ]
+    },
+    "W1:5": {
+      "feed": "B",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "W1:6": {
+      "feed": "B",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "W1:7": {
+      "feed": "B",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "W1:8": {
+      "feed": "B",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "W1:9": {
+      "feed": "B",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "W1:10": {
+      "feed": "B",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "W1:11": {
+      "feed": "B",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "W1:12": {
+      "feed": "B",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "W1:13": {
+      "feed": "B",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "W1:14": {
+      "feed": "B",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "W1:15": {
+      "feed": "B",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "W1:16": {
+      "feed": "B",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "W1:17": {
+      "feed": "B",
+      "rails": [
+        "+5V"
+      ]
+    },
+    "A01:0": {
+      "feed": "A",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "A01:1": {
+      "feed": "A",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "A01:2": {
+      "feed": "A",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "A01:3": {
+      "feed": "A",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "A01:4": {
+      "feed": "A",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "A01:5": {
+      "feed": "A",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "A01:6": {
+      "feed": "A",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "A01:7": {
+      "feed": "A",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "A01:8": {
+      "feed": "A",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "A01:9": {
+      "feed": "A",
+      "rails": [
+        "+5V"
+      ]
+    },
+    "A01:10": {
+      "feed": "A",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "A02:0": {
+      "feed": "B",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "A02:1": {
+      "feed": "B",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "A02:2": {
+      "feed": "B",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "A02:3": {
+      "feed": "B",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "A02:4": {
+      "feed": "B",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "A02:5": {
+      "feed": "B",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "A02:6": {
+      "feed": "B",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "A02:7": {
+      "feed": "B",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "A02:8": {
+      "feed": "B",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "A02:9": {
+      "feed": "B",
+      "rails": [
+        "+5V"
+      ]
+    },
+    "A02:10": {
+      "feed": "B",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "A03:0": {
+      "feed": "A",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "A03:1": {
+      "feed": "A",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "A03:2": {
+      "feed": "A",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "A03:3": {
+      "feed": "A",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "A03:4": {
+      "feed": "A",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "A03:5": {
+      "feed": "A",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "A03:6": {
+      "feed": "A",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "A03:7": {
+      "feed": "A",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "A03:8": {
+      "feed": "A",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "A03:9": {
+      "feed": "A",
+      "rails": [
+        "+5V"
+      ]
+    },
+    "A03:10": {
+      "feed": "A",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "A04:0": {
+      "feed": "B",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "A04:1": {
+      "feed": "B",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "A04:2": {
+      "feed": "B",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "A04:3": {
+      "feed": "B",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "A04:4": {
+      "feed": "B",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "A04:5": {
+      "feed": "B",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "A04:6": {
+      "feed": "B",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "A04:7": {
+      "feed": "B",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "A04:8": {
+      "feed": "B",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "A04:9": {
+      "feed": "B",
+      "rails": [
+        "+5V"
+      ]
+    },
+    "A04:10": {
+      "feed": "B",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "A05:0": {
+      "feed": "A",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "A05:1": {
+      "feed": "A",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "A05:2": {
+      "feed": "A",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "A05:3": {
+      "feed": "A",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "A05:4": {
+      "feed": "A",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "A05:5": {
+      "feed": "A",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "A05:6": {
+      "feed": "A",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "A05:7": {
+      "feed": "A",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "A05:8": {
+      "feed": "A",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "A05:9": {
+      "feed": "A",
+      "rails": [
+        "+5V"
+      ]
+    },
+    "A05:10": {
+      "feed": "A",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "A06:0": {
+      "feed": "B",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "A06:1": {
+      "feed": "B",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "A06:2": {
+      "feed": "B",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "A06:3": {
+      "feed": "B",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "A06:4": {
+      "feed": "B",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "A06:5": {
+      "feed": "B",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "A06:6": {
+      "feed": "B",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "A06:7": {
+      "feed": "B",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "A06:8": {
+      "feed": "B",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    },
+    "A06:9": {
+      "feed": "B",
+      "rails": [
+        "+5V"
+      ]
+    },
+    "A06:10": {
+      "feed": "B",
+      "rails": [
+        "+12V",
+        "-12V"
+      ]
+    }
+  },
+  "noise2_sensitivity": {
+    "extra_plus_5V_mA": 10.0,
+    "basis": "Double the existing 10 mA NOISE2 +5 V planning allowance to 20 mA; no manufacturer maximum is claimed."
+  }
+}

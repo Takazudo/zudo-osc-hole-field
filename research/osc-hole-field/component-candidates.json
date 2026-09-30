@@ -1,0 +1,458 @@
+[
+  {
+    "id": "bourns-ptv09a-4020f-b504",
+    "role": "Two post-S&H SLEW controls",
+    "mpn": "PTV09A-4020F-B504",
+    "code": "C5154140",
+    "quantity": "2, H1.SLEW and H2.SLEW",
+    "status": "R21 circuit candidate; JLC exact catalogue identity found, stock not reserved",
+    "recommendation": "500 kΩ linear rheostat in the same capless F-shaft mechanical family as the existing pots. Keep its local RC node and buffer on the pot PCB.",
+    "caveat": "Not user-approved final electrical value. JLC snapshot showed zero stock/minimum 10; procure through approved pre-order/external route. Pot resistance ±20%; exact pad/terminal convention and CW-slower wiring require audit. No resize of body or shaft.",
+    "sources": [
+      {
+        "label": "Bourns manufacturer family",
+        "url": "https://www.bourns.com/docs/product-datasheets/PTV09.pdf"
+      },
+      {
+        "label": "JLC exact catalogue identity",
+        "url": "https://jlcpcb.com/partdetail/BOURNS-PTV09A_4020FB504/C5154140"
+      }
+    ]
+  },
+  {
+    "id": "fh-c0g-100n-slew",
+    "role": "Separate post-S&H lag capacitor bank",
+    "mpn": "1206CG104J500NT",
+    "code": "C46348",
+    "quantity": "10: five parallel 100 nF capacitors per channel",
+    "status": "R21 candidate; JLC description reviewed; primary capacitor specification not retained",
+    "recommendation": "Nominal 0.50 µF C0G per cell, separate from the LF398 hold capacitor. Low-absorption finite-band lag prototype.",
+    "caveat": "JLC describes 100 nF/50 V/C0G/±5%/1206. Electrical limits and insulation resistance require exact manufacturer evidence before selection. Never substitute X7R silently. Five placements per bank; no claim this is cheapest final implementation.",
+    "sources": [
+      {
+        "label": "JLC exact record",
+        "url": "https://jlcpcb.com/partdetail/47351-1206CG104J500NT/C46348"
+      }
+    ]
+  },
+  {
+    "id": "ti-lf398m",
+    "role": "Two analogue S&H cells",
+    "mpn": "LF398M/NOPB",
+    "code": "LCSC C1346172",
+    "quantity": 2,
+    "status": "LCSC identity verified; JLC assembly listing not verified",
+    "recommendation": "First-prototype recommendation: one dedicated S&H IC per channel, with local hold capacitor and protected trigger pulse.",
+    "caveat": "SOIC-14, not SOIC-8. It tracks while SAMPLE is asserted: provide a short pulse for edge sampling. Acquisition time, offset, hold step and droop require tests with the actual capacitor. No precision-pitch or long-hold guarantee. Rev C §6.6 gives up to 200 pA hold leakage at TJ=25 C: with 10 nF this alone is 20 mV/s. Precision pitch/long-hold behavior is NOT established. Test 10 nF and 100 nF candidates with appropriately increased acquisition time.",
+    "package": "SOIC-14",
+    "research_checked_in_this_pass": true,
+    "sources": [
+      {
+        "label": "TI product and datasheet",
+        "url": "https://www.ti.com/product/LF398-N"
+      },
+      {
+        "label": "LCSC exact part",
+        "url": "https://www.lcsc.com/product-detail/C1346172.html"
+      },
+      {
+        "label": "JLC Global Sourcing process",
+        "url": "https://jlcpcb.com/help/article/how-to-use-jlcpcb-global-sourcing-parts-service"
+      }
+    ]
+  },
+  {
+    "id": "ti-hc221",
+    "role": "One-shot for both S&H trigger inputs",
+    "mpn": "CD74HC221M96",
+    "code": "C133954",
+    "quantity": 1,
+    "status": "Exact part visible in JLC monostable category; order review pending",
+    "recommendation": "Dual non-retriggerable one-shot: clean rising edge → bounded acquisition pulse. Set unused pins and reset explicitly.",
+    "caveat": "Use conditioned logic-level inputs, not raw modular voltages. Pulse width must exceed worst-case acquisition/settling; 50–100 us is a test range, not a qualified setting. Triggers during a busy pulse are intentionally not new samples.",
+    "package": "SOIC-16",
+    "research_checked_in_this_pass": true,
+    "sources": [
+      {
+        "label": "TI product",
+        "url": "https://www.ti.com/product/CD74HC221"
+      },
+      {
+        "label": "JLC monostable category",
+        "url": "https://jlcpcb.com/parts/2nd/Logic/Monostable_Multivibrators_2176"
+      }
+    ]
+  },
+  {
+    "id": "ti-lm393",
+    "role": "Trigger conditioning and optional clip detectors",
+    "mpn": "LM393DR",
+    "code": "C67470",
+    "quantity": "1 for two trigger comparators; more for other detectors",
+    "status": "JLC exact catalogue entry verified",
+    "recommendation": "Dual comparator with designed hysteresis and a 5 V pull-up domain for trigger conditioning.",
+    "caveat": "Comparator output is open collector. Choose divider/clamp/threshold and protect unpowered conditions. This is not direct ±12 V-to-logic wiring.",
+    "package": "SOIC-8",
+    "research_checked_in_this_pass": true,
+    "sources": [
+      {
+        "label": "JLC exact part",
+        "url": "https://jlcpcb.com/partdetail/TexasInstruments-LM393DR/C67470"
+      },
+      {
+        "label": "TI datasheet",
+        "url": "https://www.ti.com/lit/gpn/lm393"
+      }
+    ]
+  },
+  {
+    "id": "kemet-hold-10n",
+    "role": "S&H hold capacitor starting candidate",
+    "mpn": "C0805C103J5GACTU",
+    "code": "C2167597",
+    "quantity": 2,
+    "status": "JLC exact catalogue entry verified",
+    "recommendation": "10 nF, 50 V, C0G, ±5%, 0805. Start with this part in the acquisition/droop test.",
+    "caveat": "A larger hold capacitor can reduce leakage-related droop but needs longer acquisition. Low absorption and PCB cleanliness matter more than tight nominal capacitance tolerance. Do not use X7R as an unexplained replacement.",
+    "package": "0805",
+    "research_checked_in_this_pass": true,
+    "sources": [
+      {
+        "label": "JLC exact part",
+        "url": "https://jlcpcb.com/partdetail/KEMET-C0805C103J5GACTU/C2167597"
+      },
+      {
+        "label": "LF398 application guidance",
+        "url": "https://www.ti.com/lit/gpn/lf398-n"
+      }
+    ]
+  },
+  {
+    "id": "ti-opa4197",
+    "role": "Six MULT outputs plus two S&H post-buffers",
+    "mpn": "OPA4197IPWR",
+    "code": "C2057327",
+    "quantity": "3 quad packages proposed for six MULT buffer slots and four SLEW buffer slots; partition review pending",
+    "status": "JLC entry verified; retrieved page offered pre-order / no allocated stock",
+    "recommendation": "Two quads reserve the six MULT buffers; a third quad provides two pre-lag and two post-lag buffers on the local SLEW board.",
+    "caveat": "This count excludes input conditioners and A/B buffers. An output isolation resistor outside feedback can introduce load-dependent pitch error. Stability, protection, calibration and signal headroom need qualification. Do not double-count R20 S&H post-buffers: the post-lag pair replaces that role. Some slots remain spare; quantity is not a full-instrument order BOM.",
+    "package": "TSSOP-14",
+    "research_checked_in_this_pass": true,
+    "sources": [
+      {
+        "label": "TI specification",
+        "url": "https://www.ti.com/product/OPA4197"
+      },
+      {
+        "label": "JLC exact part",
+        "url": "https://jlcpcb.com/partdetail/TexasInstruments-OPA4197IPWR/C2057327"
+      }
+    ]
+  },
+  {
+    "id": "ti-tmux6111",
+    "role": "Alternative discrete S&H topology",
+    "mpn": "TMUX6111PWR",
+    "code": null,
+    "quantity": "Alternative, not fitted",
+    "status": "Manufacturer identity verified; no JLC code assigned",
+    "recommendation": "Low-leakage analogue-switch alternative if LF398 procurement is unsuitable.",
+    "caveat": "Needs separate input/output amplifiers and local hold capacitors. Charge injection, source impedance, settling and switch timing must be designed. Not a drop-in replacement for LF398.",
+    "package": "TSSOP-16",
+    "research_checked_in_this_pass": true,
+    "sources": [
+      {
+        "label": "TI product",
+        "url": "https://www.ti.com/product/TMUX6111"
+      }
+    ]
+  },
+  {
+    "id": "dailywell-2ms1",
+    "role": "Two-position selectors, including new A/B pair",
+    "mpn": "2MS1T1B1M2QES-5",
+    "code": "C908280",
+    "quantity": 19,
+    "status": "Previously user-selected; JLC identity rechecked",
+    "recommendation": "Keep 5 RANGE + 6 SHAPE + 6 STAGE, and add 2 manual A/B controls.",
+    "caveat": "A/B signal path should isolate its two source inputs with designed buffers/resistors. The exact contact transition must be verified; do not promise clickless switching or assume source-short protection from the word ON–ON.",
+    "package": "Sub-mini SPDT, PCB pins",
+    "research_checked_in_this_pass": true,
+    "sources": [
+      {
+        "label": "JLC exact part",
+        "url": "https://jlcpcb.com/partdetail/Dailywell-2MS1T1B1M2QES5/C908280"
+      },
+      {
+        "label": "LCSC exact part",
+        "url": "https://www.lcsc.com/product-detail/C908280.html"
+      }
+    ]
+  },
+  {
+    "id": "dailywell-2ms3",
+    "role": "Three-position SYNC and envelope MODE",
+    "mpn": "2MS3T1B1M2QES / Thonk DW2",
+    "code": null,
+    "quantity": 11,
+    "status": "Selected design intent; external procurement",
+    "recommendation": "Retain matching T1-lever counterpart. No functional change from R17.",
+    "caveat": "Factory sourcing/consignment still needs acceptance. Nut, pivot, actual throw, panel engagement and support datum remain unqualified.",
+    "package": "Sub-mini SPDT ON–OFF–ON",
+    "research_checked_in_this_pass": false,
+    "sources": [
+      {
+        "label": "Thonk orderable family",
+        "url": "https://www.thonk.co.uk/shop/sub-mini-toggle-switches/"
+      },
+      {
+        "label": "Exact drawing",
+        "url": "https://www.thonk.co.uk/wp-content/uploads/2017/05/DW2-SPDT-ON-OFF-ON-2MS3T1B1M2QES.pdf"
+      }
+    ]
+  },
+  {
+    "id": "omron-b3f1020",
+    "role": "Six TRIG + two manual SAMPLE buttons",
+    "mpn": "B3F-1020",
+    "code": "C722171",
+    "quantity": 8,
+    "status": "Candidate; JLC exact catalogue entry verified",
+    "recommendation": "Compare this 6×6 mm tactile switch with a guided panel plunger on a near-panel board.",
+    "caveat": "5 mm catalogue height is not an approved exposed button height. The drawing uses a 5 mm circle as the finger target; cap/plunger, mounting plane and stroke are still open.",
+    "package": "TH tactile, 6×6 mm",
+    "research_checked_in_this_pass": true,
+    "sources": [
+      {
+        "label": "JLC exact part",
+        "url": "https://jlcpcb.com/partdetail/OmronElectronics-B3F1020/C722171"
+      }
+    ]
+  },
+  {
+    "id": "bourns-ptv09a-4020f-b103",
+    "role": "All continuous controls",
+    "mpn": "PTV09A-4020F-B103",
+    "code": "C5848782",
+    "quantity": "99 original continuous-control positions (values/tapers pending); excludes two new B504 SLEW pots",
+    "status": "Existing mechanical reference; manufacturer drawing rechecked",
+    "recommendation": "Keep the nominal Ø6 mm capless F-shaft. B103 is the 10 kΩ linear starting value.",
+    "caveat": "Each circuit still needs its own value/taper decision. Body width, side lugs and 20 mm shaft-length datum are not a 6 mm footprint or a PCB-to-tip measurement. The viewer reserves 12×12 mm, not a qualified courtyard.",
+    "package": "PTV09A-4 bushingless",
+    "research_checked_in_this_pass": true,
+    "sources": [
+      {
+        "label": "Bourns drawing",
+        "url": "https://www.bourns.com/docs/product-datasheets/PTV09.pdf"
+      },
+      {
+        "label": "JLC catalogue",
+        "url": "https://jlcpcb.com/partdetail/BOURNS-PTV09A_4020FB103/C5848782"
+      }
+    ]
+  },
+  {
+    "id": "alps-srbv160803",
+    "role": "Five indexed octave controls",
+    "mpn": "SRBV160803",
+    "code": "C470374",
+    "quantity": 5,
+    "status": "Existing selected direction; manufacturer specification rechecked",
+    "recommendation": "Six positions; retain actual 16.2×18.5×7.5 mm body envelope. The proposed 17 mm column grid leaves 0.8 mm body gap.",
+    "caveat": "Actuator/cap and full panel mounting stack remain open. Do not confuse 15 mm actuator L datum with installed PCB-to-panel spacing. The 8 mm visible actuator in this study remains an unselected cap envelope.",
+    "package": "Vertical 6-position rotary",
+    "research_checked_in_this_pass": true,
+    "sources": [
+      {
+        "label": "ALPS exact product",
+        "url": "https://tech.alpsalpine.com/e/products/detail/SRBV160803/"
+      },
+      {
+        "label": "JLC catalogue",
+        "url": "https://jlcpcb.com/partdetail/ALPSALPINE-SRBV160803/C470374"
+      }
+    ]
+  },
+  {
+    "id": "qingpu-wqp518ma",
+    "role": "All patch points",
+    "mpn": "WQP518MA / Thonkiconn",
+    "code": "C9900052034 (earlier sourcing record)",
+    "quantity": 180,
+    "status": "Carry-forward candidate, not new stock verification",
+    "recommendation": "Use one mechanically qualified jack lot with black IN and red OUT dress nuts.",
+    "caveat": "8.3 mm nut envelope is a trial assumption. Exact EARS nut OD/thread, jack shoulder, panel thickness, engagement, pin assignment and plug clearance remain open. JLC record does not prove normal-stock availability.",
+    "package": "TH threaded 3.5 mm",
+    "research_checked_in_this_pass": false,
+    "sources": [
+      {
+        "label": "Thonk product",
+        "url": "https://www.thonk.co.uk/shop/thonkiconn/"
+      },
+      {
+        "label": "JLC sourcing record",
+        "url": "https://jlcpcb.com/partdetail/8460744-WQPWQP518MA/C9900052034"
+      }
+    ]
+  },
+  {
+    "id": "kento-white",
+    "role": "Magnitude and stage indicators",
+    "mpn": "KT-0603W",
+    "code": "C2290",
+    "quantity": "104 sites = 92 magnitude + 12 stage",
+    "status": "Carry-forward sample recommendation",
+    "recommendation": "Use low-current visual evaluation with buffered detector/driver; never attach to the hold capacitor or envelope timing node.",
+    "caveat": "White bin, optical path, lightpipe/diffuser and package-height arrangement remain unqualified. The 1.32 mm drawn aperture is not an exact part. No OSC lamps.",
+    "package": "0603 top emitter",
+    "research_checked_in_this_pass": false,
+    "sources": [
+      {
+        "label": "JLC catalogue",
+        "url": "https://jlcpcb.com/partdetail/C2290"
+      }
+    ]
+  },
+  {
+    "id": "kento-red",
+    "role": "Clip indicators at four SUM and six OFFSET outputs",
+    "mpn": "KT-0603R",
+    "code": "C2286",
+    "quantity": 10,
+    "status": "Carry-forward sample recommendation",
+    "recommendation": "Independent red CLIP detectors; pre-VCA mixer clipping must also be visible.",
+    "caveat": "Illustrative ±10 V demo threshold is not circuit headroom. Set real thresholds from output swing, load and supply limits.",
+    "package": "0603 top emitter",
+    "research_checked_in_this_pass": false,
+    "sources": [
+      {
+        "label": "JLC catalogue",
+        "url": "https://jlcpcb.com/partdetail/C2286"
+      }
+    ]
+  },
+  {
+    "id": "st-tl074",
+    "role": "General mixers / filters / folders / A/B support",
+    "mpn": "TL074CDT",
+    "code": "C6963",
+    "quantity": "Circuit-dependent",
+    "status": "Carry-forward analogue candidate",
+    "recommendation": "Low-cost general buffer, summing and shaping amplifier. A/B planning uses two input buffers and an output buffer per cell.",
+    "caveat": "Do not assign a quantity from empty rectangles. Input range, headroom, grounding and exact analogue circuit remain design work. Precision pitch paths use a separate error budget.",
+    "package": "SOIC-14",
+    "research_checked_in_this_pass": false,
+    "sources": [
+      {
+        "label": "JLC catalogue",
+        "url": "https://jlcpcb.com/partdetail/STMicroelectronics-TL074CDT/C6963"
+      },
+      {
+        "label": "ST manufacturer datasheet",
+        "url": "https://www.st.com/resource/en/datasheet/tl074.pdf"
+      }
+    ]
+  },
+  {
+    "id": "ti-lm13700",
+    "role": "MIX4 gain cells and three filter/VCA blocks",
+    "mpn": "LM13700M/NOPB",
+    "code": "C1346265",
+    "quantity": "Circuit-dependent",
+    "status": "Carry-forward analogue candidate",
+    "recommendation": "Dual OTA building block; use external input scaling, current control and output buffering.",
+    "caveat": "One OTA is not a complete synth VCA. Offset, feedthrough, resonance, loading and noise need circuit tests.",
+    "package": "SOIC-16",
+    "research_checked_in_this_pass": false,
+    "sources": [
+      {
+        "label": "TI manufacturer",
+        "url": "https://www.ti.com/product/LM13700"
+      },
+      {
+        "label": "JLC catalogue",
+        "url": "https://jlcpcb.com/partdetail/TexasInstruments-LM13700MNOPB/C1346265"
+      }
+    ]
+  },
+  {
+    "id": "alfa-as3340d",
+    "role": "Five analogue oscillator cores",
+    "mpn": "AS3340D",
+    "code": null,
+    "quantity": 5,
+    "status": "Carry-forward external candidate; not requalified in this pass",
+    "recommendation": "Build and calibrate one complete oscillator before replicating five. Separate sine shaping required.",
+    "caveat": "Exact current manufacturer datasheet, negative-supply arrangement and component lot need qualification. No through-zero FM claim; SOIC-16 version is intended. This is not a completed oscillator circuit.",
+    "package": "SOIC-16",
+    "research_checked_in_this_pass": false,
+    "sources": [
+      {
+        "label": "Retained manufacturer-authored datasheet mirror",
+        "url": "https://www.alldatasheet.com/html-pdf/1159050/ALFA/AS3340/110/1/AS3340.html"
+      }
+    ]
+  },
+  {
+    "id": "electric-druid-noise2",
+    "role": "Four noise outputs, shared source basis",
+    "mpn": "NOISE2",
+    "code": null,
+    "quantity": 1,
+    "status": "Carry-forward external programmed-component candidate",
+    "recommendation": "White/pink outputs plus proposed band-limited analogue shaping for blue/brown; each output buffered.",
+    "caveat": "Pseudo-random digital source internally. Programmed part required. Four outputs need not be statistically independent. No internal S&H normal connection.",
+    "package": "Programmed PDIP device",
+    "research_checked_in_this_pass": false,
+    "sources": [
+      {
+        "label": "Creator product",
+        "url": "https://electricdruid.net/product/noise2-white-pink-generator/"
+      },
+      {
+        "label": "Creator technical notes",
+        "url": "https://electricdruid.net/noise2-white-pink-noise-source/"
+      }
+    ]
+  },
+  {
+    "id": "interconnects",
+    "role": "Interface / core interconnections",
+    "mpn": "Exact keyed header + socket / terminated harness set",
+    "code": null,
+    "quantity": "Derived from circuit boundary, not jack count",
+    "status": "Not selected",
+    "recommendation": "Use supported, factory-populated mating pairs. Keep S&H storage and oscillator timing nodes local.",
+    "caveat": "No socket-body height is a PCB-to-PCB stack guarantee. Define signals, ground returns, mating retention and each board plane before routing.",
+    "package": "To select",
+    "research_checked_in_this_pass": false,
+    "sources": [
+      {
+        "label": "JLC consignment process",
+        "url": "https://jlcpcb.com/help/article/how-to-consign-parts-to-jlcpcb"
+      },
+      {
+        "label": "Reference mating connector families",
+        "url": "https://www.samtec.com/products/ssw"
+      }
+    ]
+  },
+  {
+    "id": "zudo-pd",
+    "role": "Power supply",
+    "mpn": "Existing zudo-pd Board P + Board B",
+    "code": null,
+    "quantity": "One qualified assembly",
+    "status": "User project reuse; not a new electrical design",
+    "recommendation": "Retain separate power assembly and model a reserved pocket, not a taller full-width core stack.",
+    "caveat": "The latest depth study is only a target. Need current populated power model, regulator heat, service access, true return paths and verified 15 V-only configuration for the exact board revision.",
+    "package": "Separate assembly",
+    "research_checked_in_this_pass": false,
+    "sources": [
+      {
+        "label": "User project",
+        "url": "https://github.com/Takazudo/zudo-pd"
+      }
+    ]
+  }
+]

@@ -1,0 +1,20 @@
+OSC-ES-1 attenuverter ideal amplifier proof, no device model
+Vin in 0 DC 5
+Vw0 w0 0 DC 0
+Vw05 w05 0 DC 2.5
+Vw1 w1 0 DC 5
+Rin0 in sum0 100k
+Rfb0 out0 sum0 100k
+Eamp0 out0 0 w0 sum0 1e6
+Rin05 in sum05 100k
+Rfb05 out05 sum05 100k
+Eamp05 out05 0 w05 sum05 1e6
+Rin1 in sum1 100k
+Rfb1 out1 sum1 100k
+Eamp1 out1 0 w1 sum1 1e6
+.control
+op
+print v(out0) v(out05) v(out1)
+quit
+.endc
+.end

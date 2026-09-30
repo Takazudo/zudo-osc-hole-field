@@ -1,0 +1,51 @@
+{
+  "schema_version": 1,
+  "status": "PROPOSAL",
+  "role": "Indicator optical window beside jack",
+  "count": 102,
+  "emitter": {
+    "type": "0402 top emitter",
+    "white_candidate": "Kingbright APHHS1005QWF/D",
+    "red_candidate": "Kingbright APG1005SEC/E-T",
+    "status": "CONDITIONAL DRAFT"
+  },
+  "placement": {
+    "offset_from_jack_centre_mm": [
+      6.15,
+      0
+    ],
+    "status": "FIXED R21 GRID",
+    "locator": "design/grid/placements.lock.json, jack-adjacent LED feature centres"
+  },
+  "method": {
+    "value": "bare FR4 optical window",
+    "status": "PROPOSAL",
+    "diameter_mm": 1.6,
+    "drill": false,
+    "copper": "clear on both panel sides",
+    "solder_mask": "open on both panel sides",
+    "locator": "research/osc-hole-field/planning-exploration/01-handoff-geometry.md, LED window method proposal"
+  },
+  "stack": {
+    "emitter_board_behind_panel_mm": 10,
+    "status": "PROPOSAL",
+    "reason": "The board partition and real seated jack height remain open."
+  },
+  "alternatives": [
+    {
+      "method": "drilled hole",
+      "tradeoff": "Direct light path, exposes aperture and potentially the internals; hole process and finished edge must be specified."
+    },
+    {
+      "method": "light pipe",
+      "tradeoff": "Can bridge the board gap, but requires an exact part, retention, and a panel aperture."
+    }
+  ],
+  "coupon_gate": [
+    "Measure white and red visibility in expected ambient light and across viewing angles",
+    "Check light bleed, cross-talk, mask registration, and copper clearance",
+    "Check jack nut and inserted plug clearance at fixed 6.15 mm offset",
+    "Measure actual seated board-to-panel distance before selecting emitter or light pipe"
+  ],
+  "qualification": "Unvalidated draft; no optical or assembled-stack test exists."
+}

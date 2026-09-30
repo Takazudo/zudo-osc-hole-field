@@ -1,0 +1,52 @@
+{
+  "schema_version": 1,
+  "coverage": [
+    {
+      "coverage_id": "cov-b3f-identity",
+      "record_id": "rec-omron-b3f-1020",
+      "domain": "identity",
+      "status": "COVERED",
+      "reason": "The exact MPN and supplier code are confirmed by the distributor listing.",
+      "fact_ids": [
+        "fact-b3f-identity",
+        "fact-b3f-1020-manufacturer"
+      ],
+      "blocking_fact_ids": []
+    },
+    {
+      "coverage_id": "cov-b3f-pinout",
+      "record_id": "rec-omron-b3f-1020",
+      "domain": "pinout",
+      "status": "COVERED",
+      "reason": "Omron primary drawing establishes the two contact pairs.",
+      "fact_ids": [
+        "fact-b3f-contact-pairs"
+      ],
+      "blocking_fact_ids": []
+    },
+    {
+      "coverage_id": "cov-b3f-pcb-pattern",
+      "record_id": "rec-omron-b3f-1020",
+      "domain": "cad_geometry",
+      "status": "COVERED",
+      "reason": "Omron drawing gives the PCB hole pattern used by the CAD receipt.",
+      "fact_ids": [
+        "fact-b3f-pcb-pattern"
+      ],
+      "blocking_fact_ids": []
+    },
+    {
+      "coverage_id": "cov-b3f-panel-fit",
+      "record_id": "rec-omron-b3f-1020",
+      "domain": "mechanical_fit",
+      "status": "OPEN",
+      "reason": "Panel reach and load-sharing actuator remain physical coupon checks.",
+      "fact_ids": [
+        "fact-b3f-panel-reach"
+      ],
+      "blocking_fact_ids": [
+        "fact-b3f-panel-reach"
+      ]
+    }
+  ]
+}

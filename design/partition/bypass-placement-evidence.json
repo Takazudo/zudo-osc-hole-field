@@ -1,0 +1,30 @@
+{
+  "status": "Manufacturer qualitative guidance plus explicit project geometric acceptance; routing/loop qualification NOT RUN #38/#65",
+  "sources": [
+    {
+      "path": "design/partition/sources/opa4196-layout.pdf",
+      "authoritative_url": "https://www.ti.com/lit/ds/symlink/opa4196.pdf",
+      "sha256": "d89dd6009d109bf18b349e77ff46e4df60bf7d4faaefd4c3ebe6ec0e2fc7793d",
+      "retrieved": "2026-09-29",
+      "physical_pdf_page_index": 30,
+      "locator": "Section 10.1 Layout Guidelines",
+      "paraphrase": "Use 0.1 uF ceramic supply bypasses close to each supply pin; minimize local loop impedance. Manufacturer provides no numeric separation limit."
+    },
+    {
+      "path": "design/partition/sources/opa4197-layout.pdf",
+      "authoritative_url": "https://www.ti.com/lit/ds/symlink/opa4197.pdf",
+      "sha256": "27653a7d5e965cbb2d23f7998919ebd774efd5cd3e126b8f0881469ae91166fd",
+      "retrieved": "2026-09-29",
+      "physical_pdf_page_index": 30,
+      "locator": "Section 10.1 Layout Guidelines",
+      "paraphrase": "Use 0.1 uF ceramic supply bypasses close to each supply pin; minimize local loop impedance. Manufacturer provides no numeric separation limit."
+    }
+  ],
+  "proposal": {
+    "same_board": true,
+    "same_face": true,
+    "courtyard_gap_mm": 0.35,
+    "note": "3 mm is a project geometric screening limit, not a manufacturer guarantee or routed supply-loop length. Actual source supply pins and capacitor rail pins set the same-face placement; #38 must preserve the shortest rail and AGND return loop.",
+    "maximum_supply_pad_to_capacitor_rail_pad_mm": 3
+  }
+}

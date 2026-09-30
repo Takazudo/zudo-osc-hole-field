@@ -1,0 +1,1081 @@
+{
+  "schema_version": 1,
+  "report_date": "2026-09-28",
+  "status": "CONDITIONAL PARTITION INPUTS CONFIRMED; UNVALIDATED DRAFT",
+  "recommendation": "Proceed with conditional issue #35 partition planning from the selected EXT requirement contract and current native master netlist. Keep physical source, exact protection circuit, affected-board fit, routing closure, and all physical qualification open.",
+  "provenance": {
+    "source_commit": "4cc30612c4d9cd0597caae2eccd1967b8870c6b9",
+    "base_branch": "base/osc-hole-field",
+    "topic_branch": "topic/54-prepartition-confirm",
+    "prerequisite_commits": {
+      "#52": "1a2f33cf6e61cf89c7422a1a42122806f68e3033",
+      "#47": "95d44b47d4a8b17f7980ebb8073679a4212d44b4",
+      "#53": "b27bc800219fe3b75ce6559fb763e38378ff1f9a",
+      "#56": "4dd813760d00a1f2a7513713bda835975c93fcb6"
+    },
+    "source_commit_is_prepartition_snapshot": true,
+    "report_scope": "Merged prerequisite source snapshot before issue #35 partition and issue #37 panel regeneration."
+  },
+  "snapshot": {
+    "tracked_input_sha256": {
+      "design/spec/instrument.py": "873dda5b03ba38de6bfbb7178235bd2b8ab8b780346ebfdae2dd90b555cf65f1",
+      "design/spec/modules/power.py": "16e884bb8db08e8690e27daee42ab497cb2b8e0b08cbdae630ef3b9c2e4a2379",
+      "design/grid/placements.lock.json": "5af1b2772cc82d47be449c6fab0902abbc9b489198f53016865d0708e2980da3",
+      "schematic/zudo-osc-hole-field.kicad_sch": "1ff18463822ffc9c16c6d30a5017c93353aa5b4b2a4a1fe5e3d6602da48b2440",
+      "design/reports/master-audit.json": "745d7d5da951cbcc190ee4c531861f819e0ef1e64370cbab4922af3c2402e7dc",
+      "design/reports/netlist-stats.json": "85409ccd8265be32835c5ecc5cbe22a0f4c97571f4b001bf406e7ca41286ad59",
+      "design/reports/master-erc-warning-baseline.json": "824782d72340da664d65e63f9e4569e5be2113a2a2a63ae40a63361f947b04ee",
+      "design/reports/power-boundary.json": "4055538888bbdd35a48d114dbd6281c5ed5ef0d05384bd064adbaa4e41c0113c",
+      "design/power/supply-architecture-input.json": "888ab1c3a0b10332a1b71d0b5a66acd78a157ffcdd2e965740724f667d559518",
+      "design/power/supply-architecture.json": "ec32b1e595f618260735631c8f336d243312ceeb8c4ddb0f259f609eea94ae8e",
+      "design/power/rail-budget.json": "0a3409f4284423fb5d3a04a4f5f4ced82303ed4cf30d018ec1c2611807bc9836",
+      "design/power/rail-ledger.json": "899d520a7b9c04e5142a74ac15987adc14702a56168350f90df58e04c3b59c48",
+      "design/power/protection58-draft-contract.json": "9fa1c8ebda9a2878821110479238cc7cf14627792938ccb3517eecd38467d61f",
+      "design/power/protection58-audit.json": "380422f77ddbc87525662e0b5a91ded59170d6c0b1617cb797a9da1c55f58f21",
+      "design/power/protection58-output-model.json": "8e6e8b867abce21b60992bbf4990a62d8e72fffe3d99dda5e2768732064b8578",
+      "design/mechanical/selector-assembly.json": "b5715d25d4d4b44bc664eac9697d83c95741b02af9a906d0c849f40da7e560bb",
+      "design/mechanical/selector-assembly-check.json": "a564618049402ab289440007632b52fc5f5e0cc4d995c75799dddb593fcdf20e",
+      "scripts/pcbgen/netlist.py": "a3bbd2ebaff5572f11d7119cb00f7821574589bf8d0f9b0d3cbb773901ea6516",
+      "design/boards/fixture-route-dense.json": "8e0429fd7ff8a51ee631bc7187f28485e6d3507a28793aef245764c85dbe655e",
+      "scripts/pcbgen/fixtures/dense-evidence/copper.json": "4d5b857953c9fe7c646d4136588cf24863c28d1d1a5a7a309d4efa7e893edd47",
+      "scripts/pcbgen/fixtures/dense-evidence/stitching.json": "5468f005e302060d292e35f2506c2ca24f9ac1b811dfeade55f6e8505afb2dea",
+      "scripts/pcbgen/fixtures/dense-evidence/preservation.json": "8545290db981b7aa236920ef450988260a4d4a0e4f0d1b70fc8957ca33a0d947",
+      "scripts/pcbgen/fixtures/dense-evidence/final-drc.json": "fe5862b77276e8ccb2fcbfcc0088196e03613847a9d8943441236b0c1a3b38af",
+      "scripts/pcbgen/fixtures/dense-evidence/verification.json": "bdaa1fee17a10ec6bebec2908c2936c8a8bbfd5179d679c10f7547e537a88222",
+      "design/reports/spice/cells.json": "fbd8fa8c7e3f1883e85df8e9f25f5ed6b875f4fc85bd37958abf6d571a597926",
+      "design/reports/spice/envelope.json": "43532e440796c5a3c5975ddad9ec77fab6052805413ed2b58381a0ef2cad76ec",
+      "design/reports/spice/filter.json": "ba7481f674b1c212f5eda228cb0019b5ae28f1bb09b8fcd3c3dd06c74ced0020",
+      "design/reports/spice/mixers.json": "8c7f3a2146ef49819d851f37239d6476fe49dc5986fa6532ebe55788ce12d23f",
+      "design/reports/spice/noise.json": "203e5d1166a9c24af3fc77d6bbb27c2e3fa188075494cf0874bc174c221810c7",
+      "design/reports/spice/offset.json": "9e899cf7e9ff04ce39ff2a87b8130f0abb8626cb09bbcafab08d80b128f73022",
+      "design/reports/spice/oscillator.json": "79abf45c35f627438acc90e645fa87670d610e26eebd112116d1c96fd6080595",
+      "design/reports/spice/sample_hold.json": "c30f7366fb24b93b64c8654465bd1dcd6c54dae81a47019ed42c3d89a4f6f32d",
+      "design/reports/spice/wavefolder.json": "f8cc12abc87358f8d763fc205e92f56f5c234898bb061dcfc96d4537c649cb1b",
+      "design/reports/spice/precision-output-sweep.json": "678a6ded43885195ba82f9dbcf73eeaff6c9750387a5e87491ed89f72ffd194c",
+      "design/reports/spice/precision-output-vendor.json": "15dbaa450ad8c99fef75bf943939de80304a00b1efad9c26999616e877c0df42",
+      "scripts/checks/prepartition54.py": "3be1f50bef9747ecdb327390f0ea10d1a82976c29b302308be181c9c21813f5e",
+      "scripts/checks/regen-all.sh": "a77b12d61b6b3f07a09c776fae46edc176fe2991ab8f61b8a075cdea0b533374",
+      "scripts/schgen/audit_master.py": "f5b420b2d2b441f2a44bc99cd7dc3f91758e5cde1ed2457983ec0335eb1c13c7",
+      "scripts/schgen/check_erc_warnings.py": "d4f985f32683e2aaeeb5886bdce9f60684b2e4a1351d35750baaca1bc0a90b71",
+      "scripts/schgen/smoke.sh": "b5dc1223b27b3d0d7eca17268f2989a2e29b4f5e731973d0f3830eeb14970024",
+      "scripts/schgen/regen-master-reports.sh": "0080c57d2ed65657bdc249464a55a6e764d7e667fc7c82df5803400ca7d531e4",
+      "scripts/schgen/README.md": "d2463547ad8d33479d4f6ecb9cc013b170cf2bd5ea1c28d82533b199c5e510c3",
+      "design/power/downstream-handoff-52.md": "3ce57e5c29fbb0b5bbca677edbdefc9d38cd59a92960180038021b35a6adcf4c",
+      "design/power/downstream-amendments-48.md": "d7b92f2a84f5b021dcb39ed94c11aa1b3286f315aef65df8f840ba0c23254c88",
+      "design/power/downstream-amendments-58.md": "df99a4f5353fb1a0373e356ee66d89696c20bd5ffc049e148f9d64617643d32a",
+      "doc/src/content/docs/verification/osc-precision-output-model.mdx": "0f3ea9624c39e4f7fe22cc946f300da6790dbddd12cc7c4ee214696b7729dbf8",
+      "doc/src/content/docs/decisions/osc-selector-assembly.mdx": "b1591dd84a4c1490970498a28a237d7fd0d14b49f0078b413626eb6de00fa465",
+      "doc/src/content/docs/decisions/osc-supply-architecture.mdx": "6a1db4d197959a8666ac88af246b63dec3b20daab42232459439b728133b58f0",
+      "design/spec/modules/run_envelope_spice.py": "41445c66bf6d2e26f9a11aa97315e5b2117c6cbc275a8571df822e91811b5b11",
+      "design/spec/modules/run_filter_spice.py": "b0051808a87113ea52b2f2a32f5125a0e8ecc02dbed91b262481134fda1e94ba",
+      "design/spec/modules/run_mixer_spice.py": "e9a1e789cbeb278e76a140df17df3e199a0d7036980d1c7a81eea21d5a1515ca",
+      "design/spec/modules/run_noise_spice.py": "7d48f67e8a7a034e776edbaffa98e0b83dbf1b59b36854ecee15c71bf9a7939e",
+      "design/spec/modules/run_offset_spice.py": "0d3ee6b0fb9c36388dfc7bf6137644d026aae8a9729441887146f272925ecc94",
+      "design/spec/modules/run_oscillator_spice.py": "e6ac561c6afa0d9945681745252c2ae907567ce8414c52fdbce40266192d800f",
+      "design/spec/modules/run_sample_hold_spice.py": "7bc933671ff21b189f88ee7d7aa73f7e23ae33a4dfd7f4300acc3b4f967c0a8c",
+      "design/spec/modules/run_wavefolder_spice.py": "bf6a02d7e813baee442c57e464e05598a30184d6739ba19da5cfa367dda8a53a",
+      "design/spec/cells/sweep_precision.py": "058c15044ab60f26088fb6f0b89a35e4a40392e9bdfc5ad198ea81f16098436e",
+      "design/spec/cells/sweep_precision_vendor.py": "df2d5d1af9911510face210bc52cd75be74724e0dbf6147631a6c351e0b275c7",
+      "design/spec/cells/run_spice.py": "443d9a686f1ead82068918f480b7a81b8acc9c7ee76520c3650ac53a1a925344",
+      "scripts/checks/protection58.py": "1dda934660325e1f99ffff62a538b624b13ab4064d55db6f478f54513edf630c",
+      "scripts/checks/protection58_model.py": "bc18a58436a247d04a97c7786651b2ae0bd4cf946c58b4ed9a5b5c70a42e0b7f",
+      ".claude/skills/component-alps-alpine-srbv160803/manifest.json": "f6ed6f63f6fa855df70487bcb8793964e2a48aba8f5b69db1f2ade1033cad790",
+      ".claude/skills/component-alps-alpine-srbv160803/sources.json": "7c9ee1edeef640ab547a680a21be53baa6be140fd7d6d80f1236d5f66e5dc1f7",
+      ".claude/skills/component-alps-alpine-srbv160803/facts.json": "52e2fe687abdf44f69ccb2054deb0c50d3ace0968d442b2ed162313104f6632e",
+      ".claude/skills/component-alps-alpine-srbv160803/coverage.json": "2d0a37d4e12fa0deb6689a0e12323ea1c1e686e5a5af57c2bf2afad54d5b1d00",
+      ".claude/skills/component-alps-alpine-srbv160803/interactions.json": "553ce2f947570de5a6d7133359821def5ecbd96aa930428b8d9fa6794de156ad",
+      ".claude/skills/component-alps-alpine-srbv160803/pin-map.json": "a148ac06c568cf2f775f06403ddac51c6801b150a946662a749f2573edeb65ce",
+      ".claude/skills/component-dealon-dw254p-2x8-l0/manifest.json": "673fb19a552a6cd117eb25e496c086754d3a01de18b66d8cbe7800b68fc14bbc",
+      ".claude/skills/component-dealon-dw254p-2x8-l0/sources.json": "6ad2ed53d2ff52b576ff38debba53449d166d5b41ec7734e2239063dcdf1ff45",
+      ".claude/skills/component-dealon-dw254p-2x8-l0/facts.json": "747feb6e514b633829e919dd4c39eff440f5fa0efac8558257db9cc87c374397",
+      ".claude/skills/component-dealon-dw254p-2x8-l0/coverage.json": "4b9051ebfa369affad1a630a02a366bb4e21d02cfccf73cd74ed5cfb2e4e9406",
+      ".claude/skills/component-dealon-dw254p-2x8-l0/interactions.json": "98601f99e4098498b53083c67636b8f25b85a239d3ad64a0f8a377c5c7adc956",
+      ".claude/skills/component-dealon-dw254p-2x8-l0/pin-map.json": "26eeede3e6dbe85ab455db76c455784fd17f2247eadee861c6775e37b61d6a0d"
+    },
+    "native_netlist_sha256": "b467bf7f9742436f99b04daeea74b6e4cc887c8b7cb1972c92b46c3db47b5cf2",
+    "native_netlist_timestamp_policy": "SHA-256 over KiCad 10.0.6 native netlist after replacing only its single export-date field; all connectivity and other netlist bytes remain included.",
+    "kicad_version": "10.0.6",
+    "superseded_by": [
+      "issue #35 partition-specific source/placement reconciliation",
+      "issue #37 panel regeneration and board-level checks"
+    ],
+    "live_check_policy": "Use python3 scripts/checks/prepartition54.py --capture-check only at this pre-partition boundary. The default invocation validates the durable record and does not compare mutable downstream files."
+  },
+  "fixed_hardware": {
+    "module_instances": 33,
+    "panel_uid_centres": 438,
+    "uid_xy_sha256": "8354aed4a72bf5357e1ccfb4da7c3234f139ba19f75a49d825d733c30a6da843",
+    "lock_file": "design/grid/placements.lock.json",
+    "lock_sha256": "5af1b2772cc82d47be449c6fab0902abbc9b489198f53016865d0708e2980da3",
+    "rule": "All 33 signal module instances and all 438 UID/x/y positions remain fixed; hierarchy power counts are source-derived separately."
+  },
+  "captured_master": {
+    "source_defined_hierarchy": {
+      "instance_count": 35,
+      "signal_module_count": 33,
+      "signal_module_instances": [
+        "A01",
+        "A02",
+        "A03",
+        "A04",
+        "A05",
+        "A06",
+        "B1",
+        "B2",
+        "E1",
+        "E2",
+        "E3",
+        "E4",
+        "E5",
+        "E6",
+        "F1",
+        "F2",
+        "F3",
+        "H1",
+        "H2",
+        "M4A",
+        "M4B",
+        "M5A",
+        "M5B",
+        "N1",
+        "O1",
+        "O2",
+        "O3",
+        "O4",
+        "O5",
+        "W1",
+        "W2",
+        "X1",
+        "X2"
+      ],
+      "power_instance_count": 1,
+      "power_instances": [
+        "POWER"
+      ],
+      "other_instance_count": 1,
+      "panel_uid_count": 438,
+      "hierarchy_policy": "Source topology is authoritative for total hierarchy and power instances; the 33-signal-module invariant is independently fixed."
+    },
+    "designator_and_package_accounting": {
+      "unique_designator_count": 5758,
+      "unique_netlist_component_count": 5752,
+      "multi_unit_package_count": 622,
+      "fitted_ic_package_count": 634,
+      "worksheet_load_count": 347,
+      "package_units_by_part": {
+        "ADG5412FBRUZ": 110,
+        "AS3340D": 5,
+        "CD74HC221M96": 8,
+        "LF398M_NOPB": 2,
+        "LM13700M_NOPB": 16,
+        "LM393BIDR": 44,
+        "NOISE2": 1,
+        "OPA4196IDR": 170,
+        "OPA4197IPWR": 77,
+        "REF5050AIDR": 24,
+        "SN74HC00DR": 102,
+        "SN74HC14DR": 21,
+        "SN74HC74DR": 54
+      },
+      "source": "design/reports/master-audit.json and design/reports/netlist-stats.json",
+      "represented_multi_unit_symbol_units": 2880,
+      "explicit_no_connect_pins": 391,
+      "unit_coverage": "Every package unit set matched its symbol definition; duplicate/missing units and active all-NC units are audit errors."
+    },
+    "net_and_island_accounting": {
+      "net_count": 4909,
+      "named_island_count": 97,
+      "sensitive_net_count": 209,
+      "panel_connected_sensitive_cross_island_violations": [],
+      "internal_cross_island_sensitive_nets": [
+        "/N1/NOISE_VDD",
+        "/N1/WHITE_RAW",
+        "/N1/PINK_RAW",
+        "/A01/OUT_INTERNAL",
+        "/A02/OUT_INTERNAL",
+        "/A03/OUT_INTERNAL",
+        "/A04/OUT_INTERNAL",
+        "/A05/OUT_INTERNAL",
+        "/A06/OUT_INTERNAL"
+      ],
+      "precision_feedback_and_compensation_outputs": 16,
+      "precision_feedback_and_compensation_are_local_non_global_pairs": true,
+      "panel_jack_sleeves_on_AGND": 180
+    },
+    "native_erc": {
+      "kicad_version": "10.0.6",
+      "error_count": 0,
+      "warning_count": 228,
+      "warning_classes": [
+        "pin_to_pin"
+      ],
+      "warning_identity_fields": [
+        "sheet_path",
+        "severity",
+        "type",
+        "description",
+        "sorted item descriptions"
+      ],
+      "warning_identity_sha256": "5c7e96d055202f4597611325caba416e7d746ac1f2a1d0963ffeb4a19bdb2455",
+      "warnings_by_sheet": {
+        "/A01/": 8,
+        "/A02/": 8,
+        "/A03/": 8,
+        "/A04/": 8,
+        "/A05/": 8,
+        "/A06/": 8,
+        "/B1/": 2,
+        "/B2/": 2,
+        "/E1/": 10,
+        "/E2/": 10,
+        "/E3/": 10,
+        "/E4/": 10,
+        "/E5/": 10,
+        "/E6/": 10,
+        "/F1/": 8,
+        "/F2/": 8,
+        "/F3/": 8,
+        "/H1/": 6,
+        "/H2/": 6,
+        "/M4A/": 14,
+        "/M4B/": 14,
+        "/M5A/": 14,
+        "/M5B/": 14,
+        "/W1/": 6,
+        "/W2/": 6,
+        "/X1/": 6,
+        "/X2/": 6
+      },
+      "baseline_file": "design/reports/master-erc-warning-baseline.json",
+      "baseline_identity_policy": "Item descriptions retain symbol references, pin numbers, names, and electrical types. KiCad UUIDs and schematic coordinates are omitted because they can change without changing the warning identity.",
+      "netlist_parity_issues": 0,
+      "unconnected_items": 0
+    },
+    "erc_warning_inventory_sha256": "5c7e96d055202f4597611325caba416e7d746ac1f2a1d0963ffeb4a19bdb2455",
+    "erc_warnings_by_sheet": {
+      "/A01/": 8,
+      "/A02/": 8,
+      "/A03/": 8,
+      "/A04/": 8,
+      "/A05/": 8,
+      "/A06/": 8,
+      "/B1/": 2,
+      "/B2/": 2,
+      "/E1/": 10,
+      "/E2/": 10,
+      "/E3/": 10,
+      "/E4/": 10,
+      "/E5/": 10,
+      "/E6/": 10,
+      "/F1/": 8,
+      "/F2/": 8,
+      "/F3/": 8,
+      "/H1/": 6,
+      "/H2/": 6,
+      "/M4A/": 14,
+      "/M4B/": 14,
+      "/M5A/": 14,
+      "/M5B/": 14,
+      "/W1/": 6,
+      "/W2/": 6,
+      "/X1/": 6,
+      "/X2/": 6
+    },
+    "sensitive_island_audit": {
+      "precision_feedback_and_compensation_outputs": 16
+    }
+  },
+  "selected_source": {
+    "domain": "EXT",
+    "source_id": "external-unselected",
+    "status": "REQUIREMENT ONLY / NON-ORDERABLE / NOT-ENERGIZABLE",
+    "signal_modules": 33,
+    "domain_instances": [
+      "H1",
+      "H2",
+      "O1",
+      "O2",
+      "O3",
+      "O4",
+      "O5",
+      "OCTAVE_REF",
+      "F1",
+      "F2",
+      "F3",
+      "N1",
+      "E1",
+      "E2",
+      "E3",
+      "E4",
+      "E5",
+      "E6",
+      "B1",
+      "B2",
+      "X1",
+      "X2",
+      "M5A",
+      "M5B",
+      "M4A",
+      "M4B",
+      "W2",
+      "W1",
+      "A01",
+      "A02",
+      "A03",
+      "A04",
+      "A05",
+      "A06"
+    ],
+    "shared_reference_instance": "OCTAVE_REF",
+    "regulated_nets": {
+      "+12V": "+12V",
+      "-12V": "-12V",
+      "+5V": "+5V"
+    },
+    "return_net": "AGND",
+    "physical_source_status": "NOT SELECTED",
+    "physical_source_identity": null,
+    "measured_source_capacity_mA": {
+      "+12V": null,
+      "-12V": null,
+      "+5V": null
+    },
+    "continuous_required_mA": {
+      "+12V": 1600,
+      "-12V": 1500,
+      "+5V": 300
+    },
+    "transient_required_mA": {
+      "+12V": 1900,
+      "-12V": 1800,
+      "+5V": 400
+    },
+    "maximum_delivered_current_mA": {
+      "+12V": 2000,
+      "-12V": 1900,
+      "+5V": 500
+    },
+    "requirements": {
+      "source_voltage_magnitude_V": {
+        "+12V": [
+          12,
+          12.3
+        ],
+        "-12V": [
+          12,
+          12.2
+        ],
+        "+5V": [
+          5.05,
+          5.1
+        ]
+      },
+      "required_load_voltage_magnitude_V": {
+        "+12V": [
+          11.53,
+          12.48
+        ],
+        "-12V": [
+          11.74,
+          12.37
+        ],
+        "+5V": [
+          4.81,
+          5.2
+        ]
+      },
+      "max_total_rail_and_return_loss_V": 0.2,
+      "ripple_target_mVpp_strictly_below": 1,
+      "soft_start_min_ms": 10,
+      "transient_duration_ms": 20,
+      "nominal_capacitance_ceiling_uF": {
+        "+12V": 150,
+        "-12V": 150,
+        "+5V": 100
+      },
+      "capacitance_tolerance_fraction": 0.2,
+      "capacity_statement": "Generated continuous/transient values are minimum REQUIRED delivery at declared source bands. No available capacity is asserted."
+    },
+    "worst_single_return_contact_A": 4.4,
+    "max_conductor_path_ohm": 0.02,
+    "return_sharing": "NOT ASSUMED; any one AGND contact may carry the full summed rail transient",
+    "inlet_reservation": {
+      "interface_id": "OSC-EXT-PWR-8-R1",
+      "status": "REQUIREMENT ONLY; orderable header, mate and contacts NOT SELECTED; no guessed footprint",
+      "candidate_only": {
+        "manufacturer": "Molex",
+        "header_mpn": "43045-0800",
+        "housing_mpn": "43025-0800",
+        "contact_mpn": "43030-0007",
+        "supplier_order_code": null,
+        "status": "NOT SELECTED; manufacturer catalog maxima do not establish assembled derating or exact drawing"
+      },
+      "pin_map": {
+        "1": "+12V_IN",
+        "2": "-12V_IN",
+        "3": "+5V_IN",
+        "4": "NC",
+        "5": "AGND",
+        "6": "AGND",
+        "7": "AGND",
+        "8": "AGND"
+      },
+      "reservation_xyz_mm": [
+        260,
+        248,
+        -85,
+        308,
+        293,
+        -45
+      ],
+      "body_and_mate_max_xyz_mm": [
+        30,
+        30,
+        16
+      ],
+      "cable_bend_and_latch_clearance_mm": 15,
+      "harness_construction": "Factory crimped copper, eight-position polarized/latching housing; pin 4 unpopulated; no bus CV/gate; 20 AWG minimum conductor size with insulation/crimp verified for chosen contact.",
+      "harness_max_length_mm": 300,
+      "harness_max_wire_ohm_per_m_hot": 0.04,
+      "harness_max_contact_and_crimp_path_ohm": 0.008,
+      "hotplug": "PROHIBITED; ground is not guaranteed first-mate/last-break. Power down source and external patched devices before connecting/disconnecting.",
+      "support": "Enclosure bracket and strain relief carry insertion/cable loads; no reliance on PCB solder joints. Reservation is a requirement, not a component model."
+    },
+    "rejected_internal_source_pockets": "Three P+B candidate pockets are not part of selected EXT topology",
+    "physical_qualification": {
+      "status": "NOT RUN",
+      "follow_up": "https://github.com/Takazudo/zudo-osc-hole-field/issues/57",
+      "reason": "No physical external source, selected inlet/harness, populated hardware, or measurement evidence is retained."
+    }
+  },
+  "rail_and_capacitance_contract": {
+    "contract_status": "PASS: conditional requirement arithmetic/allocation ONLY; hardware NOT SELECTED; unvalidated draft",
+    "arithmetic_status": "PASS - conditional requirement arithmetic/allocation only; not available source capacity",
+    "continuous_required_mA": {
+      "+12V": 1600,
+      "-12V": 1500,
+      "+5V": 300
+    },
+    "transient_required_mA": {
+      "+12V": 1900,
+      "-12V": 1800,
+      "+5V": 400
+    },
+    "maximum_delivered_current_mA": {
+      "+12V": 2000,
+      "-12V": 1900,
+      "+5V": 500
+    },
+    "selected_domain": {
+      "id": "EXT",
+      "status": "REQUIREMENT ONLY / NON-ORDERABLE / NOT-ENERGIZABLE",
+      "module_count": 33,
+      "shared_reference_count": 1,
+      "worksheet_load_count": 347,
+      "physical_ic_package_count": 634,
+      "raw_inlet_nets": [
+        "+12V_IN",
+        "-12V_IN",
+        "+5V_IN"
+      ],
+      "conditional_load_rails": [
+        "+12V",
+        "-12V",
+        "+5V"
+      ],
+      "return_net": "AGND",
+      "circuit_evidence_issue": "https://github.com/Takazudo/zudo-osc-hole-field/issues/59"
+    },
+    "fitted_nominal_uF_by_rail": {
+      "+12V": 48.3,
+      "-12V": 41.1,
+      "+5V": 24.5
+    },
+    "initial_bulk_uF_per_powered_board_per_rail": 4.7,
+    "remaining_nominal_uF_before_unplaced_board_bulk": {
+      "+12V": 101.7,
+      "-12V": 108.9,
+      "+5V": 75.5
+    },
+    "powered_board_count": null,
+    "aggregate_board_bulk_status": "OPEN",
+    "measured_source_capacity_mA": {
+      "+12V": null,
+      "-12V": null,
+      "+5V": null
+    },
+    "scope_note": "Per-pin proximity/effective ceramic capacitance, powered-board count and per-board bulk placement require #35 board reconciliation. No aggregate capacitance margin or physical capacity PASS is inferred."
+  },
+  "protection_boundary": {
+    "contract_arithmetic_and_topology": {
+      "status": "PASS - requirement-only arithmetic/topology inputs; conditional draft only",
+      "domain": "EXT",
+      "source_requirement": {
+        "voltage_magnitude_at_source_V": {
+          "+12V": [
+            12,
+            12.3
+          ],
+          "-12V": [
+            12,
+            12.2
+          ],
+          "+5V": [
+            5.05,
+            5.1
+          ]
+        },
+        "required_load_voltage_magnitude_V": {
+          "+12V": [
+            11.53,
+            12.48
+          ],
+          "-12V": [
+            11.74,
+            12.37
+          ],
+          "+5V": [
+            4.81,
+            5.2
+          ]
+        },
+        "max_total_rail_and_return_loss_V": 0.2,
+        "ripple_at_load_mVpp": 1,
+        "ripple_criterion": "Strictly below target; included within voltage bands; verify with bandwidth/setup recorded in qualification.",
+        "soft_start_min_ms": 10,
+        "transient_requirement_duration_ms": 20,
+        "nominal_capacitance_ceiling_uF": {
+          "+12V": 150,
+          "-12V": 150,
+          "+5V": 100
+        },
+        "capacitance_tolerance_fraction": 0.2,
+        "capacity_statement": "Generated continuous/transient values are minimum REQUIRED delivery at declared source bands. No available capacity is asserted.",
+        "fault_policy": "Source current limit and coordinated all-rail shutdown must prevent indefinite partial supply. Reverse-current blocking on all source outputs, active discharge under supervision and rail monitors at load are required; actual circuit and measured response remain #52/#57.",
+        "voltage_band_note": "Shared AGND drop can raise one rail magnitude while reducing another. Check source maximum plus worst return shift against every upper load limit, not only subtraction at minimum.",
+        "maximum_delivered_current_mA": {
+          "+12V": 2000,
+          "-12V": 1900,
+          "+5V": 500
+        },
+        "current_limit_contract": "Selected source or inlet must deliver minimum transient requirements yet bound each rail including tolerance to maximum_delivered_current_mA, then coordinate all-rail shutdown. Maximums are interface limits, not device ratings. Unbounded overshoot/fault energy cannot be admitted by the contact/cable checker; actual limiter dynamics require #52 circuit evidence and #57 tests."
+      },
+      "return_topology": {
+        "topology": "Single EXT source common return bonded to instrument AGND star at inlet. Separate return conductors for rail branches join the star. All 180 patch sleeves are AGND, so patching creates parallel return paths.",
+        "reference": "OCTAVE_REF and all O1..O5 remain EXT; no cross-domain reference supply. Buffered taps may cross boards only within EXT and OSC-ES-1 limits.",
+        "earth": "Require isolated SELV external supply output with documented chassis/earth bonding; connected equipment may create an earth loop. Do not float patch sleeves or use them as sole power return.",
+        "sensitive_nodes": "Hold, timing, summing, integrator and slew storage nodes stay local; no additional signal normals."
+      },
+      "source_requirement_only": true
+    },
+    "captured_implementation": {
+      "status": "PASS - abstract native pins and raw/load separation only",
+      "boundary_report_status": "PASS: native raw/load nets distinct; requirement-only boundary remains UNIMPLEMENTED",
+      "inlet_ref": "CN301",
+      "abstract_boundary_ref": "XB301",
+      "raw_net_nodes": {
+        "+12V_IN": [
+          [
+            "CN301",
+            "1"
+          ],
+          [
+            "XB301",
+            "1"
+          ]
+        ],
+        "-12V_IN": [
+          [
+            "CN301",
+            "2"
+          ],
+          [
+            "XB301",
+            "2"
+          ]
+        ],
+        "+5V_IN": [
+          [
+            "CN301",
+            "3"
+          ],
+          [
+            "XB301",
+            "3"
+          ]
+        ]
+      },
+      "load_rail_boundary_nodes": {
+        "+12V": [
+          "XB301",
+          "4"
+        ],
+        "-12V": [
+          "XB301",
+          "5"
+        ],
+        "+5V": [
+          "XB301",
+          "6"
+        ]
+      },
+      "nc_pin": 4,
+      "agnd_pins": [
+        5,
+        6,
+        7,
+        8
+      ],
+      "orderable_footprint": null,
+      "bom_entry": false,
+      "protection_implemented": false,
+      "energization_authorized": false,
+      "pcb_filter": "scripts/pcbgen/netlist.py removes CN301/XB301 only for exact AbstractBoundary=true, requirement-only status, blank MPN and footprint; malformed or misplaced markers reject."
+    },
+    "circuit_evidence": {
+      "status": "OPEN",
+      "follow_up": "https://github.com/Takazudo/zudo-osc-hole-field/issues/59",
+      "reason": "No complete source-backed protection architecture or exact circuit selected."
+    },
+    "physical_qualification": {
+      "status": "NOT RUN",
+      "follow_up": "https://github.com/Takazudo/zudo-osc-hole-field/issues/57",
+      "reason": "No selected external source, populated interface, or bench test."
+    },
+    "open_partition_reservation": {
+      "output_paths": 82,
+      "precision_sense_paths": 16,
+      "octave_reference_receivers": 30,
+      "candidate_switch_channels": 98,
+      "candidate_local_quad_packages": 35,
+      "candidate_positive_Iq_sensitivity_mA": 45.5,
+      "positive_auxiliary_allocation_mA": 20,
+      "excess_over_positive_auxiliary_mA": 25.5,
+      "candidate_local_feedback_capacitance_nF": 10,
+      "switch_capacitance_sensitivity_pF": 24,
+      "allocation_status": "OPEN PARTITION RESERVATION; no fitted zero-area device or proved clearance",
+      "follow_up": "https://github.com/Takazudo/zudo-osc-hole-field/issues/59"
+    },
+    "diagnostic_output_model": {
+      "status": "DIAGNOSTIC ONLY; protection gate OPEN",
+      "cases": 12,
+      "target_met_cases": 12,
+      "scope": "16.5 ohm and 24 pF lumped sensitivity assumptions; not ADI model; no switching, charge injection, leakage, rail faults or temperature simulation",
+      "interpretation": "Sensitivity model only; it does not close #59 or establish product stability."
+    },
+    "overall_protection_status": "OPEN - circuit evidence #59; physical qualification #57 NOT RUN"
+  },
+  "selected_selector": {
+    "manufacturer": "Alps Alpine",
+    "mpn": "SRBV160803",
+    "supplier": "LCSC",
+    "order_code": "C470374",
+    "decision": "Alternating 0/180 degree bodies on five independent adapters in two planes; retained legs and unchanged pads; two custom keyed shaft extensions, five custom re-indexable knobs, stepped bushing carrier.",
+    "instances": [
+      {
+        "uid": "C:O1.OCT",
+        "rotation_deg": 0,
+        "pcb_z_mm": -16,
+        "adapter_group": "front",
+        "extension_length_mm": 0,
+        "knob_index_correction_deg": 0
+      },
+      {
+        "uid": "C:O2.OCT",
+        "rotation_deg": 180,
+        "pcb_z_mm": -29,
+        "adapter_group": "rear",
+        "extension_length_mm": 13,
+        "knob_index_correction_deg": 180
+      },
+      {
+        "uid": "C:O3.OCT",
+        "rotation_deg": 0,
+        "pcb_z_mm": -16,
+        "adapter_group": "front",
+        "extension_length_mm": 0,
+        "knob_index_correction_deg": 0
+      },
+      {
+        "uid": "C:O4.OCT",
+        "rotation_deg": 180,
+        "pcb_z_mm": -29,
+        "adapter_group": "rear",
+        "extension_length_mm": 13,
+        "knob_index_correction_deg": 180
+      },
+      {
+        "uid": "C:O5.OCT",
+        "rotation_deg": 0,
+        "pcb_z_mm": -16,
+        "adapter_group": "front",
+        "extension_length_mm": 0,
+        "knob_index_correction_deg": 0
+      }
+    ],
+    "front_adapter_count": 3,
+    "rear_adapter_count": 2,
+    "fixed_uid_xy_sha256": "8354aed4a72bf5357e1ccfb4da7c3234f139ba19f75a49d825d733c30a6da843",
+    "fixture_status": "CONDITIONAL UNVALIDATED DRAFT",
+    "drc": {
+      "front": {},
+      "rear": {},
+      "rejected-alternating-coplanar": {
+        "clearance": 8,
+        "courtyards_overlap": 4,
+        "pth_inside_courtyard": 8,
+        "solder_mask_bridge": 8
+      },
+      "rejected-same-coplanar": {
+        "clearance": 8,
+        "courtyards_overlap": 4,
+        "hole_to_hole": 4,
+        "pth_inside_courtyard": 8,
+        "solder_mask_bridge": 8
+      },
+      "panel": {}
+    },
+    "inter_selector_keepout_intersections": [],
+    "nearest_neighbor_courtyard_projection_gap_mm": 0.25,
+    "physical_qualification": {
+      "status": "NOT RUN",
+      "follow_up": "https://github.com/Takazudo/zudo-osc-hole-field/issues/55",
+      "reason": "Fixture DRC/projection checks are not body fit, continuity, panel torque, carrier-strength, tolerance or bench evidence."
+    }
+  },
+  "dense_retained_fixture": {
+    "fixture": "design/boards/fixture-route-dense.json",
+    "status": "UNVALIDATED DRAFT",
+    "kicad_version": "10.0.6",
+    "rule_errors": 0,
+    "rule_warnings": 159,
+    "warning_identity_counts": {
+      "warning:silk_over_copper": 80,
+      "warning:silk_overlap": 79
+    },
+    "unconnected_items": 0,
+    "schematic_parity_issues": 0,
+    "placement_centres": 30,
+    "layers": 4,
+    "track_count": 2001,
+    "via_count": 208,
+    "track_and_via_records_preserved": true,
+    "scope": "Retained dense fixture regression only; not a production board or hardware qualification."
+  },
+  "supported_analog_models": {
+    "oracle": "Pinned KiCad 10.0.6 wrapper with ngspice-44.2 where supported",
+    "runs": [
+      {
+        "exit_code": 0,
+        "result": "PASS - bounded model only; hardware remains unvalidated",
+        "command": "python3 design/spec/modules/run_envelope_spice.py"
+      },
+      {
+        "exit_code": 0,
+        "result": "PASS - bounded model only; hardware remains unvalidated",
+        "command": "python3 design/spec/modules/run_filter_spice.py"
+      },
+      {
+        "exit_code": 0,
+        "result": "PASS - bounded model only; hardware remains unvalidated",
+        "command": "python3 design/spec/modules/run_mixer_spice.py"
+      },
+      {
+        "exit_code": 0,
+        "result": "PASS - bounded model only; hardware remains unvalidated",
+        "command": "python3 design/spec/modules/run_noise_spice.py"
+      },
+      {
+        "exit_code": 0,
+        "result": "PASS - bounded model only; hardware remains unvalidated",
+        "command": "python3 design/spec/modules/run_offset_spice.py"
+      },
+      {
+        "exit_code": 0,
+        "result": "PASS - bounded model only; hardware remains unvalidated",
+        "command": "python3 design/spec/modules/run_oscillator_spice.py"
+      },
+      {
+        "exit_code": 0,
+        "result": "PASS - bounded model only; hardware remains unvalidated",
+        "command": "python3 design/spec/modules/run_sample_hold_spice.py"
+      },
+      {
+        "exit_code": 0,
+        "result": "PASS - bounded model only; hardware remains unvalidated",
+        "command": "python3 design/spec/modules/run_wavefolder_spice.py"
+      }
+    ],
+    "precision_output": {
+      "ideal_sweep": {
+        "status": "DIAGNOSTIC ONLY",
+        "cases": 12,
+        "known_overshoot_failures": 6,
+        "hardware_validation": false
+      },
+      "vendor_model": {
+        "status": "PASS - TI OPAx197 Model only",
+        "cases": 12,
+        "pass_count": 12,
+        "fail_count": 0,
+        "hardware_validation": false
+      },
+      "physical_stability": {
+        "status": "NOT RUN",
+        "follow_up": "https://github.com/Takazudo/zudo-osc-hole-field/issues/49"
+      }
+    },
+    "model_limits": "Model passes apply only to retained model cases; tolerance, full-temperature, PCB parasitics, source faults and bench stability remain open."
+  },
+  "visual_review": {
+    "status": "RENDERED AND INSPECTED; NOT DIMENSIONAL OR PHYSICAL PROOF",
+    "selector_views": [
+      ".circuit-cache/selector-fixture/front.png",
+      ".circuit-cache/selector-fixture/rear.png"
+    ],
+    "dense_fixture_views": [
+      ".circuit-cache/router/dense/reports/replay-top.png",
+      ".circuit-cache/router/dense/reports/replay-bottom.png"
+    ],
+    "observations": [
+      "Selector assembly render shows three front and two rear adapter islands in the selected alternating arrangement.",
+      "Dense fixture render shows the 30 fixed jack centres, the connector/edge region, and the repeated underside component banks; no visible footprint overlap was observed."
+    ],
+    "limits": "Rendered views do not prove physical body clearance, cable/shaft fit, tolerances, mechanical support strength, electrical continuity or product qualification."
+  },
+  "command_results": [
+    {
+      "id": "pre_edit_circuit_check",
+      "command": "pnpm circuit:check",
+      "phase": "before task edits",
+      "status": "PASS",
+      "exit_code": 0,
+      "result": "Manual inventory 42 lines; no schematic or placement binding; pin-asset check performed."
+    },
+    {
+      "id": "baseline_regeneration",
+      "command": "bash scripts/checks/regen-all.sh",
+      "phase": "before task edits",
+      "status": "PASS",
+      "exit_code": 0,
+      "result": "No tracked pre-edit regeneration drift."
+    },
+    {
+      "id": "pnpm_check",
+      "command": "pnpm check",
+      "phase": "after task edits and authored summary",
+      "status": "PASS",
+      "exit_code": 0,
+      "result": "Validation, generated-output drift, previews and documentation type checks pass."
+    },
+    {
+      "id": "post_edit_circuit_check",
+      "command": "pnpm circuit:check",
+      "phase": "after task edits and authored summary",
+      "status": "PASS",
+      "exit_code": 0,
+      "result": "Manual evidence contract check passes; no schematic/placement binding."
+    },
+    {
+      "id": "master_erc_netlist",
+      "command": "bash scripts/schgen/smoke.sh",
+      "status": "PASS",
+      "exit_code": 0,
+      "documented_warning_count": 228,
+      "warning_inventory_sha256": "5c7e96d055202f4597611325caba416e7d746ac1f2a1d0963ffeb4a19bdb2455",
+      "result": "Pinned KiCad 10.0.6 ERC has zero errors; exact canonical warning identities match; native netlist parity and H1/H2 mutation rejection pass."
+    },
+    {
+      "id": "regen_twice",
+      "command": "bash scripts/checks/regen-all.sh --check",
+      "status": "PASS",
+      "exit_code": 0,
+      "result": "Second aggregate regeneration is stable; no tracked drift."
+    },
+    {
+      "id": "selector_fixture",
+      "command": "bash scripts/libgen/fixtures/check_selector_assembly.sh",
+      "status": "PASS",
+      "exit_code": 0,
+      "result": "Five-up (3 front / 2 rear), front/rear/panel DRC zero, fixed centres and no conservative keepout intersections."
+    },
+    {
+      "id": "dense_fixture",
+      "command": "bash scripts/pcbgen/test_dense.sh",
+      "status": "PASS",
+      "exit_code": 0,
+      "rule_errors": 0,
+      "rule_warnings": 159,
+      "unconnected_items": 0,
+      "parity_issues": 0,
+      "result": "Retained fixture replay deterministic; accepted warnings are 80 silk_over_copper and 79 silk_overlap."
+    },
+    {
+      "id": "focused_tests",
+      "command": "python3 -m unittest scripts.schgen.test_master_audit scripts.schgen.test_master_budget scripts.schgen.test_power_boundary scripts.schgen.test_rail_ledger scripts.schgen.test_supply_architecture scripts.checks.test_protection58",
+      "status": "PASS",
+      "exit_code": 0,
+      "tests": 36,
+      "result": "36 focused tests passed."
+    },
+    {
+      "id": "abstract_filter_tests",
+      "command": "python3 -m unittest scripts.pcbgen.test_pure",
+      "status": "PASS",
+      "exit_code": 0,
+      "tests": 8,
+      "result": "Eight tests pass, including malformed abstract-boundary rejection and removal of abstract pin nodes from board nets."
+    },
+    {
+      "id": "rail_domain_checks",
+      "status": "PASS",
+      "exit_code": 0,
+      "result": "634 fitted IC packages / 347 worksheet loads; one EXT conditional allocation; 1600/1500/300 mA continuous and 1900/1800/400 mA transient requirements; measured source capacity unknown.",
+      "commands": [
+        "python3 scripts/schgen/build_rail_ledger.py --check",
+        "python3 scripts/schgen/build_supply_architecture.py --check"
+      ]
+    },
+    {
+      "id": "protection_draft_gate",
+      "command": "python3 scripts/checks/protection58.py --check --require-draft",
+      "status": "PASS",
+      "exit_code": 0,
+      "result": "Requirement-only contract consistency passes; exact circuit remains blocked/open."
+    },
+    {
+      "id": "protection_closed_gate",
+      "command": "python3 scripts/checks/protection58.py --check --require-closed",
+      "status": "OPEN (EXPECTED)",
+      "exit_code": 1,
+      "result": "Expected OPEN until issue #59 supplies exact circuit evidence."
+    },
+    {
+      "id": "prepartition54_capture_check",
+      "command": "python3 scripts/checks/prepartition54.py --capture-check",
+      "status": "PASS",
+      "exit_code": 0,
+      "result": "Explicit live pre-partition snapshot, pinned native netlist, source hierarchy, rail/cap contract, fixed hardware and boundary checks passed."
+    },
+    {
+      "id": "master_report_accounting",
+      "command": "bash scripts/schgen/regen-master-reports.sh --check",
+      "status": "PASS",
+      "exit_code": 0,
+      "result": "Source-derived hierarchy, unique designator references, multi-unit package accounting, net statistics and 438 fixed UID centres match generated reports."
+    },
+    {
+      "id": "supported_analog_models",
+      "commands": [
+        "python3 design/spec/modules/run_envelope_spice.py",
+        "python3 design/spec/modules/run_filter_spice.py",
+        "python3 design/spec/modules/run_mixer_spice.py",
+        "python3 design/spec/modules/run_noise_spice.py",
+        "python3 design/spec/modules/run_offset_spice.py",
+        "python3 design/spec/modules/run_oscillator_spice.py",
+        "python3 design/spec/modules/run_sample_hold_spice.py",
+        "python3 design/spec/modules/run_wavefolder_spice.py"
+      ],
+      "status": "PASS",
+      "exit_code": 0,
+      "result": "Eight supported bounded/model-only target scripts completed; no physical validation implied."
+    },
+    {
+      "id": "ideal_precision_diagnostic",
+      "command": "python3 design/spec/cells/sweep_precision.py",
+      "status": "DIAGNOSTIC (EXPECTED MODEL FAILURES)",
+      "exit_code": 1,
+      "result": "12 ideal-source cases; six exceeded the 10% diagnostic overshoot target. Retained as an explicit diagnostic, not treated as a passing hardware test."
+    },
+    {
+      "id": "vendor_precision_sweep",
+      "command": "python3 design/spec/cells/sweep_precision_vendor.py",
+      "status": "PASS - TI MODEL ONLY",
+      "exit_code": 0,
+      "result": "12/12 modeled cases pass; PCB/cable/tolerance/temperature and physical stability remain NOT RUN."
+    },
+    {
+      "id": "cell_spice_summary",
+      "command": "python3 design/spec/cells/run_spice.py",
+      "status": "PASS - MODEL ONLY",
+      "exit_code": 0,
+      "result": "Five ideal-model decks pass; report retains ideal precision diagnostic failures, TI model 12/12, and physical/remote stability NOT RUN."
+    },
+    {
+      "id": "protection58_model",
+      "command": "python3 scripts/checks/protection58_model.py",
+      "status": "DIAGNOSTIC ONLY",
+      "exit_code": 0,
+      "result": "12/12 sensitivity targets met in the retained model; protection gate remains OPEN."
+    }
+  ],
+  "handoff_to_issue_35": {
+    "review_target": "Issue #35 partition report and interfaces before board-specific implementation.",
+    "usable_artifacts": [
+      "design/reports/netlist-stats.json",
+      "design/reports/master-audit.json",
+      "design/reports/power-boundary.json",
+      "design/power/supply-architecture-input.json",
+      "design/power/supply-architecture.json",
+      "design/power/rail-ledger.json",
+      "design/power/downstream-handoff-52.md",
+      "design/reports/pre-partition-confirm.json"
+    ],
+    "assumptions": [
+      "Use one requirement-only EXT domain for the 33 signal modules and shared OCTAVE_REF; measured source capacities remain null.",
+      "Reserve #48 inlet geometry only; exact connector, cable assembly and source are not selected.",
+      "Keep all 180 panel jack sleeves on common AGND and do not assume equal current sharing among return contacts.",
+      "Retain the selected five-up SRBV160803 geometry and alternate front/rear boards without moving locked panel centres.",
+      "Keep all sensitive precision feedback/compensation pairs local to the module/island."
+    ],
+    "alternatives_considered": [
+      "Three internal P+B source pockets are rejected for this partition input; only EXT is selected as requirement topology.",
+      "Exact physical external supply and inlet candidates remain unselected until #57 evidence.",
+      "No exact protection circuit/part or zero-area placeholder is assumed; reserve the unresolved 82 output, 16 sense and 30 receiver paths."
+    ],
+    "partition_constraints": [
+      "Use the current native netlist and source-domain report; preserve raw +12V_IN/-12V_IN/+5V_IN separate from conditional load rails.",
+      "Filter CN301/XB301 from PCB component placement, BOM/CPL, and copper only with the validated exact abstract-boundary marker.",
+      "Reserve 4.7 uF per powered board per rail; reconcile board count before claiming capacitance budget closure.",
+      "Keep local protection allocation open: 35 candidate quads imply 45.5 mA +12V sensitivity, 25.5 mA above the 20 mA positive auxiliary allocation.",
+      "A board requiring real power interface hardware needs a concrete #59 circuit and exact physical component data."
+    ],
+    "open_items": [
+      {
+        "topic": "protection circuit",
+        "status": "OPEN",
+        "follow_up": "https://github.com/Takazudo/zudo-osc-hole-field/issues/59"
+      },
+      {
+        "topic": "external source, inlet, cable and power physical qualification",
+        "status": "NOT RUN",
+        "follow_up": "https://github.com/Takazudo/zudo-osc-hole-field/issues/57"
+      },
+      {
+        "topic": "selector fit/continuity/support physical qualification",
+        "status": "NOT RUN",
+        "follow_up": "https://github.com/Takazudo/zudo-osc-hole-field/issues/55"
+      },
+      {
+        "topic": "precision output physical stability across cable, tolerance, temperature and load",
+        "status": "NOT RUN",
+        "follow_up": "https://github.com/Takazudo/zudo-osc-hole-field/issues/49"
+      },
+      {
+        "topic": "board count and per-board bulk capacitor reconciliation",
+        "status": "OPEN",
+        "follow_up": "https://github.com/Takazudo/zudo-osc-hole-field/issues/35"
+      }
+    ],
+    "issue_updates": "This local authored summary and JSON provide the handoff facts for #35 and the epic; the parent manager owns shared GitHub issue-body updates."
+  },
+  "status_limits": {
+    "schematic_and_pcbs": "UNVALIDATED DRAFT",
+    "CN301_XB301": "ABSTRACT, NON-ORDERABLE, NON-ENERGIZABLE REQUIREMENT BOUNDARY; no protection function or conductive bridge implied",
+    "protection_circuit": "OPEN (#59)",
+    "physical_source_power_qualification": "NOT RUN (#57)",
+    "selector_physical_qualification": "NOT RUN (#55)",
+    "dense_fixture_warnings": "159 retained silk warnings (80 silk_over_copper, 79 silk_overlap); zero rule errors, unconnected items and parity issues",
+    "fabrication_release": "NOT VALIDATED OR RELEASED; no fabrication order files created"
+  }
+}

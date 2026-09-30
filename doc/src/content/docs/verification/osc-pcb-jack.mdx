@@ -1,0 +1,29 @@
+---
+title: "Historical single-J PCB experiment"
+description: "Native placement, routing attempts, and open gates for the osc-jack board."
+---
+
+**Historical #38 evidence, superseded by the #66 JL/JR source partition.** Counts, paths and routing results below describe the rejected single board, not either current half.
+
+**Draft layout — autorouting attempted, not reviewed as hardware, not a fabrication release.** No fabrication order files have been generated.
+
+| Item | Current draft result |
+| --- | --- |
+| Board | `osc-jack`, panel frame x4–314, y20–164 mm (310 × 144 mm) |
+| Stack | Four copper layers, 1.6 mm, proposed 2 oz; F.Cu faces the panel at proposed z = −10 mm |
+| Population | 2,091 assigned master packages: 180 fixed jacks, 102 fixed compact LEDs, and 1,809 free local circuit packages; 56 rear JST GH headers and six factory load-side lands; eight Ø2.2 mm M2 support holes |
+| Placement | All 2,153 netlisted footprints retain the #35 per-reference origin, KiCad angle, and F/B face; eight board-only supports retain their source coordinates. KiCad courtyard placement passed. |
+| Rule DRC / schematic parity | Zero rule errors and zero schematic-parity issues before routing. Warnings concern silkscreen/text and isolated copper. |
+| Routing | **UNROUTED DRAFT.** The guarded 180-second fanout and 900-second no-fanout attempts both timed out before writing an SES. No router copper was imported; track and via counts remain zero. This does not meet the issue's bounded incomplete-routing allowance. |
+| Routed / unrouted | Zero new router tracks or vias; 5,611 complete native KiCad ratsnest edges remain. The exact number of unrouted *nets* is not available from the capped CLI JSON. It lists only 499 items and three sampled net names; `boards/osc-jack/reports/ratsnest.json` gives 1,362 multi-pad *candidate* net names, which are not a claim that each remains open. |
+| AGND branch plus K neck | **NOT RUN** — layout extraction and K routing are needed to verify the combined ≤0.5 mΩ condition, including vias. Hot physical measurement remains #65. |
+
+![Top render of the unvalidated osc-jack PCB draft](/assets/osc-hole-field/osc-jack-top.png)
+
+![Bottom render of the unvalidated osc-jack PCB draft](/assets/osc-hole-field/osc-jack-bottom.png)
+
+The [partition source](../architecture/osc-board-stack.mdx) preserves the gross B-face #59 output and precision-sense protection rectangle x120–310/y143–161 (3,420 mm²). The `design/partition/partition.json` subtraction receipt records 2,029.2 mm² occupied by 30 fixed jack courtyard intersections, leaving 1,390.8 mm² after jack exclusions. Three separate 5 × 3 mm bulk slots consume another 45 mm² of that area, leaving at most 1,345.8 mm² for output/sense protection. The bulk slots were moved within the proposed rectangle to clear current source courtyards. Their exact capacitor identities and protection circuit dimensions remain **OPEN #59**; no fit is inferred from the remaining area.
+
+`boards/osc-jack/reports/replication-feasibility.json` compares 22 repeated J module pairs against the exact source face and footprint centres. None has a complete single translation, so whole-module route replay would require a source placement revision. `routing-attempt-1.json` records the first timeout; `routing.json` records the second. Both left 5,611 native ratsnest edges and no copper. A revised J partition or placement/routing strategy is required before #38 can close. The current `boards/osc-jack/reports/drc.json` and top/bottom PNGs are the native KiCad 10.0.6 evidence.
+
+Physical seated fit, jack nut/shoulder clearance, supports, looms, factory load wires, hot resistance, and enclosure depth: **NOT RUN #65**. Selector coupon **NOT RUN #55**; physical source/inlet **NOT RUN #57**; LED optical/hot qualification **NOT RUN #64**. The 82 output and 16 precision-sense protection obligations remain **OPEN #59**. The 0.35 mm compact-LED/jack nominal courtyard gap is drawing-derived and does not establish assembled fit.

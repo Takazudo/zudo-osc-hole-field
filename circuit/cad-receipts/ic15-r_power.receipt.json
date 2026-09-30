@@ -1,0 +1,81 @@
+{
+  "receipt_version": 1,
+  "identity": {
+    "asset_id": "ic15-r_power",
+    "record_id": "rec-r-power",
+    "manufacturer": "Yageo",
+    "mpn": "RC1210FR-07499RL",
+    "package": "1210",
+    "variant_notes": "AVAILABLE"
+  },
+  "acquisition": {
+    "provider": "KiCad 10 stock symbol and retained manufacturer/creator document",
+    "source_url": "https://www.yageogroup.com/component-documentation/download/specsheet/RC1210FR-07499RL",
+    "acquired_on": "2026-09-28",
+    "original_filenames": [
+      "RC1210FR.pdf"
+    ],
+    "sha256": {
+      "circuit/sources/ic-library/RC1210FR.pdf": "123d6a01482ef69ec58d05de95a70efebc1ac9fb1203e77d7fa037196644a960"
+    }
+  },
+  "representation": {
+    "files": [
+      "symbols/src/RC1210FR-07499RL.kicad_sym"
+    ],
+    "formats": [
+      "kicad_sym"
+    ],
+    "units": "KiCad schematic units",
+    "original_paths": [
+      "circuit/sources/ic-library/RC1210FR.pdf"
+    ]
+  },
+  "fidelity": {
+    "class": "derived",
+    "reason": "Source pin functions audited against the retained document; KiCad stock or custom graphics normalized for this draft identity.",
+    "evidence": [
+      "AVAILABLE",
+      "https://www.yageogroup.com/component-documentation/download/specsheet/RC1210FR-07499RL"
+    ]
+  },
+  "derivation": {
+    "derived": true,
+    "input_sha256": {
+      "circuit/sources/ic-library/RC1210FR.pdf": "123d6a01482ef69ec58d05de95a70efebc1ac9fb1203e77d7fa037196644a960"
+    },
+    "tool": "scripts/libgen/fixtures/build_ic_assets.py, build_ic_custom.py, or build_passive_symbols.py",
+    "tool_version": "1",
+    "parameters": {
+      "normalization": "exact MPN/manufacturer/LCSC fields, local footprint reference; alias parent units expanded where required"
+    },
+    "output_sha256": {
+      "symbols/src/RC1210FR-07499RL.kicad_sym": "f3bb8a5a711839faa4857843c2b0520c623cf9947ae7b590b6b21535ee48e6ad"
+    }
+  },
+  "cad_use": {
+    "symbol": "zudo-osc-hole-field:RC1210FR-07499RL",
+    "footprint": "zudo-osc-hole-field:R_1210_3225Metric",
+    "model_path": null,
+    "transform": {
+      "offset": null,
+      "rotation": null,
+      "scale": null
+    },
+    "seating_plane": null
+  },
+  "checks": {
+    "performed": [
+      "Issue-15 all-unit KiCad 10 ERC fixture and project library checker"
+    ],
+    "remaining_physical_checks": [
+      "Confirm exact package drawing/lot, actual circuit net mapping, electrical suitability and procurement before board release.",
+      "Confirm exact body/height, land pattern, fixed-layout clearance, and electrical suitability before hardware use; catalogue family geometry is provisional."
+    ]
+  },
+  "publication": {
+    "preview_selected": false,
+    "download_published": false,
+    "permitted_scope": null
+  }
+}

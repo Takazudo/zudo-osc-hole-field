@@ -1,0 +1,1362 @@
+{
+  "schema_version": 1,
+  "status": "BLOCKED: no complete source-backed protection architecture selected",
+  "selected_topology": null,
+  "conditional_draft_gate": "PASS: conditional draft contract ONLY; protection unimplemented; NON-ORDERABLE / NOT-ENERGIZABLE",
+  "circuit_evidence_issue": "https://github.com/Takazudo/zudo-osc-hole-field/issues/59",
+  "draft_gate_does_not_check": "Current schematic implementation, orderable part selection, routing, fit, thermal, physical source or energization",
+  "physical_checks": "NOT RUN: no populated hardware or selected source",
+  "source_domain": "EXT only; current limit is an external-source/inlet requirement, not a synth-side sense resistor requirement",
+  "loss_calculations": {
+    "+12V": {
+      "continuous_A": 1.6,
+      "maximum_delivered_A": 2.1,
+      "resistance_budget_ohm_at_continuous": 0.024999999999999998,
+      "resistance_budget_ohm_at_maximum": 0.019047619047619046,
+      "legacy_ptc_drop_V": 0.4,
+      "legacy_ptc_dissipation_W": 0.6400000000000001,
+      "two_fet_hot_drop_V_at_maximum": 0.01029,
+      "two_fet_hot_dissipation_W_at_maximum": 0.021609
+    },
+    "-12V": {
+      "continuous_A": 1.5,
+      "maximum_delivered_A": 2.0,
+      "resistance_budget_ohm_at_continuous": 0.02666666666666667,
+      "resistance_budget_ohm_at_maximum": 0.02,
+      "legacy_ptc_drop_V": 0.375,
+      "legacy_ptc_dissipation_W": 0.5625,
+      "two_fet_hot_drop_V_at_maximum": 0.0098,
+      "two_fet_hot_dissipation_W_at_maximum": 0.0196
+    },
+    "+5V": {
+      "continuous_A": 0.3,
+      "maximum_delivered_A": 0.5,
+      "resistance_budget_ohm_at_continuous": 0.13333333333333333,
+      "resistance_budget_ohm_at_maximum": 0.08,
+      "legacy_ptc_drop_V": 0.075,
+      "legacy_ptc_dissipation_W": 0.0225,
+      "two_fet_hot_drop_V_at_maximum": 0.00245,
+      "two_fet_hot_dissipation_W_at_maximum": 0.001225
+    }
+  },
+  "fet_conditions": "PSMN1R0-40YLD Table 7: 2.45 mOhm at VGS=4.5 V, Tj=150 C, ID=25 A; resistance-only feasibility screen, no selected driver, SOA, reverse cutoff or thermal proof",
+  "output_count": 82,
+  "precision_count": 16,
+  "output_switch_channels": 98,
+  "global_quad_minimum": 25,
+  "module_local_quad_minimum": 35,
+  "normal_positive_Iq_mA_sensitivity_global": 32.5,
+  "normal_positive_Iq_mA_sensitivity_local": 45.5,
+  "existing_aux_allowance_mA": 20,
+  "prospective_current_mA": {
+    "original_sense_12V_100ohm": 120.0,
+    "revised_sense_24_48V_2740ohm_minus1percent": 9.024552090245521,
+    "main_24_48V_998ohm_minus1percent": 24.776826380032794
+  },
+  "outputs": [
+    {
+      "uid": "J:A01.OUT",
+      "instance": "A01",
+      "tip_net": "OUT_TIP",
+      "kind": "precision",
+      "existing_series_ohm": 998,
+      "existing_sense_ohm": 100,
+      "isolation_channels_required": 2,
+      "status": "UNPROTECTED OUTPUT/SENSE; candidate not captured"
+    },
+    {
+      "uid": "J:A02.OUT",
+      "instance": "A02",
+      "tip_net": "OUT_TIP",
+      "kind": "precision",
+      "existing_series_ohm": 998,
+      "existing_sense_ohm": 100,
+      "isolation_channels_required": 2,
+      "status": "UNPROTECTED OUTPUT/SENSE; candidate not captured"
+    },
+    {
+      "uid": "J:A03.OUT",
+      "instance": "A03",
+      "tip_net": "OUT_TIP",
+      "kind": "precision",
+      "existing_series_ohm": 998,
+      "existing_sense_ohm": 100,
+      "isolation_channels_required": 2,
+      "status": "UNPROTECTED OUTPUT/SENSE; candidate not captured"
+    },
+    {
+      "uid": "J:A04.OUT",
+      "instance": "A04",
+      "tip_net": "OUT_TIP",
+      "kind": "precision",
+      "existing_series_ohm": 998,
+      "existing_sense_ohm": 100,
+      "isolation_channels_required": 2,
+      "status": "UNPROTECTED OUTPUT/SENSE; candidate not captured"
+    },
+    {
+      "uid": "J:A05.OUT",
+      "instance": "A05",
+      "tip_net": "OUT_TIP",
+      "kind": "precision",
+      "existing_series_ohm": 998,
+      "existing_sense_ohm": 100,
+      "isolation_channels_required": 2,
+      "status": "UNPROTECTED OUTPUT/SENSE; candidate not captured"
+    },
+    {
+      "uid": "J:A06.OUT",
+      "instance": "A06",
+      "tip_net": "OUT_TIP",
+      "kind": "precision",
+      "existing_series_ohm": 998,
+      "existing_sense_ohm": 100,
+      "isolation_channels_required": 2,
+      "status": "UNPROTECTED OUTPUT/SENSE; candidate not captured"
+    },
+    {
+      "uid": "J:B1.1",
+      "instance": "B1",
+      "tip_net": "OUT_1_TIP",
+      "kind": "precision",
+      "existing_series_ohm": 998,
+      "existing_sense_ohm": 100,
+      "isolation_channels_required": 2,
+      "status": "UNPROTECTED OUTPUT/SENSE; candidate not captured"
+    },
+    {
+      "uid": "J:B1.2",
+      "instance": "B1",
+      "tip_net": "OUT_2_TIP",
+      "kind": "precision",
+      "existing_series_ohm": 998,
+      "existing_sense_ohm": 100,
+      "isolation_channels_required": 2,
+      "status": "UNPROTECTED OUTPUT/SENSE; candidate not captured"
+    },
+    {
+      "uid": "J:B1.3",
+      "instance": "B1",
+      "tip_net": "OUT_3_TIP",
+      "kind": "precision",
+      "existing_series_ohm": 998,
+      "existing_sense_ohm": 100,
+      "isolation_channels_required": 2,
+      "status": "UNPROTECTED OUTPUT/SENSE; candidate not captured"
+    },
+    {
+      "uid": "J:B2.1",
+      "instance": "B2",
+      "tip_net": "OUT_1_TIP",
+      "kind": "precision",
+      "existing_series_ohm": 998,
+      "existing_sense_ohm": 100,
+      "isolation_channels_required": 2,
+      "status": "UNPROTECTED OUTPUT/SENSE; candidate not captured"
+    },
+    {
+      "uid": "J:B2.2",
+      "instance": "B2",
+      "tip_net": "OUT_2_TIP",
+      "kind": "precision",
+      "existing_series_ohm": 998,
+      "existing_sense_ohm": 100,
+      "isolation_channels_required": 2,
+      "status": "UNPROTECTED OUTPUT/SENSE; candidate not captured"
+    },
+    {
+      "uid": "J:B2.3",
+      "instance": "B2",
+      "tip_net": "OUT_3_TIP",
+      "kind": "precision",
+      "existing_series_ohm": 998,
+      "existing_sense_ohm": 100,
+      "isolation_channels_required": 2,
+      "status": "UNPROTECTED OUTPUT/SENSE; candidate not captured"
+    },
+    {
+      "uid": "J:E1.BIP",
+      "instance": "E1",
+      "tip_net": "BIP_TIP",
+      "kind": "general",
+      "existing_series_ohm": 998,
+      "existing_sense_ohm": null,
+      "isolation_channels_required": 1,
+      "status": "UNPROTECTED OUTPUT/SENSE; candidate not captured"
+    },
+    {
+      "uid": "J:E1.ENV",
+      "instance": "E1",
+      "tip_net": "ENV_TIP",
+      "kind": "general",
+      "existing_series_ohm": 998,
+      "existing_sense_ohm": null,
+      "isolation_channels_required": 1,
+      "status": "UNPROTECTED OUTPUT/SENSE; candidate not captured"
+    },
+    {
+      "uid": "J:E1.EOC",
+      "instance": "E1",
+      "tip_net": "EOC_TIP",
+      "kind": "general",
+      "existing_series_ohm": 998,
+      "existing_sense_ohm": null,
+      "isolation_channels_required": 1,
+      "status": "UNPROTECTED OUTPUT/SENSE; candidate not captured"
+    },
+    {
+      "uid": "J:E1.STG",
+      "instance": "E1",
+      "tip_net": "STG_TIP",
+      "kind": "general",
+      "existing_series_ohm": 998,
+      "existing_sense_ohm": null,
+      "isolation_channels_required": 1,
+      "status": "UNPROTECTED OUTPUT/SENSE; candidate not captured"
+    },
+    {
+      "uid": "J:E2.BIP",
+      "instance": "E2",
+      "tip_net": "BIP_TIP",
+      "kind": "general",
+      "existing_series_ohm": 998,
+      "existing_sense_ohm": null,
+      "isolation_channels_required": 1,
+      "status": "UNPROTECTED OUTPUT/SENSE; candidate not captured"
+    },
+    {
+      "uid": "J:E2.ENV",
+      "instance": "E2",
+      "tip_net": "ENV_TIP",
+      "kind": "general",
+      "existing_series_ohm": 998,
+      "existing_sense_ohm": null,
+      "isolation_channels_required": 1,
+      "status": "UNPROTECTED OUTPUT/SENSE; candidate not captured"
+    },
+    {
+      "uid": "J:E2.EOC",
+      "instance": "E2",
+      "tip_net": "EOC_TIP",
+      "kind": "general",
+      "existing_series_ohm": 998,
+      "existing_sense_ohm": null,
+      "isolation_channels_required": 1,
+      "status": "UNPROTECTED OUTPUT/SENSE; candidate not captured"
+    },
+    {
+      "uid": "J:E2.STG",
+      "instance": "E2",
+      "tip_net": "STG_TIP",
+      "kind": "general",
+      "existing_series_ohm": 998,
+      "existing_sense_ohm": null,
+      "isolation_channels_required": 1,
+      "status": "UNPROTECTED OUTPUT/SENSE; candidate not captured"
+    },
+    {
+      "uid": "J:E3.BIP",
+      "instance": "E3",
+      "tip_net": "BIP_TIP",
+      "kind": "general",
+      "existing_series_ohm": 998,
+      "existing_sense_ohm": null,
+      "isolation_channels_required": 1,
+      "status": "UNPROTECTED OUTPUT/SENSE; candidate not captured"
+    },
+    {
+      "uid": "J:E3.ENV",
+      "instance": "E3",
+      "tip_net": "ENV_TIP",
+      "kind": "general",
+      "existing_series_ohm": 998,
+      "existing_sense_ohm": null,
+      "isolation_channels_required": 1,
+      "status": "UNPROTECTED OUTPUT/SENSE; candidate not captured"
+    },
+    {
+      "uid": "J:E3.EOC",
+      "instance": "E3",
+      "tip_net": "EOC_TIP",
+      "kind": "general",
+      "existing_series_ohm": 998,
+      "existing_sense_ohm": null,
+      "isolation_channels_required": 1,
+      "status": "UNPROTECTED OUTPUT/SENSE; candidate not captured"
+    },
+    {
+      "uid": "J:E3.STG",
+      "instance": "E3",
+      "tip_net": "STG_TIP",
+      "kind": "general",
+      "existing_series_ohm": 998,
+      "existing_sense_ohm": null,
+      "isolation_channels_required": 1,
+      "status": "UNPROTECTED OUTPUT/SENSE; candidate not captured"
+    },
+    {
+      "uid": "J:E4.BIP",
+      "instance": "E4",
+      "tip_net": "BIP_TIP",
+      "kind": "general",
+      "existing_series_ohm": 998,
+      "existing_sense_ohm": null,
+      "isolation_channels_required": 1,
+      "status": "UNPROTECTED OUTPUT/SENSE; candidate not captured"
+    },
+    {
+      "uid": "J:E4.ENV",
+      "instance": "E4",
+      "tip_net": "ENV_TIP",
+      "kind": "general",
+      "existing_series_ohm": 998,
+      "existing_sense_ohm": null,
+      "isolation_channels_required": 1,
+      "status": "UNPROTECTED OUTPUT/SENSE; candidate not captured"
+    },
+    {
+      "uid": "J:E4.EOC",
+      "instance": "E4",
+      "tip_net": "EOC_TIP",
+      "kind": "general",
+      "existing_series_ohm": 998,
+      "existing_sense_ohm": null,
+      "isolation_channels_required": 1,
+      "status": "UNPROTECTED OUTPUT/SENSE; candidate not captured"
+    },
+    {
+      "uid": "J:E4.STG",
+      "instance": "E4",
+      "tip_net": "STG_TIP",
+      "kind": "general",
+      "existing_series_ohm": 998,
+      "existing_sense_ohm": null,
+      "isolation_channels_required": 1,
+      "status": "UNPROTECTED OUTPUT/SENSE; candidate not captured"
+    },
+    {
+      "uid": "J:E5.BIP",
+      "instance": "E5",
+      "tip_net": "BIP_TIP",
+      "kind": "general",
+      "existing_series_ohm": 998,
+      "existing_sense_ohm": null,
+      "isolation_channels_required": 1,
+      "status": "UNPROTECTED OUTPUT/SENSE; candidate not captured"
+    },
+    {
+      "uid": "J:E5.ENV",
+      "instance": "E5",
+      "tip_net": "ENV_TIP",
+      "kind": "general",
+      "existing_series_ohm": 998,
+      "existing_sense_ohm": null,
+      "isolation_channels_required": 1,
+      "status": "UNPROTECTED OUTPUT/SENSE; candidate not captured"
+    },
+    {
+      "uid": "J:E5.EOC",
+      "instance": "E5",
+      "tip_net": "EOC_TIP",
+      "kind": "general",
+      "existing_series_ohm": 998,
+      "existing_sense_ohm": null,
+      "isolation_channels_required": 1,
+      "status": "UNPROTECTED OUTPUT/SENSE; candidate not captured"
+    },
+    {
+      "uid": "J:E5.STG",
+      "instance": "E5",
+      "tip_net": "STG_TIP",
+      "kind": "general",
+      "existing_series_ohm": 998,
+      "existing_sense_ohm": null,
+      "isolation_channels_required": 1,
+      "status": "UNPROTECTED OUTPUT/SENSE; candidate not captured"
+    },
+    {
+      "uid": "J:E6.BIP",
+      "instance": "E6",
+      "tip_net": "BIP_TIP",
+      "kind": "general",
+      "existing_series_ohm": 998,
+      "existing_sense_ohm": null,
+      "isolation_channels_required": 1,
+      "status": "UNPROTECTED OUTPUT/SENSE; candidate not captured"
+    },
+    {
+      "uid": "J:E6.ENV",
+      "instance": "E6",
+      "tip_net": "ENV_TIP",
+      "kind": "general",
+      "existing_series_ohm": 998,
+      "existing_sense_ohm": null,
+      "isolation_channels_required": 1,
+      "status": "UNPROTECTED OUTPUT/SENSE; candidate not captured"
+    },
+    {
+      "uid": "J:E6.EOC",
+      "instance": "E6",
+      "tip_net": "EOC_TIP",
+      "kind": "general",
+      "existing_series_ohm": 998,
+      "existing_sense_ohm": null,
+      "isolation_channels_required": 1,
+      "status": "UNPROTECTED OUTPUT/SENSE; candidate not captured"
+    },
+    {
+      "uid": "J:E6.STG",
+      "instance": "E6",
+      "tip_net": "STG_TIP",
+      "kind": "general",
+      "existing_series_ohm": 998,
+      "existing_sense_ohm": null,
+      "isolation_channels_required": 1,
+      "status": "UNPROTECTED OUTPUT/SENSE; candidate not captured"
+    },
+    {
+      "uid": "J:F1.BP",
+      "instance": "F1",
+      "tip_net": "BP_TIP",
+      "kind": "general",
+      "existing_series_ohm": 998,
+      "existing_sense_ohm": null,
+      "isolation_channels_required": 1,
+      "status": "UNPROTECTED OUTPUT/SENSE; candidate not captured"
+    },
+    {
+      "uid": "J:F1.HP",
+      "instance": "F1",
+      "tip_net": "HP_TIP",
+      "kind": "general",
+      "existing_series_ohm": 998,
+      "existing_sense_ohm": null,
+      "isolation_channels_required": 1,
+      "status": "UNPROTECTED OUTPUT/SENSE; candidate not captured"
+    },
+    {
+      "uid": "J:F1.LP",
+      "instance": "F1",
+      "tip_net": "LP_TIP",
+      "kind": "general",
+      "existing_series_ohm": 998,
+      "existing_sense_ohm": null,
+      "isolation_channels_required": 1,
+      "status": "UNPROTECTED OUTPUT/SENSE; candidate not captured"
+    },
+    {
+      "uid": "J:F1.OUT",
+      "instance": "F1",
+      "tip_net": "OUT_TIP",
+      "kind": "general",
+      "existing_series_ohm": 998,
+      "existing_sense_ohm": null,
+      "isolation_channels_required": 1,
+      "status": "UNPROTECTED OUTPUT/SENSE; candidate not captured"
+    },
+    {
+      "uid": "J:F2.BP",
+      "instance": "F2",
+      "tip_net": "BP_TIP",
+      "kind": "general",
+      "existing_series_ohm": 998,
+      "existing_sense_ohm": null,
+      "isolation_channels_required": 1,
+      "status": "UNPROTECTED OUTPUT/SENSE; candidate not captured"
+    },
+    {
+      "uid": "J:F2.HP",
+      "instance": "F2",
+      "tip_net": "HP_TIP",
+      "kind": "general",
+      "existing_series_ohm": 998,
+      "existing_sense_ohm": null,
+      "isolation_channels_required": 1,
+      "status": "UNPROTECTED OUTPUT/SENSE; candidate not captured"
+    },
+    {
+      "uid": "J:F2.LP",
+      "instance": "F2",
+      "tip_net": "LP_TIP",
+      "kind": "general",
+      "existing_series_ohm": 998,
+      "existing_sense_ohm": null,
+      "isolation_channels_required": 1,
+      "status": "UNPROTECTED OUTPUT/SENSE; candidate not captured"
+    },
+    {
+      "uid": "J:F2.OUT",
+      "instance": "F2",
+      "tip_net": "OUT_TIP",
+      "kind": "general",
+      "existing_series_ohm": 998,
+      "existing_sense_ohm": null,
+      "isolation_channels_required": 1,
+      "status": "UNPROTECTED OUTPUT/SENSE; candidate not captured"
+    },
+    {
+      "uid": "J:F3.BP",
+      "instance": "F3",
+      "tip_net": "BP_TIP",
+      "kind": "general",
+      "existing_series_ohm": 998,
+      "existing_sense_ohm": null,
+      "isolation_channels_required": 1,
+      "status": "UNPROTECTED OUTPUT/SENSE; candidate not captured"
+    },
+    {
+      "uid": "J:F3.HP",
+      "instance": "F3",
+      "tip_net": "HP_TIP",
+      "kind": "general",
+      "existing_series_ohm": 998,
+      "existing_sense_ohm": null,
+      "isolation_channels_required": 1,
+      "status": "UNPROTECTED OUTPUT/SENSE; candidate not captured"
+    },
+    {
+      "uid": "J:F3.LP",
+      "instance": "F3",
+      "tip_net": "LP_TIP",
+      "kind": "general",
+      "existing_series_ohm": 998,
+      "existing_sense_ohm": null,
+      "isolation_channels_required": 1,
+      "status": "UNPROTECTED OUTPUT/SENSE; candidate not captured"
+    },
+    {
+      "uid": "J:F3.OUT",
+      "instance": "F3",
+      "tip_net": "OUT_TIP",
+      "kind": "general",
+      "existing_series_ohm": 998,
+      "existing_sense_ohm": null,
+      "isolation_channels_required": 1,
+      "status": "UNPROTECTED OUTPUT/SENSE; candidate not captured"
+    },
+    {
+      "uid": "J:H1.OUT",
+      "instance": "H1",
+      "tip_net": "OUT_TIP",
+      "kind": "precision",
+      "existing_series_ohm": 998,
+      "existing_sense_ohm": 100,
+      "isolation_channels_required": 2,
+      "status": "UNPROTECTED OUTPUT/SENSE; candidate not captured"
+    },
+    {
+      "uid": "J:H2.OUT",
+      "instance": "H2",
+      "tip_net": "OUT_TIP",
+      "kind": "precision",
+      "existing_series_ohm": 998,
+      "existing_sense_ohm": 100,
+      "isolation_channels_required": 2,
+      "status": "UNPROTECTED OUTPUT/SENSE; candidate not captured"
+    },
+    {
+      "uid": "J:M4A.SUM",
+      "instance": "M4A",
+      "tip_net": "SUM_TIP",
+      "kind": "general",
+      "existing_series_ohm": 998,
+      "existing_sense_ohm": null,
+      "isolation_channels_required": 1,
+      "status": "UNPROTECTED OUTPUT/SENSE; candidate not captured"
+    },
+    {
+      "uid": "J:M4B.SUM",
+      "instance": "M4B",
+      "tip_net": "SUM_TIP",
+      "kind": "general",
+      "existing_series_ohm": 998,
+      "existing_sense_ohm": null,
+      "isolation_channels_required": 1,
+      "status": "UNPROTECTED OUTPUT/SENSE; candidate not captured"
+    },
+    {
+      "uid": "J:M5A.SUM",
+      "instance": "M5A",
+      "tip_net": "SUM_TIP",
+      "kind": "general",
+      "existing_series_ohm": 998,
+      "existing_sense_ohm": null,
+      "isolation_channels_required": 1,
+      "status": "UNPROTECTED OUTPUT/SENSE; candidate not captured"
+    },
+    {
+      "uid": "J:M5B.SUM",
+      "instance": "M5B",
+      "tip_net": "SUM_TIP",
+      "kind": "general",
+      "existing_series_ohm": 998,
+      "existing_sense_ohm": null,
+      "isolation_channels_required": 1,
+      "status": "UNPROTECTED OUTPUT/SENSE; candidate not captured"
+    },
+    {
+      "uid": "J:N1.BLUE",
+      "instance": "N1",
+      "tip_net": "BLUE_TIP",
+      "kind": "general",
+      "existing_series_ohm": 998,
+      "existing_sense_ohm": null,
+      "isolation_channels_required": 1,
+      "status": "UNPROTECTED OUTPUT/SENSE; candidate not captured"
+    },
+    {
+      "uid": "J:N1.BROWN",
+      "instance": "N1",
+      "tip_net": "BROWN_TIP",
+      "kind": "general",
+      "existing_series_ohm": 998,
+      "existing_sense_ohm": null,
+      "isolation_channels_required": 1,
+      "status": "UNPROTECTED OUTPUT/SENSE; candidate not captured"
+    },
+    {
+      "uid": "J:N1.PINK",
+      "instance": "N1",
+      "tip_net": "PINK_TIP",
+      "kind": "general",
+      "existing_series_ohm": 998,
+      "existing_sense_ohm": null,
+      "isolation_channels_required": 1,
+      "status": "UNPROTECTED OUTPUT/SENSE; candidate not captured"
+    },
+    {
+      "uid": "J:N1.WHITE",
+      "instance": "N1",
+      "tip_net": "WHITE_TIP",
+      "kind": "general",
+      "existing_series_ohm": 998,
+      "existing_sense_ohm": null,
+      "isolation_channels_required": 1,
+      "status": "UNPROTECTED OUTPUT/SENSE; candidate not captured"
+    },
+    {
+      "uid": "J:O1.PUL",
+      "instance": "O1",
+      "tip_net": "PUL_TIP",
+      "kind": "general",
+      "existing_series_ohm": 998,
+      "existing_sense_ohm": null,
+      "isolation_channels_required": 1,
+      "status": "UNPROTECTED OUTPUT/SENSE; candidate not captured"
+    },
+    {
+      "uid": "J:O1.SAW",
+      "instance": "O1",
+      "tip_net": "SAW_TIP",
+      "kind": "general",
+      "existing_series_ohm": 998,
+      "existing_sense_ohm": null,
+      "isolation_channels_required": 1,
+      "status": "UNPROTECTED OUTPUT/SENSE; candidate not captured"
+    },
+    {
+      "uid": "J:O1.SIN",
+      "instance": "O1",
+      "tip_net": "SIN_TIP",
+      "kind": "general",
+      "existing_series_ohm": 998,
+      "existing_sense_ohm": null,
+      "isolation_channels_required": 1,
+      "status": "UNPROTECTED OUTPUT/SENSE; candidate not captured"
+    },
+    {
+      "uid": "J:O1.TRI",
+      "instance": "O1",
+      "tip_net": "TRI_TIP",
+      "kind": "general",
+      "existing_series_ohm": 998,
+      "existing_sense_ohm": null,
+      "isolation_channels_required": 1,
+      "status": "UNPROTECTED OUTPUT/SENSE; candidate not captured"
+    },
+    {
+      "uid": "J:O2.PUL",
+      "instance": "O2",
+      "tip_net": "PUL_TIP",
+      "kind": "general",
+      "existing_series_ohm": 998,
+      "existing_sense_ohm": null,
+      "isolation_channels_required": 1,
+      "status": "UNPROTECTED OUTPUT/SENSE; candidate not captured"
+    },
+    {
+      "uid": "J:O2.SAW",
+      "instance": "O2",
+      "tip_net": "SAW_TIP",
+      "kind": "general",
+      "existing_series_ohm": 998,
+      "existing_sense_ohm": null,
+      "isolation_channels_required": 1,
+      "status": "UNPROTECTED OUTPUT/SENSE; candidate not captured"
+    },
+    {
+      "uid": "J:O2.SIN",
+      "instance": "O2",
+      "tip_net": "SIN_TIP",
+      "kind": "general",
+      "existing_series_ohm": 998,
+      "existing_sense_ohm": null,
+      "isolation_channels_required": 1,
+      "status": "UNPROTECTED OUTPUT/SENSE; candidate not captured"
+    },
+    {
+      "uid": "J:O2.TRI",
+      "instance": "O2",
+      "tip_net": "TRI_TIP",
+      "kind": "general",
+      "existing_series_ohm": 998,
+      "existing_sense_ohm": null,
+      "isolation_channels_required": 1,
+      "status": "UNPROTECTED OUTPUT/SENSE; candidate not captured"
+    },
+    {
+      "uid": "J:O3.PUL",
+      "instance": "O3",
+      "tip_net": "PUL_TIP",
+      "kind": "general",
+      "existing_series_ohm": 998,
+      "existing_sense_ohm": null,
+      "isolation_channels_required": 1,
+      "status": "UNPROTECTED OUTPUT/SENSE; candidate not captured"
+    },
+    {
+      "uid": "J:O3.SAW",
+      "instance": "O3",
+      "tip_net": "SAW_TIP",
+      "kind": "general",
+      "existing_series_ohm": 998,
+      "existing_sense_ohm": null,
+      "isolation_channels_required": 1,
+      "status": "UNPROTECTED OUTPUT/SENSE; candidate not captured"
+    },
+    {
+      "uid": "J:O3.SIN",
+      "instance": "O3",
+      "tip_net": "SIN_TIP",
+      "kind": "general",
+      "existing_series_ohm": 998,
+      "existing_sense_ohm": null,
+      "isolation_channels_required": 1,
+      "status": "UNPROTECTED OUTPUT/SENSE; candidate not captured"
+    },
+    {
+      "uid": "J:O3.TRI",
+      "instance": "O3",
+      "tip_net": "TRI_TIP",
+      "kind": "general",
+      "existing_series_ohm": 998,
+      "existing_sense_ohm": null,
+      "isolation_channels_required": 1,
+      "status": "UNPROTECTED OUTPUT/SENSE; candidate not captured"
+    },
+    {
+      "uid": "J:O4.PUL",
+      "instance": "O4",
+      "tip_net": "PUL_TIP",
+      "kind": "general",
+      "existing_series_ohm": 998,
+      "existing_sense_ohm": null,
+      "isolation_channels_required": 1,
+      "status": "UNPROTECTED OUTPUT/SENSE; candidate not captured"
+    },
+    {
+      "uid": "J:O4.SAW",
+      "instance": "O4",
+      "tip_net": "SAW_TIP",
+      "kind": "general",
+      "existing_series_ohm": 998,
+      "existing_sense_ohm": null,
+      "isolation_channels_required": 1,
+      "status": "UNPROTECTED OUTPUT/SENSE; candidate not captured"
+    },
+    {
+      "uid": "J:O4.SIN",
+      "instance": "O4",
+      "tip_net": "SIN_TIP",
+      "kind": "general",
+      "existing_series_ohm": 998,
+      "existing_sense_ohm": null,
+      "isolation_channels_required": 1,
+      "status": "UNPROTECTED OUTPUT/SENSE; candidate not captured"
+    },
+    {
+      "uid": "J:O4.TRI",
+      "instance": "O4",
+      "tip_net": "TRI_TIP",
+      "kind": "general",
+      "existing_series_ohm": 998,
+      "existing_sense_ohm": null,
+      "isolation_channels_required": 1,
+      "status": "UNPROTECTED OUTPUT/SENSE; candidate not captured"
+    },
+    {
+      "uid": "J:O5.PUL",
+      "instance": "O5",
+      "tip_net": "PUL_TIP",
+      "kind": "general",
+      "existing_series_ohm": 998,
+      "existing_sense_ohm": null,
+      "isolation_channels_required": 1,
+      "status": "UNPROTECTED OUTPUT/SENSE; candidate not captured"
+    },
+    {
+      "uid": "J:O5.SAW",
+      "instance": "O5",
+      "tip_net": "SAW_TIP",
+      "kind": "general",
+      "existing_series_ohm": 998,
+      "existing_sense_ohm": null,
+      "isolation_channels_required": 1,
+      "status": "UNPROTECTED OUTPUT/SENSE; candidate not captured"
+    },
+    {
+      "uid": "J:O5.SIN",
+      "instance": "O5",
+      "tip_net": "SIN_TIP",
+      "kind": "general",
+      "existing_series_ohm": 998,
+      "existing_sense_ohm": null,
+      "isolation_channels_required": 1,
+      "status": "UNPROTECTED OUTPUT/SENSE; candidate not captured"
+    },
+    {
+      "uid": "J:O5.TRI",
+      "instance": "O5",
+      "tip_net": "TRI_TIP",
+      "kind": "general",
+      "existing_series_ohm": 998,
+      "existing_sense_ohm": null,
+      "isolation_channels_required": 1,
+      "status": "UNPROTECTED OUTPUT/SENSE; candidate not captured"
+    },
+    {
+      "uid": "J:W1.OUT",
+      "instance": "W1",
+      "tip_net": "OUT_TIP",
+      "kind": "general",
+      "existing_series_ohm": 998,
+      "existing_sense_ohm": null,
+      "isolation_channels_required": 1,
+      "status": "UNPROTECTED OUTPUT/SENSE; candidate not captured"
+    },
+    {
+      "uid": "J:W2.OUT",
+      "instance": "W2",
+      "tip_net": "OUT_TIP",
+      "kind": "general",
+      "existing_series_ohm": 998,
+      "existing_sense_ohm": null,
+      "isolation_channels_required": 1,
+      "status": "UNPROTECTED OUTPUT/SENSE; candidate not captured"
+    },
+    {
+      "uid": "J:X1.OUT",
+      "instance": "X1",
+      "tip_net": "OUT_TIP",
+      "kind": "precision",
+      "existing_series_ohm": 998,
+      "existing_sense_ohm": 100,
+      "isolation_channels_required": 2,
+      "status": "UNPROTECTED OUTPUT/SENSE; candidate not captured"
+    },
+    {
+      "uid": "J:X2.OUT",
+      "instance": "X2",
+      "tip_net": "OUT_TIP",
+      "kind": "precision",
+      "existing_series_ohm": 998,
+      "existing_sense_ohm": 100,
+      "isolation_channels_required": 2,
+      "status": "UNPROTECTED OUTPUT/SENSE; candidate not captured"
+    }
+  ],
+  "reference_receivers": [
+    {
+      "instance": "O1",
+      "net": "OSC_OCT0",
+      "receiver_pins": [
+        {
+          "ref": "SW101",
+          "pin": "2",
+          "role": "oscillator:OCT_SELECTOR"
+        }
+      ],
+      "status": "Receiver input and source buffer require partial-connector analysis; no isolation captured"
+    },
+    {
+      "instance": "O1",
+      "net": "OSC_OCT1",
+      "receiver_pins": [
+        {
+          "ref": "SW101",
+          "pin": "3",
+          "role": "oscillator:OCT_SELECTOR"
+        }
+      ],
+      "status": "Receiver input and source buffer require partial-connector analysis; no isolation captured"
+    },
+    {
+      "instance": "O1",
+      "net": "OSC_OCT2",
+      "receiver_pins": [
+        {
+          "ref": "SW101",
+          "pin": "4",
+          "role": "oscillator:OCT_SELECTOR"
+        }
+      ],
+      "status": "Receiver input and source buffer require partial-connector analysis; no isolation captured"
+    },
+    {
+      "instance": "O1",
+      "net": "OSC_OCT3",
+      "receiver_pins": [
+        {
+          "ref": "SW101",
+          "pin": "5",
+          "role": "oscillator:OCT_SELECTOR"
+        }
+      ],
+      "status": "Receiver input and source buffer require partial-connector analysis; no isolation captured"
+    },
+    {
+      "instance": "O1",
+      "net": "OSC_OCT4",
+      "receiver_pins": [
+        {
+          "ref": "SW101",
+          "pin": "6",
+          "role": "oscillator:OCT_SELECTOR"
+        }
+      ],
+      "status": "Receiver input and source buffer require partial-connector analysis; no isolation captured"
+    },
+    {
+      "instance": "O1",
+      "net": "OSC_OCT5",
+      "receiver_pins": [
+        {
+          "ref": "SW101",
+          "pin": "7",
+          "role": "oscillator:OCT_SELECTOR"
+        }
+      ],
+      "status": "Receiver input and source buffer require partial-connector analysis; no isolation captured"
+    },
+    {
+      "instance": "O2",
+      "net": "OSC_OCT0",
+      "receiver_pins": [
+        {
+          "ref": "SW201",
+          "pin": "2",
+          "role": "oscillator:OCT_SELECTOR"
+        }
+      ],
+      "status": "Receiver input and source buffer require partial-connector analysis; no isolation captured"
+    },
+    {
+      "instance": "O2",
+      "net": "OSC_OCT1",
+      "receiver_pins": [
+        {
+          "ref": "SW201",
+          "pin": "3",
+          "role": "oscillator:OCT_SELECTOR"
+        }
+      ],
+      "status": "Receiver input and source buffer require partial-connector analysis; no isolation captured"
+    },
+    {
+      "instance": "O2",
+      "net": "OSC_OCT2",
+      "receiver_pins": [
+        {
+          "ref": "SW201",
+          "pin": "4",
+          "role": "oscillator:OCT_SELECTOR"
+        }
+      ],
+      "status": "Receiver input and source buffer require partial-connector analysis; no isolation captured"
+    },
+    {
+      "instance": "O2",
+      "net": "OSC_OCT3",
+      "receiver_pins": [
+        {
+          "ref": "SW201",
+          "pin": "5",
+          "role": "oscillator:OCT_SELECTOR"
+        }
+      ],
+      "status": "Receiver input and source buffer require partial-connector analysis; no isolation captured"
+    },
+    {
+      "instance": "O2",
+      "net": "OSC_OCT4",
+      "receiver_pins": [
+        {
+          "ref": "SW201",
+          "pin": "6",
+          "role": "oscillator:OCT_SELECTOR"
+        }
+      ],
+      "status": "Receiver input and source buffer require partial-connector analysis; no isolation captured"
+    },
+    {
+      "instance": "O2",
+      "net": "OSC_OCT5",
+      "receiver_pins": [
+        {
+          "ref": "SW201",
+          "pin": "7",
+          "role": "oscillator:OCT_SELECTOR"
+        }
+      ],
+      "status": "Receiver input and source buffer require partial-connector analysis; no isolation captured"
+    },
+    {
+      "instance": "O3",
+      "net": "OSC_OCT0",
+      "receiver_pins": [
+        {
+          "ref": "SW301",
+          "pin": "2",
+          "role": "oscillator:OCT_SELECTOR"
+        }
+      ],
+      "status": "Receiver input and source buffer require partial-connector analysis; no isolation captured"
+    },
+    {
+      "instance": "O3",
+      "net": "OSC_OCT1",
+      "receiver_pins": [
+        {
+          "ref": "SW301",
+          "pin": "3",
+          "role": "oscillator:OCT_SELECTOR"
+        }
+      ],
+      "status": "Receiver input and source buffer require partial-connector analysis; no isolation captured"
+    },
+    {
+      "instance": "O3",
+      "net": "OSC_OCT2",
+      "receiver_pins": [
+        {
+          "ref": "SW301",
+          "pin": "4",
+          "role": "oscillator:OCT_SELECTOR"
+        }
+      ],
+      "status": "Receiver input and source buffer require partial-connector analysis; no isolation captured"
+    },
+    {
+      "instance": "O3",
+      "net": "OSC_OCT3",
+      "receiver_pins": [
+        {
+          "ref": "SW301",
+          "pin": "5",
+          "role": "oscillator:OCT_SELECTOR"
+        }
+      ],
+      "status": "Receiver input and source buffer require partial-connector analysis; no isolation captured"
+    },
+    {
+      "instance": "O3",
+      "net": "OSC_OCT4",
+      "receiver_pins": [
+        {
+          "ref": "SW301",
+          "pin": "6",
+          "role": "oscillator:OCT_SELECTOR"
+        }
+      ],
+      "status": "Receiver input and source buffer require partial-connector analysis; no isolation captured"
+    },
+    {
+      "instance": "O3",
+      "net": "OSC_OCT5",
+      "receiver_pins": [
+        {
+          "ref": "SW301",
+          "pin": "7",
+          "role": "oscillator:OCT_SELECTOR"
+        }
+      ],
+      "status": "Receiver input and source buffer require partial-connector analysis; no isolation captured"
+    },
+    {
+      "instance": "O4",
+      "net": "OSC_OCT0",
+      "receiver_pins": [
+        {
+          "ref": "SW401",
+          "pin": "2",
+          "role": "oscillator:OCT_SELECTOR"
+        }
+      ],
+      "status": "Receiver input and source buffer require partial-connector analysis; no isolation captured"
+    },
+    {
+      "instance": "O4",
+      "net": "OSC_OCT1",
+      "receiver_pins": [
+        {
+          "ref": "SW401",
+          "pin": "3",
+          "role": "oscillator:OCT_SELECTOR"
+        }
+      ],
+      "status": "Receiver input and source buffer require partial-connector analysis; no isolation captured"
+    },
+    {
+      "instance": "O4",
+      "net": "OSC_OCT2",
+      "receiver_pins": [
+        {
+          "ref": "SW401",
+          "pin": "4",
+          "role": "oscillator:OCT_SELECTOR"
+        }
+      ],
+      "status": "Receiver input and source buffer require partial-connector analysis; no isolation captured"
+    },
+    {
+      "instance": "O4",
+      "net": "OSC_OCT3",
+      "receiver_pins": [
+        {
+          "ref": "SW401",
+          "pin": "5",
+          "role": "oscillator:OCT_SELECTOR"
+        }
+      ],
+      "status": "Receiver input and source buffer require partial-connector analysis; no isolation captured"
+    },
+    {
+      "instance": "O4",
+      "net": "OSC_OCT4",
+      "receiver_pins": [
+        {
+          "ref": "SW401",
+          "pin": "6",
+          "role": "oscillator:OCT_SELECTOR"
+        }
+      ],
+      "status": "Receiver input and source buffer require partial-connector analysis; no isolation captured"
+    },
+    {
+      "instance": "O4",
+      "net": "OSC_OCT5",
+      "receiver_pins": [
+        {
+          "ref": "SW401",
+          "pin": "7",
+          "role": "oscillator:OCT_SELECTOR"
+        }
+      ],
+      "status": "Receiver input and source buffer require partial-connector analysis; no isolation captured"
+    },
+    {
+      "instance": "O5",
+      "net": "OSC_OCT0",
+      "receiver_pins": [
+        {
+          "ref": "SW501",
+          "pin": "2",
+          "role": "oscillator:OCT_SELECTOR"
+        }
+      ],
+      "status": "Receiver input and source buffer require partial-connector analysis; no isolation captured"
+    },
+    {
+      "instance": "O5",
+      "net": "OSC_OCT1",
+      "receiver_pins": [
+        {
+          "ref": "SW501",
+          "pin": "3",
+          "role": "oscillator:OCT_SELECTOR"
+        }
+      ],
+      "status": "Receiver input and source buffer require partial-connector analysis; no isolation captured"
+    },
+    {
+      "instance": "O5",
+      "net": "OSC_OCT2",
+      "receiver_pins": [
+        {
+          "ref": "SW501",
+          "pin": "4",
+          "role": "oscillator:OCT_SELECTOR"
+        }
+      ],
+      "status": "Receiver input and source buffer require partial-connector analysis; no isolation captured"
+    },
+    {
+      "instance": "O5",
+      "net": "OSC_OCT3",
+      "receiver_pins": [
+        {
+          "ref": "SW501",
+          "pin": "5",
+          "role": "oscillator:OCT_SELECTOR"
+        }
+      ],
+      "status": "Receiver input and source buffer require partial-connector analysis; no isolation captured"
+    },
+    {
+      "instance": "O5",
+      "net": "OSC_OCT4",
+      "receiver_pins": [
+        {
+          "ref": "SW501",
+          "pin": "6",
+          "role": "oscillator:OCT_SELECTOR"
+        }
+      ],
+      "status": "Receiver input and source buffer require partial-connector analysis; no isolation captured"
+    },
+    {
+      "instance": "O5",
+      "net": "OSC_OCT5",
+      "receiver_pins": [
+        {
+          "ref": "SW501",
+          "pin": "7",
+          "role": "oscillator:OCT_SELECTOR"
+        }
+      ],
+      "status": "Receiver input and source buffer require partial-connector analysis; no isolation captured"
+    }
+  ],
+  "required_state_table": [
+    {
+      "valid_rails": {
+        "+12V": false,
+        "-12V": false,
+        "+5V": false
+      },
+      "required_signal_enable": false,
+      "implemented": false
+    },
+    {
+      "valid_rails": {
+        "+12V": false,
+        "-12V": false,
+        "+5V": true
+      },
+      "required_signal_enable": false,
+      "implemented": false
+    },
+    {
+      "valid_rails": {
+        "+12V": false,
+        "-12V": true,
+        "+5V": false
+      },
+      "required_signal_enable": false,
+      "implemented": false
+    },
+    {
+      "valid_rails": {
+        "+12V": false,
+        "-12V": true,
+        "+5V": true
+      },
+      "required_signal_enable": false,
+      "implemented": false
+    },
+    {
+      "valid_rails": {
+        "+12V": true,
+        "-12V": false,
+        "+5V": false
+      },
+      "required_signal_enable": false,
+      "implemented": false
+    },
+    {
+      "valid_rails": {
+        "+12V": true,
+        "-12V": false,
+        "+5V": true
+      },
+      "required_signal_enable": false,
+      "implemented": false
+    },
+    {
+      "valid_rails": {
+        "+12V": true,
+        "-12V": true,
+        "+5V": false
+      },
+      "required_signal_enable": false,
+      "implemented": false
+    },
+    {
+      "valid_rails": {
+        "+12V": true,
+        "-12V": true,
+        "+5V": true
+      },
+      "required_signal_enable": true,
+      "implemented": false
+    }
+  ],
+  "arrival_orders": [
+    [
+      "+12V",
+      "-12V",
+      "+5V"
+    ],
+    [
+      "+12V",
+      "+5V",
+      "-12V"
+    ],
+    [
+      "-12V",
+      "+12V",
+      "+5V"
+    ],
+    [
+      "-12V",
+      "+5V",
+      "+12V"
+    ],
+    [
+      "+5V",
+      "+12V",
+      "-12V"
+    ],
+    [
+      "+5V",
+      "-12V",
+      "+12V"
+    ]
+  ],
+  "return_counterexample": {
+    "healthy_inlet_return_ohm": 0.02,
+    "failed_inlet_return_ohm": null,
+    "replacement_patch_return_ohm": 0.02,
+    "test_net_return_A": 1,
+    "observed_AGND_shift_V_healthy": 0.02,
+    "observed_AGND_shift_V_failed": 0.02,
+    "conclusion": "Identical rail-voltage observations; rail-only monitoring cannot distinguish these states. This is not impossibility of a separately instrumented return path."
+  },
+  "open_gates": [
+    "Exact three-rail gate drive/reverse cutoff and hot SOA",
+    "Guaranteed sensing windows, control supply, all six arrival/failure orders, hiccup/discharge timing and let-through",
+    "Output/sense switch bounds at project supplies and during floating/partial power",
+    "Package/island/reference allocation within actual rail/capacitance budgets",
+    "Observable inlet-return failure independent of patch sleeves; mechanical pilot alone does not detect broken wires"
+  ]
+}

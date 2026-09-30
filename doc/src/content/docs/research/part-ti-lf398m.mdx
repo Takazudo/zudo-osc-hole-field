@@ -1,0 +1,27 @@
+---
+title: "LF398M/NOPB — Two analogue S&H cells"
+description: "Reviews the LF398 candidate for the two sample-and-hold channels and the acquisition and droop tests required."
+sidebar_position: 70
+---
+
+## Identity and role
+
+**LF398M/NOPB** — LCSC C1346172.
+
+Role: Two analogue S&H cells. Quantity scope: 2.
+
+## Current status
+
+LCSC identity verified; JLC assembly listing not verified
+
+First-prototype recommendation: one dedicated S&H IC per channel, with local hold capacitor and protected trigger pulse.
+
+## Qualification boundary
+
+SOIC-14, not SOIC-8. It tracks while SAMPLE is asserted: provide a short pulse for edge sampling. Acquisition time, offset, hold step and droop require tests with the actual capacitor. No precision-pitch or long-hold guarantee. Rev C §6.6 gives up to 200 pA hold leakage at TJ=25 C: with 10 nF this alone is 20 mV/s. Precision pitch/long-hold behavior is NOT established. Test 10 nF and 100 nF candidates with appropriately increased acquisition time.
+
+This authored page is a research intake record. It is not a generated exact-component verdict. Follow the native owner-bundle workflow before inventory/publication promotion.
+
+## Sources to acquire
+
+[TI product and datasheet](https://www.ti.com/product/LF398-N) · [LCSC exact part](https://www.lcsc.com/product-detail/C1346172.html) · [JLC Global Sourcing process](https://jlcpcb.com/help/article/how-to-use-jlcpcb-global-sourcing-parts-service)

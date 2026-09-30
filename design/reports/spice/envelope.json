@@ -1,0 +1,227 @@
+{
+  "schema_version": 1,
+  "module": "envelope",
+  "authority": "PROPOSAL (planning, owner-delegated)",
+  "oracle": "KiCad 10.0.6 pinned wrapper ngspice",
+  "status": "PASS - bounded model only",
+  "source_sha256": {
+    "design/spec/modules/envelope.py": "4aa4737afd1f6ed9f47161fd2ccb3d51fc69367bd9b9a21f2506a460f400e6bb",
+    "design/spec/modules/io_partition.py": "3372b2b650e34d0323c080ec094715c2ed44864418864db3b95a84eb82f18980",
+    "design/spec/modules/envelope_logic.py": "860cb283d2712da94bca2b7e43148f0306fb6c35ba272f8efd3df947d36c6d73",
+    "design/spec/modules/run_envelope_spice.py": "eee95410c3e76496f2ed5175d52c2b28a0faeb4d4058d4ff2563fa6c835c79f2"
+  },
+  "runs": [
+    {
+      "deck": "design/spec/modules/spice/envelope-asr-linear-normal.cir",
+      "mode": "ASR",
+      "shape": "LINEAR",
+      "scenario": "normal",
+      "status": "PASS - ideal/behavioural model only",
+      "OTA_bias_fixture_A": 0.0005,
+      "expected_full_rise_s": 0.008292079207920793,
+      "expected_full_fall_s": 0.008281249999999999,
+      "first_rise_s": 0.0084000001,
+      "first_fall_to_EOC_s": 0.008400040300000008,
+      "first_EOC_width_s": 0.0033441944999999945,
+      "peak_V": 8.01893965,
+      "rise_starts_s": [
+        0.0101250013
+      ],
+      "fall_starts_s": [
+        0.0551250014
+      ],
+      "EOC_starts_s": [
+        0.0635250417
+      ]
+    },
+    {
+      "deck": "design/spec/modules/spice/envelope-asr-curved-normal.cir",
+      "mode": "ASR",
+      "shape": "CURVED",
+      "scenario": "normal",
+      "status": "PASS - ideal/behavioural model only",
+      "OTA_bias_fixture_A": 0.0005,
+      "expected_full_rise_s": 0.02023485697518708,
+      "expected_full_fall_s": 0.02014157262343863,
+      "first_rise_s": 0.0203500001,
+      "first_fall_to_EOC_s": 0.020250040300000008,
+      "first_EOC_width_s": 0.0033441944999999945,
+      "peak_V": 8.00199046,
+      "rise_starts_s": [
+        0.0101250013
+      ],
+      "fall_starts_s": [
+        0.0551250014
+      ],
+      "EOC_starts_s": [
+        0.0753750417
+      ]
+    },
+    {
+      "deck": "design/spec/modules/spice/envelope-ar-linear-normal.cir",
+      "mode": "AR",
+      "shape": "LINEAR",
+      "scenario": "normal",
+      "status": "PASS - ideal/behavioural model only",
+      "OTA_bias_fixture_A": 0.0005,
+      "expected_full_rise_s": 0.008292079207920793,
+      "expected_full_fall_s": 0.008281249999999999,
+      "first_rise_s": 0.0084000001,
+      "first_fall_to_EOC_s": 0.0084500024,
+      "first_EOC_width_s": 0.0033442323999999975,
+      "peak_V": 8.01893965,
+      "rise_starts_s": [
+        0.0101250013
+      ],
+      "fall_starts_s": [
+        0.0185250014
+      ],
+      "EOC_starts_s": [
+        0.0269750038
+      ]
+    },
+    {
+      "deck": "design/spec/modules/spice/envelope-ar-curved-normal.cir",
+      "mode": "AR",
+      "shape": "CURVED",
+      "scenario": "normal",
+      "status": "PASS - ideal/behavioural model only",
+      "OTA_bias_fixture_A": 0.0005,
+      "expected_full_rise_s": 0.02023485697518708,
+      "expected_full_fall_s": 0.02014157262343863,
+      "first_rise_s": 0.0203500001,
+      "first_fall_to_EOC_s": 0.020250003000000003,
+      "first_EOC_width_s": 0.0033442318,
+      "peak_V": 8.00199046,
+      "rise_starts_s": [
+        0.0101250013
+      ],
+      "fall_starts_s": [
+        0.0304750014
+      ],
+      "EOC_starts_s": [
+        0.0507250044
+      ]
+    },
+    {
+      "deck": "design/spec/modules/spice/envelope-loop-linear-normal.cir",
+      "mode": "LOOP",
+      "shape": "LINEAR",
+      "scenario": "normal",
+      "status": "PASS - ideal/behavioural model only",
+      "OTA_bias_fixture_A": 0.0005,
+      "expected_full_rise_s": 0.008292079207920793,
+      "expected_full_fall_s": 0.008281249999999999,
+      "first_rise_s": 0.00839995877,
+      "first_fall_to_EOC_s": 0.008450001700000001,
+      "first_EOC_width_s": 0.0033442331,
+      "peak_V": 8.01893966,
+      "rise_starts_s": [
+        0.00522504263,
+        0.0254250013,
+        0.0456250013,
+        0.0658250316,
+        0.0860250013,
+        0.106225001
+      ],
+      "fall_starts_s": [
+        0.0136250014,
+        0.0338250014,
+        0.0540250014,
+        0.0742250014,
+        0.0944250417,
+        0.114625001
+      ],
+      "EOC_starts_s": [
+        0.0220750031,
+        0.0422750035,
+        0.0624750032,
+        0.0826750032,
+        0.102875003
+      ]
+    },
+    {
+      "deck": "design/spec/modules/spice/envelope-loop-curved-normal.cir",
+      "mode": "LOOP",
+      "shape": "CURVED",
+      "scenario": "normal",
+      "status": "PASS - ideal/behavioural model only",
+      "OTA_bias_fixture_A": 0.0005,
+      "expected_full_rise_s": 0.02023485697518708,
+      "expected_full_fall_s": 0.02014157262343863,
+      "first_rise_s": 0.02034995877,
+      "first_fall_to_EOC_s": 0.020250003000000003,
+      "first_EOC_width_s": 0.0033442318,
+      "peak_V": 8.00199046,
+      "rise_starts_s": [
+        0.00522504263,
+        0.0491750013,
+        0.0931250013
+      ],
+      "fall_starts_s": [
+        0.0255750014,
+        0.0695250014,
+        0.113475001
+      ],
+      "EOC_starts_s": [
+        0.0458250044,
+        0.0897750417
+      ]
+    },
+    {
+      "deck": "design/spec/modules/spice/envelope-asr-linear-early-release.cir",
+      "mode": "ASR",
+      "shape": "LINEAR",
+      "scenario": "early-release",
+      "status": "PASS - ideal/behavioural model only",
+      "OTA_bias_fixture_A": 0.0005,
+      "expected_full_rise_s": 0.008292079207920793,
+      "expected_full_fall_s": 0.008281249999999999,
+      "first_rise_s": 0.0030000001000000005,
+      "first_fall_to_EOC_s": 0.0030500017000000008,
+      "first_EOC_width_s": 0.0033442331,
+      "peak_V": 2.87999995,
+      "rise_starts_s": [
+        0.0101250013
+      ],
+      "fall_starts_s": [
+        0.0131250014
+      ],
+      "EOC_starts_s": [
+        0.0161750031
+      ]
+    },
+    {
+      "deck": "design/spec/modules/spice/envelope-ar-curved-retrigger.cir",
+      "mode": "AR",
+      "shape": "CURVED",
+      "scenario": "retrigger",
+      "status": "PASS - ideal/behavioural model only",
+      "OTA_bias_fixture_A": 0.0005,
+      "expected_full_rise_s": 0.02023485697518708,
+      "expected_full_fall_s": 0.02014157262343863,
+      "first_rise_s": 0.0203500001,
+      "first_fall_to_EOC_s": 0.044500003,
+      "first_EOC_width_s": 0.0033442318,
+      "peak_V": 8.00208845,
+      "rise_starts_s": [
+        0.0101250013,
+        0.0381250014
+      ],
+      "fall_starts_s": [
+        0.0304750014,
+        0.0547250014
+      ],
+      "EOC_starts_s": [
+        0.0749750044
+      ]
+    }
+  ],
+  "limitations": [
+    "Ideal OTA gm=19.2*IABC, ideal amplifier/analogue switches/comparators; no device spread, offset or leakage.",
+    "Actual packed NAND/DFF graph is exercised with behavioural gates and master/slave latches; no HC propagation or metastability claim.",
+    "Clock fixed at50us, reset asserted until5ms, converter current imposed500uA; physical RC oscillator/reset, transistor converters and power sequencing NOT RUN.",
+    "EOC timing tracks completion for one state clock then adds0.7RC; actual HC221 non-retriggerability and coefficient/corners NOT RUN.",
+    "Real output protection/loading, diode clamps, noise, rail current, PCB/harness and bench behavior NOT RUN."
+  ]
+}

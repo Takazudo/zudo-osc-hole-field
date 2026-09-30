@@ -1,0 +1,128 @@
+{
+  "schema_version": 1,
+  "facts": [
+    {
+      "fact_id": "fact-schmitt-manufacturer",
+      "record_id": "rec-schmitt",
+      "source_id": "src-schmitt-datasheet",
+      "class": "PROJECT_STATE",
+      "value": "Texas Instruments",
+      "unit": "NONE",
+      "conditions": "Manufacturer of the project-selected exact shortlist identity.",
+      "locator": "src-schmitt-datasheet: title block or OSC-ES-1 row parts[id=schmitt].manufacturer",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-schmitt-project-selection",
+      "record_id": "rec-schmitt",
+      "source_id": "src-schmitt-shortlist",
+      "class": "PROJECT_STATE",
+      "value": {
+        "manufacturer": "Texas Instruments",
+        "mpn": "SN74HC14DR",
+        "package": "SOIC-14",
+        "lcsc": "not listed in the shortlist",
+        "roles": "logic conditioning",
+        "source_status": "UNVERIFIED"
+      },
+      "unit": "NONE",
+      "conditions": "OSC-ES-1 dated proposal row; exact source status and availability statements are not supplier allocation.",
+      "locator": "src-schmitt-shortlist: JSON row parts[id=schmitt]",
+      "provenance": "PROJECT-CHOICE",
+      "verdict": "NOT APPLICABLE",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-schmitt-orderable-identity",
+      "record_id": "rec-schmitt",
+      "source_id": "src-schmitt-datasheet",
+      "class": "PROJECT_STATE",
+      "value": {
+        "manufacturer": "Texas Instruments",
+        "mpn": "SN74HC14DR",
+        "package": "SOIC-14"
+      },
+      "unit": "NONE",
+      "conditions": "Exact complete orderable identifier in the selected package; does not establish supplier stock.",
+      "locator": "Section/table audit: src-schmitt-datasheet: package/orderable addendum names exact MPN",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-schmitt-pinout",
+      "record_id": "rec-schmitt",
+      "source_id": "src-schmitt-datasheet",
+      "class": "PROJECT_STATE",
+      "value": "pin 1 1A input -> pad 1; pin 2 1Y output -> pad 2; pin 3 2A input -> pad 3; pin 4 2Y output -> pad 4; pin 5 3A input -> pad 5; pin 6 3Y output -> pad 6; pin 7 GND -> pad 7; pin 8 4Y output -> pad 8; pin 9 4A input -> pad 9; pin 10 5Y output -> pad 10; pin 11 5A input -> pad 11; pin 12 6Y output -> pad 12; pin 13 6A input -> pad 13; pin 14 VCC -> pad 14",
+      "unit": "NONE",
+      "conditions": "No schematic or placement/net binding is claimed. Manufacturer pin functions are source-backed only when a retained primary document names the product family.",
+      "locator": "src-schmitt-datasheet: Pin configuration/function table",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-schmitt-product-function",
+      "record_id": "rec-schmitt",
+      "source_id": "src-schmitt-datasheet",
+      "class": "PROJECT_STATE",
+      "value": "Manufacturer source identifies SN74HC14DR as the shortlisted logic conditioning device; this is not project suitability.",
+      "unit": "NONE",
+      "conditions": "Product family description only; no project application or electrical guarantee implied.",
+      "locator": "src-schmitt-datasheet: document title block and product description",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-schmitt-electrical-limits",
+      "record_id": "rec-schmitt",
+      "source_id": "src-schmitt-datasheet",
+      "class": "GUARANTEED_ELECTRICAL",
+      "value": "No exact-part electrical limits promoted from retained evidence.",
+      "unit": "NONE",
+      "conditions": "The task has not promoted a source-backed limit for this exact shortlist record.",
+      "locator": "src-schmitt-datasheet: exact component electrical-characteristics table not promoted",
+      "provenance": "UNVERIFIED",
+      "verdict": "UNSOURCED",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-schmitt-procurement-status",
+      "record_id": "rec-schmitt",
+      "source_id": "src-schmitt-shortlist",
+      "class": "PROJECT_STATE",
+      "value": "UNVERIFIED",
+      "unit": "NONE",
+      "conditions": "Time-stamped OSC-ES-1 state on 2026-09-28; current stock, lead time, consignment, and JLC assembly are not established.",
+      "locator": "src-schmitt-shortlist: JSON row parts[id=schmitt].sourcing.status/jlcpcb_assembly",
+      "provenance": "PROJECT-CHOICE",
+      "verdict": "UNSOURCED",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-schmitt-mechanical-fit",
+      "record_id": "rec-schmitt",
+      "source_id": "src-schmitt-shortlist",
+      "class": "PROJECT_STATE",
+      "value": "Provisional package-family envelope only; board/land-pattern fit has not been physically checked.",
+      "unit": "NONE",
+      "conditions": "Selected footprint family and display envelope do not establish exact-part placement or solderability.",
+      "locator": "Section/table audit: src-schmitt-shortlist: parts[id=schmitt].package; CAD receipt is provisional family geometry",
+      "provenance": "PROJECT-CHOICE",
+      "verdict": "NEEDS BENCH",
+      "depends_on": [],
+      "expression": ""
+    }
+  ]
+}

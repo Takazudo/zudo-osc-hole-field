@@ -1,0 +1,49 @@
+{
+  "schema_version": 1,
+  "status": "Exact candidate evidence; unvalidated circuit protection",
+  "historical_ptc_limits": {
+    "part": "TECHFUSE mSMD110-33V",
+    "hold_A_at_25C": 1.1,
+    "r1max_ohm": 0.25,
+    "source": "Physical page 0, Table II row mSMD110-33V of the retained mSMD110-33V PDF",
+    "scope": "Historical single-inlet circuit only; 25 C hold current does not cover higher ambient."
+  },
+  "sources": [
+    {
+      "component": "TECHFUSE mSMD110-33V, C70119",
+      "file": "circuit/sources/power/mSMD110-33V.pdf",
+      "sha256": "9f11eea6dd5ca89ad88ff7e9916030dc7ed08ad25a57587ff4ab97922623ee34",
+      "url": "https://datasheet.lcsc.com/datasheet/pdf/83a52b00a3fb00da0260c29eb7f73d7d.pdf?productCode=C70119",
+      "locator": "Physical page 0, Table II row mSMD110-33V",
+      "facts": "33 V maximum, 1.10 A hold and 2.20 A trip at 25 C, R1max 0.250 ohm; no ambient-temperature derating chart in the sheet",
+      "source_hash_matches_pinned_zudo_pd_bundle": true
+    },
+    {
+      "component": "High Diode SMAJ15A, C571368",
+      "file": "circuit/sources/power/SMAJ15A-High-Diode.pdf",
+      "sha256": "be81cafcbb6514e5bdd16cb45ebec1c7dea4f6f156063252d3f4fa3751b0e83f",
+      "url": "http://www.h-diode.com/upload/202506/10/202506100145085933.pdf",
+      "locator": "Physical pages 0-1, polarity note and SMAJ15A electrical row",
+      "facts": "Unidirectional; cathode band, 15.0 V reverse standoff, 16.7-18.5 V breakdown, 24.4 V maximum clamp at the specified 10/1000 us pulse",
+      "source_hash_matches_pinned_zudo_pd_bundle": true
+    },
+    {
+      "component": "Brightking SMAJ6.5A, C87267",
+      "file": "circuit/sources/power/SMAJ6.5A-Brightking.pdf",
+      "sha256": "63578e4fab6f4325c5cf21cfcee216c2af7555ec50b78cfc4f18c24f6dc821e1",
+      "url": "https://datasheet.lcsc.com/datasheet/pdf/19d0bf098ced4b4fbeb7d738e7c6c181.pdf",
+      "locator": "Physical page 1, SMAJ6.5A electrical row",
+      "facts": "Unidirectional, 6.5 V reverse standoff, 7.22-7.98 V breakdown, 11.2 V maximum clamp at the specified 10/1000 us pulse",
+      "source_hash_matches_pinned_zudo_pd_bundle": true
+    },
+    {
+      "component": "Yageo RC0603FR-072K2L, C114662",
+      "file": "circuit/sources/power/RC0603FR-072K2L.pdf",
+      "sha256": "0200f00e466cb9c7424ebcbac80c6011b60e09cf0365a76ceb8100a47d26436a",
+      "url": "https://yageogroup.com/component-documentation/download/specsheet/RC0603FR-072K2L",
+      "locator": "Physical page 0, title and specifications",
+      "facts": "Exact MPN, 2.2 kohm, 1%, 0.1 W at 70 C, 0603/1608",
+      "source_hash_matches_pinned_zudo_pd_bundle": null
+    }
+  ]
+}

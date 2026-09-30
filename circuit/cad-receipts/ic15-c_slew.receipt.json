@@ -1,0 +1,81 @@
+{
+  "receipt_version": 1,
+  "identity": {
+    "asset_id": "ic15-c_slew",
+    "record_id": "rec-c-slew",
+    "manufacturer": "Fenghua Advanced Technology",
+    "mpn": "1206CG104J500NT",
+    "package": "1206",
+    "variant_notes": "FAMILY SOURCE ONLY - exact MPN not located in PDF"
+  },
+  "acquisition": {
+    "provider": "KiCad 10 stock symbol and retained manufacturer/creator document",
+    "source_url": "https://web-static.partgenie.ai/component/docs/24814d3406042d9d5b5483a096d4df41_2304140030_FH--Guangdong-Fenghua-Advanced-Tech-1206CG104J500NT_C46348.pdf",
+    "acquired_on": "2026-09-28",
+    "original_filenames": [
+      "1206CG104J500NT.pdf"
+    ],
+    "sha256": {
+      "circuit/sources/ic-library/1206CG104J500NT.pdf": "6df3d1f341ba30358717fac8bc95719e3c5630d7cc7bccc16f469958906ac4bf"
+    }
+  },
+  "representation": {
+    "files": [
+      "symbols/src/1206CG104J500NT.kicad_sym"
+    ],
+    "formats": [
+      "kicad_sym"
+    ],
+    "units": "KiCad schematic units",
+    "original_paths": [
+      "circuit/sources/ic-library/1206CG104J500NT.pdf"
+    ]
+  },
+  "fidelity": {
+    "class": "derived",
+    "reason": "Source pin functions audited against the retained document; KiCad stock or custom graphics normalized for this draft identity.",
+    "evidence": [
+      "FAMILY SOURCE ONLY - exact MPN not located in PDF",
+      "https://web-static.partgenie.ai/component/docs/24814d3406042d9d5b5483a096d4df41_2304140030_FH--Guangdong-Fenghua-Advanced-Tech-1206CG104J500NT_C46348.pdf"
+    ]
+  },
+  "derivation": {
+    "derived": true,
+    "input_sha256": {
+      "circuit/sources/ic-library/1206CG104J500NT.pdf": "6df3d1f341ba30358717fac8bc95719e3c5630d7cc7bccc16f469958906ac4bf"
+    },
+    "tool": "scripts/libgen/fixtures/build_ic_assets.py, build_ic_custom.py, or build_passive_symbols.py",
+    "tool_version": "1",
+    "parameters": {
+      "normalization": "exact MPN/manufacturer/LCSC fields, local footprint reference; alias parent units expanded where required"
+    },
+    "output_sha256": {
+      "symbols/src/1206CG104J500NT.kicad_sym": "8597f454df0f9cdc419b1b7ac63fa3b096150f7d4f23399e7fc07b04766e6b62"
+    }
+  },
+  "cad_use": {
+    "symbol": "zudo-osc-hole-field:1206CG104J500NT",
+    "footprint": "zudo-osc-hole-field:C1206",
+    "model_path": "${KIPRJMOD}/../../footprints/kicad/zudo-osc-hole-field.3dshapes/C1206_L3.2-W1.6-H1.3.wrl",
+    "transform": {
+      "offset": null,
+      "rotation": null,
+      "scale": null
+    },
+    "seating_plane": null
+  },
+  "checks": {
+    "performed": [
+      "Issue-15 all-unit KiCad 10 ERC fixture and project library checker"
+    ],
+    "remaining_physical_checks": [
+      "Confirm exact package drawing/lot, actual circuit net mapping, electrical suitability and procurement before board release.",
+      "Confirm exact body/height, land pattern, fixed-layout clearance, and electrical suitability before hardware use; catalogue family geometry is provisional."
+    ]
+  },
+  "publication": {
+    "preview_selected": false,
+    "download_published": false,
+    "permitted_scope": null
+  }
+}

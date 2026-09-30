@@ -1,0 +1,89 @@
+{
+  "receipt_version": 1,
+  "identity": {
+    "asset_id": "ic15-nand",
+    "record_id": "rec-nand",
+    "manufacturer": "Texas Instruments",
+    "mpn": "SN74HC00DR",
+    "package": "SOIC-14",
+    "variant_notes": "AVAILABLE"
+  },
+  "acquisition": {
+    "provider": "KiCad 10 stock symbol and retained manufacturer/creator document",
+    "source_url": "https://www.ti.com/lit/ds/symlink/sn74hc00.pdf",
+    "acquired_on": "2026-09-28",
+    "original_filenames": [
+      "SN74HC00DR.stock.kicad_sympart",
+      "SN74HC00DR.parent.kicad_sympart",
+      "SN74HC00.pdf"
+    ],
+    "sha256": {
+      "circuit/sources/ic-library/cad/SN74HC00DR.stock.kicad_sympart": "52c0605d56a94361aa6d55c40e5b5bc200147ce28f436a3a291f21a4c4d6abb6",
+      "circuit/sources/ic-library/cad/SN74HC00DR.parent.kicad_sympart": "fd7a500f2a3f96a9bd53e7be4346224ac97843995afce6096c954c56f198ac4a",
+      "circuit/sources/ic-library/SN74HC00.pdf": "aacc4e5e60c10be7412b635c327d42413c4f68a58bf381467fec1e54bff24af0"
+    }
+  },
+  "representation": {
+    "files": [
+      "symbols/src/SN74HC00DR.kicad_sym"
+    ],
+    "formats": [
+      "kicad_sym"
+    ],
+    "units": "KiCad schematic units",
+    "original_paths": [
+      "circuit/sources/ic-library/cad/SN74HC00DR.stock.kicad_sympart",
+      "circuit/sources/ic-library/cad/SN74HC00DR.parent.kicad_sympart",
+      "circuit/sources/ic-library/SN74HC00.pdf"
+    ]
+  },
+  "fidelity": {
+    "class": "derived",
+    "reason": "Source pin functions audited against the retained document; KiCad stock or custom graphics normalized for this draft identity.",
+    "evidence": [
+      "AVAILABLE",
+      "https://www.ti.com/lit/ds/symlink/sn74hc00.pdf"
+    ]
+  },
+  "derivation": {
+    "derived": true,
+    "input_sha256": {
+      "circuit/sources/ic-library/cad/SN74HC00DR.stock.kicad_sympart": "52c0605d56a94361aa6d55c40e5b5bc200147ce28f436a3a291f21a4c4d6abb6",
+      "circuit/sources/ic-library/cad/SN74HC00DR.parent.kicad_sympart": "fd7a500f2a3f96a9bd53e7be4346224ac97843995afce6096c954c56f198ac4a",
+      "circuit/sources/ic-library/SN74HC00.pdf": "aacc4e5e60c10be7412b635c327d42413c4f68a58bf381467fec1e54bff24af0"
+    },
+    "tool": "scripts/libgen/fixtures/build_ic_assets.py, build_ic_custom.py, or build_passive_symbols.py",
+    "tool_version": "1",
+    "parameters": {
+      "normalization": "exact MPN/manufacturer/LCSC fields, local footprint reference; alias parent units expanded where required"
+    },
+    "output_sha256": {
+      "symbols/src/SN74HC00DR.kicad_sym": "25f8493c284c52685e9e029c4424453312fe05bf7e659c3846e3fa20add2f694"
+    }
+  },
+  "cad_use": {
+    "symbol": "zudo-osc-hole-field:SN74HC00DR",
+    "footprint": "zudo-osc-hole-field:SOIC-14_3.9x8.7mm_P1.27mm",
+    "model_path": "${KIPRJMOD}/../../footprints/kicad/zudo-osc-hole-field.3dshapes/IC_SOIC-14_3.9x8.7.wrl",
+    "transform": {
+      "offset": null,
+      "rotation": null,
+      "scale": null
+    },
+    "seating_plane": null
+  },
+  "checks": {
+    "performed": [
+      "Issue-15 all-unit KiCad 10 ERC fixture and project library checker"
+    ],
+    "remaining_physical_checks": [
+      "Confirm exact package drawing/lot, actual circuit net mapping, electrical suitability and procurement before board release.",
+      "Confirm exact body/height, land pattern, fixed-layout clearance, and electrical suitability before hardware use; catalogue family geometry is provisional."
+    ]
+  },
+  "publication": {
+    "preview_selected": true,
+    "download_published": false,
+    "permitted_scope": null
+  }
+}

@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "coverage": [
+    {
+      "coverage_id": "cov-vco-exact-orderable-identity",
+      "record_id": "rec-vco",
+      "domain": "exact orderable identity",
+      "status": "COVERED",
+      "reason": "The retained ALFA RPAR manufacturer PDF explicitly identifies AS3340D as SOIC-16; the selected exact manufacturer MPN/package are primary-source confirmed.",
+      "fact_ids": [
+        "fact-vco-orderable-identity"
+      ],
+      "blocking_fact_ids": []
+    },
+    {
+      "coverage_id": "cov-vco-pinout",
+      "record_id": "rec-vco",
+      "domain": "pinout",
+      "status": "COVERED",
+      "reason": "ALFA RPAR's retained primary table gives all sixteen PDIP-16/SOIC-16 pin numbers and names; project net/placement binding remains outside this domain.",
+      "fact_ids": [
+        "fact-vco-pinout"
+      ],
+      "blocking_fact_ids": []
+    },
+    {
+      "coverage_id": "cov-vco-electrical-limits",
+      "record_id": "rec-vco",
+      "domain": "electrical limits",
+      "status": "OPEN",
+      "reason": "A relevant absolute limit and manufacturer supply guidance are retained, but project-specific operating performance, supply suitability, startup, and current behavior still require assessment.",
+      "fact_ids": [
+        "fact-vco-absolute-maximum-vee-to-ground",
+        "fact-vco-supply-guidance",
+        "fact-vco-electrical-limits"
+      ],
+      "blocking_fact_ids": [
+        "fact-vco-electrical-limits"
+      ]
+    },
+    {
+      "coverage_id": "cov-vco-mechanical-fit",
+      "record_id": "rec-vco",
+      "domain": "mechanical fit",
+      "status": "OPEN",
+      "reason": "The manufacturer drawing supports SOIC-16 nominal planform and pitch, while exact height, land pattern, family-envelope accuracy, board clearance, and fixed-layout physical fit remain unverified.",
+      "fact_ids": [
+        "fact-vco-package-outline",
+        "fact-vco-mechanical-fit"
+      ],
+      "blocking_fact_ids": [
+        "fact-vco-mechanical-fit"
+      ]
+    },
+    {
+      "coverage_id": "cov-vco-procurement",
+      "record_id": "rec-vco",
+      "domain": "procurement",
+      "status": "OPEN",
+      "reason": "The shortlist still reports sourcing and assembly as unverified; no current stock, lead time, consignment, or factory allocation is established.",
+      "fact_ids": [
+        "fact-vco-procurement-status"
+      ],
+      "blocking_fact_ids": [
+        "fact-vco-procurement-status"
+      ]
+    }
+  ]
+}

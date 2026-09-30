@@ -1,0 +1,90 @@
+{
+  "receipt_version": 1,
+  "identity": {
+    "asset_id": "symbol-pwr-flag",
+    "record_id": null,
+    "manufacturer": null,
+    "mpn": null,
+    "package": null,
+    "variant_notes": "Abstract KiCad power-flag symbol; it declares ERC power intent and has no manufactured package."
+  },
+  "acquisition": {
+    "provider": "GitHub repository Takazudo/zudo-pd",
+    "library_release_tag": null,
+    "source_url": "https://github.com/Takazudo/zudo-pd/blob/f25194fa73ded724e82d4561307c106480fbd9ce/symbols/zudo-pd.kicad_sym",
+    "acquired_on": "2026-09-28",
+    "original_filenames": [
+      "zudo-pd.kicad_sym"
+    ],
+    "sha256": {
+      "symbols/zudo-pd.kicad_sym": "1d897bd28edfe611bd7b8f8583e54287480a24240db395cf1412c03e2d6afff1"
+    }
+  },
+  "representation": {
+    "files": [
+      "symbols/src/PWR_FLAG.kicad_sym"
+    ],
+    "formats": [
+      "kicad_sym"
+    ],
+    "units": "KiCad schematic units; footprint and model dimensions in mm",
+    "original_paths": [
+      "symbols/zudo-pd.kicad_sym"
+    ]
+  },
+  "fidelity": {
+    "class": "family",
+    "reason": "This is a schematic utility symbol, not a physical component. No package geometry is claimed.",
+    "evidence": [
+      "Source bytes are pinned to zudo-pd commit f25194fa73ded724e82d4561307c106480fbd9ce.",
+      "The footprint is an imported package representation; exact manufacturer dimensional correspondence has not been independently established here."
+    ]
+  },
+  "derivation": {
+    "derived": true,
+    "input_sha256": {
+      "symbols/zudo-pd.kicad_sym": "1d897bd28edfe611bd7b8f8583e54287480a24240db395cf1412c03e2d6afff1"
+    },
+    "tool": "scripts/libgen/seed_assets.py and scripts/libgen/gen_courtyards.py",
+    "tool_version": "1",
+    "parameters": {
+      "source_commit": "f25194fa73ded724e82d4561307c106480fbd9ce",
+      "library_nickname": "zudo-osc-hole-field",
+      "operations": [
+        "extract one symbol",
+        "set local footprint nickname",
+        "normalize identity fields",
+        "generate courtyard",
+        "normalize STEP text line endings and trailing spaces"
+      ]
+    },
+    "output_sha256": {
+      "symbols/src/PWR_FLAG.kicad_sym": "e4ab9c5c99a854a529b3f0f91960ee9307e629d838762300a7f36c938030558a"
+    }
+  },
+  "cad_use": {
+    "symbol": "zudo-osc-hole-field:PWR_FLAG",
+    "footprint": null,
+    "model_path": null,
+    "transform": {
+      "offset": null,
+      "rotation": null,
+      "scale": null
+    },
+    "seating_plane": null
+  },
+  "checks": {
+    "performed": [
+      "Source file SHA-256 values were calculated from f25194fa73ded724e82d4561307c106480fbd9ce Git objects.",
+      "Generated output SHA-256 values are checked by scripts/libgen/check_lib.py."
+    ],
+    "remaining_physical_checks": [
+      "Compare package dimensions, pin/pad numbering, orientation and seating against the exact manufacturer's drawing before using a board for fabrication."
+    ]
+  },
+  "publication": {
+    "preview_selected": false,
+    "download_published": false,
+    "permitted_scope": null
+  }
+}

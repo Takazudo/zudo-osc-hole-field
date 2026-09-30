@@ -1,0 +1,87 @@
+[
+  {
+    "id": "D01",
+    "authority": "USER",
+    "decision": "R21 grid is the continuing visual/layout baseline; fill the two unused cells with SLEW.",
+    "status": "accepted user decision"
+  },
+  {
+    "id": "D02",
+    "authority": "USER",
+    "decision": "No home soldering; external standard parts acceptable when factory supplied/populated.",
+    "status": "accepted user decision"
+  },
+  {
+    "id": "D03",
+    "authority": "USER",
+    "decision": "No hidden signal normals between modules, including S&H and noise.",
+    "status": "accepted user decision"
+  },
+  {
+    "id": "D04",
+    "authority": "USER",
+    "decision": "Retain all existing 180 jack positions and 142 control positions; two new pots only.",
+    "status": "accepted user decision"
+  },
+  {
+    "id": "D05",
+    "authority": "USER",
+    "decision": "No faders: all RISE/FALL are pots with separate stage LEDs.",
+    "status": "accepted user decision"
+  },
+  {
+    "id": "D06",
+    "authority": "USER",
+    "decision": "Small capless continuous-pot family; OCT is a separately selected real six-position switch.",
+    "status": "accepted user decision"
+  },
+  {
+    "id": "D07",
+    "authority": "PROPOSAL",
+    "decision": "Buffered RC lag after capture, common amount for rise/fall; FAST not a mechanical bypass.",
+    "status": "engineering proposal, not user-certified hardware"
+  },
+  {
+    "id": "D08",
+    "authority": "PROPOSAL",
+    "decision": "500 k\u03a9 B504 +2.2 k\u03a9 minimum +0.5 \u00b5F bank per SLEW channel, to be qualified before BOM release.",
+    "status": "engineering proposal, not user-certified hardware"
+  },
+  {
+    "id": "D09",
+    "authority": "USER",
+    "decision": "Flat panel plus height-compatible interface PCBs and rear core. Properly clamped jack bushings.",
+    "status": "accepted user decision"
+  },
+  {
+    "id": "D10",
+    "authority": "USER",
+    "decision": "Reuse zudo-pd P/B with exact revision/configuration and an independent mounting pocket.",
+    "status": "accepted user decision"
+  },
+  {
+    "id": "D11",
+    "authority": "PROPOSAL",
+    "decision": "Use the official zudo-circuit-doc initializer/runtime; copy project material, not old lamp renderer code.",
+    "status": "engineering proposal, not user-certified hardware"
+  },
+  {
+    "id": "D12",
+    "authority": "USER",
+    "decision": "Scope10 and the OSC hole field are separate projects. Do not import scope circuitry into this synth.",
+    "status": "accepted user decision"
+  },
+  {
+    "id": "D13",
+    "authority": "PROPOSAL (planning, owner-delegated)",
+    "decision": "Conditional nine-board partition: J, unified P, complete EL optical circuits, five stepped O adapters and distinct rear K at proposed z=-100mm; all438 UID centres retained. Exact sources and interface mapping in design/partition/partition.json.",
+    "status": "unvalidated draft; #65/#55/#57/#64 physical gates NOT RUN, #59 exact protection OPEN"
+  },
+  {
+    "id": "D14",
+    "authority": "PROPOSAL (owner-delegated issue #66)",
+    "decision": "Replace failed single J routing candidate with two whole-module jack boards JL/JR at x177; ten-board manifest, same-face local bypass clusters, unchanged438 fixed centres. Exact carrier/loom/hot qualification remains open.",
+    "status": "conditional unvalidated draft; routing NOT RUN #38; physical NOT RUN #65",
+    "source": "design/partition/downstream-handoff-66.md"
+  }
+]

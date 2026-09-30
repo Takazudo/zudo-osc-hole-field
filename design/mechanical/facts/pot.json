@@ -1,0 +1,114 @@
+{
+  "schema_version": 1,
+  "family": "Bourns PTV09A-4020F",
+  "exact_mpns": [
+    "PTV09A-4020F-B103",
+    "PTV09A-4020F-B104",
+    "PTV09A-4020F-B504"
+  ],
+  "authority": "Manufacturer PTV09 family PDF; three resistance codes share the -4020F mechanics. B104 order availability remains UNVERIFIED.",
+  "source": {
+    "file": "design/mechanical/sources/bourns-ptv09.pdf",
+    "sha256": "411cdb6a62e61f9c5bc2df76ed64ee21d7bcfbee035c1ba36beff08c43f28558",
+    "url": "https://www.bourns.com/docs/product-datasheets/PTV09.pdf"
+  },
+  "facts": {
+    "mounting_surface_to_shaft_end": {
+      "value": null,
+      "unit": "mm",
+      "source_locator": null,
+      "status": "UNSOURCED",
+      "note": "PTV09A-4 L=20±0.5 is drawn from a body/shaft datum, not proven PCB mounting-face to tip."
+    },
+    "shaft_length_L": {
+      "value": {
+        "nominal": 20,
+        "tolerance": 0.5
+      },
+      "unit": "mm",
+      "source_locator": "physical PDF page 1 (0-based), PTV09A-4 dimension L; page 1 F-type length table",
+      "status": "SOURCE",
+      "note": ""
+    },
+    "shaft_diameter": {
+      "value": {
+        "nominal": 6.0,
+        "upper": 0,
+        "lower": -0.1
+      },
+      "unit": "mm",
+      "source_locator": "physical PDF page 1, F-Type shaft diagram",
+      "status": "SOURCE",
+      "note": ""
+    },
+    "body_height": {
+      "value": null,
+      "unit": "mm",
+      "source_locator": null,
+      "status": "UNSOURCED",
+      "note": "No qualified seated height above the PCB is given for the exact -4 horizontal/rear configuration."
+    },
+    "recommended_panel_hole": {
+      "value": null,
+      "unit": "mm",
+      "source_locator": null,
+      "status": "UNSOURCED",
+      "note": "Bushingless -4 part has no manufacturer recommended panel hole or tolerance in this drawing; project 6.3 mm preview is a proposal."
+    },
+    "seated_height": {
+      "value": null,
+      "unit": "mm",
+      "source_locator": null,
+      "status": "UNSOURCED",
+      "note": "Board seating and panel stack need a physical coupon."
+    },
+    "support_beyond_solder_joints": {
+      "value": "Two mounting legs shown in family horizontal/rear layout; panel/knob side support not established.",
+      "unit": "NONE",
+      "source_locator": "physical PDF page 0, PTV09A-1 horizontal/rear PCB layout; physical PDF page 1, PTV09A-4 side view",
+      "status": "SOURCE",
+      "note": ""
+    },
+    "pin_row_pitch": {
+      "value": 2.5,
+      "unit": "mm",
+      "source_locator": "physical PDF page 0, horizontal/rear layout, 5.0 mm span over pins 1–3",
+      "status": "SOURCE",
+      "note": ""
+    },
+    "mounting_leg_pitch": {
+      "value": 10.6,
+      "unit": "mm",
+      "source_locator": "physical PDF page 0, horizontal/rear layout; transfer to PTV09A-4 requires first article confirmation",
+      "status": "SOURCE",
+      "note": ""
+    },
+    "full_ccw_end": {
+      "value": "terminal 1",
+      "unit": "NONE",
+      "source_locator": "physical PDF page 0, schematic and full-CCW drawing; page 1 PTV09A-4 full-CCW view",
+      "status": "SOURCE",
+      "note": ""
+    },
+    "clockwise_end": {
+      "value": "terminal 3",
+      "unit": "NONE",
+      "source_locator": "physical PDF page 0, schematic 1–2–3 and full-CCW view; clockwise travel moves wiper toward terminal 3",
+      "status": "SOURCE",
+      "note": ""
+    },
+    "body_depth_along_shaft": {
+      "value": 6.8,
+      "unit": "mm",
+      "source_locator": "physical PDF page 1, PTV09A-4 side drawing, 6.8 callout",
+      "status": "SOURCE",
+      "note": "Body depth along shaft direction, not installed height."
+    }
+  },
+  "grid_fit": {
+    "pitch_x_mm": 17,
+    "pitch_y_mm": 14,
+    "courtyard_status": "Test fixture required; no physical stack sign-off."
+  },
+  "status": "Unvalidated draft"
+}

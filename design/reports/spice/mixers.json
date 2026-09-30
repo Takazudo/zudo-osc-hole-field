@@ -1,0 +1,189 @@
+{
+  "schema_version": 2,
+  "authority": "PROPOSAL - unvalidated",
+  "oracle": "KiCad 10.0.6 ngspice via scripts/kicad/run.sh",
+  "status": "Bounded waveform and zero-bias model checks met; feedthrough open; hardware unvalidated",
+  "model": "Retained TI/National LM13700/NS single OTA; model pin order IABC, DIODE, IN+, IN-, OUT, V-, BUFFER_IN, BUFFER_OUT, V+ matches physical OTA1 pins 1,2,3,4,5,6,7,8,11.",
+  "calibration": {
+    "procedure": "At +5 V command and zero input, adjust the existing \u00b15 V offset wiper to near-zero output. At four coherent 5 V peak inputs, adjust the existing 100\u2013110 k\u03a9 TIA feedback below the \u00b110 V envelope. Freeze both settings for all vectors.",
+    "offset_wiper_unloaded_V": 2.7,
+    "pot_top_ohm": 2300.0,
+    "pot_bottom_ohm": 7700.0,
+    "tia_feedback_ohm": 109000,
+    "frozen_across_runs": true
+  },
+  "model_check_criteria": "Nonzero exit for output beyond \u00b110 V at +5 V command / four 5 V peak inputs, more than 10 mV at zero imposed bias, or positive-command gain swing outside \u00b110% of the ideal linear request. The gain tolerance is a fixture diagnostic, not a hardware specification.",
+  "feedthrough_diagnostic_V": {
+    "command_2p5_zero_input": 0.5029219,
+    "command_5_zero_input": -0.01916115,
+    "acceptance": "OPEN - no numeric hardware limit or measurement"
+  },
+  "failures": [],
+  "runs": [
+    {
+      "deck": "design/spec/modules/spice/mix5-ideal.cir",
+      "status": "PASS - ideal model only",
+      "result_V": {
+        "sum_prelevel": -9.99997,
+        "sum_out": 4.999975
+      },
+      "condition": "All five inputs +5 V, all input attenuverters at +1, LEVEL at midpoint. No saturation or tolerance modeled."
+    },
+    {
+      "deck": "design/spec/modules/spice/mix4-vendor-n5-0v.cir",
+      "status": "MEASURED - vendor single OTA model only",
+      "command_V": -5,
+      "imposed_bias_uA": 0,
+      "input_peak_each_V": 0,
+      "output_extrema_V": {
+        "out_max": 6.319555e-08,
+        "out_min": 6.319555e-08
+      },
+      "condition": "Four coherent 1 kHz ideal sources stand in for protected input/attenuverter chains; captured summer, 100k/100 \u03a9 OTA divider, offset pot, IABC series resistor and TIA; ideal \u00b112 V amplifier stages; 100k output load replaces output cell; frozen calibration."
+    },
+    {
+      "deck": "design/spec/modules/spice/mix4-vendor-n5-1v.cir",
+      "status": "MEASURED - vendor single OTA model only",
+      "command_V": -5,
+      "imposed_bias_uA": 0,
+      "input_peak_each_V": 1,
+      "output_extrema_V": {
+        "out_max": 1.034056e-07,
+        "out_min": 2.285418e-08
+      },
+      "condition": "Four coherent 1 kHz ideal sources stand in for protected input/attenuverter chains; captured summer, 100k/100 \u03a9 OTA divider, offset pot, IABC series resistor and TIA; ideal \u00b112 V amplifier stages; 100k output load replaces output cell; frozen calibration."
+    },
+    {
+      "deck": "design/spec/modules/spice/mix4-vendor-n5-5v.cir",
+      "status": "MEASURED - vendor single OTA model only",
+      "command_V": -5,
+      "imposed_bias_uA": 0,
+      "input_peak_each_V": 5,
+      "output_extrema_V": {
+        "out_max": 2.60645e-07,
+        "out_min": -1.374579e-07
+      },
+      "condition": "Four coherent 1 kHz ideal sources stand in for protected input/attenuverter chains; captured summer, 100k/100 \u03a9 OTA divider, offset pot, IABC series resistor and TIA; ideal \u00b112 V amplifier stages; 100k output load replaces output cell; frozen calibration."
+    },
+    {
+      "deck": "design/spec/modules/spice/mix4-vendor-0-0v.cir",
+      "status": "MEASURED - vendor single OTA model only",
+      "command_V": 0,
+      "imposed_bias_uA": 0,
+      "input_peak_each_V": 0,
+      "output_extrema_V": {
+        "out_max": 6.319555e-08,
+        "out_min": 6.319555e-08
+      },
+      "condition": "Four coherent 1 kHz ideal sources stand in for protected input/attenuverter chains; captured summer, 100k/100 \u03a9 OTA divider, offset pot, IABC series resistor and TIA; ideal \u00b112 V amplifier stages; 100k output load replaces output cell; frozen calibration."
+    },
+    {
+      "deck": "design/spec/modules/spice/mix4-vendor-0-1v.cir",
+      "status": "MEASURED - vendor single OTA model only",
+      "command_V": 0,
+      "imposed_bias_uA": 0,
+      "input_peak_each_V": 1,
+      "output_extrema_V": {
+        "out_max": 1.034056e-07,
+        "out_min": 2.285418e-08
+      },
+      "condition": "Four coherent 1 kHz ideal sources stand in for protected input/attenuverter chains; captured summer, 100k/100 \u03a9 OTA divider, offset pot, IABC series resistor and TIA; ideal \u00b112 V amplifier stages; 100k output load replaces output cell; frozen calibration."
+    },
+    {
+      "deck": "design/spec/modules/spice/mix4-vendor-0-5v.cir",
+      "status": "MEASURED - vendor single OTA model only",
+      "command_V": 0,
+      "imposed_bias_uA": 0,
+      "input_peak_each_V": 5,
+      "output_extrema_V": {
+        "out_max": 2.60645e-07,
+        "out_min": -1.374579e-07
+      },
+      "condition": "Four coherent 1 kHz ideal sources stand in for protected input/attenuverter chains; captured summer, 100k/100 \u03a9 OTA divider, offset pot, IABC series resistor and TIA; ideal \u00b112 V amplifier stages; 100k output load replaces output cell; frozen calibration."
+    },
+    {
+      "deck": "design/spec/modules/spice/mix4-vendor-2p5-0v.cir",
+      "status": "MEASURED - vendor single OTA model only",
+      "command_V": 2.5,
+      "imposed_bias_uA": 250.0,
+      "input_peak_each_V": 0,
+      "output_extrema_V": {
+        "out_max": 0.5029219,
+        "out_min": 0.5029219
+      },
+      "condition": "Four coherent 1 kHz ideal sources stand in for protected input/attenuverter chains; captured summer, 100k/100 \u03a9 OTA divider, offset pot, IABC series resistor and TIA; ideal \u00b112 V amplifier stages; 100k output load replaces output cell; frozen calibration."
+    },
+    {
+      "deck": "design/spec/modules/spice/mix4-vendor-2p5-1v.cir",
+      "status": "MEASURED - vendor single OTA model only",
+      "command_V": 2.5,
+      "imposed_bias_uA": 250.0,
+      "input_peak_each_V": 1,
+      "output_extrema_V": {
+        "out_max": 1.530335,
+        "out_min": -0.5258057
+      },
+      "condition": "Four coherent 1 kHz ideal sources stand in for protected input/attenuverter chains; captured summer, 100k/100 \u03a9 OTA divider, offset pot, IABC series resistor and TIA; ideal \u00b112 V amplifier stages; 100k output load replaces output cell; frozen calibration."
+    },
+    {
+      "deck": "design/spec/modules/spice/mix4-vendor-2p5-5v.cir",
+      "status": "MEASURED - vendor single OTA model only",
+      "command_V": 2.5,
+      "imposed_bias_uA": 250.0,
+      "input_peak_each_V": 5,
+      "output_extrema_V": {
+        "out_max": 5.572705,
+        "out_min": -4.599085
+      },
+      "condition": "Four coherent 1 kHz ideal sources stand in for protected input/attenuverter chains; captured summer, 100k/100 \u03a9 OTA divider, offset pot, IABC series resistor and TIA; ideal \u00b112 V amplifier stages; 100k output load replaces output cell; frozen calibration."
+    },
+    {
+      "deck": "design/spec/modules/spice/mix4-vendor-5-0v.cir",
+      "status": "MEASURED - vendor single OTA model only",
+      "command_V": 5,
+      "imposed_bias_uA": 500,
+      "input_peak_each_V": 0,
+      "output_extrema_V": {
+        "out_max": -0.01916115,
+        "out_min": -0.01916115
+      },
+      "condition": "Four coherent 1 kHz ideal sources stand in for protected input/attenuverter chains; captured summer, 100k/100 \u03a9 OTA divider, offset pot, IABC series resistor and TIA; ideal \u00b112 V amplifier stages; 100k output load replaces output cell; frozen calibration."
+    },
+    {
+      "deck": "design/spec/modules/spice/mix4-vendor-5-1v.cir",
+      "status": "MEASURED - vendor single OTA model only",
+      "command_V": 5,
+      "imposed_bias_uA": 500,
+      "input_peak_each_V": 1,
+      "output_extrema_V": {
+        "out_max": 1.972024,
+        "out_min": -2.010233
+      },
+      "condition": "Four coherent 1 kHz ideal sources stand in for protected input/attenuverter chains; captured summer, 100k/100 \u03a9 OTA divider, offset pot, IABC series resistor and TIA; ideal \u00b112 V amplifier stages; 100k output load replaces output cell; frozen calibration."
+    },
+    {
+      "deck": "design/spec/modules/spice/mix4-vendor-5-5v.cir",
+      "status": "MEASURED - vendor single OTA model only",
+      "command_V": 5,
+      "imposed_bias_uA": 500,
+      "input_peak_each_V": 5,
+      "output_extrema_V": {
+        "out_max": 9.84187,
+        "out_min": -9.877432
+      },
+      "condition": "Four coherent 1 kHz ideal sources stand in for protected input/attenuverter chains; captured summer, 100k/100 \u03a9 OTA divider, offset pot, IABC series resistor and TIA; ideal \u00b112 V amplifier stages; 100k output load replaces output cell; frozen calibration."
+    }
+  ],
+  "not_run": [
+    {
+      "subject": "MIX4 physical silence/feedthrough, complete servo, real opamp headroom, package, temperature and stability",
+      "status": "NOT RUN",
+      "reason": "The model predicts residual silence output at half command; no numeric feedthrough acceptance is specified. Retained model is one OTA only and warns bandwidth/phase-margin overestimate >2x; ideal amplifiers and imposed bias omit real servo and saturation."
+    },
+    {
+      "subject": "MIX5 cable stability, short/fault protection, \u00b110 V internal headroom and clip window tolerance",
+      "status": "NOT RUN",
+      "reason": "No complete vendor models or hardware bench measurements for full signal chain."
+    }
+  ]
+}

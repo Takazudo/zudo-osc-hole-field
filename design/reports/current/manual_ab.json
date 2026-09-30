@@ -1,0 +1,166 @@
+{
+  "schema_version": 1,
+  "module": "manual_ab",
+  "authority": "PROPOSAL (planning, owner-delegated)",
+  "status": "Unvalidated per-instance rail estimate; not measured and not a guaranteed maximum",
+  "units": "mA",
+  "IC_packages_per_instance": {
+    "ADG5412FBRUZ": 2,
+    "OPA4196IDR": 1,
+    "OPA4197IPWR": 2
+  },
+  "breakdown": [
+    {
+      "load": "OPA4197IPWR",
+      "count": 2,
+      "typical_unit_mA": {
+        "+12V": 4,
+        "-12V": 4,
+        "+5V": 0
+      },
+      "planning_maximum_unit_mA": {
+        "+12V": 6.0,
+        "-12V": 6.0,
+        "+5V": 0
+      },
+      "basis": "Whole quad packages including unused channels. Source OPA4197 p8 or OPA4196 p8; full-temperature Iq maxima. No output current included here."
+    },
+    {
+      "load": "OPA4196IDR",
+      "count": 1,
+      "typical_unit_mA": {
+        "+12V": 0.56,
+        "-12V": 0.56,
+        "+5V": 0
+      },
+      "planning_maximum_unit_mA": {
+        "+12V": 1.0,
+        "-12V": 1.0,
+        "+5V": 0
+      },
+      "basis": "Whole quad packages including unused channels. Source OPA4197 p8 or OPA4196 p8; full-temperature Iq maxima. No output current included here."
+    },
+    {
+      "load": "ADG5412FBRUZ",
+      "count": 2,
+      "typical_unit_mA": {
+        "+12V": 0.9,
+        "-12V": 0.5,
+        "+5V": 0
+      },
+      "planning_maximum_unit_mA": {
+        "+12V": 1.3,
+        "-12V": 0.7,
+        "+5V": 0
+      },
+      "basis": "ADG5412F Rev C Table 1 p4 \u00b115 V normal-mode table; extrapolation allowance at project \u00b112 V, not guaranteed at this voltage."
+    },
+    {
+      "load": "Magnitude indicator envelope",
+      "count": 3,
+      "typical_unit_mA": {
+        "+12V": 0.25,
+        "-12V": 0.25,
+        "+5V": 0
+      },
+      "planning_maximum_unit_mA": {
+        "+12V": 1.25,
+        "-12V": 1.25,
+        "+5V": 0
+      },
+      "basis": "OSC-ES-1 magnitude LED envelope per indicator; rail peaks need not coincide."
+    },
+    {
+      "load": "External output load",
+      "count": 1,
+      "typical_unit_mA": {
+        "+12V": 0.05,
+        "-12V": 0.05,
+        "+5V": 0
+      },
+      "planning_maximum_unit_mA": {
+        "+12V": 0.5,
+        "-12V": 0.5,
+        "+5V": 0
+      },
+      "basis": "OSC-ES-1 planning envelope: 5 V into 100 k\u03a9 typical / 10 k\u03a9 planning; shorts excluded."
+    },
+    {
+      "load": "Input-isolator enable feeds",
+      "count": 2,
+      "typical_unit_mA": {
+        "+12V": 0,
+        "-12V": 0,
+        "+5V": 0.05
+      },
+      "planning_maximum_unit_mA": {
+        "+12V": 0,
+        "-12V": 0,
+        "+5V": 0.075
+      },
+      "basis": "Two 5 V / 101 k\u03a9 feeds plus logic allowance; estimate, not guaranteed."
+    },
+    {
+      "load": "10 M\u03a9 selector-common bias load",
+      "count": 1,
+      "typical_unit_mA": {
+        "+12V": 0.0005,
+        "-12V": 0.0005,
+        "+5V": 0
+      },
+      "planning_maximum_unit_mA": {
+        "+12V": 0.0005,
+        "-12V": 0.0005,
+        "+5V": 0
+      },
+      "basis": "At nominal \u00b15 V signal; the positive and negative rail entries are separate polarity bounds, not simultaneous current."
+    }
+  ],
+  "instances": [
+    {
+      "instance": "X1",
+      "typical_mA_per_rail": {
+        "+12V": 11.1605,
+        "-12V": 10.3605,
+        "+5V": 0.1
+      },
+      "planning_maximum_mA_per_rail": {
+        "+12V": 19.8505,
+        "-12V": 18.6505,
+        "+5V": 0.15
+      },
+      "guaranteed_maximum_mA_per_rail": {
+        "+12V": null,
+        "-12V": null,
+        "+5V": null
+      }
+    },
+    {
+      "instance": "X2",
+      "typical_mA_per_rail": {
+        "+12V": 11.1605,
+        "-12V": 10.3605,
+        "+5V": 0.1
+      },
+      "planning_maximum_mA_per_rail": {
+        "+12V": 19.8505,
+        "-12V": 18.6505,
+        "+5V": 0.15
+      },
+      "guaranteed_maximum_mA_per_rail": {
+        "+12V": null,
+        "-12V": null,
+        "+5V": null
+      }
+    }
+  ],
+  "guaranteed_maximum_status": "NOT ESTABLISHED - input/output faults, contact overlap, switch startup, temperature and output short conditions are unqualified",
+  "omitted_transients": [
+    "input fault/clamp current",
+    "contact overlap current",
+    "simultaneous output short",
+    "capacitive load and startup",
+    "external source back-drive"
+  ],
+  "note": "Planning maximum is an allowance, not a device or module limit. Full instrument closure remains owned by the system-level power task."
+}

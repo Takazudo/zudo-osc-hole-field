@@ -1,0 +1,78 @@
+---
+title: "Fixed-centre octave selector assembly"
+description: "Conditional stepped SRBV160803 adapter decision, exact retained evidence, rejected coplanar layouts, and the persistent physical qualification gate."
+sidebar_position: 47
+---
+
+**Conditional unvalidated draft.** Keep five Alps Alpine **SRBV160803**, supplier code **LCSC C470374**, at the five R21 shaft centres: x = 14.5, 31.5, 48.5, 65.5, 82.5 mm; y = 185 mm. All 438 UID/x/y pairs and all 33 module instances are unchanged. Issue [#47](https://github.com/Takazudo/zudo-osc-hole-field/issues/47) makes a draft assembly decision. Installed mechanical qualification remains **NOT RUN** in persistent issue [#55](https://github.com/Takazudo/zudo-osc-hole-field/issues/55).
+
+![Dimensioned conservative keepouts for the stepped five-selector assembly](/assets/osc-hole-field/selector-assembly.svg)
+
+## Decision and evidence
+
+Use five independent local PCB adapters, grouped **3 front + 2 rear**. O1/O3/O5 have body rotation 0° and PCB component faces at z = −16 mm. O2/O4 have rotation 180° and faces at z = −29 mm. Z is positive toward the user from the front panel surface. The 13 mm step separates even the deliberately conservative whole body/support/tail envelopes. O2/O4 receive custom 13 mm keyed shaft extensions. All five receive custom Ø8 mm knobs with adjustable pointer collars. These are **project-designed draft parts**, not sourced commercial parts or qualified replacements. The previous Ø8 mm cap was an unselected study envelope.
+
+The source specification is `design/mechanical/selector-assembly.json`. The placement generator consumes its orientation and depth per UID; the original R21 grid and owner artwork are unchanged. Footprint and keepout model generation lives in `scripts/libgen/gen_selector_assembly.py`, and the CAD receipt records derivation and hashes. The component WRL uses [KiCad’s 0.1 inch coordinate units](https://dev-docs.kicad.org/en/file-formats/legacy-pcb/index.html) with drawing Y inverted; the independent checker converts back to mm and verifies its bounds. The independent numerical/oracle report is `design/mechanical/selector-assembly-check.json`.
+
+Retained manufacturer evidence:
+
+- SRBV catalogue update **2510**, physical PDF page index **3**, **Drawing No.7**, all three dimensions views, mounting-hole diagram and circuit diagram. Retained as `design/mechanical/sources/alps-srbv.pdf`, SHA-256 `4389058192ce8e89188d5c1c0f23de85945916542cd477ba04f3c75ac9f69ec8`.
+- [Exact product Operation Part Details (a)](https://tech.alpsalpine.com/cms.media/product_detail_fig_srbv_d_13_en_67f206af61.gif), retained as `alps-srbv-shaft.gif`: nominal shaft Ø6, 4.5 mm flat dimension, C1 chamfer.
+- [Exact product Attached Parts](https://tech.alpsalpine.com/cms.media/product_detail_fig_srbv_ap_1_en_173ba8d251.gif), retained as `alps-srbv-hardware.gif`: included M9×0.75 nut, 11 mm AF × 2 mm; washer Ø14/Ø9.1 × 0.5 mm. Both images were inspected and their hashes are in the exact component owner bundle. General dimensional tolerances are not supplied by these images.
+
+## Corrections and rejected alternatives
+
+Drawing No.7 specifies **Ø2 PCB mounting holes**, not Ø2 solid legs. The old assertion that two solid legs necessarily collide because their holes overlap was unsupported and has been removed from active evidence. Same-orientation hole centres are 1 mm apart at 17 mm shaft pitch, so the **bores** overlap 1 mm.
+
+Alternating 0°/180° at one height changes the closest mounting-hole separation to `sqrt(1² + 2.2²) = 2.416609 mm`. This gives a nominal **0.416609 mm bore web**, but unchanged Ø2.6 copper pads overlap **0.183391 mm**. A hole-only pass does not establish assembly clearance.
+
+The 16.2 × 18.5 mm central body is asymmetric: local y = −10.5 to +8 mm about the shaft in direction A. Another view gives an **18.2 mm support span**. Its complete contour and tolerances are not dimensioned. The footprint now depicts both the asymmetric central body and the larger conservative support envelope; the translucent WRL represents keepout bounds, not an exact solid. Treat the 18.2 × 18.5 × 11.5 mm body/support/mounting-tail bound, including 4 mm rear projections and 7.5 mm body depth, as occupied for separation analysis. Also include the narrower electrical-terminal tail bound x=±5.45, y=±9.6, z=−4…0: the lower terminal row extends beyond the body’s +8 mm edge. These pin bounds reserve the source bore diameter as clearance, without claiming that diameter for solid pins. Do not infer narrow reliefs by scaling a raster drawing.
+
+| Candidate | Result | Decision |
+| --- | --- | --- |
+| Original same-orientation, coplanar strip | Bore overlap; 32 KiCad violations in five-up fixture | Rejected |
+| Alternating 0°/180°, coplanar strip | Bore web positive; copper/courtyard conflicts; 28 KiCad violations; conservative support envelopes overlap in XY | Rejected |
+| Shrink mounting copper or call it NPTH | No manufacturer plating instruction retained; unsupported change to original 0.3 mm annular ring | Rejected |
+| Remove/bend legs, replace MPN or move shafts | No modification authority; violates fixed requirements | Rejected |
+| Small depth step alone | Conservative full envelopes still intersect when step ≤11.5 mm; original shaft/bushing alone cannot bridge the chosen larger step | Rejected |
+| 13 mm stepped cartridges with custom extensions/carrier | No cross-selector nominal keepout intersections; local adapters pass DRC | Selected conditional draft; physical gate open |
+
+## Panel, load path and indexing
+
+Use distinct apertures for the two actual interfaces: **carrier Ø9.5 ±0.1 mm for the M9 bushing**, and **front panel Ø7.0 ±0.1 mm for only the nominal Ø6 shaft/extension**. The old Ø6.3 front hole cannot be called M9 clearance. In this stepped design the M9 bushing never passes through the front panel. No manufacturer-recommended panel hole is retained; these are explicit project choices based on the sourced M9 and Ø6 interfaces.
+
+The carrier's 9.4 mm minimum bore gives 0.4 mm nominal diametral M9 clearance. For the front interface, allocate a 6.9 mm minimum bore, 6.1 mm maximum actual shaft/extension, 0.1 mm relative axis error and 0.2 mm radial wobble: `(6.9−6.1)/2−0.1−0.2 = 0.1 mm` residual radial clearance. The shaft source specifies **nominal Ø6 only**, so the 6.1 mm upper limit and wobble are acceptance allocations requiring measurement in #55, not manufacturer tolerances or proven performance. Front panel thickness 2 mm is also a coupon assumption.
+
+The first **Ø9.5 front** attempt created **40 hole-to-copper errors and 5 OCT legend clipping warnings** against the untouched owner art. **Ø9.2 front** removed the copper errors but still clipped all five OCT legends. Both are rejected; the original panel had zero native DRC violations. The proposed Ø12 knobs also covered the fixed labels centred 5.12 mm below each shaft, so select custom **Ø8** knobs instead. The final Ø7 front / Ø9.5 carrier split and Ø8 knobs preserve owner artwork. No deterministic conflict was relabelled as a passing check.
+
+Each insulating carrier plate is 15 × 15 × 2 mm, against the switch body front at PCB z+7.5, with a Ø9.5 hole. An open 4 mm relief toward the projecting feature clears its nominal 3 mm width without assigning an undocumented feature centre or tight key fit. Rotate the relief with the body. The washer sits at PCB z+9.5…10 and nut at +10…12; the nominal threaded bushing ends at +14.5. The nominal remaining thread beyond the nut is 2.5 mm. Torque and actual engagement remain unqualified.
+
+The carrier and captured rear adapter resist torque and axial load through enclosure supports. The two rails reserve panel y=170…172; local adapter tongues extend to y=171. Local boards are 19.8 × 21 × 1.6 mm, with a 6 mm capture tongue. All original mounting legs and plated pads remain. Carrier material, rail anchorage, tongue capture, clamp fasteners and harness strain relief need detailed structural qualification; solder joints cannot be the sole panel-load path.
+
+O2/O4 extensions reserve a Ø10 socket at PCB z+16…22.5 and a Ø6 stem up to +35.5. The draft socket Ø6.1/4.6 flat gives 0.1 mm nominal fitting allowance. With L=15±0.5 and C1, the allocated minimum usable engagement is **5 mm**. Retention, material, concentricity and backlash have not been tested. All five Ø8 knobs occupy panel z=1…10, with their pointer collars separately adjustable; qualify retention and shaft engagement on the coupon.
+
+Do not renumber pins after rotation. Terminals **1/10 are common**, **2–7 are the six positions**, **8/9 are dummy**; MP1/MP2 are mounting features outside the electrical circuit. Clockwise terminal order viewed from A is 2→3→4→5→6→7, mapped to octaves −2, −1, 0, +1, +2, +3. Body rotation preserves chirality; O2/O4 pointer collars receive a 180° index correction. The code checks this transformation, while actual continuity and angle/end-stop indexing remain **NOT RUN**.
+
+## Clearance and tolerance budget
+
+| Feature | Nominal / allocated value | Evidence limit |
+| --- | --- | --- |
+| Whole support/body/tail depth | 11.5 mm; plane separation 13 mm | Drawing dimensions, full conservative envelope; no general tolerance given |
+| Inter-selector Z gap | 1.5 mm nominal; 0.75 mm allocated minimum after 0.5 mm envelope growth and 0.25 mm relative placement error | Allocation is a project acceptance target; actual component spread unknown |
+| Recessed extension to adjacent full body in X | 2.9 mm | Nominal keepout calculation |
+| Adjacent knobs / washers / reserved Ø15 tools | 9 / 3 / 2 mm | Tool access assumes knobs installed after nuts |
+| Rotated body to adjacent toggle body in Y | 0.96 mm | Existing 5.08 mm toggle body drawing; actual travel/installed envelope unqualified |
+| Closest selector feature to existing neighboring courtyard in XY | 0.25 mm | Conservative check including adapter board; not a worst-case manufacturing gap or strength result |
+| Selector to F1 pot courtyard | Positive; checked from actual generated courtyard | Pot seating, shaft/cap and board stack remain open |
+| Mounting pads | Ø2.6 copper, Ø2 hole, 0.3 mm annular ring | Retained project pad choice; plating unspecified by manufacturer |
+| Terminal pads | Ø1.55 copper, Ø0.9 hole, 0.325 mm annular ring | Retained project pad choice |
+
+No overlap of nominal conservative inter-selector volumes is known for the selected candidate. This statement does not prove a fit at unknown tolerance extremes, neighboring lever motion, carrier strength, enclosure/core clearance or harness/tool access.
+
+## Reproducible checks and downstream work
+
+`bash scripts/libgen/fixtures/check_selector_assembly.sh` uses the pinned KiCad **10.0.6** oracle. It builds five-up fixtures as front (3) and rear (2) adapter islands at the actual fixed x/y and two rejected coplanar reference fixtures. Real pad centres, drills, diameters, classification and rotations are measured from pcbnew. The selected front and rear fixtures each have **0 DRC violations, 0 unconnected items**; they contain no functional routing. The regenerated panel also passes native DRC with **0 violations**, matching the original panel baseline after the rejected enlarged-aperture attempts were corrected. No warnings are suppressed. The checker independently verifies the 438 UID/x/y hash, 33 modules, pin geometry, six-position indexing arithmetic, inter-selector keepout intersections and nearby existing courtyards. The PCB and native DRC files stay in the ignored `.circuit-cache/selector-fixture/`; the deterministic report is retained in the repository.
+
+Issue **#35** must consume the five local adapters/two planes as the O board group, preserve all five oscillator instances, and add the inter-adapter harness and carrier volume to partition/resource checks. Do not collapse them back into one coplanar O strip. The rear envelopes occupy z=−33…−21.5 and cross the provisional core plane z=−24; carve their fixed-XY keepouts from that board allocation. Issue **#37** must carry these same fixed-centre/rotation/depth constraints into board drafts, retain all pads/legs, and check each physical board plus the complete assembly. Neither task may treat this fixture as a routed instrument board or close the physical gate from DRC.
+
+The review target is the source interpretation, source-to-generated geometry, retained annular rings, stepped separation, indexing transforms, neighboring clearances and honest open conditions. Full coupon requirements, actual measurement records and pass/fail closure belong to [qualification issue #55](https://github.com/Takazudo/zudo-osc-hole-field/issues/55). **Physical installed fit, continuity, load/torque and lifetime tests: NOT RUN — no specimen or coupon was available in this software session.**

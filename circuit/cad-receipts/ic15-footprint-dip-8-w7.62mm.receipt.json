@@ -1,0 +1,120 @@
+{
+  "receipt_version": 1,
+  "identity": {
+    "asset_id": "ic15-footprint-dip-8-w7.62mm",
+    "record_id": "rec-noise",
+    "manufacturer": null,
+    "mpn": null,
+    "package": "DIP-8_W7.62mm",
+    "variant_notes": "Generic KiCad 10 package footprint, not exact vendor land-pattern qualification."
+  },
+  "acquisition": {
+    "provider": "KiCad 10.0.6 stock library",
+    "source_url": "KiCad 10.0.6 pinned oracle, scripts/kicad/run.sh",
+    "acquired_on": "2026-09-28",
+    "original_filenames": [
+      "DIP-8_W7.62mm.stock.kicad_mod"
+    ],
+    "sha256": {
+      "circuit/sources/ic-library/cad/DIP-8_W7.62mm.stock.kicad_mod": "222fb44370968119abbd978176814cc43a71bc32ac2de275d8a3c418c0830fc6"
+    }
+  },
+  "representation": {
+    "files": [
+      "footprints/kicad/zudo-osc-hole-field.pretty/DIP-8_W7.62mm.kicad_mod",
+      "footprints/kicad/zudo-osc-hole-field.3dshapes/IC_DIP-8_W7.62mm.wrl"
+    ],
+    "formats": [
+      "kicad_mod",
+      "wrl"
+    ],
+    "units": "Footprint dimensions in mm; WRL coordinate unit 0.1 inch (2.54 mm)",
+    "original_paths": [
+      "circuit/sources/ic-library/cad/DIP-8_W7.62mm.stock.kicad_mod"
+    ]
+  },
+  "fidelity": {
+    "class": "family",
+    "reason": "Planform-only family display from retained DIP-8 footprint F.Fab extents 10.16 x 6.35 mm. The 0.1 mm plate is not a package-height claim; NOISE2 body height and optical/board clearance remain OPEN. It is a preview envelope, not an exact vendor 3D asset, seating model, fit check, or qualification.",
+    "evidence": [
+      "KiCad 10.0.6 pinned stock library source retained with SHA-256.",
+      "circuit/sources/ic-library/cad/DIP-8_W7.62mm.stock.kicad_mod SHA-256 222fb44370968119abbd978176814cc43a71bc32ac2de275d8a3c418c0830fc6",
+      "scripts/libgen/gen_ic_package_envelopes.py SHA-256 6af3e9c2885882147a87a4332aa6ec5b9c4e7a373e85242a93d3dbfa79be8957"
+    ]
+  },
+  "derivation": {
+    "derived": true,
+    "input_sha256": {
+      "circuit/sources/ic-library/cad/DIP-8_W7.62mm.stock.kicad_mod": "222fb44370968119abbd978176814cc43a71bc32ac2de275d8a3c418c0830fc6"
+    },
+    "tool": "scripts/libgen/gen_ic_package_envelopes.py and scripts/libgen/regen.sh",
+    "tool_version": "1",
+    "parameters": {
+      "operations": [
+        "set project footprint name",
+        "remove stock 3D model reference",
+        "generate project courtyard"
+      ],
+      "package_envelope": {
+        "model": "IC_DIP-8_W7.62mm.wrl",
+        "dimensions_mm": [
+          10.16,
+          6.35,
+          0.1
+        ],
+        "note": "Planform-only family display from retained DIP-8 footprint F.Fab extents 10.16 x 6.35 mm. The 0.1 mm plate is not a package-height claim; NOISE2 body height and optical/board clearance remain OPEN.",
+        "geometry_source_sha256": {
+          "circuit/sources/ic-library/cad/DIP-8_W7.62mm.stock.kicad_mod": "222fb44370968119abbd978176814cc43a71bc32ac2de275d8a3c418c0830fc6"
+        },
+        "generator_sha256": "6af3e9c2885882147a87a4332aa6ec5b9c4e7a373e85242a93d3dbfa79be8957",
+        "operations": [
+          "generate provisional display cuboid from listed family bounds",
+          "add exactly one local WRL model reference to the generic footprint"
+        ]
+      }
+    },
+    "output_sha256": {
+      "footprints/kicad/zudo-osc-hole-field.pretty/DIP-8_W7.62mm.kicad_mod": "6a9e483a3ad167813b1d240835adb48f8d791f03e24d2ce60b196547f6af57fd",
+      "footprints/kicad/zudo-osc-hole-field.3dshapes/IC_DIP-8_W7.62mm.wrl": "5cdebc77da4a94289742c9e3bb951e4d1fb6e526ab43f4d8fdc82908cec959ca"
+    }
+  },
+  "cad_use": {
+    "symbol": null,
+    "footprint": "zudo-osc-hole-field:DIP-8_W7.62mm",
+    "model_path": "${KIPRJMOD}/../../footprints/kicad/zudo-osc-hole-field.3dshapes/IC_DIP-8_W7.62mm.wrl",
+    "transform": {
+      "offset": [
+        0,
+        0,
+        0
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ]
+    },
+    "seating_plane": "F.Cu; envelope base at z=0"
+  },
+  "checks": {
+    "performed": [
+      "Project library and courtyard checks",
+      "Local WRL envelope generated and hash-bound; package preview check required",
+      "KiCad 10.0.6 native VRML export: x/y/z bounds and footprint model scale match the stated display envelope (scripts/libgen/fixtures/check_wrl_dimensions.py)."
+    ],
+    "remaining_physical_checks": [
+      "Audit against exact package drawing before fabrication.",
+      "Confirm exact device body/height, land pattern, seating plane, optical/mechanical path, and fit in the fixed layout; this family envelope establishes none of those."
+    ]
+  },
+  "publication": {
+    "preview_selected": true,
+    "download_published": false,
+    "permitted_scope": "Generated component preview only; no vendor model redistribution."
+  }
+}

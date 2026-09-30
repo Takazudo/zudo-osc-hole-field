@@ -1,0 +1,27 @@
+---
+title: "Dense routing fixture"
+description: "Reproducible KiCad routing checks for a complete synthetic 30-cell four-layer slice."
+sidebar_position: 23
+---
+
+The representative dense fixture has **zero KiCad 10.0.6 rule errors, zero schematic parity issues, and zero unconnected items after zone refill**. It remains an **unvalidated draft**. Its 159 warnings are reported, not suppressed; physical fit, circuit behavior, assembly and thermal performance have not been tested.
+
+The synthetic board contains 211 footprints: 30 locked panel jacks, 30 indicator cells, and one 40-pad connector. Each cell intentionally uses one OPA4196 quad package for routing stress. This is not the proposed indicator circuit or an instrument package-count decision. All 30 selected jack centres match the R21 placement lock; the full 438-feature lock is unchanged.
+
+## Observed failure and repair
+
+The historical routing report was retained without its PCB or raw DRC files. A fresh bounded reconstruction therefore established a new inspectable baseline: seven open ground connections, three clearance errors, and no schematic parity issues. Connector escape tracks split the inner ground pour into six polygons; the heuristic router's connectivity estimate did not survive KiCad's authoritative refill.
+
+The repaired source keeps four copper layers and adds a front ground pour, joining inner-plane regions through existing ground pads and vias. Two explicit ground vias connect C1907 and C2907. The latter needs a short inner-layer INPUT_20 detour around its via. Three newly routed ground vias and their attached segments were adjusted to meet the original 0.25 mm ground clearance. The 1,080 pre-existing replicated copper items, footprint locations, and hardware centres are preserved.
+
+## Reproduction and evidence
+
+Run `bash scripts/pcbgen/test_route.sh --dense` from the repository root. It uses the machine-wide heavy guard, rebuilds the schematic, netlist and placements, replays retained copper sources, applies the planes, and runs the pinned KiCad oracle. A second full generation must preserve the board bytes and the complete gate. A disposable board with C2907's ground via removed must fail connectivity. Changed pad geometry or source copper is rejected.
+
+The retained board, raw DRC, resource reports, routing corrections, preservation fingerprints, and reproduction log live under `scripts/pcbgen/fixtures/dense-evidence/`. `dense-slice-report.json` is generated from those measured records. The optional `--dense-route` command performs a fresh bounded heuristic experiment; it archives earlier cache attempts and does not replace accepted evidence automatically.
+
+The copper manifest is an explicit reviewed routing source. Reproduction does not depend on the heuristic router returning the same solution. General routing now checks the complete DRC gate after plane preparation and refuses a successful rerun status when rule or parity failures remain.
+
+## Remaining review
+
+Physical, electrical, mechanical, thermal, via-in-pad assembly, and fabrication qualification are **NOT RUN**: there is no physical specimen or released manufacturing process for this synthetic fixture. The result establishes the representative geometric routing gate only. Real-board routing and eventual human layout review remain separate work.

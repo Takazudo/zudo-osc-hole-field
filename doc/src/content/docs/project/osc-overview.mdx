@@ -1,0 +1,27 @@
+---
+title: "zudo-osc-hole-field — project handoff"
+description: "Summarizes the R21 instrument layout, module inventory, mechanical intent, and pre-schematic status."
+sidebar_position: 30
+---
+
+## Current baseline
+
+R21 completes the visual control grid by adding SLEW to both S&H channels. This is the continuing instrument, not a new design. The [workbench](/assets/osc-hole-field/workbench.html) includes the flat panel, 3D view, component research and ideal behavior examples. The authoritative grid is `project/osc-hole-field/workbench/layout/grid.json`; imported copies in `doc/public/` are publications, not authoring sources.
+
+The goal is a standalone, cable-patched instrument that makes synthesis understandable through visible independent blocks. There are no hidden signal normalizations. Every electrical joint must arrive soldered. Standard externally sourced synth parts are acceptable with a factory assembly route.
+
+## Scope
+
+Five oscillators, three filters with parallel VCA output, two MIX5, two MIX4/VCA, six ARs, two folders, six attenuator/offset cells, two 1-to-3 buffered multiples, two S&H with output slew, two manual A/B selectors and four noise colors. Scope10 is a different project.
+
+The current 18×10 jack grid has 180 jacks. The 18×8 control grid has 144 controls: 101 continuous pots, five indexed rotary switches, 30 toggles and eight buttons. The two new SLEW controls use cells (7,6)/(7,7), zero-based. No old jack or control moves.
+
+## Mechanical intent
+
+Flat black/gold/white panel, black IN/red OUT dress nuts. All patch points are above all controls. Compact preset: 17×14 mm pitch, 318×298 mm panel; true-square comparison: 17×17 mm, 318×352 mm. Full body dimensions and shafts must not scale with UI grid pitch.
+
+Separate height-compatible interface boards mate to a rear core using factory-populated connectors or completed harnesses. Jack shoulders and dress nuts determine the jack mounting plane; the panel is not fitted after a fixed PCB. The numeric Z positions in the preview are not build dimensions.
+
+## Next work
+
+Start with [the local plan](../project/osc-next-actions.mdx), [slew implementation](../architecture/osc-sample-hold-slew.mdx), and [readiness gates](../verification/osc-release-gates.mdx). Function scope is stable enough to document. It is not a fabrication release.

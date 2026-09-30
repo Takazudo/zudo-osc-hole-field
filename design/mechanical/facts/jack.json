@@ -1,0 +1,128 @@
+{
+  "schema_version": 1,
+  "identity": {
+    "manufacturer": "Qingpu",
+    "mpn": "WQP518MA",
+    "status": "candidate",
+    "supplier_order_code": "C9900052034 (handoff claim; unverified)"
+  },
+  "sources": [
+    {
+      "id": "TH-DRAWING",
+      "path": "circuit/sources/jack/Thonkiconn_Jack_Datasheet-new.jpg",
+      "sha256": "fae736d9826acd87360abe74ec0cffc51388e491647030139d2479617b482413",
+      "scope": "PJ398SM drawing; Thonk product page states WQP518MA uses the same footprint"
+    },
+    {
+      "id": "THONK-PAGE",
+      "url": "https://www.thonk.co.uk/shop/thonkiconn/",
+      "locator": "Description, THONKICONN NEW - WQP518MA",
+      "scope": "Family footprint equivalence only"
+    },
+    {
+      "id": "KICAD-STOCK",
+      "path": "circuit/sources/jack/KiCad10_PJ398SM_stock.kicad_mod",
+      "sha256": "5376e66b7c11f78d21d2c32579550e828919b70c90ac00bffe75dcb4d81f62ee",
+      "scope": "KiCad stock pad and circular drill implementation, not a manufacturer drill recommendation"
+    }
+  ],
+  "facts": {
+    "housing_width_mm": {
+      "value": 9.0,
+      "status": "DRAWING",
+      "locator": "TH-DRAWING, top view, 9 width"
+    },
+    "housing_length_mm": {
+      "value": 10.5,
+      "status": "DRAWING",
+      "locator": "TH-DRAWING, top view, 6 + 4.5 length"
+    },
+    "terminal_pitch_sleeve_to_normal_mm": {
+      "value": 3.1,
+      "status": "DRAWING",
+      "locator": "TH-DRAWING, PCB LAYOUT, 3.1000"
+    },
+    "terminal_pitch_sleeve_to_tip_mm": {
+      "value": 11.4,
+      "status": "DRAWING",
+      "locator": "TH-DRAWING, PCB LAYOUT, 3.10 + 8.3"
+    },
+    "barrel_axis_to_sleeve_pad_mm": {
+      "value": 6.48,
+      "status": "DRAWING",
+      "locator": "TH-DRAWING, PCB LAYOUT, 6.48"
+    },
+    "bushing_outer_diameter_mm": {
+      "value": 6.0,
+      "status": "DRAWING",
+      "locator": "TH-DRAWING, side view, diameter 6"
+    },
+    "bushing_length_mm": {
+      "value": 4.5,
+      "status": "DRAWING",
+      "locator": "TH-DRAWING, side view, 4.5"
+    },
+    "bushing_thread": {
+      "value": null,
+      "status": "UNSOURCED",
+      "reason": "Drawing gives outer diameter but no thread pitch or class."
+    },
+    "shoulder_height_above_board_mm": {
+      "value": null,
+      "status": "UNSOURCED",
+      "reason": "Drawing has no PCB seating-plane to shoulder datum."
+    },
+    "nut_outer_diameter_mm": {
+      "value": null,
+      "status": "UNSOURCED",
+      "reason": "Black and red dress nuts have no exact MPN or drawing."
+    },
+    "nut_thickness_mm": {
+      "value": null,
+      "status": "UNSOURCED",
+      "reason": "No exact nut MPN or drawing."
+    },
+    "recommended_panel_hole_diameter_mm": {
+      "value": null,
+      "status": "UNSOURCED",
+      "reason": "No mounting-hole callout or tolerance on retained jack drawing; R21 6.2 mm is a trial proposal only."
+    },
+    "recommended_panel_hole_tolerance_mm": {
+      "value": null,
+      "status": "UNSOURCED",
+      "reason": "No manufacturer hole tolerance supplied."
+    },
+    "panel_thickness_clamp_range_mm": {
+      "value": null,
+      "status": "UNSOURCED",
+      "reason": "Shoulder datum, nut dimensions, and required thread engagement are unknown."
+    },
+    "board_to_panel_distance_mm": {
+      "value": null,
+      "status": "UNSOURCED",
+      "reason": "No PCB seating plane to shoulder datum; panel and nut stack still open."
+    }
+  },
+  "grid_fit": {
+    "pitch_horizontal_mm": 17,
+    "pitch_vertical_mm": 14,
+    "footprint_courtyard_width_mm": 9.5,
+    "footprint_courtyard_length_mm": 13.9,
+    "horizontal_gap_mm": 7.5,
+    "vertical_gap_mm": 0.1,
+    "status": "GEOMETRIC DRAFT",
+    "note": "The F.CrtYd lines add 0.05 mm stroke. Nominal body-to-body vertical gap is 3.5 mm; manufactured tolerances and plug/nut envelopes are unqualified.",
+    "minimum_nominal_vertical_copper_gap_mm": 0.62,
+    "copper_gap_derivation": "14 - (6.48 + 4.92) - (1.83/2 + 2.13/2) = 0.62 mm, nearest sleeve and tip pads on adjacent rows; dimensions from the derived KiCad footprint",
+    "minimum_nominal_horizontal_copper_gap_mm": 14.87,
+    "horizontal_copper_gap_derivation": "17 - 2.13 = 14.87 mm for opposite circular pads"
+  },
+  "fabrication_boundary": {
+    "route_threshold_mm": 6.3,
+    "below_threshold_hole_tolerance_mm": {
+      "plus": 0.13,
+      "minus": 0.08
+    },
+    "status": "PROJECT RULE; proposed 6.2 mm panel hole is not approved"
+  }
+}

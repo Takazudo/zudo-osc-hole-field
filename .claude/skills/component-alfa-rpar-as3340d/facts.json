@@ -1,0 +1,180 @@
+{
+  "schema_version": 1,
+  "facts": [
+    {
+      "fact_id": "fact-vco-manufacturer",
+      "record_id": "rec-vco",
+      "source_id": "src-vco-datasheet",
+      "class": "PROJECT_STATE",
+      "value": "ALFA RPAR",
+      "unit": "NONE",
+      "conditions": "Manufacturer attribution from the retained document header; it does not establish a current factory route.",
+      "locator": "src-vco-datasheet: physical PDF p.0, printed p.1, manufacturer title block/header",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-vco-project-selection",
+      "record_id": "rec-vco",
+      "source_id": "src-vco-shortlist",
+      "class": "PROJECT_STATE",
+      "value": {
+        "manufacturer": "ALFA RPAR",
+        "mpn": "AS3340D",
+        "package": "SOIC-16",
+        "lcsc": "not listed in the shortlist",
+        "roles": "oscillator core",
+        "source_status": "UNVERIFIED"
+      },
+      "unit": "NONE",
+      "conditions": "OSC-ES-1 is a dated project selection; it is not a supplier allocation or factory order code.",
+      "locator": "src-vco-shortlist: JSON row parts[id=vco]",
+      "provenance": "PROJECT-CHOICE",
+      "verdict": "NOT APPLICABLE",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-vco-orderable-identity",
+      "record_id": "rec-vco",
+      "source_id": "src-vco-datasheet",
+      "class": "PROJECT_STATE",
+      "value": {
+        "manufacturer": "ALFA RPAR",
+        "mpn": "AS3340D",
+        "package": "SOIC-16 (150 mil)"
+      },
+      "unit": "NONE",
+      "conditions": "The manufacturer document explicitly lists AS3340D / AS3340AD in SOIC-16. This confirms the selected manufacturer part/package identity, not a commercial supplier code, allocation, or stock.",
+      "locator": "src-vco-datasheet: physical PDF p.0/printed p.1 variant list and physical PDF p.5/printed p.6 package table",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-vco-pinout",
+      "record_id": "rec-vco",
+      "source_id": "src-vco-datasheet",
+      "class": "PROJECT_STATE",
+      "value": {
+        "1": "SCALE1",
+        "2": "SCALE2",
+        "3": "VEE",
+        "4": "VP",
+        "5": "VPWM",
+        "6": "VHSI",
+        "7": "VHFT",
+        "8": "VSO",
+        "9": "VSSI",
+        "10": "VTO",
+        "11": "CAP",
+        "12": "GND",
+        "13": "VLFI",
+        "14": "VS",
+        "15": "VFCI",
+        "16": "VCC"
+      },
+      "unit": "NONE",
+      "conditions": "ALFA RPAR's AS3340/AS3340A PDIP-16/SOIC-16 table; pin identities are source-backed, but schematic nets and board placements are not bound.",
+      "locator": "src-vco-datasheet: physical PDF p.1, printed p.2, AS3340/AS3340A PDIP-16/SOIC-16 Pin Information table",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-vco-electrical-limits",
+      "record_id": "rec-vco",
+      "source_id": "src-vco-datasheet",
+      "class": "PROJECT_STATE",
+      "value": "Application-specific oscillator performance and project-supply suitability remain unassessed; the source-backed absolute limit and supply guidance below do not qualify a circuit.",
+      "unit": "NONE",
+      "conditions": "No complete guaranteed operating-frequency, output-load, startup, temperature-drift, or project power-current review is claimed in issue #21.",
+      "locator": "src-vco-datasheet: electrical characteristics and general-description sections; issue #21 scope leaves project suitability open",
+      "provenance": "UNVERIFIED",
+      "verdict": "NEEDS BENCH",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-vco-procurement-status",
+      "record_id": "rec-vco",
+      "source_id": "src-vco-shortlist",
+      "class": "PROJECT_STATE",
+      "value": "UNVERIFIED",
+      "unit": "NONE",
+      "conditions": "Time-stamped OSC-ES-1 state on 2026-09-28; current stock, lead time, consignment, and assembly allocation are not established.",
+      "locator": "src-vco-shortlist: JSON row parts[id=vco].sourcing.status/jlcpcb_assembly",
+      "provenance": "PROJECT-CHOICE",
+      "verdict": "UNSOURCED",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-vco-mechanical-fit",
+      "record_id": "rec-vco",
+      "source_id": "src-vco-datasheet",
+      "class": "PROJECT_STATE",
+      "value": "The exact SOIC-16 family/package dimensions are now documented, but the shared footprint and provisional family WRL are not a vendor fit model; fixed-layout clearance, exact height, land-pattern fit, and physical fit remain unverified.",
+      "unit": "NONE",
+      "conditions": "No fabricated fit verdict; model is an approximate family envelope and unsourced heights/clearances remain OPEN.",
+      "locator": "src-vco-datasheet: physical PDF p.5/printed p.6 package outline figure; CAD receipt ic15-vco and shared SOIC-16 package receipt",
+      "provenance": "UNVERIFIED",
+      "verdict": "NEEDS BENCH",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-vco-absolute-maximum-vee-to-ground",
+      "record_id": "rec-vco",
+      "source_id": "src-vco-datasheet",
+      "class": "ABSOLUTE_MAXIMUM",
+      "value": {
+        "minimum": -6,
+        "maximum": 0.5
+      },
+      "unit": "V",
+      "conditions": "Voltage between pin 3 VEE and GND, as listed in Absolute Maximum Ratings. This is a stress limit, not a normal supply range or proof that a directly connected project rail is suitable.",
+      "locator": "src-vco-datasheet: physical PDF p.2, printed p.3, Absolute Maximum Ratings, Voltage Between VEE and GND Pins row",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-vco-supply-guidance",
+      "record_id": "rec-vco",
+      "source_id": "src-vco-datasheet",
+      "class": "RECOMMENDED_OPERATION",
+      "value": "The datasheet describes an on-chip 7.4 V Zener; for VEE values above -7.5 V it requires a series current-limiting resistor, and it recommends external VEE = -5 V to reduce self-heating.",
+      "unit": "NONE",
+      "conditions": "Manufacturer supply guidance only; it does not validate the OSC-ES-1 supply circuit, current budget, startup, or fault behavior.",
+      "locator": "src-vco-datasheet: physical PDF p.0, printed p.1, General Description section, supply paragraph",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-vco-package-outline",
+      "record_id": "rec-vco",
+      "source_id": "src-vco-datasheet",
+      "class": "PROJECT_STATE",
+      "value": {
+        "body_length_drawing": 10.0,
+        "body_width_drawing": 4.0,
+        "lead_pitch_basic": 1.27
+      },
+      "unit": "mm",
+      "conditions": "The SOIC-16 (150 mil) drawing labels these planform/pitch values. Values are drawing dimensions, not a tolerance envelope; no exact body height is promoted.",
+      "locator": "src-vco-datasheet: physical PDF p.5, printed p.6, SOIC-16 (150 Mil) package outline figure",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
+    }
+  ]
+}

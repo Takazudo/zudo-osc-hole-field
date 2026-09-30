@@ -1,0 +1,67 @@
+{
+  "revision": "R21",
+  "phase": "Feature/layout handoff; pre-schematic and pre-layout",
+  "layout_authority": "project/osc-playground/workbench/layout/grid.json",
+  "geometry_rule": "All hardware coordinates derive from grid cells and selected pitch. Do not edit rendered SVG as geometry authority.",
+  "panel_default_mm": [
+    318,
+    298
+  ],
+  "alternate_square_mm": [
+    318,
+    352
+  ],
+  "jack_cells": [
+    18,
+    10
+  ],
+  "control_cells": [
+    18,
+    8
+  ],
+  "counts": {
+    "jacks": 180,
+    "controls": 144,
+    "continuous_pots": 101,
+    "octave_selectors": 5,
+    "two_position_toggles": 19,
+    "three_position_toggles": 11,
+    "buttons": 8,
+    "magnitude_leds": 92,
+    "stage_leds": 12,
+    "clip_leds": 10
+  },
+  "module_quantities": {
+    "OSC": 5,
+    "FILTER_VCA": 3,
+    "MIX5": 2,
+    "MIX4_VCA": 2,
+    "AR": 6,
+    "FOLD": 2,
+    "OFFSET": 6,
+    "MULT_1_to_3": 2,
+    "SH_SLEW": 2,
+    "MANUAL_AB": 2,
+    "NOISE_4_OUTPUT": 1
+  },
+  "hard_constraints": [
+    "All electrical soldering and required firmware/programming performed externally before delivery; connectors arrive populated.",
+    "One flat panel. All jacks above controls.",
+    "Black solder mask, exposed gold accents, white silk. IN dress nuts black; OUT red.",
+    "No default inter-module normal connections; S&H input has no default noise feed.",
+    "Panel fastened jack bushings; panel, footprints and PCB stack designed together BEFORE routing.",
+    "User grid is baseline: FOLD2 left / FOLD1 right, six OFFSET below ENV, two 1:3 MULTs."
+  ],
+  "not_claimed": [
+    "Fabrication-ready schematic, PCB, BOM/CPL, native ERC/DRC",
+    "Qualified mounted height, nut thread fit, connector seating or plunger reach",
+    "ADDAC215 precision, 25 s slew, or 20-minute hold performance",
+    "Through-zero FM, clickless A/B selection, or calibrated V/oct tracking",
+    "Validated power budget / thermals or surge protection"
+  ],
+  "new_scope": [
+    "H1.SLEW at control cell [7,6]",
+    "H2.SLEW at [7,7]",
+    "Post-hold symmetric exponential-lag prototype; no new CV/bypass/raw-output jack"
+  ]
+}

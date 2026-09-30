@@ -1,0 +1,88 @@
+{
+  "schema_version": 1,
+  "coverage": [
+    {
+      "coverage_id": "cov-op-audio-exact-orderable-identity",
+      "record_id": "rec-op-audio",
+      "domain": "exact orderable identity",
+      "status": "COVERED",
+      "reason": "Manufacturer primary bytes identify the exact shortlist MPN/package; supplier stock remains separately open.",
+      "fact_ids": [
+        "fact-op-audio-orderable-identity"
+      ],
+      "blocking_fact_ids": []
+    },
+    {
+      "coverage_id": "cov-op-audio-pinout",
+      "record_id": "rec-op-audio",
+      "domain": "pinout",
+      "status": "COVERED",
+      "reason": "The retained manufacturer document provides the listed pin-function table; no project nets are assigned.",
+      "fact_ids": [
+        "fact-op-audio-pinout"
+      ],
+      "blocking_fact_ids": []
+    },
+    {
+      "coverage_id": "cov-op-audio-electrical-limits",
+      "record_id": "rec-op-audio",
+      "domain": "electrical limits",
+      "status": "COVERED",
+      "reason": "Retained source supports the specific listed product-family limits; conditions remain attached to each fact.",
+      "fact_ids": [
+        "fact-op-audio-quiescent-current"
+      ],
+      "blocking_fact_ids": []
+    },
+    {
+      "coverage_id": "cov-op-audio-manufacturer-product-description",
+      "record_id": "rec-op-audio",
+      "domain": "manufacturer product description",
+      "status": "COVERED",
+      "reason": "The retained manufacturer document identifies the named product and its documented role/description; this is not application qualification.",
+      "fact_ids": [
+        "fact-op-audio-product-function"
+      ],
+      "blocking_fact_ids": []
+    },
+    {
+      "coverage_id": "cov-op-audio-mechanical-fit",
+      "record_id": "rec-op-audio",
+      "domain": "mechanical fit",
+      "status": "OPEN",
+      "reason": "The local family envelope and generic footprint are provisional; physical board fit and land-pattern suitability are not validated.",
+      "fact_ids": [
+        "fact-op-audio-mechanical-fit"
+      ],
+      "blocking_fact_ids": [
+        "fact-op-audio-mechanical-fit"
+      ]
+    },
+    {
+      "coverage_id": "cov-op-audio-procurement",
+      "record_id": "rec-op-audio",
+      "domain": "procurement",
+      "status": "OPEN",
+      "reason": "Supplier stock, lead time, consignment and assembly allocation remain unverified as of the dated shortlist.",
+      "fact_ids": [
+        "fact-op-audio-procurement-status"
+      ],
+      "blocking_fact_ids": [
+        "fact-op-audio-procurement-status"
+      ]
+    },
+    {
+      "coverage_id": "cov-op-audio-negative-rail-current-budget",
+      "record_id": "rec-op-audio",
+      "domain": "negative rail current budget",
+      "status": "OPEN",
+      "reason": "The preliminary -12 V estimate exceeds the 640 mA ceiling; netlist-derived demand and a design resolution remain open.",
+      "fact_ids": [
+        "fact-op-audio-negative-rail-budget"
+      ],
+      "blocking_fact_ids": [
+        "fact-op-audio-negative-rail-budget"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,89 @@
+{
+  "receipt_version": 1,
+  "identity": {
+    "asset_id": "ic15-regulator_3v3",
+    "record_id": "rec-regulator-3v3",
+    "manufacturer": "Texas Instruments",
+    "mpn": "TLV75533PDBVR",
+    "package": "SOT-23-5",
+    "variant_notes": "AVAILABLE"
+  },
+  "acquisition": {
+    "provider": "KiCad 10 stock symbol and retained manufacturer/creator document",
+    "source_url": "https://www.ti.com/lit/ds/symlink/tlv755p.pdf",
+    "acquired_on": "2026-09-28",
+    "original_filenames": [
+      "TLV75533PDBVR.stock.kicad_sympart",
+      "TLV75533PDBVR.parent.kicad_sympart",
+      "TLV755P.pdf"
+    ],
+    "sha256": {
+      "circuit/sources/ic-library/cad/TLV75533PDBVR.stock.kicad_sympart": "06856a3a562085fb2e21222cbfa95deef144c6761cc75c2cc105839f03649f8c",
+      "circuit/sources/ic-library/cad/TLV75533PDBVR.parent.kicad_sympart": "b71fb8ff72cdd3190d28dc21da971a6b31901e24bcf648f89eba813d76228113",
+      "circuit/sources/ic-library/TLV755P.pdf": "7eb7bc6935bf6c1d247b2fce62c9e5a49a474fd94359ddc390a4baf0ac1f5293"
+    }
+  },
+  "representation": {
+    "files": [
+      "symbols/src/TLV75533PDBVR.kicad_sym"
+    ],
+    "formats": [
+      "kicad_sym"
+    ],
+    "units": "KiCad schematic units",
+    "original_paths": [
+      "circuit/sources/ic-library/cad/TLV75533PDBVR.stock.kicad_sympart",
+      "circuit/sources/ic-library/cad/TLV75533PDBVR.parent.kicad_sympart",
+      "circuit/sources/ic-library/TLV755P.pdf"
+    ]
+  },
+  "fidelity": {
+    "class": "derived",
+    "reason": "Source pin functions audited against the retained document; KiCad stock or custom graphics normalized for this draft identity.",
+    "evidence": [
+      "AVAILABLE",
+      "https://www.ti.com/lit/ds/symlink/tlv755p.pdf"
+    ]
+  },
+  "derivation": {
+    "derived": true,
+    "input_sha256": {
+      "circuit/sources/ic-library/cad/TLV75533PDBVR.stock.kicad_sympart": "06856a3a562085fb2e21222cbfa95deef144c6761cc75c2cc105839f03649f8c",
+      "circuit/sources/ic-library/cad/TLV75533PDBVR.parent.kicad_sympart": "b71fb8ff72cdd3190d28dc21da971a6b31901e24bcf648f89eba813d76228113",
+      "circuit/sources/ic-library/TLV755P.pdf": "7eb7bc6935bf6c1d247b2fce62c9e5a49a474fd94359ddc390a4baf0ac1f5293"
+    },
+    "tool": "scripts/libgen/fixtures/build_ic_assets.py, build_ic_custom.py, or build_passive_symbols.py",
+    "tool_version": "1",
+    "parameters": {
+      "normalization": "exact MPN/manufacturer/LCSC fields, local footprint reference; alias parent units expanded where required"
+    },
+    "output_sha256": {
+      "symbols/src/TLV75533PDBVR.kicad_sym": "6f9c988dc8c2d0b3e2032f05c8cba5ebb596e0e86e9b3927d28dcb8849e2162d"
+    }
+  },
+  "cad_use": {
+    "symbol": "zudo-osc-hole-field:TLV75533PDBVR",
+    "footprint": "zudo-osc-hole-field:SOT-23-5",
+    "model_path": "${KIPRJMOD}/../../footprints/kicad/zudo-osc-hole-field.3dshapes/IC_SOT-23-5.wrl",
+    "transform": {
+      "offset": null,
+      "rotation": null,
+      "scale": null
+    },
+    "seating_plane": null
+  },
+  "checks": {
+    "performed": [
+      "Issue-15 all-unit KiCad 10 ERC fixture and project library checker"
+    ],
+    "remaining_physical_checks": [
+      "Confirm exact package drawing/lot, actual circuit net mapping, electrical suitability and procurement before board release.",
+      "Confirm exact body/height, land pattern, fixed-layout clearance, and electrical suitability before hardware use; catalogue family geometry is provisional."
+    ]
+  },
+  "publication": {
+    "preview_selected": true,
+    "download_published": false,
+    "permitted_scope": null
+  }
+}

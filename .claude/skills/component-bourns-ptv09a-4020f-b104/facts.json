@@ -1,0 +1,47 @@
+{
+  "schema_version": 1,
+  "facts": [
+    {
+      "fact_id": "fact-b104-pin",
+      "record_id": "rec-b104",
+      "source_id": "src-b104",
+      "class": "PROJECT_STATE",
+      "value": "1 CCW, 2 wiper, 3 CW, 4/5 mounting",
+      "unit": "NONE",
+      "conditions": "shaft front view, full CCW",
+      "locator": "Figure PTV09A-4 Product Dimensions on physical page 1; Figure PTV09A-1 Recommended PCB Layout and Schematic on physical page 0",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-b104-manufacturer",
+      "record_id": "rec-b104",
+      "source_id": "src-b104",
+      "class": "PROJECT_STATE",
+      "value": "Bourns",
+      "unit": "NONE",
+      "conditions": "manufacturer branding in retained PDF",
+      "locator": "PDF title block and product-list row for exact part family",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-b104-resistance",
+      "record_id": "rec-b104",
+      "source_id": "src-b104-resistance",
+      "class": "GUARANTEED_ELECTRICAL",
+      "value": 100000,
+      "unit": "ohm",
+      "conditions": "B resistance code, nominal end-to-end at room temperature; \u00b120% standard resistance tolerance",
+      "locator": "physical PDF page 0, Standard Resistance Table row 104 and How To Order resistance-code field",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
+    }
+  ]
+}

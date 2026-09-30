@@ -1,0 +1,113 @@
+{
+  "receipt_version": 1,
+  "identity": {
+    "asset_id": "cad-c2290-0603whitelight-c2290",
+    "record_id": "rec-kento-white",
+    "manufacturer": "KENTO",
+    "mpn": "KT-0603W",
+    "package": "LED0603-R-RD_WHITE",
+    "variant_notes": "KENTO KT-0603W, white 0603 LED; a shared generic package-family WRL is attached for catalogue rendering, with no white-variant model or optical claim."
+  },
+  "acquisition": {
+    "provider": "GitHub repository Takazudo/zudo-pd",
+    "library_release_tag": null,
+    "source_url": "https://github.com/Takazudo/zudo-pd/blob/f25194fa73ded724e82d4561307c106480fbd9ce/symbols/zudo-pd.kicad_sym",
+    "acquired_on": "2026-09-28",
+    "original_filenames": [
+      "zudo-pd.kicad_sym",
+      "LED0603-R-RD_WHITE.kicad_mod"
+    ],
+    "sha256": {
+      "symbols/zudo-pd.kicad_sym": "1d897bd28edfe611bd7b8f8583e54287480a24240db395cf1412c03e2d6afff1",
+      "footprints/kicad/zudo-power.pretty/LED0603-R-RD_WHITE.kicad_mod": "0fff86027a2fd4e2e60e759025c89875f71664a00d69d02d64adee53c528e9fc"
+    }
+  },
+  "representation": {
+    "files": [
+      "symbols/src/0603Whitelight_C2290.kicad_sym",
+      "footprints/kicad/zudo-osc-hole-field.pretty/LED0603-R-RD_WHITE.kicad_mod",
+      "footprints/kicad/zudo-osc-hole-field.3dshapes/LED0603-Generic-Family.wrl"
+    ],
+    "formats": [
+      "kicad_mod",
+      "kicad_sym",
+      "wrl"
+    ],
+    "units": "KiCad schematic units; footprint and model dimensions in mm",
+    "original_paths": [
+      "symbols/zudo-pd.kicad_sym",
+      "footprints/kicad/zudo-power.pretty/LED0603-R-RD_WHITE.kicad_mod"
+    ]
+  },
+  "fidelity": {
+    "class": "family",
+    "reason": "The symbol identifies the requested KENTO variant; the copied footprint is a generic 0603 LED package and the source commit contains no matching retained white LED model. The shared generic 0603 LED family WRL is reused from the KT-0603R CAD receipt; it is not an exact white-variant model and does not establish package height, polarity or optical behavior.",
+    "evidence": [
+      "Source bytes are pinned to zudo-pd commit f25194fa73ded724e82d4561307c106480fbd9ce.",
+      "The footprint is an imported package representation; exact manufacturer dimensional correspondence has not been independently established here.",
+      "Shared family WRL is hash-locked by the KT-0603R receipt; white-specific fit and polarity remain open."
+    ]
+  },
+  "derivation": {
+    "derived": true,
+    "input_sha256": {
+      "symbols/zudo-pd.kicad_sym": "1d897bd28edfe611bd7b8f8583e54287480a24240db395cf1412c03e2d6afff1",
+      "footprints/kicad/zudo-power.pretty/LED0603-R-RD_WHITE.kicad_mod": "0fff86027a2fd4e2e60e759025c89875f71664a00d69d02d64adee53c528e9fc"
+    },
+    "tool": "scripts/libgen/copy_generic_led_family_model.py (shared 0603 family geometry)",
+    "tool_version": "1",
+    "parameters": {
+      "source_commit": "f25194fa73ded724e82d4561307c106480fbd9ce",
+      "library_nickname": "zudo-osc-hole-field",
+      "operations": [
+        "extract one symbol from pinned zudo-pd commit",
+        "set local footprint nickname and normalize identity fields",
+        "generate courtyard",
+        "attach a distinct-name copy of the existing generic 0603 LED family WRL"
+      ],
+      "coarse_model": {
+        "shape": "shared generic 0603 LED family model",
+        "source_record": "rec-kento-red",
+        "note": "Distinct file name required by selected model manifest; geometry copied from existing generic 0603 family WRL and is not white-variant proof.",
+        "model_basename": "LED0603-Generic-Family.wrl"
+      },
+      "additional_input_sha256": {
+        "footprints/kicad/zudo-osc-hole-field.3dshapes/LED0603-RD.wrl": "faeab91c393eb8cc93f5c901584a2a59bedbc638abaf30fd54745c77444390c1",
+        "footprints/kicad/zudo-osc-hole-field.pretty/LED0603-R-RD_WHITE.kicad_mod (pre-model)": "f0d28a2a17db8030e86b909282af76011477415d053fbdcdd9aaafa19afd8e83",
+        "scripts/libgen/copy_generic_led_family_model.py": "ca22725337ccee4c770b7dced1e096952a7447d49bb18c65269ad07e8b32de87"
+      }
+    },
+    "output_sha256": {
+      "symbols/src/0603Whitelight_C2290.kicad_sym": "497424de5a6df3457e17d23ac2f6af38481480a0b97e58014db58c27501f0c98",
+      "footprints/kicad/zudo-osc-hole-field.pretty/LED0603-R-RD_WHITE.kicad_mod": "a9156dba5198b85e5b0af20336db6a501e931707fe9e70229a7c126c12f0cdb3",
+      "footprints/kicad/zudo-osc-hole-field.3dshapes/LED0603-Generic-Family.wrl": "7dac0aa1bbf2b9fb5bbc51e009787d816dba658065cddb59f20d7b2d571916ee"
+    }
+  },
+  "cad_use": {
+    "symbol": "zudo-osc-hole-field:0603Whitelight_C2290",
+    "footprint": "zudo-osc-hole-field:LED0603-R-RD_WHITE",
+    "model_path": "${KIPRJMOD}/../../footprints/kicad/zudo-osc-hole-field.3dshapes/LED0603-Generic-Family.wrl",
+    "transform": {
+      "offset": null,
+      "rotation": null,
+      "scale": null
+    },
+    "seating_plane": null
+  },
+  "checks": {
+    "performed": [
+      "Source file SHA-256 values were calculated from f25194fa73ded724e82d4561307c106480fbd9ce Git objects.",
+      "Generated output SHA-256 values are checked by scripts/libgen/check_lib.py.",
+      "Attached the existing distinct-name generic 0603 family WRL for catalogue rendering; no white-variant geometry or optical claim."
+    ],
+    "remaining_physical_checks": [
+      "Compare package dimensions, pin/pad numbering, orientation and seating against the exact manufacturer's drawing before using a board for fabrication.",
+      "Verify exact white LED body, polarity and optical path; shared family WRL does not establish fit."
+    ]
+  },
+  "publication": {
+    "preview_selected": false,
+    "download_published": false,
+    "permitted_scope": null
+  }
+}

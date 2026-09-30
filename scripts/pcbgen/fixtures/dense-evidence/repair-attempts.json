@@ -1,0 +1,69 @@
+[
+  {
+    "attempt": 1,
+    "note": "Diagnostic loaded baseline board under a different project filename; default 0.2 mm minimum invalidated this comparison. Corrected the project association before further checks.",
+    "router_invoked": false,
+    "runtime_memory": "NOT MEASURED for short KiCad-only geometric diagnostics",
+    "summary": {
+      "rule_errors": 142,
+      "rule_warnings": 159,
+      "schematic_parity_issues": 0,
+      "unconnected_items": 2,
+      "unrouted_nets": [
+        "GND"
+      ]
+    }
+  },
+  {
+    "attempt": 2,
+    "note": "Front GND pour and shifted vias; through-via collision with INPUT_20 revealed at C2907.",
+    "router_invoked": false,
+    "runtime_memory": "NOT MEASURED for short KiCad-only geometric diagnostics",
+    "summary": {
+      "rule_errors": 2,
+      "rule_warnings": 159,
+      "schematic_parity_issues": 0,
+      "unconnected_items": 0,
+      "unrouted_nets": []
+    }
+  },
+  {
+    "attempt": 3,
+    "note": "Attempted C2907 top escape collided with INPUT_10 and local DRIVE; C30 via displacement was in wrong normal direction.",
+    "router_invoked": false,
+    "runtime_memory": "NOT MEASURED for short KiCad-only geometric diagnostics",
+    "summary": {
+      "rule_errors": 5,
+      "rule_warnings": 159,
+      "schematic_parity_issues": 0,
+      "unconnected_items": 0,
+      "unrouted_nets": []
+    }
+  },
+  {
+    "attempt": 4,
+    "note": "C30 clearance fixed; C2907 bottom escape crossed local DRIVE.",
+    "router_invoked": false,
+    "runtime_memory": "NOT MEASURED for short KiCad-only geometric diagnostics",
+    "summary": {
+      "rule_errors": 2,
+      "rule_warnings": 159,
+      "schematic_parity_issues": 0,
+      "unconnected_items": 0,
+      "unrouted_nets": []
+    }
+  },
+  {
+    "attempt": 5,
+    "note": "Final repair: C2907 via in pad with local INPUT_20 detour; full gate passes.",
+    "router_invoked": false,
+    "runtime_memory": "NOT MEASURED for short KiCad-only geometric diagnostics",
+    "summary": {
+      "rule_errors": 0,
+      "rule_warnings": 159,
+      "schematic_parity_issues": 0,
+      "unconnected_items": 0,
+      "unrouted_nets": []
+    }
+  }
+]
