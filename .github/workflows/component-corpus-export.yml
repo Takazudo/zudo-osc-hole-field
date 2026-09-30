@@ -1,0 +1,64 @@
+name: Component corpus evidence export
+
+on:
+  push:
+    branches: [corpus/component-evidence-export-20260930]
+
+permissions:
+  contents: read
+
+jobs:
+  export:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Read pinned instrument source without persisted credentials
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          ref: fac99297702eabd97bbc3fae58876af4017fcaea
+          fetch-depth: 0
+          persist-credentials: false
+          path: instrument
+      - name: Read pinned documentation framework
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          repository: Takazudo/zudo-circuit-doc
+          ref: 5d0e2b630776489d394be341586b889dfe0d1cb8
+          persist-credentials: false
+          path: framework
+      - name: Set up Node
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
+        with:
+          node-version: 24
+          package-manager-cache: false
+      - name: Prepare standalone project with official initializer
+        run: |
+          set -euo pipefail
+          npm install --global pnpm@11.5.2
+          pnpm create zudo-circuit-doc@0.1.0 corpus-host --name zudo-modular-component-corpus --title 'Modular Synth Component Corpus' --yes --no-install --no-git --runtime-spec 0.1.0
+          cd corpus-host
+          pnpm install
+          pnpm circuit:check
+          pnpm check
+      - name: Archive only public source and generated build tools
+        run: |
+          set -euo pipefail
+          mkdir -p export
+          git -C instrument archive --format=tar.gz --output="$PWD/export/instrument-source.tar.gz" fac99297702eabd97bbc3fae58876af4017fcaea
+          git -C framework archive --format=tar.gz --output="$PWD/export/framework-source.tar.gz" 5d0e2b630776489d394be341586b889dfe0d1cb8
+          git -C instrument log --all --date=iso-strict --format='%H %aI %s' > export/instrument-history.txt
+          tar -czf export/corpus-host.tar.gz corpus-host
+          cp "$(command -v node)" export/node-linux-x64
+          node --version > export/node-version.txt
+          pnpm --version > export/pnpm-version.txt
+          printf '%s\n' 'Instrument: fac99297702eabd97bbc3fae58876af4017fcaea' 'Framework: 5d0e2b630776489d394be341586b889dfe0d1cb8' 'Public source snapshots only. No .git, credentials, local worktree, or deployment state exported.' > export/PROVENANCE.txt
+          cd export
+          sha256sum instrument-source.tar.gz framework-source.tar.gz corpus-host.tar.gz node-linux-x64 > SHA256SUMS
+      - name: Retain corpus seed for this development session
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: modular-component-corpus-source-seed
+          path: export/
+          retention-days: 7
+          if-no-files-found: error
+          compression-level: 6
