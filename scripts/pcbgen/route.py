@@ -111,8 +111,25 @@ def router(dsn,ses,work,threads,heap_mb,timeout_sec,image,fanout=True):
 
 def attach_native_ratsnest(board,report,result):
     native=report.parent/'ratsnest.json'
+    # Match DRC's fail-closed receipt policy: never reuse a previous native result.
+    native.unlink(missing_ok=True)
+    for key in ('native_ratsnest_error','native_unconnected_edge_count','native_board_sha256',
+                'native_ratsnest_report','multi_pad_candidate_net_count','native_gate_status',
+                'drc_unrouted_name_sample_count','drc_unrouted_name_sample_truncated'):
+        result.pop(key,None)
+    board_hash=hashlib.sha256(board.read_bytes()).hexdigest()
     run(['bash','scripts/kicad/run.sh','python3','scripts/pcbgen/ratsnest.py',repo_relative(board),repo_relative(native)])
     detail=json.loads(native.read_text())
+    if not isinstance(detail,dict):raise ValueError('native ratsnest report must be an object')
+    for key in ('native_unconnected_edges','multi_pad_candidate_net_count'):
+        if type(detail.get(key)) is not int or detail[key]<0:
+            raise ValueError(f'invalid native ratsnest count: {key}')
+    source=detail.get('board')
+    if not isinstance(source,str) or (ROOT/Path(source)).resolve()!=board.resolve():
+        raise ValueError('native ratsnest report describes a different board')
+    if hashlib.sha256(board.read_bytes()).hexdigest()!=board_hash:
+        raise RuntimeError('board changed while collecting native ratsnest')
+    result['native_board_sha256']=board_hash
     result['native_unconnected_edge_count']=detail['native_unconnected_edges']
     result['native_ratsnest_report']=repo_relative(native)
     result['multi_pad_candidate_net_count']=detail['multi_pad_candidate_net_count']
@@ -123,6 +140,32 @@ def attach_native_ratsnest(board,report,result):
     if detail['native_unconnected_edges']:
         result['unrouted_name_basis']='KiCad DRC JSON name sample only; see full native ratsnest edge count and bounded multi-pad candidate names in ratsnest.json'
         result['unrouted_net_count']=None
+
+SUCCESS_STATUSES={'ROUTED DRAFT','UPDATED DRAFT','UNCHANGED DRAFT'}
+
+def finalize_native_gate(board,report,result,exit_code):
+    """Native connectivity is a mandatory gate, never a best-effort statistic.
+
+    Preserve prior failures (including timeout exit 3); a native result cannot
+    promote a failed route. A ratsnest-only refresh does not recheck DRC/parity.
+    """
+    try:
+        attach_native_ratsnest(board,report,result)
+    except Exception as exc:
+        result['native_ratsnest_error']=str(exc)
+        result['native_gate_status']='NOT RUN'
+        if exit_code==0 or result.get('status') in SUCCESS_STATUSES:
+            result['status']='PIPELINE FAILED DRAFT'
+            return 2
+        return exit_code
+    if result['native_unconnected_edge_count']:
+        result['native_gate_status']='OPEN EDGES'
+        if exit_code==0 or result.get('status') in SUCCESS_STATUSES:
+            result['status']='INCOMPLETE DRAFT'
+            return 2
+    else:
+        result['native_gate_status']='ZERO OPEN EDGES'
+    return exit_code
 
 def main():
     parser=argparse.ArgumentParser();parser.add_argument('board_id');parser.add_argument('--board',type=Path);parser.add_argument('--report',type=Path);parser.add_argument('--timeout-sec',type=int);parser.add_argument('--threads',type=int);parser.add_argument('--heap-mb',type=int);parser.add_argument('--no-fanout',action='store_true');parser.add_argument('--refresh-ratsnest-only',action='store_true')
@@ -136,9 +179,14 @@ def main():
     if args.refresh_ratsnest_only:
         if not report.exists():raise FileNotFoundError(report)
         result=json.loads(report.read_text())
-        attach_native_ratsnest(board,report,result)
+        # Do not attach fresh counts to an old successful routing badge.
+        if result.get('status')!='RATSNEST ONLY DRAFT':
+            result['prior_routing_status']=result.get('status','UNKNOWN')
+        result['status']='RATSNEST ONLY DRAFT'
+        result['routing_gate_scope']='Ratsnest refresh only; DRC and parity NOT RUN'
+        exit_code=finalize_native_gate(board,report,result,0)
         report.write_text(json.dumps(result,indent=2,sort_keys=True)+'\n')
-        return 0
+        return exit_code
     work=board.parent/'routing-work';work.mkdir(exist_ok=True)
     image,env_heap,env_timeout=read_env()
     threads=args.threads or max(1,min((os.cpu_count() or 2)//2,6))
@@ -180,6 +228,9 @@ def main():
             run(['bash','scripts/kicad/run.sh','python3','scripts/pcbgen/route_kicad.py','prepare',args.board_id,'--board',repo_relative(board),'--dsn',repo_relative(dsn)])
             prepared=drc(board,work/'prepared-drc.json')
             result['prepared']=drc_summary(prepared)
+            if result['prepared']['rule_errors'] or result['prepared']['schematic_parity_issues']:
+                result['router_skipped']='Prepared DRC has rule or schematic-parity errors'
+                raise RuntimeError(result['router_skipped'])
             if drc_passes(result['prepared']):
                 stats_path=work/'stats.json'
                 run(['bash','scripts/kicad/run.sh','python3','scripts/pcbgen/route_kicad.py','inspect',args.board_id,'--board',repo_relative(board),'--stats',repo_relative(stats_path)])
@@ -232,8 +283,7 @@ def main():
             except Exception as metrics_error:
                 result['metrics_error']=str(metrics_error)
         result['runtime_sec']=round(time.monotonic()-started,3)
-        try:attach_native_ratsnest(board,report,result)
-        except Exception as native_error:result['native_ratsnest_error']=str(native_error)
+        exit_code=finalize_native_gate(board,report,result,exit_code)
         report.write_text(json.dumps(result,indent=2,sort_keys=True)+'\n')
         print(f"{args.board_id}: {result['status']}; report {repo_relative(report)}")
         if result.get('error'):print(result['error'],file=sys.stderr)

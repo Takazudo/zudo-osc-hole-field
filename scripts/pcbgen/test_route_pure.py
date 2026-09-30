@@ -44,9 +44,14 @@ class RouterContractTest(unittest.TestCase):
                 drc = dict(violations=[dict(severity='error')] if failure == 'rule' else [],
                     unconnected_items=[], schematic_parity=[{}] if failure == 'parity' else [])
                 def inspect(command, **kwargs):
-                    self.assertIn('inspect', command)
-                    (root/command[-1]).write_text(json.dumps(dict(via_count=1, via_nets=['GND'],
-                        total_track_length_mm=1, track_uuids=['owner'], zone_count=2)))
+                    if 'scripts/pcbgen/ratsnest.py' in command:
+                        (root/command[-1]).write_text(json.dumps(dict(
+                            board=command[-2], native_unconnected_edges=0,
+                            multi_pad_candidate_net_count=1)))
+                    else:
+                        self.assertIn('inspect', command)
+                        (root/command[-1]).write_text(json.dumps(dict(via_count=1, via_nets=['GND'],
+                            total_track_length_mm=1, track_uuids=['owner'], zone_count=2)))
                 with patch.object(route, 'ROOT', root), \
                      patch.object(route, 'load_definition', return_value=definition), \
                      patch.object(route, 'read_env', return_value=('image', 1024, 60)), \
@@ -58,6 +63,7 @@ class RouterContractTest(unittest.TestCase):
                 self.assertEqual(code, 2 if failure else 0)
                 self.assertEqual(json.loads(report.read_text())['status'],
                     'INCOMPLETE DRAFT' if failure else 'UNCHANGED DRAFT')
+                self.assertEqual(json.loads(report.read_text())['native_gate_status'], 'ZERO OPEN EDGES')
                 self.assertEqual(board.read_text(), 'unchanged copper')
 
     def test_failed_oracle_cannot_reuse_stale_report(self):
