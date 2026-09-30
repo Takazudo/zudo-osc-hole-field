@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """KiCad oracle assertions for small routed fixture reports."""
-import json
+import hashlib,json
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[3]/'.circuit-cache/router'
 def report(case):return json.loads((ROOT/case/'reports/routing.json').read_text())
@@ -9,6 +9,10 @@ for case in ('one','four','six'):
     assert r['status'] in ('ROUTED DRAFT','UNCHANGED DRAFT'),(case,r['status'])
     after=r['after']
     assert after['rule_errors']==after['unconnected_items']==after['schematic_parity_issues']==0,(case,after)
+    board=ROOT/case/f'fixture-route-{case}.kicad_pcb'
+    assert r['native_gate_status']=='ZERO OPEN EDGES', (case,r)
+    assert r['native_unconnected_edge_count']==0 and r['native_open_edges_by_net']=={},(case,r)
+    assert r['native_board_sha256']==hashlib.sha256(board.read_bytes()).hexdigest(),case
     assert r['via_count']>0 and r['total_track_length_mm']>0,(case,r)
     print(f'{case}: 0 KiCad errors, 0 unconnected, 0 parity; {r["via_count"]} vias')
 four=report('four')
