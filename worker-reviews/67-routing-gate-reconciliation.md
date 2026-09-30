@@ -50,7 +50,7 @@ pass the original final matrix gates. Never rebind historical result hashes.
 
 ## Validation and remaining work
 
-Validation is in progress. The 35 routing orchestration/unit tests, evidence
+The routing repair is committed as `57084d0`. The 35 routing orchestration/unit tests, evidence
 validation and `pnpm check` pass. Guarded aggregate check mode and actual JL/JR native diagnostics passed in 384 s.
 Fresh canonical results (board bytes unchanged):
 
@@ -68,7 +68,10 @@ no fixture ran in that attempt. The guarded routing retry passed in 153 s (minim
 Two-layer, four-layer and replicated fixtures had zero native/DRC/parity errors,
 matching board hashes, preserved copper and unchanged reruns. The intentional
 barrier retained TIMEOUT DRAFT / exit 3 with seven native open edges. Native
-prerequisite regressions remain queued. Contention is not a test failure or a pass. The first full
+prerequisite regressions also reached exit 75 without running; their guarded
+retry remains queued (tool session 62148). Contention is not a test failure or a pass.
+The standalone native runner and inherited test corrections remain in the
+preserved unpublished issue-38 WIP, outside the routing repair commit. The first full
 suite launch used default Python without numerical packages and was stopped;
 its replacement uses the existing environment with numpy 2.2.6, scipy 1.15.3 and
 shapely 2.1.2, matching the repository pins.
@@ -94,3 +97,29 @@ Dependencies 39–45 are not completed by this repair. Physical checks remain
 NOT RUN under 55/57/64/65; exact protection remains OPEN under 59. All schematic
 and PCB artifacts remain unvalidated drafts. No fabrication outputs, supplier
 contact, deployment or Cloudflare credential operations were performed.
+
+## Active continuation after the routing repair
+
+A K resume is queued under guard label
+`issue38-core-full-checkpoint-v2-resume-20260930` (guard PID 4103518, tool session
+29718 at submission). No competing solver or final/partial result existed at
+submission. The guarded command is retained in
+`.circuit-cache/review-20260930/resume-k.sh`; its log is
+`.circuit-cache/review-20260930/k-resume.log`. It uses the existing pinned numerical
+venv, v7 geometry/native receipt, the source manifest
+`design/partition/core-ground-feasibility/osc-core.receipt.json`, the original
+checkpoint output stem, full loads, nineteen-support main strands, adaptive
+2 mm / 0.25 mm mesh, refinement 1, all ports and origin (0,0). The guard keeps a
+6000 MB admission requirement and 14400 s run bound.
+
+QUEUED is not RUN or PASS. Reassembled source/profile/library/operand key
+admission and any new numerical progress remain unobserved. Inspect the live
+process, final guard verdict, complete result/profile and exact source hashes
+before making a result claim or restarting. Do not edit solver/native dependencies
+while it runs. No historical result was rebound or promoted. The original 1504
+current profiles remain incomplete until the solver's full final gates pass.
+
+Root main and remote PR 67 were not changed or merged. Current latest issue
+comments still leave epic 1 and dependencies 44/45 OPEN. Preserve the worktree,
+all unpublished files and recovery cache; only the narrow routing repair and
+required ERC hash refresh have been committed here.
