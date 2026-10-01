@@ -1,0 +1,85 @@
+{
+  "schema_version": 1,
+  "status": "UNSELECTED constructive reference cell; prospective PROJECT REQUIREMENTS only; exact-MPN interior and assembly compliance NOT RUN #65",
+  "scope": "One GH ground termination from a finite foil-face trace to all seven strand traces at a wire cut. This does not admit the instrument, bulk wire, or actual manufactured connector.",
+  "identities": {
+    "headers": ["BM03B-GHS-TBT(LF)(SN)", "BM07B-GHS-TBT(LF)(SN)", "BM08B-GHS-TBT(LF)(SN)"],
+    "contact": "SSHL-002T-P0.2",
+    "wire": "Alpha Wire 6821 BK005",
+    "supplier_order_code": "No new order identity selected"
+  },
+  "sources": [
+    {"path": "design/connectors/sources/jst-gh.pdf", "sha256": "b1dcb317b6b9a4fbbedd2dbf42c64c95306a252d23de8933b85fcf161240b722", "url": "https://www.jst-mfg.com/product/pdf/eng/eGH.pdf", "locator": "Printed pages 2-3: 1.25 mm pitch, nominal 7.3 mm mated height, 4.25 mm header depth, 0.7 mm toe projection, 0.15 mm toe height, contact outline 4.8/0.8/0.55 mm. These are external/reference dimensions, not minimum internal metal."},
+    {"path": "design/partition/sources/alpha-6821.pdf", "sha256": "efd1d9ca96295017e43bec8534016f8d5d30c11a1a28fc8d37b6cf35b892a80a", "url": "https://www.alphawire.com/disteAPI/SpecPDF/DownloadProductSpecPdf?productPartNumber=6821", "locator": "Physical PDF index 1: seven 34 AWG bare copper strands; no minimum contained polygon or actual crimp-contact support is inferred."}
+  ],
+  "units": {"length": "mm", "resistivity": "ohm mm", "areal_resistance": "ohm mm^2", "energy_per_unit_current_squared": "ohm"},
+  "physical_model": {"continuous_solid_crimp_hub_required": true, "interface_law": "finite_patch_local_robin", "strand_count": 7},
+  "intervals": {
+    "solder_height": ["0.025", "0.05"],
+    "toe_width": ["0.15", "0.16"],
+    "solder_patch_length": ["0.15", "0.16"],
+    "toe_height": ["0.075", "0.08"],
+    "body_width": ["0.28", "0.30"],
+    "body_depth": ["0.09", "0.10"],
+    "body_taper_length": ["0.18", "0.22"],
+    "header_spine_length": ["2.7", "2.9"],
+    "receiver_spine_length": ["1.2", "1.4"],
+    "mating_patch_width": ["0.055", "0.065"],
+    "mating_patch_depth": ["0.018", "0.022"],
+    "mating_taper_length": ["0.07", "0.09"],
+    "hub_width": ["0.46", "0.48"],
+    "hub_taper_length": ["0.35", "0.45"],
+    "hub_height": ["0.10", "0.14"],
+    "crimp_patch_width": ["0.038", "0.042"],
+    "strand_tip_length": ["0.10", "0.15"],
+    "contained_strand_radius": ["0.077", "0.079"],
+    "rho_alloy": ["0.00001", "0.0001"],
+    "rho_solder": ["0.00001", "0.0002"],
+    "rho_wire": ["0.00001", "0.000023"],
+    "solder_interface_areal_resistance": ["0.000002", "0.00001"],
+    "mating_interface_areal_resistance": ["0.000001", "0.000003"],
+    "crimp_interface_areal_resistance": ["0.000002", "0.00001"]
+  },
+  "geometry": {
+    "toe_projection": "0.7",
+    "body_front_y": "0.7",
+    "wire_axis_y": "1.5",
+    "wire_cut_z": "7.5",
+    "maximum_mated_metal_z": "7.4",
+    "maximum_possible_metal_box": {"x": ["-0.5", "0.5"], "y": ["-0.4", "4.95"], "z": ["0", "7.5"]},
+    "maximum_wetting_native_pad": ["0.6", "1.7"],
+    "minimum_allowed_solder_support": ["0.18", "0.25"],
+    "strand_centres": [["0", "0"], ["0.16", "0"], ["0.08", "0.14"], ["-0.08", "0.14"], ["-0.16", "0"], ["-0.08", "-0.14"], ["0.08", "-0.14"]],
+    "strand_polygon_first_quadrant": [["0.077", "0"], ["0.071", "0.029"], ["0.054", "0.054"], ["0.029", "0.071"], ["0", "0.077"]]
+  },
+  "bulk_correlated_class": {
+    "status": "PROPOSED explicit sufficient geometry/material correlations for the existing 0.10..0.17 ohm/m contract; not an Alpha guarantee",
+    "current_strand_arclength_over_axis_upper": "1.025",
+    "current_core_radius_times_curvature_upper": "0.1",
+    "current_frame_spin_upper_rad_per_mm": "0.8",
+    "potential_axis_section_area_over_normal_section_upper": "1.025",
+    "potential_bundle_curvature_times_metal_radius_upper": "0.05",
+    "actual_radius_over_contained_radius_upper": "1.01",
+    "strand_unit_energy_ratio_upper": "1.2",
+    "wire_resistance_lower_ohm_per_m": "0.1",
+    "wire_resistance_upper_ohm_per_m": "0.17",
+    "reference_case": {"radius_mm": "0.078", "rho_lower_ohm_mm": "0.000016", "rho_upper_basis": "NBS reference 70 C: 1.7241e-5*(1+0.003947*50); conditional reference value, not an Alpha hot maximum"},
+    "scope": "Each strand has its own contained radius, 1.01-times-radius maximum actual-metal envelope, lower/upper resistivity and computed current weight. Noncircular section perturbations within those envelopes are allowed. The admissible set has explicit lower/upper bulk witness inequalities, not independent acceptance of every box corner. Actual geometry, bounded axial material variation and all curve/frame/envelope inequalities require qualification. The original installed wire hot ceiling is 70 C; no new minimum ambient is inferred. Cold acceptance is the direct geometric/material lower-resistance condition.",
+    "correlations": [
+      "For A_j equal to the rational contained polygon scaled to radius r_j, R_j=rho_upper_j*M_current/A_j. Require 1000/sum(1/R_j)<=0.17 ohm/m.",
+      "For all actual metal contained within 1.01-times-radius circles, G_upper=M_potential*sum((22/7)*(1.01*r_j)^2/rho_lower_j). Require 1000/G_upper>=0.10 ohm/m.",
+      "Require max(R_j)/min(R_j)<=1.2. Set alpha_j=(1/R_j)/sum(1/R_j), carry those exact parameter-dependent traces through all crimp and tip fields."
+    ]
+  },
+  "admission_requirements": [
+    "Every actual conductor must contain the explicitly constructed connected reference solids, or a separately certified compatible image of them; no dimension is inferred from native pad artwork.",
+    "In particular, the crimp redistribution hub is a continuous full square conducting slab, not a convex hull of separated strands. Its existence in SSHL-002T-P0.2 is NOT KNOWN. It must not be silently treated as actual contact metal or as permission to fill a crimp with solder.",
+    "The finite mating rectangle and seven finite crimp squares are independently selected microscopic support requirements, not a claim of full macroscopic mating-face conduction.",
+    "Each interface obeys the stated local linear areal-resistance law throughout its finite patch; scalar JST contact resistance does not establish this law.",
+    "All additional possible contact metal stays inside the declared envelope and meets the positive material bounds. A potential trial constant over this envelope and full possible pad wetting extends continuously and has zero connector-cell gradient and interface jump.",
+    "The contained seven polygons scale with the independently admitted strand radii and are transported continuously to the outgoing wire sections with exactly the same normal traces. Parameter-dependent trial weights alpha_j are conserved through every crimp patch, tip, tail and bulk region; no equal actual strand sharing is assumed.",
+    "The cell's wire tips and tails are charged here and must be removed from the separately charged bulk-wire geometry to prevent double counting.",
+    "The mathematical reference solids have a gross external-envelope screen only. Internal cavity, spring, latch, crimp deformation and retained exact-MPN metal containment are unqualified. This prototype is not an adopted physical source class."
+  ],
+  "end_energy_ceiling_ohm": "0.05"
+}
