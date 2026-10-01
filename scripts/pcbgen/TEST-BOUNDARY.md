@@ -62,3 +62,4 @@ tests. The exact moved case inventory follows.
 - `pth_source_geometry_retained_regression.py`: `test_actual_native_drift_rejects_without_output`
 - `peripheral_ground_source_retained_regression.py`: `test_exact_observed_fresh_native_stage_and_foreign_rule_rejection`
 - `jack_ground_source_epoch_retained_regression.py`: `test_current_exact_nominal_source_bridge`
+- `current_convex_source_gap_retained_regression.py`: `test_complete_reviewed_epoch_remains_blocked`, `test_geometry_and_physical_claims_fail_closed`, `test_modified_aggregate_is_rejected_before_classification`, `test_original_source_exists`. Shared setup loads the exact retained v6 aggregate indirectly through `checked_source()`; this dependency was found by the clean-checkout test.
