@@ -64,6 +64,18 @@ class RegionalTransferTests(unittest.TestCase):
                 self.assertLessEqual(F(result['regions'][key]['transfer_lower']),value)
                 self.assertGreaterEqual(F(result['regions'][key]['transfer_upper']),value)
 
+    def test_complete_union_uses_orthogonality_but_proper_regions_do_not(self):
+        # One trial is exact, the other has a nonzero conserved circulation.
+        # The whole cross is exact by orthogonality; regional crosses need not be.
+        args,exact=self.fixture(F(0),F(1,2))
+        result=regional_bounds(**args)
+        self.assertEqual(result['whole_domain']['error_radius_upper'],0)
+        self.assertEqual(result['whole_domain']['transfer_lower'],float(sum(exact.values())))
+        self.assertGreater(result['common']['error_radius_upper'],0)
+        args['common_region_ids']=args['region_ids']
+        result=regional_bounds(**args)
+        self.assertEqual(result['common'],result['whole_domain'])
+
     def test_loose_regional_uppers_do_not_hide_global_cross_contradiction(self):
         args,_=self.fixture()
         for row in args['regions']:

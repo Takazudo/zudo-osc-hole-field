@@ -33,6 +33,11 @@ def regional_bounds(*, region_ids, common_region_ids, regions,
     union, nonnegative dissipation bounds its energy by both the sum of its
     regional uppers and the complete-domain upper. All bounds must refer to
     the same conserved trial fields and complete bulk/interface energy norm.
+
+    For the complete union only, variational orthogonality cancels both
+    linear error terms: physical equilibrium fields are orthogonal to the
+    homogeneous errors with matching full source/trace constraints. Merely
+    matching terminal current totals is not sufficient for this premise.
     """
     rows = covered_rows(region_ids, regions, 'physical region')
     common = list(common_region_ids)
@@ -77,7 +82,9 @@ def regional_bounds(*, region_ids, common_region_ids, regions,
         if lo > norm or hi < -norm:
             raise ValueError('trial cross interval contradicts complete trial energies')
         lo=max(lo,-norm);hi=min(hi,norm)
-        error=sqrt_upper(a*db)+sqrt_upper(b*ds)+sqrt_upper(ds*db)
+        error=sqrt_upper(ds*db)
+        if len(values)!=len(parsed):
+            error+=sqrt_upper(a*db)+sqrt_upper(b*ds)
         return {'trial_cross_lower':downward(lo),'trial_cross_upper':upward(hi),
                 'transfer_lower':downward(lo-error),'transfer_upper':upward(hi+error),
                 'error_radius_upper':upward(error),
