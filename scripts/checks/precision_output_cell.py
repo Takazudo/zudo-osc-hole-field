@@ -238,7 +238,9 @@ def calculate(spec: dict) -> dict:
     cap_tolerance = contract["source_requirement"]["capacitance_tolerance_fraction"]
     ledger = json.loads(LEDGER.read_text())
     old_packages = [p for p in ledger["physical_ic_packages"] if p["symbol"] == "ADG5412FBRUZ"]
-    old_load = {rail: sum(row["planning_allowance_mA"][rail] for row in ledger["worksheet_loads"] if row["label"] == "ADG5412FBRUZ") for rail in normal}
+    # Python 3.12 changed float sum accumulation. Use an explicit compensated
+    # sum so the same decimal ledger produces identical portable receipts.
+    old_load = {rail: math.fsum(row["planning_allowance_mA"][rail] for row in ledger["worksheet_loads"] if row["label"] == "ADG5412FBRUZ") for rail in normal}
     tmux = next(s for s in json.loads(SWITCH_SOURCES.read_text())["sources"] if s["candidate"] == "TMUX7412FRRPR")
     tmux_unit = {"+12V": tmux["normal_iq_screen"]["positive_mA"], "-12V": tmux["normal_iq_screen"]["negative_mA"], "+5V": 0}
     tmux_delta = {rail: len(old_packages) * tmux_unit[rail] - old_load[rail] for rail in normal}
