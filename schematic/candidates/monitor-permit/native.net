@@ -3237,6 +3237,104 @@
 			)
 		)
 		(comp
+			(ref "C110")
+			(value "100 nF")
+			(footprint "zudo-osc-hole-field:C0603")
+			(fields
+				(field
+					(name "MPN") "GRM188R71H104KA93D")
+				(field
+					(name "Manufacturer") "Murata")
+				(field
+					(name "LCSC")
+				)
+				(field
+					(name "Block") "MONITOR-P2")
+				(field
+					(name "Role") "UNSELECTED DRAFT: Nominal bypass candidate; manufacturer effective-capacitance evidence unavailable")
+				(field
+					(name "PanelUid")
+				)
+				(field
+					(name "Island")
+				)
+				(field
+					(name "Sensitive")
+				)
+				(field
+					(name "Footprint") "zudo-osc-hole-field:C0603")
+				(field
+					(name "Datasheet")
+				)
+				(field
+					(name "Description")
+				)
+			)
+			(libsource
+				(lib "zudo-osc-hole-field")
+				(part "GRM188R71H104KA93D")
+				(description "")
+			)
+			(property
+				(name "MPN")
+				(value "GRM188R71H104KA93D")
+			)
+			(property
+				(name "Manufacturer")
+				(value "Murata")
+			)
+			(property
+				(name "LCSC")
+				(value "")
+			)
+			(property
+				(name "Block")
+				(value "MONITOR-P2")
+			)
+			(property
+				(name "Role")
+				(value "UNSELECTED DRAFT: Nominal bypass candidate; manufacturer effective-capacitance evidence unavailable")
+			)
+			(property
+				(name "PanelUid")
+				(value "")
+			)
+			(property
+				(name "Island")
+				(value "")
+			)
+			(property
+				(name "Sensitive")
+				(value "")
+			)
+			(property
+				(name "Sheetname")
+				(value "MONITOR-P2")
+			)
+			(property
+				(name "Sheetfile")
+				(value "sheets/MonitorPermit-p2.kicad_sch")
+			)
+			(sheetpath
+				(names "/MONITOR-P2/")
+				(tstamps "/be010ac9-ddec-5242-859f-c3ed7c7c5779/")
+			)
+			(tstamps "43e12340-9a05-53c2-9449-a429db3515a3")
+			(units
+				(unit
+					(name "A")
+					(pins
+						(pin
+							(num "1")
+						)
+						(pin
+							(num "2")
+						)
+					)
+				)
+			)
+		)
+		(comp
 			(ref "Q101")
 			(value "MMBT3904,215")
 			(footprint "zudo-osc-hole-field:SOT-23")
@@ -3836,21 +3934,21 @@
 			)
 		)
 		(comp
-			(ref "U104")
-			(value "SN74HC14DR")
-			(footprint "zudo-osc-hole-field:SOIC-14_3.9x8.7mm_P1.27mm")
+			(ref "R125")
+			(value "100000 ohm")
+			(footprint "zudo-osc-hole-field:R_0805_2012Metric_Monitor")
 			(fields
 				(field
-					(name "MPN") "SN74HC14DR")
+					(name "MPN") "RC0805FR-07100KL")
 				(field
-					(name "Manufacturer") "Texas Instruments")
+					(name "Manufacturer") "Yageo")
 				(field
 					(name "LCSC")
 				)
 				(field
 					(name "Block") "MONITOR-P2")
 				(field
-					(name "Role") "UNSELECTED DRAFT: Fast asynchronous reset and delayed clock conditioning")
+					(name "Role") "UNSELECTED DRAFT: Passive timing-capacitor bleed; does not guarantee power-off restart")
 				(field
 					(name "PanelUid")
 				)
@@ -3861,7 +3959,7 @@
 					(name "Sensitive")
 				)
 				(field
-					(name "Footprint") "zudo-osc-hole-field:SOIC-14_3.9x8.7mm_P1.27mm")
+					(name "Footprint") "zudo-osc-hole-field:R_0805_2012Metric_Monitor")
 				(field
 					(name "Datasheet")
 				)
@@ -3871,16 +3969,16 @@
 			)
 			(libsource
 				(lib "zudo-osc-hole-field")
-				(part "SN74HC14DR")
-				(description "Hex inverter schmitt trigger")
+				(part "RC0805FR_07100KL")
+				(description "")
 			)
 			(property
 				(name "MPN")
-				(value "SN74HC14DR")
+				(value "RC0805FR-07100KL")
 			)
 			(property
 				(name "Manufacturer")
-				(value "Texas Instruments")
+				(value "Yageo")
 			)
 			(property
 				(name "LCSC")
@@ -3892,7 +3990,7 @@
 			)
 			(property
 				(name "Role")
-				(value "UNSELECTED DRAFT: Fast asynchronous reset and delayed clock conditioning")
+				(value "UNSELECTED DRAFT: Passive timing-capacitor bleed; does not guarantee power-off restart")
 			)
 			(property
 				(name "PanelUid")
@@ -3914,23 +4012,11 @@
 				(name "Sheetfile")
 				(value "sheets/MonitorPermit-p2.kicad_sch")
 			)
-			(property
-				(name "ki_keywords")
-				(value "HCMOS not inverter")
-			)
-			(property
-				(name "ki_fp_filters")
-				(value "DIP*W7.62mm*")
-			)
 			(sheetpath
 				(names "/MONITOR-P2/")
 				(tstamps "/be010ac9-ddec-5242-859f-c3ed7c7c5779/")
 			)
-			(tstamps "4c0c08f6-d6dc-5948-9eb4-3d4ac08e8d1a" "2b3491cf-3ab5-5602-a602-48068be97708"
-				"8bc8e220-2cc0-51fe-8e17-20df923f55f1" "13a377f1-3d89-5981-a34c-068d94c33616"
-				"4b0e123b-f6ef-5ca7-bf97-0656f291bc78" "188003da-3132-5538-bde3-bee5806fff6e"
-				"12ecbd9e-4e41-5fc4-b11b-cadee145df24"
-			)
+			(tstamps "ec1122f2-a39b-55bb-8aaf-05a9651e6b28")
 			(units
 				(unit
 					(name "A")
@@ -3943,69 +4029,110 @@
 						)
 					)
 				)
+			)
+		)
+		(comp
+			(ref "U104")
+			(value "SN74LVC1G17DBVR")
+			(footprint "zudo-osc-hole-field:SOT-23-5")
+			(fields
+				(field
+					(name "MPN") "SN74LVC1G17DBVR")
+				(field
+					(name "Manufacturer") "Texas Instruments")
+				(field
+					(name "LCSC")
+				)
+				(field
+					(name "Block") "MONITOR-P2")
+				(field
+					(name "Role") "UNSELECTED DRAFT: Noninverting asynchronous reset conditioner")
+				(field
+					(name "PanelUid")
+				)
+				(field
+					(name "Island")
+				)
+				(field
+					(name "Sensitive")
+				)
+				(field
+					(name "Footprint") "zudo-osc-hole-field:SOT-23-5")
+				(field
+					(name "Datasheet")
+				)
+				(field
+					(name "Description")
+				)
+			)
+			(libsource
+				(lib "zudo-osc-hole-field")
+				(part "SN74LVC1G17DBVR")
+				(description "")
+			)
+			(property
+				(name "MPN")
+				(value "SN74LVC1G17DBVR")
+			)
+			(property
+				(name "Manufacturer")
+				(value "Texas Instruments")
+			)
+			(property
+				(name "LCSC")
+				(value "")
+			)
+			(property
+				(name "Block")
+				(value "MONITOR-P2")
+			)
+			(property
+				(name "Role")
+				(value "UNSELECTED DRAFT: Noninverting asynchronous reset conditioner")
+			)
+			(property
+				(name "PanelUid")
+				(value "")
+			)
+			(property
+				(name "Island")
+				(value "")
+			)
+			(property
+				(name "Sensitive")
+				(value "")
+			)
+			(property
+				(name "Sheetname")
+				(value "MONITOR-P2")
+			)
+			(property
+				(name "Sheetfile")
+				(value "sheets/MonitorPermit-p2.kicad_sch")
+			)
+			(sheetpath
+				(names "/MONITOR-P2/")
+				(tstamps "/be010ac9-ddec-5242-859f-c3ed7c7c5779/")
+			)
+			(tstamps "4b0e123b-f6ef-5ca7-bf97-0656f291bc78")
+			(units
 				(unit
-					(name "B")
+					(name "A")
 					(pins
+						(pin
+							(num "1")
+						)
+						(pin
+							(num "2")
+						)
 						(pin
 							(num "3")
 						)
 						(pin
 							(num "4")
 						)
-					)
-				)
-				(unit
-					(name "C")
-					(pins
 						(pin
 							(num "5")
-						)
-						(pin
-							(num "6")
-						)
-					)
-				)
-				(unit
-					(name "D")
-					(pins
-						(pin
-							(num "9")
-						)
-						(pin
-							(num "8")
-						)
-					)
-				)
-				(unit
-					(name "E")
-					(pins
-						(pin
-							(num "11")
-						)
-						(pin
-							(num "10")
-						)
-					)
-				)
-				(unit
-					(name "F")
-					(pins
-						(pin
-							(num "13")
-						)
-						(pin
-							(num "12")
-						)
-					)
-				)
-				(unit
-					(name "G")
-					(pins
-						(pin
-							(num "14")
-						)
-						(pin
-							(num "7")
 						)
 					)
 				)
@@ -4013,11 +4140,11 @@
 		)
 		(comp
 			(ref "U105")
-			(value "SN74HC74DR")
-			(footprint "zudo-osc-hole-field:SOIC-14_3.9x8.7mm_P1.27mm")
+			(value "SN74LVC1G74DCTR")
+			(footprint "zudo-osc-hole-field:TI_DCT0008A")
 			(fields
 				(field
-					(name "MPN") "SN74HC74DR")
+					(name "MPN") "SN74LVC1G74DCTR")
 				(field
 					(name "Manufacturer") "Texas Instruments")
 				(field
@@ -4037,7 +4164,7 @@
 					(name "Sensitive")
 				)
 				(field
-					(name "Footprint") "zudo-osc-hole-field:SOIC-14_3.9x8.7mm_P1.27mm")
+					(name "Footprint") "zudo-osc-hole-field:TI_DCT0008A")
 				(field
 					(name "Datasheet")
 				)
@@ -4047,12 +4174,12 @@
 			)
 			(libsource
 				(lib "zudo-osc-hole-field")
-				(part "SN74HC74DR")
-				(description "Dual D Flip-flop, Set & Reset")
+				(part "SN74LVC1G74DCTR")
+				(description "")
 			)
 			(property
 				(name "MPN")
-				(value "SN74HC74DR")
+				(value "SN74LVC1G74DCTR")
 			)
 			(property
 				(name "Manufacturer")
@@ -4090,25 +4217,18 @@
 				(name "Sheetfile")
 				(value "sheets/MonitorPermit-p2.kicad_sch")
 			)
-			(property
-				(name "ki_keywords")
-				(value "TTL DFF")
-			)
-			(property
-				(name "ki_fp_filters")
-				(value "DIP*W7.62mm*")
-			)
 			(sheetpath
 				(names "/MONITOR-P2/")
 				(tstamps "/be010ac9-ddec-5242-859f-c3ed7c7c5779/")
 			)
-			(tstamps "fa15d1f6-ccf8-5f16-8c3f-eaf00d892e2e" "6ba3f63a-2e15-528f-ba06-e71ac3938489"
-				"63427d9c-5256-52b2-b271-815024dd6be7"
-			)
+			(tstamps "fa15d1f6-ccf8-5f16-8c3f-eaf00d892e2e")
 			(units
 				(unit
 					(name "A")
 					(pins
+						(pin
+							(num "1")
+						)
 						(pin
 							(num "2")
 						)
@@ -4119,47 +4239,123 @@
 							(num "4")
 						)
 						(pin
-							(num "1")
-						)
-						(pin
 							(num "5")
 						)
 						(pin
 							(num "6")
 						)
-					)
-				)
-				(unit
-					(name "B")
-					(pins
 						(pin
-							(num "12")
-						)
-						(pin
-							(num "11")
-						)
-						(pin
-							(num "10")
-						)
-						(pin
-							(num "13")
-						)
-						(pin
-							(num "9")
+							(num "7")
 						)
 						(pin
 							(num "8")
 						)
 					)
 				)
+			)
+		)
+		(comp
+			(ref "U106")
+			(value "SN74LVC1G17DBVR")
+			(footprint "zudo-osc-hole-field:SOT-23-5")
+			(fields
+				(field
+					(name "MPN") "SN74LVC1G17DBVR")
+				(field
+					(name "Manufacturer") "Texas Instruments")
+				(field
+					(name "LCSC")
+				)
+				(field
+					(name "Block") "MONITOR-P2")
+				(field
+					(name "Role") "UNSELECTED DRAFT: Noninverting delayed clock conditioner")
+				(field
+					(name "PanelUid")
+				)
+				(field
+					(name "Island")
+				)
+				(field
+					(name "Sensitive")
+				)
+				(field
+					(name "Footprint") "zudo-osc-hole-field:SOT-23-5")
+				(field
+					(name "Datasheet")
+				)
+				(field
+					(name "Description")
+				)
+			)
+			(libsource
+				(lib "zudo-osc-hole-field")
+				(part "SN74LVC1G17DBVR")
+				(description "")
+			)
+			(property
+				(name "MPN")
+				(value "SN74LVC1G17DBVR")
+			)
+			(property
+				(name "Manufacturer")
+				(value "Texas Instruments")
+			)
+			(property
+				(name "LCSC")
+				(value "")
+			)
+			(property
+				(name "Block")
+				(value "MONITOR-P2")
+			)
+			(property
+				(name "Role")
+				(value "UNSELECTED DRAFT: Noninverting delayed clock conditioner")
+			)
+			(property
+				(name "PanelUid")
+				(value "")
+			)
+			(property
+				(name "Island")
+				(value "")
+			)
+			(property
+				(name "Sensitive")
+				(value "")
+			)
+			(property
+				(name "Sheetname")
+				(value "MONITOR-P2")
+			)
+			(property
+				(name "Sheetfile")
+				(value "sheets/MonitorPermit-p2.kicad_sch")
+			)
+			(sheetpath
+				(names "/MONITOR-P2/")
+				(tstamps "/be010ac9-ddec-5242-859f-c3ed7c7c5779/")
+			)
+			(tstamps "243948a6-7716-5987-8789-ed1a1ff2decb")
+			(units
 				(unit
-					(name "C")
+					(name "A")
 					(pins
 						(pin
-							(num "14")
+							(num "1")
 						)
 						(pin
-							(num "7")
+							(num "2")
+						)
+						(pin
+							(num "3")
+						)
+						(pin
+							(num "4")
+						)
+						(pin
+							(num "5")
 						)
 					)
 				)
@@ -4756,99 +4952,51 @@
 		)
 		(libpart
 			(lib "zudo-osc-hole-field")
-			(part "SN74HC14DR")
-			(description "Hex inverter schmitt trigger")
-			(docs "https://www.ti.com/lit/ds/symlink/sn74hc14.pdf")
-			(footprints
-				(fp "DIP*W7.62mm*")
-			)
+			(part "SN74LVC1G17DBVR")
+			(docs "https://www.ti.com/lit/ds/symlink/sn74lvc1g17.pdf")
 			(fields
 				(field
 					(name "Reference") "U")
 				(field
-					(name "Value") "SN74HC14DR")
+					(name "Value") "SN74LVC1G17DBVR")
 				(field
-					(name "Footprint") "zudo-osc-hole-field:SOIC-14_3.9x8.7mm_P1.27mm")
+					(name "Footprint") "zudo-osc-hole-field:SOT-23-5")
 				(field
-					(name "Datasheet") "https://www.ti.com/lit/ds/symlink/sn74hc14.pdf")
+					(name "Datasheet") "https://www.ti.com/lit/ds/symlink/sn74lvc1g17.pdf")
 				(field
-					(name "Description") "Hex inverter schmitt trigger")
-				(field
-					(name "LCSC")
+					(name "Description")
 				)
+				(field
+					(name "MPN") "SN74LVC1G17DBVR")
 				(field
 					(name "Manufacturer") "Texas Instruments")
 				(field
-					(name "MPN") "SN74HC14DR")
+					(name "LCSC")
+				)
 			)
 			(pins
 				(pin
 					(num "1")
-					(name "")
-					(type "input")
+					(name "NC")
+					(type "no_connect")
 				)
 				(pin
 					(num "2")
-					(name "")
-					(type "output")
+					(name "A")
+					(type "input")
 				)
 				(pin
 					(num "3")
-					(name "")
-					(type "input")
-				)
-				(pin
-					(num "4")
-					(name "")
-					(type "output")
-				)
-				(pin
-					(num "5")
-					(name "")
-					(type "input")
-				)
-				(pin
-					(num "6")
-					(name "")
-					(type "output")
-				)
-				(pin
-					(num "7")
 					(name "GND")
 					(type "power_in")
 				)
 				(pin
-					(num "8")
-					(name "")
+					(num "4")
+					(name "Y")
 					(type "output")
 				)
 				(pin
-					(num "9")
-					(name "")
-					(type "input")
-				)
-				(pin
-					(num "10")
-					(name "")
-					(type "output")
-				)
-				(pin
-					(num "11")
-					(name "")
-					(type "input")
-				)
-				(pin
-					(num "12")
-					(name "")
-					(type "output")
-				)
-				(pin
-					(num "13")
-					(name "")
-					(type "input")
-				)
-				(pin
-					(num "14")
+					(num "5")
 					(name "VCC")
 					(type "power_in")
 				)
@@ -4856,35 +5004,32 @@
 		)
 		(libpart
 			(lib "zudo-osc-hole-field")
-			(part "SN74HC74DR")
-			(description "Dual D Flip-flop, Set & Reset")
-			(docs "https://www.ti.com/lit/ds/symlink/sn74hc74.pdf")
-			(footprints
-				(fp "DIP*W7.62mm*")
-			)
+			(part "SN74LVC1G74DCTR")
+			(docs "https://www.ti.com/lit/ds/symlink/sn74lvc1g74.pdf")
 			(fields
 				(field
 					(name "Reference") "U")
 				(field
-					(name "Value") "SN74HC74DR")
+					(name "Value") "SN74LVC1G74DCTR")
 				(field
-					(name "Footprint") "zudo-osc-hole-field:SOIC-14_3.9x8.7mm_P1.27mm")
+					(name "Footprint") "zudo-osc-hole-field:TI_DCT0008A")
 				(field
-					(name "Datasheet") "https://www.ti.com/lit/ds/symlink/sn74hc74.pdf")
+					(name "Datasheet") "https://www.ti.com/lit/ds/symlink/sn74lvc1g74.pdf")
 				(field
-					(name "Description") "Dual D Flip-flop, Set & Reset")
-				(field
-					(name "LCSC")
+					(name "Description")
 				)
+				(field
+					(name "MPN") "SN74LVC1G74DCTR")
 				(field
 					(name "Manufacturer") "Texas Instruments")
 				(field
-					(name "MPN") "SN74HC74DR")
+					(name "LCSC")
+				)
 			)
 			(pins
 				(pin
 					(num "1")
-					(name "~{R}")
+					(name "CLK")
 					(type "input")
 				)
 				(pin
@@ -4894,13 +5039,13 @@
 				)
 				(pin
 					(num "3")
-					(name "C")
-					(type "input")
+					(name "Q_N")
+					(type "output")
 				)
 				(pin
 					(num "4")
-					(name "~{S}")
-					(type "input")
+					(name "GND")
+					(type "power_in")
 				)
 				(pin
 					(num "5")
@@ -4909,46 +5054,16 @@
 				)
 				(pin
 					(num "6")
-					(name "~{Q}")
-					(type "output")
+					(name "CLR_N")
+					(type "input")
 				)
 				(pin
 					(num "7")
-					(name "GND")
-					(type "power_in")
+					(name "PRE_N")
+					(type "input")
 				)
 				(pin
 					(num "8")
-					(name "~{Q}")
-					(type "output")
-				)
-				(pin
-					(num "9")
-					(name "Q")
-					(type "output")
-				)
-				(pin
-					(num "10")
-					(name "~{S}")
-					(type "input")
-				)
-				(pin
-					(num "11")
-					(name "C")
-					(type "input")
-				)
-				(pin
-					(num "12")
-					(name "D")
-					(type "input")
-				)
-				(pin
-					(num "13")
-					(name "~{R}")
-					(type "input")
-				)
-				(pin
-					(num "14")
 					(name "VCC")
 					(type "power_in")
 				)
@@ -5130,6 +5245,11 @@
 				(pintype "passive")
 			)
 			(node
+				(ref "C110")
+				(pin "1")
+				(pintype "passive")
+			)
+			(node
 				(ref "R116")
 				(pin "1")
 				(pintype "passive")
@@ -5159,20 +5279,8 @@
 			)
 			(node
 				(ref "U104")
-				(pin "14")
-				(pinfunction "VCC_14")
-				(pintype "power_in")
-			)
-			(node
-				(ref "U105")
-				(pin "10")
-				(pinfunction "~{S}_10")
-				(pintype "input")
-			)
-			(node
-				(ref "U105")
-				(pin "14")
-				(pinfunction "VCC_14")
+				(pin "5")
+				(pinfunction "VCC_5")
 				(pintype "power_in")
 			)
 			(node
@@ -5183,9 +5291,21 @@
 			)
 			(node
 				(ref "U105")
-				(pin "4")
-				(pinfunction "~{S}_4")
+				(pin "7")
+				(pinfunction "PRE_N_7")
 				(pintype "input")
+			)
+			(node
+				(ref "U105")
+				(pin "8")
+				(pinfunction "VCC_8")
+				(pintype "power_in")
+			)
+			(node
+				(ref "U106")
+				(pin "5")
+				(pinfunction "VCC_5")
+				(pintype "power_in")
 			)
 		)
 		(net
@@ -5205,21 +5325,6 @@
 		)
 		(net
 			(code "3")
-			(name "/MONITOR-P2/BAD_FAST")
-			(class "Default")
-			(node
-				(ref "U104")
-				(pin "2")
-				(pintype "output")
-			)
-			(node
-				(ref "U104")
-				(pin "3")
-				(pintype "input")
-			)
-		)
-		(net
-			(code "4")
 			(name "/MONITOR-P2/BASE")
 			(class "Default")
 			(node
@@ -5240,7 +5345,7 @@
 			)
 		)
 		(net
-			(code "5")
+			(code "4")
 			(name "/MONITOR-P2/DELAY_CAP")
 			(class "Default")
 			(node
@@ -5258,9 +5363,14 @@
 				(pin "1")
 				(pintype "passive")
 			)
+			(node
+				(ref "R125")
+				(pin "1")
+				(pintype "passive")
+			)
 		)
 		(net
-			(code "6")
+			(code "5")
 			(name "/MONITOR-P2/DELAY_IN")
 			(class "Default")
 			(node
@@ -5269,28 +5379,14 @@
 				(pintype "passive")
 			)
 			(node
-				(ref "U104")
-				(pin "5")
+				(ref "U106")
+				(pin "2")
+				(pinfunction "A_2")
 				(pintype "input")
 			)
 		)
 		(net
-			(code "7")
-			(name "/MONITOR-P2/DELAY_INV")
-			(class "Default")
-			(node
-				(ref "U104")
-				(pin "6")
-				(pintype "output")
-			)
-			(node
-				(ref "U104")
-				(pin "9")
-				(pintype "input")
-			)
-		)
-		(net
-			(code "8")
+			(code "6")
 			(name "/MONITOR-P2/GOOD_FAST")
 			(class "Default")
 			(node
@@ -5301,33 +5397,35 @@
 			(node
 				(ref "U104")
 				(pin "4")
+				(pinfunction "Y_4")
 				(pintype "output")
 			)
 			(node
 				(ref "U105")
-				(pin "1")
-				(pinfunction "~{R}_1")
+				(pin "6")
+				(pinfunction "CLR_N_6")
 				(pintype "input")
 			)
 		)
 		(net
-			(code "9")
+			(code "7")
 			(name "/MONITOR-P2/PERMIT_CLK")
 			(class "Default")
 			(node
-				(ref "U104")
-				(pin "8")
-				(pintype "output")
+				(ref "U105")
+				(pin "1")
+				(pinfunction "CLK_1")
+				(pintype "input")
 			)
 			(node
-				(ref "U105")
-				(pin "3")
-				(pinfunction "C_3")
-				(pintype "input")
+				(ref "U106")
+				(pin "4")
+				(pinfunction "Y_4")
+				(pintype "output")
 			)
 		)
 		(net
-			(code "10")
+			(code "8")
 			(name "/MONITOR-P2/PERMIT_Q")
 			(class "Default")
 			(node
@@ -5343,7 +5441,7 @@
 			)
 		)
 		(net
-			(code "11")
+			(code "9")
 			(name "/MONITOR-P2/PERMIT_SINK")
 			(class "Default")
 			(node
@@ -5359,7 +5457,7 @@
 			)
 		)
 		(net
-			(code "12")
+			(code "10")
 			(name "/MONITOR/OV")
 			(class "Default")
 			(node
@@ -5381,7 +5479,7 @@
 			)
 		)
 		(net
-			(code "13")
+			(code "11")
 			(name "/MONITOR/P5_SENSE")
 			(class "Default")
 			(node
@@ -5403,7 +5501,7 @@
 			)
 		)
 		(net
-			(code "14")
+			(code "12")
 			(name "/MONITOR/P5_TOP")
 			(class "Default")
 			(node
@@ -5418,7 +5516,7 @@
 			)
 		)
 		(net
-			(code "15")
+			(code "13")
 			(name "/MONITOR/P12_SENSE")
 			(class "Default")
 			(node
@@ -5440,7 +5538,7 @@
 			)
 		)
 		(net
-			(code "16")
+			(code "14")
 			(name "/MONITOR/REF")
 			(class "Default")
 			(node
@@ -5491,7 +5589,7 @@
 			)
 		)
 		(net
-			(code "17")
+			(code "15")
 			(name "/MONITOR/REF_D1")
 			(class "Default")
 			(node
@@ -5507,7 +5605,7 @@
 			)
 		)
 		(net
-			(code "18")
+			(code "16")
 			(name "/MONITOR/REF_D2")
 			(class "Default")
 			(node
@@ -5524,7 +5622,7 @@
 			)
 		)
 		(net
-			(code "19")
+			(code "17")
 			(name "/MONITOR/REF_D3")
 			(class "Default")
 			(node
@@ -5540,7 +5638,7 @@
 			)
 		)
 		(net
-			(code "20")
+			(code "18")
 			(name "/MONITOR/REF_SENSE")
 			(class "Default")
 			(node
@@ -5574,7 +5672,7 @@
 			)
 		)
 		(net
-			(code "21")
+			(code "19")
 			(name "/MONITOR/SENSE")
 			(class "Default")
 			(node
@@ -5607,7 +5705,7 @@
 			)
 		)
 		(net
-			(code "22")
+			(code "20")
 			(name "/MONITOR/UV")
 			(class "Default")
 			(node
@@ -5629,7 +5727,7 @@
 			)
 		)
 		(net
-			(code "23")
+			(code "21")
 			(name "AGND")
 			(class "Default")
 			(node
@@ -5674,6 +5772,11 @@
 			)
 			(node
 				(ref "C109")
+				(pin "2")
+				(pintype "passive")
+			)
+			(node
+				(ref "C110")
 				(pin "2")
 				(pintype "passive")
 			)
@@ -5730,6 +5833,11 @@
 				(pintype "passive")
 			)
 			(node
+				(ref "R125")
+				(pin "2")
+				(pintype "passive")
+			)
+			(node
 				(ref "U101")
 				(pin "4")
 				(pinfunction "GND_4")
@@ -5749,47 +5857,25 @@
 			)
 			(node
 				(ref "U104")
-				(pin "11")
-				(pintype "input")
-			)
-			(node
-				(ref "U104")
-				(pin "13")
-				(pintype "input")
-			)
-			(node
-				(ref "U104")
-				(pin "7")
-				(pinfunction "GND_7")
+				(pin "3")
+				(pinfunction "GND_3")
 				(pintype "power_in")
 			)
 			(node
 				(ref "U105")
-				(pin "11")
-				(pinfunction "C_11")
-				(pintype "input")
+				(pin "4")
+				(pinfunction "GND_4")
+				(pintype "power_in")
 			)
 			(node
-				(ref "U105")
-				(pin "12")
-				(pinfunction "D_12")
-				(pintype "input")
-			)
-			(node
-				(ref "U105")
-				(pin "13")
-				(pinfunction "~{R}_13")
-				(pintype "input")
-			)
-			(node
-				(ref "U105")
-				(pin "7")
-				(pinfunction "GND_7")
+				(ref "U106")
+				(pin "3")
+				(pinfunction "GND_3")
 				(pintype "power_in")
 			)
 		)
 		(net
-			(code "24")
+			(code "22")
 			(name "FAULT_N")
 			(class "Default")
 			(node
@@ -5811,12 +5897,13 @@
 			)
 			(node
 				(ref "U104")
-				(pin "1")
+				(pin "2")
+				(pinfunction "A_2")
 				(pintype "input")
 			)
 		)
 		(net
-			(code "25")
+			(code "23")
 			(name "VN")
 			(class "Default")
 			(node
@@ -5826,7 +5913,7 @@
 			)
 		)
 		(net
-			(code "26")
+			(code "24")
 			(name "unconnected-(U101-SENSE2-Pad3)")
 			(class "Default")
 			(node
@@ -5837,7 +5924,7 @@
 			)
 		)
 		(net
-			(code "27")
+			(code "25")
 			(name "unconnected-(U103-NC-Pad1)")
 			(class "Default")
 			(node
@@ -5848,7 +5935,7 @@
 			)
 		)
 		(net
-			(code "28")
+			(code "26")
 			(name "unconnected-(U103-NC-Pad3)")
 			(class "Default")
 			(node
@@ -5859,7 +5946,7 @@
 			)
 		)
 		(net
-			(code "29")
+			(code "27")
 			(name "unconnected-(U103-NC-Pad5)")
 			(class "Default")
 			(node
@@ -5870,56 +5957,36 @@
 			)
 		)
 		(net
+			(code "28")
+			(name "unconnected-(U104-NC-Pad1)")
+			(class "Default")
+			(node
+				(ref "U104")
+				(pin "1")
+				(pinfunction "NC_1")
+				(pintype "no_connect")
+			)
+		)
+		(net
+			(code "29")
+			(name "unconnected-(U105-Q_N-Pad3)")
+			(class "Default")
+			(node
+				(ref "U105")
+				(pin "3")
+				(pinfunction "Q_N_3")
+				(pintype "output+no_connect")
+			)
+		)
+		(net
 			(code "30")
-			(name "unconnected-(U104-Pad10)")
+			(name "unconnected-(U106-NC-Pad1)")
 			(class "Default")
 			(node
-				(ref "U104")
-				(pin "10")
-				(pintype "output+no_connect")
-			)
-		)
-		(net
-			(code "31")
-			(name "unconnected-(U104-Pad12)")
-			(class "Default")
-			(node
-				(ref "U104")
-				(pin "12")
-				(pintype "output+no_connect")
-			)
-		)
-		(net
-			(code "32")
-			(name "unconnected-(U105A-~{Q}-Pad6)")
-			(class "Default")
-			(node
-				(ref "U105")
-				(pin "6")
-				(pinfunction "~{Q}_6")
-				(pintype "output+no_connect")
-			)
-		)
-		(net
-			(code "33")
-			(name "unconnected-(U105B-Q-Pad9)")
-			(class "Default")
-			(node
-				(ref "U105")
-				(pin "9")
-				(pinfunction "Q_9")
-				(pintype "output+no_connect")
-			)
-		)
-		(net
-			(code "34")
-			(name "unconnected-(U105B-~{Q}-Pad8)")
-			(class "Default")
-			(node
-				(ref "U105")
-				(pin "8")
-				(pinfunction "~{Q}_8")
-				(pintype "output+no_connect")
+				(ref "U106")
+				(pin "1")
+				(pinfunction "NC_1")
+				(pintype "no_connect")
 			)
 		)
 	)

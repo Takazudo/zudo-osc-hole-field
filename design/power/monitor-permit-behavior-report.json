@@ -1,8 +1,8 @@
 {
   "status": "CONDITIONAL IDEAL BEHAVIOR DIAGNOSTICS; NOT QUALIFICATION",
   "qualification_accepted": false,
-  "evaluated_input_sha256": "cdb1fae724f580322baa8a83d3469bbd6072f55810dd575d4b88b80c71abf89c",
-  "model_sha256": "b0ba2affb7209a63da28bb020ca0654ae27a5d0c4e3e630a7f66036235c88bf6",
+  "evaluated_input_sha256": "65e6a6ebb47ea62e478bbf454fcf40a204938bf5e1d7c0e51ff55ebb8d3b4570",
+  "model_sha256": "c164e46142c12cb28003f796a6883d5215b58fe346b1fa9f11f41f344b2cfcb6",
   "model_limits": [
     "Ideal monitor truth values, no comparator/reference/supervisor dynamics",
     "GOOD_FAST low pulse durations are forced after the monitor; they are not external negative-fault durations",
@@ -10,9 +10,11 @@
     "No transistor model or guaranteed physical output release",
     "Actual partial-power and retained-charge behavior remain UNKNOWN"
   ],
-  "nominal_rc_s": 0.0001,
-  "ideal_charge_to_clock_s": 7.339691750802005e-05,
-  "ideal_discharge_to_clock_low_s": 9.882642314992443e-05,
+  "nominal_rc_s": 9.09090909090909e-05,
+  "driven_dc_gain": 0.9090909090909091,
+  "open_drive_nominal_bleed_tau_s": 0.001,
+  "ideal_charge_to_clock_s": 7.714837121821276e-05,
+  "ideal_discharge_to_clock_low_s": 8.11776410631745e-05,
   "cases": {
     "arrival:+12V,VN,+5V": {
       "rail_order": [
@@ -68,7 +70,7 @@
           "duration_s": 0.02,
           "good": true,
           "q": true,
-          "capacitor_fraction": 1.0,
+          "capacitor_fraction": 0.9090909090909091,
           "clock": true
         }
       ],
@@ -115,28 +117,28 @@
           "duration_s": 0.02,
           "good": true,
           "q": true,
-          "capacitor_fraction": 1.0,
+          "capacitor_fraction": 0.9090909090909091,
           "clock": true
         },
         {
           "duration_s": 0.02,
           "good": false,
           "q": false,
-          "capacitor_fraction": 1.3838965267367376e-87,
+          "capacitor_fraction": 2.593112126512258e-96,
           "clock": false
         },
         {
           "duration_s": 0.02,
           "good": false,
           "q": false,
-          "capacitor_fraction": 1.9151695967140057e-174,
+          "capacitor_fraction": 7.396653550731417e-192,
           "clock": false
         },
         {
           "duration_s": 0.02,
           "good": false,
           "q": false,
-          "capacitor_fraction": 2.6503965530043108e-261,
+          "capacitor_fraction": 2.1098387219812748e-287,
           "clock": false
         }
       ],
@@ -197,7 +199,7 @@
           "duration_s": 0.02,
           "good": true,
           "q": true,
-          "capacitor_fraction": 1.0,
+          "capacitor_fraction": 0.9090909090909091,
           "clock": true
         }
       ],
@@ -244,28 +246,28 @@
           "duration_s": 0.02,
           "good": true,
           "q": true,
-          "capacitor_fraction": 1.0,
+          "capacitor_fraction": 0.9090909090909091,
           "clock": true
         },
         {
           "duration_s": 0.02,
           "good": false,
           "q": false,
-          "capacitor_fraction": 1.3838965267367376e-87,
+          "capacitor_fraction": 2.593112126512258e-96,
           "clock": false
         },
         {
           "duration_s": 0.02,
           "good": false,
           "q": false,
-          "capacitor_fraction": 1.9151695967140057e-174,
+          "capacitor_fraction": 7.396653550731417e-192,
           "clock": false
         },
         {
           "duration_s": 0.02,
           "good": false,
           "q": false,
-          "capacitor_fraction": 2.6503965530043108e-261,
+          "capacitor_fraction": 2.1098387219812748e-287,
           "clock": false
         }
       ],
@@ -326,7 +328,7 @@
           "duration_s": 0.02,
           "good": true,
           "q": true,
-          "capacitor_fraction": 1.0,
+          "capacitor_fraction": 0.9090909090909091,
           "clock": true
         }
       ],
@@ -373,28 +375,28 @@
           "duration_s": 0.02,
           "good": true,
           "q": true,
-          "capacitor_fraction": 1.0,
+          "capacitor_fraction": 0.9090909090909091,
           "clock": true
         },
         {
           "duration_s": 0.02,
           "good": false,
           "q": false,
-          "capacitor_fraction": 1.3838965267367376e-87,
+          "capacitor_fraction": 2.593112126512258e-96,
           "clock": false
         },
         {
           "duration_s": 0.02,
           "good": false,
           "q": false,
-          "capacitor_fraction": 1.9151695967140057e-174,
+          "capacitor_fraction": 7.396653550731417e-192,
           "clock": false
         },
         {
           "duration_s": 0.02,
           "good": false,
           "q": false,
-          "capacitor_fraction": 2.6503965530043108e-261,
+          "capacitor_fraction": 2.1098387219812748e-287,
           "clock": false
         }
       ],
@@ -455,7 +457,7 @@
           "duration_s": 0.02,
           "good": true,
           "q": true,
-          "capacitor_fraction": 1.0,
+          "capacitor_fraction": 0.9090909090909091,
           "clock": true
         }
       ],
@@ -502,28 +504,28 @@
           "duration_s": 0.02,
           "good": true,
           "q": true,
-          "capacitor_fraction": 1.0,
+          "capacitor_fraction": 0.9090909090909091,
           "clock": true
         },
         {
           "duration_s": 0.02,
           "good": false,
           "q": false,
-          "capacitor_fraction": 1.3838965267367376e-87,
+          "capacitor_fraction": 2.593112126512258e-96,
           "clock": false
         },
         {
           "duration_s": 0.02,
           "good": false,
           "q": false,
-          "capacitor_fraction": 1.9151695967140057e-174,
+          "capacitor_fraction": 7.396653550731417e-192,
           "clock": false
         },
         {
           "duration_s": 0.02,
           "good": false,
           "q": false,
-          "capacitor_fraction": 2.6503965530043108e-261,
+          "capacitor_fraction": 2.1098387219812748e-287,
           "clock": false
         }
       ],
@@ -584,7 +586,7 @@
           "duration_s": 0.02,
           "good": true,
           "q": true,
-          "capacitor_fraction": 1.0,
+          "capacitor_fraction": 0.9090909090909091,
           "clock": true
         }
       ],
@@ -631,28 +633,28 @@
           "duration_s": 0.02,
           "good": true,
           "q": true,
-          "capacitor_fraction": 1.0,
+          "capacitor_fraction": 0.9090909090909091,
           "clock": true
         },
         {
           "duration_s": 0.02,
           "good": false,
           "q": false,
-          "capacitor_fraction": 1.3838965267367376e-87,
+          "capacitor_fraction": 2.593112126512258e-96,
           "clock": false
         },
         {
           "duration_s": 0.02,
           "good": false,
           "q": false,
-          "capacitor_fraction": 1.9151695967140057e-174,
+          "capacitor_fraction": 7.396653550731417e-192,
           "clock": false
         },
         {
           "duration_s": 0.02,
           "good": false,
           "q": false,
-          "capacitor_fraction": 2.6503965530043108e-261,
+          "capacitor_fraction": 2.1098387219812748e-287,
           "clock": false
         }
       ],
@@ -713,7 +715,7 @@
           "duration_s": 0.02,
           "good": true,
           "q": true,
-          "capacitor_fraction": 1.0,
+          "capacitor_fraction": 0.9090909090909091,
           "clock": true
         }
       ],
@@ -760,28 +762,28 @@
           "duration_s": 0.02,
           "good": true,
           "q": true,
-          "capacitor_fraction": 1.0,
+          "capacitor_fraction": 0.9090909090909091,
           "clock": true
         },
         {
           "duration_s": 0.02,
           "good": false,
           "q": false,
-          "capacitor_fraction": 1.3838965267367376e-87,
+          "capacitor_fraction": 2.593112126512258e-96,
           "clock": false
         },
         {
           "duration_s": 0.02,
           "good": false,
           "q": false,
-          "capacitor_fraction": 1.9151695967140057e-174,
+          "capacitor_fraction": 7.396653550731417e-192,
           "clock": false
         },
         {
           "duration_s": 0.02,
           "good": false,
           "q": false,
-          "capacitor_fraction": 2.6503965530043108e-261,
+          "capacitor_fraction": 2.1098387219812748e-287,
           "clock": false
         }
       ],
@@ -800,21 +802,21 @@
         "duration_s": 0.02,
         "good": true,
         "q": true,
-        "capacitor_fraction": 1.0,
+        "capacitor_fraction": 0.9090909090909091,
         "clock": true
       },
       {
-        "duration_s": 1e-06,
+        "duration_s": 9.09090909090909e-07,
         "good": false,
         "q": false,
-        "capacitor_fraction": 0.9900498337491681,
+        "capacitor_fraction": 0.9000453034083347,
         "clock": true
       },
       {
         "duration_s": 0.02,
         "good": true,
         "q": false,
-        "capacitor_fraction": 1.0,
+        "capacitor_fraction": 0.9090909090909091,
         "clock": true
       }
     ],
@@ -830,21 +832,21 @@
         "duration_s": 0.02,
         "good": true,
         "q": true,
-        "capacitor_fraction": 1.0,
+        "capacitor_fraction": 0.9090909090909091,
         "clock": true
       },
       {
-        "duration_s": 0.001,
+        "duration_s": 0.0009090909090909091,
         "good": false,
         "q": false,
-        "capacitor_fraction": 4.5399929762484854e-05,
+        "capacitor_fraction": 4.1272663420440776e-05,
         "clock": false
       },
       {
         "duration_s": 0.02,
         "good": true,
         "q": true,
-        "capacitor_fraction": 1.0,
+        "capacitor_fraction": 0.9090909090909091,
         "clock": true
       }
     ],
@@ -860,7 +862,7 @@
         "duration_s": 0.02,
         "good": true,
         "q": true,
-        "capacitor_fraction": 1.0,
+        "capacitor_fraction": 0.9090909090909091,
         "clock": true
       },
       {
@@ -888,13 +890,14 @@
     "fault_pullup_low_A": 0.0005,
     "base_drive_zero_junction_drop_A": 0.0005,
     "dummy_load_zero_saturation_drop_A": 0.0012,
-    "timing_charge_C": 5e-08,
-    "nominal_5V_bypass_charge_C": 2.4999999999999998e-06,
+    "timing_charge_C": 4.545454545454545e-08,
+    "timing_bleed_dc_A": 4.545454545454545e-05,
+    "nominal_5V_bypass_charge_C": 3e-06,
     "nominal_reference_bypass_charge_C": 9.899999999999998e-07,
     "unaccounted": [
       "All active-device quiescent and dynamic supply currents",
       "Reference input current includes its output load plus regulator quiescent current; no free reference supply",
-      "HC slow-input dynamic current, reference startup and both retained RC clamp-return paths",
+      "LVC slow-input dynamic current, reference startup and retained-charge return paths",
       "Tolerance, temperature, effective capacitance and leakage",
       "Actual isolation population and driver loads"
     ],

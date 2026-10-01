@@ -44,60 +44,71 @@
       "application_qualified": false
     },
     "U104": {
-      "mpn": "SN74HC14DR",
-      "fact_id": "fact-schmitt-quiescent-table-max",
-      "table_max_A": 2e-05,
+      "mpn": "SN74LVC1G17DBVR",
+      "fact_id": "fact-monitor-sn74lvc1g17dbvr-quiescent-table-max",
+      "table_max_A": 1e-05,
       "units_per_package": 1,
-      "package_table_sum_A": 2e-05,
-      "conditions": "SN74, TA=-40..85C, VCC=6V, VI=VCC or 0, IO=0. No maximum slow-input or switching-current claim at the candidate 5V supply.",
-      "locator": "src-schmitt-datasheet: printed p5 section5.5 ICC row, SN74 column",
+      "package_table_sum_A": 1e-05,
+      "conditions": "VCC1.65..5.5V, VI5.5V orGND, IO0, TA-40..125C. Loaded, slow-input and switching current remain separate.",
+      "locator": "src-monitor-sn74lvc1g17dbvr-datasheet: printed p6 ICC row",
       "application_qualified": false
     },
     "U105": {
-      "mpn": "SN74HC74DR",
-      "fact_id": "fact-flipflop-quiescent-table-max",
-      "table_max_A": 4e-05,
+      "mpn": "SN74LVC1G74DCTR",
+      "fact_id": "fact-monitor-sn74lvc1g74dctr-quiescent-table-max",
+      "table_max_A": 1e-05,
       "units_per_package": 1,
-      "package_table_sum_A": 4e-05,
-      "conditions": "SN74, TA=-40..85C, VCC=6V, VI=VCC or 0, IO=0. No maximum loaded-output or switching-current claim at the candidate 5V supply.",
-      "locator": "src-flipflop-datasheet: printed p5 section6.5 ICC row, SN74 column",
+      "package_table_sum_A": 1e-05,
+      "conditions": "VCC1.65..5.5V, VI5.5V orGND, IO0, TA-40..125C. Loaded, slow-input and switching current remain separate.",
+      "locator": "src-monitor-sn74lvc1g74dctr-datasheet: printed p7 ICC row",
+      "application_qualified": false
+    },
+    "U106": {
+      "mpn": "SN74LVC1G17DBVR",
+      "fact_id": "fact-monitor-sn74lvc1g17dbvr-quiescent-table-max",
+      "table_max_A": 1e-05,
+      "units_per_package": 1,
+      "package_table_sum_A": 1e-05,
+      "conditions": "VCC1.65..5.5V, VI5.5V orGND, IO0, TA-40..125C. Loaded, slow-input and switching current remain separate.",
+      "locator": "src-monitor-sn74lvc1g17dbvr-datasheet: printed p6 ICC row",
       "application_qualified": false
     }
   },
-  "conditional_active_quiescent_sum_A": 0.00024,
+  "conditional_active_quiescent_sum_A": 0.00021,
+  "timing_bleed_conditional_dc_A": 4.823255511960746e-05,
   "states": {
     "fault_asserted": {
       "conditional_dc_A": {
-        "+5V": 0.006150027400084144,
+        "+5V": 0.006120027400084145,
         "+12V": 0.0008349201331657472,
         "-12V": 0.00030853006429201816
       },
       "unallocated_auxiliary_A": {
-        "+5V": 0.013849972599915855,
+        "+5V": 0.013879972599915856,
         "+12V": 0.019165079866834252,
         "-12V": 0.019691469935707983
       }
     },
     "permit_enabled": {
       "conditional_dc_A": {
-        "+5V": 0.006150027400084144,
+        "+5V": 0.006168259955203753,
         "+12V": 0.0021082595883233843,
         "-12V": 0.00030853006429201816
       },
       "unallocated_auxiliary_A": {
-        "+5V": 0.013849972599915855,
+        "+5V": 0.013831740044796249,
         "+12V": 0.017891740411676616,
         "-12V": 0.019691469935707983
       }
     },
     "both_paths_conservative_dc_screen": {
       "conditional_dc_A": {
-        "+5V": 0.006680585506399827,
+        "+5V": 0.006698818061519435,
         "+12V": 0.0021082595883233843,
         "-12V": 0.00030853006429201816
       },
       "unallocated_auxiliary_A": {
-        "+5V": 0.013319414493600173,
+        "+5V": 0.013301181938480566,
         "+12V": 0.017891740411676616,
         "-12V": 0.019691469935707983
       }
@@ -116,24 +127,19 @@
     "Zero input and output/off-state leakage, ideal logic voltages within supply rails, passive resistor network and zero semiconductor drops for load-current bounds.",
     "25C resistance reference and -40..125C resistor/TCR envelope are analysis conditions, not installed thermal qualification.",
     "Source input current equals reference output demand plus reference IQ; no separate free reference supply.",
-    "Both-path DC screen is not a transient maximum: HC slow-input/switching current, cap charging and two RC clamp-return paths remain unbounded.",
+    "U106 input settles near4.545V at5V supply through the bleed divider: its sustained HIGH is not the ICC rail-level test condition. Additional steady input-stage current is unbounded; the DeltaICC row atVCC-0.6V is not extrapolated.",
+    "Both-path DC screen is not a transient maximum: LVC slow-input/switching current, cap charging and retained-charge return paths remain unbounded.",
     "Actual isolation loads, discharge circuits and remaining protection auxiliaries must share the original 20mA per-rail allowance.",
     "Ground-loss, partial-power/backfeed, startup, thermal and physical qualification remain open."
   ],
   "input_sha256": {
-    ".claude/skills/component-monitor-permit-candidates/facts.json": "24cba1a2dee656677022d1ef95682f407d247405eb96d9c609032eda0fde20d3",
-    ".claude/skills/component-monitor-permit-candidates/manifest.json": "2089b28d887543d1172aa8fdf485432f5d54ac10c267bcf2b5dc4f670d814898",
-    ".claude/skills/component-monitor-permit-candidates/sources.json": "023186339ee8af6fdc9c4efdcb80c5a7f03c2e61f81f5f3d1bf690afc5f533dc",
-    ".claude/skills/component-ti-sn74hc14dr/facts.json": "49d8cd37cbe3b5e57ed1038e528e013ad07bd0558a6c10a7dab612136e535cd7",
-    ".claude/skills/component-ti-sn74hc14dr/manifest.json": "1cee3143639acddeb12148a704881166b99779fe53bf747abe3e7ae9532d6c12",
-    ".claude/skills/component-ti-sn74hc14dr/sources.json": "118e61bceb7128c89820a56efe9cc89d60628f4ddf2560cdc88f008b6f175ba8",
-    ".claude/skills/component-ti-sn74hc74dr/facts.json": "a51e77c2bfeb2a8da31d1ac9af7648e7d158c4cc8572abccb51ebc5a7c2f4850",
-    ".claude/skills/component-ti-sn74hc74dr/manifest.json": "7996352134b1d33f105132b562c1d4a3140ff18a2b2a07653dae75ca9f3c9726",
-    ".claude/skills/component-ti-sn74hc74dr/sources.json": "d2e84d1e29f5540956f36f06c1001499960104186f3f89ee579f8a4c66980f28",
-    "design/power/monitor-permit-draft.json": "6680ba13b0a5cae3ce9fc3355564c0c0163c5123c2bf95bebf6e2de7f417c053",
-    "design/power/monitor-permit-parts.json": "464dbd6800724eccb82a49ff495b2da585b4d5828fd27a17ef41a96698f94871",
+    ".claude/skills/component-monitor-permit-candidates/facts.json": "52cbedf855e877bc262593fb6cb90614c1367b1847d832eda04c3378a67a0006",
+    ".claude/skills/component-monitor-permit-candidates/manifest.json": "61ae9e0473b164582e33405ee270708fa8982fa49576883d04a3d8216c8db3de",
+    ".claude/skills/component-monitor-permit-candidates/sources.json": "39bfb6b2111ad314fd7276c730053876701ee490c110ab0f33f2d329ed74dca9",
+    "design/power/monitor-permit-draft.json": "953a938e7b700e64790d22acacb44fa1401f1729805be605a43ac709bd8b504a",
+    "design/power/monitor-permit-parts.json": "1fe624d54d87dc7c67e41561a7650bf0173b3a9ea33992b40c8ab1ed5460fa3a",
     "design/power/supply-architecture-input.json": "a8a4e92ac4c1d7de5c16b6982fba7d5ab60ab13753b12eabfa23fc75da98acc4",
-    "scripts/checks/monitor_permit_behavior.py": "b0ba2affb7209a63da28bb020ca0654ae27a5d0c4e3e630a7f66036235c88bf6",
-    "scripts/checks/monitor_permit_current.py": "fe59edf2330db684a4c556db66f863b326c85442a5ee67c9e407b58024a412b0"
+    "scripts/checks/monitor_permit_behavior.py": "c164e46142c12cb28003f796a6883d5215b58fe346b1fa9f11f41f344b2cfcb6",
+    "scripts/checks/monitor_permit_current.py": "e79ac96f7444fe12eee0bc83b9eace147a5924b06f9dd443013e5d18ea0201dd"
   }
 }

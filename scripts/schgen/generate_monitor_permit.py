@@ -134,7 +134,7 @@ def run(check=False):
                 raise ValueError('monitor/permit schematic drift: '+name)
         else:
             path.parent.mkdir(parents=True,exist_ok=True); path.write_text(text)
-    print('Generated isolated six-package monitor/permit draft; qualification remains OPEN')
+    print('Generated isolated monitor/permit draft; qualification remains OPEN')
 
 
 if __name__=='__main__':

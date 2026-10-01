@@ -5,13 +5,17 @@ The isolated candidate now has a conditional DC allocation screen in
 draft. The screen does not qualify total supply current or change the original
 20 mA per-rail allowance for all protection auxiliaries.
 
-Five primary-source current rows are retained in the owner bundles: TPS37044
-15 µA, TLV9022 35 µA per comparator (70 µA for both), REF3433 95 µA, SN74HC14
-20 µA and SN74HC74 40 µA. Their sum is 240 µA, but the respective source
-conditions differ from the complete candidate. In particular, the logic rows
-use 6 V, rail-level inputs and unloaded outputs; the comparator row specifies
-output low and input common mode at its negative supply; and the reference row specifies zero output load and 10 µF output
-capacitance. Their application here remains an explicit assumption.
+Six package-current rows are retained: TPS37044 15 µA, both TLV9022
+comparators 70 µA, REF3433 95 µA, two SN74LVC1G17 packages at 10 µA each and
+one SN74LVC1G74 at 10 µA. Their sum is 210 µA. LVC rows cover 1.65…5.5 V
+with rail-level inputs and unloaded outputs; they do not bound slow-input or
+switching current. The comparator row specifies output low and common mode at
+its negative supply; the reference row specifies zero output load and 10 µF
+output capacitance. Application remains conditional. U106 settles at approximately 4.545 V with
+a 5 V supply because of R125. Even this steady HIGH differs from the ICC
+input condition, so additional sustained input-stage current is an open DC
+budget gate. The 500 µA ΔICC row at VCC−0.6 V is not extrapolated to this
+voltage. The 210 µA sum is only a conditional table-row assumption.
 
 The resistor screen uses the exact RT and RC families' separate tolerance/TCR
 limits and a stated 25 °C reference / −40…125 °C analysis envelope. It assumes
@@ -25,23 +29,23 @@ R109..R112, omitting the bypassed bottom resistor. That gives 4.545 mA
 conditional reference output demand. This load is charged
 **once to +5 V**, in addition to the reference's quiescent current. Base-drive
 current already includes current subsequently flowing through the base bleed;
-the bleed is not counted again as a separate +5 V feed.
+the base bleed is not counted again as a separate +5 V feed. The new timing
+bleed R125 is separately counted through R120 in permit-enabled and conservative
+states (nominally 45.45 µA); it is distinct from the transistor base bleed.
 
 With both the fault pullup and base drive counted simultaneously, the conditional
-DC screen is 6.681 mA on +5 V, 2.108 mA on +12 V and 0.309 mA on −12 V. The
-remaining allocated currents are 13.319, 17.892 and 19.691 mA respectively.
+DC screen is 6.699 mA on +5 V, 2.108 mA on +12 V and 0.309 mA on −12 V. The
+remaining allocated currents are 13.301, 17.892 and 19.691 mA respectively.
 These are conditional allocation balances, not qualified physical margins.
 The separate stable fault and permit-enabled states are also reported.
 
-Still unbounded: HC slow-input/switching current; startup and capacitor charging;
-reference slow-slew behavior; both retained RC clamp-return paths; negative-input
+Still unbounded: LVC slow-input/switching current; startup and capacitor charging;
+reference slow-slew behavior; retained-charge return paths; negative-input
 leakage; actual isolation/discharge circuits; and partial-power/ground-loss
 behavior. Those loads must fit inside the existing allowance. No allowance is
 removed from the master budget, and no rail/current limit is increased.
 
 
-Verification: six focused accounting/topology regression tests, component and
-documentation checks, fresh native monitor ERC/pin checks and guarded aggregate
-regeneration pass. Independent primary-source/current-path review completed;
-its missing-common-mode, independent-tolerance-validation and leakage-scope
-findings were corrected. Installed/dynamic qualification remains NOT RUN.
+Verification: revised current accounting and topology tests pass. Source-table
+applicability, dynamic and installed qualification remain open; final aggregate
+and documentation verification are pending for this revision.

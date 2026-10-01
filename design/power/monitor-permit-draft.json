@@ -58,48 +58,47 @@
     },
     {
       "ref": "U104",
-      "mpn": "SN74HC14DR",
+      "mpn": "SN74LVC1G17DBVR",
       "pins": {
-        "1": "FAULT_N",
-        "2": "BAD_FAST",
-        "3": "BAD_FAST",
+        "1": null,
+        "2": "FAULT_N",
+        "3": "AGND",
         "4": "GOOD_FAST",
-        "5": "DELAY_IN",
-        "6": "DELAY_INV",
-        "7": "AGND",
-        "8": "PERMIT_CLK",
-        "9": "DELAY_INV",
-        "10": null,
-        "11": "AGND",
-        "12": null,
-        "13": "AGND",
-        "14": "+5V"
+        "5": "+5V"
       },
       "page": 2,
-      "role": "Fast asynchronous reset and delayed clock conditioning",
+      "role": "Noninverting asynchronous reset conditioner",
       "kind": "ic"
     },
     {
       "ref": "U105",
-      "mpn": "SN74HC74DR",
+      "mpn": "SN74LVC1G74DCTR",
       "pins": {
-        "1": "GOOD_FAST",
+        "1": "PERMIT_CLK",
         "2": "+5V",
-        "3": "PERMIT_CLK",
-        "4": "+5V",
+        "3": null,
+        "4": "AGND",
         "5": "PERMIT_Q",
-        "6": null,
-        "7": "AGND",
-        "8": null,
-        "9": null,
-        "10": "+5V",
-        "11": "AGND",
-        "12": "AGND",
-        "13": "AGND",
-        "14": "+5V"
+        "6": "GOOD_FAST",
+        "7": "+5V",
+        "8": "+5V"
       },
       "page": 2,
       "role": "Fault clear / delayed re-arm; raw short GOOD_FAST pulses may latch off",
+      "kind": "ic"
+    },
+    {
+      "ref": "U106",
+      "mpn": "SN74LVC1G17DBVR",
+      "pins": {
+        "1": null,
+        "2": "DELAY_IN",
+        "3": "AGND",
+        "4": "PERMIT_CLK",
+        "5": "+5V"
+      },
+      "page": 2,
+      "role": "Noninverting delayed clock conditioner",
       "kind": "ic"
     },
     {
@@ -509,6 +508,30 @@
       "role": "Timing capacitor; retained exact 10nF +/-5% evidence",
       "kind": "capacitor",
       "value": 1e-08
+    },
+    {
+      "ref": "C110",
+      "mpn": "GRM188R71H104KA93D",
+      "pins": {
+        "1": "+5V",
+        "2": "AGND"
+      },
+      "page": 2,
+      "role": "Nominal bypass candidate; manufacturer effective-capacitance evidence unavailable",
+      "kind": "capacitor",
+      "value": 1e-07
+    },
+    {
+      "ref": "R125",
+      "mpn": "RC0805FR-07100KL",
+      "pins": {
+        "1": "DELAY_CAP",
+        "2": "AGND"
+      },
+      "page": 2,
+      "role": "Passive timing-capacitor bleed; does not guarantee power-off restart",
+      "kind": "resistor",
+      "value": 100000
     }
   ],
   "ideal_test_supply": {
@@ -529,20 +552,20 @@
     "FAULT_N"
   ],
   "model_conditions": {
-    "temperature_scope": "SN74 logic source range -40..85C; not a change to the instrument environmental requirements",
+    "temperature_scope": "Exact LVC DBV/DCT source range -40..125C; instrument requirements unchanged",
     "supervisor_reset_s": 0.01,
     "supervisor_startup_s": 0.001,
     "supervisor_startup_scope": "NOMINAL illustration, not a maximum",
     "reference_rise_s": 0.0025,
     "reference_rise_scope": "Prescribed model trajectory, not a manufacturer dynamic guarantee",
-    "logic_delay_s": 3.1e-08,
-    "latch_reset_s": 5.8e-08,
-    "latch_clock_s": 4.4e-08,
-    "logic_scope": "Illustrative use of 4.5V/50pF source-table values at nominal5V; actual supply/load/edge applicability remains OPEN",
+    "logic_delay_s": 6e-09,
+    "latch_reset_s": 6.1e-09,
+    "latch_clock_s": 6.1e-09,
+    "logic_scope": "5V +/-0.5V, full-temperature source tables; actual edges/load and output slew remain unqualified",
     "schmitt_high_fraction": 0.52,
     "schmitt_low_fraction": 0.37222222222222223,
-    "schmitt_scope": "Illustrative compatible threshold pair within4.5V source ranges; not a full-temperature5V guarantee",
-    "control_valid_min_V": 2.0,
+    "schmitt_scope": "Illustrative threshold fractions only; discrete4.5V/5.5V ranges do not establish interpolation or a5V guarantee",
+    "control_valid_min_V": 1.65,
     "undefined_control_output": "UNKNOWN, never forced LOW by the model"
   },
   "open_obligations": [
@@ -552,12 +575,15 @@
     "TPS aggregate FAULT_N loading is not demonstrated to match the10pF source delay condition.",
     "TLV maximum propagation and negative-input cold leakage remain unestablished.",
     "REF startup, slow-slew overshoot, shutdown, retained charge and effective bypass remain unqualified.",
-    "HC partial-power states, actual supply/load/transition timing and reset-removal behavior remain open.",
+    "LVC partial-power states, actual supply/load/transition timing and reset-removal behavior remain open.",
     "The passive NPN base bleed does not reproduce the source switching test; full-temperature sink release is unbounded.",
     "A short raw GOOD_FAST pulse can clear Q without resetting the RC clock; automatic re-arm is not guaranteed.",
     "Mechanical, thermal, as-built and bench qualification NOT RUN.",
     "Negative-fault assertion adds supervisor detection latency; complete cold-collapse release timing remains unbounded.",
     "Nominal recovery overdrive is below the TPS reset-delay 10% condition; no actual 7..13ms interval is established.",
-    "Both TLV off-state output drain leakages now load REF_SENSE; no full-temperature maximum at this voltage is retained."
+    "Both TLV off-state output drain leakages now load REF_SENSE; no full-temperature maximum at this voltage is retained.",
+    "LVC Ioff is conditioned at zero supply; no intermediate-power default LOW is established.",
+    "R125 bleeds stored charge only under stated leakage assumptions; no minimum off interval or automatic restart guarantee.",
+    "U106 input settles at a divided HIGH (nominal4.545V at5V), outside the ICC rail-level test condition; additional steady input-stage current is unbounded."
   ]
 }

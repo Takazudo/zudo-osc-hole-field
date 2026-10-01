@@ -10,7 +10,7 @@ class MonitorRCInputTests(unittest.TestCase):
     def test_source_capacitance_and_case_initial_conditions(self):
         parameters,_=model.source_parameters()
         self.assertAlmostEqual(parameters['cap'],1e-8)
-        self.assertAlmostEqual(parameters['pin_cap'],1e-11)
+        self.assertAlmostEqual(parameters['pin_cap']/1e-12,4.5)
         for case in model.cases(parameters):
             deck=model.deck(case,parameters,model.STEPS[0])
             self.assertIn(' uic\n',deck)
@@ -61,3 +61,20 @@ class MonitorRCInputTests(unittest.TestCase):
             time=i*model.STEPS[0];voltage=5*math.exp(-time/5e-5)
             rows.append((time,voltage,0,2*voltage/10000,0))
         with self.assertRaisesRegex(ValueError,'Ohm law'):model.inspect(case,p,rows,model.STEPS[0])
+
+    def test_open_drive_is_disconnected_and_keeps_bleeder(self):
+        p,_=model.source_parameters()
+        case=next(c for c in model.cases(p) if c['name']=='open_drive_zero_pin_c')
+        text=model.deck(case,p,model.STEPS[0])
+        self.assertIn('R125 delay_cap 0 100000',text)
+        self.assertIn('Vdrive floating good 0',text)
+        self.assertNotIn('Vdrive good 0',text)
+        self.assertNotIn('Vclamp',text)
+
+    def test_nonzero_open_drive_current_is_rejected(self):
+        p,_=model.source_parameters()
+        case=next(c for c in model.cases(p) if c['name']=='open_drive_zero_pin_c')
+        step=model.STEPS[0]
+        rows=[(i*step,5*math.exp(-i*step/.001),5*math.exp(-i*step/.001),1e-12)
+              for i in range(10001)]
+        with self.assertRaisesRegex(ValueError,'open drive'):model.inspect(case,p,rows,step)

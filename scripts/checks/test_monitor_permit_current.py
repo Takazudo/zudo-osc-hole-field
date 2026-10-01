@@ -67,3 +67,16 @@ class MonitorCurrentTests(unittest.TestCase):
         part['tolerance_fraction']=2
         part['tcr_abs_per_C']=0.02
         with self.assertRaisesRegex(ValueError,'independent resistor'): self.build()
+
+    def test_both_buffers_and_bleeder_are_counted(self):
+        report=self.build()
+        self.assertEqual(set(self.current),{'U101','U102','U103','U104','U105','U106'})
+        self.assertAlmostEqual(report['conditional_active_quiescent_sum_A']/1e-6,210)
+        original=report['states']['permit_enabled']['conditional_dc_A']['+5V']
+        # Change only R125 to the already cataloged 14k identity.
+        part=next(p for p in self.spec['components'] if p['ref']=='R125')
+        part.update(value=14000,mpn='RT0603BRD0714KL')
+        changed=self.build()
+        delta=changed['states']['permit_enabled']['conditional_dc_A']['+5V']-original
+        self.assertAlmostEqual(delta,changed['timing_bleed_conditional_dc_A']-report['timing_bleed_conditional_dc_A'])
+        self.assertGreater(delta,0)

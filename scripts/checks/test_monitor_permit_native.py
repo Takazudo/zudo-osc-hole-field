@@ -15,8 +15,8 @@ class MonitorPermitNativeTests(unittest.TestCase):
 
     def test_all_physical_candidate_pins_and_identities_match(self):
         result = inspect(self.erc,self.netlist)
-        self.assertEqual(result['physical_candidate_components'],39)
-        self.assertEqual(result['checked_physical_and_test_pins'],119)
+        self.assertEqual(result['physical_candidate_components'],42)
+        self.assertEqual(result['checked_physical_and_test_pins'],113)
         self.assertEqual(result['erc_errors'],0)
         self.assertIn('Nonphysical',result['test_source_export_scope'])
 
@@ -58,8 +58,8 @@ class MonitorPermitNativeTests(unittest.TestCase):
     def test_native_inputs_cover_consumed_existing_owner_mapping(self):
         from scripts.checks.monitor_permit_native import inputs
         paths=inputs()
-        self.assertIn('.claude/skills/component-ti-sn74hc14dr/pin-map.json',paths)
-        self.assertIn('.claude/skills/component-ti-sn74hc74dr/manifest.json',paths)
+        self.assertIn('.claude/skills/component-nexperia-mmbt3904-215/pin-map.json',paths)
+        self.assertIn('.claude/skills/component-passives-family/manifest.json',paths)
 
 
 if __name__=='__main__':

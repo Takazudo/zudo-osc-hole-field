@@ -67,3 +67,11 @@ class MonitorPermitBehaviorTests(unittest.TestCase):
         changed=copy.deepcopy(self.spec)
         next(p for p in changed['components'] if p['ref']=='C109')['value'] *= 2
         self.assertNotEqual(self.report['evaluated_input_sha256'],model.build(changed)['evaluated_input_sha256'])
+
+    def test_bleeder_changes_gain_and_open_drive_decay(self):
+        self.assertAlmostEqual(self.report['driven_dc_gain'],10/11)
+        self.assertAlmostEqual(self.report['nominal_rc_s']/1e-6,1000/11)
+        self.assertAlmostEqual(self.report['open_drive_nominal_bleed_tau_s']/1e-3,1)
+        changed=copy.deepcopy(self.spec)
+        next(p for p in changed['components'] if p['ref']=='R125')['value']=1000
+        with self.assertRaisesRegex(ValueError,'threshold exceeds'):model.build(changed)

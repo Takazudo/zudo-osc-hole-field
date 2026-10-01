@@ -13,23 +13,28 @@ experiment worktrees. Issues #38 and #59 remain open, and every schematic and
 PCB remains an unvalidated draft.
 
 PR #80 captures an isolated, unselected native monitor/reference-validity/permit
-candidate with a finite dummy load: 39 proposed components, 119 physical pins,
+candidate with a finite dummy load: initially 39 proposed components and 119 physical pins,
 and fresh KiCad ERC with zero errors and warnings. Conditional Boolean/RC
 diagnostics reproduce latch-off for forced short GOOD_FAST low pulses and preserve unknown control-power
-states. They do not simulate actual device startup or release. The conditional current allocation in PR #81 retains five device-current source
+states. They do not simulate actual device startup or release. The conditional current allocation in PR #81 includes device-current source
 rows and charges reference output demand to +5 V once, within the existing
-auxiliary allowance. Its updated largest +5 V DC screen is 6.681 mA under explicit
-source-applicability/leakage assumptions. This does not bound dynamic current.
+auxiliary allowance. Its updated largest +5 V DC screen is 6.699 mA under explicit
+source-applicability/leakage assumptions. The divided steady HIGH at U106
+does not meet its rail-level ICC condition; additional steady input-stage current
+remains unbounded, as does dynamic current.
 PR #82 exposes the reference-validity integration gap: the coarse reference
 channel can retain a settled healthy state across an enclosing range of roughly
 3.00–3.61 V under the stated static assumptions. It cannot establish the narrow
 3.29–3.31 V used by the negative-monitor study. Propagating the wider range loses
 both normal-band margins, and a forced nominal counterexample is retained.
-PR #83 adds fresh passive RC transients for the actual two-resistor timing chain,
-including a declared 0/10 pF input-capacitance sensitivity. Fourteen native runs
-compare both node voltages and charge balance against independent equations,
-with ideal observer crossings checked at two timestep limits. A separate forced
-C109 discharge test does not model actual die clamps or floating control power.
+The updated candidate uses two SN74LVC1G17DBVR buffers and one
+SN74LVC1G74DCTR latch, with a passive 100 kΩ timing-capacitor bleed and an
+additional bypass. It now contains 42 physical components and 113 pins.
+Timing-table supply coverage improves to 5 V ±0.5 V, while actual edges,
+loads, partial-power states and physical release remain unqualified.
+Twenty-two fresh passive RC runs use 0/4.5 pF typical-input sensitivity,
+independent equations and two timestep limits. Both forced-zero endpoints
+and disconnected-drive decay are checked without inventing powered-off LOW.
 The current negative-fault revision routes TLV comparator drains through
 REF_SENSE and the supervisor timeout. This removes their direct FAULT_N bypass
 without adding parts. Conditional load and leakage accounting is updated.
