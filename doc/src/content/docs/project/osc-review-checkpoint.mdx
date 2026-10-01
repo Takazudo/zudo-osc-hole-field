@@ -21,7 +21,9 @@ not apply its older four-file snapshot over the recovered source. Neither patch
 proves electrical compliance. The assembly/proof checkpoint #69 is also merged
 (`c96d5ae`), with passing post-merge CI and regeneration. The collar/protection
 and selected P-probe checkpoint #70 merged at `c012271`, also with passing
-post-merge CI and regeneration. Further candidate diagnostics continue in #71.
+post-merge CI and regeneration. The native collar, wetting and protection
+diagnostics in #71 merged at `6e3cebb`, with passing post-merge CI and
+regeneration. Potential-field diagnostics continue in #72.
 
 The previously interrupted K calculation has now completed both 2,287-profile
 phases. Its retained guard log records PASS, exit 0, 7,048 seconds. A read-only
@@ -186,6 +188,18 @@ about 0.0000404 mΩ. These are lower bounds, not proof that the restriction is
 negligible or that releasing it would meet the target. The next bounded
 calculation keeps the restriction and source epoch fixed while retaining the
 same two potential fields to locate the remaining mismatch.
+
+That potential capture now reproduces the earlier lower matrix exactly. A
+separate analysis covers four complete foils and 195 barrel/collar regions,
+using matched boundary traces and exact finite source loads. It evaluates its
+own canonical potential-trial gap rather than borrowing the older API gap.
+The result remains inconclusive: all foil mismatch lower bounds are zero,
+and excluded/crossing-cell B.Cu potential-energy uppers exceed the complete
+mismatch budget. A large B.Cu upper is not evidence that this foil dominates
+the actual mismatch. `potential-pair-probe.md` preserves the results and the
+separate proposal for conservative partial-cell area integration without a
+new solve. No restriction release, mesh refinement or electrical acceptance
+is inferred.
 
 `design/partition/gh-contact-cell-proposal.md` constructs a finite reference
 termination with a 45.193238 mΩ/end conditional upper and a nonempty correlated
