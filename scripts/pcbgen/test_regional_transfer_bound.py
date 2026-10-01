@@ -72,6 +72,17 @@ class RegionalTransferTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError,'complete trial energies'):
             regional_bounds(**args)
 
+    def test_opposite_regional_crosses_cannot_hide_joint_energy_contradiction(self):
+        rows=[dict(id=name,source_energy_upper=10,observation_energy_upper=10,
+                   trial_cross_lower=cross,trial_cross_upper=cross)
+              for name,cross in [('positive',2),('negative',-2)]]
+        # Every individual cross fits the global norm and their sum is zero,
+        # but their absolute sum requires more complete energy than supplied.
+        with self.assertRaisesRegex(ValueError,'complete trial energies'):
+            regional_bounds(region_ids=['positive','negative'],common_region_ids=['positive'],
+                            regions=rows,source_energy_upper=2,source_energy_lower=0,
+                            observation_energy_upper=2,observation_energy_lower=0)
+
     def test_missing_overlap_identity_and_energy_inconsistency_rejected(self):
         for mutation in ('missing','duplicate','foreign_common','energy','cross','negative_gap'):
             args,_=self.fixture()

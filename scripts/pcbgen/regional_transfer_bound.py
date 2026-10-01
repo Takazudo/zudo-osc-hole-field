@@ -62,6 +62,12 @@ def regional_bounds(*, region_ids, common_region_ids, regions,
         if lo > norm or hi < -norm:
             raise ValueError(key+': trial cross interval contradicts regional energies')
         parsed[key] = (a,b,lo,hi)
+    # Disjointness also bounds the sum of absolute regional cross integrals
+    # by the complete-domain Cauchy norm. Opposite signs cannot hide a
+    # contradiction by cancelling in the whole-domain cross product.
+    minimum_absolute_sum=sum((max(Fraction(0),x[2],-x[3]) for x in parsed.values()),Fraction(0))
+    if minimum_absolute_sum > sqrt_upper(us*ub):
+        raise ValueError('regional cross intervals contradict complete trial energies')
     def enclose(keys):
         values=[parsed[key] for key in keys]
         a=min(us,sum((x[0] for x in values),Fraction(0)))
