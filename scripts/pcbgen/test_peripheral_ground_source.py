@@ -14,13 +14,29 @@ BASE=Path('design/partition/peripheral-ground-feasibility')
 class PeripheralGroundSourceTests(unittest.TestCase):
     def test_all_fixed_sources_and_independent_contacts(self):
         proposal=json.loads((BASE/'proposal.json').read_bytes())
+        epoch=json.loads(Path('design/partition/peripheral-source-epoch-20261001.json').read_bytes())
+        epochs={row['board_id']:row for row in epoch['boards']}
+        self.assertEqual(set(epochs),{row['board_id'] for row in proposal['boards']})
         with tempfile.TemporaryDirectory() as folder:
             for row in proposal['boards']:
                 path=Path(folder)/(row['board_id']+'.json');receipt=generate(BASE/'proposal.json',row['board_id'],path)
                 original=json.loads(Path('design/boards',path.name).read_bytes());current=json.loads(path.read_bytes())
                 self.assertEqual({k:v for k,v in original.items() if k not in ('stackup','routing')},
                     {k:v for k,v in current.items() if k not in ('stackup','routing')})
-                self.assertEqual(receipt,json.loads((BASE/(row['board_id']+'.receipt.json')).read_bytes()))
+                # Preserve historical receipts: source equivalence is separate
+                # from native/model admission and never rewrites their hashes.
+                historic_bytes=(BASE/(row['board_id']+'.receipt.json')).read_bytes()
+                historic=json.loads(historic_bytes);bound=epochs[row['board_id']]
+                self.assertEqual(hashlib.sha256(historic_bytes).hexdigest(),bound['historical_receipt_sha256'])
+                self.assertEqual(hashlib.sha256(path.with_suffix('.receipt.json').read_bytes()).hexdigest(),bound['current_source_receipt_sha256'])
+                self.assertEqual(receipt['definition_sha256'],bound['unchanged_definition_sha256'])
+                self.assertEqual(set(bound['source_changes']),{'design/partition/partition.json'})
+                expected=copy.deepcopy(historic)
+                for source,change in bound['source_changes'].items():
+                    self.assertEqual(expected['source_sha256'][source],change['historical'])
+                    self.assertEqual(hashlib.sha256(Path(source).read_bytes()).hexdigest(),change['current'])
+                    expected['source_sha256'][source]=change['current']
+                self.assertEqual(receipt,expected)
                 self.assertEqual(len(receipt['source_packages']),row['footprints'])
                 self.assertEqual(len(receipt['own_ground_contacts'])+len(receipt['GH_ground_contacts']),72 if row['board_key']=='EL' else 7)
                 self.assertFalse(receipt['model_entry_allowed'])

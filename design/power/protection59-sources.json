@@ -1,0 +1,205 @@
+{
+  "schema_version": 1,
+  "status": "RESEARCH ONLY; no candidate selected or installed",
+  "protection_implemented": false,
+  "selection_gate": "Issue #59 remains OPEN; grounded-off, floating, partial-power, local-GND loss and enabled contention remain separate obligations",
+  "sources": [
+    {
+      "candidate": "TMUX7412FRRPR",
+      "manufacturer": "Texas Instruments",
+      "package": "WQFN-16 RRP0016A, 4 x 4 mm",
+      "project_role": "Candidate replacement for existing input quads plus 82 outputs, 16 precision sense and 30 reference receiver connections",
+      "selection": "NOT SELECTED",
+      "installed": false,
+      "supplier_identity": {
+        "supplier": "Texas Instruments direct",
+        "order_code": "TMUX7412FRRPR",
+        "url": "https://www.ti.com/product/TMUX7412F/part-details/TMUX7412FRRPR",
+        "status": "Manufacturer order identity confirmed; stock and assembly availability UNVERIFIED"
+      },
+      "authority": "MANUFACTURER_PRIMARY",
+      "availability": "AVAILABLE",
+      "url": "https://www.ti.com/lit/ds/symlink/tmux7412f.pdf",
+      "retrieval_date": "2026-10-01",
+      "document_title": "TMUX741xF, SCDS404B",
+      "revision": "November 2022",
+      "file": ".circuit-cache/sources/protection-59/TMUX7412F.pdf",
+      "sha256": "7396d8a34f80b178a8b5c72272b5bb0eb7da7ad3182e7d3cd80d294fc32f26e5",
+      "locators": [
+        {
+          "physical_pdf_page_index": 2,
+          "printed_page_label": "3",
+          "locator": "Section 6, Figure 6-2 and Table 6-1",
+          "extract": "S pins protected; D pins not overvoltage protected; WQFN pin map."
+        },
+        {
+          "physical_pdf_page_index": 4,
+          "printed_page_label": "5",
+          "locator": "Section 7.4, IDC WQFN row",
+          "extract": "Recommended continuous channel current: 60 mA at 125 C."
+        },
+        {
+          "physical_pdf_page_index": 6,
+          "printed_page_label": "7",
+          "locator": "Section 7.6, RON and ID(FA) Floating rows",
+          "extract": "RON maximum 16.5 ohm at -40..125 C, +/-15 V +/-10%, VS=-10..10 V, ID=-10 mA. Floating-rail leakage is typical only."
+        },
+        {
+          "physical_pdf_page_index": 7,
+          "printed_page_label": "8",
+          "locator": "Section 7.6, IDD and ISS rows",
+          "extract": "At +/-16.5 V and -40..125 C: positive/negative supply current maxima 0.6/0.5 mA.",
+          "conditions": "VSELx=0 V, 5 V or VDD; VDD=16.5 V, VSS=-16.5 V; TA=-40..125 C. These are not guaranteed +/-12 V project values."
+        },
+        {
+          "physical_pdf_page_index": 32,
+          "printed_page_label": "33",
+          "locator": "Section 9.3.2.2 Powered-Off Protection",
+          "extract": "Off protection requires GND; VDD/VSS may be grounded or floating."
+        },
+        {
+          "physical_pdf_page_index": 40,
+          "printed_page_label": "Addendum-Page 1",
+          "locator": "Packaging information, TMUX7412FRRPR row",
+          "extract": "Exact orderable WQFN-16 reel variant."
+        },
+        {
+          "physical_pdf_page_index": 44,
+          "printed_page_label": "not numbered",
+          "locator": "Package outline RRP0016A",
+          "extract": "Manufacturer package drawing; no project footprint selected."
+        }
+      ],
+      "project_performance_verdict": "UNSOURCED",
+      "project_performance_reason": "Complete project operating/fault conditions and captured circuit not established.",
+      "normal_iq_screen": {
+        "positive_mA": 0.6,
+        "negative_mA": 0.5,
+        "value_class": "Guaranteed maxima only at specified table conditions",
+        "conditions": "VDD=16.5 V, VSS=-16.5 V, TA=-40..125 C, VSEL=0 V/5 V/VDD; not a guaranteed +/-12 V project limit",
+        "project_verdict": "UNSOURCED"
+      },
+      "retention": {
+        "mode": "LOCAL CACHE ONLY",
+        "committed": "Metadata, SHA-256, locators and minimal normalized extracts only; no PDF or public download",
+        "basis": "Actual final-page TI notice permits use for development with TI products and prohibits other reproduction/display; full unaltered bytes and notices remain in ignored local cache. Cache presence is not a build prerequisite.",
+        "physical_pdf_page_index": 47,
+        "printed_page_label": "not numbered",
+        "locator": "IMPORTANT NOTICE AND DISCLAIMER; last updated 10/2025, copyright 2026"
+      }
+    },
+    {
+      "candidate": "LM74800MDRRR",
+      "manufacturer": "Texas Instruments",
+      "package": "WSON-12 DRR0012E, 3 x 3 mm",
+      "project_role": "Candidate positive +12 V/+5 V ideal-diode and independently controlled disconnect driver",
+      "selection": "NOT SELECTED",
+      "installed": false,
+      "supplier_identity": {
+        "supplier": "Texas Instruments direct",
+        "order_code": "LM74800MDRRR",
+        "url": "https://www.ti.com/product/LM7480/part-details/LM74800MDRRR",
+        "status": "Manufacturer order identity confirmed; stock and assembly availability UNVERIFIED"
+      },
+      "authority": "MANUFACTURER_PRIMARY",
+      "availability": "AVAILABLE",
+      "url": "https://www.ti.com/lit/ds/symlink/lm7480.pdf",
+      "retrieval_date": "2026-10-01",
+      "document_title": "LM7480, SNOSDD8",
+      "revision": "December 2022",
+      "file": ".circuit-cache/sources/protection-59/LM7480.pdf",
+      "sha256": "ce71cb76e7c1374b23b07e7f15547ac74ec1f0b27e4d1a3bb5d553c05392c896",
+      "locators": [
+        {
+          "physical_pdf_page_index": 2,
+          "printed_page_label": "3",
+          "locator": "Section 6, pin configuration/functions",
+          "extract": "Separate DGATE/HGATE outputs and power-path sense pins."
+        },
+        {
+          "physical_pdf_page_index": 5,
+          "printed_page_label": "6",
+          "locator": "Sections 7.5 and 7.6, ideal-diode and timing rows",
+          "extract": "Forward regulation maximum 13.4 mV; reverse threshold -6.5..-1.3 mV. Reverse-off delay maximum 0.875 us under stated step and 10 nF gate load.",
+          "conditions": "TJ=-55..125 C; VA=VOUT=VS=VSNS=12 V, VAC=20 mV, CVCAP=0.1 uF, VEN/UVLO=2 V unless noted. Reverse-off row: VAC step +30 to -100 mV; gate-to-anode falls below 1 V; CDGATE-A=10 nF. +5 V and installed gate/rail trajectories need separate analysis."
+        },
+        {
+          "physical_pdf_page_index": 34,
+          "printed_page_label": "Addendum-Page 1",
+          "locator": "Packaging information, LM74800MDRRR row",
+          "extract": "Exact orderable WSON-12 reel variant."
+        },
+        {
+          "physical_pdf_page_index": 39,
+          "printed_page_label": "not numbered",
+          "locator": "Package outline DRR0012E",
+          "extract": "Manufacturer package drawing; no project footprint selected."
+        }
+      ],
+      "project_performance_verdict": "UNSOURCED",
+      "project_performance_reason": "Complete project operating/fault conditions and captured circuit not established.",
+      "retention": {
+        "mode": "LOCAL CACHE ONLY",
+        "committed": "Metadata, SHA-256, locators and minimal normalized extracts only; no PDF or public download",
+        "basis": "Actual final-page TI notice permits use for development with TI products and prohibits other reproduction/display; full unaltered bytes and notices remain in ignored local cache. Cache presence is not a build prerequisite.",
+        "physical_pdf_page_index": 42,
+        "printed_page_label": "not numbered",
+        "locator": "IMPORTANT NOTICE AND DISCLAIMER; last updated 10/2025, copyright 2026"
+      }
+    },
+    {
+      "candidate": "LTC4371IMS#PBF",
+      "manufacturer": "Analog Devices",
+      "package": "MSOP-10 MS",
+      "project_role": "Unselected negative ideal-diode lead; separate opposing cutoff MOSFET/driver still required",
+      "selection": "NOT SELECTED",
+      "installed": false,
+      "supplier_identity": {
+        "supplier": null,
+        "order_code": null,
+        "url": "https://www.analog.com/en/products/ltc4371.html",
+        "status": "Supplier order identity NOT ACQUIRED"
+      },
+      "authority": "MANUFACTURER_PRIMARY",
+      "availability": "SOURCE UNAVAILABLE",
+      "url": "https://www.analog.com/media/en/technical-documentation/data-sheets/4371f.pdf",
+      "retrieval_date": "2026-10-01",
+      "document_title": "LTC4371, 4371f",
+      "revision": "February 2016, web inspection only",
+      "file": null,
+      "sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+      "locators": [
+        {
+          "physical_pdf_page_index": 1,
+          "printed_page_label": "2",
+          "locator": "Order information, LTC4371IMS#PBF row",
+          "extract": "Official web PDF names the industrial MSOP variant; retained bytes unavailable."
+        },
+        {
+          "physical_pdf_page_index": 2,
+          "printed_page_label": "3",
+          "locator": "Electrical characteristics, forward-servo row",
+          "extract": "Web-research lead only; source bytes unavailable, so no retained performance PASS."
+        },
+        {
+          "physical_pdf_page_index": 6,
+          "printed_page_label": "7",
+          "locator": "Operation, negative 4.5..16 V application",
+          "extract": "Source-backed negative controller path needs retained-byte acquisition and complete cutoff/control design."
+        }
+      ],
+      "project_performance_verdict": "UNSOURCED",
+      "project_performance_reason": "Complete project operating/fault conditions and captured circuit not established.",
+      "acquisition_attempts": [
+        {
+          "url": "https://www.analog.com/media/en/technical-documentation/data-sheets/4371f.pdf",
+          "result": "TimeoutError: The read operation timed out"
+        },
+        {
+          "url": "https://www.analog.com/media/en/technical-documentation/data-sheets/4371f.pdf?download=1",
+          "result": "TimeoutError after 8 s; no PDF retained"
+        }
+      ]
+    }
+  ]
+}

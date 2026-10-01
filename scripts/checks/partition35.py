@@ -12,7 +12,8 @@ ROOT=Path(__file__).resolve().parents[2]
 sys.path.insert(0,str(ROOT))
 from scripts.checks.partition35_json import dumps
 from scripts.partition.model import JACK_BOARDS
-from scripts.checks.connector_packing35 import board_for
+from scripts.checks.connector_packing35 import board_for,partition_source_digest
+from scripts.checks.partition35_loom import power_route_errors
 from scripts.pcbgen.definition import load_definition
 
 
@@ -126,6 +127,9 @@ def build():
     parts=io['physical_packages'];byref={p['ref']:p for p in parts};loc={p['ref']:p for p in floor['placements']}
     assignment=[{'ref':p['ref'],'board':board_for(p),'side':loc[p['ref']]['side'],'fitted':not p['dnp'],'source_region':p['regions'][0],'status':'DERIVED'} for p in parts]
     errors=validate_assignment(parts,assignment,io)
+    for name,receipt in [('connectors',ports),('loom',loom)]:
+        if receipt.get('partition_source_digest')!=partition_source_digest(source):errors.append(name+': partition source digest drift')
+    errors.extend(power_route_errors(loom['load_power_routes'],source))
     mechanical=read('design/partition/mechanical-candidate.json')
     for name,report in [('floorplan',floor),('connectors',ports),('loom',loom),('mechanical',mechanical)]:
         errors.extend(name+': '+e for e in report['errors'])
@@ -270,7 +274,7 @@ def build():
             for board,y,side in [(b,branch['pad_y_mm'],'B.Cu'),('K',branch['core_pad_y_mm'][index],'F.Cu')]:
                 ref='TP'+str(990001+len(terminals));ends.append(ref)
                 terminals.append({'reference':ref,'board':board,'net':net,'manufacturer_pin':'1','center_mm':[x,y],'side':side,'copper_land_mm':[4,4],'maximum_courtyard_mm':[5,5],'wire_end':'factory stripped bare end at solder land; first/last 3mm have no full-diameter insulation; solder/profile qualification #65','mask_margin_mm':.1,'paste':'none; factory hand/wave solder process','identity':'custom PCB solder terminal, not an orderable inlet','status':'PROPOSAL copper geometry; native footprint/symbol generation #36, assembled ampacity/strain relief #65'})
-            power_wires.append({'id':'POWER-'+b+'-'+d['wire_labels'][index],'net':net,'terminal_refs':ends,'wire_mpn':d['wire'],'maximum_length_mm':125,'status':'PROPOSAL existing load-side nets only; physical continuity across CN301/XB301 remains absent'})
+            power_wires.append({'id':'POWER-'+b+'-'+d['wire_labels'][index],'net':net,'terminal_refs':ends,'wire_mpn':d['wire'],'maximum_length_mm':d['max_wire_length_mm'],'status':'PROPOSAL existing load-side nets only; physical continuity across CN301/XB301 remains absent'})
     interfaces=[]
     grouped=defaultdict(list)
     for h in ports['harnesses']:grouped['/'.join(h['boards'])].append(h)

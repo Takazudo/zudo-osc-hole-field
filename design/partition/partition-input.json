@@ -1088,7 +1088,15 @@
           "side": "B.Cu",
           "status": "PROPOSAL finite reservation for UNSELECTED bulk part. Exact #59 part may require replan; no fitted zero-area component."
         }
-      ]
+      ],
+      "service_access": {
+        "support_front_offset_mm": 2,
+        "hook_forward_offsets_mm": [
+          6,
+          9.5
+        ],
+        "status": "PROPOSAL offsets from K component face; support rear ends at enclosure inner rear. Actual tool/latch/support fit NOT RUN #65."
+      }
     },
     "EL": {
       "id": "osc-stage-optical",
@@ -1461,7 +1469,7 @@
     "source_pdf": "design/partition/sources/alpha-5859.pdf",
     "nominal_dcr_ohm_per_m": 0.009186351706036745,
     "hot_resistance_requirement_ohm_per_m": 0.013,
-    "max_wire_length_mm": 125,
+    "max_wire_length_mm": 110,
     "temperature_max_C": 70,
     "resistance_tolerance_multiplier": 1.1,
     "diameter_max_mm": 2.5907999999999998,
@@ -1594,7 +1602,8 @@
       },
       "actual_AGND_strategy": "Three source-defined25-via main-land arrays per half are required: surface ground pours left each main land attached only to its own isolated same-net zone. All lands, GH contacts and intended bypass returns must share the transitive native main AGND component; native AGND edge count must be zero. A pad+same-net-zone relation alone is insufficient.",
       "electrical_acceptance_status": "NOT ACCEPTED #38: complete native AGND/direct bypass topology is a draft checkpoint only. Authoritative common <=0.5mOhm and GH <=0.5A extraction, every fitted rail feed, actual rail <=1mOhm and hot distribution <=20mV remain unresolved; physical/process qualification NOT RUN #65."
-    }
+    },
+    "wire_cut_requirement": "PROPOSAL: finished cut <=110 mm and at least sampled centreline plus 10 mm preparation/slack allowance. Installed bends, terminations and service displacement NOT RUN #65; longer wires require revised electrical acceptance."
   },
   "jack_split": {
     "status": "PROPOSAL #66 source geometry; #38 UNVALIDATED PARTIAL ROUTING CHECKPOINT, electrical acceptance OPEN",

@@ -131,14 +131,15 @@ alternative wire/contact allowance is +0.100 Ohm, not +0.010 Ohm. The joined
 operator requires actual J-GH to K-GH observations and compatible full traces;
 the algebra helper does not supply an ideal K board.
 
-The disposable K v6 ground prerequisite now passes native rules/parity and
-connects all 1903 fitted source AGND contacts. Its exact 206 J-facing GH and
-nine main ports, 188 main-array vias and 104 header stitches are source-owned.
-The initial 214-profile coupling computation is specified in
-`core-model-scope.md`; mandatory successful-native entry is under focused
-review. This prerequisite does not complete K rail/signal routing or exclude
-its own load currents. The four utility returns still require P/rest-network
-coverage. Native connectivity supplies no resistance or equal-sharing credit.
+The retained K v7 full nominal ground calculation now covers 2,287 profiles:
+1,903 fitted own contacts, 376 GH returns and nine main lands, with 219 barrels.
+Its completed paired result and historical source scope are recorded in
+`core-nominal-checkpoint-20261001.json`. Earlier v6/214-profile coupling screens
+remain historical subsets. No result completes K rail/signal routing or the
+physical/joined common-current proof. The four utility returns still require
+P/rest-network coverage. Native connectivity supplies no resistance or
+equal-sharing credit. The latest partition epoch changes one retained native
+prerequisite hash; no old receipt is rebound to it.
 
 ## 5. Close every voltage budget with the same source scenarios
 
@@ -157,8 +158,12 @@ The +12 and -12 scenarios have different original baselines (16.6275 and
 
 The proposed finite whole-wire witness can be used only after its physical
 class and matching traces are selected. Its shorter geometric path does not
-permit unproved extra credits against the existing 125 mm / 13 mOhm per m /
-0.2 mOhm termination contract.
+permit unproved extra credits against its historical 125 mm / 13 mOhm per m /
+0.2 mOhm termination model contract. The current partition separately selects a
+110 mm maximum main-wire cut requirement and checks preparation allowance.
+That new source requirement improves the conditional distribution arithmetic;
+transfer it to a complete wire witness only after proving matching length
+boundaries and traces. The physical wire/contact model has not been rebound.
 
 ## 6. Promote only the proved source and refresh all receipts
 

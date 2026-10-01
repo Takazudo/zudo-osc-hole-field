@@ -11,16 +11,42 @@ import sys
 sys.path.insert(0,str(ROOT))
 from scripts.checks.partition35_json import dumps
 from scripts.partition.model import JACK_BOARDS
+from scripts.checks.connector_packing35 import core_service_depths,partition_source_digest
 OUT=ROOT/'design/partition/loom-candidate.json'
 
 
 def intersects(a,b):return all(a[i]<b[i+3]-1e-8 and b[i]<a[i+3]-1e-8 for i in range(3))
 
 
+def power_cut_requirement(points,maximum):
+    """Keep the full ten millimetres for factory preparation and slack."""
+    if not math.isfinite(maximum) or maximum<=0 or len(points)<2 or any(len(p)!=3 or not all(math.isfinite(v) for v in p) for p in points):
+        raise ValueError('invalid power wire cut geometry or ceiling')
+    length=sum(math.dist(p,q) for p,q in zip(points,points[1:]))
+    return {'centreline_length_mm':length,'cut_length_allowance_mm':10,
+            'minimum_cut_length_mm':length+10,'max_cut_length_mm':maximum}
+
+
+def power_route_errors(routes,source):
+    """Recheck the actual route points before consuming their wire budget."""
+    errors=[];power=source['load_distribution']
+    expected={'POWER-'+b+'-'+label for b in power['branches'] for label in power['wire_labels']}
+    if len(routes)!=len(expected) or {r['id'] for r in routes}!=expected:
+        errors.append('power route inventory differs from source')
+    for route in routes:
+        required=power_cut_requirement(route['points_mm_positive_rear'],power['max_wire_length_mm'])
+        if any(not math.isfinite(route.get(k,float('nan'))) or not math.isclose(route[k],v,rel_tol=0,abs_tol=1e-6) for k,v in required.items()):
+            errors.append('power wire cut receipt differs from source/geometry '+route['id'])
+        if required['minimum_cut_length_mm']>required['max_cut_length_mm']:
+            errors.append('power wire length exceeds loss budget '+route['id'])
+    return errors
+
+
 def build():
     src=json.loads((ROOT/'design/partition/partition-input.json').read_text());c=json.loads((ROOT/'design/partition/connector-packing-candidate.json').read_text())
     evidence=json.loads((ROOT/'design/connectors/jst-gh.json').read_text());family={r['positions']:r for r in evidence['sizes']};headers={h['id']:h for h in c['headers']}
-    corridors=[];segments=[];errors=[]
+    corridors=[];segments=[];errors=[];service_depths=core_service_depths(src)
+    if c.get('partition_source_digest')!=partition_source_digest(src):errors.append('connector packing partition source digest drift')
     for h in c['harnesses']:
         a,b=[headers[i] for i in h['header_ids']]
         if a['board']=='K':a,b=b,a
@@ -66,18 +92,19 @@ def build():
             da=-src['boards'][board]['face_z_mm']+src['boards'][board]['thickness_mm']+1
             db=-src['boards']['K']['face_z_mm']-1
             points=[[x+branch.get('bow_x_mm',0)*math.sin(math.pi*i/100)**2,y+(Y-y)*i/100+10*math.sin(math.pi*i/100)**2,da+(db-da)*i/100] for i in range(101)]
-            name='POWER-'+board+'-'+power['wire_labels'][index];radius=(db-da)**2/(2*math.pi**2*math.hypot(10,branch.get('bow_x_mm',0)));length=sum(math.dist(p,q) for p,q in zip(points,points[1:]))
+            name='POWER-'+board+'-'+power['wire_labels'][index];radius=(db-da)**2/(2*math.pi**2*math.hypot(10,branch.get('bow_x_mm',0)))
             if radius<power['minimum_bend_radius_mm']:errors.append('power wire bend too tight '+name)
-            if length+10>power['max_wire_length_mm']:errors.append('power wire length exceeds loss budget '+name)
             r=power['diameter_max_mm']/2+.25
             for p,q in zip(points,points[1:]):
                 b=[min(p[k],q[k])-r for k in range(3)]+[max(p[k],q[k])+r for k in range(3)]
                 segments.append((name,b))
                 if intersects(b,[260,248,45,308,293,85]):errors.append('power wire enters EXT reservation '+name)
-            power_routes.append({'id':name,'wire_mpn':power['wire'],'net':net,'points_mm_positive_rear':points,'centreline_length_mm':length,'max_cut_length_mm':125,'minimum_bend_radius_bound_mm':radius,'status':'PROPOSAL factory-soldered existing load-side nets only; no abstract inlet bridge'})
+            power_routes.append({'id':name,'wire_mpn':power['wire'],'net':net,'points_mm_positive_rear':points,**power_cut_requirement(points,power['max_wire_length_mm']),'minimum_bend_radius_bound_mm':radius,'status':'PROPOSAL factory-soldered existing load-side nets only; no abstract inlet bridge'})
+    errors.extend(power_route_errors(power_routes,src))
     support_volumes=[]
     for board,bs in src['boards'].items():
-        for x,y in bs['supports_mm']:support_volumes.append((board+' edge support',[x-1.6,y-1.6,98 if board=='K' else 0,x+1.6,y+1.6,120]))
+        front,rear=service_depths['support_mm'] if board=='K' else (0,src['enclosure']['inside_depth_mm'])
+        for x,y in bs['supports_mm']:support_volumes.append((board+' edge support',[x-1.6,y-1.6,front,x+1.6,y+1.6,rear]))
     carrier=src['jack_split']['carrier']
     for rect,z in [(carrier['rear_rect_mm'],carrier['rear_z_mm']),(carrier['front_lip_rect_mm'],carrier['front_lip_z_mm'])]+[(m['rect_mm'],m['z_mm']) for m in carrier['cross_members']]:
         support_volumes.append(('J split seam carrier',[rect[0],rect[1],-z[1],rect[2],rect[3],-z[0]]))
@@ -101,11 +128,12 @@ def build():
         for cell in cells:buckets[cell].append(current)
     errors +=['loom corridor overlap '+a+' '+b for a,b in sorted(collisions)]
     return {'schema_version':1,'status':'FAIL' if errors else 'PASS - nominal controlled ribbon corridor geometry only','errors':sorted(set(errors)),
+            'partition_source_digest':partition_source_digest(src),'K_service_depths_positive_rear_mm':service_depths,
             'support_reservation_count':len(support_volumes),'harness_count':len(corridors),'routes':corridors,'load_power_routes':power_routes,'max_cut_length_mm':max(r['cut_length_max_mm'] for r in corridors),
             'limits':['No measured cable solid, latch-access, crimp, stiffness or installed-fit PASS.',
                       'Mated 7.3 mm reference has no sourced tolerance; all planes and controlled loom guides are PROPOSAL.',
                       'Power distribution, support/hardware solids and connector service tooling are separate gates.',
-                      'No live disassembly: disconnect external source, prove rails discharged, remove rear cover, release combs, unlatch all K mates through proposed service apertures, then remove K supports.']}
+                      'No live disassembly: disconnect external source, prove rails discharged, remove rear cover, release combs and unlatch K mates before releasing K supports. The 18 soldered main wires still tether K; supported service displacement or factory desoldering/replacement needs qualification #65. No unrestricted K removal or owner soldering is implied.']}
 
 
 def main():

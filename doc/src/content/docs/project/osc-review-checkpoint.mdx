@@ -1,14 +1,16 @@
 ---
 title: "Engineering continuation checkpoint"
-description: "Recovered issue-38 work, completed nominal K calculation, and the architecture decisions still open."
+description: "Merged recovery, assembly margin changes, and the remaining physical and electrical acceptance gates."
 sidebar_position: 11
 ---
 
 ## Current recovery point — 1 October 2026
 
-Continue from the preserved `topic/38-jack-halves` source checkpoint. The foundation
-on `main` (`fac9929`) does not contain this work. Issue #38 remains open; none of
-the schematic or PCB drafts is validated or released.
+The recovered issue-38 source checkpoint merged through PR #68 (`9273b3a`),
+followed by the active-schematic ERC digest fix (`79d9d4f`). Continue from the
+current completion branch and preserve `worktrees/38-jack-halves`, now on
+`topic/38-completion`; its original branch and ignored recovery artifacts remain
+intact. Issue #38 remains open; every schematic and PCB is an unvalidated draft.
 
 The local routing repair `57084d0` reconciles PR #67 with the newer complete
 per-net native connectivity receipts. It requires fresh same-board native
@@ -19,12 +21,21 @@ the recovered source. Neither patch proves electrical compliance.
 
 The previously interrupted K calculation has now completed both 2,287-profile
 phases. Its retained guard log records PASS, exit 0, 7,048 seconds. A read-only
-audit found all 44 model and 82 native-prerequisite dependency hashes current,
+audit at the recovery checkpoint found all 44 model and 82 native-prerequisite dependency hashes current,
 matching profile metadata, and finite, symmetric 2,287 × 2,287 paired matrices.
 Recorded current/potential equation residual maxima are 2.467e-10 / 2.255e-9 A
 (rounded upward), below the unchanged 1e-8 A gate. This audit did not independently
 recompute residuals or repeat the eigensolve. Exact hashes and audit scope are in
 `design/partition/core-nominal-checkpoint-20261001.json`.
+
+The subsequent 110 mm main-wire requirement creates a new partition source
+epoch. A comparison against the retained K result finds all 44 model files
+unchanged and 81 of 82 prerequisite files unchanged; `partition.json` differs.
+The historical receipt remains intact. Those counts do not authorize rebinding
+its prerequisite hash or using the old result as current electrical acceptance.
+The separate `peripheral-source-epoch-20261001.json` comparison binds unchanged
+O/EL generated definitions and complete contact inventories to both partition
+hashes; it leaves all historical native/model receipts untouched and stale.
 
 **This remains a nominal finite-profile diagnostic, NOT ACCEPTED for physical or
 joined electrical compliance.** K covers 1,903 fitted own contacts, 376 GH
@@ -133,14 +144,49 @@ custom selector assembly, continuity/pull checks, and K removal/reconnection.
 No time-per-operation, labour price, supplier commitment or cost total is known.
 A compact alternative should report revised depth, harness/contact counts,
 custom-part count, load/return paths and service sequence at the same 438 centres.
-No internal redesign or new mechanical baseline is selected by this checkpoint.
+The current source retains the ten-board, −100 mm K / 120 mm enclosure proposal
+and selects a tighter **110 mm maximum main-wire cut requirement**, with a
+10 mm preparation/slack allowance checked against each generated path. The
+longest path plus allowance is 100.907060 mm (rounded upward). Conditional
+JL/JR/P GH return bounds become 0.481793930 / 0.478306085 / 0.479237292 A
+(rounded upward). These still assume the unproved common resistance and
+contact conditions; they are not physical current acceptance.
+
+K service supports and tool heights now derive from the source plane. Unplugging
+191 K GH mates still leaves **18 soldered main wires** tethering the board.
+Supported service travel and any factory desoldering procedure remain unqualified.
+No harness consolidation or shallower architecture is credited.
+
+## Current proof and protection work
+
+The new exact-arithmetic helpers separately bound a closed-network wire-cut
+current, support over both global source/redistribution budgets, and transfer
+through named common conductor/interface regions. Their tests establish the
+helper mathematics; actual field coefficients, complete physical traces and
+selected geometry still have to be supplied.
+
+`design/partition/gh-contact-cell-proposal.md` constructs a finite reference
+termination with a 45.193238 mΩ/end conditional upper and a nonempty correlated
+wire class. Its full terminal traces, weighted strand sharing and once-only wire
+segments are explicit. The required solid crimp redistribution region is not
+established inside the actual JST contact, so the class stays **UNSELECTED**.
+A catalogue contact-resistance number alone does not establish that geometry.
+Neither this cell nor its unit tests close issue #38.
+
+The protection audit now uses the ledger-derived continuous requirements of
+1.7 / 1.6 / 0.3 A on +12 / −12 / +5 V, while retaining all original delivered
+limits and the 40 mV protection budget. Exact TMUX7412FRRPR and LM74800MDRRR
+candidate evidence is recorded with its conditions; no components or source
+budgets were substituted. See the [candidate research](../research/osc-protection-candidates.mdx).
+The exact protection implementation remains open under #59, including local
+power/ground loss, return observability, enabled contention and thermal limits.
 
 ## Required continuation
 
-1. Review the source checkpoint and routing repair together before merging;
-   retain canonical and candidate board identities separately.
-2. Resolve the compactness/factory-assembly tradeoff before accepting the current
-   deep loom architecture or spending effort on dependent final routing.
+1. Preserve the merged source checkpoint, routing repair and local native
+   experiments; retain canonical and candidate board identities separately.
+2. Qualify the retained assembly proposal and its 110 mm main-wire requirement;
+   retain the explicit custom-selector and service-tether burdens.
 3. Define supported physical contact/material/current classes and compute the
    joined common-ground, GH-current, rail and voltage bounds on selected connected
    copper. Keep the 0.5 mΩ, 0.5 A/contact, 1 mΩ, 20 mV and 0.20 V limits unchanged.

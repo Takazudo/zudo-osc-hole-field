@@ -1,0 +1,59 @@
+---
+title: "Protection candidates and the next complete cell"
+description: "Issue 59 candidate evidence, conditioned package-current comparison, and unresolved fault requirements."
+sidebar_position: 18
+---
+
+**Research only. No candidate is selected or installed.** [Issue 59](https://github.com/Takazudo/zudo-osc-hole-field/issues/59) remains OPEN; every schematic and PCB is an unvalidated draft, and the EXT boundary remains NON-ORDERABLE / NOT-ENERGIZABLE. This batch corrects requirement arithmetic and retains candidate evidence. It does not replace the 110 fitted ADG5412FBRUZ packages, alter the inlet, or authorize energization.
+
+`design/power/protection59-sources.json` records exact identities, acquisition outcomes, conditions and locators. Complete PDFs remain in the ignored `.circuit-cache/sources/protection-59/` development cache with all notices. Their actual final-page terms do not grant general redistribution, so only metadata, hashes and minimal extracts are committed; no PDF is published. An absent cache is an explicit NOT RUN byte check, not a failed acquisition or a circuit PASS. These research candidates are deliberately absent from the component inventory and publication selection. Source availability does not establish project performance.
+
+## Exact identities and evidence
+
+| Candidate and role | Identity and acquisition | Primary locators: physical index / printed label |
+|---|---|---|
+| Texas Instruments **TMUX7412FRRPR**; input/output/sense/reference switch candidate | WQFN-16 RRP0016A, 4 × 4 mm; TI direct order code TMUX7412FRRPR; [order identity](https://www.ti.com/product/TMUX7412F/part-details/TMUX7412FRRPR). Actual [SCDS404B PDF](https://www.ti.com/lit/ds/symlink/tmux7412f.pdf), November 2022, inspected/cached; receipt committed | 2/3 pins; 4/5 current; 6/7 resistance/leakage; 7/8 supply current/timing; 32/33 ground/power-off; 40/Addendum-Page 1 ordering; 44/not numbered drawing |
+| Texas Instruments **LM74800MDRRR**; positive-rail controller candidate | WSON-12 DRR0012E, 3 × 3 mm; TI direct order code LM74800MDRRR; [order identity](https://www.ti.com/product/LM7480/part-details/LM74800MDRRR). Actual [SNOSDD8 PDF](https://www.ti.com/lit/ds/symlink/lm7480.pdf), December 2022, inspected/cached; receipt committed | 2/3 pins; 5/6 electrical/timing; 34/Addendum-Page 1 ordering; 39/not numbered drawing |
+| Analog Devices **LTC4371IMS#PBF**; negative ideal-diode research lead | MSOP-10 industrial variant. [Manufacturer identity](https://www.analog.com/en/products/ltc4371.html) and [4371f web PDF](https://www.analog.com/media/en/technical-documentation/data-sheets/4371f.pdf) inspected; actual byte acquisition timed out twice. **SOURCE UNAVAILABLE**, zero hash; supplier order identity NOT ACQUIRED | Web locators only: 1/2 order/pins; 2/3 electrical characteristics; 6/7 negative operation. No retained performance PASS |
+
+Stock, factory sourcing, footprints, pin-to-pad mapping, installed temperatures and complete project fault performance remain unverified for all three candidates. A package drawing is not a checked project footprint.
+
+## TMUX comparison without assumed channel reuse
+
+The retained TI table specifies 0.6/0.5 mA positive/negative maxima at ±16.5 V through 125 °C. WQFN continuous channel rating is 60 mA at 125 °C. The ±15 V table has a 16.5 Ω maximum and 14 pF typical on-capacitance. Floating-rail drain leakage is **typical only**. Ground must remain connected; overvoltage protection faces S, while D has rail clamps. The ±12 V dual-supply and finite-discharge trajectories have no equivalent guaranteed table. These are source-confirmed conditions, **not project-condition PASS**. [TI datasheet](https://www.ti.com/lit/ds/symlink/tmux7412f.pdf).
+
+The audit derives 110 existing ADG packages from the current circuit specification. There are 98 additional drive/sense connections for 82 outputs, plus 30 octave-reference receivers. The following is a **conditioned planning sensitivity**, using the table values above and existing ADG planning allowances of 1.3/0.7 mA per package:
+
+| Package allocation | Quads | Positive/negative current |
+|---|---:|---:|
+| Output/sense, unrestricted global packing | 25 | 15 / 12.5 mA |
+| Output/sense, module-local packing | 35 | 21 / 17.5 mA |
+| Module-local output/sense plus receiver-local references | 45 | 27 / 22.5 mA |
+| Replace 110 existing packages and add all 45 | 155 | 93 / 77.5 mA |
+
+The last case changes the existing 143/77 mA switch allowance by **−50/+0.5 mA**. It could preserve the source envelopes without booking spare-channel reuse, but it is not a proven current saving at ±12 V. It also requires a coordinated input-cell substitution, local supply/control reconciliation and new package geometry. No actual substitution or ledger saving is booked. Newly fitted bypass capacitors, fault currents, pull-ups and supervision must be charged separately.
+
+## Power-path candidates
+
+LM74800 provides separate ideal-diode and disconnect gates. Under its specified conditions, forward servo maximum is 13.4 mV; reverse threshold is −6.5…−1.3 mV; reverse-off delay maximum is 0.875 µs for the documented voltage step and 10 nF gate load. The common-drain two-NFET arrangement is a positive-rail starting point. Its +5 V conditions, actual gate load, coarse UV/OV thresholds, hot leakage and fault energy still require analysis. [TI datasheet](https://www.ti.com/lit/ds/symlink/lm7480.pdf).
+
+The LTC4371 official web table suggests a 25 mV forward-servo ceiling and describes negative 4.5–16 V operation, but those claims remain **UNSOURCED in retained evidence** until byte acquisition succeeds. The next negative circuit must include a separately controlled, opposing cutoff FET; an ideal diode alone does not disconnect normal load current. Candidate connectivity is Qideal source at load −12 V, Qcut source at raw −12 V, drains joined. Driver, default-off bias, gate clamp and slew/control paths are not selected. [ADI web PDF](https://www.analog.com/media/en/technical-documentation/data-sheets/4371f.pdf).
+
+Ideal-diode loss includes the controller's servo drop. Do not substitute a two-FET fully-enhanced resistance calculation for that drop. The [architecture decision](../decisions/osc-protection-architecture.mdx) retains the PSMN1R0-40YLD hot-resistance feasibility screen and the LM74502 reverse-current exclusion. No complete MOSFET/driver/SOA solution is selected. The source/inlet still owns maximum delivered current; this batch does not add a mandatory synth-side limiter shunt.
+
+## Fault requirements that remain open
+
+- **All rails and control power:** preserve +12/−12/+5 continuous requirements of 1.7/1.6/0.3 A and maximum-delivered 2.1/2.0/0.5 A. Protection drop remains at most 40 mV. Prove hot resistance, every body diode, enabled reverse current, startup linear SOA and fault let-through. Autonomous load monitors must use guaranteed threshold, tolerance and hysteresis bounds inside 11.53–12.48 V, magnitude 11.74–12.37 V, and 4.81–5.20 V. Capture surviving control power, default inhibit, startup/shutdown latch, all six arrival and failure orders, brownout/hiccup, isolation timing and controlled discharge. An abruptly collapsing raw rail still needs injection bounds before the controller reacts.
+- **Return observability:** rail measurements cannot distinguish a failed inlet return replaced by a patch sleeve. A conventional pilot can share that replacement path; mechanical withdrawal detection does not cover broken conductors. Balanced bipolar loading can produce zero normal return current. Independently excite and observe the actual inlet conductors before their common bond, and prove every/all return-open cases with external returns attached. A proposed magnetic branch test would need a bounded diagnostic return for the single-surviving-wire/no-patch case, saturation/parasitic/noise analysis and an explicit revised pin contract. It is not yet a circuit. Pin 4 remains NC in the current R1 contract.
+- **Local device ground:** remote AGND sensing cannot establish an individual switch's GND pin or internal bond. Redundant traces do not prove a lifted pin safe. Ground-dependent CMOS protection has no supported behavior in that state; either capture independent protection that covers it or leave the gate open. No ground connection may be silently assumed away.
+- **Every signal path:** cover all 82 outputs, 16 sense branches and 30 receiver connections under powered-off/partial-power external ±12 V. Preserve source-facing orientation and local feedback; bound pre-opening clamp current, floating/discharging leakage, delay, charge/energy and enabled contention. A central rail-valid flag does not cover a disconnected receiver's local supplies. Keep references within EXT and storage/summing/timing nodes local.
+- **Current and heat:** the 24.48 V, −1% resistor screen produces 24.78 mA in the 998 Ω drive path, 9.02 mA in a proposed 2.74 kΩ sense path, and about **0.303 W per 499 Ω drive resistor**. These are prospective circuit bounds, not functional guarantees at amplifier absolute maxima. In-range contention need not trip an overvoltage switch. Exact resistor derating, amplifier operating-point dissipation, simultaneous package loading and switch thermal limits remain open.
+- **Precision and implementation:** preserve ≤1 mV load error, ≤2 mV calibrated path error and existing cable/load/settling/stability targets. The twelve issue-58 R/C diagnostic cases do not establish switch fault behavior. Obtain conditioned models/limits and analyze enable/fault transients, leakage, calibration, noise and current. Reconcile every actual package, island, control route and fitted capacitor before regenerating board reservations.
+
+## Next complete cell
+
+Develop **one precision-output protection cell**, with two source-facing channels, jack-side fault-current limiting, permanent local feedback, local all-rail inhibit, and the actual rail/control interfaces. Begin from the issue-58 998 Ω drive and proposed 2.74 kΩ sense, 10 MΩ || 10 nF feedback topology; its passives are not selected by this research. Include a reference-receiver boundary in the same fault matrix. Select the exact passives and clamps only after voltage/current/thermal/precision analysis, then capture the schematic from specifications and verify pin mapping.
+
+That complete cell must expose local-ground loss and return-integrity dependencies explicitly. Do not replicate it 128 times, or mark it implemented, while those dependencies remain unspecified. Follow with the three-rail supervisor/driver/discharge circuit and independently observable return test, then regenerate aggregate outputs and reservations. Physical characterization remains NOT RUN in issue 57; missing design is still issue 59 work.
+
+`python3 scripts/checks/protection58.py --check --require-draft` may pass the conditional contract. `--require-closed` must remain red. Changes to supply/protection source files create a new source epoch for consumers such as the issue-54 snapshot; historical native or electrical receipts are not refreshed or reclassified by this evidence batch.

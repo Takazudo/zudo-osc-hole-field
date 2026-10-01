@@ -32,7 +32,7 @@ The [rail planning ledger](../architecture/osc-rail-ledger.mdx) records the actu
 
 ## Immediate continuation
 
-Use the [engineering continuation checkpoint](./osc-review-checkpoint.mdx) as the authoritative recovery point for the preserved issue-38 work, routing-gate reconciliation, completed nominal K calculation and depth/assembly review. Keep the worktree and recovery artifacts. Issue #38 remains open: current-source physical contact/material/current classes and joined electrical compliance are not established. Resolve the internal architecture tradeoff and protection circuit before accepting dependent routing. The [local R21 sequence](./osc-next-actions.mdx) remains background for mechanical and bench gates.
+Use the [engineering continuation checkpoint](./osc-review-checkpoint.mdx) as the authoritative recovery point for the preserved issue-38 work, routing-gate reconciliation, completed nominal K calculation and depth/assembly review. Keep the worktree and recovery artifacts. Issue #38 remains open: current-source physical contact/material/current classes and joined electrical compliance are not established. The current source retains the ten-board, −100 mm K / 120 mm enclosure proposal with a 110 mm main-wire cut requirement and explicit service tethers. Qualify that assembly and complete the protection circuit before accepting dependent routing. The [local R21 sequence](./osc-next-actions.mdx) remains background for mechanical and bench gates.
 
 {/* osc-hole-field-r21-handoff:start */}
 
@@ -48,7 +48,9 @@ The [fixed-centre selector decision](../decisions/osc-selector-assembly.mdx) sel
 
 ## Protection architecture continuation
 
-The [issue #58 protection audit](../decisions/osc-protection-architecture.mdx) leaves the exact circuit gate **BLOCKED**. It inventories all 82 outputs, 16 feedback paths and 30 octave-reference receivers, records an output-isolation diagnostic and proves why rail-only sensing cannot detect a patch sleeve replacing a failed inlet return. #52/#54 may continue under the explicit NON-ORDERABLE / NOT-ENERGIZABLE contract and amended draft acceptance. Exact rail/control/return-integrity and signal-isolation evidence is tracked in [#59](https://github.com/Takazudo/zudo-osc-hole-field/issues/59), separately from #57’s physical tests. No complete protection circuit is selected.
+The [issue #58 protection audit](../decisions/osc-protection-architecture.mdx) leaves the exact circuit gate **BLOCKED**. It inventories all 82 outputs, 16 feedback paths and 30 octave-reference receivers, records an output-isolation diagnostic and proves why rail-only sensing cannot detect a patch sleeve replacing a failed inlet return. #52/#54 may continue under the explicit NON-ORDERABLE / NOT-ENERGIZABLE contract and amended draft acceptance. Exact rail/control/return-integrity and signal-isolation evidence is tracked in [#59](https://github.com/Takazudo/zudo-osc-hole-field/issues/59), separately from #57's physical tests. No complete protection circuit is selected.
+
+The [protection candidate research](../research/osc-protection-candidates.mdx) now retains TMUX7412FRRPR/LM74800MDRRR source bytes and preserves LTC4371IMS#PBF's unavailable-source gap. The audit uses the amended 1.7/1.6/0.3 A continuous contract with an independent ledger consistency check. Next, capture one complete precision-output protection cell with local feedback, rail inhibit, conditioned switch faults and thermal/precision evidence before replication. The 110-package replacement sensitivity is research only; no input ICs, inlet pins, board geometry or current allocation changed. Local device-ground loss and independently observable inlet-return integrity remain design gaps in #59.
 
 ## Compact LED continuation
 
