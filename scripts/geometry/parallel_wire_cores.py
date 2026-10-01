@@ -56,7 +56,28 @@ def bounds(reference, geometry, fan, adapter, current, maximum_cut_mm, preparati
         raise ValueError('bulk and fan core sections differ')
     metal = number(reference['bulk_metal_radius_mm'], positive=True)
     curve = reference['bulk_curve_bounds']
-    span = number(reference['bulk_span_mm'], positive=True)
+    datum = {key:F(value) for key,value in reference['exact_axial_datums_mm'].items()}
+    height = F(reference['endpoint_reference']['axial_height_exact_mm'])
+    if (datum['endpoint_height'] != height
+            or datum['bulk_front'] != datum['foil_front']+height
+            or datum['bulk_rear'] != datum['foil_rear']-height
+            or datum['bulk_span'] != datum['bulk_rear']-datum['bulk_front']):
+        raise ValueError('exact shared endpoint cuts disagree')
+    stages=[('solder',number(fan['solder_height_upper_mm'],positive=True)),
+            ('tip',number(fan['redistribution_tip_height_mm'],positive=True)),
+            ('main_fan',number(fan['main_fan_height_mm'],positive=True)),
+            ('expansion',number(fan['initial_expansion_height_mm'],positive=True)),
+            ('adapter',number(adapter['arclength_mm'],positive=True))]
+    for i,(foil,target,sign) in enumerate(((datum['foil_front'],datum['bulk_front'],1),
+                                         (datum['foil_rear'],datum['bulk_rear'],-1))):
+        cuts={'foil':str(foil)};position=foil
+        for name,stage_height in stages:
+            position+=sign*stage_height;cuts[name]=str(position)
+        if position!=target or cuts!=reference['exact_endpoint_stage_cuts_mm'][i]:
+            raise ValueError('fan/adapter and bulk stage cuts disagree')
+    span = number(reference['bulk_span_lower_mm'], positive=True)
+    if not span <= datum['bulk_span'] <= number(reference['bulk_span_upper_mm'], positive=True):
+        raise ValueError('bulk span bounds do not enclose exact cuts')
     slope = number(curve['slope_upper'])
     second = number(curve['second_parameter_derivative_norm_upper_mm'], positive=True)
     bend = number(curve['curvature_radius_lower_mm'], positive=True)
@@ -83,7 +104,7 @@ def bounds(reference, geometry, fan, adapter, current, maximum_cut_mm, preparati
     axial += number(adapter['arclength_mm'], positive=True)
     for end_index, (cap, terminal) in enumerate(zip(caps, terminals)):
         cap = list(map(number, cap))
-        z = number(terminal[2])
+        z = datum['foil_front' if end_index == 0 else 'foil_rear']
         required_low, required_high = (z,z+axial) if end_index == 0 else (z-axial,z)
         if cap[2] > required_low or cap[5] < required_high:
             raise ValueError('reference endpoint axial geometry leaves reservation')
@@ -146,6 +167,8 @@ def bounds(reference, geometry, fan, adapter, current, maximum_cut_mm, preparati
     return {
         'status': 'CONDITIONAL constructed reference cores only; actual metal/cut qualification OPEN',
         'core_count': count,
+        'exact_shared_cut_datums_mm': reference['exact_axial_datums_mm'],
+        'exact_endpoint_stage_cuts_mm': reference['exact_endpoint_stage_cuts_mm'],
         'global_graph_injectivity_factor_upper': directed(injectivity, True),
         'full_tube_jacobian_lower': directed(1-metal/bend, False),
         'maximum_root_radius_upper_mm': directed(root_radius, True),

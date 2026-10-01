@@ -117,6 +117,24 @@ class ParallelWireCoreTests(unittest.TestCase):
         args=self.inputs(); args[4]['contained_core_radius_mm']=.174
         with self.assertRaisesRegex(ValueError,'sections'): bounds(*args)
 
+    def test_exact_shared_cut_identity_and_preview_roundoff(self):
+        for board in self.source['load_distribution']['branches']:
+            args=self.inputs(board);r=args[0];result=bounds(*args)
+            d={k:F(v) for k,v in r['exact_axial_datums_mm'].items()}
+            self.assertEqual(d['bulk_rear']-d['bulk_front'],d['bulk_span'])
+            self.assertEqual(F(r['exact_endpoint_stage_cuts_mm'][0]['adapter']),d['bulk_front'])
+            self.assertEqual(F(r['exact_endpoint_stage_cuts_mm'][1]['adapter']),d['bulk_rear'])
+            self.assertLess(r['preview_axial_roundoff_upper_mm'],1e-9)
+            self.assertEqual(result['exact_endpoint_stage_cuts_mm'],r['exact_endpoint_stage_cuts_mm'])
+        args=self.inputs();args[0]['exact_endpoint_stage_cuts_mm'][0]['solder']='0'
+        with self.assertRaisesRegex(ValueError,'stage cuts'):bounds(*args)
+        args=self.inputs();args[0]['exact_axial_datums_mm']['bulk_front']='0'
+        with self.assertRaisesRegex(ValueError,'shared endpoint'):bounds(*args)
+        source=copy.deepcopy(self.source);source['boards']['K']['face_z_mm']=-1e12
+        with self.assertRaisesRegex(ValueError,'preview axial rounding'):
+            registered_route(source,'JL',0,self.fan,self.wire['endpoint_adapter_class'],
+                             metal_radius=self.wire['bulk_potential_class']['maximum_metal_radius_from_bundle_axis_mm'])
+
     def test_full_eighteen_reference_inventory(self):
         for board in self.source['load_distribution']['branches']:
             for index in range(6):

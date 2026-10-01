@@ -11,7 +11,10 @@ The electrical trial and mechanical loom screen now call
 Each endpoint occupies 3.65 mm: 0.35 + 2.9 + 0.1 mm of fan, a separate
 0.05 mm solder prism, and a 0.25 mm registered zero-tilt adapter. Solder energy
 was already charged; its formerly omitted height is now included too.
-The bulk axial spans are 81.1 mm for JL/JR and 79.3 mm for P.
+The displayed bulk axial spans are approximately 81.1 mm for JL/JR and
+79.3 mm for P. Exact rational stage cuts now join fan/adapter and bulk;
+curve bounds enclose the exact span rather than treating a rounded preview
+height as the joining datum. See [individual-core construction](individual-wire-cores.md).
 
 For t in [0,1], the bulk displacement is
 `(bow_x sin²(πt), offset_y (3t²−2t³) + 10 sin²(πt), Ht)`.

@@ -5,6 +5,24 @@ This extends the [shared main-wire reference](main-wire-reference.md). It does
 not specify Alpha Wire 5859 BK005's actual strand lay, qualify a factory cut,
 select material/interface requirements, or close #38/#65.
 
+## Shared exact joining planes
+
+The source-computed numerical foil planes are canonical input datums. The
+component heights are summed as exact rationals, and the same rational cuts
+place solder, tip, fan, adapter and bulk. The record includes every stage cut;
+the helper rejects any disagreement. The exact bulk span is the difference
+between its shared end cuts. Its downward/upward floating enclosures feed
+geometry bounds, and the potential collar span is subtracted exactly before
+rounding downward. Enlarging an endpoint box alone would not establish this
+trace identity.
+
+Endpoint x/y values, zero endpoint slopes, the returned Bishop frame and the
+identical root polygons define matching traces analytically. Floating preview
+points are not the joining datums. Their axial conversion residuals, including
+the displayed span and cap height, are explicitly checked against the 1e−9 mm
+sampling allowance. Current numerical output can differ by rounding units;
+the energy formulas and original acceptance limits are unchanged.
+
 ## Individual bulk lengths
 
 Each source curve lies in one vertical plane, is monotone in depth and has
