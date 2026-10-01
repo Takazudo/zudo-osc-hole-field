@@ -6,7 +6,7 @@ sidebar_position: 11
 
 ## Current continuation — 2 October 2026
 
-Start from the latest `main`. Completed WIP checkpoints through PR #81 are
+Start from the latest `main`. Completed WIP checkpoints through PR #82 are
 merged; the preserved issue-38 worktree is a recovery/evidence store, not the
 active implementation base. Keep its ignored artifacts and the other retained
 experiment worktrees. Issues #38 and #59 remain open, and every schematic and
@@ -25,6 +25,11 @@ channel can retain a settled healthy state across an enclosing range of roughly
 3.00–3.61 V under the stated static assumptions. It cannot establish the narrow
 3.29–3.31 V used by the negative-monitor study. Propagating the wider range loses
 both normal-band margins, and a forced nominal counterexample is retained.
+PR #83 adds fresh passive RC transients for the actual two-resistor timing chain,
+including a declared 0/10 pF input-capacitance sensitivity. Fourteen native runs
+compare both node voltages and charge balance against independent equations,
+with ideal observer crossings checked at two timestep limits. A separate forced
+C109 discharge test does not model actual die clamps or floating control power.
 The next work must establish applicable precision-reference validity and actual
 partial-power behavior, including slow logic-input current and isolation loads. The monitor
 studies below provide inputs and counterexamples, not a completed protection

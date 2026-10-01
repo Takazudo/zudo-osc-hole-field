@@ -53,12 +53,23 @@ any real isolation path.
 
 `python3 scripts/checks/monitor_permit_rc.py --check` runs a fresh pinned native
 worker every time. It requires ngspice 44.2, fresh finite waveforms with complete
-time coverage, matching initial conditions and successful numerical checks.
+time coverage, actual sample spacing within the declared timestep, matching
+initial conditions and successful numerical checks. Parameters are evaluated
+from frozen source bytes, with unchanged-source verification through the run.
+Separate forced-discharge branch currents must also satisfy Ohm’s law.
 Compact metrics, deterministic circuit-deck hashes and source hashes are
 tracked; raw waveforms, decks and native logs remain under unique ignored
 `.circuit-cache/monitor-rc-*` directories. No Git LFS or fabrication exports.
 
 The deck uses the [ngspice documented table-output controls](https://ngspice.sourceforge.io/docs/ngspice-manual.pdf)
 for one time column, named vectors and explicit numeric precision. The report
-rounds only display metrics after the full-precision checks; source parameters
+quantizes only display metrics on explicit physical-unit grids after the full-precision checks; source parameters
 and waveform definitions remain explicit.
+
+
+Verification: 13 focused math/input regression tests, fresh 14-run native
+simulation and fresh native replay pass. Guarded aggregate regeneration passes
+without drift. Independent physics/numerics and freshness/portability reviews
+completed; frozen-source binding, sample-gap validation, absolute display
+quantization and separate branch-current checks address their findings.
+Physical dynamic, installed and bench qualification remain NOT RUN.

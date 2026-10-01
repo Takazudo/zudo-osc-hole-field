@@ -23,21 +23,47 @@ CROSSING_REFINEMENT_TOLERANCE=5e-9
 STEPS=(5e-7,1.25e-7)
 
 
-def source_parameters():
-    spec=json.loads(SPEC.read_text());behavior.build(spec)
+BUNDLES=(ROOT/'.claude/skills/component-passives-family',ROOT/'.claude/skills/component-ti-sn74hc14dr')
+
+
+def source_paths():
+    paths={SPEC,CATALOG,Path(behavior.__file__).resolve(),Path(reference.__file__).resolve(),
+           Path(__file__).resolve(),ROOT/'scripts/kicad/run.sh',ROOT/'scripts/kicad/pin.env'}
+    paths.update(bundle/name for bundle in BUNDLES for name in ('facts.json','manifest.json','sources.json'))
+    return paths
+
+
+def snapshot_sources():
+    return {path:path.read_bytes() for path in sorted(source_paths())}
+
+
+def source_hashes(snapshot):
+    return {str(path.relative_to(ROOT)):hashlib.sha256(data).hexdigest() for path,data in sorted(snapshot.items())}
+
+
+def verify_unchanged(snapshot):
+    if any(path.read_bytes()!=data for path,data in snapshot.items()):
+        raise ValueError('model source changed during native run')
+
+
+def source_parameters(snapshot=None):
+    snapshot=snapshot_sources() if snapshot is None else snapshot
+    if set(snapshot)!=source_paths():raise ValueError('incomplete model source snapshot')
+    read=lambda path:json.loads(snapshot[path])
+    spec=read(SPEC);behavior.build(spec)
     parts={p['ref']:p for p in spec['components']}
-    catalog={p['mpn']:p for p in json.loads(CATALOG.read_text())['parts']}
+    catalog={p['mpn']:p for p in read(CATALOG)['parts']}
     for ref in ('R120','R121'):
         if parts[ref]['value']!=catalog[parts[ref]['mpn']]['resistance_ohm']:
             raise ValueError('timing resistance differs from exact MPN')
-    bundles=[ROOT/'.claude/skills/component-passives-family',ROOT/'.claude/skills/component-ti-sn74hc14dr']
+    bundles=BUNDLES
     requested=[('rec-c-hold','fact-c-hold-capacitance','C109'),('rec-schmitt','fact-schmitt-input-capacitance','U104')]
-    facts=[];paths={SPEC,CATALOG,Path(behavior.__file__).resolve(),Path(reference.__file__).resolve(),Path(__file__).resolve(),ROOT/'scripts/kicad/run.sh',ROOT/'scripts/kicad/pin.env'}
+    facts=[];paths=set(snapshot)
     for bundle,(rid,fid,ref) in zip(bundles,requested):
         paths.update(bundle/name for name in ('facts.json','manifest.json','sources.json'))
-        record=next(r for r in json.loads((bundle/'manifest.json').read_text())['records'] if r['record_id']==rid)
-        fact=next(f for f in json.loads((bundle/'facts.json').read_text())['facts'] if f['fact_id']==fid)
-        source=next(s for s in json.loads((bundle/'sources.json').read_text())['sources'] if s['source_id']==fact['source_id'])
+        record=next(r for r in read(bundle/'manifest.json')['records'] if r['record_id']==rid)
+        fact=next(f for f in read(bundle/'facts.json')['facts'] if f['fact_id']==fid)
+        source=next(s for s in read(bundle/'sources.json')['sources'] if s['source_id']==fact['source_id'])
         if (record['mpn']!=parts[ref]['mpn'] or fact['record_id']!=rid or source['record_id']!=rid
                 or fid not in record['fact_ids'] or fact['source_id'] not in record['source_ids']
                 or fact['verdict']!='PASS - primary-source confirmed' or fact['provenance']!='PRIMARY-SPEC'
@@ -126,6 +152,8 @@ def inspect(case,p,rows,step):
     stop=case['points'][-1][0] if case['mode']=='timing' else case['stop']
     if rows[0][0]>step/10 or abs(rows[-1][0]-stop)>1e-12:
         raise ValueError('native waveform coverage incomplete')
+    if any(b[0]-a[0]>step*(1+1e-8)+1e-15 for a,b in zip(rows,rows[1:])):
+        raise ValueError('native waveform exceeds declared maximum timestep')
     first_expected=case['initial']
     if case['mode']=='forced_clamp':
         tau=p['cap']/(1/p['r1']+1/p['r2'])
@@ -158,6 +186,8 @@ def inspect(case,p,rows,step):
         for row in rows:
             expected=case['initial'][0]*math.exp(-row[0]/tau)
             errors[0]=max(errors[0],abs(row[1]-expected));errors[1]=max(errors[1],abs(row[2]))
+        if any(abs(row[3]-row[1]/p['r1'])>1e-10 or abs(row[4]-row[1]/p['r2'])>1e-10 for row in rows):
+            raise ValueError('forced discharge branch current violates Ohm law')
         available=p['cap']*case['initial'][0]
         left=reference.integrate(rows,3);right=reference.integrate(rows,4)
         residual=p['cap']*rows[-1][1]
@@ -175,8 +205,10 @@ def inspect(case,p,rows,step):
 
 
 def run(check=False):
-    p,paths=source_parameters()
-    before={str(path.relative_to(ROOT)):hashlib.sha256(path.read_bytes()).hexdigest() for path in sorted(paths)}
+    snapshot=snapshot_sources()
+    before=source_hashes(snapshot)
+    p,paths=source_parameters(snapshot)
+    verify_unchanged(snapshot)
     cache=ROOT/'.circuit-cache';cache.mkdir(exist_ok=True)
     directory=Path(tempfile.mkdtemp(prefix='monitor-rc-',dir=cache))
     manifest=[];definitions=cases(p);hashes={}
@@ -201,8 +233,7 @@ def run(check=False):
             if any(abs(x['linear_interpolation_s']-y['linear_interpolation_s'])>CROSSING_REFINEMENT_TOLERANCE for x,y in zip(a,b)):
                 raise ValueError('crossing time fails timestep refinement')
         results[case['name']]=resolutions
-    after={str(path.relative_to(ROOT)):hashlib.sha256(path.read_bytes()).hexdigest() for path in sorted(paths)}
-    if before!=after:raise ValueError('model source changed during native run')
+    verify_unchanged(snapshot)
     data={'status':'CONDITIONAL PASSIVE RC DIAGNOSTICS; NOT IC OR PHYSICAL QUALIFICATION',
           'qualification_accepted':False,'physical_permit_release_bound_s':None,
           'oracle':'ngspice44.2 through pinned KiCad10.0.6 scripts/kicad/run.sh',
@@ -215,13 +246,17 @@ def run(check=False):
              'Nominal C109 uses its retained capacitance test conditions; this does not qualify installed transient capacitance.',
              'Observer fractions are illustrative; no HC74 pulse capture, reset-removal, NPN release or startup guarantee.',
              'Forced zero endpoints do not model die clamps, surviving control power, other stored capacitors or a charged pin-capacitance impulse.']}
-    # Round display-only metrics to prevent insignificant host math-library
-    # differences; acceptance uses unrounded native/analytic values above.
-    def rounded(value):
-        if isinstance(value,float):return float(f'{value:.10g}')
-        if isinstance(value,list):return [rounded(v) for v in value]
-        if isinstance(value,dict):return {k:rounded(v) for k,v in value.items()}
+    # Acceptance uses full precision. Absolute physical-unit display grids
+    # suppress insignificant host-libm cancellation noise in small residuals.
+    def rounded(value,key=''):
+        if isinstance(value,float):
+            digits=9 if key.endswith('_V') else 15 if key.endswith('_C') else 12
+            return round(value,digits)
+        if isinstance(value,list):return [rounded(v,key) for v in value]
+        if isinstance(value,dict):return {k:rounded(v,k) for k,v in value.items()}
         return value
+    data['display_quantization']={'voltage_V':1e-9,'charge_C':1e-15,'time_s':1e-12,'current_A':1e-12,
+                                  'scope':'Display metrics only; zero residual means below display resolution.'}
     data['results']=rounded(results)
     text=json.dumps(data,indent=2)+'\n'
     if check:
