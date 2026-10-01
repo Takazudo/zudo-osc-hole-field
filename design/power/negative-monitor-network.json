@@ -1,0 +1,154 @@
+{
+  "schema_version": 1,
+  "status": "UNSELECTED passive negative-monitor subnetwork; complete protection unimplemented",
+  "protection_implemented": false,
+  "normal_voltage_source": "design/power/supply-architecture-input.json",
+  "resistors": [
+    {
+      "ref": "RN",
+      "mpn": "RT0603BRD0751KL",
+      "ohm": 51000,
+      "nodes": [
+        "VN",
+        "SENSE"
+      ]
+    },
+    {
+      "ref": "RR",
+      "mpn": "RT0603BRD074K99L",
+      "ohm": 4990,
+      "nodes": [
+        "REF",
+        "SENSE"
+      ]
+    },
+    {
+      "ref": "RG",
+      "mpn": "RT0603BRD071KL",
+      "ohm": 1000,
+      "nodes": [
+        "SENSE",
+        "AGND"
+      ]
+    },
+    {
+      "ref": "RB",
+      "mpn": "RT0603BRD0714KL",
+      "ohm": 14000,
+      "nodes": [
+        "REF",
+        "AGND"
+      ]
+    },
+    {
+      "ref": "RU",
+      "mpn": "RT0603BRD078K06L",
+      "ohm": 8060,
+      "nodes": [
+        "REF",
+        "UV"
+      ]
+    },
+    {
+      "ref": "RUG",
+      "mpn": "RT0603BRD071KL",
+      "ohm": 1000,
+      "nodes": [
+        "UV",
+        "AGND"
+      ]
+    },
+    {
+      "ref": "RO",
+      "mpn": "RT0603BRD079K09L",
+      "ohm": 9090,
+      "nodes": [
+        "REF",
+        "OV"
+      ]
+    },
+    {
+      "ref": "ROG",
+      "mpn": "RT0603BRD071KL",
+      "ohm": 1000,
+      "nodes": [
+        "OV",
+        "AGND"
+      ]
+    }
+  ],
+  "comparator": {
+    "mpn": "TLV9022DR",
+    "pins": {
+      "1": "FAULT_N",
+      "2": "SENSE",
+      "3": "UV",
+      "4": "AGND",
+      "5": "SENSE",
+      "6": "OV",
+      "7": "FAULT_N",
+      "8": "+5V"
+    },
+    "input_absolute_V": [
+      -0.3,
+      6
+    ],
+    "internal_hysteresis": false,
+    "propagation_max_s": null,
+    "input_bias_max_A": null,
+    "power_on_reset_guarantee": false
+  },
+  "reference": {
+    "mpn": "REF3433TIDBVR",
+    "pins": {
+      "1": "NC",
+      "2": "AGND",
+      "3": "NC",
+      "4": "+5V",
+      "5": "NC",
+      "6": "REF"
+    },
+    "output_absolute_V": [
+      -0.3,
+      5.5
+    ],
+    "normal_target_V": [
+      3.29,
+      3.31
+    ],
+    "startup_max_s": null,
+    "unpowered_output_leakage_max_A": null
+  },
+  "conditions": {
+    "reference_voltage_scope": "Proposed qualified total reference envelope; not derived as a lifetime/temperature guarantee from typical drift, noise or startup rows.",
+    "resistor_tolerance_fraction": 0.001,
+    "resistor_tcr_per_C": 2.5e-05,
+    "resistor_reference_C": 25,
+    "resistor_temperature_C": [
+      -40,
+      125
+    ],
+    "resistor_temperature_scope": "25 C reference remains an analysis assumption; exact retained sheets do not state it.",
+    "forced_VN_V": [
+      -12.48,
+      12.48
+    ],
+    "forced_VN_scope": "Bounded architecture screening, not a complete reachable-fault envelope proof.",
+    "powered_input_bias_per_pin_A": 1e-07,
+    "powered_comparator_error_V": 0.003,
+    "error_scope": "Proposed qualification envelopes at actual common-mode, supply and temperature; nominal bias and a table offset at other conditions do not establish them.",
+    "cold_uniform_leakage_per_pin_A": 1e-05,
+    "cold_scope": "Each of four comparator inputs and reference output is represented by an independent bounded current source. No manufacturer unpowered-leakage maximum is inferred. The open-reference calculation is a passive limiting case, not the actual unpowered regulator model."
+  },
+  "open_obligations": [
+    "Establish actual reference and pin-current envelopes across all supply and temperature states.",
+    "Independently qualify reference validity: proportional REF/VN collapse can make a bad negative rail appear healthy even with valid comparator supply.",
+    "Capture reference bypass, startup, retained charge and discharge; pin-voltage screening is DC only.",
+    "REF34 section 9.2.2.3 warns of overshoot/shutdown anomalies with slow input transitions and recommends slew near 6 V/ms; T variant has no EN. A slow source ramp does not establish the forced DC reference envelope dynamically.",
+    "Maximum detection/release latency is unestablished; TLV9022 propagation is nominal only.",
+    "There is no internal hysteresis; external latch/filter and real power-qualified permit remain uncaptured.",
+    "Output pullup, receiver and startup gating are uncaptured; the current comparator datasheet removed the POR feature. This network alone is not a valid permit.",
+    "Capture independent inlet-return detection, rail switching and every output/sense/reference isolation path.",
+    "Native schematic, dynamic model, thermal and bench qualification NOT RUN."
+  ]
+}

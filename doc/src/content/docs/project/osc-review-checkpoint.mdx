@@ -14,6 +14,13 @@ Its static margins depend on explicit input-current and resistor-temperature
 assumptions. The all-rail latch, independent return detector, surviving control
 power and output isolation remain unimplemented; issue #59 stays open.
 
+The subsequent `design/power/negative-monitor-network-work-note.md` captures a
+ground-referenced passive sensing candidate with exact resistor corner analysis.
+It corrects a normal-band threshold conflict and retains a proportional
+reference/rail-collapse counterexample. Cold pin-voltage bounds remain
+conditional on qualified leakage; reference validity and a complete permit
+are still required. No installed protection or physical acceptance is claimed.
+
 The recovered issue-38 source checkpoint merged through PR #68 (`9273b3a`),
 followed by the active-schematic ERC digest fix (`79d9d4f`). Continue from the
 current completion branch and preserve `worktrees/38-jack-halves`, now on
