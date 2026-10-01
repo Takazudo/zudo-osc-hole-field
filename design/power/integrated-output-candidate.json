@@ -1,0 +1,248 @@
+{
+  "schema_version": 1,
+  "issue": 59,
+  "status": "CANDIDATE ONLY; NOT SELECTED / NOT IMPLEMENTED / NOT ENERGIZABLE",
+  "protection_implemented": false,
+  "identity": {
+    "manufacturer": "Analog Devices",
+    "mpn": "ADG5401FBCPZ-RL7",
+    "package": "CP-10-16",
+    "supplier_order_code": "505-ADG5401FBCPZ-RL7CT-ND",
+    "supplier_url": "https://www.digikey.com/en/products/detail/analog-devices-inc/ADG5401FBCPZ-RL7/13617828",
+    "scope": "Exact identity observed in official ordering guide and distributor page; PDF bytes unavailable, no stock/assembly claim"
+  },
+  "parts": [
+    {
+      "ref": "U1",
+      "mpn": "OPA4197IPWR",
+      "source": "opa4197",
+      "pins": {
+        "1": "DRIVE",
+        "2": "FB",
+        "3": "SIGNAL",
+        "4": "VP",
+        "5": "GND",
+        "6": "SPARE_B",
+        "7": "SPARE_B",
+        "8": "SPARE_C",
+        "9": "SPARE_C",
+        "10": "GND",
+        "11": "VN",
+        "12": "GND",
+        "13": "SPARE_D",
+        "14": "SPARE_D"
+      }
+    },
+    {
+      "ref": "R_ISO_A",
+      "mpn": "RC1210FR-07499RL",
+      "source": "r499",
+      "value": 499,
+      "pins": {
+        "1": "SW_DRIVE",
+        "2": "ISO_MID"
+      }
+    },
+    {
+      "ref": "R_ISO_B",
+      "mpn": "RC1210FR-07499RL",
+      "source": "r499",
+      "value": 499,
+      "pins": {
+        "1": "ISO_MID",
+        "2": "JACK"
+      }
+    },
+    {
+      "ref": "R_SENSE",
+      "mpn": "RC1210FR-074K99L",
+      "source": "r4990",
+      "value": 4990,
+      "pins": {
+        "1": "JACK",
+        "2": "SENSE_LIMITED"
+      }
+    },
+    {
+      "ref": "R_LOCAL",
+      "mpn": "RC0805FR-0710ML",
+      "source": "r10m",
+      "value": 10000000,
+      "pins": {
+        "1": "DRIVE",
+        "2": "FB"
+      }
+    },
+    {
+      "ref": "C_LOCAL",
+      "mpn": "C0805C103J5GACTU",
+      "source": "c10n",
+      "value": 1e-08,
+      "pins": {
+        "1": "DRIVE",
+        "2": "FB"
+      }
+    },
+    {
+      "ref": "R_BLEED_P",
+      "mpn": "RC0805FR-07100KL",
+      "source": "r100k",
+      "value": 100000,
+      "pins": {
+        "1": "VP",
+        "2": "GND"
+      }
+    },
+    {
+      "ref": "R_BLEED_N",
+      "mpn": "RC0805FR-07100KL",
+      "source": "r100k",
+      "value": 100000,
+      "pins": {
+        "1": "VN",
+        "2": "GND"
+      }
+    },
+    {
+      "ref": "U_PROTECT",
+      "mpn": "ADG5401FBCPZ-RL7",
+      "source": "adg5401f_pdf",
+      "package": "CP-10-16, 10-lead LFCSP, 3 x 2 x 0.75 mm",
+      "pins": {
+        "1": "SW_DRIVE",
+        "2": "SENSE_LIMITED",
+        "3": "FAULT_N",
+        "4": "GND",
+        "5": "VP",
+        "6": "VN",
+        "7": "NC_POC",
+        "8": "PERMIT",
+        "9": "FB",
+        "10": "DRIVE"
+      }
+    },
+    {
+      "ref": "R_IN",
+      "mpn": "RC0805FR-07100KL",
+      "source": "r100k",
+      "value": 100000,
+      "pins": {
+        "1": "PERMIT",
+        "2": "GND"
+      }
+    },
+    {
+      "ref": "R_FF",
+      "mpn": "RC0805FR-07100KL",
+      "source": "r100k",
+      "value": 100000,
+      "pins": {
+        "1": "+5V",
+        "2": "FAULT_N"
+      }
+    },
+    {
+      "ref": "C_BP",
+      "mpn": "GRM188R71H104KA93D",
+      "source": "existing_bypass_identity",
+      "value": 1e-07,
+      "pins": {
+        "1": "VP",
+        "2": "GND"
+      }
+    },
+    {
+      "ref": "C_BN",
+      "mpn": "GRM188R71H104KA93D",
+      "source": "existing_bypass_identity",
+      "value": 1e-07,
+      "pins": {
+        "1": "VN",
+        "2": "GND"
+      }
+    }
+  ],
+  "pin_contract": "Logical pin map from observed datasheet p16 and retained official Fig20; no installed CAD/footprint or exposed-pad inference.",
+  "ports": {
+    "SIGNAL": "Existing local precision +/-5 V signal",
+    "JACK": "Existing tip, +/-5 V into >=10 kohm/<=5 nF, external faults +/-12 V",
+    "VP": "11.53..12.48 V relative to intact GND",
+    "VN": "-12.37..-11.74 V relative to intact GND",
+    "PERMIT": "Independently qualified 0/5 V control, normally low; driver/domain/ground continuity not captured",
+    "FAULT_N": "Open drain with 100 kohm pull-up to original +5 V; not a qualified independent safety detector",
+    "NC_POC": "Intentionally floating POC disables optional 30 kohm source-to-ground pull according to observed datasheet p31"
+  },
+  "observed_datasheet_conditions": {
+    "availability": "SOURCE UNAVAILABLE",
+    "reading": "Official PDF readable via web extraction; raw bytes could not be retained. These are locked conditional observations, not PASS facts.",
+    "operating_dual_magnitude_V": [
+      5,
+      22
+    ],
+    "signal_positive_headroom_V": 2,
+    "table_dual_nominal_V": 15,
+    "table_dual_tolerance_fraction": 0.1,
+    "Ron_max_ohm_at_13p5V_full_temp": 12.5,
+    "feedback_Ron_max_ohm_at_13p5V_full_temp": 3800,
+    "on_leakage_max_A_per_terminal_at_16p5V_125C": 4e-08,
+    "IDD_max_mA_at_16p5V_full_temp": 0.24,
+    "ISS_max_mA_at_16p5V_full_temp": 0.12,
+    "IGND_max_mA_at_16p5V_full_temp": 0.12,
+    "input_max_A_at_0or5V_table_supplies": 5e-06,
+    "logic_high_min_V": 1.3,
+    "logic_low_max_V": 0.8,
+    "fault_VOL_max_V_at_2mA": 0.4,
+    "digital_off_max_s_at_pm15V_300ohm_35pF_10V": 2.2e-07,
+    "negative_fault_response_max_s_at_pm15V_1kohm_5pF": 1.2e-06,
+    "positive_fault_response_max_s_at_pm15V_1kohm_5pF": 2.4e-07,
+    "enable_max_s_at_pm15V_300ohm_35pF_10V": 1.72e-05,
+    "fault_threshold_typ_V": 0.7,
+    "charge_injection_typ_C_at_pm15V_1nF": -2.3e-10,
+    "off_drain_leakage_max_A_grounded_supplies_125C": 5.5e-08,
+    "off_drain_leakage_typ_A_floating_supplies": 2e-06,
+    "source_off_leakage_typ_A_at_pm60V": 1.1e-05,
+    "theta_JA_test_board_C_per_W": 170,
+    "continuous_main_mA_at_125C_full_signal_range": 61,
+    "drain_clamp_abs_A": 0.03,
+    "main_feedback_difference_recommendation_V": 1,
+    "required_bypass_F_each_rail": 1e-07,
+    "ground_reference_always_required": true
+  },
+  "project_guarantees": {
+    "Ron_max_ohm": null,
+    "feedback_Ron_max_ohm": null,
+    "leakage_max_A": null,
+    "supply_current_max_mA": null,
+    "complete_release_max_s": null,
+    "floating_ground_behavior": null
+  },
+  "sensitivity": {
+    "assumed_complete_release_s": [
+      2.2e-07,
+      1.2e-06,
+      1e-05,
+      5e-05
+    ],
+    "diagnostic_rail_excursion_V": 0.3,
+    "future_soft_start_ms": 15
+  },
+  "population": {
+    "precision_outputs": 16,
+    "general_outputs": 66,
+    "reference_connections": 30,
+    "assumed_packages_per_reference": 1,
+    "note": "One dual-path package per precision output; one main-switch package per general output. One per reference is a budget sensitivity only; orientation and protection of both endpoint partial states are unproved."
+  },
+  "open_obligations": [
+    "Retain actual datasheet/UG PDF bytes; web-observed rows do not replace local evidence retention.",
+    "No tabulated +/-12 V dual Ron, leakage, current or release guarantee; operation/headroom alone is not a full performance certificate.",
+    "Datasheet p28 explicitly requires a GND reference always present for proper power-off operation. No independently observable all-rail/reference/local-GND permit circuit exists; this IC alone cannot establish the local-GND-loss obligation.",
+    "Keep998ohm on the external side of S. Moving it to D exposes internal drain rail clamps to unbounded pre-release jack current.",
+    "Internal D-to-DFB feedback is described for powered disable/fault; its resistance, closure skew and availability during arbitrary rail collapse need evidence.",
+    "100nF bypass identity exists but effective capacitance under bias/temperature and installed impedance are not primary-qualified.",
+    "Leakage from S/SFB into supply/GND, floating-rail source injection and reachable capacitance require full worst-case evidence; typical source/floating-drain leakage is not a bound.",
+    "The16-cell precision loop, all66 general outputs including six0..8V ENV outputs and all30 references require full transfer/thermal/transient qualification before replication.",
+    "The conditional ledger retains all auxiliary allowances but cannot bound unsourced +/-12V IC currents, bypass leakage, permit-driver demand or reference orientation overhead.",
+    "No native CAD, switching/loop transient model or bench qualification; original1ms/1mV/2mV/10% targets and all original rail/current/drop limits remain unchanged."
+  ]
+}

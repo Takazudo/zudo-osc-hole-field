@@ -19,8 +19,9 @@ failure and timeout exits, and labels refresh-only results as diagnostic.
 PR #67 is closed as superseded by the reconciliation merged through #68; do
 not apply its older four-file snapshot over the recovered source. Neither patch
 proves electrical compliance. The assembly/proof checkpoint #69 is also merged
-(`c96d5ae`), with passing post-merge CI and regeneration. Further proof and
-protection work continues in #70.
+(`c96d5ae`), with passing post-merge CI and regeneration. The collar/protection
+and selected P-probe checkpoint #70 merged at `c012271`, also with passing
+post-merge CI and regeneration. Further candidate diagnostics continue in #71.
 
 The previously interrupted K calculation has now completed both 2,287-profile
 phases. Its retained guard log records PASS, exit 0, 7,048 seconds. A read-only
@@ -177,6 +178,15 @@ and private allocation. Equation residuals pass the numerical gate, but the
 remaining variational gap needs investigation. The original receipt and fields
 remain unchanged; no full-profile rerun or physical acceptance is claimed.
 
+The subsequent `wetted-restriction-diagnostic.md` uses the retained fields
+without another conductor solve. On conservative subsets where the potential
+trial is forced constant, it bounds present-trial mismatch below by about
+0.0148 mΩ. Its independent restriction-forced floor lower is much weaker,
+about 0.0000404 mΩ. These are lower bounds, not proof that the restriction is
+negligible or that releasing it would meet the target. The next bounded
+calculation keeps the restriction and source epoch fixed while retaining the
+same two potential fields to locate the remaining mismatch.
+
 `design/partition/gh-contact-cell-proposal.md` constructs a finite reference
 termination with a 45.193238 mΩ/end conditional upper and a nonempty correlated
 wire class. Its full terminal traces, weighted strand sharing and once-only wire
@@ -194,6 +204,17 @@ whole-board resistance measurement with parallel returns does not establish
 those premises. Source-owned isolated foil necks are the next geometry candidate;
 actual source selection and the assembly certificate remain open.
 
+The native foil-collar experiment now preserves its failed local-only refill
+checks and a separate corrected K epoch. A source-owned zone priority removes
+K's `zones_intersect` error without changing a native rule. The corrected K
+candidate has zero rule/parity errors, unchanged 7,354 named open edges and
+551 warnings, and all 2,510 prior AGND members connected. Its full nominal dry
+section passes without trimming. This is an explicitly refilled draft geometry;
+nonlocal copper changes remain recorded and require fresh electrical witnesses.
+JL's earlier hashes and failed source-stability guard remain historical, with
+no current-proposal replay claimed. See `foil-collar-native-receipt.md` and
+`foil-collar-k-priority-receipt.md`; no hardware or material acceptance follows.
+
 The protection audit now uses the ledger-derived continuous requirements of
 1.7 / 1.6 / 0.3 A on +12 / −12 / +5 V, while retaining all original delivered
 limits and the 40 mV protection budget. Exact TMUX7412FRRPR and LM74800MDRRR
@@ -208,6 +229,29 @@ source-driven pin connectivity and bounded fault/bias calculations under
 original 1 ms target; this does not prove cold-collapse isolation, a complete
 permit circuit, or whole-instrument bias allocation. No installed substitution
 or source-current ceiling change is made.
+
+The subsequent `design/power/fast-disconnect-candidate*` study rejects the
+drawn resistor-biased discrete sense contact: its coupled DC model demands
+amplifier swing outside the available rails. The full 82-drive bias budget
+also exceeds the existing source ceilings, six 0–8 V envelope outputs lack
+established gate-drive headroom, and a complete release-time bound is absent.
+The 66 general outputs need only one contact each, but remain subject to the
+same power-loss and bipolar fault obligations. A drive-only hybrid with
+current-neutral precision sensing remains a candidate; its 16-cell sensitivity
+does not cover the whole instrument. A proposed 15 ms startup ramp is unselected
+and does not relax shutdown timing. No installed or source-contract change is
+made by this rejected-candidate record.
+
+`design/power/integrated-output-candidate-work-note.md` then examines the exact
+ADG5401FBCPZ-RL7 main/feedback switch. Its integrated feedback path avoids the
+discrete sense-driver bias mechanism under intact ground. The manufacturer's
+documented operation still requires a ground reference, and actual dual-12 V
+performance and complete power-collapse isolation remain unestablished. The
+112-package budget sensitivity retains all installed input ICs and auxiliaries;
+it is not a selected or complete protection population. Official evaluation
+HTML and a schematic image are retained, while the full PDF byte acquisitions
+remain unavailable. No dynamic model, native candidate or physical qualification
+is claimed.
 
 ## Required continuation
 
