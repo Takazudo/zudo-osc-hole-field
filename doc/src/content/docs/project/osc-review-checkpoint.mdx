@@ -176,6 +176,15 @@ established inside the actual JST contact, so the class stays **UNSELECTED**.
 A catalogue contact-resistance number alone does not establish that geometry.
 Neither this cell nor its unit tests close issue #38.
 
+A separate construction in `assembled-harness-collar-proposal.md` avoids
+assuming hidden crimp geometry. It converts a complete passive harness energy
+bound to fixed end traces through two full physical collars. All test current
+must traverse both collars, and every interface and adapter cost remains
+accounted for. A catalogue contact value, a contained metal core, or an installed
+whole-board resistance measurement with parallel returns does not establish
+those premises. Source-owned isolated foil necks are the next geometry candidate;
+actual source selection and the assembly certificate remain open.
+
 The protection audit now uses the ledger-derived continuous requirements of
 1.7 / 1.6 / 0.3 A on +12 / −12 / +5 V, while retaining all original delivered
 limits and the 40 mV protection budget. Exact TMUX7412FRRPR and LM74800MDRRR
@@ -183,6 +192,13 @@ candidate evidence is recorded with its conditions; no components or source
 budgets were substituted. See the [candidate research](../research/osc-protection-candidates.mdx).
 The exact protection implementation remains open under #59, including local
 power/ground loss, return observability, enabled contention and thermal limits.
+
+The isolated precision-output candidate now has exact component receipts,
+source-driven pin connectivity and bounded fault/bias calculations under
+`design/power/precision-output-cell*`. All 24 powered-on model cases meet the
+original 1 ms target; this does not prove cold-collapse isolation, a complete
+permit circuit, or whole-instrument bias allocation. No installed substitution
+or source-current ceiling change is made.
 
 ## Required continuation
 
