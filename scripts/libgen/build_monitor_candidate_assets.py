@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Generate unselected monitor symbols and import three pinned family footprints."""
+"""Generate unselected monitor symbols and derive source-bound candidate footprints."""
 import argparse
 import json
 import re
@@ -9,6 +9,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT))
 from scripts.libgen.gen_courtyards import rewrite as normalize_courtyard
+from scripts.libgen.gen_ic_package_envelopes import render, footprint_with_model
 
 CATALOG = ROOT / 'design/power/monitor-permit-parts.json'
 
@@ -46,10 +47,44 @@ def ic_symbol(part):
             kind = 'power_out'
         elif label.startswith(('RESET','OUT')):
             kind = 'open_collector'
+        if 'pin_types' in part:
+            if set(part['pin_types']) != set(part['pins']):
+                raise ValueError('explicit pin types must cover the complete pin map')
+            kind = part['pin_types'][number]
+            if kind not in ('input', 'output', 'power_in', 'power_out', 'no_connect', 'open_collector'):
+                raise ValueError('unsupported explicit pin type: '+kind)
         text += (f' (pin {kind} line (at {-10.16 if left else 10.16} {y:g} {0 if left else 180}) '
                  f'(length 2.54) (name {json.dumps(label)} (effects (font (size 1.27 1.27)))) '
                  f'(number "{number}" (effects (font (size 1.27 1.27)))))\n')
     return text+'  )\n )\n)\n'
+
+
+def dct_footprint(envelope):
+    """TI DCT0008A example pads; body display and courtyard remain provisional."""
+    dx, dy, _ = envelope['body_max_xyz_mm']
+    px, py = envelope['pad_size_xy_mm']
+    left, right = envelope['pad_row_centres_x_mm']
+    pitch = envelope['pad_pitch_mm']
+    corner_ratio = envelope['pad_corner_radius_mm']/min(px,py)
+    text = ('(footprint "TI_DCT0008A" (version 20260206) (generator "monitor_candidate_assets")\n'
+            ' (layer "F.Cu") (attr smd)\n'
+            ' (descr "TI DCT0008A 4220784/D example land pattern; unqualified draft")\n'
+            ' (property "Reference" "REF**" (at 0 -2.2 0) (layer "F.SilkS") '
+            '(effects (font (size 1 1) (thickness 0.15))))\n'
+            ' (property "Value" "TI_DCT0008A" (at 0 2.2 0) (layer "F.Fab") '
+            '(effects (font (size 1 1) (thickness 0.15))))\n')
+    # Chamfer identifies pin 1. Outline uses drawing maxima, not molded shape.
+    points = [(-dx/2+.4,-dy/2),(dx/2,-dy/2),(dx/2,dy/2),(-dx/2,dy/2),(-dx/2,-dy/2+.4)]
+    for a,b in zip(points,points[1:]+points[:1]):
+        text += (f' (fp_line (start {a[0]:g} {a[1]:g}) (end {b[0]:g} {b[1]:g}) '
+                 '(stroke (width 0.1) (type solid)) (layer "F.Fab"))\n')
+    for number in range(1,9):
+        x = left if number <=4 else right
+        y = (number-2.5)*pitch if number<=4 else (6.5-number)*pitch
+        text += (f' (pad "{number}" smd roundrect (at {x:g} {y:g}) (size {px:g} {py:g}) '
+                 f'(layers "F.Cu" "F.Paste" "F.Mask") (roundrect_rratio {corner_ratio:g}))\n')
+    text += ')\n'
+    return footprint_with_model(normalize_courtyard(text), 'IC_TI_DCT0008A.wrl')
 
 
 def generate(check=False):
@@ -87,7 +122,14 @@ def generate(check=False):
             raise ValueError('upstream model reference changed')
         text = normalize_courtyard(text)
         emit(ROOT/'footprints/kicad/zudo-osc-hole-field.pretty'/(output+'.kicad_mod'), text)
-    print('Prepared 13 candidate identities, retaining existing symbols; 3 family footprints, physical fit unqualified')
+    dct = next((p for p in parts if p['footprint'] == 'TI_DCT0008A'), None)
+    if dct:
+        envelope = dct['package_envelope']
+        text = dct_footprint(envelope)
+        emit(ROOT/'footprints/kicad/zudo-osc-hole-field.pretty/TI_DCT0008A.kicad_mod', text)
+        emit(ROOT/'footprints/kicad/zudo-osc-hole-field.3dshapes/IC_TI_DCT0008A.wrl',
+             render('TI_DCT0008A', tuple(envelope['body_max_xyz_mm']), envelope['scope']))
+    print(f'Prepared {len(parts)} candidate identities; physical fit unqualified')
 
 
 if __name__ == '__main__':

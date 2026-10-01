@@ -31,38 +31,35 @@ EXPECTED_TOPOLOGY = {'U101': {'kind': 'ic',
                    '7': 'REF_SENSE',
                    '8': '+5V'}},
  'U103': {'kind': 'ic',
-          'pins': {'1': None, '2': 'AGND', '3': None, '4': '+5V', '5': None, '6': 'REF'}},
- 'U104': {'kind': 'ic',
-          'pins': {'1': 'FAULT_N',
-                   '2': 'BAD_FAST',
-                   '3': 'BAD_FAST',
-                   '4': 'GOOD_FAST',
-                   '5': 'DELAY_IN',
-                   '6': 'DELAY_INV',
-                   '7': 'AGND',
-                   '8': 'PERMIT_CLK',
-                   '9': 'DELAY_INV',
-                   '10': None,
-                   '11': 'AGND',
-                   '12': None,
-                   '13': 'AGND',
-                   '14': '+5V'}},
- 'U105': {'kind': 'ic',
-          'pins': {'1': 'GOOD_FAST',
-                   '2': '+5V',
-                   '3': 'PERMIT_CLK',
+          'pins': {'1': None,
+                   '2': 'AGND',
+                   '3': None,
                    '4': '+5V',
+                   '5': None,
+                   '6': 'REF'}},
+ 'U104': {'kind': 'ic',
+          'pins': {'1': None,
+                   '2': 'FAULT_N',
+                   '3': 'AGND',
+                   '4': 'GOOD_FAST',
+                   '5': '+5V'}},
+ 'U105': {'kind': 'ic',
+          'pins': {'1': 'PERMIT_CLK',
+                   '2': '+5V',
+                   '3': None,
+                   '4': 'AGND',
                    '5': 'PERMIT_Q',
-                   '6': None,
-                   '7': 'AGND',
-                   '8': None,
-                   '9': None,
-                   '10': '+5V',
-                   '11': 'AGND',
-                   '12': 'AGND',
-                   '13': 'AGND',
-                   '14': '+5V'}},
- 'Q101': {'kind': 'npn', 'pins': {'1': 'BASE', '2': 'AGND', '3': 'PERMIT_SINK'}},
+                   '6': 'GOOD_FAST',
+                   '7': '+5V',
+                   '8': '+5V'}},
+ 'U106': {'kind': 'ic',
+          'pins': {'1': None,
+                   '2': 'DELAY_IN',
+                   '3': 'AGND',
+                   '4': 'PERMIT_CLK',
+                   '5': '+5V'}},
+ 'Q101': {'kind': 'npn',
+          'pins': {'1': 'BASE', '2': 'AGND', '3': 'PERMIT_SINK'}},
  'R101': {'kind': 'resistor', 'pins': {'1': 'VN', '2': 'SENSE'}},
  'R102': {'kind': 'resistor', 'pins': {'1': 'REF', '2': 'SENSE'}},
  'R103': {'kind': 'resistor', 'pins': {'1': 'SENSE', '2': 'AGND'}},
@@ -95,10 +92,11 @@ EXPECTED_TOPOLOGY = {'U101': {'kind': 'ic',
  'C106': {'kind': 'capacitor', 'pins': {'1': 'REF', '2': 'AGND'}},
  'C107': {'kind': 'capacitor', 'pins': {'1': '+5V', '2': 'AGND'}},
  'C108': {'kind': 'capacitor', 'pins': {'1': '+5V', '2': 'AGND'}},
- 'C109': {'kind': 'capacitor', 'pins': {'1': 'DELAY_CAP', '2': 'AGND'}}}
+ 'C109': {'kind': 'capacitor', 'pins': {'1': 'DELAY_CAP', '2': 'AGND'}},
+ 'C110': {'kind': 'capacitor', 'pins': {'1': '+5V', '2': 'AGND'}},
+ 'R125': {'kind': 'resistor', 'pins': {'1': 'DELAY_CAP', '2': 'AGND'}}}
 
-
-def latch_trace(segments, tau, high, low):
+def latch_trace(segments, tau, high, low, gain=1.0):
     """Exact single-pole RC between piecewise constant ideal GOOD_FAST levels.
 
     Input capacitance, gate propagation, reset pulse restrictions and device
@@ -123,7 +121,7 @@ def latch_trace(segments, tau, high, low):
             continue
         if not good:
             q = False
-        end = float(good) + (cap - float(good)) * math.exp(-duration / tau)
+        end = gain*float(good) + (cap - gain*float(good)) * math.exp(-duration / tau)
         if good and not clock and end >= high:
             clock, q = True, True
         elif not good and clock and end <= low:
@@ -150,7 +148,9 @@ def build(spec):
     high, low = m['schmitt_high_fraction'], m['schmitt_low_fraction']
     if not 0 < low < high < 1:
         raise ValueError('invalid Schmitt thresholds')
-    tau = r('R120') * r('C109')
+    gain = r('R125')/(r('R120')+r('R125'))
+    tau = r('C109')/(1/r('R120')+1/r('R125'))
+    if high >= gain:raise ValueError('illustrative high threshold exceeds driven DC gain')
     cases = {}
     rails = ('+12V','VN','+5V')
     for order in itertools.permutations(rails):
@@ -166,12 +166,12 @@ def build(spec):
             seq += [(0.02,all(state.values())) for state in states]
             cases[direction+':'+','.join(order)] = {
                 'rail_order':list(order), 'rail_states':states,
-                'ideal_powered_trace':latch_trace(seq,tau,high,low),
+                'ideal_powered_trace':latch_trace(seq,tau,high,low,gain),
                 'actual_control_power_absent':'UNKNOWN',
                 'scope':'Boolean sequencing only; no rail ramp or monitor propagation simulation'}
     for name, duration in [('short_good_fast_low',tau/100),('long_good_fast_low',tau*10)]:
-        cases[name] = latch_trace([(0.02,False),(0.02,True),(duration,False),(0.02,True)],tau,high,low)
-    cases['control_power_loss'] = latch_trace([(0.02,False),(0.02,True),(0.02,None),(0.02,True)],tau,high,low)
+        cases[name] = latch_trace([(0.02,False),(0.02,True),(duration,False),(0.02,True)],tau,high,low,gain)
+    cases['control_power_loss'] = latch_trace([(0.02,False),(0.02,True),(0.02,None),(0.02,True)],tau,high,low,gain)
     # Nominal resistor-only nodal calculation; no tolerance/leakage claim.
     ref, vn, p5, p12 = 3.3, -12.0, 5.0, 12.0
     sense = (vn/r('R101') + ref/r('R102')) / (1/r('R101')+1/r('R102')+1/r('R103'))
@@ -187,14 +187,15 @@ def build(spec):
         'fault_pullup_low_A': p5/r('R119'),
         'base_drive_zero_junction_drop_A': p5/r('R122'),
         'dummy_load_zero_saturation_drop_A': p12/r('R124'),
-        'timing_charge_C': r('C109')*p5,
+        'timing_charge_C': r('C109')*p5*gain,
+        'timing_bleed_dc_A':p5/(r('R120')+r('R125')),
         'nominal_5V_bypass_charge_C': sum(p['value']*p5 for p in parts.values()
              if p['kind']=='capacitor' and p['pins']['1']=='+5V'),
         'nominal_reference_bypass_charge_C': sum(p['value']*ref for p in parts.values()
              if p['kind']=='capacitor' and p['pins']['1']=='REF'),
         'unaccounted': ['All active-device quiescent and dynamic supply currents',
                         'Reference input current includes its output load plus regulator quiescent current; no free reference supply',
-                        'HC slow-input dynamic current, reference startup and both retained RC clamp-return paths',
+                        'LVC slow-input dynamic current, reference startup and retained-charge return paths',
                         'Tolerance, temperature, effective capacitance and leakage',
                         'Actual isolation population and driver loads'],
         'total_supply_current_A': None,
@@ -211,9 +212,10 @@ def build(spec):
             'Single-pole RC excludes R121/input capacitance and all device propagation',
             'No transistor model or guaranteed physical output release',
             'Actual partial-power and retained-charge behavior remain UNKNOWN'],
-        'nominal_rc_s':tau,
-        'ideal_charge_to_clock_s':-tau*math.log(1-high),
-        'ideal_discharge_to_clock_low_s':-tau*math.log(low),
+        'nominal_rc_s':tau,'driven_dc_gain':gain,
+        'open_drive_nominal_bleed_tau_s':r('R125')*r('C109'),
+        'ideal_charge_to_clock_s':-tau*math.log(1-high/gain),
+        'ideal_discharge_to_clock_low_s':-tau*math.log(low/gain),
         'cases':cases,'nominal_partial_current_ledger':ledger,
         'physical_release_bound_s':None,
     }

@@ -18,8 +18,9 @@ FACTS={
  'U101':('component-monitor-permit-candidates','monitor-tps37044mjofddfrq1',1),
  'U102':('component-monitor-permit-candidates','monitor-tlv9022dr',2),
  'U103':('component-monitor-permit-candidates','monitor-ref3433tidbvr',1),
- 'U104':('component-ti-sn74hc14dr','schmitt',1),
- 'U105':('component-ti-sn74hc74dr','flipflop',1),
+ 'U104':('component-monitor-permit-candidates','monitor-sn74lvc1g17dbvr',1),
+ 'U105':('component-monitor-permit-candidates','monitor-sn74lvc1g74dctr',1),
+ 'U106':('component-monitor-permit-candidates','monitor-sn74lvc1g17dbvr',1),
 }
 
 
@@ -89,6 +90,7 @@ def build(spec, catalog, supply, current):
     iq=sum(row['package_table_sum_A'] for row in current.values())
     base=upper['+5V']/minimum('R122')
     pullup=upper['+5V']/minimum('R119')
+    bleed=upper['+5V']/(minimum('R120')+minimum('R125'))
     p5_div=upper['+5V']/sum(minimum('R'+str(i)) for i in range(116,119))
     p12_div=upper['+12V']/(minimum('R114')+minimum('R115'))
     dummy=upper['+12V']/minimum('R124')
@@ -97,7 +99,7 @@ def build(spec, catalog, supply, current):
     for state,base_on,fault_low,dummy_on in (
             ('fault_asserted',False,True,False),('permit_enabled',True,False,True),
             ('both_paths_conservative_dc_screen',True,True,True)):
-        rows={'+5V':ref_output+iq+p5_div+base*base_on+pullup*fault_low,
+        rows={'+5V':ref_output+iq+p5_div+base*base_on+pullup*fault_low+bleed*base_on,
               '+12V':p12_div+dummy*dummy_on,'-12V':vn}
         states[state]={'conditional_dc_A':rows,
             'unallocated_auxiliary_A':{rail:supply['load_envelope']['auxiliary_allowance_mA'][rail]/1000-value
@@ -110,6 +112,7 @@ def build(spec, catalog, supply, current):
         'reference_load_charged_to_5V_once':True,
         'active_device_source_rows':current,
         'conditional_active_quiescent_sum_A':iq,
+        'timing_bleed_conditional_dc_A':bleed,
         'states':states,
         'original_auxiliary_allowance_mA':supply['load_envelope']['auxiliary_allowance_mA'],
         'original_supply_requirements_changed':False,
@@ -120,7 +123,8 @@ def build(spec, catalog, supply, current):
           'Zero input and output/off-state leakage, ideal logic voltages within supply rails, passive resistor network and zero semiconductor drops for load-current bounds.',
           '25C resistance reference and -40..125C resistor/TCR envelope are analysis conditions, not installed thermal qualification.',
           'Source input current equals reference output demand plus reference IQ; no separate free reference supply.',
-          'Both-path DC screen is not a transient maximum: HC slow-input/switching current, cap charging and two RC clamp-return paths remain unbounded.',
+          'U106 input settles near4.545V at5V supply through the bleed divider: its sustained HIGH is not the ICC rail-level test condition. Additional steady input-stage current is unbounded; the DeltaICC row atVCC-0.6V is not extrapolated.',
+          'Both-path DC screen is not a transient maximum: LVC slow-input/switching current, cap charging and retained-charge return paths remain unbounded.',
           'Actual isolation loads, discharge circuits and remaining protection auxiliaries must share the original 20mA per-rail allowance.',
           'Ground-loss, partial-power/backfeed, startup, thermal and physical qualification remain open.'],
     }

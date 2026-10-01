@@ -7,11 +7,12 @@
     "r1": 10000,
     "r2": 10000,
     "cap": 1e-08,
-    "pin_cap": 1e-11,
+    "pin_cap": 4.5e-12,
+    "bleed": 100000,
     "supply_V": 5.0,
     "high_V": 2.6,
     "low_V": 1.8611111111111112,
-    "observer_scope": "Illustrative compatible threshold pair within4.5V source ranges; not a full-temperature5V guarantee",
+    "observer_scope": "Illustrative threshold fractions only; discrete4.5V/5.5V ranges do not establish interpolation or a5V guarantee",
     "source_facts": [
       {
         "fact_id": "fact-c-hold-capacitance",
@@ -32,14 +33,14 @@
         "expression": ""
       },
       {
-        "fact_id": "fact-schmitt-input-capacitance",
-        "record_id": "rec-schmitt",
-        "source_id": "src-schmitt-datasheet",
-        "class": "GUARANTEED_ELECTRICAL",
-        "value": 10,
+        "fact_id": "fact-monitor-sn74lvc1g17dbvr-input-capacitance-typical",
+        "record_id": "rec-monitor-sn74lvc1g17dbvr",
+        "source_id": "src-monitor-sn74lvc1g17dbvr-datasheet",
+        "class": "TYPICAL_CURVE",
+        "value": 4.5,
         "unit": "pF",
-        "conditions": "Maximum at VCC5V; additional PCB and other tied-device capacitance is not included.",
-        "locator": "src-schmitt-datasheet: printed p5 table5.5 CI",
+        "conditions": "Typical only atVCC3.3V,TA25C,VI=VCC orGND. Not a maximum at5V or during power loss.",
+        "locator": "src-monitor-sn74lvc1g17dbvr-datasheet: printed p6 CI typical column row",
         "provenance": "PRIMARY-SPEC",
         "verdict": "PASS - primary-source confirmed",
         "depends_on": [],
@@ -81,7 +82,7 @@
       "expected_observer_crossings": 1
     },
     {
-      "name": "startup_source_pin_c",
+      "name": "startup_typical_pin_c",
       "mode": "timing",
       "points": [
         [
@@ -106,7 +107,7 @@
         0
       ],
       "observer_initial": false,
-      "pin_cap": 1e-11,
+      "pin_cap": 4.5e-12,
       "expected_observer_crossings": 1
     },
     {
@@ -126,11 +127,11 @@
           0
         ],
         [
-          8.006113899999999e-05,
+          6.5942113e-05,
           0
         ],
         [
-          8.0062139e-05,
+          6.5943113e-05,
           5.0
         ],
         [
@@ -139,15 +140,15 @@
         ]
       ],
       "initial": [
-        5.0,
-        5.0
+        4.545454545454546,
+        4.545454545454546
       ],
       "observer_initial": true,
       "pin_cap": 0,
       "expected_observer_crossings": 0
     },
     {
-      "name": "short_good_fast_pulse_source_pin_c",
+      "name": "short_good_fast_pulse_typical_pin_c",
       "mode": "timing",
       "points": [
         [
@@ -163,11 +164,11 @@
           0
         ],
         [
-          8.006113899999999e-05,
+          6.5942113e-05,
           0
         ],
         [
-          8.0062139e-05,
+          6.5943113e-05,
           5.0
         ],
         [
@@ -176,11 +177,11 @@
         ]
       ],
       "initial": [
-        5.0,
-        5.0
+        4.545454545454546,
+        4.545454545454546
       ],
       "observer_initial": true,
-      "pin_cap": 1e-11,
+      "pin_cap": 4.5e-12,
       "expected_observer_crossings": 0
     },
     {
@@ -200,11 +201,11 @@
           0
         ],
         [
-          0.00011959170799999999,
+          9.8413169e-05,
           0
         ],
         [
-          0.00011959270799999999,
+          9.8414169e-05,
           5.0
         ],
         [
@@ -213,15 +214,15 @@
         ]
       ],
       "initial": [
-        5.0,
-        5.0
+        4.545454545454546,
+        4.545454545454546
       ],
       "observer_initial": true,
       "pin_cap": 0,
       "expected_observer_crossings": 2
     },
     {
-      "name": "long_good_fast_pulse_source_pin_c",
+      "name": "long_good_fast_pulse_typical_pin_c",
       "mode": "timing",
       "points": [
         [
@@ -237,11 +238,11 @@
           0
         ],
         [
-          0.00011959170799999999,
+          9.8413169e-05,
           0
         ],
         [
-          0.00011959270799999999,
+          9.8414169e-05,
           5.0
         ],
         [
@@ -250,11 +251,11 @@
         ]
       ],
       "initial": [
-        5.0,
-        5.0
+        4.545454545454546,
+        4.545454545454546
       ],
       "observer_initial": true,
-      "pin_cap": 1e-11,
+      "pin_cap": 4.5e-12,
       "expected_observer_crossings": 2
     },
     {
@@ -266,6 +267,94 @@
       ],
       "pin_cap": 0,
       "stop": 0.001
+    },
+    {
+      "name": "open_drive_zero_pin_c",
+      "mode": "open_drive",
+      "points": [
+        [
+          0,
+          0
+        ],
+        [
+          0.005,
+          0
+        ]
+      ],
+      "initial": [
+        5.0,
+        5.0
+      ],
+      "observer_initial": true,
+      "pin_cap": 0,
+      "expected_observer_crossings": 1
+    },
+    {
+      "name": "open_drive_typical_pin_c",
+      "mode": "open_drive",
+      "points": [
+        [
+          0,
+          0
+        ],
+        [
+          0.005,
+          0
+        ]
+      ],
+      "initial": [
+        5.0,
+        5.0
+      ],
+      "observer_initial": true,
+      "pin_cap": 4.5e-12,
+      "expected_observer_crossings": 1
+    },
+    {
+      "name": "open_drive_assumed_20ua_zero_pin_c",
+      "mode": "open_drive",
+      "points": [
+        [
+          0,
+          0
+        ],
+        [
+          0.005,
+          0
+        ]
+      ],
+      "initial": [
+        5.0,
+        5.0
+      ],
+      "observer_initial": true,
+      "pin_cap": 0,
+      "expected_observer_crossings": 0,
+      "injection_A": 2e-05,
+      "scope": "Assumed external leakage sensitivity, not a source-guaranteed device current"
+    },
+    {
+      "name": "open_drive_assumed_20ua_typical_pin_c",
+      "mode": "open_drive",
+      "points": [
+        [
+          0,
+          0
+        ],
+        [
+          0.005,
+          0
+        ]
+      ],
+      "initial": [
+        5.0,
+        5.0
+      ],
+      "observer_initial": true,
+      "pin_cap": 4.5e-12,
+      "expected_observer_crossings": 0,
+      "injection_A": 2e-05,
+      "scope": "Assumed external leakage sensitivity, not a source-guaranteed device current"
     }
   ],
   "results": {
@@ -278,19 +367,21 @@
             {
               "transition": "rise_high",
               "bracket_s": [
-                7.4243523e-05,
-                7.4743523e-05
+                7.7944876e-05,
+                7.8444876e-05
               ],
-              "linear_interpolation_s": 7.4397259e-05
+              "linear_interpolation_s": 7.8148687e-05
             }
           ]
         },
-        "charge_balance_error_C": 2.53e-13,
+        "charge_balance_error_C": 2.64e-13,
+        "bleed_charge_C": 4.1276931e-08,
+        "assumed_injected_charge_C": 0.0,
         "maximum_voltage_difference_V": [
-          1.2261e-05,
-          1.2261e-05
+          1.2693e-05,
+          1.2693e-05
         ],
-        "sample_count": 2120,
+        "sample_count": 2131,
         "step_limit_s": 5e-07
       },
       {
@@ -301,23 +392,25 @@
             {
               "transition": "rise_high",
               "bracket_s": [
-                7.438468e-05,
-                7.450968e-05
+                7.8116336e-05,
+                7.8241336e-05
               ],
-              "linear_interpolation_s": 7.4397387e-05
+              "linear_interpolation_s": 7.8148839e-05
             }
           ]
         },
-        "charge_balance_error_C": 1.9e-14,
+        "charge_balance_error_C": 2.1e-14,
+        "bleed_charge_C": 4.1276908e-08,
+        "assumed_injected_charge_C": 0.0,
         "maximum_voltage_difference_V": [
-          9.54e-07,
-          9.54e-07
+          1.048e-06,
+          1.048e-06
         ],
-        "sample_count": 8066,
+        "sample_count": 8068,
         "step_limit_s": 1.25e-07
       }
     ],
-    "startup_source_pin_c": [
+    "startup_typical_pin_c": [
       {
         "ideal_observer": {
           "initial": false,
@@ -326,19 +419,21 @@
             {
               "transition": "rise_high",
               "bracket_s": [
-                7.44039e-05,
-                7.49039e-05
+                7.7884018e-05,
+                7.8384018e-05
               ],
-              "linear_interpolation_s": 7.4570691e-05
+              "linear_interpolation_s": 7.8228375e-05
             }
           ]
         },
-        "charge_balance_error_C": 2.53e-13,
+        "charge_balance_error_C": 2.64e-13,
+        "bleed_charge_C": 4.1275071e-08,
+        "assumed_injected_charge_C": 0.0,
         "maximum_voltage_difference_V": [
-          1.2238e-05,
-          1.225e-05
+          1.2684e-05,
+          1.269e-05
         ],
-        "sample_count": 2438,
+        "sample_count": 2346,
         "step_limit_s": 5e-07
       },
       {
@@ -349,19 +444,21 @@
             {
               "transition": "rise_high",
               "bracket_s": [
-                7.4533933e-05,
-                7.4658933e-05
+                7.8219539e-05,
+                7.8344539e-05
               ],
-              "linear_interpolation_s": 7.4570816e-05
+              "linear_interpolation_s": 7.8228554e-05
             }
           ]
         },
-        "charge_balance_error_C": 1.9e-14,
+        "charge_balance_error_C": 2.1e-14,
+        "bleed_charge_C": 4.1275049e-08,
+        "assumed_injected_charge_C": 0.0,
         "maximum_voltage_difference_V": [
-          9.46e-07,
-          9.47e-07
+          1.045e-06,
+          1.046e-06
         ],
-        "sample_count": 8384,
+        "sample_count": 8283,
         "step_limit_s": 1.25e-07
       }
     ],
@@ -372,12 +469,14 @@
           "final": true,
           "crossings": []
         },
-        "charge_balance_error_C": 1e-15,
+        "charge_balance_error_C": 2e-15,
+        "bleed_charge_C": 4.2502477e-08,
+        "assumed_injected_charge_C": 0.0,
         "maximum_voltage_difference_V": [
-          1.5086e-05,
-          1.5086e-05
+          1.6139e-05,
+          1.6139e-05
         ],
-        "sample_count": 2047,
+        "sample_count": 2048,
         "step_limit_s": 5e-07
       },
       {
@@ -387,15 +486,17 @@
           "crossings": []
         },
         "charge_balance_error_C": 0.0,
+        "bleed_charge_C": 4.2502647e-08,
+        "assumed_injected_charge_C": 0.0,
         "maximum_voltage_difference_V": [
-          1.199e-06,
-          1.199e-06
+          1.284e-06,
+          1.284e-06
         ],
         "sample_count": 8044,
         "step_limit_s": 1.25e-07
       }
     ],
-    "short_good_fast_pulse_source_pin_c": [
+    "short_good_fast_pulse_typical_pin_c": [
       {
         "ideal_observer": {
           "initial": true,
@@ -403,11 +504,13 @@
           "crossings": []
         },
         "charge_balance_error_C": 2e-15,
+        "bleed_charge_C": 4.2502477e-08,
+        "assumed_injected_charge_C": 0.0,
         "maximum_voltage_difference_V": [
-          1.4857e-05,
-          1.6137e-05
+          1.601e-05,
+          1.685e-05
         ],
-        "sample_count": 2161,
+        "sample_count": 2137,
         "step_limit_s": 5e-07
       },
       {
@@ -417,11 +520,13 @@
           "crossings": []
         },
         "charge_balance_error_C": 0.0,
+        "bleed_charge_C": 4.2502648e-08,
+        "assumed_injected_charge_C": 0.0,
         "maximum_voltage_difference_V": [
-          1.188e-06,
-          2.485e-06
+          1.277e-06,
+          2.121e-06
         ],
-        "sample_count": 8144,
+        "sample_count": 8127,
         "step_limit_s": 1.25e-07
       }
     ],
@@ -434,27 +539,29 @@
             {
               "transition": "fall_low",
               "bracket_s": [
-                9.9635548e-05,
-                0.000100135548
+                8.2113389e-05,
+                8.2613389e-05
               ],
-              "linear_interpolation_s": 9.9826387e-05
+              "linear_interpolation_s": 8.217747e-05
             },
             {
               "transition": "rise_high",
               "bracket_s": [
-                0.000156413989,
-                0.000156913989
+                0.000137032739,
+                0.000137532739
               ],
-              "linear_interpolation_s": 0.000156538089
+              "linear_interpolation_s": 0.000137446139
             }
           ]
         },
-        "charge_balance_error_C": 3e-15,
+        "charge_balance_error_C": 5e-15,
+        "bleed_charge_C": 4.102658e-08,
+        "assumed_injected_charge_C": 0.0,
         "maximum_voltage_difference_V": [
-          1.5468e-05,
-          1.5468e-05
+          1.6983e-05,
+          1.6983e-05
         ],
-        "sample_count": 2051,
+        "sample_count": 2052,
         "step_limit_s": 5e-07
       },
       {
@@ -465,31 +572,33 @@
             {
               "transition": "fall_low",
               "bracket_s": [
-                9.9784658e-05,
-                9.9909658e-05
+                8.2154119e-05,
+                8.2279119e-05
               ],
-              "linear_interpolation_s": 9.9826877e-05
+              "linear_interpolation_s": 8.2178092e-05
             },
             {
               "transition": "rise_high",
               "bracket_s": [
-                0.000156517013,
-                0.000156642013
+                0.000137358377,
+                0.000137483377
               ],
-              "linear_interpolation_s": 0.00015653773
+              "linear_interpolation_s": 0.000137445818
             }
           ]
         },
-        "charge_balance_error_C": 1e-15,
+        "charge_balance_error_C": 0.0,
+        "bleed_charge_C": 4.1026751e-08,
+        "assumed_injected_charge_C": 0.0,
         "maximum_voltage_difference_V": [
-          1.199e-06,
-          1.199e-06
+          1.289e-06,
+          1.289e-06
         ],
-        "sample_count": 8045,
+        "sample_count": 8046,
         "step_limit_s": 1.25e-07
       }
     ],
-    "long_good_fast_pulse_source_pin_c": [
+    "long_good_fast_pulse_typical_pin_c": [
       {
         "ideal_observer": {
           "initial": true,
@@ -498,27 +607,29 @@
             {
               "transition": "fall_low",
               "bracket_s": [
-                9.9770119e-05,
-                0.000100270119
+                8.2073977e-05,
+                8.2573977e-05
               ],
-              "linear_interpolation_s": 0.000100025288
+              "linear_interpolation_s": 8.225918e-05
             },
             {
               "transition": "rise_high",
               "bracket_s": [
-                0.000156280557,
-                0.000156780557
+                0.000137306996,
+                0.000137806996
               ],
-              "linear_interpolation_s": 0.000156622805
+              "linear_interpolation_s": 0.00013748597
             }
           ]
         },
-        "charge_balance_error_C": 1e-15,
+        "charge_balance_error_C": 4e-15,
+        "bleed_charge_C": 4.1026581e-08,
+        "assumed_injected_charge_C": 0.0,
         "maximum_voltage_difference_V": [
-          1.5278e-05,
-          1.596e-05
+          1.6883e-05,
+          1.7418e-05
         ],
-        "sample_count": 2173,
+        "sample_count": 2148,
         "step_limit_s": 5e-07
       },
       {
@@ -529,38 +640,41 @@
             {
               "transition": "fall_low",
               "bracket_s": [
-                9.9956059e-05,
-                0.000100081059
+                8.2242227e-05,
+                8.2367227e-05
               ],
-              "linear_interpolation_s": 0.000100025755
+              "linear_interpolation_s": 8.2259628e-05
             },
             {
               "transition": "rise_high",
               "bracket_s": [
-                0.000156527467,
-                0.000156652467
+                0.000137401014,
+                0.000137526014
               ],
-              "linear_interpolation_s": 0.000156622411
+              "linear_interpolation_s": 0.00013748553
             }
           ]
         },
-        "charge_balance_error_C": 1e-15,
+        "charge_balance_error_C": 0.0,
+        "bleed_charge_C": 4.1026752e-08,
+        "assumed_injected_charge_C": 0.0,
         "maximum_voltage_difference_V": [
-          1.188e-06,
-          2.398e-06
+          1.282e-06,
+          1.839e-06
         ],
-        "sample_count": 8155,
+        "sample_count": 8135,
         "step_limit_s": 1.25e-07
       }
     ],
     "forced_zero_endpoints": [
       {
-        "forced_C109_only_tau_s": 5e-05,
-        "left_charge_C": 2.4997298e-08,
-        "right_charge_C": 2.4997298e-08,
+        "forced_C109_only_tau_s": 4.7619048e-05,
+        "left_charge_C": 2.3806832e-08,
+        "right_charge_C": 2.3806832e-08,
+        "bleed_charge_C": 2.380683e-09,
         "first_sample_branch_current_A": [
-          0.000499950005,
-          0.000499950005
+          0.000499947506,
+          0.000499947506
         ],
         "ideal_t0_branch_current_A": [
           0.0005,
@@ -568,22 +682,23 @@
         ],
         "integration_start_s": 5e-09,
         "available_t0_charge_C": 5e-08,
-        "available_first_sample_charge_C": 4.9995e-08,
+        "available_first_sample_charge_C": 4.9994751e-08,
         "scope": "Both resistor endpoints forced to0V; pin capacitance omitted. Not a die-clamp or floating-supply model.",
         "maximum_voltage_difference_V": [
-          1.9843e-05,
+          1.9836e-05,
           0.0
         ],
-        "sample_count": 2606,
+        "sample_count": 2651,
         "step_limit_s": 5e-07
       },
       {
-        "forced_C109_only_tau_s": 5e-05,
-        "left_charge_C": 2.4999337e-08,
-        "right_charge_C": 2.4999337e-08,
+        "forced_C109_only_tau_s": 4.7619048e-05,
+        "left_charge_C": 2.3808859e-08,
+        "right_charge_C": 2.3808859e-08,
+        "bleed_charge_C": 2.380886e-09,
         "first_sample_branch_current_A": [
-          0.0004999875,
-          0.0004999875
+          0.000499986875,
+          0.000499986875
         ],
         "ideal_t0_branch_current_A": [
           0.0005,
@@ -591,53 +706,234 @@
         ],
         "integration_start_s": 1.25e-09,
         "available_t0_charge_C": 5e-08,
-        "available_first_sample_charge_C": 4.999875e-08,
+        "available_first_sample_charge_C": 4.9998688e-08,
         "scope": "Both resistor endpoints forced to0V; pin capacitance omitted. Not a die-clamp or floating-supply model.",
         "maximum_voltage_difference_V": [
-          3.736e-06,
+          4.137e-06,
           0.0
         ],
         "sample_count": 8011,
         "step_limit_s": 1.25e-07
       }
+    ],
+    "open_drive_zero_pin_c": [
+      {
+        "ideal_observer": {
+          "initial": true,
+          "final": false,
+          "crossings": [
+            {
+              "transition": "fall_low",
+              "bracket_s": [
+                0.00098798,
+                0.00098848
+              ],
+              "linear_interpolation_s": 0.000988264182
+            }
+          ]
+        },
+        "charge_balance_error_C": 3e-15,
+        "bleed_charge_C": 4.966285e-08,
+        "assumed_injected_charge_C": 0.0,
+        "maximum_voltage_difference_V": [
+          1.5e-07,
+          1.5e-07
+        ],
+        "sample_count": 10011,
+        "step_limit_s": 5e-07
+      },
+      {
+        "ideal_observer": {
+          "initial": true,
+          "final": false,
+          "crossings": [
+            {
+              "transition": "fall_low",
+              "bracket_s": [
+                0.000988245,
+                0.00098837
+              ],
+              "linear_interpolation_s": 0.000988264227
+            }
+          ]
+        },
+        "charge_balance_error_C": 0.0,
+        "bleed_charge_C": 4.966304e-08,
+        "assumed_injected_charge_C": 0.0,
+        "maximum_voltage_difference_V": [
+          9e-09,
+          9e-09
+        ],
+        "sample_count": 40011,
+        "step_limit_s": 1.25e-07
+      }
+    ],
+    "open_drive_typical_pin_c": [
+      {
+        "ideal_observer": {
+          "initial": true,
+          "final": false,
+          "crossings": [
+            {
+              "transition": "fall_low",
+              "bracket_s": [
+                0.000988693154,
+                0.000989193154
+              ],
+              "linear_interpolation_s": 0.000988753883
+            }
+          ]
+        },
+        "charge_balance_error_C": 3e-15,
+        "bleed_charge_C": 4.9684439e-08,
+        "assumed_injected_charge_C": 0.0,
+        "maximum_voltage_difference_V": [
+          1.53e-07,
+          1.161e-06
+        ],
+        "sample_count": 10031,
+        "step_limit_s": 5e-07
+      },
+      {
+        "ideal_observer": {
+          "initial": true,
+          "final": false,
+          "crossings": [
+            {
+              "transition": "fall_low",
+              "bracket_s": [
+                0.000988701377,
+                0.000988826377
+              ],
+              "linear_interpolation_s": 0.000988753948
+            }
+          ]
+        },
+        "charge_balance_error_C": 0.0,
+        "bleed_charge_C": 4.9684629e-08,
+        "assumed_injected_charge_C": 0.0,
+        "maximum_voltage_difference_V": [
+          1e-08,
+          8.37e-07
+        ],
+        "sample_count": 40025,
+        "step_limit_s": 1.25e-07
+      }
+    ],
+    "open_drive_assumed_20ua_zero_pin_c": [
+      {
+        "ideal_observer": {
+          "initial": true,
+          "final": true,
+          "crossings": []
+        },
+        "charge_balance_error_C": 2e-15,
+        "bleed_charge_C": 1.2979761e-07,
+        "assumed_injected_charge_C": 9.99999e-08,
+        "maximum_voltage_difference_V": [
+          9e-08,
+          9e-08
+        ],
+        "sample_count": 10011,
+        "step_limit_s": 5e-07
+      },
+      {
+        "ideal_observer": {
+          "initial": true,
+          "final": true,
+          "crossings": []
+        },
+        "charge_balance_error_C": 0.0,
+        "bleed_charge_C": 1.29797799e-07,
+        "assumed_injected_charge_C": 9.9999975e-08,
+        "maximum_voltage_difference_V": [
+          6e-09,
+          6e-09
+        ],
+        "sample_count": 40011,
+        "step_limit_s": 1.25e-07
+      }
+    ],
+    "open_drive_assumed_20ua_typical_pin_c": [
+      {
+        "ideal_observer": {
+          "initial": true,
+          "final": true,
+          "crossings": []
+        },
+        "charge_balance_error_C": 2e-15,
+        "bleed_charge_C": 1.29810564e-07,
+        "assumed_injected_charge_C": 9.99999e-08,
+        "maximum_voltage_difference_V": [
+          9.1e-08,
+          6.97e-07
+        ],
+        "sample_count": 10028,
+        "step_limit_s": 5e-07
+      },
+      {
+        "ideal_observer": {
+          "initial": true,
+          "final": true,
+          "crossings": []
+        },
+        "charge_balance_error_C": 0.0,
+        "bleed_charge_C": 1.29810753e-07,
+        "assumed_injected_charge_C": 9.9999975e-08,
+        "maximum_voltage_difference_V": [
+          6e-09,
+          7.03e-07
+        ],
+        "sample_count": 40022,
+        "step_limit_s": 1.25e-07
+      }
     ]
   },
   "input_sha256": {
+    ".claude/skills/component-monitor-permit-candidates/facts.json": "52cbedf855e877bc262593fb6cb90614c1367b1847d832eda04c3378a67a0006",
+    ".claude/skills/component-monitor-permit-candidates/manifest.json": "61ae9e0473b164582e33405ee270708fa8982fa49576883d04a3d8216c8db3de",
+    ".claude/skills/component-monitor-permit-candidates/sources.json": "39bfb6b2111ad314fd7276c730053876701ee490c110ab0f33f2d329ed74dca9",
     ".claude/skills/component-passives-family/facts.json": "d6bb04afca3f677eec0eecfde5f42fbd7118b5987cc14b6d4e54aa892cc9a651",
     ".claude/skills/component-passives-family/manifest.json": "9b4e8962c107c0ed75c9e42b417df9459dd26d3e7c974ab27544ccbd22aa7f16",
     ".claude/skills/component-passives-family/sources.json": "cba96f11fb2d14c18af95420ef663b5b7797005399eb3c1a8eb41539dd31460a",
-    ".claude/skills/component-ti-sn74hc14dr/facts.json": "49d8cd37cbe3b5e57ed1038e528e013ad07bd0558a6c10a7dab612136e535cd7",
-    ".claude/skills/component-ti-sn74hc14dr/manifest.json": "1cee3143639acddeb12148a704881166b99779fe53bf747abe3e7ae9532d6c12",
-    ".claude/skills/component-ti-sn74hc14dr/sources.json": "118e61bceb7128c89820a56efe9cc89d60628f4ddf2560cdc88f008b6f175ba8",
-    "design/power/monitor-permit-draft.json": "6680ba13b0a5cae3ce9fc3355564c0c0163c5123c2bf95bebf6e2de7f417c053",
-    "design/power/monitor-permit-parts.json": "464dbd6800724eccb82a49ff495b2da585b4d5828fd27a17ef41a96698f94871",
-    "scripts/checks/monitor_permit_behavior.py": "b0ba2affb7209a63da28bb020ca0654ae27a5d0c4e3e630a7f66036235c88bf6",
-    "scripts/checks/monitor_permit_rc.py": "46a03ae6d11e41378bacff736d1e3cbc1590176cf1e1673d24bc582951465dd9",
-    "scripts/checks/monitor_rc_math.py": "c3679d476e49615ae4015989f46520cf2356e0cc2384435612cb979f4bf6290e",
+    "design/power/monitor-permit-draft.json": "953a938e7b700e64790d22acacb44fa1401f1729805be605a43ac709bd8b504a",
+    "design/power/monitor-permit-parts.json": "1fe624d54d87dc7c67e41561a7650bf0173b3a9ea33992b40c8ab1ed5460fa3a",
+    "scripts/checks/monitor_permit_behavior.py": "c164e46142c12cb28003f796a6883d5215b58fe346b1fa9f11f41f344b2cfcb6",
+    "scripts/checks/monitor_permit_rc.py": "d6e9a39787e4d053015f93f45dc4d736ec6fddcf21bfde26a706b84318b2cca7",
+    "scripts/checks/monitor_rc_math.py": "70d338ea6e0fb319aeb330b7f7febda61ca284fec792bb5191af1355bce7a549",
     "scripts/kicad/pin.env": "769e2be0b61e7d92a6930684f13166b7dc098522008de3969cd30d6c4a363246",
     "scripts/kicad/run.sh": "bc74f0ade82c29d64c44119ea435bc7bfd164fc06e9afff240a3cb2b44b272a0"
   },
   "deck_sha256": {
-    "startup_zero_pin_c_0": "a74ded54ca4fc90e5032a164ed4b9601867466b1a051dc7ac256573c78926efd",
-    "startup_zero_pin_c_1": "c86460a47023540206d721ea86fb1ed8f192398e8f2484af72ede7e6cd92cc0a",
-    "startup_source_pin_c_0": "a97e74c081ed7db53827d1e624eab31a06c7c01cf776800efdf144eb4d83aabf",
-    "startup_source_pin_c_1": "eca234ff65cda941f3e21ab4e1d3f923c3bd32f3ffc047aaa53fff1c298fabd7",
-    "short_good_fast_pulse_zero_pin_c_0": "fca557c639df0e3e98c434de5db5ffb9a765f6d0cfdcab0e87089506d3a43aa2",
-    "short_good_fast_pulse_zero_pin_c_1": "bcba3a910d49964cb5059070d9c30152d1f7262b8fda8c53f9b0a8b07f00a692",
-    "short_good_fast_pulse_source_pin_c_0": "c8537b05980566fe57af57284d6f1c0a253b056429e2e1b1abcdc3d6cc9d1a94",
-    "short_good_fast_pulse_source_pin_c_1": "543586da57ea63b9c73e9a728e644e94d7d3c1d5cd54177968fa35e3f16ebaf0",
-    "long_good_fast_pulse_zero_pin_c_0": "827a8ff576f5cda99c4d9013d51f5840f3c4ebf87ff4f68fc2a765f5cd73c035",
-    "long_good_fast_pulse_zero_pin_c_1": "17553ee36b2ba6164d09d955d43aadd1ab0f0da1438f71970e6cd6380556f267",
-    "long_good_fast_pulse_source_pin_c_0": "e49401547f7417a5b9b662aa4c7182b9d186afe30ea22093bb6856b3805f7257",
-    "long_good_fast_pulse_source_pin_c_1": "315555907d7bd857ccb69237360a8f356b26b754f92b9fc7ca016cf111b63c1e",
-    "forced_zero_endpoints_0": "696c95251fd1e7c7a84da5b221d1fc85e08317f3d0ff27328bc4f816bf3bb582",
-    "forced_zero_endpoints_1": "a5f843b3a8f08635b9a66cdbf512464d2afebf8356ae9d7a134e3d649d11fdce"
+    "startup_zero_pin_c_0": "ddcb5cd492490412343b2b2f2421dd7283323b753dcdb1f53b0ec559bdfba2c7",
+    "startup_zero_pin_c_1": "456297ecf64d25f4091917ba877d3558b2d726249446afc0a6907f7334e4ce69",
+    "startup_typical_pin_c_0": "f1b835ca4d42ea03d38219198ca91c5f74bdbd357caa3565be927815aa7420a1",
+    "startup_typical_pin_c_1": "af42ecde3b5e5819f319a10244ea8ce9662f6d2f305f9fefc29742b37b134b5c",
+    "short_good_fast_pulse_zero_pin_c_0": "52c7562249d8c0d61268efb9dc9237a84442760b3fdd352f21bdaf929718e716",
+    "short_good_fast_pulse_zero_pin_c_1": "80c4eaedd5c24ec3b1f80d5311f87f81346e9b013e12ff61eb62f278499f7c30",
+    "short_good_fast_pulse_typical_pin_c_0": "12a8156895315da7e58566c073873724fd2c8f2ae841336f75071d78d6f4b5a1",
+    "short_good_fast_pulse_typical_pin_c_1": "dfa59e991a4c2bf5b0b35fabe032cc83d5568a7533942d90c3f6c5074b834429",
+    "long_good_fast_pulse_zero_pin_c_0": "b2065c46f167d8edad8c46bfd72226660f619bfdcf90979b6771c1b5f3a95a04",
+    "long_good_fast_pulse_zero_pin_c_1": "aceba1828084b50238e69bbb4a79b2d9b93bbe577ddab4828c0c84a964b715e9",
+    "long_good_fast_pulse_typical_pin_c_0": "2600f91018f356facc3993b02bd8857a90a785ba49374aeea238dadaccded663",
+    "long_good_fast_pulse_typical_pin_c_1": "51b37a1e9574cd2d0fc0802f9f8e81d85c0f35bdba817bf5188285fd04f139ae",
+    "forced_zero_endpoints_0": "c29be275c2ba391a00b6eb3f829be1ecece968c9f8b2ce125e5ea3d2d3eb02a6",
+    "forced_zero_endpoints_1": "ea489b83356d75d60b5d94b22d0960070fa759651220d80f11c0f73b1494940b",
+    "open_drive_zero_pin_c_0": "c899aac10169d6174550ee2a444be95fc3a277cd6d820c6c1c0cefc6444504ce",
+    "open_drive_zero_pin_c_1": "08b852045261c8ed4c3c2da0862226c509fff483ceef108bb46c5c7640716b6e",
+    "open_drive_typical_pin_c_0": "2ecc07a325129ed866e87f79ee2279bb831dadb6d3635d96e0b27a8965059ee6",
+    "open_drive_typical_pin_c_1": "dc5ef2dae08e78f8c116a5f603ff1f125cfd0941ef59d7311b053f26c903ad43",
+    "open_drive_assumed_20ua_zero_pin_c_0": "3c894fe43673660af7fba9d8501d98ca90e740e76e63461c5a004e777c080272",
+    "open_drive_assumed_20ua_zero_pin_c_1": "ed69faf9ac52ce3459d5046a51aaebce319c4df5d028b6970f09e72657334382",
+    "open_drive_assumed_20ua_typical_pin_c_0": "fbe87a7db5b13151535753c64667d5c98fa2b2d6d4978e612d3e39c81597ba9b",
+    "open_drive_assumed_20ua_typical_pin_c_1": "14746e04e846f03e087437b62c387411477c40386a74992b31d0f2b34977c8f5"
   },
   "limitations": [
-    "GOOD_FAST is a prescribed ideal source, not an external rail fault or an actual HC14 output.",
-    "10pF is a5V owner-table sensitivity, not an unpowered nonlinear pin-network bound.",
+    "GOOD_FAST is a prescribed ideal source, not an external rail fault or an actual LVC output.",
+    "4.5pF is a3.3V/25C typical input sensitivity, not a maximum or an unpowered nonlinear pin-network bound.",
     "Nominal C109 uses its retained capacitance test conditions; this does not qualify installed transient capacitance.",
-    "Observer fractions are illustrative; no HC74 pulse capture, reset-removal, NPN release or startup guarantee.",
+    "Observer fractions are illustrative; no LVC latch pulse capture, reset-removal, NPN release or startup guarantee.",
+    "Open-drive cases use zero or assumed20uA injection; neither qualifies device leakage, partial-power states or a restart interval.",
     "Forced zero endpoints do not model die clamps, surviving control power, other stored capacitors or a charged pin-capacitance impulse."
   ],
   "display_quantization": {

@@ -1,0 +1,114 @@
+{
+  "receipt_version": 1,
+  "identity": {
+    "asset_id": "monitor-sn74lvc1g17dbvr",
+    "record_id": "rec-monitor-sn74lvc1g17dbvr",
+    "manufacturer": "Texas Instruments",
+    "mpn": "SN74LVC1G17DBVR",
+    "package": "SOT-23-5 (DBV)",
+    "variant_notes": "UNSELECTED; not fitted to instrument; no physical qualification"
+  },
+  "acquisition": {
+    "provider": "Retained Texas Instruments primary pin/package evidence and project-derived assets",
+    "library_release_tag": "Project source derivation; shared DBV family retains its own receipt",
+    "source_url": "https://www.ti.com/lit/ds/symlink/sn74lvc1g17.pdf",
+    "acquired_on": "2026-10-02",
+    "original_filenames": [
+      "monitor-permit-parts.json",
+      "sn74lvc1g17.pdf",
+      "build_monitor_candidate_assets.py"
+    ],
+    "sha256": {
+      "design/power/monitor-permit-parts.json": "1fe624d54d87dc7c67e41561a7650bf0173b3a9ea33992b40c8ab1ed5460fa3a",
+      ".circuit-cache/sources/permit-lvc-candidates/sn74lvc1g17.pdf": "c76fa723fac4502423967a1aa087dd669106b52b8de620c024b26e56f5d59309",
+      "scripts/libgen/build_monitor_candidate_assets.py": "308239a9899ee7acd454ce8cd2b76885ee8ee9b7e2e949d29c59c336cb5516da"
+    }
+  },
+  "representation": {
+    "files": [
+      "symbols/src/SN74LVC1G17DBVR.kicad_sym",
+      "footprints/kicad/zudo-osc-hole-field.pretty/SOT-23-5.kicad_mod",
+      "footprints/kicad/zudo-osc-hole-field.3dshapes/IC_SOT-23-5.wrl"
+    ],
+    "formats": [
+      "kicad_sym",
+      "kicad_mod",
+      "wrl"
+    ],
+    "units": "KiCad mm; upstream WRL coordinates retain native KiCad convention",
+    "original_paths": [
+      "design/power/monitor-permit-parts.json",
+      ".circuit-cache/sources/permit-lvc-candidates/sn74lvc1g17.pdf",
+      "scripts/libgen/build_monitor_candidate_assets.py"
+    ]
+  },
+  "fidelity": {
+    "class": "derived",
+    "reason": "Source-derived exact pin identity; example land pattern and provisional body display, no installed qualification.",
+    "evidence": [
+      "https://www.ti.com/lit/ds/symlink/sn74lvc1g17.pdf",
+      "Exact package pin table; ordering addendum at physical index14; electrical/timing conditions retained in owner facts",
+      "DBV pinout matched to retained SOT-23-5 family footprint; not an exact manufacturer model"
+    ]
+  },
+  "derivation": {
+    "derived": true,
+    "input_sha256": {
+      "design/power/monitor-permit-parts.json": "1fe624d54d87dc7c67e41561a7650bf0173b3a9ea33992b40c8ab1ed5460fa3a",
+      ".circuit-cache/sources/permit-lvc-candidates/sn74lvc1g17.pdf": "c76fa723fac4502423967a1aa087dd669106b52b8de620c024b26e56f5d59309",
+      "scripts/libgen/build_monitor_candidate_assets.py": "308239a9899ee7acd454ce8cd2b76885ee8ee9b7e2e949d29c59c336cb5516da"
+    },
+    "tool": "scripts/libgen/build_monitor_candidate_assets.py",
+    "tool_version": "1",
+    "parameters": {
+      "retain_existing_symbol": false,
+      "footprint_geometry": "unchanged SOT-23-5 family land pattern",
+      "model_reference": "project-relative WRL; no STEP conversion"
+    },
+    "output_sha256": {
+      "symbols/src/SN74LVC1G17DBVR.kicad_sym": "ca5ef2ae094474218e9ff50440ece011c6601ee4d049d78ba389dbc3e5aa687e",
+      "footprints/kicad/zudo-osc-hole-field.pretty/SOT-23-5.kicad_mod": "240ed37b4c210c621ae3f22f877d25da656a4a5bc3de6dd6f1bd2f5afdee5dd8",
+      "footprints/kicad/zudo-osc-hole-field.3dshapes/IC_SOT-23-5.wrl": "092e9ba725c6cf5616e9f925aa45dddf337d35e2e009c5a9f22109cadcab98eb"
+    }
+  },
+  "cad_use": {
+    "symbol": "zudo-osc-hole-field:SN74LVC1G17DBVR",
+    "footprint": "zudo-osc-hole-field:SOT-23-5",
+    "model_path": "${KIPRJMOD}/../../footprints/kicad/zudo-osc-hole-field.3dshapes/IC_SOT-23-5.wrl",
+    "transform": {
+      "offset": [
+        0,
+        0,
+        0
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ]
+    },
+    "seating_plane": null
+  },
+  "checks": {
+    "performed": [
+      "Retained primary PDF SHA-256 checked",
+      "Exact package pin table mapped to symbol and pad numbers",
+      "64-line offline circuit contract and pin-set checks passed"
+    ],
+    "remaining_physical_checks": [
+      "Exact installed footprint/lead and model dimensions",
+      "Pin1/orientation and solder assembly qualification",
+      "Thermal and electrical application qualification"
+    ]
+  },
+  "publication": {
+    "preview_selected": true,
+    "download_published": false,
+    "permitted_scope": "Generated family-geometry previews and source metadata only; no fabrication release"
+  }
+}

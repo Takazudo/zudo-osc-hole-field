@@ -46,3 +46,51 @@ class MonitorRCMathTests(unittest.TestCase):
         self.assertEqual([e['transition'] for e in result['crossings']],['fall_low','rise_high'])
         self.assertEqual(result['crossings'][0]['bracket_s'],[0,1])
         self.assertTrue(result['final'])
+
+    def test_bleeder_reduces_dc_gain_and_driven_time_constant(self):
+        final=5*100000/110000
+        tau=1e-8/(1/10000+1/100000)
+        for pin_cap in (0,4.5e-12):
+            a,b=model.advance((0,0),5,5,.1,10000,10000,1e-8,pin_cap,100000)
+            self.assertAlmostEqual(a,final,places=10)
+            self.assertAlmostEqual(b,final,places=10)
+        a,b=model.advance((0,0),5,5,tau,10000,10000,1e-8,0,100000)
+        self.assertAlmostEqual(a,final*(1-math.exp(-1)),places=10)
+
+    def test_open_drive_uses_bleeder_only_and_ignores_forcing(self):
+        expected=5/math.e
+        for r1 in (1,10000,1e12):
+            a,b=model.advance((5,5),-100,100,.001,r1,10000,1e-8,0,100000,False)
+            self.assertAlmostEqual(a,expected,places=10)
+            self.assertEqual(a,b)
+        driven=model.advance((5,5),0,0,.001,10000,10000,1e-8,0,100000)[0]
+        self.assertLess(driven,expected/1000)
+
+    def test_bleeder_two_node_initial_derivative_matches_kcl(self):
+        for driven in (True,False):
+            dt=1e-12
+            a,b=model.advance((3,2),5,5,dt,10000,10000,1e-8,4.5e-12,100000,driven)
+            expected_a=((5-3)/10000*driven-(3-2)/10000-3/100000)/1e-8
+            expected_b=(3-2)/10000/4.5e-12
+            self.assertAlmostEqual((a-3)/dt/expected_a,1,delta=.0001)
+            self.assertAlmostEqual((b-2)/dt/expected_b,1,delta=.0001)
+
+    def test_bleeder_linear_ramp_composition(self):
+        for pin_cap in (0,4.5e-12):
+            whole=model.advance((1,1),0,5,1e-6,10000,10000,1e-8,pin_cap,100000)
+            half=model.advance((1,1),0,2.5,.5e-6,10000,10000,1e-8,pin_cap,100000)
+            split=model.advance(half,2.5,5,.5e-6,10000,10000,1e-8,pin_cap,100000)
+            for a,b in zip(whole,split):self.assertAlmostEqual(a,b,places=10)
+
+    def test_invalid_bleed_and_undefined_open_drive_are_rejected(self):
+        for bleed in (-1,0,True,math.inf,math.nan):
+            with self.assertRaises(ValueError):model.advance((0,0),0,5,1,1,1,1,0,bleed)
+        with self.assertRaises(ValueError):model.advance((0,0),0,5,1,1,1,1,0,None,False)
+
+    def test_assumed_leakage_changes_open_drive_equilibrium(self):
+        for pin_cap in (0,4.5e-12):
+            a,b=model.advance((5,5),0,0,.1,10000,10000,1e-8,pin_cap,100000,False,20e-6)
+            self.assertAlmostEqual(a,2,places=10)
+            self.assertAlmostEqual(b,2,places=10)
+        a,b=model.advance((5,5),0,0,.001,10000,10000,1e-8,0,100000,False,20e-6)
+        self.assertAlmostEqual(a,2+3/math.e,places=10)

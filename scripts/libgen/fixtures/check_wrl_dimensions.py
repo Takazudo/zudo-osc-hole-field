@@ -33,6 +33,7 @@ EXPECTED={
     'Toggle_Dailywell_2MS_T1B1M2':COMPONENT_MODELS['Toggle_Dailywell_2MS_T1B1M2.wrl'][:3],
     'Button_Omron_B3F_6x6_P6.5x4.5':COMPONENT_MODELS['Button_Omron_B3F_6x6_P6.5x4.5.wrl'][:3],
     **{name:row['dims'] for name,row in ic.MODELS.items()},
+    'TI_DCT0008A':(3.1,3.1,1.3),
 }
 TOLERANCE_MM=.005
 
@@ -78,7 +79,7 @@ def exported_geometry(name,position=(0,0),angle=0,bottom=False,offset=None,model
     if offset is not None:
         models[0].m_Offset.x,models[0].m_Offset.y,models[0].m_Offset.z=offset
     if model_angle is not None:models[0].m_Rotation.z=model_angle
-    basis=fab_basis(footprint) if name in ic.MODELS else None
+    basis=fab_basis(footprint) if name in ic.MODELS or name=='TI_DCT0008A' else None
     # Keep project depth fixed for existing KIPRJMOD/../../ model references;
     # unique filenames prevent stale or concurrent fixture reuse.
     base=FIXTURE/('wrl-placement-'+uuid.uuid4().hex)
@@ -104,7 +105,11 @@ def check_geometry(name,geometry,basis):
         # Fab outlines need not coincide (notably the SOD-123 family outline).
         actual=geometry['size'][0]-geometry['size'][1]
         expected=basis['size'][0]-basis['size'][1]
-        if abs(expected)<TOLERANCE_MM or actual*expected<=0:
+        if abs(expected)<TOLERANCE_MM:
+            if name!='TI_DCT0008A' or any(not math.isclose(a,b,abs_tol=TOLERANCE_MM) for a,b in zip(geometry['size'],EXPECTED[name])):
+                raise GeometryMismatch('native square-body bounds differ from retained envelope')
+            return
+        if actual*expected<=0:
             raise GeometryMismatch('native model long axis differs from transformed Fab body axis')
         short,long=sorted(EXPECTED[name][:2])
         aligned=(long,short,EXPECTED[name][2]) if expected>0 else (short,long,EXPECTED[name][2])
@@ -117,7 +122,7 @@ def check_geometry(name,geometry,basis):
 
 def source_snapshot():
     paths={Path(__file__).resolve(),Path(ic.__file__).resolve(),Path(vrml_geometry.__file__).resolve(),
-           ROOT/'scripts/libgen/gen_component_envelopes.py',ROOT/'scripts/kicad/run.sh',ROOT/'scripts/kicad/pin.env'}
+           ROOT/'scripts/libgen/gen_component_envelopes.py',ROOT/'scripts/libgen/build_monitor_candidate_assets.py',ROOT/'design/power/monitor-permit-parts.json',ROOT/'scripts/kicad/run.sh',ROOT/'scripts/kicad/pin.env'}
     for name in EXPECTED:paths.add(LIBRARY/(name+'.kicad_mod'))
     # Only attached models, not unrelated mutable cache/export artifacts.
     for name in EXPECTED:
@@ -151,7 +156,8 @@ def run(check=False):
             ('DIP zero offset','DIP-8_W7.62mm',{'offset':(0,0,0)}),
             ('DIP wrong Y sign','DIP-8_W7.62mm',{'offset':(3.81,3.81,0)}),
             ('SOT wrong rotation','SOT-23-5',{'model_angle':90}),
-            ('SOT oblique rotation','SOT-23-5',{'model_angle':20})):
+            ('SOT oblique rotation','SOT-23-5',{'model_angle':20}),
+            ('DCT oblique rotation','TI_DCT0008A',{'model_angle':20})):
         geometry,basis=exported_geometry(name,**kwargs)
         try:check_geometry(name,geometry,basis)
         except GeometryMismatch as error:rejected.append({'case':label,'rejected':True,'reason':str(error)})
@@ -161,7 +167,7 @@ def run(check=False):
     report={'status':'PASS - native display-envelope placement; no physical qualification',
             'qualification_accepted':False,'oracle':pcbnew.GetBuildVersion(),
             'tolerance_mm':TOLERANCE_MM,'cases':rows,'negative_controls':rejected,
-            'limits':['IC body centres and long axes are compared with independent native Fab outlines.',
+            'limits':['IC body centres and long axes are compared with independent native Fab outlines; DCT square-body bounds are checked without an orientation claim.',
                       'Other four component models retain their earlier model-axis unit checks only.',
                       'No footprint-containment, lead, seating, height qualification, installed clearance or fabrication claim.',
                       'DIP0.1mm is a display plate, not a package-height bound.'],

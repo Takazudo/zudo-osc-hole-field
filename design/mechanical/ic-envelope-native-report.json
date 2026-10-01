@@ -797,6 +797,68 @@
       "scope": "body axes/centre and units"
     },
     {
+      "footprint": "TI_DCT0008A",
+      "position_mm": [
+        0,
+        0
+      ],
+      "rotation_deg": 0,
+      "side": "F.Cu",
+      "native_model": {
+        "bounds": [
+          [
+            -1.549999,
+            1.549999
+          ],
+          [
+            -1.549999,
+            1.549999
+          ],
+          [
+            0.8,
+            2.1
+          ]
+        ],
+        "size": [
+          3.099999,
+          3.099999,
+          1.3
+        ],
+        "mesh_axis_sizes": [
+          3.099999,
+          3.099999,
+          1.3
+        ],
+        "center": [
+          0.0,
+          0.0,
+          1.45
+        ],
+        "transform_count": 4
+      },
+      "native_Fab": {
+        "bounds": [
+          [
+            -1.55,
+            1.55
+          ],
+          [
+            -1.55,
+            1.55
+          ]
+        ],
+        "center": [
+          0.0,
+          0.0
+        ],
+        "size": [
+          3.1,
+          3.1
+        ]
+      },
+      "scope": "body axes/centre and units"
+    },
+    {
       "footprint": "DIP-8_W7.62mm",
       "position_mm": [
         12,
@@ -1003,15 +1065,21 @@
       "case": "SOT oblique rotation",
       "rejected": true,
       "reason": "native world body bounds differ from the Fab-aligned display envelope"
+    },
+    {
+      "case": "DCT oblique rotation",
+      "rejected": true,
+      "reason": "native square-body bounds differ from retained envelope"
     }
   ],
   "limits": [
-    "IC body centres and long axes are compared with independent native Fab outlines.",
+    "IC body centres and long axes are compared with independent native Fab outlines; DCT square-body bounds are checked without an orientation claim.",
     "Other four component models retain their earlier model-axis unit checks only.",
     "No footprint-containment, lead, seating, height qualification, installed clearance or fabrication claim.",
     "DIP0.1mm is a display plate, not a package-height bound."
   ],
   "input_sha256": {
+    "design/power/monitor-permit-parts.json": "1fe624d54d87dc7c67e41561a7650bf0173b3a9ea33992b40c8ab1ed5460fa3a",
     "footprints/kicad/zudo-osc-hole-field.3dshapes/Button_Omron_B3F_6x6_P6.5x4.5.wrl": "79b822728a292391be9a37f8988fcf91f45efbe9b81ef3d26b3a33903fe26ece",
     "footprints/kicad/zudo-osc-hole-field.3dshapes/D_SOD-123.wrl": "4838583ceb56c1d56b370bf6fa70697da444dd50e05da4ea9c1d50b94617ed92",
     "footprints/kicad/zudo-osc-hole-field.3dshapes/IC_DIP-8_W7.62mm.wrl": "9257c99d34bd1b0a6cd5bc61af52990b47c09b59f6085f55f4051436853e371d",
@@ -1021,6 +1089,7 @@
     "footprints/kicad/zudo-osc-hole-field.3dshapes/IC_SOT-23-5.wrl": "092e9ba725c6cf5616e9f925aa45dddf337d35e2e009c5a9f22109cadcab98eb",
     "footprints/kicad/zudo-osc-hole-field.3dshapes/IC_SOT-23.wrl": "e89e53b2806fb56bbfab3fa26b373a8549c58b6d48f63f6687dd83de90bf7fe4",
     "footprints/kicad/zudo-osc-hole-field.3dshapes/IC_SOT-363_SC-70-6.wrl": "7874d2fe7c54a83fec433683ad5b1718482fc6640b54e2b1d0cd775eece47c4f",
+    "footprints/kicad/zudo-osc-hole-field.3dshapes/IC_TI_DCT0008A.wrl": "9ec6b99ea06bd39769bc953715977d82cd8f6f31d8ef3fd76abe74cc2acb4a84",
     "footprints/kicad/zudo-osc-hole-field.3dshapes/IC_TSSOP-14_4.4x5.0.wrl": "099f76e52198655010867ac38b604f41bcb2cff53ea5bd7e440b8b93b2b92d32",
     "footprints/kicad/zudo-osc-hole-field.3dshapes/IC_TSSOP-16_4.4x5.0.wrl": "dac91472f7dfe969cd28ec89ebcbf62a62f4f176fdc5e68d133a20b247915a2c",
     "footprints/kicad/zudo-osc-hole-field.3dshapes/Jack_3.5mm_QingPu_WQP518MA.wrl": "da96487f1d0c1daf0433d20b1992dd7009cda51a0c2ebef3819dd26fa2c0b655",
@@ -1037,12 +1106,14 @@
     "footprints/kicad/zudo-osc-hole-field.pretty/SOT-23-5.kicad_mod": "240ed37b4c210c621ae3f22f877d25da656a4a5bc3de6dd6f1bd2f5afdee5dd8",
     "footprints/kicad/zudo-osc-hole-field.pretty/SOT-23.kicad_mod": "d506ab85b553354a097c310d00106e1a8e7f5cc90c8d7643d956ae1a557c03ec",
     "footprints/kicad/zudo-osc-hole-field.pretty/SOT-363_SC-70-6.kicad_mod": "6e4172f551a82e2c65842d333ba2dfef8c5bb208b71b844b797cb13d3aa56edc",
+    "footprints/kicad/zudo-osc-hole-field.pretty/TI_DCT0008A.kicad_mod": "41212969a5e3860151a28130e80495bca802c6bcb8d827db00a824cf1a01ed37",
     "footprints/kicad/zudo-osc-hole-field.pretty/TSSOP-14_4.4x5mm_P0.65mm.kicad_mod": "de16d50ed6610086f0827082055257c9648031d8db6e7a7da797838f2c422ec6",
     "footprints/kicad/zudo-osc-hole-field.pretty/TSSOP-16_4.4x5mm_P0.65mm.kicad_mod": "33e27f56639b5b3bab24ea33e8b2c5723ca362a6e165f6f019bf98879ed545cd",
     "footprints/kicad/zudo-osc-hole-field.pretty/Toggle_Dailywell_2MS_T1B1M2.kicad_mod": "11240c0c14b6378dc93f54d9146097b1b62384b0b9cab4b145dc1367be89daf4",
     "scripts/kicad/pin.env": "769e2be0b61e7d92a6930684f13166b7dc098522008de3969cd30d6c4a363246",
     "scripts/kicad/run.sh": "bc74f0ade82c29d64c44119ea435bc7bfd164fc06e9afff240a3cb2b44b272a0",
-    "scripts/libgen/fixtures/check_wrl_dimensions.py": "cbb8bda85462af0b727dbe89ef0e6c8edfab4a0b81d5455d59771f0f780626a7",
+    "scripts/libgen/build_monitor_candidate_assets.py": "308239a9899ee7acd454ce8cd2b76885ee8ee9b7e2e949d29c59c336cb5516da",
+    "scripts/libgen/fixtures/check_wrl_dimensions.py": "f0fc5644a5f71091bbf31cbe360b290d38b5eeea14c77a4501f0283213bb0d91",
     "scripts/libgen/gen_component_envelopes.py": "656929e4298c173bb30bbf244f6c4a598d30b31f707b2cf443c257e98c6e9d3a",
     "scripts/libgen/gen_ic_package_envelopes.py": "15b5cd8f72d2b62a9cca7c655ace0e55c4b8da6ad9d99daf7e43b78c6a3f14fb",
     "scripts/libgen/vrml_geometry.py": "63056a1628b8e18028610462147b0365e70ebd7f6f615c7f1bbb09ac859e72c1"

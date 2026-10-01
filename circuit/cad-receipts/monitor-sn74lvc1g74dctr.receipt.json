@@ -1,0 +1,120 @@
+{
+  "receipt_version": 1,
+  "identity": {
+    "asset_id": "monitor-sn74lvc1g74dctr",
+    "record_id": "rec-monitor-sn74lvc1g74dctr",
+    "manufacturer": "Texas Instruments",
+    "mpn": "SN74LVC1G74DCTR",
+    "package": "SM8 (DCT)",
+    "variant_notes": "UNSELECTED; not fitted to instrument; no physical qualification"
+  },
+  "acquisition": {
+    "provider": "Retained Texas Instruments primary pin/package evidence and project-derived assets",
+    "library_release_tag": "Project source derivation; shared DBV family retains its own receipt",
+    "source_url": "https://www.ti.com/lit/ds/symlink/sn74lvc1g74.pdf",
+    "acquired_on": "2026-10-02",
+    "original_filenames": [
+      "monitor-permit-parts.json",
+      "sn74lvc1g74.pdf",
+      "build_monitor_candidate_assets.py"
+    ],
+    "sha256": {
+      "design/power/monitor-permit-parts.json": "1fe624d54d87dc7c67e41561a7650bf0173b3a9ea33992b40c8ab1ed5460fa3a",
+      ".circuit-cache/sources/permit-lvc-candidates/sn74lvc1g74.pdf": "e46a5a867fec742290000dca5ed3b291535f3c4418ef2ae267acc4ab51b26d8a",
+      "scripts/libgen/build_monitor_candidate_assets.py": "308239a9899ee7acd454ce8cd2b76885ee8ee9b7e2e949d29c59c336cb5516da",
+      "scripts/libgen/gen_ic_package_envelopes.py": "15b5cd8f72d2b62a9cca7c655ace0e55c4b8da6ad9d99daf7e43b78c6a3f14fb",
+      "scripts/libgen/gen_courtyards.py": "3db1120f6a9a93c261f50c6d46e6bbfe795506206b23a838c1fda5b0ae10ff7e"
+    }
+  },
+  "representation": {
+    "files": [
+      "symbols/src/SN74LVC1G74DCTR.kicad_sym",
+      "footprints/kicad/zudo-osc-hole-field.pretty/TI_DCT0008A.kicad_mod",
+      "footprints/kicad/zudo-osc-hole-field.3dshapes/IC_TI_DCT0008A.wrl"
+    ],
+    "formats": [
+      "kicad_sym",
+      "kicad_mod",
+      "wrl"
+    ],
+    "units": "KiCad mm; upstream WRL coordinates retain native KiCad convention",
+    "original_paths": [
+      "design/power/monitor-permit-parts.json",
+      ".circuit-cache/sources/permit-lvc-candidates/sn74lvc1g74.pdf",
+      "scripts/libgen/build_monitor_candidate_assets.py",
+      "scripts/libgen/gen_ic_package_envelopes.py",
+      "scripts/libgen/gen_courtyards.py"
+    ]
+  },
+  "fidelity": {
+    "class": "derived",
+    "reason": "Source-derived exact pin identity; example land pattern and provisional body display, no installed qualification.",
+    "evidence": [
+      "https://www.ti.com/lit/ds/symlink/sn74lvc1g74.pdf",
+      "Exact package pin table; ordering addendum at physical index14; electrical/timing conditions retained in owner facts",
+      "DCT0008A 4220784/D drawing physical PDF indexes18-20, no printed page labels"
+    ]
+  },
+  "derivation": {
+    "derived": true,
+    "input_sha256": {
+      "design/power/monitor-permit-parts.json": "1fe624d54d87dc7c67e41561a7650bf0173b3a9ea33992b40c8ab1ed5460fa3a",
+      ".circuit-cache/sources/permit-lvc-candidates/sn74lvc1g74.pdf": "e46a5a867fec742290000dca5ed3b291535f3c4418ef2ae267acc4ab51b26d8a",
+      "scripts/libgen/build_monitor_candidate_assets.py": "308239a9899ee7acd454ce8cd2b76885ee8ee9b7e2e949d29c59c336cb5516da",
+      "scripts/libgen/gen_ic_package_envelopes.py": "15b5cd8f72d2b62a9cca7c655ace0e55c4b8da6ad9d99daf7e43b78c6a3f14fb",
+      "scripts/libgen/gen_courtyards.py": "3db1120f6a9a93c261f50c6d46e6bbfe795506206b23a838c1fda5b0ae10ff7e"
+    },
+    "tool": "scripts/libgen/build_monitor_candidate_assets.py",
+    "tool_version": "1",
+    "parameters": {
+      "retain_existing_symbol": false,
+      "footprint_geometry": "TI example DCT0008A land pattern",
+      "model_reference": "project-relative WRL; no STEP conversion"
+    },
+    "output_sha256": {
+      "symbols/src/SN74LVC1G74DCTR.kicad_sym": "601c75e8502b2362b38f7d32cdaa9307d73008768f8b84834d17df306d9096c3",
+      "footprints/kicad/zudo-osc-hole-field.pretty/TI_DCT0008A.kicad_mod": "41212969a5e3860151a28130e80495bca802c6bcb8d827db00a824cf1a01ed37",
+      "footprints/kicad/zudo-osc-hole-field.3dshapes/IC_TI_DCT0008A.wrl": "9ec6b99ea06bd39769bc953715977d82cd8f6f31d8ef3fd76abe74cc2acb4a84"
+    }
+  },
+  "cad_use": {
+    "symbol": "zudo-osc-hole-field:SN74LVC1G74DCTR",
+    "footprint": "zudo-osc-hole-field:TI_DCT0008A",
+    "model_path": "${KIPRJMOD}/../../footprints/kicad/zudo-osc-hole-field.3dshapes/IC_TI_DCT0008A.wrl",
+    "transform": {
+      "offset": [
+        0,
+        0,
+        0
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ]
+    },
+    "seating_plane": null
+  },
+  "checks": {
+    "performed": [
+      "Retained primary PDF SHA-256 checked",
+      "Exact package pin table mapped to symbol and pad numbers",
+      "64-line offline circuit contract and pin-set checks passed"
+    ],
+    "remaining_physical_checks": [
+      "Exact installed footprint/lead and model dimensions",
+      "Pin1/orientation and solder assembly qualification",
+      "Thermal and electrical application qualification"
+    ]
+  },
+  "publication": {
+    "preview_selected": true,
+    "download_published": false,
+    "permitted_scope": "Generated family-geometry previews and source metadata only; no fabrication release"
+  }
+}

@@ -3,30 +3,40 @@ import bisect
 import math
 
 
-def parameters(r1,r2,cap,pin_cap):
+def parameters(r1,r2,cap,pin_cap,bleed=None,driven=True,injection_A=0):
     if any(isinstance(v,bool) or not math.isfinite(v) for v in (r1,r2,cap,pin_cap)):
         raise ValueError('finite RC parameters required')
+    if isinstance(injection_A,bool) or not math.isfinite(injection_A):
+        raise ValueError('finite injected current required')
+    if bleed is not None and (isinstance(bleed,bool) or not math.isfinite(bleed) or bleed<=0):
+        raise ValueError('positive finite bleed resistance required')
+    if not isinstance(driven,bool) or (not driven and bleed is None):
+        raise ValueError('open drive requires a passive bleed path')
     if min(r1,r2,cap)<=0 or pin_cap<0:
         raise ValueError('positive resistance/capacitance and nonnegative pin capacitance required')
 
 
-def advance(state,u0,u1,dt,r1,r2,cap,pin_cap):
+def advance(state,u0,u1,dt,r1,r2,cap,pin_cap,bleed=None,driven=True,injection_A=0):
     """Advance both nodes under a linear input ramp, including finite edges."""
-    parameters(r1,r2,cap,pin_cap)
+    parameters(r1,r2,cap,pin_cap,bleed,driven,injection_A)
     if len(state)!=2 or any(not math.isfinite(v) for v in (*state,u0,u1)):
         raise ValueError('finite two-node state and drive required')
     if dt<0 or not math.isfinite(dt): raise ValueError('invalid time interval')
     if dt==0:return tuple(state)
+    g1=1/r1 if driven else 0
+    gb=0 if bleed is None else 1/bleed
+    req=1/(g1+gb);gain=g1*req
+    u0=u0*gain+injection_A*req;u1=u1*gain+injection_A*req
     slope=(u1-u0)/dt
     if pin_cap==0:
-        tau=r1*cap;e=math.expm1(-dt/tau)
+        tau=req*cap;e=math.expm1(-dt/tau)
         value=state[0]+(state[0]-u0)*e+slope*(dt+tau*e)
         return value,value
-    a=-(1/r1+1/r2)/cap;b=1/(r2*cap);c=1/(r2*pin_cap);d=-c
-    determinant=1/(r1*r2*cap*pin_cap)
+    a=-(g1+gb+1/r2)/cap;b=1/(r2*cap);c=1/(r2*pin_cap);d=-c
+    determinant=(g1+gb)/(r2*cap*pin_cap)
     fast=(a+d-math.sqrt((a-d)**2+4*b*c))/2
     slow=determinant/fast
-    z0=-r1*(cap+pin_cap)*slope;z1=z0-r2*pin_cap*slope
+    z0=-req*(cap+pin_cap)*slope;z1=z0-r2*pin_cap*slope
     w0=state[0]-u0-z0;w1=state[1]-u0-z1
     c0=((a-fast)*w0+b*w1)/(slow-fast)
     c1=(c*w0+(d-fast)*w1)/(slow-fast)
@@ -36,14 +46,14 @@ def advance(state,u0,u1,dt,r1,r2,cap,pin_cap):
 
 
 class Trajectory:
-    def __init__(self,points,initial,r1,r2,cap,pin_cap):
-        parameters(r1,r2,cap,pin_cap)
+    def __init__(self,points,initial,r1,r2,cap,pin_cap,bleed=None,driven=True,injection_A=0):
+        parameters(r1,r2,cap,pin_cap,bleed,driven,injection_A)
         if any(len(p)!=2 or not all(math.isfinite(v) for v in p) for p in points):
             raise ValueError('finite waveform points required')
         if len(points)<2 or points[0][0]!=0 or any(b[0]<=a[0] for a,b in zip(points,points[1:])):
             raise ValueError('strictly increasing waveform from t=0 required')
         self.points=points;self.times=[p[0] for p in points]
-        self.rc=(r1,r2,cap,pin_cap);self.states=[tuple(initial)]
+        self.rc=(r1,r2,cap,pin_cap,bleed,driven,injection_A);self.states=[tuple(initial)]
         for (t0,u0),(t1,u1) in zip(points,points[1:]):
             self.states.append(advance(self.states[-1],u0,u1,t1-t0,*self.rc))
 

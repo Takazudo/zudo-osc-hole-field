@@ -23,7 +23,7 @@ CROSSING_REFINEMENT_TOLERANCE=5e-9
 STEPS=(5e-7,1.25e-7)
 
 
-BUNDLES=(ROOT/'.claude/skills/component-passives-family',ROOT/'.claude/skills/component-ti-sn74hc14dr')
+BUNDLES=(ROOT/'.claude/skills/component-passives-family',ROOT/'.claude/skills/component-monitor-permit-candidates')
 
 
 def source_paths():
@@ -53,11 +53,11 @@ def source_parameters(snapshot=None):
     spec=read(SPEC);behavior.build(spec)
     parts={p['ref']:p for p in spec['components']}
     catalog={p['mpn']:p for p in read(CATALOG)['parts']}
-    for ref in ('R120','R121'):
+    for ref in ('R120','R121','R125'):
         if parts[ref]['value']!=catalog[parts[ref]['mpn']]['resistance_ohm']:
             raise ValueError('timing resistance differs from exact MPN')
     bundles=BUNDLES
-    requested=[('rec-c-hold','fact-c-hold-capacitance','C109'),('rec-schmitt','fact-schmitt-input-capacitance','U104')]
+    requested=[('rec-c-hold','fact-c-hold-capacitance','C109'),('rec-monitor-sn74lvc1g17dbvr','fact-monitor-sn74lvc1g17dbvr-input-capacitance-typical','U106')]
     facts=[];paths=set(snapshot)
     for bundle,(rid,fid,ref) in zip(bundles,requested):
         paths.update(bundle/name for name in ('facts.json','manifest.json','sources.json'))
@@ -67,7 +67,7 @@ def source_parameters(snapshot=None):
         if (record['mpn']!=parts[ref]['mpn'] or fact['record_id']!=rid or source['record_id']!=rid
                 or fid not in record['fact_ids'] or fact['source_id'] not in record['source_ids']
                 or fact['verdict']!='PASS - primary-source confirmed' or fact['provenance']!='PRIMARY-SPEC'
-                or fact['class']!='GUARANTEED_ELECTRICAL'
+                or fact['class']!=('TYPICAL_CURVE' if ref=='U106' else 'GUARANTEED_ELECTRICAL')
                 or source['availability']!='AVAILABLE' or source['authority_class']!='MANUFACTURER_PRIMARY'
                 or not re.fullmatch('[0-9a-f]{64}',source['sha256']) or set(source['sha256'])=={'0'}):
             raise ValueError('timing-capacitance source closure failed')
@@ -79,34 +79,51 @@ def source_parameters(snapshot=None):
         raise ValueError('timing capacitance differs from exact MPN')
     reference.parameters(parts['R120']['value'],parts['R121']['value'],cap,pin_cap)
     return {'r1':parts['R120']['value'],'r2':parts['R121']['value'],'cap':cap,'pin_cap':pin_cap,
-            'supply_V':5.0,'high_V':5*spec['model_conditions']['schmitt_high_fraction'],
+            'bleed':parts['R125']['value'],'supply_V':5.0,'high_V':5*spec['model_conditions']['schmitt_high_fraction'],
             'low_V':5*spec['model_conditions']['schmitt_low_fraction'],
             'observer_scope':spec['model_conditions']['schmitt_scope'],'source_facts':facts},paths
 
 
 def cases(parameters):
-    v=parameters['supply_V'];crossing=-parameters['r1']*parameters['cap']*math.log(parameters['low_V']/v)
+    v=parameters['supply_V'];steady=v*parameters['bleed']/(parameters['r1']+parameters['bleed'])
+    tau=parameters['cap']/(1/parameters['r1']+1/parameters['bleed'])
+    crossing=-tau*math.log(parameters['low_V']/steady)
     edge=1e-9;start=1e-6;stop=0.001
     waves={'startup':([[0,0],[start,0],[start+edge,v],[stop,v]],(0,0),False)}
     for name,duration in [('short_good_fast_pulse',.8*crossing),('long_good_fast_pulse',1.2*crossing)]:
         duration=round(duration,12)  # Deterministic picosecond stimulus grid.
-        waves[name]=([[0,v],[start,v],[start+edge,0],[start+duration,0],[start+duration+edge,v],[stop,v]],(v,v),True)
+        waves[name]=([[0,v],[start,v],[start+edge,0],[start+duration,0],[start+duration+edge,v],[stop,v]],(steady,steady),True)
     result=[]
     for name,(points,initial,observer_initial) in waves.items():
-        for label,pin_cap in [('zero_pin_c',0),('source_pin_c',parameters['pin_cap'])]:
+        for label,pin_cap in [('zero_pin_c',0),('typical_pin_c',parameters['pin_cap'])]:
             result.append({'name':name+'_'+label,'mode':'timing','points':points,'initial':initial,
                            'observer_initial':observer_initial,'pin_cap':pin_cap,'expected_observer_crossings':1 if name=='startup' else 0 if name.startswith('short') else 2})
     result.append({'name':'forced_zero_endpoints','mode':'forced_clamp','initial':(v,0),'pin_cap':0,'stop':stop})
+    for label,pin_cap in [('zero_pin_c',0),('typical_pin_c',parameters['pin_cap'])]:
+        result.append({'name':'open_drive_'+label,'mode':'open_drive','points':[[0,0],[.005,0]],
+                       'initial':(v,v),'observer_initial':True,'pin_cap':pin_cap,
+                       'expected_observer_crossings':1})
+    for label,pin_cap in [('zero_pin_c',0),('typical_pin_c',parameters['pin_cap'])]:
+        result.append({'name':'open_drive_assumed_20ua_'+label,'mode':'open_drive',
+                       'points':[[0,0],[.005,0]],'initial':(v,v),'observer_initial':True,
+                       'pin_cap':pin_cap,'expected_observer_crossings':0,'injection_A':20e-6,
+                       'scope':'Assumed external leakage sensitivity, not a source-guaranteed device current'})
     return result
 
 
 def deck(case,p,step):
     lines=['* UNSELECTED PASSIVE MODEL: no buffer, Schmitt, latch, transistor or die-clamp model',
            f"R120 good delay_cap {p['r1']:.17g}",f"R121 delay_cap delay_in {p['r2']:.17g}",
-           f"C109 delay_cap 0 {p['cap']:.17g}"]
-    if case['mode']=='timing':
+           f"C109 delay_cap 0 {p['cap']:.17g}",f"R125 delay_cap 0 {p['bleed']:.17g}"]
+    if case.get('injection_A',0):lines.append(f"Iassumed 0 delay_cap {case['injection_A']:.17g}")
+    if case['mode']!='forced_clamp':
         points=' '.join(f'{t:.17g} {v:.17g}' for t,v in case['points'])
-        lines.append('Vdrive good 0 PWL('+points+')')
+        if case['mode']=='timing':
+            lines.append('Vdrive good 0 PWL('+points+')')
+        else:
+            # Floating endpoint: zero-volt current probe in series, not to ground.
+            lines[1]=f"R120 floating delay_cap {p['r1']:.17g}"
+            lines.append('Vdrive floating good 0')
         if case['pin_cap']>0:lines.append(f"Cpin delay_in 0 {case['pin_cap']:.17g}")
         stop=case['points'][-1][0];vectors='v(delay_cap) v(delay_in) i(vdrive)'
     else:
@@ -149,20 +166,20 @@ def read_waveform(path,columns):
 
 
 def inspect(case,p,rows,step):
-    stop=case['points'][-1][0] if case['mode']=='timing' else case['stop']
+    stop=case['points'][-1][0] if case['mode']!='forced_clamp' else case['stop']
     if rows[0][0]>step/10 or abs(rows[-1][0]-stop)>1e-12:
         raise ValueError('native waveform coverage incomplete')
     if any(b[0]-a[0]>step*(1+1e-8)+1e-15 for a,b in zip(rows,rows[1:])):
         raise ValueError('native waveform exceeds declared maximum timestep')
     first_expected=case['initial']
     if case['mode']=='forced_clamp':
-        tau=p['cap']/(1/p['r1']+1/p['r2'])
+        tau=p['cap']/(1/p['r1']+1/p['r2']+1/p['bleed'])
         first_expected=(case['initial'][0]*math.exp(-rows[0][0]/tau),0)
     if max(abs(rows[0][i+1]-first_expected[i]) for i in range(2))>VOLTAGE_TOLERANCE:
         raise ValueError('charged initial condition was not retained')
     errors=[0.0,0.0]
-    if case['mode']=='timing':
-        trajectory=reference.Trajectory(case['points'],case['initial'],p['r1'],p['r2'],p['cap'],case['pin_cap'])
+    if case['mode']!='forced_clamp':
+        trajectory=reference.Trajectory(case['points'],case['initial'],p['r1'],p['r2'],p['cap'],case['pin_cap'],p['bleed'],case['mode']=='timing',case.get('injection_A',0))
         for row in rows:
             expected=trajectory.value(row[0])
             errors=[max(errors[i],abs(row[i+1]-expected[i])) for i in range(2)]
@@ -178,11 +195,15 @@ def inspect(case,p,rows,step):
                 raise ValueError('native crossing bracket disagrees with RC reference')
         change=p['cap']*(rows[-1][1]-rows[0][1])+case['pin_cap']*(rows[-1][2]-rows[0][2])
         delivered=-reference.integrate(rows,3)
-        charge_error=abs(change-delivered)
-        result={'ideal_observer':observed,'charge_balance_error_C':charge_error}
+        bleed_charge=reference.integrate(rows,1)/p['bleed']
+        injected=case.get('injection_A',0)*(rows[-1][0]-rows[0][0])
+        charge_error=abs(change-delivered+bleed_charge-injected)
+        result={'ideal_observer':observed,'charge_balance_error_C':charge_error,'bleed_charge_C':bleed_charge,'assumed_injected_charge_C':injected}
+        if case['mode']=='open_drive' and any(abs(row[3])>1e-13 for row in rows):
+            raise ValueError('open drive cannot carry source current')
         if charge_error>CHARGE_TOLERANCE:raise ValueError('RC charge conservation failed')
     else:
-        tau=p['cap']/(1/p['r1']+1/p['r2'])
+        tau=p['cap']/(1/p['r1']+1/p['r2']+1/p['bleed'])
         for row in rows:
             expected=case['initial'][0]*math.exp(-row[0]/tau)
             errors[0]=max(errors[0],abs(row[1]-expected));errors[1]=max(errors[1],abs(row[2]))
@@ -190,10 +211,11 @@ def inspect(case,p,rows,step):
             raise ValueError('forced discharge branch current violates Ohm law')
         available=p['cap']*case['initial'][0]
         left=reference.integrate(rows,3);right=reference.integrate(rows,4)
+        bleed_charge=reference.integrate(rows,1)/p['bleed']
         residual=p['cap']*rows[-1][1]
         sampled_available=p['cap']*rows[0][1]
-        if abs(left+right+residual-sampled_available)>CHARGE_TOLERANCE:raise ValueError('forced discharge charge conservation failed')
-        result={'forced_C109_only_tau_s':tau,'left_charge_C':left,'right_charge_C':right,
+        if abs(left+right+bleed_charge+residual-sampled_available)>CHARGE_TOLERANCE:raise ValueError('forced discharge charge conservation failed')
+        result={'forced_C109_only_tau_s':tau,'left_charge_C':left,'right_charge_C':right,'bleed_charge_C':bleed_charge,
                 'first_sample_branch_current_A':[rows[0][3],rows[0][4]],
                 'ideal_t0_branch_current_A':[case['initial'][0]/p['r1'],case['initial'][0]/p['r2']],
                 'integration_start_s':rows[0][0],'available_t0_charge_C':available,
@@ -225,9 +247,9 @@ def run(check=False):
     for case in definitions:
         resolutions=[]
         for i,step in enumerate(STEPS):
-            rows=read_waveform(directory/(case['name']+'_'+str(i))/'waveform.dat',4 if case['mode']=='timing' else 5)
+            rows=read_waveform(directory/(case['name']+'_'+str(i))/'waveform.dat',4 if case['mode']!='forced_clamp' else 5)
             resolutions.append(inspect(case,p,rows,step))
-        if case['mode']=='timing':
+        if case['mode']!='forced_clamp':
             a,b=[row['ideal_observer']['crossings'] for row in resolutions]
             if [e['transition'] for e in a]!=[e['transition'] for e in b]:raise ValueError('observer changed with timestep refinement')
             if any(abs(x['linear_interpolation_s']-y['linear_interpolation_s'])>CROSSING_REFINEMENT_TOLERANCE for x,y in zip(a,b)):
@@ -241,10 +263,11 @@ def run(check=False):
           'charge_balance_tolerance_C':CHARGE_TOLERANCE,
           'crossing_refinement_tolerance_s':CROSSING_REFINEMENT_TOLERANCE,
           'cases':definitions,'results':results,'input_sha256':before,'deck_sha256':hashes,
-          'limitations':['GOOD_FAST is a prescribed ideal source, not an external rail fault or an actual HC14 output.',
-             '10pF is a5V owner-table sensitivity, not an unpowered nonlinear pin-network bound.',
+          'limitations':['GOOD_FAST is a prescribed ideal source, not an external rail fault or an actual LVC output.',
+             '4.5pF is a3.3V/25C typical input sensitivity, not a maximum or an unpowered nonlinear pin-network bound.',
              'Nominal C109 uses its retained capacitance test conditions; this does not qualify installed transient capacitance.',
-             'Observer fractions are illustrative; no HC74 pulse capture, reset-removal, NPN release or startup guarantee.',
+             'Observer fractions are illustrative; no LVC latch pulse capture, reset-removal, NPN release or startup guarantee.',
+             'Open-drive cases use zero or assumed20uA injection; neither qualifies device leakage, partial-power states or a restart interval.',
              'Forced zero endpoints do not model die clamps, surviving control power, other stored capacitors or a charged pin-capacitance impulse.']}
     # Acceptance uses full precision. Absolute physical-unit display grids
     # suppress insignificant host-libm cancellation noise in small residuals.
