@@ -1,0 +1,198 @@
+{
+  "schema_version": 1,
+  "status": "UNSELECTED rail-monitor study; not a complete permit/protection circuit",
+  "protection_implemented": false,
+  "issue": 59,
+  "supervisor": {
+    "manufacturer": "Texas Instruments",
+    "mpn": "TPS37044MJOFDDFRQ1",
+    "package": "DDF 8-pin SOT-23-THIN",
+    "source_id": "supervisor",
+    "used_channels": [
+      3,
+      4
+    ],
+    "nominal_threshold_V": 0.8,
+    "window_fraction": 0.07,
+    "absolute_threshold_accuracy_fraction": 0.01,
+    "hysteresis_fraction_of_trip": [
+      0.004,
+      0.01
+    ],
+    "supply_operating_V": [
+      1.7,
+      6.0
+    ],
+    "pin_absolute_V": [
+      -0.3,
+      6.5
+    ],
+    "temperature_C": [
+      -40,
+      125
+    ],
+    "adjustable_input_current_table_max_A": 3.5e-07,
+    "input_current_table_condition": "VSENSEx=5.5 V; treating this as an absolute envelope at the 0.8 V sense node is a proposed condition, not a newly sourced guarantee.",
+    "fixed_reset_delay_s": 0.01,
+    "reset_delay_fraction": [
+      -0.3,
+      0.3
+    ],
+    "detect_delay_max_s": 1e-05,
+    "delay_conditions": {
+      "fixed_reset_delay_greater_than_s": 0.001,
+      "overdrive_fraction": 0.1,
+      "pullup_ohm": 10000,
+      "load_F": 1e-11,
+      "supply_V": [
+        1.7,
+        6.0
+      ],
+      "temperature_C": [
+        -40,
+        125
+      ]
+    },
+    "startup_nominal_s": 0.001,
+    "startup_max_s": null,
+    "pin_map": {
+      "1": "VDD",
+      "2": "SENSE1",
+      "3": "SENSE2",
+      "4": "GND",
+      "5": "SENSE3",
+      "6": "SENSE4",
+      "7": "RESET2",
+      "8": "RESET1"
+    },
+    "pairing": "RESET2 combines SENSE3 and SENSE4. Unused SENSE1/2 and RESET1 follow the datasheet no-connect instruction; no third independent reset is invented."
+  },
+  "resistor_condition": {
+    "reference_C": 25,
+    "evaluated_C": [
+      -40,
+      125
+    ],
+    "tolerance_fraction": 0.001,
+    "tcr_abs_per_C": 2.5e-05,
+    "source_ids": [
+      "RT0603BRD071KL",
+      "RT0603BRD0714KL",
+      "RT0603BRD075K1L",
+      "RT0603BRD07150RL"
+    ],
+    "reference_temperature_scope": "25 C is an analysis reference assumption; the retained exact product sheets do not state the nominal-resistance reference temperature. Applicability remains OPEN."
+  },
+  "divider_candidates": [
+    {
+      "rail": "+12V",
+      "top": [
+        {
+          "mpn": "RT0603BRD0714KL",
+          "ohm": 14000
+        }
+      ],
+      "bottom": [
+        {
+          "mpn": "RT0603BRD071KL",
+          "ohm": 1000
+        }
+      ],
+      "sense_inputs": 1
+    },
+    {
+      "rail": "+5V",
+      "top": [
+        {
+          "mpn": "RT0603BRD075K1L",
+          "ohm": 5100
+        },
+        {
+          "mpn": "RT0603BRD07150RL",
+          "ohm": 150
+        }
+      ],
+      "bottom": [
+        {
+          "mpn": "RT0603BRD071KL",
+          "ohm": 1000
+        }
+      ],
+      "sense_inputs": 1
+    },
+    {
+      "rail": "-12V",
+      "top": [
+        {
+          "mpn": "RT0603BRD0714KL",
+          "ohm": 14000
+        }
+      ],
+      "bottom": [
+        {
+          "mpn": "RT0603BRD071KL",
+          "ohm": 1000
+        }
+      ],
+      "sense_inputs": 2,
+      "meaning": "Magnitude divider in a proposed floating domain referenced to VN. Both paired sense pins share the divider. Domain survival is not established."
+    }
+  ],
+  "normal_voltage_source": "design/power/supply-architecture-input.json",
+  "floating_negative_trial": {
+    "ldo_mpn": "TPS70933DBVR",
+    "isolator_mpn": "ISO7710FDR",
+    "ldo_connections": {
+      "1": "AGND",
+      "2": "VN",
+      "3": "NC enabled by internal pullup",
+      "4": "NC",
+      "5": "VCTRL_NEG"
+    },
+    "isolator_connections": {
+      "1": "VCTRL_NEG",
+      "2": "NEG_GOOD_LOCAL",
+      "3": "VCTRL_NEG",
+      "4": "VN",
+      "5": "AGND",
+      "6": "NEG_GOOD_SYSTEM",
+      "7": "NC",
+      "8": "+5V"
+    },
+    "monitor_supply_relative_VN_V": 3.3,
+    "ldo_input_absolute_min_V": -0.3,
+    "ldo_recommended_input_min_V": 2.7,
+    "pin_stress_VN_cases_V": [
+      -12.37,
+      -11.74,
+      0,
+      1,
+      12.48
+    ],
+    "counterexample_scope": "Forced bounded voltages for architectural screening, not a claim that the existing assembled circuit reaches them. Missing negative sink plus other powered paths is not proved to keep VN nonpositive.",
+    "isolator_powered_min_V": 2.25,
+    "isolator_powered_down_max_V": 1.7,
+    "isolator_supply_max_V": 5.5,
+    "source_scope": "Default-low F ordering option is conditional on receiving-side power and no parasitic power through IN; intermediate supplies and unpowered receiver are undefined.",
+    "admitted": false
+  },
+  "comparison": {
+    "mpn": "TLV6700DDCR",
+    "source_id": "comparator_comparison",
+    "propagation_nominal_s": [
+      1.8e-05,
+      2.9e-05
+    ],
+    "propagation_max_s": null,
+    "decision": "Do not use nominal timing as a guaranteed fault-response maximum."
+  },
+  "open_obligations": [
+    "Actual 0.8 V input-bias envelope, nominal-resistance reference temperature, resistor thermal/installation and complete threshold applicability.",
+    "A negative-rail front end that remains within all pin ratings when the negative rail is absent or rises above AGND.",
+    "Surviving control power, defined startup/brownout output states, and real all-rail AND/latch/permit driver.",
+    "Fault slew/overdrive, actual pullup/load and switching path must match a maximum-delay guarantee; nominal startup time is not a bound.",
+    "Independent inlet-return and local-device-GND integrity cannot be inferred from rail voltages.",
+    "Complete part/decoupler/current/area allocation and all 82 output, 16 sense and 30 reference isolation paths.",
+    "No native CAD, dynamic model, installed thermal or bench qualification performed for this monitor study."
+  ]
+}
