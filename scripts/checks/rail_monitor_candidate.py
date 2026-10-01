@@ -4,6 +4,7 @@ import hashlib
 import itertools
 import json
 import math
+import re
 from fractions import Fraction as F
 from pathlib import Path
 
@@ -94,6 +95,20 @@ def validate_sources(spec, verify_retained=False):
     by_id = {r['id']:r for r in records}
     if len(by_id)!=len(records) or spec['protection_implemented'] or spec['floating_negative_trial']['admitted']:
         raise ValueError('duplicate source or forbidden protection admission')
+    resistor_ids = {p['mpn'] for row in spec['divider_candidates'] for p in row['top']+row['bottom']}
+    declared_ids = spec['resistor_condition']['source_ids']
+    if (spec['supervisor']['source_id'] != 'supervisor'
+            or set(declared_ids) != resistor_ids or len(declared_ids) != len(resistor_ids)):
+        raise ValueError('declared source references do not match captured devices')
+    required = {
+        'supervisor': spec['supervisor']['mpn'],
+        spec['comparison']['source_id']: spec['comparison']['mpn'],
+        'floating_ldo': spec['floating_negative_trial']['ldo_mpn'],
+        'isolator': spec['floating_negative_trial']['isolator_mpn']}
+    required.update({p['mpn']:p['mpn'] for row in spec['divider_candidates']
+                     for p in row['top']+row['bottom']})
+    if any(key not in by_id or by_id[key]['mpn'] != mpn for key,mpn in required.items()):
+        raise ValueError('required device/source evidence missing or mismatched')
     if (spec['supervisor']['mpn']!='TPS37044MJOFDDFRQ1'
             or by_id['supervisor']['mpn']!=spec['supervisor']['mpn']
             or spec['supervisor']['used_channels']!=[3,4]):
@@ -125,7 +140,9 @@ def validate_sources(spec, verify_retained=False):
                     or source['tcr_abs_per_C']!=spec['resistor_condition']['tcr_abs_per_C']):
                 raise ValueError('divider differs from exact resistor source')
     for r in records:
-        if r['availability']!='AVAILABLE' or r['authority']!='MANUFACTURER_PRIMARY' or len(r['sha256'])!=64 or set(r['sha256'])=={'0'}:
+        if (r['availability']!='AVAILABLE' or r['authority']!='MANUFACTURER_PRIMARY'
+                or not re.fullmatch('[0-9a-f]{64}',r['sha256']) or set(r['sha256'])=={'0'}
+                or type(r['bytes']) is not int or r['bytes'] <= 0):
             raise ValueError('retained primary metadata required')
         if verify_retained:
             path=ROOT/r['file']; data=path.read_bytes()

@@ -4,7 +4,19 @@ description: "Merged recovery, assembly margin changes, and the remaining physic
 sidebar_position: 11
 ---
 
-## Current recovery point — 1 October 2026
+## Current continuation — 2 October 2026
+
+Start from the latest `main`. Completed WIP checkpoints through PR #78 are
+merged; the preserved issue-38 worktree is a recovery/evidence store, not the
+active implementation base. Keep its ignored artifacts and the other retained
+experiment worktrees. Issues #38 and #59 remain open, and every schematic and
+PCB remains an unvalidated draft.
+
+The next electrical implementation is a native monitor/reference-validity/permit
+draft with a finite test load and explicit startup/fault behavior. The monitor
+studies below provide inputs and counterexamples, not a completed protection
+assembly. Current-source contact/material qualification and joined electrical
+compliance still gate board acceptance; green software CI does not close them.
 
 The 2 October rail-monitor continuation is an unselected source-backed study in
 `design/power/rail-monitor-candidate-work-note.md`. It checks normal-band
@@ -22,10 +34,10 @@ conditional on qualified leakage; reference validity and a complete permit
 are still required. No installed protection or physical acceptance is claimed.
 
 The recovered issue-38 source checkpoint merged through PR #68 (`9273b3a`),
-followed by the active-schematic ERC digest fix (`79d9d4f`). Continue from the
-current completion branch and preserve `worktrees/38-jack-halves`, now on
-`topic/38-completion`; its original branch and ignored recovery artifacts remain
-intact. Issue #38 remains open; every schematic and PCB is an unvalidated draft.
+followed by the active-schematic ERC digest fix (`79d9d4f`). Preserve
+`worktrees/38-jack-halves` on `topic/38-completion`; its original branch and
+ignored recovery artifacts remain intact. This records the recovery provenance,
+not an instruction to resume implementation from that older worktree.
 
 The local routing repair `57084d0` reconciles PR #67 with the newer complete
 per-net native connectivity receipts. It requires fresh same-board native
@@ -38,7 +50,9 @@ proves electrical compliance. The assembly/proof checkpoint #69 is also merged
 and selected P-probe checkpoint #70 merged at `c012271`, also with passing
 post-merge CI and regeneration. The native collar, wetting and protection
 diagnostics in #71 merged at `6e3cebb`, with passing post-merge CI and
-regeneration. Potential-field diagnostics continue in #72.
+regeneration. Potential-field diagnostics merged through #72, followed by the
+JL collar replay in #73 and current-wire/individual-core geometry work in
+#74–#76. Those are conditional engineering results, not physical qualification.
 
 The previously interrupted K calculation has now completed both 2,287-profile
 phases. Its retained guard log records PASS, exit 0, 7,048 seconds. A read-only
