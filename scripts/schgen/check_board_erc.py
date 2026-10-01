@@ -12,6 +12,42 @@ import sys
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT))
 from scripts.checks.partition35_json import dumps
+from scripts.pcbgen.netlist import TOKEN, parse, many
+
+
+def schematic_tree_digest(root):
+    """Hash only the active root and referenced sheets, not local experiments."""
+    root = Path(root).resolve()
+    directory = root.parent
+    visited, active = set(), set()
+
+    def visit(path):
+        path = path.resolve()
+        if not path.is_relative_to(directory):
+            raise ValueError('schematic sheet escapes board directory')
+        if path in active:
+            raise ValueError('cyclic schematic hierarchy')
+        if path in visited:
+            return
+        active.add(path)
+        tokens = TOKEN.findall(path.read_text())
+        node, end = parse(tokens)
+        if end != len(tokens) or node[0] != 'kicad_sch':
+            raise ValueError('malformed schematic sheet')
+        for sheet in many(node, 'sheet'):
+            files = [p[2] for p in many(sheet, 'property') if p[1] == 'Sheetfile']
+            if len(files) != 1:
+                raise ValueError('schematic child requires one Sheetfile')
+            visit(path.parent / files[0])
+        active.remove(path)
+        visited.add(path)
+
+    visit(root)
+    digest = hashlib.sha256()
+    for path in sorted(visited):
+        digest.update(str(path.relative_to(directory)).encode())
+        digest.update(path.read_bytes())
+    return digest.hexdigest()
 
 
 def inspect(board):
@@ -29,12 +65,9 @@ def inspect(board):
                         'items': sorted(i['description'] for i in v.get('items', []))}
                        for v in violations if v['severity'] == 'warning'), key=dumps)
     errors = [v for v in violations if v['severity'] == 'error']
-    digest = hashlib.sha256()
-    for path in sorted(directory.rglob('*.kicad_sch')):
-        digest.update(str(path.relative_to(directory)).encode())
-        digest.update(path.read_bytes())
+    tree_hash = schematic_tree_digest(directory/f'{identity}.kicad_sch')
     return {'board_id': identity, 'kicad_version': native['kicad_version'],
-            'schematic_tree_sha256': digest.hexdigest(), 'errors': errors,
+            'schematic_tree_sha256': tree_hash, 'errors': errors,
             'warning_count': len(warnings),
             'warning_types': dict(sorted(Counter(w['type'] for w in warnings).items())),
             'warnings': warnings}
