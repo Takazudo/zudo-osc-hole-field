@@ -185,7 +185,7 @@ without another conductor solve. On conservative subsets where the potential
 trial is forced constant, it bounds present-trial mismatch below by about
 0.0148 mΩ. Its independent restriction-forced floor lower is much weaker,
 about 0.0000404 mΩ. These are lower bounds, not proof that the restriction is
-negligible or that releasing it would meet the target. The next bounded
+negligible or that releasing it would meet the target. The subsequent bounded
 calculation keeps the restriction and source epoch fixed while retaining the
 same two potential fields to locate the remaining mismatch.
 
@@ -209,6 +209,19 @@ trial ansatz, not every possible three-dimensional current field; an explicit
 counterexample prevents that broader interpretation. The separate
 `source-lift-mismatch.md` record tightens the prior interval without rewriting
 its receipt or counting overlapping lower bounds twice.
+
+The bounded partial-cell experiment now audits both complete coordinate sets
+and accepts all 4,096 selected B.Cu cells under the retained nominal-domain
+premises. Exact area intersections recover potential-energy lower contributions
+of approximately 0.312974 / 0.485778 mΩ. The corresponding retained B.Cu mismatch
+intervals tighten to approximately [0.132810, 0.144503] / [0.178372, 0.190178] mΩ
+(display values rounded; exact outward bounds are in
+`design/partition/partial-cell-energy.receipt.json`). All outer upper bounds,
+source terms and global gap bounds remain unchanged. This localizes mismatch
+between these particular nominal trial fields; it does not identify a physical
+board defect or establish the joined resistance limit. No source-lift floor is
+added again. See `partial-cell-energy.md`; full retained artifacts remain local
+in `worktrees/partial-cell-energy` and must be preserved.
 
 `design/partition/gh-contact-cell-proposal.md` constructs a finite reference
 termination with a 45.193238 mΩ/end conditional upper and a nonempty correlated
