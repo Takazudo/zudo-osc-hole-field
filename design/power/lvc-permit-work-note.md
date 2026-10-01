@@ -49,5 +49,10 @@ identity parity. Twenty-two fresh ngspice 44.2 runs agree with independent RC
 equations, charge conservation and timestep refinement. Native display checks
 cover 18 cases and five rejected mutations. Independent electrical and CAD
 reviews identified the pad-corner, flash-scope and sustained-HIGH current gaps;
-those findings are corrected. Final aggregate, documentation and CI verification
-remain pending. Installed electrical, dynamic and bench qualification is NOT RUN.
+those findings are corrected. The prepared batch passes guarded aggregate regeneration,
+documentation checks, build and strict site checks (guard exit 0; the one existing
+workbench template-link exception is allowlisted). Applying it atop the merged
+display-model/source-epoch fix passes 79 focused tests and generated-output checks;
+an independent integration review found no blockers. Exact-head CI remains the
+final combined-source check before merge. Installed electrical, dynamic and bench
+qualification is NOT RUN.
