@@ -1,0 +1,190 @@
+{
+  "status": "CONDITIONAL NORMAL-BAND COMPATIBILITY ONLY; NOT REFERENCE VALIDITY OR FAULT ACCEPTANCE",
+  "qualification_accepted": false,
+  "canonical_protection_implemented": false,
+  "reference_requirement_changed": false,
+  "fault_rejection_accepted": false,
+  "normal_negative_rail_magnitude_V": [
+    11.74,
+    12.37
+  ],
+  "original_reference_assumption_V": [
+    3.29,
+    3.31
+  ],
+  "original_assumption_strictly_inside": true,
+  "resistor_corner_count": 256,
+  "strict_reference_boundaries_exact": {
+    "lower": {
+      "numerator": 5909610568405894974642899,
+      "denominator": 1857045068175400000000000
+    },
+    "upper": {
+      "numerator": 5672835890275998528265173,
+      "denominator": 1700967689691400000000000
+    }
+  },
+  "inward_display_reference_interval_V": [
+    3.182265562469,
+    3.335063872556
+  ],
+  "limiting_corner_witnesses": {
+    "lower_OV": {
+      "boundary_V": {
+        "numerator": 5909610568405894974642899,
+        "denominator": 1857045068175400000000000
+      },
+      "trip_slope_V_per_V": {
+        "numerator": 928522534087700,
+        "denominator": 235026413115637
+      },
+      "trip_error_spread_V": {
+        "numerator": 95057107925035594642899,
+        "denominator": 470052826231274000000000
+      },
+      "resistance_ohm": {
+        "RN": {
+          "numerator": 20328651,
+          "denominator": 400
+        },
+        "RR": {
+          "numerator": 200299099,
+          "denominator": 40000
+        },
+        "RG": {
+          "numerator": 398601,
+          "denominator": 400
+        },
+        "RB": {
+          "numerator": 2790207,
+          "denominator": 200
+        },
+        "RU": {
+          "numerator": 160636203,
+          "denominator": 20000
+        },
+        "RUG": {
+          "numerator": 398601,
+          "denominator": 400
+        },
+        "RO": {
+          "numerator": 362328309,
+          "denominator": 40000
+        },
+        "ROG": {
+          "numerator": 401401,
+          "denominator": 400
+        }
+      }
+    },
+    "upper_UV": {
+      "boundary_V": {
+        "numerator": 5672835890275998528265173,
+        "denominator": 1700967689691400000000000
+      },
+      "trip_slope_V_per_V": {
+        "numerator": 850483844845700,
+        "denominator": 245846336869701
+      },
+      "trip_error_spread_V": {
+        "numerator": 33212033141526983911609,
+        "denominator": 163897557913134000000000
+      },
+      "resistance_ohm": {
+        "RN": {
+          "numerator": 20471451,
+          "denominator": 400
+        },
+        "RR": {
+          "numerator": 198901899,
+          "denominator": 40000
+        },
+        "RG": {
+          "numerator": 401401,
+          "denominator": 400
+        },
+        "RB": {
+          "numerator": 2790207,
+          "denominator": 200
+        },
+        "RU": {
+          "numerator": 161764603,
+          "denominator": 20000
+        },
+        "RUG": {
+          "numerator": 398601,
+          "denominator": 400
+        },
+        "RO": {
+          "numerator": 362328309,
+          "denominator": 40000
+        },
+        "ROG": {
+          "numerator": 398601,
+          "denominator": 400
+        }
+      }
+    }
+  },
+  "trip_magnitude_enclosure_over_interval_closure_V": {
+    "UV": [
+      10.129334718923742,
+      11.74
+    ],
+    "OV": [
+      12.37,
+      14.067896635160226
+    ]
+  },
+  "forced_nominal_counterexample": {
+    "reference_V": 3.2,
+    "negative_rail_V": -10.9,
+    "reference_inside_compatibility_interval": true,
+    "sense_nodes_V": {
+      "SENSE": 0.3504541355320794,
+      "UV": 0.35320088300220753,
+      "OV": 0.31714568880079286
+    },
+    "comparators_ideal_released": true,
+    "negative_rail_inside_normal_band": false,
+    "scope": "Prescribed DC, nominal resistors, zero comparator/input-current error; not a claimed reachable trajectory."
+  },
+  "conditions": {
+    "reference_voltage_scope": "Proposed qualified total reference envelope; not derived as a lifetime/temperature guarantee from typical drift, noise or startup rows.",
+    "resistor_tolerance_fraction": 0.001,
+    "resistor_tcr_per_C": 2.5e-05,
+    "resistor_reference_C": 25,
+    "resistor_temperature_C": [
+      -40,
+      125
+    ],
+    "resistor_temperature_scope": "25 C reference remains an analysis assumption; exact retained sheets do not state it.",
+    "forced_VN_V": [
+      -12.48,
+      12.48
+    ],
+    "forced_VN_scope": "Bounded architecture screening, not a complete reachable-fault envelope proof.",
+    "powered_input_bias_per_pin_A": 1e-07,
+    "powered_comparator_error_V": 0.003,
+    "error_scope": "Proposed qualification envelopes at actual common-mode, supply and temperature; nominal bias and a table offset at other conditions do not establish them.",
+    "cold_uniform_leakage_per_pin_A": 1e-05,
+    "cold_scope": "Each of four comparator inputs and reference output is represented by an independent bounded current source. No manufacturer unpowered-leakage maximum is inferred. The open-reference calculation is a passive limiting case, not the actual unpowered regulator model."
+  },
+  "limits": [
+    "Strict inequalities preserve positive normal-band margins; equality at a limiting witness loses acceptance.",
+    "The displayed usable interval is rounded inward; exact fractional boundaries and witness equations are authoritative.",
+    "Trip envelopes use the closure of the reference interval and independent resistor/error corners; no one device is claimed to span the whole envelope.",
+    "This calculation prevents false rejection of normal rails under assumptions. It does not ensure rejection of every unsafe rail.",
+    "Comparator error, input-current/TCR applicability, independent reference validity, dynamic response and ground integrity retain their existing open source/physical conditions.",
+    "Do not replace the historical reference range or dependent current/pin screens without separate fault-rejection and source qualification.",
+    "No protection hardware implementation, installed or bench qualification is inferred."
+  ],
+  "input_sha256": {
+    "design/power/negative-monitor-network-sources.json": "984dc6d0d081be4fcb6e706a64ace82e3467dfa4606c49a96cee5568b6a8ad08",
+    "design/power/negative-monitor-network.json": "96b4c9ac9626d33810f1612721a3f68b421256f88f15cd8cec8cb768a8d5da1c",
+    "design/power/supply-architecture-input.json": "a8a4e92ac4c1d7de5c16b6982fba7d5ab60ab13753b12eabfa23fc75da98acc4",
+    "scripts/checks/monitor_reference_compatibility.py": "c5d6186c84e355e50d2736e1cdc480073beb862d578333cb181fd563654f95ef",
+    "scripts/checks/negative_monitor_network.py": "ca0e9a8e3f6140c5e67770bdc696013f782119fb0d9a93276a15a78d21c1a51f",
+    "scripts/checks/rail_monitor_candidate.py": "7da0e191589e5e4221b14fdc6ba22de2f8030fc66ea47dfadf6e8fa33e2e9df8"
+  }
+}

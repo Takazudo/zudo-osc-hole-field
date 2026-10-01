@@ -27,6 +27,13 @@ channel can retain a settled healthy state across an enclosing range of roughly
 3.00–3.61 V under the stated static assumptions. It cannot establish the narrow
 3.29–3.31 V used by the negative-monitor study. Propagating the wider range loses
 both normal-band margins, and a forced nominal counterexample is retained.
+A separate inverse calculation now derives the strict conditional reference
+interval that preserves positive normal-band margins across all 256 resistor
+corners. Its inward display bounds are 3.182265562469–3.335063872556 V; exact fractional
+boundaries and limiting witnesses are in `monitor-reference-compatibility-report.json`.
+This is not a replacement reference requirement: the REF=3.2 V / negative-rail
+−10.9 V counterexample remains inside that interval with both ideal comparators
+released. Fault validity and the original 3.29–3.31 V assumption remain open.
 The updated candidate uses two SN74LVC1G17DBVR buffers and one
 SN74LVC1G74DCTR latch, with a passive 100 kΩ timing-capacitor bleed and an
 additional bypass. It now contains 42 physical components and 113 pins.
