@@ -1,0 +1,558 @@
+{
+  "status": "REJECTED DIRECT SENSE CIRCUIT; DRIVE/HYBRID TIMING UNSOURCED; no implementation admission",
+  "protection_implemented": false,
+  "original_envelope": {
+    "signal_max_V": 5,
+    "external_fault_max_V": 12,
+    "load_min_ohm": 10000,
+    "precision_load_error_max_V": 0.001,
+    "settling_deadline_s": 0.001,
+    "supply_drop_max_V": 0.04
+  },
+  "power_off_polarity_counterexamples": [
+    {
+      "external_V": -12,
+      "assumed_internal_V": 0,
+      "off_assumption_source_V": -11.3,
+      "grounded_gate_VGS_V": 11.3,
+      "source_referenced_ideal_gate_VGS_V": 0,
+      "finding": "Negative external voltage makes the grounded-gate OFF assumption self-inconsistent; do not infer a steady RDS current from that transient voltage."
+    },
+    {
+      "external_V": 12,
+      "assumed_internal_V": 0,
+      "off_assumption_source_V": 0.7,
+      "grounded_gate_VGS_V": -0.7,
+      "source_referenced_ideal_gate_VGS_V": 0,
+      "finding": "Positive external voltage does not produce that particular false-on condition with the internal node held at zero."
+    }
+  ],
+  "off_state_limits": {
+    "verdict": "UNSOURCED",
+    "scope": "Source-referenced bleed is necessary but not a complete off-state proof. Both body diodes point from common source toward their drains. Rail absent is not permission to ground GATE.",
+    "positive_common_mode_counterexample": "Without D_BLOCK, a still-positive SOURCE_COMMON/GATE can forward-bias Q_UP collector-base into an absent VP rail; the G-S clamp/bleed provides an unwanted analog-to-control path.",
+    "remaining": "Actual driver leakage, temperature, dV/dt/Miller injection, positive and negative source motion, clamp charge and independent permit are unresolved; VGS=0 table leakage is not guaranteed at the diagnostic 0.1 V cutoff."
+  },
+  "sense_injection": {
+    "verdict": "REJECTED AS DRAWN - conditional DC countermodel requires unavailable amplifier swing",
+    "condition": "DC ideal-amplifier countermodel with the stated ON contact resistance; any real implementation must first satisfy gate/rail operating conditions.",
+    "baseline_nodes_V": {
+      "drive_V": 5.502672920844816,
+      "jack_V": 4.999748764073956,
+      "source_common_V": 4.999999798930832
+    },
+    "nodes_with_diagnostic_injection_V": {
+      "drive_V": 5.177764512208341,
+      "jack_V": 4.750211153296732,
+      "source_common_V": 4.999999928894195
+    },
+    "diagnostic_injection_A": 5e-05,
+    "jack_change_V": -0.24953761077722447,
+    "injection_transfer_ohm": -4990.752215547278,
+    "diagnostic_uncompensated_static_error_allocation_V": 0.001,
+    "maximum_injection_A_for_diagnostic_static_error_allocation": 2.0037059681800725e-07,
+    "minimum_ON_bleed_A_at_4p5V_gate": 0.000439826805977735,
+    "minimum_uncompensated_static_shift_V_in_linear_countermodel": 2.195066606390464,
+    "minimum_RGS_ohm_for_diagnostic_static_error_allocation": 22458384.96996275,
+    "coupled_resistive_driver_countermodel": [
+      {
+        "signal_V": -5,
+        "drive_V": -111.16233552059293,
+        "jack_V": -86.14895592494395,
+        "source_common_V": -4.999957535065792,
+        "pullup_current_A": 0.016259915070131584,
+        "VGS_V": 8.2,
+        "branch": "clamped",
+        "required_drive_outside_even_maximum_rail_magnitudes": true
+      },
+      {
+        "signal_V": 0,
+        "drive_V": -40.67832129352618,
+        "jack_V": -31.24194645698827,
+        "source_common_V": 1.627132851741047e-05,
+        "pullup_current_A": 0.006259967457342966,
+        "VGS_V": 8.2,
+        "branch": "clamped",
+        "required_drive_outside_even_maximum_rail_magnitudes": true
+      },
+      {
+        "signal_V": 5,
+        "drive_V": 1.5852066677671246,
+        "jack_V": 1.9910387919353525,
+        "source_common_V": 5.000001365917333,
+        "pullup_current_A": 0.0006028570127697778,
+        "VGS_V": 6.028570127697778,
+        "branch": "unclamped",
+        "required_drive_outside_even_maximum_rail_magnitudes": false
+      }
+    ],
+    "meaning": "The gate is insulated; the external gate-source resistor and clamp are not. This injection creates DC transfer/offset error, not automatically the difference between unloaded and loaded output. The1mV static allocation is diagnostic, not a newly inferred original absolute-accuracy limit. Calibration could remove a constant offset at one point; the captured signal-dependent driver additionally requires amplifier swing outside the rails in this countermodel. No compensation redesign is captured."
+  },
+  "resistive_pullup_DC_sensitivity": {
+    "verdict": "NEEDS BENCH",
+    "nominal_clamp_assumption_V": 8.2,
+    "rows": [
+      {
+        "source_V": -5.51260187,
+        "VGS_V": 8.2,
+        "pullup_current_mA": 17.28520374,
+        "bleed_current_mA": 0.82,
+        "zener_current_mA": 16.46520374,
+        "zener_power_W": 0.135014670668
+      },
+      {
+        "source_V": 0,
+        "VGS_V": 8.2,
+        "pullup_current_mA": 6.260000000000002,
+        "bleed_current_mA": 0.82,
+        "zener_current_mA": 5.440000000000002,
+        "zener_power_W": 0.044608000000000016
+      },
+      {
+        "source_V": 5.51260187,
+        "VGS_V": 5.5403791714285715,
+        "pullup_current_mA": 0.5540379171428569,
+        "bleed_current_mA": 0.5540379171428572,
+        "zener_current_mA": 0,
+        "zener_power_W": 0.0
+      }
+    ],
+    "minimum_rail_positive_signal_screen": {
+      "source_V": 5.51260187,
+      "VGS_V": 4.625248639135979,
+      "pullup_current_mA": 0.47335038727047407,
+      "bleed_current_mA": 0.4733503872704736,
+      "zener_current_mA": 4.3368086899420177e-16,
+      "zener_power_W": 2.0058818491347405e-18
+    },
+    "base_sink_upper_mA_each": 1.277209787848086,
+    "scope": "Assumed PNP/diode drops and ideal 8.2 V clamp. Vz max is specified at5mA, not arbitrary fault current. This is a countermodel for current burden, not a guaranteed operating envelope.",
+    "gate_and_clamp_current_return": "Complete pullup current returns to analog SOURCE_COMMON; drive feedback can compensate voltage but its amplifier must carry the current."
+  },
+  "turnoff_evidence": {
+    "verdict": "UNSOURCED",
+    "two_MOS_Qg_table_upper_C": 2.8e-09,
+    "conditional_charge_over_min_bleed_current_s": 0.00028647639999999995,
+    "PNP_base_reverse_current_initial_screen_A": 8.5e-06,
+    "PNP_reverse_current_required_by_timing_table_A": 0.001,
+    "MOS_table_delay_plus_fall_s": 2.23e-08,
+    "whole_network_charge_max_C": null,
+    "whole_disconnect_max_s": null,
+    "gaps": "Qg bound is at10V gate/48V drain/230mA/25C, not every cold-collapse trajectory. Add clamp/diode/driver charge and Miller/source motion; PNP resistor discharge does not provide the tested reverse base current. Ciss max at one bias cannot replace a charge bound over the full transition."
+  },
+  "hybrid_DC_headroom_screen": {
+    "verdict": "NEEDS BENCH",
+    "assumed_gate_current_A": 0.004,
+    "rows": [
+      {
+        "signal_V": -5,
+        "drive_V": -5.518662966265635,
+        "jack_V": -4.999741180955878,
+        "source_common_V": -5.500663277258438
+      },
+      {
+        "signal_V": 0,
+        "drive_V": -0.01598960975000024,
+        "jack_V": 7.97900714056712e-06,
+        "source_common_V": 1.038066255300197e-05
+      },
+      {
+        "signal_V": 5,
+        "drive_V": 5.486683746765633,
+        "jack_V": 4.999757138970159,
+        "source_common_V": 5.500684038583542
+      }
+    ],
+    "maximum_ideal_jack_error_V": 0.00025881904412194956,
+    "additional_output_sink_power_screen_W": 0.07148399999999999,
+    "scope": "Fixed4-ohm MOS contacts at their conditional25C row; isolated sense carries no driver bias. Ideal amplifier DC only. Offset, finite gain, package heat, actual supply/temperature, charge injection and1ms transient target remain unverified."
+  },
+  "hybrid_collapse": {
+    "verdict": "UNSOURCED",
+    "precision_output_count": 16,
+    "condition": "All16 precision jacks simultaneously held at+12V during cold collapse; constant-current bound, no credit for bleeders or regulator sinking. Sense release uses conditional25C PhotoMOS table only.",
+    "main_initial_A_each": 0.012305474293279692,
+    "sense_initial_A_each": 0.0024610948586559385,
+    "diagnostic_guard_V_not_original_requirement": 0.3,
+    "optimistic_reachable_capacitance_F": 0.00011999999999999999,
+    "capacitance_is_not_fitted_or_locally_reachable_proof": true,
+    "both_PhotoMOS_C_required_F": 0.00039377517738495017,
+    "hybrid_max_drive_release_s_with_zero_detection_delay": 8.284545124999994e-05,
+    "RGS_max_ohm_for_conditional_MOS_Q_over_I_proof_ignoring_all_extra_charge": 2958.7661160714265,
+    "sensitivities": [
+      {
+        "assumed_drive_release_s": 1e-05,
+        "sense_release_s_conditional_25C": 0.0005,
+        "conservative_C_needed_F_for_guard": 7.219211585390754e-05,
+        "maximum_detection_delay_s_for_assumed_accessible_C": 6.070454270833328e-05
+      },
+      {
+        "assumed_drive_release_s": 5e-05,
+        "sense_release_s_conditional_25C": 0.0005,
+        "conservative_C_needed_F_for_guard": 9.844379434623756e-05,
+        "maximum_detection_delay_s_for_assumed_accessible_C": 2.737120937499995e-05
+      },
+      {
+        "assumed_drive_release_s": 0.0001,
+        "sense_release_s_conditional_25C": 0.0005,
+        "conservative_C_needed_F_for_guard": 0.00013125839246165007,
+        "maximum_detection_delay_s_for_assumed_accessible_C": -1.4295457291666722e-05
+      }
+    ],
+    "scope": "Only these16 precision outputs are counted; unqualified remaining66 outputs/30 reference connections cannot be assigned zero injection. Local capacitors disconnected by the fault cannot be counted."
+  },
+  "all_output_obligations": {
+    "verdict": "UNSOURCED",
+    "total_drive_contacts": 82,
+    "precision_count": 16,
+    "general_count": 66,
+    "general_output_uids": [
+      "J:E1.BIP",
+      "J:E1.ENV",
+      "J:E1.EOC",
+      "J:E1.STG",
+      "J:E2.BIP",
+      "J:E2.ENV",
+      "J:E2.EOC",
+      "J:E2.STG",
+      "J:E3.BIP",
+      "J:E3.ENV",
+      "J:E3.EOC",
+      "J:E3.STG",
+      "J:E4.BIP",
+      "J:E4.ENV",
+      "J:E4.EOC",
+      "J:E4.STG",
+      "J:E5.BIP",
+      "J:E5.ENV",
+      "J:E5.EOC",
+      "J:E5.STG",
+      "J:E6.BIP",
+      "J:E6.ENV",
+      "J:E6.EOC",
+      "J:E6.STG",
+      "J:F1.BP",
+      "J:F1.HP",
+      "J:F1.LP",
+      "J:F1.OUT",
+      "J:F2.BP",
+      "J:F2.HP",
+      "J:F2.LP",
+      "J:F2.OUT",
+      "J:F3.BP",
+      "J:F3.HP",
+      "J:F3.LP",
+      "J:F3.OUT",
+      "J:M4A.SUM",
+      "J:M4B.SUM",
+      "J:M5A.SUM",
+      "J:M5B.SUM",
+      "J:N1.BLUE",
+      "J:N1.BROWN",
+      "J:N1.PINK",
+      "J:N1.WHITE",
+      "J:O1.PUL",
+      "J:O1.SAW",
+      "J:O1.SIN",
+      "J:O1.TRI",
+      "J:O2.PUL",
+      "J:O2.SAW",
+      "J:O2.SIN",
+      "J:O2.TRI",
+      "J:O3.PUL",
+      "J:O3.SAW",
+      "J:O3.SIN",
+      "J:O3.TRI",
+      "J:O4.PUL",
+      "J:O4.SAW",
+      "J:O4.SIN",
+      "J:O4.TRI",
+      "J:O5.PUL",
+      "J:O5.SAW",
+      "J:O5.SIN",
+      "J:O5.TRI",
+      "J:W1.OUT",
+      "J:W2.OUT"
+    ],
+    "general_source_connections": [
+      "Local feedback before the resistor. For DC/gates select cv role."
+    ],
+    "general_source_notes": [
+      "998 ohm gives 0.990119 gain into 100 kohm; nominal \u00b15 V specified unloaded.",
+      "Each project-output pair at opposite \u00b112 V has 12.024 mA maximum ideal current and 0.0722 W per 499 ohm resistor. Ground short at 12 V is also 0.0722 W per 499 ohm resistor.",
+      "No simultaneous-all-output-short supply claim. Test sustained one-channel short and paired outputs per IC, including junction temperature.",
+      "Two series 499 ohm / 0.5 W resistors realize 998 ohm nominal. A continuous external \u00b112 V fault against the opposite output rail gives 24.05 mA and 0.289 W per resistor at nominal rails; qualify IC thermal dissipation."
+    ],
+    "material_difference": "General outputs use local feedback before998ohm and need one drive disconnect, not a second precision sense contact. The1mV load-error target is precision-specific; general +/-5V is specified unloaded. This can simplify circuitry but does not waive signal fidelity or permit arbitrary bias/distortion.",
+    "common_fault_obligations": "All82 share998ohm series resistance and sustained external +/-12V, off/partial-rail/GND-loss analysis. General unipolar/gate outputs are still externally bipolar fault ports; a single MOS body diode is not a bidirectional disconnect. No slower release or backpower exemption found.",
+    "envelope_0_to_8V_uids": [
+      "J:E1.ENV",
+      "J:E2.ENV",
+      "J:E3.ENV",
+      "J:E4.ENV",
+      "J:E5.ENV",
+      "J:E6.ENV"
+    ],
+    "plus8V_gate_headroom_screen": {
+      "source_V": 8,
+      "VGS_V": 2.261596743709072,
+      "pullup_current_mA": 0.23145300458578474,
+      "bleed_current_mA": 0.2314530045857841,
+      "zener_current_mA": 6.505213034913027e-16,
+      "zener_power_W": 1.471216861689311e-18
+    },
+    "plus8V_limit": "This BSS138N driver does not establish the4.5V gate condition at+8V. A lower-gate-voltage guaranteed MOSFET or floating/boosted drive must be proved; no catalog typical curve is an exemption.",
+    "complete_concurrent_collapse_sensitivity": {
+      "condition": "All82 drives and16 precision senses externally driven during the same cold collapse; concurrency sensitivity, not a new claim of simultaneous-all-output-short supply capacity.30 reference paths remain unquantified.",
+      "maximum_equal_drive_release_s_zero_detector_delay": 1.6164966097560962e-05,
+      "optimistic_reachable_C_F": 0.00011999999999999999,
+      "rows": [
+        {
+          "assumed_equal_drive_release_s": 1e-05,
+          "conservative_C_needed_F_for_guard": 9.926415929912287e-05,
+          "maximum_detection_delay_s_for_assumed_accessible_C": 5.9334180751173575e-06
+        },
+        {
+          "assumed_equal_drive_release_s": 5e-05,
+          "conservative_C_needed_F_for_guard": 0.00023380401157231423,
+          "maximum_detection_delay_s_for_assumed_accessible_C": -3.256423450704227e-05
+        },
+        {
+          "assumed_equal_drive_release_s": 0.0001,
+          "conservative_C_needed_F_for_guard": 0.0004019788269138034,
+          "maximum_detection_delay_s_for_assumed_accessible_C": -8.06863002347418e-05
+        }
+      ]
+    },
+    "conclusion": "The16-cell hybrid cannot close issue59. Only removal of the extra sense contact is established for the other66; an actually cheaper compliant drive circuit is not established."
+  },
+  "hybrid_power_sensitivity": {
+    "verdict": "UNSOURCED",
+    "sense_LED_mA_on_plus5": 40,
+    "all_existing_auxiliary_allowances_retained": true,
+    "sixteen_precision_at_current_ramp": {
+      "drive_count": 16,
+      "assumed_current_limit_mA_each": 4,
+      "soft_start_min_ms_sensitivity": 10,
+      "normal_mA": {
+        "+12V": 1621.2980582661264,
+        "-12V": 1501.6121956605568,
+        "+5V": 264.28644499999996
+      },
+      "continuous_requirement_mA": {
+        "+12V": 1800,
+        "-12V": 1700,
+        "+5V": 300
+      },
+      "ramp_increment_mA": {
+        "+12V": 224.64000000000001,
+        "-12V": 222.66,
+        "+5V": 62.4
+      },
+      "unrounded_transient_mA": {
+        "+12V": 2049.6400000000003,
+        "-12V": 1947.66,
+        "+5V": 362.4
+      },
+      "rounded_transient_mA": {
+        "+12V": 2100,
+        "-12V": 2000,
+        "+5V": 400
+      },
+      "maximum_delivered_mA_unchanged": {
+        "+12V": 2100,
+        "-12V": 2000,
+        "+5V": 500
+      },
+      "worst_return_current_ceiling_A_unchanged": 4.6,
+      "protection_path_max_mohm_at_prospective_continuous": {
+        "+12V": 22.22222222222222,
+        "-12V": 23.529411764705884,
+        "+5V": 133.33333333333334
+      },
+      "strict_limiter_window_mA": {
+        "+12V": 0,
+        "-12V": 0,
+        "+5V": 100
+      },
+      "arithmetic_windows_positive": false
+    },
+    "sixteen_precision_at_future_slower_ramp": {
+      "drive_count": 16,
+      "assumed_current_limit_mA_each": 4,
+      "soft_start_min_ms_sensitivity": 15,
+      "normal_mA": {
+        "+12V": 1621.2980582661264,
+        "-12V": 1501.6121956605568,
+        "+5V": 264.28644499999996
+      },
+      "continuous_requirement_mA": {
+        "+12V": 1800,
+        "-12V": 1700,
+        "+5V": 300
+      },
+      "ramp_increment_mA": {
+        "+12V": 149.76000000000002,
+        "-12V": 148.44,
+        "+5V": 41.6
+      },
+      "unrounded_transient_mA": {
+        "+12V": 1974.76,
+        "-12V": 1873.44,
+        "+5V": 341.6
+      },
+      "rounded_transient_mA": {
+        "+12V": 2000,
+        "-12V": 1900,
+        "+5V": 400
+      },
+      "maximum_delivered_mA_unchanged": {
+        "+12V": 2100,
+        "-12V": 2000,
+        "+5V": 500
+      },
+      "worst_return_current_ceiling_A_unchanged": 4.6,
+      "protection_path_max_mohm_at_prospective_continuous": {
+        "+12V": 22.22222222222222,
+        "-12V": 23.529411764705884,
+        "+5V": 133.33333333333334
+      },
+      "strict_limiter_window_mA": {
+        "+12V": 100,
+        "-12V": 100,
+        "+5V": 100
+      },
+      "arithmetic_windows_positive": true
+    },
+    "all_82_drive_contacts_at_future_slower_ramp": {
+      "drive_count": 82,
+      "assumed_current_limit_mA_each": 4,
+      "soft_start_min_ms_sensitivity": 15,
+      "normal_mA": {
+        "+12V": 1969.5939042641,
+        "-12V": 1765.6121956605568,
+        "+5V": 264.28644499999996
+      },
+      "continuous_requirement_mA": {
+        "+12V": 2200,
+        "-12V": 2000,
+        "+5V": 300
+      },
+      "ramp_increment_mA": {
+        "+12V": 149.76000000000002,
+        "-12V": 148.44,
+        "+5V": 41.6
+      },
+      "unrounded_transient_mA": {
+        "+12V": 2374.76,
+        "-12V": 2173.44,
+        "+5V": 341.6
+      },
+      "rounded_transient_mA": {
+        "+12V": 2400,
+        "-12V": 2200,
+        "+5V": 400
+      },
+      "maximum_delivered_mA_unchanged": {
+        "+12V": 2100,
+        "-12V": 2000,
+        "+5V": 500
+      },
+      "worst_return_current_ceiling_A_unchanged": 4.6,
+      "protection_path_max_mohm_at_prospective_continuous": {
+        "+12V": 18.181818181818183,
+        "-12V": 20.0,
+        "+5V": 133.33333333333334
+      },
+      "strict_limiter_window_mA": {
+        "+12V": -300,
+        "-12V": -200,
+        "+5V": 100
+      },
+      "arithmetic_windows_positive": false
+    },
+    "sixteen_resistive_pullups_at_negative_signal_sensitivity": {
+      "drive_count": 16,
+      "assumed_current_limit_mA_each": 17.28520374,
+      "soft_start_min_ms_sensitivity": 15,
+      "normal_mA": {
+        "+12V": 1833.8613181061262,
+        "-12V": 1714.1754555005568,
+        "+5V": 264.28644499999996
+      },
+      "continuous_requirement_mA": {
+        "+12V": 2100,
+        "-12V": 1900,
+        "+5V": 300
+      },
+      "ramp_increment_mA": {
+        "+12V": 149.76000000000002,
+        "-12V": 148.44,
+        "+5V": 41.6
+      },
+      "unrounded_transient_mA": {
+        "+12V": 2274.76,
+        "-12V": 2073.44,
+        "+5V": 341.6
+      },
+      "rounded_transient_mA": {
+        "+12V": 2300,
+        "-12V": 2100,
+        "+5V": 400
+      },
+      "maximum_delivered_mA_unchanged": {
+        "+12V": 2100,
+        "-12V": 2000,
+        "+5V": 500
+      },
+      "worst_return_current_ceiling_A_unchanged": 4.6,
+      "protection_path_max_mohm_at_prospective_continuous": {
+        "+12V": 19.047619047619047,
+        "-12V": 21.05263157894737,
+        "+5V": 133.33333333333334
+      },
+      "strict_limiter_window_mA": {
+        "+12V": -200,
+        "-12V": -100,
+        "+5V": 100
+      },
+      "arithmetic_windows_positive": false
+    },
+    "limitations": "The4mA current-limited source is a proposed replacement for the resistive pull-up, not a captured circuit. Includes gate current on BOTH analog rails, base current on+12,16 bleeders and40mA sense LEDs on+5. Driver overhead must fit retained supervision allowance. Remaining output/reference families, leakage, dynamic loads and real string grouping still open."
+  },
+  "slower_startup_review": {
+    "current_minimum_ms": 10,
+    "future_sensitivity_ms": 15,
+    "original_standard_note": "Unchanged 150/150/100 uF nominal +20%; selected source must ramp no faster than 10 ms and meet full-capacitance transient requirement. #52 counts fitted direct-rail decouplers as 48.3/41.1/24.5 uF; #54/#35 must allocate the still-unplaced initial 4.7 uF per powered board/rail.",
+    "interpretation": "No faster than10ms is a minimum duration, so15ms is not forbidden by this cited rule. No maximum startup deadline found in OSC-ES-1/source contract. Actual module sequencing/functional startup must still be qualified; this does not change shutdown timing or any source file."
+  },
+  "current_neutral_alternative": {
+    "mpn": "VOM1271T",
+    "source": "vom1271",
+    "verdict": "UNSOURCED",
+    "mechanism": "Floating photovoltaic output between GATE and SOURCE_COMMON avoids the DC rail-to-sense-node bias path.",
+    "turnoff_65us_value_class": "TYPICAL ONLY at IF20mA,CL200pF,25C; maximum blank in retained Rev1.9",
+    "meaning": "No guaranteed release bound. IF10mA gives sourced minimum VOC/ISC but not a turnoff maximum; LED burden and full gate charge remain."
+  },
+  "open_obligations": [
+    "Common-source body diodes and source-referenced R_GS remove the literal grounded-gate negative-jack error; leakage, displacement current, source motion and all partial-power cases still require a physical proof.",
+    "The resistive PNP pull-up injects its complete bleed AND Zener current into SOURCE_COMMON. The sense variant creates uncompensated DC transfer error; its coupled nominal driver countermodel additionally requires amplifier swing outside the rails. Do not confuse static offset with the original loaded-versus-unloaded error criterion.",
+    "The resistive pull-up has large signal-dependent clamp current; use a bounded current source for a viable drive-only hybrid. No current-source circuit is selected here.",
+    "D_BLOCK prevents a positive floating source/gate from forward-biasing Q_UP's collector-base junction into an absent rail; its actual reverse recovery and capacitance require inclusion.",
+    "BSS138N charge/capacitance/switching maxima use specific 25 C test trajectories. Clamp charge, driver stored charge, Miller injection and source movement are not bounded over the project envelope.",
+    "Q_UP's 300 ns storage-plus-fall maximum requires 1 mA reverse base current. The default-off 100 kohm base-emitter resistor does not reproduce that test.",
+    "A complete timing bound, independent rail/reference/GND permit, per-board reachable capacitance, aggregate cold-collapse concurrency and installed thermal/physical layout are absent.",
+    "A 15 ms minimum soft-start is a possible future source requirement, not a source-contract edit or a substitute for fast shutdown. Original current/voltage/capacitance/return/drop ceilings remain unchanged.",
+    "VOM1271T is an exact current-neutral floating-drive alternative, but its retained turn-off figure is typical only, not a maximum; it does not close the timing gap."
+  ],
+  "input_sha256": {
+    "design/power/fast-disconnect-candidate.json": "920e42e5772c073acf4822e0ce9448749e5adb43a115c8aed27fa0018e41d065",
+    "design/power/fast-disconnect-candidate-sources.json": "689550dba247ef7cb352da7715aa66a4f9786bcf8776f61103a9279137aa5a56",
+    "design/standard/electrical-standard.json": "da91b860845e77bf3c5b14a7e62165a55add9d4e6d3749f89057c6262be34b00",
+    "design/power/supply-architecture.json": "937d0584938c592b3a35a578b5deaf0cb60e80a4729980edd178c69a62f2345e",
+    "design/power/precision-output-cell-report.json": "daa722fa084bb28971ae523adfd8dc77c69e830e8ee8325cfeab016c3167ad8c",
+    "design/power/precision-output-cell.json": "52c63bf1d956138a68d77ad525c47d68ea4aeffe9eeb4bd65380dd5027f526c7",
+    "design/power/protection58-audit.json": "dcbec208d3b4ec13150a1712ba00770ed11af79d8edd1e08b6b4d508ee427644",
+    "scripts/checks/fast_disconnect_candidate.py": "b10ef531b8fe2d7ceeccdbf10fd529e51d4957bd3b38c2caaa38fae97d21a888"
+  }
+}
