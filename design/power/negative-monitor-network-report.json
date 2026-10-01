@@ -1,0 +1,152 @@
+{
+  "status": "UNSELECTED conditional passive network; protection unimplemented",
+  "protection_implemented": false,
+  "resistor_corner_count": 256,
+  "pin_screen": {
+    "REF": {
+      "open_reference_zero_leakage_V": [
+        -0.09059353555853548,
+        0.09059353555853548
+      ],
+      "uniform_per_pin_leakage_sensitivity_ohm_upper": 3442.044469228294,
+      "conditional_cold_V": [
+        -0.12501398025081842,
+        0.12501398025081842
+      ],
+      "conditional_cold_within_absolute_rating": true,
+      "forced_reference_zero_leakage_V": [
+        -0.30000000000000004,
+        3.31
+      ],
+      "forced_reference_zero_leakage_within_absolute_rating": true
+    },
+    "SENSE": {
+      "open_reference_zero_leakage_V": [
+        -0.21678837006248666,
+        0.21678837006248666
+      ],
+      "uniform_per_pin_leakage_sensitivity_ohm_upper": 2211.3580984801333,
+      "conditional_cold_V": [
+        -0.238901951047288,
+        0.238901951047288
+      ],
+      "conditional_cold_within_absolute_rating": true,
+      "forced_reference_zero_leakage_V": [
+        -0.25129250693748695,
+        0.7485637062379543
+      ],
+      "forced_reference_zero_leakage_within_absolute_rating": true
+    },
+    "UV": {
+      "open_reference_zero_leakage_V": [
+        -0.010046317619446786,
+        0.010046317619446786
+      ],
+      "uniform_per_pin_leakage_sensitivity_ohm_upper": 1273.9222878474932,
+      "conditional_cold_V": [
+        -0.022785540497921718,
+        0.022785540497921718
+      ],
+      "conditional_cold_within_absolute_rating": true,
+      "forced_reference_zero_leakage_V": [
+        -0.03331935060376688,
+        0.3676235016615612
+      ],
+      "forced_reference_zero_leakage_within_absolute_rating": true
+    },
+    "OV": {
+      "open_reference_zero_leakage_V": [
+        -0.009022742599970856,
+        0.009022742599970856
+      ],
+      "uniform_per_pin_leakage_sensitivity_ohm_upper": 1246.3704816497057,
+      "conditional_cold_V": [
+        -0.02148644741646791,
+        0.02148644741646791
+      ],
+      "conditional_cold_within_absolute_rating": true,
+      "forced_reference_zero_leakage_V": [
+        -0.029920435320427846,
+        0.33012213636872056
+      ],
+      "forced_reference_zero_leakage_within_absolute_rating": true
+    }
+  },
+  "sufficient_uniform_per_pin_cold_leakage_budget_A": 3.7629197186427975e-05,
+  "conditional_trip_magnitude_V": {
+    "UV": [
+      10.479103553590736,
+      11.653293730668723
+    ],
+    "OV": [
+      12.795628130981035,
+      13.96369613977682
+    ]
+  },
+  "normal_magnitude_V": [
+    11.74,
+    12.37
+  ],
+  "conditional_static_normal_band_accepted": true,
+  "normal_UV_margin_V": 0.08670626933127745,
+  "normal_OV_margin_V": 0.42562813098103636,
+  "zero_input_leakage_reference_resistor_demand_A_upper": 0.0015297318005021096,
+  "maximum_detection_delay_s": null,
+  "permit_accepted": false,
+  "permit_scope": "Output pullup, receiver and startup gating are uncaptured; the current datasheet removed the POR feature. No complete permit is implemented.",
+  "reference_collapse_counterexample": {
+    "VN_V": -8,
+    "REF_V": 2.2,
+    "comparator_supply_V": 5,
+    "sense_nodes_V": {
+      "SENSE": 0.23280082452976036,
+      "UV": 0.24282560706401765,
+      "OV": 0.2180376610505451
+    },
+    "ideal_UV_healthy_margin_V": 0.010024782534257289,
+    "ideal_OV_healthy_margin_V": 0.014763163479215276,
+    "ideal_both_outputs_released": true,
+    "negative_rail_in_normal_band": false,
+    "scope": "Forced nominal DC topology counterexample, not a claimed reachable trajectory. Independent reference validity is required even with valid comparator supply."
+  },
+  "dynamic_native_bench": "NOT RUN: incomplete monitor assembly and control circuit",
+  "conditions": {
+    "reference_voltage_scope": "Proposed qualified total reference envelope; not derived as a lifetime/temperature guarantee from typical drift, noise or startup rows.",
+    "resistor_tolerance_fraction": 0.001,
+    "resistor_tcr_per_C": 2.5e-05,
+    "resistor_reference_C": 25,
+    "resistor_temperature_C": [
+      -40,
+      125
+    ],
+    "resistor_temperature_scope": "25 C reference remains an analysis assumption; exact retained sheets do not state it.",
+    "forced_VN_V": [
+      -12.48,
+      12.48
+    ],
+    "forced_VN_scope": "Bounded architecture screening, not a complete reachable-fault envelope proof.",
+    "powered_input_bias_per_pin_A": 1e-07,
+    "powered_comparator_error_V": 0.003,
+    "error_scope": "Proposed qualification envelopes at actual common-mode, supply and temperature; nominal bias and a table offset at other conditions do not establish them.",
+    "cold_uniform_leakage_per_pin_A": 1e-05,
+    "cold_scope": "Each of four comparator inputs and reference output is represented by an independent bounded current source. No manufacturer unpowered-leakage maximum is inferred. The open-reference calculation is a passive limiting case, not the actual unpowered regulator model."
+  },
+  "open_obligations": [
+    "Establish actual reference and pin-current envelopes across all supply and temperature states.",
+    "Independently qualify reference validity: proportional REF/VN collapse can make a bad negative rail appear healthy even with valid comparator supply.",
+    "Capture reference bypass, startup, retained charge and discharge; pin-voltage screening is DC only.",
+    "REF34 section 9.2.2.3 warns of overshoot/shutdown anomalies with slow input transitions and recommends slew near 6 V/ms; T variant has no EN. A slow source ramp does not establish the forced DC reference envelope dynamically.",
+    "Maximum detection/release latency is unestablished; TLV9022 propagation is nominal only.",
+    "There is no internal hysteresis; external latch/filter and real power-qualified permit remain uncaptured.",
+    "Output pullup, receiver and startup gating are uncaptured; the current comparator datasheet removed the POR feature. This network alone is not a valid permit.",
+    "Capture independent inlet-return detection, rail switching and every output/sense/reference isolation path.",
+    "Native schematic, dynamic model, thermal and bench qualification NOT RUN."
+  ],
+  "input_sha256": {
+    "design/power/negative-monitor-network.json": "96b4c9ac9626d33810f1612721a3f68b421256f88f15cd8cec8cb768a8d5da1c",
+    "design/power/negative-monitor-network-sources.json": "984dc6d0d081be4fcb6e706a64ace82e3467dfa4606c49a96cee5568b6a8ad08",
+    "design/power/supply-architecture-input.json": "a8a4e92ac4c1d7de5c16b6982fba7d5ab60ab13753b12eabfa23fc75da98acc4",
+    "scripts/checks/negative_monitor_network.py": "e312c75c127af97a7ceec4d9d8f7dc622d7ec40938ca8a19b7346377cc620679",
+    "scripts/checks/rail_monitor_candidate.py": "75c2b1339f7fc6841e1ee7c809b089b455e44502c803e37718b89e317cbfedb8"
+  }
+}
