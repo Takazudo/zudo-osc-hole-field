@@ -1,0 +1,131 @@
+{
+  "status": "CONDITIONAL retained numerical partial-cell result; no physical/common admission",
+  "schema_version": 1,
+  "historical_artifact_root": "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/38-jack-halves",
+  "diagnostic_artifact_root": "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/partial-cell-energy",
+  "native_revalidation": "NOT RUN; unchanged historical native dependency hashes verified, no native execution",
+  "retained_revalidation_when_artifacts_absent": "NOT RUN; portable tests do not substitute for retained inputs",
+  "inherited_premise": "The unchanged canonical current-inner mesh domain is admitted inside nominal physical copper. This diagnostic does not independently prove that premise or manufacturing/contact/material admission.",
+  "diagnostic_sha256": {
+    "design/partition/partial-cell-energy.json": "edc70a782325cc573ec219d093d8b7de7a82040d24ec889867f1f89aa2982eae",
+    "scripts/pcbgen/partial_cell_energy_run.py": "c935e4071efabddf9df2a68b7afa0d0c162e48d4b48bdf26f48d41fe55e3422f",
+    "scripts/pcbgen/partial_cell_energy.py": "97ffa4a815c579b486e1b33315f4c2de64d555363a5772251e1da192c1040a20"
+  },
+  "census": {
+    "path": ".circuit-cache/issue38-recovery/partial-cell-energy-v1-census/partial-cell-energy.json",
+    "sha256": "7f3d7edb5426130d0eb5495e20be38c5634d87a1aba25fa55f02a9ecaf1426ba",
+    "runtime_sec": 64.31477571208961,
+    "peak_rss_kib": 693596,
+    "guard_verdict": "PASS",
+    "guard_secs": 65
+  },
+  "integration": {
+    "path": ".circuit-cache/issue38-recovery/partial-cell-energy-v1-integration/partial-cell-energy.json",
+    "sha256": "142d3675becc8357c1ba835ff1091478e09fff0caf7ef8027c9b81c6a2526523",
+    "runtime_sec": 141.25898400507867,
+    "peak_rss_kib": 712440,
+    "guard_verdict": "PASS",
+    "guard_secs": 142
+  },
+  "selected_cells": 4096,
+  "accepted_cells": 4096,
+  "rejected_or_capped_cells": 0,
+  "whole_inner_cells": 68987,
+  "excluded_cells": 71372,
+  "old_inclusion_mask_sha256": "9500c58d25bd671e845e71f717050e7e567c2790f22411fdd57430e6bd2b5e71",
+  "selected_ids_sha256": "89216a9c62ea64d0fa4188350f98ad2e778dbf38cfafe7215795b1414f708fb0",
+  "work_used": {
+    "candidates": 131339,
+    "overlap_checks": 73917,
+    "clips": 66903
+  },
+  "work_caps": {
+    "candidates": 500000,
+    "clips": 500000,
+    "overlap_checks": 1000000
+  },
+  "potential_chart": {
+    "checked_vertices": 94802,
+    "interface_vertices": 5965,
+    "maximum_coordinate_residual_mm_exact": "324280268078534387/12980742146337069071326240823050240",
+    "maximum_residual_eta_ratio_exact": "162129586585337856/59283121449236864875"
+  },
+  "current_chart": {
+    "checked_vertices": 94643,
+    "interface_vertices": 5965,
+    "maximum_coordinate_residual_mm_exact": "324280268078534387/12980742146337069071326240823050240",
+    "maximum_residual_eta_ratio_exact": "162129586585337856/59283121449236864875"
+  },
+  "source_pair": [
+    [
+      "J900134",
+      "2"
+    ],
+    [
+      "C107",
+      "2"
+    ]
+  ],
+  "added_potential_energy_lower_ohm": [
+    0.00031297371081925716,
+    0.0004857784907067675
+  ],
+  "unchanged_excluded_full_cell_upper_ohm": [
+    0.00032318637689024383,
+    0.0004960486841728819
+  ],
+  "uncovered_or_unprocessed_energy_upper_ohm": [
+    1.0212666070986672e-05,
+    1.027019346611438e-05
+  ],
+  "old_potential_energy_interval_ohm": [
+    [
+      0.00016248771237520934,
+      0.00048567408927306524
+    ],
+    [
+      0.0003105974040427772,
+      0.0008066460882248024
+    ]
+  ],
+  "refined_potential_energy_interval_ohm": [
+    [
+      0.0004754614231944665,
+      0.00048567408927306524
+    ],
+    [
+      0.0007963758947495446,
+      0.0008066460882248024
+    ]
+  ],
+  "old_mismatch_interval_ohm": [
+    [
+      -0.0,
+      0.00014450272599820352
+    ],
+    [
+      -0.0,
+      0.00019017763214062243
+    ]
+  ],
+  "refined_mismatch_interval_ohm": [
+    [
+      0.0001328102947297413,
+      0.00014450272599820352
+    ],
+    [
+      0.00017837185300240035,
+      0.00019017763214062243
+    ]
+  ],
+  "unchanged_global_canonical_mismatch_upper_ohm": [
+    0.00018438994133398133,
+    0.00022996703862424874
+  ],
+  "scope": [
+    "One bounded top-4096 B.Cu batch only; no field solve or mesh/source/geometry change.",
+    "No physical dominant-error attribution, material/contact admission, or issue39 unlock.",
+    "Independent fixed-depth source-lift lower is separate; not added to these mismatch lowers.",
+    "Historical receipts remain at their original paths and hashes."
+  ]
+}
