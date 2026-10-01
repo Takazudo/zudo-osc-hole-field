@@ -28,9 +28,11 @@ def regional_bounds(*, region_ids, common_region_ids, regions,
       + sqrt(gap_source * gap_observation).
 
     The last term is charged once for a union, not subtracted as private
-    access uncertainty. Regional source/observation energies are outward
-    upper bounds. They must sum to at most the supplied complete trial
-    upper energies (which may also retain global numerical allowances).
+    access uncertainty. Regional energy uppers may be independently loose;
+    their sum need not fit a tighter complete-domain upper. For any region
+    union, nonnegative dissipation bounds its energy by both the sum of its
+    regional uppers and the complete-domain upper. All bounds must refer to
+    the same conserved trial fields and complete bulk/interface energy norm.
     """
     rows = covered_rows(region_ids, regions, 'physical region')
     common = list(common_region_ids)
@@ -60,13 +62,15 @@ def regional_bounds(*, region_ids, common_region_ids, regions,
         if lo > norm or hi < -norm:
             raise ValueError(key+': trial cross interval contradicts regional energies')
         parsed[key] = (a,b,lo,hi)
-    if sum(x[0] for x in parsed.values()) > us or sum(x[1] for x in parsed.values()) > ub:
-        raise ValueError('regional upper energies exceed supplied complete trial upper')
-
     def enclose(keys):
         values=[parsed[key] for key in keys]
-        a=sum((x[0] for x in values),Fraction(0));b=sum((x[1] for x in values),Fraction(0))
+        a=min(us,sum((x[0] for x in values),Fraction(0)))
+        b=min(ub,sum((x[1] for x in values),Fraction(0)))
         lo=sum((x[2] for x in values),Fraction(0));hi=sum((x[3] for x in values),Fraction(0))
+        norm=sqrt_upper(a*b)
+        if lo > norm or hi < -norm:
+            raise ValueError('trial cross interval contradicts complete trial energies')
+        lo=max(lo,-norm);hi=min(hi,norm)
         error=sqrt_upper(a*db)+sqrt_upper(b*ds)+sqrt_upper(ds*db)
         return {'trial_cross_lower':downward(lo),'trial_cross_upper':upward(hi),
                 'transfer_lower':downward(lo-error),'transfer_upper':upward(hi+error),
