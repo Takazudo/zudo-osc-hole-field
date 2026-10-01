@@ -6,7 +6,7 @@ A standalone, cable-patched analog synthesizer on one flat 318 × 298 mm front p
 
 The site is built with [zudo-circuit-doc](https://github.com/Takazudo/zudo-circuit-doc) on top of [zudo-doc](https://github.com/zudolab/zudo-doc). Authored project documentation lives under `doc/src/content/docs/`; exact-component evidence lives under `.claude/skills/`, and the component pages are generated from that evidence.
 
-GitHub Actions runs the evidence validation, documentation checks, site build and built-site checks, plus Python unit tests under `scripts/` and `design/`, for pull requests and pushes to `main`. These checks need no secrets and do not deploy the site.
+GitHub Actions runs the evidence validation, documentation checks, site build and built-site checks, plus Python unit tests under `scripts/` and `design/`, for pull requests and pushes to `main`. CI also replays aggregate source regeneration, including pinned native schematic and display checks, and retains any generated diff when that replay fails. These checks need no secrets and do not deploy the site; they do not establish electrical or physical qualification.
 
 ## Commands
 

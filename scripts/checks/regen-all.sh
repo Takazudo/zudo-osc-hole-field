@@ -53,6 +53,7 @@ python3 scripts/checks/monitor_reference_validity.py
 python3 scripts/checks/monitor_fault_retiming.py
 python3 scripts/checks/monitor_permit_rc.py
 python3 scripts/checks/monitor_permit_native.py
+bash scripts/kicad/run.sh python3 scripts/libgen/fixtures/check_wrl_dimensions.py
 
 if [[ $check_mode == true ]]; then
   git diff --binary HEAD > "$after_diff"

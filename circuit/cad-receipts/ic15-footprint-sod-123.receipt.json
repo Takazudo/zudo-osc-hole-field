@@ -39,7 +39,7 @@
     "evidence": [
       "KiCad 10.0.6 pinned stock library source retained with SHA-256.",
       "circuit/sources/ic-library/BAS16GW-Q.pdf SHA-256 36b9d598de374dbdcc666f0516477d958e02471b323842704249e0e447e2be6b",
-      "scripts/libgen/gen_ic_package_envelopes.py SHA-256 6af3e9c2885882147a87a4332aa6ec5b9c4e7a373e85242a93d3dbfa79be8957"
+      "scripts/libgen/gen_ic_package_envelopes.py SHA-256 15b5cd8f72d2b62a9cca7c655ace0e55c4b8da6ad9d99daf7e43b78c6a3f14fb"
     ]
   },
   "derivation": {
@@ -66,10 +66,20 @@
         "geometry_source_sha256": {
           "circuit/sources/ic-library/BAS16GW-Q.pdf": "36b9d598de374dbdcc666f0516477d958e02471b323842704249e0e447e2be6b"
         },
-        "generator_sha256": "6af3e9c2885882147a87a4332aa6ec5b9c4e7a373e85242a93d3dbfa79be8957",
+        "generator_sha256": "15b5cd8f72d2b62a9cca7c655ace0e55c4b8da6ad9d99daf7e43b78c6a3f14fb",
         "operations": [
           "generate provisional display cuboid from listed family bounds",
           "add exactly one local WRL model reference to the generic footprint"
+        ],
+        "dimension_axes": "footprint X / Y / Z; not manufacturer length / width order",
+        "model_offset_mm": [
+          0,
+          0,
+          0
+        ],
+        "pcb_body_center_mm": [
+          0,
+          0
         ]
       }
     },
@@ -105,7 +115,8 @@
     "performed": [
       "Project library and courtyard checks",
       "Local WRL envelope generated and hash-bound; package preview check required",
-      "KiCad 10.0.6 native VRML export: x/y/z bounds and footprint model scale match the stated display envelope (scripts/libgen/fixtures/check_wrl_dimensions.py)."
+      "KiCad 10.0.6 native VRML export: x/y/z bounds and footprint model scale match the stated display envelope (scripts/libgen/fixtures/check_wrl_dimensions.py).",
+      "Issue85: fresh pinned native scene transforms verify IC body centres and long axes against independent Fab outlines; translated/rotated/bottom DIP and four rejected placement mutations included. design/mechanical/ic-envelope-native-report.json"
     ],
     "remaining_physical_checks": [
       "Audit against exact package drawing before fabrication.",

@@ -39,7 +39,7 @@
     "evidence": [
       "KiCad 10.0.6 pinned stock library source retained with SHA-256.",
       "circuit/sources/ic-library/cad/DIP-8_W7.62mm.stock.kicad_mod SHA-256 222fb44370968119abbd978176814cc43a71bc32ac2de275d8a3c418c0830fc6",
-      "scripts/libgen/gen_ic_package_envelopes.py SHA-256 6af3e9c2885882147a87a4332aa6ec5b9c4e7a373e85242a93d3dbfa79be8957"
+      "scripts/libgen/gen_ic_package_envelopes.py SHA-256 15b5cd8f72d2b62a9cca7c655ace0e55c4b8da6ad9d99daf7e43b78c6a3f14fb"
     ]
   },
   "derivation": {
@@ -58,24 +58,34 @@
       "package_envelope": {
         "model": "IC_DIP-8_W7.62mm.wrl",
         "dimensions_mm": [
-          10.16,
           6.35,
+          10.16,
           0.1
         ],
         "note": "Planform-only family display from retained DIP-8 footprint F.Fab extents 10.16 x 6.35 mm. The 0.1 mm plate is not a package-height claim; NOISE2 body height and optical/board clearance remain OPEN.",
         "geometry_source_sha256": {
           "circuit/sources/ic-library/cad/DIP-8_W7.62mm.stock.kicad_mod": "222fb44370968119abbd978176814cc43a71bc32ac2de275d8a3c418c0830fc6"
         },
-        "generator_sha256": "6af3e9c2885882147a87a4332aa6ec5b9c4e7a373e85242a93d3dbfa79be8957",
+        "generator_sha256": "15b5cd8f72d2b62a9cca7c655ace0e55c4b8da6ad9d99daf7e43b78c6a3f14fb",
         "operations": [
           "generate provisional display cuboid from listed family bounds",
           "add exactly one local WRL model reference to the generic footprint"
+        ],
+        "dimension_axes": "footprint X / Y / Z; not manufacturer length / width order",
+        "model_offset_mm": [
+          3.81,
+          -3.81,
+          0
+        ],
+        "pcb_body_center_mm": [
+          3.81,
+          3.81
         ]
       }
     },
     "output_sha256": {
-      "footprints/kicad/zudo-osc-hole-field.pretty/DIP-8_W7.62mm.kicad_mod": "6a9e483a3ad167813b1d240835adb48f8d791f03e24d2ce60b196547f6af57fd",
-      "footprints/kicad/zudo-osc-hole-field.3dshapes/IC_DIP-8_W7.62mm.wrl": "5cdebc77da4a94289742c9e3bb951e4d1fb6e526ab43f4d8fdc82908cec959ca"
+      "footprints/kicad/zudo-osc-hole-field.pretty/DIP-8_W7.62mm.kicad_mod": "3a5adeb975fae70458377a1ca4df83194b7626633d92d968d47415916af140f1",
+      "footprints/kicad/zudo-osc-hole-field.3dshapes/IC_DIP-8_W7.62mm.wrl": "9257c99d34bd1b0a6cd5bc61af52990b47c09b59f6085f55f4051436853e371d"
     }
   },
   "cad_use": {
@@ -84,8 +94,8 @@
     "model_path": "${KIPRJMOD}/../../footprints/kicad/zudo-osc-hole-field.3dshapes/IC_DIP-8_W7.62mm.wrl",
     "transform": {
       "offset": [
-        0,
-        0,
+        3.81,
+        -3.81,
         0
       ],
       "rotation": [
@@ -105,7 +115,8 @@
     "performed": [
       "Project library and courtyard checks",
       "Local WRL envelope generated and hash-bound; package preview check required",
-      "KiCad 10.0.6 native VRML export: x/y/z bounds and footprint model scale match the stated display envelope (scripts/libgen/fixtures/check_wrl_dimensions.py)."
+      "KiCad 10.0.6 native VRML export: x/y/z bounds and footprint model scale match the stated display envelope (scripts/libgen/fixtures/check_wrl_dimensions.py).",
+      "Issue85: fresh pinned native scene transforms verify IC body centres and long axes against independent Fab outlines; translated/rotated/bottom DIP and four rejected placement mutations included. design/mechanical/ic-envelope-native-report.json"
     ],
     "remaining_physical_checks": [
       "Audit against exact package drawing before fabrication.",
