@@ -113,21 +113,24 @@ bound `span² / (8π²)`. Requiring at least 9.398 mm gives a 27.240344 mm span.
 With the selected rear-selector board and connector datums, this requires the K
 face at least 72.440344 mm behind the panel for that path family.
 
-The main power path uses the bound
-`span² / (2π² × hypot(10, bow_x))`, with a 25.908 mm bend-radius requirement.
-The resulting minimum K face depths for the current path family are:
+The main power path uses the conservative radius bound
+`H² / (2π² × hypot(10, bow_x) + 6 × abs(offset_y))`, where H excludes
+both registered 3.65 mm endpoint caps. The smoothstep offset supplies axial
+endpoint tangents. With the 25.908 mm bend-radius requirement, the K face
+depths required by this analytic screen are:
 
-| Branch | Necessary K depth for the existing bend screen |
+| Branch | K depth required by the conservative bend screen |
 | --- | ---: |
-| JL | 94.526877 mm |
-| JR | 85.112476 mm |
-| P | 86.912476 mm |
+| JL | 99.826877 mm |
+| JR | 90.412476 mm |
+| P | 96.435238 mm |
 
-Values are rounded upward. These are necessary screens for the existing proposed
-paths, not physical minimum depths or a complete collision/assembly proof. They
-explain why simply moving K to the earlier 24 mm study plane fails the present
-routing construction. A shallower design needs new wire paths, exit orientations
-or board interfaces, followed by renewed fit, electrical and service checks.
+Values are rounded upward. These are thresholds of a conservative screen,
+not proved physical minimum depths: failure of a lower radius bound does not
+prove the actual curve fails. The current 100 mm proposal passes, with a
+smallest bound of 26.018966 mm (rounded downward). A shallower design needs
+revised paths or tighter analysis, then renewed collision, electrical and
+service checks. The fixed panel grid is unchanged.
 
 At the current −100 mm K face, the 1.6 mm board and 5 mm rear component allowance
 leave 13.4 mm to the proposed −120 mm enclosure rear. The enclosure depth is a
@@ -153,7 +156,7 @@ custom-part count, load/return paths and service sequence at the same 438 centre
 The current source retains the ten-board, −100 mm K / 120 mm enclosure proposal
 and selects a tighter **110 mm maximum main-wire cut requirement**, with a
 10 mm preparation/slack allowance checked against each generated path. The
-longest path plus allowance is 100.907060 mm (rounded upward). Conditional
+longest path plus allowance is 103.244852 mm (rounded upward). Conditional
 JL/JR/P GH return bounds become 0.481793930 / 0.478306085 / 0.479237292 A
 (rounded upward). These still assume the unproved common resistance and
 contact conditions; they are not physical current acceptance.
@@ -161,10 +164,18 @@ contact conditions; they are not physical current acceptance.
 The finite main-wire helper now reports its budget from the current source
 length, resistance-per-metre and termination requirements, separately from the
 historical 125 mm comparison. The 110 mm source gives a 1.630 mΩ budget; the
-conditional JL/JR trial uppers leave approximately 0.222190 / 0.246165 mΩ.
-This corrects mixed-epoch margin reporting, not physical wire admission. Mean
-strand length does not certify the finished cut or matching endpoint traces,
-and this construction does not cover P. See `physical-contact-model.md`.
+conditional trial uppers leave approximately 0.223412 mΩ (JL), 0.247414 mΩ
+(JR), and 0.268324 / 0.269829 mΩ (offset / zero-offset P). All 18 wires now
+share registered geometry between mechanical and electrical calculations,
+including the previously omitted solder height. Mean strand length still
+does not certify a finished cut class, actual endpoint containment or terminal
+traces. See `main-wire-reference.md` and `physical-contact-model.md`.
+
+The source-epoch audit records only six added route metadata fields across
+JL/JR/P. Board definitions and historical native receipts are byte-unchanged.
+The collar proposal was recompiled against retained native inputs before its
+partition hash was refreshed. This is not a new native or electrical receipt;
+native execution for the new global source epoch is **NOT RUN**.
 
 K service supports and tool heights now derive from the source plane. Unplugging
 191 K GH mates still leaves **18 soldered main wires** tethering the board.

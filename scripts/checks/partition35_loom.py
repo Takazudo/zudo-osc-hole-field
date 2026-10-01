@@ -5,6 +5,7 @@ import argparse
 from collections import defaultdict
 import json
 import math
+from fractions import Fraction
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[2]
 import sys
@@ -12,19 +13,31 @@ sys.path.insert(0,str(ROOT))
 from scripts.checks.partition35_json import dumps
 from scripts.partition.model import JACK_BOARDS
 from scripts.checks.connector_packing35 import core_service_depths,partition_source_digest
+from scripts.geometry.power_wire import registered_route,directed
 OUT=ROOT/'design/partition/loom-candidate.json'
 
 
 def intersects(a,b):return all(a[i]<b[i+3]-1e-8 and b[i]<a[i+3]-1e-8 for i in range(3))
 
 
-def power_cut_requirement(points,maximum):
+def power_cut_requirement(points,maximum,continuous_upper=None):
     """Keep the full ten millimetres for factory preparation and slack."""
     if not math.isfinite(maximum) or maximum<=0 or len(points)<2 or any(len(p)!=3 or not all(math.isfinite(v) for v in p) for p in points):
         raise ValueError('invalid power wire cut geometry or ceiling')
     length=sum(math.dist(p,q) for p,q in zip(points,points[1:]))
+    if continuous_upper is not None:
+        if not math.isfinite(continuous_upper) or continuous_upper<length:
+            raise ValueError('continuous wire bound is below sampled length')
+    minimum=length+10 if continuous_upper is None else directed(Fraction(continuous_upper)+10,True)
     return {'centreline_length_mm':length,'cut_length_allowance_mm':10,
-            'minimum_cut_length_mm':length+10,'max_cut_length_mm':maximum}
+            'minimum_cut_length_mm':minimum,'max_cut_length_mm':maximum}
+
+
+def wire_reference(source,board,index):
+    fan=json.loads((ROOT/'design/partition/contact-transfer-proposal.json').read_text())['main_strand_class']
+    wire=json.loads((ROOT/'design/partition/wire-transfer-proposal.json').read_text())
+    return registered_route(source,board,index,fan,wire['endpoint_adapter_class'],
+                            metal_radius=wire['bulk_potential_class']['maximum_metal_radius_from_bundle_axis_mm'])
 
 
 def power_route_errors(routes,source):
@@ -34,7 +47,25 @@ def power_route_errors(routes,source):
     if len(routes)!=len(expected) or {r['id'] for r in routes}!=expected:
         errors.append('power route inventory differs from source')
     for route in routes:
-        required=power_cut_requirement(route['points_mm_positive_rear'],power['max_wire_length_mm'])
+        continuous=None
+        boards=[board for board in power['branches'] if route['id'].startswith('POWER-'+board+'-')]
+        if len(boards)!=1:
+            errors.append('unknown power route '+route['id']);continue
+        if boards:
+            board=boards[0];label=route['id'][len('POWER-'+board+'-'):]
+            if label not in power['wire_labels']:
+                errors.append('unknown power wire '+route['id']);continue
+            reference=wire_reference(source,board,power['wire_labels'].index(label))
+            if route.get('finite_endpoint_reference')!=reference or route['points_mm_positive_rear']!=reference['points_mm_positive_rear']:
+                errors.append('power finite endpoint geometry differs from source '+route['id'])
+            else:
+                radius=reference['bulk_curve_bounds']['curvature_radius_lower_mm']
+                if route.get('minimum_bend_radius_bound_mm')!=radius:
+                    errors.append('power finite endpoint bend receipt differs from source '+route['id'])
+                if radius<power['minimum_bend_radius_mm']:
+                    errors.append('power wire bend too tight '+route['id'])
+                continuous=reference['continuous_centreline_length_upper_mm']
+        required=power_cut_requirement(route['points_mm_positive_rear'],power['max_wire_length_mm'],continuous)
         if any(not math.isfinite(route.get(k,float('nan'))) or not math.isclose(route[k],v,rel_tol=0,abs_tol=1e-6) for k,v in required.items()):
             errors.append('power wire cut receipt differs from source/geometry '+route['id'])
         if required['minimum_cut_length_mm']>required['max_cut_length_mm']:
@@ -89,17 +120,25 @@ def build():
     for board,branch in power['branches'].items():
         for index,(x,net) in enumerate(zip(branch['x_mm'],power['net_order'])):
             y=branch['pad_y_mm'];Y=branch['core_pad_y_mm'][index]
-            da=-src['boards'][board]['face_z_mm']+src['boards'][board]['thickness_mm']+1
-            db=-src['boards']['K']['face_z_mm']-1
-            points=[[x+branch.get('bow_x_mm',0)*math.sin(math.pi*i/100)**2,y+(Y-y)*i/100+10*math.sin(math.pi*i/100)**2,da+(db-da)*i/100] for i in range(101)]
-            name='POWER-'+board+'-'+power['wire_labels'][index];radius=(db-da)**2/(2*math.pi**2*math.hypot(10,branch.get('bow_x_mm',0)))
+            name='POWER-'+board+'-'+power['wire_labels'][index]
+            reference=wire_reference(src,board,index);points=reference['points_mm_positive_rear']
+            bulk_points=reference['bulk_points_mm_positive_rear'];caps=reference['endpoint_reservations_mm_positive_rear']
+            chord=reference['bulk_chord_error_upper_mm'];radius=reference['bulk_curve_bounds']['curvature_radius_lower_mm']
             if radius<power['minimum_bend_radius_mm']:errors.append('power wire bend too tight '+name)
-            r=power['diameter_max_mm']/2+.25
-            for p,q in zip(points,points[1:]):
+            r=max(power['diameter_max_mm']/2,reference['bulk_metal_radius_mm'])+.25+chord
+            for p,q in zip(bulk_points,bulk_points[1:]):
                 b=[min(p[k],q[k])-r for k in range(3)]+[max(p[k],q[k])+r for k in range(3)]
                 segments.append((name,b))
                 if intersects(b,[260,248,45,308,293,85]):errors.append('power wire enters EXT reservation '+name)
-            power_routes.append({'id':name,'wire_mpn':power['wire'],'net':net,'points_mm_positive_rear':points,**power_cut_requirement(points,power['max_wire_length_mm']),'minimum_bend_radius_bound_mm':radius,'status':'PROPOSAL factory-soldered existing load-side nets only; no abstract inlet bridge'})
+            for cap in caps:
+                b=[v-.25 for v in cap[:3]]+[v+.25 for v in cap[3:]]
+                segments.append((name,b))
+                if intersects(b,[260,248,45,308,293,85]):errors.append('power endpoint enters EXT reservation '+name)
+            row={'id':name,'wire_mpn':power['wire'],'net':net,'points_mm_positive_rear':points,
+                 **power_cut_requirement(points,power['max_wire_length_mm'],reference['continuous_centreline_length_upper_mm']),
+                 'minimum_bend_radius_bound_mm':radius,'status':'PROPOSAL factory-soldered existing load-side nets only; no abstract inlet bridge'}
+            row['finite_endpoint_reference']=reference
+            power_routes.append(row)
     errors.extend(power_route_errors(power_routes,src))
     support_volumes=[]
     for board,bs in src['boards'].items():

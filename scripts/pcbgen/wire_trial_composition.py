@@ -9,6 +9,7 @@ from fractions import Fraction
 from pathlib import Path
 from scripts.pcbgen.contact_transfer import main_strand_trial,specification
 from scripts.pcbgen.strand_adapter import bounds as adapter_bounds
+from scripts.geometry.power_wire import registered_route
 
 
 def source_budget_comparison(upper_ohm, distribution):
@@ -69,19 +70,20 @@ def bounds(*,source=None):
     if termination>source['load_distribution']['combined_termination_resistance_ohm']:
         raise ValueError('conditional contact class exceeds the existing termination budget')
     rows=[]
-    for branch in ('JL','JR'):
+    cases=[(board,i) for board in source['load_distribution']['branches']
+           for i in range(len(source['load_distribution']['wire_labels']))]
+    for branch,index in cases:
         spec=source['load_distribution']['branches'][branch]
-        front=-source['boards'][branch]['face_z_mm']+source['boards'][branch]['thickness_mm']
-        rear=-source['boards']['K']['face_z_mm']
-        H=rear-front-2*adapter['full_fan_axial_height_interval_mm'][1]
-        H_upper=rear-front-2*adapter['full_fan_axial_height_interval_mm'][0]
-        if any(y!=spec['pad_y_mm'] for y in spec['core_pad_y_mm']):
-            raise ValueError('this bounded J curve requires equal source endpoint y coordinates')
-        amplitude2=spec.get('bow_x_mm',0)**2+10**2
-        if math.pi*math.sqrt(amplitude2)/H>potential['maximum_bundle_transverse_slope']:
+        # Solder is a separate prism below the copper tip, not inside the
+        # fan height. Charge its fixed modeled thickness in both end planes.
+        reference=registered_route(source,branch,index,fan,proposal['endpoint_adapter_class'],metal_radius=radius)
+        H=reference['bulk_span_mm'];curve=reference['bulk_curve_bounds']
+        if not curve['axial_endpoint_tangents']:
+            raise ValueError('the potential collar requires axial endpoint tangents')
+        if curve['slope_upper']>potential['maximum_bundle_transverse_slope']:
             raise ValueError('actual source curve exceeds the collar inverse slope bound')
-        axis_upper=math.sqrt(H_upper*H_upper+math.pi**2*amplitude2/2)
-        bend_lower=H*H/(2*math.pi**2*math.sqrt(amplitude2))
+        axis_upper=curve['axis_length_upper_mm']
+        bend_lower=curve['curvature_radius_lower_mm']
         if bend_lower<bend:raise ValueError('fan-compatible bulk curve violates the retained bend radius')
         length_upper=current['mean_strand_arclength_over_bundle_axis_upper']*axis_upper+2*fan['maximum_fanned_length_per_end_mm']
         if length_upper>source['load_distribution']['max_wire_length_mm']:
@@ -95,13 +97,17 @@ def bounds(*,source=None):
         normal_lower=normal_material['equivalent_resistivity_lower_ohm_mm']*varying_span*jacobian/potential['maximum_total_metal_area_per_bundle_normal_section_mm2']
         full_fans=2*tip['one_terminal_fan_copper_ohm']+tip['two_terminal_added_transfer_ohm']
         whole_upper=bulk_upper+full_fans+interfaces+adapter['two_adapter_full_energy_debit_ohm']
-        rows.append({'branch':branch,'bulk_axial_height_mm':H,'bundle_axis_length_upper_mm':axis_upper,
+        row={'branch':branch,'wire_labels':[source['load_distribution']['wire_labels'][index]],
+            'bulk_axial_height_mm':H,'bundle_axis_length_upper_mm':axis_upper,
             'minimum_bulk_bend_radius_mm':bend_lower,'mean_strand_length_with_both_fans_upper_mm':length_upper,
             'bulk_varying_primal_span_lower_mm':varying_span,
             'bulk_hot_only_lower_ohm':bulk_lower,'bulk_normal_material_lower_ohm':normal_lower,'bulk_upper_ohm':bulk_upper,
             'whole_wire_hot_only_lower_ohm':bulk_lower,'whole_wire_normal_material_lower_ohm':normal_lower,'whole_wire_upper_ohm':whole_upper,
             'current_source_budget':source_budget_comparison(whole_upper,source['load_distribution']),
-            'remaining_historical_125mm_budget_ohm':.013*.125+.0002-whole_upper})
+            'remaining_historical_125mm_budget_ohm':.013*.125+.0002-whole_upper}
+        row['registered_endpoint_reference']={k:v for k,v in reference.items() if 'points' not in k}
+        row['endpoint_y_offset_mm']=spec['core_pad_y_mm'][index]-spec['pad_y_mm']
+        rows.append(row)
     return {'status':'UNSELECTED conditional inequalities only; actual containment and source selection remain OPEN',
         'endpoint_adapter':adapter,
         'bulk_trial_upper_ohm_per_bundle_axis_m':per_axis*1000,
@@ -112,7 +118,8 @@ def bounds(*,source=None):
         'remaining_combined_termination_allowance_ohm':source['load_distribution']['combined_termination_resistance_ohm']-termination,
         'historical_comparison_only':{'length_mm':125,'hot_resistance_ohm_per_m':.013,'combined_termination_ohm':.0002},
         'length_screen_scope':'Mean contained-strand arclength including both fans; not maximum individual strand length or a finished manufactured cut-length certificate. Source preparation/slack and endpoint/trace qualification remain OPEN.',
-        'branches_not_evaluated':{'P':'Offset endpoint y coordinates require a separate compatible curve/endpoint construction; no JL/JR bound is assigned to P.'},
+        'branches_not_evaluated':{},
+        'reference_scope':'All 18 source-labelled wires use registered planar trial cuts, zero-tilt reference adapters and explicit fixed solder prisms. Actual arbitrary endpoint staggering is not covered; physical containment/material/trace qualification remains OPEN.',
         'rows':rows,'scope':proposal['endpoint_gate']}
 
 

@@ -78,8 +78,10 @@ budget of **1.630 mOhm**, including both terminations.
 
 | Branch | Conditional whole-wire upper | Current budget margin |
 | --- | ---: | ---: |
-| JL | 1.407810 mOhm | 0.222190 mOhm |
-| JR | 1.383835 mOhm | 0.246165 mOhm |
+| JL (6 wires) | 1.406588 mOhm | 0.223412 mOhm |
+| JR (6 wires) | 1.382586 mOhm | 0.247414 mOhm |
+| P (4 wires, −4 mm offset) | 1.361676 mOhm | 0.268324 mOhm |
+| P (2 wires, zero offset) | 1.360171 mOhm | 0.269829 mOhm |
 
 Table values are rounded for display. The helper compares the computed trial
 value against exact decimal source-budget arithmetic without a favorable
@@ -91,12 +93,15 @@ current source allowance, rather than a hard-coded 0.2 mOhm value.
 
 These are **conditional arithmetic comparisons**, not adoption of the wire
 class or transfer of a new margin into joined ground/rail acceptance. The
-reported 96.190423 / 94.288670 mm bounds cover *mean contained-strand arclength*
-with both fans. A mean does not bound the longest strand, prove an actual
-finished cut length, or establish source preparation/slack and endpoint
-compatibility. Those geometric and trace conditions remain open. P is not
-evaluated by this JL/JR curve construction: its unequal endpoint y coordinates
-need a separate compatible construction. No JL/JR result is assigned to P.
+reported mean contained-strand arclength bounds are 96.093474 mm (JL),
+94.189582 mm (JR), 92.530938 mm (offset P) and 92.411537 mm (zero-offset P),
+rounded upward. A mean does not bound the longest strand or establish a
+finished cut-length class. All 18 wires now use the shared
+[registered reference](main-wire-reference.md), including both 0.05 mm solder
+prisms. Their energy was already charged; adding their previously omitted
+height shortens the bulk span while retaining the separately charged solder energy. P uses a
+smoothstep offset with axial endpoint tangents. Actual metal containment,
+material bounds, finished cuts and matching terminal traces remain open.
 
 ## Source and measurement functionals
 
@@ -126,8 +131,8 @@ term. The extra full adapter debit is explicitly conservative, as stated below.
 For the paired potential witness, each complete wire adds an energy term
 `(V_J - V_K)**2 / R_wire_lower` between its two full-wetting trial variables.
 The normal proof must use the normal-material lower bound, about
-0.334771739 mOhm for the proposed J/K geometry; the separate uniform-hot lower
-is about 0.669543478 mOhm. Both represent restricted continuous trial fields,
+0.334358696 mOhm for JL/JR and 0.326923913 mOhm for P; the separate
+uniform-hot lowers are about 0.668717391 and 0.653847826 mOhm. Both represent restricted continuous trial fields,
 not physical equipotential cuts. Gluing requires the same external source and
 measurement functionals in both bounds and the actual K wetted supports.
 These assembly equations are conditions for the future joined certificate;
@@ -160,7 +165,11 @@ even though the 4 mm straight-wire baseline already funds its arclength. No
 second baseline credit is taken. The paired primal stays constant through
 0.075 mm collars at both bulk ends: this covers the all-metal 1.2954 mm radius
 envelope at 3 degrees tilt, rather than just the smaller current-trial core.
-The varying axial span is at least 81.05 mm for the proposed J/K geometry.
+The registered reference selects the zero-tilt member of this adapter class;
+the generic 3-degree energy debit remains conservative. It does not assert that
+actual manufactured joints have zero tilt. After both collars, the varying
+axial spans are 80.95 mm (JL/JR) and 79.15 mm (P). Arbitrary independent
+endpoint staggering cannot borrow these collars without another proof.
 
 The proposed rho_min = 2e-5 ohm mm is **uniform nominal 70 C hot-only**. It
 is not a valid cold/mixed-temperature lower bound. The maximum conductivity

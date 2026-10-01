@@ -21,7 +21,8 @@ class ArchitectureMarginTests(unittest.TestCase):
         source=copy.deepcopy(self.source)
         self.assertEqual(power_route_errors(self.loom['load_power_routes'],source),[])
         longest=max(r['minimum_cut_length_mm'] for r in self.loom['load_power_routes'])
-        self.assertAlmostEqual(longest,100.9070593291981,places=6)
+        self.assertGreater(longest,103)
+        self.assertLess(longest,104)
         source['load_distribution']['max_wire_length_mm']=100
         self.assertTrue(any('power wire length exceeds loss budget POWER-JL-' in e for e in power_route_errors(self.loom['load_power_routes'],source)))
         self.assertEqual(power_cut_requirement([[0,0,0],[0,0,25]],40)['minimum_cut_length_mm'],35)
@@ -79,16 +80,54 @@ class ArchitectureMarginTests(unittest.TestCase):
         self.assertEqual({tuple(a['hook_sweep_positive_depth_mm']) for a in connectors['K_service_apertures']},{(86.5,90)})
         with tempfile.TemporaryDirectory() as directory:
             root=Path(directory)
-            for relative in ('design/connectors/jst-gh.json','design/partition/stage-optical-candidate.json'):
+            for relative in ('design/connectors/jst-gh.json','design/partition/stage-optical-candidate.json',
+                             'design/partition/contact-transfer-proposal.json','design/partition/wire-transfer-proposal.json'):
                 target=root/relative;target.parent.mkdir(parents=True,exist_ok=True)
                 target.write_bytes((ROOT/relative).read_bytes())
             (root/'design/partition/partition-input.json').write_text(json.dumps(changed))
             (root/'design/partition/connector-packing-candidate.json').write_text(json.dumps(connectors))
             with patch.object(partition35_loom,'ROOT',root):result=partition35_loom.build()
-        self.assertEqual(result['errors'],[])
+        # Registered bulk spans exclude the real endpoint volumes. K at96mm
+        # now fails all six JL and four offset P conservative bend bounds.
+        expected={'power wire bend too tight POWER-P-'+label for label in ('+12V','-12V','+5V','AGND1')}
+        expected.update('power wire bend too tight POWER-JL-'+label for label in changed['load_distribution']['wire_labels'])
+        self.assertEqual(set(result['errors']),expected)
         self.assertEqual(result['K_service_depths_positive_rear_mm'],{'support_mm':[94,116],'hook_mm':[86.5,90]})
         # This is route geometry only; the shorter GH paths need a new
         # electrical screen and cannot inherit the selected K100 current bound.
+
+    def test_registered_p_geometry_cannot_use_stale_cap_or_curve(self):
+        routes=copy.deepcopy(self.loom['load_power_routes'])
+        p=next(r for r in routes if r['id']=='POWER-P-+12V')
+        self.assertEqual(len(p['finite_endpoint_reference']['endpoint_reservations_mm_positive_rear']),2)
+        self.assertAlmostEqual(p['finite_endpoint_reference']['bulk_span_mm'],79.3)
+        self.assertGreater(p['minimum_cut_length_mm'],p['centreline_length_mm']+10)
+        p['finite_endpoint_reference']['endpoint_reference']['solder_trial_height_mm']=0
+        self.assertTrue(any('finite endpoint geometry differs' in e for e in power_route_errors(routes,self.source)))
+
+    def test_missing_p_profile_cannot_fall_back_to_unmatched_linear_curve(self):
+        for board in ('JL','JR','P'):
+            for value in (None,''):
+                source=copy.deepcopy(self.source)
+                if value is None:source['load_distribution']['branches'][board].pop('route_profile')
+                else:source['load_distribution']['branches'][board]['route_profile']=value
+                with self.assertRaisesRegex(ValueError,'explicit registered'):
+                    power_route_errors(self.loom['load_power_routes'],source)
+
+    def test_full_endpoint_volume_collisions_are_not_omitted(self):
+        changed=copy.deepcopy(self.source)
+        changed['load_distribution']['branches']['P']['endpoint_metal_half_extent_mm']=50
+        with patch.object(connector_packing35,'source',return_value=changed):
+            connectors=connector_packing35.candidate()
+        with tempfile.TemporaryDirectory() as directory:
+            root=Path(directory)
+            for relative in ('design/connectors/jst-gh.json','design/partition/stage-optical-candidate.json',
+                             'design/partition/contact-transfer-proposal.json','design/partition/wire-transfer-proposal.json'):
+                target=root/relative;target.parent.mkdir(parents=True,exist_ok=True);target.write_bytes((ROOT/relative).read_bytes())
+            (root/'design/partition/partition-input.json').write_text(json.dumps(changed))
+            (root/'design/partition/connector-packing-candidate.json').write_text(json.dumps(connectors))
+            with patch.object(partition35_loom,'ROOT',root):result=partition35_loom.build()
+        self.assertTrue(any('loom corridor overlap' in e or 'loom/support collision' in e for e in result['errors']))
 
     def test_invalid_service_offsets_are_not_a_fit_pass(self):
         for offsets in ([9.5,6],[-1,9.5],[6,float('nan')],[6,101]):
