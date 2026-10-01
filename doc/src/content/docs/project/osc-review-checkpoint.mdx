@@ -16,8 +16,11 @@ The local routing repair `57084d0` reconciles PR #67 with the newer complete
 per-net native connectivity receipts. It requires fresh same-board native
 connectivity, rejects prepared rule/parity errors before routing, preserves
 failure and timeout exits, and labels refresh-only results as diagnostic.
-PR #67 is still a separate draft: do not apply its older four-file snapshot over
-the recovered source. Neither patch proves electrical compliance.
+PR #67 is closed as superseded by the reconciliation merged through #68; do
+not apply its older four-file snapshot over the recovered source. Neither patch
+proves electrical compliance. The assembly/proof checkpoint #69 is also merged
+(`c96d5ae`), with passing post-merge CI and regeneration. Further proof and
+protection work continues in #70.
 
 The previously interrupted K calculation has now completed both 2,287-profile
 phases. Its retained guard log records PASS, exit 0, 7,048 seconds. A read-only
