@@ -71,7 +71,10 @@ remain in `foil-collar-native-receipt.json`; neither is relabelled as passing.
 The new run must freeze its source inputs and check the entire refilled board,
 including nonlocal copper changes, complete connectivity and the full untrimmed
 dry section. This scope change makes no dimensional, net, clearance, priority
-or electrical-limit change. Actual native results will be recorded separately.
+or electrical-limit change. The completed source-stable native result is
+recorded separately in `foil-collar-jl-replay-receipt.json` and its Markdown
+companion. Its rule/connectivity scope passes; its local-only, electrical and
+physical admission do not.
 
 The historical K receipt keeps its original global proposal hash. K-local
 construction is unchanged, but no K replay or rebinding is implied by this
