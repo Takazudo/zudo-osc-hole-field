@@ -1,0 +1,423 @@
+{
+  "status": "UNSELECTED conditioned monitor study; protection unimplemented",
+  "protection_implemented": false,
+  "static_divider_cases": [
+    {
+      "rail": "+12V",
+      "normal_load_magnitude_V": [
+        11.53,
+        12.48
+      ],
+      "threshold_magnitude_intervals_V": {
+        "UV_trip": [
+          10.97158619587392,
+          11.350416746044322
+        ],
+        "UV_recover": [
+          11.015492072106415,
+          11.463871741882265
+        ],
+        "OV_trip": [
+          12.623957882043113,
+          13.0583414145725
+        ],
+        "OV_recover": [
+          12.497669474600182,
+          13.006127717563208
+        ]
+      },
+      "normal_recovery_lower_margin_V": 0.06612825811773615,
+      "normal_recovery_upper_margin_V": 0.017669474600182235,
+      "conditional_static_recovery_covers_normal_band": true,
+      "scope": "Conditional input-bias/thermal envelope; no startup, dynamic or whole-protection admission."
+    },
+    {
+      "rail": "+5V",
+      "normal_load_magnitude_V": [
+        4.81,
+        5.2
+      ],
+      "threshold_magnitude_intervals_V": {
+        "UV_trip": [
+          4.57469482345272,
+          4.72605627976662
+        ],
+        "UV_recover": [
+          4.593000927039906,
+          4.77329840320585
+        ],
+        "OV_trip": [
+          5.263634205766167,
+          5.437228030464687
+        ],
+        "OV_recover": [
+          5.2109795529750675,
+          5.4154864940862035
+        ]
+      },
+      "normal_recovery_lower_margin_V": 0.036701596794151053,
+      "normal_recovery_upper_margin_V": 0.010979552975068339,
+      "conditional_static_recovery_covers_normal_band": true,
+      "scope": "Conditional input-bias/thermal envelope; no startup, dynamic or whole-protection admission."
+    },
+    {
+      "rail": "-12V",
+      "normal_load_magnitude_V": [
+        11.74,
+        12.37
+      ],
+      "threshold_magnitude_intervals_V": {
+        "UV_trip": [
+          10.96670333362392,
+          11.355333908294321
+        ],
+        "UV_recover": [
+          11.010609209856415,
+          11.468788904132264
+        ],
+        "OV_trip": [
+          12.619075019793112,
+          13.063258576822498
+        ],
+        "OV_recover": [
+          12.492786612350182,
+          13.011044879813209
+        ]
+      },
+      "normal_recovery_lower_margin_V": 0.2712110958677361,
+      "normal_recovery_upper_margin_V": 0.12278661235018223,
+      "conditional_static_recovery_covers_normal_band": true,
+      "scope": "Conditional input-bias/thermal envelope; no startup, dynamic or whole-protection admission."
+    }
+  ],
+  "timing_cases": [
+    {
+      "name": "table matched",
+      "overdrive_fraction": 0.1,
+      "pullup_ohm": 10000,
+      "load_F": 1e-11,
+      "supply_V": 3.3,
+      "temperature_C": 125,
+      "matched_detection_upper_s": 1e-05
+    },
+    {
+      "name": "near-threshold fault",
+      "overdrive_fraction": 0.01,
+      "pullup_ohm": 10000,
+      "load_F": 1e-11,
+      "supply_V": 3.3,
+      "temperature_C": 25,
+      "matched_detection_upper_s": null
+    },
+    {
+      "name": "lighter pullup is a different condition",
+      "overdrive_fraction": 0.1,
+      "pullup_ohm": 100000,
+      "load_F": 1e-11,
+      "supply_V": 3.3,
+      "temperature_C": 25,
+      "matched_detection_upper_s": null
+    },
+    {
+      "name": "added logic/gate capacitance",
+      "overdrive_fraction": 0.1,
+      "pullup_ohm": 10000,
+      "load_F": 1e-10,
+      "supply_V": 3.3,
+      "temperature_C": 25,
+      "matched_detection_upper_s": null
+    }
+  ],
+  "startup_maximum_s": null,
+  "startup_reason": "Nominal startup time plus a bounded reset delay is not a maximum startup guarantee.",
+  "floating_negative_pin_stress": [
+    {
+      "VN_relative_AGND_V": -12.37,
+      "ldo_IN_relative_GND_V": 12.37,
+      "unloaded_sense_relative_VN_V": 0.8246666666666667,
+      "ldo_input_absolute_rating_violated": false,
+      "unloaded_monitor_sense_outside_absolute_rating": false,
+      "sense_scope": "Unloaded divider prediction; actual clamp/injection behavior is unresolved."
+    },
+    {
+      "VN_relative_AGND_V": -11.74,
+      "ldo_IN_relative_GND_V": 11.74,
+      "unloaded_sense_relative_VN_V": 0.7826666666666666,
+      "ldo_input_absolute_rating_violated": false,
+      "unloaded_monitor_sense_outside_absolute_rating": false,
+      "sense_scope": "Unloaded divider prediction; actual clamp/injection behavior is unresolved."
+    },
+    {
+      "VN_relative_AGND_V": 0,
+      "ldo_IN_relative_GND_V": 0,
+      "unloaded_sense_relative_VN_V": 0.0,
+      "ldo_input_absolute_rating_violated": false,
+      "unloaded_monitor_sense_outside_absolute_rating": false,
+      "sense_scope": "Unloaded divider prediction; actual clamp/injection behavior is unresolved."
+    },
+    {
+      "VN_relative_AGND_V": 1,
+      "ldo_IN_relative_GND_V": -1,
+      "unloaded_sense_relative_VN_V": -0.06666666666666667,
+      "ldo_input_absolute_rating_violated": true,
+      "unloaded_monitor_sense_outside_absolute_rating": false,
+      "sense_scope": "Unloaded divider prediction; actual clamp/injection behavior is unresolved."
+    },
+    {
+      "VN_relative_AGND_V": 12.48,
+      "ldo_IN_relative_GND_V": -12.48,
+      "unloaded_sense_relative_VN_V": -0.832,
+      "ldo_input_absolute_rating_violated": true,
+      "unloaded_monitor_sense_outside_absolute_rating": true,
+      "sense_scope": "Unloaded divider prediction; actual clamp/injection behavior is unresolved."
+    }
+  ],
+  "floating_negative_scope": "Forced bounded voltages for architectural screening, not a claim that the existing assembled circuit reaches them. Missing negative sink plus other powered paths is not proved to keep VN nonpositive.",
+  "isolator_power_states": [
+    {
+      "VCC1_V": 0,
+      "VCC2_V": 0,
+      "input": "OPEN",
+      "output": "UNDEFINED"
+    },
+    {
+      "VCC1_V": 0,
+      "VCC2_V": 0,
+      "input": "LOW",
+      "output": "UNDEFINED"
+    },
+    {
+      "VCC1_V": 0,
+      "VCC2_V": 0,
+      "input": "HIGH",
+      "output": "UNDEFINED"
+    },
+    {
+      "VCC1_V": 0,
+      "VCC2_V": 1.9,
+      "input": "OPEN",
+      "output": "UNDEFINED"
+    },
+    {
+      "VCC1_V": 0,
+      "VCC2_V": 1.9,
+      "input": "LOW",
+      "output": "UNDEFINED"
+    },
+    {
+      "VCC1_V": 0,
+      "VCC2_V": 1.9,
+      "input": "HIGH",
+      "output": "UNDEFINED"
+    },
+    {
+      "VCC1_V": 0,
+      "VCC2_V": 5,
+      "input": "OPEN",
+      "output": "LOW"
+    },
+    {
+      "VCC1_V": 0,
+      "VCC2_V": 5,
+      "input": "LOW",
+      "output": "LOW"
+    },
+    {
+      "VCC1_V": 0,
+      "VCC2_V": 5,
+      "input": "HIGH",
+      "output": "UNDEFINED"
+    },
+    {
+      "VCC1_V": 1.9,
+      "VCC2_V": 0,
+      "input": "OPEN",
+      "output": "UNDEFINED"
+    },
+    {
+      "VCC1_V": 1.9,
+      "VCC2_V": 0,
+      "input": "LOW",
+      "output": "UNDEFINED"
+    },
+    {
+      "VCC1_V": 1.9,
+      "VCC2_V": 0,
+      "input": "HIGH",
+      "output": "UNDEFINED"
+    },
+    {
+      "VCC1_V": 1.9,
+      "VCC2_V": 1.9,
+      "input": "OPEN",
+      "output": "UNDEFINED"
+    },
+    {
+      "VCC1_V": 1.9,
+      "VCC2_V": 1.9,
+      "input": "LOW",
+      "output": "UNDEFINED"
+    },
+    {
+      "VCC1_V": 1.9,
+      "VCC2_V": 1.9,
+      "input": "HIGH",
+      "output": "UNDEFINED"
+    },
+    {
+      "VCC1_V": 1.9,
+      "VCC2_V": 5,
+      "input": "OPEN",
+      "output": "UNDEFINED"
+    },
+    {
+      "VCC1_V": 1.9,
+      "VCC2_V": 5,
+      "input": "LOW",
+      "output": "UNDEFINED"
+    },
+    {
+      "VCC1_V": 1.9,
+      "VCC2_V": 5,
+      "input": "HIGH",
+      "output": "UNDEFINED"
+    },
+    {
+      "VCC1_V": 3.3,
+      "VCC2_V": 0,
+      "input": "OPEN",
+      "output": "UNDEFINED"
+    },
+    {
+      "VCC1_V": 3.3,
+      "VCC2_V": 0,
+      "input": "LOW",
+      "output": "UNDEFINED"
+    },
+    {
+      "VCC1_V": 3.3,
+      "VCC2_V": 0,
+      "input": "HIGH",
+      "output": "UNDEFINED"
+    },
+    {
+      "VCC1_V": 3.3,
+      "VCC2_V": 1.9,
+      "input": "OPEN",
+      "output": "UNDEFINED"
+    },
+    {
+      "VCC1_V": 3.3,
+      "VCC2_V": 1.9,
+      "input": "LOW",
+      "output": "UNDEFINED"
+    },
+    {
+      "VCC1_V": 3.3,
+      "VCC2_V": 1.9,
+      "input": "HIGH",
+      "output": "UNDEFINED"
+    },
+    {
+      "VCC1_V": 3.3,
+      "VCC2_V": 5,
+      "input": "OPEN",
+      "output": "LOW"
+    },
+    {
+      "VCC1_V": 3.3,
+      "VCC2_V": 5,
+      "input": "LOW",
+      "output": "LOW"
+    },
+    {
+      "VCC1_V": 3.3,
+      "VCC2_V": 5,
+      "input": "HIGH",
+      "output": "HIGH"
+    }
+  ],
+  "all_rail_arrival_orders_required": [
+    [
+      "+12V",
+      "-12V",
+      "+5V"
+    ],
+    [
+      "+12V",
+      "+5V",
+      "-12V"
+    ],
+    [
+      "-12V",
+      "+12V",
+      "+5V"
+    ],
+    [
+      "-12V",
+      "+5V",
+      "+12V"
+    ],
+    [
+      "+5V",
+      "+12V",
+      "-12V"
+    ],
+    [
+      "+5V",
+      "-12V",
+      "+12V"
+    ]
+  ],
+  "all_rail_failure_orders_required": [
+    [
+      "+12V",
+      "-12V",
+      "+5V"
+    ],
+    [
+      "+12V",
+      "+5V",
+      "-12V"
+    ],
+    [
+      "-12V",
+      "+12V",
+      "+5V"
+    ],
+    [
+      "-12V",
+      "+5V",
+      "+12V"
+    ],
+    [
+      "+5V",
+      "+12V",
+      "-12V"
+    ],
+    [
+      "+5V",
+      "-12V",
+      "+12V"
+    ]
+  ],
+  "state_sequence_validation": "NOT RUN: surviving power, real AND/latch/driver and independent return monitor are not captured.",
+  "native_dynamic_bench": "NOT RUN: no implemented monitor assembly",
+  "input_current_scope": "VSENSEx=5.5 V; treating this as an absolute envelope at the 0.8 V sense node is a proposed condition, not a newly sourced guarantee.",
+  "resistor_reference_scope": "25 C is an analysis reference assumption; the retained exact product sheets do not state the nominal-resistance reference temperature. Applicability remains OPEN.",
+  "open_obligations": [
+    "Actual 0.8 V input-bias envelope, nominal-resistance reference temperature, resistor thermal/installation and complete threshold applicability.",
+    "A negative-rail front end that remains within all pin ratings when the negative rail is absent or rises above AGND.",
+    "Surviving control power, defined startup/brownout output states, and real all-rail AND/latch/permit driver.",
+    "Fault slew/overdrive, actual pullup/load and switching path must match a maximum-delay guarantee; nominal startup time is not a bound.",
+    "Independent inlet-return and local-device-GND integrity cannot be inferred from rail voltages.",
+    "Complete part/decoupler/current/area allocation and all 82 output, 16 sense and 30 reference isolation paths.",
+    "No native CAD, dynamic model, installed thermal or bench qualification performed for this monitor study."
+  ],
+  "input_sha256": {
+    "design/power/rail-monitor-candidate.json": "955c92a826f02b1239a656c22035404f73da04e9d38d1f765b2580fcf88c2ac5",
+    "design/power/rail-monitor-candidate-sources.json": "3f59d64081128f0742d0a755204ca6ac53247de1b48e8a35a7024da65bf4d843",
+    "design/power/supply-architecture-input.json": "a8a4e92ac4c1d7de5c16b6982fba7d5ab60ab13753b12eabfa23fc75da98acc4",
+    "scripts/checks/rail_monitor_candidate.py": "75c2b1339f7fc6841e1ee7c809b089b455e44502c803e37718b89e317cbfedb8"
+  }
+}

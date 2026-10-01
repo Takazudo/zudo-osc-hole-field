@@ -6,6 +6,14 @@ sidebar_position: 11
 
 ## Current recovery point — 1 October 2026
 
+The 2 October rail-monitor continuation is an unselected source-backed study in
+`design/power/rail-monitor-candidate-work-note.md`. It checks normal-band
+recovery, conditional maximum delay and isolator power states, and identifies
+a reversed-input failure in the direct floating negative-rail regulator trial.
+Its static margins depend on explicit input-current and resistor-temperature
+assumptions. The all-rail latch, independent return detector, surviving control
+power and output isolation remain unimplemented; issue #59 stays open.
+
 The recovered issue-38 source checkpoint merged through PR #68 (`9273b3a`),
 followed by the active-schematic ERC digest fix (`79d9d4f`). Continue from the
 current completion branch and preserve `worktrees/38-jack-halves`, now on
