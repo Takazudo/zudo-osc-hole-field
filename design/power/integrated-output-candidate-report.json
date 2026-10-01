@@ -1,0 +1,602 @@
+{
+  "status": "UNSOURCED project performance; candidate topology only; implementation gate OPEN",
+  "protection_implemented": false,
+  "model_run": "NOT RUN: no identified model can supply missing manufacturer guarantees",
+  "identity": {
+    "manufacturer": "Analog Devices",
+    "mpn": "ADG5401FBCPZ-RL7",
+    "package": "CP-10-16",
+    "supplier_order_code": "505-ADG5401FBCPZ-RL7CT-ND",
+    "supplier_url": "https://www.digikey.com/en/products/detail/analog-devices-inc/ADG5401FBCPZ-RL7/13617828",
+    "scope": "Exact identity observed in official ordering guide and distributor page; PDF bytes unavailable, no stock/assembly claim"
+  },
+  "original_limits": {
+    "load_error_mV": 1,
+    "calibrated_error_mV": 2,
+    "overshoot_percent": 10,
+    "settling_error_mV": 1,
+    "settling_deadline_s": 0.001,
+    "supply_protection_drop_V": 0.04
+  },
+  "source_retention": {
+    "PDF_bytes": "SOURCE UNAVAILABLE; zero-hash records",
+    "official_HTML_and_PNG": "AVAILABLE; distinct actual hashes",
+    "performance_fact_verdict": "UNSOURCED"
+  },
+  "operating_range_screen": {
+    "verdict": "UNSOURCED",
+    "evidence_scope": "Operation described by official web observation; complete PDF retention pending",
+    "project_positive_rail_V": [
+      11.53,
+      12.48
+    ],
+    "project_negative_magnitude_V": [
+      11.74,
+      12.37
+    ],
+    "observed_dual_range_V": [
+      5,
+      22
+    ],
+    "minimum_positive_signal_limit_V": 9.53,
+    "plus8V_headroom_margin_V": 1.5299999999999994,
+    "precision_5V_headroom_margin_V": 4.0126913841120535,
+    "project_rails_inside_pm15_table_range": false,
+    "interpretation": "Operation/headroom is documented; single+12 table requiresVSS=GND and cannot certify bipolar operation."
+  },
+  "precision_DC_sensitivity": {
+    "verdict": "UNSOURCED",
+    "effective_drive_R_ohm": 1033.70374,
+    "effective_feedback_R_ohm": 8905.5387,
+    "minimum_local_feedback_R_ohm": 9771300.0,
+    "rows": [
+      {
+        "signal_V": -5,
+        "lumped_FB_bias_A_sensitivity": -9.5e-08,
+        "jack_V": -5.000374552380932,
+        "drive_V": -5.517308615887946,
+        "unloaded_jack_V": -5.000845166483871,
+        "load_dependent_change_V": 0.0004706141029391375,
+        "uncalibrated_static_shift_V": -0.0003745523809319806
+      },
+      {
+        "signal_V": -5,
+        "lumped_FB_bias_A_sensitivity": 0,
+        "jack_V": -4.99952946543307,
+        "drive_V": -5.516278079151181,
+        "unloaded_jack_V": -5.0,
+        "load_dependent_change_V": 0.0004705345669302474,
+        "uncalibrated_static_shift_V": 0.0004705345669302474
+      },
+      {
+        "signal_V": -5,
+        "lumped_FB_bias_A_sensitivity": 9.5e-08,
+        "jack_V": -4.998684378485208,
+        "drive_V": -5.515247542414419,
+        "unloaded_jack_V": -4.999154833516129,
+        "load_dependent_change_V": 0.00047045503092046914,
+        "uncalibrated_static_shift_V": 0.0013156215147915873
+      },
+      {
+        "signal_V": 0,
+        "lumped_FB_bias_A_sensitivity": -9.5e-08,
+        "jack_V": -0.0008450869478619455,
+        "drive_V": -0.001030536736763678,
+        "unloaded_jack_V": -0.0008451664838710399,
+        "load_dependent_change_V": 7.953600909436573e-08,
+        "uncalibrated_static_shift_V": -0.0008450869478619455
+      },
+      {
+        "signal_V": 0,
+        "lumped_FB_bias_A_sensitivity": 0,
+        "jack_V": 0.0,
+        "drive_V": 0.0,
+        "unloaded_jack_V": 0.0,
+        "load_dependent_change_V": 0.0,
+        "uncalibrated_static_shift_V": 0.0
+      },
+      {
+        "signal_V": 0,
+        "lumped_FB_bias_A_sensitivity": 9.5e-08,
+        "jack_V": 0.0008450869478619455,
+        "drive_V": 0.001030536736763678,
+        "unloaded_jack_V": 0.0008451664838710399,
+        "load_dependent_change_V": -7.953600909436573e-08,
+        "uncalibrated_static_shift_V": 0.0008450869478619455
+      },
+      {
+        "signal_V": 5,
+        "lumped_FB_bias_A_sensitivity": -9.5e-08,
+        "jack_V": 4.998684378485208,
+        "drive_V": 5.515247542414419,
+        "unloaded_jack_V": 4.999154833516129,
+        "load_dependent_change_V": -0.00047045503092046914,
+        "uncalibrated_static_shift_V": -0.0013156215147915873
+      },
+      {
+        "signal_V": 5,
+        "lumped_FB_bias_A_sensitivity": 0,
+        "jack_V": 4.99952946543307,
+        "drive_V": 5.516278079151181,
+        "unloaded_jack_V": 5.0,
+        "load_dependent_change_V": -0.0004705345669302474,
+        "uncalibrated_static_shift_V": -0.0004705345669302474
+      },
+      {
+        "signal_V": 5,
+        "lumped_FB_bias_A_sensitivity": 9.5e-08,
+        "jack_V": 5.000374552380932,
+        "drive_V": 5.517308615887946,
+        "unloaded_jack_V": 5.000845166483871,
+        "load_dependent_change_V": -0.0004706141029391375,
+        "uncalibrated_static_shift_V": 0.0003745523809319806
+      }
+    ],
+    "maximum_load_dependent_change_V": 0.0004706141029391375,
+    "maximum_uncalibrated_static_shift_V": 0.0013156215147915873,
+    "approximate_S_to_SFB_drop_at_5V_10kohm_V": 0.51060187,
+    "scope": "Other-supply table maxima are conditional sensitivities. Two40nA channel leakage magnitudes conservatively lumped atFB plus15nA amplifier bias. Static offset is separate from load error; finite amplifier gain/offset, calibration, added capacitance and1ms settling remain unverified."
+  },
+  "feedback_states": {
+    "enabled": "D-S andDFB-SFB closed; internalD-DFB open; remote feedback includes998ohm;10M/10nF local feedback remains.",
+    "powered_disabled_or_fault": "Observed internalD-DFB feedback closes automatically;10M/10nF remains. Exact closure skew and actual12V resistance are unknown.",
+    "unpowered_or_partial": "Do not assume the powered local-feedback switch still operates. Passive10M/10nF remains, but unpowered amplifier functionality is not inferred.",
+    "POC": "Pin7 deliberately floating; optional30k source-to-GND pull disabled. IN absent is described asOFF;100k adds a local default-low bias only while reference is valid.",
+    "fault_detection": "S/SFB compare with localrails, not external intended-signal limits. External+/-12V may be inside actualrails and need not trip. Keep series resistors and independent supervision."
+  },
+  "static_fault_screen": {
+    "verdict": "UNSOURCED",
+    "both_external_polarities_V": [
+      -12,
+      12
+    ],
+    "main_opposing_voltage_current_A": 0.025103167558290573,
+    "sense_opposing_voltage_current_A": 0.005020633511658115,
+    "cold_main_initial_A": 0.012305474293279692,
+    "cold_sense_initial_A": 0.0024610948586559385,
+    "existing_fault_allocation_mA_not_toleranced_proof": 25,
+    "conditional_switch_I2R_plus_idle_W": 0.012356712768245154,
+    "conditional_JEDEC_rise_C": 2.1006411706016763,
+    "scope": "30mA drain clamp and61mA main continuous rows are ratings under stated conditions, not tolerance/temperature proof at12V. External998ohm bounds initial paths; moving it inward invalidates the cold-injection bound. S-SFB optimal<1V recommendation can be exceeded during opposing faults."
+  },
+  "power_off_and_ground": {
+    "verdict": "UNSOURCED",
+    "official_retained_broad_claim": "Manufacturer wiki describes powered and unpowered S/SFB protection up to+/-60V.",
+    "grounded_supply_drain_leakage_max_A_observed": 5.5e-08,
+    "floating_supply_drain_leakage_TYPICAL_A_observed": 2e-06,
+    "source_leakage_TYPICAL_A_observed": 1.1e-05,
+    "conditional_two_drain_bleeder_equilibrium_V": 0.01125443,
+    "documented_GND_premise": {
+      "locator": "ADG5401F Rev0 printedp28,physicalindex27,Power Off Protection",
+      "minimal_extract": "A GND reference must always be present to ensure proper operation."
+    },
+    "limitation": "The IC alone cannot establish localGND-loss protection because the datasheet expressly requires that reference. All observed leakage rows keepGND=0. Source current intoGND/supply is only typical; floating-drain current is only typical. Two-drain bleeder arithmetic is NOT a complete nonbackpower bound. LocalGND-open shifts logic,thresholds and absolute terminal references; no survival/isolation guarantee inferred."
+  },
+  "collapse_sensitivity": {
+    "verdict": "UNSOURCED",
+    "diagnostic_guard_V_not_original_limit": 0.3,
+    "optimistic_reachable_C_F_not_fitted_proof": 0.00011999999999999999,
+    "cases": [
+      {
+        "drive_count": 16,
+        "sense_count": 16,
+        "initial_injection_A": 0.2362651064309701,
+        "zero_detector_complete_release_budget_s": 0.00015237120937499997,
+        "rows": [
+          {
+            "assumed_COMPLETE_release_s": 2.2e-07,
+            "required_reachable_C_F": 1.732610780493781e-07,
+            "maximum_detector_delay_s": 0.00015215120937499998
+          },
+          {
+            "assumed_COMPLETE_release_s": 1.2e-06,
+            "required_reachable_C_F": 9.450604257238803e-07,
+            "maximum_detector_delay_s": 0.00015117120937499997
+          },
+          {
+            "assumed_COMPLETE_release_s": 1e-05,
+            "required_reachable_C_F": 7.875503547699004e-06,
+            "maximum_detector_delay_s": 0.00014237120937499997
+          },
+          {
+            "assumed_COMPLETE_release_s": 5e-05,
+            "required_reachable_C_F": 3.937751773849502e-05,
+            "maximum_detector_delay_s": 0.00010237120937499998
+          }
+        ]
+      },
+      {
+        "drive_count": 82,
+        "sense_count": 16,
+        "initial_injection_A": 1.0484264097874298,
+        "zero_detector_complete_release_budget_s": 3.4337173943661964e-05,
+        "rows": [
+          {
+            "assumed_COMPLETE_release_s": 2.2e-07,
+            "required_reachable_C_F": 7.688460338441153e-07,
+            "maximum_detector_delay_s": 3.411717394366196e-05
+          },
+          {
+            "assumed_COMPLETE_release_s": 1.2e-06,
+            "required_reachable_C_F": 4.193705639149719e-06,
+            "maximum_detector_delay_s": 3.313717394366196e-05
+          },
+          {
+            "assumed_COMPLETE_release_s": 1e-05,
+            "required_reachable_C_F": 3.494754699291434e-05,
+            "maximum_detector_delay_s": 2.4337173943661965e-05
+          },
+          {
+            "assumed_COMPLETE_release_s": 5e-05,
+            "required_reachable_C_F": 0.00017473773496457166,
+            "maximum_detector_delay_s": -1.5662826056338038e-05
+          }
+        ]
+      }
+    ],
+    "timing_boundary": "220ns tOFF and1.2us negative tRESPONSE are conditioned observations at15V. tRESPONSE ends when drain falls to90% ofrail, not guaranteed full isolation. Listed COMPLETE release delays are hypothetical, not renamed datasheet guarantees.",
+    "missing": "Actual12V release/detector, source slew, amplifier rail-clamp injection, partial-rail transition,30 reference paths, other input backfeed and physically reachable capacitors remain open."
+  },
+  "population_and_budget": {
+    "precision_outputs": 16,
+    "general_outputs": 66,
+    "reference_connections": 30,
+    "existing_110_input_ICs_unchanged": true,
+    "original_maximum_return_A": 4.6,
+    "general_0to8V_outputs": [
+      "J:E1.ENV",
+      "J:E2.ENV",
+      "J:E3.ENV",
+      "J:E4.ENV",
+      "J:E5.ENV",
+      "J:E6.ENV"
+    ],
+    "general_connection": "One package perdrive: tieS/SFB andD/DFB as recommended for single-channel use; retain amplifier local feedback and external998ohm. No general-output fault exemption.",
+    "reference_connection": "30 one-package receiver-side placements are a budget sensitivity only. Source-facing orientation and protection of source/receiver during every partial connector state need a separate circuit.",
+    "cases": [
+      {
+        "switch_packages": 16,
+        "soft_start_ms_sensitivity": 10,
+        "conditional_added_mA_per_package": {
+          "+12V": 0.3677209787848086,
+          "-12V": 0.24659523297821168,
+          "+5V": 0.11143414898734048
+        },
+        "normal_with_all_existing_allowances_mA": {
+          "+12V": 1540.7027016605568,
+          "-12V": 1439.5141837276512,
+          "+5V": 226.06939138379744
+        },
+        "prospective_continuous_mA": {
+          "+12V": 1700,
+          "-12V": 1600,
+          "+5V": 300
+        },
+        "ramp_increment_mA": {
+          "+12V": 224.64000000000001,
+          "-12V": 222.66,
+          "+5V": 62.4
+        },
+        "unrounded_transient_mA": {
+          "+12V": 1949.64,
+          "-12V": 1847.66,
+          "+5V": 362.4
+        },
+        "rounded_transient_mA": {
+          "+12V": 2000,
+          "-12V": 1900,
+          "+5V": 400
+        },
+        "original_maximum_delivered_mA": {
+          "+12V": 2100,
+          "-12V": 2000,
+          "+5V": 500
+        },
+        "strict_limiter_window_mA": {
+          "+12V": 100,
+          "-12V": 100,
+          "+5V": 100
+        },
+        "arithmetic_windows_positive": true,
+        "extra_nominal_bypass_uF_each_analog_rail": 1.5999999999999999,
+        "protection_path_mohm_at_prospective_continuous": {
+          "+12V": 23.529411764705884,
+          "-12V": 25.0,
+          "+5V": 133.33333333333334
+        },
+        "budget_status": "UNSOURCED: table currents at16.5V, not actual12V; input current at0/5V, not guaranteed5.2V; bypass leakage, permit-driver power and complete reference topology remain unbounded"
+      },
+      {
+        "switch_packages": 16,
+        "soft_start_ms_sensitivity": 15,
+        "conditional_added_mA_per_package": {
+          "+12V": 0.3677209787848086,
+          "-12V": 0.24659523297821168,
+          "+5V": 0.11143414898734048
+        },
+        "normal_with_all_existing_allowances_mA": {
+          "+12V": 1540.7027016605568,
+          "-12V": 1439.5141837276512,
+          "+5V": 226.06939138379744
+        },
+        "prospective_continuous_mA": {
+          "+12V": 1700,
+          "-12V": 1600,
+          "+5V": 300
+        },
+        "ramp_increment_mA": {
+          "+12V": 149.76000000000002,
+          "-12V": 148.44,
+          "+5V": 41.6
+        },
+        "unrounded_transient_mA": {
+          "+12V": 1874.76,
+          "-12V": 1773.44,
+          "+5V": 341.6
+        },
+        "rounded_transient_mA": {
+          "+12V": 1900,
+          "-12V": 1800,
+          "+5V": 400
+        },
+        "original_maximum_delivered_mA": {
+          "+12V": 2100,
+          "-12V": 2000,
+          "+5V": 500
+        },
+        "strict_limiter_window_mA": {
+          "+12V": 200,
+          "-12V": 200,
+          "+5V": 100
+        },
+        "arithmetic_windows_positive": true,
+        "extra_nominal_bypass_uF_each_analog_rail": 1.5999999999999999,
+        "protection_path_mohm_at_prospective_continuous": {
+          "+12V": 23.529411764705884,
+          "-12V": 25.0,
+          "+5V": 133.33333333333334
+        },
+        "budget_status": "UNSOURCED: table currents at16.5V, not actual12V; input current at0/5V, not guaranteed5.2V; bypass leakage, permit-driver power and complete reference topology remain unbounded"
+      },
+      {
+        "switch_packages": 82,
+        "soft_start_ms_sensitivity": 10,
+        "conditional_added_mA_per_package": {
+          "+12V": 0.3677209787848086,
+          "-12V": 0.24659523297821168,
+          "+5V": 0.11143414898734048
+        },
+        "normal_with_all_existing_allowances_mA": {
+          "+12V": 1564.9722862603544,
+          "-12V": 1455.7894691042134,
+          "+5V": 233.4240452169619
+        },
+        "prospective_continuous_mA": {
+          "+12V": 1800,
+          "-12V": 1700,
+          "+5V": 300
+        },
+        "ramp_increment_mA": {
+          "+12V": 224.64000000000001,
+          "-12V": 222.66,
+          "+5V": 62.4
+        },
+        "unrounded_transient_mA": {
+          "+12V": 2049.6400000000003,
+          "-12V": 1947.66,
+          "+5V": 362.4
+        },
+        "rounded_transient_mA": {
+          "+12V": 2100,
+          "-12V": 2000,
+          "+5V": 400
+        },
+        "original_maximum_delivered_mA": {
+          "+12V": 2100,
+          "-12V": 2000,
+          "+5V": 500
+        },
+        "strict_limiter_window_mA": {
+          "+12V": 0,
+          "-12V": 0,
+          "+5V": 100
+        },
+        "arithmetic_windows_positive": false,
+        "extra_nominal_bypass_uF_each_analog_rail": 8.2,
+        "protection_path_mohm_at_prospective_continuous": {
+          "+12V": 22.22222222222222,
+          "-12V": 23.529411764705884,
+          "+5V": 133.33333333333334
+        },
+        "budget_status": "UNSOURCED: table currents at16.5V, not actual12V; input current at0/5V, not guaranteed5.2V; bypass leakage, permit-driver power and complete reference topology remain unbounded"
+      },
+      {
+        "switch_packages": 82,
+        "soft_start_ms_sensitivity": 15,
+        "conditional_added_mA_per_package": {
+          "+12V": 0.3677209787848086,
+          "-12V": 0.24659523297821168,
+          "+5V": 0.11143414898734048
+        },
+        "normal_with_all_existing_allowances_mA": {
+          "+12V": 1564.9722862603544,
+          "-12V": 1455.7894691042134,
+          "+5V": 233.4240452169619
+        },
+        "prospective_continuous_mA": {
+          "+12V": 1800,
+          "-12V": 1700,
+          "+5V": 300
+        },
+        "ramp_increment_mA": {
+          "+12V": 149.76000000000002,
+          "-12V": 148.44,
+          "+5V": 41.6
+        },
+        "unrounded_transient_mA": {
+          "+12V": 1974.76,
+          "-12V": 1873.44,
+          "+5V": 341.6
+        },
+        "rounded_transient_mA": {
+          "+12V": 2000,
+          "-12V": 1900,
+          "+5V": 400
+        },
+        "original_maximum_delivered_mA": {
+          "+12V": 2100,
+          "-12V": 2000,
+          "+5V": 500
+        },
+        "strict_limiter_window_mA": {
+          "+12V": 100,
+          "-12V": 100,
+          "+5V": 100
+        },
+        "arithmetic_windows_positive": true,
+        "extra_nominal_bypass_uF_each_analog_rail": 8.2,
+        "protection_path_mohm_at_prospective_continuous": {
+          "+12V": 22.22222222222222,
+          "-12V": 23.529411764705884,
+          "+5V": 133.33333333333334
+        },
+        "budget_status": "UNSOURCED: table currents at16.5V, not actual12V; input current at0/5V, not guaranteed5.2V; bypass leakage, permit-driver power and complete reference topology remain unbounded"
+      },
+      {
+        "switch_packages": 112,
+        "soft_start_ms_sensitivity": 10,
+        "conditional_added_mA_per_package": {
+          "+12V": 0.3677209787848086,
+          "-12V": 0.24659523297821168,
+          "+5V": 0.11143414898734048
+        },
+        "normal_with_all_existing_allowances_mA": {
+          "+12V": 1576.0039156238986,
+          "-12V": 1463.1873260935597,
+          "+5V": 236.76706968658212
+        },
+        "prospective_continuous_mA": {
+          "+12V": 1800,
+          "-12V": 1700,
+          "+5V": 300
+        },
+        "ramp_increment_mA": {
+          "+12V": 224.64000000000001,
+          "-12V": 222.66,
+          "+5V": 62.4
+        },
+        "unrounded_transient_mA": {
+          "+12V": 2049.6400000000003,
+          "-12V": 1947.66,
+          "+5V": 362.4
+        },
+        "rounded_transient_mA": {
+          "+12V": 2100,
+          "-12V": 2000,
+          "+5V": 400
+        },
+        "original_maximum_delivered_mA": {
+          "+12V": 2100,
+          "-12V": 2000,
+          "+5V": 500
+        },
+        "strict_limiter_window_mA": {
+          "+12V": 0,
+          "-12V": 0,
+          "+5V": 100
+        },
+        "arithmetic_windows_positive": false,
+        "extra_nominal_bypass_uF_each_analog_rail": 11.2,
+        "protection_path_mohm_at_prospective_continuous": {
+          "+12V": 22.22222222222222,
+          "-12V": 23.529411764705884,
+          "+5V": 133.33333333333334
+        },
+        "budget_status": "UNSOURCED: table currents at16.5V, not actual12V; input current at0/5V, not guaranteed5.2V; bypass leakage, permit-driver power and complete reference topology remain unbounded"
+      },
+      {
+        "switch_packages": 112,
+        "soft_start_ms_sensitivity": 15,
+        "conditional_added_mA_per_package": {
+          "+12V": 0.3677209787848086,
+          "-12V": 0.24659523297821168,
+          "+5V": 0.11143414898734048
+        },
+        "normal_with_all_existing_allowances_mA": {
+          "+12V": 1576.0039156238986,
+          "-12V": 1463.1873260935597,
+          "+5V": 236.76706968658212
+        },
+        "prospective_continuous_mA": {
+          "+12V": 1800,
+          "-12V": 1700,
+          "+5V": 300
+        },
+        "ramp_increment_mA": {
+          "+12V": 149.76000000000002,
+          "-12V": 148.44,
+          "+5V": 41.6
+        },
+        "unrounded_transient_mA": {
+          "+12V": 1974.76,
+          "-12V": 1873.44,
+          "+5V": 341.6
+        },
+        "rounded_transient_mA": {
+          "+12V": 2000,
+          "-12V": 1900,
+          "+5V": 400
+        },
+        "original_maximum_delivered_mA": {
+          "+12V": 2100,
+          "-12V": 2000,
+          "+5V": 500
+        },
+        "strict_limiter_window_mA": {
+          "+12V": 100,
+          "-12V": 100,
+          "+5V": 100
+        },
+        "arithmetic_windows_positive": true,
+        "extra_nominal_bypass_uF_each_analog_rail": 11.2,
+        "protection_path_mohm_at_prospective_continuous": {
+          "+12V": 22.22222222222222,
+          "-12V": 23.529411764705884,
+          "+5V": 133.33333333333334
+        },
+        "budget_status": "UNSOURCED: table currents at16.5V, not actual12V; input current at0/5V, not guaranteed5.2V; bypass leakage, permit-driver power and complete reference topology remain unbounded"
+      }
+    ],
+    "scope": "Every modeled package includes own rail bleeders,100k IN pull-down and100k FF pull-up. FF pull-up counted fully conducting as a conservative demand allowance, not claimed normal state. No LED current and no current credit for removal of installed parts."
+  },
+  "logic_and_bypass": {
+    "conditional_IN_resistor_drop_at_table_max_input_V": 0.5115649999999999,
+    "maximum_FF_resistor_current_A_at_supply_ceiling": 5.321707449367024e-05,
+    "minimum_rail_bypass_F_requested": 1e-07,
+    "scope": "Exact bypass identity retained from existing project; effective capacitance/ESR/leakage unqualified. A100k FF pull-up does not reproduce the1k timing test; no flag-delay guarantee transferred. Input table at0/5V does not certify5.2V bias."
+  },
+  "next_step": "Retain fullPDF and obtain an actual12V guarantee or qualification plan, then characterize the captured remote/local feedback cell including disable/fault/collapse. Do not run a typical model as proof of missing maxima. Capture independently observable return/rail permit and complete reference boundary before replication.",
+  "open_obligations": [
+    "Retain actual datasheet/UG PDF bytes; web-observed rows do not replace local evidence retention.",
+    "No tabulated +/-12 V dual Ron, leakage, current or release guarantee; operation/headroom alone is not a full performance certificate.",
+    "Datasheet p28 explicitly requires a GND reference always present for proper power-off operation. No independently observable all-rail/reference/local-GND permit circuit exists; this IC alone cannot establish the local-GND-loss obligation.",
+    "Keep998ohm on the external side of S. Moving it to D exposes internal drain rail clamps to unbounded pre-release jack current.",
+    "Internal D-to-DFB feedback is described for powered disable/fault; its resistance, closure skew and availability during arbitrary rail collapse need evidence.",
+    "100nF bypass identity exists but effective capacitance under bias/temperature and installed impedance are not primary-qualified.",
+    "Leakage from S/SFB into supply/GND, floating-rail source injection and reachable capacitance require full worst-case evidence; typical source/floating-drain leakage is not a bound.",
+    "The16-cell precision loop, all66 general outputs including six0..8V ENV outputs and all30 references require full transfer/thermal/transient qualification before replication.",
+    "The conditional ledger retains all auxiliary allowances but cannot bound unsourced +/-12V IC currents, bypass leakage, permit-driver demand or reference orientation overhead.",
+    "No native CAD, switching/loop transient model or bench qualification; original1ms/1mV/2mV/10% targets and all original rail/current/drop limits remain unchanged."
+  ],
+  "input_sha256": {
+    "design/power/integrated-output-candidate.json": "23ccc5398eab28caa33ad5a8ec294a9b7a2d29b445f0598cc3da066cb6bc5ed1",
+    "design/power/integrated-output-candidate-sources.json": "d69c547d6dd9b8871fe4fc703144a5ea6301d4ce2b2d5038bb369dcedd380b19",
+    "design/power/precision-output-cell.json": "52c63bf1d956138a68d77ad525c47d68ea4aeffe9eeb4bd65380dd5027f526c7",
+    "design/power/precision-output-cell-report.json": "daa722fa084bb28971ae523adfd8dc77c69e830e8ee8325cfeab016c3167ad8c",
+    "design/power/precision-output-cell-sources.json": "3d7d7bb406a42cae97364fca8552599b02f7651bb1c88f1503816c91a6f46004",
+    "design/standard/electrical-standard.json": "da91b860845e77bf3c5b14a7e62165a55add9d4e6d3749f89057c6262be34b00",
+    "design/power/supply-architecture.json": "937d0584938c592b3a35a578b5deaf0cb60e80a4729980edd178c69a62f2345e",
+    "design/power/protection58-audit.json": "dcbec208d3b4ec13150a1712ba00770ed11af79d8edd1e08b6b4d508ee427644",
+    "scripts/checks/integrated_output_candidate.py": "9b3a55b5dacebee1c9eb30e7782b94c81d7add1e939239350404006e1a66e661"
+  }
+}
