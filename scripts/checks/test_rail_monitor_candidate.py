@@ -125,5 +125,15 @@ class RailMonitorTests(unittest.TestCase):
                 with self.assertRaisesRegex(ValueError,'primary metadata'):
                     validate_sources(self.spec)
 
+    def test_declared_source_references_cannot_be_ignored(self):
+        for field,value in [
+                (('supervisor','source_id'),'missing'),
+                (('resistor_condition','source_ids'),self.spec['resistor_condition']['source_ids']+['missing']),
+                (('resistor_condition','source_ids'),self.spec['resistor_condition']['source_ids'][:-1]),
+                (('resistor_condition','source_ids'),self.spec['resistor_condition']['source_ids']+['RT0603BRD071KL'])]:
+            changed=copy.deepcopy(self.spec);changed[field[0]][field[1]]=value
+            with self.assertRaisesRegex(ValueError,'declared source references'):
+                validate_sources(changed)
+
 
 if __name__=='__main__':unittest.main()

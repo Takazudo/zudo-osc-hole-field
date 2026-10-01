@@ -95,6 +95,11 @@ def validate_sources(spec, verify_retained=False):
     by_id = {r['id']:r for r in records}
     if len(by_id)!=len(records) or spec['protection_implemented'] or spec['floating_negative_trial']['admitted']:
         raise ValueError('duplicate source or forbidden protection admission')
+    resistor_ids = {p['mpn'] for row in spec['divider_candidates'] for p in row['top']+row['bottom']}
+    declared_ids = spec['resistor_condition']['source_ids']
+    if (spec['supervisor']['source_id'] != 'supervisor'
+            or set(declared_ids) != resistor_ids or len(declared_ids) != len(resistor_ids)):
+        raise ValueError('declared source references do not match captured devices')
     required = {
         'supervisor': spec['supervisor']['mpn'],
         spec['comparison']['source_id']: spec['comparison']['mpn'],
