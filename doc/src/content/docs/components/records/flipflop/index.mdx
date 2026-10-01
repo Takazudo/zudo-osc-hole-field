@@ -199,6 +199,20 @@ A parameter the manufacturer guarantees over the stated conditions, usually with
   **Evidence:** [src-flipflop-datasheet: selected electrical and timing tables; application closure remains open](#src-flipflop-datasheet)
 </EvidenceFact>
 
+<EvidenceFact>
+  <EvidenceAnchor id="fact-flipflop-quiescent-table-max" />
+
+  **Fact:** `fact-flipflop-quiescent-table-max`
+
+  **Value:** 0.00004 · **Unit:** `A`
+
+  **Conditions:** SN74, TA=-40..85C, VCC=6V, VI=VCC or 0, IO=0. No maximum loaded-output or switching-current claim at the candidate 5V supply.
+
+  **Verdict:** PASS - primary-source confirmed · **Provenance:** PRIMARY-SPEC
+
+  **Evidence:** [src-flipflop-datasheet: printed p5 section6.5 ICC row, SN74 column](#src-flipflop-datasheet)
+</EvidenceFact>
+
 ### TRANSIENT
 
 Behaviour during a short event — startup, a switching edge, a fault or a surge.

@@ -224,6 +224,20 @@
       "verdict": "PASS - primary-source confirmed",
       "depends_on": [],
       "expression": ""
+    },
+    {
+      "fact_id": "fact-flipflop-quiescent-table-max",
+      "record_id": "rec-flipflop",
+      "source_id": "src-flipflop-datasheet",
+      "class": "GUARANTEED_ELECTRICAL",
+      "value": 4e-05,
+      "unit": "A",
+      "conditions": "SN74, TA=-40..85C, VCC=6V, VI=VCC or 0, IO=0. No maximum loaded-output or switching-current claim at the candidate 5V supply.",
+      "locator": "src-flipflop-datasheet: printed p5 section6.5 ICC row, SN74 column",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
     }
   ]
 }
