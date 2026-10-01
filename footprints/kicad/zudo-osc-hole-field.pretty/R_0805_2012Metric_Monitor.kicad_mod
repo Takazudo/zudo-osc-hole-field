@@ -56,16 +56,6 @@
 		(layer "F.SilkS")
 	)
 	(fp_rect
-		(start -1.68 -0.95)
-		(end 1.68 0.95)
-		(stroke
-			(width 0.05)
-			(type solid)
-		)
-		(fill no)
-		(layer "F.CrtYd")
-	)
-	(fp_rect
 		(start -1 -0.625)
 		(end 1 0.625)
 		(stroke
@@ -98,6 +88,10 @@
 		(roundrect_rratio 0.243902)
 	)
 	(embedded_fonts no)
+	(fp_line (start -1.67 -0.98) (end 1.67 -0.98) (layer "F.CrtYd") (width 0.05))
+	(fp_line (start 1.67 -0.98) (end 1.67 0.98) (layer "F.CrtYd") (width 0.05))
+	(fp_line (start 1.67 0.98) (end -1.67 0.98) (layer "F.CrtYd") (width 0.05))
+	(fp_line (start -1.67 0.98) (end -1.67 -0.98) (layer "F.CrtYd") (width 0.05))
 	(model "${KIPRJMOD}/../../footprints/kicad/zudo-osc-hole-field.3dshapes/R_0805_2012Metric.wrl"
 		(offset
 			(xyz 0 0 0)

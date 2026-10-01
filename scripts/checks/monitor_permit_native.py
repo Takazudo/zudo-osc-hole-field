@@ -24,13 +24,21 @@ NETLIST = ROOT/'schematic/candidates/monitor-permit/native.net'
 
 def inputs():
     families, instances, _ = generator.specification()
-    paths = {generator.SPEC,ROOT/'design/power/monitor-permit-parts.json',Path(__file__).resolve(),
+    spec = json.loads(generator.SPEC.read_text())
+    paths = {generator.SPEC,ROOT/spec['source_catalog'],Path(__file__).resolve(),
              ROOT/'scripts/schgen/generate_monitor_permit.py',ROOT/'scripts/schgen/core.py',
              ROOT/'scripts/schgen/verify_netlist.py',ROOT/'design/spec/cells/_builder.py',
              ROOT/'scripts/libgen/build_symbol_lib.py',ROOT/'symbols/zudo-osc-hole-field.kicad_sym',
-             ROOT/'scripts/libgen/build_monitor_candidate_assets.py',ROOT/'symbols/src/RT0603BRD07100KL.kicad_sym',
+             ROOT/'scripts/libgen/build_monitor_candidate_assets.py',ROOT/'scripts/libgen/gen_courtyards.py',ROOT/'symbols/src/RT0603BRD07100KL.kicad_sym',
              ROOT/'.claude/skills/component-spec-audit/references/inventory.json',
              ROOT/'scripts/kicad/run.sh',ROOT/'scripts/kicad/pin.env'}
+    catalog_mpns = {p['mpn'] for p in json.loads((ROOT/spec['source_catalog']).read_text())['parts']}
+    existing_mpns = {p['mpn'] for p in spec['components']} - catalog_mpns
+    inventory = json.loads((ROOT/'.claude/skills/component-spec-audit/references/inventory.json').read_text())
+    for line in inventory['lines']:
+        if line['mpn'] in existing_mpns:
+            bundle = ROOT/'.claude/skills'/line['owner_skill']
+            paths.update((bundle/'manifest.json',bundle/'pin-map.json'))
     paths.update(generator.OUTPUT/name for name in generator.generated_files())
     paths.update((ROOT/'circuit/sources/monitor-permit-cad').glob('*.kicad_mod'))
     for family in families:

@@ -49,6 +49,18 @@ class MonitorPermitNativeTests(unittest.TestCase):
         with patch.object(generator,'SPEC',Mock(read_text=lambda:json.dumps(spec))):
             with self.assertRaisesRegex(ValueError,'cannot admit'): generator.specification()
 
+    def test_value_cannot_disagree_with_exact_resistor_identity(self):
+        spec=json.loads(generator.SPEC.read_text())
+        next(p for p in spec['components'] if p['ref']=='R114')['value']=15000
+        with patch.object(generator,'SPEC',Mock(read_text=lambda:json.dumps(spec))):
+            with self.assertRaisesRegex(ValueError,'exact MPN'): generator.specification()
+
+    def test_native_inputs_cover_consumed_existing_owner_mapping(self):
+        from scripts.checks.monitor_permit_native import inputs
+        paths=inputs()
+        self.assertIn('.claude/skills/component-ti-sn74hc14dr/pin-map.json',paths)
+        self.assertIn('.claude/skills/component-ti-sn74hc74dr/manifest.json',paths)
+
 
 if __name__=='__main__':
     unittest.main()

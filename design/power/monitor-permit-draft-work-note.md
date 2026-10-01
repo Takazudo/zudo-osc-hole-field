@@ -58,13 +58,35 @@ Three additional family footprints use pinned KiCad 10.0.0 imports and original
 8.0.0 WRL models. The resistor gets a separate candidate footprint so the
 instrument's existing resistor footprint is preserved. Per-part CAD receipts
 record source files, transforms and hashes. Package-family previews do not prove
-exact lead fit, seating, solderability or installed thermal behavior.
+exact lead fit, seating, solderability or installed thermal behavior. The family
+model URI follows the existing board-project directory convention; a future PCB
+under this deeper candidate directory must receive a suitable project-relative
+model path before any 3D assembly check.
+
+## Verification of this checkpoint
+
+The guarded aggregate regeneration passes, including fresh KiCad 10.0.6 native
+ERC and pin/identity checks. Sixteen focused regression tests pass. Component
+validation, documentation checks, guarded build and built-site checks pass (the
+site retains its existing single allowlisted link exception). Both child sheets
+were exported to PDF and visually inspected; overlapping component labels were
+moved and the native checks rerun. Independent source/topology and portability
+reviews were completed, with their value-binding, input-closure and model-binding
+findings fixed. These checks do not establish installed electrical performance.
 
 ## Open gates
 
-The behavioral transient harness and candidate current ledger are being added.
-They must retain undefined control-power states, short-fault latch behavior,
-reference collapse and stored-charge paths instead of assuming powered-off LOW.
+The conditional [behavioral diagnostics](monitor-permit-behavior-report.json)
+now reproduce short-fault latch-off and long-fault re-arm in an ideal single-pole
+RC abstraction. They enumerate all six arrival/failure orders as Boolean rail
+sequences, not device-level transient simulations. Control-power loss and
+subsequent recovery remain UNKNOWN. Device propagation, input capacitance,
+reference trajectories and stored-charge clamp behavior are not simulated.
+
+The report also accounts for nominal resistor currents and capacitor charge,
+including the coarse-reference divider. Active-device currents and actual
+isolation loads are still missing, so no total supply-current result is claimed.
+Original auxiliary allowances and current limits are retained.
 
 The coarse reference window cannot certify the earlier 3.29–3.31 V precision
 assumption. The combined FAULT_N capacitance is not shown to match TPS37044's

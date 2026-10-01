@@ -1,11 +1,15 @@
 #!/usr/bin/env python3
-"""Generate unselected monitor symbols and import two pinned family footprints."""
+"""Generate unselected monitor symbols and import three pinned family footprints."""
 import argparse
 import json
 import re
+import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
+sys.path.insert(0, str(ROOT))
+from scripts.libgen.gen_courtyards import rewrite as normalize_courtyard
+
 CATALOG = ROOT / 'design/power/monitor-permit-parts.json'
 
 
@@ -81,6 +85,7 @@ def generate(check=False):
                             '${KIPRJMOD}/../../footprints/kicad/zudo-osc-hole-field.3dshapes/'+name+'.wrl')
         if not re.search(r'\(model "\$\{KIPRJMOD\}', text):
             raise ValueError('upstream model reference changed')
+        text = normalize_courtyard(text)
         emit(ROOT/'footprints/kicad/zudo-osc-hole-field.pretty'/(output+'.kicad_mod'), text)
     print('Prepared 13 candidate identities, retaining existing symbols; 3 family footprints, physical fit unqualified')
 

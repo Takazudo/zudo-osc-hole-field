@@ -46,6 +46,10 @@ for generator in "${generators[@]}"; do
   fi
 done
 
+python3 scripts/schgen/generate_monitor_permit.py
+python3 scripts/checks/monitor_permit_behavior.py
+python3 scripts/checks/monitor_permit_native.py
+
 if [[ $check_mode == true ]]; then
   git diff --binary HEAD > "$after_diff"
   if ! cmp -s "$before_diff" "$after_diff"; then

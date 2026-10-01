@@ -2,13 +2,14 @@
 """Generate the isolated, unselected monitor/permit test schematic."""
 import argparse
 import json
+import math
 from pathlib import Path
 import re
 import sys
 
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT))
-from scripts.schgen.core import Family, Instance, LibrarySymbol, Part, Pin, render
+from scripts.schgen.core import Family, Instance, LibrarySymbol, Part, Pin, render, _prop, designator
 from design.spec.cells._builder import load_symbol
 
 SPEC = ROOT/'design/power/monitor-permit-draft.json'
@@ -35,6 +36,7 @@ def specification():
     if spec['canonical_protection_implemented'] or spec['qualification_accepted']:
         raise ValueError('isolated draft cannot admit canonical protection')
     catalog = json.loads((ROOT/spec['source_catalog']).read_text())['parts']
+    exact = {p['mpn']:p for p in catalog}
     selected = {p['mpn']:(p['symbol'],p['footprint'],p['manufacturer']) for p in catalog}
     needed = {p['mpn'] for p in spec['components']}
     inventory = json.loads((ROOT/'.claude/skills/component-spec-audit/references/inventory.json').read_text())
@@ -50,6 +52,15 @@ def specification():
     library = {}; parts = []; positions = {1:0,2:0}; seen = set()
     for component in spec['components']:
         ref = component['ref']
+        evidence = exact.get(component['mpn'])
+        if evidence and component['kind'] != evidence['kind']:
+            raise ValueError('candidate kind differs from exact catalog: '+ref)
+        if component['kind'] in ('resistor','capacitor'):
+            value = component.get('value')
+            if isinstance(value,bool) or not isinstance(value,(int,float)) or not math.isfinite(value) or value <= 0:
+                raise ValueError('invalid passive value: '+ref)
+        if evidence and component['kind']=='resistor' and component['value'] != evidence['resistance_ohm']:
+            raise ValueError('resistance differs from exact MPN: '+ref)
         if ref in seen:
             raise ValueError('duplicate candidate reference')
         seen.add(ref)
@@ -94,6 +105,14 @@ def generated_files():
              '(comment 1 "NOT ORDERABLE / NOT ENERGIZABLE; no installed protection"))')
     for path in files:
         if path.endswith('.kicad_sch'):
+            for inst in instances:
+                family = next(f for f in families if f.name==inst.family)
+                for part in family.parts:
+                    for key, value, old_y, new_y in (
+                        ('Reference',designator(part,inst),part.y-3,part.y-11.43),
+                        ('Value',part.value or part.symbol.split(':')[-1],part.y+3,part.y+11.43)):
+                        files[path] = files[path].replace(
+                            _prop(key,value,part.x+3,old_y),_prop(key,value,part.x,new_y))
             files[path] = re.sub(r'  \(paper "[^"]+"\)',lambda m:m[0]+title,files[path],count=1)
     files[spec['project']+'.kicad_pro'] = json.dumps({'meta':{'filename':spec['project']+'.kicad_pro','version':1},
         'sheets':[],'text_variables':{}},indent=2)+'\n'
