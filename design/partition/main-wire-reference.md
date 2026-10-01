@@ -81,6 +81,9 @@ and unchanged board-definition bytes. Removing those additions reproduces the
 previous structured partition inputs and outputs. The collar recipe was
 recompiled using retained native inputs, with identical compiled board objects,
 before refreshing its partition hash. Historical native receipts are unchanged.
+All six peripheral source projections were also regenerated and compared in full;
+only the partition hash in their current source receipts changed. Their separate
+source-epoch audit is refreshed without rewriting historical receipts.
 Native execution for the new global source epoch is **NOT RUN**; this audit
 does not rebind old native or electrical results.
 
