@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "status": "NOT ACCEPTED: nominal finite-profile full-native diagnostic only",
+  "audit_date": "2026-10-01",
+  "artifacts": {
+    ".circuit-cache/issue38-recovery/core-feasibility-v7/ground-full-nineteen-checkpoint-v2.json": "906f7713e6a40a368a8849847a277d16dcdf86e114eaec85789d74a75d9b3dde",
+    "profile_receipt_sha256": "7fb3dae814a5a6a7fb8a68c4f2368d6a9f229984947ae64aa55f1a2767231b99",
+    "native_geometry_sha256": "a5b6ab06e376502a4516ce3632268c26a64f5705c168a778240809f60cea1ec6",
+    "candidate_board_sha256": "98993d11e143da86ecc72190a1a4a0c6c9677b3b7bf431b78f6b3868615ae411",
+    "native_receipt_sha256": "1e2f31fc78c54f5876dfdace07d5de1b9dfda143f2cf15420600fb682fc76058"
+  },
+  "guard": {"verdict": "PASS", "exit": 0, "seconds": 7048, "minimum_available_memory_mb": 624},
+  "read_only_audit": {
+    "current_model_dependency_hashes": 44,
+    "current_core_prerequisite_dependency_hashes": 82,
+    "current_native_source_hashes": 70,
+    "current_native_artifact_hashes": 4,
+    "profile_metadata_matches": true,
+    "matrix_shape": [2287, 2287],
+    "both_matrices_finite_and_exactly_symmetric": true,
+    "independent_residual_recomputation": "NOT RUN",
+    "independent_eigensolve": "NOT RUN",
+    "native_or_full_solver_rerun": "NOT RUN; existing completed artifacts audited"
+  },
+  "recorded_numerical_results": {
+    "maximum_current_equation_residual_A": 2.466087997330356e-10,
+    "maximum_potential_equation_residual_A": 2.2541771991654803e-9,
+    "maximum_upper_diagonal_ohm": 0.002198831945339694,
+    "solver_runtime_seconds": 6584.541083239019
+  },
+  "basis": {"fitted_own_contacts": 1903, "GH_returns": 376, "main_lands": 9, "balanced_functions": 2287, "foil_layers": 4, "barrels": 219},
+  "remaining": ["Physical lead/solder/contact classes unaccepted", "Material and manufacturing envelope unaccepted", "Common/private K allocation NOT RUN", "Joined branch/core current and voltage acceptance OPEN", "Candidate board not selected canonical"]
+}
