@@ -2652,7 +2652,12 @@
         "-12V": 2000,
         "+5V": 500
       },
-      "current_limit_contract": "Selected source or inlet must deliver minimum transient requirements with a positive planning window to maximum_delivered_current_mA, then bound each rail including tolerance to that maximum and coordinate all-rail shutdown. The 100 mA windows are proposals, not proven realizable limiter tolerances. Maximums are interface limits, not device ratings. Unbounded overshoot/fault energy cannot be admitted by the contact/cable checker; actual limiter dynamics require #52 circuit evidence and #57 tests."
+      "current_limit_contract": "Selected source or inlet must deliver minimum transient requirements with a positive planning window to maximum_delivered_current_mA, then bound each rail including tolerance to that maximum and coordinate all-rail shutdown. The 100 mA windows are proposals, not proven realizable limiter tolerances. Maximums are interface limits, not device ratings. Unbounded overshoot/fault energy cannot be admitted by the contact/cable checker; actual limiter dynamics require #52 circuit evidence and #57 tests.",
+      "minimum_continuous_current_mA": {
+        "+12V": 1700,
+        "-12V": 1600,
+        "+5V": 300
+      }
     },
     "inlet": {
       "interface_id": "OSC-EXT-PWR-8-R1",

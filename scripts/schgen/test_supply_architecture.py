@@ -31,6 +31,12 @@ class SupplyArchitectureTests(unittest.TestCase):
         self.assertEqual(r['selected_requirement']['minimum_continuous_mA'],{'+12V':1700,'-12V':1600,'+5V':300})
         self.assertTrue(all(v is None for v in r['measured_source_capacity_mA'].values()))
 
+    def test_declared_continuous_requirement_cannot_override_ledger(self):
+        self.reject(lambda c: c['source_requirement']['minimum_continuous_current_mA'].update({'+12V':1600}),
+                    'declared continuous-current contract')
+        self.reject(lambda c: c['source_requirement'].pop('minimum_continuous_current_mA'),
+                    'declared continuous-current contract')
+
     def test_abstract_boundary_and_historical_conflict_are_separate(self):
         r=self.build()
         self.assertIn('requirement-only specification separation',r['implementation']['status'])
