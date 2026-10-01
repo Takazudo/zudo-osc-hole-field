@@ -1,6 +1,31 @@
 {
   "status": "CALCULATED SCREENS ONLY; protection gate OPEN",
   "protection_implemented": false,
+  "condition_validation": {
+    "original_scenario": "Bound to OSC-ES-1 signals/precision-cell notes and existing supply contract; exact envelope retained because the model receipt describes that envelope",
+    "source_backed_fixed_fields": {
+      "resistor_tolerance": "r499/r4990/r10m/r100k exact-part sheets",
+      "resistor_tcr_per_C": "r499/r4990/r10m/r100k exact-part sheets",
+      "relay_on_ohm_at_25C": "photomos, printed p3, IF=5mA",
+      "relay_off_A_at_25C": "photomos, printed p3, IF=0, VL=60V",
+      "relay_off_s_at_25C": "photomos, printed p3, IF=5mA, IL=100mA, VL=10V",
+      "relay_recommended_contact_V_at_25C": "photomos, printed p4",
+      "relay_abs_contact_V_at_25C": "photomos, printed p2, absolute rating",
+      "amplifier_bias_A_full_temp_PW": "opa4197, printed p7, PW full-temperature row",
+      "amplifier_input_absolute_current_A": "opa4197, printed p5, absolute input rating",
+      "amplifier_Iq_per_core_A_full_temp": "opa4197, printed p8, unloaded full-temperature row",
+      "amplifier_theta_JA_C_per_W_test_board": "opa4197, printed p6, test-board metric",
+      "led_characterization_A": "photomos, printed p3, Ron/timing characterization condition",
+      "led_Vf_max_at_5mA_25C": "photomos, printed p3, IF=5mA"
+    },
+    "variable_sensitivity_fields": [
+      "floating_rail_diagnostic_C_F",
+      "off_rail_diagnostic_guard_V",
+      "relay_contact_cap_sensitivity_F",
+      "resistor_screen_C"
+    ],
+    "sensitivity_domains": "Positive finite contact/reservoir capacitance; finite sorted resistor ambient screens within -55..155 C; diagnostic guard strictly above leakage equilibrium and below initial/fault voltage. These are assumptions, not sourced guaranteed values."
+  },
   "resistance_bounds": {
     "method": "1% tolerance times +/-100 ppm/C across -55..155 C around 25 C; relay Ron bound is separately only at 25 C",
     "minimum_factor": 0.9771299999999999,
@@ -491,6 +516,8 @@
     "design/power/supply-architecture.json": "937d0584938c592b3a35a578b5deaf0cb60e80a4729980edd178c69a62f2345e",
     "design/power/rail-ledger.json": "783f578045a6a5bed31e3f1e944d9dfde5e12696ba5805a39f5ece6d9a8d1a5f",
     "design/power/protection59-sources.json": "ba1e0f165d0ff17ba3b574a67c11f626272327d339af90f6d77959e840ea7d8f",
-    "scripts/checks/precision_output_cell.py": "03fd3bf6f806a388561d877eb8edfd6d4bc0c1d753bccc40f2ce33bde79186b8"
+    "design/standard/electrical-standard.json": "da91b860845e77bf3c5b14a7e62165a55add9d4e6d3749f89057c6262be34b00",
+    "design/power/protection58-audit.json": "dcbec208d3b4ec13150a1712ba00770ed11af79d8edd1e08b6b4d508ee427644",
+    "scripts/checks/precision_output_cell.py": "3f36cdaf1feeac5b36e91fedf1cef4d52eb33b8cdeec0911f2ee7478588eab17"
   }
 }

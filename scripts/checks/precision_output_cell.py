@@ -15,15 +15,118 @@ NETLIST = ROOT / "design/power/precision-output-cell-connectivity.txt"
 SUPPLY = ROOT / "design/power/supply-architecture.json"
 LEDGER = ROOT / "design/power/rail-ledger.json"
 SWITCH_SOURCES = ROOT / "design/power/protection59-sources.json"
+STANDARD = ROOT / "design/standard/electrical-standard.json"
+PROTECTION_AUDIT = ROOT / "design/power/protection58-audit.json"
+
+# These are transcriptions of the exact receipts, not tunable sensitivity inputs.
+# Changes require review of the cited source/condition and the candidate itself.
+SOURCE_CONDITIONS = {
+    "resistor_tolerance": (0.01, "r499/r4990/r10m/r100k exact-part sheets"),
+    "resistor_tcr_per_C": (0.0001, "r499/r4990/r10m/r100k exact-part sheets"),
+    "relay_on_ohm_at_25C": (0.12, "photomos, printed p3, IF=5mA"),
+    "relay_off_A_at_25C": (1e-6, "photomos, printed p3, IF=0, VL=60V"),
+    "relay_off_s_at_25C": (0.0005, "photomos, printed p3, IF=5mA, IL=100mA, VL=10V"),
+    "relay_recommended_contact_V_at_25C": (48, "photomos, printed p4"),
+    "relay_abs_contact_V_at_25C": (60, "photomos, printed p2, absolute rating"),
+    "amplifier_bias_A_full_temp_PW": (1.5e-8, "opa4197, printed p7, PW full-temperature row"),
+    "amplifier_input_absolute_current_A": (0.01, "opa4197, printed p5, absolute input rating"),
+    "amplifier_Iq_per_core_A_full_temp": (0.0015, "opa4197, printed p8, unloaded full-temperature row"),
+    "amplifier_theta_JA_C_per_W_test_board": (92.6, "opa4197, printed p6, test-board metric"),
+    "led_characterization_A": (0.005, "photomos, printed p3, Ron/timing characterization condition"),
+    "led_Vf_max_at_5mA_25C": (1.7, "photomos, printed p3, IF=5mA"),
+}
+SENSITIVITY_CONDITIONS = {
+    "relay_contact_cap_sensitivity_F",
+    "floating_rail_diagnostic_C_F",
+    "off_rail_diagnostic_guard_V",
+    "resistor_screen_C",
+}
 
 
 def digest(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
+def finite_number(value: object, name: str) -> None:
+    # bool is a Python int subclass, but never a valid physical quantity here.
+    try:
+        finite = type(value) in (int, float) and math.isfinite(value)
+    except OverflowError:
+        finite = False
+    if not finite:
+        raise ValueError(f"{name} must be a finite number, not a boolean or string")
+
+
+def validate_conditions(spec: dict) -> None:
+    c = spec["conditions"]
+    if not isinstance(c, dict):
+        raise ValueError("Conditions must be an object with classified physical quantities")
+    standard = json.loads(STANDARD.read_text())
+    contract = json.loads(SUPPLY.read_text())["contract"]
+    signals = standard["signals"]
+    precision = next(cell for cell in standard["cells"] if cell["id"] == "precision_output")
+    if not any("0/100p/1n/5n F cable loads" in note for note in precision["notes"]):
+        raise ValueError("Authoritative precision cable envelope changed; review the 5 nF mapping")
+    project = {
+        "signal_max_V": max(abs(x) for x in signals["bipolar_cv_nominal_V"]),
+        "fault_external_max_V": max(abs(x) for x in signals["input_continuous_fault_V"]),
+        "load_min_ohm": signals["minimum_output_load_ohm"],
+        "positive_rail_max_V": contract["source_requirement"]["required_load_voltage_magnitude_V"]["+12V"][1],
+        "negative_rail_magnitude_max_V": contract["source_requirement"]["required_load_voltage_magnitude_V"]["-12V"][1],
+        # OSC-ES-1 cells.precision_output.notes states the 0/100p/1n/5n sweep.
+        "cable_max_F": 5e-9,
+        "ambient_project_C": contract["load_envelope"]["ambient_C"],
+    }
+    if set(c) != set(project) | set(SOURCE_CONDITIONS) | SENSITIVITY_CONDITIONS:
+        raise ValueError("Conditions are missing or unclassified; review their provenance/domain")
+    for name, value in c.items():
+        if name in ("ambient_project_C", "resistor_screen_C"):
+            if not isinstance(value, list) or not value:
+                raise ValueError(f"{name} requires a nonempty temperature list")
+            for temperature in value:
+                finite_number(temperature, name)
+                if not -55 <= temperature <= 155:
+                    raise ValueError(f"{name} lies outside the sourced resistor range")
+            if value != sorted(set(value)):
+                raise ValueError(f"{name} must be strictly increasing")
+        else:
+            finite_number(value, name)
+            if value <= 0:
+                raise ValueError(f"{name} must be positive")
+    if c["resistor_tolerance"] >= 1 or c["resistor_tcr_per_C"] * 130 >= 1:
+        raise ValueError("Tolerance/TCR would permit a nonpositive resistance")
+    for name, value in project.items():
+        if c[name] != value:
+            raise ValueError(f"{name} changes the original scenario; update its source and review the model")
+    for name, (value, locator) in SOURCE_CONDITIONS.items():
+        if c[name] != value:
+            raise ValueError(f"{name} must match the sourced condition at {locator}; not a sensitivity variable")
+    bleeder = next(p for p in spec["parts"] if p["ref"] == "R_BLEED_P")["value"]
+    finite_number(bleeder, "R_BLEED_P")
+    if bleeder <= 0:
+        raise ValueError("R_BLEED_P must be positive")
+    steady = 2 * c["relay_off_A_at_25C"] * bleeder * (1 + c["resistor_tolerance"]) * (1 + c["resistor_tcr_per_C"] * 130)
+    # This report computes a finite discharge time to the diagnostic guard. A
+    # lower/equal guard never settles under the stated leakage, so reject it
+    # explicitly rather than taking log(negative), dividing by zero or hiding it.
+    if not steady < c["off_rail_diagnostic_guard_V"] < min(c["fault_external_max_V"], c["positive_rail_max_V"]):
+        raise ValueError("Diagnostic guard must exceed steady leakage voltage and stay below the initial/fault voltage")
+    audit = json.loads(PROTECTION_AUDIT.read_text())
+    counts = {"drive_channels": audit["output_count"], "precision_sense_channels": audit["precision_count"], "reference_channels": len(audit["reference_receivers"])}
+    for name, expected in counts.items():
+        value = spec["replication_screen"][name]
+        if type(value) is not int or value <= 0 or value != expected:
+            raise ValueError(f"{name} must match the actual issue-58 population")
+    for name in ("existing_plus5_continuous_mA", "unchanged_plus5_maximum_mA"):
+        finite_number(spec["replication_screen"][name], name)
+
+
 def validate(spec: dict, sources: dict) -> None:
+    validate_conditions(spec)
     if spec["protection_implemented"] or "NOT IMPLEMENTED" not in spec["status"]:
         raise ValueError("Candidate must not assert implemented protection")
+    for name, value in spec["limits_preserved"].items():
+        finite_number(value, name)
     if spec["limits_preserved"] != {"load_error_mV": 1, "calibrated_error_mV": 2, "overshoot_percent": 10, "settling_error_mV": 1, "settling_deadline_s": 0.001, "supply_protection_drop_V": 0.04}:
         raise ValueError("Original precision, deadline and protection-drop limits changed")
     ids = {s["id"]: s for s in sources["sources"]}
@@ -81,6 +184,8 @@ def floating_rail(voltage: float, series: float, capacitance: float, elapsed: fl
 
 
 def calculate(spec: dict) -> dict:
+    # Direct Python callers get the same protection as the command-line entry.
+    validate(spec, json.loads(SOURCES.read_text()))
     p = {x["ref"]: x for x in spec["parts"]}
     c = spec["conditions"]
     v = lambda ref: p[ref]["value"]
@@ -153,9 +258,10 @@ def calculate(spec: dict) -> dict:
         candidate_transient = {rail: math.ceil(value / rounding) * rounding for rail, value in unrounded_transient.items()}
         maximum = contract["source_requirement"]["maximum_delivered_current_mA"]
         return {"normal_mA": candidate_normal, "derived_continuous_requirement_mA": candidate_continuous, "unrounded_transient_demand_mA": unrounded_transient, "derived_transient_requirement_mA": candidate_transient, "transient_rounding_allowance_mA": {rail: candidate_transient[rail] - unrounded_transient[rail] for rail in normal}, "physical_ceiling_minus_unrounded_demand_mA": {rail: maximum[rail] - unrounded_transient[rail] for rail in normal}, "maximum_delivered_mA_unchanged": maximum, "transient_requirements_within_original_maxima": all(maximum[rail] >= candidate_transient[rail] for rail in normal), "positive_limiter_window_mA": {rail: maximum[rail] - candidate_transient[rail] for rail in normal}, "original_strict_limiter_windows_met_arithmetically": all(maximum[rail] > candidate_transient[rail] for rail in normal), "protection_path_resistance_max_mohm_at_candidate_continuous": {rail: spec["limits_preserved"]["supply_protection_drop_V"] * 1e6 / candidate_continuous[rail] for rail in normal}}
-    return {
+    report = {
         "status": "CALCULATED SCREENS ONLY; protection gate OPEN",
         "protection_implemented": False,
+        "condition_validation": {"original_scenario": "Bound to OSC-ES-1 signals/precision-cell notes and existing supply contract; exact envelope retained because the model receipt describes that envelope", "source_backed_fixed_fields": {name: locator for name, (_, locator) in SOURCE_CONDITIONS.items()}, "variable_sensitivity_fields": sorted(SENSITIVITY_CONDITIONS), "sensitivity_domains": "Positive finite contact/reservoir capacitance; finite sorted resistor ambient screens within -55..155 C; diagnostic guard strictly above leakage equilibrium and below initial/fault voltage. These are assumptions, not sourced guaranteed values."},
         "resistance_bounds": {"method": "1% tolerance times +/-100 ppm/C across -55..155 C around 25 C; relay Ron bound is separately only at 25 C", "minimum_factor": low, "maximum_factor": high, "drive_min_ohm": rd_min, "drive_max_ohm": rd_max, "sense_min_ohm": rs_min, "sense_max_ohm": rs_max},
         "precision": {"verdict": "NEEDS BENCH", "ideal_DC_load_error_upper_mV": load_mV, "input_bias_contribution_upper_mV": bias_mV, "subtotal_mV": load_mV + bias_mV, "limit_load_mV": spec["limits_preserved"]["load_error_mV"], "conditional_subtotal_below_load_limit": load_mV + bias_mV <= spec["limits_preserved"]["load_error_mV"], "formula": "e=V*Rd*Rs/[RL*(Rlocal+Rs+Rd)+Rd*Rs]; bias <= Ib*Rs", "scope": "Ideal amplifier DC network plus PW bias bound; not total calibrated accuracy. Offset, finite gain, thermal drift, actual +/-12 V conditions and dynamic error remain open."},
         "sustained_contention": {"verdict": "NEEDS BENCH", "condition": "Intact rail reference; external +/-12 V against a drive bounded by maximum opposite rail; no credit for a fault trip", "maximum_differential_V": fault, "main_current_upper_mA": current * 1000, "sense_current_upper_mA": fault / rs_min * 1000, "each_499_power_upper_W": resistor_power, "sense_resistor_power_upper_W": fault ** 2 / rs_min, "main_relay_power_at_25C_Ron_W": current ** 2 * c["relay_on_ohm_at_25C"], "maximum_resistor_ambient_from_derating_C": 155 - 85 * resistor_power / 0.5, "ambient_screens": [{"ambient_C": t, "allowed_each_499_W": 0.5 * min(1, max(0, (155 - t) / 85)), "within_resistor_power_curve": resistor_power <= 0.5 * min(1, max(0, (155 - t) / 85))} for t in c["resistor_screen_C"]], "amplifier_output_stage_power_screen_W": output_power, "whole_quad_quiescent_power_upper_W": iq_power, "one_active_core_package_power_screen_W": iq_power + output_power, "four_active_cores_package_power_screen_W": iq_power + 4 * output_power, "one_active_core_Tj_test_board_at_30C": 30 + (iq_power + output_power) * c["amplifier_theta_JA_C_per_W_test_board"], "thermal_limit": "Single output-stage two-rail linear transistor model only; saturation, input-clamp redistribution and actual PCB thetaJA not established. Do not use the typical short-current or thermal-shutdown curves as protection."},
@@ -170,6 +276,19 @@ def calculate(spec: dict) -> dict:
         "bipolar_strings_without_IC_substitution": {"verdict": "UNSOURCED", "status": "Prospective requirement arithmetic only; existing contract remains 1700/1600/300 mA until captured change", "conditions": "128 LEDs grouped into 10..12 independent strings of at most 13 LEDs across +/-12 V at 5 mA; no 110-IC substitution; all existing auxiliary allowance retained, 16 precision-cell bleeders added. Real locality/string map and regulator/control overhead not proven.", "cases": [{"string_count": count, "bias_mA_each_analog_rail": count * led_mA, **budget_case({}, {"+12V": count * led_mA, "-12V": count * led_mA, "+5V": 0})} for count in (10, 11, 12)], "meaning": "Prospective 1800/1700 mA continuous and 2100/2000 mA transient requirements can equal the original analog maximum-delivered ceilings without changing the 4.6 A return or 40 mV target. Equality leaves ZERO positive limiter window, so the current full source acceptance still fails. Resolve actual limiter tolerance/dynamics and requirement window; do not claim selected or quietly rewrite the contract."},
         "open_obligations": spec["open_obligations"],
     }
+    # Finite inputs can still overflow through extreme sensitivity products.
+    # Fail closed before either direct callers or serialization receive infinity.
+    def check_finite(value: object) -> None:
+        if isinstance(value, dict):
+            for child in value.values():
+                check_finite(child)
+        elif isinstance(value, list):
+            for child in value:
+                check_finite(child)
+        elif isinstance(value, float) and not math.isfinite(value):
+            raise ValueError("Sensitivity arithmetic produced a nonfinite result")
+    check_finite(report)
+    return report
 
 
 def connectivity(spec: dict) -> str:
@@ -186,8 +305,8 @@ def run(check: bool = False) -> None:
     spec, sources = json.loads(SPEC.read_text()), json.loads(SOURCES.read_text())
     validate(spec, sources)
     report = calculate(spec)
-    report["input_sha256"] = {str(p.relative_to(ROOT)): digest(p) for p in (SPEC, SOURCES, SUPPLY, LEDGER, SWITCH_SOURCES, Path(__file__).resolve())}
-    outputs = {REPORT: json.dumps(report, indent=2) + "\n", NETLIST: connectivity(spec)}
+    report["input_sha256"] = {str(p.relative_to(ROOT)): digest(p) for p in (SPEC, SOURCES, SUPPLY, LEDGER, SWITCH_SOURCES, STANDARD, PROTECTION_AUDIT, Path(__file__).resolve())}
+    outputs = {REPORT: json.dumps(report, indent=2, allow_nan=False) + "\n", NETLIST: connectivity(spec)}
     for path, body in outputs.items():
         if check:
             if not path.exists() or path.read_text() != body:

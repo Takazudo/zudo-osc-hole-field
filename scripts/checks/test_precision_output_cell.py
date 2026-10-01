@@ -1,5 +1,6 @@
 """Portable independent arithmetic and adversarial candidate-boundary checks."""
 import json
+import copy
 import unittest
 
 from scripts.checks.precision_output_cell import ROOT, SPEC, SOURCES, calculate, digest, floating_rail, load_error, validate, run
@@ -48,6 +49,87 @@ class PrecisionOutputCandidateTests(unittest.TestCase):
         self.spec["limits_preserved"]["settling_deadline_s"] = 0.002
         with self.assertRaises(ValueError):
             validate(self.spec, self.sources)
+
+    def test_every_scalar_condition_rejects_nonphysical_numeric_domains(self):
+        original = copy.deepcopy(self.spec)
+        for name, value in original["conditions"].items():
+            if isinstance(value, list):
+                continue
+            for invalid in (float("nan"), float("inf"), -float("inf"), 0, -1, True, "1", 10 ** 400):
+                with self.subTest(condition=name, invalid=repr(invalid)):
+                    mutated = copy.deepcopy(original)
+                    mutated["conditions"][name] = invalid
+                    with self.assertRaises(ValueError):
+                        validate(mutated, self.sources)
+
+    def test_original_operating_and_fault_scenario_cannot_be_weakened(self):
+        weakened = {"load_min_ohm": 100000, "signal_max_V": 1,
+                    "fault_external_max_V": 5, "positive_rail_max_V": 11,
+                    "negative_rail_magnitude_max_V": 11, "cable_max_F": 1e-9,
+                    "ambient_project_C": [20, 25]}
+        for name, value in weakened.items():
+            with self.subTest(condition=name):
+                mutated = copy.deepcopy(self.spec)
+                mutated["conditions"][name] = value
+                with self.assertRaises(ValueError):
+                    validate(mutated, self.sources)
+
+    def test_source_maxima_and_test_conditions_are_not_sensitivity_knobs(self):
+        substitutions = {"relay_off_A_at_25C": 1e-9, "relay_off_s_at_25C": 1e-5,
+                         "relay_on_ohm_at_25C": 0.01, "led_characterization_A": 0.002,
+                         "resistor_tolerance": 0.001, "resistor_tcr_per_C": 1e-5,
+                         "amplifier_Iq_per_core_A_full_temp": 0.0001,
+                         "amplifier_input_absolute_current_A": 0.1}
+        for name, value in substitutions.items():
+            with self.subTest(condition=name):
+                mutated = copy.deepcopy(self.spec)
+                mutated["conditions"][name] = value
+                with self.assertRaises(ValueError):
+                    validate(mutated, self.sources)
+
+    def test_invalid_diagnostic_guard_is_not_reported_as_finite_discharge(self):
+        for guard in (0.1, 12, 15):
+            with self.subTest(guard=guard):
+                mutated = copy.deepcopy(self.spec)
+                mutated["conditions"]["off_rail_diagnostic_guard_V"] = guard
+                with self.assertRaisesRegex(ValueError, "Diagnostic guard"):
+                    calculate(mutated)
+
+    def test_temperature_screens_have_a_physical_domain(self):
+        for temperatures in ([], [25, float("nan")], [True, 25], [25, 25], [100, 25], [-56, 25], [25, 156]):
+            with self.subTest(temperatures=temperatures):
+                mutated = copy.deepcopy(self.spec)
+                mutated["conditions"]["resistor_screen_C"] = temperatures
+                with self.assertRaises(ValueError):
+                    validate(mutated, self.sources)
+
+    def test_declared_diagnostic_sensitivities_remain_variable(self):
+        mutated = copy.deepcopy(self.spec)
+        mutated["conditions"].update(floating_rail_diagnostic_C_F=47e-6,
+                                    relay_contact_cap_sensitivity_F=500e-12,
+                                    off_rail_diagnostic_guard_V=0.4,
+                                    resistor_screen_C=[-40, 25, 80])
+        validate(mutated, self.sources)
+        result = calculate(mutated)
+        self.assertEqual(result["isolated_off_boundary"]["discharge_capacitance_F_is_assumption"], 47e-6)
+        self.assertEqual(result["sustained_contention"]["ambient_screens"][0]["ambient_C"], -40)
+
+    def test_extreme_finite_sensitivity_cannot_emit_infinity(self):
+        for name in ("floating_rail_diagnostic_C_F", "relay_contact_cap_sensitivity_F"):
+            with self.subTest(condition=name):
+                mutated = copy.deepcopy(self.spec)
+                mutated["conditions"][name] = 1e308
+                with self.assertRaisesRegex(ValueError, "nonfinite result"):
+                    calculate(mutated)
+
+    def test_population_cannot_shrink_or_become_fractional(self):
+        for name in ("drive_channels", "precision_sense_channels", "reference_channels"):
+            for value in (0, -1, 1, True, 2.5):
+                with self.subTest(count=name, value=value):
+                    mutated = copy.deepcopy(self.spec)
+                    mutated["replication_screen"][name] = value
+                    with self.assertRaises(ValueError):
+                        validate(mutated, self.sources)
 
     def test_corrupt_retained_source_fails_closed(self):
         self.sources["sources"][1]["sha256"] = "f" * 64
