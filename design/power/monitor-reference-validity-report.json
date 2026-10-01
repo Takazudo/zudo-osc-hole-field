@@ -1,0 +1,225 @@
+{
+  "status": "CONDITIONAL REFERENCE VALIDITY INTEGRATION; NO QUALIFICATION",
+  "qualification_accepted": false,
+  "canonical_protection_implemented": false,
+  "original_narrow_reference_assumption_V": [
+    3.29,
+    3.31
+  ],
+  "narrow_reference_proved_by_coarse_enclosure": false,
+  "source_facts": {
+    "programmed-window": {
+      "fact_id": "fact-monitor-tps37044mjofddfrq1-programmed-window",
+      "record_id": "rec-monitor-tps37044mjofddfrq1",
+      "source_id": "src-monitor-tps37044mjofddfrq1-datasheet",
+      "class": "GUARANTEED_ELECTRICAL",
+      "value": {
+        "sense1_2_nominal_V": 0.4,
+        "sense3_4_nominal_V": 0.8,
+        "window_fraction": 0.07
+      },
+      "unit": "NONE",
+      "conditions": "Exact MJOFDDFRQ1 option; two paired open-drain reset groups.",
+      "locator": "src-monitor-tps37044mjofddfrq1-datasheet: printed p3 table4-1",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
+    },
+    "accuracy": {
+      "fact_id": "fact-monitor-tps37044mjofddfrq1-accuracy",
+      "record_id": "rec-monitor-tps37044mjofddfrq1",
+      "source_id": "src-monitor-tps37044mjofddfrq1-datasheet",
+      "class": "GUARANTEED_ELECTRICAL",
+      "value": {
+        "at_0p4V_fraction": 0.016,
+        "at_0p8V_fraction": 0.01
+      },
+      "unit": "fraction",
+      "conditions": "VDD1.7..6V, TA -40..125C; applicable threshold ranges differ.",
+      "locator": "src-monitor-tps37044mjofddfrq1-datasheet: printed p8 electrical characteristics table",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
+    },
+    "hysteresis": {
+      "fact_id": "fact-monitor-tps37044mjofddfrq1-hysteresis",
+      "record_id": "rec-monitor-tps37044mjofddfrq1",
+      "source_id": "src-monitor-tps37044mjofddfrq1-datasheet",
+      "class": "GUARANTEED_ELECTRICAL",
+      "value": {
+        "at_0p4V_min": 0.011,
+        "at_0p4V_max": 0.017,
+        "at_0p8V_min": 0.004,
+        "at_0p8V_max": 0.01
+      },
+      "unit": "fraction of trip threshold",
+      "conditions": "Distinct source rows for nominal thresholds below0.8V and at least0.8V.",
+      "locator": "src-monitor-tps37044mjofddfrq1-datasheet: printed p8 electrical characteristics table",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
+    }
+  },
+  "resistor_condition": {
+    "reference_C": 25,
+    "evaluated_C": [
+      -40,
+      125
+    ],
+    "tolerance_fraction": 0.001,
+    "tcr_abs_per_C": 2.5e-05,
+    "source_ids": [
+      "RT0603BRD071KL",
+      "RT0603BRD0714KL",
+      "RT0603BRD075K1L",
+      "RT0603BRD07150RL"
+    ],
+    "reference_temperature_scope": "25 C is an analysis reference assumption; the retained exact product sheets do not state the nominal-resistance reference temperature. Applicability remains OPEN."
+  },
+  "studies": {
+    "zero_sense_current": {
+      "sense_current_absolute_assumption_A": 0,
+      "events_V": {
+        "UV_trip": [
+          3.0013839026210696,
+          3.1373523852273326
+        ],
+        "UV_recover": [
+          3.034399125549901,
+          3.1906873757761973
+        ],
+        "OV_trip": [
+          3.4532051352737034,
+          3.609641991605641
+        ],
+        "OV_recover": [
+          3.3945006479740507,
+          3.5699359296979787
+        ]
+      },
+      "possible_settled_retained_good_reference_extent_V": [
+        3.0013839026210696,
+        3.609641991605641
+      ],
+      "common_static_recovery_interval_V": [
+        3.1906873757761973,
+        3.3945006479740507
+      ],
+      "propagated_reference_enclosure_V": [
+        3.001383902621,
+        3.609641991606
+      ],
+      "negative_trip_magnitude_V": {
+        "UV": [
+          9.542087327775796,
+          12.6898789258891
+        ],
+        "OV": [
+          11.655387991312148,
+          15.20942717724523
+        ]
+      },
+      "negative_normal_UV_margin_V": -0.9498789258891007,
+      "negative_normal_OV_margin_V": -0.7146120086878507,
+      "negative_normal_band_guaranteed": false,
+      "coarse_enclosure_within_narrow_reference": false
+    },
+    "assumed_source_table_current": {
+      "sense_current_absolute_assumption_A": 3.5e-07,
+      "events_V": {
+        "UV_trip": [
+          2.9988552775273196,
+          3.1398987728210828
+        ],
+        "UV_recover": [
+          3.0318705004561513,
+          3.1932337633699475
+        ],
+        "OV_trip": [
+          3.4506765101799535,
+          3.6121883791993907
+        ],
+        "OV_recover": [
+          3.3919720228803008,
+          3.572482317291729
+        ]
+      },
+      "possible_settled_retained_good_reference_extent_V": [
+        2.9988552775273196,
+        3.6121883791993907
+      ],
+      "common_static_recovery_interval_V": [
+        3.1932337633699475,
+        3.3919720228803008
+      ],
+      "propagated_reference_enclosure_V": [
+        2.998855277527,
+        3.6121883792
+      ],
+      "negative_trip_magnitude_V": {
+        "UV": [
+          9.533877935563796,
+          12.698687930485173
+        ],
+        "OV": [
+          11.645398112519745,
+          15.220013524112932
+        ]
+      },
+      "negative_normal_UV_margin_V": -0.9586879304851721,
+      "negative_normal_OV_margin_V": -0.7246018874802544,
+      "negative_normal_band_guaranteed": false,
+      "coarse_enclosure_within_narrow_reference": false
+    }
+  },
+  "forced_nominal_counterexample": {
+    "reference_V": 3.14,
+    "negative_rail_V": -10.9,
+    "positive_rails_V": [
+      12,
+      5
+    ],
+    "reference_sense_V": 0.3806060606060606,
+    "nominal_coarse_recovery_V": [
+      0.378324,
+      0.420724
+    ],
+    "coarse_monitor_ideal_released": true,
+    "negative_nodes_V": {
+      "SENSE": 0.3405984282401443,
+      "UV": 0.3465783664459161,
+      "OV": 0.311199207135778
+    },
+    "negative_comparators_ideal_released": true,
+    "negative_rail_inside_required_band": false,
+    "scope": "Forced DC values, nominal resistor/threshold accuracy, zero leakage/offset; not proof of a reachable physical trajectory."
+  },
+  "remaining_conditions": [
+    "All threshold intervals are settled/static; common recovery means its strict interior with valid supply, other paired sense inputs healthy or correctly unused, and sufficient settling, not a time bound.",
+    "Source-table 350nA condition is VSENSE=5.5V; its use near0.4V is an assumption, not a source guarantee.",
+    "Negative comparator error/input-current envelopes retain all conditions of the separate network study.",
+    "The broad interval is an enclosure across independent corners; it is not one device's exact acceptance interval.",
+    "Reference startup, slow-slew, effective bypass, actual output-current/line conditions and independent validity remain unqualified.",
+    "REF34 box temperature coefficient is not a local slope; separate line/load cross-sections do not bound their interaction.",
+    "No physical dynamic, bench or installed protection acceptance; do not replace the narrow study with a claimed wider passing result."
+  ],
+  "input_sha256": {
+    ".claude/skills/component-monitor-permit-candidates/facts.json": "cc967ee764880636a4ba44eda6651ff652119e42734a25f47d9d1eb2f42e5556",
+    ".claude/skills/component-monitor-permit-candidates/manifest.json": "641ef0d581b1957bbcfd1c8bb9bd562cb4bb6bb414494398218ec68f27964a04",
+    ".claude/skills/component-monitor-permit-candidates/sources.json": "3a0deec654184e04e2b9187437a6aca143585d6c2b902ffa7ec3eb96b5948f32",
+    "design/power/monitor-permit-draft.json": "ff845a082c9da1274d204fb2b369fa4fde8f86d2ddcd0afe227c7f018f748655",
+    "design/power/monitor-permit-parts.json": "464dbd6800724eccb82a49ff495b2da585b4d5828fd27a17ef41a96698f94871",
+    "design/power/negative-monitor-network-sources.json": "984dc6d0d081be4fcb6e706a64ace82e3467dfa4606c49a96cee5568b6a8ad08",
+    "design/power/negative-monitor-network.json": "96b4c9ac9626d33810f1612721a3f68b421256f88f15cd8cec8cb768a8d5da1c",
+    "design/power/rail-monitor-candidate-sources.json": "3f59d64081128f0742d0a755204ca6ac53247de1b48e8a35a7024da65bf4d843",
+    "design/power/rail-monitor-candidate.json": "955c92a826f02b1239a656c22035404f73da04e9d38d1f765b2580fcf88c2ac5",
+    "design/power/supply-architecture-input.json": "a8a4e92ac4c1d7de5c16b6982fba7d5ab60ab13753b12eabfa23fc75da98acc4",
+    "scripts/checks/monitor_permit_behavior.py": "3b37bd83fba82ef90b8b3f1118579f51367c3a6d9487de11e77fc0738fb51420",
+    "scripts/checks/monitor_reference_validity.py": "3a34f05035739896708e435f0a7224e8262eb8028fdc6f9ec4ad4f0f9dd616c7",
+    "scripts/checks/negative_monitor_network.py": "ca0e9a8e3f6140c5e67770bdc696013f782119fb0d9a93276a15a78d21c1a51f",
+    "scripts/checks/rail_monitor_candidate.py": "7da0e191589e5e4221b14fdc6ba22de2f8030fc66ea47dfadf6e8fa33e2e9df8"
+  }
+}
