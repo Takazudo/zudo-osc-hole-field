@@ -85,4 +85,7 @@ jobs:
       - name: Run native passive permit RC diagnostics
         run: python3 scripts/checks/monitor_permit_rc.py --check
 
-  # KiCad checks will be added by sub-issue #44.
+      - name: Run native IC display-envelope placement checks
+        run: bash scripts/kicad/run.sh python3 scripts/libgen/fixtures/check_wrl_dimensions.py --check
+
+  # Complete native assembly checks remain gated by sub-issue #44.

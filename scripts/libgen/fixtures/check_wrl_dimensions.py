@@ -1,85 +1,179 @@
 #!/usr/bin/env python3
-"""Compare KiCad 10's imported WRL bounds with the source display envelopes.
+"""Fresh pinned native checks of display-envelope units, axes and body centres.
 
-Run inside the pinned oracle: bash scripts/kicad/run.sh python3
-scripts/libgen/fixtures/check_wrl_dimensions.py
-This checks coordinate units and footprint model scale, not mechanical fit.
+Run through scripts/kicad/run.sh. This checks display geometry, not installed
+fit, leads, seating, clearance or physical qualification.
 """
-
 from __future__ import annotations
-
+import argparse
+import hashlib
+import json
 import math
 import re
 import subprocess
 import sys
+import uuid
 from pathlib import Path
-
 import pcbnew
 
-ROOT = Path(__file__).resolve().parents[3]
-sys.path.insert(0, str(ROOT / "scripts/libgen"))
-from gen_component_envelopes import MODELS as COMPONENT_MODELS  # noqa: E402
-from gen_ic_package_envelopes import MODELS as IC_MODELS  # noqa: E402
+ROOT=Path(__file__).resolve().parents[3]
+sys.path.insert(0,str(ROOT/'scripts/libgen'))
+import gen_ic_package_envelopes as ic
+from gen_component_envelopes import MODELS as COMPONENT_MODELS
+from vrml_geometry import first_coordinate_geometry
+import vrml_geometry
 
-LIBRARY = ROOT / "footprints/kicad/zudo-osc-hole-field.pretty"
-FIXTURE = ROOT / ".circuit-cache/fixtures"
-EXPECTED = {
-    "PTV09A-4020F": (10.0, 10.0, 6.8),
-    "Jack_3.5mm_QingPu_WQP518MA": COMPONENT_MODELS["Jack_3.5mm_QingPu_WQP518MA.wrl"][:3],
-    "Toggle_Dailywell_2MS_T1B1M2": COMPONENT_MODELS["Toggle_Dailywell_2MS_T1B1M2.wrl"][:3],
-    "Button_Omron_B3F_6x6_P6.5x4.5": COMPONENT_MODELS["Button_Omron_B3F_6x6_P6.5x4.5.wrl"][:3],
-    **{name: model["dims"] for name, model in IC_MODELS.items()},
+LIBRARY=ROOT/'footprints/kicad/zudo-osc-hole-field.pretty'
+MODELS=ROOT/'footprints/kicad/zudo-osc-hole-field.3dshapes'
+FIXTURE=ROOT/'.circuit-cache/fixtures'
+REPORT=ROOT/'design/mechanical/ic-envelope-native-report.json'
+EXPECTED={
+    'PTV09A-4020F':(10.0,10.0,6.8),
+    'Jack_3.5mm_QingPu_WQP518MA':COMPONENT_MODELS['Jack_3.5mm_QingPu_WQP518MA.wrl'][:3],
+    'Toggle_Dailywell_2MS_T1B1M2':COMPONENT_MODELS['Toggle_Dailywell_2MS_T1B1M2.wrl'][:3],
+    'Button_Omron_B3F_6x6_P6.5x4.5':COMPONENT_MODELS['Button_Omron_B3F_6x6_P6.5x4.5.wrl'][:3],
+    **{name:row['dims'] for name,row in ic.MODELS.items()},
 }
-NUMBER = r"[-+]?(?:\d+(?:\.\d*)?|\.\d+)(?:[eE][-+]?\d+)?"
+TOLERANCE_MM=.005
 
 
-def exported_bounds(footprint_name: str) -> tuple[float, float, float]:
-    board = pcbnew.BOARD()
-    footprint = pcbnew.FootprintLoad(str(LIBRARY), footprint_name)
-    if footprint is None:
-        raise AssertionError(f"KiCad cannot load {footprint_name}")
-    footprint.SetPosition(pcbnew.VECTOR2I(0, 0))
+class GeometryMismatch(AssertionError):
+    pass
+
+
+def fab_basis(footprint):
+    """Independent native 2D body outline after the footprint's own transform."""
+    layer=pcbnew.B_Fab if footprint.GetLayer()==pcbnew.B_Cu else pcbnew.F_Fab
+    points=[]
+    for item in footprint.GraphicalItems():
+        if not isinstance(item,pcbnew.PCB_SHAPE) or item.GetLayer()!=layer:continue
+        if item.GetShape()==pcbnew.SHAPE_T_POLY:
+            poly=item.GetPolyShape()
+            vertices=[]
+            for index in range(poly.OutlineCount()):
+                chain=poly.COutline(index)
+                if chain.ArcCount():raise ValueError('curved Fab polygon is not supported')
+                vertices.extend(chain.CPoint(i) for i in range(chain.PointCount()))
+        elif item.GetShape() in (pcbnew.SHAPE_T_SEGMENT,pcbnew.SHAPE_T_RECT):
+            vertices=(item.GetStart(),item.GetEnd())
+        else:raise ValueError('unsupported Fab body primitive')
+        for p in vertices:
+            points.append((pcbnew.ToMM(p.x),-pcbnew.ToMM(p.y)))
+    if len(points)<4:raise ValueError('missing native Fab body outline')
+    bounds=[(min(p[i] for p in points),max(p[i] for p in points)) for i in range(2)]
+    return {'bounds':bounds,'center':tuple((a+b)/2 for a,b in bounds),
+            'size':tuple(b-a for a,b in bounds)}
+
+
+def exported_geometry(name,position=(0,0),angle=0,bottom=False,offset=None,model_angle=None):
+    board=pcbnew.BOARD()
+    footprint=pcbnew.FootprintLoad(str(LIBRARY),name)
+    if footprint is None:raise RuntimeError('native footprint load failed: '+name)
     board.Add(footprint)
-    pcb_path = FIXTURE / "wrl-dimensions.kicad_pcb"
-    vrml_path = FIXTURE / "wrl-dimensions.wrl"
-    pcbnew.SaveBoard(str(pcb_path), board)
-    result = subprocess.run(
-        ["kicad-cli", "pcb", "export", "vrml", "--units", "mm", "--force",
-         "-o", str(vrml_path), str(pcb_path)],
-        text=True, capture_output=True,
-    )
-    if result.returncode:
-        raise AssertionError(f"KiCad VRML export failed for {footprint_name}: {result.stderr}")
-    exported = vrml_path.read_text(encoding="utf-8")
-    match = re.search(r"\bCoordinate\s*\{\s*point\s*\[([^]]+)\]", exported, re.S)
-    if match is None:
-        raise AssertionError(f"KiCad exported no model coordinates for {footprint_name}")
-    # The first Coordinate node belongs to the sole attached model; subsequent
-    # nodes may describe pads and the board. Native Transform scales preceding
-    # that node include the exporter unit conversion and footprint model scale.
-    prefix = exported[:match.start()]
-    scales = [tuple(map(float, re.findall(NUMBER, line))) for line in
-              re.findall(r"^\s*scale\s+[^\n]+", prefix, re.M)]
-    if not scales or not math.isclose(scales[0][0], 2.54, abs_tol=1e-6):
-        raise AssertionError(f"unexpected KiCad VRML unit transform for {footprint_name}: {scales}")
-    scale = [math.prod(axis[n] for axis in scales) for n in range(3)]
-    numbers = [float(value) for value in re.findall(NUMBER, match.group(1))]
-    if len(numbers) < 24 or len(numbers) % 3:
-        raise AssertionError(f"incomplete native model coordinates for {footprint_name}")
-    points = list(zip(*(iter(numbers),) * 3))
-    return tuple((max(point[n] for point in points) - min(point[n] for point in points))
-                 * abs(scale[n]) for n in range(3))
+    footprint.SetPosition(pcbnew.VECTOR2I(*(pcbnew.FromMM(v) for v in position)))
+    if bottom:footprint.Flip(footprint.GetPosition(),False)
+    footprint.SetOrientationDegrees(angle)
+    models=footprint.Models()
+    if len(models)!=1:raise RuntimeError('expected exactly one display model')
+    if offset is not None:
+        models[0].m_Offset.x,models[0].m_Offset.y,models[0].m_Offset.z=offset
+    if model_angle is not None:models[0].m_Rotation.z=model_angle
+    basis=fab_basis(footprint) if name in ic.MODELS else None
+    # Keep project depth fixed for existing KIPRJMOD/../../ model references;
+    # unique filenames prevent stale or concurrent fixture reuse.
+    base=FIXTURE/('wrl-placement-'+uuid.uuid4().hex)
+    pcb=base.with_suffix('.kicad_pcb');vrml=base.with_suffix('.wrl')
+    pcbnew.SaveBoard(str(pcb),board)
+    result=subprocess.run(['kicad-cli','pcb','export','vrml','--units','mm',
+                           '--user-origin','0x0mm','--force','-o',str(vrml),str(pcb)],
+                          text=True,capture_output=True)
+    if result.returncode:raise RuntimeError('native VRML export failed: '+result.stderr)
+    geometry=first_coordinate_geometry(vrml.read_text())
+    if geometry['transform_count']<2:
+        raise RuntimeError('no attached model transform; refusing a board/pad mesh')
+    return geometry,basis
 
 
-def main() -> None:
-    FIXTURE.mkdir(parents=True, exist_ok=True)
-    for footprint_name, expected in EXPECTED.items():
-        actual = exported_bounds(footprint_name)
-        if any(not math.isclose(got, want, abs_tol=0.005) for got, want in zip(actual, expected)):
-            raise AssertionError(f"{footprint_name}: native KiCad bounds {actual} mm; expected {expected} mm")
-        print(f"PASS: {footprint_name}: {tuple(round(value, 3) for value in actual)} mm")
-    print(f"PASS: {len(EXPECTED)} project-authored display WRLs match source x/y/z envelopes in KiCad 10")
+def check_geometry(name,geometry,basis):
+    if any(not math.isclose(a,b,abs_tol=TOLERANCE_MM) for a,b in zip(geometry['mesh_axis_sizes'],EXPECTED[name])):
+        raise GeometryMismatch('native model-axis dimensions differ from retained display bounds')
+    if basis is not None:
+        if any(not math.isclose(a,b,abs_tol=TOLERANCE_MM) for a,b in zip(geometry['center'][:2],basis['center'])):
+            raise GeometryMismatch('native model centre differs from transformed Fab body centre')
+        # Compare orientation, not containment: manufacturer maxima and generic
+        # Fab outlines need not coincide (notably the SOD-123 family outline).
+        actual=geometry['size'][0]-geometry['size'][1]
+        expected=basis['size'][0]-basis['size'][1]
+        if abs(expected)<TOLERANCE_MM or actual*expected<=0:
+            raise GeometryMismatch('native model long axis differs from transformed Fab body axis')
+        short,long=sorted(EXPECTED[name][:2])
+        aligned=(long,short,EXPECTED[name][2]) if expected>0 else (short,long,EXPECTED[name][2])
+        if any(not math.isclose(a,b,abs_tol=TOLERANCE_MM) for a,b in zip(geometry['size'],aligned)):
+            raise GeometryMismatch('native world body bounds differ from the Fab-aligned display envelope')
+        if name=='DIP-8_W7.62mm' and any(not math.isclose(a,b,abs_tol=TOLERANCE_MM)
+                for a,b in zip(geometry['size'][:2],basis['size'])):
+            raise GeometryMismatch('DIP planform differs from its retained Fab source')
 
 
-if __name__ == "__main__":
-    main()
+def source_snapshot():
+    paths={Path(__file__).resolve(),Path(ic.__file__).resolve(),Path(vrml_geometry.__file__).resolve(),
+           ROOT/'scripts/libgen/gen_component_envelopes.py',ROOT/'scripts/kicad/run.sh',ROOT/'scripts/kicad/pin.env'}
+    for name in EXPECTED:paths.add(LIBRARY/(name+'.kicad_mod'))
+    # Only attached models, not unrelated mutable cache/export artifacts.
+    for name in EXPECTED:
+        footprint=pcbnew.FootprintLoad(str(LIBRARY),name)
+        for model in footprint.Models():paths.add(MODELS/Path(model.m_Filename).name)
+    return {p:p.read_bytes() for p in sorted(paths)}
+
+
+def rounded(value):
+    if isinstance(value,float):return round(value,6)
+    if isinstance(value,(tuple,list)):return [rounded(v) for v in value]
+    if isinstance(value,dict):return {k:rounded(v) for k,v in value.items()}
+    return value
+
+
+def run(check=False):
+    if not re.match(r'^10\.0\.6(?:[-+ ]|$)',pcbnew.GetBuildVersion()):
+        raise RuntimeError('pinned KiCad10.0.6 oracle required')
+    FIXTURE.mkdir(parents=True,exist_ok=True)
+    snapshot=source_snapshot();rows=[]
+    cases=[(name,(0,0),0,False) for name in EXPECTED]
+    cases += [('DIP-8_W7.62mm',(12,7),angle,bottom) for angle,bottom in ((0,False),(90,False),(90,True))]
+    for name,position,angle,bottom in cases:
+        geometry,basis=exported_geometry(name,position,angle,bottom)
+        check_geometry(name,geometry,basis)
+        rows.append(rounded({'footprint':name,'position_mm':position,'rotation_deg':angle,
+                    'side':'B.Cu' if bottom else 'F.Cu','native_model':geometry,'native_Fab':basis,
+                    'scope':'body axes/centre and units' if basis is not None else 'legacy model-axis units only'}))
+    rejected=[]
+    for label,name,kwargs in (
+            ('DIP zero offset','DIP-8_W7.62mm',{'offset':(0,0,0)}),
+            ('DIP wrong Y sign','DIP-8_W7.62mm',{'offset':(3.81,3.81,0)}),
+            ('SOT wrong rotation','SOT-23-5',{'model_angle':90}),
+            ('SOT oblique rotation','SOT-23-5',{'model_angle':20})):
+        geometry,basis=exported_geometry(name,**kwargs)
+        try:check_geometry(name,geometry,basis)
+        except GeometryMismatch as error:rejected.append({'case':label,'rejected':True,'reason':str(error)})
+        else:raise AssertionError('negative control was accepted: '+label)
+    if any(p.read_bytes()!=data for p,data in snapshot.items()):
+        raise RuntimeError('envelope inputs changed during native checks')
+    report={'status':'PASS - native display-envelope placement; no physical qualification',
+            'qualification_accepted':False,'oracle':pcbnew.GetBuildVersion(),
+            'tolerance_mm':TOLERANCE_MM,'cases':rows,'negative_controls':rejected,
+            'limits':['IC body centres and long axes are compared with independent native Fab outlines.',
+                      'Other four component models retain their earlier model-axis unit checks only.',
+                      'No footprint-containment, lead, seating, height qualification, installed clearance or fabrication claim.',
+                      'DIP0.1mm is a display plate, not a package-height bound.'],
+            'input_sha256':{str(p.relative_to(ROOT)):hashlib.sha256(data).hexdigest() for p,data in snapshot.items()}}
+    text=json.dumps(report,indent=2)+'\n'
+    if check:
+        if not REPORT.exists() or REPORT.read_text()!=text:raise AssertionError('native envelope report drift')
+    else:
+        REPORT.parent.mkdir(parents=True,exist_ok=True);REPORT.write_text(text)
+    print(f'PASS: {len(rows)} native display cases and {len(rejected)} rejected placement mutations; physical fit NOT RUN')
+
+
+if __name__=='__main__':
+    parser=argparse.ArgumentParser(description=__doc__);parser.add_argument('--check',action='store_true')
+    run(parser.parse_args().check)

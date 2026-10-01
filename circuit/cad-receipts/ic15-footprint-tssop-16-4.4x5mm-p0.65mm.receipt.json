@@ -39,7 +39,7 @@
     "evidence": [
       "KiCad 10.0.6 pinned stock library source retained with SHA-256.",
       "circuit/sources/ic-library/ADG5412F.pdf SHA-256 ea3d12f983fc79a728d302675a0428a6d244e95828154bc4c970d34e23195a96",
-      "scripts/libgen/gen_ic_package_envelopes.py SHA-256 6af3e9c2885882147a87a4332aa6ec5b9c4e7a373e85242a93d3dbfa79be8957"
+      "scripts/libgen/gen_ic_package_envelopes.py SHA-256 15b5cd8f72d2b62a9cca7c655ace0e55c4b8da6ad9d99daf7e43b78c6a3f14fb"
     ]
   },
   "derivation": {
@@ -58,24 +58,34 @@
       "package_envelope": {
         "model": "IC_TSSOP-16_4.4x5.0.wrl",
         "dimensions_mm": [
-          5.1,
           4.5,
+          5.1,
           1.2
         ],
         "note": "Provisional family envelope: ADG5412F RU-16 outline maxima 5.10 x 4.50 x 1.20 mm. No board-fit or system protection verdict.",
         "geometry_source_sha256": {
           "circuit/sources/ic-library/ADG5412F.pdf": "ea3d12f983fc79a728d302675a0428a6d244e95828154bc4c970d34e23195a96"
         },
-        "generator_sha256": "6af3e9c2885882147a87a4332aa6ec5b9c4e7a373e85242a93d3dbfa79be8957",
+        "generator_sha256": "15b5cd8f72d2b62a9cca7c655ace0e55c4b8da6ad9d99daf7e43b78c6a3f14fb",
         "operations": [
           "generate provisional display cuboid from listed family bounds",
           "add exactly one local WRL model reference to the generic footprint"
+        ],
+        "dimension_axes": "footprint X / Y / Z; not manufacturer length / width order",
+        "model_offset_mm": [
+          0,
+          0,
+          0
+        ],
+        "pcb_body_center_mm": [
+          0,
+          0
         ]
       }
     },
     "output_sha256": {
       "footprints/kicad/zudo-osc-hole-field.pretty/TSSOP-16_4.4x5mm_P0.65mm.kicad_mod": "33e27f56639b5b3bab24ea33e8b2c5723ca362a6e165f6f019bf98879ed545cd",
-      "footprints/kicad/zudo-osc-hole-field.3dshapes/IC_TSSOP-16_4.4x5.0.wrl": "abd26840ddd1d6f1400ff942d135e54cf05d1df9deb6ec6db852f8dd45e83f34"
+      "footprints/kicad/zudo-osc-hole-field.3dshapes/IC_TSSOP-16_4.4x5.0.wrl": "dac91472f7dfe969cd28ec89ebcbf62a62f4f176fdc5e68d133a20b247915a2c"
     }
   },
   "cad_use": {
@@ -105,7 +115,8 @@
     "performed": [
       "Project library and courtyard checks",
       "Local WRL envelope generated and hash-bound; package preview check required",
-      "KiCad 10.0.6 native VRML export: x/y/z bounds and footprint model scale match the stated display envelope (scripts/libgen/fixtures/check_wrl_dimensions.py)."
+      "KiCad 10.0.6 native VRML export: x/y/z bounds and footprint model scale match the stated display envelope (scripts/libgen/fixtures/check_wrl_dimensions.py).",
+      "Issue85: fresh pinned native scene transforms verify IC body centres and long axes against independent Fab outlines; translated/rotated/bottom DIP and four rejected placement mutations included. design/mechanical/ic-envelope-native-report.json"
     ],
     "remaining_physical_checks": [
       "Audit against exact package drawing before fabrication.",
