@@ -28,3 +28,9 @@ Guarded documentation checks, build and strict site checks pass (exit0,50 second
 one existing workbench template-link exception remains allowlisted). The parent
 reference-diagnostic change was fast-forwarded afterward; component validation and
 generation remain clean. Exact combined-source CI is required before merge.
+
+The post-parent aggregate replay exposed two dependent monitor receipts that
+bind the updated inventory/passive-owner files. Fresh native ERC/pin-parity and
+22 RC runs succeeded; their regenerated reports differ only in input hashes,
+with all numerical results and acceptance flags unchanged. Those generated
+updates are included rather than treating the first CI failure as a pass.
