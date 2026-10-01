@@ -178,6 +178,15 @@ and private allocation. Equation residuals pass the numerical gate, but the
 remaining variational gap needs investigation. The original receipt and fields
 remain unchanged; no full-profile rerun or physical acceptance is claimed.
 
+The subsequent `wetted-restriction-diagnostic.md` uses the retained fields
+without another conductor solve. On conservative subsets where the potential
+trial is forced constant, it bounds present-trial mismatch below by about
+0.0148 mΩ. Its independent restriction-forced floor lower is much weaker,
+about 0.0000404 mΩ. These are lower bounds, not proof that the restriction is
+negligible or that releasing it would meet the target. The next bounded
+calculation keeps the restriction and source epoch fixed while retaining the
+same two potential fields to locate the remaining mismatch.
+
 `design/partition/gh-contact-cell-proposal.md` constructs a finite reference
 termination with a 45.193238 mΩ/end conditional upper and a nonempty correlated
 wire class. Its full terminal traces, weighted strand sharing and once-only wire
