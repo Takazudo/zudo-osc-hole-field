@@ -57,6 +57,9 @@ installed timing remain open. No physical qualification or energization.
 Regressions cover the removed direct bypass, separate divider branch currents,
 leakage sensitivity and the recovery-overdrive condition. The fresh KiCad 10.0.6 schematic/ERC/netlist check passes with zero errors
 and warnings, and all 119 physical pins match. Fresh passive ngspice RC checks,
-component validation and 51 focused regressions pass. Aggregate regeneration
-and documentation build/site checks are pending in the guarded queue. Bench checks are
+component validation and 51 focused regressions pass. Guarded aggregate regeneration reproduces tracked outputs without drift;
+documentation checks, build and site checks pass, retaining the existing single
+allowlisted link exception. CI passes 735 Python tests and fresh native checks.
+Two source/code reviews and a final branch review found no remaining blockers
+within this scope. Bench checks are
 NOT RUN because no assembled candidate is available.
