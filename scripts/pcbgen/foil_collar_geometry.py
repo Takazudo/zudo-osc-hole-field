@@ -15,6 +15,7 @@ import sys
 ROOT=Path(__file__).resolve().parents[2]
 sys.path.insert(0,str(ROOT))
 from scripts.pcbgen.netlist import TOKEN,parse,one,many
+from scripts.pcbgen.uuid_tools import top_level_spans,UUID_RE
 
 PROPOSAL=ROOT/'design/partition/gh-foil-collar-proposal.json'
 
@@ -130,6 +131,17 @@ def verify_native(board,root):
     if len(data['items'])!=snapshot['whole_export_item_count'] or len(data['holes'])!=snapshot['whole_export_hole_count']:
         raise ValueError('full native inventory count differs')
     text=path.read_text();fp=footprint_node(text,board['reference'])
+    targets={z['uuid'] for z in snapshot['zone_clip_candidates'] if z['layer']==board['board_access']['target_plane'] and z['net']=='AGND'}
+    found={}
+    for start,end in top_level_spans(text):
+        block=text[start:end]
+        if not re.match(r'\(zone\s',block):continue
+        match=UUID_RE.search(block)
+        if match and match[1] in targets:
+            priority=re.search(r'\(priority\s+(\d+)\)',block)
+            found[match[1]]=int(priority[1]) if priority else 0
+    if set(found)!=targets or any(p!=board['board_access']['target_zone_priority'] for p in found.values()):
+        raise ValueError('retained target-zone priority differs from source')
     pad=next(p for p in many(fp,'pad') if p[1]==board['pad'])
     if (one(fp,'uuid')[1]!=board['footprint_uuid'] or one(fp,'layer')[1]!=board['face']
             or list(map(float,one(fp,'at')[1:]))!=board['native_footprint_at_mm_deg']
@@ -224,6 +236,10 @@ def compile_proposal(spec,*,verify_source=True,native_root=None):
                 if r['uuid'] not in holes or not holes[r['uuid']]['plated']:raise ValueError('retired via lacks actual plated hole')
             elif r['kind']!='track' or set(item['primitive_kinds'].values())!={'segment'}:raise ValueError('retired track is not exact native segment')
         access=board['board_access'];added=[]
+        for priority in (board['collar_zone_priority'],access['target_zone_priority']):
+            if type(priority) is not int or not 0<=priority<=2147483647:raise ValueError('explicit nonnegative native zone priority required')
+        if board['native_realization_scope'] not in ('local_only_experiment','full_refill_draft_epoch'):
+            raise ValueError('explicit native realization scope required')
         if access['net']!='AGND':raise ValueError('PCB-side access must remain AGND')
         if access['kind']=='proposed_new_via_and_dogleg':
             positive_interval(access['finished_drill_interval_mm']);positive_interval(access['finished_barrel_copper_interval_mm'])
@@ -289,8 +305,11 @@ def compile_proposal(spec,*,verify_source=True,native_root=None):
                                           'subtract_window_mm':inflate(box,clearance),'status':'PROPOSED AGND '+name+' clearance/antipad'})
         if not any(z.get('net')=='AGND' and z['layer']==access['target_plane'] for z in snapshot['zone_clip_candidates']):
             raise ValueError('PCB-side access has no retained AGND target plane')
+        if access['target_plane']==board['face'] and board['collar_zone_priority']==access['target_zone_priority']:
+            raise ValueError('same-face collar and landing zone require distinct priorities')
         layer=next(r for r in snapshot['stackup'] if r['layer']==board['face']);t=layer['copper_thickness_mm'];mid=layer['nominal_midplane_depth_mm']
         results.append({'board_key':board['board_key'],'actual_pad_uuid':board['pad_uuid'],'proposed_geometry':shape,
+            'collar_zone_priority':board['collar_zone_priority'],'native_realization_scope':board['native_realization_scope'],
             'proposed_retirements':board['proposed_retirements'],'proposed_zone_clips':clips,'proposed_PCB_access':access,
             'minimum_conservative_copper_separation_mm':min(v['axis_separation_lower_mm'] for v in separations),
             'minimum_dry_wetting_separation_mm':min(v['dry_separation_lower_mm'] for v in mask_gaps),

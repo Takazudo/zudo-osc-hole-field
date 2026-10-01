@@ -1,0 +1,563 @@
+{
+  "actual_native_revalidation_if_ignored_artifacts_absent": "NOT RUN; portable receipt checks do not substitute for the pinned oracle",
+  "boards": [
+    {
+      "artifacts_sha256": {
+        ".circuit-cache/foil-collar-native-v5/JL/after-connectivity-partition.json": "53cc22c59ac103032086c274daa5bc60f663438eaf437bc6a0e31f438f462b99",
+        ".circuit-cache/foil-collar-native-v5/JL/after-drc.json": "4a604b28a3b5e8add0fbba7262112f5d59937e01e0f594499106e7825d91c344",
+        ".circuit-cache/foil-collar-native-v5/JL/after-ratsnest.json": "56cb7481369eb918198b6cbe9c4449f0907cbb4c06c6d685c08f6fcce0c1b394",
+        ".circuit-cache/foil-collar-native-v5/JL/before-connectivity-partition.json": "53cc22c59ac103032086c274daa5bc60f663438eaf437bc6a0e31f438f462b99",
+        ".circuit-cache/foil-collar-native-v5/JL/before-drc.json": "7a4e43b3b107041e2e4cee642afcc7412c0a746a719ed108b85b87eaf2da863b",
+        ".circuit-cache/foil-collar-native-v5/JL/before-ratsnest.json": "a3f61d2d641925a912409e10cdad82248ccf221b3533409430dfd20fb23ac35e",
+        ".circuit-cache/foil-collar-native-v5/JL/collar-isolation.json": "9ca7a10d0d0f01a208e825f8136d8b89252aadd99985c3daae8de0f8f9a88828",
+        ".circuit-cache/foil-collar-native-v5/JL/filled-copper-delta.json": "1ebb072a8dbd1a1de51d991441a14fcc0bfec83f801b3aad4c89848b898a4569",
+        ".circuit-cache/foil-collar-native-v5/JL/native-geometry.json": "bf4391e5fae66a5a640a19cbf3ed59902ace85eb32820ff488cfa9d33f201421",
+        ".circuit-cache/foil-collar-native-v5/JL/outside-region-polygons.json": "e38c20405ef2f8b255eb47df263c090fd14fc476db70fd07b3f0418a58386f87",
+        ".circuit-cache/foil-collar-native-v5/JL/preservation.json": "2710ea154e3e132711ccb9712630539e6cf2a6b05140a15be911a7a4c86651b0",
+        ".circuit-cache/foil-collar-native-v5/JL/supplemental-overshoot.json": "3a80029ad06b2be857c47f41936aca4166702dce90330aaa6dfe225144c603d6"
+      },
+      "board_key": "JL",
+      "candidate_path": ".circuit-cache/foil-collar-native-v5/candidate/boards/osc-jack-left/osc-jack-left-white-current-v1.kicad_pcb",
+      "candidate_sha256": "4a290a7753f99ab1e966bcc760fa58322359c8d57130c972055dc265cae47795",
+      "collar_overshoot": {
+        "excess_area_mm2": 8.8809e-08,
+        "excess_bbox_mm": [
+          119.56769,
+          83.732458,
+          119.725,
+          85.185411
+        ],
+        "intersection_with_full_dry_guard_mm2": 0.0,
+        "outward_displacement_diagnostic": {
+          "largest_failed_offset_mm": 0.0,
+          "offset_polygon_max_error_mm": 0.0001,
+          "scope": "Bidirectional material-set displacement outside declared windows, using native rounded offsets. Measures changed boundaries/filled gaps; not an exact Hausdorff certificate, physical tolerance, or passing admission threshold.",
+          "search_resolution_mm": 0.001,
+          "smallest_tested_covering_offset_mm": 0.001
+        }
+      },
+      "complete_named_open_edges": 1063,
+      "complete_named_open_net_count": 642,
+      "constructor_execution": {
+        "current_frozen_constructor_replay": "NOT RUN; rejection retained; supplemental probe is separately hash-bound",
+        "source_hash_guard": "FAIL: diagnostic source changed after queued execution started"
+      },
+      "filled_copper_delta": [
+        {
+          "added_area_mm2": 0.536820250137,
+          "boundary_displacement_diagnostic": {
+            "status": "exceeds 1 mm diagnostic search range; no tolerance admitted"
+          },
+          "filled_topology_after": {
+            "components": 2,
+            "holes": 1419
+          },
+          "filled_topology_before": {
+            "components": 2,
+            "holes": 1422
+          },
+          "layer": "B.Cu",
+          "outside_declared_area_mm2": 3.0074035627625,
+          "removed_area_mm2": 6.6388634789565,
+          "zone_uuid": "3ad96219-14ce-547a-9737-e3cf10d19b86"
+        },
+        {
+          "added_area_mm2": 1.347914012827,
+          "boundary_displacement_diagnostic": {
+            "largest_failed_offset_mm": 0.194,
+            "offset_polygon_max_error_mm": 0.0001,
+            "scope": "Bidirectional material-set displacement outside declared windows, using native rounded offsets. Measures changed boundaries/filled gaps; not an exact Hausdorff certificate, physical tolerance, or passing admission threshold.",
+            "search_resolution_mm": 0.001,
+            "smallest_tested_covering_offset_mm": 0.195
+          },
+          "filled_topology_after": {
+            "components": 2,
+            "holes": 1152
+          },
+          "filled_topology_before": {
+            "components": 2,
+            "holes": 1153
+          },
+          "layer": "F.Cu",
+          "outside_declared_area_mm2": 0.222180427719,
+          "removed_area_mm2": 2.514784772881,
+          "zone_uuid": "3d15ff39-14d9-5e81-981a-73b660d4232a"
+        },
+        {
+          "added_area_mm2": 1.139375591169,
+          "boundary_displacement_diagnostic": {
+            "largest_failed_offset_mm": 0.0,
+            "offset_polygon_max_error_mm": 0.0001,
+            "scope": "Bidirectional material-set displacement outside declared windows, using native rounded offsets. Measures changed boundaries/filled gaps; not an exact Hausdorff certificate, physical tolerance, or passing admission threshold.",
+            "search_resolution_mm": 0.001,
+            "smallest_tested_covering_offset_mm": 0.001
+          },
+          "filled_topology_after": {
+            "components": 1,
+            "holes": 1012
+          },
+          "filled_topology_before": {
+            "components": 1,
+            "holes": 1012
+          },
+          "layer": "In2.Cu",
+          "outside_declared_area_mm2": 4.90199e-07,
+          "removed_area_mm2": 2.603789770104,
+          "zone_uuid": "60069117-630c-5d54-891a-21af4048da7a"
+        },
+        {
+          "added_area_mm2": 0.0,
+          "boundary_displacement_diagnostic": {
+            "status": "no outside area above 1e-8 mm2 audit threshold"
+          },
+          "filled_topology_after": {
+            "components": 1,
+            "holes": 578
+          },
+          "filled_topology_before": {
+            "components": 1,
+            "holes": 577
+          },
+          "layer": "In1.Cu",
+          "outside_declared_area_mm2": 0.0,
+          "removed_area_mm2": 1.0549,
+          "zone_uuid": "be59e803-89c4-593c-a108-aa260437a47f"
+        }
+      ],
+      "full_existing_connectivity_partition_unchanged": true,
+      "isolation": {
+        "checked_full_width_interior_mm": [
+          119.72500000000001,
+          84.11,
+          119.925,
+          84.87
+        ],
+        "full_nominal_collar_mm": [
+          84.11,
+          84.87
+        ],
+        "full_nominal_section_gate_pass": true,
+        "interior_trim_each_end_mm": 0.0,
+        "layers": [
+          {
+            "filled_guard_area_mm2": 0.0,
+            "guard_rectangle_mm": [
+              119.47500000000001,
+              84.11,
+              120.175,
+              84.87
+            ],
+            "layer": "F.Cu",
+            "same_face_excess_area_mm2": 0.0,
+            "same_face_missing_area_mm2": 0.0
+          },
+          {
+            "filled_guard_area_mm2": 0.0,
+            "guard_rectangle_mm": [
+              119.47500000000001,
+              84.11,
+              120.175,
+              84.87
+            ],
+            "layer": "In1.Cu",
+            "same_face_excess_area_mm2": 0.0,
+            "same_face_missing_area_mm2": 0.0
+          },
+          {
+            "filled_guard_area_mm2": 0.0,
+            "guard_rectangle_mm": [
+              119.47500000000001,
+              84.11,
+              120.175,
+              84.87
+            ],
+            "layer": "In2.Cu",
+            "same_face_excess_area_mm2": 0.0,
+            "same_face_missing_area_mm2": 0.0
+          },
+          {
+            "filled_guard_area_mm2": 0.152,
+            "guard_rectangle_mm": [
+              119.47500000000001,
+              84.11,
+              120.175,
+              84.87
+            ],
+            "layer": "B.Cu",
+            "same_face_excess_area_mm2": 0.0,
+            "same_face_missing_area_mm2": 0.0
+          }
+        ],
+        "missing_prior_AGND_members": [],
+        "native_zone_minimum_thickness_mm": 0.15,
+        "note": "Exact nominal filled section only; manufactured full-section geometry/material metric remains OPEN",
+        "paid_via_connected": true,
+        "prior_AGND_member_count": 3172
+      },
+      "local_only_delta_gate_pass": false,
+      "named_open_edges_unchanged": true,
+      "native_admission_gate_pass": false,
+      "native_rule_error_count": 0,
+      "native_rule_errors": [],
+      "preservation": {
+        "added": {
+          "collar_zone": "935d9c41-2aca-5508-b679-a96e62afd557",
+          "tracks": [
+            "8f4bbb34-3227-50f0-845a-96487444c437",
+            "4094351c-12be-5f02-b299-696222e2d7dc"
+          ],
+          "via": "cc2ef998-45d0-5eca-a757-150a82231611"
+        },
+        "byte_preserved_footprints": 1099,
+        "byte_preserved_unretired_explicit_copper": 3714,
+        "changed_zone_uuids": [
+          "3ad96219-14ce-547a-9737-e3cf10d19b86",
+          "3d15ff39-14d9-5e81-981a-73b660d4232a",
+          "60069117-630c-5d54-891a-21af4048da7a",
+          "be59e803-89c4-593c-a108-aa260437a47f"
+        ],
+        "retired_uuids": [
+          "0e98d896-7f4b-529e-bb8d-5d0672d24f52",
+          "a93acaf3-1753-5d6e-b340-4ae1bc5472cc"
+        ]
+      },
+      "recovery_original_unchanged": true,
+      "reported_warning_count": 507,
+      "reported_warning_records_unchanged": true,
+      "schematic_parity_count": 0,
+      "source_board_sha256": "da368dfab311b1a8eee91485f10bfc87c82e679a7a0f015207e215c8f9d45c4e",
+      "source_polygon_gate_pass": false,
+      "source_zone_outline_deltas": [
+        {
+          "outside_declared_area_mm2": 0.0,
+          "zone_uuid": "3ad96219-14ce-547a-9737-e3cf10d19b86"
+        },
+        {
+          "outside_declared_area_mm2": 0.0,
+          "zone_uuid": "3d15ff39-14d9-5e81-981a-73b660d4232a"
+        },
+        {
+          "outside_declared_area_mm2": 0.0,
+          "zone_uuid": "60069117-630c-5d54-891a-21af4048da7a"
+        },
+        {
+          "outside_declared_area_mm2": 0.0,
+          "zone_uuid": "be59e803-89c4-593c-a108-aa260437a47f"
+        }
+      ],
+      "supplemental_normalized_displacement": [
+        {
+          "layer": "B.Cu",
+          "measurement": {
+            "status": "exceeds 1 mm diagnostic search range; no tolerance admitted"
+          },
+          "normalization_area_delta_after_mm2": 0.00018637760513229296,
+          "normalization_area_delta_before_mm2": 0.0003022828641405795,
+          "zone_uuid": "3ad96219-14ce-547a-9737-e3cf10d19b86"
+        },
+        {
+          "layer": "F.Cu",
+          "measurement": {
+            "largest_failed_offset_mm": 0.194,
+            "offset_polygon_max_error_mm": 0.0001,
+            "scope": "Bidirectional material-set displacement outside declared windows, using native rounded offsets. Measures changed boundaries/filled gaps; not an exact Hausdorff certificate, physical tolerance, or passing admission threshold.",
+            "search_resolution_mm": 0.001,
+            "smallest_tested_covering_offset_mm": 0.195
+          },
+          "normalization_area_delta_after_mm2": 0.00022230076865525916,
+          "normalization_area_delta_before_mm2": 0.00022315610476653092,
+          "zone_uuid": "3d15ff39-14d9-5e81-981a-73b660d4232a"
+        },
+        {
+          "layer": "In2.Cu",
+          "measurement": {
+            "largest_failed_offset_mm": 0.0,
+            "offset_polygon_max_error_mm": 0.0001,
+            "scope": "Bidirectional material-set displacement outside declared windows, using native rounded offsets. Measures changed boundaries/filled gaps; not an exact Hausdorff certificate, physical tolerance, or passing admission threshold.",
+            "search_resolution_mm": 0.001,
+            "smallest_tested_covering_offset_mm": 0.001
+          },
+          "normalization_area_delta_after_mm2": 0.0002506484634068329,
+          "normalization_area_delta_before_mm2": 0.0002508103789296001,
+          "zone_uuid": "60069117-630c-5d54-891a-21af4048da7a"
+        }
+      ]
+    },
+    {
+      "artifacts_sha256": {
+        ".circuit-cache/foil-collar-native-v5/K/after-connectivity-partition.json": "8c9047a904e5994336f6c9ac2a622fe110258660ac101e670d048649e7c1759e",
+        ".circuit-cache/foil-collar-native-v5/K/after-drc.json": "4eec9d8e823d7293e065cd30562821a429b5ba8350c075d3a02e23fae5869f78",
+        ".circuit-cache/foil-collar-native-v5/K/after-ratsnest.json": "8d179be265f11b8e56ce3418392eecc5734761d5cff75fa212308103abbdbc39",
+        ".circuit-cache/foil-collar-native-v5/K/before-connectivity-partition.json": "8c9047a904e5994336f6c9ac2a622fe110258660ac101e670d048649e7c1759e",
+        ".circuit-cache/foil-collar-native-v5/K/before-drc.json": "2f591f9c1bba8c0637a64e0ff2f98506bf9c102b8232a4803f4c6d7557e7a8fa",
+        ".circuit-cache/foil-collar-native-v5/K/before-ratsnest.json": "f388dd9628a5d0a15f68804926f11d4c6d71a1b20b448d9dea5746b7ed247604",
+        ".circuit-cache/foil-collar-native-v5/K/collar-isolation.json": "4690c1a20b69135c8b3c66d9aa54b29fff22a8fb2ded1d6494cc61dff1f4bcfb",
+        ".circuit-cache/foil-collar-native-v5/K/filled-copper-delta.json": "e9fa9fefe169850ad67e55ae602e360f80547363f0932d2ae30320d071f92aa9",
+        ".circuit-cache/foil-collar-native-v5/K/native-geometry.json": "750817d2aaa31f90c6e5730cf17237147ac851c6e704ba3e82455fa56f14feb1",
+        ".circuit-cache/foil-collar-native-v5/K/native-receipt.json": "09e42ed94ac5cb82b1ad651d14e54ab0b9d5341ef6e08224ab36c430ec75cbeb",
+        ".circuit-cache/foil-collar-native-v5/K/outside-region-polygons.json": "4ed0bead6fbd6ab94f2caa72f29275c3c3db4d8ba255ad4f178fd0fec75ca483",
+        ".circuit-cache/foil-collar-native-v5/K/preservation.json": "ea614539250ca1ecaed9d354bf92a01d9929db14446ff81a7f1a59ebd387a9de",
+        ".circuit-cache/foil-collar-native-v5/K/supplemental-overshoot.json": "6f296395b5b8e760f6d34d9bce115131bc8dcc12360c3286c369ab86460b0f31"
+      },
+      "board_key": "K",
+      "candidate_path": ".circuit-cache/foil-collar-native-v5/candidate/boards/osc-core/osc-core-ground-feasibility-v7.kicad_pcb",
+      "candidate_sha256": "92e30b66c71b7ba4a4e3edc72f954e246a8a14d5f1577d42c8b85ae90e1f7505",
+      "collar_overshoot": {
+        "excess_area_mm2": 1.290325e-07,
+        "excess_bbox_mm": [
+          119.581631,
+          90.814588,
+          119.725,
+          91.129999
+        ],
+        "intersection_with_full_dry_guard_mm2": 0.0,
+        "outward_displacement_diagnostic": {
+          "largest_failed_offset_mm": 0.0,
+          "offset_polygon_max_error_mm": 0.0001,
+          "scope": "Bidirectional material-set displacement outside declared windows, using native rounded offsets. Measures changed boundaries/filled gaps; not an exact Hausdorff certificate, physical tolerance, or passing admission threshold.",
+          "search_resolution_mm": 0.001,
+          "smallest_tested_covering_offset_mm": 0.001
+        }
+      },
+      "complete_named_open_edges": 7354,
+      "complete_named_open_net_count": 2779,
+      "constructor_execution": {
+        "source_hash_guard": "PASS",
+        "terminal_result": "FAIL: local-only/native source-polygon admission gates; complete diagnostic receipt retained"
+      },
+      "filled_copper_delta": [
+        {
+          "added_area_mm2": 0.0,
+          "boundary_displacement_diagnostic": {
+            "status": "no outside area above 1e-8 mm2 audit threshold"
+          },
+          "filled_topology_after": {
+            "components": 1,
+            "holes": 214
+          },
+          "filled_topology_before": {
+            "components": 1,
+            "holes": 213
+          },
+          "layer": "In1.Cu",
+          "outside_declared_area_mm2": 0.0,
+          "removed_area_mm2": 1.0549,
+          "zone_uuid": "603c6b2f-6307-54dd-a628-89d0d060349e"
+        },
+        {
+          "added_area_mm2": 3.687935e-07,
+          "boundary_displacement_diagnostic": {
+            "largest_failed_offset_mm": 0.0,
+            "offset_polygon_max_error_mm": 0.0001,
+            "scope": "Bidirectional material-set displacement outside declared windows, using native rounded offsets. Measures changed boundaries/filled gaps; not an exact Hausdorff certificate, physical tolerance, or passing admission threshold.",
+            "search_resolution_mm": 0.001,
+            "smallest_tested_covering_offset_mm": 0.001
+          },
+          "filled_topology_after": {
+            "components": 1,
+            "holes": 9206
+          },
+          "filled_topology_before": {
+            "components": 1,
+            "holes": 9209
+          },
+          "layer": "B.Cu",
+          "outside_declared_area_mm2": 1.54e-07,
+          "removed_area_mm2": 0.690315796354,
+          "zone_uuid": "865a0770-0253-5584-956f-91d612bf7e6d"
+        },
+        {
+          "added_area_mm2": 0.0,
+          "boundary_displacement_diagnostic": {
+            "status": "exceeds 1 mm diagnostic search range; no tolerance admitted"
+          },
+          "filled_topology_after": {
+            "components": 1,
+            "holes": 1127
+          },
+          "filled_topology_before": {
+            "components": 1,
+            "holes": 1128
+          },
+          "layer": "F.Cu",
+          "outside_declared_area_mm2": 0.415406613169,
+          "removed_area_mm2": 4.350076881716,
+          "zone_uuid": "f66a9044-a512-563f-b959-e21c6095d50b"
+        }
+      ],
+      "full_existing_connectivity_partition_unchanged": true,
+      "isolation": {
+        "checked_full_width_interior_mm": [
+          119.72500000000001,
+          91.13,
+          119.925,
+          91.89
+        ],
+        "full_nominal_collar_mm": [
+          91.13,
+          91.89
+        ],
+        "full_nominal_section_gate_pass": true,
+        "interior_trim_each_end_mm": 0.0,
+        "layers": [
+          {
+            "filled_guard_area_mm2": 0.152,
+            "guard_rectangle_mm": [
+              119.47500000000001,
+              91.13,
+              120.175,
+              91.89
+            ],
+            "layer": "F.Cu",
+            "same_face_excess_area_mm2": 0.0,
+            "same_face_missing_area_mm2": 0.0
+          },
+          {
+            "filled_guard_area_mm2": 0.0,
+            "guard_rectangle_mm": [
+              119.47500000000001,
+              91.13,
+              120.175,
+              91.89
+            ],
+            "layer": "In1.Cu",
+            "same_face_excess_area_mm2": 0.0,
+            "same_face_missing_area_mm2": 0.0
+          },
+          {
+            "filled_guard_area_mm2": 0.0,
+            "guard_rectangle_mm": [
+              119.47500000000001,
+              91.13,
+              120.175,
+              91.89
+            ],
+            "layer": "In2.Cu",
+            "same_face_excess_area_mm2": 0.0,
+            "same_face_missing_area_mm2": 0.0
+          },
+          {
+            "filled_guard_area_mm2": 0.0,
+            "guard_rectangle_mm": [
+              119.47500000000001,
+              91.13,
+              120.175,
+              91.89
+            ],
+            "layer": "B.Cu",
+            "same_face_excess_area_mm2": 0.0,
+            "same_face_missing_area_mm2": 0.0
+          }
+        ],
+        "missing_prior_AGND_members": [],
+        "native_zone_minimum_thickness_mm": 0.15,
+        "note": "Exact nominal filled section only; manufactured full-section geometry/material metric remains OPEN",
+        "paid_via_connected": true,
+        "prior_AGND_member_count": 2510
+      },
+      "local_only_delta_gate_pass": false,
+      "named_open_edges_unchanged": true,
+      "native_admission_gate_pass": false,
+      "native_rule_error_count": 1,
+      "native_rule_errors": [
+        {
+          "description": "Copper zones intersect (intersecting zones must have distinct priorities)",
+          "items": [
+            {
+              "description": "Zone 'pcbgen:osc-core:pour:agnd_feasibility:F.Cu' [AGND] on F.Cu, priority 0",
+              "pos": {
+                "x": 414.0,
+                "y": 296.0
+              },
+              "uuid": "f66a9044-a512-563f-b959-e21c6095d50b"
+            },
+            {
+              "description": "Zone 'UNSELECTED foil collar K' [AGND] on F.Cu, priority 0",
+              "pos": {
+                "x": 119.575,
+                "y": 89.1
+              },
+              "uuid": "6a7a0d75-662b-5ad6-91ef-466018204ca1"
+            }
+          ],
+          "severity": "error",
+          "type": "zones_intersect"
+        }
+      ],
+      "preservation": {
+        "added": {
+          "collar_zone": "6a7a0d75-662b-5ad6-91ef-466018204ca1"
+        },
+        "byte_preserved_footprints": 3793,
+        "byte_preserved_unretired_explicit_copper": 292,
+        "changed_zone_uuids": [
+          "603c6b2f-6307-54dd-a628-89d0d060349e",
+          "865a0770-0253-5584-956f-91d612bf7e6d",
+          "f66a9044-a512-563f-b959-e21c6095d50b"
+        ],
+        "retired_uuids": []
+      },
+      "recovery_original_unchanged": true,
+      "reported_warning_count": 551,
+      "reported_warning_records_unchanged": true,
+      "schematic_parity_count": 0,
+      "source_board_sha256": "98993d11e143da86ecc72190a1a4a0c6c9677b3b7bf431b78f6b3868615ae411",
+      "source_polygon_gate_pass": false,
+      "source_zone_outline_deltas": [
+        {
+          "outside_declared_area_mm2": 0.0,
+          "zone_uuid": "603c6b2f-6307-54dd-a628-89d0d060349e"
+        },
+        {
+          "outside_declared_area_mm2": 0.0,
+          "zone_uuid": "865a0770-0253-5584-956f-91d612bf7e6d"
+        },
+        {
+          "outside_declared_area_mm2": 0.0,
+          "zone_uuid": "f66a9044-a512-563f-b959-e21c6095d50b"
+        }
+      ],
+      "supplemental_normalized_displacement": [
+        {
+          "layer": "F.Cu",
+          "measurement": {
+            "status": "exceeds 1 mm diagnostic search range; no tolerance admitted"
+          },
+          "normalization_area_delta_after_mm2": 1.8688428099267185e-05,
+          "normalization_area_delta_before_mm2": 1.867431274149567e-05,
+          "zone_uuid": "f66a9044-a512-563f-b959-e21c6095d50b"
+        }
+      ]
+    }
+  ],
+  "conditional_reference_neck_ohm": {
+    "lower": 0.0006989374262101535,
+    "scope": "Conditional complete isolated straight-prism references only; no admission for arbitrary shear/nonuniform manufactured geometry, bypasses or unqualified contacts. Costs paid once in private assembly plus separate PCB access.",
+    "upper": 0.001582010582010582
+  },
+  "electrical_limits_unchanged": {
+    "GH_contact_A": 0.5,
+    "common_branch_plus_K_ohm": 0.0005,
+    "common_rail_ohm": 0.001,
+    "distribution_V": 0.02,
+    "whole_path_V": 0.2
+  },
+  "frozen_constructor_sha256": "b5ffe2e90a9d8a4529be9eda7b8c4186a13c1b1369572c617f650d478058181d",
+  "input_manifest_sha256": "fd3567bb752ab89f2c5b832682102228b9414ad954c20bcf3c459fb605d3cc29",
+  "local_only_is_experimental_scope_not_original_project_target": true,
+  "next_step": "Declare a complete refilled candidate epoch with all deltas explicit; classify shoulder geometry within a prospective source envelope and produce fresh matched whole-geometry electrical witnesses. Do not retrofit a tolerance into this rejected local-only run.",
+  "open": [
+    "fixture isolation/local power certificate",
+    "test-to-installed and remated contact applicability",
+    "full manufactured geometry/material metric",
+    "full PCB-side flare/via/annular/spreading cost",
+    "joined original current and voltage targets",
+    "physical manufacturing and protection gates"
+  ],
+  "oracle_pin_sha256": "769e2be0b61e7d92a6930684f13166b7dc098522008de3969cd30d6c4a363246",
+  "oracle_version": "10.0.6",
+  "proposal_sha256": "e6ac39926caccd98c461ba9cc6908b2745ddd6fd608239bc54a81da6c84521b1",
+  "retained_supplemental_measurement_sha256": "0613a6d62c27bdbdc44efa09c1fbe2bfe24c9af62098f64c40ef9b1962b93c55",
+  "schema_version": 1,
+  "status": "REJECTED local-only native experiment; no geometry selection or electrical/physical admission"
+}

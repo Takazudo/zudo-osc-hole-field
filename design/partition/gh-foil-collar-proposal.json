@@ -486,8 +486,12 @@
           ]
         ],
         "proposal_via_uuid": "cc2ef998-45d0-5eca-a757-150a82231611",
-        "status": "NOT GENERATED in native board; complete pad/barrel/plane access energy OPEN"
-      }
+        "status": "NOT GENERATED in native board; complete pad/barrel/plane access energy OPEN",
+        "target_zone_priority": 0,
+        "priority_basis": "Retained native source zone; exact priority checked before construction. K same-face flare overlap requires a distinct collar priority."
+      },
+      "collar_zone_priority": 0,
+      "native_realization_scope": "local_only_experiment"
     },
     {
       "board_key": "K",
@@ -880,8 +884,12 @@
         "kind": "same_foil_AGND_pour",
         "net": "AGND",
         "target_plane": "F.Cu",
-        "status": "Proposed flare overlaps existing F.Cu AGND outside island window; native refill/connectivity and access energy OPEN"
-      }
+        "status": "Proposed flare overlaps existing F.Cu AGND outside island window; native refill/connectivity and access energy OPEN",
+        "target_zone_priority": 0,
+        "priority_basis": "Retained native source zone; exact priority checked before construction. K same-face flare overlap requires a distinct collar priority."
+      },
+      "collar_zone_priority": 1,
+      "native_realization_scope": "full_refill_draft_epoch"
     }
   ],
   "test_admission": "OPEN: isolate the one selected conductor so every measured excitation ampere crosses both collar cuts. Other GH AGND pins, other harnesses, PCB planes and main wires must not bypass it. Test-to-installed/remated/contact-state applicability requires an independent process certificate. Whole-board V/I_total is not this test.",
