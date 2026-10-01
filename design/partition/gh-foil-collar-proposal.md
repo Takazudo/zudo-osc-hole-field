@@ -62,3 +62,19 @@ The next constructive step is a bounded native reconstruction of these exact nam
 The first native realization is retained in `foil-collar-native-receipt.json` as a rejected historical experiment. Its K collar and F.Cu AGND landing both used priority 0, causing a real `zones_intersect` error. The source now specifies K collar priority **1**, with retained landing priority **0**. The compiler rejects equal priorities for a same-face landing, and the native constructor checks the actual target priority before applying the owned value. JL's explicit planned priority remains 0; its historical candidate is neither refilled nor rebound to this revised proposal hash.
 
 K's declared native scope is `full_refill_draft_epoch`. A native rule/connectivity result may pass while the historical local-only criterion remains failed. This does not suppress any KiCad rule or admit a material class, electrical model or physical build. Every refilled copper change belongs to the new K artifact, and fresh whole-geometry electrical witnesses remain required. All dimensions, fixed hardware, source copper allowances and original electrical limits are unchanged by this priority correction.
+
+## JL frozen-source replay
+
+JL now also declares `full_refill_draft_epoch` before a new native run. The
+historical local-only delta failure and failed in-flight source-stability check
+remain in `foil-collar-native-receipt.json`; neither is relabelled as passing.
+The new run must freeze its source inputs and check the entire refilled board,
+including nonlocal copper changes, complete connectivity and the full untrimmed
+dry section. This scope change makes no dimensional, net, clearance, priority
+or electrical-limit change. Actual native results will be recorded separately.
+
+The historical K receipt keeps its original global proposal hash. K-local
+construction is unchanged, but no K replay or rebinding is implied by this
+JL-only continuation. Fresh electrical witnesses remain required for each
+candidate's complete geometry, and no physical or material admission follows
+from a passing native rule/connectivity result.
