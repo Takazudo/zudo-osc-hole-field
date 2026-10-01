@@ -227,8 +227,8 @@
         "Unused source/drain grounded, unused IN grounded, FF explicitly no-connect."
       ],
       "notes": [
-        "Powered-off isolation replaces a naked rail-clamp path. GND must stay connected with patch sleeves. No \u00b155 V system rating is inferred; project fault range is \u00b112 V.",
-        "Fault switch uses \u00b112 V rails; \u00b115 V datasheet tables are planning references, not guaranteed \u00b112 V performance. Drain clamps/current limiting below remain mandatory.",
+        "Powered-off isolation replaces a naked rail-clamp path. GND must stay connected with patch sleeves. No ±55 V system rating is inferred; project fault range is ±12 V.",
+        "Fault switch uses ±12 V rails; ±15 V datasheet tables are planning references, not guaranteed ±12 V performance. Drain clamps/current limiting below remain mandatory.",
         "Do not tie enable directly to +12 V. Require #24 power-sequence analysis for missing-rail and ground-loss cases."
       ],
       "uses": [],
@@ -289,7 +289,7 @@
       "notes": [
         "100 kohm nominal at drain; switch on resistance adds series error. No independent 10 kohm pot may load the jack.",
         "Clamp leakage and input current, especially hot, remain part of the input error budget.",
-        "Nominal accuracy limited to \u00b15 V; \u00b112 V is a continuous survival requirement, not a linear input range."
+        "Nominal accuracy limited to ±5 V; ±12 V is a continuous survival requirement, not a linear input range."
       ],
       "uses": [
         "input_fault_switch"
@@ -379,10 +379,10 @@
         "Local feedback before the resistor. For DC/gates select cv role."
       ],
       "notes": [
-        "998 ohm gives 0.990119 gain into 100 kohm; nominal \u00b15 V specified unloaded.",
-        "Each project-output pair at opposite \u00b112 V has 12.024 mA maximum ideal current and 0.0722 W per 499 ohm resistor. Ground short at 12 V is also 0.0722 W per 499 ohm resistor.",
+        "998 ohm gives 0.990119 gain into 100 kohm; nominal ±5 V specified unloaded.",
+        "Each project-output pair at opposite ±12 V has 12.024 mA maximum ideal current and 0.0722 W per 499 ohm resistor. Ground short at 12 V is also 0.0722 W per 499 ohm resistor.",
         "No simultaneous-all-output-short supply claim. Test sustained one-channel short and paired outputs per IC, including junction temperature.",
-        "Two series 499 ohm / 0.5 W resistors realize 998 ohm nominal. A continuous external \u00b112 V fault against the opposite output rail gives 24.05 mA and 0.289 W per resistor at nominal rails; qualify IC thermal dissipation."
+        "Two series 499 ohm / 0.5 W resistors realize 998 ohm nominal. A continuous external ±12 V fault against the opposite output rail gives 24.05 mA and 0.289 W per resistor at nominal rails; qualify IC thermal dissipation."
       ],
       "uses": [],
       "verification": [
@@ -454,7 +454,7 @@
         "DC load-induced error target <=1 mV for -5/0/+5 V, no load to 10 kohm; full static path error target <=2 mV after factory calibration.",
         "TI-model sweep: open/10k/100k loads and 0/100p/1n/5n F cable loads, +/-5 V steps; require no sustained oscillation, <=10% overshoot and settle within 1 mV by 1 ms. Physical cable, PCB parasitics, component tolerances and temperature require qualification.",
         "Feedback stays on the jack board with output cell; no long unsensed feedback net across connectors.",
-        "Two series 499 ohm / 0.5 W resistors realize 998 ohm nominal. A continuous external \u00b112 V fault against the opposite output rail gives 24.05 mA and 0.289 W per resistor at nominal rails; qualify IC thermal dissipation."
+        "Two series 499 ohm / 0.5 W resistors realize 998 ohm nominal. A continuous external ±12 V fault against the opposite output rail gives 24.05 mA and 0.289 W per resistor at nominal rails; qualify IC thermal dissipation."
       ],
       "uses": [],
       "verification": [
@@ -673,7 +673,7 @@
         "Bipolar endpoints -5/+5 V; unipolar endpoints AGND/+5 V. Module maps normalized 0..1 or -1..1 to named function using explicit gain."
       ],
       "notes": [
-        "48 pots become 100 kohm B104 in unchanged mechanical family. 0.1 mA each across \u00b15 V; total 4.8 mA on each analog rail.",
+        "48 pots become 100 kohm B104 in unchanged mechanical family. 0.1 mA each across ±5 V; total 4.8 mA on each analog rail.",
         "At most six pots per pair of local reference buffers; Kelvin reference return accompanies harness.",
         "10 nF wiper filter gives variable time constant up to approximately 0.26 ms. Do not use for audio."
       ],
@@ -856,12 +856,12 @@
       "connections": [
         "REF_5V = +5 V, REF_N5V = -5 V, GATE_REF = 5*100/122 V.",
         "Distribute through local remote_buffer cells; REF5050 does not source all pots.",
-        "No physical \u00b110 V reference: clip compares buffered node/2 against \u00b15 V."
+        "No physical ±10 V reference: clip compares buffered node/2 against ±5 V."
       ],
       "notes": [
         "1 uF capacitor uses X7R value variant of c_bypass series, with effective C checked against manufacturer stability guidance in #15.",
         "REF5050 trim left open; factory adjusts octave scaling downstream. Use 100 nF local bypass on each amplifier rail in addition to explicit caps.",
-        "Raw reference buffers and local fan-out are separate allocations. Buffered \u00b15 V fan-out pairs use cv role and serve at most six 100 kohm pots per pair."
+        "Raw reference buffers and local fan-out are separate allocations. Buffered ±5 V fan-out pairs use cv role and serve at most six 100 kohm pots per pair."
       ],
       "uses": [
         "remote_buffer"
@@ -1201,7 +1201,7 @@
       ],
       "connections": [
         "JACK -> high_impedance_input -> BUFFERED.",
-        "Comparator runs from +12 V/GND, not \u00b112 V: its open collector low must be 0 V for HC logic.",
+        "Comparator runs from +12 V/GND, not ±12 V: its open collector low must be 0 V for HC logic.",
         "Biased divider keeps comparator input positive for bipolar jack signals. GATE_HIGH rises with the jack."
       ],
       "notes": [
@@ -1289,11 +1289,11 @@
         "Feedback forces SENSE approximately equal MONITOR; LED current = abs(MONITOR)/5600."
       ],
       "notes": [
-        "One amplifier per indicator, 92 sites. About 0.893 mA at \u00b15 V. LED is isolated from signal source by high-impedance amplifier input.",
+        "One amplifier per indicator, 92 sites. About 0.893 mA at ±5 V. LED is isolated from signal source by high-impedance amplifier input.",
         "At larger magnitudes amplifier clips: brightness may saturate and is not a calibrated voltmeter. At audio rates the eye averages rectified current. No polarity or plug detection.",
         "Only already buffered nodes may feed MONITOR. Hold/timing/integrator/storage nodes are forbidden.",
         "Driver stays with LED on its board; only buffered MONITOR plus adjacent analog return cross a connector.",
-        "At assumed \u00b113.2 V rail extremes and 1% minimum 5.6 kohm sense resistor, the ideal zero-diode-drop branch bound is 4.762 mA, below the approximate 5 mA white-LED current derating at 85 C. Exact resistor tolerance/sourcing, loop faults and hot LED ambient remain unqualified."
+        "At assumed ±13.2 V rail extremes and 1% minimum 5.6 kohm sense resistor, the ideal zero-diode-drop branch bound is 4.762 mA, below the approximate 5 mA white-LED current derating at 85 C. Exact resistor tolerance/sourcing, loop faults and hot LED ambient remain unqualified."
       ],
       "uses": [],
       "verification": [
@@ -1381,7 +1381,7 @@
         "Comparators wired-OR to CLIP_N; negative rail is the low level. This output is analog LED drive only and must not touch 5 V logic."
       ],
       "notes": [
-        "10 sites; trip at nominal \u00b110 V on internal pre-attenuation node. About 1 mA LED current when CLIP_N approaches -12 V.",
+        "10 sites; trip at nominal ±10 V on internal pre-attenuation node. About 1 mA LED current when CLIP_N approaches -12 V.",
         "No hysteresis or hold capacitor fitted: intentional immediate clip indication; threshold flicker is allowed.",
         "Monitor after a dedicated buffer; mixer detector before output level/VCA, AO detector before output isolation.",
         "Changing op-amp or load requires checking actual headroom against 10 V; threshold remains PROPOSAL."
@@ -1626,9 +1626,9 @@
         "4.7 uF maximum per powered board per rail as starting allocation. R_BLEED appears once per whole instrument rail, not once per IC/board."
       ],
       "notes": [
-        "Instrument nominal ceilings: 150 uF on each \u00b112 V rail, 100 uF on +5 V, including ceramic bypass, references, regulators and bulk. Use +20% tolerance for inrush.",
+        "Instrument nominal ceilings: 150 uF on each ±12 V rail, 100 uF on +5 V, including ceramic bypass, references, regulators and bulk. Use +20% tolerance for inrush.",
         "No bulk multiplier by module; #24 and #35 must maintain capacitor ledger. No extra 10/47/100 uF per module by habit.",
-        "R_BLEED uses 0.125 W minimum for \u00b112 V (65.5 mW nominal); +5 V dissipates 11.4 mW. Backfeed voltage remains a measured gate.",
+        "R_BLEED uses 0.125 W minimum for ±12 V (65.5 mW nominal); +5 V dissipates 11.4 mW. Backfeed voltage remains a measured gate.",
         "Small capacitance does not qualify the supply: the 4.5 A/2 ms vs 3 A source startup case remains OPEN."
       ],
       "uses": [],
@@ -1790,7 +1790,7 @@
     }
   ],
   "release_gates": [
-    "Power-off and missing-rail input injection, all 98 inputs and single-channel \u00b112 V faults, with GND connected. Record drain leakage, rail lift, latch-up, recovery and temperature; no zero-backfeed assertion.",
+    "Power-off and missing-rail input injection, all 98 inputs and single-channel ±12 V faults, with GND connected. Record drain leakage, rail lift, latch-up, recovery and temperature; no zero-backfeed assertion.",
     "Output short/output-output patch thermal test; two 499 ohm / 0.5 W resistors provide 1 W total nominal isolation resistance rating; derating and IC temperature remain unqualified.",
     "Compensated output and harness stability across 0..5 nF loads.",
     "Magnitude LED headroom/visual visibility, stage shutoff, clip threshold under load.",
@@ -1806,12 +1806,12 @@
     {
       "item": "Audio",
       "disposition": "adopted",
-      "decision": "\u00b15 V nominal unloaded"
+      "decision": "±5 V nominal unloaded"
     },
     {
       "item": "Bipolar CV",
       "disposition": "adopted",
-      "decision": "\u00b15 V nominal; \u00b112 V continuous survival, not linear operation"
+      "decision": "±5 V nominal; ±12 V continuous survival, not linear operation"
     },
     {
       "item": "Envelope",
@@ -1846,7 +1846,7 @@
     {
       "item": "Precision output",
       "disposition": "replaced",
-      "decision": "998 ohm inside dual feedback with 10 kohm / 100 pF; higher resistance bounds fault current"
+      "decision": "998 ohm inside compensated feedback limits fault current. The initial 10 kohm / 100 pF feedback was superseded by #49: current draft uses 100 ohm jack feedback and 1 nF local feedback. Model screening is not hardware qualification."
     },
     {
       "item": "Input protection",
@@ -1861,7 +1861,7 @@
     {
       "item": "Clip threshold",
       "disposition": "adopted",
-      "decision": "\u00b110 V at pre-attenuation internal node via divide-by-two window"
+      "decision": "±10 V at pre-attenuation internal node via divide-by-two window"
     },
     {
       "item": "Rail ceiling",
@@ -1881,7 +1881,7 @@
       "part_id": "pot_104"
     },
     {
-      "panel_uid": "C:O1.FM\u00b1",
+      "panel_uid": "C:O1.FM±",
       "role": "bipolar_attenuverter",
       "part_id": "pot_103"
     },
@@ -1891,7 +1891,7 @@
       "part_id": "pot_104"
     },
     {
-      "panel_uid": "C:O1.PWM\u00b1",
+      "panel_uid": "C:O1.PWM±",
       "role": "bipolar_attenuverter",
       "part_id": "pot_103"
     },
@@ -1906,7 +1906,7 @@
       "part_id": "pot_104"
     },
     {
-      "panel_uid": "C:O2.FM\u00b1",
+      "panel_uid": "C:O2.FM±",
       "role": "bipolar_attenuverter",
       "part_id": "pot_103"
     },
@@ -1916,7 +1916,7 @@
       "part_id": "pot_104"
     },
     {
-      "panel_uid": "C:O2.PWM\u00b1",
+      "panel_uid": "C:O2.PWM±",
       "role": "bipolar_attenuverter",
       "part_id": "pot_103"
     },
@@ -1931,7 +1931,7 @@
       "part_id": "pot_104"
     },
     {
-      "panel_uid": "C:O3.FM\u00b1",
+      "panel_uid": "C:O3.FM±",
       "role": "bipolar_attenuverter",
       "part_id": "pot_103"
     },
@@ -1941,7 +1941,7 @@
       "part_id": "pot_104"
     },
     {
-      "panel_uid": "C:O3.PWM\u00b1",
+      "panel_uid": "C:O3.PWM±",
       "role": "bipolar_attenuverter",
       "part_id": "pot_103"
     },
@@ -1956,7 +1956,7 @@
       "part_id": "pot_104"
     },
     {
-      "panel_uid": "C:O4.FM\u00b1",
+      "panel_uid": "C:O4.FM±",
       "role": "bipolar_attenuverter",
       "part_id": "pot_103"
     },
@@ -1966,7 +1966,7 @@
       "part_id": "pot_104"
     },
     {
-      "panel_uid": "C:O4.PWM\u00b1",
+      "panel_uid": "C:O4.PWM±",
       "role": "bipolar_attenuverter",
       "part_id": "pot_103"
     },
@@ -1981,7 +1981,7 @@
       "part_id": "pot_104"
     },
     {
-      "panel_uid": "C:O5.FM\u00b1",
+      "panel_uid": "C:O5.FM±",
       "role": "bipolar_attenuverter",
       "part_id": "pot_103"
     },
@@ -1991,7 +1991,7 @@
       "part_id": "pot_104"
     },
     {
-      "panel_uid": "C:O5.PWM\u00b1",
+      "panel_uid": "C:O5.PWM±",
       "role": "bipolar_attenuverter",
       "part_id": "pot_103"
     },
@@ -2006,12 +2006,12 @@
       "part_id": "pot_104"
     },
     {
-      "panel_uid": "C:F1.FREQ\u00b1",
+      "panel_uid": "C:F1.FREQ±",
       "role": "bipolar_attenuverter",
       "part_id": "pot_103"
     },
     {
-      "panel_uid": "C:F1.RES\u00b1",
+      "panel_uid": "C:F1.RES±",
       "role": "bipolar_attenuverter",
       "part_id": "pot_103"
     },
@@ -2021,7 +2021,7 @@
       "part_id": "pot_104"
     },
     {
-      "panel_uid": "C:F1.GAIN\u00b1",
+      "panel_uid": "C:F1.GAIN±",
       "role": "bipolar_attenuverter",
       "part_id": "pot_103"
     },
@@ -2036,12 +2036,12 @@
       "part_id": "pot_104"
     },
     {
-      "panel_uid": "C:F2.FREQ\u00b1",
+      "panel_uid": "C:F2.FREQ±",
       "role": "bipolar_attenuverter",
       "part_id": "pot_103"
     },
     {
-      "panel_uid": "C:F2.RES\u00b1",
+      "panel_uid": "C:F2.RES±",
       "role": "bipolar_attenuverter",
       "part_id": "pot_103"
     },
@@ -2051,7 +2051,7 @@
       "part_id": "pot_104"
     },
     {
-      "panel_uid": "C:F2.GAIN\u00b1",
+      "panel_uid": "C:F2.GAIN±",
       "role": "bipolar_attenuverter",
       "part_id": "pot_103"
     },
@@ -2066,12 +2066,12 @@
       "part_id": "pot_104"
     },
     {
-      "panel_uid": "C:F3.FREQ\u00b1",
+      "panel_uid": "C:F3.FREQ±",
       "role": "bipolar_attenuverter",
       "part_id": "pot_103"
     },
     {
-      "panel_uid": "C:F3.RES\u00b1",
+      "panel_uid": "C:F3.RES±",
       "role": "bipolar_attenuverter",
       "part_id": "pot_103"
     },
@@ -2081,32 +2081,32 @@
       "part_id": "pot_104"
     },
     {
-      "panel_uid": "C:F3.GAIN\u00b1",
+      "panel_uid": "C:F3.GAIN±",
       "role": "bipolar_attenuverter",
       "part_id": "pot_103"
     },
     {
-      "panel_uid": "C:M5A.1\u00b1",
+      "panel_uid": "C:M5A.1±",
       "role": "bipolar_attenuverter",
       "part_id": "pot_103"
     },
     {
-      "panel_uid": "C:M5A.2\u00b1",
+      "panel_uid": "C:M5A.2±",
       "role": "bipolar_attenuverter",
       "part_id": "pot_103"
     },
     {
-      "panel_uid": "C:M5A.3\u00b1",
+      "panel_uid": "C:M5A.3±",
       "role": "bipolar_attenuverter",
       "part_id": "pot_103"
     },
     {
-      "panel_uid": "C:M5A.4\u00b1",
+      "panel_uid": "C:M5A.4±",
       "role": "bipolar_attenuverter",
       "part_id": "pot_103"
     },
     {
-      "panel_uid": "C:M5A.5\u00b1",
+      "panel_uid": "C:M5A.5±",
       "role": "bipolar_attenuverter",
       "part_id": "pot_103"
     },
@@ -2116,27 +2116,27 @@
       "part_id": "pot_103"
     },
     {
-      "panel_uid": "C:M5B.1\u00b1",
+      "panel_uid": "C:M5B.1±",
       "role": "bipolar_attenuverter",
       "part_id": "pot_103"
     },
     {
-      "panel_uid": "C:M5B.2\u00b1",
+      "panel_uid": "C:M5B.2±",
       "role": "bipolar_attenuverter",
       "part_id": "pot_103"
     },
     {
-      "panel_uid": "C:M5B.3\u00b1",
+      "panel_uid": "C:M5B.3±",
       "role": "bipolar_attenuverter",
       "part_id": "pot_103"
     },
     {
-      "panel_uid": "C:M5B.4\u00b1",
+      "panel_uid": "C:M5B.4±",
       "role": "bipolar_attenuverter",
       "part_id": "pot_103"
     },
     {
-      "panel_uid": "C:M5B.5\u00b1",
+      "panel_uid": "C:M5B.5±",
       "role": "bipolar_attenuverter",
       "part_id": "pot_103"
     },
@@ -2146,27 +2146,27 @@
       "part_id": "pot_103"
     },
     {
-      "panel_uid": "C:M4A.1\u00b1",
+      "panel_uid": "C:M4A.1±",
       "role": "bipolar_attenuverter",
       "part_id": "pot_103"
     },
     {
-      "panel_uid": "C:M4A.2\u00b1",
+      "panel_uid": "C:M4A.2±",
       "role": "bipolar_attenuverter",
       "part_id": "pot_103"
     },
     {
-      "panel_uid": "C:M4A.3\u00b1",
+      "panel_uid": "C:M4A.3±",
       "role": "bipolar_attenuverter",
       "part_id": "pot_103"
     },
     {
-      "panel_uid": "C:M4A.4\u00b1",
+      "panel_uid": "C:M4A.4±",
       "role": "bipolar_attenuverter",
       "part_id": "pot_103"
     },
     {
-      "panel_uid": "C:M4A.CV\u00b1",
+      "panel_uid": "C:M4A.CV±",
       "role": "bipolar_attenuverter",
       "part_id": "pot_103"
     },
@@ -2176,27 +2176,27 @@
       "part_id": "pot_104"
     },
     {
-      "panel_uid": "C:M4B.1\u00b1",
+      "panel_uid": "C:M4B.1±",
       "role": "bipolar_attenuverter",
       "part_id": "pot_103"
     },
     {
-      "panel_uid": "C:M4B.2\u00b1",
+      "panel_uid": "C:M4B.2±",
       "role": "bipolar_attenuverter",
       "part_id": "pot_103"
     },
     {
-      "panel_uid": "C:M4B.3\u00b1",
+      "panel_uid": "C:M4B.3±",
       "role": "bipolar_attenuverter",
       "part_id": "pot_103"
     },
     {
-      "panel_uid": "C:M4B.4\u00b1",
+      "panel_uid": "C:M4B.4±",
       "role": "bipolar_attenuverter",
       "part_id": "pot_103"
     },
     {
-      "panel_uid": "C:M4B.CV\u00b1",
+      "panel_uid": "C:M4B.CV±",
       "role": "bipolar_attenuverter",
       "part_id": "pot_103"
     },
@@ -2211,7 +2211,7 @@
       "part_id": "pot_104"
     },
     {
-      "panel_uid": "C:W2.FOLD\u00b1",
+      "panel_uid": "C:W2.FOLD±",
       "role": "bipolar_attenuverter",
       "part_id": "pot_103"
     },
@@ -2231,7 +2231,7 @@
       "part_id": "pot_104"
     },
     {
-      "panel_uid": "C:W1.FOLD\u00b1",
+      "panel_uid": "C:W1.FOLD±",
       "role": "bipolar_attenuverter",
       "part_id": "pot_103"
     },

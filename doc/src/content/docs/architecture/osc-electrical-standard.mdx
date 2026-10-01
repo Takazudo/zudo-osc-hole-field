@@ -27,7 +27,7 @@ The machine-readable authority is `design/standard/electrical-standard.json`; sh
 | Input protection | Replace bare resistor/rail clamps with source-facing ADG5412F isolation, current limiting and drain-side clamps. |
 | Magnitude brightness | Adopt approximately 0.893 mA at 5 V magnitude: 5 V / 5.6 kΩ = 0.893 mA. |
 | Clip threshold | Adopt ±10 V on the internal node before level attenuation or VCA. |
-| Current ceilings | Historical pinned-source ceilings: 960 / 640 / 400 mA. The #48 external contract requires 1600 / 1500 / 300 mA continuous delivery; physical capacity is unknown. |
+| Current ceilings | Historical pinned-source ceilings: 960 / 640 / 400 mA. The current external-source requirement is 1700 / 1600 / 300 mA continuous delivery; physical capacity is unknown. |
 
 Nominal output loading is 100 kΩ; the design load envelope extends down to 10 kΩ. A 998 Ω general output loses 0.988% into 100 kΩ and 9.075% into 10 kΩ. Precision outputs instead sense the jack after the isolation resistor. Their **load-induced** DC error target is at most 1 mV between open circuit and 10 kΩ at −5, 0 and +5 V. The separate calibrated static path target is 2 mV. Neither target establishes sample-and-hold droop or oscillator tracking.
 
@@ -86,7 +86,7 @@ Functional terminal connections and all constituent parts are in the JSON. Exact
 | Trimmer | TC33X-2-103E, 10 kΩ with end-strapped wiper and 100 kΩ limiting resistor; octave uses TC33X-2-102E separately |
 | Slew island | Precision pre/post buffers, 2.2 kΩ + 500 kΩ rheostat, five parallel 100 nF C0G capacitors; precision output after the island |
 
-The precision output's 100 pF is a selected starting value. Test 0, 100 pF, 1 nF and 5 nF cable loads, open/100 kΩ/10 kΩ resistance, and ±5 V steps. Targets: no sustained oscillation, at most 10% overshoot, settling within 1 mV by 1 ms. Component tolerances and amplifier models must be included; arithmetic alone does not test compensation.
+The initial precision feedback of 10 kΩ / 100 pF was superseded by #49: the current draft uses 100 Ω jack feedback and 1 nF local feedback. Model screening is not hardware qualification. Test 0, 100 pF, 1 nF and 5 nF cable loads, open/100 kΩ/10 kΩ resistance, and ±5 V steps. Targets: no sustained oscillation, at most 10% overshoot, settling within 1 mV by 1 ms. Component tolerances and amplifier models must be included; arithmetic alone does not test compensation.
 
 Gate thresholds include pull-up loading. Comparator supply choice matters: gate comparators run from +12 V/GND so their low output is suitable for 5 V logic. Clip comparators run from ±12 V and may sink toward −12 V; their outputs drive only the analog LED circuit. The acceptance windows for real gate thresholds are 1.35…1.65 V rising and 0.85…1.15 V falling.
 
@@ -110,7 +110,7 @@ After 20 minutes of warm-up, record serial/revision, ambient temperature, rails,
 
 ## Rail and capacitor budgets
 
-Issue #48 supersedes the original source choice with the [single-domain external source requirement](../decisions/osc-supply-architecture.mdx). The old 960/640/400 mA ceilings remain historical pinned P+B comparisons. The selected contract requires 1600/1500/300 mA continuous and 1900/1800/400 mA transient delivery; these are required values, not available source capacity. The 150/150/100 µF capacitance limits remain unchanged; count their full +20% tolerance at a monotonic ramp no faster than 10 ms. #52 captures only the non-orderable power boundary and verifies raw/load net separation; #59 owns exact protection circuits and #57 retains physical qualification.
+Issue #48 supersedes the original source choice with the [single-domain external source requirement](../decisions/osc-supply-architecture.mdx). The old 960/640/400 mA ceilings remain historical pinned P+B comparisons. The current contract requires 1700/1600/300 mA continuous and 2000/1900/400 mA transient delivery; these are minimum required deliveries, not measured or available source capacity. Maximum delivered-current limits remain 2100/2000/500 mA. The 150/150/100 µF capacitance limits remain unchanged; count their full +20% tolerance at a monotonic ramp no faster than 10 ms. #52 captures only the non-orderable power boundary and verifies raw/load net separation; #59 owns exact protection circuits and #57 retains physical qualification.
 
 
 `rail-budget-preliminary.json` retains the 33-module, 225-signal-section planning table and splits it by role. It adds all 98 protected input buffers, 48 DC wiper buffers, 51 remote signal/level drivers, reference generation/fan-out, 92 magnitude drivers, twelve stage drivers and ten clip buffers. It rounds whole packages and charges unused sections. Some additions may overlap stages in the original rough estimate; only captured connectivity may remove that overlap.
