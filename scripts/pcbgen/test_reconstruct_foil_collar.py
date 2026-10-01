@@ -6,7 +6,7 @@ import tempfile
 import unittest
 
 from scripts.pcbgen.foil_collar_geometry import PROPOSAL,compile_proposal
-from scripts.pcbgen.reconstruct_foil_collar import require_cache,island_polygon,added_ids,restore_unchanged,check_named_connectivity,declared_edit_windows
+from scripts.pcbgen.reconstruct_foil_collar import require_cache,island_polygon,added_ids,restore_unchanged,check_named_connectivity,declared_edit_windows,result_policy
 
 
 class ReconstructFoilCollarTests(unittest.TestCase):
@@ -83,6 +83,31 @@ class ReconstructFoilCollarTests(unittest.TestCase):
         self.assertEqual([e['type'] for e in k['native_rule_errors']],['zones_intersect'])
         jl=next(b for b in receipt['boards'] if b['board_key']=='JL')
         self.assertTrue(jl['constructor_execution']['source_hash_guard'].startswith('FAIL'))
+
+    def test_full_refill_scope_does_not_admit_old_local_or_electrical_gate(self):
+        full=result_policy('full_refill_draft_epoch',True,False)
+        self.assertTrue(full['command_scope_gate_pass'])
+        self.assertTrue(full['native_rule_connectivity_gate_pass'])
+        self.assertFalse(full['local_only_experiment_gate_pass'])
+        self.assertFalse(full['electrical_or_physical_admission'])
+        self.assertFalse(result_policy('full_refill_draft_epoch',False,True)['command_scope_gate_pass'])
+        self.assertFalse(result_policy('local_only_experiment',True,False)['command_scope_gate_pass'])
+        with self.assertRaisesRegex(ValueError,'unknown'):result_policy('ignore_rules',True,True)
+
+    def test_priority_receipt_retains_old_failure_and_separate_native_scope(self):
+        receipt=json.loads((PROPOSAL.parent/'foil-collar-k-priority-receipt.json').read_bytes())
+        historical=json.loads((PROPOSAL.parent/'foil-collar-native-receipt.json').read_bytes())
+        self.assertEqual(receipt['source_priority']['new_collar'],1)
+        self.assertEqual(receipt['source_priority']['retained_target'],0)
+        self.assertEqual(receipt['K']['native_rule_errors'],0)
+        self.assertEqual(receipt['K']['schematic_parity_issues'],0)
+        self.assertTrue(receipt['native_result_policy']['native_rule_connectivity_gate_pass'])
+        self.assertFalse(receipt['native_result_policy']['local_only_experiment_gate_pass'])
+        self.assertFalse(receipt['native_result_policy']['electrical_or_physical_admission'])
+        old_jl=next(b for b in historical['boards'] if b['board_key']=='JL')
+        self.assertEqual(receipt['JL_not_rerun']['historical_candidate_sha256'],old_jl['candidate_sha256'])
+        self.assertEqual(receipt['JL_not_rerun']['historical_proposal_sha256'],historical['proposal_sha256'])
+        self.assertNotEqual(receipt['source_sha256']['proposal'],historical['proposal_sha256'])
 
 
 if __name__=='__main__':unittest.main()

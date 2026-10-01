@@ -189,6 +189,15 @@ def displacement_diagnostic(old_fill,new_fill,allowed):
         'scope':'Bidirectional material-set displacement outside declared windows, using native rounded offsets. Measures changed boundaries/filled gaps; not an exact Hausdorff certificate, physical tolerance, or passing admission threshold.'}
 
 
+def result_policy(scope,rule_connectivity_pass,local_only_pass):
+    if scope not in ('local_only_experiment','full_refill_draft_epoch'):raise ValueError('unknown native realization scope')
+    if type(rule_connectivity_pass) is not bool or type(local_only_pass) is not bool:raise ValueError('explicit boolean native check outcomes required')
+    return {'native_rule_connectivity_gate_pass':rule_connectivity_pass,
+            'local_only_experiment_gate_pass':rule_connectivity_pass and local_only_pass,
+            'command_scope_gate_pass':rule_connectivity_pass and (local_only_pass or scope=='full_refill_draft_epoch'),
+            'electrical_or_physical_admission':False}
+
+
 def run_board(cache,key):
     import pcbnew
     from scripts.pcbgen.extract_power_geometry import extract,contours
@@ -229,7 +238,11 @@ def run_board(cache,key):
         zone.Outline().BooleanSubtract(rectangle(clip['subtract_window_mm']))
         changed.add(uid)
     ids=added_ids(b);net=board.FindNet('AGND');face=board.GetLayerID(b['face'])
+    landing=[z for z in zones.values() if z.GetNetname()=='AGND' and board.GetLayerName(z.GetLayer())==b['board_access']['target_plane']]
+    if not landing or any(z.GetAssignedPriority()!=b['board_access']['target_zone_priority'] for z in landing):
+        raise ValueError('actual target-zone priority differs from proposal authority')
     zone=pcbnew.ZONE(board);zone.SetUuid(pcbnew.KIID(ids['collar_zone']));zone.SetZoneName('UNSELECTED foil collar '+key)
+    zone.SetAssignedPriority(b['collar_zone_priority'])
     zone.SetLayer(face);zone.SetNet(net);zone.SetLocalClearance(pcbnew.FromMM(spec['geometry']['copper_isolation_clearance_mm']))
     native_minimum=max(z.GetMinThickness() for z in zones.values() if z.IsOnLayer(face) and not z.GetIsRuleArea())
     zone.SetMinThickness(native_minimum);zone.SetPadConnection(pcbnew.ZONE_CONNECTION_FULL)
@@ -381,9 +394,12 @@ def run_board(cache,key):
     if any(digest(ROOT/name)!=want for name,want in companion_hashes.items()):raise ValueError('native companion changed during checks')
     verify_inputs(cache,manifest)
     if digest(Path(__file__))!=constructor_hash:raise ValueError('constructor source changed during native execution')
-    native_gate=(not errors and not drcs['after']['schematic_parity'] and delta_receipt['local_only_delta_gate_pass'] and delta_receipt['source_polygon_gate_pass']
-        and partition_unchanged and not missing_ground and paid_via_connected and section_gate and connectivity['gate_pass'])
-    report={'status':('UNSELECTED native checks pass; no electrical or physical admission' if native_gate else 'REJECTED native admission; full failed-gate diagnostics retained'),
+    rule_connectivity_pass=(not errors and not drcs['after']['schematic_parity'] and partition_unchanged and not missing_ground
+        and paid_via_connected and section_gate and connectivity['gate_pass'])
+    policy=result_policy(b['native_realization_scope'],rule_connectivity_pass,delta_receipt['local_only_delta_gate_pass'] and delta_receipt['source_polygon_gate_pass'])
+    native_gate=policy['local_only_experiment_gate_pass']
+    report={'status':('PASS declared native rule/connectivity scope; UNSELECTED full geometry epoch; electrical/material/physical admission OPEN' if policy['command_scope_gate_pass'] else 'REJECTED declared native scope; full failed-gate diagnostics retained'),
+        'realization_scope':b['native_realization_scope'],'result_policy':policy,'source_collar_zone_priority':b['collar_zone_priority'],
         'native_admission_gate_pass':native_gate,'board_key':key,'kicad_version':pcbnew.GetBuildVersion(),
         'proposal_sha256':manifest['proposal_sha256'],'constructor_sha256':constructor_hash,
         'source_board_sha256':b['native_board_sha256'],'candidate_board_sha256':digest(candidate),'companion_sha256':companion_hashes,
@@ -400,7 +416,7 @@ def run_board(cache,key):
         'open':'Fixture isolation/remating/process, manufactured material/geometry metric, PCB access energy and joined network acceptance remain OPEN. Historical electrical receipts are not reused.'}
     write_json(directory/'native-receipt.json',report)
     print(key,'native rules',len(errors),'parity',report['schematic_parity_issues'],'open edges',after['native_unconnected_edges'],flush=True)
-    if not native_gate:raise ValueError('native admission gate failed; full diagnostics retained, no admission')
+    if not policy['command_scope_gate_pass']:raise ValueError('declared native scope failed; full diagnostics retained, no admission')
 
 
 def main():

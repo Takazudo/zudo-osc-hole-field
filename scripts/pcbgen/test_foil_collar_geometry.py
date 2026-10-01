@@ -128,5 +128,20 @@ class FoilCollarGeometryTests(unittest.TestCase):
         self.spec['source_files']['design/partition/partition.json']='0'*64
         self.rejects('source file hash drift')
 
+    def test_same_face_landing_requires_explicit_distinct_priority(self):
+        k=self.spec['boards'][1]
+        self.assertEqual(k['collar_zone_priority'],1)
+        self.assertEqual(k['board_access']['target_zone_priority'],0)
+        k['collar_zone_priority']=0
+        self.rejects('distinct priorities')
+
+    def test_priority_and_scope_are_source_checked(self):
+        original=copy.deepcopy(self.spec)
+        for value in (-1,True,.5):
+            self.spec=copy.deepcopy(original);self.spec['boards'][1]['collar_zone_priority']=value
+            self.rejects('explicit nonnegative')
+        self.spec=original;self.spec['boards'][1]['native_realization_scope']='ignore_rules'
+        self.rejects('realization scope')
+
 
 if __name__=='__main__':unittest.main()
