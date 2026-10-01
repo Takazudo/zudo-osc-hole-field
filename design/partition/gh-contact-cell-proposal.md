@@ -62,9 +62,12 @@ physical-pad wetting or a uniform operating current.
    not stacked as two toe heights.
 4. A rectangular taper starts at z=s+h, centre y=0.7+h/2, section a x h.
    It ends with section body-width x body-depth and centre
-   y=0.7+body-depth/2. Its actual centre displacement is half the difference
-   of those depths. The calculator uses an interval upper on that actual
-   displacement, not a fictitious maximum displacement for every member.
+   y=0.7+body-depth/2. More generally its start centre is
+   `toe_projection+h/2` and its end centre is `body_front_y+body-depth/2`.
+   The calculator derives the displacement from both endpoints. Moving the
+   body front therefore pays a real sheared transition; it cannot leave an
+   uncharged gap before the header spine. For the current coincident front
+   datums, the displacement is half the difference of the section depths.
 5. The header spine is a sheared constant-section prism. Its centre moves
    from that taper endpoint to y=1.5 over its own positive length. A taper
    contracts to the finite mating patch, and a second taper expands to the
@@ -142,6 +145,18 @@ interface jump is zero. This is an admissible restriction of the lower
 potential trial, **not** a claim that the actual connector or cut is an ideal
 equipotential. The same value must be imposed on the matching PCB trial and
 on the incoming boundary of the separately modeled bulk-wire potential.
+
+The checker requires the maximum metal box to contain every reference solid
+and the full permitted outgoing strand metal, including the annuli outside
+the current polygons. Affine taper and sheared-prism extrema follow from
+their connected endpoints. The separate maximum-wetting rectangle is centred
+on the native pad at z=0. The required minimum solder support is centred in
+x and starts at y=0, like the current patch; that entire support must fit
+inside maximum wetting. Maximum wetting is a conservative potential-support
+restriction, not an assertion that all of the native pad is physically wet.
+For the current source, required metal spans x=−0.24..0.24,
+y=0..1.74 and z=0..7.5 mm. The larger declared metal/wetting envelopes remain
+prospective containment requirements, not exact-MPN evidence.
 
 ## Bulk wire: rejected independent box and a nonempty correlated class
 
