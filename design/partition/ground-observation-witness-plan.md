@@ -208,7 +208,8 @@ error_W <= sqrt(U_s,W Delta_b) + sqrt(U_b,W Delta_s)
 
 The last term is charged once for a selected union of disjoint regions. Full
 source and observation functionals must match those used by both witnesses;
-the regional partition must cover the whole physical conductor exactly once.
+the regional partition must cover the whole physical conductor and any
+Robin/contact surface dissipation exactly once.
 Main-terminal spreading and shared necks cannot be renamed private to evade
 the original limit. Private regions stay in the full current/voltage budget.
 Negative regional cross products are allowed: regional transfer is not positive

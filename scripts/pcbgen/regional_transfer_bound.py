@@ -1,7 +1,8 @@
 """Regional reciprocal-transfer bounds without subtracting private diagonals.
 
 Supplied regions must be a disjoint complete partition of one physical
-conductor domain, with compatible conserved source/observation current trials.
+conductor energy measure, with compatible conserved source/observation current
+trials. Include any Robin/contact surface dissipation as well as bulk volumes.
 This arithmetic helper checks ID coverage and energy consistency; it cannot
 establish those geometric/physical premises or admit a manufactured board.
 """
@@ -81,7 +82,7 @@ def regional_bounds(*, region_ids, common_region_ids, regions,
         'scope':[
             'Common is a named physical region union, not a difference of unrelated diagonals.',
             'Private regions remain present in whole-domain current and voltage objectives.',
-            'Region geometry must be disjoint and complete, with matching source/observation functionals.',
+            'Region bulk and interface energy measures must be disjoint and complete, with matching functionals.',
             'No monotonicity of regional trial energy or physical hardware acceptance is asserted.',
         ],
     }
