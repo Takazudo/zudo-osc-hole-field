@@ -50,9 +50,41 @@ Ideal-diode loss includes the controller's servo drop. Do not substitute a two-F
 - **Current and heat:** the 24.48 V, −1% resistor screen produces 24.78 mA in the 998 Ω drive path, 9.02 mA in a proposed 2.74 kΩ sense path, and about **0.303 W per 499 Ω drive resistor**. These are prospective circuit bounds, not functional guarantees at amplifier absolute maxima. In-range contention need not trip an overvoltage switch. Exact resistor derating, amplifier operating-point dissipation, simultaneous package loading and switch thermal limits remain open.
 - **Precision and implementation:** preserve ≤1 mV load error, ≤2 mV calibrated path error and existing cable/load/settling/stability targets. The twelve issue-58 R/C diagnostic cases do not establish switch fault behavior. Obtain conditioned models/limits and analyze enable/fault transients, leakage, calibration, noise and current. Reconcile every actual package, island, control route and fitted capacitor before regenerating board reservations.
 
+## Isolated precision-output candidate
+
+A source-driven analog candidate now exists in
+`design/power/precision-output-cell.json`, with generated connectivity, source
+receipts, calculations and a work note beside it. It uses exact Panasonic
+AQY232G3HSX isolated contacts, a 4.99 kΩ sense resistor and permanent
+10 MΩ / 10 nF local feedback. The contacts have no analog ground pin, but the
+independent permit source and ground-observation circuit are still missing.
+No installed component or board population changes.
+
+The pinned amplifier model meets the original 1 ms settling target in all 24
+powered-on diagnostic cases (maximum error 0.272 mV, overshoot 5.486%). Only
+12 cases meet the earlier stricter 400 µs diagnostic; those misses remain
+recorded. Static contact R/C does not model relay switching or fault isolation.
+
+The candidate quantifies the remaining design constraints. Its simple +5 V
+LED-drive arrangement exceeds the original current ceiling. Alternative series
+strings can reduce bias demand, but no driver, grouping or project-temperature
+guarantee is established. Some no-substitution cases fit the hard current
+ceilings while losing the required positive limiter window after rounding.
+During a cold rail collapse, contacts remain conductive through detection and
+release; leakage bleeders cannot absorb that current. The reservoir and 0.3 V
+excursion used in the counterexample are explicit diagnostic assumptions, not
+fitted parts or new acceptance limits.
+
 ## Next complete cell
 
-Develop **one precision-output protection cell**, with two source-facing channels, jack-side fault-current limiting, permanent local feedback, local all-rail inhibit, and the actual rail/control interfaces. Begin from the issue-58 998 Ω drive and proposed 2.74 kΩ sense, 10 MΩ || 10 nF feedback topology; its passives are not selected by this research. Include a reference-receiver boundary in the same fault matrix. Select the exact passives and clamps only after voltage/current/thermal/precision analysis, then capture the schematic from specifications and verify pin mapping.
+Complete the candidate’s **cold-collapse boundary and permit circuit**, then
+capture a complete precision-output protection cell with isolated drive/sense
+paths, jack-side current limiting, permanent local feedback and actual
+rail/control interfaces. The current analog candidate uses 998 Ω drive,
+4.99 kΩ sense and 10 MΩ || 10 nF feedback; its exact passives remain research
+candidates. Include reference receivers and shared-rail fault contributions in
+the same analysis. Confirm the required clamps, detector/release timing and
+reachable capacitance before schematic capture and pin-mapping verification.
 
 That complete cell must expose local-ground loss and return-integrity dependencies explicitly. Do not replicate it 128 times, or mark it implemented, while those dependencies remain unspecified. Follow with the three-rail supervisor/driver/discharge circuit and independently observable return test, then regenerate aggregate outputs and reservations. Physical characterization remains NOT RUN in issue 57; missing design is still issue 59 work.
 

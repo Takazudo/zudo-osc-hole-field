@@ -47,6 +47,54 @@ class RegionalTransferTests(unittest.TestCase):
                     self.assertLessEqual(F(result[name]['transfer_lower']),value)
                     self.assertGreaterEqual(F(result[name]['transfer_upper']),value)
 
+    def test_independent_regional_uppers_can_exceed_tighter_complete_upper(self):
+        # The exact same physical fields admit loose regional bounds and a
+        # tight global bound simultaneously. No energy or gap is increased.
+        for x,y in ((F(0),F(0)),(F(1,4),F(-2,3))):
+            args,exact=self.fixture(x,y)
+            original=regional_bounds(**args)
+            for row in args['regions']:
+                row['source_energy_upper']+=10
+                row['observation_energy_upper']+=10
+            result=regional_bounds(**args)
+            self.assertEqual(result['source_gap_upper'],original['source_gap_upper'])
+            self.assertEqual(result['observation_gap_upper'],original['observation_gap_upper'])
+            self.assertEqual(result['whole_domain'],original['whole_domain'])
+            for key,value in exact.items():
+                self.assertLessEqual(F(result['regions'][key]['transfer_lower']),value)
+                self.assertGreaterEqual(F(result['regions'][key]['transfer_upper']),value)
+
+    def test_complete_union_uses_orthogonality_but_proper_regions_do_not(self):
+        # One trial is exact, the other has a nonzero conserved circulation.
+        # The whole cross is exact by orthogonality; regional crosses need not be.
+        args,exact=self.fixture(F(0),F(1,2))
+        result=regional_bounds(**args)
+        self.assertEqual(result['whole_domain']['error_radius_upper'],0)
+        self.assertEqual(result['whole_domain']['transfer_lower'],float(sum(exact.values())))
+        self.assertGreater(result['common']['error_radius_upper'],0)
+        args['common_region_ids']=args['region_ids']
+        result=regional_bounds(**args)
+        self.assertEqual(result['common'],result['whole_domain'])
+
+    def test_loose_regional_uppers_do_not_hide_global_cross_contradiction(self):
+        args,_=self.fixture()
+        for row in args['regions']:
+            row.update(source_energy_upper=100,observation_energy_upper=100)
+        args['regions'][0].update(trial_cross_lower=99,trial_cross_upper=100)
+        with self.assertRaisesRegex(ValueError,'complete trial energies'):
+            regional_bounds(**args)
+
+    def test_opposite_regional_crosses_cannot_hide_joint_energy_contradiction(self):
+        rows=[dict(id=name,source_energy_upper=10,observation_energy_upper=10,
+                   trial_cross_lower=cross,trial_cross_upper=cross)
+              for name,cross in [('positive',2),('negative',-2)]]
+        # Every individual cross fits the global norm and their sum is zero,
+        # but their absolute sum requires more complete energy than supplied.
+        with self.assertRaisesRegex(ValueError,'complete trial energies'):
+            regional_bounds(region_ids=['positive','negative'],common_region_ids=['positive'],
+                            regions=rows,source_energy_upper=2,source_energy_lower=0,
+                            observation_energy_upper=2,observation_energy_lower=0)
+
     def test_missing_overlap_identity_and_energy_inconsistency_rejected(self):
         for mutation in ('missing','duplicate','foreign_common','energy','cross','negative_gap'):
             args,_=self.fixture()

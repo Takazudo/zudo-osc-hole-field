@@ -28,9 +28,16 @@ def regional_bounds(*, region_ids, common_region_ids, regions,
       + sqrt(gap_source * gap_observation).
 
     The last term is charged once for a union, not subtracted as private
-    access uncertainty. Regional source/observation energies are outward
-    upper bounds. They must sum to at most the supplied complete trial
-    upper energies (which may also retain global numerical allowances).
+    access uncertainty. Regional energy uppers may be independently loose;
+    their sum need not fit a tighter complete-domain upper. For any region
+    union, nonnegative dissipation bounds its energy by both the sum of its
+    regional uppers and the complete-domain upper. All bounds must refer to
+    the same conserved trial fields and complete bulk/interface energy norm.
+
+    For the complete union only, variational orthogonality cancels both
+    linear error terms: physical equilibrium fields are orthogonal to the
+    homogeneous errors with matching full source/trace constraints. Merely
+    matching terminal current totals is not sufficient for this premise.
     """
     rows = covered_rows(region_ids, regions, 'physical region')
     common = list(common_region_ids)
@@ -60,14 +67,24 @@ def regional_bounds(*, region_ids, common_region_ids, regions,
         if lo > norm or hi < -norm:
             raise ValueError(key+': trial cross interval contradicts regional energies')
         parsed[key] = (a,b,lo,hi)
-    if sum(x[0] for x in parsed.values()) > us or sum(x[1] for x in parsed.values()) > ub:
-        raise ValueError('regional upper energies exceed supplied complete trial upper')
-
+    # Disjointness also bounds the sum of absolute regional cross integrals
+    # by the complete-domain Cauchy norm. Opposite signs cannot hide a
+    # contradiction by cancelling in the whole-domain cross product.
+    minimum_absolute_sum=sum((max(Fraction(0),x[2],-x[3]) for x in parsed.values()),Fraction(0))
+    if minimum_absolute_sum > sqrt_upper(us*ub):
+        raise ValueError('regional cross intervals contradict complete trial energies')
     def enclose(keys):
         values=[parsed[key] for key in keys]
-        a=sum((x[0] for x in values),Fraction(0));b=sum((x[1] for x in values),Fraction(0))
+        a=min(us,sum((x[0] for x in values),Fraction(0)))
+        b=min(ub,sum((x[1] for x in values),Fraction(0)))
         lo=sum((x[2] for x in values),Fraction(0));hi=sum((x[3] for x in values),Fraction(0))
-        error=sqrt_upper(a*db)+sqrt_upper(b*ds)+sqrt_upper(ds*db)
+        norm=sqrt_upper(a*b)
+        if lo > norm or hi < -norm:
+            raise ValueError('trial cross interval contradicts complete trial energies')
+        lo=max(lo,-norm);hi=min(hi,norm)
+        error=sqrt_upper(ds*db)
+        if len(values)!=len(parsed):
+            error+=sqrt_upper(a*db)+sqrt_upper(b*ds)
         return {'trial_cross_lower':downward(lo),'trial_cross_upper':upward(hi),
                 'transfer_lower':downward(lo-error),'transfer_upper':upward(hi+error),
                 'error_radius_upper':upward(error),
