@@ -10,12 +10,12 @@ Five primary-source current rows are retained in the owner bundles: TPS37044
 20 µA and SN74HC74 40 µA. Their sum is 240 µA, but the respective source
 conditions differ from the complete candidate. In particular, the logic rows
 use 6 V, rail-level inputs and unloaded outputs; the comparator row specifies
-output low; and the reference row specifies zero output load and 10 µF output
+output low and input common mode at its negative supply; and the reference row specifies zero output load and 10 µF output
 capacitance. Their application here remains an explicit assumption.
 
 The resistor screen uses the exact RT and RC families' separate tolerance/TCR
 limits and a stated 25 °C reference / −40…125 °C analysis envelope. It assumes
-zero input leakage, reference voltage at most 3.31 V and normal rail limits.
+zero input and output/off-state leakage, reference voltage at most 3.31 V and normal rail limits.
 The coarse reference monitor does not establish that narrow reference bound.
 A passive-network voltage bound deliberately overestimates the reference feed
 through R102 rather than substituting a nominal current for a maximum.
@@ -36,3 +36,10 @@ reference slow-slew behavior; both retained RC clamp-return paths; negative-inpu
 leakage; actual isolation/discharge circuits; and partial-power/ground-loss
 behavior. Those loads must fit inside the existing allowance. No allowance is
 removed from the master budget, and no rail/current limit is increased.
+
+
+Verification: six focused accounting/topology regression tests, component and
+documentation checks, fresh native monitor ERC/pin checks and guarded aggregate
+regeneration pass. Independent primary-source/current-path review completed;
+its missing-common-mode, independent-tolerance-validation and leakage-scope
+findings were corrected. Installed/dynamic qualification remains NOT RUN.

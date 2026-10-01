@@ -6,7 +6,7 @@ sidebar_position: 11
 
 ## Current continuation — 2 October 2026
 
-Start from the latest `main`. Completed WIP checkpoints through PR #79 are
+Start from the latest `main`. Completed WIP checkpoints through PR #80 are
 merged; the preserved issue-38 worktree is a recovery/evidence store, not the
 active implementation base. Keep its ignored artifacts and the other retained
 experiment worktrees. Issues #38 and #59 remain open, and every schematic and
@@ -16,9 +16,12 @@ PR #80 captures an isolated, unselected native monitor/reference-validity/permit
 candidate with a finite dummy load: 39 proposed components, 119 physical pins,
 and fresh KiCad ERC with zero errors and warnings. Conditional Boolean/RC
 diagnostics reproduce short-fault latch-off and preserve unknown control-power
-states. They do not simulate actual device startup or release. The next work is
-closing the active-device current ledger, reference-validity and partial-power
-behavior against actual isolation loads. The monitor
+states. They do not simulate actual device startup or release. The conditional current allocation in PR #81 retains five device-current source
+rows and charges reference output demand to +5 V once, within the existing
+auxiliary allowance. Its largest +5 V DC screen is 6.625 mA under explicit
+source-applicability/leakage assumptions. This does not bound dynamic current.
+The next work is reference-validity and partial-power behavior, including slow
+logic-input current and actual isolation loads. The monitor
 studies below provide inputs and counterexamples, not a completed protection
 assembly. Current-source contact/material qualification and joined electrical
 compliance still gate board acceptance; green software CI does not close them.

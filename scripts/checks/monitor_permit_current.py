@@ -64,7 +64,11 @@ def build(spec, catalog, supply, current):
             raise ValueError('resistance and MPN disagree')
         # Analysis reference 25C and -40..125C envelope, not a manufacturer
         # nominal-resistance reference-temperature qualification.
-        factor=(1-e['tolerance_fraction'])*(1-100*e['tcr_abs_per_C'])
+        tolerance=e['tolerance_fraction']; drift=100*e['tcr_abs_per_C']
+        if (not math.isfinite(tolerance) or not math.isfinite(drift)
+                or not 0 <= tolerance < 1 or not 0 <= drift < 1):
+            raise ValueError('invalid independent resistor condition')
+        factor=(1-tolerance)*(1-drift)
         if not 0 < factor <= 1:
             raise ValueError('invalid resistor condition')
         return p['value']*factor
@@ -111,7 +115,7 @@ def build(spec, catalog, supply, current):
         'conditions_and_open_gates':[
           'Adopt the listed source-table currents outside their full source conditions only as explicit assumptions, not guarantees.',
           'Reference <=3.31V, negative rail nonpositive and normal rail bounds; coarse reference monitor does not establish this precision window.',
-          'Zero input leakage, ideal logic voltages within supply rails, passive resistor network and zero semiconductor drops for load-current bounds.',
+          'Zero input and output/off-state leakage, ideal logic voltages within supply rails, passive resistor network and zero semiconductor drops for load-current bounds.',
           '25C resistance reference and -40..125C resistor/TCR envelope are analysis conditions, not installed thermal qualification.',
           'Source input current equals reference output demand plus reference IQ; no separate free reference supply.',
           'Both-path DC screen is not a transient maximum: HC slow-input/switching current, cap charging and two RC clamp-return paths remain unbounded.',

@@ -52,3 +52,9 @@ class MonitorCurrentTests(unittest.TestCase):
 
     def test_report_current(self):
         model.run(check=True)
+
+    def test_invalid_resistor_factors_cannot_cancel(self):
+        part=next(p for p in self.catalog['parts'] if p['mpn']=='RT0603BRD074K99L')
+        part['tolerance_fraction']=2
+        part['tcr_abs_per_C']=0.02
+        with self.assertRaisesRegex(ValueError,'independent resistor'): self.build()
