@@ -82,6 +82,8 @@ def build(config=None):
     allowances['+5V'].append({'id':'NOISE2-extra-sensitivity','mA':10})
     normal = {r:total[r] + sum(v['mA'] for v in allowances[r]) for r in RAILS}
     continuous = {r:math.ceil(normal[r]*(1+env['reserve_fraction']) / 100)*100 for r in RAILS}
+    require(req.get('minimum_continuous_current_mA') == continuous,
+            'declared continuous-current contract does not match independent ledger calculation')
     charge = {r:req['nominal_capacitance_ceiling_uF'][r]*(1+req['capacitance_tolerance_fraction'])*req['required_load_voltage_magnitude_V'][r][1] / req['soft_start_min_ms'] for r in RAILS}
     transient = {r:math.ceil((continuous[r]+charge[r]+env['fault_increment_mA'][r])/100)*100 for r in RAILS}
     require(env['fault_increment_mA']['+12V'] >= 24/998*1000 and env['fault_increment_mA']['-12V'] >= 24/998*1000, 'conditional output fault allowance missing')
@@ -200,7 +202,7 @@ def build(config=None):
             'maximum_additional_full_board_allocations_at_4p7uF':math.floor((remaining+1e-9)/4.7),
             'board_bulk_status':'OPEN: board count and per-board/rail reservoir placement not established; no zero-capacitance assumption',
             'full_ceiling_with_plus20percent_uF':round(req['nominal_capacitance_ceiling_uF'][rail]*1.2,6)}
-    protection = protection_audit_build()
+    protection = protection_audit_build(c)
     require(protection['output_count'] == 82 and protection['precision_count'] == 16 and len(protection['reference_receivers']) == 30, 'unresolved injection inventory changed')
     implementation = {
         'status': 'PASS: requirement-only specification separation; native netlist audited separately; OPEN: protection circuit #59; NOT RUN: physical #57',
