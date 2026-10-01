@@ -313,7 +313,10 @@ def run(check: bool = False) -> None:
                 raise ValueError(f"Generated candidate drift: {path.relative_to(ROOT)}")
         else:
             path.write_text(body)
-    print("PASS: candidate topology/evidence/arithmetic; hardware protection remains OPEN")
+    print("PASS: candidate topology/evidence receipts/arithmetic; hardware protection remains OPEN")
+    for source in sources["sources"]:
+        if not (ROOT / source["file"]).exists():
+            print(f"NOT RUN: optional source-byte check for {source['id']}; retained acquisition receipt present, local PDF cache absent")
 
 
 if __name__ == "__main__":

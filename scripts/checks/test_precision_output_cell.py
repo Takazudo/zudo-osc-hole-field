@@ -206,10 +206,17 @@ class PrecisionOutputCandidateTests(unittest.TestCase):
     def test_generated_bounds_and_model_receipt_match_inputs_without_running_oracle(self):
         run(check=True)
         report = json.loads((ROOT / "design/power/precision-output-cell-model.json").read_text())
+        self.assertTrue({
+            "scripts/checks/precision_output_cell.py",
+            "design/spec/cells/sweep_precision_vendor.py",
+            "design/spec/cells/_builder.py",
+            "scripts/kicad/run.sh", "scripts/kicad/pin.env",
+        } <= set(report["input_sha256"]))
         for path, expected in report["input_sha256"].items():
             self.assertEqual(digest(ROOT / path), expected)
         self.assertEqual(len(report["cases"]), 24)
         self.assertEqual(sum(row["stricter_400us_diagnostic_met"] for row in report["cases"]), 12)
+        self.assertTrue(all(len(row["deck_sha256"]) == 64 for row in report["cases"]))
 
 
 if __name__ == "__main__":

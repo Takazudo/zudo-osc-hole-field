@@ -6,7 +6,9 @@ Run through heavy-guard because it invokes the pinned native KiCad oracle.
 """
 from pathlib import Path
 import argparse
+import hashlib
 import json
+import math
 import re
 import shutil
 import subprocess
@@ -16,9 +18,19 @@ from tempfile import TemporaryDirectory
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT))
 from design.spec.cells.sweep_precision_vendor import model, measure, LOADS, CAPS, LIBRARY, LIB_SHA256, ZIP_SHA256
-from scripts.checks.precision_output_cell import SPEC, SOURCES, validate, digest
+from scripts.checks.precision_output_cell import SPEC, SOURCES, STANDARD, SUPPLY, PROTECTION_AUDIT, validate, digest
 
 OUT = ROOT / "design/power/precision-output-cell-model.json"
+
+
+def input_hashes() -> dict[str, str]:
+    """Bind the actual deck, validation, measurement and pinned-oracle code."""
+    paths = (SPEC, SOURCES, STANDARD, SUPPLY, PROTECTION_AUDIT, Path(__file__).resolve(),
+             ROOT / "scripts/checks/precision_output_cell.py",
+             ROOT / "design/spec/cells/sweep_precision_vendor.py",
+             ROOT / "design/spec/cells/_builder.py",
+             ROOT / "scripts/kicad/run.sh", ROOT / "scripts/kicad/pin.env")
+    return {str(p.relative_to(ROOT)): digest(p) for p in paths}
 
 
 def deck(spec: dict, load: str, cable: str | None, contact: float, compensation: float) -> str:
@@ -55,6 +67,7 @@ def deck(spec: dict, load: str, cable: str | None, contact: float, compensation:
 
 
 def run(check: bool = False) -> None:
+    frozen_inputs = input_hashes()
     spec = json.loads(SPEC.read_text())
     validate(spec, json.loads(SOURCES.read_text()))
     model(offline=True)
@@ -79,14 +92,20 @@ def run(check: bool = False) -> None:
                     expected = {prefix + suffix for prefix in ("p", "n", "p2", "n2") for suffix in ("deadline", "deadlinehi", "deadlinelo")}
                     if set(late) != expected:
                         raise RuntimeError("Missing original-deadline measurements")
+                    if not all(math.isfinite(x) for x in (*v.values(), *late.values())):
+                        raise RuntimeError("Nonfinite simulator measurement")
                     overshoot = max(0, max(v["pmax"], v["p2max"]) - 5, -5 - min(v["nmin"], v["n2min"])) / 10 * 100
                     error = max(abs(v[k] - (5 if k.startswith("p") else -5)) for k in ("pset", "p2set", "nset", "n2set")) * 1000
                     ripple = max(v[a] - v[b] for a, b in [("platmax", "platmin"), ("p2latmax", "p2latmin"), ("nlatmax", "nlatmin"), ("n2latmax", "n2latmin")]) * 1000
                     deadline_error = max(abs(late[p + "deadline"] - (5 if p.startswith("p") else -5)) for p in ("p", "n", "p2", "n2")) * 1000
                     deadline_ripple = max(late[p + "deadlinehi"] - late[p + "deadlinelo"] for p in ("p", "n", "p2", "n2")) * 1000
                     rows.append({"corner": label, "load": load, "cable_capacitance": cable, "overshoot_percent": round(overshoot, 6), "settling_error_mV_at_400us": round(error, 6), "ripple_mVpp_at_300_to_450us": round(ripple, 6), "stricter_400us_diagnostic_met": overshoot <= 10 and error <= 1 and ripple <= 1, "settling_error_mV_at_original_1ms_deadline": round(deadline_error, 6), "ripple_mVpp_after_original_deadline": round(deadline_ripple, 6), "diagnostic_targets_met": overshoot <= spec["limits_preserved"]["overshoot_percent"] and deadline_error <= spec["limits_preserved"]["settling_error_mV"] and deadline_ripple <= 1})
+                    rows[-1]["deck_sha256"] = hashlib.sha256(path.read_bytes()).hexdigest()
+    if input_hashes() != frozen_inputs:
+        raise RuntimeError("Candidate model inputs changed during simulation")
     report = {"status": "DIAGNOSTIC ONLY; hardware protection OPEN", "input_sha256": {str(p.relative_to(ROOT)): digest(p) for p in (SPEC, SOURCES, Path(__file__).resolve())}, "oracle": "KiCad 10.0.6 / pinned ngspice via scripts/kicad/run.sh", "TI_model_zip_sha256": ZIP_SHA256, "TI_model_lib_sha256": LIB_SHA256, "conditions": "+/-12 V, +/-5 V pulse (1.5 ms plateaus, 3 ms period, two cycles), one active core at 27 C; 0.12 ohm/9.5 nF and 0.5 ohm/10.5 nF sensitivity pairs, 200 pF ACROSS each closed contact. Not a complete tolerance/temperature sweep.", "deadline_note": "Original 1 ms deadline measured directly. Earlier 400 us error/ripple retained as stricter diagnostics; their failures are not erased or relabeled as passes.", "excluded": "Real relay switching and capacitance, LED driver, charge injection, off leakage, rail/GND faults, spare-core package heat and PCB parasitics; no hardware qualification", "cases": rows}
-    body = json.dumps(report, indent=2) + "\n"
+    report["input_sha256"] = frozen_inputs
+    body = json.dumps(report, indent=2, allow_nan=False) + "\n"
     if check:
         if OUT.read_text() != body:
             raise RuntimeError("Candidate model report drift")
