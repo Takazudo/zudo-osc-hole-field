@@ -82,7 +82,8 @@ def build(spec, catalog, supply, current):
         'R104':reference/minimum('R104'),
         'R105_R106':reference/(minimum('R105')+minimum('R106')),
         'R107_R108':reference/(minimum('R107')+minimum('R108')),
-        'R109_to_R113':reference/sum(minimum('R'+str(i)) for i in range(109,114)),
+        # A negative fault clamps REF_SENSE: R113 no longer limits the feed.
+        'R109_to_R112_clamped':reference/sum(minimum('R'+str(i)) for i in range(109,113)),
     }
     ref_output=sum(ref_branches.values())
     iq=sum(row['package_table_sum_A'] for row in current.values())
@@ -114,6 +115,7 @@ def build(spec, catalog, supply, current):
         'original_supply_requirements_changed':False,
         'conditions_and_open_gates':[
           'Adopt the listed source-table currents outside their full source conditions only as explicit assumptions, not guarantees.',
+          'Reference-divider load uses the top-only path when either TLV output clamps REF_SENSE to ground; this loose bound is retained in every screened state.',
           'Reference <=3.31V, negative rail nonpositive and normal rail bounds; coarse reference monitor does not establish this precision window.',
           'Zero input and output/off-state leakage, ideal logic voltages within supply rails, passive resistor network and zero semiconductor drops for load-current bounds.',
           '25C resistance reference and -40..125C resistor/TCR envelope are analysis conditions, not installed thermal qualification.',

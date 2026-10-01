@@ -82,6 +82,9 @@
   "studies": {
     "zero_sense_current": {
       "sense_current_absolute_assumption_A": 0,
+      "both_TLV_output_drains_released": true,
+      "total_TLV_output_leakage_assumption_A": 0,
+      "total_TLV_output_leakage_guaranteed_bound_A": null,
       "events_V": {
         "UV_trip": [
           3.0013839026210696,
@@ -129,6 +132,9 @@
     },
     "assumed_source_table_current": {
       "sense_current_absolute_assumption_A": 3.5e-07,
+      "both_TLV_output_drains_released": true,
+      "total_TLV_output_leakage_assumption_A": 0,
+      "total_TLV_output_leakage_guaranteed_bound_A": null,
       "events_V": {
         "UV_trip": [
           2.9988552775273196,
@@ -200,6 +206,7 @@
   "remaining_conditions": [
     "All threshold intervals are settled/static; common recovery means its strict interior with valid supply, other paired sense inputs healthy or correctly unused, and sufficient settling, not a time bound.",
     "Source-table 350nA condition is VSENSE=5.5V; its use near0.4V is an assumption, not a source guarantee.",
+    "Both TLV output drains are assumed released with zero leakage; their added REF_SENSE loading has no retained full-temperature maximum. The 350nA sensitivity includes only the TPS input.",
     "Negative comparator error/input-current envelopes retain all conditions of the separate network study.",
     "The broad interval is an enclosure across independent corners; it is not one device's exact acceptance interval.",
     "Reference startup, slow-slew, effective bypass, actual output-current/line conditions and independent validity remain unqualified.",
@@ -207,18 +214,18 @@
     "No physical dynamic, bench or installed protection acceptance; do not replace the narrow study with a claimed wider passing result."
   ],
   "input_sha256": {
-    ".claude/skills/component-monitor-permit-candidates/facts.json": "cc967ee764880636a4ba44eda6651ff652119e42734a25f47d9d1eb2f42e5556",
-    ".claude/skills/component-monitor-permit-candidates/manifest.json": "641ef0d581b1957bbcfd1c8bb9bd562cb4bb6bb414494398218ec68f27964a04",
-    ".claude/skills/component-monitor-permit-candidates/sources.json": "3a0deec654184e04e2b9187437a6aca143585d6c2b902ffa7ec3eb96b5948f32",
-    "design/power/monitor-permit-draft.json": "ff845a082c9da1274d204fb2b369fa4fde8f86d2ddcd0afe227c7f018f748655",
+    ".claude/skills/component-monitor-permit-candidates/facts.json": "24cba1a2dee656677022d1ef95682f407d247405eb96d9c609032eda0fde20d3",
+    ".claude/skills/component-monitor-permit-candidates/manifest.json": "2089b28d887543d1172aa8fdf485432f5d54ac10c267bcf2b5dc4f670d814898",
+    ".claude/skills/component-monitor-permit-candidates/sources.json": "023186339ee8af6fdc9c4efdcb80c5a7f03c2e61f81f5f3d1bf690afc5f533dc",
+    "design/power/monitor-permit-draft.json": "6680ba13b0a5cae3ce9fc3355564c0c0163c5123c2bf95bebf6e2de7f417c053",
     "design/power/monitor-permit-parts.json": "464dbd6800724eccb82a49ff495b2da585b4d5828fd27a17ef41a96698f94871",
     "design/power/negative-monitor-network-sources.json": "984dc6d0d081be4fcb6e706a64ace82e3467dfa4606c49a96cee5568b6a8ad08",
     "design/power/negative-monitor-network.json": "96b4c9ac9626d33810f1612721a3f68b421256f88f15cd8cec8cb768a8d5da1c",
     "design/power/rail-monitor-candidate-sources.json": "3f59d64081128f0742d0a755204ca6ac53247de1b48e8a35a7024da65bf4d843",
     "design/power/rail-monitor-candidate.json": "955c92a826f02b1239a656c22035404f73da04e9d38d1f765b2580fcf88c2ac5",
     "design/power/supply-architecture-input.json": "a8a4e92ac4c1d7de5c16b6982fba7d5ab60ab13753b12eabfa23fc75da98acc4",
-    "scripts/checks/monitor_permit_behavior.py": "3b37bd83fba82ef90b8b3f1118579f51367c3a6d9487de11e77fc0738fb51420",
-    "scripts/checks/monitor_reference_validity.py": "3a34f05035739896708e435f0a7224e8262eb8028fdc6f9ec4ad4f0f9dd616c7",
+    "scripts/checks/monitor_permit_behavior.py": "b0ba2affb7209a63da28bb020ca0654ae27a5d0c4e3e630a7f66036235c88bf6",
+    "scripts/checks/monitor_reference_validity.py": "654321a06bb82e2a4db66c6aecc4799a4aec90728323f705aa1b8426ffdc04a3",
     "scripts/checks/negative_monitor_network.py": "ca0e9a8e3f6140c5e67770bdc696013f782119fb0d9a93276a15a78d21c1a51f",
     "scripts/checks/rail_monitor_candidate.py": "7da0e191589e5e4221b14fdc6ba22de2f8030fc66ea47dfadf6e8fa33e2e9df8"
   }

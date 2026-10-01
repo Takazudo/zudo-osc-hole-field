@@ -1,10 +1,11 @@
 {
   "status": "CONDITIONAL IDEAL BEHAVIOR DIAGNOSTICS; NOT QUALIFICATION",
   "qualification_accepted": false,
-  "evaluated_input_sha256": "7e3690bb412c16b67be41adcdf1ec41664ccf22956fc3604b9d284b97ae19b1d",
-  "model_sha256": "3b37bd83fba82ef90b8b3f1118579f51367c3a6d9487de11e77fc0738fb51420",
+  "evaluated_input_sha256": "cdb1fae724f580322baa8a83d3469bbd6072f55810dd575d4b88b80c71abf89c",
+  "model_sha256": "b0ba2affb7209a63da28bb020ca0654ae27a5d0c4e3e630a7f66036235c88bf6",
   "model_limits": [
     "Ideal monitor truth values, no comparator/reference/supervisor dynamics",
+    "GOOD_FAST low pulse durations are forced after the monitor; they are not external negative-fault durations",
     "Single-pole RC excludes R121/input capacitance and all device propagation",
     "No transistor model or guaranteed physical output release",
     "Actual partial-power and retained-charge behavior remain UNKNOWN"
@@ -787,7 +788,7 @@
       "actual_control_power_absent": "UNKNOWN",
       "scope": "Boolean sequencing only; no rail ramp or monitor propagation simulation"
     },
-    "short_fault": [
+    "short_good_fast_low": [
       {
         "duration_s": 0.02,
         "good": false,
@@ -817,7 +818,7 @@
         "clock": true
       }
     ],
-    "long_fault": [
+    "long_good_fast_low": [
       {
         "duration_s": 0.02,
         "good": false,
@@ -879,7 +880,7 @@
     ]
   },
   "nominal_partial_current_ledger": {
-    "scope": "Nominal resistor currents only; not a maximum or total supply-current budget",
+    "scope": "Nominal resistor currents with both TLV drains released; not a maximum or total supply-current budget",
     "reference_output_A": 0.001918351625402234,
     "negative_rail_sink_A": 0.00024214120072146354,
     "positive_12_divider_A": 0.0008,

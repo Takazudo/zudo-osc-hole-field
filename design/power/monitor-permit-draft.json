@@ -21,24 +21,24 @@
         "8": "FAULT_N"
       },
       "page": 1,
-      "role": "Positive rails and coarse reference window",
+      "role": "Positive rails and coarse reference window with negative-fault veto",
       "kind": "ic"
     },
     {
       "ref": "U102",
       "mpn": "TLV9022DR",
       "pins": {
-        "1": "FAULT_N",
+        "1": "REF_SENSE",
         "2": "SENSE",
         "3": "UV",
         "4": "AGND",
         "5": "SENSE",
         "6": "OV",
-        "7": "FAULT_N",
+        "7": "REF_SENSE",
         "8": "+5V"
       },
       "page": 1,
-      "role": "Negative-rail window candidate",
+      "role": "Negative-rail window veto on REF_SENSE; detected faults pass through supervisor timeout",
       "kind": "ic"
     },
     {
@@ -99,7 +99,7 @@
         "14": "+5V"
       },
       "page": 2,
-      "role": "Fault clear / delayed re-arm; short faults may latch off",
+      "role": "Fault clear / delayed re-arm; raw short GOOD_FAST pulses may latch off",
       "kind": "ic"
     },
     {
@@ -554,7 +554,10 @@
     "REF startup, slow-slew overshoot, shutdown, retained charge and effective bypass remain unqualified.",
     "HC partial-power states, actual supply/load/transition timing and reset-removal behavior remain open.",
     "The passive NPN base bleed does not reproduce the source switching test; full-temperature sink release is unbounded.",
-    "A short fault can clear Q without resetting the RC clock; automatic re-arm is not guaranteed.",
-    "Mechanical, thermal, as-built and bench qualification NOT RUN."
+    "A short raw GOOD_FAST pulse can clear Q without resetting the RC clock; automatic re-arm is not guaranteed.",
+    "Mechanical, thermal, as-built and bench qualification NOT RUN.",
+    "Negative-fault assertion adds supervisor detection latency; complete cold-collapse release timing remains unbounded.",
+    "Nominal recovery overdrive is below the TPS reset-delay 10% condition; no actual 7..13ms interval is established.",
+    "Both TLV off-state output drain leakages now load REF_SENSE; no full-temperature maximum at this voltage is retained."
   ]
 }

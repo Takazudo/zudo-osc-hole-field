@@ -2615,7 +2615,7 @@
 				(field
 					(name "Block") "MONITOR")
 				(field
-					(name "Role") "UNSELECTED DRAFT: Positive rails and coarse reference window")
+					(name "Role") "UNSELECTED DRAFT: Positive rails and coarse reference window with negative-fault veto")
 				(field
 					(name "PanelUid")
 				)
@@ -2657,7 +2657,7 @@
 			)
 			(property
 				(name "Role")
-				(value "UNSELECTED DRAFT: Positive rails and coarse reference window")
+				(value "UNSELECTED DRAFT: Positive rails and coarse reference window with negative-fault veto")
 			)
 			(property
 				(name "PanelUid")
@@ -2731,7 +2731,7 @@
 				(field
 					(name "Block") "MONITOR")
 				(field
-					(name "Role") "UNSELECTED DRAFT: Negative-rail window candidate")
+					(name "Role") "UNSELECTED DRAFT: Negative-rail window veto on REF_SENSE; detected faults pass through supervisor timeout")
 				(field
 					(name "PanelUid")
 				)
@@ -2773,7 +2773,7 @@
 			)
 			(property
 				(name "Role")
-				(value "UNSELECTED DRAFT: Negative-rail window candidate")
+				(value "UNSELECTED DRAFT: Negative-rail window veto on REF_SENSE; detected faults pass through supervisor timeout")
 			)
 			(property
 				(name "PanelUid")
@@ -4026,7 +4026,7 @@
 				(field
 					(name "Block") "MONITOR-P2")
 				(field
-					(name "Role") "UNSELECTED DRAFT: Fault clear / delayed re-arm; short faults may latch off")
+					(name "Role") "UNSELECTED DRAFT: Fault clear / delayed re-arm; raw short GOOD_FAST pulses may latch off")
 				(field
 					(name "PanelUid")
 				)
@@ -4068,7 +4068,7 @@
 			)
 			(property
 				(name "Role")
-				(value "UNSELECTED DRAFT: Fault clear / delayed re-arm; short faults may latch off")
+				(value "UNSELECTED DRAFT: Fault clear / delayed re-arm; raw short GOOD_FAST pulses may latch off")
 			)
 			(property
 				(name "PanelUid")
@@ -5560,6 +5560,18 @@
 				(pinfunction "SENSE1_2")
 				(pintype "input")
 			)
+			(node
+				(ref "U102")
+				(pin "1")
+				(pinfunction "OUT1_1")
+				(pintype "open_collector")
+			)
+			(node
+				(ref "U102")
+				(pin "7")
+				(pinfunction "OUT2_7")
+				(pintype "open_collector")
+			)
 		)
 		(net
 			(code "21")
@@ -5795,18 +5807,6 @@
 				(ref "U101")
 				(pin "8")
 				(pinfunction "RESET1_N_8")
-				(pintype "open_collector")
-			)
-			(node
-				(ref "U102")
-				(pin "1")
-				(pinfunction "OUT1_1")
-				(pintype "open_collector")
-			)
-			(node
-				(ref "U102")
-				(pin "7")
-				(pinfunction "OUT2_7")
 				(pintype "open_collector")
 			)
 			(node

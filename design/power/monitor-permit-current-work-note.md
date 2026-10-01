@@ -20,14 +20,16 @@ The coarse reference monitor does not establish that narrow reference bound.
 A passive-network voltage bound deliberately overestimates the reference feed
 through R102 rather than substituting a nominal current for a maximum.
 
-That gives 4.489 mA conditional reference output demand. This load is charged
+The negative-fault veto can clamp REF_SENSE. Its feed bound now uses only
+R109..R112, omitting the bypassed bottom resistor. That gives 4.545 mA
+conditional reference output demand. This load is charged
 **once to +5 V**, in addition to the reference's quiescent current. Base-drive
 current already includes current subsequently flowing through the base bleed;
 the bleed is not counted again as a separate +5 V feed.
 
 With both the fault pullup and base drive counted simultaneously, the conditional
-DC screen is 6.625 mA on +5 V, 2.108 mA on +12 V and 0.309 mA on −12 V. The
-remaining allocated currents are 13.375, 17.892 and 19.691 mA respectively.
+DC screen is 6.681 mA on +5 V, 2.108 mA on +12 V and 0.309 mA on −12 V. The
+remaining allocated currents are 13.319, 17.892 and 19.691 mA respectively.
 These are conditional allocation balances, not qualified physical margins.
 The separate stable fault and permit-enabled states are also reported.
 

@@ -1822,7 +1822,8 @@
       "value": {
         "nominal_s": 0.01,
         "relative_min": -0.3,
-        "relative_max": 0.3
+        "relative_max": 0.3,
+        "test_overdrive_fraction": 0.1
       },
       "unit": "NONE",
       "conditions": "Fixed 10ms option; greater-than 5ms reset-delay tolerance row; 10% overdrive, VDD 1.7..6V, TA -40..125C, 10kohm pullup and 10pF load. Startup 1ms is nominal, not a maximum.",
@@ -2004,6 +2005,48 @@
       "unit": "A",
       "conditions": "Active mode; VIN=VOUT+VDO, COUT=10uF, CIN=0.1uF, IL=0mA, TA=-40..125C. Output load must additionally be supplied through VIN; actual 5V/0.3uF loaded candidate applicability remains open.",
       "locator": "src-monitor-ref3433tidbvr-datasheet: printed p7 section6.5 IQ row and common table conditions",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-monitor-tlv9022dr-output-low-table-max",
+      "record_id": "rec-monitor-tlv9022dr",
+      "source_id": "src-monitor-tlv9022dr-datasheet",
+      "class": "GUARANTEED_ELECTRICAL",
+      "value": 0.175,
+      "unit": "V",
+      "conditions": "ISINK=4mA, VS=5V, VCM=V-, TA=-40..125C. Application at lower actual sink current, different supply or common mode remains unqualified.",
+      "locator": "src-monitor-tlv9022dr-datasheet: printed p11 section5.9 VOL full-temperature row",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-monitor-tlv9022dr-output-leakage-typical",
+      "record_id": "rec-monitor-tlv9022dr",
+      "source_id": "src-monitor-tlv9022dr-datasheet",
+      "class": "TYPICAL_CURVE",
+      "value": 1e-10,
+      "unit": "A",
+      "conditions": "Typical only, not a maximum: VPULLUP=V+, VS=5V, VCM=V-, TA=25C, open-drain version. No full-temperature maximum or REF_SENSE-voltage applicability is established.",
+      "locator": "src-monitor-tlv9022dr-datasheet: printed p11 section5.9 ILKG typical column",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-monitor-tps37044mjofddfrq1-glitch-immunity-nominal",
+      "record_id": "rec-monitor-tps37044mjofddfrq1",
+      "source_id": "src-monitor-tps37044mjofddfrq1-datasheet",
+      "class": "TRANSIENT",
+      "value": 2e-06,
+      "unit": "s",
+      "conditions": "NOMINAL only, 5% overdrive, VDD=3.3V, TA=25C, RESET 10kohm pullup and 10pF load. Not a guaranteed pulse-detection threshold.",
+      "locator": "src-monitor-tps37044mjofddfrq1-datasheet: printed p10 section6.7 Timing Requirements, glitch immunity NOM column",
       "provenance": "PRIMARY-SPEC",
       "verdict": "PASS - primary-source confirmed",
       "depends_on": [],
