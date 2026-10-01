@@ -1,0 +1,650 @@
+{
+  "status": "CONDITIONAL PASSIVE RC DIAGNOSTICS; NOT IC OR PHYSICAL QUALIFICATION",
+  "qualification_accepted": false,
+  "physical_permit_release_bound_s": null,
+  "oracle": "ngspice44.2 through pinned KiCad10.0.6 scripts/kicad/run.sh",
+  "parameters": {
+    "r1": 10000,
+    "r2": 10000,
+    "cap": 1e-08,
+    "pin_cap": 1e-11,
+    "supply_V": 5.0,
+    "high_V": 2.6,
+    "low_V": 1.8611111111111112,
+    "observer_scope": "Illustrative compatible threshold pair within4.5V source ranges; not a full-temperature5V guarantee",
+    "source_facts": [
+      {
+        "fact_id": "fact-c-hold-capacitance",
+        "record_id": "rec-c-hold",
+        "source_id": "src-c-hold-datasheet",
+        "class": "GUARANTEED_ELECTRICAL",
+        "value": {
+          "nominal": 10,
+          "tolerance_percent": 5,
+          "rated_voltage": 50
+        },
+        "unit": "nF and VDC",
+        "conditions": "KEMET C0805C103J5GACTU product sheet; C0G; measurement at 1 kHz, 1 Vrms.",
+        "locator": "Section/table audit: src-c-hold-datasheet: PDF page index 0, specifications, capacitance/tolerance/voltage/dielectric fields",
+        "provenance": "PRIMARY-SPEC",
+        "verdict": "PASS - primary-source confirmed",
+        "depends_on": [],
+        "expression": ""
+      },
+      {
+        "fact_id": "fact-schmitt-input-capacitance",
+        "record_id": "rec-schmitt",
+        "source_id": "src-schmitt-datasheet",
+        "class": "GUARANTEED_ELECTRICAL",
+        "value": 10,
+        "unit": "pF",
+        "conditions": "Maximum at VCC5V; additional PCB and other tied-device capacitance is not included.",
+        "locator": "src-schmitt-datasheet: printed p5 table5.5 CI",
+        "provenance": "PRIMARY-SPEC",
+        "verdict": "PASS - primary-source confirmed",
+        "depends_on": [],
+        "expression": ""
+      }
+    ]
+  },
+  "voltage_comparison_tolerance_V": 5e-05,
+  "charge_balance_tolerance_C": 2e-12,
+  "crossing_refinement_tolerance_s": 5e-09,
+  "cases": [
+    {
+      "name": "startup_zero_pin_c",
+      "mode": "timing",
+      "points": [
+        [
+          0,
+          0
+        ],
+        [
+          1e-06,
+          0
+        ],
+        [
+          1.001e-06,
+          5.0
+        ],
+        [
+          0.001,
+          5.0
+        ]
+      ],
+      "initial": [
+        0,
+        0
+      ],
+      "observer_initial": false,
+      "pin_cap": 0,
+      "expected_observer_crossings": 1
+    },
+    {
+      "name": "startup_source_pin_c",
+      "mode": "timing",
+      "points": [
+        [
+          0,
+          0
+        ],
+        [
+          1e-06,
+          0
+        ],
+        [
+          1.001e-06,
+          5.0
+        ],
+        [
+          0.001,
+          5.0
+        ]
+      ],
+      "initial": [
+        0,
+        0
+      ],
+      "observer_initial": false,
+      "pin_cap": 1e-11,
+      "expected_observer_crossings": 1
+    },
+    {
+      "name": "short_good_fast_pulse_zero_pin_c",
+      "mode": "timing",
+      "points": [
+        [
+          0,
+          5.0
+        ],
+        [
+          1e-06,
+          5.0
+        ],
+        [
+          1.001e-06,
+          0
+        ],
+        [
+          8.006113899999999e-05,
+          0
+        ],
+        [
+          8.0062139e-05,
+          5.0
+        ],
+        [
+          0.001,
+          5.0
+        ]
+      ],
+      "initial": [
+        5.0,
+        5.0
+      ],
+      "observer_initial": true,
+      "pin_cap": 0,
+      "expected_observer_crossings": 0
+    },
+    {
+      "name": "short_good_fast_pulse_source_pin_c",
+      "mode": "timing",
+      "points": [
+        [
+          0,
+          5.0
+        ],
+        [
+          1e-06,
+          5.0
+        ],
+        [
+          1.001e-06,
+          0
+        ],
+        [
+          8.006113899999999e-05,
+          0
+        ],
+        [
+          8.0062139e-05,
+          5.0
+        ],
+        [
+          0.001,
+          5.0
+        ]
+      ],
+      "initial": [
+        5.0,
+        5.0
+      ],
+      "observer_initial": true,
+      "pin_cap": 1e-11,
+      "expected_observer_crossings": 0
+    },
+    {
+      "name": "long_good_fast_pulse_zero_pin_c",
+      "mode": "timing",
+      "points": [
+        [
+          0,
+          5.0
+        ],
+        [
+          1e-06,
+          5.0
+        ],
+        [
+          1.001e-06,
+          0
+        ],
+        [
+          0.00011959170799999999,
+          0
+        ],
+        [
+          0.00011959270799999999,
+          5.0
+        ],
+        [
+          0.001,
+          5.0
+        ]
+      ],
+      "initial": [
+        5.0,
+        5.0
+      ],
+      "observer_initial": true,
+      "pin_cap": 0,
+      "expected_observer_crossings": 2
+    },
+    {
+      "name": "long_good_fast_pulse_source_pin_c",
+      "mode": "timing",
+      "points": [
+        [
+          0,
+          5.0
+        ],
+        [
+          1e-06,
+          5.0
+        ],
+        [
+          1.001e-06,
+          0
+        ],
+        [
+          0.00011959170799999999,
+          0
+        ],
+        [
+          0.00011959270799999999,
+          5.0
+        ],
+        [
+          0.001,
+          5.0
+        ]
+      ],
+      "initial": [
+        5.0,
+        5.0
+      ],
+      "observer_initial": true,
+      "pin_cap": 1e-11,
+      "expected_observer_crossings": 2
+    },
+    {
+      "name": "forced_zero_endpoints",
+      "mode": "forced_clamp",
+      "initial": [
+        5.0,
+        0
+      ],
+      "pin_cap": 0,
+      "stop": 0.001
+    }
+  ],
+  "results": {
+    "startup_zero_pin_c": [
+      {
+        "ideal_observer": {
+          "initial": false,
+          "final": true,
+          "crossings": [
+            {
+              "transition": "rise_high",
+              "bracket_s": [
+                7.4243523e-05,
+                7.4743523e-05
+              ],
+              "linear_interpolation_s": 7.4397259e-05
+            }
+          ]
+        },
+        "charge_balance_error_C": 2.53e-13,
+        "maximum_voltage_difference_V": [
+          1.2261e-05,
+          1.2261e-05
+        ],
+        "sample_count": 2120,
+        "step_limit_s": 5e-07
+      },
+      {
+        "ideal_observer": {
+          "initial": false,
+          "final": true,
+          "crossings": [
+            {
+              "transition": "rise_high",
+              "bracket_s": [
+                7.438468e-05,
+                7.450968e-05
+              ],
+              "linear_interpolation_s": 7.4397387e-05
+            }
+          ]
+        },
+        "charge_balance_error_C": 1.9e-14,
+        "maximum_voltage_difference_V": [
+          9.54e-07,
+          9.54e-07
+        ],
+        "sample_count": 8066,
+        "step_limit_s": 1.25e-07
+      }
+    ],
+    "startup_source_pin_c": [
+      {
+        "ideal_observer": {
+          "initial": false,
+          "final": true,
+          "crossings": [
+            {
+              "transition": "rise_high",
+              "bracket_s": [
+                7.44039e-05,
+                7.49039e-05
+              ],
+              "linear_interpolation_s": 7.4570691e-05
+            }
+          ]
+        },
+        "charge_balance_error_C": 2.53e-13,
+        "maximum_voltage_difference_V": [
+          1.2238e-05,
+          1.225e-05
+        ],
+        "sample_count": 2438,
+        "step_limit_s": 5e-07
+      },
+      {
+        "ideal_observer": {
+          "initial": false,
+          "final": true,
+          "crossings": [
+            {
+              "transition": "rise_high",
+              "bracket_s": [
+                7.4533933e-05,
+                7.4658933e-05
+              ],
+              "linear_interpolation_s": 7.4570816e-05
+            }
+          ]
+        },
+        "charge_balance_error_C": 1.9e-14,
+        "maximum_voltage_difference_V": [
+          9.46e-07,
+          9.47e-07
+        ],
+        "sample_count": 8384,
+        "step_limit_s": 1.25e-07
+      }
+    ],
+    "short_good_fast_pulse_zero_pin_c": [
+      {
+        "ideal_observer": {
+          "initial": true,
+          "final": true,
+          "crossings": []
+        },
+        "charge_balance_error_C": 1e-15,
+        "maximum_voltage_difference_V": [
+          1.5086e-05,
+          1.5086e-05
+        ],
+        "sample_count": 2047,
+        "step_limit_s": 5e-07
+      },
+      {
+        "ideal_observer": {
+          "initial": true,
+          "final": true,
+          "crossings": []
+        },
+        "charge_balance_error_C": 0.0,
+        "maximum_voltage_difference_V": [
+          1.199e-06,
+          1.199e-06
+        ],
+        "sample_count": 8044,
+        "step_limit_s": 1.25e-07
+      }
+    ],
+    "short_good_fast_pulse_source_pin_c": [
+      {
+        "ideal_observer": {
+          "initial": true,
+          "final": true,
+          "crossings": []
+        },
+        "charge_balance_error_C": 2e-15,
+        "maximum_voltage_difference_V": [
+          1.4857e-05,
+          1.6137e-05
+        ],
+        "sample_count": 2161,
+        "step_limit_s": 5e-07
+      },
+      {
+        "ideal_observer": {
+          "initial": true,
+          "final": true,
+          "crossings": []
+        },
+        "charge_balance_error_C": 0.0,
+        "maximum_voltage_difference_V": [
+          1.188e-06,
+          2.485e-06
+        ],
+        "sample_count": 8144,
+        "step_limit_s": 1.25e-07
+      }
+    ],
+    "long_good_fast_pulse_zero_pin_c": [
+      {
+        "ideal_observer": {
+          "initial": true,
+          "final": true,
+          "crossings": [
+            {
+              "transition": "fall_low",
+              "bracket_s": [
+                9.9635548e-05,
+                0.000100135548
+              ],
+              "linear_interpolation_s": 9.9826387e-05
+            },
+            {
+              "transition": "rise_high",
+              "bracket_s": [
+                0.000156413989,
+                0.000156913989
+              ],
+              "linear_interpolation_s": 0.000156538089
+            }
+          ]
+        },
+        "charge_balance_error_C": 3e-15,
+        "maximum_voltage_difference_V": [
+          1.5468e-05,
+          1.5468e-05
+        ],
+        "sample_count": 2051,
+        "step_limit_s": 5e-07
+      },
+      {
+        "ideal_observer": {
+          "initial": true,
+          "final": true,
+          "crossings": [
+            {
+              "transition": "fall_low",
+              "bracket_s": [
+                9.9784658e-05,
+                9.9909658e-05
+              ],
+              "linear_interpolation_s": 9.9826877e-05
+            },
+            {
+              "transition": "rise_high",
+              "bracket_s": [
+                0.000156517013,
+                0.000156642013
+              ],
+              "linear_interpolation_s": 0.00015653773
+            }
+          ]
+        },
+        "charge_balance_error_C": 1e-15,
+        "maximum_voltage_difference_V": [
+          1.199e-06,
+          1.199e-06
+        ],
+        "sample_count": 8045,
+        "step_limit_s": 1.25e-07
+      }
+    ],
+    "long_good_fast_pulse_source_pin_c": [
+      {
+        "ideal_observer": {
+          "initial": true,
+          "final": true,
+          "crossings": [
+            {
+              "transition": "fall_low",
+              "bracket_s": [
+                9.9770119e-05,
+                0.000100270119
+              ],
+              "linear_interpolation_s": 0.000100025288
+            },
+            {
+              "transition": "rise_high",
+              "bracket_s": [
+                0.000156280557,
+                0.000156780557
+              ],
+              "linear_interpolation_s": 0.000156622805
+            }
+          ]
+        },
+        "charge_balance_error_C": 1e-15,
+        "maximum_voltage_difference_V": [
+          1.5278e-05,
+          1.596e-05
+        ],
+        "sample_count": 2173,
+        "step_limit_s": 5e-07
+      },
+      {
+        "ideal_observer": {
+          "initial": true,
+          "final": true,
+          "crossings": [
+            {
+              "transition": "fall_low",
+              "bracket_s": [
+                9.9956059e-05,
+                0.000100081059
+              ],
+              "linear_interpolation_s": 0.000100025755
+            },
+            {
+              "transition": "rise_high",
+              "bracket_s": [
+                0.000156527467,
+                0.000156652467
+              ],
+              "linear_interpolation_s": 0.000156622411
+            }
+          ]
+        },
+        "charge_balance_error_C": 1e-15,
+        "maximum_voltage_difference_V": [
+          1.188e-06,
+          2.398e-06
+        ],
+        "sample_count": 8155,
+        "step_limit_s": 1.25e-07
+      }
+    ],
+    "forced_zero_endpoints": [
+      {
+        "forced_C109_only_tau_s": 5e-05,
+        "left_charge_C": 2.4997298e-08,
+        "right_charge_C": 2.4997298e-08,
+        "first_sample_branch_current_A": [
+          0.000499950005,
+          0.000499950005
+        ],
+        "ideal_t0_branch_current_A": [
+          0.0005,
+          0.0005
+        ],
+        "integration_start_s": 5e-09,
+        "available_t0_charge_C": 5e-08,
+        "available_first_sample_charge_C": 4.9995e-08,
+        "scope": "Both resistor endpoints forced to0V; pin capacitance omitted. Not a die-clamp or floating-supply model.",
+        "maximum_voltage_difference_V": [
+          1.9843e-05,
+          0.0
+        ],
+        "sample_count": 2606,
+        "step_limit_s": 5e-07
+      },
+      {
+        "forced_C109_only_tau_s": 5e-05,
+        "left_charge_C": 2.4999337e-08,
+        "right_charge_C": 2.4999337e-08,
+        "first_sample_branch_current_A": [
+          0.0004999875,
+          0.0004999875
+        ],
+        "ideal_t0_branch_current_A": [
+          0.0005,
+          0.0005
+        ],
+        "integration_start_s": 1.25e-09,
+        "available_t0_charge_C": 5e-08,
+        "available_first_sample_charge_C": 4.999875e-08,
+        "scope": "Both resistor endpoints forced to0V; pin capacitance omitted. Not a die-clamp or floating-supply model.",
+        "maximum_voltage_difference_V": [
+          3.736e-06,
+          0.0
+        ],
+        "sample_count": 8011,
+        "step_limit_s": 1.25e-07
+      }
+    ]
+  },
+  "input_sha256": {
+    ".claude/skills/component-passives-family/facts.json": "d6bb04afca3f677eec0eecfde5f42fbd7118b5987cc14b6d4e54aa892cc9a651",
+    ".claude/skills/component-passives-family/manifest.json": "9b4e8962c107c0ed75c9e42b417df9459dd26d3e7c974ab27544ccbd22aa7f16",
+    ".claude/skills/component-passives-family/sources.json": "cba96f11fb2d14c18af95420ef663b5b7797005399eb3c1a8eb41539dd31460a",
+    ".claude/skills/component-ti-sn74hc14dr/facts.json": "49d8cd37cbe3b5e57ed1038e528e013ad07bd0558a6c10a7dab612136e535cd7",
+    ".claude/skills/component-ti-sn74hc14dr/manifest.json": "1cee3143639acddeb12148a704881166b99779fe53bf747abe3e7ae9532d6c12",
+    ".claude/skills/component-ti-sn74hc14dr/sources.json": "118e61bceb7128c89820a56efe9cc89d60628f4ddf2560cdc88f008b6f175ba8",
+    "design/power/monitor-permit-draft.json": "ff845a082c9da1274d204fb2b369fa4fde8f86d2ddcd0afe227c7f018f748655",
+    "design/power/monitor-permit-parts.json": "464dbd6800724eccb82a49ff495b2da585b4d5828fd27a17ef41a96698f94871",
+    "scripts/checks/monitor_permit_behavior.py": "3b37bd83fba82ef90b8b3f1118579f51367c3a6d9487de11e77fc0738fb51420",
+    "scripts/checks/monitor_permit_rc.py": "46a03ae6d11e41378bacff736d1e3cbc1590176cf1e1673d24bc582951465dd9",
+    "scripts/checks/monitor_rc_math.py": "c3679d476e49615ae4015989f46520cf2356e0cc2384435612cb979f4bf6290e",
+    "scripts/kicad/pin.env": "769e2be0b61e7d92a6930684f13166b7dc098522008de3969cd30d6c4a363246",
+    "scripts/kicad/run.sh": "bc74f0ade82c29d64c44119ea435bc7bfd164fc06e9afff240a3cb2b44b272a0"
+  },
+  "deck_sha256": {
+    "startup_zero_pin_c_0": "a74ded54ca4fc90e5032a164ed4b9601867466b1a051dc7ac256573c78926efd",
+    "startup_zero_pin_c_1": "c86460a47023540206d721ea86fb1ed8f192398e8f2484af72ede7e6cd92cc0a",
+    "startup_source_pin_c_0": "a97e74c081ed7db53827d1e624eab31a06c7c01cf776800efdf144eb4d83aabf",
+    "startup_source_pin_c_1": "eca234ff65cda941f3e21ab4e1d3f923c3bd32f3ffc047aaa53fff1c298fabd7",
+    "short_good_fast_pulse_zero_pin_c_0": "fca557c639df0e3e98c434de5db5ffb9a765f6d0cfdcab0e87089506d3a43aa2",
+    "short_good_fast_pulse_zero_pin_c_1": "bcba3a910d49964cb5059070d9c30152d1f7262b8fda8c53f9b0a8b07f00a692",
+    "short_good_fast_pulse_source_pin_c_0": "c8537b05980566fe57af57284d6f1c0a253b056429e2e1b1abcdc3d6cc9d1a94",
+    "short_good_fast_pulse_source_pin_c_1": "543586da57ea63b9c73e9a728e644e94d7d3c1d5cd54177968fa35e3f16ebaf0",
+    "long_good_fast_pulse_zero_pin_c_0": "827a8ff576f5cda99c4d9013d51f5840f3c4ebf87ff4f68fc2a765f5cd73c035",
+    "long_good_fast_pulse_zero_pin_c_1": "17553ee36b2ba6164d09d955d43aadd1ab0f0da1438f71970e6cd6380556f267",
+    "long_good_fast_pulse_source_pin_c_0": "e49401547f7417a5b9b662aa4c7182b9d186afe30ea22093bb6856b3805f7257",
+    "long_good_fast_pulse_source_pin_c_1": "315555907d7bd857ccb69237360a8f356b26b754f92b9fc7ca016cf111b63c1e",
+    "forced_zero_endpoints_0": "696c95251fd1e7c7a84da5b221d1fc85e08317f3d0ff27328bc4f816bf3bb582",
+    "forced_zero_endpoints_1": "a5f843b3a8f08635b9a66cdbf512464d2afebf8356ae9d7a134e3d649d11fdce"
+  },
+  "limitations": [
+    "GOOD_FAST is a prescribed ideal source, not an external rail fault or an actual HC14 output.",
+    "10pF is a5V owner-table sensitivity, not an unpowered nonlinear pin-network bound.",
+    "Nominal C109 uses its retained capacitance test conditions; this does not qualify installed transient capacitance.",
+    "Observer fractions are illustrative; no HC74 pulse capture, reset-removal, NPN release or startup guarantee.",
+    "Forced zero endpoints do not model die clamps, surviving control power, other stored capacitors or a charged pin-capacitance impulse."
+  ],
+  "display_quantization": {
+    "voltage_V": 1e-09,
+    "charge_C": 1e-15,
+    "time_s": 1e-12,
+    "current_A": 1e-12,
+    "scope": "Display metrics only; zero residual means below display resolution."
+  }
+}
