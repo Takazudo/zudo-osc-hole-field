@@ -1,0 +1,31 @@
+---
+title: Bypass capacitor lifecycle evidence
+description: Retained identity and lifecycle status for the existing bypass capacitor; substitution remains open.
+---
+
+The retained Murata catalogue response from 2026-10-01 explicitly lists
+**GRM188R71H104KA93D**. It marks the family **to be discontinued** and **not
+recommended**. It does not supply a final discontinuation date or establish
+remaining stock, lead time or assembly allocation.
+
+The exact D suffix identifies 180 mm reel / W8P4 paper tape / 4000-piece
+packaging in that response. This closes the identity evidence gap only. The
+existing detailed specification remains **SOURCE UNAVAILABLE**, with its
+zero-hash sentinel preserved. Electrical behavior, effective capacitance,
+installed fit and procurement remain open.
+
+The [manufacturer catalogue page](https://pim.murata.com/en-us/pim/details/?partNum=GRM188R71H104KA93%23)
+is the human-readable entry point. The retained read-only API query and response
+are bound by `circuit/sources/bypass-capacitor/acquisition-20261001.json`;
+`src-c-bypass-murata-catalog-20261001` is the owner source record. Raw response
+bytes stay in the local source cache and recovery archive.
+
+The catalogue's suggested GRM155R71H104KE14# family is 0402, so it is not a
+drop-in replacement for the current 0603 footprint. The separately researched
+GRM188R72A104KA35D requires its own land-pattern and application review. No
+replacement is selected here: the existing identity also occurs in oscillator
+filter and noise-coupling roles, which need separate assessment.
+
+[Issue #87](https://github.com/Takazudo/zudo-osc-hole-field/issues/87) retains the
+replacement and qualification work. This evidence update changes no fitted
+component, circuit value, panel position or electrical acceptance limit.

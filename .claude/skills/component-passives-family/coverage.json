@@ -153,14 +153,12 @@
       "coverage_id": "cov-c-bypass-exact-orderable-identity",
       "record_id": "rec-c-bypass",
       "domain": "exact orderable identity",
-      "status": "OPEN",
-      "reason": "The current exact MPN is a project-selected proposal but its full manufacturer orderable identity/package suffix is not confirmed by retained exact-part bytes.",
+      "status": "COVERED",
+      "reason": "The retained manufacturer catalogue explicitly lists the complete D suffix; this closes identity only. Detailed electrical/pinout/fit evidence and procurement remain open.",
       "fact_ids": [
         "fact-c-bypass-orderable-identity"
       ],
-      "blocking_fact_ids": [
-        "fact-c-bypass-orderable-identity"
-      ]
+      "blocking_fact_ids": []
     },
     {
       "coverage_id": "cov-c-bypass-pinout",
@@ -180,7 +178,7 @@
       "record_id": "rec-c-bypass",
       "domain": "electrical limits",
       "status": "OPEN",
-      "reason": "No exact-part electrical limits were promoted; source/identity gap remains open.",
+      "reason": "No exact-part detailed electrical limits were promoted; the detailed specification remains unavailable.",
       "fact_ids": [
         "fact-c-bypass-electrical-limits"
       ],
@@ -206,9 +204,10 @@
       "record_id": "rec-c-bypass",
       "domain": "procurement",
       "status": "OPEN",
-      "reason": "Supplier stock, lead time, consignment and assembly allocation remain unverified as of the dated shortlist.",
+      "reason": "Manufacturer catalogue observation on 2026-10-01 marks this identity for discontinuation and not recommended. No end date, current supplier stock, lead time, consignment or assembly allocation is established.",
       "fact_ids": [
-        "fact-c-bypass-procurement-status"
+        "fact-c-bypass-procurement-status",
+        "fact-c-bypass-lifecycle-20261001"
       ],
       "blocking_fact_ids": [
         "fact-c-bypass-procurement-status"

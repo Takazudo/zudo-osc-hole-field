@@ -267,14 +267,14 @@
     {
       "fact_id": "fact-c-bypass-manufacturer",
       "record_id": "rec-c-bypass",
-      "source_id": "src-c-bypass-shortlist",
+      "source_id": "src-c-bypass-murata-catalog-20261001",
       "class": "PROJECT_STATE",
       "value": "Murata",
       "unit": "NONE",
-      "conditions": "Manufacturer of the project-selected exact shortlist identity.",
-      "locator": "src-c-bypass-shortlist: title block or OSC-ES-1 row parts[id=c_bypass].manufacturer",
-      "provenance": "UNVERIFIED",
-      "verdict": "UNSOURCED",
+      "conditions": "Manufacturer-owned product catalogue explicitly lists the exact selected identity.",
+      "locator": "src-c-bypass-murata-catalog-20261001: JSON rows productSearchResult[0].itemInfoList[id=partNumWithPackageCode]",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
       "depends_on": [],
       "expression": ""
     },
@@ -302,18 +302,14 @@
     {
       "fact_id": "fact-c-bypass-orderable-identity",
       "record_id": "rec-c-bypass",
-      "source_id": "src-c-bypass-datasheet",
+      "source_id": "src-c-bypass-murata-catalog-20261001",
       "class": "PROJECT_STATE",
-      "value": {
-        "manufacturer": "Murata",
-        "mpn": "GRM188R71H104KA93D",
-        "package": "0603"
-      },
+      "value": "Murata GRM188R71H104KA93D; exact D package-code suffix is listed in the manufacturer catalogue.",
       "unit": "NONE",
-      "conditions": "Exact complete orderable identifier in the selected package; does not establish supplier stock.",
-      "locator": "Section/table audit: src-c-bypass-datasheet: retained source does not establish complete exact MPN GRM188R71H104KA93D; see project shortlist selection",
-      "provenance": "UNVERIFIED",
-      "verdict": "UNSOURCED",
+      "conditions": "D denotes 180 mm reel, W8P4 paper tape, 4000 pieces in the retained catalogue. Identity/lifecycle observation only; not current supplier stock, detailed specification, board fit or effective capacitance.",
+      "locator": "src-c-bypass-murata-catalog-20261001: JSON rows productSearchResult[0].itemInfoList[id=partNumWithPackageCode] and [id=carrierPackageInfo]",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
       "depends_on": [],
       "expression": ""
     },
@@ -1375,6 +1371,24 @@
       "locator": "Section/table audit: src-trim-103-shortlist: parts[id=trim_103].package; CAD receipt is provisional family geometry",
       "provenance": "PROJECT-CHOICE",
       "verdict": "NEEDS BENCH",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-c-bypass-lifecycle-20261001",
+      "record_id": "rec-c-bypass",
+      "source_id": "src-c-bypass-murata-catalog-20261001",
+      "class": "PROJECT_STATE",
+      "value": {
+        "production_status": "plannedDiscontinue",
+        "recommended_status": "false",
+        "observation_date": "2026-10-01"
+      },
+      "unit": "NONE",
+      "conditions": "Time-stamped manufacturer catalogue response. No final discontinuation date, remaining stock, supplier lead time or assembly allocation is established. The suggested 0402 family is not approved as a replacement.",
+      "locator": "src-c-bypass-murata-catalog-20261001: JSON rows productSearchResult[0].itemInfoList[id=productionStatus] and [id=recommendedStatus]",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
       "depends_on": [],
       "expression": ""
     }
