@@ -101,6 +101,12 @@ its prerequisite hash or using the old result as current electrical acceptance.
 The separate `peripheral-source-epoch-20261001.json` comparison binds unchanged
 O/EL generated definitions and complete contact inventories to both partition
 hashes; it leaves all historical native/model receipts untouched and stale.
+The subsequent `peripheral-source-epoch-20261002.json` proves that correcting
+the NOISE2 display model changes only its footprint hash in the IO report.
+It checks every 2D footprint byte and every other IO report value against
+the pinned main revision, then regenerates all six O/EL source receipts.
+Definitions and contact inventories remain unchanged; native/model admission
+remains stale. The earlier epoch and historical receipts are preserved.
 
 **This remains a nominal finite-profile diagnostic, NOT ACCEPTED for physical or
 joined electrical compliance.** K covers 1,903 fitted own contacts, 376 GH
