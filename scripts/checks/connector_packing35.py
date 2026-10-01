@@ -3,6 +3,7 @@
 from __future__ import annotations
 from collections import defaultdict
 import argparse
+import hashlib
 import json
 import math
 from pathlib import Path
@@ -14,6 +15,21 @@ from scripts.partition.model import jack_board, JACK_BOARDS, source
 from scripts.pcbgen.netlist import TOKEN, parse, many, one
 from scripts.checks.partition35_diagnostic import footprint_geometry
 OUT=ROOT/'design/partition/connector-packing-candidate.json'
+
+
+def partition_source_digest(spec):
+    """Bind source content, independent of JSON whitespace and member order."""
+    return hashlib.sha256(json.dumps(spec,sort_keys=True,separators=(',',':'),allow_nan=False).encode()).hexdigest()
+
+
+def core_service_depths(spec):
+    """Positive-rear proposal depths, never manufacturer tool/fit evidence."""
+    core=spec['boards']['K'];proposal=core['service_access']
+    depth=-core['face_z_mm'];rear=spec['enclosure']['inside_depth_mm']
+    offset=proposal['support_front_offset_mm'];near,far=proposal['hook_forward_offsets_mm']
+    if not all(math.isfinite(v) for v in (depth,rear,offset,near,far)) or not (0<=offset<depth and 0<=near<far<depth and depth+core['thickness_mm']<=rear):
+        raise ValueError('invalid K support/tool depth proposal')
+    return {'support_mm':[depth-offset,rear],'hook_mm':[depth-far,depth-near]}
 
 
 def board_for(part):
@@ -39,6 +55,7 @@ def pads(part,lock):
 
 
 def candidate():
+    spec=source();service_depths=core_service_depths(spec)
     io=json.loads((ROOT/'design/reports/io-partition.json').read_text());lock={p['uid']:p for p in json.loads((ROOT/'design/grid/placements.lock.json').read_text())['placements']}
     parts={p['ref']:p for p in io['physical_packages']};boards={r:board_for(p) for r,p in parts.items()};pairs=defaultdict(dict)
     for row in io['allowed_crossings']:
@@ -151,11 +168,11 @@ def candidate():
             if any(rect_collision(b,k['box_mm']) for k in service):continue
             sweep=[min(x,sx)-.75,min(y,sy)-.75,max(x,sx)+.75,max(y,sy)+.75]
             if any(rect_collision(sweep,k['land_courtyard_mm'],0) for k in byboard['K'] if k['id']!=h['id']):continue
-            chosen={'header_id':h['id'],'center_mm':[sx,sy],'diameter_mm':2.2,'box_mm':b,'tool_shaft_diameter_mm':1.5,'hook_sweep_xy_mm':sweep,'hook_sweep_positive_depth_mm':[90.5,94],'status':'PROPOSAL straight hook approach; mating/latch mechanics and installed tool fit NOT RUN'};break
+            chosen={'header_id':h['id'],'center_mm':[sx,sy],'diameter_mm':2.2,'box_mm':b,'tool_shaft_diameter_mm':1.5,'hook_sweep_xy_mm':sweep,'hook_sweep_positive_depth_mm':service_depths['hook_mm'],'status':'PROPOSAL straight hook approach; mating/latch mechanics and installed tool fit NOT RUN'};break
         if chosen is None:errors.append('no service aperture '+h['id'])
         else:service.append(chosen)
     return {'schema_version':1,'status':'PASS - preliminary pad/edge packing only' if not errors else 'FAIL',
-            'errors':errors,'family_envelopes':families,'header_count':len(headers),'harness_count':len(harnesses),
+            'errors':errors,'partition_source_digest':partition_source_digest(spec),'family_envelopes':families,'header_count':len(headers),'harness_count':len(harnesses),
             'headers_by_board':{b:len(hs) for b,hs in sorted(byboard.items())},'control_sites_available':len(ps)+len(utility),
             'control_sites_used':pi+len(utility),'jack_sites_used':ji,'core_inlet_notch_relocations':orphans,
             'headers':headers,'harnesses':harnesses,'K_service_apertures':service,

@@ -6,7 +6,7 @@ sidebar_position: 85
 
 Authority: **PROPOSAL (planning, owner-delegated)**. Status: **unvalidated draft**.
 
-Adopt the ten-board source decision in `design/partition/partition.json`: J jack board, consolidated P controls, complete EL stage optics, five selected stepped O adapters and a distinct rear K core. Preserve every original UID x/y, every Sensitive island, all 650 fitted ICs and the single conditional EXT domain. K at z=−100 mm and an enclosure inner depth of at least 120 mm are proposals.
+Adopt the ten-board source decision in `design/partition/partition.json`: JL/JR jack halves, consolidated P controls, complete EL stage optics, five selected stepped O adapters and a distinct rear K core. Preserve every original UID x/y, every Sensitive island, all 650 fitted ICs and the single conditional EXT domain. K at z=−100 mm and an enclosure inner depth of at least 120 mm are proposals.
 
 The decision uses exact GH3/GH7/GH8 top-entry connectors and audited Kingbright footprints. It counts all package assignments, contacts, returns, power-wire losses, support exclusions and controlled ribbon corridors. The [board-stack architecture](../../architecture/osc-board-stack/) records the dimensions and the source boundary.
 
@@ -14,3 +14,18 @@ Courtyard capacity and conditional electrical arithmetic do not establish PCB ro
 
 
 Issue #66 supersedes the single J board with whole-module JL/JR halves at x177. Source geometry and ten-board native joined parity pass; half-board routing remains NOT RUN #38. The original 900-second single-J routing timeout is historical. Exact changes and qualification boundaries are in `design/partition/downstream-handoff-66.md`.
+
+
+## Bounded architecture continuation — 1 October 2026
+
+Retain K at −100 mm, the proposed 120 mm enclosure, all ten boards and the selected 3+2 selector assembly. There is no owner-defined maximum depth or assembly-cost target. This working decision preserves all 438 centres, 33 modules, 650 fitted ICs, sensitive islands and the complete feature set; it does not establish that 120 mm is a physical minimum or that a factory accepts the assembly.
+
+Select a **110 mm maximum finished cut** for each of the eighteen Alpha Wire 5859 BK005 main wires, replacing the earlier 125 mm proposal. Every sampled centreline must fit with **10 mm additional preparation/slack allowance**. The longest current path plus that allowance is 100.907060 mm, leaving 9.092940 mm before the ceiling. Installed bending, stripping, soldering, strain relief and supported service displacement must meet this requirement in #65. If they need longer wires, revise the source and electrical proof before taking any shorter-wire credit.
+
+The conditional conductance-extrema screen becomes JL 0.481793929 A, JR 0.478306084 A and P 0.479237291 A per worst GH return; worst distribution loss becomes 15.321 mV. These numbers retain 0.5 mΩ common branch-plus-K, 0.5 A/contact, 1 mΩ rail, 20 mV distribution and 0.20 V full-budget limits. They do not prove the actual joined network, material/contact classes or local access costs. Exact protection remains OPEN #59.
+
+Simply moving K to −99 mm with the old 125 mm main-wire ceiling raises the JL scalar screen to 0.501995 A. A −98 mm / 110 mm combination saves only 2 mm while leaving less current margin. Retain the present depth instead. The source now derives K support depth and hook-sweep depth from its plane, enclosure and explicit proposed offsets; these remain unqualified support/tool envelopes, not manufacturer latch dimensions or a full 3D service check.
+
+Assembly still requires 195 harnesses, 390 headers and housings, 1,822 fitted crimps, eighteen main wires and 36 main-wire solder lands. K's 191 GH mates have proposed service apertures for latch access; actual release remains unqualified, but **the eighteen soldered main wires still tether K**. After removing external power and proving discharge, release combs and mates before supporting and unfastening K. A qualified limited displacement or factory desoldering/replacement procedure is still needed; unrestricted board removal and owner soldering are not implied. The five adapters, two custom extensions, five custom knobs and carrier remain subject to #55.
+
+This source replan changes receipt admission. Connector and loom receipts bind the normalized partition source; stale receipts fail before their scalar budgets are consumed. Historical native/conductor/contact/matrix receipts retain their original hashes and are **not rebound or promoted**. Current-source physical equivalence or fresh extraction and the joined electrical proof remain required for #38; this prerequisite does not unlock #39. #55/#57/#64/#65 remain NOT RUN. No production copper, source/inlet realization or fabrication package is selected by this decision.
