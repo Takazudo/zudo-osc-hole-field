@@ -35,8 +35,8 @@ class ReferenceValidityTests(unittest.TestCase):
 
     def test_recovery_is_stricter_than_retaining_good(self):
         study=self.build()['studies']['zero_sense_current']
-        outer=study['possible_retained_good_reference_extent_V']
-        inner=study['guaranteed_recovery_interval_V']
+        outer=study['possible_settled_retained_good_reference_extent_V']
+        inner=study['common_static_recovery_interval_V']
         self.assertLess(outer[0],inner[0])
         self.assertLess(inner[1],outer[1])
 
@@ -56,3 +56,9 @@ class ReferenceValidityTests(unittest.TestCase):
 
     def test_report_reproduces(self):
         model.run(check=True)
+
+    def test_json_pin_key_order_is_not_rewiring(self):
+        baseline=self.build()
+        for part in self.spec['components']:
+            part['pins']=dict(reversed(list(part['pins'].items())))
+        self.assertEqual(self.build(),baseline)

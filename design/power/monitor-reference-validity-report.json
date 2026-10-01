@@ -100,11 +100,11 @@
           3.5699359296979787
         ]
       },
-      "possible_retained_good_reference_extent_V": [
+      "possible_settled_retained_good_reference_extent_V": [
         3.0013839026210696,
         3.609641991605641
       ],
-      "guaranteed_recovery_interval_V": [
+      "common_static_recovery_interval_V": [
         3.1906873757761973,
         3.3945006479740507
       ],
@@ -147,11 +147,11 @@
           3.572482317291729
         ]
       },
-      "possible_retained_good_reference_extent_V": [
+      "possible_settled_retained_good_reference_extent_V": [
         2.9988552775273196,
         3.6121883791993907
       ],
-      "guaranteed_recovery_interval_V": [
+      "common_static_recovery_interval_V": [
         3.1932337633699475,
         3.3919720228803008
       ],
@@ -198,6 +198,7 @@
     "scope": "Forced DC values, nominal resistor/threshold accuracy, zero leakage/offset; not proof of a reachable physical trajectory."
   },
   "remaining_conditions": [
+    "All threshold intervals are settled/static; common recovery means its strict interior with valid supply, other paired sense inputs healthy or correctly unused, and sufficient settling, not a time bound.",
     "Source-table 350nA condition is VSENSE=5.5V; its use near0.4V is an assumption, not a source guarantee.",
     "Negative comparator error/input-current envelopes retain all conditions of the separate network study.",
     "The broad interval is an enclosure across independent corners; it is not one device's exact acceptance interval.",
@@ -217,7 +218,7 @@
     "design/power/rail-monitor-candidate.json": "955c92a826f02b1239a656c22035404f73da04e9d38d1f765b2580fcf88c2ac5",
     "design/power/supply-architecture-input.json": "a8a4e92ac4c1d7de5c16b6982fba7d5ab60ab13753b12eabfa23fc75da98acc4",
     "scripts/checks/monitor_permit_behavior.py": "3b37bd83fba82ef90b8b3f1118579f51367c3a6d9487de11e77fc0738fb51420",
-    "scripts/checks/monitor_reference_validity.py": "01813f946ac30a2993bf0890c835a61741dd691690196e38dd5bec842bd1e371",
+    "scripts/checks/monitor_reference_validity.py": "3a34f05035739896708e435f0a7224e8262eb8028fdc6f9ec4ad4f0f9dd616c7",
     "scripts/checks/negative_monitor_network.py": "ca0e9a8e3f6140c5e67770bdc696013f782119fb0d9a93276a15a78d21c1a51f",
     "scripts/checks/rail_monitor_candidate.py": "7da0e191589e5e4221b14fdc6ba22de2f8030fc66ea47dfadf6e8fa33e2e9df8"
   }

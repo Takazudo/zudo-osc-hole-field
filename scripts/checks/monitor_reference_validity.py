@@ -73,7 +73,7 @@ def calculate(spec,catalog,old,negative_spec,facts,mpn):
     for p in negative_spec['resistors']:
         captured=parts['R'+str(mapping[p['ref']])]
         if (captured['mpn']!=p['mpn'] or captured['value']!=p['ohm']
-                or list(captured['pins'].values())!=p['nodes']):
+                or [captured['pins']['1'],captured['pins']['2']]!=p['nodes']):
             raise ValueError('negative study differs from captured resistor network')
     for ref,key in (('U102','comparator'),('U103','reference')):
         if parts[ref]['mpn']!=negative_spec[key]['mpn']:
@@ -102,8 +102,8 @@ def calculate(spec,catalog,old,negative_spec,facts,mpn):
         studies[label]={
             'sense_current_absolute_assumption_A':bias,
             'events_V':{name:[rail.display(v,i==1) for i,v in enumerate(pair)] for name,pair in limits.items()},
-            'possible_retained_good_reference_extent_V':[rail.display(v,i==1) for i,v in enumerate(extent)],
-            'guaranteed_recovery_interval_V':[rail.display(recovery[0],True),rail.display(recovery[1],False)],
+            'possible_settled_retained_good_reference_extent_V':[rail.display(v,i==1) for i,v in enumerate(extent)],
+            'common_static_recovery_interval_V':[rail.display(recovery[0],True),rail.display(recovery[1],False)],
             'propagated_reference_enclosure_V':evaluated['reference']['normal_target_V'],
             'negative_trip_magnitude_V':result['conditional_trip_magnitude_V'],
             'negative_normal_UV_margin_V':result['normal_UV_margin_V'],
@@ -140,6 +140,7 @@ def calculate(spec,catalog,old,negative_spec,facts,mpn):
             'negative_rail_inside_required_band':rail.number(result['normal_magnitude_V'][0]) <= -vn <= rail.number(result['normal_magnitude_V'][1]),
             'scope':'Forced DC values, nominal resistor/threshold accuracy, zero leakage/offset; not proof of a reachable physical trajectory.'},
         'remaining_conditions':[
+            'All threshold intervals are settled/static; common recovery means its strict interior with valid supply, other paired sense inputs healthy or correctly unused, and sufficient settling, not a time bound.',
             'Source-table 350nA condition is VSENSE=5.5V; its use near0.4V is an assumption, not a source guarantee.',
             'Negative comparator error/input-current envelopes retain all conditions of the separate network study.',
             'The broad interval is an enclosure across independent corners; it is not one device\'s exact acceptance interval.',

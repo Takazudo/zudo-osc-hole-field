@@ -6,7 +6,7 @@ sidebar_position: 11
 
 ## Current continuation — 2 October 2026
 
-Start from the latest `main`. Completed WIP checkpoints through PR #80 are
+Start from the latest `main`. Completed WIP checkpoints through PR #81 are
 merged; the preserved issue-38 worktree is a recovery/evidence store, not the
 active implementation base. Keep its ignored artifacts and the other retained
 experiment worktrees. Issues #38 and #59 remain open, and every schematic and
@@ -20,8 +20,13 @@ states. They do not simulate actual device startup or release. The conditional c
 rows and charges reference output demand to +5 V once, within the existing
 auxiliary allowance. Its largest +5 V DC screen is 6.625 mA under explicit
 source-applicability/leakage assumptions. This does not bound dynamic current.
-The next work is reference-validity and partial-power behavior, including slow
-logic-input current and actual isolation loads. The monitor
+PR #82 exposes the reference-validity integration gap: the coarse reference
+channel can retain a settled healthy state across an enclosing range of roughly
+3.00–3.61 V under the stated static assumptions. It cannot establish the narrow
+3.29–3.31 V used by the negative-monitor study. Propagating the wider range loses
+both normal-band margins, and a forced nominal counterexample is retained.
+The next work must establish applicable precision-reference validity and actual
+partial-power behavior, including slow logic-input current and isolation loads. The monitor
 studies below provide inputs and counterexamples, not a completed protection
 assembly. Current-source contact/material qualification and joined electrical
 compliance still gate board acceptance; green software CI does not close them.

@@ -8,10 +8,13 @@ captured divider, exact resistor evidence and the supervisor's **0.4 V** channel
 accuracy/hysteresis rows. It does not reuse the 0.8 V rows.
 
 With zero sense current and the stated resistor-temperature assumptions, the
-possible retained-good reference extent is approximately 3.001–3.610 V. The
-common interval guaranteed to recover across those corners is about
+possible settled retained-good reference extent is approximately 3.001–3.610 V. The
+common static recovery interval across those corners is about
 3.191–3.395 V. The first interval encloses independent device/resistor corners;
-it is not the exact acceptance window of a single physical device.
+it is not the exact acceptance window of a single physical device. Recovery
+means the strict interval interior with valid control supply, the other paired
+sense inputs healthy or correctly unused, and sufficient settling. Neither
+interval bounds behavior during startup or fault-detection delay.
 A separate 350 nA input-current sensitivity retains the source's 5.5 V test
 condition and leaves its applicability near 0.4 V unproved.
 
@@ -47,3 +50,10 @@ The integration check binds the actual captured resistor/device identities,
 rejects topology and evidence drift, and leaves canonical protection and
 qualification false. No PCB, physical transient, thermal or bench qualification
 is included.
+
+
+Verification: seven focused regression tests cover the assumption gap,
+counterexample, nonmutation of the original study, source sensitivity,
+connectivity binding and JSON-key ordering. Guarded full regeneration, component
+validation and fresh native candidate checks pass. Independent source/arithmetic
+review found no remaining scoped blocker. Physical dynamic checks are NOT RUN.
