@@ -174,6 +174,24 @@ The range the manufacturer intends the part to be used in. Always narrower than 
   **Evidence:** [src-monitor-tlv9022dr-datasheet: printed p7 section5.3](#src-monitor-tlv9022dr-datasheet)
 </EvidenceFact>
 
+### GUARANTEED\_ELECTRICAL
+
+A parameter the manufacturer guarantees over the stated conditions, usually with minimum, typical and maximum values.
+
+<EvidenceFact>
+  <EvidenceAnchor id="fact-monitor-tlv9022dr-quiescent-table-max" />
+
+  **Fact:** `fact-monitor-tlv9022dr-quiescent-table-max`
+
+  **Value:** 0.000035 · **Unit:** `A`
+
+  **Conditions:** Per comparator, VS=1.8V and 5V, VCM=V-, no load, output LOW, TA=-40..125C. Dual package contains two comparators. Does not bound arbitrary output-high or transient operation.
+
+  **Verdict:** PASS - primary-source confirmed · **Provenance:** PRIMARY-SPEC
+
+  **Evidence:** [src-monitor-tlv9022dr-datasheet: printed p11 section5.9 IQ row for TLV90x2](#src-monitor-tlv9022dr-datasheet)
+</EvidenceFact>
+
 ### TYPICAL\_CURVE
 
 A representative figure read from a characteristic curve. Typical values are not guaranteed and vary part to part.
@@ -414,6 +432,7 @@ What the recorded terms on this page mean, in ordinary words. The exact terms ab
 | Recorded term           | What it means                                                                                                                                                      |
 | ----------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | `ABSOLUTE_MAXIMUM`      | A never-exceed limit. Reaching it may damage the part; it is not an operating target and there is no margin implied by it.                                         |
+| `GUARANTEED_ELECTRICAL` | A parameter the manufacturer guarantees over the stated conditions, usually with minimum, typical and maximum values.                                              |
 | `PROJECT_STATE`         | A value this project recorded about how the part is used here — a chosen operating point, a net assignment, or a derived figure. Not a manufacturer specification. |
 | `RECOMMENDED_OPERATION` | The range the manufacturer intends the part to be used in. Always narrower than the absolute maximum.                                                              |
 | `TYPICAL_CURVE`         | A representative figure read from a characteristic curve. Typical values are not guaranteed and vary part to part.                                                 |

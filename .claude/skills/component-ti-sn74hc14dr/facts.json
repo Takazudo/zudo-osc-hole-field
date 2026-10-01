@@ -219,6 +219,20 @@
       "verdict": "PASS - primary-source confirmed",
       "depends_on": [],
       "expression": ""
+    },
+    {
+      "fact_id": "fact-schmitt-quiescent-table-max",
+      "record_id": "rec-schmitt",
+      "source_id": "src-schmitt-datasheet",
+      "class": "GUARANTEED_ELECTRICAL",
+      "value": 2e-05,
+      "unit": "A",
+      "conditions": "SN74, TA=-40..85C, VCC=6V, VI=VCC or 0, IO=0. No maximum slow-input or switching-current claim at the candidate 5V supply.",
+      "locator": "src-schmitt-datasheet: printed p5 section5.5 ICC row, SN74 column",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
     }
   ]
 }

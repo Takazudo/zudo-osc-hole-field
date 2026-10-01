@@ -1,0 +1,138 @@
+{
+  "status": "CONDITIONAL DC ALLOCATION SCREEN; NO COMPLETE CURRENT ACCEPTANCE",
+  "qualification_accepted": false,
+  "total_dynamic_current_A": null,
+  "reference_assumed_max_V": 3.31,
+  "reference_output_branch_bounds_A": {
+    "R102": 0.003153313282343272,
+    "R104": 0.00023725838262179111,
+    "R105_R106": 0.00036662443230740354,
+    "R107_R108": 0.0003291989451640313,
+    "R109_to_R113": 0.0004026202856612213
+  },
+  "reference_output_total_A": 0.004489015328097719,
+  "reference_load_charged_to_5V_once": true,
+  "active_device_source_rows": {
+    "U101": {
+      "mpn": "TPS37044MJOFDDFRQ1",
+      "fact_id": "fact-monitor-tps37044mjofddfrq1-quiescent-table-max",
+      "table_max_A": 1.5e-05,
+      "units_per_package": 1,
+      "package_table_sum_A": 1.5e-05,
+      "conditions": "At 1.7V<=VDD<=6V, -40..125C, RESET pullup 10kohm to VDD and 10pF load; IDD row VDD<=6V. This is the source-table maximum, not proof of actual aggregate output-loading applicability.",
+      "locator": "src-monitor-tps37044mjofddfrq1-datasheet: printed p8 section6.5 IDD row",
+      "application_qualified": false
+    },
+    "U102": {
+      "mpn": "TLV9022DR",
+      "fact_id": "fact-monitor-tlv9022dr-quiescent-table-max",
+      "table_max_A": 3.5e-05,
+      "units_per_package": 2,
+      "package_table_sum_A": 7e-05,
+      "conditions": "Per comparator, VS=1.8V and 5V, VCM=V-, no load, output LOW, TA=-40..125C. Dual package contains two comparators. Does not bound arbitrary output-high or transient operation.",
+      "locator": "src-monitor-tlv9022dr-datasheet: printed p11 section5.9 IQ row for TLV90x2",
+      "application_qualified": false
+    },
+    "U103": {
+      "mpn": "REF3433TIDBVR",
+      "fact_id": "fact-monitor-ref3433tidbvr-quiescent-table-max",
+      "table_max_A": 9.5e-05,
+      "units_per_package": 1,
+      "package_table_sum_A": 9.5e-05,
+      "conditions": "Active mode; VIN=VOUT+VDO, COUT=10uF, CIN=0.1uF, IL=0mA, TA=-40..125C. Output load must additionally be supplied through VIN; actual 5V/0.3uF loaded candidate applicability remains open.",
+      "locator": "src-monitor-ref3433tidbvr-datasheet: printed p7 section6.5 IQ row and common table conditions",
+      "application_qualified": false
+    },
+    "U104": {
+      "mpn": "SN74HC14DR",
+      "fact_id": "fact-schmitt-quiescent-table-max",
+      "table_max_A": 2e-05,
+      "units_per_package": 1,
+      "package_table_sum_A": 2e-05,
+      "conditions": "SN74, TA=-40..85C, VCC=6V, VI=VCC or 0, IO=0. No maximum slow-input or switching-current claim at the candidate 5V supply.",
+      "locator": "src-schmitt-datasheet: printed p5 section5.5 ICC row, SN74 column",
+      "application_qualified": false
+    },
+    "U105": {
+      "mpn": "SN74HC74DR",
+      "fact_id": "fact-flipflop-quiescent-table-max",
+      "table_max_A": 4e-05,
+      "units_per_package": 1,
+      "package_table_sum_A": 4e-05,
+      "conditions": "SN74, TA=-40..85C, VCC=6V, VI=VCC or 0, IO=0. No maximum loaded-output or switching-current claim at the candidate 5V supply.",
+      "locator": "src-flipflop-datasheet: printed p5 section6.5 ICC row, SN74 column",
+      "application_qualified": false
+    }
+  },
+  "conditional_active_quiescent_sum_A": 0.00024,
+  "states": {
+    "fault_asserted": {
+      "conditional_dc_A": {
+        "+5V": 0.006094493567579148,
+        "+12V": 0.0008349201331657472,
+        "-12V": 0.00030853006429201816
+      },
+      "unallocated_auxiliary_A": {
+        "+5V": 0.013905506432420852,
+        "+12V": 0.019165079866834252,
+        "-12V": 0.019691469935707983
+      }
+    },
+    "permit_enabled": {
+      "conditional_dc_A": {
+        "+5V": 0.006094493567579148,
+        "+12V": 0.0021082595883233843,
+        "-12V": 0.00030853006429201816
+      },
+      "unallocated_auxiliary_A": {
+        "+5V": 0.013905506432420852,
+        "+12V": 0.017891740411676616,
+        "-12V": 0.019691469935707983
+      }
+    },
+    "both_paths_conservative_dc_screen": {
+      "conditional_dc_A": {
+        "+5V": 0.00662505167389483,
+        "+12V": 0.0021082595883233843,
+        "-12V": 0.00030853006429201816
+      },
+      "unallocated_auxiliary_A": {
+        "+5V": 0.01337494832610517,
+        "+12V": 0.017891740411676616,
+        "-12V": 0.019691469935707983
+      }
+    }
+  },
+  "original_auxiliary_allowance_mA": {
+    "+12V": 20,
+    "-12V": 20,
+    "+5V": 20
+  },
+  "original_supply_requirements_changed": false,
+  "conditions_and_open_gates": [
+    "Adopt the listed source-table currents outside their full source conditions only as explicit assumptions, not guarantees.",
+    "Reference <=3.31V, negative rail nonpositive and normal rail bounds; coarse reference monitor does not establish this precision window.",
+    "Zero input and output/off-state leakage, ideal logic voltages within supply rails, passive resistor network and zero semiconductor drops for load-current bounds.",
+    "25C resistance reference and -40..125C resistor/TCR envelope are analysis conditions, not installed thermal qualification.",
+    "Source input current equals reference output demand plus reference IQ; no separate free reference supply.",
+    "Both-path DC screen is not a transient maximum: HC slow-input/switching current, cap charging and two RC clamp-return paths remain unbounded.",
+    "Actual isolation loads, discharge circuits and remaining protection auxiliaries must share the original 20mA per-rail allowance.",
+    "Ground-loss, partial-power/backfeed, startup, thermal and physical qualification remain open."
+  ],
+  "input_sha256": {
+    ".claude/skills/component-monitor-permit-candidates/facts.json": "cc967ee764880636a4ba44eda6651ff652119e42734a25f47d9d1eb2f42e5556",
+    ".claude/skills/component-monitor-permit-candidates/manifest.json": "641ef0d581b1957bbcfd1c8bb9bd562cb4bb6bb414494398218ec68f27964a04",
+    ".claude/skills/component-monitor-permit-candidates/sources.json": "3a0deec654184e04e2b9187437a6aca143585d6c2b902ffa7ec3eb96b5948f32",
+    ".claude/skills/component-ti-sn74hc14dr/facts.json": "49d8cd37cbe3b5e57ed1038e528e013ad07bd0558a6c10a7dab612136e535cd7",
+    ".claude/skills/component-ti-sn74hc14dr/manifest.json": "1cee3143639acddeb12148a704881166b99779fe53bf747abe3e7ae9532d6c12",
+    ".claude/skills/component-ti-sn74hc14dr/sources.json": "118e61bceb7128c89820a56efe9cc89d60628f4ddf2560cdc88f008b6f175ba8",
+    ".claude/skills/component-ti-sn74hc74dr/facts.json": "a51e77c2bfeb2a8da31d1ac9af7648e7d158c4cc8572abccb51ebc5a7c2f4850",
+    ".claude/skills/component-ti-sn74hc74dr/manifest.json": "7996352134b1d33f105132b562c1d4a3140ff18a2b2a07653dae75ca9f3c9726",
+    ".claude/skills/component-ti-sn74hc74dr/sources.json": "d2e84d1e29f5540956f36f06c1001499960104186f3f89ee579f8a4c66980f28",
+    "design/power/monitor-permit-draft.json": "ff845a082c9da1274d204fb2b369fa4fde8f86d2ddcd0afe227c7f018f748655",
+    "design/power/monitor-permit-parts.json": "464dbd6800724eccb82a49ff495b2da585b4d5828fd27a17ef41a96698f94871",
+    "design/power/supply-architecture-input.json": "a8a4e92ac4c1d7de5c16b6982fba7d5ab60ab13753b12eabfa23fc75da98acc4",
+    "scripts/checks/monitor_permit_behavior.py": "3b37bd83fba82ef90b8b3f1118579f51367c3a6d9487de11e77fc0738fb51420",
+    "scripts/checks/monitor_permit_current.py": "58327ee1e5e04e0df09f0acdc3a040834faacfa6d729ffb8496288a0875cdd2f"
+  }
+}

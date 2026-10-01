@@ -1966,6 +1966,48 @@
       "verdict": "PASS - primary-source confirmed",
       "depends_on": [],
       "expression": ""
+    },
+    {
+      "fact_id": "fact-monitor-tps37044mjofddfrq1-quiescent-table-max",
+      "record_id": "rec-monitor-tps37044mjofddfrq1",
+      "source_id": "src-monitor-tps37044mjofddfrq1-datasheet",
+      "class": "GUARANTEED_ELECTRICAL",
+      "value": 1.5e-05,
+      "unit": "A",
+      "conditions": "At 1.7V<=VDD<=6V, -40..125C, RESET pullup 10kohm to VDD and 10pF load; IDD row VDD<=6V. This is the source-table maximum, not proof of actual aggregate output-loading applicability.",
+      "locator": "src-monitor-tps37044mjofddfrq1-datasheet: printed p8 section6.5 IDD row",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-monitor-tlv9022dr-quiescent-table-max",
+      "record_id": "rec-monitor-tlv9022dr",
+      "source_id": "src-monitor-tlv9022dr-datasheet",
+      "class": "GUARANTEED_ELECTRICAL",
+      "value": 3.5e-05,
+      "unit": "A",
+      "conditions": "Per comparator, VS=1.8V and 5V, VCM=V-, no load, output LOW, TA=-40..125C. Dual package contains two comparators. Does not bound arbitrary output-high or transient operation.",
+      "locator": "src-monitor-tlv9022dr-datasheet: printed p11 section5.9 IQ row for TLV90x2",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-monitor-ref3433tidbvr-quiescent-table-max",
+      "record_id": "rec-monitor-ref3433tidbvr",
+      "source_id": "src-monitor-ref3433tidbvr-datasheet",
+      "class": "GUARANTEED_ELECTRICAL",
+      "value": 9.5e-05,
+      "unit": "A",
+      "conditions": "Active mode; VIN=VOUT+VDO, COUT=10uF, CIN=0.1uF, IL=0mA, TA=-40..125C. Output load must additionally be supplied through VIN; actual 5V/0.3uF loaded candidate applicability remains open.",
+      "locator": "src-monitor-ref3433tidbvr-datasheet: printed p7 section6.5 IQ row and common table conditions",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
     }
   ]
 }
