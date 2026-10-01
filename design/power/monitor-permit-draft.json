@@ -1,0 +1,560 @@
+{
+  "schema_version": 1,
+  "status": "UNSELECTED NATIVE DRAFT; NOT ORDERABLE / NOT ENERGIZABLE",
+  "candidate_circuit_captured": true,
+  "canonical_protection_implemented": false,
+  "qualification_accepted": false,
+  "project": "monitor-permit-candidate",
+  "source_catalog": "design/power/monitor-permit-parts.json",
+  "components": [
+    {
+      "ref": "U101",
+      "mpn": "TPS37044MJOFDDFRQ1",
+      "pins": {
+        "1": "+5V",
+        "2": "REF_SENSE",
+        "3": null,
+        "4": "AGND",
+        "5": "P12_SENSE",
+        "6": "P5_SENSE",
+        "7": "FAULT_N",
+        "8": "FAULT_N"
+      },
+      "page": 1,
+      "role": "Positive rails and coarse reference window",
+      "kind": "ic"
+    },
+    {
+      "ref": "U102",
+      "mpn": "TLV9022DR",
+      "pins": {
+        "1": "FAULT_N",
+        "2": "SENSE",
+        "3": "UV",
+        "4": "AGND",
+        "5": "SENSE",
+        "6": "OV",
+        "7": "FAULT_N",
+        "8": "+5V"
+      },
+      "page": 1,
+      "role": "Negative-rail window candidate",
+      "kind": "ic"
+    },
+    {
+      "ref": "U103",
+      "mpn": "REF3433TIDBVR",
+      "pins": {
+        "1": null,
+        "2": "AGND",
+        "3": null,
+        "4": "+5V",
+        "5": null,
+        "6": "REF"
+      },
+      "page": 1,
+      "role": "Unselected reference; startup and effective bypass unqualified",
+      "kind": "ic"
+    },
+    {
+      "ref": "U104",
+      "mpn": "SN74HC14DR",
+      "pins": {
+        "1": "FAULT_N",
+        "2": "BAD_FAST",
+        "3": "BAD_FAST",
+        "4": "GOOD_FAST",
+        "5": "DELAY_IN",
+        "6": "DELAY_INV",
+        "7": "AGND",
+        "8": "PERMIT_CLK",
+        "9": "DELAY_INV",
+        "10": null,
+        "11": "AGND",
+        "12": null,
+        "13": "AGND",
+        "14": "+5V"
+      },
+      "page": 2,
+      "role": "Fast asynchronous reset and delayed clock conditioning",
+      "kind": "ic"
+    },
+    {
+      "ref": "U105",
+      "mpn": "SN74HC74DR",
+      "pins": {
+        "1": "GOOD_FAST",
+        "2": "+5V",
+        "3": "PERMIT_CLK",
+        "4": "+5V",
+        "5": "PERMIT_Q",
+        "6": null,
+        "7": "AGND",
+        "8": null,
+        "9": null,
+        "10": "+5V",
+        "11": "AGND",
+        "12": "AGND",
+        "13": "AGND",
+        "14": "+5V"
+      },
+      "page": 2,
+      "role": "Fault clear / delayed re-arm; short faults may latch off",
+      "kind": "ic"
+    },
+    {
+      "ref": "Q101",
+      "mpn": "MMBT3904,215",
+      "pins": {
+        "1": "BASE",
+        "2": "AGND",
+        "3": "PERMIT_SINK"
+      },
+      "page": 2,
+      "role": "Default-off intent with passive base bleed; actual turn-off bound open",
+      "kind": "npn"
+    },
+    {
+      "ref": "R101",
+      "mpn": "RT0603BRD0751KL",
+      "pins": {
+        "1": "VN",
+        "2": "SENSE"
+      },
+      "page": 1,
+      "role": "Negative monitor RN",
+      "kind": "resistor",
+      "value": 51000
+    },
+    {
+      "ref": "R102",
+      "mpn": "RT0603BRD074K99L",
+      "pins": {
+        "1": "REF",
+        "2": "SENSE"
+      },
+      "page": 1,
+      "role": "Negative monitor RR",
+      "kind": "resistor",
+      "value": 4990
+    },
+    {
+      "ref": "R103",
+      "mpn": "RT0603BRD071KL",
+      "pins": {
+        "1": "SENSE",
+        "2": "AGND"
+      },
+      "page": 1,
+      "role": "Negative monitor RG",
+      "kind": "resistor",
+      "value": 1000
+    },
+    {
+      "ref": "R104",
+      "mpn": "RT0603BRD0714KL",
+      "pins": {
+        "1": "REF",
+        "2": "AGND"
+      },
+      "page": 1,
+      "role": "Negative monitor RB",
+      "kind": "resistor",
+      "value": 14000
+    },
+    {
+      "ref": "R105",
+      "mpn": "RT0603BRD078K06L",
+      "pins": {
+        "1": "REF",
+        "2": "UV"
+      },
+      "page": 1,
+      "role": "Negative monitor RU",
+      "kind": "resistor",
+      "value": 8060
+    },
+    {
+      "ref": "R106",
+      "mpn": "RT0603BRD071KL",
+      "pins": {
+        "1": "UV",
+        "2": "AGND"
+      },
+      "page": 1,
+      "role": "Negative monitor RUG",
+      "kind": "resistor",
+      "value": 1000
+    },
+    {
+      "ref": "R107",
+      "mpn": "RT0603BRD079K09L",
+      "pins": {
+        "1": "REF",
+        "2": "OV"
+      },
+      "page": 1,
+      "role": "Negative monitor RO",
+      "kind": "resistor",
+      "value": 9090
+    },
+    {
+      "ref": "R108",
+      "mpn": "RT0603BRD071KL",
+      "pins": {
+        "1": "OV",
+        "2": "AGND"
+      },
+      "page": 1,
+      "role": "Negative monitor ROG",
+      "kind": "resistor",
+      "value": 1000
+    },
+    {
+      "ref": "R109",
+      "mpn": "RT0603BRD075K1L",
+      "pins": {
+        "1": "REF",
+        "2": "REF_D1"
+      },
+      "page": 1,
+      "role": "Unselected monitor/permit resistor; R124 is a finite dummy load",
+      "kind": "resistor",
+      "value": 5100
+    },
+    {
+      "ref": "R110",
+      "mpn": "RT0603BRD071KL",
+      "pins": {
+        "1": "REF_D1",
+        "2": "REF_D2"
+      },
+      "page": 1,
+      "role": "Unselected monitor/permit resistor; R124 is a finite dummy load",
+      "kind": "resistor",
+      "value": 1000
+    },
+    {
+      "ref": "R111",
+      "mpn": "RT0603BRD071KL",
+      "pins": {
+        "1": "REF_D2",
+        "2": "REF_D3"
+      },
+      "page": 1,
+      "role": "Unselected monitor/permit resistor; R124 is a finite dummy load",
+      "kind": "resistor",
+      "value": 1000
+    },
+    {
+      "ref": "R112",
+      "mpn": "RT0603BRD07150RL",
+      "pins": {
+        "1": "REF_D3",
+        "2": "REF_SENSE"
+      },
+      "page": 1,
+      "role": "Unselected monitor/permit resistor; R124 is a finite dummy load",
+      "kind": "resistor",
+      "value": 150
+    },
+    {
+      "ref": "R113",
+      "mpn": "RT0603BRD071KL",
+      "pins": {
+        "1": "REF_SENSE",
+        "2": "AGND"
+      },
+      "page": 1,
+      "role": "Unselected monitor/permit resistor; R124 is a finite dummy load",
+      "kind": "resistor",
+      "value": 1000
+    },
+    {
+      "ref": "R114",
+      "mpn": "RT0603BRD0714KL",
+      "pins": {
+        "1": "+12V",
+        "2": "P12_SENSE"
+      },
+      "page": 1,
+      "role": "Unselected monitor/permit resistor; R124 is a finite dummy load",
+      "kind": "resistor",
+      "value": 14000
+    },
+    {
+      "ref": "R115",
+      "mpn": "RT0603BRD071KL",
+      "pins": {
+        "1": "P12_SENSE",
+        "2": "AGND"
+      },
+      "page": 1,
+      "role": "Unselected monitor/permit resistor; R124 is a finite dummy load",
+      "kind": "resistor",
+      "value": 1000
+    },
+    {
+      "ref": "R116",
+      "mpn": "RT0603BRD075K1L",
+      "pins": {
+        "1": "+5V",
+        "2": "P5_TOP"
+      },
+      "page": 1,
+      "role": "Unselected monitor/permit resistor; R124 is a finite dummy load",
+      "kind": "resistor",
+      "value": 5100
+    },
+    {
+      "ref": "R117",
+      "mpn": "RT0603BRD07150RL",
+      "pins": {
+        "1": "P5_TOP",
+        "2": "P5_SENSE"
+      },
+      "page": 1,
+      "role": "Unselected monitor/permit resistor; R124 is a finite dummy load",
+      "kind": "resistor",
+      "value": 150
+    },
+    {
+      "ref": "R118",
+      "mpn": "RT0603BRD071KL",
+      "pins": {
+        "1": "P5_SENSE",
+        "2": "AGND"
+      },
+      "page": 1,
+      "role": "Unselected monitor/permit resistor; R124 is a finite dummy load",
+      "kind": "resistor",
+      "value": 1000
+    },
+    {
+      "ref": "R119",
+      "mpn": "RC0805FR-0710KL",
+      "pins": {
+        "1": "+5V",
+        "2": "FAULT_N"
+      },
+      "page": 1,
+      "role": "Unselected monitor/permit resistor; R124 is a finite dummy load",
+      "kind": "resistor",
+      "value": 10000
+    },
+    {
+      "ref": "R120",
+      "mpn": "RC0805FR-0710KL",
+      "pins": {
+        "1": "GOOD_FAST",
+        "2": "DELAY_CAP"
+      },
+      "page": 2,
+      "role": "Unselected monitor/permit resistor; R124 is a finite dummy load",
+      "kind": "resistor",
+      "value": 10000
+    },
+    {
+      "ref": "R121",
+      "mpn": "RC0805FR-0710KL",
+      "pins": {
+        "1": "DELAY_CAP",
+        "2": "DELAY_IN"
+      },
+      "page": 2,
+      "role": "Unselected monitor/permit resistor; R124 is a finite dummy load",
+      "kind": "resistor",
+      "value": 10000
+    },
+    {
+      "ref": "R122",
+      "mpn": "RC0805FR-0710KL",
+      "pins": {
+        "1": "PERMIT_Q",
+        "2": "BASE"
+      },
+      "page": 2,
+      "role": "Unselected monitor/permit resistor; R124 is a finite dummy load",
+      "kind": "resistor",
+      "value": 10000
+    },
+    {
+      "ref": "R123",
+      "mpn": "RC0805FR-07100KL",
+      "pins": {
+        "1": "BASE",
+        "2": "AGND"
+      },
+      "page": 2,
+      "role": "Unselected monitor/permit resistor; R124 is a finite dummy load",
+      "kind": "resistor",
+      "value": 100000
+    },
+    {
+      "ref": "R124",
+      "mpn": "RC0805FR-0710KL",
+      "pins": {
+        "1": "+12V",
+        "2": "PERMIT_SINK"
+      },
+      "page": 2,
+      "role": "Unselected monitor/permit resistor; R124 is a finite dummy load",
+      "kind": "resistor",
+      "value": 10000
+    },
+    {
+      "ref": "C101",
+      "mpn": "GRM188R71H104KA93D",
+      "pins": {
+        "1": "+5V",
+        "2": "AGND"
+      },
+      "page": 1,
+      "role": "Nominal bypass candidate; manufacturer effective-capacitance evidence unavailable",
+      "kind": "capacitor",
+      "value": 1e-07
+    },
+    {
+      "ref": "C102",
+      "mpn": "GRM188R71H104KA93D",
+      "pins": {
+        "1": "+5V",
+        "2": "AGND"
+      },
+      "page": 1,
+      "role": "Nominal bypass candidate; manufacturer effective-capacitance evidence unavailable",
+      "kind": "capacitor",
+      "value": 1e-07
+    },
+    {
+      "ref": "C103",
+      "mpn": "GRM188R71H104KA93D",
+      "pins": {
+        "1": "+5V",
+        "2": "AGND"
+      },
+      "page": 1,
+      "role": "Nominal bypass candidate; manufacturer effective-capacitance evidence unavailable",
+      "kind": "capacitor",
+      "value": 1e-07
+    },
+    {
+      "ref": "C104",
+      "mpn": "GRM188R71H104KA93D",
+      "pins": {
+        "1": "REF",
+        "2": "AGND"
+      },
+      "page": 1,
+      "role": "Nominal bypass candidate; manufacturer effective-capacitance evidence unavailable",
+      "kind": "capacitor",
+      "value": 1e-07
+    },
+    {
+      "ref": "C105",
+      "mpn": "GRM188R71H104KA93D",
+      "pins": {
+        "1": "REF",
+        "2": "AGND"
+      },
+      "page": 1,
+      "role": "Nominal bypass candidate; manufacturer effective-capacitance evidence unavailable",
+      "kind": "capacitor",
+      "value": 1e-07
+    },
+    {
+      "ref": "C106",
+      "mpn": "GRM188R71H104KA93D",
+      "pins": {
+        "1": "REF",
+        "2": "AGND"
+      },
+      "page": 1,
+      "role": "Nominal bypass candidate; manufacturer effective-capacitance evidence unavailable",
+      "kind": "capacitor",
+      "value": 1e-07
+    },
+    {
+      "ref": "C107",
+      "mpn": "GRM188R71H104KA93D",
+      "pins": {
+        "1": "+5V",
+        "2": "AGND"
+      },
+      "page": 2,
+      "role": "Nominal bypass candidate; manufacturer effective-capacitance evidence unavailable",
+      "kind": "capacitor",
+      "value": 1e-07
+    },
+    {
+      "ref": "C108",
+      "mpn": "GRM188R71H104KA93D",
+      "pins": {
+        "1": "+5V",
+        "2": "AGND"
+      },
+      "page": 2,
+      "role": "Nominal bypass candidate; manufacturer effective-capacitance evidence unavailable",
+      "kind": "capacitor",
+      "value": 1e-07
+    },
+    {
+      "ref": "C109",
+      "mpn": "C0805C103J5GACTU",
+      "pins": {
+        "1": "DELAY_CAP",
+        "2": "AGND"
+      },
+      "page": 2,
+      "role": "Timing capacitor; retained exact 10nF +/-5% evidence",
+      "kind": "capacitor",
+      "value": 1e-08
+    }
+  ],
+  "ideal_test_supply": {
+    "ref": "J101",
+    "pins": {
+      "1": "+12V",
+      "2": "VN",
+      "3": "+5V",
+      "4": "AGND"
+    },
+    "scope": "Ideal external test assumptions only; not an inlet, orderable connector or implemented source"
+  },
+  "global_nets": [
+    "+12V",
+    "VN",
+    "+5V",
+    "AGND",
+    "FAULT_N"
+  ],
+  "model_conditions": {
+    "temperature_scope": "SN74 logic source range -40..85C; not a change to the instrument environmental requirements",
+    "supervisor_reset_s": 0.01,
+    "supervisor_startup_s": 0.001,
+    "supervisor_startup_scope": "NOMINAL illustration, not a maximum",
+    "reference_rise_s": 0.0025,
+    "reference_rise_scope": "Prescribed model trajectory, not a manufacturer dynamic guarantee",
+    "logic_delay_s": 3.1e-08,
+    "latch_reset_s": 5.8e-08,
+    "latch_clock_s": 4.4e-08,
+    "logic_scope": "Illustrative use of 4.5V/50pF source-table values at nominal5V; actual supply/load/edge applicability remains OPEN",
+    "schmitt_high_fraction": 0.52,
+    "schmitt_low_fraction": 0.37222222222222223,
+    "schmitt_scope": "Illustrative compatible threshold pair within4.5V source ranges; not a full-temperature5V guarantee",
+    "control_valid_min_V": 2.0,
+    "undefined_control_output": "UNKNOWN, never forced LOW by the model"
+  },
+  "open_obligations": [
+    "Independent inlet-return and local-device-GND integrity are uncaptured.",
+    "Canonical 82-output,16-sense and30-reference isolation is not implemented by this dummy-load circuit.",
+    "Coarse REF good does not establish the narrow3.29..3.31V precision-reference assumption.",
+    "TPS aggregate FAULT_N loading is not demonstrated to match the10pF source delay condition.",
+    "TLV maximum propagation and negative-input cold leakage remain unestablished.",
+    "REF startup, slow-slew overshoot, shutdown, retained charge and effective bypass remain unqualified.",
+    "HC partial-power states, actual supply/load/transition timing and reset-removal behavior remain open.",
+    "The passive NPN base bleed does not reproduce the source switching test; full-temperature sink release is unbounded.",
+    "A short fault can clear Q without resetting the RC clock; automatic re-arm is not guaranteed.",
+    "Mechanical, thermal, as-built and bench qualification NOT RUN."
+  ]
+}

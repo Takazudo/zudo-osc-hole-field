@@ -91,7 +91,7 @@ Coverage is stated one domain at a time and is never rolled up. A domain marked 
 
 **Coverage ID:** `cov-schmitt-electrical-limits` · **Status:** OPEN
 
-**Reason:** No exact-part electrical limits were promoted; source/identity gap remains open.
+**Reason:** UNSOURCED full application closure: selected table rows do not establish all actual-supply, load, startup and partial-power behavior.
 
 **Facts in this domain:**
 
@@ -149,6 +149,24 @@ Coverage is stated one domain at a time and is never rolled up. A domain marked 
 
 Each fact keeps its value, its unit, the conditions it holds under, where it came from and how far it has been confirmed as separate fields, because they are separate claims. A value without its conditions is not the same fact, and a verdict is about the evidence for the value, not about the part.
 
+### RECOMMENDED\_OPERATION
+
+The range the manufacturer intends the part to be used in. Always narrower than the absolute maximum.
+
+<EvidenceFact>
+  <EvidenceAnchor id="fact-schmitt-temperature" />
+
+  **Fact:** `fact-schmitt-temperature`
+
+  **Value:** `maximum`=85; `minimum`=-40 · **Unit:** `degC`
+
+  **Conditions:** SN74HC14DR grade; not the SN54 range.
+
+  **Verdict:** PASS - primary-source confirmed · **Provenance:** PRIMARY-SPEC
+
+  **Evidence:** [src-schmitt-datasheet: printed p4 section5.3](#src-schmitt-datasheet)
+</EvidenceFact>
+
 ### GUARANTEED\_ELECTRICAL
 
 A parameter the manufacturer guarantees over the stated conditions, usually with minimum, typical and maximum values.
@@ -158,13 +176,87 @@ A parameter the manufacturer guarantees over the stated conditions, usually with
 
   **Fact:** `fact-schmitt-electrical-limits`
 
-  **Value:** No exact-part electrical limits promoted from retained evidence. · **Unit:** `NONE`
+  **Value:** Selected source-conditioned logic rows are retained; whole project supply/load/partial-power applicability remains unestablished. · **Unit:** `NONE`
 
-  **Conditions:** The task has not promoted a source-backed limit for this exact shortlist record.
+  **Conditions:** Source table points are not silently promoted into complete permit qualification.
 
   **Verdict:** UNSOURCED · **Provenance:** UNVERIFIED
 
-  **Evidence:** [src-schmitt-datasheet: exact component electrical-characteristics table not promoted](#src-schmitt-datasheet)
+  **Evidence:** [src-schmitt-datasheet: selected electrical and timing tables; application closure remains open](#src-schmitt-datasheet)
+</EvidenceFact>
+
+<EvidenceFact>
+  <EvidenceAnchor id="fact-schmitt-schmitt-high" />
+
+  **Fact:** `fact-schmitt-schmitt-high`
+
+  **Value:** `maximum`=3.13; `minimum`=1.55 · **Unit:** `V`
+
+  **Conditions:** VCC4.5V, TA -40..85C; same-gate thresholds must also meet the hysteresis row.
+
+  **Verdict:** PASS - primary-source confirmed · **Provenance:** PRIMARY-SPEC
+
+  **Evidence:** [src-schmitt-datasheet: printed p5 table5.5 positive-going threshold](#src-schmitt-datasheet)
+</EvidenceFact>
+
+<EvidenceFact>
+  <EvidenceAnchor id="fact-schmitt-schmitt-low" />
+
+  **Fact:** `fact-schmitt-schmitt-low`
+
+  **Value:** `maximum`=2.45; `minimum`=0.9 · **Unit:** `V`
+
+  **Conditions:** VCC4.5V, TA -40..85C; same-gate thresholds must also meet the hysteresis row.
+
+  **Verdict:** PASS - primary-source confirmed · **Provenance:** PRIMARY-SPEC
+
+  **Evidence:** [src-schmitt-datasheet: printed p5 table5.5 negative-going threshold](#src-schmitt-datasheet)
+</EvidenceFact>
+
+<EvidenceFact>
+  <EvidenceAnchor id="fact-schmitt-hysteresis" />
+
+  **Fact:** `fact-schmitt-hysteresis`
+
+  **Value:** `maximum`=2.1; `minimum`=0.4 · **Unit:** `V`
+
+  **Conditions:** VCC4.5V, TA -40..85C; constrains high-minus-low threshold on one gate.
+
+  **Verdict:** PASS - primary-source confirmed · **Provenance:** PRIMARY-SPEC
+
+  **Evidence:** [src-schmitt-datasheet: printed p5 table5.5 hysteresis](#src-schmitt-datasheet)
+</EvidenceFact>
+
+<EvidenceFact>
+  <EvidenceAnchor id="fact-schmitt-input-capacitance" />
+
+  **Fact:** `fact-schmitt-input-capacitance`
+
+  **Value:** 10 · **Unit:** `pF`
+
+  **Conditions:** Maximum at VCC5V; additional PCB and other tied-device capacitance is not included.
+
+  **Verdict:** PASS - primary-source confirmed · **Provenance:** PRIMARY-SPEC
+
+  **Evidence:** [src-schmitt-datasheet: printed p5 table5.5 CI](#src-schmitt-datasheet)
+</EvidenceFact>
+
+### TRANSIENT
+
+Behaviour during a short event — startup, a switching edge, a fault or a surge.
+
+<EvidenceFact>
+  <EvidenceAnchor id="fact-schmitt-delay45" />
+
+  **Fact:** `fact-schmitt-delay45`
+
+  **Value:** 31 · **Unit:** `ns`
+
+  **Conditions:** Maximum at VCC4.5V, TA -40..85C, CL50pF; source test input transitions \<6ns. Not an unconditional project-supply/load bound.
+
+  **Verdict:** PASS - primary-source confirmed · **Provenance:** PRIMARY-SPEC
+
+  **Evidence:** [src-schmitt-datasheet: printed p6 section5.7 and p8 section6](#src-schmitt-datasheet)
 </EvidenceFact>
 
 ### PROJECT\_STATE
@@ -323,7 +415,9 @@ Behaviour that is not a property of this part alone. Each interaction names the 
 
 Rules that span several parts at once and are published in full on the integration page. Each rule's verdict below is that rule's own — it is a statement about the cross-component question, not about this part — and the exact wording of what the rule refuses to conclude is published with the rule itself.
 
-No cross-component rule names this record.
+- [`monitor-permit-startup`](/docs/components/integration/#monitor-permit-startup) — unselected monitor/reference/latch startup and power loss — **rule verdict:** UNSOURCED
+
+[All cross-component rules](/docs/components/integration/)
 
 ## Sources
 
@@ -335,13 +429,13 @@ Every document cited above, with its identification, when it was retrieved, and 
 
 **Source ID:** `src-schmitt-datasheet` · **Authority:** MANUFACTURER\_PRIMARY
 
-| Field           | Recorded value                                                    |
-| --------------- | ----------------------------------------------------------------- |
-| Document number | Data Sheet                                                        |
-| Revision        | History.......................................................... |
-| Document date   | July 2024                                                         |
-| Retrieved       | 2026-09-28                                                        |
-| Printed page    | 3                                                                 |
+| Field           | Recorded value |
+| --------------- | -------------- |
+| Document number | SCLS085        |
+| Revision        | L              |
+| Document date   | February 2025  |
+| Retrieved       | 2026-09-28     |
+| Printed page    | 3              |
 
 **Locator:** Pin configuration/function table
 
@@ -396,6 +490,8 @@ What the recorded terms on this page mean, in ordinary words. The exact terms ab
 | ----------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | `GUARANTEED_ELECTRICAL` | A parameter the manufacturer guarantees over the stated conditions, usually with minimum, typical and maximum values.                                              |
 | `PROJECT_STATE`         | A value this project recorded about how the part is used here — a chosen operating point, a net assignment, or a derived figure. Not a manufacturer specification. |
+| `RECOMMENDED_OPERATION` | The range the manufacturer intends the part to be used in. Always narrower than the absolute maximum.                                                              |
+| `TRANSIENT`             | Behaviour during a short event — startup, a switching edge, a fault or a surge.                                                                                    |
 
 ### Coverage status
 

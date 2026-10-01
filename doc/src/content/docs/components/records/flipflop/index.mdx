@@ -91,7 +91,7 @@ Coverage is stated one domain at a time and is never rolled up. A domain marked 
 
 **Coverage ID:** `cov-flipflop-electrical-limits` · **Status:** OPEN
 
-**Reason:** No exact-part electrical limits were promoted; source/identity gap remains open.
+**Reason:** UNSOURCED full application closure: selected table rows do not establish all actual-supply, load, startup and partial-power behavior.
 
 **Facts in this domain:**
 
@@ -149,6 +149,38 @@ Coverage is stated one domain at a time and is never rolled up. A domain marked 
 
 Each fact keeps its value, its unit, the conditions it holds under, where it came from and how far it has been confirmed as separate fields, because they are separate claims. A value without its conditions is not the same fact, and a verdict is about the evidence for the value, not about the part.
 
+### RECOMMENDED\_OPERATION
+
+The range the manufacturer intends the part to be used in. Always narrower than the absolute maximum.
+
+<EvidenceFact>
+  <EvidenceAnchor id="fact-flipflop-temperature" />
+
+  **Fact:** `fact-flipflop-temperature`
+
+  **Value:** `maximum`=85; `minimum`=-40 · **Unit:** `degC`
+
+  **Conditions:** SN74HC74DR grade; not the SN54 range.
+
+  **Verdict:** PASS - primary-source confirmed · **Provenance:** PRIMARY-SPEC
+
+  **Evidence:** [src-flipflop-datasheet: printed p4 section6.3](#src-flipflop-datasheet)
+</EvidenceFact>
+
+<EvidenceFact>
+  <EvidenceAnchor id="fact-flipflop-input-transition45" />
+
+  **Fact:** `fact-flipflop-input-transition45`
+
+  **Value:** 500 · **Unit:** `ns`
+
+  **Conditions:** Maximum input rise/fall transition at VCC4.5V. The table prints unit ns; this is not an HC14 Schmitt-input constraint.
+
+  **Verdict:** PASS - primary-source confirmed · **Provenance:** PRIMARY-SPEC
+
+  **Evidence:** [src-flipflop-datasheet: printed p4 section6.3](#src-flipflop-datasheet)
+</EvidenceFact>
+
 ### GUARANTEED\_ELECTRICAL
 
 A parameter the manufacturer guarantees over the stated conditions, usually with minimum, typical and maximum values.
@@ -158,13 +190,87 @@ A parameter the manufacturer guarantees over the stated conditions, usually with
 
   **Fact:** `fact-flipflop-electrical-limits`
 
-  **Value:** No exact-part electrical limits promoted from retained evidence. · **Unit:** `NONE`
+  **Value:** Selected source-conditioned logic rows are retained; whole project supply/load/partial-power applicability remains unestablished. · **Unit:** `NONE`
 
-  **Conditions:** The task has not promoted a source-backed limit for this exact shortlist record.
+  **Conditions:** Source table points are not silently promoted into complete permit qualification.
 
   **Verdict:** UNSOURCED · **Provenance:** UNVERIFIED
 
-  **Evidence:** [src-flipflop-datasheet: exact component electrical-characteristics table not promoted](#src-flipflop-datasheet)
+  **Evidence:** [src-flipflop-datasheet: selected electrical and timing tables; application closure remains open](#src-flipflop-datasheet)
+</EvidenceFact>
+
+### TRANSIENT
+
+Behaviour during a short event — startup, a switching edge, a fault or a surge.
+
+<EvidenceFact>
+  <EvidenceAnchor id="fact-flipflop-clear-pulse45" />
+
+  **Fact:** `fact-flipflop-clear-pulse45`
+
+  **Value:** 25 · **Unit:** `ns`
+
+  **Conditions:** Minimum PRE/CLR low pulse at VCC4.5V, TA -40..85C.
+
+  **Verdict:** PASS - primary-source confirmed · **Provenance:** PRIMARY-SPEC
+
+  **Evidence:** [src-flipflop-datasheet: printed p6 section6.7 -74 timing requirements](#src-flipflop-datasheet)
+</EvidenceFact>
+
+<EvidenceFact>
+  <EvidenceAnchor id="fact-flipflop-clock-pulse45" />
+
+  **Fact:** `fact-flipflop-clock-pulse45`
+
+  **Value:** 20 · **Unit:** `ns`
+
+  **Conditions:** Minimum CLK high or low pulse at VCC4.5V, TA -40..85C.
+
+  **Verdict:** PASS - primary-source confirmed · **Provenance:** PRIMARY-SPEC
+
+  **Evidence:** [src-flipflop-datasheet: printed p6 section6.7 -74 timing requirements](#src-flipflop-datasheet)
+</EvidenceFact>
+
+<EvidenceFact>
+  <EvidenceAnchor id="fact-flipflop-clear-setup45" />
+
+  **Fact:** `fact-flipflop-clear-setup45`
+
+  **Value:** 6 · **Unit:** `ns`
+
+  **Conditions:** Minimum PRE/CLR inactive interval before CLK rising at VCC4.5V, TA -40..85C. No independent removal-time row is inferred.
+
+  **Verdict:** PASS - primary-source confirmed · **Provenance:** PRIMARY-SPEC
+
+  **Evidence:** [src-flipflop-datasheet: printed p6 section6.7 -74 timing requirements](#src-flipflop-datasheet)
+</EvidenceFact>
+
+<EvidenceFact>
+  <EvidenceAnchor id="fact-flipflop-reset-delay45" />
+
+  **Fact:** `fact-flipflop-reset-delay45`
+
+  **Value:** 58 · **Unit:** `ns`
+
+  **Conditions:** Maximum PRE/CLR to Q at VCC4.5V, TA -40..85C, CL50pF, input transitions \<6ns.
+
+  **Verdict:** PASS - primary-source confirmed · **Provenance:** PRIMARY-SPEC
+
+  **Evidence:** [src-flipflop-datasheet: printed p7 section6.9 and p9 section7](#src-flipflop-datasheet)
+</EvidenceFact>
+
+<EvidenceFact>
+  <EvidenceAnchor id="fact-flipflop-clock-delay45" />
+
+  **Fact:** `fact-flipflop-clock-delay45`
+
+  **Value:** 44 · **Unit:** `ns`
+
+  **Conditions:** Maximum CLK to Q at VCC4.5V, TA -40..85C, CL50pF, input transitions \<6ns.
+
+  **Verdict:** PASS - primary-source confirmed · **Provenance:** PRIMARY-SPEC
+
+  **Evidence:** [src-flipflop-datasheet: printed p7 section6.9 and p9 section7](#src-flipflop-datasheet)
 </EvidenceFact>
 
 ### PROJECT\_STATE
@@ -323,7 +429,9 @@ Behaviour that is not a property of this part alone. Each interaction names the 
 
 Rules that span several parts at once and are published in full on the integration page. Each rule's verdict below is that rule's own — it is a statement about the cross-component question, not about this part — and the exact wording of what the rule refuses to conclude is published with the rule itself.
 
-No cross-component rule names this record.
+- [`monitor-permit-startup`](/docs/components/integration/#monitor-permit-startup) — unselected monitor/reference/latch startup and power loss — **rule verdict:** UNSOURCED
+
+[All cross-component rules](/docs/components/integration/)
 
 ## Sources
 
@@ -396,6 +504,8 @@ What the recorded terms on this page mean, in ordinary words. The exact terms ab
 | ----------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | `GUARANTEED_ELECTRICAL` | A parameter the manufacturer guarantees over the stated conditions, usually with minimum, typical and maximum values.                                              |
 | `PROJECT_STATE`         | A value this project recorded about how the part is used here — a chosen operating point, a net assignment, or a derived figure. Not a manufacturer specification. |
+| `RECOMMENDED_OPERATION` | The range the manufacturer intends the part to be used in. Always narrower than the absolute maximum.                                                              |
+| `TRANSIENT`             | Behaviour during a short event — startup, a switching edge, a fault or a surge.                                                                                    |
 
 ### Coverage status
 

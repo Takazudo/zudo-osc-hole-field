@@ -1,0 +1,118 @@
+{
+  "receipt_version": 1,
+  "identity": {
+    "asset_id": "monitor-ref3433tidbvr",
+    "record_id": "rec-monitor-ref3433tidbvr",
+    "manufacturer": "Texas Instruments",
+    "mpn": "REF3433TIDBVR",
+    "package": "SOT-23-6 (DBV)",
+    "variant_notes": "UNSELECTED; not fitted to instrument; no physical qualification"
+  },
+  "acquisition": {
+    "provider": "Retained primary pin evidence, existing project graphics, and pinned KiCad family assets",
+    "library_release_tag": "footprints10.0.0; SOT-23 WRL models8.0.0; existing family assets retain their original receipts",
+    "source_url": "https://www.ti.com/lit/ds/symlink/ref34.pdf",
+    "acquired_on": "2026-10-02",
+    "original_filenames": [
+      "monitor-permit-parts.json",
+      "ref34.pdf",
+      "build_monitor_candidate_assets.py",
+      "SOT-23-6.kicad_mod"
+    ],
+    "sha256": {
+      "design/power/monitor-permit-parts.json": "464dbd6800724eccb82a49ff495b2da585b4d5828fd27a17ef41a96698f94871",
+      ".circuit-cache/sources/negative-monitor-continuation/ref34.pdf": "cbf64eb240e023dfdbb063d9f515212718f8b1732fc5b582e52f268dfbd5d665",
+      "scripts/libgen/build_monitor_candidate_assets.py": "0cf750ab0235ea7dce9314fb16e2bc4495ebe8265b714ba37b4fb8f16a68223d",
+      "circuit/sources/monitor-permit-cad/SOT-23-6.kicad_mod": "f341c73aac9dcb553456f68bf3fee3d26eb14acf6d8a1cae82b50418fe1d71ca"
+    }
+  },
+  "representation": {
+    "files": [
+      "symbols/src/REF3433TIDBVR.kicad_sym",
+      "footprints/kicad/zudo-osc-hole-field.pretty/SOT-23-6.kicad_mod",
+      "footprints/kicad/zudo-osc-hole-field.3dshapes/SOT-23-6.wrl"
+    ],
+    "formats": [
+      "kicad_sym",
+      "kicad_mod",
+      "wrl"
+    ],
+    "units": "KiCad mm; upstream WRL coordinates retain native KiCad convention",
+    "original_paths": [
+      "design/power/monitor-permit-parts.json",
+      ".circuit-cache/sources/negative-monitor-continuation/ref34.pdf",
+      "scripts/libgen/build_monitor_candidate_assets.py",
+      "circuit/sources/monitor-permit-cad/SOT-23-6.kicad_mod"
+    ]
+  },
+  "fidelity": {
+    "class": "derived",
+    "reason": "Source-derived schematic identity/pins; reused footprint and 3D geometry remain family fidelity, not exact-vendor geometry.",
+    "evidence": [
+      "https://www.ti.com/lit/ds/symlink/ref34.pdf",
+      "Exact variant ordering entries and pin configuration/function table; candidate-specific conditions retained in monitor studies",
+      "Pin-set agreement does not prove physical seating or solderability."
+    ]
+  },
+  "derivation": {
+    "derived": true,
+    "input_sha256": {
+      "design/power/monitor-permit-parts.json": "464dbd6800724eccb82a49ff495b2da585b4d5828fd27a17ef41a96698f94871",
+      ".circuit-cache/sources/negative-monitor-continuation/ref34.pdf": "cbf64eb240e023dfdbb063d9f515212718f8b1732fc5b582e52f268dfbd5d665",
+      "scripts/libgen/build_monitor_candidate_assets.py": "0cf750ab0235ea7dce9314fb16e2bc4495ebe8265b714ba37b4fb8f16a68223d",
+      "circuit/sources/monitor-permit-cad/SOT-23-6.kicad_mod": "f341c73aac9dcb553456f68bf3fee3d26eb14acf6d8a1cae82b50418fe1d71ca"
+    },
+    "tool": "scripts/libgen/build_monitor_candidate_assets.py",
+    "tool_version": "1",
+    "parameters": {
+      "retain_existing_symbol": false,
+      "footprint_geometry": "unchanged family land pattern",
+      "model_reference": "project-relative WRL; no STEP conversion"
+    },
+    "output_sha256": {
+      "symbols/src/REF3433TIDBVR.kicad_sym": "5a0598d96d5706e7ff7b7a389fee6f698d52565b525a1a5b54c4e685c5839586",
+      "footprints/kicad/zudo-osc-hole-field.pretty/SOT-23-6.kicad_mod": "952f05a44bdb9513b2f5c56da0bc7b2a0174795f5c41b729242039d68afc5d85",
+      "footprints/kicad/zudo-osc-hole-field.3dshapes/SOT-23-6.wrl": "01fe842f8ca8534456b365e2a38b77b8c61a07e4133d79187d0df9d46037051b"
+    }
+  },
+  "cad_use": {
+    "symbol": "zudo-osc-hole-field:REF3433TIDBVR",
+    "footprint": "zudo-osc-hole-field:SOT-23-6",
+    "model_path": "${KIPRJMOD}/../../footprints/kicad/zudo-osc-hole-field.3dshapes/SOT-23-6.wrl",
+    "transform": {
+      "offset": [
+        0,
+        0,
+        0
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ]
+    },
+    "seating_plane": null
+  },
+  "checks": {
+    "performed": [
+      "Retained source SHA-256 verified locally",
+      "Source pin-function audit / nonpolarized resistor numbering convention",
+      "62-line circuit contract and CAD pin-set check passed"
+    ],
+    "remaining_physical_checks": [
+      "Exact installed footprint/lead and model dimensions",
+      "Pin1/orientation and solder assembly qualification",
+      "Thermal and electrical application qualification"
+    ]
+  },
+  "publication": {
+    "preview_selected": true,
+    "download_published": false,
+    "permitted_scope": "Generated family-geometry previews and source metadata only; no fabrication release"
+  }
+}

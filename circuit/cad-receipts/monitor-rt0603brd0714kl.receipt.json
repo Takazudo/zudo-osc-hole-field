@@ -1,0 +1,118 @@
+{
+  "receipt_version": 1,
+  "identity": {
+    "asset_id": "monitor-rt0603brd0714kl",
+    "record_id": "rec-monitor-rt0603brd0714kl",
+    "manufacturer": "Yageo",
+    "mpn": "RT0603BRD0714KL",
+    "package": "0603",
+    "variant_notes": "UNSELECTED; not fitted to instrument; no physical qualification"
+  },
+  "acquisition": {
+    "provider": "Retained primary pin evidence, existing project graphics, and pinned KiCad family assets",
+    "library_release_tag": "footprints10.0.0; SOT-23 WRL models8.0.0; existing family assets retain their original receipts",
+    "source_url": "https://www.yageogroup.com/component-documentation/download/specsheet/RT0603BRD0714KL",
+    "acquired_on": "2026-10-02",
+    "original_filenames": [
+      "monitor-permit-parts.json",
+      "RT0603BRD0714KL.pdf",
+      "build_monitor_candidate_assets.py",
+      "RT0603BRD07100KL.kicad_sym"
+    ],
+    "sha256": {
+      "design/power/monitor-permit-parts.json": "464dbd6800724eccb82a49ff495b2da585b4d5828fd27a17ef41a96698f94871",
+      ".circuit-cache/sources/rail-monitor-candidate/RT0603BRD0714KL.pdf": "eab17bfa2dbd4f9b878b3f29ef46c51fc90759bdc523a5960e691e34beba8e45",
+      "scripts/libgen/build_monitor_candidate_assets.py": "0cf750ab0235ea7dce9314fb16e2bc4495ebe8265b714ba37b4fb8f16a68223d",
+      "symbols/src/RT0603BRD07100KL.kicad_sym": "8ec8fa2005172dda44f7c7000a261f3441c4dc0dad188b0afa1aed4c9ea9ffff"
+    }
+  },
+  "representation": {
+    "files": [
+      "symbols/src/RT0603BRD0714KL.kicad_sym",
+      "footprints/kicad/zudo-osc-hole-field.pretty/R0603.kicad_mod",
+      "footprints/kicad/zudo-osc-hole-field.3dshapes/R0603.wrl"
+    ],
+    "formats": [
+      "kicad_sym",
+      "kicad_mod",
+      "wrl"
+    ],
+    "units": "KiCad mm; upstream WRL coordinates retain native KiCad convention",
+    "original_paths": [
+      "design/power/monitor-permit-parts.json",
+      ".circuit-cache/sources/rail-monitor-candidate/RT0603BRD0714KL.pdf",
+      "scripts/libgen/build_monitor_candidate_assets.py",
+      "symbols/src/RT0603BRD07100KL.kicad_sym"
+    ]
+  },
+  "fidelity": {
+    "class": "derived",
+    "reason": "Source-derived schematic identity/pins; reused footprint and 3D geometry remain family fidelity, not exact-vendor geometry.",
+    "evidence": [
+      "https://www.yageogroup.com/component-documentation/download/specsheet/RT0603BRD0714KL",
+      "Page 1 specification table rows: exact MPN, dimensions, resistance, tolerance, TCR and power",
+      "Pin-set agreement does not prove physical seating or solderability."
+    ]
+  },
+  "derivation": {
+    "derived": true,
+    "input_sha256": {
+      "design/power/monitor-permit-parts.json": "464dbd6800724eccb82a49ff495b2da585b4d5828fd27a17ef41a96698f94871",
+      ".circuit-cache/sources/rail-monitor-candidate/RT0603BRD0714KL.pdf": "eab17bfa2dbd4f9b878b3f29ef46c51fc90759bdc523a5960e691e34beba8e45",
+      "scripts/libgen/build_monitor_candidate_assets.py": "0cf750ab0235ea7dce9314fb16e2bc4495ebe8265b714ba37b4fb8f16a68223d",
+      "symbols/src/RT0603BRD07100KL.kicad_sym": "8ec8fa2005172dda44f7c7000a261f3441c4dc0dad188b0afa1aed4c9ea9ffff"
+    },
+    "tool": "scripts/libgen/build_monitor_candidate_assets.py",
+    "tool_version": "1",
+    "parameters": {
+      "retain_existing_symbol": false,
+      "footprint_geometry": "unchanged family land pattern",
+      "model_reference": "project-relative WRL; no STEP conversion"
+    },
+    "output_sha256": {
+      "symbols/src/RT0603BRD0714KL.kicad_sym": "6356d5b950fe2db85bd0b5a2c19269c2277b562a87a7fdd378d749a1a1061e87",
+      "footprints/kicad/zudo-osc-hole-field.pretty/R0603.kicad_mod": "25cf0c8152ddf3adbf6c02140174cf5c53cfe865e425d689fb901c6ff1fab6d0",
+      "footprints/kicad/zudo-osc-hole-field.3dshapes/R0603.wrl": "2a125409502d8eb68f2e196ab1c28b180e0918830445364f93a45d9461b4daad"
+    }
+  },
+  "cad_use": {
+    "symbol": "zudo-osc-hole-field:RT0603BRD0714KL",
+    "footprint": "zudo-osc-hole-field:R0603",
+    "model_path": "${KIPRJMOD}/../../footprints/kicad/zudo-osc-hole-field.3dshapes/R0603.wrl",
+    "transform": {
+      "offset": [
+        0,
+        0,
+        0
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ]
+    },
+    "seating_plane": null
+  },
+  "checks": {
+    "performed": [
+      "Retained source SHA-256 verified locally",
+      "Source pin-function audit / nonpolarized resistor numbering convention",
+      "62-line circuit contract and CAD pin-set check passed"
+    ],
+    "remaining_physical_checks": [
+      "Exact installed footprint/lead and model dimensions",
+      "Pin1/orientation and solder assembly qualification",
+      "Thermal and electrical application qualification"
+    ]
+  },
+  "publication": {
+    "preview_selected": true,
+    "download_published": false,
+    "permitted_scope": "Generated family-geometry previews and source metadata only; no fabrication release"
+  }
+}
