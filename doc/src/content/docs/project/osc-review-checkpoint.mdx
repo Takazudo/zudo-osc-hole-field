@@ -158,6 +158,14 @@ JL/JR/P GH return bounds become 0.481793930 / 0.478306085 / 0.479237292 A
 (rounded upward). These still assume the unproved common resistance and
 contact conditions; they are not physical current acceptance.
 
+The finite main-wire helper now reports its budget from the current source
+length, resistance-per-metre and termination requirements, separately from the
+historical 125 mm comparison. The 110 mm source gives a 1.630 mΩ budget; the
+conditional JL/JR trial uppers leave approximately 0.222190 / 0.246165 mΩ.
+This corrects mixed-epoch margin reporting, not physical wire admission. Mean
+strand length does not certify the finished cut or matching endpoint traces,
+and this construction does not cover P. See `physical-contact-model.md`.
+
 K service supports and tool heights now derive from the source plane. Unplugging
 191 K GH mates still leaves **18 soldered main wires** tethering the board.
 Supported service travel and any factory desoldering procedure remain unqualified.

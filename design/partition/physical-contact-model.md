@@ -70,9 +70,33 @@ adapters must also fit the remaining energy and existing 4 mm fan-length
 budgets before selection. No interface is silently treated as zero resistance.
 
 The bulk-wire baseline and the fans' straight-wire baseline are counted once.
-The body, both fans and both terminations must remain inside the existing
-125 mm / 13 mOhm per metre / 0.2 mOhm budget. The new helper reports conditional
-bounds without selecting a new wire length or weakening any existing limit.
+The historical 125 mm / 13 mOhm per metre / 0.2 mOhm comparison is retained
+under an explicitly historical output name. The current helper separately reads
+length, hot resistance per metre and termination allowance from
+`partition-input.json`. At the current 110 mm limit, these give a complete-wire
+budget of **1.630 mOhm**, including both terminations.
+
+| Branch | Conditional whole-wire upper | Current budget margin |
+| --- | ---: | ---: |
+| JL | 1.407810 mOhm | 0.222190 mOhm |
+| JR | 1.383835 mOhm | 0.246165 mOhm |
+
+Table values are rounded for display. The helper compares the computed trial
+value against exact decimal source-budget arithmetic without a favorable
+tolerance and rounds the reported margin downward. This does not improve the
+upstream numerical trial's own arithmetic or physical applicability. A negative
+current margin is reported as a failed conditional comparison even if the
+historical budget would pass. The separate termination margin also consumes the
+current source allowance, rather than a hard-coded 0.2 mOhm value.
+
+These are **conditional arithmetic comparisons**, not adoption of the wire
+class or transfer of a new margin into joined ground/rail acceptance. The
+reported 96.190423 / 94.288670 mm bounds cover *mean contained-strand arclength*
+with both fans. A mean does not bound the longest strand, prove an actual
+finished cut length, or establish source preparation/slack and endpoint
+compatibility. Those geometric and trace conditions remain open. P is not
+evaluated by this JL/JR curve construction: its unequal endpoint y coordinates
+need a separate compatible construction. No JL/JR result is assigned to P.
 
 ## Source and measurement functionals
 

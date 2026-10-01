@@ -164,6 +164,12 @@ permit unproved extra credits against its historical 125 mm / 13 mOhm per m /
 That new source requirement improves the conditional distribution arithmetic;
 transfer it to a complete wire witness only after proving matching length
 boundaries and traces. The physical wire/contact model has not been rebound.
+The wire helper now separately compares its conditional JL/JR trial bounds
+against the current source-derived 1.630 mOhm whole-wire budget. Its positive
+0.222190 / 0.246165 mOhm margins (rounded display) are not physical acceptance:
+mean strand arclength does not establish a finished cut-length class, endpoint
+and material requirements remain unqualified, and P has no corresponding wire
+construction. The historical 125 mm comparison remains separately labelled.
 
 ## 6. Promote only the proved source and refresh all receipts
 
