@@ -193,13 +193,22 @@ That potential capture now reproduces the earlier lower matrix exactly. A
 separate analysis covers four complete foils and 195 barrel/collar regions,
 using matched boundary traces and exact finite source loads. It evaluates its
 own canonical potential-trial gap rather than borrowing the older API gap.
-The result remains inconclusive: all foil mismatch lower bounds are zero,
-and excluded/crossing-cell B.Cu potential-energy uppers exceed the complete
+That initial enclosure remains inconclusive: its foil mismatch lower bounds
+are zero, and excluded/crossing-cell B.Cu potential-energy uppers exceed the complete
 mismatch budget. A large B.Cu upper is not evidence that this foil dominates
 the actual mismatch. `potential-pair-probe.md` preserves the results and the
 separate proposal for conservative partial-cell area integration without a
 new solve. No restriction release, mesh refinement or electrical acceptance
 is inferred.
+
+A separate exact current-source audit supports an independent B.Cu mismatch
+floor of approximately 0.008147 mΩ per selected column for the retained
+linear-depth source-lift construction. Its source triangles, signed densities
+and stored source operands agree exactly. This floor applies to that fixed
+trial ansatz, not every possible three-dimensional current field; an explicit
+counterexample prevents that broader interpretation. The separate
+`source-lift-mismatch.md` record tightens the prior interval without rewriting
+its receipt or counting overlapping lower bounds twice.
 
 `design/partition/gh-contact-cell-proposal.md` constructs a finite reference
 termination with a 45.193238 mΩ/end conditional upper and a nonempty correlated
