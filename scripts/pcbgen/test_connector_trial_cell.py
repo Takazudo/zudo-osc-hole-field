@@ -8,6 +8,7 @@ from scripts.pcbgen.connector_trial_cell import (
     PROPOSAL, corner_upper, evaluate, geometry_checks, interval,
     rectangle_integral_upper, slab_upper, taper_upper, bulk_class_admission,
     maximum_weight_square_sum,
+    toe_body_centres,
 )
 
 
@@ -173,6 +174,59 @@ class ConnectorTrialCellTests(unittest.TestCase):
         weights=[F(".145"),F(".140"),F(".143"),F(".142"),F(".144"),F(".141"),F(".145")]
         self.assertEqual(sum(weights),1)
         self.assertLess(sum(x*x for x in weights),upper)
+
+    def test_moved_body_pays_the_actual_connected_taper_displacement(self):
+        baseline=evaluate(self.spec)
+        spec=deepcopy(self.spec);spec["geometry"]["body_front_y"]="0.8"
+        p,_,_=geometry_checks(spec)
+        start,end=toe_body_centres(p,spec["geometry"])
+        self.assertEqual(start,(F(".7375"),F(".74")))
+        self.assertEqual(end,(F(".845"),F(".85")))
+        # The new body face is reached through a real sheared taper, not an
+        # uncharged 0.1 mm jump between independent toe and spine positions.
+        changed=evaluate(spec,verify_sources=False)
+        expected=taper_upper(p["toe_width"],p["toe_height"],p["body_width"],
+                             p["body_depth"],p["body_taper_length"],p["rho_alloy"][1],
+                             offset=(F(0),F(".1125")))
+        self.assertEqual(F(changed["exact_costs_ohm"]["toe_to_body_taper"]),expected)
+        self.assertGreater(expected,F(baseline["exact_costs_ohm"]["toe_to_body_taper"]))
+        # Moving both front datums preserves this taper's local field. The
+        # horizontal prism and the following spine pay their changed lengths.
+        spec["geometry"]["toe_projection"]="0.8"
+        translated=evaluate(spec,verify_sources=False)
+        self.assertEqual(translated["exact_costs_ohm"]["toe_to_body_taper"],
+                         baseline["exact_costs_ohm"]["toe_to_body_taper"])
+
+    def test_possible_metal_box_must_contain_every_reference_extent(self):
+        for axis,bounds in (("x",["-.23",".23"]),("y",["0","1.7"]),
+                            ("z",["0","7.49"]),("x",[".5","-.5"])):
+            spec=deepcopy(self.spec)
+            spec["geometry"]["maximum_possible_metal_box"][axis]=bounds
+            with self.subTest(axis=axis,bounds=bounds),self.assertRaisesRegex(ValueError,"maximum envelope"):
+                evaluate(spec,verify_sources=False)
+
+    def test_metal_envelope_includes_actual_strand_annuli(self):
+        spec=deepcopy(self.spec)
+        spec["intervals"]["hub_width"]=[".46",".47"]
+        # Contains all inscribed current polygons (x<=.16+.079=.239), but
+        # excludes part of the permitted 1.01-radius actual strand metal.
+        spec["geometry"]["maximum_possible_metal_box"]["x"]=["-.2395",".2395"]
+        with self.assertRaisesRegex(ValueError,"maximum envelope: x"):
+            evaluate(spec,verify_sources=False)
+        spec["geometry"]["maximum_possible_metal_box"]["x"]=["-.24",".24"]
+        self.assertFalse(evaluate(spec,verify_sources=False)["physical_class_selected"])
+
+    def test_full_pad_wetting_contains_the_required_solder_support(self):
+        for maximum in ([".17","1.7"],[".6",".49"],["0","1.7"]):
+            spec=deepcopy(self.spec)
+            spec["geometry"]["maximum_wetting_native_pad"]=maximum
+            with self.subTest(maximum=maximum),self.assertRaises(ValueError):
+                evaluate(spec,verify_sources=False)
+        spec=deepcopy(self.spec)
+        spec["geometry"]["maximum_wetting_native_pad"]=[".18",".50"]
+        result=evaluate(spec,verify_sources=False)
+        self.assertEqual(result["geometry"]["full_possible_wetting_xy_mm"],
+                         ["-9/100","-1/4","9/100","1/4"])
 
 
 if __name__ == "__main__":

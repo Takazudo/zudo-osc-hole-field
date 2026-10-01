@@ -189,6 +189,63 @@ def polygon_area(points):
                 in zip(points, points[1:] + points[:1])), F(0)) / 2
 
 
+def toe_body_centres(p, geometry):
+    """The taper starts on the second corner and ends on the body spine."""
+    toe, body = (F(geometry[key]) for key in ("toe_projection", "body_front_y"))
+    return (tuple(toe + h/2 for h in p["toe_height"]),
+            tuple(body + b/2 for b in p["body_depth"]))
+
+
+def displacement_upper(start, end):
+    return max(abs(end[1]-start[0]), abs(end[0]-start[1]))
+
+
+def required_envelopes(spec, p, centres):
+    """Enclose every reference solid and all permitted outgoing strand metal.
+
+    Each taper is affine, so endpoint extrema enclose its complete sides.
+    The sequential z interfaces already share the same cumulative parameters.
+    Full possible pad wetting is a separate constant-potential support at z=0;
+    its rectangle is centred on the native pad. Required minimum wetting shares
+    the current patch's x centre and starts at y=0.
+    """
+    g=spec["geometry"]
+    minimum=[F(x) for x in g["minimum_allowed_solder_support"]]
+    maximum=[F(x) for x in g["maximum_wetting_native_pad"]]
+    if len(minimum)!=2 or len(maximum)!=2 or min(minimum+maximum)<=0:
+        raise ValueError("Positive two-dimensional solder/wetting supports required")
+    if minimum[0]>maximum[0] or minimum[1]>maximum[1]/2:
+        raise ValueError("Required solder support escapes full possible pad wetting")
+    toe, body, axis = (F(g[key]) for key in ("toe_projection","body_front_y","wire_axis_y"))
+    outer=F(spec["bulk_correlated_class"]["actual_radius_over_contained_radius_upper"])
+    if outer<=1:
+        raise ValueError("Finite positive actual-metal shape tolerance required")
+    radius=outer*p["contained_strand_radius"][1]
+    half_x=max(p[key][1] for key in ("toe_width","body_width","mating_patch_width","hub_width"))/2
+    half_y=max(p[key][1] for key in ("body_depth","mating_patch_depth","hub_width"))/2
+    required={
+        "x":(min(-half_x,-minimum[0]/2,*(x-radius for x,y in centres)),
+             max(half_x,minimum[0]/2,*(x+radius for x,y in centres))),
+        "y":(min(F(0),toe,body,axis-half_y,*(axis+y-radius for x,y in centres)),
+             max(minimum[1],p["solder_patch_length"][1],toe+p["toe_height"][1],
+                 body+p["body_depth"][1],axis+half_y,*(axis+y+radius for x,y in centres))),
+        "z":(F(0),F(g["wire_cut_z"])),
+    }
+    box=g["maximum_possible_metal_box"]
+    if not isinstance(box,dict) or set(box)!={"x","y","z"}:
+        raise ValueError("Complete three-dimensional maximum metal envelope required")
+    for key,(lo,hi) in required.items():
+        bounds=box[key]
+        if not isinstance(bounds,list) or len(bounds)!=2:
+            raise ValueError("Two ordered maximum metal coordinates required")
+        a,b=map(F,bounds)
+        if not a<b or a>lo or b<hi:
+            raise ValueError("Required reference/strand metal escapes maximum envelope: "+key)
+    return {"required_metal_envelope_mm":{key:list(map(str,value)) for key,value in required.items()},
+            "full_possible_wetting_xy_mm":[str(-maximum[0]/2),str(-maximum[1]/2),
+                                            str(maximum[0]/2),str(maximum[1]/2)]}
+
+
 def geometry_checks(spec):
     if spec.get("physical_model") != {"continuous_solid_crimp_hub_required": True,
                                        "interface_law": "finite_patch_local_robin", "strand_count": 7}:
@@ -247,7 +304,8 @@ def geometry_checks(spec):
         raise ValueError("Reference hub escapes gross header depth")
     if p["toe_height"][1] + p["solder_height"][1] > F("0.15"):
         raise ValueError("Toe and solder exceed nominal drawing toe height")
-    return p, points, {"strand_polygon_area_mm2": polygon_area(points),
+    envelopes=required_envelopes(spec,p,centres)
+    return p, points, {**envelopes,"strand_polygon_area_mm2": polygon_area(points),
                        "metal_before_outgoing_collar_z_mm": [zlo, zhi],
                        "wire_tail_length_mm": [F(g["wire_cut_z"])-zhi, F(g["wire_cut_z"])-zlo],
                        "gross_external_envelope_screen": "PASS for constructed reference only",
@@ -275,9 +333,11 @@ def evaluate(spec=None, verify_sources=True):
     q["foil_to_horizontal_toe_corner"] = corner_upper(a, b, h, ra)
     q["horizontal_toe"] = ra*(F(spec["geometry"]["toe_projection"])-b[0])/(a[0]*h[0])
     q["horizontal_to_vertical_corner"] = corner_upper(a, h, h, ra)
+    toe_centre,body_centre=toe_body_centres(p,spec["geometry"])
     q["toe_to_body_taper"] = taper_upper(a, h, ba, bb, p["body_taper_length"], ra,
-                                            offset=(F(0), (bb[1]-h[0])/2))
-    shift = F(spec["geometry"]["wire_axis_y"])-F(spec["geometry"]["body_front_y"])-bb[0]/2
+                                            offset=(F(0),displacement_upper(toe_centre,body_centre)))
+    axis=F(spec["geometry"]["wire_axis_y"])
+    shift=displacement_upper(body_centre,(axis,axis))
     # Constant-section sheared prism; dimensions are the same at both ends,
     # so no fictitious taper derivative is charged.
     length = p["header_spine_length"]
