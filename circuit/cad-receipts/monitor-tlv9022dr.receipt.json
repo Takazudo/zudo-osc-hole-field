@@ -1,0 +1,114 @@
+{
+  "receipt_version": 1,
+  "identity": {
+    "asset_id": "monitor-tlv9022dr",
+    "record_id": "rec-monitor-tlv9022dr",
+    "manufacturer": "Texas Instruments",
+    "mpn": "TLV9022DR",
+    "package": "SOIC-8 (D)",
+    "variant_notes": "UNSELECTED; not fitted to instrument; no physical qualification"
+  },
+  "acquisition": {
+    "provider": "Retained primary pin evidence, existing project graphics, and pinned KiCad family assets",
+    "library_release_tag": "footprints10.0.0; SOT-23 WRL models8.0.0; existing family assets retain their original receipts",
+    "source_url": "https://www.ti.com/lit/ds/symlink/tlv9022.pdf",
+    "acquired_on": "2026-10-02",
+    "original_filenames": [
+      "monitor-permit-parts.json",
+      "tlv9022.pdf",
+      "build_monitor_candidate_assets.py"
+    ],
+    "sha256": {
+      "design/power/monitor-permit-parts.json": "464dbd6800724eccb82a49ff495b2da585b4d5828fd27a17ef41a96698f94871",
+      ".circuit-cache/sources/negative-monitor-continuation/tlv9022.pdf": "97f124d3a40b1e55e74dda66ca81654b0c2eb782ec8aa1e9b18d2a40bd65627d",
+      "scripts/libgen/build_monitor_candidate_assets.py": "e430e9872cd0a5d38109258dfbbb7c7442b24d614e3070362be872df75b76807"
+    }
+  },
+  "representation": {
+    "files": [
+      "symbols/src/TLV9022DR.kicad_sym",
+      "footprints/kicad/zudo-osc-hole-field.pretty/SOIC-8_3.9x4.9mm_P1.27mm.kicad_mod",
+      "footprints/kicad/zudo-osc-hole-field.3dshapes/IC_SOIC-8_3.9x4.9.wrl"
+    ],
+    "formats": [
+      "kicad_sym",
+      "kicad_mod",
+      "wrl"
+    ],
+    "units": "KiCad mm; upstream WRL coordinates retain native KiCad convention",
+    "original_paths": [
+      "design/power/monitor-permit-parts.json",
+      ".circuit-cache/sources/negative-monitor-continuation/tlv9022.pdf",
+      "scripts/libgen/build_monitor_candidate_assets.py"
+    ]
+  },
+  "fidelity": {
+    "class": "derived",
+    "reason": "Source-derived schematic identity/pins; reused footprint and 3D geometry remain family fidelity, not exact-vendor geometry.",
+    "evidence": [
+      "https://www.ti.com/lit/ds/symlink/tlv9022.pdf",
+      "Exact variant ordering entries and pin configuration/function table; candidate-specific conditions retained in monitor studies",
+      "Pin-set agreement does not prove physical seating or solderability."
+    ]
+  },
+  "derivation": {
+    "derived": true,
+    "input_sha256": {
+      "design/power/monitor-permit-parts.json": "464dbd6800724eccb82a49ff495b2da585b4d5828fd27a17ef41a96698f94871",
+      ".circuit-cache/sources/negative-monitor-continuation/tlv9022.pdf": "97f124d3a40b1e55e74dda66ca81654b0c2eb782ec8aa1e9b18d2a40bd65627d",
+      "scripts/libgen/build_monitor_candidate_assets.py": "e430e9872cd0a5d38109258dfbbb7c7442b24d614e3070362be872df75b76807"
+    },
+    "tool": "scripts/libgen/build_monitor_candidate_assets.py",
+    "tool_version": "1",
+    "parameters": {
+      "retain_existing_symbol": false,
+      "footprint_geometry": "unchanged family land pattern",
+      "model_reference": "project-relative WRL; no STEP conversion"
+    },
+    "output_sha256": {
+      "symbols/src/TLV9022DR.kicad_sym": "19fa89da5f23def287fc22366642bac499959424a3c04be5bd4215a3d629d970",
+      "footprints/kicad/zudo-osc-hole-field.pretty/SOIC-8_3.9x4.9mm_P1.27mm.kicad_mod": "60fc4a5e63729c51bd1ddbc3dc6865f25ca972aea6ed7607bcd848a60925c9bf",
+      "footprints/kicad/zudo-osc-hole-field.3dshapes/IC_SOIC-8_3.9x4.9.wrl": "e91e487b55ddc9c5ec54d3ac4f670b05dcb6d635a06543cbeccd9ae7b12ecd43"
+    }
+  },
+  "cad_use": {
+    "symbol": "zudo-osc-hole-field:TLV9022DR",
+    "footprint": "zudo-osc-hole-field:SOIC-8_3.9x4.9mm_P1.27mm",
+    "model_path": "${KIPRJMOD}/../../footprints/kicad/zudo-osc-hole-field.3dshapes/IC_SOIC-8_3.9x4.9.wrl",
+    "transform": {
+      "offset": [
+        0,
+        0,
+        0
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ]
+    },
+    "seating_plane": null
+  },
+  "checks": {
+    "performed": [
+      "Retained source SHA-256 verified locally",
+      "Source pin-function audit / nonpolarized resistor numbering convention",
+      "62-line circuit contract and CAD pin-set check passed"
+    ],
+    "remaining_physical_checks": [
+      "Exact installed footprint/lead and model dimensions",
+      "Pin1/orientation and solder assembly qualification",
+      "Thermal and electrical application qualification"
+    ]
+  },
+  "publication": {
+    "preview_selected": true,
+    "download_published": false,
+    "permitted_scope": "Generated family-geometry previews and source metadata only; no fabrication release"
+  }
+}

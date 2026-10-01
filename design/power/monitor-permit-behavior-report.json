@@ -1,0 +1,905 @@
+{
+  "status": "CONDITIONAL IDEAL BEHAVIOR DIAGNOSTICS; NOT QUALIFICATION",
+  "qualification_accepted": false,
+  "evaluated_input_sha256": "7e3690bb412c16b67be41adcdf1ec41664ccf22956fc3604b9d284b97ae19b1d",
+  "model_sha256": "3b37bd83fba82ef90b8b3f1118579f51367c3a6d9487de11e77fc0738fb51420",
+  "model_limits": [
+    "Ideal monitor truth values, no comparator/reference/supervisor dynamics",
+    "Single-pole RC excludes R121/input capacitance and all device propagation",
+    "No transistor model or guaranteed physical output release",
+    "Actual partial-power and retained-charge behavior remain UNKNOWN"
+  ],
+  "nominal_rc_s": 0.0001,
+  "ideal_charge_to_clock_s": 7.339691750802005e-05,
+  "ideal_discharge_to_clock_low_s": 9.882642314992443e-05,
+  "cases": {
+    "arrival:+12V,VN,+5V": {
+      "rail_order": [
+        "+12V",
+        "VN",
+        "+5V"
+      ],
+      "rail_states": [
+        {
+          "+12V": false,
+          "VN": false,
+          "+5V": false
+        },
+        {
+          "+12V": true,
+          "VN": false,
+          "+5V": false
+        },
+        {
+          "+12V": true,
+          "VN": true,
+          "+5V": false
+        },
+        {
+          "+12V": true,
+          "VN": true,
+          "+5V": true
+        }
+      ],
+      "ideal_powered_trace": [
+        {
+          "duration_s": 0.02,
+          "good": false,
+          "q": false,
+          "capacitor_fraction": 0.0,
+          "clock": false
+        },
+        {
+          "duration_s": 0.02,
+          "good": false,
+          "q": false,
+          "capacitor_fraction": 0.0,
+          "clock": false
+        },
+        {
+          "duration_s": 0.02,
+          "good": false,
+          "q": false,
+          "capacitor_fraction": 0.0,
+          "clock": false
+        },
+        {
+          "duration_s": 0.02,
+          "good": true,
+          "q": true,
+          "capacitor_fraction": 1.0,
+          "clock": true
+        }
+      ],
+      "actual_control_power_absent": "UNKNOWN",
+      "scope": "Boolean sequencing only; no rail ramp or monitor propagation simulation"
+    },
+    "failure:+12V,VN,+5V": {
+      "rail_order": [
+        "+12V",
+        "VN",
+        "+5V"
+      ],
+      "rail_states": [
+        {
+          "+12V": true,
+          "VN": true,
+          "+5V": true
+        },
+        {
+          "+12V": false,
+          "VN": true,
+          "+5V": true
+        },
+        {
+          "+12V": false,
+          "VN": false,
+          "+5V": true
+        },
+        {
+          "+12V": false,
+          "VN": false,
+          "+5V": false
+        }
+      ],
+      "ideal_powered_trace": [
+        {
+          "duration_s": 0.02,
+          "good": false,
+          "q": false,
+          "capacitor_fraction": 0.0,
+          "clock": false
+        },
+        {
+          "duration_s": 0.02,
+          "good": true,
+          "q": true,
+          "capacitor_fraction": 1.0,
+          "clock": true
+        },
+        {
+          "duration_s": 0.02,
+          "good": false,
+          "q": false,
+          "capacitor_fraction": 1.3838965267367376e-87,
+          "clock": false
+        },
+        {
+          "duration_s": 0.02,
+          "good": false,
+          "q": false,
+          "capacitor_fraction": 1.9151695967140057e-174,
+          "clock": false
+        },
+        {
+          "duration_s": 0.02,
+          "good": false,
+          "q": false,
+          "capacitor_fraction": 2.6503965530043108e-261,
+          "clock": false
+        }
+      ],
+      "actual_control_power_absent": "UNKNOWN",
+      "scope": "Boolean sequencing only; no rail ramp or monitor propagation simulation"
+    },
+    "arrival:+12V,+5V,VN": {
+      "rail_order": [
+        "+12V",
+        "+5V",
+        "VN"
+      ],
+      "rail_states": [
+        {
+          "+12V": false,
+          "VN": false,
+          "+5V": false
+        },
+        {
+          "+12V": true,
+          "VN": false,
+          "+5V": false
+        },
+        {
+          "+12V": true,
+          "VN": false,
+          "+5V": true
+        },
+        {
+          "+12V": true,
+          "VN": true,
+          "+5V": true
+        }
+      ],
+      "ideal_powered_trace": [
+        {
+          "duration_s": 0.02,
+          "good": false,
+          "q": false,
+          "capacitor_fraction": 0.0,
+          "clock": false
+        },
+        {
+          "duration_s": 0.02,
+          "good": false,
+          "q": false,
+          "capacitor_fraction": 0.0,
+          "clock": false
+        },
+        {
+          "duration_s": 0.02,
+          "good": false,
+          "q": false,
+          "capacitor_fraction": 0.0,
+          "clock": false
+        },
+        {
+          "duration_s": 0.02,
+          "good": true,
+          "q": true,
+          "capacitor_fraction": 1.0,
+          "clock": true
+        }
+      ],
+      "actual_control_power_absent": "UNKNOWN",
+      "scope": "Boolean sequencing only; no rail ramp or monitor propagation simulation"
+    },
+    "failure:+12V,+5V,VN": {
+      "rail_order": [
+        "+12V",
+        "+5V",
+        "VN"
+      ],
+      "rail_states": [
+        {
+          "+12V": true,
+          "VN": true,
+          "+5V": true
+        },
+        {
+          "+12V": false,
+          "VN": true,
+          "+5V": true
+        },
+        {
+          "+12V": false,
+          "VN": true,
+          "+5V": false
+        },
+        {
+          "+12V": false,
+          "VN": false,
+          "+5V": false
+        }
+      ],
+      "ideal_powered_trace": [
+        {
+          "duration_s": 0.02,
+          "good": false,
+          "q": false,
+          "capacitor_fraction": 0.0,
+          "clock": false
+        },
+        {
+          "duration_s": 0.02,
+          "good": true,
+          "q": true,
+          "capacitor_fraction": 1.0,
+          "clock": true
+        },
+        {
+          "duration_s": 0.02,
+          "good": false,
+          "q": false,
+          "capacitor_fraction": 1.3838965267367376e-87,
+          "clock": false
+        },
+        {
+          "duration_s": 0.02,
+          "good": false,
+          "q": false,
+          "capacitor_fraction": 1.9151695967140057e-174,
+          "clock": false
+        },
+        {
+          "duration_s": 0.02,
+          "good": false,
+          "q": false,
+          "capacitor_fraction": 2.6503965530043108e-261,
+          "clock": false
+        }
+      ],
+      "actual_control_power_absent": "UNKNOWN",
+      "scope": "Boolean sequencing only; no rail ramp or monitor propagation simulation"
+    },
+    "arrival:VN,+12V,+5V": {
+      "rail_order": [
+        "VN",
+        "+12V",
+        "+5V"
+      ],
+      "rail_states": [
+        {
+          "+12V": false,
+          "VN": false,
+          "+5V": false
+        },
+        {
+          "+12V": false,
+          "VN": true,
+          "+5V": false
+        },
+        {
+          "+12V": true,
+          "VN": true,
+          "+5V": false
+        },
+        {
+          "+12V": true,
+          "VN": true,
+          "+5V": true
+        }
+      ],
+      "ideal_powered_trace": [
+        {
+          "duration_s": 0.02,
+          "good": false,
+          "q": false,
+          "capacitor_fraction": 0.0,
+          "clock": false
+        },
+        {
+          "duration_s": 0.02,
+          "good": false,
+          "q": false,
+          "capacitor_fraction": 0.0,
+          "clock": false
+        },
+        {
+          "duration_s": 0.02,
+          "good": false,
+          "q": false,
+          "capacitor_fraction": 0.0,
+          "clock": false
+        },
+        {
+          "duration_s": 0.02,
+          "good": true,
+          "q": true,
+          "capacitor_fraction": 1.0,
+          "clock": true
+        }
+      ],
+      "actual_control_power_absent": "UNKNOWN",
+      "scope": "Boolean sequencing only; no rail ramp or monitor propagation simulation"
+    },
+    "failure:VN,+12V,+5V": {
+      "rail_order": [
+        "VN",
+        "+12V",
+        "+5V"
+      ],
+      "rail_states": [
+        {
+          "+12V": true,
+          "VN": true,
+          "+5V": true
+        },
+        {
+          "+12V": true,
+          "VN": false,
+          "+5V": true
+        },
+        {
+          "+12V": false,
+          "VN": false,
+          "+5V": true
+        },
+        {
+          "+12V": false,
+          "VN": false,
+          "+5V": false
+        }
+      ],
+      "ideal_powered_trace": [
+        {
+          "duration_s": 0.02,
+          "good": false,
+          "q": false,
+          "capacitor_fraction": 0.0,
+          "clock": false
+        },
+        {
+          "duration_s": 0.02,
+          "good": true,
+          "q": true,
+          "capacitor_fraction": 1.0,
+          "clock": true
+        },
+        {
+          "duration_s": 0.02,
+          "good": false,
+          "q": false,
+          "capacitor_fraction": 1.3838965267367376e-87,
+          "clock": false
+        },
+        {
+          "duration_s": 0.02,
+          "good": false,
+          "q": false,
+          "capacitor_fraction": 1.9151695967140057e-174,
+          "clock": false
+        },
+        {
+          "duration_s": 0.02,
+          "good": false,
+          "q": false,
+          "capacitor_fraction": 2.6503965530043108e-261,
+          "clock": false
+        }
+      ],
+      "actual_control_power_absent": "UNKNOWN",
+      "scope": "Boolean sequencing only; no rail ramp or monitor propagation simulation"
+    },
+    "arrival:VN,+5V,+12V": {
+      "rail_order": [
+        "VN",
+        "+5V",
+        "+12V"
+      ],
+      "rail_states": [
+        {
+          "+12V": false,
+          "VN": false,
+          "+5V": false
+        },
+        {
+          "+12V": false,
+          "VN": true,
+          "+5V": false
+        },
+        {
+          "+12V": false,
+          "VN": true,
+          "+5V": true
+        },
+        {
+          "+12V": true,
+          "VN": true,
+          "+5V": true
+        }
+      ],
+      "ideal_powered_trace": [
+        {
+          "duration_s": 0.02,
+          "good": false,
+          "q": false,
+          "capacitor_fraction": 0.0,
+          "clock": false
+        },
+        {
+          "duration_s": 0.02,
+          "good": false,
+          "q": false,
+          "capacitor_fraction": 0.0,
+          "clock": false
+        },
+        {
+          "duration_s": 0.02,
+          "good": false,
+          "q": false,
+          "capacitor_fraction": 0.0,
+          "clock": false
+        },
+        {
+          "duration_s": 0.02,
+          "good": true,
+          "q": true,
+          "capacitor_fraction": 1.0,
+          "clock": true
+        }
+      ],
+      "actual_control_power_absent": "UNKNOWN",
+      "scope": "Boolean sequencing only; no rail ramp or monitor propagation simulation"
+    },
+    "failure:VN,+5V,+12V": {
+      "rail_order": [
+        "VN",
+        "+5V",
+        "+12V"
+      ],
+      "rail_states": [
+        {
+          "+12V": true,
+          "VN": true,
+          "+5V": true
+        },
+        {
+          "+12V": true,
+          "VN": false,
+          "+5V": true
+        },
+        {
+          "+12V": true,
+          "VN": false,
+          "+5V": false
+        },
+        {
+          "+12V": false,
+          "VN": false,
+          "+5V": false
+        }
+      ],
+      "ideal_powered_trace": [
+        {
+          "duration_s": 0.02,
+          "good": false,
+          "q": false,
+          "capacitor_fraction": 0.0,
+          "clock": false
+        },
+        {
+          "duration_s": 0.02,
+          "good": true,
+          "q": true,
+          "capacitor_fraction": 1.0,
+          "clock": true
+        },
+        {
+          "duration_s": 0.02,
+          "good": false,
+          "q": false,
+          "capacitor_fraction": 1.3838965267367376e-87,
+          "clock": false
+        },
+        {
+          "duration_s": 0.02,
+          "good": false,
+          "q": false,
+          "capacitor_fraction": 1.9151695967140057e-174,
+          "clock": false
+        },
+        {
+          "duration_s": 0.02,
+          "good": false,
+          "q": false,
+          "capacitor_fraction": 2.6503965530043108e-261,
+          "clock": false
+        }
+      ],
+      "actual_control_power_absent": "UNKNOWN",
+      "scope": "Boolean sequencing only; no rail ramp or monitor propagation simulation"
+    },
+    "arrival:+5V,+12V,VN": {
+      "rail_order": [
+        "+5V",
+        "+12V",
+        "VN"
+      ],
+      "rail_states": [
+        {
+          "+12V": false,
+          "VN": false,
+          "+5V": false
+        },
+        {
+          "+12V": false,
+          "VN": false,
+          "+5V": true
+        },
+        {
+          "+12V": true,
+          "VN": false,
+          "+5V": true
+        },
+        {
+          "+12V": true,
+          "VN": true,
+          "+5V": true
+        }
+      ],
+      "ideal_powered_trace": [
+        {
+          "duration_s": 0.02,
+          "good": false,
+          "q": false,
+          "capacitor_fraction": 0.0,
+          "clock": false
+        },
+        {
+          "duration_s": 0.02,
+          "good": false,
+          "q": false,
+          "capacitor_fraction": 0.0,
+          "clock": false
+        },
+        {
+          "duration_s": 0.02,
+          "good": false,
+          "q": false,
+          "capacitor_fraction": 0.0,
+          "clock": false
+        },
+        {
+          "duration_s": 0.02,
+          "good": true,
+          "q": true,
+          "capacitor_fraction": 1.0,
+          "clock": true
+        }
+      ],
+      "actual_control_power_absent": "UNKNOWN",
+      "scope": "Boolean sequencing only; no rail ramp or monitor propagation simulation"
+    },
+    "failure:+5V,+12V,VN": {
+      "rail_order": [
+        "+5V",
+        "+12V",
+        "VN"
+      ],
+      "rail_states": [
+        {
+          "+12V": true,
+          "VN": true,
+          "+5V": true
+        },
+        {
+          "+12V": true,
+          "VN": true,
+          "+5V": false
+        },
+        {
+          "+12V": false,
+          "VN": true,
+          "+5V": false
+        },
+        {
+          "+12V": false,
+          "VN": false,
+          "+5V": false
+        }
+      ],
+      "ideal_powered_trace": [
+        {
+          "duration_s": 0.02,
+          "good": false,
+          "q": false,
+          "capacitor_fraction": 0.0,
+          "clock": false
+        },
+        {
+          "duration_s": 0.02,
+          "good": true,
+          "q": true,
+          "capacitor_fraction": 1.0,
+          "clock": true
+        },
+        {
+          "duration_s": 0.02,
+          "good": false,
+          "q": false,
+          "capacitor_fraction": 1.3838965267367376e-87,
+          "clock": false
+        },
+        {
+          "duration_s": 0.02,
+          "good": false,
+          "q": false,
+          "capacitor_fraction": 1.9151695967140057e-174,
+          "clock": false
+        },
+        {
+          "duration_s": 0.02,
+          "good": false,
+          "q": false,
+          "capacitor_fraction": 2.6503965530043108e-261,
+          "clock": false
+        }
+      ],
+      "actual_control_power_absent": "UNKNOWN",
+      "scope": "Boolean sequencing only; no rail ramp or monitor propagation simulation"
+    },
+    "arrival:+5V,VN,+12V": {
+      "rail_order": [
+        "+5V",
+        "VN",
+        "+12V"
+      ],
+      "rail_states": [
+        {
+          "+12V": false,
+          "VN": false,
+          "+5V": false
+        },
+        {
+          "+12V": false,
+          "VN": false,
+          "+5V": true
+        },
+        {
+          "+12V": false,
+          "VN": true,
+          "+5V": true
+        },
+        {
+          "+12V": true,
+          "VN": true,
+          "+5V": true
+        }
+      ],
+      "ideal_powered_trace": [
+        {
+          "duration_s": 0.02,
+          "good": false,
+          "q": false,
+          "capacitor_fraction": 0.0,
+          "clock": false
+        },
+        {
+          "duration_s": 0.02,
+          "good": false,
+          "q": false,
+          "capacitor_fraction": 0.0,
+          "clock": false
+        },
+        {
+          "duration_s": 0.02,
+          "good": false,
+          "q": false,
+          "capacitor_fraction": 0.0,
+          "clock": false
+        },
+        {
+          "duration_s": 0.02,
+          "good": true,
+          "q": true,
+          "capacitor_fraction": 1.0,
+          "clock": true
+        }
+      ],
+      "actual_control_power_absent": "UNKNOWN",
+      "scope": "Boolean sequencing only; no rail ramp or monitor propagation simulation"
+    },
+    "failure:+5V,VN,+12V": {
+      "rail_order": [
+        "+5V",
+        "VN",
+        "+12V"
+      ],
+      "rail_states": [
+        {
+          "+12V": true,
+          "VN": true,
+          "+5V": true
+        },
+        {
+          "+12V": true,
+          "VN": true,
+          "+5V": false
+        },
+        {
+          "+12V": true,
+          "VN": false,
+          "+5V": false
+        },
+        {
+          "+12V": false,
+          "VN": false,
+          "+5V": false
+        }
+      ],
+      "ideal_powered_trace": [
+        {
+          "duration_s": 0.02,
+          "good": false,
+          "q": false,
+          "capacitor_fraction": 0.0,
+          "clock": false
+        },
+        {
+          "duration_s": 0.02,
+          "good": true,
+          "q": true,
+          "capacitor_fraction": 1.0,
+          "clock": true
+        },
+        {
+          "duration_s": 0.02,
+          "good": false,
+          "q": false,
+          "capacitor_fraction": 1.3838965267367376e-87,
+          "clock": false
+        },
+        {
+          "duration_s": 0.02,
+          "good": false,
+          "q": false,
+          "capacitor_fraction": 1.9151695967140057e-174,
+          "clock": false
+        },
+        {
+          "duration_s": 0.02,
+          "good": false,
+          "q": false,
+          "capacitor_fraction": 2.6503965530043108e-261,
+          "clock": false
+        }
+      ],
+      "actual_control_power_absent": "UNKNOWN",
+      "scope": "Boolean sequencing only; no rail ramp or monitor propagation simulation"
+    },
+    "short_fault": [
+      {
+        "duration_s": 0.02,
+        "good": false,
+        "q": false,
+        "capacitor_fraction": 0.0,
+        "clock": false
+      },
+      {
+        "duration_s": 0.02,
+        "good": true,
+        "q": true,
+        "capacitor_fraction": 1.0,
+        "clock": true
+      },
+      {
+        "duration_s": 1e-06,
+        "good": false,
+        "q": false,
+        "capacitor_fraction": 0.9900498337491681,
+        "clock": true
+      },
+      {
+        "duration_s": 0.02,
+        "good": true,
+        "q": false,
+        "capacitor_fraction": 1.0,
+        "clock": true
+      }
+    ],
+    "long_fault": [
+      {
+        "duration_s": 0.02,
+        "good": false,
+        "q": false,
+        "capacitor_fraction": 0.0,
+        "clock": false
+      },
+      {
+        "duration_s": 0.02,
+        "good": true,
+        "q": true,
+        "capacitor_fraction": 1.0,
+        "clock": true
+      },
+      {
+        "duration_s": 0.001,
+        "good": false,
+        "q": false,
+        "capacitor_fraction": 4.5399929762484854e-05,
+        "clock": false
+      },
+      {
+        "duration_s": 0.02,
+        "good": true,
+        "q": true,
+        "capacitor_fraction": 1.0,
+        "clock": true
+      }
+    ],
+    "control_power_loss": [
+      {
+        "duration_s": 0.02,
+        "good": false,
+        "q": false,
+        "capacitor_fraction": 0.0,
+        "clock": false
+      },
+      {
+        "duration_s": 0.02,
+        "good": true,
+        "q": true,
+        "capacitor_fraction": 1.0,
+        "clock": true
+      },
+      {
+        "duration_s": 0.02,
+        "good": null,
+        "q": null,
+        "capacitor_fraction": null,
+        "clock": null
+      },
+      {
+        "duration_s": 0.02,
+        "good": true,
+        "q": null,
+        "capacitor_fraction": null,
+        "clock": null
+      }
+    ]
+  },
+  "nominal_partial_current_ledger": {
+    "scope": "Nominal resistor currents only; not a maximum or total supply-current budget",
+    "reference_output_A": 0.001918351625402234,
+    "negative_rail_sink_A": 0.00024214120072146354,
+    "positive_12_divider_A": 0.0008,
+    "positive_5_divider_A": 0.0008,
+    "fault_pullup_low_A": 0.0005,
+    "base_drive_zero_junction_drop_A": 0.0005,
+    "dummy_load_zero_saturation_drop_A": 0.0012,
+    "timing_charge_C": 5e-08,
+    "nominal_5V_bypass_charge_C": 2.4999999999999998e-06,
+    "nominal_reference_bypass_charge_C": 9.899999999999998e-07,
+    "unaccounted": [
+      "All active-device quiescent and dynamic supply currents",
+      "Reference input current includes its output load plus regulator quiescent current; no free reference supply",
+      "HC slow-input dynamic current, reference startup and both retained RC clamp-return paths",
+      "Tolerance, temperature, effective capacitance and leakage",
+      "Actual isolation population and driver loads"
+    ],
+    "total_supply_current_A": null,
+    "original_auxiliary_allowances_removed": false,
+    "original_current_limits_changed": false
+  },
+  "physical_release_bound_s": null
+}

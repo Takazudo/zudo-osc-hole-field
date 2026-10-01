@@ -87,10 +87,10 @@
       "record_id": "rec-schmitt",
       "source_id": "src-schmitt-datasheet",
       "class": "GUARANTEED_ELECTRICAL",
-      "value": "No exact-part electrical limits promoted from retained evidence.",
+      "value": "Selected source-conditioned logic rows are retained; whole project supply/load/partial-power applicability remains unestablished.",
       "unit": "NONE",
-      "conditions": "The task has not promoted a source-backed limit for this exact shortlist record.",
-      "locator": "src-schmitt-datasheet: exact component electrical-characteristics table not promoted",
+      "conditions": "Source table points are not silently promoted into complete permit qualification.",
+      "locator": "src-schmitt-datasheet: selected electrical and timing tables; application closure remains open",
       "provenance": "UNVERIFIED",
       "verdict": "UNSOURCED",
       "depends_on": [],
@@ -121,6 +121,102 @@
       "locator": "Section/table audit: src-schmitt-shortlist: parts[id=schmitt].package; CAD receipt is provisional family geometry",
       "provenance": "PROJECT-CHOICE",
       "verdict": "NEEDS BENCH",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-schmitt-temperature",
+      "record_id": "rec-schmitt",
+      "source_id": "src-schmitt-datasheet",
+      "class": "RECOMMENDED_OPERATION",
+      "value": {
+        "minimum": -40,
+        "maximum": 85
+      },
+      "unit": "degC",
+      "conditions": "SN74HC14DR grade; not the SN54 range.",
+      "locator": "src-schmitt-datasheet: printed p4 section5.3",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-schmitt-schmitt-high",
+      "record_id": "rec-schmitt",
+      "source_id": "src-schmitt-datasheet",
+      "class": "GUARANTEED_ELECTRICAL",
+      "value": {
+        "minimum": 1.55,
+        "maximum": 3.13
+      },
+      "unit": "V",
+      "conditions": "VCC4.5V, TA -40..85C; same-gate thresholds must also meet the hysteresis row.",
+      "locator": "src-schmitt-datasheet: printed p5 table5.5 positive-going threshold",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-schmitt-schmitt-low",
+      "record_id": "rec-schmitt",
+      "source_id": "src-schmitt-datasheet",
+      "class": "GUARANTEED_ELECTRICAL",
+      "value": {
+        "minimum": 0.9,
+        "maximum": 2.45
+      },
+      "unit": "V",
+      "conditions": "VCC4.5V, TA -40..85C; same-gate thresholds must also meet the hysteresis row.",
+      "locator": "src-schmitt-datasheet: printed p5 table5.5 negative-going threshold",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-schmitt-hysteresis",
+      "record_id": "rec-schmitt",
+      "source_id": "src-schmitt-datasheet",
+      "class": "GUARANTEED_ELECTRICAL",
+      "value": {
+        "minimum": 0.4,
+        "maximum": 2.1
+      },
+      "unit": "V",
+      "conditions": "VCC4.5V, TA -40..85C; constrains high-minus-low threshold on one gate.",
+      "locator": "src-schmitt-datasheet: printed p5 table5.5 hysteresis",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-schmitt-delay45",
+      "record_id": "rec-schmitt",
+      "source_id": "src-schmitt-datasheet",
+      "class": "TRANSIENT",
+      "value": 31,
+      "unit": "ns",
+      "conditions": "Maximum at VCC4.5V, TA -40..85C, CL50pF; source test input transitions <6ns. Not an unconditional project-supply/load bound.",
+      "locator": "src-schmitt-datasheet: printed p6 section5.7 and p8 section6",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-schmitt-input-capacitance",
+      "record_id": "rec-schmitt",
+      "source_id": "src-schmitt-datasheet",
+      "class": "GUARANTEED_ELECTRICAL",
+      "value": 10,
+      "unit": "pF",
+      "conditions": "Maximum at VCC5V; additional PCB and other tied-device capacitance is not included.",
+      "locator": "src-schmitt-datasheet: printed p5 table5.5 CI",
+      "provenance": "PRIMARY-SPEC",
+      "verdict": "PASS - primary-source confirmed",
       "depends_on": [],
       "expression": ""
     }

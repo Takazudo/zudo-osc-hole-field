@@ -79,4 +79,7 @@ jobs:
       - name: Run native main-ground connectivity regression
         run: bash scripts/kicad/run.sh python3 scripts/pcbgen/power_locality_native_regression.py
 
+      - name: Run native monitor/permit candidate checks
+        run: python3 scripts/checks/monitor_permit_native.py --check
+
   # KiCad checks will be added by sub-issue #44.
