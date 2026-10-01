@@ -1,0 +1,523 @@
+{
+  "status": "CALCULATED SCREENS ONLY; protection gate OPEN",
+  "protection_implemented": false,
+  "condition_validation": {
+    "original_scenario": "Bound to OSC-ES-1 signals/precision-cell notes and existing supply contract; exact envelope retained because the model receipt describes that envelope",
+    "source_backed_fixed_fields": {
+      "resistor_tolerance": "r499/r4990/r10m/r100k exact-part sheets",
+      "resistor_tcr_per_C": "r499/r4990/r10m/r100k exact-part sheets",
+      "relay_on_ohm_at_25C": "photomos, printed p3, IF=5mA",
+      "relay_off_A_at_25C": "photomos, printed p3, IF=0, VL=60V",
+      "relay_off_s_at_25C": "photomos, printed p3, IF=5mA, IL=100mA, VL=10V",
+      "relay_recommended_contact_V_at_25C": "photomos, printed p4",
+      "relay_abs_contact_V_at_25C": "photomos, printed p2, absolute rating",
+      "amplifier_bias_A_full_temp_PW": "opa4197, printed p7, PW full-temperature row",
+      "amplifier_input_absolute_current_A": "opa4197, printed p5, absolute input rating",
+      "amplifier_Iq_per_core_A_full_temp": "opa4197, printed p8, unloaded full-temperature row",
+      "amplifier_theta_JA_C_per_W_test_board": "opa4197, printed p6, test-board metric",
+      "led_characterization_A": "photomos, printed p3, Ron/timing characterization condition",
+      "led_Vf_max_at_5mA_25C": "photomos, printed p3, IF=5mA"
+    },
+    "variable_sensitivity_fields": [
+      "floating_rail_diagnostic_C_F",
+      "off_rail_diagnostic_guard_V",
+      "relay_contact_cap_sensitivity_F",
+      "resistor_screen_C"
+    ],
+    "sensitivity_domains": "Positive finite contact/reservoir capacitance; finite sorted resistor ambient screens within -55..155 C; diagnostic guard strictly above leakage equilibrium and below initial/fault voltage. These are assumptions, not sourced guaranteed values."
+  },
+  "resistance_bounds": {
+    "method": "1% tolerance times +/-100 ppm/C across -55..155 C around 25 C; relay Ron bound is separately only at 25 C",
+    "minimum_factor": 0.9771299999999999,
+    "maximum_factor": 1.0231299999999999,
+    "drive_min_ohm": 975.1757399999999,
+    "drive_max_ohm": 1021.2037399999999,
+    "sense_min_ohm": 4875.878699999999,
+    "sense_max_ohm": 5105.538699999999
+  },
+  "precision": {
+    "verdict": "NEEDS BENCH",
+    "ideal_DC_load_error_upper_mV": 0.2666098832864751,
+    "input_bias_contribution_upper_mV": 0.07658308049999998,
+    "subtotal_mV": 0.3431929637864751,
+    "limit_load_mV": 1,
+    "conditional_subtotal_below_load_limit": true,
+    "formula": "e=V*Rd*Rs/[RL*(Rlocal+Rs+Rd)+Rd*Rs]; bias <= Ib*Rs",
+    "scope": "Ideal amplifier DC network plus PW bias bound; not total calibrated accuracy. Offset, finite gain, thermal drift, actual +/-12 V conditions and dynamic error remain open."
+  },
+  "sustained_contention": {
+    "verdict": "NEEDS BENCH",
+    "condition": "Intact rail reference; external +/-12 V against a drive bounded by maximum opposite rail; no credit for a fault trip",
+    "maximum_differential_V": 24.48,
+    "main_current_upper_mA": 25.103167558290572,
+    "sense_current_upper_mA": 5.020633511658115,
+    "each_499_power_upper_W": 0.3072627709134766,
+    "sense_resistor_power_upper_W": 0.12290510836539065,
+    "main_relay_power_at_25C_Ron_W": 7.562028257515347e-05,
+    "maximum_resistor_ambient_from_derating_C": 102.76532894470898,
+    "ambient_screens": [
+      {
+        "ambient_C": 25,
+        "allowed_each_499_W": 0.5,
+        "within_resistor_power_curve": true
+      },
+      {
+        "ambient_C": 70,
+        "allowed_each_499_W": 0.5,
+        "within_resistor_power_curve": true
+      },
+      {
+        "ambient_C": 100,
+        "allowed_each_499_W": 0.3235294117647059,
+        "within_resistor_power_curve": true
+      },
+      {
+        "ambient_C": 105,
+        "allowed_each_499_W": 0.29411764705882354,
+        "within_resistor_power_curve": false
+      },
+      {
+        "ambient_C": 125,
+        "allowed_each_499_W": 0.17647058823529413,
+        "within_resistor_power_curve": false
+      }
+    ],
+    "amplifier_output_stage_power_screen_W": 0.1536313854567383,
+    "whole_quad_quiescent_power_upper_W": 0.1491,
+    "one_active_core_package_power_screen_W": 0.3027313854567383,
+    "four_active_cores_package_power_screen_W": 0.7636255418269532,
+    "one_active_core_Tj_test_board_at_30C": 58.03292629329396,
+    "thermal_limit": "Single output-stage two-rail linear transistor model only; saturation, input-clamp redistribution and actual PCB thetaJA not established. Do not use the typical short-current or thermal-shutdown curves as protection."
+  },
+  "isolated_off_boundary": {
+    "verdict": "UNSOURCED",
+    "condition": "Both LEDs IF=0, two contact leakage paths each <=1 uA at 25 C and contact <=60 V; rail bleeders fitted, no other energizing port. Does not bound absolute floating common mode.",
+    "two_contact_leakage_upper_uA": 2.0,
+    "single_rail_steady_differential_upper_V": 0.20462599999999997,
+    "bleeder_each_enabled_current_upper_mA": 0.12772097878480856,
+    "bleeder_each_enabled_power_upper_W": 0.001593957815234411,
+    "diagnostic_guard_V_not_original_requirement": 0.3,
+    "conditional_steady_below_diagnostic_guard": true,
+    "discharge_time_to_guard_s_for_assumed_cap": 4.969899418350881,
+    "discharge_capacitance_F_is_assumption": 1e-05,
+    "meaning": "Finite bleed prevents indefinite charging in this bounded leakage-only model; multi-second discharge does not prove immediate power-off or whole-board non-backpower."
+  },
+  "ground_loss_counterexample": {
+    "verdict": "UNSOURCED",
+    "argument_result": "COUNTEREXAMPLE to resistor-only isolation argument; actual device behavior UNSOURCED",
+    "scope": "Only a resistor-only boundary with conductive/unqualified switch state and floating unloaded rail; not a demonstrated original-spec violation or a claim that every ground-independent topology is impossible",
+    "counterexample_rail_V_at_1ms": 1.1695562894448734,
+    "assumed_cap_F": 1e-05,
+    "series_ohm": 975.1757399999999,
+    "bleeder_max_ohm_for_diagnostic_guard": 25.00450615384615,
+    "bleeder_current_at_12V_A": 0.479913497437908,
+    "observation": "Any finite series resistor charges an unloaded floating rail toward the external source. The exact final behavior of an unqualified CMOS switch is unknown; this allowed conductive counterexample defeats a universal resistor-only proof."
+  },
+  "transition_bounds": {
+    "verdict": "NEEDS BENCH",
+    "turnoff_table_s_at_25C_only": 0.0005,
+    "each_499_energy_J_during_table_turnoff": 0.0001536313854567383,
+    "detection_delay_is_additional_and_unbounded": true,
+    "contact_cap_F_sensitivity_only": 2e-10,
+    "contact_charge_C_for_full_rail_span_step": 4.8960000000000005e-09,
+    "charge_share_into_min_local_10n_V_sensitivity_only": 0.5153684210526317,
+    "passive_cable_RC_s": 5.1060186999999996e-06,
+    "meaning": "Contact capacitance lies between contact pins, not from either pin to GND. Charge/RC arithmetic is not op-amp settling, clamp stress, overshoot or power-off qualification."
+  },
+  "cold_collapse_before_contact_release": {
+    "verdict": "UNSOURCED",
+    "circuit_assumption": "Initially zero rail, external +12 V, both closed contacts and conductive pin-to-rail injection paths, one 100 kohm bleed, no regulator sink. Counterexample screen; not a vendor clamp model.",
+    "detection_delay_assumed_s": 0,
+    "contact_delay_s_conditional_25C_table": 0.0005,
+    "cold_main_initial_mA": 12.305474293279692,
+    "cold_sense_initial_mA": 2.4610948586559385,
+    "sense_max_differential_current_mA": 5.020633511658115,
+    "amplifier_input_absolute_limit_mA_not_operating_target": 10.0,
+    "amplifier_powered_off_output_injection_limit": "UNSOURCED; no output-pin input-clamp limit inferred",
+    "cold_rail_V_at_contact_delay_for_assumed_cap": 0.7159003638787236,
+    "local_reservoir_F_is_assumption_not_fitted": 1e-05,
+    "conservative_C_min_F_for_cold_current_and_guard": 2.4610948586559386e-05,
+    "conservative_C_min_F_for_max_differential_and_guard": 5.020633511658115e-05,
+    "formula": "C >= (V/Rdrive_min + V/Rsense_min)*(t_detect+t_release)/deltaV; ignores bleed conservatively; capacitor initial voltage and derated reachable capacitance required",
+    "meaning": "Even zero detection delay does not prove collapse protection. Bleeders address steady relay leakage after opening, not pre-opening current. Actual hot release, detector latency, capacitance/ESR and all shared-rail contributors remain open."
+  },
+  "shared_reservoir_sensitivity": {
+    "verdict": "UNSOURCED",
+    "condition": "If all 16 precision jacks are externally held at +12 V through common cold collapse; fault concurrency contract and actual shared paths remain to be established",
+    "channels": 16,
+    "conservative_cold_C_min_F": 0.00039377517738495017,
+    "existing_nominal_cap_ceiling_F": 0.00015,
+    "optimistic_reachable_C_at_nominal_ceiling_minus_tolerance_F": 0.00011999999999999999,
+    "maximum_detection_plus_release_s_for_constant_current_screen": 0.000152371209375,
+    "meaning": "Assigning the entire existing rail-capacitance ceiling to this one purpose is already optimistic; remote capacitors may be disconnected by the fault. More bulk cannot be silently added. This diagnostic 0.3 V guard is not an original hard requirement."
+  },
+  "permit_budget": {
+    "verdict": "UNSOURCED",
+    "series_LED_current_A": 0.005,
+    "two_LED_compliance_min_V_at_25C": 3.4,
+    "two_LED_dissipation_upper_W_at_25C": 0.017,
+    "sixteen_precision_cells_current_A_if_one_5V_current_source_each": 0.08,
+    "sixteen_cell_5V_input_power_W_excluding_driver_overhead": 0.4,
+    "meaning": "No fitted driver. 80 mA at 5 V for this illustrative 16-cell permit arrangement must be placed in the original ledger; it is not free power or an authorized population change."
+  },
+  "full_population_LED_screen": {
+    "verdict": "BLOCKER - deterministic spec violation",
+    "scope": "Only the stated +5 V LED-bias arrangements; not a universal ban on isolated relays or other bias architectures",
+    "channels": 128,
+    "independent_5mA_strings_mA": 640.0,
+    "strings_with_only_precision_drive_sense_pairs": 112,
+    "precision_paired_arrangement_mA": 560.0,
+    "plus5_original_maximum_mA": 500,
+    "precision_paired_LED_load_alone_exceeds_entire_rail_maximum": true,
+    "all_contacts_in_pairs_mA_if_grouping_allowed": 320.0,
+    "existing_normal_with_allowances_mA": {
+      "+12V": 1534.819166,
+      "-12V": 1435.56866,
+      "+5V": 224.286445
+    },
+    "existing_continuous_requirement_mA": {
+      "+12V": 1700,
+      "-12V": 1600,
+      "+5V": 300
+    },
+    "existing_auxiliary_allowance_mA": {
+      "+12V": 20,
+      "-12V": 20,
+      "+5V": 20
+    },
+    "all_paired_plus5_normal_mA_even_replacing_entire_auxiliary_allowance": 524.286445,
+    "plus12_six_LEDs_per_string_current_mA": 110.0,
+    "plus12_normal_mA_six_LED_strings_even_replacing_entire_auxiliary_allowance": 1624.819166,
+    "plus12_required_continuous_mA_with_original_reserve_and_rounding": 1800,
+    "normal_increment_headroom_before_original_reserve_mA": {
+      "+12V": 10.635379454545273,
+      "-12V": 18.976794545454595,
+      "+5V": 48.440827727272705
+    },
+    "lower_IF_limit": "2 mA is recommended at 25 C, but selected G3HS Ron and timing maxima are tested at 5 mA. Do not carry those maxima to 2 mA. Input operate threshold is not a full timing/Ron guarantee.",
+    "alternative_next_step": "AQY234SX has 35 ohm Ron and 2 ms release maxima at 2 mA/25 C, unlike the G3HS 5 mA test. Higher resistance is plausible inside feedback; longer release worsens collapse hold-up. Series strings across +/-12 V could reduce current, but require a captured regulator, independently safe permit, min-rail/hot-Vf compliance, shared fault grouping and complete normal/reserve ledger. No rail allocation changes."
+  },
+  "mixed_LED_and_input_switch_sensitivity": {
+    "verdict": "UNSOURCED",
+    "status": "No part substitution, source-contract edit, or current saving booked",
+    "string_allocation": {
+      "bipolar_strings": 7,
+      "LEDs_per_bipolar_string": 13,
+      "positive_strings": 7,
+      "maximum_LEDs_per_positive_string": 6,
+      "positive_string_LED_total": 37,
+      "total_LED_count": 128
+    },
+    "added_LED_bias_mA": {
+      "+12V": 70.0,
+      "-12V": 35.0,
+      "+5V": 0
+    },
+    "added_only_16_precision_cell_bleeders_mA": {
+      "+12V": 2.043535660556937,
+      "-12V": 2.043535660556937,
+      "+5V": 0
+    },
+    "existing_auxiliary_allowance_retained_in_full_mA": {
+      "+12V": 20,
+      "-12V": 20,
+      "+5V": 20
+    },
+    "actual_existing_ADG_package_count": 110,
+    "existing_ADG_planning_mA": {
+      "+12V": 143.0,
+      "-12V": 77.0,
+      "+5V": 0
+    },
+    "hypothetical_110_TMUX_delta_mA": {
+      "+12V": -77.0,
+      "-12V": -22.0,
+      "+5V": 0
+    },
+    "TMUX_current_condition": "VDD=16.5 V, VSS=-16.5 V, TA=-40..125 C, VSEL=0 V/5 V/VDD; not a guaranteed +/-12 V project limit",
+    "minimum_bipolar_string_compliance_V_at_25C_Vf_bound": 1.1700000000000017,
+    "minimum_positive_string_compliance_V_at_25C_Vf_bound": 1.33,
+    "without_input_switch_substitution": {
+      "normal_mA": {
+        "+12V": 1606.862701660557,
+        "-12V": 1472.6121956605568,
+        "+5V": 224.286445
+      },
+      "derived_continuous_requirement_mA": {
+        "+12V": 1800,
+        "-12V": 1700,
+        "+5V": 300
+      },
+      "unrounded_transient_demand_mA": {
+        "+12V": 2049.64,
+        "-12V": 1947.66,
+        "+5V": 362.4
+      },
+      "derived_transient_requirement_mA": {
+        "+12V": 2100,
+        "-12V": 2000,
+        "+5V": 400
+      },
+      "transient_rounding_allowance_mA": {
+        "+12V": 50.36000000000013,
+        "-12V": 52.33999999999992,
+        "+5V": 37.60000000000002
+      },
+      "physical_ceiling_minus_unrounded_demand_mA": {
+        "+12V": 50.36000000000013,
+        "-12V": 52.33999999999992,
+        "+5V": 137.60000000000002
+      },
+      "maximum_delivered_mA_unchanged": {
+        "+12V": 2100,
+        "-12V": 2000,
+        "+5V": 500
+      },
+      "transient_requirements_within_original_maxima": true,
+      "positive_limiter_window_mA": {
+        "+12V": 0,
+        "-12V": 0,
+        "+5V": 100
+      },
+      "original_strict_limiter_windows_met_arithmetically": false,
+      "protection_path_resistance_max_mohm_at_candidate_continuous": {
+        "+12V": 22.22222222222222,
+        "-12V": 23.529411764705884,
+        "+5V": 133.33333333333334
+      }
+    },
+    "with_conditioned_exact_110_input_switch_substitution": {
+      "normal_mA": {
+        "+12V": 1529.862701660557,
+        "-12V": 1450.6121956605568,
+        "+5V": 224.286445
+      },
+      "derived_continuous_requirement_mA": {
+        "+12V": 1700,
+        "-12V": 1600,
+        "+5V": 300
+      },
+      "unrounded_transient_demand_mA": {
+        "+12V": 1949.6399999999999,
+        "-12V": 1847.66,
+        "+5V": 362.4
+      },
+      "derived_transient_requirement_mA": {
+        "+12V": 2000,
+        "-12V": 1900,
+        "+5V": 400
+      },
+      "transient_rounding_allowance_mA": {
+        "+12V": 50.36000000000013,
+        "-12V": 52.33999999999992,
+        "+5V": 37.60000000000002
+      },
+      "physical_ceiling_minus_unrounded_demand_mA": {
+        "+12V": 150.36000000000013,
+        "-12V": 152.33999999999992,
+        "+5V": 137.60000000000002
+      },
+      "maximum_delivered_mA_unchanged": {
+        "+12V": 2100,
+        "-12V": 2000,
+        "+5V": 500
+      },
+      "transient_requirements_within_original_maxima": true,
+      "positive_limiter_window_mA": {
+        "+12V": 100,
+        "-12V": 100,
+        "+5V": 100
+      },
+      "original_strict_limiter_windows_met_arithmetically": true,
+      "protection_path_resistance_max_mohm_at_candidate_continuous": {
+        "+12V": 23.529411764705884,
+        "-12V": 25.0,
+        "+5V": 133.33333333333334
+      }
+    },
+    "limits": "Current minimum is a derived delivery requirement, not maximum capacity. All original maxima, reserve, ramp, fault increment and strict positive limiter windows remain. TMUX current at actual project rails, hot LED Vf, 14 real current regulators, all extra bleeders/reference loads, string/board fault grouping and independent permit must be captured; this arithmetic is not a complete power or protection design."
+  },
+  "bipolar_strings_without_IC_substitution": {
+    "verdict": "UNSOURCED",
+    "status": "Prospective requirement arithmetic only; existing contract remains 1700/1600/300 mA until captured change",
+    "conditions": "128 LEDs grouped into 10..12 independent strings of at most 13 LEDs across +/-12 V at 5 mA; no 110-IC substitution; all existing auxiliary allowance retained, 16 precision-cell bleeders added. Real locality/string map and regulator/control overhead not proven.",
+    "cases": [
+      {
+        "string_count": 10,
+        "bias_mA_each_analog_rail": 50.0,
+        "normal_mA": {
+          "+12V": 1586.862701660557,
+          "-12V": 1487.6121956605568,
+          "+5V": 224.286445
+        },
+        "derived_continuous_requirement_mA": {
+          "+12V": 1800,
+          "-12V": 1700,
+          "+5V": 300
+        },
+        "unrounded_transient_demand_mA": {
+          "+12V": 2049.64,
+          "-12V": 1947.66,
+          "+5V": 362.4
+        },
+        "derived_transient_requirement_mA": {
+          "+12V": 2100,
+          "-12V": 2000,
+          "+5V": 400
+        },
+        "transient_rounding_allowance_mA": {
+          "+12V": 50.36000000000013,
+          "-12V": 52.33999999999992,
+          "+5V": 37.60000000000002
+        },
+        "physical_ceiling_minus_unrounded_demand_mA": {
+          "+12V": 50.36000000000013,
+          "-12V": 52.33999999999992,
+          "+5V": 137.60000000000002
+        },
+        "maximum_delivered_mA_unchanged": {
+          "+12V": 2100,
+          "-12V": 2000,
+          "+5V": 500
+        },
+        "transient_requirements_within_original_maxima": true,
+        "positive_limiter_window_mA": {
+          "+12V": 0,
+          "-12V": 0,
+          "+5V": 100
+        },
+        "original_strict_limiter_windows_met_arithmetically": false,
+        "protection_path_resistance_max_mohm_at_candidate_continuous": {
+          "+12V": 22.22222222222222,
+          "-12V": 23.529411764705884,
+          "+5V": 133.33333333333334
+        }
+      },
+      {
+        "string_count": 11,
+        "bias_mA_each_analog_rail": 55.0,
+        "normal_mA": {
+          "+12V": 1591.862701660557,
+          "-12V": 1492.6121956605568,
+          "+5V": 224.286445
+        },
+        "derived_continuous_requirement_mA": {
+          "+12V": 1800,
+          "-12V": 1700,
+          "+5V": 300
+        },
+        "unrounded_transient_demand_mA": {
+          "+12V": 2049.64,
+          "-12V": 1947.66,
+          "+5V": 362.4
+        },
+        "derived_transient_requirement_mA": {
+          "+12V": 2100,
+          "-12V": 2000,
+          "+5V": 400
+        },
+        "transient_rounding_allowance_mA": {
+          "+12V": 50.36000000000013,
+          "-12V": 52.33999999999992,
+          "+5V": 37.60000000000002
+        },
+        "physical_ceiling_minus_unrounded_demand_mA": {
+          "+12V": 50.36000000000013,
+          "-12V": 52.33999999999992,
+          "+5V": 137.60000000000002
+        },
+        "maximum_delivered_mA_unchanged": {
+          "+12V": 2100,
+          "-12V": 2000,
+          "+5V": 500
+        },
+        "transient_requirements_within_original_maxima": true,
+        "positive_limiter_window_mA": {
+          "+12V": 0,
+          "-12V": 0,
+          "+5V": 100
+        },
+        "original_strict_limiter_windows_met_arithmetically": false,
+        "protection_path_resistance_max_mohm_at_candidate_continuous": {
+          "+12V": 22.22222222222222,
+          "-12V": 23.529411764705884,
+          "+5V": 133.33333333333334
+        }
+      },
+      {
+        "string_count": 12,
+        "bias_mA_each_analog_rail": 60.0,
+        "normal_mA": {
+          "+12V": 1596.862701660557,
+          "-12V": 1497.6121956605568,
+          "+5V": 224.286445
+        },
+        "derived_continuous_requirement_mA": {
+          "+12V": 1800,
+          "-12V": 1700,
+          "+5V": 300
+        },
+        "unrounded_transient_demand_mA": {
+          "+12V": 2049.64,
+          "-12V": 1947.66,
+          "+5V": 362.4
+        },
+        "derived_transient_requirement_mA": {
+          "+12V": 2100,
+          "-12V": 2000,
+          "+5V": 400
+        },
+        "transient_rounding_allowance_mA": {
+          "+12V": 50.36000000000013,
+          "-12V": 52.33999999999992,
+          "+5V": 37.60000000000002
+        },
+        "physical_ceiling_minus_unrounded_demand_mA": {
+          "+12V": 50.36000000000013,
+          "-12V": 52.33999999999992,
+          "+5V": 137.60000000000002
+        },
+        "maximum_delivered_mA_unchanged": {
+          "+12V": 2100,
+          "-12V": 2000,
+          "+5V": 500
+        },
+        "transient_requirements_within_original_maxima": true,
+        "positive_limiter_window_mA": {
+          "+12V": 0,
+          "-12V": 0,
+          "+5V": 100
+        },
+        "original_strict_limiter_windows_met_arithmetically": false,
+        "protection_path_resistance_max_mohm_at_candidate_continuous": {
+          "+12V": 22.22222222222222,
+          "-12V": 23.529411764705884,
+          "+5V": 133.33333333333334
+        }
+      }
+    ],
+    "meaning": "Prospective 1800/1700 mA continuous and 2100/2000 mA transient requirements can equal the original analog maximum-delivered ceilings without changing the 4.6 A return or 40 mV target. Equality leaves ZERO positive limiter window, so the current full source acceptance still fails. Resolve actual limiter tolerance/dynamics and requirement window; do not claim selected or quietly rewrite the contract."
+  },
+  "open_obligations": [
+    "Permit source, all three rail/reference qualification, and independently observable local-GND continuity are not captured; series LEDs do not detect a fault.",
+    "A voltage-only GND monitor cannot distinguish a failed return bridged by an equally low-impedance alternate return; define the monitored conductor and fault coverage explicitly.",
+    "No maximum relay leakage, resistance, contact capacitance or turnoff delay over the complete 15..30 C installation is established by the 25 C electrical table.",
+    "Determine contact voltage under whole-board floating and partial-power faults. The isolated cell alone provides no absolute bound on local common-mode voltage.",
+    "Bleeder calculation covers only two relay leakage paths into a local rail, with no other energizing port; all shared-rail injection paths and distributed capacitance require an aggregate proof.",
+    "The relay offers no overcurrent trip. Sustained enabled contention, detection plus turnoff energy, amplifier saturation/recovery and simultaneous package faults need physical qualification.",
+    "Cold/partial rail collapse leaves closed contacts conducting until detection plus actual relay release. Local reachable reservoir and powered-off amplifier output injection limit are unknown; 100 kohm leakage bleeders do not absorb this transient.",
+    "Supply bypass network, PCB clearance/footprint, installed thermal resistance and mechanical fit are not captured in this analog candidate.",
+    "Absolute calibrated accuracy at actual +/-12 V rails and installed temperatures, switching skew, off-contact capacitive injection, hot leakage and disabled output settling require evidence and bench results.",
+    "No board population or power-ledger substitution is authorized by this candidate; supply rails keep their original current and 40 mV limits."
+  ],
+  "input_sha256": {
+    "design/power/precision-output-cell.json": "52c63bf1d956138a68d77ad525c47d68ea4aeffe9eeb4bd65380dd5027f526c7",
+    "design/power/precision-output-cell-sources.json": "3d7d7bb406a42cae97364fca8552599b02f7651bb1c88f1503816c91a6f46004",
+    "design/power/supply-architecture.json": "937d0584938c592b3a35a578b5deaf0cb60e80a4729980edd178c69a62f2345e",
+    "design/power/rail-ledger.json": "783f578045a6a5bed31e3f1e944d9dfde5e12696ba5805a39f5ece6d9a8d1a5f",
+    "design/power/protection59-sources.json": "ba1e0f165d0ff17ba3b574a67c11f626272327d339af90f6d77959e840ea7d8f",
+    "design/standard/electrical-standard.json": "da91b860845e77bf3c5b14a7e62165a55add9d4e6d3749f89057c6262be34b00",
+    "design/power/protection58-audit.json": "dcbec208d3b4ec13150a1712ba00770ed11af79d8edd1e08b6b4d508ee427644",
+    "scripts/checks/precision_output_cell.py": "3f36cdaf1feeac5b36e91fedf1cef4d52eb33b8cdeec0911f2ee7478588eab17"
+  }
+}
