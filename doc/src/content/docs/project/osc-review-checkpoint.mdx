@@ -19,8 +19,9 @@ failure and timeout exits, and labels refresh-only results as diagnostic.
 PR #67 is closed as superseded by the reconciliation merged through #68; do
 not apply its older four-file snapshot over the recovered source. Neither patch
 proves electrical compliance. The assembly/proof checkpoint #69 is also merged
-(`c96d5ae`), with passing post-merge CI and regeneration. Further proof and
-protection work continues in #70.
+(`c96d5ae`), with passing post-merge CI and regeneration. The collar/protection
+and selected P-probe checkpoint #70 merged at `c012271`, also with passing
+post-merge CI and regeneration. Further candidate diagnostics continue in #71.
 
 The previously interrupted K calculation has now completed both 2,287-profile
 phases. Its retained guard log records PASS, exit 0, 7,048 seconds. A read-only
@@ -208,6 +209,18 @@ source-driven pin connectivity and bounded fault/bias calculations under
 original 1 ms target; this does not prove cold-collapse isolation, a complete
 permit circuit, or whole-instrument bias allocation. No installed substitution
 or source-current ceiling change is made.
+
+The subsequent `design/power/fast-disconnect-candidate*` study rejects the
+drawn resistor-biased discrete sense contact: its coupled DC model demands
+amplifier swing outside the available rails. The full 82-drive bias budget
+also exceeds the existing source ceilings, six 0–8 V envelope outputs lack
+established gate-drive headroom, and a complete release-time bound is absent.
+The 66 general outputs need only one contact each, but remain subject to the
+same power-loss and bipolar fault obligations. A drive-only hybrid with
+current-neutral precision sensing remains a candidate; its 16-cell sensitivity
+does not cover the whole instrument. A proposed 15 ms startup ramp is unselected
+and does not relax shutdown timing. No installed or source-contract change is
+made by this rejected-candidate record.
 
 ## Required continuation
 
