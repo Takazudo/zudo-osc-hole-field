@@ -1,0 +1,117 @@
+{
+  "schema_version": 1,
+  "status": "UNSELECTED PROJECT CHOICE; computable conditional upper-current class only. Physical qualification NOT RUN #65. No supplier or availability claim.",
+  "source_wire": "Existing ten-board Alpha Wire 5859 AWG14, 19 strands of nominal 27 AWG. Eighteen is the load-wire count, not its gauge.",
+  "main_strand_class": {
+    "strand_count": 19,
+    "minimum_copper_core_diameter_mm": 0.35,
+    "maximum_fanned_length_per_end_mm": 4.0,
+    "redistribution_tip_height_mm": 0.1,
+    "tip_inside_fanned_length": true,
+    "root_hex_pitch_mm": 0.37,
+    "expanded_hex_pitch_mm": 0.4,
+    "root_hex_rotation_deg": 15,
+    "initial_expansion_height_mm": 0.35,
+    "main_fan_height_mm": 2.9,
+    "both_fans_inside_branch_wire_length_maximum_mm": 125,
+    "hot_copper_resistivity_upper_ohm_mm": 2.3e-05,
+    "hot_solder_resistivity_upper_ohm_mm": 0.0002,
+    "solder_height_upper_mm": 0.05,
+    "square_support_side_mm": 0.24,
+    "support_centres_relative_to_land_mm": [
+      [
+        -1.05,
+        -1.05
+      ],
+      [
+        -1.05,
+        -0.35
+      ],
+      [
+        -1.05,
+        0.35
+      ],
+      [
+        -1.05,
+        1.05
+      ],
+      [
+        -0.35,
+        -1.05
+      ],
+      [
+        -0.35,
+        -0.35
+      ],
+      [
+        -0.35,
+        0.35
+      ],
+      [
+        -0.35,
+        1.05
+      ],
+      [
+        0.35,
+        -1.05
+      ],
+      [
+        0.35,
+        -0.35
+      ],
+      [
+        0.35,
+        0.35
+      ],
+      [
+        0.35,
+        1.05
+      ],
+      [
+        1.05,
+        -1.05
+      ],
+      [
+        1.05,
+        -0.35
+      ],
+      [
+        1.05,
+        0.35
+      ],
+      [
+        1.05,
+        1.05
+      ],
+      [
+        -1.75,
+        -1.05
+      ],
+      [
+        1.75,
+        -1.05
+      ],
+      [
+        0.35,
+        1.75
+      ]
+    ],
+    "wire_accounting": "The <=4 mm fan includes its 0.1 mm redistribution tip and lies inside 125 mm total wire length. Its uniform copper baseline must fit 13 mOhm/m. Add transported-core bending energy and tip redistribution above the straight baseline, solder energy and actual interfaces to the existing combined 0.2 mOhm termination allowance.",
+    "current_trial": "Nineteen contained strand-core fields carry 1/19 of total current each, with finite tip redistribution to nineteen solder prisms. This is an admissible trial for a circuit terminal with fixed total current; physical current density need not be uniform.",
+    "remaining_qualification": [
+      "Minimum finished core diameter, finite nonoverlapping fan geometry/curvature and actual external terminal scope; nominal AWG alone is not a tolerance guarantee.",
+      "Actual continuous solder coverage, <=0.05 mm transfer height, hot resistivity ceiling and positive remaining metallurgical/interface resistance allowance at both ends.",
+      "Native support containment outside every drill/collar plus wire retention, solder wicking, strain relief and mechanical envelope.",
+      "Existing full 4 x 4 mm land solder-coverage requirement remains. Extra solder is passive conductor: the current trial may omit it, but a primal lower bound must extend continuously through it or constrain the full actual contact support.",
+      "This proposal supplies no physical lower-conductivity envelope or completed whole-board resistance/current acceptance."
+    ],
+    "maximum_wetted_copper_support": "The actual 4 x 4 mm B.Cu AGND land and its owned array foil/barrel copper only. Solder outside that projected land may cover insulation but must not contact additional copper. No wetted support is inferred from the minimum nineteen squares.",
+    "paired_potential_trial": "Constrain the entire allowed wetted land and all ports of every intersected owned array barrel to one trial potential; extend that constant through all possible contact metal. This is a restricted continuous variational witness, not an assertion that the physical PCB land is equipotential.",
+    "terminal_boundary_status": "OPEN: the external terminal voltage boundary and finite lead extent must be selected consistently for the paired model. Nineteen uniform trial supports alone do not qualify an equipotential wire cut."
+  },
+  "GH_class": {
+    "status": "NOT SELECTED; finite external lead-foot contact and potential extension still required",
+    "primary_nominal_reference": "JST America public eGH-new.pdf top-entry drawing shows 0.2 mm nominal lead width and 0.7 mm projection, not a guaranteed minimum contact rectangle. BM03/BM08 land size does not prove a 0.25 mm square metal foot.",
+    "limits": "Regional catalog revision/applicability differs from retained current JST catalog. Do not transfer its temperature range or invent a foot tolerance/hot conductivity guarantee."
+  }
+}

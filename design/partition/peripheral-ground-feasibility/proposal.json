@@ -1,0 +1,100 @@
+{
+  "schema_version": 1,
+  "status": "UNSELECTED bounded O/EL ground prerequisites for issue 38; no downstream PCB or electrical acceptance",
+  "project_template": "boards/osc-jack-left/osc-jack-left.kicad_pro",
+  "partition": "design/partition/partition.json",
+  "io": "design/reports/io-partition.json",
+  "foil_thickness_mm": 0.035,
+  "minimum_track_width_mm": 0.2,
+  "clearance_mm": 0.25,
+  "minimum_fill_neck_mm": 0.15,
+  "via_diameter_mm": 0.7,
+  "via_drill_mm": 0.3,
+  "minimum_finished_barrel_mm": 0.025,
+  "class_track_width_mm": {
+    "Default": 0.3,
+    "Rails": 0.4,
+    "Ground": 0.5
+  },
+  "boards": [
+    {
+      "board_id": "osc-octave-1",
+      "board_key": "O1",
+      "footprints": 3,
+      "own_ground_contacts": 0,
+      "GH_ground_contacts": 7,
+      "reference": [
+        "J900114",
+        "2"
+      ],
+      "initial_stage": "ground_candidate",
+      "fixed_hardware": 1
+    },
+    {
+      "board_id": "osc-octave-2",
+      "board_key": "O2",
+      "footprints": 3,
+      "own_ground_contacts": 0,
+      "GH_ground_contacts": 7,
+      "reference": [
+        "J900118",
+        "2"
+      ],
+      "initial_stage": "ground_candidate",
+      "fixed_hardware": 1
+    },
+    {
+      "board_id": "osc-octave-3",
+      "board_key": "O3",
+      "footprints": 3,
+      "own_ground_contacts": 0,
+      "GH_ground_contacts": 7,
+      "reference": [
+        "J900122",
+        "2"
+      ],
+      "initial_stage": "ground_candidate",
+      "fixed_hardware": 1
+    },
+    {
+      "board_id": "osc-octave-4",
+      "board_key": "O4",
+      "footprints": 3,
+      "own_ground_contacts": 0,
+      "GH_ground_contacts": 7,
+      "reference": [
+        "J900126",
+        "2"
+      ],
+      "initial_stage": "ground_candidate",
+      "fixed_hardware": 1
+    },
+    {
+      "board_id": "osc-octave-5",
+      "board_key": "O5",
+      "footprints": 3,
+      "own_ground_contacts": 0,
+      "GH_ground_contacts": 7,
+      "reference": [
+        "J900130",
+        "2"
+      ],
+      "initial_stage": "ground_candidate",
+      "fixed_hardware": 1
+    },
+    {
+      "board_id": "osc-stage-optical",
+      "board_key": "EL",
+      "footprints": 144,
+      "own_ground_contacts": 60,
+      "GH_ground_contacts": 12,
+      "reference": [
+        "J900379",
+        "2"
+      ],
+      "initial_stage": "bare_source_planning",
+      "fixed_hardware": 12
+    }
+  ],
+  "scope": "Exactly two original foils and original nominal total depth. Explicit positive dielectric is the original total less two nominal 35 um foils. No manufacturing tolerance, contact class, current or voltage acceptance is selected. No new tracks/vias or exceptions are authorized by this initial source. EL bare planning remains model-prohibited; complete native ground connectivity is required for every later candidate. Missing rails and signals remain named prerequisite omissions."
+}

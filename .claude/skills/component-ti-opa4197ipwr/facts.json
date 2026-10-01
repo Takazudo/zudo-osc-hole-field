@@ -188,11 +188,11 @@
       "source_id": "src-op-precision-datasheet",
       "class": "GUARANTEED_ELECTRICAL",
       "value": {
-        "maximum": 5
+        "maximum": 15
       },
       "unit": "nA",
-      "conditions": "TA = -40..125 C; full-temperature maximum in the OPA4197 electrical-characteristics table.",
-      "locator": "src-op-precision-datasheet: PDF page index 6, printed page 7, Section 6.7, INPUT BIAS CURRENT, IB row",
+      "conditions": "OPA4197IPWR is the PW (TSSOP-14) package: TA = -40..125 C, maximum absolute IB = 15 nA. Section 6.7 defaults are VS = +/-4 V to +/-18 V, VCM = VOUT at midsupply and RLOAD = 10 kohm to midsupply unless noted. The separate 5 nA row is not the PW-package limit.",
+      "locator": "src-op-precision-datasheet: PDF page index 6, printed page 7, Section 6.7, INPUT BIAS CURRENT, IB full-temperature subrow marked PW package only",
       "provenance": "PRIMARY-SPEC",
       "verdict": "PASS - primary-source confirmed",
       "depends_on": [],

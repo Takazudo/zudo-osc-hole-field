@@ -34,6 +34,12 @@ The default report is `reports/routing.json` beside the board, with routed/unrou
 
 ## Draft ground extraction numerical setup
 
+`bash scripts/pcbgen/test_native_prerequisites.sh` runs the standalone control/core
+terminal-access, enabled-foil export and core package-field regressions through
+the pinned KiCad oracle under the heavy guard. These executable native fixtures
+use `*_native_regression.py` names; they are not ordinary Python unittest modules.
+Each run retains fresh local fixture receipts and leaves earlier evidence intact.
+
 Use a disposable local environment; the pinned KiCad oracle exports native
 geometry separately. Numerical extraction never changes a PCB or qualifies
 materials, soldering, temperature, or hardware.

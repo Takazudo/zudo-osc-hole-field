@@ -16,7 +16,7 @@
     "fixed_resistance_tolerance_fraction": 0.01,
     "pot_resistance_tolerance_fraction": 0.2,
     "trim_resistance_tolerance_fraction": 0.25,
-    "input_bias_bound_A": 5e-09,
+    "input_bias_bound_A": 1.5e-08,
     "driver_limit_mA": 2,
     "maximum_panel_pots_per_pair": 6,
     "isolation_ohm": 100,
@@ -40,7 +40,8 @@
       "Physical source/inlet qualification: #57"
     ],
     "nonprecision_receiver_current_allowance_A": 1e-06,
-    "nonprecision_receiver_basis": "Conservative project planning allowance per powered nonprecision input/divider branch, not a guaranteed OPA4196 limit. Retained LM393B full-temperature input bias is 50 nA (fact-comparator-input-bias-current)."
+    "nonprecision_receiver_basis": "Conservative project planning allowance per powered nonprecision input/divider branch, not a guaranteed OPA4196 limit. LM393B has a retained 50 nA full-temperature row at the table defaults VS=5 V and VCM=V-; that row is not an unconditional +/-12 V / AGND or +5 V input guarantee.",
+    "input_bias_application_scope": "Conditional powered fanout requirement using the retained PW-package full-temperature magnitude. The primary table defaults to midsupply common mode; actual reference/common-mode, rail and temperature corners remain qualification gates, not a simulated full-temperature guarantee."
   },
   "local_outputs_per_oscillator": [
     {
@@ -54,24 +55,24 @@
           "kind": "panel pot",
           "nominal_ohm": 100000,
           "resistance_tolerance_fraction": 0.2,
-          "wiper_bound_mA": 0.0005125250050752501,
-          "maximum_mA": 0.12613752500507527
+          "wiper_bound_mA": 0.0005225250050752501,
+          "maximum_mA": 0.12614752500507526
         },
         {
           "key": "dc_control_source_C_O1_FINE_FINE__RV.0",
           "kind": "panel pot",
           "nominal_ohm": 100000,
           "resistance_tolerance_fraction": 0.2,
-          "wiper_bound_mA": 0.0005125250050752501,
-          "maximum_mA": 0.12613752500507527
+          "wiper_bound_mA": 0.0005225250050752501,
+          "maximum_mA": 0.12614752500507526
         },
         {
           "key": "dc_control_source_C_O1_PW_PW__RV.0",
           "kind": "panel pot",
           "nominal_ohm": 100000,
           "resistance_tolerance_fraction": 0.2,
-          "wiper_bound_mA": 0.0005125250050752501,
-          "maximum_mA": 0.06332502500507525
+          "wiper_bound_mA": 0.0005225250050752501,
+          "maximum_mA": 0.06333502500507526
         },
         {
           "key": "R_PITCH_BIAS.0",
@@ -114,9 +115,9 @@
           "maximum_mA": 0.17903030303030304
         }
       ],
-      "maximum_mA": 1.3666020451863472,
-      "output_drive_abs_max_V": 5.163026806563821,
-      "connector_branch_mA": 0.3156000750152258
+      "maximum_mA": 1.3666420451863472,
+      "output_drive_abs_max_V": 5.163030846563822,
+      "connector_branch_mA": 0.3156300750152258
     },
     {
       "net": "LOCAL_REFN5",
@@ -129,21 +130,21 @@
           "kind": "panel pot",
           "nominal_ohm": 100000,
           "resistance_tolerance_fraction": 0.2,
-          "wiper_bound_mA": 0.0005125250050752501,
-          "maximum_mA": 0.12613752500507527
+          "wiper_bound_mA": 0.0005225250050752501,
+          "maximum_mA": 0.12614752500507526
         },
         {
           "key": "dc_control_source_C_O1_FINE_FINE__RV.0",
           "kind": "panel pot",
           "nominal_ohm": 100000,
           "resistance_tolerance_fraction": 0.2,
-          "wiper_bound_mA": 0.0005125250050752501,
-          "maximum_mA": 0.12613752500507527
+          "wiper_bound_mA": 0.0005225250050752501,
+          "maximum_mA": 0.12614752500507526
         },
         {
           "key": "PACK_OPA4197IPWR_0.4",
           "kind": "input bias",
-          "maximum_mA": 5e-06
+          "maximum_mA": 1.4999999999999999e-05
         },
         {
           "key": "PACK_OPA4196IDR_1.2",
@@ -151,9 +152,9 @@
           "maximum_mA": 0.001
         }
       ],
-      "maximum_mA": 0.2532850500101505,
-      "output_drive_abs_max_V": 5.050581790051026,
-      "connector_branch_mA": 0.25227505001015055
+      "maximum_mA": 0.2533250500101505,
+      "output_drive_abs_max_V": 5.050585830051025,
+      "connector_branch_mA": 0.2522950500101505
     },
     {
       "net": "BASE_REF5",
@@ -170,8 +171,8 @@
           "maximum_mA": 1.3578030303030304
         }
       ],
-      "maximum_mA": 1.3578080303030304,
-      "output_drive_abs_max_V": 5.162138611060606,
+      "maximum_mA": 1.3578180303030305,
+      "output_drive_abs_max_V": 5.162139621060606,
       "connector_branch_mA": 0
     },
     {
@@ -189,8 +190,8 @@
           "maximum_mA": 1.3578030303030304
         }
       ],
-      "maximum_mA": 1.3578080303030304,
-      "output_drive_abs_max_V": 5.162138611060606,
+      "maximum_mA": 1.3578180303030305,
+      "output_drive_abs_max_V": 5.162139621060606,
       "connector_branch_mA": 0
     },
     {
@@ -208,8 +209,8 @@
           "maximum_mA": 1.3578030303030304
         }
       ],
-      "maximum_mA": 1.3578080303030304,
-      "output_drive_abs_max_V": 5.162138611060606,
+      "maximum_mA": 1.3578180303030305,
+      "output_drive_abs_max_V": 5.162139621060606,
       "connector_branch_mA": 0
     },
     {
@@ -227,8 +228,8 @@
           "maximum_mA": 1.3578030303030304
         }
       ],
-      "maximum_mA": 1.3578080303030304,
-      "output_drive_abs_max_V": 5.162138611060606,
+      "maximum_mA": 1.3578180303030305,
+      "output_drive_abs_max_V": 5.162139621060606,
       "connector_branch_mA": 0
     }
   ],
@@ -249,8 +250,8 @@
           "maximum_mA": 0.8901515151515151
         }
       ],
-      "maximum_mA": 1.4495078531213776,
-      "connector_input_bias_mA_per_oscillator": 1.5000000000000002e-05
+      "maximum_mA": 1.4496578531213775,
+      "connector_input_bias_mA_per_oscillator": 4.4999999999999996e-05
     },
     {
       "net": "OSC_REFN5",
@@ -260,8 +261,8 @@
           "maximum_mA": 0.5176767676767676
         }
       ],
-      "maximum_mA": 0.5177517676767677,
-      "connector_input_bias_mA_per_oscillator": 1.5000000000000002e-05
+      "maximum_mA": 0.5179017676767677,
+      "connector_input_bias_mA_per_oscillator": 4.4999999999999996e-05
     }
   ],
   "shared_source_receiver_inputs": [
@@ -735,16 +736,16 @@
     "basis": "Two additional quads/oscillator at 6 mA/rail; add 5 mA/rail/oscillator without crediting the existing 12 mA local or 8 mA shared reserves."
   },
   "per_oscillator_output_current_sum_mA": {
-    "+5V": 4.082218105792408,
-    "-5V": 2.9689011106162115
+    "+5V": 4.082278105792408,
+    "-5V": 2.9689611106162115
   },
-  "conservative_AGND_return_bound_mA_per_oscillator": 7.051119216408619,
+  "conservative_AGND_return_bound_mA_per_oscillator": 7.05123921640862,
   "per_rail_output_current_bound_mA_per_oscillator": {
-    "+12V": 4.119869216408619,
-    "-12V": 4.057056716408619
+    "+12V": 4.119989216408619,
+    "-12V": 4.05717671640862
   },
   "rail_planning_check": true,
-  "minimum_driver_rail_headroom_V": 6.236973193436179,
+  "minimum_driver_rail_headroom_V": 6.236969153436179,
   "calibration": {
     "nominal_TUNE_V": [
       -5,
@@ -771,8 +772,9 @@
       0.1
     ],
     "local_offset_sensitivity_uV_per_100uV_amplifier_offset": 100,
-    "local_bias_error_uV_at_5nA": 0.5,
-    "note": "Remote DC feedback cancels the 100 ohm isolation drop at the local sense point. Harness drop and master-reference error remain additional; 100 uV offset source is at +/-18 V, 25 C and is a sensitivity calculation, not a +/-12 V guarantee."
+    "input_bias_bound_A": 1.5e-08,
+    "local_bias_error_uV_at_source_bound": 1.4999999999999998,
+    "note": "Remote DC feedback cancels the 100 ohm isolation drop at the local sense point. Harness drop and master-reference error remain additional; 100 uV offset source is at +/-18 V, 25 C and is a sensitivity calculation, not a +/-12 V guarantee. Full-temperature bias is the PW-package row; actual common-mode and loaded corner applicability remains conditional."
   },
   "not_run": [
     "Exact 100 ohm and 1 nF identities/tolerances",

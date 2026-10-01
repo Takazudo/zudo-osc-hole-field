@@ -1,10 +1,21 @@
 """Reject direct-source loading, overfanout and weakened trim topology."""
 from dataclasses import replace
 import unittest
+import json,tempfile
+from pathlib import Path
+from unittest.mock import patch
 from design.spec.modules.oscillator import family
 from design.spec.modules.check_oscillator_reference import build
 
 class ReferenceFanout(unittest.TestCase):
+    def test_rejects_bias_bound_below_exact_pw_package_fact(self):
+        import design.spec.modules.check_oscillator_reference as check
+        config=json.loads(check.CONFIG.read_text());config['input_bias_bound_A']=5e-9
+        with tempfile.TemporaryDirectory() as directory:
+            path=Path(directory)/'reference.json';path.write_text(json.dumps(config))
+            with patch.object(check,'CONFIG',path),self.assertRaisesRegex(AssertionError,'exact-package maximum'):
+                check.build()
+
     def test_powered_bounds_and_complete_packages(self):
         r=build()
         self.assertEqual(len(r['local_outputs_per_oscillator']),6)

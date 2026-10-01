@@ -17,6 +17,9 @@
       "APHHS1005QWF-D.pdf"
     ],
     "sha256": {
+      "design/mechanical/kingbright-white-land.json": "77d7e5c26f7745a97ec61afe470ed1b490dd5e60346b48c8e6b335f2b5224800",
+      "design/mechanical/sources/kingbright-white-land/original.kicad_mod.txt": "dd17013532b5226f10fdb1d7f8480bc94a451027529dab412fd988f6955fc4bf",
+      "design/mechanical/sources/kingbright-white-land/original-cad-receipt.json": "4217719bf5d6e54a29d16898d29bc537bbcb7ec86cf50fe2aee3f481899a4f33",
       "circuit/source-archive/kingbright/APHHS1005QWF-D.pdf": "025c18fdb1abd9cb727a24a04f44af8f609b492e7a55c62679ee665bbd09765c"
     }
   },
@@ -33,12 +36,15 @@
     ],
     "units": "mm",
     "original_paths": [
+      "design/mechanical/kingbright-white-land.json",
+      "design/mechanical/sources/kingbright-white-land/original.kicad_mod.txt",
+      "design/mechanical/sources/kingbright-white-land/original-cad-receipt.json",
       "circuit/source-archive/kingbright/APHHS1005QWF-D.pdf"
     ]
   },
   "fidelity": {
     "class": "derived",
-    "reason": "Project symbol and footprint transcribed from exact manufacturer page 1 land/polarity drawing; no exact 3D model is available.",
+    "reason": "Drawing-derived project land selection within the published recommended ranges. Exact original owner bytes retained; only two inner pad edges trimmed. Not assembly or manufacturing qualification.",
     "evidence": [
       "Retained exact manufacturer PDF with hash",
       "Page 1 package and land drawing visually inspected."
@@ -47,18 +53,22 @@
   "derivation": {
     "derived": true,
     "input_sha256": {
+      "design/mechanical/kingbright-white-land.json": "77d7e5c26f7745a97ec61afe470ed1b490dd5e60346b48c8e6b335f2b5224800",
+      "design/mechanical/sources/kingbright-white-land/original.kicad_mod.txt": "dd17013532b5226f10fdb1d7f8480bc94a451027529dab412fd988f6955fc4bf",
+      "design/mechanical/sources/kingbright-white-land/original-cad-receipt.json": "4217719bf5d6e54a29d16898d29bc537bbcb7ec86cf50fe2aee3f481899a4f33",
       "circuit/source-archive/kingbright/APHHS1005QWF-D.pdf": "025c18fdb1abd9cb727a24a04f44af8f609b492e7a55c62679ee665bbd09765c"
     },
-    "tool": "manual transcription; scripts/libgen/gen_courtyards.py; scripts/libgen/gen_component_envelopes.py",
-    "tool_version": "1",
+    "tool": "scripts/libgen/gen_kingbright_land.py",
+    "tool_version": "2",
     "parameters": {
-      "pads": "0.7 x 0.5 mm; 0.2 mm gap; 1=K 2=A",
-      "courtyard": "project 0.25 mm margin",
-      "model": "package-only cuboid from exact primary dimensions"
+      "pads": "Project 0.65 x 0.5 mm at x +/-0.475; gap 0.30 mm; 1=K 2=A",
+      "primary_nominal": "0.7 x 0.5 mm, gap 0.2 mm; drawing tolerance +/-0.1 mm",
+      "source_owned_delta": "Only the two original white pad inner X edges move outward 0.05 mm; footprint/hardware origin, outer X/Y extents, pad numbers, polarity, layers, all other footprint text/style/model unchanged. No red footprint change.",
+      "qualification": "Published drawing tolerance is not a PCB manufacturing guarantee. Actual assembled wetting, alignment, etch/registration clearance and reflow process remain to be qualified under #64/#65."
     },
     "output_sha256": {
       "symbols/src/Kingbright_White_0402.kicad_sym": "8cdbceb68129d6b3f1539a9fbc74364afc91509d1322a9c6d30741f4d9a3a8cd",
-      "footprints/kicad/zudo-osc-hole-field.pretty/LED0402-Kingbright-White.kicad_mod": "dd17013532b5226f10fdb1d7f8480bc94a451027529dab412fd988f6955fc4bf",
+      "footprints/kicad/zudo-osc-hole-field.pretty/LED0402-Kingbright-White.kicad_mod": "5fd510e04081eabe44d47fd8094a64ceec03e65a0b3b772237ce1d92be71b4c2",
       "footprints/kicad/zudo-osc-hole-field.3dshapes/LED0402-Kingbright-White.wrl": "5e14d39e5baabde9a9f0df9b1dc0cacd5f4941757a951767b597a199e5216fb7"
     }
   },
@@ -75,7 +85,8 @@
       "KiCad library hash check"
     ],
     "remaining_physical_checks": [
-      "Physical mounting, optical coupling and current under tolerance"
+      "Physical mounting, optical coupling and current under tolerance",
+      "Published drawing tolerance is not a PCB manufacturing guarantee. Actual assembled wetting, alignment, etch/registration clearance and reflow process remain to be qualified under #64/#65."
     ]
   },
   "publication": {

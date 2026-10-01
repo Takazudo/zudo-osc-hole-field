@@ -1,0 +1,84 @@
+"""Conditional whole-wire current/potential witnesses, with open endpoint gates.
+
+This helper computes a proposed material/geometry class. It supplies no Alpha
+lay evidence and does not turn scalar assembled DCR into a profile certificate.
+"""
+import json
+import math
+from pathlib import Path
+from scripts.pcbgen.contact_transfer import main_strand_trial,specification
+from scripts.pcbgen.strand_adapter import bounds as adapter_bounds
+
+
+def bounds():
+    proposal=json.loads(Path('design/partition/wire-transfer-proposal.json').read_text())
+    source=json.loads(Path('design/partition/partition-input.json').read_text())
+    current=proposal['bulk_current_class'];potential=proposal['bulk_potential_class']
+    normal_material=proposal['normal_material_class']
+    if not math.isclose(normal_material['equivalent_resistivity_lower_ohm_mm'],
+                        1000/normal_material['maximum_all_metal_conductivity_S_per_m'],rel_tol=1e-14):
+        raise ValueError('normal conductivity and resistivity units disagree')
+    tip=main_strand_trial();count=current['contained_core_count']
+    area=tip['minimum_effective_copper_area_mm2']/count;a=current['contained_core_radius_mm']
+    # The actual contained polygon lies inside radius a, so its centred second
+    # moment is <=a². This universal bound also covers a non-circular polygon;
+    # no unverified exact disk moment is substituted for the actual section.
+    spin_factor=1+current['frame_spin_upper_rad_per_mm']**2*a*a/(1-current['core_radius_times_curvature_upper'])
+    per_axis=current['hot_resistivity_upper_ohm_mm']/(count*area)*current['mean_strand_arclength_over_bundle_axis_upper']*spin_factor
+    fan=specification();fan_height=fan['initial_expansion_height_mm']+fan['main_fan_height_mm']+fan['redistribution_tip_height_mm']
+    radius=potential['maximum_metal_radius_from_bundle_axis_mm'];bend=potential['minimum_bundle_bend_radius_mm']
+    jacobian=1-radius/bend
+    if jacobian<=0:raise ValueError('bundle-coordinate potential map has nonpositive Jacobian')
+    interface=proposal['interface_trial_class']
+    adapter=adapter_bounds(proposal['endpoint_adapter_class'],current['hot_resistivity_upper_ohm_mm'],
+        a,area,count,fan['root_hex_pitch_mm'],tip['fan_geometry']['maximum_arclength_upper_mm'],fan_height,radius,bend,potential['maximum_bundle_transverse_slope'])
+    area_total=count*fan['square_support_side_mm']**2
+    interfaces=2*interface['metallurgical_interfaces_per_end']*interface['normal_areal_resistance_upper_ohm_mm2']/area_total
+    termination=tip['two_terminal_added_transfer_ohm']+interfaces+adapter['two_adapter_full_energy_debit_ohm']
+    if termination>source['load_distribution']['combined_termination_resistance_ohm']:
+        raise ValueError('conditional contact class exceeds the existing termination budget')
+    rows=[]
+    for branch in ('JL','JR'):
+        spec=source['load_distribution']['branches'][branch]
+        front=-source['boards'][branch]['face_z_mm']+source['boards'][branch]['thickness_mm']
+        rear=-source['boards']['K']['face_z_mm']
+        H=rear-front-2*adapter['full_fan_axial_height_interval_mm'][1]
+        H_upper=rear-front-2*adapter['full_fan_axial_height_interval_mm'][0]
+        if any(y!=spec['pad_y_mm'] for y in spec['core_pad_y_mm']):
+            raise ValueError('this bounded J curve requires equal source endpoint y coordinates')
+        amplitude2=spec.get('bow_x_mm',0)**2+10**2
+        if math.pi*math.sqrt(amplitude2)/H>potential['maximum_bundle_transverse_slope']:
+            raise ValueError('actual source curve exceeds the collar inverse slope bound')
+        axis_upper=math.sqrt(H_upper*H_upper+math.pi**2*amplitude2/2)
+        bend_lower=H*H/(2*math.pi**2*math.sqrt(amplitude2))
+        if bend_lower<bend:raise ValueError('fan-compatible bulk curve violates the retained bend radius')
+        length_upper=current['mean_strand_arclength_over_bundle_axis_upper']*axis_upper+2*fan['maximum_fanned_length_per_end_mm']
+        if length_upper>source['load_distribution']['max_wire_length_mm']:
+            raise ValueError('actual-strand length class exceeds the retained whole-wire limit')
+        bulk_upper=per_axis*axis_upper
+        # phi varies only along the common bundle coordinate. The area,
+        # conductivity and 1/(1-kappa dot xi) bounds cover ALL actual metal.
+        varying_span=H-2*adapter['constant_primal_collar_mm']
+        if varying_span<=0:raise ValueError('all-metal collars consume the entire varying bulk span')
+        bulk_lower=potential['hot_resistivity_lower_ohm_mm']*varying_span*jacobian/potential['maximum_total_metal_area_per_bundle_normal_section_mm2']
+        normal_lower=normal_material['equivalent_resistivity_lower_ohm_mm']*varying_span*jacobian/potential['maximum_total_metal_area_per_bundle_normal_section_mm2']
+        full_fans=2*tip['one_terminal_fan_copper_ohm']+tip['two_terminal_added_transfer_ohm']
+        whole_upper=bulk_upper+full_fans+interfaces+adapter['two_adapter_full_energy_debit_ohm']
+        rows.append({'branch':branch,'bulk_axial_height_mm':H,'bundle_axis_length_upper_mm':axis_upper,
+            'minimum_bulk_bend_radius_mm':bend_lower,'mean_strand_length_with_both_fans_upper_mm':length_upper,
+            'bulk_varying_primal_span_lower_mm':varying_span,
+            'bulk_hot_only_lower_ohm':bulk_lower,'bulk_normal_material_lower_ohm':normal_lower,'bulk_upper_ohm':bulk_upper,
+            'whole_wire_hot_only_lower_ohm':bulk_lower,'whole_wire_normal_material_lower_ohm':normal_lower,'whole_wire_upper_ohm':whole_upper,
+            'remaining_existing_whole_wire_budget_ohm':.013*.125+.0002-whole_upper})
+    return {'status':'UNSELECTED conditional inequalities only; actual containment and source selection remain OPEN',
+        'endpoint_adapter':adapter,
+        'bulk_trial_upper_ohm_per_bundle_axis_m':per_axis*1000,
+        'temperature_scope':potential['temperature_scope'],
+        'normal_GH_current_conductivity_class':normal_material,
+        'bulk_potential_jacobian_lower':jacobian,'normal_interface_energy_two_ends_ohm':interfaces,
+        'combined_termination_trial_ohm':termination,
+        'remaining_combined_termination_allowance_ohm':.0002-termination,
+        'rows':rows,'scope':proposal['endpoint_gate']}
+
+
+if __name__=='__main__':print(json.dumps(bounds(),indent=2))

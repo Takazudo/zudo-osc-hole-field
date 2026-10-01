@@ -1,0 +1,121 @@
+{
+  "board_id": "osc-octave-2",
+  "corner_radius_mm": 0,
+  "domains": [
+    "O"
+  ],
+  "keepouts": [],
+  "layers": 2,
+  "mounting_holes": [],
+  "netlist": "schematic/boards/osc-octave-2.net",
+  "outline": [
+    [
+      21.6,
+      174.5
+    ],
+    [
+      28.5,
+      174.5
+    ],
+    [
+      28.5,
+      171
+    ],
+    [
+      34.5,
+      171
+    ],
+    [
+      34.5,
+      174.5
+    ],
+    [
+      41.4,
+      174.5
+    ],
+    [
+      41.4,
+      195.5
+    ],
+    [
+      21.6,
+      195.5
+    ]
+  ],
+  "placement_uids": [
+    "C:O2.OCT"
+  ],
+  "regions": [],
+  "routing": {
+    "min_track_width_mm": 0.2,
+    "net_classes": [
+      {
+        "clearance_mm": 0.25,
+        "name": "Default",
+        "nets": [],
+        "track_width_mm": 0.3,
+        "via_diameter_mm": 0.7,
+        "via_drill_mm": 0.3
+      },
+      {
+        "clearance_mm": 0.25,
+        "name": "Rails",
+        "nets": [
+          "+12V",
+          "-12V",
+          "+5V"
+        ],
+        "track_width_mm": 0.4,
+        "via_diameter_mm": 0.7,
+        "via_drill_mm": 0.3
+      },
+      {
+        "clearance_mm": 0.25,
+        "name": "Ground",
+        "nets": [
+          "AGND"
+        ],
+        "track_width_mm": 0.5,
+        "via_diameter_mm": 0.7,
+        "via_drill_mm": 0.3
+      }
+    ],
+    "zones": [
+      {
+        "clearance_mm": 0.25,
+        "layers": [
+          "F.Cu",
+          "B.Cu"
+        ],
+        "min_thickness_mm": 0.15,
+        "name": "ground_prerequisite",
+        "net": "AGND",
+        "pad_connection": "full"
+      }
+    ]
+  },
+  "schema_version": 1,
+  "schematic": "schematic/boards/osc-octave-2.kicad_sch",
+  "stackup": [
+    {
+      "copper_oz": 1,
+      "copper_thickness_mm": 0.035,
+      "layer": "F.Cu",
+      "nominal_midplane_depth_mm": 0.0175,
+      "role": "UNSELECTED prerequisite ground/signal foil"
+    },
+    {
+      "layer": "dielectric-1",
+      "material": "UNSELECTED conditional positive dielectric",
+      "thickness_mm": 1.53
+    },
+    {
+      "copper_oz": 1,
+      "copper_thickness_mm": 0.035,
+      "layer": "B.Cu",
+      "nominal_midplane_depth_mm": 1.5825,
+      "role": "UNSELECTED prerequisite ground/signal foil"
+    }
+  ],
+  "thickness_mm": 1.6
+}

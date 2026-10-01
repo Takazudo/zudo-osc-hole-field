@@ -1,0 +1,13 @@
+{
+  "status": "Conditional PROJECT nominal PTH shell geometry; actual finished plating/process qualification OPEN",
+  "minimum_finished_plating_mm": 0.025,
+  "native_evidence_scope": "Native through-hole identity, nominal drill, full enabled layer span, foil lands and board thickness only. Native CAD does not measure plating thickness or prove manufactured wall completeness.",
+  "conditional_wall": "A complete 360-degree plated inner wall through the nominal board depth, with at least 0.025 mm copper outward from the nominal drill radius, is a project condition for this contained shell. No fill or cap is introduced.",
+  "existing_nominal_sources": [
+    "scripts/pcbgen/ground_volume_geometry.py",
+    "design/partition/partition-input.json",
+    "design/partition/core-ground-feasibility/proposal.json",
+    "design/partition/control-ground-feasibility/proposal.json"
+  ],
+  "remaining": "Physical drill/plating/etch/registration intervals, actual source support, source partition among wall and exterior faces, 3D current/annular transfer, cross energy and complete continuous primal remain OPEN. Positive nominal radial margin is not a process tolerance allowance."
+}

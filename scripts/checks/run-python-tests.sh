@@ -47,3 +47,5 @@ for directory in "${ordered_discovery_roots[@]}"; do
 done
 
 printf 'Python unit tests: %d tests ran.\n' "$total_tests"
+
+printf "%s\n" "NOT RUN: retained-artifact integration requires preserved local issue-38 artifacts; run bash scripts/checks/run-retained-artifact-tests.sh separately."

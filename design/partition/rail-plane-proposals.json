@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "status": "DISPOSABLE SOURCE CANDIDATES ONLY; no selected stack, factory capability or electrical acceptance",
+  "reason": "The source three-way In2 split leaves fitted JL loads up to 114.06 mm from their own rail. Short local loops do not establish complete feeds or voltage drop.",
+  "fixed_constraints": "Four layers, 1.6 mm nominal board, source outlines, 438 hardware centres, exact packages, all prior copper and mechanical keepouts remain fixed.",
+  "coordinate_frame": "Source panel millimetres; native KiCad coordinates add [100,50] mm.",
+  "local_escape_track_width_mm": 0.3,
+  "local_escape_overrides": [{"ref": "R3306", "pad": "1", "net": "+5V", "width_mm": 0.2, "maximum_search_radius_mm": 6.0}],
+  "local_escape_contract": "Outer-layer finite load-pad escapes may use 0.30mm copper where the default 0.50mm ground or 0.40mm rail track cannot leave a fine-pitch pad. Existing 0.25mm clearance and all inner 0.35mm clearances remain. Every actual escape length and resistance is charged; this is not an ideal attachment or a per-load current qualification.",
+  "profiles": {
+    "surface-rails-70um": {
+      "status": "DISPOSABLE baseline candidate; one 70um AGND plane",
+      "copper_thickness_mm": {"F.Cu": 0.07, "In1.Cu": 0.07, "In2.Cu": 0.07, "B.Cu": 0.07},
+      "AGND_clearance_mm": 0.25,
+      "AGND_minimum_fill_neck_mm": 0.15,
+      "nominal_dielectric_mm": [1.20, 0.06, 0.06]
+    },
+    "surface-rails-140um-ground": {
+      "status": "DISPOSABLE manager-authorized candidate; stronger inner clearance, actual manufacturability NOT RUN #65",
+      "copper_thickness_mm": {"F.Cu": 0.07, "In1.Cu": 0.14, "In2.Cu": 0.07, "B.Cu": 0.07},
+      "AGND_clearance_mm": 0.35,
+      "AGND_minimum_fill_neck_mm": 0.35,
+      "nominal_dielectric_mm": [1.13, 0.06, 0.06],
+      "all_In1_copper_clearance_mm": 0.35,
+      "manufacturing_context": "Manager primary-source review found Wrekin general guidance for 4oz=140um inner copper and 0.304mm minimum line/space. This is not selected service, a guarantee for this board, or evidence of achieved copper/stack dimensions.",
+      "reference_url": "https://www.wrekin-circuits.co.uk/technology/capabilities"
+    }
+  },
+  "plane_nets": {"F.Cu": "+12V", "In1.Cu": "AGND", "In2.Cu": "-12V", "B.Cu": "+5V"},
+  "required_paid_transfers": "Preserve the outer-face power-land collars. Surface rail lands need real inner-layer bridges and outside-collar plated exits; existing land arrays alone do not join an outer pour. Every fitted AGND/rail load must reach its correct native main component.",
+  "dielectric_contract": "The ordered nominal F/In1/In2/B dielectric allocations sum with all four copper thicknesses to 1.6mm. The 0.06mm inner dielectric is a conditional pressed-stack requirement, not an inference from prepreg stock availability. Actual material, positive allowed thickness ranges, finished thickness tolerance, registration and stack/process acceptance are not selected and remain NOT RUN #65. The numerical candidate uses explicit nominal depths; it is not an accepted manufactured envelope.",
+  "electrical_limits_unchanged": {"common_branch_plus_K_ohm": 0.0005, "combined_rail_ohm": 0.001, "GH_contact_A": 0.5, "distribution_mV": 20, "source_rail_return_V": 0.20}
+}

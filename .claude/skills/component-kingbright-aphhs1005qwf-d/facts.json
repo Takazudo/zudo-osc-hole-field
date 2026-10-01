@@ -48,9 +48,9 @@
       "record_id": "rec-kingbright-white",
       "source_id": "src-kingbright-white-datasheet",
       "class": "PROJECT_STATE",
-      "value": "Two 0.7 x 0.5 mm pads, separated by 0.2 mm; mask open area ratio 80%",
+      "value": "Recommended nominal two 0.7 x 0.5 mm pads separated by 0.2 mm; the figure explicitly states dimension tolerance +/-0.1 mm",
       "unit": "NONE",
-      "conditions": "Exact manufacturer part at 25 C unless stated otherwise",
+      "conditions": "Recommended soldering pattern drawing dimensions in mm; stated drawing tolerance is not a project fabrication or assembly qualification",
       "locator": "Page 1, Recommended Soldering Pattern figure",
       "provenance": "PRIMARY-SPEC",
       "verdict": "PASS - primary-source confirmed",
@@ -96,6 +96,20 @@
       "locator": "Page 1, title and Selection Guide table, exact part number row",
       "provenance": "PRIMARY-SPEC",
       "verdict": "PASS - primary-source confirmed",
+      "depends_on": [],
+      "expression": ""
+    },
+    {
+      "fact_id": "fact-kingbright-white-project-land",
+      "record_id": "rec-kingbright-white",
+      "source_id": "src-kingbright-white-datasheet",
+      "class": "PROJECT_STATE",
+      "value": "Project land: two 0.65 x 0.5 mm pads at x +/-0.475 mm, gap 0.30 mm; unchanged outer edges +/-0.8 mm and hardware centre; assembly qualification pending",
+      "unit": "NONE",
+      "conditions": "Selected within the published +/-0.1 mm recommended dimension ranges; preserve the project 0.25 mm clearance rule. No manufacturing or solder-joint qualification inferred.",
+      "locator": "Page 1, Recommended Soldering Pattern figure, width/height/gap dimension callouts and +/-0.1 mm tolerance label; project source design/mechanical/kingbright-white-land.json",
+      "provenance": "PROJECT-CHOICE",
+      "verdict": "NEEDS BENCH",
       "depends_on": [],
       "expression": ""
     }
