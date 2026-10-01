@@ -63,6 +63,32 @@ housings, 1,822 fitted crimps and 18 additional main power/return wires. It allo
 650 fitted IC packages and 5,896 fitted master components before interface
 hardware. These are source counts, not a priced or accepted factory order.
 
+The board planes and boundaries serve different purposes:
+
+| Board group | Proposed component-face z | What drives the proposal; what remains negotiable |
+| --- | ---: | --- |
+| JL / JR | −10 mm | Fixed jack centres and proposed bushing/shoulder seating; two boards address the rejected single-J routing allocation. Actual seated datum remains unqualified. |
+| P | −11.8 mm | Shared pot/toggle/button plane and custom body/plunger support. Hardware reach needs a coupon; the panel centres alone do not prove this depth. |
+| EL | −4.2 mm | Separate thin optical plane brings twelve stage emitters toward their fixed windows while clearing controls. Optical path, stiffness and tolerances remain unqualified. |
+| O1/O3/O5; O2/O4 | −16; −29 mm | Stepping resolves the selected switch pad/support envelopes at fixed centres. The switch/carrier/extension choice is a candidate with custom assembly work. |
+| K | −100 mm | Rear circuit area, front-facing mates, service access, and the current loom/power-wire paths. The path screens below explain the allocation; no minimum-depth optimization has been proved. |
+
+The generated connector packing assigns the 195 harnesses as follows. Each count
+is a physical cable assembly, not a count of independent signals:
+
+| Boundary | Harnesses | Architectural purpose and review opportunity |
+| --- | ---: | --- |
+| P ↔ K | 123 | Ordinary control interfaces; the largest assembly burden. Compare distributed core circuitry or redesigned connectors while retaining required nets, sensitive local circuits and service access. |
+| JL ↔ K; JR ↔ K | 25; 27 | Jack signal interfaces and assigned returns; preserve local sensitive circuits/bypass paths and prove revised return currents before reducing connections. |
+| EL ↔ K | 6 | Stage optical-board interfaces; review together with optical placement, power and temperature requirements. |
+| Five O adapters ↔ K | 10 | Two harnesses per selector adapter; include them in any switch/carrier alternative. |
+| JL ↔ P | 4 | Existing utility connections; the current rear-facing service loops need separate routing even if K moves forward. |
+
+These boundaries implement the current partition; they are not all unavoidable
+consequences of the feature set. Consolidation would change circuit ownership,
+net cuts, routing density and electrical/thermal budgets, so no reduction is
+counted before a source-defined alternative demonstrates those obligations.
+
 The fixed panel grid does not itself require a core plane at −100 mm. The current
 loom construction helps explain that allocation. From
 `scripts/checks/partition35_loom.py`, the 4 mm bowed GH path has the checked radius
