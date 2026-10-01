@@ -51,5 +51,10 @@ height, and the SOIC-16 family height estimate remains an estimate.
 
 Eleven focused unit regressions and the fresh pinned native cases pass. Library
 receipt checks pass, and selected models and footprint previews are regenerated.
-Aggregate regeneration, documentation checks/build/site checks and CI remain
-pending before merge. Physical qualification is NOT RUN.
+The complete aggregate replay also runs in CI, with a generated diff retained on
+failure. Its first run found the old DIP footprint hash still recorded for
+NOISE2 in the partition report; that report was regenerated from the corrected
+footprint. The fresh board projection reports zero ERC errors and 673 retained
+warnings across ten boards. Documentation validation, build and built-site
+checks passed, and the extended workflow passes actionlint 1.7.12. These are
+source, display and draft connectivity checks; physical qualification is NOT RUN.
