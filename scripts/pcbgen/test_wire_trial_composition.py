@@ -93,16 +93,23 @@ class WireTrialTests(unittest.TestCase):
 
     def test_live_source_operands_and_termination_margin(self):
         source=json.loads(Path('design/partition/partition-input.json').read_text())
-        source['load_distribution'].update(max_wire_length_mm=100,
+        source['load_distribution'].update(max_wire_length_mm=105,
             hot_resistance_requirement_ohm_per_m=.02,combined_termination_resistance_ohm=.0003)
         result=bounds(source=source)
         self.assertAlmostEqual(result['remaining_combined_termination_allowance_ohm'],
             .0003-result['combined_termination_trial_ohm'],places=15)
         for row in result['rows']:
             comparison=row['current_source_budget']
-            self.assertEqual(comparison['whole_wire_budget_exact_ohm'],'23/10000')
-            self.assertEqual(comparison['source_max_wire_length_mm'],100)
+            self.assertEqual(comparison['whole_wire_budget_exact_ohm'],'3/1250')
+            self.assertEqual(comparison['source_max_wire_length_mm'],105)
             self.assertTrue(comparison['conditional_trial_within_budget'])
+
+    def test_positive_resistance_budget_does_not_bypass_reference_cut(self):
+        source=json.loads(Path('design/partition/partition-input.json').read_text())
+        source['load_distribution'].update(max_wire_length_mm=100,
+            hot_resistance_requirement_ohm_per_m=.02,combined_termination_resistance_ohm=.0003)
+        with self.assertRaisesRegex(ValueError,'reference path plus preparation'):
+            bounds(source=source)
 
     def test_budget_boundary_has_no_favorable_tolerance(self):
         source={'max_wire_length_mm':125,'hot_resistance_requirement_ohm_per_m':.125,
