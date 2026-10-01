@@ -169,7 +169,13 @@ conditional trial uppers leave approximately 0.223412 mΩ (JL), 0.247414 mΩ
 share registered geometry between mechanical and electrical calculations,
 including the previously omitted solder height. Mean strand length still
 does not certify a finished cut class, actual endpoint containment or terminal
-traces. See `main-wire-reference.md` and `physical-contact-model.md`.
+traces. A separate individual-core construction now checks all 19 reference
+paths per wire, global tube injectivity and fan separation. Including both
+complete endpoints and preparation, its maximum is 103.944852 mm, below
+110 mm. This strengthens the conditional geometry proof; actual wire
+containment, material/interface and cut qualification remain open. See
+`individual-wire-cores.md`, `main-wire-reference.md` and
+`physical-contact-model.md`.
 
 The source-epoch audit records only six added route metadata fields across
 JL/JR/P. Board definitions and historical native receipts are byte-unchanged.

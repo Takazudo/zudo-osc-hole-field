@@ -67,6 +67,10 @@ Rounded display values are:
 | P, −4 mm offset | 4 | 1.361676 | 0.268324 | 92.530938 |
 | P, zero offset | 2 | 1.360171 | 0.269829 | 92.411537 |
 
+The separate [individual-core construction](individual-wire-cores.md) now proves
+a maximum for each registered reference path, including fan, adapter, solder
+and preparation. It leaves actual manufactured containment/cut qualification open.
+
 Lengths in the table are rounded upward. A mean strand length does not bound
 every strand or certify the finished cut. The conservative generic adapter
 energy debit remains charged even though the registered reference uses its

@@ -173,7 +173,11 @@ class, and endpoint containment, terminal traces and material requirements
 remain unqualified. The mechanical and electrical helpers now share the
 [registered geometry](main-wire-reference.md), including solder height and
 axial endpoint tangents. The historical 125 mm comparison remains separately
-labelled; the global joined certificate remains open.
+labelled; the global joined certificate remains open. A separate
+[individual-core certificate](individual-wire-cores.md) now checks global tube
+injectivity, core separation and each registered reference length including
+solder and preparation. Its worst reference allowance is 103.944852 mm;
+actual containment and finished-cut qualification remain open.
 
 ## 6. Promote only the proved source and refresh all receipts
 

@@ -107,8 +107,13 @@ def registered_route(source,board,index,fan,adapter,*,metal_radius):
     finite(half)
     if half<max(max(power['factory_solder_pad_mm'])/2,metal_radius):
         raise ValueError('endpoint metal reservation cannot shrink below the full solder land or bulk metal')
-    caps=[[x-half,y-half,front,x+half,y+half,front+height],
-          [x-half,Y-half,rear-height,x+half,Y+half,rear]]
+    # Reserve both the numeric reference cap and the exact sum of its
+    # component heights. Nearest rounding can otherwise shrink a changed cap.
+    exact_height=sum((F(fan[k]) for k in ('initial_expansion_height_mm',
+        'main_fan_height_mm','redistribution_tip_height_mm','solder_height_upper_mm')),F())+F(adapter['arclength_mm'])
+    envelope_height=max(F(height),exact_height)
+    caps=[[x-half,y-half,front,x+half,y+half,directed(F(front)+envelope_height,True)],
+          [x-half,Y-half,directed(F(rear)-envelope_height,False),x+half,Y+half,rear]]
     chord=limits['second_parameter_derivative_norm_upper_mm']/(8*100**2)+1e-9
     return {'profile':branch['route_profile'],'board':board,'wire_label':power['wire_labels'][index],
         'bulk_metal_radius_mm':metal_radius,'endpoint_reference':cap,

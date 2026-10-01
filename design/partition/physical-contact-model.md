@@ -102,6 +102,9 @@ prisms. Their energy was already charged; adding their previously omitted
 height shortens the bulk span while retaining the separately charged solder energy. P uses a
 smoothstep offset with axial endpoint tangents. Actual metal containment,
 material bounds, finished cuts and matching terminal traces remain open.
+The separate [individual-core construction](individual-wire-cores.md) bounds
+each registered reference path including endpoint solder and preparation; it
+does not infer actual strand lay or replace the conservative mean-length energy.
 
 ## Source and measurement functionals
 

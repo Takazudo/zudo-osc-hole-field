@@ -10,6 +10,7 @@ from pathlib import Path
 from scripts.pcbgen.contact_transfer import main_strand_trial,specification
 from scripts.pcbgen.strand_adapter import bounds as adapter_bounds
 from scripts.geometry.power_wire import registered_route
+from scripts.geometry.parallel_wire_cores import bounds as individual_core_bounds
 
 
 def source_budget_comparison(upper_ohm, distribution):
@@ -107,6 +108,9 @@ def bounds(*,source=None):
             'remaining_historical_125mm_budget_ohm':.013*.125+.0002-whole_upper}
         row['registered_endpoint_reference']={k:v for k,v in reference.items() if 'points' not in k}
         row['endpoint_y_offset_mm']=spec['core_pad_y_mm'][index]-spec['pad_y_mm']
+        row['individual_reference_core_construction']=individual_core_bounds(
+            reference,tip['fan_geometry'],fan,proposal['endpoint_adapter_class'],current,
+            source['load_distribution']['max_wire_length_mm'])
         rows.append(row)
     return {'status':'UNSELECTED conditional inequalities only; actual containment and source selection remain OPEN',
         'endpoint_adapter':adapter,
