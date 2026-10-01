@@ -101,6 +101,9 @@ def calculate(spec,catalog,old,negative_spec,facts,mpn):
         result=negative.calculate(evaluated)
         studies[label]={
             'sense_current_absolute_assumption_A':bias,
+            'both_TLV_output_drains_released':True,
+            'total_TLV_output_leakage_assumption_A':0,
+            'total_TLV_output_leakage_guaranteed_bound_A':None,
             'events_V':{name:[rail.display(v,i==1) for i,v in enumerate(pair)] for name,pair in limits.items()},
             'possible_settled_retained_good_reference_extent_V':[rail.display(v,i==1) for i,v in enumerate(extent)],
             'common_static_recovery_interval_V':[rail.display(recovery[0],True),rail.display(recovery[1],False)],
@@ -142,6 +145,7 @@ def calculate(spec,catalog,old,negative_spec,facts,mpn):
         'remaining_conditions':[
             'All threshold intervals are settled/static; common recovery means its strict interior with valid supply, other paired sense inputs healthy or correctly unused, and sufficient settling, not a time bound.',
             'Source-table 350nA condition is VSENSE=5.5V; its use near0.4V is an assumption, not a source guarantee.',
+            'Both TLV output drains are assumed released with zero leakage; their added REF_SENSE loading has no retained full-temperature maximum. The 350nA sensitivity includes only the TPS input.',
             'Negative comparator error/input-current envelopes retain all conditions of the separate network study.',
             'The broad interval is an enclosure across independent corners; it is not one device\'s exact acceptance interval.',
             'Reference startup, slow-slew, effective bypass, actual output-current/line conditions and independent validity remain unqualified.',

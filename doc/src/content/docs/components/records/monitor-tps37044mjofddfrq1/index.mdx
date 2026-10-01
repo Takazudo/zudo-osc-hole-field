@@ -207,7 +207,7 @@ Behaviour during a short event — startup, a switching edge, a fault or a surge
 
   **Fact:** `fact-monitor-tps37044mjofddfrq1-reset-delay`
 
-  **Value:** `nominal_s`=0.01; `relative_max`=0.3; `relative_min`=-0.3 · **Unit:** `NONE`
+  **Value:** `nominal_s`=0.01; `relative_max`=0.3; `relative_min`=-0.3; `test_overdrive_fraction`=0.1 · **Unit:** `NONE`
 
   **Conditions:** Fixed 10ms option; greater-than 5ms reset-delay tolerance row; 10% overdrive, VDD 1.7..6V, TA -40..125C, 10kohm pullup and 10pF load. Startup 1ms is nominal, not a maximum.
 
@@ -228,6 +228,20 @@ Behaviour during a short event — startup, a switching edge, a fault or a surge
   **Verdict:** PASS - primary-source confirmed · **Provenance:** PRIMARY-SPEC
 
   **Evidence:** [src-monitor-tps37044mjofddfrq1-datasheet: printed p10 timing characteristics table](#src-monitor-tps37044mjofddfrq1-datasheet)
+</EvidenceFact>
+
+<EvidenceFact>
+  <EvidenceAnchor id="fact-monitor-tps37044mjofddfrq1-glitch-immunity-nominal" />
+
+  **Fact:** `fact-monitor-tps37044mjofddfrq1-glitch-immunity-nominal`
+
+  **Value:** 0.000002 · **Unit:** `s`
+
+  **Conditions:** NOMINAL only, 5% overdrive, VDD=3.3V, TA=25C, RESET 10kohm pullup and 10pF load. Not a guaranteed pulse-detection threshold.
+
+  **Verdict:** PASS - primary-source confirmed · **Provenance:** PRIMARY-SPEC
+
+  **Evidence:** [src-monitor-tps37044mjofddfrq1-datasheet: printed p10 section6.7 Timing Requirements, glitch immunity NOM column](#src-monitor-tps37044mjofddfrq1-datasheet)
 </EvidenceFact>
 
 ### PROJECT\_STATE

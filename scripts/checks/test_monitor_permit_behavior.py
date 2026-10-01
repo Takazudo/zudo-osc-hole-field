@@ -10,14 +10,14 @@ class MonitorPermitBehaviorTests(unittest.TestCase):
         self.report=model.build(self.spec)
 
     def test_short_fault_clears_but_does_not_rearm(self):
-        case=self.report['cases']['short_fault']
+        case=self.report['cases']['short_good_fast_low']
         self.assertTrue(case[1]['q'])
         self.assertFalse(case[2]['q'])
         self.assertTrue(case[2]['clock'])
         self.assertFalse(case[3]['q'])
 
     def test_long_fault_rearms(self):
-        case=self.report['cases']['long_fault']
+        case=self.report['cases']['long_good_fast_low']
         self.assertFalse(case[2]['clock'])
         self.assertTrue(case[3]['q'])
 

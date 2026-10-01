@@ -50,6 +50,15 @@ class MonitorCurrentTests(unittest.TestCase):
         next(p for p in self.spec['components'] if p['ref']=='R124')['value']=1000
         with self.assertRaisesRegex(ValueError,'MPN'): self.build()
 
+    def test_clamped_reference_feed_bypasses_bottom_resistor(self):
+        before=self.build()['reference_output_branch_bounds_A']['R109_to_R112_clamped']
+        # A change of R113 value/MPN cannot lower the clamped feed bound.
+        part=next(p for p in self.spec['components'] if p['ref']=='R113')
+        part['mpn']='RT0603BRD0714KL';part['value']=14000
+        after=self.build()['reference_output_branch_bounds_A']['R109_to_R112_clamped']
+        self.assertEqual(before,after)
+        self.assertGreater(before,3.31/7250)
+
     def test_report_current(self):
         model.run(check=True)
 

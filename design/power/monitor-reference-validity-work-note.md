@@ -1,5 +1,11 @@
 # Coarse reference-validity integration
 
+Both TLV drains are now connected to REF_SENSE. The intervals below assume
+both drains released and zero output leakage; the separate350nA sensitivity
+covers only the TPS input. Full-temperature TLV drain leakage at this voltage
+is unbounded by the retained source. The counterexample remains applicable
+with both ideal comparators released.
+
 The TPS37044 reference channel in the isolated monitor/permit draft is useful
 for detecting large reference errors, but it does not establish the narrow
 3.29–3.31 V assumption used by the negative-rail network and current studies.

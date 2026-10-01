@@ -6,7 +6,7 @@ sidebar_position: 11
 
 ## Current continuation — 2 October 2026
 
-Start from the latest `main`. Completed WIP checkpoints through PR #82 are
+Start from the latest `main`. Completed WIP checkpoints through PR #83 are
 merged; the preserved issue-38 worktree is a recovery/evidence store, not the
 active implementation base. Keep its ignored artifacts and the other retained
 experiment worktrees. Issues #38 and #59 remain open, and every schematic and
@@ -15,10 +15,10 @@ PCB remains an unvalidated draft.
 PR #80 captures an isolated, unselected native monitor/reference-validity/permit
 candidate with a finite dummy load: 39 proposed components, 119 physical pins,
 and fresh KiCad ERC with zero errors and warnings. Conditional Boolean/RC
-diagnostics reproduce short-fault latch-off and preserve unknown control-power
+diagnostics reproduce latch-off for forced short GOOD_FAST low pulses and preserve unknown control-power
 states. They do not simulate actual device startup or release. The conditional current allocation in PR #81 retains five device-current source
 rows and charges reference output demand to +5 V once, within the existing
-auxiliary allowance. Its largest +5 V DC screen is 6.625 mA under explicit
+auxiliary allowance. Its updated largest +5 V DC screen is 6.681 mA under explicit
 source-applicability/leakage assumptions. This does not bound dynamic current.
 PR #82 exposes the reference-validity integration gap: the coarse reference
 channel can retain a settled healthy state across an enclosing range of roughly
@@ -30,6 +30,13 @@ including a declared 0/10 pF input-capacitance sensitivity. Fourteen native runs
 compare both node voltages and charge balance against independent equations,
 with ideal observer crossings checked at two timestep limits. A separate forced
 C109 discharge test does not model actual die clamps or floating control power.
+The current negative-fault revision routes TLV comparator drains through
+REF_SENSE and the supervisor timeout. This removes their direct FAULT_N bypass
+without adding parts. Conditional load and leakage accounting is updated.
+Nominal recovery overdrive is only7.527%, below the reset table's10% condition;
+no guaranteed minimum reset pulse or complete physical assertion/recovery
+bound is claimed. The added detection stage and fault-dependent reference load
+remain part of the unclosed timing/settling analysis.
 The next work must establish applicable precision-reference validity and actual
 partial-power behavior, including slow logic-input current and isolation loads. The monitor
 studies below provide inputs and counterexamples, not a completed protection

@@ -22,13 +22,13 @@ EXPECTED_TOPOLOGY = {'U101': {'kind': 'ic',
                    '7': 'FAULT_N',
                    '8': 'FAULT_N'}},
  'U102': {'kind': 'ic',
-          'pins': {'1': 'FAULT_N',
+          'pins': {'1': 'REF_SENSE',
                    '2': 'SENSE',
                    '3': 'UV',
                    '4': 'AGND',
                    '5': 'SENSE',
                    '6': 'OV',
-                   '7': 'FAULT_N',
+                   '7': 'REF_SENSE',
                    '8': '+5V'}},
  'U103': {'kind': 'ic',
           'pins': {'1': None, '2': 'AGND', '3': None, '4': '+5V', '5': None, '6': 'REF'}},
@@ -169,7 +169,7 @@ def build(spec):
                 'ideal_powered_trace':latch_trace(seq,tau,high,low),
                 'actual_control_power_absent':'UNKNOWN',
                 'scope':'Boolean sequencing only; no rail ramp or monitor propagation simulation'}
-    for name, duration in [('short_fault',tau/100),('long_fault',tau*10)]:
+    for name, duration in [('short_good_fast_low',tau/100),('long_good_fast_low',tau*10)]:
         cases[name] = latch_trace([(0.02,False),(0.02,True),(duration,False),(0.02,True)],tau,high,low)
     cases['control_power_loss'] = latch_trace([(0.02,False),(0.02,True),(0.02,None),(0.02,True)],tau,high,low)
     # Nominal resistor-only nodal calculation; no tolerance/leakage claim.
@@ -179,7 +179,7 @@ def build(spec):
                 + ref/(r('R105')+r('R106')) + ref/(r('R107')+r('R108'))
                 + ref/sum(r('R'+str(i)) for i in range(109,114)))
     ledger = {
-        'scope': 'Nominal resistor currents only; not a maximum or total supply-current budget',
+        'scope': 'Nominal resistor currents with both TLV drains released; not a maximum or total supply-current budget',
         'reference_output_A': ref_load,
         'negative_rail_sink_A': (sense-vn)/r('R101'),
         'positive_12_divider_A': p12/(r('R114')+r('R115')),
@@ -207,6 +207,7 @@ def build(spec):
         'evaluated_input_sha256':hashlib.sha256(json.dumps(spec,sort_keys=True,separators=(',',':')).encode()).hexdigest(),
         'model_sha256':hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
         'model_limits':['Ideal monitor truth values, no comparator/reference/supervisor dynamics',
+            'GOOD_FAST low pulse durations are forced after the monitor; they are not external negative-fault durations',
             'Single-pole RC excludes R121/input capacitance and all device propagation',
             'No transistor model or guaranteed physical output release',
             'Actual partial-power and retained-charge behavior remain UNKNOWN'],

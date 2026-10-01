@@ -192,6 +192,20 @@ A parameter the manufacturer guarantees over the stated conditions, usually with
   **Evidence:** [src-monitor-tlv9022dr-datasheet: printed p11 section5.9 IQ row for TLV90x2](#src-monitor-tlv9022dr-datasheet)
 </EvidenceFact>
 
+<EvidenceFact>
+  <EvidenceAnchor id="fact-monitor-tlv9022dr-output-low-table-max" />
+
+  **Fact:** `fact-monitor-tlv9022dr-output-low-table-max`
+
+  **Value:** 0.175 · **Unit:** `V`
+
+  **Conditions:** ISINK=4mA, VS=5V, VCM=V-, TA=-40..125C. Application at lower actual sink current, different supply or common mode remains unqualified.
+
+  **Verdict:** PASS - primary-source confirmed · **Provenance:** PRIMARY-SPEC
+
+  **Evidence:** [src-monitor-tlv9022dr-datasheet: printed p11 section5.9 VOL full-temperature row](#src-monitor-tlv9022dr-datasheet)
+</EvidenceFact>
+
 ### TYPICAL\_CURVE
 
 A representative figure read from a characteristic curve. Typical values are not guaranteed and vary part to part.
@@ -208,6 +222,20 @@ A representative figure read from a characteristic curve. Typical values are not
   **Verdict:** PASS - primary-source confirmed · **Provenance:** PRIMARY-SPEC
 
   **Evidence:** [src-monitor-tlv9022dr-datasheet: printed p12 switching characteristics table](#src-monitor-tlv9022dr-datasheet)
+</EvidenceFact>
+
+<EvidenceFact>
+  <EvidenceAnchor id="fact-monitor-tlv9022dr-output-leakage-typical" />
+
+  **Fact:** `fact-monitor-tlv9022dr-output-leakage-typical`
+
+  **Value:** 1e-10 · **Unit:** `A`
+
+  **Conditions:** Typical only, not a maximum: VPULLUP=V+, VS=5V, VCM=V-, TA=25C, open-drain version. No full-temperature maximum or REF\_SENSE-voltage applicability is established.
+
+  **Verdict:** PASS - primary-source confirmed · **Provenance:** PRIMARY-SPEC
+
+  **Evidence:** [src-monitor-tlv9022dr-datasheet: printed p11 section5.9 ILKG typical column](#src-monitor-tlv9022dr-datasheet)
 </EvidenceFact>
 
 ### PROJECT\_STATE

@@ -21,7 +21,9 @@ KiCad did not run; none of this establishes electrical performance or fit.
   That channel has different accuracy and hysteresis rows. Its divider adds
   nominally 0.4 mA to the reference load.
 - TLV9022DR uses the previously studied negative-rail resistor network.
-  Both comparator outputs and both supervisor reset outputs share FAULT_N.
+  Both comparator outputs now veto REF_SENSE; detected negative faults pass
+  through the supervisor reset timer. Only supervisor resets drive FAULT_N.
+  See [retiming conditions](monitor-fault-retiming-work-note.md).
 - REF3433TIDBVR supplies the sensing reference. Three nominal 100 nF output
   capacitors are captured as a draft choice. Their effective capacitance remains
   unestablished because the existing Murata source is unavailable.
@@ -36,7 +38,7 @@ KiCad did not run; none of this establishes electrical performance or fit.
 
 Directly connecting the latch reset to the pulled-up RC node would create a
 slow CMOS input transition. The buffered reset avoids that topology error.
-A short fault can still clear Q while the timing capacitor remains charged,
+A short raw GOOD_FAST low pulse can still clear Q while the timing capacitor remains charged,
 leaving no new clock edge after recovery. Automatic re-arm is not claimed.
 
 ## Evidence and CAD
@@ -77,15 +79,16 @@ findings fixed. These checks do not establish installed electrical performance.
 ## Open gates
 
 The conditional [behavioral diagnostics](monitor-permit-behavior-report.json)
-now reproduce short-fault latch-off and long-fault re-arm in an ideal single-pole
+reproduce latch-off and re-arm for forced short/long GOOD_FAST low pulses in an ideal single-pole
 RC abstraction. They enumerate all six arrival/failure orders as Boolean rail
 sequences, not device-level transient simulations. Control-power loss and
 subsequent recovery remain UNKNOWN. Device propagation, input capacitance,
 reference trajectories and stored-charge clamp behavior are not simulated.
 
 The report also accounts for nominal resistor currents and capacitor charge,
-including the coarse-reference divider. Active-device currents and actual
-isolation loads are still missing, so no total supply-current result is claimed.
+including the released coarse-reference divider. The separate conditional DC
+allocation includes source-table active currents and the clamped divider feed;
+dynamic current and actual isolation loads remain unbounded.
 Original auxiliary allowances and current limits are retained.
 
 The coarse reference window cannot certify the earlier 3.29–3.31 V precision
