@@ -1,0 +1,117 @@
+{
+  "schema_version": 1,
+  "status": "UNSELECTED disposable EL two-foil ground bridge prerequisite; no downstream PCB or electrical acceptance",
+  "project_template": "boards/osc-jack-left/osc-jack-left.kicad_pro",
+  "partition": "design/partition/partition.json",
+  "io": "design/reports/io-partition.json",
+  "foil_thickness_mm": 0.035,
+  "minimum_track_width_mm": 0.2,
+  "clearance_mm": 0.25,
+  "minimum_fill_neck_mm": 0.15,
+  "via_diameter_mm": 0.7,
+  "via_drill_mm": 0.3,
+  "minimum_finished_barrel_mm": 0.025,
+  "class_track_width_mm": {
+    "Default": 0.3,
+    "Rails": 0.4,
+    "Ground": 0.5
+  },
+  "boards": [
+    {
+      "board_id": "osc-octave-1",
+      "board_key": "O1",
+      "footprints": 3,
+      "own_ground_contacts": 0,
+      "GH_ground_contacts": 7,
+      "reference": [
+        "J900114",
+        "2"
+      ],
+      "initial_stage": "ground_candidate",
+      "fixed_hardware": 1
+    },
+    {
+      "board_id": "osc-octave-2",
+      "board_key": "O2",
+      "footprints": 3,
+      "own_ground_contacts": 0,
+      "GH_ground_contacts": 7,
+      "reference": [
+        "J900118",
+        "2"
+      ],
+      "initial_stage": "ground_candidate",
+      "fixed_hardware": 1
+    },
+    {
+      "board_id": "osc-octave-3",
+      "board_key": "O3",
+      "footprints": 3,
+      "own_ground_contacts": 0,
+      "GH_ground_contacts": 7,
+      "reference": [
+        "J900122",
+        "2"
+      ],
+      "initial_stage": "ground_candidate",
+      "fixed_hardware": 1
+    },
+    {
+      "board_id": "osc-octave-4",
+      "board_key": "O4",
+      "footprints": 3,
+      "own_ground_contacts": 0,
+      "GH_ground_contacts": 7,
+      "reference": [
+        "J900126",
+        "2"
+      ],
+      "initial_stage": "ground_candidate",
+      "fixed_hardware": 1
+    },
+    {
+      "board_id": "osc-octave-5",
+      "board_key": "O5",
+      "footprints": 3,
+      "own_ground_contacts": 0,
+      "GH_ground_contacts": 7,
+      "reference": [
+        "J900130",
+        "2"
+      ],
+      "initial_stage": "ground_candidate",
+      "fixed_hardware": 1
+    },
+    {
+      "board_id": "osc-stage-optical",
+      "board_key": "EL",
+      "footprints": 144,
+      "own_ground_contacts": 60,
+      "GH_ground_contacts": 12,
+      "reference": [
+        "J900379",
+        "2"
+      ],
+      "initial_stage": "ground_candidate",
+      "fixed_hardware": 12
+    }
+  ],
+  "scope": "Source geometry and routing are identical to optical-ground-v1 except one finite source AGND F/B via at source (218,166) / native (318,216) mm. The failed v1 candidate had exactly two native AGND components: 60 F own contacts and 12 B GH contacts, rules/parity0. The candidate point lay in both native filled AGND regions, >=1.5 mm from outer fill boundaries and >3.0 mm from B fill holes in that retained export. This is a screened hypothesis, not placement acceptance: fresh pinned native DRC, exact original block preservation, all72 source contacts, copper fill, holes, and companions must pass. No other tracks/vias/exception are selected. Rail/signal routes, material/contact/electrical qualification remain open.",
+  "source_ground_bridge": {
+    "source_xy_mm": [
+      218,
+      166
+    ],
+    "native_xy_mm": [
+      318,
+      216
+    ],
+    "net": "AGND",
+    "layers": [
+      "F.Cu",
+      "B.Cu"
+    ],
+    "diameter_mm": 0.7,
+    "drill_mm": 0.3
+  }
+}

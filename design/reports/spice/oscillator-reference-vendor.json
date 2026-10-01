@@ -7,7 +7,7 @@
   "nominal_isolation_ohm": 100,
   "nominal_compensation_F": 1e-09,
   "load_current_at_5_025V_mA": 1.675,
-  "computed_max_branch_mA": 1.3666020451863472,
+  "computed_max_branch_mA": 1.3666420451863472,
   "runs": [
     {
       "rail_abs_V": 11.4,
@@ -274,5 +274,11 @@
       "status": "PASS - model only"
     }
   ],
-  "limits": "Nominal TI family model at 27 C. Passive/rail corners and load cover the declared powered envelope; temperature, semiconductor process, real harness/PCB, startup/partial-power and physical calibration NOT RUN. No short-circuit-current guarantee used."
+  "limits": "Nominal TI family model at 27 C. Passive/rail corners and load cover the declared powered envelope; temperature, semiconductor process, real harness/PCB, startup/partial-power and physical calibration NOT RUN. No short-circuit-current guarantee used.",
+  "source_load_bound": {
+    "input_bias_bound_A": 1.5e-08,
+    "scope": "Conditional full-temperature load arithmetic; retained nominal TI model remains at 27 C. No full-temperature semiconductor performance was simulated.",
+    "source": "design/spec/modules/oscillator-reference.json",
+    "model_deck_inputs_changed_by_bias_correction": false
+  }
 }

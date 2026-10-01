@@ -1,0 +1,152 @@
+---
+title: "Engineering continuation checkpoint"
+description: "Recovered issue-38 work, completed nominal K calculation, and the architecture decisions still open."
+sidebar_position: 11
+---
+
+## Current recovery point — 1 October 2026
+
+Continue from the preserved `topic/38-jack-halves` source checkpoint. The foundation
+on `main` (`fac9929`) does not contain this work. Issue #38 remains open; none of
+the schematic or PCB drafts is validated or released.
+
+The local routing repair `57084d0` reconciles PR #67 with the newer complete
+per-net native connectivity receipts. It requires fresh same-board native
+connectivity, rejects prepared rule/parity errors before routing, preserves
+failure and timeout exits, and labels refresh-only results as diagnostic.
+PR #67 is still a separate draft: do not apply its older four-file snapshot over
+the recovered source. Neither patch proves electrical compliance.
+
+The previously interrupted K calculation has now completed both 2,287-profile
+phases. Its retained guard log records PASS, exit 0, 7,048 seconds. A read-only
+audit found all 44 model and 82 native-prerequisite dependency hashes current,
+matching profile metadata, and finite, symmetric 2,287 × 2,287 paired matrices.
+Recorded current/potential equation residual maxima are 2.467e-10 / 2.255e-9 A
+(rounded upward), below the unchanged 1e-8 A gate. This audit did not independently
+recompute residuals or repeat the eigensolve. Exact hashes and audit scope are in
+`design/partition/core-nominal-checkpoint-20261001.json`.
+
+**This remains a nominal finite-profile diagnostic, NOT ACCEPTED for physical or
+joined electrical compliance.** K covers 1,903 fitted own contacts, 376 GH
+returns and nine main lands. It uses four foil layers and 219 barrels. Its
+largest diagonal upper value, 2.198832 mΩ, includes access terms and is not the
+common branch-plus-K resistance allocation. Do not compare that number directly
+to the 0.5 mΩ common-ground limit as either a pass or a demonstrated failure.
+
+P has a completed earlier current-source nominal calculation. JL/JR/EL/O
+historical model results must retain their original source epochs. Current-source
+coverage, supported contact and material classes, signed current envelopes and
+the joined network allocation are still incomplete. The adoption checklist in
+`design/partition/issue38-adoption-checklist.md` defines those gates; another
+nominal solve alone cannot close them.
+
+## Source checkpoint and local artifacts
+
+Recovered sources, evidence corrections, generators, tests and small receipts
+belong in version control. The 199 unselected native experiment files (555,138,473
+bytes) remain local and ignored, with exact paths, sizes and SHA-256 in
+`design/partition/local-experimental-artifacts.json`. Recovery caches, including
+the 333 MB K matrix, also remain local. No Git LFS is used. A source checkout
+alone cannot reproduce historical artifact comparisons without those exact files.
+Do not delete the preserved worktree or its `.circuit-cache/issue38-recovery/`.
+
+The portable Python suite and retained-artifact integration suite are separate.
+All retained assertions are available through
+`bash scripts/checks/run-retained-artifact-tests.sh`; missing or stale inputs
+fail explicitly. See `scripts/pcbgen/TEST-BOUNDARY.md`. Portable tests and green
+documentation CI do not imply native or electrical acceptance.
+
+## Depth and assembly decision
+
+The current proposal retains ten boards, 195 GH harnesses, 390 headers, 390 cable
+housings, 1,822 fitted crimps and 18 additional main power/return wires. It allocates
+650 fitted IC packages and 5,896 fitted master components before interface
+hardware. These are source counts, not a priced or accepted factory order.
+
+The board planes and boundaries serve different purposes:
+
+| Board group | Proposed component-face z | What drives the proposal; what remains negotiable |
+| --- | ---: | --- |
+| JL / JR | −10 mm | Fixed jack centres and proposed bushing/shoulder seating; two boards address the rejected single-J routing allocation. Actual seated datum remains unqualified. |
+| P | −11.8 mm | Shared pot/toggle/button plane and custom body/plunger support. Hardware reach needs a coupon; the panel centres alone do not prove this depth. |
+| EL | −4.2 mm | Separate thin optical plane brings twelve stage emitters toward their fixed windows while clearing controls. Optical path, stiffness and tolerances remain unqualified. |
+| O1/O3/O5; O2/O4 | −16; −29 mm | Stepping resolves the selected switch pad/support envelopes at fixed centres. The switch/carrier/extension choice is a candidate with custom assembly work. |
+| K | −100 mm | Rear circuit area, front-facing mates, service access, and the current loom/power-wire paths. The path screens below explain the allocation; no minimum-depth optimization has been proved. |
+
+The generated connector packing assigns the 195 harnesses as follows. Each count
+is a physical cable assembly, not a count of independent signals:
+
+| Boundary | Harnesses | Architectural purpose and review opportunity |
+| --- | ---: | --- |
+| P ↔ K | 123 | Ordinary control interfaces; the largest assembly burden. Compare distributed core circuitry or redesigned connectors while retaining required nets, sensitive local circuits and service access. |
+| JL ↔ K; JR ↔ K | 25; 27 | Jack signal interfaces and assigned returns; preserve local sensitive circuits/bypass paths and prove revised return currents before reducing connections. |
+| EL ↔ K | 6 | Stage optical-board interfaces; review together with optical placement, power and temperature requirements. |
+| Five O adapters ↔ K | 10 | Two harnesses per selector adapter; include them in any switch/carrier alternative. |
+| JL ↔ P | 4 | Existing utility connections; the current rear-facing service loops need separate routing even if K moves forward. |
+
+These boundaries implement the current partition; they are not all unavoidable
+consequences of the feature set. Consolidation would change circuit ownership,
+net cuts, routing density and electrical/thermal budgets, so no reduction is
+counted before a source-defined alternative demonstrates those obligations.
+
+The fixed panel grid does not itself require a core plane at −100 mm. The current
+loom construction helps explain that allocation. From
+`scripts/checks/partition35_loom.py`, the 4 mm bowed GH path has the checked radius
+bound `span² / (8π²)`. Requiring at least 9.398 mm gives a 27.240344 mm span.
+With the selected rear-selector board and connector datums, this requires the K
+face at least 72.440344 mm behind the panel for that path family.
+
+The main power path uses the bound
+`span² / (2π² × hypot(10, bow_x))`, with a 25.908 mm bend-radius requirement.
+The resulting minimum K face depths for the current path family are:
+
+| Branch | Necessary K depth for the existing bend screen |
+| --- | ---: |
+| JL | 94.526877 mm |
+| JR | 85.112476 mm |
+| P | 86.912476 mm |
+
+Values are rounded upward. These are necessary screens for the existing proposed
+paths, not physical minimum depths or a complete collision/assembly proof. They
+explain why simply moving K to the earlier 24 mm study plane fails the present
+routing construction. A shallower design needs new wire paths, exit orientations
+or board interfaces, followed by renewed fit, electrical and service checks.
+
+At the current −100 mm K face, the 1.6 mm board and 5 mm rear component allowance
+leave 13.4 mm to the proposed −120 mm enclosure rear. The enclosure depth is a
+proposal; that remaining gap has not been justified as unavoidable. Rear depth
+summaries now derive from the partition/enclosure inputs and the explicit
+`design/mechanical/core-rear-allowance.json` proposal. A stale source clearance
+summary or negative component clearance is rejected.
+
+The [selector candidate](../decisions/osc-selector-assembly.mdx) also retains
+three front and two rear adapters, two custom 13 mm keyed extensions, five
+custom Ø8 mm knobs, adjustable pointer collars and a supported carrier. Its
+indexing, backlash, retention, factory assembly and serviceability remain
+unqualified. Preserve it as a documented candidate while comparing alternatives
+at the same hardware centres.
+
+The next architecture comparison should price the burden in operations and
+access requirements before accepting the current depth: 1,822 crimp insertions,
+390 housing ends to assemble, 195 labelled cable routes, main-wire terminations,
+custom selector assembly, continuity/pull checks, and K removal/reconnection.
+No time-per-operation, labour price, supplier commitment or cost total is known.
+A compact alternative should report revised depth, harness/contact counts,
+custom-part count, load/return paths and service sequence at the same 438 centres.
+No internal redesign or new mechanical baseline is selected by this checkpoint.
+
+## Required continuation
+
+1. Review the source checkpoint and routing repair together before merging;
+   retain canonical and candidate board identities separately.
+2. Resolve the compactness/factory-assembly tradeoff before accepting the current
+   deep loom architecture or spending effort on dependent final routing.
+3. Define supported physical contact/material/current classes and compute the
+   joined common-ground, GH-current, rail and voltage bounds on selected connected
+   copper. Keep the 0.5 mΩ, 0.5 A/contact, 1 mΩ, 20 mV and 0.20 V limits unchanged.
+4. Complete exact protection under [#59](https://github.com/Takazudo/zudo-osc-hole-field/issues/59)
+   and select the regulated source/inlet realization. Space reservations are not
+   a protection circuit. Keep the abstract boundary non-orderable and non-energizable.
+5. Regenerate selected sources, repeat pinned native checks and electrical
+   acceptance, then continue dependent routing. Physical checks under #55/#57/#64/#65
+   remain NOT RUN because no qualified prototype or measurements are available.

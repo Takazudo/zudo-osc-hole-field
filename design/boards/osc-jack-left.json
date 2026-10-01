@@ -34,10 +34,7 @@
     {"id":"future-output-protection-BCu-14","polygon":[[155.3,143],[162.7,143],[162.7,161],[155.3,161]],"layers":["B.Cu"]},
     {"id":"seam-rear-carrier-BCu-1","polygon":[[172.3,20],[176.5,20],[176.5,164],[172.3,164]],"layers":["B.Cu"]},
     {"id":"seam-rear-carrier-BCu-2","polygon":[[172,20],[172.3,20],[172.3,21.3],[172,21.3]],"layers":["B.Cu"]},
-    {"id":"seam-rear-carrier-BCu-3","polygon":[[172,35.3],[172.3,35.3],[172.3,35.300000000000004],[172,35.300000000000004]],"layers":["B.Cu"]},
-    {"id":"seam-rear-carrier-BCu-4","polygon":[[172,49.3],[172.3,49.3],[172.3,49.300000000000004],[172,49.300000000000004]],"layers":["B.Cu"]},
-    {"id":"seam-rear-carrier-BCu-5","polygon":[[172,63.3],[172.3,63.3],[172.3,63.300000000000004],[172,63.300000000000004]],"layers":["B.Cu"]},
-    {"id":"seam-rear-carrier-BCu-6","polygon":[[172,161.3],[172.3,161.3],[172.3,164],[172,164]],"layers":["B.Cu"]},
+    {"id":"seam-rear-carrier-BCu-3","polygon":[[172,161.3],[172.3,161.3],[172.3,164],[172,164]],"layers":["B.Cu"]},
     {"id":"seam-front-lip-FCu-1","polygon":[[175.2,20],[176.5,20],[176.5,164],[175.2,164]],"layers":["F.Cu"]},
     {"id":"UNSELECTED-BULK-1-BCu-1","polygon":[[122,145],[127,145],[127,148],[122,148]],"layers":["B.Cu"]},
     {"id":"UNSELECTED-BULK-2-BCu-1","polygon":[[122,149],[127,149],[127,152],[122,152]],"layers":["B.Cu"]},
@@ -138,9 +135,37 @@
     ],
     "zones": [
       {"name":"agnd_plane","net":"AGND","layers":["In1.Cu"],"clearance_mm":0.25,"min_thickness_mm":0.15,"pad_connection":"full"},
-      {"name":"+12V_plane","net":"+12V","layers":["In2.Cu"],"polygon":[[4.25,20],[61.25,20],[61.25,164],[4.25,164]],"clearance_mm":0.25,"min_thickness_mm":0.15,"pad_connection":"full"},
-      {"name":"-12V_plane","net":"-12V","layers":["In2.Cu"],"polygon":[[61.75,20],[118.75,20],[118.75,164],[61.75,164]],"clearance_mm":0.25,"min_thickness_mm":0.15,"pad_connection":"full"},
-      {"name":"+5V_plane","net":"+5V","layers":["In2.Cu"],"polygon":[[119.25,20],[176.25,20],[176.25,164],[119.25,164]],"clearance_mm":0.25,"min_thickness_mm":0.15,"pad_connection":"full"}
-    ]
+      {"name":"agnd_surface","net":"AGND","layers":["F.Cu","B.Cu"],"clearance_mm":0.25,"min_thickness_mm":0.15,"pad_connection":"full"},
+      {"name":"+12V_plane","net":"+12V","layers":["In2.Cu"],"polygon":[[4.25,20],[61.25,20],[61.25,145],[54.0,145],[54.0,163.75],[4.25,163.75]],"clearance_mm":0.25,"min_thickness_mm":0.15,"pad_connection":"full"},
+      {"name":"-12V_plane","net":"-12V","layers":["In2.Cu"],"polygon":[[61.75,20],[118.75,20],[118.75,157.5],[71.5,157.5],[71.5,163.75],[54.5,163.75],[54.5,145.5],[61.75,145.5]],"clearance_mm":0.25,"min_thickness_mm":0.15,"pad_connection":"full"},
+      {"name":"+5V_plane","net":"+5V","layers":["In2.Cu"],"polygon":[[119.25,20],[176.25,20],[176.25,163.75],[72.0,163.75],[72.0,158],[119.25,158]],"clearance_mm":0.25,"min_thickness_mm":0.15,"pad_connection":"full"}
+    ],
+    "load_terminal_transfer": {
+      "status": "PROPOSAL #38; conditional manufacturing acceptance, not selected service or qualification",
+      "minimum_finished_via_barrel_copper_mm": 0.025,
+      "calculation_temperature_C": 70,
+      "plane_copper_thickness_mm": 0.07,
+      "array_rows": 5,
+      "array_columns": 5,
+      "array_pitch_mm": 0.7,
+      "via_diameter_mm": 0.7,
+      "via_drill_mm": 0.3,
+      "pad_edge_copper_margin_mm": 0.25,
+      "nets": ["AGND","+12V","-12V","+5V"],
+      "process_requirement": "Factory-qualified filled/capped via-in-pad, or documented wire-solder process proving full coverage, no wicking and mechanical retention. NOT RUN #65. No supplier/service selected.",
+      "resistance_requirement": "Extract actual land, barrel and filled-plane spreading/neck resistance; whole 4.6 A return may use one terminal. Combined branch plus K must remain <=0.5 mOhm. Via-barrel calculation alone is insufficient.",
+      "external_array_fit": "Unchanged 4x4 mm copper land and 5x5 mm courtyard do not fit a 0.7 mm via annulus wholly outside the solder land: minimum centre offset 2.35 mm exceeds courtyard maximum 2.15 mm.",
+      "surface_ground_strategy": {
+        "status": "PROPOSAL #38 manager source-ground revision",
+        "layers": ["F.Cu","In1.Cu","B.Cu"],
+        "clearance_mm": 0.25,
+        "min_thickness_mm": 0.15,
+        "pad_connection": "full",
+        "geometry": "Same outline, real source keepouts/reservations and all existing copper/hardware unchanged. Measure actual filled continuity. Prefer native surface-pour main-land and GH contact access through existing plated AGND sleeves/vias before using solder-land arrays.",
+        "common_resistance_interpretation": "Combined branch+K common plane/spreading/shared neck including main-terminal transfer <=0.5 mOhm. Individual GH access paths are separately extracted and added to every alternative return in conductance-extrema bound; candidate own PCB/contact resistance remains zero."
+      },
+      "actual_AGND_strategy": "Three source-defined25-via main-land arrays per half are required: surface ground pours left each main land attached only to its own isolated same-net zone. All lands, GH contacts and intended bypass returns must share the transitive native main AGND component; native AGND edge count must be zero. A pad+same-net-zone relation alone is insufficient.",
+      "electrical_acceptance_status": "NOT ACCEPTED #38: complete native AGND/direct bypass topology is a draft checkpoint only. Authoritative common <=0.5mOhm and GH <=0.5A extraction, every fitted rail feed, actual rail <=1mOhm and hot distribution <=20mV remain unresolved; physical/process qualification NOT RUN #65."
+    }
   }
 }

@@ -1,0 +1,181 @@
+{
+  "boards": [
+    {
+      "board_id": "osc-jack-left",
+      "board_sha256": "b0d3fc3e127a7f761c66e0324446c0826cdcc51ed0328c0ce829703c7d08695e",
+      "final_native_receipt_hashes": {
+        "drc.json": "f6c465071c86c31bff3c67a84b0d9b1130491145c4bfae3f179c64cfcf01822a",
+        "exact-placement.json": "9262e6b421759bca841630f01f50ead0c3543993379c34353713656b3be6c82f",
+        "power-locality.json": "73ec8357ff5b761b2e977c8de28e1ae7c80ea1cb67faa9448a1a5cd7e27fda49",
+        "ratsnest.json": "f3bba990976ce9760143e6ea1f9c28484bbaa3b9b8cc94a3ad29ea6ec4b06284"
+      },
+      "native_open_edges": 1400,
+      "native_open_nets": 645,
+      "owner_preservation": "boards/osc-jack-left/reports/checkpoint-preservation.json",
+      "pcb": "boards/osc-jack-left/osc-jack-left.kicad_pcb",
+      "power_feed_and_bypass_report": "boards/osc-jack-left/reports/power-locality.json",
+      "rail_open_edges": {
+        "+12V": 135,
+        "+5V": 59,
+        "-12V": 143,
+        "AGND": 0
+      },
+      "ratsnest": "boards/osc-jack-left/reports/ratsnest.json",
+      "signal_open_edges": 1063,
+      "unfed_fitted_rail_pads": 547,
+      "warning_identities": "boards/osc-jack-left/reports/warning-dispositions.json"
+    },
+    {
+      "board_id": "osc-jack-right",
+      "board_sha256": "7ae9771554337af003432133b10a84f5206ac25cc865eb9699a47a4f3c02ac73",
+      "final_native_receipt_hashes": {
+        "drc.json": "03673c8647a46f5d264981164aec25abc5ecf2f94c3b7b1518c63812b01c623f",
+        "exact-placement.json": "f3edceb8ac24a3c951bef6ff35179420d21df54d44ab820818f139090862de46",
+        "power-locality.json": "39ef536f975dbfad8bc0ec93ef29a9d41723a7fa39df4b403a76d32329205cbf",
+        "ratsnest.json": "14135ae0059fa17d97b52d78b501e0725bb353e07c1f5b285a612fb2e3127826"
+      },
+      "native_open_edges": 1439,
+      "native_open_nets": 645,
+      "owner_preservation": "boards/osc-jack-right/reports/checkpoint-preservation.json",
+      "pcb": "boards/osc-jack-right/osc-jack-right.kicad_pcb",
+      "power_feed_and_bypass_report": "boards/osc-jack-right/reports/power-locality.json",
+      "rail_open_edges": {
+        "+12V": 139,
+        "+5V": 59,
+        "-12V": 132,
+        "AGND": 0
+      },
+      "ratsnest": "boards/osc-jack-right/reports/ratsnest.json",
+      "signal_open_edges": 1109,
+      "unfed_fitted_rail_pads": 528,
+      "warning_identities": "boards/osc-jack-right/reports/warning-dispositions.json"
+    }
+  ],
+  "cache_input_note": "Left raw geometry was exported from a disposable powerstage PCB, then augmented with exact native pad polygons. That disposable has been removed; its SHA exactly equals current canonical JL. Regenerate from canonical using the listed pinned extract command.",
+  "explicit_limits": {
+    "GH_contact_max_A": 0.5,
+    "common_branch_plus_K_ohm": 0.0005,
+    "hot_distribution_drop_max_mV": 20,
+    "rail_transfer_max_ohm": 0.001,
+    "worst_whole_return_A": 4.6
+  },
+  "final_checks": {
+    "Python_unit_tests": "PASS -196 tests, pinned numerical environment",
+    "aggregate_regeneration": "PASS - 168s guarded; 5904 joined packages,20419 pins,4106 master nets;10 board ERC0 errors/673 retained warnings;438 fixed centres",
+    "circuit_check": "PASS; manual inventory scope49 lines,0 placement binding;pin assets checked",
+    "native_orphan_zone_regression": "PASS -1 pinned KiCad10.0.6 test",
+    "pnpm_check": "PASS -generated output,22 footprint previews/models and documentation TypeScript",
+    "post_regeneration_native": "PASS -39s guarded;0 rule/parity errors;complete native open counts1400/1439;AGND0;414 direct local bypass loops;exact source placement PASS"
+  },
+  "last_attempt": {
+    "actual_courtyard_cut_mm": [
+      119.875,
+      84.905
+    ],
+    "board_id": "osc-jack-left",
+    "failed_pad": "2",
+    "failed_ref": "J900001",
+    "guard_verdict": "FAIL exit1 secs201; finite interface representation exception, not a native connectivity failure",
+    "mesh_pitch_mm": 0.25,
+    "native_contained_candidate_count": 89,
+    "ownership_rejected_candidate_count": 89,
+    "status": "NOT SOLVED / NOT ACCEPTED"
+  },
+  "local_cache_manifest": [
+    {
+      "bytes": 12053199,
+      "path": ".circuit-cache/issue38-recovery/planes-left-ground-unfractured.json",
+      "sha256": "fbc1e8457108d69cddab09df1d5b50b5ea2796e3346281a87ebfc1434d7d6ee3",
+      "status": "LOCAL IGNORED - historical or experimental; NOT ACCEPTED"
+    },
+    {
+      "bytes": 1108115,
+      "path": ".circuit-cache/issue38-recovery/planes-left-ground-interfaces-05mm.json",
+      "sha256": "f21946d0444276e3b0fcacf11ffe08e6d579528370fef0a2e7d42adf20f3c103",
+      "status": "LOCAL IGNORED - historical or experimental; NOT ACCEPTED"
+    },
+    {
+      "bytes": 1362177,
+      "path": ".circuit-cache/issue38-recovery/planes-left-ground-shared-05mm.json",
+      "sha256": "81806123ff187f794cffabc6e383102efb41f47d44d2223cbb93c1c6e54e44df",
+      "status": "LOCAL IGNORED - historical or experimental; NOT ACCEPTED"
+    },
+    {
+      "bytes": 1351685,
+      "path": ".circuit-cache/issue38-recovery/planes-left-ground-shared-025mm.json",
+      "sha256": "fcd5ece2d1fb1d0d011984ae2177c3968c3d10d9ed5188f53f7b771ff3561b2f",
+      "status": "LOCAL IGNORED - historical or experimental; NOT ACCEPTED"
+    },
+    {
+      "bytes": 1365680,
+      "path": ".circuit-cache/issue38-recovery/planes-left-ground-polar-05mm.json",
+      "sha256": "2bc0955a89e9afc20fd098154503a18591fac3ae5bcd8c0394726031192a1480",
+      "status": "LOCAL IGNORED - historical or experimental; NOT ACCEPTED"
+    },
+    {
+      "bytes": 655,
+      "path": ".circuit-cache/issue38-recovery/planes-left-ground-polar-owned-05mm.json",
+      "sha256": "2becb032f11182f60e640bcec1549fececd6c470117976a9336db9ff1fb75f63",
+      "status": "LOCAL IGNORED - historical or experimental; NOT ACCEPTED"
+    },
+    {
+      "bytes": 752,
+      "path": ".circuit-cache/issue38-recovery/planes-left-ground-polar-owned-025mm.json",
+      "sha256": "468d1591151682202631081a4ac93b7d988904c37820f61f284d0789a14776a5",
+      "status": "LOCAL IGNORED - historical or experimental; NOT ACCEPTED"
+    },
+    {
+      "bytes": 2132,
+      "path": ".circuit-cache/issue38-recovery/ground-screen-history.json",
+      "sha256": "a70f2af40590039e335c6e3a38c60ad6e6b7d7881896499b1ab49e33c5b130fb",
+      "status": "LOCAL IGNORED - historical or experimental; NOT ACCEPTED"
+    },
+    {
+      "bytes": 4767745,
+      "path": ".circuit-cache/issue38-recovery/copper-wire-tables.pdf",
+      "sha256": "3128aaa9fac5688c4e2c4ea9e1b0bb9e20aead7c71039772790859c7fa571af0",
+      "status": "LOCAL IGNORED - historical or experimental; NOT ACCEPTED"
+    }
+  ],
+  "model_sources": [
+    {
+      "path": "scripts/pcbgen/solve_ground_interfaces.py",
+      "sha256": "9a795b7cb3d99fcd6a9e85a667770ed3723417cf99e7d48e99bca7dd737975f1"
+    },
+    {
+      "path": "scripts/pcbgen/ground_access.py",
+      "sha256": "51ed4e780efef89fa49e37e4f32d8c0eb2492748f910da3ec3c1466721f6a214"
+    },
+    {
+      "path": "scripts/pcbgen/ground_annular.py",
+      "sha256": "a08cd130f71c336a43f419a909a25d532a82e283ad665a1ed85a112f25e21b15"
+    },
+    {
+      "path": "scripts/pcbgen/ground_private.py",
+      "sha256": "eca244057d4cc21fddfcc24fb5c526de909efce42ea6a2fec2418a3730a556f6"
+    },
+    {
+      "path": "scripts/pcbgen/extract_ground_mesh.py",
+      "sha256": "2fbbec93b2f6b4c387b496516a1d840ad1503c71ba4ad4eee27b7fe465179024"
+    }
+  ],
+  "native_extract_commands": [
+    "bash scripts/kicad/run.sh python3 scripts/pcbgen/extract_ground_mesh.py boards/osc-jack-left/osc-jack-left.kicad_pcb .circuit-cache/issue38-recovery/planes-left-ground-unfractured.json --raw-multilayer",
+    "bash scripts/kicad/run.sh python3 scripts/pcbgen/extract_ground_mesh.py boards/osc-jack-right/osc-jack-right.kicad_pcb .circuit-cache/issue38-recovery/planes-right-ground-unfractured.json --raw-multilayer"
+  ],
+  "no_fabrication_or_outward_actions": true,
+  "numerical_requirements": "scripts/pcbgen/numerical-requirements.txt",
+  "partition_source_sha256": "115f16e7097c0c9f86a54a915e6404769a62f3b4cb3ef093a37aa4d2cdaa33c7",
+  "retained_material_reference": "design/partition/ground-material-evidence.json",
+  "schema_version": 1,
+  "solver_command": ".circuit-cache/issue38-recovery/solver-venv/bin/python scripts/pcbgen/solve_ground_interfaces.py .circuit-cache/issue38-recovery/planes-left-ground-unfractured.json .circuit-cache/issue38-recovery/next-left-result.json --pitch-mm 0.25",
+  "solver_environment": "Task-local ignored venv: numpy2.2.6/scipy1.15.3/shapely2.1.2. Reproduce using numerical-requirements.txt; no system/repo-wide Python dependency mutation. Full solves go through bash $HOME/.codex/scripts/heavy-guard.sh --.",
+  "status": "REVIEWABLE UNVALIDATED DRAFT CHECKPOINT; #38 OPEN; electrical acceptance NOT ACCEPTED",
+  "successor_scope": [
+    "Implement local fine-region meshes or shared finite faces/collars at GH cuts and main via arrays; preserve fixed physical patches, native copper ownership and one actual barrel network. No source geometry change inferred from unsupported screens.",
+    "Establish authoritative common branch + finite K residual <=0.5mOhm, and GH conductance-extrema <=0.5A with finite actual/private and required K access. Zero K access cannot be acceptance.",
+    "Enumerate and repair every fitted rail pin/passive feed from source-defined exact nets/planes under native owner/DRC/parity gates; local bypass loops alone do not feed a module.",
+    "Extract actual rail paths <=1mOhm and current-dependent hot distribution <=20mV. Remaining power paths are electrical acceptance blockers, not ordinary signal-routing remainder.",
+    "Complete native per-net signal routing followup, warning disposition/nativeCI#44, K extraction#43 and actual manufacturing/hot/stability/fit qualification#65."
+  ]
+}

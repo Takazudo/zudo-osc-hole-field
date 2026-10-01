@@ -70,7 +70,13 @@ jobs:
         with:
           python-version: "3.12"
 
+      - name: Install pinned numerical test dependencies
+        run: python -m pip install -r scripts/pcbgen/numerical-requirements.txt
+
       - name: Run Python unit tests
         run: bash scripts/checks/run-python-tests.sh
+
+      - name: Run native main-ground connectivity regression
+        run: bash scripts/kicad/run.sh python3 scripts/pcbgen/power_locality_native_regression.py
 
   # KiCad checks will be added by sub-issue #44.

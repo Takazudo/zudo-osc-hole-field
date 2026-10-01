@@ -1,0 +1,48 @@
+{
+  "schema_version": 1,
+  "status": "UNSELECTED PROJECT REQUIREMENTS; finite endpoint adapter construction implemented, actual metal containment/material/assembly qualification OPEN. No Alpha geometry guarantee.",
+  "identity": "Existing Alpha Wire 5859 BK005, 19/27 AWG14. No hardware or MPN change.",
+  "bulk_current_class": {
+    "contained_core_count": 19,
+    "contained_core_radius_mm": 0.175,
+    "section": "The same contained polygon section used by the finite tip trial; centred normal-frame sections, disjoint or with zero normal trial current at touching boundaries.",
+    "hot_resistivity_upper_ohm_mm": 2.3e-05,
+    "mean_strand_arclength_over_bundle_axis_upper": 1.025,
+    "core_radius_times_curvature_upper": 0.1,
+    "frame_spin_upper_rad_per_mm": 0.1,
+    "scope": "These constrain actual contained strand paths. They do not assume regular hexagonal unilay, equal physical current, an Alpha lay pitch, or infer arithmetic per-strand transfer energy from assembled parallel DCR."
+  },
+  "bulk_potential_class": {
+    "hot_resistivity_lower_ohm_mm": 2e-05,
+    "maximum_total_metal_area_per_bundle_normal_section_mm2": 2.3,
+    "maximum_metal_radius_from_bundle_axis_mm": 1.2954,
+    "minimum_bundle_bend_radius_mm": 25.908,
+    "scope": "One continuous potential in bundle coordinates, shared across all actual metal including touching strands. Every actual conductive material in the bulk must meet the resistivity floor and section/extent envelope. This is not nineteen independent strand potentials. Both fans/tips/solder may carry their land's constant trial value.",
+    "temperature_scope": "The 2e-5 floor is the separate uniform nominal 70 C hot-only proposal. Normal/cold calculations instead use the unselected direct 100 MS/m all-metal conductivity ceiling. Neither is a manufacturer guarantee or qualified process.",
+    "maximum_bundle_transverse_slope": 1.0,
+    "bundle_axis_condition": "Monotone in board-depth z with initial axial tangent; source sin-squared bows satisfy the stated slope and curvature bounds. This establishes the near-end branch used to convert global endpoint extent into bundle arclength."
+  },
+  "interface_trial_class": {
+    "metallurgical_interfaces_per_end": 2,
+    "normal_areal_resistance_upper_ohm_mm2": 4.5e-05,
+    "scope": "A finite upper bound on normal transfer energy over each of the nineteen supported squares, for both copper-tip/solder and solder/PCB interfaces. Uniform current is an admissible trial, not a claim about actual current density. The four interfaces of a complete wire are booked once inside the existing combined 0.2 mOhm termination budget.",
+    "qualification": "PROJECT REQUIREMENT / NEEDS BENCH #65; no primary manufacturer interface-resistance guarantee is claimed."
+  },
+  "endpoint_gate": "Constructed sufficient 0.25 mm / <=3 degree adapter class; actual contained tubes, incoming sections/tangents/roll and all-metal extent remain unqualified #65. No physical equipotential wire cut is introduced.",
+  "downstream_K": "The K board must retain compatible full wetted supports and conductor trial traces. Its finite common/private allocation and the complete joined branch proof remain #43 obligations. Common PCB/K spreading and separately charged wire/termination functionals must be stated before acceptance.",
+  "endpoint_adapter_class": {
+    "status": "UNSELECTED conditional factory geometry; not an Alpha endpoint-angle guarantee",
+    "arclength_mm": 0.25,
+    "incoming_tangent_tilt_upper_deg": 3.0,
+    "current_section_area_floor_mm2": 0.096,
+    "constant_primal_collar_mm": 0.075,
+    "maximum_total_fan_arclength_mm": 4.0,
+    "physical_support": "Nineteen actual contained/disjoint normal-frame arc tubes, matching bulk polygons and the finite fan roots. Input centre offsets and section roll must agree with the constructed arcs. No guessed unilay pattern."
+  },
+  "normal_material_class": {
+    "status": "UNSELECTED PROJECT REQUIREMENT / NEEDS BENCH #65; not a manufacturer guarantee",
+    "maximum_all_metal_conductivity_S_per_m": 100000000,
+    "equivalent_resistivity_lower_ohm_mm": 1e-05,
+    "scope": "Every actual conductive material in the modeled bulk, including coatings and touching strands, across all permitted normal operating conditions. This directly bounds maximum conductivity; no new minimum temperature or narrow hot-only floor is inferred. The permitted operating envelope and actual applicability must be qualified before selection."
+  }
+}

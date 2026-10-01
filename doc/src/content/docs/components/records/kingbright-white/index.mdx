@@ -33,7 +33,7 @@ This record in the catalog: [APHHS1005QWF/D](/docs/components/catalog/#rec-kingb
 
 **Source state:** AVAILABLE
 
-**Coverage:** 2 open of 6 published
+**Coverage:** 3 open of 7 published
 
 ## Documents and package
 
@@ -141,6 +141,22 @@ Coverage is stated one domain at a time and is never rolled up. A domain marked 
 
 - [`fact-kingbright-white-current-limit`](#fact-kingbright-white-current-limit)
 
+### cad\_geometry
+
+<EvidenceAnchor id="cov-kingbright-white-project-land" />
+
+**Coverage ID:** `cov-kingbright-white-project-land` · **Status:** OPEN
+
+**Reason:** Source-derived dimensions remain within the recommended drawing ranges, but manufacturing clearance, wetting, alignment and reflow require qualification #64/#65
+
+**Facts in this domain:**
+
+- [`fact-kingbright-white-project-land`](#fact-kingbright-white-project-land)
+
+**Blocked by:** these facts must be resolved before the domain can close. Each is listed in full under Facts.
+
+- [`fact-kingbright-white-project-land`](#fact-kingbright-white-project-land)
+
 ## Facts
 
 Each fact keeps its value, its unit, the conditions it holds under, where it came from and how far it has been confirmed as separate fields, because they are separate claims. A value without its conditions is not the same fact, and a verdict is about the evidence for the value, not about the part.
@@ -200,9 +216,9 @@ A value this project recorded about how the part is used here — a chosen opera
 
   **Fact:** `fact-kingbright-white-land`
 
-  **Value:** Two 0.7 x 0.5 mm pads, separated by 0.2 mm; mask open area ratio 80% · **Unit:** `NONE`
+  **Value:** Recommended nominal two 0.7 x 0.5 mm pads separated by 0.2 mm; the figure explicitly states dimension tolerance +/-0.1 mm · **Unit:** `NONE`
 
-  **Conditions:** Exact manufacturer part at 25 C unless stated otherwise
+  **Conditions:** Recommended soldering pattern drawing dimensions in mm; stated drawing tolerance is not a project fabrication or assembly qualification
 
   **Verdict:** PASS - primary-source confirmed · **Provenance:** PRIMARY-SPEC
 
@@ -249,6 +265,20 @@ A value this project recorded about how the part is used here — a chosen opera
   **Verdict:** PASS - primary-source confirmed · **Provenance:** PRIMARY-SPEC
 
   **Evidence:** [`src-kingbright-white-datasheet`](#src-kingbright-white-datasheet) — Page 1, title and Selection Guide table, exact part number row
+</EvidenceFact>
+
+<EvidenceFact>
+  <EvidenceAnchor id="fact-kingbright-white-project-land" />
+
+  **Fact:** `fact-kingbright-white-project-land`
+
+  **Value:** Project land: two 0.65 x 0.5 mm pads at x +/-0.475 mm, gap 0.30 mm; unchanged outer edges +/-0.8 mm and hardware centre; assembly qualification pending · **Unit:** `NONE`
+
+  **Conditions:** Selected within the published +/-0.1 mm recommended dimension ranges; preserve the project 0.25 mm clearance rule. No manufacturing or solder-joint qualification inferred.
+
+  **Verdict:** NEEDS BENCH · **Provenance:** PROJECT-CHOICE
+
+  **Evidence:** [`src-kingbright-white-datasheet`](#src-kingbright-white-datasheet) — Page 1, Recommended Soldering Pattern figure, width/height/gap dimension callouts and +/-0.1 mm tolerance label; project source design/mechanical/kingbright-white-land.json
 </EvidenceFact>
 
 ## Pin maps
