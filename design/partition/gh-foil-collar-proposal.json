@@ -1,0 +1,897 @@
+{
+  "schema_version": 1,
+  "status": "UNSELECTED source-owned foil-collar proposal; no canonical copper change, actual reconstruction or electrical admission",
+  "context_commit": "c96d5ae",
+  "pair_id": "JL-K-1:AGND-pin-2",
+  "header_mpn": "BM08B-GHS-TBT(LF)(SN)",
+  "housing_mpn": "GHR-08V-S",
+  "contact_mpn": "SSHL-002T-P0.2",
+  "wire_mpn": "Alpha Wire 6821 BK005",
+  "source_files": {
+    "design/partition/partition.json": "85af249fd0c5f47c854e067e0734495ad448500c678c4520004745ecaee8636f",
+    "design/grid/placements.lock.json": "297300b067fd646624b9e501791163fa2d60702862b61568753bf92e5b88dbe8",
+    "footprints/kicad/zudo-osc-hole-field.pretty/JST_GH8_BM_TopEntry.kicad_mod": "47115bed0ac39ccb559704cfe5ade35e5eaf9b869466042a92130755a38909dd"
+  },
+  "geometry": {
+    "nominal_neck_width_mm": 0.2,
+    "finished_neck_width_interval_mm": [
+      0.18,
+      0.22
+    ],
+    "nominal_neck_length_mm": 0.76,
+    "finished_neck_length_interval_mm": [
+      0.74,
+      0.78
+    ],
+    "finished_foil_thickness_interval_mm": [
+      0.063,
+      0.077
+    ],
+    "neck_x_offset_mm": -0.05,
+    "relative_registration_abs_max_mm": 0.025,
+    "foreign_and_pad_copper_edge_abs_max_mm": 0.025,
+    "nominal_shoulder_length_mm": 0.33,
+    "finished_shoulder_length_interval_mm": [
+      0.31,
+      0.35
+    ],
+    "nominal_flare_length_mm": 0.48,
+    "finished_flare_length_interval_mm": [
+      0.46,
+      0.5
+    ],
+    "flare_width_interval_mm": [
+      0.58,
+      0.62
+    ],
+    "copper_isolation_clearance_mm": 0.25,
+    "mask_expansion_upper_mm": 0.05,
+    "mask_registration_abs_max_mm": 0.05,
+    "solder_over_mask_extent_upper_mm": 0.05,
+    "required_dry_separation_mm": 0.1,
+    "native_mask_expansion_observed_mm": 0,
+    "status": "Finite prospective fabrication/registration/wetting acceptance class only; no selected process capability or measured fit"
+  },
+  "material": {
+    "volume_resistivity_interval_ohm_mm": [
+      1.6e-05,
+      2.3e-05
+    ],
+    "status": "PROPOSED positive material interval; not a manufacturer guarantee; no omitted internal interface energy. Full collar shape/material metric still requires admission."
+  },
+  "boards": [
+    {
+      "board_key": "JL",
+      "board_id": "osc-jack-left",
+      "connector_id": "JL-K-1-JL",
+      "reference": "J900001",
+      "pad": "2",
+      "net": "AGND",
+      "face": "B.Cu",
+      "pad_uuid": "3f388439-96b8-5e20-aa1d-16ee31561d83",
+      "footprint_uuid": "db2ef864-6c2d-52ce-bca7-8b37f286695a",
+      "native_footprint_at_mm_deg": [
+        123.0,
+        86.05,
+        180.0
+      ],
+      "native_pad_xy_mm": [
+        119.875,
+        86.05
+      ],
+      "native_pad_size_mm": [
+        0.6,
+        1.7
+      ],
+      "native_pad_quarter_turns": 2,
+      "outward_direction_y": -1,
+      "native_board_path": "boards/osc-jack-left/osc-jack-left-white-current-v1.kicad_pcb",
+      "native_board_sha256": "da368dfab311b1a8eee91485f10bfc87c82e679a7a0f015207e215c8f9d45c4e",
+      "native_geometry_path": ".circuit-cache/issue38-recovery/white-current-boards/osc-jack-left/native-geometry.json",
+      "native_geometry_sha256": "29c432b874443a589836a884c917f0032c344eee10c7a38187c1da5310590249",
+      "snapshot": {
+        "coordinate_frame": {
+          "name": "native KiCad millimetres",
+          "source_to_native_translation_mm": [
+            100,
+            50
+          ]
+        },
+        "outline_mm": [
+          [
+            104.0,
+            70.0
+          ],
+          [
+            276.5,
+            70.0
+          ],
+          [
+            276.5,
+            214.0
+          ],
+          [
+            104.0,
+            214.0
+          ]
+        ],
+        "stackup": [
+          {
+            "copper_oz": 2.0,
+            "copper_thickness_mm": 0.07,
+            "layer": "F.Cu",
+            "nominal_midplane_depth_mm": 0.035,
+            "role": "DISPOSABLE +12V plane"
+          },
+          {
+            "layer": "dielectric-1",
+            "material": "UNSELECTED conditional pressed dielectric",
+            "thickness_mm": 1.13
+          },
+          {
+            "copper_oz": 4.0,
+            "copper_thickness_mm": 0.14,
+            "layer": "In1.Cu",
+            "minimum_copper_clearance_mm": 0.35,
+            "nominal_midplane_depth_mm": 1.27,
+            "role": "DISPOSABLE AGND plane"
+          },
+          {
+            "layer": "dielectric-2",
+            "material": "UNSELECTED conditional pressed dielectric",
+            "thickness_mm": 0.06
+          },
+          {
+            "copper_oz": 2.0,
+            "copper_thickness_mm": 0.07,
+            "layer": "In2.Cu",
+            "nominal_midplane_depth_mm": 1.4349999999999998,
+            "role": "DISPOSABLE -12V plane"
+          },
+          {
+            "layer": "dielectric-3",
+            "material": "UNSELECTED conditional pressed dielectric",
+            "thickness_mm": 0.06
+          },
+          {
+            "copper_oz": 2.0,
+            "copper_thickness_mm": 0.07,
+            "layer": "B.Cu",
+            "nominal_midplane_depth_mm": 1.565,
+            "role": "DISPOSABLE +5V plane"
+          }
+        ],
+        "enabled_copper_layers": [
+          "F.Cu",
+          "In1.Cu",
+          "In2.Cu",
+          "B.Cu"
+        ],
+        "minimum_native_track_width_mm": 0.1,
+        "scan_window_mm": [
+          117.875,
+          82.85,
+          121.875,
+          89.25
+        ],
+        "whole_export_item_count": 7641,
+        "whole_export_hole_count": 1678,
+        "items": [
+          {
+            "uuid": "3a237eaa-53f8-5c3c-9c85-d22c42ad818b",
+            "net": "X7F1517D2A1A5A4E8D80F",
+            "ref": "DH106",
+            "pad": "1",
+            "copper_bbox_mm": {
+              "F.Cu": [
+                120.11,
+                82.55,
+                121.01,
+                83.75
+              ]
+            },
+            "primitive_kinds": {
+              "F.Cu": "roundrect"
+            }
+          },
+          {
+            "uuid": "d3017828-83e6-5734-a8bc-001dd29b7957",
+            "net": "XF07C0B8E7A600ED00375",
+            "ref": "DH203",
+            "pad": "1",
+            "copper_bbox_mm": {
+              "F.Cu": [
+                120.11,
+                85.45,
+                121.01,
+                86.65
+              ]
+            },
+            "primitive_kinds": {
+              "F.Cu": "roundrect"
+            }
+          },
+          {
+            "uuid": "aa81a5e4-be7c-5b39-a78f-0fccbddcb2b7",
+            "net": "X075DA9F385C5969C5685",
+            "ref": "DH214",
+            "pad": "1",
+            "copper_bbox_mm": {
+              "F.Cu": [
+                120.11,
+                88.35,
+                121.01,
+                89.55
+              ]
+            },
+            "primitive_kinds": {
+              "F.Cu": "roundrect"
+            }
+          },
+          {
+            "uuid": "7db7f9c0-85f7-52ce-af05-8de1dfc7251f",
+            "net": "X81CA071E9915CC31EAEA",
+            "ref": "J900001",
+            "pad": "1",
+            "copper_bbox_mm": {
+              "B.Cu": [
+                118.325,
+                85.2,
+                118.925,
+                86.9
+              ]
+            },
+            "primitive_kinds": {
+              "B.Cu": "rectangle"
+            }
+          },
+          {
+            "uuid": "3f388439-96b8-5e20-aa1d-16ee31561d83",
+            "net": "AGND",
+            "ref": "J900001",
+            "pad": "2",
+            "copper_bbox_mm": {
+              "B.Cu": [
+                119.575,
+                85.2,
+                120.175,
+                86.9
+              ]
+            },
+            "primitive_kinds": {
+              "B.Cu": "rectangle"
+            }
+          },
+          {
+            "uuid": "7f534ed4-fefd-51fb-b267-b38a8b81ed11",
+            "net": "X9D4DAF35CDBF61FFC354",
+            "ref": "J900001",
+            "pad": "3",
+            "copper_bbox_mm": {
+              "B.Cu": [
+                120.825,
+                85.2,
+                121.425,
+                86.9
+              ]
+            },
+            "primitive_kinds": {
+              "B.Cu": "rectangle"
+            }
+          },
+          {
+            "uuid": "f5a5d9c1-59db-501c-8377-1e2aabb51337",
+            "net": "XA643B6F53FCA49747AA7",
+            "ref": "R3208",
+            "pad": "1",
+            "copper_bbox_mm": {
+              "B.Cu": [
+                119.17,
+                80.575,
+                120.295,
+                83.225
+              ]
+            },
+            "primitive_kinds": {
+              "B.Cu": "roundrect"
+            }
+          },
+          {
+            "uuid": "a02926b3-75d3-5b4c-afae-ac066ad61368",
+            "net": "XF5D05EE37B07790295CC",
+            "ref": "R3209",
+            "pad": "2",
+            "copper_bbox_mm": {
+              "B.Cu": [
+                121.145,
+                80.575,
+                122.27,
+                83.225
+              ]
+            },
+            "primitive_kinds": {
+              "B.Cu": "roundrect"
+            }
+          },
+          {
+            "uuid": "0e98d896-7f4b-529e-bb8d-5d0672d24f52",
+            "net": "AGND",
+            "copper_bbox_mm": {
+              "F.Cu": [
+                119.240299,
+                86.762518,
+                119.940299,
+                87.462518
+              ],
+              "In1.Cu": [
+                119.240299,
+                86.762518,
+                119.940299,
+                87.462518
+              ],
+              "In2.Cu": [
+                119.240299,
+                86.762518,
+                119.940299,
+                87.462518
+              ],
+              "B.Cu": [
+                119.240299,
+                86.762518,
+                119.940299,
+                87.462518
+              ]
+            },
+            "primitive_kinds": {
+              "F.Cu": "circle",
+              "In1.Cu": "circle",
+              "In2.Cu": "circle",
+              "B.Cu": "circle"
+            }
+          },
+          {
+            "uuid": "a93acaf3-1753-5d6e-b340-4ae1bc5472cc",
+            "net": "AGND",
+            "copper_bbox_mm": {
+              "B.Cu": [
+                119.339612,
+                85.799313,
+                120.125687,
+                87.363205
+              ]
+            },
+            "primitive_kinds": {
+              "B.Cu": "segment"
+            }
+          }
+        ],
+        "holes": [
+          {
+            "xy_mm": [
+              119.590299,
+              87.112518
+            ],
+            "uuid": "0e98d896-7f4b-529e-bb8d-5d0672d24f52",
+            "net": "AGND",
+            "plated": true,
+            "copper_layers": [
+              "F.Cu",
+              "In1.Cu",
+              "In2.Cu",
+              "B.Cu"
+            ],
+            "size_mm": [
+              0.3,
+              0.3
+            ],
+            "angle_deg": 0
+          }
+        ],
+        "zone_clip_candidates": [
+          {
+            "uuid": "3ad96219-14ce-547a-9737-e3cf10d19b86",
+            "layer": "B.Cu",
+            "net": "+5V",
+            "keepout": false,
+            "bbox_mm": [
+              104.5005,
+              70.5005,
+              272.3,
+              213.4995
+            ]
+          },
+          {
+            "uuid": "3d15ff39-14d9-5e81-981a-73b660d4232a",
+            "layer": "F.Cu",
+            "net": "+12V",
+            "keepout": false,
+            "bbox_mm": [
+              104.5005,
+              70.5005,
+              275.2,
+              213.4995
+            ]
+          },
+          {
+            "uuid": "60069117-630c-5d54-891a-21af4048da7a",
+            "layer": "In2.Cu",
+            "net": "-12V",
+            "keepout": false,
+            "bbox_mm": [
+              104.5005,
+              70.5005,
+              275.9995,
+              213.4995
+            ]
+          },
+          {
+            "uuid": "be59e803-89c4-593c-a108-aa260437a47f",
+            "layer": "In1.Cu",
+            "net": "AGND",
+            "keepout": false,
+            "bbox_mm": [
+              104.5005,
+              70.5005,
+              275.9995,
+              213.4995
+            ]
+          }
+        ]
+      },
+      "proposed_retirements": [
+        {
+          "uuid": "0e98d896-7f4b-529e-bb8d-5d0672d24f52",
+          "kind": "via",
+          "net": "AGND",
+          "reason": "Existing plated stitch overlaps the pad and bypasses an isolated single-foil collar."
+        },
+        {
+          "uuid": "a93acaf3-1753-5d6e-b340-4ae1bc5472cc",
+          "kind": "track",
+          "net": "AGND",
+          "reason": "Existing pad-to-stitch branch must not bypass the collar."
+        }
+      ],
+      "board_access": {
+        "kind": "proposed_new_via_and_dogleg",
+        "net": "AGND",
+        "via_centre_native_mm": [
+          120.75,
+          84.5
+        ],
+        "via_diameter_mm": 0.7,
+        "via_drill_mm": 0.3,
+        "finished_drill_interval_mm": [
+          0.28,
+          0.32
+        ],
+        "finished_barrel_copper_interval_mm": [
+          0.025,
+          0.035
+        ],
+        "target_plane": "In1.Cu",
+        "track_width_mm": 0.2,
+        "track_points_native_mm": [
+          [
+            119.825,
+            83.75
+          ],
+          [
+            120.75,
+            83.75
+          ],
+          [
+            120.75,
+            84.5
+          ]
+        ],
+        "proposal_via_uuid": "cc2ef998-45d0-5eca-a757-150a82231611",
+        "status": "NOT GENERATED in native board; complete pad/barrel/plane access energy OPEN"
+      }
+    },
+    {
+      "board_key": "K",
+      "board_id": "osc-core",
+      "connector_id": "JL-K-1-K",
+      "reference": "J900002",
+      "pad": "2",
+      "net": "AGND",
+      "face": "F.Cu",
+      "pad_uuid": "835eae24-7f0d-5918-8d54-859e5053df59",
+      "footprint_uuid": "50c2705e-47c1-5e01-beb5-b73e19480b22",
+      "native_footprint_at_mm_deg": [
+        123.0,
+        89.95,
+        180.0
+      ],
+      "native_pad_xy_mm": [
+        119.875,
+        89.95
+      ],
+      "native_pad_size_mm": [
+        0.6,
+        1.7
+      ],
+      "native_pad_quarter_turns": 2,
+      "outward_direction_y": 1,
+      "native_board_path": "boards/osc-core/osc-core-ground-feasibility-v7.kicad_pcb",
+      "native_board_sha256": "98993d11e143da86ecc72190a1a4a0c6c9677b3b7bf431b78f6b3868615ae411",
+      "native_geometry_path": ".circuit-cache/issue38-recovery/core-feasibility-v7/ground-feasibility-geometry.json",
+      "native_geometry_sha256": "a5b6ab06e376502a4516ce3632268c26a64f5705c168a778240809f60cea1ec6",
+      "snapshot": {
+        "coordinate_frame": {
+          "name": "native KiCad millimetres",
+          "source_to_native_translation_mm": [
+            100,
+            50
+          ]
+        },
+        "outline_mm": [
+          [
+            104.0,
+            58.0
+          ],
+          [
+            414.0,
+            58.0
+          ],
+          [
+            414.0,
+            296.0
+          ],
+          [
+            358.0,
+            296.0
+          ],
+          [
+            358.0,
+            342.0
+          ],
+          [
+            104.0,
+            342.0
+          ]
+        ],
+        "stackup": [
+          {
+            "copper_oz": 2.0,
+            "copper_thickness_mm": 0.07,
+            "layer": "F.Cu",
+            "nominal_midplane_depth_mm": 0.035,
+            "role": "UNSELECTED K AGND feasibility"
+          },
+          {
+            "layer": "dielectric-1",
+            "material": "UNSELECTED conditional pressed dielectric",
+            "thickness_mm": 0.06
+          },
+          {
+            "copper_oz": 2.0,
+            "copper_thickness_mm": 0.07,
+            "layer": "In1.Cu",
+            "nominal_midplane_depth_mm": 0.165,
+            "role": "UNSELECTED K AGND feasibility"
+          },
+          {
+            "layer": "dielectric-2",
+            "material": "UNSELECTED conditional pressed dielectric",
+            "thickness_mm": 1.2
+          },
+          {
+            "copper_oz": 2.0,
+            "copper_thickness_mm": 0.07,
+            "layer": "In2.Cu",
+            "nominal_midplane_depth_mm": 1.4349999999999998,
+            "role": "Reserved rail routing; no rail plane modeled"
+          },
+          {
+            "layer": "dielectric-3",
+            "material": "UNSELECTED conditional pressed dielectric",
+            "thickness_mm": 0.06
+          },
+          {
+            "copper_oz": 2.0,
+            "copper_thickness_mm": 0.07,
+            "layer": "B.Cu",
+            "nominal_midplane_depth_mm": 1.565,
+            "role": "UNSELECTED K AGND feasibility"
+          }
+        ],
+        "enabled_copper_layers": [
+          "F.Cu",
+          "In1.Cu",
+          "In2.Cu",
+          "B.Cu"
+        ],
+        "minimum_native_track_width_mm": 0.2,
+        "scan_window_mm": [
+          117.875,
+          86.75,
+          121.875,
+          93.15
+        ],
+        "whole_export_item_count": 13698,
+        "whole_export_hole_count": 499,
+        "items": [
+          {
+            "uuid": "14496657-0d5d-53df-be29-e9ce67478f49",
+            "net": "X81CA071E9915CC31EAEA",
+            "ref": "J900002",
+            "pad": "1",
+            "copper_bbox_mm": {
+              "F.Cu": [
+                118.325,
+                89.1,
+                118.925,
+                90.8
+              ]
+            },
+            "primitive_kinds": {
+              "F.Cu": "rectangle"
+            }
+          },
+          {
+            "uuid": "835eae24-7f0d-5918-8d54-859e5053df59",
+            "net": "AGND",
+            "ref": "J900002",
+            "pad": "2",
+            "copper_bbox_mm": {
+              "F.Cu": [
+                119.575,
+                89.1,
+                120.175,
+                90.8
+              ]
+            },
+            "primitive_kinds": {
+              "F.Cu": "rectangle"
+            }
+          },
+          {
+            "uuid": "1784e598-97e6-5ac1-87d1-dd5bfa87e5cd",
+            "net": "X9D4DAF35CDBF61FFC354",
+            "ref": "J900002",
+            "pad": "3",
+            "copper_bbox_mm": {
+              "F.Cu": [
+                120.825,
+                89.1,
+                121.425,
+                90.8
+              ]
+            },
+            "primitive_kinds": {
+              "F.Cu": "rectangle"
+            }
+          },
+          {
+            "uuid": "84cd3774-15d0-5c89-b7a4-551c42e469ed",
+            "net": "XB01DA53372CF61D6B865",
+            "ref": "U4113",
+            "pad": "6",
+            "copper_bbox_mm": {
+              "B.Cu": [
+                120.95,
+                86.94,
+                122.9,
+                87.54
+              ]
+            },
+            "primitive_kinds": {
+              "B.Cu": "roundrect"
+            }
+          },
+          {
+            "uuid": "09ea43c7-69fd-515e-a65c-68216da37099",
+            "net": "AGND",
+            "ref": "U4113",
+            "pad": "7",
+            "copper_bbox_mm": {
+              "B.Cu": [
+                120.95,
+                88.21,
+                122.9,
+                88.81
+              ]
+            },
+            "primitive_kinds": {
+              "B.Cu": "roundrect"
+            }
+          },
+          {
+            "uuid": "133717bb-64fe-52a8-ac05-b44f6dc5c4c6",
+            "net": "X85D909FBF582A5BD0B18",
+            "ref": "U4113",
+            "pad": "8",
+            "copper_bbox_mm": {
+              "B.Cu": [
+                116.0,
+                88.21,
+                117.95,
+                88.81
+              ]
+            },
+            "primitive_kinds": {
+              "B.Cu": "roundrect"
+            }
+          },
+          {
+            "uuid": "c3960b6b-f0ea-5928-b271-bf08188f26e3",
+            "net": "X667413A9D525833F4F71",
+            "ref": "U4113",
+            "pad": "9",
+            "copper_bbox_mm": {
+              "B.Cu": [
+                116.0,
+                86.94,
+                117.95,
+                87.54
+              ]
+            },
+            "primitive_kinds": {
+              "B.Cu": "roundrect"
+            }
+          },
+          {
+            "uuid": "26e8c414-4231-5510-a1e4-a833938812fc",
+            "net": "XAAF00CCA5FF4D85D61E4",
+            "ref": "U4218",
+            "pad": "1",
+            "copper_bbox_mm": {
+              "B.Cu": [
+                117.45,
+                90.59,
+                119.4,
+                91.19
+              ]
+            },
+            "primitive_kinds": {
+              "B.Cu": "roundrect"
+            }
+          },
+          {
+            "uuid": "dab5dc41-1c22-5005-84fe-68030434de06",
+            "net": "X1181CA2352DC36220A8E",
+            "ref": "U4218",
+            "pad": "2",
+            "copper_bbox_mm": {
+              "B.Cu": [
+                117.45,
+                91.86,
+                119.4,
+                92.46
+              ]
+            },
+            "primitive_kinds": {
+              "B.Cu": "roundrect"
+            }
+          },
+          {
+            "uuid": "f1eb48ec-6fd6-528d-a330-69433ab935eb",
+            "net": "X3F9340B957384731A232",
+            "ref": "U4218",
+            "pad": "3",
+            "copper_bbox_mm": {
+              "B.Cu": [
+                117.45,
+                93.13,
+                119.4,
+                93.73
+              ]
+            },
+            "primitive_kinds": {
+              "B.Cu": "roundrect"
+            }
+          },
+          {
+            "uuid": "9db5aa7b-d28d-53ec-a24c-06d681a31d3c",
+            "net": "XCFDB8030594DCB3A26BA",
+            "ref": "U4219",
+            "pad": "12",
+            "copper_bbox_mm": {
+              "B.Cu": [
+                120.25,
+                93.13,
+                122.2,
+                93.73
+              ]
+            },
+            "primitive_kinds": {
+              "B.Cu": "roundrect"
+            }
+          },
+          {
+            "uuid": "12758422-da2b-5579-aeb6-202e1b17c2a8",
+            "net": "XB6126EF3BD713ABCAC1E",
+            "ref": "U4219",
+            "pad": "13",
+            "copper_bbox_mm": {
+              "B.Cu": [
+                120.25,
+                91.86,
+                122.2,
+                92.46
+              ]
+            },
+            "primitive_kinds": {
+              "B.Cu": "roundrect"
+            }
+          },
+          {
+            "uuid": "4a851db4-2beb-52d2-82d8-4985b34af0c7",
+            "net": "+5V",
+            "ref": "U4219",
+            "pad": "14",
+            "copper_bbox_mm": {
+              "B.Cu": [
+                120.25,
+                90.59,
+                122.2,
+                91.19
+              ]
+            },
+            "primitive_kinds": {
+              "B.Cu": "roundrect"
+            }
+          }
+        ],
+        "holes": [],
+        "zone_clip_candidates": [
+          {
+            "uuid": "603c6b2f-6307-54dd-a628-89d0d060349e",
+            "layer": "In1.Cu",
+            "net": "AGND",
+            "keepout": false,
+            "bbox_mm": [
+              104.5005,
+              58.5005,
+              413.4995,
+              341.4995
+            ]
+          },
+          {
+            "uuid": "865a0770-0253-5584-956f-91d612bf7e6d",
+            "layer": "B.Cu",
+            "net": "AGND",
+            "keepout": false,
+            "bbox_mm": [
+              104.5005,
+              58.5005,
+              413.4995,
+              341.4995
+            ]
+          },
+          {
+            "uuid": "f66a9044-a512-563f-b959-e21c6095d50b",
+            "layer": "F.Cu",
+            "net": "AGND",
+            "keepout": false,
+            "bbox_mm": [
+              104.5005,
+              58.5005,
+              413.4995,
+              341.4995
+            ]
+          }
+        ]
+      },
+      "proposed_retirements": [],
+      "board_access": {
+        "kind": "same_foil_AGND_pour",
+        "net": "AGND",
+        "target_plane": "F.Cu",
+        "status": "Proposed flare overlaps existing F.Cu AGND outside island window; native refill/connectivity and access energy OPEN"
+      }
+    }
+  ],
+  "test_admission": "OPEN: isolate the one selected conductor so every measured excitation ampere crosses both collar cuts. Other GH AGND pins, other harnesses, PCB planes and main wires must not bypass it. Test-to-installed/remated/contact-state applicability requires an independent process certificate. Whole-board V/I_total is not this test.",
+  "electrical_limits": {
+    "common_branch_plus_K_ohm": 0.0005,
+    "GH_contact_A": 0.5,
+    "common_rail_ohm": 0.001,
+    "distribution_V": 0.02,
+    "whole_path_V": 0.2
+  },
+  "claim_boundary": "Only a hash-bound retained-native local projection and proposed set-difference geometry. New native topology, masks, whole-board DRC/connectivity, copper/current/material operators, fixture isolation, actual process and physical qualification remain NOT RUN.",
+  "fabricated_geometry_premise": "All current-path joins are one connected copper pattern, not independently displaced solids. Required full section and source-union inner containment/outer envelope must be established over the finite etch/registration class. Geometry bounds alone do not certify its full energy metric."
+}
