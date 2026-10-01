@@ -3,6 +3,8 @@ import json
 from fractions import Fraction as F
 from pathlib import Path
 import unittest
+from unittest.mock import Mock, patch
+from scripts.checks import rail_monitor_candidate as monitor
 from scripts.checks.rail_monitor_candidate import (
     SPEC,calculate,delay_bound,divider_bounds,isolator_state,run,validate_sources)
 
@@ -100,6 +102,28 @@ class RailMonitorTests(unittest.TestCase):
 
     def test_generated_report_is_current(self):
         run(check=True)
+
+    def test_every_required_source_record_is_bound(self):
+        original=json.loads(monitor.SOURCES.read_text())
+        for record in original['sources']:
+            for missing in (True,False):
+                changed=copy.deepcopy(original)
+                if missing:
+                    changed['sources']=[r for r in changed['sources'] if r['id']!=record['id']]
+                else:
+                    next(r for r in changed['sources'] if r['id']==record['id'])['mpn']='WRONG-MPN'
+                with self.subTest(source=record['id'],missing=missing), patch.object(
+                        monitor,'SOURCES',Mock(read_text=lambda:json.dumps(changed))):
+                    with self.assertRaisesRegex(ValueError,'required device/source'):
+                        validate_sources(self.spec)
+
+    def test_source_hash_and_size_metadata_rejected_before_byte_verification(self):
+        original=json.loads(monitor.SOURCES.read_text())
+        for key,value in [('sha256','z'*64),('sha256','0'*64),('bytes',0),('bytes',True)]:
+            changed=copy.deepcopy(original);changed['sources'][0][key]=value
+            with patch.object(monitor,'SOURCES',Mock(read_text=lambda:json.dumps(changed))):
+                with self.assertRaisesRegex(ValueError,'primary metadata'):
+                    validate_sources(self.spec)
 
 
 if __name__=='__main__':unittest.main()

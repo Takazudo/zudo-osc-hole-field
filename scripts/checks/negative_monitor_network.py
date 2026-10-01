@@ -3,6 +3,7 @@ import argparse
 import hashlib
 import itertools
 import json
+import re
 import sys
 from fractions import Fraction as F
 from pathlib import Path
@@ -75,8 +76,12 @@ def validate(spec, retained=False):
         raise ValueError('not an admitted protection circuit')
     records = json.loads(SOURCES.read_text())['sources']
     sources = {r['mpn']: r for r in records}
-    if len(sources) != len(records):
+    if len(sources) != len(records) or len({r['id'] for r in records}) != len(records):
         raise ValueError('duplicate source')
+    required = {p['mpn'] for p in spec['resistors']} | {
+        spec['comparator']['mpn'], spec['reference']['mpn']}
+    if not required <= sources.keys():
+        raise ValueError('required device/source evidence missing or mismatched')
     expected = {
         'RN': ('VN', 'SENSE'), 'RR': ('REF', 'SENSE'), 'RG': ('SENSE', 'AGND'),
         'RB': ('REF', 'AGND'), 'RU': ('REF', 'UV'), 'RUG': ('UV', 'AGND'),
@@ -103,7 +108,10 @@ def validate(spec, retained=False):
             or r['pins'] != {'1':'NC','2':'AGND','3':'NC','4':'+5V','5':'NC','6':'REF'}):
         raise ValueError('exact pin map changed')
     for record in records:
-        if record['authority'] != 'MANUFACTURER_PRIMARY' or record['availability'] != 'AVAILABLE':
+        if (record['authority'] != 'MANUFACTURER_PRIMARY' or record['availability'] != 'AVAILABLE'
+                or not re.fullmatch('[0-9a-f]{64}', record['sha256'])
+                or set(record['sha256']) == {'0'}
+                or type(record['bytes']) is not int or record['bytes'] <= 0):
             raise ValueError('primary evidence required')
         if retained:
             data = (ROOT / record['file']).read_bytes()
