@@ -1,0 +1,51 @@
+---
+title: "Octave adapter PCB drafts"
+description: "Five routed passive selector adapters and their remaining qualification gates."
+---
+
+The five passive octave adapters now have routed PCB drafts. Each carries one ALPS Alpine SRBV160803 switch on the front and two JST BM07B-GHS-TBT(LF)(SN) headers on the back. All switch centres, source outlines and header poses remain fixed. These are **unvalidated drafts**, not fabrication releases.
+
+| Board | Selector orientation | Layers | Tracks / vias | Track length | Native open edges | DRC / parity findings |
+| --- | --- | --- | --- | --- | --- | --- |
+| O1 | Front, 0° | 2 | 33 / 7 | 111.7603 mm | 0 | 0 / 0 |
+| O2 | Rear, 180° | 2 | 22 / 3 | 69.9345 mm | 0 | 0 / 0 |
+| O3 | Front, 0° | 2 | 33 / 7 | 111.7603 mm | 0 | 0 / 0 |
+| O4 | Rear, 180° | 2 | 22 / 3 | 69.9345 mm | 0 | 0 / 0 |
+| O5 | Front, 0° | 2 | 33 / 7 | 111.7603 mm | 0 | 0 / 0 |
+
+Every board has three components, 30 pads and eight connected functional nets. Routing completed on the first bounded attempt for each board. Unconnected mechanical/NC pads retain their declared source mapping. Fresh native checks compare complete pad/net mappings, source poses, the fixed outline, zone definitions and full rule/net-class configuration before checking DRC and connected copper. The reports live in `boards/osc-octave-N/reports/`; their hashes bind the actual source and PCB bytes. CI checks disposable copies and does not rerun heuristic routing.
+
+The source proposal is 1.6 mm PCB thickness with 1 oz copper on two layers. These nominal values are not manufactured-board measurements. Top and bottom views were inspected by the coding agent; they have not been physically fitted or reviewed as a fabrication release.
+
+## Native views
+
+### O1
+
+![O1 front draft](/assets/osc-hole-field/osc-octave-1-top.png)
+![O1 back draft](/assets/osc-hole-field/osc-octave-1-bottom.png)
+
+### O2
+
+![O2 front draft](/assets/osc-hole-field/osc-octave-2-top.png)
+![O2 back draft](/assets/osc-hole-field/osc-octave-2-bottom.png)
+
+### O3
+
+![O3 front draft](/assets/osc-hole-field/osc-octave-3-top.png)
+![O3 back draft](/assets/osc-hole-field/osc-octave-3-bottom.png)
+
+### O4
+
+![O4 front draft](/assets/osc-hole-field/osc-octave-4-top.png)
+![O4 back draft](/assets/osc-hole-field/osc-octave-4-bottom.png)
+
+### O5
+
+![O5 front draft](/assets/osc-hole-field/osc-octave-5-top.png)
+![O5 back draft](/assets/osc-hole-field/osc-octave-5-bottom.png)
+
+## Remaining work
+
+The stepped switch carriers, recessed shafts, pointer indexing, handling panel, solder process and installed harness/service fit remain **NOT RUN** under [#55](https://github.com/Takazudo/zudo-osc-hole-field/issues/55) and [#65](https://github.com/Takazudo/zudo-osc-hole-field/issues/65). Modelled bodies and native DRC do not qualify those mechanisms. These passive adapters do not prove the powered boards' current, ground, rail or protection limits.
+
+The shared control board P remains unfinished in [#39](https://github.com/Takazudo/zudo-osc-hole-field/issues/39), including compact placement of its two slew circuits. [#38](https://github.com/Takazudo/zudo-osc-hole-field/issues/38) and [#59](https://github.com/Takazudo/zudo-osc-hole-field/issues/59) retain the unresolved current/ground and exact protection work. No order files are generated.

@@ -8,7 +8,8 @@ from scripts.pcbgen.generate_peripheral_ground import generate,source_contacts
 from scripts.pcbgen.peripheral_project_source import derive,fresh_sync_project
 from scripts.pcbgen.native_companion_binding import verify
 from scripts.pcbgen.peripheral_source_epoch import (derive as derive_epoch, prove_display_only,
-    prove_power_metadata_only, historical, IO, FP, OUTPUT, METADATA_BASE, CONTRACT, SUPPLY)
+    prove_power_metadata_only, prove_octave_routing_only, historical, IO, FP, OUTPUT,
+    METADATA_BASE, ROUTING_BASE, ROUTING, CONTRACT, SUPPLY)
 import hashlib
 
 BASE=Path('design/partition/peripheral-ground-feasibility')
@@ -33,7 +34,9 @@ class PeripheralGroundSourceTests(unittest.TestCase):
                 self.assertEqual(hashlib.sha256(historic_bytes).hexdigest(),bound['historical_receipt_sha256'])
                 self.assertEqual(hashlib.sha256(path.with_suffix('.receipt.json').read_bytes()).hexdigest(),bound['current_source_receipt_sha256'])
                 self.assertEqual(receipt['definition_sha256'],bound['unchanged_definition_sha256'])
-                self.assertEqual(set(bound['source_changes']),{'design/partition/partition.json','design/reports/io-partition.json'})
+                changes={'design/partition/partition.json','design/reports/io-partition.json'}
+                if row['board_id'].startswith('osc-octave-'):changes.add('design/boards/'+path.name)
+                self.assertEqual(set(bound['source_changes']),changes)
                 expected=copy.deepcopy(historic)
                 for source,change in bound['source_changes'].items():
                     self.assertEqual(expected['source_sha256'][source],change['historical'])
@@ -106,7 +109,9 @@ class PeripheralGroundSourceTests(unittest.TestCase):
     def test_complete_project_is_source_derived_with_only_named_changes(self):
         template=Path('boards/osc-jack-left/osc-jack-left.kicad_pro').read_bytes()
         for bid in ['osc-octave-1','osc-stage-optical']:
-            original=Path('boards',bid,bid+'.kicad_pro').read_bytes();definition=(BASE/(bid+'.json')).read_bytes()
+            # This tests the retained historical ground prerequisite, whose
+            # minimal project predates the separately checked real PCB drafts.
+            original=historical(f'boards/{bid}/{bid}.kicad_pro',ROUTING_BASE);definition=(BASE/(bid+'.json')).read_bytes()
             expected,receipt=derive(template,original,definition,bid+'-trial.kicad_pro');project=json.loads(expected)
             self.assertEqual(project['board']['design_settings']['rules']['min_copper_edge_clearance'],.5)
             self.assertEqual(project['board']['design_settings']['rules']['min_track_width'],.2)
@@ -118,6 +123,19 @@ class PeripheralGroundSourceTests(unittest.TestCase):
             changed=json.loads(original);changed['foreign_setting']='preserve me'
             with self.assertRaisesRegex(ValueError,'known source form'):
                 derive(template,json.dumps(changed).encode(),definition,bid+'-trial.kicad_pro')
+
+    def test_routing_transition_rejects_geometry_and_undeclared_rules(self):
+        path='design/boards/osc-octave-1.json'
+        old=historical(path,ROUTING_BASE);current=Path(path).read_bytes()
+        routing=json.loads(Path(ROUTING).read_bytes())
+        prove_octave_routing_only(old,current,routing)
+        for field in ('outline','layers','routing'):
+            changed=json.loads(current)
+            if field=='outline':changed[field][0][0]+=.01
+            elif field=='layers':changed[field]=4
+            else:changed[field]['net_classes'][0]['clearance_mm']=.01
+            with self.assertRaisesRegex(ValueError,'beyond declared routing'):
+                prove_octave_routing_only(old,json.dumps(changed).encode(),routing)
 
 
 

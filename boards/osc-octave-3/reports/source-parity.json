@@ -1,0 +1,151 @@
+{
+  "absent_inputs": [
+    "boards/osc-octave-3/osc-octave-3.kicad_dru",
+    "fp-lib-table"
+  ],
+  "board_id": "osc-octave-3",
+  "components": [
+    {
+      "angle_deg": 0,
+      "pins": {
+        "1": "X5D31DD5D6E642F7542A9",
+        "10": "X5D31DD5D6E642F7542A9",
+        "2": "X5CF52A5D3BDB84554948",
+        "3": "XA9392E54A81C8E2987E0",
+        "4": "X56C3D53C39023A952E08",
+        "5": "XE979A9D83B4902B292ED",
+        "6": "X9CC58764476721DDB0F8",
+        "7": "XFE31B748A31181E56A8B",
+        "8": "unconnected-(SW301-DUMMY-Pad8)",
+        "9": "unconnected-(SW301-DUMMY-Pad9)",
+        "MP1": "unconnected-(SW301-MOUNT-PadMP1)",
+        "MP2": "unconnected-(SW301-MOUNT-PadMP2)"
+      },
+      "reference": "SW301",
+      "side": "F.Cu",
+      "xy_mm": [
+        48.5,
+        185.0
+      ]
+    },
+    {
+      "angle_deg": 180.0,
+      "pins": {
+        "1": "X5D31DD5D6E642F7542A9",
+        "2": "AGND",
+        "3": "X5CF52A5D3BDB84554948",
+        "4": "AGND",
+        "5": "XA9392E54A81C8E2987E0",
+        "6": "AGND",
+        "7": "X56C3D53C39023A952E08",
+        "MP1": "unconnected-(J900122-MOUNT-PadMP1)",
+        "MP2": "unconnected-(J900122-MOUNT-PadMP2)"
+      },
+      "reference": "J900122",
+      "side": "B.Cu",
+      "xy_mm": [
+        48.5,
+        179.55
+      ]
+    },
+    {
+      "angle_deg": 180.0,
+      "pins": {
+        "1": "XE979A9D83B4902B292ED",
+        "2": "AGND",
+        "3": "X9CC58764476721DDB0F8",
+        "4": "AGND",
+        "5": "XFE31B748A31181E56A8B",
+        "6": "AGND",
+        "7": "AGND",
+        "MP1": "unconnected-(J900124-MOUNT-PadMP1)",
+        "MP2": "unconnected-(J900124-MOUNT-PadMP2)"
+      },
+      "reference": "J900124",
+      "side": "B.Cu",
+      "xy_mm": [
+        48.5,
+        186.55
+      ]
+    }
+  ],
+  "custom_rules": "ABSENT",
+  "drc": {
+    "rule_errors": 0,
+    "rule_warnings": 0,
+    "schematic_parity_issues": 0,
+    "unconnected_items": 0,
+    "unrouted_nets": []
+  },
+  "drc_command": [
+    "kicad-cli",
+    "pcb",
+    "drc",
+    "--schematic-parity",
+    "--refill-zones",
+    "--format",
+    "json",
+    "--severity-all",
+    "-o",
+    "/work/boards/osc-octave-3/reports/drc.json",
+    "/work/boards/osc-octave-3/osc-octave-3.kicad_pcb"
+  ],
+  "drc_sha256": "4bc6acee619e21c151a7d9c91a44d9924363d264ea58491829ca8ac4e7419375",
+  "electrical_performance": "NOT RUN; no ground-material/model qualification or protection acceptance",
+  "native_connectivity": {
+    "board": "/work/boards/osc-octave-3/osc-octave-3.kicad_pcb",
+    "board_net_count": 17,
+    "board_sha256": "f9e8be0e5f6d352667dd4b66f529cadb84660baec6dddd47903e2cb91eb90eb2",
+    "multi_pad_candidate_net_count": 8,
+    "multi_pad_candidate_net_names": [
+      "AGND",
+      "X56C3D53C39023A952E08",
+      "X5CF52A5D3BDB84554948",
+      "X5D31DD5D6E642F7542A9",
+      "X9CC58764476721DDB0F8",
+      "XA9392E54A81C8E2987E0",
+      "XE979A9D83B4902B292ED",
+      "XFE31B748A31181E56A8B"
+    ],
+    "name_scope": "native_open_edges_by_net is complete and sum-checked. multi_pad_candidate_net_names is a separate candidate inventory; CLI DRC JSON can truncate its item list.",
+    "named_edge_basis": "Native GetConnectedItems connectivity clusters including filled-zone islands; each net has clusters minus one edges; sum must equal native GetUnconnectedCount(False). Orphan zone-only islands excluded by native ratsnest policy.",
+    "named_edge_count_sum": 0,
+    "native_open_edge_source_identities": [],
+    "native_open_edges_by_net": {},
+    "native_open_net_count": 0,
+    "native_unconnected_edges": 0,
+    "schema_version": 2
+  },
+  "oracle": "KiCad 10.0.6 pinned container",
+  "physical_fit": "NOT RUN #55/#65",
+  "source_sha256": {
+    "boards/osc-octave-3/fp-lib-table": "3df699cb17aede0e9ad3da0fe2c32a3d22ff34180ec0e6a459f343bb7f982566",
+    "boards/osc-octave-3/osc-octave-3.kicad_pcb": "f9e8be0e5f6d352667dd4b66f529cadb84660baec6dddd47903e2cb91eb90eb2",
+    "boards/osc-octave-3/osc-octave-3.kicad_pro": "10828bcda07fd3c145c110b52d6c8da1f7b947294754f9935819d5bd4e3cec3e",
+    "boards/osc-octave-3/osc-octave-3.kicad_sch": "d230a771addf2278b43c4743de26f6a9fb91d38654fc490c46334b876e53674f",
+    "boards/osc-octave-3/sheets/board_interfaces_O3.kicad_sch": "4a5e52d41fd2330ed86a1fc77b2cc89db10f412dda5bc09b7a54a2fea8736ffa",
+    "boards/osc-octave-3/sheets/oscillator_O3_O3.kicad_sch": "2b22a4d3c0e0b6a6e391ecbe0bf66aa1c37daa48e1d1b155dbb5ca8e6dc96ca5",
+    "boards/osc-octave-3/sym-lib-table": "b5448cd3118cf4c51396e57ede913d028ff14955364c61183812abd351df0658",
+    "design/boards/osc-octave-3.json": "9bfd96d9500e7708cedc0947bba12737b693b4422a4c2f04d95948b66df9b51b",
+    "design/grid/placements.lock.json": "297300b067fd646624b9e501791163fa2d60702862b61568753bf92e5b88dbe8",
+    "design/partition/octave-routing.json": "b9129a46623ccbbee576caa3e3f84d62c779a285885542123ce9b55872ecd30d",
+    "design/reports/board-net-tokens.json": "2191a7c460dca125a296735c709ea15bb4921dc75eeb4fd87bb6f75528062d7e",
+    "footprints/kicad/zudo-osc-hole-field.pretty/JST_GH7_BM_TopEntry.kicad_mod": "e12c44cac03badb19ca799dc0a0f448143b1466daac1399d4db5662b67c4c979",
+    "footprints/kicad/zudo-osc-hole-field.pretty/SRBV160803.kicad_mod": "f8206a956661f5ff94ab9779e59dab9553c2df72df49aaa4a2dfa64c82a6d81b",
+    "schematic/boards/osc-octave-3.net": "e2bc5baf96ef34b5d2bbfd7c0bec1f981b4e09a72e551c592f0917f3085613ff",
+    "scripts/kicad/pin.env": "769e2be0b61e7d92a6930684f13166b7dc098522008de3969cd30d6c4a363246",
+    "scripts/kicad/run.sh": "bc74f0ade82c29d64c44119ea435bc7bfd164fc06e9afff240a3cb2b44b272a0",
+    "scripts/pcbgen/check_octave.py": "1b15a8f782eae93118ac54b70ca6399183f9584835423f26887fcac066fd00ad",
+    "scripts/pcbgen/definition.py": "547be631ce54651ec3cbcfaa0f2d4f63718c7bbc12794c0c893989e57f7e7997",
+    "scripts/pcbgen/fixtures/octave-project-template.json": "dc632022614d7d985ca97b60ad2546cbc6ddc908c303834ab60abe675191b20b",
+    "scripts/pcbgen/netlist.py": "a3bbd2ebaff5572f11d7119cb00f7821574589bf8d0f9b0d3cbb773901ea6516",
+    "scripts/pcbgen/octave_geometry.py": "e8d53596f8f23f3ca2e87c829776c6c86a512974c9528d5ed4a3d4f17a4565ad",
+    "scripts/pcbgen/octave_project.py": "9fc705059e094464ca952faefd25853cff96f2d541de5010bfbfee4cd7aec78d",
+    "scripts/pcbgen/pose.py": "482da9c0ee42cd2515ba397648c4261e07f1385abbe71919f70494eb873647bd",
+    "scripts/pcbgen/ratsnest.py": "110d37ee5a31911d867542dcf8cd9f6e836be657639f08346d172bfb2d8e2f34",
+    "scripts/pcbgen/route.py": "1e719b9e111f2d63f8ad497aef350bfc7c80c20eb41d805b35b5c81bf2667062",
+    "scripts/pcbgen/uuid_tools.py": "92db6d775250d9a375673f3e233079427226c081aa6efd571e4b58c9043fc68b",
+    "symbols/zudo-osc-hole-field.kicad_sym": "58c6e03b9b457e2f83a31a2ef74c3974fcec2807658ad7591dcefccc6aa271c4"
+  },
+  "status": "CONNECTED UNVALIDATED DRAFT"
+}

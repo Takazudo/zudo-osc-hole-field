@@ -13,7 +13,10 @@ from scripts.checks.io_partition60 import power_requirements, repacking_metadata
 BASE = Path('design/partition/peripheral-ground-feasibility')
 PRIOR = Path('design/partition/peripheral-source-epoch-20261001.json')
 DISPLAY_EPOCH = Path('design/partition/peripheral-source-epoch-20261002.json')
-OUTPUT = Path('design/partition/peripheral-source-epoch-20261002-power-metadata.json')
+POWER_EPOCH = Path('design/partition/peripheral-source-epoch-20261002-power-metadata.json')
+OUTPUT = Path('design/partition/peripheral-source-epoch-20261002-octave-routing.json')
+ROUTING_BASE = 'b8795bfbceaeb13e8e3f6d29d9ef57729299fd68'
+ROUTING = 'design/partition/octave-routing.json'
 COMMIT = 'fa11636b860ef80c01cb42bc7450551db556c72e'
 METADATA_BASE = '38153f8d51db8852ab87e00aa94039f7981dc937'
 IO = 'design/reports/io-partition.json'
@@ -75,7 +78,19 @@ def prove_power_metadata_only(old_io, new_io, contract, supply):
         raise ValueError('IO report changed beyond the exact power/package metadata replacement')
 
 
+def prove_octave_routing_only(old_bytes, new_bytes, routing):
+    old,new=json.loads(old_bytes),json.loads(new_bytes)
+    if old.get('routing') is not None or old['board_id'] not in {f'osc-octave-{n}' for n in range(1,6)}:
+        raise ValueError('unexpected octave routing transition base')
+    if new != {**old,'routing':routing}:
+        raise ValueError('octave definition changed beyond declared routing')
+
+
 def derive():
+    power_bytes=POWER_EPOCH.read_bytes()
+    if power_bytes != historical(str(POWER_EPOCH),ROUTING_BASE):
+        raise ValueError('historical power metadata epoch was modified')
+    routing_bytes=Path(ROUTING).read_bytes()
     prior_bytes = PRIOR.read_bytes()
     if prior_bytes != historical(str(PRIOR)):
         raise ValueError('historical epoch was modified')
@@ -95,10 +110,14 @@ def derive():
         raise ValueError('supply source changed beyond this metadata-only transition')
     prove_power_metadata_only(display_io, new_io, json.loads(inputs[CONTRACT]), json.loads(inputs[SUPPLY]))
     result = copy.deepcopy(display)
-    result['scope'] = ('Exact source projection equivalence through the retained display epoch '
-        'and the named power/package metadata correction. All other IO report values and '
-        'the supply contract/report are unchanged. Historical native/model prerequisites remain stale.')
-    result['prior_epoch'] = {'path': str(DISPLAY_EPOCH), 'sha256': sha(display_bytes)}
+    result['scope'] = ('Exact source projection equivalence through the retained power metadata epoch '
+        'plus declared routing-only additions to the five canonical octave definitions. '
+        'Their geometry, stack proposal and source pins are unchanged. The disposable ground '
+        'generator replaces routing, so its output definition remains identical. '
+        'Historical native/model prerequisites remain stale; actual octave PCB checks are separate.')
+    result['prior_epoch'] = {'path': str(POWER_EPOCH), 'sha256': sha(power_bytes)}
+    result['routing_transition']={'base_commit':ROUTING_BASE,'source':ROUTING,'sha256':sha(routing_bytes),
+        'scope':'Canonical routing-only proposal; no native/model evidence rebinding'}
     result['metadata_comparison'] = {'commit': METADATA_BASE, 'report': IO,
         'historical_report_sha256': sha(display_io), 'current_report_sha256': sha(new_io),
         'unchanged_supply_sources': {p: sha(raw) for p, raw in inputs.items()}}
@@ -114,6 +133,12 @@ def derive():
             if row['source_changes'][IO] != {'historical': sha(old_io), 'current': sha(display_io)}:
                 raise ValueError(f'{bid}: display epoch IO binding changed')
             row['source_changes'][IO] = {'historical': sha(old_io), 'current': sha(new_io)}
+            if bid.startswith('osc-octave-'):
+                path=f'design/boards/{bid}.json'
+                old_definition=historical(path,ROUTING_BASE)
+                new_definition=Path(path).read_bytes()
+                prove_octave_routing_only(old_definition,new_definition,json.loads(routing_bytes))
+                row['source_changes'][path]={'historical':sha(old_definition),'current':sha(new_definition)}
             for path, change in row['source_changes'].items():
                 if expected['source_sha256'][path] != change['historical'] or sha(Path(path).read_bytes()) != change['current']:
                     raise ValueError(f'{bid}: source hash mismatch: {path}')
@@ -126,7 +151,8 @@ def derive():
                 raise ValueError(f'{bid}: definition changed')
             row['current_source_receipt_sha256'] = sha(target.with_suffix('.receipt.json').read_bytes())
     result['latest_source_audit'] = ('Source projection only; exact historical receipt equality '
-        'except the two named source hashes. No native/model receipt rebind or electrical acceptance.')
+        'except the explicitly named metadata and canonical routing-only source hashes. '
+        'No native/model receipt rebind or electrical acceptance.')
     return result
 
 

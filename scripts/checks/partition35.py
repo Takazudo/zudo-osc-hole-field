@@ -197,6 +197,10 @@ def build():
             x,y=hole['center'];r=1.6
             keepouts.append({'id':'COLLAR-'+hole['id'],'polygon':[[x-r,y-r],[x+r,y-r],[x+r,y+r],[x-r,y+r]],'layers':['F.Cu'] if b=='EL' else ['F.Cu','B.Cu']})
         definition={'schema_version':1,'board_id':s['id'],'outline':s['outline'],'corner_radius_mm':0,'layers':s['layers'],'thickness_mm':s['thickness_mm'],'stackup':stack,'mounting_holes':holes,'keepouts':keepouts,'domains':sorted({p['domain'] for p in lock if p['uid'] in uids}),'placement_uids':uids,'netlist':'schematic/boards/'+s['id']+'.net','schematic':'schematic/boards/'+s['id']+'.kicad_sch','regions':regions}
+        if b in ('O1','O2','O3','O4','O5'):
+            # Passive adapter draft: no physical stack/material or ground-
+            # resistance qualification is implied by these routing proposals.
+            definition['routing']=read('design/partition/octave-routing.json')
         if b in JACK_BOARDS:
             definition['routing']={'min_track_width_mm':.1,'net_classes':[
                 {'name':'Default','nets':[],'track_width_mm':.2,'clearance_mm':.2,'via_diameter_mm':.6,'via_drill_mm':.3},
