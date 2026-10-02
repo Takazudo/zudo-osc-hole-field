@@ -33,7 +33,7 @@ def build():
   if cell['id']=='reference_generator':unquantified.append('REF5050 supply current, reference load and output drive')
   if cell['id']=='precision_output':unquantified.append('1 nF local feedback charge and discharge current during large steps; 100 ohm jack-sense resistor adds no nominal DC rail load, but modelled transient supply current is not a guaranteed maximum')
   rows.append({'id':cell['id'],'status':'PLANNING PARTIAL - NOT A CELL MAXIMUM','known_planning_mA':{r:round(subtotal[r],6) for r in RAILS},'basis':basis,'unquantified':unquantified,'qualification':'Sum only after exact package sharing, loads, duty cycles, source facts and netlist are resolved; no passing instrument budget is claimed.'})
- return {'schema_version':1,'standard_id':'OSC-ES-1','authority':STANDARD['authority'],'status':'Unvalidated partial planning worksheet; not a maximum or a board budget','source':SOURCE,'rail_ceiling_warning':'-12 V preliminary estimate is 712.655 mA versus 640 mA ceiling; #34 reduction required.','cells':rows}
+ return {'schema_version':1,'standard_id':'OSC-ES-1','authority':STANDARD['authority'],'status':'Unvalidated partial planning worksheet; not a maximum or a board budget','source':SOURCE,'rail_ceiling_warning':'Historical OSC-ES-1 preliminary worksheet: -12 V estimate 712.655 mA versus the then-proposed 640 mA ceiling. This superseded supply study is not the current EXT limit. Current allocation authority: design/power/rail-ledger.json and design/power/supply-architecture.json, with requirements in design/power/supply-architecture-input.json. Source qualification (#57) and protection implementation (#59) remain open.','cells':rows}
 
 def main(check=False):
  body=json.dumps(build(),indent=2,ensure_ascii=False)+'\n'
