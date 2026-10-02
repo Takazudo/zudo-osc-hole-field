@@ -18,10 +18,13 @@ bash scripts/kicad/run.sh kicad-cli pcb export svg --mode-single --layers F.Cu,F
 test -s "$fixture_dir/toggle-button-pitch.svg"
 python3 - "$fixture_dir/drc.json" <<'PY'
 import json,sys
+from pathlib import Path
+from scripts.libgen.gen_courtyards import courtyard_box
 r=json.load(open(sys.argv[1]))
 for v in r['violations']: print(v['type']+': '+v['description'])
 if r['violations'] or r['unconnected_items']: raise SystemExit(f"DRC FAIL: {len(r['violations'])} violations, {len(r['unconnected_items'])} unconnected items")
 print('KiCad 10 DRC PASS: 0 violations; SVG rendered')
-print('Nominal toggle courtyard gaps: 8.36 mm horizontal, 7.50 mm vertical')
-print('Conservative 9.4 mm radial lever reach would overlap adjacent 17 mm centres by 1.8 mm; actual swept reach UNSOURCED')
+box=courtyard_box(Path('footprints/kicad/zudo-osc-hole-field.pretty/Toggle_Dailywell_2MS_T1B1M2.kicad_mod').read_text())
+print(f'Nominal toggle courtyard gaps: {17-(box[2]-box[0]):.2f} mm horizontal, {14-(box[3]-box[1]):.2f} mm vertical')
+print('NOT RUN: actual lever swept-envelope clearance; pivot/throw envelope is unverified. This fixture contains footprints only.')
 PY

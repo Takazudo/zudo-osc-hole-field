@@ -184,26 +184,27 @@
     }
   },
   "switch_function": {
-    "status": "DRAWING",
+    "status": "DRAWING POSITIONS ONLY; PANEL-DIRECTION MAPPING UNPROVED",
     "locator": "DAILYWELL-2M printed p.25, SWITCH FUNCTION table; DW2 physical p.0, SWITCH FUNCTION table",
-    "left_lever_position": {
+    "drawing_position_1": {
       "terminal_pair": "2-3",
       "two_position": "ON",
       "three_position": "ON"
     },
-    "centre_lever_position": {
+    "drawing_position_2": {
       "two_position": "not stable",
       "three_position": "OPEN"
     },
-    "right_lever_position": {
+    "drawing_position_3": {
       "terminal_pair": "2-1",
       "two_position": "ON",
       "three_position": "ON"
-    }
+    },
+    "scope": "POS.1 connects 2-3, POS.2 is open for 2MS3, and POS.3 connects 2-1 in the retained drawings. These view-dependent labels are not a proven panel-left/right mapping."
   },
   "orientation": {
     "status": "PROJECT-CHOICE",
-    "rule": "Mount pad 3 at panel-left, pad 1 at panel-right; pin 2 is common. First printed position is panel-left.",
+    "rule": "Provisional footprint convention: pad 3 at panel-left, pad 1 at panel-right, pin 2 common. The first printed word is intended at panel-left; which contact closes there is not established by this convention.",
     "uses": [
       {
         "use": "RANGE",
@@ -262,7 +263,9 @@
         "mpn": "2MS3T1B1M2QES"
       }
     ],
-    "source_locator": "design/grid/placements.lock.json and R21 panel wording in project/osc-hole-field/workbench; Dailywell printed p.25 POS.1/POS.3 contact table"
+    "source_locator": "design/grid/placements.lock.json and R21 panel wording in project/osc-hole-field/workbench; Dailywell printed p.25 POS.1/POS.3 contact table",
+    "contact_to_panel_direction_status": "UNSOURCED",
+    "required_evidence": "Reconcile the switch-function icons, terminal-numbered mechanical views, drawing projection and actual board face/rotation before assigning POS.1/POS.3 to panel-left/right; confirm physical continuity before installed qualification. Current electrical nets and selected MPNs are unchanged and remain draft."
   },
   "grid_fit": {
     "fixed_pitch_mm": [
@@ -278,7 +281,7 @@
       7.5
     ],
     "status": "GEOMETRIC DRAFT",
-    "lever_sweep_note": "A full 9.4 mm radius around each axis would overlap by 1.8 mm at 17 mm pitch; this is a deliberately conservative bound, not an actual swept envelope. Physical lever sweep needs a coupon.",
+    "lever_sweep_note": "Actual swept-envelope clearance is UNSOURCED. The 9.4 mm actuator-length datum does not locate the pivot or bound the swept radius; no conservative clearance claim follows from a hypothetical radius of that value.",
     "source_locator": "design/grid/placements.lock.json control grid and scripts/libgen/gen_courtyards.py generated outline"
   },
   "exact_identity_gate": {
