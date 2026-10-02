@@ -10,12 +10,26 @@
     "status": "CONDITIONAL DRAFT"
   },
   "placement": {
-    "offset_from_jack_centre_mm": [
-      6.15,
-      0
-    ],
     "status": "FIXED R21 GRID",
-    "locator": "design/grid/placements.lock.json, jack-adjacent LED feature centres"
+    "locator": "design/grid/placements.lock.json: jack-field LED centres minus their parent jack centres, grouped by led_type",
+    "groups": [
+      {
+        "led_type": "mag",
+        "count": 92,
+        "offset_from_jack_centre_mm": [
+          6.15,
+          0.0
+        ]
+      },
+      {
+        "led_type": "clip",
+        "count": 10,
+        "offset_from_jack_centre_mm": [
+          6.15,
+          2.05
+        ]
+      }
+    ]
   },
   "method": {
     "value": "bare FR4 optical window",
@@ -44,7 +58,7 @@
   "coupon_gate": [
     "Measure white and red visibility in expected ambient light and across viewing angles",
     "Check light bleed, cross-talk, mask registration, and copper clearance",
-    "Check jack nut and inserted plug clearance at fixed 6.15 mm offset",
+    "Check jack nut and inserted plug clearance at the fixed per-type offsets",
     "Measure actual seated board-to-panel distance before selecting emitter or light pipe"
   ],
   "qualification": "Unvalidated draft; no optical or assembled-stack test exists."

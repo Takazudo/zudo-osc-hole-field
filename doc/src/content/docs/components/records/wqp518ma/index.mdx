@@ -31,7 +31,7 @@ This record in the catalog: [WQP518MA](/docs/components/catalog/#rec-wqp518ma)
 
 **Identity state:** UNRESOLVED
 
-**Source state:** AVAILABLE
+**Source state:** SOURCE UNAVAILABLE
 
 **Coverage:** 3 open of 3 published
 
@@ -103,15 +103,17 @@ Coverage is stated one domain at a time and is never rolled up. A domain marked 
 
 **Coverage ID:** `cov-wqp-mechanical` · **Status:** OPEN
 
-**Reason:** The fixed panel stack requires a coupon measurement; do not infer fit from the family drawing.
+**Reason:** Exact manufacturer mechanical drawing is unavailable and the fixed panel stack requires a coupon measurement; distributor family CAD establishes neither exact dimensions nor installed fit.
 
 **Facts in this domain:**
 
 - [`fact-wqp-panel-stack`](#fact-wqp-panel-stack)
+- [`fact-wqp-manufacturer-drawing-unavailable`](#fact-wqp-manufacturer-drawing-unavailable)
 
 **Blocked by:** these facts must be resolved before the domain can close. Each is listed in full under Facts.
 
 - [`fact-wqp-panel-stack`](#fact-wqp-panel-stack)
+- [`fact-wqp-manufacturer-drawing-unavailable`](#fact-wqp-manufacturer-drawing-unavailable)
 
 ## Facts
 
@@ -217,6 +219,20 @@ A value this project recorded about how the part is used here — a chosen opera
   **Verdict:** UNSOURCED · **Provenance:** UNVERIFIED
 
   **Evidence:** [`src-wqp-thonk`](#src-wqp-thonk) — Product identity section: the retained listing does not state the handoff manufacturer string Qingpu.
+</EvidenceFact>
+
+<EvidenceFact>
+  <EvidenceAnchor id="fact-wqp-manufacturer-drawing-unavailable" />
+
+  **Fact:** `fact-wqp-manufacturer-drawing-unavailable`
+
+  **Value:** Exact manufacturer mechanical drawing is unavailable; terminal drills, bushing/thread, nut and clamp range remain unconfirmed. · **Unit:** `NONE`
+
+  **Conditions:** Missing evidence only. The inventory identity remains a candidate; retained distributor family CAD is not promoted to manufacturer proof.
+
+  **Verdict:** UNSOURCED · **Provenance:** UNVERIFIED
+
+  **Evidence:** [src-wqp-manufacturer-drawing-unavailable: requested exact terminal-layout and panel-stack figure/table](#src-wqp-manufacturer-drawing-unavailable)
 </EvidenceFact>
 
 ## Pin maps
@@ -332,6 +348,26 @@ Every document cited above, with its identification, when it was retrieved, and 
 
 **Document URL:** [https://jlcpcb.com/partdetail/8460744-WQPWQP518MA/C9900052034](https://jlcpcb.com/partdetail/8460744-WQPWQP518MA/C9900052034)
 
+### Exact WQP518MA manufacturer mechanical drawing (unavailable)
+
+<EvidenceAnchor id="src-wqp-manufacturer-drawing-unavailable" />
+
+**Source ID:** `src-wqp-manufacturer-drawing-unavailable` · **Authority:** MANUFACTURER\_PRIMARY
+
+| Field           | Recorded value |
+| --------------- | -------------- |
+| Document number | Not identified |
+| Revision        | Not verified   |
+| Document date   | Not verified   |
+| Retrieved       | 2026-10-02     |
+| Printed page    | not verified   |
+
+**Locator:** Requested figure/table: exact WQP518MA terminal layout, drill dimensions, bushing/thread, nut and panel clamp range; manufacturer drawing not retained.
+
+**Availability:** SOURCE UNAVAILABLE
+
+**Document URL:** no link is published for this source
+
 ## Legend
 
 What the recorded terms on this page mean, in ordinary words. The exact terms above are the ones that count; these descriptions explain them and never replace them.
@@ -364,15 +400,17 @@ What the recorded terms on this page mean, in ordinary words. The exact terms ab
 
 ### Source availability
 
-| Recorded term | What it means                                |
-| ------------- | -------------------------------------------- |
-| `AVAILABLE`   | The document was retrieved and is on record. |
+| Recorded term        | What it means                                                                                                         |
+| -------------------- | --------------------------------------------------------------------------------------------------------------------- |
+| `AVAILABLE`          | The document was retrieved and is on record.                                                                          |
+| `SOURCE UNAVAILABLE` | The document could not be retrieved. It stays listed so the gap is visible; anything resting on it remains unsourced. |
 
 ### Source authority
 
 | Recorded term          | What it means                                                        |
 | ---------------------- | -------------------------------------------------------------------- |
 | `DISTRIBUTOR_IDENTITY` | A distributor listing. Establishes which part this is, nothing more. |
+| `MANUFACTURER_PRIMARY` | The manufacturer's own document for this exact part.                 |
 
 ### Identity state
 
@@ -382,9 +420,9 @@ What the recorded terms on this page mean, in ordinary words. The exact terms ab
 
 ### Source state
 
-| Recorded term | What it means                                          |
-| ------------- | ------------------------------------------------------ |
-| `AVAILABLE`   | At least one document backing this line was retrieved. |
+| Recorded term        | What it means                                     |
+| -------------------- | ------------------------------------------------- |
+| `SOURCE UNAVAILABLE` | No document backing this line could be retrieved. |
 
 ### Unit
 
