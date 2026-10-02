@@ -1,0 +1,9 @@
+# SPICE trace freshness
+
+Request: continue checking and fixing draft-model evidence before merging completed work.
+
+The envelope, noise and filter AC runners previously accepted any cached trace when ngspice returned zero. A pinned ngspice 44.2 diagnostic with `wrdata ... v(NO_SUCH_NODE)` returned zero, printed `Error: no such vector NO_SUCH_NODE`, and left a pre-existing output untouched. A disposable envelope regression reproduced a false model PASS with retained old data. Neither probe changed hardware or the canonical trace.
+
+Each trace consumer now removes its previous output before invocation and requires a new nonempty file. Shared result checking rejects nonzero status, explicit error/fatal-error diagnostics and aborted simulations. Filter transient results receive the same error check. Numerical acceptance limits and circuit values are unchanged. Regression controls exercise all three consumers, including fresh success and advisory warnings; fixture provenance is recorded alongside the decimated envelope trace.
+
+Entry aggregate regeneration passed with no tracked drift. Final guarded verification passed in400s: all21 fresh native cases (8 envelope,4 noise,8 filter AC and1 filter transient), aggregate regeneration,24 focused tests, evidence validation/generation, model publication checks, documentation type/build checks and strict site checks with the existing single allowlist exception. All three report payloads are identical apart from envelope producer/helper hashes. Of22 deck/include files,20 are byte-identical; two filter files change only source-generated amplifier identifiers, with every connection/value unchanged. Independent read-only review found no blocking issue. No new electrical qualification is claimed. These remain ideal/limited device models, with physical protection, current and board acceptance open.
