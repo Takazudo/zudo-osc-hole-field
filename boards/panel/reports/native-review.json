@@ -1,0 +1,121 @@
+{
+  "schema_version": 1,
+  "status": "PASS - native panel checks; unvalidated draft",
+  "oracle": {
+    "kicad_version": "10.0.6",
+    "image": "kicad/kicad@sha256:18693567392b80da435f9fa952ce3a3e534c66eb5a6033f5b9c80aa3b19dd3ec"
+  },
+  "inputs": {
+    "boards/panel/panel.kicad_pcb": {
+      "sha256": "8584308d9b011bd9cf03f3f283d22677ba30a001fec4bb9d08cd429b695c50e5",
+      "bytes": 1895534
+    },
+    "boards/panel/panel.kicad_pro": {
+      "sha256": "6ef92d66a16fae59400be919c75bd70ba765ef6b24cc9e06aecbd7a706f2d126",
+      "bytes": 9739
+    },
+    "design/panel/panel-params.json": {
+      "sha256": "e69cbba6370d6d1f7dc6afdd04f31d7704fa40af012e4ee457fe5c7e999a6148",
+      "bytes": 2328
+    },
+    "design/grid/placements.lock.json": {
+      "sha256": "297300b067fd646624b9e501791163fa2d60702862b61568753bf92e5b88dbe8",
+      "bytes": 224256
+    },
+    "scripts/kicad/pin.env": {
+      "sha256": "769e2be0b61e7d92a6930684f13166b7dc098522008de3969cd30d6c4a363246",
+      "bytes": 257
+    }
+  },
+  "outputs": {
+    "boards/panel/reports/drc.json": {
+      "sha256": "e7ace19335cb97526cba1ba6f5265726889c9f9ca5571a7e22d90fb45d7af01e",
+      "bytes": 1083
+    },
+    "boards/panel/reports/feature-table.json": {
+      "sha256": "4a20987e7f25d046db343be3d73ce165c3363f3685442e48a31293b4d208d819",
+      "bytes": 69574
+    },
+    "boards/panel/reports/panel-top.png": {
+      "sha256": "9ef0f47c84e7caf493d02898e674085516ad364b4ae7fd5c514bdaba4686a6fd",
+      "bytes": 787109
+    },
+    "doc/public/assets/osc-hole-field/panel-kicad-top.png": {
+      "sha256": "9ef0f47c84e7caf493d02898e674085516ad364b4ae7fd5c514bdaba4686a6fd",
+      "bytes": 787109
+    }
+  },
+  "commands": {
+    "version": [
+      "bash",
+      "scripts/kicad/run.sh",
+      "kicad-cli",
+      "version"
+    ],
+    "features": [
+      "bash",
+      "scripts/kicad/run.sh",
+      "python3",
+      "scripts/panel/check_panel.py",
+      "--output",
+      ".circuit-cache/panel-review-refresh/features.json"
+    ],
+    "drc": [
+      "bash",
+      "scripts/kicad/run.sh",
+      "kicad-cli",
+      "pcb",
+      "drc",
+      "--format",
+      "json",
+      "--severity-all",
+      "--output",
+      ".circuit-cache/panel-review-refresh/drc.json",
+      "boards/panel/panel.kicad_pcb"
+    ],
+    "render": [
+      "bash",
+      "scripts/kicad/run.sh",
+      "kicad-cli",
+      "pcb",
+      "render",
+      "--width",
+      "2384",
+      "--height",
+      "2240",
+      "--side",
+      "top",
+      "--quality",
+      "high",
+      "--background",
+      "opaque",
+      "--use-board-stackup-colors",
+      "--output",
+      ".circuit-cache/panel-review-refresh/panel-top-opaque.png",
+      "boards/panel/panel.kicad_pcb"
+    ]
+  },
+  "render_actual_pixels": [
+    2352,
+    2216
+  ],
+  "render_requested_pixels": [
+    2384,
+    2240
+  ],
+  "renderer_state": "Orthographic top, high quality, opaque background, board stackup colors; default follow_plot_settings preset in a fresh pinned-oracle HOME. Pixel dimensions are the actual exported canvas, not physical dimensions.",
+  "feature_summary": {
+    "features": 438,
+    "drilled_holes": 324,
+    "undrilled_optical_windows": 114,
+    "octave_diameters_mm": [
+      7.0,
+      7.0,
+      7.0,
+      7.0,
+      7.0
+    ]
+  },
+  "schematic_parity": "NOT APPLICABLE - board-only panel; no electronic schematic",
+  "qualification": "Physical fit, strength, optical behavior and manufacturing qualification NOT RUN; no fabrication output."
+}
