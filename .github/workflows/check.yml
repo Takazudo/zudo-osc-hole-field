@@ -121,6 +121,13 @@ jobs:
       - name: Replay dense routing and reject stale project rules
         run: bash scripts/pcbgen/test_route.sh --dense
 
+      - name: Check five current octave PCB drafts and rejection controls
+        run: |
+          bash scripts/kicad/run.sh python3 scripts/pcbgen/fixtures/check_fixed_only.py
+          bash scripts/kicad/run.sh python3 scripts/pcbgen/fixtures/check_octave_labels.py
+          bash scripts/kicad/run.sh python3 scripts/pcbgen/check_octave.py --disposable
+          bash scripts/kicad/run.sh python3 scripts/pcbgen/fixtures/check_octave_mutations.py
+
       - name: Check aggregate source regeneration
         id: aggregate
         run: |

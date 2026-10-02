@@ -17,6 +17,7 @@ from scripts.pcbgen.definition import load_definition,load_lock,selected_hardwar
 from scripts.pcbgen.netlist import read_netlist
 from scripts.pcbgen.uuid_tools import stable_uuid,normalize_file
 from scripts.pcbgen.placement_geometry import Box,inside_outline,placement_side_matches
+from scripts.pcbgen.pose import source_pose
 
 GRID=0.5
 POWER={'GND','AGND','+12V','-12V','+5V','VCC','VDD','VSS'}
@@ -136,7 +137,8 @@ def cluster_order(components,pin_nets):
 
 def place(board_id,board_path=None,netlist_path=None,report_path=None):
  definition=load_definition(ROOT/'design/boards'/f'{board_id}.json')
- if not definition.regions:raise ValueError(f'{board_id}: no placement regions')
+ # A fully source-anchored board needs no search regions. Missing regions
+ # still fail below for every eligible unlocked component.
  board_path=Path(board_path) if board_path else ROOT/'boards'/board_id/f'{board_id}.kicad_pcb'
  netlist_path=Path(netlist_path) if netlist_path else ROOT/definition.netlist
  report_path=Path(report_path) if report_path else board_path.parent/'reports/placement.json'
@@ -147,11 +149,18 @@ def place(board_id,board_path=None,netlist_path=None,report_path=None):
  lock=load_lock(ROOT/'design/grid/placements.lock.json')
  fixed={p['ref']:p for p in selected_hardware(definition,lock)}
  board_refs={fp.GetReference():fp for fp in board.GetFootprints()}
+ if len(board_refs)!=len(list(board.GetFootprints())):raise ValueError('duplicate board reference')
+ if not definition.regions:
+  expected=set(metadata)|{f"MH_{h['id']}" for h in definition.mounting_holes}
+  if set(board_refs)!=expected:raise ValueError('fixed-only board has missing or unaccounted footprints')
  for ref,p in fixed.items():
   fp=board_refs.get(ref)
   if fp is None or not fp.IsLocked():raise ValueError(f'{ref}: fixed hardware missing/unlocked')
   x,y=to_kicad(p['x_mm'],p['y_mm'])
   if abs(mm(fp.GetPosition().x)-x)>1e-6 or abs(mm(fp.GetPosition().y)-y)>1e-6:raise ValueError(f'{ref}: fixed hardware moved from lockfile')
+  pose=source_pose(dict(metadata[ref].fields),p['rot_deg'])
+  if fp.GetLayerName()!=pose.side or abs((fp.GetOrientationDegrees()-pose.orientation+180)%360-180)>1e-5:
+   raise ValueError(f'{ref}: fixed hardware face/angle differs from lockfile')
  regions=regions_for(definition)
  free=collections.defaultdict(list);preserved=[]
  for ref,c in metadata.items():
@@ -159,14 +168,17 @@ def place(board_id,board_path=None,netlist_path=None,report_path=None):
   fp=board_refs.get(ref)
   if fp is None:raise ValueError(f'{ref}: board footprint missing')
   source_origin=dict(c.fields).get('FootprintOriginMm','')
+  if not definition.regions and not source_origin:raise ValueError(f'{ref}: fixed-only board requires a source origin')
   if source_origin:
    sx,sy=(float(v) for v in source_origin.split(','))
+   if not all(math.isfinite(v) for v in (sx,sy)):raise ValueError(f'{ref}: nonfinite source origin')
+   pose=source_pose(dict(c.fields))
+   if not definition.regions and (pose.side is None or pose.orientation is None):
+    raise ValueError(f'{ref}: fixed-only board requires source face and angle')
    pos=fp.GetPosition()
    if abs(mm(pos.x)-100-sx)>1e-5 or abs(mm(pos.y)-50-sy)>1e-5:raise ValueError(f'{ref}: board differs from source footprint origin')
-   source_side=dict(c.fields).get('BoardSide','')
-   if source_side and str(fp.GetLayerName())!=source_side:raise ValueError(f'{ref}: board differs from source footprint face')
-   source_angle=dict(c.fields).get('KiCadOrientationDeg','')
-   if source_angle and abs((fp.GetOrientationDegrees()-float(source_angle)+180)%360-180)>1e-5:
+   if pose.side and str(fp.GetLayerName())!=pose.side:raise ValueError(f'{ref}: board differs from source footprint face')
+   if pose.orientation is not None and abs((fp.GetOrientationDegrees()-pose.orientation+180)%360-180)>1e-5:
     raise ValueError(f'{ref}: board differs from source footprint angle')
   if fp.IsLocked() or not owned(board_id,fp):preserved.append(ref);continue
   block=normalize_block(c)
@@ -279,9 +291,10 @@ def place(board_id,board_path=None,netlist_path=None,report_path=None):
   report['placements'].append({'ref':ref,'block':normalize_block(metadata[ref]),'region_index':ri,'side':side,'x_mm':x,'y_mm':y,'courtyard_mm':[round(box.x0,4),round(box.y0,4),round(box.x1,4),round(box.y1,4)]})
  report['status']='PLACED DRAFT'
  owned_refs={ref for ref,fp in board_refs.items() if owned(board_id,fp)}
- pcbnew.SaveBoard(str(board_path),board)
- owned_zone_ids={item_uuid(z) for z in board.Zones() if z.GetZoneName().startswith(f'pcbgen:{board_id}:')}
- normalize_file(board_path,board_id,owned_refs,{},False,owned_zone_ids)
+ if placed:
+  pcbnew.SaveBoard(str(board_path),board)
+  owned_zone_ids={item_uuid(z) for z in board.Zones() if z.GetZoneName().startswith(f'pcbgen:{board_id}:')}
+  normalize_file(board_path,board_id,owned_refs,{},False,owned_zone_ids)
  report_path.write_text(json.dumps(report,indent=2,sort_keys=True)+'\n')
  print(f'{board_id}: placed {len(placed)} free footprints in {len(report["regions"])} regions; {len(preserved)} locked/unowned preserved; draft')
  return report

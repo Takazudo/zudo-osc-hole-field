@@ -19,6 +19,7 @@ from scripts.pcbgen.uuid_tools import stable_uuid,normalize_file
 from scripts.pcbgen.geometry import outline_segments,staging_position
 from scripts.pcbgen.footprint_attributes import source_attribute_bits
 from scripts.pcbgen.pose import source_pose
+from scripts.pcbgen.octave_labels import place_default_reference
 
 LIB='zudo-osc-hole-field'
 
@@ -144,6 +145,8 @@ def sync(board_id:str,output:Path|None=None,netlist:Path|None=None):
         # Flipping changes native orientation; apply the source/lock angle last.
         if pose.orientation is not None:fp.SetOrientationDegrees(pose.orientation)
         if pose.force_lock:fp.SetLocked(True)
+        if board_id in {f"osc-octave-{n}" for n in range(1,6)} and c.ref in by_ref:
+            place_default_reference(fp, by_ref[c.ref])
         fp.SetAttributes(source_attribute_bits(fp.GetAttributes(),fields,pcbnew.FP_DNP,pcbnew.FP_EXCLUDE_FROM_BOM))
         for pad in fp.Pads():
             net_name=pin_nets.get((c.ref,pad.GetNumber()))
