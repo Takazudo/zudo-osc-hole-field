@@ -14,7 +14,7 @@ class ControlCopperSourceTests(unittest.TestCase):
 
     def test_current_source_has_complete_arrays(self):
         rows = validate(self.spec)
-        self.assertEqual(sum(r['kind']=='segment' for r in rows),1345)
+        self.assertEqual(sum(r['kind']=='segment' for r in rows),1355)
         self.assertEqual(sum(r['kind']=='via' for r in rows),368)
         self.assertEqual(sum(len(a['via_uuids']) for a in self.spec['main_arrays']),150)
 
