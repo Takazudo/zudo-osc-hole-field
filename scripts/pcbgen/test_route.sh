@@ -41,7 +41,7 @@ PYREP
   fi
   python3 scripts/pcbgen/fixtures/assert_route_fixture.py
 elif [[ $mode == --dense ]]; then
-  exec bash "$HOME/.codex/scripts/heavy-guard.sh" -- bash scripts/pcbgen/test_dense.sh
+  exec bash scripts/pcbgen/with_route_guard.sh bash scripts/pcbgen/test_dense.sh
 elif [[ $mode == --dense-route ]]; then
   python3 - <<'PYCLEAN'
 from pathlib import Path

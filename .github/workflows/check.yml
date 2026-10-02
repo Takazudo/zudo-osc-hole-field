@@ -115,6 +115,9 @@ jobs:
       - name: Reject malformed native panel features
         run: bash scripts/kicad/run.sh python3 scripts/panel/check_feature_mutations.py
 
+      - name: Replay dense routing and reject stale project rules
+        run: bash scripts/pcbgen/test_route.sh --dense
+
       - name: Check aggregate source regeneration
         id: aggregate
         run: |
