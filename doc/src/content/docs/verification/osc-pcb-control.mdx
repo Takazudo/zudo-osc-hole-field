@@ -11,15 +11,16 @@ The candidate uses the reviewed local edge tab beside RV601 and separate reserva
 | --- | --- |
 | DRC violations, including silkscreen | **0** |
 | Schematic parity findings | **0** |
-| Source track segments / through vias | 1,355 / 368 |
+| Source track segments / through vias | 905 / 278 |
 | Connected source ground contacts | **344 / 344** |
-| Complete native open-edge count | **366** |
+| Connected local IC/bypass rail pairs | **16 / 16**, maximum pad distance 2.535 mm |
+| Complete native open-edge count | **389** |
 | Independent reload and refill | Same ground and open-edge counts |
 | Routing / electrical and physical qualification | **Incomplete / NOT RUN** |
 
-The unrouted placement reference remains at `boards/osc-control/osc-control-layout.kicad_pcb`, with 872 open edges. Adding the original ground prerequisite reduced that to 529. The current explicit copper and local repairs reduce it to 366; the full per-net inventory is retained in `design/partition/control-copper/ratsnest.json`.
+The unrouted placement reference remains at `boards/osc-control/osc-control-layout.kicad_pcb`, with 872 open edges. Adding the original ground prerequisite reduced that to 529. The earlier partial checkpoint reached 366. Correcting twelve remote bypass capacitors moved 22 unfixed IC/capacitor packages and required removal of their obsolete routing. The repaired copper had 432 open edges; sixteen bypass connections and ten local signal links reduce it to 406. Seventeen additional local signal links use short layer changes and reduce it to 389; the full per-net inventory is retained in `design/partition/control-copper/ratsnest.json`.
 
-Fresh refill exposed four ground islands hidden by the first recovered autorouter fill. Four short front-layer signal bridges now open those back-plane boundaries, and a separate via joins an unfinished signal-layer transition. The replay checks every source ground contact after a fresh load and a second refill. It preserves the original footprint, outline and reservation bytes. A passing DRC alone is not treated as connected or electrically compliant copper.
+In the earlier recovery, fresh refill exposed four ground islands hidden by the first autorouter fill. Four short front-layer signal bridges now open those back-plane boundaries, and a separate via joins an unfinished signal-layer transition. The replay checks every source ground contact after a fresh load and a second refill. It preserves the current source footprint, outline and reservation bytes. Native checks also reject a displaced bypass capacitor and require all sixteen local rail pairs to remain connected after independent refill. A passing DRC alone is not treated as connected or electrically compliant copper.
 
 ## Native layer views
 
@@ -31,4 +32,4 @@ These are copper/silkscreen previews of the partial candidate, not fabrication p
 
 ## Remaining work
 
-[Issue #39](https://github.com/Takazudo/zudo-osc-hole-field/issues/39) remains open for the 366 remaining connections and canonical geometry adoption. The proposed four-layer, 2 oz, 1.6 mm stack, actual connected-copper current and resistance limits, exact protection and supply boundaries, manufacturing process and installed assembly remain unresolved under [#38](https://github.com/Takazudo/zudo-osc-hole-field/issues/38), [#59](https://github.com/Takazudo/zudo-osc-hole-field/issues/59), [#55](https://github.com/Takazudo/zudo-osc-hole-field/issues/55) and [#65](https://github.com/Takazudo/zudo-osc-hole-field/issues/65). Historical electrical receipts are not reused for this copper. No fabrication or order files are generated.
+[Issue #39](https://github.com/Takazudo/zudo-osc-hole-field/issues/39) remains open for the 389 remaining connections and canonical geometry adoption. The proposed four-layer, 2 oz, 1.6 mm stack, actual connected-copper current and resistance limits, exact protection and supply boundaries, manufacturing process and installed assembly remain unresolved under [#38](https://github.com/Takazudo/zudo-osc-hole-field/issues/38), [#59](https://github.com/Takazudo/zudo-osc-hole-field/issues/59), [#55](https://github.com/Takazudo/zudo-osc-hole-field/issues/55) and [#65](https://github.com/Takazudo/zudo-osc-hole-field/issues/65). Historical electrical receipts are not reused for this copper. No fabrication or order files are generated.
