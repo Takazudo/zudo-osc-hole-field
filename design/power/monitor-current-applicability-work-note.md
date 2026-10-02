@@ -48,3 +48,11 @@ validation; it changes no native producer input. Every pre-existing numerical
 value and Boolean qualification flag in the six regenerated monitor reports
 is unchanged. Exact-head CI remains required; software checks do not qualify
 the circuit.
+
+Integration of main `2bec1d3` brings reviewed source metadata, PCB pose checks
+and capture-status corrections. The only conflict was the generated RC report's
+adjacent source hashes. Fresh RC and monitor native producers resolved it under
+the guard (64 seconds, PASS), followed by generation and component validation.
+Both producer reports are identical to the reviewed result after removing input
+hashes; the 76 focused monitor tests pass again. The final-head CI performs the
+complete aggregate check after this parent integration.

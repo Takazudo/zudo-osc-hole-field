@@ -10,7 +10,7 @@ The generated harness under `schematic/cells/` has zero KiCad 10 ERC errors and 
 
 The proposed signal diode is **Nexperia BAS16GW-QX**, replacing an unsupported `1N4148W,115` identity. Nexperia’s [exact OPN record](https://www.nexperia.com/chemical-content/BAS16GW-Q.html?identifier=BAS16GW-Q) names BAS16GW-QX in SOD123; the retained BAS16GW-Q datasheet gives pin 1 cathode and pin 2 anode. Bridge brightness and physical qualification remain open.
 
-The preliminary −12 V demand remains **712.655 mA versus a 640 mA ceiling**. Current figures below are partial planning allocations, not cell maxima or a passing instrument budget. Exact value-specific passive sourcing, package sharing, output loads, rail startup, and supplier allocation remain open.
+The historical OSC-ES-1 preliminary worksheet estimated **712.655 mA on −12 V against its then-proposed 640 mA ceiling**. Those figures describe the superseded supply study, not the current EXT requirement contract. See the [current supply architecture](../decisions/osc-supply-architecture.mdx) and its generated `design/power/rail-ledger.json` and `design/power/supply-architecture.json` for present allocations. Current figures below remain partial planning allocations, not cell maxima or a passing instrument budget. Exact value-specific passive sourcing, package sharing, output loads and rail startup remain open; #57 retains physical source qualification and #59 retains protection implementation.
 
 ## Input Fault Switch (`input_fault_switch`)
 
