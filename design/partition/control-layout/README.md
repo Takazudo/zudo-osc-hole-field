@@ -3,8 +3,15 @@
 `boards/osc-control/osc-control-layout.kicad_pcb` is a reproducible **unvalidated,
 unrouted draft**, separate from the canonical partition outline. It contains
 418 source packages, 36 board-only supports and all 139 fixed P controls.
-The H1/H2 slew groups use the current compact source positions. No panel
-hardware moved.
+The H1/H2 slew groups use the current compact source positions. Ninety
+envelope debounce passives now form thirty complete triplets beside their
+existing SN74HC14DR inputs. All ICs, bypass capacitors, headers and panel
+hardware retain their positions. All net assignments and part identities
+remain unchanged. Native comparison covers all 1,740 pads: exactly the 180
+passive pads move; every other pad remains unchanged. The largest
+capacitor-to-input pad distance falls from 144.626 mm to 7.665 mm. The 8 mm
+capacitor/input and 4 mm adjacent-resistor targets are project choices,
+not manufacturer limits or functional qualification.
 
 The candidate applies the already reviewed RV601 edge tab and individual
 power-terminal reservations from `control-ground-feasibility/proposal.json`.
@@ -57,7 +64,11 @@ does not repeat that search.
 The 4-layer, 2 oz, 1.6 mm stack is still a proposal. Routing, current-source
 copper analysis, exact power/protection, manufacturing process, installed
 clearance and physical qualification remain open. Historical ground/current
-receipts are not rebound to the 18 moved slew packages. No order files are
+receipts are not rebound to changed source placements. No order files are
 created, and this candidate cannot enter a conductor model as a connected PCB.
 
-Final local replay, including dependency immutability: PASS, 42 seconds. Documentation build and site checks: PASS, 68 seconds, with the existing single workbench-link allowlist exception unchanged. The three reference-byte ownership tests pass. Integrated CI is pending.
+The corrected source regeneration and fresh labelled native construction pass.
+All 418 references remain at 1 mm text height. Some moved passive labels need
+larger offsets to retain clearance; the maximum is 16.553 mm. The partial
+copper checkpoint has its own full replay, independent refill and complete
+connectivity gate in `../control-copper/`.

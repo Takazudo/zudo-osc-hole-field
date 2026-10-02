@@ -224,12 +224,16 @@ def build():
     from scripts.checks.control_bypass_locality import apply_bypass_locality
     bypass_source=json.loads((ROOT/'design/partition/control-bypass-locality.json').read_text())
     placements,control_bypasses=apply_bypass_locality(placements,io,source,connector,lock,shapes,bypass_source,optical_source,locality_source)
+    from scripts.checks.control_debounce_locality import apply_debounce_locality
+    debounce_source=json.loads((ROOT/'design/partition/control-debounce-locality.json').read_text())
+    placements,control_debounce=apply_debounce_locality(placements,io,source,connector,lock,shapes,debounce_source,optical_source)
     for row in placements:row['kicad_orientation_deg']=((180 if row['side']=='B.Cu' else 0)-row['rotation_deg'])%360
     if Counter(p['ref'] for p in placements)!=Counter(p['ref'] for p in parts):errors.append('package roster mismatch')
     bypass,bypass_errors=check_bypasses(parts,placements,pin_nets);errors.extend(bypass_errors)
     return {'schema_version':1,'status':'FAIL' if errors else 'PASS - conservative courtyard capacity proposal only',
             'errors':errors,'control_slew_locality':{'source':'design/partition/control-locality.json','status':'SOURCE GEOMETRY ONLY; native/routed/physical checks required','groups':locality},'grid_mm_by_board':{b:(.1 if b in JACK_BOARDS else .25) for b in source['boards']},'courtyard_gap_mm':.35,'drawn_edge_margin_mm':.30,'native_cached_inflation_ceiling_mm':.05,'native_free_clearance_lower_bound_mm':.25,'placements':placements,
             'control_bypass_locality':{'source':'design/partition/control-bypass-locality.json',**control_bypasses},
+            'control_debounce_locality':{'source':'design/partition/control-debounce-locality.json',**control_debounce},
             'bypass_proximity':{'status':'DERIVED geometry only; routed loop #38 NOT RUN','evidence':'design/partition/bypass-placement-evidence.json','project_pad_distance_limit_mm':json.loads((ROOT/'design/partition/bypass-placement-evidence.json').read_text())['proposal']['maximum_supply_pad_to_capacitor_rail_pad_mm'],'pairs':bypass,'maximum_supply_pad_distance_mm':max((r['supply_pad_centre_distance_mm'] for r in bypass),default=0)},
             'usable_grid_area_after_exclusions_mm2':available,
             'counts':{b:dict(Counter(p['side'] for p in placements if p['board']==b)) for b in source['boards']},
