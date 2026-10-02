@@ -1,0 +1,106 @@
+{
+  "schema_version": 1,
+  "scope": "Every current manual-inventory exact record, including DNP, requires an explicit publication decision. Passing this coverage check is not full catalogue completion or physical qualification.",
+  "renderer": {
+    "package": "@takazudo/zudo-circuit-doc",
+    "version": "0.1.0"
+  },
+  "blocked_records": [
+    {
+      "record_id": "rec-c-bulk",
+      "blockers": [
+        "document-pdf-only"
+      ],
+      "reason": "Exact detailed datasheet unavailable. Framework 0.1.0 requires a linkable PDF-labelled document; a manufacturer homepage or catalogue JSON must not be presented as that PDF.",
+      "unblock": "Released source-record or nullable-document support, or genuinely retained appropriate exact documentation; preserve current source gaps and lifecycle limits."
+    },
+    {
+      "record_id": "rec-c-bypass",
+      "blockers": [
+        "document-pdf-only"
+      ],
+      "reason": "Exact detailed datasheet unavailable. Framework 0.1.0 requires a linkable PDF-labelled document; a manufacturer homepage or catalogue JSON must not be presented as that PDF.",
+      "unblock": "Released source-record or nullable-document support, or genuinely retained appropriate exact documentation; preserve current source gaps and lifecycle limits."
+    },
+    {
+      "record_id": "rec-r-ladder",
+      "blockers": [
+        "model-required"
+      ],
+      "reason": "Retained footprint has no model reference. Framework 0.1.0 requires a WRL for every selected PCB record.",
+      "unblock": "Released optional-model publication that preserves footprint and pin checks, states absent geometry, and still rejects broken declared references; no invented model."
+    },
+    {
+      "record_id": "rec-r-power",
+      "blockers": [
+        "model-required"
+      ],
+      "reason": "Retained footprint has no model reference. Framework 0.1.0 requires a WRL for every selected PCB record.",
+      "unblock": "Released optional-model publication that preserves footprint and pin checks, states absent geometry, and still rejects broken declared references; no invented model."
+    },
+    {
+      "record_id": "rec-trim-102",
+      "blockers": [
+        "model-required"
+      ],
+      "reason": "Retained footprint has no model reference. Framework 0.1.0 requires a WRL for every selected PCB record.",
+      "unblock": "Released optional-model publication that preserves footprint and pin checks, states absent geometry, and still rejects broken declared references; no invented model."
+    },
+    {
+      "record_id": "rec-trim-103",
+      "blockers": [
+        "model-required"
+      ],
+      "reason": "Retained footprint has no model reference. Framework 0.1.0 requires a WRL for every selected PCB record.",
+      "unblock": "Released optional-model publication that preserves footprint and pin checks, states absent geometry, and still rejects broken declared references; no invented model."
+    },
+    {
+      "record_id": "rec-gh3-housing",
+      "blockers": [
+        "model-required"
+      ],
+      "reason": "External housing/contact has an explicit NOT_FOR_PCB numbering-aid footprint without a WRL. Do not reclassify it as physical PCB geometry to satisfy the renderer.",
+      "unblock": "Released optional-model publication retaining the mapping aid and honest no-model status. GH acceptance remains separately owned by issue63."
+    },
+    {
+      "record_id": "rec-gh7-housing",
+      "blockers": [
+        "model-required"
+      ],
+      "reason": "External housing/contact has an explicit NOT_FOR_PCB numbering-aid footprint without a WRL. Do not reclassify it as physical PCB geometry to satisfy the renderer.",
+      "unblock": "Released optional-model publication retaining the mapping aid and honest no-model status. GH acceptance remains separately owned by issue63."
+    },
+    {
+      "record_id": "rec-gh8-housing",
+      "blockers": [
+        "model-required"
+      ],
+      "reason": "External housing/contact has an explicit NOT_FOR_PCB numbering-aid footprint without a WRL. Do not reclassify it as physical PCB geometry to satisfy the renderer.",
+      "unblock": "Released optional-model publication retaining the mapping aid and honest no-model status. GH acceptance remains separately owned by issue63."
+    },
+    {
+      "record_id": "rec-gh-contact",
+      "blockers": [
+        "model-required"
+      ],
+      "reason": "External housing/contact has an explicit NOT_FOR_PCB numbering-aid footprint without a WRL. Do not reclassify it as physical PCB geometry to satisfy the renderer.",
+      "unblock": "Released optional-model publication retaining the mapping aid and honest no-model status. GH acceptance remains separately owned by issue63."
+    }
+  ],
+  "intentional_exclusions": [],
+  "document_constraints": [
+    {
+      "record_id": "rec-c-slew",
+      "source_id": "src-c-slew-datasheet",
+      "document_kind": "specification",
+      "authority_class": "MANUFACTURER_MIRROR",
+      "applicability_fact_id": "fact-c-slew-exact-value-identity",
+      "applicability_verdict": "UNSOURCED",
+      "required_record_terms": [
+        "FAMILY",
+        "UNSOURCED"
+      ],
+      "source_title": "HIGH VOLTAGE MLCC — High-Voltage Multi-layer Ceramic Capacitors, Product Specification"
+    }
+  ]
+}
