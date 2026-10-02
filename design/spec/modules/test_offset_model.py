@@ -21,6 +21,44 @@ class OffsetModelSourceTests(unittest.TestCase):
         self.assertEqual(model_contract(moved), expected)
         self.assertIn('three-input summer', expected['included'])
 
+    def test_every_checked_primitive_identity_is_bound(self):
+        checked = model_contract(self.family.parts)['checked_parts']
+        for part in self.family.parts:
+            role = part.attributes.get('Role')
+            if role not in checked:
+                continue
+            wrong_kind = ('zudo-osc-hole-field:C0603C101J5GACTU' if part.prefix != 'C'
+                          else 'zudo-osc-hole-field:RT0603BRD07100KL')
+            for changes in ({'prefix': 'WRONG'}, {'symbol': wrong_kind},
+                            {'symbol': 'other-library:' + part.symbol.split(':', 1)[1]},
+                            {'unit': 0 if part.prefix == 'U' else 1}):
+                with self.subTest(role=role, changes=changes), self.assertRaisesRegex(ValueError, 'identity'):
+                    model_contract(self.change(role, **changes))
+
+    def test_resistor_to_capacitor_swap_fails_before_oracle_or_write(self):
+        # Same role, value and endpoints previously admitted the wrong primitive.
+        bad = self.change('offset:R_SUM_FB', prefix='C',
+                          symbol='zudo-osc-hole-field:C0603C101J5GACTU')
+        with patch('design.spec.modules.offset.family', return_value=replace(self.family, parts=bad)), \
+                patch.object(run_offset_spice, 'run_case') as run, \
+                patch.object(run_offset_spice.Path, 'write_text') as write:
+            with self.assertRaisesRegex(ValueError, 'passive identity'):
+                run_offset_spice.main()
+            run.assert_not_called()
+            write.assert_not_called()
+
+    def test_pot_body_contacts_remain_explicitly_unconnected(self):
+        part = next(p for p in self.family.parts if p.attributes.get('Role') == 'bipolar_attenuverter:RV')
+        series = next(p for p in self.family.parts if p.attributes.get('Role') == 'bipolar_attenuverter:R_W')
+        for pin in ('4', '5'):
+            for net in (series.pins['2'], part.pins['2'], 'AGND'):
+                with self.subTest(pin=pin, net=net), self.assertRaisesRegex(ValueError, 'pot source'):
+                    model_contract(self.change('bipolar_attenuverter:RV', pins={**part.pins, pin: net}))
+        for pins in ({key: value for key, value in part.pins.items() if key != '4'},
+                     {**part.pins, '6': None}):
+            with self.subTest(pins=pins), self.assertRaisesRegex(ValueError, 'pot source'):
+                model_contract(self.change('bipolar_attenuverter:RV', pins=pins))
+
     def test_wrong_summer_wire_is_rejected_before_any_model_execution(self):
         bad = self.change('offset:R_SUM_MANUAL', pins={'1': 'AGND', '2': 'SUM_NODE'})
         with patch('design.spec.modules.offset.family', return_value=replace(self.family, parts=bad)), \
