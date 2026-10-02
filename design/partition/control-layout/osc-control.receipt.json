@@ -1,0 +1,2068 @@
+{
+  "all_P_main_lands": [
+    {
+      "board": "P",
+      "center_mm": [
+        142,
+        179
+      ],
+      "copper_land_mm": [
+        4,
+        4
+      ],
+      "identity": "custom PCB solder terminal, not an orderable inlet",
+      "manufacturer_pin": "1",
+      "mask_margin_mm": 0.1,
+      "maximum_courtyard_mm": [
+        5,
+        5
+      ],
+      "net": "+12V",
+      "paste": "none; factory hand/wave solder process",
+      "reference": "TP990025",
+      "side": "B.Cu",
+      "status": "PROPOSAL copper geometry; native footprint/symbol generation #36, assembled ampacity/strain relief #65",
+      "wire_end": "factory stripped bare end at solder land; first/last 3mm have no full-diameter insulation; solder/profile qualification #65"
+    },
+    {
+      "board": "P",
+      "center_mm": [
+        159,
+        179
+      ],
+      "copper_land_mm": [
+        4,
+        4
+      ],
+      "identity": "custom PCB solder terminal, not an orderable inlet",
+      "manufacturer_pin": "1",
+      "mask_margin_mm": 0.1,
+      "maximum_courtyard_mm": [
+        5,
+        5
+      ],
+      "net": "-12V",
+      "paste": "none; factory hand/wave solder process",
+      "reference": "TP990027",
+      "side": "B.Cu",
+      "status": "PROPOSAL copper geometry; native footprint/symbol generation #36, assembled ampacity/strain relief #65",
+      "wire_end": "factory stripped bare end at solder land; first/last 3mm have no full-diameter insulation; solder/profile qualification #65"
+    },
+    {
+      "board": "P",
+      "center_mm": [
+        176,
+        179
+      ],
+      "copper_land_mm": [
+        4,
+        4
+      ],
+      "identity": "custom PCB solder terminal, not an orderable inlet",
+      "manufacturer_pin": "1",
+      "mask_margin_mm": 0.1,
+      "maximum_courtyard_mm": [
+        5,
+        5
+      ],
+      "net": "+5V",
+      "paste": "none; factory hand/wave solder process",
+      "reference": "TP990029",
+      "side": "B.Cu",
+      "status": "PROPOSAL copper geometry; native footprint/symbol generation #36, assembled ampacity/strain relief #65",
+      "wire_end": "factory stripped bare end at solder land; first/last 3mm have no full-diameter insulation; solder/profile qualification #65"
+    },
+    {
+      "board": "P",
+      "center_mm": [
+        193,
+        179
+      ],
+      "copper_land_mm": [
+        4,
+        4
+      ],
+      "identity": "custom PCB solder terminal, not an orderable inlet",
+      "manufacturer_pin": "1",
+      "mask_margin_mm": 0.1,
+      "maximum_courtyard_mm": [
+        5,
+        5
+      ],
+      "net": "AGND",
+      "paste": "none; factory hand/wave solder process",
+      "reference": "TP990031",
+      "side": "B.Cu",
+      "status": "PROPOSAL copper geometry; native footprint/symbol generation #36, assembled ampacity/strain relief #65",
+      "wire_end": "factory stripped bare end at solder land; first/last 3mm have no full-diameter insulation; solder/profile qualification #65"
+    },
+    {
+      "board": "P",
+      "center_mm": [
+        210,
+        179
+      ],
+      "copper_land_mm": [
+        4,
+        4
+      ],
+      "identity": "custom PCB solder terminal, not an orderable inlet",
+      "manufacturer_pin": "1",
+      "mask_margin_mm": 0.1,
+      "maximum_courtyard_mm": [
+        5,
+        5
+      ],
+      "net": "AGND",
+      "paste": "none; factory hand/wave solder process",
+      "reference": "TP990033",
+      "side": "B.Cu",
+      "status": "PROPOSAL copper geometry; native footprint/symbol generation #36, assembled ampacity/strain relief #65",
+      "wire_end": "factory stripped bare end at solder land; first/last 3mm have no full-diameter insulation; solder/profile qualification #65"
+    },
+    {
+      "board": "P",
+      "center_mm": [
+        227,
+        179
+      ],
+      "copper_land_mm": [
+        4,
+        4
+      ],
+      "identity": "custom PCB solder terminal, not an orderable inlet",
+      "manufacturer_pin": "1",
+      "mask_margin_mm": 0.1,
+      "maximum_courtyard_mm": [
+        5,
+        5
+      ],
+      "net": "AGND",
+      "paste": "none; factory hand/wave solder process",
+      "reference": "TP990035",
+      "side": "B.Cu",
+      "status": "PROPOSAL copper geometry; native footprint/symbol generation #36, assembled ampacity/strain relief #65",
+      "wire_end": "factory stripped bare end at solder land; first/last 3mm have no full-diameter insulation; solder/profile qualification #65"
+    }
+  ],
+  "canonical_definition_sha256": "b413ed9192e89552351da00eea7e19e46725a3c450850e935fda1b6ddf970444",
+  "conditional_class": {
+    "AGND_layers": [
+      "F.Cu",
+      "In2.Cu",
+      "B.Cu"
+    ],
+    "GH_ground_contact_count": 127,
+    "all_main_land_count": 6,
+    "board_id": "osc-control",
+    "board_key": "P",
+    "canonical_definition": "design/boards/osc-control.json",
+    "class_track_width_mm": {
+      "Default": 0.3,
+      "Ground": 0.5,
+      "Rails": 0.4
+    },
+    "clearance_mm": 0.25,
+    "fitted_source_AGND_contact_count": 214,
+    "fixed_panel_hardware_count": 139,
+    "fixed_source_footprint_count": 418,
+    "geometry_replan": {
+      "RV601_tab": {
+        "left_x_mm": 92.35,
+        "y_interval_mm": [
+          182.8,
+          187.2
+        ]
+      },
+      "individual_reservations": {
+        "contact_volume_requirement": "The entire wetted PCB support stays inside its unchanged 4 x 4 mm land. The proposed finite fan, tip and endpoint adapter stay inside the land projection; the later insulated wire has its existing separate 3D loom envelope. Qualification must verify actual tails, solder, insulation, tool and restraint envelopes. No minimum contact conductivity or resistance acceptance follows from this geometry.",
+        "factory_tool_requirement": "Factory tool, bare fan, solder and wire attachment operations remain within the individual 6 x 6 mm B-side column near the land. P must be accessible before K and its loom are installed. This is a process requirement for #65, not a claim that the installed assembly provides a tool corridor. Other boards and loose wires must be absent from the tool approach during that operation.",
+        "front_face_scope": "Terminals, solder and stripped-wire fans are on B.Cu. The solid PCB separates them from F-side surface parts. Every through-hole pad/drill remains in the B-side collision authority; no through-hole or foreign via is exempted. F-side removal is not permission for a foreign conductor to enter a B-side terminal volume.",
+        "rationale": "The original load-power strip was a PROPOSAL reservation for load terminals, not a retained solid part or transverse bus. All six independent wires keep their fixed endpoints and separate finite fans. Replace only the broad F/B strip with four B-side reservations matching the two existing AGND reservations. Preserve every unrelated reservation and all foreign-object prohibitions.",
+        "references": [
+          "TP990025",
+          "TP990027",
+          "TP990029",
+          "TP990031"
+        ],
+        "side": "B.Cu",
+        "square_side_mm": 6
+      },
+      "status": "UNSELECTED bounded repair of the complete bare native conflict inventory; canonical source unchanged"
+    },
+    "header_transfer_scope": "No default 254-via stitching array is assumed. First retain all existing actual plated component contacts and the legal main arrays, fill source-owned ground planes and audit all 344 ground contacts. Add individually named legal finite transfers only for an observed connectivity or resistance bottleneck.",
+    "initial_model_scope": "Bounded nominal coupling profiles for all127 GH and3 mains, 129 independent functions. Whole P own-load current class, real contacts, manufacturing envelopes and joined utility/common/current/voltage acceptance remain separate required proof. No ideal P or rest-network node.",
+    "local_ground_escape_width_mm": 0.3,
+    "main_AGND_land_count": 3,
+    "main_array_columns": 5,
+    "main_array_pitch_mm": 0.7,
+    "main_array_rows": 5,
+    "main_array_scope": "Enumerate only legal original-grid sites in all six fixed 4x4 lands using the synchronized bare native pad/drill/keepout authority. Do not insert a knowingly colliding 150-via trial or assume 25 sites survive. Retain exact accepted and rejected identities; no displaced ideal coupling.",
+    "minimum_fill_neck_mm": 0.15,
+    "minimum_finished_barrel_mm": 0.025,
+    "minimum_track_width_mm": 0.2,
+    "model_entry": "Actual passing pinned KiCad 10.0.6 rule/parity receipt, exact source/native/companion hashes, all214 source own-load AGND plus127 GH and3 main contacts connected, explicit physical face and complete inventory. A bare planning export or failed candidate cannot enter a conductor model.",
+    "nominal_copper_thickness_mm": [
+      0.07,
+      0.07,
+      0.07,
+      0.07
+    ],
+    "nominal_dielectric_thickness_mm": [
+      0.06,
+      1.2,
+      0.06
+    ],
+    "own_terminal_scope": "The two original and four explicitly replanned individual POWER reservations each protect one fixed B-side land. Preserve their polygons and track/zone prohibitions; use the same narrowly tested owning reference/net/whole-object predicates as K, with P-specific UUID, B-face, origin and shape verification. No foreign hardware or header receives an owning-terminal exception. A B-face positive/negative native fixture is required before a full candidate.",
+    "physical_preservation": "All 418 source footprints and 139 lock-bound controls retain exact origin, angle, face, pin/net identity and owner/library geometry. The only proposed geometric changes are the explicit local RV601 edge tab and replacement of the broad load-power strip with four individual B-side reservations. All mounting holes, foreign-net pad/drill exclusions and unrelated reservations remain unchanged. Source netlist native fields are projected separately from property markers, with every original schematic unit retained.",
+    "remaining_scope": "Rail/signal routing and full #39 implementation remain open. Four JL/P utility ground paths are represented explicitly; K/P/EL/adapter own loads and every omitted passive subnetwork require supported composition or a valid conservative theorem. No canonical promotion.",
+    "schema_version": 1,
+    "source_netlist": "schematic/boards/osc-control.net",
+    "source_partition": "design/partition/partition.json",
+    "stack_scope": "Four positive copper bands and three positive dielectric gaps total the unchanged nominal 1.6 mm. In2 is near the actual B-side P main/GH contacts. Manufacturing intervals/materials remain unselected under #65; no selected service or qualification.",
+    "status": "UNSELECTED bounded P ground-conductor prerequisite for #38; not implementation or acceptance of #39",
+    "via_diameter_mm": 0.7,
+    "via_drill_mm": 0.3
+  },
+  "definition_sha256": "1c956486f91a8fb7140c200438238807d69666a25d5f3b6357461cd81e15ee00",
+  "explicit_geometry_change": {
+    "RV601_nominal_copper_edge_clearance_mm": 0.6500000000000086,
+    "RV601_nominal_drill_edge_clearance_mm": 0.9500000000000085,
+    "added_keepouts": [
+      {
+        "id": "POWER-+12V-142-179",
+        "layers": [
+          "B.Cu"
+        ],
+        "polygon": [
+          [
+            139,
+            176
+          ],
+          [
+            145,
+            176
+          ],
+          [
+            145,
+            182
+          ],
+          [
+            139,
+            182
+          ]
+        ]
+      },
+      {
+        "id": "POWER--12V-159-179",
+        "layers": [
+          "B.Cu"
+        ],
+        "polygon": [
+          [
+            156,
+            176
+          ],
+          [
+            162,
+            176
+          ],
+          [
+            162,
+            182
+          ],
+          [
+            156,
+            182
+          ]
+        ]
+      },
+      {
+        "id": "POWER-+5V-176-179",
+        "layers": [
+          "B.Cu"
+        ],
+        "polygon": [
+          [
+            173,
+            176
+          ],
+          [
+            179,
+            176
+          ],
+          [
+            179,
+            182
+          ],
+          [
+            173,
+            182
+          ]
+        ]
+      },
+      {
+        "id": "POWER-AGND-193-179",
+        "layers": [
+          "B.Cu"
+        ],
+        "polygon": [
+          [
+            190,
+            176
+          ],
+          [
+            196,
+            176
+          ],
+          [
+            196,
+            182
+          ],
+          [
+            190,
+            182
+          ]
+        ]
+      }
+    ],
+    "new_outline": [
+      [
+        1,
+        194
+      ],
+      [
+        94,
+        194
+      ],
+      [
+        94,
+        187.2
+      ],
+      [
+        92.35,
+        187.2
+      ],
+      [
+        92.35,
+        182.8
+      ],
+      [
+        94,
+        182.8
+      ],
+      [
+        94,
+        176
+      ],
+      [
+        317,
+        176
+      ],
+      [
+        317,
+        292
+      ],
+      [
+        1,
+        292
+      ]
+    ],
+    "old_outline": [
+      [
+        1,
+        194
+      ],
+      [
+        94,
+        194
+      ],
+      [
+        94,
+        176
+      ],
+      [
+        317,
+        176
+      ],
+      [
+        317,
+        292
+      ],
+      [
+        1,
+        292
+      ]
+    ],
+    "removed_keepouts": [
+      {
+        "id": "load-power",
+        "layers": [
+          "F.Cu",
+          "B.Cu"
+        ],
+        "polygon": [
+          [
+            139,
+            176.5
+          ],
+          [
+            196,
+            176.5
+          ],
+          [
+            196,
+            184
+          ],
+          [
+            139,
+            184
+          ]
+        ]
+      }
+    ],
+    "scope": "Only the source-owned outline and broad load-power reservation change. No hardware, copper pad, hole, component face or global clearance changes.",
+    "status": "UNSELECTED source geometry revision; native and assembly gates required",
+    "unchanged_keepout_count": 41
+  },
+  "fixed_component_geometry_preserved": true,
+  "generator_sha256": "dee942e82b6d8f641673292ee9d641ecda416a84b3249efbd4b172c70d7ab7f9",
+  "geometry_source_sha256": {
+    "design/grid/placements.lock.json": "297300b067fd646624b9e501791163fa2d60702862b61568753bf92e5b88dbe8",
+    "design/mechanical/selector-assembly.json": "b5715d25d4d4b44bc664eac9697d83c95741b02af9a906d0c849f40da7e560bb",
+    "design/partition/partition-input.json": "ffbc3c8fa2f3a0dad3bbfc16a2b1936b4b2d0f1a32d558e4f8cb29372895a0dc",
+    "scripts/pcbgen/control_geometry_replan.py": "9ca59e24bc7d74a843c78e12098b9e4de74495ede1ed5cf56c1b28cacf9f29e4"
+  },
+  "native_rule_sha256": "7b24d666dbf61b40ed9676ee3ea4c5c73ef147827369df957501182a9202bd97",
+  "neighbor_envelope_screen": {
+    "O5_body_support_right_x_mm": 91.6,
+    "O5_front_z_mm": -16,
+    "P_rear_z_mm": -13.4,
+    "allocated_body_support_XY_gap_mm": 0.55,
+    "body_tail_growth_mm": 0.5,
+    "nominal_board_z_gap_mm": 2.5999999999999996,
+    "nominal_body_support_XY_gap_mm": 0.75,
+    "relative_adapter_z_error_mm": 0.25,
+    "remaining_board_copper_solder_z_gap_mm": 1.8499999999999996,
+    "required_XY_gap_mm": 0.5,
+    "required_z_gap_mm": 0.75,
+    "scope": "Conservative full body/support XY projection is used wherever its z range crosses P. O5 board/copper and rear solder/tails may overlap P in XY but remain in the separate z interval. Exact manufactured envelopes must meet the existing conditional source allocations.",
+    "status": "Conditional nominal source-envelope screen; physical qualification remains #55/#65",
+    "two_axis_errors_mm": 0.2
+  },
+  "netlist_sha256": "6f6de2b6012f1131bfd7e4d59600385a138d90e882ad1bef2089caa33f935b5f",
+  "own_terminal_entries": [
+    {
+      "board_id": "osc-control",
+      "center_mm": [
+        142,
+        179
+      ],
+      "keepout_id": "POWER-+12V-142-179",
+      "keepout_name": "pcbgen:osc-control:keepout:POWER-+12V-142-179:B.Cu",
+      "keepout_polygon": [
+        [
+          139,
+          176
+        ],
+        [
+          145,
+          176
+        ],
+        [
+          145,
+          182
+        ],
+        [
+          139,
+          182
+        ]
+      ],
+      "land_size_mm": [
+        4,
+        4
+      ],
+      "net": "+12V",
+      "ref": "TP990025",
+      "side": "B.Cu",
+      "window_name": "pcbgen:osc-control:own-land-via:TP990025"
+    },
+    {
+      "board_id": "osc-control",
+      "center_mm": [
+        159,
+        179
+      ],
+      "keepout_id": "POWER--12V-159-179",
+      "keepout_name": "pcbgen:osc-control:keepout:POWER--12V-159-179:B.Cu",
+      "keepout_polygon": [
+        [
+          156,
+          176
+        ],
+        [
+          162,
+          176
+        ],
+        [
+          162,
+          182
+        ],
+        [
+          156,
+          182
+        ]
+      ],
+      "land_size_mm": [
+        4,
+        4
+      ],
+      "net": "-12V",
+      "ref": "TP990027",
+      "side": "B.Cu",
+      "window_name": "pcbgen:osc-control:own-land-via:TP990027"
+    },
+    {
+      "board_id": "osc-control",
+      "center_mm": [
+        176,
+        179
+      ],
+      "keepout_id": "POWER-+5V-176-179",
+      "keepout_name": "pcbgen:osc-control:keepout:POWER-+5V-176-179:B.Cu",
+      "keepout_polygon": [
+        [
+          173,
+          176
+        ],
+        [
+          179,
+          176
+        ],
+        [
+          179,
+          182
+        ],
+        [
+          173,
+          182
+        ]
+      ],
+      "land_size_mm": [
+        4,
+        4
+      ],
+      "net": "+5V",
+      "ref": "TP990029",
+      "side": "B.Cu",
+      "window_name": "pcbgen:osc-control:own-land-via:TP990029"
+    },
+    {
+      "board_id": "osc-control",
+      "center_mm": [
+        193,
+        179
+      ],
+      "keepout_id": "POWER-AGND-193-179",
+      "keepout_name": "pcbgen:osc-control:keepout:POWER-AGND-193-179:B.Cu",
+      "keepout_polygon": [
+        [
+          190,
+          176
+        ],
+        [
+          196,
+          176
+        ],
+        [
+          196,
+          182
+        ],
+        [
+          190,
+          182
+        ]
+      ],
+      "land_size_mm": [
+        4,
+        4
+      ],
+      "net": "AGND",
+      "ref": "TP990031",
+      "side": "B.Cu",
+      "window_name": "pcbgen:osc-control:own-land-via:TP990031"
+    },
+    {
+      "board_id": "osc-control",
+      "center_mm": [
+        210,
+        179
+      ],
+      "keepout_id": "POWER-AGND-210-179",
+      "keepout_name": "pcbgen:osc-control:keepout:POWER-AGND-210-179:B.Cu",
+      "keepout_polygon": [
+        [
+          207,
+          176
+        ],
+        [
+          213,
+          176
+        ],
+        [
+          213,
+          182
+        ],
+        [
+          207,
+          182
+        ]
+      ],
+      "land_size_mm": [
+        4,
+        4
+      ],
+      "net": "AGND",
+      "ref": "TP990033",
+      "side": "B.Cu",
+      "window_name": "pcbgen:osc-control:own-land-via:TP990033"
+    },
+    {
+      "board_id": "osc-control",
+      "center_mm": [
+        227,
+        179
+      ],
+      "keepout_id": "POWER-AGND-227-179",
+      "keepout_name": "pcbgen:osc-control:keepout:POWER-AGND-227-179:B.Cu",
+      "keepout_polygon": [
+        [
+          224,
+          176
+        ],
+        [
+          230,
+          176
+        ],
+        [
+          230,
+          182
+        ],
+        [
+          224,
+          182
+        ]
+      ],
+      "land_size_mm": [
+        4,
+        4
+      ],
+      "net": "AGND",
+      "ref": "TP990035",
+      "side": "B.Cu",
+      "window_name": "pcbgen:osc-control:own-land-via:TP990035"
+    }
+  ],
+  "partition_sha256": "03f27e34ef07896d05b2f2972fb40bba1853d9668c6d4a842aa8d632efc4ad67",
+  "proposal_sha256": "187fb8c6b89f4a2601a08d18518fe7e26818b4446a807eb38deadb776d0d235e",
+  "selected_P_ground_ports": [
+    {
+      "header_id": "JL-P-1-P",
+      "native_orientation_deg": 180,
+      "pad": "2",
+      "ref": "J900052",
+      "side": "B.Cu",
+      "source_footprint_origin_mm": [
+        40.0,
+        274.05
+      ]
+    },
+    {
+      "header_id": "JL-P-2-P",
+      "native_orientation_deg": 180,
+      "pad": "2",
+      "ref": "J900054",
+      "side": "B.Cu",
+      "source_footprint_origin_mm": [
+        57.0,
+        274.05
+      ]
+    },
+    {
+      "header_id": "JL-P-3-P",
+      "native_orientation_deg": 180,
+      "pad": "2",
+      "ref": "J900056",
+      "side": "B.Cu",
+      "source_footprint_origin_mm": [
+        74.0,
+        274.05
+      ]
+    },
+    {
+      "header_id": "JL-P-4-P",
+      "native_orientation_deg": 180,
+      "pad": "2",
+      "ref": "J900058",
+      "side": "B.Cu",
+      "source_footprint_origin_mm": [
+        91.0,
+        274.05
+      ]
+    },
+    {
+      "header_id": "K-P-1-P",
+      "native_orientation_deg": 90,
+      "pad": "2",
+      "ref": "J900134",
+      "side": "B.Cu",
+      "source_footprint_origin_mm": [
+        101.45,
+        185.0
+      ]
+    },
+    {
+      "header_id": "K-P-2-P",
+      "native_orientation_deg": 90,
+      "pad": "2",
+      "ref": "J900136",
+      "side": "B.Cu",
+      "source_footprint_origin_mm": [
+        118.45,
+        185.0
+      ]
+    },
+    {
+      "header_id": "K-P-3-P",
+      "native_orientation_deg": 90,
+      "pad": "2",
+      "ref": "J900138",
+      "side": "B.Cu",
+      "source_footprint_origin_mm": [
+        135.45,
+        185.0
+      ]
+    },
+    {
+      "header_id": "K-P-4-P",
+      "native_orientation_deg": 90,
+      "pad": "2",
+      "ref": "J900140",
+      "side": "B.Cu",
+      "source_footprint_origin_mm": [
+        152.45,
+        185.0
+      ]
+    },
+    {
+      "header_id": "K-P-5-P",
+      "native_orientation_deg": 90,
+      "pad": "2",
+      "ref": "J900142",
+      "side": "B.Cu",
+      "source_footprint_origin_mm": [
+        169.45,
+        185.0
+      ]
+    },
+    {
+      "header_id": "K-P-6-P",
+      "native_orientation_deg": 90,
+      "pad": "2",
+      "ref": "J900144",
+      "side": "B.Cu",
+      "source_footprint_origin_mm": [
+        186.45,
+        185.0
+      ]
+    },
+    {
+      "header_id": "K-P-7-P",
+      "native_orientation_deg": 90,
+      "pad": "2",
+      "ref": "J900146",
+      "side": "B.Cu",
+      "source_footprint_origin_mm": [
+        203.45,
+        185.0
+      ]
+    },
+    {
+      "header_id": "K-P-8-P",
+      "native_orientation_deg": 90,
+      "pad": "2",
+      "ref": "J900148",
+      "side": "B.Cu",
+      "source_footprint_origin_mm": [
+        101.45,
+        199.0
+      ]
+    },
+    {
+      "header_id": "K-P-9-P",
+      "native_orientation_deg": 90,
+      "pad": "2",
+      "ref": "J900150",
+      "side": "B.Cu",
+      "source_footprint_origin_mm": [
+        118.45,
+        199.0
+      ]
+    },
+    {
+      "header_id": "K-P-10-P",
+      "native_orientation_deg": 90,
+      "pad": "2",
+      "ref": "J900152",
+      "side": "B.Cu",
+      "source_footprint_origin_mm": [
+        135.45,
+        199.0
+      ]
+    },
+    {
+      "header_id": "K-P-11-P",
+      "native_orientation_deg": 90,
+      "pad": "2",
+      "ref": "J900154",
+      "side": "B.Cu",
+      "source_footprint_origin_mm": [
+        152.45,
+        199.0
+      ]
+    },
+    {
+      "header_id": "K-P-12-P",
+      "native_orientation_deg": 90,
+      "pad": "2",
+      "ref": "J900156",
+      "side": "B.Cu",
+      "source_footprint_origin_mm": [
+        169.45,
+        199.0
+      ]
+    },
+    {
+      "header_id": "K-P-13-P",
+      "native_orientation_deg": 90,
+      "pad": "2",
+      "ref": "J900158",
+      "side": "B.Cu",
+      "source_footprint_origin_mm": [
+        186.45,
+        199.0
+      ]
+    },
+    {
+      "header_id": "K-P-14-P",
+      "native_orientation_deg": 90,
+      "pad": "2",
+      "ref": "J900160",
+      "side": "B.Cu",
+      "source_footprint_origin_mm": [
+        203.45,
+        199.0
+      ]
+    },
+    {
+      "header_id": "K-P-15-P",
+      "native_orientation_deg": 90,
+      "pad": "2",
+      "ref": "J900162",
+      "side": "B.Cu",
+      "source_footprint_origin_mm": [
+        101.45,
+        213.0
+      ]
+    },
+    {
+      "header_id": "K-P-16-P",
+      "native_orientation_deg": 90,
+      "pad": "2",
+      "ref": "J900164",
+      "side": "B.Cu",
+      "source_footprint_origin_mm": [
+        118.45,
+        213.0
+      ]
+    },
+    {
+      "header_id": "K-P-17-P",
+      "native_orientation_deg": 90,
+      "pad": "2",
+      "ref": "J900166",
+      "side": "B.Cu",
+      "source_footprint_origin_mm": [
+        135.45,
+        213.0
+      ]
+    },
+    {
+      "header_id": "K-P-18-P",
+      "native_orientation_deg": 90,
+      "pad": "2",
+      "ref": "J900168",
+      "side": "B.Cu",
+      "source_footprint_origin_mm": [
+        152.45,
+        213.0
+      ]
+    },
+    {
+      "header_id": "K-P-19-P",
+      "native_orientation_deg": 90,
+      "pad": "2",
+      "ref": "J900170",
+      "side": "B.Cu",
+      "source_footprint_origin_mm": [
+        169.45,
+        213.0
+      ]
+    },
+    {
+      "header_id": "K-P-20-P",
+      "native_orientation_deg": 90,
+      "pad": "2",
+      "ref": "J900172",
+      "side": "B.Cu",
+      "source_footprint_origin_mm": [
+        186.45,
+        213.0
+      ]
+    },
+    {
+      "header_id": "K-P-21-P",
+      "native_orientation_deg": 90,
+      "pad": "2",
+      "ref": "J900174",
+      "side": "B.Cu",
+      "source_footprint_origin_mm": [
+        203.45,
+        213.0
+      ]
+    },
+    {
+      "header_id": "K-P-22-P",
+      "native_orientation_deg": 90,
+      "pad": "2",
+      "ref": "J900176",
+      "side": "B.Cu",
+      "source_footprint_origin_mm": [
+        16.45,
+        227.0
+      ]
+    },
+    {
+      "header_id": "K-P-23-P",
+      "native_orientation_deg": 90,
+      "pad": "2",
+      "ref": "J900178",
+      "side": "B.Cu",
+      "source_footprint_origin_mm": [
+        33.45,
+        227.0
+      ]
+    },
+    {
+      "header_id": "K-P-24-P",
+      "native_orientation_deg": 90,
+      "pad": "2",
+      "ref": "J900180",
+      "side": "B.Cu",
+      "source_footprint_origin_mm": [
+        50.45,
+        227.0
+      ]
+    },
+    {
+      "header_id": "K-P-25-P",
+      "native_orientation_deg": 90,
+      "pad": "2",
+      "ref": "J900182",
+      "side": "B.Cu",
+      "source_footprint_origin_mm": [
+        67.45,
+        227.0
+      ]
+    },
+    {
+      "header_id": "K-P-26-P",
+      "native_orientation_deg": 90,
+      "pad": "2",
+      "ref": "J900184",
+      "side": "B.Cu",
+      "source_footprint_origin_mm": [
+        84.45,
+        227.0
+      ]
+    },
+    {
+      "header_id": "K-P-27-P",
+      "native_orientation_deg": 90,
+      "pad": "2",
+      "ref": "J900186",
+      "side": "B.Cu",
+      "source_footprint_origin_mm": [
+        101.45,
+        227.0
+      ]
+    },
+    {
+      "header_id": "K-P-28-P",
+      "native_orientation_deg": 90,
+      "pad": "2",
+      "ref": "J900188",
+      "side": "B.Cu",
+      "source_footprint_origin_mm": [
+        118.45,
+        227.0
+      ]
+    },
+    {
+      "header_id": "K-P-29-P",
+      "native_orientation_deg": 90,
+      "pad": "2",
+      "ref": "J900190",
+      "side": "B.Cu",
+      "source_footprint_origin_mm": [
+        135.45,
+        227.0
+      ]
+    },
+    {
+      "header_id": "K-P-30-P",
+      "native_orientation_deg": 90,
+      "pad": "2",
+      "ref": "J900192",
+      "side": "B.Cu",
+      "source_footprint_origin_mm": [
+        152.45,
+        227.0
+      ]
+    },
+    {
+      "header_id": "K-P-31-P",
+      "native_orientation_deg": 90,
+      "pad": "2",
+      "ref": "J900194",
+      "side": "B.Cu",
+      "source_footprint_origin_mm": [
+        169.45,
+        227.0
+      ]
+    },
+    {
+      "header_id": "K-P-32-P",
+      "native_orientation_deg": 90,
+      "pad": "2",
+      "ref": "J900196",
+      "side": "B.Cu",
+      "source_footprint_origin_mm": [
+        186.45,
+        227.0
+      ]
+    },
+    {
+      "header_id": "K-P-33-P",
+      "native_orientation_deg": 90,
+      "pad": "2",
+      "ref": "J900198",
+      "side": "B.Cu",
+      "source_footprint_origin_mm": [
+        203.45,
+        227.0
+      ]
+    },
+    {
+      "header_id": "K-P-34-P",
+      "native_orientation_deg": 90,
+      "pad": "2",
+      "ref": "J900200",
+      "side": "B.Cu",
+      "source_footprint_origin_mm": [
+        16.45,
+        241.0
+      ]
+    },
+    {
+      "header_id": "K-P-35-P",
+      "native_orientation_deg": 90,
+      "pad": "2",
+      "ref": "J900202",
+      "side": "B.Cu",
+      "source_footprint_origin_mm": [
+        33.45,
+        241.0
+      ]
+    },
+    {
+      "header_id": "K-P-36-P",
+      "native_orientation_deg": 90,
+      "pad": "2",
+      "ref": "J900204",
+      "side": "B.Cu",
+      "source_footprint_origin_mm": [
+        50.45,
+        241.0
+      ]
+    },
+    {
+      "header_id": "K-P-37-P",
+      "native_orientation_deg": 90,
+      "pad": "2",
+      "ref": "J900206",
+      "side": "B.Cu",
+      "source_footprint_origin_mm": [
+        67.45,
+        241.0
+      ]
+    },
+    {
+      "header_id": "K-P-38-P",
+      "native_orientation_deg": 90,
+      "pad": "2",
+      "ref": "J900208",
+      "side": "B.Cu",
+      "source_footprint_origin_mm": [
+        84.45,
+        241.0
+      ]
+    },
+    {
+      "header_id": "K-P-39-P",
+      "native_orientation_deg": 90,
+      "pad": "2",
+      "ref": "J900210",
+      "side": "B.Cu",
+      "source_footprint_origin_mm": [
+        101.45,
+        241.0
+      ]
+    },
+    {
+      "header_id": "K-P-40-P",
+      "native_orientation_deg": 90,
+      "pad": "2",
+      "ref": "J900212",
+      "side": "B.Cu",
+      "source_footprint_origin_mm": [
+        118.45,
+        241.0
+      ]
+    },
+    {
+      "header_id": "K-P-41-P",
+      "native_orientation_deg": 90,
+      "pad": "2",
+      "ref": "J900214",
+      "side": "B.Cu",
+      "source_footprint_origin_mm": [
+        135.45,
+        241.0
+      ]
+    },
+    {
+      "header_id": "K-P-42-P",
+      "native_orientation_deg": 90,
+      "pad": "2",
+      "ref": "J900216",
+      "side": "B.Cu",
+      "source_footprint_origin_mm": [
+        152.45,
+        241.0
+      ]
+    },
+    {
+      "header_id": "K-P-43-P",
+      "native_orientation_deg": 90,
+      "pad": "2",
+      "ref": "J900218",
+      "side": "B.Cu",
+      "source_footprint_origin_mm": [
+        169.45,
+        241.0
+      ]
+    },
+    {
+      "header_id": "K-P-44-P",
+      "native_orientation_deg": 90,
+      "pad": "2",
+      "ref": "J900220",
+      "side": "B.Cu",
+      "source_footprint_origin_mm": [
+        186.45,
+        241.0
+      ]
+    },
+    {
+      "header_id": "K-P-45-P",
+      "native_orientation_deg": 90,
+      "pad": "2",
+      "ref": "J900222",
+      "side": "B.Cu",
+      "source_footprint_origin_mm": [
+        203.45,
+        241.0
+      ]
+    },
+    {
+      "header_id": "K-P-46-P",
+      "native_orientation_deg": 90,
+      "pad": "2",
+      "ref": "J900224",
+      "side": "B.Cu",
+      "source_footprint_origin_mm": [
+        220.45,
+        241.0
+      ]
+    },
+    {
+      "header_id": "K-P-47-P",
+      "native_orientation_deg": 90,
+      "pad": "2",
+      "ref": "J900226",
+      "side": "B.Cu",
+      "source_footprint_origin_mm": [
+        237.45,
+        241.0
+      ]
+    },
+    {
+      "header_id": "K-P-48-P",
+      "native_orientation_deg": 90,
+      "pad": "2",
+      "ref": "J900228",
+      "side": "B.Cu",
+      "source_footprint_origin_mm": [
+        254.45,
+        241.0
+      ]
+    },
+    {
+      "header_id": "K-P-49-P",
+      "native_orientation_deg": 90,
+      "pad": "2",
+      "ref": "J900230",
+      "side": "B.Cu",
+      "source_footprint_origin_mm": [
+        271.45,
+        241.0
+      ]
+    },
+    {
+      "header_id": "K-P-50-P",
+      "native_orientation_deg": 90,
+      "pad": "2",
+      "ref": "J900232",
+      "side": "B.Cu",
+      "source_footprint_origin_mm": [
+        288.45,
+        241.0
+      ]
+    },
+    {
+      "header_id": "K-P-51-P",
+      "native_orientation_deg": 90,
+      "pad": "2",
+      "ref": "J900234",
+      "side": "B.Cu",
+      "source_footprint_origin_mm": [
+        305.45,
+        241.0
+      ]
+    },
+    {
+      "header_id": "K-P-52-P",
+      "native_orientation_deg": 90,
+      "pad": "2",
+      "ref": "J900236",
+      "side": "B.Cu",
+      "source_footprint_origin_mm": [
+        16.45,
+        255.0
+      ]
+    },
+    {
+      "header_id": "K-P-53-P",
+      "native_orientation_deg": 90,
+      "pad": "2",
+      "ref": "J900238",
+      "side": "B.Cu",
+      "source_footprint_origin_mm": [
+        33.45,
+        255.0
+      ]
+    },
+    {
+      "header_id": "K-P-54-P",
+      "native_orientation_deg": 90,
+      "pad": "2",
+      "ref": "J900240",
+      "side": "B.Cu",
+      "source_footprint_origin_mm": [
+        50.45,
+        255.0
+      ]
+    },
+    {
+      "header_id": "K-P-55-P",
+      "native_orientation_deg": 90,
+      "pad": "2",
+      "ref": "J900242",
+      "side": "B.Cu",
+      "source_footprint_origin_mm": [
+        67.45,
+        255.0
+      ]
+    },
+    {
+      "header_id": "K-P-56-P",
+      "native_orientation_deg": 90,
+      "pad": "2",
+      "ref": "J900244",
+      "side": "B.Cu",
+      "source_footprint_origin_mm": [
+        84.45,
+        255.0
+      ]
+    },
+    {
+      "header_id": "K-P-57-P",
+      "native_orientation_deg": 90,
+      "pad": "2",
+      "ref": "J900246",
+      "side": "B.Cu",
+      "source_footprint_origin_mm": [
+        101.45,
+        255.0
+      ]
+    },
+    {
+      "header_id": "K-P-58-P",
+      "native_orientation_deg": 90,
+      "pad": "2",
+      "ref": "J900248",
+      "side": "B.Cu",
+      "source_footprint_origin_mm": [
+        118.45,
+        255.0
+      ]
+    },
+    {
+      "header_id": "K-P-59-P",
+      "native_orientation_deg": 90,
+      "pad": "2",
+      "ref": "J900250",
+      "side": "B.Cu",
+      "source_footprint_origin_mm": [
+        135.45,
+        255.0
+      ]
+    },
+    {
+      "header_id": "K-P-60-P",
+      "native_orientation_deg": 90,
+      "pad": "2",
+      "ref": "J900252",
+      "side": "B.Cu",
+      "source_footprint_origin_mm": [
+        152.45,
+        255.0
+      ]
+    },
+    {
+      "header_id": "K-P-61-P",
+      "native_orientation_deg": 90,
+      "pad": "2",
+      "ref": "J900254",
+      "side": "B.Cu",
+      "source_footprint_origin_mm": [
+        169.45,
+        255.0
+      ]
+    },
+    {
+      "header_id": "K-P-62-P",
+      "native_orientation_deg": 90,
+      "pad": "2",
+      "ref": "J900256",
+      "side": "B.Cu",
+      "source_footprint_origin_mm": [
+        186.45,
+        255.0
+      ]
+    },
+    {
+      "header_id": "K-P-63-P",
+      "native_orientation_deg": 90,
+      "pad": "2",
+      "ref": "J900258",
+      "side": "B.Cu",
+      "source_footprint_origin_mm": [
+        203.45,
+        255.0
+      ]
+    },
+    {
+      "header_id": "K-P-64-P",
+      "native_orientation_deg": 90,
+      "pad": "2",
+      "ref": "J900260",
+      "side": "B.Cu",
+      "source_footprint_origin_mm": [
+        220.45,
+        255.0
+      ]
+    },
+    {
+      "header_id": "K-P-65-P",
+      "native_orientation_deg": 90,
+      "pad": "2",
+      "ref": "J900262",
+      "side": "B.Cu",
+      "source_footprint_origin_mm": [
+        237.45,
+        255.0
+      ]
+    },
+    {
+      "header_id": "K-P-66-P",
+      "native_orientation_deg": 90,
+      "pad": "2",
+      "ref": "J900264",
+      "side": "B.Cu",
+      "source_footprint_origin_mm": [
+        254.45,
+        255.0
+      ]
+    },
+    {
+      "header_id": "K-P-67-P",
+      "native_orientation_deg": 90,
+      "pad": "2",
+      "ref": "J900266",
+      "side": "B.Cu",
+      "source_footprint_origin_mm": [
+        16.45,
+        269.0
+      ]
+    },
+    {
+      "header_id": "K-P-68-P",
+      "native_orientation_deg": 90,
+      "pad": "2",
+      "ref": "J900268",
+      "side": "B.Cu",
+      "source_footprint_origin_mm": [
+        33.45,
+        269.0
+      ]
+    },
+    {
+      "header_id": "K-P-69-P",
+      "native_orientation_deg": 90,
+      "pad": "2",
+      "ref": "J900270",
+      "side": "B.Cu",
+      "source_footprint_origin_mm": [
+        50.45,
+        269.0
+      ]
+    },
+    {
+      "header_id": "K-P-70-P",
+      "native_orientation_deg": 90,
+      "pad": "2",
+      "ref": "J900272",
+      "side": "B.Cu",
+      "source_footprint_origin_mm": [
+        67.45,
+        269.0
+      ]
+    },
+    {
+      "header_id": "K-P-71-P",
+      "native_orientation_deg": 90,
+      "pad": "2",
+      "ref": "J900274",
+      "side": "B.Cu",
+      "source_footprint_origin_mm": [
+        84.45,
+        269.0
+      ]
+    },
+    {
+      "header_id": "K-P-72-P",
+      "native_orientation_deg": 90,
+      "pad": "2",
+      "ref": "J900276",
+      "side": "B.Cu",
+      "source_footprint_origin_mm": [
+        135.45,
+        269.0
+      ]
+    },
+    {
+      "header_id": "K-P-73-P",
+      "native_orientation_deg": 90,
+      "pad": "2",
+      "ref": "J900278",
+      "side": "B.Cu",
+      "source_footprint_origin_mm": [
+        152.45,
+        269.0
+      ]
+    },
+    {
+      "header_id": "K-P-74-P",
+      "native_orientation_deg": 90,
+      "pad": "2",
+      "ref": "J900280",
+      "side": "B.Cu",
+      "source_footprint_origin_mm": [
+        169.45,
+        269.0
+      ]
+    },
+    {
+      "header_id": "K-P-75-P",
+      "native_orientation_deg": 90,
+      "pad": "2",
+      "ref": "J900282",
+      "side": "B.Cu",
+      "source_footprint_origin_mm": [
+        186.45,
+        269.0
+      ]
+    },
+    {
+      "header_id": "K-P-76-P",
+      "native_orientation_deg": 90,
+      "pad": "2",
+      "ref": "J900284",
+      "side": "B.Cu",
+      "source_footprint_origin_mm": [
+        203.45,
+        269.0
+      ]
+    },
+    {
+      "header_id": "K-P-77-P",
+      "native_orientation_deg": 90,
+      "pad": "2",
+      "ref": "J900286",
+      "side": "B.Cu",
+      "source_footprint_origin_mm": [
+        220.45,
+        269.0
+      ]
+    },
+    {
+      "header_id": "K-P-78-P",
+      "native_orientation_deg": 90,
+      "pad": "2",
+      "ref": "J900288",
+      "side": "B.Cu",
+      "source_footprint_origin_mm": [
+        237.45,
+        269.0
+      ]
+    },
+    {
+      "header_id": "K-P-79-P",
+      "native_orientation_deg": 90,
+      "pad": "2",
+      "ref": "J900290",
+      "side": "B.Cu",
+      "source_footprint_origin_mm": [
+        254.45,
+        269.0
+      ]
+    },
+    {
+      "header_id": "K-P-80-P",
+      "native_orientation_deg": 90,
+      "pad": "2",
+      "ref": "J900292",
+      "side": "B.Cu",
+      "source_footprint_origin_mm": [
+        16.45,
+        283.0
+      ]
+    },
+    {
+      "header_id": "K-P-81-P",
+      "native_orientation_deg": 90,
+      "pad": "2",
+      "ref": "J900294",
+      "side": "B.Cu",
+      "source_footprint_origin_mm": [
+        33.45,
+        283.0
+      ]
+    },
+    {
+      "header_id": "K-P-82-P",
+      "native_orientation_deg": 90,
+      "pad": "2",
+      "ref": "J900296",
+      "side": "B.Cu",
+      "source_footprint_origin_mm": [
+        50.45,
+        283.0
+      ]
+    },
+    {
+      "header_id": "K-P-83-P",
+      "native_orientation_deg": 90,
+      "pad": "2",
+      "ref": "J900298",
+      "side": "B.Cu",
+      "source_footprint_origin_mm": [
+        67.45,
+        283.0
+      ]
+    },
+    {
+      "header_id": "K-P-84-P",
+      "native_orientation_deg": 90,
+      "pad": "2",
+      "ref": "J900300",
+      "side": "B.Cu",
+      "source_footprint_origin_mm": [
+        84.45,
+        283.0
+      ]
+    },
+    {
+      "header_id": "K-P-85-P",
+      "native_orientation_deg": 90,
+      "pad": "2",
+      "ref": "J900302",
+      "side": "B.Cu",
+      "source_footprint_origin_mm": [
+        135.45,
+        283.0
+      ]
+    },
+    {
+      "header_id": "K-P-86-P",
+      "native_orientation_deg": 90,
+      "pad": "2",
+      "ref": "J900304",
+      "side": "B.Cu",
+      "source_footprint_origin_mm": [
+        152.45,
+        283.0
+      ]
+    },
+    {
+      "header_id": "K-P-87-P",
+      "native_orientation_deg": 90,
+      "pad": "2",
+      "ref": "J900306",
+      "side": "B.Cu",
+      "source_footprint_origin_mm": [
+        169.45,
+        283.0
+      ]
+    },
+    {
+      "header_id": "K-P-88-P",
+      "native_orientation_deg": 90,
+      "pad": "2",
+      "ref": "J900308",
+      "side": "B.Cu",
+      "source_footprint_origin_mm": [
+        186.45,
+        283.0
+      ]
+    },
+    {
+      "header_id": "K-P-89-P",
+      "native_orientation_deg": 90,
+      "pad": "2",
+      "ref": "J900310",
+      "side": "B.Cu",
+      "source_footprint_origin_mm": [
+        203.45,
+        283.0
+      ]
+    },
+    {
+      "header_id": "K-P-90-P",
+      "native_orientation_deg": 90,
+      "pad": "2",
+      "ref": "J900312",
+      "side": "B.Cu",
+      "source_footprint_origin_mm": [
+        220.45,
+        283.0
+      ]
+    },
+    {
+      "header_id": "K-P-91-P",
+      "native_orientation_deg": 90,
+      "pad": "2",
+      "ref": "J900314",
+      "side": "B.Cu",
+      "source_footprint_origin_mm": [
+        237.45,
+        283.0
+      ]
+    },
+    {
+      "header_id": "K-P-92-P",
+      "native_orientation_deg": 90,
+      "pad": "2",
+      "ref": "J900316",
+      "side": "B.Cu",
+      "source_footprint_origin_mm": [
+        254.45,
+        283.0
+      ]
+    },
+    {
+      "header_id": "K-P-93-P",
+      "native_orientation_deg": 90,
+      "pad": "2",
+      "ref": "J900318",
+      "side": "B.Cu",
+      "source_footprint_origin_mm": [
+        16.45,
+        206.0
+      ]
+    },
+    {
+      "header_id": "K-P-94-P",
+      "native_orientation_deg": 90,
+      "pad": "2",
+      "ref": "J900320",
+      "side": "B.Cu",
+      "source_footprint_origin_mm": [
+        16.45,
+        218.5
+      ]
+    },
+    {
+      "header_id": "K-P-95-P",
+      "native_orientation_deg": 90,
+      "pad": "2",
+      "ref": "J900322",
+      "side": "B.Cu",
+      "source_footprint_origin_mm": [
+        33.45,
+        206.0
+      ]
+    },
+    {
+      "header_id": "K-P-96-P",
+      "native_orientation_deg": 90,
+      "pad": "2",
+      "ref": "J900324",
+      "side": "B.Cu",
+      "source_footprint_origin_mm": [
+        33.45,
+        218.5
+      ]
+    },
+    {
+      "header_id": "K-P-97-P",
+      "native_orientation_deg": 90,
+      "pad": "2",
+      "ref": "J900326",
+      "side": "B.Cu",
+      "source_footprint_origin_mm": [
+        50.45,
+        206.0
+      ]
+    },
+    {
+      "header_id": "K-P-98-P",
+      "native_orientation_deg": 90,
+      "pad": "2",
+      "ref": "J900328",
+      "side": "B.Cu",
+      "source_footprint_origin_mm": [
+        50.45,
+        218.5
+      ]
+    },
+    {
+      "header_id": "K-P-99-P",
+      "native_orientation_deg": 90,
+      "pad": "2",
+      "ref": "J900330",
+      "side": "B.Cu",
+      "source_footprint_origin_mm": [
+        67.45,
+        206.0
+      ]
+    },
+    {
+      "header_id": "K-P-100-P",
+      "native_orientation_deg": 90,
+      "pad": "2",
+      "ref": "J900332",
+      "side": "B.Cu",
+      "source_footprint_origin_mm": [
+        67.45,
+        218.5
+      ]
+    },
+    {
+      "header_id": "K-P-101-P",
+      "native_orientation_deg": 90,
+      "pad": "2",
+      "ref": "J900334",
+      "side": "B.Cu",
+      "source_footprint_origin_mm": [
+        84.45,
+        206.0
+      ]
+    },
+    {
+      "header_id": "K-P-102-P",
+      "native_orientation_deg": 90,
+      "pad": "2",
+      "ref": "J900336",
+      "side": "B.Cu",
+      "source_footprint_origin_mm": [
+        84.45,
+        218.5
+      ]
+    },
+    {
+      "header_id": "K-P-103-P",
+      "native_orientation_deg": 90,
+      "pad": "2",
+      "ref": "J900338",
+      "side": "B.Cu",
+      "source_footprint_origin_mm": [
+        220.45,
+        192.0
+      ]
+    },
+    {
+      "header_id": "K-P-104-P",
+      "native_orientation_deg": 90,
+      "pad": "2",
+      "ref": "J900340",
+      "side": "B.Cu",
+      "source_footprint_origin_mm": [
+        220.45,
+        206.0
+      ]
+    },
+    {
+      "header_id": "K-P-105-P",
+      "native_orientation_deg": 90,
+      "pad": "2",
+      "ref": "J900342",
+      "side": "B.Cu",
+      "source_footprint_origin_mm": [
+        220.45,
+        219.75
+      ]
+    },
+    {
+      "header_id": "K-P-106-P",
+      "native_orientation_deg": 90,
+      "pad": "2",
+      "ref": "J900344",
+      "side": "B.Cu",
+      "source_footprint_origin_mm": [
+        237.45,
+        192.0
+      ]
+    },
+    {
+      "header_id": "K-P-107-P",
+      "native_orientation_deg": 90,
+      "pad": "2",
+      "ref": "J900346",
+      "side": "B.Cu",
+      "source_footprint_origin_mm": [
+        237.45,
+        206.0
+      ]
+    },
+    {
+      "header_id": "K-P-108-P",
+      "native_orientation_deg": 90,
+      "pad": "2",
+      "ref": "J900348",
+      "side": "B.Cu",
+      "source_footprint_origin_mm": [
+        237.45,
+        219.75
+      ]
+    },
+    {
+      "header_id": "K-P-109-P",
+      "native_orientation_deg": 90,
+      "pad": "2",
+      "ref": "J900350",
+      "side": "B.Cu",
+      "source_footprint_origin_mm": [
+        254.45,
+        192.0
+      ]
+    },
+    {
+      "header_id": "K-P-110-P",
+      "native_orientation_deg": 90,
+      "pad": "2",
+      "ref": "J900352",
+      "side": "B.Cu",
+      "source_footprint_origin_mm": [
+        254.45,
+        206.0
+      ]
+    },
+    {
+      "header_id": "K-P-111-P",
+      "native_orientation_deg": 90,
+      "pad": "2",
+      "ref": "J900354",
+      "side": "B.Cu",
+      "source_footprint_origin_mm": [
+        254.45,
+        219.75
+      ]
+    },
+    {
+      "header_id": "K-P-112-P",
+      "native_orientation_deg": 90,
+      "pad": "2",
+      "ref": "J900356",
+      "side": "B.Cu",
+      "source_footprint_origin_mm": [
+        271.45,
+        192.0
+      ]
+    },
+    {
+      "header_id": "K-P-113-P",
+      "native_orientation_deg": 90,
+      "pad": "2",
+      "ref": "J900358",
+      "side": "B.Cu",
+      "source_footprint_origin_mm": [
+        271.45,
+        206.0
+      ]
+    },
+    {
+      "header_id": "K-P-114-P",
+      "native_orientation_deg": 90,
+      "pad": "2",
+      "ref": "J900360",
+      "side": "B.Cu",
+      "source_footprint_origin_mm": [
+        271.45,
+        219.75
+      ]
+    },
+    {
+      "header_id": "K-P-115-P",
+      "native_orientation_deg": 90,
+      "pad": "2",
+      "ref": "J900362",
+      "side": "B.Cu",
+      "source_footprint_origin_mm": [
+        288.45,
+        192.0
+      ]
+    },
+    {
+      "header_id": "K-P-116-P",
+      "native_orientation_deg": 90,
+      "pad": "2",
+      "ref": "J900364",
+      "side": "B.Cu",
+      "source_footprint_origin_mm": [
+        288.45,
+        206.0
+      ]
+    },
+    {
+      "header_id": "K-P-117-P",
+      "native_orientation_deg": 90,
+      "pad": "2",
+      "ref": "J900366",
+      "side": "B.Cu",
+      "source_footprint_origin_mm": [
+        288.45,
+        219.75
+      ]
+    },
+    {
+      "header_id": "K-P-118-P",
+      "native_orientation_deg": 90,
+      "pad": "2",
+      "ref": "J900368",
+      "side": "B.Cu",
+      "source_footprint_origin_mm": [
+        305.45,
+        192.0
+      ]
+    },
+    {
+      "header_id": "K-P-119-P",
+      "native_orientation_deg": 90,
+      "pad": "2",
+      "ref": "J900370",
+      "side": "B.Cu",
+      "source_footprint_origin_mm": [
+        305.45,
+        206.0
+      ]
+    },
+    {
+      "header_id": "K-P-120-P",
+      "native_orientation_deg": 90,
+      "pad": "2",
+      "ref": "J900372",
+      "side": "B.Cu",
+      "source_footprint_origin_mm": [
+        305.45,
+        219.75
+      ]
+    },
+    {
+      "header_id": "K-P-121-P",
+      "native_orientation_deg": 90,
+      "pad": "2",
+      "ref": "J900374",
+      "side": "B.Cu",
+      "source_footprint_origin_mm": [
+        143.95,
+        234.0
+      ]
+    },
+    {
+      "header_id": "K-P-122-P",
+      "native_orientation_deg": 90,
+      "pad": "2",
+      "ref": "J900376",
+      "side": "B.Cu",
+      "source_footprint_origin_mm": [
+        160.95,
+        234.0
+      ]
+    },
+    {
+      "header_id": "K-P-123-P",
+      "native_orientation_deg": 90,
+      "pad": "2",
+      "ref": "J900378",
+      "side": "B.Cu",
+      "source_footprint_origin_mm": [
+        177.95,
+        234.0
+      ]
+    }
+  ],
+  "status": "UNSELECTED bounded P ground-conductor prerequisite for #38; not implementation or acceptance of #39"
+}
