@@ -1,5 +1,298 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
+  "source_projection": {
+    "scope": "Four coherent ideal inputs replace the complete input/attenuverter chains at 1_GAIN through 4_GAIN. Ideal +/-5 V sources replace the reference generator. The commanded bias current replaces the complete clamp/current servo at CURRENT_SOURCE; the captured current-sense resistance defines only its nominal requested slope. Captured summer and TIA connections use unbounded ideal E sources, not OPA4196 models. The OTA divider, offset pot, IABC series resistor, OTA1 and TIA feedback are included. A fixture 100k load at SUM_POSTVCA replaces the general-output cell and indicator; the clip monitor at SUM_PRELEVEL, unused OTA section and package supply current are excluded. No complete servo, opamp headroom, protection, tolerance, temperature or hardware claim.",
+    "source_parts": [
+      {
+        "key": "G1_PACK_OPA4196IDR_2.1",
+        "role": "mix4_vca:SUMMER",
+        "symbol": "zudo-osc-hole-field:OPA4196IDR",
+        "unit": 1,
+        "value": "OPA4196IDR",
+        "mpn": "OPA4196IDR",
+        "pins": {
+          "1": "SUM_PRELEVEL",
+          "2": "SUM_NODE",
+          "3": "AGND"
+        }
+      },
+      {
+        "key": "G1_PACK_OPA4196IDR_2.5",
+        "role": "mix4_vca:package supply",
+        "symbol": "zudo-osc-hole-field:OPA4196IDR",
+        "unit": 5,
+        "value": "OPA4196IDR",
+        "mpn": "OPA4196IDR",
+        "pins": {
+          "4": "+12V",
+          "11": "-12V"
+        }
+      },
+      {
+        "key": "G1_PACK_OPA4196IDR_4.2",
+        "role": "mix4_vca:CURRENT_TO_VOLTAGE",
+        "symbol": "zudo-osc-hole-field:OPA4196IDR",
+        "unit": 2,
+        "value": "OPA4196IDR",
+        "mpn": "OPA4196IDR",
+        "pins": {
+          "7": "SUM_POSTVCA",
+          "6": "OTA_CURRENT",
+          "5": "AGND"
+        }
+      },
+      {
+        "key": "G1_PACK_OPA4196IDR_4.5",
+        "role": "mix4_vca:package supply",
+        "symbol": "zudo-osc-hole-field:OPA4196IDR",
+        "unit": 5,
+        "value": "OPA4196IDR",
+        "mpn": "OPA4196IDR",
+        "pins": {
+          "4": "+12V",
+          "11": "-12V"
+        }
+      },
+      {
+        "key": "G1_R_SUM_IN_1.0",
+        "role": "mix4_vca:R_SUM_IN_1",
+        "symbol": "zudo-osc-hole-field:RT0603BRD07100KL",
+        "unit": 0,
+        "value": "100 k\u03a9",
+        "mpn": "RT0603BRD07100KL",
+        "pins": {
+          "1": "1_GAIN",
+          "2": "SUM_NODE"
+        }
+      },
+      {
+        "key": "G1_R_SUM_IN_2.0",
+        "role": "mix4_vca:R_SUM_IN_2",
+        "symbol": "zudo-osc-hole-field:RT0603BRD07100KL",
+        "unit": 0,
+        "value": "100 k\u03a9",
+        "mpn": "RT0603BRD07100KL",
+        "pins": {
+          "1": "2_GAIN",
+          "2": "SUM_NODE"
+        }
+      },
+      {
+        "key": "G1_R_SUM_IN_3.0",
+        "role": "mix4_vca:R_SUM_IN_3",
+        "symbol": "zudo-osc-hole-field:RT0603BRD07100KL",
+        "unit": 0,
+        "value": "100 k\u03a9",
+        "mpn": "RT0603BRD07100KL",
+        "pins": {
+          "1": "3_GAIN",
+          "2": "SUM_NODE"
+        }
+      },
+      {
+        "key": "G1_R_SUM_IN_4.0",
+        "role": "mix4_vca:R_SUM_IN_4",
+        "symbol": "zudo-osc-hole-field:RT0603BRD07100KL",
+        "unit": 0,
+        "value": "100 k\u03a9",
+        "mpn": "RT0603BRD07100KL",
+        "pins": {
+          "1": "4_GAIN",
+          "2": "SUM_NODE"
+        }
+      },
+      {
+        "key": "G1_R_SUM_FEEDBACK.0",
+        "role": "mix4_vca:R_SUM_FEEDBACK",
+        "symbol": "zudo-osc-hole-field:RT0603BRD07100KL",
+        "unit": 0,
+        "value": "50 k\u03a9",
+        "mpn": "",
+        "pins": {
+          "1": "SUM_PRELEVEL",
+          "2": "SUM_NODE"
+        }
+      },
+      {
+        "key": "G1_R_CURRENT_SENSE.0",
+        "role": "mix4_vca:R_CURRENT_SENSE",
+        "symbol": "zudo-osc-hole-field:RT0603BRD07100KL",
+        "unit": 0,
+        "value": "10 k\u03a9",
+        "mpn": "",
+        "pins": {
+          "1": "REF5",
+          "2": "EMITTER"
+        }
+      },
+      {
+        "key": "G1_R_IABC_LIMIT.0",
+        "role": "mix4_vca:R_IABC_LIMIT",
+        "symbol": "zudo-osc-hole-field:RT0603BRD07100KL",
+        "unit": 0,
+        "value": "10 k\u03a9",
+        "mpn": "",
+        "pins": {
+          "1": "CURRENT_SOURCE",
+          "2": "IABC1"
+        }
+      },
+      {
+        "key": "G1_R_OTA_ATTEN_TOP.0",
+        "role": "mix4_vca:R_OTA_ATTEN_TOP",
+        "symbol": "zudo-osc-hole-field:RT0603BRD07100KL",
+        "unit": 0,
+        "value": "100 k\u03a9",
+        "mpn": "RT0603BRD07100KL",
+        "pins": {
+          "1": "SUM_PRELEVEL",
+          "2": "OTA_SIGNAL"
+        }
+      },
+      {
+        "key": "G1_R_OTA_ATTEN_BOTTOM.0",
+        "role": "mix4_vca:R_OTA_ATTEN_BOTTOM",
+        "symbol": "zudo-osc-hole-field:RT0603BRD07100KL",
+        "unit": 0,
+        "value": "100 \u03a9",
+        "mpn": "",
+        "pins": {
+          "1": "OTA_SIGNAL",
+          "2": "AGND"
+        }
+      },
+      {
+        "key": "G1_R_OFFSET_FEED.0",
+        "role": "mix4_vca:R_OFFSET_FEED",
+        "symbol": "zudo-osc-hole-field:RT0603BRD07100KL",
+        "unit": 0,
+        "value": "1 M\u03a9",
+        "mpn": "",
+        "pins": {
+          "1": "OFFSET_W",
+          "2": "OTA_OFFSET"
+        }
+      },
+      {
+        "key": "G1_R_OFFSET_RETURN.0",
+        "role": "mix4_vca:R_OFFSET_RETURN",
+        "symbol": "zudo-osc-hole-field:RT0603BRD07100KL",
+        "unit": 0,
+        "value": "1 k\u03a9",
+        "mpn": "",
+        "pins": {
+          "1": "OTA_OFFSET",
+          "2": "AGND"
+        }
+      },
+      {
+        "key": "G1_R_TIA_FIXED.0",
+        "role": "mix4_vca:R_TIA_FIXED",
+        "symbol": "zudo-osc-hole-field:RT0603BRD07100KL",
+        "unit": 0,
+        "value": "100 k\u03a9",
+        "mpn": "RT0603BRD07100KL",
+        "pins": {
+          "1": "SUM_POSTVCA",
+          "2": "TIA_TRIM"
+        }
+      },
+      {
+        "key": "G1_FEEDTHROUGH.0",
+        "role": "mix4_vca:FEEDTHROUGH",
+        "symbol": "zudo-osc-hole-field:TC33X-2-103E",
+        "unit": 0,
+        "value": "10 k\u03a9",
+        "mpn": "TC33X-2-103E",
+        "pins": {
+          "1": "REFN5",
+          "2": "OFFSET_W",
+          "3": "REF5"
+        }
+      },
+      {
+        "key": "G1_TIA_CAL.0",
+        "role": "mix4_vca:TIA_CAL",
+        "symbol": "zudo-osc-hole-field:TC33X-2-103E",
+        "unit": 0,
+        "value": "10 k\u03a9",
+        "mpn": "TC33X-2-103E",
+        "pins": {
+          "1": "TIA_TRIM",
+          "2": "OTA_CURRENT",
+          "3": "OTA_CURRENT"
+        }
+      },
+      {
+        "key": "G1_VCA_OTA.1",
+        "role": "mix4_vca:VCA_OTA",
+        "symbol": "zudo-osc-hole-field:LM13700M_NOPB",
+        "unit": 1,
+        "value": "LM13700M/NOPB",
+        "mpn": "LM13700M/NOPB",
+        "pins": {
+          "12": null,
+          "13": "AGND",
+          "14": "AGND",
+          "15": null,
+          "16": "IABC2"
+        }
+      },
+      {
+        "key": "G1_VCA_OTA.2",
+        "role": "mix4_vca:VCA_OTA",
+        "symbol": "zudo-osc-hole-field:LM13700M_NOPB",
+        "unit": 2,
+        "value": "LM13700M/NOPB",
+        "mpn": "LM13700M/NOPB",
+        "pins": {
+          "9": null,
+          "10": "AGND"
+        }
+      },
+      {
+        "key": "G1_VCA_OTA.3",
+        "role": "mix4_vca:VCA_OTA",
+        "symbol": "zudo-osc-hole-field:LM13700M_NOPB",
+        "unit": 3,
+        "value": "LM13700M/NOPB",
+        "mpn": "LM13700M/NOPB",
+        "pins": {
+          "1": "IABC1",
+          "2": null,
+          "3": "OTA_SIGNAL",
+          "4": "OTA_OFFSET",
+          "5": "OTA_CURRENT"
+        }
+      },
+      {
+        "key": "G1_VCA_OTA.4",
+        "role": "mix4_vca:VCA_OTA",
+        "symbol": "zudo-osc-hole-field:LM13700M_NOPB",
+        "unit": 4,
+        "value": "LM13700M/NOPB",
+        "mpn": "LM13700M/NOPB",
+        "pins": {
+          "7": "AGND",
+          "8": null
+        }
+      },
+      {
+        "key": "G1_VCA_OTA.5",
+        "role": "mix4_vca:VCA_OTA",
+        "symbol": "zudo-osc-hole-field:LM13700M_NOPB",
+        "unit": 5,
+        "value": "LM13700M/NOPB",
+        "mpn": "LM13700M/NOPB",
+        "pins": {
+          "6": "-12V",
+          "11": "+12V"
+        }
+      }
+    ]
+  },
+  "source_projection_sha256": "8907a0e3684e3cc8cd5c98486cf76478d4acb77afbbb641677ed15e442889060",
+  "model_sha256": "666df501773da5e65f7fd3b3c806b2c1ae7770784685dd8191a9df33b382f390",
   "authority": "PROPOSAL - unvalidated",
   "oracle": "KiCad 10.0.6 ngspice via scripts/kicad/run.sh",
   "status": "Bounded waveform and zero-bias model checks met; feedthrough open; hardware unvalidated",
@@ -23,6 +316,7 @@
     {
       "deck": "design/spec/modules/spice/mix5-ideal.cir",
       "status": "PASS - ideal model only",
+      "deck_sha256": "3a9ea12d0e51f23ec07b12983c69e54567ad2f5697026ae4aa523c45159eb7c4",
       "result_V": {
         "sum_prelevel": -9.99997,
         "sum_out": 4.999975
@@ -32,6 +326,7 @@
     {
       "deck": "design/spec/modules/spice/mix4-vendor-n5-0v.cir",
       "status": "MEASURED - vendor single OTA model only",
+      "deck_sha256": "fd834e72a4b97dcced1bec188b646347cbfeff83acbaef7b48ecee05c4a0ee8b",
       "command_V": -5,
       "imposed_bias_uA": 0,
       "input_peak_each_V": 0,
@@ -44,6 +339,7 @@
     {
       "deck": "design/spec/modules/spice/mix4-vendor-n5-1v.cir",
       "status": "MEASURED - vendor single OTA model only",
+      "deck_sha256": "e06f8f2efb2f16c81e25a00eb1bba5ba34c290dea14d43adddeaae38bc4f3f48",
       "command_V": -5,
       "imposed_bias_uA": 0,
       "input_peak_each_V": 1,
@@ -56,6 +352,7 @@
     {
       "deck": "design/spec/modules/spice/mix4-vendor-n5-5v.cir",
       "status": "MEASURED - vendor single OTA model only",
+      "deck_sha256": "500a329a55f33cb61868e3fdfaa35ffb3adfc71016bbd2fe3318d9087ce4e30e",
       "command_V": -5,
       "imposed_bias_uA": 0,
       "input_peak_each_V": 5,
@@ -68,6 +365,7 @@
     {
       "deck": "design/spec/modules/spice/mix4-vendor-0-0v.cir",
       "status": "MEASURED - vendor single OTA model only",
+      "deck_sha256": "fd834e72a4b97dcced1bec188b646347cbfeff83acbaef7b48ecee05c4a0ee8b",
       "command_V": 0,
       "imposed_bias_uA": 0,
       "input_peak_each_V": 0,
@@ -80,6 +378,7 @@
     {
       "deck": "design/spec/modules/spice/mix4-vendor-0-1v.cir",
       "status": "MEASURED - vendor single OTA model only",
+      "deck_sha256": "e06f8f2efb2f16c81e25a00eb1bba5ba34c290dea14d43adddeaae38bc4f3f48",
       "command_V": 0,
       "imposed_bias_uA": 0,
       "input_peak_each_V": 1,
@@ -92,6 +391,7 @@
     {
       "deck": "design/spec/modules/spice/mix4-vendor-0-5v.cir",
       "status": "MEASURED - vendor single OTA model only",
+      "deck_sha256": "500a329a55f33cb61868e3fdfaa35ffb3adfc71016bbd2fe3318d9087ce4e30e",
       "command_V": 0,
       "imposed_bias_uA": 0,
       "input_peak_each_V": 5,
@@ -104,6 +404,7 @@
     {
       "deck": "design/spec/modules/spice/mix4-vendor-2p5-0v.cir",
       "status": "MEASURED - vendor single OTA model only",
+      "deck_sha256": "b12cf793c30b692526796d92e3dbad8bc5a7f4520e1b75c93d4863dad6c482e7",
       "command_V": 2.5,
       "imposed_bias_uA": 250.0,
       "input_peak_each_V": 0,
@@ -116,6 +417,7 @@
     {
       "deck": "design/spec/modules/spice/mix4-vendor-2p5-1v.cir",
       "status": "MEASURED - vendor single OTA model only",
+      "deck_sha256": "681da900bdfb459a19199a4d314b29f73991d3490910a8e3d3a889b8c14d444b",
       "command_V": 2.5,
       "imposed_bias_uA": 250.0,
       "input_peak_each_V": 1,
@@ -128,6 +430,7 @@
     {
       "deck": "design/spec/modules/spice/mix4-vendor-2p5-5v.cir",
       "status": "MEASURED - vendor single OTA model only",
+      "deck_sha256": "6981556e460d85eb153ee024b7078701fb7cc774dc584072e67d651ce9d9c742",
       "command_V": 2.5,
       "imposed_bias_uA": 250.0,
       "input_peak_each_V": 5,
@@ -140,6 +443,7 @@
     {
       "deck": "design/spec/modules/spice/mix4-vendor-5-0v.cir",
       "status": "MEASURED - vendor single OTA model only",
+      "deck_sha256": "fe09c5e353015c6330186d109aa22653509556fbdf8f8323dab25692445d2c12",
       "command_V": 5,
       "imposed_bias_uA": 500,
       "input_peak_each_V": 0,
@@ -152,6 +456,7 @@
     {
       "deck": "design/spec/modules/spice/mix4-vendor-5-1v.cir",
       "status": "MEASURED - vendor single OTA model only",
+      "deck_sha256": "229a15c4912f077d3c2312c180887e3e6c4965fab4ba830275a1335d36ef7327",
       "command_V": 5,
       "imposed_bias_uA": 500,
       "input_peak_each_V": 1,
@@ -164,6 +469,7 @@
     {
       "deck": "design/spec/modules/spice/mix4-vendor-5-5v.cir",
       "status": "MEASURED - vendor single OTA model only",
+      "deck_sha256": "0e21b96977635e7e56f5cf3f442d11085fd29c391d8b22fd965c74be4e6e701e",
       "command_V": 5,
       "imposed_bias_uA": 500,
       "input_peak_each_V": 5,

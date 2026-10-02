@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "status": "UNSELECTED synthetic analytic fixture; no physical/candidate admission",
+  "scope": "All dimensions, resistivities and currents below are synthetic test constants. They are not manufacturer evidence, actual PCB cuts, material selection or changed instrument limits.",
+  "source_kind": "full_section_foil_cut",
+  "current_sign": "positive into conductor; outward normal current is its negative",
+  "potential_ansatz": "continuous_p1_constant_through_foil_depth",
+  "regions": [
+    {
+      "region_id": "analytic:left",
+      "foil_layer": "B.Cu",
+      "x_mm": ["0", "2"],
+      "y_mm": ["0", "4"],
+      "depth_mm": ["3/2", "8/5"],
+      "rho_ohm_mm": "1/50000",
+      "current_A": "1/5",
+      "flow_axis": 0
+    },
+    {
+      "region_id": "analytic:right",
+      "foil_layer": "B.Cu",
+      "x_mm": ["2", "5"],
+      "y_mm": ["0", "4"],
+      "depth_mm": ["3/2", "8/5"],
+      "rho_ohm_mm": "3/100000",
+      "current_A": "1/5",
+      "flow_axis": 0
+    }
+  ],
+  "left_join_face_breakpoints_mm": ["0", "1", "4"],
+  "right_join_face_breakpoints_mm": ["0", "2", "3", "4"],
+  "entrance_voltage_V": "7",
+  "expected_total_energy_W_exact": "13/1000000",
+  "expected_series_resistance_ohm_exact": "13/40000",
+  "actual_native_interface_selection": "NOT RUN; no candidate geometry/mesh loaded",
+  "assembled_solver_integration": "NOT RUN; historical 44 model files unchanged",
+  "physical_geometry_material_contact_current_qualification": "OPEN; not established by this primitive"
+}
