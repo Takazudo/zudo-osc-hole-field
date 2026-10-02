@@ -5,11 +5,144 @@
   "oracle": "KiCad 10.0.6 pinned image, ngspice-44.2",
   "deck": "design/spec/modules/spice/sample-hold-slew-ideal.cir",
   "instances": "H1 and H2 share this topology; one representative deck run",
+  "source_projection": {
+    "r_min_ohm": 2200.0,
+    "r_pot_nominal_ohm": 500000.0,
+    "c_lag_F": 5e-07,
+    "pot_nominal_evidence": {
+      "fact_id": "fact-b504-resistance",
+      "record_id": "rec-b504",
+      "source_id": "src-b504-resistance",
+      "value": 500000,
+      "unit": "ohm",
+      "conditions": "B resistance code, nominal end-to-end at room temperature; \u00b120% standard resistance tolerance"
+    },
+    "included_roles": [
+      "slew_island:PRE",
+      "slew_island:POST",
+      "slew_island:RV",
+      "slew_island:R_MIN",
+      "slew_island:C1",
+      "slew_island:C2",
+      "slew_island:C3",
+      "slew_island:C4",
+      "slew_island:C5"
+    ],
+    "source_parts": [
+      {
+        "role": "slew_island:PRE",
+        "key": "reference_generator_J_H1_TRIGGER___A1.1",
+        "symbol": "zudo-osc-hole-field:OPA4197IPWR",
+        "unit": 1,
+        "value": "OPA4197IPWR",
+        "pins": {
+          "1": "C5195c0_PRE_OUT",
+          "2": "C5195c0_PRE_OUT",
+          "3": "RAW_HELD"
+        }
+      },
+      {
+        "role": "slew_island:POST",
+        "key": "reference_generator_J_H1_TRIGGER___A1.2",
+        "symbol": "zudo-osc-hole-field:OPA4197IPWR",
+        "unit": 2,
+        "value": "OPA4197IPWR",
+        "pins": {
+          "7": "SLEW_BUFFERED",
+          "6": "SLEW_BUFFERED",
+          "5": "SLEW_STORAGE"
+        }
+      },
+      {
+        "role": "slew_island:RV",
+        "key": "slew_island_C_H1_SLEW___RV.0",
+        "symbol": "zudo-osc-hole-field:PTV09A-4020F-B504",
+        "unit": 0,
+        "value": "PTV09A-4020F-B504",
+        "pins": {
+          "1": "SLEW_POT_IN",
+          "2": "SLEW_STORAGE",
+          "3": "SLEW_STORAGE",
+          "4": null,
+          "5": null
+        }
+      },
+      {
+        "role": "slew_island:R_MIN",
+        "key": "slew_island_C_H1_SLEW___R_MIN.0",
+        "symbol": "zudo-osc-hole-field:RC0603FR-07100KL",
+        "unit": 0,
+        "value": "2200 \u03a9",
+        "pins": {
+          "1": "C5195c0_PRE_OUT",
+          "2": "SLEW_POT_IN"
+        }
+      },
+      {
+        "role": "slew_island:C1",
+        "key": "slew_island_C_H1_SLEW___C1.0",
+        "symbol": "zudo-osc-hole-field:1206CG104J500NT",
+        "unit": 0,
+        "value": "1e-07 F",
+        "pins": {
+          "1": "SLEW_STORAGE",
+          "2": "AGND"
+        }
+      },
+      {
+        "role": "slew_island:C2",
+        "key": "slew_island_C_H1_SLEW___C2.0",
+        "symbol": "zudo-osc-hole-field:1206CG104J500NT",
+        "unit": 0,
+        "value": "1e-07 F",
+        "pins": {
+          "1": "SLEW_STORAGE",
+          "2": "AGND"
+        }
+      },
+      {
+        "role": "slew_island:C3",
+        "key": "slew_island_C_H1_SLEW___C3.0",
+        "symbol": "zudo-osc-hole-field:1206CG104J500NT",
+        "unit": 0,
+        "value": "1e-07 F",
+        "pins": {
+          "1": "SLEW_STORAGE",
+          "2": "AGND"
+        }
+      },
+      {
+        "role": "slew_island:C4",
+        "key": "slew_island_C_H1_SLEW___C4.0",
+        "symbol": "zudo-osc-hole-field:1206CG104J500NT",
+        "unit": 0,
+        "value": "1e-07 F",
+        "pins": {
+          "1": "SLEW_STORAGE",
+          "2": "AGND"
+        }
+      },
+      {
+        "role": "slew_island:C5",
+        "key": "slew_island_C_H1_SLEW___C5.0",
+        "symbol": "zudo-osc-hole-field:1206CG104J500NT",
+        "unit": 0,
+        "value": "1e-07 F",
+        "pins": {
+          "1": "SLEW_STORAGE",
+          "2": "AGND"
+        }
+      }
+    ],
+    "scope": "The captured lag resistors/capacitors and follower connections are projected. The held input and pre/post buffers are ideal voltage sources with unlimited rails; the three 100 kohm output loads are fixture loads isolated by ideal post buffers. LF398 acquisition/hold, trigger logic, the physical precision-output cell, actual output/indicator loading, pot tolerance/taper/contact, capacitor tolerance/leakage and amplifier limits are excluded. The fast endpoint uses a 1 milliohm numerical rheostat, compared with the nominal zero-ohm endpoint. Positions are nominal resistance fractions, not measured knob angles."
+  },
+  "fast_endpoint_numerical_rheostat_ohm": 0.001,
   "cases": [
     {
       "position": "fast",
-      "r_min_ohm": 2200,
-      "r_pot_ohm": 0,
+      "nominal_pot_fraction": 0,
+      "r_min_ohm": 2200.0,
+      "r_pot_ohm": 0.0,
       "c_lag_F": 5e-07,
       "calculated_10_90_s": 0.002416947,
       "ngspice_10_90_s": 0.00241688,
@@ -18,8 +151,9 @@
     },
     {
       "position": "center",
-      "r_min_ohm": 2200,
-      "r_pot_ohm": 250000,
+      "nominal_pot_fraction": 0.5,
+      "r_min_ohm": 2200.0,
+      "r_pot_ohm": 250000.0,
       "c_lag_F": 5e-07,
       "calculated_10_90_s": 0.277070019,
       "ngspice_10_90_s": 0.27707004,
@@ -28,8 +162,9 @@
     },
     {
       "position": "slow",
-      "r_min_ohm": 2200,
-      "r_pot_ohm": 500000,
+      "nominal_pot_fraction": 1,
+      "r_min_ohm": 2200.0,
+      "r_pot_ohm": 500000.0,
       "c_lag_F": 5e-07,
       "calculated_10_90_s": 0.551723091,
       "ngspice_10_90_s": 0.55172308,
