@@ -3,7 +3,7 @@ title: "Precision-output model sweep"
 description: "OPA4197 model result, fixed compensation, failure gate, and physical follow-up."
 ---
 
-The OSC-ES-1 precision-output cell is an **unvalidated draft**. Its fixed proposal has two 499 Ω series output resistors, a 100 Ω resistor from JACK to the inverting input, and a 1 nF capacitor from the amplifier DRIVE to the inverting input. The output jack remains sensed locally on the jack board. These changes apply to every `precision_output` cell instance generated from the shared electrical standard. The 100 Ω and 1 nF values have **no selected exact orderable MPN** yet; the schematic preserves the values with blank MPN fields.
+The OSC-ES-1 precision-output cell is an **unvalidated draft**. Its fixed proposal has two 499 Ω series output resistors, a 100 Ω resistor from JACK to the inverting input, and a 1 nF capacitor from the amplifier DRIVE to the inverting input. The output jack remains sensed locally on the jack board. These changes apply to every `precision_output` cell instance generated from the shared electrical standard. The 100 Ω feedback resistor is now **Yageo RC0603FR-07100RL** (1%, 0.1 W at 70 °C), and the 1 nF local capacitor is **KEMET C0603C102J5GACTU** (5%, 50 V, C0G). Both use the existing 0603 family footprints. The schematic binds these exact identities through dedicated roles; supplier allocation, land-pattern qualification and physical stability remain open.
 
 ## Model and method
 

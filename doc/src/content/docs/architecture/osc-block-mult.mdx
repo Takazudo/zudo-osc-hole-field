@@ -42,7 +42,7 @@ flowchart LR
 | Output load target as fractional error | 1 mV / 5 V = 200 ppm = 0.02% at the ±5 V test point | Target, not a measured gain error |
 | 1 V/octave pitch conversion | 1 mV ≈ 1.2 cents; the 1 mV load target is ≈1.2 cents. Adding only the 0.2 mV preliminary offset estimate gives ≈1.44 cents | Arithmetic at 1 V/octave; excludes bias, tolerance and source effects and does not establish tracking or an accuracy limit |
 
-The multiplication output paths use OSC-ES-1's compensated precision cell. The 998 Ω resistance is outside the local amplifier drive node but inside the DC feedback loop through the jack; the 1 nF capacitor supplies a separate local high-frequency path. A plain output resistor outside feedback would attenuate a 10 kΩ load. The project has no per-output gain trim. The 100 Ω and 1 nF exact passive identities remain open.
+The multiplication output paths use OSC-ES-1's compensated precision cell. The 998 Ω resistance is outside the local amplifier drive node but inside the DC feedback loop through the jack; the 1 nF capacitor supplies a separate local high-frequency path. A plain output resistor outside feedback would attenuate a 10 kΩ load. The project has no per-output gain trim. The shared cell now selects Yageo RC0603FR-07100RL for 100 Ω feedback and KEMET C0603C102J5GACTU for 1 nF compensation. Exact identity is established; procurement, thermal/fault duty and populated-loop stability remain open.
 
 ### Main nets
 

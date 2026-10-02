@@ -14,7 +14,10 @@ BASE = Path('design/partition/peripheral-ground-feasibility')
 PRIOR = Path('design/partition/peripheral-source-epoch-20261001.json')
 DISPLAY_EPOCH = Path('design/partition/peripheral-source-epoch-20261002.json')
 POWER_EPOCH = Path('design/partition/peripheral-source-epoch-20261002-power-metadata.json')
-OUTPUT = Path('design/partition/peripheral-source-epoch-20261002-octave-routing.json')
+ROUTING_EPOCH = Path('design/partition/peripheral-source-epoch-20261002-octave-routing.json')
+OUTPUT = Path('design/partition/peripheral-source-epoch-20261002-feedback-identities.json')
+IDENTITY_BASE = '8d2940ac7f6fde3d2a466e4e21c45d4f232fdad1'
+IDENTITIES = Path('design/standard/precision-feedback-bindings.json')
 ROUTING_BASE = 'b8795bfbceaeb13e8e3f6d29d9ef57729299fd68'
 ROUTING = 'design/partition/octave-routing.json'
 COMMIT = 'fa11636b860ef80c01cb42bc7450551db556c72e'
@@ -93,7 +96,43 @@ def prove_octave_netclass_only(old_bytes, new_bytes):
         raise ValueError('octave netlist changed beyond the AGND class declaration')
 
 
+def prove_feedback_identity_only(old_bytes, new_bytes, contract):
+    """Compare the entire IO report after 32 explicitly named substitutions."""
+    if contract['schema_version'] != 1 or contract['base_commit'] != IDENTITY_BASE:
+        raise ValueError('Unexpected feedback identity transition base')
+    expected, current = json.loads(old_bytes), json.loads(new_bytes)
+    if expected['native_netlist']['sha256'] != contract['old_native_netlist_sha256']:
+        raise ValueError('Feedback identity base netlist hash differs')
+    expected['native_netlist']['sha256'] = contract['new_native_netlist_sha256']
+    packages = {row['ref']:row for row in expected['physical_packages']}
+    if len(packages) != len(expected['physical_packages']):
+        raise ValueError('Duplicate source package identity')
+    changes = contract['packages']
+    if len(changes) != 32 or len({row['ref'] for row in changes}) != 32:
+        raise ValueError('Exactly 32 unique feedback package substitutions required')
+    allowed = {'RC0603FR-07100KL':'RC0603FR-07100RL',
+               'C0603C101J5GACTU':'C0603C102J5GACTU'}
+    counts = {key:0 for key in allowed}
+    for change in changes:
+        old = change['old_symbol']
+        if old not in allowed or change['new_symbol'] != allowed[old] or change['new_mpn'] != allowed[old]:
+            raise ValueError('Unexpected exact feedback substitution')
+        row = packages[change['ref']]
+        if (row['instance'] != change['instance'] or row['symbol'] != old or
+                row['mpn'] != '' or row['dnp']):
+            raise ValueError('Feedback substitution does not match its original fitted package')
+        row['symbol'] = change['new_symbol']
+        row['mpn'] = change['new_mpn']
+        counts[old] += 1
+    if set(counts.values()) != {16} or expected != current:
+        raise ValueError('IO report changed beyond the exact feedback identities/netlist hash')
+
+
 def derive():
+    routing_epoch = ROUTING_EPOCH.read_bytes()
+    if routing_epoch != historical(str(ROUTING_EPOCH), IDENTITY_BASE):
+        raise ValueError('Historical routing epoch was modified')
+    identity_bytes = IDENTITIES.read_bytes()
     power_bytes=POWER_EPOCH.read_bytes()
     if power_bytes != historical(str(POWER_EPOCH),ROUTING_BASE):
         raise ValueError('historical power metadata epoch was modified')
@@ -115,14 +154,20 @@ def derive():
     inputs = {p: Path(p).read_bytes() for p in (CONTRACT, SUPPLY)}
     if any(raw != historical(p, METADATA_BASE) for p, raw in inputs.items()):
         raise ValueError('supply source changed beyond this metadata-only transition')
-    prove_power_metadata_only(display_io, new_io, json.loads(inputs[CONTRACT]), json.loads(inputs[SUPPLY]))
+    identity_base_io = historical(IO, IDENTITY_BASE)
+    prove_power_metadata_only(display_io, identity_base_io, json.loads(inputs[CONTRACT]), json.loads(inputs[SUPPLY]))
+    prove_feedback_identity_only(identity_base_io, new_io, json.loads(identity_bytes))
     result = copy.deepcopy(display)
     result['scope'] = ('Exact source projection equivalence through the retained power metadata epoch '
-        'plus declared routing-only additions and the corresponding AGND net-class declarations. '
+        'plus declared routing-only additions, AGND net-class declarations, and 32 exact feedback '
+        'package identity substitutions on the jack boards. '
         'Their geometry, stack proposal and source pins are unchanged. The disposable ground '
         'generator replaces routing, so its output definition remains identical. '
         'Historical native/model prerequisites remain stale; actual octave PCB checks are separate.')
-    result['prior_epoch'] = {'path': str(POWER_EPOCH), 'sha256': sha(power_bytes)}
+    result['prior_epoch'] = {'path': str(ROUTING_EPOCH), 'sha256': sha(routing_epoch)}
+    result['feedback_identity_transition'] = {'base_commit':IDENTITY_BASE,
+        'contract':str(IDENTITIES),'sha256':sha(identity_bytes),'package_count':32,
+        'scope':'Complete IO report equality except the 32 named symbol/MPN pairs and bound native-netlist hash; no native/model rebinding'}
     result['routing_transition']={'base_commit':ROUTING_BASE,'source':ROUTING,'sha256':sha(routing_bytes),
         'scope':'Canonical routing-only proposal; no native/model evidence rebinding'}
     result['metadata_comparison'] = {'commit': METADATA_BASE, 'report': IO,
