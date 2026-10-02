@@ -5,14 +5,14 @@
 layout's 418 packages, 36 supports, 139 fixed controls, actual outline, stack
 proposal and reservations. The canonical partition outline remains separate.
 
-`copper.json` owns 1,781 track segments and 430 through vias, including all 150
+`copper.json` owns 1,811 track segments and 436 through vias, including all 150
 main-terminal array vias. Coordinates are native integer nanometres. The
 constructor appends only this copper and the source-defined ground pours to
 the checked labelled layout, preserving every other input byte. Each main
 array's complete annuli remain inside its owning 4 × 4 mm terminal.
 
 Fresh KiCad 10.0.6 checks give zero DRC violations, zero schematic-parity
-findings, **301 open edges** and **344/344 connected ground contacts**. All
+findings, **278 open edges** and **344/344 connected ground contacts**. All
 **16 local IC/bypass rail pairs are connected**, with at most 2.535 mm between
 supply-pad centres. Independent reload/refill retains the connectivity.
 `ratsnest.json` contains the complete per-net inventory; the truncated CLI
@@ -85,3 +85,12 @@ bypass pairs connected after independent refill. The raw router timed out;
 its unfiltered result is not accepted. Combined native replay, 26 targeted tests, documentation build and
 publication checks passed for this checkpoint. The existing single workbench
 link exception remains explicit. Integrated CI is pending.
+
+Twenty-three further same-module front-layer links reduce 301 open edges to
+278, adding 30 segments and six distinct off-pad through vias. A first trial
+that proposed coincident drill locations was rejected. All ground contacts
+and local bypass pairs remain connected after independent refill. The full
+replay also checks per-net connectivity equality across refill, not only the
+total edge count. Combined native replay, 26 targeted tests, documentation
+build and publication checks passed for this extension; the existing single
+workbench link exception remains explicit. Integrated CI is pending.
