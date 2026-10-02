@@ -1,0 +1,31 @@
+---
+title: "Control PCB layout draft"
+description: "Current P placement, readable references, and the remaining routing work."
+---
+
+The shared control board has a reproducible **unvalidated, unrouted layout candidate** at `boards/osc-control/osc-control-layout.kicad_pcb`. Its 418 source packages and 36 supports preserve all 139 fixed control positions. The two complete slew circuits sit beside their unchanged potentiometers; all four amplifier bypass capacitors are 2.2975 mm from their supply pads.
+
+The candidate uses the reviewed local edge tab beside RV601 and separate reservations around the six power terminals. It remains separate from the canonical partition outline. The tab and neighboring octave adapter pass their conditional source-envelope screen; installed fit remains unqualified.
+
+| Current native check | Result |
+| --- | --- |
+| DRC violations, including silkscreen | 0 |
+| Schematic parity findings | 0 |
+| Visible references | 418, using 1 mm text |
+| Complete native open-edge count | **872** |
+| Multi-pad candidate nets | 348 |
+| Routing / physical qualification | **Incomplete / NOT RUN** |
+
+The source-controlled references avoid same-face component courtyards, pad projections, other silk and board edges. Fresh CI replay regenerates the candidate and checks complete PCB, project, schematic and custom-rule bytes before running native DRC. It also rejects a missing reference, a nonfinite position, a label over a component and a changed bare input. Reference placement preserves every other PCB byte.
+
+## Current views
+
+These are native copper/silkscreen previews of the unrouted candidate, not fabrication plots or proof of physical fit. The rear view is mirrored to show the board from that side.
+
+![Control candidate front copper and references](/assets/osc-hole-field/osc-control-layout-front.png)
+
+![Control candidate rear copper and references](/assets/osc-hole-field/osc-control-layout-back.png)
+
+## Remaining work
+
+[Issue #39](https://github.com/Takazudo/zudo-osc-hole-field/issues/39) remains open for canonical geometry adoption and routing. The proposed four-layer, 2 oz, 1.6 mm stack, actual connected-copper current and resistance limits, exact protection and supply boundaries, manufacturing process and installed assembly remain unresolved under [#38](https://github.com/Takazudo/zudo-osc-hole-field/issues/38), [#59](https://github.com/Takazudo/zudo-osc-hole-field/issues/59), [#55](https://github.com/Takazudo/zudo-osc-hole-field/issues/55) and [#65](https://github.com/Takazudo/zudo-osc-hole-field/issues/65). Historical electrical receipts are not reused for the relocated slew contacts. No fabrication or order files are generated.
