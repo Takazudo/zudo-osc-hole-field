@@ -82,6 +82,12 @@ jobs:
       - name: Run Python unit tests
         run: bash scripts/checks/run-python-tests.sh
 
+      - name: Check current shortlist capture and pin evidence
+        run: python3 scripts/libgen/fixtures/check_ic_evidence.py
+
+      - name: Place every current shortlist symbol unit and check native ERC
+        run: bash scripts/libgen/fixtures/check_ic_units.sh
+
       - name: Run native main-ground connectivity regression
         run: bash scripts/kicad/run.sh python3 scripts/pcbgen/power_locality_native_regression.py
 
