@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Bounded, offline Freerouting DSN/SES round trip for unvalidated PCB drafts."""
 from __future__ import annotations
-import argparse,copy,hashlib,json,os,re,subprocess,sys,time
+import argparse,base64,copy,hashlib,json,os,re,subprocess,sys,tempfile,time
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[2]
 sys.path.insert(0,str(ROOT))
@@ -203,18 +203,85 @@ def finalize_native_gate(board,report,result,exit_code):
         result['native_gate_status']='ZERO OPEN EDGES'
     return exit_code
 
+def setup_failure_report(board_id,board,report,previous_bytes,started,exc):
+    """Replace stale success only after retaining its exact diagnostic bytes."""
+    result={'schema_version':1,'board_id':board_id,'board':repo_relative(board),
+            'status':'PIPELINE FAILED DRAFT','draft':True,'failure_stage':'setup',
+            'error':str(exc),'error_type':type(exc).__name__,
+            'native_gate_status':'NOT RUN','router_status':'NOT RUN',
+            'routing_gate_scope':'Setup failed; DRC, parity, native connectivity and router NOT RUN',
+            'routed_net_count':None,'unrouted_net_count':None,'via_count':None,
+            'total_track_length_mm':None,'runtime_sec':round(time.monotonic()-started,3)}
+    if previous_bytes is None and report.exists():
+        print(f'Cannot preserve unreadable prior routing report {report}; setup failure: {exc}',file=sys.stderr)
+        return 2
+    if previous_bytes is not None:
+        digest=hashlib.sha256(previous_bytes).hexdigest()
+        retained=report.with_name(report.name+'.prior-'+digest+'.json')
+        result['prior_report_sha256']=digest
+        try:
+            # Never overwrite a conflicting retained artifact.
+            if retained.exists():
+                if retained.read_bytes()!=previous_bytes:
+                    raise RuntimeError('retained archive conflicts with its content hash')
+            else:
+                with retained.open('xb') as stream:stream.write(previous_bytes)
+            result['prior_report_archive']=repo_relative(retained)
+        except Exception as archive_error:
+            result['prior_report_archive_error']=str(archive_error)
+            result['prior_report_base64']=base64.b64encode(previous_bytes).decode('ascii')
+    temporary=None
+    try:
+        with tempfile.NamedTemporaryFile(mode='w',encoding='utf-8',dir=report.parent,
+                                         prefix=report.name+'.pending-',delete=False) as stream:
+            temporary=Path(stream.name)
+            stream.write(json.dumps(result,indent=2,sort_keys=True)+'\n')
+        temporary.replace(report)
+    except OSError as report_error:
+        print(f'Cannot write fresh routing failure report {report}: {report_error}',file=sys.stderr)
+        print(f'Setup failure: {result["error"]}',file=sys.stderr)
+        return 2
+    finally:
+        if temporary is not None:temporary.unlink(missing_ok=True)
+    print(f"{board_id}: {result['status']}; report {repo_relative(report)}")
+    print(result['error'],file=sys.stderr)
+    return 2
+
 def main():
     parser=argparse.ArgumentParser();parser.add_argument('board_id');parser.add_argument('--board',type=Path);parser.add_argument('--report',type=Path);parser.add_argument('--timeout-sec',type=int);parser.add_argument('--threads',type=int);parser.add_argument('--heap-mb',type=int);parser.add_argument('--no-fanout',action='store_true');parser.add_argument('--refresh-ratsnest-only',action='store_true')
     args=parser.parse_args()
-    definition=load_definition(ROOT/'design/boards'/f'{args.board_id}.json')
-    if not definition.routing:raise ValueError(f'{args.board_id}: routing definition missing')
     board=(args.board or ROOT/'boards'/args.board_id/f'{args.board_id}.kicad_pcb').resolve()
     board.relative_to(ROOT)
-    if not board.exists():raise FileNotFoundError(board)
-    report=(args.report or board.parent/'reports/routing.json').resolve();report.relative_to(ROOT);report.parent.mkdir(parents=True,exist_ok=True)
+    report=(args.report or board.parent/'reports/routing.json').resolve();report.relative_to(ROOT)
+    definition_path=ROOT/'design/boards'/f'{args.board_id}.json'
+    protected={board,definition_path.resolve(),*(board.with_suffix(suffix) for suffix in ('.kicad_pro','.kicad_sch','.net'))}
+    if (report.suffix in ('.kicad_pcb','.kicad_pro','.kicad_sch','.net') or report in protected or
+            (report.exists() and any(path.exists() and report.samefile(path) for path in protected))):
+        raise ValueError('routing report destination collides with a circuit source/artifact')
+    report.parent.mkdir(parents=True,exist_ok=True)
+    started=time.monotonic()
+    previous_bytes=None
+    try:
+        previous_bytes=report.read_bytes() if report.exists() else None
+        previous=json.loads(previous_bytes) if previous_bytes is not None else {}
+        if not isinstance(previous,dict):raise ValueError('retained routing report must be an object')
+        definition=load_definition(definition_path)
+        if not definition.routing:raise ValueError(f'{args.board_id}: routing definition missing')
+        if not board.exists():raise FileNotFoundError(board)
+        if args.refresh_ratsnest_only:
+            if previous_bytes is None:raise FileNotFoundError(report)
+        else:
+            work=board.parent/'routing-work';work.mkdir(exist_ok=True)
+            image,env_heap,env_timeout=read_env()
+            threads=args.threads if args.threads is not None else max(1,min((os.cpu_count() or 2)//2,6))
+            heap=args.heap_mb if args.heap_mb is not None else env_heap
+            timeout=args.timeout_sec if args.timeout_sec is not None else env_timeout
+            if threads<1 or threads>max(1,(os.cpu_count() or 1)//2) or heap<256 or heap>4096 or timeout<1:raise ValueError('invalid resource bounds')
+            routing_hash=hashlib.sha256(json.dumps({'routing':definition.routing,'outline':definition.outline,'layers':definition.layers},sort_keys=True,separators=(',',':')).encode()).hexdigest()
+    except Exception as exc:
+        return setup_failure_report(args.board_id,board,report,previous_bytes,started,exc)
     if args.refresh_ratsnest_only:
-        if not report.exists():raise FileNotFoundError(report)
-        result=json.loads(report.read_text())
+        result=previous
         # Do not attach fresh counts to an old successful routing badge.
         if result.get('status')!='RATSNEST ONLY DRAFT':
             result['prior_routing_status']=result.get('status','UNKNOWN')
@@ -223,14 +290,6 @@ def main():
         exit_code=finalize_native_gate(board,report,result,0)
         report.write_text(json.dumps(result,indent=2,sort_keys=True)+'\n')
         return exit_code
-    work=board.parent/'routing-work';work.mkdir(exist_ok=True)
-    image,env_heap,env_timeout=read_env()
-    threads=args.threads or max(1,min((os.cpu_count() or 2)//2,6))
-    heap=args.heap_mb or env_heap;timeout=args.timeout_sec or env_timeout
-    if threads<1 or threads>max(1,(os.cpu_count() or 1)//2) or heap<256 or heap>4096 or timeout<1:raise ValueError('invalid resource bounds')
-    routing_hash=hashlib.sha256(json.dumps({'routing':definition.routing,'outline':definition.outline,'layers':definition.layers},sort_keys=True,separators=(',',':')).encode()).hexdigest()
-    previous=json.loads(report.read_text()) if report.exists() else {}
-    started=time.monotonic()
     result={'routing_spec_sha256':routing_hash,'schema_version':1,'board_id':args.board_id,'status':'NOT RUN','draft':True,'router_image':image,'thread_limit':threads,'heap_mb':heap,'fanout_enabled':not args.no_fanout,'time_limit_sec':timeout,'board':repo_relative(board),'routed_net_count':0,'unrouted_net_count':0,'unrouted_net_names':[],'via_count':0,'total_track_length_mm':0.0,'runtime_sec':0.0,'sampled_peak_memory_mb':0.0,'preexisting_tracks_preserved':0,'preexisting_zones_preserved':0}
     exit_code=1
     try:

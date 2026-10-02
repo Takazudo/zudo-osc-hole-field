@@ -1,0 +1,11 @@
+# Routing setup failure report lifecycle
+
+Issue #23 requires a report for failed routing runs. On main 0673460, malformed retained JSON raised before the report lifecycle began, and an invalid heap bound left a previous ROUTED DRAFT report untouched. Pure temporary-fixture reproductions performed no KiCad or router work. The prior dense/native acceptance from #53 remains separate and unchanged.
+
+The setup phase now starts after resolving safe repository-local board/report paths. Prior report parsing/type checks, board definition/load availability, router configuration and resource bounds either prepare a normal run or return a fresh PIPELINE FAILED DRAFT report. A setup failure explicitly marks DRC, parity, native connectivity and routing NOT RUN and leaves unmeasured counts null. Explicit zero bounds fail rather than silently selecting defaults. Valid routing/native results still use the existing mandatory final native gate.
+
+Before replacing a previous report, its exact bytes are retained in a content-hash archive. If that archive cannot be created or conflicts with an existing artifact, the fresh failure report includes the prior bytes as base64 plus their hash and an archive-error diagnostic. Conflicting retained artifacts are never overwritten. Report destinations that collide with native CAD/net files, the selected board definition, or hardlinks to the board/project/schematic/net are rejected before writing. If the destination itself cannot be written, the command fails with an explicit stderr diagnostic; it cannot claim to have produced a fresh report.
+
+Regression scope covers malformed/non-object retained JSON, resource bounds including explicit zero, absent previous reports, circuit-file collisions, archive conflict/permissions and an unwritable report. Setup failures must invoke no native checker, KiCad process or router. Existing native gate tests retain their statuses and coverage. No board geometry, component facts, copper, routing targets or retained dense/failed native evidence changes.
+
+Verification receipts are recorded in the PR. Hardware, electrical, thermal, mechanical and fabrication qualification remain NOT RUN; all boards remain unvalidated drafts.
