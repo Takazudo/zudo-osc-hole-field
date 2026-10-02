@@ -86,6 +86,13 @@ def prove_octave_routing_only(old_bytes, new_bytes, routing):
         raise ValueError('octave definition changed beyond declared routing')
 
 
+def prove_octave_netclass_only(old_bytes, new_bytes):
+    old_class = b'(name "AGND")\n\t\t\t(class "Default")'
+    new_class = b'(name "AGND")\n\t\t\t(class "Ground")'
+    if old_bytes.count(old_class) != 1 or new_bytes != old_bytes.replace(old_class, new_class, 1):
+        raise ValueError('octave netlist changed beyond the AGND class declaration')
+
+
 def derive():
     power_bytes=POWER_EPOCH.read_bytes()
     if power_bytes != historical(str(POWER_EPOCH),ROUTING_BASE):
@@ -111,7 +118,7 @@ def derive():
     prove_power_metadata_only(display_io, new_io, json.loads(inputs[CONTRACT]), json.loads(inputs[SUPPLY]))
     result = copy.deepcopy(display)
     result['scope'] = ('Exact source projection equivalence through the retained power metadata epoch '
-        'plus declared routing-only additions to the five canonical octave definitions. '
+        'plus declared routing-only additions and the corresponding AGND net-class declarations. '
         'Their geometry, stack proposal and source pins are unchanged. The disposable ground '
         'generator replaces routing, so its output definition remains identical. '
         'Historical native/model prerequisites remain stale; actual octave PCB checks are separate.')
@@ -139,6 +146,11 @@ def derive():
                 new_definition=Path(path).read_bytes()
                 prove_octave_routing_only(old_definition,new_definition,json.loads(routing_bytes))
                 row['source_changes'][path]={'historical':sha(old_definition),'current':sha(new_definition)}
+                net_path=f'schematic/boards/{bid}.net'
+                old_net=historical(net_path,ROUTING_BASE)
+                new_net=Path(net_path).read_bytes()
+                prove_octave_netclass_only(old_net,new_net)
+                row['source_changes'][net_path]={'historical':sha(old_net),'current':sha(new_net)}
             for path, change in row['source_changes'].items():
                 if expected['source_sha256'][path] != change['historical'] or sha(Path(path).read_bytes()) != change['current']:
                     raise ValueError(f'{bid}: source hash mismatch: {path}')

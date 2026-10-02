@@ -8,7 +8,7 @@ from scripts.pcbgen.generate_peripheral_ground import generate,source_contacts
 from scripts.pcbgen.peripheral_project_source import derive,fresh_sync_project
 from scripts.pcbgen.native_companion_binding import verify
 from scripts.pcbgen.peripheral_source_epoch import (derive as derive_epoch, prove_display_only,
-    prove_power_metadata_only, prove_octave_routing_only, historical, IO, FP, OUTPUT,
+    prove_power_metadata_only, prove_octave_routing_only, prove_octave_netclass_only, historical, IO, FP, OUTPUT,
     METADATA_BASE, ROUTING_BASE, ROUTING, CONTRACT, SUPPLY)
 import hashlib
 
@@ -35,7 +35,9 @@ class PeripheralGroundSourceTests(unittest.TestCase):
                 self.assertEqual(hashlib.sha256(path.with_suffix('.receipt.json').read_bytes()).hexdigest(),bound['current_source_receipt_sha256'])
                 self.assertEqual(receipt['definition_sha256'],bound['unchanged_definition_sha256'])
                 changes={'design/partition/partition.json','design/reports/io-partition.json'}
-                if row['board_id'].startswith('osc-octave-'):changes.add('design/boards/'+path.name)
+                if row['board_id'].startswith('osc-octave-'):
+                    changes.add('design/boards/'+path.name)
+                    changes.add('schematic/boards/'+path.with_suffix('.net').name)
                 self.assertEqual(set(bound['source_changes']),changes)
                 expected=copy.deepcopy(historic)
                 for source,change in bound['source_changes'].items():
@@ -123,6 +125,14 @@ class PeripheralGroundSourceTests(unittest.TestCase):
             changed=json.loads(original);changed['foreign_setting']='preserve me'
             with self.assertRaisesRegex(ValueError,'known source form'):
                 derive(template,json.dumps(changed).encode(),definition,bid+'-trial.kicad_pro')
+
+    def test_netclass_transition_rejects_any_other_netlist_change(self):
+        path='schematic/boards/osc-octave-1.net'
+        old=historical(path,ROUTING_BASE);new=Path(path).read_bytes()
+        prove_octave_netclass_only(old,new)
+        for changed in (new+b'\n',new.replace(b'"AGND"',b'"ALTERED"',1),old):
+            with self.assertRaisesRegex(ValueError,'beyond the AGND'):
+                prove_octave_netclass_only(old,changed)
 
     def test_routing_transition_rejects_geometry_and_undeclared_rules(self):
         path='design/boards/osc-octave-1.json'
