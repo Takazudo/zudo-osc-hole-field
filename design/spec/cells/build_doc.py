@@ -1,7 +1,7 @@
 """Render the authored standard-cell reference from the proposal authority."""
 from pathlib import Path
 import json
-from ._builder import ROOT,STANDARD,CELLS
+from ._builder import ROOT,STANDARD,CELLS,SHORTLIST
 DOC=ROOT/'doc/src/content/docs/architecture/osc-standard-cells.mdx'
 SPICE=ROOT/'design/reports/spice/cells.json'
 CURRENT=ROOT/'design/reports/current/cells.json'
@@ -59,7 +59,7 @@ def build():
   if id=='precision_output':
    vendor=json.loads((ROOT/'design/reports/spice/precision-output-vendor.json').read_text())
    worst=max(vendor['cases'],key=lambda case:case['overshoot_percent'])
-   lines += [f'**TI OPAx197 Final 1.3 model sweep:** {vendor["pass_count"]} of {len(vendor["cases"])} cases pass overshoot, settling and late-ripple checks. Worst overshoot is {worst["overshoot_percent"]:g}% at {worst["load"]} load and {worst["cable_capacitance"]} cable capacitance. The fixed proposal uses 100 Ω jack-sense feedback and 1 nF local feedback. The prior 10 kΩ/100 pF ideal diagnostic remains retained with six of twelve failures; it was a different circuit and an ideal source, so its results do not predict this TI model. Value-specific 100 Ω and 1 nF orderable identities are still open. Physical cable, PCB parasitics, temperature and tolerance checks are **NOT RUN**.','']
+   lines += [f'**TI OPAx197 Final 1.3 model sweep:** {vendor["pass_count"]} of {len(vendor["cases"])} cases pass overshoot, settling and late-ripple checks. Worst overshoot is {worst["overshoot_percent"]:g}% at {worst["load"]} load and {worst["cable_capacitance"]} cable capacitance. The fixed proposal uses 100 Ω jack-sense feedback and 1 nF local feedback. The prior 10 kΩ/100 pF ideal diagnostic remains retained with six of twelve failures; it was a different circuit and an ideal source, so its results do not predict this TI model. Exact feedback identities are `{SHORTLIST["r_feedback"]["mpn"]}` and `{SHORTLIST["c_feedback"]["mpn"]}`; supplier allocation, assembly and thermal/fault duty remain open. Physical cable, PCB parasitics, temperature and tolerance checks are **NOT RUN**.','']
   for note in cell.get('notes',[])[:3]:lines += ['- '+note.replace('<','less than ').replace('>','greater than ')]
   lines.append('')
  lines += ['## Verification limits','','The TI OPAx197 model includes OPA4197 and models output impedance, slew rate, settling and capacitive-load response. Its sweep is a model result for the stated fixed network, not a measurement or a guarantee across part and layout variation. Physical OPA4197 cable stability is **NOT RUN** pending a populated board/cable coupon; temperature, component tolerances, output-current and thermal checks are also open. The remote driver cable stability check is **NOT RUN** for its separate model/harness gap. Resistor-chain fault power is an arithmetic planning check, not thermal qualification. The sample-and-hold slew and reference outputs require measured calibration and hot/cold data. No cell is released for fabrication.','']

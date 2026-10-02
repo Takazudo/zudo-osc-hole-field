@@ -1,0 +1,85 @@
+{
+  "receipt_version": 1,
+  "identity": {
+    "asset_id": "precision-feedback-c",
+    "record_id": "rec-precision-feedback-c",
+    "manufacturer": "KEMET",
+    "mpn": "C0603C102J5GACTU",
+    "package": "0603",
+    "variant_notes": "Exact electrical identity with existing family geometry; unvalidated assembly."
+  },
+  "acquisition": {
+    "provider": "Manufacturer product sheet and retained project family symbol",
+    "library_release_tag": null,
+    "source_url": "https://search.kemet.com/download/specsheet/C0603C102J5GACTU",
+    "acquired_on": "2026-10-02",
+    "original_filenames": [
+      "C0603C102J5GACTU.pdf"
+    ],
+    "sha256": {
+      "symbols/src/C0603C101J5GACTU.kicad_sym": "6a81dbabb90ae37411e622cc0296a9384ef48771b59ff1b0e8f2185f7346a694",
+      "circuit/sources/precision-feedback/C0603C102J5GACTU.pdf": "bf29afa1dd268d1292bf484950970dfd5bd19a0b705c775c53d6d1c6b7976e77"
+    }
+  },
+  "representation": {
+    "files": [
+      "symbols/src/C0603C102J5GACTU.kicad_sym"
+    ],
+    "formats": [
+      "kicad_sym"
+    ],
+    "units": "KiCad schematic units",
+    "original_paths": [
+      "symbols/src/C0603C101J5GACTU.kicad_sym",
+      "circuit/sources/precision-feedback/C0603C102J5GACTU.pdf"
+    ]
+  },
+  "fidelity": {
+    "class": "derived",
+    "reason": "Only symbol identity and datasheet properties changed. Existing C0603 footprint/model remain family fidelity.",
+    "evidence": [
+      "src-precision-feedback-c-datasheet: physical PDF page 0"
+    ]
+  },
+  "derivation": {
+    "derived": true,
+    "input_sha256": {
+      "symbols/src/C0603C101J5GACTU.kicad_sym": "6a81dbabb90ae37411e622cc0296a9384ef48771b59ff1b0e8f2185f7346a694",
+      "circuit/sources/precision-feedback/C0603C102J5GACTU.pdf": "bf29afa1dd268d1292bf484950970dfd5bd19a0b705c775c53d6d1c6b7976e77"
+    },
+    "tool": "Exact identity substitution from retained family symbol",
+    "tool_version": "1",
+    "parameters": {
+      "source_symbol": "C0603C101J5GACTU",
+      "target_symbol": "C0603C102J5GACTU",
+      "footprint_unchanged": "C0603"
+    },
+    "output_sha256": {
+      "symbols/src/C0603C102J5GACTU.kicad_sym": "548f84b051954258f5042319be895b38d4a406a9a530a695c0543b33a9173afc"
+    }
+  },
+  "cad_use": {
+    "symbol": "zudo-osc-hole-field:C0603C102J5GACTU",
+    "footprint": "zudo-osc-hole-field:C0603",
+    "model_path": null,
+    "transform": {
+      "offset": null,
+      "rotation": null,
+      "scale": null
+    },
+    "seating_plane": null
+  },
+  "checks": {
+    "performed": [
+      "Exact title, nominal value, rating and body dimensions inspected in manufacturer PDF."
+    ],
+    "remaining_physical_checks": [
+      "Land-pattern solderability, maximum body-height clearance, fault/temperature and assembled output stability."
+    ]
+  },
+  "publication": {
+    "preview_selected": false,
+    "download_published": false,
+    "permitted_scope": null
+  }
+}

@@ -19,6 +19,19 @@ class PrecisionSourceContract(unittest.TestCase):
     def template(self, cell):
         return contracts.precision_contract(cell, source.STANDARD['roles'], source.SHORTLIST, source.AMP)
 
+    def test_feedback_identities_do_not_inherit_generic_representatives(self):
+        projection = contracts.current_precision_contract()
+        identities = {p['role'].split(':')[1]: p['mpn'] for p in projection['compiled_parts']}
+        self.assertEqual(identities['R_FB'], 'RC0603FR-07100RL')
+        self.assertEqual(identities['C_FAST'], 'C0603C102J5GACTU')
+        self.assertEqual(source.SHORTLIST['r_general']['mpn'], 'RC0603FR-07100KL')
+        self.assertEqual(source.SHORTLIST['c_small']['mpn'], 'C0603C101J5GACTU')
+        for role, value, unit in [('r_feedback',100,'ohm'),('c_feedback',1e-9,'F')]:
+            with self.subTest(role=role):
+                self.assertTrue(source._exact_value({'value':value,'unit':unit}, source.SHORTLIST[role]))
+                self.assertFalse(source._exact_value({'value':value*2,'unit':unit}, source.SHORTLIST[role]))
+                self.assertFalse(source._exact_value({'value':value,'unit':'V'}, source.SHORTLIST[role]))
+
     def test_all_amplifier_terminals_are_bound(self):
         for pin in ('IN+', 'IN-', 'OUT', 'V+', 'V-'):
             cell = copy.deepcopy(source.CELLS['precision_output'])
@@ -47,15 +60,15 @@ class PrecisionSourceContract(unittest.TestCase):
         with self.assertRaises(ValueError):self.template(cell)
 
     def test_compiled_primitive_mapping_cannot_drift(self):
-        for key, value in [('r_power','C'),('r_general','C'),('c_small','R')]:
+        for key, value in [('r_power','C'),('r_feedback','C'),('c_feedback','R')]:
             with self.subTest(key=key), patch.dict(source.PREFIX,{key:value}), self.assertRaises(ValueError):
                 contracts.current_precision_contract()
         with patch.dict(source.PIN_ALIASES,{'r_power':{'1':'2','2':'1'}}), self.assertRaises(ValueError):
             contracts.current_precision_contract()
         # A shortlist substitution must fail, even when the template IDs stay fixed.
-        for role in ('r_power','r_general','c_small'):
+        for role in ('r_power','r_feedback','c_feedback'):
             shortlist=copy.deepcopy(source.SHORTLIST)
-            shortlist[role]['mpn']=source.SHORTLIST['c_small' if role!='c_small' else 'r_general']['mpn']
+            shortlist[role]['mpn']=source.SHORTLIST['c_feedback' if role!='c_feedback' else 'r_feedback']['mpn']
             with self.subTest(role=role), patch.object(contracts,'require_current_builder'), patch.object(source,'SHORTLIST',shortlist), self.assertRaises(ValueError):
                 contracts.current_precision_contract()
 

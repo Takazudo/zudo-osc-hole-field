@@ -427,7 +427,7 @@
         },
         {
           "ref": "R_FB",
-          "part_id": "r_general",
+          "part_id": "r_feedback",
           "value": 100,
           "unit": "ohm",
           "terminals": {
@@ -437,7 +437,7 @@
         },
         {
           "ref": "C_FAST",
-          "part_id": "c_small",
+          "part_id": "c_feedback",
           "value": 1e-09,
           "unit": "F",
           "terminals": {
@@ -450,7 +450,7 @@
         "DC feedback senses JACK through 100 ohm R_FB; 1 nF high-frequency feedback returns locally from DRIVE to FB."
       ],
       "notes": [
-        "Fixed 100 ohm JACK feedback and 1 nF local feedback are TI OPAx197 model-screened compensation choices, not hardware stability proof. Value-specific resistor and capacitor orderable identities remain unresolved.",
+        "Fixed 100 ohm JACK feedback and 1 nF local feedback are TI OPAx197 model-screened compensation choices, not hardware stability proof. Exact identities are Yageo RC0603FR-07100RL (100 ohm, 1%, 0.1 W at 70 C) and KEMET C0603C102J5GACTU (1 nF, 5%, 50 V, C0G). Physical stability, tolerance, thermal/fault duty and factory assembly remain unqualified.",
         "DC load-induced error target <=1 mV for -5/0/+5 V, no load to 10 kohm; full static path error target <=2 mV after factory calibration.",
         "TI-model sweep: open/10k/100k loads and 0/100p/1n/5n F cable loads, +/-5 V steps; require no sustained oscillation, <=10% overshoot and settle within 1 mV by 1 ms. Physical cable, PCB parasitics, component tolerances and temperature require qualification.",
         "Feedback stays on the jack board with output cell; no long unsensed feedback net across connectors.",
