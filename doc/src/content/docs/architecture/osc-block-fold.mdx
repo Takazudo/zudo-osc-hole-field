@@ -250,6 +250,13 @@ two combined control-limit cases, mute and diode mismatch), and one sine transie
 The signal path, PNP control servo, resistor/capacitor values and physical OTA
 pin mapping come from the captured source. Front-end/control outputs and references
 are imposed fixtures; actual protection and remote CV behavior are not modeled.
+The transistor, clamp and gain-trim fixture now use the captured terminal nets;
+missing, unfitted or unsupported source devices fail before a model run. The gain
+trim remains a nominal 5 kΩ fixture for the captured 10 kΩ rheostat with its wiper
+and clockwise terminal tied. Distinct source nets may not collapse onto the same
+SPICE node through punctuation conversion, case differences, ground aliases or
+synthetic no-connect names. These checks establish model wiring consistency,
+not real device behavior.
 
 The retained TI/National LM13700 model comes from the existing SNOM267 receipt
 under `design/spec/modules/spice/filter-model/`. Its header warns that its
