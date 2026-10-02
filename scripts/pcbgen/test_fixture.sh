@@ -26,4 +26,5 @@ cp "$scratch/fixture-jacks.kicad_pcb" "$scratch/before-removal.kicad_pcb"
 python3 scripts/pcbgen/fixtures/make_reduced_netlist.py boards/fixture-jacks/fixture-jacks.net "$scratch/reduced.net"
 bash scripts/kicad/run.sh python3 scripts/pcbgen/sync.py fixture-jacks --output "$scratch/fixture-jacks.kicad_pcb" --netlist "$scratch/reduced.net"
 python3 scripts/pcbgen/fixtures/assert_fixture.py reduced "$scratch/fixture-jacks.kicad_pcb" "$scratch/before-removal.kicad_pcb"
+bash scripts/kicad/run.sh python3 scripts/pcbgen/fixtures/check_sync_pose.py
 echo 'PCB sync fixture: PASS (parity, idempotence, owner preservation, component removal)'

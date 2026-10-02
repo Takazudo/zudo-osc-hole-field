@@ -91,6 +91,9 @@ jobs:
       - name: Run native main-ground connectivity regression
         run: bash scripts/kicad/run.sh python3 scripts/pcbgen/power_locality_native_regression.py
 
+      - name: Check update-in-place PCB sync
+        run: bash scripts/pcbgen/test_fixture.sh
+
       - name: Run native monitor/permit candidate checks
         run: python3 scripts/checks/monitor_permit_native.py --check
 
