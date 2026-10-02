@@ -193,6 +193,16 @@ def compile_proposal(spec,*,verify_source=True,native_root=None):
     if verify_source:
         for name,want in spec['source_files'].items():
             if digest(ROOT/name)!=want:raise ValueError('source file hash drift: '+name)
+        if 'source_transition' in spec:
+            bound=spec['source_transition'];proof_path=ROOT/bound['proof']
+            if not proof_path.is_file() or digest(proof_path)!=bound['proof_sha256']:
+                raise ValueError('source transition proof unavailable or changed')
+            transition=json.loads(proof_path.read_bytes())['connector_locality_transition']
+            if (any(bound.get(k)!=transition.get(k) for k in
+                    ('base_commit','historical_partition_sha256','current_partition_sha256')) or
+                    bound['current_partition_sha256']!=spec['source_files']['design/partition/partition.json'] or
+                    digest(ROOT/transition['proposal'])!=transition['proposal_sha256']):
+                raise ValueError('source transition does not match the bounded connector change')
     g=spec['geometry']
     for name,value in g.items():
         if name.endswith('_interval_mm'):positive_interval(value)

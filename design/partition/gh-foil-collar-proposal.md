@@ -81,3 +81,10 @@ construction is unchanged, but no K replay or rebinding is implied by this
 JL-only continuation. Fresh electrical witnesses remain required for each
 candidate's complete geometry, and no physical or material admission follows
 from a passing native rule/connectivity result.
+
+The 2026-10-02 paired K/P header-source transition is separately bound in
+`peripheral-source-epoch-20261002-connector-locality.json`. The complete partition
+comparison permits only that explicit pair/site permutation and its service-hole
+associations. Both collar endpoint records are unchanged. This updates only the
+portable source binding; the retained native projections remain historical,
+unselected drafts. It does not rebind a native or electrical model receipt.

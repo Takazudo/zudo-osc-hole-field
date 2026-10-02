@@ -1,7 +1,8 @@
 import copy
 import json
 import unittest
-from scripts.pcbgen.core_package_fields import projection
+from scripts.pcbgen.core_package_fields import projection,native_field_projection
+from scripts.pcbgen.peripheral_source_epoch import historical,CONNECTOR_BASE
 from scripts.pcbgen.footprint_attributes import source_attribute_bits,source_rotation_degrees,capture_template_digests,verify_template_digest
 from scripts.pcbgen.netlist import read_netlist
 from pathlib import Path
@@ -9,15 +10,28 @@ import tempfile
 
 
 class CorePackageFieldsTests(unittest.TestCase):
-    def test_actual_representatives_preserve_distinct_units_and_reject_fabricated_value(self):
+    def test_historical_representatives_preserve_distinct_units_and_reject_fabricated_value(self):
         with open('design/partition/core-ground-feasibility/package-field-source-audit.json') as f:audit=json.load(f)
-        p=projection(audit,'schematic/boards/osc-core.net')
-        self.assertEqual(len(p['representatives']),199)
+        with tempfile.TemporaryDirectory() as directory:
+            netlist=Path(directory)/'historical.net'
+            netlist.write_bytes(historical('schematic/boards/osc-core.net',CONNECTOR_BASE))
+            p=projection(audit,netlist)
+            self.assertEqual(len(p['representatives']),199)
+            roles={r['resolved_fields']['Role'] for r in p['all_original_source_units'] if r['ref']=='U103'}
+            self.assertIn('reference_generator:A1',roles);self.assertIn('reference_generator:A3',roles)
+            bad=copy.deepcopy(audit)
+            next(r for r in bad['parity_records'] if 'field' in r)['expected_source_value']='invented'
+            with self.assertRaisesRegex(ValueError,'exact source unit'):projection(bad,netlist)
+        # A source-only header relocation does not make an old native audit current.
+        with self.assertRaisesRegex(ValueError,'netlist is stale'):
+            projection(audit,'schematic/boards/osc-core.net')
+
+    def test_current_source_projection_preserves_units_without_rebinding_old_audit(self):
+        p=native_field_projection('schematic/boards/osc-core.net')
         roles={r['resolved_fields']['Role'] for r in p['all_original_source_units'] if r['ref']=='U103'}
         self.assertIn('reference_generator:A1',roles);self.assertIn('reference_generator:A3',roles)
-        bad=copy.deepcopy(audit)
-        next(r for r in bad['parity_records'] if 'field' in r)['expected_source_value']='invented'
-        with self.assertRaisesRegex(ValueError,'exact source unit'):projection(bad,'schematic/boards/osc-core.net')
+        components,_=read_netlist(Path('schematic/boards/osc-core.net'))
+        self.assertEqual({r['ref'] for r in p['packages']},{c.ref for c in components})
 
     def test_exact_source_flags_preserve_unrelated_attributes(self):
         dnp,bom,position,smd=1,2,4,8

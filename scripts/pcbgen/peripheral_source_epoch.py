@@ -15,7 +15,11 @@ PRIOR = Path('design/partition/peripheral-source-epoch-20261001.json')
 DISPLAY_EPOCH = Path('design/partition/peripheral-source-epoch-20261002.json')
 POWER_EPOCH = Path('design/partition/peripheral-source-epoch-20261002-power-metadata.json')
 ROUTING_EPOCH = Path('design/partition/peripheral-source-epoch-20261002-octave-routing.json')
-OUTPUT = Path('design/partition/peripheral-source-epoch-20261002-feedback-identities.json')
+IDENTITY_EPOCH = Path('design/partition/peripheral-source-epoch-20261002-feedback-identities.json')
+OUTPUT = Path('design/partition/peripheral-source-epoch-20261002-connector-locality.json')
+CONNECTOR_BASE = '141b508e89030e8465bf750147d529426c60b91f'
+CONNECTOR_SOURCE = Path('design/partition/control-connector-locality.json')
+PARTITION = 'design/partition/partition.json'
 IDENTITY_BASE = '8d2940ac7f6fde3d2a466e4e21c45d4f232fdad1'
 IDENTITIES = Path('design/standard/precision-feedback-bindings.json')
 ROUTING_BASE = 'b8795bfbceaeb13e8e3f6d29d9ef57729299fd68'
@@ -129,6 +133,15 @@ def prove_feedback_identity_only(old_bytes, new_bytes, contract):
 
 
 def derive():
+    from scripts.checks.control_connector_locality import prove_partition_transition
+    identity_epoch = IDENTITY_EPOCH.read_bytes()
+    if identity_epoch != historical(str(IDENTITY_EPOCH), CONNECTOR_BASE):
+        raise ValueError('Historical feedback identity epoch was modified')
+    connector_source = CONNECTOR_SOURCE.read_bytes()
+    old_partition = historical(PARTITION, CONNECTOR_BASE)
+    new_partition = Path(PARTITION).read_bytes()
+    prove_partition_transition(json.loads(old_partition), json.loads(new_partition),
+                               json.loads(connector_source))
     routing_epoch = ROUTING_EPOCH.read_bytes()
     if routing_epoch != historical(str(ROUTING_EPOCH), IDENTITY_BASE):
         raise ValueError('Historical routing epoch was modified')
@@ -163,8 +176,13 @@ def derive():
         'package identity substitutions on the jack boards. '
         'Their geometry, stack proposal and source pins are unchanged. The disposable ground '
         'generator replaces routing, so its output definition remains identical. '
+        'The later K/P pair permutation changes no EL or octave source geometry or contacts. '
         'Historical native/model prerequisites remain stale; actual octave PCB checks are separate.')
-    result['prior_epoch'] = {'path': str(ROUTING_EPOCH), 'sha256': sha(routing_epoch)}
+    result['prior_epoch'] = {'path': str(IDENTITY_EPOCH), 'sha256': sha(identity_epoch)}
+    result['connector_locality_transition'] = {'base_commit':CONNECTOR_BASE,
+        'proposal':str(CONNECTOR_SOURCE),'proposal_sha256':sha(connector_source),
+        'historical_partition_sha256':sha(old_partition),'current_partition_sha256':sha(new_partition),
+        'scope':'Whole partition equality after only the declared K/P header-pair and service-aperture permutation. EL and octave source geometry/contacts unchanged. No native/model rebinding.'}
     result['feedback_identity_transition'] = {'base_commit':IDENTITY_BASE,
         'contract':str(IDENTITIES),'sha256':sha(identity_bytes),'package_count':32,
         'scope':'Complete IO report equality except the 32 named symbol/MPN pairs and bound native-netlist hash; no native/model rebinding'}
@@ -196,6 +214,9 @@ def derive():
                 new_net=Path(net_path).read_bytes()
                 prove_octave_netclass_only(old_net,new_net)
                 row['source_changes'][net_path]={'historical':sha(old_net),'current':sha(new_net)}
+            if row['source_changes'][PARTITION]['current'] != sha(old_partition):
+                raise ValueError(f'{bid}: connector transition partition base differs')
+            row['source_changes'][PARTITION]['current'] = sha(new_partition)
             for path, change in row['source_changes'].items():
                 if expected['source_sha256'][path] != change['historical'] or sha(Path(path).read_bytes()) != change['current']:
                     raise ValueError(f'{bid}: source hash mismatch: {path}')
@@ -208,7 +229,7 @@ def derive():
                 raise ValueError(f'{bid}: definition changed')
             row['current_source_receipt_sha256'] = sha(target.with_suffix('.receipt.json').read_bytes())
     result['latest_source_audit'] = ('Source projection only; exact historical receipt equality '
-        'except the explicitly named metadata and canonical routing-only source hashes. '
+        'except the explicitly named metadata, canonical routing and K/P-only partition source hashes. '
         'No native/model receipt rebind or electrical acceptance.')
     return result
 
