@@ -1,13 +1,20 @@
 #!/usr/bin/env bash
 set -euo pipefail
 cd "$(dirname "$0")/../.."
-bash scripts/schgen/regen.sh
+if (( $# > 1 )) || [[ ${1:-} != '' && ${1:-} != --generated ]]; then
+  printf 'Usage: bash scripts/schgen/smoke.sh [--generated]\n' >&2
+  exit 2
+fi
+if [[ ${1:-} != --generated ]]; then
+  bash scripts/schgen/regen.sh
+fi
 scratch=$(mktemp -d schematic/.schgen-smoke.XXXXXX)
 trap 'rm -rf -- "$scratch"' EXIT
 bash scripts/kicad/run.sh kicad-cli sch erc --format json --severity-all -o "$scratch/erc.json" schematic/zudo-osc-hole-field.kicad_sch
 python3 scripts/schgen/check_erc_warnings.py "$scratch/erc.json"
 bash scripts/kicad/run.sh kicad-cli sch export netlist --format kicadsexpr -o "$scratch/netlist.net" schematic/zudo-osc-hole-field.kicad_sch
 python3 scripts/schgen/verify_netlist.py "$scratch/netlist.net"
+python3 scripts/schgen/audit_master.py "$scratch/netlist.net" --check
 python3 - "$scratch/netlist.net" <<'PY'
 from dataclasses import replace
 from pathlib import Path

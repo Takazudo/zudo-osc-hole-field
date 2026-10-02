@@ -1,0 +1,9 @@
+# Master documentation freshness
+
+Baseline regeneration passed235s with no tracked drift at main1dac536. Main38153f8 was then integrated before task edits; its changes are the separate unselected inverter study.
+
+The retained power SVG still depicted DW254P-2X8-L0 rather than the current CN301/XB301 abstract raw/load boundary. Master and power ERC notes also used old240/POWER12 and pilot24-warning results as present-tense claims. Canonical regeneration now calls the full-master smoke check (without repeating source generation), including exact warning identities, native netlist parity and the complete master audit, then regenerates retained exports. The exporter rejects missing/orphan SVG views and PDF page-count mismatches against the source hierarchy. Existing timestamp normalization remains unchanged.
+
+Authored corrections distinguish historical power/rail results from current requirements, repair the Python producer command and S&H reference rail, and explain that TI OPAx197 Final1.3 exists while the complete MULT circuit remains unmodeled. The OPA4197 evidence owner and retained12-case output report were inspected; no new component or hardware claim is made. No source envelope, warning suppression, circuit value or historical snapshot hash changes.
+
+Seven focused master-audit/budget/MULT tests, component validation, shell syntax and invalid-mode rejection passed. Independent read-only review found no blocker. Fresh native ERC, master audit and export regeneration are pending through the draft PR oracle. Retained PDF/SVG outputs have deliberately not been fabricated or manually edited. The first aggregate CI is expected to retain its actual generated diff; only those inspected exports will be admitted, followed by a clean repeat to prove reproducibility. All CAD remains an unvalidated draft. Issues24/33/34 remain open until this batch passes and merges; circuit59 and physical57 remain open independently.

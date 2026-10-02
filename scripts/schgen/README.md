@@ -63,3 +63,5 @@ capacity, complete load maxima or physical qualification.
 `design/power/rail-budget.json`. Canonical regeneration refreshes the mixer
 worksheets and master budget before these tables. `--check` rejects publication
 drift; unknown complete maxima and partial worksheet scopes remain explicit.
+
+Canonical `bash scripts/checks/regen-all.sh` now runs full-master ERC, exact warning-identity checks, native netlist parity and the complete master audit through `smoke.sh --generated`, then refreshes the retained draft PDF/SVG exports. The `--generated` flag avoids a second source generation; direct smoke use still regenerates by default. Export checks require exactly the active child SVG set plus the root view, and one PDF page per hierarchy instance plus the root. `regen-all.sh --check` rejects stale exports through its tracked-byte comparison. These source/consistency checks do not establish electrical or physical qualification.
