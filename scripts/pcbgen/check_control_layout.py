@@ -21,6 +21,7 @@ from scripts.pcbgen.control_reference_layout import apply
 from scripts.pcbgen.control_project_source import derive
 from scripts.pcbgen.octave_project import expected_configuration, TEMPLATE
 from scripts.pcbgen.ratsnest import inspect
+from scripts.pcbgen.control_bypass_geometry import audit as audit_bypasses, reject_displaced_capacitor
 
 FOLDER = ROOT/'boards/osc-control'
 SOURCE = ROOT/'design/partition/control-layout'
@@ -86,6 +87,7 @@ def negative_controls(bare, work):
 def check():
     digest = lambda path: hashlib.sha256(Path(path).read_bytes()).hexdigest()
     paths = [Path(__file__), ROOT/'scripts/pcbgen/control_reference_layout.py',
+             ROOT/'scripts/pcbgen/control_bypass_geometry.py', ROOT/'design/reports/io-partition.json',
              ROOT/'scripts/pcbgen/control_project_source.py', SOURCE/'reference-positions.json',
              ROOT/'scripts/pcbgen/octave_project.py', ROOT/TEMPLATE]
     paths += [FOLDER/(STEM+suffix) for suffix in ('.kicad_pcb', '.kicad_pro', '.kicad_sch', '.kicad_dru')]
@@ -131,6 +133,11 @@ def check():
         if drc['violations'] or drc['schematic_parity']:
             print(json.dumps((drc['violations']+drc['schematic_parity'])[:5], indent=2), flush=True)
             raise ValueError('Control layout has native rule or parity findings')
+        import pcbnew
+        native_board = pcbnew.LoadBoard(str(output))
+        io = json.loads((ROOT/'design/reports/io-partition.json').read_bytes())
+        bypass_geometry = audit_bypasses(native_board, io)
+        reject_displaced_capacitor(native_board, io)
         ratsnest = inspect(output)
         if ratsnest['native_unconnected_edges'] != 872 or ratsnest['multi_pad_candidate_net_count'] != 348:
             raise ValueError('Unrouted control connectivity inventory changed')
@@ -143,6 +150,7 @@ def check():
         print(json.dumps({'status': 'PASS UNROUTED DRAFT ONLY', **annotation,
                           'native_violations': 0, 'native_parity_findings': 0,
                           'native_open_edges': 872, 'routing_complete': False,
+                          'native_bypass_geometry': bypass_geometry,
                           'physical_qualification': 'NOT RUN'}, indent=2), flush=True)
 
 
