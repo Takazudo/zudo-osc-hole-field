@@ -5,14 +5,14 @@
 layout's 418 packages, 36 supports, 139 fixed controls, actual outline, stack
 proposal and reservations. The canonical partition outline remains separate.
 
-`copper.json` owns 905 track segments and 278 through vias, including all 150
+`copper.json` owns 1,605 track segments and 402 through vias, including all 150
 main-terminal array vias. Coordinates are native integer nanometres. The
 constructor appends only this copper and the source-defined ground pours to
 the checked labelled layout, preserving every other input byte. Each main
 array's complete annuli remain inside its owning 4 × 4 mm terminal.
 
 Fresh KiCad 10.0.6 checks give zero DRC violations, zero schematic-parity
-findings, **389 open edges** and **344/344 connected ground contacts**. All
+findings, **323 open edges** and **344/344 connected ground contacts**. All
 **16 local IC/bypass rail pairs are connected**, with at most 2.535 mm between
 supply-pad centres. Independent reload/refill retains the connectivity.
 `ratsnest.json` contains the complete per-net inventory; the truncated CLI
@@ -28,6 +28,14 @@ leaving 432 open edges. Sixteen local bypass connections and ten local signal
 links then reduced that count to 406. Seventeen short signal links using
 off-pad layer changes subsequently reduced it to 389. Source metadata records the removed
 copper and new links. All failed local trials remain available in the cache.
+
+A bounded continuation with all existing copper locked produced a timed-out
+partial session. Only new copper was imported, with the source footprints
+preserved exactly. An unfinished two-track stub was removed. The resulting
+1,605-segment/402-via checkpoint preserves all 1,183 prior copper objects and
+reduces native open edges from 389 to 323. Fresh DRC/parity and independent
+refill pass with all 344 grounds and sixteen bypass pairs connected. The raw
+autorouter timeout is retained; this is not complete routing.
 
 The earlier recovery from a partial autorouter session corrected omitted
 mechanical-footprint names and nanometre import rounding, then repaired four
@@ -64,3 +72,7 @@ compliance, protection, source/inlet selection, manufacturing and installed
 fit remain open. The four-layer, 2 oz, 1.6 mm stack remains a proposal. No
 historical ground/current receipt is rebound and no fabrication or order
 files are produced.
+
+Final combined native replay, 26 targeted tests, documentation build and
+publication checks for the 323-edge continuation passed in 88 seconds. The
+existing workbench link exception remains unchanged. Integrated CI is pending.

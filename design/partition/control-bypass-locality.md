@@ -21,7 +21,7 @@ warnings. Source-driven label regeneration then placed all 418 references
 and the full native layout replay passed with zero violations. Obsolete
 signal routes and dangling rail branches were removed. Sixteen local bypass
 connections and ten signal links were added, followed by seventeen additional
-local signal links using short layer changes. The current partial copper has
+local signal links using short layer changes. The bypass-repair checkpoint has
 905 segments, 278 vias and 389 open edges, zero DRC/parity findings, and all
 344 ground contacts connected after independent refill. Combined final
 replay, 26 targeted tests, documentation build and publication checks passed
