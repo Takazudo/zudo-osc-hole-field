@@ -25,9 +25,10 @@ capacitance and leakage. An explicitly assumed 20 µA injection instead leaves
 a 2 V equilibrium. No actual leakage bound, minimum off interval, powered-off
 LOW or automatic restart is established by those diagnostics.
 
-The divided steady HIGH also means U106 does not meet its rail-level ICC input
-condition even after settling. Its extra steady input-stage current is an open
-DC budget item. The 210 µA device table-row sum and 6.699 mA largest +5 V screen
+The SN74LVC1G17 ICC input condition is VI=5.5 V or GND, with IO=0;
+it is not a general VI=VCC condition. Both U104 and U106 actual HIGH inputs
+lack direct application coverage. U106 also retains a divided steady HIGH.
+Additional steady input-stage current remains an open DC budget item. The 210 µA device table-row sum and 6.699 mA largest +5 V screen
 remain conditional; the ΔICC row at VCC−0.6 V is not extrapolated.
 
 The new DCT footprint follows TI drawing DCT0008A 4220784/D, physical PDF
