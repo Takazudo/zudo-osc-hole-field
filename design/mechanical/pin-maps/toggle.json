@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "status": "DRAFT; 2MS3 unsuffixed versus -5 mechanical identity unresolved; physical lot and board rotation not verified",
+  "status": "DRAFT; unsuffixed 2MS3 versus -5 identity and panel-direction mapping unresolved; physical continuity NOT RUN",
   "mpns": [
     "2MS1T1B1M2QES-5",
     "2MS3T1B1M2QES"
@@ -15,7 +15,7 @@
     {
       "symbol_pin": "3",
       "footprint_pad": "3",
-      "role": "left throw",
+      "role": "contact 3; provisional footprint location only, not a proved lever direction",
       "panel_axis_mm": [
         -2.54,
         0
@@ -33,7 +33,7 @@
     {
       "symbol_pin": "1",
       "footprint_pad": "1",
-      "role": "right throw",
+      "role": "contact 1; provisional footprint location only, not a proved lever direction",
       "panel_axis_mm": [
         2.54,
         0
@@ -42,7 +42,7 @@
   ],
   "lever_truth_table": [
     {
-      "lever": "left / position 1",
+      "lever": "drawing POS.1",
       "closed": [
         "2",
         "3"
@@ -50,13 +50,13 @@
       "source_locator": "Dailywell printed p.25 POS.1, 2-3"
     },
     {
-      "lever": "centre / position 2",
+      "lever": "drawing POS.2",
       "closed": [],
       "applies_to": "2MS3 only",
       "source_locator": "Dailywell printed p.25 2MS3 POS.2 OPEN"
     },
     {
-      "lever": "right / position 3",
+      "lever": "drawing POS.3",
       "closed": [
         "2",
         "1"
@@ -64,5 +64,6 @@
       "source_locator": "Dailywell printed p.25 POS.3, 2-1"
     }
   ],
-  "nets": "Unassigned; mapping is for symbol/footprint geometry and panel wording only."
+  "nets": "Mechanical mapping only; no electrical net assignment in this record. Panel-word-to-contact association is unproved.",
+  "panel_direction_status": "UNSOURCED: drawing POS.1/POS.3 have not been reconciled with actual board face/rotation and panel-left/right"
 }
