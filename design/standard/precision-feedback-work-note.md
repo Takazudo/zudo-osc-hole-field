@@ -47,5 +47,9 @@ Validation completed before the first commit:
   unchanged and are not made current by this proof. Historical local-artifact
   integration was NOT RUN in this clone.
 
-Integrated CI is pending. Supplier allocation, factory solderability, installed
+The first CI run caught a stale generated standard-cell precision-output
+sheet. The harness was regenerated from the exact roles, and its generator
+was added to the aggregate regeneration command so future identity changes
+cannot omit this output. A fresh native cell-harness check and CI rerun are
+pending. Supplier allocation, factory solderability, installed
 clearance, fault/thermal duty and physical output stability remain open.

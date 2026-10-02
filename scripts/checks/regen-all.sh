@@ -48,6 +48,8 @@ for generator in "${generators[@]}"; do
   fi
 done
 
+python3 -m design.spec.cells.harness
+
 bash scripts/schgen/smoke.sh --generated
 bash scripts/schgen/export-master.sh
 
