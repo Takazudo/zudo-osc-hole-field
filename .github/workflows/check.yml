@@ -85,6 +85,9 @@ jobs:
       - name: Check current shortlist capture and pin evidence
         run: python3 scripts/libgen/fixtures/check_ic_evidence.py
 
+      - name: Check explicit catalogue publication coverage
+        run: python3 scripts/checks/check_catalogue_publication.py
+
       - name: Place every current shortlist symbol unit and check native ERC
         run: bash scripts/libgen/fixtures/check_ic_units.sh
 
