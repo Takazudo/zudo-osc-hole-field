@@ -91,6 +91,9 @@ jobs:
       - name: Run native passive permit RC diagnostics
         run: python3 scripts/checks/monitor_permit_rc.py --check
 
+      - name: Run native source courtyard minimum check
+        run: bash scripts/kicad/run.sh python3 scripts/libgen/fixtures/check_courtyard_minimum.py
+
       - name: Run native IC display-envelope placement checks
         run: bash scripts/kicad/run.sh python3 scripts/libgen/fixtures/check_wrl_dimensions.py --check
 

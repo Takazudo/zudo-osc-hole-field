@@ -9,6 +9,7 @@ import math
 import re
 import sys
 from pathlib import Path
+from decimal import Decimal, InvalidOperation, ROUND_FLOOR, ROUND_CEILING
 
 ROOT = Path(__file__).resolve().parents[2]
 FOOTPRINT_DIR = ROOT / "footprints" / "kicad" / "zudo-osc-hole-field.pretty"
@@ -201,6 +202,48 @@ def envelope(tree, clearance: float = CLEARANCE_MM, rounded: bool = True):
     return tuple(round(value, 2) for value in box) if rounded else box
 
 
+def desired_courtyard(tree):
+    """Union the generated envelope with an optional local-mm source minimum.
+
+    Floorless footprints retain their historical rounding. Explicit minima use
+    outward 0.01 mm rounding, so serialization cannot shrink either boundary.
+    This does not alter envelope(), which also serves raw geometry callers.
+    """
+    properties = [node for node in tree[1:]
+                  if node_name(node) == "property" and len(node) > 1
+                  and node[1] == "ProjectCourtyardMinimumBox"]
+    if not properties:
+        return envelope(tree)
+    if len(properties) != 1:
+        raise ValueError("duplicate ProjectCourtyardMinimumBox")
+    prop = properties[0]
+    try:
+        if len(prop) < 3 or not isinstance(prop[2], str):
+            raise ValueError("missing box coordinates")
+        box = tuple(Decimal(value) for value in prop[2].split())
+        if len(box) != 4 or not all(value.is_finite() for value in box):
+            raise ValueError("expected four finite coordinates")
+        if box[0] >= box[2] or box[1] >= box[3]:
+            raise ValueError("minimum box must have positive area")
+    except (InvalidOperation, ValueError) as exc:
+        raise ValueError("invalid ProjectCourtyardMinimumBox: " + str(exc)) from exc
+    generated = tuple(Decimal(str(v)) for v in envelope(tree, rounded=False))
+    combined = (min(box[0], generated[0]), min(box[1], generated[1]),
+                max(box[2], generated[2]), max(box[3], generated[3]))
+    try:
+        result = []
+        for i, value in enumerate(combined):
+            quantized = value.quantize(Decimal("0.01"),
+                        rounding=ROUND_FLOOR if i < 2 else ROUND_CEILING)
+            converted = float(quantized)
+            if not math.isfinite(converted) or Decimal(format(converted, ".2f")) != quantized:
+                raise ValueError("ProjectCourtyardMinimumBox exceeds coordinate precision")
+            result.append(converted)
+        return tuple(result)
+    except InvalidOperation as exc:
+        raise ValueError("ProjectCourtyardMinimumBox exceeds coordinate precision") from exc
+
+
 def courtyard_box(text: str) -> tuple[float, float, float, float]:
     graphics = [node for node in walk(parse(text)) if node_name(node) in GRAPHIC_NODES and "F.CrtYd" in layers_of(node)]
     for node in graphics:
@@ -244,11 +287,13 @@ def courtyard_box(text: str) -> tuple[float, float, float, float]:
     return box
 
 
-def courtyard_matches(text: str, expected: tuple[float, float, float, float]) -> bool:
+def courtyard_matches(text: str, expected: tuple[float, float, float, float], *, exact=False) -> bool:
     try:
         actual = courtyard_box(text)
     except (ValueError, IndexError):
         return False
+    if exact:
+        return actual == expected
     return all(math.isclose(a, b, abs_tol=GEOMETRY_TOLERANCE_MM) for a, b in zip(actual, expected))
 
 
@@ -309,8 +354,13 @@ def strip_courtyard(text: str) -> str:
 
 
 def rewrite(text: str) -> str:
-    box = envelope(parse(text))
-    if courtyard_matches(text, box):
+    tree = parse(text)
+    box = desired_courtyard(tree)
+    has_minimum = any(node_name(node) == "property" and len(node) > 1
+                      and node[1] == "ProjectCourtyardMinimumBox" for node in tree[1:])
+    # The historical tolerance may accept an inward edge. Explicit source
+    # minima must match the canonical rectangle exactly before reusing bytes.
+    if courtyard_matches(text, box, exact=has_minimum):
         return text
     stripped = strip_courtyard(text)
     quoted = '(layer "' in stripped
