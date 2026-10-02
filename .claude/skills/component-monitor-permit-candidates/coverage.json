@@ -992,6 +992,68 @@
       "blocking_fact_ids": [
         "fact-monitor-c0603c104k5ractu-procurement"
       ]
+    },
+    {
+      "coverage_id": "cov-monitor-c1206c104f3gactu-exact-orderable-identity",
+      "record_id": "rec-monitor-c1206c104f3gactu",
+      "domain": "exact orderable identity",
+      "status": "COVERED",
+      "reason": "Exact retained manufacturer identity only; supplier stock remains open.",
+      "fact_ids": [
+        "fact-monitor-c1206c104f3gactu-manufacturer",
+        "fact-monitor-c1206c104f3gactu-identity"
+      ],
+      "blocking_fact_ids": []
+    },
+    {
+      "coverage_id": "cov-monitor-c1206c104f3gactu-pinout",
+      "record_id": "rec-monitor-c1206c104f3gactu",
+      "domain": "pinout",
+      "status": "COVERED",
+      "reason": "Primary IC pin table or explicit nonpolarized project terminal convention; not an installed-board claim.",
+      "fact_ids": [
+        "fact-monitor-c1206c104f3gactu-pinout"
+      ],
+      "blocking_fact_ids": []
+    },
+    {
+      "coverage_id": "cov-monitor-c1206c104f3gactu-application-qualification",
+      "record_id": "rec-monitor-c1206c104f3gactu",
+      "domain": "application qualification",
+      "status": "OPEN",
+      "reason": "UNSOURCED complete startup, bias, timing and power-transition applicability.",
+      "fact_ids": [
+        "fact-monitor-c1206c104f3gactu-application-qualification"
+      ],
+      "blocking_fact_ids": [
+        "fact-monitor-c1206c104f3gactu-application-qualification"
+      ]
+    },
+    {
+      "coverage_id": "cov-monitor-c1206c104f3gactu-mechanical-fit",
+      "record_id": "rec-monitor-c1206c104f3gactu",
+      "domain": "mechanical fit",
+      "status": "OPEN",
+      "reason": "Family CAD needs installed physical and thermal qualification.",
+      "fact_ids": [
+        "fact-monitor-c1206c104f3gactu-mechanical-fit"
+      ],
+      "blocking_fact_ids": [
+        "fact-monitor-c1206c104f3gactu-mechanical-fit"
+      ]
+    },
+    {
+      "coverage_id": "cov-monitor-c1206c104f3gactu-procurement",
+      "record_id": "rec-monitor-c1206c104f3gactu",
+      "domain": "procurement",
+      "status": "OPEN",
+      "reason": "UNSOURCED lifecycle, stock and factory allocation.",
+      "fact_ids": [
+        "fact-monitor-c1206c104f3gactu-procurement"
+      ],
+      "blocking_fact_ids": [
+        "fact-monitor-c1206c104f3gactu-procurement"
+      ]
     }
   ]
 }

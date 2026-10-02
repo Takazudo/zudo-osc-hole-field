@@ -89,7 +89,7 @@ def dct_footprint(envelope):
 
 
 def capacitor_footprint(part):
-    """KEMET C1002_X7R Table3 DensityB; dimensions remain source parameters."""
+    """KEMET family Table3 DensityB; dimensions remain source parameters."""
     envelope = part['package_envelope']
     name = part['footprint']
     dx, dy, _ = envelope['body_max_xyz_mm']
@@ -97,7 +97,7 @@ def capacitor_footprint(part):
     box = ' '.join(f'{v:g}' for v in envelope['courtyard_minimum_box_mm'])
     text = (f'(footprint "{name}" (version 20260206) (generator "monitor_candidate_assets")\n'
             ' (layer "F.Cu") (attr smd)\n'
-            ' (descr "KEMET0603 DensityB recommended reflow lands; unqualified draft")\n'
+            f' (descr {json.dumps(part.get("footprint_description", "KEMET0603 DensityB recommended reflow lands; unqualified draft"))})\n'
             ' (property "Reference" "REF**" (at 0 -1.5 0) (layer "F.SilkS") '
             '(effects (font (size 1 1) (thickness 0.15))))\n'
             f' (property "Value" "{name}" (at 0 1.5 0) (layer "F.Fab") '
