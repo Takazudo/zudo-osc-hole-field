@@ -5,14 +5,14 @@
 layout's 418 packages, 36 supports, 139 fixed controls, actual outline, stack
 proposal and reservations. The canonical partition outline remains separate.
 
-`copper.json` owns 1,811 track segments and 436 through vias, including all 150
+`copper.json` owns 1,961 track segments and 472 through vias, including all 150
 main-terminal array vias. Coordinates are native integer nanometres. The
 constructor appends only this copper and the source-defined ground pours to
 the checked labelled layout, preserving every other input byte. Each main
 array's complete annuli remain inside its owning 4 × 4 mm terminal.
 
 Fresh KiCad 10.0.6 checks give zero DRC violations, zero schematic-parity
-findings, **278 open edges** and **344/344 connected ground contacts**. All
+findings, **257 open edges** and **344/344 connected ground contacts**. All
 **16 local IC/bypass rail pairs are connected**, with at most 2.535 mm between
 supply-pad centres. Independent reload/refill retains the connectivity.
 `ratsnest.json` contains the complete per-net inventory; the truncated CLI
@@ -84,7 +84,7 @@ per-net connectivity regressions, all 344 ground contacts and all sixteen
 bypass pairs connected after independent refill. The raw router timed out;
 its unfiltered result is not accepted. Combined native replay, 26 targeted tests, documentation build and
 publication checks passed for this checkpoint. The existing single workbench
-link exception remains explicit. Integrated CI is pending.
+link exception remains explicit. Integrated CI through the 278-edge checkpoint passed in run 37006282053.
 
 Twenty-three further same-module front-layer links reduce 301 open edges to
 278, adding 30 segments and six distinct off-pad through vias. A first trial
@@ -93,4 +93,14 @@ and local bypass pairs remain connected after independent refill. The full
 replay also checks per-net connectivity equality across refill, not only the
 total edge count. Combined native replay, 26 targeted tests, documentation
 build and publication checks passed for this extension; the existing single
-workbench link exception remains explicit. Integrated CI is pending.
+workbench link exception remains explicit. Integrated CI through the 278-edge checkpoint passed in run 37006282053.
+
+A second bounded selective continuation improves ten nets and reduces the
+278-edge checkpoint to 268, with no per-net regression. Its raw timeout and
+three dangling fragments were not accepted. Eleven subsequent same-net
+front-layer links, including interface-to-control connections and short
+orthogonal detours, reduce the count to 257. All 344 grounds and sixteen
+bypass pairs remain connected after independent refill. Final combined
+native replay, 26 targeted tests, documentation build and publication checks
+passed in 85 seconds. The existing workbench link exception remains explicit.
+Integrated CI for the 257-edge checkpoint is pending.
