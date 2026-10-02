@@ -5,14 +5,14 @@
 layout's 418 packages, 36 supports, 139 fixed controls, actual outline, stack
 proposal and reservations. The canonical partition outline remains separate.
 
-`copper.json` owns 1,605 track segments and 402 through vias, including all 150
+`copper.json` owns 1,781 track segments and 430 through vias, including all 150
 main-terminal array vias. Coordinates are native integer nanometres. The
 constructor appends only this copper and the source-defined ground pours to
 the checked labelled layout, preserving every other input byte. Each main
 array's complete annuli remain inside its owning 4 × 4 mm terminal.
 
 Fresh KiCad 10.0.6 checks give zero DRC violations, zero schematic-parity
-findings, **323 open edges** and **344/344 connected ground contacts**. All
+findings, **301 open edges** and **344/344 connected ground contacts**. All
 **16 local IC/bypass rail pairs are connected**, with at most 2.535 mm between
 supply-pad centres. Independent reload/refill retains the connectivity.
 `ratsnest.json` contains the complete per-net inventory; the truncated CLI
@@ -65,7 +65,7 @@ refill. Combined final replay, 26 targeted tests, documentation build and public
 checks passed in 83 seconds. Strict link checks retain the existing single
 workbench exception. All 482 PCB tests and 281 source/check tests pass for the bypass-repair
 checkpoint. Final replay, 26 targeted tests and publication checks for the seventeen
-additional links passed in 81 seconds. Integrated CI is pending.
+additional links passed in 81 seconds. Integrated CI passed in run 37003058077.
 
 Current-source resistance/current analysis, global rail-distribution
 compliance, protection, source/inlet selection, manufacturing and installed
@@ -75,4 +75,13 @@ files are produced.
 
 Final combined native replay, 26 targeted tests, documentation build and
 publication checks for the 323-edge continuation passed in 88 seconds. The
-existing workbench link exception remains unchanged. Integrated CI is pending.
+existing workbench link exception remains unchanged. Integrated CI passed in run 37004361858.
+
+A selective continuation retains new routing on 21 improved nets and restores
+the prior routes elsewhere, including two nets whose new routing isolated
+ground contacts. The accepted combination has 301 native open edges, no
+per-net connectivity regressions, all 344 ground contacts and all sixteen
+bypass pairs connected after independent refill. The raw router timed out;
+its unfiltered result is not accepted. Combined native replay, 26 targeted tests, documentation build and
+publication checks passed for this checkpoint. The existing single workbench
+link exception remains explicit. Integrated CI is pending.
