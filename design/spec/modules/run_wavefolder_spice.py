@@ -12,8 +12,40 @@ OUT=ROOT/'design/reports/spice/wavefolder.json'
 MODEL=ROOT/'design/spec/modules/spice/filter-model/LM13700.MOD'
 
 
+def checked_fixture_parts(parts):
+ """These generic fixtures still need the actual captured device pin mapping."""
+ expected={
+  'wavefolder:BIAS_PNP':('MMBT3906_215','Q',1),
+  'wavefolder:CONTROL_CLAMP':('BAT54S_215','D',1),
+  'wavefolder:PRE_GAIN_MAX':('TC33X-2-103E','RV',0),
+ }
+ for role,(symbol,prefix,unit) in expected.items():
+  found=[p for p in parts if p.attributes.get('Role')==role]
+  if len(found)!=1:raise ValueError('wavefolder fixture requires unique '+role)
+  p=found[0]
+  if (p.dnp or p.symbol!='zudo-osc-hole-field:'+symbol or p.prefix!=prefix or p.unit!=unit
+      or set(p.pins)!={'1','2','3'} or any(not isinstance(n,str) or not n for n in p.pins.values())):
+   raise ValueError('wavefolder fixture identity/pins changed: '+role)
+  if role=='wavefolder:PRE_GAIN_MAX' and (p.value!='10 kΩ' or p.pins['3']!=p.pins['2']):
+   raise ValueError('wavefolder mid-trim fixture requires captured 10k rheostat with tied pins 2/3')
+
+
 def common(fold=5,bias=0,*,depth=0,bias_cv=0,offset=-.3,mismatch=False,sine=False):
- f=family();lines=['* Spec-derived signal path and bias servo; ideal limited amplifiers.', '.include "design/spec/modules/spice/filter-model/LM13700.MOD"','VP P_12V 0 12','VN N_12V 0 -12','VREF5 REF5 0 5','VREFN5 REFN5 0 -5',f'VIN IN_BUFFER 0 '+('SIN(0 5 100)' if sine else '0'),f'VMANUAL FOLD_MANUAL 0 {fold}',f'VDEPTH FOLD_DEPTH 0 {depth}',f'VBIAS BIAS_MANUAL 0 {bias}',f'VBIASCV BIAS_BUFFER 0 {bias_cv}',f'VOFFSET OFFSET_TRIM 0 {offset}']
+ f=family();checked_fixture_parts(f.parts)
+ seen_nodes={}
+ def mapped(value):
+  if not isinstance(value,str) or not value:raise ValueError('invalid wavefolder source node')
+  target=net(value);key=target.casefold()
+  if key=='gnd':key='0'  # ngspice default ground alias (manual 44, section 2.1.3.5).
+  if key in seen_nodes and seen_nodes[key]!=value:
+   raise ValueError(f'wavefolder SPICE node collision: {seen_nodes[key]!r} / {value!r} -> {target}')
+  seen_nodes[key]=value
+  return target
+ # These voltage-source and load boundaries are explicit ideal fixtures.
+ for value in ('AGND','+12V','-12V','REF5','REFN5','IN_BUFFER','FOLD_MANUAL',
+               'FOLD_DEPTH','BIAS_MANUAL','BIAS_BUFFER','OFFSET_TRIM','OUT_TIP'):
+  mapped(value)
+ lines=['* Spec-derived signal path and bias servo; ideal limited amplifiers.', '.include "design/spec/modules/spice/filter-model/LM13700.MOD"','VP P_12V 0 12','VN N_12V 0 -12','VREF5 REF5 0 5','VREFN5 REFN5 0 -5',f'VIN IN_BUFFER 0 '+('SIN(0 5 100)' if sine else '0'),f'VMANUAL FOLD_MANUAL 0 {fold}',f'VDEPTH FOLD_DEPTH 0 {depth}',f'VBIAS BIAS_MANUAL 0 {bias}',f'VBIASCV BIAS_BUFFER 0 {bias_cv}',f'VOFFSET OFFSET_TRIM 0 {offset}']
  selected=[]
  for p in f.parts:
   role=p.attributes.get('Role','');key=p.attributes.get('LogicalCellKey',p.key)
@@ -23,25 +55,32 @@ def common(fold=5,bias=0,*,depth=0,bias_cv=0,offset=-.3,mismatch=False,sine=Fals
  for p in selected:
   role=p.attributes.get('Role','')
   if p.prefix in ('R','RB','C'):
-   lines.append(f'{p.prefix[0]}{name(p.key)} {net(p.pins["1"])} {net(p.pins["2"])} {number(p.value):g}')
+   lines.append(f'{p.prefix[0]}{name(p.key)} {mapped(p.pins["1"])} {mapped(p.pins["2"])} {number(p.value):g}')
   elif p.symbol.endswith(('OPA4196IDR','OPA4197IPWR')) and p.unit in MAPS:
    out,minus,plus=MAPS[p.unit]
-   if role=='wavefolder:CURRENT_SERVO':lines.append(f'B{name(p.key)} {net(p.pins[out])} 0 V=10.5*tanh(1e5*(v({net(p.pins[plus])})-v({net(p.pins[minus])}))/10.5)')
-   else:lines.append(f'E{name(p.key)} {net(p.pins[out])} 0 {net(p.pins[plus])} {net(p.pins[minus])} 1e6')
+   if role=='wavefolder:CURRENT_SERVO':lines.append(f'B{name(p.key)} {mapped(p.pins[out])} 0 V=10.5*tanh(1e5*(v({mapped(p.pins[plus])})-v({mapped(p.pins[minus])}))/10.5)')
+   else:lines.append(f'E{name(p.key)} {mapped(p.pins[out])} 0 {mapped(p.pins[plus])} {mapped(p.pins[minus])} 1e6')
   elif role.startswith('wavefolder:F') and '_D_' in role:
    model='FOLD_POS' if '_D_POS' in role else 'FOLD_NEG'
-   lines.append(f'D{name(p.key)} {net(p.pins["2"])} {net(p.pins["1"])} {model}')
-  elif role=='wavefolder:BIAS_REVERSE_BE':lines.append(f'DREVERSE {net(p.pins["2"])} {net(p.pins["1"])} FOLD_NEG')
-  elif role=='wavefolder:CONTROL_CLAMP':lines+=['DCLOW 0 CONTROL_CLAMP SCHOTTKY','DCHIGH CONTROL_CLAMP REF5 SCHOTTKY']
-  elif role=='wavefolder:BIAS_PNP':lines.append('QBIAS CURRENT_SOURCE BASE EMITTER GENERIC_PNP')
-  elif role=='wavefolder:PRE_GAIN_MAX':lines.append('RGAIN_TRIM PRE_GAIN_TRIM PRE_GAIN_SUM 5k')
+   lines.append(f'D{name(p.key)} {mapped(p.pins["2"])} {mapped(p.pins["1"])} {model}')
+  elif role=='wavefolder:BIAS_REVERSE_BE':lines.append(f'DREVERSE {mapped(p.pins["2"])} {mapped(p.pins["1"])} FOLD_NEG')
+  elif role=='wavefolder:CONTROL_CLAMP':lines+=[f'DCLOW {mapped(p.pins["1"])} {mapped(p.pins["3"])} SCHOTTKY',f'DCHIGH {mapped(p.pins["3"])} {mapped(p.pins["2"])} SCHOTTKY']
+  elif role=='wavefolder:BIAS_PNP':lines.append(f'QBIAS {mapped(p.pins["3"])} {mapped(p.pins["1"])} {mapped(p.pins["2"])} GENERIC_PNP')
+  elif role=='wavefolder:PRE_GAIN_MAX':lines.append(f'RGAIN_TRIM {mapped(p.pins["1"])} {mapped(p.pins["2"])} 5k')
   elif role=='level_attenuator:RV':
-   lines+=['RLEVEL_TOP '+net(p.pins['3'])+' '+net(p.pins['2'])+' 1u','RLEVEL_BOTTOM '+net(p.pins['2'])+' '+net(p.pins['1'])+' 10k']
+   lines+=['RLEVEL_TOP '+mapped(p.pins['3'])+' '+mapped(p.pins['2'])+' 1u','RLEVEL_BOTTOM '+mapped(p.pins['2'])+' '+mapped(p.pins['1'])+' 10k']
  pins={}
  for p in f.parts:
   if p.symbol.endswith('LM13700M_NOPB'):pins.update(p.pins)
  for i,numbers in enumerate([('1','2','3','4','5','6','7','8','11'),('16','15','14','13','12','6','10','9','11')]):
-  nodes=[net(pins[n]) if pins[n] is not None else f'NC_{i}_{n}' for n in numbers]
+  nodes=[]
+  for n in numbers:
+   if pins[n] is not None:target=mapped(pins[n])
+   else:
+    target=f'NC_{i}_{n}';key=target.casefold()
+    if key in seen_nodes:raise ValueError('wavefolder SPICE node collision with generated NC: '+target)
+    seen_nodes[key]=('generated NC',i,n)
+   nodes.append(target)
   lines.append(f'XOTA{i} '+' '.join(nodes)+' LM13700/NS')
  lines+=['.model GENERIC_PNP PNP(IS=1e-14 BF=200 VAF=100)',f'.model FOLD_POS D(IS={2e-9 if mismatch else 1e-9} N=1.8 RS=1 CJO=2p TT=4n)','.model FOLD_NEG D(IS=1n N=1.8 RS=1 CJO=2p TT=4n)','.model SCHOTTKY D(IS=1u N=1.1 RS=1 CJO=10p)','RLOAD OUT_TIP 0 100k','.options reltol=1e-5 abstol=1e-11']
  return '\n'.join(lines)+'\n'
