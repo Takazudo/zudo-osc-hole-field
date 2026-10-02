@@ -1,0 +1,14 @@
+# Wavefolder model pin binding
+
+Continue issue #32 by fixing three source/model discrepancies without changing the circuit or panel.
+
+- Entry component validation PASS: 65 manual inventory lines, no schematic/placement binding; pin assets checked. Baseline canonical regeneration PASS in 224 seconds with no tracked drift. An earlier queued baseline was canceled before execution to prioritize older work (NOT RUN).
+- Reproduced: changing BIAS_PNP pin 3, CONTROL_CLAMP pin 3 or PRE_GAIN_MAX pin 1 to AGND left the original model deck identical. Those fixtures now consume actual captured pins, with fitted unique primitive identity and rheostat checks.
+- Independent review also reproduced node conversion aliases. A per-deck map checks actual emitted nodes case-insensitively, reserves ideal boundaries and synthetic NC nodes, and accounts for ngspice's default gnd alias. The distinct numeric node 00 remains allowed. See [ngspice 44 manual](https://ngspice.sourceforge.io/docs/ngspice-44-manual.pdf), sections 2.1.3.4–5, physical page index 48 / printed page 49. Eight prepared mutation/nominal tests passed and the revised proposal was re-reviewed without a blocking finding.
+- Source pin mapping checked against retained Nexperia MMBT3906 (10 April 2025), physical index 0 / printed 1, section 5 table 2: 1 B, 2 E, 3 C. SHA-256: 9589175ddb2e89e0cddef099fdd74ce6b33a2f7f9de9b4292b964f3189bf806b.
+- Nexperia BAT54S (1 July 2022), same page/section/table: 1 A1, 2 K2, 3 K1/A2. SHA-256: 0baaac4f52b05b5d41932c445eb8dddc636e464b1f717d11ee41b27ba1202fe7.
+- Bourns TC33, revision 08/19: physical index 0 terminal drawing (visually inspected), index 1 resistance code 103 = 10 kΩ. SHA-256: b13258ee9f777b70198554ad4ed43cab2167b2bdf31bdcbe52c4956bfff1adbf. The half-resistance setting is an ideal fixture, not a measured shaft setting.
+- The Nexperia full ,215 orderable-suffix evidence gaps remain open. No source verdict, procurement or physical qualification is promoted. PNP/diodes remain generic models; amplifier, headroom, current, fault, temperature and installed behavior limits remain explicit.
+- Fresh oracle traces, plots and source receipts must be regenerated before acceptance; never rebind old report hashes without running their producer.
+
+Final local validation PASS: guarded batch completed in 289 seconds. All 18 fresh native decks, both freshly rendered PNGs and every numerical model result equal the retained before-state. Only the producer source hash and dependent plot receipt changed. Fresh whole-master ERC has zero errors and 228 warnings (12 wavefolder, 216 other); the old native receipt was refreshed by its actual producer. Fifteen wavefolder tests, canonical regeneration, evidence validation, generated-page/model checks, documentation build, publication scan and strict links passed. The existing single link allowlist exception remains unchanged. No schematic source or panel geometry changed.
