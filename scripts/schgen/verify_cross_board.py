@@ -77,13 +77,28 @@ def assert_partition(partition, assignment):
     if len(partition['load_side_wires']) != partition['counts']['factory_load_side_wires']: raise ValueError('load wire count differs from manifest')
     used_terminals=[r for w in partition['load_side_wires'] for r in w['terminal_refs']]
     if Counter(used_terminals)!=Counter(terminals.keys()):raise ValueError('every load terminal must appear in exactly one wire')
-    sensitive = {x['net'] for x in json.loads((ROOT/'design/reports/master-audit.json').read_text())['sensitive_nets']}
+    audit=json.loads((ROOT/'design/reports/master-audit.json').read_text())
+    sensitive={x['net'] for x in audit['sensitive_nets']}
+    def check_interface_net(label,net):
+        if net in sensitive:raise ValueError(f'{label}: Sensitive net on interface: {net}')
+        # Match the captured raw-TIP naming rule in io_partition60.crossing_kind().
+        if net and (net.upper().endswith('_TIP') or any(x in net.upper() for x in ('RAW_TIP','SLEW_STORAGE','HOLD_CAP','SUMMING'))):
+            raise ValueError(f'{label}: raw/storage/summing net on interface: {net}')
     for c in connectors.values():
-        for net in c['pin_map'].values():
-            if net in sensitive: raise ValueError(f'{c["id"]}: Sensitive net on connector: {net}')
-            if net and any(x in net.upper() for x in ('RAW_TIP', 'SLEW_STORAGE', 'HOLD_CAP', 'SUMMING')):
-                raise ValueError(f'{c["id"]}: raw/storage/summing net on connector: {net}')
-    islands = json.loads((ROOT/'design/reports/master-audit.json').read_text())['islands']
+        for net in c['pin_map'].values():check_interface_net(c['id'],net)
+    # The independent source contract defines these as regulated main-power
+    # and return wires, never a second channel for ordinary or Sensitive signals.
+    distribution=json.loads((ROOT/'design/partition/partition-input.json').read_text())['load_distribution']
+    net_order=distribution['net_order']
+    if not isinstance(net_order,list) or not net_order or any(not isinstance(n,str) or not n for n in net_order):
+        raise ValueError('source load-distribution net order must be a nonempty net list')
+    allowed_load_nets=set(net_order)
+    for terminal in terminals.values():
+        net=terminal['net']
+        check_interface_net(terminal['reference'],net)
+        if net not in allowed_load_nets:
+            raise ValueError(f'{terminal["reference"]}: net outside source load-distribution rails: {net}')
+    islands=audit['islands']
     for island, refs in islands.items():
         boards = {assignment[ref]['board'] for ref in refs if ref in assignment}
         if len(boards) > 1: raise ValueError(f'split island {island}: {sorted(boards)}')

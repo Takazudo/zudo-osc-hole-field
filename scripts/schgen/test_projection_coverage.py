@@ -3,7 +3,7 @@ from copy import deepcopy
 import json
 import unittest
 from scripts.schgen.project_boards import net_token
-from scripts.schgen.verify_cross_board import verify, native_component
+from scripts.schgen.verify_cross_board import verify, native_component, ROOT
 
 
 def export(parts, pins):
@@ -177,6 +177,64 @@ class ProjectionCoverageTests(unittest.TestCase):
         self.master_parts['RBBB']['properties']={'dnp':''}
         self.partition['assignment']['components'][1]['fitted']=False
         with self.assertRaisesRegex(ValueError,'projected DNP population'):self.check()
+
+    def add_load_pair(self, net):
+        refs=[]
+        for board in ('A','B'):
+            ref='TPEXTRA'+board;refs.append(ref)
+            self.partition['load_side_terminals'].append(
+                {'reference':ref,'board':board,'net':net,'manufacturer_pin':'1'})
+            self.parts[board.lower()][ref]={}
+            self.pins[board.lower()][(ref,'1')]=net_token(net)
+        self.partition['load_side_wires'].append(
+            {'id':'extra-wire','terminal_refs':refs,'net':net})
+        self.partition['counts'].update(load_side_copper_terminals=4,factory_load_side_wires=2)
+
+    def test_load_terminals_cannot_export_a_local_sensitive_net(self):
+        net='/H1/HOLD_CAP'
+        self.master_pins[('RAAA','1')]=net
+        self.pins['a'][('RAAA','1')]=net_token(net)
+        self.add_load_pair(net)
+        with self.assertRaisesRegex(ValueError,'Sensitive net on interface'):self.check()
+
+    def test_load_terminals_cannot_bypass_raw_storage_or_summing_screen(self):
+        for net in ('/NEW/RAW_TIP','/NEW/IN_TIP','/NEW/OUT_TIP','/NEW/SLEW_STORAGE','/NEW/HOLD_CAP','/NEW/SUMMING'):
+            with self.subTest(net=net):
+                self.setUp();self.add_load_pair(net)
+                with self.assertRaisesRegex(ValueError,'raw/storage/summing'):self.check()
+
+    def test_load_terminals_allow_only_independent_source_power_nets(self):
+        for net in ('SIGNAL','+12V_IN','-12V_IN','+5V_IN'):
+            with self.subTest(net=net):
+                self.setUp();self.add_load_pair(net)
+                # A modified generated echo must not authorize a signal or raw rail.
+                self.partition['power']={'load_distribution':{'net_order':[net]}}
+                with self.assertRaisesRegex(ValueError,'outside source load-distribution rails'):self.check()
+
+    def test_all_declared_load_rails_and_return_remain_accepted(self):
+        source=json.loads((ROOT/'design/partition/partition-input.json').read_text())
+        for net in set(source['load_distribution']['net_order']):
+            with self.subTest(net=net):
+                self.setUp();self.add_load_pair(net)
+                result=self.check()
+                self.assertEqual(result['load_side_terminals'],4)
+                self.assertEqual(result['load_side_wires'],2)
+
+    def test_actual_tip_naming_cannot_cross_a_gh_harness(self):
+        net='/A01/IN_TIP'
+        self.master_pins[('RAAA','1')]=net
+        self.pins['a'][('RAAA','1')]=net_token(net)
+        ids=[]
+        for board in ('A','B'):
+            connector=deepcopy(self.partition['connectors'][0])
+            connector.update(id='raw-'+board,pcb_reference='JRAW'+board,board=board,
+                             pin_map={'1':net,'2':'NC','3':'NC'})
+            ids.append(connector['id']);self.partition['connectors'].append(connector)
+            self.parts[board.lower()][connector['pcb_reference']]=deepcopy(self.parts[board.lower()]['J'+board*3])
+            for pin,value in {'1':net_token(net),'2':None,'3':None,'MP1':None,'MP2':None}.items():
+                self.pins[board.lower()][(connector['pcb_reference'],pin)]=value
+        self.partition['harnesses'].append({'id':'raw-wire','header_ids':ids})
+        with self.assertRaisesRegex(ValueError,'raw/storage/summing'):self.check()
 
     def test_missing_board_export_fails(self):
         del self.parts['b']

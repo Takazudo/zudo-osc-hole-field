@@ -5,6 +5,7 @@ AS3340 core, sync, tracking and rail sequencing have no retained vendor model.
 import json, re, subprocess
 from pathlib import Path
 from .oscillator import ROOT, family, octave_family
+from .oscillator_sine_projection import sine_parts, SINE_ROLES, BOUNDARY
 DIR=ROOT/'design/spec/modules/spice'
 REPORT=ROOT/'design/reports/spice/oscillator.json'
 MAPS={1:('1','2','3'),2:('7','6','5'),3:('8','9','10'),4:('14','13','12')}
@@ -33,7 +34,7 @@ def decks():
     trim=next(p for p in parts if p.prefix=='RV')
     lines += [f'Rspan {net(trim.pins["1"])} {net(trim.pins["2"])} 900','.control','op','print '+' '.join('v(osc_oct'+str(i)+')' for i in range(6)),'quit','.endc','.end']
     out={'oscillator-reference-ideal.cir':'\n'.join(lines)+'\n'}
-    f=family();sp=[p for p in f.parts if p.key.startswith('R_SINE_') or p.attributes.get('LogicalCellKey','').startswith(('SINE_DIFF.','SINE_GAIN.'))]
+    f=family();sp=sine_parts(f.parts)
     lines=['Sine shaper: generic matched BJT pair, ideal amplifiers; no AS3340 model','Vp P_12V 0 12','Vn N_12V 0 -12','Vtri TRI_SCALED 0 PWL('+' '.join(f'{i*.0005:g} {(-5 if i%2==0 else 5)}' for i in range(21))+')','Voffset SINE_OFFSET 0 1.5']
     generated=primitives(sp)
     lines+=generated+['Q1 SINE_C1 SINE_BASE SINE_TAIL GENERIC_PAIR','Q2 SINE_C2 0 SINE_TAIL GENERIC_PAIR','.model GENERIC_PAIR NPN(IS=1e-14 BF=300 VAF=100)','Rlevel SINE_GAIN_TRIM SINE_GAIN_SUM 5500','.tran 2u 10m','.measure tran sine_max MAX v(SIN_SCALED) FROM=5m TO=10m','.measure tran sine_min MIN v(SIN_SCALED) FROM=5m TO=10m','.measure tran sine_mean AVG v(SIN_SCALED) FROM=5m TO=10m','.four 1k v(SIN_SCALED)','.end']
@@ -67,6 +68,6 @@ def main():
             assert all(abs(measures[k]-v)<.02 for k,v in [('tri_max',5),('tri_min',-5),('saw_max',5),('saw_min',-5)]),measures
         results.append({'deck':str(p.relative_to(ROOT)),'status':'PASS - model only','measures':measures,'model_limit':'Ideal op-amps/reference; generic matched BJT pair if present. Not a manufacturer oscillator model or hardware result.'})
         print(file,measures)
-    report={'schema_version':1,'oracle':'scripts/kicad/run.sh ngspice -b, pinned KiCad 10.0.6 image','status':'Model-limited checks only','model_calibration':{'generic_pair_temperature_C':27,'sine_symmetry_wiper_V':1.5,'sine_level_rheostat_ohm':5500,'octave_span_rheostat_ohm':900,'meaning':'Chosen model settings, not measured factory trim positions'},'runs':results,'not_run':[{'subject':'AS3340 exponential core, tracking, sync, PWM transients, startup and temperature','status':'NOT RUN','reason':'No retained vendor macro-model; ALFA data sheet gives reference topology and typical conditions, not a SPICE model.'},{'subject':'Cable stability, protection and buffered -5 V supply sequencing','status':'NOT RUN','reason':'Ideal amplifier models here do not establish device stability, rail behavior or fault survival.'}]}
+    report={'schema_version':1,'oracle':'scripts/kicad/run.sh ngspice -b, pinned KiCad 10.0.6 image','status':'Model-limited checks only','sine_source_projection':{'included_roles':list(SINE_ROLES),'scope':BOUNDARY},'model_calibration':{'generic_pair_temperature_C':27,'sine_symmetry_wiper_V':1.5,'sine_level_rheostat_ohm':5500,'octave_span_rheostat_ohm':900,'meaning':'Chosen model settings, not measured factory trim positions'},'runs':results,'not_run':[{'subject':'AS3340 exponential core, tracking, sync, PWM transients, startup and temperature','status':'NOT RUN','reason':'No retained vendor macro-model; ALFA data sheet gives reference topology and typical conditions, not a SPICE model.'},{'subject':'Cable stability, protection and buffered -5 V supply sequencing','status':'NOT RUN','reason':'Ideal amplifier models here do not establish device stability, rail behavior or fault survival.'}]}
     REPORT.parent.mkdir(parents=True,exist_ok=True);REPORT.write_text(json.dumps(report,indent=2)+'\n')
 if __name__=='__main__':main()

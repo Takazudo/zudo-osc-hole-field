@@ -17,6 +17,8 @@ from scripts.schgen.build_supply_documentation import render
 
 REPORT = ROOT / 'design/power/rail-budget.json'
 PAGE = ROOT / 'doc/src/content/docs/verification/osc-schematic-status.mdx'
+OSCILLATOR_REPORT = ROOT / 'design/reports/current/oscillator.json'
+OSCILLATOR_PAGE = ROOT / 'doc/src/content/docs/architecture/osc-block-osc.mdx'
 
 
 def number(value):
@@ -76,19 +78,44 @@ def sections(report):
     return {'schematic-rail-current': '\n'.join(rail_table), 'schematic-family-current': '\n'.join(family_table)}
 
 
+def oscillator_current(report):
+    rows = report['sheets']
+    if len(rows) != 2 or {row['family'] for row in rows} != {'oscillator', 'octave_reference'}:
+        raise ValueError('expected oscillator and shared-reference current sheets')
+    instances = [name for row in rows for name in row['instances']]
+    if not instances or len(instances) != len(set(instances)):
+        raise ValueError('missing or duplicate oscillator current instances')
+    lines = ['Current captured population from `design/reports/current/oscillator.json`; whole packages, including unused powered channels, are counted.']
+    for row in rows:
+        counts = row['fitted_IC_packages_per_instance']
+        if not counts or any(type(n) is not int or n <= 0 for n in counts.values()):
+            raise ValueError('invalid whole-package population')
+        packages = ', '.join(f'{n} `{symbol}`' for symbol, n in sorted(counts.items()))
+        lines += ['', f"Per `{row['family']}` instance ({', '.join(row['instances'])}): {packages}."]
+    upper = ' / '.join(display(report['planning_upper_total_mA'][rail]) for rail in RAILS)
+    maxima = ' / '.join(maximum([row['guaranteed_maximum_mA_per_instance'][rail]
+                                 for row in rows for _ in row['instances']]) for rail in RAILS)
+    lines += ['', f'Combined planning upper subtotals (+12 / −12 / +5 mA): **{upper}**. These are rounded planning allowances, not measured or guaranteed maxima.',
+              '', f'Complete guaranteed maxima (+12 / −12 / +5 mA): **{maxima}**. Core source conditions, dynamic/temperature loads and faults remain qualification gates.']
+    return '\n'.join(lines)
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--check', action='store_true')
     args = parser.parse_args()
-    old = PAGE.read_text()
-    new = old
-    for name, body in sections(json.loads(REPORT.read_text())).items():
-        new = render(new, name, body, True)
-    if args.check and old != new:
-        raise SystemExit('Schematic-status current documentation drift')
-    if not args.check:
-        PAGE.write_text(new)
-    print('PASS: schematic-status current sections match master budget; hardware unvalidated')
+    targets = ((PAGE, sections(json.loads(REPORT.read_text()))),
+               (OSCILLATOR_PAGE, {'oscillator-current': oscillator_current(json.loads(OSCILLATOR_REPORT.read_text()))}))
+    for path, bodies in targets:
+        old = path.read_text()
+        new = old
+        for name, body in bodies.items():
+            new = render(new, name, body, True)
+        if args.check and old != new:
+            raise SystemExit(f'Current documentation drift: {path.relative_to(ROOT)}')
+        if not args.check:
+            path.write_text(new)
+    print('PASS: current publication matches master and oscillator worksheets; hardware unvalidated')
 
 
 if __name__ == '__main__':
