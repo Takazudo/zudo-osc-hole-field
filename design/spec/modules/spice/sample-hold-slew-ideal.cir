@@ -1,19 +1,19 @@
-OSC-ES-1 H1/H2 post-hold lag: ideal pre/post buffers, 5x100n equivalent bank
+OSC-ES-1 H1/H2 post-hold lag: ideal pre/post buffers, source-derived equivalent bank
 Vheld held 0 PULSE(0 5 10m 1u 1u 3 6)
 Epre pre 0 held 0 1
 Rmin_fast pre rfast 2200
 Rpot_fast rfast lagfast 0.001
-Cfast lagfast 0 500n
+Cfast lagfast 0 4.9999999999999998e-07
 Epost_fast outfast 0 lagfast 0 1
 Rload_fast outfast 0 100k
 Rmin_center pre rcenter 2200
-Rpot_center rcenter lagcenter 250k
-Ccenter lagcenter 0 500n
+Rpot_center rcenter lagcenter 250000
+Ccenter lagcenter 0 4.9999999999999998e-07
 Epost_center outcenter 0 lagcenter 0 1
 Rload_center outcenter 0 100k
 Rmin_slow pre rslow 2200
-Rpot_slow rslow lagslow 500k
-Cslow lagslow 0 500n
+Rpot_slow rslow lagslow 500000
+Cslow lagslow 0 4.9999999999999998e-07
 Epost_slow outslow 0 lagslow 0 1
 Rload_slow outslow 0 100k
 .control
