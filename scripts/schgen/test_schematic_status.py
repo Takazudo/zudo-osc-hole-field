@@ -3,13 +3,34 @@ import copy
 import json
 import unittest
 
-from scripts.schgen.build_schematic_status import REPORT, sections
+from scripts.schgen.build_schematic_status import REPORT, OSCILLATOR_REPORT, sections, oscillator_current
 from scripts.schgen.build_supply_documentation import render
 
 
 class SchematicStatus(unittest.TestCase):
     def setUp(self):
         self.report = json.loads(REPORT.read_text())
+
+    def test_oscillator_population_and_totals_follow_current_source(self):
+        report = json.loads(OSCILLATOR_REPORT.read_text())
+        body = oscillator_current(report)
+        self.assertIn('4 `OPA4197IPWR`', body)
+        self.assertIn('339.500 / 335.000 / 30.000', body)
+        self.assertIn('NOT ESTABLISHED / NOT ESTABLISHED / NOT ESTABLISHED', body)
+        report['sheets'][0]['fitted_IC_packages_per_instance']['OPA4197IPWR'] += 1
+        report['planning_upper_total_mA']['+12V'] += 6
+        body = oscillator_current(report)
+        self.assertIn('5 `OPA4197IPWR`', body)
+        self.assertIn('345.500 / 335.000 / 30.000', body)
+
+    def test_oscillator_population_cannot_omit_or_duplicate_a_sheet(self):
+        report = json.loads(OSCILLATOR_REPORT.read_text())
+        for rows in (report['sheets'][:1], [report['sheets'][0]] * 2):
+            with self.subTest(count=len(rows)), self.assertRaises(ValueError):
+                oscillator_current({**report, 'sheets': rows})
+        report['sheets'][0]['fitted_IC_packages_per_instance']['OPA4197IPWR'] = -1
+        with self.assertRaisesRegex(ValueError, 'population'):
+            oscillator_current(report)
 
     def test_current_mixer_totals_and_partial_scope(self):
         body = sections(self.report)['schematic-family-current']
