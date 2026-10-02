@@ -859,6 +859,68 @@
       "scope": "body axes/centre and units"
     },
     {
+      "footprint": "KEMET_C0603_DensityB",
+      "position_mm": [
+        0,
+        0
+      ],
+      "rotation_deg": 0,
+      "side": "F.Cu",
+      "native_model": {
+        "bounds": [
+          [
+            -0.875,
+            0.875
+          ],
+          [
+            -0.475,
+            0.475
+          ],
+          [
+            0.8,
+            1.750001
+          ]
+        ],
+        "size": [
+          1.749999,
+          0.950001,
+          0.950001
+        ],
+        "mesh_axis_sizes": [
+          1.749999,
+          0.950001,
+          0.950001
+        ],
+        "center": [
+          0.0,
+          0.0,
+          1.275
+        ],
+        "transform_count": 4
+      },
+      "native_Fab": {
+        "bounds": [
+          [
+            -0.875,
+            0.875
+          ],
+          [
+            -0.475,
+            0.475
+          ]
+        ],
+        "center": [
+          0.0,
+          0.0
+        ],
+        "size": [
+          1.75,
+          0.95
+        ]
+      },
+      "scope": "body axes/centre and units"
+    },
+    {
       "footprint": "DIP-8_W7.62mm",
       "position_mm": [
         12,
@@ -1070,16 +1132,56 @@
       "case": "DCT oblique rotation",
       "rejected": true,
       "reason": "native square-body bounds differ from retained envelope"
+    },
+    {
+      "case": "KEMET swapped pad dimensions",
+      "rejected": true,
+      "reason": "KEMET source pad centres or X/Y dimensions differ"
+    },
+    {
+      "case": "KEMET duplicate physical pad",
+      "rejected": true,
+      "reason": "KEMET must have exactly two physical pads"
+    },
+    {
+      "case": "KEMET rotated pad axes",
+      "rejected": true,
+      "reason": "KEMET pad axes differ from source orientation"
     }
   ],
+  "capacitor_land_check": {
+    "pads_mm": {
+      "1": [
+        -0.8,
+        0,
+        0.95,
+        1
+      ],
+      "2": [
+        0.8,
+        0,
+        0.95,
+        1
+      ]
+    },
+    "courtyard_box_mm": [
+      -1.55,
+      -0.75,
+      1.55,
+      0.75
+    ],
+    "source": "C1002_X7R (2026-09-01), physical index11/printed12 Table3 DensityB",
+    "qualification_accepted": false,
+    "symmetric_pad_rotation_checked_deg": 180
+  },
   "limits": [
     "IC body centres and long axes are compared with independent native Fab outlines; DCT square-body bounds are checked without an orientation claim.",
-    "Other four component models retain their earlier model-axis unit checks only.",
+    "Other four component models retain their earlier model-axis unit checks only. KEMET capacitor body dimensions come from the exact sheet; lands are separately checked against family Table3.",
     "No footprint-containment, lead, seating, height qualification, installed clearance or fabrication claim.",
     "DIP0.1mm is a display plate, not a package-height bound."
   ],
   "input_sha256": {
-    "design/power/monitor-permit-parts.json": "1fe624d54d87dc7c67e41561a7650bf0173b3a9ea33992b40c8ab1ed5460fa3a",
+    "design/power/monitor-permit-parts.json": "28906f6ddde30ff6d791bb77446b13bc9f69cf2c1f600383bfaca0d77b31136c",
     "footprints/kicad/zudo-osc-hole-field.3dshapes/Button_Omron_B3F_6x6_P6.5x4.5.wrl": "79b822728a292391be9a37f8988fcf91f45efbe9b81ef3d26b3a33903fe26ece",
     "footprints/kicad/zudo-osc-hole-field.3dshapes/D_SOD-123.wrl": "4838583ceb56c1d56b370bf6fa70697da444dd50e05da4ea9c1d50b94617ed92",
     "footprints/kicad/zudo-osc-hole-field.3dshapes/IC_DIP-8_W7.62mm.wrl": "9257c99d34bd1b0a6cd5bc61af52990b47c09b59f6085f55f4051436853e371d",
@@ -1093,11 +1195,13 @@
     "footprints/kicad/zudo-osc-hole-field.3dshapes/IC_TSSOP-14_4.4x5.0.wrl": "099f76e52198655010867ac38b604f41bcb2cff53ea5bd7e440b8b93b2b92d32",
     "footprints/kicad/zudo-osc-hole-field.3dshapes/IC_TSSOP-16_4.4x5.0.wrl": "dac91472f7dfe969cd28ec89ebcbf62a62f4f176fdc5e68d133a20b247915a2c",
     "footprints/kicad/zudo-osc-hole-field.3dshapes/Jack_3.5mm_QingPu_WQP518MA.wrl": "da96487f1d0c1daf0433d20b1992dd7009cda51a0c2ebef3819dd26fa2c0b655",
+    "footprints/kicad/zudo-osc-hole-field.3dshapes/KEMET_C0603_DensityB.wrl": "cde9847058926c775f90bbbd594e42ab64ee5eacf2721dd083ef3bc99180f99e",
     "footprints/kicad/zudo-osc-hole-field.3dshapes/PTV09A-4020F.wrl": "24a986336911e221acec40227a58a2df02e364e367cc5bcc049ae6542db447df",
     "footprints/kicad/zudo-osc-hole-field.3dshapes/Toggle_Dailywell_2MS_T1B1M2.wrl": "b402986b45a069ada712d104e5eb36eb0611aca6941a3c2ad6f44624d5389fd6",
     "footprints/kicad/zudo-osc-hole-field.pretty/Button_Omron_B3F_6x6_P6.5x4.5.kicad_mod": "5308867a94916318f13100fe7a07505c1c2d41ea7fc35c63d5d5ce3fcbb30c52",
     "footprints/kicad/zudo-osc-hole-field.pretty/DIP-8_W7.62mm.kicad_mod": "3a5adeb975fae70458377a1ca4df83194b7626633d92d968d47415916af140f1",
     "footprints/kicad/zudo-osc-hole-field.pretty/Jack_3.5mm_QingPu_WQP518MA.kicad_mod": "51a6cc131190b3b1f7f9aa925d4ce08e05a796f62dc8c00d3a89086354b80a20",
+    "footprints/kicad/zudo-osc-hole-field.pretty/KEMET_C0603_DensityB.kicad_mod": "2cde126035640cffbaa40fa40e1910263d0a3a57267d284e27ca34f6d7cda7e8",
     "footprints/kicad/zudo-osc-hole-field.pretty/PTV09A-4020F.kicad_mod": "c0dafcafeba8f3570b1c395c12e844ab8d237bb54edfd65130cf98f25939c557",
     "footprints/kicad/zudo-osc-hole-field.pretty/SOD-123.kicad_mod": "163732fa59fe99507f882db80a34ee17a997baec1df55939509fa78c709408d6",
     "footprints/kicad/zudo-osc-hole-field.pretty/SOIC-14_3.9x8.7mm_P1.27mm.kicad_mod": "d686d259c1e4bed4147735ed25de08a498e8626d082058f4f5e00168017b2337",
@@ -1112,8 +1216,8 @@
     "footprints/kicad/zudo-osc-hole-field.pretty/Toggle_Dailywell_2MS_T1B1M2.kicad_mod": "11240c0c14b6378dc93f54d9146097b1b62384b0b9cab4b145dc1367be89daf4",
     "scripts/kicad/pin.env": "769e2be0b61e7d92a6930684f13166b7dc098522008de3969cd30d6c4a363246",
     "scripts/kicad/run.sh": "bc74f0ade82c29d64c44119ea435bc7bfd164fc06e9afff240a3cb2b44b272a0",
-    "scripts/libgen/build_monitor_candidate_assets.py": "308239a9899ee7acd454ce8cd2b76885ee8ee9b7e2e949d29c59c336cb5516da",
-    "scripts/libgen/fixtures/check_wrl_dimensions.py": "f0fc5644a5f71091bbf31cbe360b290d38b5eeea14c77a4501f0283213bb0d91",
+    "scripts/libgen/build_monitor_candidate_assets.py": "880cf491b4d0a0cac0a58550cd0e4788013c2063198a3fe7772726418277f0f6",
+    "scripts/libgen/fixtures/check_wrl_dimensions.py": "07cfe90d56ad6b3058867f9e2593d859a10eb748d9bac465a5a9c5bc82121bbe",
     "scripts/libgen/gen_component_envelopes.py": "656929e4298c173bb30bbf244f6c4a598d30b31f707b2cf443c257e98c6e9d3a",
     "scripts/libgen/gen_ic_package_envelopes.py": "15b5cd8f72d2b62a9cca7c655ace0e55c4b8da6ad9d99daf7e43b78c6a3f14fb",
     "scripts/libgen/vrml_geometry.py": "63056a1628b8e18028610462147b0365e70ebd7f6f615c7f1bbb09ac859e72c1"

@@ -55,6 +55,12 @@ class MonitorPermitNativeTests(unittest.TestCase):
         with patch.object(generator,'SPEC',Mock(read_text=lambda:json.dumps(spec))):
             with self.assertRaisesRegex(ValueError,'exact MPN'): generator.specification()
 
+    def test_capacitance_cannot_disagree_with_exact_identity(self):
+        spec=json.loads(generator.SPEC.read_text())
+        next(p for p in spec['components'] if p['ref']=='C101')['value']=2e-7
+        with patch.object(generator,'SPEC',Mock(read_text=lambda:json.dumps(spec))):
+            with self.assertRaisesRegex(ValueError,'capacitance differs'): generator.specification()
+
     def test_native_inputs_cover_consumed_existing_owner_mapping(self):
         from scripts.checks.monitor_permit_native import inputs
         paths=inputs()

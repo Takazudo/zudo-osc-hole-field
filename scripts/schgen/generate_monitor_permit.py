@@ -61,6 +61,8 @@ def specification():
                 raise ValueError('invalid passive value: '+ref)
         if evidence and component['kind']=='resistor' and component['value'] != evidence['resistance_ohm']:
             raise ValueError('resistance differs from exact MPN: '+ref)
+        if evidence and component['kind']=='capacitor' and component['value'] != evidence['capacitance_F']:
+            raise ValueError('capacitance differs from exact MPN: '+ref)
         if ref in seen:
             raise ValueError('duplicate candidate reference')
         seen.add(ref)

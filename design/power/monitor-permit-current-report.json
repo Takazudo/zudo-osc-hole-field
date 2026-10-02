@@ -124,7 +124,7 @@
     "Adopt the listed source-table currents outside their full source conditions only as explicit assumptions, not guarantees.",
     "Reference-divider load uses the top-only path when either TLV output clamps REF_SENSE to ground; this loose bound is retained in every screened state.",
     "Reference <=3.31V, negative rail nonpositive and normal rail bounds; coarse reference monitor does not establish this precision window.",
-    "Zero input and output/off-state leakage, ideal logic voltages within supply rails, passive resistor network and zero semiconductor drops for load-current bounds.",
+    "Zero capacitor leakage and zero input/output/off-state semiconductor leakage, ideal logic voltages within supply rails, passive resistor network and zero semiconductor drops for load-current bounds.",
     "25C resistance reference and -40..125C resistor/TCR envelope are analysis conditions, not installed thermal qualification.",
     "Source input current equals reference output demand plus reference IQ; no separate free reference supply.",
     "U106 input settles near4.545V at5V supply through the bleed divider: its sustained HIGH is not the ICC rail-level test condition. Additional steady input-stage current is unbounded; the DeltaICC row atVCC-0.6V is not extrapolated.",
@@ -133,13 +133,13 @@
     "Ground-loss, partial-power/backfeed, startup, thermal and physical qualification remain open."
   ],
   "input_sha256": {
-    ".claude/skills/component-monitor-permit-candidates/facts.json": "52cbedf855e877bc262593fb6cb90614c1367b1847d832eda04c3378a67a0006",
-    ".claude/skills/component-monitor-permit-candidates/manifest.json": "61ae9e0473b164582e33405ee270708fa8982fa49576883d04a3d8216c8db3de",
-    ".claude/skills/component-monitor-permit-candidates/sources.json": "39bfb6b2111ad314fd7276c730053876701ee490c110ab0f33f2d329ed74dca9",
-    "design/power/monitor-permit-draft.json": "953a938e7b700e64790d22acacb44fa1401f1729805be605a43ac709bd8b504a",
-    "design/power/monitor-permit-parts.json": "1fe624d54d87dc7c67e41561a7650bf0173b3a9ea33992b40c8ab1ed5460fa3a",
+    ".claude/skills/component-monitor-permit-candidates/facts.json": "6cc84c8c4032aeb4b7a5af7f23ec7bb420efcc2a300507c921f315ec02fc11f3",
+    ".claude/skills/component-monitor-permit-candidates/manifest.json": "98ccd199ba301af43bbed2573084331d2e53e1b3f829070b445ca9d7d09757ac",
+    ".claude/skills/component-monitor-permit-candidates/sources.json": "7255ad7242f5cf25a71e62bf81304e666b1fd8ff18c01b0284fefca85d1948b2",
+    "design/power/monitor-permit-draft.json": "5422effb9d0f9ee4f24f9add04325a49565c78ad3cc96fe7ea9a98c00bc3db9b",
+    "design/power/monitor-permit-parts.json": "28906f6ddde30ff6d791bb77446b13bc9f69cf2c1f600383bfaca0d77b31136c",
     "design/power/supply-architecture-input.json": "a8a4e92ac4c1d7de5c16b6982fba7d5ab60ab13753b12eabfa23fc75da98acc4",
     "scripts/checks/monitor_permit_behavior.py": "c164e46142c12cb28003f796a6883d5215b58fe346b1fa9f11f41f344b2cfcb6",
-    "scripts/checks/monitor_permit_current.py": "e79ac96f7444fe12eee0bc83b9eace147a5924b06f9dd443013e5d18ea0201dd"
+    "scripts/checks/monitor_permit_current.py": "25d33342e6020cff777c411f4bd7e72a05d245680d4f4c36dd8990f7174a6b88"
   }
 }

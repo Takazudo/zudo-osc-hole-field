@@ -29,7 +29,7 @@ def inputs():
              ROOT/'scripts/schgen/generate_monitor_permit.py',ROOT/'scripts/schgen/core.py',
              ROOT/'scripts/schgen/verify_netlist.py',ROOT/'design/spec/cells/_builder.py',
              ROOT/'scripts/libgen/build_symbol_lib.py',ROOT/'symbols/zudo-osc-hole-field.kicad_sym',
-             ROOT/'scripts/libgen/build_monitor_candidate_assets.py',ROOT/'scripts/libgen/gen_ic_package_envelopes.py',ROOT/'scripts/libgen/gen_courtyards.py',ROOT/'symbols/src/RT0603BRD07100KL.kicad_sym',
+             ROOT/'scripts/libgen/build_monitor_candidate_assets.py',ROOT/'scripts/libgen/gen_ic_package_envelopes.py',ROOT/'scripts/libgen/gen_courtyards.py',ROOT/'symbols/src/RT0603BRD07100KL.kicad_sym',ROOT/'symbols/src/GRM188R71H104KA93D.kicad_sym',
              ROOT/'.claude/skills/component-spec-audit/references/inventory.json',
              ROOT/'scripts/kicad/run.sh',ROOT/'scripts/kicad/pin.env'}
     catalog_mpns = {p['mpn'] for p in json.loads((ROOT/spec['source_catalog']).read_text())['parts']}
