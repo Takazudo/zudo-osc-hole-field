@@ -75,6 +75,62 @@
     }
   },
   "conditional_active_quiescent_sum_A": 0.00021,
+  "steady_high_icc_applicability": {
+    "status": "CONDITIONAL INPUT VOLTAGES; ACTUAL ICC APPLICATION UNRESOLVED",
+    "source_fact_id": "fact-monitor-sn74lvc1g17dbvr-quiescent-table-max",
+    "source_locator": "src-monitor-sn74lvc1g17dbvr-datasheet: printed p6 ICC row",
+    "source_conditions": "VCC1.65..5.5V, VI5.5V orGND, IO0, TA-40..125C. Loaded, slow-input and switching current remain separate.",
+    "source_high_input_test_V": 5.5,
+    "conditional_supply_V": [
+      4.81,
+      5.2
+    ],
+    "resistance_bounds_ohm": {
+      "R120": [
+        9801.0,
+        10201.0
+      ],
+      "R125": [
+        98010.0,
+        102010.0
+      ]
+    },
+    "U106_divider_gain_bounds": [
+      0.9057304710242027,
+      0.9123431504950318
+    ],
+    "U106_input_deficit_below_supply_V": [
+      0.4216294461188971,
+      0.4902015506741461
+    ],
+    "buffers": {
+      "U104": {
+        "conditional_steady_high_input_V": [
+          4.81,
+          5.2
+        ],
+        "icc_high_test_point_matches_entire_conditional_interval": false,
+        "application_qualified": false
+      },
+      "U106": {
+        "conditional_steady_high_input_V": [
+          4.356563565626415,
+          4.744184382574166
+        ],
+        "icc_high_test_point_matches_entire_conditional_interval": false,
+        "application_qualified": false
+      }
+    },
+    "actual_extra_supply_current_A": null,
+    "assumptions": [
+      "U104 input FAULT_N and its HIGH output GOOD_FAST are ideal and equal to the normal +5V source; actual output droop and loading remain unresolved.",
+      "Zero U106 input current and other leakage; R121 therefore has no steady voltage drop.",
+      "Independent resistor tolerance/TCR corners use the existing 25C reference and -40..125C analysis envelope.",
+      "U106 input equals GOOD_FAST*R125/(R120+R125); these conditional intervals are not physical input-voltage guarantees.",
+      "Even a modeled test-point match does not establish actual input/output conditions or current qualification.",
+      "The separate 3.6V ICC row and VCC-0.6V DeltaICC point do not establish a voltage-wide bound for either buffer."
+    ]
+  },
   "timing_bleed_conditional_dc_A": 4.823255511960746e-05,
   "states": {
     "fault_asserted": {
@@ -127,7 +183,7 @@
     "Zero capacitor leakage and zero input/output/off-state semiconductor leakage, ideal logic voltages within supply rails, passive resistor network and zero semiconductor drops for load-current bounds.",
     "25C resistance reference and -40..125C resistor/TCR envelope are analysis conditions, not installed thermal qualification.",
     "Source input current equals reference output demand plus reference IQ; no separate free reference supply.",
-    "U106 input settles near4.545V at5V supply through the bleed divider: its sustained HIGH is not the ICC rail-level test condition. Additional steady input-stage current is unbounded; the DeltaICC row atVCC-0.6V is not extrapolated.",
+    "The SN74LVC1G17 ICC row specifies VI=5.5 V or GND, IO=0, VCC=1.65..5.5 V. Neither U104 nor U106 actual HIGH input is directly covered. U106 additionally retains a divided HIGH (nominal 4.545 V at 5 V). Additional steady input-stage current is unbounded; the separate 3.6 V ICC row and VCC-0.6 V DeltaICC point are not extrapolated.",
     "Both-path DC screen is not a transient maximum: LVC slow-input/switching current, cap charging and retained-charge return paths remain unbounded.",
     "Actual isolation loads, discharge circuits and remaining protection auxiliaries must share the original 20mA per-rail allowance.",
     "Ground-loss, partial-power/backfeed, startup, thermal and physical qualification remain open."
@@ -136,10 +192,10 @@
     ".claude/skills/component-monitor-permit-candidates/facts.json": "6cc84c8c4032aeb4b7a5af7f23ec7bb420efcc2a300507c921f315ec02fc11f3",
     ".claude/skills/component-monitor-permit-candidates/manifest.json": "98ccd199ba301af43bbed2573084331d2e53e1b3f829070b445ca9d7d09757ac",
     ".claude/skills/component-monitor-permit-candidates/sources.json": "7255ad7242f5cf25a71e62bf81304e666b1fd8ff18c01b0284fefca85d1948b2",
-    "design/power/monitor-permit-draft.json": "5422effb9d0f9ee4f24f9add04325a49565c78ad3cc96fe7ea9a98c00bc3db9b",
+    "design/power/monitor-permit-draft.json": "9ef350a96d6f8bc558bcb07e28b646c5c840d84493d388368ec86f6a924d5372",
     "design/power/monitor-permit-parts.json": "28906f6ddde30ff6d791bb77446b13bc9f69cf2c1f600383bfaca0d77b31136c",
     "design/power/supply-architecture-input.json": "a8a4e92ac4c1d7de5c16b6982fba7d5ab60ab13753b12eabfa23fc75da98acc4",
     "scripts/checks/monitor_permit_behavior.py": "c164e46142c12cb28003f796a6883d5215b58fe346b1fa9f11f41f344b2cfcb6",
-    "scripts/checks/monitor_permit_current.py": "25d33342e6020cff777c411f4bd7e72a05d245680d4f4c36dd8990f7174a6b88"
+    "scripts/checks/monitor_permit_current.py": "5af07f30302c9cdabd5386e520509d7d507120a89ef95d2760d6946f40144011"
   }
 }
