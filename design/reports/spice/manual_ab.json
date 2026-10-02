@@ -270,10 +270,10 @@
     }
   ],
   "source_sha256": {
-    "design/spec/modules/manual_ab.py": "a527a98f35cbd573c91d261b976cd6730e62c94584e30685940d8c40d748ba34",
-    "design/spec/modules/io_partition.py": "7082eb87a73ed42a91b5d1e88672f68334c8f3cfeadcb2156f62aa2f5d9e28b1",
-    "design/spec/modules/run_manual_ab_spice.py": "6de08923fc6288353d2e50cd4becaf66558776d8d3e256e4fd9cadf07713f562"
+    "design/spec/modules/manual_ab.py": "c072c5ce20213f44da9597b5b952a862e343b6dcfef89f597929ad2dccb54ada",
+    "design/spec/modules/io_partition.py": "3372b2b650e34d0323c080ec094715c2ed44864418864db3b95a84eb82f18980",
+    "design/spec/modules/run_manual_ab_spice.py": "a4de9a71e7860ee85274c066ed681798125049e5f1b18afaccc56dd5fbdc779c"
   },
-  "limits": "27 C nominal model; +/-5V selected source, 2.2k series/10M bias. <=2mV complete DC path error; <=1mV settling error from the resistor-loaded nominal by 400us, <=1mV late ripple, <=10% overshoot. Internal harness <=1nF; external <=5nF. Contact transition/bounce, overload, tolerance, partial power, protection #59 and bench NOT RUN.",
+  "limits": "27 C nominal model; ideal +/-5V source represents A_BUFFER/B_BUFFER, followed by 2.2k series/10M bias, local harness follower and precision jack-output cell. Source-facing protection and the input amplifier are excluded. <=2mV selected-buffered-source-to-jack error at the sampled settling times; <=1mV settling error from the resistor-loaded nominal by 400us, <=1mV late ripple, <=10% overshoot. Internal harness <=1nF; external <=5nF. Contact transition/bounce, overload, tolerance, partial power, protection #59 and bench NOT RUN.",
   "circuit": "FITTED DRAFT: local unity feedback plus two 499ohm resistors; high-impedance receiver"
 }
