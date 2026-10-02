@@ -11,10 +11,10 @@ The candidate uses the reviewed local edge tab beside RV601 and separate reserva
 | --- | --- |
 | DRC violations, including silkscreen | **0** |
 | Schematic parity findings | **0** |
-| Source track segments / through vias | 2889 / 431 |
+| Source track segments / through vias | 3063 / 455 |
 | Connected source ground contacts | **344 / 344** |
 | Connected local IC/bypass rail pairs | **16 / 16**, maximum pad distance 2.535 mm |
-| Complete native open-edge count | **43** |
+| Complete native open-edge count | **23** |
 | Independent reload and refill | Same ground and open-edge counts |
 | Routing / electrical and physical qualification | **Incomplete / NOT RUN** |
 
@@ -22,9 +22,11 @@ The earlier assignment of 123 complete K/P header pairs to existing identical si
 
 The largest debounce-capacitor to input-pad distance falls from 144.626 mm to 7.665 mm; the median falls from 93.580 mm to 4.039 mm. The 8 mm input and 4 mm neighboring-resistor limits are project layout targets, not manufacturer requirements. These straight-line pad distances do not establish routed length or functional performance. The proposal is explicit in `design/partition/control-debounce-locality.json`.
 
-Moving these terminals invalidates affected routes. The previous 72-edge checkpoint remains in git history. Rebuilding compatible copper and removing collisions produces a 199-edge seed, then checked local back/front routing reduces it to 43 open edges. Candidate links that disconnect ground are rejected. All 344 ground contacts, all 77 source AGND copper objects and sixteen local bypass pairs remain connected after independent refill. The six main-terminal arrays and local C222 ground stitch remain; their current and resistance capability is unqualified. Rail-link searches consider pad pairs at most 25 mm apart; this does not bound their routed length.
+Moving these terminals invalidates affected routes. The previous 72-edge checkpoint remains in git history. Rebuilding compatible copper and removing collisions produces a 199-edge seed, then checked local back/front routing reduces it to 23 open edges. Candidate links that disconnect ground are rejected. All 344 ground contacts, all 77 source AGND copper objects and sixteen local bypass pairs remain connected after independent refill. The six main-terminal arrays and local C222 ground stitch remain; their current and resistance capability is unqualified. Later inner-layer searches also consider distant rail islands; search distances do not establish electrical resistance or voltage drop.
 
 All 418 visible references retain 1 mm text and checked clearance. Some moved passive references require offsets up to 16.553 mm. Native source replay, DRC, complete connectivity and independent refill form the acceptance gate for this partial copper. Current and resistance limits have not been checked for it.
+
+The merged 43-edge checkpoint is preserved. A further bounded autorouter run timed out; its raw 30-edge candidate disconnected two grounds. Selectively retaining seven improved signal nets restored all grounds at 36 edges. Native-checked inner-layer rail and signal links then reached 23. All 3,320 prior copper objects remain unchanged. Proposed routes that violated unplated-hole clearance or disconnected ground were rejected.
 
 ## Native layer views
 
@@ -36,4 +38,4 @@ These are copper/silkscreen previews of the partial candidate, not fabrication p
 
 ## Remaining work
 
-[Issue #39](https://github.com/Takazudo/zudo-osc-hole-field/issues/39) remains open for the 43 remaining connections and canonical geometry adoption. The proposed four-layer, 2 oz, 1.6 mm stack, actual connected-copper current and resistance limits, exact protection and supply boundaries, manufacturing process and installed assembly remain unresolved under [#38](https://github.com/Takazudo/zudo-osc-hole-field/issues/38), [#59](https://github.com/Takazudo/zudo-osc-hole-field/issues/59), [#55](https://github.com/Takazudo/zudo-osc-hole-field/issues/55) and [#65](https://github.com/Takazudo/zudo-osc-hole-field/issues/65). Historical electrical receipts are not reused for this copper. No fabrication or order files are generated.
+[Issue #39](https://github.com/Takazudo/zudo-osc-hole-field/issues/39) remains open for the 23 remaining connections and canonical geometry adoption. The proposed four-layer, 2 oz, 1.6 mm stack, actual connected-copper current and resistance limits, exact protection and supply boundaries, manufacturing process and installed assembly remain unresolved under [#38](https://github.com/Takazudo/zudo-osc-hole-field/issues/38), [#59](https://github.com/Takazudo/zudo-osc-hole-field/issues/59), [#55](https://github.com/Takazudo/zudo-osc-hole-field/issues/55) and [#65](https://github.com/Takazudo/zudo-osc-hole-field/issues/65). Historical electrical receipts are not reused for this copper. No fabrication or order files are generated.

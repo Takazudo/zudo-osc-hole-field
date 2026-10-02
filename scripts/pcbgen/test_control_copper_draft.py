@@ -14,8 +14,8 @@ class ControlCopperSourceTests(unittest.TestCase):
 
     def test_current_source_has_complete_arrays(self):
         rows = validate(self.spec)
-        self.assertEqual(sum(r['kind']=='segment' for r in rows),2889)
-        self.assertEqual(sum(r['kind']=='via' for r in rows),431)
+        self.assertEqual(sum(r['kind']=='segment' for r in rows),3063)
+        self.assertEqual(sum(r['kind']=='via' for r in rows),455)
         self.assertEqual(sum(len(a['via_uuids']) for a in self.spec['main_arrays']),150)
 
     def test_isolated_ground_stitch_rejected(self):
