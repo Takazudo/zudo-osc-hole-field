@@ -2,11 +2,13 @@ import copy
 import json
 import tempfile
 import unittest
+from unittest.mock import patch
 from pathlib import Path
 from scripts.pcbgen.generate_peripheral_ground import generate,source_contacts
 from scripts.pcbgen.peripheral_project_source import derive,fresh_sync_project
 from scripts.pcbgen.native_companion_binding import verify
-from scripts.pcbgen.peripheral_source_epoch import derive as derive_epoch, prove_display_only, historical, IO, FP, OUTPUT
+from scripts.pcbgen.peripheral_source_epoch import (derive as derive_epoch, prove_display_only,
+    prove_power_metadata_only, historical, IO, FP, OUTPUT, METADATA_BASE, CONTRACT, SUPPLY)
 import hashlib
 
 BASE=Path('design/partition/peripheral-ground-feasibility')
@@ -46,10 +48,10 @@ class PeripheralGroundSourceTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError,'duplicate source header'):
             source_contacts('osc-octave-1','O1',changed,io)
 
-    def test_display_epoch_is_reproducible_and_rejects_geometry_changes(self):
+    def test_epoch_chain_is_reproducible_and_display_proof_rejects_geometry_changes(self):
         self.assertEqual(json.loads(OUTPUT.read_bytes()), derive_epoch())
-        old_io, new_io = historical(IO), Path(IO).read_bytes()
-        old_fp, new_fp = historical(FP), Path(FP).read_bytes()
+        old_io, new_io = historical(IO), historical(IO, METADATA_BASE)
+        old_fp, new_fp = historical(FP), historical(FP, METADATA_BASE)
         prove_display_only(old_io, new_io, old_fp, new_fp)
         with self.assertRaisesRegex(ValueError, '2D footprint geometry changed'):
             prove_display_only(old_io, new_io, old_fp, new_fp + b'\n')
@@ -59,6 +61,34 @@ class PeripheralGroundSourceTests(unittest.TestCase):
             prove_display_only(old_io, json.dumps(changed).encode(), old_fp, new_fp)
         with self.assertRaisesRegex(ValueError, 'historical footprint hash mismatch'):
             prove_display_only(old_io, new_io, new_fp, new_fp)
+
+    def test_metadata_comparison_rejects_geometry_connectivity_and_wrong_currents(self):
+        old_io, new_io = historical(IO, METADATA_BASE), Path(IO).read_bytes()
+        contract, supply = json.loads(Path(CONTRACT).read_bytes()), json.loads(Path(SUPPLY).read_bytes())
+        prove_power_metadata_only(old_io, new_io, contract, supply)
+        for kind in ['geometry', 'pin', 'current', 'package']:
+            with self.subTest(kind=kind):
+                changed = json.loads(new_io)
+                if kind == 'geometry':
+                    changed['physical_packages'][0]['courtyard']['width_mm'] += .001
+                elif kind == 'pin':
+                    changed['allowed_crossings'][0]['members'][0]['pin'] = 'WRONG'
+                elif kind == 'current':
+                    row = next(r for r in changed['allowed_crossings'] if r['net']=='AGND')
+                    row['current_mA']['whole_domain_maximum_return_magnitude'] = 4400
+                else:
+                    changed['current_repacking_added_packages']['packages'].pop()
+                with self.assertRaisesRegex(ValueError, 'beyond the exact power/package'):
+                    prove_power_metadata_only(old_io, json.dumps(changed).encode(), contract, supply)
+
+    def test_metadata_epoch_requires_unchanged_supply_source(self):
+        def changed_snapshot(path, commit=None):
+            if path == CONTRACT and commit == METADATA_BASE:
+                return b'{}\n'
+            return historical(path) if commit is None else historical(path, commit)
+        with patch('scripts.pcbgen.peripheral_source_epoch.historical', side_effect=changed_snapshot):
+            with self.assertRaisesRegex(ValueError, 'supply source changed'):
+                derive_epoch()
 
     def test_source_bridge_accounting_and_invalid_declaration(self):
         with tempfile.TemporaryDirectory() as folder:

@@ -65,6 +65,15 @@ def power_requirements(contract, supply):
     return rows
 
 
+def repacking_metadata(packages, units):
+    extra_refs=sorted({u['ref'] for u in units if u['key'].startswith('IO_EXTRA_')})
+    return {
+        'current_repacking_added_packages':{'packages':[{'ref':r,'mpn':packages[r]['mpn']} for r in extra_refs],
+            'scope':'Current IO_EXTRA source-marked packages, including later oscillator fanout repacking. Not an independent increment to add to the current ledger.'},
+        'historical_issue60_increment':{'merge':'f6d2d6112d780a565cedafaea81b5644f46c3c24','package_counts':{'OPA4196IDR':4,'OPA4197IPWR':2},'planning_quiescent_delta_mA':{'+12V':16,'-12V':16,'+5V':0},'bypass_delta_uF':{'+12V':.6,'-12V':.6,'+5V':0},'basis':'Original issue60 checkpoint only: four OPA4196IDR at 1mA/rail and two OPA4197IPWR at 6mA/rail, full-temperature quiescent only. This is not the load of the current source-marked package list. Generated current worksheets, rail ledger and supply architecture are the current load authority.'},
+        'power_requirement_sources':['design/power/supply-architecture-input.json','design/power/supply-architecture.json']}
+
+
 @lru_cache(None)
 def courtyard(footprint):
     path=ROOT/'footprints/kicad/zudo-osc-hole-field.pretty'/(footprint.split(':')[-1]+'.kicad_mod')
@@ -271,12 +280,8 @@ def build(families=None, instances=None, assignments=None, capacities=None, *, s
     lock=json.loads((ROOT/'design/grid/placements.lock.json').read_text())['placements']
     fixed_digest=hashlib.sha256(json.dumps(sorted((p['uid'],p['x_mm'],p['y_mm']) for p in lock),separators=(',',':')).encode()).hexdigest()
     if fixed_digest!='8354aed4a72bf5357e1ccfb4da7c3234f139ba19f75a49d825d733c30a6da843':errors.append('fixed R21 UID/XY digest changed')
-    extra_refs=sorted({u['ref'] for u in units if u['key'].startswith('IO_EXTRA_')})
     return {'schema_version':1,'fixed_uid_xy_sha256':fixed_digest,'source_cut_accepted':not(errors or forbidden),
-            'current_repacking_added_packages':{'packages':[{'ref':r,'mpn':packages[r]['mpn']} for r in extra_refs],
-                'scope':'Current IO_EXTRA source-marked packages, including later oscillator fanout repacking. Not an independent increment to add to the current ledger.'},
-            'historical_issue60_increment':{'merge':'f6d2d6112d780a565cedafaea81b5644f46c3c24','package_counts':{'OPA4196IDR':4,'OPA4197IPWR':2},'planning_quiescent_delta_mA':{'+12V':16,'-12V':16,'+5V':0},'bypass_delta_uF':{'+12V':.6,'-12V':.6,'+5V':0},'basis':'Original issue60 checkpoint only: four OPA4196IDR at 1mA/rail and two OPA4197IPWR at 6mA/rail, full-temperature quiescent only. This is not the load of the current source-marked package list. Generated current worksheets, rail ledger and supply architecture are the current load authority.'},
-            'power_requirement_sources':['design/power/supply-architecture-input.json','design/power/supply-architecture.json'],
+            **repacking_metadata(packages, units),
             'status':'BLOCKED' if errors or forbidden else 'DRAFT ELECTRICAL CUT; FIT/CONNECTOR LOADS OPEN',
             'module_count':len({p['instance'] for p in packages.values()}-{'POWER','OCTAVE_REF'}),
             'fixed_uid_count':len({p['panel_uid'] for p in packages.values() if p['panel_uid']}),
