@@ -7,14 +7,14 @@ draft. The screen does not qualify total supply current or change the original
 
 Six package-current rows are retained: TPS37044 15 µA, both TLV9022
 comparators 70 µA, REF3433 95 µA, two SN74LVC1G17 packages at 10 µA each and
-one SN74LVC1G74 at 10 µA. Their sum is 210 µA. LVC rows cover 1.65…5.5 V
-with rail-level inputs and unloaded outputs; they do not bound slow-input or
-switching current. The comparator row specifies output low and common mode at
+one SN74LVC1G74 at 10 µA. Their sum is 210 µA. The SN74LVC1G17 row covers 1.65…5.5 V with **VI=5.5 V or GND** and
+IO=0; it is not a general VI=VCC condition. The latch has its own retained
+input conditions. These rows do not bound slow-input or switching current. The comparator row specifies output low and common mode at
 its negative supply; the reference row specifies zero output load and 10 µF
 output capacitance. Application remains conditional. U106 settles at approximately 4.545 V with
-a 5 V supply because of R125. Even this steady HIGH differs from the ICC
-input condition, so additional sustained input-stage current is an open DC
-budget gate. The 500 µA ΔICC row at VCC−0.6 V is not extrapolated to this
+a 5 V supply because of R125. Both U104 and U106 actual HIGH inputs lack direct coverage by the
+buffer ICC row. U106 additionally has a sustained divider voltage. Additional
+steady input-stage current remains an open DC budget gate. The 500 µA ΔICC row at VCC−0.6 V is not extrapolated to this
 voltage. The 210 µA sum is only a conditional table-row assumption.
 
 The resistor screen uses the exact RT and RC families' separate tolerance/TCR

@@ -40,3 +40,6 @@ s=open('.circuit-cache/placer/one/fixture-place-one.kicad_pcb').read()
 assert '(at 114.5 120' in s
 print('manual locked free footprint preserved: PASS')
 PYLOCK
+
+# Actual native face agreement and anchored-base template initialization.
+bash scripts/kicad/run.sh python3 scripts/pcbgen/fixtures/assert_placer_sides.py

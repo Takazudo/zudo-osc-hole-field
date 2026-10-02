@@ -16,20 +16,10 @@ from scripts.geometry.panel_frame import to_kicad
 from scripts.pcbgen.definition import load_definition,load_lock,selected_hardware
 from scripts.pcbgen.netlist import read_netlist
 from scripts.pcbgen.uuid_tools import stable_uuid,normalize_file
+from scripts.pcbgen.placement_geometry import Box,inside_outline,placement_side_matches
 
 GRID=0.5
 POWER={'GND','AGND','+12V','-12V','+5V','VCC','VDD','VSS'}
-
-@dataclass(frozen=True)
-class Box:
- x0:float;y0:float;x1:float;y1:float
- @property
- def area(self):return max(0,self.x1-self.x0)*max(0,self.y1-self.y0)
- def shift(self,dx,dy):return Box(self.x0+dx,self.y0+dy,self.x1+dx,self.y1+dy)
- def intersects(self,other,gap=0):
-  return self.x0<other.x1+gap and self.x1>other.x0-gap and self.y0<other.y1+gap and self.y1>other.y0-gap
- def overlap_area(self,other):
-  return max(0,min(self.x1,other.x1)-max(self.x0,other.x0))*max(0,min(self.y1,other.y1)-max(self.y0,other.y0))
 
 @dataclass(frozen=True)
 class Region:
@@ -67,29 +57,6 @@ def normalize_block(c):
  return value.strip('/')
 def normalize_island(c,block):return dict(c.fields).get('Island','').replace('${SHEETNAME}',block)
 def role(c):return dict(c.fields).get('Role','')
-
-def point_in_polygon(x,y,poly):
- inside=False
- for i,(x1,y1) in enumerate(poly):
-  x2,y2=poly[(i+1)%len(poly)]
-  if ((y1>y)!=(y2>y)) and x<(x2-x1)*(y-y1)/(y2-y1)+x1:inside=not inside
- return inside
-
-def point_segment_distance(x,y,a,b):
- ax,ay=a;bx,by=b;dx=bx-ax;dy=by-ay
- t=max(0,min(1,((x-ax)*dx+(y-ay)*dy)/(dx*dx+dy*dy))) if dx*dx+dy*dy else 0
- return math.hypot(x-(ax+t*dx),y-(ay+t*dy))
-
-def inside_outline(box,outline,clearance):
- corners=((box.x0,box.y0),(box.x1,box.y0),(box.x1,box.y1),(box.x0,box.y1))
- for x,y in corners:
-  if not point_in_polygon(x,y,outline):return False
-  if min(point_segment_distance(x,y,outline[i],outline[(i+1)%len(outline)]) for i in range(len(outline)))<clearance-1e-6:return False
- # A concave cut through a box is rejected even when its four corners lie inside.
- for a,b in zip(outline,outline[1:]+outline[:1]):
-  if max(a[0],b[0])>box.x0 and min(a[0],b[0])<box.x1 and max(a[1],b[1])>box.y0 and min(a[1],b[1])<box.y1:
-   if point_in_polygon((a[0]+b[0])/2,(a[1]+b[1])/2,[(box.x0,box.y0),(box.x1,box.y0),(box.x1,box.y1),(box.x0,box.y1)]):return False
- return True
 
 def candidate_centres(region,shape,target):
  minx=region.rect.x0+region.edge-shape.x0;maxx=region.rect.x1-region.edge-shape.x1
@@ -256,7 +223,7 @@ def place(board_id,board_path=None,netlist_path=None,report_path=None):
       first=current_regions[0].rect;target_xy=((first.x0+first.x1)/2,(first.y0+first.y1)/2)
      if source_origin:
       x,y=(float(v) for v in source_origin.split(','));box=offsets(fp).shift(x,y)
-      chosen=next((ri for ri,region in enumerate(current_regions) if region.side==dict(c.fields).get('BoardSide') and is_clear(box,region.side,region,definition,obs)),None)
+      chosen=next((ri for ri,region in enumerate(current_regions) if placement_side_matches(str(fp.GetLayerName()),dict(c.fields).get('BoardSide',''),region.side) and is_clear(box,region.side,region,definition,obs)),None)
       if chosen is None:
        region=current_regions[0];needed=sum(offsets(board_refs[item.ref]).area for item in free[instance])
        raise PlacementFailure(instance,region,f'{c.ref}: source courtyard/origin violates region or obstacle',needed,region_available(region,obs))
@@ -264,7 +231,7 @@ def place(board_id,board_path=None,netlist_path=None,report_path=None):
      elif instance==base:
       shape=offsets(fp);chosen=None
       for ri,region in enumerate(current_regions):
-       if region.side != (dict(c.fields).get('BoardSide','') or region.side):continue
+       if not placement_side_matches(str(fp.GetLayerName()),dict(c.fields).get('BoardSide',''),region.side):continue
        for x,y in candidate_centres(region,shape,target_xy):
         box=shape.shift(x,y)
         if is_clear(box,region.side,region,definition,obs):chosen=(x,y,ri,box);break
@@ -272,12 +239,20 @@ def place(board_id,board_path=None,netlist_path=None,report_path=None):
       if chosen is None:
        region=current_regions[0];needed=sum((offsets(board_refs[x.ref]).area for x in free[instance]))
        raise PlacementFailure(instance,region,f'{c.ref}: no legal courtyard position',needed,region_available(region,obs))
-      x,y,ri,box=chosen;template[key]=(x-base_regions[ri].rect.x0,y-base_regions[ri].rect.y0,ri)
+      x,y,ri,box=chosen
      else:
       tx,ty,ri=template[key];region=current_regions[ri];x=region.rect.x0+tx;y=region.rect.y0+ty;box=offsets(fp).shift(x,y)
+      if not placement_side_matches(str(fp.GetLayerName()),dict(c.fields).get('BoardSide',''),region.side):
+       raise PlacementFailure(instance,region,f'{c.ref}: actual/source face {fp.GetLayerName()}/{dict(c.fields).get("BoardSide", "unspecified")} conflicts with template region {region.side}',box.area,region_available(region,obs))
       if not is_clear(box,region.side,region,definition,obs):
        needed=sum(offsets(board_refs[x.ref]).area for x in free[instance])
        raise PlacementFailure(instance,region,f'{c.ref}: translated template collides or leaves region',needed,region_available(region,obs))
+     if not placement_side_matches(str(fp.GetLayerName()),dict(c.fields).get('BoardSide',''),region.side):
+      raise PlacementFailure(instance,region,f'{c.ref}: actual/source face {fp.GetLayerName()}/{dict(c.fields).get("BoardSide", "unspecified")} conflicts with template region {region.side}',box.area,region_available(region,obs))
+     # Explicit source anchors retain precedence over searched translations.
+     # An anchored base still supplies a template for unanchored repetitions.
+     if instance==base:
+      template[key]=(x-base_regions[ri].rect.x0,y-base_regions[ri].rect.y0,ri)
      placed[c.ref]=(x,y,ri,box,region.side)
      obs.append((box,region.side,'placed:'+c.ref,False));local.append((c.ref,key,ri,box.area))
     clusters=collections.defaultdict(list)

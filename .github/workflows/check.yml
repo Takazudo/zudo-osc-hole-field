@@ -91,6 +91,9 @@ jobs:
       - name: Place every current shortlist symbol unit and check native ERC
         run: bash scripts/libgen/fixtures/check_ic_units.sh
 
+      - name: Check deterministic cluster placement and source faces
+        run: bash scripts/pcbgen/test_placer.sh
+
       - name: Check native standard-cell ERC and pin-net parity
         run: bash design/spec/cells/check_harness.sh
 
@@ -111,6 +114,9 @@ jobs:
 
       - name: Run native IC display-envelope placement checks
         run: bash scripts/kicad/run.sh python3 scripts/libgen/fixtures/check_wrl_dimensions.py --check
+
+      - name: Reject malformed native panel features
+        run: bash scripts/kicad/run.sh python3 scripts/panel/check_feature_mutations.py
 
       - name: Check aggregate source regeneration
         id: aggregate

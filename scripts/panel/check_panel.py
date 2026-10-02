@@ -5,20 +5,23 @@ from __future__ import annotations
 from collections import Counter
 import argparse
 import json
+import math
 from pathlib import Path
 
 import pcbnew
 
 ROOT = Path(__file__).resolve().parents[2]
 LOCK = ROOT / 'design/grid/placements.lock.json'
+PARAMS = ROOT / 'design/panel/panel-params.json'
 
 
 def mm(value):
     return round(pcbnew.ToMM(value), 4)
 
 
-def check(board_path: Path, output: Path | None = None):
+def check(board_path: Path, output: Path | None = None, params_path: Path = PARAMS):
     lock = json.loads(LOCK.read_text())
+    params = json.loads(params_path.read_text())
     board = pcbnew.LoadBoard(str(board_path))
     if board is None:
         raise ValueError(f'could not load {board_path}')
@@ -27,8 +30,9 @@ def check(board_path: Path, output: Path | None = None):
                 for row in lock['placements']}
     footprints = list(board.GetFootprints())
     actual = {fp.GetReference(): fp for fp in footprints}
-    if len(expected) != 438 or len(actual) != 438 or set(actual) != set(expected):
-        raise ValueError(f'feature references differ: expected {len(expected)}, got {len(actual)}')
+    if (len(lock['placements']) != 438 or len(expected) != 438
+            or len(footprints) != 438 or len(actual) != 438 or set(actual) != set(expected)):
+        raise ValueError(f'feature references differ: expected {len(expected)}, got {len(footprints)} footprints / {len(actual)} unique references')
     holes = windows = 0
     rows = []
     for ref, source in sorted(expected.items()):
@@ -45,6 +49,17 @@ def check(board_path: Path, output: Path | None = None):
             raise ValueError(f'{ref}: physical pad not centred on footprint')
         if not (fp.IsBoardOnly() and fp.IsExcludedFromBOM() and fp.IsExcludedFromPosFiles()):
             raise ValueError(f'{ref}: not board-only/BOM/POS excluded')
+        diameter = (params['indicator_window']['diameter_mm']
+                    if source['kind'] == 'led' else source['hole_d_mm'])
+        if (isinstance(diameter, bool) or not isinstance(diameter, (int, float))
+                or not math.isfinite(diameter) or diameter <= 0):
+            raise ValueError(f'{ref}: invalid source diameter')
+        expected_size = pcbnew.FromMM(diameter)
+        if (pad.GetShape() != pcbnew.PAD_SHAPE_CIRCLE
+                or (pad.GetSize().x, pad.GetSize().y) != (expected_size, expected_size)):
+            raise ValueError(f'{ref}: circular pad diameter differs from source')
+        if set(pad.GetLayerSet().Seq()) != {pcbnew.F_Mask, pcbnew.B_Mask}:
+            raise ValueError(f'{ref}: feature must use only both mask layers')
         if source['kind'] == 'led':
             windows += 1
             if pad.HasDrilledHole() or pad.GetAttribute() != pcbnew.PAD_ATTRIB_SMD:
@@ -53,11 +68,11 @@ def check(board_path: Path, output: Path | None = None):
             holes += 1
             if not pad.HasDrilledHole() or pad.GetAttribute() != pcbnew.PAD_ATTRIB_NPTH:
                 raise ValueError(f'{ref}: panel hole must be NPTH')
-            if mm(pad.GetDrillSizeX()) != source['hole_d_mm']:
+            if (pad.GetDrillSizeX(), pad.GetDrillSizeY()) != (expected_size, expected_size):
                 raise ValueError(f'{ref}: drill diameter drift')
         rows.append({'uid': source['uid'], 'ref': ref, 'kind': source['kind'],
                      'x_mm': source['x_mm'], 'y_mm': source['y_mm'],
-                     'diameter_mm': 1.6 if source['kind'] == 'led' else source['hole_d_mm']})
+                     'diameter_mm': diameter})
     if (holes, windows) != (324, 114):
         raise ValueError(f'feature counts drift: {holes} holes, {windows} windows')
     groups = {group.GetName(): group for group in board.Groups()}
@@ -97,5 +112,6 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--board', type=Path, default=ROOT / 'boards/panel/panel.kicad_pcb')
     parser.add_argument('--output', type=Path, default=ROOT / 'boards/panel/reports/feature-table.json')
+    parser.add_argument('--params', type=Path, default=PARAMS)
     args = parser.parse_args()
-    check(args.board, args.output)
+    check(args.board, args.output, args.params)
