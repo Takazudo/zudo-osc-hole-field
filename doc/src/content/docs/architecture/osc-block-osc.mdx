@@ -30,7 +30,7 @@ flowchart LR
 
 The retained [ALFA manufacturer PDF](https://www.alfatriode.lv/eng/sc/AS3340.pdf) is revision **2020 v7, 08-Sep-2020**, SHA-256 `66108a3ddcc78a158d66974a497801ce6a429d465b338f6c8d656fd7ddce815e`. Its headers identify ALFA RPAR and the publisher domain. Printed pages 1 and 6 identify **AS3340D, SOIC-16**; the page 2 PDIP-16/SOIC-16 table establishes all sixteen pins. The file is retained at `circuit/sources/ic-library/AS3340.pdf`, with audited pin evidence in `design/standard/pin-maps/vco.json`. This supersedes the earlier unavailable-source state for this exact part. It does not confirm factory stock.
 
-The document recommends externally supplied −5 V to reduce self-heating. Its internal 7.4 V zener description conflicts with the page 3 absolute limit of −6 V between VEE and ground. The draft therefore replaces the planning series resistor into the internal zener with a **local OPA4197 buffer of the shared −5 V reference**, using 100 Ω isolation, 10 kΩ sense feedback and 100 pF local feedback. VEE bypasses to ground with 100 nF. The buffer must sink the core's negative-supply current; the current worksheet charges this to −12 V. This is a proposed supply circuit, requiring load, stability and rail-sequencing tests. The source's startup statement about its core does not validate this complete instrument.
+The document recommends externally supplied −5 V to reduce self-heating. Its internal 7.4 V zener description conflicts with the page 3 absolute limit of −6 V between VEE and ground. The draft therefore replaces the planning series resistor into the internal zener with a **local OPA4197 VEE driver fed by LOCAL_REFN5**, itself buffered from the shared −5 V reference by the [local fanout stage](./osc-reference-fanout.mdx), using 100 Ω isolation, 10 kΩ sense feedback and 100 pF local feedback. VEE bypasses to ground with 100 nF. The buffer must sink the core's negative-supply current; the current worksheet charges this to −12 V. This is a proposed supply circuit, requiring load, stability and rail-sequencing tests. The source's startup statement about its core does not validate this complete instrument.
 
 The intended steady operating state requires all three instrument rails. With +12 V absent, or −12 V absent, reference and amplifier operation is outside the selected normal supply condition; oscillator output levels and VEE5 are not guaranteed. +5 V absent disables input-switch enable and invalidates sync logic. No startup mute or rail-order-independent output is claimed. Test each rail first/last, slow ramps and brownouts while monitoring VEE5 against the core limit; a failed sequence requires a reviewed supply/enable change before hardware use.
 
@@ -109,11 +109,23 @@ The standard's 2 mV octave-step and five-cent tracking figures remain **targets*
 
 ## Verification and remaining gates
 
-The generated master passes pinned KiCad 10 ERC with zero errors; oscillator and octave sheets introduce zero warnings. Twelve existing pilot LED pin-type warnings remain documented in the pilot report. Exported netlist parity checks every component pin. Contract tests cover bindings, pin evidence, local timing, input isolation, real ladder endpoint connections, range/pitch ratios, transistor wiring and complete amplifier packages.
+The generated master passes pinned KiCad 10 ERC with zero errors; oscillator and octave sheets introduce zero warnings. Other module warnings are tracked in the master ERC baseline; this paragraph describes the retained native check, not a new whole-master run. Exported netlist parity checks every component pin. Contract tests cover bindings, pin evidence, local timing, input isolation, real ladder endpoint connections, range/pitch ratios, transistor wiring and complete amplifier packages.
 
-`design/reports/spice/oscillator.json` records the exact model-limited results. Shared reference, waveform scaling and generic-pair shaping are exercised through the pinned ngspice runner. The AS3340 core, sync behavior, temperature, V/oct tracking, startup, real amplifier stability and fault protection are **NOT RUN** because those retained models do not establish those behaviors.
+`design/reports/spice/oscillator.json` records the exact model-limited results. Shared reference, waveform scaling and generic-pair shaping are exercised through the pinned ngspice runner during canonical regeneration. The sine fixture selects twelve signal-path resistors and two amplifier connections by source role; its symmetry wiper is imposed at 1.5 V and its level rheostat at 5.5 kΩ. The SINE_REF5/REFN5 fanout and actual symmetry-pot loading are excluded from this fixture. The separate [local-reference fanout report](./osc-reference-fanout.mdx) owns the nominal vendor-buffer model and its limits. The AS3340 core, sync behavior, temperature, V/oct tracking, startup, real amplifier stability and fault protection are **NOT RUN** because those retained models do not establish those behaviors.
 
-`design/reports/current/oscillator.json` counts actual whole packages: per oscillator, six OPA4196 quads, two OPA4197 quads, four ADG5412F quads, two LM393B duals, one HC14 and one AS3340D. The shared reference adds three OPA4197 quads and one REF5050. Upper **planning allowances** total +12 V **254.5 mA**, −12 V **250 mA**, +5 V **30 mA** for all five plus the single reference. Guaranteed maxima remain `NOT ESTABLISHED`: core supply conditions differ from the source table, and dynamic/fault loads are unqualified. Issue #33/#34 must use this capture-derived worksheet instead of the old nine-section-per-oscillator size estimate.
+{/* oscillator-current:start */}
+
+Current captured population from `design/reports/current/oscillator.json`; whole packages, including unused powered channels, are counted.
+
+Per `oscillator` instance (O1, O2, O3, O4, O5): 4 `ADG5412FBRUZ`, 1 `AS3340D`, 2 `LM393BIDR`, 6 `OPA4196IDR`, 4 `OPA4197IPWR`, 1 `SN74HC14DR`.
+
+Per `octave_reference` instance (OCTAVE_REF): 3 `OPA4197IPWR`, 1 `REF5050AIDR`.
+
+Combined planning upper subtotals (+12 / −12 / +5 mA): **339.500 / 335.000 / 30.000**. These are rounded planning allowances, not measured or guaranteed maxima.
+
+Complete guaranteed maxima (+12 / −12 / +5 mA): **NOT ESTABLISHED / NOT ESTABLISHED / NOT ESTABLISHED**. Core source conditions, dynamic/temperature loads and faults remain qualification gates.
+
+{/* oscillator-current:end */}
 
 Before hardware approval: resolve AS3340D factory sourcing, exact value-specific passive MPNs, the buffered negative supply under every rail sequence, thermal drift, frequency coverage, actual 12 V waveform levels, sine distortion, PWM endpoints, both sync modes, octave bounce, harness stability and output faults. No physical oscillator, factory assembly or complete supply budget has passed here.
 
