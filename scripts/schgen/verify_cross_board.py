@@ -15,6 +15,7 @@ sys.path.insert(0, str(ROOT))
 from scripts.schgen.core import children, parse, tokens
 from scripts.schgen.project_boards import load_partition, net_token
 from scripts.schgen.verify_netlist import exported_pin_nets
+from scripts.pcbgen.netlist import Component, is_abstract_boundary
 
 
 def export_netlist(board_id):
@@ -89,17 +90,100 @@ def assert_partition(partition, assignment):
     return edges
 
 
+def native_component(ref, node):
+    """Adapt the native component to the shared strict boundary policy."""
+    def scalar(name, optional=False):
+        rows=children(node,name)
+        if optional and not rows:return ''
+        if len(rows)!=1 or len(rows[0])!=2:
+            raise ValueError(f'{ref}: expected one native {name}')
+        return rows[0][1]
+    properties=[]
+    for prop in children(node,'property'):
+        names,values=children(prop,'name'),children(prop,'value')
+        if len(names)!=1 or len(names[0])!=2 or len(values)>1 or any(len(row)!=2 for row in values):
+            raise ValueError(f'{ref}: malformed native property')
+        properties.append((names[0][1],values[0][1] if values else ''))
+    if len(dict(properties))!=len(properties):
+        raise ValueError(f'{ref}: duplicate native property')
+    return Component(ref,scalar('value'),scalar('footprint',optional=True),'','','',tuple(properties))
+
+
+def interface_pin_maps(partition):
+    """All declared interface pins, including explicit NC and mechanical pads."""
+    board_keys=[b['board_key'] for b in partition['boards']]
+    if len(set(board_keys))!=len(board_keys):raise ValueError('duplicate declared board key')
+    boards=set(board_keys)
+    result={board:{} for board in boards}
+    seen=set()
+    def add(ref,board,pins):
+        if ref in seen:raise ValueError(f'duplicate interface reference {ref}')
+        if board not in boards:raise ValueError(f'{ref}: unknown interface board {board}')
+        seen.add(ref)
+        result[board].update({(ref,pin):net_token(net) if net not in (None,'NC') else None
+                              for pin,net in pins.items()})
+    for c in partition['connectors']:
+        count=c['contacts']
+        if type(count) is not int or count<1:raise ValueError('invalid connector contact count')
+        electrical={str(pin) for pin in range(1,count+1)}
+        if set(c['pin_map'])!=electrical:
+            raise ValueError(f'{c["id"]}: incomplete electrical pin declaration')
+        mechanical=c['mechanical_pads']
+        if (any(not isinstance(pin,str) or not pin for pin in mechanical) or
+                len(set(mechanical))!=len(mechanical) or electrical.intersection(mechanical)):
+            raise ValueError(f'{c["id"]}: invalid mechanical pin declaration')
+        add(c['pcb_reference'],c['board'],{**c['pin_map'],**dict.fromkeys(mechanical)})
+    for terminal in partition['load_side_terminals']:
+        pin=terminal['manufacturer_pin']
+        if not isinstance(pin,str) or not pin:raise ValueError('invalid load terminal pin')
+        add(terminal['reference'],terminal['board'],{pin:terminal['net']})
+    return result
+
+
+def verify_header_identity(connector, node, catalogue):
+    ref=connector['pcb_reference'];count=connector['contacts']
+    expected=catalogue.get(count)
+    component=native_component(ref,node)
+    properties=dict(component.fields)
+    source=children(node,'libsource')
+    if (expected is None or connector['header_mpn']!=expected or
+            component.value!=expected or properties.get('MPN')!=expected or
+            properties.get('Manufacturer')!='JST' or 'dnp' in properties or
+            component.footprint!=f'zudo-osc-hole-field:JST_GH{count}_BM_TopEntry' or
+            len(source)!=1 or children(source[0],'lib')!=[['lib','zudo-osc-hole-field']] or
+            children(source[0],'part')!=[['part',f'JST_GH{count}_BM']]):
+        raise ValueError(f'{ref}: fitted interface header identity differs from declared/audited GH source')
+
+
 def verify(partition, board_netlists, master_netlist):
     assignment = {x['ref']: x for x in partition['assignment']['components']}
     if len(assignment) != len(partition['assignment']['components']): raise ValueError('duplicate component assignment')
     edges = assert_partition(partition, assignment)
     master = exported_pin_nets(master_netlist)
-    master = {key: net for key, net in master.items() if key[0] in assignment}
     master_components = components(master_netlist)
+    abstract={ref for ref,node in master_components.items()
+              if is_abstract_boundary(native_component(ref,node))}
+    declared_abstract=partition['assignment']['abstract_boundaries']
+    if len(set(declared_abstract))!=len(declared_abstract) or set(declared_abstract)!=abstract:
+        raise ValueError('declared abstract boundaries differ from validated master boundaries')
+    physical_master=set(master_components)-abstract
+    if set(assignment)!=physical_master:
+        raise ValueError(f'master physical component coverage mismatch: missing={sorted(physical_master-set(assignment))[:8]} extra={sorted(set(assignment)-physical_master)[:8]}')
+    master={key:net for key,net in master.items() if key[0] not in abstract}
+    interface_maps=interface_pin_maps(partition)
+    headers={c['pcb_reference']:c for c in partition['connectors']}
+    catalogue={row['positions']:row['header_mpn'] for row in json.loads(
+        (ROOT/'design/connectors/jst-gh.json').read_text())['sizes']}
+    if set(assignment).intersection(ref for pins in interface_maps.values() for ref,pin in pins):
+        raise ValueError('interface reference collides with a master physical component')
     projected = {}
     net_boards = defaultdict(set)
     refs = Counter()
+    interface_pins=unconnected_interface_pins=0
     board_by_id = {b['id']: b['board_key'] for b in partition['boards']}
+    if (len(board_by_id)!=len(partition['boards']) or
+            len(set(board_by_id.values()))!=len(board_by_id) or set(board_netlists)!=set(board_by_id)):
+        raise ValueError('board export set differs from unique declared boards')
     for board_id, data in board_netlists.items():
         board = board_by_id[board_id]
         comp = components(data)
@@ -108,10 +192,23 @@ def verify(partition, board_netlists, master_netlist):
         physical = set(comp) & set(assignment)
         if physical != expected_refs: raise ValueError(f'{board_id}: component set mismatch: missing={sorted(expected_refs-physical)[:8]} extra={sorted(physical-expected_refs)[:8]}')
         for ref in physical: refs[ref] += 1
-        expected_interfaces = {c['pcb_reference'] for c in partition['connectors'] if c['board'] == board}
-        expected_interfaces |= {t['reference'] for t in partition['load_side_terminals'] if t['board'] == board}
+        expected_pins=interface_maps[board]
+        expected_interfaces={ref for ref,pin in expected_pins}
+        if any(ref not in comp for ref,pin in actual):
+            raise ValueError(f'{board_id}: exported pin has no component')
+        actual_interfaces={key:net for key,net in actual.items() if key[0] in expected_interfaces}
+        if actual_interfaces!=expected_pins:
+            missing=sorted(set(expected_pins)-set(actual_interfaces))
+            extra=sorted(set(actual_interfaces)-set(expected_pins))
+            changed=sorted(key for key in set(expected_pins)&set(actual_interfaces)
+                           if expected_pins[key]!=actual_interfaces[key])
+            raise ValueError(f'{board_id}: interface pin set/map mismatch: missing={missing[:8]} extra={extra[:8]} changed={changed[:8]}')
+        interface_pins+=len(actual_interfaces)
+        unconnected_interface_pins+=sum(net is None for net in actual_interfaces.values())
         if set(comp) != physical | expected_interfaces:
             raise ValueError(f'{board_id}: interface component set mismatch')
+        for ref in expected_interfaces & headers.keys():
+            verify_header_identity(headers[ref],comp[ref],catalogue)
         for ref in physical:
             for field in ('value', 'footprint'):
                 if children(comp[ref], field) != children(master_components[ref], field):
@@ -131,12 +228,6 @@ def verify(partition, board_netlists, master_netlist):
                 if key in projected: raise ValueError(f'duplicate physical pin {key}')
                 projected[key] = token
                 if token is not None: net_boards[master[key]].add(board)
-            elif ref in expected_interfaces:
-                declared = next((c['pin_map'].get(pin) for c in partition['connectors'] if c['pcb_reference'] == ref), None)
-                if ref.startswith('TP'):
-                    declared = next(t['net'] for t in partition['load_side_terminals'] if t['reference'] == ref)
-                if token != (net_token(declared) if declared not in (None, 'NC') else None):
-                    raise ValueError(f'{ref}.{pin}: connector/terminal pin map mismatch {token} / {declared}')
     if set(refs) != set(assignment) or any(v != 1 for v in refs.values()):
         raise ValueError('missing/duplicate physical package')
     if set(projected) != set(master):
@@ -155,6 +246,8 @@ def verify(partition, board_netlists, master_netlist):
             raise ValueError(f'{net}: declared harness/wire graph disconnects {sorted(boards-reached)}')
     return {'status': 'PASS - native joined pin/net and declared interface graph only; unvalidated draft',
             'physical_components': len(refs), 'physical_pins': len(projected),
+            'interface_pins': interface_pins, 'unconnected_interface_pins': unconnected_interface_pins,
+            'validated_abstract_exclusions': sorted(abstract), 'verified_header_identities':len(headers),
             'fitted_components': sum(x['fitted'] for x in assignment.values()),
             'dnp_components': sum(not x['fitted'] for x in assignment.values()),
             'fitted_ICs': sum(x['fitted'] and ref.startswith('U') for ref, x in assignment.items()),
