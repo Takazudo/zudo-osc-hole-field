@@ -30,6 +30,7 @@ STEM = 'osc-control-layout'
 
 @contextmanager
 def workspace():
+    (ROOT/'.circuit-cache').mkdir(parents=True, exist_ok=True)
     path = Path(tempfile.mkdtemp(prefix='control-layout-', dir=ROOT/'.circuit-cache'))
     try:
         yield path
