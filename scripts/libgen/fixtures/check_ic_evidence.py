@@ -59,6 +59,6 @@ def main():
  if errors:
   for e in errors:print('FAIL:',e,file=sys.stderr)
   return 1
- print(f'Issue-15 evidence check: PASS ({captured}/{len(parts)} shortlist rows captured; {blocked} exact-identity blocker; {checked} new pin maps and footprints checked)')
+ print(f'Issue-15 evidence check: PASS ({captured}/{len(parts)} shortlist rows captured; {blocked} uncaptured selected parts; {checked} new pin maps and footprints checked)')
  return 0
 if __name__=='__main__':raise SystemExit(main())
