@@ -1,0 +1,118 @@
+{
+  "schema_version": 1,
+  "status": "CONDITIONAL nominal two-column improvement; issue38/common/physical admission OPEN",
+  "executed_source_commit": "e404aef92d1dd9b9c71f2f1ede180ea4649a59d5",
+  "historical_artifact_root": "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/38-jack-halves",
+  "retained_result": {
+    "path": ".circuit-cache/issue38-recovery/foil-edge-bubble-v1/result.json",
+    "sha256": "ab9748a1f7775a5e61f846d9778ef7e9d1eaae01378ae6191e4e38791be6e9b1"
+  },
+  "frozen_sha256": {
+    "scripts/pcbgen/foil_edge_bubble_probe.py": "7b564f845bdd63ca1b16b491a90714e0787a600e6a30360e96ab44078dd8ab8c",
+    "scripts/pcbgen/foil_edge_bubble_run.py": "a435e0b0a21115ecd0a9138a874b7c673deadc8530b32a3e9aaba06073e5f807",
+    "design/partition/foil-edge-bubble-probe.json": "a0c2d41de87d3af8a79c22af75f4f4130c177cd5e2daad7e67afffec67f383fa"
+  },
+  "guard": {
+    "verdict": "PASS",
+    "exit": 0,
+    "seconds": 13,
+    "minimum_available_memory_mb": 7105
+  },
+  "runtime_sec": 10.392379081109539,
+  "peak_rss_kib": 566800,
+  "historical_input_hash_count": 167,
+  "executed_hash_count": 47,
+  "selected_columns": [
+    [
+      "J900134",
+      "2"
+    ],
+    [
+      "C107",
+      "2"
+    ]
+  ],
+  "reference_contact": {
+    "ref": "TP990031",
+    "pad": "1",
+    "kind": "main",
+    "layer": 3,
+    "physical_layer": "B.Cu"
+  },
+  "selection": {
+    "all_edges": 236116,
+    "eligible_edges": 168632,
+    "selected_patches": 128
+  },
+  "accepted_patches": 128,
+  "rejected_or_unprocessed_patches": 0,
+  "work_used": {
+    "overlap_checks": 4285
+  },
+  "canonical_chart_audit": {
+    "checked_vertices": 94643,
+    "interface_vertices": 5965,
+    "maximum_coordinate_residual_mm_exact": "324280268078534387/12980742146337069071326240823050240",
+    "maximum_residual_eta_ratio_exact": "162129586585337856/59283121449236864875"
+  },
+  "raw_to_conserved_energy_upper_ohm": [
+    5.897765633281863e-12,
+    5.8584781831935625e-12
+  ],
+  "old_upper_ohm": [
+    [
+      0.0008872804875601901,
+      0.0005940549771504091
+    ],
+    [
+      0.0005940549771504091,
+      0.0012535631111422597
+    ]
+  ],
+  "new_upper_ohm": [
+    [
+      0.0008590509319395498,
+      0.0005841492611966175
+    ],
+    [
+      0.0005841492611966175,
+      0.0012046313227644192
+    ]
+  ],
+  "unchanged_lower_ohm": [
+    [
+      0.0007028616380880108,
+      0.0004899353183419629
+    ],
+    [
+      0.0004899353183419629,
+      0.00102356601364414
+    ]
+  ],
+  "diagonal_upper_reduction_lower_ohm": [
+    2.8229555620640267e-05,
+    4.8931788377840546e-05
+  ],
+  "old_transfer_interval_ohm": [
+    0.00043901966510281117,
+    0.0006449706303895608
+  ],
+  "new_transfer_interval_ohm": [
+    0.000452958309766398,
+    0.0006211262697721823
+  ],
+  "intersection_transfer_interval_ohm": [
+    0.000452958309766398,
+    0.0006211262697721823
+  ],
+  "receipt_only_arithmetic_replay": "PASS: patch work/coefficient sums and upper Gram/serialization reproduced exactly; no mesh reload",
+  "old_upper_minus_new_upper_exact_psd": true,
+  "scope": [
+    "Same finite source normal flux a.e.; tangential jumps allowed.",
+    "No field solve, matrix factorization, mesh/material/contact/geometry change or source-lift change.",
+    "Conditional canonical current-inner containment; no actual physical class or joined common admission.",
+    "Zero contribution from every rejected/unprocessed patch; no replacement or second batch."
+  ],
+  "retained_revalidation_if_artifacts_absent": "NOT RUN; portable fixtures do not substitute for retained inputs",
+  "additional_batch": "NOT RUN; one fixed128-patch selection only"
+}
