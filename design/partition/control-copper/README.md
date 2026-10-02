@@ -1,7 +1,7 @@
 # Control-board copper after paired-header reassignment
 
-This is a **partially routed, unvalidated draft**. The current source has 1682
-track segments, 458 through vias and 189 complete native open edges. It keeps
+This is a **partially routed, unvalidated draft**. The current source has 2806
+track segments, 554 through vias and 93 complete native open edges. It keeps
 all 344 ground contacts and sixteen local IC/bypass rail pairs connected after
 independent refill. The current four-layer, 2 oz, 1.6 mm stack is a proposal.
 
@@ -19,7 +19,11 @@ from a bounded, timed-out autorouter run. Native-checked local links then
 reduced it through 246, 222, 199, 194 and 190 to 189 edges. Every adopted
 batch preserved all 344 ground contacts and sixteen bypass pairs. The
 timeout remains a failed full-routing attempt; its partial copper has separate
-native checks.
+native checks. A subsequent continuation protected every one of those 2,140
+existing copper objects and reached 114 edges after removing ground-sensitive
+additions. Front-layer grid paths reduced this to 102 and 96; three accepted
+back-layer paths reduced it to 93. Every candidate underwent native DRC,
+complete connectivity, ground and bypass checks before adoption.
 
 `copper.json` owns explicit integer-nanometre copper geometry. The constructor
 replays it on the current labelled base without changing any other source
@@ -34,17 +38,17 @@ Run the native gate through the shared heavy guard:
 bash scripts/kicad/run.sh python3 scripts/pcbgen/check_control_copper.py
 ```
 
-The paired-header seed passed source regeneration, the full 484-test PCB suite,
-the 285-test source/check suite, the connector-transition negative test and CI.
-Each later routing batch passed native DRC/parity and independent refill;
-the final combined source replay, 42 targeted tests, documentation build and
-publication checks passed in 89 seconds. The existing single workbench-link
-exception remains explicit. Both native layer previews were visually inspected.
-Integrated CI for the final routing revision is pending. K's native comparison preserves all 13,406
-pad identities and pin/net assignments, all non-header component pads and the
-occupied ground geometry. Its two bare-board drafts each have 9,650 open
-edges, zero reported DRC errors or parity findings and 477 reported annotation
-warnings (some categories are capped). K annotation and routing remain incomplete.
+The preceding 189-edge checkpoint passed source regeneration, native replay,
+42 targeted tests, documentation and publication checks, and integrated CI.
+The 93-edge continuation passed full native replay, 42 targeted tests,
+documentation build and publication checks in 93 seconds. Both native views
+were visually inspected; all 2,140 prior copper objects are unchanged and no
+net has regressed. Integrated CI is pending. The remaining native open edges
+comprise 57 signal edges and 36 supply-rail edges.
+All prior source copper is retained exactly. K's native comparison preserves
+all 13,406 pad identities and pin/net assignments, all non-header component
+pads and occupied ground geometry. K still has 9,650 open edges and reported
+annotation warnings; its routing and annotation remain incomplete.
 
 Actual conductor resistance/current, complete rail distribution, protection,
 manufacturing and physical fit remain open. No previous electrical receipt is
