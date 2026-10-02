@@ -60,7 +60,6 @@ def main():
     report['external_assembly']['fitted_crimps'] = sum(x['pins_used'] for x in items)
     (ROOT/'design/reports/connectors.json').write_text(json.dumps(report, indent=2)+'\n')
     lines = ['---', 'title: Board connector projection', 'description: Declared board-to-board interfaces in the conditional ten-board draft.', '---', '',
-             '# Board connector projection', '',
              'This is an unvalidated draft. The 195 harnesses and eighteen factory load-side wires are declared interfaces; their installed fit, crimp, hot resistance and service behavior are NOT RUN. CN301/XB301 remain abstract source boundaries.', '',
              f'{len(p["connectors"])} PCB headers expose {sum(x["pins_used"] for x in items)} wired contact positions and {sum(x["pins_free"] for x in items)} unwired positions across both ends. The 390 external housings and {report["external_assembly"]["fitted_crimps"]} fitted crimps are non-PCB assembly items. The planning limit is 500 mA per contact; this is not a measured capacity.', '']
     for pair, nets in sorted(by_pair.items()):
