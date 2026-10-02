@@ -91,6 +91,9 @@ jobs:
       - name: Check deterministic cluster placement and source faces
         run: bash scripts/pcbgen/test_placer.sh
 
+      - name: Check native standard-cell ERC and pin-net parity
+        run: bash design/spec/cells/check_harness.sh
+
       - name: Run native main-ground connectivity regression
         run: bash scripts/kicad/run.sh python3 scripts/pcbgen/power_locality_native_regression.py
 
