@@ -33,6 +33,7 @@ EXPECTED={
     **{name:row['dims'] for name,row in ic.MODELS.items()},
     'TI_DCT0008A':(3.1,3.1,1.3),
     'KEMET_C0603_DensityB':(1.75,.95,.95),
+    'KEMET_C1206_C0G_DensityB':(3.4,1.8,1.8),
 }
 TOLERANCE_MM=.005
 
@@ -147,22 +148,28 @@ def check_geometry(name,geometry,basis):
 
 
 
-def check_capacitor_lands(footprint):
-    """Independent KEMET C1002_X7R (2026-09-01), p12 Table3 DensityB."""
+def check_capacitor_lands(footprint, name='KEMET_C0603_DensityB'):
+    """Independent published Table3 DensityB transcriptions, not catalog copies."""
+    centre, width, height, expected_box, source = {
+        'KEMET_C0603_DensityB': (.8,.95,1.0,(-1.55,-.75,1.55,.75),
+            'C1002_X7R (2026-09-01), physical index11/printed12 Table3 DensityB'),
+        'KEMET_C1206_C0G_DensityB': (1.5,1.15,1.8,(-2.35,-1.15,2.35,1.15),
+            'C1003_C0G (2025-02-20), physical index11/printed12 Table3 1206 DensityB'),
+    }[name]
     raw_pads = list(footprint.Pads())
     if len(raw_pads) != 2:
         raise GeometryMismatch('KEMET must have exactly two physical pads')
     pads = {pad.GetNumber(): pad for pad in raw_pads}
     if set(pads) != {'1', '2'}:
         raise GeometryMismatch('KEMET terminal set differs')
-    for number, x in (('1', -.8), ('2', .8)):
+    for number, x in (('1', -centre), ('2', centre)):
         pad = pads[number]
         angle = pad.GetOrientationDegrees() - footprint.GetOrientationDegrees()
         if not math.isclose(math.remainder(angle, 180), 0, abs_tol=1e-9):
             raise GeometryMismatch('KEMET pad axes differ from source orientation')
         actual = (pcbnew.ToMM(pad.GetPosition().x), pcbnew.ToMM(pad.GetPosition().y),
                   pcbnew.ToMM(pad.GetSize().x), pcbnew.ToMM(pad.GetSize().y))
-        if actual != (x, 0, .95, 1.0):
+        if actual != (x, 0, width, height):
             raise GeometryMismatch('KEMET source pad centres or X/Y dimensions differ')
     points = []
     for graphic in footprint.GraphicalItems():
@@ -172,11 +179,11 @@ def check_capacitor_lands(footprint):
         raise GeometryMismatch('KEMET courtyard rectangle missing')
     box = (min(pcbnew.ToMM(p.x) for p in points), min(pcbnew.ToMM(p.y) for p in points),
            max(pcbnew.ToMM(p.x) for p in points), max(pcbnew.ToMM(p.y) for p in points))
-    if box != (-1.55, -.75, 1.55, .75):
+    if box != expected_box:
         raise GeometryMismatch('KEMET source courtyard differs')
-    return {'pads_mm': {'1': [-.8, 0, .95, 1], '2': [.8, 0, .95, 1]},
+    return {'pads_mm': {'1': [-centre, 0, width, height], '2': [centre, 0, width, height]},
             'courtyard_box_mm': box,
-            'source': 'C1002_X7R (2026-09-01), physical index11/printed12 Table3 DensityB',
+            'source': source,
             'qualification_accepted': False}
 
 
@@ -205,8 +212,12 @@ def run(check=False):
     snapshot=source_snapshot();rows=[]
     capacitor = pcbnew.FootprintLoad(str(LIBRARY), "KEMET_C0603_DensityB")
     capacitor_lands = check_capacitor_lands(capacitor)
+    c0g_name = 'KEMET_C1206_C0G_DensityB'
+    c0g = pcbnew.FootprintLoad(str(LIBRARY), c0g_name)
+    c0g_lands = check_capacitor_lands(c0g, c0g_name)
     cases=[(name,(0,0),0,False) for name in EXPECTED]
     cases += [('DIP-8_W7.62mm',(12,7),angle,bottom) for angle,bottom in ((0,False),(90,False),(90,True))]
+    cases += [(c0g_name,(12,7),90,bottom) for bottom in (False,True)]
     for name,position,angle,bottom in cases:
         geometry,basis=exported_geometry(name,position,angle,bottom)
         check_geometry(name,geometry,basis)
@@ -220,6 +231,7 @@ def run(check=False):
             ('SOT wrong rotation','SOT-23-5',{'model_angle':90}),
             ('SOT oblique rotation','SOT-23-5',{'model_angle':20}),
             ('DCT oblique rotation','TI_DCT0008A',{'model_angle':20}),
+            ('C0G undersized body height',c0g_name,{'model_scale':(1,1,.5)}),
             ('Historical IC coordinates 2.54x','SOT-23-5',{'coordinate_factor':2.54}),
             ('Historical pot coordinates 0.1x','PTV09A-4020F',{'coordinate_factor':.1}),
             ('Footprint model Z scale 2x','SOT-23-5',{'model_scale':(1,1,2)})):
@@ -270,12 +282,18 @@ def run(check=False):
     pad.SetOrientationDegrees(180)
     check_capacitor_lands(rotated)
     capacitor_lands['symmetric_pad_rotation_checked_deg'] = 180
+    c0g.Pads()[0].SetSize(pcbnew.VECTOR2I(pcbnew.FromMM(1.8), pcbnew.FromMM(1.15)))
+    try: check_capacitor_lands(c0g, c0g_name)
+    except GeometryMismatch as error:
+        rejected.append({'case':'C0G swapped pad dimensions','rejected':True,'reason':str(error)})
+    else: raise AssertionError('negative C0G pad control accepted')
     if any(p.read_bytes()!=data for p,data in snapshot.items()):
         raise RuntimeError('envelope inputs changed during native checks')
     report={'status':'PASS - native display-envelope placement; no physical qualification',
             'qualification_accepted':False,'oracle':pcbnew.GetBuildVersion(),
             'tolerance_mm':TOLERANCE_MM,'cases':rows,'negative_controls':rejected,
             'capacitor_land_check':capacitor_lands,
+            'reference_capacitor_land_check':c0g_lands,
             'limits':['IC body centres and long axes are compared with independent native Fab outlines; DCT square-body bounds are checked without an orientation claim.',
                       'PTV09 and all five generated component models have model-axis unit checks only. KEMET capacitor body dimensions come from the exact sheet; lands are separately checked against family Table3.',
                       'No footprint-containment, lead, seating, height qualification, installed clearance or fabrication claim.',

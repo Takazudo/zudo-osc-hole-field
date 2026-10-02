@@ -42,3 +42,14 @@ class MonitorCandidateAssetTests(unittest.TestCase):
             self.assertAlmostEqual(float(children(pad,'roundrect_rratio')[0][1])*.4,.05)
             self.assertEqual(tuple(float(v) for v in children(pad,'at')[0][1:]),expected[pad[1]])
             self.assertEqual(tuple(float(v) for v in children(pad,'size')[0][1:]),(1.1,.4))
+
+    def test_c0g_land_pattern_uses_independent_1206_source_dimensions(self):
+        part = self.parts['C1206C104F3GACTU']
+        tree, _ = parse(tokens(assets.capacitor_footprint(part)))
+        pads = children(tree, 'pad')
+        self.assertEqual(len(pads), 2)
+        for pad in pads:
+            self.assertEqual(tuple(float(v) for v in children(pad,'at')[0][1:]),
+                             {'1':(-1.5,0),'2':(1.5,0)}[pad[1]])
+            self.assertEqual(tuple(float(v) for v in children(pad,'size')[0][1:]),(1.15,1.8))
+        self.assertEqual(part['package_envelope']['body_max_xyz_mm'],[3.4,1.8,1.8])
