@@ -2,6 +2,25 @@
   "schema_version": 1,
   "oracle": "scripts/kicad/run.sh ngspice -b, pinned KiCad 10.0.6 image",
   "status": "Model-limited checks only",
+  "sine_source_projection": {
+    "included_roles": [
+      "oscillator:R_SINE_ATTEN",
+      "oscillator:R_SINE_BASE_GND",
+      "oscillator:R_SINE_OFFSET",
+      "oscillator:R_SINE_TAIL",
+      "oscillator:R_SINE_COLLECTOR1",
+      "oscillator:R_SINE_COLLECTOR2",
+      "oscillator:R_SINE_DIFF_PLUS",
+      "oscillator:R_SINE_DIFF_GROUND",
+      "oscillator:R_SINE_DIFF_MINUS",
+      "oscillator:R_SINE_DIFF_FB",
+      "oscillator:R_SINE_GAIN_IN",
+      "oscillator:R_SINE_GAIN_FIXED",
+      "oscillator:SINE_DIFF",
+      "oscillator:SINE_GAIN"
+    ],
+    "scope": "Only the selected sine-shaper resistors/amplifier connections are projected; the matched pair uses a generic NPN model, the symmetry wiper is an ideal 1.5 V source and the level rheostat is a fixed 5.5 kohm fixture. Local SINE_REF5/REFN5 fanout, actual symmetry-pot loading and output loading are excluded. This does not simulate the full reference or oscillator circuit."
+  },
   "model_calibration": {
     "generic_pair_temperature_C": 27,
     "sine_symmetry_wiper_V": 1.5,

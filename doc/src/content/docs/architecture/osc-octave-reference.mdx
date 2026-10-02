@@ -34,6 +34,8 @@ flowchart LR
 
 Five 10 kΩ / 0.1% resistors divide the −2…+3 V span. A 40 kΩ/10 kΩ divider and buffer produce +1 V from +5 V; 10 kΩ/20 kΩ inversion produces −2 V. The top-end amplifier uses 10 kΩ to ground and 19.1 kΩ plus a 1 kΩ trimmer in feedback. Setting the trimmer near 900 Ω gives nominal +3 V. All six taps are buffered before the panel selectors.
 
+The shared ±5 V sources now feed three [local reference pairs per oscillator](./osc-reference-fanout.mdx): LOCAL supplies the controls and fixed branches, while BASE and SINE each serve one calibration trimmer. Those additional drivers are counted in the oscillator worksheet, separately from this shared reference. The ideal shared-reference deck does not model the loaded local drivers; their nominal vendor-model evidence and remaining physical gates belong to the fanout report.
+
 A shared ladder reduces reference-current demand and differences between five independent references. It also creates a shared failure point. It does not cancel channel receiver errors, cable return offsets, switch contact resistance or core scale drift. No unbuffered ladder junction, high-impedance summing node or capacitor timing node crosses a board connector.
 
 The initial wiring envelope is at most 300 mm per harness, with an **aggregate direct cable capacitance of at most 1 nF per shared tap** (approximately 200 pF per branch when all five are connected). The 100 nF receiver capacitor is behind its 1 kΩ series resistor. Real cable, filter, simultaneous switching and reference-buffer stability must be checked together. Return wiring accompanies each reference group. A shared source does not eliminate return voltage error.

@@ -6,6 +6,7 @@ python3 -m design.spec.modules.build_sample_hold_current
 python3 -m design.spec.modules.check_oscillator_reference
 python3 -m design.spec.modules.run_oscillator_reference_model --refresh-load-bound
 python3 -m design.spec.modules.build_oscillator_current
+python3 -m design.spec.modules.run_oscillator_spice
 python3 -m design.spec.modules.run_offset_spice
 python3 -m design.spec.modules.run_noise_spice
 python3 -m design.spec.modules.build_mixer_current
