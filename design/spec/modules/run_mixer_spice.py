@@ -3,19 +3,30 @@
 The retained National/TI LM13700 single-OTA model excludes real opamps,
 current-servo dynamics, package coupling, temperature and cable loading.
 """
-import json,re,subprocess
+import hashlib,json,math,re,subprocess
+from design.spec.model_contracts import current_mix4_contract, fingerprint, snapshot_sources, verify_snapshot
 from design.spec.cells._builder import ROOT
+from design.spec.modules.spice_trace import check_oracle_result
 
 DIR=ROOT/'design/spec/modules/spice'
 OUT=ROOT/'design/reports/spice/mixers.json'
 OFFSET_WIPER_V=2.7
 TIA_TRIM_OHM=9000
+MODEL_SHA256="666df501773da5e65f7fd3b3c806b2c1ae7770784685dd8191a9df33b382f390"
+MODEL=DIR/"filter-model/LM13700.MOD"
+
+def verify_model():
+    if hashlib.sha256(MODEL.read_bytes()).hexdigest()!=MODEL_SHA256:
+        raise ValueError("retained LM13700 model hash changed")
 
 
 def run(deck):
+    evaluated=deck.read_bytes();verify_model()
     proc=subprocess.run(['bash','scripts/kicad/run.sh','ngspice','-b',str(deck.relative_to(ROOT))],cwd=ROOT,text=True,capture_output=True)
+    if deck.read_bytes()!=evaluated:raise ValueError('mixer deck changed during execution')
+    verify_model()
     output=proc.stdout+'\n'+proc.stderr
-    if proc.returncode:raise RuntimeError(output)
+    check_oracle_result(proc)
     return output
 
 
@@ -47,6 +58,9 @@ ERESTORE SUM_OUT 0 0 RESTORE_NODE 1e6
 
 
 def mixer4(command, amplitude, offset_wiper=OFFSET_WIPER_V, tia_trim=TIA_TRIM_OHM):
+    current_mix4_contract()
+    if any(type(x) not in (int,float) or not math.isfinite(x) for x in (command,amplitude,offset_wiper,tia_trim)) or amplitude<0:
+        raise ValueError("nonfinite/invalid MIX4 fixture input")
     # The physical 10 kΩ trim is a ±5 V divider feeding 1 MΩ into a 1 kΩ return.
     # Only the bias servo is imposed; negative combined CV requests shutoff.
     ibias=max(0,command)/10000
@@ -87,9 +101,18 @@ RLOAD SUM_OUT 0 100k
 '''
 
 
-def model_failures(rows):
+def model_failures(rows, *, complete=False):
     """Check the fixed model criteria; physical feedthrough has no limit yet."""
     failures=[]
+    if any(set(r.get('output_extrema_V', {})) != {'out_min','out_max'} or
+           any(type(v) not in (int,float) or not math.isfinite(v) for v in r['output_extrema_V'].values()) or
+           r['output_extrema_V']['out_min'] > r['output_extrema_V']['out_max'] for r in rows):
+        return ['invalid/nonfinite MIX4 extrema']
+    vectors=[(r['command_V'],r['input_peak_each_V']) for r in rows]
+    if len(set(vectors))!=len(vectors):
+        return ['duplicate MIX4 vectors']
+    if complete and set(vectors)!={(c,a) for c in (-5,0,2.5,5) for a in (0,1,5)}:
+        return ['missing/unexpected MIX4 vectors']
     by_vector={(r['command_V'],r['input_peak_each_V']):r for r in rows}
     for row in rows:
         values=row['output_extrema_V']
@@ -115,27 +138,59 @@ def exit_on_model_failures(failures):
         raise SystemExit('\n'.join(failures))
 
 
+def check_mix5_result(op):
+    if (set(op)!={'sum_prelevel','sum_out'} or
+            any(type(v) not in (int,float) or not math.isfinite(v) for v in op.values())):
+        raise ValueError('MIX5 requires two finite modeled voltages')
+    if abs(op['sum_prelevel']+10)>=.01 or abs(op['sum_out']-5)>=.01:
+        raise ValueError('MIX5 ideal summer target failed: '+str(op))
+
+
+def check_retained(report):
+    projection=current_mix4_contract();verify_model()
+    if (report.get('source_projection')!=projection or report.get('source_projection_sha256')!=fingerprint(projection)
+            or report.get('model_sha256')!=MODEL_SHA256):
+        raise ValueError('MIX4 retained source/model binding drift')
+    rows=report['runs']
+    if len(rows)!=13:raise ValueError('mixer report requires thirteen vectors')
+    check_mix5_result(rows[0]['result_V'])
+    if rows[0].get('deck_sha256')!=hashlib.sha256(mixer5().encode()).hexdigest():
+        raise ValueError('MIX5 retained deck drift')
+    for row in rows[1:]:
+        body=mixer4(row['command_V'],row['input_peak_each_V'])
+        if row.get('deck_sha256')!=hashlib.sha256(body.encode()).hexdigest():
+            raise ValueError('MIX4 retained deck drift')
+    failures=model_failures(rows[1:],complete=True)
+    if failures or report.get('failures'):
+        raise ValueError('MIX4 retained acceptance drift: '+str(failures))
+
+
 def main():
+    projection=current_mix4_contract();evaluated=fingerprint(projection);snapshot=snapshot_sources();verify_model()
     DIR.mkdir(exist_ok=True);results=[]
-    deck=DIR/'mix5-ideal.cir';deck.write_text(mixer5());output=run(deck)
+    deck=DIR/'mix5-ideal.cir';body=mixer5();deck.write_text(body);output=run(deck)
     match=re.search(r'^0\s+([-+\d.eE]+)\s+([-+\d.eE]+)',output,re.M)
     op={'sum_prelevel':float(match[1]),'sum_out':float(match[2])} if match else {}
-    if len(op)!=2:raise RuntimeError(output)
-    if abs(op['sum_prelevel']+10)>=.01 or abs(op['sum_out']-5)>=.01:
-        raise RuntimeError(f'MIX5 ideal summer target failed: {op}')
-    results.append({'deck':str(deck.relative_to(ROOT)),'status':'PASS - ideal model only','result_V':op,'condition':'All five inputs +5 V, all input attenuverters at +1, LEVEL at midpoint. No saturation or tolerance modeled.'})
+    check_mix5_result(op)
+    results.append({'deck':str(deck.relative_to(ROOT)),'status':'PASS - ideal model only','deck_sha256':hashlib.sha256(body.encode()).hexdigest(),'result_V':op,'condition':'All five inputs +5 V, all input attenuverters at +1, LEVEL at midpoint. No saturation or tolerance modeled.'})
     mix4_rows=[]
     for command in (-5,0,2.5,5):
         for amplitude in (0,1,5):
-            deck=DIR/f'mix4-vendor-{str(command).replace("-","n").replace(".","p")}-{amplitude}v.cir';deck.write_text(mixer4(command,amplitude));output=run(deck)
+            deck=DIR/f'mix4-vendor-{str(command).replace("-","n").replace(".","p")}-{amplitude}v.cir';body=mixer4(command,amplitude);deck.write_text(body);output=run(deck)
             values={k:float(v) for k,v in re.findall(r'^(out_(?:max|min))\s*=\s*([-+\d.eE]+)',output,re.M)}
             if len(values)!=2:raise RuntimeError(output)
-            row={'deck':str(deck.relative_to(ROOT)),'status':'MEASURED - vendor single OTA model only','command_V':command,
+            row={'deck':str(deck.relative_to(ROOT)),'status':'MEASURED - vendor single OTA model only','deck_sha256':hashlib.sha256(body.encode()).hexdigest(),'command_V':command,
                         'imposed_bias_uA':max(0,command)*100,'input_peak_each_V':amplitude,'output_extrema_V':values,
                         'condition':'Four coherent 1 kHz ideal sources stand in for protected input/attenuverter chains; captured summer, 100k/100 Ω OTA divider, offset pot, IABC series resistor and TIA; unbounded dependent E-source summer/TIA (no supply pins or saturation); ±12 V sources power the OTA model only; 100k output load replaces output cell; frozen calibration.'}
             results.append(row);mix4_rows.append(row)
-    failures=model_failures(mix4_rows)
-    report={'schema_version':2,'authority':'PROPOSAL - unvalidated','oracle':'KiCad 10.0.6 ngspice via scripts/kicad/run.sh',
+    failures=model_failures(mix4_rows, complete=True)
+    verify_snapshot(snapshot)
+    if fingerprint(current_mix4_contract())!=evaluated:raise ValueError('MIX4 source changed during execution')
+    verify_model()
+    for row in results:
+        if row['deck_sha256']!=hashlib.sha256((ROOT/row['deck']).read_bytes()).hexdigest():
+            raise ValueError('previously evaluated mixer deck changed during execution')
+    report={'schema_version':3,'source_projection':projection,'source_projection_sha256':evaluated,'model_sha256':MODEL_SHA256,'authority':'PROPOSAL - unvalidated','oracle':'KiCad 10.0.6 ngspice via scripts/kicad/run.sh',
             'status':'MODEL TARGET FAIL' if failures else 'Bounded waveform and zero-bias model checks met; feedthrough open; hardware unvalidated',
             'model':'Retained TI/National LM13700/NS single OTA; model pin order IABC, DIODE, IN+, IN-, OUT, V-, BUFFER_IN, BUFFER_OUT, V+ matches physical OTA1 pins 1,2,3,4,5,6,7,8,11.',
             'calibration':{'procedure':'At +5 V command and zero input, adjust the existing ±5 V offset wiper to near-zero output. At four coherent 5 V peak inputs, adjust the existing 100–110 kΩ TIA feedback below the ±10 V envelope. Freeze both settings for all vectors.',

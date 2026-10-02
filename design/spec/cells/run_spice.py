@@ -2,6 +2,7 @@
 from pathlib import Path
 import json,re,subprocess,sys
 from ._builder import ROOT,CELLS
+from .sweep_precision_vendor import check_retained
 DECKS={
  'bipolar_attenuverter':('attenuverter-ideal.cir',{'v(out0)':(-5,0.001),'v(out05)':(0,0.001),'v(out1)':(5,0.001)}),
  'magnitude_indicator':('magnitude-bridge-ideal.cir',{'@dledp[id]':(5/5600,2e-6),'@dledn[id]':(5/5600,2e-6)}),
@@ -19,7 +20,7 @@ def measured(output,name):
 def build():
  rows=[]
  vendor=json.loads((ROOT/'design/reports/spice/precision-output-vendor.json').read_text())
- if vendor['fail_count'] or len(vendor['cases'])!=12:raise AssertionError('precision vendor model target failure; run sweep_precision_vendor for case details')
+ check_retained(vendor)
  for id in CELLS:
   if id=='precision_output':
    rows.append({'id':id,'status':'PASS - TI MODEL ONLY','cases':len(vendor['cases']),'failed_cases':vendor['fail_count'],'report':'design/reports/spice/precision-output-vendor.json','limit':'TI OPAx197 Final 1.3 is applicable to OPA4197, but tolerance, board/cable parasitics and physical stability remain NOT RUN.'})
