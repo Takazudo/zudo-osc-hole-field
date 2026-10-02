@@ -151,7 +151,7 @@ class PanelFeatureTests(unittest.TestCase):
                 edge = next(item for item in self.board.GetDrawings()
                             if item.GetLayer() == pcbnew.Edge_Cuts)
                 if remove:
-                    self.board.Remove(edge)
+                    self.remove_grouped_item(edge)
                 else:
                     edge.SetLayer(pcbnew.F_SilkS)
                 with self.assertRaisesRegex(ValueError, 'outline differs'):
@@ -194,15 +194,24 @@ class PanelFeatureTests(unittest.TestCase):
                 with self.assertRaisesRegex(ValueError, 'outline differs|locked frame'):
                     self.verify(params_path=path)
 
+    def remove_grouped_item(self, item):
+        # KiCad groups retain native pointers: detach before removing an item.
+        for group in self.board.Groups():
+            if any(member.m_Uuid == item.m_Uuid for member in group.GetItems()):
+                group.RemoveItem(item)
+        self.board.Remove(item)
+
     def replace_outline(self, params):
         from scripts.pcbgen.geometry import outline_segments
-        for item in list(self.board.GetDrawings()):
-            if item.GetLayer() == pcbnew.Edge_Cuts:
-                self.board.Remove(item)
+        from scripts.pcbgen.uuid_tools import stable_uuid
+        # Update the existing native items as the generator does; preserve
+        # their identities and ownership-group membership in the fixture.
+        edges = {item.m_Uuid.AsString(): item for item in self.board.GetDrawings()
+                 if item.GetLayer() == pcbnew.Edge_Cuts}
         outline = [(0, 0), (params['width_mm'], 0),
                    (params['width_mm'], params['height_mm']), (0, params['height_mm'])]
-        for segment in outline_segments(outline, params['corner_radius_mm']):
-            item = pcbnew.PCB_SHAPE(self.board)
+        for index, segment in enumerate(outline_segments(outline, params['corner_radius_mm'])):
+            item = edges[stable_uuid('panel', 'outline', str(index))]
             points = [pcbnew.VECTOR2I(pcbnew.FromMM(x + 100), pcbnew.FromMM(y + 50))
                       for x, y in segment[1:]]
             if segment[0] == 'arc':
@@ -210,8 +219,6 @@ class PanelFeatureTests(unittest.TestCase):
             else:
                 item.SetShape(pcbnew.SHAPE_T_SEGMENT)
                 item.SetStart(points[0]); item.SetEnd(points[1])
-            item.SetLayer(pcbnew.Edge_Cuts); item.SetWidth(pcbnew.FromMM(.05))
-            self.board.Add(item)
 
     def test_source_shrink_cannot_cut_through_locked_hardware(self):
         params = json.loads(PARAMS.read_text()); params['width_mm'] = 100
