@@ -1,7 +1,11 @@
 """Pilot module source, binding, and storage-node contract tests."""
 import json
+from pathlib import Path
+import tempfile
 import unittest
+from unittest.mock import patch
 from design.spec.modules.sample_hold import family,panel_bindings,specification,ROOT
+from design.spec.modules import build_sample_hold_current as current_module
 from design.spec.modules.build_sample_hold_current import build as current_report
 from scripts.schgen.core import designator
 
@@ -55,6 +59,26 @@ class SampleHoldContract(unittest.TestCase):
   for row in report['instances']:
    self.assertIsNone(row['complete_total_maximum_mA'])
    self.assertIn('NOT ESTABLISHED',row['maximum_status_by_rail']['+5V'])
+ def test_committed_current_report_matches_current_capture(self):
+  current_module.main(check=True)
+ def test_obsolete_led_population_is_rejected_by_report_check(self):
+  report=current_report()
+  selected={p.symbol.split(':')[-1] for p in self.parts
+            if p.attributes.get('PanelUid','').startswith('L:')}
+  self.assertEqual(len(selected),1)
+  symbol=selected.pop()
+  self.assertNotEqual(symbol,'0603Whitelight_C2290')
+  with tempfile.TemporaryDirectory() as directory:
+   out=Path(directory)/'sample_hold.json'
+   with patch.object(current_module,'OUT',out):
+    out.write_text(json.dumps(report,indent=2)+'\n')
+    current_module.main(check=True)
+    count=report['fitted_package_count_per_instance'].pop(symbol)
+    self.assertEqual(count,3)
+    report['fitted_package_count_per_instance']['0603Whitelight_C2290']=count
+    out.write_text(json.dumps(report,indent=2)+'\n')
+    with self.assertRaisesRegex(SystemExit,'current report drift'):
+     current_module.main(check=True)
  def test_local_decoupling_and_bulk_reservations(self):
   caps=[p for p in self.parts if p.key.startswith('C_DEC_')]
   bulk=[p for p in self.parts if p.key.startswith('C_BULK_')]
