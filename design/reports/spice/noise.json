@@ -3,6 +3,207 @@
   "module": "noise",
   "status": "PASS - small-signal filters only",
   "oracle": "pinned KiCad 10 ngspice",
+  "source_projection": {
+    "included": "Fixed nominal reconstruction, AC coupling, buffer and colour-shaping subgraph",
+    "ideal_boundaries": [
+      "WHITE_RAW and PINK_RAW are separate flat ideal AC sources",
+      "WHITE_SIGNAL, PINK_SIGNAL, BROWN_SHAPE and BLUE_SHAPE are model outputs",
+      "Amplifiers have ideal input/output impedance and finite open-loop gain 1e6",
+      "WHITE/PINK include an extra synthetic closed-loop 1e6 readout follower; it is not a captured stage"
+    ],
+    "excluded": [
+      "NOISE2 spectra, output impedance, clock feedthrough and supply behavior",
+      "Level stages, trims, output cells, jack loads and cross-channel coupling",
+      "Offset, bias, leakage, tolerance, temperature, rails, headroom and hardware stability"
+    ],
+    "checked_parts": {
+      "noise:BLUE_DIFF": {
+        "symbol": "zudo-osc-hole-field:OPA4196IDR",
+        "unit": 1,
+        "value": "OPA4196IDR",
+        "pins": {
+          "1": "BLUE_SHAPE",
+          "2": "BLUE_SUM",
+          "3": "AGND"
+        }
+      },
+      "noise:BROWN_LEAK": {
+        "symbol": "zudo-osc-hole-field:OPA4196IDR",
+        "unit": 4,
+        "value": "OPA4196IDR",
+        "pins": {
+          "14": "BROWN_SHAPE",
+          "13": "BROWN_SUM",
+          "12": "AGND"
+        }
+      },
+      "noise:C_BLUE_FEEDBACK": {
+        "symbol": "zudo-osc-hole-field:C0603C101J5GACTU",
+        "unit": 0,
+        "value": "33 pF",
+        "pins": {
+          "1": "BLUE_SHAPE",
+          "2": "BLUE_SUM"
+        }
+      },
+      "noise:C_BLUE_INPUT": {
+        "symbol": "zudo-osc-hole-field:C0603C101J5GACTU",
+        "unit": 0,
+        "value": "100 pF",
+        "pins": {
+          "1": "PINK_SIGNAL",
+          "2": "BLUE_SERIES"
+        }
+      },
+      "noise:C_BROWN_LEAK": {
+        "symbol": "zudo-osc-hole-field:C0603C101J5GACTU",
+        "unit": 0,
+        "value": "10 nF",
+        "pins": {
+          "1": "BROWN_SHAPE",
+          "2": "BROWN_SUM"
+        }
+      },
+      "noise:C_PINK_AC": {
+        "symbol": "zudo-osc-hole-field:GRM188R71H104KA93D",
+        "unit": 0,
+        "value": "100 nF",
+        "pins": {
+          "1": "PINK_LP",
+          "2": "PINK_AC"
+        }
+      },
+      "noise:C_PINK_RECON": {
+        "symbol": "zudo-osc-hole-field:C0603C101J5GACTU",
+        "unit": 0,
+        "value": "10 nF",
+        "pins": {
+          "1": "PINK_LP",
+          "2": "AGND"
+        }
+      },
+      "noise:C_WHITE_AC": {
+        "symbol": "zudo-osc-hole-field:GRM188R71H104KA93D",
+        "unit": 0,
+        "value": "100 nF",
+        "pins": {
+          "1": "WHITE_LP",
+          "2": "WHITE_AC"
+        }
+      },
+      "noise:C_WHITE_RECON": {
+        "symbol": "zudo-osc-hole-field:C0603C101J5GACTU",
+        "unit": 0,
+        "value": "10 nF",
+        "pins": {
+          "1": "WHITE_LP",
+          "2": "AGND"
+        }
+      },
+      "noise:PINK_INPUT": {
+        "symbol": "zudo-osc-hole-field:OPA4196IDR",
+        "unit": 3,
+        "value": "OPA4196IDR",
+        "pins": {
+          "8": "PINK_SIGNAL",
+          "9": "PINK_SIGNAL",
+          "10": "PINK_AC"
+        }
+      },
+      "noise:PINK_SOURCE": {
+        "symbol": "zudo-osc-hole-field:OPA4196IDR",
+        "unit": 2,
+        "value": "OPA4196IDR",
+        "pins": {
+          "7": "PINK_SOURCE",
+          "6": "PINK_SOURCE",
+          "5": "PINK_RAW"
+        }
+      },
+      "noise:R_BLUE_FEEDBACK": {
+        "symbol": "zudo-osc-hole-field:RT0603BRD07100KL",
+        "unit": 0,
+        "value": "100 k\u03a9",
+        "pins": {
+          "1": "BLUE_SHAPE",
+          "2": "BLUE_SUM"
+        }
+      },
+      "noise:R_BLUE_INPUT": {
+        "symbol": "zudo-osc-hole-field:RT0603BRD07100KL",
+        "unit": 0,
+        "value": "100 k\u03a9",
+        "pins": {
+          "1": "BLUE_SERIES",
+          "2": "BLUE_SUM"
+        }
+      },
+      "noise:R_BROWN_IN": {
+        "symbol": "zudo-osc-hole-field:RT0603BRD07100KL",
+        "unit": 0,
+        "value": "100 k\u03a9",
+        "pins": {
+          "1": "WHITE_SIGNAL",
+          "2": "BROWN_SUM"
+        }
+      },
+      "noise:R_BROWN_LEAK": {
+        "symbol": "zudo-osc-hole-field:RT0603BRD07100KL",
+        "unit": 0,
+        "value": "1 M\u03a9",
+        "pins": {
+          "1": "BROWN_SHAPE",
+          "2": "BROWN_SUM"
+        }
+      },
+      "noise:R_PINK_BLEED": {
+        "symbol": "zudo-osc-hole-field:RT0603BRD07100KL",
+        "unit": 0,
+        "value": "100 k\u03a9",
+        "pins": {
+          "1": "PINK_AC",
+          "2": "AGND"
+        }
+      },
+      "noise:R_PINK_RECON": {
+        "symbol": "zudo-osc-hole-field:RT0603BRD07100KL",
+        "unit": 0,
+        "value": "1 k\u03a9",
+        "pins": {
+          "1": "PINK_SOURCE",
+          "2": "PINK_LP"
+        }
+      },
+      "noise:R_WHITE_BLEED": {
+        "symbol": "zudo-osc-hole-field:RT0603BRD07100KL",
+        "unit": 0,
+        "value": "100 k\u03a9",
+        "pins": {
+          "1": "WHITE_AC",
+          "2": "AGND"
+        }
+      },
+      "noise:R_WHITE_RECON": {
+        "symbol": "zudo-osc-hole-field:RT0603BRD07100KL",
+        "unit": 0,
+        "value": "1 k\u03a9",
+        "pins": {
+          "1": "WHITE_RAW",
+          "2": "WHITE_LP"
+        }
+      },
+      "noise:WHITE_INPUT": {
+        "symbol": "zudo-osc-hole-field:OPA4196IDR",
+        "unit": 1,
+        "value": "OPA4196IDR",
+        "pins": {
+          "1": "WHITE_SIGNAL",
+          "2": "WHITE_SIGNAL",
+          "3": "WHITE_AC"
+        }
+      }
+    }
+  },
   "runs": [
     {
       "colour": "WHITE",
