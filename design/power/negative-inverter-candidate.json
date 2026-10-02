@@ -1,0 +1,91 @@
+{
+  "schema_version": 1,
+  "selected": false,
+  "qualification_accepted": false,
+  "canonical_protection_implemented": false,
+  "status": "UNSELECTED STATIC CANDIDATE STUDY; NO NATIVE CAPTURE",
+  "amplifier_mpn": "OPA388IDBVR",
+  "amplifier_pins": {
+    "1": "NEG_MAG",
+    "2": "AGND",
+    "3": "AGND",
+    "4": "NEG_SUM",
+    "5": "+5V"
+  },
+  "resistors": [
+    {
+      "ref": "RN1",
+      "mpn": "RT0603BRD07150KL",
+      "ohm": 150000,
+      "pins": [
+        "VN",
+        "RN_MID"
+      ]
+    },
+    {
+      "ref": "RN2",
+      "mpn": "RT0603BRD071KL",
+      "ohm": 1000,
+      "pins": [
+        "RN_MID",
+        "NEG_SUM"
+      ]
+    },
+    {
+      "ref": "RF",
+      "mpn": "RT0603BRD074K99L",
+      "ohm": 4990,
+      "pins": [
+        "NEG_MAG",
+        "NEG_SUM"
+      ]
+    },
+    {
+      "ref": "RG",
+      "mpn": "RT0603BRD07150RL",
+      "ohm": 150,
+      "pins": [
+        "NEG_SUM",
+        "AGND"
+      ]
+    }
+  ],
+  "hypothetical_interface": {
+    "TPS_part": "U101",
+    "SENSE2_pin": "3",
+    "new_net": "NEG_MAG",
+    "previously_unused": true,
+    "SENSE1_pin": "2",
+    "future_unused_net": null,
+    "removed_block_if_eventually_selected": "U102/U103 and their reference/negative-monitor resistor network; no such edits are made by this study."
+  },
+  "conditions": {
+    "resistor_reference_C": 25,
+    "resistor_temperature_C": [
+      -40,
+      125
+    ],
+    "reference_temperature_scope": "25C is an analysis reference, not specified by the retained exact resistor sheets.",
+    "forced_VN_V": [
+      -12.48,
+      12.48
+    ],
+    "forced_output_V": [
+      0,
+      5.2
+    ],
+    "cold_current_sensitivity_each_A": 1e-05,
+    "forced_port_scope": "Externally prescribed port voltages and independent current sources; not established reachable semiconductor envelopes.",
+    "negative_fault_witness_V": -10.9
+  },
+  "open_gates": [
+    "Actual joint offset/common-mode/bias/load/supply error must fit the derived strict total-error allowance.",
+    "Actual OPA output and TPS input currents, output clamps/backdrive, unpowered/partial-power states and retained-capacitance injection are unbounded here.",
+    "A forced or shorted output can contend with amplifier drive; resistor branch currents do not bound that drive. Source short-circuit current entries are typical, not maximum limits.",
+    "OPA startup/settling/overload recovery and compensation have no application maximum from the retained typical rows.",
+    "TPS 10% overdrive and actual paired-reset load conditions remain unmet/unproved; nominal startup is not a maximum.",
+    "Current allocation comparison borrows source-point IQ and leakage only as explicit assumptions; actual operating and dynamic current remain unqualified.",
+    "Local AGND loss, return integrity and full signal isolation are independent unresolved requirements.",
+    "No selection, native schematic/PCB, physical temperature/fit/stock/procurement or installed protection claim."
+  ]
+}

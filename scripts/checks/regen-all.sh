@@ -51,6 +51,7 @@ done
 python3 scripts/schgen/generate_monitor_permit.py
 python3 scripts/checks/monitor_permit_behavior.py
 python3 scripts/checks/monitor_permit_current.py
+python3 scripts/checks/negative_inverter_candidate.py
 python3 scripts/checks/monitor_reference_capacitance.py
 python3 scripts/checks/monitor_reference_validity.py
 python3 scripts/checks/monitor_reference_compatibility.py
