@@ -72,6 +72,16 @@ def validate(spec):
     return rows
 
 
+def require_connected_ground_copper(spec, native):
+    """Reject isolated source ground copper, including non-array stitches."""
+    expected = {row['uuid'] for row in spec['copper'] if row['net'] == 'AGND'}
+    disconnected = expected - set(native['main_rail_members']['AGND'])
+    if disconnected:
+        raise ValueError('Source ground copper is disconnected from main ground: '+
+                         ', '.join(sorted(disconnected)))
+    return len(expected)
+
+
 def build(source, output):
     import pcbnew
     from scripts.pcbgen.definition import load_definition

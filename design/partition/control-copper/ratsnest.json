@@ -1,7 +1,7 @@
 {
   "board": "boards/osc-control/osc-control-routed-draft.kicad_pcb",
   "board_net_count": 833,
-  "board_sha256": "526fc58a7f7f05dfece1e3eb572678fd84a3b529065686579ea6d781a4433291",
+  "board_sha256": "cd6b3c2339a6f2631d9d0fca2e4eddd5053b8c7bbc29ec02577f637b131296d5",
   "multi_pad_candidate_net_count": 348,
   "multi_pad_candidate_net_names": [
     "+12V",
@@ -355,7 +355,7 @@
   ],
   "name_scope": "native_open_edges_by_net is complete and sum-checked. multi_pad_candidate_net_names is a separate candidate inventory; CLI DRC JSON can truncate its item list.",
   "named_edge_basis": "Native GetConnectedItems connectivity clusters including filled-zone islands; each net has clusters minus one edges; sum must equal native GetUnconnectedCount(False). Orphan zone-only islands excluded by native ratsnest policy.",
-  "named_edge_count_sum": 93,
+  "named_edge_count_sum": 72,
   "native_open_edge_source_identities": [
     {
       "native_net_name": "+12V",
@@ -364,7 +364,7 @@
     },
     {
       "native_net_name": "+5V",
-      "native_open_edges": 28,
+      "native_open_edges": 13,
       "source_net_name": "+5V"
     },
     {
@@ -418,11 +418,6 @@
       "source_net_name": "/X1/A_BUFFER"
     },
     {
-      "native_net_name": "X387EC52CA3999BB128B1",
-      "native_open_edges": 1,
-      "source_net_name": "/H2/RAW_HELD"
-    },
-    {
       "native_net_name": "X3C30CF4F46CC9EAA54FD",
       "native_open_edges": 1,
       "source_net_name": "/E4/C992951_DEBOUNCE"
@@ -436,11 +431,6 @@
       "native_net_name": "X479764B836FB7BB3EF48",
       "native_open_edges": 1,
       "source_net_name": "/E6/ASR_RAW"
-    },
-    {
-      "native_net_name": "X514AF48BBD9C212363F8",
-      "native_open_edges": 1,
-      "source_net_name": "/A01/Cc045d2_W"
     },
     {
       "native_net_name": "X547DC548216A545CE445",
@@ -519,7 +509,7 @@
     },
     {
       "native_net_name": "X94AE1057F6F6F403AA12",
-      "native_open_edges": 2,
+      "native_open_edges": 1,
       "source_net_name": "/E5/TRIG_CONTACT"
     },
     {
@@ -536,16 +526,6 @@
       "native_net_name": "XAB90894E398C3C7E5F74",
       "native_open_edges": 1,
       "source_net_name": "/A05/Cc045d2_W"
-    },
-    {
-      "native_net_name": "XABD60A45AAAC75EB8951",
-      "native_open_edges": 1,
-      "source_net_name": "/F3/FREQ_REMOTE"
-    },
-    {
-      "native_net_name": "XB9604987375065EFAB29",
-      "native_open_edges": 1,
-      "source_net_name": "/E1/TRIG_CONTACT"
     },
     {
       "native_net_name": "XBD6357A0B75FD46712BB",
@@ -583,11 +563,6 @@
       "source_net_name": "/E2/ASR_CONTACT"
     },
     {
-      "native_net_name": "XE3CCFA14F6E3DCF3F5F1",
-      "native_open_edges": 1,
-      "source_net_name": "/H2/SLEW_STORAGE"
-    },
-    {
       "native_net_name": "XE57A4DF41E8F2F4A1ABF",
       "native_open_edges": 1,
       "source_net_name": "/E1/ASR_CONTACT"
@@ -620,7 +595,7 @@
   ],
   "native_open_edges_by_net": {
     "+12V": 4,
-    "+5V": 28,
+    "+5V": 13,
     "-12V": 4,
     "X0F98EC836B304857ABC5": 2,
     "X130E2D2473EEC58833A8": 1,
@@ -631,11 +606,9 @@
     "X21BEBE4AB581C385D0B8": 1,
     "X2BCD7805C65AE3992EDF": 1,
     "X37DEB0D3B35ED7C3B732": 1,
-    "X387EC52CA3999BB128B1": 1,
     "X3C30CF4F46CC9EAA54FD": 1,
     "X3FCBFC999FCAA257D324": 1,
     "X479764B836FB7BB3EF48": 1,
-    "X514AF48BBD9C212363F8": 1,
     "X547DC548216A545CE445": 1,
     "X6158489D0D822E09DE71": 2,
     "X652F7E92722B07CC611F": 1,
@@ -651,12 +624,10 @@
     "X8A58565164C7AD5DB771": 1,
     "X8F338CC60323B9942D2C": 1,
     "X9480A1F10120402F93CC": 1,
-    "X94AE1057F6F6F403AA12": 2,
+    "X94AE1057F6F6F403AA12": 1,
     "X98302BA4179BABC520A9": 1,
     "X9D8BBA8996899EAF9E11": 1,
     "XAB90894E398C3C7E5F74": 1,
-    "XABD60A45AAAC75EB8951": 1,
-    "XB9604987375065EFAB29": 1,
     "XBD6357A0B75FD46712BB": 1,
     "XC6592B5E19554E448150": 2,
     "XC6A7664726BAFEE0BCFA": 1,
@@ -664,7 +635,6 @@
     "XD495321DB3DAE206B30C": 1,
     "XE2766944E33E2DEBD272": 1,
     "XE31F05877B8C46E4CC67": 2,
-    "XE3CCFA14F6E3DCF3F5F1": 1,
     "XE57A4DF41E8F2F4A1ABF": 1,
     "XE5EBE89E3604C69EA63D": 1,
     "XE94499060CE17305BDE7": 1,
@@ -672,7 +642,7 @@
     "XF0DC26E7D2B4314CF41F": 1,
     "XF6BF97BFAAAC54218A4D": 2
   },
-  "native_open_net_count": 52,
-  "native_unconnected_edges": 93,
+  "native_open_net_count": 47,
+  "native_unconnected_edges": 72,
   "schema_version": 2
 }
