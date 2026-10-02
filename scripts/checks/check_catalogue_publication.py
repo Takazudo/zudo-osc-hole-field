@@ -2,6 +2,7 @@
 """Require an explicit publication decision for every manual inventory record."""
 from pathlib import Path
 import json
+import re
 
 ROOT = Path(__file__).resolve().parents[2]
 
@@ -73,6 +74,43 @@ def read(path):
     return json.loads((ROOT / path).read_text())
 
 
+def locked_renderer_version(lock_text, package, installed_version=None):
+    """Read only pnpm's canonical root-importer projection; reject other layouts.
+
+    This intentionally is not a general YAML parser. Unsupported/ambiguous lock
+    shapes fail rather than picking a similarly named transitive package.
+    """
+    def block(lines, key, indent):
+        marker = ' ' * indent + key + ':'
+        matches = [i for i, line in enumerate(lines) if line == marker]
+        if len(matches) != 1:
+            raise ValueError(f'lockfile needs one canonical {key} block')
+        start = matches[0] + 1
+        end = next((i for i in range(start, len(lines))
+                    if lines[i].strip() and len(lines[i]) - len(lines[i].lstrip()) <= indent), len(lines))
+        return lines[start:end]
+
+    lines = block(lock_text.splitlines(), 'importers', 0)
+    lines = block(lines, '.', 2)
+    lines = block(lines, 'devDependencies', 4)
+    lines = block(lines, "'@takazudo/zudo-circuit-doc'", 6)
+    values = {}
+    for key in ('specifier', 'version'):
+        matches = [line[8 + len(key) + 2:] for line in lines if line.startswith(' ' * 8 + key + ': ')]
+        if len(matches) != 1:
+            raise ValueError(f'lockfile renderer needs one {key}')
+        values[key] = matches[0]
+    if values['specifier'] != package['devDependencies']['@takazudo/zudo-circuit-doc']:
+        raise ValueError('renderer package specifier differs from root lockfile')
+    match = re.fullmatch(r'(\d+\.\d+\.\d+(?:-[0-9A-Za-z.-]+)?)(?:\([^\s]+\))?', values['version'])
+    if match is None:
+        raise ValueError('renderer lockfile version is not a registry release')
+    version = match[1]
+    if installed_version is not None and installed_version != version:
+        raise ValueError('installed renderer differs from locked version')
+    return version
+
+
 def main():
     lines = read('.claude/skills/component-spec-audit/references/inventory.json')['lines']
     records = []; sources = []; facts = []
@@ -81,10 +119,13 @@ def main():
         records += read(f'{directory}/manifest.json')['records']
         sources += read(f'{directory}/sources.json')['sources']
         facts += read(f'{directory}/facts.json')['facts']
+    installed = ROOT / 'node_modules/@takazudo/zudo-circuit-doc/package.json'
+    version = locked_renderer_version((ROOT / 'pnpm-lock.yaml').read_text(), read('package.json'),
+                                      json.loads(installed.read_text())['version'] if installed.exists() else None)
     result = check_publication(lines, records, read('circuit/publication/selection.json'),
                                read('design/standard/catalogue-publication.json'),
                                keyed(sources, 'source_id'), keyed(facts, 'fact_id'),
-                               read('node_modules/@takazudo/zudo-circuit-doc/package.json')['version'])
+                               version)
     print('PASS: explicit catalogue decisions:', result)
     if result['blocked']:
         print('SCOPE: catalogue completion remains OPEN; renderer blockers are explicit, not waived. Physical qualification NOT RUN.')

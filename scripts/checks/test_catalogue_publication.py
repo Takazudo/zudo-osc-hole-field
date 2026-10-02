@@ -71,5 +71,35 @@ class PublicationCoverageTests(unittest.TestCase):
         with self.assertRaises(ValueError): self.check(sources=sources, facts=facts)
 
 
+
+class RendererLockTests(unittest.TestCase):
+    def test_reads_root_resolution_without_node_modules(self):
+        from scripts.checks.check_catalogue_publication import locked_renderer_version
+        lock = """importers:
+
+  .:
+    devDependencies:
+      '@takazudo/zudo-circuit-doc':
+        specifier: ^0.1.0
+        version: 0.1.0(peer@2.0.0)
+
+  doc:
+    dependencies:
+      '@takazudo/zudo-circuit-doc':
+        specifier: ^0.2.0
+        version: 0.2.0
+"""
+        package = {'devDependencies': {'@takazudo/zudo-circuit-doc': '^0.1.0'}}
+        self.assertEqual(locked_renderer_version(lock, package), '0.1.0')
+        self.assertEqual(locked_renderer_version(lock, package, '0.1.0'), '0.1.0')
+        with self.assertRaisesRegex(ValueError, 'installed renderer'):
+            locked_renderer_version(lock, package, '0.2.0')
+        for bad in (lock.replace('specifier: ^0.1.0', 'specifier: ^0.2.0'),
+                    lock.replace('version: 0.1.0(peer@2.0.0)', 'version: link:../renderer'),
+                    lock.replace('  .:', '  elsewhere:'),
+                    lock.replace('        version: 0.1.0(peer@2.0.0)', '        version: 0.1.0\n        version: 0.2.0')):
+            with self.assertRaises(ValueError):
+                locked_renderer_version(bad, package)
+
 if __name__ == '__main__':
     unittest.main()
