@@ -109,6 +109,9 @@ jobs:
       - name: Run native IC display-envelope placement checks
         run: bash scripts/kicad/run.sh python3 scripts/libgen/fixtures/check_wrl_dimensions.py --check
 
+      - name: Reject malformed native panel features
+        run: bash scripts/kicad/run.sh python3 scripts/panel/check_feature_mutations.py
+
       - name: Check aggregate source regeneration
         id: aggregate
         run: |
