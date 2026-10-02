@@ -20,11 +20,16 @@ schematic-parity findings for this candidate. It initially retained 42 silkscree
 warnings. Source-driven label regeneration then placed all 418 references
 and the full native layout replay passed with zero violations. Obsolete
 signal routes and dangling rail branches were removed. Sixteen local bypass
-connections and ten signal links were added. The current partial copper has
-854 segments, 246 vias and 406 open edges, zero DRC/parity findings, and all
+connections and ten signal links were added, followed by seventeen additional
+local signal links using short layer changes. The current partial copper has
+905 segments, 278 vias and 389 open edges, zero DRC/parity findings, and all
 344 ground contacts connected after independent refill. Combined final
 replay, 26 targeted tests, documentation build and publication checks passed
 in 83 seconds, with the existing workbench link exception retained. All 482 PCB tests and 281 source/check tests pass. CI is pending. The previous 366-open-edge copper checkpoint remains in git
 history and is not evidence for the new placement. Current-source connectivity,
 resistance/current limits, protection and physical qualification remain open.
 No fabrication or order files are produced.
+
+The seventeen layer-change links passed a separate full replay, 26 targeted
+tests and publication checks in 81 seconds. All sixteen bypass rail pairs
+and all 344 ground contacts remain connected after independent refill.

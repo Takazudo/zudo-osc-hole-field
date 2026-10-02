@@ -5,14 +5,14 @@
 layout's 418 packages, 36 supports, 139 fixed controls, actual outline, stack
 proposal and reservations. The canonical partition outline remains separate.
 
-`copper.json` owns 854 track segments and 246 through vias, including all 150
+`copper.json` owns 905 track segments and 278 through vias, including all 150
 main-terminal array vias. Coordinates are native integer nanometres. The
 constructor appends only this copper and the source-defined ground pours to
 the checked labelled layout, preserving every other input byte. Each main
 array's complete annuli remain inside its owning 4 × 4 mm terminal.
 
 Fresh KiCad 10.0.6 checks give zero DRC violations, zero schematic-parity
-findings, **406 open edges** and **344/344 connected ground contacts**. All
+findings, **389 open edges** and **344/344 connected ground contacts**. All
 **16 local IC/bypass rail pairs are connected**, with at most 2.535 mm between
 supply-pad centres. Independent reload/refill retains the connectivity.
 `ratsnest.json` contains the complete per-net inventory; the truncated CLI
@@ -25,7 +25,8 @@ positions remain unchanged. The earlier 366-edge checkpoint is retained in
 git history. Its copper at the moved ICs is not reused as valid routing:
 obsolete signal-net routes and incompatible/dangling copper were removed,
 leaving 432 open edges. Sixteen local bypass connections and ten local signal
-links then reduced that count to 406. Source metadata records the removed
+links then reduced that count to 406. Seventeen short signal links using
+off-pad layer changes subsequently reduced it to 389. Source metadata records the removed
 copper and new links. All failed local trials remain available in the cache.
 
 The earlier recovery from a partial autorouter session corrected omitted
@@ -54,7 +55,9 @@ layout passed native replay with zero rule/parity findings and all 418 labels.
 The copper cleanup and local-routing trials passed native DRC and independent
 refill. Combined final replay, 26 targeted tests, documentation build and publication
 checks passed in 83 seconds. Strict link checks retain the existing single
-workbench exception. All 482 PCB tests and 281 source/check tests pass. CI is pending.
+workbench exception. All 482 PCB tests and 281 source/check tests pass for the bypass-repair
+checkpoint. Final replay, 26 targeted tests and publication checks for the seventeen
+additional links passed in 81 seconds. Integrated CI is pending.
 
 Current-source resistance/current analysis, global rail-distribution
 compliance, protection, source/inlet selection, manufacturing and installed
