@@ -6,9 +6,26 @@ The definition contains a panel-frame outline polygon, optional convex corner ra
 
 A footprint belongs to this generator only when its UUID equals the UUIDv5 derived from the board ID and reference. The same rule applies to outline segments, declared mounting holes, and rule-area keepouts. Sync can remove those items when the source removes them. It never removes an unowned footprint, track, via, zone, text or graphic; a conflicting unowned reference fails before the generator takes it over. Existing free footprints retain their current location. Fixed hardware footprints return to their lockfile position and are locked. Library footprints are loaded once per type, then cloned. KiCad's random generated UUIDs are rewritten after save; the postpass also sorts only owned footprint/keepout blocks so repeated syncs are byte-identical. Schematic paths use the netlist sheet and symbol UUIDs.
 
+Fixed hardware always returns to F.Cu before the exact lockfile angle is applied.
+An explicit B.Cu or conflicting `KiCadOrientationDeg` fails without saving the
+board; equivalent full turns are accepted but the lockfile angle is retained.
+For free components, changing the library footprint preserves position, side,
+native angle and locked state. Explicit `BoardSide` then applies KiCad's native
+flip, followed by an explicit `KiCadOrientationDeg` if supplied. Source-origin
+locking still applies when `FootprintOriginMm` is present without `BoardRegion`;
+sync never unlocks an existing free footprint. Nonfinite source angles fail.
+New hidden source fields explicitly use KiCad's 0.15 mm default text thickness
+so their first saved form survives reload unchanged; existing field strokes remain untouched.
+
 `bash scripts/pcbgen/check.sh <board-id>` runs the pinned KiCad 10.0.6 DRC with schematic parity, zone refill and all severities, then writes JSON, top/bottom PNG renders and an SVG to `boards/<board-id>/reports/`. The summary separates rule violations, unconnected items and parity issues, and exits nonzero for DRC errors or parity issues. It does **not** claim that a clean rule check qualifies the PCB or its mechanical fit.
 
 Run `python3 -m unittest scripts.pcbgen.test_pure -v` for board-definition and UUID tests and `bash scripts/pcbgen/test_fixture.sh` for the ten-jack oracle fixture. The fixture tests exact lockfile placement, zero schematic parity issues, byte-identical repeat sync, owner track/via/zone/text/graphic preservation, component re-netting, and component removal. Its jacks are deliberately unrouted; unconnected items are expected. The synthetic circuit and board are unvalidated drafts and are never fabrication order files.
+
+The fixture also runs `fixtures/check_sync_pose.py` through the pinned oracle:
+saved B.Cu hardware is repaired to its fixed front pose, conflicting fields leave
+board bytes unchanged, replacement preserves both lock states and B.Cu placement,
+explicit source overrides take precedence, and repeat sync stays byte-identical.
+`python3 -m unittest scripts.pcbgen.test_pose -v` checks the pure source policy.
 
 Current limitations: the stackup JSON records intent while KiCad receives thickness and copper count; detailed dielectric/material rule values await the board-stack decision. Fillets require a strictly convex polygon. The fixture cannot establish physical jack-panel fit or electrical function.
 

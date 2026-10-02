@@ -18,6 +18,7 @@ from scripts.pcbgen.netlist import read_netlist
 from scripts.pcbgen.uuid_tools import stable_uuid,normalize_file
 from scripts.pcbgen.geometry import outline_segments,staging_position
 from scripts.pcbgen.footprint_attributes import source_attribute_bits
+from scripts.pcbgen.pose import source_pose
 
 LIB='zudo-osc-hole-field'
 
@@ -73,6 +74,10 @@ def sync(board_id:str,output:Path|None=None,netlist:Path|None=None):
     cache={};new_ids={};owned_refs=set()
     for index,c in enumerate(sorted(components,key=lambda x:x.ref)):
         fields=dict(c.fields)
+        try:
+            pose=source_pose(fields,by_ref[c.ref]['rot_deg'] if c.ref in by_ref else None)
+        except ValueError as error:
+            raise ValueError(f'{c.ref}: {error}') from error
         if ':' not in c.footprint:raise ValueError(f'{c.ref}: footprint lacks library nickname')
         library,name=c.footprint.split(':',1)
         fp=old_managed.get(c.ref)
@@ -102,6 +107,7 @@ def sync(board_id:str,output:Path|None=None,netlist:Path|None=None):
         # KiCad 10 returns wxString wrappers; compare their text, not wrapper identity.
         elif str(fp.GetFPID().GetLibItemName())!=name or str(fp.GetFPID().GetLibNickname())!=library:
             prior_position=fp.GetPosition();prior_orientation=fp.GetOrientationDegrees()
+            prior_layer=fp.GetLayer();prior_locked=fp.IsLocked()
             board.Remove(fp)
             src=cache.get(c.footprint)
             if src is None:
@@ -109,15 +115,22 @@ def sync(board_id:str,output:Path|None=None,netlist:Path|None=None):
                 if src is None:raise FileNotFoundError(c.footprint)
                 cache[c.footprint]=src
             fp=pcbnew.FOOTPRINT(src);fp.SetParent(board);fp.SetFPID(pcbnew.LIB_ID(library,name));fp.SetReference(c.ref)
-            fp.SetPosition(prior_position);fp.SetOrientationDegrees(prior_orientation);board.Add(fp)
+            fp.SetPosition(prior_position)
+            if fp.GetLayer()!=prior_layer:fp.Flip(fp.GetPosition(),False)
+            fp.SetOrientationDegrees(prior_orientation);fp.SetLocked(prior_locked);board.Add(fp)
         fp.SetValue(c.value)
         fp.SetPath(pcbnew.KIID_PATH(c.sheet_ts+c.symbol_ts))
         fp.SetSheetname(c.sheetname)
         fp.SetSheetfile(c.fields and dict(c.fields).get('Sheetfile',Path(definition.schematic).name) or Path(definition.schematic).name)
         for field_name,field_value in c.fields:
             if field_name not in {'Reference','Value','Footprint','Datasheet','Sheetname','Sheetfile'} and not field_name.startswith('ki_'):
+                new_field=not fp.HasField(field_name)
                 fp.SetField(field_name,field_value)
-                fp.GetField(field_name).SetVisible(False)
+                field=fp.GetField(field_name)
+                # KiCad 10 reloads an omitted new-field thickness as 0.15 mm.
+                # Declare that default on first save; preserve existing styling.
+                if new_field:field.SetTextThickness(pcbnew.FromMM(0.15))
+                field.SetVisible(False)
         if board_id=='osc-jack':
             for unit_field in ('Role','LogicalCellKey','Island'):
                 if unit_field not in fields and fp.HasField(unit_field):
@@ -125,18 +138,12 @@ def sync(board_id:str,output:Path|None=None,netlist:Path|None=None):
         if c.ref in by_ref:
             p=by_ref[c.ref]
             fp.SetPosition(vec(*to_kicad(p['x_mm'],p['y_mm'])))
-            fp.SetOrientationDegrees(p['rot_deg'])
-            fp.SetLocked(True)
-        requested_side=dict(c.fields).get('BoardSide','')
-        if requested_side not in {'','F.Cu','B.Cu'}:raise ValueError(f'{c.ref}: invalid BoardSide')
-        if c.ref in by_ref and requested_side=='B.Cu':raise ValueError(f'{c.ref}: panel hardware must face F.Cu')
-        if requested_side:
-            target_layer=pcbnew.F_Cu if requested_side=='F.Cu' else pcbnew.B_Cu
+        if pose.side:
+            target_layer=pcbnew.F_Cu if pose.side=='F.Cu' else pcbnew.B_Cu
             if fp.GetLayer()!=target_layer:fp.Flip(fp.GetPosition(),False)
-        orientation=fields.get('KiCadOrientationDeg','')
-        if orientation:fp.SetOrientationDegrees(float(orientation))
-        if fields.get('FootprintOriginMm') and not fields.get('BoardRegion'):
-            fp.SetLocked(True)
+        # Flipping changes native orientation; apply the source/lock angle last.
+        if pose.orientation is not None:fp.SetOrientationDegrees(pose.orientation)
+        if pose.force_lock:fp.SetLocked(True)
         fp.SetAttributes(source_attribute_bits(fp.GetAttributes(),fields,pcbnew.FP_DNP,pcbnew.FP_EXCLUDE_FROM_BOM))
         for pad in fp.Pads():
             net_name=pin_nets.get((c.ref,pad.GetNumber()))
