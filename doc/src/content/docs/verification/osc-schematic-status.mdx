@@ -6,47 +6,79 @@ sidebar_position: 20
 
 > **Unvalidated draft — no circuit here has been bench tested.** KiCad rule checks and simulations establish only the specific connectivity/model results stated below. No fabrication, procurement or performance release is implied.
 
-## Rail budget gate before board partition
+## Current worksheets and historical source comparison
 
 The 34 non-power current rows cover 33 module instances and the shared octave reference. The separate POWER sheet contributes three fitted 2.2 kΩ inlet bleeders: nominal current enters the reported/assumed typical subtotal, and the retained issue #24 worst-voltage/resistance allowance enters the planning upper subtotal. Summing the authored worksheets gives the following **reported planning upper subtotals**, including those bleeders. They are not guaranteed maxima, and H1/H2 +5 V demand is incomplete.
 
-| Rail | Reported/assumed typical subtotal | Planning upper subtotal | 80% supply design ceiling | Planning subtotal excess |
+{/* schematic-rail-current:start */}
+
+Rounded display of reported arithmetic (mA); complete values remain in `design/power/rail-budget.json`. These planning upper subtotals are not certified upper bounds.
+
+| Rail | Reported/assumed typical subtotal | Planning upper subtotal | Historical 80% source ceiling | Planning subtotal excess |
 | --- | ---: | ---: | ---: | ---: |
-| +12 V | 781.958 mA | 1,404.819 mA | 960 mA | **444.819 mA** |
-| −12 V | 715.458 mA | 1,313.569 mA | 640 mA | **673.569 mA** |
-| +5 V | 80.273 mA | 177.286 mA | 400 mA | none in the known subtotal |
+| +12V | 857.198 | 1,505.819 | 960.000 | 545.819 |
+| -12V | 790.698 | 1,414.569 | 640.000 | 774.569 |
+| +5V | 80.273 | 177.286 | 400.000 | 0.000 |
 
-**Complete typical current and guaranteed maximum current are NOT ESTABLISHED on every rail.** In particular, NOISE2's 5 mA reported typical is an assumption, not a manufacturer typical rating; the sample-and-hold +5 V worksheet has a zero *known subtotal* while omitting reference, HC logic, switching and pull-up loads. TVS/capacitor leakage, startup and faults are also unbounded. The numbers above are arithmetic from `design/power/rail-budget.json`, not an electrical sign-off. Issue #34 found no source-backed options 1–3 that close the analog ceilings and escalated the supply-capacity/possible-second-feed gate to [issue #48](https://github.com/Takazudo/zudo-osc-hole-field/issues/48). No current-driven topology or component value was changed by that review.
+Complete typical current (+12/−12/+5 mA): NOT ESTABLISHED / NOT ESTABLISHED / NOT ESTABLISHED. Guaranteed maximum current: NOT ESTABLISHED / NOT ESTABLISHED / NOT ESTABLISHED.
 
-Largest planning contributors by family are six envelopes (350.7/+12, 320.7/−12, 129.25/+5 mA), five oscillators (228.5/+12, 224.0/−12, 30.0/+5 mA), six attenuator/offsets (196.95/+12, 173.55/−12 mA), and three filters (174.6/+12, 167.4/−12 mA). These are family subtotals, not per-device maxima.
+{/* schematic-rail-current:end */}
 
-## Connectivity audit
+In particular, NOISE2's 5 mA reported typical is an assumption, not a manufacturer typical rating; the sample-and-hold worksheet omits REF5050 input/reference demand on +12 V and reports a zero *known subtotal* on +5 V while omitting HC logic, switching and pull-up loads. TVS/capacitor leakage, startup and faults are also unbounded. The numbers above are arithmetic from `design/power/rail-budget.json`, not an electrical sign-off. Issue #34 found no source-backed options 1–3 that close the analog ceilings and escalated the supply-capacity/possible-second-feed gate to [issue #48](https://github.com/Takazudo/zudo-osc-hole-field/issues/48). No current-driven topology or component value was changed by that review.
 
-The generated master has **35 hierarchy instances**: 33 modules, `OCTAVE_REF` and `POWER`. The source audit finds all **438 locked panel UIDs** exactly once (180 jacks, 144 controls, 114 indicators), **5,747 unique designators** including ten power flags, **5,737 exported physical components**, **4,912 KiCad nets**, **209 Sensitive nets**, **97 named islands**, and **622 multi-unit packages**. Every populated library unit is present exactly once; no-connect pins are explicit. `design/reports/master-audit.json` lists every Sensitive net's ref/pin/island members and every island's members. `design/reports/netlist-stats.json` gives component, IC, instance and pins-per-net distributions.
+## Historical connectivity checkpoint
 
-No Sensitive net touches panel hardware outside its own island, and every Sensitive member has an island. Nine Sensitive nets cross two *internal* named islands: N1 `NOISE_VDD`, `WHITE_RAW`, `PINK_RAW`; and A01–A06 `OUT_INTERNAL`. These are visible in the audit and must co-locate on one board despite their different logical island names. No Sensitive net may cross any board connector. They touch no panel part across an island boundary. The board partition is still open.
+The following paragraphs retain the [f663143 integration checkpoint](https://github.com/Takazudo/zudo-osc-hole-field/commit/f663143edf92476dd6a23730931b02b92413c88d), before later source I/O and component changes. Their counts and native results are historical, not a new check of the current tree. Current retained identities and counts live in `design/reports/master-audit.json`, `design/reports/netlist-stats.json` and `design/reports/master-erc-warning-baseline.json`; use the pinned smoke command below for a fresh native check.
 
-Pinned KiCad 10.0.6 ERC on the full hierarchy has **zero errors and 240 documented `pin_to_pin` warnings**; `schematic/reports/erc-notes.md` enumerates exact per-sheet counts and causes. The KiCad exported netlist matches every specified symbol pin, including deliberate no-connects. Numeric clip LED designators remove the earlier generic annotation warning without changing panel UIDs or coordinates. Integration also corrected 143 formerly all-NC active units across 63 packages: unused OPA channels are grounded followers, unused HC14 inputs are grounded, and unused LM393B inputs have defined AGND/+5 V states with outputs NC. The common cell compiler and one manually instantiated oscillator comparator are the only circuit sources changed; selected signal-unit pins, 438 panel bindings and 5,747 designators remain stable. This reduces net count from 5,153 to 4,912 by replacing isolated NC nets with defined local connections. `schematic/exports/master-hierarchy.pdf` and one SVG for each of the 13 distinct generated child-sheet sources are local draft exports under `schematic/exports/`.
+At that checkpoint the generated master had **35 hierarchy instances**: 33 modules, `OCTAVE_REF` and `POWER`. The source audit found all **438 locked panel UIDs** exactly once (180 jacks, 144 controls, 114 indicators), **5,747 unique designators** including ten power flags, **5,737 exported physical components**, **4,912 KiCad nets**, **209 Sensitive nets**, **97 named islands**, and **622 multi-unit packages**. At that checkpoint every populated library unit was present exactly once, with explicit no-connect pins. The checkpoint versions of `design/reports/master-audit.json` and `design/reports/netlist-stats.json` retain its Sensitive-net/island membership and component, IC, instance and pins-per-net distributions.
+
+No Sensitive net touches panel hardware outside its own island, and every Sensitive member has an island. Nine Sensitive nets cross two *internal* named islands: N1 `NOISE_VDD`, `WHITE_RAW`, `PINK_RAW`; and A01–A06 `OUT_INTERNAL`. These are visible in the audit and must co-locate on one board despite their different logical island names. No Sensitive net may cross any board connector. They touch no panel part across an island boundary. That checkpoint did not close the physical board partition.
+
+At that checkpoint, pinned KiCad 10.0.6 ERC on the full hierarchy had **zero errors and 240 documented `pin_to_pin` warnings**; `schematic/reports/erc-notes.md` enumerates exact per-sheet counts and causes. The KiCad exported netlist matches every specified symbol pin, including deliberate no-connects. Numeric clip LED designators remove the earlier generic annotation warning without changing panel UIDs or coordinates. Integration also corrected 143 formerly all-NC active units across 63 packages: unused OPA channels are grounded followers, unused HC14 inputs are grounded, and unused LM393B inputs have defined AGND/+5 V states with outputs NC. The common cell compiler and one manually instantiated oscillator comparator are the only circuit sources changed; selected signal-unit pins, 438 panel bindings and 5,747 designators remain stable. This reduces net count from 5,153 to 4,912 by replacing isolated NC nets with defined local connections. `schematic/exports/master-hierarchy.pdf` and one SVG for each of the 13 distinct generated child-sheet sources are local draft exports under `schematic/exports/`.
 
 ## Family status
 
-Rail figures below are *family planning upper subtotals* in `+12/−12/+5` mA, not guaranteed maxima. Every family has zero ERC errors and full master netlist parity; the warning count is shown for auditability. Simulations are model-only where present.
+The authored notes below summarize retained connectivity and model checks, not new native results. Current warning identities belong to `design/reports/master-erc-warning-baseline.json`. Simulations are model-only where present; the source-derived current table follows separately.
 
-| Family / sheet | Instances | ERC warnings | Netlist | Simulation | Rail planning subtotal (+/−/+5 mA) | Open bench gate |
-| --- | --- | ---: | --- | --- | --- | --- |
-| Sample/hold, `sample_hold` | H1–H2 | 12 | PASS | Ideal RC model only | 109.70 / 105.30 / **0 known, incomplete** | Hold drift, acquisition, slew tails, logic/load current. |
-| Oscillator, `oscillator`; shared `octave_reference` | O1–O5; OCTAVE_REF | 0 | PASS | Ideal/generic shaper models only; AS3340 core **NOT RUN** (no retained usable model) | 254.50 / 250.00 / 30.00 | Tracking, sync, timing, shaping, supply sequence, reference calibration. |
-| Filter, `filter` | F1–F3 | 24 | PASS | LM13700 single-OTA model only | 174.60 / 167.40 / 0.90 | Stability, resonance/frequency calibration, real bias/current limits. |
-| MIX5, `mix5` | M5A–M5B | 28 | PASS | Ideal summer model only | 77.20 / 71.20 / 1.00 | Headroom, clip threshold, protection and cable stability. |
-| MIX4 VCA, `mix4_vca` | M4A–M4B | 28 | PASS | Fixed in-range trim gives model +9.842/−9.877 V at full scale; half-command silence remains +0.503 V | 91.20 / 85.20 / 1.00 | Physical gain/feedthrough calibration, real headroom, distortion, bias compliance, stability. |
-| Envelope, `envelope` | E1–E6 | 60 | PASS | Bounded model only | 350.70 / 320.70 / 129.25 | Timing, gate behavior, transients and dynamic rail load. |
-| Wavefolder, `wavefolder` | W2, W1 | 12 | PASS | Bounded model only | 88.44 / 82.34 / 0.50 | Fold count, diode matching, servo and amplifier stability. |
-| Attenuator/offset, `offset` | A01–A06 | 48 | PASS | Ideal linear transfer only | 196.95 / 173.55 / 1.80 | ±15 V mathematical overload, clip threshold, precision and output stability. |
-| Buffered multiple, `mult` | B1–B2 | 4 | PASS | **NOT RUN**: no complete output-chain vendor model | 22.10 / 20.90 / 0.15 | Load isolation, output recovery and rail current. |
-| Manual A/B, `manual_ab` | X1–X2 | 12 | PASS | **NOT RUN**: no complete switch/contact model | 27.70 / 25.30 / 0.30 | Contact behavior, click amplitude, source overlap. |
-| Noise, `noise` | N1 | 0 | PASS | Small-signal filters only; NOISE2 generator **NOT RUN** (no model) | 6.00 / 6.00 / 10.00 | Spectrum/RMS, NOISE2 current and digital/analog island handoff. |
-| Power inlet, `01_power_interfaces` | POWER | 12 | PASS | **NOT RUN**: no complete cable/protection/startup model | 5.730 / 5.680 / 2.388 worst-voltage/resistance bleeder allowance | IDC orientation, fuse/TVS energy, supply startup and leakage. |
+| Family / sheet | Instances | Netlist | Simulation | Open bench gate |
+| --- | --- | --- | --- | --- |
+| Sample/hold, `sample_hold` | H1–H2 | PASS | Ideal RC model only | Hold drift, acquisition, slew tails, logic/load current. |
+| Oscillator, `oscillator`; shared `octave_reference` | O1–O5; OCTAVE_REF | PASS | Ideal/generic shaper models only; AS3340 core **NOT RUN** (no retained usable model) | Tracking, sync, timing, shaping, supply sequence, reference calibration. |
+| Filter, `filter` | F1–F3 | PASS | LM13700 single-OTA model only | Stability, resonance/frequency calibration, real bias/current limits. |
+| MIX5, `mix5` | M5A–M5B | PASS | Ideal summer model only | Headroom, clip threshold, protection and cable stability. |
+| MIX4 VCA, `mix4_vca` | M4A–M4B | PASS | Fixed in-range trim gives model +9.842/−9.877 V at full scale; half-command silence remains +0.503 V | Physical gain/feedthrough calibration, real headroom, distortion, bias compliance, stability. |
+| Envelope, `envelope` | E1–E6 | PASS | Bounded model only | Timing, gate behavior, transients and dynamic rail load. |
+| Wavefolder, `wavefolder` | W2, W1 | PASS | Bounded model only | Fold count, diode matching, servo and amplifier stability. |
+| Attenuator/offset, `offset` | A01–A06 | PASS | Ideal linear transfer only | ±15 V mathematical overload, clip threshold, precision and output stability. |
+| Buffered multiple, `mult` | B1–B2 | PASS | **NOT RUN**: no complete output-chain vendor model | Load isolation, output recovery and rail current. |
+| Manual A/B, `manual_ab` | X1–X2 | PASS | Bounded selected-buffer-to-jack model; input amplifier and contact transitions **NOT RUN** | Contact behavior, click amplitude, source overlap. |
+| Noise, `noise` | N1 | PASS | Small-signal filters only; NOISE2 generator **NOT RUN** (no model) | Spectrum/RMS, NOISE2 current and digital/analog island handoff. |
+| Power inlet, `01_power_interfaces` | POWER | PASS | **NOT RUN**: no complete cable/protection/startup model | IDC orientation, fuse/TVS energy, supply startup and leakage. |
+
+## Current family planning subtotals
+
+{/* schematic-family-current:start */}
+
+Current worksheet subtotals, rounded to 0.001 mA. The shared octave reference is listed separately. Unknown maxima remain unknown; a planning subtotal never substitutes for them.
+
+| Family / sheet | Instances | Planning +12 / −12 / +5 mA | Guaranteed maximum +12 / −12 / +5 mA | Scope |
+| --- | --- | --- | --- | --- |
+| `envelope` | E1, E2, E3, E4, E5, E6 | 350.700 / 320.700 / 129.249 | NOT ESTABLISHED / NOT ESTABLISHED / NOT ESTABLISHED | Planning worksheet only |
+| `filter` | F1, F2, F3 | 174.600 / 167.400 / 0.900 | NOT ESTABLISHED / NOT ESTABLISHED / NOT ESTABLISHED | Planning worksheet only |
+| `manual_ab` | X1, X2 | 39.701 / 37.301 / 0.300 | NOT ESTABLISHED / NOT ESTABLISHED / NOT ESTABLISHED | Planning worksheet only |
+| `mix4_vca` | M4A, M4B | 93.200 / 87.200 / 1.000 | NOT ESTABLISHED / NOT ESTABLISHED / NOT ESTABLISHED | Planning worksheet only |
+| `mix5` | M5A, M5B | 79.200 / 73.200 / 1.000 | NOT ESTABLISHED / NOT ESTABLISHED / NOT ESTABLISHED | Planning worksheet only |
+| `mult` | B1, B2 | 22.100 / 20.900 / 0.150 | NOT ESTABLISHED / NOT ESTABLISHED / NOT ESTABLISHED | Planning worksheet only |
+| `noise` | N1 | 6.000 / 6.000 / 10.000 | NOT ESTABLISHED / NOT ESTABLISHED / NOT ESTABLISHED | Planning worksheet only |
+| `octave_reference` | OCTAVE_REF | 26.000 / 26.000 / 0.000 | NOT ESTABLISHED / NOT ESTABLISHED / NOT ESTABLISHED | Planning worksheet only |
+| `offset` | A01, A02, A03, A04, A05, A06 | 196.950 / 173.550 / 1.800 | NOT ESTABLISHED / NOT ESTABLISHED / NOT ESTABLISHED | Planning worksheet only |
+| `oscillator` | O1, O2, O3, O4, O5 | 313.500 / 309.000 / 30.000 | NOT ESTABLISHED / NOT ESTABLISHED / NOT ESTABLISHED | Planning worksheet only |
+| `sample_hold` | H1, H2 | 109.700 / 105.300 / 0.000 | NOT ESTABLISHED / NOT ESTABLISHED / NOT ESTABLISHED | **Partial known subtotal; omitted loads remain unbounded** |
+| `wavefolder` | W2, W1 | 88.438 / 82.338 / 0.500 | NOT ESTABLISHED / NOT ESTABLISHED / NOT ESTABLISHED | Planning worksheet only |
+| POWER | POWER | 5.730 / 5.680 / 2.388 | NOT ESTABLISHED on every rail | Bleeder allowance only; leakage/startup/fault loads unbounded |
+
+{/* schematic-family-current:end */}
 
 ## Reproduction and limits
 
-`bash scripts/schgen/regen-master-reports.sh` regenerates the schematic and produces the netlist statistics, full sensitive/island audit and rail budget. Its `--check` mode rejects drift. `bash scripts/schgen/smoke.sh` checks the pinned KiCad ERC warning map, netlist parity and a deliberately corrupted hold-node fixture. `bash scripts/schgen/export-master.sh` regenerates the PDF/SVG exports. `pnpm circuit:check`, `pnpm check`, and the guarded site build are documentation gates. Their success does not establish analog behavior, installed power capacity, physical fit, safe faults or thermal margin.
+`bash scripts/schgen/regen-master-reports.sh` regenerates the schematic and produces the netlist statistics, full sensitive/island audit and rail budget. Its `--check` mode rejects drift. Canonical regeneration also refreshes these marked current tables; `python3 scripts/schgen/build_schematic_status.py --check` checks their correspondence to the master budget. `bash scripts/schgen/smoke.sh` checks the pinned KiCad ERC warning map, netlist parity and a deliberately corrupted hold-node fixture. `bash scripts/schgen/export-master.sh` regenerates the PDF/SVG exports. `pnpm circuit:check`, `pnpm check`, and the guarded site build are documentation gates. Their success does not establish analog behavior, installed power capacity, physical fit, safe faults or thermal margin.

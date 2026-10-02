@@ -38,6 +38,9 @@ BANDS = {'WHITE': (100, 8000), 'PINK': (100, 8000),
 
 
 def main():
+    from design.spec.modules.noise import family
+    from design.spec.modules.noise_model_contract import model_contract
+    projection = model_contract(family().parts)
     DIR.mkdir(parents=True, exist_ok=True)
     CACHE.mkdir(parents=True, exist_ok=True)
     rows = []
@@ -87,7 +90,7 @@ quit
                                  for f in (20, 100, 1000, 5000, 10000, 20000)},
                      'noise_spectrum_included': False})
     report = {'schema_version': 1, 'module': 'noise', 'status': 'PASS - small-signal filters only',
-              'oracle': 'pinned KiCad 10 ngspice', 'runs': rows,
+              'oracle': 'pinned KiCad 10 ngspice', 'source_projection': projection, 'runs': rows,
               'limits': 'Input AC sources are flat; NOISE2 source spectra, quantization, random RMS, headroom and hardware stability are excluded. BLUE uses pink input; BROWN uses white input.'}
     OUT.parent.mkdir(parents=True, exist_ok=True)
     OUT.write_text(json.dumps(report, indent=2) + '\n')

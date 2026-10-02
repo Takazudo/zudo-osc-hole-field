@@ -35,7 +35,7 @@ Run `bash scripts/schgen/smoke.sh` after regeneration. It requires KiCad 10 ERC 
 
 ## M5A/M5B and M4A/M4B mixer families
 
-`design/spec/modules/mix5.py` and `mix4_vca.py` compose standard OSC-ES-1 cells through `mixer_common.py`. The two family sheets are each reused twice; instance indices 61–64 reserve collision-free internal component references while `panel_refs` binds the exact fixed M5A/M5B and M4A/M4B hardware. `panel_bindings()` asserts 19 unique UIDs per instance. Input and OTA current nodes are local; only instrument rails are global. Regenerate with `bash scripts/checks/regen-all.sh`, then export the KiCad 10 netlist and run `scripts/schgen/verify_netlist.py`. The module tests check panel identity, audio/CV isolation, protected input order, clip monitor, OTA termination and planned rail counts. `design/spec/modules/run_mixer_spice.py` generates bounded ideal and vendor OTA fixtures with one frozen in-range calibration across the command/input matrix. It exits nonzero on a model headroom, zero-bias shutoff or gain-law failure; the report retains feedthrough and real-hardware limitations.
+`design/spec/modules/mix5.py` and `mix4_vca.py` compose standard OSC-ES-1 cells through `mixer_common.py`. The two family sheets are each reused twice; instance indices 81–84 reserve collision-free internal component references while `panel_refs` binds the exact fixed M5A/M5B and M4A/M4B hardware. `panel_bindings()` asserts 19 unique UIDs per instance. Input and OTA current nodes are local; only instrument rails are global. Regenerate with `bash scripts/checks/regen-all.sh`, then export the KiCad 10 netlist and run `scripts/schgen/verify_netlist.py`. The module tests check panel identity, audio/CV isolation, protected input order, clip monitor, OTA termination and planned rail counts. `design/spec/modules/run_mixer_spice.py` generates bounded ideal and vendor OTA fixtures with one frozen in-range calibration across the command/input matrix. It exits nonzero on a model headroom, zero-bias shutoff or gain-law failure; the report retains feedthrough and real-hardware limitations.
 
 ## Whole-instrument integration audit
 
@@ -58,3 +58,8 @@ comparison, return/loss and master-capacitance sections from
 or producer, then regenerate those sections. The surrounding historical narrative
 remains authored. These source-derived planning values do not establish source
 capacity, complete load maxima or physical qualification.
+
+`build_schematic_status.py` renders marked rail and family-current tables from
+`design/power/rail-budget.json`. Canonical regeneration refreshes the mixer
+worksheets and master budget before these tables. `--check` rejects publication
+drift; unknown complete maxima and partial worksheet scopes remain explicit.

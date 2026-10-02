@@ -132,7 +132,7 @@ def main():
             if len(values)!=2:raise RuntimeError(output)
             row={'deck':str(deck.relative_to(ROOT)),'status':'MEASURED - vendor single OTA model only','command_V':command,
                         'imposed_bias_uA':max(0,command)*100,'input_peak_each_V':amplitude,'output_extrema_V':values,
-                        'condition':'Four coherent 1 kHz ideal sources stand in for protected input/attenuverter chains; captured summer, 100k/100 Ω OTA divider, offset pot, IABC series resistor and TIA; ideal ±12 V amplifier stages; 100k output load replaces output cell; frozen calibration.'}
+                        'condition':'Four coherent 1 kHz ideal sources stand in for protected input/attenuverter chains; captured summer, 100k/100 Ω OTA divider, offset pot, IABC series resistor and TIA; unbounded dependent E-source summer/TIA (no supply pins or saturation); ±12 V sources power the OTA model only; 100k output load replaces output cell; frozen calibration.'}
             results.append(row);mix4_rows.append(row)
     failures=model_failures(mix4_rows)
     report={'schema_version':2,'authority':'PROPOSAL - unvalidated','oracle':'KiCad 10.0.6 ngspice via scripts/kicad/run.sh',

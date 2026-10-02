@@ -65,3 +65,5 @@ fresh DRC, even when the prior routing definition digest matches. Restoring a
 changed project reports `UPDATED DRAFT`; a subsequent unchanged run preserves
 board/project bytes and reports `UNCHANGED DRAFT`. Unrelated project fields remain
 untouched. The dense replay includes a native regression for this path.
+
+Setup failures after safe board/report path resolution write a fresh `PIPELINE FAILED DRAFT` receipt before any oracle/router call. Native and routing checks are explicitly `NOT RUN`; unmeasured counts are null. Prior report bytes are preserved in a SHA-256-named archive, or inline as base64 if archival fails. Circuit-file collisions are rejected before writing. An unwritable reporting destination is an explicit nonzero stderr failure, never a claim that a new report was written.
