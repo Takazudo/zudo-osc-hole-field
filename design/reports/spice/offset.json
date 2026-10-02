@@ -3,6 +3,164 @@
   "module": "offset",
   "status": "PASS - ideal linear transfer only",
   "oracle": "pinned KiCad 10 ngspice",
+  "source_projection": {
+    "included": "Attenuverter, three-input summer and sign-restoring amplifier DC algebra only",
+    "ideal_boundaries": [
+      "IN_BUFFER and IN_REMOTE are the same ideal input source",
+      "MANUAL_OFFSET and OFFSET_BUFFER are ideal voltage sources",
+      "Pot and wiper network are replaced by an ideal alpha divider",
+      "OUT_INTERNAL is the model output, not the jack"
+    ],
+    "excluded": [
+      "Source-facing protection and input/remote-buffer behavior",
+      "Finite pot/wiper loading, tolerance, contact failure and taper",
+      "Feedback-capacitor dynamics, finite amplifier rails and macromodel behavior",
+      "Reference, jack-output isolation, indicators and physical qualification"
+    ],
+    "checked_parts": {
+      "bipolar_attenuverter:A": {
+        "symbol": "zudo-osc-hole-field:OPA4197IPWR",
+        "unit": 1,
+        "value": "OPA4197IPWR",
+        "pins": {
+          "1": "ATTEN_OUT",
+          "2": "ATTEN_SUM",
+          "3": "Cc045d2_W_SENSE"
+        }
+      },
+      "bipolar_attenuverter:C_FB": {
+        "symbol": "zudo-osc-hole-field:C0603C101J5GACTU",
+        "unit": 0,
+        "value": "1e-11 F",
+        "pins": {
+          "1": "ATTEN_OUT",
+          "2": "ATTEN_SUM"
+        }
+      },
+      "bipolar_attenuverter:RV": {
+        "symbol": "zudo-osc-hole-field:PTV09A-4020F-B103",
+        "unit": 0,
+        "value": "PTV09A-4020F-B103",
+        "pins": {
+          "1": "AGND",
+          "2": "Cc045d2_W",
+          "3": "IN_REMOTE",
+          "4": null,
+          "5": null
+        }
+      },
+      "bipolar_attenuverter:R_FAIL": {
+        "symbol": "zudo-osc-hole-field:RC0603FR-07100KL",
+        "unit": 0,
+        "value": "1e+07 \u03a9",
+        "pins": {
+          "1": "Cc045d2_W_SENSE",
+          "2": "AGND"
+        }
+      },
+      "bipolar_attenuverter:R_FB": {
+        "symbol": "zudo-osc-hole-field:RT0603BRD07100KL",
+        "unit": 0,
+        "value": "100000 \u03a9",
+        "pins": {
+          "1": "ATTEN_OUT",
+          "2": "ATTEN_SUM"
+        }
+      },
+      "bipolar_attenuverter:R_IN": {
+        "symbol": "zudo-osc-hole-field:RT0603BRD07100KL",
+        "unit": 0,
+        "value": "100000 \u03a9",
+        "pins": {
+          "1": "IN_BUFFER",
+          "2": "ATTEN_SUM"
+        }
+      },
+      "bipolar_attenuverter:R_W": {
+        "symbol": "zudo-osc-hole-field:RC0603FR-07100KL",
+        "unit": 0,
+        "value": "1000 \u03a9",
+        "pins": {
+          "1": "Cc045d2_W",
+          "2": "Cc045d2_W_SENSE"
+        }
+      },
+      "offset:RESTORE": {
+        "symbol": "zudo-osc-hole-field:OPA4197IPWR",
+        "unit": 3,
+        "value": "OPA4197IPWR",
+        "pins": {
+          "8": "OUT_INTERNAL",
+          "9": "RESTORE_NODE",
+          "10": "AGND"
+        }
+      },
+      "offset:R_RESTORE_FB": {
+        "symbol": "zudo-osc-hole-field:RT0603BRD07100KL",
+        "unit": 0,
+        "value": "100 k\u03a9",
+        "pins": {
+          "1": "OUT_INTERNAL",
+          "2": "RESTORE_NODE"
+        }
+      },
+      "offset:R_RESTORE_IN": {
+        "symbol": "zudo-osc-hole-field:RT0603BRD07100KL",
+        "unit": 0,
+        "value": "100 k\u03a9",
+        "pins": {
+          "1": "SUM_NEG",
+          "2": "RESTORE_NODE"
+        }
+      },
+      "offset:R_SUM_ATTEN": {
+        "symbol": "zudo-osc-hole-field:RT0603BRD07100KL",
+        "unit": 0,
+        "value": "100 k\u03a9",
+        "pins": {
+          "1": "ATTEN_OUT",
+          "2": "SUM_NODE"
+        }
+      },
+      "offset:R_SUM_CV": {
+        "symbol": "zudo-osc-hole-field:RT0603BRD07100KL",
+        "unit": 0,
+        "value": "100 k\u03a9",
+        "pins": {
+          "1": "OFFSET_BUFFER",
+          "2": "SUM_NODE"
+        }
+      },
+      "offset:R_SUM_FB": {
+        "symbol": "zudo-osc-hole-field:RT0603BRD07100KL",
+        "unit": 0,
+        "value": "100 k\u03a9",
+        "pins": {
+          "1": "SUM_NEG",
+          "2": "SUM_NODE"
+        }
+      },
+      "offset:R_SUM_MANUAL": {
+        "symbol": "zudo-osc-hole-field:RT0603BRD07100KL",
+        "unit": 0,
+        "value": "100 k\u03a9",
+        "pins": {
+          "1": "MANUAL_OFFSET",
+          "2": "SUM_NODE"
+        }
+      },
+      "offset:SUM": {
+        "symbol": "zudo-osc-hole-field:OPA4197IPWR",
+        "unit": 3,
+        "value": "OPA4197IPWR",
+        "pins": {
+          "8": "SUM_NEG",
+          "9": "SUM_NODE",
+          "10": "AGND"
+        }
+      }
+    }
+  },
   "runs": [
     {
       "deck": "design/spec/modules/spice/offset-g-1-in+1-m+0-cv+0.cir",

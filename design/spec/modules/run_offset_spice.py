@@ -48,14 +48,8 @@ quit
 
 def main():
     from design.spec.modules.offset import family
-    parts=family().parts
-    def value(role):
-        return next(p.value for p in parts if p.attributes.get('Role')==role)
-    for role in ('offset:R_SUM_ATTEN','offset:R_SUM_MANUAL','offset:R_SUM_CV',
-                 'offset:R_SUM_FB','offset:R_RESTORE_IN','offset:R_RESTORE_FB'):
-        assert value(role)=='100 kΩ',(role,value(role))
-    assert value('bipolar_attenuverter:R_IN')=='100000 Ω'
-    assert value('bipolar_attenuverter:R_FB')=='100000 Ω'
+    from design.spec.modules.offset_model_contract import model_contract
+    projection = model_contract(family().parts)
     DIR.mkdir(parents=True,exist_ok=True)
     rows=[]
     for gain,signal,manual,cv in [(-1,1,0,0),(0,1,0,0),(1,1,0,0),
@@ -63,7 +57,7 @@ def main():
                                   (-.5,4,1,-2)]:
         rows.append(run_case(gain,signal,manual,cv))
     report={'schema_version':1,'module':'offset','status':'PASS - ideal linear transfer only',
-            'oracle':'pinned KiCad 10 ngspice','runs':rows,
+            'oracle':'pinned KiCad 10 ngspice','source_projection':projection,'runs':rows,
             'limits':'Ideal opamps have unlimited rails; ±15 V endpoint cases demonstrate the mathematical demand, not realizable output. Pot taper/contact, source impedance, tolerances, offset, drift and clipping are excluded.'}
     OUT.parent.mkdir(parents=True,exist_ok=True)
     OUT.write_text(json.dumps(report,indent=2)+'\n')
