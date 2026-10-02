@@ -5,6 +5,7 @@ They do not run pcbnew, the pinned KiCad oracle, Freerouting, or physical hardwa
 """
 from __future__ import annotations
 
+import base64
 import contextlib
 import hashlib
 import io
@@ -143,6 +144,120 @@ class RoutingGateTests(unittest.TestCase):
             'native_board_sha256': 'old-receipt',
             'native_ratsnest_error': 'old-error',
         }))
+
+    def assert_setup_failure(self, code, result, prior):
+        self.assertEqual(code,2)
+        self.assertEqual(result['status'],'PIPELINE FAILED DRAFT')
+        self.assertEqual(result['failure_stage'],'setup')
+        self.assertEqual(result['native_gate_status'],'NOT RUN')
+        self.assertEqual(result['router_status'],'NOT RUN')
+        self.assertIsNone(result['routed_net_count'])
+        self.assertIsNone(result['unrouted_net_count'])
+        self.assertEqual(self.native_calls,0)
+        self.assertEqual(self.router_calls,0)
+        self.assertEqual(self.commands,[])
+        self.assertNotIn('native_board_sha256',result)
+        if prior is not None:
+            self.assertEqual(result['prior_report_sha256'],hashlib.sha256(prior).hexdigest())
+            if 'prior_report_archive' in result:
+                self.assertEqual((self.root/result['prior_report_archive']).read_bytes(),prior)
+            else:
+                self.assertEqual(base64.b64decode(result['prior_report_base64']),prior)
+
+    def test_setup_rejects_malformed_and_nonobject_retained_reports_without_tools(self):
+        for prior in (b'{truncated',b'[]',b'null',b'42',b'"text"',b'\xff'):
+            with self.subTest(prior=prior):
+                self.report.write_bytes(prior)
+                code,result=self.invoke()
+                self.assert_setup_failure(code,result,prior)
+                self.assertTrue(result['error'])
+        # The same protection applies to ratsnest-only continuation.
+        self.report.write_bytes(b'{truncated')
+        code,result=self.invoke('--refresh-ratsnest-only')
+        self.assert_setup_failure(code,result,b'{truncated')
+
+    def test_invalid_resource_bounds_replace_stale_success_without_tools(self):
+        for option,value in (('--heap-mb','1'),('--heap-mb','0'),('--heap-mb','4097'),
+                             ('--threads','0'),('--threads','-1'),
+                             ('--timeout-sec','0'),('--timeout-sec','-1')):
+            with self.subTest(option=option,value=value):
+                self.retained_report()
+                prior=self.report.read_bytes()
+                code,result=self.invoke(option,value)
+                self.assert_setup_failure(code,result,prior)
+                self.assertEqual(result['error'],'invalid resource bounds')
+
+    def test_setup_failure_without_a_prior_report_is_explicit(self):
+        code,result=self.invoke('--heap-mb','1')
+        self.assert_setup_failure(code,result,None)
+        self.assertNotIn('prior_report_sha256',result)
+
+    def test_report_destination_cannot_overwrite_circuit_files_or_hardlinks(self):
+        protected=[self.board,self.project,self.board.with_suffix('.kicad_sch'),
+                   self.board.with_suffix('.net'),
+                   self.root/'design/boards'/f'{self.board_id}.json']
+        for path in protected:
+            if not path.exists():path.write_bytes(b'PROTECTED SOURCE')
+            before=path.read_bytes()
+            with self.subTest(path=path),self.assertRaisesRegex(ValueError,'destination collides'):
+                self.invoke('--report',str(path))
+            self.assertEqual(path.read_bytes(),before)
+        alias=self.report.with_name('hardlink.json');alias.hardlink_to(self.board)
+        before=self.board.read_bytes()
+        with self.assertRaisesRegex(ValueError,'destination collides'):
+            self.invoke('--report',str(alias))
+        self.assertEqual(self.board.read_bytes(),before)
+        self.assertEqual(self.commands,[])
+        self.assertEqual(self.native_calls,0)
+
+    def test_archive_conflict_preserves_prior_bytes_inline_without_overwriting_archive(self):
+        self.retained_report();prior=self.report.read_bytes()
+        digest=hashlib.sha256(prior).hexdigest()
+        archive=self.report.with_name(self.report.name+'.prior-'+digest+'.json')
+        archive.write_bytes(b'EXISTING DIAGNOSTIC')
+        code,result=self.invoke('--heap-mb','1')
+        self.assert_setup_failure(code,result,prior)
+        self.assertIn('conflicts',result['prior_report_archive_error'])
+        self.assertEqual(archive.read_bytes(),b'EXISTING DIAGNOSTIC')
+
+    def test_unwritable_archive_preserves_prior_bytes_inline_and_fresh_failure(self):
+        self.retained_report();prior=self.report.read_bytes()
+        original_open=Path.open
+        def opened(path,*args,**kwargs):
+            if '.prior-' in path.name:raise PermissionError('archive denied')
+            return original_open(path,*args,**kwargs)
+        with patch.object(Path,'open',opened):
+            code,result=self.invoke('--heap-mb','1')
+        self.assert_setup_failure(code,result,prior)
+        self.assertEqual(result['prior_report_archive_error'],'archive denied')
+
+    def test_unwritable_report_returns_failure_and_explicit_diagnostic(self):
+        self.retained_report();prior=self.report.read_bytes()
+        original_replace=Path.replace
+        def replaced(path,target):
+            if target==self.report:raise PermissionError('report denied')
+            return original_replace(path,target)
+        with patch.object(Path,'replace',replaced):
+            code,result=self.invoke('--heap-mb','1')
+        self.assertEqual(code,2)
+        self.assertEqual(self.report.read_bytes(),prior)
+        self.assertIn('Cannot write fresh routing failure report',self.log)
+        self.assertIn('report denied',self.log)
+        self.assertIn('Setup failure: invalid resource bounds',self.log)
+        self.assertEqual(self.commands,[])
+        self.assertEqual(self.native_calls,0)
+        self.assertEqual(self.router_calls,0)
+
+    def test_valid_rerun_recovers_after_setup_failure(self):
+        code,failed=self.invoke('--heap-mb','1')
+        self.assert_setup_failure(code,failed,None)
+        code,result=self.invoke()
+        self.assertEqual(code,0)
+        self.assertEqual(result['status'],'UPDATED DRAFT')
+        self.assertEqual(result['native_gate_status'],'ZERO OPEN EDGES')
+        self.assertNotIn('failure_stage',result)
+        self.assertNotIn('error',result)
+        self.assertGreater(self.native_calls,0)
 
     def test_missing_or_malformed_drc_categories_cannot_mean_zero(self):
         for key in ('violations','unconnected_items','schematic_parity'):
