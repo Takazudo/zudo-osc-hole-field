@@ -19,6 +19,8 @@ def main():
     original=folder/(board_id+'.kicad_pcb')
     definition=placer.load_definition(ROOT/'design/boards'/(board_id+'.json'))
     components,nets=placer.read_netlist(folder/(board_id+'.net'))
+    fixed={p['ref'] for p in placer.selected_hardware(definition,
+        placer.load_lock(ROOT/'design/grid/placements.lock.json'))}
     with tempfile.TemporaryDirectory(prefix='face-anchors-',dir=folder) as temporary:
         work=Path(temporary)
         path=work/'trial.kicad_pcb'
@@ -30,7 +32,10 @@ def main():
         rows=[]
         for component in components:
             fields=dict(component.fields)
-            fields['BoardSide']='F.Cu' if placer.normalize_block(component)=='S2' else 'B.Cu'
+            # Only free components participate in this face disagreement.
+            # Fixed front-panel hardware must retain its source/lock pose.
+            if component.ref not in fixed:
+                fields['BoardSide']='F.Cu' if placer.normalize_block(component)=='S2' else 'B.Cu'
             rows.append(replace(component,fields=tuple(fields.items())))
         before=path.read_bytes()
         report=work/'failure.json'
