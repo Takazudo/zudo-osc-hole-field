@@ -7,6 +7,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import math
 import re
 import subprocess
 import sys
@@ -14,7 +15,9 @@ import urllib.request
 import zipfile
 from pathlib import Path
 
-from ._builder import ROOT, CELLS
+from design.spec.modules.spice_trace import check_oracle_result
+from ._builder import ROOT
+from design.spec.model_contracts import current_precision_contract, fingerprint, snapshot_sources, verify_snapshot
 
 URL = "https://www.ti.com/lit/zip/sboma34"
 ZIP_SHA256 = "9e55fcaa23d54cee025dda3fa9872b11c41c531f82e0802c2b93d51e943666e5"
@@ -57,17 +60,11 @@ def model(*, offline: bool = False) -> None:
 
 
 def values(*, original: bool = False) -> tuple[int, float]:
-    cell = CELLS["precision_output"]
-    by_ref = {part["ref"]: part for part in cell["parts"]}
+    # The rejected historical fixture is deliberately independent of current source.
     if original:
         return 10000, 1e-10
-    assert by_ref["R_ISO_A"]["value"] == by_ref["R_ISO_B"]["value"] == 499
-    assert by_ref["R_ISO_A"]["terminals"] == {"1": "DRIVE", "2": "ISO_MID"}
-    assert by_ref["R_ISO_B"]["terminals"] == {"1": "ISO_MID", "2": "JACK"}
-    assert by_ref["A"]["terminals"]["IN-"] == "FB"
-    assert by_ref["R_FB"]["terminals"] == {"1": "JACK", "2": "FB"}
-    assert by_ref["C_FAST"]["terminals"] == {"1": "DRIVE", "2": "FB"}
-    return by_ref["R_FB"]["value"], by_ref["C_FAST"]["value"]
+    projection = current_precision_contract()
+    return projection['values']['R_FB'], projection['values']['C_FAST']
 
 
 def deck(load: str, cap: str | None, *, original: bool = False) -> str:
@@ -115,11 +112,17 @@ def measure(output: str) -> dict[str, float]:
     missing = set(METRICS) - found.keys()
     if missing:
         raise RuntimeError(f"ngspice measurements missing: {sorted(missing)}")
+    if not all(math.isfinite(v) for v in found.values()):
+        raise RuntimeError("nonfinite ngspice measurement")
     return found
 
 
 def verdict(row: dict) -> list[str]:
     failures = []
+    names = ('overshoot_percent', 'positive_error_mV', 'negative_error_mV',
+             'positive_late_ripple_mV', 'negative_late_ripple_mV')
+    if any(type(row.get(k)) not in (int, float) or not math.isfinite(row[k]) or row[k] < 0 for k in names):
+        return ['invalid/nonfinite model acceptance metric']
     if row["overshoot_percent"] > 10:
         failures.append("overshoot > 10%")
     if row["positive_error_mV"] > 1 or row["negative_error_mV"] > 1:
@@ -129,7 +132,28 @@ def verdict(row: dict) -> list[str]:
     return failures
 
 
+def check_retained(report):
+    projection = current_precision_contract()
+    if (report.get('source_projection') != projection or
+            report.get('source_projection_sha256') != fingerprint(projection) or
+            report.get('model_lib_sha256') != LIB_SHA256 or report.get('model_zip_sha256') != ZIP_SHA256):
+        raise ValueError('precision report source/model binding drift')
+    expected = {(load, cap) for load in LOADS for cap in CAPS}
+    rows = report['cases']
+    if len(rows) != len(expected) or {(r['load'], r['cable_capacitance']) for r in rows} != expected:
+        raise ValueError('precision report must contain exactly the twelve required vectors')
+    for row in rows:
+        body = deck(LOADS[row['load']], CAPS[row['cable_capacitance']])
+        if row.get('deck_sha256') != digest(body.encode()) or verdict(row) or row.get('failures'):
+            raise ValueError('precision retained deck or acceptance drift')
+    if report.get('fail_count') != 0 or report.get('pass_count') != 12:
+        raise ValueError('precision retained count drift')
+
+
 def run(*, check: bool = False, offline: bool = False, fixture_original: bool = False) -> None:
+    projection = None if fixture_original else current_precision_contract()
+    evaluated = None if fixture_original else fingerprint(projection)
+    snapshot = snapshot_sources()
     model(offline=offline)
     init = ROOT / ".spiceinit"
     if init.exists():
@@ -141,16 +165,18 @@ def run(*, check: bool = False, offline: bool = False, fixture_original: bool = 
             (load, cap) for load in LOADS for cap in CAPS
         ]
         for load, cap in cases:
-            DECK.write_text(deck(LOADS[load], CAPS[cap], original=fixture_original))
+            body = deck(LOADS[load], CAPS[cap], original=fixture_original)
+            DECK.write_text(body)
             proc = subprocess.run(
                 ["bash", "scripts/kicad/run.sh", "ngspice", "-b", DECK.relative_to(ROOT).as_posix()],
                 cwd=ROOT, capture_output=True, text=True, timeout=120,
             )
-            if proc.returncode:
-                raise RuntimeError(f"pinned ngspice failed for {load}/{cap}: {proc.stderr[-1200:]}")
+            if DECK.read_text() != body:
+                raise RuntimeError("precision deck changed during execution")
+            check_oracle_result(proc)
             v = measure(proc.stdout)
             row = {
-                "load": load, "cable_capacitance": cap,
+                "load": load, "cable_capacitance": cap, "deck_sha256": digest(body.encode()),
                 "positive_peak_V": max(v["pmax"], v["p2max"]),
                 "negative_peak_V": min(v["nmin"], v["n2min"]),
                 "positive_settled_V": v["p2set"], "negative_settled_V": v["n2set"],
@@ -174,9 +200,14 @@ def run(*, check: bool = False, offline: bool = False, fixture_original: bool = 
         DECK.unlink(missing_ok=True)
     failures = sum(bool(row["failures"]) for row in rows)
     if not fixture_original:
+        verify_snapshot(snapshot)
+        if fingerprint(current_precision_contract()) != evaluated:
+            raise RuntimeError("precision source changed during model execution")
+        model(offline=True)
         feedback, compensation = values()
         report = {
-            "schema_version": 1,
+            "schema_version": 2,
+            "source_projection": projection, "source_projection_sha256": evaluated,
             "status": "FAIL - TI MODEL TARGET" if failures else "PASS - TI MODEL ONLY; NOT HARDWARE QUALIFICATION",
             "model": "TI OPAx197 Final 1.3 (23JUN2022), generic single core explicitly applicable to OPA4197; PSpice compatibility in KiCad 10.0.6 ngspice-44.2",
             "model_url": URL, "model_zip_sha256": ZIP_SHA256, "model_lib_sha256": LIB_SHA256,
