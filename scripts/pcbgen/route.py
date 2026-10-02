@@ -34,7 +34,11 @@ def drc(board,path):
     if result.returncode:raise RuntimeError(f'KiCad DRC failed (exit {result.returncode})')
     if not path.exists():raise RuntimeError(f'KiCad DRC report missing (exit {result.returncode})')
     data=json.loads(path.read_text())
+    validate_drc_collections(data)
     if data.get('kicad_version')!='10.0.6':raise RuntimeError('wrong KiCad oracle version')
+    if data.get('source')!=board.name:raise RuntimeError('DRC report describes a different board')
+    if set(data.get('included_severities',[]))!={'error','warning','exclusion'}:
+        raise RuntimeError('DRC severity scope is incomplete')
     return data
 
 def unrouted_names(data):
@@ -45,7 +49,18 @@ def unrouted_names(data):
             if match:names.add(match[1])
     return sorted(names)
 
+def validate_drc_collections(data):
+    """Missing native result categories mean unavailable checks, never zero."""
+    if not isinstance(data,dict):raise ValueError('DRC report must be an object')
+    for key in ('violations','unconnected_items','schematic_parity'):
+        if not isinstance(data.get(key),list) or any(not isinstance(row,dict) for row in data[key]):
+            raise ValueError('DRC report requires an object list: '+key)
+    if any(row.get('severity') not in ('error','warning','exclusion') for row in data['violations']):
+        raise ValueError('DRC violation severity missing or invalid')
+
+
 def drc_summary(data):
+    validate_drc_collections(data)
     return {'rule_errors':sum(x.get('severity')=='error' for x in data.get('violations',[])),
             'rule_warnings':sum(x.get('severity')=='warning' for x in data.get('violations',[])),
             'unconnected_items':len(data.get('unconnected_items',[])),
@@ -78,7 +93,9 @@ def project_settings(board,routing):
         if spec['name']!='Default':patterns.extend({'netclass':spec['name'],'pattern':n} for n in spec['nets'])
     settings['netclass_patterns']=patterns
     output=json.dumps(data,indent=2,sort_keys=True)+'\n'
-    if project.read_text()!=output:project.write_text(output)
+    changed=project.read_text()!=output
+    if changed:project.write_text(output)
+    return changed
 
 def memory_mb(raw):
     match=SIZE_RE.search(raw)
@@ -217,6 +234,9 @@ def main():
     result={'routing_spec_sha256':routing_hash,'schema_version':1,'board_id':args.board_id,'status':'NOT RUN','draft':True,'router_image':image,'thread_limit':threads,'heap_mb':heap,'fanout_enabled':not args.no_fanout,'time_limit_sec':timeout,'board':repo_relative(board),'routed_net_count':0,'unrouted_net_count':0,'unrouted_net_names':[],'via_count':0,'total_track_length_mm':0.0,'runtime_sec':0.0,'sampled_peak_memory_mb':0.0,'preexisting_tracks_preserved':0,'preexisting_zones_preserved':0}
     exit_code=1
     try:
+        # A retained definition hash does not prove the current project still
+        # enforces those rules. Restore only source-owned fields before DRC.
+        result['project_settings_refreshed']=project_settings(board,definition.routing)
         pre=drc(board,work/'pre-drc.json');result['before']=drc_summary(pre)
         complete=not result['before']['unrouted_nets'] and result['before']['unconnected_items']==0
         if complete and previous.get('routing_spec_sha256')!=routing_hash:
@@ -239,7 +259,7 @@ def main():
             result['preexisting_tracks_preserved']=len(stats['track_uuids'])
             result['preexisting_zones_preserved']=stats['zone_count']
             result['after']=result['before']
-            result['status']='UNCHANGED DRAFT' if drc_passes(result['after']) else 'INCOMPLETE DRAFT'
+            result['status']=('UPDATED DRAFT' if result['project_settings_refreshed'] else 'UNCHANGED DRAFT') if drc_passes(result['after']) else 'INCOMPLETE DRAFT'
             exit_code=0 if drc_passes(result['after']) else 2
         else:
             project_settings(board,definition.routing)

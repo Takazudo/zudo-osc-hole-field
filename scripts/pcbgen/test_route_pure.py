@@ -38,6 +38,8 @@ class RouterContractTest(unittest.TestCase):
                 root = Path(tmp)
                 board = root/'fixture.kicad_pcb'
                 board.write_text('unchanged copper')
+                board.with_suffix('.kicad_pro').write_text(json.dumps(
+                    {'net_settings':{'classes':[{'name':'Default'}]}}))
                 report = root/'reports/routing.json'
                 report.parent.mkdir()
                 report.write_text(json.dumps(dict(routing_spec_sha256=spec_hash)))
@@ -65,7 +67,7 @@ class RouterContractTest(unittest.TestCase):
                     code = route.main()
                 self.assertEqual(code, 2 if failure else 0)
                 self.assertEqual(json.loads(report.read_text())['status'],
-                    'INCOMPLETE DRAFT' if failure else 'UNCHANGED DRAFT')
+                    'INCOMPLETE DRAFT' if failure else 'UPDATED DRAFT')
                 self.assertEqual(json.loads(report.read_text())['native_gate_status'], 'ZERO OPEN EDGES')
                 self.assertEqual(board.read_text(), 'unchanged copper')
 

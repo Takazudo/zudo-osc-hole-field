@@ -1,19 +1,35 @@
 {
   "command": "bash scripts/pcbgen/test_route.sh --dense",
+  "execution": {
+    "baseline_main": "bd5b8ef8eb6b930f18beebdb742744eacda803b8",
+    "command": "bash scripts/pcbgen/test_route.sh --dense && bash scripts/pcbgen/test_route.sh --quick",
+    "guard_verdict": "PASS",
+    "minimum_available_memory_mb": 6709,
+    "seconds": 127
+  },
   "gate": {
     "rule_errors": 0,
     "schematic_parity_issues": 0,
     "unconnected_items": 0
   },
+  "native_gate": {
+    "board_sha256": "589087c6ee6dca731696872003acae949e4936bdfaba27ae2094731799583e85",
+    "serialization": "final canonical source-owned copper ordering",
+    "status": "ZERO OPEN EDGES",
+    "unconnected_edge_count": 0
+  },
   "oracle": "KiCad 10.0.6 via scripts/kicad/run.sh pinned container",
   "placement_centres_sha256": "8354aed4a72bf5357e1ccfb4da7c3234f139ba19f75a49d825d733c30a6da843",
   "sha256": {
-    "design/boards/fixture-route-dense.json": "8e0429fd7ff8a51ee631bc7187f28485e6d3507a28793aef245764c85dbe655e",
+    "design/boards/fixture-route-dense.json": "bfa2d2f54169a234ddfeba437d2a8e59716d7b33ba68d33704ff3df429591e54",
     "scripts/pcbgen/fixtures/dense-evidence/copper.json": "4d5b857953c9fe7c646d4136588cf24863c28d1d1a5a7a309d4efa7e893edd47",
-    "scripts/pcbgen/fixtures/dense-evidence/final-drc.json": "fe5862b77276e8ccb2fcbfcc0088196e03613847a9d8943441236b0c1a3b38af",
+    "scripts/pcbgen/fixtures/dense-evidence/final-drc.json": "608c35a4075d399796877c8f9baea3f99a4215a865ee188f3345c8cd8d8742db",
+    "scripts/pcbgen/fixtures/dense-evidence/final-ratsnest.json": "b90a1344482b61ae514bdaa8c11774a380e1d60c0ceab9e4469e5d151729f4ff",
+    "scripts/pcbgen/fixtures/dense-evidence/final-routing.json": "dee98e5336b89abdae20cb454be84c817c9d9bbc0f0a66a33789e99a88ea64ed",
     "scripts/pcbgen/fixtures/dense-evidence/final-stats.json": "24cc0c61afa27d79c6eaac2c635e6dc266c5578e33a74352a498dfd34874ae02",
-    "scripts/pcbgen/fixtures/dense-evidence/fixture-route-dense.kicad_pcb": "62bd821afd4850cc9614210c01272d03f6ef0a6fedbef275a5e6ff95e535272a",
+    "scripts/pcbgen/fixtures/dense-evidence/fixture-route-dense.kicad_pcb": "589087c6ee6dca731696872003acae949e4936bdfaba27ae2094731799583e85",
     "scripts/pcbgen/fixtures/dense-evidence/preservation.json": "8545290db981b7aa236920ef450988260a4d4a0e4f0d1b70fc8957ca33a0d947",
+    "scripts/pcbgen/fixtures/dense-evidence/replay-run.txt": "eb01ad033cdc9d5f2aa17fb3e5e3429ab9075919946b07435cf3786f29c1e0aa",
     "scripts/pcbgen/fixtures/dense-evidence/stitching.json": "5468f005e302060d292e35f2506c2ca24f9ac1b811dfeade55f6e8505afb2dea"
   },
   "status": "UNVALIDATED DRAFT"

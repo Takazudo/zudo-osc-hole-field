@@ -21,6 +21,8 @@ from scripts.pcbgen import route
 def drc_report(*, open_edges=0, rule_errors=0, parity_errors=0, warnings=0):
     return {
         'kicad_version': '10.0.6',
+        'source': 'fixture-native-gate.kicad_pcb',
+        'included_severities': ['error','warning','exclusion'],
         'violations': [{'severity': 'error'} for _ in range(rule_errors)]
                       + [{'severity': 'warning'} for _ in range(warnings)],
         'unconnected_items': [
@@ -141,6 +143,62 @@ class RoutingGateTests(unittest.TestCase):
             'native_board_sha256': 'old-receipt',
             'native_ratsnest_error': 'old-error',
         }))
+
+    def test_missing_or_malformed_drc_categories_cannot_mean_zero(self):
+        for key in ('violations','unconnected_items','schematic_parity'):
+            for value in ('missing',None,{},0,'', [None]):
+                with self.subTest(key=key,value=value):
+                    data=drc_report()
+                    if value=='missing':del data[key]
+                    else:data[key]=value
+                    self.drc_reports=[data]
+                    code,result=self.invoke()
+                    self.assertEqual(code,2)
+                    self.assertEqual(result['status'],'PIPELINE FAILED DRAFT')
+                    self.assertIn('DRC report requires',result['error'])
+                    self.assertEqual(self.router_calls,0)
+
+    def test_wrong_board_scope_and_untyped_violations_fail_closed(self):
+        for change in ({'source':'other.kicad_pcb'},
+                       {'included_severities':['warning']},
+                       {'violations':[{}]}, {'violations':[{'severity':'unknown'}]}):
+            with self.subTest(change=change):
+                self.drc_reports=[{**drc_report(),**change}]
+                code,result=self.invoke()
+                self.assertEqual(code,2)
+                self.assertEqual(result['status'],'PIPELINE FAILED DRAFT')
+                self.assertEqual(self.router_calls,0)
+
+    def test_same_spec_hash_does_not_bypass_changed_project_rules(self):
+        code,_=self.invoke()
+        self.assertEqual(code,0)
+        data=json.loads(self.project.read_text())
+        data['net_settings']['classes'][0]['clearance']=0
+        data['board']['design_settings']['rules']['min_track_width']=.01
+        data['owner_note']='preserve me'
+        self.project.write_text(json.dumps(data))
+        before=self.board.read_bytes()
+        original=self.run_process
+        def verify_settings(command,**kwargs):
+            if 'kicad-cli' in command:
+                project=json.loads(self.project.read_text())
+                self.assertEqual(project['net_settings']['classes'][0]['clearance'],.2)
+                self.assertEqual(project['board']['design_settings']['rules']['min_track_width'],.2)
+                self.assertEqual(project['owner_note'],'preserve me')
+            return original(command,**kwargs)
+        self.run_process=verify_settings
+        self.drc_reports=[drc_report()]
+        code,result=self.invoke()
+        self.assertEqual(code,0)
+        self.assertEqual(result['status'],'UPDATED DRAFT')
+        self.assertTrue(result['project_settings_refreshed'])
+        self.assertEqual(self.board.read_bytes(),before)
+        restored=self.project.read_bytes()
+        self.drc_reports=[drc_report()]
+        code,result=self.invoke()
+        self.assertEqual(code,0)
+        self.assertFalse(result['project_settings_refreshed'])
+        self.assertEqual(self.project.read_bytes(),restored)
 
     def test_clean_drc_and_native_zero_succeed(self):
         code, result = self.invoke()
