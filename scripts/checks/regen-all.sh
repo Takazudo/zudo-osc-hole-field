@@ -31,6 +31,8 @@ if [[ $check_mode == true ]]; then
   git diff --binary HEAD > "$before_diff"
 fi
 
+python3 scripts/checks/check_catalogue_publication.py
+
 generators=(
   scripts/geometry/regen.sh
   scripts/libgen/regen.sh
