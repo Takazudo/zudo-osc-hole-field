@@ -8,6 +8,7 @@ import hashlib,json,math,subprocess
 from pathlib import Path
 from design.spec.modules.envelope import ROOT,family
 from design.spec.modules.envelope_logic import captured_logic
+from design.spec.modules.spice_trace import check_oracle_result
 DIR=ROOT/'design/spec/modules/spice'
 CACHE=ROOT/'.circuit-cache/envelope-spice'
 OUT=ROOT/'design/reports/spice/envelope.json'
@@ -42,10 +43,11 @@ def crossings(rows,col):
 def run(mode,curved,scenario='normal'):
  stem='envelope-'+mode.lower()+'-'+('curved' if curved else 'linear')+'-'+scenario
  p=DIR/(stem+'.cir');data=CACHE/(stem+'.txt')
+ data.unlink(missing_ok=True)  # A zero-exit control error must not reuse an old trace.
  p.write_text('Envelope model only: '+stem+'\n'+common(mode,curved,scenario)+f'.control\nset wr_singlescale\nset wr_vecnames\ntran 5u 120m uic\nwrdata {data.relative_to(ROOT)} v(ENV_BUFFER) v(RISE) v(HOLD) v(FALL) v(EOC) v(BIP) v(STAGE_HIGH) v(RISE_LED) v(FALL_LED)\nquit\n.endc\n.end\n')
  result=subprocess.run(['bash','scripts/kicad/run.sh','ngspice','-b',str(p.relative_to(ROOT))],cwd=ROOT,text=True,capture_output=True)
  (CACHE/(stem+'.log')).write_text(result.stdout+'\n'+result.stderr)
- if result.returncode:raise RuntimeError(result.stdout+'\n'+result.stderr)
+ check_oracle_result(result,data)
  rows=[[float(v) for v in l.split()] for l in data.read_text().splitlines()[1:]]
  assert all(math.isfinite(v) for r in rows for v in r)
  assert min(r[1] for r in rows)>-.025 and max(r[1] for r in rows)<8.1
@@ -90,6 +92,6 @@ def main():
  CACHE.mkdir(parents=True,exist_ok=True)
  runs=[run(mode,shape) for mode in ('ASR','AR','LOOP') for shape in (False,True)]
  runs.extend([run('ASR',False,'early-release'),run('AR',True,'retrigger')])
- report={'schema_version':1,'module':'envelope','authority':'PROPOSAL (planning, owner-delegated)','oracle':'KiCad 10.0.6 pinned wrapper ngspice','status':'PASS - bounded model only','source_sha256':{str(p.relative_to(ROOT)):hashlib.sha256(p.read_bytes()).hexdigest() for p in [ROOT/'design/spec/modules/envelope.py',ROOT/'design/spec/modules/io_partition.py',ROOT/'design/spec/modules/envelope_logic.py',Path(__file__).resolve()]},'runs':runs,'limitations':['Ideal OTA gm=19.2*IABC, ideal amplifier/analogue switches/comparators; no device spread, offset or leakage.','Actual packed NAND/DFF graph is exercised with behavioural gates and master/slave latches; no HC propagation or metastability claim.','Clock fixed at50us, reset asserted until5ms, converter current imposed500uA; physical RC oscillator/reset, transistor converters and power sequencing NOT RUN.','EOC timing tracks completion for one state clock then adds0.7RC; actual HC221 non-retriggerability and coefficient/corners NOT RUN.','Real output protection/loading, diode clamps, noise, rail current, PCB/harness and bench behavior NOT RUN.']}
+ report={'schema_version':1,'module':'envelope','authority':'PROPOSAL (planning, owner-delegated)','oracle':'KiCad 10.0.6 pinned wrapper ngspice','status':'PASS - bounded model only','source_sha256':{str(p.relative_to(ROOT)):hashlib.sha256(p.read_bytes()).hexdigest() for p in [ROOT/'design/spec/modules/envelope.py',ROOT/'design/spec/modules/io_partition.py',ROOT/'design/spec/modules/envelope_logic.py',ROOT/'design/spec/modules/spice_trace.py',Path(__file__).resolve()]},'runs':runs,'limitations':['Ideal OTA gm=19.2*IABC, ideal amplifier/analogue switches/comparators; no device spread, offset or leakage.','Actual packed NAND/DFF graph is exercised with behavioural gates and master/slave latches; no HC propagation or metastability claim.','Clock fixed at50us, reset asserted until5ms, converter current imposed500uA; physical RC oscillator/reset, transistor converters and power sequencing NOT RUN.','EOC timing tracks completion for one state clock then adds0.7RC; actual HC221 non-retriggerability and coefficient/corners NOT RUN.','Real output protection/loading, diode clamps, noise, rail current, PCB/harness and bench behavior NOT RUN.']}
  OUT.parent.mkdir(parents=True,exist_ok=True);OUT.write_text(json.dumps(report,indent=2)+'\n')
 if __name__=='__main__':main()

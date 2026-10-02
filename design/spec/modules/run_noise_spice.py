@@ -5,6 +5,7 @@ import math
 import subprocess
 from pathlib import Path
 from design.spec.cells._builder import ROOT
+from design.spec.modules.spice_trace import check_oracle_result
 
 DIR = ROOT / 'design/spec/modules/spice'
 CACHE = ROOT / '.circuit-cache/noise-spice'
@@ -47,6 +48,7 @@ def main():
     for name, circuit in CASES.items():
         path = DIR / f'noise-{name.lower()}-ac.cir'
         data = CACHE / f'{name.lower()}.txt'
+        data.unlink(missing_ok=True)  # Require output from this invocation.
         relative = data.relative_to(ROOT)
         deck = f'''N1 {name} small-signal shaping; ideal opamps
 {circuit}.control
@@ -62,8 +64,7 @@ quit
         result = subprocess.run(['bash', 'scripts/kicad/run.sh', 'ngspice', '-b',
                                  str(path.relative_to(ROOT))], cwd=ROOT,
                                 text=True, capture_output=True)
-        if result.returncode:
-            raise RuntimeError(result.stdout + result.stderr)
+        check_oracle_result(result, data)
         table = []
         for line in data.read_text().splitlines()[1:]:
             values = [float(x) for x in line.split()]

@@ -278,8 +278,10 @@ uv pip install --python .circuit-cache/wavefolder-plot/bin/python -r design/spec
 `design/reports/spice/wavefolder.json` records cases and source hashes;
 `wavefolder-plots.json` records the PNG hashes. The native checker verifies
 complete pin/net parity, all 22 bindings and separate coupling nodes. KiCad 10.0.6
-reports zero errors and twelve justified input-LED pin-type warnings, recorded
-in `schematic/reports/wavefolder-erc-notes.md`; no suppressions are used.
+reports zero errors and twelve justified input-LED pin-type warnings **on the
+wavefolder sheets**, recorded in `schematic/reports/wavefolder-erc-notes.md`; no
+suppressions are used. Whole-master counts are tracked separately in the
+[schematic status](../verification/osc-schematic-status.mdx).
 
 ## Rail planning and open gates
 

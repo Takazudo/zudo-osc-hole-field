@@ -7,6 +7,7 @@ import json,math,re,subprocess
 from pathlib import Path
 from design.spec.modules.filter import ROOT,family
 from design.spec.modules.run_oscillator_spice import primitives,net,name
+from design.spec.modules.spice_trace import check_oracle_result
 DIR=ROOT/'design/spec/modules/spice'
 SCRATCH=ROOT/'.circuit-cache/filter-spice'
 OUT=ROOT/'design/reports/spice/filter.json'
@@ -57,11 +58,12 @@ def main():
         stem=f'filter-{fc}-{("low" if g==0 else "high")}-gain{gain}'
         ibfreq=2*math.pi*fc*CAP/(19.2*ATTEN);ibres=g/(19.2*ATTEN*RF_RES);ibdry=gain*5/12400
         data=f'.circuit-cache/filter-spice/{stem}.txt'
+        (ROOT/data).unlink(missing_ok=True)  # Do not consume a previous AC trace.
         lines=[f'Filter response: vendor OTA, ideal opamps; fc command {fc}, damping feedback {g}',f'.param ibfreq={ibfreq:.12g} ibres={ibres:.12g} ibdry={ibdry:.12g}','.include "design/spec/modules/spice/filter-core-vendor.inc"','.control','set wr_singlescale','set wr_vecnames','op','print v(BP_INT) v(LP_INT) v(HP_CORE)','ac dec 100 2 200k',f'wrdata {data} db(v(LP_TIP)) db(v(BP_TIP)) db(v(HP_TIP)) db(v(OUT_TIP))','quit','.endc','.end']
         deck=DIR/(stem+'.cir');deck.write_text('\n'.join(lines)+'\n')
         run=subprocess.run(['bash','scripts/kicad/run.sh','ngspice','-b',str(deck.relative_to(ROOT))],cwd=ROOT,text=True,capture_output=True)
         text=run.stdout+'\n'+run.stderr
-        if run.returncode:raise RuntimeError(text)
+        check_oracle_result(run,ROOT/data)
         table=[]
         for line in (ROOT/data).read_text().splitlines()[1:]:
             row=[float(x) for x in line.split()];assert len(row)==5,row;table.append(row)
@@ -88,7 +90,7 @@ def main():
     deck.write_text('Model-only self-oscillation with generic limiter diodes\n'+f'.param ibfreq={bias:.12g} ibres={5/49900:.12g} ibdry=0\n'+transient+'.tran 1u 50m\n.measure tran bp_max MAX v(BP_CORE) FROM=30m TO=50m\n.measure tran bp_min MIN v(BP_CORE) FROM=30m TO=50m\n.measure tran lp_max MAX v(LP_CORE) FROM=30m TO=50m\n.measure tran lp_min MIN v(LP_CORE) FROM=30m TO=50m\n.end\n')
     run=subprocess.run(['bash','scripts/kicad/run.sh','ngspice','-b',str(deck.relative_to(ROOT))],cwd=ROOT,text=True,capture_output=True)
     text=run.stdout+'\n'+run.stderr
-    if run.returncode:raise RuntimeError(text)
+    check_oracle_result(run)
     measures={k:float(v) for k,v in re.findall(r'^((?:bp|lp)_(?:max|min))\s*=\s*([-+\d.eE]+)',text,re.M)}
     assert len(measures)==4,text
     assert .5<measures['bp_max']-measures['bp_min']<12,measures
