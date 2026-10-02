@@ -1,11 +1,63 @@
 """Adversarial electrical-boundary and physical-package allocation checks."""
 from collections import defaultdict
 from dataclasses import replace
+from copy import deepcopy
+import json
 import unittest
 from design.spec.instrument import specification
 from design.spec.modules.io_partition import refine, channel_signatures
 from design.spec.modules.envelope import family as envelope
-from scripts.checks.io_partition60 import build, source_data, assignment_errors, crossing_kind
+from scripts.checks.io_partition60 import build, source_data, assignment_errors, crossing_kind, power_requirements, ROOT
+
+
+class PowerRequirementTests(unittest.TestCase):
+    def setUp(self):
+        self.contract = json.loads((ROOT/'design/power/supply-architecture-input.json').read_text())
+        self.supply = json.loads((ROOT/'design/power/supply-architecture.json').read_text())
+
+    def test_return_limit_is_not_sum_of_transient_minima(self):
+        rows = power_requirements(self.contract, self.supply)
+        self.assertEqual(rows['AGND']['current_mA']['whole_domain_maximum_return_magnitude'], 4600)
+        self.assertEqual(rows['AGND']['current_mA']['sum_of_rail_transient_minima'], 4300)
+        self.assertNotIn('whole_domain_transient_requirement', rows['AGND']['current_mA'])
+
+    def test_stale_report_after_authored_source_change_is_rejected(self):
+        self.contract['source_requirement']['maximum_delivered_current_mA']['+5V'] += 25
+        with self.assertRaisesRegex(ValueError, 'does not match authored contract'):
+            power_requirements(self.contract, self.supply)
+
+    def test_changed_source_reaches_actual_crossing_report(self):
+        # A sensitivity fixture only: does not admit a new project current limit.
+        self.contract['source_requirement']['maximum_delivered_current_mA']['+5V'] += 25
+        self.supply['contract'] = deepcopy(self.contract)
+        self.supply['selected_requirement']['worst_single_return_contact_A'] = 4.625
+        report = build(supply_contract=self.contract, supply_report=self.supply)
+        rows = {r['net']: r for r in report['allowed_crossings']}
+        self.assertEqual(rows['AGND']['current_mA']['whole_domain_maximum_return_magnitude'], 4625)
+        self.assertEqual(rows['+5V']['current_mA']['whole_domain_maximum_delivered_current'], 525)
+        self.assertEqual(rows['AGND']['current_mA']['sum_of_rail_transient_minima'], 4300)
+
+    def test_stale_return_or_continuous_derivation_is_rejected(self):
+        for key, value in [('worst_single_return_contact_A', 4.4),
+                           ('minimum_continuous_mA', {'+12V':1600,'-12V':1500,'+5V':300})]:
+            with self.subTest(key=key):
+                supply = deepcopy(self.supply)
+                supply['selected_requirement'][key] = value
+                with self.assertRaises(ValueError):
+                    power_requirements(self.contract, supply)
+
+    def test_missing_nonfinite_negative_and_no_window_inputs_are_rejected(self):
+        for value in [float('nan'), float('inf'), -1, 0, True, 400]:
+            with self.subTest(value=value):
+                contract = deepcopy(self.contract)
+                contract['source_requirement']['maximum_delivered_current_mA']['+5V'] = value
+                supply = deepcopy(self.supply)
+                supply['contract'] = contract
+                with self.assertRaises(ValueError):
+                    power_requirements(contract, supply)
+        self.supply['selected_requirement']['minimum_transient_mA'].pop('-12V')
+        with self.assertRaises(ValueError):
+            power_requirements(self.contract, self.supply)
 
 
 class BoundaryTests(unittest.TestCase):
@@ -26,6 +78,14 @@ class BoundaryTests(unittest.TestCase):
         self.assertLess(jack['courtyard_sum_mm2'],jack['gross_face_area_mm2'])
         self.assertIsNone(jack['usable_area_mm2'])
         self.assertFalse(report['complete_cut_accepted'])
+        added = report['current_repacking_added_packages']['packages']
+        self.assertEqual({p['ref'] for p in added}, {u['ref'] for u in self.units if u['key'].startswith('IO_EXTRA_')})
+        self.assertEqual(len(added), 11)
+        self.assertEqual(sum(p['mpn']=='OPA4197IPWR' for p in added), 7)
+        historical = report['historical_issue60_increment']
+        self.assertEqual(historical['package_counts'], {'OPA4196IDR':4,'OPA4197IPWR':2})
+        self.assertEqual(historical['planning_quiescent_delta_mA']['+12V'], 16)
+        self.assertNotIn('rail_change', report)
 
     def test_missing_duplicate_and_unknown_assignments_rejected(self):
         self.assertEqual(assignment_errors(self.packages,self.assignments),[])

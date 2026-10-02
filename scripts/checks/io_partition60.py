@@ -22,6 +22,58 @@ OUT = ROOT/'design/reports/io-partition.json'
 RAILS = {'+12V','-12V','+5V','AGND'}
 
 
+def power_requirements(contract, supply):
+    """Read current requirements, keeping delivery minima separate from limits.
+
+    The architecture producer owns load accounting and transient derivation.
+    This projection is metadata, not a fresh source-capacity qualification.
+    """
+    if supply['contract'] != contract:
+        raise ValueError('supply architecture report does not match authored contract')
+    req = contract['source_requirement']
+    selected = supply['selected_requirement']
+    rails = RAILS - {'AGND'}
+    def positive_map(values, name):
+        if set(values) != rails or any(isinstance(v, bool) or not isinstance(v, (int, float))
+                                      or not math.isfinite(v) or v <= 0 for v in values.values()):
+            raise ValueError(f'invalid {name} rail requirements')
+        return values
+    continuous = positive_map(selected['minimum_continuous_mA'], 'continuous')
+    transient = positive_map(selected['minimum_transient_mA'], 'transient')
+    maximum = positive_map(req['maximum_delivered_current_mA'], 'maximum delivered')
+    capacitance = positive_map(req['nominal_capacitance_ceiling_uF'], 'capacitance')
+    if continuous != req['minimum_continuous_current_mA']:
+        raise ValueError('supply continuous requirement disagrees with authored contract')
+    if any(not continuous[r] <= transient[r] < maximum[r] for r in rails):
+        raise ValueError('invalid continuous/transient/maximum delivery ordering')
+    return_mA = sum(maximum.values())
+    recorded_return = selected['worst_single_return_contact_A']
+    if (isinstance(recorded_return, bool) or not isinstance(recorded_return, (int, float))
+            or not math.isfinite(recorded_return)
+            or not math.isclose(recorded_return * 1000, return_mA, rel_tol=0, abs_tol=1e-9)):
+        raise ValueError('supply return requirement disagrees with delivered-current sum')
+    rows = {r: {'current_mA': {
+        'whole_domain_transient_requirement': transient[r],
+        'whole_domain_maximum_delivered_current': maximum[r],
+        'status': 'Minimum delivery and maximum interface limit are distinct requirements; not capacity or a per-contact allocation'},
+        'capacitance_F': capacitance[r] / 1e6} for r in rails}
+    rows['AGND'] = {'current_mA': {
+        'whole_domain_maximum_return_magnitude': return_mA,
+        'sum_of_rail_transient_minima': sum(transient.values()),
+        'status': 'Conservative sum of maximum delivered rail magnitudes; transient-minima sum is not the return limit. No equal contact sharing or fault qualification'},
+        'capacitance_F': None}
+    return rows
+
+
+def repacking_metadata(packages, units):
+    extra_refs=sorted({u['ref'] for u in units if u['key'].startswith('IO_EXTRA_')})
+    return {
+        'current_repacking_added_packages':{'packages':[{'ref':r,'mpn':packages[r]['mpn']} for r in extra_refs],
+            'scope':'Current IO_EXTRA source-marked packages, including later oscillator fanout repacking. Not an independent increment to add to the current ledger.'},
+        'historical_issue60_increment':{'merge':'f6d2d6112d780a565cedafaea81b5644f46c3c24','package_counts':{'OPA4196IDR':4,'OPA4197IPWR':2},'planning_quiescent_delta_mA':{'+12V':16,'-12V':16,'+5V':0},'bypass_delta_uF':{'+12V':.6,'-12V':.6,'+5V':0},'basis':'Original issue60 checkpoint only: four OPA4196IDR at 1mA/rail and two OPA4197IPWR at 6mA/rail, full-temperature quiescent only. This is not the load of the current source-marked package list. Generated current worksheets, rail ledger and supply architecture are the current load authority.'},
+        'power_requirement_sources':['design/power/supply-architecture-input.json','design/power/supply-architecture.json']}
+
+
 @lru_cache(None)
 def courtyard(footprint):
     path=ROOT/'footprints/kicad/zudo-osc-hole-field.pretty'/(footprint.split(':')[-1]+'.kicad_mod')
@@ -148,7 +200,12 @@ def crossing_kind(name, members, sensitive, nets=None):
     return None,'no supported buffered/conditioned crossing source'
 
 
-def build(families=None, instances=None, assignments=None, capacities=None):
+def build(families=None, instances=None, assignments=None, capacities=None, *, supply_contract=None, supply_report=None):
+    if supply_contract is None:
+        supply_contract = json.loads((ROOT/'design/power/supply-architecture-input.json').read_text())
+    if supply_report is None:
+        supply_report = json.loads((ROOT/'design/power/supply-architecture.json').read_text())
+    power = power_requirements(supply_contract, supply_report)
     packages,nets,sensitive,units=source_data(families,instances)
     if assignments is None:assignments=[{'ref':r,'region':p['regions'][0]} for r,p in sorted(packages.items())]
     errors=assignment_errors(packages,assignments)
@@ -184,9 +241,8 @@ def build(families=None, instances=None, assignments=None, capacities=None):
                        capacitance_F={'maximum':1e-9,'basis':'OSC-ES-1 remote_controls design envelope, physical stability NOT RUN'},
                        max_harness_length_m=.3, adjacent_return='AGND')
             if kind=='power/return':
-                contracts={'+12V':(12,2000,150e-6),'-12V':(-12,1900,150e-6),'+5V':(5,400,100e-6),'AGND':(0,4400,None)}
-                voltage,current,capacitance=contracts[name]
-                row.update(direction={'source':'EXT conditional boundary/star','receivers':boards}, voltage_V={'nominal':voltage,'status':'conditional regulated rail'},current_mA={'whole_domain_transient_requirement':current,'status':'not a per-contact allocation'},capacitance_F={'whole_domain_nominal_ceiling':capacitance,'initial_bulk_per_powered_board':4.7e-6 if name!='AGND' else None,'status':'board count OPEN #35'})
+                voltage={'+12V':12,'-12V':-12,'+5V':5,'AGND':0}[name]
+                row.update(direction={'source':'EXT conditional boundary/star','receivers':boards}, voltage_V={'nominal':voltage,'status':'conditional regulated rail'},current_mA=power[name]['current_mA'],capacitance_F={'whole_domain_nominal_ceiling':power[name]['capacitance_F'],'initial_bulk_per_powered_board':4.7e-6 if name!='AGND' else None,'status':'board count and fitted/bulk totals are owned by the current partition report'})
             crossings.append(row)
     # An island may contain multiple independent package sections, but cannot
     # straddle boards. DNP parts count for ownership, not fitted area.
@@ -224,9 +280,9 @@ def build(families=None, instances=None, assignments=None, capacities=None):
     lock=json.loads((ROOT/'design/grid/placements.lock.json').read_text())['placements']
     fixed_digest=hashlib.sha256(json.dumps(sorted((p['uid'],p['x_mm'],p['y_mm']) for p in lock),separators=(',',':')).encode()).hexdigest()
     if fixed_digest!='8354aed4a72bf5357e1ccfb4da7c3234f139ba19f75a49d825d733c30a6da843':errors.append('fixed R21 UID/XY digest changed')
-    extra_refs=sorted({u['ref'] for u in units if u['key'].startswith('IO_EXTRA_')})
-    return {'schema_version':1,'fixed_uid_xy_sha256':fixed_digest,'source_cut_accepted':not(errors or forbidden),'added_fitted_quads':extra_refs,
-            'rail_change':{'planning_quiescent_delta_mA':{'+12V':16,'-12V':16,'+5V':0},'bypass_delta_uF':{'+12V':.6,'-12V':.6,'+5V':0},'basis':'Four exact OPA4196IDR at 1mA/rail and two exact OPA4197IPWR at 6mA/rail, full-temperature quiescent only. Generated current worksheets, rail ledger and supply architecture are the load authority.'},'status':'BLOCKED' if errors or forbidden else 'DRAFT ELECTRICAL CUT; FIT/CONNECTOR LOADS OPEN',
+    return {'schema_version':1,'fixed_uid_xy_sha256':fixed_digest,'source_cut_accepted':not(errors or forbidden),
+            **repacking_metadata(packages, units),
+            'status':'BLOCKED' if errors or forbidden else 'DRAFT ELECTRICAL CUT; FIT/CONNECTOR LOADS OPEN',
             'module_count':len({p['instance'] for p in packages.values()}-{'POWER','OCTAVE_REF'}),
             'fixed_uid_count':len({p['panel_uid'] for p in packages.values() if p['panel_uid']}),
             'source_domain':'EXT conditional requirement only; #59 protection OPEN; #55/#57 physical fit NOT RUN',

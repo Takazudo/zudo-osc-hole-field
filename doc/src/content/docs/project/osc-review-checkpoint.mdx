@@ -120,6 +120,12 @@ It checks every 2D footprint byte and every other IO report value against
 the pinned main revision, then regenerates all six O/EL source receipts.
 Definitions and contact inventories remain unchanged; native/model admission
 remains stale. The earlier epoch and historical receipts are preserved.
+The later `peripheral-source-epoch-20261002-power-metadata.json` adds the exact
+power/package metadata correction against main `38153f8`. Its comparison requires
+unchanged supply input/report bytes and unchanged IO values outside that computed
+replacement, then checks all six source receipts and board definitions. Both prior
+epochs and every historical native/model receipt remain intact and stale; this
+comparison supplies no new numerical or electrical acceptance.
 
 **This remains a nominal finite-profile diagnostic, NOT ACCEPTED for physical or
 joined electrical compliance.** K covers 1,903 fitted own contacts, 376 GH
