@@ -114,6 +114,158 @@ class PanelFeatureTests(unittest.TestCase):
         self.assertEqual(len(windows), 114)
         self.assertEqual({r['diameter_mm'] for r in windows}, {1.8})
 
+    def shape(self, layer, footprint=None):
+        owner = footprint or self.board
+        item = pcbnew.PCB_SHAPE(owner)
+        item.SetShape(pcbnew.SHAPE_T_CIRCLE)
+        item.SetLayer(layer)
+        item.SetCenter(pcbnew.VECTOR2I(104000000, 54000000))
+        item.SetEnd(pcbnew.VECTOR2I(105000000, 54000000))
+        item.SetWidth(pcbnew.FromMM(.05))
+        owner.Add(item)
+        return item
+
+    def test_extra_via_drill_is_rejected(self):
+        via = pcbnew.PCB_VIA(self.board)
+        via.SetPosition(pcbnew.VECTOR2I(104000000, 54000000))
+        via.SetWidth(pcbnew.FromMM(.6)); via.SetDrill(pcbnew.FromMM(.3))
+        via.SetViaType(pcbnew.VIATYPE_THROUGH)
+        via.SetLayerPair(pcbnew.F_Cu, pcbnew.B_Cu)
+        self.board.Add(via)
+        with self.assertRaisesRegex(ValueError, 'extra drilled via'):
+            self.verify()
+
+    def test_extra_cutout_on_board_or_footprint_is_rejected(self):
+        for embedded in (False, True):
+            with self.subTest(embedded=embedded):
+                self.board = pcbnew.LoadBoard(str(SOURCE))
+                fp = next(iter(self.board.GetFootprints())) if embedded else None
+                self.shape(pcbnew.Edge_Cuts, fp)
+                with self.assertRaisesRegex(ValueError, 'outline differs'):
+                    self.verify()
+
+    def test_missing_or_relayered_outline_is_rejected(self):
+        for remove in (False, True):
+            with self.subTest(remove=remove):
+                self.board = pcbnew.LoadBoard(str(SOURCE))
+                edge = next(item for item in self.board.GetDrawings()
+                            if item.GetLayer() == pcbnew.Edge_Cuts)
+                if remove:
+                    self.board.Remove(edge)
+                else:
+                    edge.SetLayer(pcbnew.F_SilkS)
+                with self.assertRaisesRegex(ValueError, 'outline differs'):
+                    self.verify()
+
+    def test_arc_shape_and_stroke_must_match_source(self):
+        for change in ('midpoint', 'width'):
+            with self.subTest(change=change):
+                self.board = pcbnew.LoadBoard(str(SOURCE))
+                edge = next(item for item in self.board.GetDrawings()
+                            if item.GetLayer() == pcbnew.Edge_Cuts
+                            and item.GetShape() == pcbnew.SHAPE_T_ARC)
+                if change == 'midpoint':
+                    mid = edge.GetArcMid()
+                    edge.SetArcGeometry(edge.GetStart(),
+                                        pcbnew.VECTOR2I(mid.x + 200000, mid.y),
+                                        edge.GetEnd())
+                else:
+                    edge.SetWidth(pcbnew.FromMM(.1))
+                with self.assertRaisesRegex(ValueError, 'outline differs'):
+                    self.verify()
+
+    def test_thickness_matches_source_parameter(self):
+        self.board.GetDesignSettings().SetBoardThickness(pcbnew.FromMM(1.6))
+        with self.assertRaisesRegex(ValueError, 'thickness differs'):
+            self.verify()
+        params = json.loads(PARAMS.read_text())
+        params['thickness_mm'] = 1.6
+        path = Path(self.temp.name) / 'params.json'
+        path.write_text(json.dumps(params))
+        self.verify(params_path=path)
+
+    def test_changed_source_outline_requires_matching_native_geometry(self):
+        for key, value in (('width_mm', 320), ('height_mm', 300),
+                           ('corner_radius_mm', 4)):
+            with self.subTest(key=key):
+                params = json.loads(PARAMS.read_text()); params[key] = value
+                path = Path(self.temp.name) / 'params.json'
+                path.write_text(json.dumps(params))
+                with self.assertRaisesRegex(ValueError, 'outline differs|locked frame'):
+                    self.verify(params_path=path)
+
+    def replace_outline(self, params):
+        from scripts.pcbgen.geometry import outline_segments
+        for item in list(self.board.GetDrawings()):
+            if item.GetLayer() == pcbnew.Edge_Cuts:
+                self.board.Remove(item)
+        outline = [(0, 0), (params['width_mm'], 0),
+                   (params['width_mm'], params['height_mm']), (0, params['height_mm'])]
+        for segment in outline_segments(outline, params['corner_radius_mm']):
+            item = pcbnew.PCB_SHAPE(self.board)
+            points = [pcbnew.VECTOR2I(pcbnew.FromMM(x + 100), pcbnew.FromMM(y + 50))
+                      for x, y in segment[1:]]
+            if segment[0] == 'arc':
+                item.SetShape(pcbnew.SHAPE_T_ARC); item.SetArcGeometry(*points)
+            else:
+                item.SetShape(pcbnew.SHAPE_T_SEGMENT)
+                item.SetStart(points[0]); item.SetEnd(points[1])
+            item.SetLayer(pcbnew.Edge_Cuts); item.SetWidth(pcbnew.FromMM(.05))
+            self.board.Add(item)
+
+    def test_source_shrink_cannot_cut_through_locked_hardware(self):
+        params = json.loads(PARAMS.read_text()); params['width_mm'] = 100
+        self.replace_outline(params)
+        self.assertAlmostEqual(pcbnew.ToMM(self.board.GetBoardEdgesBoundingBox().GetWidth()), 100.05)
+        path = Path(self.temp.name) / 'params.json'
+        path.write_text(json.dumps(params))
+        with self.assertRaisesRegex(ValueError, 'locked frame'):
+            self.verify(params_path=path)
+
+    def test_source_corner_cannot_cut_through_locked_hardware(self):
+        params = json.loads(PARAMS.read_text()); params['corner_radius_mm'] = 148
+        self.replace_outline(params)
+        path = Path(self.temp.name) / 'params.json'
+        path.write_text(json.dumps(params))
+        with self.assertRaisesRegex(ValueError, 'intersects a locked feature'):
+            self.verify(params_path=path)
+
+    def test_native_corner_geometry_follows_source_radius(self):
+        params = json.loads(PARAMS.read_text()); params['corner_radius_mm'] = 4
+        self.replace_outline(params)
+        path = Path(self.temp.name) / 'params.json'
+        path.write_text(json.dumps(params))
+        self.verify(params_path=path)
+
+    def test_invalid_physical_source_parameters_are_rejected(self):
+        path = Path(self.temp.name) / 'params.json'
+        for key in ('width_mm', 'height_mm', 'thickness_mm', 'corner_radius_mm'):
+            for value in (True, -1, float('nan'), float('inf')):
+                with self.subTest(key=key, value=value):
+                    params = json.loads(PARAMS.read_text()); params[key] = value
+                    path.write_text(json.dumps(params))
+                    with self.assertRaisesRegex(ValueError, 'invalid panel source'):
+                        self.verify(params_path=path)
+
+    def test_undrilled_owner_copper_and_art_remain_allowed(self):
+        self.shape(pcbnew.F_Cu)
+        self.shape(pcbnew.F_SilkS)
+        track = pcbnew.PCB_TRACK(self.board)
+        track.SetStart(pcbnew.VECTOR2I(104000000, 54000000))
+        track.SetEnd(pcbnew.VECTOR2I(105000000, 54000000))
+        track.SetWidth(pcbnew.FromMM(.2)); track.SetLayer(pcbnew.F_Cu)
+        self.board.Add(track)
+        self.verify()
+
+    def test_rejection_preserves_owner_geometry_bytes(self):
+        self.shape(pcbnew.Edge_Cuts)
+        self.shape(pcbnew.F_SilkS)
+        pcbnew.SaveBoard(str(self.path), self.board)
+        original = self.path.read_bytes()
+        with self.assertRaisesRegex(ValueError, 'outline differs'):
+            check(self.path)
+        self.assertEqual(self.path.read_bytes(), original)
+
     def test_invalid_source_diameter_is_rejected(self):
         params = json.loads(PARAMS.read_text())
         params_path = Path(self.temp.name) / 'params.json'

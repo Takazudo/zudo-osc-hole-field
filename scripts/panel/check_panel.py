@@ -19,6 +19,89 @@ def mm(value):
     return round(pcbnew.ToMM(value), 4)
 
 
+def check_physical_boundary(board, params, frame):
+    """Compare native physical features with the independently defined rectangle."""
+    dimensions = {}
+    for key in ('width_mm', 'height_mm', 'thickness_mm', 'corner_radius_mm'):
+        value = params[key]
+        if (isinstance(value, bool) or not isinstance(value, (int, float))
+                or not math.isfinite(value) or value < 0
+                or (key != 'corner_radius_mm' and value == 0)):
+            raise ValueError(f'invalid panel source {key}')
+        dimensions[key] = value
+    width, height, radius = (dimensions[k] for k in
+                             ('width_mm', 'height_mm', 'corner_radius_mm'))
+    if (width, height) != (frame['panel_width_mm'], frame['panel_height_mm']):
+        raise ValueError('panel source dimensions differ from locked frame')
+    if radius >= min(width, height) / 2:
+        raise ValueError('panel corner radius consumes an outline edge')
+    if board.GetDesignSettings().GetBoardThickness() != pcbnew.FromMM(dimensions['thickness_mm']):
+        raise ValueError('panel thickness differs from source')
+    if any(isinstance(item, pcbnew.PCB_VIA) for item in board.GetTracks()):
+        raise ValueError('extra drilled via on panel')
+
+    # The source outline may not remove material occupied by any fixed circular
+    # hole/window. Signed distance to a rounded rectangle is negative inside.
+    for fp in board.GetFootprints():
+        for pad in fp.Pads():
+            x = pcbnew.ToMM(pad.GetPosition().x) - frame['kicad_translation_mm']['x']
+            y = pcbnew.ToMM(pad.GetPosition().y) - frame['kicad_translation_mm']['y']
+            qx = abs(x - width / 2) - (width / 2 - radius)
+            qy = abs(y - height / 2) - (height / 2 - radius)
+            distance = math.hypot(max(qx, 0), max(qy, 0)) + min(max(qx, qy), 0) - radius
+            if distance > -pcbnew.ToMM(pad.GetSize().x) / 2:
+                raise ValueError(f'{fp.GetReference()}: panel outline intersects a locked feature')
+
+    def point(x, y):
+        return pcbnew.VECTOR2I(pcbnew.FromMM(x + frame['kicad_translation_mm']['x']),
+                              pcbnew.FromMM(y + frame['kicad_translation_mm']['y']))
+
+    def signature(item):
+        if not isinstance(item, pcbnew.PCB_SHAPE):
+            raise ValueError('unsupported panel Edge.Cuts item')
+        shape = item.GetShape()
+        if shape not in (pcbnew.SHAPE_T_SEGMENT, pcbnew.SHAPE_T_ARC):
+            raise ValueError('panel outline differs from source')
+        start, end = item.GetStart(), item.GetEnd()
+        endpoints = tuple(sorted(((start.x, start.y), (end.x, end.y))))
+        mid = item.GetArcMid() if shape == pcbnew.SHAPE_T_ARC else None
+        return (shape, endpoints, (mid.x, mid.y) if mid else None, item.GetWidth())
+
+    expected = []
+    corners = ((0, 0, 1, 1), (width, 0, -1, 1),
+               (width, height, -1, -1), (0, height, 1, -1))
+    if radius:
+        # Each rounded corner has tangent points r from the sharp corner and
+        # a 45-degree midpoint at r*(1-1/sqrt(2)) along each inward axis.
+        delta = radius * (1 - 1 / math.sqrt(2))
+        arcs = []
+        for x, y, dx, dy in corners:
+            arcs.append((point(x, y + dy * radius),
+                         point(x + dx * delta, y + dy * delta),
+                         point(x + dx * radius, y)))
+        # Tangent order is reversed at the top-right and bottom-left corners.
+        arcs = [arc if i % 2 == 0 else (arc[2], arc[1], arc[0])
+                for i, arc in enumerate(arcs)]
+        for i, arc in enumerate(arcs):
+            item = pcbnew.PCB_SHAPE(board); item.SetShape(pcbnew.SHAPE_T_ARC)
+            item.SetArcGeometry(*arc); item.SetWidth(pcbnew.FromMM(.05))
+            expected.append(signature(item))
+            item = pcbnew.PCB_SHAPE(board); item.SetShape(pcbnew.SHAPE_T_SEGMENT)
+            item.SetStart(arc[2]); item.SetEnd(arcs[(i + 1) % 4][0])
+            item.SetWidth(pcbnew.FromMM(.05)); expected.append(signature(item))
+    else:
+        for i, (x, y, _, _) in enumerate(corners):
+            x2, y2, _, _ = corners[(i + 1) % 4]
+            item = pcbnew.PCB_SHAPE(board); item.SetShape(pcbnew.SHAPE_T_SEGMENT)
+            item.SetStart(point(x, y)); item.SetEnd(point(x2, y2))
+            item.SetWidth(pcbnew.FromMM(.05)); expected.append(signature(item))
+    graphics = list(board.GetDrawings()) + [item for fp in board.GetFootprints()
+                                            for item in fp.GraphicalItems()]
+    actual = [signature(item) for item in graphics if item.GetLayer() == pcbnew.Edge_Cuts]
+    if Counter(actual) != Counter(expected):
+        raise ValueError('panel outline differs from source (segments, arcs, layers or stroke)')
+
+
 def check(board_path: Path, output: Path | None = None, params_path: Path = PARAMS):
     lock = json.loads(LOCK.read_text())
     params = json.loads(params_path.read_text())
@@ -89,17 +172,13 @@ def check(board_path: Path, output: Path | None = None, params_path: Path = PARA
         members = list(groups['panelgen:art:' + layer].GetItems())
         if not members or any(item.GetLayer() != layer_id for item in members):
             raise ValueError(f'{layer}: artwork group is empty or contains another layer')
-    bbox = board.GetBoardEdgesBoundingBox()
-    # KiCad's edge bounding box includes half of the 0.05 mm Edge.Cuts stroke
-    # on both sides; the outline centreline is exactly 318 × 298 mm.
-    if (mm(bbox.GetWidth()), mm(bbox.GetHeight())) != (318.05, 298.05):
-        raise ValueError('panel outline centreline is not 318 × 298 mm')
+    check_physical_boundary(board, params, lock['frame'])
     text = board_path.read_text()
     if 'OSC PLAYGROUND' in text or 'INTEGER CELLS / FIXED HARDWARE' in text:
         raise ValueError('old title or proof annotation on panel board')
     counts = Counter(row['kind'] for row in lock['placements'])
     report = {'schema_version': 1, 'status': 'PASS - source/board centre parity, unvalidated draft',
-              'outline_mm': [318, 298], 'features': len(rows),
+              'outline_mm': [params['width_mm'], params['height_mm']], 'features': len(rows),
               'drilled_holes': holes, 'undrilled_optical_windows': windows,
               'by_kind': dict(sorted(counts.items())), 'rows': rows}
     if output:
