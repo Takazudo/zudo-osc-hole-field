@@ -48,6 +48,9 @@ for generator in "${generators[@]}"; do
   fi
 done
 
+bash scripts/schgen/smoke.sh --generated
+bash scripts/schgen/export-master.sh
+
 python3 scripts/schgen/generate_monitor_permit.py
 python3 scripts/checks/monitor_permit_behavior.py
 python3 scripts/checks/monitor_permit_current.py
