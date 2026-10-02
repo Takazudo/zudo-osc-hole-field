@@ -9,3 +9,9 @@ The calculator derives a strict normal-band total-error allowance, conditional f
 Entry and post-edit component validation: PASS, 66 records. Baseline guarded regeneration: PASS (329 seconds), no tracked drift. Thirteen focused arithmetic/source/provenance tests and retained-PDF/report checks pass. Foreground review applied output-contention, opposite load-polarity, strict-boundary rounding and current-report dependency-closure clarifications. Final aggregate/docs checks and exact-head CI remain pending at this first draft commit.
 
 No installed proof is obtained. Source applicability at actual common-mode/supply/load, output and partial-power behavior, current and thermal bounds, maximum timing, compensation, return integrity and full protection remain open. Native/dynamic/bench validation of this new topology is NOT RUN. No native model run can substitute typical-only data for a maximum guarantee.
+
+## Integration evidence
+
+Main PR121 and PR122 were integrated without study-input or numerical changes. The 13 focused tests, retained-PDF/report check and component validation passed again. Initial exact-head CI36975043563 passed (documentation 53 seconds; Python/native/aggregate 11 minutes 8 seconds).
+
+The additional local final waiter was confirmed queued and canceled by coordination before any suite execution: **NOT RUN, exit 143**, not a passed or failed test. Final combined-head CI supplies aggregate regeneration and documentation verification; its exact commit/result are retained on PR123 and the independent review log. This avoids a duplicate local aggregate for unchanged study inputs. No new native or physical qualification is inferred.
