@@ -1,7 +1,7 @@
 # Control-board copper after paired-header reassignment
 
-This is a **partially routed, unvalidated draft**. The current source has 2806
-track segments, 554 through vias and 93 complete native open edges. It keeps
+This is a **partially routed, unvalidated draft**. The current source has 3016
+track segments, 565 through vias and 72 complete native open edges. It keeps
 all 344 ground contacts and sixteen local IC/bypass rail pairs connected after
 independent refill. The current four-layer, 2 oz, 1.6 mm stack is a proposal.
 
@@ -23,7 +23,13 @@ native checks. A subsequent continuation protected every one of those 2,140
 existing copper objects and reached 114 edges after removing ground-sensitive
 additions. Front-layer grid paths reduced this to 102 and 96; three accepted
 back-layer paths reduced it to 93. Every candidate underwent native DRC,
-complete connectivity, ground and bypass checks before adoption.
+complete connectivity, ground and bypass checks before adoption. Two further front-layer detours reached 91 edges. A back-layer
+link with a local C222 ground stitch reached 90; another protected-copper
+continuation reached 72 after restoring a ground-sensitive route. All previous
+copper remains exact. Every source AGND segment and via must connect to main
+ground both before and after independent refill. The stitch uses the declared
+0.3 mm local ground escape and 0.7/0.3 mm via dimensions; electrical current
+and resistance capability remain unqualified.
 
 `copper.json` owns explicit integer-nanometre copper geometry. The constructor
 replays it on the current labelled base without changing any other source
@@ -43,8 +49,11 @@ The preceding 189-edge checkpoint passed source regeneration, native replay,
 The 93-edge continuation passed full native replay, 42 targeted tests,
 documentation build and publication checks in 93 seconds. Both native views
 were visually inspected; all 2,140 prior copper objects are unchanged and no
-net has regressed. Integrated CI is pending. The remaining native open edges
-comprise 57 signal edges and 36 supply-rail edges.
+net has regressed. That 93-edge revision passed integrated CI and is merged. The final 72-edge
+combined native replay, 43 targeted tests, documentation build and publication
+checks passed in 211 seconds. Both layer views were visually inspected; the
+existing single workbench-link exception remains explicit. Its integrated CI
+is pending. The current remaining connections are retained in the complete native ratsnest.
 All prior source copper is retained exactly. K's native comparison preserves
 all 13,406 pad identities and pin/net assignments, all non-header component
 pads and occupied ground geometry. K still has 9,650 open edges and reported

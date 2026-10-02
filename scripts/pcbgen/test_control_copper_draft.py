@@ -4,7 +4,7 @@ import json
 from pathlib import Path
 import unittest
 
-from scripts.pcbgen.control_copper_draft import validate
+from scripts.pcbgen.control_copper_draft import validate, require_connected_ground_copper
 
 
 class ControlCopperSourceTests(unittest.TestCase):
@@ -14,9 +14,20 @@ class ControlCopperSourceTests(unittest.TestCase):
 
     def test_current_source_has_complete_arrays(self):
         rows = validate(self.spec)
-        self.assertEqual(sum(r['kind']=='segment' for r in rows),2806)
-        self.assertEqual(sum(r['kind']=='via' for r in rows),554)
+        self.assertEqual(sum(r['kind']=='segment' for r in rows),3016)
+        self.assertEqual(sum(r['kind']=='via' for r in rows),565)
         self.assertEqual(sum(len(a['via_uuids']) for a in self.spec['main_arrays']),150)
+
+    def test_isolated_ground_stitch_rejected(self):
+        ground = {row['uuid'] for row in self.spec['copper'] if row['net']=='AGND'}
+        native = {'main_rail_members': {'AGND': sorted(ground)}}
+        self.assertEqual(require_connected_ground_copper(self.spec, native), len(ground))
+        for kind in ('segment', 'via'):
+            row = next(row for row in self.spec['copper'] if row['net']=='AGND' and row['kind']==kind)
+            with self.subTest(kind=kind):
+                broken = {'main_rail_members': {'AGND': sorted(ground-{row['uuid']})}}
+                with self.assertRaisesRegex(ValueError, 'ground copper is disconnected'):
+                    require_connected_ground_copper(self.spec, broken)
 
     def test_native_views_match_the_retained_board_and_images(self):
         root = Path(__file__).resolve().parents[2]
