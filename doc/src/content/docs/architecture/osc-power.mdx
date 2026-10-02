@@ -8,13 +8,39 @@ sidebar_position: 60
 
 ## Selected draft decision after issue #48
 
-The [supply architecture decision](../decisions/osc-supply-architecture.mdx) supersedes the supply intent below: one external regulated-source **requirement contract**, one `EXT` domain, 1.6/1.5/0.3 A required continuous delivery and 1.9/1.8/0.4 A required transient delivery. Physical source and orderable inlet/mate are **NOT SELECTED**; energization is not authorized. #52 now captures a logical eight-pin inlet and an unimplemented raw-to-load boundary with no footprint or BOM line. The native netlist confirms distinct source and load nets; no protection circuit is implemented. Its exact realization stays [open in #59](https://github.com/Takazudo/zudo-osc-hole-field/issues/59). The 16-contact inlet/PTC circuit described below is historical comparison only; its 1.1 A PTC path fails the new protection-loss requirement. Physical source realization, thermal/startup/programming, cable and power-off gates persist in [issue #57](https://github.com/Takazudo/zudo-osc-hole-field/issues/57).
+The [supply architecture decision](../decisions/osc-supply-architecture.mdx) supersedes the historical P+B reuse intent below. The current report-derived requirements are:
 
-The captured rail-attributed capacitor inventory is **48.3 / 41.1 / 24.5 µF** on +12/−12/+5, leaving **101.7 / 108.9 / 75.5 µF** nominal before the still-unplaced 4.7 µF per powered board/rail. This conservatively charges local VEE5 and filtered NOISE_VDD capacitance to their upstream domains. It also restores 20 missing −12 V 100 nF comparator decouplers; the generated count now covers the mapped IC supply-pin count, while proximity and effective ceramic capacitance remain board checks. The generated report shows +20% full-ceiling comparison; board count and bulk allocation remain open. Existing 20 mA per-rail auxiliary allowances remain planning requirements. The #58 prospective 35 local quad isolation packages would require a 45.5 mA +12 V sensitivity, exceeding the +12 V allowance by 25.5 mA before other protection demand; no such parts or savings are fitted. All 82 outputs, 16 precision feedback paths and 30 octave receivers remain open protection obligations. See `design/power/downstream-handoff-52.md` for board projection rules.
+{/* power-current:start */}
 
-## Historical pinned source contract
+All 33 signal modules, the shared reference, 347 worksheet loads and 650 fitted IC packages belong to `EXT`. These counts describe the captured master; the separate protection candidate is not a fitted implementation.
 
-The intended source is zudo-pd Board P (USB-PD input) stacked on Board B (power conversion). The synth uses a factory-made ribbon cable into the matching 2 × 8, 2.54 mm shrouded IDC header, DEALON `DW254P-2X8-L0` (`C4749189`). The supply's screw terminals are excluded because they provide a single ground pole and require hand wiring. Connector orientation, cable assembly, and offset/reversal protection remain physical qualification gates.
+| Requirement | +12 V | −12 V (magnitude) | +5 V |
+| --- | --- | --- | --- |
+| Normal planning load including allowances | 1,534.819 mA | 1,435.569 mA | 224.286 mA |
+| Minimum continuous delivery | 1,700 mA | 1,600 mA | 300 mA |
+| Minimum transient delivery for at least 20 ms | 2,000 mA | 1,900 mA | 400 mA |
+| Maximum delivered current, including limiter tolerance | 2,100 mA | 2,000 mA | 500 mA |
+| Full capacitance ramp increment | 224.64 mA | 222.66 mA | 62.40 mA |
+| Source magnitude band, including ripple | 12.00…12.30 V | 12.00…12.20 V | 5.05…5.10 V |
+| Required voltage magnitude at load | 11.53…12.48 V | 11.74…12.37 V | 4.81…5.20 V |
+
+These are conditional planning requirements, not measured source capacity or guaranteed whole-instrument maxima. Source, inlet and mate remain **NOT SELECTED**; protection remains open in #59 and physical qualification **NOT RUN** in #57.
+
+{/* power-current:end */}
+
+#52 captures a logical eight-pin inlet and an unimplemented raw-to-load boundary with no footprint or BOM line. The native netlist confirms distinct source and load nets; no protection circuit is implemented. Its exact realization remains open in [#59](https://github.com/Takazudo/zudo-osc-hole-field/issues/59). The historical 16-contact inlet/PTC circuit is comparison evidence only. Physical source realization, thermal/startup, cable and power-off gates remain in [#57](https://github.com/Takazudo/zudo-osc-hole-field/issues/57).
+
+{/* power-capacitance:start */}
+
+The captured master rail-attributed capacitor inventory is **49.9 / 42.7 / 24.5 µF** on +12/−12/+5 V, leaving **100.1 / 107.3 / 75.5 µF** nominal against the source-contract ceilings before unplaced board bulk. Local VEE5 and filtered NOISE_VDD capacitors count against their upstream rails. This is the master inventory, not a census of completed board copper or the unfitted protection candidate. Reconcile every board reservoir and selected protection capacitor; per-pin proximity and effective ceramic capacitance remain open.
+
+{/* power-capacitance:end */}
+
+The #58 prospective local-quad isolation sensitivity is research only, not fitted protection. The open output, feedback and reference obligations are recorded in `design/power/downstream-handoff-52.md`; #59 must reconcile the selected circuit's full demand.
+
+## Historical pinned source contract (not selected)
+
+The original intended source was zudo-pd Board P (USB-PD input) stacked on Board B (power conversion). That historical design used a factory-made ribbon cable into the matching 2 × 8, 2.54 mm shrouded IDC header, DEALON `DW254P-2X8-L0` (`C4749189`). The supply's screw terminals are excluded because they provide a single ground pole and require hand wiring. Connector orientation, cable assembly, and offset/reversal protection remain physical qualification gates.
 
 | Property | Design assumption at the locked source | Evidence state |
 | --- | --- | --- |
@@ -49,14 +75,13 @@ The PTC sheet lists `R1max` as 0.250 Ω but does not establish the worst normal-
 
 The current requirement-only sheet contributes 1.1 µF nominal capacitance per rail, or 1.32 µF per rail at +20% tolerance. Bleeders draw about 5.455 mA on each 12 V rail and 2.273 mA on +5 V at nominal voltage; this load remains in the finished planning budget. Across the entire synth, nominal added bulk capacitance may be at most **150 µF on +12 V, 150 µF on −12 V, and 100 µF on +5 V**, including the 100 nF supply decouplers and initial 4.7 µF per board rail; use +20% capacitance tolerance in startup arithmetic. The fitted rail-attributed count is reported above, but the board partition and full bulk placement remain open, so the final capacitance total is **NOT ESTABLISHED**.
 
-The issue #33 captured master budget supersedes the earlier preliminary model. Its reported planning upper subtotals, including the issue #24 worst-voltage/resistance inlet bleeders, are **1,404.819 mA on +12 V, 1,313.569 mA on −12 V, and 177.286 mA on +5 V**. They exceed the +12 V 960 mA ceiling by **444.819 mA** and the −12 V 640 mA ceiling by **673.569 mA**. Complete typical and guaranteed maximum currents remain **NOT ESTABLISHED**; the supply targets themselves are unmeasured. Issue #34's option review in `design/power/rail-budget-resolution.md` shows that even deliberately overgenerous op-amp, LED and DC-pot savings leave a −12 V planning deficit. It follows the prescribed fourth case: propose a second supply feed for later engineering review, without designing one or changing this captured circuit. The board partition is gated on a source-backed current closure and physical supply/return-path qualification, tracked in [issue #48](https://github.com/Takazudo/zudo-osc-hole-field/issues/48). See the [rail budget decision](../decisions/osc-rail-budget.mdx).
+The historical issue #33 budget and #34 escalation are retained in the [rail budget decision](../decisions/osc-rail-budget.mdx). Their earlier single-source subtotals are not the current source contract. The [supply decision](../decisions/osc-supply-architecture.mdx) now derives its comparison tables from the current report. Complete typical and guaranteed maximum instrument currents remain **NOT ESTABLISHED**; physical source and return-path qualification remain open.
 
-The [instrument rail planning ledger](./osc-rail-ledger.mdx) traces 634 fitted IC packages and 347 worksheet loads to their actual rails, adds the omitted S&H +12 V reference and +5 V logic draft allowances, and retains the historical provisional feed comparison. Even with two full inlets, the conditional −12 V planning total was 1,319.448 mA, **39.448 mA above two inherited 640 mA ceilings**. The selected EXT requirement supersedes that failed comparison; source-side capacity is still not qualified.
-Reversed or offset ribbon insertion must not silently connect a rail to the wrong circuit. A shroud alone does not prove this. The protection topology, exact parts, fault-energy arithmetic, and an offset-cable test need to be reviewed against the paired supply before fabrication. The supply's output fuses and clamps are not proof that the synth survives every insertion fault.
+The [instrument rail planning ledger](./osc-rail-ledger.mdx) traces the captured IC packages and worksheet loads to their rails. Its A/B feed labels remain historical comparison evidence; the selected requirement uses one `EXT` domain. Reverse polarity, offset wiring and fault-energy behavior require the actual selected inlet and protection circuit. A shroud, supply fuse or clamp does not establish survival.
 
-## 15 V-only bring-up precondition
+## Historical P+B 15 V-only bring-up precondition
 
-The supply's USB-PD controller ships advertising a 20 V request at top priority, while its input bus has a 16 V clamp diode that conducts at a 20 V contract. Before connecting any 20 V-capable charger, program the controller memory for **5 V and 15 V only** and read back the programmed image. First power must come from a current-limited 5 V source with Board B disconnected. No programmed image or readback is retained; this is an **open bring-up gate**, not a claimed configuration.
+If the project returns to the pinned P+B supply, its USB-PD controller ships advertising a 20 V request at top priority, while its input bus has a 16 V clamp diode that conducts at a 20 V contract. Before connecting any 20 V-capable charger, program the controller memory for **5 V and 15 V only** and read back the programmed image. First power must come from a current-limited 5 V source with Board B disconnected. No programmed image or readback is retained; this is an **open bring-up gate**, not a claimed configuration.
 
 ## Verification still required
 
