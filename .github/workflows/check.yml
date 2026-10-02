@@ -88,6 +88,9 @@ jobs:
       - name: Place every current shortlist symbol unit and check native ERC
         run: bash scripts/libgen/fixtures/check_ic_units.sh
 
+      - name: Check deterministic cluster placement and source faces
+        run: bash scripts/pcbgen/test_placer.sh
+
       - name: Check native standard-cell ERC and pin-net parity
         run: bash design/spec/cells/check_harness.sh
 

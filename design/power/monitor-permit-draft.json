@@ -584,6 +584,6 @@
     "Both TLV off-state output drain leakages now load REF_SENSE; no full-temperature maximum at this voltage is retained.",
     "LVC Ioff is conditioned at zero supply; no intermediate-power default LOW is established.",
     "R125 bleeds stored charge only under stated leakage assumptions; no minimum off interval or automatic restart guarantee.",
-    "U106 input settles at a divided HIGH (nominal4.545V at5V), outside the ICC rail-level test condition; additional steady input-stage current is unbounded."
+    "U104 and U106 actual HIGH inputs are not directly covered by the fixed VI=5.5V or GND, IO=0 ICC row. U106 also retains a divided HIGH (nominal4.545V at5V). Additional steady input-stage current remains unbounded."
   ]
 }

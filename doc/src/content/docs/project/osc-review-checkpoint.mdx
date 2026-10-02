@@ -19,8 +19,9 @@ diagnostics reproduce latch-off for forced short GOOD_FAST low pulses and preser
 states. They do not simulate actual device startup or release. The conditional current allocation in PR #81 includes device-current source
 rows and charges reference output demand to +5 V once, within the existing
 auxiliary allowance. Its updated largest +5 V DC screen is 6.699 mA under explicit
-source-applicability/leakage assumptions. The divided steady HIGH at U106
-does not meet its rail-level ICC condition; additional steady input-stage current
+source-applicability/leakage assumptions. The buffer ICC source row requires VI=5.5 V or GND and IO=0. Neither
+U104 nor U106 actual HIGH input is directly covered; U106 also retains a
+divided steady HIGH. Additional steady input-stage current
 remains unbounded, as does dynamic current.
 PR #82 exposes the reference-validity integration gap: the coarse reference
 channel can retain a settled healthy state across an enclosing range of roughly
