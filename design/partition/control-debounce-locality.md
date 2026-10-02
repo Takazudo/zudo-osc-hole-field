@@ -25,7 +25,7 @@ DRC/parity findings. Native comparison covers all 1,740 pads: exactly the
 180 passive pads move, while all other pads and every pad identity, net,
 shape and layer remain unchanged. The bare layout still has 872 open edges.
 Compatible-copper rebuilding starts at 199 open edges; separately checked
-routing batches reduce this to 43, retaining all 344 grounds, 77 source
+routing batches reduce this to 23, retaining all 344 grounds, 77 source
 AGND copper objects and sixteen local bypass pairs after independent refill.
 The previous 72-open-edge checkpoint remains the recovery source in git.
 Old routes to moved pads are not accepted for this proposal. Current/resistance, protection, component qualification and

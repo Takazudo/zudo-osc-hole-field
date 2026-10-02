@@ -106,7 +106,7 @@ def check():
         if any(holes.get(r['uuid'])!=r for r in old['holes']):
             raise ValueError('Partial copper changed an existing drill')
         via_ids = {r['uuid'] for r in spec['copper'] if r['kind']=='via'}
-        if set(holes)-{r['uuid'] for r in old['holes']} != via_ids or len(via_ids)!=431:
+        if set(holes)-{r['uuid'] for r in old['holes']} != via_ids or len(via_ids)!=455:
             raise ValueError('Partial copper drill inventory differs from source')
         for array in spec['main_arrays']:
             if not set(array['via_uuids']) <= set(geom['main_rail_members'][array['net']]):
@@ -114,7 +114,7 @@ def check():
         inventory = audit(geom,json.loads((ROOT/'design/partition/control-layout/osc-control.receipt.json').read_bytes()),
                           json.loads((ROOT/'design/partition/partition.json').read_bytes()),
                           json.loads((ROOT/'design/reports/io-partition.json').read_bytes()))
-        if rats['native_unconnected_edges'] != 43:
+        if rats['native_unconnected_edges'] != 23:
             raise ValueError('Partial-copper connectivity changed: '+str(rats['native_unconnected_edges']))
         refilled = work/'refilled.kicad_pcb'
         independent_refill(board,definition,refilled)
@@ -123,7 +123,7 @@ def check():
         (work/'refilled-ratsnest.json').write_text(json.dumps(refill_rats,indent=2)+'\n')
         if refill_rats['native_open_edges_by_net'] != rats['native_open_edges_by_net']:
             raise ValueError('Independent reload/refill changed per-net connectivity')
-        if refill_rats['native_unconnected_edges'] != 43:
+        if refill_rats['native_unconnected_edges'] != 23:
             raise ValueError('Independent reload/refill changed connectivity')
         refill_geometry_path = work/'refilled-geometry.json'
         extract('osc-control',refilled,refill_geometry_path,definition)
@@ -136,14 +136,14 @@ def check():
               json.loads((ROOT/'design/reports/io-partition.json').read_bytes()))
         if any(digest(p)!=value for p,value in {**before,**native_inputs}.items()):
             raise ValueError('Input changed during native copper verification')
-        result = {'status':'PASS PARTIAL UNVALIDATED DRAFT ONLY','native_open_edges':43,
+        result = {'status':'PASS PARTIAL UNVALIDATED DRAFT ONLY','native_open_edges':23,
                   'native_rule_errors':0,'native_parity_findings':0,
                   'native_warnings':sum(v['severity']=='warning' for v in drc['violations']),
                   'ground_contacts_connected':inventory['connected_count'],
                   'ground_copper_objects_connected':ground_copper_count,
-                  'local_bypass_rail_pairs_connected':bypasses['rail_pairs_connected'],'source_vias':431,
+                  'local_bypass_rail_pairs_connected':bypasses['rail_pairs_connected'],'source_vias':455,
                   'source_tracks':sum(r['kind']=='segment' for r in spec['copper']),
-                  'independent_reload_refill':'PASS: 43 open edges and all 344 ground contacts retained',
+                  'independent_reload_refill':'PASS: 23 open edges and all 344 ground contacts retained',
                   'board_sha256':digest(published),'routing_complete':False,
                   'electrical_current_resistance_acceptance':'NOT RUN','physical_qualification':'NOT RUN'}
         print(json.dumps(result,indent=2),flush=True)
