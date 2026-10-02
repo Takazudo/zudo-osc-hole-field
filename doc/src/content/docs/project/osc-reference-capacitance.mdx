@@ -1,0 +1,24 @@
+---
+title: "Monitor reference output capacitance"
+description: "Exact C0G bank evidence and the limited REF34 capacitance-range check."
+sidebar_position: 251
+---
+
+> **Unvalidated candidate — not bench tested.** This is an isolated protection study. Canonical protection, reference validity and physical qualification remain open in #59.
+
+The monitor candidate uses three **C1206C104F3GACTU** capacitors from KEMET at C104–C106 between REF and AGND. Each is 100 nF ±1%, 25 V, C0G in a 1206 case. The nominal total remains **0.3 µF**. The other six [X7R bypasses](./osc-monitor-bypass.mdx), the C109 timing capacitor and the instrument's global bypass selection are unchanged. The candidate identity is cataloged as not fitted to the instrument; stock and factory allocation are unverified.
+
+KEMET's exact specification gives the capacitance and tolerance at 1 kHz, 1 Vrms. Its C1003_C0G family document specifies no capacitance change with applied rated DC voltage or time and ±30 ppm/°C relative to +25 °C. Over the stated −40…125 °C component-temperature screen, the maximum reference departure is 100 °C. Combining tolerance and temperature factors gives:
+
+| Bound | Calculation | Result |
+| --- | --- | --- |
+| Minimum | 300 nF × 0.99 × 0.997 | 296.109 nF |
+| Maximum | 300 nF × 1.01 × 1.003 | 303.909 nF |
+
+`monitor-reference-capacitance-report.json` checks that this entire interval is strictly inside REF34 section 6.5's **0.1–10 µF** stable-output-capacitor range. The calculation binds the actual candidate connections, exact owner facts and source hashes. It admits the component capacitance-value range only; it does not qualify installed reference stability or high-frequency impedance.
+
+The dedicated footprint follows KEMET's 1206 Density B recommendation: pad centres ±1.50 mm, pad size 1.15 × 1.80 mm and a 4.70 × 2.30 mm minimum courtyard. The provisional display body is the exact maximum envelope, 3.4 × 1.8 × 1.8 mm. Native geometry and pin checks do not establish soldering, seating, installed clearance or thermal fit.
+
+The reference's common **10 µF** test condition for accuracy, quiescent current and timing is still unmatched. Startup, slow-slew overshoot, shutdown, line/load interactions and the narrow 3.29–3.31 V validity assumption remain unresolved. The capacitor's 10 GΩ insulation-resistance value is measured under the family's rated-voltage, 120 ±5 second, 25 °C condition; it is not a full-temperature leakage guarantee. Current calculations retain their explicit zero-capacitor-leakage assumption. Environmental stress and installed parasitics remain separate qualification work.
+
+The source records retain the exact manufacturer PDF and C1003_C0G (2025-02-20) hashes and locators; raw copyrighted PDFs stay in the development cache. The bank change makes no claim about return integrity, isolation release, the source current envelope or hardware readiness.

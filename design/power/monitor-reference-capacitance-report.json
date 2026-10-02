@@ -1,0 +1,71 @@
+{
+  "status": "SOURCE-BOUND CAPACITANCE RANGE ONLY; unselected native candidate",
+  "capacitors": [
+    "C104",
+    "C105",
+    "C106"
+  ],
+  "mpn": "C1206C104F3GACTU",
+  "component_temperature_C": [
+    -40,
+    125
+  ],
+  "reference_temperature_C": 25,
+  "nominal_bank_F": 3e-07,
+  "capacitance_interval_F": [
+    2.96109e-07,
+    3.0390900000000005e-07
+  ],
+  "exact_interval_F": [
+    "296109/1000000000000",
+    "303909/1000000000000"
+  ],
+  "REF_stable_capacitance_range_F": [
+    1e-07,
+    1e-05
+  ],
+  "capacitance_value_range_admitted": true,
+  "common_table_COUT_F": 1e-05,
+  "common_accuracy_timing_condition_matched": false,
+  "canonical_protection_implemented": false,
+  "qualification_accepted": false,
+  "installed_reference_stability_qualified": false,
+  "precision_reference_validity_qualified": false,
+  "source_fact_ids": [
+    "fact-monitor-c1206c104f3gactu-aging",
+    "fact-monitor-c1206c104f3gactu-capacitance",
+    "fact-monitor-c1206c104f3gactu-rated-voltage",
+    "fact-monitor-c1206c104f3gactu-temperature-coefficient",
+    "fact-monitor-c1206c104f3gactu-temperature-range",
+    "fact-monitor-c1206c104f3gactu-tolerance",
+    "fact-monitor-c1206c104f3gactu-voltage-change",
+    "fact-monitor-ref3433tidbvr-stable-capacitance"
+  ],
+  "primary_source_sha256": {
+    "src-monitor-c1206c104f3gactu-datasheet": "f5c22b668f632aa28ad2696645232c9b3554b82ff9028888a0b10c86f5c42716",
+    "src-monitor-c1206c104f3gactu-land": "02d179914aeb9585eb2229ba8e18ef9d6b01c77c056de2af295d6950a2a5cc0d",
+    "src-monitor-ref3433tidbvr-datasheet": "cbf64eb240e023dfdbb063d9f515212718f8b1732fc5b582e52f268dfbd5d665"
+  },
+  "conditions": [
+    "Exact part tolerance at 1 kHz/1 Vrms; C0G temperature factor relative to25C.",
+    "Family no applied-rated-DC-voltage capacitance change and zero aging; not beyond25V.",
+    "Component temperature within -40..125C is a screen, not an installed thermal result.",
+    "No full-temperature capacitor leakage bound is added to the conditional DC current ledger."
+  ],
+  "remaining": [
+    "REF table common10uF accuracy, Iq and timing condition remains unmatched.",
+    "Startup/slow-slew/shutdown, line-load cross-condition and3.29..3.31V reference validity remain open.",
+    "Installed ESR/ESL, board parasitics, soldering/environmental stress and physical fit remain unqualified.",
+    "LVC ICC/partial-power/release, return integrity and real signal isolation remain open."
+  ],
+  "input_sha256": {
+    "design/power/monitor-permit-draft.json": "9751daf2fa004eb72b315f0b8515a0b8ff0956979b05a2ed835498d193a3ec5b",
+    "design/power/monitor-permit-parts.json": "92867833b4ace72f67851908738f9034da4ff23bd4439baf866c6538cde93e64",
+    ".claude/skills/component-monitor-permit-candidates/facts.json": "af30bd0c71d2f5b1572657fe4b3e842e8f27f70e953c51796ca7c1eede16dca5",
+    ".claude/skills/component-monitor-permit-candidates/sources.json": "28be4659d8390dd237c3443a5d694cfd18623b7632dc660d2fbacfbd55439beb",
+    ".claude/skills/component-monitor-permit-candidates/manifest.json": "54d3975f122a32336ebd1c962422d64191207d470667f6092725799c267ab5ae",
+    ".claude/skills/component-monitor-permit-candidates/pin-map.json": "0adbfce673ed45e0e17b64a33c3f91c35be3403cb9a0db5c973e05d24f72266e",
+    ".claude/skills/component-spec-audit/references/inventory.json": "9cd69ef775e47b9aec35002aa67ed4817a72260100c2603e8e416c1e76435b28",
+    "scripts/checks/monitor_reference_capacitance.py": "97425d97f45aca377d4cdaaf880791a1dde690bda9e7ca36054e732baba96ef4"
+  }
+}
