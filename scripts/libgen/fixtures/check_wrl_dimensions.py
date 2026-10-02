@@ -29,9 +29,7 @@ FIXTURE=ROOT/'.circuit-cache/fixtures'
 REPORT=ROOT/'design/mechanical/ic-envelope-native-report.json'
 EXPECTED={
     'PTV09A-4020F':(10.0,10.0,6.8),
-    'Jack_3.5mm_QingPu_WQP518MA':COMPONENT_MODELS['Jack_3.5mm_QingPu_WQP518MA.wrl'][:3],
-    'Toggle_Dailywell_2MS_T1B1M2':COMPONENT_MODELS['Toggle_Dailywell_2MS_T1B1M2.wrl'][:3],
-    'Button_Omron_B3F_6x6_P6.5x4.5':COMPONENT_MODELS['Button_Omron_B3F_6x6_P6.5x4.5.wrl'][:3],
+    **{name.removesuffix('.wrl'):row[:3] for name,row in COMPONENT_MODELS.items()},
     **{name:row['dims'] for name,row in ic.MODELS.items()},
     'TI_DCT0008A':(3.1,3.1,1.3),
     'KEMET_C0603_DensityB':(1.75,.95,.95),
@@ -67,7 +65,22 @@ def fab_basis(footprint):
             'size':tuple(b-a for a,b in bounds)}
 
 
-def exported_geometry(name,position=(0,0),angle=0,bottom=False,offset=None,model_angle=None):
+
+def scaled_coordinate_copy(text, factor):
+    """Mutate only a disposable single-body WRL copy, never the library asset."""
+    points = list(re.finditer(r'\bpoint\s*\[([^]]*)\]', text))
+    if len(points) != 1:
+        raise ValueError('unit mutation requires one Coordinate point array')
+    point = points[0]
+    number = r'[-+]?(?:\d+(?:\.\d*)?|\.\d+)(?:[eE][-+]?\d+)?'
+    if len(re.findall(number, point[1])) != 24:
+        raise ValueError('unit mutation requires the retained eight-vertex body')
+    changed = re.sub(number, lambda match: format(float(match[0])*factor, '.12g'), point[1])
+    return text[:point.start(1)] + changed + text[point.end(1):]
+
+
+def exported_geometry(name,position=(0,0),angle=0,bottom=False,offset=None,model_angle=None,
+                      coordinate_factor=None,model_scale=None):
     board=pcbnew.BOARD()
     footprint=pcbnew.FootprintLoad(str(LIBRARY),name)
     if footprint is None:raise RuntimeError('native footprint load failed: '+name)
@@ -80,20 +93,32 @@ def exported_geometry(name,position=(0,0),angle=0,bottom=False,offset=None,model
     if offset is not None:
         models[0].m_Offset.x,models[0].m_Offset.y,models[0].m_Offset.z=offset
     if model_angle is not None:models[0].m_Rotation.z=model_angle
+    if model_scale is not None:
+        models[0].m_Scale.x,models[0].m_Scale.y,models[0].m_Scale.z=model_scale
     basis=fab_basis(footprint) if name in ic.MODELS or name in ('TI_DCT0008A','KEMET_C0603_DensityB') else None
     # Keep project depth fixed for existing KIPRJMOD/../../ model references;
     # unique filenames prevent stale or concurrent fixture reuse.
     base=FIXTURE/('wrl-placement-'+uuid.uuid4().hex)
     pcb=base.with_suffix('.kicad_pcb');vrml=base.with_suffix('.wrl')
-    pcbnew.SaveBoard(str(pcb),board)
-    result=subprocess.run(['kicad-cli','pcb','export','vrml','--units','mm',
-                           '--user-origin','0x0mm','--force','-o',str(vrml),str(pcb)],
-                          text=True,capture_output=True)
-    if result.returncode:raise RuntimeError('native VRML export failed: '+result.stderr)
-    geometry=first_coordinate_geometry(vrml.read_text())
-    if geometry['transform_count']<2:
-        raise RuntimeError('no attached model transform; refusing a board/pad mesh')
-    return geometry,basis
+    mutated_model = None
+    try:
+        if coordinate_factor is not None:
+            source = MODELS/Path(models[0].m_Filename).name
+            mutated_model = base.with_suffix('.mutated.wrl')
+            mutated_model.write_text(scaled_coordinate_copy(source.read_text(), coordinate_factor))
+            models[0].m_Filename = str(mutated_model)
+        pcbnew.SaveBoard(str(pcb),board)
+        result=subprocess.run(['kicad-cli','pcb','export','vrml','--units','mm',
+                               '--user-origin','0x0mm','--force','-o',str(vrml),str(pcb)],
+                              text=True,capture_output=True)
+        if result.returncode:raise RuntimeError('native VRML export failed: '+result.stderr)
+        geometry=first_coordinate_geometry(vrml.read_text())
+        if geometry['transform_count']<2:
+            raise RuntimeError('no attached model transform; refusing a board/pad mesh')
+        return geometry,basis
+    finally:
+        if mutated_model is not None:
+            mutated_model.unlink(missing_ok=True)
 
 
 def check_geometry(name,geometry,basis):
@@ -194,10 +219,28 @@ def run(check=False):
             ('DIP wrong Y sign','DIP-8_W7.62mm',{'offset':(3.81,3.81,0)}),
             ('SOT wrong rotation','SOT-23-5',{'model_angle':90}),
             ('SOT oblique rotation','SOT-23-5',{'model_angle':20}),
-            ('DCT oblique rotation','TI_DCT0008A',{'model_angle':20})):
+            ('DCT oblique rotation','TI_DCT0008A',{'model_angle':20}),
+            ('Historical IC coordinates 2.54x','SOT-23-5',{'coordinate_factor':2.54}),
+            ('Historical pot coordinates 0.1x','PTV09A-4020F',{'coordinate_factor':.1}),
+            ('Footprint model Z scale 2x','SOT-23-5',{'model_scale':(1,1,2)})):
         geometry,basis=exported_geometry(name,**kwargs)
+        scaling = None
+        if 'coordinate_factor' in kwargs:
+            scaling = (kwargs['coordinate_factor'],)*3
+        elif 'model_scale' in kwargs:
+            scaling = kwargs['model_scale']
+        if scaling is not None:
+            intended = tuple(value*factor for value,factor in zip(EXPECTED[name], scaling))
+            if any(not math.isclose(a,b,abs_tol=TOLERANCE_MM)
+                   for a,b in zip(geometry['mesh_axis_sizes'],intended)):
+                raise AssertionError('native export did not reproduce intended scale mutation: '+label)
         try:check_geometry(name,geometry,basis)
-        except GeometryMismatch as error:rejected.append({'case':label,'rejected':True,'reason':str(error)})
+        except GeometryMismatch as error:
+            row={'case':label,'rejected':True,'reason':str(error)}
+            if scaling is not None:
+                row.update(mutation=kwargs,baseline_expected_mm=EXPECTED[name],
+                           observed_model_axis_mm=rounded(geometry['mesh_axis_sizes']))
+            rejected.append(row)
         else:raise AssertionError('negative control was accepted: '+label)
     capacitor.Pads()[0].SetSize(pcbnew.VECTOR2I(pcbnew.FromMM(1), pcbnew.FromMM(.95)))
     try: check_capacitor_lands(capacitor)
@@ -234,7 +277,7 @@ def run(check=False):
             'tolerance_mm':TOLERANCE_MM,'cases':rows,'negative_controls':rejected,
             'capacitor_land_check':capacitor_lands,
             'limits':['IC body centres and long axes are compared with independent native Fab outlines; DCT square-body bounds are checked without an orientation claim.',
-                      'Other four component models retain their earlier model-axis unit checks only. KEMET capacitor body dimensions come from the exact sheet; lands are separately checked against family Table3.',
+                      'PTV09 and all five generated component models have model-axis unit checks only. KEMET capacitor body dimensions come from the exact sheet; lands are separately checked against family Table3.',
                       'No footprint-containment, lead, seating, height qualification, installed clearance or fabrication claim.',
                       'DIP0.1mm is a display plate, not a package-height bound.'],
             'input_sha256':{str(p.relative_to(ROOT)):hashlib.sha256(data).hexdigest() for p,data in snapshot.items()}}
