@@ -14,8 +14,8 @@ class ControlCopperSourceTests(unittest.TestCase):
 
     def test_current_source_has_complete_arrays(self):
         rows = validate(self.spec)
-        self.assertEqual(sum(r['kind']=='segment' for r in rows),191)
-        self.assertEqual(sum(r['kind']=='via' for r in rows),188)
+        self.assertEqual(sum(r['kind']=='segment' for r in rows),1682)
+        self.assertEqual(sum(r['kind']=='via' for r in rows),458)
         self.assertEqual(sum(len(a['via_uuids']) for a in self.spec['main_arrays']),150)
 
     def test_native_views_match_the_retained_board_and_images(self):

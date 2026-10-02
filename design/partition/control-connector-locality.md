@@ -30,3 +30,11 @@ and electrical receipts are not accepted for the new source. Native K and P
 routing, actual copper compliance and installed assembly remain open.
 
 The source-only transition is retained in `peripheral-source-epoch-20261002-connector-locality.json`. It proves complete partition equality after the declared permutation, keeps EL/octave geometry unchanged, and preserves historical native/model receipts. The historical K field audit is checked against its original netlist and explicitly rejected for the new source; the current source has a separate field projection.
+
+Native K comparison also covers all 13,406 pads and 207 physical hole sites.
+The 123 moved header groups and their service-hole ownership follow the exact
+permutation; occupied geometry and non-header component pads are unchanged.
+Both bare K projections report 9,650 open edges, zero DRC errors and zero
+parity findings. They retain 477 reported annotation warnings, with capped
+categories; neither annotation nor routing is complete. This comparison does
+not reuse or update historical current/resistance receipts.
