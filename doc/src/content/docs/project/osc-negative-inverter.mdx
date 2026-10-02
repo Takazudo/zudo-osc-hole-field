@@ -1,0 +1,78 @@
+---
+title: "Unselected negative-rail inverter study"
+description: "Exact OPA388 candidate, DC error allowance, forced-port countermodels and source applicability gaps."
+sidebar_position: 48
+---
+
+The OPA388IDBVR study asks whether an inverting amplifier could replace the negative monitor's external-reference dependency. It produces a conditional DC error allowance and a passive port screen. It does **not** select a replacement or change the captured monitor. Issue #59 remains open; circuit, timing, current, return-integrity and signal-isolation acceptance remain unproved.
+
+The retained source is Texas Instruments SBOS777D, revised July 2020, with a 15 July 2026 package addendum. The exact order entry is OPA388IDBVR, five-pin DBV SOT-23, 3000-piece large tape-and-reel. Its Active/Production entry is not a stock or assembly-allocation claim. The [manufacturer datasheet](https://www.ti.com/lit/ds/symlink/opa388.pdf) supplies pin functions, ratings and conditioned characteristics; cached bytes and SHA-256 are recorded in `design/power/negative-inverter-candidate-sources.json`.
+
+## Candidate connectivity
+
+| Element | Unselected connection |
+|---|---|
+| OPA388IDBVR pins 1, 2, 3, 4, 5 | NEG_MAG, AGND, AGND, NEG_SUM, +5 V |
+| RN1, RT0603BRD07150KL, 150 kΩ | VN to RN_MID |
+| RN2, RT0603BRD071KL, 1 kΩ | RN_MID to NEG_SUM |
+| RF, RT0603BRD074K99L, 4.99 kΩ | NEG_MAG to NEG_SUM |
+| RG, RT0603BRD07150RL, 150 Ω | NEG_SUM to AGND |
+| Hypothetical monitor interface | NEG_MAG to existing U101 SENSE2 pin 3 |
+
+U101 is the existing TPS37044MJOFDDFRQ1. Its spare SENSE2 input uses a 0.4 V, ±7% window and shares RESET1_N with SENSE1. If this topology were eventually selected, the old reference/comparator network would be removed and SENSE1 left unused according to the manufacturer's instruction to leave unused SENSE inputs floating. That is a proposed interface change, not a committed rewire. The captured U101 still has SENSE2 unused and SENSE1 connected to REF_SENSE.
+
+No bypass choice, compensation network, PCB placement or native schematic is added for the OPA388. The missing supply and output parasitics matter to startup, collapse and stability.
+
+## Static allowance, not a device error guarantee
+
+The calculation keeps the current negative-rail normal magnitude of 11.74–12.37 V. Exact resistor sheets provide ±0.1% initial tolerance and ±25 ppm/°C TCR. It applies independent multiplicative tolerance and temperature factors over −40…125 °C, with the existing **assumed** 25 °C resistance reference; that reference temperature is not stated by those sheets.
+
+The ideal gain range is approximately 0.03281584–0.03327850. The normal output spans 0.38525796–0.41165498 V, inside the conservative common static recovery window, 0.384377184–0.413992416 V. The strict uniform allowance for **all additive output error together** is approximately **0.880783 mV**. Equality loses strict recovery margin; the report retains an exact fraction and rounds the displayed allowance inward.
+
+RG increases the noise gain to as much as 34.53363. If offset were the only error, the input allowance would be 25.5050 µV. If inverting-input current were the only error, its allowance would be 0.175893 µA. These separate allowances cannot each be consumed in full at once.
+
+The OPA388's full-temperature 7.5 µV offset row would contribute about 0.259003 mV at that noise gain **if its conditions applied**. Its 700 pA bias row would contribute about 3.506 µV through RF. Neither is an actual application bound:
+
+- Offset common conditions are VCM = VOUT = VS/2 and 10 kΩ connected to VS/2. The candidate operates near ground common-mode with approximately 0.4 V output.
+- Full-temperature CMRR minima are at VS = 2.5 V and 5.5 V, with different common-mode ranges. The 2.5 V row excludes the negative rail itself; the 5.5 V row extends 50 mV below it. The candidate's 4.81–5.2 V supply is not silently interpolated between these rows.
+- The bias row specifies RIN = 100 kΩ. The grounded 150 Ω shunt changes the actual source impedance. The AOL/load and output-swing rows also retain their stated load references. The candidate ideally sources up to 82.209 µA through RF, while a 10 kΩ load to mid-supply at this low output would require approximately 199–222 µA of sinking. A lighter current of the opposite polarity does not establish table-load equivalence.
+- Supply rejection, common-mode rejection, finite gain, output load, noise and transient errors need a joint application bound. No sum of unrelated table cross-sections is promoted to that bound.
+
+## Fault and power-state limits
+
+Under the **additional hypothetical assumption** that the same total-error allowance holds at VN = −10.9 V, the output is below every UV trip corner. The minimum overdrive is only about **0.6643%**, far below the TPS table's 10% condition. Its 10 µs maximum also requires valid supply, a fixed reset delay greater than 1 ms, 10 kΩ pullup and 10 pF output load. The real shared reset loading is not established here. Even greater overdrive does not authorize an assumed monotonic timing guarantee.
+
+Normal-band compatibility is not fault coverage. At nominal resistances and zero amplifier error, VN = −12.48 V produces about 0.412419 V, between the nominal UV/OV trip thresholds of 0.372/0.428 V. A previously released negative-channel reset need not trip, even though that rail is outside the normal band. This prescribed DC countermodel is not a measured trajectory or a new accepted fault limit.
+
+The OPA388 slew, settling and overload-recovery entries are typical. The 2 µs settling entry is at gain one, a 1 V step and ±2.5 V supply; it is not a maximum for this high-noise-gain inverter. TPS nominal startup is likewise not a maximum. No total fault, startup or release time is calculated.
+
+The passive screen prescribes VN within ±12.48 V, output within 0–5.2 V, and an independent ±10 µA sensitivity current at NEG_SUM. The output driver may be external, retained charge or a hypothetical semiconductor state. Including RF backfeed gives:
+
+| Prescribed-port result | Conditional bound |
+|---|---|
+| NEG_SUM with RG = 150 Ω | −13.569 mV to +166.203 mV |
+| Current through RF | Approximately −2.729 µA to +1.018 mA |
+| RF dissipation | Below 5.155 mW in this box |
+| Largest RN1 dissipation | Below 1.052 mW in this box |
+
+The resistor currents do **not** bound amplifier current into a forced or shorted output. With VN negative and OUT clamped low, the amplifier can drive against that clamp. The datasheet short-circuit entries are typical (60 mA at 5.5 V, 30 mA at 2.5 V), not maximum current guarantees or proof of the auxiliary budget.
+
+At zero amplifier supply the differential-input stress rating is 0.2 V. The 150 Ω screen stays inside it; the otherwise identical **1 kΩ shunt countermodel exceeds it**. This is a computable defect of that weaker passive argument, not evidence of measured device failure.
+
+For a separate cold high-impedance output model, two independent ±10 µA sensitivities represent summing-node and output/TPS currents. The output range is approximately ±65.555 mV. These currents are deliberately variable sensitivities, **not manufacturer leakage maxima**. A negative output within the TPS −0.3 V absolute limit is still outside its 0 V minimum recommended SENSE voltage. An output below −0.3 V directly conflicts with the TPS stress rating; RG does not isolate that output pin.
+
+The enumerated passive boxes do not establish actual cold output clamps, partial-supply behavior, rail-order trajectories, saturation recovery, retained-capacitor injection or output backdrive limits. Reversed VN would demand a negative linear output and invokes unqualified saturation behavior. Local AGND loss invalidates the coordinate reference used by every calculation and remains independently unresolved.
+
+Resistor power bounds use maximum voltage-drop magnitude squared divided by minimum resistance; they do not assume power is extremal at resistor corners. The exact sheets rate 0.1 W at 70 °C and state a 75 V maximum continuous voltage at full rated power. Full-temperature derating and installed temperatures are not proved. The OPA388 DBV thermal metric is a test-board characterization, not an installed thermal bound.
+
+## Conditional current comparison
+
+A hypothetical replacement removes the old reference output demand, reference IQ and dual-comparator IQ once, while keeping the other conservative monitor branches. Adding the OPA388's **5.5 V, unloaded** 2.6 mA IQ row, ideal feedback demand and the TPS input-current row gives approximately 4.671827 mA on +5 V and 82.209 µA on the negative rail; the old +12 V screen remains unchanged.
+
+This comparison explicitly borrows table values outside their full conditions. TPS adjustable-input current is tabulated at SENSE = 5.5 V, not the candidate's 0.4 V. Actual OPA current at 4.81–5.2 V, feedback drive, input/output leakage, bypass charging, compensation, partial-power injection and dynamic current remain unqualified. The original 20 mA auxiliary allocations do not change. The current monitor report and its scalar values are preserved.
+
+## Reproduction and remaining work
+
+Run `python3 scripts/checks/negative_inverter_candidate.py --check` for the committed report and `--verify-retained` when the ignored PDF cache is present. Portable tests exercise strict boundaries, KCL, resistor interiors, cold-current sensitivities, the rejected 1 kΩ countermodel, source/condition mutations and frozen-input provenance. Canonical regeneration regenerates the study after the current monitor report.
+
+A next circuit selection requires an actual joint error/load envelope and protected output/power-state contract, plus supported fault timing and compensation. The present study makes those requirements quantitative without replacing the captured monitor. Native capture, dynamic IC simulation and bench qualification are **NOT RUN** for this unselected topology. Return integrity and the instrument's signal-disconnect obligations remain separate open gates.

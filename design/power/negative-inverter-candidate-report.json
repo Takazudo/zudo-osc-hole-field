@@ -1,0 +1,450 @@
+{
+  "status": "UNSELECTED CONDITIONED DC STUDY; NO NATIVE CAPTURE OR PROTECTION ADMISSION",
+  "selected": false,
+  "qualification_accepted": false,
+  "canonical_protection_implemented": false,
+  "normal": {
+    "negative_magnitude_V": [
+      11.74,
+      12.37
+    ],
+    "gain": [
+      0.03281584049878545,
+      0.0332784940162656
+    ],
+    "ideal_output_V": [
+      0.3852579674557412,
+      0.41165497098120546
+    ],
+    "strict_common_static_recovery_window_V": [
+      0.38437718400000004,
+      0.413992416
+    ],
+    "output_error_margin_lower_V": [
+      0.0008807834557412332,
+      0.0023374450187945584
+    ],
+    "strict_total_additive_output_error_budget_V": 0.0008807834557412332,
+    "exact_budget_fraction": "238328800659/270587281250000",
+    "noise_gain_upper": 34.53362913705697,
+    "offset_only_input_budget_V": 2.55050939548109e-05,
+    "bias_only_input_current_budget_A": 1.75893643084482e-07,
+    "borrowed_source_point_offset_contribution_V": 0.0002590022185279273,
+    "borrowed_source_point_bias_contribution_V": 3.5052342325e-06,
+    "actual_joint_error_max_V": null,
+    "ideal_feedback_output_source_current_upper_A": 8.220805246482022e-05,
+    "source_10k_to_midsupply_load_sink_current_at_candidate_output_A": [
+      0.00019933450290187944,
+      0.0002214742032544259
+    ],
+    "conditions": "Strict |total additive output error| below budget; includes offset, bias, CMRR, finite gain, supply/load effects, noise and transients if claimed. No such total bound is established. Normal linear calculation assumes closed-loop action."
+  },
+  "static_trip_magnitude_envelopes_at_error_budget_closure_V": {
+    "UV": [
+      10.97306916490197,
+      11.544204801634205
+    ],
+    "OV": [
+      12.628913325790581,
+      13.278001624607725
+    ]
+  },
+  "negative_fault_witness": {
+    "VN_V": -10.9,
+    "output_upper_with_budget_closure_V": 0.3636163682330363,
+    "lowest_UV_trip_V": 0.366048,
+    "conditional_below_every_UV_trip": true,
+    "minimum_UV_overdrive_fraction": 0.006642931437854471,
+    "at_least_10percent_UV_overdrive_all_corners": false,
+    "maximum_total_detection_s": null,
+    "condition": "The same hypothetical additive-error bound is additionally assumed at this fault point; normal-band compatibility does not prove fault-point error."
+  },
+  "outside_normal_band_no_trip_countermodel": {
+    "VN_V": -12.48,
+    "nominal_ideal_output_V": 0.41241854304635767,
+    "nominal_UV_OV_trip_V": [
+      0.372,
+      0.42800000000000005
+    ],
+    "inside_nominal_trip_window": true,
+    "scope": "Zero-error nominal DC with previously released reset; outside the project normal band but no negative-channel trip. Not a measured trajectory or a waiver of fault coverage."
+  },
+  "ten_percent_overdrive_necessary_magnitude_boundaries_V": {
+    "UV_at_most": 9.87311554374025,
+    "OV_at_least": 14.603117767880345,
+    "scope": "Geometric margin only; the table test is exactly 10% and no monotonic timing guarantee is inferred for larger margins. Amplifier timing, valid supply, reset load and other channel remain separate."
+  },
+  "passive_ports": {
+    "RG_nominal_ohm": 150,
+    "forced_sum_V": [
+      -0.013568254348303117,
+      0.1662029080656652
+    ],
+    "forced_sum_inside_cold_differential_0p2V": true,
+    "forced_output_cases": [
+      {
+        "VN_V": -12.48,
+        "OUT_V": 0.0,
+        "sum_V": [
+          -0.013568254348303117,
+          -0.01049042692115468
+        ]
+      },
+      {
+        "VN_V": -12.48,
+        "OUT_V": 5.2,
+        "sum_V": [
+          0.13710142079583643,
+          0.14207658114845906
+        ]
+      },
+      {
+        "VN_V": 12.48,
+        "OUT_V": 0.0,
+        "sum_V": [
+          0.01049042692115468,
+          0.013568254348303117
+        ]
+      },
+      {
+        "VN_V": 12.48,
+        "OUT_V": 5.2,
+        "sum_V": [
+          0.16107143378308825,
+          0.1662029080656652
+        ]
+      }
+    ],
+    "forced_branch_current_A": {
+      "RN1": [
+        -8.388272535840806e-05,
+        8.286881227753933e-05
+      ],
+      "RN2": [
+        -8.388272535840806e-05,
+        8.286881227753933e-05
+      ],
+      "RF": [
+        -2.728073735012362e-06,
+        0.0010179629169432163
+      ],
+      "RG": [
+        -9.015826166532306e-05,
+        0.001104385697101489
+      ]
+    },
+    "forced_branch_voltage_V": {
+      "RN1": [
+        -12.539065364388073,
+        12.387501742724023
+      ],
+      "RN2": [
+        -0.08417261266538774,
+        0.08315519561322215
+      ],
+      "RF": [
+        -0.013568254348303117,
+        5.062898579204164
+      ],
+      "RG": [
+        -0.013568254348303117,
+        0.1662029080656652
+      ]
+    },
+    "forced_branch_power_upper_W": {
+      "RN1": 0.0010518666383168235,
+      "RN2": 7.109895582717947e-06,
+      "RF": 0.0051548913614560396,
+      "RG": 0.00018480239069133602
+    },
+    "cold_highZ_sum_V": [
+      -0.015479459570750333,
+      0.015479459570750333
+    ],
+    "cold_highZ_output_V": [
+      -0.06555423432075035,
+      0.06555423432075035
+    ],
+    "scope": "Prescribed ports and current sensitivity only; cold high-Z excludes internal output clamps. Absolute-stress screen is not operation or survival qualification. Branch currents do not bound amplifier current into an externally forced/shorted OUT port."
+  },
+  "rejected_RG_1k_countermodel": {
+    "RG_nominal_ohm": 1000,
+    "forced_sum_V": [
+      -0.07726529340048442,
+      0.9455442084510695
+    ],
+    "forced_sum_inside_cold_differential_0p2V": false,
+    "forced_output_cases": [
+      {
+        "VN_V": -12.48,
+        "OUT_V": 0.0,
+        "sum_V": [
+          -0.07726529340048442,
+          -0.05974219106208698
+        ]
+      },
+      {
+        "VN_V": -12.48,
+        "OUT_V": 5.2,
+        "sum_V": [
+          0.7815039404784074,
+          0.8083128784568631
+        ]
+      },
+      {
+        "VN_V": 12.48,
+        "OUT_V": 0.0,
+        "sum_V": [
+          0.05974219106208698,
+          0.07726529340048442
+        ]
+      },
+      {
+        "VN_V": 12.48,
+        "OUT_V": 5.2,
+        "sum_V": [
+          0.9181665420895088,
+          0.9455442084510695
+        ]
+      }
+    ],
+    "forced_branch_current_A": {
+      "RN1": [
+        -8.830754002593118e-05,
+        8.253889471449882e-05
+      ],
+      "RN2": [
+        -8.830754002593118e-05,
+        8.253889471449882e-05
+      ],
+      "RF": [
+        -1.5520271879654925e-05,
+        0.0008875488504474492
+      ],
+      "RG": [
+        -7.708786278341004e-05,
+        0.000943379236093845
+      ]
+    },
+    "forced_branch_voltage_V": {
+      "RN1": [
+        -13.200917291536456,
+        12.338571330681532
+      ],
+      "RN2": [
+        -0.08861273764095344,
+        0.08282415532707098
+      ],
+      "RF": [
+        -0.07726529340048442,
+        4.418496059521593
+      ],
+      "RG": [
+        -0.07726529340048442,
+        0.9455442084510695
+      ]
+    },
+    "forced_branch_power_upper_W": {
+      "RN1": 0.0011658389707200011,
+      "RN2": 7.879776791552904e-06,
+      "RF": 0.003926178186565799,
+      "RG": 0.0008971917783802445
+    },
+    "cold_highZ_sum_V": [
+      -0.10261528510454224,
+      0.10261528510454224
+    ],
+    "cold_highZ_output_V": [
+      -0.15269005985454226,
+      0.15269005985454226
+    ],
+    "scope": "Prescribed ports and current sensitivity only; cold high-Z excludes internal output clamps. Absolute-stress screen is not operation or survival qualification. Branch currents do not bound amplifier current into an externally forced/shorted OUT port."
+  },
+  "port_state_coverage": [
+    {
+      "state": "Normal -12 rail, +5 valid, AGND intact",
+      "result": "Conditional linear DC only; actual joint error, output loading and compensation unproved."
+    },
+    {
+      "state": "Both VN polarities, output externally held LOW or HIGH",
+      "result": "Passive KCL screen includes RF backfeed. Output holding source also contends with the amplifier; amplifier drive/short-circuit current is not bounded by these resistor branch currents. No device output-state guarantee."
+    },
+    {
+      "state": "Cold amplifier, TPS powered or cold, output high impedance",
+      "result": "Two independent +/- current sensitivities only; actual TPS/OPA cold leakage and output clamps remain UNSOURCED."
+    },
+    {
+      "state": "Partial supply or reversed VN, startup/collapse/recovery",
+      "result": "Forced-port screen is not a semiconductor trajectory. A reversed VN demands a negative linear output and instead invokes unqualified saturation/recovery."
+    },
+    {
+      "state": "OUT forced below -0.3 V",
+      "result": "Direct TPS input absolute-rating conflict; RG does not isolate NEG_MAG from TPS. No bound excludes this trajectory."
+    },
+    {
+      "state": "Local AGND open or return lost",
+      "result": "AGND-relative assumptions fail; no independent observable or ground-loss qualification."
+    }
+  ],
+  "hypothetical_current_comparison": {
+    "old_conditional_both_paths_A": {
+      "+5V": 0.006698818061519435,
+      "+12V": 0.0021082595883233843,
+      "-12V": 0.00030853006429201816
+    },
+    "removed_reference_and_comparator_5V_A": 0.0047095491606027155,
+    "borrowed_OPA_IQ_plus_ideal_feedback_and_TPS_load_A": 0.0026825580524648205,
+    "new_conditional_5V_A": 0.004671826953381541,
+    "new_conditional_negative_rail_A": 8.220805246482022e-05,
+    "positive_12V_unchanged_A": 0.0021082595883233843,
+    "original_auxiliary_allowance_mA": {
+      "+12V": 20,
+      "-12V": 20,
+      "+5V": 20
+    },
+    "application_qualified": false,
+    "dynamic_current_max_A": null,
+    "scope": "Arithmetic substitution only: removes all old REF output demand, REF IQ and dual comparator IQ once, replaces old negative divider load with ideal inverter load. Retains all other conservative old branches. Borrows OPA IQ at 5.5V/IO0 and TPS input current at 5.5V as assumptions, not actual 4.81..5.2V/0.4V guarantees. Zero other leakage; no new bypass/inrush/return/clamp current bound."
+  },
+  "source_observations": {
+    "opa": {
+      "mpn": "OPA388IDBVR",
+      "pins": {
+        "1": "OUT",
+        "2": "V-",
+        "3": "+IN",
+        "4": "-IN",
+        "5": "V+"
+      },
+      "recommended_supply_V": [
+        2.5,
+        5.5
+      ],
+      "specified_temperature_C": [
+        -40,
+        125
+      ],
+      "input_common_mode_absolute_offsets_V": [
+        -0.5,
+        0.5
+      ],
+      "differential_absolute_supply_plus_V": 0.2,
+      "input_absolute_current_A": 0.01,
+      "offset_full_temperature_max_V": 7.5e-06,
+      "bias_full_temperature_max_A": 7e-10,
+      "aol_full_temperature_10k_min_dB": 120,
+      "iq_5p5V_full_temperature_max_A": 0.0026,
+      "iq_2p5V_full_temperature_max_A": 0.0024,
+      "dbv_RthetaJA_C_per_W": 145.7,
+      "common_conditions": "VCM=VOUT=VS/2; RLOAD=10kohm connected to VS/2; TA=25C unless otherwise noted.",
+      "offset_conditions": "OPA388, -40..125C, VS=2.5..5.5V; common VCM/output/load conditions retained.",
+      "bias_conditions": "OPA388, RIN=100kohm, -40..125C; common VCM/output/load conditions retained.",
+      "aol_conditions": "OPA388, -40..125C, RLOAD=10kohm; V-+0.15V<VOUT<V+-0.15V; common VCM/load reference retained.",
+      "iq_conditions": "VS=5.5V or 2.5V endpoint rows, IO=0A, -40..125C; no interpolation to actual 4.81..5.2V.",
+      "cmrr_full_temperature_rows": [
+        {
+          "supply_V": 2.5,
+          "min_dB": 114,
+          "common_mode_offsets_V": [
+            0,
+            0.1
+          ]
+        },
+        {
+          "supply_V": 5.5,
+          "min_dB": 124,
+          "common_mode_offsets_V": [
+            -0.05,
+            0.1
+          ]
+        }
+      ],
+      "typical_only": {
+        "slew_V_per_us": 5,
+        "settling_0p01percent_s": 2e-06,
+        "overload_recovery_s": 1e-05,
+        "short_circuit_at_5p5V_A": 0.06,
+        "short_circuit_at_2p5V_A": 0.03
+      },
+      "maximum_startup_or_settling_s": null
+    },
+    "tps": {
+      "mpn": "TPS37044MJOFDDFRQ1",
+      "sense2_pin": "3",
+      "nominal_V": 0.4,
+      "window_fraction": 0.07,
+      "accuracy_fraction": 0.016,
+      "hysteresis_fraction": [
+        0.011,
+        0.017
+      ],
+      "sense_absolute_V": [
+        -0.3,
+        6.5
+      ],
+      "sense_recommended_V": [
+        0,
+        6
+      ],
+      "adjustable_input_current_max_A": 3.5e-07,
+      "input_current_condition": "VSENSEx=5.5V; not a uniform bound at the candidate 0.4V node.",
+      "detect_max_s": 1e-05,
+      "timing_conditions": {
+        "overdrive_fraction": 0.1,
+        "fixed_reset_delay_s": 0.01,
+        "fixed_reset_delay_greater_than_s": 0.001,
+        "pullup_ohm": 10000,
+        "load_F": 1e-11,
+        "supply_V": [
+          1.7,
+          6
+        ],
+        "temperature_C": [
+          -40,
+          125
+        ]
+      },
+      "startup_nominal_s": 0.001,
+      "startup_max_s": null
+    },
+    "resistor": {
+      "tolerance_fraction": 0.001,
+      "tcr_abs_per_C": 2.5e-05,
+      "rated_power_W": 0.1,
+      "rated_power_temperature_C": 70,
+      "continuous_voltage_V": 75,
+      "temperature_C": [
+        -55,
+        155
+      ],
+      "power_voltage_scope": "75V maximum continuous voltage at full rated power; no full-temperature derating curve retained."
+    }
+  },
+  "sensitivity_current_each_A": 1e-05,
+  "thermal_scope": "Passive power upper bounds apply only to the stated forced-port box; 0.1W is rated at 70C. Full-temperature derating and installed temperatures are not established. DBV RthetaJA is a source test-board metric, not an installed thermal bound.",
+  "native_dynamic_bench": "NOT RUN: unselected analytical study; no vendor IC model or native assembly captured.",
+  "open_gates": [
+    "Actual joint offset/common-mode/bias/load/supply error must fit the derived strict total-error allowance.",
+    "Actual OPA output and TPS input currents, output clamps/backdrive, unpowered/partial-power states and retained-capacitance injection are unbounded here.",
+    "A forced or shorted output can contend with amplifier drive; resistor branch currents do not bound that drive. Source short-circuit current entries are typical, not maximum limits.",
+    "OPA startup/settling/overload recovery and compensation have no application maximum from the retained typical rows.",
+    "TPS 10% overdrive and actual paired-reset load conditions remain unmet/unproved; nominal startup is not a maximum.",
+    "Current allocation comparison borrows source-point IQ and leakage only as explicit assumptions; actual operating and dynamic current remain unqualified.",
+    "Local AGND loss, return integrity and full signal isolation are independent unresolved requirements.",
+    "No selection, native schematic/PCB, physical temperature/fit/stock/procurement or installed protection claim."
+  ],
+  "input_sha256": {
+    ".claude/skills/component-monitor-permit-candidates/facts.json": "af30bd0c71d2f5b1572657fe4b3e842e8f27f70e953c51796ca7c1eede16dca5",
+    ".claude/skills/component-monitor-permit-candidates/manifest.json": "54d3975f122a32336ebd1c962422d64191207d470667f6092725799c267ab5ae",
+    ".claude/skills/component-monitor-permit-candidates/sources.json": "28be4659d8390dd237c3443a5d694cfd18623b7632dc660d2fbacfbd55439beb",
+    "design/power/monitor-permit-current-report.json": "94a27991fc4b0444265b677ae7dc9a33d6acc69c355b2b3b366b5ddba215d357",
+    "design/power/monitor-permit-draft.json": "9751daf2fa004eb72b315f0b8515a0b8ff0956979b05a2ed835498d193a3ec5b",
+    "design/power/monitor-permit-parts.json": "92867833b4ace72f67851908738f9034da4ff23bd4439baf866c6538cde93e64",
+    "design/power/negative-inverter-candidate-sources.json": "d3ff6d2d4927c3f189b0004c45196a3341a1fdb8e7cc4c0dc339450e278b46ad",
+    "design/power/negative-inverter-candidate.json": "88968214b4d0232ba56d8c2b2ef23d5b6245468d0e782b7d1ce84292c904ae45",
+    "design/power/supply-architecture-input.json": "a8a4e92ac4c1d7de5c16b6982fba7d5ab60ab13753b12eabfa23fc75da98acc4",
+    "scripts/checks/monitor_permit_behavior.py": "c164e46142c12cb28003f796a6883d5215b58fe346b1fa9f11f41f344b2cfcb6",
+    "scripts/checks/monitor_permit_current.py": "5af07f30302c9cdabd5386e520509d7d507120a89ef95d2760d6946f40144011",
+    "scripts/checks/negative_inverter_candidate.py": "7bda90c89d205f8ef22986ae2cc3211a381c508d29ea825c2b1ea2883a5b1ac8"
+  }
+}
