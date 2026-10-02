@@ -61,7 +61,7 @@ def precision_contract(cell, roles, shortlist, aliases):
         raise ValueError('precision amplifier physical pin mapping changed')
     values = {}
     for ref, part_id, unit in [('R_ISO_A', 'r_power', 'ohm'), ('R_ISO_B', 'r_power', 'ohm'),
-                               ('R_FB', 'r_general', 'ohm'), ('C_FAST', 'c_small', 'F')]:
+                               ('R_FB', 'r_feedback', 'ohm'), ('C_FAST', 'c_feedback', 'F')]:
         p = by_ref[ref]
         value = p.get('value')
         if (p.get('part_id') != part_id or p.get('unit') != unit or 'opamp_role' in p or
@@ -116,12 +116,12 @@ def compiled_precision_contract(parts, projection):
             raise ValueError('precision compiled amplifier pins changed')
     for ref, symbol, prefix, unit in [
         ('R_ISO_A', 'RC1210FR-07499RL', 'R', 'Ω'), ('R_ISO_B', 'RC1210FR-07499RL', 'R', 'Ω'),
-        ('R_FB', 'RC0603FR-07100KL', 'R', 'Ω'), ('C_FAST', 'C0603C101J5GACTU', 'C', 'F')]:
+        ('R_FB', 'RC0603FR-07100RL', 'R', 'Ω'), ('C_FAST', 'C0603C102J5GACTU', 'C', 'F')]:
         rows = groups[ref]
         if len(rows) != 1:
             raise ValueError('precision compiled passive multiplicity changed')
         p = rows[0]
-        representative = {'R_ISO_A':499, 'R_ISO_B':499, 'R_FB':100000, 'C_FAST':1e-10}[ref]
+        representative = {'R_ISO_A':499, 'R_ISO_B':499, 'R_FB':100, 'C_FAST':1e-9}[ref]
         expected_mpn = symbol if projection['values'][ref] == representative else ''
         if p.attributes.get('MPN') != expected_mpn:
             raise ValueError('precision exact-value identity handling changed: ' + ref)

@@ -55,7 +55,7 @@ def main():
     if x['verdict']!='UNSOURCED':errors.append(f'{id}: unresolved source has promoted pin row')
   checked+=1
  if capture['captured_count']!=captured or capture['blocked_count']!=blocked:errors.append('capture count mismatch')
- if captured!=36 or blocked!=0:errors.append(f'expected 36/36 coverage after source-backed diode correction, found {captured}/{len(parts)}')
+ if captured!=38 or blocked!=0:errors.append(f'expected 38/38 coverage including exact precision-feedback passives, found {captured}/{len(parts)}')
  if errors:
   for e in errors:print('FAIL:',e,file=sys.stderr)
   return 1

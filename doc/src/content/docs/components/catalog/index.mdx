@@ -81,6 +81,8 @@ Four columns describe state. None of them is a grade, and there is deliberately 
   | <EvidenceAnchor id="rec-monitor-sn74lvc1g74dctr" />[SN74LVC1G74DCTR](/docs/components/records/monitor-sn74lvc1g74dctr/)          | `rec-monitor-sn74lvc1g74dctr`    | unselected permit D flip-flop                                                         | DNP or hand-fit | VERIFIED   | AVAILABLE          | 3 of 5       |
   | <EvidenceAnchor id="rec-monitor-c0603c104k5ractu" />[C0603C104K5RACTU](/docs/components/records/monitor-c0603c104k5ractu/)       | `rec-monitor-c0603c104k5ractu`   | unselected monitor local bypass capacitor                                             | DNP or hand-fit | VERIFIED   | AVAILABLE          | 3 of 5       |
   | <EvidenceAnchor id="rec-monitor-c1206c104f3gactu" />[C1206C104F3GACTU](/docs/components/records/monitor-c1206c104f3gactu/)       | `rec-monitor-c1206c104f3gactu`   | unselected reference output C0G bank capacitor                                        | DNP or hand-fit | VERIFIED   | AVAILABLE          | 3 of 5       |
+  | <EvidenceAnchor id="rec-precision-feedback-r" />[RC0603FR-07100RL](/docs/components/records/precision-feedback-r/)               | `rec-precision-feedback-r`       | 100 ohm precision-output feedback resistor                                            | Fitted          | VERIFIED   | AVAILABLE          | 3 of 6       |
+  | <EvidenceAnchor id="rec-precision-feedback-c" />[C0603C102J5GACTU](/docs/components/records/precision-feedback-c/)               | `rec-precision-feedback-c`       | 1 nF precision-output local compensation capacitor                                    | Fitted          | VERIFIED   | AVAILABLE          | 3 of 6       |
 </EvidenceTable>
 
 ## Part entries
@@ -1452,3 +1454,51 @@ One entry per record, carrying the orderable identity and every board placement.
 **Open coverage domains:** 3 open of 5 published
 
 [C1206C104F3GACTU record details](/docs/components/records/monitor-c1206c104f3gactu/) — [C1206C104F3GACTU raw agent resource](/docs/claude-skills/component-monitor-permit-candidates/)
+
+### RC0603FR-07100RL
+
+| Field          | Recorded value                             |
+| -------------- | ------------------------------------------ |
+| Record ID      | `rec-precision-feedback-r`                 |
+| Kind           | standalone — audited in its own right      |
+| Manufacturer   | Yageo                                      |
+| Function       | 100 ohm precision-output feedback resistor |
+| Package        | `0603`                                     |
+| Inventory line | `line-precision-feedback-r`                |
+| Owner skill    | `component-precision-feedback-passives`    |
+
+**Placements:** no placement published
+
+**Fit:** Fitted
+
+**Identity state:** VERIFIED
+
+**Source state:** AVAILABLE
+
+**Open coverage domains:** 3 open of 6 published
+
+[RC0603FR-07100RL record details](/docs/components/records/precision-feedback-r/) — [RC0603FR-07100RL raw agent resource](/docs/claude-skills/component-precision-feedback-passives/)
+
+### C0603C102J5GACTU
+
+| Field          | Recorded value                                     |
+| -------------- | -------------------------------------------------- |
+| Record ID      | `rec-precision-feedback-c`                         |
+| Kind           | standalone — audited in its own right              |
+| Manufacturer   | KEMET                                              |
+| Function       | 1 nF precision-output local compensation capacitor |
+| Package        | `0603`                                             |
+| Inventory line | `line-precision-feedback-c`                        |
+| Owner skill    | `component-precision-feedback-passives`            |
+
+**Placements:** no placement published
+
+**Fit:** Fitted
+
+**Identity state:** VERIFIED
+
+**Source state:** AVAILABLE
+
+**Open coverage domains:** 3 open of 6 published
+
+[C0603C102J5GACTU record details](/docs/components/records/precision-feedback-c/) — [C0603C102J5GACTU raw agent resource](/docs/claude-skills/component-precision-feedback-passives/)

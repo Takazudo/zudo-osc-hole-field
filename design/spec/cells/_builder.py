@@ -37,7 +37,7 @@ PIN_ALIASES={
  'trim_103':{'END1':'1','WIPER':'2','END2':'3'},
 }
 AMP={'IN+':'3','IN-':'2','OUT':'1','V+':'4','V-':'11'}
-PREFIX={'r_general':'R','r_precision':'R','r_power':'R','r_ladder':'R','c_small':'C','c_bypass':'C','c_bulk':'C','c_slew':'C','signal_diode':'D','clamp_diode':'D','led_white':'D','led_red':'D','pot_103':'RV','pot_104':'RV','pot_504':'RV','trim_102':'RV','trim_103':'RV','npn':'Q','mosfet':'Q'}
+PREFIX={'r_feedback':'R','c_feedback':'C','r_general':'R','r_precision':'R','r_power':'R','r_ladder':'R','c_small':'C','c_bypass':'C','c_bulk':'C','c_slew':'C','signal_diode':'D','clamp_diode':'D','led_white':'D','led_red':'D','pot_103':'RV','pot_104':'RV','pot_504':'RV','trim_102':'RV','trim_103':'RV','npn':'Q','mosfet':'Q'}
 
 
 def load_symbol(name):
@@ -76,7 +76,8 @@ def _exact_value(part,record):
  # The shortlist contains one exact representative per passive role. No inferred
  # value can be assigned to that MPN; only a documented value match can clear it.
  val=part['value'];id=record['id']
- known={'r_general':100000,'r_precision':100000,'r_power':499,'r_ladder':10000,'c_small':1e-10,'c_bypass':1e-7,'c_bulk':4.7e-6,'c_slew':1e-7}
+ if id in ('r_feedback','c_feedback') and part.get('unit') != ('ohm' if id=='r_feedback' else 'F'):return False
+ known={'r_feedback':100,'c_feedback':1e-9,'r_general':100000,'r_precision':100000,'r_power':499,'r_ladder':10000,'c_small':1e-10,'c_bypass':1e-7,'c_bulk':4.7e-6,'c_slew':1e-7}
  return id in known and abs(val-known[id]) <= abs(known[id])*1e-9
 
 

@@ -1,0 +1,85 @@
+{
+  "receipt_version": 1,
+  "identity": {
+    "asset_id": "precision-feedback-r",
+    "record_id": "rec-precision-feedback-r",
+    "manufacturer": "Yageo",
+    "mpn": "RC0603FR-07100RL",
+    "package": "0603",
+    "variant_notes": "Exact electrical identity with existing family geometry; unvalidated assembly."
+  },
+  "acquisition": {
+    "provider": "Manufacturer product sheet and retained project family symbol",
+    "library_release_tag": null,
+    "source_url": "https://www.yageogroup.com/component-documentation/download/specsheet/RC0603FR-07100RL",
+    "acquired_on": "2026-10-02",
+    "original_filenames": [
+      "RC0603FR-07100RL.pdf"
+    ],
+    "sha256": {
+      "symbols/src/RC0603FR-07100KL.kicad_sym": "1ec5cdf30dda13fb6539dd061bb9f06c11c80d696587e1c33ca1e19fd3e8e0c2",
+      "circuit/sources/precision-feedback/RC0603FR-07100RL.pdf": "9e474ac15c59495ce359994879ed283f520b0aa38757cc7ec7917a0c4e654724"
+    }
+  },
+  "representation": {
+    "files": [
+      "symbols/src/RC0603FR-07100RL.kicad_sym"
+    ],
+    "formats": [
+      "kicad_sym"
+    ],
+    "units": "KiCad schematic units",
+    "original_paths": [
+      "symbols/src/RC0603FR-07100KL.kicad_sym",
+      "circuit/sources/precision-feedback/RC0603FR-07100RL.pdf"
+    ]
+  },
+  "fidelity": {
+    "class": "derived",
+    "reason": "Only symbol identity and datasheet properties changed. Existing R0603 footprint/model remain family fidelity.",
+    "evidence": [
+      "src-precision-feedback-r-datasheet: physical PDF page 0"
+    ]
+  },
+  "derivation": {
+    "derived": true,
+    "input_sha256": {
+      "symbols/src/RC0603FR-07100KL.kicad_sym": "1ec5cdf30dda13fb6539dd061bb9f06c11c80d696587e1c33ca1e19fd3e8e0c2",
+      "circuit/sources/precision-feedback/RC0603FR-07100RL.pdf": "9e474ac15c59495ce359994879ed283f520b0aa38757cc7ec7917a0c4e654724"
+    },
+    "tool": "Exact identity substitution from retained family symbol",
+    "tool_version": "1",
+    "parameters": {
+      "source_symbol": "RC0603FR-07100KL",
+      "target_symbol": "RC0603FR-07100RL",
+      "footprint_unchanged": "R0603"
+    },
+    "output_sha256": {
+      "symbols/src/RC0603FR-07100RL.kicad_sym": "1dd0b759f371840dffca67aafb5183b32df156ea903b66dedbc90b8c6e220a3c"
+    }
+  },
+  "cad_use": {
+    "symbol": "zudo-osc-hole-field:RC0603FR-07100RL",
+    "footprint": "zudo-osc-hole-field:R0603",
+    "model_path": null,
+    "transform": {
+      "offset": null,
+      "rotation": null,
+      "scale": null
+    },
+    "seating_plane": null
+  },
+  "checks": {
+    "performed": [
+      "Exact title, nominal value, rating and body dimensions inspected in manufacturer PDF."
+    ],
+    "remaining_physical_checks": [
+      "Land-pattern solderability, maximum body-height clearance, fault/temperature and assembled output stability."
+    ]
+  },
+  "publication": {
+    "preview_selected": false,
+    "download_published": false,
+    "permitted_scope": null
+  }
+}

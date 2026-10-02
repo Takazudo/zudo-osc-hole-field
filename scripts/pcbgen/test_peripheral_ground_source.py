@@ -9,7 +9,8 @@ from scripts.pcbgen.peripheral_project_source import derive,fresh_sync_project
 from scripts.pcbgen.native_companion_binding import verify
 from scripts.pcbgen.peripheral_source_epoch import (derive as derive_epoch, prove_display_only,
     prove_power_metadata_only, prove_octave_routing_only, prove_octave_netclass_only, historical, IO, FP, OUTPUT,
-    METADATA_BASE, ROUTING_BASE, ROUTING, CONTRACT, SUPPLY)
+    METADATA_BASE, ROUTING_BASE, ROUTING, CONTRACT, SUPPLY,
+    IDENTITY_BASE, IDENTITIES, prove_feedback_identity_only)
 import hashlib
 
 BASE=Path('design/partition/peripheral-ground-feasibility')
@@ -68,7 +69,7 @@ class PeripheralGroundSourceTests(unittest.TestCase):
             prove_display_only(old_io, new_io, new_fp, new_fp)
 
     def test_metadata_comparison_rejects_geometry_connectivity_and_wrong_currents(self):
-        old_io, new_io = historical(IO, METADATA_BASE), Path(IO).read_bytes()
+        old_io, new_io = historical(IO, METADATA_BASE), historical(IO, IDENTITY_BASE)
         contract, supply = json.loads(Path(CONTRACT).read_bytes()), json.loads(Path(SUPPLY).read_bytes())
         prove_power_metadata_only(old_io, new_io, contract, supply)
         for kind in ['geometry', 'pin', 'current', 'package']:
@@ -85,6 +86,23 @@ class PeripheralGroundSourceTests(unittest.TestCase):
                     changed['current_repacking_added_packages']['packages'].pop()
                 with self.assertRaisesRegex(ValueError, 'beyond the exact power/package'):
                     prove_power_metadata_only(old_io, json.dumps(changed).encode(), contract, supply)
+
+    def test_feedback_epoch_rejects_changes_beyond_named_identities(self):
+        old, new = historical(IO, IDENTITY_BASE), Path(IO).read_bytes()
+        contract = json.loads(IDENTITIES.read_bytes())
+        prove_feedback_identity_only(old,new,contract)
+        for kind in ('geometry','identity','netlist','count','pin'):
+            changed = json.loads(new)
+            bad = copy.deepcopy(contract)
+            if kind == 'geometry':changed['physical_packages'][0]['courtyard']['width_mm'] += .001
+            if kind == 'identity':
+                row = next(r for r in changed['physical_packages'] if r['ref']==bad['packages'][0]['ref'])
+                row['mpn'] = 'WRONG'
+            if kind == 'netlist':changed['native_netlist']['sha256'] = '0'*64
+            if kind == 'count':bad['packages'].pop()
+            if kind == 'pin':changed['allowed_crossings'][0]['members'][0]['pin'] = 'WRONG'
+            with self.subTest(kind=kind),self.assertRaises(ValueError):
+                prove_feedback_identity_only(old,json.dumps(changed).encode(),bad)
 
     def test_metadata_epoch_requires_unchanged_supply_source(self):
         def changed_snapshot(path, commit=None):

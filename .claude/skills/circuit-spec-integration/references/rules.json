@@ -23,6 +23,25 @@
       "conditions": "Six-package candidate only. Coarse reference validity, control-power loss, retained charge, latch timing and sink release need whole-circuit evidence.",
       "verdict": "UNSOURCED",
       "refusal": "Do not accept a complete permit or protection boundary from these partial component and draft-connectivity facts. Independent return integrity and physical qualification remain open."
+    },
+    {
+      "rule_id": "precision-feedback-physical-qualification",
+      "domain": "precision-output feedback compensation and fault duty",
+      "record_ids": [
+        "rec-precision-feedback-r",
+        "rec-precision-feedback-c"
+      ],
+      "fact_ids": [
+        "fact-precision-feedback-r-nominal",
+        "fact-precision-feedback-r-rating",
+        "fact-precision-feedback-r-application",
+        "fact-precision-feedback-c-nominal",
+        "fact-precision-feedback-c-rating",
+        "fact-precision-feedback-c-application"
+      ],
+      "conditions": "100 ohm JACK-to-FB resistor and 1 nF DRIVE-to-FB capacitor in the OPA4197 precision-output cell. Manufacturer nominal values and ratings do not prove the assembled feedback loop or protection behavior.",
+      "verdict": "NEEDS BENCH",
+      "refusal": "Do not accept populated-output stability, fault current/thermal duty, tolerance, temperature, layout parasitics or factory assembly from exact MPN capture and nominal model sweeps."
     }
   ]
 }
