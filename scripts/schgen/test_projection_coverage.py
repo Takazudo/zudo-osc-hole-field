@@ -163,6 +163,21 @@ class ProjectionCoverageTests(unittest.TestCase):
         self.assertEqual(result['dnp_components'],1)
         self.assertEqual(result['fitted_components'],1)
 
+    def test_physical_population_drift_is_rejected(self):
+        for case in ('board_only','assignment_only','master_only','nonboolean_assignment'):
+            with self.subTest(case=case):
+                self.setUp()
+                if case=='board_only':self.parts['b']['RBBB']['properties']={'dnp':''}
+                elif case=='assignment_only':self.partition['assignment']['components'][1]['fitted']=False
+                elif case=='master_only':self.master_parts['RBBB']['properties']={'dnp':''}
+                else:self.partition['assignment']['components'][1]['fitted']=1
+                with self.assertRaisesRegex(ValueError,'population'):self.check()
+        # Removing a real DNP marker must fail too, not only adding one.
+        self.setUp()
+        self.master_parts['RBBB']['properties']={'dnp':''}
+        self.partition['assignment']['components'][1]['fitted']=False
+        with self.assertRaisesRegex(ValueError,'projected DNP population'):self.check()
+
     def test_missing_board_export_fails(self):
         del self.parts['b']
         with self.assertRaisesRegex(ValueError,'board export set'):self.check()

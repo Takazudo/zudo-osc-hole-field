@@ -161,14 +161,18 @@ def verify(partition, board_netlists, master_netlist):
     edges = assert_partition(partition, assignment)
     master = exported_pin_nets(master_netlist)
     master_components = components(master_netlist)
-    abstract={ref for ref,node in master_components.items()
-              if is_abstract_boundary(native_component(ref,node))}
+    native_master={ref:native_component(ref,node) for ref,node in master_components.items()}
+    abstract={ref for ref,component in native_master.items() if is_abstract_boundary(component)}
     declared_abstract=partition['assignment']['abstract_boundaries']
     if len(set(declared_abstract))!=len(declared_abstract) or set(declared_abstract)!=abstract:
         raise ValueError('declared abstract boundaries differ from validated master boundaries')
     physical_master=set(master_components)-abstract
     if set(assignment)!=physical_master:
         raise ValueError(f'master physical component coverage mismatch: missing={sorted(physical_master-set(assignment))[:8]} extra={sorted(set(assignment)-physical_master)[:8]}')
+    master_dnp={ref:'dnp' in dict(native_master[ref].fields) for ref in physical_master}
+    for ref,item in assignment.items():
+        if type(item.get('fitted')) is not bool or item['fitted']!= (not master_dnp[ref]):
+            raise ValueError(f'{ref}: assignment fitted population differs from native master DNP')
     master={key:net for key,net in master.items() if key[0] not in abstract}
     interface_maps=interface_pin_maps(partition)
     headers={c['pcb_reference']:c for c in partition['connectors']}
@@ -210,6 +214,8 @@ def verify(partition, board_netlists, master_netlist):
         for ref in expected_interfaces & headers.keys():
             verify_header_identity(headers[ref],comp[ref],catalogue)
         for ref in physical:
+            if ('dnp' in dict(native_component(ref,comp[ref]).fields))!=master_dnp[ref]:
+                raise ValueError(f'{ref}: projected DNP population differs from native master')
             for field in ('value', 'footprint'):
                 if children(comp[ref], field) != children(master_components[ref], field):
                     raise ValueError(f'{ref}: {field} differs from master')
