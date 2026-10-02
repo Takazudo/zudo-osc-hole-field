@@ -171,11 +171,15 @@ def candidate():
             chosen={'header_id':h['id'],'center_mm':[sx,sy],'diameter_mm':2.2,'box_mm':b,'tool_shaft_diameter_mm':1.5,'hook_sweep_xy_mm':sweep,'hook_sweep_positive_depth_mm':service_depths['hook_mm'],'status':'PROPOSAL straight hook approach; mating/latch mechanics and installed tool fit NOT RUN'};break
         if chosen is None:errors.append('no service aperture '+h['id'])
         else:service.append(chosen)
+    from scripts.checks.control_connector_locality import reassign
+    locality_source = ROOT/'design/partition/control-connector-locality.json'
+    headers, service, locality = reassign(headers, service, json.loads(locality_source.read_text()))
     return {'schema_version':1,'status':'PASS - preliminary pad/edge packing only' if not errors else 'FAIL',
             'errors':errors,'partition_source_digest':partition_source_digest(spec),'family_envelopes':families,'header_count':len(headers),'harness_count':len(harnesses),
             'headers_by_board':{b:len(hs) for b,hs in sorted(byboard.items())},'control_sites_available':len(ps)+len(utility),
             'control_sites_used':pi+len(utility),'jack_sites_used':ji,'core_inlet_notch_relocations':orphans,
             'headers':headers,'harnesses':harnesses,'K_service_apertures':service,
+            'control_connector_locality':{'source':'design/partition/control-connector-locality.json',**locality},
             'limits':['Exact #63 generated footprint courtyards consumed; no tolerance-qualified 3D fit.','No mounted hardware/body or routed PCB PASS follows from 2D bounds.',
                       'Detailed harness bend/service/strain-relief sweeps and all free component placements still need full partition check.',
                       'No source or power inlet selected; #59 protection and #55/#57 installed fit remain open.']}

@@ -11,16 +11,18 @@ The candidate uses the reviewed local edge tab beside RV601 and separate reserva
 | --- | --- |
 | DRC violations, including silkscreen | **0** |
 | Schematic parity findings | **0** |
-| Source track segments / through vias | 1,961 / 472 |
+| Source track segments / through vias | 1682 / 458 |
 | Connected source ground contacts | **344 / 344** |
 | Connected local IC/bypass rail pairs | **16 / 16**, maximum pad distance 2.535 mm |
-| Complete native open-edge count | **257** |
+| Complete native open-edge count | **189** |
 | Independent reload and refill | Same ground and open-edge counts |
 | Routing / electrical and physical qualification | **Incomplete / NOT RUN** |
 
-The unrouted placement reference remains at `boards/osc-control/osc-control-layout.kicad_pcb`, with 872 open edges. Adding the original ground prerequisite reduced that to 529. The earlier partial checkpoint reached 366. Correcting twelve remote bypass capacitors moved 22 unfixed IC/capacitor packages and required removal of their obsolete routing. The repaired copper had 432 open edges; sixteen bypass connections and ten local signal links reduce it to 406. Seventeen additional local signal links use short layer changes and reduce it to 389. A checked partial continuation preserves all prior copper and reduces it to 323; a further selective continuation retains 21 improved nets, restores ground-sensitive routes, and reduces the count to 301 without per-net regressions. All 344 grounds and sixteen bypass pairs remain connected after independent refill. Twenty-three additional local front-layer links reduce that count to 278, with six distinct off-pad vias. A second selective continuation and eleven local interface links reduce it further to 257 without per-net regression. The full per-net inventory is retained in `design/partition/control-copper/ratsnest.json`.
+The source now permutes 123 complete K/P header pairs among existing identical sites. Both ends move together; all 390 connector references and pin maps, 195 modeled cable-route geometries, 18 main power routes, and all non-header component positions remain unchanged. Native comparison confirms the same occupied pad geometry and ground-pad positions. Only the 123 corresponding reference labels move. The source proposal remains an unvalidated assembly allocation.
 
-In the earlier recovery, fresh refill exposed four ground islands hidden by the first autorouter fill. Four short front-layer signal bridges now open those back-plane boundaries, and a separate via joins an unfinished signal-layer transition. The replay checks every source ground contact after a fresh load and a second refill. It preserves the current source footprint, outline and reservation bytes. Native checks also reject a displaced bypass capacitor and require all sixteen local rail pairs to remain connected after independent refill. A passing DRC alone is not treated as connected or electrically compliant copper.
+The summed nearest-signal-pad distance estimate falls from 29.90 m to 6.66 m on P and from 29.70 m to 25.75 m on K. These are straight-line placement estimates, not routed lengths or electrical qualification. The explicit assignment is in `design/partition/control-connector-locality.json`.
+
+Moving header terminals invalidates their old routes. The previous routing checkpoints remain in git history; this branch rebuilds from compatible local control/bypass links and the six main-terminal arrays. Seventy-two short inner-layer segments connect the three rail arrays on a second layer. The 453-edge rerouting seed was reduced to 270 edges by selectively retaining new routes that preserve every checked ground connection, then to 189 edges by adding native-checked local links. The previous header layout reached 257 edges on main. The bounded autorouter run timed out; its partial copper was accepted only after separate native replay, DRC, connectivity and ground checks. Independent refill retains all 344 source grounds and sixteen local bypass pairs. Current and resistance limits have not been checked for this copper.
 
 ## Native layer views
 
@@ -32,4 +34,4 @@ These are copper/silkscreen previews of the partial candidate, not fabrication p
 
 ## Remaining work
 
-[Issue #39](https://github.com/Takazudo/zudo-osc-hole-field/issues/39) remains open for the 257 remaining connections and canonical geometry adoption. The proposed four-layer, 2 oz, 1.6 mm stack, actual connected-copper current and resistance limits, exact protection and supply boundaries, manufacturing process and installed assembly remain unresolved under [#38](https://github.com/Takazudo/zudo-osc-hole-field/issues/38), [#59](https://github.com/Takazudo/zudo-osc-hole-field/issues/59), [#55](https://github.com/Takazudo/zudo-osc-hole-field/issues/55) and [#65](https://github.com/Takazudo/zudo-osc-hole-field/issues/65). Historical electrical receipts are not reused for this copper. No fabrication or order files are generated.
+[Issue #39](https://github.com/Takazudo/zudo-osc-hole-field/issues/39) remains open for the 189 remaining connections and canonical geometry adoption. The proposed four-layer, 2 oz, 1.6 mm stack, actual connected-copper current and resistance limits, exact protection and supply boundaries, manufacturing process and installed assembly remain unresolved under [#38](https://github.com/Takazudo/zudo-osc-hole-field/issues/38), [#59](https://github.com/Takazudo/zudo-osc-hole-field/issues/59), [#55](https://github.com/Takazudo/zudo-osc-hole-field/issues/55) and [#65](https://github.com/Takazudo/zudo-osc-hole-field/issues/65). Historical electrical receipts are not reused for this copper. No fabrication or order files are generated.

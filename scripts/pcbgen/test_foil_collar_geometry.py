@@ -30,6 +30,13 @@ class FoilCollarGeometryTests(unittest.TestCase):
         for b in result['boards']:
             self.assertAlmostEqual(b['full_trace']['nominal_stack_depth_mm'][1]-b['full_trace']['nominal_stack_depth_mm'][0],.07)
 
+    def test_source_transition_cannot_bypass_its_proof_or_partition_binding(self):
+        original=copy.deepcopy(self.spec)
+        for field in ('proof_sha256','current_partition_sha256'):
+            self.spec=copy.deepcopy(original)
+            self.spec['source_transition'][field]='0'*64
+            self.rejects('source transition')
+
     def test_each_actual_bypass_must_be_retired(self):
         original=copy.deepcopy(self.spec)
         for index in (0,1):
