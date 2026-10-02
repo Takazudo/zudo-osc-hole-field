@@ -88,6 +88,9 @@ jobs:
       - name: Place every current shortlist symbol unit and check native ERC
         run: bash scripts/libgen/fixtures/check_ic_units.sh
 
+      - name: Check deterministic cluster placement and source faces
+        run: bash scripts/pcbgen/test_placer.sh
+
       - name: Run native main-ground connectivity regression
         run: bash scripts/kicad/run.sh python3 scripts/pcbgen/power_locality_native_regression.py
 
