@@ -37,7 +37,7 @@ bash scripts/kicad/run.sh python3 scripts/pcbgen/check_control_copper.py
 The paired-header seed passed source regeneration, the full 484-test PCB suite,
 the 285-test source/check suite, the connector-transition negative test and CI.
 Each later routing batch passed native DRC/parity and independent refill;
-the final combined source replay, 41 targeted tests, documentation build and
+the final combined source replay, 42 targeted tests, documentation build and
 publication checks passed in 89 seconds. The existing single workbench-link
 exception remains explicit. Both native layer previews were visually inspected.
 Integrated CI for the final routing revision is pending. K's native comparison preserves all 13,406
