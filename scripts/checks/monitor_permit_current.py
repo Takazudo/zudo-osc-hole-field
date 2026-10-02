@@ -120,7 +120,7 @@ def build(spec, catalog, supply, current):
           'Adopt the listed source-table currents outside their full source conditions only as explicit assumptions, not guarantees.',
           'Reference-divider load uses the top-only path when either TLV output clamps REF_SENSE to ground; this loose bound is retained in every screened state.',
           'Reference <=3.31V, negative rail nonpositive and normal rail bounds; coarse reference monitor does not establish this precision window.',
-          'Zero input and output/off-state leakage, ideal logic voltages within supply rails, passive resistor network and zero semiconductor drops for load-current bounds.',
+          'Zero capacitor leakage and zero input/output/off-state semiconductor leakage, ideal logic voltages within supply rails, passive resistor network and zero semiconductor drops for load-current bounds.',
           '25C resistance reference and -40..125C resistor/TCR envelope are analysis conditions, not installed thermal qualification.',
           'Source input current equals reference output demand plus reference IQ; no separate free reference supply.',
           'U106 input settles near4.545V at5V supply through the bleed divider: its sustained HIGH is not the ICC rail-level test condition. Additional steady input-stage current is unbounded; the DeltaICC row atVCC-0.6V is not extrapolated.',

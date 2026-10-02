@@ -87,6 +87,35 @@ def dct_footprint(envelope):
     return footprint_with_model(normalize_courtyard(text), 'IC_TI_DCT0008A.wrl')
 
 
+
+def capacitor_footprint(part):
+    """KEMET C1002_X7R Table3 DensityB; dimensions remain source parameters."""
+    envelope = part['package_envelope']
+    name = part['footprint']
+    dx, dy, _ = envelope['body_max_xyz_mm']
+    px, py = envelope['pad_size_xy_mm']
+    box = ' '.join(f'{v:g}' for v in envelope['courtyard_minimum_box_mm'])
+    text = (f'(footprint "{name}" (version 20260206) (generator "monitor_candidate_assets")\n'
+            ' (layer "F.Cu") (attr smd)\n'
+            ' (descr "KEMET0603 DensityB recommended reflow lands; unqualified draft")\n'
+            ' (property "Reference" "REF**" (at 0 -1.5 0) (layer "F.SilkS") '
+            '(effects (font (size 1 1) (thickness 0.15))))\n'
+            f' (property "Value" "{name}" (at 0 1.5 0) (layer "F.Fab") '
+            '(effects (font (size 1 1) (thickness 0.15))))\n'
+            f' (property "ProjectCourtyardMinimumBox" "{box}" (at 0 0 0) (layer "F.Fab") '
+            '(effects (font (size 1 1)) (hide yes)))\n')
+    corners = [(-dx/2,-dy/2),(dx/2,-dy/2),(dx/2,dy/2),(-dx/2,dy/2)]
+    for a, b in zip(corners, corners[1:]+corners[:1]):
+        text += (f' (fp_line (start {a[0]:g} {a[1]:g}) (end {b[0]:g} {b[1]:g}) '
+                 '(stroke (width 0.1) (type solid)) (layer "F.Fab"))\n')
+    # No corner radius is dimensioned in Table3: rectangular corners are a
+    # project choice; the recommended X/Y dimensions and pad centres are exact.
+    for number, x in enumerate(envelope['pad_row_centres_x_mm'], 1):
+        text += (f' (pad "{number}" smd rect (at {x:g} 0) (size {px:g} {py:g}) '
+                 '(layers "F.Cu" "F.Paste" "F.Mask"))\n')
+    return footprint_with_model(normalize_courtyard(text+')\n'), name+'.wrl')
+
+
 def generate(check=False):
     def emit(path, text):
         if check:
@@ -105,6 +134,12 @@ def generate(check=False):
             text = template.replace('RT0603BRD07100KL', part['symbol'])
             text = text.replace('"MPN" "'+part['symbol']+'"', '"MPN" '+json.dumps(part['mpn']))
             text = text.replace('zudo-osc-hole-field:R0603', 'zudo-osc-hole-field:'+part['footprint'])
+            text = text.replace('(property "Datasheet" ""', '(property "Datasheet" '+json.dumps(part['source']['url']))
+        elif part['kind'] == 'capacitor':
+            text = (ROOT/'symbols/src/GRM188R71H104KA93D.kicad_sym').read_text()
+            text = text.replace('GRM188R71H104KA93D', part['symbol'])
+            text = text.replace('"Manufacturer" "Murata"', '"Manufacturer" '+json.dumps(part['manufacturer']))
+            text = text.replace('zudo-osc-hole-field:C0603', 'zudo-osc-hole-field:'+part['footprint'])
             text = text.replace('(property "Datasheet" ""', '(property "Datasheet" '+json.dumps(part['source']['url']))
         else:
             text = ic_symbol(part)
@@ -129,6 +164,14 @@ def generate(check=False):
         emit(ROOT/'footprints/kicad/zudo-osc-hole-field.pretty/TI_DCT0008A.kicad_mod', text)
         emit(ROOT/'footprints/kicad/zudo-osc-hole-field.3dshapes/IC_TI_DCT0008A.wrl',
              render('TI_DCT0008A', tuple(envelope['body_max_xyz_mm']), envelope['scope']))
+    for part in parts:
+        if part['kind'] != 'capacitor':
+            continue
+        envelope = part['package_envelope']
+        emit(ROOT/'footprints/kicad/zudo-osc-hole-field.pretty'/(part['footprint']+'.kicad_mod'),
+             capacitor_footprint(part))
+        emit(ROOT/'footprints/kicad/zudo-osc-hole-field.3dshapes'/(part['footprint']+'.wrl'),
+             render(part['footprint'], tuple(envelope['body_max_xyz_mm']), envelope['scope']))
     print(f'Prepared {len(parts)} candidate identities; physical fit unqualified')
 
 

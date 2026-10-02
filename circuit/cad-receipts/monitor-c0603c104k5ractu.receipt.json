@@ -1,0 +1,148 @@
+{
+  "receipt_version": 1,
+  "identity": {
+    "asset_id": "monitor-c0603c104k5ractu",
+    "record_id": "rec-monitor-c0603c104k5ractu",
+    "manufacturer": "KEMET",
+    "mpn": "C0603C104K5RACTU",
+    "package": "0603 / 1608",
+    "variant_notes": "UNSELECTED monitor-only candidate; not fitted to the instrument; no physical qualification"
+  },
+  "acquisition": {
+    "provider": "Retained KEMET/YAGEO primary exact specification and family land recommendation; project-derived CAD",
+    "source_url": "https://www.yageogroup.com/component-documentation/download/specsheet/C0603C104K5RACTU",
+    "acquired_on": "2026-10-02",
+    "original_filenames": [
+      "monitor-permit-parts.json",
+      "C0603C104K5RACTU.pdf",
+      "KEM_C1002_X7R_SMD.pdf",
+      "build_monitor_candidate_assets.py",
+      "gen_ic_package_envelopes.py",
+      "gen_courtyards.py",
+      "GRM188R71H104KA93D.kicad_sym"
+    ],
+    "sha256": {
+      "design/power/monitor-permit-parts.json": "28906f6ddde30ff6d791bb77446b13bc9f69cf2c1f600383bfaca0d77b31136c",
+      ".circuit-cache/sources/monitor-bypass/C0603C104K5RACTU.pdf": "dd5738e57db9a724c328c9ca110aae85a1cff38998e2f4e2563e924bf2254a58",
+      ".circuit-cache/sources/monitor-bypass/KEM_C1002_X7R_SMD.pdf": "d8e6ca6631862e31a19b90b6cfe13f1b20153c2efd6c8e30f1a5d5ba147aa908",
+      "scripts/libgen/build_monitor_candidate_assets.py": "880cf491b4d0a0cac0a58550cd0e4788013c2063198a3fe7772726418277f0f6",
+      "scripts/libgen/gen_ic_package_envelopes.py": "15b5cd8f72d2b62a9cca7c655ace0e55c4b8da6ad9d99daf7e43b78c6a3f14fb",
+      "scripts/libgen/gen_courtyards.py": "0857e5bc66bd62dab89e68dc7c9677ce8bd714cc7bf51bd6a6b9feaf875ff69c",
+      "symbols/src/GRM188R71H104KA93D.kicad_sym": "6acc84fa943c15ee6a70893344bd70edd19eafa3e5d08ead83d6ae464c47b5fa"
+    }
+  },
+  "representation": {
+    "files": [
+      "symbols/src/C0603C104K5RACTU.kicad_sym",
+      "footprints/kicad/zudo-osc-hole-field.pretty/KEMET_C0603_DensityB.kicad_mod",
+      "footprints/kicad/zudo-osc-hole-field.3dshapes/KEMET_C0603_DensityB.wrl"
+    ],
+    "formats": [
+      "kicad_sym",
+      "kicad_mod",
+      "wrl"
+    ],
+    "units": "KiCad millimetres; WRL uses KiCad 0.1-inch coordinate units with zero transform offset",
+    "original_paths": [
+      "design/power/monitor-permit-parts.json",
+      ".circuit-cache/sources/monitor-bypass/C0603C104K5RACTU.pdf",
+      ".circuit-cache/sources/monitor-bypass/KEM_C1002_X7R_SMD.pdf",
+      "scripts/libgen/build_monitor_candidate_assets.py",
+      "scripts/libgen/gen_ic_package_envelopes.py",
+      "scripts/libgen/gen_courtyards.py",
+      "symbols/src/GRM188R71H104KA93D.kicad_sym"
+    ]
+  },
+  "fidelity": {
+    "class": "derived",
+    "reason": "Source-derived Density B reflow lands and bounded body display; project terminal convention and rectangular pad corners; no installed qualification.",
+    "evidence": [
+      "https://www.yageogroup.com/component-documentation/download/specsheet/C0603C104K5RACTU",
+      "https://content.kemet.com/datasheets/KEM_C1002_X7R_SMD.pdf",
+      "Exact Dimensions table physical index0: 1.6+/-.15 x .8+/-.15 x .8+/-.15mm",
+      "C1002_X7R (2026-09-01) physical index11/printed12 Table3 DensityB: C=.8,Y=.95,X=1,V1=3.1,V2=1.5mm"
+    ]
+  },
+  "derivation": {
+    "derived": true,
+    "input_sha256": {
+      "design/power/monitor-permit-parts.json": "28906f6ddde30ff6d791bb77446b13bc9f69cf2c1f600383bfaca0d77b31136c",
+      ".circuit-cache/sources/monitor-bypass/C0603C104K5RACTU.pdf": "dd5738e57db9a724c328c9ca110aae85a1cff38998e2f4e2563e924bf2254a58",
+      ".circuit-cache/sources/monitor-bypass/KEM_C1002_X7R_SMD.pdf": "d8e6ca6631862e31a19b90b6cfe13f1b20153c2efd6c8e30f1a5d5ba147aa908",
+      "scripts/libgen/build_monitor_candidate_assets.py": "880cf491b4d0a0cac0a58550cd0e4788013c2063198a3fe7772726418277f0f6",
+      "scripts/libgen/gen_ic_package_envelopes.py": "15b5cd8f72d2b62a9cca7c655ace0e55c4b8da6ad9d99daf7e43b78c6a3f14fb",
+      "scripts/libgen/gen_courtyards.py": "0857e5bc66bd62dab89e68dc7c9677ce8bd714cc7bf51bd6a6b9feaf875ff69c",
+      "symbols/src/GRM188R71H104KA93D.kicad_sym": "6acc84fa943c15ee6a70893344bd70edd19eafa3e5d08ead83d6ae464c47b5fa"
+    },
+    "tool": "scripts/libgen/build_monitor_candidate_assets.py",
+    "tool_version": "1",
+    "parameters": {
+      "body_max_mm": [
+        1.75,
+        0.95,
+        0.95
+      ],
+      "pad_size_mm": [
+        0.95,
+        1.0
+      ],
+      "pad_centres_x_mm": [
+        -0.8,
+        0.8
+      ],
+      "minimum_courtyard_mm": [
+        -1.55,
+        -0.75,
+        1.55,
+        0.75
+      ],
+      "pad_corner_shape": "rectangular project choice",
+      "model_reference": "project-relative WRL; no STEP conversion"
+    },
+    "output_sha256": {
+      "symbols/src/C0603C104K5RACTU.kicad_sym": "4aeb2b7217ae4f409d870f64a6bc9a232785f4c34267dc555169edb0b5423d46",
+      "footprints/kicad/zudo-osc-hole-field.pretty/KEMET_C0603_DensityB.kicad_mod": "2cde126035640cffbaa40fa40e1910263d0a3a57267d284e27ca34f6d7cda7e8",
+      "footprints/kicad/zudo-osc-hole-field.3dshapes/KEMET_C0603_DensityB.wrl": "cde9847058926c775f90bbbd594e42ab64ee5eacf2721dd083ef3bc99180f99e"
+    }
+  },
+  "cad_use": {
+    "symbol": "zudo-osc-hole-field:C0603C104K5RACTU",
+    "footprint": "zudo-osc-hole-field:KEMET_C0603_DensityB",
+    "model_path": "${KIPRJMOD}/../../footprints/kicad/zudo-osc-hole-field.3dshapes/KEMET_C0603_DensityB.wrl",
+    "transform": {
+      "offset": [
+        0,
+        0,
+        0
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ]
+    },
+    "seating_plane": null
+  },
+  "checks": {
+    "performed": [
+      "Retained exact and family PDF SHA-256 checked",
+      "Native exact pin/MPN parity and ERC passed",
+      "Native source pad dimensions, courtyard and model-body checks; see current native report"
+    ],
+    "remaining_physical_checks": [
+      "Installed seating, solderability and clearance",
+      "Effective capacitance, leakage, aging and thermal conditions",
+      "Startup, shutdown and partial-power protection behavior"
+    ]
+  },
+  "publication": {
+    "preview_selected": true,
+    "download_published": false,
+    "permitted_scope": "Generated family-geometry previews and source metadata only; no fabrication release"
+  }
+}

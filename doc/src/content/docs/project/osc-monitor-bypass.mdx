@@ -1,0 +1,18 @@
+---
+title: "Monitor bypass capacitor candidate"
+description: "Exact KEMET specifications and derived CAD for nine isolated monitor bypass capacitors, with application gates still open."
+---
+
+The isolated monitor/permit draft uses **KEMET C0603C104K5RACTU** for C101–C108 and C110. These nine 100 nF capacitors are an unselected instrument candidate. The fitted Murata population elsewhere in the instrument and the C109 timing capacitor are unchanged. This is an unvalidated schematic draft, not an approved substitution or protection circuit.
+
+The retained exact specification sheet, generated October 1, 2026, gives 100 nF ±10%, 50 VDC and X7R dielectric in a 0603/1608 package. Capacitance and tolerance refer to 1 kHz, 1 Vrms and the part-specific 48-hour referee time; they are not post-reflow time-zero or lifetime tolerances. The ±15% temperature characteristic refers to +25 °C at **zero DC bias**; it does not establish effective capacitance at the monitor's 3.3 V and 5 V nodes. The stated aging rate is 3% per decade-hour with a 48-hour referee time, not a fixed lifetime loss. The sheet's simulation plots are typical and explicitly not specifications.
+
+The exact sheet lists 5 GΩ insulation resistance. The family document's general test uses rated voltage for 120 seconds at 25 °C. Neither supports a hot or partial-power leakage bound. The conditional current screen explicitly excludes capacitor leakage as well as semiconductor leakage, switching current and other unresolved dynamic loads.
+
+Nominal charge accounting remains 0.6 µF on +5 V and 0.3 µF on REF, or 3 µC and 0.99 µC at nominal voltages. The three REF capacitors remain far below the REF34 common-table 10 µF test condition. Effective capacitance, reference stability and startup/shutdown applicability remain open. The passive timing diagnostic still uses the unchanged C109 and U106 input capacitance; this substitution does not improve its qualification status.
+
+The exact body dimensions are 1.6 ±0.15 × 0.8 ±0.15 × 0.8 ±0.15 mm. The derived model displays the resulting 1.75 × 0.95 × 0.95 mm maximum body. It omits solder fillets, seating and installed clearance. KEMET family document C1002_X7R, September 1, 2026, printed page 12 Table 3 gives Density B reflow lands: pad centres ±0.80 mm, pad size 0.95 × 1.00 mm, and a 3.10 × 1.50 mm grid-placement courtyard. Rectangular pad corners are a project choice; no corner radius is specified there. The generator preserves that courtyard minimum.
+
+The exact and family PDFs are retained locally with acquisition hashes. Metadata and generated previews are published; the PDFs are not redistributed. Native ERC, pin identity, land coordinates and model dimensions are software checks. Physical solderability, installed fit, electrical behavior and thermal qualification are **NOT RUN**.
+
+Manufacturer lifecycle, stock and factory allocation remain **UNSOURCED**. A generated datasheet, packaging quantity and shelf-life statement do not establish active lifecycle or availability. [Issue #87](https://github.com/Takazudo/zudo-osc-hole-field/issues/87) remains open for the global capacitor roles and replacement decision; [#59](https://github.com/Takazudo/zudo-osc-hole-field/issues/59) remains open for complete protection.
