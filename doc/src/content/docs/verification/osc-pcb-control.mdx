@@ -11,18 +11,20 @@ The candidate uses the reviewed local edge tab beside RV601 and separate reserva
 | --- | --- |
 | DRC violations, including silkscreen | **0** |
 | Schematic parity findings | **0** |
-| Source track segments / through vias | 3016 / 565 |
+| Source track segments / through vias | 2889 / 431 |
 | Connected source ground contacts | **344 / 344** |
 | Connected local IC/bypass rail pairs | **16 / 16**, maximum pad distance 2.535 mm |
-| Complete native open-edge count | **72** |
+| Complete native open-edge count | **43** |
 | Independent reload and refill | Same ground and open-edge counts |
 | Routing / electrical and physical qualification | **Incomplete / NOT RUN** |
 
-The source now permutes 123 complete K/P header pairs among existing identical sites. Both ends move together; all 390 connector references and pin maps, 195 modeled cable-route geometries, 18 main power routes, and all non-header component positions remain unchanged. Native comparison confirms the same occupied pad geometry and ground-pad positions. Only the 123 corresponding reference labels move. The source proposal remains an unvalidated assembly allocation.
+The earlier assignment of 123 complete K/P header pairs to existing identical sites remains. The current correction moves ninety envelope debounce passives into thirty complete resistor/resistor/capacitor groups beside their existing Texas Instruments SN74HC14DR inputs. All ICs, bypass capacitors, headers, panel controls, component identities and electrical net assignments are unchanged. Native comparison checks all 1,740 pads and confirms that exactly the 180 passive pads move.
 
-The summed nearest-signal-pad distance estimate falls from 29.90 m to 6.66 m on P and from 29.70 m to 25.75 m on K. These are straight-line placement estimates, not routed lengths or electrical qualification. The explicit assignment is in `design/partition/control-connector-locality.json`.
+The largest debounce-capacitor to input-pad distance falls from 144.626 mm to 7.665 mm; the median falls from 93.580 mm to 4.039 mm. The 8 mm input and 4 mm neighboring-resistor limits are project layout targets, not manufacturer requirements. These straight-line pad distances do not establish routed length or functional performance. The proposal is explicit in `design/partition/control-debounce-locality.json`.
 
-Moving header terminals invalidates their old routes. The previous routing checkpoints remain in git history; this branch rebuilds from compatible local control/bypass links and the six main-terminal arrays. Seventy-two short inner-layer segments connect the three rail arrays on a second layer. The 453-edge rerouting seed was reduced to 270 edges by selectively retaining new routes that preserve every checked ground connection, then to 189 edges by adding native-checked local links. A further protected-copper continuation and front/back detour routing reduce the count to 93, preserving every copper object from the 189-edge checkpoint. Candidate routes that disconnected ground contacts were removed before acceptance. Further detour routing, one local C222 ground stitch and another protected-copper continuation reduce the count to 72. All source ground copper, including the stitch, is checked for connection to main ground before and after refill; its resistance and current capability remain unqualified. The previous header layout reached 257 edges on main. The bounded autorouter run timed out; its partial copper was accepted only after separate native replay, DRC, connectivity and ground checks. Independent refill retains all 344 source grounds and sixteen local bypass pairs. Current and resistance limits have not been checked for this copper.
+Moving these terminals invalidates affected routes. The previous 72-edge checkpoint remains in git history. Rebuilding compatible copper and removing collisions produces a 199-edge seed, then checked local back/front routing reduces it to 43 open edges. Candidate links that disconnect ground are rejected. All 344 ground contacts, all 77 source AGND copper objects and sixteen local bypass pairs remain connected after independent refill. The six main-terminal arrays and local C222 ground stitch remain; their current and resistance capability is unqualified. Rail-link searches consider pad pairs at most 25 mm apart; this does not bound their routed length.
+
+All 418 visible references retain 1 mm text and checked clearance. Some moved passive references require offsets up to 16.553 mm. Native source replay, DRC, complete connectivity and independent refill form the acceptance gate for this partial copper. Current and resistance limits have not been checked for it.
 
 ## Native layer views
 
@@ -34,4 +36,4 @@ These are copper/silkscreen previews of the partial candidate, not fabrication p
 
 ## Remaining work
 
-[Issue #39](https://github.com/Takazudo/zudo-osc-hole-field/issues/39) remains open for the 72 remaining connections and canonical geometry adoption. The proposed four-layer, 2 oz, 1.6 mm stack, actual connected-copper current and resistance limits, exact protection and supply boundaries, manufacturing process and installed assembly remain unresolved under [#38](https://github.com/Takazudo/zudo-osc-hole-field/issues/38), [#59](https://github.com/Takazudo/zudo-osc-hole-field/issues/59), [#55](https://github.com/Takazudo/zudo-osc-hole-field/issues/55) and [#65](https://github.com/Takazudo/zudo-osc-hole-field/issues/65). Historical electrical receipts are not reused for this copper. No fabrication or order files are generated.
+[Issue #39](https://github.com/Takazudo/zudo-osc-hole-field/issues/39) remains open for the 43 remaining connections and canonical geometry adoption. The proposed four-layer, 2 oz, 1.6 mm stack, actual connected-copper current and resistance limits, exact protection and supply boundaries, manufacturing process and installed assembly remain unresolved under [#38](https://github.com/Takazudo/zudo-osc-hole-field/issues/38), [#59](https://github.com/Takazudo/zudo-osc-hole-field/issues/59), [#55](https://github.com/Takazudo/zudo-osc-hole-field/issues/55) and [#65](https://github.com/Takazudo/zudo-osc-hole-field/issues/65). Historical electrical receipts are not reused for this copper. No fabrication or order files are generated.

@@ -1,7 +1,7 @@
 {
   "board": "boards/osc-control/osc-control-routed-draft.kicad_pcb",
   "board_net_count": 833,
-  "board_sha256": "cd6b3c2339a6f2631d9d0fca2e4eddd5053b8c7bbc29ec02577f637b131296d5",
+  "board_sha256": "178a3ce04a6fff5128ea9e6e6d0e7b66036cc72711010d1fb30e6926007965fa",
   "multi_pad_candidate_net_count": 348,
   "multi_pad_candidate_net_names": [
     "+12V",
@@ -355,7 +355,7 @@
   ],
   "name_scope": "native_open_edges_by_net is complete and sum-checked. multi_pad_candidate_net_names is a separate candidate inventory; CLI DRC JSON can truncate its item list.",
   "named_edge_basis": "Native GetConnectedItems connectivity clusters including filled-zone islands; each net has clusters minus one edges; sum must equal native GetUnconnectedCount(False). Orphan zone-only islands excluded by native ratsnest policy.",
-  "named_edge_count_sum": 72,
+  "named_edge_count_sum": 43,
   "native_open_edge_source_identities": [
     {
       "native_net_name": "+12V",
@@ -364,23 +364,13 @@
     },
     {
       "native_net_name": "+5V",
-      "native_open_edges": 13,
+      "native_open_edges": 14,
       "source_net_name": "+5V"
     },
     {
       "native_net_name": "-12V",
-      "native_open_edges": 4,
-      "source_net_name": "-12V"
-    },
-    {
-      "native_net_name": "X0F98EC836B304857ABC5",
-      "native_open_edges": 2,
-      "source_net_name": "/E4/C8c25a4_DEBOUNCE"
-    },
-    {
-      "native_net_name": "X130E2D2473EEC58833A8",
       "native_open_edges": 1,
-      "source_net_name": "/E3/LOOP_RAW"
+      "source_net_name": "-12V"
     },
     {
       "native_net_name": "X1B787BB4D565EE8CF824",
@@ -403,11 +393,6 @@
       "source_net_name": "/X1/SELECTOR_REMOTE"
     },
     {
-      "native_net_name": "X21BEBE4AB581C385D0B8",
-      "native_open_edges": 1,
-      "source_net_name": "/E1/STAGE_FALL_CONTACT"
-    },
-    {
       "native_net_name": "X2BCD7805C65AE3992EDF",
       "native_open_edges": 1,
       "source_net_name": "/E6/CURVED_CONTACT"
@@ -418,9 +403,9 @@
       "source_net_name": "/X1/A_BUFFER"
     },
     {
-      "native_net_name": "X3C30CF4F46CC9EAA54FD",
+      "native_net_name": "X3D9DB9D8CDF65F493A37",
       "native_open_edges": 1,
-      "source_net_name": "/E4/C992951_DEBOUNCE"
+      "source_net_name": "/E6/LOOP_RAW"
     },
     {
       "native_net_name": "X3FCBFC999FCAA257D324",
@@ -428,24 +413,19 @@
       "source_net_name": "/E6/TRIG_CONTACT"
     },
     {
+      "native_net_name": "X45AEDA7EA8DE3AE9B3ED",
+      "native_open_edges": 1,
+      "source_net_name": "/A06/REF5"
+    },
+    {
       "native_net_name": "X479764B836FB7BB3EF48",
       "native_open_edges": 1,
       "source_net_name": "/E6/ASR_RAW"
     },
     {
-      "native_net_name": "X547DC548216A545CE445",
+      "native_net_name": "X594671D4E0DDE8EDD9FF",
       "native_open_edges": 1,
-      "source_net_name": "/X1/SELECT_B_CONTACT"
-    },
-    {
-      "native_net_name": "X6158489D0D822E09DE71",
-      "native_open_edges": 2,
-      "source_net_name": "/E6/C76e00a_DEBOUNCE"
-    },
-    {
-      "native_net_name": "X652F7E92722B07CC611F",
-      "native_open_edges": 1,
-      "source_net_name": "/E6/C8c25a4_DEBOUNCE"
+      "source_net_name": "/E2/LOOP_RAW"
     },
     {
       "native_net_name": "X65EF910626D86173FCAE",
@@ -453,44 +433,9 @@
       "source_net_name": "/X1/C33d018_DRIVE"
     },
     {
-      "native_net_name": "X69343E2C6D875EFAA724",
-      "native_open_edges": 1,
-      "source_net_name": "/E6/STAGE_FALL_CONTACT"
-    },
-    {
-      "native_net_name": "X69557299DAC5668C77C1",
-      "native_open_edges": 1,
-      "source_net_name": "/E5/C8c25a4_DEBOUNCE"
-    },
-    {
-      "native_net_name": "X6EAF3E6A330509674504",
-      "native_open_edges": 1,
-      "source_net_name": "/E4/LOOP_CONTACT"
-    },
-    {
-      "native_net_name": "X73DCD6567A68738230C2",
-      "native_open_edges": 2,
-      "source_net_name": "/E6/C992951_DEBOUNCE"
-    },
-    {
       "native_net_name": "X78C1702B66BDCEBC593E",
       "native_open_edges": 1,
       "source_net_name": "/M5A/C445167_W"
-    },
-    {
-      "native_net_name": "X7B7BDD1C1DB4BA20302F",
-      "native_open_edges": 1,
-      "source_net_name": "/E1/C76e00a_DEBOUNCE"
-    },
-    {
-      "native_net_name": "X7DF116D877C176D3E3C1",
-      "native_open_edges": 1,
-      "source_net_name": "/E2/STAGE_FALL_CONTACT"
-    },
-    {
-      "native_net_name": "X8314A000574C61D85A46",
-      "native_open_edges": 2,
-      "source_net_name": "/E2/C76e00a_DEBOUNCE"
     },
     {
       "native_net_name": "X8A58565164C7AD5DB771",
@@ -498,29 +443,9 @@
       "source_net_name": "/E6/TRIG_ACTIVE"
     },
     {
-      "native_net_name": "X8F338CC60323B9942D2C",
+      "native_net_name": "X9791E4C8B176990128D8",
       "native_open_edges": 1,
-      "source_net_name": "/E1/Cb2412d_DEBOUNCE"
-    },
-    {
-      "native_net_name": "X9480A1F10120402F93CC",
-      "native_open_edges": 1,
-      "source_net_name": "/E1/C8c25a4_DEBOUNCE"
-    },
-    {
-      "native_net_name": "X94AE1057F6F6F403AA12",
-      "native_open_edges": 1,
-      "source_net_name": "/E5/TRIG_CONTACT"
-    },
-    {
-      "native_net_name": "X98302BA4179BABC520A9",
-      "native_open_edges": 1,
-      "source_net_name": "/E6/LOOP_CONTACT"
-    },
-    {
-      "native_net_name": "X9D8BBA8996899EAF9E11",
-      "native_open_edges": 1,
-      "source_net_name": "/E4/ASR_CONTACT"
+      "source_net_name": "/E5/CURVED"
     },
     {
       "native_net_name": "XAB90894E398C3C7E5F74",
@@ -528,24 +453,24 @@
       "source_net_name": "/A05/Cc045d2_W"
     },
     {
-      "native_net_name": "XBD6357A0B75FD46712BB",
+      "native_net_name": "XB6FA1BCBBFA3EEA95431",
       "native_open_edges": 1,
-      "source_net_name": "/E3/STAGE_FALL_CONTACT"
+      "source_net_name": "/E6/ASR_CONTACT"
     },
     {
-      "native_net_name": "XC6592B5E19554E448150",
-      "native_open_edges": 2,
-      "source_net_name": "/E5/Cb2412d_DEBOUNCE"
+      "native_net_name": "XBCA4688CC73D43650238",
+      "native_open_edges": 1,
+      "source_net_name": "/E1/CURVED"
+    },
+    {
+      "native_net_name": "XC394C67B39CCAC7BCAC2",
+      "native_open_edges": 1,
+      "source_net_name": "/E3/ASR_RAW"
     },
     {
       "native_net_name": "XC6A7664726BAFEE0BCFA",
       "native_open_edges": 1,
       "source_net_name": "/A05/REFN5"
-    },
-    {
-      "native_net_name": "XC7F5BDC04F0481121BA1",
-      "native_open_edges": 1,
-      "source_net_name": "/E1/CURVED_CONTACT"
     },
     {
       "native_net_name": "XD495321DB3DAE206B30C",
@@ -559,90 +484,45 @@
     },
     {
       "native_net_name": "XE31F05877B8C46E4CC67",
-      "native_open_edges": 2,
+      "native_open_edges": 1,
       "source_net_name": "/E2/ASR_CONTACT"
-    },
-    {
-      "native_net_name": "XE57A4DF41E8F2F4A1ABF",
-      "native_open_edges": 1,
-      "source_net_name": "/E1/ASR_CONTACT"
-    },
-    {
-      "native_net_name": "XE5EBE89E3604C69EA63D",
-      "native_open_edges": 1,
-      "source_net_name": "/E1/LOOP_CONTACT"
-    },
-    {
-      "native_net_name": "XE94499060CE17305BDE7",
-      "native_open_edges": 1,
-      "source_net_name": "/E3/TRIG_CONTACT"
-    },
-    {
-      "native_net_name": "XEB97E29642F2FC671EF7",
-      "native_open_edges": 1,
-      "source_net_name": "/E4/C76e00a_DEBOUNCE"
     },
     {
       "native_net_name": "XF0DC26E7D2B4314CF41F",
       "native_open_edges": 1,
       "source_net_name": "/E2/Cb2412d_DEBOUNCE"
-    },
-    {
-      "native_net_name": "XF6BF97BFAAAC54218A4D",
-      "native_open_edges": 2,
-      "source_net_name": "/E4/Cb2412d_DEBOUNCE"
     }
   ],
   "native_open_edges_by_net": {
     "+12V": 4,
-    "+5V": 13,
-    "-12V": 4,
-    "X0F98EC836B304857ABC5": 2,
-    "X130E2D2473EEC58833A8": 1,
+    "+5V": 14,
+    "-12V": 1,
     "X1B787BB4D565EE8CF824": 1,
     "X1C49E274E70449E3D265": 1,
     "X1C545F78A9EEA47275D3": 1,
     "X1CB7E660D7B486B8C4E6": 1,
-    "X21BEBE4AB581C385D0B8": 1,
     "X2BCD7805C65AE3992EDF": 1,
     "X37DEB0D3B35ED7C3B732": 1,
-    "X3C30CF4F46CC9EAA54FD": 1,
+    "X3D9DB9D8CDF65F493A37": 1,
     "X3FCBFC999FCAA257D324": 1,
+    "X45AEDA7EA8DE3AE9B3ED": 1,
     "X479764B836FB7BB3EF48": 1,
-    "X547DC548216A545CE445": 1,
-    "X6158489D0D822E09DE71": 2,
-    "X652F7E92722B07CC611F": 1,
+    "X594671D4E0DDE8EDD9FF": 1,
     "X65EF910626D86173FCAE": 1,
-    "X69343E2C6D875EFAA724": 1,
-    "X69557299DAC5668C77C1": 1,
-    "X6EAF3E6A330509674504": 1,
-    "X73DCD6567A68738230C2": 2,
     "X78C1702B66BDCEBC593E": 1,
-    "X7B7BDD1C1DB4BA20302F": 1,
-    "X7DF116D877C176D3E3C1": 1,
-    "X8314A000574C61D85A46": 2,
     "X8A58565164C7AD5DB771": 1,
-    "X8F338CC60323B9942D2C": 1,
-    "X9480A1F10120402F93CC": 1,
-    "X94AE1057F6F6F403AA12": 1,
-    "X98302BA4179BABC520A9": 1,
-    "X9D8BBA8996899EAF9E11": 1,
+    "X9791E4C8B176990128D8": 1,
     "XAB90894E398C3C7E5F74": 1,
-    "XBD6357A0B75FD46712BB": 1,
-    "XC6592B5E19554E448150": 2,
+    "XB6FA1BCBBFA3EEA95431": 1,
+    "XBCA4688CC73D43650238": 1,
+    "XC394C67B39CCAC7BCAC2": 1,
     "XC6A7664726BAFEE0BCFA": 1,
-    "XC7F5BDC04F0481121BA1": 1,
     "XD495321DB3DAE206B30C": 1,
     "XE2766944E33E2DEBD272": 1,
-    "XE31F05877B8C46E4CC67": 2,
-    "XE57A4DF41E8F2F4A1ABF": 1,
-    "XE5EBE89E3604C69EA63D": 1,
-    "XE94499060CE17305BDE7": 1,
-    "XEB97E29642F2FC671EF7": 1,
-    "XF0DC26E7D2B4314CF41F": 1,
-    "XF6BF97BFAAAC54218A4D": 2
+    "XE31F05877B8C46E4CC67": 1,
+    "XF0DC26E7D2B4314CF41F": 1
   },
-  "native_open_net_count": 47,
-  "native_unconnected_edges": 72,
+  "native_open_net_count": 27,
+  "native_unconnected_edges": 43,
   "schema_version": 2
 }
