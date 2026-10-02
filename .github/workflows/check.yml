@@ -128,8 +128,8 @@ jobs:
           bash scripts/kicad/run.sh python3 scripts/pcbgen/check_octave.py --disposable
           bash scripts/kicad/run.sh python3 scripts/pcbgen/fixtures/check_octave_mutations.py
 
-      - name: Rebuild and check the unrouted control PCB draft
-        run: bash scripts/kicad/run.sh python3 scripts/pcbgen/check_control_layout.py
+      - name: Rebuild and check the control layout and partial copper
+        run: bash scripts/kicad/run.sh python3 scripts/pcbgen/check_control_copper.py
 
       - name: Check aggregate source regeneration
         id: aggregate
