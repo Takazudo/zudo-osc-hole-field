@@ -48,6 +48,92 @@
       "scope": "legacy model-axis units only"
     },
     {
+      "footprint": "LED0402-Kingbright-White",
+      "position_mm": [
+        0,
+        0
+      ],
+      "rotation_deg": 0,
+      "side": "F.Cu",
+      "native_model": {
+        "bounds": [
+          [
+            -0.499999,
+            0.499999
+          ],
+          [
+            -0.249999,
+            0.249999
+          ],
+          [
+            0.8,
+            1.299999
+          ]
+        ],
+        "size": [
+          0.999998,
+          0.499999,
+          0.499999
+        ],
+        "mesh_axis_sizes": [
+          0.999998,
+          0.499999,
+          0.499999
+        ],
+        "center": [
+          0.0,
+          0.0,
+          1.049999
+        ],
+        "transform_count": 4
+      },
+      "native_Fab": null,
+      "scope": "legacy model-axis units only"
+    },
+    {
+      "footprint": "LED0402-Kingbright-Red",
+      "position_mm": [
+        0,
+        0
+      ],
+      "rotation_deg": 0,
+      "side": "F.Cu",
+      "native_model": {
+        "bounds": [
+          [
+            -0.499999,
+            0.499999
+          ],
+          [
+            -0.249999,
+            0.249999
+          ],
+          [
+            0.8,
+            1.0
+          ]
+        ],
+        "size": [
+          0.999998,
+          0.499999,
+          0.2
+        ],
+        "mesh_axis_sizes": [
+          0.999998,
+          0.499999,
+          0.2
+        ],
+        "center": [
+          0.0,
+          0.0,
+          0.9
+        ],
+        "transform_count": 4
+      },
+      "native_Fab": null,
+      "scope": "legacy model-axis units only"
+    },
+    {
       "footprint": "Jack_3.5mm_QingPu_WQP518MA",
       "position_mm": [
         0,
@@ -1134,6 +1220,64 @@
       "reason": "native square-body bounds differ from retained envelope"
     },
     {
+      "case": "Historical IC coordinates 2.54x",
+      "rejected": true,
+      "reason": "native model-axis dimensions differ from retained display bounds",
+      "mutation": {
+        "coordinate_factor": 2.54
+      },
+      "baseline_expected_mm": [
+        1.75,
+        3.05,
+        1.45
+      ],
+      "observed_model_axis_mm": [
+        4.444997,
+        7.747004,
+        3.682999
+      ]
+    },
+    {
+      "case": "Historical pot coordinates 0.1x",
+      "rejected": true,
+      "reason": "native model-axis dimensions differ from retained display bounds",
+      "mutation": {
+        "coordinate_factor": 0.1
+      },
+      "baseline_expected_mm": [
+        10.0,
+        10.0,
+        6.8
+      ],
+      "observed_model_axis_mm": [
+        1.0,
+        1.0,
+        0.68
+      ]
+    },
+    {
+      "case": "Footprint model Z scale 2x",
+      "rejected": true,
+      "reason": "native model-axis dimensions differ from retained display bounds",
+      "mutation": {
+        "model_scale": [
+          1,
+          1,
+          2
+        ]
+      },
+      "baseline_expected_mm": [
+        1.75,
+        3.05,
+        1.45
+      ],
+      "observed_model_axis_mm": [
+        1.749999,
+        3.050002,
+        2.899999
+      ]
+    },
+    {
       "case": "KEMET swapped pad dimensions",
       "rejected": true,
       "reason": "KEMET source pad centres or X/Y dimensions differ"
@@ -1176,7 +1320,7 @@
   },
   "limits": [
     "IC body centres and long axes are compared with independent native Fab outlines; DCT square-body bounds are checked without an orientation claim.",
-    "Other four component models retain their earlier model-axis unit checks only. KEMET capacitor body dimensions come from the exact sheet; lands are separately checked against family Table3.",
+    "PTV09 and all five generated component models have model-axis unit checks only. KEMET capacitor body dimensions come from the exact sheet; lands are separately checked against family Table3.",
     "No footprint-containment, lead, seating, height qualification, installed clearance or fabrication claim.",
     "DIP0.1mm is a display plate, not a package-height bound."
   ],
@@ -1196,12 +1340,16 @@
     "footprints/kicad/zudo-osc-hole-field.3dshapes/IC_TSSOP-16_4.4x5.0.wrl": "dac91472f7dfe969cd28ec89ebcbf62a62f4f176fdc5e68d133a20b247915a2c",
     "footprints/kicad/zudo-osc-hole-field.3dshapes/Jack_3.5mm_QingPu_WQP518MA.wrl": "da96487f1d0c1daf0433d20b1992dd7009cda51a0c2ebef3819dd26fa2c0b655",
     "footprints/kicad/zudo-osc-hole-field.3dshapes/KEMET_C0603_DensityB.wrl": "cde9847058926c775f90bbbd594e42ab64ee5eacf2721dd083ef3bc99180f99e",
+    "footprints/kicad/zudo-osc-hole-field.3dshapes/LED0402-Kingbright-Red.wrl": "6a109b4dfed83ee0ef076f88aae38c0d37a915cd56b9b31d53a7e830ae8fd18f",
+    "footprints/kicad/zudo-osc-hole-field.3dshapes/LED0402-Kingbright-White.wrl": "5e14d39e5baabde9a9f0df9b1dc0cacd5f4941757a951767b597a199e5216fb7",
     "footprints/kicad/zudo-osc-hole-field.3dshapes/PTV09A-4020F.wrl": "24a986336911e221acec40227a58a2df02e364e367cc5bcc049ae6542db447df",
     "footprints/kicad/zudo-osc-hole-field.3dshapes/Toggle_Dailywell_2MS_T1B1M2.wrl": "b402986b45a069ada712d104e5eb36eb0611aca6941a3c2ad6f44624d5389fd6",
     "footprints/kicad/zudo-osc-hole-field.pretty/Button_Omron_B3F_6x6_P6.5x4.5.kicad_mod": "5308867a94916318f13100fe7a07505c1c2d41ea7fc35c63d5d5ce3fcbb30c52",
     "footprints/kicad/zudo-osc-hole-field.pretty/DIP-8_W7.62mm.kicad_mod": "3a5adeb975fae70458377a1ca4df83194b7626633d92d968d47415916af140f1",
     "footprints/kicad/zudo-osc-hole-field.pretty/Jack_3.5mm_QingPu_WQP518MA.kicad_mod": "51a6cc131190b3b1f7f9aa925d4ce08e05a796f62dc8c00d3a89086354b80a20",
     "footprints/kicad/zudo-osc-hole-field.pretty/KEMET_C0603_DensityB.kicad_mod": "2cde126035640cffbaa40fa40e1910263d0a3a57267d284e27ca34f6d7cda7e8",
+    "footprints/kicad/zudo-osc-hole-field.pretty/LED0402-Kingbright-Red.kicad_mod": "4a16e45298e7f349499aaf1157d1ee422e4775819e21859d34767c241a1eb51b",
+    "footprints/kicad/zudo-osc-hole-field.pretty/LED0402-Kingbright-White.kicad_mod": "5fd510e04081eabe44d47fd8094a64ceec03e65a0b3b772237ce1d92be71b4c2",
     "footprints/kicad/zudo-osc-hole-field.pretty/PTV09A-4020F.kicad_mod": "c0dafcafeba8f3570b1c395c12e844ab8d237bb54edfd65130cf98f25939c557",
     "footprints/kicad/zudo-osc-hole-field.pretty/SOD-123.kicad_mod": "163732fa59fe99507f882db80a34ee17a997baec1df55939509fa78c709408d6",
     "footprints/kicad/zudo-osc-hole-field.pretty/SOIC-14_3.9x8.7mm_P1.27mm.kicad_mod": "d686d259c1e4bed4147735ed25de08a498e8626d082058f4f5e00168017b2337",
@@ -1217,7 +1365,7 @@
     "scripts/kicad/pin.env": "769e2be0b61e7d92a6930684f13166b7dc098522008de3969cd30d6c4a363246",
     "scripts/kicad/run.sh": "bc74f0ade82c29d64c44119ea435bc7bfd164fc06e9afff240a3cb2b44b272a0",
     "scripts/libgen/build_monitor_candidate_assets.py": "880cf491b4d0a0cac0a58550cd0e4788013c2063198a3fe7772726418277f0f6",
-    "scripts/libgen/fixtures/check_wrl_dimensions.py": "07cfe90d56ad6b3058867f9e2593d859a10eb748d9bac465a5a9c5bc82121bbe",
+    "scripts/libgen/fixtures/check_wrl_dimensions.py": "73f5deb9f1bf1142d32736cf6188d702c7dc38a435434f6f6cc55bb6fa32b6b8",
     "scripts/libgen/gen_component_envelopes.py": "656929e4298c173bb30bbf244f6c4a598d30b31f707b2cf443c257e98c6e9d3a",
     "scripts/libgen/gen_ic_package_envelopes.py": "15b5cd8f72d2b62a9cca7c655ace0e55c4b8da6ad9d99daf7e43b78c6a3f14fb",
     "scripts/libgen/vrml_geometry.py": "63056a1628b8e18028610462147b0365e70ebd7f6f615c7f1bbb09ac859e72c1"
