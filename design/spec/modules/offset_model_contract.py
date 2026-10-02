@@ -1,6 +1,8 @@
 """Check the captured AO subgraph before projecting its ideal DC model."""
 from design.spec.modules.io_partition import AMP_MAPS
 
+SOURCE_LIBRARY = 'zudo-osc-hole-field:'
+
 
 def model_contract(parts):
     if len({p.key for p in parts}) != len(parts):
@@ -16,19 +18,33 @@ def model_contract(parts):
 
     def passive(role, value, a, b):
         p = one(role)
+        kind = 'C' if role == 'bipolar_attenuverter:C_FB' else 'R'
+        symbol = ('C0603C101J5GACTU' if kind == 'C' else
+                  'RC0603FR-07100KL' if role in ('bipolar_attenuverter:R_W',
+                                               'bipolar_attenuverter:R_FAIL') else
+                  'RT0603BRD07100KL')
+        if p.prefix != kind or p.unit != 0 or p.symbol != SOURCE_LIBRARY + symbol:
+            raise ValueError(f'AO model passive identity changed: {role}')
         if p.value != value or p.pins != {'1': a, '2': b}:
             raise ValueError(f'AO model value/connectivity changed: {role}')
 
     def amp(role, plus, minus, out):
         p = one(role)
-        if not p.symbol.endswith(':OPA4197IPWR') or p.unit not in (1, 2, 3, 4):
+        if (p.prefix != 'U' or p.symbol != SOURCE_LIBRARY + 'OPA4197IPWR' or
+                p.unit not in (1, 2, 3, 4)):
             raise ValueError(f'AO model amplifier identity changed: {role}')
         output, negative, positive = AMP_MAPS[p.unit - 1]
         if p.pins != {output: out, negative: minus, positive: plus}:
             raise ValueError(f'AO model amplifier connectivity changed: {role}')
 
     pot = one('bipolar_attenuverter:RV')
-    if (pot.value != 'PTV09A-4020F-B103' or pot.pins.get('1') != 'AGND' or
+    if (pot.prefix != 'RV' or pot.unit != 0 or
+            pot.symbol != SOURCE_LIBRARY + 'PTV09A-4020F-B103'):
+        raise ValueError('AO model attenuator pot identity changed')
+    if (pot.value != 'PTV09A-4020F-B103' or
+            set(pot.pins) != {'1', '2', '3', '4', '5'} or
+            pot.pins['4'] is not None or pot.pins['5'] is not None or
+            pot.pins.get('1') != 'AGND' or
             pot.pins.get('3') != 'IN_REMOTE' or not pot.pins.get('2')):
         raise ValueError('AO model attenuator pot source changed')
     wiper = pot.pins['2']
