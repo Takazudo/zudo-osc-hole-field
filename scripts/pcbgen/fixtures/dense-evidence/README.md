@@ -32,7 +32,7 @@ Physical circuit behavior, installed mechanical fit, current/thermal performance
 
 KiCad serializes tracks/vias using transient net codes, so a reload can reorder identical copper objects. The fixture's final serialization sorts only source-owned copper slots by kind and retained UUID; owner objects and individual object bytes are preserved. This makes the first and subsequent complete source generation byte-identical. The normalizer does not change routes or DRC results.
 
-## Final measured checks
+## Original repair measurements (historical)
 
 - Pinned KiCad 10.0.6: 0 rule errors, 0 unconnected items, 0 schematic parity issues; 159 warnings (80 silk-over-copper, 79 silk-overlap), unsuppressed.
 - Complete fixture: 211 footprints, 30 selected locked hardware centres, 40 connector pads, four copper layers, 2,001 tracks and 208 vias. All 1,080 original replicated copper records match their retained fingerprint.
@@ -43,3 +43,13 @@ KiCad serializes tracks/vias using transient net codes, so a reload can reorder 
 - Visual inspection: front ground continuity, inner connector escapes/plane cuts, and bottom repeated-cell routing inspected from KiCad layer plots. This is a visual geometry review, not hardware qualification.
 
 The verification receipt binds the accepted board, final DRC/statistics, copper sources, board definition, and placement lock by SHA-256. `python3 scripts/pcbgen/fixtures/write_dense_report.py --check` checks those inputs and the generated acceptance summary. Replacing any of them requires renewed oracle evidence.
+
+## Current-source replay and routing gate repair
+
+The 2026-10-02 replay regenerated the fixture from current sources after the board definition's power-domain name changed from `J` to `JL`. The earlier receipt was stale and was not accepted by updating hashes alone. Fresh pinned KiCad execution passed, and only then were the retained board, DRC, statistics, native ratsnest, routing report, run log and verification receipt replaced. Historical failed router attempts and repair records remain unchanged.
+
+The current replay retains the same 211 footprints, 30 fixed hardware centres, 40 connector pads, four layers, 2,001 tracks, 208 vias, and 1,080 original copper records. Native results are 0 rule errors, 0 schematic parity issues, 0 unconnected items and 0 native open edges, with 159 warnings. `final-routing.json` and `final-ratsnest.json` bind the exact final canonical board bytes. The second full generation remains byte-identical. A disposable copy with weakened project clearance/width rules is repaired from the current board definition before native DRC; its copper bytes and unrelated project setting are preserved, and its next run is unchanged.
+
+The retained log covers dense replay followed by bounded one/four/six-instance Freerouting checks and the deliberately unroutable timeout case. The combined machine guard reported PASS in 127 seconds with 6,709 MB minimum available memory. The quick successful fixtures had 0 rule errors, 0 parity issues and 0 unconnected items; the designated timeout retained seven native open edges and remained incomplete. These are software/geometry checks, not electrical or physical qualification.
+
+The dense replay now runs in CI. Local and self-hosted runs require the machine-wide heavy guard; only a GitHub-hosted Actions job identified by both `GITHUB_ACTIONS=true` and `RUNNER_ENVIRONMENT=github-hosted` runs directly, because that job has its own runner and no user-local guard installation. Wrapper dispatch regressions cover missing, partial and self-hosted environment values. No bypass was used for these local native runs.

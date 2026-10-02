@@ -35,5 +35,19 @@ python3 scripts/pcbgen/fixtures/canonicalize_dense.py "$board"
 after=$(sha256sum "$board" | cut -d' ' -f1)
 [[ $before == "$after" ]] || { echo 'Repeat generation changed board bytes' >&2; exit 1; }
 bash scripts/kicad/run.sh python3 scripts/pcbgen/fixtures/assert_dense_fixture.py "$board" "$dir/routing-work/pre-drc.json"
+# Canonical serialization reorders source-owned slots. Bind the native report
+# to those exact final bytes, rather than the preceding equivalent ordering.
+bash scripts/pcbgen/route.sh "$id" --board "$board" --report "$dir/reports/replay-routing.json" --timeout-sec 1
+python3 - "$board" "$dir/reports/replay-routing.json" <<'PYBIND'
+import hashlib,json,sys
+from pathlib import Path
+board,report=map(Path,sys.argv[1:])
+data=json.loads(report.read_text())
+assert data['native_board_sha256']==hashlib.sha256(board.read_bytes()).hexdigest()
+assert data['native_gate_status']=='ZERO OPEN EDGES'
+assert data['status']=='UNCHANGED DRAFT'
+PYBIND
 bash scripts/kicad/run.sh python3 scripts/pcbgen/fixtures/check_dense_replay.py "$board"
 echo 'PASS: fresh dense replay, complete DRC, byte-identical regeneration, preservation and negative regressions'
+
+python3 scripts/pcbgen/fixtures/check_project_rule_replay.py

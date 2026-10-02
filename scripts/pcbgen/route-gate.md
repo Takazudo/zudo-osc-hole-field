@@ -54,3 +54,14 @@ Run the project regeneration/evidence checks, existing Python suite, and the
 pinned KiCad 10.0.6 fixture/native checks through the existing guards. New physical
 routing or hardware acceptance must use the actual current board sources and
 receipts; old numerical solver epochs are not made current by this code fix.
+
+## Current DRC categories and project settings
+
+Fresh DRC reports must contain object lists for rule violations, unconnected items
+and schematic parity. Missing categories are failed checks, never implicit zeros.
+The oracle report must identify the requested board and include all requested
+severities. Source-owned project routing fields are synchronized before every
+fresh DRC, even when the prior routing definition digest matches. Restoring a
+changed project reports `UPDATED DRAFT`; a subsequent unchanged run preserves
+board/project bytes and reports `UNCHANGED DRAFT`. Unrelated project fields remain
+untouched. The dense replay includes a native regression for this path.
