@@ -12,7 +12,8 @@ ROOT = Path(__file__).resolve().parents[2]
 RECEIPT = 'boards/panel/reports/native-review.json'
 INPUTS = ('boards/panel/panel.kicad_pcb', 'boards/panel/panel.kicad_pro',
           'design/panel/panel-params.json', 'design/grid/placements.lock.json',
-          'scripts/kicad/pin.env')
+          'scripts/kicad/pin.env', 'scripts/kicad/run.sh', 'scripts/panel/check_panel.py')
+ABSENT_INPUTS = ('boards/panel/panel.kicad_dru',)
 OUTPUTS = ('boards/panel/reports/drc.json', 'boards/panel/reports/feature-table.json',
            'boards/panel/reports/panel-top.png',
            'doc/public/assets/osc-hole-field/panel-kicad-top.png')
@@ -38,6 +39,12 @@ def verify(root: Path = ROOT):
     if (not isinstance(receipt, dict) or type(receipt.get('schema_version')) is not int
             or receipt['schema_version'] != 1 or receipt.get('commands') != COMMANDS):
         raise ValueError('native panel receipt schema/command mismatch')
+    if receipt.get('absent_inputs') != list(ABSENT_INPUTS):
+        raise ValueError('native panel receipt missing custom-rule absence declaration')
+    def absent():
+        return all(not (root / p).exists() and not (root / p).is_symlink() for p in ABSENT_INPUTS)
+    if not absent():
+        raise ValueError('native panel custom-rule absence changed; fresh source capture required')
     snapshots = {}
     for group, paths in (('inputs', INPUTS), ('outputs', OUTPUTS)):
         records = receipt.get(group)
@@ -81,6 +88,13 @@ def verify(root: Path = ROOT):
     for key in ('violations', 'unconnected_items', 'schematic_parity'):
         if not isinstance(drc.get(key), list) or drc[key]:
             raise ValueError(f'native panel DRC incomplete or nonzero: {key}')
+    features = json.loads(snapshots[OUTPUTS[1]])
+    summary = {key: features[key] for key in
+               ('features', 'drilled_holes', 'undrilled_optical_windows')}
+    summary['octave_diameters_mm'] = [row['diameter_mm'] for row in features['rows']
+                                      if row['kind'] == 'octave']
+    if receipt.get('feature_summary') != summary or receipt.get('render_requested_pixels') != [2384, 2240]:
+        raise ValueError('native panel receipt summary differs from native table/command')
     png = snapshots[OUTPUTS[2]]
     if png != snapshots[OUTPUTS[3]]:
         raise ValueError('published panel image differs from native render')
@@ -90,7 +104,7 @@ def verify(root: Path = ROOT):
     if min(size) <= 0 or receipt.get('render_actual_pixels') != size:
         raise ValueError('native panel render pixel dimensions mismatch')
     # Hash checks consume exactly the bytes parsed above, not a later read.
-    if ((root / RECEIPT).read_bytes() != receipt_bytes
+    if (not absent() or (root / RECEIPT).read_bytes() != receipt_bytes
             or any((root / path).read_bytes() != data for path, data in snapshots.items())):
         raise ValueError('native panel review inputs changed during verification')
     print('PASS: retained panel native DRC/render hashes match current inputs and published image')

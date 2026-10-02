@@ -5,7 +5,7 @@ from pathlib import Path
 import shutil
 from tempfile import TemporaryDirectory
 import unittest
-from scripts.panel.check_review_receipt import ROOT, RECEIPT, INPUTS, OUTPUTS, verify
+from scripts.panel.check_review_receipt import ROOT, RECEIPT, INPUTS, OUTPUTS, ABSENT_INPUTS, verify
 
 
 class PanelReviewReceiptTests(unittest.TestCase):
@@ -70,6 +70,16 @@ class PanelReviewReceiptTests(unittest.TestCase):
             with self.assertRaises(ValueError): verify(self.root)
             (self.root / RECEIPT).write_bytes(original)
 
+    def test_new_custom_rule_file_cannot_hide_outside_hashed_inputs(self):
+        path = self.root / ABSENT_INPUTS[0]
+        path.write_text('(version 1)\n(rule "new clearance" (constraint clearance (min 0mm)))\n')
+        with self.assertRaisesRegex(ValueError, 'custom-rule absence changed'):
+            verify(self.root)
+        path.unlink()
+        self.receipt(lambda r: r.update(absent_inputs=[]))
+        with self.assertRaisesRegex(ValueError, 'absence declaration'):
+            verify(self.root)
+
     def test_weakened_project_rules_cannot_be_rehashed_into_success(self):
         path = self.root / INPUTS[1]; original = path.read_bytes()
         for mutate in (lambda d: d['rules'].update(min_hole_clearance=.1),
@@ -82,6 +92,15 @@ class PanelReviewReceiptTests(unittest.TestCase):
                 {'sha256': hashlib.sha256(data).hexdigest(), 'bytes': len(data)}))
             with self.assertRaisesRegex(ValueError, 'source rule floor'):
                 verify(self.root)
+
+    def test_receipt_summary_must_match_native_table_and_command(self):
+        original = (self.root / RECEIPT).read_bytes()
+        for mutate in (lambda r: r['feature_summary'].update(features=1),
+                       lambda r: r.update(render_requested_pixels=[1, 1])):
+            self.receipt(mutate)
+            with self.assertRaisesRegex(ValueError, 'summary differs'):
+                verify(self.root)
+            (self.root / RECEIPT).write_bytes(original)
 
     def test_published_image_must_remain_the_same_native_output(self):
         path = OUTPUTS[3]; target = self.root / path

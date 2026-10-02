@@ -25,11 +25,19 @@
     "scripts/kicad/pin.env": {
       "sha256": "769e2be0b61e7d92a6930684f13166b7dc098522008de3969cd30d6c4a363246",
       "bytes": 257
+    },
+    "scripts/kicad/run.sh": {
+      "sha256": "bc74f0ade82c29d64c44119ea435bc7bfd164fc06e9afff240a3cb2b44b272a0",
+      "bytes": 2972
+    },
+    "scripts/panel/check_panel.py": {
+      "sha256": "fb79fca1bbde77ef81693ddd8aeac12bc5ab27f03c8dc82aa82b0e2df19e6987",
+      "bytes": 10881
     }
   },
   "outputs": {
     "boards/panel/reports/drc.json": {
-      "sha256": "e7ace19335cb97526cba1ba6f5265726889c9f9ca5571a7e22d90fb45d7af01e",
+      "sha256": "7d38997849ddd0a4226a31c98ef93605203b1f4a0623b2f77cfe70583d519b51",
       "bytes": 1083
     },
     "boards/panel/reports/feature-table.json": {
@@ -37,12 +45,12 @@
       "bytes": 69574
     },
     "boards/panel/reports/panel-top.png": {
-      "sha256": "9ef0f47c84e7caf493d02898e674085516ad364b4ae7fd5c514bdaba4686a6fd",
-      "bytes": 787109
+      "sha256": "a021f30af85255d82f7465a3ce1c72263a66e9cd2e7e207af525bd08e84a41e1",
+      "bytes": 787199
     },
     "doc/public/assets/osc-hole-field/panel-kicad-top.png": {
-      "sha256": "9ef0f47c84e7caf493d02898e674085516ad364b4ae7fd5c514bdaba4686a6fd",
-      "bytes": 787109
+      "sha256": "a021f30af85255d82f7465a3ce1c72263a66e9cd2e7e207af525bd08e84a41e1",
+      "bytes": 787199
     }
   },
   "commands": {
@@ -117,5 +125,8 @@
     ]
   },
   "schematic_parity": "NOT APPLICABLE - board-only panel; no electronic schematic",
-  "qualification": "Physical fit, strength, optical behavior and manufacturing qualification NOT RUN; no fabrication output."
+  "qualification": "Physical fit, strength, optical behavior and manufacturing qualification NOT RUN; no fabrication output.",
+  "absent_inputs": [
+    "boards/panel/panel.kicad_dru"
+  ]
 }
