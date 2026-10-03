@@ -43,7 +43,7 @@ static item pop(heap *h) {
 
 long grid_astar(int L, int H, int W, const uint8_t *passable, const float *cost,
                 const uint8_t *via_ok, const uint8_t *through, const uint8_t *src,
-                const uint8_t *goal, const float *hdist, float via_cost, long max_exp,
+                const uint8_t *goal, const float *hdist, const float *via_cost, long max_exp,
                 int32_t *out, long cap, long *expanded) {
     long plane = (long)H * W, total = plane * L, found = -1, n = 0;
     float *g = malloc(total * sizeof(float));
@@ -73,7 +73,7 @@ long grid_astar(int L, int H, int W, const uint8_t *passable, const float *cost,
             if (ng < g[j]) { g[j] = ng; prev[j] = (int32_t)i; if (!push(&h, ng + hdist[ny * W + nx], (int32_t)j)) goto done; }
         }
         if (through[rest] || via_ok[rest]) {
-            float c = through[rest] ? 0.5f : via_cost;
+            float c = through[rest] ? 0.5f : via_cost[rest];
             for (long l2 = 0; l2 < L; l2++) {
                 long j = l2 * plane + rest;
                 if (l2 == l || !passable[j]) continue;
