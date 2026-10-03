@@ -103,9 +103,9 @@ def memory_mb(raw):
     amount=float(match[1]);unit=match[2]
     return amount*{'B':1/1048576,'KiB':1/1024,'MiB':1,'GiB':1024,'TiB':1048576}[unit]
 
-def router(dsn,ses,work,threads,heap_mb,timeout_sec,image,fanout=True,ignored_classes=()):
+def router(dsn,ses,work,threads,heap_mb,timeout_sec,image,fanout=True,ignored_classes=(),max_passes=20):
     name=f'osc-route-{os.getpid()}'
-    command=['docker','run','--rm','--name',name,'--network','none','--hostname','router','--cpus',str(threads),'--memory',f'{max(heap_mb+512,1024)}m','--user',f'{os.getuid()}:{os.getgid()}','-e','HOME=/tmp','-v',f'{work.resolve()}:/work','-w','/work','--entrypoint','java',image,f'-Xmx{heap_mb}m','-jar','/app/freerouting-executable.jar','--gui.enabled=false','--api_server.enabled=false','--user_data_path=/tmp','-de','/work/'+dsn.name,'-do','/work/'+ses.name,'-mt',str(threads),'-mp','20','--router.optimizer.enabled=false']
+    command=['docker','run','--rm','--name',name,'--network','none','--hostname','router','--cpus',str(threads),'--memory',f'{max(heap_mb+512,1024)}m','--user',f'{os.getuid()}:{os.getgid()}','-e','HOME=/tmp','-v',f'{work.resolve()}:/work','-w','/work','--entrypoint','java',image,f'-Xmx{heap_mb}m','-jar','/app/freerouting-executable.jar','--gui.enabled=false','--api_server.enabled=false','--user_data_path=/tmp','-de','/work/'+dsn.name,'-do','/work/'+ses.name,'-mt',str(threads),'-mp',str(max_passes),'--router.optimizer.enabled=false']
     if not fanout:command.append('--router.fanout.enabled=false')
     if ignored_classes:command.extend(('-inc',','.join(ignored_classes)))
     started=time.monotonic();peak=0.0;timed_out=False;log_path=work/'freerouting-live.log'
@@ -248,7 +248,7 @@ def setup_failure_report(board_id,board,report,previous_bytes,started,exc):
     return 2
 
 def main():
-    parser=argparse.ArgumentParser();parser.add_argument('board_id');parser.add_argument('--board',type=Path);parser.add_argument('--report',type=Path);parser.add_argument('--timeout-sec',type=int);parser.add_argument('--threads',type=int);parser.add_argument('--heap-mb',type=int);parser.add_argument('--no-fanout',action='store_true');parser.add_argument('--refresh-ratsnest-only',action='store_true')
+    parser=argparse.ArgumentParser();parser.add_argument('board_id');parser.add_argument('--board',type=Path);parser.add_argument('--report',type=Path);parser.add_argument('--timeout-sec',type=int);parser.add_argument('--threads',type=int);parser.add_argument('--heap-mb',type=int);parser.add_argument('--no-fanout',action='store_true');parser.add_argument('--max-passes',type=int,default=20);parser.add_argument('--refresh-ratsnest-only',action='store_true')
     args=parser.parse_args()
     board=(args.board or ROOT/'boards'/args.board_id/f'{args.board_id}.kicad_pcb').resolve()
     board.relative_to(ROOT)
@@ -290,7 +290,7 @@ def main():
         exit_code=finalize_native_gate(board,report,result,0)
         report.write_text(json.dumps(result,indent=2,sort_keys=True)+'\n')
         return exit_code
-    result={'routing_spec_sha256':routing_hash,'schema_version':1,'board_id':args.board_id,'status':'NOT RUN','draft':True,'router_image':image,'thread_limit':threads,'heap_mb':heap,'fanout_enabled':not args.no_fanout,'time_limit_sec':timeout,'board':repo_relative(board),'routed_net_count':0,'unrouted_net_count':0,'unrouted_net_names':[],'via_count':0,'total_track_length_mm':0.0,'runtime_sec':0.0,'sampled_peak_memory_mb':0.0,'preexisting_tracks_preserved':0,'preexisting_zones_preserved':0}
+    result={'routing_spec_sha256':routing_hash,'schema_version':1,'board_id':args.board_id,'status':'NOT RUN','draft':True,'router_image':image,'thread_limit':threads,'heap_mb':heap,'fanout_enabled':not args.no_fanout,'max_passes':args.max_passes,'time_limit_sec':timeout,'board':repo_relative(board),'routed_net_count':0,'unrouted_net_count':0,'unrouted_net_names':[],'via_count':0,'total_track_length_mm':0.0,'runtime_sec':0.0,'sampled_peak_memory_mb':0.0,'preexisting_tracks_preserved':0,'preexisting_zones_preserved':0}
     exit_code=1
     try:
         # A retained definition hash does not prove the current project still
@@ -342,7 +342,7 @@ def main():
                 result['router_skipped']='Prepared copper and refilled zones satisfy the complete gate'
                 exit_code=0
             else:
-                code,seconds,peak,log=router(dsn,ses,work,threads,heap,timeout,image,not args.no_fanout)
+                code,seconds,peak,log=router(dsn,ses,work,threads,heap,timeout,image,not args.no_fanout,max_passes=args.max_passes)
                 (work/'freerouting.log').write_text(log)
                 result['router_runtime_sec']=round(seconds,3);result['sampled_peak_memory_mb']=round(peak,2)
                 if code==124:

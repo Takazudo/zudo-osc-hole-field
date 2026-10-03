@@ -10,7 +10,8 @@ from scripts.pcbgen.native_companion_binding import verify
 from scripts.pcbgen.peripheral_source_epoch import (derive as derive_epoch, prove_display_only,
     prove_power_metadata_only, prove_octave_routing_only, prove_octave_netclass_only, historical, IO, FP, OUTPUT,
     METADATA_BASE, ROUTING_BASE, ROUTING, CONTRACT, SUPPLY,
-    IDENTITY_BASE, IDENTITIES, prove_feedback_identity_only)
+    IDENTITY_BASE, IDENTITIES, prove_feedback_identity_only,
+    STAGE_LAYOUT_BASE, STAGE_ROUTING, prove_stage_optical_layout)
 import hashlib
 
 BASE=Path('design/partition/peripheral-ground-feasibility')
@@ -34,9 +35,12 @@ class PeripheralGroundSourceTests(unittest.TestCase):
                 historic=json.loads(historic_bytes);bound=epochs[row['board_id']]
                 self.assertEqual(hashlib.sha256(historic_bytes).hexdigest(),bound['historical_receipt_sha256'])
                 self.assertEqual(hashlib.sha256(path.with_suffix('.receipt.json').read_bytes()).hexdigest(),bound['current_source_receipt_sha256'])
-                self.assertEqual(receipt['definition_sha256'],bound['unchanged_definition_sha256'])
+                self.assertEqual(receipt['definition_sha256'],bound.get('current_definition_sha256',bound['unchanged_definition_sha256']))
                 changes={'design/partition/partition.json','design/reports/io-partition.json'}
                 if row['board_id'].startswith('osc-octave-'):
+                    changes.add('design/boards/'+path.name)
+                    changes.add('schematic/boards/'+path.with_suffix('.net').name)
+                if row['board_id']=='osc-stage-optical':
                     changes.add('design/boards/'+path.name)
                     changes.add('schematic/boards/'+path.with_suffix('.net').name)
                 self.assertEqual(set(bound['source_changes']),changes)
@@ -45,6 +49,11 @@ class PeripheralGroundSourceTests(unittest.TestCase):
                     self.assertEqual(expected['source_sha256'][source],change['historical'])
                     self.assertEqual(hashlib.sha256(Path(source).read_bytes()).hexdigest(),change['current'])
                     expected['source_sha256'][source]=change['current']
+                for package in expected['source_packages']:
+                    for field,change in bound.get('layout_field_changes',{}).get(package['ref'],{}).items():
+                        self.assertEqual(package['source_fields'][field],change['historical'])
+                        package['source_fields'][field]=change['current']
+                if 'current_definition_sha256' in bound:expected['definition_sha256']=bound['current_definition_sha256']
                 self.assertEqual(receipt,expected)
                 self.assertEqual(len(receipt['source_packages']),row['footprints'])
                 self.assertEqual(len(receipt['own_ground_contacts'])+len(receipt['GH_ground_contacts']),72 if row['board_key']=='EL' else 7)
@@ -165,6 +174,35 @@ class PeripheralGroundSourceTests(unittest.TestCase):
             with self.assertRaisesRegex(ValueError,'beyond declared routing'):
                 prove_octave_routing_only(old,json.dumps(changed).encode(),routing)
 
+    def test_stage_optical_layout_transition_rejects_other_changes(self):
+        path,net_path='design/boards/osc-stage-optical.json','schematic/boards/osc-stage-optical.net'
+        old,current=historical(path,STAGE_LAYOUT_BASE),Path(path).read_bytes()
+        old_net,net=historical(net_path,STAGE_LAYOUT_BASE),Path(net_path).read_bytes()
+        routing=json.loads(Path(STAGE_ROUTING).read_bytes())
+        changes=prove_stage_optical_layout(old,current,old_net,net,routing)
+        self.assertTrue(changes)
+        self.assertTrue(all(set(fields)<={'FootprintOriginMm','KiCadOrientationDeg'} for fields in changes.values()))
+        for field in ('outline','keepouts','routing','region_side'):
+            changed=json.loads(current)
+            if field=='outline':changed[field][0][0]+=.01
+            elif field=='keepouts':changed[field].pop()
+            elif field=='routing':changed[field]['zones'][0]['layers']=['F.Cu']
+            else:changed['regions'][0]['side']='B.Cu'
+            with self.subTest(field=field),self.assertRaisesRegex(ValueError,'beyond'):
+                prove_stage_optical_layout(old,json.dumps(changed).encode(),old_net,net,routing)
+        with self.assertRaisesRegex(ValueError,'transition base'):
+            prove_stage_optical_layout(current,current,old_net,net,routing)
+        with self.assertRaisesRegex(ValueError,'connectivity'):
+            prove_stage_optical_layout(old,current,old_net,net.replace(b'(name "+5V")',b'(name "+5V_X")',1),routing)
+        # D11305 is fixed panel hardware; its source origin may never move.
+        marker=net.index(b'(ref "D11305")');origin=net.index(b'"FootprintOriginMm")',marker)
+        value_start=net.index(b'"',origin+len(b'"FootprintOriginMm")'))
+        value_end=net.index(b'"',value_start+1)
+        moved=net[:value_start+1]+b'1,1'+net[value_end:]
+        with self.assertRaisesRegex(ValueError,'beyond free-part layout'):
+            prove_stage_optical_layout(old,current,old_net,moved,routing)
+        with self.assertRaisesRegex(ValueError,'no change'):
+            prove_stage_optical_layout(old,current,old_net,old_net,routing)
 
 
 if __name__=='__main__':unittest.main()

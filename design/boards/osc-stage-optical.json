@@ -175,11 +175,22 @@
   "netlist": "schematic/boards/osc-stage-optical.net",
   "schematic": "schematic/boards/osc-stage-optical.kicad_sch",
   "regions": [
-    {"instance":"E1","family":"EL-E1","rect":[219.7,175.7,229.76000000000002,274.93],"side":"F.Cu","edge_clearance_mm":0.25,"mounting_clearance_mm":0.25},
-    {"instance":"E2","family":"EL-E2","rect":[236.7,175.7,246.76000000000002,274.93],"side":"F.Cu","edge_clearance_mm":0.25,"mounting_clearance_mm":0.25},
-    {"instance":"E3","family":"EL-E3","rect":[253.7,175.7,263.76,274.93],"side":"F.Cu","edge_clearance_mm":0.25,"mounting_clearance_mm":0.25},
-    {"instance":"E4","family":"EL-E4","rect":[270.7,175.7,280.76,274.93],"side":"F.Cu","edge_clearance_mm":0.25,"mounting_clearance_mm":0.25},
-    {"instance":"E5","family":"EL-E5","rect":[287.7,175.7,297.76,274.93],"side":"F.Cu","edge_clearance_mm":0.25,"mounting_clearance_mm":0.25},
-    {"instance":"E6","family":"EL-E6","rect":[304.7,175.7,316.83,228.93],"side":"F.Cu","edge_clearance_mm":0.25,"mounting_clearance_mm":0.25}
-  ]
+    {"instance":"E1","family":"EL-E1","rect":[219.7,216.45,231.83,276.18],"side":"F.Cu","edge_clearance_mm":0.25,"mounting_clearance_mm":0.25},
+    {"instance":"E2","family":"EL-E2","rect":[236.7,216.45,248.83,276.18],"side":"F.Cu","edge_clearance_mm":0.25,"mounting_clearance_mm":0.25},
+    {"instance":"E3","family":"EL-E3","rect":[253.7,216.45,265.83,276.18],"side":"F.Cu","edge_clearance_mm":0.25,"mounting_clearance_mm":0.25},
+    {"instance":"E4","family":"EL-E4","rect":[270.7,216.45,282.83,276.18],"side":"F.Cu","edge_clearance_mm":0.25,"mounting_clearance_mm":0.25},
+    {"instance":"E5","family":"EL-E5","rect":[287.7,216.45,299.83,276.18],"side":"F.Cu","edge_clearance_mm":0.25,"mounting_clearance_mm":0.25},
+    {"instance":"E6","family":"EL-E6","rect":[304.7,225.95,316.58,276.18],"side":"F.Cu","edge_clearance_mm":0.25,"mounting_clearance_mm":0.25}
+  ],
+  "routing": {
+    "min_track_width_mm": 0.2,
+    "net_classes": [
+      {"name":"Default","nets":[],"track_width_mm":0.25,"clearance_mm":0.25,"via_diameter_mm":0.6,"via_drill_mm":0.3},
+      {"name":"Rails","nets":["+12V","-12V","+5V"],"track_width_mm":0.4,"clearance_mm":0.25,"via_diameter_mm":0.7,"via_drill_mm":0.3},
+      {"name":"Ground","nets":["AGND"],"track_width_mm":0.4,"clearance_mm":0.25,"via_diameter_mm":0.7,"via_drill_mm":0.3}
+    ],
+    "zones": [
+      {"name":"optical_agnd","net":"AGND","layers":["F.Cu","B.Cu"],"clearance_mm":0.25,"min_thickness_mm":0.15,"pad_connection":"full"}
+    ]
+  }
 }

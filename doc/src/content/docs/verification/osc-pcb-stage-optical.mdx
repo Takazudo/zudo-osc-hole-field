@@ -1,0 +1,60 @@
+---
+title: "Stage-optical PCB routed draft"
+description: "Placed and fully routed stage-indicator board with zero native open edges, DRC errors and parity issues; physical and electrical qualification remain open."
+---
+
+The stage-optical board `osc-stage-optical` (EL) now has a **placed and fully routed, unvalidated draft**. It carries the 12 fixed stage LEDs and their complete driver circuits for envelopes E1–E6. The 12 stage-LED windows keep their lockfile positions, and no panel position changed. It is not a fabrication release, and no order files exist. Issue [#42](https://github.com/Takazudo/zudo-osc-hole-field/issues/42) tracks this board.
+
+| Native check (KiCad 10.0.6) | Result |
+| --- | --- |
+| Outline / stack | 107 × 113 mm (x210–317, y164–277); two copper layers, 0.4 mm, 1 oz proposal |
+| Netlisted parts at source pose | **144 / 144** (12 fixed LEDs, 132 free parts); 77 NPTH passages and supports |
+| Native open edges | **0** |
+| DRC errors / unconnected items / schematic parity | **0 / 0 / 0** |
+| DRC warnings | 289 silkscreen and text warnings (silk overlap 199, silk over copper 76, text height 12, silk edge 2) |
+| Copper | 2,242 track segments, 335 through vias, 6,468.4 mm total track length |
+| AGND pours | F.Cu and B.Cu, each over the whole outline with keepouts; full pad connection |
+
+## Draft routing rules
+
+The routing proposal lives in `design/partition/stage-optical-routing.json` and is projected into `design/boards/osc-stage-optical.json`. Signal nets use 0.25 mm tracks. The +12 V, −12 V and +5 V rails and AGND use 0.4 mm tracks. Every class uses 0.25 mm clearance, which also meets the 0.25 mm hole clearance to the NPTH passages. Vias are 0.6/0.3 mm for signals and 0.7/0.3 mm for rails and ground. These widths are draft choices for the board's small LED and amplifier currents, not a measured current or temperature-rise result.
+
+AGND is routed as tracks to every ground pad, and both copper layers are then poured with AGND. The connection therefore does not depend on pour islands.
+
+## Placement correction
+
+The first source packing stacked each column's drivers in the 6 mm gaps between the 11 mm passages. Their pins were boxed in, and bounded Freerouting runs stalled at 33–46 open connections. The source packer in `scripts/checks/stage_optical35.py` now accepts four options, which `design/partition/stage-optical-input.json` sets:
+
+- regions start at y216, below the 11 mm passage rows;
+- courtyard spacing is 0.7 mm, with 1.5 mm around the fixed LEDs;
+- packing runs bottom-up;
+- each bypass capacitor is placed nearest its amplifier.
+
+Only free parts move. The LEDs, passages, supports, outline, connectors and all connectivity are unchanged. The peripheral source epoch proves that only free-part origins and angles change in the netlist, and that the definition changes only in regions and routing.
+
+Each OPA4196 now has its two 100 nF bypass pads 7.0–8.2 mm from its supply pins. The geometry above the package allows nothing closer. Earlier, they were near the top edge. These straight-line pad distances do not establish loop inductance or stability.
+
+## How the copper was produced
+
+1. `sync.py` and `place.py` built the board from the regenerated netlist.
+2. One bounded Freerouting run (`route.sh --no-fanout --max-passes 60`, about 322 s) left 2 native open edges: `reports/attempt-1-routing.json`.
+3. `finish_routes.py` completed the rest with a 0.1 mm two-layer maze search. In three rip-up rounds, it removed and rerouted two blocking signal nets and cut AGND and −12 V pieces, which it then reconnected. It also removed one dangling stub: `reports/finish-routes.json`.
+4. `route.sh` added the AGND pours, refilled them and confirmed zero open edges, errors and parity issues. It did not run the router again: `reports/routing.json`, `reports/ratsnest.json`.
+5. `check.sh` wrote `reports/drc.json` and the native views below.
+
+CI runs `scripts/pcbgen/check_stage_optical.py --disposable` on a temporary copy. The check confirms every part's source pose, the fixed-LED lockfile poses and the complete pin-to-net map, then reruns native DRC with schematic parity. CI does not repeat the heuristic routing.
+
+## Native views
+
+![Stage-optical front (F.Cu, panel side) draft](/assets/osc-hole-field/osc-stage-optical-top.png)
+![Stage-optical back (B.Cu) draft](/assets/osc-hole-field/osc-stage-optical-bottom.png)
+
+## Remaining work
+
+These items are **NOT RUN**:
+
+- installed LED optical behaviour, LED temperature and the stage limiter's power derating ([#64](https://github.com/Takazudo/zudo-osc-hole-field/issues/64));
+- passage, support, connector and pot-body fit ([#65](https://github.com/Takazudo/zudo-osc-hole-field/issues/65));
+- partial-power and protection behaviour ([#59](https://github.com/Takazudo/zudo-osc-hole-field/issues/59)).
+
+Rail drop, ground resistance and thermal performance have not been measured or modelled for this copper. Silkscreen overlaps remain as warnings for human layout review. Native DRC with parity is a rule and connectivity check only. It does not qualify the circuit, the stack or the mechanical fit.

@@ -63,6 +63,10 @@ The [oscillator reference fanout](../architecture/osc-reference-fanout.mdx) now 
 The [single-J native draft](../verification/osc-pcb-jack.mdx) is historical rejected evidence: 5,611 native open edges and no copper after bounded routing. Issue #66 replaces its source/schematic projection with `osc-jack-left` and `osc-jack-right`, preserving all fixed centres and same-face local bypass clusters. Owner decision 2026-10-03 (#38): both halves move to six layers with locality re-placement, after a cut-line bound showed four layers could not carry their signals with intact planes. Each half is routed by the staged native-checked grid router in `scripts/pcbgen/route_jack_grid.py`; the [jack page](../verification/osc-pcb-jack.mdx) records the current counts. Physical #55/#57/#64/#65 remain NOT RUN; protection #59 remains OPEN.
 
 
+## Stage-optical PCB continuation
+
+The [stage-optical PCB routed draft](../verification/osc-pcb-stage-optical.mdx) records the placed and fully routed `osc-stage-optical` board for #42. KiCad 10 reports zero native open edges, zero DRC errors and zero schematic-parity issues. The board's free driver parts moved below the large passages, and the fixed LEDs, passages and connectivity are unchanged. Next, a human should review the layout and silkscreen. Installed LED optics and temperature (#64), fit (#65) and protection (#59) remain NOT RUN. The routed draft is not a fabrication release.
+
 ## Control PCB continuation
 
 The [control-board verification page](../verification/osc-pcb-control.mdx) records the current native source and routed draft. Its native connectivity is complete; actual connected-copper current/resistance checks remain. The paired K/P header assignment preserves the existing hardware sites and modeled cable spans while shortening the placement-distance estimate; it does not establish finished routing, protection or installed fit.

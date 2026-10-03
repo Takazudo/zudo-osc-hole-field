@@ -205,6 +205,9 @@ def build():
             # Passive adapter draft: no physical stack/material or ground-
             # resistance qualification is implied by these routing proposals.
             definition['routing']=read('design/partition/octave-routing.json')
+        if b=='EL':
+            # Draft routing classes and AGND pours only; no qualification implied.
+            definition['routing']=read('design/partition/stage-optical-routing.json')
         if b in JACK_BOARDS:
             definition['routing']={'min_track_width_mm':.1,'net_classes':[
                 {'name':'Default','nets':[],'track_width_mm':.2,'clearance_mm':.2,'via_diameter_mm':.6,'via_drill_mm':.3},
