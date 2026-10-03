@@ -1,10 +1,9 @@
 # Control-board copper after debounce placement correction
 
-This is a **partially routed, unvalidated draft**. The source has 3063
-track segments, 455 through vias and 23 complete native open edges.
-Accepted routing batches retain all 344 ground contacts, all 77 source AGND
-copper objects and sixteen local IC/bypass rail pairs after independent
-refill. The four-layer, 2 oz, 1.6 mm stack remains a proposal.
+This is a **routed, unvalidated draft**. The source has 4140 track
+segments, 527 through vias and 0 complete native open edges. Accepted
+routing batches retain all 344 ground contacts, all 81 source AGND copper
+objects and sixteen local IC/bypass rail pairs after independent refill. The four-layer, 2 oz, 1.6 mm stack remains a proposal.
 
 The source moves ninety envelope debounce passives into thirty complete
 triplets beside their existing Texas Instruments SN74HC14DR input pins.
@@ -18,7 +17,7 @@ The 72-edge checkpoint remains in git history. Moving passive terminals
 invalidated affected signal routes; retaining only compatible copper and
 removing routes that collided with the new placement produced a checked
 199-edge seed. Native-checked back/front signal links and rail links reduce
-that seed to 23 edges. Candidate links that break ground connectivity
+that seed to 0 edges. Candidate links that break ground connectivity
 are rejected individually. The later inner-layer search also considers distant rail islands.
 Search distances and connected copper do not establish a resistance bound.
 The six main-terminal arrays and local C222 ground stitch remain. Their
@@ -27,10 +26,18 @@ current and resistance capability is not qualified.
 After the merged 43-edge checkpoint, a protected-copper autorouter run timed
 out. Its 30-edge raw import disconnected two grounds and was rejected. Keeping
 only seven improved signal nets restored every ground and yielded 36 edges.
-Checked inner-layer rail and signal links then reached 23. All 3,320
-copper objects from the 43-edge checkpoint remain exact. New candidates that
-cross unplated holes or disconnect ground are excluded. Complete routing and
-current/resistance acceptance remain open.
+Checked inner-layer rail and signal links then reached 23.
+
+From the 23-edge checkpoint, checked multilayer links reached 15 and then 12.
+A grid A* router over all four copper layers closed the rest: the +12 V and
+-12 V terminal feeds to the op-amp cluster, the remaining +5 V pins, four long
+panel-signal links and three boxed IC/resistor pins. The boxed pins needed
+rip-up and reroute of four nearby signal nets (X69343E2C6D875EFAA724,
+XE3CCFA14F6E3DCF3F5F1, X664ED05EACC39FA0A717 and X69F956D2CD0D8F7D7812);
+every other earlier copper object is unchanged. Four added AGND stitching vias
+rejoin B.Cu ground-pour islands that new links cut. Each batch passed native
+DRC, parity, refill and ground/bypass checks before adoption. Current and
+resistance acceptance remain open.
 
 `copper.json` owns explicit integer-nanometre copper geometry. Construction
 replays it on the current labelled base without moving other source geometry.
