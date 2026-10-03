@@ -168,7 +168,11 @@ def build():
                 if b=='P' and post['center_mm'][1]<176:continue
                 holes.append({'id':b+'-OPT-'+str(i+1),'center':post['center_mm'],'diameter_mm':post['hole_mm']})
         if b=='K':holes +=[{'id':'K-SERVICE-'+str(i+1),'center':a['center_mm'],'diameter_mm':a['diameter_mm']} for i,a in enumerate(ports['K_service_apertures'])]
-        layernames=['F.Cu','In1.Cu','In2.Cu','B.Cu'] if s['layers']==4 else ['F.Cu','B.Cu'];stack=[{'layer':n,'role':('continuous AGND' if n=='In1.Cu' else 'split regulated power planes' if n=='In2.Cu' else 'signals / local AGND fill'),'copper_oz':s['copper_oz']} for n in layernames]
+        layernames=['F.Cu',*(f'In{i}.Cu' for i in range(1,s['layers']-1)),'B.Cu']
+        # Owner decision 2026-10-03 (#38): six-layer jack halves are signal/AGND/signal/signal+-12V fill/+12V/signal.
+        roles={4:{'In1.Cu':'continuous AGND','In2.Cu':'split regulated power planes'},
+               6:{'In1.Cu':'continuous AGND','In2.Cu':'inner signals','In3.Cu':'inner signals with -12V plane fill','In4.Cu':'continuous +12V plane'}}.get(s['layers'],{})
+        stack=[{'layer':n,'role':roles.get(n,'signals / local AGND fill'),'copper_oz':s['copper_oz']} for n in layernames]
         regions=[]
         for instance in sorted({p['instance'] for p in selected if not p['panel_uid']}):
             for side in ('F.Cu','B.Cu'):
@@ -207,16 +211,19 @@ def build():
                 {'name':'Rails','nets':['+12V','-12V','+5V'],'track_width_mm':.4,'clearance_mm':.25,'via_diameter_mm':.7,'via_drill_mm':.3},
                 {'name':'Ground','nets':['AGND'],'track_width_mm':.5,'clearance_mm':.25,'via_diameter_mm':.7,'via_drill_mm':.3}],
                 'zones':[{'name':'agnd_plane','net':'AGND','layers':['In1.Cu'],'clearance_mm':.25,'min_thickness_mm':.15,'pad_connection':'full'},
-                    {'name':'agnd_surface','net':'AGND','layers':['F.Cu','B.Cu'],'clearance_mm':.25,'min_thickness_mm':.15,'pad_connection':'full'}]+[
+                    {'name':'agnd_surface','net':'AGND','layers':['F.Cu','B.Cu'],'clearance_mm':.25,'min_thickness_mm':.15,'pad_connection':'full'}]+([
+                    {'name':'-12V_plane','net':'-12V','layers':['In3.Cu'],'clearance_mm':.25,'min_thickness_mm':.15,'pad_connection':'full'},
+                    {'name':'+12V_plane','net':'+12V','layers':['In4.Cu'],'clearance_mm':.25,'min_thickness_mm':.15,'pad_connection':'full'}]
+                    if s['layers']==6 else [
                     {'name':rail+'_plane','net':rail,'layers':['In2.Cu'],'polygon':polygon,'clearance_mm':.25,'min_thickness_mm':.15,'pad_connection':'full'}
-                    for rail,polygon in jack_rail_polygons(s,d,b).items()]}
+                    for rail,polygon in jack_rail_polygons(s,d,b).items()])}
             if 'jack_terminal_transfer' in d:
                 definition['routing']['load_terminal_transfer']=d['jack_terminal_transfer']
         definitions[s['id']]=definition
         boards.append({**s,'board_key':b,'role':{'JL':'left jack interfaces, whole local islands','JR':'right jack interfaces, whole local islands','P':'all pots/toggles/buttons and complete slew/control circuits','K':'distinct rear signal core and conditional load-side power star','EL':'complete stage-indicator circuits'}.get(b,'one selected stepped octave adapter'),
                        'facing_panel':'F.Cu','status':'PROPOSAL','supply_domain':'EXT','physical_package_count':len(selected),'fitted_package_count':sum(not p['dnp'] for p in selected),'definition':'design/boards/'+s['id']+'.json',
                        'single_board_assembly': 'Standard PCBA eligible size envelope' if b in (*JACK_BOARDS,'P','K','EL') else 'PROPOSAL one adapter per 70x70 mm factory handling panel, below250x250mm delivery cap; exact tabs/tooling #39, no order files',
-                       'layer_reason':'Four layers: inner AGND plus rail planes; 2 oz plane-resistance requirement' if s['layers']==4 else 'EL 0.4 mm two-layer exception: complete sparse local LED loops, rear AGND fill and quiet signal returns' if b=='EL' else 'Passive selector adapter; two layers with local return fill; no sensitive storage circuit',
+                       'layer_reason':'Six layers (owner decision 2026-10-03, #38): F/In2/In3/B signals, In1 AGND, -12V fill on In3 and +12V plane on In4; four layers failed the cut-line routing bound' if s['layers']==6 else 'Four layers: inner AGND plus rail planes; 2 oz plane-resistance requirement' if s['layers']==4 else 'EL 0.4 mm two-layer exception: complete sparse local LED loops, rear AGND fill and quiet signal returns' if b=='EL' else 'Passive selector adapter; two layers with local return fill; no sensitive storage circuit',
                        'field_status':{'id':'DERIVED','physical_package_count':'DERIVED','fitted_package_count':'DERIVED','outline':'PROPOSAL','face_z_mm':'PROPOSAL','thickness_mm':'PROPOSAL','layers':'PROPOSAL','copper_oz':'PROPOSAL'}})
         for h in holes:
             if '-SERVICE-' in h['id'] or '-PASSAGE-' in h['id']:continue

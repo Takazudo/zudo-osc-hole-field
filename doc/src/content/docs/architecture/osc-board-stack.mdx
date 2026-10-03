@@ -12,8 +12,8 @@ All **438 panel centres and 33 modules remain fixed**. The partition assigns all
 
 | Board | Panel-frame outline, mm | F.Cu z, mm | Stack | Main assignment |
 | --- | --- | --- | --- | --- |
-| `osc-jack-left` / JL | x4–176.5, y20–164 | −10 | 4 layers, 1.6 mm, 2 oz | 100 jacks, 43 indicators; 1,060 whole master packages |
-| `osc-jack-right` / JR | x177.5–314, y20–164 | −10 | 4 layers, 1.6 mm, 2 oz | 80 jacks, 59 indicators; 1,031 whole master packages |
+| `osc-jack-left` / JL | x4–176.5, y20–164 | −10 | 6 layers, 1.6 mm, 2 oz | 100 jacks, 43 indicators; 1,060 whole master packages |
+| `osc-jack-right` / JR | x177.5–314, y20–164 | −10 | 6 layers, 1.6 mm, 2 oz | 80 jacks, 59 indicators; 1,031 whole master packages |
 | `osc-control` / P | (1,194), (94,194), (94,176), (317,176), (317,292), (1,292) | −11.8 | 4 layers, 1.6 mm, 2 oz | All 101 pots, 30 toggles, eight buttons, complete slew/control circuits |
 | `osc-stage-optical` / EL | x210–317, y164–277 | −4.2 | 2 layers, 0.4 mm, 1 oz | 12 stage LEDs and complete 138-part driver/local-net island set |
 | `osc-octave-1`…`5` | 19.8 × 21 at each fixed shaft; 6 mm wide tongue to y171 | −16 for O1/O3/O5; −29 for O2/O4 | 2 layers, 1.6 mm, 1 oz | One exact selector per adapter |
@@ -93,7 +93,9 @@ Physical gates stay open: **#65** main supports/seated hardware/loom/service/dep
 
 The rejected single J draft timed out before producing copper. Its PCB/render/reports are historical #38 evidence. The current source places complete modules on JL/JR at the x177 seam; x159 would split W2/X1/X2 packages and islands. All 438 UID x/y/hole sizes remain unchanged; only J ownership metadata changes.
 
-The J search grid is 0.10 mm, retaining 0.35 mm drawn courtyard and 0.30 mm edge constraints. Final master rows are JL 754 B/306 F and JR 527 B/504 F. All 414 J bypass capacitors stay on their owning IC face, aligned using actual supply/rail pads. Worst pad-centre distance is 2.8875 mm against a 3 mm project proposal. TI OPAx196/OPAx197 §10.1 supplies qualitative close-bypass guidance, not a numeric distance guarantee. Actual rail/AGND loop routing remains #38. Retained sources and conditions are in `design/partition/bypass-placement-evidence.json`.
+**Owner decision 2026-10-03 (#38): six-layer jack halves with locality re-placement.** A cut-line bound showed the four-layer halves could not carry their signal nets with the ground and power planes intact: about 400 nets had to cross single jack-pin columns whose front/back capacity was only 0.80–0.86 of that. The earlier first-fit J placement ignored connectivity. `scripts/checks/jack_locality.py` now gives each free J package an ideal position by median relaxation over its signal nets, anchored by the fixed jacks, LEDs and headers, then legalizes it onto the nearest free courtyard cells. IC/bypass clusters are placed first; fixed hardware and headers never move. The JL worst-line demand falls from 402 to 233 nets. JL/JR now use F.Cu/In2.Cu/B.Cu signals, In1.Cu AGND, an In3.Cu −12 V plane and an In4.Cu +12 V plane; +5 V is routed as tracks.
+
+The J search grid is 0.10 mm, retaining 0.35 mm drawn courtyard and 0.30 mm edge constraints. Final master rows are JL 619 B/441 F and JR 571 B/460 F. All 414 J bypass capacitors stay on their owning IC face, aligned using actual supply/rail pads. Worst pad-centre distance is 2.8875 mm against a 3 mm project proposal. TI OPAx196/OPAx197 §10.1 supplies qualitative close-bypass guidance, not a numeric distance guarantee. Actual rail/AGND loop routing remains #38. Retained sources and conditions are in `design/partition/bypass-placement-evidence.json`.
 
 The pinned native oracle checks all 2,147 J package/header placements and both-face through-hole pad exclusions. Minimum native cached courtyard clearance is 0.260 mm: 0.350 mm drawn spacing minus 0.045 mm native inflation at each facing edge. The existing native limit stays 0.250 mm. This is geometry evidence, not half-board routing/DRC.
 

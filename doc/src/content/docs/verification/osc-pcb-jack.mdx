@@ -1,50 +1,43 @@
 ---
-title: "JL/JR PCB draft checkpoint"
-description: "Native partial routing, exact open topology, and unresolved electrical acceptance for the jack halves."
+title: "JL/JR PCB routed draft"
+description: "Six-layer jack halves after locality re-placement: native routing status and remaining qualification."
 ---
 
-**Unvalidated draft — not reviewed as hardware, not a fabrication release. [Issue #38 remains OPEN](https://github.com/Takazudo/zudo-osc-hole-field/issues/38).** The native placement and partial copper checkpoint is reviewable. Ground resistance/current and complete power-feed acceptance are **NOT ACCEPTED**; this page does not describe a powered or qualified prototype. No fabrication order files were generated.
+**Routed draft in progress — unvalidated, not reviewed as hardware, not a fabrication release. [Issue #38 remains OPEN](https://github.com/Takazudo/zudo-osc-hole-field/issues/38).** Electrical and physical qualification are **NOT RUN**. No fabrication or order files were generated.
 
-## Current half-board evidence
+## Owner decision 2026-10-03: six layers with locality re-placement
 
-The #66 ten-board source assigns all 33 intact J module islands, with 17 on JL and 16 on JR. The project's 438 fixed hardware centres remain unchanged. Native source origin, face, angle, UUID, courtyard/rule and schematic-parity checks pass for both halves.
+A cut-line bound (`scripts/pcbgen/cut_capacity.py`) showed that the four-layer halves could not carry their signal nets with intact ground and power planes. About 400 nets had to cross single jack-pin columns whose front/back capacity was only 0.80–0.86 of that demand. The owner chose both remedies: six copper layers and locality re-placement of the free surface-mount packages. Panel hardware, LEDs and headers do not move.
 
-| Native checkpoint | JL / `osc-jack-left` | JR / `osc-jack-right` |
+- **Placement:** `scripts/checks/jack_locality.py` replaces the connectivity-blind first-fit J placement. Each free package is pulled toward the fixed jacks, LEDs and headers on its signal nets and toward its own module's fixed hardware, then legalized onto the nearest free courtyard cells. IC/bypass clusters are placed first and keep their supply-pad alignment (worst 2.8875 mm against the 3 mm proposal).
+- **Stack:** F.Cu, In2.Cu, In3.Cu and B.Cu carry signals; In1.Cu is a continuous AGND plane; In3.Cu also carries the −12 V fill; In4.Cu is a continuous +12 V plane. +5 V is routed as 0.4 mm tracks. Signals on In3.Cu are accepted only if the −12 V fill stays connected, and native checks reject any batch that splits it.
+- **Evidence chain:** `scripts/checks/jack_locality.py` proves the partition changed only in jack package faces, jack bypass distances and the jack layer stack, and chains onto the earlier connector-locality transition. Superseded four-layer stage reports were removed; git history keeps them.
+
+## Current half-board status
+
+| Native check | JL / `osc-jack-left` | JR / `osc-jack-right` |
 | --- | --- | --- |
-| Outline in panel coordinates | x4–176.5, y20–164 mm; 172.5 × 144 mm | x177.5–314, y20–164 mm; 136.5 × 144 mm |
-| Proposed stack | Four copper layers, 1.6 mm, 2 oz; F.Cu toward panel at z=−10 mm | Same proposal |
-| Assigned master packages / native footprints | 1,060 / 1,099, including 143 fixed UID features and four board-only supports | 1,031 / 1,068, including 139 fixed UID features and four board-only supports |
-| Copper | 576 segments, 346 vias | 454 segments, 282 vias |
-| Added source-local signal links in this recovery | 112 | 102 |
-| Direct same-face IC/bypass supply links | 214 / 214 | 200 / 200 |
-| Bypass return / main AGND topology | All 214 returns, every GH contact and all three main lands share the main native AGND component; zero AGND open edges | All 200 returns and the same whole-network gate; zero AGND open edges |
-| Complete native open topology | **1,400 edges on 645 nets** | **1,439 edges on 645 nets** |
-| Rule / schematic parity | Zero errors / zero issues | Zero errors / zero issues |
-| Remaining native warnings | 507: silk overlap 199, silk over copper 199, silk edge clearance 66, text height 43 | 475: silk overlap 199, silk over copper 199, silk edge clearance 18, text height 59 |
+| Status | ROUTED DRAFT IN PROGRESS | ROUTED DRAFT IN PROGRESS |
+| Native open edges | **411** | **518** |
+| Remaining signal edges | 371 | 453 |
+| Remaining rail / ground edges | +12V 3, +5V 0, -12V 4, AGND 33 | +12V 0, +5V 0, -12V 5, AGND 60 |
+| DRC errors / schematic parity | 0 / 0 | 0 / 0 |
+| Track segments / vias | 20253 / 2429 | 16974 / 2076 |
+| Native warnings | silk edge clearance 8, silk over copper 199, silk overlap 199, text height 43, via dangling 23 | silk edge clearance 13, silk over copper 199, silk overlap 199, text height 59, track dangling 8, via dangling 24 |
 
-`boards/<board-id>/reports/checkpoint-preservation.json` binds the before/after PCB SHA and proves byte preservation of all prior copper, footprints, graphics, outline, keepouts and non-pour owner state. Only the listed source-owned pour blocks change. Native edge counts decrease from JL 2,657 and JR 2,559. `ratsnest.json` contains every native net identity, decoded source identity and per-net count; their exact sum equals KiCad's complete native count. The CLI DRC list of 499 unconnected items is a truncated sample and is not the topology total.
+Routing uses `scripts/pcbgen/route_jack_grid.py`: terminal via arrays, ±12 V plane fanouts, rail links, then short local signals and batches of longer signals, with AGND stitching vias where new copper cuts a surface pour. Each stage is applied to a disposable copy, checked with native DRC, schematic parity and zone refill, and kept only when the native open-edge count falls. Stage receipts are in `boards/<board-id>/reports/grid-routing/`; `reports/ratsnest.json` holds the complete native per-net topology. Silkscreen/text warnings remain [#44](https://github.com/Takazudo/zudo-osc-hole-field/issues/44).
 
-All 414 supply links are direct local copper on the IC's face, with the source pad-centre bound still 2.8875 mm. Electrical continuity and drawing locality do not establish physical loop stability or temperature performance. The source-defined F.Cu/B.Cu/In1.Cu AGND pours and finite nonoverlapping In2.Cu rail tails retain all outlines and reservations. Each of the six 4×4 mm load lands per half has a source-defined 5×5 array of 0.7/0.3 mm vias on 0.7 mm pitch. The unchanged 5×5 mm courtyards cannot hold these arrays wholly outside the solder lands.
+![JL top: unvalidated routed draft](/assets/osc-hole-field/osc-jack-left-top.png)
 
-![JL top: unvalidated partial routing checkpoint](/assets/osc-hole-field/osc-jack-left-top.png)
+![JL bottom: unvalidated routed draft](/assets/osc-hole-field/osc-jack-left-bottom.png)
 
-![JL bottom: unvalidated partial routing checkpoint](/assets/osc-hole-field/osc-jack-left-bottom.png)
+![JR top: unvalidated routed draft](/assets/osc-hole-field/osc-jack-right-top.png)
 
-![JR top: unvalidated partial routing checkpoint](/assets/osc-hole-field/osc-jack-right-top.png)
+![JR bottom: unvalidated routed draft](/assets/osc-hole-field/osc-jack-right-bottom.png)
 
-![JR bottom: unvalidated partial routing checkpoint](/assets/osc-hole-field/osc-jack-right-bottom.png)
+## Qualification remains NOT RUN
 
-## Electrical acceptance remains unresolved
-
-Closed local bypass loops **do not mean their rails are fed**. Only 4/214 JL and 2/200 JR bypass rail pads join their load-side land. JL still has +12 V 135, −12 V 143 and +5 V 59 native open edges; JR has 139, 132 and 59 respectively. Only 52/599 JL and 25/553 JR fitted master-package rail pads reach their land (547/528 remain unfed). All fitted rail pins/passives, their exact native identities and land-feed status are enumerated in `reports/power-locality.json`. These are unresolved power obligations, separate from the remaining 1,063 JL / 1,109 JR signal edges.
-
-The combined branch plus K common AGND plane/neck target remains ≤0.5 mΩ, including actual shared copper and main terminal transfer. The GH contact bound remains ≤0.5 A, with every alternative's finite access resistance charged and the worst candidate's own PCB/contact access taken as zero. Rail transfer ≤1 mΩ and hot distribution drop ≤20 mV also remain unaccepted until actual fitted feeds and current-dependent paths are extracted. No target was relaxed.
-
-Ground screens are **historical or experimental, NOT ACCEPTED**. The final ownership-corrected 0.25 mm attempt did not solve: J900001 pad 2 at its actual courtyard cut (119.875, 84.905 mm) had 89 native-contained candidate couplings, all rejected for overlapping represented plane/access conductor ownership. Native ground continuity passes; the unresolved gate is the numerical finite interface/collar representation. Earlier seam-excluding meshes, arbitrary nearest anchors, whole-courtyard cuts and overlapping annular/sheet models cannot be acceptance evidence. The next implementation needs local fine-region meshes or shared finite faces at arrays and GH cuts, preserving fixed physical patches and one physical barrel network. `design/partition/ground-extraction-handoff.json` records exact cache/source hashes, commands, failures and successor scope.
-
-The minimum 25 µm finished barrel copper, 70 µm foil and nominal 70°C calculation are conditional draft requirements. [NBS Copper Wire Tables](https://nvlpubs.nist.gov/nistpubs/Legacy/hb/nbshandbook100.pdf) supplies the retained copper reference constants; it does not qualify this PCB. The arrays require factory-qualified filled/capped via-in-pad, or a documented solder process proving full coverage, no wicking and retention. This is **NOT RUN #65**, with no supplier or service selected. K's actual extraction and finite residual common/access allocations remain [#43](https://github.com/Takazudo/zudo-osc-hole-field/issues/43); no zero-access K assumption is accepted.
-
-Bounded full-half 180 s, selective 120 s and extended 1,800 s autorouter strategies produced no SES and imported no copper. The current copper comes from the preserved deterministic native-gated stages. Continue [#38](https://github.com/Takazudo/zudo-osc-hole-field/issues/38) for authoritative ground/current extraction, all fitted power feeds and the exact remaining signal topology. Warning identities/dispositions remain in `reports/warning-dispositions.json`; silkscreen/text cleanup and native regression coverage remain [#44](https://github.com/Takazudo/zudo-osc-hole-field/issues/44). Physical fit, looms, hot Kelvin/current, solder retention, stability and enclosure qualification remain [NOT RUN #65](https://github.com/Takazudo/zudo-osc-hole-field/issues/65), with protection #59, source/inlet #57, selector #55 and LED #64 gates still open.
+The earlier field-solver ground/current extraction is parked and is not a routing gate. Rail and return resistance, hot distribution drop, GH contact current, the 5×5 filled/capped via-in-pad terminal arrays (#65 process), protection (#59), source/inlet (#57), selector (#55), LED (#64) and installed fit (#65) all remain unqualified. Continue [#38](https://github.com/Takazudo/zudo-osc-hole-field/issues/38) for the remaining open edges.
 
 ## Historical rejected single-J experiment
 

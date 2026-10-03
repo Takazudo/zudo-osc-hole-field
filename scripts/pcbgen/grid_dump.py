@@ -9,15 +9,13 @@ import argparse,collections,hashlib,json
 from pathlib import Path
 import pcbnew
 
-LAYERS={pcbnew.F_Cu:'F.Cu',pcbnew.In1_Cu:'In1.Cu',pcbnew.In2_Cu:'In2.Cu',pcbnew.B_Cu:'B.Cu'}
-
 def outline(shape):
     if shape.OutlineCount()==0:return []
     o=shape.Outline(0);return [[o.CPoint(i).x,o.CPoint(i).y] for i in range(o.PointCount())]
 
 def dump(board_path):
     board=pcbnew.LoadBoard(str(board_path))
-    if board.GetCopperLayerCount()!=4:raise ValueError('grid router supports four copper layers')
+    LAYERS={layer:board.GetLayerName(layer) for layer in board.GetEnabledLayers().CuStack()}
     pads=[]
     for fp in board.GetFootprints():
         for pad in fp.Pads():
@@ -58,7 +56,7 @@ def dump(board_path):
     count=sum(len(g)-1 for g in islands.values())
     if count!=conn.GetUnconnectedCount(False):raise ValueError('island count differs from native ratsnest')
     return {'schema':'grid-router-dump-1','board':str(board_path),'board_sha256':hashlib.sha256(Path(board_path).read_bytes()).hexdigest(),
-            'pads':pads,'tracks':tracks,'vias':vias,'keepouts':keepouts,'edges':edges,'open_edges':count,'islands':islands}
+            'layers':list(LAYERS.values()),'pads':pads,'tracks':tracks,'vias':vias,'keepouts':keepouts,'edges':edges,'open_edges':count,'islands':islands}
 
 def main():
     p=argparse.ArgumentParser();p.add_argument('board',type=Path);p.add_argument('output',type=Path);a=p.parse_args()

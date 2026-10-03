@@ -1,7 +1,8 @@
 """Synthetic tests for the grid router and the cut-line capacity bound."""
 import math
 import unittest
-from scripts.pcbgen.grid_router import copper_rows,route
+import numpy as np
+from scripts.pcbgen.grid_router import copper_rows,fill_partition,fill_region_count,route,splits
 from scripts.pcbgen.cut_capacity import scan,summarize
 
 MM=1_000_000
@@ -53,10 +54,55 @@ class GridRouterTests(unittest.TestCase):
         results=self.route(board(ring=True))
         self.assertIsNone(results[0]['path'])
 
+    def test_six_layer_board_uses_only_allowed_layers(self):
+        dump=board(walls=((6,'B.Cu'),));dump['layers']=['F.Cu','In1.Cu','In2.Cu','In3.Cu','In4.Cu','B.Cu']
+        results=route(dump,res=0.1,clearance=0.2,signal_width=0.2,allowed_layers=['F.Cu','In2.Cu','B.Cu'],log=lambda m:None)[0]
+        rows,_=copper_rows(results,'fixture','t')
+        self.assertTrue(rows)
+        self.assertLessEqual({r['layer'] for r in rows if r['kind']=='segment'},{'F.Cu','In2.Cu','B.Cu'})
+
     def test_rows_have_stable_uuids(self):
         a,_=copper_rows(self.route(board(walls=((6,'B.Cu'),))),'fixture','t')
         b,_=copper_rows(self.route(board(walls=((6,'B.Cu'),))),'fixture','t')
         self.assertEqual(a,b)
+
+
+def crossing_board():
+    edges=[[0,0,12*MM,0],[12*MM,0,12*MM,8*MM],[12*MM,8*MM,0,8*MM],[0,8*MM,0,0]]
+    spots={'a0':('A',1.2,4),'a1':('A',10.8,4),'b0':('B',6,2),'b1':('B',6,6)}
+    pads=[{'uuid':u,'ref':'R'+u,'pad':'1','net':n,'xy':[int(x*MM),int(y*MM)],'layers':['B.Cu'],'poly':square(x,y),'drill':0,'npth':False,'locked':False}
+          for u,(n,x,y) in spots.items()]
+    return {'board_sha256':'0','layers':['B.Cu'],'pads':pads,'tracks':[],'vias':[],'keepouts':[],'edges':edges,
+            'islands':{'A':[['a0'],['a1']],'B':[['b0'],['b1']]}}
+
+
+class RipUpTests(unittest.TestCase):
+    def test_rip_up_reroutes_a_blocking_net(self):
+        common=dict(res=0.1,clearance=0.2,signal_width=0.2,layer_cost=[1.0],log=lambda m:None)
+        greedy=route(crossing_board(),['A','B'],**common)[0]
+        self.assertEqual({r['net'] for r in greedy if not r['path']},{'B'})
+        repaired=route(crossing_board(),['A','B'],rrr_rounds=2,**common)[0]
+        self.assertEqual({r['net'] for r in repaired if r['path']},{'A','B'})
+        self.assertFalse([r for r in repaired if not r['path']])
+
+
+class FillGuardTests(unittest.TestCase):
+    def test_wall_across_fill_splits_plane_regions(self):
+        label=np.zeros((40,80),np.int32);label[20,5]=7;label[20,75]=7
+        self.assertEqual(fill_region_count(label,7,0.2,0.1),1)
+        label[:,40]=3
+        self.assertEqual(fill_region_count(label,7,0.2,0.1),2)
+        label[18:23,40]=0
+        self.assertEqual(fill_region_count(label,7,0.2,0.1),1)
+
+    def test_partition_detects_split_even_when_count_is_unchanged(self):
+        label=np.zeros((40,80),np.int32);label[10,5]=7;label[10,75]=7;label[30,5]=7;label[30,75]=7
+        label[20,:]=3  # two fill regions, each holding a left and a right blob
+        before=fill_partition(label,7,0.2,0.1)
+        after_label=label.copy();after_label[20,:]=0;after_label[:,40]=3
+        after=fill_partition(after_label,7,0.2,0.1)
+        self.assertEqual(len({c for c in before}),len({c for c in after}))
+        self.assertTrue(splits(before,after))
 
 
 class CutCapacityTests(unittest.TestCase):

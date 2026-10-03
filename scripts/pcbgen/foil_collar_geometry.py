@@ -197,7 +197,12 @@ def compile_proposal(spec,*,verify_source=True,native_root=None):
             bound=spec['source_transition'];proof_path=ROOT/bound['proof']
             if not proof_path.is_file() or digest(proof_path)!=bound['proof_sha256']:
                 raise ValueError('source transition proof unavailable or changed')
-            transition=json.loads(proof_path.read_bytes())['connector_locality_transition']
+            proof=json.loads(proof_path.read_bytes());transition=dict(proof['connector_locality_transition'])
+            jack=proof.get('jack_locality_transition')
+            if jack:
+                # Later jack-half-only change: chain it onto the connector transition.
+                if jack['base_partition_sha256']!=transition['current_partition_sha256']:raise ValueError('source transition chain is broken')
+                transition['current_partition_sha256']=jack['current_partition_sha256']
             if (any(bound.get(k)!=transition.get(k) for k in
                     ('base_commit','historical_partition_sha256','current_partition_sha256')) or
                     bound['current_partition_sha256']!=spec['source_files']['design/partition/partition.json'] or

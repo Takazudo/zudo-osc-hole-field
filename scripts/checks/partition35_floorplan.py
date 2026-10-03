@@ -15,6 +15,7 @@ from scripts.partition.model import JACK_BOARDS
 from scripts.checks.connector_packing35 import board_for,pads
 from scripts.checks.partition35_diagnostic import footprint_geometry
 from scripts.pcbgen.netlist import TOKEN, parse, many, one
+from scripts.checks.jack_locality import place_jack_locality
 OUT=ROOT/'design/partition/floorplan-candidate.json'
 SCALE=4
 
@@ -81,10 +82,9 @@ def footprint_pads(footprint):
     return {p[1]:tuple(map(float,one(p,'at')[1:3])) for p in many(tree,'pad')}
 
 
-def place_bypass_cluster(parent,caps,grid,shapes,pin_nets,horizontal=False):
-    """Place the full IC and its two capacitors, aligned to actual supply pads."""
-    SCALE=grid.scale
-    side=grid.side;icbox=oriented_box(shapes[parent['footprint']],side,0)
+def bypass_cells(parent,caps,side,shapes,pin_nets,horizontal=False):
+    """Rigid IC plus capacitors, each capacitor aligned to its actual supply pad."""
+    icbox=oriented_box(shapes[parent['footprint']],side,0)
     ipads=footprint_pads(parent['footprint']);cells=[(parent,0,(0,0))]
     for cap in caps:
         rail=next(n for n in pin_nets[cap['ref']].values() if n in ('+12V','-12V','+5V'))
@@ -97,46 +97,7 @@ def place_bypass_cluster(parent,caps,grid,shapes,pin_nets,horizontal=False):
         box=oriented_box(shapes[cap['footprint']],side,angle)
         x=icbox[2]+.35-box[0] if sx>0 else icbox[0]-.35-box[2]
         cells.append((cap,angle,(x,sy-cy)))
-    boxes=[]
-    for part,angle,(x,y) in cells:
-        b=oriented_box(shapes[part['footprint']],side,angle);boxes.append([b[0]+x,b[1]+y,b[2]+x,b[3]+y])
-    whole=[min(b[0] for b in boxes),min(b[1] for b in boxes),max(b[2] for b in boxes),max(b[3] for b in boxes)]
-    # Search the exact union of the three courtyards, not its mostly empty
-    # enclosing rectangle. This permits real hardware gaps between cells.
-    found=None
-    for theta in (0,90,180,270):
-        rb=[oriented_box(b,'F.Cu',theta) for b in boxes]
-        envelope=[min(b[0] for b in rb),min(b[1] for b in rb),max(b[2] for b in rb),max(b[3] for b in rb)]
-        masks=[]
-        for b in rb:
-            dx=math.floor((b[0]-envelope[0])*SCALE+1e-8);dy=math.floor((b[1]-envelope[1])*SCALE+1e-8)
-            w=math.ceil((b[2]-envelope[0]+.35)*SCALE-1e-8)-dx;h=math.ceil((b[3]-envelope[1]+.35)*SCALE-1e-8)-dy
-            masks.append((dx,dy,w,h))
-        height=max(dy+h for dx,dy,w,h in masks)
-        for yy in range(grid.height-height+1):
-            available=grid.full
-            for dx,dy,w,h in masks:
-                rowfree=grid.full
-                for row in grid.rows[yy+dy:yy+dy+h]:rowfree &= ~(row>>dx)
-                n=w;shift=1
-                while n>1:
-                    step=min(shift,n-1);rowfree &= rowfree>>step;n-=step;shift*=2
-                available &= rowfree
-                if not available:break
-            if not available:continue
-            xx=(available&-available).bit_length()-1
-            for dx,dy,w,h in masks:
-                mask=((1<<w)-1)<<(xx+dx)
-                for yy2 in range(yy+dy,yy+dy+h):grid.rows[yy2]|=mask
-            found=(theta,(xx/SCALE-envelope[0],yy/SCALE-envelope[1]));break
-        if found:break
-    if found is None:return None
-    theta,offset=found;rows=[]
-    for part,angle,pos in cells:
-        x,y=turn(pos,theta);x+=offset[0];y+=offset[1];rotation=(angle+theta)%360
-        b=oriented_box(shapes[part['footprint']],side,rotation)
-        rows.append({'ref':part['ref'],'board':grid.board,'fixed':False,'x_mm':x,'y_mm':y,'rotation_deg':rotation,'side':side,'courtyard_mm':[b[0]+x,b[1]+y,b[2]+x,b[3]+y],'bypass_cluster':parent['ref']})
-    return rows
+    return cells
 
 
 def check_bypasses(parts,placements,pin_nets):
@@ -192,20 +153,24 @@ def build():
             available[board+' '+side]=sum(g.width-row.bit_count() for row in g.rows)/(g.scale*g.scale)
         free=sorted((p for p in parts if board_for(p)==board and not p['panel_uid']),key=lambda p:(-p['courtyard']['area_mm2'],p['ref']))
         if board in JACK_BOARDS:
-            caps=defaultdict(list)
-            for p in free:
-                if p['decouples_ref']:caps[p['decouples_ref']].append(p)
-            clustered=set()
-            for parent in [p for p in free if p['ref'] in caps]:
-                children=sorted(caps[parent['ref']],key=lambda p:p['ref'])
-                rows=place_bypass_cluster(parent,children,grids[board,'B.Cu'],shapes,pin_nets)
-                if rows is None:rows=place_bypass_cluster(parent,children,grids[board,'F.Cu'],shapes,pin_nets)
-                if rows is None:rows=place_bypass_cluster(parent,children,grids[board,'B.Cu'],shapes,pin_nets,True)
-                if rows is None:rows=place_bypass_cluster(parent,children,grids[board,'F.Cu'],shapes,pin_nets,True)
-                if rows is None:errors.append('IC/bypass cluster overflow '+board+' '+parent['ref'])
-                else:placements.extend(rows)
-                clustered.update([parent['ref'],*(p['ref'] for p in children)])
-            free=[p for p in free if p['ref'] not in clustered]
+            anchors=defaultdict(list)
+            for p in parts:
+                if board_for(p)!=board or not p['panel_uid']:continue
+                point=lock[p['panel_uid']];angle=math.radians(point['rot_deg']);co,si=math.cos(angle),math.sin(angle)
+                for pin,(x,y) in footprint_pads(p['footprint']).items():
+                    net=pin_nets[p['ref']].get(pin)
+                    if net:anchors[net].append((point['x_mm']+x*co-y*si,point['y_mm']+x*si+y*co))
+            for h in connector['headers']:
+                if h['board']==board:
+                    for net in h['pin_map'].values():
+                        if net not in (None,'NC'):anchors[net].append(tuple(h['center_mm']))
+            homes=defaultdict(list)
+            for p in parts:
+                if board_for(p)==board and p['panel_uid']:homes[p['instance']].append((lock[p['panel_uid']]['x_mm'],lock[p['panel_uid']]['y_mm']))
+            instance_anchor={k:(sum(x for x,_ in v)/len(v),sum(y for _,y in v)/len(v)) for k,v in homes.items()}
+            placements.extend(place_jack_locality(board,free,grids,shapes,pin_nets,anchors,
+                lambda parent,caps,side,horizontal:bypass_cells(parent,caps,side,shapes,pin_nets,horizontal),turn,oriented_box,instance_anchor))
+            free=[]
         for p in free:
             location=grids[board,'B.Cu'].place(shapes[p['footprint']])
             if location is None and board in JACK_BOARDS:location=grids[board,'F.Cu'].place(shapes[p['footprint']])
