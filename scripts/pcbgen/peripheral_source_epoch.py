@@ -9,6 +9,7 @@ from pathlib import Path
 from scripts.libgen.gen_ic_package_envelopes import owned_model_span
 from scripts.pcbgen.generate_peripheral_ground import generate
 from scripts.checks.io_partition60 import power_requirements, repacking_metadata
+from scripts.pcbgen.netlist import TOKEN, many, one, parse, read_netlist
 
 BASE = Path('design/partition/peripheral-ground-feasibility')
 PRIOR = Path('design/partition/peripheral-source-epoch-20261001.json')
@@ -24,6 +25,8 @@ IDENTITY_BASE = '8d2940ac7f6fde3d2a466e4e21c45d4f232fdad1'
 IDENTITIES = Path('design/standard/precision-feedback-bindings.json')
 ROUTING_BASE = 'b8795bfbceaeb13e8e3f6d29d9ef57729299fd68'
 ROUTING = 'design/partition/octave-routing.json'
+STAGE_LAYOUT_BASE = '34de88e3c2bac915bbdfbb5458194328be167e62'
+STAGE_ROUTING = 'design/partition/stage-optical-routing.json'
 COMMIT = 'fa11636b860ef80c01cb42bc7450551db556c72e'
 METADATA_BASE = '38153f8d51db8852ab87e00aa94039f7981dc937'
 IO = 'design/reports/io-partition.json'
@@ -91,6 +94,76 @@ def prove_octave_routing_only(old_bytes, new_bytes, routing):
         raise ValueError('unexpected octave routing transition base')
     if new != {**old,'routing':routing}:
         raise ValueError('octave definition changed beyond declared routing')
+
+
+STAGE_LAYOUT_FIELDS = ('FootprintOriginMm', 'KiCadOrientationDeg')
+
+
+def _netlist(raw):
+    with tempfile.TemporaryDirectory(prefix='stage-layout-') as folder:
+        path = Path(folder) / 'source.net'
+        path.write_bytes(raw)
+        return read_netlist(path)
+
+
+def _set_layout_fields(root, changes):
+    for comp in many(one(root, 'components'), 'comp'):
+        fields = changes.get(one(comp, 'ref')[1], {})
+        for entry in many(one(comp, 'fields'), 'field'):
+            name = one(entry, 'name')[1]
+            if name in fields:
+                entry[2] = fields[name]['current']
+        for prop in many(comp, 'property'):
+            name = one(prop, 'name')[1]
+            if name in fields:
+                one(prop, 'value')[1] = fields[name]['current']
+    return root
+
+
+def prove_stage_optical_layout(old_definition, new_definition, old_net, new_net, routing):
+    """Return the free-part layout field changes after proving nothing else moved."""
+    old, new = json.loads(old_definition), json.loads(new_definition)
+    if old.get('routing') is not None or old['board_id'] != 'osc-stage-optical':
+        raise ValueError('unexpected stage-optical layout transition base')
+    if {k: v for k, v in new.items() if k != 'regions'} != {**{k: v for k, v in old.items() if k != 'regions'}, 'routing': routing}:
+        raise ValueError('stage-optical definition changed beyond declared routing and regions')
+    shape = lambda rows: [{k: v for k, v in r.items() if k != 'rect'} for r in rows]
+    if shape(old['regions']) != shape(new['regions']):
+        raise ValueError('stage-optical regions changed beyond rectangles')
+    old_parts, old_pins = _netlist(old_net)
+    new_parts, new_pins = _netlist(new_net)
+    if old_pins != new_pins:
+        raise ValueError('stage-optical netlist connectivity changed')
+    olds, news = {c.ref: c for c in old_parts}, {c.ref: c for c in new_parts}
+    if set(olds) != set(news):
+        raise ValueError('stage-optical netlist package set changed')
+    changes = {}
+    for ref in sorted(olds):
+        a, b = olds[ref], news[ref]
+        fa, fb = dict(a.fields), dict(b.fields)
+        if (a.value, a.footprint, a.sheetname, a.sheet_ts, a.symbol_ts) != (b.value, b.footprint, b.sheetname, b.sheet_ts, b.symbol_ts) or set(fa) != set(fb):
+            raise ValueError('stage-optical netlist identity changed: ' + ref)
+        diff = {k: {'historical': fa[k], 'current': fb[k]} for k in sorted(fa) if fa[k] != fb[k]}
+        if not diff:
+            continue
+        if set(diff) - set(STAGE_LAYOUT_FIELDS) or fa.get('PanelUid'):
+            raise ValueError('stage-optical netlist changed beyond free-part layout fields: ' + ref)
+        changes[ref] = diff
+    if not changes:
+        raise ValueError('stage-optical layout transition declares no change')
+    old_root, _ = parse(TOKEN.findall(old_net.decode()))
+    new_root, _ = parse(TOKEN.findall(new_net.decode()))
+    _set_layout_fields(old_root, changes)
+    # Routing may also declare the KiCad net class of rail and ground nets.
+    classes = {net: spec['name'] for spec in routing['net_classes'] for net in spec['nets']}
+    for net in many(one(new_root, 'nets'), 'net'):
+        if one(net, 'class')[1] not in ('Default', classes.get(one(net, 'name')[1], 'Default')):
+            raise ValueError('stage-optical netlist net class differs from declared routing')
+    for old_entry, new_entry in zip(many(one(old_root, 'nets'), 'net'), many(one(new_root, 'nets'), 'net')):
+        one(old_entry, 'class')[1] = one(new_entry, 'class')[1]
+    if old_root != new_root:
+        raise ValueError('stage-optical netlist text changed beyond free-part layout fields')
+    return changes
 
 
 def prove_octave_netclass_only(old_bytes, new_bytes):
@@ -188,6 +261,12 @@ def derive():
         'scope':'Complete IO report equality except the 32 named symbol/MPN pairs and bound native-netlist hash; no native/model rebinding'}
     result['routing_transition']={'base_commit':ROUTING_BASE,'source':ROUTING,'sha256':sha(routing_bytes),
         'scope':'Canonical routing-only proposal; no native/model evidence rebinding'}
+    stage_routing_bytes=Path(STAGE_ROUTING).read_bytes()
+    result['stage_optical_layout_transition']={'base_commit':STAGE_LAYOUT_BASE,'routing_source':STAGE_ROUTING,
+        'routing_sha256':sha(stage_routing_bytes),
+        'scope':('Draft routing classes and AGND pours plus moved free (non-panel) stage-optical part origins and angles. '
+                 'Panel hardware, connectivity, identities and all other source geometry are unchanged; '
+                 'no native/model evidence rebinding')}
     result['metadata_comparison'] = {'commit': METADATA_BASE, 'report': IO,
         'historical_report_sha256': sha(display_io), 'current_report_sha256': sha(new_io),
         'unchanged_supply_sources': {p: sha(raw) for p, raw in inputs.items()}}
@@ -214,6 +293,22 @@ def derive():
                 new_net=Path(net_path).read_bytes()
                 prove_octave_netclass_only(old_net,new_net)
                 row['source_changes'][net_path]={'historical':sha(old_net),'current':sha(new_net)}
+            if bid == 'osc-stage-optical':
+                path=f'design/boards/{bid}.json'
+                net_path=f'schematic/boards/{bid}.net'
+                old_definition=historical(path,STAGE_LAYOUT_BASE)
+                new_definition=Path(path).read_bytes()
+                old_net=historical(net_path,STAGE_LAYOUT_BASE)
+                new_net=Path(net_path).read_bytes()
+                layout=prove_stage_optical_layout(old_definition,new_definition,old_net,new_net,json.loads(stage_routing_bytes))
+                row['source_changes'][path]={'historical':sha(old_definition),'current':sha(new_definition)}
+                row['source_changes'][net_path]={'historical':sha(old_net),'current':sha(new_net)}
+                row['layout_field_changes']=layout
+                for package in expected['source_packages']:
+                    for field,change in layout.get(package['ref'],{}).items():
+                        if package['source_fields'][field]!=change['historical']:
+                            raise ValueError(f'{bid}: historical layout field mismatch')
+                        package['source_fields'][field]=change['current']
             if row['source_changes'][PARTITION]['current'] != sha(old_partition):
                 raise ValueError(f'{bid}: connector transition partition base differs')
             row['source_changes'][PARTITION]['current'] = sha(new_partition)
@@ -223,9 +318,15 @@ def derive():
                 expected['source_sha256'][path] = change['current']
             target = Path(folder) / (bid + '.json')
             actual = generate(BASE / 'proposal.json', bid, target)
+            if bid == 'osc-stage-optical':
+                # The generated definition may differ from the historical one only by regions.
+                generated=json.loads(target.read_bytes());generated['regions']=json.loads(old_definition)['regions']
+                if sha((json.dumps(generated,indent=2,sort_keys=True)+'\n').encode()) != row['unchanged_definition_sha256']:
+                    raise ValueError(f'{bid}: generated definition changed beyond regions')
+                expected['definition_sha256']=row['current_definition_sha256']=actual['definition_sha256']
             if actual != expected or actual['model_entry_allowed']:
                 raise ValueError(f'{bid}: source projection differs or model admitted')
-            if actual['definition_sha256'] != row['unchanged_definition_sha256']:
+            if actual['definition_sha256'] != row.get('current_definition_sha256',row['unchanged_definition_sha256']):
                 raise ValueError(f'{bid}: definition changed')
             row['current_source_receipt_sha256'] = sha(target.with_suffix('.receipt.json').read_bytes())
     result['latest_source_audit'] = ('Source projection only; exact historical receipt equality '
