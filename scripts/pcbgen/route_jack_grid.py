@@ -192,6 +192,12 @@ def stage(board_id,current,spec,definition,log):
         if not bad:break
         culprits=[l for l in links if bad & set(l['copper_uuids'])]
         if not culprits:raise RuntimeError(f"{spec['name']}: DRC errors not attributable to new copper")
+        if removed:
+            # A rerouted (ripped) net loses its whole new route and gets its old copper back.
+            ripped_nets={i['net'] for k in ('tracks','vias') for i in dump[k] if i['uuid'] in set(removed)}
+            back={l['net'] for l in culprits}&ripped_nets
+            culprits+=[l for l in links if l['net'] in back and l not in culprits]
+            removed=[u for u in removed if not any(i['uuid']==u and i['net'] in back for k in ('tracks','vias') for i in dump[k])]
         drop={u for l in culprits for u in l['copper_uuids']};dropped+=culprits
         rows=[r for r in rows if r['uuid'] not in drop];links=[l for l in links if l not in culprits]
         log(f"{spec['name']}: dropped {len(culprits)} links with DRC errors; retrying")
@@ -216,6 +222,7 @@ def main():
     for spec in STAGES[names.index(a.from_stage):last]:
         candidate,receipt=stage(a.board_id,current,spec,definition,lambda m:print(m,flush=True))
         if candidate is None:print(f"{spec['name']}: nothing to do",flush=True);continue
+        receipt['adopted']=receipt['open_edges_after']<receipt['open_edges_before']
         (reports/f"{spec['name']}.json").write_text(json.dumps(receipt,indent=1,sort_keys=True)+'\n')
         print(f"{spec['name']}: {receipt['open_edges_before']} -> {receipt['open_edges_after']} open edges",flush=True)
         if receipt['open_edges_after']<receipt['open_edges_before']:

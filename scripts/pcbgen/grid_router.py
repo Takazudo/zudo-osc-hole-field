@@ -204,7 +204,7 @@ def route(dump,nets=(),rip=(),rip_first=False,res=0.1,layer_cost=None,via_cost=3
           clearance=0.25,rail_nets=(),rail_width=0.4,signal_width=0.3,via_diameter=0.7,via_drill=0.3,
           hole_clearance=0.25,edge_clearance=0.5,max_expansions=4_000_000,allowed_layers=None,log=print,
           planes=None,signal_via_diameter=None,grow=None,window_mm=12.0,weight=1.0,full_board=False,
-          escape_halo_mm=0.0,escape_halo_cost=4.0,fill_guards=None,fill_clearance=0.33,
+          escape_halo_mm=0.0,escape_halo_cost=4.0,fill_guards=None,fill_clearance=0.45,
           rrr_rounds=0,rrr_max_rip=4,rrr_soft_cost=12.0):
     """Return (results, removed_uuids). Each result has net, island pad names and a [layer,x,y,through] path or None.
 
@@ -312,7 +312,7 @@ def route(dump,nets=(),rip=(),rip_first=False,res=0.1,layer_cost=None,via_cost=3
     # Fill guards: a signal path may share a plane-fill layer only if the fill keeps
     # every plane via/pad in as few connected regions as before.
     guards={raster.layers.index(layer):raster.net_id[n] for n,layer in (fill_guards or {}).items() if n in raster.net_id}
-    # Zone clearance plus half the minimum fill width approximates where the native fill can pass.
+    # Stricter than the native fill (zone clearance, minimum width and raster slack) so a pass here is a pass there.
     fill_regions=lambda li,lab:fill_partition(lab,guards[li],fill_clearance,res)
     fill_count={li:fill_regions(li,raster.label[li]) for li in guards}
     def fill_ok(path,w,vd,src,goal):
@@ -385,6 +385,7 @@ def route(dump,nets=(),rip=(),rip_first=False,res=0.1,layer_cost=None,via_cost=3
                     results[:]=[r for r in results if not (r['net']==net and r['path'] is None and r['island']==name(g))];fixed+=1;continue
                 probe,blockers=search(N,w,vd,src,reached,False,window_mm,soft=sorted(rippable-{N}))
                 if probe is None or not blockers or len(blockers)>rrr_max_rip:
+                    log(f"RRR-SKIP {net} {name(g)} {'no probe path' if probe is None else f'{len(blockers)} blockers'}")
                     failed.append((net,g,main_group));continue
                 snapshot=(raster.label.copy(),raster.hole.copy(),[dict(r) for r in results],set(removed),dict(fill_count))
                 victims=[id_net[b] for b in blockers]
@@ -405,6 +406,7 @@ def route(dump,nets=(),rip=(),rip_first=False,res=0.1,layer_cost=None,via_cost=3
                     results[:]=[r for r in results if not (r['net']==net and r['path'] is None and r['island']==name(g))]
                     fixed+=1;log(f'RRR {net} {name(g)} ripped {victims}')
                 else:
+                    log(f"RRR-UNDO {net} {name(g)} victims {victims}")
                     raster.label[...]=snapshot[0];raster.hole[...]=snapshot[1];results[:]=snapshot[2];removed.clear();removed|=snapshot[3];fill_count.clear();fill_count.update(snapshot[4])
                     failed.append((net,g,main_group))
             log(f'RRR round {rnd+1}: fixed {fixed}, still failing {len(failed)}')

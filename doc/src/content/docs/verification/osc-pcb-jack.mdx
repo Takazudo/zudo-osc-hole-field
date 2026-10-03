@@ -18,11 +18,11 @@ A cut-line bound (`scripts/pcbgen/cut_capacity.py`) showed that the four-layer h
 | Native check | JL / `osc-jack-left` | JR / `osc-jack-right` |
 | --- | --- | --- |
 | Status | ROUTED DRAFT IN PROGRESS | ROUTED DRAFT IN PROGRESS |
-| Native open edges | **411** | **518** |
-| Remaining signal edges | 371 | 453 |
-| Remaining rail / ground edges | +12V 3, +5V 0, -12V 4, AGND 33 | +12V 0, +5V 0, -12V 5, AGND 60 |
+| Native open edges | **411** | **516** |
+| Remaining signal edges | 371 | 450 |
+| Remaining rail / ground edges | +12V 3, +5V 0, -12V 4, AGND 33 | +12V 0, +5V 0, -12V 5, AGND 61 |
 | DRC errors / schematic parity | 0 / 0 | 0 / 0 |
-| Track segments / vias | 20253 / 2429 | 16974 / 2076 |
+| Track segments / vias | 20253 / 2429 | 17147 / 2103 |
 | Native warnings | silk edge clearance 8, silk over copper 199, silk overlap 199, text height 43, via dangling 23 | silk edge clearance 13, silk over copper 199, silk overlap 199, text height 59, track dangling 8, via dangling 24 |
 
 Routing uses `scripts/pcbgen/route_jack_grid.py`: terminal via arrays, ±12 V plane fanouts, rail links, then short local signals and batches of longer signals, with AGND stitching vias where new copper cuts a surface pour. Each stage is applied to a disposable copy, checked with native DRC, schematic parity and zone refill, and kept only when the native open-edge count falls. Stage receipts are in `boards/<board-id>/reports/grid-routing/`; `reports/ratsnest.json` holds the complete native per-net topology. Silkscreen/text warnings remain [#44](https://github.com/Takazudo/zudo-osc-hole-field/issues/44).
