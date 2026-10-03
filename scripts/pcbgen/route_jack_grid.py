@@ -35,7 +35,7 @@ STAGES=[
     {'name':'rail-escapes','nets':RAILS,'clearance':.25,'rail_width':.25,'res':.05,'window_mm':6},
     # Negotiated (PathFinder) routing of every signal net on a 0.05 mm grid; leftovers go to the batches below.
     # A run stops after budget_s and saves its state, so each heavy-guard run stays short.
-    {'name':'negotiate','negotiate':True,'res':.05,'iterations':60,'workers':6,'budget_s':5400,'clearance':.2,'signal_width':.2,'signal_via_diameter':.6,'grow':{n:.05 for n in [*RAILS,'AGND']}},
+    {'name':'negotiate','negotiate':True,'res':.05,'iterations':60,'workers':4,'budget_s':5400,'clearance':.2,'signal_width':.2,'signal_via_diameter':.6,'grow':{n:.05 for n in [*RAILS,'AGND']}},
     # Short local nets first.
     {'name':'signals-local','signals':True,'max_span_mm':8,'escape_halo_mm':.9,'clearance':.2,'signal_width':.2,'signal_via_diameter':.6,'grow':{n:.05 for n in [*RAILS,'AGND']}},
     # Then the remaining open signal nets, shortest first, in checked and promoted batches.

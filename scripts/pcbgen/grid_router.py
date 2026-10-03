@@ -531,7 +531,11 @@ def negotiate(dump,nets,res=0.1,layer_cost=None,via_cost=30.0,clearance=0.2,widt
         ys,xs=np.nonzero(mask);k=int(math.ceil(r/res))
         a0,a1=max(0,ys.min()-k),min(mask.shape[0],ys.max()+k+1);b0,b1=max(0,xs.min()-k),min(mask.shape[1],xs.max()+k+1)
         sub=ndimage.distance_transform_edt(~mask[a0:a1,b0:b1])<=r/res
-        return y0+a0,y0+a1,x0+b0,x0+b1,sub
+        # Bit-packed: hundreds of routes stay resident and travel between processes.
+        return y0+a0,y0+a1,x0+b0,x0+b1,np.packbits(sub)
+
+    def unpack(a0,a1,b0,b1,bits):
+        return np.unpackbits(bits,count=(a1-a0)*(b1-b0)).reshape(a1-a0,b1-b0).astype(bool)
 
     def footprint(cl,vias,box):
         # Occupancy one route adds: (layer or None for all, y0, y1, x0, x1, cells) for tracks and for vias.
@@ -546,27 +550,32 @@ def negotiate(dump,nets,res=0.1,layer_cost=None,via_cost=30.0,clearance=0.2,widt
         return track,via
 
     def stamp(net,route,sign):
-        track,via=route[3]
-        for l,a0,a1,b0,b1,sub in track:
-            if l is None:occ_track[:,a0:a1,b0:b1]+=sign*sub.astype(np.int16)[None]
-            else:occ_track[l,a0:a1,b0:b1]+=sign*sub.astype(np.int16)
-        for a0,a1,b0,b1,sub in via:occ_via[a0:a1,b0:b1]+=sign*sub.astype(np.int16)
+        track,via=route[2:4]
+        for l,*box in track:
+            sub=unpack(*box).astype(np.int16);a0,a1,b0,b1=box[:4]
+            if l is None:occ_track[:,a0:a1,b0:b1]+=sign*sub[None]
+            else:occ_track[l,a0:a1,b0:b1]+=sign*sub
+        for box in via:a0,a1,b0,b1=box[:4];occ_via[a0:a1,b0:b1]+=sign*unpack(*box).astype(np.int16)
 
     def own_at(entries,ls,ys,xs):
         # The route's own occupancy at the given cells (ls None for the via plane).
         own=np.zeros(len(ys),np.int16)
         for e in entries:
-            l,(a0,a1,b0,b1,sub)=(e[0],e[1:]) if ls is not None else (None,e)
+            l,box=(e[0],e[1:]) if ls is not None else (None,e);a0,a1,b0,b1=box[:4]
             sel=(ys>=a0)&(ys<a1)&(xs>=b0)&(xs<b1)
             if ls is not None and l is not None:sel&=ls==l
-            own[sel]+=sub[ys[sel]-a0,xs[sel]-b0]
+            if sel.any():own[sel]+=unpack(*box)[ys[sel]-a0,xs[sel]-b0]
         return own
 
     def route_net(net,pfac):
-        r=route_window(net,pfac,margin_mm)
-        return r if r[0]!='fail' or wide_margin_mm<=margin_mm else route_window(net,pfac,wide_margin_mm)
+        # Retry wider with a larger budget and an inflated heuristic (cost within weight x optimal):
+        # under heavy congestion costs an exact search can exhaust its budget on a routable net.
+        for window,budget,weight in ((margin_mm,max_expansions,1.0),(wide_margin_mm,3*max_expansions,1.3),(wide_margin_mm,3*max_expansions,2.5)):
+            r=route_window(net,pfac,max(margin_mm,window),budget,weight)
+            if r[0]!='fail' or 'search limit' not in r[1]:return r
+        return r
 
-    def route_window(net,pfac,margin_mm):
+    def route_window(net,pfac,margin_mm,max_expansions,weight):
         N=raster.net_id[net];group=pads_by_net[net]
         if len(group)<2:return 'fail','single pad'
         pts=np.array([p['xy'] for p in group],float)
@@ -608,7 +617,7 @@ def negotiate(dump,nets,res=0.1,layer_cost=None,via_cost=30.0,clearance=0.2,widt
         for i in order:
             src=masks[i]
             if (src&reached).any():continue
-            path,expanded=astar(free,via_ok,src,reached,layer_cost,vcost,max_expansions,1.0,cost)
+            path,expanded=astar(free,via_ok,src,reached,layer_cost,vcost,max_expansions,weight,cost)
             if path is None:
                 pad=group[i]['ref']+'.'+group[i]['pad']
                 rim=ndimage.binary_dilation(src,structure=np.ones((1,3,3),bool))&~src
@@ -625,23 +634,26 @@ def negotiate(dump,nets,res=0.1,layer_cost=None,via_cost=30.0,clearance=0.2,widt
         ownpad=np.zeros((L,y1-y0,x1-x0),bool)
         for m in masks:ownpad|=m
         # Track inside the net's own pads is pad copper, already kept clear of other nets.
-        cl&=~ownpad;box=((y0,y1),(x0,x1))
-        return (cl,vias,box,footprint(cl,vias,box)),paths
+        cl&=~ownpad;fp=footprint(cl,vias,((y0,y1),(x0,x1)))
+        ls,ys,xs=np.nonzero(cl);vy,vx=np.nonzero(vias)
+        # Stored sparse in board coordinates; the dense window arrays are dropped here.
+        return ((ls.astype(np.int8),(ys+y0).astype(np.int32),(xs+x0).astype(np.int32)),((vy+y0).astype(np.int32),(vx+x0).astype(np.int32)),*fp),paths
 
     order=sorted(nets,key=lambda n:len(pads_by_net[n]))
     pfac=present;conflicted=set(order);start=0;failures={}
-    key=(res,tuple(order),raster.h,raster.w)
+    key=(2,res,tuple(order),raster.h,raster.w)
     if state_path and os.path.exists(state_path):
         with open(state_path,'rb') as f:st=pickle.load(f)
         if st['key']==key:
-            hist[:]=st['hist'];hist_via[:]=st['hist_via'];routes.update(st['routes']);pfac=st['pfac']
+            hist[tuple(st['hist'][0])]=st['hist'][1];hist_via[tuple(st['hist_via'][0])]=st['hist_via'][1];routes.update(st['routes']);pfac=st['pfac']
             conflicted=st['conflicted'];start=st['iteration'];failures=st['failures']
             for net,r in routes.items():stamp(net,r[0],+1)
             log(f'NEGOTIATE resumed after iteration {start}: {len(routes)} nets routed, {len(conflicted)} in conflict')
     def save(it):
         if not state_path:return
         with open(state_path+'.tmp','wb') as f:
-            pickle.dump({'key':key,'hist':hist,'hist_via':hist_via,'routes':routes,'pfac':pfac,'conflicted':conflicted,'iteration':it,'failures':failures},f)
+            sparse=lambda a:(lambda i:(i,a[tuple(i)]))(np.array(np.nonzero(a)))
+            pickle.dump({'key':key,'hist':sparse(hist),'hist_via':sparse(hist_via),'routes':routes,'pfac':pfac,'conflicted':conflicted,'iteration':it,'failures':failures},f)
         os.replace(state_path+'.tmp',state_path)
     global _NEGOTIATE_ROUTE
     for it in range(start,iterations):
@@ -667,11 +679,9 @@ def negotiate(dump,nets,res=0.1,layer_cost=None,via_cost=30.0,clearance=0.2,widt
                 if r[0]=='fail':routes.pop(net,None);failed+=1;failures[net]=r[1];continue
                 failures.pop(net,None);routes[net]=r;stamp(net,r[0],+1)
         conflicted=set()
-        for net,((cl,vias,((y0,_),(x0,_)),(track,via)),_) in routes.items():
-            ls,ys,xs=np.nonzero(cl);ys=ys+y0;xs=xs+x0
+        for net,(((ls,ys,xs),(vy,vx),track,via),_) in routes.items():
             hot=occ_track[ls,ys,xs]-own_at(track,ls,ys,xs)>0
             if hot.any():conflicted.add(net);np.add.at(hist,(ls[hot],ys[hot],xs[hot]),history)
-            vy,vx=np.nonzero(vias);vy=vy+y0;vx=vx+x0
             vhot=occ_via[vy,vx]-own_at(via,None,vy,vx)>0
             if vhot.any():conflicted.add(net);np.add.at(hist_via,(vy[vhot],vx[vhot]),history)
         log(f'NEGOTIATE iteration {it+1}: {len(routes)} nets routed, {len(conflicted)} in conflict, {failed} unroutable')
@@ -691,9 +701,12 @@ def negotiate(dump,nets,res=0.1,layer_cost=None,via_cost=30.0,clearance=0.2,widt
         for net in order:
             r=routes.get(net)
             if r is None or net in conflicted or net in split_dropped:continue
-            (cl,vias,((y0,y1),(x0,x1)))=r[0][:3];trial=lab.copy()
-            if cl[gl].any():trial[y0:y1,x0:x1][ndimage.binary_dilation(cl[gl],structure=k_cl)]=-1
-            if vias.any():trial[y0:y1,x0:x1][ndimage.binary_dilation(vias,structure=k_v)]=-1
+            (ls,ys,xs),(vy,vx)=r[0][:2];trial=lab.copy()
+            for cy,cx,k in ((ys[ls==gl],xs[ls==gl],k_cl),(vy,vx,k_v)):
+                if not len(cy):continue
+                h=k.shape[0]//2;a0,b0=max(0,cy.min()-h),max(0,cx.min()-h);a1,b1=min(raster.h,cy.max()+h+1),min(raster.w,cx.max()+h+1)
+                m=np.zeros((a1-a0,b1-b0),bool);m[cy-a0,cx-b0]=True
+                trial[a0:a1,b0:b1][ndimage.binary_dilation(m,structure=k)]=-1
             after=fill_partition(trial,P,fill_clearance,res)
             if splits(base,after):split_dropped.add(net);continue
             lab=trial;base=after
