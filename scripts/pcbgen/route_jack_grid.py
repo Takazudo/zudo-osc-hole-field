@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Staged grid routing of a six-layer jack half (owner decision 2026-10-03, #38).
+"""Staged grid routing of a six-layer jack half (owner decision 2026-10-03, #38) or the core (#43).
 
 Host driver: KiCad steps run through scripts/kicad/run.sh and routing runs on
 the host (numerical-requirements.txt). Starting from the synced, placed and
@@ -126,6 +126,7 @@ def stage(board_id,current,spec,definition,log):
     original=current
     dump=json.loads((current.with_name('dump.json')).read_text())
     if spec.get('terminal_arrays'):
+        if 'load_terminal_transfer' not in definition['routing']:return None,None
         rows,links=terminal_array(dump,board_id,definition);removed=[]
     elif spec.get('repair'):
         # Phase A: cut foreign signal copper beside the failed pins; native islands then
@@ -205,10 +206,10 @@ def stage(board_id,current,spec,definition,log):
 
 
 def main():
-    p=argparse.ArgumentParser(description=__doc__.splitlines()[0]);p.add_argument('board_id',choices=('osc-jack-left','osc-jack-right'))
+    p=argparse.ArgumentParser(description=__doc__.splitlines()[0]);p.add_argument('board_id',choices=('osc-jack-left','osc-jack-right','osc-core'))
     p.add_argument('--from-stage',default=STAGES[0]['name']);p.add_argument('--to-stage');p.add_argument('--promote',action='store_true');a=p.parse_args()
     board=ROOT/'boards'/a.board_id/f'{a.board_id}.kicad_pcb';definition=json.loads((ROOT/'design/boards'/f'{a.board_id}.json').read_text())
-    if definition['layers']!=6:raise ValueError('six-layer jack definition required')
+    if definition['layers']!=6:raise ValueError('six-layer board definition required')
     reports=board.parent/'reports'/'grid-routing';reports.mkdir(parents=True,exist_ok=True)
     work=workspace(a.board_id,'start');current=work/board.name;shutil.copyfile(board,current);check(current)
     names=[s['name'] for s in STAGES]
