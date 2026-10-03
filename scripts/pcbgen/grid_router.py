@@ -489,7 +489,7 @@ def _negotiate_worker(job):
 
 def negotiate(dump,nets,res=0.1,layer_cost=None,via_cost=30.0,clearance=0.2,width=0.2,via_diameter=0.6,via_drill=0.3,
               hole_clearance=0.25,edge_clearance=0.5,allowed_layers=None,grow=None,iterations=30,present=0.5,present_growth=1.6,
-              history=1.0,margin_mm=4.0,wide_margin_mm=12.0,max_expansions=2_000_000,log=print,workers=1,waves=4,
+              history=1.0,margin_mm=4.0,wide_margin_mm=12.0,max_expansions=2_000_000,log=print,workers=1,
               fill_guards=None,fill_clearance=0.45,state_path=None,deadline=None):
     """PathFinder-style negotiated routing of whole signal nets.
 
@@ -521,7 +521,12 @@ def negotiate(dump,nets,res=0.1,layer_cost=None,via_cost=30.0,clearance=0.2,widt
                 &(raster.d_smd>=vr+margin))
     disc=lambda r:(lambda k:(np.add.outer(np.arange(-k,k+1)**2,np.arange(-k,k+1)**2)<=(r/res)**2))(int(math.ceil(r/res)))
     # Track cells conflict with another track within width+clearance and with a via within the via spacing.
-    occ_track=np.zeros((L,H,W),np.int16);occ_via=np.zeros((H,W),np.int16);hist=np.zeros((L,H,W),np.float32);hist_via=np.zeros((H,W),np.float32)
+    import multiprocessing
+    def shared(shape,dtype):
+        # Shared with forked workers, so every wave routes against the live congestion.
+        n=int(np.prod(shape))*np.dtype(dtype).itemsize
+        return np.frombuffer(multiprocessing.RawArray('b',n) if workers>1 else bytearray(n),dtype).reshape(shape)
+    occ_track=shared((L,H,W),np.int16);occ_via=shared((H,W),np.int16);hist=shared((L,H,W),np.float32);hist_via=shared((H,W),np.float32)
     pads={p['uuid']:p for p in dump['pads']}
     pads_by_net={n:[p for p in dump['pads'] if p['net']==n] for n in nets}
     routes={}
@@ -570,9 +575,10 @@ def negotiate(dump,nets,res=0.1,layer_cost=None,via_cost=30.0,clearance=0.2,widt
     def route_net(net,pfac):
         # Retry wider with a larger budget and an inflated heuristic (cost within weight x optimal):
         # under heavy congestion costs an exact search can exhaust its budget on a routable net.
-        for window,budget,weight in ((margin_mm,max_expansions,1.0),(wide_margin_mm,3*max_expansions,1.3),(wide_margin_mm,3*max_expansions,2.5)):
+        for attempt,(window,budget,weight) in enumerate(((margin_mm,max_expansions,1.0),(wide_margin_mm,3*max_expansions,1.3),(wide_margin_mm,3*max_expansions,2.5))):
             r=route_window(net,pfac,max(margin_mm,window),budget,weight)
-            if r[0]!='fail' or 'search limit' not in r[1]:return r
+            if r[0]!='fail':return (*r,attempt)
+            if 'search limit' not in r[1]:break
         return r
 
     def route_window(net,pfac,margin_mm,max_expansions,weight):
@@ -655,28 +661,46 @@ def negotiate(dump,nets,res=0.1,layer_cost=None,via_cost=30.0,clearance=0.2,widt
             sparse=lambda a:(lambda i:(i,a[tuple(i)]))(np.array(np.nonzero(a)))
             pickle.dump({'key':key,'hist':sparse(hist),'hist_via':sparse(hist_via),'routes':routes,'pfac':pfac,'conflicted':conflicted,'iteration':it,'failures':failures},f)
         os.replace(state_path+'.tmp',state_path)
+    def disjoint_waves(batch):
+        boxes={}
+        for net in batch:
+            pts=np.array([p['xy'] for p in pads_by_net[net]],float)
+            boxes[net]=(pts.min(0)-margin_mm*1e6,pts.max(0)+margin_mm*1e6)
+        waves=[]
+        for net in batch:
+            lo,hi=boxes[net]
+            for wave in waves:
+                if len(wave)<4*workers and all((lo>boxes[o][1]).any() or (hi<boxes[o][0]).any() for o in wave):wave.append(net);break
+            else:waves.append([net])
+        return waves
     global _NEGOTIATE_ROUTE
+    pool=None
     for it in range(start,iterations):
         if deadline and time.time()>deadline:
-            log(f'NEGOTIATE deadline reached before iteration {it+1}; state saved for resume');return None,None
-        failed=0;batch=[n for n in order if not it or n in conflicted or n not in routes]
+            log(f'NEGOTIATE deadline reached before iteration {it+1}; state saved for resume')
+            if pool is not None:pool.terminate()
+            return None,None
+        failed=0;attempts=[0,0,0];batch=[n for n in order if not it or n in conflicted or n not in routes]
         if workers>1:
-            # Waves of parallel routing: each wave sees the congestion of all earlier waves.
-            import multiprocessing
-            for wave in (batch[i::waves] for i in range(waves)):
+            # Waves of nets whose search windows do not overlap route in parallel with the
+            # same outcome as routing them one after another.
+            if pool is None:
+                _NEGOTIATE_ROUTE=route_net
+                pool=multiprocessing.get_context('fork').Pool(workers,maxtasksperchild=200)
+            for wave in disjoint_waves(batch):
                 for net in wave:
                     if net in routes:stamp(net,routes.pop(net)[0],-1)
-                _NEGOTIATE_ROUTE=route_net
-                with multiprocessing.get_context('fork').Pool(workers) as pool:
-                    done=pool.map(_negotiate_worker,[(n,pfac) for n in wave],chunksize=4)
+                done=pool.map(_negotiate_worker,[(n,pfac) for n in wave],chunksize=1)
                 for net,r in done:
                     if r[0]=='fail':failed+=1;failures[net]=r[1];continue
+                    attempts[r[2]]+=1;r=r[:2]
                     failures.pop(net,None);routes[net]=r;stamp(net,r[0],+1)
         else:
             for net in batch:
                 if net in routes:stamp(net,routes[net][0],-1)
                 r=route_net(net,pfac)
                 if r[0]=='fail':routes.pop(net,None);failed+=1;failures[net]=r[1];continue
+                attempts[r[2]]+=1;r=r[:2]
                 failures.pop(net,None);routes[net]=r;stamp(net,r[0],+1)
         conflicted=set()
         for net,(((ls,ys,xs),(vy,vx),track,via),_) in routes.items():
@@ -684,13 +708,14 @@ def negotiate(dump,nets,res=0.1,layer_cost=None,via_cost=30.0,clearance=0.2,widt
             if hot.any():conflicted.add(net);np.add.at(hist,(ls[hot],ys[hot],xs[hot]),history)
             vhot=occ_via[vy,vx]-own_at(via,None,vy,vx)>0
             if vhot.any():conflicted.add(net);np.add.at(hist_via,(vy[vhot],vx[vhot]),history)
-        log(f'NEGOTIATE iteration {it+1}: {len(routes)} nets routed, {len(conflicted)} in conflict, {failed} unroutable')
+        log(f'NEGOTIATE iteration {it+1}: {len(routes)} nets routed, {len(conflicted)} in conflict, {failed} unroutable; exact/wide/greedy searches {attempts}')
         save(it+1)
         if it==start:
             for net,why in sorted(failures.items()):log(f'NEGOTIATE unroutable {net}: {why}')
         if not conflicted:break
         # Every net touching a contested cell is rerouted next round.
         pfac*=present_growth
+    if pool is not None:pool.terminate()
     for net,why in sorted(failures.items()):log(f'NEGOTIATE unroutable {net}: {why}')
     # Plane fills sharing a signal layer: accept routes one by one, dropping any that split the fill.
     split_dropped=set()

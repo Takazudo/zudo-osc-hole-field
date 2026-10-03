@@ -108,7 +108,7 @@ class NegotiationTests(unittest.TestCase):
         self.assertFalse([r for r in results if not r['path']])
 
     def test_parallel_waves_match_the_serial_outcome(self):
-        results,_=negotiate(crossing_board(),['A','B'],res=0.1,clearance=0.2,width=0.2,layer_cost=[1.0],log=lambda m:None,workers=2,waves=2)
+        results,_=negotiate(crossing_board(),['A','B'],res=0.1,clearance=0.2,width=0.2,layer_cost=[1.0],log=lambda m:None,workers=2)
         self.assertEqual({r['net'] for r in results if r['path']},{'A','B'})
 
 
