@@ -17,7 +17,8 @@ DISPLAY_EPOCH = Path('design/partition/peripheral-source-epoch-20261002.json')
 POWER_EPOCH = Path('design/partition/peripheral-source-epoch-20261002-power-metadata.json')
 ROUTING_EPOCH = Path('design/partition/peripheral-source-epoch-20261002-octave-routing.json')
 IDENTITY_EPOCH = Path('design/partition/peripheral-source-epoch-20261002-feedback-identities.json')
-OUTPUT = Path('design/partition/peripheral-source-epoch-20261002-connector-locality.json')
+CONNECTOR_EPOCH = Path('design/partition/peripheral-source-epoch-20261002-connector-locality.json')
+OUTPUT = Path('design/partition/peripheral-source-epoch-20261003-stage-optical-layout.json')
 CONNECTOR_BASE = '141b508e89030e8465bf750147d529426c60b91f'
 CONNECTOR_SOURCE = Path('design/partition/control-connector-locality.json')
 PARTITION = 'design/partition/partition.json'
@@ -251,7 +252,11 @@ def derive():
         'generator replaces routing, so its output definition remains identical. '
         'The later K/P pair permutation changes no EL or octave source geometry or contacts. '
         'Historical native/model prerequisites remain stale; actual octave PCB checks are separate.')
-    result['prior_epoch'] = {'path': str(IDENTITY_EPOCH), 'sha256': sha(identity_epoch)}
+    # The connector-locality epoch stays byte-stable; other proofs bind its hash.
+    connector_epoch = CONNECTOR_EPOCH.read_bytes()
+    if connector_epoch != historical(str(CONNECTOR_EPOCH), STAGE_LAYOUT_BASE):
+        raise ValueError('Historical connector-locality epoch was modified')
+    result['prior_epoch'] = {'path': str(CONNECTOR_EPOCH), 'sha256': sha(connector_epoch)}
     result['connector_locality_transition'] = {'base_commit':CONNECTOR_BASE,
         'proposal':str(CONNECTOR_SOURCE),'proposal_sha256':sha(connector_source),
         'historical_partition_sha256':sha(old_partition),'current_partition_sha256':sha(new_partition),
