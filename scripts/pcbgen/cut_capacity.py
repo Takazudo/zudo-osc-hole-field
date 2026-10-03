@@ -16,7 +16,7 @@ from scipy import ndimage
 
 ROOT=Path(__file__).resolve().parents[2]
 sys.path.insert(0,str(ROOT))
-from scripts.pcbgen.grid_router import LAYERS,Raster
+from scripts.pcbgen.grid_router import Raster
 
 PLANE_NETS=('AGND','+12V','-12V','+5V')
 
@@ -31,7 +31,7 @@ def line_capacity(free_line,res,pitch):
 def scan(dump,res=0.1,width=0.2,clearance=0.2,step_mm=0.5,exclude=PLANE_NETS):
     raster=Raster(dump,res,{t['uuid'] for t in dump['tracks'] if t['net'] in exclude})
     free=[]
-    for li in range(4):
+    for li in range(len(raster.layers)):
         occupied=raster.label[li]!=0
         free.append((ndimage.distance_transform_edt(~occupied)*res>=clearance+width/2)&(raster.d_edge>=width/2)
                     &(raster.d_keep_track[li]>=width/2))
@@ -45,7 +45,7 @@ def scan(dump,res=0.1,width=0.2,clearance=0.2,step_mm=0.5,exclude=PLANE_NETS):
             c=origin+i*raster.step
             demand=int(((spans[:,0]<c)&(c<spans[:,1])).sum() if axis=='x' else ((spans[:,2]<c)&(c<spans[:,3])).sum()) if len(spans) else 0
             caps=[line_capacity(f[:,i] if axis=='x' else f[i,:],res,pitch) for f in free]
-            rows.append({'axis':axis,'position_mm':round(c/1e6,2),'demand':demand,'capacity':dict(zip(LAYERS,caps))})
+            rows.append({'axis':axis,'position_mm':round(c/1e6,2),'demand':demand,'capacity':dict(zip(raster.layers,caps))})
     return rows
 
 

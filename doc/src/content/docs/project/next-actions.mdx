@@ -60,7 +60,7 @@ The [oscillator reference fanout](../architecture/osc-reference-fanout.mdx) now 
 
 ## Jack PCB routing continuation
 
-The [single-J native draft](../verification/osc-pcb-jack.mdx) is historical rejected evidence: 5,611 native open edges and no copper after bounded routing. Issue #66 replaces its source/schematic projection with `osc-jack-left` and `osc-jack-right`, preserving all fixed centres and same-face local bypass clusters. #38 must now generate and route each native half board, inspect short local return loops, and verify complete native ratsnest/DRC. Source capacity/parity does not establish routability. Physical #55/#57/#64/#65 remain NOT RUN; protection #59 remains OPEN.
+The [single-J native draft](../verification/osc-pcb-jack.mdx) is historical rejected evidence: 5,611 native open edges and no copper after bounded routing. Issue #66 replaces its source/schematic projection with `osc-jack-left` and `osc-jack-right`, preserving all fixed centres and same-face local bypass clusters. Owner decision 2026-10-03 (#38): both halves move to six layers with locality re-placement, after a cut-line bound showed four layers could not carry their signals with intact planes. Each half is routed by the staged native-checked grid router in `scripts/pcbgen/route_jack_grid.py`; the [jack page](../verification/osc-pcb-jack.mdx) records the current counts. Physical #55/#57/#64/#65 remain NOT RUN; protection #59 remains OPEN.
 
 
 ## Stage-optical PCB continuation

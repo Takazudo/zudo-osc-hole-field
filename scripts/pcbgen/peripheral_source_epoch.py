@@ -21,6 +21,7 @@ CONNECTOR_EPOCH = Path('design/partition/peripheral-source-epoch-20261002-connec
 OUTPUT = Path('design/partition/peripheral-source-epoch-20261003-stage-optical-layout.json')
 CONNECTOR_BASE = '141b508e89030e8465bf750147d529426c60b91f'
 CONNECTOR_SOURCE = Path('design/partition/control-connector-locality.json')
+JACK_BASE = 'eecfdaf60db38d5f42b85ffb3d3fdd07403fc27f'
 PARTITION = 'design/partition/partition.json'
 IDENTITY_BASE = '8d2940ac7f6fde3d2a466e4e21c45d4f232fdad1'
 IDENTITIES = Path('design/standard/precision-feedback-bindings.json')
@@ -208,14 +209,17 @@ def prove_feedback_identity_only(old_bytes, new_bytes, contract):
 
 def derive():
     from scripts.checks.control_connector_locality import prove_partition_transition
+    from scripts.checks.jack_locality import prove_jack_locality_transition
     identity_epoch = IDENTITY_EPOCH.read_bytes()
     if identity_epoch != historical(str(IDENTITY_EPOCH), CONNECTOR_BASE):
         raise ValueError('Historical feedback identity epoch was modified')
     connector_source = CONNECTOR_SOURCE.read_bytes()
     old_partition = historical(PARTITION, CONNECTOR_BASE)
+    jack_base_partition = historical(PARTITION, JACK_BASE)
     new_partition = Path(PARTITION).read_bytes()
-    prove_partition_transition(json.loads(old_partition), json.loads(new_partition),
+    prove_partition_transition(json.loads(old_partition), json.loads(jack_base_partition),
                                json.loads(connector_source))
+    prove_jack_locality_transition(json.loads(jack_base_partition), json.loads(new_partition))
     routing_epoch = ROUTING_EPOCH.read_bytes()
     if routing_epoch != historical(str(ROUTING_EPOCH), IDENTITY_BASE):
         raise ValueError('Historical routing epoch was modified')
@@ -259,8 +263,11 @@ def derive():
     result['prior_epoch'] = {'path': str(CONNECTOR_EPOCH), 'sha256': sha(connector_epoch)}
     result['connector_locality_transition'] = {'base_commit':CONNECTOR_BASE,
         'proposal':str(CONNECTOR_SOURCE),'proposal_sha256':sha(connector_source),
-        'historical_partition_sha256':sha(old_partition),'current_partition_sha256':sha(new_partition),
+        'historical_partition_sha256':sha(old_partition),'current_partition_sha256':sha(jack_base_partition),
         'scope':'Whole partition equality after only the declared K/P header-pair and service-aperture permutation. EL and octave source geometry/contacts unchanged. No native/model rebinding.'}
+    result['jack_locality_transition'] = {'base_commit':JACK_BASE,
+        'base_partition_sha256':sha(jack_base_partition),'current_partition_sha256':sha(new_partition),
+        'scope':'Whole partition equality except jack-half package faces, jack bypass distances and the six-layer jack stack (owner decision 2026-10-03). EL and octave source geometry/contacts unchanged. No native/model rebinding.'}
     result['feedback_identity_transition'] = {'base_commit':IDENTITY_BASE,
         'contract':str(IDENTITIES),'sha256':sha(identity_bytes),'package_count':32,
         'scope':'Complete IO report equality except the 32 named symbol/MPN pairs and bound native-netlist hash; no native/model rebinding'}
