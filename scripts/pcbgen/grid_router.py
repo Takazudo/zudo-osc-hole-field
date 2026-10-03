@@ -138,7 +138,50 @@ def island_mask(raster,dump,members):
     return mask
 
 
+_LIB=None
+
+
+def native_astar():
+    """Compile grid_astar.c once into the repository cache; None if no C compiler is available."""
+    global _LIB
+    if _LIB is None:
+        import ctypes,hashlib,shutil,subprocess
+        source=Path(__file__).with_name('grid_astar.c');_LIB=False
+        cc=shutil.which('cc') or shutil.which('gcc')
+        if cc and source.exists():
+            out=ROOT/'.circuit-cache'/f"grid_astar-{hashlib.sha256(source.read_bytes()).hexdigest()[:12]}.so"
+            out.parent.mkdir(exist_ok=True)
+            if not out.exists():
+                done=subprocess.run([cc,'-O2','-shared','-fPIC','-o',str(out),str(source)],capture_output=True)
+                if done.returncode:return None
+            lib=ctypes.CDLL(str(out));P=ctypes.c_void_p
+            lib.grid_astar.restype=ctypes.c_long
+            lib.grid_astar.argtypes=[ctypes.c_int]*3+[P]*7+[ctypes.c_float,ctypes.c_long,P,ctypes.c_long,P]
+            _LIB=lib
+    return _LIB or None
+
+
 def astar(free,via_ok,src,goal,layer_cost,via_cost,max_expansions,weight=1.0,penalty=None):
+    lib=native_astar()
+    if lib is not None:
+        import ctypes
+        L,h,w=free.shape
+        passable=np.ascontiguousarray(free|src|goal,dtype=np.uint8)
+        cost=np.empty((L,h,w),np.float32)
+        for l in range(L):cost[l]=layer_cost[l]*(penalty[l] if penalty is not None else 1.0)
+        through=np.ascontiguousarray(src.all(0)|goal.all(0),dtype=np.uint8)
+        hdist=np.ascontiguousarray(ndimage.distance_transform_edt(~goal.any(0))*weight,dtype=np.float32)
+        arrays=[passable,cost,np.ascontiguousarray(via_ok,dtype=np.uint8),through,
+                np.ascontiguousarray(src,dtype=np.uint8),np.ascontiguousarray(goal,dtype=np.uint8),hdist]
+        cap=4*(h+w)*L+100000;out=np.empty(cap,np.int32);expanded=ctypes.c_long(0)
+        n=lib.grid_astar(L,h,w,*[a.ctypes.data for a in arrays],float(via_cost),int(max_expansions),out.ctypes.data,cap,ctypes.byref(expanded))
+        if n<0:return None,expanded.value
+        idx=out[:n][::-1];plane=h*w
+        return [(int(i//plane),int(i%plane//w),int(i%w)) for i in idx],expanded.value
+    return astar_py(free,via_ok,src,goal,layer_cost,via_cost,max_expansions,weight,penalty)
+
+
+def astar_py(free,via_ok,src,goal,layer_cost,via_cost,max_expansions,weight=1.0,penalty=None):
     """Multi-source A*; through-copper (all layers own copper) switches layer without a via.
 
     weight>1 inflates the heuristic: faster, at most weight times the optimal cost.
@@ -432,6 +475,176 @@ def route(dump,nets=(),rip=(),rip_first=False,res=0.1,layer_cost=None,via_cost=3
 
     if rrr_rounds:
         rip_up_and_reroute()
+    return results,sorted(removed)
+
+
+_NEGOTIATE_ROUTE=None
+
+
+def _negotiate_worker(job):
+    net,pfac=job
+    return net,_NEGOTIATE_ROUTE(net,pfac)
+
+
+def negotiate(dump,nets,res=0.1,layer_cost=None,via_cost=30.0,clearance=0.2,width=0.2,via_diameter=0.6,via_drill=0.3,
+              hole_clearance=0.25,edge_clearance=0.5,allowed_layers=None,grow=None,iterations=30,present=0.5,present_growth=1.6,
+              history=1.0,margin_mm=12.0,max_expansions=2_000_000,log=print,workers=1,waves=4,
+              fill_guards=None,fill_clearance=0.45):
+    """PathFinder-style negotiated routing of whole signal nets.
+
+    All copper of the named nets is ripped and every net is rerouted from its pads.
+    Other nets' tracks may overlap at a rising cost; cells that stay shared collect
+    history cost, so contested nets spread out over the iterations. Vias never
+    share space. Returns (results, removed_uuids); nets still in conflict after the
+    last iteration come back with path None for a later sequential pass.
+    """
+    nets=[n for n in nets if any(p['net']==n for p in dump['pads'])]
+    removed={i['uuid'] for k in ('tracks','vias') for i in dump[k] if i['net'] in nets}
+    raster=Raster(dump,res,removed,grow or {});L=len(raster.layers);H,W=raster.h,raster.w
+    layer_cost=list(layer_cost) if layer_cost else [3.0 if n in ('F.Cu','B.Cu') else 1.0 for n in raster.layers]
+    allowed=[raster.layers.index(n) for n in (allowed_layers or raster.layers)]
+    margin=res/SQRT2+0.01;vr=via_diameter/2
+    foreign=[raster.label[l]!=0 for l in range(L)]
+    static_free=np.zeros((L,H,W),bool)
+    for l in allowed:
+        static_free[l]=((ndimage.distance_transform_edt(~foreign[l])*res>=clearance+width/2+margin)
+                        &(raster.d_edge>=edge_clearance+width/2+margin)&(raster.d_keep_track[l]>=width/2+margin))
+    any_copper=np.any(foreign,axis=0)
+    static_via=((ndimage.distance_transform_edt(~any_copper)*res>=clearance+vr+margin)&(raster.d_edge>=edge_clearance+vr+margin)
+                &(raster.d_keep_via>=vr+margin)&(ndimage.distance_transform_edt(~raster.hole)*res>=vr+hole_clearance+margin)
+                &(raster.d_smd>=vr+margin))
+    disc=lambda r:(lambda k:(np.add.outer(np.arange(-k,k+1)**2,np.arange(-k,k+1)**2)<=(r/res)**2))(int(math.ceil(r/res)))
+    # Track cells conflict with another track within width+clearance and with a via within the via spacing.
+    k_track=disc(width+clearance+margin);k_via_track=disc(vr+clearance+width/2+margin);k_via_via=disc(2*vr+clearance+margin)
+    occ_track=np.zeros((L,H,W),np.int16);occ_via=np.zeros((H,W),np.int16);hist=np.zeros((L,H,W),np.float32)
+    pads={p['uuid']:p for p in dump['pads']}
+    pads_by_net={n:[p for p in dump['pads'] if p['net']==n] for n in nets}
+    routes={}
+
+    def stamp(net,route,sign):
+        cl,vias,box=route
+        (y0,y1),(x0,x1)=box
+        for l in range(L):
+            if cl[l].any():occ_track[l,y0:y1,x0:x1]+=sign*ndimage.binary_dilation(cl[l],structure=k_track).astype(np.int16)
+        if vias.any():
+            vt=ndimage.binary_dilation(vias,structure=k_via_track).astype(np.int16)
+            for l in range(L):occ_track[l,y0:y1,x0:x1]+=sign*vt
+            occ_via[y0:y1,x0:x1]+=sign*ndimage.binary_dilation(vias,structure=k_via_via).astype(np.int16)
+        anyl=np.any(cl,axis=0)
+        if anyl.any():occ_via[y0:y1,x0:x1]+=sign*ndimage.binary_dilation(anyl,structure=k_via_track).astype(np.int16)
+
+    def route_net(net,pfac):
+        N=raster.net_id[net];group=pads_by_net[net]
+        if len(group)<2:return None
+        pts=np.array([p['xy'] for p in group],float)
+        lo=pts.min(0)-margin_mm*1e6;hi=pts.max(0)+margin_mm*1e6
+        sl=raster.window(lo,hi);(y0,y1),(x0,x1)=(sl[0].start,sl[0].stop),(sl[1].start,sl[1].stop)
+        free=static_free[:,y0:y1,x0:x1].copy();via_ok=static_via[y0:y1,x0:x1].copy()
+        # Clearance to the net's own pads does not apply: recompute next to them.
+        own=np.zeros((L,y1-y0,x1-x0),bool)
+        for p in group:
+            m,psl=raster.polygon(p['poly'],conservative=False) if p['poly'] else (None,None)
+            if m is None:continue
+            ys=slice(psl[0].start-y0,psl[0].stop-y0);xs=slice(psl[1].start-x0,psl[1].stop-x0)
+            for name in p['layers']:own[raster.layers.index(name)][ys,xs]|=m
+        pad_zone=ndimage.binary_dilation(own.any(0),iterations=int(math.ceil((clearance+width/2+margin)/res))+2)
+        if pad_zone.any():
+            for l in allowed:
+                fl=foreign[l][y0:y1,x0:x1]&(raster.label[l][y0:y1,x0:x1]!=N)
+                local=(ndimage.distance_transform_edt(~fl)*res>=clearance+width/2+margin)&(raster.d_edge[y0:y1,x0:x1]>=edge_clearance+width/2+margin)&(raster.d_keep_track[l][y0:y1,x0:x1]>=width/2+margin)
+                free[l]|=pad_zone&local
+        via_ok&=occ_via[y0:y1,x0:x1]==0
+        cost=[(1.0+hist[l,y0:y1,x0:x1])*(1.0+pfac*occ_track[l,y0:y1,x0:x1]) for l in range(L)]
+        masks=[]
+        for p in group:
+            m=np.zeros((L,y1-y0,x1-x0),bool)
+            if p['poly']:
+                pm,psl=raster.polygon(p['poly'],conservative=False)
+                ys=slice(psl[0].start-y0,psl[0].stop-y0);xs=slice(psl[1].start-x0,psl[1].stop-x0)
+                for name in p['layers']:m[raster.layers.index(name)][ys,xs]|=pm
+            masks.append(m)
+        through=np.zeros((y1-y0,x1-x0),bool)
+        for m in masks:through|=m.all(0)
+        reached=masks[0].copy();cl=np.zeros((L,y1-y0,x1-x0),bool);vias=np.zeros((y1-y0,x1-x0),bool);paths=[]
+        order=sorted(range(1,len(group)),key=lambda i:float(np.hypot(*(pts[i]-pts[0]))))
+        for i in order:
+            src=masks[i]
+            if (src&reached).any():continue
+            path,_=astar(free,via_ok,src,reached,layer_cost,via_cost,max_expansions,1.0,cost)
+            if path is None:return None
+            i0=max(k for k,(l,y,x) in enumerate(path) if src[l,y,x]);i1=min(k for k,(l,y,x) in enumerate(path) if reached[l,y,x] and k>=i0)
+            path=path[i0:i1+1]
+            for k,(l,y,x) in enumerate(path):
+                cl[l,y,x]=True;reached[l,y,x]=True
+                if k and path[k-1][0]!=l and not through[y,x]:vias[y,x]=True
+            reached|=src
+            paths.append([(l,y+y0,x+x0,int(through[y,x])) for l,y,x in path])
+        return (cl,vias,((y0,y1),(x0,x1))),paths
+
+    order=sorted(nets,key=lambda n:len(pads_by_net[n]))
+    pfac=present;conflicted=set(order)
+    global _NEGOTIATE_ROUTE
+    for it in range(iterations):
+        failed=0;batch=[n for n in order if not it or n in conflicted]
+        if workers>1:
+            # Waves of parallel routing: each wave sees the congestion of all earlier waves.
+            import multiprocessing
+            for wave in (batch[i::waves] for i in range(waves)):
+                for net in wave:
+                    if net in routes:stamp(net,routes.pop(net)[0],-1)
+                _NEGOTIATE_ROUTE=route_net
+                with multiprocessing.get_context('fork').Pool(workers) as pool:
+                    done=pool.map(_negotiate_worker,[(n,pfac) for n in wave],chunksize=4)
+                for net,r in done:
+                    if r is None:failed+=1;continue
+                    routes[net]=r;stamp(net,r[0],+1)
+        else:
+            for net in batch:
+                if net in routes:stamp(net,routes[net][0],-1)
+                r=route_net(net,pfac)
+                if r is None:routes.pop(net,None);failed+=1;continue
+                routes[net]=r;stamp(net,r[0],+1)
+        conflicted=set()
+        for net,((cl,vias,((y0,y1),(x0,x1))),_) in routes.items():
+            mine=np.zeros((L,y1-y0,x1-x0),np.int16)
+            for l in range(L):
+                if cl[l].any():mine[l]=ndimage.binary_dilation(cl[l],structure=k_track)
+            if vias.any():mine+=ndimage.binary_dilation(vias,structure=k_via_track)[None]
+            other=occ_track[:,y0:y1,x0:x1]-mine
+            hot=cl&(other>0)
+            if hot.any():
+                conflicted.add(net);hist[:,y0:y1,x0:x1]+=history*hot
+        log(f'NEGOTIATE iteration {it+1}: {len(routes)} nets routed, {len(conflicted)} in conflict, {failed} unroutable')
+        if not conflicted:break
+        # Every net touching a contested cell is rerouted next round.
+        pfac*=present_growth
+    # Plane fills sharing a signal layer: accept routes one by one, dropping any that split the fill.
+    split_dropped=set()
+    for gname,glayer in (fill_guards or {}).items():
+        if gname not in raster.net_id:continue
+        gl=raster.layers.index(glayer);P=raster.net_id[gname];lab=raster.label[gl].copy()
+        base=fill_partition(lab,P,fill_clearance,res);k_cl=disc(width/2+res);k_v=disc(vr)
+        for net in order:
+            r=routes.get(net)
+            if r is None or net in conflicted or net in split_dropped:continue
+            (cl,vias,((y0,y1),(x0,x1)))=r[0];trial=lab.copy()
+            if cl[gl].any():trial[y0:y1,x0:x1][ndimage.binary_dilation(cl[gl],structure=k_cl)]=-1
+            if vias.any():trial[y0:y1,x0:x1][ndimage.binary_dilation(vias,structure=k_v)]=-1
+            after=fill_partition(trial,P,fill_clearance,res)
+            if splits(base,after):split_dropped.add(net);continue
+            lab=trial;base=after
+        log(f'NEGOTIATE {gname} fill guard dropped {len(split_dropped)} nets')
+    results=[]
+    name=lambda p:p['ref']+'.'+p['pad']
+    for net in order:
+        r=routes.get(net)
+        if r is None or net in conflicted or net in split_dropped:
+            results.append({'net':net,'island':[name(p) for p in pads_by_net[net]],'path':None});continue
+        for path in r[1]:
+            out=[]
+            for l,y,x,thr in path:
+                px,py=raster.point(y,x);out.append([raster.layers[l],px,py,thr])
+            results.append({'net':net,'island':[name(p) for p in pads_by_net[net]],'path':out,'width_nm':int(round(width*1e6)),'via_diameter_nm':int(round(via_diameter*1e6))})
     return results,sorted(removed)
 
 

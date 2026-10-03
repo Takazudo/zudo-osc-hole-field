@@ -16,7 +16,7 @@ import argparse,collections,hashlib,json,shutil,subprocess,sys
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[2]
 sys.path.insert(0,str(ROOT))
-from scripts.pcbgen.grid_router import route,copper_rows
+from scripts.pcbgen.grid_router import route,copper_rows,negotiate
 from scripts.pcbgen.uuid_tools import stable_uuid
 
 PLANES={'+12V':'In4.Cu','-12V':'In3.Cu'}
@@ -33,6 +33,8 @@ STAGES=[
     {'name':'rail-fanout','nets':['+12V','-12V'],'planes':PLANES,'clearance':.25,'rail_width':.4},
     {'name':'rail-links','nets':RAILS,'clearance':.25,'rail_width':.4},
     {'name':'rail-escapes','nets':RAILS,'clearance':.25,'rail_width':.25,'res':.05,'window_mm':6},
+    # Negotiated (PathFinder) routing of every signal net on a 0.05 mm grid; leftovers go to the batches below.
+    {'name':'negotiate','negotiate':True,'res':.05,'iterations':16,'workers':4,'clearance':.2,'signal_width':.2,'signal_via_diameter':.6,'grow':{n:.05 for n in [*RAILS,'AGND']}},
     # Short local nets first.
     {'name':'signals-local','signals':True,'max_span_mm':8,'escape_halo_mm':.9,'clearance':.2,'signal_width':.2,'signal_via_diameter':.6,'grow':{n:.05 for n in [*RAILS,'AGND']}},
     # Then the remaining open signal nets, shortest first, in checked and promoted batches.
@@ -155,6 +157,15 @@ def stage(board_id,current,spec,definition,log):
         stitched={**dump,'islands':{'AGND':[g for i,g in enumerate(groups) if i!=main]}}
         results,removed=route(stitched,['AGND'],planes={'AGND':'In1.Cu'},allowed_layers=SIGNAL_LAYERS,layer_cost=LAYER_COST,rail_nets=RAILS,
                               log=log,clearance=.25,rail_width=.3,via_diameter=.6,res=.05)
+        rows,links=copper_rows(results,board_id,'grid-'+spec['name'])
+    elif spec.get('negotiate'):
+        # PathFinder pass over every signal net: rip all signal copper and reroute together.
+        nets=sorted({p['net'] for p in dump['pads'] if p['net'] and p['net'] not in (*RAILS,'AGND')})
+        nets=[n for n in nets if sum(1 for p in dump['pads'] if p['net']==n)>1]
+        results,removed=negotiate(dump,nets,res=spec['res'],layer_cost=LAYER_COST,clearance=spec['clearance'],width=spec['signal_width'],
+                                  via_diameter=spec['signal_via_diameter'],allowed_layers=SIGNAL_LAYERS,grow=spec['grow'],
+                                  iterations=spec['iterations'],present=2.0,present_growth=1.5,history=2.0,workers=spec['workers'],
+                                  fill_guards={'-12V':'In3.Cu'},log=log)
         rows,links=copper_rows(results,board_id,'grid-'+spec['name'])
     elif spec.get('signal_fanout'):
         # Reserve a via escape for every pin of a long net before long routes can box it in.
