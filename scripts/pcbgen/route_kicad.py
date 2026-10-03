@@ -10,6 +10,7 @@ sys.path.insert(0,str(ROOT))
 from scripts.geometry.panel_frame import to_kicad
 from scripts.pcbgen.definition import load_definition
 from scripts.pcbgen.uuid_tools import stable_uuid,normalize_file
+from scripts.pcbgen.ses_text import without_placement
 
 def vec(x,y):return pcbnew.VECTOR2I(pcbnew.FromMM(x),pcbnew.FromMM(y))
 def uid(item):return item.m_Uuid.AsString()
@@ -82,6 +83,8 @@ def prepare(board_id,board_path,dsn):
     print(f'{board_id}: draft zones/classes applied; {len(list(board.GetTracks()))} existing tracks fixed; DSN exported')
 
 def finish(board_path,ses,stats_path):
+    stripped=Path(ses).with_name('import.ses');stripped.write_text(without_placement(Path(ses).read_text()))
+    ses=stripped
     board=pcbnew.LoadBoard(str(board_path));board.SetFileName(str(board_path))
     before={uid(x):track_signature(x) for x in board.GetTracks()}
     zones={uid(z) for z in board.Zones()}

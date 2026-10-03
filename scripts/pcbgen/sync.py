@@ -14,7 +14,7 @@ ROOT=Path(__file__).resolve().parents[2]
 sys.path.insert(0,str(ROOT))
 from scripts.geometry.panel_frame import to_kicad
 from scripts.pcbgen.definition import load_definition,load_lock,selected_hardware
-from scripts.pcbgen.netlist import read_netlist
+from scripts.pcbgen.netlist import TOKEN,many,one,parse,read_netlist
 from scripts.pcbgen.uuid_tools import stable_uuid,normalize_file
 from scripts.pcbgen.geometry import outline_segments,staging_position
 from scripts.pcbgen.footprint_attributes import source_attribute_bits
@@ -22,6 +22,23 @@ from scripts.pcbgen.pose import source_pose
 from scripts.pcbgen.octave_labels import place_default_reference
 
 LIB='zudo-osc-hole-field'
+# Multi-unit packages here carry per-unit Role/LogicalCellKey/Island values;
+# KiCad parity compares the netlist's representative `(fields ...)` values.
+NATIVE_UNIT_FIELD_BOARDS={'osc-stage-optical'}
+UNIT_FIELDS=('Role','LogicalCellKey','Island')
+
+def read_native_fields(path:Path):
+    """Return each component's netlist `(fields ...)` block, which KiCad parity compares."""
+    root,_=parse(TOKEN.findall(Path(path).read_text()))
+    result={}
+    for comp in many(one(root,'components'),'comp'):
+        fields={}
+        for entry in many(one(comp,'fields'),'field'):
+            name=one(entry,'name')[1]
+            if name in fields or len(entry) not in (2,3):raise ValueError('malformed or duplicate native component field')
+            fields[name]=entry[2] if len(entry)==3 else ''
+        result[one(comp,'ref')[1]]=fields
+    return result
 
 def vec(x,y):return pcbnew.VECTOR2I(pcbnew.FromMM(x),pcbnew.FromMM(y))
 def item_uuid(item):return item.m_Uuid.AsString()
@@ -39,6 +56,7 @@ def sync(board_id:str,output:Path|None=None,netlist:Path|None=None):
     if len(by_ref)!=len(hardware):raise ValueError('lockfile selections share a reference')
     netpath=netlist or ROOT/definition.netlist
     components,pin_nets=read_netlist(netpath)
+    native_fields=read_native_fields(netpath) if board_id in NATIVE_UNIT_FIELD_BOARDS else {}
     refs={c.ref for c in components}
     hole_refs={f"MH_{h['id']}" for h in definition.mounting_holes}
     if refs & hole_refs:raise ValueError('mounting-hole reference collides with netlist')
@@ -132,6 +150,9 @@ def sync(board_id:str,output:Path|None=None,netlist:Path|None=None):
                 # Declare that default on first save; preserve existing styling.
                 if new_field:field.SetTextThickness(pcbnew.FromMM(0.15))
                 field.SetVisible(False)
+        for unit_field in UNIT_FIELDS:
+            if unit_field in native_fields.get(c.ref,{}) and fp.HasField(unit_field):
+                fp.SetField(unit_field,native_fields[c.ref][unit_field])
         if board_id=='osc-jack':
             for unit_field in ('Role','LogicalCellKey','Island'):
                 if unit_field not in fields and fp.HasField(unit_field):

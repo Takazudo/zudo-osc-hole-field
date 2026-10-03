@@ -77,11 +77,14 @@ def build():
     proposal=source['placement_proposal'];gap=proposal['courtyard_clearance_mm']
     obstacles=[(h['center_mm'],h['diameter_mm']/2) for h in holes]
     obstacles +=[(p['center_mm'],proposal['support_head_diameter_mm']/2) for p in posts]
-    placements=[];boxes=list(source.get("bulk_reservation_rectangles_mm",[]))
+    placements=[];boxes=list(source.get("bulk_reservation_rectangles_mm",[]));fixed_boxes=[]
+    # Optional extra keep-clear around fixed emitters so their pads stay routable.
+    fixed_gap=proposal.get('fixed_part_clearance_mm',gap)
     def intersects(a,b):return a[0]<b[2]+gap and b[0]<a[2]+gap and a[1]<b[3]+gap and b[1]<a[3]+gap
     def legal(box):
         if not(left+.30<=box[0] and box[2]<=right-.30 and top+.30<=box[1] and box[3]<=bottom-.30):return False
         if any(intersects(box,b) for b in boxes):return False
+        if any(a[0]<b[2]+fixed_gap and b[0]<a[2]+fixed_gap and a[1]<b[3]+fixed_gap and b[1]<a[3]+fixed_gap for a in (box,) for b in fixed_boxes):return False
         for (x,y),radius in obstacles:
             # Match the current placer's conservative hole/collar bounding boxes.
             if intersects(box,[x-radius,y-radius,x+radius,y+radius]):return False
@@ -91,24 +94,41 @@ def build():
         p=locked[part['panel_uid']];b=box_by_fp[part['footprint']]
         box=[b[0]+p['x_mm'],b[1]+p['y_mm'],b[2]+p['x_mm'],b[3]+p['y_mm']]
         if p['rot_deg']!=0 or not legal(box):raise ValueError('fixed stage LED collision '+p['uid'])
-        placements.append({'ref':part['ref'],'x_mm':p['x_mm'],'y_mm':p['y_mm'],'rotation_deg':0,'courtyard_mm':box,'fixed':True});boxes.append(box)
+        placements.append({'ref':part['ref'],'x_mm':p['x_mm'],'y_mm':p['y_mm'],'rotation_deg':0,'courtyard_mm':box,'fixed':True});boxes.append(box);fixed_boxes.append(box)
     for region in proposal['regions']:
         parts=[p for p in selected if p['instance']==region['instance'] and not p['panel_uid']]
-        parts.sort(key=lambda p:(-p['courtyard']['area_mm2'],p['ref']))
+        area={p['ref']:p['courtyard']['area_mm2'] for p in parts}
+        nearest=proposal.get('decoupling')=='nearest'
+        def order(p):
+            # Optionally place each bypass capacitor directly after its own IC.
+            owner=p['decouples_ref'] if nearest and p['decouples_ref'] in area else None
+            return (-area[owner],owner,1,p['ref']) if owner else (-area[p['ref']],p['ref'],0,p['ref'])
+        parts.sort(key=order)
+        placed_box={}
         for part in parts:
             original=box_by_fp[part['footprint']];found=None
+            target=placed_box.get(part['decouples_ref']) if nearest else None
+            best=None
             for angle in (0,90):
                 local=original if angle==0 else [-original[3],original[0],-original[1],original[2]]
                 w=local[2]-local[0];h=local[3]-local[1]
                 x0,y0,x1,y1=region['rect']
-                for yi in range(round(y0*4),math.floor((y1-h)*4)+1):
+                rows=range(round(y0*4),math.floor((y1-h)*4)+1)
+                # Bottom-up packing keeps drivers beside the wide lower LED/amplifier gaps.
+                if proposal.get('scan_from')=='bottom':rows=reversed(rows)
+                for yi in rows:
                     for xi in range(round(x0*4),math.floor((x1-w)*4)+1):
                         x=xi/4;y=yi/4;box=[x,y,x+w,y+h]
-                        if legal(box):found={'ref':part['ref'],'x_mm':round(x-local[0],6),'y_mm':round(y-local[1],6),'rotation_deg':angle,'courtyard_mm':box,'fixed':False};break
+                        if not legal(box):continue
+                        candidate={'ref':part['ref'],'x_mm':round(x-local[0],6),'y_mm':round(y-local[1],6),'rotation_deg':angle,'courtyard_mm':box,'fixed':False}
+                        if target is None:found=candidate;break
+                        distance=math.dist(((box[0]+box[2])/2,(box[1]+box[3])/2),((target[0]+target[2])/2,(target[1]+target[3])/2))
+                        if best is None or distance<best[0]-1e-9:best=(distance,candidate)
                     if found:break
                 if found:break
+            if best is not None:found=best[1]
             if not found:raise ValueError('optical proposal OVERFLOW '+part['ref'])
-            placements.append(found);boxes.append(found['courtyard_mm'])
+            placements.append(found);boxes.append(found['courtyard_mm']);placed_box[part['ref']]=found['courtyard_mm']
     result={'schema_version':1,'status':'CONDITIONAL CANDIDATE; nominal passage/port checks only; installed fit NOT RUN',
             'source':'design/partition/stage-optical-input.json','source_sha256':hashlib.sha256((ROOT/'design/partition/stage-optical-input.json').read_bytes()).hexdigest(),
             'package_count':len(refs),'component_refs':sorted(refs),'stage_uids':sorted(stage_uids),

@@ -88,4 +88,14 @@ class RouterContractTest(unittest.TestCase):
             path=Path(tmp)/'fixture-route-one.json'
             original['routing']['zones'][0]['layers']=['In1.Cu'];path.write_text(json.dumps(original))
             with self.assertRaises(ValueError):load_definition(path)
+
+    def test_ses_import_text_drops_only_placement(self):
+        from scripts.pcbgen.ses_text import without_placement
+        ses=('(session x\n  (base_design x)\n  (placement\n    (resolution um 10)\n    (component \n'
+             '      (place "MH_(A)" 1 2 front 0)\n    )\n  )\n  (was_is\n  )\n  (routes (net A))\n)\n')
+        stripped=without_placement(ses)
+        self.assertNotIn('placement',stripped)
+        self.assertIn('(was_is',stripped);self.assertIn('(routes (net A))',stripped)
+        self.assertEqual(without_placement(stripped),stripped)
+        with self.assertRaisesRegex(ValueError,'unterminated'):without_placement('(session (placement (component')
 if __name__=='__main__':unittest.main()
