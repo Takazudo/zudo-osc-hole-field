@@ -20,6 +20,8 @@ FACE_PENALTY_MM=4.0
 # Nets longer than this pay a quadratic penalty in the swap pass; long spans, not total
 # length, are what overload the routing channels.
 SPAN_SOFT_MM=60.0
+# Boards whose placement has been rebuilt and rerouted with the swap pass.
+SWAP_BOARDS={'JL'}
 SWAP_PASSES=8
 
 
@@ -148,6 +150,7 @@ def place_jack_locality(board,free,grids,shapes,pin_nets,anchors,cluster_cells,t
             rows.append(row)
         placed[u]=offset
     swappable={u for u in units if u not in caps}
+    if board not in SWAP_BOARDS:return rows
     return improve_by_swaps(rows,{r:by_ref[r]['footprint'] for r in swappable},pin_nets,anchors)
 
 
