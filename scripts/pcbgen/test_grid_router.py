@@ -112,6 +112,34 @@ class NegotiationTests(unittest.TestCase):
         self.assertEqual({r['net'] for r in results if r['path']},{'A','B'})
 
 
+def detour_board(wall_half_mm):
+    # A on two pads 16 mm apart; a B wall across all of the board's single layer except its ends.
+    edges=[[0,0,30*MM,0],[30*MM,0,30*MM,40*MM],[30*MM,40*MM,0,40*MM],[0,40*MM,0,0]]
+    pads=[{'uuid':f'a{i}','ref':f'R{i}','pad':'1','net':'A','xy':[int(x*MM),20*MM],'layers':['B.Cu'],'poly':square(x,20),'drill':0,'npth':False,'locked':False}
+          for i,x in enumerate((7,23))]
+    wall=[{'uuid':'w','net':'B','a':[15*MM,int((20-wall_half_mm)*MM)],'b':[15*MM,int((20+wall_half_mm)*MM)],'width':int(0.3*MM),'layer':'B.Cu'}]
+    return {'board_sha256':'0','layers':['B.Cu'],'pads':pads,'tracks':wall,'vias':[],'keepouts':[],'edges':edges,'islands':{'A':[['a0'],['a1']]}}
+
+
+class WindowEscalationTests(unittest.TestCase):
+    def negotiate(self,dump,**kw):
+        log=[]
+        results,_=negotiate(dump,['A'],res=0.1,clearance=0.2,width=0.2,layer_cost=[1.0],margin_mm=4.0,log=log.append,**kw)
+        return results,log
+
+    def test_path_outside_the_first_window_is_found_in_the_wide_window(self):
+        # The wall reaches 8 mm past the pads: the 4 mm window has no path, the 12 mm one does.
+        results,log=self.negotiate(detour_board(8))
+        self.assertTrue(results[0]['path'],log)
+        self.assertTrue(any(abs(y-20*MM)>4*MM for _,_,y,_ in results[0]['path']))
+
+    def test_full_board_is_the_last_resort(self):
+        # The wall reaches 15 mm past the pads: only a full-board window gets around it.
+        results,log=self.negotiate(detour_board(15),wide_margin_mm=12.0)
+        self.assertTrue(results[0]['path'],log)
+        self.assertTrue(any('[0, 0, 0, 1]' in m for m in log),log)
+
+
 class FillGuardTests(unittest.TestCase):
     def test_wall_across_fill_splits_plane_regions(self):
         label=np.zeros((40,80),np.int32);label[20,5]=7;label[20,75]=7
