@@ -17,6 +17,10 @@ import statistics
 PLANE_NETS={'AGND','+12V','-12V','+5V'}
 RELAX_PASSES=40
 FACE_PENALTY_MM=4.0
+# Nets longer than this pay a quadratic penalty in the swap pass; long spans, not total
+# length, are what overload the routing channels.
+SPAN_SOFT_MM=60.0
+SWAP_PASSES=8
 
 
 def nearest(grid,masks,target):
@@ -143,6 +147,48 @@ def place_jack_locality(board,free,grids,shapes,pin_nets,anchors,cluster_cells,t
             if u in caps:row['bypass_cluster']=u
             rows.append(row)
         placed[u]=offset
+    swappable={u for u in units if u not in caps}
+    return improve_by_swaps(rows,{r:by_ref[r]['footprint'] for r in swappable},pin_nets,anchors)
+
+
+def net_cost(points):
+    xs=[x for x,_ in points];ys=[y for _,y in points]
+    dx,dy=max(xs)-min(xs),max(ys)-min(ys);excess=max(0.0,math.hypot(dx,dy)-SPAN_SOFT_MM)
+    return dx+dy+excess*excess/10.0
+
+
+def improve_by_swaps(rows,footprint,pin_nets,anchors):
+    """Swap legal slots between packages with the same footprint to shorten long nets.
+
+    Two packages with one footprint have identical courtyards in each other's slot (side
+    and rotation travel with the slot), so every swap stays legal.
+    """
+    at={r['ref']:r for r in rows}
+    nets_of={ref:{n for n in pin_nets[ref].values() if n and n not in PLANE_NETS} for ref in at}
+    members=defaultdict(set)
+    for ref,ns in nets_of.items():
+        for n in ns:members[n].add(ref)
+    cost=lambda n:net_cost(anchors.get(n,[])+[(at[r]['x_mm'],at[r]['y_mm']) for r in members[n]]) if len(members[n])+len(anchors.get(n,[]))>1 else 0.0
+    groups=defaultdict(list)
+    for ref in sorted(footprint):
+        if ref in at:groups[footprint[ref]].append(ref)
+    slot=('x_mm','y_mm','rotation_deg','side','courtyard_mm')
+    def swap(a,b):
+        ra,rb=at[a],at[b]
+        for k in slot:ra[k],rb[k]=rb[k],ra[k]
+    for _ in range(SWAP_PASSES):
+        improved=False
+        for group in groups.values():
+            for a in sorted(group,key=lambda r:-max((cost(n) for n in nets_of[r]),default=0)):
+                best=(-1e-6,None)
+                for b in group:
+                    if b==a:continue
+                    touched=nets_of[a]|nets_of[b]
+                    before=sum(cost(n) for n in touched);swap(a,b)
+                    delta=sum(cost(n) for n in touched)-before;swap(a,b)
+                    if delta<best[0]:best=(delta,b)
+                if best[1]:swap(a,best[1]);improved=True
+        if not improved:break
     return rows
 
 
