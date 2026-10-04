@@ -24,6 +24,11 @@ IC_CHANNEL_MM={'JL':0.8,'JR':0.0,'K':0.5}
 CHANNEL_DETOUR_MM=3.0
 # Courtyard gap between legalized packages (mm); the core spreads wider for routing room (#43).
 GAP_MM={'K':.6}
+# Same-footprint swap pass: nets longer than SPAN_SOFT_MM pay a quadratic penalty, since long
+# spans, not total length, overload routing channels.
+SPAN_SOFT_MM=60.0
+SWAP_PASSES=8
+SWAP_RADIUS_MM=25.0
 
 
 def nearest(grid,masks,target):
@@ -71,12 +76,12 @@ def masks_for(boxes,scale,theta,oriented_box,gap=.35):
     return envelope,masks
 
 
-def place_jack_locality(board,free,grids,shapes,pin_nets,anchors,cluster_cells,turn,oriented_box,instance_anchor=None,through_hole=lambda part:False,module_order=False):
+def place_jack_locality(board,free,grids,shapes,pin_nets,anchors,cluster_cells,turn,oriented_box,instance_anchor=None,through_hole=lambda part:False,module_order=False,swaps=False):
     """Place one board's free packages with that board's IC routing channel."""
-    return _place(board,free,grids,shapes,pin_nets,anchors,cluster_cells,turn,oriented_box,instance_anchor,IC_CHANNEL_MM.get(board,0.0),through_hole,GAP_MM.get(board,.35),module_order)
+    return _place(board,free,grids,shapes,pin_nets,anchors,cluster_cells,turn,oriented_box,instance_anchor,IC_CHANNEL_MM.get(board,0.0),through_hole,GAP_MM.get(board,.35),module_order,swaps)
 
 
-def _place(board,free,grids,shapes,pin_nets,anchors,cluster_cells,turn,oriented_box,instance_anchor,ic_channel,through_hole,gap,module_order):
+def _place(board,free,grids,shapes,pin_nets,anchors,cluster_cells,turn,oriented_box,instance_anchor,ic_channel,through_hole,gap,module_order,swaps):
     """Return floorplan rows for every free package of one jack board, or raise on overflow.
 
     anchors: {net: [(x_mm, y_mm), ...]} pad/contact positions of fixed parts and headers.
@@ -174,6 +179,56 @@ def _place(board,free,grids,shapes,pin_nets,anchors,cluster_cells,turn,oriented_
             if u in caps:row['bypass_cluster']=u
             rows.append(row)
         placed[u]=offset
+    if swaps:
+        swappable={u for u in units if u not in caps}
+        return improve_by_swaps(rows,{r:by_ref[r]['footprint'] for r in swappable},pin_nets,anchors)
+    return rows
+
+
+def net_cost(points):
+    xs=[x for x,_ in points];ys=[y for _,y in points]
+    dx,dy=max(xs)-min(xs),max(ys)-min(ys);excess=max(0.0,math.hypot(dx,dy)-SPAN_SOFT_MM)
+    return dx+dy+excess*excess/10.0
+
+
+def improve_by_swaps(rows,footprint,pin_nets,anchors,radius=SWAP_RADIUS_MM):
+    """Swap legal slots between packages with the same footprint to shorten long nets.
+
+    Two packages with one footprint have identical courtyards in each other's slot (side
+    and rotation travel with the slot), so every swap stays legal. Candidates are the
+    same-footprint slots within radius of the package's net median.
+    """
+    at={r['ref']:r for r in rows}
+    nets_of={ref:{n for n in pin_nets[ref].values() if n and n not in PLANE_NETS} for ref in at}
+    members=defaultdict(set)
+    for ref,ns in nets_of.items():
+        for n in ns:members[n].add(ref)
+    cost=lambda n:net_cost(anchors.get(n,[])+[(at[r]['x_mm'],at[r]['y_mm']) for r in members[n]]) if len(members[n])+len(anchors.get(n,[]))>1 else 0.0
+    groups=defaultdict(list)
+    for ref in sorted(footprint):
+        if ref in at:groups[footprint[ref]].append(ref)
+    slot=('x_mm','y_mm','rotation_deg','side','courtyard_mm')
+    def swap(a,b):
+        ra,rb=at[a],at[b]
+        for k in slot:ra[k],rb[k]=rb[k],ra[k]
+    def want(a):
+        pts=[q for n in nets_of[a] for q in anchors.get(n,[])+[(at[r]['x_mm'],at[r]['y_mm']) for r in members[n] if r!=a]]
+        return (statistics.median(x for x,_ in pts),statistics.median(y for _,y in pts)) if pts else None
+    for _ in range(SWAP_PASSES):
+        improved=False
+        for group in groups.values():
+            for a in sorted(group,key=lambda r:-max((cost(n) for n in nets_of[r]),default=0)):
+                t=want(a)
+                if t is None:continue
+                best=(-1e-6,None)
+                for b in group:
+                    if b==a or abs(at[b]['x_mm']-t[0])>radius or abs(at[b]['y_mm']-t[1])>radius:continue
+                    touched=nets_of[a]|nets_of[b]
+                    before=sum(cost(n) for n in touched);swap(a,b)
+                    delta=sum(cost(n) for n in touched)-before;swap(a,b)
+                    if delta<best[0]:best=(delta,b)
+                if best[1]:swap(a,best[1]);improved=True
+        if not improved:break
     return rows
 
 
