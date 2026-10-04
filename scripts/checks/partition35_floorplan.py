@@ -201,7 +201,7 @@ def build():
             instance_anchor=spread_module_homes(instance_anchor,areas,(4.3,8.3,313.7,291.7),holes=[notch],fill=.45)
             placements.extend(place_jack_locality(board,free,grids,shapes,pin_nets,anchors,
                 lambda parent,caps,side,horizontal:bypass_cells(parent,caps,side,shapes,pin_nets,horizontal),turn,oriented_box,instance_anchor,
-                lambda part:through_hole(part['footprint']),module_order=True,swaps=True))
+                lambda part:through_hole(part['footprint']),module_order=True))
             free=[]
         for p in free:
             location=grids[board,'B.Cu'].place(shapes[p['footprint']])

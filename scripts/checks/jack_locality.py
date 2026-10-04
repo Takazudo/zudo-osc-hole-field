@@ -18,17 +18,20 @@ import statistics
 PLANE_NETS={'AGND','+12V','-12V','+5V'}
 RELAX_PASSES=40
 FACE_PENALTY_MM=4.0
-# Extra keep-clear ring around each IC (mm) so its pins can escape. JR's rear face is about
-# 78% occupied and overflows with any ring (tried 0.8/0.5/0.3), so it keeps none.
-IC_CHANNEL_MM={'JL':0.8,'JR':0.0,'K':0.5}
-CHANNEL_DETOUR_MM=3.0
-# Courtyard gap between legalized packages (mm); the core spreads wider for routing room (#43).
-GAP_MM={'K':.6}
-# Same-footprint swap pass: nets longer than SPAN_SOFT_MM pay a quadratic penalty, since long
-# spans, not total length, overload routing channels.
+# Nets longer than this pay a quadratic penalty in the swap pass; long spans, not total
+# length, are what overload the routing channels.
 SPAN_SOFT_MM=60.0
+# Boards whose placement has been rebuilt and rerouted with the swap pass.
+SWAP_BOARDS={'JL','K'}
 SWAP_PASSES=8
-SWAP_RADIUS_MM=25.0
+# Core (#43): its ~1700 R0603s make all-pairs swaps too slow, so candidates are the
+# same-footprint slots within this radius of a package's net median.
+SWAP_RADIUS_MM={'K':25.0}
+# Core only: keep-clear ring around each IC so its pins can escape (it lengthened JL nets).
+IC_CHANNEL_MM={'K':0.5}
+CHANNEL_DETOUR_MM=3.0
+# Courtyard gap between legalized packages (mm); the core spreads wider for routing room.
+GAP_MM={'K':.6}
 
 
 def nearest(grid,masks,target):
@@ -76,12 +79,7 @@ def masks_for(boxes,scale,theta,oriented_box,gap=.35):
     return envelope,masks
 
 
-def place_jack_locality(board,free,grids,shapes,pin_nets,anchors,cluster_cells,turn,oriented_box,instance_anchor=None,through_hole=lambda part:False,module_order=False,swaps=False):
-    """Place one board's free packages with that board's IC routing channel."""
-    return _place(board,free,grids,shapes,pin_nets,anchors,cluster_cells,turn,oriented_box,instance_anchor,IC_CHANNEL_MM.get(board,0.0),through_hole,GAP_MM.get(board,.35),module_order,swaps)
-
-
-def _place(board,free,grids,shapes,pin_nets,anchors,cluster_cells,turn,oriented_box,instance_anchor,ic_channel,through_hole,gap,module_order,swaps):
+def place_jack_locality(board,free,grids,shapes,pin_nets,anchors,cluster_cells,turn,oriented_box,instance_anchor=None,through_hole=lambda part:False,module_order=False):
     """Return floorplan rows for every free package of one jack board, or raise on overflow.
 
     anchors: {net: [(x_mm, y_mm), ...]} pad/contact positions of fixed parts and headers.
@@ -131,6 +129,7 @@ def _place(board,free,grids,shapes,pin_nets,anchors,cluster_cells,turn,oriented_
         for u in units:size[by_ref[u]['instance']]+=1+len(caps.get(u,[]))
         rank={k:i for i,k in enumerate(sorted(size,key=lambda k:(-size[k],k)))}
         order=sorted(order,key=lambda u:rank[by_ref[u]['instance']])
+    ic_channel=IC_CHANNEL_MM.get(board,0.0);gap=GAP_MM.get(board,.35)
     placed={};rows=[]
     for u in order:
         legal={**pos,**placed};t=target(u,{v:legal[v] for v in legal if v!=u}) or pos[u]
@@ -179,10 +178,9 @@ def _place(board,free,grids,shapes,pin_nets,anchors,cluster_cells,turn,oriented_
             if u in caps:row['bypass_cluster']=u
             rows.append(row)
         placed[u]=offset
-    if swaps:
-        swappable={u for u in units if u not in caps}
-        return improve_by_swaps(rows,{r:by_ref[r]['footprint'] for r in swappable},pin_nets,anchors)
-    return rows
+    swappable={u for u in units if u not in caps}
+    if board not in SWAP_BOARDS:return rows
+    return improve_by_swaps(rows,{r:by_ref[r]['footprint'] for r in swappable},pin_nets,anchors,SWAP_RADIUS_MM.get(board))
 
 
 def net_cost(points):
@@ -191,12 +189,12 @@ def net_cost(points):
     return dx+dy+excess*excess/10.0
 
 
-def improve_by_swaps(rows,footprint,pin_nets,anchors,radius=SWAP_RADIUS_MM):
+def improve_by_swaps(rows,footprint,pin_nets,anchors,radius=None):
     """Swap legal slots between packages with the same footprint to shorten long nets.
 
     Two packages with one footprint have identical courtyards in each other's slot (side
-    and rotation travel with the slot), so every swap stays legal. Candidates are the
-    same-footprint slots within radius of the package's net median.
+    and rotation travel with the slot), so every swap stays legal. With a radius, candidates
+    are the same-footprint slots within it of the package's net median.
     """
     at={r['ref']:r for r in rows}
     nets_of={ref:{n for n in pin_nets[ref].values() if n and n not in PLANE_NETS} for ref in at}
@@ -218,11 +216,12 @@ def improve_by_swaps(rows,footprint,pin_nets,anchors,radius=SWAP_RADIUS_MM):
         improved=False
         for group in groups.values():
             for a in sorted(group,key=lambda r:-max((cost(n) for n in nets_of[r]),default=0)):
-                t=want(a)
-                if t is None:continue
+                t=want(a) if radius else None
+                if radius and t is None:continue
                 best=(-1e-6,None)
                 for b in group:
-                    if b==a or abs(at[b]['x_mm']-t[0])>radius or abs(at[b]['y_mm']-t[1])>radius:continue
+                    if b==a:continue
+                    if radius and (abs(at[b]['x_mm']-t[0])>radius or abs(at[b]['y_mm']-t[1])>radius):continue
                     touched=nets_of[a]|nets_of[b]
                     before=sum(cost(n) for n in touched);swap(a,b)
                     delta=sum(cost(n) for n in touched)-before;swap(a,b)

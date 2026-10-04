@@ -16,6 +16,7 @@ import argparse,collections,hashlib,json,shutil,subprocess,sys,time
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[2]
 sys.path.insert(0,str(ROOT))
+from scipy.spatial import cKDTree
 from scripts.pcbgen.grid_router import route,copper_rows,negotiate
 from scripts.pcbgen.uuid_tools import stable_uuid
 
@@ -42,6 +43,8 @@ STAGES=[
     # Negotiated (PathFinder) routing of every signal net on a 0.05 mm grid; leftovers go to the batches below.
     # A run stops after budget_s and saves its state, so each heavy-guard run stays short.
     {'name':'negotiate','negotiate':True,'res':.05,'iterations':60,'workers':4,'budget_s':5400,'clearance':.2,'signal_width':.2,'signal_via_diameter':.6,'grow':{n:.05 for n in [*RAILS,'AGND']}},
+    # Second negotiated pass over what is still open, after the sequential stages.
+    {'name':'negotiate-open','negotiate':True,'open_only':True,'halo_mm':1.5,'res':.05,'iterations':40,'workers':4,'budget_s':5400,'clearance':.2,'signal_width':.2,'signal_via_diameter':.6,'grow':{n:.05 for n in [*RAILS,'AGND']}},
     # Short local nets first.
     {'name':'signals-local','signals':True,'max_span_mm':8,'escape_halo_mm':.9,'clearance':.2,'signal_width':.2,'signal_via_diameter':.6,'grow':{n:.05 for n in [*RAILS,'AGND']}},
     # Then the remaining open signal nets, shortest first, in checked and promoted batches
@@ -168,9 +171,17 @@ def stage(board_id,current,spec,definition,log):
                               log=log,clearance=.25,rail_width=.3,via_diameter=.6,res=.05)
         rows,links=copper_rows(results,board_id,'grid-'+spec['name'])
     elif spec.get('negotiate'):
-        # PathFinder pass over every signal net: rip all signal copper and reroute together.
+        # PathFinder pass: rip the chosen signal nets and reroute them together.
         nets=sorted({p['net'] for p in dump['pads'] if p['net'] and p['net'] not in (*RAILS,'AGND')})
         nets=[n for n in nets if sum(1 for p in dump['pads'] if p['net']==n)>1]
+        if spec.get('open_only'):
+            # Second pass: only the open nets and the nets whose copper crowds their pads.
+            open_nets={n for n in nets if len(dump['islands'].get(n,[]))>1}
+            tree=cKDTree([p['xy'] for p in dump['pads'] if p['net'] in open_nets])
+            near=lambda xy:tree.query(xy)[0]<=spec['halo_mm']*1e6
+            crowding={i['net'] for i in dump['tracks'] if i['net'] in nets and (near(i['a']) or near(i['b']))}
+            crowding|={i['net'] for i in dump['vias'] if i['net'] in nets and near(i['xy'])}
+            nets=sorted(open_nets|crowding);log(f"{spec['name']}: {len(open_nets)} open nets, {len(nets)} nets renegotiated")
         results,removed=negotiate(dump,nets,res=NEGOTIATE_RES.get(board_id,spec['res']),layer_cost=LAYER_COST,clearance=spec['clearance'],width=spec['signal_width'],
                                   via_diameter=spec['signal_via_diameter'],allowed_layers=SIGNAL_LAYERS,grow=spec['grow'],
                                   iterations=NEGOTIATE_ITERATIONS.get(board_id,spec['iterations']),present=0.5,present_growth=1.8,history=0.5,workers=NEGOTIATE_WORKERS.get(board_id,spec['workers']),
@@ -178,6 +189,11 @@ def stage(board_id,current,spec,definition,log):
                                   state_path=str(ROOT/'.circuit-cache'/f"{board_id}-negotiate-{hashlib.sha256(current.read_bytes()).hexdigest()[:16]}.pkl"))
         # Out of time: the negotiation state is saved; rerun this stage to continue it.
         if results is None:return None,'resume'
+        if spec.get('open_only'):
+            # A net still in conflict keeps its old copper instead of losing it.
+            kept={r['net'] for r in results if not r['path']}
+            results=[r for r in results if r['path']]
+            removed=[u for u in removed if not any(i['uuid']==u and i['net'] in kept for k in ('tracks','vias') for i in dump[k])]
         rows,links=copper_rows(results,board_id,'grid-'+spec['name'])
     elif spec.get('signal_fanout'):
         # Reserve a via escape for every pin of a long net before long routes can box it in.
