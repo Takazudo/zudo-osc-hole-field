@@ -11,6 +11,7 @@ Panel hardware and headers never move. Geometry only; routing is separate.
 """
 from __future__ import annotations
 from collections import defaultdict
+import copy
 import math
 import statistics
 
@@ -68,12 +69,12 @@ def masks_for(boxes,scale,theta,oriented_box):
     return envelope,masks
 
 
-def place_jack_locality(board,free,grids,shapes,pin_nets,anchors,cluster_cells,turn,oriented_box,instance_anchor=None):
-    """Place one jack board's free packages with that board's IC routing channel."""
-    return _place(board,free,grids,shapes,pin_nets,anchors,cluster_cells,turn,oriented_box,instance_anchor,IC_CHANNEL_MM[board])
+def place_jack_locality(board,free,grids,shapes,pin_nets,anchors,cluster_cells,turn,oriented_box,instance_anchor=None,through_hole=lambda part:False):
+    """Place one board's free packages with that board's IC routing channel."""
+    return _place(board,free,grids,shapes,pin_nets,anchors,cluster_cells,turn,oriented_box,instance_anchor,IC_CHANNEL_MM.get(board,0.0),through_hole)
 
 
-def _place(board,free,grids,shapes,pin_nets,anchors,cluster_cells,turn,oriented_box,instance_anchor,ic_channel):
+def _place(board,free,grids,shapes,pin_nets,anchors,cluster_cells,turn,oriented_box,instance_anchor,ic_channel,through_hole):
     """Return floorplan rows for every free package of one jack board, or raise on overflow.
 
     anchors: {net: [(x_mm, y_mm), ...]} pad/contact positions of fixed parts and headers.
@@ -120,10 +121,14 @@ def _place(board,free,grids,shapes,pin_nets,anchors,cluster_cells,turn,oriented_
     placed={};rows=[]
     for u in order:
         legal={**pos,**placed};t=target(u,{v:legal[v] for v in legal if v!=u}) or pos[u]
+        tht=any(through_hole(p) for p in [by_ref[u],*caps.get(u,[])])
         def candidate(channel):
             best=None
             for side in ('B.Cu','F.Cu'):
                 g=grids[board,side]
+                if tht:
+                    # Through-hole pads occupy both faces: search the union of both grids.
+                    other=grids[board,'F.Cu' if side=='B.Cu' else 'B.Cu'];g=copy.copy(g);g.rows=[a|b for a,b in zip(g.rows,other.rows)]
                 if u in caps:
                     variants=[(cluster_cells(by_ref[u],sorted(caps[u],key=lambda p:p['ref']),side,h),thetas) for h,thetas in ((False,(0,90,180,270)),(True,(0,90,180,270)))]
                 else:
@@ -151,7 +156,7 @@ def _place(board,free,grids,shapes,pin_nets,anchors,cluster_cells,turn,oriented_
             if roomy is not None and (best is None or roomy[0]<=best[0]+CHANNEL_DETOUR_MM):best=roomy
         if best is None:raise ValueError(f'jack locality overflow {board} {u}')
         _,side,g,cells,theta,envelope,masks,(_,xx,yy)=best
-        occupy(g,masks,xx,yy)
+        for face in (('B.Cu','F.Cu') if tht else (side,)):occupy(grids[board,face],masks,xx,yy)
         offset=(xx/g.scale-envelope[0],yy/g.scale-envelope[1])
         for part,angle,p in cells:
             x,y=turn(p,theta);x+=offset[0];y+=offset[1];rotation=(angle+theta)%360
