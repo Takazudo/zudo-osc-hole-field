@@ -3,12 +3,14 @@
   "board_id": "osc-core",
   "outline": [[4,8],[314,8],[314,246],[258,246],[258,292],[4,292]],
   "corner_radius_mm": 0,
-  "layers": 4,
+  "layers": 6,
   "thickness_mm": 1.6,
   "stackup": [
     {"layer":"F.Cu","role":"signals / local AGND fill","copper_oz":2},
     {"layer":"In1.Cu","role":"continuous AGND","copper_oz":2},
-    {"layer":"In2.Cu","role":"split regulated power planes","copper_oz":2},
+    {"layer":"In2.Cu","role":"inner signals","copper_oz":2},
+    {"layer":"In3.Cu","role":"inner signals with -12V plane fill","copper_oz":2},
+    {"layer":"In4.Cu","role":"continuous +12V plane","copper_oz":2},
     {"layer":"B.Cu","role":"signals / local AGND fill","copper_oz":2}
   ],
   "mounting_holes": [
@@ -311,5 +313,46 @@
     {"instance":"W1","family":"K-W1","rect":[169.2,207.95,206.32999999999998,253.32999999999998],"side":"B.Cu","edge_clearance_mm":0.25,"mounting_clearance_mm":0.25},
     {"instance":"W2","family":"K-W2","rect":[121.95,209.95,156.8,245.70000000000002],"side":"F.Cu","edge_clearance_mm":0.25,"mounting_clearance_mm":0.25},
     {"instance":"W2","family":"K-W2","rect":[117.45,204.2,160.07999999999998,248.55],"side":"B.Cu","edge_clearance_mm":0.25,"mounting_clearance_mm":0.25}
-  ]
+  ],
+  "routing": {
+    "min_track_width_mm": 0.1,
+    "net_classes": [
+      {"name":"Default","nets":[],"track_width_mm":0.2,"clearance_mm":0.2,"via_diameter_mm":0.6,"via_drill_mm":0.3},
+      {"name":"Rails","nets":["+12V","-12V","+5V"],"track_width_mm":0.4,"clearance_mm":0.25,"via_diameter_mm":0.7,"via_drill_mm":0.3},
+      {"name":"Ground","nets":["AGND"],"track_width_mm":0.5,"clearance_mm":0.25,"via_diameter_mm":0.7,"via_drill_mm":0.3}
+    ],
+    "zones": [
+      {"name":"agnd_plane","net":"AGND","layers":["In1.Cu"],"clearance_mm":0.25,"min_thickness_mm":0.15,"pad_connection":"full"},
+      {"name":"agnd_surface","net":"AGND","layers":["F.Cu","B.Cu"],"clearance_mm":0.25,"min_thickness_mm":0.15,"pad_connection":"full"},
+      {"name":"-12V_plane","net":"-12V","layers":["In3.Cu"],"clearance_mm":0.25,"min_thickness_mm":0.15,"pad_connection":"full"},
+      {"name":"+12V_plane","net":"+12V","layers":["In4.Cu"],"clearance_mm":0.25,"min_thickness_mm":0.15,"pad_connection":"full"}
+    ],
+    "load_terminal_transfer": {
+      "status": "PROPOSAL #38; conditional manufacturing acceptance, not selected service or qualification",
+      "minimum_finished_via_barrel_copper_mm": 0.025,
+      "calculation_temperature_C": 70,
+      "plane_copper_thickness_mm": 0.07,
+      "array_rows": 5,
+      "array_columns": 5,
+      "array_pitch_mm": 0.7,
+      "via_diameter_mm": 0.7,
+      "via_drill_mm": 0.3,
+      "pad_edge_copper_margin_mm": 0.25,
+      "nets": ["AGND","+12V","-12V","+5V"],
+      "process_requirement": "Factory-qualified filled/capped via-in-pad, or documented wire-solder process proving full coverage, no wicking and mechanical retention. NOT RUN #65. No supplier/service selected.",
+      "resistance_requirement": "Extract actual land, barrel and filled-plane spreading/neck resistance; whole 4.6 A return may use one terminal. Combined branch plus K must remain <=0.5 mOhm. Via-barrel calculation alone is insufficient.",
+      "external_array_fit": "Unchanged 4x4 mm copper land and 5x5 mm courtyard do not fit a 0.7 mm via annulus wholly outside the solder land: minimum centre offset 2.35 mm exceeds courtyard maximum 2.15 mm.",
+      "surface_ground_strategy": {
+        "status": "PROPOSAL #38 manager source-ground revision",
+        "layers": ["F.Cu","In1.Cu","B.Cu"],
+        "clearance_mm": 0.25,
+        "min_thickness_mm": 0.15,
+        "pad_connection": "full",
+        "geometry": "Same outline, real source keepouts/reservations and all existing copper/hardware unchanged. Measure actual filled continuity. Prefer native surface-pour main-land and GH contact access through existing plated AGND sleeves/vias before using solder-land arrays.",
+        "common_resistance_interpretation": "Combined branch+K common plane/spreading/shared neck including main-terminal transfer <=0.5 mOhm. Individual GH access paths are separately extracted and added to every alternative return in conductance-extrema bound; candidate own PCB/contact resistance remains zero."
+      },
+      "actual_AGND_strategy": "Three source-defined25-via main-land arrays per half are required: surface ground pours left each main land attached only to its own isolated same-net zone. All lands, GH contacts and intended bypass returns must share the transitive native main AGND component; native AGND edge count must be zero. A pad+same-net-zone relation alone is insufficient.",
+      "electrical_acceptance_status": "NOT ACCEPTED #38: complete native AGND/direct bypass topology is a draft checkpoint only. Authoritative common <=0.5mOhm and GH <=0.5A extraction, every fitted rail feed, actual rail <=1mOhm and hot distribution <=20mV remain unresolved; physical/process qualification NOT RUN #65."
+    }
+  }
 }

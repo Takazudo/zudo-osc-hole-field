@@ -60,14 +60,15 @@ def apply_native_fields(board,projected):
             fp.SetField(name,value);fp.GetField(name).SetVisible(False)
 
 
-def projection(audit,netlist):
+def projection(audit,netlist,read_sheet=lambda name:Path(name).read_bytes()):
+    """read_sheet lets a historical audit read the sheets of its own source commit."""
     if hashlib.sha256(Path(netlist).read_bytes()).hexdigest()!=audit['netlist_sha256']:
         raise ValueError('K package field netlist is stale')
     components,_=read_netlist(Path(netlist));packages={p.ref:p for p in components}
     records=[r for r in audit['parity_records'] if 'field' in r]
     refs={r['ref'] for r in records};units={};retained=[]
     for name,expected in audit['source_sheet_sha256'].items():
-        content=Path(name).read_bytes()
+        content=read_sheet(name)
         if hashlib.sha256(content).hexdigest()!=expected:raise ValueError('K package field source sheet changed')
         root,_=parse(TOKEN.findall(content.decode()))
         for symbol in many(root,'symbol'):

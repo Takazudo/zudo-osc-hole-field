@@ -203,6 +203,11 @@ def compile_proposal(spec,*,verify_source=True,native_root=None):
                 # Later jack-half-only change: chain it onto the connector transition.
                 if jack['base_partition_sha256']!=transition['current_partition_sha256']:raise ValueError('source transition chain is broken')
                 transition['current_partition_sha256']=jack['current_partition_sha256']
+            core=proof.get('core_locality_transition')
+            if core:
+                # Later core-only locality placement and stack change (#43): chain it as well.
+                if core['base_partition_sha256']!=transition['current_partition_sha256']:raise ValueError('source transition chain is broken')
+                transition['current_partition_sha256']=core['current_partition_sha256']
             if (any(bound.get(k)!=transition.get(k) for k in
                     ('base_commit','historical_partition_sha256','current_partition_sha256')) or
                     bound['current_partition_sha256']!=spec['source_files']['design/partition/partition.json'] or
