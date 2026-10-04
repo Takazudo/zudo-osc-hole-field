@@ -12,11 +12,11 @@ stage writes a receipt under boards/<id>/reports/grid-routing/. Draft only:
 electrical and physical qualification remain NOT RUN.
 """
 from __future__ import annotations
-import argparse,collections,hashlib,json,shutil,subprocess,sys
+import argparse,collections,hashlib,json,shutil,subprocess,sys,time
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[2]
 sys.path.insert(0,str(ROOT))
-from scripts.pcbgen.grid_router import route,copper_rows
+from scripts.pcbgen.grid_router import route,copper_rows,negotiate
 from scripts.pcbgen.uuid_tools import stable_uuid
 
 PLANES={'+12V':'In4.Cu','-12V':'In3.Cu'}
@@ -33,6 +33,9 @@ STAGES=[
     {'name':'rail-fanout','nets':['+12V','-12V'],'planes':PLANES,'clearance':.25,'rail_width':.4},
     {'name':'rail-links','nets':RAILS,'clearance':.25,'rail_width':.4},
     {'name':'rail-escapes','nets':RAILS,'clearance':.25,'rail_width':.25,'res':.05,'window_mm':6},
+    # Negotiated (PathFinder) routing of every signal net on a 0.05 mm grid; leftovers go to the batches below.
+    # A run stops after budget_s and saves its state, so each heavy-guard run stays short.
+    {'name':'negotiate','negotiate':True,'res':.05,'iterations':60,'workers':4,'budget_s':5400,'clearance':.2,'signal_width':.2,'signal_via_diameter':.6,'grow':{n:.05 for n in [*RAILS,'AGND']}},
     # Short local nets first.
     {'name':'signals-local','signals':True,'max_span_mm':8,'escape_halo_mm':.9,'clearance':.2,'signal_width':.2,'signal_via_diameter':.6,'grow':{n:.05 for n in [*RAILS,'AGND']}},
     # Then the remaining open signal nets, shortest first, in checked and promoted batches.
@@ -156,6 +159,18 @@ def stage(board_id,current,spec,definition,log):
         results,removed=route(stitched,['AGND'],planes={'AGND':'In1.Cu'},allowed_layers=SIGNAL_LAYERS,layer_cost=LAYER_COST,rail_nets=RAILS,
                               log=log,clearance=.25,rail_width=.3,via_diameter=.6,res=.05)
         rows,links=copper_rows(results,board_id,'grid-'+spec['name'])
+    elif spec.get('negotiate'):
+        # PathFinder pass over every signal net: rip all signal copper and reroute together.
+        nets=sorted({p['net'] for p in dump['pads'] if p['net'] and p['net'] not in (*RAILS,'AGND')})
+        nets=[n for n in nets if sum(1 for p in dump['pads'] if p['net']==n)>1]
+        results,removed=negotiate(dump,nets,res=spec['res'],layer_cost=LAYER_COST,clearance=spec['clearance'],width=spec['signal_width'],
+                                  via_diameter=spec['signal_via_diameter'],allowed_layers=SIGNAL_LAYERS,grow=spec['grow'],
+                                  iterations=spec['iterations'],present=0.5,present_growth=1.8,history=0.5,workers=spec['workers'],
+                                  fill_guards={'-12V':'In3.Cu'},log=log,deadline=time.time()+spec['budget_s'],
+                                  state_path=str(ROOT/'.circuit-cache'/f"{board_id}-negotiate-{hashlib.sha256(current.read_bytes()).hexdigest()[:16]}.pkl"))
+        # Out of time: the negotiation state is saved; rerun this stage to continue it.
+        if results is None:return None,'resume'
+        rows,links=copper_rows(results,board_id,'grid-'+spec['name'])
     elif spec.get('signal_fanout'):
         # Reserve a via escape for every pin of a long net before long routes can box it in.
         nets=signal_chunk(dump,None,min_span_mm=spec['signal_fanout'])
@@ -187,6 +202,9 @@ def stage(board_id,current,spec,definition,log):
             # surface-pour islands are rejoined later by the agnd-stitch stage.
             plane_layers={PLANES[n] for n in split}
             bad={r['uuid'] for r in rows if r['kind']=='segment' and r['layer'] in plane_layers}
+            if not bad:
+                # Through vias cross the plane layer too; without plane-layer track, drop the new vias.
+                bad={r['uuid'] for r in rows if r['kind']=='via'}
             log(f"{spec['name']}: {split} split; dropping links with copper on {sorted(plane_layers)}")
             if not bad:raise RuntimeError(f"{spec['name']}: {split} split without attributable copper")
         if not bad:break
@@ -221,6 +239,7 @@ def main():
     last=names.index(a.to_stage)+1 if a.to_stage else len(STAGES)
     for spec in STAGES[names.index(a.from_stage):last]:
         candidate,receipt=stage(a.board_id,current,spec,definition,lambda m:print(m,flush=True))
+        if receipt=='resume':print(f"{spec['name']}: time budget used; rerun --from-stage {spec['name']} to resume",flush=True);break
         if candidate is None:print(f"{spec['name']}: nothing to do",flush=True);continue
         receipt['adopted']=receipt['open_edges_after']<receipt['open_edges_before']
         (reports/f"{spec['name']}.json").write_text(json.dumps(receipt,indent=1,sort_keys=True)+'\n')
