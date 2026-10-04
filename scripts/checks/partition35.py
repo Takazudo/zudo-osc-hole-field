@@ -187,7 +187,9 @@ def build():
             errors.extend(jack_bulk_conflicts(s.get('reserves',[]),loc,ports['headers'],terminal_sites,b))
             keepouts,jack_reservation_receipt[b]=jack_reservation_keepouts(s.get('reserves',[]),loc,connector,terminal_sites,b)
         else:
-            keepouts=[{'id':r['id'],'polygon':[[r['rect'][0],r['rect'][1]],[r['rect'][2],r['rect'][1]],[r['rect'][2],r['rect'][3]],[r['rect'][0],r['rect'][3]]],'layers':r['sides']} for r in s.get('reserves',[])]
+            # A core POWER-* reserve is the load-land site itself; its netlisted TP terminal occupies it.
+            keepouts=[{'id':r['id'],'polygon':[[r['rect'][0],r['rect'][1]],[r['rect'][2],r['rect'][1]],[r['rect'][2],r['rect'][3]],[r['rect'][0],r['rect'][3]]],'layers':r['sides']} for r in s.get('reserves',[])
+                      if not (b=='K' and r['id'].startswith('POWER-'))]
         if b=='EL':
             # Source circles are represented by a circumscribed 64-gon for
             # conservative copper keepout, and an exact round NPTH/routed cut.

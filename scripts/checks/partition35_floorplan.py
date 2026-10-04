@@ -82,6 +82,11 @@ def footprint_pads(footprint):
     return {p[1]:tuple(map(float,one(p,'at')[1:3])) for p in many(tree,'pad')}
 
 
+@lru_cache(maxsize=None)
+def through_hole(footprint):
+    return 'thru_hole' in (ROOT/'footprints/kicad/zudo-osc-hole-field.pretty'/(footprint.split(':')[1]+'.kicad_mod')).read_text()
+
+
 def bypass_cells(parent,caps,side,shapes,pin_nets,horizontal=False):
     """Rigid IC plus capacitors, each capacitor aligned to its actual supply pad."""
     icbox=oriented_box(shapes[parent['footprint']],side,0)
@@ -187,7 +192,8 @@ def build():
                         for instance in net_instances[net]:homes[instance].append(h['center_mm'])
             instance_anchor={k:(sum(x for x,_ in v)/len(v),sum(y for _,y in v)/len(v)) for k,v in homes.items()}
             placements.extend(place_jack_locality(board,free,grids,shapes,pin_nets,anchors,
-                lambda parent,caps,side,horizontal:bypass_cells(parent,caps,side,shapes,pin_nets,horizontal),turn,oriented_box,instance_anchor))
+                lambda parent,caps,side,horizontal:bypass_cells(parent,caps,side,shapes,pin_nets,horizontal),turn,oriented_box,instance_anchor,
+                lambda part:through_hole(part['footprint'])))
             free=[]
         for p in free:
             location=grids[board,'B.Cu'].place(shapes[p['footprint']])

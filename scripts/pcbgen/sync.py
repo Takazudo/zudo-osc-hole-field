@@ -24,7 +24,7 @@ from scripts.pcbgen.octave_labels import place_default_reference
 LIB='zudo-osc-hole-field'
 # Multi-unit packages here carry per-unit Role/LogicalCellKey/Island values;
 # KiCad parity compares the netlist's representative `(fields ...)` values.
-NATIVE_UNIT_FIELD_BOARDS={'osc-stage-optical'}
+NATIVE_UNIT_FIELD_BOARDS={'osc-stage-optical','osc-core'}
 UNIT_FIELDS=('Role','LogicalCellKey','Island')
 
 def read_native_fields(path:Path):
@@ -151,8 +151,12 @@ def sync(board_id:str,output:Path|None=None,netlist:Path|None=None):
                 if new_field:field.SetTextThickness(pcbnew.FromMM(0.15))
                 field.SetVisible(False)
         for unit_field in UNIT_FIELDS:
-            if unit_field in native_fields.get(c.ref,{}) and fp.HasField(unit_field):
+            if unit_field in native_fields.get(c.ref,{}):
+                # The representative unit may carry a field the package properties lack.
+                new_field=not fp.HasField(unit_field)
                 fp.SetField(unit_field,native_fields[c.ref][unit_field])
+                if new_field:
+                    fp.GetField(unit_field).SetTextThickness(pcbnew.FromMM(0.15));fp.GetField(unit_field).SetVisible(False)
         if board_id=='osc-jack':
             for unit_field in ('Role','LogicalCellKey','Island'):
                 if unit_field not in fields and fp.HasField(unit_field):

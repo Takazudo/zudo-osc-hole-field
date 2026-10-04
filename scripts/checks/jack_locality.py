@@ -11,6 +11,7 @@ Panel hardware and headers never move. Geometry only; routing is separate.
 """
 from __future__ import annotations
 from collections import defaultdict
+import copy
 import math
 import statistics
 
@@ -64,7 +65,7 @@ def masks_for(boxes,scale,theta,oriented_box):
     return envelope,masks
 
 
-def place_jack_locality(board,free,grids,shapes,pin_nets,anchors,cluster_cells,turn,oriented_box,instance_anchor=None):
+def place_jack_locality(board,free,grids,shapes,pin_nets,anchors,cluster_cells,turn,oriented_box,instance_anchor=None,through_hole=lambda part:False):
     """Return floorplan rows for every free package of one jack board, or raise on overflow.
 
     anchors: {net: [(x_mm, y_mm), ...]} pad/contact positions of fixed parts and headers.
@@ -112,8 +113,12 @@ def place_jack_locality(board,free,grids,shapes,pin_nets,anchors,cluster_cells,t
     for u in order:
         legal={**pos,**placed};t=target(u,{v:legal[v] for v in legal if v!=u}) or pos[u]
         best=None
+        tht=any(through_hole(p) for p in [by_ref[u],*caps.get(u,[])])
         for side in ('B.Cu','F.Cu'):
             g=grids[board,side]
+            if tht:
+                # Through-hole pads occupy both faces: search the union of both grids.
+                other=grids[board,'F.Cu' if side=='B.Cu' else 'B.Cu'];g=copy.copy(g);g.rows=[a|b for a,b in zip(g.rows,other.rows)]
             if u in caps:
                 variants=[(cluster_cells(by_ref[u],sorted(caps[u],key=lambda p:p['ref']),side,h),thetas) for h,thetas in ((False,(0,90,180,270)),(True,(0,90,180,270)))]
             else:
@@ -133,7 +138,7 @@ def place_jack_locality(board,free,grids,shapes,pin_nets,anchors,cluster_cells,t
                     if best is None or cost<best[0]:best=(cost,side,g,cells,theta,envelope,masks,found)
         if best is None:raise ValueError(f'jack locality overflow {board} {u}')
         _,side,g,cells,theta,envelope,masks,(_,xx,yy)=best
-        occupy(g,masks,xx,yy)
+        for s_ in (('B.Cu','F.Cu') if tht else (side,)):occupy(grids[board,s_],masks,xx,yy)
         offset=(xx/g.scale-envelope[0],yy/g.scale-envelope[1])
         for part,angle,p in cells:
             x,y=turn(p,theta);x+=offset[0];y+=offset[1];rotation=(angle+theta)%360

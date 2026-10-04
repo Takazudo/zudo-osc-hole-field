@@ -35,8 +35,9 @@ STAGES=[
     {'name':'rail-escapes','nets':RAILS,'clearance':.25,'rail_width':.25,'res':.05,'window_mm':6},
     # Short local nets first.
     {'name':'signals-local','signals':True,'max_span_mm':8,'escape_halo_mm':.9,'clearance':.2,'signal_width':.2,'signal_via_diameter':.6,'grow':{n:.05 for n in [*RAILS,'AGND']}},
-    # Then the remaining open signal nets, shortest first, in checked and promoted batches.
-    *({'name':f'signals-{i:02d}','signals':True,'chunk':120,'escape_halo_mm':.9,'clearance':.2,'signal_width':.2,'signal_via_diameter':.6,'grow':{n:.05 for n in [*RAILS,'AGND']}} for i in range(1,13)),
+    # Then the remaining open signal nets, shortest first, in checked and promoted batches
+    # (the core needs more batches than a jack half; empty batches are skipped).
+    *({'name':f'signals-{i:02d}','signals':True,'chunk':120,'escape_halo_mm':.9,'clearance':.2,'signal_width':.2,'signal_via_diameter':.6,'grow':{n:.05 for n in [*RAILS,'AGND']}} for i in range(1,41)),
     # Rip-up and reroute: probe each failed island with other signal copper as a cost,
     # rip the few nets in its way, route it, then reroute the ripped nets; all-or-nothing.
     *({'name':f'rrr-{i:02d}','signals':True,'chunk':80,'rrr_rounds':2,'clearance':.2,'signal_width':.2,'signal_via_diameter':.6,'grow':{n:.05 for n in [*RAILS,'AGND']}} for i in range(1,9)),
@@ -167,6 +168,7 @@ def stage(board_id,current,spec,definition,log):
         rrr=spec.get('rrr_rounds')
         nets=spec.get('nets') or signal_chunk(dump,spec.get('chunk'),max_span_mm=spec.get('max_span_mm'),
                                               skip=RRR_TRIED if rrr else (FAILED if spec.get('chunk') else ()))
+        if not nets:return None,None
         if rrr:RRR_TRIED.update(nets)
         kwargs={k:v for k,v in spec.items() if k in ('planes','clearance','rail_width','signal_width','signal_via_diameter','grow','res','window_mm','full_board','max_expansions','escape_halo_mm','rrr_rounds')}
         kwargs['fill_guards']={'-12V':'In3.Cu'}
@@ -211,7 +213,10 @@ def main():
     board=ROOT/'boards'/a.board_id/f'{a.board_id}.kicad_pcb';definition=json.loads((ROOT/'design/boards'/f'{a.board_id}.json').read_text())
     if definition['layers']!=6:raise ValueError('six-layer board definition required')
     reports=board.parent/'reports'/'grid-routing';reports.mkdir(parents=True,exist_ok=True)
-    work=workspace(a.board_id,'start');current=work/board.name;shutil.copyfile(board,current);check(current)
+    work=workspace(a.board_id,'start');current=work/board.name;shutil.copyfile(board,current);drc,_=check(current)
+    errors=collections.Counter(v['type'] for v in drc['violations'] if v['severity']=='error')
+    # Stage gates attribute every DRC error to new copper, so the start board must be clean.
+    if errors or drc['schematic_parity']:raise RuntimeError(f"start board not clean: {dict(errors)}, {len(drc['schematic_parity'])} parity")
     names=[s['name'] for s in STAGES]
     last=names.index(a.to_stage)+1 if a.to_stage else len(STAGES)
     for spec in STAGES[names.index(a.from_stage):last]:
