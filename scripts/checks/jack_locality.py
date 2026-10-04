@@ -22,7 +22,7 @@ FACE_PENALTY_MM=4.0
 # length, are what overload the routing channels.
 SPAN_SOFT_MM=60.0
 # Boards whose placement has been rebuilt and rerouted with the swap pass.
-SWAP_BOARDS={'JL'}
+SWAP_BOARDS={'JL','JR'}
 SWAP_PASSES=8
 
 
