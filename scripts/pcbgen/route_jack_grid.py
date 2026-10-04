@@ -202,6 +202,9 @@ def stage(board_id,current,spec,definition,log):
             # surface-pour islands are rejoined later by the agnd-stitch stage.
             plane_layers={PLANES[n] for n in split}
             bad={r['uuid'] for r in rows if r['kind']=='segment' and r['layer'] in plane_layers}
+            if not bad:
+                # Through vias cross the plane layer too; without plane-layer track, drop the new vias.
+                bad={r['uuid'] for r in rows if r['kind']=='via'}
             log(f"{spec['name']}: {split} split; dropping links with copper on {sorted(plane_layers)}")
             if not bad:raise RuntimeError(f"{spec['name']}: {split} split without attributable copper")
         if not bad:break
