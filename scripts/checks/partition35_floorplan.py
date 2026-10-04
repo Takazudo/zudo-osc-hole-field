@@ -15,7 +15,7 @@ from scripts.partition.model import JACK_BOARDS
 from scripts.checks.connector_packing35 import board_for,pads
 from scripts.checks.partition35_diagnostic import footprint_geometry
 from scripts.pcbgen.netlist import TOKEN, parse, many, one
-from scripts.checks.jack_locality import place_jack_locality
+from scripts.checks.jack_locality import place_jack_locality,stable_sum
 OUT=ROOT/'design/partition/floorplan-candidate.json'
 SCALE=4
 
@@ -173,7 +173,7 @@ def build():
             homes=defaultdict(list)
             for p in parts:
                 if board_for(p)==board and p['panel_uid']:homes[p['instance']].append((lock[p['panel_uid']]['x_mm'],lock[p['panel_uid']]['y_mm']))
-            instance_anchor={k:(sum(x for x,_ in v)/len(v),sum(y for _,y in v)/len(v)) for k,v in homes.items()}
+            instance_anchor={k:(stable_sum(x for x,_ in v)/len(v),stable_sum(y for _,y in v)/len(v)) for k,v in homes.items()}
             placements.extend(place_jack_locality(board,free,grids,shapes,pin_nets,anchors,
                 lambda parent,caps,side,horizontal:bypass_cells(parent,caps,side,shapes,pin_nets,horizontal),turn,oriented_box,instance_anchor))
             free=[]
@@ -190,7 +190,7 @@ def build():
                     anchors[net].append(tuple(h['center_mm']))
                     if net not in ('AGND','+12V','-12V','+5V'):
                         for instance in net_instances[net]:homes[instance].append(h['center_mm'])
-            instance_anchor={k:(sum(x for x,_ in v)/len(v),sum(y for _,y in v)/len(v)) for k,v in homes.items()}
+            instance_anchor={k:(stable_sum(x for x,_ in v)/len(v),stable_sum(y for _,y in v)/len(v)) for k,v in homes.items()}
             placements.extend(place_jack_locality(board,free,grids,shapes,pin_nets,anchors,
                 lambda parent,caps,side,horizontal:bypass_cells(parent,caps,side,shapes,pin_nets,horizontal),turn,oriented_box,instance_anchor,
                 lambda part:through_hole(part['footprint'])))

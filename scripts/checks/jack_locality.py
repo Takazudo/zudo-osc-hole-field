@@ -159,6 +159,20 @@ def place_jack_locality(board,free,grids,shapes,pin_nets,anchors,cluster_cells,t
     return improve_by_swaps(rows,{r:by_ref[r]['footprint'] for r in swappable},pin_nets,anchors)
 
 
+def stable_sum(values):
+    """Neumaier-compensated float sum, written out so every Python version agrees.
+
+    It is the algorithm CPython 3.12+ uses for sum() over floats (3.10/3.11 add naively);
+    committed floorplans were generated with it, so it must stay bit-for-bit the same.
+    """
+    total=0.0;c=0.0
+    for x in values:
+        t=total+x
+        c+=(total-t)+x if abs(total)>=abs(x) else (x-t)+total
+        total=t
+    return total+c if c and math.isfinite(c) else total
+
+
 def net_cost(points):
     xs=[x for x,_ in points];ys=[y for _,y in points]
     dx,dy=max(xs)-min(xs),max(ys)-min(ys);excess=max(0.0,math.hypot(dx,dy)-SPAN_SOFT_MM)
@@ -176,7 +190,7 @@ def improve_by_swaps(rows,footprint,pin_nets,anchors):
     members=defaultdict(set)
     for ref,ns in nets_of.items():
         for n in ns:members[n].add(ref)
-    cost=lambda n:net_cost(anchors.get(n,[])+[(at[r]['x_mm'],at[r]['y_mm']) for r in members[n]]) if len(members[n])+len(anchors.get(n,[]))>1 else 0.0
+    cost=lambda n:net_cost(anchors.get(n,[])+[(at[r]['x_mm'],at[r]['y_mm']) for r in sorted(members[n])]) if len(members[n])+len(anchors.get(n,[]))>1 else 0.0
     groups=defaultdict(list)
     for ref in sorted(footprint):
         if ref in at:groups[footprint[ref]].append(ref)
@@ -186,14 +200,16 @@ def improve_by_swaps(rows,footprint,pin_nets,anchors):
         for k in slot:ra[k],rb[k]=rb[k],ra[k]
     for _ in range(SWAP_PASSES):
         improved=False
-        for group in groups.values():
-            for a in sorted(group,key=lambda r:-max((cost(n) for n in nets_of[r]),default=0)):
+        # Groups in order of their first reference, as built from sorted references.
+        for fp in sorted(groups,key=lambda f:groups[f][0]):
+            group=groups[fp]
+            for a in sorted(group,key=lambda r:(-max((cost(n) for n in sorted(nets_of[r])),default=0),r)):
                 best=(-1e-6,None)
                 for b in group:
                     if b==a:continue
-                    touched=nets_of[a]|nets_of[b]
-                    before=sum(cost(n) for n in touched);swap(a,b)
-                    delta=sum(cost(n) for n in touched)-before;swap(a,b)
+                    touched=sorted(nets_of[a]|nets_of[b])
+                    before=stable_sum(cost(n) for n in touched);swap(a,b)
+                    delta=stable_sum(cost(n) for n in touched)-before;swap(a,b)
                     if delta<best[0]:best=(delta,b)
                 if best[1]:swap(a,best[1]);improved=True
         if not improved:break
