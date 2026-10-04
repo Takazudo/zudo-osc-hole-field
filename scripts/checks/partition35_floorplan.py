@@ -16,6 +16,7 @@ from scripts.checks.connector_packing35 import board_for,pads
 from scripts.checks.partition35_diagnostic import footprint_geometry
 from scripts.pcbgen.netlist import TOKEN, parse, many, one
 from scripts.checks.jack_locality import place_jack_locality
+from scripts.checks.core_locality import spread_module_homes
 OUT=ROOT/'design/partition/floorplan-candidate.json'
 SCALE=4
 
@@ -191,9 +192,16 @@ def build():
                     if net not in ('AGND','+12V','-12V','+5V'):
                         for instance in net_instances[net]:homes[instance].append(h['center_mm'])
             instance_anchor={k:(sum(x for x,_ in v)/len(v),sum(y for _,y in v)/len(v)) for k,v in homes.items()}
+            # Header homes crowd ~1300 packages into one corner; spread the module homes so each
+            # module gets contiguous room, then legalize module by module (#43 congestion review).
+            areas=defaultdict(float)
+            for p in free:
+                b=shapes[p['footprint']];areas[p['instance']]+=(b[2]-b[0]+.35)*(b[3]-b[1]+.35)
+            notch=[spec['outline'][3][0],spec['outline'][3][1],spec['outline'][2][0],spec['outline'][4][1]]
+            instance_anchor=spread_module_homes(instance_anchor,areas,(4.3,8.3,313.7,291.7),holes=[notch],fill=.45)
             placements.extend(place_jack_locality(board,free,grids,shapes,pin_nets,anchors,
                 lambda parent,caps,side,horizontal:bypass_cells(parent,caps,side,shapes,pin_nets,horizontal),turn,oriented_box,instance_anchor,
-                lambda part:through_hole(part['footprint'])))
+                lambda part:through_hole(part['footprint']),module_order=True))
             free=[]
         for p in free:
             location=grids[board,'B.Cu'].place(shapes[p['footprint']])

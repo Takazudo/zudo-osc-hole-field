@@ -20,8 +20,10 @@ RELAX_PASSES=40
 FACE_PENALTY_MM=4.0
 # Extra keep-clear ring around each IC (mm) so its pins can escape. JR's rear face is about
 # 78% occupied and overflows with any ring (tried 0.8/0.5/0.3), so it keeps none.
-IC_CHANNEL_MM={'JL':0.8,'JR':0.0}
+IC_CHANNEL_MM={'JL':0.8,'JR':0.0,'K':0.5}
 CHANNEL_DETOUR_MM=3.0
+# Courtyard gap between legalized packages (mm); the core spreads wider for routing room (#43).
+GAP_MM={'K':.6}
 
 
 def nearest(grid,masks,target):
@@ -58,23 +60,23 @@ def occupy(grid,masks,xx,yy):
         for y in range(yy+dy,yy+dy+h):grid.rows[y]|=mask
 
 
-def masks_for(boxes,scale,theta,oriented_box):
+def masks_for(boxes,scale,theta,oriented_box,gap=.35):
     rb=[oriented_box(b,'F.Cu',theta) for b in boxes]
     envelope=[min(b[0] for b in rb),min(b[1] for b in rb),max(b[2] for b in rb),max(b[3] for b in rb)]
     masks=[]
     for b in rb:
         dx=math.floor((b[0]-envelope[0])*scale+1e-8);dy=math.floor((b[1]-envelope[1])*scale+1e-8)
-        w=math.ceil((b[2]-envelope[0]+.35)*scale-1e-8)-dx;h=math.ceil((b[3]-envelope[1]+.35)*scale-1e-8)-dy
+        w=math.ceil((b[2]-envelope[0]+gap)*scale-1e-8)-dx;h=math.ceil((b[3]-envelope[1]+gap)*scale-1e-8)-dy
         masks.append((dx,dy,w,h))
     return envelope,masks
 
 
-def place_jack_locality(board,free,grids,shapes,pin_nets,anchors,cluster_cells,turn,oriented_box,instance_anchor=None,through_hole=lambda part:False):
+def place_jack_locality(board,free,grids,shapes,pin_nets,anchors,cluster_cells,turn,oriented_box,instance_anchor=None,through_hole=lambda part:False,module_order=False):
     """Place one board's free packages with that board's IC routing channel."""
-    return _place(board,free,grids,shapes,pin_nets,anchors,cluster_cells,turn,oriented_box,instance_anchor,IC_CHANNEL_MM.get(board,0.0),through_hole)
+    return _place(board,free,grids,shapes,pin_nets,anchors,cluster_cells,turn,oriented_box,instance_anchor,IC_CHANNEL_MM.get(board,0.0),through_hole,GAP_MM.get(board,.35),module_order)
 
 
-def _place(board,free,grids,shapes,pin_nets,anchors,cluster_cells,turn,oriented_box,instance_anchor,ic_channel,through_hole):
+def _place(board,free,grids,shapes,pin_nets,anchors,cluster_cells,turn,oriented_box,instance_anchor,ic_channel,through_hole,gap,module_order):
     """Return floorplan rows for every free package of one jack board, or raise on overflow.
 
     anchors: {net: [(x_mm, y_mm), ...]} pad/contact positions of fixed parts and headers.
@@ -118,6 +120,12 @@ def _place(board,free,grids,shapes,pin_nets,anchors,cluster_cells,turn,oriented_
             if t:pos[u]=t
     fixed_degree=lambda u:sum(len(anchors.get(n,[])) for n in neighbours[u])
     order=sorted(units,key=lambda u:(u not in caps,-fixed_degree(u),-len(neighbours[u]),u))
+    if module_order:
+        # Legalize one module at a time, largest first, so each fills contiguous space around its home.
+        size=defaultdict(int)
+        for u in units:size[by_ref[u]['instance']]+=1+len(caps.get(u,[]))
+        rank={k:i for i,k in enumerate(sorted(size,key=lambda k:(-size[k],k)))}
+        order=sorted(order,key=lambda u:rank[by_ref[u]['instance']])
     placed={};rows=[]
     for u in order:
         legal={**pos,**placed};t=target(u,{v:legal[v] for v in legal if v!=u}) or pos[u]
@@ -140,7 +148,7 @@ def _place(board,free,grids,shapes,pin_nets,anchors,cluster_cells,turn,oriented_
                         b=oriented_box(shapes[part['footprint']],side,angle);m=channel if k==0 else 0.0
                         boxes.append([b[0]+x-m,b[1]+y-m,b[2]+x+m,b[3]+y+m])
                     for theta in thetas:
-                        envelope,masks=masks_for(boxes,g.scale,theta,oriented_box)
+                        envelope,masks=masks_for(boxes,g.scale,theta,oriented_box,gap)
                         # Parent (cell 0) origin sits at (0,0); aim the envelope so the parent lands on the target.
                         cell=(round((t[0]+envelope[0])*g.scale),round((t[1]+envelope[1])*g.scale))
                         found=nearest(g,masks,cell)
