@@ -9,7 +9,7 @@ description: "Six-layer jack halves after locality re-placement: native routing 
 
 A cut-line bound (`scripts/pcbgen/cut_capacity.py`) showed that the four-layer halves could not carry their signal nets with intact ground and power planes. About 400 nets had to cross single jack-pin columns whose front/back capacity was only 0.80–0.86 of that demand. The owner chose both remedies: six copper layers and locality re-placement of the free surface-mount packages. Panel hardware, LEDs and headers do not move.
 
-- **Placement:** `scripts/checks/jack_locality.py` replaces the connectivity-blind first-fit J placement. Each free package is pulled toward the fixed jacks, LEDs and headers on its signal nets and toward its own module's fixed hardware, then legalized onto the nearest free courtyard cells. IC/bypass clusters are placed first and keep their supply-pad alignment (worst 2.8875 mm against the 3 mm proposal). On JL each IC also keeps a 0.8 mm keep-clear ring for pin escape; JR's rear face is too full for one and keeps none. The ring lengthens JL nets (estimated wire length 25.5 → 29.4 m) and is being replaced by a span-aware swap pass.
+- **Placement:** `scripts/checks/jack_locality.py` replaces the connectivity-blind first-fit J placement. Each free package is pulled toward the fixed jacks, LEDs and headers on its signal nets and toward its own module's fixed hardware, then legalized onto the nearest free courtyard cells. IC/bypass clusters are placed first and keep their supply-pad alignment (worst 2.8875 mm against the 3 mm proposal). After legalization, packages with the same footprint trade slots (side and rotation travel with the slot, so every swap stays legal) to cut span-weighted wire length, with a quadratic penalty above 60 mm. On JL this cuts the estimated wire length from 25.5 to 18.1 m and nets longer than 60 mm from 79 to 21; JR keeps the earlier placement until it is rebuilt with the same pass. The output is byte-stable across hash seeds.
 - **Stack:** F.Cu, In2.Cu, In3.Cu and B.Cu carry signals; In1.Cu is a continuous AGND plane; In3.Cu also carries the −12 V fill; In4.Cu is a continuous +12 V plane. +5 V is routed as 0.4 mm tracks. Signals on In3.Cu are accepted only if the −12 V fill stays connected, and native checks reject any batch that splits it.
 - **Evidence chain:** `scripts/checks/jack_locality.py` proves the partition changed only in jack package faces, jack bypass distances and the jack layer stack, and chains onto the earlier connector-locality transition. Superseded four-layer stage reports were removed; git history keeps them.
 
@@ -18,12 +18,12 @@ A cut-line bound (`scripts/pcbgen/cut_capacity.py`) showed that the four-layer h
 | Native check | JL / `osc-jack-left` | JR / `osc-jack-right` |
 | --- | --- | --- |
 | Status | ROUTED DRAFT IN PROGRESS | ROUTED DRAFT IN PROGRESS |
-| Native open edges | **360** | **516** |
-| Remaining signal edges | 332 | 450 |
-| Remaining rail / ground edges | +12V 3, +5V 0, -12V 4, AGND 21 | +12V 0, +5V 0, -12V 5, AGND 61 |
+| Native open edges | **173** | **516** |
+| Remaining signal edges | 152 | 450 |
+| Remaining rail / ground edges | +12V 3, +5V 0, -12V 4, AGND 14 | +12V 0, +5V 0, -12V 5, AGND 61 |
 | DRC errors / schematic parity | 0 / 0 | 0 / 0 |
-| Track segments / vias | 42996 / 3298 | 17147 / 2103 |
-| Native warnings | hole to hole 199, silk edge clearance 7, silk over copper 199, silk overlap 199, text height 43, track dangling 11, via dangling 25 | silk edge clearance 13, silk over copper 199, silk overlap 199, text height 59, track dangling 8, via dangling 24 |
+| Track segments / vias | 27392 / 2646 | 17147 / 2103 |
+| Native warnings | hole to hole 4, silk edge clearance 8, silk over copper 199, silk overlap 199, text height 43, track dangling 5, via dangling 22 | silk edge clearance 13, silk over copper 199, silk overlap 199, text height 59, track dangling 8, via dangling 24 |
 
 Routing uses `scripts/pcbgen/route_jack_grid.py`: terminal via arrays, ±12 V plane fanouts, rail links, then a negotiated-congestion (PathFinder) pass over every signal net on a 0.05 mm grid, rip-up-and-reroute batches for what it leaves open, with AGND stitching vias where new copper cuts a surface pour. Each stage is applied to a disposable copy, checked with native DRC, schematic parity and zone refill, and kept only when the native open-edge count falls. Stage receipts are in `boards/<board-id>/reports/grid-routing/`; `reports/ratsnest.json` holds the complete native per-net topology. Silkscreen/text warnings remain [#44](https://github.com/Takazudo/zudo-osc-hole-field/issues/44).
 
