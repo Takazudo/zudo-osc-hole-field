@@ -480,6 +480,7 @@ def route(dump,nets=(),rip=(),rip_first=False,res=0.1,layer_cost=None,via_cost=3
 
 
 _NEGOTIATE_ROUTE=None
+FULL_BOARD_MM=10_000.0  # window margin that covers any board
 
 
 def _negotiate_worker(job):
@@ -574,12 +575,25 @@ def negotiate(dump,nets,res=0.1,layer_cost=None,via_cost=30.0,clearance=0.2,widt
 
     def route_net(net,pfac):
         # Retry wider with a larger budget and an inflated heuristic (cost within weight x optimal):
-        # under heavy congestion costs an exact search can exhaust its budget on a routable net.
-        for attempt,(window,budget,weight) in enumerate(((margin_mm,max_expansions,1.0),(wide_margin_mm,3*max_expansions,1.3),(wide_margin_mm,3*max_expansions,2.5))):
-            r=route_window(net,pfac,max(margin_mm,window),budget,weight)
-            if r[0]!='fail':return (*r,attempt)
-            if 'search limit' not in r[1]:break
+        # under heavy congestion costs an exact search can exhaust its budget on a routable net,
+        # and a window-bound 'no path' needs a larger window, not a larger budget.
+        attempts=((margin_mm,max_expansions,1.0),(max(margin_mm,wide_margin_mm),3*max_expansions,1.3),(max(margin_mm,wide_margin_mm),3*max_expansions,2.5))
+        k=0
+        while k<len(attempts):
+            window,budget,weight=attempts[k]
+            r=route_window(net,pfac,window,budget,weight)
+            if r[0]!='fail':return (*r,k)
+            if 'boxed in' in r[1]:break
+            k+=1
+            if 'no path' in r[1]:
+                while k<len(attempts) and attempts[k][0]<=window:k+=1
         return r
+
+    def route_full(net,pfac):
+        # Last resort for a window-bound 'no path': the whole board, one net at a time in
+        # this process (a full six-layer window costs about 1 GB).
+        r=route_window(net,pfac,FULL_BOARD_MM,3*max_expansions,2.5)
+        return r if r[0]=='fail' else (*r,3)
 
     def route_window(net,pfac,margin_mm,max_expansions,weight):
         N=raster.net_id[net];group=pads_by_net[net]
@@ -606,8 +620,9 @@ def negotiate(dump,nets,res=0.1,layer_cost=None,via_cost=30.0,clearance=0.2,widt
                        &(raster.d_edge[y0+a0:y0+a1,x0+b0:x0+b1]>=edge_clearance+width/2+margin)&(raster.d_keep_track[l][y0+a0:y0+a1,x0+b0:x0+b1]>=width/2+margin))
                 free[l][a0:a1,b0:b1]|=pad_zone[a0:a1,b0:b1]&local
         # Vias negotiate too: a contested via site costs more instead of being forbidden.
-        vcost=via_cost*(1.0+hist_via[y0:y1,x0:x1])*(1.0+pfac*occ_via[y0:y1,x0:x1])
-        cost=[(1.0+hist[l,y0:y1,x0:x1])*(1.0+pfac*occ_track[l,y0:y1,x0:x1]) for l in range(L)]
+        pf=np.float32(pfac)
+        vcost=np.float32(via_cost)*(1.0+hist_via[y0:y1,x0:x1])*(1.0+pf*occ_via[y0:y1,x0:x1])
+        cost=[(1.0+hist[l,y0:y1,x0:x1])*(1.0+pf*occ_track[l,y0:y1,x0:x1]) for l in range(L)]
         masks=[]
         for p in group:
             m=np.zeros((L,y1-y0,x1-x0),bool)
@@ -628,8 +643,9 @@ def negotiate(dump,nets,res=0.1,layer_cost=None,via_cost=30.0,clearance=0.2,widt
                 pad=group[i]['ref']+'.'+group[i]['pad']
                 rim=ndimage.binary_dilation(src,structure=np.ones((1,3,3),bool))&~src
                 if not (rim&free).any():return 'fail',f'{pad} boxed in (no free cell next to the pad)'
-                if expanded>max_expansions:return 'fail',f'{pad} search limit ({margin_mm:g} mm window)'
-                return 'fail',f'{pad} no path ({margin_mm:g} mm window)'
+                where='full board' if margin_mm>=FULL_BOARD_MM else f'{margin_mm:g} mm window'
+                if expanded>max_expansions:return 'fail',f'{pad} search limit ({where})'
+                return 'fail',f'{pad} no path ({where})'
             i0=max(k for k,(l,y,x) in enumerate(path) if src[l,y,x]);i1=min(k for k,(l,y,x) in enumerate(path) if reached[l,y,x] and k>=i0)
             path=path[i0:i1+1]
             for k,(l,y,x) in enumerate(path):
@@ -680,7 +696,7 @@ def negotiate(dump,nets,res=0.1,layer_cost=None,via_cost=30.0,clearance=0.2,widt
             log(f'NEGOTIATE deadline reached before iteration {it+1}; state saved for resume')
             if pool is not None:pool.terminate()
             return None,None
-        failed=0;attempts=[0,0,0];batch=[n for n in order if not it or n in conflicted or n not in routes]
+        failed=0;attempts=[0,0,0,0];batch=[n for n in order if not it or n in conflicted or n not in routes]
         if workers>1:
             # Waves of nets whose search windows do not overlap route in parallel with the
             # same outcome as routing them one after another.
@@ -691,6 +707,7 @@ def negotiate(dump,nets,res=0.1,layer_cost=None,via_cost=30.0,clearance=0.2,widt
                 for net in wave:
                     if net in routes:stamp(net,routes.pop(net)[0],-1)
                 done=pool.map(_negotiate_worker,[(n,pfac) for n in wave],chunksize=1)
+                done=[(n,route_full(n,pfac) if r[0]=='fail' and 'no path' in r[1] else r) for n,r in done]
                 for net,r in done:
                     if r[0]=='fail':failed+=1;failures[net]=r[1];continue
                     attempts[r[2]]+=1;r=r[:2]
@@ -699,6 +716,7 @@ def negotiate(dump,nets,res=0.1,layer_cost=None,via_cost=30.0,clearance=0.2,widt
             for net in batch:
                 if net in routes:stamp(net,routes[net][0],-1)
                 r=route_net(net,pfac)
+                if r[0]=='fail' and 'no path' in r[1]:r=route_full(net,pfac)
                 if r[0]=='fail':routes.pop(net,None);failed+=1;failures[net]=r[1];continue
                 attempts[r[2]]+=1;r=r[:2]
                 failures.pop(net,None);routes[net]=r;stamp(net,r[0],+1)
@@ -708,7 +726,7 @@ def negotiate(dump,nets,res=0.1,layer_cost=None,via_cost=30.0,clearance=0.2,widt
             if hot.any():conflicted.add(net);np.add.at(hist,(ls[hot],ys[hot],xs[hot]),history)
             vhot=occ_via[vy,vx]-own_at(via,None,vy,vx)>0
             if vhot.any():conflicted.add(net);np.add.at(hist_via,(vy[vhot],vx[vhot]),history)
-        log(f'NEGOTIATE iteration {it+1}: {len(routes)} nets routed, {len(conflicted)} in conflict, {failed} unroutable; exact/wide/greedy searches {attempts}')
+        log(f'NEGOTIATE iteration {it+1}: {len(routes)} nets routed, {len(conflicted)} in conflict, {failed} unroutable; exact/wide/greedy/full-board searches {attempts}')
         save(it+1)
         if it==start:
             for net,why in sorted(failures.items()):log(f'NEGOTIATE unroutable {net}: {why}')
