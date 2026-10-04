@@ -18,6 +18,10 @@ import statistics
 PLANE_NETS={'AGND','+12V','-12V','+5V'}
 RELAX_PASSES=40
 FACE_PENALTY_MM=4.0
+# Extra keep-clear ring around each IC (mm) so its pins can escape. JR's rear face is about
+# 78% occupied and overflows with any ring (tried 0.8/0.5/0.3), so it keeps none.
+IC_CHANNEL_MM={'JL':0.8,'JR':0.0}
+CHANNEL_DETOUR_MM=3.0
 
 
 def nearest(grid,masks,target):
@@ -66,6 +70,11 @@ def masks_for(boxes,scale,theta,oriented_box):
 
 
 def place_jack_locality(board,free,grids,shapes,pin_nets,anchors,cluster_cells,turn,oriented_box,instance_anchor=None,through_hole=lambda part:False):
+    """Place one board's free packages with that board's IC routing channel."""
+    return _place(board,free,grids,shapes,pin_nets,anchors,cluster_cells,turn,oriented_box,instance_anchor,IC_CHANNEL_MM.get(board,0.0),through_hole)
+
+
+def _place(board,free,grids,shapes,pin_nets,anchors,cluster_cells,turn,oriented_box,instance_anchor,ic_channel,through_hole):
     """Return floorplan rows for every free package of one jack board, or raise on overflow.
 
     anchors: {net: [(x_mm, y_mm), ...]} pad/contact positions of fixed parts and headers.
@@ -112,33 +121,42 @@ def place_jack_locality(board,free,grids,shapes,pin_nets,anchors,cluster_cells,t
     placed={};rows=[]
     for u in order:
         legal={**pos,**placed};t=target(u,{v:legal[v] for v in legal if v!=u}) or pos[u]
-        best=None
         tht=any(through_hole(p) for p in [by_ref[u],*caps.get(u,[])])
-        for side in ('B.Cu','F.Cu'):
-            g=grids[board,side]
-            if tht:
-                # Through-hole pads occupy both faces: search the union of both grids.
-                other=grids[board,'F.Cu' if side=='B.Cu' else 'B.Cu'];g=copy.copy(g);g.rows=[a|b for a,b in zip(g.rows,other.rows)]
-            if u in caps:
-                variants=[(cluster_cells(by_ref[u],sorted(caps[u],key=lambda p:p['ref']),side,h),thetas) for h,thetas in ((False,(0,90,180,270)),(True,(0,90,180,270)))]
-            else:
-                variants=[([(by_ref[u],0,(0,0))],(0,90))]
-            for cells,thetas in variants:
-                if cells is None:continue
-                boxes=[]
-                for part,angle,(x,y) in cells:
-                    b=oriented_box(shapes[part['footprint']],side,angle);boxes.append([b[0]+x,b[1]+y,b[2]+x,b[3]+y])
-                for theta in thetas:
-                    envelope,masks=masks_for(boxes,g.scale,theta,oriented_box)
-                    # Parent (cell 0) origin sits at (0,0); aim the envelope so the parent lands on the target.
-                    cell=(round((t[0]+envelope[0])*g.scale),round((t[1]+envelope[1])*g.scale))
-                    found=nearest(g,masks,cell)
-                    if found is None:continue
-                    cost=found[0]/g.scale+(FACE_PENALTY_MM if side=='F.Cu' else 0)
-                    if best is None or cost<best[0]:best=(cost,side,g,cells,theta,envelope,masks,found)
+        def candidate(channel):
+            best=None
+            for side in ('B.Cu','F.Cu'):
+                g=grids[board,side]
+                if tht:
+                    # Through-hole pads occupy both faces: search the union of both grids.
+                    other=grids[board,'F.Cu' if side=='B.Cu' else 'B.Cu'];g=copy.copy(g);g.rows=[a|b for a,b in zip(g.rows,other.rows)]
+                if u in caps:
+                    variants=[(cluster_cells(by_ref[u],sorted(caps[u],key=lambda p:p['ref']),side,h),thetas) for h,thetas in ((False,(0,90,180,270)),(True,(0,90,180,270)))]
+                else:
+                    variants=[([(by_ref[u],0,(0,0))],(0,90))]
+                for cells,thetas in variants:
+                    if cells is None:continue
+                    boxes=[]
+                    for k,(part,angle,(x,y)) in enumerate(cells):
+                        b=oriented_box(shapes[part['footprint']],side,angle);m=channel if k==0 else 0.0
+                        boxes.append([b[0]+x-m,b[1]+y-m,b[2]+x+m,b[3]+y+m])
+                    for theta in thetas:
+                        envelope,masks=masks_for(boxes,g.scale,theta,oriented_box)
+                        # Parent (cell 0) origin sits at (0,0); aim the envelope so the parent lands on the target.
+                        cell=(round((t[0]+envelope[0])*g.scale),round((t[1]+envelope[1])*g.scale))
+                        found=nearest(g,masks,cell)
+                        if found is None:continue
+                        cost=found[0]/g.scale+(FACE_PENALTY_MM if side=='F.Cu' else 0)
+                        if best is None or cost<best[0]:best=(cost,side,g,cells,theta,envelope,masks,found)
+            return best
+        best=candidate(0.0)
+        if u in caps and ic_channel:
+            # Reserve a routing channel around each IC so its pins can escape, unless
+            # that would push the cluster much further from its target.
+            roomy=candidate(ic_channel)
+            if roomy is not None and (best is None or roomy[0]<=best[0]+CHANNEL_DETOUR_MM):best=roomy
         if best is None:raise ValueError(f'jack locality overflow {board} {u}')
         _,side,g,cells,theta,envelope,masks,(_,xx,yy)=best
-        for s_ in (('B.Cu','F.Cu') if tht else (side,)):occupy(grids[board,s_],masks,xx,yy)
+        for face in (('B.Cu','F.Cu') if tht else (side,)):occupy(grids[board,face],masks,xx,yy)
         offset=(xx/g.scale-envelope[0],yy/g.scale-envelope[1])
         for part,angle,p in cells:
             x,y=turn(p,theta);x+=offset[0];y+=offset[1];rotation=(angle+theta)%360

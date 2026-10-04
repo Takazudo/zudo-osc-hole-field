@@ -19,3 +19,20 @@ def prove_core_locality_transition(old,new):
         before=old_rows.get(row['ref'])
         if before is not None and before['board']=='K':before['side']=row['side']
     if expected!=new:raise ValueError('Partition changed beyond the core locality placement and core layer stack')
+
+
+def without_core_locality(partition,base):
+    """The partition with core package faces and the core layer stack restored from base.
+
+    Later jack-half changes stay, so the jack transition is proved on this
+    intermediate and the core transition from it to the current partition.
+    """
+    result=copy.deepcopy(partition)
+    before={b['id']:b for b in base['boards']}
+    for board in result['boards']:
+        if board.get('board_key')=='K':
+            board['layers']=before[board['id']]['layers'];board['layer_reason']=before[board['id']]['layer_reason']
+    sides={r['ref']:r['side'] for r in base['assignment']['components'] if r['board']=='K'}
+    for row in result['assignment']['components']:
+        if row['board']=='K':row['side']=sides[row['ref']]
+    return result

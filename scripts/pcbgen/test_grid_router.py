@@ -2,7 +2,7 @@
 import math
 import unittest
 import numpy as np
-from scripts.pcbgen.grid_router import copper_rows,fill_partition,fill_region_count,route,splits
+from scripts.pcbgen.grid_router import negotiate,astar,astar_py,copper_rows,fill_partition,fill_region_count,native_astar,route,splits
 from scripts.pcbgen.cut_capacity import scan,summarize
 
 MM=1_000_000
@@ -84,6 +84,32 @@ class RipUpTests(unittest.TestCase):
         repaired=route(crossing_board(),['A','B'],rrr_rounds=2,**common)[0]
         self.assertEqual({r['net'] for r in repaired if r['path']},{'A','B'})
         self.assertFalse([r for r in repaired if not r['path']])
+
+
+class NativeSearchTests(unittest.TestCase):
+    def test_native_and_python_search_agree_on_cost(self):
+        if native_astar() is None:self.skipTest('no C compiler')
+        rng=np.random.default_rng(3);free=rng.random((2,40,50))>0.25
+        src=np.zeros_like(free);goal=np.zeros_like(free);src[0,2,2]=free[0,2,2]=True;goal[1,37,47]=free[1,37,47]=True
+        via_ok=rng.random((40,50))>0.6
+        def cost(path):
+            total=0.0
+            for (l,y,x),(m,v,u) in zip(path,path[1:]):total+=30 if l!=m else (1.41421356 if y!=v and x!=u else 1.0)*(1,2)[m]
+            return total
+        a,_=astar(free,via_ok,src,goal,(1,2),30,10**7);b,_=astar_py(free,via_ok,src,goal,(1,2),30,10**7)
+        self.assertEqual(a is None,b is None)
+        if a:self.assertAlmostEqual(cost(a),cost(b),places=3)
+
+
+class NegotiationTests(unittest.TestCase):
+    def test_negotiation_resolves_a_greedy_block(self):
+        results,removed=negotiate(crossing_board(),['A','B'],res=0.1,clearance=0.2,width=0.2,layer_cost=[1.0],log=lambda m:None)
+        self.assertEqual({r['net'] for r in results if r['path']},{'A','B'})
+        self.assertFalse([r for r in results if not r['path']])
+
+    def test_parallel_waves_match_the_serial_outcome(self):
+        results,_=negotiate(crossing_board(),['A','B'],res=0.1,clearance=0.2,width=0.2,layer_cost=[1.0],log=lambda m:None,workers=2)
+        self.assertEqual({r['net'] for r in results if r['path']},{'A','B'})
 
 
 class FillGuardTests(unittest.TestCase):
