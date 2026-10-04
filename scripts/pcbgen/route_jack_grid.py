@@ -26,6 +26,8 @@ RRR_TRIED=set()  # nets already offered to a rip-up batch in this run
 SIGNAL_LAYERS=['F.Cu','In2.Cu','In3.Cu','B.Cu']
 LAYER_COST=[3.0,1.0,1.0,1.5,1.0,3.0]
 RAILS=['+12V','-12V','+5V']
+# The core is twice a jack half's area; a 0.05 mm six-layer negotiation raster would not fit in memory.
+NEGOTIATE_RES={'osc-core':0.075}
 COMMON=dict(layers=SIGNAL_LAYERS)
 # Each stage: router keyword arguments plus which nets it serves.
 STAGES=[
@@ -165,7 +167,7 @@ def stage(board_id,current,spec,definition,log):
         # PathFinder pass over every signal net: rip all signal copper and reroute together.
         nets=sorted({p['net'] for p in dump['pads'] if p['net'] and p['net'] not in (*RAILS,'AGND')})
         nets=[n for n in nets if sum(1 for p in dump['pads'] if p['net']==n)>1]
-        results,removed=negotiate(dump,nets,res=spec['res'],layer_cost=LAYER_COST,clearance=spec['clearance'],width=spec['signal_width'],
+        results,removed=negotiate(dump,nets,res=NEGOTIATE_RES.get(board_id,spec['res']),layer_cost=LAYER_COST,clearance=spec['clearance'],width=spec['signal_width'],
                                   via_diameter=spec['signal_via_diameter'],allowed_layers=SIGNAL_LAYERS,grow=spec['grow'],
                                   iterations=spec['iterations'],present=0.5,present_growth=1.8,history=0.5,workers=spec['workers'],
                                   fill_guards={'-12V':'In3.Cu'},log=log,deadline=time.time()+spec['budget_s'],

@@ -1,0 +1,52 @@
+---
+title: "Core PCB routed draft"
+description: "Six-layer core board after locality placement and rail routing: native routing status and remaining qualification."
+---
+
+**Routed draft in progress. It is unvalidated, has not been reviewed as hardware, and is not a fabrication release. [Issue #43 remains OPEN](https://github.com/Takazudo/zudo-osc-hole-field/issues/43).** Electrical and physical qualification are **NOT RUN**. No fabrication or order files were generated.
+
+## Placement: locality instead of first-fit
+
+`scripts/checks/partition35_floorplan.py` places the 3,385 free core packages with the locality placer in `scripts/checks/jack_locality.py`. The core has no panel hardware, so the core GH header pins anchor each signal net. Each of the 31 modules is also pulled toward the headers that carry its nets.
+
+The placer legalizes IC/bypass clusters first and keeps them rigid. Through-hole packages block both faces. The #59 protection rectangle, the bulk-capacitor reserves and the supports stay as obstacles.
+
+Result: 1,844 packages on B.Cu and 1,541 on F.Cu. Signal half-perimeter wirelength falls from 545 m (connectivity-blind first-fit) to 162 m. The 18 POWER-* reserves are the TP load-wire lands themselves. They hold their netlisted terminals and no longer emit keepouts over them.
+
+## Stack: six layers
+
+`scripts/pcbgen/cut_capacity.py` bounds the native placed board. Its worst line is y=177 (board frame), which 853 signal nets must cross.
+
+| Signal layers | Ideal track capacity | Ratio to demand |
+| --- | --- | --- |
+| F.Cu + B.Cu (four layers with intact planes) | 942 | 1.10× |
+| F.Cu, In2.Cu, In3.Cu, B.Cu (six layers) | 2,364 | 2.77× |
+
+Four layers fall below the 1.5× margin used for the jack halves, so the core takes the same six-layer stack:
+
+- F.Cu, In2.Cu, In3.Cu and B.Cu carry signals.
+- In1.Cu is a continuous AGND plane.
+- In3.Cu also carries the −12 V fill. A signal batch that splits the fill is rejected.
+- In4.Cu is a continuous +12 V plane.
+- +5 V is routed as 0.4 mm tracks.
+
+## Current status
+
+| Native check (KiCad 10.0.6) | Result |
+| --- | --- |
+| Outline / stack | 310 × 284 mm minus the 56 × 46 mm notch; six copper layers, 1.6 mm, 2 oz proposal |
+| Footprints | 3,594 netlisted (8 DNP), 13,406 pads |
+| Native open edges | **5,849**: +12 V 15, −12 V 16, +5 V 0, AGND 1, signals 5,817 |
+| DRC errors / schematic parity | **0 / 0** |
+| DRC warnings | silk overlap 199, silk over copper 199, silk edge clearance 10, text height 4 |
+| Copper | 6,559 track segments, 1,199 vias |
+
+`scripts/pcbgen/route_jack_grid.py` drives the routing stages. It first tries terminal via arrays; none were adopted. It then routes ±12 V plane fanouts, rail links and rail escapes. Each stage is applied to a disposable copy and checked with native DRC, schematic parity and zone refill. A stage is kept only when native open edges fall. Stage receipts are in `boards/osc-core/reports/grid-routing/`. Signal routing (negotiated pass, rip-up and reroute, batches, AGND stitching) continues under #43.
+
+![Core top: unvalidated routed draft in progress](/assets/osc-hole-field/osc-core-top.png)
+
+![Core bottom: unvalidated routed draft in progress](/assets/osc-hole-field/osc-core-bottom.png)
+
+## Qualification remains NOT RUN
+
+The earlier field-solver ground/current extraction is parked and is not a routing gate. Rail and return resistance, the ≤0.5 mΩ combined AGND neck and hot distribution drop remain unqualified. So do the 2.1 A / 2 A / 0.5 A load-wire terminal transfers and GH contact current. Protection (#59), source/inlet (#57) and installed fit (#65) also remain open.
