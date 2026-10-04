@@ -15,13 +15,15 @@ class CorePackageFieldsTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             netlist=Path(directory)/'historical.net'
             netlist.write_bytes(historical('schematic/boards/osc-core.net',CONNECTOR_BASE))
-            p=projection(audit,netlist)
+            # Later core locality placement (#43) rewrites the sheets' layout fields, so the audit reads its own commit.
+            sheets=lambda name:historical(name,CONNECTOR_BASE)
+            p=projection(audit,netlist,sheets)
             self.assertEqual(len(p['representatives']),199)
             roles={r['resolved_fields']['Role'] for r in p['all_original_source_units'] if r['ref']=='U103'}
             self.assertIn('reference_generator:A1',roles);self.assertIn('reference_generator:A3',roles)
             bad=copy.deepcopy(audit)
             next(r for r in bad['parity_records'] if 'field' in r)['expected_source_value']='invented'
-            with self.assertRaisesRegex(ValueError,'exact source unit'):projection(bad,netlist)
+            with self.assertRaisesRegex(ValueError,'exact source unit'):projection(bad,netlist,sheets)
         # A source-only header relocation does not make an old native audit current.
         with self.assertRaisesRegex(ValueError,'netlist is stale'):
             projection(audit,'schematic/boards/osc-core.net')
@@ -42,7 +44,9 @@ class CorePackageFieldsTests(unittest.TestCase):
 
     def test_source_rotations_distinguish_master_header_and_library_terminal(self):
         components,_=read_netlist(Path('schematic/boards/osc-core.net'));by={c.ref:dict(c.fields) for c in components}
-        self.assertEqual(source_rotation_degrees(by['U103']),180)
+        # U103 is a free core package: its angle follows the locality floorplan (#43).
+        floorplan={r['ref']:r for r in json.loads(Path('design/partition/floorplan-candidate.json').read_text())['placements']}
+        self.assertEqual(source_rotation_degrees(by['U103']),floorplan['U103']['kicad_orientation_deg'])
         self.assertEqual(source_rotation_degrees(by['J900002']),180)
         absent={r for r,f in by.items() if not f.get('KiCadOrientationDeg')}
         partition=json.loads(Path('design/partition/partition.json').read_text())
