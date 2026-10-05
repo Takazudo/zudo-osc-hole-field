@@ -1,0 +1,249 @@
+name: Sharded grid routing
+run-name: Shard-route ${{ inputs.board }} on ${{ inputs.branch }} x${{ inputs.shards }} from ${{ inputs.from_stage }}
+
+# N shard jobs each route a disjoint set of nets from the same base board: hotspot
+# regions for region stages, a board area for signal/rrr stages. Each uploads a copper
+# delta; one merge job applies every delta, runs the native gate once and pushes.
+# Draft only: qualification NOT RUN.
+on:
+  workflow_dispatch:
+    inputs:
+      board:
+        description: Board to route
+        required: true
+        type: choice
+        options: [osc-jack-left, osc-jack-right, osc-core]
+      branch:
+        description: Existing branch to read the board from and push the result to
+        required: true
+        type: string
+      shards:
+        description: Number of shard jobs (1-16)
+        required: false
+        default: "6"
+        type: string
+      from_stage:
+        description: First stage (region-NN, or signals-local / signals-NN / rrr-NN / signal-escapes)
+        required: false
+        default: region-01
+        type: string
+      to_stage:
+        description: Last stage (same kind as the first)
+        required: false
+        default: region-08
+        type: string
+      workers:
+        description: Negotiation workers per shard (runner has 4 vCPU / 16 GB)
+        required: false
+        default: "3"
+        type: string
+      res:
+        description: Negotiation raster in mm (empty keeps the per-board default)
+        required: false
+        type: string
+      iterations:
+        description: Negotiation iteration cap (empty keeps the per-board default)
+        required: false
+        type: string
+      max_minutes:
+        description: Routing time budget per shard in minutes (at most 300)
+        required: false
+        default: "270"
+        type: string
+
+permissions:
+  contents: write
+
+# Shared with route.yml so a board/branch never has two routing runs at once.
+concurrency:
+  group: route-${{ inputs.board }}-${{ inputs.branch }}
+  cancel-in-progress: false
+
+env:
+  BOARD: ${{ inputs.board }}
+  BRANCH: ${{ inputs.branch }}
+  SHARDS: ${{ inputs.shards }}
+  FROM_STAGE: ${{ inputs.from_stage }}
+  TO_STAGE: ${{ inputs.to_stage }}
+  WORKERS: ${{ inputs.workers }}
+  MAX_MINUTES: ${{ inputs.max_minutes }}
+  RES: ${{ inputs.res }}
+  ITERATIONS: ${{ inputs.iterations }}
+
+jobs:
+  prepare:
+    name: Pin the base commit
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    outputs:
+      sha: ${{ steps.pin.outputs.sha }}
+      matrix: ${{ steps.pin.outputs.matrix }}
+    steps:
+      - name: Validate inputs and resolve the branch
+        id: pin
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          git check-ref-format --branch "$BRANCH" >/dev/null
+          # The driver checks the range is all region stages or all signal/rrr stages.
+          [[ $FROM_STAGE =~ ^[a-z0-9-]+$ && $TO_STAGE =~ ^[a-z0-9-]+$ ]] || { echo "bad stage names"; exit 1; }
+          [[ $WORKERS =~ ^[1-8]$ ]] || { echo "workers must be 1-8"; exit 1; }
+          [[ -z $RES || $RES =~ ^0\.[0-9]+$ ]] || { echo "bad res: $RES"; exit 1; }
+          [[ -z $ITERATIONS || $ITERATIONS =~ ^[0-9]+$ ]] || { echo "bad iterations: $ITERATIONS"; exit 1; }
+          if ! [[ $SHARDS =~ ^[0-9]+$ ]] || ((SHARDS < 1 || SHARDS > 16)); then echo "shards must be 1-16"; exit 1; fi
+          if ! [[ $MAX_MINUTES =~ ^[0-9]+$ ]] || ((MAX_MINUTES < 1 || MAX_MINUTES > 300)); then echo "max_minutes must be 1-300"; exit 1; fi
+          sha=$(gh api "repos/$GITHUB_REPOSITORY/commits/$BRANCH" --jq .sha)
+          echo "sha=$sha" >> "$GITHUB_OUTPUT"
+          echo "matrix=$(seq 0 $((SHARDS - 1)) | jq -cs .)" >> "$GITHUB_OUTPUT"
+          echo "Base $BRANCH at $sha, $SHARDS shards" >> "$GITHUB_STEP_SUMMARY"
+
+  shard:
+    name: Shard ${{ matrix.index }}
+    needs: prepare
+    runs-on: ubuntu-latest
+    timeout-minutes: 330
+    strategy:
+      fail-fast: false
+      matrix:
+        index: ${{ fromJSON(needs.prepare.outputs.matrix) }}
+    env:
+      INDEX: ${{ matrix.index }}
+    steps:
+      - name: Check out the base commit
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ needs.prepare.outputs.sha }}
+
+      - name: Set up Python
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.10"
+
+      - name: Install pinned numerical dependencies
+        run: python -m pip install -r scripts/pcbgen/numerical-requirements.txt
+
+      - name: Pull the pinned KiCad oracle and build the A* core
+        run: |
+          grep -q -- "--shard" scripts/pcbgen/route_jack_grid.py || { echo "::error::$BRANCH predates --shard; merge main first"; exit 1; }
+          mkdir -p "$RUNNER_TEMP/out"
+          source scripts/kicad/pin.env
+          docker pull --quiet "$KICAD_IMAGE"
+          bash scripts/kicad/run.sh kicad-cli version
+          python -c "from scripts.pcbgen.grid_router import native_astar; assert native_astar(), 'grid_astar.c did not compile'"
+
+      - name: Route the shard
+        id: route
+        run: |
+          (
+            peak=0
+            while sleep 5; do
+              used=$(awk '/^MemTotal:/{t=$2} /^MemAvailable:/{a=$2} END{print t-a}' /proc/meminfo)
+              ((used > peak)) && peak=$used && echo "$peak" > "$RUNNER_TEMP/out/memory-peak-kb.txt"
+            done
+          ) &
+          sampler=$!
+          args=("$BOARD" --shard "$INDEX/$SHARDS" --from-stage "$FROM_STAGE" --to-stage "$TO_STAGE" --promote
+            --workers "$WORKERS" --max-minutes "$MAX_MINUTES")
+          [[ -n $RES ]] && args+=(--res "$RES")
+          [[ -n $ITERATIONS ]] && args+=(--iterations "$ITERATIONS")
+          set +e
+          timeout --signal=INT --kill-after=2m "$((MAX_MINUTES + 12))m" \
+            python -u scripts/pcbgen/route_jack_grid.py "${args[@]}" 2>&1 | tee "$RUNNER_TEMP/out/route.log"
+          status=${PIPESTATUS[0]}
+          set -e
+          kill "$sampler" || true
+          echo "status=$status" >> "$GITHUB_OUTPUT"
+          echo "$status" > "$RUNNER_TEMP/out/status.txt"
+          git show "HEAD:boards/$BOARD/$BOARD.kicad_pcb" > "$RUNNER_TEMP/base.kicad_pcb"
+          python scripts/pcbgen/route_shards.py delta "$RUNNER_TEMP/base.kicad_pcb" "boards/$BOARD/$BOARD.kicad_pcb" \
+            -o "$RUNNER_TEMP/out/delta-$INDEX.json"
+          cp -r "boards/$BOARD/reports/grid-routing" "$RUNNER_TEMP/out/receipts"
+          {
+            echo "### Shard $INDEX/$SHARDS: exit $status, peak host memory $(( $(cat "$RUNNER_TEMP/out/memory-peak-kb.txt" 2>/dev/null || echo 0) / 1024 )) MB"
+            grep -E '^shard |open edges$|time budget' "$RUNNER_TEMP/out/route.log" || true
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload the shard delta and logs
+        if: always() && steps.route.outcome == 'success'
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: shard-${{ matrix.index }}
+          path: ${{ runner.temp }}/out/
+          if-no-files-found: error
+          retention-days: 7
+
+      - name: Fail on a router error
+        if: steps.route.outputs.status != '' && steps.route.outputs.status != '0'
+        env:
+          STATUS: ${{ steps.route.outputs.status }}
+        run: |
+          echo "::error::route_jack_grid.py exited with status $STATUS (the shard's adopted stages are still in its delta)"
+          exit 1
+
+  merge:
+    name: Merge shard deltas and push
+    needs: [prepare, shard]
+    if: always() && needs.prepare.result == 'success'
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - name: Check out the base commit
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ needs.prepare.outputs.sha }}
+
+      - name: Set up Python
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.10"
+
+      - name: Install pinned numerical dependencies
+        run: python -m pip install -r scripts/pcbgen/numerical-requirements.txt
+
+      - name: Download shard deltas
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          pattern: shard-*
+          path: ${{ runner.temp }}/shards
+
+      - name: Merge, check natively and promote
+        id: merge
+        run: |
+          mkdir -p "$RUNNER_TEMP/merge"
+          mapfile -t deltas < <(find "$RUNNER_TEMP/shards" -name 'delta-*.json' | sort -V)
+          ((${#deltas[@]})) || { echo "::error::no shard produced a delta"; exit 1; }
+          echo "${#deltas[@]} of $SHARDS shard deltas" | tee -a "$GITHUB_STEP_SUMMARY"
+          source scripts/kicad/pin.env
+          docker pull --quiet "$KICAD_IMAGE"
+          python -u scripts/pcbgen/route_shards.py merge "$BOARD" "${deltas[@]}" --label "$GITHUB_RUN_ID" 2>&1 | tee "$RUNNER_TEMP/merge/merge.log"
+          line=$(grep -E '^shards-[0-9]+: [0-9]+ -> [0-9]+ open edges$' "$RUNNER_TEMP/merge/merge.log" || true)
+          echo "edges=$(sed -E 's/^[^:]+: (.*) open edges$/\1/' <<<"$line")" >> "$GITHUB_OUTPUT"
+          echo "${line:-no merged change}" >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Commit and push the merged board
+        env:
+          EDGES: ${{ steps.merge.outputs.edges }}
+          SHA: ${{ needs.prepare.outputs.sha }}
+          SHARD_RESULT: ${{ needs.shard.result }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          {
+            echo "Route $BOARD on CI in $SHARDS region shards: $FROM_STAGE..$TO_STAGE, open edges ${EDGES:-n/a}"
+            echo
+            echo "Sharded hotspot-region renegotiation from $SHA, merged and checked natively once."
+            echo "Shard jobs: $SHARD_RESULT. Unvalidated draft; electrical and physical qualification NOT RUN."
+            echo
+            echo "Run: $RUN_URL"
+          } > "$RUNNER_TEMP/commit-message.txt"
+          bash scripts/pcbgen/ci_push_route.sh "$BOARD" "$BRANCH" "$RUNNER_TEMP/commit-message.txt"
+
+      - name: Upload the merge log and receipt
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: merge-${{ github.run_id }}
+          path: |
+            ${{ runner.temp }}/merge/
+            boards/${{ inputs.board }}/reports/grid-routing/shards-*.json
+          if-no-files-found: warn
+          retention-days: 7

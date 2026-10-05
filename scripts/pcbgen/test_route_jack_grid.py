@@ -14,7 +14,7 @@ class RipUpRoundTests(unittest.TestCase):
     def setUp(self):
         self.calls=[];self.saved=(driver.signal_chunk,driver.route,driver.copper_rows)
         driver.RRR_TRIED.clear();driver.RRR_ROUND.update(round=0,adopted=False,done=False)
-        driver.signal_chunk=lambda dump,chunk,max_span_mm=None,skip=():[n for n in ('a','b','c') if n not in skip][:2]
+        driver.signal_chunk=lambda dump,chunk,max_span_mm=None,skip=(),only=None:[n for n in ('a','b','c') if n not in skip][:2]
         driver.route=lambda dump,nets,**kw:(self.calls.append((list(nets),kw['rrr_max_rip'],kw['window_mm'])),([],[]))[1]
         driver.copper_rows=lambda *a:([],[])
         self.spec=next(s for s in driver.STAGES if s['name']=='rrr-01')
@@ -44,6 +44,22 @@ class HotspotRegionTests(unittest.TestCase):
         regions=driver.hotspot_regions(dump,8)
         self.assertEqual([r[2] for r in regions],[2,1])
         self.assertEqual(list(regions[0][0]/mm),[10.0,10.0])
+
+
+class StageRejectionTests(unittest.TestCase):
+    def test_unrepairable_candidate_is_rejected_not_fatal(self):
+        saved=driver.stage
+        def failing(*args,**kwargs):raise driver.StageRejected('DRC errors persist after dropping culprit links')
+        driver.stage=failing
+        try:
+            logs=[]
+            board=type('B',(),{'with_name':lambda self,n:self,'read_text':lambda self:json.dumps({'open_edges':42})})()
+            candidate,receipt=driver.run_stage('fixture',board,{'name':'region-02'},{},logs.append)
+        finally:driver.stage=saved
+        self.assertIsNone(candidate)
+        self.assertTrue(receipt['rejected'])
+        self.assertEqual((receipt['open_edges_before'],receipt['open_edges_after']),(42,42))
+        self.assertIn('keeping the previous board',logs[0])
 
 
 if __name__=='__main__':
