@@ -16,7 +16,10 @@ import argparse,collections,hashlib,json,shutil,subprocess,sys,time
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[2]
 sys.path.insert(0,str(ROOT))
+import numpy as np
 from scipy.spatial import cKDTree
+from scipy.sparse import coo_matrix
+from scipy.sparse.csgraph import connected_components
 from scripts.pcbgen.grid_router import route,copper_rows,negotiate
 from scripts.pcbgen.uuid_tools import stable_uuid
 
@@ -26,6 +29,7 @@ RRR_TRIED=set()  # nets already offered to a rip-up batch in the current round
 # Rip-up rounds: once every open net has been offered, the next round re-offers them (earlier
 # rounds changed the copper) with a larger rip-up budget; a round that adopts nothing ends them.
 RRR_ROUND={'round':0,'adopted':False,'done':False}
+REGIONS_TRIED=set()  # hotspot regions already renegotiated in this run (rounded box corners)
 RRR_BUDGETS=[{'rrr_max_rip':4,'window_mm':12.0},{'rrr_max_rip':6,'window_mm':16.0},{'rrr_max_rip':8,'window_mm':20.0}]
 # In3 carries signals as well as the -12V fill (owner stack: four signal layers); In2 is preferred.
 SIGNAL_LAYERS=['F.Cu','In2.Cu','In3.Cu','B.Cu']
@@ -49,6 +53,8 @@ STAGES=[
     {'name':'negotiate','negotiate':True,'res':.05,'iterations':60,'workers':4,'budget_s':5400,'clearance':.2,'signal_width':.2,'signal_via_diameter':.6,'grow':{n:.05 for n in [*RAILS,'AGND']}},
     # Second negotiated pass over what is still open, after the sequential stages.
     {'name':'negotiate-open','negotiate':True,'open_only':True,'halo_mm':1.5,'res':.05,'iterations':40,'workers':4,'budget_s':5400,'clearance':.2,'signal_width':.2,'signal_via_diameter':.6,'grow':{n:.05 for n in [*RAILS,'AGND']}},
+    # Hotspot regions: rip all signal copper in a few clusters of stranded pins and renegotiate it.
+    *({'name':f'region-{i:02d}','negotiate':True,'regions':True,'eps_mm':8,'margin_mm':3,'regions_per_stage':8,'res':.05,'iterations':40,'workers':4,'budget_s':5400,'clearance':.2,'signal_width':.2,'signal_via_diameter':.6,'grow':{n:.05 for n in [*RAILS,'AGND']}} for i in range(1,9)),
     # Short local nets first.
     {'name':'signals-local','signals':True,'max_span_mm':8,'escape_halo_mm':.9,'clearance':.2,'signal_width':.2,'signal_via_diameter':.6,'grow':{n:.05 for n in [*RAILS,'AGND']}},
     # Then the remaining open signal nets, shortest first, in checked and promoted batches
@@ -139,6 +145,24 @@ def repair_batch(dump,radius_mm=1.2,limit=30):
     return targets,cut
 
 
+def hotspot_regions(dump,eps_mm):
+    """Clusters of stranded signal pins (every island but each net's largest), largest first.
+
+    Single-link clustering at eps_mm; returns [(lo_xy_nm, hi_xy_nm, pad_count)].
+    """
+    pads={p['uuid']:p for p in dump['pads']};pts=[]
+    for net,groups in sorted(dump['islands'].items()):
+        if len(groups)<2 or net in (*RAILS,'AGND'):continue
+        largest=max(groups,key=lambda g:sum(u in pads for u in g))
+        pts+=[pads[u]['xy'] for g in groups if g is not largest for u in g if u in pads]
+    if not pts:return []
+    xy=np.array(pts,float);pairs=cKDTree(xy).query_pairs(eps_mm*1e6,output_type='ndarray')
+    graph=coo_matrix((np.ones(len(pairs)),(pairs[:,0],pairs[:,1])),shape=(len(xy),len(xy)))
+    _,label=connected_components(graph,directed=False)
+    regions=[(xy[label==c].min(0),xy[label==c].max(0),int((label==c).sum())) for c in range(label.max()+1)]
+    return sorted(regions,key=lambda r:(-r[2],tuple(r[0])))
+
+
 def stage(board_id,current,spec,definition,log):
     original=current
     dump=json.loads((current.with_name('dump.json')).read_text())
@@ -178,6 +202,17 @@ def stage(board_id,current,spec,definition,log):
         # PathFinder pass: rip the chosen signal nets and reroute them together.
         nets=sorted({p['net'] for p in dump['pads'] if p['net'] and p['net'] not in (*RAILS,'AGND')})
         nets=[n for n in nets if sum(1 for p in dump['pads'] if p['net']==n)>1]
+        if spec.get('regions'):
+            # Hotspot pass: every signal net with copper or a stranded pin in a few stuck regions.
+            regions=[r for r in hotspot_regions(dump,spec['eps_mm']) if tuple(np.round(r[0]/1e6)) not in REGIONS_TRIED][:spec['regions_per_stage']]
+            if not regions:return None,None
+            REGIONS_TRIED.update(tuple(np.round(r[0]/1e6)) for r in regions)
+            m=spec['margin_mm']*1e6
+            inside=lambda xy:any(lo[0]-m<=xy[0]<=hi[0]+m and lo[1]-m<=xy[1]<=hi[1]+m for lo,hi,_ in regions)
+            chosen={i['net'] for i in dump['tracks'] if i['net'] in nets and (inside(i['a']) or inside(i['b']))}
+            chosen|={i['net'] for i in dump['vias'] if i['net'] in nets and inside(i['xy'])}
+            chosen|={p['net'] for p in dump['pads'] if p['net'] in nets and len(dump['islands'].get(p['net'],[]))>1 and inside(p['xy'])}
+            nets=sorted(chosen);log(f"{spec['name']}: {len(regions)} regions ({[r[2] for r in regions]} stranded pins), {len(nets)} nets renegotiated")
         if spec.get('open_only'):
             # Second pass: only the open nets and the nets whose copper crowds their pads.
             open_nets={n for n in nets if len(dump['islands'].get(n,[]))>1}
@@ -190,10 +225,10 @@ def stage(board_id,current,spec,definition,log):
                                   via_diameter=spec['signal_via_diameter'],allowed_layers=SIGNAL_LAYERS,grow=spec['grow'],
                                   iterations=NEGOTIATE_ITERATIONS.get(board_id,spec['iterations']),present=0.5,present_growth=1.8,history=0.5,workers=NEGOTIATE_WORKERS.get(board_id,spec['workers']),
                                   fill_guards={'-12V':'In3.Cu'},log=log,deadline=time.time()+spec['budget_s'],
-                                  state_path=str(ROOT/'.circuit-cache'/f"{board_id}-negotiate-{hashlib.sha256(current.read_bytes()).hexdigest()[:16]}.pkl"))
+                                  state_path=str(ROOT/'.circuit-cache'/f"{board_id}-{spec['name']}-{hashlib.sha256(current.read_bytes()).hexdigest()[:16]}.pkl"))
         # Out of time: the negotiation state is saved; rerun this stage to continue it.
         if results is None:return None,'resume'
-        if spec.get('open_only'):
+        if spec.get('open_only') or spec.get('regions'):
             # A net still in conflict keeps its old copper instead of losing it.
             kept={r['net'] for r in results if not r['path']}
             results=[r for r in results if r['path']]

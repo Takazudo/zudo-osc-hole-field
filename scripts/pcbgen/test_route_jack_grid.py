@@ -33,5 +33,18 @@ class RipUpRoundTests(unittest.TestCase):
         self.assertTrue(driver.RRR_ROUND['done'])
 
 
+class HotspotRegionTests(unittest.TestCase):
+    def test_stranded_pins_cluster_largest_first(self):
+        mm=1_000_000
+        pad=lambda u,net,x,y:{'uuid':u,'ref':'R'+u,'pad':'1','net':net,'xy':[x*mm,y*mm]}
+        # A: main island of two pads far away, stranded pins s1/s2 near (10,10); B: one stranded pin near (80,80).
+        pads=[pad('a0','A',100,0),pad('a1','A',101,0),pad('s1','A',10,10),pad('s2','A',12,11),
+              pad('b0','B',0,90),pad('b1','B',1,90),pad('s3','B',80,80),pad('r0','+12V',50,50),pad('r1','+12V',60,60)]
+        dump={'pads':pads,'islands':{'A':[['a0','a1'],['s1'],['s2']],'B':[['b0','b1'],['s3']],'+12V':[['r0'],['r1']]}}
+        regions=driver.hotspot_regions(dump,8)
+        self.assertEqual([r[2] for r in regions],[2,1])
+        self.assertEqual(list(regions[0][0]/mm),[10.0,10.0])
+
+
 if __name__=='__main__':
     unittest.main()
