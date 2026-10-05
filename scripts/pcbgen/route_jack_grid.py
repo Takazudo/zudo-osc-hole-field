@@ -32,6 +32,8 @@ RRR_TRIED=set()  # nets already offered to a rip-up batch in the current round
 RRR_ROUND={'round':0,'adopted':False,'done':False}
 REGIONS_TRIED=set()  # hotspot regions already renegotiated in this run (rounded box corners)
 # With --max-minutes the run deadline replaces each negotiated stage's local slice budget (budget_s).
+# Time a negotiated stage keeps after its last iteration for the fill guard, apply, native DRC and push.
+FINALIZE_MARGIN_S=20*60
 RUN={'deadline':None,'workers':None,'res':None,'iterations':None,'shard':None}  # --max-minutes/--workers/--res/--iterations/--shard overrides (CI routing)
 RRR_BUDGETS=[{'rrr_max_rip':4,'window_mm':12.0},{'rrr_max_rip':6,'window_mm':16.0},{'rrr_max_rip':8,'window_mm':20.0}]
 # In3 carries signals as well as the -12V fill (owner stack: four signal layers); In2 is preferred.
@@ -240,7 +242,7 @@ def stage(board_id,current,spec,definition,log):
         results,removed=negotiate(dump,nets,res=RUN['res'] or NEGOTIATE_RES.get(board_id,spec['res']),layer_cost=LAYER_COST,clearance=spec['clearance'],width=spec['signal_width'],
                                   via_diameter=spec['signal_via_diameter'],allowed_layers=SIGNAL_LAYERS,grow=spec['grow'],
                                   iterations=RUN['iterations'] or NEGOTIATE_ITERATIONS.get(board_id,spec['iterations']),present=0.5,present_growth=1.8,history=0.5,workers=RUN['workers'] or NEGOTIATE_WORKERS.get(board_id,spec['workers']),
-                                  fill_guards={'-12V':'In3.Cu'},log=log,deadline=RUN['deadline'] or time.time()+spec['budget_s'],
+                                  fill_guards={'-12V':'In3.Cu'},log=log,deadline=(RUN['deadline']-FINALIZE_MARGIN_S if RUN['deadline'] else time.time()+spec['budget_s']),
                                   state_path=str(ROOT/'.circuit-cache'/f"{board_id}-{spec['name']}-{hashlib.sha256(current.read_bytes()).hexdigest()[:16]}.pkl"))
         # Out of time: the negotiation state is saved; rerun this stage to continue it.
         if results is None:return None,'resume'
