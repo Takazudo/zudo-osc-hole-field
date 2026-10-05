@@ -2,7 +2,7 @@
 import math
 import unittest
 import numpy as np
-from scripts.pcbgen.grid_router import plateaued,negotiate,astar,astar_py,copper_rows,fill_partition,fill_region_count,native_astar,route,splits
+from scripts.pcbgen.grid_router import FillGuard,plateaued,negotiate,astar,astar_py,copper_rows,fill_partition,fill_region_count,native_astar,route,splits
 from scripts.pcbgen.cut_capacity import scan,summarize
 
 MM=1_000_000
@@ -85,6 +85,15 @@ class RipUpTests(unittest.TestCase):
         self.assertEqual({r['net'] for r in repaired if r['path']},{'A','B'})
         self.assertFalse([r for r in repaired if not r['path']])
 
+    def test_rip_up_runs_with_a_plane_fill_guard(self):
+        # The guard's state is saved, reset after the rip and restored on undo.
+        dump=crossing_board()
+        dump['pads'].append({'uuid':'pp','ref':'RP','pad':'1','net':'P','xy':[int(0.8*MM),int(0.8*MM)],'layers':['B.Cu'],
+                             'poly':square(0.8,0.8),'drill':0,'npth':False,'locked':False})
+        repaired=route(dump,['A','B'],rrr_rounds=2,fill_guards={'P':'B.Cu'},fill_clearance=0.2,
+                       res=0.1,clearance=0.2,signal_width=0.2,layer_cost=[1.0],log=lambda m:None)[0]
+        self.assertEqual({r['net'] for r in repaired if r['path']},{'A','B'})
+
 
 class NativeSearchTests(unittest.TestCase):
     def test_native_and_python_search_agree_on_cost(self):
@@ -165,6 +174,17 @@ class FillGuardTests(unittest.TestCase):
         after=fill_partition(after_label,7,0.2,0.1)
         self.assertEqual(len({c for c in before}),len({c for c in after}))
         self.assertTrue(splits(before,after))
+
+    def test_incremental_guard_matches_full_recomputation(self):
+        rng=np.random.default_rng(3);label=np.zeros((60,90),np.int32)
+        label[[10,10,50,50],[5,85,5,85]]=7;label[30,10:80:7]=4
+        guard=FillGuard(label,7,0.2,0.1);region=guard.region;full=label.copy()
+        for _ in range(12):
+            y,x=int(rng.integers(0,56)),int(rng.integers(0,86));m=np.ones((4,4),bool)
+            region=guard.shrunk([(m,(slice(y,y+4),slice(x,x+4)))],region);full[y:y+4,x:x+4]=-1
+            self.assertEqual(guard.partition(region),fill_partition(full,7,0.2,0.1))
+        wall=np.ones((60,1),bool)
+        self.assertFalse(guard.keeps(guard.shrunk([(wall,(slice(0,60),slice(45,46)))])))
 
 
 class CutCapacityTests(unittest.TestCase):
