@@ -148,6 +148,19 @@ def repair_batch(dump,radius_mm=1.2,limit=30):
     return targets,cut
 
 
+class StageRejected(RuntimeError):
+    """A stage whose candidate keeps DRC errors that cannot be dropped: keep the previous board."""
+
+
+def run_stage(board_id,current,spec,definition,log):
+    """stage(), with an unrepairable candidate turned into a rejected receipt instead of an abort."""
+    try:return stage(board_id,current,spec,definition,log)
+    except StageRejected as e:
+        before=json.loads(current.with_name('dump.json').read_text())['open_edges']
+        log(f"{spec['name']}: rejected ({e}); keeping the previous board")
+        return None,{'stage':spec['name'],'status':'REJECTED: '+str(e),'open_edges_before':before,'open_edges_after':before,'rejected':True}
+
+
 def hotspot_regions(dump,eps_mm):
     """Clusters of stranded signal pins (every island but each net's largest), largest first.
 
@@ -279,10 +292,10 @@ def stage(board_id,current,spec,definition,log):
                 # Through vias cross the plane layer too; without plane-layer track, drop the new vias.
                 bad={r['uuid'] for r in rows if r['kind']=='via'}
             log(f"{spec['name']}: {split} split; dropping links with copper on {sorted(plane_layers)}")
-            if not bad:raise RuntimeError(f"{spec['name']}: {split} split without attributable copper")
+            if not bad:raise StageRejected(f"{split} split without attributable copper")
         if not bad:break
         culprits=[l for l in links if bad & set(l['copper_uuids'])]
-        if not culprits:raise RuntimeError(f"{spec['name']}: DRC errors not attributable to new copper")
+        if not culprits:raise StageRejected("DRC errors not attributable to new copper")
         if removed:
             # A rerouted (ripped) net loses its whole new route and gets its old copper back.
             ripped_nets={i['net'] for k in ('tracks','vias') for i in dump[k] if i['uuid'] in set(removed)}
@@ -292,7 +305,7 @@ def stage(board_id,current,spec,definition,log):
         drop={u for l in culprits for u in l['copper_uuids']};dropped+=culprits
         rows=[r for r in rows if r['uuid'] not in drop];links=[l for l in links if l not in culprits]
         log(f"{spec['name']}: dropped {len(culprits)} links with DRC errors; retrying")
-    else:raise RuntimeError(f"{spec['name']}: DRC errors persist")
+    else:raise StageRejected("DRC errors persist after dropping culprit links")
     before=json.loads(original.with_name('dump.json').read_text())['open_edges']
     receipt={'stage':spec['name'],'status':'NATIVE CHECKED DRAFT STAGE','open_edges_before':before,'open_edges_after':after['open_edges'],
              'links_added':len(links),'links_dropped_for_drc':len(dropped),'copper_rows':len(rows),'ripped':len(removed),
@@ -336,8 +349,10 @@ def main():
     for spec in STAGES[names.index(a.from_stage):last]:
         if RUN['deadline'] and time.time()>RUN['deadline']:
             print(f"run time budget used; rerun --from-stage {spec['name']} to resume",flush=True);break
-        candidate,receipt=stage(a.board_id,current,spec,definition,lambda m:print(m,flush=True))
+        candidate,receipt=run_stage(a.board_id,current,spec,definition,lambda m:print(m,flush=True))
         if receipt=='resume':print(f"{spec['name']}: time budget used; rerun --from-stage {spec['name']} to resume",flush=True);break
+        if candidate is None and receipt:
+            receipt['adopted']=False;(reports/f"{spec['name']}.json").write_text(json.dumps(receipt,indent=1,sort_keys=True)+'\n');continue
         if candidate is None:print(f"{spec['name']}: nothing to do",flush=True);continue
         receipt['adopted']=receipt['open_edges_after']<receipt['open_edges_before']
         if spec.get('rrr_rounds') and receipt['adopted']:RRR_ROUND['adopted']=True
