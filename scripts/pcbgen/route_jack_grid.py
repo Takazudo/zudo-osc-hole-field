@@ -22,7 +22,7 @@ from scipy.sparse import coo_matrix
 from scipy.sparse.csgraph import connected_components
 from scripts.pcbgen.grid_router import route,copper_rows,negotiate
 from scripts.pcbgen.uuid_tools import stable_uuid
-from scripts.pcbgen.route_shards import plan,region_key,region_nets
+from scripts.pcbgen.route_shards import area_plan,plan,region_key,region_nets
 
 PLANES={'+12V':'In4.Cu','-12V':'In3.Cu'}
 FAILED=set()  # signal nets with an unroutable island in an earlier batch; retried by the escape stage
@@ -116,14 +116,14 @@ def terminal_array(dump,board_id,definition):
     return rows,[{'net':'terminal arrays','copper_uuids':[r['uuid'] for r in rows]}]
 
 
-def signal_chunk(dump,chunk,min_span_mm=None,max_span_mm=None,skip=()):
-    """Open signal nets, shortest pad span first; chunk limits the count, spans filter in mm."""
+def signal_chunk(dump,chunk,min_span_mm=None,max_span_mm=None,skip=(),only=None):
+    """Open signal nets, shortest pad span first; chunk limits the count, spans filter in mm, only keeps a shard's nets."""
     pads={p['uuid']:p['xy'] for p in dump['pads']}
     def span(net):
         pts=[pads[u] for g in dump['islands'][net] for u in g if u in pads]
         return (max(p[0] for p in pts)-min(p[0] for p in pts)+max(p[1] for p in pts)-min(p[1] for p in pts))/1e6 if pts else 0
     skip={*RAILS,'AGND',*skip}
-    nets=sorted((n for n in dump['islands'] if n not in skip),key=lambda n:(span(n),n))
+    nets=sorted((n for n in dump['islands'] if n not in skip and (only is None or n in only)),key=lambda n:(span(n),n))
     if min_span_mm is not None:nets=[n for n in nets if span(n)>min_span_mm]
     if max_span_mm is not None:nets=[n for n in nets if span(n)<=max_span_mm]
     return nets[:chunk] if chunk else nets
@@ -260,7 +260,8 @@ def stage(board_id,current,spec,definition,log):
         rrr=spec.get('rrr_rounds')
         if rrr and RRR_ROUND['done']:return None,None
         chunk=lambda:spec.get('nets') or signal_chunk(dump,spec.get('chunk'),max_span_mm=spec.get('max_span_mm'),
-                                                      skip=RRR_TRIED if rrr else (FAILED if spec.get('chunk') else ()))
+                                                      skip=RRR_TRIED if rrr else (FAILED if spec.get('chunk') else ()),
+                                                      only=set(RUN['shard']['nets']) if RUN['shard'] else None)
         nets=chunk()
         if rrr and not nets:
             if not RRR_ROUND['adopted'] or RRR_ROUND['round']+1>=len(RRR_BUDGETS):RRR_ROUND['done']=True;return None,None
@@ -271,6 +272,7 @@ def stage(board_id,current,spec,definition,log):
         kwargs={k:v for k,v in spec.items() if k in ('planes','clearance','rail_width','signal_width','signal_via_diameter','grow','res','window_mm','full_board','max_expansions','escape_halo_mm','rrr_rounds')}
         if rrr:kwargs.update(RRR_BUDGETS[RRR_ROUND['round']])
         kwargs['fill_guards']={'-12V':'In3.Cu'}
+        if RUN['shard']:kwargs['rip_only']=set(RUN['shard']['nets'])  # a shard rips only the nets it owns
         results,removed=route(dump,nets,allowed_layers=SIGNAL_LAYERS,layer_cost=LAYER_COST,rail_nets=RAILS,log=log,**kwargs)
         rows,links=copper_rows(results,board_id,'grid-'+spec['name'])
         if spec.get('chunk') and not spec.get('rrr_rounds'):FAILED.update(r['net'] for r in results if not r['path'])
@@ -335,19 +337,35 @@ def main():
     # Stage gates attribute every DRC error to new copper, so the start board must be clean.
     if errors or drc['schematic_parity']:raise RuntimeError(f"start board not clean: {dict(errors)}, {len(drc['schematic_parity'])} parity")
     names=[s['name'] for s in STAGES]
+    last=names.index(a.to_stage)+1 if a.to_stage else len(STAGES)
     if a.shard:
         index,count=map(int,a.shard.split('/'))
-        region_specs=[s for s in STAGES[names.index(a.from_stage):] if s.get('regions')]
-        if not 0<=index<count or not STAGES[names.index(a.from_stage)].get('regions'):raise ValueError('--shard needs I/N with 0<=I<N and a region --from-stage')
-        spec=region_specs[0];signal={p['net'] for p in start_dump['pads'] if p['net'] and p['net'] not in (*RAILS,'AGND')}
+        chosen=STAGES[names.index(a.from_stage):last]
+        regional=all(s.get('regions') for s in chosen)
+        # Area shards own disjoint nets, so only stages that route and rip signal nets alone may run.
+        signal_only=all(s.get('signals') and not s.get('nets') and not s.get('repair') for s in chosen)
+        if not 0<=index<count or not (regional or signal_only):
+            raise ValueError('--shard needs I/N with 0<=I<N and a stage range of only region stages or only signal/rrr stages')
+        signal={p['net'] for p in start_dump['pads'] if p['net'] and p['net'] not in (*RAILS,'AGND')}
         signal={n for n in signal if sum(1 for p in start_dump['pads'] if p['net']==n)>1}
+    if a.shard and signal_only:
+        pads=collections.defaultdict(list)
+        for p_ in start_dump['pads']:
+            if p_['net'] in signal:pads[p_['net']].append(p_['xy'])
+        points={n:(*np.mean(xy,axis=0),len(start_dump['islands'].get(n,[None]))-1) for n,xy in pads.items()}
+        shards=[{'nets':nets_,'open_nets':[n for n in nets_ if points[n][2]],'open_edges':int(sum(points[n][2] for n in nets_))} for nets_ in area_plan(points,count)]
+        RUN['shard']=shards[index]
+        (work/'shard-plan.json').write_text(json.dumps(shards)+'\n')
+        print(f"shard {index}/{count} (area): {len(RUN['shard']['open_nets'])} open nets, {RUN['shard']['open_edges']} open edges, "
+              f"{len(RUN['shard']['nets'])} owned nets",flush=True)
+    elif a.shard:
+        spec=chosen[0]
         regions=hotspot_regions(start_dump,spec['eps_mm'])
         shards=plan(regions,[region_nets(start_dump,signal,r,spec['margin_mm']) for r in regions],count,margin=spec['margin_mm']*1e6)
         RUN['shard']=shards[index]
         (work/'shard-plan.json').write_text(json.dumps(shards)+'\n')
         print(f"shard {index}/{count}: {len(RUN['shard']['regions'])} of {len(regions)} regions, {len(RUN['shard']['nets'])} owned nets, "
               f"{RUN['shard']['stranded_pins']} stranded pins",flush=True)
-    last=names.index(a.to_stage)+1 if a.to_stage else len(STAGES)
     for spec in STAGES[names.index(a.from_stage):last]:
         if RUN['deadline'] and time.time()>RUN['deadline']:
             print(f"run time budget used; rerun --from-stage {spec['name']} to resume",flush=True);break

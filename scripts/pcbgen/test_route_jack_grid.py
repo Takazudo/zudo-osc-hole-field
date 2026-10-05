@@ -14,7 +14,7 @@ class RipUpRoundTests(unittest.TestCase):
     def setUp(self):
         self.calls=[];self.saved=(driver.signal_chunk,driver.route,driver.copper_rows)
         driver.RRR_TRIED.clear();driver.RRR_ROUND.update(round=0,adopted=False,done=False)
-        driver.signal_chunk=lambda dump,chunk,max_span_mm=None,skip=():[n for n in ('a','b','c') if n not in skip][:2]
+        driver.signal_chunk=lambda dump,chunk,max_span_mm=None,skip=(),only=None:[n for n in ('a','b','c') if n not in skip][:2]
         driver.route=lambda dump,nets,**kw:(self.calls.append((list(nets),kw['rrr_max_rip'],kw['window_mm'])),([],[]))[1]
         driver.copper_rows=lambda *a:([],[])
         self.spec=next(s for s in driver.STAGES if s['name']=='rrr-01')
