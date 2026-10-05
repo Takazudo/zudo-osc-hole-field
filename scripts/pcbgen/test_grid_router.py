@@ -85,6 +85,15 @@ class RipUpTests(unittest.TestCase):
         self.assertEqual({r['net'] for r in repaired if r['path']},{'A','B'})
         self.assertFalse([r for r in repaired if not r['path']])
 
+    def test_rip_up_runs_with_a_plane_fill_guard(self):
+        # The guard's state is saved, reset after the rip and restored on undo.
+        dump=crossing_board()
+        dump['pads'].append({'uuid':'pp','ref':'RP','pad':'1','net':'P','xy':[int(0.8*MM),int(0.8*MM)],'layers':['B.Cu'],
+                             'poly':square(0.8,0.8),'drill':0,'npth':False,'locked':False})
+        repaired=route(dump,['A','B'],rrr_rounds=2,fill_guards={'P':'B.Cu'},fill_clearance=0.2,
+                       res=0.1,clearance=0.2,signal_width=0.2,layer_cost=[1.0],log=lambda m:None)[0]
+        self.assertEqual({r['net'] for r in repaired if r['path']},{'A','B'})
+
 
 class NativeSearchTests(unittest.TestCase):
     def test_native_and_python_search_agree_on_cost(self):

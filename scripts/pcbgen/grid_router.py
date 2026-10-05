@@ -424,7 +424,7 @@ def route(dump,nets=(),rip=(),rip_first=False,res=0.1,layer_cost=None,via_cost=3
         i1=min(i for i,(l,y,x) in enumerate(path) if reached[l,y,x] and i>=i0)
         path=path[i0:i1+1]
         commit(net,N,w,vd,names,path,src,reached,False)
-        for li,g in fill_count.items():g.region=g.shrunk(path_pieces(path,w,vd,li))
+        for li,fg in fill_count.items():fg.region=fg.shrunk(path_pieces(path,w,vd,li))
         for l,y,x in path:reached[l,y,x]=True
         return True
 
@@ -463,7 +463,7 @@ def route(dump,nets=(),rip=(),rip_first=False,res=0.1,layer_cost=None,via_cost=3
                 if probe is None or not blockers or len(blockers)>rrr_max_rip:
                     log(f"RRR-SKIP {net} {name(g)} {'no probe path' if probe is None else f'{len(blockers)} blockers'}")
                     failed.append((net,g,main_group));continue
-                snapshot=(raster.label.copy(),raster.hole.copy(),[dict(r) for r in results],set(removed),{li:(g.region.copy(),g.base) for li,g in fill_count.items()})
+                snapshot=(raster.label.copy(),raster.hole.copy(),[dict(r) for r in results],set(removed),{li:(fg.region.copy(),fg.base) for li,fg in fill_count.items()})
                 victims=[id_net[b] for b in blockers]
                 for b in blockers:
                     raster.label[raster.label==b]=0
@@ -473,7 +473,8 @@ def route(dump,nets=(),rip=(),rip_first=False,res=0.1,layer_cost=None,via_cost=3
                             for lay in pad['layers']:raster.label[raster.layers.index(lay)][sl][m]=b
                 results[:]=[r for r in results if r['net'] not in victims]
                 removed|={i['uuid'] for k in ('tracks','vias') for i in dump[k] if i['net'] in victims}
-                for li,g in fill_count.items():g.reset(raster.label[li])
+                # Not `g`: that name holds the island being rerouted.
+                for li,fg in fill_count.items():fg.reset(raster.label[li])
                 ok=route_one(net,src,reached,name(g))
                 for v in victims:
                     if not ok:break
