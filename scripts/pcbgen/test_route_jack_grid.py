@@ -46,5 +46,21 @@ class HotspotRegionTests(unittest.TestCase):
         self.assertEqual(list(regions[0][0]/mm),[10.0,10.0])
 
 
+class StageRejectionTests(unittest.TestCase):
+    def test_unrepairable_candidate_is_rejected_not_fatal(self):
+        saved=driver.stage
+        def failing(*args,**kwargs):raise driver.StageRejected('DRC errors persist after dropping culprit links')
+        driver.stage=failing
+        try:
+            logs=[]
+            board=type('B',(),{'with_name':lambda self,n:self,'read_text':lambda self:json.dumps({'open_edges':42})})()
+            candidate,receipt=driver.run_stage('fixture',board,{'name':'region-02'},{},logs.append)
+        finally:driver.stage=saved
+        self.assertIsNone(candidate)
+        self.assertTrue(receipt['rejected'])
+        self.assertEqual((receipt['open_edges_before'],receipt['open_edges_after']),(42,42))
+        self.assertIn('keeping the previous board',logs[0])
+
+
 if __name__=='__main__':
     unittest.main()
