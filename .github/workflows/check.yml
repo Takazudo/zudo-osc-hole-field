@@ -156,3 +156,30 @@ jobs:
           retention-days: 7
 
   # Complete native assembly checks remain gated by sub-issue #44.
+
+  board-drc:
+    name: Native DRC gate (${{ matrix.board }})
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    strategy:
+      fail-fast: false
+      matrix:
+        board: [osc-jack-left, osc-jack-right, osc-core]
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Set up Python
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.12"
+
+      # Partially routed drafts: unconnected items are reported, DRC errors and schematic parity fail.
+      - name: Run pinned KiCad DRC with schematic parity and zone refill
+        env:
+          BOARD: ${{ matrix.board }}
+        run: |
+          bash scripts/kicad/run.sh kicad-cli pcb drc --schematic-parity --refill-zones --format json --severity-all \
+            -o "boards/$BOARD/reports/ci-drc.json" "boards/$BOARD/$BOARD.kicad_pcb"
+          python3 scripts/pcbgen/summarize.py "boards/$BOARD/reports/ci-drc.json"
