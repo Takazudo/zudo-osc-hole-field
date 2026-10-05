@@ -48,21 +48,21 @@ Four layers fall below the 1.5× margin used for the jack halves, so the core ta
 | --- | --- |
 | Outline / stack | 310 × 284 mm minus the 56 × 46 mm notch; six copper layers, 1.6 mm, 2 oz proposal |
 | Footprints | 3,594 netlisted (8 DNP), 13,406 pads |
-| Native open edges | **2,077**: +12 V 80, −12 V 80, +5 V 0, AGND 121, signals 1,796 |
+| Native open edges | **1,843**: +12 V 80, −12 V 80, +5 V 0, AGND 198, signals 1,485 |
 | DRC errors / schematic parity | **0 / 0** |
-| Copper | 97,079 track segments, 7,636 vias |
 
 `scripts/pcbgen/route_jack_grid.py` ran these stages:
 
 1. ±12 V plane fanouts and rail links (7,355 → 5,977).
 2. A negotiated (PathFinder) pass over all signal nets on a 0.075 mm raster with two workers, finalized at its saved state (→ 2,975).
 3. Rip-up-and-reroute batches rrr-01..08 (→ 2,077).
+4. Signal batches signals-local and signals-01..09 (→ 1,843). AGND rose from 121 to 198 because new signal copper cuts the surface pours; AGND stitching reconnects them later.
 
 Each stage is applied to a disposable copy and checked with native DRC, schematic parity and zone refill. A stage is kept only when native open edges fall. Stage receipts are in `boards/osc-core/reports/grid-routing/`.
 
-Still to run under #43: signal batches, rip-up re-offer rounds, rail escapes and AGND stitching.
+Still to run under #43: rip-up re-offer rounds, hotspot-region renegotiation, rail escapes and AGND stitching.
 
-The renders below are from the earlier 5,849-edge checkpoint; native checks of this revision run in CI.
+The renders below are from the earlier 5,849-edge checkpoint. Native checks of this revision run in CI.
 
 ![Core top: unvalidated routed draft in progress](/assets/osc-hole-field/osc-core-top.png)
 
