@@ -22,7 +22,11 @@ from scripts.pcbgen.uuid_tools import stable_uuid
 
 PLANES={'+12V':'In4.Cu','-12V':'In3.Cu'}
 FAILED=set()  # signal nets with an unroutable island in an earlier batch; retried by the escape stage
-RRR_TRIED=set()  # nets already offered to a rip-up batch in this run
+RRR_TRIED=set()  # nets already offered to a rip-up batch in the current round
+# Rip-up rounds: once every open net has been offered, the next round re-offers them (earlier
+# rounds changed the copper) with a larger rip-up budget; a round that adopts nothing ends them.
+RRR_ROUND={'round':0,'adopted':False,'done':False}
+RRR_BUDGETS=[{'rrr_max_rip':4,'window_mm':12.0},{'rrr_max_rip':6,'window_mm':16.0},{'rrr_max_rip':8,'window_mm':20.0}]
 # In3 carries signals as well as the -12V fill (owner stack: four signal layers); In2 is preferred.
 SIGNAL_LAYERS=['F.Cu','In2.Cu','In3.Cu','B.Cu']
 LAYER_COST=[3.0,1.0,1.0,1.5,1.0,3.0]
@@ -48,7 +52,7 @@ STAGES=[
     *({'name':f'signals-{i:02d}','signals':True,'chunk':120,'escape_halo_mm':.9,'clearance':.2,'signal_width':.2,'signal_via_diameter':.6,'grow':{n:.05 for n in [*RAILS,'AGND']}} for i in range(1,41)),
     # Rip-up and reroute: probe each failed island with other signal copper as a cost,
     # rip the few nets in its way, route it, then reroute the ripped nets; all-or-nothing.
-    *({'name':f'rrr-{i:02d}','signals':True,'chunk':80,'rrr_rounds':2,'clearance':.2,'signal_width':.2,'signal_via_diameter':.6,'grow':{n:.05 for n in [*RAILS,'AGND']}} for i in range(1,9)),
+    *({'name':f'rrr-{i:02d}','signals':True,'chunk':80,'rrr_rounds':2,'clearance':.2,'signal_width':.2,'signal_via_diameter':.6,'grow':{n:.05 for n in [*RAILS,'AGND']}} for i in range(1,25)),  # room for three re-offer rounds; unused batches are skipped
     {'name':'agnd-stitch-1','agnd_stitch':True},
     {'name':'signal-escapes','signals':True,'clearance':.2,'signal_width':.2,'signal_via_diameter':.6,'grow':{n:.05 for n in [*RAILS,'AGND']},'res':.05,'window_mm':6},
     *({'name':f'repair-{i:02d}','repair':True,'clearance':.2,'signal_width':.2,'signal_via_diameter':.6,'grow':{n:.05 for n in [*RAILS,'AGND']},'res':.05,'window_mm':8} for i in range(1,9)),
@@ -199,11 +203,18 @@ def stage(board_id,current,spec,definition,log):
         rows,links=copper_rows(results,board_id,'grid-'+spec['name'])
     else:
         rrr=spec.get('rrr_rounds')
-        nets=spec.get('nets') or signal_chunk(dump,spec.get('chunk'),max_span_mm=spec.get('max_span_mm'),
-                                              skip=RRR_TRIED if rrr else (FAILED if spec.get('chunk') else ()))
+        if rrr and RRR_ROUND['done']:return None,None
+        chunk=lambda:spec.get('nets') or signal_chunk(dump,spec.get('chunk'),max_span_mm=spec.get('max_span_mm'),
+                                                      skip=RRR_TRIED if rrr else (FAILED if spec.get('chunk') else ()))
+        nets=chunk()
+        if rrr and not nets:
+            if not RRR_ROUND['adopted'] or RRR_ROUND['round']+1>=len(RRR_BUDGETS):RRR_ROUND['done']=True;return None,None
+            RRR_ROUND.update(round=RRR_ROUND['round']+1,adopted=False);RRR_TRIED.clear();nets=chunk()
+            log(f"{spec['name']}: rip-up round {RRR_ROUND['round']+1}, budget {RRR_BUDGETS[RRR_ROUND['round']]}")
         if not nets:return None,None
         if rrr:RRR_TRIED.update(nets)
         kwargs={k:v for k,v in spec.items() if k in ('planes','clearance','rail_width','signal_width','signal_via_diameter','grow','res','window_mm','full_board','max_expansions','escape_halo_mm','rrr_rounds')}
+        if rrr:kwargs.update(RRR_BUDGETS[RRR_ROUND['round']])
         kwargs['fill_guards']={'-12V':'In3.Cu'}
         results,removed=route(dump,nets,allowed_layers=SIGNAL_LAYERS,layer_cost=LAYER_COST,rail_nets=RAILS,log=log,**kwargs)
         rows,links=copper_rows(results,board_id,'grid-'+spec['name'])
@@ -266,6 +277,7 @@ def main():
         if receipt=='resume':print(f"{spec['name']}: time budget used; rerun --from-stage {spec['name']} to resume",flush=True);break
         if candidate is None:print(f"{spec['name']}: nothing to do",flush=True);continue
         receipt['adopted']=receipt['open_edges_after']<receipt['open_edges_before']
+        if spec.get('rrr_rounds') and receipt['adopted']:RRR_ROUND['adopted']=True
         (reports/f"{spec['name']}.json").write_text(json.dumps(receipt,indent=1,sort_keys=True)+'\n')
         print(f"{spec['name']}: {receipt['open_edges_before']} -> {receipt['open_edges_after']} open edges",flush=True)
         if receipt['open_edges_after']<receipt['open_edges_before']:
