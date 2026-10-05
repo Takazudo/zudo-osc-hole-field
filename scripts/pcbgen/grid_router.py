@@ -236,6 +236,42 @@ def fill_region_count(label,plane_id,clearance,res):
     return len({c for c in fill_partition(label,plane_id,clearance,res) if c})
 
 
+class FillGuard:
+    """Incremental fill_partition for one plane-fill layer.
+
+    New copper only removes fill-region cells within the clearance of itself, so a
+    trial needs a local distance transform plus one connectivity labelling instead of a
+    whole-layer distance transform per candidate (the core's six-layer raster is ~15M
+    cells per layer). Ripped copper widens the region: call reset() with the new label.
+    """
+    def __init__(self,label,plane_id,clearance,res):
+        self.plane_id=plane_id;self.clearance=clearance;self.res=res;self.reset(label)
+
+    def reset(self,label):
+        self.region=ndimage.distance_transform_edt(~((label!=0)&(label!=self.plane_id)))*self.res>=self.clearance
+        self.blobs,self.n=ndimage.label(label==self.plane_id);self.base=self.partition(self.region)
+
+    def partition(self,region):
+        comp,_=ndimage.label(region)
+        found=ndimage.maximum(comp,self.blobs,range(1,self.n+1)) if self.n else []
+        return [int(c) for c in np.atleast_1d(found)]
+
+    def shrunk(self,pieces,region=None):
+        """Region after adding copper given as (mask, (row slice, column slice)) pieces."""
+        region=(self.region if region is None else region).copy()
+        if not pieces:return region
+        k=int(math.ceil(self.clearance/self.res))+1;H,W=region.shape
+        a0=max(0,min(sl[0].start for _,sl in pieces)-k);a1=min(H,max(sl[0].stop for _,sl in pieces)+k)
+        b0=max(0,min(sl[1].start for _,sl in pieces)-k);b1=min(W,max(sl[1].stop for _,sl in pieces)+k)
+        local=np.zeros((a1-a0,b1-b0),bool)
+        for m,sl in pieces:local[sl[0].start-a0:sl[0].stop-a0,sl[1].start-b0:sl[1].stop-b0]|=m
+        region[a0:a1,b0:b1]&=ndimage.distance_transform_edt(~local)*self.res>=self.clearance
+        return region
+
+    def keeps(self,region):
+        return not splits(self.base,self.partition(region))
+
+
 def splits(before,after):
     """True if two copper blobs sharing a fill region before are separated after."""
     joined={}
@@ -357,23 +393,19 @@ def route(dump,nets=(),rip=(),rip_first=False,res=0.1,layer_cost=None,via_cost=3
     # every plane via/pad in as few connected regions as before.
     guards={raster.layers.index(layer):raster.net_id[n] for n,layer in (fill_guards or {}).items() if n in raster.net_id}
     # Stricter than the native fill (zone clearance, minimum width and raster slack) so a pass here is a pass there.
-    fill_regions=lambda li,lab:fill_partition(lab,guards[li],fill_clearance,res)
-    fill_count={li:fill_regions(li,raster.label[li]) for li in guards}
+    fill_count={li:FillGuard(raster.label[li],guards[li],fill_clearance,res) for li in guards}
+    def path_pieces(path,w,vd,li):
+        pieces=[]
+        for i,(l,y,x) in enumerate(path):
+            px,py=raster.point(y,x)
+            if l==li:pieces.append(raster.segment_mask((px,py),(px,py),w*1e6+2*raster.step))
+            elif i and path[i-1][0]!=l:pieces.append(raster.disc((px,py),vd*1e6/2))
+        return pieces
     def fill_ok(path,w,vd,src,goal):
         # Vias pierce every layer, so any layer change can also cut a fill.
         vias=any(path[i][0]!=path[i-1][0] for i in range(1,len(path)))
         used=[li for li in guards if vias or any(l==li for l,_,_ in path)]
-        if not used:return True
-        for li in used:
-            lab=raster.label[li].copy()
-            for i,(l,y,x) in enumerate(path):
-                px,py=raster.point(y,x)
-                if l==li:
-                    m,sl=raster.segment_mask((px,py),(px,py),w*1e6+2*raster.step);lab[sl][m]=-1
-                elif i and path[i-1][0]!=l:
-                    m,sl=raster.disc((px,py),vd*1e6/2);lab[sl][m]=-1
-            if splits(fill_count[li],fill_regions(li,lab)):return False
-        return True
+        return all(fill_count[li].keeps(fill_count[li].shrunk(path_pieces(path,w,vd,li))) for li in used)
 
     name=lambda g:[pads_by_uuid[u]['ref']+'.'+pads_by_uuid[u]['pad'] for u in g if u in pads_by_uuid]
     def net_params(net):
@@ -392,7 +424,7 @@ def route(dump,nets=(),rip=(),rip_first=False,res=0.1,layer_cost=None,via_cost=3
         i1=min(i for i,(l,y,x) in enumerate(path) if reached[l,y,x] and i>=i0)
         path=path[i0:i1+1]
         commit(net,N,w,vd,names,path,src,reached,False)
-        if guards:fill_count.update({li:fill_regions(li,raster.label[li]) for li in guards})
+        for li,g in fill_count.items():g.region=g.shrunk(path_pieces(path,w,vd,li))
         for l,y,x in path:reached[l,y,x]=True
         return True
 
@@ -431,7 +463,7 @@ def route(dump,nets=(),rip=(),rip_first=False,res=0.1,layer_cost=None,via_cost=3
                 if probe is None or not blockers or len(blockers)>rrr_max_rip:
                     log(f"RRR-SKIP {net} {name(g)} {'no probe path' if probe is None else f'{len(blockers)} blockers'}")
                     failed.append((net,g,main_group));continue
-                snapshot=(raster.label.copy(),raster.hole.copy(),[dict(r) for r in results],set(removed),dict(fill_count))
+                snapshot=(raster.label.copy(),raster.hole.copy(),[dict(r) for r in results],set(removed),{li:(g.region.copy(),g.base) for li,g in fill_count.items()})
                 victims=[id_net[b] for b in blockers]
                 for b in blockers:
                     raster.label[raster.label==b]=0
@@ -441,7 +473,7 @@ def route(dump,nets=(),rip=(),rip_first=False,res=0.1,layer_cost=None,via_cost=3
                             for lay in pad['layers']:raster.label[raster.layers.index(lay)][sl][m]=b
                 results[:]=[r for r in results if r['net'] not in victims]
                 removed|={i['uuid'] for k in ('tracks','vias') for i in dump[k] if i['net'] in victims}
-                if guards:fill_count.update({li:fill_regions(li,raster.label[li]) for li in guards})
+                for li,g in fill_count.items():g.reset(raster.label[li])
                 ok=route_one(net,src,reached,name(g))
                 for v in victims:
                     if not ok:break
@@ -451,7 +483,8 @@ def route(dump,nets=(),rip=(),rip_first=False,res=0.1,layer_cost=None,via_cost=3
                     fixed+=1;log(f'RRR {net} {name(g)} ripped {victims}')
                 else:
                     log(f"RRR-UNDO {net} {name(g)} victims {victims}")
-                    raster.label[...]=snapshot[0];raster.hole[...]=snapshot[1];results[:]=snapshot[2];removed.clear();removed|=snapshot[3];fill_count.clear();fill_count.update(snapshot[4])
+                    raster.label[...]=snapshot[0];raster.hole[...]=snapshot[1];results[:]=snapshot[2];removed.clear();removed|=snapshot[3]
+                    for li,(region,base) in snapshot[4].items():fill_count[li].region=region;fill_count[li].base=base
                     failed.append((net,g,main_group))
             log(f'RRR round {rnd+1}: fixed {fixed}, still failing {len(failed)}')
             if not fixed:break
@@ -747,20 +780,28 @@ def negotiate(dump,nets,res=0.1,layer_cost=None,via_cost=30.0,clearance=0.2,widt
     split_dropped=set()
     for gname,glayer in (fill_guards or {}).items():
         if gname not in raster.net_id:continue
-        gl=raster.layers.index(glayer);P=raster.net_id[gname];lab=raster.label[gl].copy()
-        base=fill_partition(lab,P,fill_clearance,res);k_cl=disc(width/2+res);k_v=disc(vr)
-        for net in order:
-            r=routes.get(net)
-            if r is None or net in conflicted or net in split_dropped:continue
-            (ls,ys,xs),(vy,vx)=r[0][:2];trial=lab.copy()
+        gl=raster.layers.index(glayer);P=raster.net_id[gname]
+        guard=FillGuard(raster.label[gl],P,fill_clearance,res);k_cl=disc(width/2+res);k_v=disc(vr)
+        def pieces(net):
+            (ls,ys,xs),(vy,vx)=routes[net][0][:2];out=[]
             for cy,cx,k in ((ys[ls==gl],xs[ls==gl],k_cl),(vy,vx,k_v)):
                 if not len(cy):continue
                 h=k.shape[0]//2;a0,b0=max(0,cy.min()-h),max(0,cx.min()-h);a1,b1=min(raster.h,cy.max()+h+1),min(raster.w,cx.max()+h+1)
                 m=np.zeros((a1-a0,b1-b0),bool);m[cy-a0,cx-b0]=True
-                trial[a0:a1,b0:b1][ndimage.binary_dilation(m,structure=k)]=-1
-            after=fill_partition(trial,P,fill_clearance,res)
-            if splits(base,after):split_dropped.add(net);continue
-            lab=trial;base=after
+                out.append((ndimage.binary_dilation(m,structure=k),(slice(a0,a1),slice(b0,b1))))
+            return out
+        def accept(batch,region):
+            # Copper only removes fill, so a batch that keeps the fill keeps it for every subset;
+            # bisecting left first therefore drops exactly the nets a one-by-one pass would.
+            trial=region
+            for net in batch:trial=guard.shrunk(pieces(net),trial)
+            if guard.keeps(trial):return trial
+            if len(batch)==1:split_dropped.add(batch[0]);return region
+            mid=len(batch)//2
+            return accept(batch[mid:],accept(batch[:mid],region))
+        todo=[net for net in order if routes.get(net) is not None and net not in conflicted]
+        region=guard.region
+        for i in range(0,len(todo),256):region=accept(todo[i:i+256],region)
         log(f'NEGOTIATE {gname} fill guard dropped {len(split_dropped)} nets')
     results=[]
     name=lambda p:p['ref']+'.'+p['pad']
