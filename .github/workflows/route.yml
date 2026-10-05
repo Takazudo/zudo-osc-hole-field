@@ -1,0 +1,220 @@
+name: Grid routing
+run-name: Route ${{ inputs.board }} on ${{ inputs.branch }} from ${{ inputs.from_stage }}
+
+# Runs scripts/pcbgen/route_jack_grid.py on a GitHub-hosted runner and pushes the
+# promoted draft board back to the chosen branch. Draft routing only: electrical
+# and physical qualification remain NOT RUN.
+on:
+  workflow_dispatch:
+    inputs:
+      board:
+        description: Board to route
+        required: true
+        type: choice
+        options: [osc-jack-left, osc-jack-right, osc-core]
+      branch:
+        description: Existing branch to read the board from and push the result to
+        required: true
+        type: string
+      from_stage:
+        description: First stage (route_jack_grid.py STAGES name)
+        required: true
+        type: string
+      to_stage:
+        description: Last stage (empty runs to the end)
+        required: false
+        type: string
+      workers:
+        description: Negotiation workers (runner has 4 vCPU / 16 GB)
+        required: false
+        default: "3"
+        type: string
+      max_minutes:
+        description: Routing time budget in minutes (at most 335; the job limit is 355)
+        required: false
+        default: "330"
+        type: string
+
+permissions:
+  contents: write
+
+concurrency:
+  group: route-${{ inputs.board }}-${{ inputs.branch }}
+  cancel-in-progress: false
+
+jobs:
+  route:
+    name: Route ${{ inputs.board }} on ${{ inputs.branch }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 355
+    env:
+      BOARD: ${{ inputs.board }}
+      BRANCH: ${{ inputs.branch }}
+      FROM_STAGE: ${{ inputs.from_stage }}
+      TO_STAGE: ${{ inputs.to_stage }}
+      WORKERS: ${{ inputs.workers }}
+      MAX_MINUTES: ${{ inputs.max_minutes }}
+
+    steps:
+      - name: Validate inputs
+        run: |
+          git check-ref-format --branch "$BRANCH" >/dev/null
+          [[ $FROM_STAGE =~ ^[a-z0-9-]+$ ]] || { echo "bad from_stage: $FROM_STAGE"; exit 1; }
+          [[ -z $TO_STAGE || $TO_STAGE =~ ^[a-z0-9-]+$ ]] || { echo "bad to_stage: $TO_STAGE"; exit 1; }
+          [[ $WORKERS =~ ^[1-8]$ ]] || { echo "workers must be 1-8"; exit 1; }
+          if ! [[ $MAX_MINUTES =~ ^[0-9]+$ ]] || ((MAX_MINUTES < 1 || MAX_MINUTES > 335)); then
+            echo "max_minutes must be 1-335"; exit 1
+          fi
+
+      - name: Check out the routing branch
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ inputs.branch }}
+
+      # Matches the local routing venv (CPython 3.10 with the pinned numerical stack).
+      - name: Set up Python
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.10"
+
+      - name: Install pinned numerical dependencies
+        run: python -m pip install -r scripts/pcbgen/numerical-requirements.txt
+
+      - name: Pull the pinned KiCad oracle and build the A* core
+        run: |
+          mkdir -p "$RUNNER_TEMP/route-logs"
+          source scripts/kicad/pin.env
+          start=$(date +%s)
+          docker pull --quiet "$KICAD_IMAGE"
+          echo "kicad_pull_seconds=$(( $(date +%s) - start ))" | tee -a "$RUNNER_TEMP/route-logs/environment.txt"
+          bash scripts/kicad/run.sh kicad-cli version | tee -a "$RUNNER_TEMP/route-logs/environment.txt"
+          cc --version | head -n 1 | tee -a "$RUNNER_TEMP/route-logs/environment.txt"
+          python - <<'EOF' | tee -a "$RUNNER_TEMP/route-logs/environment.txt"
+          import sys
+          from scripts.pcbgen.grid_router import native_astar
+          assert native_astar(), 'grid_astar.c did not compile'
+          print('python', sys.version.split()[0], 'astar_c compiled')
+          EOF
+
+      # Resumable negotiate/region stages keep their state in .circuit-cache/<board>-<stage>-<hash>.pkl.
+      - name: Restore routing stage state
+        uses: actions/cache/restore@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: .circuit-cache/${{ inputs.board }}-*.pkl
+          key: route-state-${{ inputs.board }}-${{ inputs.branch }}-${{ github.run_id }}-${{ github.run_attempt }}
+          restore-keys: route-state-${{ inputs.board }}-${{ inputs.branch }}-
+
+      - name: Route
+        id: route
+        run: |
+          ls -la .circuit-cache/"$BOARD"-*.pkl 2>/dev/null || echo "no restored stage state"
+          (
+            peak=0
+            while sleep 5; do
+              used=$(awk '/^MemTotal:/{t=$2} /^MemAvailable:/{a=$2} END{print t-a}' /proc/meminfo)
+              ((used > peak)) && peak=$used && echo "$peak" > "$RUNNER_TEMP/route-logs/memory-peak-kb.txt"
+            done
+          ) &
+          sampler=$!
+          args=("$BOARD" --from-stage "$FROM_STAGE" --promote --workers "$WORKERS" --max-minutes "$MAX_MINUTES")
+          [[ -n $TO_STAGE ]] && args+=(--to-stage "$TO_STAGE")
+          start=$(date +%s)
+          set +e
+          # The driver stops between stages at max_minutes; the hard limit leaves time to save and push.
+          timeout --signal=INT --kill-after=2m "$((MAX_MINUTES + 12))m" \
+            python -u scripts/pcbgen/route_jack_grid.py "${args[@]}" 2>&1 | tee "$RUNNER_TEMP/route-logs/route.log"
+          status=${PIPESTATUS[0]}
+          set -e
+          kill "$sampler" || true
+          minutes=$(( ($(date +%s) - start) / 60 ))
+          peak_mb=$(( $(cat "$RUNNER_TEMP/route-logs/memory-peak-kb.txt" 2>/dev/null || echo 0) / 1024 ))
+          edges=$(grep -E '^[a-z0-9-]+: [0-9]+ -> [0-9]+ open edges$' "$RUNNER_TEMP/route-logs/route.log" || true)
+          first=$(head -n 1 <<<"$edges" | sed -E 's/.*: ([0-9]+) -> .*/\1/')
+          last=$(tail -n 1 <<<"$edges" | sed -E 's/.* -> ([0-9]+) open edges/\1/')
+          resume=$(grep -oE 'rerun --from-stage [a-z0-9-]+' "$RUNNER_TEMP/route-logs/route.log" | tail -n 1 | awk '{print $3}' || true)
+          {
+            echo "status=$status"
+            echo "minutes=$minutes"
+            echo "peak_mb=$peak_mb"
+            echo "edges_before=${first:-n/a}"
+            echo "edges_after=${last:-n/a}"
+            echo "resume=$resume"
+          } | tee -a "$GITHUB_OUTPUT" "$RUNNER_TEMP/route-logs/result.txt"
+          {
+            echo "### $BOARD on $BRANCH: $FROM_STAGE .. ${TO_STAGE:-end}"
+            echo
+            echo "- exit status: $status; wall time: ${minutes} min; peak host memory: ${peak_mb} MB"
+            echo "- open edges: ${first:-n/a} -> ${last:-n/a}"
+            [[ -n $resume ]] && echo "- resume with from_stage=$resume"
+            echo
+            echo '```'
+            echo "${edges:-no stage reported an open-edge change}"
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Drop stale stage state
+        if: always() && steps.route.outcome != 'skipped'
+        run: find .circuit-cache -maxdepth 1 -name "$BOARD-*.pkl" -mtime +7 -print -delete || true
+
+      - name: Save routing stage state
+        if: always() && steps.route.outcome != 'skipped'
+        uses: actions/cache/save@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: .circuit-cache/${{ inputs.board }}-*.pkl
+          key: route-state-${{ inputs.board }}-${{ inputs.branch }}-${{ github.run_id }}-${{ github.run_attempt }}
+
+      - name: Commit and push the promoted board
+        if: always() && steps.route.outcome == 'success'
+        env:
+          EDGES_BEFORE: ${{ steps.route.outputs.edges_before }}
+          EDGES_AFTER: ${{ steps.route.outputs.edges_after }}
+          RESUME: ${{ steps.route.outputs.resume }}
+          STATUS: ${{ steps.route.outputs.status }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          git add -- "boards/$BOARD/$BOARD.kicad_pcb" "boards/$BOARD/reports/grid-routing"
+          if git diff --cached --quiet; then
+            echo "No adopted stage; nothing to commit." | tee -a "$GITHUB_STEP_SUMMARY"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898+github-actions[bot]@users.noreply.github.com"
+          {
+            echo "Route $BOARD on CI: $FROM_STAGE..${TO_STAGE:-end}, open edges $EDGES_BEFORE -> $EDGES_AFTER"
+            echo
+            echo "Grid-routing stages $FROM_STAGE..${TO_STAGE:-end} with promoted adopted stages."
+            echo "Native open edges: $EDGES_BEFORE -> $EDGES_AFTER. Driver exit status: $STATUS."
+            [[ -n $RESUME ]] && echo "Time budget used; resume with --from-stage $RESUME."
+            echo "Unvalidated draft; electrical and physical qualification NOT RUN."
+            echo
+            echo "Run: $RUN_URL"
+          } > "$RUNNER_TEMP/commit-message.txt"
+          git commit --quiet -F "$RUNNER_TEMP/commit-message.txt"
+          if git push origin "HEAD:refs/heads/$BRANCH"; then exit 0; fi
+          # The branch moved during the run: rebase onto it, or keep the result on a side branch.
+          git fetch --quiet --unshallow origin "$BRANCH" || git fetch --quiet origin "$BRANCH"
+          if git rebase "origin/$BRANCH" && git push origin "HEAD:refs/heads/$BRANCH"; then exit 0; fi
+          git rebase --abort 2>/dev/null || true
+          side="ci-route/$BOARD-$GITHUB_RUN_ID"
+          git push origin "HEAD:refs/heads/$side"
+          echo "::warning::$BRANCH moved and the rebase failed; result pushed to $side"
+          echo "Result pushed to side branch \`$side\` because \`$BRANCH\` moved." >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload stage logs and receipts
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: route-${{ inputs.board }}-${{ github.run_id }}
+          path: |
+            ${{ runner.temp }}/route-logs/
+            boards/${{ inputs.board }}/reports/grid-routing/
+          if-no-files-found: warn
+          retention-days: 7
+
+      - name: Fail on a router error
+        if: steps.route.outputs.status != '' && steps.route.outputs.status != '0'
+        env:
+          STATUS: ${{ steps.route.outputs.status }}
+        run: |
+          echo "::error::route_jack_grid.py exited with status $STATUS (adopted stages were still committed)"
+          exit 1
