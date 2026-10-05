@@ -32,6 +32,9 @@ RRR_TRIED=set()  # nets already offered to a rip-up batch in the current round
 RRR_ROUND={'round':0,'adopted':False,'done':False}
 REGIONS_TRIED=set()  # hotspot regions already renegotiated in this run (rounded box corners)
 # With --max-minutes the run deadline replaces each negotiated stage's local slice budget (budget_s).
+# Branch-local experiment (#43): keep the core's negotiated base even when it has more open edges,
+# because rip-up then collapses the conflicted nets; compare the end result with ea407c4 (1841).
+FORCE_ADOPT={'osc-core':{'negotiate'}}
 # Time a negotiated stage keeps after its last iteration for the fill guard, apply, native DRC and push.
 FINALIZE_MARGIN_S=20*60
 RUN={'deadline':None,'workers':None,'res':None,'iterations':None,'shard':None}  # --max-minutes/--workers/--res/--iterations/--shard overrides (CI routing)
@@ -376,11 +379,11 @@ def main():
         if candidate is None and receipt:
             receipt['adopted']=False;(reports/f"{spec['name']}.json").write_text(json.dumps(receipt,indent=1,sort_keys=True)+'\n');continue
         if candidate is None:print(f"{spec['name']}: nothing to do",flush=True);continue
-        receipt['adopted']=receipt['open_edges_after']<receipt['open_edges_before']
+        receipt['adopted']=receipt['open_edges_after']<receipt['open_edges_before'] or spec['name'] in FORCE_ADOPT.get(a.board_id,())
         if spec.get('rrr_rounds') and receipt['adopted']:RRR_ROUND['adopted']=True
         (reports/f"{spec['name']}.json").write_text(json.dumps(receipt,indent=1,sort_keys=True)+'\n')
         print(f"{spec['name']}: {receipt['open_edges_before']} -> {receipt['open_edges_after']} open edges",flush=True)
-        if receipt['open_edges_after']<receipt['open_edges_before']:
+        if receipt['adopted']:
             current=candidate
             # Promote every adopted stage so a later interruption keeps checked progress.
             if a.promote:shutil.copyfile(current,board);print('promoted',rel(board),flush=True)
