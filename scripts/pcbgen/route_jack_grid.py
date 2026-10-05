@@ -12,7 +12,7 @@ stage writes a receipt under boards/<id>/reports/grid-routing/. Draft only:
 electrical and physical qualification remain NOT RUN.
 """
 from __future__ import annotations
-import argparse,collections,hashlib,json,shutil,subprocess,sys,time
+import argparse,collections,hashlib,json,os,shutil,subprocess,sys,time
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[2]
 sys.path.insert(0,str(ROOT))
@@ -31,6 +31,7 @@ RRR_TRIED=set()  # nets already offered to a rip-up batch in the current round
 # rounds changed the copper) with a larger rip-up budget; a round that adopts nothing ends them.
 RRR_ROUND={'round':0,'adopted':False,'done':False}
 REGIONS_TRIED=set()  # hotspot regions already renegotiated in this run (rounded box corners)
+# With --max-minutes the run deadline replaces each negotiated stage's local slice budget (budget_s).
 RUN={'deadline':None,'workers':None,'res':None,'iterations':None,'shard':None}  # --max-minutes/--workers/--res/--iterations/--shard overrides (CI routing)
 RRR_BUDGETS=[{'rrr_max_rip':4,'window_mm':12.0},{'rrr_max_rip':6,'window_mm':16.0},{'rrr_max_rip':8,'window_mm':20.0}]
 # In3 carries signals as well as the -12V fill (owner stack: four signal layers); In2 is preferred.
@@ -239,7 +240,7 @@ def stage(board_id,current,spec,definition,log):
         results,removed=negotiate(dump,nets,res=RUN['res'] or NEGOTIATE_RES.get(board_id,spec['res']),layer_cost=LAYER_COST,clearance=spec['clearance'],width=spec['signal_width'],
                                   via_diameter=spec['signal_via_diameter'],allowed_layers=SIGNAL_LAYERS,grow=spec['grow'],
                                   iterations=RUN['iterations'] or NEGOTIATE_ITERATIONS.get(board_id,spec['iterations']),present=0.5,present_growth=1.8,history=0.5,workers=RUN['workers'] or NEGOTIATE_WORKERS.get(board_id,spec['workers']),
-                                  fill_guards={'-12V':'In3.Cu'},log=log,deadline=min(time.time()+spec['budget_s'],RUN['deadline'] or float('inf')),
+                                  fill_guards={'-12V':'In3.Cu'},log=log,deadline=RUN['deadline'] or time.time()+spec['budget_s'],
                                   state_path=str(ROOT/'.circuit-cache'/f"{board_id}-{spec['name']}-{hashlib.sha256(current.read_bytes()).hexdigest()[:16]}.pkl"))
         # Out of time: the negotiation state is saved; rerun this stage to continue it.
         if results is None:return None,'resume'
@@ -322,6 +323,7 @@ def main():
     # The local core caps (0.075 mm, 30 iterations) exist for an 11 GB host; a 16 GB CI runner can lift them.
     p.add_argument('--res',type=float,help='negotiation raster in mm for every negotiated stage (default: per-board table)')
     p.add_argument('--iterations',type=int,help='negotiation iteration cap for every negotiated stage (default: per-board table)')
+    p.add_argument('--after-promote',help='shell command run after each promotion, with STAGE, OPEN_BEFORE and OPEN_AFTER set (CI pushes)')
     p.add_argument('--shard',help='I/N: route only shard I of N hotspot-region shards planned from the start board (region stages only)')
     a=p.parse_args()
     RUN.update(workers=a.workers,res=a.res,iterations=a.iterations,deadline=time.time()+a.max_minutes*60 if a.max_minutes else None)
@@ -362,6 +364,10 @@ def main():
             current=candidate
             # Promote every adopted stage so a later interruption keeps checked progress.
             if a.promote:shutil.copyfile(current,board);print('promoted',rel(board),flush=True)
+            if a.promote and a.after_promote:
+                env={**os.environ,'STAGE':spec['name'],'OPEN_BEFORE':str(receipt['open_edges_before']),'OPEN_AFTER':str(receipt['open_edges_after'])}
+                done=subprocess.run(a.after_promote,shell=True,cwd=ROOT,env=env)
+                if done.returncode:print(f"after-promote command failed ({done.returncode}); routing continues",flush=True)
     print('final candidate',rel(current))
 
 
