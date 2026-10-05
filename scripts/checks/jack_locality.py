@@ -30,6 +30,12 @@ SWAP_RADIUS_MM={'K':25.0}
 # Core only: keep-clear ring around each IC so its pins can escape (it lengthened JL nets).
 IC_CHANNEL_MM={'K':0.5}
 CHANNEL_DETOUR_MM=3.0
+# Quads whose pins carried five or more open signal nets on the routed jack drafts (main
+# 6c90729: JL 164, JR 177 open edges). Each gets ESCAPE_MM of keep-clear space on its two
+# pin-row (long) sides for via fanout, instead of a ring around the whole package.
+HOT_QUADS={'JL':{'U106','U1116','U1216','U206','U2117','U2217','U2317','U3305','U3405','U8112','U8115','U8212','U8215','U8216'},
+           'JR':{'U4147','U4647','U5212','U7206','U7406','U7506','U7606','U8418'}}
+ESCAPE_MM=1.2
 # Courtyard gap between legalized packages (mm); the core spreads wider for routing room.
 GAP_MM={'K':.6}
 
@@ -134,6 +140,7 @@ def place_jack_locality(board,free,grids,shapes,pin_nets,anchors,cluster_cells,t
     for u in order:
         legal={**pos,**placed};t=target(u,{v:legal[v] for v in legal if v!=u}) or pos[u]
         tht=any(through_hole(p) for p in [by_ref[u],*caps.get(u,[])])
+        escape=ESCAPE_MM if u in HOT_QUADS.get(board,()) else 0.0
         def candidate(channel):
             best=None
             for side in ('B.Cu','F.Cu'):
@@ -150,7 +157,9 @@ def place_jack_locality(board,free,grids,shapes,pin_nets,anchors,cluster_cells,t
                     boxes=[]
                     for k,(part,angle,(x,y)) in enumerate(cells):
                         b=oriented_box(shapes[part['footprint']],side,angle);m=channel if k==0 else 0.0
-                        boxes.append([b[0]+x-m,b[1]+y-m,b[2]+x+m,b[3]+y+m])
+                        # Pins leave across the short axis: widen only that way for an escape reservation.
+                        ex,ey=((escape,0.0) if b[2]-b[0]<b[3]-b[1] else (0.0,escape)) if k==0 else (0.0,0.0)
+                        boxes.append([b[0]+x-m-ex,b[1]+y-m-ey,b[2]+x+m+ex,b[3]+y+m+ey])
                     for theta in thetas:
                         envelope,masks=masks_for(boxes,g.scale,theta,oriented_box,gap)
                         # Parent (cell 0) origin sits at (0,0); aim the envelope so the parent lands on the target.
@@ -161,6 +170,7 @@ def place_jack_locality(board,free,grids,shapes,pin_nets,anchors,cluster_cells,t
                         if best is None or cost<best[0]:best=(cost,side,g,cells,theta,envelope,masks,found)
             return best
         best=candidate(0.0)
+        if best is None and escape:escape=0.0;best=candidate(0.0)
         if u in caps and ic_channel:
             # Reserve a routing channel around each IC so its pins can escape, unless
             # that would push the cluster much further from its target.
