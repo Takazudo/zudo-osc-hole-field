@@ -36,6 +36,14 @@ on:
         required: false
         default: "3"
         type: string
+      res:
+        description: Negotiation raster in mm (empty keeps the per-board default)
+        required: false
+        type: string
+      iterations:
+        description: Negotiation iteration cap (empty keeps the per-board default)
+        required: false
+        type: string
       max_minutes:
         description: Routing time budget per shard in minutes (at most 300)
         required: false
@@ -58,6 +66,8 @@ env:
   TO_STAGE: ${{ inputs.to_stage }}
   WORKERS: ${{ inputs.workers }}
   MAX_MINUTES: ${{ inputs.max_minutes }}
+  RES: ${{ inputs.res }}
+  ITERATIONS: ${{ inputs.iterations }}
 
 jobs:
   prepare:
@@ -76,6 +86,8 @@ jobs:
           git check-ref-format --branch "$BRANCH" >/dev/null
           [[ $FROM_STAGE =~ ^region-[0-9]+$ && $TO_STAGE =~ ^region-[0-9]+$ ]] || { echo "stages must be region-NN"; exit 1; }
           [[ $WORKERS =~ ^[1-8]$ ]] || { echo "workers must be 1-8"; exit 1; }
+          [[ -z $RES || $RES =~ ^0\.[0-9]+$ ]] || { echo "bad res: $RES"; exit 1; }
+          [[ -z $ITERATIONS || $ITERATIONS =~ ^[0-9]+$ ]] || { echo "bad iterations: $ITERATIONS"; exit 1; }
           if ! [[ $SHARDS =~ ^[0-9]+$ ]] || ((SHARDS < 1 || SHARDS > 16)); then echo "shards must be 1-16"; exit 1; fi
           if ! [[ $MAX_MINUTES =~ ^[0-9]+$ ]] || ((MAX_MINUTES < 1 || MAX_MINUTES > 300)); then echo "max_minutes must be 1-300"; exit 1; fi
           sha=$(gh api "repos/$GITHUB_REPOSITORY/commits/$BRANCH" --jq .sha)
@@ -128,10 +140,13 @@ jobs:
             done
           ) &
           sampler=$!
+          args=("$BOARD" --shard "$INDEX/$SHARDS" --from-stage "$FROM_STAGE" --to-stage "$TO_STAGE" --promote
+            --workers "$WORKERS" --max-minutes "$MAX_MINUTES")
+          [[ -n $RES ]] && args+=(--res "$RES")
+          [[ -n $ITERATIONS ]] && args+=(--iterations "$ITERATIONS")
           set +e
           timeout --signal=INT --kill-after=2m "$((MAX_MINUTES + 12))m" \
-            python -u scripts/pcbgen/route_jack_grid.py "$BOARD" --shard "$INDEX/$SHARDS" --from-stage "$FROM_STAGE" \
-            --to-stage "$TO_STAGE" --promote --workers "$WORKERS" --max-minutes "$MAX_MINUTES" 2>&1 | tee "$RUNNER_TEMP/out/route.log"
+            python -u scripts/pcbgen/route_jack_grid.py "${args[@]}" 2>&1 | tee "$RUNNER_TEMP/out/route.log"
           status=${PIPESTATUS[0]}
           set -e
           kill "$sampler" || true

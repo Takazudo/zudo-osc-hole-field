@@ -327,7 +327,7 @@ def main():
         spec=region_specs[0];signal={p['net'] for p in start_dump['pads'] if p['net'] and p['net'] not in (*RAILS,'AGND')}
         signal={n for n in signal if sum(1 for p in start_dump['pads'] if p['net']==n)>1}
         regions=hotspot_regions(start_dump,spec['eps_mm'])
-        shards=plan(regions,[region_nets(start_dump,signal,r,spec['margin_mm']) for r in regions],count)
+        shards=plan(regions,[region_nets(start_dump,signal,r,spec['margin_mm']) for r in regions],count,margin=spec['margin_mm']*1e6)
         RUN['shard']=shards[index]
         (work/'shard-plan.json').write_text(json.dumps(shards)+'\n')
         print(f"shard {index}/{count}: {len(RUN['shard']['regions'])} of {len(regions)} regions, {len(RUN['shard']['nets'])} owned nets, "

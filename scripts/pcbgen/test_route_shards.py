@@ -31,6 +31,14 @@ class PlanTest(unittest.TestCase):
             for nets in s['region_nets']:
                 self.assertTrue(set(nets) <= set(s['nets']))
 
+    def test_regions_overlapping_within_the_margin_share_a_shard(self):
+        regions = [((0, 0), (4, 4), 9), ((50, 50), (54, 54), 8), ((7, 0), (9, 2), 1)]
+        apart = plan(regions, [{'A'}, {'B'}, {'C'}], 2, margin=1)
+        together = plan(regions, [{'A'}, {'B'}, {'C'}], 2, margin=2)
+        self.assertEqual([len(s['regions']) for s in apart], [1, 2])
+        self.assertEqual([len(s['regions']) for s in together], [2, 1])
+        self.assertEqual(together[0]['nets'], ['A', 'C'])
+
     def test_more_shards_than_regions_leaves_empty_shards(self):
         shards = plan([((0, 0), (1, 1), 3)], [{'A'}], 3)
         self.assertEqual([len(s['regions']) for s in shards], [1, 0, 0])

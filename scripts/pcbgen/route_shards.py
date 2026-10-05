@@ -35,17 +35,30 @@ def region_nets(dump,nets,region,margin_mm):
     return chosen
 
 
-def plan(regions,nets_of,shards):
+def plan(regions,nets_of,shards,margin=0):
     """Split regions over shards and give every net to exactly one shard.
 
     regions: [(lo, hi, stranded_pins)] largest first; nets_of: one net set per region.
-    Regions go greedily to the least-loaded shard by stranded pins. A net seen by
-    several shards belongs to the one whose regions hold it most often (ties to the
-    lower shard), so other shards keep that net's copper as a fixed obstacle.
+    Regions whose boxes overlap once grown by margin (board units) stay in one shard,
+    so two shards never rip copper in the same window. Those groups go greedily, by
+    stranded pins, to the least-loaded shard. A net seen by several shards belongs to
+    the one whose regions hold it most often (ties to the lower shard), so other
+    shards keep that net's copper as a fixed obstacle.
     """
-    load=[0]*shards;owner=[]
-    for r in regions:
-        s=min(range(shards),key=lambda k:(load[k],k));owner.append(s);load[s]+=int(r[2])
+    parent=list(range(len(regions)))
+    def root(i):
+        while parent[i]!=i:parent[i]=parent[parent[i]];i=parent[i]
+        return i
+    for i,a in enumerate(regions):
+        for j in range(i):
+            b=regions[j]
+            if all(a[0][k]-margin<=b[1][k]+margin and b[0][k]-margin<=a[1][k]+margin for k in (0,1)):parent[root(i)]=root(j)
+    groups={}
+    for i in range(len(regions)):groups.setdefault(root(i),[]).append(i)
+    load=[0]*shards;owner=[0]*len(regions)
+    for members in sorted(groups.values(),key=lambda g:(-sum(int(regions[i][2]) for i in g),g[0])):
+        s=min(range(shards),key=lambda k:(load[k],k));load[s]+=sum(int(regions[i][2]) for i in members)
+        for i in members:owner[i]=s
     votes={}
     for s,ns in zip(owner,nets_of):
         for n in ns:votes.setdefault(n,[0]*shards)[s]+=1
