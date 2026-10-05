@@ -1,6 +1,6 @@
 import unittest
 
-from scripts.pcbgen.route_shards import copper_blocks, delta, disjoint, merge_text, plan
+from scripts.pcbgen.route_shards import area_plan, copper_blocks, delta, disjoint, merge_text, plan
 
 U = ['00000000-0000-4000-8000-%012d' % i for i in range(10)]
 
@@ -32,12 +32,28 @@ class PlanTest(unittest.TestCase):
                 self.assertTrue(set(nets) <= set(s['nets']))
 
     def test_regions_overlapping_within_the_margin_share_a_shard(self):
-        regions = [((0, 0), (4, 4), 9), ((50, 50), (54, 54), 8), ((7, 0), (9, 2), 1)]
-        apart = plan(regions, [{'A'}, {'B'}, {'C'}], 2, margin=1)
-        together = plan(regions, [{'A'}, {'B'}, {'C'}], 2, margin=2)
-        self.assertEqual([len(s['regions']) for s in apart], [1, 2])
-        self.assertEqual([len(s['regions']) for s in together], [2, 1])
-        self.assertEqual(together[0]['nets'], ['A', 'C'])
+        regions = [((0, 0), (4, 4), 5), ((50, 50), (54, 54), 8), ((7, 0), (9, 2), 3), ((12, 0), (14, 2), 3)]
+        apart = plan(regions, [{'A'}, {'B'}, {'C'}, {'D'}], 2, margin=1)
+        together = plan(regions, [{'A'}, {'B'}, {'C'}, {'D'}], 2, margin=2)
+        self.assertEqual([s['nets'] for s in apart], [['B', 'D'], ['A', 'C']])
+        # A and C join; D would push that group past the even share (10 of 19 pins), so it stays apart.
+        self.assertEqual([s['nets'] for s in together], [['A', 'C', 'D'], ['B']])
+
+    def test_overlap_groups_stop_at_an_even_share(self):
+        chain = [((3 * i, 0), (3 * i + 2, 2), 1) for i in range(8)]
+        shards = plan(chain, [{f'N{i}'} for i in range(8)], 4, margin=1)
+        self.assertEqual([s['stranded_pins'] for s in shards], [2, 2, 2, 2])
+
+    def test_area_plan_balances_open_edges_and_keeps_neighbours(self):
+        points = {f'L{i}': (i, 0, 1) for i in range(4)}
+        points.update({f'R{i}': (100 + i, 0, 1) for i in range(4)})
+        points['closed-left'] = (1.5, 0, 0)
+        left, right = area_plan(points, 2)
+        self.assertEqual(set(left), {'L0', 'L1', 'L2', 'L3', 'closed-left'})
+        self.assertEqual(set(right), {'R0', 'R1', 'R2', 'R3'})
+        shards = area_plan(points, 4)
+        self.assertEqual(sorted(len([n for n in s if n.startswith(('L', 'R'))]) for s in shards), [2, 2, 2, 2])
+        self.assertEqual(sorted(n for s in shards for n in s), sorted(points))
 
     def test_more_shards_than_regions_leaves_empty_shards(self):
         shards = plan([((0, 0), (1, 1), 3)], [{'A'}], 3)

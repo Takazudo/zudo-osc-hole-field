@@ -286,13 +286,14 @@ def route(dump,nets=(),rip=(),rip_first=False,res=0.1,layer_cost=None,via_cost=3
           hole_clearance=0.25,edge_clearance=0.5,max_expansions=4_000_000,allowed_layers=None,log=print,
           planes=None,signal_via_diameter=None,grow=None,window_mm=12.0,weight=1.0,full_board=False,
           escape_halo_mm=0.0,escape_halo_cost=4.0,fill_guards=None,fill_clearance=0.45,
-          rrr_rounds=0,rrr_max_rip=4,rrr_soft_cost=12.0):
+          rrr_rounds=0,rrr_max_rip=4,rrr_soft_cost=12.0,rip_only=None):
     """Return (results, removed_uuids). Each result has net, island pad names and a [layer,x,y,through] path or None.
 
     planes maps a net to its plane layer: every island of that net gets a short
     fanout ending in a through via inside the plane instead of a link to another island.
     grow adds clearance (mm) around existing copper of the named nets, e.g. rails
-    whose net-class clearance exceeds the routed class.
+    whose net-class clearance exceeds the routed class. rip_only, when given, limits
+    rip-up-and-reroute to those signal nets (a CI shard may only rip the nets it owns).
     """
     rip=list(rip);planes=planes or {}
     removed={i['uuid'] for k in ('tracks','vias') for i in dump[k] if i['net'] in rip}
@@ -441,7 +442,8 @@ def route(dump,nets=(),rip=(),rip_first=False,res=0.1,layer_cost=None,via_cost=3
                 log(f'NOPATH {net} {name(g)}');results.append({'net':net,'island':name(g),'path':None});failed.append((net,g,groups[main]))
         return ok
 
-    rippable={raster.net_id[n] for n in raster.net_id if n not in rail_nets and n not in planes and n not in (fill_guards or {}) and n!='AGND'}
+    rippable={raster.net_id[n] for n in raster.net_id if n not in rail_nets and n not in planes and n not in (fill_guards or {}) and n!='AGND'
+              and (rip_only is None or n in rip_only)}
     pads_by_net=collections.defaultdict(list)
     for p in dump['pads']:pads_by_net[p['net']].append(p)
 
