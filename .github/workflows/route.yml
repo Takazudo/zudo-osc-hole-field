@@ -136,8 +136,12 @@ jobs:
             echo "::warning::$BRANCH has no --workers/--max-minutes in route_jack_grid.py; merge main to use them"
           fi
           [[ -n $TO_STAGE ]] && args+=(--to-stage "$TO_STAGE")
-          [[ -n $RES ]] && args+=(--res "$RES")
-          [[ -n $ITERATIONS ]] && args+=(--iterations "$ITERATIONS")
+          if grep -q -- "--iterations" scripts/pcbgen/route_jack_grid.py; then
+            [[ -n $RES ]] && args+=(--res "$RES")
+            [[ -n $ITERATIONS ]] && args+=(--iterations "$ITERATIONS")
+          elif [[ -n $RES || -n $ITERATIONS ]]; then
+            echo "::warning::$BRANCH has no --res/--iterations in route_jack_grid.py; merge main to use them"
+          fi
           start=$(date +%s)
           set +e
           # The driver stops between stages at max_minutes; the hard limit leaves time to save and push.
