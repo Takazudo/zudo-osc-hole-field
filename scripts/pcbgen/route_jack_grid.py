@@ -30,6 +30,7 @@ RRR_TRIED=set()  # nets already offered to a rip-up batch in the current round
 # rounds changed the copper) with a larger rip-up budget; a round that adopts nothing ends them.
 RRR_ROUND={'round':0,'adopted':False,'done':False}
 REGIONS_TRIED=set()  # hotspot regions already renegotiated in this run (rounded box corners)
+RUN={'deadline':None,'workers':None}  # --max-minutes / --workers overrides for the whole run (CI routing)
 RRR_BUDGETS=[{'rrr_max_rip':4,'window_mm':12.0},{'rrr_max_rip':6,'window_mm':16.0},{'rrr_max_rip':8,'window_mm':20.0}]
 # In3 carries signals as well as the -12V fill (owner stack: four signal layers); In2 is preferred.
 SIGNAL_LAYERS=['F.Cu','In2.Cu','In3.Cu','B.Cu']
@@ -224,8 +225,8 @@ def stage(board_id,current,spec,definition,log):
             nets=sorted(open_nets|crowding);log(f"{spec['name']}: {len(open_nets)} open nets, {len(nets)} nets renegotiated")
         results,removed=negotiate(dump,nets,res=NEGOTIATE_RES.get(board_id,spec['res']),layer_cost=LAYER_COST,clearance=spec['clearance'],width=spec['signal_width'],
                                   via_diameter=spec['signal_via_diameter'],allowed_layers=SIGNAL_LAYERS,grow=spec['grow'],
-                                  iterations=NEGOTIATE_ITERATIONS.get(board_id,spec['iterations']),present=0.5,present_growth=1.8,history=0.5,workers=NEGOTIATE_WORKERS.get(board_id,spec['workers']),
-                                  fill_guards={'-12V':'In3.Cu'},log=log,deadline=time.time()+spec['budget_s'],
+                                  iterations=NEGOTIATE_ITERATIONS.get(board_id,spec['iterations']),present=0.5,present_growth=1.8,history=0.5,workers=RUN['workers'] or NEGOTIATE_WORKERS.get(board_id,spec['workers']),
+                                  fill_guards={'-12V':'In3.Cu'},log=log,deadline=min(time.time()+spec['budget_s'],RUN['deadline'] or float('inf')),
                                   state_path=str(ROOT/'.circuit-cache'/f"{board_id}-{spec['name']}-{hashlib.sha256(current.read_bytes()).hexdigest()[:16]}.pkl"))
         # Out of time: the negotiation state is saved; rerun this stage to continue it.
         if results is None:return None,'resume'
@@ -302,7 +303,11 @@ def stage(board_id,current,spec,definition,log):
 
 def main():
     p=argparse.ArgumentParser(description=__doc__.splitlines()[0]);p.add_argument('board_id',choices=('osc-jack-left','osc-jack-right','osc-core'))
-    p.add_argument('--from-stage',default=STAGES[0]['name']);p.add_argument('--to-stage');p.add_argument('--promote',action='store_true');a=p.parse_args()
+    p.add_argument('--from-stage',default=STAGES[0]['name']);p.add_argument('--to-stage');p.add_argument('--promote',action='store_true')
+    p.add_argument('--workers',type=int,help='negotiation workers for every negotiated stage (default: per-board table)')
+    p.add_argument('--max-minutes',type=float,help='stop before starting a stage after this, and cap negotiation deadlines')
+    a=p.parse_args()
+    RUN.update(workers=a.workers,deadline=time.time()+a.max_minutes*60 if a.max_minutes else None)
     board=ROOT/'boards'/a.board_id/f'{a.board_id}.kicad_pcb';definition=json.loads((ROOT/'design/boards'/f'{a.board_id}.json').read_text())
     if definition['layers']!=6:raise ValueError('six-layer board definition required')
     reports=board.parent/'reports'/'grid-routing';reports.mkdir(parents=True,exist_ok=True)
@@ -313,6 +318,8 @@ def main():
     names=[s['name'] for s in STAGES]
     last=names.index(a.to_stage)+1 if a.to_stage else len(STAGES)
     for spec in STAGES[names.index(a.from_stage):last]:
+        if RUN['deadline'] and time.time()>RUN['deadline']:
+            print(f"run time budget used; rerun --from-stage {spec['name']} to resume",flush=True);break
         candidate,receipt=stage(a.board_id,current,spec,definition,lambda m:print(m,flush=True))
         if receipt=='resume':print(f"{spec['name']}: time budget used; rerun --from-stage {spec['name']} to resume",flush=True);break
         if candidate is None:print(f"{spec['name']}: nothing to do",flush=True);continue
