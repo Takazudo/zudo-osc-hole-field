@@ -31,7 +31,7 @@ RRR_TRIED=set()  # nets already offered to a rip-up batch in the current round
 # rounds changed the copper) with a larger rip-up budget; a round that adopts nothing ends them.
 RRR_ROUND={'round':0,'adopted':False,'done':False}
 REGIONS_TRIED=set()  # hotspot regions already renegotiated in this run (rounded box corners)
-RUN={'deadline':None,'workers':None,'shard':None}  # --max-minutes / --workers overrides for the whole run (CI routing)
+RUN={'deadline':None,'workers':None,'res':None,'iterations':None,'shard':None}  # --max-minutes/--workers/--res/--iterations/--shard overrides (CI routing)
 RRR_BUDGETS=[{'rrr_max_rip':4,'window_mm':12.0},{'rrr_max_rip':6,'window_mm':16.0},{'rrr_max_rip':8,'window_mm':20.0}]
 # In3 carries signals as well as the -12V fill (owner stack: four signal layers); In2 is preferred.
 SIGNAL_LAYERS=['F.Cu','In2.Cu','In3.Cu','B.Cu']
@@ -223,9 +223,9 @@ def stage(board_id,current,spec,definition,log):
             crowding={i['net'] for i in dump['tracks'] if i['net'] in nets and (near(i['a']) or near(i['b']))}
             crowding|={i['net'] for i in dump['vias'] if i['net'] in nets and near(i['xy'])}
             nets=sorted(open_nets|crowding);log(f"{spec['name']}: {len(open_nets)} open nets, {len(nets)} nets renegotiated")
-        results,removed=negotiate(dump,nets,res=NEGOTIATE_RES.get(board_id,spec['res']),layer_cost=LAYER_COST,clearance=spec['clearance'],width=spec['signal_width'],
+        results,removed=negotiate(dump,nets,res=RUN['res'] or NEGOTIATE_RES.get(board_id,spec['res']),layer_cost=LAYER_COST,clearance=spec['clearance'],width=spec['signal_width'],
                                   via_diameter=spec['signal_via_diameter'],allowed_layers=SIGNAL_LAYERS,grow=spec['grow'],
-                                  iterations=NEGOTIATE_ITERATIONS.get(board_id,spec['iterations']),present=0.5,present_growth=1.8,history=0.5,workers=RUN['workers'] or NEGOTIATE_WORKERS.get(board_id,spec['workers']),
+                                  iterations=RUN['iterations'] or NEGOTIATE_ITERATIONS.get(board_id,spec['iterations']),present=0.5,present_growth=1.8,history=0.5,workers=RUN['workers'] or NEGOTIATE_WORKERS.get(board_id,spec['workers']),
                                   fill_guards={'-12V':'In3.Cu'},log=log,deadline=min(time.time()+spec['budget_s'],RUN['deadline'] or float('inf')),
                                   state_path=str(ROOT/'.circuit-cache'/f"{board_id}-{spec['name']}-{hashlib.sha256(current.read_bytes()).hexdigest()[:16]}.pkl"))
         # Out of time: the negotiation state is saved; rerun this stage to continue it.
@@ -306,9 +306,12 @@ def main():
     p.add_argument('--from-stage',default=STAGES[0]['name']);p.add_argument('--to-stage');p.add_argument('--promote',action='store_true')
     p.add_argument('--workers',type=int,help='negotiation workers for every negotiated stage (default: per-board table)')
     p.add_argument('--max-minutes',type=float,help='stop before starting a stage after this, and cap negotiation deadlines')
+    # The local core caps (0.075 mm, 30 iterations) exist for an 11 GB host; a 16 GB CI runner can lift them.
+    p.add_argument('--res',type=float,help='negotiation raster in mm for every negotiated stage (default: per-board table)')
+    p.add_argument('--iterations',type=int,help='negotiation iteration cap for every negotiated stage (default: per-board table)')
     p.add_argument('--shard',help='I/N: route only shard I of N hotspot-region shards planned from the start board (region stages only)')
     a=p.parse_args()
-    RUN.update(workers=a.workers,deadline=time.time()+a.max_minutes*60 if a.max_minutes else None)
+    RUN.update(workers=a.workers,res=a.res,iterations=a.iterations,deadline=time.time()+a.max_minutes*60 if a.max_minutes else None)
     board=ROOT/'boards'/a.board_id/f'{a.board_id}.kicad_pcb';definition=json.loads((ROOT/'design/boards'/f'{a.board_id}.json').read_text())
     if definition['layers']!=6:raise ValueError('six-layer board definition required')
     reports=board.parent/'reports'/'grid-routing';reports.mkdir(parents=True,exist_ok=True)
