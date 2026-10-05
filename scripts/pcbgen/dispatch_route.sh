@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 # Dispatch .github/workflows/route.yml for one board and wait for the run to finish.
-# Usage: bash scripts/pcbgen/dispatch_route.sh <board> <branch> <from-stage> [<to-stage>] [--workers N] [--max-minutes M] [--no-wait]
+# Usage: bash scripts/pcbgen/dispatch_route.sh <board> <branch> <from-stage> [<to-stage>] [--workers N] [--max-minutes M] [--res MM] [--iterations N] [--no-wait]
 set -euo pipefail
 
 usage() {
-  printf 'Usage: bash scripts/pcbgen/dispatch_route.sh <board> <branch> <from-stage> [<to-stage>] [--workers N] [--max-minutes M] [--no-wait]\n' >&2
+  printf 'Usage: bash scripts/pcbgen/dispatch_route.sh <board> <branch> <from-stage> [<to-stage>] [--workers N] [--max-minutes M] [--res MM] [--iterations N] [--no-wait]\n' >&2
   exit 2
 }
 
@@ -15,6 +15,8 @@ while (($#)); do
   case $1 in
     --workers) fields+=(-f "workers=${2:?}"); shift 2 ;;
     --max-minutes) fields+=(-f "max_minutes=${2:?}"); shift 2 ;;
+    --res) fields+=(-f "res=${2:?}"); shift 2 ;;
+    --iterations) fields+=(-f "iterations=${2:?}"); shift 2 ;;
     --no-wait) wait=0; shift ;;
     -h | --help) usage ;;
     *) positional+=("$1"); shift ;;
