@@ -40,19 +40,23 @@ def plan(regions,nets_of,shards,margin=0):
 
     regions: [(lo, hi, stranded_pins)] largest first; nets_of: one net set per region.
     Regions whose boxes overlap once grown by margin (board units) stay in one shard,
-    so two shards never rip copper in the same window. Those groups go greedily, by
+    so two shards rarely rip copper in the same window, unless joining them would
+    exceed an even share of the stranded pins (dense boards otherwise chain most
+    regions into one group; the merge gate reverts any clash). Groups go greedily, by
     stranded pins, to the least-loaded shard. A net seen by several shards belongs to
     the one whose regions hold it most often (ties to the lower shard), so other
     shards keep that net's copper as a fixed obstacle.
     """
-    parent=list(range(len(regions)))
+    parent=list(range(len(regions)));weight=[int(r[2]) for r in regions]
+    cap=-(-sum(weight)//shards)
     def root(i):
         while parent[i]!=i:parent[i]=parent[parent[i]];i=parent[i]
         return i
     for i,a in enumerate(regions):
         for j in range(i):
-            b=regions[j]
-            if all(a[0][k]-margin<=b[1][k]+margin and b[0][k]-margin<=a[1][k]+margin for k in (0,1)):parent[root(i)]=root(j)
+            b=regions[j];ri,rj=root(i),root(j)
+            if ri==rj or weight[ri]+weight[rj]>cap:continue
+            if all(a[0][k]-margin<=b[1][k]+margin and b[0][k]-margin<=a[1][k]+margin for k in (0,1)):parent[ri]=rj;weight[rj]+=weight[ri]
     groups={}
     for i in range(len(regions)):groups.setdefault(root(i),[]).append(i)
     load=[0]*shards;owner=[0]*len(regions)
@@ -70,6 +74,31 @@ def plan(regions,nets_of,shards,margin=0):
                     'region_nets':[sorted(n for n in ns if net_owner[n]==k) for _,ns in mine],
                     'nets':sorted(n for n,s in net_owner.items() if s==k),'stranded_pins':load[k]})
     return out
+
+
+def area_plan(points,shards):
+    """Split nets into shards by board area: recursive bisection of net centroids.
+
+    points: {net: (x, y, open_edges)}. Each cut runs across the longer side of the
+    current box at the open-edge-weighted position that gives each half its share of
+    shards; closed nets follow their position, so the nets a shard may rip up are the
+    ones around its open nets. Returns one sorted net list per shard.
+    """
+    def split(nets,n):
+        if n==1 or len(nets)<2:return [sorted(nets)]+[[] for _ in range(n-1)]
+        xs=[points[m][0] for m in nets];ys=[points[m][1] for m in nets]
+        axis=0 if max(xs)-min(xs)>=max(ys)-min(ys) else 1
+        order=sorted(nets,key=lambda m:(points[m][axis],points[m][1-axis],m))
+        left=n//2;total=sum(points[m][2] for m in order)
+        if total:
+            target=total*left/n;run=0;cut=len(order)
+            for i,m in enumerate(order):
+                run+=points[m][2]
+                if run>=target:cut=i+1;break
+        else:cut=len(order)*left//n
+        cut=min(max(cut,1),len(order)-1)
+        return split(order[:cut],left)+split(order[cut:],n-left)
+    return split(sorted(points),shards)
 
 
 def copper_blocks(text):

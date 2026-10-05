@@ -85,6 +85,13 @@ class RipUpTests(unittest.TestCase):
         self.assertEqual({r['net'] for r in repaired if r['path']},{'A','B'})
         self.assertFalse([r for r in repaired if not r['path']])
 
+    def test_rip_only_protects_nets_outside_the_shard(self):
+        common=dict(res=0.1,clearance=0.2,signal_width=0.2,layer_cost=[1.0],log=lambda m:None,rrr_rounds=2)
+        guarded=route(crossing_board(),['A','B'],rip_only={'B'},**common)[0]
+        self.assertEqual({r['net'] for r in guarded if not r['path']},{'B'})
+        allowed=route(crossing_board(),['A','B'],rip_only={'A','B'},**common)[0]
+        self.assertFalse([r for r in allowed if not r['path']])
+
     def test_rip_up_runs_with_a_plane_fill_guard(self):
         # The guard's state is saved, reset after the rip and restored on undo.
         dump=crossing_board()

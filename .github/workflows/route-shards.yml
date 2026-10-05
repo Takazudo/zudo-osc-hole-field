@@ -1,9 +1,10 @@
-name: Sharded region routing
+name: Sharded grid routing
 run-name: Shard-route ${{ inputs.board }} on ${{ inputs.branch }} x${{ inputs.shards }} from ${{ inputs.from_stage }}
 
-# N shard jobs each renegotiate a disjoint set of hotspot regions (and the nets they
-# own) from the same base board and upload a copper delta; one merge job applies every
-# delta, runs the native gate once and pushes. Draft only: qualification NOT RUN.
+# N shard jobs each route a disjoint set of nets from the same base board: hotspot
+# regions for region stages, a board area for signal/rrr stages. Each uploads a copper
+# delta; one merge job applies every delta, runs the native gate once and pushes.
+# Draft only: qualification NOT RUN.
 on:
   workflow_dispatch:
     inputs:
@@ -22,12 +23,12 @@ on:
         default: "6"
         type: string
       from_stage:
-        description: First region stage
+        description: First stage (region-NN, or signals-local / signals-NN / rrr-NN / signal-escapes)
         required: false
         default: region-01
         type: string
       to_stage:
-        description: Last region stage
+        description: Last stage (same kind as the first)
         required: false
         default: region-08
         type: string
@@ -84,7 +85,8 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           git check-ref-format --branch "$BRANCH" >/dev/null
-          [[ $FROM_STAGE =~ ^region-[0-9]+$ && $TO_STAGE =~ ^region-[0-9]+$ ]] || { echo "stages must be region-NN"; exit 1; }
+          # The driver checks the range is all region stages or all signal/rrr stages.
+          [[ $FROM_STAGE =~ ^[a-z0-9-]+$ && $TO_STAGE =~ ^[a-z0-9-]+$ ]] || { echo "bad stage names"; exit 1; }
           [[ $WORKERS =~ ^[1-8]$ ]] || { echo "workers must be 1-8"; exit 1; }
           [[ -z $RES || $RES =~ ^0\.[0-9]+$ ]] || { echo "bad res: $RES"; exit 1; }
           [[ -z $ITERATIONS || $ITERATIONS =~ ^[0-9]+$ ]] || { echo "bad iterations: $ITERATIONS"; exit 1; }
