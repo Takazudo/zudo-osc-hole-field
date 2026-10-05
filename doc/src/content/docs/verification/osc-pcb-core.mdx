@@ -5,17 +5,29 @@ description: "Six-layer core board after locality placement and rail routing: na
 
 **Routed draft in progress. It is unvalidated, has not been reviewed as hardware, and is not a fabrication release. [Issue #43 remains OPEN](https://github.com/Takazudo/zudo-osc-hole-field/issues/43).** Electrical and physical qualification are **NOT RUN**. No fabrication or order files were generated.
 
-## Placement: locality instead of first-fit
+## Placement: module-spread locality
 
-`scripts/checks/partition35_floorplan.py` places the 3,385 free core packages with the locality placer in `scripts/checks/jack_locality.py`. The core has no panel hardware, so the core GH header pins anchor each signal net. Each of the 31 modules is also pulled toward the headers that carry its nets.
+`scripts/checks/partition35_floorplan.py` places the 3,385 free core packages with `scripts/checks/jack_locality.py`. The core has no panel hardware, so the core GH header pins anchor each signal net.
 
-The placer legalizes IC/bypass clusters first and keeps them rigid. Through-hole packages block both faces. The #59 protection rectangle, the bulk-capacitor reserves and the supports stay as obstacles.
+The first header-anchored placement crowded about 1,300 envelope/offset packages into one corner and scattered modules: 751 nets spanned 80 mm or more. Negotiated routing then stalled at about 2,500 of 2,727 nets in conflict. The current placement (v3) adds three steps:
 
-Result: 1,844 packages on B.Cu and 1,541 on F.Cu. Signal half-perimeter wirelength falls from 545 m (connectivity-blind first-fit) to 162 m. The 18 POWER-* reserves are the TP load-wire lands themselves. They hold their netlisted terminals and no longer emit keepouts over them.
+- **Module home discs.** Each module gets an area-proportional disc around its header home. `scripts/checks/core_locality.py:spread_module_homes` pushes the discs apart inside the outline and the notch. Packages are then legalized one module at a time, largest first.
+- **Core-only spacing.** A 0.6 mm courtyard gap and a 0.5 mm keep-clear ring around each IC.
+- **Swap pass.** A same-footprint swap pass penalizes nets longer than 60 mm, with candidates within 25 mm of each package's net median.
+
+Through-hole packages block both faces. IC + bypass clusters stay rigid. The #59 protection rectangle, the bulk-capacitor reserves and the supports stay obstacles. The 18 POWER-* reserves are the TP load-wire lands themselves.
+
+| Placement | Signal HPWL | Peak RUDY / p99 | 5 mm tiles > 0.7 |
+| --- | --- | --- | --- |
+| Header-anchored locality | 162 m | 1.39 / — | 682 |
+| v3 module-spread + swaps | 105 m | 1.24 / 0.78 | 68 |
+| JL with swaps (for comparison) | 35 m | 0.93 / 0.81 | 42 |
+
+RUDY is the bounding-box wire-demand estimate divided by ideal four-signal-layer supply. It is a congestion screen, not a routing result. The core header positions are tied to their partner boards' headers by the straight harnesses, so they stay fixed.
 
 ## Stack: six layers
 
-`scripts/pcbgen/cut_capacity.py` bounds the native placed board. Its worst line is y=177 (board frame), which 853 signal nets must cross.
+`scripts/pcbgen/cut_capacity.py` bounds the first native locality placement. Its worst line is y=177 (board frame), which 853 signal nets must cross.
 
 | Signal layers | Ideal track capacity | Ratio to demand |
 | --- | --- | --- |
@@ -36,12 +48,21 @@ Four layers fall below the 1.5× margin used for the jack halves, so the core ta
 | --- | --- |
 | Outline / stack | 310 × 284 mm minus the 56 × 46 mm notch; six copper layers, 1.6 mm, 2 oz proposal |
 | Footprints | 3,594 netlisted (8 DNP), 13,406 pads |
-| Native open edges | **5,849**: +12 V 15, −12 V 16, +5 V 0, AGND 1, signals 5,817 |
+| Native open edges | **2,077**: +12 V 80, −12 V 80, +5 V 0, AGND 121, signals 1,796 |
 | DRC errors / schematic parity | **0 / 0** |
-| DRC warnings | silk overlap 199, silk over copper 199, silk edge clearance 10, text height 4 |
-| Copper | 6,559 track segments, 1,199 vias |
+| Copper | 97,079 track segments, 7,636 vias |
 
-`scripts/pcbgen/route_jack_grid.py` drives the routing stages. It first tries terminal via arrays; none were adopted. It then routes ±12 V plane fanouts, rail links and rail escapes. Each stage is applied to a disposable copy and checked with native DRC, schematic parity and zone refill. A stage is kept only when native open edges fall. Stage receipts are in `boards/osc-core/reports/grid-routing/`. Signal routing (negotiated pass, rip-up and reroute, batches, AGND stitching) continues under #43.
+`scripts/pcbgen/route_jack_grid.py` ran these stages:
+
+1. ±12 V plane fanouts and rail links (7,355 → 5,977).
+2. A negotiated (PathFinder) pass over all signal nets on a 0.075 mm raster with two workers, finalized at its saved state (→ 2,975).
+3. Rip-up-and-reroute batches rrr-01..08 (→ 2,077).
+
+Each stage is applied to a disposable copy and checked with native DRC, schematic parity and zone refill. A stage is kept only when native open edges fall. Stage receipts are in `boards/osc-core/reports/grid-routing/`.
+
+Still to run under #43: signal batches, rip-up re-offer rounds, rail escapes and AGND stitching.
+
+The renders below are from the earlier 5,849-edge checkpoint; native checks of this revision run in CI.
 
 ![Core top: unvalidated routed draft in progress](/assets/osc-hole-field/osc-core-top.png)
 
