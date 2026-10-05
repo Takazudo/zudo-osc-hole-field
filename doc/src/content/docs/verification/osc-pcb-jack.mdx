@@ -18,12 +18,12 @@ A cut-line bound (`scripts/pcbgen/cut_capacity.py`) showed that the four-layer h
 | Native check | JL / `osc-jack-left` | JR / `osc-jack-right` |
 | --- | --- | --- |
 | Status | ROUTED DRAFT IN PROGRESS | ROUTED DRAFT IN PROGRESS |
-| Native open edges | **173** | **190** |
-| Remaining signal edges | 152 | 156 |
-| Remaining rail / ground edges | +12V 3, +5V 0, -12V 4, AGND 14 | +12V 0, +5V 0, -12V 5, AGND 29 |
+| Native open edges | **173** | **177** |
+| Remaining signal edges | 152 | 144 |
+| Remaining rail / ground edges | +12V 3, +5V 0, -12V 4, AGND 14 | +12V 0, +5V 0, -12V 5, AGND 28 |
 | DRC errors / schematic parity | 0 / 0 | 0 / 0 |
-| Track segments / vias | 27392 / 2646 | 46712 / 3049 |
-| Native warnings | hole to hole 4, silk edge clearance 8, silk over copper 199, silk overlap 199, text height 43, track dangling 5, via dangling 22 | hole to hole 24, silk edge clearance 13, silk over copper 199, silk overlap 199, text height 59, via dangling 23 |
+| Track segments / vias | 27392 / 2646 | 46986 / 3070 |
+| Native warnings | hole to hole 4, silk edge clearance 8, silk over copper 199, silk overlap 199, text height 43, track dangling 5, via dangling 22 | hole to hole 24, silk edge clearance 13, silk over copper 199, silk overlap 199, text height 59, track dangling 2, via dangling 23 |
 
 Routing uses `scripts/pcbgen/route_jack_grid.py`: terminal via arrays, ±12 V plane fanouts, rail links, then a negotiated-congestion (PathFinder) pass over every signal net on a 0.05 mm grid, rip-up-and-reroute batches for what it leaves open, with AGND stitching vias where new copper cuts a surface pour. Each stage is applied to a disposable copy, checked with native DRC, schematic parity and zone refill, and kept only when the native open-edge count falls. Stage receipts are in `boards/<board-id>/reports/grid-routing/`; `reports/ratsnest.json` holds the complete native per-net topology. Silkscreen/text warnings remain [#44](https://github.com/Takazudo/zudo-osc-hole-field/issues/44).
 
