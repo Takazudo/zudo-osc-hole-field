@@ -12,7 +12,7 @@ stage writes a receipt under boards/<id>/reports/grid-routing/. Draft only:
 electrical and physical qualification remain NOT RUN.
 """
 from __future__ import annotations
-import argparse,collections,hashlib,json,shutil,subprocess,sys,time
+import argparse,collections,hashlib,json,os,shutil,subprocess,sys,time
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[2]
 sys.path.insert(0,str(ROOT))
@@ -322,6 +322,7 @@ def main():
     # The local core caps (0.075 mm, 30 iterations) exist for an 11 GB host; a 16 GB CI runner can lift them.
     p.add_argument('--res',type=float,help='negotiation raster in mm for every negotiated stage (default: per-board table)')
     p.add_argument('--iterations',type=int,help='negotiation iteration cap for every negotiated stage (default: per-board table)')
+    p.add_argument('--after-promote',help='shell command run after each promotion, with STAGE, OPEN_BEFORE and OPEN_AFTER set (CI pushes)')
     p.add_argument('--shard',help='I/N: route only shard I of N hotspot-region shards planned from the start board (region stages only)')
     a=p.parse_args()
     RUN.update(workers=a.workers,res=a.res,iterations=a.iterations,deadline=time.time()+a.max_minutes*60 if a.max_minutes else None)
@@ -362,6 +363,10 @@ def main():
             current=candidate
             # Promote every adopted stage so a later interruption keeps checked progress.
             if a.promote:shutil.copyfile(current,board);print('promoted',rel(board),flush=True)
+            if a.promote and a.after_promote:
+                env={**os.environ,'STAGE':spec['name'],'OPEN_BEFORE':str(receipt['open_edges_before']),'OPEN_AFTER':str(receipt['open_edges_after'])}
+                done=subprocess.run(a.after_promote,shell=True,cwd=ROOT,env=env)
+                if done.returncode:print(f"after-promote command failed ({done.returncode}); routing continues",flush=True)
     print('final candidate',rel(current))
 
 
