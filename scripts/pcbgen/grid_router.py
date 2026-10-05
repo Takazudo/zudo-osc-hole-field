@@ -488,10 +488,15 @@ def _negotiate_worker(job):
     return net,_NEGOTIATE_ROUTE(net,pfac)
 
 
+def plateaued(counts,window,fraction):
+    """True once conflicts fell by less than `fraction` over the last `window` iterations."""
+    return len(counts)>window and counts[-1]>(1.0-fraction)*counts[-1-window]
+
+
 def negotiate(dump,nets,res=0.1,layer_cost=None,via_cost=30.0,clearance=0.2,width=0.2,via_diameter=0.6,via_drill=0.3,
               hole_clearance=0.25,edge_clearance=0.5,allowed_layers=None,grow=None,iterations=30,present=0.5,present_growth=1.6,
               history=1.0,margin_mm=4.0,wide_margin_mm=12.0,max_expansions=2_000_000,log=print,workers=1,
-              fill_guards=None,fill_clearance=0.45,state_path=None,deadline=None):
+              fill_guards=None,fill_clearance=0.45,state_path=None,deadline=None,plateau=(10,0.05)):
     """PathFinder-style negotiated routing of whole signal nets.
 
     All copper of the named nets is ripped and every net is rerouted from its pads.
@@ -662,20 +667,20 @@ def negotiate(dump,nets,res=0.1,layer_cost=None,via_cost=30.0,clearance=0.2,widt
         return ((ls.astype(np.int8),(ys+y0).astype(np.int32),(xs+x0).astype(np.int32)),((vy+y0).astype(np.int32),(vx+x0).astype(np.int32)),*fp),paths
 
     order=sorted(nets,key=lambda n:len(pads_by_net[n]))
-    pfac=present;conflicted=set(order);start=0;failures={}
+    pfac=present;conflicted=set(order);start=0;failures={};counts=[]
     key=(2,res,tuple(order),raster.h,raster.w)
     if state_path and os.path.exists(state_path):
         with open(state_path,'rb') as f:st=pickle.load(f)
         if st['key']==key:
             hist[tuple(st['hist'][0])]=st['hist'][1];hist_via[tuple(st['hist_via'][0])]=st['hist_via'][1];routes.update(st['routes']);pfac=st['pfac']
-            conflicted=st['conflicted'];start=st['iteration'];failures=st['failures']
+            conflicted=st['conflicted'];start=st['iteration'];failures=st['failures'];counts=st.get('counts',[])
             for net,r in routes.items():stamp(net,r[0],+1)
             log(f'NEGOTIATE resumed after iteration {start}: {len(routes)} nets routed, {len(conflicted)} in conflict')
     def save(it):
         if not state_path:return
         with open(state_path+'.tmp','wb') as f:
             sparse=lambda a:(lambda i:(i,a[tuple(i)]))(np.array(np.nonzero(a)))
-            pickle.dump({'key':key,'hist':sparse(hist),'hist_via':sparse(hist_via),'routes':routes,'pfac':pfac,'conflicted':conflicted,'iteration':it,'failures':failures},f)
+            pickle.dump({'key':key,'hist':sparse(hist),'hist_via':sparse(hist_via),'routes':routes,'pfac':pfac,'conflicted':conflicted,'iteration':it,'failures':failures,'counts':counts},f)
         os.replace(state_path+'.tmp',state_path)
     def disjoint_waves(batch):
         boxes={}
@@ -692,6 +697,8 @@ def negotiate(dump,nets,res=0.1,layer_cost=None,via_cost=30.0,clearance=0.2,widt
     global _NEGOTIATE_ROUTE
     pool=None
     for it in range(start,iterations):
+        if plateaued(counts,*plateau):
+            log(f'NEGOTIATE plateau: under {plateau[1]:.0%} fewer conflicts over the last {plateau[0]} iterations; stopping');break
         if deadline and time.time()>deadline:
             log(f'NEGOTIATE deadline reached before iteration {it+1}; state saved for resume')
             if pool is not None:pool.terminate()
@@ -726,6 +733,7 @@ def negotiate(dump,nets,res=0.1,layer_cost=None,via_cost=30.0,clearance=0.2,widt
             if hot.any():conflicted.add(net);np.add.at(hist,(ls[hot],ys[hot],xs[hot]),history)
             vhot=occ_via[vy,vx]-own_at(via,None,vy,vx)>0
             if vhot.any():conflicted.add(net);np.add.at(hist_via,(vy[vhot],vx[vhot]),history)
+        counts.append(len(conflicted))
         log(f'NEGOTIATE iteration {it+1}: {len(routes)} nets routed, {len(conflicted)} in conflict, {failed} unroutable; exact/wide/greedy/full-board searches {attempts}')
         save(it+1)
         if it==start:

@@ -2,7 +2,7 @@
 import math
 import unittest
 import numpy as np
-from scripts.pcbgen.grid_router import negotiate,astar,astar_py,copper_rows,fill_partition,fill_region_count,native_astar,route,splits
+from scripts.pcbgen.grid_router import plateaued,negotiate,astar,astar_py,copper_rows,fill_partition,fill_region_count,native_astar,route,splits
 from scripts.pcbgen.cut_capacity import scan,summarize
 
 MM=1_000_000
@@ -138,6 +138,14 @@ class WindowEscalationTests(unittest.TestCase):
         results,log=self.negotiate(detour_board(15),wide_margin_mm=12.0)
         self.assertTrue(results[0]['path'],log)
         self.assertTrue(any('[0, 0, 0, 1]' in m for m in log),log)
+
+
+class PlateauTests(unittest.TestCase):
+    def test_stops_only_after_a_flat_window(self):
+        self.assertFalse(plateaued([100,90,80],10,0.05))
+        self.assertFalse(plateaued([100]+[60]*9+[94],10,0.05))
+        self.assertTrue(plateaued([100]+[98]*10,10,0.05))
+        self.assertFalse(plateaued([100]+[98]*9+[94],10,0.05))
 
 
 class FillGuardTests(unittest.TestCase):
