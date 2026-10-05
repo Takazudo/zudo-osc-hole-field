@@ -38,7 +38,8 @@ RAILS=['+12V','-12V','+5V']
 # The core is twice a jack half's area; a 0.05 mm six-layer negotiation raster would not fit in memory.
 NEGOTIATE_RES={'osc-core':0.075}
 # Fewer forked workers on the core keep its shared rasters within this machine's memory.
-NEGOTIATE_WORKERS={'osc-core':2}
+# Jack jobs run beside the core (heavy-guard --slots 2): each worker holds ~0.4 GB private.
+NEGOTIATE_WORKERS={'osc-core':2,'osc-jack-left':2,'osc-jack-right':2}
 # Core iterations plateau near 1000 conflicts by about 25; stop there and hand the rest to rip-up.
 NEGOTIATE_ITERATIONS={'osc-core':30}
 COMMON=dict(layers=SIGNAL_LAYERS)
