@@ -128,7 +128,13 @@ jobs:
             done
           ) &
           sampler=$!
-          args=("$BOARD" --from-stage "$FROM_STAGE" --promote --workers "$WORKERS" --max-minutes "$MAX_MINUTES")
+          args=("$BOARD" --from-stage "$FROM_STAGE" --promote)
+          if grep -q -- "--max-minutes" scripts/pcbgen/route_jack_grid.py; then
+            args+=(--workers "$WORKERS" --max-minutes "$MAX_MINUTES")
+          else
+            # Branches cut before the CI routing driver flags: per-board workers and per-stage budgets apply.
+            echo "::warning::$BRANCH has no --workers/--max-minutes in route_jack_grid.py; merge main to use them"
+          fi
           [[ -n $TO_STAGE ]] && args+=(--to-stage "$TO_STAGE")
           [[ -n $RES ]] && args+=(--res "$RES")
           [[ -n $ITERATIONS ]] && args+=(--iterations "$ITERATIONS")
