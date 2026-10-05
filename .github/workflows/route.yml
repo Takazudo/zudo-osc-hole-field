@@ -142,6 +142,10 @@ jobs:
           elif [[ -n $RES || -n $ITERATIONS ]]; then
             echo "::warning::$BRANCH has no --res/--iterations in route_jack_grid.py; merge main to use them"
           fi
+          if grep -q -- "--after-promote" scripts/pcbgen/route_jack_grid.py; then
+            # Push every adopted stage as it lands, so a job lost near the limit keeps its progress.
+            args+=(--after-promote "bash scripts/pcbgen/ci_stage_push.sh $(printf '%q %q' "$BOARD" "$BRANCH")")
+          fi
           start=$(date +%s)
           set +e
           # The driver stops between stages at max_minutes; the hard limit leaves time to save and push.
@@ -196,9 +200,10 @@ jobs:
           STATUS: ${{ steps.route.outputs.status }}
           RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
         run: |
+          # Adopted stages may already be pushed one by one (--after-promote); this commits what is left.
           git add -- "boards/$BOARD/$BOARD.kicad_pcb" "boards/$BOARD/reports/grid-routing"
           if git diff --cached --quiet; then
-            echo "No adopted stage; nothing to commit." | tee -a "$GITHUB_STEP_SUMMARY"
+            echo "Nothing left to commit." | tee -a "$GITHUB_STEP_SUMMARY"
             exit 0
           fi
           git config user.name "github-actions[bot]"
