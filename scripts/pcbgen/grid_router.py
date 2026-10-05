@@ -256,9 +256,10 @@ class FillGuard:
         found=ndimage.maximum(comp,self.blobs,range(1,self.n+1)) if self.n else []
         return [int(c) for c in np.atleast_1d(found)]
 
-    def shrunk(self,pieces,region=None):
+    def shrunk(self,pieces,region=None,inplace=False):
         """Region after adding copper given as (mask, (row slice, column slice)) pieces."""
-        region=(self.region if region is None else region).copy()
+        region=self.region if region is None else region
+        if not inplace:region=region.copy()
         if not pieces:return region
         k=int(math.ceil(self.clearance/self.res))+1;H,W=region.shape
         a0=max(0,min(sl[0].start for _,sl in pieces)-k);a1=min(H,max(sl[0].stop for _,sl in pieces)+k)
@@ -463,7 +464,7 @@ def route(dump,nets=(),rip=(),rip_first=False,res=0.1,layer_cost=None,via_cost=3
                 if probe is None or not blockers or len(blockers)>rrr_max_rip:
                     log(f"RRR-SKIP {net} {name(g)} {'no probe path' if probe is None else f'{len(blockers)} blockers'}")
                     failed.append((net,g,main_group));continue
-                snapshot=(raster.label.copy(),raster.hole.copy(),[dict(r) for r in results],set(removed),{li:(g.region.copy(),g.base) for li,g in fill_count.items()})
+                snapshot=(raster.label.copy(),raster.hole.copy(),[dict(r) for r in results],set(removed),{li:(g.region.copy(),g.base,g.blobs,g.n) for li,g in fill_count.items()})
                 victims=[id_net[b] for b in blockers]
                 for b in blockers:
                     raster.label[raster.label==b]=0
@@ -484,7 +485,7 @@ def route(dump,nets=(),rip=(),rip_first=False,res=0.1,layer_cost=None,via_cost=3
                 else:
                     log(f"RRR-UNDO {net} {name(g)} victims {victims}")
                     raster.label[...]=snapshot[0];raster.hole[...]=snapshot[1];results[:]=snapshot[2];removed.clear();removed|=snapshot[3]
-                    for li,(region,base) in snapshot[4].items():fill_count[li].region=region;fill_count[li].base=base
+                    for li,(region,base,blobs,n) in snapshot[4].items():fill_count[li].region=region;fill_count[li].base=base;fill_count[li].blobs=blobs;fill_count[li].n=n
                     failed.append((net,g,main_group))
             log(f'RRR round {rnd+1}: fixed {fixed}, still failing {len(failed)}')
             if not fixed:break
@@ -793,8 +794,8 @@ def negotiate(dump,nets,res=0.1,layer_cost=None,via_cost=30.0,clearance=0.2,widt
         def accept(batch,region):
             # Copper only removes fill, so a batch that keeps the fill keeps it for every subset;
             # bisecting left first therefore drops exactly the nets a one-by-one pass would.
-            trial=region
-            for net in batch:trial=guard.shrunk(pieces(net),trial)
+            trial=region.copy()
+            for net in batch:guard.shrunk(pieces(net),trial,inplace=True)
             if guard.keeps(trial):return trial
             if len(batch)==1:split_dropped.add(batch[0]);return region
             mid=len(batch)//2
