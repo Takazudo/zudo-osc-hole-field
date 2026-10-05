@@ -22,6 +22,7 @@ from scipy.sparse import coo_matrix
 from scipy.sparse.csgraph import connected_components
 from scripts.pcbgen.grid_router import route,copper_rows,negotiate
 from scripts.pcbgen.uuid_tools import stable_uuid
+from scripts.pcbgen.route_shards import plan,region_key,region_nets
 
 PLANES={'+12V':'In4.Cu','-12V':'In3.Cu'}
 FAILED=set()  # signal nets with an unroutable island in an earlier batch; retried by the escape stage
@@ -30,7 +31,7 @@ RRR_TRIED=set()  # nets already offered to a rip-up batch in the current round
 # rounds changed the copper) with a larger rip-up budget; a round that adopts nothing ends them.
 RRR_ROUND={'round':0,'adopted':False,'done':False}
 REGIONS_TRIED=set()  # hotspot regions already renegotiated in this run (rounded box corners)
-RUN={'deadline':None,'workers':None}  # --max-minutes / --workers overrides for the whole run (CI routing)
+RUN={'deadline':None,'workers':None,'shard':None}  # --max-minutes / --workers overrides for the whole run (CI routing)
 RRR_BUDGETS=[{'rrr_max_rip':4,'window_mm':12.0},{'rrr_max_rip':6,'window_mm':16.0},{'rrr_max_rip':8,'window_mm':20.0}]
 # In3 carries signals as well as the -12V fill (owner stack: four signal layers); In2 is preferred.
 SIGNAL_LAYERS=['F.Cu','In2.Cu','In3.Cu','B.Cu']
@@ -206,14 +207,13 @@ def stage(board_id,current,spec,definition,log):
         nets=[n for n in nets if sum(1 for p in dump['pads'] if p['net']==n)>1]
         if spec.get('regions'):
             # Hotspot pass: every signal net with copper or a stranded pin in a few stuck regions.
-            regions=[r for r in hotspot_regions(dump,spec['eps_mm']) if tuple(np.round(r[0]/1e6)) not in REGIONS_TRIED][:spec['regions_per_stage']]
+            # A shard (--shard) takes its regions from the base-board plan and renegotiates only the nets it owns.
+            pool=RUN['shard']['regions'] if RUN['shard'] else hotspot_regions(dump,spec['eps_mm'])
+            regions=[r for r in pool if region_key(r) not in REGIONS_TRIED][:spec['regions_per_stage']]
             if not regions:return None,None
-            REGIONS_TRIED.update(tuple(np.round(r[0]/1e6)) for r in regions)
-            m=spec['margin_mm']*1e6
-            inside=lambda xy:any(lo[0]-m<=xy[0]<=hi[0]+m and lo[1]-m<=xy[1]<=hi[1]+m for lo,hi,_ in regions)
-            chosen={i['net'] for i in dump['tracks'] if i['net'] in nets and (inside(i['a']) or inside(i['b']))}
-            chosen|={i['net'] for i in dump['vias'] if i['net'] in nets and inside(i['xy'])}
-            chosen|={p['net'] for p in dump['pads'] if p['net'] in nets and len(dump['islands'].get(p['net'],[]))>1 and inside(p['xy'])}
+            REGIONS_TRIED.update(region_key(r) for r in regions)
+            chosen=set().union(*(region_nets(dump,nets,r,spec['margin_mm']) for r in regions))
+            if RUN['shard']:chosen&=set(RUN['shard']['nets'])
             nets=sorted(chosen);log(f"{spec['name']}: {len(regions)} regions ({[r[2] for r in regions]} stranded pins), {len(nets)} nets renegotiated")
         if spec.get('open_only'):
             # Second pass: only the open nets and the nets whose copper crowds their pads.
@@ -306,16 +306,29 @@ def main():
     p.add_argument('--from-stage',default=STAGES[0]['name']);p.add_argument('--to-stage');p.add_argument('--promote',action='store_true')
     p.add_argument('--workers',type=int,help='negotiation workers for every negotiated stage (default: per-board table)')
     p.add_argument('--max-minutes',type=float,help='stop before starting a stage after this, and cap negotiation deadlines')
+    p.add_argument('--shard',help='I/N: route only shard I of N hotspot-region shards planned from the start board (region stages only)')
     a=p.parse_args()
     RUN.update(workers=a.workers,deadline=time.time()+a.max_minutes*60 if a.max_minutes else None)
     board=ROOT/'boards'/a.board_id/f'{a.board_id}.kicad_pcb';definition=json.loads((ROOT/'design/boards'/f'{a.board_id}.json').read_text())
     if definition['layers']!=6:raise ValueError('six-layer board definition required')
     reports=board.parent/'reports'/'grid-routing';reports.mkdir(parents=True,exist_ok=True)
-    work=workspace(a.board_id,'start');current=work/board.name;shutil.copyfile(board,current);drc,_=check(current)
+    work=workspace(a.board_id,'start');current=work/board.name;shutil.copyfile(board,current);drc,start_dump=check(current)
     errors=collections.Counter(v['type'] for v in drc['violations'] if v['severity']=='error')
     # Stage gates attribute every DRC error to new copper, so the start board must be clean.
     if errors or drc['schematic_parity']:raise RuntimeError(f"start board not clean: {dict(errors)}, {len(drc['schematic_parity'])} parity")
     names=[s['name'] for s in STAGES]
+    if a.shard:
+        index,count=map(int,a.shard.split('/'))
+        region_specs=[s for s in STAGES[names.index(a.from_stage):] if s.get('regions')]
+        if not 0<=index<count or not STAGES[names.index(a.from_stage)].get('regions'):raise ValueError('--shard needs I/N with 0<=I<N and a region --from-stage')
+        spec=region_specs[0];signal={p['net'] for p in start_dump['pads'] if p['net'] and p['net'] not in (*RAILS,'AGND')}
+        signal={n for n in signal if sum(1 for p in start_dump['pads'] if p['net']==n)>1}
+        regions=hotspot_regions(start_dump,spec['eps_mm'])
+        shards=plan(regions,[region_nets(start_dump,signal,r,spec['margin_mm']) for r in regions],count)
+        RUN['shard']=shards[index]
+        (work/'shard-plan.json').write_text(json.dumps(shards)+'\n')
+        print(f"shard {index}/{count}: {len(RUN['shard']['regions'])} of {len(regions)} regions, {len(RUN['shard']['nets'])} owned nets, "
+              f"{RUN['shard']['stranded_pins']} stranded pins",flush=True)
     last=names.index(a.to_stage)+1 if a.to_stage else len(STAGES)
     for spec in STAGES[names.index(a.from_stage):last]:
         if RUN['deadline'] and time.time()>RUN['deadline']:

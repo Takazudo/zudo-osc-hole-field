@@ -1,0 +1,177 @@
+#!/usr/bin/env python3
+"""Sharded hotspot-region routing: plan disjoint net shards, extract copper deltas, merge them.
+
+Every shard starts from the same base board and renegotiates only the signal nets
+it owns, so the deltas never touch the same net. Each delta is the set of
+segment/via blocks the shard removed and added. The merge applies all deltas to
+the base board as text, runs the native DRC/parity/refill gate once, and reverts
+whole nets whose new copper still fails, as a route_jack_grid.py stage does.
+Draft only: electrical and physical qualification remain NOT RUN.
+"""
+from __future__ import annotations
+import argparse,hashlib,json,re,shutil,sys
+from pathlib import Path
+ROOT=Path(__file__).resolve().parents[2]
+sys.path.insert(0,str(ROOT))
+from scripts.pcbgen.uuid_tools import top_level_spans,UUID_RE
+
+NET_RE=re.compile(r'\(net\s+"((?:[^"\\]|\\.)*)"\)')
+LAYER_RE=re.compile(r'\(layer\s+"([^"]+)"\)')
+
+
+def region_key(region):
+    """The rounded lower corner that route_jack_grid.py uses to mark a region as tried."""
+    return tuple(round(float(v)/1e6) for v in region[0])
+
+
+def region_nets(dump,nets,region,margin_mm):
+    """Signal nets (from nets) with copper or a stranded pin inside one region box plus margin."""
+    lo,hi=region[0],region[1];m=margin_mm*1e6
+    inside=lambda xy:lo[0]-m<=xy[0]<=hi[0]+m and lo[1]-m<=xy[1]<=hi[1]+m
+    nets=set(nets)
+    chosen={i['net'] for i in dump['tracks'] if i['net'] in nets and (inside(i['a']) or inside(i['b']))}
+    chosen|={i['net'] for i in dump['vias'] if i['net'] in nets and inside(i['xy'])}
+    chosen|={p['net'] for p in dump['pads'] if p['net'] in nets and len(dump['islands'].get(p['net'],[]))>1 and inside(p['xy'])}
+    return chosen
+
+
+def plan(regions,nets_of,shards):
+    """Split regions over shards and give every net to exactly one shard.
+
+    regions: [(lo, hi, stranded_pins)] largest first; nets_of: one net set per region.
+    Regions go greedily to the least-loaded shard by stranded pins. A net seen by
+    several shards belongs to the one whose regions hold it most often (ties to the
+    lower shard), so other shards keep that net's copper as a fixed obstacle.
+    """
+    load=[0]*shards;owner=[]
+    for r in regions:
+        s=min(range(shards),key=lambda k:(load[k],k));owner.append(s);load[s]+=int(r[2])
+    votes={}
+    for s,ns in zip(owner,nets_of):
+        for n in ns:votes.setdefault(n,[0]*shards)[s]+=1
+    net_owner={n:max(range(shards),key=lambda k:(v[k],-k)) for n,v in votes.items()}
+    out=[]
+    for k in range(shards):
+        mine=[(r,ns) for r,ns,s in zip(regions,nets_of,owner) if s==k]
+        out.append({'regions':[[[float(v) for v in r[0]],[float(v) for v in r[1]],int(r[2])] for r,_ in mine],
+                    'region_nets':[sorted(n for n in ns if net_owner[n]==k) for _,ns in mine],
+                    'nets':sorted(n for n,s in net_owner.items() if s==k),'stranded_pins':load[k]})
+    return out
+
+
+def copper_blocks(text):
+    """{uuid: (net, layer or None, block)} for every top-level segment and via."""
+    out={}
+    for start,end in top_level_spans(text):
+        block=text[start:end]
+        if not block.startswith(('(segment','(via')):continue
+        uid=UUID_RE.search(block);net=NET_RE.search(block)
+        if not uid or not net:raise ValueError('copper item without uuid or net: '+block[:80])
+        layer=LAYER_RE.search(block) if block.startswith('(segment') else None
+        out[uid[1]]=(net[1],layer[1] if layer else None,block)
+    return out
+
+
+def delta(base_text,final_text):
+    """Copper removed from and added to base_text by one shard, with the nets it touched."""
+    base=copper_blocks(base_text);final=copper_blocks(final_text)
+    removed=sorted(set(base)-set(final));added=sorted(set(final)-set(base))
+    changed=sorted(u for u in set(base)&set(final) if base[u][2]!=final[u][2])
+    if changed:raise ValueError(f'shard edited {len(changed)} copper items in place; only removal and addition are mergeable')
+    return {'base_sha256':hashlib.sha256(base_text.encode()).hexdigest(),
+            'removed':[{'uuid':u,'net':base[u][0]} for u in removed],
+            'added':[{'uuid':u,'net':final[u][0],'layer':final[u][1],'block':final[u][2]} for u in added],
+            'nets':sorted({base[u][0] for u in removed}|{final[u][0] for u in added})}
+
+
+def disjoint(deltas):
+    """Nets each delta keeps: a net already claimed by an earlier delta is dropped from a later one."""
+    seen=set();keep=[]
+    for d in deltas:
+        mine=set(d['nets'])-seen;keep.append(mine);seen|=mine
+    return keep
+
+
+def merge_text(base_text,deltas,reverted=frozenset()):
+    """Base board with every delta applied, except for disjoint-check losers and reverted nets."""
+    keep=disjoint(deltas)
+    removed={r['uuid'] for d,k in zip(deltas,keep) for r in d['removed'] if r['net'] in k and r['net'] not in reverted}
+    added=[a['block'] for d,k in zip(deltas,keep) for a in d['added'] if a['net'] in k and a['net'] not in reverted]
+    chunks=[];last=0;spans=list(top_level_spans(base_text));dropped=0
+    for start,end in spans:
+        block=base_text[start:end]
+        if block.startswith(('(segment','(via')):
+            uid=UUID_RE.search(block)
+            if uid and uid[1] in removed:
+                # Drop the block and the indentation/newline that preceded it.
+                cut=base_text.rfind('\n',last,start);chunks.append(base_text[last:cut if cut>=0 else start]);last=end;dropped+=1
+    if dropped!=len(removed):raise ValueError(f'removed copper not found in base: {dropped}/{len(removed)}')
+    tail=base_text[last:];close=tail.rstrip().rfind(')')
+    if close<0:raise ValueError('board text has no closing parenthesis')
+    # Spans start at '(' and keep their inner lines' absolute indentation.
+    body=''.join('\n\t'+b for b in added)
+    chunks.append(tail[:close].rstrip('\n')+body+'\n'+tail[close:])
+    return ''.join(chunks)
+
+
+def merge(board_id,delta_paths,label):
+    """Apply every shard delta to the board, gate it natively, and promote it if open edges fall."""
+    from scripts.pcbgen.route_jack_grid import PLANES,workspace,check
+    board=ROOT/'boards'/board_id/f'{board_id}.kicad_pcb';base_text=board.read_text()
+    sha=hashlib.sha256(base_text.encode()).hexdigest()
+    deltas=[json.loads(Path(p).read_text()) for p in delta_paths]
+    stale=[p for p,d in zip(delta_paths,deltas) if d['base_sha256']!=sha]
+    if stale:raise ValueError(f'deltas made for a different board: {stale}')
+    deltas=[d for d in deltas if d['added'] or d['removed']]
+    if not deltas:print('no shard changed copper');return None
+    start=workspace(board_id,'shards-start');base=start/board.name;shutil.copyfile(board,base)
+    drc,before=check(base)
+    if [v for v in drc['violations'] if v['severity']=='error'] or drc['schematic_parity']:raise RuntimeError('base board not clean')
+    lost=sorted(set().union(*map(set,(d['nets'] for d in deltas)))-set().union(*disjoint(deltas)))
+    if lost:print(f'{len(lost)} nets claimed by two shards; the later shard loses them: {lost[:10]}')
+    added={a['uuid']:a for d in deltas for a in d['added']}
+    reverted=set()
+    for attempt in range(6):
+        work=workspace(board_id,'shards-merge');candidate=work/board.name
+        candidate.write_text(merge_text(base_text,deltas,reverted))
+        drc,after=check(candidate)
+        if drc['schematic_parity']:raise RuntimeError('schematic parity findings after the shard merge')
+        bad={i.get('uuid') for v in drc['violations'] if v['severity']=='error' for i in v['items']}
+        culprits={added[u]['net'] for u in bad if u in added}
+        if bad and not culprits:raise RuntimeError('merged DRC errors not attributable to shard copper')
+        split=[n for n in PLANES if len(after['islands'].get(n,[None]))>len(before['islands'].get(n,[None]))]
+        if split and not culprits:
+            layers={PLANES[n] for n in split}
+            culprits={a['net'] for a in added.values() if a['net'] not in reverted and a['layer'] in layers}
+            culprits=culprits or {a['net'] for a in added.values() if a['net'] not in reverted and a['layer'] is None}
+            print(f'{split} split by merged copper')
+        if not culprits:break
+        reverted|=culprits;print(f'merge attempt {attempt+1}: reverting {len(culprits)} nets with failing copper',flush=True)
+    else:raise RuntimeError('merged DRC errors persist after reverting nets')
+    receipt={'stage':f'shards-{label}','status':'NATIVE CHECKED DRAFT STAGE','shards':len(deltas),
+             'open_edges_before':before['open_edges'],'open_edges_after':after['open_edges'],
+             'nets_merged':len(set().union(*disjoint(deltas))-reverted),'nets_reverted':sorted(reverted),'nets_lost_to_overlap':lost,
+             'copper_added':sum(a['net'] not in reverted for a in added.values()),'drc_errors':0,
+             'drc_warnings':sum(v['severity']=='warning' for v in drc['violations']),'parity':0,
+             'open_by_net_after':{n:len(g)-1 for n,g in after['islands'].items()}}
+    receipt['adopted']=receipt['open_edges_after']<receipt['open_edges_before']
+    reports=board.parent/'reports'/'grid-routing';reports.mkdir(parents=True,exist_ok=True)
+    (reports/f'shards-{label}.json').write_text(json.dumps(receipt,indent=1,sort_keys=True)+'\n')
+    print(f"shards-{label}: {receipt['open_edges_before']} -> {receipt['open_edges_after']} open edges",flush=True)
+    if receipt['adopted']:shutil.copyfile(candidate,board);print('promoted',board.relative_to(ROOT),flush=True)
+    return receipt
+
+
+def main():
+    p=argparse.ArgumentParser(description=__doc__.splitlines()[0]);sub=p.add_subparsers(dest='cmd',required=True)
+    d=sub.add_parser('delta',help='copper delta between a base and a shard board');d.add_argument('base',type=Path);d.add_argument('final',type=Path);d.add_argument('-o','--output',type=Path,required=True)
+    m=sub.add_parser('merge',help='apply shard deltas to boards/<id>/<id>.kicad_pcb (KiCad via scripts/kicad/run.sh)')
+    m.add_argument('board_id',choices=('osc-jack-left','osc-jack-right','osc-core'));m.add_argument('deltas',nargs='+');m.add_argument('--label',required=True)
+    a=p.parse_args()
+    if a.cmd=='delta':
+        out=delta(a.base.read_text(),a.final.read_text());a.output.write_text(json.dumps(out)+'\n')
+        print(f"delta: {len(out['removed'])} removed, {len(out['added'])} added, {len(out['nets'])} nets")
+    else:merge(a.board_id,a.deltas,a.label)
+
+
+if __name__=='__main__':main()
