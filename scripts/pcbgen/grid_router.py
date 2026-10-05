@@ -733,10 +733,13 @@ def negotiate(dump,nets,res=0.1,layer_cost=None,via_cost=30.0,clearance=0.2,widt
         return waves
     global _NEGOTIATE_ROUTE
     pool=None
+    iteration_s=0.0
     for it in range(start,iterations):
+        started=time.time()
         if plateaued(counts,*plateau):
             log(f'NEGOTIATE plateau: under {plateau[1]:.0%} fewer conflicts over the last {plateau[0]} iterations; stopping');break
-        if deadline and time.time()>deadline:
+        # Start an iteration only if one more of the last one's length still fits before the deadline.
+        if deadline and time.time()+iteration_s>deadline:
             log(f'NEGOTIATE deadline reached before iteration {it+1}; state saved for resume')
             if pool is not None:pool.terminate()
             return None,None
@@ -772,7 +775,7 @@ def negotiate(dump,nets,res=0.1,layer_cost=None,via_cost=30.0,clearance=0.2,widt
             if vhot.any():conflicted.add(net);np.add.at(hist_via,(vy[vhot],vx[vhot]),history)
         counts.append(len(conflicted))
         log(f'NEGOTIATE iteration {it+1}: {len(routes)} nets routed, {len(conflicted)} in conflict, {failed} unroutable; exact/wide/greedy/full-board searches {attempts}')
-        save(it+1)
+        save(it+1);iteration_s=time.time()-started
         if it==start:
             for net,why in sorted(failures.items()):log(f'NEGOTIATE unroutable {net}: {why}')
         if not conflicted:break
