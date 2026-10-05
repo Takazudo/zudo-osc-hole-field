@@ -29,6 +29,14 @@ on:
         required: false
         default: "3"
         type: string
+      res:
+        description: Negotiation raster in mm (empty keeps the per-board default)
+        required: false
+        type: string
+      iterations:
+        description: Negotiation iteration cap (empty keeps the per-board default)
+        required: false
+        type: string
       max_minutes:
         description: Routing time budget in minutes (at most 335; the job limit is 355)
         required: false
@@ -54,6 +62,8 @@ jobs:
       TO_STAGE: ${{ inputs.to_stage }}
       WORKERS: ${{ inputs.workers }}
       MAX_MINUTES: ${{ inputs.max_minutes }}
+      RES: ${{ inputs.res }}
+      ITERATIONS: ${{ inputs.iterations }}
 
     steps:
       - name: Validate inputs
@@ -62,6 +72,8 @@ jobs:
           [[ $FROM_STAGE =~ ^[a-z0-9-]+$ ]] || { echo "bad from_stage: $FROM_STAGE"; exit 1; }
           [[ -z $TO_STAGE || $TO_STAGE =~ ^[a-z0-9-]+$ ]] || { echo "bad to_stage: $TO_STAGE"; exit 1; }
           [[ $WORKERS =~ ^[1-8]$ ]] || { echo "workers must be 1-8"; exit 1; }
+          [[ -z $RES || $RES =~ ^0\.[0-9]+$ ]] || { echo "bad res: $RES"; exit 1; }
+          [[ -z $ITERATIONS || $ITERATIONS =~ ^[0-9]+$ ]] || { echo "bad iterations: $ITERATIONS"; exit 1; }
           if ! [[ $MAX_MINUTES =~ ^[0-9]+$ ]] || ((MAX_MINUTES < 1 || MAX_MINUTES > 335)); then
             echo "max_minutes must be 1-335"; exit 1
           fi
@@ -124,6 +136,12 @@ jobs:
             echo "::warning::$BRANCH has no --workers/--max-minutes in route_jack_grid.py; merge main to use them"
           fi
           [[ -n $TO_STAGE ]] && args+=(--to-stage "$TO_STAGE")
+          if grep -q -- "--iterations" scripts/pcbgen/route_jack_grid.py; then
+            [[ -n $RES ]] && args+=(--res "$RES")
+            [[ -n $ITERATIONS ]] && args+=(--iterations "$ITERATIONS")
+          elif [[ -n $RES || -n $ITERATIONS ]]; then
+            echo "::warning::$BRANCH has no --res/--iterations in route_jack_grid.py; merge main to use them"
+          fi
           start=$(date +%s)
           set +e
           # The driver stops between stages at max_minutes; the hard limit leaves time to save and push.
