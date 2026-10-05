@@ -22,8 +22,16 @@ FACE_PENALTY_MM=4.0
 # length, are what overload the routing channels.
 SPAN_SOFT_MM=60.0
 # Boards whose placement has been rebuilt and rerouted with the swap pass.
-SWAP_BOARDS={'JL'}
+SWAP_BOARDS={'JL','K'}
 SWAP_PASSES=8
+# Core (#43): its ~1700 R0603s make all-pairs swaps too slow, so candidates are the
+# same-footprint slots within this radius of a package's net median.
+SWAP_RADIUS_MM={'K':25.0}
+# Core only: keep-clear ring around each IC so its pins can escape (it lengthened JL nets).
+IC_CHANNEL_MM={'K':0.5}
+CHANNEL_DETOUR_MM=3.0
+# Courtyard gap between legalized packages (mm); the core spreads wider for routing room.
+GAP_MM={'K':.6}
 
 
 def nearest(grid,masks,target):
@@ -60,18 +68,18 @@ def occupy(grid,masks,xx,yy):
         for y in range(yy+dy,yy+dy+h):grid.rows[y]|=mask
 
 
-def masks_for(boxes,scale,theta,oriented_box):
+def masks_for(boxes,scale,theta,oriented_box,gap=.35):
     rb=[oriented_box(b,'F.Cu',theta) for b in boxes]
     envelope=[min(b[0] for b in rb),min(b[1] for b in rb),max(b[2] for b in rb),max(b[3] for b in rb)]
     masks=[]
     for b in rb:
         dx=math.floor((b[0]-envelope[0])*scale+1e-8);dy=math.floor((b[1]-envelope[1])*scale+1e-8)
-        w=math.ceil((b[2]-envelope[0]+.35)*scale-1e-8)-dx;h=math.ceil((b[3]-envelope[1]+.35)*scale-1e-8)-dy
+        w=math.ceil((b[2]-envelope[0]+gap)*scale-1e-8)-dx;h=math.ceil((b[3]-envelope[1]+gap)*scale-1e-8)-dy
         masks.append((dx,dy,w,h))
     return envelope,masks
 
 
-def place_jack_locality(board,free,grids,shapes,pin_nets,anchors,cluster_cells,turn,oriented_box,instance_anchor=None,through_hole=lambda part:False):
+def place_jack_locality(board,free,grids,shapes,pin_nets,anchors,cluster_cells,turn,oriented_box,instance_anchor=None,through_hole=lambda part:False,module_order=False):
     """Return floorplan rows for every free package of one jack board, or raise on overflow.
 
     anchors: {net: [(x_mm, y_mm), ...]} pad/contact positions of fixed parts and headers.
@@ -115,33 +123,49 @@ def place_jack_locality(board,free,grids,shapes,pin_nets,anchors,cluster_cells,t
             if t:pos[u]=t
     fixed_degree=lambda u:sum(len(anchors.get(n,[])) for n in neighbours[u])
     order=sorted(units,key=lambda u:(u not in caps,-fixed_degree(u),-len(neighbours[u]),u))
+    if module_order:
+        # Legalize one module at a time, largest first, so each fills contiguous space around its home.
+        size=defaultdict(int)
+        for u in units:size[by_ref[u]['instance']]+=1+len(caps.get(u,[]))
+        rank={k:i for i,k in enumerate(sorted(size,key=lambda k:(-size[k],k)))}
+        order=sorted(order,key=lambda u:rank[by_ref[u]['instance']])
+    ic_channel=IC_CHANNEL_MM.get(board,0.0);gap=GAP_MM.get(board,.35)
     placed={};rows=[]
     for u in order:
         legal={**pos,**placed};t=target(u,{v:legal[v] for v in legal if v!=u}) or pos[u]
         tht=any(through_hole(p) for p in [by_ref[u],*caps.get(u,[])])
-        best=None
-        for side in ('B.Cu','F.Cu'):
-            g=grids[board,side]
-            if tht:
-                # Through-hole pads occupy both faces: search the union of both grids.
-                other=grids[board,'F.Cu' if side=='B.Cu' else 'B.Cu'];g=copy.copy(g);g.rows=[a|b for a,b in zip(g.rows,other.rows)]
-            if u in caps:
-                variants=[(cluster_cells(by_ref[u],sorted(caps[u],key=lambda p:p['ref']),side,h),thetas) for h,thetas in ((False,(0,90,180,270)),(True,(0,90,180,270)))]
-            else:
-                variants=[([(by_ref[u],0,(0,0))],(0,90))]
-            for cells,thetas in variants:
-                if cells is None:continue
-                boxes=[]
-                for part,angle,(x,y) in cells:
-                    b=oriented_box(shapes[part['footprint']],side,angle);boxes.append([b[0]+x,b[1]+y,b[2]+x,b[3]+y])
-                for theta in thetas:
-                    envelope,masks=masks_for(boxes,g.scale,theta,oriented_box)
-                    # Parent (cell 0) origin sits at (0,0); aim the envelope so the parent lands on the target.
-                    cell=(round((t[0]+envelope[0])*g.scale),round((t[1]+envelope[1])*g.scale))
-                    found=nearest(g,masks,cell)
-                    if found is None:continue
-                    cost=found[0]/g.scale+(FACE_PENALTY_MM if side=='F.Cu' else 0)
-                    if best is None or cost<best[0]:best=(cost,side,g,cells,theta,envelope,masks,found)
+        def candidate(channel):
+            best=None
+            for side in ('B.Cu','F.Cu'):
+                g=grids[board,side]
+                if tht:
+                    # Through-hole pads occupy both faces: search the union of both grids.
+                    other=grids[board,'F.Cu' if side=='B.Cu' else 'B.Cu'];g=copy.copy(g);g.rows=[a|b for a,b in zip(g.rows,other.rows)]
+                if u in caps:
+                    variants=[(cluster_cells(by_ref[u],sorted(caps[u],key=lambda p:p['ref']),side,h),thetas) for h,thetas in ((False,(0,90,180,270)),(True,(0,90,180,270)))]
+                else:
+                    variants=[([(by_ref[u],0,(0,0))],(0,90))]
+                for cells,thetas in variants:
+                    if cells is None:continue
+                    boxes=[]
+                    for k,(part,angle,(x,y)) in enumerate(cells):
+                        b=oriented_box(shapes[part['footprint']],side,angle);m=channel if k==0 else 0.0
+                        boxes.append([b[0]+x-m,b[1]+y-m,b[2]+x+m,b[3]+y+m])
+                    for theta in thetas:
+                        envelope,masks=masks_for(boxes,g.scale,theta,oriented_box,gap)
+                        # Parent (cell 0) origin sits at (0,0); aim the envelope so the parent lands on the target.
+                        cell=(round((t[0]+envelope[0])*g.scale),round((t[1]+envelope[1])*g.scale))
+                        found=nearest(g,masks,cell)
+                        if found is None:continue
+                        cost=found[0]/g.scale+(FACE_PENALTY_MM if side=='F.Cu' else 0)
+                        if best is None or cost<best[0]:best=(cost,side,g,cells,theta,envelope,masks,found)
+            return best
+        best=candidate(0.0)
+        if u in caps and ic_channel:
+            # Reserve a routing channel around each IC so its pins can escape, unless
+            # that would push the cluster much further from its target.
+            roomy=candidate(ic_channel)
+            if roomy is not None and (best is None or roomy[0]<=best[0]+CHANNEL_DETOUR_MM):best=roomy
         if best is None:raise ValueError(f'jack locality overflow {board} {u}')
         _,side,g,cells,theta,envelope,masks,(_,xx,yy)=best
         for face in (('B.Cu','F.Cu') if tht else (side,)):occupy(grids[board,face],masks,xx,yy)
@@ -156,7 +180,7 @@ def place_jack_locality(board,free,grids,shapes,pin_nets,anchors,cluster_cells,t
         placed[u]=offset
     swappable={u for u in units if u not in caps}
     if board not in SWAP_BOARDS:return rows
-    return improve_by_swaps(rows,{r:by_ref[r]['footprint'] for r in swappable},pin_nets,anchors)
+    return improve_by_swaps(rows,{r:by_ref[r]['footprint'] for r in swappable},pin_nets,anchors,SWAP_RADIUS_MM.get(board))
 
 
 def stable_sum(values):
@@ -179,11 +203,12 @@ def net_cost(points):
     return dx+dy+excess*excess/10.0
 
 
-def improve_by_swaps(rows,footprint,pin_nets,anchors):
+def improve_by_swaps(rows,footprint,pin_nets,anchors,radius=None):
     """Swap legal slots between packages with the same footprint to shorten long nets.
 
     Two packages with one footprint have identical courtyards in each other's slot (side
-    and rotation travel with the slot), so every swap stays legal.
+    and rotation travel with the slot), so every swap stays legal. With a radius, candidates
+    are the same-footprint slots within it of the package's net median.
     """
     at={r['ref']:r for r in rows}
     nets_of={ref:{n for n in pin_nets[ref].values() if n and n not in PLANE_NETS} for ref in at}
@@ -198,15 +223,21 @@ def improve_by_swaps(rows,footprint,pin_nets,anchors):
     def swap(a,b):
         ra,rb=at[a],at[b]
         for k in slot:ra[k],rb[k]=rb[k],ra[k]
+    def want(a):
+        pts=[q for n in nets_of[a] for q in anchors.get(n,[])+[(at[r]['x_mm'],at[r]['y_mm']) for r in members[n] if r!=a]]
+        return (statistics.median(x for x,_ in pts),statistics.median(y for _,y in pts)) if pts else None
     for _ in range(SWAP_PASSES):
         improved=False
         # Groups in order of their first reference, as built from sorted references.
         for fp in sorted(groups,key=lambda f:groups[f][0]):
             group=groups[fp]
             for a in sorted(group,key=lambda r:(-max((cost(n) for n in sorted(nets_of[r])),default=0),r)):
+                t=want(a) if radius else None
+                if radius and t is None:continue
                 best=(-1e-6,None)
                 for b in group:
                     if b==a:continue
+                    if radius and (abs(at[b]['x_mm']-t[0])>radius or abs(at[b]['y_mm']-t[1])>radius):continue
                     touched=sorted(nets_of[a]|nets_of[b])
                     before=stable_sum(cost(n) for n in touched);swap(a,b)
                     delta=stable_sum(cost(n) for n in touched)-before;swap(a,b)
