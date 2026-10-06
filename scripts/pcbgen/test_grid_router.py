@@ -85,6 +85,18 @@ class RipUpTests(unittest.TestCase):
         self.assertEqual({r['net'] for r in repaired if r['path']},{'A','B'})
         self.assertFalse([r for r in repaired if not r['path']])
 
+    def test_rip_up_reads_neck_flagged_paths(self):
+        # B gets a third pad, so one B link is already routed (neck-flagged 5-element points)
+        # when its blocked link is retried by rip-up.
+        dump=crossing_board()
+        dump['pads'].append({'uuid':'b2','ref':'Rb2','pad':'1','net':'B','xy':[6*MM,int(7.2*MM)],'layers':['B.Cu'],'poly':square(6,7.2),'drill':0,'npth':False,'locked':False})
+        dump['islands']['B']=[['b0'],['b1'],['b2']]
+        dump['keepouts']=[{'name':'NECKDOWN','layers':['B.Cu'],'poly':[[0,0],[12*MM,0],[12*MM,8*MM],[0,8*MM]],'tracks':False,'vias':False}]
+        results=route(dump,['A','B'],rrr_rounds=2,res=0.1,clearance=0.2,signal_width=0.2,layer_cost=[1.0],
+                      neck_width=0.15,neck_clearance=0.15,log=lambda m:None)[0]
+        self.assertTrue(any(len(p)==5 for r in results if r['path'] for p in r['path']))
+        self.assertFalse([r for r in results if not r['path']])
+
     def test_rip_only_protects_nets_outside_the_shard(self):
         common=dict(res=0.1,clearance=0.2,signal_width=0.2,layer_cost=[1.0],log=lambda m:None,rrr_rounds=2)
         guarded=route(crossing_board(),['A','B'],rip_only={'B'},**common)[0]

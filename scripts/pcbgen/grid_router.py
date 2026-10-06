@@ -477,7 +477,7 @@ def route(dump,nets=(),rip=(),rip_first=False,res=0.1,layer_cost=None,via_cost=3
                 src=island_mask(raster,dump,g);reached=island_mask(raster,dump,main_group)
                 for r in results:
                     if r['net']==net and r['path']:
-                        for lay,x,y,_ in r['path']:
+                        for lay,x,y,*_ in r["path"]:
                             j,i=raster.cell(x,y);reached[raster.layers.index(lay),j,i]=True
                 if route_one(net,src,reached,name(g)):
                     results[:]=[r for r in results if not (r['net']==net and r['path'] is None and r['island']==name(g))];fixed+=1;continue
