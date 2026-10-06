@@ -85,6 +85,18 @@ class RipUpTests(unittest.TestCase):
         self.assertEqual({r['net'] for r in repaired if r['path']},{'A','B'})
         self.assertFalse([r for r in repaired if not r['path']])
 
+    def test_rip_up_reads_neck_flagged_paths(self):
+        # B gets a third pad, so one B link is already routed (neck-flagged 5-element points)
+        # when its blocked link is retried by rip-up.
+        dump=crossing_board()
+        dump['pads'].append({'uuid':'b2','ref':'Rb2','pad':'1','net':'B','xy':[6*MM,int(7.2*MM)],'layers':['B.Cu'],'poly':square(6,7.2),'drill':0,'npth':False,'locked':False})
+        dump['islands']['B']=[['b0'],['b1'],['b2']]
+        dump['keepouts']=[{'name':'NECKDOWN','layers':['B.Cu'],'poly':[[0,0],[12*MM,0],[12*MM,8*MM],[0,8*MM]],'tracks':False,'vias':False}]
+        results=route(dump,['A','B'],rrr_rounds=2,res=0.1,clearance=0.2,signal_width=0.2,layer_cost=[1.0],
+                      neck_width=0.15,neck_clearance=0.15,log=lambda m:None)[0]
+        self.assertTrue(any(len(p)==5 for r in results if r['path'] for p in r['path']))
+        self.assertFalse([r for r in results if not r['path']])
+
     def test_rip_only_protects_nets_outside_the_shard(self):
         common=dict(res=0.1,clearance=0.2,signal_width=0.2,layer_cost=[1.0],log=lambda m:None,rrr_rounds=2)
         guarded=route(crossing_board(),['A','B'],rip_only={'B'},**common)[0]
@@ -162,6 +174,43 @@ class PlateauTests(unittest.TestCase):
         self.assertFalse(plateaued([100]+[60]*9+[94],10,0.05))
         self.assertTrue(plateaued([100]+[98]*10,10,0.05))
         self.assertFalse(plateaued([100]+[98]*9+[94],10,0.05))
+
+
+def neck_board(neck):
+    # Net A must pass a 0.6 mm copper gap between two B walls: too narrow for 0.2/0.2, enough for 0.15/0.15.
+    edges=[[0,0,12*MM,0],[12*MM,0,12*MM,8*MM],[12*MM,8*MM,0,8*MM],[0,8*MM,0,0]]
+    pads=[{'uuid':f'a{i}','ref':f'R{i}','pad':'1','net':'A','xy':[int(x*MM),4*MM],'layers':['B.Cu'],'poly':square(x,4),'drill':0,'npth':False,'locked':False}
+          for i,x in enumerate((2,10))]
+    walls=[{'uuid':'w1','net':'B','a':[6*MM,int(0.5*MM)],'b':[6*MM,int(3.6*MM)],'width':int(0.2*MM),'layer':'B.Cu'},
+           {'uuid':'w2','net':'B','a':[6*MM,int(4.4*MM)],'b':[6*MM,int(7.5*MM)],'width':int(0.2*MM),'layer':'B.Cu'}]
+    area=[{'name':'NECKDOWN','layers':['B.Cu'],'poly':[[4*MM,2*MM],[8*MM,2*MM],[8*MM,6*MM],[4*MM,6*MM]],'tracks':False,'vias':False}]
+    return {'board_sha256':'0','layers':['B.Cu'],'pads':pads,'tracks':walls,'vias':[],'keepouts':area if neck else [],'edges':edges,'islands':{'A':[['a0'],['a1']]}}
+
+
+class NeckDownTests(unittest.TestCase):
+    def route(self,neck):
+        return route(neck_board(neck),res=0.05,clearance=0.2,signal_width=0.2,layer_cost=[1.0],neck_width=0.15,neck_clearance=0.15,log=lambda m:None)[0]
+
+    def test_gap_needs_the_neck_down_area(self):
+        self.assertIsNone(self.route(False)[0]['path'])
+        self.assertTrue(self.route(True)[0]['path'])
+
+    def test_negotiation_uses_the_neck_down_area(self):
+        kw=dict(res=0.05,clearance=0.2,width=0.2,layer_cost=[1.0],neck_width=0.15,neck_clearance=0.15,log=lambda m:None)
+        self.assertFalse(negotiate(neck_board(False),['A'],**kw)[0][0]['path'])
+        results,_=negotiate(neck_board(True),['A'],**kw)
+        self.assertEqual({r['width_nm'] for r in copper_rows(results,'fixture','t')[0] if r['kind']=='segment'},{150000,200000})
+
+    def test_narrow_only_inside_the_area_and_clear_of_the_walls(self):
+        rows,_=copper_rows(self.route(True),'fixture','t')
+        segs=[r for r in rows if r['kind']=='segment']
+        self.assertEqual({r['width_nm'] for r in segs},{150000,200000})
+        walls=[((6*MM,int(0.5*MM)),(6*MM,int(3.6*MM))),((6*MM,int(4.4*MM)),(6*MM,int(7.5*MM)))]
+        for r in segs:
+            if r['width_nm']==150000:self.assertTrue(any(4*MM<=p[0]<=8*MM and 2*MM<=p[1]<=6*MM for p in (r['start_nm'],r['end_nm'])))
+            for t in (i/40 for i in range(41)):
+                p=(r['start_nm'][0]+t*(r['end_nm'][0]-r['start_nm'][0]),r['start_nm'][1]+t*(r['end_nm'][1]-r['start_nm'][1]))
+                for w in walls:self.assertGreaterEqual(seg_distance(p,*w)-0.1*MM-r['width_nm']/2,0.15*MM-1)
 
 
 class FillGuardTests(unittest.TestCase):

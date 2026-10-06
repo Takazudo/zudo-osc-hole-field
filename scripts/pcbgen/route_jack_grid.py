@@ -91,17 +91,27 @@ def workspace(board_id,name):
     if work.exists():shutil.rmtree(work)
     work.mkdir(parents=True);src=ROOT/'boards'/board_id
     for name_ in ('fp-lib-table','sym-lib-table',f'{board_id}.kicad_pro',f'{board_id}.kicad_sch'):shutil.copyfile(src/name_,work/name_)
+    # Custom DRC rules (neck-down areas) travel with the candidate so native checks apply them.
+    if (src/f'{board_id}.kicad_dru').exists():shutil.copyfile(src/f'{board_id}.kicad_dru',work/f'{board_id}.kicad_dru')
     shutil.copytree(src/'sheets',work/'sheets')
     return work
 
 
-def check(board):
-    drc=board.with_name('drc.json')
-    run('bash','scripts/kicad/run.sh','kicad-cli','pcb','drc','--schematic-parity','--refill-zones','--save-board','--format','json','--severity-all','-o',rel(drc),rel(board))
-    data=json.loads(drc.read_text())
-    dump=board.with_name('dump.json')
-    run('bash','scripts/kicad/run.sh','python3','scripts/pcbgen/grid_dump.py',rel(board),rel(dump))
-    return data,json.loads(dump.read_text())
+def check(board,max_refills=3):
+    """Native DRC with zone refill, repeated until the open-edge count is stable.
+
+    A single refill of a freshly edited board can leave the pours in a state the next
+    refill changes (AGND islands 22 -> 28 on a neck-down candidate), so adoption must
+    compare settled fills.
+    """
+    drc=board.with_name('drc.json');dump=board.with_name('dump.json');last=None
+    for _ in range(max_refills):
+        run('bash','scripts/kicad/run.sh','kicad-cli','pcb','drc','--schematic-parity','--refill-zones','--save-board','--format','json','--severity-all','-o',rel(drc),rel(board))
+        run('bash','scripts/kicad/run.sh','python3','scripts/pcbgen/grid_dump.py',rel(board),rel(dump))
+        state=json.loads(dump.read_text());islands={n:len(g) for n,g in state['islands'].items()}
+        if islands==last:break
+        last=islands
+    return json.loads(drc.read_text()),state
 
 
 def terminal_array(dump,board_id,definition):
@@ -164,6 +174,15 @@ def run_stage(board_id,current,spec,definition,log):
         return None,{'stage':spec['name'],'status':'REJECTED: '+str(e),'open_edges_before':before,'open_edges_after':before,'rejected':True}
 
 
+def neck_kwargs(board_id):
+    """Neck-down width/clearance for signal routing on boards listed in neckdown-areas.json."""
+    path=ROOT/'design/partition/neckdown-areas.json'
+    if not path.exists():return {}
+    src=json.loads(path.read_text())
+    if board_id not in src['boards']:return {}
+    return {'neck_width':src['rule']['track_width_mm'],'neck_clearance':src['rule']['clearance_mm']}
+
+
 def hotspot_regions(dump,eps_mm):
     """Clusters of stranded signal pins (every island but each net's largest), largest first.
 
@@ -205,7 +224,7 @@ def stage(board_id,current,spec,definition,log):
             _,dump=check(cut_board);cut|=set(floating)
         cut_nets=sorted({n for n in dump['islands'] if n not in (*RAILS,'AGND')}-set(targets))
         kwargs={k:v for k,v in spec.items() if k in ('clearance','signal_width','signal_via_diameter','grow','res','window_mm','escape_halo_mm')}
-        results,removed=route(dump,targets+[n for n in cut_nets if n not in targets],allowed_layers=SIGNAL_LAYERS,layer_cost=LAYER_COST,rail_nets=RAILS,log=log,**kwargs)
+        results,removed=route(dump,targets+[n for n in cut_nets if n not in targets],allowed_layers=SIGNAL_LAYERS,layer_cost=LAYER_COST,rail_nets=RAILS,log=log,**kwargs,**neck_kwargs(board_id))
         rows,links=copper_rows(results,board_id,'grid-'+spec['name'])
         current=cut_board;removed=[]
     elif spec.get('agnd_stitch'):
@@ -243,7 +262,7 @@ def stage(board_id,current,spec,definition,log):
                                   via_diameter=spec['signal_via_diameter'],allowed_layers=SIGNAL_LAYERS,grow=spec['grow'],
                                   iterations=RUN['iterations'] or NEGOTIATE_ITERATIONS.get(board_id,spec['iterations']),present=0.5,present_growth=1.8,history=0.5,workers=RUN['workers'] or NEGOTIATE_WORKERS.get(board_id,spec['workers']),
                                   fill_guards={'-12V':'In3.Cu'},log=log,deadline=(RUN['deadline']-FINALIZE_MARGIN_S if RUN['deadline'] else time.time()+spec['budget_s']),
-                                  state_path=str(ROOT/'.circuit-cache'/f"{board_id}-{spec['name']}-{hashlib.sha256(current.read_bytes()).hexdigest()[:16]}.pkl"))
+                                  state_path=str(ROOT/'.circuit-cache'/f"{board_id}-{spec['name']}-{hashlib.sha256(current.read_bytes()).hexdigest()[:16]}.pkl"),**neck_kwargs(board_id))
         # Out of time: the negotiation state is saved; rerun this stage to continue it.
         if results is None:return None,'resume'
         if spec.get('open_only') or spec.get('regions'):
@@ -275,7 +294,7 @@ def stage(board_id,current,spec,definition,log):
         if rrr:kwargs.update(RRR_BUDGETS[RRR_ROUND['round']])
         kwargs['fill_guards']={'-12V':'In3.Cu'}
         if RUN['shard']:kwargs['rip_only']=set(RUN['shard']['nets'])  # a shard rips only the nets it owns
-        results,removed=route(dump,nets,allowed_layers=SIGNAL_LAYERS,layer_cost=LAYER_COST,rail_nets=RAILS,log=log,**kwargs)
+        results,removed=route(dump,nets,allowed_layers=SIGNAL_LAYERS,layer_cost=LAYER_COST,rail_nets=RAILS,log=log,**kwargs,**neck_kwargs(board_id))
         rows,links=copper_rows(results,board_id,'grid-'+spec['name'])
         if spec.get('chunk') and not spec.get('rrr_rounds'):FAILED.update(r['net'] for r in results if not r['path'])
     dropped=[]
