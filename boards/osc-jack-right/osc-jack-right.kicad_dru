@@ -1,0 +1,4 @@
+(version 1)
+# Neck-down at IC pin rows (design/partition/neckdown-areas.json): Quad op-amp pin rows (SOIC-14/TSSOP-14) carry most of the still-open signal links. Inside these areas Default-class signal tracks may neck down to 0.15 mm width and 0.15 mm signal-to-signal clearance, common practice and within standard 6-layer fabrication capability. Rails and AGND keep their net-class clearance (0.25 mm).
+(rule "neck-down clearance" (condition "A.NetClass == 'Default' && B.NetClass == 'Default' && (A.intersectsArea('pcbgen:osc-jack-right:neckdown') || B.intersectsArea('pcbgen:osc-jack-right:neckdown'))") (constraint clearance (min 0.15mm)))
+(rule "neck-down track width" (condition "A.Type == 'track' && A.intersectsArea('pcbgen:osc-jack-right:neckdown')") (constraint track_width (min 0.15mm)))
