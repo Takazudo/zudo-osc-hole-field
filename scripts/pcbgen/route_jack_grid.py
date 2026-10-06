@@ -97,13 +97,21 @@ def workspace(board_id,name):
     return work
 
 
-def check(board):
-    drc=board.with_name('drc.json')
-    run('bash','scripts/kicad/run.sh','kicad-cli','pcb','drc','--schematic-parity','--refill-zones','--save-board','--format','json','--severity-all','-o',rel(drc),rel(board))
-    data=json.loads(drc.read_text())
-    dump=board.with_name('dump.json')
-    run('bash','scripts/kicad/run.sh','python3','scripts/pcbgen/grid_dump.py',rel(board),rel(dump))
-    return data,json.loads(dump.read_text())
+def check(board,max_refills=3):
+    """Native DRC with zone refill, repeated until the open-edge count is stable.
+
+    A single refill of a freshly edited board can leave the pours in a state the next
+    refill changes (AGND islands 22 -> 28 on a neck-down candidate), so adoption must
+    compare settled fills.
+    """
+    drc=board.with_name('drc.json');dump=board.with_name('dump.json');last=None
+    for _ in range(max_refills):
+        run('bash','scripts/kicad/run.sh','kicad-cli','pcb','drc','--schematic-parity','--refill-zones','--save-board','--format','json','--severity-all','-o',rel(drc),rel(board))
+        run('bash','scripts/kicad/run.sh','python3','scripts/pcbgen/grid_dump.py',rel(board),rel(dump))
+        state=json.loads(dump.read_text());islands={n:len(g) for n,g in state['islands'].items()}
+        if islands==last:break
+        last=islands
+    return json.loads(drc.read_text()),state
 
 
 def terminal_array(dump,board_id,definition):
