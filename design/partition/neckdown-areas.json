@@ -1,0 +1,13 @@
+{
+ "schema": "neckdown-areas/v1",
+ "status": "Routing aid for unvalidated drafts; electrical/physical qualification NOT RUN.",
+ "rule": {
+  "track_width_mm": 0.15,
+  "clearance_mm": 0.15,
+  "netclass": "Default",
+  "margin_mm": 2.0,
+  "reason": "IC pin rows carry most of the still-open signal links. Inside these areas Default-class signal tracks may neck down to 0.15 mm width and 0.15 mm signal-to-signal clearance, common practice and within standard 6-layer fabrication capability. Rails and AGND keep their net-class clearance."
+ },
+ "basis": "Per board, the ICs with a pad on an open Default-class net when `neckdown_areas.py <board> --select` was run.",
+ "boards": {}
+}

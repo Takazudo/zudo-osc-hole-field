@@ -27,6 +27,7 @@ sys.path.insert(0,str(ROOT))
 from scripts.pcbgen.uuid_tools import stable_uuid
 
 LAYERS=('F.Cu','In1.Cu','In2.Cu','B.Cu')
+NECK_AREA='NECKDOWN'
 SQRT2=math.sqrt(2)
 
 
@@ -65,12 +66,18 @@ class Raster:
         inside=shapely.contains_xy(shapely.union_all(ring),gx,gy) if not ring.is_empty else np.zeros_like(gx,bool)
         self.d_edge=ndimage.distance_transform_edt(inside)*res
         self.keep_track=np.zeros((n,self.h,self.w),bool);self.keep_via=np.zeros((self.h,self.w),bool)
+        # Neck-down rule areas: inside them signal tracks may be thinner and closer (board .kicad_dru).
+        self.neck=np.zeros((self.h,self.w),bool)
         for k in dump['keepouts']:
             if len(k['poly'])<3:continue
+            if k.get('name')==NECK_AREA or str(k.get('name','')).endswith(':neckdown'):
+                m,sl=self.polygon(k['poly'],conservative=False);self.neck[sl]|=m;continue
             m,sl=self.polygon(k['poly'])
             for name in k['layers']:
                 if k['tracks']:self.keep_track[self.layers.index(name)][sl]|=m
             if k['vias']:self.keep_via[sl]|=m
+        # One cell in from the area edge, so a narrow track drawn on a neck cell really lies in the area.
+        self.neck=ndimage.binary_erosion(self.neck)
         self.d_keep_track=[ndimage.distance_transform_edt(~m)*res for m in self.keep_track]
         self.d_keep_via=ndimage.distance_transform_edt(~self.keep_via)*res
         self.d_smd=ndimage.distance_transform_edt(~self.smd)*res
@@ -285,14 +292,16 @@ def route(dump,nets=(),rip=(),rip_first=False,res=0.1,layer_cost=None,via_cost=3
           clearance=0.25,rail_nets=(),rail_width=0.4,signal_width=0.3,via_diameter=0.7,via_drill=0.3,
           hole_clearance=0.25,edge_clearance=0.5,max_expansions=4_000_000,allowed_layers=None,log=print,
           planes=None,signal_via_diameter=None,grow=None,window_mm=12.0,weight=1.0,full_board=False,
-          escape_halo_mm=0.0,escape_halo_cost=4.0,fill_guards=None,fill_clearance=0.45,
+          escape_halo_mm=0.0,escape_halo_cost=4.0,fill_guards=None,fill_clearance=0.45,neck_width=None,neck_clearance=None,
           rrr_rounds=0,rrr_max_rip=4,rrr_soft_cost=12.0,rip_only=None):
     """Return (results, removed_uuids). Each result has net, island pad names and a [layer,x,y,through] path or None.
 
     planes maps a net to its plane layer: every island of that net gets a short
     fanout ending in a through via inside the plane instead of a link to another island.
     grow adds clearance (mm) around existing copper of the named nets, e.g. rails
-    whose net-class clearance exceeds the routed class. rip_only, when given, limits
+    whose net-class clearance exceeds the routed class. neck_width/neck_clearance (mm) apply
+    to signal tracks inside NECKDOWN rule areas: closer to other signal copper only, never
+    to the grown (rail/ground) nets. rip_only, when given, limits
     rip-up-and-reroute to those signal nets (a CI shard may only rip the nets it owns).
     """
     rip=list(rip);planes=planes or {}
@@ -311,6 +320,8 @@ def route(dump,nets=(),rip=(),rip_first=False,res=0.1,layer_cost=None,via_cost=3
     order=rip+order if rip_first else order+rip
     allowed=[raster.layers.index(n) for n in (allowed_layers or raster.layers)]
     results=[]
+    strict=sorted(raster.net_id[n] for n in (grow or {}) if n in raster.net_id)
+    necked=lambda N,w:bool(neck_width) and raster.neck.any() and N not in strict and w<=signal_width+1e-9
 
     def search(N,w,vd,src,goal,goal_is_via,pad_window,exclude=(),soft=None):
         """soft: net ids whose copper is passable at a cost; returns (path, expanded) or, with soft, (path, blockers)."""
@@ -340,6 +351,12 @@ def route(dump,nets=(),rip=(),rip_first=False,res=0.1,layer_cost=None,via_cost=3
                 if li in allowed and li not in exclude:
                     dist=ndimage.distance_transform_edt(~foreign)[inner]*res
                     free[li]=(dist>=clearance+w/2+margin)&(raster.d_edge[win]>=edge_clearance+w/2+margin)&(raster.d_keep_track[li][win]>=w/2+margin)
+                    if necked(N,w) and raster.neck[win].any():
+                        nw=neck_width;hard=foreign&np.isin(lab,strict)
+                        d_sig=ndimage.distance_transform_edt(~(foreign&~hard))[inner]*res;d_hard=ndimage.distance_transform_edt(~hard)[inner]*res
+                        nfree=((d_sig>=neck_clearance+nw/2+margin)&(d_hard>=clearance+nw/2+margin)
+                               &(raster.d_edge[win]>=edge_clearance+nw/2+margin)&(raster.d_keep_track[li][win]>=nw/2+margin))
+                        free[li]=np.where(raster.neck[win],nfree,free[li])
             vr=vd/2
             dist_any=ndimage.distance_transform_edt(~foreign_any)[inner]*res
             d_hole=ndimage.distance_transform_edt(~raster.hole[g0:g1,h0:h1])[inner]*res
@@ -377,16 +394,18 @@ def route(dump,nets=(),rip=(),rip_first=False,res=0.1,layer_cost=None,via_cost=3
 
     def commit(net,N,w,vd,names,path,src,goal,end_via):
         out=[]
+        neck=necked(N,w)
         for l,y,x in path:
             px,py=raster.point(y,x);through=bool(src[:,y,x].all() or (goal is not None and goal[:,y,x].all()))
-            out.append([raster.layers[l],px,py,int(through)])
-        if end_via:out.append([raster.layers[(path[-1][0]+1)%L],out[-1][1],out[-1][2],0])
+            out.append([raster.layers[l],px,py,int(through)]+([int(raster.neck[y,x])] if neck else []))
+        if end_via:out.append([raster.layers[(path[-1][0]+1)%L],out[-1][1],out[-1][2],0]+([out[-1][4]] if neck else []))
         vias=sum(1 for p,q in zip(out,out[1:]) if p[0]!=q[0] and not q[3])
         log(f'PATH {net} {names} cells {len(path)} vias {vias}')
-        results.append({'net':net,'island':names,'path':out,'width_nm':int(round(w*1e6)),'via_diameter_nm':int(round(vd*1e6))})
+        results.append({'net':net,'island':names,'path':out,'width_nm':int(round(w*1e6)),'via_diameter_nm':int(round(vd*1e6)),
+                        **({'neck_width_nm':int(round(neck_width*1e6))} if neck else {})})
         for i,(l,y,x) in enumerate(path):
             px,py=raster.point(y,x)
-            raster.segment(l,(px,py),(px,py),w*1e6+2*raster.step,N)
+            raster.segment(l,(px,py),(px,py),(neck_width if neck and raster.neck[y,x] else w)*1e6+2*raster.step,N)
             if i and path[i-1][0]!=l and not out[i][3]:raster.via((px,py),vd*1e6,via_drill*1e6,N)
         if end_via:
             px,py=raster.point(path[-1][1],path[-1][2]);raster.via((px,py),vd*1e6,via_drill*1e6,N)
@@ -458,7 +477,7 @@ def route(dump,nets=(),rip=(),rip_first=False,res=0.1,layer_cost=None,via_cost=3
                 src=island_mask(raster,dump,g);reached=island_mask(raster,dump,main_group)
                 for r in results:
                     if r['net']==net and r['path']:
-                        for lay,x,y,_ in r['path']:
+                        for lay,x,y,*_ in r["path"]:
                             j,i=raster.cell(x,y);reached[raster.layers.index(lay),j,i]=True
                 if route_one(net,src,reached,name(g)):
                     results[:]=[r for r in results if not (r['net']==net and r['path'] is None and r['island']==name(g))];fixed+=1;continue
@@ -533,7 +552,8 @@ def plateaued(counts,window,fraction):
 def negotiate(dump,nets,res=0.1,layer_cost=None,via_cost=30.0,clearance=0.2,width=0.2,via_diameter=0.6,via_drill=0.3,
               hole_clearance=0.25,edge_clearance=0.5,allowed_layers=None,grow=None,iterations=30,present=0.5,present_growth=1.6,
               history=1.0,margin_mm=4.0,wide_margin_mm=12.0,max_expansions=2_000_000,log=print,workers=1,
-              fill_guards=None,fill_clearance=0.45,state_path=None,deadline=None,plateau=(10,0.05)):
+              fill_guards=None,fill_clearance=0.45,state_path=None,deadline=None,plateau=(10,0.05),
+              neck_width=None,neck_clearance=None):
     """PathFinder-style negotiated routing of whole signal nets.
 
     All copper of the named nets is ripped and every net is rerouted from its pads.
@@ -555,9 +575,19 @@ def negotiate(dump,nets,res=0.1,layer_cost=None,via_cost=30.0,clearance=0.2,widt
     margin=res/SQRT2+0.01;vr=via_diameter/2
     foreign=[raster.label[l]!=0 for l in range(L)]
     static_free=np.zeros((L,H,W),bool)
+    strict=sorted(raster.net_id[n] for n in (grow or {}) if n in raster.net_id)
+    neck=raster.neck if neck_width and raster.neck.any() else None
+    nw=neck_width or width
+    def neck_free(lab,fl,edge,keep):
+        # Inside neck-down areas: neck clearance to signal copper, full clearance to the grown (rail/ground) nets.
+        hard=fl&np.isin(lab,strict)
+        return ((ndimage.distance_transform_edt(~(fl&~hard))*res>=neck_clearance+nw/2+margin)&(ndimage.distance_transform_edt(~hard)*res>=clearance+nw/2+margin)
+                &(edge>=edge_clearance+nw/2+margin)&(keep>=nw/2+margin))
     for l in allowed:
         static_free[l]=((ndimage.distance_transform_edt(~foreign[l])*res>=clearance+width/2+margin)
                         &(raster.d_edge>=edge_clearance+width/2+margin)&(raster.d_keep_track[l]>=width/2+margin))
+        if neck is not None:
+            static_free[l]=np.where(neck,neck_free(raster.label[l],foreign[l],raster.d_edge,raster.d_keep_track[l]),static_free[l])
     any_copper=np.any(foreign,axis=0)
     static_via=((ndimage.distance_transform_edt(~any_copper)*res>=clearance+vr+margin)&(raster.d_edge>=edge_clearance+vr+margin)
                 &(raster.d_keep_via>=vr+margin)&(ndimage.distance_transform_edt(~raster.hole)*res>=vr+hole_clearance+margin)
@@ -588,8 +618,12 @@ def negotiate(dump,nets,res=0.1,layer_cost=None,via_cost=30.0,clearance=0.2,widt
     def footprint(cl,vias,box):
         # Occupancy one route adds: (layer or None for all, y0, y1, x0, x1, cells) for tracks and for vias.
         (y0,_),(x0,_)=box;track=[];via=[]
+        nk=neck[y0:y0+cl.shape[1],x0:x0+cl.shape[2]] if neck is not None else None
         for l in range(L):
-            if cl[l].any():track.append((l,*near(cl[l],width+clearance+margin,y0,x0)))
+            if not cl[l].any():continue
+            if nk is None:track.append((l,*near(cl[l],width+clearance+margin,y0,x0)));continue
+            for part,r in ((cl[l]&~nk,width+clearance+margin),(cl[l]&nk,nw+neck_clearance+margin)):
+                if part.any():track.append((l,*near(part,r,y0,x0)))
         if vias.any():
             track.append((None,*near(vias,vr+clearance+width/2+margin,y0,x0)))
             via.append(near(vias,2*vr+clearance+margin,y0,x0))
@@ -660,6 +694,9 @@ def negotiate(dump,nets,res=0.1,layer_cost=None,via_cost=30.0,clearance=0.2,widt
                 fl=foreign[l][y0+a0:y0+a1,x0+b0:x0+b1]&(raster.label[l][y0+a0:y0+a1,x0+b0:x0+b1]!=N)
                 local=((ndimage.distance_transform_edt(~fl)*res>=clearance+width/2+margin)
                        &(raster.d_edge[y0+a0:y0+a1,x0+b0:x0+b1]>=edge_clearance+width/2+margin)&(raster.d_keep_track[l][y0+a0:y0+a1,x0+b0:x0+b1]>=width/2+margin))
+                if neck is not None:
+                    win=(slice(y0+a0,y0+a1),slice(x0+b0,x0+b1))
+                    local=np.where(neck[win],neck_free(raster.label[l][win],fl,raster.d_edge[win],raster.d_keep_track[l][win]),local)
                 free[l][a0:a1,b0:b1]|=pad_zone[a0:a1,b0:b1]&local
         # Vias negotiate too: a contested via site costs more instead of being forbidden.
         pf=np.float32(pfac)
@@ -819,8 +856,9 @@ def negotiate(dump,nets,res=0.1,layer_cost=None,via_cost=30.0,clearance=0.2,widt
         for path in r[1]:
             out=[]
             for l,y,x,thr in path:
-                px,py=raster.point(y,x);out.append([raster.layers[l],px,py,thr])
-            results.append({'net':net,'island':[name(p) for p in pads_by_net[net]],'path':out,'width_nm':int(round(width*1e6)),'via_diameter_nm':int(round(via_diameter*1e6))})
+                px,py=raster.point(y,x);out.append([raster.layers[l],px,py,thr]+([int(neck[y,x])] if neck is not None else []))
+            results.append({'net':net,'island':[name(p) for p in pads_by_net[net]],'path':out,'width_nm':int(round(width*1e6)),'via_diameter_nm':int(round(via_diameter*1e6)),
+                            **({'neck_width_nm':int(round(nw*1e6))} if neck is not None else {})})
     return results,sorted(removed)
 
 
@@ -829,7 +867,8 @@ def simplify(points):
     out=[points[0]]
     for i in range(1,len(points)-1):
         p,q,r=out[-1],points[i],points[i+1]
-        if p[0]==q[0]==r[0]:
+        # A neck flag change (5th element) keeps its point: the track width changes there.
+        if p[0]==q[0]==r[0] and p[4:]==q[4:]==r[4:]:
             d1=(q[1]-p[1],q[2]-p[2]);d2=(r[1]-q[1],r[2]-q[2])
             if d1[0]*d2[1]-d1[1]*d2[0]==0 and d1[0]*d2[0]+d1[1]*d2[1]>0:continue
         out.append(q)
@@ -846,7 +885,9 @@ def copper_rows(results,board_id,tag,via_diameter=0.7,via_drill=0.3):
             if p[0]==q[0]:
                 if p[1:3]==q[1:3]:continue
                 uid=stable_uuid(board_id,tag,f'{key}:track:{i}')
-                rows.append({'kind':'segment','uuid':uid,'net':r['net'],'start_nm':p[1:3],'end_nm':q[1:3],'width_nm':r['width_nm'],'layer':p[0]})
+                # Narrow inside a neck-down area: a segment with either end there is drawn at the neck width.
+                width=r['neck_width_nm'] if 'neck_width_nm' in r and (p[4:5]==[1] or q[4:5]==[1]) else r['width_nm']
+                rows.append({'kind':'segment','uuid':uid,'net':r['net'],'start_nm':p[1:3],'end_nm':q[1:3],'width_nm':width,'layer':p[0]})
             else:
                 if q[3] or (r['net'],q[1],q[2]) in seen:continue
                 seen.add((r['net'],q[1],q[2]))
