@@ -158,7 +158,8 @@ jobs:
           peak_mb=$(( $(cat "$RUNNER_TEMP/route-logs/memory-peak-kb.txt" 2>/dev/null || echo 0) / 1024 ))
           edges=$(grep -E '^[a-z0-9-]+: [0-9]+ -> [0-9]+ open edges$' "$RUNNER_TEMP/route-logs/route.log" || true)
           first=$(head -n 1 <<<"$edges" | sed -E 's/.*: ([0-9]+) -> .*/\1/')
-          last=$(tail -n 1 <<<"$edges" | sed -E 's/.* -> ([0-9]+) open edges/\1/')
+          # Only a stage that lowers the count is adopted, so the board ends at the last such stage.
+          last=$(sed -E 's/.*: ([0-9]+) -> ([0-9]+) open edges/\1 \2/' <<<"$edges" | awk -v n="$first" '$2<$1{n=$2} END{print n}')
           resume=$(grep -oE 'rerun --from-stage [a-z0-9-]+' "$RUNNER_TEMP/route-logs/route.log" | tail -n 1 | awk '{print $3}' || true)
           {
             echo "status=$status"
