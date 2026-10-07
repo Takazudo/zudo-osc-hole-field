@@ -336,6 +336,14 @@ def stage(board_id,current,spec,definition,log):
         rows=[r for r in rows if r['uuid'] not in drop];links=[l for l in links if l not in culprits]
         log(f"{spec['name']}: dropped {len(culprits)} links with DRC errors; retrying")
     else:raise StageRejected("DRC errors persist after dropping culprit links")
+    # A candidate checked where it was built has read lower than the same file checked fresh
+    # (jack-right AGND 21 vs 28), so adoption counts a copy checked in a new workspace.
+    verify=workspace(board_id,spec['name']+'-verify')/candidate.name;shutil.copyfile(candidate,verify)
+    drc_v,fresh=check(verify)
+    if fresh['open_edges']!=after['open_edges']:
+        log(f"{spec['name']}: in-place check {after['open_edges']} open edges, fresh copy {fresh['open_edges']}; the fresh count is used")
+    if any(v['severity']=='error' for v in drc_v['violations']) or drc_v['schematic_parity']:raise StageRejected("fresh copy has DRC errors or parity findings")
+    candidate,after,drc=verify,fresh,drc_v
     before=json.loads(original.with_name('dump.json').read_text())['open_edges']
     receipt={'stage':spec['name'],'status':'NATIVE CHECKED DRAFT STAGE','open_edges_before':before,'open_edges_after':after['open_edges'],
              'links_added':len(links),'links_dropped_for_drc':len(dropped),'copper_rows':len(rows),'ripped':len(removed),
