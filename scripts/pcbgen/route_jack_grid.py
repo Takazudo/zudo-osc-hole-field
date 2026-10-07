@@ -97,20 +97,26 @@ def workspace(board_id,name):
     return work
 
 
-def check(board,max_refills=3):
-    """Native DRC with zone refill, repeated until the open-edge count is stable.
+class FillUnsettled(RuntimeError):
+    """Zone refills kept changing the island counts, so the board has no settled open-edge count."""
+
+
+def check(board,max_refills=6,stable=3):
+    """Native DRC with zone refill, repeated until the island counts hold for `stable` passes.
 
     A single refill of a freshly edited board can leave the pours in a state the next
-    refill changes (AGND islands 22 -> 28 on a neck-down candidate), so adoption must
-    compare settled fills.
+    refill changes (AGND islands 22 -> 28 on a neck-down candidate). Two equal passes were
+    not enough either: a jack-right stage settled at 169 in-run, and a fresh check of the
+    saved board gave 175, so adoption needs three equal passes.
     """
-    drc=board.with_name('drc.json');dump=board.with_name('dump.json');last=None
+    drc=board.with_name('drc.json');dump=board.with_name('dump.json');seen=[]
     for _ in range(max_refills):
         run('bash','scripts/kicad/run.sh','kicad-cli','pcb','drc','--schematic-parity','--refill-zones','--save-board','--format','json','--severity-all','-o',rel(drc),rel(board))
         run('bash','scripts/kicad/run.sh','python3','scripts/pcbgen/grid_dump.py',rel(board),rel(dump))
-        state=json.loads(dump.read_text());islands={n:len(g) for n,g in state['islands'].items()}
-        if islands==last:break
-        last=islands
+        state=json.loads(dump.read_text());seen.append({n:len(g) for n,g in state['islands'].items()})
+        print(f"  refill pass {len(seen)}: {state['open_edges']} open edges",flush=True)
+        if len(seen)>=stable and all(x==seen[-1] for x in seen[-stable:]):break
+    else:raise FillUnsettled(f"{rel(board)}: island counts still changing after {max_refills} refills")
     return json.loads(drc.read_text()),state
 
 
@@ -168,7 +174,7 @@ class StageRejected(RuntimeError):
 def run_stage(board_id,current,spec,definition,log):
     """stage(), with an unrepairable candidate turned into a rejected receipt instead of an abort."""
     try:return stage(board_id,current,spec,definition,log)
-    except StageRejected as e:
+    except (StageRejected,FillUnsettled) as e:
         before=json.loads(current.with_name('dump.json').read_text())['open_edges']
         log(f"{spec['name']}: rejected ({e}); keeping the previous board")
         return None,{'stage':spec['name'],'status':'REJECTED: '+str(e),'open_edges_before':before,'open_edges_after':before,'rejected':True}
