@@ -62,5 +62,27 @@ class StageRejectionTests(unittest.TestCase):
         self.assertIn('keeping the previous board',logs[0])
 
 
+class SettledRefillTests(unittest.TestCase):
+    def passes(self,counts):
+        """check() against a fake oracle whose successive refills report these AGND island counts."""
+        files={};seq=iter(counts)
+        class Path_:
+            def __init__(self,name):self.name=name
+            def with_name(self,name):return Path_(name)
+            def read_text(self):return files[self.name]
+        def run(*args):
+            if any(a.endswith('grid_dump.py') for a in args):n=next(seq);files['dump.json']=json.dumps({'open_edges':n-1,'islands':{'AGND':[[i] for i in range(n)]}})
+            else:files['drc.json']=json.dumps({'violations':[],'schematic_parity':[]})
+        saved=driver.run,driver.rel;driver.run,driver.rel=run,lambda p:p.name
+        try:return driver.check(Path_('board.kicad_pcb'))[1]['open_edges']
+        finally:driver.run,driver.rel=saved
+
+    def test_two_equal_passes_are_not_settled(self):
+        self.assertEqual(self.passes([30,24,24,30,30,30]),29)
+
+    def test_refills_that_never_hold_raise(self):
+        with self.assertRaises(driver.FillUnsettled):self.passes([24,30,24,30,24,30])
+
+
 if __name__=='__main__':
     unittest.main()
