@@ -84,5 +84,24 @@ class SettledRefillTests(unittest.TestCase):
         with self.assertRaises(driver.FillUnsettled):self.passes([24,30,24,30,24,30])
 
 
+class StitchedCandidateTests(unittest.TestCase):
+    def judge(self,stitch_after):
+        current=type('B',(),{'with_name':lambda self,n:self,'read_text':lambda self:json.dumps({'open_edges':150,'islands':{'AGND':[[0]]*21}})})()
+        receipt={'open_edges_before':150,'open_edges_after':150,'open_by_net_after':{'AGND':27},'links_added':9}
+        saved=driver.run_stage,driver.RUN['shard'];driver.RUN['shard']=None
+        driver.run_stage=lambda *a:('stitched-board',{'open_edges_after':stitch_after,'open_by_net_after':{'AGND':stitch_after-123},'links_added':6,'links_dropped_for_drc':0,'copper_rows':12})
+        try:return driver.stitched('fixture',current,'signal-board',receipt,{'name':'region-02'},{},lambda m:None)
+        finally:driver.run_stage,driver.RUN['shard']=saved
+
+    def test_signal_gain_hidden_by_cut_pours_is_kept_after_stitching(self):
+        board,receipt=self.judge(144)
+        self.assertEqual(board,'stitched-board')
+        self.assertEqual((receipt['open_edges_before'],receipt['open_edges_after']),(150,144))
+
+    def test_stitching_that_does_not_lower_the_total_keeps_the_signal_verdict(self):
+        board,receipt=self.judge(150)
+        self.assertEqual((board,receipt['open_edges_after']),('signal-board',150))
+
+
 if __name__=='__main__':
     unittest.main()

@@ -180,6 +180,25 @@ def run_stage(board_id,current,spec,definition,log):
         return None,{'stage':spec['name'],'status':'REJECTED: '+str(e),'open_edges_before':before,'open_edges_after':before,'rejected':True}
 
 
+def stitched(board_id,current,candidate,receipt,spec,definition,log):
+    """Judge a signal candidate after AGND stitching when it closed signal edges but cut AGND pours.
+
+    New signal copper at the AGND clearance splits surface pours, so a stage can close signal
+    edges and still not lower the total; stitching the cut islands to the In1 plane decides it.
+    Shards skip this: AGND is not a net a shard owns.
+    """
+    if RUN['shard'] or spec.get('agnd_stitch'):return candidate,receipt
+    before=json.loads(current.with_name('dump.json').read_text())
+    signal_before=before['open_edges']-(len(before['islands'].get('AGND',[None]))-1)
+    signal_after=receipt['open_edges_after']-receipt['open_by_net_after'].get('AGND',0)
+    if signal_after>=signal_before:return candidate,receipt
+    joined,stitch=run_stage(board_id,candidate,{'name':spec['name']+'-stitch','agnd_stitch':True},definition,log)
+    if joined is None or stitch['open_edges_after']>=receipt['open_edges_before']:return candidate,receipt
+    log(f"{spec['name']}: signal edges {signal_before} -> {signal_after}; with AGND stitching {receipt['open_edges_before']} -> {stitch['open_edges_after']} open edges")
+    return joined,{**receipt,'open_edges_after':stitch['open_edges_after'],'open_by_net_after':stitch['open_by_net_after'],
+                   'agnd_stitch':{k:stitch[k] for k in ('links_added','links_dropped_for_drc','copper_rows')}}
+
+
 def neck_kwargs(board_id):
     """Neck-down width/clearance for signal routing on boards listed in neckdown-areas.json."""
     path=ROOT/'design/partition/neckdown-areas.json'
@@ -409,6 +428,8 @@ def main():
         if candidate is None and receipt:
             receipt['adopted']=False;(reports/f"{spec['name']}.json").write_text(json.dumps(receipt,indent=1,sort_keys=True)+'\n');continue
         if candidate is None:print(f"{spec['name']}: nothing to do",flush=True);continue
+        if receipt['open_edges_after']>=receipt['open_edges_before']:
+            candidate,receipt=stitched(a.board_id,current,candidate,receipt,spec,definition,lambda m:print(m,flush=True))
         receipt['adopted']=receipt['open_edges_after']<receipt['open_edges_before']
         if spec.get('rrr_rounds') and receipt['adopted']:RRR_ROUND['adopted']=True
         (reports/f"{spec['name']}.json").write_text(json.dumps(receipt,indent=1,sort_keys=True)+'\n')
