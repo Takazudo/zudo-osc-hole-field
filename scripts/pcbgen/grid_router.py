@@ -475,6 +475,13 @@ def route(dump,nets=(),rip=(),rip_first=False,res=0.1,layer_cost=None,via_cost=3
     last_failure={'reason':'unknown'}
     def event(net,names,reason,**details):
         if diagnostics is not None:
+            if 'victims' in details and details.get('phase')=='probe':
+                victims=set(details['victims'])
+                details['removable_source_uuids']=sorted(i['uuid'] for k in ('tracks','vias') for i in dump[k]
+                    if i['net'] in victims and i['uuid'] not in removed)
+                details['committed_victim_paths']=[{'net':r['net'],'endpoints':r['island']} for r in results
+                    if r['net'] in victims and r['path']]
+
             diagnostics.append({'net':net,'endpoints':names,'reason':reason,**details})
 
     def route_one(net,src,reached,names):
@@ -549,6 +556,7 @@ def route(dump,nets=(),rip=(),rip_first=False,res=0.1,layer_cost=None,via_cost=3
                     failed.append((net,g,main_group));continue
                 snapshot=(raster.label.copy(),raster.hole.copy(),[dict(r) for r in results],set(removed),{li:(fg.region.copy(),fg.base,fg.blobs,fg.n) for li,fg in fill_count.items()},list(raster.route_holes))
                 victims=sorted(id_net[b] for b in blockers)
+                event(net,name(g),'probe_candidate',phase='probe',victims=victims)
                 results[:]=[r for r in results if r['net'] not in victims]
                 removed|={i['uuid'] for k in ('tracks','vias') for i in dump[k] if i['net'] in victims}
                 raster.rebuild_routes(removed,results,via_drill)

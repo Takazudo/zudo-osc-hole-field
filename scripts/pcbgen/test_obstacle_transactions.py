@@ -30,7 +30,14 @@ class ObstacleTransactionTests(unittest.TestCase):
         dump['vias']=[dict(uuid='victim-via',net='B',xy=[6*MM,4*MM],diameter=600000,drill=300000)]
         dump['pads'].append(dict(uuid='b',ref='J1',pad='1',net='B',xy=[6*MM,MM],
             layers=['B.Cu'],poly=square(6,1),drill=0,npth=False))
+        dump['pads'].append(dict(uuid='guard',ref='P',pad='1',net='P',xy=[MM,MM],
+            layers=['B.Cu'],poly=square(1,1),drill=0,npth=False))
         instances=[];original=router.Raster;transaction=[];before=[];probed=False
+        guards=[];guard_before=[];original_guard=router.FillGuard
+        class CaptureGuard(original_guard):
+            def __init__(self,*args,**kw):
+                super().__init__(*args,**kw);guards.append(self)
+
         class Capture(original):
             def __init__(self,*args,**kw):
                 super().__init__(*args,**kw);instances.append(self)
@@ -38,21 +45,27 @@ class ObstacleTransactionTests(unittest.TestCase):
             nonlocal probed
             r=instances[0]
             if args[-1] is not None:
-                before.append((r.label.copy(),r.hole.copy()));probed=True
+                before.append((r.label.copy(),r.hole.copy(),list(r.route_holes) if hasattr(r,'route_holes') else None));probed=True
+                guard_before.append((guards[0].region.copy(),guards[0].base[:],guards[0].blobs.copy(),guards[0].n))
                 l,y,x=map(int,np.argwhere(src)[0]);_,gy,gx=map(int,np.argwhere(goal)[0])
                 # The synthetic probe crosses B's removable track/via. Fail the real
                 # transaction so the final assertions also exercise rollback.
                 return [(l,y,i) for i in range(x,gx-1,-1)],0
             if probed:transaction.append(bool(r.hole[r.cell(6*MM,4*MM)]))
             return None,0
-        with patch.object(router,'Raster',Capture),patch.object(router,'astar',side_effect=search):
-            results,removed=router.route(dump,['A'],rrr_rounds=1,window_mm=50,
+        with patch.object(router,'Raster',Capture),patch.object(router,'FillGuard',CaptureGuard),patch.object(router,'astar',side_effect=search):
+            results,removed=router.route(dump,['A'],rrr_rounds=1,window_mm=50,fill_guards={'P':'B.Cu'},
                 res=.1,clearance=.2,signal_width=.2,log=lambda _:None)
         self.assertTrue(transaction,'fixture did not enter a rip-up transaction')
         self.assertFalse(any(transaction),'removed via left a ghost drill exclusion')
         np.testing.assert_array_equal(instances[0].label,before[0][0])
         np.testing.assert_array_equal(instances[0].hole,before[0][1])
         self.assertEqual(removed,[])
+        self.assertEqual(instances[0].route_holes,before[0][2])
+        np.testing.assert_array_equal(guards[0].region,guard_before[0][0])
+        self.assertEqual(guards[0].base,guard_before[0][1])
+        np.testing.assert_array_equal(guards[0].blobs,guard_before[0][2])
+        self.assertEqual(guards[0].n,guard_before[0][3])
 
     def test_rebuild_preserves_fixed_overlapping_and_new_drills(self):
         dump=board();dump['layers']=['B.Cu','F.Cu']
@@ -84,6 +97,14 @@ class ObstacleTransactionTests(unittest.TestCase):
             res=.1,clearance=.2,signal_width=.2,layer_cost=[1.0],log=lambda _:None)
         self.assertEqual({r['net'] for r in results if r['path']},{'A','B'})
         self.assertFalse([r for r in results if not r['path']])
+
+    def test_failure_diagnostics_report_limits_without_inventing_blockers(self):
+        events=[]
+        results,_=router.route(board(),['A'],max_expansions=1,diagnostics=events,log=lambda _:None)
+        self.assertTrue(events)
+        self.assertEqual(events[0]['reason'],'expansion_limit')
+        self.assertTrue(events[0]['attempts'])
+        self.assertTrue(all(r['path'] is None for r in results))
 
 
 if __name__=='__main__':unittest.main()

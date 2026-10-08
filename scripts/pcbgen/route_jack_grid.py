@@ -22,7 +22,7 @@ from scipy.sparse import coo_matrix
 from scipy.sparse.csgraph import connected_components
 from scripts.pcbgen.grid_router import route,copper_rows,negotiate
 from scripts.pcbgen.uuid_tools import stable_uuid
-from scripts.pcbgen.route_shards import area_plan,plan,region_key,region_nets
+from scripts.pcbgen.route_shards import area_plan,plan,region_key,region_nets,delta
 
 PLANES={'+12V':'In4.Cu','-12V':'In3.Cu'}
 FAILED=set()  # signal nets with an unroutable island in an earlier batch; retried by the escape stage
@@ -373,6 +373,39 @@ def stage(board_id,current,spec,definition,log):
     return candidate,receipt
 
 
+def connected_pad_groups(dump):
+    """Native pad memberships; absent open nets are fully connected, not absent."""
+    pads={p['uuid']:p for p in dump['pads'] if p['net']}
+    by_net=collections.defaultdict(list)
+    for uid,p in pads.items():by_net[p['net']].append(uid)
+    return {n:[sorted(u for u in g if u in pads) for g in dump['islands'].get(n,[ids])]
+            for n,ids in sorted(by_net.items())}
+
+
+def split_pad_groups(before,after):
+    old,new=connected_pad_groups(before),connected_pad_groups(after);bad=[]
+    for net,groups in old.items():
+        labels={u:i for i,g in enumerate(new.get(net,[])) for u in g}
+        for g in groups:
+            if any(u not in labels for u in g) or len({labels[u] for u in g if u in labels})>1:
+                bad.append({'net':net,'previously_connected_pads':g})
+    return bad
+
+
+def warning_identities(drc):
+    return sorted((v['type'],tuple(sorted(i.get('uuid','') for i in v.get('items',[]))))
+                  for v in drc['violations'] if v['severity']=='warning')
+
+
+def promotion_gate(before,after,before_drc,after_drc):
+    splits=split_pad_groups(before,after)
+    previous=set(warning_identities(before_drc))
+    new_warnings=[w for w in warning_identities(after_drc) if w not in previous]
+    native_errors=any(v['severity']=='error' for v in after_drc['violations']) or bool(after_drc.get('schematic_parity'))
+    return {'adopted':after['open_edges']<before['open_edges'] and not splits and not new_warnings and not native_errors,
+            'split_pad_groups':splits,'new_warning_identities':new_warnings,'native_errors':native_errors}
+
+
 def main():
     p=argparse.ArgumentParser(description=__doc__.splitlines()[0]);p.add_argument('board_id',choices=('osc-jack-left','osc-jack-right','osc-core'))
     p.add_argument('--from-stage',default=STAGES[0]['name']);p.add_argument('--to-stage');p.add_argument('--promote',action='store_true')
@@ -430,13 +463,34 @@ def main():
         if candidate is None and receipt:
             receipt['adopted']=False;(reports/f"{spec['name']}.json").write_text(json.dumps(receipt,indent=1,sort_keys=True)+'\n');continue
         if candidate is None:print(f"{spec['name']}: nothing to do",flush=True);continue
-        if receipt['open_edges_after']>=receipt['open_edges_before']:
+        if (receipt['open_edges_after']>=receipt['open_edges_before'] or
+            split_pad_groups(json.loads(current.with_name('dump.json').read_text()),
+                             json.loads(candidate.with_name('dump.json').read_text()))):
             candidate,receipt=stitched(a.board_id,current,candidate,receipt,spec,definition,lambda m:print(m,flush=True))
-        receipt['adopted']=receipt['open_edges_after']<receipt['open_edges_before']
+        # Count improvements can conceal disconnected feeds/returns on another net.
+        # Check after the optional stitching transaction, so temporary AGND splits
+        # may be repaired in the disposable candidate but never promoted.
+        receipt.update(promotion_gate(json.loads(current.with_name('dump.json').read_text()),
+                                      json.loads(candidate.with_name('dump.json').read_text()),
+                                      json.loads(current.with_name('drc.json').read_text()),
+                                      json.loads(candidate.with_name('drc.json').read_text())))
+        receipt['input_board_sha256']=hashlib.sha256(current.read_bytes()).hexdigest()
+        receipt['candidate_board_sha256']=hashlib.sha256(candidate.read_bytes()).hexdigest()
+        if receipt['split_pad_groups'] or receipt['new_warning_identities']:
+            receipt['rejection_reason']='connected_pad_group_split' if receipt['split_pad_groups'] else 'new_native_warning'
+            print(f"{spec['name']}: rejected: {receipt['rejection_reason']}",flush=True)
+        if receipt['adopted']:
+            # Retain a source replay against the canonical bytes that will be
+            # replaced. Refill is intentionally repeated after replay.
+            replay=delta((board if a.promote else current).read_text(),candidate.read_text())
+            replay_path=reports/f"{spec['name']}-copper.json"
+            replay_path.write_text(json.dumps(replay,sort_keys=True)+'\n')
+            receipt['copper_replay']={'path':rel(replay_path),'sha256':hashlib.sha256(replay_path.read_bytes()).hexdigest(),
+                                     'base_sha256':replay['base_sha256']}
         if spec.get('rrr_rounds') and receipt['adopted']:RRR_ROUND['adopted']=True
         (reports/f"{spec['name']}.json").write_text(json.dumps(receipt,indent=1,sort_keys=True)+'\n')
         print(f"{spec['name']}: {receipt['open_edges_before']} -> {receipt['open_edges_after']} open edges",flush=True)
-        if receipt['open_edges_after']<receipt['open_edges_before']:
+        if receipt['adopted']:
             current=candidate
             # Promote every adopted stage so a later interruption keeps checked progress.
             if a.promote:shutil.copyfile(current,board);print('promoted',rel(board),flush=True)

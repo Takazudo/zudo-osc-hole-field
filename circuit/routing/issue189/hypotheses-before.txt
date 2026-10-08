@@ -1,13 +1,6 @@
-test_removed_via_hole_is_rebuilt_and_rollback_restores_it (scripts.pcbgen.test_obstacle_transactions.ObstacleTransactionTests.test_removed_via_hole_is_rebuilt_and_rollback_restores_it) ... FAIL
+Regression target: 1fe06ad50248d6434876fbf2bd6e32e1bfbb13bb
 test_soft_probe_keeps_fixed_foreign_pad_hard (scripts.pcbgen.test_obstacle_transactions.ObstacleTransactionTests.test_soft_probe_keeps_fixed_foreign_pad_hard) ... FAIL
-
-======================================================================
-FAIL: test_removed_via_hole_is_rebuilt_and_rollback_restores_it (scripts.pcbgen.test_obstacle_transactions.ObstacleTransactionTests.test_removed_via_hole_is_rebuilt_and_rollback_restores_it)
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "/workspace/zudo-osc-hole-field/scripts/pcbgen/test_obstacle_transactions.py", line 52, in test_removed_via_hole_is_rebuilt_and_rollback_restores_it
-    self.assertFalse(any(transaction),'removed via left a ghost drill exclusion')
-AssertionError: True is not false : removed via left a ghost drill exclusion
+test_removed_via_hole_is_rebuilt_and_rollback_restores_it (scripts.pcbgen.test_obstacle_transactions.ObstacleTransactionTests.test_removed_via_hole_is_rebuilt_and_rollback_restores_it) ... FAIL
 
 ======================================================================
 FAIL: test_soft_probe_keeps_fixed_foreign_pad_hard (scripts.pcbgen.test_obstacle_transactions.ObstacleTransactionTests.test_soft_probe_keeps_fixed_foreign_pad_hard)
@@ -17,7 +10,15 @@ Traceback (most recent call last):
     self.assertFalse(any(probes),'soft search made an immovable foreign pad traversable')
 AssertionError: True is not false : soft search made an immovable foreign pad traversable
 
+======================================================================
+FAIL: test_removed_via_hole_is_rebuilt_and_rollback_restores_it (scripts.pcbgen.test_obstacle_transactions.ObstacleTransactionTests.test_removed_via_hole_is_rebuilt_and_rollback_restores_it)
 ----------------------------------------------------------------------
-Ran 2 tests in 0.137s
+Traceback (most recent call last):
+  File "/workspace/zudo-osc-hole-field/scripts/pcbgen/test_obstacle_transactions.py", line 60, in test_removed_via_hole_is_rebuilt_and_rollback_restores_it
+    self.assertFalse(any(transaction),'removed via left a ghost drill exclusion')
+AssertionError: True is not false : removed via left a ghost drill exclusion
+
+----------------------------------------------------------------------
+Ran 2 tests in 0.027s
 
 FAILED (failures=2)

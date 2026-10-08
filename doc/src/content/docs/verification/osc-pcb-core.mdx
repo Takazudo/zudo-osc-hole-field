@@ -74,3 +74,13 @@ The renders below are from this 1,509-edge revision. Native checks of this revis
 ## Qualification remains NOT RUN
 
 The earlier field-solver ground/current extraction is parked and is not a routing gate. Rail and return resistance, the ≤0.5 mΩ combined AGND neck and hot distribution drop remain unqualified. So do the 2.1 A / 2 A / 0.5 A load-wire terminal transfers and GH contact current. Protection (#59), source/inlet (#57) and installed fit (#65) also remain open.
+
+
+## Issue #189 implementation checkpoint
+
+[Draft PR #190](https://github.com/Takazudo/zudo-osc-hole-field/pull/190) corrects
+reproduced rip-up obstacle defects and adds an identical-input native comparison.
+No routing gain is inferred from the synthetic regressions. The current board
+and copper remain preserved; benchmark receipts and continuation commands are
+tracked in `circuit/routing/issue189/`. Routing completion and hardware
+qualification remain separate, open obligations.

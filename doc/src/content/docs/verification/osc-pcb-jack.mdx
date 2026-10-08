@@ -66,3 +66,13 @@ The [partition source](../architecture/osc-board-stack.mdx) preserves the gross 
 `boards/osc-jack/reports/replication-feasibility.json` compares 22 repeated J module pairs against the exact source face and footprint centres. None has a complete single translation, so whole-module route replay would require a source placement revision. `routing-attempt-1.json` records the first timeout; `routing.json` records the second. Both left 5,611 native ratsnest edges and no copper. A revised J partition or placement/routing strategy is required before #38 can close. The current `boards/osc-jack/reports/drc.json` and top/bottom PNGs are the native KiCad 10.0.6 evidence.
 
 Physical seated fit, jack nut/shoulder clearance, supports, looms, factory load wires, hot resistance, and enclosure depth: **NOT RUN #65**. Selector coupon **NOT RUN #55**; physical source/inlet **NOT RUN #57**; LED optical/hot qualification **NOT RUN #64**. The 82 output and 16 precision-sense protection obligations remain **OPEN #59**. The 0.35 mm compact-LED/jack nominal courtyard gap is drawing-derived and does not establish assembled fit.
+
+
+## Issue #189 implementation checkpoint
+
+[Draft PR #190](https://github.com/Takazudo/zudo-osc-hole-field/pull/190) corrects
+reproduced rip-up obstacle defects and adds an identical-input native comparison.
+No routing gain is inferred from the synthetic regressions. The current board
+and copper remain preserved; benchmark receipts and continuation commands are
+tracked in `circuit/routing/issue189/`. Routing completion and hardware
+qualification remain separate, open obligations.

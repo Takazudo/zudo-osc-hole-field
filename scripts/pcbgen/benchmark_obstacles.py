@@ -15,28 +15,11 @@ from scripts.pcbgen import grid_router
 
 def sha(path):return hashlib.sha256(Path(path).read_bytes()).hexdigest()
 
-def endpoints(dump):
-    """Pad-component membership, including nets absent from the open-island table."""
-    pads={p['uuid']:p for p in dump['pads'] if p['net']}
-    by_net=collections.defaultdict(list)
-    for uid,p in pads.items():by_net[p['net']].append(uid)
-    return {n:[sorted(u for u in g if u in pads) for g in dump['islands'].get(n,[ids])]
-            for n,ids in sorted(by_net.items())}
+endpoints=driver.connected_pad_groups
+splits=driver.split_pad_groups
 
 
-def splits(before,after):
-    old,new=endpoints(before),endpoints(after);bad=[]
-    for net,groups in old.items():
-        labels={u:i for i,g in enumerate(new.get(net,[])) for u in g}
-        for g in groups:
-            if any(u not in labels for u in g) or len({labels[u] for u in g if u in labels})>1:
-                bad.append({'net':net,'previously_connected_pads':g})
-    return bad
-
-
-def warning_ids(drc):
-    return sorted((v['type'],tuple(sorted(i.get('uuid','') for i in v.get('items',[]))))
-                  for v in drc['violations'] if v['severity']=='warning')
+warning_ids=driver.warning_identities
 
 
 def select(dump,count):

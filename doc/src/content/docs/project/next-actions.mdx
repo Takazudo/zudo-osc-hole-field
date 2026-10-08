@@ -72,3 +72,17 @@ The [stage-optical PCB routed draft](../verification/osc-pcb-stage-optical.mdx) 
 The [control-board verification page](../verification/osc-pcb-control.mdx) records the current native source and routed draft. Its native connectivity is complete; actual connected-copper current/resistance checks remain. The paired K/P header assignment preserves the existing hardware sites and modeled cable spans while shortening the placement-distance estimate; it does not establish finished routing, protection or installed fit.
 
 The current debounce placement correction moves ninety non-panel passives beside their existing Schmitt inputs and rebuilds compatible control-board copper, now routed to 0 native open edges. The fixed panel, ICs, bypasses, headers and net assignments are preserved. Continue from the current source and full native ratsnest; earlier routes to moved passive pads and historical electrical receipts are not current-board evidence.
+
+
+## Routing completion implementation (#189)
+
+[Issue #189](https://github.com/Takazudo/zudo-osc-hole-field/issues/189) coordinates
+JL/JR/core completion without changing the panel or discarding successful copper.
+[Draft PR #190](https://github.com/Takazudo/zudo-osc-hole-field/pull/190) reproduces
+and fixes stale removed-via drill obstacles and soft probes through fixed pads.
+Its bounded old/new benchmark uses identical saved native inputs and preserves
+negative results. Router tests do not establish board-level improvement; retain
+the current routed candidates until fresh native transactions pass. The resumable
+implementation note is `circuit/routing/issue189/checkpoint.md` in the repository.
+Issue #189 stays open until all routing and regression criteria are met. Existing
+protection, mechanical, electrical and manufacturing gates remain open.

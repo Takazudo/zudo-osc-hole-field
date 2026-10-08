@@ -80,3 +80,28 @@ If a candidate is eligible, inspect its complete proposal, rules and native rece
 replay against the exact input SHA and run fresh settled checks before adopting.
 If both variants make negligible progress, use failed victim/terminal identities to
 change the local repair method. Do not simply increase global rerouting budgets.
+
+
+## In-session follow-through
+
+The staged driver's final promotion gate now checks complete native pad-component
+membership after optional AGND stitching, rejects new reported warning identities,
+and saves a hash-bound copper delta for replay whenever a stage is promoted.
+This preserves the existing strict connectivity-improvement threshold.
+
+Local routing regression suite: 97 tests PASS. Local circuit validation,
+`pnpm check`, guarded `pnpm build` and `pnpm check:site`: PASS (the existing
+allowlisted workbench HTML link is still reported). The all-repository Python
+suite stopped at a model fixture requiring the blocked native image; it is NOT
+claimed passed locally. Current CI performs that full suite and native fixtures.
+
+Read-only benchmark run: 37821079619, head 640c0388b6b23696a35a9f63ce923b67c032fa96.
+Earlier run 37820757090 was canceled before use because its old-router snapshot
+lacked the adjacent C backend. The corrected run pins and asserts compiled C A*
+for both variants. Do not compare the canceled run's timing. No routing gain is
+claimed before inspecting the corrected results. Subsequent benchmarks are
+explicit dispatches (workflow ID 378789207), avoiding automatic duplicate compute
+on every PR documentation push.
+
+Current single-refill CI evidence is in `native-ci.json`: JL140/JR162 with zero
+DRC errors and parity. Settled comparison results are a separate gate.

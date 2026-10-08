@@ -1,6 +1,7 @@
 """Identity-based benchmark selection and connectivity regression gates."""
 import unittest
 from scripts.pcbgen.benchmark_obstacles import endpoints,splits,select
+from scripts.pcbgen.route_jack_grid import promotion_gate
 from scripts.pcbgen.test_grid_router import crossing_board
 
 class BenchmarkTests(unittest.TestCase):
@@ -16,3 +17,20 @@ class BenchmarkTests(unittest.TestCase):
         b=crossing_board();selected=select(b,2)
         self.assertEqual({x['net'] for x in selected},{'A','B'})
         self.assertTrue(all(p['uuid'] and p['ref'] and p['pad'] for x in selected for g in x['islands'] for p in g))
+
+    def test_promotion_gate_rejects_warning_and_membership_regressions(self):
+        before=crossing_board();before['open_edges']=2
+        after={**before,'islands':{},'open_edges':0}
+        clean={'violations':[]}
+        self.assertTrue(promotion_gate(before,after,clean,clean)['adopted'])
+        warning={'violations':[{'type':'hole_to_hole','severity':'warning','items':[{'uuid':'v'}]}]}
+        gate=promotion_gate(before,after,clean,warning)
+        self.assertFalse(gate['adopted']);self.assertTrue(gate['new_warning_identities'])
+        self.assertTrue(promotion_gate(before,after,warning,warning)['adopted'])
+
+    def test_promotion_gate_rejects_native_errors_and_parity(self):
+        before={**crossing_board(),'open_edges':2};after={**before,'islands':{},'open_edges':0}
+        clean={'violations':[]}
+        for drc in ({'violations':[{'type':'clearance','severity':'error'}]},
+                    {'violations':[],'schematic_parity':[{'type':'missing_pad'}]}):
+            self.assertFalse(promotion_gate(before,after,clean,drc)['adopted'])
