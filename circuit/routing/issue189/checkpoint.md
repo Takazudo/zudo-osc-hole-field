@@ -146,3 +146,33 @@ retain the 90-minute compute cap; core now has 335 minutes for its measured
 nine-minute native refill and mandatory repeated/fresh checks. Routing expansion,
 victim and round budgets are unchanged. This is a harness correction, not another
 unchanged routing-strategy attempt.
+
+## Current native jobs and adoption continuation
+
+Corrected identical-input runs at `ba3aaba0bf651f3934904836737529bd0518241d`:
+JL **37824198833**, JR **37824203279**, core **37824207235**. Read current status;
+do not infer completion from these IDs. The main CI run for that head is
+37824191309. Subsequent code changes do not change these saved comparisons.
+
+The adoption helper `scripts/pcbgen/adopt_obstacle_benchmark.py` validates input
+and candidate hashes, replays only copper onto the current canonical board,
+checks baseline/settled/fresh-copy native connectivity and warning identities,
+and rejects stale inputs before writing. It does not reroute. Its focused input
+rejection tests bring the suite to **104 tests PASS**. Native adoption is NOT RUN
+until an eligible complete benchmark artifact is inspected.
+
+After reviewing a completed result and its retained copper/splits/warnings, use:
+
+```sh
+# Example JL only; substitute the reviewed board/run, one writer at a time.
+gh workflow run 378789207 --ref agent-fix/189-obstacle-transactions \
+  -f board=osc-jack-left -f adopt_run=37824198833
+# This mode checks eligibility and performs fresh native checks before promotion.
+# It pushes only the accepted board plus replay/receipts on the isolated branch.
+# Fetch the resulting remote commit before making subsequent local edits.
+```
+
+If the benchmark is ineligible, do not dispatch adoption. Inspect its exact
+failed endpoints, victim reconnect failures, plane regressions and new warning
+identities, then change the local method (rail/AGND repair or a source-defined
+circuit-local repair). Do not treat a lower raster or CLI count as adoption.
