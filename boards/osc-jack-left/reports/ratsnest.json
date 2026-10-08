@@ -1,7 +1,7 @@
 {
   "board": "boards/osc-jack-left/osc-jack-left.kicad_pcb",
   "board_net_count": 918,
-  "board_sha256": "12206c2dab6d8f5bace2b6824418db170d6aead28bc267d441839517d45dc411",
+  "board_sha256": "8911b26ce5bc0d694f52fb1b132c2ff601f9ddf14369c102fccddc53049caaa6",
   "multi_pad_candidate_net_count": 700,
   "multi_pad_candidate_net_names": [
     "+12V",
@@ -707,7 +707,7 @@
   ],
   "name_scope": "native_open_edges_by_net is complete and sum-checked. multi_pad_candidate_net_names is a separate candidate inventory; CLI DRC JSON can truncate its item list.",
   "named_edge_basis": "Native GetConnectedItems connectivity clusters including filled-zone islands; each net has clusters minus one edges; sum must equal native GetUnconnectedCount(False). Orphan zone-only islands excluded by native ratsnest policy.",
-  "named_edge_count_sum": 156,
+  "named_edge_count_sum": 146,
   "native_open_edge_source_identities": [
     {
       "native_net_name": "+12V",
@@ -721,7 +721,7 @@
     },
     {
       "native_net_name": "AGND",
-      "native_open_edges": 22,
+      "native_open_edges": 17,
       "source_net_name": "AGND"
     },
     {
@@ -875,11 +875,6 @@
       "source_net_name": "/M5B/5_TIP"
     },
     {
-      "native_net_name": "X47C2211BADF82245E208",
-      "native_open_edges": 1,
-      "source_net_name": "/O1/PUL_SCALED"
-    },
-    {
       "native_net_name": "X47CDB73EF89C07E59C0F",
       "native_open_edges": 1,
       "source_net_name": "/O1/1V_BUFFER"
@@ -910,11 +905,6 @@
       "source_net_name": "/F3/DRY_CORE"
     },
     {
-      "native_net_name": "X5CD5EA02032391EA4821",
-      "native_open_edges": 1,
-      "source_net_name": "/M5B/5_BUFFER"
-    },
-    {
       "native_net_name": "X5D869BEACD2A6CD8F888",
       "native_open_edges": 1,
       "source_net_name": "/M5B/4_TIP"
@@ -933,11 +923,6 @@
       "native_net_name": "X6BD40278C60E8AC692D2",
       "native_open_edges": 1,
       "source_net_name": "/M5A/5_GAIN"
-    },
-    {
-      "native_net_name": "X70FF44125622536BA5C7",
-      "native_open_edges": 1,
-      "source_net_name": "/H2/SLEW_BUFFERED"
     },
     {
       "native_net_name": "X722B62B5E67741B855CA",
@@ -996,7 +981,7 @@
     },
     {
       "native_net_name": "X931E79E5D5D06724201E",
-      "native_open_edges": 2,
+      "native_open_edges": 1,
       "source_net_name": "/O2/SYNC_BUFFER"
     },
     {
@@ -1140,11 +1125,6 @@
       "source_net_name": "/H1/IN_BUFFERED"
     },
     {
-      "native_net_name": "XE81DCCD63340C32994FE",
-      "native_open_edges": 1,
-      "source_net_name": "/F1/HP_CORE"
-    },
-    {
       "native_net_name": "XEC4C271577BFE8DBACB5",
       "native_open_edges": 1,
       "source_net_name": "/M5A/REF5"
@@ -1203,7 +1183,7 @@
   "native_open_edges_by_net": {
     "+12V": 3,
     "-12V": 4,
-    "AGND": 22,
+    "AGND": 17,
     "X00444C74247F40210707": 1,
     "X008537AA7400D5A1B933": 1,
     "X05BCFE2EF95F38E6961A": 1,
@@ -1234,19 +1214,16 @@
     "X3BC732DF0F3F87A8F391": 1,
     "X4070539D709C19A0AF65": 2,
     "X42270EFC9CF11BED5785": 1,
-    "X47C2211BADF82245E208": 1,
     "X47CDB73EF89C07E59C0F": 1,
     "X48130AD0B69DF1932D00": 1,
     "X508B7C84413321BA0F22": 2,
     "X50A8C3F00D253C65AB68": 2,
     "X557F548F7D9FAD9BFC62": 1,
     "X5A748C9F10BC16D9ED6F": 1,
-    "X5CD5EA02032391EA4821": 1,
     "X5D869BEACD2A6CD8F888": 1,
     "X5E0D118DFCE19397D1E5": 1,
     "X632AF8DD6216ED26A96D": 3,
     "X6BD40278C60E8AC692D2": 1,
-    "X70FF44125622536BA5C7": 1,
     "X722B62B5E67741B855CA": 1,
     "X7524FCE1337109215C77": 2,
     "X78C7B972E1FCC604C20F": 1,
@@ -1258,7 +1235,7 @@
     "X8BDF2BAD2449627A6AD6": 1,
     "X8DEDD995BB5D1F1ACF65": 1,
     "X90A3CD82F6E195F644DD": 2,
-    "X931E79E5D5D06724201E": 2,
+    "X931E79E5D5D06724201E": 1,
     "X94210EAC11BB98036631": 1,
     "X947D4B49DF13D9BCAFA3": 1,
     "X97E728989B7553A387AE": 1,
@@ -1287,7 +1264,6 @@
     "XE3A5F9F02D2D6774F3AA": 1,
     "XE4269911EACAC31347CE": 1,
     "XE696508C2D9B11400F0C": 3,
-    "XE81DCCD63340C32994FE": 1,
     "XEC4C271577BFE8DBACB5": 1,
     "XECBEEEFCEFE563B826AB": 1,
     "XED6550DF5A5397CEA3E1": 1,
@@ -1300,7 +1276,7 @@
     "XFBD81EB4423EDA37C16F": 1,
     "XFCBF7CEE1BED9441283A": 1
   },
-  "native_open_net_count": 98,
-  "native_unconnected_edges": 156,
+  "native_open_net_count": 94,
+  "native_unconnected_edges": 146,
   "schema_version": 2
 }
