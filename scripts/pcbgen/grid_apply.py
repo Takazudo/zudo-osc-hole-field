@@ -26,6 +26,12 @@ def apply(board_path,proposal,output):
         keep.append(text[last:])
         if dropped!=len(removed):raise ValueError(f'ripped copper not found: {dropped}/{len(removed)}')
         source=Path(output).with_suffix('.ripped.kicad_pcb');source.write_text(''.join(keep))
+    # LoadBoard reads <stem>.kicad_pro and SaveBoard writes it next to --output; a ripped copy
+    # without its project loads default net classes and overwrites the candidate's project.
+    project=Path(output).with_suffix('.kicad_pro');source_project=source.with_suffix('.kicad_pro')
+    if source!=Path(board_path):
+        if not project.exists():raise ValueError(f'{project} missing: net classes unknown')
+        source_project.write_bytes(project.read_bytes())
     board=pcbnew.LoadBoard(str(source))
     for row in proposal['copper']:
         net=board.FindNet(row['net'])
@@ -38,7 +44,7 @@ def apply(board_path,proposal,output):
             item.SetPosition(pcbnew.VECTOR2I(*row['at_nm']));item.SetWidth(row['diameter_nm']);item.SetDrill(row['drill_nm'])
         item.SetNetCode(net.GetNetCode());item.SetUuid(pcbnew.KIID(row['uuid']));board.Add(item)
     pcbnew.SaveBoard(str(output),board)
-    if source!=Path(board_path):source.unlink()
+    if source!=Path(board_path):source.unlink();source_project.unlink()
 
 def main():
     p=argparse.ArgumentParser();p.add_argument('board',type=Path);p.add_argument('proposal',type=Path);p.add_argument('--output',type=Path,required=True);a=p.parse_args()
