@@ -45,6 +45,7 @@ class Raster:
         self.label=np.zeros((n,self.h,self.w),np.int32)
         self.hole=np.zeros((self.h,self.w),bool);self.smd=np.zeros((self.h,self.w),bool)
         grow=grow or {}
+        self.dump=dump;self.grow=grow;self.route_holes=[]
         for p in dump['pads']:
             value=self.net_id.get(p['net'],-1) if p['net'] else -1
             if p['poly']:
@@ -55,12 +56,9 @@ class Raster:
                 m,sl=self.disc(p['xy'],p['drill']/2);self.hole[sl]|=m
                 if p['npth']:
                     for li in range(n):self.label[li][sl][m]=-1
-        for t in dump['tracks']:
-            if t['uuid'] in skip:continue
-            self.segment(self.layers.index(t['layer']),t['a'],t['b'],t['width']+2e6*grow.get(t['net'],0),self.net_id[t['net']])
-        for v in dump['vias']:
-            if v['uuid'] in skip:continue
-            self.via(v['xy'],v['diameter']+2e6*grow.get(v['net'],0),v['drill'],self.net_id[v['net']])
+        # Immutable terminals and drills must survive every route transaction.
+        self.fixed_label=self.label.copy();self.fixed_hole=self.hole.copy()
+        self.rebuild_routes(skip)
         gx,gy=self.centres()
         ring=shapely.polygonize([shapely.LineString([e[:2],e[2:]]) for e in dump['edges']])
         inside=shapely.contains_xy(shapely.union_all(ring),gx,gy) if not ring.is_empty else np.zeros_like(gx,bool)
@@ -81,6 +79,39 @@ class Raster:
         self.d_keep_track=[ndimage.distance_transform_edt(~m)*res for m in self.keep_track]
         self.d_keep_via=ndimage.distance_transform_edt(~self.keep_via)*res
         self.d_smd=ndimage.distance_transform_edt(~self.smd)*res
+
+    def rebuild_routes(self,removed=(),results=(),via_drill=0.3):
+        """Rebuild from surviving objects, never subtract masks which may overlap."""
+        removed=set(removed)
+        self.label[...]=self.fixed_label;self.hole[...]=self.fixed_hole
+        self.route_holes=[]
+        for t in self.dump['tracks']:
+            if t['uuid'] not in removed:
+                self.segment(self.layers.index(t['layer']),t['a'],t['b'],
+                             t['width']+2e6*self.grow.get(t['net'],0),self.net_id[t['net']])
+        for v in self.dump['vias']:
+            if v['uuid'] not in removed:
+                self.via(v['xy'],v['diameter']+2e6*self.grow.get(v['net'],0),v['drill'],self.net_id[v['net']])
+        for result in results:
+            if result['path']:self.add_result(result,via_drill)
+
+    def add_result(self,result,via_drill):
+        """Replay committed proposal occupancy identically after a later rip-up."""
+        path=result['path'];value=self.net_id[result['net']]
+        for i,p in enumerate(path):
+            layer,x,y,through,*neck=p
+            width=result.get('neck_width_nm',result['width_nm']) if neck and neck[0] else result['width_nm']
+            self.segment(self.layers.index(layer),(x,y),(x,y),width+2*self.step,value)
+            if i and path[i-1][0]!=layer and not through:
+                self.via((x,y),result['via_diameter_nm'],via_drill*1e6,value)
+
+    def holes_without(self,nets):
+        """Probe drill occupancy for exactly the removable nets (fixed drills stay)."""
+        holes=self.fixed_hole.copy();nets=set(nets)
+        for value,xy,drill in self.route_holes:
+            if value not in nets:
+                mask,sl=self.disc(xy,drill/2);holes[sl]|=mask
+        return holes
 
     def centres(self,sl=(slice(None),slice(None))):
         ys=np.arange(self.h)[sl[0]];xs=np.arange(self.w)[sl[1]]
@@ -119,6 +150,7 @@ class Raster:
         m,sl=self.disc(xy,diameter/2)
         for li in range(len(self.layers)):self.label[li][sl][m]=value
         h,hs=self.disc(xy,drill/2);self.hole[hs]|=h
+        self.route_holes.append((value,tuple(xy),drill))
 
     def cell(self,x,y):
         return int(round((y-self.y0)/self.step)),int(round((x-self.x0)/self.step))
@@ -293,7 +325,7 @@ def route(dump,nets=(),rip=(),rip_first=False,res=0.1,layer_cost=None,via_cost=3
           hole_clearance=0.25,edge_clearance=0.5,max_expansions=4_000_000,allowed_layers=None,log=print,
           planes=None,signal_via_diameter=None,grow=None,window_mm=12.0,weight=1.0,full_board=False,
           escape_halo_mm=0.0,escape_halo_cost=4.0,fill_guards=None,fill_clearance=0.45,neck_width=None,neck_clearance=None,
-          rrr_rounds=0,rrr_max_rip=4,rrr_soft_cost=12.0,rip_only=None):
+          rrr_rounds=0,rrr_max_rip=4,rrr_soft_cost=12.0,rip_only=None,diagnostics=None):
     """Return (results, removed_uuids). Each result has net, island pad names and a [layer,x,y,through] path or None.
 
     planes maps a net to its plane layer: every island of that net gets a short
@@ -325,6 +357,7 @@ def route(dump,nets=(),rip=(),rip_first=False,res=0.1,layer_cost=None,via_cost=3
 
     def search(N,w,vd,src,goal,goal_is_via,pad_window,exclude=(),soft=None):
         """soft: net ids whose copper is passable at a cost; returns (path, expanded) or, with soft, (path, blockers)."""
+        holes=raster.hole if soft is None else raster.holes_without(soft)
         extra=int(round(pad_window/res));guard=int(round(1.5/res))
         boxes=[np.argwhere(src.any(0))]
         if not goal_is_via:boxes.append(np.argwhere(src.any(0)|goal.any(0)))
@@ -341,12 +374,15 @@ def route(dump,nets=(),rip=(),rip_first=False,res=0.1,layer_cost=None,via_cost=3
             soft_near=[None]*L;soft_any=np.zeros((g1-g0,h1-h0),bool)
             for li in range(L):
                 lab=raster.label[li][g0:g1,h0:h1];foreign=(lab!=0)&(lab!=N)
+                fixed=raster.fixed_label[li][g0:g1,h0:h1]
+                fixed_foreign=(fixed!=0)&(fixed!=N)
                 if soft is not None:
-                    sm=np.isin(lab,soft)&foreign;foreign&=~sm;soft_any|=sm
+                    sm=np.isin(lab,soft)&foreign&~fixed_foreign;foreign&=~sm;soft_any|=sm
                     if li in allowed and li not in exclude and sm.any():
                         dsoft,idx=ndimage.distance_transform_edt(~sm,return_indices=True)
                         near=(dsoft[inner]*res<clearance+w/2+margin)
                         soft_near[li]=np.where(near,lab[idx[0],idx[1]][inner],0)
+                foreign|=fixed_foreign
                 foreign_any|=foreign
                 if li in allowed and li not in exclude:
                     dist=ndimage.distance_transform_edt(~foreign)[inner]*res
@@ -359,7 +395,7 @@ def route(dump,nets=(),rip=(),rip_first=False,res=0.1,layer_cost=None,via_cost=3
                         free[li]=np.where(raster.neck[win],nfree,free[li])
             vr=vd/2
             dist_any=ndimage.distance_transform_edt(~foreign_any)[inner]*res
-            d_hole=ndimage.distance_transform_edt(~raster.hole[g0:g1,h0:h1])[inner]*res
+            d_hole=ndimage.distance_transform_edt(~holes[g0:g1,h0:h1])[inner]*res
             via_ok=((dist_any>=clearance+vr+margin)&(raster.d_edge[win]>=edge_clearance+vr+margin)&(raster.d_keep_via[win]>=vr+margin)
                     &(d_hole>=vr+hole_clearance+margin)&(raster.d_smd[win]>=vr+margin))
             s=src[:,y0:y1,x0:x1]
@@ -403,12 +439,7 @@ def route(dump,nets=(),rip=(),rip_first=False,res=0.1,layer_cost=None,via_cost=3
         log(f'PATH {net} {names} cells {len(path)} vias {vias}')
         results.append({'net':net,'island':names,'path':out,'width_nm':int(round(w*1e6)),'via_diameter_nm':int(round(vd*1e6)),
                         **({'neck_width_nm':int(round(neck_width*1e6))} if neck else {})})
-        for i,(l,y,x) in enumerate(path):
-            px,py=raster.point(y,x)
-            raster.segment(l,(px,py),(px,py),(neck_width if neck and raster.neck[y,x] else w)*1e6+2*raster.step,N)
-            if i and path[i-1][0]!=l and not out[i][3]:raster.via((px,py),vd*1e6,via_drill*1e6,N)
-        if end_via:
-            px,py=raster.point(path[-1][1],path[-1][2]);raster.via((px,py),vd*1e6,via_drill*1e6,N)
+        raster.add_result(results[-1],via_drill)
 
     # Fill guards: a signal path may share a plane-fill layer only if the fill keeps
     # every plane via/pad in as few connected regions as before.
@@ -433,6 +464,10 @@ def route(dump,nets=(),rip=(),rip_first=False,res=0.1,layer_cost=None,via_cost=3
         rail=net in rail_nets or net in planes
         return (rail_width if rail else signal_width),(via_diameter if rail or not signal_via_diameter else signal_via_diameter)
     failed=[]
+    last_failure={'reason':'unknown'}
+    def event(net,names,reason,**details):
+        if diagnostics is not None:
+            diagnostics.append({'net':net,'endpoints':names,'reason':reason,**details})
 
     def route_one(net,src,reached,names):
         N=raster.net_id[net];w,vd=net_params(net)
@@ -440,7 +475,9 @@ def route(dump,nets=(),rip=(),rip_first=False,res=0.1,layer_cost=None,via_cost=3
         if path is not None and guards and not fill_ok(path,w,vd,src,reached):
             path,_=search(N,w,vd,src,reached,False,window_mm,exclude=tuple(guards))
             if path is not None and not fill_ok(path,w,vd,src,reached):path=None
-        if path is None:return False
+        if path is None:
+            last_failure['reason']='unknown'
+            return False
         i0=max(i for i,(l,y,x) in enumerate(path) if src[l,y,x])
         i1=min(i for i,(l,y,x) in enumerate(path) if reached[l,y,x] and i>=i0)
         path=path[i0:i1+1]
@@ -471,6 +508,7 @@ def route(dump,nets=(),rip=(),rip_first=False,res=0.1,layer_cost=None,via_cost=3
                 comp[find(gi)]=find(j);continue
             ok=False
             if record:
+                event(net,name(g),last_failure['reason'],phase='route',max_expansions=max_expansions,window_mm=window_mm)
                 log(f'NOPATH {net} {name(g)}');results.append({'net':net,'island':name(g),'path':None});failed.append((net,g,groups[main]))
         return ok
 
@@ -497,29 +535,32 @@ def route(dump,nets=(),rip=(),rip_first=False,res=0.1,layer_cost=None,via_cost=3
                 probe,blockers=search(N,w,vd,src,reached,False,window_mm,soft=sorted(rippable-{N}))
                 if probe is None or not blockers or len(blockers)>rrr_max_rip:
                     log(f"RRR-SKIP {net} {name(g)} {'no probe path' if probe is None else f'{len(blockers)} blockers'}")
+                    reason='unknown' if probe is None else ('victim_budget' if len(blockers)>rrr_max_rip else 'no_removable_blocker')
+                    event(net,name(g),reason,phase='probe',victims=sorted(id_net[b] for b in blockers) if probe is not None else [],
+                          victim_budget=rrr_max_rip,shard_restricted=rip_only is not None)
                     failed.append((net,g,main_group));continue
-                snapshot=(raster.label.copy(),raster.hole.copy(),[dict(r) for r in results],set(removed),{li:(fg.region.copy(),fg.base,fg.blobs,fg.n) for li,fg in fill_count.items()})
-                victims=[id_net[b] for b in blockers]
-                for b in blockers:
-                    raster.label[raster.label==b]=0
-                    for pad in pads_by_net[id_net[b]]:
-                        if pad['poly']:
-                            m,sl=raster.polygon(pad['poly'])
-                            for lay in pad['layers']:raster.label[raster.layers.index(lay)][sl][m]=b
+                snapshot=(raster.label.copy(),raster.hole.copy(),[dict(r) for r in results],set(removed),{li:(fg.region.copy(),fg.base,fg.blobs,fg.n) for li,fg in fill_count.items()},list(raster.route_holes))
+                victims=sorted(id_net[b] for b in blockers)
                 results[:]=[r for r in results if r['net'] not in victims]
                 removed|={i['uuid'] for k in ('tracks','vias') for i in dump[k] if i['net'] in victims}
+                raster.rebuild_routes(removed,results,via_drill)
                 # Not `g`: that name holds the island being rerouted.
                 for li,fg in fill_count.items():fg.reset(raster.label[li])
                 ok=route_one(net,src,reached,name(g))
+                failed_victim=None
                 for v in victims:
                     if not ok:break
                     ok=route_groups(v,[[p['uuid']] for p in pads_by_net[v]],record=False)
+                    if not ok:failed_victim=v
                 if ok:
                     results[:]=[r for r in results if not (r['net']==net and r['path'] is None and r['island']==name(g))]
+                    event(net,name(g),'raster_transaction_accepted',phase='transaction',victims=victims,native_status='NOT RUN')
                     fixed+=1;log(f'RRR {net} {name(g)} ripped {victims}')
                 else:
+                    event(net,name(g),'victim_reconnect_failure' if failed_victim else 'unknown',phase='rollback',victims=victims,failed_victim=failed_victim)
                     log(f"RRR-UNDO {net} {name(g)} victims {victims}")
                     raster.label[...]=snapshot[0];raster.hole[...]=snapshot[1];results[:]=snapshot[2];removed.clear();removed|=snapshot[3]
+                    raster.route_holes=snapshot[5]
                     for li,(region,base,blobs,n) in snapshot[4].items():fill_count[li].region=region;fill_count[li].base=base;fill_count[li].blobs=blobs;fill_count[li].n=n
                     failed.append((net,g,main_group))
             log(f'RRR round {rnd+1}: fixed {fixed}, still failing {len(failed)}')
