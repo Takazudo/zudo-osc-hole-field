@@ -1,4 +1,7 @@
 import unittest
+import json,tempfile
+from pathlib import Path
+from unittest.mock import patch
 
 from scripts.pcbgen.route_shards import area_plan, copper_blocks, delta, disjoint, merge_text, plan
 
@@ -16,6 +19,30 @@ def via(uid, net):
 
 def board(*items):
     return '(kicad_pcb\n\t(version 20250000)\n' + ''.join(items) + ')\n'
+
+
+class MergeAcceptanceTests(unittest.TestCase):
+    def test_fresh_copy_drift_or_native_error_cannot_promote(self):
+        from scripts.pcbgen import route_shards,route_jack_grid as driver
+        from scripts.pcbgen.test_grid_router import crossing_board
+        for failure in ('none','connectivity','drc'):
+            with self.subTest(failure=failure),tempfile.TemporaryDirectory() as directory:
+                root=Path(directory);target=root/'boards/osc-jack-left/osc-jack-left.kicad_pcb'
+                target.parent.mkdir(parents=True);original=board(seg(U[0],'A'));target.write_text(original)
+                proposal=root/'delta.json';proposal.write_text(json.dumps(delta(original,board(seg(U[0],'A'),seg(U[1],'B')))))
+                before={**crossing_board(),'open_edges':2}
+                after={**before,'open_edges':1,'islands':{'B':[['b0'],['b1']]}}
+                fresh=after if failure!='connectivity' else {**after,'islands':{'A':[['a0'],['a1']]}}
+                clean={'violations':[],'schematic_parity':[]}
+                drc=clean if failure!='drc' else {'violations':[{'severity':'error','type':'clearance','items':[]}],'schematic_parity':[]}
+                def workspace(board_id,name):
+                    folder=root/name;folder.mkdir();return folder
+                with patch.object(route_shards,'ROOT',root),patch.object(driver,'workspace',side_effect=workspace),patch.object(driver,'check',side_effect=[(clean,before),(clean,after),(drc,fresh)]):
+                    receipt=route_shards.merge('osc-jack-left',[proposal],'test')
+                self.assertEqual(receipt['adopted'],failure=='none')
+                if failure=='none':self.assertIn('copper_replay',receipt)
+                else:self.assertEqual(target.read_text(),original)
+                if failure=='drc':self.assertEqual(receipt['drc_errors'],1)
 
 
 class PlanTest(unittest.TestCase):

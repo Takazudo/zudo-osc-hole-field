@@ -158,7 +158,7 @@ def merge_text(base_text,deltas,reverted=frozenset()):
 
 def merge(board_id,delta_paths,label):
     """Apply every shard delta to the board, gate it natively, and promote it if open edges fall."""
-    from scripts.pcbgen.route_jack_grid import PLANES,workspace,check
+    from scripts.pcbgen.route_jack_grid import PLANES,workspace,check,promotion_gate,connectivity_signature
     board=ROOT/'boards'/board_id/f'{board_id}.kicad_pcb';base_text=board.read_text()
     sha=hashlib.sha256(base_text.encode()).hexdigest()
     deltas=[json.loads(Path(p).read_text()) for p in delta_paths]
@@ -167,8 +167,8 @@ def merge(board_id,delta_paths,label):
     deltas=[d for d in deltas if d['added'] or d['removed']]
     if not deltas:print('no shard changed copper');return None
     start=workspace(board_id,'shards-start');base=start/board.name;shutil.copyfile(board,base)
-    drc,before=check(base)
-    if [v for v in drc['violations'] if v['severity']=='error'] or drc['schematic_parity']:raise RuntimeError('base board not clean')
+    before_drc,before=check(base)
+    if [v for v in before_drc['violations'] if v['severity']=='error'] or before_drc['schematic_parity']:raise RuntimeError('base board not clean')
     lost=sorted(set().union(*map(set,(d['nets'] for d in deltas)))-set().union(*disjoint(deltas)))
     if lost:print(f'{len(lost)} nets claimed by two shards; the later shard loses them: {lost[:10]}')
     added={a['uuid']:a for d in deltas for a in d['added']}
@@ -190,14 +190,29 @@ def merge(board_id,delta_paths,label):
         if not culprits:break
         reverted|=culprits;print(f'merge attempt {attempt+1}: reverting {len(culprits)} nets with failing copper',flush=True)
     else:raise RuntimeError('merged DRC errors persist after reverting nets')
+    fresh=workspace(board_id,'shards-fresh')/board.name;shutil.copyfile(candidate,fresh)
+    fresh_drc,fresh_dump=check(fresh)
+    agreement=connectivity_signature(after)==connectivity_signature(fresh_dump)
+    candidate,drc,after=fresh,fresh_drc,fresh_dump
     receipt={'stage':f'shards-{label}','status':'NATIVE CHECKED DRAFT STAGE','shards':len(deltas),
              'open_edges_before':before['open_edges'],'open_edges_after':after['open_edges'],
              'nets_merged':len(set().union(*disjoint(deltas))-reverted),'nets_reverted':sorted(reverted),'nets_lost_to_overlap':lost,
-             'copper_added':sum(a['net'] not in reverted for a in added.values()),'drc_errors':0,
-             'drc_warnings':sum(v['severity']=='warning' for v in drc['violations']),'parity':0,
+             'copper_added':sum(a['net'] not in reverted for a in added.values()),'drc_errors':sum(v['severity']=='error' for v in drc['violations']),
+             'drc_warnings':sum(v['severity']=='warning' for v in drc['violations']),'parity':len(drc['schematic_parity']),
              'open_by_net_after':{n:len(g)-1 for n,g in after['islands'].items()}}
-    receipt['adopted']=receipt['open_edges_after']<receipt['open_edges_before']
+    receipt.update(promotion_gate(before,after,before_drc,drc))
+    if receipt['native_errors']:receipt['status']='REJECTED: fresh native DRC/parity errors'
+    receipt['independent_connectivity_agrees']=agreement
+    if not agreement:
+        receipt['adopted']=False;receipt['rejection_reason']='independent_connectivity_changed'
+    receipt['input_board_sha256']=sha
+    receipt['candidate_board_sha256']=hashlib.sha256(candidate.read_bytes()).hexdigest()
     reports=board.parent/'reports'/'grid-routing';reports.mkdir(parents=True,exist_ok=True)
+    if receipt['adopted']:
+        replay_path=reports/f'shards-{label}-copper.json'
+        replay_path.write_text(json.dumps(delta(base_text,candidate.read_text()),sort_keys=True)+'\n')
+        receipt['copper_replay']={'path':str(replay_path.relative_to(ROOT)),
+                                'sha256':hashlib.sha256(replay_path.read_bytes()).hexdigest(),'base_sha256':sha}
     (reports/f'shards-{label}.json').write_text(json.dumps(receipt,indent=1,sort_keys=True)+'\n')
     print(f"shards-{label}: {receipt['open_edges_before']} -> {receipt['open_edges_after']} open edges",flush=True)
     if receipt['adopted']:shutil.copyfile(candidate,board);print('promoted',board.relative_to(ROOT),flush=True)

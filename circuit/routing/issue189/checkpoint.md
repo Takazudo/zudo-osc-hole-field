@@ -176,3 +176,19 @@ If the benchmark is ineligible, do not dispatch adoption. Inspect its exact
 failed endpoints, victim reconnect failures, plane regressions and new warning
 identities, then change the local method (rail/AGND repair or a source-defined
 circuit-local repair). Do not treat a lower raster or CLI count as adoption.
+
+## Concurrent core result recovered
+
+Run 37775496177 has now finished: aggregate native log 1,509→1,400, but push failed
+because the filled PCB exceeded GitHub's 100 MB limit. Its source branch still
+points to 8315af554132b283e4e6e9b62d76bbfdcea560c0. No other-session branch changed.
+All eight retained shard deltas and the original aggregate receipt are preserved
+under `concurrent-core/`, with verified artifact digests and exact replay commands.
+The replay retains 132,916 original copper objects, removes 29 and adds 1,413.
+It remains **NOT ADOPTED**: AGND worsened 252→272, and current membership/warning
+and independent-copy gates have not checked this recovered candidate.
+
+The shared shard merger now uses those stronger gates too and saves a copper
+replay on adoption. Its tests confirm fresh-copy drift or native error cannot
+replace canonical copper. Focused suite: **105 tests PASS**. No native routing
+completion is claimed from these unit tests or the recovered historical receipt.
