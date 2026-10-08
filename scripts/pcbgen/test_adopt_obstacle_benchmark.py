@@ -1,6 +1,7 @@
 """Fail closed before native work when a candidate or its canonical input changed."""
 import copy,tempfile,unittest
 from pathlib import Path
+from unittest.mock import patch
 from scripts.pcbgen.adopt_obstacle_benchmark import sha,validate_inputs
 
 
@@ -36,3 +37,27 @@ class AdoptionInputTests(unittest.TestCase):
             if field=='status':report['status']='RUNNING'
             else:report['variants']['new']['eligible_for_promotion']=False
             with self.assertRaises(ValueError):validate_inputs(report,self.folder,self.root)
+
+
+class CachePublicationTests(unittest.TestCase):
+    def test_compaction_requires_native_equivalence(self):
+        from scripts.pcbgen import adopt_obstacle_benchmark as adopt
+        for change in ('none','connectivity','warning','geometry'):
+            with self.subTest(change=change),tempfile.TemporaryDirectory() as directory:
+                root=Path(directory);checked=root/'osc-core.kicad_pcb'
+                checked.write_text('(kicad_pcb (zone (net "A") (filled_polygon (pts '+('(xy 1 1)'*100)+'))))')
+                dump={'open_edges':1,'islands':{'A':[['p'],['q']]},'pads':[{'uuid':'p','xy':[0,0]}],'tracks':[],'vias':[]}
+                after=copy.deepcopy(dump);drc={'violations':[],'schematic_parity':[]};after_drc=copy.deepcopy(drc)
+                if change=='connectivity':after['islands']={'A':[['p','q'],['r']]}
+                if change=='warning':after_drc['violations']=[{'type':'clearance','severity':'warning','items':[]}]
+                if change=='geometry':after['pads'][0]['xy']=[1,0]
+                def workspace(*args):
+                    folder=root/'compact';folder.mkdir();return folder
+                with patch.object(adopt.driver,'workspace',side_effect=workspace),patch.object(adopt,'checked_copy',return_value=(checked,after_drc,after)) as native:
+                    if change=='none':
+                        published,receipt=adopt.publication_copy('osc-core',checked,drc,dump,limit=100)
+                        self.assertLess(published.stat().st_size,100)
+                        self.assertEqual(receipt['derived_zone_cache_fields_removed'],1)
+                    else:
+                        with self.assertRaises(adopt.driver.StageRejected):adopt.publication_copy('osc-core',checked,drc,dump,limit=100)
+                    native.assert_called_once()

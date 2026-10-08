@@ -1,0 +1,13 @@
+......F.................
+======================================================================
+FAIL: test_repeated_stage_different_geometry_has_different_uuids (scripts.pcbgen.test_grid_router.GridRouterTests.test_repeated_stage_different_geometry_has_different_uuids)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/zudo-osc-hole-field/scripts/pcbgen/test_grid_router.py", line 83, in test_repeated_stage_different_geometry_has_different_uuids
+    self.assertNotEqual(first,copper_rows([changed],'fixture','repeated-stage')[0][0]['uuid'])
+AssertionError: '4df0b460-e7f1-5c3c-9ee1-88477a286eac' == '4df0b460-e7f1-5c3c-9ee1-88477a286eac'
+
+----------------------------------------------------------------------
+Ran 24 tests in 0.581s
+
+FAILED (failures=1)

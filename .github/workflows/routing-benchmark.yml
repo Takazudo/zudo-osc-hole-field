@@ -1,5 +1,5 @@
 name: Routing obstacle benchmark
-run-name: Issue 189 identical-input obstacle benchmark
+run-name: "Issue 189 ${{ inputs.recover_core && 'core return repair' || inputs.adopt_run && 'copper adoption' || 'same-input benchmark' }} — ${{ inputs.board }}"
 on:
   workflow_dispatch:
     inputs:
@@ -11,6 +11,10 @@ on:
         description: Optional completed benchmark run ID to replay and natively recheck before adoption
         type: string
         required: false
+      recover_core:
+        description: Replay the preserved core aggregate and repair split AGND before the full native gate
+        type: boolean
+        default: false
 permissions:
   contents: read
 concurrency:
@@ -18,7 +22,7 @@ concurrency:
   cancel-in-progress: false
 jobs:
   benchmark:
-    if: inputs.adopt_run == ''
+    if: inputs.adopt_run == '' && !inputs.recover_core
     runs-on: ubuntu-latest
     timeout-minutes: 355
     strategy:
@@ -57,7 +61,7 @@ jobs:
           if-no-files-found: error
           include-hidden-files: true
   adopt:
-    if: inputs.adopt_run != ''
+    if: inputs.adopt_run != '' || inputs.recover_core
     runs-on: ubuntu-latest
     timeout-minutes: 355
     permissions:
@@ -69,32 +73,47 @@ jobs:
     env:
       BOARD: ${{ inputs.board }}
       BENCHMARK_RUN: ${{ inputs.adopt_run }}
+      RECOVER_CORE: ${{ inputs.recover_core }}
     steps:
       - name: Restrict adoption to the isolated issue branch
         run: |
           [[ $GITHUB_REF_NAME == agent-fix/189-* ]] || exit 1
-          [[ $BENCHMARK_RUN =~ ^[0-9]+$ ]] || exit 1
+          if [[ $RECOVER_CORE == true ]]; then
+            [[ $BOARD == osc-core && -z $BENCHMARK_RUN ]] || exit 1
+          else
+            [[ $BENCHMARK_RUN =~ ^[0-9]+$ ]] || exit 1
+          fi
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
       - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97
         with:
           python-version: '3.10'
       - run: python -m pip install -r scripts/pcbgen/numerical-requirements.txt
       - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c
+        if: inputs.recover_core == false
         with:
           name: obstacle-benchmark-${{ inputs.board }}-${{ inputs.adopt_run }}
           run-id: ${{ inputs.adopt_run }}
           github-token: ${{ secrets.GITHUB_TOKEN }}
           path: .circuit-cache/benchmark-download
       - name: Replay eligible copper and recheck native connectivity
+        if: inputs.recover_core == false
         run: |
           set -o pipefail
           timeout --signal=INT --kill-after=2m 335m python -u scripts/pcbgen/adopt_obstacle_benchmark.py \
             ".circuit-cache/benchmark-download/issue189-$BOARD" --promote \
             2>&1 | tee .circuit-cache/adoption.log
+      - name: Recover preserved core copper and repair split returns
+        if: inputs.recover_core
+        run: |
+          mkdir -p .circuit-cache
+          set -o pipefail
+          timeout --signal=INT --kill-after=2m 335m python -u scripts/pcbgen/route_shards.py merge osc-core \
+            circuit/routing/issue189/concurrent-core/aggregate-copper.json \
+            --label issue189-recovered --repair-ground 2>&1 | tee .circuit-cache/adoption.log
       - name: Push accepted draft copper with replay and native receipts
         run: |
           message=$(mktemp)
-          echo "Adopt native-rechecked $BOARD benchmark copper from run $BENCHMARK_RUN" > "$message"
+          echo "Record native-rechecked $BOARD copper (benchmark $BENCHMARK_RUN, recovered core $RECOVER_CORE)" > "$message"
           bash scripts/pcbgen/ci_push_route.sh "$BOARD" "$GITHUB_REF_NAME" "$message"
       - name: Retain native acceptance and rejected candidates
         if: always()
@@ -105,5 +124,7 @@ jobs:
             .circuit-cache/*-grid-189-*/
             .circuit-cache/*-189-adoption.json
             .circuit-cache/adoption.log
+            .circuit-cache/osc-core-grid-shards-*/
+            boards/${{ inputs.board }}/reports/grid-routing/
           include-hidden-files: true
           retention-days: 30

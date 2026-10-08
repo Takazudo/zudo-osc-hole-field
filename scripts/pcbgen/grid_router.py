@@ -957,16 +957,18 @@ def copper_rows(results,board_id,tag,via_diameter=0.7,via_drill=0.3):
         for i,(p,q) in enumerate(zip(pts,pts[1:])):
             if p[0]==q[0]:
                 if p[1:3]==q[1:3]:continue
-                uid=stable_uuid(board_id,tag,f'{key}:track:{i}')
                 # Narrow inside a neck-down area: a segment with either end there is drawn at the neck width.
                 width=r['neck_width_nm'] if 'neck_width_nm' in r and (p[4:5]==[1] or q[4:5]==[1]) else r['width_nm']
-                rows.append({'kind':'segment','uuid':uid,'net':r['net'],'start_nm':p[1:3],'end_nm':q[1:3],'width_nm':width,'layer':p[0]})
+                row={'kind':'segment','net':r['net'],'start_nm':p[1:3],'end_nm':q[1:3],'width_nm':width,'layer':p[0]}
             else:
                 if q[3] or (r['net'],q[1],q[2]) in seen:continue
                 seen.add((r['net'],q[1],q[2]))
-                uid=stable_uuid(board_id,tag,f'{key}:via:{i}')
-                rows.append({'kind':'via','uuid':uid,'net':r['net'],'at_nm':q[1:3],'diameter_nm':r.get('via_diameter_nm',int(round(via_diameter*1e6))),
-                             'drill_nm':int(round(via_drill*1e6)),'layers':['F.Cu','B.Cu'],'locked':False})
+                row={'kind':'via','net':r['net'],'at_nm':q[1:3],'diameter_nm':r.get('via_diameter_nm',int(round(via_diameter*1e6))),
+                     'drill_nm':int(round(via_drill*1e6)),'layers':['F.Cu','B.Cu'],'locked':False}
+            # Stage names and result indices repeat across sessions. Bind new
+            # identities to their geometry so another run cannot alias old copper.
+            uid=stable_uuid(board_id,tag,f'{key}:{i}:'+json.dumps(row,sort_keys=True,separators=(',',':')))
+            row['uuid']=uid;rows.append(row)
             ids.append(uid)
         links.append({'net':r['net'],'island':r['island'],'copper_uuids':ids})
     return rows,links

@@ -78,9 +78,17 @@ The earlier field-solver ground/current extraction is parked and is not a routin
 
 ## Issue #189 implementation checkpoint
 
-[Draft PR #190](https://github.com/Takazudo/zudo-osc-hole-field/pull/190) corrects
-reproduced rip-up obstacle defects and adds an identical-input native comparison.
-No routing gain is inferred from the synthetic regressions. The current board
-and copper remain preserved; benchmark receipts and continuation commands are
-tracked in `circuit/routing/issue189/`. Routing completion and hardware
-qualification remain separate, open obligations.
+[Draft PR #190](https://github.com/Takazudo/zudo-osc-hole-field/pull/190) preserves
+the canonical 1,509-edge core while its identical-input obstacle comparison runs
+in [37824207235](https://github.com/Takazudo/zudo-osc-hole-field/actions/runs/37824207235).
+No unfinished job result is counted as progress.
+
+The separate eight-shard run 37775496177 reached a reported 1,400 edges but worsened
+AGND from 252 to 272 and failed to push its oversized filled board. Its exact
+copper deltas and artifact digests are preserved under
+`circuit/routing/issue189/concurrent-core/`; they are **not adopted**. The next
+native pilot must repair affected returns, retain connected pad groups, reject
+new warnings and agree after independent reload. A cache-free publication path
+is prepared for the storage limit, but requires native refill equivalence before
+use. No zone definition, physical constraint or successful copper is discarded.
+#189 remains open; source replay is not hardware qualification.

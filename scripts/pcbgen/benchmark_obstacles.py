@@ -11,6 +11,7 @@ ROOT=Path(__file__).resolve().parents[2]
 sys.path.insert(0,str(ROOT))
 from scripts.pcbgen import route_jack_grid as driver
 from scripts.pcbgen import grid_router
+from scripts.pcbgen.copper_identity import retention
 
 
 def sha(path):return hashlib.sha256(Path(path).read_bytes()).hexdigest()
@@ -104,10 +105,7 @@ def main():
                 result['new_warning_identities']=[w for w in warning_ids(after_drc) if w not in warning_ids(drc)]
                 result['native_gain']=before['open_edges']-after['open_edges']
                 result['eligible_for_promotion']=result['native_gain']>0 and not result['splits'] and not result['new_warning_identities']
-                original={i['uuid']:i for k in ('tracks','vias') for i in before[k]};remaining={i['uuid']:i for k in ('tracks','vias') for i in after[k]}
-                result['retained_copper']={'before':len(original),'after':len(remaining),'identical':sum(remaining.get(u)==i for u,i in original.items()),
-                    'removed_uuids':sorted(set(original)-set(remaining)),'added_uuids':sorted(set(remaining)-set(original)),
-                    'changed_existing_uuids':sorted(u for u in set(original)&set(remaining) if original[u]!=remaining[u])}
+                result['retained_copper']=retention(before,after)
                 shutil.copytree(candidate.parent,out/label/'native',dirs_exist_ok=True)
             else:result['eligible_for_promotion']=False
             result['accepted_progress_per_hour']=(result.get('native_gain',0)*3600/result['elapsed_seconds']) if result['eligible_for_promotion'] else 0

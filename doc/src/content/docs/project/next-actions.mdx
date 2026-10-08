@@ -81,8 +81,12 @@ JL/JR/core completion without changing the panel or discarding successful copper
 [Draft PR #190](https://github.com/Takazudo/zudo-osc-hole-field/pull/190) reproduces
 and fixes stale removed-via drill obstacles and soft probes through fixed pads.
 Its bounded old/new benchmark uses identical saved native inputs and preserves
-negative results. Router tests do not establish board-level improvement; retain
-the current routed candidates until fresh native transactions pass. The resumable
-implementation note is `circuit/routing/issue189/checkpoint.md` in the repository.
+negative results. JL's independently replayed native transaction is adopted at
+139 edges; JR remains at 162 after a zero-gain comparison and three negative
+local probes. Core remains at its canonical 1,509 while the corrected comparison
+runs; the recovered 1,400-edge candidate needs AGND repair and is not adopted.
+Continue with the exact unresolved endpoints and source-defined local repairs,
+not unchanged larger rerouting budgets. The resumable implementation note is
+`circuit/routing/issue189/checkpoint.md` in the repository.
 Issue #189 stays open until all routing and regression criteria are met. Existing
 protection, mechanical, electrical and manufacturing gates remain open.

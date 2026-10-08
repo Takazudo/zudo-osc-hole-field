@@ -10,6 +10,7 @@ from pathlib import Path
 import pcbnew,sys
 sys.path.insert(0,str(Path(__file__).resolve().parents[2]))
 from scripts.pcbgen.uuid_tools import top_level_spans,UUID_RE
+from scripts.pcbgen.copper_identity import reject_new_uuid_collisions
 
 def apply(board_path,proposal,output):
     if hashlib.sha256(Path(board_path).read_bytes()).hexdigest()!=proposal['board_sha256']:raise ValueError('proposal was made for a different board')
@@ -33,6 +34,7 @@ def apply(board_path,proposal,output):
         if not project.exists():raise ValueError(f'{project} missing: net classes unknown')
         source_project.write_bytes(project.read_bytes())
     board=pcbnew.LoadBoard(str(source))
+    reject_new_uuid_collisions((t.m_Uuid.AsString() for t in board.GetTracks()),proposal['copper'])
     for row in proposal['copper']:
         net=board.FindNet(row['net'])
         if net is None:raise ValueError('net absent: '+row['net'])

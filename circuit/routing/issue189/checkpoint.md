@@ -1,194 +1,165 @@
-# Issue 189 implementation checkpoint
+# Issue 189 resumable implementation checkpoint
 
-Unvalidated draft. Issue #189 remains open. No fabrication, release or hardware qualification.
+**Incomplete, unvalidated draft. Keep #189 open.** No fabrication, release,
+merge, or physical/electrical qualification. Snapshot: 2026-10-08 20:00 UTC.
+Branch `agent-fix/189-obstacle-transactions`, draft PR #190. Last published head
+before this checkpoint: `5932578181ca9fa88991ae5067d6ec1ac6ed6f86`.
+Main remains `1fe06ad50248d6434876fbf2bd6e32e1bfbb13bb`.
 
-## Frozen baseline and plan
+## Current accepted copper
 
-Remote main refreshed at `1fe06ad50248d6434876fbf2bd6e32e1bfbb13bb` on 2026-10-08.
-No open PRs at initial inspection. Core run 37775496177 remained in aggregation
-(one successful shard, seven failures); no result adopted from that concurrent branch.
-`input-hashes.json` identifies 251 board/project/rule/schematic/library-context and fixed-input files.
-All remained byte-identical after attempted initial regeneration.
+| Board | Native open edges | Signal | +12V | -12V | +5V | AGND | Native errors/parity |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: | --- |
+| JL | 139 | 108 | 3 | 5 | 0 | 23 | 0 / 0 |
+| JR | 162 | 128 | 0 | 5 | 0 | 29 | 0 / 0 |
+| Core | 1509 | See baseline | See baseline | See baseline | See baseline | 252 | 0 / 0 |
 
-1. Reproduce H1/H2 before changes, then fix geometry ownership and transaction replay.
-2. Compare old/new on identical saved native inputs: ten deterministic signal nets
-   per JL/JR/core, short stranded neighbours, long nets and high-island-count nets.
-   One rip-up round, four victim nets, 100,000 expansions per search, 0.1 mm grid.
-   Minimum useful progress is one native edge closed without pad-membership splits
-   or new warning identities. Do not repeat two negligible comparisons unchanged.
-3. Retain native-accepted local proposals and continue diagnosed hotspot repair,
-   including rail/AGND obligations. Do not promote merely on raster success.
-4. Recheck P/EL/octaves, aggregate source regeneration and integrated CI. The goal
-   remains JL/JR/core zero native open edges, not just a router fix.
+Core's single-refill CLI report of 499 is a capped report, not the complete native
+connectivity count. Read the full native dump. Completion requires all remaining
+JL/JR/core connectivity obligations plus the issue's verification criteria.
 
-## Reproduction and implementation
+JL adoption run **37826672368** passed independent native replay and committed
+`e0efa3152f01bd343eb8597cedeb146d2d0ae4f3`. Canonical JL SHA256:
+`09745a4e0d04dbfc7c1af6fcffb65430034d63e21434d2240f41944daba5607c`.
+It retained **32667 physical copper objects**, removed 78 and added 117;
+29946 tracks + 2838 vias remain. Eleven pre-existing duplicated UUIDs explain
+why the original benchmark's unique-ID metric was 32656, not 32667. Full object
+multiplicity is now checked. No legacy IDs were renumbered. All 1099 footprint
+blocks, setup/outline, 128 source zone definitions (excluding derived fill caches),
+and 250 other frozen context files including fixed panel requirements are unchanged.
+See `jl-preservation.json` and `jl-retention-audit.json`.
 
-`hypotheses-before.txt`: both regression assertions fail on unchanged main.
-H1: the removed via remains in the transaction's hole mask.
-H2: the soft search marks a fixed foreign terminal traversable.
+JR retains all 50311 original copper objects (47236 tracks, 3075 vias). Its board
+SHA256 remains `3d9bfccb3e201756fb7a32847f4b3c754f1a92bf22315115e150c239dbcc7f7e`.
+Core remains SHA256 `34955f1f1ca3a31d897e54d890f4d2eac1877aacc828961624226366bf3e5382`.
 
-The raster now separates fixed terminal/drill ownership, rebuilds route occupancy
-from surviving source objects plus committed result paths, and snapshots/restores
-removable drill records on rollback. Fixed PTH/NPTH holes and overlapping surviving
-vias are retained. Soft searches keep foreign pads hard and soften only routing
-drills/copper. Victim ordering is deterministic. Structured diagnostics explicitly
-use `unknown` where a specific geometric cause is not established.
+## H1/H2 and implementation
 
-Native acceptance remains mandatory; these tests prove raster behavior only.
-The benchmark additionally rejects lost pad-component membership even when totals
-improve, records warnings by type/item identities, and reports retained copper UUIDs.
-It does not modify canonical boards. Any eligible candidate still needs review of
-proposal/source replay and promotion on this isolated branch.
+`hypotheses-before.txt` records two failures against unchanged main:
+H1 left removed routing-via drills in the hole mask; H2 softened fixed foreign
+terminals. Regression tests now pass. Raster transactions distinguish fixed
+terminal/drill ownership, surviving removable objects and committed paths;
+rollback restores all occupancy and fill guards. Soft probes keep fixed foreign
+pads and drills hard. Victim order is deterministic. Diagnostic causes are
+explicit or `unknown`, never inferred merely from an exhausted search.
 
-## Environment and checks
+Native acceptance requires zero rule/parity errors, strict edge improvement,
+no previous connected pad-group splits, no new warning identities, three settled
+complete island-membership passes, and an independent saved-copy agreement.
+Accepted copper has a base-hash-bound replay. New UUID collisions are rejected;
+legacy duplicate IDs cannot silently collapse geometry in comparisons or deltas.
 
-- Initial `pnpm circuit:check`: PASS. Manual inventory, 68 lines, zero declared
-  placements; no schematic/placement binding; pin-asset check performed.
-- Existing focused suite: 30 tests PASS before edits.
-- H1/H2 tests: 2 expected failures before edits; corrected regressions and focused
-  suite pass. Additional fixture/gate tests are in the same Python test discovery.
-- Initial aggregate regeneration: BLOCKED at pinned KiCad startup, exit 1.
-  Docker pull exhausted the 32 GB overlay; no container started. Only this session's
-  unused image was removed to recover space. No tracked regeneration drift.
-- Local native KiCad is 9.0.2 and was not used for acceptance. Native JL/JR/core,
-  P/EL/octave checks are NOT RUN locally. CI uses the pinned 10.0.6 wrapper.
-- Initial personal-context loading was blocked by an automatic review reporting
-  `/root/.codex`. After readiness was refreshed, both ordinary and escalated HOME
-  checks returned `/home/agent`; the exact loader was approved and its entire
-  stdout consumed. Snapshot: `a4fd2a5bdfd2f137dce3bd5cc2af1d593d85ce4971449fe4fd163db0690d6b94`.
-  Runtime bridge restoration succeeded separately. Explicit loading does not prove
-  native host discovery or delivery via a saved environment startup field.
+## Identical-input benchmark
+
+Both variants use one frozen independently rechecked native input, pinned native
+C A*, ten deterministic signal nets (short/long/high-island), 0.1 mm grid,
+100000 expansions, one rip-up round, four victims, unchanged electrical rules.
+The original exact result JSONs are preserved; corrected physical-object metrics
+are separate retention audits, so result hashes remain valid.
+
+| Board/run | Old native edges / stage seconds | New native edges / stage seconds | Useful accepted edges/hour |
+| --- | --- | --- | ---: |
+| JL / 37824198833 | 140→140 / 325.5136 | 140→139 / 328.8692 | 10.9466 |
+| JR / 37824203279 | 162→162 / 327.2931 | 162→162 / 321.9534 | 0 |
+| Core / 37824207235 | RUNNING | RUNNING | Not known |
+
+JL routing-only times: 18.0550 / 24.3133 s; JR: 17.3206 / 35.0349 s.
+Baseline native checks: JL334.0319 s, JR319.2444 s. These are bounded single-input
+samples, not a broad speed claim. RSS measures Python only, not host/native peak.
+`benchmark-artifacts.json` records artifact/result hashes and IDs. Core run uses
+source `ba3aaba0bf651f3934904836737529bd0518241d`; do not duplicate it.
+
+JL bounded follow-on **37828529257** finished 139→139 with zero added/removed
+copper; its negative receipt is committed at 5932578. JR's three changed-method
+local probes also produced no copper: finer-grid fill-guard rejection, protected
+victim reconnect failure, and B.Cu-only no-path. See `jr-probes/README.md` for exact
+inputs, commands and negatives. Native checks were NOT RUN for those empty
+proposals. Stop these configurations; do not merely increase global budgets.
+
+## Recovered concurrent core work
+
+Separate branch `agent-fix/core-rrr-escalate` remains
+`8315af554132b283e4e6e9b62d76bbfdcea560c0`, untouched. Run37775496177 finished with
+seven failed shards, but retained partial deltas from all eight. The aggregate
+failed to push its 100.11 MB filled board. All artifact digests were verified;
+exact replay, original receipt and source deltas are under `concurrent-core/`.
+
+The initial candidate1390 had failing copper; reverting eight nets produced1400.
+This was **not** fresh-copy drift. The final historical native receipt had zero
+rule/parity errors but AGND252→272; it is **NOT ADOPTED** under current membership
+and warning gates. It adds1413/removes29 objects and retains132924 physical
+objects (132916 unique UUIDs; eight legacy duplicate IDs).
+
+Prepared recovery mode replays this exact aggregate, tries the existing AGND
+stitching routine, then requires current settled/fresh native gates. This mode is
+**NOT RUN**. Rejected proposals are retained. If a native-accepted board exceeds
+95 MiB, publication removes only derived zone-fill caches, then requires native
+refill equality of connectivity, warning identities and all pad/copper geometry.
+The local cache-removal probe shrank104475412→49724128 bytes, but its native
+refill equivalence is **NOT RUN** (`core-cache-probe.json`). No LFS or canonical
+cache stripping has occurred.
+
+## Verification and environment
+
+Full CI **37825997275** at `19f1a9c181da76a6ff1509ff1bb1d2023e14ab9f` passed:
+1211 Python tests, native fixtures, aggregate regeneration, documentation/site,
+JL/JR/core native DRC/parity gates, P/EL and all five octave checks.
+See `ci-19f1a9c.json`. This predates JL adoption and the later collision/cache/core
+recovery changes; final integrated native CI is still required.
+
+Current focused routing suite: **114 tests PASS**, including H1/H2, rollback,
+complete membership/fresh-copy rejection, duplicate IDs, native cache-equivalence
+rejection, and recovered-return gating. `pnpm check`, guarded `pnpm build`,
+`pnpm check:site`, and `git diff --check` pass; the site scanner's one historical
+workbench link remains explicitly allowlisted. No test or requirement weakened.
+
+Local KiCad9.0.2 is not the required native oracle. Pulling pinned KiCad10.0.6
+exhausted this32GB overlay; only this session's unused image was removed. Native
+acceptance therefore runs in CI. Initial all-repository local Python discovery
+stopped at an image-dependent fixture; it was not claimed passed locally.
+
+At19:35UTC `gh` began returning401 Bad credentials; Git push could not obtain
+credentials, including the exact supported escalation. GitHub connector reads
+and branch APIs still work, but it exposes no workflow-dispatch action. Credentials recovered after environment restart at19:59UTC; authenticated reads
+and git fetch now succeed. Workspace, staged files and prior personal context
+survived. The interrupted blob upload never advanced the remote branch. Normal
+Git publication and workflow dispatch can resume; do not substitute KiCad9 acceptance.
+
+Personal startup context loaded completely once; do not rerun in this chat.
+Snapshot `a4fd2a5bdfd2f137dce3bd5cc2af1d593d85ce4971449fe4fd163db0690d6b94`.
+Runtime bridge restoration succeeded separately. This does not prove native
+host discovery or delivery through a saved environment startup field.
 
 ## Exact continuation
 
-```sh
-git fetch origin
-git switch agent-fix/189-obstacle-transactions
-python3 -m venv .circuit-cache/route-venv
-.circuit-cache/route-venv/bin/pip install -r scripts/pcbgen/numerical-requirements.txt
-.circuit-cache/route-venv/bin/python -m unittest scripts.pcbgen.test_obstacle_transactions scripts.pcbgen.test_benchmark_obstacles scripts.pcbgen.test_grid_router scripts.pcbgen.test_route_jack_grid
-# Native-capable host, with the machine-wide heavy guard:
-python3 scripts/pcbgen/benchmark_obstacles.py osc-jack-left
-# Same command for osc-jack-right and osc-core; do not change inputs between variants.
-```
-
-CI equivalent: dispatch `routing-benchmark.yml` on this topic branch with `board`
-set to each board. It has read-only repository permission, no canonical writer,
-90-minute compute cap and 30-day artifact retention. `result.json` contains source
-and board hashes, selected identities, component memberships, old/new native stage
-receipts, timings, diagnostics, warning identities and retained-copper evidence.
-Copy durable compact results/proposals into this directory before artifact expiry.
-
-If a candidate is eligible, inspect its complete proposal, rules and native receipt;
-replay against the exact input SHA and run fresh settled checks before adopting.
-If both variants make negligible progress, use failed victim/terminal identities to
-change the local repair method. Do not simply increase global rerouting budgets.
-
-
-## In-session follow-through
-
-The staged driver's final promotion gate now checks complete native pad-component
-membership after optional AGND stitching, rejects new reported warning identities,
-and saves a hash-bound copper delta for replay whenever a stage is promoted.
-This preserves the existing strict connectivity-improvement threshold.
-
-Local routing regression suite: 100 tests PASS. Local circuit validation,
-`pnpm check`, guarded `pnpm build` and `pnpm check:site`: PASS (the existing
-allowlisted workbench HTML link is still reported). The all-repository Python
-suite stopped at a model fixture requiring the blocked native image; it is NOT
-claimed passed locally. Current CI performs that full suite and native fixtures.
-
-Read-only benchmark run: 37821079619, head 640c0388b6b23696a35a9f63ce923b67c032fa96.
-Earlier run 37820757090 was canceled before use because its old-router snapshot
-lacked the adjacent C backend. The corrected run pins and asserts compiled C A*
-for both variants. Do not compare the canceled run's timing. No routing gain is
-claimed before inspecting the corrected results. Subsequent benchmarks are
-explicit dispatches (workflow ID 378789207), avoiding automatic duplicate compute
-on every PR documentation push.
-
-Current single-refill CI evidence is in `native-ci.json`: JL140/JR162 with zero
-DRC errors and parity. Settled comparison results are a separate gate.
-
-Refill convergence now compares complete island memberships, including padless
-copper, and rejects a fresh copy whose connectivity differs from the settled
-candidate. Island enumeration order is canonicalized. Regression tests prove
-that equal counts with changing membership do not pass convergence. The running
-640c038 benchmark predates this stronger gate; any candidate from it must be
-rechecked with this gate before adoption. Its old/new comparison still uses one
-identical protocol and frozen input for both variants.
-
-Future benchmark receipts split proposal application, refill/DRC and native
-connectivity-dump timings. Memory is explicitly Python-process RSS, not Docker
-or host peak memory (the historical benchmark's `peak_host_rss_kb` label was too
-broad). The routing budget selects ten signal **nets**, possibly multiple missing
-connections each; no claim of exactly ten connections is intended.
-
-Fill-guard path rejection now has an explicit diagnostic, distinct from a failed
-retry search. The original benchmark remains pinned to 640c038 for comparability.
-Fresh CI run 37822334447 confirms zero rule/parity errors for all three routed
-drafts; JL/JR CLI unconnected reports remain 140/162. Core CLI reports 499 items,
-which must not replace the complete native dump count (reviewed baseline 1,509).
-The full Python/native regression job is still pending.
-
-## Benchmark harness failure and correction
-
-Run 37821079619 reached JL old 140→140 and corrected 140→139 through repeated
-native checks, then failed while serializing a NumPy integer in diagnostics.
-Its upload also excluded the hidden `.circuit-cache` directory. No candidate or
-complete receipt survived, so **no copper was adopted and no usable performance
-comparison is claimed**. Log evidence is in `failed-benchmark-37821079619.json`.
-The remaining jobs were canceled because they shared these harness defects.
-
-A small-window regression reproduced the exact JSON error and now passes with
-explicit Python integer diagnostics. Artifact upload now includes hidden files
-only under the selected cache paths, plus incomplete native workspaces. JL/JR
-retain the 90-minute compute cap; core now has 335 minutes for its measured
-nine-minute native refill and mandatory repeated/fresh checks. Routing expansion,
-victim and round budgets are unchanged. This is a harness correction, not another
-unchanged routing-strategy attempt.
-
-## Current native jobs and adoption continuation
-
-Corrected identical-input runs at `ba3aaba0bf651f3934904836737529bd0518241d`:
-JL **37824198833**, JR **37824203279**, core **37824207235**. Read current status;
-do not infer completion from these IDs. The main CI run for that head is
-37824191309. Subsequent code changes do not change these saved comparisons.
-
-The adoption helper `scripts/pcbgen/adopt_obstacle_benchmark.py` validates input
-and candidate hashes, replays only copper onto the current canonical board,
-checks baseline/settled/fresh-copy native connectivity and warning identities,
-and rejects stale inputs before writing. It does not reroute. Its focused input
-rejection tests bring the suite to **104 tests PASS**. Native adoption is NOT RUN
-until an eligible complete benchmark artifact is inspected.
-
-After reviewing a completed result and its retained copper/splits/warnings, use:
+1. Read current PR190/main/other branch heads and run37824207235. Preserve concurrent
+   copper. Do not launch another same-input core benchmark while it runs.
+2. When core finishes, download its artifact, verify GitHub's SHA256 digest, save
+   exact result/proposals and inspect full component memberships, native errors,
+   warnings and retained geometry. The single-refill CLI499 is not a final result.
+3. Decide benchmark promotion versus recovered-core repair with explicit source
+   hashes. Both start from the current unchanged core. A changed canonical core
+   makes the preserved aggregate stale; reconcile disjoint source deltas without
+   overwriting successful copper before any further replay.
+4. With a working authenticated CLI, run one reviewed writer at a time:
 
 ```sh
-# Example JL only; substitute the reviewed board/run, one writer at a time.
 gh workflow run 378789207 --ref agent-fix/189-obstacle-transactions \
-  -f board=osc-jack-left -f adopt_run=37824198833
-# This mode checks eligibility and performs fresh native checks before promotion.
-# It pushes only the accepted board plus replay/receipts on the isolated branch.
-# Fetch the resulting remote commit before making subsequent local edits.
+  -f board=osc-core -f recover_core=true
+# Native-capable local equivalent, under the required heavy guard:
+bash "$HOME/.codex/scripts/heavy-guard.sh" -- .circuit-cache/route-venv/bin/python \
+  scripts/pcbgen/route_shards.py merge osc-core \
+  circuit/routing/issue189/concurrent-core/aggregate-copper.json \
+  --label issue189-recovered --repair-ground
 ```
 
-If the benchmark is ineligible, do not dispatch adoption. Inspect its exact
-failed endpoints, victim reconnect failures, plane regressions and new warning
-identities, then change the local method (rail/AGND repair or a source-defined
-circuit-local repair). Do not treat a lower raster or CLI count as adoption.
-
-## Concurrent core result recovered
-
-Run 37775496177 has now finished: aggregate native log 1,509→1,400, but push failed
-because the filled PCB exceeded GitHub's 100 MB limit. Its source branch still
-points to 8315af554132b283e4e6e9b62d76bbfdcea560c0. No other-session branch changed.
-All eight retained shard deltas and the original aggregate receipt are preserved
-under `concurrent-core/`, with verified artifact digests and exact replay commands.
-The replay retains 132,916 original copper objects, removes 29 and adds 1,413.
-It remains **NOT ADOPTED**: AGND worsened 252→272, and current membership/warning
-and independent-copy gates have not checked this recovered candidate.
-
-The shared shard merger now uses those stronger gates too and saves a copper
-replay on adoption. Its tests confirm fresh-copy drift or native error cannot
-replace canonical copper. Focused suite: **105 tests PASS**. No native routing
-completion is claimed from these unit tests or the recovered historical receipt.
+Recovery has a335-minute compute cap because measured core native refills take
+about9minutes each. Search/electrical constraints are unchanged. Read final gates
+and cache equivalence, not just a lower total. Fetch the resulting branch commit
+before editing. Preserve failed receipts and exact replay even on rejection.
+5. Continue source-defined local repair for JL/JR and remaining core obligations;
+   do not repeat the documented zero-progress methods unchanged. Fixed panel,
+   local bypass/circuit constraints and previous successful copper remain binding.
+6. Run full integrated CI on the final branch head, including P/EL/octave gates,
+   aggregate regeneration and documentation. Keep #189 open until all completion
+   criteria are met; this checkpoint is not completion.

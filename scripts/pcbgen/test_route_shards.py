@@ -22,6 +22,33 @@ def board(*items):
 
 
 class MergeAcceptanceTests(unittest.TestCase):
+    def test_recovered_signal_gain_must_restore_split_return_membership(self):
+        from scripts.pcbgen import route_shards,route_jack_grid as driver
+        from scripts.pcbgen.test_grid_router import crossing_board
+        with tempfile.TemporaryDirectory() as directory:
+            root=Path(directory);target=root/'boards/osc-jack-left/osc-jack-left.kicad_pcb'
+            target.parent.mkdir(parents=True);original=board(seg(U[0],'AGND'));target.write_text(original)
+            definition=root/'design/boards/osc-jack-left.json';definition.parent.mkdir(parents=True);definition.write_text('{}')
+            proposal=root/'delta.json';proposal.write_text(json.dumps(delta(original,board(seg(U[0],'AGND'),seg(U[1],'B')))))
+            before=crossing_board();before['pads']=[{**p,'net':'AGND' if p['net']=='A' else p['net']} for p in before['pads']]
+            before['islands']={'AGND':[['a0','a1']],'B':[['b0'],['b1'],['copper-fragment']]};before['open_edges']=2
+            split={**before,'islands':{'AGND':[['a0'],['a1']]},'open_edges':1}
+            joined={**before,'islands':{},'open_edges':0};clean={'violations':[],'schematic_parity':[]}
+            states=iter([before,split,joined])
+            def workspace(board_id,name):
+                folder=root/name;folder.mkdir();return folder
+            def check(path):
+                state=next(states);path.with_name('dump.json').write_text(json.dumps(state));path.with_name('drc.json').write_text(json.dumps(clean));return clean,state
+            def stitch(board_id,base,candidate,*args):
+                result=workspace(board_id,'stitched')/target.name
+                result.write_text(board(seg(U[0],'AGND'),seg(U[1],'B'),seg(U[2],'AGND')))
+                result.with_name('dump.json').write_text(json.dumps(joined));result.with_name('drc.json').write_text(json.dumps(clean))
+                return result,{'agnd_stitch':{'links_added':1}}
+            with patch.object(route_shards,'ROOT',root),patch.object(driver,'workspace',side_effect=workspace),patch.object(driver,'check',side_effect=check),patch.object(driver,'stitched',side_effect=stitch) as repair:
+                receipt=route_shards.merge('osc-jack-left',[proposal],'recovery',repair_ground=True)
+            repair.assert_called_once();self.assertTrue(receipt['adopted']);self.assertEqual(receipt['copper_added'],2)
+            self.assertEqual(receipt['split_pad_groups'],[])
+
     def test_fresh_copy_drift_or_native_error_cannot_promote(self):
         from scripts.pcbgen import route_shards,route_jack_grid as driver
         from scripts.pcbgen.test_grid_router import crossing_board
@@ -89,6 +116,20 @@ class PlanTest(unittest.TestCase):
 
 
 class DeltaMergeTest(unittest.TestCase):
+    def test_legacy_duplicate_ids_are_preserved_but_cannot_hide_removed_geometry(self):
+        original=board(seg(U[0],'A'),seg(U[0],'A',x=2))
+        changed=board(seg(U[0],'A'),seg(U[0],'A',x=2),seg(U[1],'B'))
+        d=delta(original,changed)
+        self.assertEqual(len(d['added']),1);self.assertEqual(d['removed'],[])
+        self.assertEqual(merge_text(original,[d]).count(f'(uuid "{U[0]}")'),2)
+        with self.assertRaisesRegex(ValueError,'ambiguous duplicate'):
+            delta(original,board(seg(U[0],'A',x=2)))
+
+    def test_merge_rejects_new_uuid_alias_of_surviving_copper(self):
+        d=delta(board(),board(seg(U[0],'B')))
+        with self.assertRaisesRegex(ValueError,'collides'):
+            merge_text(board(seg(U[0],'A')),[d])
+
     def setUp(self):
         self.base = board(seg(U[0], 'A'), seg(U[1], 'B'), via(U[2], 'C'), seg(U[3], 'GND', 'In1.Cu'))
 
