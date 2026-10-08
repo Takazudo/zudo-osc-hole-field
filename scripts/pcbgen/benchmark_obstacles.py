@@ -82,7 +82,10 @@ def main():
         shutil.copytree(board.parent,out/'input',dirs_exist_ok=True)
         old_path=ROOT/'.circuit-cache'/'old-grid'/'grid_router.py';old_path.parent.mkdir(exist_ok=True)
         old_path.write_bytes(subprocess.check_output(['git','show',f'{a.old_ref}:scripts/pcbgen/grid_router.py']))
+        old_path.with_name('grid_astar.c').write_bytes(subprocess.check_output(['git','show',f'{a.old_ref}:scripts/pcbgen/grid_astar.c']))
         spec=importlib.util.spec_from_file_location('issue189_old_grid',old_path);old=importlib.util.module_from_spec(spec);spec.loader.exec_module(old)
+        if not old.native_astar() or not grid_router.native_astar():raise RuntimeError('both variants require compiled native A*')
+        report['old_astar_sha256']=sha(old_path.with_name('grid_astar.c'))
         report['old_router_sha256']=sha(old_path);save()
         for label,router in [('old',old.route),('new',grid_router.route)]:
             events=[];routing_seconds=0;logs=[];start=time.monotonic()

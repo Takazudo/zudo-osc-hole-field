@@ -355,8 +355,11 @@ def route(dump,nets=(),rip=(),rip_first=False,res=0.1,layer_cost=None,via_cost=3
     strict=sorted(raster.net_id[n] for n in (grow or {}) if n in raster.net_id)
     necked=lambda N,w:bool(neck_width) and raster.neck.any() and N not in strict and w<=signal_width+1e-9
 
+    search_failure={'reason':'unknown'}
+
     def search(N,w,vd,src,goal,goal_is_via,pad_window,exclude=(),soft=None):
         """soft: net ids whose copper is passable at a cost; returns (path, expanded) or, with soft, (path, blockers)."""
+        search_failure.clear();search_failure.update(reason='unknown',attempts=[])
         holes=raster.hole if soft is None else raster.holes_without(soft)
         extra=int(round(pad_window/res));guard=int(round(1.5/res))
         boxes=[np.argwhere(src.any(0))]
@@ -400,7 +403,9 @@ def route(dump,nets=(),rip=(),rip_first=False,res=0.1,layer_cost=None,via_cost=3
                     &(d_hole>=vr+hole_clearance+margin)&(raster.d_smd[win]>=vr+margin))
             s=src[:,y0:y1,x0:x1]
             gl=(np.broadcast_to(via_ok,s.shape)&~s&free) if goal_is_via else goal[:,y0:y1,x0:x1]
-            if not s.any() or not gl.any():continue
+            if not s.any() or not gl.any():
+                if goal_is_via and s.any():search_failure['reason']='no_legal_via_site'
+                continue
             penalty=None
             if escape_halo_mm:
                 # Keep inner-layer copper off the via-escape ring around other SMD pads.
@@ -413,7 +418,10 @@ def route(dump,nets=(),rip=(),rip_first=False,res=0.1,layer_cost=None,via_cost=3
                 penalty=[np.where(soft_near[li]>0,base[li]*rrr_soft_cost,base[li]) if soft_near[li] is not None else base[li] for li in range(L)]
                 if soft_any.any():
                     dvia,vidx=ndimage.distance_transform_edt(~soft_any,return_indices=True)
-            path,expanded=astar(free,via_ok,s,gl,layer_cost,via_cost,max_expansions if k else min(max_expansions,300_000),weight,penalty)
+            limit=max_expansions if k else min(max_expansions,300_000)
+            path,expanded=astar(free,via_ok,s,gl,layer_cost,via_cost,limit,weight,penalty)
+            search_failure['attempts'].append({'window_cells':[y0,y1,x0,x1],'expanded':expanded,'limit':limit})
+            if path is None and expanded>=limit:search_failure['reason']='expansion_limit'
             if path is not None and soft is not None:
                 blockers=set()
                 for i,(l,y,x) in enumerate(path):
@@ -476,7 +484,7 @@ def route(dump,nets=(),rip=(),rip_first=False,res=0.1,layer_cost=None,via_cost=3
             path,_=search(N,w,vd,src,reached,False,window_mm,exclude=tuple(guards))
             if path is not None and not fill_ok(path,w,vd,src,reached):path=None
         if path is None:
-            last_failure['reason']='unknown'
+            last_failure.clear();last_failure.update(search_failure)
             return False
         i0=max(i for i,(l,y,x) in enumerate(path) if src[l,y,x])
         i1=min(i for i,(l,y,x) in enumerate(path) if reached[l,y,x] and i>=i0)
@@ -508,7 +516,7 @@ def route(dump,nets=(),rip=(),rip_first=False,res=0.1,layer_cost=None,via_cost=3
                 comp[find(gi)]=find(j);continue
             ok=False
             if record:
-                event(net,name(g),last_failure['reason'],phase='route',max_expansions=max_expansions,window_mm=window_mm)
+                event(net,name(g),last_failure['reason'],phase='route',attempts=last_failure.get('attempts',[]),max_expansions=max_expansions,window_mm=window_mm)
                 log(f'NOPATH {net} {name(g)}');results.append({'net':net,'island':name(g),'path':None});failed.append((net,g,groups[main]))
         return ok
 
@@ -535,9 +543,9 @@ def route(dump,nets=(),rip=(),rip_first=False,res=0.1,layer_cost=None,via_cost=3
                 probe,blockers=search(N,w,vd,src,reached,False,window_mm,soft=sorted(rippable-{N}))
                 if probe is None or not blockers or len(blockers)>rrr_max_rip:
                     log(f"RRR-SKIP {net} {name(g)} {'no probe path' if probe is None else f'{len(blockers)} blockers'}")
-                    reason='unknown' if probe is None else ('victim_budget' if len(blockers)>rrr_max_rip else 'no_removable_blocker')
+                    reason=search_failure['reason'] if probe is None else ('victim_budget' if len(blockers)>rrr_max_rip else 'no_removable_blocker')
                     event(net,name(g),reason,phase='probe',victims=sorted(id_net[b] for b in blockers) if probe is not None else [],
-                          victim_budget=rrr_max_rip,shard_restricted=rip_only is not None)
+                          victim_budget=rrr_max_rip,shard_restricted=rip_only is not None,attempts=search_failure.get('attempts',[]))
                     failed.append((net,g,main_group));continue
                 snapshot=(raster.label.copy(),raster.hole.copy(),[dict(r) for r in results],set(removed),{li:(fg.region.copy(),fg.base,fg.blobs,fg.n) for li,fg in fill_count.items()},list(raster.route_holes))
                 victims=sorted(id_net[b] for b in blockers)
@@ -578,6 +586,7 @@ def route(dump,nets=(),rip=(),rip_first=False,res=0.1,layer_cost=None,via_cost=3
                 if src.all(0).any():continue  # through-hole copper already reaches every layer
                 path,expanded=search(N,w,vd,src,None,True,3.0)
                 if path is None:
+                    event(net,name(g),search_failure['reason'],phase='plane_fanout',attempts=search_failure.get('attempts',[]))
                     log(f'NOPATH {net} {name(g)} plane fanout');results.append({'net':net,'island':name(g),'path':None});continue
                 i0=max(i for i,(l,y,x) in enumerate(path) if src[l,y,x]);path=path[i0:]
                 commit(net,N,w,vd,name(g),path,src,None,True)
