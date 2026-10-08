@@ -104,7 +104,7 @@ class FillUnsettled(RuntimeError):
 
 
 def check(board,max_refills=6,stable=3):
-    """Native DRC with zone refill, repeated until the island counts hold for `stable` passes.
+    """Native DRC with zone refill, repeated until island memberships hold for `stable` passes.
 
     A single refill of a freshly edited board can leave the pours in a state the next
     refill changes (AGND islands 22 -> 28 on a neck-down candidate). Two equal passes were
@@ -115,11 +115,16 @@ def check(board,max_refills=6,stable=3):
     for _ in range(max_refills):
         run('bash','scripts/kicad/run.sh','kicad-cli','pcb','drc','--schematic-parity','--refill-zones','--save-board','--format','json','--severity-all','-o',rel(drc),rel(board))
         run('bash','scripts/kicad/run.sh','python3','scripts/pcbgen/grid_dump.py',rel(board),rel(dump))
-        state=json.loads(dump.read_text());seen.append({n:len(g) for n,g in state['islands'].items()})
+        state=json.loads(dump.read_text());seen.append(connectivity_signature(state))
         print(f"  refill pass {len(seen)}: {state['open_edges']} open edges",flush=True)
         if len(seen)>=stable and all(x==seen[-1] for x in seen[-stable:]):break
-    else:raise FillUnsettled(f"{rel(board)}: island counts still changing after {max_refills} refills")
+    else:raise FillUnsettled(f"{rel(board)}: island memberships still changing after {max_refills} refills")
     return json.loads(drc.read_text()),state
+
+
+def connectivity_signature(dump):
+    """Compare all native islands, including padless copper, independent of enumeration."""
+    return dump['open_edges'],{n:sorted(sorted(g) for g in groups) for n,groups in dump['islands'].items()}
 
 
 def terminal_array(dump,board_id,definition):
@@ -361,8 +366,8 @@ def stage(board_id,current,spec,definition,log):
     # (jack-right AGND 21 vs 28), so adoption counts a copy checked in a new workspace.
     verify=workspace(board_id,spec['name']+'-verify')/candidate.name;shutil.copyfile(candidate,verify)
     drc_v,fresh=check(verify)
-    if fresh['open_edges']!=after['open_edges']:
-        log(f"{spec['name']}: in-place check {after['open_edges']} open edges, fresh copy {fresh['open_edges']}; the fresh count is used")
+    if connectivity_signature(fresh)!=connectivity_signature(after):
+        raise StageRejected('fresh copy connectivity differs from settled candidate')
     if any(v['severity']=='error' for v in drc_v['violations']) or drc_v['schematic_parity']:raise StageRejected("fresh copy has DRC errors or parity findings")
     candidate,after,drc=verify,fresh,drc_v
     before=json.loads(original.with_name('dump.json').read_text())['open_edges']
@@ -378,7 +383,7 @@ def connected_pad_groups(dump):
     pads={p['uuid']:p for p in dump['pads'] if p['net']}
     by_net=collections.defaultdict(list)
     for uid,p in pads.items():by_net[p['net']].append(uid)
-    return {n:[sorted(u for u in g if u in pads) for g in dump['islands'].get(n,[ids])]
+    return {n:sorted(sorted(u for u in g if u in pads) for g in dump['islands'].get(n,[ids]))
             for n,ids in sorted(by_net.items())}
 
 

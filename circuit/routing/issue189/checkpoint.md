@@ -52,9 +52,12 @@ proposal/source replay and promotion on this isolated branch.
   unused image was removed to recover space. No tracked regeneration drift.
 - Local native KiCad is 9.0.2 and was not used for acceptance. Native JL/JR/core,
   P/EL/octave checks are NOT RUN locally. CI uses the pinned 10.0.6 wrapper.
-- Personal-context loader was rejected by automatic approval review because its
-  path resolved into forbidden `/root/.codex`; no workaround attempted. Runtime
-  bridge restoration succeeded separately. This is not proof of automatic delivery.
+- Initial personal-context loading was blocked by an automatic review reporting
+  `/root/.codex`. After readiness was refreshed, both ordinary and escalated HOME
+  checks returned `/home/agent`; the exact loader was approved and its entire
+  stdout consumed. Snapshot: `a4fd2a5bdfd2f137dce3bd5cc2af1d593d85ce4971449fe4fd163db0690d6b94`.
+  Runtime bridge restoration succeeded separately. Explicit loading does not prove
+  native host discovery or delivery via a saved environment startup field.
 
 ## Exact continuation
 
@@ -89,7 +92,7 @@ membership after optional AGND stitching, rejects new reported warning identitie
 and saves a hash-bound copper delta for replay whenever a stage is promoted.
 This preserves the existing strict connectivity-improvement threshold.
 
-Local routing regression suite: 97 tests PASS. Local circuit validation,
+Local routing regression suite: 99 tests PASS. Local circuit validation,
 `pnpm check`, guarded `pnpm build` and `pnpm check:site`: PASS (the existing
 allowlisted workbench HTML link is still reported). The all-repository Python
 suite stopped at a model fixture requiring the blocked native image; it is NOT
@@ -105,3 +108,17 @@ on every PR documentation push.
 
 Current single-refill CI evidence is in `native-ci.json`: JL140/JR162 with zero
 DRC errors and parity. Settled comparison results are a separate gate.
+
+Refill convergence now compares complete island memberships, including padless
+copper, and rejects a fresh copy whose connectivity differs from the settled
+candidate. Island enumeration order is canonicalized. Regression tests prove
+that equal counts with changing membership do not pass convergence. The running
+640c038 benchmark predates this stronger gate; any candidate from it must be
+rechecked with this gate before adoption. Its old/new comparison still uses one
+identical protocol and frozen input for both variants.
+
+Future benchmark receipts split proposal application, refill/DRC and native
+connectivity-dump timings. Memory is explicitly Python-process RSS, not Docker
+or host peak memory (the historical benchmark's `peak_host_rss_kb` label was too
+broad). The routing budget selects ten signal **nets**, possibly multiple missing
+connections each; no claim of exactly ten connections is intended.

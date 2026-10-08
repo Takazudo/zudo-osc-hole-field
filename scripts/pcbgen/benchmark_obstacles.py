@@ -38,7 +38,7 @@ def main():
     a=p.parse_args();out=ROOT/'.circuit-cache'/f'issue189-{a.board}';out.mkdir(exist_ok=True)
     report={'schema':'obstacle-benchmark-1','board':a.board,'old_ref':a.old_ref,
             'new_ref':subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip(),
-            'budget':{'connections':a.count,'rrr_rounds':1,'max_victims':4,'max_expansions':100000,'res_mm':.1,
+            'budget':{'signal_nets':a.count,'rrr_rounds':1,'max_victims':4,'max_expansions':100000,'res_mm':.1,
                       'minimum_useful_progress':'at least one native open edge closed without any pad-component split or warning regression'},
             'variants':{},'status':'RUNNING'}
     def save(): (out/'result.json').write_text(json.dumps(report,indent=2,sort_keys=True)+'\n')
@@ -53,7 +53,7 @@ def main():
         drc,before=driver.check(board)
         verify=driver.workspace(a.board,'189-frozen-verify')/board.name;shutil.copyfile(board,verify)
         drc2,before2=driver.check(verify)
-        if endpoints(before)!=endpoints(before2) or before['open_edges']!=before2['open_edges']:
+        if driver.connectivity_signature(before)!=driver.connectivity_signature(before2):
             raise RuntimeError('independent baseline differs after settled refill')
         if any(v['severity']=='error' for v in drc2['violations']) or drc2['schematic_parity']:
             raise RuntimeError('baseline native DRC/parity errors')
@@ -71,7 +71,15 @@ def main():
         report['old_astar_sha256']=sha(old_path.with_name('grid_astar.c'))
         report['old_router_sha256']=sha(old_path);save()
         for label,router in [('old',old.route),('new',grid_router.route)]:
-            events=[];routing_seconds=0;logs=[];start=time.monotonic()
+            events=[];routing_seconds=0;logs=[];start=time.monotonic();phase_seconds=collections.defaultdict(float)
+            native_run=driver.run
+            def measured_run(*args):
+                phase=('proposal_application' if any(str(x).endswith('grid_apply.py') for x in args) else
+                       'native_connectivity_dump' if any(str(x).endswith('grid_dump.py') for x in args) else
+                       'refill_and_native_drc' if 'drc' in args else 'other_native')
+                began=time.monotonic()
+                try:return native_run(*args)
+                finally:phase_seconds[phase]+=time.monotonic()-began
             def timed(*args,**kw):
                 nonlocal routing_seconds
                 if label=='new':kw['diagnostics']=events
@@ -82,9 +90,13 @@ def main():
             stage=dict(name=f'189-{label}',nets=[x['net'] for x in report['selected']],rrr_rounds=1,
                 clearance=.2,signal_width=.2,signal_via_diameter=.6,res=.1,max_expansions=100000,
                 grow={n:.05 for n in [*driver.RAILS,'AGND']})
-            candidate,receipt=driver.run_stage(a.board,board,stage,json.loads((ROOT/'design/boards'/f'{a.board}.json').read_text()),
-                                             lambda line:(logs.append(line),print(line,flush=True)))
+            driver.run=measured_run
+            try:
+                candidate,receipt=driver.run_stage(a.board,board,stage,json.loads((ROOT/'design/boards'/f'{a.board}.json').read_text()),
+                                                 lambda line:(logs.append(line),print(line,flush=True)))
+            finally:driver.run=native_run
             result={'receipt':receipt,'diagnostics':events,'routing_seconds':routing_seconds,'elapsed_seconds':time.monotonic()-start,
+                    'native_phase_seconds':dict(phase_seconds),
                     'native_status':'REJECTED' if candidate is None else 'CHECKED','candidate_sha256':sha(candidate) if candidate else None}
             if candidate:
                 after=json.loads(candidate.with_name('dump.json').read_text());after_drc=json.loads(candidate.with_name('drc.json').read_text())
@@ -109,6 +121,9 @@ def main():
     except Exception as error:
         report.update(status='ERROR',error=repr(error));raise
     finally:
-        report['elapsed_seconds']=time.monotonic()-t;report['peak_host_rss_kb']=resource.getrusage(resource.RUSAGE_SELF).ru_maxrss;save()
+        report['elapsed_seconds']=time.monotonic()-t
+        report['peak_python_process_rss_kb']=resource.getrusage(resource.RUSAGE_SELF).ru_maxrss
+        report['memory_scope']='Python process only; Docker/native peak memory not measured'
+        save()
 
 if __name__=='__main__':main()
