@@ -15,7 +15,7 @@ concurrency:
 jobs:
   benchmark:
     runs-on: ubuntu-latest
-    timeout-minutes: 100
+    timeout-minutes: 355
     strategy:
       fail-fast: false
       matrix:
@@ -34,7 +34,11 @@ jobs:
         run: |
           mkdir -p .circuit-cache
           set -o pipefail
-          timeout --signal=INT --kill-after=2m 90m python -u scripts/pcbgen/benchmark_obstacles.py "$BOARD" 2>&1 | tee .circuit-cache/benchmark.log
+          # Core's measured native refill takes nine minutes; keep the routing
+          # search budget fixed but allow its mandatory settled/fresh checks.
+          budget=90
+          [[ $BOARD == osc-core ]] && budget=335
+          timeout --signal=INT --kill-after=2m "${budget}m" python -u scripts/pcbgen/benchmark_obstacles.py "$BOARD" 2>&1 | tee .circuit-cache/benchmark.log
       - name: Preserve inputs, negative results, proposals and native receipts
         if: always()
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
@@ -43,5 +47,7 @@ jobs:
           path: |
             .circuit-cache/issue189-*/
             .circuit-cache/benchmark.log
+            .circuit-cache/*-grid-189-*/
           retention-days: 30
           if-no-files-found: error
+          include-hidden-files: true

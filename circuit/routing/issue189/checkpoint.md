@@ -129,3 +129,20 @@ Fresh CI run 37822334447 confirms zero rule/parity errors for all three routed
 drafts; JL/JR CLI unconnected reports remain 140/162. Core CLI reports 499 items,
 which must not replace the complete native dump count (reviewed baseline 1,509).
 The full Python/native regression job is still pending.
+
+## Benchmark harness failure and correction
+
+Run 37821079619 reached JL old 140→140 and corrected 140→139 through repeated
+native checks, then failed while serializing a NumPy integer in diagnostics.
+Its upload also excluded the hidden `.circuit-cache` directory. No candidate or
+complete receipt survived, so **no copper was adopted and no usable performance
+comparison is claimed**. Log evidence is in `failed-benchmark-37821079619.json`.
+The remaining jobs were canceled because they shared these harness defects.
+
+A small-window regression reproduced the exact JSON error and now passes with
+explicit Python integer diagnostics. Artifact upload now includes hidden files
+only under the selected cache paths, plus incomplete native workspaces. JL/JR
+retain the 90-minute compute cap; core now has 335 minutes for its measured
+nine-minute native refill and mandatory repeated/fresh checks. Routing expansion,
+victim and round budgets are unchanged. This is a harness correction, not another
+unchanged routing-strategy attempt.

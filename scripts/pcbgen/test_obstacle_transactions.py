@@ -1,5 +1,6 @@
 """Issue #189: probes and rip-up must describe the geometry actually removed."""
 import unittest
+import json
 from unittest.mock import patch
 import numpy as np
 from scripts.pcbgen import grid_router as router
@@ -100,10 +101,11 @@ class ObstacleTransactionTests(unittest.TestCase):
 
     def test_failure_diagnostics_report_limits_without_inventing_blockers(self):
         events=[]
-        results,_=router.route(board(),['A'],max_expansions=1,diagnostics=events,log=lambda _:None)
+        results,_=router.route(board(),['A'],max_expansions=1,window_mm=.5,diagnostics=events,log=lambda _:None)
         self.assertTrue(events)
         self.assertEqual(events[0]['reason'],'expansion_limit')
         self.assertTrue(events[0]['attempts'])
+        json.dumps(events)  # diagnostics must survive an actual benchmark receipt
         self.assertTrue(all(r['path'] is None for r in results))
 
     def test_fill_guard_rejection_is_distinguished_from_search_failure(self):
