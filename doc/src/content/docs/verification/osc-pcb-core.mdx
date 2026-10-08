@@ -48,7 +48,7 @@ Four layers fall below the 1.5× margin used for the jack halves, so the core ta
 | --- | --- |
 | Outline / stack | 310 × 284 mm minus the 56 × 46 mm notch; six copper layers, 1.6 mm, 2 oz proposal |
 | Footprints | 3,594 netlisted (8 DNP), 13,406 pads |
-| Native open edges | **1,526**: +12 V 80, −12 V 80, +5 V 0, AGND 249, signals 1,117 |
+| Native open edges | **1,509**: +12 V 80, −12 V 80, +5 V 0, AGND 252, signals 1,097 |
 | DRC errors / schematic parity | **0 / 0** |
 
 `scripts/pcbgen/route_jack_grid.py` ran these stages:
@@ -59,12 +59,13 @@ Four layers fall below the 1.5× margin used for the jack halves, so the core ta
 4. Signal batches signals-local and signals-01..09 (→ 1,843). AGND rose from 121 to 198 because new signal copper cuts the surface pours; AGND stitching reconnects them later.
 5. Neck-down rule areas at 326 IC pad fields (0.15 mm track and signal clearance inside each IC's pads plus 2 mm, from `design/partition/neckdown-areas.json`), then rip-up-and-reroute rrr-01..24 in eight area shards on CI (1,841 → 1,789).
 6. Signal batches signals-local..signals-40 in eight area shards (→ 1,776), signal escapes (→ 1,682), AGND stitching (→ 1,536) and a second signal-escape pass (→ 1,526).
+7. With in-place stage checks fixed to load the board's own project (#183) and verified on a fresh copy (#181): rip-up-and-reroute in eight area shards (→ 1,523), signal batches in eight area shards (→ 1,516), AGND stitching (→ 1,513) and signal escapes (→ 1,509).
 
 Each stage is applied to a disposable copy and checked with native DRC, schematic parity and zone refill. A stage is kept only when native open edges fall. Stage receipts are in `boards/osc-core/reports/grid-routing/`.
 
 Still to run under #43: further rip-up rounds and hotspot-region renegotiation for the remaining signal edges, and ±12 V rail escapes.
 
-The renders below are from this 1,526-edge revision. Native checks of this revision also run in CI.
+The renders below are from this 1,509-edge revision. Native checks of this revision also run in CI.
 
 ![Core top: unvalidated routed draft in progress](/assets/osc-hole-field/osc-core-top.png)
 
