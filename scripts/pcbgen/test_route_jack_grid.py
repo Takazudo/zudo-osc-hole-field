@@ -27,9 +27,10 @@ class RipUpRoundTests(unittest.TestCase):
         except Exception:pass  # the native check after routing is not part of this fixture
         if adopted:driver.RRR_ROUND['adopted']=True
 
-    def test_open_nets_are_reoffered_with_a_larger_budget_until_a_round_adopts_nothing(self):
-        for adopted in (True,False,False,False,False):self.batch(adopted)
-        self.assertEqual(self.calls,[(['a','b'],4,12.0),(['c'],4,12.0),(['a','b'],6,16.0),(['c'],6,16.0)])
+    def test_open_nets_are_reoffered_with_every_larger_budget_even_after_a_round_adopts_nothing(self):
+        for _ in range(12):self.batch(False)
+        budgets=[(4,12.0),(8,16.0),(12,20.0),(20,24.0)]
+        self.assertEqual(self.calls,[(nets,rip,window) for rip,window in budgets for nets in (['a','b'],['c'])])
         self.assertTrue(driver.RRR_ROUND['done'])
 
 

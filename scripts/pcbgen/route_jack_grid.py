@@ -35,7 +35,9 @@ REGIONS_TRIED=set()  # hotspot regions already renegotiated in this run (rounded
 # Time a negotiated stage keeps after its last iteration for the fill guard, apply, native DRC and push.
 FINALIZE_MARGIN_S=20*60
 RUN={'deadline':None,'workers':None,'res':None,'iterations':None,'shard':None}  # --max-minutes/--workers/--res/--iterations/--shard overrides (CI routing)
-RRR_BUDGETS=[{'rrr_max_rip':4,'window_mm':12.0},{'rrr_max_rip':6,'window_mm':16.0},{'rrr_max_rip':8,'window_mm':20.0}]
+# Rip-up probes on the jack halves need 5-20 victim nets (JL CI run 37580806638: all 109 skipped at 4),
+# so later rounds rip more; every round runs even when the previous one adopted nothing.
+RRR_BUDGETS=[{'rrr_max_rip':4,'window_mm':12.0},{'rrr_max_rip':8,'window_mm':16.0},{'rrr_max_rip':12,'window_mm':20.0},{'rrr_max_rip':20,'window_mm':24.0}]
 # In3 carries signals as well as the -12V fill (owner stack: four signal layers); In2 is preferred.
 SIGNAL_LAYERS=['F.Cu','In2.Cu','In3.Cu','B.Cu']
 LAYER_COST=[3.0,1.0,1.0,1.5,1.0,3.0]
@@ -310,7 +312,7 @@ def stage(board_id,current,spec,definition,log):
                                                       only=set(RUN['shard']['nets']) if RUN['shard'] else None)
         nets=chunk()
         if rrr and not nets:
-            if not RRR_ROUND['adopted'] or RRR_ROUND['round']+1>=len(RRR_BUDGETS):RRR_ROUND['done']=True;return None,None
+            if RRR_ROUND['round']+1>=len(RRR_BUDGETS):RRR_ROUND['done']=True;return None,None
             RRR_ROUND.update(round=RRR_ROUND['round']+1,adopted=False);RRR_TRIED.clear();nets=chunk()
             log(f"{spec['name']}: rip-up round {RRR_ROUND['round']+1}, budget {RRR_BUDGETS[RRR_ROUND['round']]}")
         if not nets:return None,None

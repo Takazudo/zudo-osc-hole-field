@@ -447,15 +447,28 @@ def route(dump,nets=(),rip=(),rip_first=False,res=0.1,layer_cost=None,via_cost=3
         commit(net,N,w,vd,names,path,src,reached,False)
         for li,fg in fill_count.items():fg.region=fg.shrunk(path_pieces(path,w,vd,li))
         for l,y,x in path:reached[l,y,x]=True
-        return True
+        return path
 
     def route_groups(net,groups,record=True):
+        # Each island joins whichever island of another component is cheapest to reach, not only
+        # the largest: every join removes one open edge, and stranded neighbours (an op-amp's
+        # follower pins) are often far closer to each other than to the main island.
         main=max(range(len(groups)),key=lambda i:len(groups[i]))
-        reached=island_mask(raster,dump,groups[main]);ok=True
+        masks=[island_mask(raster,dump,g) for g in groups];comp=list(range(len(groups)));ok=True
+        def find(i):
+            while comp[i]!=i:comp[i]=comp[comp[i]];i=comp[i]
+            return i
         for gi,g in enumerate(groups):
             if gi==main:continue
-            src=island_mask(raster,dump,g)
-            if route_one(net,src,reached,name(g)):reached|=src;continue
+            src=masks[gi]
+            goal=np.zeros_like(src)
+            for j,m in enumerate(masks):
+                if find(j)!=find(gi):goal|=m
+            path=route_one(net,src,goal,name(g))
+            if path:
+                l,y,x=path[-1];j=next(j for j,m in enumerate(masks) if m[l,y,x] and find(j)!=find(gi))
+                for cl,cy,cx in path:masks[gi][cl,cy,cx]=True
+                comp[find(gi)]=find(j);continue
             ok=False
             if record:
                 log(f'NOPATH {net} {name(g)}');results.append({'net':net,'island':name(g),'path':None});failed.append((net,g,groups[main]))

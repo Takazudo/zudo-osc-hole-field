@@ -50,6 +50,15 @@ class GridRouterTests(unittest.TestCase):
                     p=(r['start_nm'][0]+t*(r['end_nm'][0]-r['start_nm'][0]),r['start_nm'][1]+t*(r['end_nm'][1]-r['start_nm'][1]))
                     self.assertGreaterEqual(seg_distance(p,*wall)-0.15*MM-0.1*MM,0.2*MM)
 
+    def test_stranded_island_joins_its_nearest_island_not_only_the_largest(self):
+        dump=board();pad=lambda i,x:{'uuid':f'p{i}','ref':f'R{i}','pad':'1','net':'A','xy':[int(x*MM),4*MM],'layers':['B.Cu'],'poly':square(x,4),'drill':0,'npth':False,'locked':False}
+        dump['pads']=[pad(0,1.5),pad(1,2.5),pad(2,9.5),pad(3,10.5)]
+        dump['islands']={'A':[['p0'],['p1'],['p2','p3']]}
+        results=self.route(dump,layer_cost=(1,1,1,1))
+        self.assertTrue(all(r['path'] for r in results))
+        first=next(r for r in results if r['island']==['R0.1'])
+        self.assertLess(max(x for _,x,_,*_ in first['path']),3.2*MM)
+
     def test_boxed_pad_reports_no_path(self):
         results=self.route(board(ring=True))
         self.assertIsNone(results[0]['path'])
