@@ -488,8 +488,10 @@ def route(dump,nets=(),rip=(),rip_first=False,res=0.1,layer_cost=None,via_cost=3
         N=raster.net_id[net];w,vd=net_params(net)
         path,_=search(N,w,vd,src,reached,False,window_mm)
         if path is not None and guards and not fill_ok(path,w,vd,src,reached):
+            event(net,names,'fill_guard_disconnection',phase='path_rejected',guard_layers=[raster.layers[li] for li in guards])
             path,_=search(N,w,vd,src,reached,False,window_mm,exclude=tuple(guards))
-            if path is not None and not fill_ok(path,w,vd,src,reached):path=None
+            if path is not None and not fill_ok(path,w,vd,src,reached):
+                search_failure['reason']='fill_guard_disconnection';path=None
         if path is None:
             last_failure.clear();last_failure.update(search_failure)
             return False

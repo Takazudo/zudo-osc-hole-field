@@ -92,7 +92,7 @@ membership after optional AGND stitching, rejects new reported warning identitie
 and saves a hash-bound copper delta for replay whenever a stage is promoted.
 This preserves the existing strict connectivity-improvement threshold.
 
-Local routing regression suite: 99 tests PASS. Local circuit validation,
+Local routing regression suite: 100 tests PASS. Local circuit validation,
 `pnpm check`, guarded `pnpm build` and `pnpm check:site`: PASS (the existing
 allowlisted workbench HTML link is still reported). The all-repository Python
 suite stopped at a model fixture requiring the blocked native image; it is NOT
@@ -122,3 +122,10 @@ connectivity-dump timings. Memory is explicitly Python-process RSS, not Docker
 or host peak memory (the historical benchmark's `peak_host_rss_kb` label was too
 broad). The routing budget selects ten signal **nets**, possibly multiple missing
 connections each; no claim of exactly ten connections is intended.
+
+Fill-guard path rejection now has an explicit diagnostic, distinct from a failed
+retry search. The original benchmark remains pinned to 640c038 for comparability.
+Fresh CI run 37822334447 confirms zero rule/parity errors for all three routed
+drafts; JL/JR CLI unconnected reports remain 140/162. Core CLI reports 499 items,
+which must not replace the complete native dump count (reviewed baseline 1,509).
+The full Python/native regression job is still pending.

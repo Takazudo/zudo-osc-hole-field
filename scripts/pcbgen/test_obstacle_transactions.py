@@ -106,5 +106,15 @@ class ObstacleTransactionTests(unittest.TestCase):
         self.assertTrue(events[0]['attempts'])
         self.assertTrue(all(r['path'] is None for r in results))
 
+    def test_fill_guard_rejection_is_distinguished_from_search_failure(self):
+        dump=board();events=[]
+        dump['pads'].append(dict(uuid='guard',ref='P',pad='1',net='P',xy=[MM,MM],
+            layers=['B.Cu'],poly=square(1,1),drill=0,npth=False))
+        with patch.object(router.FillGuard,'keeps',return_value=False):
+            router.route(dump,['A'],fill_guards={'P':'B.Cu'},diagnostics=events,log=lambda _:None)
+        rejected=[e for e in events if e['reason']=='fill_guard_disconnection']
+        self.assertTrue(rejected)
+        self.assertEqual(rejected[0]['guard_layers'],['B.Cu'])
+
 
 if __name__=='__main__':unittest.main()
