@@ -1,6 +1,10 @@
 name: Routing obstacle benchmark
 run-name: Issue 189 identical-input obstacle benchmark
 on:
+  pull_request:
+    paths:
+      - '.github/workflows/routing-benchmark.yml'
+      - 'scripts/pcbgen/benchmark_obstacles.py'
   workflow_dispatch:
     inputs:
       board:
@@ -16,6 +20,10 @@ jobs:
   benchmark:
     runs-on: ubuntu-latest
     timeout-minutes: 100
+    strategy:
+      fail-fast: false
+      matrix:
+        board: ${{ fromJSON(inputs.board && format('["{0}"]', inputs.board) || '["osc-jack-left","osc-jack-right","osc-core"]') }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
@@ -26,7 +34,7 @@ jobs:
       - run: python -m pip install -r scripts/pcbgen/numerical-requirements.txt
       - name: Compare old and corrected routers on identical saved inputs
         env:
-          BOARD: ${{ inputs.board }}
+          BOARD: ${{ matrix.board }}
         run: |
           mkdir -p .circuit-cache
           set -o pipefail
@@ -35,7 +43,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
         with:
-          name: obstacle-benchmark-${{ inputs.board }}-${{ github.run_id }}
+          name: obstacle-benchmark-${{ matrix.board }}-${{ github.run_id }}
           path: |
             .circuit-cache/issue189-*/
             .circuit-cache/benchmark.log
