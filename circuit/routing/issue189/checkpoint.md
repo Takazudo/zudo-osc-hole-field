@@ -1,27 +1,29 @@
 # Issue 189 exact continuation checkpoint
 
-Updated 2026-10-09 16:59 UTC. **Issue #189 remains OPEN.** Accepted native open edges on the draft branch are **JL119 / JR135 / core1441**; main remains120/136/1441. Zero-edge connectivity and final completion gates are unmet. No fabrication or hardware qualification is claimed.
+Updated 2026-10-09 17:01 UTC. **Issue #189 remains OPEN.** Accepted native open edges on the draft branch are **JL119 / JR135 / core1441**; main remains120/136/1441. Zero-edge connectivity and final completion gates are unmet. No fabrication or hardware qualification is claimed.
 
 ## Current authoritative state
 
-Main is merged PR207, commit `9de20ab442dca2940da0a201d5ef5e764dcdbea3`. Its exact-head CI37950014675 and post-merge CI37952715447 passed all five jobs; receipts are `ci-0d6a444.json` and `ci-main-9de20ab.json`. Current continuation is draft PR208, branch `agent-fix/189-next-ground-continuation`. It includes native-accepted JL119 plus negative evidence and guarded successors; JR135 is now also native accepted; core remains1441. Refresh its exact head and checks before any merge.
+Main is merged PR207, commit `9de20ab442dca2940da0a201d5ef5e764dcdbea3`. Its exact-head CI37950014675 and post-merge CI37952715447 passed all five jobs; receipts are `ci-0d6a444.json` and `ci-main-9de20ab.json`. Accepted-copper PR208 is frozen at `2d59eb83d413b1dcd5997b6aaa6c878d43fa1f35` on `agent-fix/189-next-ground-continuation` for verification. New work continues in stacked draft PR209, branch `agent-fix/189-following-ground-continuation`. It includes native-accepted JL119 plus negative evidence and guarded successors; JR135 is now also native accepted; core remains1441. Refresh its exact head and checks before any merge.
 
 All accepted boards have zero native DRC/parity errors, no new warning identities or split original pad groups, and fresh native agreement. Warnings: JL477/JR520/core619. Fixed panel/electrical rules, accepted copper and other sessions remain preserved. PR202 post-CI was cancelled/superseded, never passed; subsequent accepted main states have passed post-CI.
 
 ## Active native trials — reconcile before further board work
 
-| Board | Run | Dedicated worker branch | Pinned source |
+| Board / purpose | Run | Dedicated worker branch | Pinned source |
 | --- | --- | --- | --- |
-| Core |37950004600|`agent-fix/189-core-finer-ground-worker`|`0d6a444aa1ad648ce6146d0e893e93307bd98f14`|
+| Core adoption |37950004600|`agent-fix/189-core-finer-ground-worker`|`0d6a444aa1ad648ce6146d0e893e93307bd98f14`|
+| JL119 U2205 cut pilot |37962133490|`agent-fix/189-jl-u2205-ground-worker`|`1924fa6548ae1ad756cd9c9c359153b82ab3afcb`|
+| JR135 C7413 cut pilot |37963087457|`agent-fix/189-jr-c7413-ground-worker`|`6e37fdd43becf2b783d11b52e2332dc82b204c04`|
 
-The core run in this table remains in progress. Each is the sole writer for its board. Core tests38 ground groups/382objects/38vias/zero cuts, full0.3mm AGND tracks. JL adoption37960073108 is complete and integrated as67d2a1e:58segments/no vias/four reviewed cuts,120→119. JR adoption37960834229 is complete and integrated as6b72bc2:85segments/one via/four reviewed cuts,136→135. Both pilots have0DRC/parity,unchanged warnings/groups,fresh agreement and complete retained-copper/physical proofs in their case directories. Eligible pilots are not canonical promotion.
+All three remain in progress. Core is the sole core writer, testing38ground groups/382objects/38vias/zero cuts at full0.3mm AGND width. Both jack pilots are disposable/read-only. JL selects four original segments/two victim nets in14.7x15.75mm; JR five/one in14.55x14.15mm. Exact native geometry checks prove recently accepted U1518/R4207 copper is not cut. Neither new pilot is an accepted gain.
 
-JR's first adoption37960568111 failed before routing because its declared replay choice was missing from a separate shell allowlist. The correction has a reproduced failing regression and two passing tests, including unknown-choice rejection. The retry uses the new source/worker above; do not resume or treat the failed run as native evidence.
+Previous jack adoptions are fully reconciled and integrated: JL37960073108, cherry67d2a1e,120→119; JR37960834229, cherry6b72bc2,136→135. Both match their eligible pilot board/replay hashes, have zeroDRC/parity,unchanged warnings/groups,fresh agreement and complete uncut/physical proofs. JR's first adoption37960568111 failed before routing at a missing shell allowlist choice; it has a reproduced regression and fixed retry, not native evidence.
 
 ## Exact next actions
 
 1. Refresh each run with `gh run view RUN --json status,conclusion,headSha,jobs`; refresh main, PR208 and the other-session refs before changing boards. Download terminal artifacts, verify their published ZIP SHA256, and retain the full native baseline/candidate/fresh evidence. Workflow success alone is not adoption.
-2. Reconcile each jack adoption receipt and bot delta from its pinned source. Require all original native pad-group memberships, warning identities, DRC/parity, fresh agreement and every uncut full copper object to survive. Compare the adopted candidate/replay SHA with the eligible pilot. Integrate only the reviewed successful bot delta; never copy a pilot board manually. If replay rejects, preserve its evidence and do not claim the pilot result as canonical.
+2. Verify all five checks on PR208's exact frozen head, refresh remote PR/main/other-session state, then use the normal verified merge workflow and check post-merge CI. Keep branches. Save evidence on this continuation, carry the predecessor merge forward, and retarget PR209 to main. The two jack adoptions are already fully reconciled; do not redo or promote old pilot files. For the new cut pilots inspect actual eligibility, native topology, warning identities, retained objects and fresh agreement; preserve rejections and change demonstrated causes rather than repeating unchanged scopes.
 3. For core37950004600 inspect `boards/osc-core/reports/grid-routing/shards-issue189-finer-ground-batch.json` and the native artifact. Require all133169 prior full copper objects, including duplicate UUID blocks, to survive, plus every usual native gate. Reconcile the bot delta from its pinned source. Adopted copper may be integrated only after those proofs; a rejected bot receipt must not be treated as a board gain.
 4. Only after core reconciliation, run `.circuit-cache/route-venv/bin/python circuit/routing/issue189/core-short-no-via/rebase_proposal.py --accepted-sha256 ACTUAL_ACCEPTED_SHA256`. It accepts only unchanged core or the exact whole known382 ground additions, verifies their full native geometry and all prior blocks, and rejects unexpected changes. It writes proposal/plan/rebase receipts for19short signal segments/11nets, no vias/cuts. Inspect those receipts, commit/push a new dedicated worker, then dispatch `gh workflow run routing-benchmark.yml --ref NEW_WORKER -f board=osc-core -f recover_core=true -f core_replay=short-no-via`. All native gates remain mandatory. This future rebase has NOT run.
 5. Do not close #189 until all three canonical boards pass zero-edge completion, settled/fresh native connectivity, unchanged constraints, regeneration/P/EL/O checks and same-revision final documentation/renders. Verified intermediate progress is not hardware qualification.
@@ -152,3 +154,5 @@ Separate stacked draft PR209 (`agent-fix/189-following-ground-continuation`) pin
 
 
 Cumulative full-block ledger retention-ledger-6b72bc2.json is recomputed (heavy guardPASS24s): original JL32745→33348,32609identical,136reviewed original removed/changed,739new; JR50311→51145,50292identical,19reviewed original removed/changed,853new; core132953→133169,all132953identical,+216. Latest stages retain every uncut object. Do not claim all original jack copper survives. Local pnpm circuit:check and pnpm check pass after both119/135 documentation updates. Exact-head CI and normal PR verification remain required before merge.
+
+The authoritative table is refreshed for PR209. Source6e37fdd includes PR208's accepted JR135 change through a normal merge; current boards remain119/135/1441. Neither current cut pilot touches the newly accepted jack copper.
