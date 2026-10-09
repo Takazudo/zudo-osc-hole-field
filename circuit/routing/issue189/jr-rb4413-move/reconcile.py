@@ -37,6 +37,9 @@ def main():
     assert sha(Path(meta['zip_path'])) == meta['zip_sha256']
     plan = read(HERE / 'plan.json')
     cache = ROOT / '.circuit-cache' if (ROOT / '.circuit-cache').is_dir() else ROOT
+    pilot = read(cache / 'issue189-rb4413-move/result.json')
+    assert pilot['plan_sha256'] == sha(HERE / 'plan.json')
+    assert pilot['adopted'] is False and pilot['source_regenerated'] is False
     paths = {s: cache / ('osc-jack-right-grid-189-jr-rb4413-' + s)
              for s in ('base', 'candidate', 'fresh')}
     dumps = {s: read(p / 'dump.json') for s, p in paths.items()}
@@ -49,6 +52,9 @@ def main():
         if pad['ref'] == plan['ref']:
             pad['xy'] = [a+b for a, b in zip(pad['xy'], plan['translation_nm'])]
             pad['poly'] = [[a+b for a, b in zip(v, plan['translation_nm'])] for v in pad['poly']]
+    assert sha(paths['candidate'] / 'osc-jack-right.kicad_pcb') == pilot['candidate_sha256']
+    assert sha(paths['fresh'] / 'osc-jack-right.kicad_pcb') == pilot['fresh_sha256']
+    assert sha(cache / 'issue189-rb4413-move/moved-copper.json') == pilot['proposal_sha256']
     gates = {}
     for stage in ('candidate', 'fresh'):
         assert dumps[stage]['pads'] == expected_pads
