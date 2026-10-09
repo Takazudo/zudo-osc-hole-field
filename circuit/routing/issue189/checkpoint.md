@@ -13,10 +13,10 @@ All accepted boards have zero native DRC/parity errors, no new warning identitie
 | Board | Run | Dedicated worker branch | Pinned source |
 | --- | --- | --- | --- |
 | Core |37950004600|`agent-fix/189-core-finer-ground-worker`|`0d6a444aa1ad648ce6146d0e893e93307bd98f14`|
-| JL |37956537948|`agent-fix/189-jl-u1518-ground-worker`|`5add51f584e077ad9529854ea27ba7ac2b512d2e`|
+| JL |37958624929|`agent-fix/189-jl-u1518-joint-worker`|`161f734bd0319b0ce51a1e8d1331d0196ed416d0`|
 | JR |37956542080|`agent-fix/189-jr-r4207-ground-worker`|`5add51f584e077ad9529854ea27ba7ac2b512d2e`|
 
-All three runs in this table remain in progress. The earlier C2248/R7609 jack runs are terminal/rejected; their exact artifacts and retained-object proofs are saved. The core run is the sole core writer:38 ground groups/382objects/38vias/zero cuts, full0.3mm AGND tracks. Jack runs are disposable cut/restoration pilots, not canonical writers. Each selects four unchanged original signal segments (JL two victim nets, JR one), F/B restoration,300000 cap. Neither cuts PR207's new copper. Do not dispatch overlapping trials or change pinned worker branches.
+All three runs in this table remain in progress. The earlier C2248/R7609 jack runs are terminal/rejected; their exact artifacts and retained-object proofs are saved. The core run is the sole core writer:38 ground groups/382objects/38vias/zero cuts, full0.3mm AGND tracks. Jack runs are disposable cut/restoration pilots, not canonical writers. JR selects four unchanged original signal segments on one victim net, F/B restoration,300000 cap. JL now tests the fixed58-segment joint ground/two-victim proposal with four reviewed cuts, no vias and no automatic repair. Neither cuts PR207's new copper. Do not dispatch overlapping trials or change pinned worker branches.
 
 ## Exact next actions
 
@@ -116,3 +116,6 @@ The expanded1680-case R7609±2mm translation comparison also yields zero candida
 JL37956537948 is now terminal/rejected120→120:AGND17→16→17,5adds/4cuts,all33290uncut objects identical,0DRC/parity,477unchanged warnings,no original splits,fresh agreement. Artifact11630850236 ZIP72c63a28cc78d4f140149fdc192eb29f580f3dc465179380a65d6af6d61a7013; candidate749845e4071e2fc51fae37c8e790b44cef86282bdab91c30b0cd86176583eaa6; replayba6cbb4144fa498a67fc31e56694c5417e0bf1b98455d684f6ac05a56b963954. Receipts are in jl120-u1518-10-ground-cut/.
 
 The distinct joint U1518 search reserves explicit AGND then restores both actual native-cut victim components. First declared order completes58segments/no vias with the same4cuts at0.0125mm, F/In2/B,300000cap,original finite frame; heavy guardPASS6s. jl-u1518-joint/ and jl-coupled-plan.json pin this complete proposal for a strict native pilot, without automatic repair. Raster completeness is not native eligibility; retained-endpoint and all original acceptance gates remain mandatory. JR37956542080 and core37950004600 are still pending.
+
+
+Active JL joint pilot37958624929 uses source161f734bd0319b0ce51a1e8d1331d0196ed416d0 on agent-fix/189-jl-u1518-joint-worker. Its two exposed retained endpoints are inside new same-net copper in the saved endpoint-screen.json; this is geometry evidence only, not a native warning result. A gated adoption replay is prepared as choice u1518-joint, with exact input/proposal/add/remove UUID checks and original project/rules copied for native cuts. Workflow YAML/all12shell steps and Python syntax checks pass. Native serialization/adoption is NOT RUN; dispatch only after the strict pilot is eligible and fully reconciled. Then commit/push a dedicated worker and use `gh workflow run routing-benchmark.yml --ref NEW_WORKER -f board=osc-jack-left -f replay_jl=true -f jl_replay=u1518-joint`.
