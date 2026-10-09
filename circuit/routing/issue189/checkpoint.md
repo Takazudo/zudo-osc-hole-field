@@ -1,3 +1,30 @@
+# Native pilot rejection and exact continuation — 2026-10-09 07:28 UTC
+
+Accepted boards remain JL134 / JR153 / core1509. No canonical change in PR196.
+JL pilot37897562881 atfb793f7 was REJECTED:134→135, two signal pad-group splits,
+four new dangling warnings, native DRC/parity0/0.33128oldobjects retained,3removed,
+32added. Both victim searches hit In3 fill-guard disconnection; higher expansion
+budgets explored the same exhausted states. Do not rerun this unchanged or raise
+the budget as a fix. Full fresh/cache acceptance was not reached. Receipt and exact
+replay are jl-two-ground-result.json and jl-two-ground-copper.json. Artifact11600957971
+ZIP c0c766c334ddc56f48ca8c3fbd52e66479b7ed984dd4724095f91e1b3a1d3521 verified.
+
+Core twelve-group screen is retained under core-twelve-ground-screen/:0/12paths,
+zero copper,129.347741s,heavy guard PASS. Native NOT RUN for this empty proposal.
+It uses original34955input and must not override an eventual accepted core result.
+
+Continuation:
+1. gh run view37898486489 (insert space before run ID): PR195 exact head76ed56b
+   must have all five required checks successful before the authorized normal merge.
+   Retain branch. Then retarget PR196 to main and merge origin/main into this branch.
+2. gh run view37895925149: sole core writer on agent-fix/189-core-filtered,
+   source0e6697df2bde94e3b3397da9ae0727bcdf4de464. Inspect adopted receipt, full native
+   groups/warnings/DRC/parity and fresh/cache equivalence; download and verify artifact
+   digest. Fetch any bot commit and preserve accepted copper when reconciling.
+3. Further JL changes must repair both signal victims while keeping all existing
+   native groups. The failed candidate is diagnostic only, never canonical input.
+4. Keep issue189 OPEN. Zero connectivity remains unmet; no fabrication qualification.
+
 # PR196 continuation checkpoint — 2026-10-09 07:24 UTC
 
 This branch preserves accepted JL134 / JR153 / core1509 from frozen PR195 head
