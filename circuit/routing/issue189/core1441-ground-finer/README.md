@@ -5,3 +5,5 @@ One bounded24-group comparison uses the identical native core1441 dump, same cur
 C1548 is already in active core143 run37925863664. Do not duplicate it, rebase alternatives or dispatch another core writer. Wait for the actual native result, reconcile every accepted object, then explicitly select only still-open groups and recheck compatibility on the accepted output. Finer raster proposals are not proof of completed ground connectivity or a speedup.
 
 The next two 48-group batches completed: six positive groups/85 objects and ten positive groups/87 objects. All are raster-only. Core143 run37925863664 subsequently rejected; accepted core remains1441. Its143 additions are not present and do not need preserving in a new candidate. Rebase only against the accepted hash and select still-open groups.
+
+Third48-group batch completed all48 in314.38s (guardPASS315s), yielding five groups/25objects. Across168groups the positive total is25groups/209objects. The combined selector excludes one12-object transaction due to0.025mm between proposed via centers, leaving24groups/197objects. Still no native acceptance.
