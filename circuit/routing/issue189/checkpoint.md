@@ -1,3 +1,25 @@
+# Accepted increment — 2026-10-09 05:18 UTC
+
+PR #193 branch agent-fix/189-corridor-repair. JR adoption commit0cdf42e;
+JL137 / JR155 / core1509 accepted native edges. JR replay37886650433 passed
+162→155, DRC/parity0/0,520 existing warnings, no new warning identities/split
+pad groups, independent reload agrees. All50311 original objects retained,
+401 additions/0 removals. Board SHA
+cf8cabf2e115e294a7a67253eae290ecd02a57419b5996a54e8755fcf79196cf.
+
+70 affected tests and pnpm check pass; guarded build/site checks PASS (the
+pre-existing allowlisted template link remains unchanged). Freeze PR#193 after
+this accepted-status commit for exact-head CI; continue experiments separately.
+
+JL six-corridor pilot37887005318 remains read-only on4f15044. JR next-pilot
+input now matches adopted155; dispatch once on the follow-up branch using
+board=osc-jack-right, local_repair=true, local_mode=cut. Core sole writer
+37881591885 remains on agent-fix/189-isolated-rail-replay; never duplicate or
+remove it. Inspect/reconcile its final bot commit before ground-link replay.
+Issue#189 remains open; none of these counts meets zero-edge completion.
+
+## Earlier checkpoint history (superseded above)
+
 # Current checkpoint — 2026-10-09 05:04 UTC
 
 PR #193 branch `agent-fix/189-corridor-repair`; JL adoption commit `7b8898c`.
