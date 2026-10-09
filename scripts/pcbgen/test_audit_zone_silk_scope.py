@@ -1,8 +1,25 @@
 import unittest
-from scripts.pcbgen.audit_zone_silk_scope import zone_metadata
+from scripts.pcbgen.audit_zone_silk_scope import zone_metadata,zone_fixture_parts,zone_fixture_text
 
 
 class ZoneScopeTests(unittest.TestCase):
+    def test_reusable_fixture_preserves_zone_context_artwork_bytes_and_removes_other_copper(self):
+        zone='00000000-0000-4000-8000-000000000001'
+        other='00000000-0000-4000-8000-000000000002'
+        footprint='00000000-0000-4000-8000-000000000003'
+        drawing='00000000-0000-4000-8000-000000000004'
+        zone_block=f'(zone (uuid "{zone}") (layer "F.Cu") (filled_polygon (pts (xy 1 2))))'
+        fp=f'(footprint (uuid "{footprint}") (property "Value" "a (quoted) value") (pad "1" smd rect))'
+        art=f'(gr_text "silk" (uuid "{drawing}"))'
+        source=f'(kicad_pcb\n (setup exact)\n {zone_block}\n (zone (uuid "{other}"))\n {fp}\n {art}\n (segment copper)\n (via drill)\n)'
+        parts=zone_fixture_parts(source,zone,{footprint,drawing})
+        for selected in (footprint,drawing):
+            with self.subTest(selected=selected):
+                expected=source.replace(f'(zone (uuid "{other}"))','').replace('(segment copper)','').replace('(via drill)','')
+                expected=expected.replace(art,'') if selected==footprint else expected.replace(fp,'')
+                expected=expected.replace('(pad "1" smd rect)','')
+                self.assertEqual(zone_fixture_text(parts,selected),expected)
+
     def test_fill_changes_do_not_hide_outline_or_context_changes(self):
         def board(fill,outline='(xy 0 0)',net='AGND'):
             return f'(kicad_pcb (zone (uuid "00000000-0000-4000-8000-000000000001") (net "{net}") (layer "F.Cu") (polygon (pts {outline})) {fill}))'

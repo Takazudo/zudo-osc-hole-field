@@ -1,6 +1,6 @@
 # Issue 189 exact continuation checkpoint
 
-Updated 2026-10-09 19:16 UTC. **Issue #189 remains OPEN.** Main `2ca29f2550366d5b31f6eb2ce9dbdbfd9a6b27c2` accepts **JL119 / JR134 / core1441**. Draft PR211, branch `agent-fix/189-finer-jack-continuation`, contains the next bounded work. Zero-edge completion, final regeneration/P/EL/O and renders remain unmet. No fabrication or hardware qualification is claimed.
+Updated 2026-10-09 19:26 UTC. **Issue #189 remains OPEN.** Main `2ca29f2550366d5b31f6eb2ce9dbdbfd9a6b27c2` accepts **JL119 / JR134 / core1441**. Draft PR211, branch `agent-fix/189-finer-jack-continuation`, contains the next bounded work. Zero-edge completion, final regeneration/P/EL/O and renders remain unmet. No fabrication or hardware qualification is claimed.
 
 ## Active work and hard gates
 
@@ -15,7 +15,7 @@ Parent steering at18:34UTC explicitly authorizes incremental merges once exact g
 
 PR209 merged head2c3afdedf9e999ef0b091db74805d10fc5687d44 as98820acfefa293f7c2558aacb2059d3de8da5ae8 after all five exact-head checks37972341588 passed. It adopted JR134. Its post-merge run37975245292 was cancelled/superseded, **not passed**.
 
-PR210 merged heada95f936cca551742267e36dde9276a8b813739f1 as2ca29f2550366d5b31f6eb2ce9dbdbfd9a6b27c2 after all five exact-head checks37974947048 passed. It changed verification, not canonical boards. Post-merge37977274128: documentation and all three native DRC jobs passed; Python/native regeneration job still active at19:13. Exact-head receipts are `ci-2c3afde.json` and `ci-a95f936.json`. Earlier main4db1d3c all-five post-check proof is `ci-main-4db1d3c.json`.
+PR210 merged heada95f936cca551742267e36dde9276a8b813739f1 as2ca29f2550366d5b31f6eb2ce9dbdbfd9a6b27c2 after all five exact-head checks37974947048 passed. It changed verification, not canonical boards. Post-merge37977274128: all five checks passed, including native regeneration (`ci-main-2ca29f2.json`). Exact-head receipts are `ci-2c3afde.json` and `ci-a95f936.json`. Earlier main4db1d3c all-five post-check proof is `ci-main-4db1d3c.json`.
 
 ## Accepted immutable boards
 
@@ -55,13 +55,13 @@ Exact10.0.6 source proves hole and both silk domains cap at199, and native silk 
 
 `complete_native_warnings.py` fails closed on missing/stale/incomplete evidence, changed context, new native warnings, unsupported domains, missing copper or zone scope. It only appends complete hole observations and removes no original finding. Ordinary DRC/parity/membership/fresh/source-publication gates remain. Opt-in `route_shards.py merge --complete-native-warnings` regenerates all audits on actual sources. No core adoption using this option has run.
 
-`reassessment-before-zone-scope.json` is explicitly provisional. Current `reassessment.json` records the zone-scope block. Updated `reassess.py` expects both full382copper and zone classification evidence; do not run it against old partial evidence. Latest focused tests are rerun before the next freeze.
+`reassessment-before-zone-scope.json` is explicitly provisional. Current `reassessment.json` records the zone-scope block. Updated `reassess.py` expects both full382copper and zone classification evidence; do not run it against old partial evidence. 24focused audit/workflow tests and100affected router tests pass; `pnpm circuit:check` and `pnpm check` pass. A new serializer regression also passes. The exact saved-input fixture benchmark produces byte-identical outputs: two fixtures per source take11.106→7.125s and10.776→6.770s; no native acceptance is inferred from serialization timing. See `zone-fixture-benchmark/`.
 
 ## JR rejected successor and changed-method controls
 
 Run37974220440 atb3ba58e8e4c1363efe08e55324cecd68455c9625:134→133 rejected,+22segments/2cuts,all51175uncut full objects identical,0DRC/parity,522unchanged warnings,fresh agreement. AGND joins improve but original X67A5B6E02FA33495DE9E splits: R7628.1/R7627.2, native groups4/58. Candidate d8765ecc82f188e7302ea4525b2aa446ac4aa68e4cf92b06e0577f837d02ab0b; replaye1e3011e587df334a6a44782311f526b70a08bb3d931c2ca14add11ffe257d57. Artifact11638981471,ZIPed1c64bb976d116756344c672d7743e8df811236f7df235b04bb24d488ce9f4b. `jr134-rb4614-2-ground-cut/` full proof.
 
-Explicit endpoint routing at0.025and0.0125 finds no path; joint permanent-ground-first restoration at0.0125fails both declared victim orders. `jr-rb4614-endpoints/`, `jr-rb4614-joint/` preserve negatives. No partial proposal submitted or unchanged-budget retry. JL C8142 joint/fanout and R8127/R8276 bounded source-defined move comparisons also preserve negative controls; no actual placement moved.
+Explicit endpoint routing at0.025and0.0125 finds no path; joint permanent-ground-first restoration at0.0125fails both declared victim orders. `jr-rb4614-endpoints/`, `jr-rb4614-joint/` preserve negatives. The additional `jr-rb4614-plane-joint/` control restores signals first then attempts explicit In1 AGND fanout; both declared orders still fail X67A5B6E02FA33495DE9E (guardPASS12s). No partial proposal submitted or unchanged-budget retry. JL C8142 joint/fanout and R8127/R8276 bounded source-defined move comparisons also preserve negative controls; no actual placement moved.
 
 ## H1/H2 and identical-input benchmarks
 

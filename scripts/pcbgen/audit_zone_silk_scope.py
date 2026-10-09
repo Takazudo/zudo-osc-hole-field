@@ -19,6 +19,27 @@ def zone_metadata(text):
     return rows
 
 
+def zone_fixture_parts(source_text, zone_uid, artwork_ids):
+    """Parse a large source once; retain exact bytes for each paired fixture."""
+    parts=[];cursor=0
+    for a,b in top_level_spans(source_text):
+        parts.append((None,source_text[cursor:a]));cursor=b
+        block=source_text[a:b];kind=block[1:].split(None,1)[0].rstrip(')')
+        match=UUID_RE.search(block);uid=match[1] if match else None
+        if kind in ('segment','via') or (kind=='zone' and uid!=zone_uid):continue
+        if kind=='footprint':
+            edits=[(x,y,'') for x,y in top_level_spans(block)
+                   if block[x+1:y].split(None,1)[0].rstrip(')')=='pad']
+            block=replace_spans(block,edits)
+        parts.append((uid if uid in artwork_ids else None,block))
+    parts.append((None,source_text[cursor:]))
+    return parts
+
+
+def zone_fixture_text(parts, item_uid):
+    return ''.join(block for uid,block in parts if uid is None or uid==item_uid)
+
+
 def classify_zone(before_path,after_path,output,before,after,uid,layer,growth,pcbnew):
     """Native full-zone/silk pairs wherever added filled area could collide."""
     settings=json.loads(after_path.with_suffix('.kicad_pro').read_text())['board']['design_settings']['rules']
@@ -38,18 +59,11 @@ def classify_zone(before_path,after_path,output,before,after,uid,layer,growth,pc
     sources=[(before_path,before),(after_path,after)];receipts=[];unions=[set(),set()]
     for stage,(source,board) in enumerate(sources):
         source_text=source.read_text();texts=text_rows(board);native_zone=next(z for z in board.Zones() if z.m_Uuid.AsString()==uid)
+        parts=zone_fixture_parts(source_text,uid,all_ids)
         for index,item_uid in enumerate(selected):
             folder=output/f'zone-{uid}'/f'{stage}-{index:04d}';folder.mkdir(parents=True,exist_ok=True)
-            fixture=folder/source.name;edits=[]
-            for a,b in top_level_spans(source_text):
-                block=source_text[a:b];kind=block[1:].split(None,1)[0].rstrip(')');match=UUID_RE.search(block)
-                block_uid=match[1] if match else None
-                if kind in ('segment','via') or (kind=='zone' and block_uid!=uid) or (block_uid in all_ids and block_uid!=item_uid):
-                    edits.append((a,b,''))
-                elif kind=='footprint':
-                    for x,y in top_level_spans(block):
-                        if block[x+1:y].split(None,1)[0].rstrip(')')=='pad':edits.append((a+x,a+y,''))
-            fixture.write_text(replace_spans(source_text,edits))
+            fixture=folder/source.name
+            fixture.write_text(zone_fixture_text(parts,item_uid))
             for suffix in ('.kicad_pro','.kicad_dru'):shutil.copyfile(source.with_suffix(suffix),fixture.with_suffix(suffix))
             loaded=pcbnew.LoadBoard(str(fixture));zones=list(loaded.Zones())
             if len(zones)!=1 or zones[0].m_Uuid.AsString()!=uid:raise ValueError('fixture zone identity changed')
