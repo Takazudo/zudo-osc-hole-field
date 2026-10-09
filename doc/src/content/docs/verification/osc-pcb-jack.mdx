@@ -19,16 +19,16 @@ A cut-line bound (`scripts/pcbgen/cut_capacity.py`) showed that the four-layer h
 | Native check | JL / `osc-jack-left` | JR / `osc-jack-right` |
 | --- | --- | --- |
 | Status | ROUTED DRAFT IN PROGRESS | ROUTED DRAFT IN PROGRESS |
-| Native open edges (DRC, settled zone refill) | **134** | **153** |
+| Native open edges (DRC, settled zone refill) | **127** | **148** |
 | Remaining signal edges | 105 | 120 |
-| Remaining rail / ground edges | +12V 3, +5V 0, -12V 4, AGND 22 | +12V 0, +5V 0, -12V 5, AGND 28 |
+| Remaining rail / ground edges | +12V 0, +5V 0, -12V 0, AGND 22 | +12V 0, +5V 0, -12V 0, AGND 28 |
 | DRC errors / schematic parity | 0 / 0 | 0 / 0 |
-| Track segments / vias | 30281 / 2850 | 47660 / 3096 |
+| Track segments / vias | 30291 / 2850 | 47670 / 3096 |
 | Native warnings | hole to hole 2, silk edge clearance 8, silk over copper 199, silk overlap 199, text height 43, track dangling 4, via dangling 22 | hole to hole 24, silk edge clearance 13, silk over copper 199, silk overlap 199, text height 59, track dangling 3, via dangling 23 |
 
 Routing uses `scripts/pcbgen/route_jack_grid.py`: terminal via arrays, ±12 V plane fanouts, rail links, then a negotiated-congestion (PathFinder) pass over every signal net on a 0.05 mm grid (region stages re-run on a 0.035 mm grid inside the neck-down areas), rip-up-and-reroute batches for what it leaves open, with AGND stitching vias where new copper cuts a surface pour. Each stage is applied to a disposable copy, checked with native DRC, schematic parity and zone refill, and kept only when the native open-edge count falls. Rip-up-and-reroute re-offers still-open islands with 4, 8, 12 and then 20 victim nets per probe, and a stranded island joins whichever island of its net is cheapest to reach, not only the largest. Stage receipts are in `boards/<board-id>/reports/grid-routing/`; `reports/ratsnest.json` holds the native per-net topology after a single zone refill; the open-edge figures above come from DRC with refilled zones, which can be higher. Silkscreen/text warnings remain [#44](https://github.com/Takazudo/zudo-osc-hole-field/issues/44).
 
-The images below predate the #189 JL transaction; refreshed renders remain part of final integration. The table and native receipts describe the current copper.
+The images below predate the #189 routing transactions; refreshed renders remain part of final integration. The table and native receipts describe the current copper.
 
 ![JL top: unvalidated routed draft](/assets/osc-hole-field/osc-jack-left-top.png)
 
@@ -176,3 +176,23 @@ signal groups split and four dangling warnings appeared. Its copper is not adopt
 The exact replay, hashes, retention checks and continuing pilot state are recorded
 in `circuit/routing/issue189/checkpoint.md`. Complete connectivity and hardware
 qualification remain open; the earlier renders have not been refreshed.
+
+### All jack supply edges connected (PR #197)
+
+[JL canonical replay 37903090712](https://github.com/Takazudo/zudo-osc-hole-field/actions/runs/37903090712)
+adopted 134→127, and
+[JR canonical replay 37903349098](https://github.com/Takazudo/zudo-osc-hole-field/actions/runs/37903349098)
+adopted 153→148. Both now have zero +12V, −12V and +5V native open edges.
+AGND remains at 22/28 and signal edges at 105/120, so routing is incomplete.
+
+Each transaction adds ten 0.25 mm outer-layer supply segments, with no vias or
+removals. All 33,131 JL and 50,756 JR pre-existing copper objects remain unchanged.
+Native errors/parity are 0/0; existing 477/520 warnings retain their identities,
+no original pad groups split, and independent fresh-copy connectivity agrees.
+The canonical board hashes match the independently checked pilot boards.
+
+The finer raster resolves these short escapes without changing electrical rules.
+A separate regression prevents supply and ground paths from inheriting signal
+neck-down dimensions. Earlier undersized raster proposals were never adopted.
+No routing result establishes current capacity, powered behavior or manufacturing
+qualification. Exact receipts and further signal/ground work remain under #189.

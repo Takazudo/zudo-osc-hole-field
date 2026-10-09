@@ -1,3 +1,103 @@
+# Frozen PR197 supply milestone — 2026-10-09 08:25 UTC
+
+PR197 agent-fix/189-fine-escape-replays now contains acceptedJL127/JR148/core1509.
+All +12/-12/+5 open edges are0 on both jack boards. Remaining:JL105signals+22AGND;
+JR120signals+28AGND. Native errors/parity0/0,existingwarnings477/520,no new identities
+or original-group splits,independent fresh agreement. Not routing-complete or
+hardware-qualified. Freeze this final review head for fresh required CI before
+normal merge; keep189OPEN and retain branches. Continue new work on a follow-up.
+
+JL adoption37903090712 source85ee381,bot37ce2ec8e0a2e86215e12eaad0d429af270fcde1:
+134→127,all33131oldobjects retained,10added,zero removals/vias. BoardSHA
+343add6006f409640372f77cee521f717626c852c9ee8f68066b78c6b91471f7.
+JR adoption37903349098 sourcee6a6220,bot51d4d21c9f9dc94ee56aa5cad577577283450544
+on retainedci-route/osc-jack-right-37903349098 after a branch-update race; reconciled
+as43e3fe812f53d63500986ee314864bae211b73a8.153→148,all50756oldobjects retained,10added,
+zero removals/vias. BoardSHAea5f09c78cd1146ad5c4f8a1f9e573bb644e9e96cd3ee0d02ab5c8a64b3cf6e2.
+Both exact board/replay hashes match downloaded and digest-verified eligible pilot
+artifacts. Canonical adoption receipts inspected; additional adoption ZIPs are
+listed with downloaded=false in benchmark-artifacts.json. No jack writer remains.
+
+Next read-only JL D2326 pilot37904498108 at43e3fe8 uses actualaccepted127 input,
+eight signal objects,zero removals,all10supply additions preserved by hash-bound
+preparation. Next JR filtered two-signal pilot37902237082 at ee6c0aa still uses153;
+if eligible,rebind toactualaccepted148 and prove all10supply objects remain before
+native canonical replay. Never dispatch a new-input plan before its board exists
+in the source commit. Neither pending pilot is accepted progress.
+
+PR196 merged5df9ba7d30621a682c163e9614d0513c154e9aac after all five checks passed
+on ee6c0aa in37902231900. PostmergeCI37903625267 pending. PR195 c7f9a4e postmergeCI
+37900306980 passed. PR197 has already merged origin/main and is based on main.
+
+Core sole writer37895925149 remains at0e6697d on agent-fix/189-core-filtered.
+No duplicate writer. Core24-resolution-screen contains identical-input bounded
+24-net probes excluding its56nets:0.075mm1path/36objects/34.703791s;0.05mm2paths/
+38objects/80.232105s. Both heavy-guardPASS; nativeNOTRUN,acceptededgesunknown.
+Inspect the existing writer's actual terminal receipt first,then rebind or regenerate
+proposals against its accepted input without overwriting successful copper.
+
+Validation:81affected tests,pnpm check,workflow YAML and12shell blocks pass.
+New explicit completion command's synthetic tests pass; its native invocation is
+NOTRUN and these nonzero boards cannot meet its zero-edge criterion. Final-head
+required CI for197 must finish before merge. No manufacturing or external contact.
+
+# Both supply pilots eligible — 2026-10-09 08:11 UTC
+
+DraftPR197 on agent-fix/189-fine-escape-replays owns further adoption work.
+JL canonical adoption37903090712 runs from85ee381b81341e9d367245d974666d042ded34c4;
+expected eligible127,actual canonical result pending. Do not start a second JLwriter.
+
+JR supply pilot37901540024 is NATIVE ELIGIBLE153→148: all supply edges0,signals120,
+AGND28. Errors/parity0/0,520existingwarnings,no new identities or original-group
+splits,independent fresh agrees. All50756oldobjects retained,10full-widthsegments
+added,zero vias/removals. CandidateSHAea5f09c78cd1146ad5c4f8a1f9e573bb644e9e96cd3ee0d02ab5c8a64b3cf6e2;
+replaySHA44cdc51fb3177d828893b4c5ec7e07650591b2eaa767593e832ae24b12dec95d.
+Artifact11603022660 ZIPd7845cb466f3e81cdfbf18d6da214fc07245ac97a6ee99dde826c84bde9cda82
+verified. Dedicated canonical JR replay is prepared; canonical remains153 until it
+passes. Preserve these supply additions before rebinding a later signal replay.
+
+JL finer additive screen finished1path/104failures/8objects/zero removals in
+730.181655s (heavy guardPASS), versus0paths in143.503631s at0.05mm on the same saved
+134input. Source/results retained as jl134-finer-probe.*. Native NOT RUN for its
+one D2326.1 signal path. Rebind only after accepted127 board exists in the source
+commit, preserving every added supply object; do not dispatch against stale134.
+
+PR196 remains frozenee6c0aa with CI37902231900 pending. Retarget197 after verified
+196merge. JR filtered two-signal pilot37902237082 and sole core writer37895925149
+remain active; inspect actual terminal receipts. No rejected copper is canonical.
+
+# Fine escape replay continuation — 2026-10-09 08:08 UTC
+
+PR196 is frozen at ee6c0aaa760b2e48e41bcfe82af259819f11ada1 for CI37902231900;
+all five checks must pass on that exact head before its authorized normal merge.
+Retain its branch and keep189 OPEN. Continue on agent-fix/189-fine-escape-replays.
+PR195 mergedc7f9a4e; its postmergeCI37900306980 passed all five checks.
+
+JL supply pilot37901808610 atc4a3c79 is NATIVE ELIGIBLE134→127: all +12/-12/+5
+open edges are0,signals105,AGND22. Errors/parity0/0,477existingwarnings,no new
+identities or original-group splits,independent fresh agrees. All33131oldobjects
+retained,10full-width250000nm outer segments added,zero vias/removals. CandidateSHA
+343add6006f409640372f77cee521f717626c852c9ee8f68066b78c6b91471f7; replaySHA
+37930f7d0da6ff2f2ceba89e0f90938f45ed4ff705a44bdd037fea472b5c4a11. Artifact11603365827
+ZIP5515fcdb207670ff61d76e5fd1f2676191b5b1c3ff615d49195b758c9df166a2 verified.
+Canonical board remains134 until the dedicated adoption replay passes.
+The prior accidental old-plan dispatch37901753345 was canceled,not evidence.
+
+JR supply pilot37901540024 at a3ec8ca is running against153; full-width10segment
+proposal,fivepaths,zero vias/removals. JR filtered signal pilot37902237082 at ee6c0aa
+is queued behind it,against the same153 input. The earlier three-signal pilot
+37900022560 rejected153→151 for an original minus-twelve group split atC7221.1;
+restore failed,full fresh acceptance not reached. Verified receipt and geometric
+attribution are committed. Filtered33object/two-net proposal omits whole D7208
+transaction within2mm; this is a hypothesis pending native validation. Preserve
+any accepted supply copper before rebinding a later signal replay.
+
+Core sole writer37895925149 remains on agent-fix/189-core-filtered at0e6697d.
+Do not duplicate. Local JL0.025mm additive signal screen remains running on134;
+one raster path so far,no native claim. Its source/output are
+.circuit-cache/issue189-jl134-finer-probe.{py,json}; retain final result. No other
+local heavy run is active. Accepted main remainsJL134/JR153/core1509 until adoption.
+
 # Bounded pilot diagnosis — 2026-10-09 07:49 UTC
 
 JL RB2217 pilot37899555501 is REJECTED:134→134,one signal group split,one new

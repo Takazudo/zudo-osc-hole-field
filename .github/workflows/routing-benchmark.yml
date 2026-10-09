@@ -22,12 +22,12 @@ on:
       jr_replay:
         description: Fixed reviewed JR transaction (used only with replay_jr)
         type: choice
-        options: [return-restored, original-ground, u7509-on-ground]
+        options: [return-restored, original-ground, u7509-on-ground, rail-finer]
         default: return-restored
       jl_replay:
         description: Fixed native-eligible JL transaction (used only with replay_jl)
         type: choice
-        options: [rail-leaf, corridor, paired-corridors, ground-junction]
+        options: [rail-leaf, corridor, paired-corridors, ground-junction, rail-finer]
         default: rail-leaf
       recover_core:
         description: Replay the preserved core aggregate and repair split AGND before the full native gate
@@ -161,6 +161,9 @@ jobs:
           elif [[ $JL_REPLAY == ground-junction ]]; then
             replay=circuit/routing/issue189/jl-ground-junction-copper.json
             label=issue189-ground-junction
+          elif [[ $JL_REPLAY == rail-finer ]]; then
+            replay=circuit/routing/issue189/jl-rail-finer-copper.json
+            label=issue189-rail-finer
           else
             exit 1
           fi
@@ -173,7 +176,7 @@ jobs:
           mkdir -p .circuit-cache
           set -o pipefail
           case "$JR_REPLAY" in
-            return-restored|original-ground|u7509-on-ground) ;;
+            return-restored|original-ground|u7509-on-ground|rail-finer) ;;
             *) exit 1 ;;
           esac
           timeout --signal=INT --kill-after=2m 80m python -u scripts/pcbgen/route_shards.py merge osc-jack-right \
