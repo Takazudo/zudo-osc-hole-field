@@ -1,5 +1,37 @@
 # Issue 189 resumable implementation checkpoint
 
+Snapshot 2026-10-09 03:57 UTC. Incomplete; keep #189 open. Current branch
+`agent-fix/189-isolated-rail-replay`, draft PR#192. PR#190/#191 merged after
+all checks passed under explicit incremental-merge authorization.
+
+JL isolated pilot37880632743 is native eligible:139→138, no new warnings,
+no split groups, all32784 existing physical copper objects retained unchanged.
+Exact receipt/replay:jl-rail-leaf-result.json/jl-rail-leaf-copper.json. One added
+0.65mm -12V segment, no removals. Still read-only; canonical adoption is next:
+
+```sh
+gh workflow run 378789207 --ref agent-fix/189-isolated-rail-replay \
+  -f board=osc-jack-left -f replay_jl=true
+```
+
+Check existing runs before dispatch. The source replay binds original JL SHA;
+stale copper must fail instead of overwriting other work. The native merger
+independently checks DRC/parity, complete pad membership, warnings and fresh reload.
+
+Core37872907194 finished, rejected1509→1400 with three original AGND groups
+split into four extra pieces. Native errors/parity0/0; no canonical core change.
+Receipt/replay are boards/osc-core/reports/grid-routing/shards-issue189-reviewed*.
+Native-result-diagnosis.json documents detached pads and KiCad's199 per-code
+warning cap; never waive the warning gate. A targeted ground-link probe found
+one path for J900151.2,21 objects/one via, but five other searches failed. This
+is raster-only, not acceptance. Exact source/output in core-reviewed/ground-link-probe.*.
+No core writer remains active. Retain original task branch and other sessions' branches.
+Accepted canonical counts remain JL139/JR162/core1509; core report499 is capped.
+
+## Historical checkpoints (superseded by current state above)
+
+# Issue 189 resumable implementation checkpoint
+
 **Incomplete, unvalidated draft. Keep #189 open.** Snapshot:2026-10-09 03:44 UTC.
 PR#190 merged at `da615cc059e56709c47c38a9af7ab175d55ca2c0`; PR#191 merged at
 `1beddde2cfb9f9c9bec4b0798fce2258c8d9c8b4`. Both matched their exact heads after
