@@ -1,3 +1,86 @@
+# Current checkpoint — 2026-10-09 05:44 UTC
+
+PR#193 merged at652dab95ba3f2da44ad941c2b972ad074bfdf8fc after all five exact-head
+checks passed on52362ff (run37887923010). Issue#189 remains OPEN. PR#194 now
+bases on main; merge commitcd2366b preserves accepted JL135/JR155/core1509.
+Core sole writer37881591885 is still running on retained
+agent-fix/189-isolated-rail-replay; do not treat it as accepted or duplicate it.
+
+JR six-corridor pilot37887951545 was rejected155→157: three signal victim nets
+split, AGND29→31,13 new dangling warnings, DRC/parity0/0. Detached return pads
+are R7532.2/C7512.2/R7434.2 and R7530.2. Exact result/replay and artifact digest
+are committed. Canonical JR remains155 with all previous accepted copper.
+
+Prepared next read-only JR coupled plan isolates D7504.1 and its complete victim
+repair:48 additions/five removals. Four are the source corridor blockers; the
+fifth is one diagnosed0.55mm In2 dangling tail on the replaced victim branch.
+Source asserts exact UUID/geometry and prior native warning; original signal pad
+groups were intact in the donor. Return/fill effect of isolated subset is unknown.
+Existing native coupled restoration and full original-baseline gates must pass.
+Dispatch local_repair=true/local_mode=coupled on this branch after push, checking
+active runs first. No automatic canonical promotion by the pilot.
+
+JL first-corridor coupled pilot37889308541 remains active on8b191ce, input135.
+No new canonical writer is active for either jack. PR#194 CI is pending after
+merging main. Executor remains usable after the transient05:22 disconnect.
+
+## Earlier checkpoint history (superseded above)
+
+# Accepted follow-up — 2026-10-09 05:35 UTC
+
+PR#194 agent-fix/189-corridor-followup adopted JL137→135 at002a8bf via
+37888369139. DRC/parity0/0,477 existing warnings, no new warning identities or
+split pad groups, independent reload agrees. Native retained-copper multiset:
+32910 unchanged,25 removed,214 added; physical count33124. Board SHA
+3d40f1db27f350ce063bf601cab2eeb9f6394b47da9930fca21b6bc0258d2352.
+Task accepted counts:JL135/JR155/core1509. PR#193 remains frozen at52362ff;
+all three native DRC and documentation checks pass, Python job still pending.
+
+Next JL read-only coupled pilot source is jl-coupled-plan.json: isolate R2316.2
+with its complete victim repair,66 additions/four source cuts. The failed victim
+had a path rejected by the raster -12V fill guard. Diagnostic capture without
+that heuristic finds a path; this is NOT native acceptance. Existing coupled
+pilot must restore any native supply/return split and pass all original-baseline
+gates. Proposal preparation verifies selected-net geometry and all pads are
+unchanged between source137 and accepted135. Input pinned3d40; canonical untouched.
+Dispatch local_repair=true/local_mode=coupled on this branch only after push.
+
+JR pilot37887951545 is still active. Core sole writer37881591885 is still active
+on retained agent-fix/189-isolated-rail-replay; its outcome is NOT yet known.
+Do not duplicate it. Executor is usable after the transient05:22 disconnect.
+Keep#189 open; PR#194 depends on#193 until that checked increment merges.
+
+## Earlier checkpoint history (superseded above)
+
+# Current checkpoint — 2026-10-09 05:24 UTC
+
+Active branch agent-fix/189-corridor-followup, based on PR#193 frozen head
+52362ff0719d049b17db88a715e073ecc9c81dd9. PR#193 exact-head CI37887923010
+is pending; native JL/JR and documentation checks have passed. Do not move that
+PR head while checking it. Accepted task copper:JL137/JR155/core1509.
+
+The 05:22 executor transport disconnect was transient: immediate pwd retry,
+subsequent filesystem/Python/git/GitHub calls succeeded. No present executor blocker.
+
+JL six-corridor pilot37887005318 completed137→136 but was rejected: victim nets
+X1C571F565717425C0CCC and X862F9C0AC61EAF484CDC split and own all four new
+dangling warnings. Native DRC/parity0/0; original supply/ground membership intact.
+Exact source result/replay and artifact11597336751 retained. Do not adopt the batch.
+
+Prepared two whole successful transactions only:U3404.10/X23ECF9EB43629B723874
+and U2119.3/XA3808316751BA419D842, including all their victim repairs. The fixed
+subset contains214 additions/25 removals, pins the source hash and canonical137,
+and excludes entire failed transactions. Native subset acceptance NOT RUN yet.
+After push, dispatch replay_jl=true,jl_replay=paired-corridors on this branch;
+check active runs first. Full original-baseline gates remain mandatory.
+
+JR six-corridor read-only pilot37887951545 is active on this follow-up branch,
+source52362ff, based on adopted155. Core sole writer37881591885 still runs on
+retained agent-fix/189-isolated-rail-replay. Inspect/reconcile its eventual bot
+commit before ground-link replay; do not launch a duplicate writer. #189 OPEN.
+
+## Earlier checkpoint history (superseded above)
+
 # Accepted increment — 2026-10-09 05:18 UTC
 
 PR #193 branch agent-fix/189-corridor-repair. JR adoption commit0cdf42e;
