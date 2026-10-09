@@ -1,3 +1,23 @@
+# Short escape continuation — 2026-10-09 09:15 UTC
+
+PR198 is frozen at563c09936e63361bce96cfb89a5f4eb83a358fb9 for requiredCI37909660345.
+Its actual accepted boards areJL126/JR145/core1441. Merge only after all five checks
+pass on the exact current head; preserve the sole core writer37907147442 on that
+branch and inspect its real receipt if it changes the head. Keep189OPEN.
+
+New work is isolated on agent-fix/189-short-escape-continuation, based on563c099.
+JR bounded-two/select.py rebinds two saved paths,D7504.1 and R7626.1,from146 to
+accepted145,proving all50821current objects (including22new U7403objects) remain
+unchanged,31new objects,zero removals/UUID collisions. prepare.py requires exact
+145inputSHA7e548f08e57c5b982c707583b537c7364939f4e336c1f2e8cfc2b2b7bf0253b6
+and proposalSHA before native serialization. Combined native gate NOTRUN yet.
+No second core writer is authorized while37907147442 remains active.
+
+Core remaining supply screen is finishing locally. Next: retain its complete
+results,select only short full-width additive paths,then reconcile with the core
+writer's eventual accepted board before any native submission. Prepared JL126
+24-net and core24-ground scripts in.circuit-cache are NOTRUN. No checks waived.
+
 # JR145 accepted; freeze the continuation milestone — 2026-10-09 09:11 UTC
 
 PR198 now contains acceptedJL126/JR145/core1441. JR bounded run37907617523 at75f599e
