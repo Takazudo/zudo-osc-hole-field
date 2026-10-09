@@ -1,3 +1,30 @@
+# PR195 merged; continued routing — 2026-10-09 07:44 UTC
+
+PR195 merged2026-10-09T07:39:46Z as c7f9a4e1aee0d9dbbb3f5c4d2f7a67c0cda6dc73,
+after all five checks passed on76ed56bd501e44ef19dc1a41847dcfe017999dc6 in37898486489.
+Main now has acceptedJL134/JR153/core1509. Issue189 remains OPEN and the branch is
+retained. Postmerge CI37900306980 is pending. PR196 is retargeted to main and
+merged origin/main at9f868d4; all three accepted board hashes remain unchanged.
+
+Read-only JL RB2217 pilot37899555501 uses source80ed9377dc60a1df687e0a337b389b0f7bd70bc2.
+Read-only JR three-additive pilot37900022560 uses6b2d7ee3259b3ccaaf7f55672ca830e8e91c08db;
+59objects/3paths/zero removals selected from the153 fine-grid screen's22paths.
+Both native outcomes are pending. Core sole writer37895925149 remains active at
+0e6697df2bde94e3b3397da9ae0727bcdf4de464; do not duplicate or infer adoption.
+
+The additiveJL1340.05mm screen finished0/105paths,zero copper,143.503631s,heavy guard
+PASS. Native NOT RUN for the empty proposal. Source/result retained as jl134-fine-probe.*.
+Do not repeat this unchanged configuration. JR153 screen22paths/98failures/781objects
+in186.051014s,heavy guardPASS; source/result retained, but only the59-object subset
+is in a native pilot. Raster paths alone are not accepted progress.
+
+An explicit zero-edge milestone command is now implemented in
+scripts/pcbgen/check_routing_completion.py (see route-gate.md). Six synthetic gate
+regressions pass, plus nine existing native-settling orchestration tests. A real
+native invocation of this new command is NOT RUN; current native board counts
+already fail its zero-edge requirement. This gate does not waive warning review,
+other-board regression, source boundary isolation or hardware qualification.
+
 # Active continuation — 2026-10-09 07:35 UTC
 
 PR195 remains frozen at76ed56bd501e44ef19dc1a41847dcfe017999dc6. CI37898486489 has
