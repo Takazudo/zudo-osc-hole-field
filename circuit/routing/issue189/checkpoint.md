@@ -1,6 +1,6 @@
 # Issue 189 exact continuation checkpoint
 
-Updated 2026-10-09 19:27 UTC. **Issue #189 remains OPEN.** Main `2ca29f2550366d5b31f6eb2ce9dbdbfd9a6b27c2` accepts **JL119 / JR134 / core1441**. Draft branch now accepts **JL118 / JR134 / core1441**. Draft PR211, branch `agent-fix/189-finer-jack-continuation`, contains the next bounded work. Zero-edge completion, final regeneration/P/EL/O and renders remain unmet. No fabrication or hardware qualification is claimed.
+Updated 2026-10-09 19:48 UTC. **Issue #189 remains OPEN.** Main `2ca29f2550366d5b31f6eb2ce9dbdbfd9a6b27c2` accepts **JL119 / JR134 / core1441**. Draft branch now accepts **JL118 / JR134 / core1441**. PR211 is frozen at57aa5247c5cdd8bfb559ae65a9bd202c2d0d7f90 on `agent-fix/189-finer-jack-continuation`. Current follow-up branch is `agent-fix/189-ground-scope-continuation`, containing read-only movement comparisons and an audit timeout that retains upload time. Zero-edge completion, final regeneration/P/EL/O and renders remain unmet. No fabrication or hardware qualification is claimed.
 
 ## Active work and hard gates
 
@@ -63,6 +63,12 @@ Exact10.0.6 source proves hole and both silk domains cap at199, and native silk 
 Run37974220440 atb3ba58e8e4c1363efe08e55324cecd68455c9625:134→133 rejected,+22segments/2cuts,all51175uncut full objects identical,0DRC/parity,522unchanged warnings,fresh agreement. AGND joins improve but original X67A5B6E02FA33495DE9E splits: R7628.1/R7627.2, native groups4/58. Candidate d8765ecc82f188e7302ea4525b2aa446ac4aa68e4cf92b06e0577f837d02ab0b; replaye1e3011e587df334a6a44782311f526b70a08bb3d931c2ca14add11ffe257d57. Artifact11638981471,ZIPed1c64bb976d116756344c672d7743e8df811236f7df235b04bb24d488ce9f4b. `jr134-rb4614-2-ground-cut/` full proof.
 
 Explicit endpoint routing at0.025and0.0125 finds no path; joint permanent-ground-first restoration at0.0125fails both declared victim orders. `jr-rb4614-endpoints/`, `jr-rb4614-joint/` preserve negatives. The additional `jr-rb4614-plane-joint/` control restores signals first then attempts explicit In1 AGND fanout; both declared orders still fail X67A5B6E02FA33495DE9E (guardPASS12s). No partial proposal submitted or unchanged-budget retry. JL C8142 joint/fanout and R8127/R8276 bounded source-defined move comparisons also preserve negative controls; no actual placement moved.
+
+## JL118 source-defined movement controls
+
+`jl118-r8127-placement-screen/` expands physical translations to±2mm at0.1mm steps:1,680cases, only the same seven feasible moves as the older±0.8mm screen; no unchanged route rerun. `jl118-movable-ground/` screens seven other source-defined movable resistors outside bypass clusters,1,680translations each, unchanged orientation/side, fixed outline,0.35mm source courtyards,0.25mm copper and full0.2mm signal landing bridge. R8105/R8173havezero static candidates; R8273/RB2214/RB2315/R8270/R8107have1/4/8/10/86. All228direct/plane-fanout comparisons including unmoved controls fail (guardPASS697s). A changed-target R8107→actual isolated R8105group comparison also fails all87cases (guardPASS280s). Diagnostics are exhausted searches/no legal via sites, not expansion-limit failures. No footprint moved, no copper changed, no native moved-board acceptance claimed. Preserve results and do not repeat unchanged scopes or raise the budget.
+
+Future standalone zone-audit steps now have an80minute command timeout inside the90minute job, leaving time to upload incomplete evidence. This does not alter the active old run or classify incomplete evidence as passed.
 
 ## H1/H2 and identical-input benchmarks
 
