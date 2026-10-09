@@ -1,6 +1,6 @@
 # Issue 189 exact continuation checkpoint
 
-Updated 2026-10-09 15:08 UTC. **Issue189 remains OPEN.** Zero-edge connectivity and final completion gates are unmet. No fabrication/hardware qualification is claimed. Fixed panel/electrical rules, accepted copper and other sessions are preserved.
+Updated 2026-10-09 15:15 UTC. **Issue189 remains OPEN.** Zero-edge connectivity and final completion gates are unmet. No fabrication/hardware qualification is claimed. Fixed panel/electrical rules, accepted copper and other sessions are preserved.
 
 ## Current authoritative state
 
@@ -108,3 +108,10 @@ Third core no-via screen completed48cases,6positivecases/92segments,zero vias,34
 JL adoption37947364213 failed before routing: the newly copied additive prepare helper lacked the .kicad_pro required by grid_apply for cuts. Canonical copper is unchanged; no native adoption check passed in that failed job. Both endpoint prepare helpers now copy the original .kicad_pro and .kicad_dru beside the disposable output; the strict missing-project guard is unchanged. Retry through a new source-pinned worker after this correction.
 
 JR endpoint pilot37945797248 is terminal/eligible137→136:0DRC/parity,520unchanged warnings,no new identities/splits,fresh agreement. All51024uncut objects identical,+39/2reviewedcuts. Artifact11624043283 ZIP990c17f4155dc6ad98b4f0db0c091f1b25bd265c16d834afa2bfa9fb68b6293b; candidate33747bfc15d66bc92e7fb7c563dfa853b13058a0056075626551ef3d385d6b84; replay88f040c0318eccb93cf002f7a35e8d464b21c38c41d44f5bf765688468bcd953. Canonical remains137 pending gated adoption.
+
+
+## Latest active successor sources
+
+PR207 is fixed at0d6a444aa1ad648ce6146d0e893e93307bd98f14 (JL120/JR136/core1441); exact CI37950014675 must be reconciled before merge. Core ground-only native run37950004600 uses that same source on `agent-fix/189-core-finer-ground-worker`. It is now the sole core writer; never reuse the already rejected core26 as accepted evidence.
+
+Next jack scopes are isolated on `agent-fix/189-next-ground-continuation`: JL120 U1502.16 (two cuts, one victim,12.8x16.5mm frame) and JR136 J900107.4 (three cuts, one victim,13.65x13.7mm frame). Every selected track is identical to its saved prefilter geometry on the new accepted board, and each target is still disconnected. F/B-only native cut/restoration pilots will establish actual topology; ground-only prefilter paths are not complete proposals. No candidate copper has been applied by these plans.
