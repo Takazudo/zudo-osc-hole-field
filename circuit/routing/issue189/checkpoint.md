@@ -1,3 +1,18 @@
+# Active native replays — 2026-10-09 08:50 UTC
+
+Sole core writer37907147442 ataf724ad816ccf837cc3494f10bf3137f8025ae5e
+replays core-bounded-one/proposal.json onto accepted1441SHAa0e3cff...:
+31objects on X33ADBEB2EBFF18372234/U1513.9,zero removals. Native NOT RUN to completion.
+Do not dispatch another core writer or overwrite eventual accepted copper.
+JL canonical37906767213 at46a599c remains active. Inspect both actual receipts.
+
+core1441-bounded-screen retains exact probe and24-net result:0.025mm additive
+frames,maximum2500mm2 each,300000expansions/window;5paths/283objects in187.959573s,
+heavy-guardPASS. Only the31-object transaction is submitted; other proposals remain
+raster-only and must be rebound to any new accepted board with retention proof.
+A same-input0.05mm comparison is running locally. Existing tests87PASS and both
+pnpm circuit:check/pnpm check PASS after the documentation updates.
+
 # Accepted core and JR continuation — 2026-10-09 08:46 UTC
 
 PR197 merged normally as1842b477fa74fdf269fc2346091d6e7e17c359de after all five
