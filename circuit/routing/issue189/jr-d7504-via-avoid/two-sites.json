@@ -1,0 +1,77 @@
+{
+  "status": "ADDITIVE RASTER ONLY; SEARCH-ONLY VIA EXCLUSION AROUND NATIVE LOST FILL; BOARD RULES UNCHANGED; NATIVE NOT RUN",
+  "input_dump_sha256": "1b488ef5504be0fb23706ecfb1ead5bdf448463a7e9bdb591ca79a80bb00506f",
+  "bounds_mm": [
+    387.125,
+    170.5,
+    416.45,
+    187.56
+  ],
+  "elapsed_seconds": 3.4023838869979954,
+  "transactions": [
+    {
+      "via_avoid_mm": [
+        410.075,
+        177.55,
+        410.675,
+        178.15
+      ],
+      "allowed_layers": [
+        "F.Cu",
+        "In2.Cu",
+        "In3.Cu",
+        "B.Cu"
+      ],
+      "ground_growth_mm": 0.05,
+      "elapsed_seconds": 3.3889120480016572,
+      "results": [
+        {
+          "net": "X3307A17C148FAA8F7A4D",
+          "island": [
+            "D7504.1"
+          ],
+          "path": null
+        }
+      ],
+      "diagnostics": [
+        {
+          "net": "X3307A17C148FAA8F7A4D",
+          "endpoints": [
+            "D7504.1"
+          ],
+          "reason": "expansion_limit",
+          "phase": "route",
+          "attempts": [
+            {
+              "window_cells": [
+                0,
+                500,
+                670,
+                1079
+              ],
+              "expanded": 300001,
+              "limit": 300000
+            },
+            {
+              "window_cells": [
+                0,
+                686,
+                0,
+                1079
+              ],
+              "expanded": 300001,
+              "limit": 300000
+            }
+          ],
+          "max_expansions": 300000,
+          "window_mm": 6
+        }
+      ],
+      "proposal": {
+        "board_sha256": "72a24ee996ae454c099ed165de1bd857721c42bef37861907a98ba5a4bf39d0c",
+        "removed_uuids": [],
+        "copper": []
+      }
+    }
+  ]
+}

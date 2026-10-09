@@ -1,3 +1,19 @@
+# Ground-fill continuation — 2026-10-09 11:12 UTC
+
+New isolated branch agent-fix/189-ground-fill-continuation starts at 82ce9b4.
+PR200 remains on short-power-continuation for exact-head CI; JR37920931258 is
+still its sole JR writer. Core37907147442 remains the sole core writer on the
+retained ground-signal branch. Reconcile those results before any next JR/core run.
+
+JL U2119 rejected125→126; ground repairs found no legal paths at unchanged rules.
+A search-only via exclusion near C2148 produces a different83-object additive
+proposal on actual JL125, preserving all33220objects. Submit once as replay_jl=true,
+jl_replay=u2119-via-avoid; native results NOT YET RUN at this checkpoint.
+
+JR native fill-loss polygons are saved under jr-d7504-fill-diagnosis. Avoiding the
+first failed via site yields34objects; excluding both sites yields0. This JR
+alternative is not rebased/submitted. Do not adopt raster-only output.
+
 # JL rejected; receipts recovered — 2026-10-09 11:08 UTC
 
 JL run 37919613559 rejected U2119: 125→126, one signal join and two new
