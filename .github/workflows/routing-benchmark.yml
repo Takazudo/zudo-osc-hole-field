@@ -427,7 +427,7 @@ jobs:
       contents: read
       actions: read
     runs-on: ubuntu-latest
-    timeout-minutes: 90
+    timeout-minutes: 60
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
       - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c
@@ -436,30 +436,29 @@ jobs:
           run-id: 37950004600
           github-token: ${{ secrets.GITHUB_TOKEN }}
           path: .circuit-cache/hole-audit-input
-      - name: Verify immutable native inputs
+      - name: Download immutable single-item archive without extracting
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          python3 - <<'PY'
-          import hashlib
-          from pathlib import Path
-          root=Path('.circuit-cache/hole-audit-input/.circuit-cache')
-          for stage,expected in [('start','95c815b2178511621f97cd7021938023b96d4ee19c9282ae99b35fb387ba10c5'),('merge','b9f5ca13f83c7ffdbe5836fd271e7c1099e04b901ca1798a7be06f025bd02d66')]:
-              p=root/('osc-core-grid-shards-'+stage)/'osc-core.kicad_pcb'
-              assert hashlib.sha256(p.read_bytes()).hexdigest()==expected
-          PY
-      - name: Classify changed outer-zone silkscreen interactions
+          mkdir -p .circuit-cache/issue189-zone-batch-input
+          gh api repos/Takazudo/zudo-osc-hole-field/actions/artifacts/11644814747/zip > .circuit-cache/issue189-zone-batch-input/golden.zip
+          echo '925d83879571b2127af73526ead4cef86472138f3093fc909dfcf19a22f54c1b  .circuit-cache/issue189-zone-batch-input/golden.zip' | sha256sum -c -
+      - name: Compare native batches against identical saved fixtures
         run: |
-          # Leave time to upload incomplete evidence if classification times out.
-          timeout --signal=INT --kill-after=2m 80m bash scripts/kicad/run.sh python3 scripts/pcbgen/audit_zone_silk_scope.py \
+          set -o pipefail
+          timeout --signal=INT --kill-after=2m 40m bash scripts/kicad/run.sh python3 scripts/pcbgen/probe_zone_batches.py \
             .circuit-cache/hole-audit-input/.circuit-cache/osc-core-grid-shards-start/osc-core.kicad_pcb \
-            .circuit-cache/hole-audit-input/.circuit-cache/osc-core-grid-shards-merge/osc-core.kicad_pcb \
-            .circuit-cache/zone-silk-audit --classify
+            .circuit-cache/issue189-zone-batch-input/golden.zip \
+            .circuit-cache/issue189-zone-batch-result \
+            2>&1 | tee .circuit-cache/issue189-zone-batch.log
       - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
         if: always()
         with:
-          name: issue189-zone-audit-${{ github.run_id }}
+          name: issue189-zone-batch-probe-${{ github.run_id }}
           path: |
-            .circuit-cache/zone-silk-audit
-            !.circuit-cache/zone-silk-audit/**/~*.lck
+            .circuit-cache/issue189-zone-batch-result
+            .circuit-cache/issue189-zone-batch.log
+            !.circuit-cache/issue189-zone-batch-result/**/~*.lck
           retention-days: 30
           include-hidden-files: true
           if-no-files-found: error
