@@ -1,3 +1,29 @@
+# Current checkpoint — 2026-10-09 06:35 UTC
+
+JR original-ground pilot37892918965 is NATIVE ELIGIBLE155→154: full original pad
+membership and returns preserved, no new warnings, DRC/parity0/0, independent
+fresh reload agrees. All50712 original copper objects retained,24added,0removed.
+Candidate SHA3e7305df6f30fb66593e767d1c36c148684ae8664e71a82f4a1bf381f77de9f6;
+replay SHA734bdcdb3229302139ab2bba5ef0852bc3299995371fcd422d0b3ce4c03ad884.
+Verified artifact11599681786 and exact receipt/replay retained. Canonical still155.
+Workflow now has tenth input jr_replay=[return-restored,original-ground].
+Dispatch replay_jr=true/jr_replay=original-ground after push; it queues after the
+read-only tail pilot37893521710. Only one JR canonical writer. Do not count the
+pilot as adoption; inspect the actual merger's complete native gate and bot commit.
+
+JL ground corridor37893328321 reached135→134 with all original pad groups and
+returns preserved, DRC/parity0/0; three dangling track warnings reject adoption.
+33123original objects retained,1removed,27added. Candidate52ccc61d654358e065e965a8017480c3d5f916a7a11def61f4bdca5e913e47d3.
+Verified artifact11599164273 and replay retained; canonical JL stays135. Diagnose
+these exact tails before a replay; do not waive warnings or recut unrelated copper.
+
+Main postmerge194 CI37891992677 PASS. Main002427f keeps JL135/JR155/core1509.
+Core sole writer37881591885 remains active; current retained source branch dff36f.
+Other concurrent routing branches unchanged on06:30 read. Issue189 OPEN.
+73 affected tests and pnpm check PASS; final PR195 integrated CI pending.
+
+## Earlier checkpoint history (superseded above)
+
 # Current checkpoint — 2026-10-09 06:26 UTC
 
 JL one-via ground corridor pilot37893328321 is running on
