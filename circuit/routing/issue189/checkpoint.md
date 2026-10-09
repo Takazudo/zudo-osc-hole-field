@@ -1,3 +1,29 @@
+# Accepted follow-up — 2026-10-09 05:35 UTC
+
+PR#194 agent-fix/189-corridor-followup adopted JL137→135 at002a8bf via
+37888369139. DRC/parity0/0,477 existing warnings, no new warning identities or
+split pad groups, independent reload agrees. Native retained-copper multiset:
+32910 unchanged,25 removed,214 added; physical count33124. Board SHA
+3d40f1db27f350ce063bf601cab2eeb9f6394b47da9930fca21b6bc0258d2352.
+Task accepted counts:JL135/JR155/core1509. PR#193 remains frozen at52362ff;
+all three native DRC and documentation checks pass, Python job still pending.
+
+Next JL read-only coupled pilot source is jl-coupled-plan.json: isolate R2316.2
+with its complete victim repair,66 additions/four source cuts. The failed victim
+had a path rejected by the raster -12V fill guard. Diagnostic capture without
+that heuristic finds a path; this is NOT native acceptance. Existing coupled
+pilot must restore any native supply/return split and pass all original-baseline
+gates. Proposal preparation verifies selected-net geometry and all pads are
+unchanged between source137 and accepted135. Input pinned3d40; canonical untouched.
+Dispatch local_repair=true/local_mode=coupled on this branch only after push.
+
+JR pilot37887951545 is still active. Core sole writer37881591885 is still active
+on retained agent-fix/189-isolated-rail-replay; its outcome is NOT yet known.
+Do not duplicate it. Executor is usable after the transient05:22 disconnect.
+Keep#189 open; PR#194 depends on#193 until that checked increment merges.
+
+## Earlier checkpoint history (superseded above)
+
 # Current checkpoint — 2026-10-09 05:24 UTC
 
 Active branch agent-fix/189-corridor-followup, based on PR#193 frozen head
