@@ -1,11 +1,48 @@
 # Issue 189 resumable implementation checkpoint
 
-**Incomplete, unvalidated draft. Keep #189 open.** Snapshot:2026-10-09 03:17 UTC.
-PR#190 merged normally at `da615cc059e56709c47c38a9af7ab175d55ca2c0` after all
-five checks passed on `489c7d18af5be3d1ebef5f8ca901136bd9bce029` (run37877192529).
-The user explicitly authorized incremental merging during development. No release,
-deployment, fabrication or hardware qualification. Main was refreshed to that merge;
-continuation branch is `agent-fix/189-routing-followup`.
+**Incomplete, unvalidated draft. Keep #189 open.** Snapshot:2026-10-09 03:44 UTC.
+PR#190 merged at `da615cc059e56709c47c38a9af7ab175d55ca2c0`; PR#191 merged at
+`1beddde2cfb9f9c9bec4b0798fce2258c8d9c8b4`. Both matched their exact heads after
+all five checks passed. Main CI37878383977 also passed after#190. User explicitly
+authorized incremental merging during development. No release, deployment,
+fabrication or hardware qualification. Main refreshed to1beddde; continuation
+branch:`agent-fix/189-isolated-rail-replay`.
+
+## Current isolated supply replay
+
+JL direct-rail pilot37878622291 finished139→138 and restored -12V membership,
+but remained rejected because C2148.2 split from its original AGND group. Native
+errors/parity0/0, no new warnings, independent reload agrees. Exact result and
+replay are jl-links-result.json/jl-links-copper.json. A direct ground-link probe
+also found no path. Do not repeat those unchanged ground/fanout configurations.
+
+One independent pre-existing -12V link from that run is now isolated: native UUID
+be3bc2d8-bbd6-5369-a979-582f4c429a5a, B.Cu,0.65mm long,0.4mm wide, no removals or
+vias. All72 source pads/copper objects within2mm match the original canonical
+board; only this segment differs in the rejected parent. This is a locality
+screen, not native acceptance. jl-rail-leaf-proposal.json binds the single segment
+to canonical JL SHA09745a4e0d04dbfc7c1af6fcffb65430034d63e21434d2240f41944daba5607c.
+The revised fixed-replay plan prohibits collateral restoration; any supply/ground
+split rejects the segment. Full original-board native checks and independent
+reload are still required. No new canonical copper is adopted.
+
+Core reviewed replay37872907194 remains the sole writer on retained branch
+agent-fix/189-obstacle-transactions. Never delete that branch or duplicate the
+writer. Inspect its terminal output and bring eligible copper into a follow-up
+PR. Accepted counts remain JL139/JR162/core1509 complete experimental edges;
+core's committed DRC report still has499 capped records.
+
+After pushing this continuation, the read-only command is:
+
+```sh
+gh workflow run 378789207 --ref agent-fix/189-isolated-rail-replay \
+  -f board=osc-jack-left -f local_repair=true -f local_mode=coupled
+```
+
+Check existing runs first and do not duplicate an active pilot. The JR one-round
+rail blocker probe (three permitted local signal nets, at most two victims) made
+zero paths/removals/additions; exact diagnostics and source are retained. Previous
+sections below retain history and are superseded by the current state above.
 
 ## Active continuation after incremental merge
 

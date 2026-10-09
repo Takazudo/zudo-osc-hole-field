@@ -7,16 +7,20 @@ from scripts.pcbgen.test_grid_router import crossing_board
 
 class CoupledRepairTests(unittest.TestCase):
     def test_supply_restoration_and_independent_agreement_are_mandatory(self):
-        for outcome,method in itertools.product(('native-error','unrestored','fresh-drift','success'),('rail-fanout','rail-links')):
+        for outcome,method in itertools.product(('native-error','unrestored','fresh-drift','success','no-restoration','ground-no-restoration'),('rail-fanout','rail-links')):
             with self.subTest(outcome=outcome,method=method),tempfile.TemporaryDirectory() as directory:
                 root=Path(directory);base=root/'base.kicad_pcb';base.write_text('canonical copper')
                 proposal=root/'proposal.json';proposal.write_text('{}')
                 plan={'name':'coupled','rail_method':method,'signal_proposal':'proposal.json',
                       'signal_proposal_sha256':hashlib.sha256(proposal.read_bytes()).hexdigest(),
                       'input_board_sha256':hashlib.sha256(base.read_bytes()).hexdigest()}
-                before=crossing_board();before['pads']=[{**p,'net':'-12V' if p['net']=='A' else p['net']} for p in before['pads']]
+                if method=='rail-links':
+                    plan['proposal']=plan.pop('signal_proposal');plan['proposal_sha256']=plan.pop('signal_proposal_sha256')
+                plan['restore_connectivity']=outcome not in ('no-restoration','ground-no-restoration')
+                net='AGND' if outcome=='ground-no-restoration' else '-12V'
+                before=crossing_board();before['pads']=[{**p,'net':net if p['net']=='A' else p['net']} for p in before['pads']]
                 before.update(open_edges=1,islands={'B':[['b0'],['b1']]})
-                split={**before,'open_edges':1,'islands':{'-12V':[['a0'],['a1']]}}
+                split={**before,'open_edges':1,'islands':{net:[['a0'],['a1']]}}
                 joined={**before,'open_edges':0,'islands':{}}
                 clean={'violations':[],'schematic_parity':[]}
                 signal_drc={'violations':[{'severity':'error'}],'schematic_parity':[]} if outcome=='native-error' else clean
@@ -40,7 +44,7 @@ class CoupledRepairTests(unittest.TestCase):
                     else:
                         with self.assertRaises(driver.StageRejected):
                             pilot.coupled_candidate('osc-jack-right',base,before,plan,{})
-                if outcome=='native-error':restoration.assert_not_called()
+                if outcome in ('native-error','no-restoration','ground-no-restoration'):restoration.assert_not_called()
                 self.assertEqual(base.read_text(),'canonical copper')
 
     def test_unknown_rail_method_is_rejected_before_native_work(self):
