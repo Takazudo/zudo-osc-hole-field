@@ -31,8 +31,16 @@ net transactions nearest detached AGND fragments, preserve all other recovered
 rows and stitch links, and replace the overlapping eight-via signal cluster with
 one retained via plus0.2mm fanout on existing signal layers. Hash-bound source
 plan and generator produce1085 additions/29 removals. The source topology screen
-and117 focused tests pass. **Native pilot NOT RUN yet**; no copper is adopted.
-Dispatch once with `-f core_replay=reviewed` after publishing this proposal.
+and117 focused tests pass. Native run **37872907194** is now executing source `f637cc9`; no copper has
+been adopted. Do not duplicate that writer. Read its complete receipt/artifact
+before adopting another core proposal.
+
+A separate **read-only** JR local repair is prepared in `jr-local-plan.json` and
+`local_repair_pilot.py`: target RB4611.1, cut23 local objects from four blocking
+signal nets within1.2mm, obtain native topology, keep padless fragments as boundary
+obligations, and route only the target plus those four nets. It restores the -12V
+fill guard and does not move parts or promote automatically. This is a changed
+local branch method after the failed whole-net rip-up probes. Native NOT RUN yet.
 
 Concurrent branch `agent-fix/jack-replace-region-2` advanced to30db43e with JL140→140
 and JR162→162 region attempts. It was read, not changed. Do not repeat that

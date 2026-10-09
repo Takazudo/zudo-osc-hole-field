@@ -154,14 +154,14 @@ def signal_chunk(dump,chunk,min_span_mm=None,max_span_mm=None,skip=(),only=None)
     return nets[:chunk] if chunk else nets
 
 
-def repair_batch(dump,radius_mm=1.2,limit=30):
+def repair_batch(dump,radius_mm=1.2,limit=30,only=None):
     """Open signal nets plus the nearby foreign signal copper to cut; batches never share a net."""
     pads={p['uuid']:p for p in dump['pads']};used=set();targets=[];cut=set()
     r2=(radius_mm*1e6)**2
     def near(x,y,t):
         ax,ay=t['a'];bx,by=t['b'];dx,dy=bx-ax,by-ay;length=dx*dx+dy*dy or 1
         u=max(0,min(1,((x-ax)*dx+(y-ay)*dy)/length));return (ax+u*dx-x)**2+(ay+u*dy-y)**2<=r2
-    for net in signal_chunk(dump,None):
+    for net in signal_chunk(dump,None,only=only):
         groups=dump['islands'][net];main=max(range(len(groups)),key=lambda i:len(groups[i]))
         pts=[pads[u]['xy'] for i,g in enumerate(groups) if i!=main for u in g if u in pads]
         hits={t['uuid']:t['net'] for t in dump['tracks'] if t['net'] not in (*RAILS,'AGND',net) and any(near(x,y,t) for x,y in pts)}
@@ -172,6 +172,15 @@ def repair_batch(dump,radius_mm=1.2,limit=30):
         targets.append(net);cut|=set(hits);used|=nets|{net}
         if len(targets)>=limit:break
     return targets,cut
+
+
+def repair_nets(dump,targets,cut):
+    """Only the selected targets and nets whose local copper was actually cut."""
+    objects={i['uuid']:i for kind in ('tracks','vias') for i in dump[kind]}
+    if not set(cut)<=objects.keys():raise ValueError('repair cut contains unknown source copper')
+    affected={objects[u]['net'] for u in cut}
+    if affected&{*RAILS,'AGND'}:raise ValueError('local signal repair cannot cut supply/ground copper')
+    return list(targets)+sorted(affected-set(targets))
 
 
 class StageRejected(RuntimeError):
@@ -235,6 +244,7 @@ def hotspot_regions(dump,eps_mm):
 
 def stage(board_id,current,spec,definition,log):
     original=current
+    repair_details=None
     dump=json.loads((current.with_name('dump.json')).read_text())
     if spec.get('terminal_arrays'):
         if 'load_terminal_transfer' not in definition['routing']:return None,None
@@ -242,21 +252,20 @@ def stage(board_id,current,spec,definition,log):
     elif spec.get('repair'):
         # Phase A: cut foreign signal copper beside the failed pins; native islands then
         # describe exactly what each cut net must reconnect.
-        targets,cut=repair_batch(dump)
+        targets,cut=repair_batch(dump,radius_mm=spec.get('repair_radius_mm',1.2),only=spec.get('repair_targets'))
         if not targets:return None,None
+        nets_to_repair=repair_nets(dump,targets,cut)
         work=workspace(board_id,spec['name']+'-cut');cut_board=work/f'{board_id}.kicad_pcb';proposal=work/'proposal.json'
         proposal.write_text(json.dumps({'board_sha256':hashlib.sha256(current.read_bytes()).hexdigest(),'removed_uuids':sorted(cut),'copper':[]})+'\n')
         run('bash','scripts/kicad/run.sh','python3','scripts/pcbgen/grid_apply.py',rel(current),rel(proposal),'--output',rel(cut_board))
         _,dump=check(cut_board)
-        floating=[u for n,groups in dump['islands'].items() for g in groups if not any(x in {p['uuid'] for p in dump['pads']} for x in g) for u in g]
-        if floating:
-            # Pad-less fragments are dead copper: drop them instead of reconnecting them.
-            proposal.write_text(json.dumps({'board_sha256':hashlib.sha256(current.read_bytes()).hexdigest(),'removed_uuids':sorted(cut|set(floating)),'copper':[]})+'\n')
-            run('bash','scripts/kicad/run.sh','python3','scripts/pcbgen/grid_apply.py',rel(current),rel(proposal),'--output',rel(cut_board))
-            _,dump=check(cut_board);cut|=set(floating)
-        cut_nets=sorted({n for n in dump['islands'] if n not in (*RAILS,'AGND')}-set(targets))
+        repair_details={'targets':targets,'affected_nets':nets_to_repair,'removed_source_uuids':sorted(cut),
+                        'cut_native_open_edges':dump['open_edges'],'routing_diagnostics':[]}
+        # Keep padless fragments and native component identities: they remain
+        # boundary anchors/obligations, rather than disappearing from the metric.
         kwargs={k:v for k,v in spec.items() if k in ('clearance','signal_width','signal_via_diameter','grow','res','window_mm','escape_halo_mm')}
-        results,removed=route(dump,targets+[n for n in cut_nets if n not in targets],allowed_layers=SIGNAL_LAYERS,layer_cost=LAYER_COST,rail_nets=RAILS,log=log,**kwargs,**neck_kwargs(board_id))
+        results,removed=route(dump,nets_to_repair,allowed_layers=SIGNAL_LAYERS,layer_cost=LAYER_COST,rail_nets=RAILS,
+                              fill_guards={'-12V':'In3.Cu'},diagnostics=repair_details['routing_diagnostics'],log=log,**kwargs,**neck_kwargs(board_id))
         rows,links=copper_rows(results,board_id,'grid-'+spec['name'])
         current=cut_board;removed=[]
     elif spec.get('agnd_stitch'):
@@ -372,9 +381,11 @@ def stage(board_id,current,spec,definition,log):
     candidate,after,drc=verify,fresh,drc_v
     before=json.loads(original.with_name('dump.json').read_text())['open_edges']
     receipt={'stage':spec['name'],'status':'NATIVE CHECKED DRAFT STAGE','open_edges_before':before,'open_edges_after':after['open_edges'],
-             'links_added':len(links),'links_dropped_for_drc':len(dropped),'copper_rows':len(rows),'ripped':len(removed),
+             'links_added':len(links),'links_dropped_for_drc':len(dropped),'copper_rows':len(rows),
+             'ripped':len(removed)+(len(repair_details['removed_source_uuids']) if repair_details else 0),
              'drc_errors':0,'drc_warnings':sum(v['severity']=='warning' for v in drc['violations']),'parity':0,
              'open_by_net_after':{n:len(g)-1 for n,g in after['islands'].items()}}
+    if repair_details:receipt['local_repair']=repair_details
     return candidate,receipt
 
 
