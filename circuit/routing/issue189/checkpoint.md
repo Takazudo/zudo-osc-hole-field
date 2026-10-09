@@ -1,3 +1,22 @@
+# JR via alternative rejected; next233ready — 2026-10-09 11:37 UTC
+
+JR37923452631 REJECTED141→141:signal joined,but R7530.2AGNDsplit remains;
+R7505split is avoided.0DRC/parity,520unchanged warnings,no new identities,fresh
+agrees. All50964oldobjects identical. Artifact11614010702 ZIP0824da7ca61708b51bce5627b1e540353fa0678223dd4ce343ad25c88c2bd9a2 verified.
+Receipt-onlybotac793c8 integrated; canonical JR unchanged141.
+
+Three separate remaining signal transactions233objects rebased on actual141SHA
+3d9940791131e31d22ea65e4457ccb77d5250d629eaa2b5d3c6b03024ac3405c;all50964
+objects retained,zero cuts/UUID conflicts,new/newgap18.329622949229602mm.
+Submit replay_jr=true,jr_replay=three-remaining once on this continuation.
+JL87-object37923946134 remains active. Solecore37907147442 remains active.
+PR200 final CI37923371952 has allthree native DRC jobs+docsPASS; final test job
+still pending. Frozenhead1686c77must stay unchanged. Keep189OPEN.
+
+Native-exported pad/net,outline,keepout,layer invariance passed allthree accepted
+stages; boards' KiCad project/rule files are unchanged from original1fe06ad.
+Evidence physical-invariants.json; this is not hardware qualification.
+
 # Next compatible JR batch prepared — 2026-10-09 11:33 UTC
 
 JR141 fresh-input screen found6raster candidates in35s(guardPASS). Two conflict
