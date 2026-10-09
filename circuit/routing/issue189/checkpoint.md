@@ -1,3 +1,24 @@
+# Current native queue and saved alternatives — 2026-10-09 10:36 UTC
+
+PR200 branchagent-fix/189-short-power-continuation has two isolated native writers:
+JR37917534758(source93392c84d883c30ef7207fdad507afc1787624c5,83adds on143) and
+JL37918072226(source9980ceaad4fd03bc6ffc38d897143a2239900d98,71adds on126,zero cuts).
+No outcome claimed yet. Core37907147442 remains the solecorewriter on retained
+agent-fix/189-ground-signal-continuation. Keep all three actual terminal receipts
+and bot deltas; never replace copper from a stale raster source.
+
+PR199 frozenbd41809dd6bbeac028638b8419b349545cc64c3e has CI37917295454 pending;
+three jobs passed,Python aggregate regeneration/coreDRC still running at lastread.
+No comments/reviews; do not merge until allfive exact-head checks pass. Main remains
+126/145/1441; PR199/200 accepted copies126/143/1441. Keep189OPEN.
+
+New saved alternatives (NOT native checked): JL outer-only screen on remaining23
+native component pairs found one U2119.12 path91objects in94.521080s,guardPASS.
+JR D7504 more conservativeAGND growth.6mm produced7objects instead of the rejected15;
+its hash-bound rebase must wait for currentJRwriter's actual terminal board.
+No new/new clearance screen substitutes for the native warning/membership gates.
+Core short-power143objects is likewise unsubmitted until the solecorewriter ends.
+
 # Additive JL U106 alternative — 2026-10-09 10:31 UTC
 
 Saved native126input,identical15mm frame,0.025mm raster,weight2.5 and300000
