@@ -1,9 +1,9 @@
 {
   "board": "osc-jack-left",
   "input_board_sha256": "f9eff29fc92c4533ab518ebdc6dbc2ead2a53e5d0f03f2eb5891814608bfa65e",
-  "scope": "Bounded local repair for U2319.5 on X2F7F192BBAEF5BD8A311. Whole-net RRR found a target path but rolled back on victim XBC731BF594F15897A262; cut only six nearby objects across three signal nets, retaining outside copper and native padless fragments. Existing dimensions; no physical placement or requirement changes.",
+  "scope": "Source-pinned seven-object cut along the diagnosed soft-probe corridor for U2319.5. Three victim nets contain 217 objects in total; only seven corridor blockers are cut. Native post-cut topology retains outside copper and padless boundary fragments, then full original-baseline membership/warning/fresh-copy gates apply. No placement or electrical rule changes.",
   "stage": {
-    "name": "189-jl-local-follower2",
+    "name": "189-jl-local-corridor",
     "repair": true,
     "repair_targets": [
       "X2F7F192BBAEF5BD8A311"
@@ -19,6 +19,15 @@
       "AGND": 0.05
     },
     "res": 0.05,
-    "window_mm": 8
+    "window_mm": 8,
+    "repair_source_uuids": [
+      "1214b678-7636-5fb8-b9a5-6b6df525a03f",
+      "4f629628-be8a-5e0c-8492-25889e067b45",
+      "684b2d20-a8d4-5920-910a-faa81d406be5",
+      "84a5a5db-974b-5464-8067-cf4694c5f63c",
+      "c52ae959-cb77-53cd-8e53-38ce03605211",
+      "cdf59502-2a58-5e51-9e45-96bb02fd85c7",
+      "ff48a496-ad60-5040-aebf-ba32c829c375"
+    ]
   }
 }

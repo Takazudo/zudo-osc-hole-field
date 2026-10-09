@@ -183,6 +183,17 @@ def repair_nets(dump,targets,cut):
     return list(targets)+sorted(affected-set(targets))
 
 
+def repair_selection(dump,spec):
+    """Use a source-pinned corridor cut, or the existing terminal-local selection."""
+    if 'repair_source_uuids' not in spec:
+        return repair_batch(dump,radius_mm=spec.get('repair_radius_mm',1.2),only=spec.get('repair_targets'))
+    targets=list(spec.get('repair_targets',[]));cut=set(spec['repair_source_uuids'])
+    if not targets or any(n not in dump['islands'] or n in (*RAILS,'AGND') for n in targets):
+        raise ValueError('explicit repair requires existing open signal targets')
+    repair_nets(dump,targets,cut)  # Reject missing objects and supply/ground cuts before native application.
+    return targets,cut
+
+
 class StageRejected(RuntimeError):
     """A stage whose candidate keeps DRC errors that cannot be dropped: keep the previous board."""
 
@@ -252,7 +263,7 @@ def stage(board_id,current,spec,definition,log):
     elif spec.get('repair'):
         # Phase A: cut foreign signal copper beside the failed pins; native islands then
         # describe exactly what each cut net must reconnect.
-        targets,cut=repair_batch(dump,radius_mm=spec.get('repair_radius_mm',1.2),only=spec.get('repair_targets'))
+        targets,cut=repair_selection(dump,spec)
         if not targets:return None,None
         nets_to_repair=repair_nets(dump,targets,cut)
         work=workspace(board_id,spec['name']+'-cut');cut_board=work/f'{board_id}.kicad_pcb';proposal=work/'proposal.json'

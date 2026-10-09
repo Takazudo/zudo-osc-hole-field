@@ -1,0 +1,429 @@
+{
+  "status": "RASTER ONLY; NATIVE NOT RUN; NOT ELIGIBLE",
+  "input_dump_sha256": "39d305cb53d2257dd4991c56c237e50319624bda9f6da8693c0686817f8875ad",
+  "scope": "Repair only native pieces of originally connected supply/AGND groups; AGND may use its dedicated In1 plane; no signal on In1; all physical copper retained",
+  "elapsed_seconds": 46.21178592000069,
+  "records": [
+    {
+      "net": "-12V",
+      "results": [
+        {
+          "net": "-12V",
+          "island": [
+            "U7102.4",
+            "U7107.4",
+            "C7109.1",
+            "C5223.1",
+            "U5203.4"
+          ],
+          "path": [
+            [
+              "B.Cu",
+              316350000,
+              191150000,
+              0
+            ],
+            [
+              "B.Cu",
+              316400000,
+              191150000,
+              0
+            ],
+            [
+              "B.Cu",
+              316450000,
+              191150000,
+              0
+            ],
+            [
+              "B.Cu",
+              316500000,
+              191150000,
+              0
+            ],
+            [
+              "B.Cu",
+              316550000,
+              191150000,
+              0
+            ],
+            [
+              "B.Cu",
+              316600000,
+              191150000,
+              0
+            ],
+            [
+              "B.Cu",
+              316650000,
+              191150000,
+              0
+            ],
+            [
+              "B.Cu",
+              316700000,
+              191150000,
+              0
+            ],
+            [
+              "B.Cu",
+              316750000,
+              191150000,
+              0
+            ],
+            [
+              "B.Cu",
+              316800000,
+              191150000,
+              0
+            ],
+            [
+              "B.Cu",
+              316850000,
+              191150000,
+              0
+            ],
+            [
+              "B.Cu",
+              316900000,
+              191150000,
+              0
+            ],
+            [
+              "B.Cu",
+              316950000,
+              191150000,
+              0
+            ],
+            [
+              "B.Cu",
+              317000000,
+              191150000,
+              0
+            ],
+            [
+              "B.Cu",
+              317050000,
+              191150000,
+              0
+            ],
+            [
+              "B.Cu",
+              317100000,
+              191150000,
+              0
+            ],
+            [
+              "B.Cu",
+              317150000,
+              191150000,
+              0
+            ],
+            [
+              "B.Cu",
+              317200000,
+              191150000,
+              0
+            ],
+            [
+              "B.Cu",
+              317250000,
+              191150000,
+              0
+            ],
+            [
+              "B.Cu",
+              317300000,
+              191150000,
+              0
+            ],
+            [
+              "B.Cu",
+              317350000,
+              191150000,
+              0
+            ],
+            [
+              "B.Cu",
+              317400000,
+              191150000,
+              0
+            ],
+            [
+              "B.Cu",
+              317450000,
+              191150000,
+              0
+            ],
+            [
+              "B.Cu",
+              317500000,
+              191150000,
+              0
+            ],
+            [
+              "B.Cu",
+              317550000,
+              191150000,
+              0
+            ]
+          ],
+          "width_nm": 400000,
+          "via_diameter_nm": 600000
+        },
+        {
+          "net": "-12V",
+          "island": [
+            "C7321.1"
+          ],
+          "path": null
+        }
+      ],
+      "diagnostics": [
+        {
+          "net": "-12V",
+          "endpoints": [
+            "C7321.1"
+          ],
+          "reason": "fill_guard_disconnection",
+          "phase": "path_rejected",
+          "guard_layers": [
+            "In3.Cu"
+          ]
+        },
+        {
+          "net": "-12V",
+          "endpoints": [
+            "C7321.1"
+          ],
+          "reason": "fill_guard_disconnection",
+          "phase": "route",
+          "attempts": [
+            {
+              "window_cells": [
+                2166,
+                2672,
+                1421,
+                1922
+              ],
+              "expanded": 58067,
+              "limit": 300000
+            },
+            {
+              "window_cells": [
+                0,
+                2884,
+                0,
+                2734
+              ],
+              "expanded": 405370,
+              "limit": 1000000
+            }
+          ],
+          "max_expansions": 1000000,
+          "window_mm": 12
+        }
+      ],
+      "links": [
+        {
+          "net": "-12V",
+          "island": [
+            "U7102.4",
+            "U7107.4",
+            "C7109.1",
+            "C5223.1",
+            "U5203.4"
+          ],
+          "copper_uuids": [
+            "b496ca87-0474-52e4-a8c9-00c5a057fec0"
+          ]
+        }
+      ],
+      "copper_count": 1
+    },
+    {
+      "net": "AGND",
+      "results": [
+        {
+          "net": "AGND",
+          "island": [
+            "J900109.2"
+          ],
+          "path": null
+        },
+        {
+          "net": "AGND",
+          "island": [
+            "J900109.6",
+            "J900109.4"
+          ],
+          "path": null
+        },
+        {
+          "net": "AGND",
+          "island": [
+            "C7313.2"
+          ],
+          "path": null
+        },
+        {
+          "net": "AGND",
+          "island": [
+            "C7215.2"
+          ],
+          "path": null
+        }
+      ],
+      "diagnostics": [
+        {
+          "net": "AGND",
+          "endpoints": [
+            "J900109.2"
+          ],
+          "reason": "unknown",
+          "phase": "route",
+          "attempts": [
+            {
+              "window_cells": [
+                2305,
+                2820,
+                1363,
+                1855
+              ],
+              "expanded": 993,
+              "limit": 300000
+            },
+            {
+              "window_cells": [
+                0,
+                2884,
+                0,
+                2734
+              ],
+              "expanded": 993,
+              "limit": 1000000
+            }
+          ],
+          "max_expansions": 1000000,
+          "window_mm": 12
+        },
+        {
+          "net": "AGND",
+          "endpoints": [
+            "J900109.6",
+            "J900109.4"
+          ],
+          "reason": "unknown",
+          "phase": "route",
+          "attempts": [
+            {
+              "window_cells": [
+                2305,
+                2820,
+                1413,
+                1955
+              ],
+              "expanded": 2681,
+              "limit": 300000
+            },
+            {
+              "window_cells": [
+                0,
+                2884,
+                0,
+                2734
+              ],
+              "expanded": 2681,
+              "limit": 1000000
+            }
+          ],
+          "max_expansions": 1000000,
+          "window_mm": 12
+        },
+        {
+          "net": "AGND",
+          "endpoints": [
+            "C7313.2"
+          ],
+          "reason": "unknown",
+          "phase": "route",
+          "attempts": [
+            {
+              "window_cells": [
+                1978,
+                2476,
+                1826,
+                2322
+              ],
+              "expanded": 997,
+              "limit": 300000
+            },
+            {
+              "window_cells": [
+                0,
+                2884,
+                0,
+                2734
+              ],
+              "expanded": 997,
+              "limit": 1000000
+            }
+          ],
+          "max_expansions": 1000000,
+          "window_mm": 12
+        },
+        {
+          "net": "AGND",
+          "endpoints": [
+            "C7215.2"
+          ],
+          "reason": "unknown",
+          "phase": "route",
+          "attempts": [
+            {
+              "window_cells": [
+                1978,
+                2476,
+                1486,
+                1982
+              ],
+              "expanded": 2031,
+              "limit": 300000
+            },
+            {
+              "window_cells": [
+                0,
+                2884,
+                0,
+                2734
+              ],
+              "expanded": 2031,
+              "limit": 1000000
+            }
+          ],
+          "max_expansions": 1000000,
+          "window_mm": 12
+        }
+      ],
+      "links": [],
+      "copper_count": 0
+    }
+  ],
+  "repair_rows": [
+    {
+      "kind": "segment",
+      "net": "-12V",
+      "start_nm": [
+        316350000,
+        191150000
+      ],
+      "end_nm": [
+        317550000,
+        191150000
+      ],
+      "width_nm": 400000,
+      "layer": "B.Cu",
+      "uuid": "b496ca87-0474-52e4-a8c9-00c5a057fec0"
+    }
+  ]
+}

@@ -7,6 +7,18 @@ from scripts.pcbgen.test_grid_router import crossing_board
 
 
 class LocalRepairScopeTests(unittest.TestCase):
+    def test_explicit_corridor_cut_does_not_expand_to_nearby_copper(self):
+        dump=crossing_board();dump['tracks']=[{'uuid':'cut','net':'victim'},{'uuid':'keep','net':'victim'}]
+        with patch.object(driver,'repair_batch',side_effect=AssertionError('must not expand explicit selection')):
+            targets,cut=driver.repair_selection(dump,{'repair_targets':['A'],'repair_source_uuids':['cut']})
+        self.assertEqual((targets,cut),(['A'],{'cut'}))
+
+    def test_explicit_corridor_cut_rejects_unknown_objects_and_non_signal_targets(self):
+        dump=crossing_board();dump['tracks']=[{'uuid':'ground','net':'AGND'}]
+        for targets,cut in [(['A'],['missing']),(['A'],['ground']),(['AGND'],[]),(['missing'],[]),([],[])]:
+            with self.subTest(targets=targets,cut=cut),self.assertRaises(ValueError):
+                driver.repair_selection(dump,{'repair_targets':targets,'repair_source_uuids':cut})
+
     def test_unrelated_open_nets_are_not_rerouted(self):
         dump=crossing_board()
         dump['tracks']=[{'uuid':'cut','net':'victim','a':[0,0],'b':[1,0]},

@@ -94,10 +94,19 @@ class ObstacleTransactionTests(unittest.TestCase):
 
     def test_same_net_terminal_access_and_removable_blocker_still_work(self):
         from scripts.pcbgen.test_grid_router import crossing_board
+        events=[]
         results,removed=router.route(crossing_board(),['A','B'],rrr_rounds=2,
-            res=.1,clearance=.2,signal_width=.2,layer_cost=[1.0],log=lambda _:None)
+            res=.1,clearance=.2,signal_width=.2,layer_cost=[1.0],diagnostics=events,log=lambda _:None)
         self.assertEqual({r['net'] for r in results if r['path']},{'A','B'})
         self.assertFalse([r for r in results if not r['path']])
+        probes=[e for e in events if e['reason']=='probe_candidate']
+        self.assertTrue(probes)
+        for event in probes:
+            self.assertEqual(event['native_status'],'NOT RUN')
+            self.assertTrue(event['probe_path_nm'])
+            self.assertTrue(all(layer=='B.Cu' and isinstance(x,int) and isinstance(y,int)
+                                for layer,x,y in event['probe_path_nm']))
+            self.assertGreater(max(x for _,x,_ in event['probe_path_nm']),MM)
 
     def test_failure_diagnostics_report_limits_without_inventing_blockers(self):
         events=[]

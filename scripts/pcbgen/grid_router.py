@@ -558,7 +558,9 @@ def route(dump,nets=(),rip=(),rip_first=False,res=0.1,layer_cost=None,via_cost=3
                     failed.append((net,g,main_group));continue
                 snapshot=(raster.label.copy(),raster.hole.copy(),[dict(r) for r in results],set(removed),{li:(fg.region.copy(),fg.base,fg.blobs,fg.n) for li,fg in fill_count.items()},list(raster.route_holes))
                 victims=sorted(id_net[b] for b in blockers)
-                event(net,name(g),'probe_candidate',phase='probe',victims=victims)
+                event(net,name(g),'probe_candidate',phase='probe',victims=victims,
+                      probe_path_nm=[[raster.layers[l],*map(int,raster.point(y,x))] for l,y,x in probe],
+                      native_status='NOT RUN')
                 results[:]=[r for r in results if r['net'] not in victims]
                 removed|={i['uuid'] for k in ('tracks','vias') for i in dump[k] if i['net'] in victims}
                 raster.rebuild_routes(removed,results,via_drill)
