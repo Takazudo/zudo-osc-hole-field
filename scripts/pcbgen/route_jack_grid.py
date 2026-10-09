@@ -223,6 +223,34 @@ def repair_search_dump(dump,spec):
     return {**dump,'islands':{**dump['islands'],'AGND':selected}}
 
 
+def repair_bounds(dump,spec,targets,cut):
+    """Bound search allocation and entire cuts, never native connectivity scope."""
+    bounds=spec.get('repair_bounds_mm')
+    if bounds is None:return None
+    if 'repair_source_uuids' not in spec or len(targets)!=1 or not cut or len(cut)>12:
+        raise ValueError('bounded repair requires one target and one to twelve explicit cuts')
+    if len(repair_nets(dump,targets,cut))>3:
+        raise ValueError('bounded repair may affect at most two signal victim nets')
+    if len(bounds)!=4 or not all(np.isfinite(v) for v in bounds):
+        raise ValueError('bounded repair requires four finite coordinates')
+    x0,y0,x1,y1=map(float,bounds)
+    if not (0<x1-x0<=50 and 0<y1-y0<=50):
+        raise ValueError('bounded repair dimensions must be positive and at most50mm')
+    def inside(xy,radius=0):
+        x,y=np.asarray(xy)/1e6;r=radius/1e6
+        return x0<=x-r and x+r<=x1 and y0<=y-r and y+r<=y1
+    objects={i['uuid']:i for kind in ('tracks','vias') for i in dump[kind]}
+    for uid in cut:
+        obj=objects[uid]
+        points=[obj['a'],obj['b']] if 'a' in obj else [obj['xy']]
+        radius=obj.get('width',obj.get('diameter',0))/2
+        if not all(inside(xy,radius) for xy in points):
+            raise ValueError('bounded repair cut extends outside its search frame: '+uid)
+    if not any(p['net'] in targets and inside(p['xy']) for p in dump['pads']):
+        raise ValueError('bounded repair has no target pad in its search frame')
+    return [x0,y0,x1,y1]
+
+
 class StageRejected(RuntimeError):
     """A stage whose candidate keeps DRC errors that cannot be dropped: keep the previous board."""
 
@@ -296,6 +324,7 @@ def stage(board_id,current,spec,definition,log):
         targets,cut=repair_selection(dump,spec)
         if not targets:return None,None
         nets_to_repair=repair_nets(dump,targets,cut)
+        bounds=repair_bounds(dump,spec,targets,cut)
         work=workspace(board_id,spec['name']+'-cut');cut_board=work/f'{board_id}.kicad_pcb';proposal=work/'proposal.json'
         proposal.write_text(json.dumps({'board_sha256':hashlib.sha256(current.read_bytes()).hexdigest(),'removed_uuids':sorted(cut),'copper':[]})+'\n')
         run('bash','scripts/kicad/run.sh','python3','scripts/pcbgen/grid_apply.py',rel(current),rel(proposal),'--output',rel(cut_board))
@@ -305,6 +334,9 @@ def stage(board_id,current,spec,definition,log):
         # Keep padless fragments and native component identities: they remain
         # boundary anchors/obligations, rather than disappearing from the metric.
         kwargs={k:v for k,v in spec.items() if k in ('clearance','signal_width','signal_via_diameter','grow','res','window_mm','escape_halo_mm')}
+        if bounds is not None:
+            kwargs.update(bounds_mm=bounds,max_expansions=300000)
+            repair_details['search_bounds_mm']=bounds
         rails=RAILS
         if 'repair_ground_pad_uuids' in spec:
             # Match existing AGND stitching dimensions; signal victims also get

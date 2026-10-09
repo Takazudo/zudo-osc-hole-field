@@ -7,6 +7,56 @@ from scripts.pcbgen.test_grid_router import crossing_board
 
 
 class LocalRepairScopeTests(unittest.TestCase):
+    def test_bounded_cut_requires_entire_geometry_and_explicit_scope(self):
+        dump={'pads':[{'net':'A','xy':[5e6,5e6]}],
+              'tracks':[{'uuid':'cut','net':'B','a':[4e6,5e6],'b':[6e6,5e6],'width':.2e6}],
+              'vias':[]}
+        spec={'repair_bounds_mm':[3,3,7,7],'repair_source_uuids':['cut']}
+        self.assertEqual(driver.repair_bounds(dump,spec,['A'],{'cut'}),[3,3,7,7])
+        for change in ({'repair_bounds_mm':[4,3,7,7]}, # Track width crosses the frame.
+                       {'repair_bounds_mm':[3,3,6,7]},
+                       {'repair_bounds_mm':[0,0,60,10]},
+                       {'repair_bounds_mm':[3,3,float('nan'),7]},
+                       {'repair_bounds_mm':[3,3,7]},
+                       {'repair_bounds_mm':[8,3,7,7]}):
+            with self.subTest(change=change),self.assertRaises(ValueError):
+                driver.repair_bounds(dump,{**spec,**change},['A'],{'cut'})
+        with self.assertRaises(ValueError):
+            driver.repair_bounds(dump,{'repair_bounds_mm':[3,3,7,7]},['A'],{'cut'})
+        with self.assertRaises(ValueError):driver.repair_bounds(dump,spec,['A'],set())
+        self.assertIsNone(driver.repair_bounds(dump,{},['A'],{'cut'}))
+
+    def test_bounded_repair_limits_victims_and_requires_a_target_inside(self):
+        dump={'pads':[{'net':'A','xy':[20e6,20e6]}],
+              'tracks':[{'uuid':str(i),'net':f'B{i}','a':[4e6,5e6],'b':[6e6,5e6],'width':.2e6}
+                        for i in range(13)],'vias':[]}
+        spec={'repair_bounds_mm':[3,3,7,7],'repair_source_uuids':['0']}
+        for cut in ({'0'},set(map(str,range(3))),set(map(str,range(13)))):
+            with self.subTest(cut=cut),self.assertRaises(ValueError):
+                driver.repair_bounds(dump,spec,['A'],cut)
+
+    def test_bounded_stage_keeps_all_native_groups_after_the_cut(self):
+        original=crossing_board()
+        original['tracks']=[{'uuid':'cut','net':'victim','a':[5e6,3e6],
+                             'b':[5e6,5e6],'width':.2e6}]
+        native={**original,'open_edges':4,'islands':{**original['islands'],
+                'victim':[['far-pad'],['padless-boundary']],'unrelated':[['p'],['q']]}}
+        spec={'name':'bounded','repair':True,'repair_targets':['A'],
+              'repair_source_uuids':['cut'],'repair_bounds_mm':[0,0,12,8],'res':.025}
+        class Captured(Exception):pass
+        with tempfile.TemporaryDirectory() as directory:
+            root=Path(directory);base=root/'base.kicad_pcb';base.write_text('unchanged')
+            base.with_name('dump.json').write_text(json.dumps(original));cut=root/'cut';cut.mkdir()
+            with patch.object(driver,'ROOT',root),patch.object(driver,'workspace',return_value=cut),\
+                 patch.object(driver,'run'),patch.object(driver,'check',return_value=({},native)),\
+                 patch.object(driver,'route',side_effect=Captured) as route:
+                with self.assertRaises(Captured):driver.stage('osc-jack-left',base,spec,{},print)
+            self.assertEqual(route.call_args.args[0]['islands'],native['islands'])
+            self.assertEqual(route.call_args.kwargs['bounds_mm'],[0,0,12,8])
+            self.assertEqual(route.call_args.kwargs['max_expansions'],300000)
+            self.assertEqual(route.call_args.kwargs['allowed_layers'],driver.SIGNAL_LAYERS)
+            self.assertEqual(base.read_text(),'unchanged')
+
     def test_ground_corridor_requires_explicit_bounded_signal_cuts(self):
         dump=crossing_board()
         dump['pads'] += [{'uuid':'g','net':'AGND'}]
