@@ -1,3 +1,25 @@
+# Active continuation — 2026-10-09 10:04 UTC
+
+JR three-compatible writer37914521455 at e4eff65cbacd2f6578ed696ee89156be22f2716a
+is active; sole core writer37907147442 also remains active. No new native adoption
+is claimed. Postmerge198CI37911896861 passed. Main totals remain126/145/1441.
+
+JL native cut diagnosis: original frame excluded the entire destination component.
+New explicit empty-source/goal diagnostics preserve obligations and avoid empty
+array crashes; both directions have a regression. Same saved cut dump with a
+complete-component frame reaches300000 expansions but still no target path.
+The changed weighted17-cut target-only screen also found zero paths; no native
+victim restoration or promotion attempted. Exact inputs/results retained in
+jl126-u2105-result and jl126-ranked-cut-screen.62 focused tests,PNPM circuit/check,
+and diff checks PASS. A changed additive nearest-native-component-pair screen is
+running locally; no result claimed yet.
+
+core-short-supplies/rebase_proposal.py requires an explicitly reviewed accepted
+core SHA and proves every old copper block retained,known new31-object transaction
+only,zero UUID collisions and new/new clearances. Its workflow entry intentionally
+has no ready plan/proposal until the sole core writer finishes and the rebase is
+reviewed. Do not dispatch short-supplies before that terminal reconciliation.
+
 # Current checkpoint — 2026-10-09 09:58 UTC
 
 PR198 merged at4580536e8edd0bb9216c02d6b01aec00189da20e; all five exact-head
