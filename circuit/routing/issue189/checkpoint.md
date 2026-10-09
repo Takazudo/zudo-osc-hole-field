@@ -1,3 +1,26 @@
+# Current checkpoint — 2026-10-09 06:26 UTC
+
+JL one-via ground corridor pilot37893328321 is running on
+2f46cb779fc0e9022486ce2827cb41c79dae18b0. Its native outcome is unknown.
+Ground-corridor implementation passed73 affected tests and pnpm check.
+JR original-ground pilot37892918965 runs on622ede26899f26b59d3505968a1561a32e903354.
+Both are read-only; canonical JL135/JR155/core1509 remains unchanged.
+
+Prepared JR U7509 tail correction: follow the actual warned staircase's centerline
+through five original segments (0.312132mm), then stop at the first interior junction.
+The next original2.35mm segment is replaced by its retained1.4mm portion from
+391.9,190.25 to391.9,191.65mm. Its joining source track and every original object
+are asserted against the independently checked candidate/base dumps. This adds
+one replacement to the original32-object candidate, with13total removals.
+Full native original membership/warning/DRC/parity/fresh gates mandatory.
+Current jr-coupled-plan.json selects this candidate; original-ground plan archived.
+Dispatch read-only coupled after push; existing JR job serializes the follow-up.
+
+Core sole writer37881591885 is still active; no duplicate writer. Main postmerge
+37891992677 pending at06:25. Issue189 remains OPEN. No new acceptance claimed.
+
+## Earlier checkpoint history (superseded above)
+
 # Current checkpoint — 2026-10-09 06:23 UTC
 
 Active PR195 now adds opt-in ground corridor repair: explicit source ground pads,
