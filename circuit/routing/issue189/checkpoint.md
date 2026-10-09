@@ -1,3 +1,40 @@
+# PR201 verification checkpoint — 2026-10-09 12:04 UTC
+
+PR200 merged as `b215be72058ac77e5b2be04b2b4de5ae93a60541`. All five exact-head
+checks (`37923371952`) and all five post-merge checks (`37925223945`) passed.
+Main and the continuation retain **JL125 / JR141 / core1441**, with native DRC
+and parity errors both zero. Issue #189 remains open; full connectivity is unmet.
+
+JR run `37925027262` was rejected. The initial 233-object candidate split −12 V
+at C4616.1/U4602.4 and ground at C8431.2/U8403.5–8. The driver retained the failed
+workspace and reverted the 115-object X6522EE2C05A9BE92D3C2 transaction. The final
+118-object candidate joined two signals but left two ground splits (141→141),
+so nothing was adopted. Both attempts retain all 50,964 prior objects unchanged.
+Artifact `11613823860` was downloaded and its ZIP digest verified. Exact results
+and both retention proofs are in `jr-three-remaining/`.
+
+Next steps:
+
+1. Freeze this PR201 head and require all five exact-head checks before normal
+   merge; retain its branch and verify post-merge CI.
+2. Dispatch the rebased nine-object D7504 outer alternative on a dedicated
+   `agent-fix/189-jr-outer-worker` branch from this head. Do not push human changes
+   onto that worker branch. Reconcile its eventual board-only delta and actual
+   native receipt; never replace another board from its older snapshot.
+3. Core run `37925863664` remains the sole core writer, using source
+   `97e3a28b54ca2a4071ab36b2a4a644fa187debcf` on the retained ground-fill branch.
+   Its 143-object power batch has not been accepted yet. After terminal results
+   are reconciled, the saved 26-segment/no-via alternative requires an explicit
+   rebase against the actual accepted SHA; see `core-u1513-alternatives/README.md`.
+4. No JL writer is active. Ground-first C2148 reinforcement yielded ground
+   candidates, but all six subsequent signal searches failed. Evidence is saved
+   in `jl-c2148-reinforcement/`; no combined copper was submitted or adopted.
+
+Local validation: 97 affected tests passed for the diagnostic correction;
+`pnpm circuit:check`, `pnpm check`, and workflow YAML/shell validation passed.
+Fixed panel, project/rule files, electrical limits and native acceptance gates
+remain unchanged. Hardware qualification is not claimed.
+
 # Active power batch and zero-via alternative — 2026-10-09 11:53 UTC
 
 Sole core writer is now37925863664 on97e3a28b54ca2a4071ab36b2a4a644fa187debcf,
