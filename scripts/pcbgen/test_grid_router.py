@@ -271,6 +271,23 @@ class NeckDownTests(unittest.TestCase):
 
 
 class FillGuardTests(unittest.TestCase):
+    def test_outline_padding_cannot_bypass_a_plane_cut(self):
+        label=np.zeros((7,9),np.int32);label[3,2]=7;label[3,6]=7
+        domain=np.zeros(label.shape,bool);domain[1:6,1:8]=True
+        wall=[(np.ones((5,1),bool),(slice(1,6),slice(4,5)))]
+        unbounded=FillGuard(label,7,1,1)
+        self.assertTrue(unbounded.keeps(unbounded.shrunk(wall)))
+        bounded=FillGuard(label,7,1,1,domain=domain)
+        self.assertFalse(bounded.keeps(bounded.shrunk(wall)))
+        # Rebuilding after copper rollback must not reintroduce outside cells.
+        bounded.reset(label.copy())
+        self.assertFalse(bounded.region[~domain].any())
+        self.assertFalse(bounded.keeps(bounded.shrunk(wall)))
+
+    def test_fill_domain_shape_must_match_the_raster(self):
+        with self.assertRaises(ValueError):
+            FillGuard(np.zeros((7,9),np.int32),7,1,1,domain=np.ones((6,9),bool))
+
     def test_wall_across_fill_splits_plane_regions(self):
         label=np.zeros((40,80),np.int32);label[20,5]=7;label[20,75]=7
         self.assertEqual(fill_region_count(label,7,0.2,0.1),1)

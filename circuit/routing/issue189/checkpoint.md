@@ -1,3 +1,59 @@
+# Current resumable checkpoint — 2026-10-09 12:27 UTC
+
+PR201 merged normally at `843b93da5bdb6913c2c66b83ab2f92a2374164db` after exact-head run37927716576 passed all five checks (`ci-3f7fb68.json`). Post-merge run37929896255 is running; do not call it passed. Retained branch `agent-fix/189-ground-fill-continuation` still carries the active core writer. PR202 is now based on main, on `agent-fix/189-fill-boundary-continuation`; this checkout includes the main merge.
+
+Accepted canonical copper remains JL125 / JR141 / core1441, zero native DRC/parity errors. SHA256s:
+- JL `55a3edef21878d3e89ac9a02b0264f27d7a97da0d666648b5ffc27e47afde17d`
+- JR `3d9940791131e31d22ea65e4457ccb77d5250d629eaa2b5d3c6b03024ac3405c`
+- core published `a0e3cff1ebc211564b8be10f6a993d50fb6d4372edde86a056ebc8dda3ea5932`
+
+## Exactly one active routing writer per board
+
+- Core143: run37925863664, source97e3a28b54ca2a4071ab36b2a4a644fa187debcf, retained `agent-fix/189-ground-fill-continuation`. Pending native acceptance; do not duplicate/cancel.
+- JR26 no-via D7208: run37929676316, sourceb8c3d97c3d77f2b6d54a5dc4884d141673e8077b, dedicated `agent-fix/189-jr-d7208-worker`. Do not human-push to worker. Its accepted baseline is JR141; candidate has26F.Cu segments, zero vias/cuts. No result claimed yet.
+- No JL writer. New48-case via-free screen found zero routes; details in `jl125-no-via/`.
+
+## Continuation commands and acceptance steps
+
+1. `gh run view 37925863664 --json status,conclusion,jobs` and `gh run view 37929676316 --json status,conclusion,jobs`. Read actual terminal receipts and artifact metadata; workflow success is not native acceptance. Existing GitHub connector can retrieve/download artifacts if CLI blob download fails. Verify archive SHA256 before extraction.
+2. `git fetch origin main agent-fix/189-ground-fill-continuation agent-fix/189-jr-d7208-worker`. Inspect only bot deltas from the exact source SHAs above. For either candidate require0native DRC/parity errors, unchanged warning identities, no split original pad groups, independently agreeing fresh connectivity, and exact retained-copper multiset checks. Only then integrate the reviewed board/receipt delta. Never copy an older full branch snapshot over successful copper.
+3. Once core143 is terminal and reconciled, run `.circuit-cache/route-venv/bin/python circuit/routing/issue189/core-u1513-alternatives/rebase_proposal.py --accepted-sha256 ACTUAL_PUBLISHED_SHA256`. Review explicit rebase/retention evidence before adding its workflow choice and dispatching the next sole core writer. Do not submit the unreconciled26-segment alternative now.
+4. Verify PR201 post-merge run37929896255 and latest exact-head PR202 check.yml run. PR202 remains draft until all required checks pass and review/head state is refreshed. Normal verified incremental merge is authorized; retain worker branches and verify post-merge CI.
+5. Keep #189 OPEN. Full settled zero-edge/zero-split completion gate remains unmet; never treat connectivity as fabrication/hardware qualification. Fixed panel, rules and electrical widths remain unchanged. Do not rerun known rejected proposals unchanged.
+
+H1/H2 before failures and identical-input native benchmark evidence remain in hypotheses-before.txt, jl/jr/core-benchmark.json and benchmark-artifacts.json. Latest boundary comparison reproduces identical115-object rejectedJR candidate,4.836299s before /4.924470s after; no speedup or new native acceptance.99affected tests, local circuit/docs checks and workflow YAML/shell syntax passed. No active local heavy job at this checkpoint.
+
+---
+
+# JR follow-up checkpoint — 2026-10-09 12:24 UTC
+
+PR202 is draft on `agent-fix/189-fill-boundary-continuation`, stacked on frozen PR201. JR9 run37927714132 REJECTED141→142: signal join plus R7505.2/R7530.2 AGND splits,0 DRC/parity,520 unchanged warnings, fresh agrees. Artifact11614927392 digest verified and all50964 accepted objects identical; receipt-only commit598d64b integrated. Canonical JR remains141. Eight additive ground repair searches found no path.
+
+A distinct no-via D7208 alternative is prepared:26 F.Cu segments from acceptedJR141, zero removals. `jr-d7208-no-via/prepare.py` validates input/proposal hashes; workflow choice `d7208-no-via` added and YAML/all shell steps parsed. Full native run/adoption still required. The12-case single-layer screen and all negative cases are recorded in `jr141-no-via-alternatives/`.
+
+Core143 run37925863664 remains the sole core writer. No JL writer. PR201 CI37927716576 has passed all three board DRC jobs/docs; remaining combined regression job still running at latest check. Main remains125/141/1441. Keep189OPEN. GitHubCLI401 was transient: read-only API succeeded again at12:24 with unchanged credentials.
+
+---
+
+# Boundary continuation checkpoint — 2026-10-09 12:18 UTC
+
+Current branch: `agent-fix/189-fill-boundary-continuation`, based on PR201 frozen head `3f7fb6895f4a7d2d7590ef40d3d66486025480a8`. Boundary-domain guard and two regressions pass all 99 affected tests. Same-input native-A* comparison reproduces identical 115-object JR proposal (4.836299s before / 4.924470s after); this does not cure its native -12V split. See `fill-boundary/README.md` and immutable hashes in benchmark.json. No board change in this increment.
+
+Main: `b215be72058ac77e5b2be04b2b4de5ae93a60541` (PR200), post-merge run37925223945 all five checks passed. Accepted native open edges JL125 / JR141 / core1441; DRC/parity zero on each. Full connectivity remains unmet; keep #189 OPEN.
+
+PR201 exact-head CI37927716576: JL/JR/docs PASS, core and remaining regression checks still running at last check. Do not move its frozen head. Once every check passes, refresh head/reviews and use authorized normal merge; retain its branch because core writer uses it. Verify post-merge CI. Retarget this continuation onto main after that merge.
+
+Active native writers (one per board):
+- Core143 run37925863664, source97e3a28b54ca2a4071ab36b2a4a644fa187debcf, on `agent-fix/189-ground-fill-continuation`. Review terminal receipt/artifact, native groups, warnings, fresh counts and complete retained-copper checks before adoption. Do not duplicate this run.
+- JR9 run37927714132, source3f7fb6895f4a7d2d7590ef40d3d66486025480a8, dedicated `agent-fix/189-jr-outer-worker`. Do not human-push to worker. Fetch and cherry-pick only reviewed publication delta after terminal native validation.
+- No JL writer active.
+
+Next core26 no-via alternative is prepared at `core-u1513-alternatives/`; only after core143 terminal reconciliation run its `rebase_proposal.py --accepted-sha256 ACTUAL_PUBLISHED_SHA256`, review rebase/retention evidence, then add workflow choice and dispatch exactly one core writer. Never assume output from a pending run.
+
+GitHub CLI returned HTTP401 at12:13; existing GitHub connector and git transport still work. No credential/permission expansion attempted. Use connector run-job/artifact tools and PR APIs as needed.
+
+---
+
 # PR201 verification checkpoint — 2026-10-09 12:04 UTC
 
 PR200 merged as `b215be72058ac77e5b2be04b2b4de5ae93a60541`. All five exact-head

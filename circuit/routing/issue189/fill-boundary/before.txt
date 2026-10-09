@@ -1,0 +1,22 @@
+EE
+======================================================================
+ERROR: test_outline_padding_cannot_bypass_a_plane_cut (scripts.pcbgen.test_grid_router.FillGuardTests.test_outline_padding_cannot_bypass_a_plane_cut)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/zudo-osc-hole-field/scripts/pcbgen/test_grid_router.py", line 280, in test_outline_padding_cannot_bypass_a_plane_cut
+    bounded=FillGuard(label,7,1,1,domain=domain)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: FillGuard.__init__() got an unexpected keyword argument 'domain'
+
+======================================================================
+ERROR: test_fill_domain_shape_must_match_the_raster (scripts.pcbgen.test_grid_router.FillGuardTests.test_fill_domain_shape_must_match_the_raster)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/zudo-osc-hole-field/scripts/pcbgen/test_grid_router.py", line 289, in test_fill_domain_shape_must_match_the_raster
+    FillGuard(np.zeros((7,9),np.int32),7,1,1,domain=np.ones((6,9),bool))
+TypeError: FillGuard.__init__() got an unexpected keyword argument 'domain'
+
+----------------------------------------------------------------------
+Ran 2 tests in 0.002s
+
+FAILED (errors=2)
