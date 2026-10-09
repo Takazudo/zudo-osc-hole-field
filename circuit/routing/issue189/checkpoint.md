@@ -1,3 +1,25 @@
+# Full core supply inventory selected — 2026-10-09 09:16 UTC
+
+Current follow-up PR199,branch agent-fix/189-short-escape-continuation,source1ad8b28.
+JR writer37909861297 at1ad8b2869b13036a66d93c743168c78281a59185 is checking the31-object
+two-path proposal on actual145. Core sole writer37907147442 remains on PR198's branch;
+no duplicate core writer. PR198 frozen563c099 has requiredCI37909660345 pending.
+
+Core supply screen completed all160targets on identical accepted1441 native geometry:
+130raster paths/437objects,total1143.965605s; both guarded batchesPASS.
+core-short-supplies/select.py selects109targets(59+12V/50-12V),135segments,
+all250000nm wide,zero vias/removals/UUID collisions,total length<=2mm per target
+(observed maximum1.75mm). All133169input objects preserved. Selection is NOT native
+checked and must be reconciled against the active core writer's actual terminal
+board before submission. Do not overwrite accepted copper with its old1441input.
+
+JL126 24-net0.025mm screen is running locally; no new paths so far. A0.0125mm paired
+script is prepared butNOTRUN,as is the24-target core ground screen. These are finite
+changed-method probes,not permission to weaken native gates or repeat unchanged
+larger budgets. Four first24failed supplies exhaust below budget;U1603.4 records no
+A*attempt and remains undiagnosed. Failure evidence is retained without claiming a
+cause for that fifth target. Main197 postmerge37906634220 passed.
+
 # Short escape continuation — 2026-10-09 09:15 UTC
 
 PR198 is frozen at563c09936e63361bce96cfb89a5f4eb83a358fb9 for requiredCI37909660345.
