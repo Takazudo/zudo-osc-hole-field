@@ -58,9 +58,8 @@ def coupled_candidate(board_id,base,before,plan,definition):
 def main():
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--board',choices=('osc-jack-left','osc-jack-right'),default='osc-jack-right')
-    parser.add_argument('--coupled',action='store_true',help='fixed JR signal replay with mandatory native supply restoration')
+    parser.add_argument('--coupled',action='store_true',help='fixed jack signal replay with mandatory native supply restoration')
     args=parser.parse_args();short='jl' if args.board=='osc-jack-left' else 'jr'
-    if args.coupled and args.board!='osc-jack-right':raise ValueError('coupled pilot is defined only for JR')
     mode='coupled' if args.coupled else 'local'
     plan_path=ROOT/f'circuit/routing/issue189/{short}-{mode}-plan.json'
     plan=json.loads(plan_path.read_text());board_id=plan['board']

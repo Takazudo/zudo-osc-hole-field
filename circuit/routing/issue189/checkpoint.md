@@ -6,6 +6,30 @@ Branch `agent-fix/189-obstacle-transactions`, draft PR #190. Last published head
 before this checkpoint: `5932578181ca9fa88991ae5067d6ec1ac6ed6f86`.
 Main remains `1fe06ad50248d6434876fbf2bd6e32e1bfbb13bb`.
 
+## Current execution — 2026-10-09 03:00 UTC
+
+Integrated CI37875608789 passed on52b3855, including all native fixtures,
+aggregate regeneration, documentation and the three native DRC gates. The JR
+coupled pilot37875619974 completed but was rejected: signal target closed,
+-12V5→6 and AGND29→30, total162→163. Detached -12V pads are U4603.4/C4618.1;
+AGND pad C4675.2 also split. One new dangling track warning remains. The existing
+rail-fanout stage did not restore supply membership. Exact rejection, component
+identities, gate and verified artifact digest are retained in jr-coupled-*.json
+and benchmark-artifacts.json. No canonical board changed.
+
+A bounded raster probe of the existing0.4mm/0.25mm rail-link stage on that exact
+candidate also found zero paths (six failures,31.04s); no native claim or adoption.
+Do not repeat the same fanout/link configurations. A next JR transaction needs a
+different signal escape or explicitly source-defined local circuit repair.
+
+JL has a separate hash-bound79-object proposal removing the three original local
+segments. Three signal paths were found; J900001.7 remains unresolved. It is NOT
+native checked yet. The read-only coupled CLI now accepts the explicit JL plan,
+with the same supply restoration, independent reload and original-baseline gates.
+Core reviewed replay37872907194 remains the sole canonical writer. The accepted
+counts remain JL139/JR162/core1509 complete experimental edges (core committed
+DRC file still499 capped records). Older sections below are historical.
+
 ## Terminal jack pilot results — 2026-10-09 02:35 UTC
 
 JR37873299470 finished: baseline162, cut168, repaired/fresh163. Rejected for no

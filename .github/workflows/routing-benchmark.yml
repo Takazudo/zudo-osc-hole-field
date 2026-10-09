@@ -179,7 +179,6 @@ jobs:
           set -o pipefail
           args=(--board "$BOARD")
           if [[ $LOCAL_MODE == coupled ]]; then
-            [[ $BOARD == osc-jack-right ]] || exit 1
             args+=(--coupled)
           elif [[ $LOCAL_MODE != cut ]]; then
             exit 1
