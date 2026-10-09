@@ -1,32 +1,37 @@
 # Issue 189 exact continuation checkpoint
 
-Updated 2026-10-09 17:01 UTC. **Issue #189 remains OPEN.** Accepted native open edges on the draft branch are **JL119 / JR135 / core1441**; main remains120/136/1441. Zero-edge connectivity and final completion gates are unmet. No fabrication or hardware qualification is claimed.
+Updated 2026-10-09 17:29 UTC. **Issue #189 remains OPEN.** Accepted draft boards are **JL119 / JR135 / core1441**. Main remains **JL120 / JR136 / core1441**, commit `9de20ab442dca2940da0a201d5ef5e764dcdbea3`. Completion gates are unmet; no fabrication or hardware qualification is claimed.
 
-## Current authoritative state
+## Authoritative state — supersedes historical pending entries below
 
-Main is merged PR207, commit `9de20ab442dca2940da0a201d5ef5e764dcdbea3`. Its exact-head CI37950014675 and post-merge CI37952715447 passed all five jobs; receipts are `ci-0d6a444.json` and `ci-main-9de20ab.json`. Accepted-copper PR208 is frozen at `2d59eb83d413b1dcd5997b6aaa6c878d43fa1f35` on `agent-fix/189-next-ground-continuation` for verification. New work continues in stacked draft PR209, branch `agent-fix/189-following-ground-continuation`. It includes native-accepted JL119 plus negative evidence and guarded successors; JR135 is now also native accepted; core remains1441. Refresh its exact head and checks before any merge.
+PR208, `agent-fix/189-next-ground-continuation`, frozen `2d59eb83d413b1dcd5997b6aaa6c878d43fa1f35`: all five exact-head CI jobs passed in37962980438 (`ci-2d59eb8.json`). It remains open; no merge was performed in this continuation. Draft PR209 on `agent-fix/189-following-ground-continuation` contains the subsequent receipts and trials, stacked on208. Preserve both branches and other sessions. Refresh remote state before integration; respect the user's no-merge instruction unless separately superseded by explicit authorization.
 
-All accepted boards have zero native DRC/parity errors, no new warning identities or split original pad groups, and fresh native agreement. Warnings: JL477/JR520/core619. Fixed panel/electrical rules, accepted copper and other sessions remain preserved. PR202 post-CI was cancelled/superseded, never passed; subsequent accepted main states have passed post-CI.
+All accepted boards have0native DRC/parity errors, no new reported warning identities or split original pad groups, and fresh native agreement. Warnings477/520/619. Latest complete retention ledger is `retention-ledger-6b72bc2.json`: every uncut object survives the latest stages, every original core object survives, and jack removals are explicitly reviewed rather than claimed retained. Fixed physical/electrical requirements remain unchanged.
 
-## Active native trials — reconcile before further board work
+## Terminal results reconciled this continuation
 
-| Board / purpose | Run | Dedicated worker branch | Pinned source |
+- Core37950004600 **rejected1441→1402**. All133169prior full copper objects survive,+382/zero cuts,0DRC/parity,no group splits,fresh agrees. Only rejection is one new reported hole_to_hole identity on two unchanged old vias. Exact KiCad10.0.6 source caps this code at199; unchanged totals cannot prove absence of new warnings. Gate remains strict and unmodified. `core-finer-ground-batch/{rejection,retention,artifact,warning-cap-sources}.json` and `reconcile.py` preserve/reproduce proof. Bot29974f7f is receipt-only, integrated as1d779e5; no candidate board promoted. Candidate SHA b9f5ca13f83c7ffdbe5836fd271e7c1099e04b901ca1798a7be06f025bd02d66; artifact11631867897 ZIP8919c769bba2f17fc3d695a80590f6e75e618d8767f464baf2d39fb027ca90d6.
+- JL37962133490 **rejected119→119**:17adds/4cuts,all33344uncut objects identical,0DRC/parity,477unchanged warnings,no splits,fresh agreement. AGND16→15after cut→16after restoration. Full proofs in `jl119-u2205-9-ground-cut/`; artifact11631578874 ZIPb72672c80287a441826032aaf5a8023e394ebc9734bd3cb09d24e15007035f74. Explicit joint ground+two-victim search at0.0125mm F/In2/B fails both declared orders on X77D98D4570DBC8F06DA7; no partial proposal submitted. The distinct In1 ground-fanout comparison also fails at0.025/0.0125mm: both victims restore, but the ground fanout has no path. Saved under `jl-u2205-ground-fanout/`; guardPASS13s. No partial proposal submitted.
+- JR37963087457 **rejected135→134**:16adds/5cuts,all51140uncut objects identical,0DRC/parity,no splits,fresh agreement,522warnings. Two new dangling retained-track ends block promotion. Full proofs in `jr135-c7413-2-ground-cut/`; artifact11633150655 ZIP803fb9b637d47aaf314c4af0c7d2ac0e0bd3b025e7d40d38774e0e86ed1882d2. Additive endpoint repair finds21extra B.Cu segments, yielding37segments total with unchanged five cuts/no vias. Native successor below; no gain accepted yet.
+
+## Active native trials — do not overwrite workers
+
+| Purpose | Run | Worker | Exact source |
 | --- | --- | --- | --- |
-| Core adoption |37950004600|`agent-fix/189-core-finer-ground-worker`|`0d6a444aa1ad648ce6146d0e893e93307bd98f14`|
-| JL119 U2205 cut pilot |37962133490|`agent-fix/189-jl-u2205-ground-worker`|`1924fa6548ae1ad756cd9c9c359153b82ab3afcb`|
-| JR135 C7413 cut pilot |37963087457|`agent-fix/189-jr-c7413-ground-worker`|`6e37fdd43becf2b783d11b52e2332dc82b204c04`|
+| Core19short signal segments/11nets, no vias/cuts |37965185751|`agent-fix/189-core-short-no-via-worker`|`08aec29e83d24d291f4d41a7bb10300e072a7260`|
+| JR37segment endpoint-complete disposable pilot |37965489217|`agent-fix/189-jr-c7413-endpoints-worker`|`61dcf368f6d29f32b33f5d6b0baa4aacb162e419`|
 
-All three remain in progress. Core is the sole core writer, testing38ground groups/382objects/38vias/zero cuts at full0.3mm AGND width. Both jack pilots are disposable/read-only. JL selects four original segments/two victim nets in14.7x15.75mm; JR five/one in14.55x14.15mm. Exact native geometry checks prove recently accepted U1518/R4207 copper is not cut. Neither new pilot is an accepted gain.
+Core19 was explicitly rebased onto accepted a0e3cff1 with all133169objects retained and no accepted ground additions. See `core-short-no-via/rebase.json`; it supersedes older statements that this rebase has not run. This is the sole current core writer. JR pilot remains read-only; canonical JR135 is unchanged.
 
-Previous jack adoptions are fully reconciled and integrated: JL37960073108, cherry67d2a1e,120→119; JR37960834229, cherry6b72bc2,136→135. Both match their eligible pilot board/replay hashes, have zeroDRC/parity,unchanged warnings/groups,fresh agreement and complete uncut/physical proofs. JR's first adoption37960568111 failed before routing at a missing shell allowlist choice; it has a reproduced regression and fixed retry, not native evidence.
+## Exact continuation
 
-## Exact next actions
+1. Refresh both runs with `gh run view RUN --json status,conclusion,headSha,jobs`, PR208/209, main and other-session refs. Other-session heads last verified unchanged: core-rrr-escalate8315af55, jack-replace-region-230db43e0, jack-replace-jl-1470b3f0e. Do not restart unrelated watches.
+2. Download terminal native artifacts, verify published ZIP SHA, independently compare full-object multisets including duplicates, original memberships, physical invariants, warning identities, DRC/parity and fresh signature. Workflow success is not adoption. For JR endpoint pilot, gate.adopted is eligibility only; if eligible, pin a separate prepare/adoption replay with original project/rules and exact37-add/5-remove sets. Never replace a newer accepted board from an old worker.
+3. Keep core1402 rejected. Do not rerun unchanged or waive the warning. Investigate an uncapped pinned-native hole audit with exact constraint/epsilon/layer/slot/microvia semantics and fixture/native regression evidence if pursuing that proposal. Local pcbnew exposes no DRC_ENGINE/EvalRules; localKiCad9 is not acceptance. Such an audit is NOT implemented or validated. `--all-track-errors` does not lift the per-code199 cap.
+4. JL's two joint orders and two-resolution plane-fanout comparison are terminal negative controls; no budget-only retry. Change a demonstrated geometric cause or use a source-defined movable-component comparison under all existing constraints.
+5. Keep189 open until canonical JL/JR/core reach zero native edges and all settled/fresh, regeneration/P/EL/O, unchanged-context and same-revision documentation/render gates pass. Accepted intermediate copper is not hardware qualification.
 
-1. Refresh each run with `gh run view RUN --json status,conclusion,headSha,jobs`; refresh main, PR208 and the other-session refs before changing boards. Download terminal artifacts, verify their published ZIP SHA256, and retain the full native baseline/candidate/fresh evidence. Workflow success alone is not adoption.
-2. Verify all five checks on PR208's exact frozen head, refresh remote PR/main/other-session state, then use the normal verified merge workflow and check post-merge CI. Keep branches. Save evidence on this continuation, carry the predecessor merge forward, and retarget PR209 to main. The two jack adoptions are already fully reconciled; do not redo or promote old pilot files. For the new cut pilots inspect actual eligibility, native topology, warning identities, retained objects and fresh agreement; preserve rejections and change demonstrated causes rather than repeating unchanged scopes.
-3. For core37950004600 inspect `boards/osc-core/reports/grid-routing/shards-issue189-finer-ground-batch.json` and the native artifact. Require all133169 prior full copper objects, including duplicate UUID blocks, to survive, plus every usual native gate. Reconcile the bot delta from its pinned source. Adopted copper may be integrated only after those proofs; a rejected bot receipt must not be treated as a board gain.
-4. Only after core reconciliation, run `.circuit-cache/route-venv/bin/python circuit/routing/issue189/core-short-no-via/rebase_proposal.py --accepted-sha256 ACTUAL_ACCEPTED_SHA256`. It accepts only unchanged core or the exact whole known382 ground additions, verifies their full native geometry and all prior blocks, and rejects unexpected changes. It writes proposal/plan/rebase receipts for19short signal segments/11nets, no vias/cuts. Inspect those receipts, commit/push a new dedicated worker, then dispatch `gh workflow run routing-benchmark.yml --ref NEW_WORKER -f board=osc-core -f recover_core=true -f core_replay=short-no-via`. All native gates remain mandatory. This future rebase has NOT run.
-5. Do not close #189 until all three canonical boards pass zero-edge completion, settled/fresh native connectivity, unchanged constraints, regeneration/P/EL/O checks and same-revision final documentation/renders. Verified intermediate progress is not hardware qualification.
+## Historical evidence (pending statements below are superseded above)
 
 ## Core negative controls and held proposals
 
