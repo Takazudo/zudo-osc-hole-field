@@ -1,0 +1,13 @@
+"""Pin the next disposable JR cut to native-accepted JR135; preserve recent copper."""
+import hashlib,json,sys
+from pathlib import Path
+sys.path.insert(0,str(Path.cwd()))
+from scripts.pcbgen.route_jack_grid import repair_selection,repair_bounds
+source=Path('circuit/routing/issue189/jr137-ground-cut-screen/result.json');old=json.loads(source.read_text());target='C7413.2';t=next(x for x in old['transactions'] if x['pad']==target)
+p=Path('.circuit-cache/issue189-downloaded/jr-r4207-adoption/.circuit-cache/osc-jack-right-grid-shards-fresh/dump.json');d=json.loads(p.read_text());sha=hashlib.sha256(Path('boards/osc-jack-right/osc-jack-right.kicad_pcb').read_bytes()).hexdigest();assert sha==d['board_sha256']=='d2a7d2c9d1d1135296e5a591748214ec4e16198bfdf4ec31e30e4199c2e1c0e8';assert d['open_edges']==135
+ids=set(t['spec']['repair_source_uuids']);actual=[x for x in d['tracks'] if x['uuid'] in ids];assert sorted(actual,key=lambda x:x['uuid'])==sorted(t['selected_objects'],key=lambda x:x['uuid']);uid=t['spec']['repair_ground_pad_uuids'][0];assert next(g for g in d['islands']['AGND'] if uid in g)!=max(d['islands']['AGND'],key=len)
+new_ids={r['uuid'] for r in json.loads(Path('circuit/routing/issue189/jr-r4207-joint/proposal.json').read_text())['copper']};assert not ids&new_ids
+stage={**t['spec'],'name':'189-jr135-c7413-2-ground-cut','repair':True,'repair_layers':['F.Cu','B.Cu'],'clearance':.25,'signal_width':.2,'signal_via_diameter':.6,'grow':{'+12V':.05,'-12V':.05,'+5V':.05,'AGND':.05},'res':.025,'window_mm':6};repair_selection(d,stage);repair_bounds(d,stage,['AGND'],ids)
+plan={'board':'osc-jack-right','input_board_sha256':sha,'scope':'Disposable C7413.2 ground repair: five identical original segments/one victim net; no newly accepted JR135 copper cut. Finite original frame,F/B restoration,300000cap. Ground-only prefilter is not complete/native accepted. All original membership,warning,DRC/parity,fresh and retained-object gates mandatory.','stage':stage};dest=Path('circuit/routing/issue189/jr135-c7413-2-ground-cut');dest.mkdir(exist_ok=True)
+for out in [dest/'plan.json',Path('circuit/routing/issue189/jr-local-plan.json')]:out.write_text(json.dumps(plan,indent=2)+'\n')
+(dest/'rebase.json').write_text(json.dumps({'status':'EXACT SELECTED GEOMETRY VERIFIED ON ACCEPTED JR135; NATIVE TRIAL NOT RUN','source_screen_sha256':hashlib.sha256(source.read_bytes()).hexdigest(),'input_dump_sha256':hashlib.sha256(p.read_bytes()).hexdigest(),'accepted_board_sha256':sha,'unchanged_selected_objects':actual,'newly_accepted_copper_preserved':True,'victim_nets':t['victim_nets']},indent=2)+'\n');print('JR135 C7413.2:',len(ids),'cuts,',len(t['victim_nets']),'victims, bounds',stage['repair_bounds_mm'],'native NOT RUN')

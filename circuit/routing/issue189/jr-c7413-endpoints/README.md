@@ -1,0 +1,7 @@
+# C7413 retained-endpoint repair
+
+Original native pilot37963087457 gains135→134 but rejects two new track_dangling warnings. Five reviewed cuts remain exact; all51140uncut objects survive. The endpoint search adds21B.Cu segments to the original16-segment restoration, no vias or additional cuts. Both anchors are exactly old cut endpoints inside retained copper; synthetic pads exist only in the search. The complete replay is pinned to accepted JR135 d2a7d2c9.
+
+Initial helper assertion correctly rejected an incomplete replay description: the disposable restoration proposal contains no cuts and uses the cut-board hash. The corrected script explicitly combines the original canonical hash and five reviewed cuts from the saved plan. B.Cu search succeeds under the guard in9s; no native acceptance is claimed until the new disposable pilot finishes.
+
+Native pilot37965489217 is eligible135→134:37segments/5cuts,all51140uncut objects identical,0DRC/parity,520unchanged warnings,no original group splits,fresh agrees. Pads/outline/keepouts/layers and project/rule bytes are unchanged. Pilot candidate35b52972dd70b4186cf3f3b7ee2ac3d70432f3476c2f56c9fcf9c1c4d7d4d445; replay3c3495b6442d463366c39ccdee4c010f9ca3c030cb321cda4d1780c4a6971c61. Reconciliation initially expected cut-pilot receipt fields; corrected to read native DRC JSON directly. GuardPASS5s after correction. Canonical adoption is a separate required run.

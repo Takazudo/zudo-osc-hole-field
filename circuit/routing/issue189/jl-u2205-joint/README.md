@@ -1,0 +1,1 @@
+Both explicit ground-first victim orders fail the same victim X77D98D4570DBC8F06DA7 at0.0125mm F/In2/B in the original bounded frame. GuardPASS12s. No partial proposal submitted and no native acceptance claimed. The separate In1 fanout comparison also fails ground at0.025/0.0125mm while both victims restore; guardPASS13s. Stop these unchanged configurations.

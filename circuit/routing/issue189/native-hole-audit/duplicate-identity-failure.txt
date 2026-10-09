@@ -1,0 +1,86 @@
+hole-audit	Audit every potentially violating hole pair with pinned native fixtures	﻿2026-10-09T17:31:54.2379342Z ##[group]Run set -euo pipefail
+hole-audit	Audit every potentially violating hole pair with pinned native fixtures	2026-10-09T17:31:54.2379843Z [36;1mset -euo pipefail[0m
+hole-audit	Audit every potentially violating hole pair with pinned native fixtures	2026-10-09T17:31:54.2380246Z [36;1mfor stage in start merge; do[0m
+hole-audit	Audit every potentially violating hole pair with pinned native fixtures	2026-10-09T17:31:54.2381043Z [36;1m  bash scripts/kicad/run.sh python3 scripts/pcbgen/audit_hole_pairs.py \[0m
+hole-audit	Audit every potentially violating hole pair with pinned native fixtures	2026-10-09T17:31:54.2382049Z [36;1m    ".circuit-cache/hole-audit-input/.circuit-cache/osc-core-grid-shards-$stage/osc-core.kicad_pcb" \[0m
+hole-audit	Audit every potentially violating hole pair with pinned native fixtures	2026-10-09T17:31:54.2382885Z [36;1m    ".circuit-cache/hole-audit-$stage"[0m
+hole-audit	Audit every potentially violating hole pair with pinned native fixtures	2026-10-09T17:31:54.2383323Z [36;1mdone[0m
+hole-audit	Audit every potentially violating hole pair with pinned native fixtures	2026-10-09T17:31:54.2474258Z shell: /usr/bin/bash -e {0}
+hole-audit	Audit every potentially violating hole pair with pinned native fixtures	2026-10-09T17:31:54.2474661Z ##[endgroup]
+hole-audit	Audit every potentially violating hole pair with pinned native fixtures	2026-10-09T17:31:54.3380632Z Unable to find image 'kicad/kicad@sha256:18693567392b80da435f9fa952ce3a3e534c66eb5a6033f5b9c80aa3b19dd3ec' locally
+hole-audit	Audit every potentially violating hole pair with pinned native fixtures	2026-10-09T17:31:54.5440059Z docker.io/kicad/kicad@sha256:18693567392b80da435f9fa952ce3a3e534c66eb5a6033f5b9c80aa3b19dd3ec: Pulling from kicad/kicad
+hole-audit	Audit every potentially violating hole pair with pinned native fixtures	2026-10-09T17:31:54.6203913Z f072f58012e5: Pulling fs layer
+hole-audit	Audit every potentially violating hole pair with pinned native fixtures	2026-10-09T17:31:54.6206264Z 7a697221ed08: Pulling fs layer
+hole-audit	Audit every potentially violating hole pair with pinned native fixtures	2026-10-09T17:31:54.6207080Z 2a725967b0c1: Pulling fs layer
+hole-audit	Audit every potentially violating hole pair with pinned native fixtures	2026-10-09T17:31:54.6208074Z d59c8d6b4ee3: Pulling fs layer
+hole-audit	Audit every potentially violating hole pair with pinned native fixtures	2026-10-09T17:31:54.6208558Z 06396e02790e: Pulling fs layer
+hole-audit	Audit every potentially violating hole pair with pinned native fixtures	2026-10-09T17:31:54.6208953Z 2378ea4a3f01: Pulling fs layer
+hole-audit	Audit every potentially violating hole pair with pinned native fixtures	2026-10-09T17:31:54.6209333Z a5fac0bcdf2f: Pulling fs layer
+hole-audit	Audit every potentially violating hole pair with pinned native fixtures	2026-10-09T17:31:54.6209708Z 2a4cad830bcc: Pulling fs layer
+hole-audit	Audit every potentially violating hole pair with pinned native fixtures	2026-10-09T17:31:54.6210073Z 247e0200b7e4: Pulling fs layer
+hole-audit	Audit every potentially violating hole pair with pinned native fixtures	2026-10-09T17:31:54.6210441Z 9a99e09d41bb: Pulling fs layer
+hole-audit	Audit every potentially violating hole pair with pinned native fixtures	2026-10-09T17:31:54.6210819Z 51707baaa5e0: Pulling fs layer
+hole-audit	Audit every potentially violating hole pair with pinned native fixtures	2026-10-09T17:31:54.6211367Z b5ecfc164241: Pulling fs layer
+hole-audit	Audit every potentially violating hole pair with pinned native fixtures	2026-10-09T17:31:54.6211722Z 2c012cda8801: Pulling fs layer
+hole-audit	Audit every potentially violating hole pair with pinned native fixtures	2026-10-09T17:31:54.6212074Z d59c8d6b4ee3: Waiting
+hole-audit	Audit every potentially violating hole pair with pinned native fixtures	2026-10-09T17:31:54.6212450Z 247e0200b7e4: Waiting
+hole-audit	Audit every potentially violating hole pair with pinned native fixtures	2026-10-09T17:31:54.6212769Z 9a99e09d41bb: Waiting
+hole-audit	Audit every potentially violating hole pair with pinned native fixtures	2026-10-09T17:31:54.6213069Z 06396e02790e: Waiting
+hole-audit	Audit every potentially violating hole pair with pinned native fixtures	2026-10-09T17:31:54.6213373Z 2378ea4a3f01: Waiting
+hole-audit	Audit every potentially violating hole pair with pinned native fixtures	2026-10-09T17:31:54.6213675Z a5fac0bcdf2f: Waiting
+hole-audit	Audit every potentially violating hole pair with pinned native fixtures	2026-10-09T17:31:54.6213983Z 2a4cad830bcc: Waiting
+hole-audit	Audit every potentially violating hole pair with pinned native fixtures	2026-10-09T17:31:54.6214300Z 51707baaa5e0: Waiting
+hole-audit	Audit every potentially violating hole pair with pinned native fixtures	2026-10-09T17:31:54.6214614Z b5ecfc164241: Waiting
+hole-audit	Audit every potentially violating hole pair with pinned native fixtures	2026-10-09T17:31:54.6214928Z 2c012cda8801: Waiting
+hole-audit	Audit every potentially violating hole pair with pinned native fixtures	2026-10-09T17:31:54.9734413Z f072f58012e5: Verifying Checksum
+hole-audit	Audit every potentially violating hole pair with pinned native fixtures	2026-10-09T17:31:54.9743339Z f072f58012e5: Download complete
+hole-audit	Audit every potentially violating hole pair with pinned native fixtures	2026-10-09T17:31:55.2319485Z 2a725967b0c1: Verifying Checksum
+hole-audit	Audit every potentially violating hole pair with pinned native fixtures	2026-10-09T17:31:55.2361553Z 2a725967b0c1: Download complete
+hole-audit	Audit every potentially violating hole pair with pinned native fixtures	2026-10-09T17:31:55.4970622Z 06396e02790e: Verifying Checksum
+hole-audit	Audit every potentially violating hole pair with pinned native fixtures	2026-10-09T17:31:55.4972411Z 06396e02790e: Download complete
+hole-audit	Audit every potentially violating hole pair with pinned native fixtures	2026-10-09T17:31:55.5899307Z d59c8d6b4ee3: Verifying Checksum
+hole-audit	Audit every potentially violating hole pair with pinned native fixtures	2026-10-09T17:31:55.5901940Z d59c8d6b4ee3: Download complete
+hole-audit	Audit every potentially violating hole pair with pinned native fixtures	2026-10-09T17:31:55.6699491Z a5fac0bcdf2f: Verifying Checksum
+hole-audit	Audit every potentially violating hole pair with pinned native fixtures	2026-10-09T17:31:55.6699916Z a5fac0bcdf2f: Download complete
+hole-audit	Audit every potentially violating hole pair with pinned native fixtures	2026-10-09T17:31:55.7394635Z 2a4cad830bcc: Verifying Checksum
+hole-audit	Audit every potentially violating hole pair with pinned native fixtures	2026-10-09T17:31:55.7396525Z 2a4cad830bcc: Download complete
+hole-audit	Audit every potentially violating hole pair with pinned native fixtures	2026-10-09T17:31:55.8132032Z 247e0200b7e4: Verifying Checksum
+hole-audit	Audit every potentially violating hole pair with pinned native fixtures	2026-10-09T17:31:55.8138736Z 247e0200b7e4: Download complete
+hole-audit	Audit every potentially violating hole pair with pinned native fixtures	2026-10-09T17:31:55.8891348Z 9a99e09d41bb: Verifying Checksum
+hole-audit	Audit every potentially violating hole pair with pinned native fixtures	2026-10-09T17:31:55.8892262Z 9a99e09d41bb: Download complete
+hole-audit	Audit every potentially violating hole pair with pinned native fixtures	2026-10-09T17:31:55.9691663Z 51707baaa5e0: Verifying Checksum
+hole-audit	Audit every potentially violating hole pair with pinned native fixtures	2026-10-09T17:31:55.9695374Z 51707baaa5e0: Download complete
+hole-audit	Audit every potentially violating hole pair with pinned native fixtures	2026-10-09T17:31:56.0369577Z b5ecfc164241: Verifying Checksum
+hole-audit	Audit every potentially violating hole pair with pinned native fixtures	2026-10-09T17:31:56.0382130Z b5ecfc164241: Download complete
+hole-audit	Audit every potentially violating hole pair with pinned native fixtures	2026-10-09T17:31:56.1186896Z 2c012cda8801: Verifying Checksum
+hole-audit	Audit every potentially violating hole pair with pinned native fixtures	2026-10-09T17:31:56.1187680Z 2c012cda8801: Download complete
+hole-audit	Audit every potentially violating hole pair with pinned native fixtures	2026-10-09T17:31:56.1317944Z 2378ea4a3f01: Verifying Checksum
+hole-audit	Audit every potentially violating hole pair with pinned native fixtures	2026-10-09T17:31:56.1319041Z 2378ea4a3f01: Download complete
+hole-audit	Audit every potentially violating hole pair with pinned native fixtures	2026-10-09T17:31:57.0783425Z f072f58012e5: Pull complete
+hole-audit	Audit every potentially violating hole pair with pinned native fixtures	2026-10-09T17:31:57.2277248Z 7a697221ed08: Verifying Checksum
+hole-audit	Audit every potentially violating hole pair with pinned native fixtures	2026-10-09T17:31:57.2278107Z 7a697221ed08: Download complete
+hole-audit	Audit every potentially violating hole pair with pinned native fixtures	2026-10-09T17:32:14.2858209Z 7a697221ed08: Pull complete
+hole-audit	Audit every potentially violating hole pair with pinned native fixtures	2026-10-09T17:32:16.0188522Z 2a725967b0c1: Pull complete
+hole-audit	Audit every potentially violating hole pair with pinned native fixtures	2026-10-09T17:32:23.5570485Z d59c8d6b4ee3: Pull complete
+hole-audit	Audit every potentially violating hole pair with pinned native fixtures	2026-10-09T17:32:23.8517805Z 06396e02790e: Pull complete
+hole-audit	Audit every potentially violating hole pair with pinned native fixtures	2026-10-09T17:32:25.2319532Z 2378ea4a3f01: Pull complete
+hole-audit	Audit every potentially violating hole pair with pinned native fixtures	2026-10-09T17:32:27.1925064Z a5fac0bcdf2f: Pull complete
+hole-audit	Audit every potentially violating hole pair with pinned native fixtures	2026-10-09T17:32:27.2252340Z 2a4cad830bcc: Pull complete
+hole-audit	Audit every potentially violating hole pair with pinned native fixtures	2026-10-09T17:32:27.2401591Z 247e0200b7e4: Pull complete
+hole-audit	Audit every potentially violating hole pair with pinned native fixtures	2026-10-09T17:32:27.2577902Z 9a99e09d41bb: Pull complete
+hole-audit	Audit every potentially violating hole pair with pinned native fixtures	2026-10-09T17:32:27.2675686Z 51707baaa5e0: Pull complete
+hole-audit	Audit every potentially violating hole pair with pinned native fixtures	2026-10-09T17:32:27.2765315Z b5ecfc164241: Pull complete
+hole-audit	Audit every potentially violating hole pair with pinned native fixtures	2026-10-09T17:32:27.2854450Z 2c012cda8801: Pull complete
+hole-audit	Audit every potentially violating hole pair with pinned native fixtures	2026-10-09T17:32:27.2905415Z Digest: sha256:18693567392b80da435f9fa952ce3a3e534c66eb5a6033f5b9c80aa3b19dd3ec
+hole-audit	Audit every potentially violating hole pair with pinned native fixtures	2026-10-09T17:32:27.2912763Z Status: Downloaded newer image for kicad/kicad@sha256:18693567392b80da435f9fa952ce3a3e534c66eb5a6033f5b9c80aa3b19dd3ec
+hole-audit	Audit every potentially violating hole pair with pinned native fixtures	2026-10-09T17:34:23.7168562Z Traceback (most recent call last):
+hole-audit	Audit every potentially violating hole pair with pinned native fixtures	2026-10-09T17:34:23.7183647Z   File "/work/scripts/pcbgen/audit_hole_pairs.py", line 171, in <module>
+hole-audit	Audit every potentially violating hole pair with pinned native fixtures	2026-10-09T17:34:23.7184140Z     args=parser.parse_args(); audit(args.board,args.output)
+hole-audit	Audit every potentially violating hole pair with pinned native fixtures	2026-10-09T17:34:23.7184596Z                               ~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+hole-audit	Audit every potentially violating hole pair with pinned native fixtures	2026-10-09T17:34:23.7185153Z   File "/work/scripts/pcbgen/audit_hole_pairs.py", line 126, in audit
+hole-audit	Audit every potentially violating hole pair with pinned native fixtures	2026-10-09T17:34:23.7186002Z     holes, objects = native_holes(source, pcbnew)
+hole-audit	Audit every potentially violating hole pair with pinned native fixtures	2026-10-09T17:34:23.7186400Z                      ~~~~~~~~~~~~^^^^^^^^^^^^^^^^
+hole-audit	Audit every potentially violating hole pair with pinned native fixtures	2026-10-09T17:34:23.7186922Z   File "/work/scripts/pcbgen/audit_hole_pairs.py", line 75, in native_holes
+hole-audit	Audit every potentially violating hole pair with pinned native fixtures	2026-10-09T17:34:23.7187405Z     raise ValueError('duplicate hole UUID cannot identify native pair: ' + uid)
+hole-audit	Audit every potentially violating hole pair with pinned native fixtures	2026-10-09T17:34:23.7187931Z ValueError: duplicate hole UUID cannot identify native pair: 068d8b75-2a29-587e-ad91-2a5fd680fc8e
+hole-audit	Audit every potentially violating hole pair with pinned native fixtures	2026-10-09T17:34:23.8435980Z ##[error]Process completed with exit code 1.
