@@ -1,3 +1,18 @@
+# PR199 merged; continuation on main — 2026-10-09 10:39 UTC
+
+All five exact-head CI37917295454 checks passed onbd41809dd6bbeac028638b8419b349545cc64c3e.
+PR199 normally merged at2026-10-09T10:37:46Z as7af7489d1a728746cdd095c2d9c52e1b9452e30f.
+Its branch is retained,#189OPEN. Main nowJL126/JR143/core1441,allnative errors/parity0/0.
+PostmergeCI37918769043 is pending. PR200 now targets main and incorporates that
+merge via60ff239c888a1a1d5dcce1161747ca3f6995e7d3. No old copper overwritten.
+
+Still active: JR37917534758(83objects on143),JL37918072226(71outer objects on126),
+and solecorewriter37907147442 on retainedagent-fix/189-ground-signal-continuation.
+Read actual native receipts/bot commits before any next submission. Keep accepted
+geometry and failed evidence,including fallbackci-routebranches if publication races.
+Core short-power143objects remains unsubmitted until terminal core reconciliation.
+JR D7504 protected7-object alternative must likewise wait for currentJRoutput.
+
 # Current native queue and saved alternatives — 2026-10-09 10:36 UTC
 
 PR200 branchagent-fix/189-short-power-continuation has two isolated native writers:
