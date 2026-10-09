@@ -1,13 +1,13 @@
 # Issue 189 exact continuation checkpoint
 
-Updated 2026-10-09 19:24 UTC. **Issue #189 remains OPEN.** Main `2ca29f2550366d5b31f6eb2ce9dbdbfd9a6b27c2` accepts **JL119 / JR134 / core1441**. Draft PR211, branch `agent-fix/189-finer-jack-continuation`, contains the next bounded work. Zero-edge completion, final regeneration/P/EL/O and renders remain unmet. No fabrication or hardware qualification is claimed.
+Updated 2026-10-09 19:27 UTC. **Issue #189 remains OPEN.** Main `2ca29f2550366d5b31f6eb2ce9dbdbfd9a6b27c2` accepts **JL119 / JR134 / core1441**. Draft branch now accepts **JL118 / JR134 / core1441**. Draft PR211, branch `agent-fix/189-finer-jack-continuation`, contains the next bounded work. Zero-edge completion, final regeneration/P/EL/O and renders remain unmet. No fabrication or hardware qualification is claimed.
 
 ## Active work and hard gates
 
-- **JL adoption37978945582** is the sole active jack writer, isolated branch `agent-fix/189-jl-r8276-adopt-worker`, source `8b0a7701a680a9df7fd3272c4749365a5911ad74`. It replays the native-eligible JL118 joint proposal through all ordinary gates. Do not change this worker while running. Its exact-branch, exact-workflow-path push trigger is worker-only: later cherry-pick only verified bot board/receipt changes, never the temporary trigger.
+- **JL adoption37978945582 completed and independently verified**, isolated branch `agent-fix/189-jl-r8276-adopt-worker`, source `8b0a7701a680a9df7fd3272c4749365a5911ad74`. Bot534dd3e60985799502420dd326fe41bca9e15875 cherry-picked asd50853d3d56984c204c45ae5918dfa87d8956fee after exact3file blobs matched the SHA-verified artifact. Temporary worker-only workflow is excluded. No jack writer is active.
 - **Core zone classification37976003780** is read-only and still active, source `bacd089f36a12d839a96cb6888640918cefe1e35`, worker `agent-fix/189-complete-silk-worker`. It must finish and its full raw evidence must validate before the saved core1402 candidate is eligible. **No core writer is active.** Do not infer eligibility from the earlier provisional reassessment.
 - Core19run37965185751 is terminal and rejected, fully reconciled below. It is safe to prepare a successor after completing the warning evidence; never reuse source-bound audits on a changed candidate.
-- CLI `GH_TOKEN` expired: API requests return401. Git push and connected GitHub tools still work. Public read-only REST also works. No connector workflow-dispatch action is available. The isolated push trigger uses identical existing native gates, source checks and receipts; it does not weaken verification.
+- CLI API authentication expired at19:08 and recovered after host runtime refresh at19:25; a harmless repository API read succeeded. Git/connector access remained functional. Same container and snapshot verified; bridge already valid; loader not repeated. Regular workflow dispatch is available again. The temporary JL worker push trigger retained identical gates and is not part of PR211.
 
 Parent steering at18:34UTC explicitly authorizes incremental merges once exact gates pass and requires core19reconciliation before a ground writer. Preserve other sessions and all branches. No unrelated watches. Previously checked other-session heads: `core-rrr-escalate`8315af554132b283e4e6e9b62d76bbfdcea560c0, `jack-replace-region-2`30db43e0c63cc4e380fd1525e74e76d27d8b0694, `jack-replace-jl-1`470b3f0e074b7f1254b529c58932e57ed456d195. Refresh them before any adoption/merge.
 
@@ -17,25 +17,26 @@ PR209 merged head2c3afdedf9e999ef0b091db74805d10fc5687d44 as98820acfefa293f7c255
 
 PR210 merged heada95f936cca551742267e36dde9276a8b813739f1 as2ca29f2550366d5b31f6eb2ce9dbdbfd9a6b27c2 after all five exact-head checks37974947048 passed. It changed verification, not canonical boards. Post-merge37977274128: all five checks passed, including native regeneration (`ci-main-2ca29f2.json`). Exact-head receipts are `ci-2c3afde.json` and `ci-a95f936.json`. Earlier main4db1d3c all-five post-check proof is `ci-main-4db1d3c.json`.
 
-## Accepted immutable boards
+## Accepted immutable boards (main and current draft)
 
 | Board | Published SHA256 | Latest accepted evidence |
 | --- | --- | --- |
-| JL119 | `554fa85a44d74c2ad2105e34f1bbc4de9b674e46dd7531ddc3e00c6d8e1c1291` | 37960073108:120→119,+58segments/4reviewed cuts,all33290uncut objects identical |
+| JL118 draft | `a01df89dcab3d4fab8eb0ae80195b2825d2d47adc517cd73452d9b9aa6ea079a` | 37978945582:119→118,+75segments/2reviewed cuts,all33346uncut objects identical |
+| JL119 main | `554fa85a44d74c2ad2105e34f1bbc4de9b674e46dd7531ddc3e00c6d8e1c1291` | 37960073108:120→119,+58segments/4reviewed cuts,all33290uncut objects identical |
 | JR134 | `35b52972dd70b4186cf3f3b7ee2ac3d70432f3476c2f56c9fcf9c1c4d7d4d445` | 37967123290:135→134,+37segments/5reviewed cuts,all51140uncut objects identical |
 | Core1441 | `a0e3cff1ebc211564b8be10f6a993d50fb6d4372edde86a056ebc8dda3ea5932` | 37895925149:1509→1441,+216segments/zero cuts,all132953original objects identical |
 
-All three have0native DRC/parity, no new reported warning identities, no original pad-group splits and fresh agreement. Reported warnings477/520/619. Native10.0.6 is pinned by `scripts/kicad/run.sh`; local9.0.2 is not acceptance. Fixed panel/placements/pads/outline/rule areas/layers and project/rules remain unchanged. Jack rails are fully joined. JL103signal+16AGND; JR111signal+23AGND; core80+12V/80−12V/252AGND/1029signal edges.
+All three have0native DRC/parity, no new reported warning identities, no original pad-group splits and fresh agreement. Reported warnings477/520/619. Native10.0.6 is pinned by `scripts/kicad/run.sh`; local9.0.2 is not acceptance. Fixed panel/placements/pads/outline/rule areas/layers and project/rules remain unchanged. Jack rails are fully joined. JL103signal+15AGND on the draft (16AGND on main); JR111signal+23AGND; core80+12V/80−12V/252AGND/1029signal edges.
 
 JR134bot a59ef3669cdac3d6ca31131722c082aefd92b507, cherry133f2f6; replay3c3495b6442d463366c39ccdee4c010f9ca3c030cb321cda4d1780c4a6971c61; artifact11633969149,ZIPafa07c7a1c2315162bcc62fa780a0e6e805f0082c4f59e5739ec000a097b8b5a. Proof `jr-c7413-endpoints/`.
 
-`retention-ledger-133f2f6.json` uses full-object multisets including legacy duplicates. From issue baseline: JL32609original retained/136reviewed changed or removed/739new; JR50287original retained/24reviewed changed or removed/890new; all132953original core retained/216new. Latest stages preserve every uncut object. Do not claim all original jack copper survives.
+`retention-ledger-d50853d.json` uses full-object multisets including legacy duplicates. From issue baseline: JL32607original retained/138reviewed changed or removed/814new; JR50287original retained/24reviewed changed or removed/890new; all132953original core retained/216new. Latest stages preserve every uncut object. Do not claim all original jack copper survives.
 
-## JL118 eligible pilot; adoption pending
+## JL118 native adoption verified and integrated
 
 Pilot37976521780 atd1dd53fea72278434ae40e6ef4c4d02ac2c54afd:119→118,+75segments/zero vias/2reviewed cuts,all33346uncut full objects identical,33348→33421. Native0DRC/0parity,477unchanged warnings,no original splits,fresh agreement,physical/context invariance. Candidate `a01df89dcab3d4fab8eb0ae80195b2825d2d47adc517cd73452d9b9aa6ea079a`; replay `b1678187a5365202fe12a97e80ff4f33bc264a0616b8269af0ffa84aaa253f67`. Artifact11639497498,ZIP0d643e9bfa906f9f45f2daa8ec87835a64ca2ec8c05bbc9ad2d3071fb5fd12b6.
 
-`jl-r8276-joint/` contains proposal, native pilot, full retention proof, exact source/UUID preparation and adoption plan. First reserve the permanent AGND join, then restore both actual native cut victim groups within the same14.9×16.45mm frame, F/In2/B at0.0125mm/300k. The earlier cut-and-restore pilot37973959441 was119→119 and rejected; the changed joint method is material. Native-eligible is not canonical adoption.
+`jl-r8276-joint/` contains proposal, native pilot, full retention proof, exact source/UUID preparation and adoption plan. First reserve the permanent AGND join, then restore both actual native cut victim groups within the same14.9×16.45mm frame, F/In2/B at0.0125mm/300k. The earlier cut-and-restore pilot37973959441 was119→119 and rejected; the changed joint method is material. Adoption37978945582 reproduced both hashes and all native gates. Artifact11641021167,ZIP83335f6ba6e189458a6d5b66caa5ba0f96590a7838dabaf92f6d5b7f70f56610. `reconcile_adoption.py` passed under the guard in8s: all start/merge/fresh DRC/parity0,warnings477,exact physical/context invariance and full copper retention. Published candidatea01df89d is now on the draft branch; main remainsJL119 until exact-head PR checks and authorized merge.
 
 ## Core19 rejected and reconciled
 
@@ -55,7 +56,7 @@ Exact10.0.6 source proves hole and both silk domains cap at199, and native silk 
 
 `complete_native_warnings.py` fails closed on missing/stale/incomplete evidence, changed context, new native warnings, unsupported domains, missing copper or zone scope. It only appends complete hole observations and removes no original finding. Ordinary DRC/parity/membership/fresh/source-publication gates remain. Opt-in `route_shards.py merge --complete-native-warnings` regenerates all audits on actual sources. No core adoption using this option has run.
 
-`reassessment-before-zone-scope.json` is explicitly provisional. Current `reassessment.json` records the zone-scope block. Updated `reassess.py` expects both full382copper and zone classification evidence; do not run it against old partial evidence. 24focused audit/workflow tests and100affected router tests pass; `pnpm circuit:check` and `pnpm check` pass. A new serializer regression also passes. The exact saved-input fixture benchmark produces byte-identical outputs: two fixtures per source take11.106→7.125s and10.776→6.770s; no native acceptance is inferred from serialization timing. See `zone-fixture-benchmark/`.
+`reassessment-before-zone-scope.json` is explicitly provisional. Current `reassessment.json` records the zone-scope block. Updated `reassess.py` expects both full382copper and zone classification evidence; do not run it against old partial evidence. 25focused audit/workflow tests and100affected router tests pass; `pnpm circuit:check` and `pnpm check` pass. A new serializer regression also passes. The exact saved-input fixture benchmark produces byte-identical outputs: two fixtures per source take11.106→7.125s and10.776→6.770s; no native acceptance is inferred from serialization timing. See `zone-fixture-benchmark/`.
 
 ## JR rejected successor and changed-method controls
 
@@ -77,8 +78,8 @@ No speedup claim. Immutable inputs/toolchain/source/results: `jl-benchmark.json`
 
 ## Exact continuation
 
-1. Refresh main, PR211 and other-session refs. Query active runs37978945582 and37976003780 plus post-main37977274128. Public REST GET or connected GitHub tools work despite CLI API401. Never restart unrelated watches or duplicate a writer.
-2. For terminal JL adoption: download artifact, verify published ZIP SHA, run full original/candidate/fresh promotion gate, membership/DRC/parity/warnings/context/physical comparisons and exact full-object retention75adds/2cuts/33346uncut. Compare candidate/replay against pilot hashes. Only then fetch bot commit, verify its exact files/blobs against artifact and cherry-pick board/receipts into PR211. Keep worker-only workflow out.
+1. Refresh main, PR211 and other-session refs. Query active zone run37976003780 and exact-current PR211 CI. JL adoption37978945582 and post-main37977274128 are completed/pass and independently reconciled. CLI API authentication works again. Never restart unrelated watches or duplicate a writer.
+2. JL adoption is already integrated asd50853d; do not replay/cherry-pick twice. Freeze PR211 after evidence updates, run exact-head CI, review and merge only under the existing incremental-merge authorization. Keep worker-only workflow out and verify post-merge main.
 3. For terminal zone classification: download SHA-verified artifact, retain raw DRC/project/rules and `result.json` at `.circuit-cache/issue189-downloaded/native-zone-classification/`. Run `bash "$HOME/.codex/scripts/heavy-guard.sh" -- .circuit-cache/route-venv/bin/python circuit/routing/issue189/native-hole-audit/reassess.py`. Full382copper data is at `native-all-copper-silk`, holes at `native-hole-context`, candidate at `core-finer-ground-batch/.circuit-cache`, under the same download root. Any new zone warning rejects; preserve exact identities and change the proposal, never waive them.
 4. Only after complete evidence passes and fresh main still has actual corea0e3cff1: run guarded `core-finer-ground-batch/rebase_proposal.py --accepted-sha256 a0e3cff1ebc211564b8be10f6a993d50fb6d4372edde86a056ebc8dda3ea5932`. Check whole old copper and new geometry. Push isolated worker and run ordinary merge with `--complete-native-warnings`; regenerate native evidence against actual candidate. CLI dispatch choice is `finer-ground-complete-warnings` if auth returns; otherwise use equivalent exact-branch push trigger as for JL, worker-only. Native ground adoption remains NOT RUN.
 5. Keep PR211 draft until all exact-head gates and review complete. After an authorized merge, verify main and post-merge checks; distinguish cancelled from passed. Preserve issue189OPEN until all3boards are zero edges with required settled/fresh repeats, final regeneration/P/EL/O/docs/renders.
