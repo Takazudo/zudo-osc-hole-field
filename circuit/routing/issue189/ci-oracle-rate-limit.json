@@ -1,0 +1,14 @@
+{
+  "run_id": 37989870090,
+  "head": "23bf6176354d12492763eb5f17af80edfc3f9d11",
+  "status": "FAILED; DO NOT MERGE",
+  "native_blocker": "All three native jobs fail before DRC: Docker Hub unauthenticated pinned-image pull rate limit",
+  "python_failure": "PrecisionVendorSweepGate expects failing-network summary but stdout is empty. It invokes pinned oracle ngspice; same infrastructure cause is plausible, not proven because stderr was not printed.",
+  "log_sha256": "641fe7fac242eea33ea6ece0bd70c3391b3b14ba02518eb23b4624df415a346a",
+  "evidence": [
+    "Python unit tests\tRun Python unit tests\t2026-10-09T20:53:58.3994236Z AssertionError: '0/1 pass; 1 fail' not found in ''",
+    "Native DRC gate (osc-jack-left)\tRun pinned KiCad DRC with schematic parity and zone refill\t2026-10-09T20:53:07.6006592Z docker: Error response from daemon: toomanyrequests: You have reached your unauthenticated pull rate limit. https://www.docker.com/increase-rate-limit",
+    "Native DRC gate (osc-jack-right)\tRun pinned KiCad DRC with schematic parity and zone refill\t2026-10-09T20:53:17.2491431Z docker: Error response from daemon: toomanyrequests: You have reached your unauthenticated pull rate limit. https://www.docker.com/increase-rate-limit",
+    "Native DRC gate (osc-core)\tRun pinned KiCad DRC with schematic parity and zone refill\t2026-10-09T20:53:08.3558071Z docker: Error response from daemon: toomanyrequests: You have reached your unauthenticated pull rate limit. https://www.docker.com/increase-rate-limit"
+  ]
+}
