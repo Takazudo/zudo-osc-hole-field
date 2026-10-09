@@ -22,7 +22,7 @@ on:
       core_replay:
         description: Reviewed recovery transaction (used only with recover_core)
         type: choice
-        options: [aggregate, reviewed]
+        options: [aggregate, reviewed, outer]
         default: aggregate
       local_repair:
         description: Read-only jack local branch-repair pilot (no canonical writer)
@@ -141,6 +141,11 @@ jobs:
             python circuit/routing/issue189/core-reviewed/prepare.py
             replay=circuit/routing/issue189/core-reviewed/copper.json
             label=issue189-reviewed
+            extra=()
+          elif [[ $CORE_REPLAY == outer ]]; then
+            python circuit/routing/issue189/core-outer/prepare.py
+            replay=circuit/routing/issue189/core-outer/copper.json
+            label=issue189-outer
             extra=()
           elif [[ $CORE_REPLAY == aggregate ]]; then
             replay=circuit/routing/issue189/concurrent-core/aggregate-copper.json
