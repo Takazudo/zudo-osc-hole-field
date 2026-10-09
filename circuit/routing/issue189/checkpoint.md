@@ -1,3 +1,27 @@
+# Accepted JR143 and PR199 freeze — 2026-10-09 10:23 UTC
+
+JR run37916090766 atfcf8a4fe3d4b9697f2d8d42d090a60bd220ffe79 ADOPTED145→143:
+87segments+6vias,zero removals,all50821old objects identical.0DRC/parity,520warnings,
+no new identities/splits,independent fresh agreement. Candidate/published SHA
+72a24ee996ae454c099ed165de1bd857721c42bef37861907a98ba5a4bf39d0c; replaySHA
+d6c52b2e08c6311ad8bdb3c19dac176f37ebf9624235b6c2d6d398ea955c0ecc.
+Artifact11610260309 ZIP827206306661b112533bf86ecae32581534d3d65d7712d746475227bb2e91f95
+is downloaded/digest verified. Native full geometry multiset retention is saved.
+Bot commite8648bbc732cef03b9234811d57f5b74dfc6a935 fast-forward integrated without overwriting other work.
+
+Freeze PR199 after this evidence/docs commit for exact-head CI; move new proposals
+to a separate continuation branch. Main198 remains126/145/1441 until199 merges;
+PR199 actual boards are126/143/1441. Keep189OPEN.95affected tests andPNPMchecks pass;
+full final-head CI still required before normal incremental merge.
+
+JL read-only U106pilot37915918722 on66c34d823bfa9a5b3c343fe4ca081f9c517378d3 remains
+active. Its result is NOT claimed accepted. Core37907147442 still solecorewriter
+on retained agent-fix/189-ground-signal-continuation; inspect terminal output and
+integrate any accepted core-only delta into the continuation,not frozen199.
+Next JR selection is83objects on3whole transactions from the native145screen;
+rebase on actual143,prove retained50914objects and no conflicts with accepted93,
+then use full original native gates. It is NOT native checked yet.
+
 # Native JR split isolated — 2026-10-09 10:12 UTC
 
 JR37914521455 completed145→144,but REJECTED:3signal joins plus2new AGND splits
