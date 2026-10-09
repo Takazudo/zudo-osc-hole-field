@@ -427,39 +427,52 @@ jobs:
       contents: read
       actions: read
     runs-on: ubuntu-latest
-    timeout-minutes: 90
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
-      - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c
-        with:
-          name: obstacle-adoption-osc-core-37950004600
-          run-id: 37950004600
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          path: .circuit-cache/hole-audit-input
-      - name: Verify immutable native inputs
+      - name: Export exact immutable archive in connector-sized chunks
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          python3 - <<'PY'
-          import hashlib
+          set -euo pipefail
+          mkdir -p .circuit-cache/core-evidence-export
+          gh api repos/Takazudo/zudo-osc-hole-field/actions/artifacts/11650664778/zip > .circuit-cache/core-evidence-export/original.zip
+          python3 - <<'PYCODE'
+          import hashlib,json
           from pathlib import Path
-          root=Path('.circuit-cache/hole-audit-input/.circuit-cache')
-          for stage,expected in [('start','95c815b2178511621f97cd7021938023b96d4ee19c9282ae99b35fb387ba10c5'),('merge','b9f5ca13f83c7ffdbe5836fd271e7c1099e04b901ca1798a7be06f025bd02d66')]:
-              p=root/('osc-core-grid-shards-'+stage)/'osc-core.kicad_pcb'
-              assert hashlib.sha256(p.read_bytes()).hexdigest()==expected
-          PY
-      - name: Classify changed outer-zone silkscreen interactions
-        run: |
-          # Leave time to upload incomplete evidence if classification times out.
-          timeout --signal=INT --kill-after=2m 80m bash scripts/kicad/run.sh python3 scripts/pcbgen/audit_zone_silk_scope.py \
-            .circuit-cache/hole-audit-input/.circuit-cache/osc-core-grid-shards-start/osc-core.kicad_pcb \
-            .circuit-cache/hole-audit-input/.circuit-cache/osc-core-grid-shards-merge/osc-core.kicad_pcb \
-            .circuit-cache/zone-silk-audit --classify
+          root=Path('.circuit-cache/core-evidence-export');archive=root/'original.zip'
+          with archive.open('rb') as stream:digest=hashlib.file_digest(stream,'sha256').hexdigest()
+          assert digest=='b5c112a5c9336a27cb08369ec42a11b7cc51a39bb569215d24075ccd3ab11567'
+          assert archive.stat().st_size==724422573
+          rows=[]
+          with archive.open('rb') as stream:
+              while data:=stream.read(256*1024*1024):
+                  index=len(rows);folder=root/str(index);folder.mkdir()
+                  name=f'part-{index:03d}.bin';(folder/name).write_bytes(data)
+                  rows.append(dict(index=index,name=name,size=len(data),sha256=hashlib.sha256(data).hexdigest()))
+          assert len(rows)==3 and sum(r['size'] for r in rows)==724422573
+          manifest=dict(status='EXACT ARCHIVE CHUNKS; NO EXTRACTION OR ADOPTION',original_artifact=11650664778,original_run=37984573591,original_sha256=digest,original_size=724422573,parts=rows)
+          for row in rows:(root/str(row['index'])/'manifest.json').write_text(json.dumps(manifest,indent=2)+'\n')
+          print(json.dumps(manifest,indent=2))
+          PYCODE
       - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
-        if: always()
         with:
-          name: issue189-zone-audit-${{ github.run_id }}
-          path: |
-            .circuit-cache/zone-silk-audit
-            !.circuit-cache/zone-silk-audit/**/~*.lck
+          name: issue189-core-evidence-part0-${{ github.run_id }}
+          path: .circuit-cache/core-evidence-export/0
+          compression-level: 0
           retention-days: 30
-          include-hidden-files: true
+          if-no-files-found: error
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: issue189-core-evidence-part1-${{ github.run_id }}
+          path: .circuit-cache/core-evidence-export/1
+          compression-level: 0
+          retention-days: 30
+          if-no-files-found: error
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: issue189-core-evidence-part2-${{ github.run_id }}
+          path: .circuit-cache/core-evidence-export/2
+          compression-level: 0
+          retention-days: 30
           if-no-files-found: error
