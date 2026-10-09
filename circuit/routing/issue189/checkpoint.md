@@ -63,3 +63,13 @@ Use `.circuit-cache/route-venv/bin/python` for numerical scripts and the require
 `agent-fix/189-finer-ground-continuation` now holds **JL121 / JR139 / core1441**. JL published/native SHA95d10f2b21ee75831b370a97c2035e209ae296d0dfb2ec74f5bed610133d5070, all33222 old objects identical+20. JR published/native SHA42a8db717b7342beceb4b15556e5f1c76429112c8e3fc9283a1d2a1a07b27f12, all50990 old objects identical+27. Both0DRC/parity,unchanged477/520 warnings,no splits,fresh agrees. Verified artifact digests and replay receipts are in jl-three-finer-ground/ and jr-r8487-no-via/. The PR204 frozen head remains124/140/1441 until merged; do not confuse its state with this branch.
 
 Next dispatches prepared but NOT RUN at this commit: JR `two-fine-ground` (nine full-width objects, no cuts) and core `u1513-alternatives` (26 B.Cu segments,no vias/cuts), each on a separate dedicated worker branch. Record exact source/run before continuing. No new native JL proposal is prepared.
+
+## Active dispatches after cba4755
+
+Draft PR205: https://github.com/Takazudo/zudo-osc-hole-field/pull/205 . Sole activeJR run37936737740 on `agent-fix/189-jr-two-ground-worker`; sole activecore run37936741388 on `agent-fix/189-core-u1513-worker`. Both exact source `cba4755227b52145a9dc9cd9e5e0f9880787ff1f`. Do not write those branches or dispatch another same-board trial before terminal reconciliation. JL has no native writer. Its18remaining grounds all failed a0.00625mm bounded fanout screen (94.33s;guardPASS95s); bounded links to existing AGND copper are the next distinct local strategy.
+
+## PR204 merged and bounded JL repair
+
+PR204 exact-head37934945521 all five PASS, merged2026-10-09T13:30:26Z as `df126be3c393c7841ac58408e620b82744a19e03`. Main is now124/140/1441; post-merge verification pending. PR205 holds121/139/1441. Its next head corrects the table breakdown toJL103signal+18ground,JR111signal+28ground,30384/2858 JLsegments/vias and47905/3112 JR.
+
+JL121 ground links found0/18paths (guardPASS35s). The distinct cut prefilter found6positive ground-only paths among17source pads (guardPASS40s); victim topology is unverified. `jl121-ground-cut-screen/u2204-plan.json` and `jl-local-plan.json` pin the next disposable native pilot: one exact B.Cu signal cut, one victim net,19.35x12.955mm frame. It must reconnect the victim and pass every original native gate before any adoption.

@@ -1,0 +1,3 @@
+# JL121 bounded ground cut prefilter
+
+Seventeen candidate source pads were tested with1–12 exactly identified signal cuts on at most two victim nets, frames no larger than50mm and300000 expansions. Six searches found ground-only paths. This screen removes selected geometry from the search model but does not infer signal cut topology or restore victims, so none is a complete proposal or native acceptance. The next disposable native pilot selects U2204.16 with one B.Cu cut and one victim net. Native memberships, all victim reconnections, DRC/parity, warning identities and fresh verification remain mandatory.
