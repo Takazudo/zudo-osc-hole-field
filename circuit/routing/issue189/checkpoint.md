@@ -1,3 +1,18 @@
+# Next compatible JR batch prepared — 2026-10-09 11:33 UTC
+
+JR141 fresh-input screen found6raster candidates in35s(guardPASS). Two conflict
+with active34-object D7504 output; D7208 is held aside for prior supply-split
+investigation. The other3transactions total233objects,mutually compatible and
+clear of the pending34. Saved asjr-three-remaining/proposal-original.json,not
+rebased or natively checked. Only after JR37923452631 is terminal and reconciled,
+run its rebase_proposal.py with ACTUAL_PUBLISHED_SHA256,inspect plan/gaps,then add
+workflow choice three-remaining and submit one writer. Do not duplicateJR jobs.
+
+JL87-object37923946134 is active on26f83f7674be04fd7691fb3c9b22d6b1d1a3f2d7.
+Core37907147442 remains sole core writer; prepared143-object short-power batch
+still waits for its actual terminal output. PR200 frozen1686c77,CI37923371952
+pending. Accepted branches125/141/1441;main126/143/1441. Keep189OPEN.
+
 # JL remaining ground split isolated — 2026-10-09 11:30 UTC
 
 JL83-object37922377985 is REJECTED125→125:target signal joined,but C2148.2 AGND
