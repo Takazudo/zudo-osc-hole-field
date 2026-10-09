@@ -64,6 +64,12 @@ class RoutingTranslationTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, 'edge'):
             self.run_change()
 
+    def test_diagonal_gap_preserves_conservative_source_margin(self):
+        self.rows[1]['courtyard_mm'] = [6.2, 6.2, 8.2, 8.2]
+        self.change['delta_mm'] = [0, -.1]
+        with self.assertRaisesRegex(ValueError, 'separation'):
+            self.run_change()
+
     def test_duplicate_translation_and_unknown_fields_rejected(self):
         with self.assertRaisesRegex(ValueError, 'duplicate'):
             self.run_change([self.change, self.change])

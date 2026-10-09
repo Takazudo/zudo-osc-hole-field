@@ -53,9 +53,7 @@ def apply_translations(placements, source, adjustments):
         for other in rows:
             if other['ref'] == ref or (other['board'], other['side']) != (row['board'], row['side']):
                 continue
-            a, b, c, d = other['courtyard_mm']
-            distance = math.hypot(max(a-courtyard.x1, courtyard.x0-c, 0),
-                                  max(b-courtyard.y1, courtyard.y0-d, 0))
-            if distance < .35 - 1e-8:
+            # Match the floorplan's conservative axis-aligned courtyard margin.
+            if courtyard.intersects(Box(*other['courtyard_mm']), .35 - 1e-8):
                 raise ValueError('translated courtyard violates source separation: ' + other['ref'])
     return rows
