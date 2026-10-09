@@ -89,5 +89,5 @@ Evidence is `.circuit-cache/routing-completion.json` and the retained
 `*-grid-completion-{settled,fresh}` workspaces. A pass covers only the zero-edge
 milestone: existing warnings still need their recorded disposition; P/EL/octave
 regressions, integration and hardware qualification remain separate. Current
-JL120/JR136/core1441 does not meet this gate. Its orchestration regressions use
+JL119/JR135/core1441 does not meet this gate. Its orchestration regressions use
 synthetic data; they are not a native completion run.
