@@ -1,3 +1,13 @@
+# JR follow-up checkpoint — 2026-10-09 12:24 UTC
+
+PR202 is draft on `agent-fix/189-fill-boundary-continuation`, stacked on frozen PR201. JR9 run37927714132 REJECTED141→142: signal join plus R7505.2/R7530.2 AGND splits,0 DRC/parity,520 unchanged warnings, fresh agrees. Artifact11614927392 digest verified and all50964 accepted objects identical; receipt-only commit598d64b integrated. Canonical JR remains141. Eight additive ground repair searches found no path.
+
+A distinct no-via D7208 alternative is prepared:26 F.Cu segments from acceptedJR141, zero removals. `jr-d7208-no-via/prepare.py` validates input/proposal hashes; workflow choice `d7208-no-via` added and YAML/all shell steps parsed. Full native run/adoption still required. The12-case single-layer screen and all negative cases are recorded in `jr141-no-via-alternatives/`.
+
+Core143 run37925863664 remains the sole core writer. No JL writer. PR201 CI37927716576 has passed all three board DRC jobs/docs; remaining combined regression job still running at latest check. Main remains125/141/1441. Keep189OPEN. GitHubCLI401 was transient: read-only API succeeded again at12:24 with unchanged credentials.
+
+---
+
 # Boundary continuation checkpoint — 2026-10-09 12:18 UTC
 
 Current branch: `agent-fix/189-fill-boundary-continuation`, based on PR201 frozen head `3f7fb6895f4a7d2d7590ef40d3d66486025480a8`. Boundary-domain guard and two regressions pass all 99 affected tests. Same-input native-A* comparison reproduces identical 115-object JR proposal (4.836299s before / 4.924470s after); this does not cure its native -12V split. See `fill-boundary/README.md` and immutable hashes in benchmark.json. No board change in this increment.
