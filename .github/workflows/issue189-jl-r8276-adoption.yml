@@ -1,0 +1,47 @@
+name: Issue 189 isolated JL R8276 adoption
+on:
+  push:
+    branches: [agent-fix/189-jl-r8276-adopt-worker]
+    paths: [.github/workflows/issue189-jl-r8276-adoption.yml]
+permissions:
+  contents: write
+concurrency:
+  group: route-osc-jack-left-${{ github.ref_name }}
+  cancel-in-progress: false
+jobs:
+  adopt:
+    runs-on: ubuntu-latest
+    timeout-minutes: 95
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97
+        with:
+          python-version: '3.10'
+      - run: python -m pip install -r scripts/pcbgen/numerical-requirements.txt
+      - name: Replay exact reviewed JL proposal through ordinary native gates
+        run: |
+          [[ $GITHUB_REF_NAME == agent-fix/189-jl-r8276-adopt-worker ]] || exit 1
+          mkdir -p .circuit-cache
+          set -o pipefail
+          python circuit/routing/issue189/jl-r8276-joint/prepare.py
+          timeout --signal=INT --kill-after=2m 80m python -u scripts/pcbgen/route_shards.py merge osc-jack-left \
+            .circuit-cache/issue189-jl-r8276-joint/copper.json --label issue189-r8276-joint \
+            2>&1 | tee .circuit-cache/adoption.log
+      - name: Preserve gated board and receipts on this worker only
+        run: |
+          message=$(mktemp)
+          echo 'Record native-rechecked JL R8276 joint copper for issue 189' > "$message"
+          bash scripts/pcbgen/ci_push_route.sh osc-jack-left "$GITHUB_REF_NAME" "$message"
+      - name: Retain complete native evidence
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: issue189-jl-r8276-adoption-${{ github.run_id }}
+          path: |
+            .circuit-cache/*-grid-shards-*/
+            .circuit-cache/adoption.log
+            .circuit-cache/issue189-jl-r8276-joint/
+            boards/osc-jack-left/reports/grid-routing/
+          include-hidden-files: true
+          if-no-files-found: error
+          retention-days: 30
