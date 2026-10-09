@@ -1,10 +1,10 @@
 # Issue 189 exact continuation checkpoint
 
-Updated 2026-10-09 18:26 UTC. **Issue #189 remains OPEN.** Accepted draft boards: **JL119 / JR134 / core1441**. Main: **JL119 / JR135 / core1441**, commit `4db1d3c009dbf7744541c01692bc626213832ca6`. Zero-edge completion, final regeneration/P/EL/O and renders remain unmet. No fabrication or hardware qualification is claimed.
+Updated 2026-10-09 18:35 UTC. **Issue #189 remains OPEN.** Accepted draft boards: **JL119 / JR134 / core1441**. Main: **JL119 / JR135 / core1441**, commit `4db1d3c009dbf7744541c01692bc626213832ca6`. Zero-edge completion, final regeneration/P/EL/O and renders remain unmet. No fabrication or hardware qualification is claimed.
 
 ## Current work and accepted evidence
 
-PR209 is draft at `2c3afdedf9e999ef0b091db74805d10fc5687d44`, base main. CI37972341588 must be checked at that exact head; earlier e736 checks do not cover the context fix. Current continuation branch is `agent-fix/189-uncapped-warning-continuation`. PR208 merged at4db1d3c only after all five exact-head checks; all five post-merge checks passed (`ci-main-4db1d3c.json`). Preserve branches and other sessions.
+PR209 is draft at `2c3afdedf9e999ef0b091db74805d10fc5687d44`, base main. CI37972341588 must be checked at that exact head; earlier e736 checks do not cover the context fix. PR210 is draft at `f2a5a025dc31bbc1f5ada2f6def486abc49db717`, stacked on209, CI37973580281. Current continuation branch is `agent-fix/189-finer-jack-continuation`. PR208 merged at4db1d3c only after all five exact-head checks; all five post-merge checks passed (`ci-main-4db1d3c.json`). Preserve branches and other sessions.
 
 JR adoption37967123290 is accepted and integrated as133f2f6 from bota59ef366:135→134,+37segments/5reviewed cuts,all51140uncut full objects identical,0native DRC/parity,520unchanged warning identities,no original pad-group splits,fresh agreement. Published board35b52972dd70b4186cf3f3b7ee2ac3d70432f3476c2f56c9fcf9c1c4d7d4d445 and replay3c3495b6442d463366c39ccdee4c010f9ca3c030cb321cda4d1780c4a6971c61 match the eligible pilot. Artifact11633969149 ZIPafa07c7a1c2315162bcc62fa780a0e6e805f0082c4f59e5739ec000a097b8b5a. Proofs in `jr-c7413-endpoints/`.
 
@@ -24,7 +24,14 @@ Opt-in `route_shards.py merge --complete-native-warnings` generates all native a
 
 ## Sole active core writer
 
-Run **37965185751**, worker `agent-fix/189-core-short-no-via-worker`, source `08aec29e83d24d291f4d41a7bb10300e072a7260`:19outer segments/11signal nets,zero cuts/vias, rebased ontoa0e3cff1 with all133169prior objects retained. Still active at last check. **Do not start any competing core writer or overwrite its branch.** Read-only warning audits are terminal. No jack writer is active.
+Run **37965185751**, worker `agent-fix/189-core-short-no-via-worker`, source `08aec29e83d24d291f4d41a7bb10300e072a7260`:19outer segments/11signal nets,zero cuts/vias, rebased ontoa0e3cff1 with all133169prior objects retained. Still active at last check. **Do not start any competing core writer or overwrite its branch.** Read-only warning audits are terminal. No jack writer is active. Two read-only jack pilots are active; neither can promote canonical copper.
+
+## Active read-only jack pilots
+
+- JL R8276.2: run37973959441, worker `agent-fix/189-jl-r8276-finer-worker`, exact source880fe7422532b4d77705aada1eb6e7403c29df72. On current JL119, the0.0125mm prefilter finds38ground segments with two reviewed signal cuts/two victims in14.9×16.45mm. Earlier0.025mm prefilter found no path. Other ten previously negative cut targets remain negative on the finer screen (guardPASS49s). Native victim restoration/full gates remain pending. No placement moved. Plans/source evidence in `jl119-r8276-2-finer-ground-cut/`.
+- JR RB4614.2: run37974220440, worker `agent-fix/189-jr-rb4614-worker`, exact sourceb3ba58e8e4c1363efe08e55324cecd68455c9625. Rebased old positive ground-only prefilter onto accepted JR134 by checking both selected full native track records unchanged; target remains isolated. Two cuts/two victims,13.6×25.2mm original frame,0.025mm. No accepted JR134 additions selected. Native restoration/full gates pending. Plans/rebase proof in `jr134-rb4614-2-ground-cut/`.
+
+Parent steering at18:34UTC explicitly confirms incremental merges remain authorized after exact gates pass and requires core19reconciliation before another ground writer. Preserve single-writer order. Pending jobs are ongoing work, not completion.
 
 ## JL changed-method negative controls
 
