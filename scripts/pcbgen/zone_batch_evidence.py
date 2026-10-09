@@ -59,9 +59,10 @@ def normalized(rows):
     return result
 
 
-def main(archive,digest,before,after,output):
-    if SHA(archive.read_bytes())!=digest or SHA(before.read_bytes())!=BEFORE or SHA(after.read_bytes())!=AFTER:
-        raise ValueError('immutable archive/source mismatch')
+def verify_result(read_bytes,before,after):
+    """Validate complete native batch evidence through a read-only file accessor."""
+    source_hashes=[SHA(p.read_bytes()) for p in (before,after)]
+    read=lambda name:json.loads(read_bytes(name))
     sources=[before,after];texts=[p.read_text() for p in sources]
     if zone_metadata(texts[0])!=zone_metadata(texts[1]):raise ValueError('zone metadata changed')
     unchanged_nonrouting(*texts)
@@ -78,63 +79,71 @@ def main(archive,digest,before,after,output):
         layers=re.search(r'\(layers?\s+([^)]*)\)',block)
         if not layers:raise ValueError('zone layer missing')
         expected_zones.update((UUID_RE.search(block)[1],layer) for layer in re.findall(r'"([^"]+)"',layers[1]) if layer in SILK_TARGET_LAYERS)
+    result=read('result.json')
+    if (result['version']!='10.0.6' or result['before_sha256']!=source_hashes[0] or result['after_sha256']!=source_hashes[1]
+            or not result.get('zone_silk_scope_complete')):raise ValueError('native source/version/coverage incomplete')
+    rows=result['zones']
+    if len(rows)!=len(expected_zones) or {(r['uuid'],r['layer']) for r in rows}!=expected_zones:
+        raise ValueError('zone layer coverage incomplete')
+    all_new=set();counts=[]
+    for row in rows:
+        if row['native_added_shape_empty']:
+            if row['native_added_area_nm2']!=0 or row['native_added_outline_count']!=0:raise ValueError('inconsistent empty growth')
+            counts.append(dict(uuid=row['uuid'],layer=row['layer'],subset=True,fixtures=0));continue
+        uid=row['uuid'];pairs=row['native_silk_pairs'];coverage=validate_coverage(pairs)
+        selected=pairs['selected_item_uuids']
+        if selected!=sorted(selected) or not set(selected)<=art[1]:raise ValueError('unbound selected artwork')
+        scope=read(f'zone-{uid}-scope.json')
+        if (scope['zone_uuid']!=uid or scope['layer']!=row['layer'] or scope['selected_item_uuids']!=selected
+                or scope['artwork_count']!=len(art[1]) or scope['conservative_margin_nm']!=margin
+                or pairs['conservative_margin_nm']!=margin):raise ValueError('native scope receipt mismatch')
+        boxes=scope['growth_boxes_nm']
+        if len(boxes)!=row['native_added_outline_count'] or any(len(b)!=4 or any(type(v) is not int for v in b) or min(b[2:])<=0 for b in boxes):
+            raise ValueError('native growth box receipt invalid')
+        geometry=pairs['source_geometry_sha256']
+        if (pairs['native_geometry_method']!='exact_native_coordinates_no_arcs' or set(geometry)!={'0','1'}
+                or any(not re.fullmatch('[0-9a-f]{64}',v) for v in geometry.values())):raise ValueError('invalid geometry signatures')
+        parts=[zone_fixture_parts(t,uid,ids) for t,ids in zip(texts,art)]
+        unions=[set(),set()]
+        for f,(stage,index,ids) in zip(pairs['fixtures'],coverage):
+            folder=f'zone-{uid}/{stage}-batch-{index:04d}/'
+            pcb=read_bytes(folder+sources[stage].name)
+            if pcb!=zone_fixture_batch_text(parts[stage],ids).encode() or SHA(pcb)!=f['fixture_sha256']:
+                raise ValueError('fixture differs from exact source artwork/zone bytes')
+            if f['native_geometry_sha256']!=geometry[str(stage)]:raise ValueError('fixture geometry signature mismatch')
+            for suffix,data in context.items():
+                if read_bytes(folder+sources[stage].stem+suffix)!=data:raise ValueError('fixture native context changed')
+            report=read_bytes(folder+'drc.json')
+            if SHA(report)!=f['report_sha256']:raise ValueError('report hash mismatch')
+            raw=json.loads(report)
+            if raw.get('kicad_version')!='10.0.6' or set(raw.get('included_severities',[]))!={'error','warning','exclusion'}:
+                raise ValueError('native version/severity scope mismatch')
+            actual={(r['type'],r['severity'],tuple(sorted(i['uuid'] for i in r['items']))) for r in new_silk_identities(raw,uid)}
+            if actual!=normalized(f['identities']):raise ValueError('receipt differs from raw native observations')
+            unions[stage].update(actual)
+        if unions[0]!=normalized(pairs['before_identities']) or unions[1]!=normalized(pairs['after_identities']):raise ValueError('incomplete identity union')
+        new=unions[1]-unions[0]
+        if new!=normalized(pairs['new_identities']):raise ValueError('identity delta mismatch')
+        all_new.update(new)
+        counts.append(dict(uuid=uid,layer=row['layer'],selected_items=len(selected),fixtures=len(coverage),before_identities=len(unions[0]),after_identities=len(unions[1])))
+    if all_new!=normalized(result['new_zone_silk_identities']):raise ValueError('incomplete final identity union')
+    receipt=dict(status='COMPLETE PAIRED BATCH ARTIFACT RECONCILED; NOT ACCEPTED OR ADOPTED',
+        before_sha256=source_hashes[0],after_sha256=source_hashes[1],version='10.0.6',zones=counts,
+        new_zone_silk_identities=sorted(all_new),full_paired_zone_coverage=True,
+        promotion_scope='warning evidence only; caller native and retention gates remain mandatory',adopted=False)
+    return receipt
+
+
+def main(archive,digest,before,after,output):
+    if SHA(archive.read_bytes())!=digest or SHA(before.read_bytes())!=BEFORE or SHA(after.read_bytes())!=AFTER:
+        raise ValueError('immutable archive/source mismatch')
     with zipfile.ZipFile(archive) as z:
         names=[n for n in z.namelist() if n.endswith('/result.json') and 'paired-zone-batches/' in n]
         if len(names)!=1:raise ValueError('missing/ambiguous result')
-        prefix=names[0][:-len('result.json')];read=lambda n:json.loads(z.read(prefix+n))
-        result=read('result.json')
-        if (result['version']!='10.0.6' or result['before_sha256']!=BEFORE or result['after_sha256']!=AFTER
-                or not result.get('zone_silk_scope_complete')):raise ValueError('native source/version/coverage incomplete')
-        rows=result['zones']
-        if len(rows)!=len(expected_zones) or {(r['uuid'],r['layer']) for r in rows}!=expected_zones:
-            raise ValueError('zone layer coverage incomplete')
-        all_new=set();counts=[]
-        for row in rows:
-            if row['native_added_shape_empty']:
-                if row['native_added_area_nm2']!=0 or row['native_added_outline_count']!=0:raise ValueError('inconsistent empty growth')
-                counts.append(dict(uuid=row['uuid'],layer=row['layer'],subset=True,fixtures=0));continue
-            uid=row['uuid'];pairs=row['native_silk_pairs'];coverage=validate_coverage(pairs)
-            selected=pairs['selected_item_uuids']
-            if selected!=sorted(selected) or not set(selected)<=art[1]:raise ValueError('unbound selected artwork')
-            scope=read(f'zone-{uid}-scope.json')
-            if (scope['zone_uuid']!=uid or scope['layer']!=row['layer'] or scope['selected_item_uuids']!=selected
-                    or scope['artwork_count']!=len(art[1]) or scope['conservative_margin_nm']!=margin
-                    or pairs['conservative_margin_nm']!=margin):raise ValueError('native scope receipt mismatch')
-            boxes=scope['growth_boxes_nm']
-            if len(boxes)!=row['native_added_outline_count'] or any(len(b)!=4 or any(type(v) is not int for v in b) or min(b[2:])<=0 for b in boxes):
-                raise ValueError('native growth box receipt invalid')
-            geometry=pairs['source_geometry_sha256']
-            if (pairs['native_geometry_method']!='exact_native_coordinates_no_arcs' or set(geometry)!={'0','1'}
-                    or any(not re.fullmatch('[0-9a-f]{64}',v) for v in geometry.values())):raise ValueError('invalid geometry signatures')
-            parts=[zone_fixture_parts(t,uid,ids) for t,ids in zip(texts,art)]
-            unions=[set(),set()]
-            for f,(stage,index,ids) in zip(pairs['fixtures'],coverage):
-                folder=f'zone-{uid}/{stage}-batch-{index:04d}/'
-                pcb=z.read(prefix+folder+sources[stage].name)
-                if pcb!=zone_fixture_batch_text(parts[stage],ids).encode() or SHA(pcb)!=f['fixture_sha256']:
-                    raise ValueError('fixture differs from exact source artwork/zone bytes')
-                if f['native_geometry_sha256']!=geometry[str(stage)]:raise ValueError('fixture geometry signature mismatch')
-                for suffix,data in context.items():
-                    if z.read(prefix+folder+sources[stage].stem+suffix)!=data:raise ValueError('fixture native context changed')
-                report=z.read(prefix+folder+'drc.json')
-                if SHA(report)!=f['report_sha256']:raise ValueError('report hash mismatch')
-                raw=json.loads(report)
-                if raw.get('kicad_version')!='10.0.6' or set(raw.get('included_severities',[]))!={'error','warning','exclusion'}:
-                    raise ValueError('native version/severity scope mismatch')
-                actual={(r['type'],r['severity'],tuple(sorted(i['uuid'] for i in r['items']))) for r in new_silk_identities(raw,uid)}
-                if actual!=normalized(f['identities']):raise ValueError('receipt differs from raw native observations')
-                unions[stage].update(actual)
-            if unions[0]!=normalized(pairs['before_identities']) or unions[1]!=normalized(pairs['after_identities']):raise ValueError('incomplete identity union')
-            new=unions[1]-unions[0]
-            if new!=normalized(pairs['new_identities']):raise ValueError('identity delta mismatch')
-            all_new.update(new)
-            counts.append(dict(uuid=uid,layer=row['layer'],selected_items=len(selected),fixtures=len(coverage),before_identities=len(unions[0]),after_identities=len(unions[1])))
-        if all_new!=normalized(result['new_zone_silk_identities']):raise ValueError('incomplete final identity union')
-        receipt=dict(status='COMPLETE PAIRED BATCH ARTIFACT RECONCILED; NOT ACCEPTED OR ADOPTED',
-            artifact_sha256=digest,before_sha256=BEFORE,after_sha256=AFTER,version='10.0.6',zones=counts,
-            new_zone_silk_identities=sorted(all_new),full_paired_zone_coverage=True,
-            acceptance_integration='NOT IMPLEMENTED; gate rejects batch receipts',adopted=False)
-        output.write_text(json.dumps(receipt,indent=2)+'\n');print(json.dumps(receipt,indent=2))
+        prefix=names[0][:-len('result.json')]
+        receipt=verify_result(lambda n:z.read(prefix+n),before,after)
+    receipt['artifact_sha256']=digest
+    output.write_text(json.dumps(receipt,indent=2)+'\n');print(json.dumps(receipt,indent=2))
 
 
 if __name__=='__main__':
