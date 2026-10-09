@@ -1,3 +1,26 @@
+# Native bounded-cut pilot and paired JL negative evidence — 2026-10-09 09:28 UTC
+
+JL disposable cut pilot37911267983 at898fbd963877407a83e576e2569cdb9c1249632f
+runs from accepted126. Exact U2105.2 target,one3.6mm In2.Cu victim segment,
+12mm frame,0.025mm raster,300000expansions/window. repair_bounds validates one target,
+1..12explicit entire cuts within a<=50mm frame and at most two signal victims.
+Native cut dump retains all groups/padless fragments; original full-board gates
+are unchanged. Pilot cannot promote.90affected tests,source selection,PNPM circuit
+and documentation checks PASS. Initial dispatch local_mode=local was rejected422
+before creating a run; actual mode=cut is37911267983. No duplicate pilot.
+
+JR retry37910371564 at8cc4928906be305c551f9a01df0dd2e66e4e0808 remains active after
+fixing the preparation import collision; prior37909861297 never reached native.
+Core sole writer37907147442 remains active on the parent branch. PR198 frozen563c099
+requiredCI37909660345 has four passing jobs;Python job is at aggregate regeneration.
+
+JL same-input comparison selected24nets,searched23,and skipped the same one whose
+frame exceeded2500mm2. Both0.025mm(162.632636s) and0.0125mm(498.109087s) produced0paths/
+0copper; both guardPASS. The skipped net isX2F7F192BBAEF5BD8A311. This is not proof of
+physical impossibility. Full inputs,budgets,negative results and repair ranking are
+in jl126-bounded-screen. A24target bounded core ground fanout screen is running;
+its output remains raster-only. Accepted totals remainJL126/JR145/core1441.
+
 # JR preparation failure corrected
 
 JR run37909861297 at1ad8b28 FAILED BEFORE NATIVE ROUTING: local select.py shadowed
