@@ -67,3 +67,27 @@ board/project bytes and reports `UNCHANGED DRAFT`. Unrelated project fields rema
 untouched. The dense replay includes a native regression for this path.
 
 Setup failures after safe board/report path resolution write a fresh `PIPELINE FAILED DRAFT` receipt before any oracle/router call. Native and routing checks are explicitly `NOT RUN`; unmeasured counts are null. Prior report bytes are preserved in a SHA-256-named archive, or inline as base64 if archival fails. Circuit-file collisions are rejected before writing. An unwritable reporting destination is an explicit nonzero stderr failure, never a claim that a new report was written.
+
+## JL/JR/core zero-edge milestone
+
+`check_routing_completion.py` is an explicit completion check separate from the
+intermediate draft CI matrix. Run with the pinned native toolchain available:
+
+```sh
+bash "$HOME/.codex/scripts/heavy-guard.sh" -- python3 scripts/pcbgen/check_routing_completion.py
+```
+
+The interpreter needs the pinned numerical dependencies. This command checks all
+three canonical boards in disposable project contexts, waits for settled native
+island membership, then independently reloads each saved board and checks again.
+It requires zero complete native edges and zero rule/parity errors in both copies,
+matching membership and warning identities, and unchanged canonical input/context
+hashes. Capped CLI unconnected samples cannot substitute for native connectivity.
+A failure replaces a previous success receipt with an explicit failed state.
+
+Evidence is `.circuit-cache/routing-completion.json` and the retained
+`*-grid-completion-{settled,fresh}` workspaces. A pass covers only the zero-edge
+milestone: existing warnings still need their recorded disposition; P/EL/octave
+regressions, integration and hardware qualification remain separate. Current
+JL134/JR153/core1509 does not meet this gate. Its orchestration regressions use
+synthetic data; they are not a native completion run.

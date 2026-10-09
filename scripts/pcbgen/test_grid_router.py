@@ -211,6 +211,20 @@ class NeckDownTests(unittest.TestCase):
         self.assertIsNone(self.route(False)[0]['path'])
         self.assertTrue(self.route(True)[0]['path'])
 
+    def test_rail_cannot_use_signal_neckdown_even_without_grow(self):
+        results,_=route(neck_board(True),res=.05,clearance=.2,signal_width=.2,
+                        rail_width=.2,rail_nets=['A'],layer_cost=[1.0],
+                        neck_width=.15,neck_clearance=.15,log=lambda m:None)
+        self.assertIsNone(results[0]['path'])
+
+    def test_ground_cannot_use_signal_neckdown_when_not_listed_as_rail(self):
+        dump=neck_board(True)
+        for pad in dump['pads']:pad['net']='AGND'
+        dump['islands']={'AGND':dump['islands']['A']}
+        results,_=route(dump,res=.05,clearance=.2,signal_width=.2,layer_cost=[1.0],
+                        neck_width=.15,neck_clearance=.15,log=lambda m:None)
+        self.assertIsNone(results[0]['path'])
+
     def test_negotiation_uses_the_neck_down_area(self):
         kw=dict(res=0.05,clearance=0.2,width=0.2,layer_cost=[1.0],neck_width=0.15,neck_clearance=0.15,log=lambda m:None)
         self.assertFalse(negotiate(neck_board(False),['A'],**kw)[0][0]['path'])

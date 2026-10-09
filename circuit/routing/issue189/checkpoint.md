@@ -1,3 +1,121 @@
+# Bounded pilot diagnosis — 2026-10-09 07:49 UTC
+
+JL RB2217 pilot37899555501 is REJECTED:134→134,one signal group split,one new
+track-dangling warning,DRC/parity0/0.33124oldobjects retained,7removed,13added.
+Artifact11602760623 ZIPdefc55b9c354f2306934b744acbc3e7614cbb4812bed631faa7283724b81038d
+verified; exact native result/replay retained. Follow-up victim repair under existing
+signal0.2mm rules found0/1paths in9.689453s. No canonical change. Do not repeat the
+same corridor/budget; diagnose another local escape or change the routing method.
+
+JR153 rail escape screen revealed a separate signal-neckdown eligibility defect:
+when rail_width was below signal_width and grow omitted rails, five apparent paths
+exported150000nm supply segments. They were held back; native NOT RUN,zero adopted.
+Two regression tests fail before and pass after excluding rail_nets,plane nets and
+AGND from signal neckdown. All81affected tests pass. On identical saved native input
+and identical parameters, corrected screen returns0/5paths,zero copper,27.586087s
+(previous8.574963s returned20invalid segments). No performance improvement claimed.
+rail-neckdown-diagnosis.json binds router,input and result hashes. Constraints and
+native gates are unchanged; successful accepted copper remains byte-identical.
+
+JR additive native pilot37900022560 remains pending at6b2d7ee; it contains only
+signal additions and is separate from the rejected undersized supply proposal.
+Core sole writer37895925149 and main postmergeCI37900306980 remain pending.
+PR195 is already merged as c7f9a4e; PR196 is the continuing isolated branch.
+
+# PR195 merged; continued routing — 2026-10-09 07:44 UTC
+
+PR195 merged2026-10-09T07:39:46Z as c7f9a4e1aee0d9dbbb3f5c4d2f7a67c0cda6dc73,
+after all five checks passed on76ed56bd501e44ef19dc1a41847dcfe017999dc6 in37898486489.
+Main now has acceptedJL134/JR153/core1509. Issue189 remains OPEN and the branch is
+retained. Postmerge CI37900306980 is pending. PR196 is retargeted to main and
+merged origin/main at9f868d4; all three accepted board hashes remain unchanged.
+
+Read-only JL RB2217 pilot37899555501 uses source80ed9377dc60a1df687e0a337b389b0f7bd70bc2.
+Read-only JR three-additive pilot37900022560 uses6b2d7ee3259b3ccaaf7f55672ca830e8e91c08db;
+59objects/3paths/zero removals selected from the153 fine-grid screen's22paths.
+Both native outcomes are pending. Core sole writer37895925149 remains active at
+0e6697df2bde94e3b3397da9ae0727bcdf4de464; do not duplicate or infer adoption.
+
+The additiveJL1340.05mm screen finished0/105paths,zero copper,143.503631s,heavy guard
+PASS. Native NOT RUN for the empty proposal. Source/result retained as jl134-fine-probe.*.
+Do not repeat this unchanged configuration. JR153 screen22paths/98failures/781objects
+in186.051014s,heavy guardPASS; source/result retained, but only the59-object subset
+is in a native pilot. Raster paths alone are not accepted progress.
+
+An explicit zero-edge milestone command is now implemented in
+scripts/pcbgen/check_routing_completion.py (see route-gate.md). Six synthetic gate
+regressions pass, plus nine existing native-settling orchestration tests. A real
+native invocation of this new command is NOT RUN; current native board counts
+already fail its zero-edge requirement. This gate does not waive warning review,
+other-board regression, source boundary isolation or hardware qualification.
+
+# Active continuation — 2026-10-09 07:35 UTC
+
+PR195 remains frozen at76ed56bd501e44ef19dc1a41847dcfe017999dc6. CI37898486489 has
+passed all three native board gates and documentation checks; the Python job is
+still checking aggregate regeneration. Wait for all five checks before merge.
+Then retarget196 to main and reconcile main without changing successful copper.
+
+Read-only JL RB2217 pilot37899555501 runs at80ed9377dc60a1df687e0a337b389b0f7bd70bc2.
+It uses accepted134 input892c31f6d97081723864996d601ece6ecf272c25140fd1169f9e534b1adcda6a,
+seven exact signal segments on one victim net; no canonical promotion is implied.
+The prior two-ground pilot remains rejected. A no-In3 repair screen also found
+0/2 victim paths in10.099407s; full result/source retained. No larger unchanged
+budget should be attempted. Previous plan archived as jl-two-ground-plan.json.
+
+Core sole writer37895925149 remains active. Do not duplicate; inspect its actual
+terminal native receipt before adopting or rebinding any further core proposals.
+A local additive0.05mm signal screen on acceptedJR153 is running under the heavy
+guard; source/output paths are .circuit-cache/issue189-jr153-fine-probe.{py,json}.
+Native NOT RUN for that screen. Preserve its final result before continuation.
+
+Routing pages now reflect acceptedJL134/JR153/core1509 and the completed rejected
+outer-core receipt. pnpm check passes. Full connectivity remains incomplete.
+
+# Native pilot rejection and exact continuation — 2026-10-09 07:28 UTC
+
+Accepted boards remain JL134 / JR153 / core1509. No canonical change in PR196.
+JL pilot37897562881 atfb793f7 was REJECTED:134→135, two signal pad-group splits,
+four new dangling warnings, native DRC/parity0/0.33128oldobjects retained,3removed,
+32added. Both victim searches hit In3 fill-guard disconnection; higher expansion
+budgets explored the same exhausted states. Do not rerun this unchanged or raise
+the budget as a fix. Full fresh/cache acceptance was not reached. Receipt and exact
+replay are jl-two-ground-result.json and jl-two-ground-copper.json. Artifact11600957971
+ZIP c0c766c334ddc56f48ca8c3fbd52e66479b7ed984dd4724095f91e1b3a1d3521 verified.
+
+Core twelve-group screen is retained under core-twelve-ground-screen/:0/12paths,
+zero copper,129.347741s,heavy guard PASS. Native NOT RUN for this empty proposal.
+It uses original34955input and must not override an eventual accepted core result.
+
+Continuation:
+1. `gh run view 37898486489`: PR195 exact head76ed56b
+   must have all five required checks successful before the authorized normal merge.
+   Retain branch. Then retarget PR196 to main and merge origin/main into this branch.
+2. `gh run view 37895925149`: sole core writer on agent-fix/189-core-filtered,
+   source0e6697df2bde94e3b3397da9ae0727bcdf4de464. Inspect adopted receipt, full native
+   groups/warnings/DRC/parity and fresh/cache equivalence; download and verify artifact
+   digest. Fetch any bot commit and preserve accepted copper when reconciling.
+3. Further JL changes must repair both signal victims while keeping all existing
+   native groups. The failed candidate is diagnostic only, never canonical input.
+4. Keep issue189 OPEN. Zero connectivity remains unmet; no fabrication qualification.
+
+# PR196 continuation checkpoint — 2026-10-09 07:24 UTC
+
+This branch preserves accepted JL134 / JR153 / core1509 from frozen PR195 head
+76ed56bd501e44ef19dc1a41847dcfe017999dc6. Its fresh required CI is37898486489;
+merge195 only after all five checks pass on that exact head. Then retarget196 to
+main and reconcile the merge. Issue189 remains OPEN and connectivity incomplete.
+
+Read-only JL two-ground pilot37897562881 atfb793f70595da70a9e62bd7d87dd564fa7d3b83c
+has finished; its native receipt still needs inspection. A successful workflow is
+not proof of acceptance. The plan selects R8105.2/R2209.2, three exact signal cuts,
+and two victim nets against acceptedJL134; no canonical board was changed by it.
+
+Core sole writer37895925149 remains active at0e6697df2bde94e3b3397da9ae0727bcdf4de464
+on agent-fix/189-core-filtered. Do not duplicate or overwrite its eventual accepted
+copper. Full native groups, warning identities, DRC/parity and fresh/cache checks
+remain mandatory. The detailed accepted evidence and continuation rules follow.
+
 # Frozen PR195 review checkpoint — 2026-10-09 07:20 UTC
 
 PR195 branch agent-fix/189-return-continuation now contains native-adopted

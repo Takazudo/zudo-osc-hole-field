@@ -110,6 +110,18 @@ original geometry; KiCad 10.0.6 caps each warning code at 199 records, so invent
 changes require investigation and are not waived. Exact evidence is retained in
 `circuit/routing/issue189/core-reviewed/native-result-diagnosis.json`.
 
-A new native replay 37881591885 selects 63 complete net transactions, 333 outer-layer
-segments and zero removals or new vias. Its acceptance is pending; canonical core
-remains 1,509. Source and exact native receipts remain in the #189 checkpoint. These are unvalidated drafts, not hardware qualification.
+[Native replay 37881591885](https://github.com/Takazudo/zudo-osc-hole-field/actions/runs/37881591885)
+finished at 1,430 edges but was rejected for two original AGND-group splits.
+It retained all 132,953 original copper objects and added 317 outer-layer segments;
+native errors/parity were 0/0, no new warning identities appeared, and fresh-copy
+connectivity agreed. The lower count therefore is not accepted progress.
+
+The filtered follow-up, run 37895925149 at source commit
+`0e6697df2bde94e3b3397da9ae0727bcdf4de464`, selects 56 complete net transactions
+and 216 outer-layer segments, with zero removals, new vias or inner-layer tracks.
+It excludes six whole transactions near the detached native ground branches;
+this geometric attribution is a hypothesis, not proof of acceptance. It remains
+the sole active core writer. Canonical core stays at 1,509 until the complete
+native receipt passes all gates. Exact replay and continuation evidence remain
+in `circuit/routing/issue189/checkpoint.md`. These are unvalidated drafts, not
+hardware qualification.

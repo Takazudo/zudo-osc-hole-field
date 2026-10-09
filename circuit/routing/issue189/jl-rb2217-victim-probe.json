@@ -1,0 +1,66 @@
+{
+  "status": "RASTER DIAGNOSTIC ONLY; NATIVE NOT RUN; NOT ELIGIBLE",
+  "scope": "One natively split signal victim on the rejected RB2217 candidate; restore using the existing signal0.2mm clearance/width and existing neck-down rules, with unchanged rail/AGND growth and native acceptance. Existing minus-twelve fill guard retained. Full original native gates mandatory.",
+  "input_dump_sha256": "81745e01392e2020c78167858c52a6a225cee67d09ffec32fbe4f3ca4081cd74",
+  "elapsed_seconds": 9.689452519000042,
+  "results": [
+    {
+      "net": "X1B3E1B9E41C624EA5258",
+      "island": [
+        "RB2213.2"
+      ],
+      "path": null
+    }
+  ],
+  "diagnostics": [
+    {
+      "net": "X1B3E1B9E41C624EA5258",
+      "endpoints": [
+        "RB2213.2"
+      ],
+      "reason": "fill_guard_disconnection",
+      "phase": "path_rejected",
+      "guard_layers": [
+        "In3.Cu"
+      ]
+    },
+    {
+      "net": "X1B3E1B9E41C624EA5258",
+      "endpoints": [
+        "RB2213.2"
+      ],
+      "reason": "unknown",
+      "phase": "route",
+      "attempts": [
+        {
+          "window_cells": [
+            1543,
+            1916,
+            1870,
+            2213
+          ],
+          "expanded": 41332,
+          "limit": 300000
+        },
+        {
+          "window_cells": [
+            1543,
+            2421,
+            1870,
+            2433
+          ],
+          "expanded": 93111,
+          "limit": 1600000
+        }
+      ],
+      "max_expansions": 1600000,
+      "window_mm": 8
+    }
+  ],
+  "links": [],
+  "proposal": {
+    "board_sha256": "0e290e09ef653369099fc2272b779a8e60a192d9ef745fd86ca44c3d22447e61",
+    "removed_uuids": [],
+    "copper": []
+  }
+}
