@@ -1,6 +1,9 @@
 {
   "status": "SAVED ORIGINAL INPUT ONLY; WAIT FOR CORE37936741388; NOT REBASED OR NATIVE VALIDATED",
-  "source_result_sha256": "c1d23a95e94584f58c36aa768daf99df13113fc6d06bb5b532d062486e61b5f1",
+  "source_results": {
+    "circuit/routing/issue189/core1441-no-via/result.json": "c1d23a95e94584f58c36aa768daf99df13113fc6d06bb5b532d062486e61b5f1",
+    "circuit/routing/issue189/core1441-next-no-via/result.json": "1c3179358dd19af2478101c0cad1ecdcce114b0273d260d856af8d3d1b53325d"
+  },
   "source_board_sha256": "a0e3cff1ebc211564b8be10f6a993d50fb6d4372edde86a056ebc8dda3ea5932",
   "rule": "1to4outer segments, total length<=4mm per case; no vias/cuts; conservative0.25mm new/new foreign-net clearance",
   "selected": [
@@ -83,9 +86,42 @@
           "R1343.2"
         ]
       ]
+    },
+    {
+      "net": "XED165ED96D75C15A85C4",
+      "layer": "F.Cu",
+      "objects": 1,
+      "length_mm": 1.675,
+      "source_islands": [
+        [
+          "RB4502.1"
+        ]
+      ]
+    },
+    {
+      "net": "X419E27ECCE370EBEF72E",
+      "layer": "B.Cu",
+      "objects": 1,
+      "length_mm": 1.9,
+      "source_islands": [
+        [
+          "RV2113.2"
+        ]
+      ]
+    },
+    {
+      "net": "X3424E95A32BB77159B46",
+      "layer": "F.Cu",
+      "objects": 1,
+      "length_mm": 2.175,
+      "source_islands": [
+        [
+          "R4249.2"
+        ]
+      ]
     }
   ],
-  "objects": 12,
+  "objects": 15,
   "minimum_new_cross_net_gap_mm": 19.55674059807963,
-  "proposal_sha256": "79ef1ed2785380b7b6bd7148e7ea995c7aa4be89da8ab9768cc72d1a883ad7c6"
+  "proposal_sha256": "00d94f99a0b05b06f039b6022488da53f718c6cdd3569e489134d868dafa52f0"
 }
