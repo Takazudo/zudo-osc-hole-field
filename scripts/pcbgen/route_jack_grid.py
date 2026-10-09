@@ -226,6 +226,10 @@ def repair_search_dump(dump,spec):
 def repair_bounds(dump,spec,targets,cut):
     """Bound search allocation and entire cuts, never native connectivity scope."""
     bounds=spec.get('repair_bounds_mm')
+    if 'repair_search_weight' in spec:
+        weight=spec['repair_search_weight']
+        if bounds is None or not np.isfinite(weight) or not 1<=weight<=2.5:
+            raise ValueError('repair search weight requires bounded allocation and must be finite in [1,2.5]')
     if bounds is None:return None
     if 'repair_source_uuids' not in spec or len(targets)!=1 or not cut or len(cut)>12:
         raise ValueError('bounded repair requires one target and one to twelve explicit cuts')
@@ -335,7 +339,7 @@ def stage(board_id,current,spec,definition,log):
         # boundary anchors/obligations, rather than disappearing from the metric.
         kwargs={k:v for k,v in spec.items() if k in ('clearance','signal_width','signal_via_diameter','grow','res','window_mm','escape_halo_mm')}
         if bounds is not None:
-            kwargs.update(bounds_mm=bounds,max_expansions=300000)
+            kwargs.update(bounds_mm=bounds,max_expansions=300000,weight=spec.get('repair_search_weight',1.0))
             repair_details['search_bounds_mm']=bounds
         rails=RAILS
         if 'repair_ground_pad_uuids' in spec:

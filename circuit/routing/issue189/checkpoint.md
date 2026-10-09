@@ -1,3 +1,20 @@
+# Bounded JL U106 pilot prepared — 2026-10-09 10:11 UTC
+
+Source adds a bounded search weight in[1,2.5],with the same300000 expansion cap and
+unchanged50mm frame,12cut,two-victim limits. U106.12 targetXE696508C2D9B11400F0C
+has a raster-only48-object path after three exact segment cuts on two victim nets.
+The15.1x15.3mm frame passes entire-cut geometry validation. Planjl126-u106-plan.json
+and currentjl-local-plan.json require native victim restoration and all original
+full-board gates. Dispatch local_repair=true,local_mode=cut,board=osc-jack-left on
+this exact pushed source; no canonical promotion by pilot. Prior JL frame and
+nearest-pair screens remain saved as negative evidence. Weighted nearest-pair
+cut screen guardPASS(37s); native cut memberships/restoration NOTRUN locally.
+
+JR next24screen completed:4raster paths,guardPASS(154s),native NOTRUN. Reconcile
+with ongoing three-compatible writer37914521455 before any subsequent proposal.
+Core37907147442 still sole core writer; no further core dispatch until terminal
+accepted-input reconciliation. Main native totals remain126/145/1441.
+
 # Active continuation — 2026-10-09 10:04 UTC
 
 JR three-compatible writer37914521455 at e4eff65cbacd2f6578ed696ee89156be22f2716a

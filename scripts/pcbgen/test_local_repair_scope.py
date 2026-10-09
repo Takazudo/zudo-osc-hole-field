@@ -18,7 +18,10 @@ class LocalRepairScopeTests(unittest.TestCase):
                        {'repair_bounds_mm':[0,0,60,10]},
                        {'repair_bounds_mm':[3,3,float('nan'),7]},
                        {'repair_bounds_mm':[3,3,7]},
-                       {'repair_bounds_mm':[8,3,7,7]}):
+                       {'repair_bounds_mm':[8,3,7,7]},
+                       {'repair_search_weight':float('nan')},
+                       {'repair_search_weight':3},
+                       {'repair_search_weight':0}):
             with self.subTest(change=change),self.assertRaises(ValueError):
                 driver.repair_bounds(dump,{**spec,**change},['A'],{'cut'})
         with self.assertRaises(ValueError):
@@ -42,7 +45,7 @@ class LocalRepairScopeTests(unittest.TestCase):
         native={**original,'open_edges':4,'islands':{**original['islands'],
                 'victim':[['far-pad'],['padless-boundary']],'unrelated':[['p'],['q']]}}
         spec={'name':'bounded','repair':True,'repair_targets':['A'],
-              'repair_source_uuids':['cut'],'repair_bounds_mm':[0,0,12,8],'res':.025}
+              'repair_source_uuids':['cut'],'repair_bounds_mm':[0,0,12,8],'res':.025,'repair_search_weight':2.5}
         class Captured(Exception):pass
         with tempfile.TemporaryDirectory() as directory:
             root=Path(directory);base=root/'base.kicad_pcb';base.write_text('unchanged')
@@ -53,6 +56,7 @@ class LocalRepairScopeTests(unittest.TestCase):
                 with self.assertRaises(Captured):driver.stage('osc-jack-left',base,spec,{},print)
             self.assertEqual(route.call_args.args[0]['islands'],native['islands'])
             self.assertEqual(route.call_args.kwargs['bounds_mm'],[0,0,12,8])
+            self.assertEqual(route.call_args.kwargs['weight'],2.5)
             self.assertEqual(route.call_args.kwargs['max_expansions'],300000)
             self.assertEqual(route.call_args.kwargs['allowed_layers'],driver.SIGNAL_LAYERS)
             self.assertEqual(base.read_text(),'unchanged')
