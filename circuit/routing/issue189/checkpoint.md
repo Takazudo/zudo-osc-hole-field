@@ -1,3 +1,34 @@
+# JL U106 native result — 2026-10-09 10:25 UTC
+
+Pilot37915918722 REJECTED126→127:target joined but both cut victim nets remained
+split;3new dangling-track warnings.0DRC/parity,480warnings,48adds/3cuts,33146old
+objects identical. Exact result in jl126-u106-result/result.json; artifact11610795203
+digest verified. Victim1 hits300000expansions;victim2 rejects anIn3fill split then
+hits the same fixed budget. This candidate is NOT eligible and NOT promoted.
+Continue only with a changed method on the saved native candidate; never waive
+victim restoration/warnings or repeat an unchanged larger budget.
+
+# Separate short-power continuation — 2026-10-09 10:24 UTC
+
+PR199 is frozen atbd41809dd6bbeac028638b8419b349545cc64c3e for requiredCI.
+New work is on agent-fix/189-short-power-continuation. Actual boards126/143/1441.
+JR next-three is rebased on accepted143SHA72a24ee996ae454c099ed165de1bd857721c42bef37861907a98ba5a4bf39d0c:
+83additions,zero removals,all50914current objects preserved; new/new and prior93
+object gap checks pass. Native NOTRUN until dispatched on this new branch.
+
+Core short-power selects the saved135 full-width supply segments plus4short
+AGND fanouts(8objects):143objects total,139segments/4vias. Ground remains.3mm track,
+.6mm via/.3mm drill/.25mm clearance. Minimum new cross-net gap1.335124mm.
+This is only a geometric screen,not native acceptance. Its plan remains absent
+until solecorewriter37907147442 finishes and an exact accepted-input rebase is
+reviewed. Do not dispatch or overwrite accepted core copper before then.
+
+JL U106read-only pilot37915918722 remains pending on frozen199's earlier66c34d8.
+Its eventual result belongs in this continuation. The remaining bounded nearest
+pair cut screen found no new target paths; direct JR D7504 ground links and finer
+fanouts also yielded no paths. Saved negative evidence prevents unchanged repeats.
+Core next24signal screen yielded2paths/32objects,guardPASS; nativeNOTRUN.
+
 # Accepted JR143 and PR199 freeze — 2026-10-09 10:23 UTC
 
 JR run37916090766 atfcf8a4fe3d4b9697f2d8d42d090a60bd220ffe79 ADOPTED145→143:
