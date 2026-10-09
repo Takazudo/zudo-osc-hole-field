@@ -1,4 +1,42 @@
-# Current checkpoint — 2026-10-09 06:16 UTC
+# Current checkpoint — 2026-10-09 06:20 UTC
+
+Main remains002427f1e036f0b998221e2de073284e6c425be7 (merged194), accepted
+JL135/JR155/core1509; zero native rule/parity errors. Active draftPR195 branch
+agent-fix/189-return-continuation retains all merged copper. Postmerge194 CI
+37891992677 still pending core/Python at last read. Issue189 OPEN.
+
+JR U7509.9 read-only pilot37892274328 is running on immutable source
+d0b196a40c6fd9060a35ad2de7c2ca169f2cd53f. Its plan is archived as
+jr-u7509-corridor-plan.json; do not confuse later live-plan changes with that run.
+A separate additive search on original JR155 found one ground connection:
+C7421.2/U7406.10,24objects (15In1 segments,8F segments,1via),zero removals.
+28other groups remain unrouted.71.580s, guarded PASS; native NOT RUN.
+jr-original-ground-prepare.py pins the saved probe and canonical input SHA,
+produces current jr-coupled-plan.json. Dispatch read-only coupled after push;
+branch/board concurrency serializes it after the existing JR pilot. Every native
+original-membership/warning/fresh/DRC/parity gate remains mandatory.
+
+JL alternate pilot37891092578 rejected135→138:3signal groups split,11newwarning
+identities,returns preserved,DRC/parity0/0.33108oldobjects retained,16removed,
+137added. Artifact11597714656 ZIP digest verified, exact replay retained.
+A.05grid repair found3paths/1failure (12.135s); same-input1.6m budget comparison
+found the remaining path violates the minus-twelve fill guard (13.239s).
+ExcludingIn3 for that one victim while preserving the other48 proposal objects
+still found no path (9.442s), exhausting187961states. No incomplete native replay.
+
+Direct original JL ground search found0/23 paths (81.931s). A bounded R1301.2
+ground escape identified one signal victim but whole-victim reconnection failed;
+transaction rolled back (10.345s), no copper changes. Sources/results retained;
+no native run claimed for these empty proposals.
+
+Core sole writer37881591885 remains active on retained
+agent-fix/189-isolated-rail-replay,335min compute cap. Do not duplicate. After
+terminal result, inspect native acceptance/cache equivalence and retained copper,
+fetch/reconcile bot output, then rebind next ground-link proposal if input changed.
+
+## Earlier checkpoint history (superseded above)
+
+# Current checkpoint — 2026-10-09 06:13 UTC
 
 PR#194 merged at002427f1e036f0b998221e2de073284e6c425be7 after all five checks
 passed on1defd95 (CI37889964779). Issue#189 remains OPEN. Main accepted native
