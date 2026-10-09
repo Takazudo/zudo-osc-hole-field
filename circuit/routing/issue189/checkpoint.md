@@ -1,3 +1,38 @@
+# Accepted core and JR continuation — 2026-10-09 08:46 UTC
+
+PR197 merged normally as1842b477fa74fdf269fc2346091d6e7e17c359de after all five
+required checks passed on58026c3 in37904748777. Branch retained;189OPEN.
+PR196 postmerge37903625267 passed. PR198 now targets main and contains accepted
+JL127/JR146/core1441. Jack supply edges remain zero. Current pushed source46a599c.
+
+Core37895925149 is ADOPTED1509→1441: all132953original objects unchanged,
+216outer segments added,zero removals/vias/innertracks. Native errors/parity0/0,
+619warnings,no new identities or original pad-group splits,independent fresh agrees.
+Publication cache stripping passed native geometry/connectivity/warning equivalence.
+Bot44e4a33 was reconciled as14f5595; both branches retained. PublishedSHA
+ a0e3cff1ebc211564b8be10f6a993d50fb6d4372edde86a056ebc8dda3ea5932
+and native-filledSHA95c815b2178511621f97cd7021938023b96d4ee19c9282ae99b35fb387ba10c5.
+Artifact11603564190 ZIPa01f06e5458221d6d013c5331110e0f60c849d756cec84dfdcf835750bda4cfc
+verified; full multiset retention in core-outer-filtered/retention.json.
+
+JR37905262670 is ADOPTED148→146,bot e77a92e5a357d65501a52115609741c662df00b2:
+33additions,zero removals,all50766prior objects including supplies retained;
+0errors/parity,520unchangedwarnings,no splits,fresh agrees. BoardSHA
+f08bc0fd04a23a66471a7e563f0661f6313ded52db11a51b857eff49af1c5d05.
+
+JL pilot37904498108 is eligible127→126,all33141oldobjects retained,8additions,
+zero removals; full native membership/warning/error/fresh gate passed.
+Artifact11604082851 ZIPe06a2e898930796b2a03bcf1f54fa4900ba916b1970a3f12411f429f0ef7fb3e
+verified. Canonical replay37906767213 at46a599c is active; inspect its actual receipt.
+
+Bounded additive raster feature keeps full native islands and geometry, restricts
+only search allocation, rejects rip-up, and fixes negative slice/via indexing.
+87affectedtests PASS. Same savedJR153 U7506.11 reference produced identical2segments:
+full25.169316s,bounded2.375470s; guardPASS. Initial via-index failure fixed with a
+regression. Native validation of a new bounded-core proposal NOTRUN yet.
+Core24 fine bounded screen runs locally from accepted1441 native geometry; do not
+reuse old1509 proposals without reconciliation. All default native gates unchanged.
+
 # Ground and signal continuation — 2026-10-09 08:29 UTC
 
 PR197 remains frozen at58026c3bd0c288b3a4ebcbf830fe5be6dde2f233 for CI37904748777.
