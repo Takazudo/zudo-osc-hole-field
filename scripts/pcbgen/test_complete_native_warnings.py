@@ -25,6 +25,14 @@ class CompleteWarningTests(unittest.TestCase):
             (root/'result.json').write_text(json.dumps(result))
             with self.assertRaisesRegex(ValueError,'new complete native zone'):
                 zone_evidence(root,before,after,context)
+            pairs=result['zones'][0]['native_silk_pairs']
+            pairs['native_geometry_method']='exact_native_coordinates_no_arcs'
+            pairs['source_geometry_sha256']={'0':'a'*64,'1':'b'*64}
+            for f in pairs['fixtures']:f['native_geometry_sha256']=pairs['source_geometry_sha256'][str(f['stage'])]
+            pairs['fixtures'][1]['native_geometry_sha256']='c'*64
+            (root/'result.json').write_text(json.dumps(result))
+            with self.assertRaisesRegex(ValueError,'geometry signature mismatch'):
+                zone_evidence(root,before,after,context)
             result['zone_silk_scope_complete']=False;(root/'result.json').write_text(json.dumps(result))
             with self.assertRaisesRegex(ValueError,'classification incomplete'):
                 zone_evidence(root,before,after,context)

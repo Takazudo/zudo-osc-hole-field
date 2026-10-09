@@ -1,8 +1,15 @@
 import unittest
-from scripts.pcbgen.audit_zone_silk_scope import zone_metadata,zone_fixture_parts,zone_fixture_text
+from scripts.pcbgen.audit_zone_silk_scope import zone_metadata,zone_fixture_parts,zone_fixture_text,native_zone_signature
 
 
 class ZoneScopeTests(unittest.TestCase):
+    def test_incomplete_arc_format_is_rejected_before_comparison(self):
+        class ArcPoly:
+            def ArcCount(self):return 1
+            def Format(self):raise AssertionError('must not use incomplete arc serialization')
+        with self.assertRaisesRegex(ValueError,'does not support arcs'):
+            native_zone_signature(ArcPoly())
+
     def test_reusable_fixture_preserves_zone_context_artwork_bytes_and_removes_other_copper(self):
         zone='00000000-0000-4000-8000-000000000001'
         other='00000000-0000-4000-8000-000000000002'

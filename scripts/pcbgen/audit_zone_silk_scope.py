@@ -40,6 +40,13 @@ def zone_fixture_text(parts, item_uid):
     return ''.join(block for uid,block in parts if uid is None or uid==item_uid)
 
 
+def native_zone_signature(poly):
+    # Pinned10.0.6 Format includes all outline/hole vertices and closure flags,
+    # but omits arcs. Refuse those rather than comparing incomplete geometry.
+    if poly.ArcCount():raise ValueError('native zone fingerprint does not support arcs')
+    return hashlib.sha256(poly.Format().encode()).hexdigest()
+
+
 def classify_zone(before_path,after_path,output,before,after,uid,layer,growth,pcbnew):
     """Native full-zone/silk pairs wherever added filled area could collide."""
     settings=json.loads(after_path.with_suffix('.kicad_pro').read_text())['board']['design_settings']['rules']
@@ -52,13 +59,22 @@ def classify_zone(before_path,after_path,output,before,after,uid,layer,growth,pc
         box=item.GetBoundingBox(True,True) if item.Type()==pcbnew.PCB_FOOTPRINT_T else item.GetBoundingBox()
         if any(box.Intersects(region) for region in boxes):selected.append(item.m_Uuid.AsString())
     selected=sorted(selected);all_ids={x.m_Uuid.AsString() for x in items}
+    # Retain the actual scope and completed fixtures if a bounded job stops.
+    # Progress is diagnostic only; result.json must still certify full coverage.
+    (output/f'zone-{uid}-scope.json').write_text(json.dumps(dict(
+        zone_uuid=uid,layer=pcbnew.LayerName(layer),artwork_count=len(items),
+        selected_item_uuids=selected,conservative_margin_nm=margin,
+        growth_boxes_nm=[[b.GetX(),b.GetY(),b.GetWidth(),b.GetHeight()] for b in boxes]),indent=2)+'\n')
+    progress=output/f'zone-{uid}-progress.jsonl';progress.write_text('')
+    print(f'zone {uid}: {len(selected)}/{len(items)} artwork items, {2*len(selected)} paired fixtures',flush=True)
     def text_rows(board):
         objects=list(board.GetDrawings())
         for fp in board.GetFootprints():objects.extend([*fp.GetFields(),*fp.GraphicalItems()])
         return {x.m_Uuid.AsString():x.GetShownText(True) for x in objects if hasattr(x,'GetShownText')}
-    sources=[(before_path,before),(after_path,after)];receipts=[];unions=[set(),set()]
+    sources=[(before_path,before),(after_path,after)];receipts=[];unions=[set(),set()];source_signatures={}
     for stage,(source,board) in enumerate(sources):
         source_text=source.read_text();texts=text_rows(board);native_zone=next(z for z in board.Zones() if z.m_Uuid.AsString()==uid)
+        source_signatures[str(stage)]=native_zone_signature(native_zone.GetFilledPolysList(layer))
         parts=zone_fixture_parts(source_text,uid,all_ids)
         for index,item_uid in enumerate(selected):
             folder=output/f'zone-{uid}'/f'{stage}-{index:04d}';folder.mkdir(parents=True,exist_ok=True)
@@ -70,18 +86,18 @@ def classify_zone(before_path,after_path,output,before,after,uid,layer,growth,pc
             if list(loaded.GetTracks()) or any(list(fp.Pads()) for fp in loaded.GetFootprints()):raise ValueError('unrelated fixture copper remains')
             actual=text_rows(loaded)
             if any(texts.get(k)!=v for k,v in actual.items()):raise ValueError('fixture rendered text changed')
-            for left,right in [(zones[0],native_zone),(native_zone,zones[0])]:
-                diff=left.GetFilledPolysList(layer).CloneDropTriangulation();diff.BooleanSubtract(right.GetFilledPolysList(layer))
-                if not diff.IsEmpty():raise ValueError('fixture native zone shape changed')
+            geometry_signature=native_zone_signature(zones[0].GetFilledPolysList(layer))
+            if geometry_signature!=source_signatures[str(stage)]:raise ValueError('fixture native zone shape changed')
             report=folder/'drc.json'
             subprocess.run(['kicad-cli','pcb','drc','--format','json','--severity-all','--output',str(report),str(fixture)],check=True,stdout=subprocess.DEVNULL)
             for suffix in ('.kicad_pro','.kicad_dru'):
                 if source.with_suffix(suffix).read_bytes()!=fixture.with_suffix(suffix).read_bytes():raise ValueError('fixture native context changed')
             rows=new_silk_identities(json.loads(report.read_text()),uid)
             identities={(v['type'],v['severity'],tuple(sorted(i['uuid'] for i in v['items']))) for v in rows};unions[stage].update(identities)
-            receipts.append(dict(stage=stage,item_uuid=item_uid,fixture=str(fixture),fixture_sha256=hashlib.sha256(fixture.read_bytes()).hexdigest(),report_sha256=hashlib.sha256(report.read_bytes()).hexdigest(),identities=sorted(identities)))
+            receipts.append(dict(stage=stage,item_uuid=item_uid,fixture=str(fixture),fixture_sha256=hashlib.sha256(fixture.read_bytes()).hexdigest(),native_geometry_sha256=geometry_signature,report_sha256=hashlib.sha256(report.read_bytes()).hexdigest(),identities=sorted(identities)))
+            with progress.open('a') as stream:stream.write(json.dumps(receipts[-1])+'\n')
             print(f'zone {uid} stage{stage} item{index+1}/{len(selected)} identities{len(identities)}',flush=True)
-    return dict(selected_item_uuids=selected,conservative_margin_nm=margin,fixtures=receipts,before_identities=sorted(unions[0]),after_identities=sorted(unions[1]),new_identities=sorted(unions[1]-unions[0]))
+    return dict(selected_item_uuids=selected,conservative_margin_nm=margin,native_geometry_method='exact_native_coordinates_no_arcs',source_geometry_sha256=source_signatures,fixtures=receipts,before_identities=sorted(unions[0]),after_identities=sorted(unions[1]),new_identities=sorted(unions[1]-unions[0]))
 
 
 def main(before_path,after_path,output,classify=False):
