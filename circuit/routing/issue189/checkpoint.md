@@ -1,3 +1,16 @@
+# JL126 adopted — 2026-10-09 08:59 UTC
+
+Canonical JL37906767213 source46a599c ADOPTED127→126;botf5ce549 reconciled by fast-forward.
+Candidate boardSHA54b4c9718f652dfdc98b4dab615845962dc8e3025f51a76541a50e0ba3d579d9
+and replaySHA1d75189b5ef247abb31b47a2e6e7867597c074e9486e4cb2d374e2bd8df62a2b
+match the downloaded,digest-verified eligible pilot exactly. All33141oldobjects
+retained,6segments+2vias added,0removed;native errors/parity0/0,477warnings,
+no new identities or original group splits,independent fresh agrees.
+Accepted totals nowJL126/JR146/core1441; jack supplies remain0.
+JR37907617523 and core37907147442 remain active; no second writer for either.
+Local core supply rest-screen remains active;first24 found19paths/34objects,
+175.383462s,guardPASS. Raster candidates are not native-accepted connections.
+
 # Three bounded native transactions — 2026-10-09 08:55 UTC
 
 Current pushed head75f599e21a70175dfc035de26aba120fcee8b041; PR198 targets main.
