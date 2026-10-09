@@ -1,49 +1,39 @@
 # Issue 189 exact continuation checkpoint
 
-Updated 2026-10-09 14:53 UTC. **Issue189 remains OPEN.** Zero-edge connectivity and final completion gates are unmet. No fabrication/hardware qualification is claimed. Fixed panel/electrical rules, accepted copper and other sessions are preserved.
+Updated 2026-10-09 15:08 UTC. **Issue189 remains OPEN.** Zero-edge connectivity and final completion gates are unmet. No fabrication/hardware qualification is claimed. Fixed panel/electrical rules, accepted copper and other sessions are preserved.
 
 ## Current authoritative state
 
 | Location | Commit | Accepted native edges JL/JR/core |
 | --- | --- | --- |
 | Main, merged PR206 | `9376342b5767a8107ffeda4f8290b122fd1ce268` |121/137/1441|
-| Merged PR206 source, `agent-fix/189-bounded-ground-continuation` | `ab0018bc332dfd18fb2e4a9e52da6d9128158c14` |121/137/1441|
-| Native-trial source on working `agent-fix/189-ground-repair-continuation` | `0b38d659151730dad5fd65500fe9319dbb92df8c` |121/137/1441|
+| PR207 branch `agent-fix/189-ground-repair-continuation`, integrated worker copper | `2b38e2e` |120/136/1441|
 
-All three accepted boards have0native DRC/parity errors. JL477/JR520/core619 warning counts are unchanged by the latest accepted steps; no new warning identities or split original pad groups; fresh native connectivity agrees. Counts on a pending/rejected candidate are not accepted progress.
+All accepted boards have zero native DRC/parity errors, no new warning identities or split original pad groups, and fresh native agreement. JL477/JR520/core619 warnings. The all-board zero-edge completion gate remains unmet. PR207 is draft; exact-head CI must pass before any authorized normal merge. Main9376342 post-CI37941329856 passed all five checks. Prior PR201/203–206 exact/post checks passed; PR202 post was cancelled/superseded, never passed.
 
-- PR205 exact-head37937443719 and preceding-main37937330204: all5PASS. Merged13:49:34Z; post-main37939632920 all5PASS.
-- PR206 exact-head37938871985 all5PASS. Merged14:03:16Z as9376342b5767a8107ffeda4f8290b122fd1ce268; post-main37941329856 all5PASS (saved ci-main-9376342.json).
-- PR204 exact-head37934945521 and post-main37937330204 all5PASS; mergeddf126be3c393c7841ac58408e620b82744a19e03.
-- PR201 exact/post, PR203 exact/post all5PASS. PR202 exact passed; its post-run37932366842 was cancelled/superseded, never passed. PR203's subsequent integrated-main check passed. Evidence remains in ci-*.json and git history.
+## Next native core trial
 
-## Sole active native trials
+Core26 run37936741388 is terminal/rejected1441→1442. It joins the target signal but AGND252→254, splitting U1513.12 and C1547.2/C1545.2/C1546.2. All133169old objects survive,+26/0cuts,0DRC/parity,619unchanged warnings,fresh agreement. Sourcecba4755,bot5e15231,receipt-only cherry8e2514e. Exact artifact/candidate/replay IDs are in core-u1513-alternatives/{artifact,rejection,retention}.json. Do not repeat this signal proposal unchanged.
 
-| Board | Run | Source | Worker | Scope |
-| --- | --- | --- | --- | --- |
-| Core |37936741388|`cba4755227b52145a9dc9cd9e5e0f9880787ff1f`|`agent-fix/189-core-u1513-worker`|26 B.Cu signal segments,no vias/cuts; ordinary gated adoption |
-| JL |37947364213|`330975fde822e4872fe0b5219788b1ab46b094c4`|`agent-fix/189-jl-u2204-adopt-worker`|Gated adoption replay of eligible native endpoint pilot:53objects/3vias/1reviewedcut |
-| JR |37945797248|`0b38d659151730dad5fd65500fe9319dbb92df8c`|`agent-fix/189-jr-u8303-endpoints-worker`|Read-only joint39objects/1via/2reviewedcuts,including both retained endpoint links; no automatic repair |
-
-Do not write these worker branches, duplicate same-board trials or count their pending output. The JR pilot cannot promote canonical boards; the JL gated adoption worker may publish only after all native gates. Reconcile actual terminal receipts/artifacts before selecting any next same-board action. Core alternatives must not be rebased before core26 is terminal/reconciled.
+The38-group/382-object ground batch is explicitly rebased on unchanged accepted corea0e3cff1... (rebase.json), no J900237 exclusion because core26 was not adopted. The new sole core worker will use fixed replay choice `finer-ground-batch`; every native gate remains mandatory. Jack workers are terminal and integrated. The19-segment/11-net short signal successor remains original-input-only; wait for ground-batch result and rebase against actual accepted copper before submission.
 
 ## Accepted immutable boards and retention
 
 | Board | Published SHA256 | Latest accepted stage |
 | --- | --- | --- |
-|JL121|`95d10f2b21ee75831b370a97c2035e209ae296d0dfb2ec74f5bed610133d5070`|Run37934138351:124→121,all33222prior objects identical,+17segments/3vias,0cuts|
-|JR137|`3f33128a85634798938b1d4b42c78d3e84e38f9818912fae02596fa8848838cd`|Run37936737740:139→137,all51017prior objects identical,+7segments/2vias,0cuts|
-|Core1441|`a0e3cff1ebc211564b8be10f6a993d50fb6d4372edde86a056ebc8dda3ea5932`|Run37895925149:1509→1441,all132953original objects identical,+216segments,0cuts|
+|JL120|`2068e5e7fc0ab3f091423e3685e6793c36de24c6308c681233465b3ce100b437`|37947934139:121→120,+53/1reviewedcut,all33241uncut objects identical|
+|JR136|`33747bfc15d66bc92e7fb7c563dfa853b13058a0056075626551ef3d385d6b84`|37947938555:137→136,+39/2reviewedcuts,all51024uncut objects identical|
+|Core1441|`a0e3cff1ebc211564b8be10f6a993d50fb6d4372edde86a056ebc8dda3ea5932`|37895925149:1509→1441,+216segments/0cuts,all132953original objects identical|
 
-JL: artifact11618501163 ZIP`7ba5dfcf88e628cef37c196d596160f37f445eb306005ef57a2758cc1b2b15eb`; replay`3e2a038f72e68a0b350583cd1d26d1c45983ab1161d17bf0dd98f191a585c628`; boteca35e63e3bbb495b734cd20f2963003a214cab5. Full physical invariants checked.
+JL bot`abd7af3bcbbcdd25f553c5ed2aa7ea5863f60acb`, cherry`a8c0876`; artifact11625415141 ZIP`71a7b0d79fe22dbc99dfe4d089c154807cdcd5e43895b72fa883073c5f3fb123`; replay`8ec99ea42016282c19fcd4860c82a9ee402ff218eafb80d20c558d32354c847d`.
 
-JR: artifact11618839122 ZIP`0a419810ae0c1a0edd69e9db594f8596de474c1d95a45fb525e0cb8ebb98d170`; replay`b2f991e5e46f2345a70f3c4382acfc4f6960779634a6cd434729772e74c57487`; botdd7184acfb0235e876ba57bd09669c1247ddf74b, integrated9dd9090. All3655pads,4edges,154keepouts,sixlayers unchanged. Evidence in jr-two-fine-ground/.
+JR bot`574025484e6b1413f97b9b761041ab4f3973b85f`, cherry`2b38e2e`; artifact11625175772 ZIP`d278a0f56c37007eea57ecab8e45d7bf17968ccc945e9c61e1c99ab04c422105`; replay`88f040c0318eccb93cf002f7a35e8d464b21c38c41d44f5bf765688468bcd953`.
 
-Core: native-filled SHA`95c815b2178511621f97cd7021938023b96d4ee19c9282ae99b35fb387ba10c5`; publication removes derived caches only, with native equivalence proved. Artifact11603564190 ZIP`a01f06e5458221d6d013c5331110e0f60c849d756cec84dfdcf835750bda4cfc`. See core-filtered/.
+Both adoption outputs exactly match their eligible pilot board and replay hashes. Native DRC/parity0/0,warnings477/520,no new identities/splits,fresh agreement. Full-object retention and physical invariants are in `{jl-u2204,jr-u8303}-endpoints/`: JL3925/JR3655pads,four outline edges,123/154rule areas,six layers unchanged; project/rules byte-identical.
 
-Current JL30384segments/2858vias,103signal+18ground edges. JR47912segments/3114vias,111signal+26ground edges. Core80+12V/80−12V/252AGND/1029signal edges. Rails on both jack boards are zero-open.
+JL30433segments/2861vias,103signal+17AGNDedges. JR47948segments/3115vias,111signal+25AGNDedges. Both jack supply rails have zero open edges. Core80+12V/80−12V/252AGND/1029signal edges. Latest cumulative full-object ledger records reviewed jack removals; do not claim all original jack copper survives. All original core copper survives. Fixed panel, electrical rules and placements remain unchanged.
 
-Latest additive steps retain every prior object. Earlier accepted JL/JR reroutes removed131/13reviewed objects respectively; do not claim all original jack copper survives. All original core copper survives. retention-ledger-*.json records exact cumulative multisets. Fixed .kicad_dru/.kicad_pro and placements.lock.json remain unchanged from1fe06ad5.
+Core native-filled hash`95c815b2178511621f97cd7021938023b96d4ee19c9282ae99b35fb387ba10c5`; cache-only publication equivalence proved. Artifact11603564190 ZIP`a01f06e5458221d6d013c5331110e0f60c849d756cec84dfdcf835750bda4cfc`.
 
 ## Current rejected controls and prepared successors
 
