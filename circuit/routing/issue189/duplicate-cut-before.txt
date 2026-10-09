@@ -1,0 +1,24 @@
+F
+======================================================================
+FAIL: test_bounded_cut_rejects_duplicate_ids_before_native_writes (scripts.pcbgen.test_local_repair_scope.LocalRepairScopeTests.test_bounded_cut_rejects_duplicate_ids_before_native_writes)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/zudo-osc-hole-field/scripts/pcbgen/test_local_repair_scope.py", line 47, in test_bounded_cut_rejects_duplicate_ids_before_native_writes
+    driver.stage('osc-jack-left',base,spec,{},print)
+  File "/workspace/zudo-osc-hole-field/scripts/pcbgen/route_jack_grid.py", line 332, in stage
+    work=workspace(board_id,spec['name']+'-cut');cut_board=work/f'{board_id}.kicad_pcb';proposal=work/'proposal.json'
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1139, in __call__
+    return self._mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1143, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py", line 1198, in _execute_mock_call
+    raise effect
+AssertionError: native workspace created before duplicate cut rejection
+
+----------------------------------------------------------------------
+Ran 1 test in 0.003s
+
+FAILED (failures=1)

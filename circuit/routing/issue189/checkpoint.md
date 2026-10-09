@@ -1,3 +1,17 @@
+# Duplicate-ID cut guard hardened — 2026-10-09 10:48 UTC
+
+A synthetic regression reproduced a bounded-cut bug: duplicate legacy IDs could
+hide an outside-frame segment behind a later inside-frame object. The old path
+reached native workspace creation. Bounded cuts now reject non-unique physical
+IDs before any workspace/native writes; unselected duplicate copper stays intact.
+Exact red output:duplicate-cut-before.txt.96affected tests and PNPM circuit/check
+PASS after the fix. This tightens scope validation; no accepted copper is changed.
+
+Active native writers use immutable prior sources: JL91objects37919613559 at
+fcd169e0094aea5639824e9ff4829ef0a83fb175; JR57objects37919363686 ate2757b3c0993e765cd12e69b0ab7cbdf7ad7bcc2;
+solecore37907147442 on retainedground-signal-continuation. Do not duplicate them.
+Actual PR200boards remain125/143/1441;main199boards126/143/1441,postmergeCI37918769043pending.
+
 # Accepted JL125; next bounded candidates — 2026-10-09 10:46 UTC
 
 JL37918072226 ADOPTED126→125:69segments+2vias,zero removals,all33149old objects

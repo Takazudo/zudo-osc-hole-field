@@ -243,9 +243,13 @@ def repair_bounds(dump,spec,targets,cut):
     def inside(xy,radius=0):
         x,y=np.asarray(xy)/1e6;r=radius/1e6
         return x0<=x-r and x+r<=x1 and y0<=y-r and y+r<=y1
-    objects={i['uuid']:i for kind in ('tracks','vias') for i in dump[kind]}
+    objects=collections.defaultdict(list)
+    for kind in ('tracks','vias'):
+        for obj in dump[kind]:objects[obj['uuid']].append(obj)
     for uid in cut:
-        obj=objects[uid]
+        if len(objects[uid])!=1:
+            raise ValueError('bounded repair cut UUID is not unique: '+uid)
+        obj=objects[uid][0]
         points=[obj['a'],obj['b']] if 'a' in obj else [obj['xy']]
         radius=obj.get('width',obj.get('diameter',0))/2
         if not all(inside(xy,radius) for xy in points):
