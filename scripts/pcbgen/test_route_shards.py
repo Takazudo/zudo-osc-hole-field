@@ -22,6 +22,42 @@ def board(*items):
 
 
 class MergeAcceptanceTests(unittest.TestCase):
+    def test_reverted_geometry_and_native_error_evidence_survive_next_attempt(self):
+        from scripts.pcbgen import route_shards,route_jack_grid as driver
+        from scripts.pcbgen.test_grid_router import crossing_board
+        with tempfile.TemporaryDirectory() as directory:
+            root=Path(directory);target=root/'boards/osc-jack-left/osc-jack-left.kicad_pcb'
+            target.parent.mkdir(parents=True);original=board(seg(U[0],'A'));target.write_text(original)
+            proposal=root/'delta.json';proposal.write_text(json.dumps(delta(original,board(seg(U[0],'A'),seg(U[1],'B')))))
+            state={**crossing_board(),'open_edges':2};clean={'violations':[],'schematic_parity':[]}
+            violation={'severity':'error','type':'clearance','items':[{'uuid':U[1]}]}
+            dirty={'violations':[violation],'schematic_parity':[]};checks=iter([clean,dirty,clean,clean])
+            def workspace(board_id,name):
+                folder=root/name
+                if folder.exists():route_shards.shutil.rmtree(folder)
+                folder.mkdir();return folder
+            def check(path):
+                drc=next(checks);path.with_name('drc.json').write_text(json.dumps(drc))
+                path.with_name('dump.json').write_text(json.dumps(state));return drc,state
+            with patch.object(route_shards,'ROOT',root),patch.object(driver,'workspace',side_effect=workspace),\
+                 patch.object(driver,'check',side_effect=check):
+                receipt=route_shards.merge('osc-jack-left',[proposal],'retention')
+            self.assertFalse(receipt['adopted']);self.assertEqual(target.read_text(),original)
+            self.assertEqual(receipt['copper_added'],0);self.assertEqual(receipt['drc_errors'],0)
+            rejected=receipt['rejected_attempts'];self.assertEqual(len(rejected),1)
+            self.assertEqual(rejected[0]['native_errors'],[violation])
+            self.assertEqual(rejected[0]['reverted_nets'],['B'])
+            saved=root/rejected[0]['workspace']
+            self.assertIn(U[1],(saved/target.name).read_text())
+            self.assertEqual(json.loads((saved/'drc.json').read_text()),dirty)
+            self.assertEqual(len(json.loads((saved/'candidate-replay.json').read_text())['added']),1)
+            checks=iter([clean,dirty,clean,clean])
+            with patch.object(route_shards,'ROOT',root),patch.object(driver,'workspace',side_effect=workspace),\
+                 patch.object(driver,'check',side_effect=check):
+                again=route_shards.merge('osc-jack-left',[proposal],'retention-again')
+            self.assertNotEqual(again['rejected_attempts'][0]['workspace'],rejected[0]['workspace'])
+            self.assertEqual(json.loads((saved/'drc.json').read_text()),dirty)
+
     def test_recovered_signal_gain_must_restore_split_return_membership(self):
         from scripts.pcbgen import route_shards,route_jack_grid as driver
         from scripts.pcbgen.test_grid_router import crossing_board

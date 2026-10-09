@@ -1,3 +1,37 @@
+# Current checkpoint — 2026-10-09 09:58 UTC
+
+PR198 merged at4580536e8edd0bb9216c02d6b01aec00189da20e; all five exact-head
+checks37909660345 and postmerge37911896861 PASS. PR199 continues on
+agent-fix/189-short-escape-continuation, reconciled with main. Issue189 remains OPEN.
+Canonical native totals JL126/JR145/core1441, errors/parity0/0 on all three.
+
+JR two-net writer37910371564 reverted both proposals:145→145,zero adopted copper.
+Read-only diagnostic37912542439 proves20 shorting_items +4 tracks_crossing errors,
+parity0. Both proposals put vias at(410.375,177.85), producing a-0.6mm copper gap.
+Its exact native findings and failed result are retained in jr-bounded-two/diagnostic.
+The merger now preserves every failed native workspace/replay before reverting,
+including repeat-run histories;91 affected regression tests PASS.
+
+JL U2105 bounded cut37911267983 restored its victim but not its target:126→126,
+errors/parity0/0,477 warnings,zero new warning identities/group splits. One3.6mm
+segment was removed and one replacement added;33148 other objects unchanged.
+Pilot NOT ADOPTED. Exact result:jl126-u2105-result/result.json.
+
+JR three-compatible selects3 whole net transactions/108 additions/zero removals,
+retains all50821 accepted objects, and excludes the proven colliding R7626 path.
+New/new minimum copper gap39.740573mm; this geometric screen is NOT native acceptance.
+Next: push this source and dispatch replay_jr=true,jr_replay=three-compatible,
+board=osc-jack-right on this isolated branch. Preserve actual receipts and copper.
+
+Core sole writer37907147442 remains active on retained parent branch
+agent-fix/189-ground-signal-continuation ataf724ad816ccf837cc3494f10bf3137f8025ae5e.
+Do not duplicate it. Inspect terminal artifact/native receipt and any bot commit,
+then integrate accepted core-only delta before rebasing core-short-supplies.
+Those135 full-width short supply segments remain NATIVE NOT RUN.
+Core AGND bounded inventory completed both guarded batches (summary.json); every
+saved proposal is raster-only, NATIVE NOT RUN. Rebase against terminal core input
+before any submission; never overwrite newly accepted copper with the old1441 board.
+
 # Native bounded-cut pilot and paired JL negative evidence — 2026-10-09 09:28 UTC
 
 JL disposable cut pilot37911267983 at898fbd963877407a83e576e2569cdb9c1249632f
