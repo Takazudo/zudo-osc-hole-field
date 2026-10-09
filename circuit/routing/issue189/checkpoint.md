@@ -1,6 +1,6 @@
 # Issue 189 exact continuation checkpoint
 
-Updated 2026-10-09 14:12 UTC. **Issue189 remains OPEN.** Zero-edge connectivity and final completion gates are unmet. No fabrication/hardware qualification is claimed. Fixed panel/electrical rules, accepted copper and other sessions are preserved.
+Updated 2026-10-09 14:43 UTC. **Issue189 remains OPEN.** Zero-edge connectivity and final completion gates are unmet. No fabrication/hardware qualification is claimed. Fixed panel/electrical rules, accepted copper and other sessions are preserved.
 
 ## Current authoritative state
 
@@ -8,12 +8,12 @@ Updated 2026-10-09 14:12 UTC. **Issue189 remains OPEN.** Zero-edge connectivity 
 | --- | --- | --- |
 | Main, merged PR206 | `9376342b5767a8107ffeda4f8290b122fd1ce268` |121/137/1441|
 | Merged PR206 source, `agent-fix/189-bounded-ground-continuation` | `ab0018bc332dfd18fb2e4a9e52da6d9128158c14` |121/137/1441|
-| Native-trial source on working `agent-fix/189-ground-repair-continuation` | `29ce0d56c938198654e80e50f480be5e9e462906` |121/137/1441|
+| Native-trial source on working `agent-fix/189-ground-repair-continuation` | `0b38d659151730dad5fd65500fe9319dbb92df8c` |121/137/1441|
 
 All three accepted boards have0native DRC/parity errors. JL477/JR520/core619 warning counts are unchanged by the latest accepted steps; no new warning identities or split original pad groups; fresh native connectivity agrees. Counts on a pending/rejected candidate are not accepted progress.
 
 - PR205 exact-head37937443719 and preceding-main37937330204: all5PASS. Merged13:49:34Z; post-main37939632920 all5PASS.
-- PR206 exact-head37938871985 all5PASS. Merged14:03:16Z as9376342b5767a8107ffeda4f8290b122fd1ce268; post-main37941329856 running. Verify this main before another merge.
+- PR206 exact-head37938871985 all5PASS. Merged14:03:16Z as9376342b5767a8107ffeda4f8290b122fd1ce268; post-main37941329856 all5PASS (saved ci-main-9376342.json).
 - PR204 exact-head37934945521 and post-main37937330204 all5PASS; mergeddf126be3c393c7841ac58408e620b82744a19e03.
 - PR201 exact/post, PR203 exact/post all5PASS. PR202 exact passed; its post-run37932366842 was cancelled/superseded, never passed. PR203's subsequent integrated-main check passed. Evidence remains in ci-*.json and git history.
 
@@ -22,8 +22,8 @@ All three accepted boards have0native DRC/parity errors. JL477/JR520/core619 war
 | Board | Run | Source | Worker | Scope |
 | --- | --- | --- | --- | --- |
 | Core |37936741388|`cba4755227b52145a9dc9cd9e5e0f9880787ff1f`|`agent-fix/189-core-u1513-worker`|26 B.Cu signal segments,no vias/cuts; ordinary gated adoption |
-| JL |37940189931|`29ce0d56c938198654e80e50f480be5e9e462906`|`agent-fix/189-jl-u2204-outer-worker`|Read-only fixed coupled proposal:8 B.Cu restoration segments/1reviewedcut,no vias,no automatic repair |
-| JR |37940194109|`29ce0d56c938198654e80e50f480be5e9e462906`|`agent-fix/189-jr-u8303-ground-worker`|Read-only U8303 native cut/restoration:2 F.Cu cuts,one victim,outer-only routing,300000expansion cap |
+| JL |37945793199|`0b38d659151730dad5fd65500fe9319dbb92df8c`|`agent-fix/189-jl-u2204-endpoints-worker`|Read-only joint53objects/3vias/1reviewedcut,including exact retained endpoint links; no automatic repair |
+| JR |37945797248|`0b38d659151730dad5fd65500fe9319dbb92df8c`|`agent-fix/189-jr-u8303-endpoints-worker`|Read-only joint39objects/1via/2reviewedcuts,including both retained endpoint links; no automatic repair |
 
 Do not write these worker branches, duplicate same-board trials or count their pending output. The jack pilots cannot promote canonical boards. Reconcile actual terminal receipts/artifacts before selecting any next same-board action. Core alternatives must not be rebased before core26 is terminal/reconciled.
 
