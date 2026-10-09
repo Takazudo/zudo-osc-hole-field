@@ -36,7 +36,7 @@ on:
       core_replay:
         description: Reviewed recovery transaction (used only with recover_core)
         type: choice
-        options: [aggregate, reviewed, outer, outer-filtered, ground-link, bounded-one, short-supplies, short-power, u1513-alternatives, finer-ground-batch, short-no-via]
+        options: [aggregate, reviewed, outer, outer-filtered, ground-link, bounded-one, short-supplies, short-power, u1513-alternatives, finer-ground-batch, short-no-via, supply-away-from-splits]
         default: aggregate
       local_repair:
         description: Read-only jack local branch-repair pilot (no canonical writer)
@@ -228,6 +228,11 @@ jobs:
             python circuit/routing/issue189/core-short-no-via/prepare.py
             replay=.circuit-cache/issue189-core-short-no-via/copper.json
             label=issue189-short-no-via
+            extra=()
+          elif [[ $CORE_REPLAY == supply-away-from-splits ]]; then
+            python circuit/routing/issue189/core-supply-away-from-splits/prepare.py
+            replay=.circuit-cache/issue189-core-supply-away-from-splits/copper.json
+            label=issue189-supply-away-from-splits
             extra=()
           elif [[ $CORE_REPLAY == short-power ]]; then
             python circuit/routing/issue189/core-short-power/prepare.py
