@@ -22,7 +22,7 @@ on:
       jr_replay:
         description: Fixed reviewed JR transaction (used only with replay_jr)
         type: choice
-        options: [return-restored, original-ground, u7509-on-ground]
+        options: [return-restored, original-ground, u7509-on-ground, rail-finer]
         default: return-restored
       jl_replay:
         description: Fixed native-eligible JL transaction (used only with replay_jl)
@@ -176,7 +176,7 @@ jobs:
           mkdir -p .circuit-cache
           set -o pipefail
           case "$JR_REPLAY" in
-            return-restored|original-ground|u7509-on-ground) ;;
+            return-restored|original-ground|u7509-on-ground|rail-finer) ;;
             *) exit 1 ;;
           esac
           timeout --signal=INT --kill-after=2m 80m python -u scripts/pcbgen/route_shards.py merge osc-jack-right \

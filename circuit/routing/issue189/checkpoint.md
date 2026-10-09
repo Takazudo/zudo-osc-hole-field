@@ -1,3 +1,28 @@
+# Both supply pilots eligible — 2026-10-09 08:11 UTC
+
+DraftPR197 on agent-fix/189-fine-escape-replays owns further adoption work.
+JL canonical adoption37903090712 runs from85ee381b81341e9d367245d974666d042ded34c4;
+expected eligible127,actual canonical result pending. Do not start a second JLwriter.
+
+JR supply pilot37901540024 is NATIVE ELIGIBLE153→148: all supply edges0,signals120,
+AGND28. Errors/parity0/0,520existingwarnings,no new identities or original-group
+splits,independent fresh agrees. All50756oldobjects retained,10full-widthsegments
+added,zero vias/removals. CandidateSHAea5f09c78cd1146ad5c4f8a1f9e573bb644e9e96cd3ee0d02ab5c8a64b3cf6e2;
+replaySHA44cdc51fb3177d828893b4c5ec7e07650591b2eaa767593e832ae24b12dec95d.
+Artifact11603022660 ZIPd7845cb466f3e81cdfbf18d6da214fc07245ac97a6ee99dde826c84bde9cda82
+verified. Dedicated canonical JR replay is prepared; canonical remains153 until it
+passes. Preserve these supply additions before rebinding a later signal replay.
+
+JL finer additive screen finished1path/104failures/8objects/zero removals in
+730.181655s (heavy guardPASS), versus0paths in143.503631s at0.05mm on the same saved
+134input. Source/results retained as jl134-finer-probe.*. Native NOT RUN for its
+one D2326.1 signal path. Rebind only after accepted127 board exists in the source
+commit, preserving every added supply object; do not dispatch against stale134.
+
+PR196 remains frozenee6c0aa with CI37902231900 pending. Retarget197 after verified
+196merge. JR filtered two-signal pilot37902237082 and sole core writer37895925149
+remain active; inspect actual terminal receipts. No rejected copper is canonical.
+
 # Fine escape replay continuation — 2026-10-09 08:08 UTC
 
 PR196 is frozen at ee6c0aaa760b2e48e41bcfe82af259819f11ada1 for CI37902231900;
