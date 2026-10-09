@@ -1,3 +1,46 @@
+# Frozen PR197 supply milestone — 2026-10-09 08:25 UTC
+
+PR197 agent-fix/189-fine-escape-replays now contains acceptedJL127/JR148/core1509.
+All +12/-12/+5 open edges are0 on both jack boards. Remaining:JL105signals+22AGND;
+JR120signals+28AGND. Native errors/parity0/0,existingwarnings477/520,no new identities
+or original-group splits,independent fresh agreement. Not routing-complete or
+hardware-qualified. Freeze this final review head for fresh required CI before
+normal merge; keep189OPEN and retain branches. Continue new work on a follow-up.
+
+JL adoption37903090712 source85ee381,bot37ce2ec8e0a2e86215e12eaad0d429af270fcde1:
+134→127,all33131oldobjects retained,10added,zero removals/vias. BoardSHA
+343add6006f409640372f77cee521f717626c852c9ee8f68066b78c6b91471f7.
+JR adoption37903349098 sourcee6a6220,bot51d4d21c9f9dc94ee56aa5cad577577283450544
+on retainedci-route/osc-jack-right-37903349098 after a branch-update race; reconciled
+as43e3fe812f53d63500986ee314864bae211b73a8.153→148,all50756oldobjects retained,10added,
+zero removals/vias. BoardSHAea5f09c78cd1146ad5c4f8a1f9e573bb644e9e96cd3ee0d02ab5c8a64b3cf6e2.
+Both exact board/replay hashes match downloaded and digest-verified eligible pilot
+artifacts. Canonical adoption receipts inspected; additional adoption ZIPs are
+listed with downloaded=false in benchmark-artifacts.json. No jack writer remains.
+
+Next read-only JL D2326 pilot37904498108 at43e3fe8 uses actualaccepted127 input,
+eight signal objects,zero removals,all10supply additions preserved by hash-bound
+preparation. Next JR filtered two-signal pilot37902237082 at ee6c0aa still uses153;
+if eligible,rebind toactualaccepted148 and prove all10supply objects remain before
+native canonical replay. Never dispatch a new-input plan before its board exists
+in the source commit. Neither pending pilot is accepted progress.
+
+PR196 merged5df9ba7d30621a682c163e9614d0513c154e9aac after all five checks passed
+on ee6c0aa in37902231900. PostmergeCI37903625267 pending. PR195 c7f9a4e postmergeCI
+37900306980 passed. PR197 has already merged origin/main and is based on main.
+
+Core sole writer37895925149 remains at0e6697d on agent-fix/189-core-filtered.
+No duplicate writer. Core24-resolution-screen contains identical-input bounded
+24-net probes excluding its56nets:0.075mm1path/36objects/34.703791s;0.05mm2paths/
+38objects/80.232105s. Both heavy-guardPASS; nativeNOTRUN,acceptededgesunknown.
+Inspect the existing writer's actual terminal receipt first,then rebind or regenerate
+proposals against its accepted input without overwriting successful copper.
+
+Validation:81affected tests,pnpm check,workflow YAML and12shell blocks pass.
+New explicit completion command's synthetic tests pass; its native invocation is
+NOTRUN and these nonzero boards cannot meet its zero-edge criterion. Final-head
+required CI for197 must finish before merge. No manufacturing or external contact.
+
 # Both supply pilots eligible — 2026-10-09 08:11 UTC
 
 DraftPR197 on agent-fix/189-fine-escape-replays owns further adoption work.
