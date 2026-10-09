@@ -16,11 +16,13 @@ from scripts.pcbgen.audit_added_mask import new_silk_identities
 IDS = [str(uuid.uuid5(uuid.NAMESPACE_URL, 'issue189-zone-batch-control-' + str(i))) for i in range(3)]
 
 
-def control_text(parts, selected, point):
+def control_text(parts, selected, point, zone_layer="F.Mask"):
     """Create an exposed mask-zone control with identical polygon coordinates."""
     if not selected or len(selected) != len(set(selected)) or not set(selected) <= set(range(3)):
         raise ValueError('invalid control selection')
-    common = ''.join(block.replace('"F.Cu"', '"F.Mask"') if block.startswith('(zone') else block
+    if zone_layer not in ('F.Cu', 'F.Mask'):
+        raise ValueError('unsupported control zone layer')
+    common = ''.join(block.replace('"F.Cu"', '"' + zone_layer + '"') if block.startswith('(zone') else block
                      for uid, block in parts if uid is None)
     end = common.rfind(')')
     if end < 0:
@@ -74,17 +76,17 @@ def main(source, output):
     if point is None:
         raise ValueError('no verified interior control point')
     parts = zone_fixture_parts(source.read_text(), ZONE, {a.m_Uuid.AsString() for a in artwork(board, pcbnew)})
-    unions = []
-    for name, selected in [('positive-a', [0]), ('positive-b', [1]), ('negative', [2]), ('batch', [0, 1, 2])]:
+    unions = {}
+    for name, selected, zone_layer in [('covered-copper', [0, 1], 'F.Cu'), ('positive-a', [0], 'F.Mask'), ('positive-b', [1], 'F.Mask'), ('negative', [2], 'F.Mask'), ('batch', [0, 1, 2], 'F.Mask')]:
         folder = output / name
         folder.mkdir()
         fixture = folder / source.name
-        fixture.write_text(control_text(parts, selected, point))
+        fixture.write_text(control_text(parts, selected, point, zone_layer))
         for suffix in ('.kicad_pro', '.kicad_dru'):
             shutil.copyfile(source.with_suffix(suffix), fixture.with_suffix(suffix))
         loaded = pcbnew.LoadBoard(str(fixture))
         zones = list(loaded.Zones())
-        if len(zones) != 1 or zones[0].m_Uuid.AsString() != ZONE or native_zone_signature(zones[0].GetFilledPolysList(pcbnew.F_Mask)) != signature:
+        if len(zones) != 1 or zones[0].m_Uuid.AsString() != ZONE or native_zone_signature(zones[0].GetFilledPolysList(pcbnew.F_Mask if zone_layer == 'F.Mask' else pcbnew.F_Cu)) != signature:
             raise ValueError('control changed native zone geometry')
         if list(loaded.GetTracks()) or list(loaded.GetFootprints()):
             raise ValueError('unrelated control copper/footprints remain')
@@ -96,15 +98,15 @@ def main(source, output):
             if source.with_suffix(suffix).read_bytes() != fixture.with_suffix(suffix).read_bytes():
                 raise ValueError('native control context changed')
         observed = selected_identities(json.loads(report.read_text()))
-        expected_art = {IDS[i] for i in selected if i < 2}
+        expected_art = {IDS[i] for i in selected if i < 2} if zone_layer == 'F.Mask' else set()
         actual_art = {u for _, _, ids in observed for u in ids if u != ZONE}
         if actual_art != expected_art:
             raise ValueError('native positive/negative control did not detect exactly the expected artwork')
-        unions.append(observed)
-        result['controls'].append(dict(name=name, selected=selected, identities=sorted(observed),
+        unions[name] = observed
+        result['controls'].append(dict(name=name, selected=selected, zone_layer=zone_layer, identities=sorted(observed),
             fixture_sha256=sha(fixture), report_sha256=sha(report), native_geometry_sha256=signature))
         receipt.write_text(json.dumps(result, indent=2) + '\n')
-    if unions[3] != unions[0] | unions[1] | unions[2]:
+    if unions['batch'] != unions['positive-a'] | unions['positive-b'] | unions['negative']:
         raise ValueError('batch detection differs from single-item controls')
     result.update(status='NATIVE POSITIVE AND NEGATIVE CONTROLS PASS; NEVER ACCEPTANCE', point_mm=point)
     receipt.write_text(json.dumps(result, indent=2) + '\n')

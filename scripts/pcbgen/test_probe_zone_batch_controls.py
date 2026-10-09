@@ -14,6 +14,10 @@ class BatchControlTests(unittest.TestCase):
         self.assertNotIn(IDS[1], text)
         self.assertIn('(start 1000.000000 1000.100000)', text)
         self.assertTrue(text.endswith(')'))
+        copper = control_text(parts, [0], (10., 20.), 'F.Cu')
+        self.assertIn(zone, copper)
+        with self.assertRaisesRegex(ValueError, 'unsupported'):
+            control_text(parts, [0], (10., 20.), 'B.Cu')
 
     def test_invalid_selection_and_native_caps_fail_closed(self):
         for selection in ([], [0, 0], [3]):

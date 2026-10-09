@@ -1,9 +1,15 @@
 # Read-only native zone batching comparison
 
-Run38002541870 at`b19d387d62bb2a016638efff740051b8a0f15eb5` is active,
-with a40-minute native command bound starting23:05:06UTC October9. No timing or
-equivalence result is claimed yet. No acceptance code, source placement or
-canonical copper changes. The sole core writer37984573591 remains untouched.
+Run38002541870 at`b19d387d62bb2a016638efff740051b8a0f15eb5` completed
+successfully. Artifact11650083938 ZIP SHA256
+`e925baf46b0941e35354f89edb9737ceb00b65fca0dab7f3246276d008837724`
+is independently reconciled (`native-timing-receipt.json`, heavy-guardPASS20s).
+The same16saved fixtures took638.2805s/174.5692s/57.8693s at batch sizes1/4/16:
+3.6563x/11.0297x improvement. All37saved/new raw reports, fixture bytes, native
+version and context bindings pass. This meets the predeclared2x threshold.
+It is an all-negative before-only sample, not complete warning evidence or
+acceptance. Native positive controls remain NOT RUN. No acceptance code, source
+placement or canonical copper changes; sole core writer37984573591 is untouched.
 
 Supported pinned-native CI has recovered: PR213 and PR215 exact heads passed all
 five checks and merged. This branch also exposes already-captured stderr when
@@ -72,8 +78,8 @@ bash "$HOME/.codex/scripts/heavy-guard.sh" -- \
   .circuit-cache/issue189-zone-batch-result
 ```
 
-The active run already uses these immutable inputs; do not dispatch an unchanged
-duplicate. `reconcile.py` is prepared to verify its terminal artifact independently.
+The completed run used these immutable inputs; do not dispatch an unchanged
+duplicate. `reconcile.py` has independently verified its terminal artifact.
 The134 saved reports have no zone-linked positive findings, so positive controls
 in `controls-plan.md` are required before any production batching change.
 
