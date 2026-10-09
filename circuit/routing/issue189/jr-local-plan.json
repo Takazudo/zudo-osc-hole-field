@@ -1,12 +1,17 @@
 {
   "board": "osc-jack-right",
-  "input_board_sha256": "3d9bfccb3e201756fb7a32847f4b3c754f1a92bf22315115e150c239dbcc7f7e",
-  "scope": "Read-only native pilot: RB4611.1 local branch repair; no placement/constraint change; no automatic adoption",
+  "input_board_sha256": "cf8cabf2e115e294a7a67253eae290ecd02a57419b5996a54e8755fcf79196cf",
+  "scope": "Six disjoint captured corridors on native-eligible JR155; 23 explicit blocker cuts; no In3 signal routing. Canonical155 adoption must finish first. Full original-baseline native membership/warnings/DRC/parity and independent reload remain mandatory.",
   "stage": {
-    "name": "189-jr-local",
+    "name": "189-jr-six-corridors",
     "repair": true,
     "repair_targets": [
-      "XC13372BA423E9AD7226E"
+      "X644D5B39CA94D516B1A0",
+      "X3C700C41783811C4A521",
+      "XCD7957368B0652402848",
+      "X3307A17C148FAA8F7A4D",
+      "XA722A4EC7F452FB17AC1",
+      "X35E745E28FE360C09868"
     ],
     "repair_radius_mm": 1.2,
     "clearance": 0.2,
@@ -19,6 +24,36 @@
       "AGND": 0.05
     },
     "res": 0.05,
-    "window_mm": 8
+    "window_mm": 8,
+    "repair_source_uuids": [
+      "072665d9-0585-55a3-b464-d70c9a112253",
+      "0929ebc7-715d-59f8-ba67-14ec4cedf767",
+      "13276753-62b3-5fb0-9349-896e322845b3",
+      "1683cba4-ee94-587a-a543-2ce176f900bd",
+      "29440637-d199-510f-af65-181a03e7fcc5",
+      "2b2bedf2-c589-5261-a42f-961b6788a430",
+      "35552c8c-a7e0-52ea-b2c0-152d891ef254",
+      "4b1d0db0-8749-5b07-ae01-9965e7f46a87",
+      "50e99aff-47bc-5cd1-84f7-dfe116862575",
+      "54c3e4ce-5477-5c0f-a93a-4972d524f2e4",
+      "81ad643e-643d-5f43-a089-d6496bc55e92",
+      "8387a260-fee0-5e31-8bfe-96a801c0823d",
+      "87fbad29-a807-5561-9883-60eb3bef6a45",
+      "8ca6c07d-5e9f-5c8a-ae96-133d1fb172d0",
+      "a84508e1-4ce2-55de-8e21-9bdf0729bb38",
+      "ac7165aa-641e-504d-9a41-72f398f82cda",
+      "c1892839-6651-5f7f-98fc-17f252984cd1",
+      "d006fbc0-0a74-5f26-8177-f69ca607f726",
+      "d256dd05-d300-5411-ab69-f0dba9a591da",
+      "e1c70e5b-c86c-5392-bf7f-22cd35afdf23",
+      "e7b12650-94c7-5489-9962-791867dcdbfe",
+      "f0d4668b-7a63-53a7-9112-e64dc0c02542",
+      "f1fe25a1-45df-5d02-9be1-b7143f8c7600"
+    ],
+    "repair_layers": [
+      "F.Cu",
+      "In2.Cu",
+      "B.Cu"
+    ]
   }
 }

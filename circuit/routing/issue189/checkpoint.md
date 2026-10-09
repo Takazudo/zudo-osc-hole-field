@@ -1,3 +1,122 @@
+# Accepted increment — 2026-10-09 05:18 UTC
+
+PR #193 branch agent-fix/189-corridor-repair. JR adoption commit0cdf42e;
+JL137 / JR155 / core1509 accepted native edges. JR replay37886650433 passed
+162→155, DRC/parity0/0,520 existing warnings, no new warning identities/split
+pad groups, independent reload agrees. All50311 original objects retained,
+401 additions/0 removals. Board SHA
+cf8cabf2e115e294a7a67253eae290ecd02a57419b5996a54e8755fcf79196cf.
+
+70 affected tests and pnpm check pass; guarded build/site checks PASS (the
+pre-existing allowlisted template link remains unchanged). Freeze PR#193 after
+this accepted-status commit for exact-head CI; continue experiments separately.
+
+JL six-corridor pilot37887005318 remains read-only on4f15044. JR next-pilot
+input now matches adopted155; dispatch once on the follow-up branch using
+board=osc-jack-right, local_repair=true, local_mode=cut. Core sole writer
+37881591885 remains on agent-fix/189-isolated-rail-replay; never duplicate or
+remove it. Inspect/reconcile its final bot commit before ground-link replay.
+Issue#189 remains open; none of these counts meets zero-edge completion.
+
+## Earlier checkpoint history (superseded above)
+
+# Current checkpoint — 2026-10-09 05:04 UTC
+
+PR #193 branch `agent-fix/189-corridor-repair`; JL adoption commit `7b8898c`.
+PR #192 merged `da551253b2b3fb057ba352e39179c9a7d1233e93`; exact-head and
+post-merge CI 37884892166 passed. Issue #189 remains open.
+
+Task branch canonical JL137 / JR162 / core1509. JL corridor adoption37885619978
+passed:138→137, DRC/parity0/0, independent reload agrees, no split groups or
+new warning identities. Removed7/added157, retained32778 original objects.
+Candidate SHA b91bc8f1194dbaf9534863534ef2a090fae165b63f0aa01eaea2d367e7c94dbc.
+
+JR read-only pilot37885622256 passed its full gate:162→155, no native errors,
+no split groups/new warning identities, all50311 original objects retained,
+401 added/0 removed. This is NOT canonical adoption. Artifact11596192828,
+ZIP SHA 0b632955551285ac5a716372483de9bf46b2f94e9596ec8656417cd26a1ee37a.
+Fixed replay/result are jr-return-restored-copper.json and -result.json.
+Canonical replay37886650433 is active from c9f89aa; do not duplicate. Its command:
+```sh
+gh workflow run 378789207 --ref agent-fix/189-corridor-repair \
+  -f board=osc-jack-right -f replay_jr=true
+```
+
+Core sole writer37881591885 remains on retained branch
+agent-fix/189-isolated-rail-replay, source78ebdcf. Do not duplicate or delete.
+Inspect its final native receipt and reconcile any bot commit before a new core
+transaction. Prepared core-ground-link is raster-only, 11 additions/0 removals,
+not native-validated; rebind/recompute if current writer changes canonical core. The ground-link replay
+mode source-pins both hashes before native serialization; stale input regression
+passes. Do not dispatch it until the current core writer finishes.
+
+H1/H2 proofs and same-input benchmarks remain in merged#190 evidence. Corridor
+implementation passed68 affected tests. Await current exact-head CI and canonical
+JR replay before recording further accepted progress. Completion still requires
+JL/JR/core zero native open edges and full integration checks; no qualification claim.
+
+Next JL pilot uses six disjoint captured corridors on accepted137, selecting54
+objects out of1268 whole-victim objects. Bounded raster RRR found0 accepted
+paths/107 failures in140.7846s and rolled back all changes (guard PASS). Archived
+original plan:jl-corridor-plan.json. Current jl-local-plan.json is the new native
+pilot, NOT the already-adopted seven-object transaction. Native not yet run.
+
+JL six-corridor pilot37887005318 is active from4f15044. No canonical writer.
+JR follow-on source plan now selects23 objects over six disjoint corridors on
+native-eligible155, excluding In3 signal routes. Its all-net bounded probe had
+0 accepted paths/121 failures in177.1664s (guard PASS); no copper changed.
+Do not dispatch the follow-on cut until JR writer37886650433 finishes and its
+adopted board hash matches the plan. Current jr-local-plan.json is this next
+pilot; the old terminal-only plan is archived separately.
+
+## Earlier checkpoint history (superseded above)
+
+# Current checkpoint — 2026-10-09 04:34 UTC
+
+Active execution branch: `agent-fix/189-corridor-repair`, based on PR#192 head
+`dff36f0407520bb9f4eed8b5aa33adfcd5c7b6b1`. PR#192 is frozen for checks while
+core writer37881591885 continues on its retained branch; never delete that branch.
+PR#190/#191 already merged with required checks and post-merge CI passing.
+
+Accepted canonical counts: JL138 / JR162 / core1509. JL leaf adoptionf154db5
+is preserved. No other pilot copper was adopted. Full native artifacts and ZIP
+hashes are indexed in benchmark-artifacts.json.
+
+JL local pilot37883020432 finished138→cut141→fresh138: rejected for no gain,
+errors/parity0/0, no warning or membership regression. The target's soft probe
+crossed three victim nets; whole-net rerouting rolled back. The follow-on
+source corridor selection cuts only seven actual corridor objects out of217
+objects on those nets. New diagnostics retain its exact physical probe path;
+explicit cut validation rejects unknown geometry and supply/ground objects.
+The native cut topology must still reconstruct every retained boundary fragment.
+
+Next JL read-only native command after this branch is pushed (check active runs
+first; do not duplicate):
+```sh
+gh workflow run 378789207 --ref agent-fix/189-corridor-repair \
+  -f board=osc-jack-left -f local_repair=true -f local_mode=cut
+```
+
+JR subset37883303894 finished162→156 but is rejected:12 signal edges close,
+-12V5→7 and AGND29→33; errors/parity0/0, no new warnings. Explicit restoration
+found one supply track but no path for C7321.1 or the four detached AGND groups;
+no native validation of that incomplete restoration was launched. Exact probe
+source/output retained. Do not repeat the unchanged additive configuration.
+
+Core outer-only replay37881591885 is still active, source78ebdcf. Its prior
+reviewed candidate was rejected1509→1400. Allowing AGND itself on In1 in a
+subsequent direct-link probe still found only one path and five failures; no
+native eligibility inferred. Keep canonical core unchanged until its full gate
+passes. Core's checked-in499 unconnected records are capped, not the complete count.
+
+Validation:68 affected Python tests passed on the corridor implementation.
+The prior PR#192 head passed local pnpm check and guarded build/site checks
+(the existing allowlisted template link is unchanged). Current PR#192 CI37883307910
+has documentation and all three native DRC jobs green; Python/native fixtures
+still pending. Await all exact-head checks before normal merge. #189 stays open.
+
+## Earlier checkpoint history (superseded above)
+
 # Current checkpoint — 2026-10-09 04:10 UTC
 
 PR#192 branch agent-fix/189-isolated-rail-replay. PR#190 merged da615cc and#191
