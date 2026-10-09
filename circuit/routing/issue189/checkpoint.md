@@ -1,3 +1,28 @@
+# Follow-up checkpoint — 2026-10-09 07:11 UTC
+
+Active follow-up branch agent-fix/189-next-ground-corridors starts at accepted
+JL134/JR154/core1509 (JL bot5dcf82e,JR ground bot7c80220). Parent PR195 still owns
+the ongoing JR signal writer37896805484 on710bb92; reconcile its eventual commit
+into this branch before any JR work. Do not duplicate that writer. Its source
+checks preserve all24accepted ground additions. PR195 final CI/merge is pending.
+
+Next read-only JL cut: R8105.2 and R2209.2,three exact signal objects on two victim
+nets. jl-two-ground-prepare.py pins accepted134 SHA892c... and its native dump,
+proves each selected135-era object remains exactly unchanged/unique, checks the
+prior R1301.2 ground repair is in the main native group, and selects only the two
+remaining source groups. Ground dimensions and all full native gates are unchanged.
+Current jl-local-plan.json targets this case; prior one-via plan archived.
+Dispatch local_repair=true/local_mode=cut on this follow-up branch after push.
+No canonical copper change in this follow-up yet. Keep the result even if rejected.
+
+Core sole writer37895925149 remains active on agent-fix/189-core-filtered source
+0e6697df2bde94e3b3397da9ae0727bcdf4de464. Native filtered result unknown. Original
+outer rejection and complete retained-copper evidence are already preserved.
+Main remains135/155/1509 until PR195 merges; issue189 stays OPEN. Full completion
+criteria remain unmet. Reconcile accepted inputs before every further replay.
+
+## Earlier checkpoint history (superseded above)
+
 # Current checkpoint — 2026-10-09 07:02 UTC
 
 JR ground replay37894363972 ADOPTED155→154, bot7c8022065fa4177e44567de084d0fdb8342991c4,
