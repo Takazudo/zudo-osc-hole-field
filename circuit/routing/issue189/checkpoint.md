@@ -1,3 +1,29 @@
+# Current checkpoint — 2026-10-09 07:02 UTC
+
+JR ground replay37894363972 ADOPTED155→154, bot7c8022065fa4177e44567de084d0fdb8342991c4,
+now incorporated on PR195 task branch. Canonical SHA is exactly the eligible donor
+3e7305df6f30fb66593e767d1c36c148684ae8664e71a82f4a1bf381f77de9f6. Native errors/parity0/0,
+520existingwarnings,no new warning identities or original-group splits,fresh agrees.
+All50712 originals retained,24ground objects added,zero removals. Main still155
+until PR195 passes exact-head checks and merges; task branch counts135/154/1509.
+
+jr-u7509-on-ground-prepare.py now asserts that exact canonical154 hash. It proves
+every old copper block is unchanged on the additive ground input, all13 signal
+removals match exact original objects,33added identities do not collide, and all24
+accepted ground blocks survive byte-for-byte. Rebased replay retains50723 objects
+INCLUDING the24ground additions. No old155 board is copied over canonical154.
+Combined native check is NOT RUN yet. Dispatch replay_jr=true/jr_replay=u7509-on-ground
+after push; full native gate against154 must decide eligibility and adoption.
+
+JL canonical ground-junction writer37896098143 is active on
+ de8c9153e067bb02c263e57fe0e711168118d378; eligible donor135→134 already fully checked.
+Core sole writer37895925149 is active on agent-fix/189-core-filtered at0e6697d,
+56nets/216outersegments/zero removals. Do not duplicate either writer.
+Next: reconcile bot commits, freeze final PR195 head for full CI and authorized
+merge, then continue bounded repairs on accepted inputs. Issue189 remains OPEN.
+
+## Earlier checkpoint history (superseded above)
+
 # Current checkpoint — 2026-10-09 06:55 UTC
 
 JL ground-junction pilot37894907581 is NATIVE ELIGIBLE135→134. Native errors/parity0/0,
