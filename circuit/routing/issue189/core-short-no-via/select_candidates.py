@@ -3,14 +3,14 @@ import json,hashlib,math
 from pathlib import Path
 from shapely.geometry import LineString
 ROOT=Path(__file__).resolve().parents[4];HERE=Path(__file__).resolve().parent
-sources=[HERE.parent/name/'result.json' for name in ['core1441-no-via','core1441-next-no-via']];data={'transactions':[t for source in sources for t in json.loads(source.read_text())['transactions']]};rows=[];selected=[]
+sources=[HERE.parent/name/'result.json' for name in ['core1441-no-via','core1441-next-no-via','core1441-third-no-via']];data={'transactions':[t for source in sources for t in json.loads(source.read_text())['transactions']]};rows=[];selected=[]
 for t in data['transactions']:
  c=t['proposal']['copper']
  if not 1<=len(c)<=4 or not all(r['kind']=='segment' and r['layer'] in ['F.Cu','B.Cu'] and r['width_nm'] in [150000,200000] for r in c):continue
  length=sum(math.dist(r['start_nm'],r['end_nm'])/1e6 for r in c)
  if length>4:continue
  selected.append({'net':t['net'],'layer':t['layer'],'objects':len(c),'length_mm':length,'source_islands':[r['island'] for r in t['results'] if r['path']]});rows.extend(c)
-assert len(rows)==15 and len(selected)==10 and len({r['uuid'] for r in rows})==len(rows)
+assert len(rows)==19 and len(selected)==11 and len({r['uuid'] for r in rows})==len(rows)
 distances=[]
 for i,a in enumerate(rows):
  for b in rows[:i]:
