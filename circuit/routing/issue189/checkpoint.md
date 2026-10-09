@@ -1,4 +1,21 @@
-# Bounded JL U106 pilot prepared — 2026-10-09 10:11 UTC
+# Native JR split isolated — 2026-10-09 10:12 UTC
+
+JR37914521455 completed145→144,but REJECTED:3signal joins plus2new AGND splits
+(R7530.2,R7505.2),0DRC/parity,520warnings,no new warning identities,fresh agrees.
+No canonical copper changed. Receipt-only bota169d40 integrated by66c34d8 while
+preserving local implementation. Artifact11609602841 digest verified; exactnative
+candidate682ad2f791da4bbf4eaf76b03f3329e1c8c9765121ae44b3b2690225b7fb7120 retained.
+
+New two-without-d7504 proposal excludes the entire15-object transaction near both
+split pads,retaining93objects on twoother nets. This is a native isolation test,
+not proof that the two nets are safe. Dispatch replay_jr=true,jr_replay=two-without-d7504
+on the pushed source; actualJRinput remains145SHA7e548f08e57c5b982c707583b537c7364939f4e336c1f2e8cfc2b2b7bf0253b6.
+
+JL read-only U106cut pilot37915918722 at66c34d823bfa9a5b3c343fe4ca081f9c517378d3
+is active. Core37907147442 remains solecorewriter.95affected tests PASS after
+bounded-weight change;PNPMcircuit/check PASS. Keep189OPEN and allsuccessfulcopper.
+
+# Bounded JL U106 pilot prepared — 2026-10-09 10:09 UTC
 
 Source adds a bounded search weight in[1,2.5],with the same300000 expansion cap and
 unchanged50mm frame,12cut,two-victim limits. U106.12 targetXE696508C2D9B11400F0C
