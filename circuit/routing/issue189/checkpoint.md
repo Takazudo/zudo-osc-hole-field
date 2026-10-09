@@ -1,3 +1,35 @@
+# Fine escape replay continuation — 2026-10-09 08:08 UTC
+
+PR196 is frozen at ee6c0aaa760b2e48e41bcfe82af259819f11ada1 for CI37902231900;
+all five checks must pass on that exact head before its authorized normal merge.
+Retain its branch and keep189 OPEN. Continue on agent-fix/189-fine-escape-replays.
+PR195 mergedc7f9a4e; its postmergeCI37900306980 passed all five checks.
+
+JL supply pilot37901808610 atc4a3c79 is NATIVE ELIGIBLE134→127: all +12/-12/+5
+open edges are0,signals105,AGND22. Errors/parity0/0,477existingwarnings,no new
+identities or original-group splits,independent fresh agrees. All33131oldobjects
+retained,10full-width250000nm outer segments added,zero vias/removals. CandidateSHA
+343add6006f409640372f77cee521f717626c852c9ee8f68066b78c6b91471f7; replaySHA
+37930f7d0da6ff2f2ceba89e0f90938f45ed4ff705a44bdd037fea472b5c4a11. Artifact11603365827
+ZIP5515fcdb207670ff61d76e5fd1f2676191b5b1c3ff615d49195b758c9df166a2 verified.
+Canonical board remains134 until the dedicated adoption replay passes.
+The prior accidental old-plan dispatch37901753345 was canceled,not evidence.
+
+JR supply pilot37901540024 at a3ec8ca is running against153; full-width10segment
+proposal,fivepaths,zero vias/removals. JR filtered signal pilot37902237082 at ee6c0aa
+is queued behind it,against the same153 input. The earlier three-signal pilot
+37900022560 rejected153→151 for an original minus-twelve group split atC7221.1;
+restore failed,full fresh acceptance not reached. Verified receipt and geometric
+attribution are committed. Filtered33object/two-net proposal omits whole D7208
+transaction within2mm; this is a hypothesis pending native validation. Preserve
+any accepted supply copper before rebinding a later signal replay.
+
+Core sole writer37895925149 remains on agent-fix/189-core-filtered at0e6697d.
+Do not duplicate. Local JL0.025mm additive signal screen remains running on134;
+one raster path so far,no native claim. Its source/output are
+.circuit-cache/issue189-jl134-finer-probe.{py,json}; retain final result. No other
+local heavy run is active. Accepted main remainsJL134/JR153/core1509 until adoption.
+
 # Bounded pilot diagnosis — 2026-10-09 07:49 UTC
 
 JL RB2217 pilot37899555501 is REJECTED:134→134,one signal group split,one new
