@@ -190,7 +190,7 @@ def merge(board_id,delta_paths,label,repair_ground=False):
     lost=sorted(set().union(*(set(d['nets'])-k for d,k in zip(deltas,ownership))))
     if lost:print(f'{len(lost)} nets claimed by two shards; the later shard loses them: {lost[:10]}')
     added={a['uuid']:a for d in deltas for a in d['added']}
-    reverted=set()
+    reverted=set();rejected_attempts=[]
     for attempt in range(6):
         work=workspace(board_id,'shards-merge');candidate=work/board.name
         candidate.write_text(merge_text(base_text,deltas,reverted))
@@ -206,6 +206,21 @@ def merge(board_id,delta_paths,label,repair_ground=False):
             culprits=culprits or {a['net'] for a in added.values() if a['net'] not in reverted and a['layer'] is None}
             print(f'{split} split by merged copper')
         if not culprits:break
+        # The next workspace() call clears shards-merge. Preserve the actual
+        # failing geometry and native findings before reverting whole nets.
+        saved=work.with_name(work.name+f'-rejected-{attempt+1}')
+        suffix=2
+        while saved.exists():
+            saved=work.with_name(work.name+f'-rejected-{attempt+1}-{suffix}');suffix+=1
+        evidence={'attempt':attempt+1,'input_board_sha256':sha,
+                  'candidate_board_sha256':hashlib.sha256(candidate.read_bytes()).hexdigest(),
+                  'open_edges':after['open_edges'],'reverted_nets':sorted(culprits),
+                  'native_errors':[v for v in drc['violations'] if v['severity']=='error'],
+                  'plane_splits':split,'split_pad_groups':split_pad_groups(before,after),
+                  'workspace':str(saved.relative_to(ROOT))}
+        (work/'rejected-attempt.json').write_text(json.dumps(evidence,indent=2)+'\n')
+        (work/'candidate-replay.json').write_text(json.dumps(delta(base_text,candidate.read_text()),sort_keys=True)+'\n')
+        work.rename(saved);rejected_attempts.append(evidence)
         reverted|=culprits;print(f'merge attempt {attempt+1}: reverting {len(culprits)} nets with failing copper',flush=True)
     else:raise RuntimeError('merged DRC errors persist after reverting nets')
     stitch_receipt=None
@@ -222,6 +237,7 @@ def merge(board_id,delta_paths,label,repair_ground=False):
     receipt={'stage':f'shards-{label}','status':'NATIVE CHECKED DRAFT STAGE','shards':len(deltas),
              'open_edges_before':before['open_edges'],'open_edges_after':after['open_edges'],
              'nets_merged':len(set().union(*disjoint(deltas))-reverted),'nets_reverted':sorted(reverted),'nets_lost_to_overlap':lost,
+             'rejected_attempts':rejected_attempts,
              'copper_added':sum(a['net'] not in reverted for a in added.values()),'drc_errors':sum(v['severity']=='error' for v in drc['violations']),
              'drc_warnings':sum(v['severity']=='warning' for v in drc['violations']),'parity':len(drc['schematic_parity']),
              'open_by_net_after':{n:len(g)-1 for n,g in after['islands'].items()}}

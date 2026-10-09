@@ -389,6 +389,15 @@ def route(dump,nets=(),rip=(),rip_first=False,res=0.1,layer_cost=None,via_cost=3
     def search(N,w,vd,src,goal,goal_is_via,pad_window,exclude=(),soft=None):
         """soft: net ids whose copper is passable at a cost; returns (path, expanded) or, with soft, (path, blockers)."""
         search_failure.clear();search_failure.update(reason='unknown',attempts=[])
+        # A bounded allocation can exclude an entire native component. Keep the
+        # obligation and report it; never reduce an empty coordinate array or
+        # misreport this as an exhausted path search.
+        if not src.any():
+            search_failure['reason']='no_source_in_search_bounds'
+            return None,0
+        if not goal_is_via and not goal.any():
+            search_failure['reason']='no_goal_in_search_bounds'
+            return None,0
         holes=raster.hole if soft is None else raster.holes_without(soft)
         extra=int(round(pad_window/res));guard=int(round(1.5/res))
         boxes=[np.argwhere(src.any(0))]

@@ -1,3 +1,192 @@
+# Accepted JR143 and PR199 freeze — 2026-10-09 10:23 UTC
+
+JR run37916090766 atfcf8a4fe3d4b9697f2d8d42d090a60bd220ffe79 ADOPTED145→143:
+87segments+6vias,zero removals,all50821old objects identical.0DRC/parity,520warnings,
+no new identities/splits,independent fresh agreement. Candidate/published SHA
+72a24ee996ae454c099ed165de1bd857721c42bef37861907a98ba5a4bf39d0c; replaySHA
+d6c52b2e08c6311ad8bdb3c19dac176f37ebf9624235b6c2d6d398ea955c0ecc.
+Artifact11610260309 ZIP827206306661b112533bf86ecae32581534d3d65d7712d746475227bb2e91f95
+is downloaded/digest verified. Native full geometry multiset retention is saved.
+Bot commite8648bbc732cef03b9234811d57f5b74dfc6a935 fast-forward integrated without overwriting other work.
+
+Freeze PR199 after this evidence/docs commit for exact-head CI; move new proposals
+to a separate continuation branch. Main198 remains126/145/1441 until199 merges;
+PR199 actual boards are126/143/1441. Keep189OPEN.95affected tests andPNPMchecks pass;
+full final-head CI still required before normal incremental merge.
+
+JL read-only U106pilot37915918722 on66c34d823bfa9a5b3c343fe4ca081f9c517378d3 remains
+active. Its result is NOT claimed accepted. Core37907147442 still solecorewriter
+on retained agent-fix/189-ground-signal-continuation; inspect terminal output and
+integrate any accepted core-only delta into the continuation,not frozen199.
+Next JR selection is83objects on3whole transactions from the native145screen;
+rebase on actual143,prove retained50914objects and no conflicts with accepted93,
+then use full original native gates. It is NOT native checked yet.
+
+# Native JR split isolated — 2026-10-09 10:12 UTC
+
+JR37914521455 completed145→144,but REJECTED:3signal joins plus2new AGND splits
+(R7530.2,R7505.2),0DRC/parity,520warnings,no new warning identities,fresh agrees.
+No canonical copper changed. Receipt-only bota169d40 integrated by66c34d8 while
+preserving local implementation. Artifact11609602841 digest verified; exactnative
+candidate682ad2f791da4bbf4eaf76b03f3329e1c8c9765121ae44b3b2690225b7fb7120 retained.
+
+New two-without-d7504 proposal excludes the entire15-object transaction near both
+split pads,retaining93objects on twoother nets. This is a native isolation test,
+not proof that the two nets are safe. Dispatch replay_jr=true,jr_replay=two-without-d7504
+on the pushed source; actualJRinput remains145SHA7e548f08e57c5b982c707583b537c7364939f4e336c1f2e8cfc2b2b7bf0253b6.
+
+JL read-only U106cut pilot37915918722 at66c34d823bfa9a5b3c343fe4ca081f9c517378d3
+is active. Core37907147442 remains solecorewriter.95affected tests PASS after
+bounded-weight change;PNPMcircuit/check PASS. Keep189OPEN and allsuccessfulcopper.
+
+# Bounded JL U106 pilot prepared — 2026-10-09 10:09 UTC
+
+Source adds a bounded search weight in[1,2.5],with the same300000 expansion cap and
+unchanged50mm frame,12cut,two-victim limits. U106.12 targetXE696508C2D9B11400F0C
+has a raster-only48-object path after three exact segment cuts on two victim nets.
+The15.1x15.3mm frame passes entire-cut geometry validation. Planjl126-u106-plan.json
+and currentjl-local-plan.json require native victim restoration and all original
+full-board gates. Dispatch local_repair=true,local_mode=cut,board=osc-jack-left on
+this exact pushed source; no canonical promotion by pilot. Prior JL frame and
+nearest-pair screens remain saved as negative evidence. Weighted nearest-pair
+cut screen guardPASS(37s); native cut memberships/restoration NOTRUN locally.
+
+JR next24screen completed:4raster paths,guardPASS(154s),native NOTRUN. Reconcile
+with ongoing three-compatible writer37914521455 before any subsequent proposal.
+Core37907147442 still sole core writer; no further core dispatch until terminal
+accepted-input reconciliation. Main native totals remain126/145/1441.
+
+# Active continuation — 2026-10-09 10:04 UTC
+
+JR three-compatible writer37914521455 at e4eff65cbacd2f6578ed696ee89156be22f2716a
+is active; sole core writer37907147442 also remains active. No new native adoption
+is claimed. Postmerge198CI37911896861 passed. Main totals remain126/145/1441.
+
+JL native cut diagnosis: original frame excluded the entire destination component.
+New explicit empty-source/goal diagnostics preserve obligations and avoid empty
+array crashes; both directions have a regression. Same saved cut dump with a
+complete-component frame reaches300000 expansions but still no target path.
+The changed weighted17-cut target-only screen also found zero paths; no native
+victim restoration or promotion attempted. Exact inputs/results retained in
+jl126-u2105-result and jl126-ranked-cut-screen.62 focused tests,PNPM circuit/check,
+and diff checks PASS. A changed additive nearest-native-component-pair screen is
+running locally; no result claimed yet.
+
+core-short-supplies/rebase_proposal.py requires an explicitly reviewed accepted
+core SHA and proves every old copper block retained,known new31-object transaction
+only,zero UUID collisions and new/new clearances. Its workflow entry intentionally
+has no ready plan/proposal until the sole core writer finishes and the rebase is
+reviewed. Do not dispatch short-supplies before that terminal reconciliation.
+
+# Current checkpoint — 2026-10-09 09:58 UTC
+
+PR198 merged at4580536e8edd0bb9216c02d6b01aec00189da20e; all five exact-head
+checks37909660345 and postmerge37911896861 PASS. PR199 continues on
+agent-fix/189-short-escape-continuation, reconciled with main. Issue189 remains OPEN.
+Canonical native totals JL126/JR145/core1441, errors/parity0/0 on all three.
+
+JR two-net writer37910371564 reverted both proposals:145→145,zero adopted copper.
+Read-only diagnostic37912542439 proves20 shorting_items +4 tracks_crossing errors,
+parity0. Both proposals put vias at(410.375,177.85), producing a-0.6mm copper gap.
+Its exact native findings and failed result are retained in jr-bounded-two/diagnostic.
+The merger now preserves every failed native workspace/replay before reverting,
+including repeat-run histories;91 affected regression tests PASS.
+
+JL U2105 bounded cut37911267983 restored its victim but not its target:126→126,
+errors/parity0/0,477 warnings,zero new warning identities/group splits. One3.6mm
+segment was removed and one replacement added;33148 other objects unchanged.
+Pilot NOT ADOPTED. Exact result:jl126-u2105-result/result.json.
+
+JR three-compatible selects3 whole net transactions/108 additions/zero removals,
+retains all50821 accepted objects, and excludes the proven colliding R7626 path.
+New/new minimum copper gap39.740573mm; this geometric screen is NOT native acceptance.
+Next: push this source and dispatch replay_jr=true,jr_replay=three-compatible,
+board=osc-jack-right on this isolated branch. Preserve actual receipts and copper.
+
+Core sole writer37907147442 remains active on retained parent branch
+agent-fix/189-ground-signal-continuation ataf724ad816ccf837cc3494f10bf3137f8025ae5e.
+Do not duplicate it. Inspect terminal artifact/native receipt and any bot commit,
+then integrate accepted core-only delta before rebasing core-short-supplies.
+Those135 full-width short supply segments remain NATIVE NOT RUN.
+Core AGND bounded inventory completed both guarded batches (summary.json); every
+saved proposal is raster-only, NATIVE NOT RUN. Rebase against terminal core input
+before any submission; never overwrite newly accepted copper with the old1441 board.
+
+# Native bounded-cut pilot and paired JL negative evidence — 2026-10-09 09:28 UTC
+
+JL disposable cut pilot37911267983 at898fbd963877407a83e576e2569cdb9c1249632f
+runs from accepted126. Exact U2105.2 target,one3.6mm In2.Cu victim segment,
+12mm frame,0.025mm raster,300000expansions/window. repair_bounds validates one target,
+1..12explicit entire cuts within a<=50mm frame and at most two signal victims.
+Native cut dump retains all groups/padless fragments; original full-board gates
+are unchanged. Pilot cannot promote.90affected tests,source selection,PNPM circuit
+and documentation checks PASS. Initial dispatch local_mode=local was rejected422
+before creating a run; actual mode=cut is37911267983. No duplicate pilot.
+
+JR retry37910371564 at8cc4928906be305c551f9a01df0dd2e66e4e0808 remains active after
+fixing the preparation import collision; prior37909861297 never reached native.
+Core sole writer37907147442 remains active on the parent branch. PR198 frozen563c099
+requiredCI37909660345 has four passing jobs;Python job is at aggregate regeneration.
+
+JL same-input comparison selected24nets,searched23,and skipped the same one whose
+frame exceeded2500mm2. Both0.025mm(162.632636s) and0.0125mm(498.109087s) produced0paths/
+0copper; both guardPASS. The skipped net isX2F7F192BBAEF5BD8A311. This is not proof of
+physical impossibility. Full inputs,budgets,negative results and repair ranking are
+in jl126-bounded-screen. A24target bounded core ground fanout screen is running;
+its output remains raster-only. Accepted totals remainJL126/JR145/core1441.
+
+# JR preparation failure corrected
+
+JR run37909861297 at1ad8b28 FAILED BEFORE NATIVE ROUTING: local select.py shadowed
+Python stdlib select while prepare.py imported subprocess. No native gate ran and
+no canonical copper changed. Renamed it to rebase_proposal.py; the analogous core
+selector is now select_proposal.py. Fresh-interpreter select/subprocess smoke
+checks pass from all four affected preparation directories. Retry only the same
+hash-bound31-object proposal on unchangedJR145 after pushing this correction.
+This is a script-name failure,not a native DRC result or environment blocker.
+
+# Full core supply inventory selected — 2026-10-09 09:16 UTC
+
+Current follow-up PR199,branch agent-fix/189-short-escape-continuation,source1ad8b28.
+JR writer37909861297 at1ad8b2869b13036a66d93c743168c78281a59185 is checking the31-object
+two-path proposal on actual145. Core sole writer37907147442 remains on PR198's branch;
+no duplicate core writer. PR198 frozen563c099 has requiredCI37909660345 pending.
+
+Core supply screen completed all160targets on identical accepted1441 native geometry:
+130raster paths/437objects,total1143.965605s; both guarded batchesPASS.
+core-short-supplies/select_proposal.py selects109targets(59+12V/50-12V),135segments,
+all250000nm wide,zero vias/removals/UUID collisions,total length<=2mm per target
+(observed maximum1.75mm). All133169input objects preserved. Selection is NOT native
+checked and must be reconciled against the active core writer's actual terminal
+board before submission. Do not overwrite accepted copper with its old1441input.
+
+JL126 24-net0.025mm screen is running locally; no new paths so far. A0.0125mm paired
+script is prepared butNOTRUN,as is the24-target core ground screen. These are finite
+changed-method probes,not permission to weaken native gates or repeat unchanged
+larger budgets. Four first24failed supplies exhaust below budget;U1603.4 records no
+A*attempt and remains undiagnosed. Failure evidence is retained without claiming a
+cause for that fifth target. Main197 postmerge37906634220 passed.
+
+# Short escape continuation — 2026-10-09 09:15 UTC
+
+PR198 is frozen at563c09936e63361bce96cfb89a5f4eb83a358fb9 for requiredCI37909660345.
+Its actual accepted boards areJL126/JR145/core1441. Merge only after all five checks
+pass on the exact current head; preserve the sole core writer37907147442 on that
+branch and inspect its real receipt if it changes the head. Keep189OPEN.
+
+New work is isolated on agent-fix/189-short-escape-continuation, based on563c099.
+JR bounded-two/rebase_proposal.py rebinds two saved paths,D7504.1 and R7626.1,from146 to
+accepted145,proving all50821current objects (including22new U7403objects) remain
+unchanged,31new objects,zero removals/UUID collisions. prepare.py requires exact
+145inputSHA7e548f08e57c5b982c707583b537c7364939f4e336c1f2e8cfc2b2b7bf0253b6
+and proposalSHA before native serialization. Combined native gate NOTRUN yet.
+No second core writer is authorized while37907147442 remains active.
+
+Core remaining supply screen is finishing locally. Next: retain its complete
+results,select only short full-width additive paths,then reconcile with the core
+writer's eventual accepted board before any native submission. Prepared JL126
+24-net and core24-ground scripts in.circuit-cache are NOTRUN. No checks waived.
+
 # JR145 accepted; freeze the continuation milestone — 2026-10-09 09:11 UTC
 
 PR198 now contains acceptedJL126/JR145/core1441. JR bounded run37907617523 at75f599e

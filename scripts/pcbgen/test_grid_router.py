@@ -34,6 +34,20 @@ class GridRouterTests(unittest.TestCase):
     def route(self,dump,layer_cost=(3,1,1.3,3)):
         return route(dump,res=0.1,clearance=0.2,signal_width=0.2,layer_cost=layer_cost,log=lambda m:None)[0]
 
+    def test_bounded_missing_component_is_reported_without_dropping_obligation(self):
+        for bounds,reason in (((0,0,5,8),'no_source_in_search_bounds'),
+                              ((7,0,12,8),'no_goal_in_search_bounds')):
+            with self.subTest(bounds=bounds):
+                events=[];dump=board()
+                results,removed=route(dump,['A'],res=.1,bounds_mm=bounds,
+                                      diagnostics=events,log=lambda m:None)
+                self.assertEqual(len(results),1)
+                self.assertIsNone(results[0]['path'])
+                self.assertFalse(removed)
+                self.assertEqual(events[0]['reason'],reason)
+                self.assertEqual(events[0]['attempts'],[])
+                self.assertEqual(dump['islands']['A'],[['p0'],['p1']])
+
     def test_open_layer_routes_without_via(self):
         rows,_=copper_rows(self.route(board(),layer_cost=(1,1,1,1)),'fixture','t')
         self.assertTrue(rows)
