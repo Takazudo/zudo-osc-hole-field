@@ -1,3 +1,345 @@
+# Frozen PR195 review checkpoint — 2026-10-09 07:20 UTC
+
+PR195 branch agent-fix/189-return-continuation now contains native-adopted
+JL134 / JR153 / core1509. Freeze this review commit for fresh required CI; only
+merge its exact head after all five checks pass. Existing user authorization
+permits a normal verified incremental merge; retain branches and keep189 OPEN.
+Main is still135/155/1509 until that merge. No board in this PR is qualified for
+fabrication or hardware use by these routing checks.
+
+Accepted JL135→134: writer37896098143,bot5dcf82e6be60d0d06e023f4830d5a478e3f29ab2,
+boardSHA892c31f6d97081723864996d601ece6ecf272c25140fd1169f9e534b1adcda6a.
+Native errors/parity0/0,477existingwarnings,no new identities or original pad-group
+splits,independent fresh agrees.33103oldobjects retained,21explicitly diagnosed
+objects removed,28added. The corrected endpoints meet retained centerlines.
+
+Accepted JR155→154→153: ground writer37894363972/bot7c80220, then signal writer
+37896805484/bot300123fab361a3400aa1188bf11af4b083f770b8. Final board SHA
+05a8d4beff64f5dee1356f679eb7d24842996d7a6b125047b8f48467e41bac26. Native errors/parity0/0,
+520existingwarnings,no new identities or original-group splits,fresh agrees.
+Last step retains50723objects INCLUDING all24previous ground additions,13removed,
+33added. Direct original155→final153 native-dump comparison also passes the full
+gate:50699originalobjects retained,13removed,57added (jr-pr195-retention.json).
+Final artifact11601650042 was downloaded and ZIP digest verified.
+
+No jack canonical writer remains active. Next JL read-only pilot37897562881 is
+already running fromfb793f70595da70a9e62bd7d87dd564fa7d3b83c on follow-up branch
+agent-fix/189-next-ground-corridors, draftPR196 based on195. It targets R8105.2 and
+R2209.2 using three exact signal objects and protects accepted R1301.2 in its
+native134 baseline. Reconcile this final JR153 commit into196, then retarget196
+to main after195 merges. Preserve the pilot's actual result and all accepted copper.
+
+Core sole writer37895925149 runs on agent-fix/189-core-filtered at
+0e6697df2bde94e3b3397da9ae0727bcdf4de464. It replays56nets/216outersegments without
+removing originals or adding vias/inner tracks; final result is unknown. Do not
+duplicate. Previous outer run37881591885 finished rejected1509→1430 for two AGND
+splits; all132953originalobjects retained,317added,no new warnings,DRC/parity0/0,
+fresh agreement. Its receipt-only commit and exact replay are retained.
+If filtered core adopts, inspect canonical versus native-filled hashes and any
+publication-cache equivalence receipt before rebinding further ground proposals.
+Never copy an old34955 input over accepted copper or skip the full native gates.
+
+Validation covering implementation:73affected tests,pnpm check,workflow YAML and
+shell syntax pass. Main postmerge194 CI37891992677 passed. Final PR195 exact-head
+CI must still finish; a prior bot action_required run with zero jobs is not evidence.
+H1/H2 and identical-input benchmarks remain in their committed evidence files.
+Local KiCad9 is not the oracle; pinned10.0.6 CI performs native acceptance.
+Executor works; no actual environment blockage. Full zero-edge completion criteria
+remain unmet, and issue189 remains OPEN.
+
+## Earlier checkpoint history (superseded above)
+
+# Current checkpoint — 2026-10-09 07:02 UTC
+
+JR ground replay37894363972 ADOPTED155→154, bot7c8022065fa4177e44567de084d0fdb8342991c4,
+now incorporated on PR195 task branch. Canonical SHA is exactly the eligible donor
+3e7305df6f30fb66593e767d1c36c148684ae8664e71a82f4a1bf381f77de9f6. Native errors/parity0/0,
+520existingwarnings,no new warning identities or original-group splits,fresh agrees.
+All50712 originals retained,24ground objects added,zero removals. Main still155
+until PR195 passes exact-head checks and merges; task branch counts135/154/1509.
+
+jr-u7509-on-ground-prepare.py now asserts that exact canonical154 hash. It proves
+every old copper block is unchanged on the additive ground input, all13 signal
+removals match exact original objects,33added identities do not collide, and all24
+accepted ground blocks survive byte-for-byte. Rebased replay retains50723 objects
+INCLUDING the24ground additions. No old155 board is copied over canonical154.
+Combined native check is NOT RUN yet. Dispatch replay_jr=true/jr_replay=u7509-on-ground
+after push; full native gate against154 must decide eligibility and adoption.
+
+JL canonical ground-junction writer37896098143 is active on
+ de8c9153e067bb02c263e57fe0e711168118d378; eligible donor135→134 already fully checked.
+Core sole writer37895925149 is active on agent-fix/189-core-filtered at0e6697d,
+56nets/216outersegments/zero removals. Do not duplicate either writer.
+Next: reconcile bot commits, freeze final PR195 head for full CI and authorized
+merge, then continue bounded repairs on accepted inputs. Issue189 remains OPEN.
+
+## Earlier checkpoint history (superseded above)
+
+# Current checkpoint — 2026-10-09 06:55 UTC
+
+JL ground-junction pilot37894907581 is NATIVE ELIGIBLE135→134. Native errors/parity0/0,
+no new warnings, no original pad-group/return splits, independent fresh agreement.
+33103 original objects retained,21removed,28added. Candidate
+892c31f6d97081723864996d601ece6ecf272c25140fd1169f9e534b1adcda6a;
+replay4e30062818692c712c156dce37c0a37712d5e435b1ca9e01921652b6e3332456.
+Artifact11600556242 ZIP verified, exact result/replay retained. Workflow option
+jl_replay=ground-junction now permits canonical replay through unchanged full gates.
+Dispatch replay_jl=true/jl_replay=ground-junction after push; do not duplicate it.
+This removes only the exact diagnosed terminal copper; fixed panel/electrical
+requirements and every original connected pad group remain protected.
+
+JR ground canonical writer37894363972 is active on3b5c056. JR U7509-tail donor
+is separately native eligible155→154, but must be rebound to the eventual accepted
+JR ground input before replay. Do not overwrite accepted ground additions.
+Core new sole writer37895925149 is active on agent-fix/189-core-filtered at
+0e6697df2bde94e3b3397da9ae0727bcdf4de464 (56nets/216outersegments/zero removals).
+Previous outer writer is terminal/rejected; canonical core remains1509.
+
+Task PR195 branch agent-fix/189-return-continuation. Main postmerge194 checks PASS;
+main remainsJL135/JR155/core1509 until task replay commits and PR checks complete.
+Issue189 OPEN. Next: reconcile each bot commit and exact native receipts; rebind
+JR tail; freeze verified PR head for full CI, merge under existing authorization,
+and continue ground-corridor cases on the accepted inputs. Native eligibility is
+not canonical adoption, completion, or hardware qualification.
+
+## Earlier checkpoint history (superseded above)
+
+# Current checkpoint — 2026-10-09 06:53 UTC
+
+Core outer run37881591885 is finished and REJECTED1509→1430. Native DRC/parity0/0,
+no new warnings, independent fresh agreement; all132953 originals retained with
+317new outer segments. Two original AGND groups split:1928→1922+3+2+1 and9→5+4.
+Native-reverted netX6971D913D0096F4F900D is absent from the retained replay.
+Receipt-only bot11520126bc8c2ef589ca0ee374c05ed165621601 is preserved via cherry-pick
+56be690. Canonical core SHA34955... and1509 unchanged. Artifact11599719955 verified.
+
+Next core candidate excludes six complete new net transactions within8mm of the
+four detached branches, retaining56nets/216outersegments,zero original removals,
+zero vias/inner tracks. This is a bounded attribution hypothesis, not proof of
+causality or acceptance. core-outer-filtered/prepare.py pins native donor/canonical
+hashes, records nearest-net distances and original full multiset retention.
+Dispatch one recover_core=true/core_replay=outer-filtered writer on a new isolated
+agent-fix/189-core-filtered branch at this reviewed source; old core writer is terminal.
+Full native original membership/warning/fresh/cache gates remain unchanged.
+
+JR U7509 tail pilot37893521710 is NATIVE ELIGIBLE155→154. Candidate
+7c9bc0e97f79573fb32d0e8212edc53d4be76d575f5980605ab3f7bf8483d2a3, replay
+ba52b79a56f890f5149788e7226e7a2273098ef5f2be0dad93baddde2c724973.
+All original pad groups/returns preserved,no new warnings,DRC/parity0/0,fresh agrees.
+Artifact11599459103 verified. JR ground canonical writer37894363972 is now running;
+wait for its accepted bot output, then source-check/rebind this disjoint signal
+transaction onto the accepted input before another canonical replay. Never replace
+accepted ground copper with the old155 board. JL junction pilot37894907581 still
+running; no new JL acceptance yet. Main remains135/155/1509 and issue189 OPEN.
+
+## Earlier checkpoint history (superseded above)
+
+# Current checkpoint — 2026-10-09 06:42 UTC
+
+JR canonical ground replay37894363972 is queued on
+3b5c056ed4ab5496ce450baebfa980c7dc9cea75, behind read-only tail pilot37893521710.
+Its donor pilot is native eligible155→154 with zero removals and all50712 original
+objects unchanged. Do not dispatch another JR writer. Reconcile its eventual bot
+commit before further JR proposals; successful adoption changes the155 input.
+
+Prepared JL ground-junction correction from native rejected134 candidate52ccc...:
+new F route endpoint now meets the retained branch at143.2,122.2mm; new In2
+endpoint meets the preserved13mm original track at146.8,123.6mm. Remove only
+newly redundant old terminal copper: eighteen In2 staircase segments totaling
+3.672792mm, one0.2mm F tail, and trim the adjacent F diagonal at the new junction.
+The first ten-track screen stopped at its explicit bound; examination found the
+preserved long-track boundary. Final screen is capped20segments/5mm and stops
+there; it does not delete the long13mm branch. Every selected original object
+has a unique UUID and exact baseline/candidate geometry asserted.
+Final proposal28adds/21removes; full native gate NOT RUN. Current jl-coupled-plan
+selects it. Dispatch read-only local_mode=coupled after push. No canonical JL change.
+
+Accepted main remains JL135/JR155/core1509, DRC/parity0/0; postmerge194 CI PASS.
+Core sole writer37881591885 still active within335min compute cap; never duplicate.
+Issue189 OPEN. Source preparation and git diff checks pass;73 affected tests and
+pnpm check previously passed for unchanged routing implementation.
+
+## Earlier checkpoint history (superseded above)
+
+# Current checkpoint — 2026-10-09 06:35 UTC
+
+JR original-ground pilot37892918965 is NATIVE ELIGIBLE155→154: full original pad
+membership and returns preserved, no new warnings, DRC/parity0/0, independent
+fresh reload agrees. All50712 original copper objects retained,24added,0removed.
+Candidate SHA3e7305df6f30fb66593e767d1c36c148684ae8664e71a82f4a1bf381f77de9f6;
+replay SHA734bdcdb3229302139ab2bba5ef0852bc3299995371fcd422d0b3ce4c03ad884.
+Verified artifact11599681786 and exact receipt/replay retained. Canonical still155.
+Workflow now has tenth input jr_replay=[return-restored,original-ground].
+Dispatch replay_jr=true/jr_replay=original-ground after push; it queues after the
+read-only tail pilot37893521710. Only one JR canonical writer. Do not count the
+pilot as adoption; inspect the actual merger's complete native gate and bot commit.
+
+JL ground corridor37893328321 reached135→134 with all original pad groups and
+returns preserved, DRC/parity0/0; three dangling track warnings reject adoption.
+33123original objects retained,1removed,27added. Candidate52ccc61d654358e065e965a8017480c3d5f916a7a11def61f4bdca5e913e47d3.
+Verified artifact11599164273 and replay retained; canonical JL stays135. Diagnose
+these exact tails before a replay; do not waive warnings or recut unrelated copper.
+
+Main postmerge194 CI37891992677 PASS. Main002427f keeps JL135/JR155/core1509.
+Core sole writer37881591885 remains active; current retained source branch dff36f.
+Other concurrent routing branches unchanged on06:30 read. Issue189 OPEN.
+73 affected tests and pnpm check PASS; final PR195 integrated CI pending.
+
+## Earlier checkpoint history (superseded above)
+
+# Current checkpoint — 2026-10-09 06:26 UTC
+
+JL one-via ground corridor pilot37893328321 is running on
+2f46cb779fc0e9022486ce2827cb41c79dae18b0. Its native outcome is unknown.
+Ground-corridor implementation passed73 affected tests and pnpm check.
+JR original-ground pilot37892918965 runs on622ede26899f26b59d3505968a1561a32e903354.
+Both are read-only; canonical JL135/JR155/core1509 remains unchanged.
+
+Prepared JR U7509 tail correction: follow the actual warned staircase's centerline
+through five original segments (0.312132mm), then stop at the first interior junction.
+The next original2.35mm segment is replaced by its retained1.4mm portion from
+391.9,190.25 to391.9,191.65mm. Its joining source track and every original object
+are asserted against the independently checked candidate/base dumps. This adds
+one replacement to the original32-object candidate, with13total removals.
+Full native original membership/warning/DRC/parity/fresh gates mandatory.
+Current jr-coupled-plan.json selects this candidate; original-ground plan archived.
+Dispatch read-only coupled after push; existing JR job serializes the follow-up.
+
+Core sole writer37881591885 is still active; no duplicate writer. Main postmerge
+37891992677 pending at06:25. Issue189 remains OPEN. No new acceptance claimed.
+
+## Earlier checkpoint history (superseded above)
+
+# Current checkpoint — 2026-10-09 06:23 UTC
+
+Active PR195 now adds opt-in ground corridor repair: explicit source ground pads,
+maximum12 exact signal cuts /2victim nets /4source pads. Supply/ground cuts remain
+forbidden; reserved layers remain unavailable. Ground matches existing stitching
+width.3/clearance.25/via.6 and cannot use signal neck-down dimensions. Search-only
+source filtering preserves full native acceptance metrics and padless victims.
+73 affected tests and pnpm check PASS. Full current-head CI/native pilot pending.
+
+Next JL local cut targets R1301.2 AGND with exactly one obstructing signal via
+fa171022-b139-55ce-8e09-dd3ae02497b0 at143.5,122.7mm;69other victim objects stay.
+Input is accepted135 SHA3d40...; current jl-local-plan.json selects this case.
+Dispatch read-only local_mode=cut after push. Full native gate mandatory.
+
+JR U7509 pilot37892274328 finished155→154 with zero native errors/parity and no
+original pad-group splits, but one new dangling-tail warning rejects adoption.
+Artifact11598808234 digest verified, exact replay/result retained. No canonical
+changes. The remaining0.07071mm tail continues the removed0.05mm tail; inspect
+its complete centerline branch before another replay, do not waive the warning.
+JR additive ground pilot37892918965 is running on622ede26899f26b59d3505968a1561a32e903354.
+Core sole writer37881591885 is still active. Main JL135/JR155/core1509 unchanged;
+issue189 OPEN; main postmerge37891992677 still pending. No duplicate core writer.
+
+## Earlier checkpoint history (superseded above)
+
+# Current checkpoint — 2026-10-09 06:20 UTC
+
+Main remains002427f1e036f0b998221e2de073284e6c425be7 (merged194), accepted
+JL135/JR155/core1509; zero native rule/parity errors. Active draftPR195 branch
+agent-fix/189-return-continuation retains all merged copper. Postmerge194 CI
+37891992677 still pending core/Python at last read. Issue189 OPEN.
+
+JR U7509.9 read-only pilot37892274328 is running on immutable source
+d0b196a40c6fd9060a35ad2de7c2ca169f2cd53f. Its plan is archived as
+jr-u7509-corridor-plan.json; do not confuse later live-plan changes with that run.
+A separate additive search on original JR155 found one ground connection:
+C7421.2/U7406.10,24objects (15In1 segments,8F segments,1via),zero removals.
+28other groups remain unrouted.71.580s, guarded PASS; native NOT RUN.
+jr-original-ground-prepare.py pins the saved probe and canonical input SHA,
+produces current jr-coupled-plan.json. Dispatch read-only coupled after push;
+branch/board concurrency serializes it after the existing JR pilot. Every native
+original-membership/warning/fresh/DRC/parity gate remains mandatory.
+
+JL alternate pilot37891092578 rejected135→138:3signal groups split,11newwarning
+identities,returns preserved,DRC/parity0/0.33108oldobjects retained,16removed,
+137added. Artifact11597714656 ZIP digest verified, exact replay retained.
+A.05grid repair found3paths/1failure (12.135s); same-input1.6m budget comparison
+found the remaining path violates the minus-twelve fill guard (13.239s).
+ExcludingIn3 for that one victim while preserving the other48 proposal objects
+still found no path (9.442s), exhausting187961states. No incomplete native replay.
+
+Direct original JL ground search found0/23 paths (81.931s). A bounded R1301.2
+ground escape identified one signal victim but whole-victim reconnection failed;
+transaction rolled back (10.345s), no copper changes. Sources/results retained;
+no native run claimed for these empty proposals.
+
+Core sole writer37881591885 remains active on retained
+agent-fix/189-isolated-rail-replay,335min compute cap. Do not duplicate. After
+terminal result, inspect native acceptance/cache equivalence and retained copper,
+fetch/reconcile bot output, then rebind next ground-link proposal if input changed.
+
+## Earlier checkpoint history (superseded above)
+
+# Current checkpoint — 2026-10-09 06:13 UTC
+
+PR#194 merged at002427f1e036f0b998221e2de073284e6c425be7 after all five checks
+passed on1defd95 (CI37889964779). Issue#189 remains OPEN. Main accepted native
+counts are JL135/JR155/core1509, DRC/parity0/0. PR#195 is now based on main;
+active branch agent-fix/189-return-continuation includes that merge atdc6b86f.
+Post-merge194 CI must still be checked; no executor blockage is present.
+
+JR pilot37890000088 rejected155→156: AGND's original main group splits off
+R7532.2/C7512.2/R7434.2 and R7530.2. One further0.07071mm dangling tail appears
+on the repaired victim. Native error/parity0/0 and fresh reload agrees, but full
+membership/warning gate rejects.50707 prior copper objects unchanged;5removed,
+48added in disposable candidate only. Artifact11597949920 digest verified;
+result/diagnosis retained. Explicit two-group ground routing found0paths in11.75s
+with.075grid/.25clearance/.3width/.6via; searches exhausted reachable states.
+Do not repeat this configuration unchanged.
+
+Next JR pilot isolates the independent U7509.9 transaction:32additions/7cuts
+(six original blockers and the donor's exact warned0.05mm victim tail). No signal
+pad groups split for these nets in the donor. Actual isolated return impact is
+unknown. jr-u7509-corridor-prepare.py pins original155, donor and replay hashes;
+jr-coupled-plan.json now selects it. Dispatch read-only coupled pilot after push.
+Keep all original membership, warning, DRC/parity and fresh reload gates.
+
+JL alternate-layer cut pilot37891092578 runs on902c12e (input135), excludingIn3
+for new signal repair. Inspect its actual receipt before any follow-up. Separate
+source-lead extension comparison found0/3 routes both without and with extensions
+(4.634/4.479s); exact same input/parameters. No native run for empty routing result.
+
+Core sole writer37881591885 remains active on retained
+agent-fix/189-isolated-rail-replay. Do not duplicate or infer acceptance. Its
+335-minute compute cap bounds runtime; active logs are unavailable until terminal.
+Inspect native acceptance/cache-equivalence/retention and reconcile bot output
+before any ground-link replay; successful adoption makes the34955 input stale.
+
+## Earlier checkpoint history (superseded above)
+
+# Current checkpoint — 2026-10-09 05:57 UTC
+
+Active execution branch: agent-fix/189-return-continuation. PR#194 is frozen at
+1defd95ca9e4d7948bc84c0bbb8cee86cad486a2 for exact-head CI37889964779: all three
+native DRC jobs and documentation pass; Python job pending. PR#193 merged
+652dab95ba3f2da44ad941c2b972ad074bfdf8fc; post-merge CI37889506317 passed.
+Accepted task copper remains JL135/JR155/core1509. Issue#189 OPEN.
+
+JL coupled pilot37889308541 rejected135→136. The signal connection closes but
+-12V's original266-pad group splits258+4+4; detached branches are documented in
+jl-first-corridor-diagnosis.json. Bounded rail restoration found no paths.
+DRC/parity0/0, no new warnings, but full coupled fresh gate was never reached.
+Canonical135 unchanged. This configuration will not be repeated unchanged.
+
+Next JL source plan excludes In3 for signal repair. A bounded soft probe on the
+same accepted135 needs six victim nets; four-victim budget diagnosed that limit,
+then six-victim capture identified16 corridor objects out of519 on those nets.
+Whole-net routing rolled back with zero changes. The native local cut now uses
+those16 exact objects, with F/In2/B signal layers and all original gates intact.
+After push, dispatch local_repair=true/local_mode=cut on this active branch;
+check existing runs first. Probe sources/results and original six-case plan retained.
+
+JR isolated D7504.1 coupled pilot37890000088 is active on1defd95. Core sole writer
+37881591885 is still active on agent-fix/189-isolated-rail-replay; no terminal
+outcome exists yet. Do not duplicate it or infer acceptance. If core adopts,
+reconcile its bot commit and recompute the ground-link proposal on the accepted
+input before another core replay. Executor works after the transient05:22 disconnect.
+
+## Earlier checkpoint history (superseded above)
+
 # Current checkpoint — 2026-10-09 05:44 UTC
 
 PR#193 merged at652dab95ba3f2da44ad941c2b972ad074bfdf8fc after all five exact-head

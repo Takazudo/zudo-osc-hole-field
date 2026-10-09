@@ -58,3 +58,33 @@ far from the rejected C2148 repair. It adds one track and removes nothing; all72
 nearby original physical objects are unchanged. It is NOT independently native
 checked yet and must never inherit the rejected parent's lower count as accepted
 progress. Its plan rejects any supply/ground split without extra repairs.
+
+## Explicit ground corridor pilot
+
+The opt-in `repair_ground_pad_uuids` field permits an AGND target only with an
+explicit `repair_source_uuids` list. It is bounded to four source pads, twelve
+signal-copper objects and two victim nets. Existing supply/ground copper cannot
+be selected for removal. Default signal-only repair behavior is unchanged.
+
+After the exact cut, KiCad supplies the victim component boundaries, including
+padless retained fragments. Only the ground search is narrowed to the selected
+source groups and the largest ground group; the complete native dump remains the
+acceptance baseline. Mixed ground/signal search still uses the existing signal
+layers, so a victim cannot acquire access to a reserved plane. AGND matches the
+existing stitching dimensions (0.3mm track,0.25mm minimum clearance,0.6mm via)
+and is excluded from signal neck-down. Signal victims also receive at least the
+0.25mm clearance in this mode. Original pad membership, warning identities,
+DRC/parity and independent native reload remain mandatory.
+
+The first case is R1301.2 on accepted JL135: remove only signal via
+`fa171022-b139-55ce-8e09-dd3ae02497b0` at143.5,122.7mm, retaining the other69
+objects on that victim net and all unrelated copper. Source selection and native
+pilot are pinned in `jl-ground-corridor-selection.json` and the checkpoint.
+The whole-net experiment failed victim reconnection and rolled back; that failure
+is why this case uses native local boundaries instead.
+
+A subsequent read-only four-source screen identified candidate selections of
+2objects for R8105,7 for RB2217,1 for R2209 and14 for R8276. R8276 exceeds the
+new mode's twelve-object bound and is not eligible for that pilot unchanged.
+No follow-up selection has native acceptance yet; do not reuse its JL135 input
+hash after a successful adoption without reconciling against the new board.
