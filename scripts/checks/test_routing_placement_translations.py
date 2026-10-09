@@ -81,11 +81,15 @@ class RoutingTranslationTests(unittest.TestCase):
         root = Path(__file__).resolve().parents[2]
         rows = json.loads((root/'design/partition/floorplan-candidate.json').read_text())['placements']
         source = json.loads((root/'design/partition/partition-input.json').read_text())
-        part = next(p for p in rows if p['ref'] == 'RB4413')
-        changes = dict(schema_version=1, translations=[dict(ref='RB4413', expected_source=part,
-                       delta_mm=[0, -.2], evidence='disposable native experiment; not adoption')])
-        result = apply_translations(rows, source, changes)
-        self.assertEqual([a['ref'] for a, b in zip(rows, result) if a != b], ['RB4413'])
+        changes = json.loads((root/'circuit/routing/issue189/jr-rb4413-edge-bridge/pending-source-translation.json').read_text())
+        original = copy.deepcopy(rows)
+        index = next(i for i, p in enumerate(original) if p['ref'] == 'RB4413')
+        original[index] = changes['translations'][0]['expected_source']
+        result = apply_translations(original, source, changes)
+        self.assertEqual([a['ref'] for a, b in zip(original, result) if a != b], ['RB4413'])
+        active = json.loads((root/'design/partition/routing-placement-translations.json').read_text())
+        translated = any(row['ref'] == 'RB4413' for row in active['translations'])
+        self.assertEqual(rows[index], (result if translated else original)[index])
 
 
 if __name__ == '__main__':
