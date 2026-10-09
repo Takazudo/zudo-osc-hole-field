@@ -1,12 +1,29 @@
 import itertools
 import random
 import unittest
+import tempfile
+from pathlib import Path
 from scripts.pcbgen.audit_hole_pairs import possible_pairs, pack_pairs
+from scripts.pcbgen.audit_hole_pairs import restore_fixture_context, verify_fixture_context
 from scripts.pcbgen.compare_hole_audits import compare
 from scripts.pcbgen.audit_added_mask import unchanged_nonrouting, new_silk_identities
 
 
 class HoleCoverageTests(unittest.TestCase):
+    def test_native_new_board_project_reset_must_be_restored_and_verified(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root=Path(directory);source=root/'source.kicad_pcb';fixture=root/'fixture.kicad_pcb'
+            for suffix in ('.kicad_pro','.kicad_dru'):
+                source.with_suffix(suffix).write_text('reviewed constraints and netclasses')
+                fixture.with_suffix(suffix).write_text('native new BOARD defaults')
+            with self.assertRaisesRegex(ValueError,'context changed'):
+                verify_fixture_context(source,fixture)
+            restore_fixture_context(source,fixture)
+            verify_fixture_context(source,fixture)
+            fixture.with_suffix('.kicad_pro').write_text('changed again during native processing')
+            with self.assertRaisesRegex(ValueError,'context changed'):
+                verify_fixture_context(source,fixture)
+
     def test_copper_layer_silk_warning_is_not_missed(self):
         row=dict(type='silk_overlap',severity='warning',items=[{'uuid':'via'},{'uuid':'text'}])
         self.assertEqual(new_silk_identities({'violations':[row]},'via'),[row])

@@ -116,6 +116,19 @@ def make_fixture(source, objects, selected, path, pcbnew):
     return board
 
 
+def restore_fixture_context(source_path, fixture):
+    # SaveBoard on a newly constructed BOARD writes a default project. Restore
+    # the reviewed context only after serialization, before loading/running DRC.
+    for suffix in ('.kicad_pro', '.kicad_dru'):
+        shutil.copyfile(source_path.with_suffix(suffix), fixture.with_suffix(suffix))
+
+
+def verify_fixture_context(source_path, fixture):
+    for suffix in ('.kicad_pro', '.kicad_dru'):
+        if source_path.with_suffix(suffix).read_bytes() != fixture.with_suffix(suffix).read_bytes():
+            raise ValueError('native fixture context changed: ' + suffix)
+
+
 def audit(path, output):
     import pcbnew
     version = subprocess.check_output(['kicad-cli','version'], text=True).strip()
@@ -137,18 +150,19 @@ def audit(path, output):
     for i, group in enumerate(groups):
         folder = output / f'fixture-{i:04d}'; folder.mkdir(exist_ok=True)
         fixture = folder / path.name
-        for suffix in ('.kicad_pro','.kicad_dru'):
-            shutil.copyfile(path.with_suffix(suffix), fixture.with_suffix(suffix))
         selected = {holes[j]['object_key'] for j in group}
         uuid_to_key={holes[j]['uuid']:holes[j]['object_key'] for j in group}
         make_fixture(source, objects, selected, fixture, pcbnew)
+        restore_fixture_context(path, fixture)
         actual, _ = native_holes(pcbnew.LoadBoard(str(fixture)), pcbnew)
         expected = [h for h in holes if h['object_key'] in selected]
         if actual != expected:
             raise ValueError('fixture changed native hole geometry or identity')
         report = folder / 'drc.json'
+        verify_fixture_context(path, fixture)
         subprocess.run(['kicad-cli','pcb','drc','--format','json','--severity-all',
                         '--output',str(report),str(fixture)], check=True, stdout=subprocess.DEVNULL)
+        verify_fixture_context(path, fixture)
         drc = json.loads(report.read_text())
         found = []
         for violation in drc['violations']:

@@ -2,6 +2,12 @@
 
 Updated 2026-10-09 17:52 UTC. **Issue #189 remains OPEN.** Accepted draft boards are **JL119 / JR134 / core1441**. Main is also **JL119 / JR135 / core1441**, commit `4db1d3c009dbf7744541c01692bc626213832ca6`. Completion gates are unmet; no fabrication or hardware qualification is claimed.
 
+## Latest correction — supersedes hole-audit eligibility claims below
+
+At18:18UTC, complete-evidence reassessment failed closed: native SaveBoard reset all128 fixture project files in each hole audit. Run37967430188 is diagnostic evidence only, not a valid unchanged-context audit. No core board was promoted and the ordinary gate remains unchanged. The producer now restores context after serialization and verifies exact bytes around native DRC; rerun required. Silk audit37970119956 passed with38fixtures, zero new silk identities, maximum69/0 silk_overlap/silk_over_copper reports, and exact fixture context. Its result/receipt are saved in native-hole-audit/.
+
+Current continuation branch agent-fix/189-uncapped-warning-continuation is based on frozen PR209 head e7364065. PR209 must remain draft until this context correction is incorporated and checked. Its CI37970134465 currently has documentation and all three native boards passed; Python tests are still running. Sole core writer37965185751 remains active. No competing core writer is authorized while it runs. JL C8142 pilot rejected119→119; finer joint and explicit plane-fanout controls both fail complete restoration, saved under jl-c8142-joint-finer/ and jl-c8142-ground-fanout/.
+
 ## Authoritative state — supersedes historical pending entries below
 
 PR208 merged after all five exact-head checks passed at2d59eb83, CI37962980438. Merge4db1d3c009dbf7744541c01692bc626213832ca6 at17:24:56UTC; post-merge CI37966103089 passed all five jobs (`ci-main-4db1d3c.json`). Explicit user steering authorized verified incremental merges. PR209 now targets main and carries the merge forward as0aa91f52. Preserve branches; never merge unverified heads or close189.
