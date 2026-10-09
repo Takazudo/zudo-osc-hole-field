@@ -1,3 +1,187 @@
+# PR200 frozen for final CI — 2026-10-09 11:23 UTC
+
+JR37920931258 ADOPTED143→141:50additions,zero removals,all50914oldobjects
+identical. Native DRC/parity0/0,520unchanged warnings,no new identities/split groups,
+fresh connectivity agrees. Published/filledSHA3d9940791131e31d22ea65e4457ccb77d5250d629eaa2b5d3c6b03024ac3405c.
+ReplaySHAf27f02dfb438a87a6ded2fc657aa70f9aae362cc119410571dcef8ac1db8a4ca.
+Artifact11612945888 ZIP8c1e91cc4efcbb61a13bac8d404997f0537ef1e5c7ec0656436152cff04dd618 verified.
+Botd21c1d4d5ce1640871c9b734de2b7c321366a2c0 integrated; full native retention saved.
+
+PR200 now has JL125/JR141/core1441. Freeze this next evidence head and require
+all five exact-head CI checks before authorized normal merge; retain branch and
+verify postmerge CI. Prior82ce9b4CI does not cover this new JR copper.
+
+PR201 agent-fix/189-ground-fill-continuation is the only continuation. Merge this
+accepted JR delta into it before rebasing its34-object JR via-avoid proposal.
+JL83-object37922377985 remains active there on sourcec8259332ed4755fe171a481a22abc9708ffd6245.
+Core37907147442 remains sole core writer on retained ground-signal branch; inspect
+terminal output before core-short-power143rebase/submission. Keep189OPEN.
+
+# JL rejected; receipts recovered — 2026-10-09 11:08 UTC
+
+JL run 37919613559 rejected U2119: 125→126, one signal join and two new
+AGND splits. Native DRC/parity 0/0, 477 warnings, no new identities, fresh
+connectivity agrees. The later push raced twice; fallback creation was denied
+workflow-write permission. Digest-verified artifact 11611786768 recovered the
+receipt/replay locally without copying rejected copper. See jl-u2119-outer/result.json.
+
+Actual accepted branch boards remain JL125/JR143/core1441. JR two-route run
+37920931258 uses source 191b3c21f8d1bc12a8f45890ec804be73f40ca1d and is active.
+Sole core writer 37907147442 is still active on the retained ground-signal branch.
+Do not duplicate either writer. Reconcile terminal receipts and board-only deltas
+before explicitly rebasing core-short-power's 143-object proposal on actual output.
+Keep issue189 OPEN. Complete connectivity and qualification are not achieved.
+
+# Protected JR alternative rejected; isolate remaining50 — 2026-10-09 10:59 UTC
+
+JR37919363686 finished143→142 but REJECTED:the same R7505.2/R7530.2 AGND splits
+persisted despite more conservative ground obstacle inflation.0DRC/parity,520warnings,
+no new identities,fresh agrees. Receipt-only fa83d12 integrated; no board changed.
+Artifact11611402953 digest verified. Candidate6f8f67a5175abf0297510f0810d06c60c00955a87937c7e033114f01f27ff72b.
+
+Next native isolation removes the entire7-object D7504 alternative,retaining the
+other50objects on2nets. Input remains actual143SHA72a24ee996ae454c099ed165de1bd857721c42bef37861907a98ba5a4bf39d0c.
+Dispatch replay_jr=true,jr_replay=two-after-protected; do not count unrun results.
+Native fill connectivity,not simple pad clearance,is the remaining D7504 blocker;
+retain this negative evidence instead of repeating unchanged clearance growth.
+
+Main199postmergeCI37918769043 passed allfivechecks; snapshotci-main-7af7489.json.
+JL91-object writer37919613559 and solecore37907147442 remain active. Actual branch
+boards125/143/1441. Core short-power143remains unsubmitted until terminal reconciliation.
+
+# Duplicate-ID cut guard hardened — 2026-10-09 10:48 UTC
+
+A synthetic regression reproduced a bounded-cut bug: duplicate legacy IDs could
+hide an outside-frame segment behind a later inside-frame object. The old path
+reached native workspace creation. Bounded cuts now reject non-unique physical
+IDs before any workspace/native writes; unselected duplicate copper stays intact.
+Exact red output:duplicate-cut-before.txt.96affected tests and PNPM circuit/check
+PASS after the fix. This tightens scope validation; no accepted copper is changed.
+
+Active native writers use immutable prior sources: JL91objects37919613559 at
+fcd169e0094aea5639824e9ff4829ef0a83fb175; JR57objects37919363686 ate2757b3c0993e765cd12e69b0ab7cbdf7ad7bcc2;
+solecore37907147442 on retainedground-signal-continuation. Do not duplicate them.
+Actual PR200boards remain125/143/1441;main199boards126/143/1441,postmergeCI37918769043pending.
+
+# Accepted JL125; next bounded candidates — 2026-10-09 10:46 UTC
+
+JL37918072226 ADOPTED126→125:69segments+2vias,zero removals,all33149old objects
+identical.0DRC/parity,477warnings,no new identities/splits,fresh agrees. Published
+SHA55a3edef21878d3e89ac9a02b0264f27d7a97da0d666648b5ffc27e47afde17d;
+replaySHA83792c73c14cee92d4679b15cb34987515362b6b8f90844c7b31b7388efe03e5.
+Artifact11610558493 digest verified; native full-object retention saved.
+Bot75a8c16 integratedbye2757b3c0993e765cd12e69b0ab7cbdf7ad7bcc2;actual branch125/143/1441.
+
+U2119 outer91-object proposal rebased on actualJL125 and all33220objects retained,
+including the new71. Zero removals/collisions and cross-net clearance precheck pass.
+Native NOTRUN until replay_jl=true,jl_replay=u2119-outer on the new pushed source.
+JR57-object writer37919363686 is active ate2757b3c0993e765cd12e69b0ab7cbdf7ad7bcc2.
+Core37907147442 remains solewriter;short-power143stillunsubmitted. Main199postmerge
+CI37918769043 remains pending. Keep189OPEN; no zero-edge milestone claimed.
+
+# JR native rejection isolated — 2026-10-09 10:43 UTC
+
+JR37917534758 finished143→141 but NOTADOPTED:3signal joins,1new AGND split at
+J900105.6,0DRC/parity,520warnings,no new identities,fresh agrees. Publication raced
+with our evidence push; fallbackci-route/osc-jack-right-37917534758 is retained at
+c3acb63282166c5905744faff8d741933d50a3f3. Its receipt-only commit was inspected and
+cherry-picked as241a0a5; canonicalJR remains143. Artifact11610993154 digest verified.
+
+New57-object replay removes the entire33-object U7106 transaction near that split,
+retains the other50objects,and adds the7-object D7504 alternative using more
+conservativeAGND obstacle growth. Actual143input is pinned; all50914old objects
+retained prospectively,zero removals/UUID collisions,new/new clearance passed.
+Native NOTRUN until dispatched asjr_replay=three-protected on this continuation.
+This is a native isolation experiment,not proof that geometric attribution is exact.
+
+JL71outer writer37918072226 and solecorewriter37907147442 remain active. Never
+submit another writer for either board until its terminal receipt is reconciled.
+The saved91-object U2119 outer proposal is also unbound/unsubmitted until actual
+JLoutput is inspected. Main199postmergeCI37918769043 remains pending at lastread.
+
+# PR199 merged; continuation on main — 2026-10-09 10:39 UTC
+
+All five exact-head CI37917295454 checks passed onbd41809dd6bbeac028638b8419b349545cc64c3e.
+PR199 normally merged at2026-10-09T10:37:46Z as7af7489d1a728746cdd095c2d9c52e1b9452e30f.
+Its branch is retained,#189OPEN. Main nowJL126/JR143/core1441,allnative errors/parity0/0.
+PostmergeCI37918769043 is pending. PR200 now targets main and incorporates that
+merge via60ff239c888a1a1d5dcce1161747ca3f6995e7d3. No old copper overwritten.
+
+Still active: JR37917534758(83objects on143),JL37918072226(71outer objects on126),
+and solecorewriter37907147442 on retainedagent-fix/189-ground-signal-continuation.
+Read actual native receipts/bot commits before any next submission. Keep accepted
+geometry and failed evidence,including fallbackci-routebranches if publication races.
+Core short-power143objects remains unsubmitted until terminal core reconciliation.
+JR D7504 protected7-object alternative must likewise wait for currentJRoutput.
+
+# Current native queue and saved alternatives — 2026-10-09 10:36 UTC
+
+PR200 branchagent-fix/189-short-power-continuation has two isolated native writers:
+JR37917534758(source93392c84d883c30ef7207fdad507afc1787624c5,83adds on143) and
+JL37918072226(source9980ceaad4fd03bc6ffc38d897143a2239900d98,71adds on126,zero cuts).
+No outcome claimed yet. Core37907147442 remains the solecorewriter on retained
+agent-fix/189-ground-signal-continuation. Keep all three actual terminal receipts
+and bot deltas; never replace copper from a stale raster source.
+
+PR199 frozenbd41809dd6bbeac028638b8419b349545cc64c3e has CI37917295454 pending;
+three jobs passed,Python aggregate regeneration/coreDRC still running at lastread.
+No comments/reviews; do not merge until allfive exact-head checks pass. Main remains
+126/145/1441; PR199/200 accepted copies126/143/1441. Keep189OPEN.
+
+New saved alternatives (NOT native checked): JL outer-only screen on remaining23
+native component pairs found one U2119.12 path91objects in94.521080s,guardPASS.
+JR D7504 more conservativeAGND growth.6mm produced7objects instead of the rejected15;
+its hash-bound rebase must wait for currentJRwriter's actual terminal board.
+No new/new clearance screen substitutes for the native warning/membership gates.
+Core short-power143objects is likewise unsubmitted until the solecorewriter ends.
+
+# Additive JL U106 alternative — 2026-10-09 10:31 UTC
+
+Saved native126input,identical15mm frame,0.025mm raster,weight2.5 and300000
+expansions/window: disallowingIn2produced a71-object outer-layer path withZERO
+cuts. F/In3/B and F/B both produce the exact same proposal; F/In2/B producesnone.
+GuardPASS(10s). No original victim copper needs removal. Native NOTRUN until
+replay_jl=true,jl_replay=u106-outer on this continuation. Preparation is pinned to
+54b4c9718f652dfdc98b4dab615845962dc8e3025f51a76541a50e0ba3d579d9 and full gates remain.
+The failed two-original-segment restoration probe is separately retained as negative
+evidence; it is not incorporated into the additive proposal.
+
+PR200:https://github.com/Takazudo/zudo-osc-hole-field/pull/200.
+JR83-object writer37917534758 at93392c84d883c30ef7207fdad507afc1787624c5 is active.
+PR199 frozenbd41809 requiredCI37917295454 pending. Core37907147442 still solewriter;
+short-power143proposal remains unreconciled/unsubmitted until it finishes.
+
+# JL U106 native result — 2026-10-09 10:25 UTC
+
+Pilot37915918722 REJECTED126→127:target joined but both cut victim nets remained
+split;3new dangling-track warnings.0DRC/parity,480warnings,48adds/3cuts,33146old
+objects identical. Exact result in jl126-u106-result/result.json; artifact11610795203
+digest verified. Victim1 hits300000expansions;victim2 rejects anIn3fill split then
+hits the same fixed budget. This candidate is NOT eligible and NOT promoted.
+Continue only with a changed method on the saved native candidate; never waive
+victim restoration/warnings or repeat an unchanged larger budget.
+
+# Separate short-power continuation — 2026-10-09 10:24 UTC
+
+PR199 is frozen atbd41809dd6bbeac028638b8419b349545cc64c3e for requiredCI.
+New work is on agent-fix/189-short-power-continuation. Actual boards126/143/1441.
+JR next-three is rebased on accepted143SHA72a24ee996ae454c099ed165de1bd857721c42bef37861907a98ba5a4bf39d0c:
+83additions,zero removals,all50914current objects preserved; new/new and prior93
+object gap checks pass. Native NOTRUN until dispatched on this new branch.
+
+Core short-power selects the saved135 full-width supply segments plus4short
+AGND fanouts(8objects):143objects total,139segments/4vias. Ground remains.3mm track,
+.6mm via/.3mm drill/.25mm clearance. Minimum new cross-net gap1.335124mm.
+This is only a geometric screen,not native acceptance. Its plan remains absent
+until solecorewriter37907147442 finishes and an exact accepted-input rebase is
+reviewed. Do not dispatch or overwrite accepted core copper before then.
+
+JL U106read-only pilot37915918722 remains pending on frozen199's earlier66c34d8.
+Its eventual result belongs in this continuation. The remaining bounded nearest
+pair cut screen found no new target paths; direct JR D7504 ground links and finer
+fanouts also yielded no paths. Saved negative evidence prevents unchanged repeats.
+Core next24signal screen yielded2paths/32objects,guardPASS; nativeNOTRUN.
+
 # Accepted JR143 and PR199 freeze — 2026-10-09 10:23 UTC
 
 JR run37916090766 atfcf8a4fe3d4b9697f2d8d42d090a60bd220ffe79 ADOPTED145→143:

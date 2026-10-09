@@ -29,6 +29,25 @@ class LocalRepairScopeTests(unittest.TestCase):
         with self.assertRaises(ValueError):driver.repair_bounds(dump,spec,['A'],set())
         self.assertIsNone(driver.repair_bounds(dump,{},['A'],{'cut'}))
 
+    def test_bounded_cut_rejects_duplicate_ids_before_native_writes(self):
+        inside={'uuid':'cut','net':'B','a':[4e6,5e6],'b':[6e6,5e6],'width':.2e6}
+        # Last-write-wins lookup used to hide the outside object sharing this ID.
+        outside={**inside,'a':[80e6,5e6],'b':[82e6,5e6]}
+        spec={'name':'duplicate-cut','repair':True,'repair_targets':['A'],
+              'repair_bounds_mm':[3,3,7,7],'repair_source_uuids':['cut']}
+        dump={'pads':[{'net':'A','xy':[5e6,5e6]}],
+              'tracks':[outside,inside],'vias':[],'islands':{'A':[['one'],['two']]}}
+        with tempfile.TemporaryDirectory() as directory:
+            base=Path(directory)/'base.kicad_pcb';base.write_text('unchanged')
+            base.with_name('dump.json').write_text(json.dumps(dump))
+            with patch.object(driver,'ROOT',Path(directory)),\
+                 patch.object(driver,'workspace',side_effect=AssertionError('native workspace created before duplicate cut rejection')) as workspace,\
+                 patch.object(driver,'run') as run:
+                with self.assertRaisesRegex(ValueError,'not unique'):
+                    driver.stage('osc-jack-left',base,spec,{},print)
+                workspace.assert_not_called();run.assert_not_called()
+            self.assertEqual(base.read_text(),'unchanged')
+
     def test_bounded_repair_limits_victims_and_requires_a_target_inside(self):
         dump={'pads':[{'net':'A','xy':[20e6,20e6]}],
               'tracks':[{'uuid':str(i),'net':f'B{i}','a':[4e6,5e6],'b':[6e6,5e6],'width':.2e6}

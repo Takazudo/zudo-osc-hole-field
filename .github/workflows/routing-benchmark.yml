@@ -12,7 +12,7 @@ on:
         type: string
         required: false
       replay_jl:
-        description: Replay a fixed native-eligible JL transaction through full adoption gates
+        description: Replay a reviewed JL transaction through full native adoption gates
         type: boolean
         default: false
       replay_jr:
@@ -22,12 +22,12 @@ on:
       jr_replay:
         description: Fixed reviewed JR transaction (used only with replay_jr)
         type: choice
-        options: [return-restored, original-ground, u7509-on-ground, rail-finer, two-on-supply, bounded-one, bounded-two, three-compatible, two-without-d7504]
+        options: [return-restored, original-ground, u7509-on-ground, rail-finer, two-on-supply, bounded-one, bounded-two, three-compatible, two-without-d7504, next-three, three-protected, two-after-protected]
         default: return-restored
       jl_replay:
-        description: Fixed native-eligible JL transaction (used only with replay_jl)
+        description: Fixed reviewed JL transaction (used only with replay_jl)
         type: choice
-        options: [rail-leaf, corridor, paired-corridors, ground-junction, rail-finer, d2326]
+        options: [rail-leaf, corridor, paired-corridors, ground-junction, rail-finer, d2326, u106-outer, u2119-outer]
         default: rail-leaf
       recover_core:
         description: Replay the preserved core aggregate and repair split AGND before the full native gate
@@ -36,7 +36,7 @@ on:
       core_replay:
         description: Reviewed recovery transaction (used only with recover_core)
         type: choice
-        options: [aggregate, reviewed, outer, outer-filtered, ground-link, bounded-one, short-supplies]
+        options: [aggregate, reviewed, outer, outer-filtered, ground-link, bounded-one, short-supplies, short-power]
         default: aggregate
       local_repair:
         description: Read-only jack local branch-repair pilot (no canonical writer)
@@ -143,7 +143,7 @@ jobs:
           timeout --signal=INT --kill-after=2m 335m python -u scripts/pcbgen/adopt_obstacle_benchmark.py \
             ".circuit-cache/benchmark-download/issue189-$BOARD" --promote \
             2>&1 | tee .circuit-cache/adoption.log
-      - name: Replay fixed native-eligible JL copper
+      - name: Replay reviewed JL copper through full native gates
         if: inputs.replay_jl
         run: |
           mkdir -p .circuit-cache
@@ -164,6 +164,10 @@ jobs:
           elif [[ $JL_REPLAY == rail-finer ]]; then
             replay=circuit/routing/issue189/jl-rail-finer-copper.json
             label=issue189-rail-finer
+          elif [[ $JL_REPLAY == u106-outer || $JL_REPLAY == u2119-outer ]]; then
+            python "circuit/routing/issue189/jl-$JL_REPLAY/prepare.py"
+            replay=".circuit-cache/issue189-jl-$JL_REPLAY/copper.json"
+            label="issue189-$JL_REPLAY"
           elif [[ $JL_REPLAY == d2326 ]]; then
             replay=circuit/routing/issue189/jl-d2326-copper.json
             label=issue189-d2326
@@ -179,11 +183,11 @@ jobs:
           mkdir -p .circuit-cache
           set -o pipefail
           case "$JR_REPLAY" in
-            return-restored|original-ground|u7509-on-ground|rail-finer|two-on-supply|bounded-one|bounded-two|three-compatible|two-without-d7504) ;;
+            return-restored|original-ground|u7509-on-ground|rail-finer|two-on-supply|bounded-one|bounded-two|three-compatible|two-without-d7504|next-three|three-protected|two-after-protected) ;;
             *) exit 1 ;;
           esac
           replay="circuit/routing/issue189/jr-${JR_REPLAY}-copper.json"
-          if [[ $JR_REPLAY == bounded-one || $JR_REPLAY == bounded-two || $JR_REPLAY == three-compatible || $JR_REPLAY == two-without-d7504 ]]; then
+          if [[ $JR_REPLAY == bounded-one || $JR_REPLAY == bounded-two || $JR_REPLAY == three-compatible || $JR_REPLAY == two-without-d7504 || $JR_REPLAY == next-three || $JR_REPLAY == three-protected || $JR_REPLAY == two-after-protected ]]; then
             python "circuit/routing/issue189/jr-${JR_REPLAY}/prepare.py"
             replay=".circuit-cache/issue189-jr-${JR_REPLAY}/copper.json"
           fi
@@ -209,6 +213,11 @@ jobs:
             python circuit/routing/issue189/core-ground-link/prepare.py
             replay=.circuit-cache/issue189-core-ground-link/copper.json
             label=issue189-ground-link
+            extra=()
+          elif [[ $CORE_REPLAY == short-power ]]; then
+            python circuit/routing/issue189/core-short-power/prepare.py
+            replay=.circuit-cache/issue189-core-short-power/copper.json
+            label=issue189-short-power
             extra=()
           elif [[ $CORE_REPLAY == short-supplies ]]; then
             python circuit/routing/issue189/core-short-supplies/prepare.py
