@@ -1,4 +1,4 @@
-import hashlib,json,tempfile,unittest
+import hashlib,itertools,json,tempfile,unittest
 from pathlib import Path
 from unittest.mock import patch
 from scripts.pcbgen import local_repair_pilot as pilot,route_jack_grid as driver
@@ -7,11 +7,11 @@ from scripts.pcbgen.test_grid_router import crossing_board
 
 class CoupledRepairTests(unittest.TestCase):
     def test_supply_restoration_and_independent_agreement_are_mandatory(self):
-        for outcome in ('native-error','unrestored','fresh-drift','success'):
-            with self.subTest(outcome=outcome),tempfile.TemporaryDirectory() as directory:
+        for outcome,method in itertools.product(('native-error','unrestored','fresh-drift','success'),('rail-fanout','rail-links')):
+            with self.subTest(outcome=outcome,method=method),tempfile.TemporaryDirectory() as directory:
                 root=Path(directory);base=root/'base.kicad_pcb';base.write_text('canonical copper')
                 proposal=root/'proposal.json';proposal.write_text('{}')
-                plan={'name':'coupled','signal_proposal':'proposal.json',
+                plan={'name':'coupled','rail_method':method,'signal_proposal':'proposal.json',
                       'signal_proposal_sha256':hashlib.sha256(proposal.read_bytes()).hexdigest(),
                       'input_board_sha256':hashlib.sha256(base.read_bytes()).hexdigest()}
                 before=crossing_board();before['pads']=[{**p,'net':'-12V' if p['net']=='A' else p['net']} for p in before['pads']]
@@ -26,6 +26,7 @@ class CoupledRepairTests(unittest.TestCase):
                     (root/args[-1]).write_text('candidate')
                 def restore(board_id,candidate,spec,definition,log):
                     self.assertEqual(spec['rail_width'],.4);self.assertEqual(spec['clearance'],.25)
+                    self.assertEqual(spec.get('planes'),{'-12V':'In3.Cu'} if method=='rail-fanout' else None)
                     candidate.with_name('dump.json').write_text(json.dumps(split if outcome=='unrestored' else joined))
                     return candidate,{'status':'mock native test state'}
                 fresh=split if outcome=='fresh-drift' else joined
@@ -41,3 +42,9 @@ class CoupledRepairTests(unittest.TestCase):
                             pilot.coupled_candidate('osc-jack-right',base,before,plan,{})
                 if outcome=='native-error':restoration.assert_not_called()
                 self.assertEqual(base.read_text(),'canonical copper')
+
+    def test_unknown_rail_method_is_rejected_before_native_work(self):
+        with patch.object(driver,'run') as native:
+            with self.assertRaisesRegex(ValueError,'unsupported coupled rail method'):
+                pilot.coupled_candidate('osc-jack-left',None,None,{'rail_method':'unbounded'},None)
+            native.assert_not_called()
