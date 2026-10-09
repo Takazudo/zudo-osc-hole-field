@@ -1,6 +1,6 @@
 # Issue 189 exact continuation checkpoint
 
-Updated 2026-10-09 16:15 UTC. **Issue #189 remains OPEN.** Accepted native open edges are **JL120 / JR136 / core1441**. Zero-edge connectivity and final completion gates are unmet. No fabrication or hardware qualification is claimed.
+Updated 2026-10-09 16:42 UTC. **Issue #189 remains OPEN.** Accepted native open edges are **JL120 / JR136 / core1441**. Zero-edge connectivity and final completion gates are unmet. No fabrication or hardware qualification is claimed.
 
 ## Current authoritative state
 
@@ -13,15 +13,17 @@ All accepted boards have zero native DRC/parity errors, no new warning identitie
 | Board | Run | Dedicated worker branch | Pinned source |
 | --- | --- | --- | --- |
 | Core |37950004600|`agent-fix/189-core-finer-ground-worker`|`0d6a444aa1ad648ce6146d0e893e93307bd98f14`|
-| JL |37958624929|`agent-fix/189-jl-u1518-joint-worker`|`161f734bd0319b0ce51a1e8d1331d0196ed416d0`|
-| JR |37956542080|`agent-fix/189-jr-r4207-ground-worker`|`5add51f584e077ad9529854ea27ba7ac2b512d2e`|
+| JL adoption |37960073108|`agent-fix/189-jl-u1518-adopt-worker`|`72f563f09865426d8965b1780972479887f944c0`|
+| JR adoption |37960834229|`agent-fix/189-jr-r4207-adopt-dispatch-worker`|`4ad55bd217e0a079d2c85e3ed0eccaf04bf3c49e`|
 
-All three runs in this table remain in progress. The earlier C2248/R7609 jack runs are terminal/rejected; their exact artifacts and retained-object proofs are saved. The core run is the sole core writer:38 ground groups/382objects/38vias/zero cuts, full0.3mm AGND tracks. Jack runs are disposable cut/restoration pilots, not canonical writers. JR selects four unchanged original signal segments on one victim net, F/B restoration,300000 cap. JL now tests the fixed58-segment joint ground/two-victim proposal with four reviewed cuts, no vias and no automatic repair. Neither cuts PR207's new copper. Do not dispatch overlapping trials or change pinned worker branches.
+All three runs in this table remain in progress. Each is the sole writer for its board. Core tests38 ground groups/382objects/38vias/zero cuts, full0.3mm AGND tracks. JL replays58segments/no vias/four reviewed cuts after eligible pilot37958624929 (120→119). JR replays85segments/one via/four reviewed cuts after eligible pilot37959238545 (136→135). Both pilots have0DRC/parity,unchanged warnings/groups,fresh agreement and complete retained-copper/physical proofs in their case directories. Eligible pilots are not canonical promotion.
+
+JR's first adoption37960568111 failed before routing because its declared replay choice was missing from a separate shell allowlist. The correction has a reproduced failing regression and two passing tests, including unknown-choice rejection. The retry uses the new source/worker above; do not resume or treat the failed run as native evidence.
 
 ## Exact next actions
 
 1. Refresh each run with `gh run view RUN --json status,conclusion,headSha,jobs`; refresh main, PR208 and the other-session refs before changing boards. Download terminal artifacts, verify their published ZIP SHA256, and retain the full native baseline/candidate/fresh evidence. Workflow success alone is not adoption.
-2. For the jack pilots read actual `gate.adopted`, original native pad-group memberships, warning identities, DRC/parity and fresh agreement. Prove all uncut full copper objects remain identical. If rejected, preserve receipts and change the demonstrated cause; no unchanged retries or larger-cap substitute. If eligible, implement a pinned replay through normal native adoption gates rather than copying the pilot board manually.
+2. Reconcile each jack adoption receipt and bot delta from its pinned source. Require all original native pad-group memberships, warning identities, DRC/parity, fresh agreement and every uncut full copper object to survive. Compare the adopted candidate/replay SHA with the eligible pilot. Integrate only the reviewed successful bot delta; never copy a pilot board manually. If replay rejects, preserve its evidence and do not claim the pilot result as canonical.
 3. For core37950004600 inspect `boards/osc-core/reports/grid-routing/shards-issue189-finer-ground-batch.json` and the native artifact. Require all133169 prior full copper objects, including duplicate UUID blocks, to survive, plus every usual native gate. Reconcile the bot delta from its pinned source. Adopted copper may be integrated only after those proofs; a rejected bot receipt must not be treated as a board gain.
 4. Only after core reconciliation, run `.circuit-cache/route-venv/bin/python circuit/routing/issue189/core-short-no-via/rebase_proposal.py --accepted-sha256 ACTUAL_ACCEPTED_SHA256`. It accepts only unchanged core or the exact whole known382 ground additions, verifies their full native geometry and all prior blocks, and rejects unexpected changes. It writes proposal/plan/rebase receipts for19short signal segments/11nets, no vias/cuts. Inspect those receipts, commit/push a new dedicated worker, then dispatch `gh workflow run routing-benchmark.yml --ref NEW_WORKER -f board=osc-core -f recover_core=true -f core_replay=short-no-via`. All native gates remain mandatory. This future rebase has NOT run.
 5. Do not close #189 until all three canonical boards pass zero-edge completion, settled/fresh native connectivity, unchanged constraints, regeneration/P/EL/O checks and same-revision final documentation/renders. Verified intermediate progress is not hardware qualification.
@@ -137,3 +139,5 @@ JL adoption37960073108 uses agent-fix/189-jl-u1518-adopt-worker, source72f563f09
 
 
 JR adoption37960568111 (source5b25f2f097fb849b82f3737e70b9c42d30ca8781) failed before routing: r4207-joint was declared as an input/preparation option but missing from the separate shell allowlist. No native adoption ran and canonical JR remains136. The new dispatch regression reproduced that exact failure; adding the declared choice to the strict allowlist makes both tests pass, including unknown-choice rejection. YAML/all12shell steps pass. Failed logs are retained in jr-r4207-joint/dispatch-failure.txt. Retry on a new pinned worker after this correction, not the old worker.
+
+JR adoption retry37960834229 is now active at exact source4ad55bd217e0a079d2c85e3ed0eccaf04bf3c49e; it supersedes the failed pre-routing attempt37960568111. The authoritative active table above has been refreshed.
