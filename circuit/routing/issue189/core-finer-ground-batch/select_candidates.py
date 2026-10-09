@@ -5,7 +5,7 @@ ROOT=Path(__file__).resolve().parents[4];HERE=Path(__file__).resolve().parent
 SOURCE='a0e3cff1ebc211564b8be10f6a993d50fb6d4372edde86a056ebc8dda3ea5932'
 
 def main():
-    names=sys.argv[1:] or ['result','next48','next48b']
+    names=sys.argv[1:] or ['result','next48','next48b','next48c','next48d','last']
     transactions=[];inputs=[];dump_hashes=set();router_hashes=set()
     for name in names:
         path=HERE.parent/'core1441-ground-finer'/f'{name}.json';data=json.loads(path.read_text())

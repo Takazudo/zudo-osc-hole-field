@@ -1,19 +1,19 @@
 # Issue 189 exact continuation checkpoint
 
-Updated 2026-10-09 14:00 UTC. **Issue189 remains OPEN.** Zero-edge connectivity and final completion gates are unmet. No fabrication/hardware qualification is claimed. Fixed panel/electrical rules, accepted copper and other sessions are preserved.
+Updated 2026-10-09 14:12 UTC. **Issue189 remains OPEN.** Zero-edge connectivity and final completion gates are unmet. No fabrication/hardware qualification is claimed. Fixed panel/electrical rules, accepted copper and other sessions are preserved.
 
 ## Current authoritative state
 
 | Location | Commit | Accepted native edges JL/JR/core |
 | --- | --- | --- |
-| Main, merged PR205 | `1b8c6f8589fee431f542fb37a3c16e072865b8d3` |121/139/1441|
-| Frozen draft PR206, `agent-fix/189-bounded-ground-continuation` | `ab0018bc332dfd18fb2e4a9e52da6d9128158c14` |121/137/1441|
+| Main, merged PR206 | `9376342b5767a8107ffeda4f8290b122fd1ce268` |121/137/1441|
+| Merged PR206 source, `agent-fix/189-bounded-ground-continuation` | `ab0018bc332dfd18fb2e4a9e52da6d9128158c14` |121/137/1441|
 | Native-trial source on working `agent-fix/189-ground-repair-continuation` | `29ce0d56c938198654e80e50f480be5e9e462906` |121/137/1441|
 
 All three accepted boards have0native DRC/parity errors. JL477/JR520/core619 warning counts are unchanged by the latest accepted steps; no new warning identities or split original pad groups; fresh native connectivity agrees. Counts on a pending/rejected candidate are not accepted progress.
 
-- PR205 exact-head37937443719 and preceding-main37937330204: all5PASS. Merged13:49:34Z; **post-main37939632920 running**. Finish this before the next merge.
-- PR206 exact-head **37938871985 running**. Keep its head frozen. After both checks above pass, refresh head/reviews/mergeability, merge normally under existing authorization, retain branches and verify resulting main.
+- PR205 exact-head37937443719 and preceding-main37937330204: all5PASS. Merged13:49:34Z; post-main37939632920 all5PASS.
+- PR206 exact-head37938871985 all5PASS. Merged14:03:16Z as9376342b5767a8107ffeda4f8290b122fd1ce268; post-main37941329856 running. Verify this main before another merge.
 - PR204 exact-head37934945521 and post-main37937330204 all5PASS; mergeddf126be3c393c7841ac58408e620b82744a19e03.
 - PR201 exact/post, PR203 exact/post all5PASS. PR202 exact passed; its post-run37932366842 was cancelled/superseded, never passed. PR203's subsequent integrated-main check passed. Evidence remains in ci-*.json and git history.
 
@@ -82,3 +82,11 @@ Current site/circuit checks pass. Real zero-edge completion gate is NOT RUN and 
 Use KiCad10.0.6 CI as the native oracle; localKiCad9 is not acceptance. Numerical scripts use `.circuit-cache/route-venv/bin/python`. Heavy runs use `bash "$HOME/.codex/scripts/heavy-guard.sh" -- COMMAND` with supported runtime-path escalation. Do not repull the oversized Docker image or bypass the guard.
 
 Refresh `gh run view RUN --json status,conclusion,jobs` and remote refs before acting. For artifacts verify ZIP SHA before extraction; connector download can recover CLI failures. Workflow success alone is not adoption. Require original-group preservation,warning identities,DRC/parity,fresh agreement and exact retained-copper proof. Review bot deltas from pinned source; never overwrite a newer whole board from an old branch. Do not force-push,merge unverified heads,close189,change physical/electrical rules or resume unrelated watches. Other-session branch heads remain8315af55/30db43e0/470b3f0e and were freshly checked unchanged.
+
+## Latest terminal JL control and completed core screen
+
+JL37940189931 is now terminal/rejected for no strict improvement:121→121,0DRC/parity,477unchanged warnings,no splits,fresh agrees. All33241uncut objects identical,+8Bsegments/1cut. AGND returned to18while the victim was restored. Artifact11621538416 ZIPd6d7f2e285ae738b0634e49c24b6bfffc253bae68b8e929b84302013ae89c95d; candidate9a55a3efcacf41672abef2a97d2098fe8aa9ae19b3d66e9791c670e7975fc3d0; replaya518a11401feb003d1eb84cfaf7c75cbe35862d10dddcf76cfd6f5671aa0fd76. A distinct joint ground/victim raster transaction finds51objects/3vias/1reviewedcut on F/B. F/In2/B fails victim restoration. `jl-coupled-plan.json` now pins the complete F/B candidate; no automatic repair. Native NOT RUN at this commit.
+
+All252core ground groups have now been screened at0.0125mm, without skipped frames:39positive groups/394objects. Pair-spacing selection excludes one0.025mm via conflict, retaining38groups/382objects/38vias. The saved batch and dynamic rebase helper are updated, but NOT rebased/dispatched while core26 remains active. Original .025/.0125 first24 comparison remains identical-input evidence; later groups have no speedup claim.
+
+JR37940194109 is terminal; its artifact11622010297 (ZIPa40c3cb959ab9c67286dfe612b25b36fdef0aa000a52a382f41b9940acaefd3e) is downloaded/verified. Receipt says137→137,0DRC/parity,520unchanged warnings,no original splits,not adopted. Finish retention/topology reconciliation before a next JR trial.
