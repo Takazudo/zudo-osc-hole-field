@@ -1,3 +1,15 @@
+# Current continuation — 2026-10-09 12:38 UTC
+
+Branch `agent-fix/189-ground-domain-continuation` includes native-accepted JR141→140 from run37929676316. Sourceb8c3d97c3d77f2b6d54a5dc4884d141673e8077b; worker commit21965d2f848dda38c12895e7cc3f5bb16e1474ba integrated as057bee8. Artifact11616270361 digest verified; all50,964 old copper objects identical,26 added F.Cu segments,zero vias/removals. Zero native DRC/parity,520 unchanged warnings,no split groups,new warning identities or fresh-copy mismatch. Published/native-filledJR SHA256c2e6f8896869213293239912fefa64915da41fcdfa2094f082d017a88803a087; replayd2c5927d764863fb73210a8b77bbe2633a88db078db63f04753f594eeedc4626. Current branch counts JL125/JR140/core1441. Main still125/141/1441 until this accepted increment merges.
+
+JR writer is now terminal and reconciled; no active JL/JR native writer. Core143 run37925863664 remains the sole core writer; do not duplicate it or rebase next core26 until it is terminal and safely reconciled. PR201 post-merge37929896255 and PR202 exact-head37930123640 remain running at last check. PR202 head remains frozen9d8bdf94202601ef174cb58c273a4e4418a40a8c; merge only once all five checks pass and exact head/reviews are refreshed. Keep189OPEN.
+
+Further bounded evidence:48 JL via-free cases yielded no route; surface-ground per-layer screening catches rejected transactions but falsely flags all three native-accepted controls, so defaults are unchanged. One D7504 ground-corridor exclusion and eight ground-first repair cases also yielded no route. Existing full native memberships and constraints remain authoritative. D7209 follow-up on the newly accepted140 input found no route in two outer-layer cases. Do not repeat these unchanged configurations; next D7504 strategy needs coordinated local copper repair around diagnosed returns rather than wider additive searches. Native accepted D7208 is preserved.
+
+Circuit/docs validation passed after accepted-board status reconciliation. No production, manufacturing or hardware qualification performed. Detailed resume commands below still apply, except JR37929676316 is accepted/reconciled and no longer pending.
+
+---
+
 # Current resumable checkpoint — 2026-10-09 12:27 UTC
 
 PR201 merged normally at `843b93da5bdb6913c2c66b83ab2f92a2374164db` after exact-head run37927716576 passed all five checks (`ci-3f7fb68.json`). Post-merge run37929896255 is running; do not call it passed. Retained branch `agent-fix/189-ground-fill-continuation` still carries the active core writer. PR202 is now based on main, on `agent-fix/189-fill-boundary-continuation`; this checkout includes the main merge.

@@ -1,0 +1,87 @@
+{
+  "status": "ADDITIVE RASTER ONLY; SEARCH-ONLY VIA EXCLUSION AROUND NATIVE LOST FILL; BOARD RULES UNCHANGED; NATIVE NOT RUN",
+  "input_dump_sha256": "135e1c2495204972ad3f410d90b649c67f3ce9fa87eab724f19cb7196c87c53b",
+  "bounds_mm": [
+    387.125,
+    170.5,
+    416.45,
+    187.56
+  ],
+  "elapsed_seconds": 5.863215718010906,
+  "transactions": [
+    {
+      "via_avoid_mm": [
+        410.075,
+        177.55,
+        410.675,
+        178.15
+      ],
+      "allowed_layers": [
+        "F.Cu",
+        "B.Cu"
+      ],
+      "ground_growth_mm": 0.05,
+      "elapsed_seconds": 5.842978738000966,
+      "results": [
+        {
+          "net": "X3307A17C148FAA8F7A4D",
+          "island": [
+            "D7504.1"
+          ],
+          "path": null
+        }
+      ],
+      "diagnostics": [
+        {
+          "net": "X3307A17C148FAA8F7A4D",
+          "endpoints": [
+            "D7504.1"
+          ],
+          "reason": "fill_guard_disconnection",
+          "phase": "path_rejected",
+          "guard_layers": [
+            "In3.Cu",
+            "F.Cu"
+          ]
+        },
+        {
+          "net": "X3307A17C148FAA8F7A4D",
+          "endpoints": [
+            "D7504.1"
+          ],
+          "reason": "search_exhausted",
+          "phase": "route",
+          "attempts": [
+            {
+              "window_cells": [
+                0,
+                500,
+                670,
+                1079
+              ],
+              "expanded": 28694,
+              "limit": 300000
+            },
+            {
+              "window_cells": [
+                0,
+                686,
+                0,
+                1079
+              ],
+              "expanded": 28694,
+              "limit": 300000
+            }
+          ],
+          "max_expansions": 300000,
+          "window_mm": 6
+        }
+      ],
+      "proposal": {
+        "board_sha256": "3d9940791131e31d22ea65e4457ccb77d5250d629eaa2b5d3c6b03024ac3405c",
+        "removed_uuids": [],
+        "copper": []
+      }
+    }
+  ]
+}

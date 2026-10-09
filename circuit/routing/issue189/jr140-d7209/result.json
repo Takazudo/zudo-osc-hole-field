@@ -1,0 +1,107 @@
+{
+  "status": "RASTER ONLY; NATIVE NOT RUN",
+  "input_board_sha256": "c2e6f8896869213293239912fefa64915da41fcdfa2094f082d017a88803a087",
+  "input_dump_sha256": "903e9f2362fc693c295e00e55e697bc378d2819fd8b902c476470bd740725c69",
+  "weight": 1,
+  "elapsed_seconds": 6.702172081000754,
+  "transactions": [
+    {
+      "net": "XFA0270EBB537DA86D487",
+      "layer": "F.Cu",
+      "bounds_mm": [
+        335.56,
+        179.15,
+        364.85,
+        197.0
+      ],
+      "elapsed_seconds": 3.301703349003219,
+      "results": [
+        {
+          "net": "XFA0270EBB537DA86D487",
+          "island": [
+            "D7209.1"
+          ],
+          "path": null
+        }
+      ],
+      "diagnostics": [
+        {
+          "net": "XFA0270EBB537DA86D487",
+          "endpoints": [
+            "D7209.1"
+          ],
+          "reason": "search_exhausted",
+          "phase": "route",
+          "attempts": [
+            {
+              "window_cells": [
+                0,
+                717,
+                0,
+                1175
+              ],
+              "expanded": 184972,
+              "limit": 300000
+            }
+          ],
+          "max_expansions": 300000,
+          "window_mm": 6
+        }
+      ],
+      "proposal": {
+        "board_sha256": "c2e6f8896869213293239912fefa64915da41fcdfa2094f082d017a88803a087",
+        "removed_uuids": [],
+        "copper": []
+      }
+    },
+    {
+      "net": "XFA0270EBB537DA86D487",
+      "layer": "F.Cu,B.Cu",
+      "bounds_mm": [
+        335.56,
+        179.15,
+        364.85,
+        197.0
+      ],
+      "elapsed_seconds": 3.376811309994082,
+      "results": [
+        {
+          "net": "XFA0270EBB537DA86D487",
+          "island": [
+            "D7209.1"
+          ],
+          "path": null
+        }
+      ],
+      "diagnostics": [
+        {
+          "net": "XFA0270EBB537DA86D487",
+          "endpoints": [
+            "D7209.1"
+          ],
+          "reason": "expansion_limit",
+          "phase": "route",
+          "attempts": [
+            {
+              "window_cells": [
+                0,
+                717,
+                0,
+                1175
+              ],
+              "expanded": 300001,
+              "limit": 300000
+            }
+          ],
+          "max_expansions": 300000,
+          "window_mm": 6
+        }
+      ],
+      "proposal": {
+        "board_sha256": "c2e6f8896869213293239912fefa64915da41fcdfa2094f082d017a88803a087",
+        "removed_uuids": [],
+        "copper": []
+      }
+    }
+  ]
+}

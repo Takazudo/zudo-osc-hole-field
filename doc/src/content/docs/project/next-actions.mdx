@@ -101,7 +101,10 @@ pilot copper is counted as accepted progress.
 PR #199 further adopts JR145→143: 93 additive objects, all 50,821 old objects retained,
 zero native errors/parity, no new warning identities or group splits, and fresh agreement.
 PR #200 adds an accepted outer-layer JL connection without removing old copper.
-Current native totals are **JL125 / JR143 / core1,441**.
+PR #200 also adds JR143→141 with 50 additive objects. The next native-accepted
+D7208 alternative adds 26 F.Cu segments, preserves all 50,964 prior objects, and
+passes unchanged group/warning/DRC/parity/fresh-copy gates: JR141→140.
+Current native totals on this branch are **JL125 / JR140 / core1,441**.
 Continue with the exact unresolved endpoints and source-defined local repairs,
 not unchanged larger rerouting budgets. The resumable implementation note is
 `circuit/routing/issue189/checkpoint.md` in the repository.
