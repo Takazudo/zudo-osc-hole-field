@@ -19,7 +19,7 @@ A cut-line bound (`scripts/pcbgen/cut_capacity.py`) showed that the four-layer h
 | Native check | JL / `osc-jack-left` | JR / `osc-jack-right` |
 | --- | --- | --- |
 | Status | ROUTED DRAFT IN PROGRESS | ROUTED DRAFT IN PROGRESS |
-| Native open edges (DRC, settled zone refill) | **124** | **140** |
+| Native open edges (DRC, settled zone refill) | **121** | **139** |
 | Remaining signal edges | 103 | 112 |
 | Remaining rail / ground edges | +12V 0, +5V 0, -12V 0, AGND 21 | +12V 0, +5V 0, -12V 0, AGND 28 |
 | DRC errors / schematic parity | 0 / 0 | 0 / 0 |
@@ -246,3 +246,11 @@ DRC/parity are 0/0, with 477 unchanged warnings, no split original pad groups or
 new warning identities, and independent fresh-copy agreement. The pad/net,
 outline, keepout and layer records are unchanged. Exact artifact and retention
 receipts are in `circuit/routing/issue189/jl-c8143-fanout`.
+
+Native run `37933235474` then accepted **JR140→139** by isolating the 27 B.Cu
+R8487 segments from the rejected two-net candidate. All 50,990 prior copper
+objects remained identical. Run `37934138351` accepted **JL124→121** with 17
+segments and three vias joining R2209, RB2217 and the U3402 ground cluster; all
+33,222 prior objects remained identical. Both have zero native DRC/parity errors,
+unchanged warning identities, no split original pad groups and matching fresh
+connectivity. These are partial routing improvements, not fabrication approval.

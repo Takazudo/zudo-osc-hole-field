@@ -106,7 +106,9 @@ D7208 alternative adds 26 F.Cu segments, preserves all 50,964 prior objects, and
 passes unchanged group/warning/DRC/parity/fresh-copy gates: JR141→140.
 A native-accepted C8143 ground fanout also adds one segment and one via, preserving
 all 33,220 prior JL objects and passing the same gates: JL125→124.
-Current native totals on this branch are **JL124 / JR140 / core1,441**.
+Subsequent native gates accepted 27 additive R8487 segments (JR140→139) and
+20 additive ground objects (JL124→121), preserving all prior accepted copper.
+Current native totals on this branch are **JL121 / JR139 / core1,441**.
 Continue with the exact unresolved endpoints and source-defined local repairs,
 not unchanged larger rerouting budgets. The resumable implementation note is
 `circuit/routing/issue189/checkpoint.md` in the repository.
