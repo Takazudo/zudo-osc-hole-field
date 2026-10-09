@@ -1,0 +1,26 @@
+{
+  "status": "REGRESSION REPRODUCED AND FIXED; NATIVE NOT RUN; NO COPPER ADOPTED",
+  "cause": "Neck-down eligibility compared requested width with signal_width and optional grow IDs, without excluding rail_nets/plane nets/AGND. Rail escape width equalled the default signal width and exported undersized150000nm supply segments.",
+  "input_board_sha256": "05a8d4beff64f5dee1356f679eb7d24842996d7a6b125047b8f48467e41bac26",
+  "input_dump_sha256": "0464088b46037dcaafb2f1acd5f977aeb72a89f47ba9de4070ee8dc4bd82d330",
+  "before_router_sha256": "60eccc228566bed87c4b0e7b0f5c7edf44d7380c213e6074822a951b43f44eba",
+  "after_router_sha256": "3330f5926545cf742cc89bb149d88eb8c0e8be3d6a51aa73179f21a1d16824d4",
+  "before_result_sha256": "1c21d97fef39a75b6eb2a94563fba49f590d5b9f72d8ae68741872dab5c436f1",
+  "after_result_sha256": "b63362210620ee32ed54d24c887df488ba00fb643d497fc32e67c11aa6ef8144",
+  "before": {
+    "elapsed_seconds": 8.574963093997212,
+    "paths": 5,
+    "copper_objects": 20,
+    "segment_widths_nm": [
+      150000
+    ],
+    "accepted": false
+  },
+  "after": {
+    "elapsed_seconds": 27.58608660200116,
+    "paths": 0,
+    "copper_objects": 0,
+    "accepted": false
+  },
+  "regression_tests": "Two tests failed before;81 affected tests pass after. No native oracle was invoked on undersized proposal. Existing native gates remain mandatory."
+}

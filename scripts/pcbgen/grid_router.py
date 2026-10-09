@@ -353,7 +353,11 @@ def route(dump,nets=(),rip=(),rip_first=False,res=0.1,layer_cost=None,via_cost=3
     allowed=[raster.layers.index(n) for n in (allowed_layers or raster.layers)]
     results=[]
     strict=sorted(raster.net_id[n] for n in (grow or {}) if n in raster.net_id)
-    necked=lambda N,w:bool(neck_width) and raster.neck.any() and N not in strict and w<=signal_width+1e-9
+    # Net role, not just requested width or optional obstacle growth, decides
+    # whether a path may use signal neck-down rules. Rail escapes can be as
+    # narrow as signal_width while still requiring their full rail dimensions.
+    no_neck={raster.net_id[n] for n in (*rail_nets,*planes,'AGND') if n in raster.net_id}
+    necked=lambda N,w:bool(neck_width) and raster.neck.any() and N not in strict and N not in no_neck and w<=signal_width+1e-9
 
     search_failure={'reason':'unknown'}
 

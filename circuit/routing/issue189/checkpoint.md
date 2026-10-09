@@ -1,3 +1,27 @@
+# Bounded pilot diagnosis — 2026-10-09 07:49 UTC
+
+JL RB2217 pilot37899555501 is REJECTED:134→134,one signal group split,one new
+track-dangling warning,DRC/parity0/0.33124oldobjects retained,7removed,13added.
+Artifact11602760623 ZIPdefc55b9c354f2306934b744acbc3e7614cbb4812bed631faa7283724b81038d
+verified; exact native result/replay retained. Follow-up victim repair under existing
+signal0.2mm rules found0/1paths in9.689453s. No canonical change. Do not repeat the
+same corridor/budget; diagnose another local escape or change the routing method.
+
+JR153 rail escape screen revealed a separate signal-neckdown eligibility defect:
+when rail_width equalled signal_width and grow omitted rails, five apparent paths
+exported150000nm supply segments. They were held back; native NOT RUN,zero adopted.
+Two regression tests fail before and pass after excluding rail_nets,plane nets and
+AGND from signal neckdown. All81affected tests pass. On identical saved native input
+and identical parameters, corrected screen returns0/5paths,zero copper,27.586087s
+(previous8.574963s returned20invalid segments). No performance improvement claimed.
+rail-neckdown-diagnosis.json binds router,input and result hashes. Constraints and
+native gates are unchanged; successful accepted copper remains byte-identical.
+
+JR additive native pilot37900022560 remains pending at6b2d7ee; it contains only
+signal additions and is separate from the rejected undersized supply proposal.
+Core sole writer37895925149 and main postmergeCI37900306980 remain pending.
+PR195 is already merged as c7f9a4e; PR196 is the continuing isolated branch.
+
 # PR195 merged; continued routing — 2026-10-09 07:44 UTC
 
 PR195 merged2026-10-09T07:39:46Z as c7f9a4e1aee0d9dbbb3f5c4d2f7a67c0cda6dc73,
