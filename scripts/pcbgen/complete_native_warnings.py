@@ -132,6 +132,7 @@ def zone_evidence(root,before_board,after_board,context):
             continue
         pairs=row.get('native_silk_pairs')
         if pairs is None:raise ValueError('growing zone has no native pair evidence')
+        if 'artwork_batch_size' in pairs:raise ValueError('batched zone evidence requires independent coverage support')
         selected=pairs['selected_item_uuids'];fixtures=pairs['fixtures']
         geometry=pairs.get('source_geometry_sha256')
         if 'native_geometry_method' in pairs or geometry is not None:
