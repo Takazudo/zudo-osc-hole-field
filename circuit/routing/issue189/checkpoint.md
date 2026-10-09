@@ -1,6 +1,6 @@
 # Issue 189 exact continuation checkpoint
 
-Updated 2026-10-09 19:26 UTC. **Issue #189 remains OPEN.** Main `2ca29f2550366d5b31f6eb2ce9dbdbfd9a6b27c2` accepts **JL119 / JR134 / core1441**. Draft PR211, branch `agent-fix/189-finer-jack-continuation`, contains the next bounded work. Zero-edge completion, final regeneration/P/EL/O and renders remain unmet. No fabrication or hardware qualification is claimed.
+Updated 2026-10-09 19:24 UTC. **Issue #189 remains OPEN.** Main `2ca29f2550366d5b31f6eb2ce9dbdbfd9a6b27c2` accepts **JL119 / JR134 / core1441**. Draft PR211, branch `agent-fix/189-finer-jack-continuation`, contains the next bounded work. Zero-edge completion, final regeneration/P/EL/O and renders remain unmet. No fabrication or hardware qualification is claimed.
 
 ## Active work and hard gates
 
@@ -41,7 +41,7 @@ Pilot37976521780 atd1dd53fea72278434ae40e6ef4c4d02ac2c54afd:119→118,+75segment
 
 Run37965185751 at08aec29e83d24d291f4d41a7bb10300e072a7260:1441→1432 rejected. All133169old full objects unchanged,+19outer segments/11nets/zero cuts or vias.0DRC/0parity,619unchanged warnings,fresh agreement. Original1928-padAGND group splits into1/1/2/1924: J900311.2, C4445.2, and U4606.5/C4623.2 isolated. AGND252→255. No board adopted.
 
-Candidate40ace01e555e637a1faa369990fecc715ba8ee9b49dd5d717fddef004ddf8233, replayda1d5262b945e51aa45eb500e1296efd2324d515b164132c4da9e36cec67cf49. Artifact11638511202,ZIP60524fca152e069c17d8880e0a740df9b6a082273f7a879a88764d17f509e414. `core-short-no-via/{reconcile.py,retention,artifact}.json`. Bot9ac2677 contains exactly two receipt files, both whole blobs matched verified artifact; receipt-only cherry7028f17. Do not retry unchanged.
+Candidate40ace01e555e637a1faa369990fecc715ba8ee9b49dd5d717fddef004ddf8233, replayda1d5262b945e51aa45eb500e1296efd2324d515b164132c4da9e36cec67cf49. Artifact11638511202,ZIP60524fca152e069c17d8880e0a740df9b6a082273f7a879a88764d17f509e414. `core-short-no-via/{reconcile.py,retention,artifact}.json`. Bot9ac2677 contains exactly two receipt files, both whole blobs matched verified artifact; receipt-only cherry7028f17. Do not retry unchanged. `core-short-no-via/split-proximity.json` measures nearest new copper4.95–7.22mm from the four split pads: a3mm exclusion would miss them. `core-short-split-filter/` holds8whole cases/13segments after excluding the three closest transactions; this is a hypothesis only, not causal attribution or native acceptance, and must rebase after the current ground work.
 
 ## Complete core warning evidence: provisional, NOT eligible yet
 
