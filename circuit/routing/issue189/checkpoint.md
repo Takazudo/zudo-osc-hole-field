@@ -6,6 +6,33 @@ Branch `agent-fix/189-obstacle-transactions`, draft PR #190. Last published head
 before this checkpoint: `5932578181ca9fa88991ae5067d6ec1ac6ed6f86`.
 Main remains `1fe06ad50248d6434876fbf2bd6e32e1bfbb13bb`.
 
+## Terminal jack pilot results — 2026-10-09 02:35 UTC
+
+JR37873299470 finished: baseline162, cut168, repaired/fresh163. Rejected for no
+strict improvement, one split victim pad group, and new dangling track/via warning
+identities. JL37874044551 finished: baseline139, cut141, repaired/fresh139; no
+native errors, no new warnings or pad splits, but no strict improvement. Neither
+pilot wrote canonical copper. Exact result/replay JSONs and verified archive
+SHA256 digests are committed alongside `benchmark-artifacts.json`. Stop these
+unchanged cut configurations.
+
+JR diagnostics show the target and failed victim first finding paths rejected by
+the -12V fill guard; fallback searches did not exhaust expansion budgets. A
+bounded disposable signal probe found all seven local paths without treating that
+intermediate signal-only topology as acceptable. `jr-coupled-plan.json` and its
+hash-bound87-object proposal now define a read-only joint signal/supply pilot.
+It requires native DRC/parity after the fixed signal replay, one existing-dimension
+-12V restoration if native supply membership/count worsens, optional existing AGND
+stitching, independent final reload and the full original-baseline promotion gate.
+Ordinary routing's fill guard is unchanged. Failure to restore returns rejects
+all candidate copper. This coupled native pilot is NOT RUN yet.
+
+Core reviewed replay37872907194 remains the sole writer. Integrated CI37874044502 **passed on7e2ad15**, including aggregate regeneration,
+native fixtures, docs and all three DRC gates (`ci-7e2ad15.json`). Do not duplicate either run. The committed core DRC file
+has499 capped unconnected records and620 warnings (zero errors/parity); the
+experiment measured1509 complete open edges at the exact canonical PCB hash.
+Those reports/metrics remain distinct. Latest local focused suite:122 tests PASS.
+
 ## Resumed execution — 2026-10-09
 
 Workspace and prior context survived restart; Git credentials work. Refreshed

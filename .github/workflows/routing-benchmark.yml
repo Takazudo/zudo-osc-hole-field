@@ -24,6 +24,11 @@ on:
         description: Read-only jack local branch-repair pilot (no canonical writer)
         type: boolean
         default: false
+      local_mode:
+        description: Local cut pilot, or fixed JR signal proposal with native supply restoration
+        type: choice
+        options: [cut, coupled]
+        default: cut
 permissions:
   contents: read
 concurrency:
@@ -159,6 +164,7 @@ jobs:
       BOARD: ${{ inputs.board }}
       ADOPT_RUN: ${{ inputs.adopt_run }}
       RECOVER_CORE: ${{ inputs.recover_core }}
+      LOCAL_MODE: ${{ inputs.local_mode }}
     steps:
       - name: Require a read-only jack request
         run: '[[ ( $BOARD == osc-jack-left || $BOARD == osc-jack-right ) && -z $ADOPT_RUN && $RECOVER_CORE == false ]]'
@@ -171,7 +177,14 @@ jobs:
         run: |
           mkdir -p .circuit-cache
           set -o pipefail
-          timeout --signal=INT --kill-after=2m 80m python -u scripts/pcbgen/local_repair_pilot.py --board "$BOARD" \
+          args=(--board "$BOARD")
+          if [[ $LOCAL_MODE == coupled ]]; then
+            [[ $BOARD == osc-jack-right ]] || exit 1
+            args+=(--coupled)
+          elif [[ $LOCAL_MODE != cut ]]; then
+            exit 1
+          fi
+          timeout --signal=INT --kill-after=2m 80m python -u scripts/pcbgen/local_repair_pilot.py "${args[@]}" \
             2>&1 | tee .circuit-cache/local-repair.log
       - name: Retain local proposal and native rejection or eligibility
         if: always()
@@ -182,6 +195,7 @@ jobs:
             .circuit-cache/issue189-local-${{ inputs.board }}/
             .circuit-cache/${{ inputs.board }}-grid-189-local-base/
             .circuit-cache/${{ inputs.board }}-grid-189-j*-local*/
+            .circuit-cache/${{ inputs.board }}-grid-189-j*-coupled*/
             .circuit-cache/local-repair.log
           include-hidden-files: true
           retention-days: 30
