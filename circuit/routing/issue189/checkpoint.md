@@ -1,3 +1,33 @@
+# Current checkpoint — 2026-10-09 05:57 UTC
+
+Active execution branch: agent-fix/189-return-continuation. PR#194 is frozen at
+1defd95ca9e4d7948bc84c0bbb8cee86cad486a2 for exact-head CI37889964779: all three
+native DRC jobs and documentation pass; Python job pending. PR#193 merged
+652dab95ba3f2da44ad941c2b972ad074bfdf8fc; post-merge CI37889506317 passed.
+Accepted task copper remains JL135/JR155/core1509. Issue#189 OPEN.
+
+JL coupled pilot37889308541 rejected135→136. The signal connection closes but
+-12V's original266-pad group splits258+4+4; detached branches are documented in
+jl-first-corridor-diagnosis.json. Bounded rail restoration found no paths.
+DRC/parity0/0, no new warnings, but full coupled fresh gate was never reached.
+Canonical135 unchanged. This configuration will not be repeated unchanged.
+
+Next JL source plan excludes In3 for signal repair. A bounded soft probe on the
+same accepted135 needs six victim nets; four-victim budget diagnosed that limit,
+then six-victim capture identified16 corridor objects out of519 on those nets.
+Whole-net routing rolled back with zero changes. The native local cut now uses
+those16 exact objects, with F/In2/B signal layers and all original gates intact.
+After push, dispatch local_repair=true/local_mode=cut on this active branch;
+check existing runs first. Probe sources/results and original six-case plan retained.
+
+JR isolated D7504.1 coupled pilot37890000088 is active on1defd95. Core sole writer
+37881591885 is still active on agent-fix/189-isolated-rail-replay; no terminal
+outcome exists yet. Do not duplicate it or infer acceptance. If core adopts,
+reconcile its bot commit and recompute the ground-link proposal on the accepted
+input before another core replay. Executor works after the transient05:22 disconnect.
+
+## Earlier checkpoint history (superseded above)
+
 # Current checkpoint — 2026-10-09 05:44 UTC
 
 PR#193 merged at652dab95ba3f2da44ad941c2b972ad074bfdf8fc after all five exact-head
