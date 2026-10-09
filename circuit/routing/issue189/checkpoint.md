@@ -1,3 +1,130 @@
+# JR145 accepted; freeze the continuation milestone — 2026-10-09 09:11 UTC
+
+PR198 now contains acceptedJL126/JR145/core1441. JR bounded run37907617523 at75f599e
+ADOPTED146→145; botc82eae5 reconciled by fast-forward. BoardSHA
+7e548f08e57c5b982c707583b537c7364939f4e336c1f2e8cfc2b2b7bf0253b6;
+replaySHA1c2a6a4703837fd2511ac3262ca2b3319d5c040502fe8ccad736717c1f03d26a.
+All50799oldobjects retained,20segments+2vias added,0removals;0DRC/parity,
+520unchangedwarnings,no original-group splits,independent fresh agrees.
+Artifact11606256269 ZIP9f26641b7abbba8b5c93ffa68d95f2b010dafa29d3696245ad5217b4ea470395
+verified; full multiset retention committed. Bounded search now has actual native
+accepted progress,not just synthetic or raster evidence.
+
+Core sole writer37907147442 ataf724ad remains active; do not duplicate it.
+JL and JR have no active writer. Main197 postmerge37906634220 PASSED.
+Freeze this milestone for all five exact-head checks; move new jack proposals and
+supply-screen evidence to a follow-up branch while preserving the pending core writer.
+Native full completion command has NOTRUN; nonzero totals cannot satisfy it.
+Issue189 stays OPEN; no hardware qualification or fabrication.
+
+# JL126 adopted — 2026-10-09 08:59 UTC
+
+Canonical JL37906767213 source46a599c ADOPTED127→126;botf5ce549 reconciled by fast-forward.
+Candidate boardSHA54b4c9718f652dfdc98b4dab615845962dc8e3025f51a76541a50e0ba3d579d9
+and replaySHA1d75189b5ef247abb31b47a2e6e7867597c074e9486e4cb2d374e2bd8df62a2b
+match the downloaded,digest-verified eligible pilot exactly. All33141oldobjects
+retained,6segments+2vias added,0removed;native errors/parity0/0,477warnings,
+no new identities or original group splits,independent fresh agrees.
+Accepted totals nowJL126/JR146/core1441; jack supplies remain0.
+JR37907617523 and core37907147442 remain active; no second writer for either.
+Local core supply rest-screen remains active;first24 found19paths/34objects,
+175.383462s,guardPASS. Raster candidates are not native-accepted connections.
+
+# Three bounded native transactions — 2026-10-09 08:55 UTC
+
+Current pushed head75f599e21a70175dfc035de26aba120fcee8b041; PR198 targets main.
+Exactly one native writer per board:
+- JL37906767213 source46a599c: fixed eligible D2326 replay127→126 candidate.
+- JR37907617523 source75f599e: new22-object U7403.2 bounded escape on146.
+- Core37907147442 sourceaf724ad: new31-object U1513.9 bounded escape on1441.
+None has a terminal native receipt yet. Preserve their eventual copper,including
+fallback ci-route branches if publication races; never infer adoption from green CI.
+
+Accepted counts remain JL127/JR146/core1441,all DRC/parity0/0; warnings477/520/619.
+JR146-bounded-screen:24nets,9raster paths/414objects/120.062891s,guardPASS.
+Only22objects are submitted; eight other paths are proposals,not native progress.
+Core paired bounded screen has identical source,nets,frames and budgets:
+0.025mm5paths/283objects/187.959573s;0.05mm3paths/78objects/155.845891s.
+The two coarser-only paths are retained; neither resolution dominates.
+Local core full-width0.025mm supply screen is ongoing from accepted1441.
+Any next proposal must be reconciled to the terminal core writer's actual board.
+
+# Active native replays — 2026-10-09 08:50 UTC
+
+Sole core writer37907147442 ataf724ad816ccf837cc3494f10bf3137f8025ae5e
+replays core-bounded-one/proposal.json onto accepted1441SHAa0e3cff...:
+31objects on X33ADBEB2EBFF18372234/U1513.9,zero removals. Native NOT RUN to completion.
+Do not dispatch another core writer or overwrite eventual accepted copper.
+JL canonical37906767213 at46a599c remains active. Inspect both actual receipts.
+
+core1441-bounded-screen retains exact probe and24-net result:0.025mm additive
+frames,maximum2500mm2 each,300000expansions/window;5paths/283objects in187.959573s,
+heavy-guardPASS. Only the31-object transaction is submitted; other proposals remain
+raster-only and must be rebound to any new accepted board with retention proof.
+A same-input0.05mm comparison is running locally. Existing tests87PASS and both
+pnpm circuit:check/pnpm check PASS after the documentation updates.
+
+# Accepted core and JR continuation — 2026-10-09 08:46 UTC
+
+PR197 merged normally as1842b477fa74fdf269fc2346091d6e7e17c359de after all five
+required checks passed on58026c3 in37904748777. Branch retained;189OPEN.
+PR196 postmerge37903625267 passed. PR198 now targets main and contains accepted
+JL127/JR146/core1441. Jack supply edges remain zero. Current pushed source46a599c.
+
+Core37895925149 is ADOPTED1509→1441: all132953original objects unchanged,
+216outer segments added,zero removals/vias/innertracks. Native errors/parity0/0,
+619warnings,no new identities or original pad-group splits,independent fresh agrees.
+Publication cache stripping passed native geometry/connectivity/warning equivalence.
+Bot44e4a33 was reconciled as14f5595; both branches retained. PublishedSHA
+ a0e3cff1ebc211564b8be10f6a993d50fb6d4372edde86a056ebc8dda3ea5932
+and native-filledSHA95c815b2178511621f97cd7021938023b96d4ee19c9282ae99b35fb387ba10c5.
+Artifact11603564190 ZIPa01f06e5458221d6d013c5331110e0f60c849d756cec84dfdcf835750bda4cfc
+verified; full multiset retention in core-outer-filtered/retention.json.
+
+JR37905262670 is ADOPTED148→146,bot e77a92e5a357d65501a52115609741c662df00b2:
+33additions,zero removals,all50766prior objects including supplies retained;
+0errors/parity,520unchangedwarnings,no splits,fresh agrees. BoardSHA
+f08bc0fd04a23a66471a7e563f0661f6313ded52db11a51b857eff49af1c5d05.
+
+JL pilot37904498108 is eligible127→126,all33141oldobjects retained,8additions,
+zero removals; full native membership/warning/error/fresh gate passed.
+Artifact11604082851 ZIPe06a2e898930796b2a03bcf1f54fa4900ba916b1970a3f12411f429f0ef7fb3e
+verified. Canonical replay37906767213 at46a599c is active; inspect its actual receipt.
+
+Bounded additive raster feature keeps full native islands and geometry, restricts
+only search allocation, rejects rip-up, and fixes negative slice/via indexing.
+87affectedtests PASS. Same savedJR153 U7506.11 reference produced identical2segments:
+full25.169316s,bounded2.375470s; guardPASS. Initial via-index failure fixed with a
+regression. Native validation of a new bounded-core proposal NOTRUN yet.
+Core24 fine bounded screen runs locally from accepted1441 native geometry; do not
+reuse old1509 proposals without reconciliation. All default native gates unchanged.
+
+# Ground and signal continuation — 2026-10-09 08:29 UTC
+
+PR197 remains frozen at58026c3bd0c288b3a4ebcbf830fe5be6dde2f233 for CI37904748777.
+Do not move its head; merge only after all five required checks pass,then retarget
+this follow-up to main. Current branch agent-fix/189-ground-signal-continuation
+preserves acceptedJL127/JR148/core1509; jack supply edges0/0.
+
+JR filtered two-net pilot37902237082 at ee6c0aa is NATIVE ELIGIBLE153→151:
+all50756oldobjects retained,33added,zero removals;0errors/parity,no new warnings,
+no original-group splits,independent fresh agrees. CandidateSHA
+410a49e6d81a9fba3645f92385ff9d2599c952727674383884c01ea63f1b7860; replaySHA
+586f2601155c97d72429eaa48d8abfc175d18da69e91ed10d303e257b42b7b8a.
+Artifact11603853248 ZIPf9600ebe778ed3c37312154c6a27e31acf8466ac8b74f6ae691d8feda9ea40ca
+verified. The whole D7208 transaction is excluded,so originalC7221.1 membership
+survives. This eligible old153 result must not overwrite the accepted148 supplies.
+
+jr-two-on-supply-prepare.py rebinds only its33additions onto exactea5f09c78cd1146ad5c4f8a1f9e573bb644e9e96cd3ee0d02ab5c8a64b3cf6e2,
+proving all50766current objects INCLUDING all10new supply objects remain unchanged,
+no removals or UUID collisions. The combined148-input native gate is NOT RUN yet;
+canonical replay will require that exact input and all existing native gates.
+
+JL read-only D2326 pilot37904498108 at43e3fe8 remains running on accepted127.
+Core sole writer37895925149 at0e6697d remains active; do not duplicate or overwrite
+its eventual accepted copper. No local heavy probes remain active. Core24 bounded
+comparison and all prior native evidence remain committed. Issue189 stays OPEN.
+
 # Frozen PR197 supply milestone — 2026-10-09 08:25 UTC
 
 PR197 agent-fix/189-fine-escape-replays now contains acceptedJL127/JR148/core1509.

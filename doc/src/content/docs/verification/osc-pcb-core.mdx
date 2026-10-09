@@ -48,7 +48,7 @@ Four layers fall below the 1.5× margin used for the jack halves, so the core ta
 | --- | --- |
 | Outline / stack | 310 × 284 mm minus the 56 × 46 mm notch; six copper layers, 1.6 mm, 2 oz proposal |
 | Footprints | 3,594 netlisted (8 DNP), 13,406 pads |
-| Native open edges | **1,509**: +12 V 80, −12 V 80, +5 V 0, AGND 252, signals 1,097 |
+| Native open edges | **1,441**: +12 V 80, −12 V 80, +5 V 0, AGND 252, signals 1,029 |
 | DRC errors / schematic parity | **0 / 0** |
 
 `scripts/pcbgen/route_jack_grid.py` ran these stages:
@@ -65,7 +65,7 @@ Each stage is applied to a disposable copy and checked with native DRC, schemati
 
 Still to run under #43: further rip-up rounds and hotspot-region renegotiation for the remaining signal edges, and ±12 V rail escapes.
 
-The renders below are from this 1,509-edge revision. Native checks of this revision also run in CI.
+The renders below predate the accepted 1,441-edge revision. Native receipts and the table describe current copper.
 
 ![Core top: unvalidated routed draft in progress](/assets/osc-hole-field/osc-core-top.png)
 
@@ -99,7 +99,7 @@ reported 1,509→1,499, but both split two existing AGND pad groups and were rej
 The subsequent recovered-copper plus stitching transaction reached 1,391 with
 zero rule/parity errors and independent-copy agreement; it still split four
 previous AGND groups, left AGND at 263 versus 252, and introduced hole-to-hole and
-dangling-via warning identities. It was not adopted. Canonical core remains 1,509.
+dangling-via warning identities. It was not adopted. That candidate did not change canonical core.
 
 A source-defined local replay now omits ten suspected ground-splitting net
 changes and repairs the overlapping signal-via cluster without changing layer or
@@ -116,12 +116,16 @@ It retained all 132,953 original copper objects and added 317 outer-layer segmen
 native errors/parity were 0/0, no new warning identities appeared, and fresh-copy
 connectivity agreed. The lower count therefore is not accepted progress.
 
-The filtered follow-up, run 37895925149 at source commit
-`0e6697df2bde94e3b3397da9ae0727bcdf4de464`, selects 56 complete net transactions
-and 216 outer-layer segments, with zero removals, new vias or inner-layer tracks.
-It excludes six whole transactions near the detached native ground branches;
-this geometric attribution is a hypothesis, not proof of acceptance. It remains
-the sole active core writer. Canonical core stays at 1,509 until the complete
-native receipt passes all gates. Exact replay and continuation evidence remain
-in `circuit/routing/issue189/checkpoint.md`. These are unvalidated drafts, not
-hardware qualification.
+The filtered follow-up, [run 37895925149](https://github.com/Takazudo/zudo-osc-hole-field/actions/runs/37895925149),
+passed all native gates and adopted **1,509→1,441**. Its 56 net transactions add
+216 outer-layer segments while retaining all 132,953 existing copper objects.
+No original pad group splits, new warning identities, DRC errors or parity errors
+remain in this transaction; independent fresh-copy connectivity agrees. The 619
+existing warnings remain unresolved. Removing derived fill-cache fields for
+publication passed native refill equivalence for connectivity, warnings and geometry.
+The published board SHA is `a0e3cff1ebc211564b8be10f6a993d50fb6d4372edde86a056ebc8dda3ea5932`.
+
+Further bounded signal and ground work must start from this accepted board and
+preserve its copper. Exact replay and continuation evidence remain in
+`circuit/routing/issue189/checkpoint.md`. These are incomplete routed drafts,
+not hardware qualification.

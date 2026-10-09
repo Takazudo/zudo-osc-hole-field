@@ -33,13 +33,27 @@ SQRT2=math.sqrt(2)
 
 class Raster:
     """Integer net labels per layer on a res-mm grid; 0 is empty, -1 foreign to every net."""
-    def __init__(self,dump,res=0.1,skip=(),grow=None):
+    def __init__(self,dump,res=0.1,skip=(),grow=None,bounds_mm=None):
         self.layers=tuple(dump.get('layers',LAYERS));n=len(self.layers)
         xs=[v for e in dump['edges'] for v in (e[0],e[2])];ys=[v for e in dump['edges'] for v in (e[1],e[3])]
         if not xs:raise ValueError('board outline missing')
         self.res=res;self.step=res*1e6
         self.x0=min(xs)-self.step;self.y0=min(ys)-self.step
         self.w=int((max(xs)-self.x0)/self.step)+3;self.h=int((max(ys)-self.y0)/self.step)+3
+        if bounds_mm is not None:
+            if len(bounds_mm)!=4 or not all(math.isfinite(v) for v in bounds_mm):
+                raise ValueError('search bounds require four finite coordinates')
+            left,bottom,right,top=[v*1e6 for v in bounds_mm]
+            if left>=right or bottom>=top:raise ValueError('search bounds must have positive area')
+            # Keep exactly the full-board lattice, with one fence cell around
+            # the requested window. Geometry and native islands stay intact.
+            ix0=max(0,math.floor((left-self.x0)/self.step)-1)
+            iy0=max(0,math.floor((bottom-self.y0)/self.step)-1)
+            ix1=min(self.w-1,math.ceil((right-self.x0)/self.step)+1)
+            iy1=min(self.h-1,math.ceil((top-self.y0)/self.step)+1)
+            if ix1<=ix0 or iy1<=iy0:raise ValueError('search bounds miss the board')
+            self.x0+=ix0*self.step;self.y0+=iy0*self.step
+            self.w=ix1-ix0+1;self.h=iy1-iy0+1
         nets=sorted({i['net'] for k in ('pads','tracks','vias') for i in dump[k] if i['net']})
         self.net_id={n:i+1 for i,n in enumerate(nets)}
         self.label=np.zeros((n,self.h,self.w),np.int32)
@@ -62,6 +76,10 @@ class Raster:
         gx,gy=self.centres()
         ring=shapely.polygonize([shapely.LineString([e[:2],e[2:]]) for e in dump['edges']])
         inside=shapely.contains_xy(shapely.union_all(ring),gx,gy) if not ring.is_empty else np.zeros_like(gx,bool)
+        if bounds_mm is not None:
+            # A computational boundary is a conservative fence, never a new
+            # physical outline. It cannot increase board-edge clearance.
+            inside[[0,-1],:]=False;inside[:,[0,-1]]=False
         self.d_edge=ndimage.distance_transform_edt(inside)*res
         self.keep_track=np.zeros((n,self.h,self.w),bool);self.keep_via=np.zeros((self.h,self.w),bool)
         # Neck-down rule areas: inside them signal tracks may be thinner and closer (board .kicad_dru).
@@ -119,8 +137,10 @@ class Raster:
         return gx,gy
 
     def window(self,lo,hi):
-        i0=max(0,int((lo[0]-self.x0)/self.step)-1);i1=min(self.w,int((hi[0]-self.x0)/self.step)+2)
-        j0=max(0,int((lo[1]-self.y0)/self.step)-1);j1=min(self.h,int((hi[1]-self.y0)/self.step)+2)
+        # Off-window objects must produce empty slices, not Python's negative
+        # end-index slices that unexpectedly cover most of the local raster.
+        i0=max(0,min(self.w,int((lo[0]-self.x0)/self.step)-1));i1=max(i0,min(self.w,int((hi[0]-self.x0)/self.step)+2))
+        j0=max(0,min(self.h,int((lo[1]-self.y0)/self.step)-1));j1=max(j0,min(self.h,int((hi[1]-self.y0)/self.step)+2))
         return (slice(j0,j1),slice(i0,i1))
 
     def polygon(self,poly,grow=0.0,conservative=True):
@@ -173,7 +193,8 @@ def island_mask(raster,dump,members):
             mask[li][sl]|=(gx-a[0]-u*dx)**2+(gy-a[1]-u*dy)**2<=(raster.step*0.75)**2
     for v in dump['vias']:
         if v['uuid'] in ids:
-            j,i=raster.cell(*v['xy']);mask[:,j,i]=True
+            j,i=raster.cell(*v['xy'])
+            if 0<=j<raster.h and 0<=i<raster.w:mask[:,j,i]=True
     return mask
 
 
@@ -325,7 +346,7 @@ def route(dump,nets=(),rip=(),rip_first=False,res=0.1,layer_cost=None,via_cost=3
           hole_clearance=0.25,edge_clearance=0.5,max_expansions=4_000_000,allowed_layers=None,log=print,
           planes=None,signal_via_diameter=None,grow=None,window_mm=12.0,weight=1.0,full_board=False,
           escape_halo_mm=0.0,escape_halo_cost=4.0,fill_guards=None,fill_clearance=0.45,neck_width=None,neck_clearance=None,
-          rrr_rounds=0,rrr_max_rip=4,rrr_soft_cost=12.0,rip_only=None,diagnostics=None):
+          rrr_rounds=0,rrr_max_rip=4,rrr_soft_cost=12.0,rip_only=None,diagnostics=None,bounds_mm=None):
     """Return (results, removed_uuids). Each result has net, island pad names and a [layer,x,y,through] path or None.
 
     planes maps a net to its plane layer: every island of that net gets a short
@@ -335,10 +356,14 @@ def route(dump,nets=(),rip=(),rip_first=False,res=0.1,layer_cost=None,via_cost=3
     to signal tracks inside NECKDOWN rule areas: closer to other signal copper only, never
     to the grown (rail/ground) nets. rip_only, when given, limits
     rip-up-and-reroute to those signal nets (a CI shard may only rip the nets it owns).
+    bounds_mm limits raster allocation for additive search only; it never changes
+    the input geometry or native membership used for whole-board acceptance.
     """
     rip=list(rip);planes=planes or {}
+    if bounds_mm is not None and (rip or rip_first or rrr_rounds):
+        raise ValueError('bounded search is additive only; rip-up is forbidden')
     removed={i['uuid'] for k in ('tracks','vias') for i in dump[k] if i['net'] in rip}
-    raster=Raster(dump,res,removed,grow or {});L=len(raster.layers)
+    raster=Raster(dump,res,removed,grow or {},bounds_mm=bounds_mm);L=len(raster.layers)
     # Outer layers cost more: new copper there cuts the surface pours.
     layer_cost=list(layer_cost) if layer_cost else [3.0 if name in ('F.Cu','B.Cu') else 1.0 for name in raster.layers]
     if len(layer_cost)!=L:raise ValueError('one layer cost per copper layer required')
