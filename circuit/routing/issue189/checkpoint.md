@@ -1,6 +1,6 @@
 # Issue 189 exact continuation checkpoint
 
-Updated 2026-10-09 15:55 UTC. **Issue #189 remains OPEN.** Accepted native open edges are **JL120 / JR136 / core1441**. Zero-edge connectivity and final completion gates are unmet. No fabrication or hardware qualification is claimed.
+Updated 2026-10-09 16:15 UTC. **Issue #189 remains OPEN.** Accepted native open edges are **JL120 / JR136 / core1441**. Zero-edge connectivity and final completion gates are unmet. No fabrication or hardware qualification is claimed.
 
 ## Current authoritative state
 
@@ -13,10 +13,10 @@ All accepted boards have zero native DRC/parity errors, no new warning identitie
 | Board | Run | Dedicated worker branch | Pinned source |
 | --- | --- | --- | --- |
 | Core |37950004600|`agent-fix/189-core-finer-ground-worker`|`0d6a444aa1ad648ce6146d0e893e93307bd98f14`|
-| JL |37953994482|`agent-fix/189-jl-c2248-ground-worker`|`ab36b23ae2afbf371a72ff9990a5f353293a94df`|
-| JR |37953998528|`agent-fix/189-jr-r7609-ground-worker`|`ab36b23ae2afbf371a72ff9990a5f353293a94df`|
+| JL |37956537948|`agent-fix/189-jl-u1518-ground-worker`|`5add51f584e077ad9529854ea27ba7ac2b512d2e`|
+| JR |37956542080|`agent-fix/189-jr-r4207-ground-worker`|`5add51f584e077ad9529854ea27ba7ac2b512d2e`|
 
-The core run remains in progress. Both jack runs are now terminal/rejected; their exact artifacts and retained-object proofs are saved. The core run is the sole core writer:38 ground groups/382objects/38vias/zero cuts, full0.3mm AGND tracks. Jack runs are disposable cut/restoration pilots, not canonical writers. Each selects three unchanged original signal segments on one victim net, F/B restoration,300000 cap. Neither cuts PR207's new copper. Do not dispatch overlapping trials or change pinned worker branches.
+All three runs in this table remain in progress. The earlier C2248/R7609 jack runs are terminal/rejected; their exact artifacts and retained-object proofs are saved. The core run is the sole core writer:38 ground groups/382objects/38vias/zero cuts, full0.3mm AGND tracks. Jack runs are disposable cut/restoration pilots, not canonical writers. Each selects four unchanged original signal segments (JL two victim nets, JR one), F/B restoration,300000 cap. Neither cuts PR207's new copper. Do not dispatch overlapping trials or change pinned worker branches.
 
 ## Exact next actions
 
@@ -103,3 +103,11 @@ JR37953998528 rejected136→136: AGND25→24→25,12adds/3cuts,all51060uncut obj
 Both scopes then failed complete bounded joint routing on F/B and F/In2/B at0.025mm, a finer0.0125mm access comparison, and explicit ground-to-In1 fanout at0.025/0.0125mm. All local searches completed under heavy guard; no partial proposal was submitted. Stop those unchanged configurations. The endpoint search exhausts well below300000, so raising caps is not justified.
 
 New distinct native cut/restoration scopes target JL U1518.10 (four original segments/two victim nets,16.25x13.1325mm) and JR R4207.2 (four segments/one victim,14.4x13.96mm). Source preparation verifies exact selected geometry against accepted JL120/JR136, target disconnection, finite bounds and existing repair limits; it does not cut newly accepted PR207 copper. Plans are in jl120-u1518-10-ground-cut/ and jr136-r4207-2-ground-cut/. These are new disposable native trials, not accepted gains.
+
+
+Current alternate jack runs are JL37956537948 and JR37956542080, source5add51f584e077ad9529854ea27ba7ac2b512d2e, on the worker branches in the authoritative table. Both are pending, not accepted gains.
+
+A read-only source-defined R7609 placement comparison tested288translations within±0.8mm while retaining all copper and orientation. Three pass exact source-outline and conservative courtyard clearance; all three conflict with existing segment638c8d71-8db4-5871-a197-ea0ffd3d7075. No static candidate survives, no placement changed and no native acceptance claimed. Exact input/floorplan hashes and results are in jr-r7609-placement-screen/. This negative result applies only to this small no-cut translation scope.
+
+
+The expanded1680-case R7609±2mm translation comparison also yields zero candidates after applying the exact JR source outline and0.30mm inset. The preliminary panel-envelope outputs are retained and explicitly superseded; six apparently pad-clear larger shifts were outside JR and were ruled out before routing. Authoritative results pin the exact partition/floorplan hashes. No source placement or physical constraint changed.
