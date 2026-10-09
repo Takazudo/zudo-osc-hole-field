@@ -22,7 +22,7 @@ on:
       jl_replay:
         description: Fixed native-eligible JL transaction (used only with replay_jl)
         type: choice
-        options: [rail-leaf, corridor]
+        options: [rail-leaf, corridor, paired-corridors]
         default: rail-leaf
       recover_core:
         description: Replay the preserved core aggregate and repair split AGND before the full native gate
@@ -142,7 +142,11 @@ jobs:
         run: |
           mkdir -p .circuit-cache
           set -o pipefail
-          if [[ $JL_REPLAY == corridor ]]; then
+          if [[ $JL_REPLAY == paired-corridors ]]; then
+            python circuit/routing/issue189/jl-paired-corridors-prepare.py
+            replay=circuit/routing/issue189/jl-paired-corridors-copper.json
+            label=issue189-paired-corridors
+          elif [[ $JL_REPLAY == corridor ]]; then
             replay=circuit/routing/issue189/jl-corridor-copper.json
             label=issue189-corridor
           elif [[ $JL_REPLAY == rail-leaf ]]; then
