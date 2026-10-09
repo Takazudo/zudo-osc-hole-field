@@ -1,3 +1,28 @@
+# Current checkpoint — 2026-10-09 06:23 UTC
+
+Active PR195 now adds opt-in ground corridor repair: explicit source ground pads,
+maximum12 exact signal cuts /2victim nets /4source pads. Supply/ground cuts remain
+forbidden; reserved layers remain unavailable. Ground matches existing stitching
+width.3/clearance.25/via.6 and cannot use signal neck-down dimensions. Search-only
+source filtering preserves full native acceptance metrics and padless victims.
+73 affected tests and pnpm check PASS. Full current-head CI/native pilot pending.
+
+Next JL local cut targets R1301.2 AGND with exactly one obstructing signal via
+fa171022-b139-55ce-8e09-dd3ae02497b0 at143.5,122.7mm;69other victim objects stay.
+Input is accepted135 SHA3d40...; current jl-local-plan.json selects this case.
+Dispatch read-only local_mode=cut after push. Full native gate mandatory.
+
+JR U7509 pilot37892274328 finished155→154 with zero native errors/parity and no
+original pad-group splits, but one new dangling-tail warning rejects adoption.
+Artifact11598808234 digest verified, exact replay/result retained. No canonical
+changes. The remaining0.07071mm tail continues the removed0.05mm tail; inspect
+its complete centerline branch before another replay, do not waive the warning.
+JR additive ground pilot37892918965 is running on622ede26899f26b59d3505968a1561a32e903354.
+Core sole writer37881591885 is still active. Main JL135/JR155/core1509 unchanged;
+issue189 OPEN; main postmerge37891992677 still pending. No duplicate core writer.
+
+## Earlier checkpoint history (superseded above)
+
 # Current checkpoint — 2026-10-09 06:20 UTC
 
 Main remains002427f1e036f0b998221e2de073284e6c425be7 (merged194), accepted

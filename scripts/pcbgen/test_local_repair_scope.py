@@ -7,6 +7,58 @@ from scripts.pcbgen.test_grid_router import crossing_board
 
 
 class LocalRepairScopeTests(unittest.TestCase):
+    def test_ground_corridor_requires_explicit_bounded_signal_cuts(self):
+        dump=crossing_board()
+        dump['pads'] += [{'uuid':'g','net':'AGND'}]
+        dump['islands']['AGND']=[['main','anchor'],['g']]
+        dump['tracks']=[{'uuid':'cut','net':'victim'},{'uuid':'supply','net':'-12V'}]
+        spec={'repair_targets':['AGND'],'repair_ground_pad_uuids':['g'],'repair_source_uuids':['cut']}
+        self.assertEqual(driver.repair_selection(dump,spec),(['AGND'],{'cut'}))
+        for change in ({'repair_ground_pad_uuids':[]},{'repair_ground_pad_uuids':['missing']},
+                       {'repair_ground_pad_uuids':['g','g']},{'repair_targets':['-12V']},
+                       {'repair_source_uuids':['supply']},{'repair_targets':['AGND','A']}):
+            with self.subTest(change=change),self.assertRaises(ValueError):
+                driver.repair_selection(dump,{**spec,**change})
+        with self.assertRaises(ValueError):
+            driver.repair_selection(dump,{k:v for k,v in spec.items() if k!='repair_source_uuids'})
+        dump['tracks']=[{'uuid':str(i),'net':f'victim{i}'} for i in range(13)]
+        for count in (3,13):
+            with self.subTest(count=count),self.assertRaises(ValueError):
+                driver.repair_selection(dump,{**spec,'repair_source_uuids':[str(i) for i in range(count)]})
+
+    def test_ground_search_scope_does_not_hide_native_groups_or_victim_fragments(self):
+        dump={'islands':{'AGND':[['main','anchor'],['chosen'],['other']],
+                         'victim':[['pad'],['padless-boundary']]}}
+        search=driver.repair_search_dump(dump,{'repair_ground_pad_uuids':['chosen']})
+        self.assertEqual(search['islands']['AGND'],[['main','anchor'],['chosen']])
+        self.assertEqual(search['islands']['victim'],[['pad'],['padless-boundary']])
+        self.assertEqual(len(dump['islands']['AGND']),3)
+
+    def test_ground_stage_preserves_ground_dimensions_and_reserved_layers(self):
+        original=crossing_board()
+        original['pads'] += [{'uuid':'ground-pad','net':'AGND'}]
+        original['islands']['AGND']=[['main','anchor'],['ground-pad'],['unrelated-ground']]
+        original['tracks']=[{'uuid':'cut','net':'victim'}]
+        native={**original,'open_edges':4,'islands':{**original['islands'],'victim':[['pad'],['boundary']]}}
+        spec={'name':'ground','repair':True,'repair_targets':['AGND'],'repair_ground_pad_uuids':['ground-pad'],
+              'repair_source_uuids':['cut'],'clearance':.2,'signal_width':.2}
+        class Captured(Exception):pass
+        with tempfile.TemporaryDirectory() as directory:
+            root=Path(directory);base=root/'base.kicad_pcb';base.write_text('unchanged')
+            base.with_name('dump.json').write_text(json.dumps(original));cut=root/'cut';cut.mkdir()
+            with patch.object(driver,'ROOT',root),patch.object(driver,'workspace',return_value=cut),\
+                 patch.object(driver,'run'),patch.object(driver,'check',return_value=({},native)),\
+                 patch.object(driver,'route',side_effect=Captured) as route:
+                with self.assertRaises(Captured):driver.stage('osc-jack-left',base,spec,{},print)
+            kwargs=route.call_args.kwargs
+            self.assertEqual((kwargs['clearance'],kwargs['rail_width'],kwargs['via_diameter']),(.25,.3,.6))
+            self.assertIn('AGND',kwargs['rail_nets'])
+            self.assertIn('AGND',kwargs['grow'])  # Ground cannot use signal neck-down dimensions.
+            self.assertEqual(kwargs['allowed_layers'],driver.SIGNAL_LAYERS)
+            self.assertEqual(route.call_args.args[0]['islands']['victim'],[['pad'],['boundary']])
+            self.assertEqual(len(native['islands']['AGND']),3)
+            self.assertEqual(base.read_text(),'unchanged')
+
     def test_repair_cannot_enable_reserved_planes_or_empty_search(self):
         self.assertEqual(driver.repair_layers({}),list(driver.SIGNAL_LAYERS))
         for layers in ([],['In1.Cu'],['In4.Cu'],['F.Cu','F.Cu']):

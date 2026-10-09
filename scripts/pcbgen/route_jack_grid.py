@@ -194,12 +194,33 @@ def repair_layers(spec):
 def repair_selection(dump,spec):
     """Use a source-pinned corridor cut, or the existing terminal-local selection."""
     if 'repair_source_uuids' not in spec:
+        if 'repair_ground_pad_uuids' in spec:
+            raise ValueError('ground corridor requires an explicit signal cut list')
         return repair_batch(dump,radius_mm=spec.get('repair_radius_mm',1.2),only=spec.get('repair_targets'))
     targets=list(spec.get('repair_targets',[]));cut=set(spec['repair_source_uuids'])
-    if not targets or any(n not in dump['islands'] or n in (*RAILS,'AGND') for n in targets):
+    ground=spec.get('repair_ground_pad_uuids')
+    if 'repair_ground_pad_uuids' in spec:
+        pads={p['uuid']:p for p in dump['pads']}
+        if (targets!=['AGND'] or not ground or len(ground)>4 or len(set(ground))!=len(ground)
+                or any(u not in pads or pads[u]['net']!='AGND' for u in ground)
+                or 'AGND' not in dump['islands'] or len(cut)>12):
+            raise ValueError('ground corridor requires AGND source pads and at most twelve signal cuts')
+        if len(repair_nets(dump,targets,cut))>3:
+            raise ValueError('ground corridor may affect at most two signal victim nets')
+    elif not targets or any(n not in dump['islands'] or n in (*RAILS,'AGND') for n in targets):
         raise ValueError('explicit repair requires existing open signal targets')
     repair_nets(dump,targets,cut)  # Reject missing objects and supply/ground cuts before native application.
     return targets,cut
+
+
+def repair_search_dump(dump,spec):
+    """Limit ground source groups only in search; native acceptance keeps the full dump."""
+    if 'repair_ground_pad_uuids' not in spec:return dump
+    groups=dump['islands'].get('AGND',[])
+    if not groups:return dump
+    main=max(groups,key=len);sources=set(spec['repair_ground_pad_uuids'])
+    selected=[main]+[g for g in groups if g is not main and sources.intersection(g)]
+    return {**dump,'islands':{**dump['islands'],'AGND':selected}}
 
 
 class StageRejected(RuntimeError):
@@ -284,7 +305,14 @@ def stage(board_id,current,spec,definition,log):
         # Keep padless fragments and native component identities: they remain
         # boundary anchors/obligations, rather than disappearing from the metric.
         kwargs={k:v for k,v in spec.items() if k in ('clearance','signal_width','signal_via_diameter','grow','res','window_mm','escape_halo_mm')}
-        results,removed=route(dump,nets_to_repair,allowed_layers=layers,layer_cost=LAYER_COST,rail_nets=RAILS,
+        rails=RAILS
+        if 'repair_ground_pad_uuids' in spec:
+            # Match existing AGND stitching dimensions; signal victims also get
+            # the stricter ground clearance. Reserved signal layers stay forbidden.
+            kwargs.update(clearance=max(.25,kwargs.get('clearance',.25)),rail_width=.3,via_diameter=.6)
+            kwargs['grow']={**kwargs.get('grow',{}),'AGND':max(0,kwargs.get('grow',{}).get('AGND',0))}
+            rails=[*RAILS,'AGND']
+        results,removed=route(repair_search_dump(dump,spec),nets_to_repair,allowed_layers=layers,layer_cost=LAYER_COST,rail_nets=rails,
                               fill_guards={'-12V':'In3.Cu'},diagnostics=repair_details['routing_diagnostics'],log=log,**kwargs,**neck_kwargs(board_id))
         rows,links=copper_rows(results,board_id,'grid-'+spec['name'])
         current=cut_board;removed=[]
