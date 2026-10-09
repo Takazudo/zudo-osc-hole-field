@@ -81,12 +81,13 @@ JL/JR/core completion without changing the panel or discarding successful copper
 [Merged PR #190](https://github.com/Takazudo/zudo-osc-hole-field/pull/190) reproduces
 and fixes stale removed-via drill obstacles and soft probes through fixed pads.
 Its bounded old/new benchmark uses identical saved native inputs and preserves
-negative results. The isolated native supply replay in
-[PR #192](https://github.com/Takazudo/zudo-osc-hole-field/pull/192) now leaves JL
-at 138 edges, with one added segment and all existing copper retained. JR remains
-162; its 13-path additive proposal was rejected for a supply-group split. Core
-remains 1,509: both the same-input benchmark and recovered proposals failed
-original AGND membership gates. The bounded outer-only core replay is pending.
+negative results. The isolated supply replay in merged PR #192 and corridor replay
+in [PR #193](https://github.com/Takazudo/zudo-osc-hole-field/pull/193) leave JL
+at 137 accepted edges. The corridor replaces only seven source-selected objects,
+retaining32,778 originals. JR remains 162; its changed seven-signal plus supply
+restoration pilot passed162→155 and canonical replay is pending. Core remains
+1,509 while its outer-only replay completes; previous candidates failed original
+AGND membership gates. No rejected pilot copper is counted as accepted progress.
 Continue with the exact unresolved endpoints and source-defined local repairs,
 not unchanged larger rerouting budgets. The resumable implementation note is
 `circuit/routing/issue189/checkpoint.md` in the repository.

@@ -14,7 +14,7 @@ no split groups/new warning identities, all50311 original objects retained,
 401 added/0 removed. This is NOT canonical adoption. Artifact11596192828,
 ZIP SHA 0b632955551285ac5a716372483de9bf46b2f94e9596ec8656417cd26a1ee37a.
 Fixed replay/result are jr-return-restored-copper.json and -result.json.
-Next canonical command after push (check active runs first):
+Canonical replay37886650433 is active from c9f89aa; do not duplicate. Its command:
 ```sh
 gh workflow run 378789207 --ref agent-fix/189-corridor-repair \
   -f board=osc-jack-right -f replay_jr=true
@@ -24,12 +24,20 @@ Core sole writer37881591885 remains on retained branch
 agent-fix/189-isolated-rail-replay, source78ebdcf. Do not duplicate or delete.
 Inspect its final native receipt and reconcile any bot commit before a new core
 transaction. Prepared core-ground-link is raster-only, 11 additions/0 removals,
-not native-validated; rebind/recompute if current writer changes canonical core.
+not native-validated; rebind/recompute if current writer changes canonical core. The ground-link replay
+mode source-pins both hashes before native serialization; stale input regression
+passes. Do not dispatch it until the current core writer finishes.
 
 H1/H2 proofs and same-input benchmarks remain in merged#190 evidence. Corridor
 implementation passed68 affected tests. Await current exact-head CI and canonical
 JR replay before recording further accepted progress. Completion still requires
 JL/JR/core zero native open edges and full integration checks; no qualification claim.
+
+Next JL pilot uses six disjoint captured corridors on accepted137, selecting54
+objects out of1268 whole-victim objects. Bounded raster RRR found0 accepted
+paths/107 failures in140.7846s and rolled back all changes (guard PASS). Archived
+original plan:jl-corridor-plan.json. Current jl-local-plan.json is the new native
+pilot, NOT the already-adopted seven-object transaction. Native not yet run.
 
 ## Earlier checkpoint history (superseded above)
 

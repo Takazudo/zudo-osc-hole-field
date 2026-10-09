@@ -19,11 +19,11 @@ A cut-line bound (`scripts/pcbgen/cut_capacity.py`) showed that the four-layer h
 | Native check | JL / `osc-jack-left` | JR / `osc-jack-right` |
 | --- | --- | --- |
 | Status | ROUTED DRAFT IN PROGRESS | ROUTED DRAFT IN PROGRESS |
-| Native open edges (DRC, settled zone refill) | **138** | **162** |
-| Remaining signal edges | 108 | 128 |
+| Native open edges (DRC, settled zone refill) | **137** | **162** |
+| Remaining signal edges | 107 | 128 |
 | Remaining rail / ground edges | +12V 3, +5V 0, -12V 4, AGND 23 | +12V 0, +5V 0, -12V 5, AGND 29 |
 | DRC errors / schematic parity | 0 / 0 | 0 / 0 |
-| Track segments / vias | 29947 / 2838 | 47236 / 3075 |
+| Track segments / vias | 30091 / 2844 | 47236 / 3075 |
 | Native warnings | hole to hole 2, silk edge clearance 8, silk over copper 199, silk overlap 199, text height 43, track dangling 4, via dangling 22 | hole to hole 24, silk edge clearance 13, silk over copper 199, silk overlap 199, text height 59, track dangling 3, via dangling 23 |
 
 Routing uses `scripts/pcbgen/route_jack_grid.py`: terminal via arrays, ±12 V plane fanouts, rail links, then a negotiated-congestion (PathFinder) pass over every signal net on a 0.05 mm grid (region stages re-run on a 0.035 mm grid inside the neck-down areas), rip-up-and-reroute batches for what it leaves open, with AGND stitching vias where new copper cuts a surface pour. Each stage is applied to a disposable copy, checked with native DRC, schematic parity and zone refill, and kept only when the native open-edge count falls. Rip-up-and-reroute re-offers still-open islands with 4, 8, 12 and then 20 victim nets per probe, and a stranded island joins whichever island of its net is cheapest to reach, not only the largest. Stage receipts are in `boards/<board-id>/reports/grid-routing/`; `reports/ratsnest.json` holds the native per-net topology after a single zone refill; the open-edge figures above come from DRC with refilled zones, which can be higher. Silkscreen/text warnings remain [#44](https://github.com/Takazudo/zudo-osc-hole-field/issues/44).
@@ -119,3 +119,18 @@ The larger coupled signal/rail proposal also reported 138 but split an original
 AGND group and was rejected. Only the independently checked isolated segment
 was adopted. JR's 13-path additive candidate was rejected for original -12V
 membership change; its lower raster count is not accepted progress.
+
+### Bounded corridor replay (2026-10-09)
+
+[Native replay 37885619978](https://github.com/Takazudo/zudo-osc-hole-field/actions/runs/37885619978)
+adopted JL 138→137. The physical soft-probe corridor selected seven blockers on
+three signal nets; native topology reconstructed every retained boundary fragment.
+The transaction adds 157 objects, removes 7, and retains 32,778 original copper
+objects. DRC/parity remain 0/0, all original pad groups remain connected, no new
+warning identities appear, and an independent reload agrees. Source/replay hashes
+and the acceptance receipt are in `shards-issue189-corridor*` routing reports.
+
+JR's seven-signal proposal plus explicit supply restoration passed the read-only
+native pilot 162→155, retaining all 50,311 original objects. Its canonical replay
+is pending; the table above reports only adopted copper. Core and jack completion
+remain open under #189; these increments do not qualify hardware for manufacture.
