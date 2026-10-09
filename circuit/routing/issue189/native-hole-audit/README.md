@@ -25,3 +25,7 @@ Corrected run37972238437 at2c3afde passed all256fixtures with exact source proje
 `reassess.py` now passes on identical saved boards: raw ordinary gate rejects the shifted capped hole identity; appending complete native observations to both reports makes the same unchanged gate eligible1441→1402 with0DRC/parity/no splits/fresh agreement. No original finding is removed. `reassessment.json` binds all three native audit result hashes. This reassessment does not publish any board. Core19trial37965185751 must reconcile first.
 
 The opt-in `route_shards.py merge --complete-native-warnings` path generates new native audits for its actual baseline and fresh candidate, verifies them, then runs the ordinary gate. Unsupported scope or incomplete evidence rejects and preserves native receipts. Workflow choice `finer-ground-complete-warnings` remains unrun; it cannot start while another core writer is active.
+
+## Outer-zone scope correction (authoritative)
+
+Exact10.0.6 provider source also includes copper zones in silk DRC; ZONE::GetEffectiveShape returns filled polygons. Source core has F.Cu/B.Cu zones, and their serialized fills differ across the candidate. The added-via audit does not cover that scope. The previously passing reassessment is **provisional and not eligible for adoption**, preserved in reassessment-before-zone-scope.json. The replay validator now fails closed on changed silk-relevant zone blocks, with a regression. Native zone-shape/interaction evidence is required before reconsideration. Core remains1441; no candidate was published.
