@@ -444,9 +444,10 @@ jobs:
               p=root/('osc-core-grid-shards-'+stage)/'osc-core.kicad_pcb'
               assert hashlib.sha256(p.read_bytes()).hexdigest()==expected
           PY
-      - name: Audit new via mask interactions against unchanged native artwork
+      - name: Classify changed outer-zone silkscreen interactions
         run: |
-          bash scripts/kicad/run.sh python3 scripts/pcbgen/audit_zone_silk_scope.py \
+          # Leave time to upload incomplete evidence if classification times out.
+          timeout --signal=INT --kill-after=2m 80m bash scripts/kicad/run.sh python3 scripts/pcbgen/audit_zone_silk_scope.py \
             .circuit-cache/hole-audit-input/.circuit-cache/osc-core-grid-shards-start/osc-core.kicad_pcb \
             .circuit-cache/hole-audit-input/.circuit-cache/osc-core-grid-shards-merge/osc-core.kicad_pcb \
             .circuit-cache/zone-silk-audit --classify

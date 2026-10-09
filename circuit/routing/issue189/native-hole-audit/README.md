@@ -17,7 +17,7 @@ Silk fixtures preserve exact native source artwork/context, verify rendered text
 
 `complete_native_warnings.py` validates complete raw evidence, then only appends complete native hole observations to both full-board reports. No original finding is removed or waived. The unchanged ordinary promotion gate still rejects errors, parity differences, new warnings, original-group splits or lack of strict connectivity gain. Fresh agreement and source/publication checks remain mandatory.
 
-`route_shards.py merge --complete-native-warnings` regenerates all audits for the actual native before/after boards. The `finer-ground-complete-warnings` workflow choice is prepared but **not run**. The saved candidate may be reconsidered only after full zone classification passes; new zone warning identities require a changed proposal.
+`route_shards.py merge --complete-native-warnings` regenerates all audits for the actual native before/after boards. The fully gated `finer-ground-complete-warnings` attempt37984573591 is active on isolated worker `agent-fix/189-core-complete-warnings-worker`, sourcea89ff33adc26675b7cdf2f22616dcb1a9826cb59. The worker generates complete evidence inside its mandatory pre-publication gate. It cannot publish unless full zone classification and every ordinary gate pass; new zone warning identities require a changed proposal. The saved candidate remains provisional.
 
 ## Superseded diagnostic evidence
 
@@ -25,4 +25,4 @@ Silk fixtures preserve exact native source artwork/context, verify rendered text
 
 37968944848 failed on GetShownText API usage. 37969719809 was cancelled/superseded after discovering a missing silk category; neither passed. The38via-only run37970119956 passed its limited scope, but omits344new tracks and changed zone fills. `silk-*.json` is partial history; it cannot establish complete warning scope.
 
-Core19run37965185751 is terminal and rejected for original AGND splits; its receipt-only commit is reconciled. No core writer is active. See `../checkpoint.md` for precise continuation, immutable board/replay hashes and current worker status.
+Core19run37965185751 is terminal and rejected for original AGND splits; its receipt-only commit is reconciled. Run37984573591 is now the sole active core writer; preserve its immutable branch while it validates. See `../checkpoint.md` for precise continuation, immutable board/replay hashes and current worker status.

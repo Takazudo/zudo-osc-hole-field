@@ -133,11 +133,19 @@ def zone_evidence(root,before_board,after_board,context):
         pairs=row.get('native_silk_pairs')
         if pairs is None:raise ValueError('growing zone has no native pair evidence')
         selected=pairs['selected_item_uuids'];fixtures=pairs['fixtures']
+        geometry=pairs.get('source_geometry_sha256')
+        if 'native_geometry_method' in pairs or geometry is not None:
+            if pairs.get('native_geometry_method')!='exact_native_coordinates_no_arcs' or not isinstance(geometry,dict) or set(geometry)!={'0','1'}:
+                raise ValueError('unsupported native zone geometry evidence')
+            if any(not isinstance(v,str) or not re.fullmatch('[0-9a-f]{64}',v) for v in geometry.values()):
+                raise ValueError('invalid native zone geometry signature')
         if len(set(selected))!=len(selected) or len(fixtures)!=2*len(selected):raise ValueError('incomplete zone fixture coverage')
         expected_pairs={(stage,uid) for stage in (0,1) for uid in selected}
         if {(f['stage'],f['item_uuid']) for f in fixtures}!=expected_pairs:raise ValueError('incomplete paired zone fixtures')
         unions=[set(),set()]
         for f in fixtures:
+            if geometry is not None and f.get('native_geometry_sha256')!=geometry.get(str(f['stage'])):
+                raise ValueError('native zone fixture geometry signature mismatch')
             index=selected.index(f['item_uuid']);folder=root/('zone-'+row['uuid'])/f"{f['stage']}-{index:04d}"
             report=folder/'drc.json'
             if sha(report)!=f['report_sha256']:raise ValueError('zone fixture report hash mismatch')
