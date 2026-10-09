@@ -10,6 +10,11 @@ silk-relevant zone still run. Incomplete output cannot certify coverage.
 The acceptance consumer explicitly rejects the new batch format until independent
 coverage support and artifact reconciliation are implemented and validated.
 No existing warning or other gate is waived. No canonical board changes.
+All21saved native sample fixture bytes also reconstruct exactly with the new
+serializer (heavy-guardPASS16s); `native-sample-serialization.json` binds each hash.
+Reproduce with `verify_sample_serialization.py BEFORE_BOARD TIMING_ZIP OUTPUT_JSON`.
+No native tool is invoked by that check.
+
 Twenty-one focused tests pass, including bounded tail coverage, unknown/duplicate
 scope rejection, unchanged single-item serialization and unsupported batch-proof
 rejection. Native performance sample38002541870 independently established3.66x/
