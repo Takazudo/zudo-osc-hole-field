@@ -1,6 +1,6 @@
 {
   "status": "REGRESSION REPRODUCED AND FIXED; NATIVE NOT RUN; NO COPPER ADOPTED",
-  "cause": "Neck-down eligibility compared requested width with signal_width and optional grow IDs, without excluding rail_nets/plane nets/AGND. Rail escape width equalled the default signal width and exported undersized150000nm supply segments.",
+  "cause": "Neck-down eligibility compared requested width with signal_width and optional grow IDs, without excluding rail_nets/plane nets/AGND. The0.25mm rail escape was below the default0.3mm signal width and exported undersized150000nm supply segments.",
   "input_board_sha256": "05a8d4beff64f5dee1356f679eb7d24842996d7a6b125047b8f48467e41bac26",
   "input_dump_sha256": "0464088b46037dcaafb2f1acd5f977aeb72a89f47ba9de4070ee8dc4bd82d330",
   "before_router_sha256": "60eccc228566bed87c4b0e7b0f5c7edf44d7380c213e6074822a951b43f44eba",
@@ -22,5 +22,10 @@
     "copper_objects": 0,
     "accepted": false
   },
-  "regression_tests": "Two tests failed before;81 affected tests pass after. No native oracle was invoked on undersized proposal. Existing native gates remain mandatory."
+  "regression_tests": "Two tests failed before;81 affected tests pass after. No native oracle was invoked on undersized proposal. Existing native gates remain mandatory.",
+  "parameters": {
+    "rail_width_mm": 0.25,
+    "signal_width_default_mm": 0.3,
+    "neck_width_mm": 0.15
+  }
 }

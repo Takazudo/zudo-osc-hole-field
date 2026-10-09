@@ -8,7 +8,7 @@ signal0.2mm rules found0/1paths in9.689453s. No canonical change. Do not repeat 
 same corridor/budget; diagnose another local escape or change the routing method.
 
 JR153 rail escape screen revealed a separate signal-neckdown eligibility defect:
-when rail_width equalled signal_width and grow omitted rails, five apparent paths
+when rail_width was below signal_width and grow omitted rails, five apparent paths
 exported150000nm supply segments. They were held back; native NOT RUN,zero adopted.
 Two regression tests fail before and pass after excluding rail_nets,plane nets and
 AGND from signal neckdown. All81affected tests pass. On identical saved native input
