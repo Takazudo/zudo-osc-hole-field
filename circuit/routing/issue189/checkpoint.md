@@ -1,3 +1,23 @@
+# JR native rejection isolated — 2026-10-09 10:43 UTC
+
+JR37917534758 finished143→141 but NOTADOPTED:3signal joins,1new AGND split at
+J900105.6,0DRC/parity,520warnings,no new identities,fresh agrees. Publication raced
+with our evidence push; fallbackci-route/osc-jack-right-37917534758 is retained at
+c3acb63282166c5905744faff8d741933d50a3f3. Its receipt-only commit was inspected and
+cherry-picked as241a0a5; canonicalJR remains143. Artifact11610993154 digest verified.
+
+New57-object replay removes the entire33-object U7106 transaction near that split,
+retains the other50objects,and adds the7-object D7504 alternative using more
+conservativeAGND obstacle growth. Actual143input is pinned; all50914old objects
+retained prospectively,zero removals/UUID collisions,new/new clearance passed.
+Native NOTRUN until dispatched asjr_replay=three-protected on this continuation.
+This is a native isolation experiment,not proof that geometric attribution is exact.
+
+JL71outer writer37918072226 and solecorewriter37907147442 remain active. Never
+submit another writer for either board until its terminal receipt is reconciled.
+The saved91-object U2119 outer proposal is also unbound/unsubmitted until actual
+JLoutput is inspected. Main199postmergeCI37918769043 remains pending at lastread.
+
 # PR199 merged; continuation on main — 2026-10-09 10:39 UTC
 
 All five exact-head CI37917295454 checks passed onbd41809dd6bbeac028638b8419b349545cc64c3e.
