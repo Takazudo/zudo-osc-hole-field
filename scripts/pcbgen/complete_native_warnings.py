@@ -1,7 +1,7 @@
 """Validate native fixture evidence, then append full hole observations to DRC.
 
 Never delete or waive a native finding. Only additive, context-invariant boards
-are supported. Both capped silk domains require the independent added-via audit.
+are supported. Both capped silk domains require all-added-copper and zone audits.
 The ordinary promotion gate still decides connectivity, errors and warnings.
 """
 import collections
