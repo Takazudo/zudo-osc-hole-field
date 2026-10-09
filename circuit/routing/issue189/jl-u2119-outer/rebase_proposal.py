@@ -4,7 +4,7 @@ Pass the reviewed exact accepted board hash. Preserve every full copper block,
 including duplicate UUIDs, and reject unknown changes or proposal conflicts.
 This does not run or replace the mandatory native gate.
 """
-import argparse,hashlib,json,subprocess,sys
+import argparse,hashlib,json,subprocess,sys,math
 from pathlib import Path
 from shapely.geometry import Point,LineString
 ROOT=Path(__file__).resolve().parents[4];HERE=Path(__file__).resolve().parent
@@ -42,7 +42,7 @@ def main():
     assert fixed_gap is None or fixed_gap>=.25,'saved signal path conflicts with accepted new JL copper'
     p=HERE/'proposal.json';p.write_text(json.dumps({**source,'board_sha256':sha},indent=2)+'\n')
     (HERE/'plan.json').write_text(json.dumps({'base_sha256':sha,'proposal_sha256':hashlib.sha256(p.read_bytes()).hexdigest(),'scope':'1signal transaction,91objects,zero removals. Full native gates mandatory.'},indent=2)+'\n')
-    (HERE/'rebase.json').write_text(json.dumps({'status':'REBASED; NATIVE NOT RUN','source_commit':source_commit,'source_board_sha256':source['board_sha256'],'accepted_board_sha256':sha,'retained_objects':sum(map(len,after.values())),'retained_new_objects':len(actual_new),'added_objects':len(rows),'removed_objects':0,'minimum_new_cross_net_gap_mm':minimum,'minimum_gap_to_accepted_new_copper_mm':fixed_gap},indent=2)+'\n')
+    (HERE/'rebase.json').write_text(json.dumps({'status':'REBASED; NATIVE NOT RUN','source_commit':source_commit,'source_board_sha256':source['board_sha256'],'accepted_board_sha256':sha,'retained_objects':sum(map(len,after.values())),'retained_new_objects':len(actual_new),'added_objects':len(rows),'removed_objects':0,'minimum_new_cross_net_gap_mm':minimum if math.isfinite(minimum) else None,'minimum_gap_to_accepted_new_copper_mm':fixed_gap},indent=2)+'\n')
     print('Rebased91signal objects; native NOT RUN')
 
 if __name__=='__main__':main()

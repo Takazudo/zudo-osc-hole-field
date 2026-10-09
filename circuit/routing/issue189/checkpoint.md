@@ -1,3 +1,19 @@
+# Accepted JL125; next bounded candidates — 2026-10-09 10:46 UTC
+
+JL37918072226 ADOPTED126→125:69segments+2vias,zero removals,all33149old objects
+identical.0DRC/parity,477warnings,no new identities/splits,fresh agrees. Published
+SHA55a3edef21878d3e89ac9a02b0264f27d7a97da0d666648b5ffc27e47afde17d;
+replaySHA83792c73c14cee92d4679b15cb34987515362b6b8f90844c7b31b7388efe03e5.
+Artifact11610558493 digest verified; native full-object retention saved.
+Bot75a8c16 integratedbye2757b3c0993e765cd12e69b0ab7cbdf7ad7bcc2;actual branch125/143/1441.
+
+U2119 outer91-object proposal rebased on actualJL125 and all33220objects retained,
+including the new71. Zero removals/collisions and cross-net clearance precheck pass.
+Native NOTRUN until replay_jl=true,jl_replay=u2119-outer on the new pushed source.
+JR57-object writer37919363686 is active ate2757b3c0993e765cd12e69b0ab7cbdf7ad7bcc2.
+Core37907147442 remains solewriter;short-power143stillunsubmitted. Main199postmerge
+CI37918769043 remains pending. Keep189OPEN; no zero-edge milestone claimed.
+
 # JR native rejection isolated — 2026-10-09 10:43 UTC
 
 JR37917534758 finished143→141 but NOTADOPTED:3signal joins,1new AGND split at
