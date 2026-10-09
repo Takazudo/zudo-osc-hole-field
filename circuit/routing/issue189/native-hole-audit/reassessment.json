@@ -1,40 +1,7 @@
 {
-  "status": "ELIGIBLE WITH COMPLETE NATIVE EVIDENCE; CANONICAL BOARD NOT CHANGED",
-  "raw_gate": {
-    "adopted": false,
-    "split_pad_groups": [],
-    "new_warning_identities": [
-      [
-        "hole_to_hole",
-        [
-          "8b23aee3-f7be-588d-bfd3-d3c8b6ccdb70",
-          "f3f839da-7140-5261-8465-5d0f95deef46"
-        ]
-      ]
-    ],
-    "native_errors": false
-  },
-  "complete_gate": {
-    "adopted": true,
-    "split_pad_groups": [],
-    "new_warning_identities": [],
-    "native_errors": false
-  },
-  "evidence": {
-    "status": "COMPLETE NATIVE HOLE OBSERVATIONS APPENDED; NO ORIGINAL FINDING REMOVED",
-    "before_hole_identities": 1407,
-    "after_hole_identities": 1407,
-    "new_hole_object_identities": [],
-    "new_silk_identities": [],
-    "before_source_sha256": "95c815b2178511621f97cd7021938023b96d4ee19c9282ae99b35fb387ba10c5",
-    "after_source_sha256": "b9f5ca13f83c7ffdbe5836fd271e7c1099e04b901ca1798a7be06f025bd02d66",
-    "audit_result_sha256": [
-      "976e264aceff2505fe4c4f0b9567144a237dfd7ed93104049735d12ca0221c99",
-      "74dc0a5a3ddb6ea876072758815ae83439d6de2f7d07f6c168083cf94fec77c5",
-      "652ec803a00c5d2b803dd88726eb48872e695d9261a5cbb4f69d9eee9d0f5e64"
-    ]
-  },
+  "status": "REJECTED: INCOMPLETE NATIVE ZONE/SILK EVIDENCE",
+  "reason": "Outer copper zone fills change and participate in silk DRC; added-via fixtures do not cover those changes.",
+  "canonical_board_changed": false,
   "native_edges_before": 1441,
-  "native_edges_after": 1402,
-  "fresh_native_agreement": true
+  "native_edges_candidate": 1402
 }

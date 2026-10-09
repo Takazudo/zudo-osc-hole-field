@@ -3,10 +3,18 @@ import json
 import hashlib
 from pathlib import Path
 import unittest
-from scripts.pcbgen.complete_native_warnings import append_observations, check_caps, hole_evidence
+from scripts.pcbgen.complete_native_warnings import append_observations, check_caps, hole_evidence, unchanged_silk_zones
 
 
 class CompleteWarningTests(unittest.TestCase):
+    def test_new_via_audit_cannot_hide_changed_outer_zone_fill(self):
+        def board(layer,fill):return f'(kicad_pcb (zone (layer "{layer}") (filled_polygon (pts {fill}))))'
+        unchanged_silk_zones(board('F.Cu','old'),board('F.Cu','old'))
+        unchanged_silk_zones(board('In1.Cu','old'),board('In1.Cu','new'))
+        for layer in ('F.Cu','B.Cu','F.SilkS','B.Mask'):
+            with self.subTest(layer=layer),self.assertRaisesRegex(ValueError,'zone fills changed'):
+                unchanged_silk_zones(board(layer,'old'),board(layer,'new'))
+
     def test_raw_fixture_context_must_match_source_even_when_receipt_claims_it_does(self):
         with tempfile.TemporaryDirectory() as directory:
             root=Path(directory);board=root/'board.kicad_pcb';board.write_text('native source')

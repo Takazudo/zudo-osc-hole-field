@@ -16,9 +16,29 @@ import subprocess
 
 from scripts.pcbgen.audit_hole_pairs import possible_pairs
 from scripts.pcbgen.audit_added_mask import unchanged_nonrouting, new_silk_identities
+from scripts.pcbgen.uuid_tools import top_level_spans
 
 HOLE_TYPES={'hole_to_hole','holes_co_located'}
 SUPPORTED_CAPS=HOLE_TYPES | {'silk_overlap','silk_over_copper'}
+SILK_TARGET_LAYERS={'F.Cu','B.Cu','F.SilkS','B.SilkS','F.Mask','B.Mask',
+                    'F.Adhes','B.Adhes','F.Paste','B.Paste','F.CrtYd','B.CrtYd',
+                    'F.Fab','B.Fab','Edge.Cuts','Margin'}
+
+
+def unchanged_silk_zones(before, after):
+    """Zone fills participate in native silk DRC, independently of new vias."""
+    def relevant(text):
+        result=collections.Counter()
+        for a,b in top_level_spans(text):
+            block=text[a:b]
+            if not block.startswith('(zone') or re.search(r'\(keepout\s',block):continue
+            match=re.search(r'\(layers?\s+([^)]*)\)',block)
+            if not match:raise ValueError('zone layers missing')
+            if set(re.findall(r'"([^"]+)"',match[1])) & SILK_TARGET_LAYERS:
+                result[block]+=1
+        return result
+    if relevant(before)!=relevant(after):
+        raise ValueError('silk-relevant zone fills changed; complete native zone evidence required')
 
 
 def sha(path):return hashlib.sha256(Path(path).read_bytes()).hexdigest()
@@ -92,6 +112,7 @@ def complete_reports(before_board, after_board, before_drc, after_drc, before_au
     before_board,after_board=Path(before_board),Path(after_board)
     for drc in (before_drc,after_drc):check_caps(drc)
     count=unchanged_nonrouting(before_board.read_text(),after_board.read_text())
+    unchanged_silk_zones(before_board.read_text(),after_board.read_text())
     context={}
     for suffix,key in (('.kicad_pro','project_sha256'),('.kicad_dru','rules_sha256')):
         context[key]=sha(before_board.with_suffix(suffix))
