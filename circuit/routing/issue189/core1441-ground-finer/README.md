@@ -7,3 +7,5 @@ C1548 is already in active core143 run37925863664. Do not duplicate it, rebase a
 The next two 48-group batches completed: six positive groups/85 objects and ten positive groups/87 objects. All are raster-only. Core143 run37925863664 subsequently rejected; accepted core remains1441. Its143 additions are not present and do not need preserving in a new candidate. Rebase only against the accepted hash and select still-open groups.
 
 Third48-group batch completed all48 in314.38s (guardPASS315s), yielding five groups/25objects. Across168groups the positive total is25groups/209objects. The combined selector excludes one12-object transaction due to0.025mm between proposed via centers, leaving24groups/197objects. Still no native acceptance.
+
+The fourth48-group batch completed all48 in393.09s (guardPASS394s):6positive groups/73objects. The final36 completed in325.34s (guardPASS326s):8groups/112objects. All252non-main native AGND groups were covered, with no large-frame skips. Total39positive groups/394objects; pair-spacing selection excludes one12-object transaction, retaining38groups/382objects/38vias. No native acceptance or future rebase is claimed.

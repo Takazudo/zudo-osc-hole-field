@@ -1,85 +1,110 @@
-# Issue 189 continuation checkpoint
+# Issue 189 exact continuation checkpoint
 
-Updated 2026-10-09 13:23 UTC. **Issue 189 remains OPEN.** Full native zero-edge connectivity and final completion gates are unmet. Fixed panel, electrical constraints, successful copper and other sessions' branches remain preserved. No fabrication or hardware qualification is claimed.
+Updated 2026-10-09 15:08 UTC. **Issue189 remains OPEN.** Zero-edge connectivity and final completion gates are unmet. No fabrication/hardware qualification is claimed. Fixed panel/electrical rules, accepted copper and other sessions are preserved.
 
-## Current branches and verified state
+## Current authoritative state
 
-- Main: `b1beebad2941bbf4980ac3fe438577b75a982032` (PR203), accepted **JL125 / JR140 / core1441**, native DRC/parity zero on each.
-- PR204: `agent-fix/189-jr140-local-continuation`, frozen head `e68a49e9d1f131ffd689dd5a18133b64103a9324`; accepted **JL124 / JR140 / core1441**. Exact-head CI37934945521 is running. Do not move its head while verification runs.
-- Further work: `agent-fix/189-finer-ground-continuation`, based on PR204. Keep active worker branches free of human pushes.
-- PR201 merge843b93da5bdb6913c2c66b83ab2f92a2374164db: exact-head37927716576 and post-merge37929896255 all five checks PASS.
-- PR202 merge7bddcc9d08cd2ec1f209cf71beb4737ba1d7da8e: exact-head37930123640 all five checks PASS. Post-merge37932366842 was cancelled/superseded by the next main merge; **not passed**.
-- PR203 mergeb1beebad2941bbf4980ac3fe438577b75a982032: exact-head37931360751 all five checks PASS. Current integrated main post-merge37933748017 completed all five checks PASS.
+| Location | Commit | Accepted native edges JL/JR/core |
+| --- | --- | --- |
+| Main, merged PR206 | `9376342b5767a8107ffeda4f8290b122fd1ce268` |121/137/1441|
+| PR207 branch `agent-fix/189-ground-repair-continuation`, integrated worker copper | `2b38e2e` |120/136/1441|
 
-Normal verified incremental merges are authorized. Refresh exact head, reviews and mergeability; retain worker branches and verify resulting main. Do not close189 on green partial-routing CI.
+All accepted boards have zero native DRC/parity errors, no new warning identities or split original pad groups, and fresh native agreement. JL477/JR520/core619 warnings. The all-board zero-edge completion gate remains unmet. PR207 is draft; exact-head CI must pass before any authorized normal merge. Main9376342 post-CI37941329856 passed all five checks. Prior PR201/203–206 exact/post checks passed; PR202 post was cancelled/superseded, never passed.
 
-## Accepted immutable boards on PR204
+## Next native core trial
 
-| Board | Native open edges | Published SHA256 | Latest retention |
-| --- | ---: | --- | --- |
-| JL | 124 | `f5661fda3b568c82a7a2bef5cd7ef319d5996598995295b05664944f5493cd56` | All33220 old objects identical; one segment and one via added |
-| JR | 140 | `c2e6f8896869213293239912fefa64915da41fcdfa2094f082d017a88803a087` | All50964 old objects identical;26 F.Cu segments added |
-| Core | 1441 | `a0e3cff1ebc211564b8be10f6a993d50fb6d4372edde86a056ebc8dda3ea5932` | All132953 original objects identical;216 segments added |
+Core26 run37936741388 is terminal/rejected1441→1442. It joins the target signal but AGND252→254, splitting U1513.12 and C1547.2/C1545.2/C1546.2. All133169old objects survive,+26/0cuts,0DRC/parity,619unchanged warnings,fresh agreement. Sourcecba4755,bot5e15231,receipt-only cherry8e2514e. Exact artifact/candidate/replay IDs are in core-u1513-alternatives/{artifact,rejection,retention}.json. Do not repeat this signal proposal unchanged.
 
-JL run37932246042: artifact11616679678, ZIP SHA2568480291e21fc7f591be077f700c53fc15e8e8adc1fd8c0761560fe5e320761f6; replayf21597cf0028de8690a81b5c6bfbd14d94e2dd50e0906f5a24550d0b66c644d3. Native0/0,477 unchanged warnings,no new identities/split groups,fresh agrees. Source0fe35127d621fa8a5285b61e066ec8fac89fa886; bot60dac38b271c311e8c152995da470565ceb627ca integrated as2f983dc. Pad/net, outline, keepout and layer invariants checked.
+The38-group/382-object ground batch is explicitly rebased on unchanged accepted corea0e3cff1... (rebase.json), no J900237 exclusion because core26 was not adopted. The new sole core worker will use fixed replay choice `finer-ground-batch`; every native gate remains mandatory. Jack workers are terminal and integrated. The19-segment/11-net short signal successor remains original-input-only; wait for ground-batch result and rebase against actual accepted copper before submission.
 
-JR run37929676316: artifact11616270361, ZIP SHA256b014f263a0a8bda0034beaf0831cf0c15eb31af7930da561af44d2a43742b9bd; replayd2c5927d764863fb73210a8b77bbe2633a88db078db63f04753f594eeedc4626. Native0/0,520 unchanged warnings,no new identities/split groups,fresh agrees. Sourceb8c3d97c3d77f2b6d54a5dc4884d141673e8077b; bot21965d2f848dda38c12895e7cc3f5bb16e1474ba integrated as057bee8. All3655 pads,4 edges,154 keepouts and six layers unchanged.
+## Accepted immutable boards and retention
 
-Core native-filled SHA25695c815b2178511621f97cd7021938023b96d4ee19c9282ae99b35fb387ba10c5 differs from published SHA only through verified removal of derived caches. Run37895925149, artifact11603564190, ZIP SHA256a01f06e5458221d6d013c5331110e0f60c849d756cec84dfdcf835750bda4cfc. Native0/0,619 warnings,no new identities/split groups,fresh agrees. See core-filtered evidence.
+| Board | Published SHA256 | Latest accepted stage |
+| --- | --- | --- |
+|JL120|`2068e5e7fc0ab3f091423e3685e6793c36de24c6308c681233465b3ce100b437`|37947934139:121→120,+53/1reviewedcut,all33241uncut objects identical|
+|JR136|`33747bfc15d66bc92e7fb7c563dfa853b13058a0056075626551ef3d385d6b84`|37947938555:137→136,+39/2reviewedcuts,all51024uncut objects identical|
+|Core1441|`a0e3cff1ebc211564b8be10f6a993d50fb6d4372edde86a056ebc8dda3ea5932`|37895925149:1509→1441,+216segments/0cuts,all132953original objects identical|
 
-## Reconciled workers (all terminal; no active native writer at this checkpoint)
+JL bot`abd7af3bcbbcdd25f553c5ed2aa7ea5863f60acb`, cherry`a8c0876`; artifact11625415141 ZIP`71a7b0d79fe22dbc99dfe4d089c154807cdcd5e43895b72fa883073c5f3fb123`; replay`8ec99ea42016282c19fcd4860c82a9ee402ff218eafb80d20c558d32354c847d`.
 
-| Board | Run | Source commit | Retained worker branch | Scope |
-| --- | --- | --- | --- | --- |
-| Core |37925863664|`97e3a28b54ca2a4071ab36b2a4a644fa187debcf`|`agent-fix/189-ground-fill-continuation`|143 additive objects for109 supply targets and4 ground fanouts |
-| JR |37933235474|`410fec0714305c9b560684b789f1af161b95729d`|`agent-fix/189-jr-r8487-worker`|27 B.Cu R8487 segments isolated from rejected pair; baseJR140 |
-| JL |37934138351|`e68a49e9d1f131ffd689dd5a18133b64103a9324`|`agent-fix/189-jl-three-ground-worker`|20 finer ground objects explicitly rebased onto acceptedJL124 |
+JR bot`574025484e6b1413f97b9b761041ab4f3973b85f`, cherry`2b38e2e`; artifact11625175772 ZIP`d278a0f56c37007eea57ecab8e45d7bf17968ccc945e9c61e1c99ab04c422105`; replay`88f040c0318eccb93cf002f7a35e8d464b21c38c41d44f5bf765688468bcd953`.
 
-All three runs above are now terminal and reconciled. JR27 accepted139 (bot2e2f0f14a9d291bc99eb5b873e43edf553f1e609, integrated6e6e34d), JL20 accepted121 (boteca35e63e3bbb495b734cd20f2963003a214cab5, integratedfbfd7e4). Core143 rejected (bot97bbe89699f47d357652ff34b5e6c12fc89146dd, receipt integrated160fcac), with16 split increments in original ground groups and a new reported hole identity. Its1343 candidate is not adopted; accepted core stays1441. See core-short-power/rejection.json and artifact.json. No pending proposal is accepted progress. The older C8143/D7208/two-no-via workers are terminal; preserve their branches/artifacts.
+Both adoption outputs exactly match their eligible pilot board and replay hashes. Native DRC/parity0/0,warnings477/520,no new identities/splits,fresh agreement. Full-object retention and physical invariants are in `{jl-u2204,jr-u8303}-endpoints/`: JL3925/JR3655pads,four outline edges,123/154rule areas,six layers unchanged; project/rules byte-identical.
 
-## Next executable steps
+JL30433segments/2861vias,103signal+17AGNDedges. JR47948segments/3115vias,111signal+25AGNDedges. Both jack supply rails have zero open edges. Core80+12V/80−12V/252AGND/1029signal edges. Latest cumulative full-object ledger records reviewed jack removals; do not claim all original jack copper survives. All original core copper survives. Fixed panel, electrical rules and placements remain unchanged.
 
-1. Inspect current status with `gh run view RUN_ID --json status,conclusion,jobs`. Fetch `main` and the exact worker branch after terminal completion. Workflow success alone is not adoption.
-2. Retrieve the terminal receipt and artifact metadata. Verify archive SHA256 before extraction. Existing GitHub connector artifact tools work if CLI download fails. Do not expand credentials. Require0native DRC/parity errors,no new warning identities,no split original pad groups,settled/fresh connectivity agreement and exact retained-copper checks. Review only the bot's board/receipt delta from the pinned source; never overwrite newer copper with an older whole-branch snapshot.
-3. Reconcile each accepted result before any same-board dispatch. The nine-object JR ground pair is now explicitly rebased onto acceptedJR139 SHA42a8db717b7342beceb4b15556e5f1c76429112c8e3fc9283a1d2a1a07b27f12 with51017 objects retained and minimum gap15.171478899410737mm to accepted additions. For any later rebase, run `circuit/routing/issue189/jr-two-fine-ground/rebase_proposal.py --accepted-sha256 ACTUAL_SHA` using the route venv only after R8487 is terminal/reconciled. Its nine original objects remain tied toJR140 until then.
-4. Core143 is terminal/rejected; the26 B.Cu alternative is rebased onto unchanged accepteda0e3cff1ebc211564b8be10f6a993d50fb6d4372edde86a056ebc8dda3ea5932. For subsequent accepted changes evaluate `core-u1513-alternatives/rebase_proposal.py --accepted-sha256 ACTUAL_PUBLISHED_SHA256` for the prepared26 B.Cu no-via signal route. Also select only still-open finer ground groups, explicitly check compatibility with accepted power/ground additions and preserve every old object. No blindly reused pending-input proposal.
-5. Finish main post-merge37933748017 and PR204 exact-head37934945521. Only then merge verified PR204 under existing authorization and verify its new main run. Keep189OPEN.
+Core native-filled hash`95c815b2178511621f97cd7021938023b96d4ee19c9282ae99b35fb387ba10c5`; cache-only publication equivalence proved. Artifact11603564190 ZIP`a01f06e5458221d6d013c5331110e0f60c849d756cec84dfdcf835750bda4cfc`.
 
-## Evidence and strategy constraints
+## Current rejected controls and prepared successors
 
-- H1/H2 regression failures are in hypotheses-before.txt. Both defects were fixed with regression coverage. Same-input native benchmark evidence is in jl/jr/core-benchmark.json and benchmark-artifacts.json: JL140→139 accepted; JR unchanged; core1509→1499 rejected forAGND splits. No speedup claim.
-- Latest boundary-mask fix:99affected tests pass; circuit/docs checks pass. Saved native-A* comparison yields identical115-object rejectedJR proposal,4.836299s before /4.924470s after. It does not fix that native -12V split.
-- A blanket per-layer surface-ground screen falsely flags all three native-accepted controls; it is not enabled. Native multilayer connectivity remains authoritative.
-- JR72 run37931910118 rejected140→139: two signals joined, R5273.2 AGND split. All50990 old objects identical,72 added,0DRC/parity,520 unchanged warnings,fresh agrees. Artifact11616917678 ZIP SHA256e64934d87fb79fe1dba9764d56306af371733f752b333ce259d591652582d213. Candidate11e5b0f8d1931646aa6cf5c23cc337c8311f39b48bb340186f0352736af7f4ec; replayd41ad91b9ce99c4b0ace9975f4ba04e06f66dcb15f7974f5ac2855f4185f8216. Four additive R5273 repair cases failed; the isolated27-object R8487 proposal subsequently accepted140→139. Do not count rejected139.
-- Repeated D7504 proposals split R7505.2/R7530.2. Corridor exclusion and ground-first repairs found no path. Do not rerun them unchanged; coordinated local copper repair is the next distinct strategy.
-- Same-input JL ground comparison:0.025mm one group/2objects/37.78s;0.0125mm four groups/22objects/51.20s. C8143 is accepted; other20 objects are native accepted, reducing124→121.
-- Same-code/core-input24-group comparison:0.025mm two groups/7objects/140.92s;0.0125mm four groups/12objects/154.17s. No finer core proposal is natively accepted. Further bounded batches retain all failures and are not substitutes for native checks.
-- Fixed panel/electrical files are unchanged from the issue baseline. Earlier accepted JL/JR reroutes did remove explicitly reviewed copper; do not claim every original segment survives. Latest additive steps retain every immediate accepted object, and all original core copper survives. The retention ledger documents earlier removals.
+- **Core143 run37925863664 rejected1441→1343**,0DRC/parity,619warnings,fresh agrees,all133169old objects retained,+143/0cuts. Ground groups split; one newly reported hole identity involves two unchanged preexisting vias, but the warning gate is not waived. Artifact11617518320 ZIP`d6dbd7428da9064c99581eff5e7e03dbf5684576eb0b4ff6a180695688012ab9`; candidate`bbdbbef213020a3700bd50b9e1d98201fe3b777056cc049b730cb2f4ada75968`; replay`8717c4c29145e1e860c924a0ea6d33f204edeb556e0efcbf30f1ca3b5b743fe6`. None adopted; core-short-power/ holds split attribution and retention.
+- **JL U2204 run37937518106 rejected121→121**. Native cut alone joins AGND18→17 but splits U8213.3/J900027.1. In3 signal restoration split−12V and was dropped. Final candidate has0adds/1cut,0DRC/parity,479warnings(two new dangling tracks),unrestored signal. Artifact11620945674 ZIP`446c4b116bb6492b5aed0cd2df2a8dbc0a354212945d87582205accec3b69cc0`; candidate`b4101d38ea23e0cec644fe607afd2ed0aa47c7042d0fdc38fdef4b6563250de5`; replay`351ad125364cd52a1485d72231f5af29d06e38d0e7d7bf5a8f23850f777e2526`. jl-u2204-ground-cut/ preserves everything. Exact-cut outer raster probes found8Bsegments/no vias with F+B or B-only; F-only failed. The active coupled trial tests this actual cause change, with all original gates intact.
+- **JR137 finer ground screen:**0/26paths at0.00625mm,guardPASS131s. Distinct cut prefilter:16ground-only paths/24cases,guardPASS65s. The active U8303 pilot selects2Fcuts/one victim,12.705×14.8mm frame; ground prefilter uses F/B and restoration is restricted to F/B.
+- Older negative controls remain authoritative: D7504 repeatedly splits R7505/R7530; U2119 splits C2148; JR72's U5213 route split R5273. Isolated R8487 later accepted. Do not repeat failed configurations unchanged or just increase caps.
 
-Use `.circuit-cache/route-venv/bin/python` for numerical scripts and the required machine-wide heavy guard for heavy runs. Local KiCad9 is not the acceptance oracle; pinned KiCad10.0.6 CI is available. No unrelated terminal watch was resumed.
+## Core successors held until actual reconciliation
 
-## Latest working branch state
+1. Preferred **core-finer-ground-batch/**: completed168-group screen yielded25positive groups; pair-spacing selection excludes a0.025mm via conflict, leaving24groups/197objects/24vias. Full .3mm ground tracks/.6mm vias,zero cuts. NOT native accepted. Additional next48d.py screen of source groups168:216 is in progress locally; do not call a partial result complete.
+2. After core26 is terminal/reconciled, invoke `.circuit-cache/route-venv/bin/python circuit/routing/issue189/core-finer-ground-batch/rebase_proposal.py --accepted-sha256 ACTUAL_PUBLISHED_SHA256`. It permits only exact known26-object additions or no change, retains every full prior copper block including duplicate UUIDs, and fails on unexpected changes/cross-net conflicts. It has NOT been run on future output. Update selection/plan scope deliberately if adding later completed batches; then wire a dedicated native replay and all ordinary merge gates.
+3. **core-supply-away-from-splits/**: original-input heuristic94targets/120segments,excluding15transactions within3mm of pads in observed smaller ground-split pieces and all four ground fanouts. Not causal proof,not rebased/submitted/accepted.
+4. **core1441-no-via/**:48outer-layer cases completed,11positives/10nets/117segments/no vias,guardPASS377s. **core-short-no-via/** selects12segments/7nets,≤4segments/4mm per case,minnew/new foreign-net gap19.55674059807963mm. Original-input only; no native acceptance. Rebase only after preceding accepted core changes.
 
-`agent-fix/189-finer-ground-continuation` now holds **JL121 / JR139 / core1441**. JL published/native SHA95d10f2b21ee75831b370a97c2035e209ae296d0dfb2ec74f5bed610133d5070, all33222 old objects identical+20. JR published/native SHA42a8db717b7342beceb4b15556e5f1c76429112c8e3fc9283a1d2a1a07b27f12, all50990 old objects identical+27. Both0DRC/parity,unchanged477/520 warnings,no splits,fresh agrees. Verified artifact digests and replay receipts are in jl-three-finer-ground/ and jr-r8487-no-via/. The PR204 frozen head remains124/140/1441 until merged; do not confuse its state with this branch.
+## H1/H2, benchmarks and validation
 
-Next dispatches prepared but NOT RUN at this commit: JR `two-fine-ground` (nine full-width objects, no cuts) and core `u1513-alternatives` (26 B.Cu segments,no vias/cuts), each on a separate dedicated worker branch. Record exact source/run before continuing. No new native JL proposal is prepared.
+Original baseline `1fe06ad50248d6434876fbf2bd6e32e1bfbb13bb`. Two red regressions in hypotheses-before.txt reproduce ghost drill occupancy after via removal (H1) and a soft probe through an immutable foreign pad (H2). Fixes and regressions are merged. Same saved native inputs:
 
-## Active dispatches after cba4755
+|Board|Old native result/time|Fixed native result/time|Acceptance|
+|---|---|---|---|
+|JL|140→140 /325.5136s|140→139 /328.8692s|one accepted edge|
+|JR|162→162 /327.2931s|162→162 /321.9534s|no gain|
+|Core|1509→1499 /3545.3150s|1509→1499 /4729.8022s|both rejected for2AGND splits|
 
-Draft PR205: https://github.com/Takazudo/zudo-osc-hole-field/pull/205 . Sole activeJR run37936737740 on `agent-fix/189-jr-two-ground-worker`; sole activecore run37936741388 on `agent-fix/189-core-u1513-worker`. Both exact source `cba4755227b52145a9dc9cd9e5e0f9880787ff1f`. Do not write those branches or dispatch another same-board trial before terminal reconciliation. JL has no native writer. Its18remaining grounds all failed a0.00625mm bounded fanout screen (94.33s;guardPASS95s); bounded links to existing AGND copper are the next distinct local strategy.
+No speedup claim. Exact input/tool/source/output identities are in jl/jr/core-benchmark.json and benchmark-artifacts.json.
 
-## PR204 merged and bounded JL repair
+Same-input JL ground .025mm:1group/2objects/37.78s; .0125mm:4groups/22objects/51.20s. All four were subsequently native accepted across two stages. Same-code/core-input24group comparison: .025mm2groups/7objects/140.92s vs .0125mm4groups/12objects/154.17s; finer core proposals remain unaccepted.
 
-PR204 exact-head37934945521 all five PASS, merged2026-10-09T13:30:26Z as `df126be3c393c7841ac58408e620b82744a19e03`. Main is now124/140/1441; post-merge verification pending. PR205 holds121/139/1441. Its next head corrects the table breakdown toJL103signal+18ground,JR111signal+28ground,30384/2858 JLsegments/vias and47905/3112 JR.
+Latest shared-router boundary fix has99affected tests passing. Its same-input native-A* control yields identical115objects at4.836299s before/4.924470s after; it does not fix the native−12V split. Blanket per-layer ground screening falsely flags three native-accepted controls and is not enabled. Native multilayer topology stays authoritative.
 
-JL121 ground links found0/18paths (guardPASS35s). The distinct cut prefilter found6positive ground-only paths among17source pads (guardPASS40s); victim topology is unverified. `jl121-ground-cut-screen/u2204-plan.json` and `jl-local-plan.json` pin the next disposable native pilot: one exact B.Cu signal cut, one victim net,19.35x12.955mm frame. It must reconnect the victim and pass every original native gate before any adoption.
+Current site/circuit checks pass. Real zero-edge completion gate is NOT RUN and cannot pass these nonzero counts. It requires all three canonical boards,settled/fresh connectivity,zero open edges,zero DRC/parity and unchanged context/warning identities. Full connection alone is not fabrication qualification.
 
-## Current continuation after PR205 freeze
+## Execution notes
 
-`agent-fix/189-bounded-ground-continuation` starts from frozen PR205 head `aba10367d58416c82cf7a5e4efead9eb843b3196` (exact CI37937443719 running). PR204 post-main run37937330204 ondf126be3c393c7841ac58408e620b82744a19e03 is running. Finish that main verification before merging205.
+Use KiCad10.0.6 CI as the native oracle; localKiCad9 is not acceptance. Numerical scripts use `.circuit-cache/route-venv/bin/python`. Heavy runs use `bash "$HOME/.codex/scripts/heavy-guard.sh" -- COMMAND` with supported runtime-path escalation. Do not repull the oversized Docker image or bypass the guard.
 
-JR nine-object ground run37936737740 accepted139→137, bot `dd7184acfb0235e876ba57bd09669c1247ddf74b`, cherry-picked as9dd9090. Published/native SHA `3f33128a85634798938b1d4b42c78d3e84e38f9818912fae02596fa8848838cd`, replay `b2f991e5e46f2345a70f3c4382acfc4f6960779634a6cd434729772e74c57487`, artifact11618839122 ZIP `0a419810ae0c1a0edd69e9db594f8596de474c1d95a45fb525e0cb8ebb98d170`, verified. All51017 old objects identical+9(7segments2vias), no removals;0DRC/parity,520 unchanged warnings,no original splits,fresh agrees. Physical pad/net/outline/keepout/layer invariants proved in jr-two-fine-ground/. Current working copper **JL121 / JR137 / core1441**. No active JR writer remains.
+Refresh `gh run view RUN --json status,conclusion,jobs` and remote refs before acting. For artifacts verify ZIP SHA before extraction; connector download can recover CLI failures. Workflow success alone is not adoption. Require original-group preservation,warning identities,DRC/parity,fresh agreement and exact retained-copper proof. Review bot deltas from pinned source; never overwrite a newer whole board from an old branch. Do not force-push,merge unverified heads,close189,change physical/electrical rules or resume unrelated watches. Other-session branch heads remain8315af55/30db43e0/470b3f0e and were freshly checked unchanged.
 
-Active JL read-only native cut pilot37937518106 uses worker `agent-fix/189-jl-u2204-ground-worker`, exact sourceaba10367d58416c82cf7a5e4efead9eb843b3196. It cannot promote the board. Retrieve native topology, victim restoration, retention, warning identities and full original-baseline gate before considering its replay. Core26 run37936741388 remains active; do not rebase or dispatch another core trial yet.
+## Latest terminal JL control and completed core screen
 
-Prepared core ground selection now spans168saved groups:24compatible positives/197objects/24vias after excluding one0.025mm coincident-via pair. Selection and future fail-closed rebase helper are in core-finer-ground-batch/. Helper has NOT been run on future core output. A separate heuristic94target/120segment supply subset excludes15 transactions near observed native ground splits and all four ground fanouts; it is unrebased/unsubmitted. Both remain non-native proposals; prefer ground batch next after actual core reconciliation.
+JL37940189931 is now terminal/rejected for no strict improvement:121→121,0DRC/parity,477unchanged warnings,no splits,fresh agrees. All33241uncut objects identical,+8Bsegments/1cut. AGND returned to18while the victim was restored. Artifact11621538416 ZIPd6d7f2e285ae738b0634e49c24b6bfffc253bae68b8e929b84302013ae89c95d; candidate9a55a3efcacf41672abef2a97d2098fe8aa9ae19b3d66e9791c670e7975fc3d0; replaya518a11401feb003d1eb84cfaf7c75cbe35862d10dddcf76cfd6f5671aa0fd76. A distinct joint ground/victim raster transaction finds51objects/3vias/1reviewedcut on F/B. F/In2/B fails victim restoration. `jl-coupled-plan.json` now pins the complete F/B candidate; no automatic repair. Native NOT RUN at this commit.
+
+All252core ground groups have now been screened at0.0125mm, without skipped frames:39positive groups/394objects. Pair-spacing selection excludes one0.025mm via conflict, retaining38groups/382objects/38vias. The saved batch and dynamic rebase helper are updated, but NOT rebased/dispatched while core26 remains active. Original .025/.0125 first24 comparison remains identical-input evidence; later groups have no speedup claim.
+
+JR37940194109 is terminal; its artifact11622010297 (ZIPa40c3cb959ab9c67286dfe612b25b36fdef0aa000a52a382f41b9940acaefd3e) is downloaded/verified. Receipt says137→137,0DRC/parity,520unchanged warnings,no original splits,not adopted. Finish retention/topology reconciliation before a next JR trial.
+
+## Next native trial sources after afc0edb
+
+JL joint trial37942916185 is active on `agent-fix/189-jl-u2204-joint-worker`, exact source `afc0edb05e980739b52f9275a360cc75f3cd36d8`. It is read-only;51objects/3vias/1reviewedcut,explicit ground plus signal,F/B only. The previous JL outer control remains rejected.
+
+JR37940194109 is fully reconciled/rejected137→137:14adds/2cuts,all51024uncut objects identical,0DRC/parity,520unchanged warnings,no splits,fresh agrees. Cut AGND26→25returned26after signal restoration; victim1→2→1. Candidate6861070eb3d554c0f25e7dce6075d0df4c8085ecba14c9da80a59b7e93467b06; replayb67a21c204a25f0f8585fba7dab690a92d6893658da05dd50a8b7ef3031c4112. JR joint F/B candidate now pins36objects/1via/2cuts after reserving explicit ground and restoring only the two native parts of the original cut component. Full original memberships remain the native acceptance baseline. Native NOT RUN at this commit.
+
+Core38-group saved batch has exactly one proposal/proposal conflict with pendingcore26: J900237.2,−0.3375mm. If that exact core26 stage is accepted, explicitly exclude this entire unaccepted group with `select_candidates.py --exclude-pad J900237.2`, then rebase against the actual accepted hash and inspect proof. If it rejects, keep38groups. No exclusion/rebase has been applied while pending.
+
+## Endpoint continuation (2026-10-09, supersedes earlier local-pilot table)
+
+Main9376342 is nativeJL121/JR137/core1441; post-merge37941329856 all five checks passed (ci-main-9376342.json). Joint JL51 run37942916185 and JR36 run37943728586 improved to120/136 and preserved original pad groups, zero native DRC/parity errors and identical fresh connectivity, but were rejected for one/two new dangling warnings on retained tracks. Complete receipts, artifact hashes and full-object retention proofs are in the corresponding joint directories. No candidate copper was promoted.
+
+New endpoints proposals preserve those joint objects and original reviewed cut sets, adding only two B.Cu JL segments and three F.Cu JR segments, no vias. Search anchors use the exact retained endpoints shared with removed original tracks, not the DRC item's displayed position (which may be the opposite track end). Helpers ran under heavy guard; JR initially failed a proposal-to-dump conversion and passed after explicit conversion was fixed. These are raster-only pending strict native pilots; original input hashes remain authoritative. No warning waiver or retained-track deletion.
+
+Core next24 signal screen completed all48 F/B cases in296.535883952s (guardPASS299), eight positive cases/105objects. Native acceptance not run. Core26 run37936741388 remains the sole active core writer; do not rebase/submit the prepared finer-ground batch until its actual result is reconciled. Conditional J900237.2 exclusion and rebase instructions above still apply.
+
+Endpoint native pilots: JL37945793199 and JR37945797248, both source0b38d659151730dad5fd65500fe9319dbb92df8c, dedicated `agent-fix/189-jl-u2204-endpoints-worker` and `agent-fix/189-jr-u8303-endpoints-worker`. Read actual `gate.adopted`, not top-level pilot status. If eligible, fixed replay choices `u2204-endpoints`/`u8303-endpoints` are prepared to serialize exactly the pinned objects and reviewed cuts, then run `route_shards.py merge` with all native gates. Do not dispatch until pilot evidence is reconciled; do not manually promote a pilot artifact.
+
+The first48 plus next48 core signal cases now yield a conservative saved15-segment/10-net short subset (at most4segments and4mm per case), no vias/cuts. Full selection hashes and pairwise new/new gap checks are in `core-short-no-via`. This supersedes the earlier12-segment/7-net subset; it is still original-input-only, not rebased or native accepted. Ground batch remains the preferred next core transaction.
+
+JL endpoint pilot37945793199 is terminal/eligible121→120:0DRC/parity,477unchanged warnings,no new warning identities/splits,fresh native agreement. Full33241uncut objects identical,+53/1reviewedcut. Artifact11624457321 ZIPda72aebbaa496eb93a4e43fdfe5e0b844bbcece35fe1bb9d3e8e0ab2b4a23c50; candidate2068e5e7fc0ab3f091423e3685e6793c36de24c6308c681233465b3ce100b437; replay8ec99ea42016282c19fcd4860c82a9ee402ff218eafb80d20c558d32354c847d. Native adoption replay is the next JL action; canonical remains121 until it succeeds.
+
+Third core no-via screen completed48cases,6positivecases/92segments,zero vias,344.347644239s (guardPASS349). Short saved successor is now19segments/11nets; no rebase or native acceptance. Other longer paths remain separate evidence.
+
+JL adoption37947364213 failed before routing: the newly copied additive prepare helper lacked the .kicad_pro required by grid_apply for cuts. Canonical copper is unchanged; no native adoption check passed in that failed job. Both endpoint prepare helpers now copy the original .kicad_pro and .kicad_dru beside the disposable output; the strict missing-project guard is unchanged. Retry through a new source-pinned worker after this correction.
+
+JR endpoint pilot37945797248 is terminal/eligible137→136:0DRC/parity,520unchanged warnings,no new identities/splits,fresh agreement. All51024uncut objects identical,+39/2reviewedcuts. Artifact11624043283 ZIP990c17f4155dc6ad98b4f0db0c091f1b25bd265c16d834afa2bfa9fb68b6293b; candidate33747bfc15d66bc92e7fb7c563dfa853b13058a0056075626551ef3d385d6b84; replay88f040c0318eccb93cf002f7a35e8d464b21c38c41d44f5bf765688468bcd953. Canonical remains137 pending gated adoption.

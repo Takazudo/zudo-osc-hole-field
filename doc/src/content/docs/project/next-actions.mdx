@@ -108,7 +108,10 @@ A native-accepted C8143 ground fanout also adds one segment and one via, preserv
 all 33,220 prior JL objects and passing the same gates: JL125→124.
 Subsequent native gates accepted 27 additive R8487 segments (JR140→139) and
 20 additive ground objects (JL124→121), preserving all prior accepted copper.
-Current native totals on this branch are **JL121 / JR137 / core1,441**.
+Native-accepted coupled ground repairs now restore the displaced signal groups
+and their exposed endpoints: JL121→120 and JR137→136. All uncut copper and fixed
+physical/electrical constraints are retained; warning, group, DRC/parity and
+fresh-copy gates pass. Current native totals are **JL120 / JR136 / core1,441**.
 Continue with the exact unresolved endpoints and source-defined local repairs,
 not unchanged larger rerouting budgets. The resumable implementation note is
 `circuit/routing/issue189/checkpoint.md` in the repository.
