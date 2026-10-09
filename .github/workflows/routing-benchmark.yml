@@ -425,7 +425,7 @@ jobs:
       contents: read
       actions: read
     runs-on: ubuntu-latest
-    timeout-minutes: 90
+    timeout-minutes: 25
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
       - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c
@@ -444,18 +444,18 @@ jobs:
               p=root/('osc-core-grid-shards-'+stage)/'osc-core.kicad_pcb'
               assert hashlib.sha256(p.read_bytes()).hexdigest()==expected
           PY
-      - name: Classify changed outer-zone silkscreen interactions
+      - name: Profile exact native zone geometry equality
         run: |
           # Leave time to upload incomplete evidence if classification times out.
-          timeout --signal=INT --kill-after=2m 80m bash scripts/kicad/run.sh python3 scripts/pcbgen/audit_zone_silk_scope.py \
+          timeout --signal=INT --kill-after=2m 15m bash scripts/kicad/run.sh python3 circuit/routing/issue189/native-zone-profile/profile.py \
             .circuit-cache/hole-audit-input/.circuit-cache/osc-core-grid-shards-start/osc-core.kicad_pcb \
             .circuit-cache/hole-audit-input/.circuit-cache/osc-core-grid-shards-merge/osc-core.kicad_pcb \
-            .circuit-cache/zone-silk-audit --classify
+            .circuit-cache/zone-geometry-profile
       - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
         if: always()
         with:
-          name: issue189-zone-audit-${{ github.run_id }}
-          path: .circuit-cache/zone-silk-audit
+          name: issue189-zone-profile-${{ github.run_id }}
+          path: .circuit-cache/zone-geometry-profile
           retention-days: 30
           include-hidden-files: true
           if-no-files-found: error
