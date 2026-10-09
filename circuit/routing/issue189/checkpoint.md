@@ -1,15 +1,15 @@
 # Issue 189 exact continuation checkpoint
 
-Updated 2026-10-09 15:15 UTC. **Issue189 remains OPEN.** Zero-edge connectivity and final completion gates are unmet. No fabrication/hardware qualification is claimed. Fixed panel/electrical rules, accepted copper and other sessions are preserved.
+Updated 2026-10-09 15:45 UTC. **Issue189 remains OPEN.** Zero-edge connectivity and final completion gates are unmet. No fabrication/hardware qualification is claimed. Fixed panel/electrical rules, accepted copper and other sessions are preserved.
 
 ## Current authoritative state
 
 | Location | Commit | Accepted native edges JL/JR/core |
 | --- | --- | --- |
-| Main, merged PR206 | `9376342b5767a8107ffeda4f8290b122fd1ce268` |121/137/1441|
+| Main, merged PR207 | `9de20ab442dca2940da0a201d5ef5e764dcdbea3` |120/136/1441|
 | PR207 branch `agent-fix/189-ground-repair-continuation`, integrated worker copper | `2b38e2e` |120/136/1441|
 
-All accepted boards have zero native DRC/parity errors, no new warning identities or split original pad groups, and fresh native agreement. JL477/JR520/core619 warnings. The all-board zero-edge completion gate remains unmet. PR207 is draft; exact-head CI must pass before any authorized normal merge. Main9376342 post-CI37941329856 passed all five checks. Prior PR201/203–206 exact/post checks passed; PR202 post was cancelled/superseded, never passed.
+All accepted boards have zero native DRC/parity errors, no new warning identities or split original pad groups, and fresh native agreement. JL477/JR520/core619 warnings. The all-board zero-edge completion gate remains unmet. PR207 exact-head37950014675 passed all five jobs and merged at15:34:10Z; post-merge37952715447 is still running. Main9376342 post-CI37941329856 passed all five checks. Prior PR201/203–206 exact/post checks passed; PR202 post was cancelled/superseded, never passed.
 
 ## Next native core trial
 
@@ -117,3 +117,12 @@ PR207 is fixed at0d6a444aa1ad648ce6146d0e893e93307bd98f14 (JL120/JR136/core1441)
 Next jack scopes are isolated on `agent-fix/189-next-ground-continuation`: JL120 U1502.16 (two cuts, one victim,12.8x16.5mm frame) and JR136 J900107.4 (three cuts, one victim,13.65x13.7mm frame). Every selected track is identical to its saved prefilter geometry on the new accepted board, and each target is still disconnected. F/B-only native cut/restoration pilots will establish actual topology; ground-only prefilter paths are not complete proposals. No candidate copper has been applied by these plans.
 
 Active successor runs: JL37950326215 (`agent-fix/189-jl-u1502-ground-worker`) and JR37950331735 (`agent-fix/189-jr-j900107-ground-worker`), both source43140342eec659a65b1a8bfa3ebea4b02fe4d17e; core37950004600 source0d6a444. All are pending native results, not accepted gains. Short-core rebase now also validates exact known new-object geometry, not UUIDs alone; four tests pass against53real native objects plus width/coordinate/net mutations. Static clearance against pending ground additions passes, but no future rebase has run.
+
+
+## Successor cut results and next scopes
+
+JL37950326215 rejected120→120:2adds/2cuts,all33292uncut objects identical,0DRC/parity,477unchanged warnings,no splits,fresh agreement. AGND17→16after cut→17after victim restoration. Victim obligations are J900047.5 and U1516.8/U1516.9. Exact endpoints, full native component terminals, and explicit ground-plane fanout methods all failed to find complete bounded joint paths in their saved two-variant screens. No partial rows were submitted.
+
+JR37950331735 rejected136→136:7adds/3cuts,all51060uncut objects identical,0DRC/parity,520unchanged warnings,no splits,fresh agreement. AGND25→24→25. Victim obligations are U6105.10, J900107.5 and a five-object padless piece. Exact endpoint, full-component, and smaller two-cut reconstruction methods all failed to produce complete bounded proposals. The smaller cut set retains original0.15mm segment7ce0d76d-8094-5807-b95d-ce967dc887af; its pad/track contacts were checked exactly, but no native two-cut acceptance is claimed. Stop these unchanged configurations; no larger-cap retry.
+
+Next source-pinned cut plans target JL120 C2248.2 (three cuts/one victim,15.4x13.1mm frame) and JR136 R7609.2 (three cuts/one victim,12.84x15.55mm frame). Every selected original track is identical on the accepted input, and neither cut set touches the recently accepted endpoint-repair copper. These are disposable native pilots, not canonical writers. Core37950004600 remains the sole core writer.
