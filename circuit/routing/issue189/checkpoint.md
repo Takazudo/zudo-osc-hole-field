@@ -1,3 +1,22 @@
+# Boundary continuation checkpoint — 2026-10-09 12:18 UTC
+
+Current branch: `agent-fix/189-fill-boundary-continuation`, based on PR201 frozen head `3f7fb6895f4a7d2d7590ef40d3d66486025480a8`. Boundary-domain guard and two regressions pass all 99 affected tests. Same-input native-A* comparison reproduces identical 115-object JR proposal (4.836299s before / 4.924470s after); this does not cure its native -12V split. See `fill-boundary/README.md` and immutable hashes in benchmark.json. No board change in this increment.
+
+Main: `b215be72058ac77e5b2be04b2b4de5ae93a60541` (PR200), post-merge run37925223945 all five checks passed. Accepted native open edges JL125 / JR141 / core1441; DRC/parity zero on each. Full connectivity remains unmet; keep #189 OPEN.
+
+PR201 exact-head CI37927716576: JL/JR/docs PASS, core and remaining regression checks still running at last check. Do not move its frozen head. Once every check passes, refresh head/reviews and use authorized normal merge; retain its branch because core writer uses it. Verify post-merge CI. Retarget this continuation onto main after that merge.
+
+Active native writers (one per board):
+- Core143 run37925863664, source97e3a28b54ca2a4071ab36b2a4a644fa187debcf, on `agent-fix/189-ground-fill-continuation`. Review terminal receipt/artifact, native groups, warnings, fresh counts and complete retained-copper checks before adoption. Do not duplicate this run.
+- JR9 run37927714132, source3f7fb6895f4a7d2d7590ef40d3d66486025480a8, dedicated `agent-fix/189-jr-outer-worker`. Do not human-push to worker. Fetch and cherry-pick only reviewed publication delta after terminal native validation.
+- No JL writer active.
+
+Next core26 no-via alternative is prepared at `core-u1513-alternatives/`; only after core143 terminal reconciliation run its `rebase_proposal.py --accepted-sha256 ACTUAL_PUBLISHED_SHA256`, review rebase/retention evidence, then add workflow choice and dispatch exactly one core writer. Never assume output from a pending run.
+
+GitHub CLI returned HTTP401 at12:13; existing GitHub connector and git transport still work. No credential/permission expansion attempted. Use connector run-job/artifact tools and PR APIs as needed.
+
+---
+
 # PR201 verification checkpoint — 2026-10-09 12:04 UTC
 
 PR200 merged as `b215be72058ac77e5b2be04b2b4de5ae93a60541`. All five exact-head

@@ -304,11 +304,13 @@ class FillGuard:
     whole-layer distance transform per candidate (the core's six-layer raster is ~15M
     cells per layer). Ripped copper widens the region: call reset() with the new label.
     """
-    def __init__(self,label,plane_id,clearance,res):
+    def __init__(self,label,plane_id,clearance,res,domain=None):
+        self.domain=np.ones(label.shape,bool) if domain is None else np.asarray(domain,dtype=bool).copy()
+        if self.domain.shape!=label.shape:raise ValueError('fill domain shape differs from raster')
         self.plane_id=plane_id;self.clearance=clearance;self.res=res;self.reset(label)
 
     def reset(self,label):
-        self.region=ndimage.distance_transform_edt(~((label!=0)&(label!=self.plane_id)))*self.res>=self.clearance
+        self.region=(ndimage.distance_transform_edt(~((label!=0)&(label!=self.plane_id)))*self.res>=self.clearance)&self.domain
         self.blobs,self.n=ndimage.label(label==self.plane_id);self.base=self.partition(self.region)
 
     def partition(self,region):
@@ -492,8 +494,11 @@ def route(dump,nets=(),rip=(),rip_first=False,res=0.1,layer_cost=None,via_cost=3
     # Fill guards: a signal path may share a plane-fill layer only if the fill keeps
     # every plane via/pad in as few connected regions as before.
     guards={raster.layers.index(layer):raster.net_id[n] for n,layer in (fill_guards or {}).items() if n in raster.net_id}
-    # Stricter than the native fill (zone clearance, minimum width and raster slack) so a pass here is a pass there.
-    fill_count={li:FillGuard(raster.label[li],guards[li],fill_clearance,res) for li in guards}
+    # Exclude physical outline padding and bounded-search fences from fill paths.
+    # This is still an approximate screen: exact zone shapes and native refill
+    # connectivity remain mandatory acceptance checks, even when this passes.
+    fill_count={li:FillGuard(raster.label[li],guards[li],fill_clearance,res,
+                            domain=raster.d_edge>0) for li in guards}
     def path_pieces(path,w,vd,li):
         pieces=[]
         for i,(l,y,x) in enumerate(path):
