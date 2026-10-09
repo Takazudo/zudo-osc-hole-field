@@ -85,11 +85,15 @@ negative results. The isolated supply replay in merged PR #192 and corridor repl
 in [PR #193](https://github.com/Takazudo/zudo-osc-hole-field/pull/193) leave JL
 at 137 accepted edges. The isolated pair in
 [PR #194](https://github.com/Takazudo/zudo-osc-hole-field/pull/194) reduces JL
-further to 135 while retaining 32,910 objects and replacing 25 selected blockers. JR now has 155 accepted edges after seven signal paths
-and an explicit supply restoration passed canonical replay, retaining all 50,311
-original copper objects. Core remains
-1,509 while its outer-only replay completes; previous candidates failed original
-AGND membership gates. No rejected pilot copper is counted as accepted progress.
+further to 135. [PR #195](https://github.com/Takazudo/zudo-osc-hole-field/pull/195)
+then adopts bounded ground and signal repairs reaching **JL134 / JR153**. Across
+its JL repair, 33,103 old objects remain unchanged; across its two JR repairs,
+50,699 original objects remain unchanged and all 24 new ground objects are retained.
+Native errors/parity are 0/0, with no new warning identities or original pad-group
+splits and independent fresh-copy agreement. Core remains **1,509**: its outer-only
+candidate was rejected for two AGND splits. A filtered follow-up is still pending;
+its workflow status alone must not be treated as native acceptance. No rejected
+pilot copper is counted as accepted progress.
 Continue with the exact unresolved endpoints and source-defined local repairs,
 not unchanged larger rerouting budgets. The resumable implementation note is
 `circuit/routing/issue189/checkpoint.md` in the repository.

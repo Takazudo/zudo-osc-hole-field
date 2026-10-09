@@ -1,3 +1,26 @@
+# Active continuation — 2026-10-09 07:35 UTC
+
+PR195 remains frozen at76ed56bd501e44ef19dc1a41847dcfe017999dc6. CI37898486489 has
+passed all three native board gates and documentation checks; the Python job is
+still checking aggregate regeneration. Wait for all five checks before merge.
+Then retarget196 to main and reconcile main without changing successful copper.
+
+Read-only JL RB2217 pilot37899555501 runs at80ed9377dc60a1df687e0a337b389b0f7bd70bc2.
+It uses accepted134 input892c31f6d97081723864996d601ece6ecf272c25140fd1169f9e534b1adcda6a,
+seven exact signal segments on one victim net; no canonical promotion is implied.
+The prior two-ground pilot remains rejected. A no-In3 repair screen also found
+0/2 victim paths in10.099407s; full result/source retained. No larger unchanged
+budget should be attempted. Previous plan archived as jl-two-ground-plan.json.
+
+Core sole writer37895925149 remains active. Do not duplicate; inspect its actual
+terminal native receipt before adopting or rebinding any further core proposals.
+A local additive0.05mm signal screen on acceptedJR153 is running under the heavy
+guard; source/output paths are .circuit-cache/issue189-jr153-fine-probe.{py,json}.
+Native NOT RUN for that screen. Preserve its final result before continuation.
+
+Routing pages now reflect acceptedJL134/JR153/core1509 and the completed rejected
+outer-core receipt. pnpm check passes. Full connectivity remains incomplete.
+
 # Native pilot rejection and exact continuation — 2026-10-09 07:28 UTC
 
 Accepted boards remain JL134 / JR153 / core1509. No canonical change in PR196.
