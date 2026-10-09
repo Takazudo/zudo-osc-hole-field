@@ -1,25 +1,68 @@
-# Follow-up checkpoint — 2026-10-09 07:11 UTC
+# PR196 continuation checkpoint — 2026-10-09 07:24 UTC
 
-Active follow-up branch agent-fix/189-next-ground-corridors starts at accepted
-JL134/JR154/core1509 (JL bot5dcf82e,JR ground bot7c80220). Parent PR195 still owns
-the ongoing JR signal writer37896805484 on710bb92; reconcile its eventual commit
-into this branch before any JR work. Do not duplicate that writer. Its source
-checks preserve all24accepted ground additions. PR195 final CI/merge is pending.
+This branch preserves accepted JL134 / JR153 / core1509 from frozen PR195 head
+76ed56bd501e44ef19dc1a41847dcfe017999dc6. Its fresh required CI is37898486489;
+merge195 only after all five checks pass on that exact head. Then retarget196 to
+main and reconcile the merge. Issue189 remains OPEN and connectivity incomplete.
 
-Next read-only JL cut: R8105.2 and R2209.2,three exact signal objects on two victim
-nets. jl-two-ground-prepare.py pins accepted134 SHA892c... and its native dump,
-proves each selected135-era object remains exactly unchanged/unique, checks the
-prior R1301.2 ground repair is in the main native group, and selects only the two
-remaining source groups. Ground dimensions and all full native gates are unchanged.
-Current jl-local-plan.json targets this case; prior one-via plan archived.
-Dispatch local_repair=true/local_mode=cut on this follow-up branch after push.
-No canonical copper change in this follow-up yet. Keep the result even if rejected.
+Read-only JL two-ground pilot37897562881 atfb793f70595da70a9e62bd7d87dd564fa7d3b83c
+has finished; its native receipt still needs inspection. A successful workflow is
+not proof of acceptance. The plan selects R8105.2/R2209.2, three exact signal cuts,
+and two victim nets against acceptedJL134; no canonical board was changed by it.
 
-Core sole writer37895925149 remains active on agent-fix/189-core-filtered source
-0e6697df2bde94e3b3397da9ae0727bcdf4de464. Native filtered result unknown. Original
-outer rejection and complete retained-copper evidence are already preserved.
-Main remains135/155/1509 until PR195 merges; issue189 stays OPEN. Full completion
-criteria remain unmet. Reconcile accepted inputs before every further replay.
+Core sole writer37895925149 remains active at0e6697df2bde94e3b3397da9ae0727bcdf4de464
+on agent-fix/189-core-filtered. Do not duplicate or overwrite its eventual accepted
+copper. Full native groups, warning identities, DRC/parity and fresh/cache checks
+remain mandatory. The detailed accepted evidence and continuation rules follow.
+
+# Frozen PR195 review checkpoint — 2026-10-09 07:20 UTC
+
+PR195 branch agent-fix/189-return-continuation now contains native-adopted
+JL134 / JR153 / core1509. Freeze this review commit for fresh required CI; only
+merge its exact head after all five checks pass. Existing user authorization
+permits a normal verified incremental merge; retain branches and keep189 OPEN.
+Main is still135/155/1509 until that merge. No board in this PR is qualified for
+fabrication or hardware use by these routing checks.
+
+Accepted JL135→134: writer37896098143,bot5dcf82e6be60d0d06e023f4830d5a478e3f29ab2,
+boardSHA892c31f6d97081723864996d601ece6ecf272c25140fd1169f9e534b1adcda6a.
+Native errors/parity0/0,477existingwarnings,no new identities or original pad-group
+splits,independent fresh agrees.33103oldobjects retained,21explicitly diagnosed
+objects removed,28added. The corrected endpoints meet retained centerlines.
+
+Accepted JR155→154→153: ground writer37894363972/bot7c80220, then signal writer
+37896805484/bot300123fab361a3400aa1188bf11af4b083f770b8. Final board SHA
+05a8d4beff64f5dee1356f679eb7d24842996d7a6b125047b8f48467e41bac26. Native errors/parity0/0,
+520existingwarnings,no new identities or original-group splits,fresh agrees.
+Last step retains50723objects INCLUDING all24previous ground additions,13removed,
+33added. Direct original155→final153 native-dump comparison also passes the full
+gate:50699originalobjects retained,13removed,57added (jr-pr195-retention.json).
+Final artifact11601650042 was downloaded and ZIP digest verified.
+
+No jack canonical writer remains active. Next JL read-only pilot37897562881 is
+already running fromfb793f70595da70a9e62bd7d87dd564fa7d3b83c on follow-up branch
+agent-fix/189-next-ground-corridors, draftPR196 based on195. It targets R8105.2 and
+R2209.2 using three exact signal objects and protects accepted R1301.2 in its
+native134 baseline. Reconcile this final JR153 commit into196, then retarget196
+to main after195 merges. Preserve the pilot's actual result and all accepted copper.
+
+Core sole writer37895925149 runs on agent-fix/189-core-filtered at
+0e6697df2bde94e3b3397da9ae0727bcdf4de464. It replays56nets/216outersegments without
+removing originals or adding vias/inner tracks; final result is unknown. Do not
+duplicate. Previous outer run37881591885 finished rejected1509→1430 for two AGND
+splits; all132953originalobjects retained,317added,no new warnings,DRC/parity0/0,
+fresh agreement. Its receipt-only commit and exact replay are retained.
+If filtered core adopts, inspect canonical versus native-filled hashes and any
+publication-cache equivalence receipt before rebinding further ground proposals.
+Never copy an old34955 input over accepted copper or skip the full native gates.
+
+Validation covering implementation:73affected tests,pnpm check,workflow YAML and
+shell syntax pass. Main postmerge194 CI37891992677 passed. Final PR195 exact-head
+CI must still finish; a prior bot action_required run with zero jobs is not evidence.
+H1/H2 and identical-input benchmarks remain in their committed evidence files.
+Local KiCad9 is not the oracle; pinned10.0.6 CI performs native acceptance.
+Executor works; no actual environment blockage. Full zero-edge completion criteria
+remain unmet, and issue189 remains OPEN.
 
 ## Earlier checkpoint history (superseded above)
 
