@@ -1,11 +1,43 @@
 import tempfile
 import json
+import hashlib
 from pathlib import Path
 import unittest
-from scripts.pcbgen.complete_native_warnings import append_observations, check_caps, hole_evidence
+from scripts.pcbgen.complete_native_warnings import append_observations, check_caps, hole_evidence, unchanged_silk_zones
 
 
 class CompleteWarningTests(unittest.TestCase):
+    def test_new_via_audit_cannot_hide_changed_outer_zone_fill(self):
+        def board(layer,fill):return f'(kicad_pcb (zone (layer "{layer}") (filled_polygon (pts {fill}))))'
+        unchanged_silk_zones(board('F.Cu','old'),board('F.Cu','old'))
+        unchanged_silk_zones(board('In1.Cu','old'),board('In1.Cu','new'))
+        for layer in ('F.Cu','B.Cu','F.SilkS','B.Mask'):
+            with self.subTest(layer=layer),self.assertRaisesRegex(ValueError,'zone fills changed'):
+                unchanged_silk_zones(board(layer,'old'),board(layer,'new'))
+
+    def test_raw_fixture_context_must_match_source_even_when_receipt_claims_it_does(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root=Path(directory);board=root/'board.kicad_pcb';board.write_text('native source')
+            folder=root/'fixture-0000';folder.mkdir()
+            context={'clearance_nm':250000}
+            for suffix,key in (('.kicad_pro','project_sha256'),('.kicad_dru','rules_sha256')):
+                data=b'exact source context';board.with_suffix(suffix).write_bytes(data)
+                (folder/board.with_suffix(suffix).name).write_bytes(data)
+                context[key]=hashlib.sha256(data).hexdigest()
+            holes=[]
+            for uid,x in [('a',0),('b',300000)]:
+                row=dict(uuid=uid,xy=[x,0],radius=150000,drill=300000,kind='via',subtype=3,layers=[0,2],net='AGND')
+                row['object_key']=hashlib.sha256(json.dumps(row,sort_keys=True).encode()).hexdigest();holes.append(row)
+            item=('hole_to_hole','warning',('a','b'))
+            report={'violations':[dict(type=item[0],severity=item[1],items=[{'uuid':u} for u in item[2]])]}
+            (folder/'drc.json').write_text(json.dumps(report))
+            audit=dict(context,version='10.0.6',source_sha256=hashlib.sha256(board.read_bytes()).hexdigest(),holes=holes,covered_pairs=[[0,1]],identities=[item],object_identities=[(item[0],item[1],sorted(h['object_key'] for h in holes))],fixtures=[dict(fixture=str(folder/board.name),holes=[h['object_key'] for h in holes],identities=[item],report_sha256=hashlib.sha256((folder/'drc.json').read_bytes()).hexdigest())])
+            (root/'result.json').write_text(json.dumps(audit))
+            self.assertEqual(hole_evidence(root,board,report,context)[1],{item})
+            (folder/'board.kicad_pro').write_text('native SaveBoard defaults')
+            with self.assertRaisesRegex(ValueError,'fixture context changed'):
+                hole_evidence(root,board,report,context)
+
     def test_append_never_removes_original_error_or_warning(self):
         error=dict(type='clearance',severity='error',items=[{'uuid':'bad'}])
         old=dict(type='hole_to_hole',severity='warning',items=[{'uuid':'a'},{'uuid':'b'}])

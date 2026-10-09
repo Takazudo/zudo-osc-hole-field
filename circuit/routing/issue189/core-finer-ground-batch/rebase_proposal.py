@@ -4,12 +4,14 @@ Pass the reviewed exact accepted board hash. Preserve every full copper block,
 including duplicate UUIDs, and reject unknown changes or proposal conflicts.
 This does not run or replace the mandatory native gate.
 """
-import argparse,hashlib,json,subprocess,sys,math
+import argparse,hashlib,importlib.util,json,subprocess,sys,math
 from pathlib import Path
 from shapely.geometry import Point,LineString
 ROOT=Path(__file__).resolve().parents[4];HERE=Path(__file__).resolve().parent
 sys.path.insert(0,str(ROOT))
 from scripts.pcbgen.route_shards import copper_block_groups,delta
+spec=importlib.util.spec_from_file_location('signal_rebase',HERE.parent/'core-short-no-via/rebase_proposal.py')
+signal_guard=importlib.util.module_from_spec(spec);spec.loader.exec_module(signal_guard)
 
 def gap(a,b):
     if a['net']==b['net'] or (a['kind']==b['kind']=='segment' and a['layer']!=b['layer']):return float('inf')
@@ -30,9 +32,12 @@ def main():
     before,after=copper_block_groups(old),copper_block_groups(current)
     assert all(rows==after.get(u) for u,rows in before.items()),'prior copper changed'
     change=delta(old,current);assert not change['removed']
-    known=json.loads((HERE.parent/'core-u1513-alternatives/proposal.json').read_text())['copper']
+    # The earlier26-object trial rejected. Only the exact whole19-object signal
+    # successor can be accepted here, after its native result is reconciled.
+    known=json.loads((HERE.parent/'core-short-no-via/proposal-original.json').read_text())['copper']
     actual_new={r['uuid'] for r in change['added']}
     assert not actual_new or actual_new=={r['uuid'] for r in known},'unreviewed core changes: inspect and update explicitly'
+    signal_guard.require_known_geometry(change['added'],known)
     fixed=known if actual_new else []
     rows=source['copper'];selection=json.loads((HERE/'selection.json').read_text());assert not source['removed_uuids'] and len(rows)==selection['objects'];assert hashlib.sha256((HERE/'proposal-original.json').read_bytes()).hexdigest()==selection['proposal_sha256']
     assert all(r['net']=='AGND' and ((r['kind']=='segment' and r['width_nm']==300000) or (r['kind']=='via' and r['diameter_nm']==600000 and r['drill_nm']==300000)) for r in rows)

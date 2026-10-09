@@ -22,6 +22,39 @@ def board(*items):
 
 
 class MergeAcceptanceTests(unittest.TestCase):
+    def test_complete_native_observations_do_not_bypass_errors_splits_or_failed_evidence(self):
+        from scripts.pcbgen import route_shards,route_jack_grid as driver
+        from scripts.pcbgen.test_grid_router import crossing_board
+        from scripts.pcbgen.complete_native_warnings import append_observations
+        old=('hole_to_hole','warning',('old-a','old-b'))
+        shifted=('hole_to_hole','warning',('old-c','old-d'))
+        def report(item):
+            return {'violations':[dict(type=item[0],severity=item[1],items=[{'uuid':u} for u in item[2]])],'schematic_parity':[]}
+        for failure in ('none','evidence','error','split','fresh'):
+            with self.subTest(failure=failure),tempfile.TemporaryDirectory() as directory:
+                root=Path(directory);target=root/'boards/osc-jack-left/osc-jack-left.kicad_pcb'
+                target.parent.mkdir(parents=True);original=board(seg(U[0],'A'));target.write_text(original)
+                proposal=root/'delta.json';proposal.write_text(json.dumps(delta(original,board(seg(U[0],'A'),seg(U[1],'B')))))
+                before={**crossing_board(),'open_edges':3,'islands':{'A':[['a0','a1']],'B':[['b0'],['b1']]}}
+                after={**before,'open_edges':1,'islands':{}}
+                if failure=='split':after['islands']={'A':[['a0'],['a1']]}
+                fresh=after if failure!='fresh' else {**after,'islands':{'B':[['b0'],['b1']]}}
+                bd,ad=report(old),report(shifted)
+                if failure=='error':ad['violations'].append(dict(type='clearance',severity='error',items=[]))
+                def workspace(board_id,name):
+                    folder=root/name;folder.mkdir();return folder
+                def evidence(*args):
+                    if failure=='evidence':raise ValueError('fixture context changed')
+                    return append_observations(bd,{old,shifted}),append_observations(ad,{old,shifted}),{'status':'test native observations'}
+                with patch.object(route_shards,'ROOT',root),patch.object(driver,'workspace',side_effect=workspace),\
+                     patch.object(driver,'check',side_effect=[(bd,before),(report(shifted),after),(ad,fresh)]),\
+                     patch('scripts.pcbgen.complete_native_warnings.audit_current_reports',side_effect=evidence):
+                    receipt=route_shards.merge('osc-jack-left',[proposal],'complete',complete_native_warnings=True)
+                self.assertFalse(receipt['raw_promotion_gate']['adopted'])
+                self.assertEqual(receipt['adopted'],failure=='none')
+                if failure!='none':self.assertEqual(target.read_text(),original)
+                if failure=='evidence':self.assertEqual(receipt['rejection_reason'],'incomplete_native_warning_evidence')
+
     def test_reverted_geometry_and_native_error_evidence_survive_next_attempt(self):
         from scripts.pcbgen import route_shards,route_jack_grid as driver
         from scripts.pcbgen.test_grid_router import crossing_board

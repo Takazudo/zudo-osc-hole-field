@@ -12,12 +12,33 @@ import json
 import math
 from pathlib import Path
 import re
+import subprocess
 
 from scripts.pcbgen.audit_hole_pairs import possible_pairs
 from scripts.pcbgen.audit_added_mask import unchanged_nonrouting, new_silk_identities
+from scripts.pcbgen.uuid_tools import top_level_spans
 
 HOLE_TYPES={'hole_to_hole','holes_co_located'}
 SUPPORTED_CAPS=HOLE_TYPES | {'silk_overlap','silk_over_copper'}
+SILK_TARGET_LAYERS={'F.Cu','B.Cu','F.SilkS','B.SilkS','F.Mask','B.Mask',
+                    'F.Adhes','B.Adhes','F.Paste','B.Paste','F.CrtYd','B.CrtYd',
+                    'F.Fab','B.Fab','Edge.Cuts','Margin'}
+
+
+def unchanged_silk_zones(before, after):
+    """Zone fills participate in native silk DRC, independently of new vias."""
+    def relevant(text):
+        result=collections.Counter()
+        for a,b in top_level_spans(text):
+            block=text[a:b]
+            if not block.startswith('(zone') or re.search(r'\(keepout\s',block):continue
+            match=re.search(r'\(layers?\s+([^)]*)\)',block)
+            if not match:raise ValueError('zone layers missing')
+            if set(re.findall(r'"([^"]+)"',match[1])) & SILK_TARGET_LAYERS:
+                result[block]+=1
+        return result
+    if relevant(before)!=relevant(after):
+        raise ValueError('silk-relevant zone fills changed; complete native zone evidence required')
 
 
 def sha(path):return hashlib.sha256(Path(path).read_bytes()).hexdigest()
@@ -91,6 +112,7 @@ def complete_reports(before_board, after_board, before_drc, after_drc, before_au
     before_board,after_board=Path(before_board),Path(after_board)
     for drc in (before_drc,after_drc):check_caps(drc)
     count=unchanged_nonrouting(before_board.read_text(),after_board.read_text())
+    unchanged_silk_zones(before_board.read_text(),after_board.read_text())
     context={}
     for suffix,key in (('.kicad_pro','project_sha256'),('.kicad_dru','rules_sha256')):
         context[key]=sha(before_board.with_suffix(suffix))
@@ -130,3 +152,22 @@ def complete_reports(before_board, after_board, before_drc, after_drc, before_au
         before_hole_identities=len(old),after_hole_identities=len(new),new_hole_object_identities=[],
         new_silk_identities=[],before_source_sha256=sha(before_board),after_source_sha256=sha(after_board),
         audit_result_sha256=[sha(Path(p)/'result.json') for p in (before_audit,after_audit,mask_audit)])
+
+
+def audit_current_reports(before_board, after_board, before_drc, after_drc, output):
+    """Produce evidence for these exact native boards; never reuse stale audits."""
+    root=Path(__file__).resolve().parents[2]
+    output=Path(output)
+    output.mkdir(parents=True,exist_ok=False)
+    before_audit=output/'holes-before';after_audit=output/'holes-after';mask_audit=output/'silk'
+    # The pinned container mounts the checkout at /work, not the host path.
+    relative=lambda p:str(Path(p).resolve().relative_to(root))
+    commands=[['scripts/pcbgen/audit_hole_pairs.py',relative(before_board),relative(before_audit)],
+              ['scripts/pcbgen/audit_hole_pairs.py',relative(after_board),relative(after_audit)],
+              ['scripts/pcbgen/audit_added_mask.py',relative(before_board),relative(after_board),relative(mask_audit)]]
+    for command in commands:
+        subprocess.run(['bash','scripts/kicad/run.sh','python3',*command],cwd=root,check=True)
+    result=complete_reports(before_board,after_board,before_drc,after_drc,before_audit,after_audit,mask_audit)
+    for name,value in zip(('complete-before-drc','complete-after-drc','proof'),result):
+        (output/(name+'.json')).write_text(json.dumps(value,indent=2)+'\n')
+    return result
