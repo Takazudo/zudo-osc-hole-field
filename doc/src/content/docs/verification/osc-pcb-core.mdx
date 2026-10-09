@@ -92,3 +92,18 @@ new warnings and agree after independent reload. A cache-free publication path
 is prepared for the storage limit, but requires native refill equivalence before
 use. No zone definition, physical constraint or successful copper is discarded.
 #189 remains open; source replay is not hardware qualification.
+
+### Issue #189 resumed native results (2026-10-09)
+
+The identical-input core comparison finished: both old and corrected routers
+reported 1,509→1,499, but both split two existing AGND pad groups and were rejected.
+The subsequent recovered-copper plus stitching transaction reached 1,391 with
+zero rule/parity errors and independent-copy agreement; it still split four
+previous AGND groups, left AGND at 263 versus 252, and introduced hole-to-hole and
+dangling-via warning identities. It was not adopted. Canonical core remains 1,509.
+
+A source-defined local replay now omits ten suspected ground-splitting net
+changes and repairs the overlapping signal-via cluster without changing layer or
+electrical constraints. Its native acceptance is pending. Full CI passed on
+`7ca5bed`; source proposals and exact failed receipts are retained in the #189
+checkpoint. These are unvalidated drafts, not hardware qualification.

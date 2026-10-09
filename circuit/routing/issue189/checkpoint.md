@@ -6,6 +6,41 @@ Branch `agent-fix/189-obstacle-transactions`, draft PR #190. Last published head
 before this checkpoint: `5932578181ca9fa88991ae5067d6ec1ac6ed6f86`.
 Main remains `1fe06ad50248d6434876fbf2bd6e32e1bfbb13bb`.
 
+## Resumed execution — 2026-10-09
+
+Workspace and prior context survived restart; Git credentials work. Refreshed
+main remains1fe06ad; current topic head9c7702bd adds only rejected recovery evidence,
+no PCB. Integrated CI37836142683 **passed on7ca5bed**. CI37864988038 initially had
+`action_required` with no jobs; the supported GitHub run-approval endpoint accepted
+approval and its jobs are now running. No approval bypass or duplicate rerun.
+
+Core benchmark37824207235 **completed**: old/new both1509→1499, both ineligible
+because two prior AGND pad groups split. Neither introduced warning identities.
+Old/new routing seconds117.2721/189.0070; complete stage3545.3150/4729.8022;
+accepted progress/hour0 for both. Exact3.4MB result is `core-benchmark.json`;
+artifact/digest and timing provenance are in `benchmark-artifacts.json`.
+
+Recovery37836277044 **completed but rejected**:1509→1391, AGND252→263,
+four split prior AGND pad groups, one new hole-to-hole pair and one new dangling
+signal via. Native errors/parity0/0 and independent agreement were necessary but
+insufficient. The canonical core remains1509. Exact replay/receipt were pushed
+at9c7702bd; archive11587449567 digest is recorded in `core-reviewed/README.md`.
+
+Next changed-method pilot is materialized under `core-reviewed/`: omit ten new
+net transactions nearest detached AGND fragments, preserve all other recovered
+rows and stitch links, and replace the overlapping eight-via signal cluster with
+one retained via plus0.2mm fanout on existing signal layers. Hash-bound source
+plan and generator produce1085 additions/29 removals. The source topology screen
+and117 focused tests pass. **Native pilot NOT RUN yet**; no copper is adopted.
+Dispatch once with `-f core_replay=reviewed` after publishing this proposal.
+
+Concurrent branch `agent-fix/jack-replace-region-2` advanced to30db43e with JL140→140
+and JR162→162 region attempts. It was read, not changed. Do not repeat that
+unchanged strategy or overwrite this branch's accepted JL139 copper.
+
+The sections below retain earlier evidence and commands; the resumed status above
+supersedes statements that the core comparison/recovery or7ca5bed CI are pending.
+
 ## Current accepted copper
 
 | Board | Native open edges | Signal | +12V | -12V | +5V | AGND | Native errors/parity |

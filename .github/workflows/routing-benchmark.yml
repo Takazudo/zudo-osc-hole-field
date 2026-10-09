@@ -15,6 +15,11 @@ on:
         description: Replay the preserved core aggregate and repair split AGND before the full native gate
         type: boolean
         default: false
+      core_replay:
+        description: Reviewed recovery transaction (used only with recover_core)
+        type: choice
+        options: [aggregate, reviewed]
+        default: aggregate
 permissions:
   contents: read
 concurrency:
@@ -74,6 +79,7 @@ jobs:
       BOARD: ${{ inputs.board }}
       BENCHMARK_RUN: ${{ inputs.adopt_run }}
       RECOVER_CORE: ${{ inputs.recover_core }}
+      CORE_REPLAY: ${{ inputs.core_replay }}
     steps:
       - name: Restrict adoption to the isolated issue branch
         run: |
@@ -107,9 +113,20 @@ jobs:
         run: |
           mkdir -p .circuit-cache
           set -o pipefail
+          if [[ $CORE_REPLAY == reviewed ]]; then
+            python circuit/routing/issue189/core-reviewed/prepare.py
+            replay=circuit/routing/issue189/core-reviewed/copper.json
+            label=issue189-reviewed
+            extra=()
+          elif [[ $CORE_REPLAY == aggregate ]]; then
+            replay=circuit/routing/issue189/concurrent-core/aggregate-copper.json
+            label=issue189-recovered
+            extra=(--repair-ground)
+          else
+            exit 1
+          fi
           timeout --signal=INT --kill-after=2m 335m python -u scripts/pcbgen/route_shards.py merge osc-core \
-            circuit/routing/issue189/concurrent-core/aggregate-copper.json \
-            --label issue189-recovered --repair-ground 2>&1 | tee .circuit-cache/adoption.log
+            "$replay" --label "$label" "${extra[@]}" 2>&1 | tee .circuit-cache/adoption.log
       - name: Push accepted draft copper with replay and native receipts
         run: |
           message=$(mktemp)
