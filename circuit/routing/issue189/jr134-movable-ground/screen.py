@@ -4,7 +4,7 @@ from pathlib import Path
 from shapely.geometry import Polygon,LineString,Point,box
 from shapely.strtree import STRtree
 parser=argparse.ArgumentParser();parser.add_argument('ref',choices=['RB4614','R4611','RB4615','R7609','RB4413','RB4414','R8490','R4409','RB4613']);args=parser.parse_args();ref=args.ref
-ROOT=Path.cwd();HERE=Path(__file__).resolve().parent/ref;HERE.mkdir(exist_ok=True)
+ROOT=Path.cwd();HERE=Path(__file__).resolve().parent.parent/'jr134-movable-ground-connectors'/ref;HERE.mkdir(parents=True,exist_ok=True)
 p=ROOT/'.circuit-cache/issue189-downloaded/jr-c7413-adoption/.circuit-cache/osc-jack-right-grid-shards-fresh/dump.json'
 d=json.loads(p.read_text());board=ROOT/'boards/osc-jack-right/osc-jack-right.kicad_pcb';assert hashlib.sha256(board.read_bytes()).hexdigest()==d['board_sha256']
 floor=ROOT/'design/partition/floorplan-candidate.json';placements=json.loads(floor.read_text())['placements'];part=next(p for p in placements if p['ref']==ref);assert not part['fixed'] and 'bypass_cluster' not in part and part['board']=='JR';side=part['side'];assert side in ('F.Cu','B.Cu')
@@ -25,9 +25,12 @@ def conflict(shape,net):
   if meta[i][0]!=net and shape.distance(shapes[i])<.25-1e-8:return meta[i][1]
  return None
 others=[(p['ref'],box(*p['courtyard_mm'])) for p in placements if p['ref']!=ref and p['board']=='JR' and p['side']==side]
-partition=ROOT/'design/partition/partition.json';outline=next(b['outline'] for b in json.loads(partition.read_text())['boards'] if b.get('board_key')=='JR');inside=Polygon(outline).buffer(-.30)
+partition=ROOT/'design/partition/partition.json';partition_data=json.loads(partition.read_text());outline=next(b['outline'] for b in partition_data['boards'] if b.get('board_key')=='JR');inside=Polygon(outline).buffer(-.30)
+others.extend((h['pcb_reference'],box(*h['land_courtyard_mm'])) for h in partition_data['connectors'] if h['board']=='JR' and h['side']==side)
+def axis_gap(a,b):
+ return max(b[0]-a[2],a[0]-b[2],b[1]-a[3],a[1]-b[3])
 source_box=part['courtyard_mm'];cases=[]
-# Use the exact source JL outline with the floorplan generator's .30mm inset.
+# Use the exact source JR outline with the floorplan generator's .30mm inset.
 for ix in range(-20,21):
  for iy in range(-20,21):
   if not(ix or iy):continue
@@ -35,7 +38,7 @@ for ix in range(-20,21):
   courtyard=box(*b)
   if not inside.covers(courtyard):
    cases.append({'delta_mm':[dx,dy],'courtyard_conflict':'SOURCE_BOARD_EDGE'});continue
-  block=next((ref for ref,other in others if courtyard.distance(other)<.35-1e-8),None)
+  block=next((ref for ref,other in others if axis_gap(courtyard.bounds,other.bounds)<.35-1e-8),None)
   item={'delta_mm':[dx,dy],'courtyard_conflict':block}
   if block:cases.append(item);continue
   conflicts=[]
@@ -48,5 +51,5 @@ for ix in range(-20,21):
   bridge=LineString([(x,y),(x+dx,y+dy)]).buffer(.1)
   item['signal_bridge_conflict']=conflict(bridge,signal['net'])
   item['static_candidate']=not conflicts and not item['signal_bridge_conflict'];cases.append(item)
-out={'status':'READ-ONLY STATIC SCREEN; NO PLACEMENT CHANGED; NATIVE NOT RUN','board_sha256':d['board_sha256'],'dump_sha256':hashlib.sha256(p.read_bytes()).hexdigest(),'floorplan_sha256':hashlib.sha256(floor.read_bytes()).hexdigest(),'part':part,'source_outline':outline,'source_partition_sha256':hashlib.sha256(partition.read_bytes()).hexdigest(),'scope':ref+' only, translations in 0.1mm increments within +/-2.0mm, unchanged orientation/side, no cuts, full .2mm signal bridge, .25mm copper/.35mm courtyard screening. Exact zones, native clearance, source regeneration and all original topology/warning gates remain mandatory.','cases':cases,'static_candidates':[c for c in cases if c.get('static_candidate')]}
+out={'status':'READ-ONLY STATIC SCREEN; NO PLACEMENT CHANGED; NATIVE NOT RUN','board_sha256':d['board_sha256'],'dump_sha256':hashlib.sha256(p.read_bytes()).hexdigest(),'floorplan_sha256':hashlib.sha256(floor.read_bytes()).hexdigest(),'part':part,'source_outline':outline,'source_partition_sha256':hashlib.sha256(partition.read_bytes()).hexdigest(),'scope':ref+' only, translations in 0.1mm increments within +/-2.0mm, unchanged orientation/side, no cuts, full .2mm signal bridge, .25mm copper/.35mm axis-aligned component AND connector courtyard screening (reserves .05mm native expansion on each envelope). Native THT courtyard checks remain mandatory. Exact zones, native clearance, source regeneration and all original topology/warning gates remain mandatory.','cases':cases,'static_candidates':[c for c in cases if c.get('static_candidate')]}
 (HERE/'result.json').write_text(json.dumps(out,indent=2)+'\n');print('cases',len(cases),'courtyard clear',sum(not c['courtyard_conflict'] for c in cases),'static candidates',len(out['static_candidates']))

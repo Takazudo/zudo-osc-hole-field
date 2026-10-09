@@ -20,7 +20,7 @@ class RoutingTranslationTests(unittest.TestCase):
 
     def run_change(self, changes=None):
         return apply_translations(self.rows, self.source, dict(schema_version=1,
-                                  translations=[self.change] if changes is None else changes))
+                                  translations=[self.change] if changes is None else changes), headers=[])
 
     def test_empty_and_translation_preserve_all_unaffected_source(self):
         original = copy.deepcopy(self.rows)
@@ -77,7 +77,27 @@ class RoutingTranslationTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, 'fields'):
             self.run_change()
 
-    def test_actual_rb4413_reviewed_translation_changes_only_one_part(self):
+    def test_connector_margin_and_face_scope(self):
+        header = dict(id='H1', board='JR', side='B.Cu', land_courtyard_mm=[4., 6.1, 6., 7.])
+        adjustments = dict(schema_version=1, translations=[self.change])
+        with self.assertRaisesRegex(ValueError, 'connector.*H1'):
+            apply_translations(self.rows, self.source, adjustments, headers=[header])
+        header['side'] = 'F.Cu'
+        self.assertEqual(apply_translations(self.rows, self.source, adjustments, headers=[header]), self.run_change())
+        header['side'] = 'B.Cu'
+        header['land_courtyard_mm'] = [4., 6.2, 6., 7.]
+        self.assertEqual(apply_translations(self.rows, self.source, adjustments, headers=[header]), self.run_change())
+
+    def test_actual_rb4413_connector_conflict_rejected(self):
+        root = Path(__file__).resolve().parents[2]
+        rows = json.loads((root/'design/partition/floorplan-candidate.json').read_text())['placements']
+        source = json.loads((root/'design/partition/partition-input.json').read_text())
+        changes = json.loads((root/'circuit/routing/issue189/jr-rb4413-edge-bridge/pending-source-translation.json').read_text())
+        headers = json.loads((root/'design/partition/connector-packing-candidate.json').read_text())['headers']
+        with self.assertRaisesRegex(ValueError, 'connector.*JR-K-6-JR'):
+            apply_translations(rows, source, changes, headers=headers)
+
+    def test_component_only_translation_does_not_certify_connector_clearance(self):
         root = Path(__file__).resolve().parents[2]
         rows = json.loads((root/'design/partition/floorplan-candidate.json').read_text())['placements']
         source = json.loads((root/'design/partition/partition-input.json').read_text())
@@ -85,7 +105,7 @@ class RoutingTranslationTests(unittest.TestCase):
         original = copy.deepcopy(rows)
         index = next(i for i, p in enumerate(original) if p['ref'] == 'RB4413')
         original[index] = changes['translations'][0]['expected_source']
-        result = apply_translations(original, source, changes)
+        result = apply_translations(original, source, changes, headers=[])
         self.assertEqual([a['ref'] for a, b in zip(original, result) if a != b], ['RB4413'])
         active = json.loads((root/'design/partition/routing-placement-translations.json').read_text())
         translated = any(row['ref'] == 'RB4413' for row in active['translations'])

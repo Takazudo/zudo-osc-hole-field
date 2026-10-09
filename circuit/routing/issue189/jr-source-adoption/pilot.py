@@ -98,6 +98,12 @@ def main():
     try:
         if READ(adjustment) != dict(schema_version=1, translations=[]):
             raise ValueError('source translation input is not the reviewed empty baseline')
+        changes = READ(PILOT / 'pending-source-translation.json')
+        changes['translations'][0]['evidence'] = 'circuit/routing/issue189/jr-rb4413-edge-bridge/native-result.json; circuit/routing/issue189/jr-source-adoption native source/copper receipts required'
+        expected_rows = apply_translations(old_rows, READ(ROOT / 'design/partition/partition-input.json'), changes,
+            headers=READ(ROOT / 'design/partition/connector-packing-candidate.json')['headers'])
+        expected_part = next(p for p in expected_rows if p['ref'] == REF)
+        new_origin = f"{expected_part['x_mm']},{expected_part['y_mm']}"
         driver.run('python3', str(PILOT / 'pilot.py'))
         original_pilot = READ(ROOT / '.circuit-cache/issue189-rb4413-move/result.json')
         if not (original_pilot['gate']['adopted'] and original_pilot['fresh_gate']['adopted'] and original_pilot['fresh_agreement']):
@@ -111,11 +117,6 @@ def main():
         if before_drc.get('kicad_version') != '10.0.6':
             raise ValueError('baseline native version differs from pinned oracle')
         receipt['native_version'] = before_drc['kicad_version']
-        changes = READ(PILOT / 'pending-source-translation.json')
-        changes['translations'][0]['evidence'] = 'circuit/routing/issue189/jr-rb4413-edge-bridge/native-result.json; circuit/routing/issue189/jr-source-adoption native source/copper receipts required'
-        expected_rows = apply_translations(old_rows, READ(ROOT / 'design/partition/partition-input.json'), changes)
-        expected_part = next(p for p in expected_rows if p['ref'] == REF)
-        new_origin = f"{expected_part['x_mm']},{expected_part['y_mm']}"
         adjustment.write_text(json.dumps(changes, indent=2) + '\n')
 
         def regenerate():

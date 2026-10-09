@@ -1,4 +1,30 @@
-# JR133 source-regeneration pilot
+# JR133 source-regeneration pilot — rejected
+
+Run37999678014 (acabdda6118fde6623defe811a0493ba3eeef830) reproduced the
+reviewed native133-edge board, but partition regeneration failed: native
+courtyard clearance J900069/RB4413 was0.06mm against the unchanged0.25mm requirement.
+Artifact11649741925 SHA256 d22721f7545bf34ef439805c6dbe61d8e78f1368b21478e7dc7051b2ff8acce7
+is verified. `rejected-receipt.json`, `rejected-worker-result.json`, and
+`rejected-source.patch` preserve the failure. **Do not apply the partial patch.**
+All canonical board hashes still match the worker inputs; no source/copper was
+adopted. Schematic regeneration, source sync and subsequent native repeats did
+not run. The earlier ordinary PCB DRC result did not certify source courtyard fit.
+
+The source translation helper now requires connector envelopes explicitly and
+uses the same conservative0.35mm drawn margin as component courtyards. The
+regression rejects the actual failed move. The pilot performs this preflight
+before expensive native replay. Native source geometry/THT checks remain mandatory.
+Do not rerun this unchanged pilot. The success reconciler is prepared only:
+its success path has not run and must reject this failed artifact.
+
+The new connector-aware screen preserves the old results separately in
+`../jr134-movable-ground/`. See `../jr134-movable-ground-connectors/summary.json`
+for identical-input comparison. RB4413's remaining horizontal translations both
+fail direct and plane raster routing; six comparisons including controls, zero
+complete transactions. Choose a changed placement/routing method next.
+
+## Original bounded protocol (historical; rejected input)
+
 
 Prepared on main d644b527 after PR213's exact803bba6 head passed all five checks
 in run37991181938 attempt2. **Native pilot NOT RUN yet; no source placement or
