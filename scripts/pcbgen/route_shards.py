@@ -9,7 +9,7 @@ whole nets whose new copper still fails, as a route_jack_grid.py stage does.
 Draft only: electrical and physical qualification remain NOT RUN.
 """
 from __future__ import annotations
-import argparse,collections,hashlib,json,re,shutil,sys
+import argparse,collections,hashlib,json,re,shutil,subprocess,sys
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[2]
 sys.path.insert(0,str(ROOT))
@@ -173,7 +173,7 @@ def merge_text(base_text,deltas,reverted=frozenset()):
     return ''.join(chunks)
 
 
-def merge(board_id,delta_paths,label,repair_ground=False):
+def merge(board_id,delta_paths,label,repair_ground=False,complete_native_warnings=False):
     """Apply every shard delta to the board, gate it natively, and promote it if open edges fall."""
     from scripts.pcbgen.route_jack_grid import PLANES,workspace,check,promotion_gate,connectivity_signature,split_pad_groups,stitched
     board=ROOT/'boards'/board_id/f'{board_id}.kicad_pcb';base_text=board.read_text()
@@ -242,6 +242,20 @@ def merge(board_id,delta_paths,label,repair_ground=False):
              'drc_warnings':sum(v['severity']=='warning' for v in drc['violations']),'parity':len(drc['schematic_parity']),
              'open_by_net_after':{n:len(g)-1 for n,g in after['islands'].items()}}
     receipt.update(promotion_gate(before,after,before_drc,drc))
+    if complete_native_warnings:
+        # Supplemental observations are opt-in and source-bound. Existing
+        # findings survive, and the same ordinary gate evaluates the result.
+        from scripts.pcbgen.complete_native_warnings import audit_current_reports
+        receipt['raw_promotion_gate']=promotion_gate(before,after,before_drc,drc)
+        evidence=workspace(board_id,'shards-complete-warnings')/'native-audits'
+        try:
+            complete_before,complete_after,proof=audit_current_reports(base,candidate,before_drc,drc,evidence)
+            receipt['complete_native_warning_evidence']=proof
+            receipt.update(promotion_gate(before,after,complete_before,complete_after))
+        except (ValueError,RuntimeError,OSError,subprocess.SubprocessError) as error:
+            receipt['adopted']=False
+            receipt['rejection_reason']='incomplete_native_warning_evidence'
+            receipt['native_warning_evidence_error']=str(error)
     if stitch_receipt and 'agnd_stitch' in stitch_receipt:receipt['agnd_stitch']=stitch_receipt['agnd_stitch']
     if receipt['native_errors']:receipt['status']='REJECTED: fresh native DRC/parity errors'
     receipt['independent_connectivity_agrees']=agreement
@@ -281,11 +295,12 @@ def main():
     m=sub.add_parser('merge',help='apply shard deltas to boards/<id>/<id>.kicad_pcb (KiCad via scripts/kicad/run.sh)')
     m.add_argument('board_id',choices=('osc-jack-left','osc-jack-right','osc-core'));m.add_argument('deltas',nargs='+');m.add_argument('--label',required=True)
     m.add_argument('--repair-ground',action='store_true',help='try existing AGND stitching before the complete membership gate')
+    m.add_argument('--complete-native-warnings',action='store_true',help='require source-bound complete native hole/silk evidence; unsupported scope rejects')
     a=p.parse_args()
     if a.cmd=='delta':
         out=delta(a.base.read_text(),a.final.read_text());a.output.write_text(json.dumps(out)+'\n')
         print(f"delta: {len(out['removed'])} removed, {len(out['added'])} added, {len(out['nets'])} nets")
-    else:merge(a.board_id,a.deltas,a.label,a.repair_ground)
+    else:merge(a.board_id,a.deltas,a.label,a.repair_ground,a.complete_native_warnings)
 
 
 if __name__=='__main__':main()

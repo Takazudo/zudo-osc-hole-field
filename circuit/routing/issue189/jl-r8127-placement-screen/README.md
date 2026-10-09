@@ -1,0 +1,3 @@
+# Bounded movable R8127 comparison
+
+Source marks R8127 as movable, B.Cu, outside bypass clusters. Exact JL119 native input is pinned. Of288 translations at0.1mm increments within±0.8mm, seven satisfy exact JL outline,0.35mm source-courtyard and0.25mm copper screens while allowing a full0.2mm additive signal landing bridge. Neither the unmoved control nor any of those seven movements yields a complete ground route at0.0125mm with300k expansions, by direct routing or In1 plane fanout. All existing copper remains fixed in both comparisons; no placement was changed and no native moved-board result is claimed. GuardPASS25s/29s. Do not submit bridge-only proposals or repeat unchanged scopes.

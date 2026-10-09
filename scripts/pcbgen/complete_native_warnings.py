@@ -12,6 +12,7 @@ import json
 import math
 from pathlib import Path
 import re
+import subprocess
 
 from scripts.pcbgen.audit_hole_pairs import possible_pairs
 from scripts.pcbgen.audit_added_mask import unchanged_nonrouting, new_silk_identities
@@ -130,3 +131,22 @@ def complete_reports(before_board, after_board, before_drc, after_drc, before_au
         before_hole_identities=len(old),after_hole_identities=len(new),new_hole_object_identities=[],
         new_silk_identities=[],before_source_sha256=sha(before_board),after_source_sha256=sha(after_board),
         audit_result_sha256=[sha(Path(p)/'result.json') for p in (before_audit,after_audit,mask_audit)])
+
+
+def audit_current_reports(before_board, after_board, before_drc, after_drc, output):
+    """Produce evidence for these exact native boards; never reuse stale audits."""
+    root=Path(__file__).resolve().parents[2]
+    output=Path(output)
+    output.mkdir(parents=True,exist_ok=False)
+    before_audit=output/'holes-before';after_audit=output/'holes-after';mask_audit=output/'silk'
+    # The pinned container mounts the checkout at /work, not the host path.
+    relative=lambda p:str(Path(p).resolve().relative_to(root))
+    commands=[['scripts/pcbgen/audit_hole_pairs.py',relative(before_board),relative(before_audit)],
+              ['scripts/pcbgen/audit_hole_pairs.py',relative(after_board),relative(after_audit)],
+              ['scripts/pcbgen/audit_added_mask.py',relative(before_board),relative(after_board),relative(mask_audit)]]
+    for command in commands:
+        subprocess.run(['bash','scripts/kicad/run.sh','python3',*command],cwd=root,check=True)
+    result=complete_reports(before_board,after_board,before_drc,after_drc,before_audit,after_audit,mask_audit)
+    for name,value in zip(('complete-before-drc','complete-after-drc','proof'),result):
+        (output/(name+'.json')).write_text(json.dumps(value,indent=2)+'\n')
+    return result

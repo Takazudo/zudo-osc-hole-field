@@ -4,7 +4,7 @@ from pathlib import Path
 sys.path.insert(0,str(Path.cwd()))
 from scripts.pcbgen.complete_native_warnings import complete_reports
 from scripts.pcbgen.route_jack_grid import promotion_gate,connectivity_signature
-native=Path('.circuit-cache/issue189-downloaded/core-finer-ground-batch/.circuit-cache');holes=Path('.circuit-cache/issue189-downloaded/native-hole-audit');masks=Path('.circuit-cache/issue189-downloaded/native-silk-audit');out=Path(__file__).parent
+native=Path('.circuit-cache/issue189-downloaded/core-finer-ground-batch/.circuit-cache');holes=Path('.circuit-cache/issue189-downloaded/native-hole-context');masks=Path('.circuit-cache/issue189-downloaded/native-silk-audit');out=Path(__file__).parent
 before=native/'osc-core-grid-shards-start';after=native/'osc-core-grid-shards-merge';fresh=native/'osc-core-grid-shards-fresh'
 read=lambda p:json.loads(p.read_text())
 a,b=read(before/'dump.json'),read(after/'dump.json');bd,ad=read(before/'drc.json'),read(after/'drc.json')
