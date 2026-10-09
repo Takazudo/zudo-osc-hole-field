@@ -27,7 +27,7 @@ on:
       jl_replay:
         description: Fixed reviewed JL transaction (used only with replay_jl)
         type: choice
-        options: [rail-leaf, corridor, paired-corridors, ground-junction, rail-finer, d2326, u106-outer, u2119-outer, u2119-via-avoid, u2119-ground-corridor]
+        options: [rail-leaf, corridor, paired-corridors, ground-junction, rail-finer, d2326, u106-outer, u2119-outer, u2119-via-avoid, u2119-ground-corridor, c8143-fanout]
         default: rail-leaf
       recover_core:
         description: Replay the preserved core aggregate and repair split AGND before the full native gate
@@ -164,7 +164,7 @@ jobs:
           elif [[ $JL_REPLAY == rail-finer ]]; then
             replay=circuit/routing/issue189/jl-rail-finer-copper.json
             label=issue189-rail-finer
-          elif [[ $JL_REPLAY == u106-outer || $JL_REPLAY == u2119-outer || $JL_REPLAY == u2119-via-avoid || $JL_REPLAY == u2119-ground-corridor ]]; then
+          elif [[ $JL_REPLAY == u106-outer || $JL_REPLAY == u2119-outer || $JL_REPLAY == u2119-via-avoid || $JL_REPLAY == u2119-ground-corridor || $JL_REPLAY == c8143-fanout ]]; then
             python "circuit/routing/issue189/jl-$JL_REPLAY/prepare.py"
             replay=".circuit-cache/issue189-jl-$JL_REPLAY/copper.json"
             label="issue189-$JL_REPLAY"
