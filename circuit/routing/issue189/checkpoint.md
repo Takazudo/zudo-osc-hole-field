@@ -6,6 +6,10 @@ Updated 2026-10-09 18:35 UTC. **Issue #189 remains OPEN.** Accepted draft boards
 
 At18:38UTC source review found that native silk DRC also tests outer copper zone fills. The candidate changes those fills; added-via fixtures do not cover this scope. The earlier reassessment is provisional, **not eligible for adoption**. Validator now rejects changed silk-relevant zone blocks and a regression passes. `native-hole-audit/reassessment.json` records the block; earlier result retained as explicitly provisional. Native zone evidence is still required. Do not dispatch ground adoption until the scope is complete; core19 remains sole writer and canonical core1441 unchanged.
 
+## Blocking scope correction — supersedes eligibility statements below
+
+At18:38UTC source review found that native silk DRC also tests outer copper zone fills. The candidate changes those fills; added-via fixtures do not cover this scope. The earlier reassessment is provisional, **not eligible for adoption**. Validator now rejects changed silk-relevant zone blocks and a regression passes. `native-hole-audit/reassessment.json` records the block; earlier result retained as explicitly provisional. Native zone evidence is still required. Do not dispatch ground adoption until the scope is complete; core19 remains sole writer and canonical core1441 unchanged.
+
 ## Current work and accepted evidence
 
 PR209 is draft at `2c3afdedf9e999ef0b091db74805d10fc5687d44`, base main. CI37972341588 must be checked at that exact head; earlier e736 checks do not cover the context fix. PR210 is draft at `f2a5a025dc31bbc1f5ada2f6def486abc49db717`, stacked on209, CI37973580281. Current continuation branch is `agent-fix/189-finer-jack-continuation`. PR208 merged at4db1d3c only after all five exact-head checks; all five post-merge checks passed (`ci-main-4db1d3c.json`). Preserve branches and other sessions.
