@@ -14,10 +14,10 @@ zero copper,129.347741s,heavy guard PASS. Native NOT RUN for this empty proposal
 It uses original34955input and must not override an eventual accepted core result.
 
 Continuation:
-1. gh run view37898486489 (insert space before run ID): PR195 exact head76ed56b
+1. `gh run view 37898486489`: PR195 exact head76ed56b
    must have all five required checks successful before the authorized normal merge.
    Retain branch. Then retarget PR196 to main and merge origin/main into this branch.
-2. gh run view37895925149: sole core writer on agent-fix/189-core-filtered,
+2. `gh run view 37895925149`: sole core writer on agent-fix/189-core-filtered,
    source0e6697df2bde94e3b3397da9ae0727bcdf4de464. Inspect adopted receipt, full native
    groups/warnings/DRC/parity and fresh/cache equivalence; download and verify artifact
    digest. Fetch any bot commit and preserve accepted copper when reconciling.
