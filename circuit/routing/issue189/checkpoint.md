@@ -1,10 +1,42 @@
 # Issue 189 resumable implementation checkpoint
 
-**Incomplete, unvalidated draft. Keep #189 open.** No fabrication, release,
-merge, or physical/electrical qualification. Snapshot: 2026-10-08 20:00 UTC.
-Branch `agent-fix/189-obstacle-transactions`, draft PR #190. Last published head
-before this checkpoint: `5932578181ca9fa88991ae5067d6ec1ac6ed6f86`.
-Main remains `1fe06ad50248d6434876fbf2bd6e32e1bfbb13bb`.
+**Incomplete, unvalidated draft. Keep #189 open.** Snapshot:2026-10-09 03:17 UTC.
+PR#190 merged normally at `da615cc059e56709c47c38a9af7ab175d55ca2c0` after all
+five checks passed on `489c7d18af5be3d1ebef5f8ca901136bd9bce029` (run37877192529).
+The user explicitly authorized incremental merging during development. No release,
+deployment, fabrication or hardware qualification. Main was refreshed to that merge;
+continuation branch is `agent-fix/189-routing-followup`.
+
+## Active continuation after incremental merge
+
+- Core reviewed replay37872907194 is still the sole core writer on retained branch
+  `agent-fix/189-obstacle-transactions`. Do not delete that branch, overwrite its
+  results, or dispatch another core writer. Inspect its terminal receipt/artifact,
+  then bring any eligible result into a follow-up PR through normal checks.
+- Main-push CI37878383977 is running and includes post-merge aggregate regeneration.
+- JL coupled pilot37877201397 finished but was rejected:139→140. Its target improved
+  by one while -12V5→6 and AGND23→24. Newly detached supply pads:
+  U2102.4/U2117.11/C2148.1/C2118.1; ground pad:C2148.2. Zero native errors/parity and
+  no new warnings. Original supply membership was not restored by plane fanout.
+- A changed-method direct rail-link raster probe on that exact saved JL candidate
+  found two paths/20 objects at the existing0.4mm width and0.25mm clearance, including
+  the newly detached supply group. Four other original supply groups remain no-path.
+  This is NOT native acceptance. The revised JL plan selects existing `rail-links`
+  instead of repeating `rail-fanout`; all original-baseline acceptance gates remain.
+- Canonical counts remain JL139/JR162/core1509 complete experimental edges. The
+  committed core DRC report still has499 capped records. No new candidate adopted.
+
+The read-only next command, once this continuation branch is pushed, is:
+
+```sh
+gh workflow run 378789207 --ref agent-fix/189-routing-followup \
+  -f board=osc-jack-left -f local_repair=true -f local_mode=coupled
+```
+
+Check existing runs before dispatch; do not duplicate an active pilot. Exact
+rejected results, verified artifact digests and probe scripts are retained beside
+this checkpoint. See `return-repair-probes.md`. The sections below retain history;
+the current merge/branch and terminal statuses above supersede older pending text.
 
 ## Current execution — 2026-10-09 03:00 UTC
 

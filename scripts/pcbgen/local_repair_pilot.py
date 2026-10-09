@@ -15,6 +15,9 @@ def coupled_candidate(board_id,base,before,plan,definition):
     This disposable transaction does not weaken the ordinary router's fill
     guard. Its intermediate signal topology is never eligible for promotion.
     """
+    rail_method=plan.get('rail_method','rail-fanout')
+    if rail_method not in ('rail-fanout','rail-links'):
+        raise ValueError('unsupported coupled rail method')
     proposal=ROOT/plan['signal_proposal']
     if hashlib.sha256(proposal.read_bytes()).hexdigest()!=plan['signal_proposal_sha256']:
         raise ValueError('coupled proposal changed')
@@ -31,8 +34,9 @@ def coupled_candidate(board_id,base,before,plan,definition):
     prior_minus=len(before['islands'].get('-12V',[None]))-1
     needs_rail=any(s['net']=='-12V' for s in splits) or len(after['islands'].get('-12V',[None]))-1>prior_minus
     if needs_rail:
-        rail={**next(s for s in driver.STAGES if s['name']=='rail-fanout'),
-              'name':plan['name']+'-rail','nets':['-12V'],'planes':{'-12V':'In3.Cu'},'res':.05,'window_mm':6}
+        rail={**next(s for s in driver.STAGES if s['name']==rail_method),
+              'name':plan['name']+'-rail','nets':['-12V'],'res':.05,'window_mm':6}
+        if rail_method=='rail-fanout':rail['planes']={'-12V':'In3.Cu'}
         restored,receipt=driver.run_stage(board_id,candidate,rail,definition,print)
         phases['rail']=receipt
         if restored is None:raise driver.StageRejected('bounded -12V restoration failed')
