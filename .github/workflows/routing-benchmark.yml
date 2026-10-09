@@ -36,7 +36,7 @@ on:
       core_replay:
         description: Reviewed recovery transaction (used only with recover_core)
         type: choice
-        options: [aggregate, reviewed, outer, ground-link]
+        options: [aggregate, reviewed, outer, outer-filtered, ground-link]
         default: aggregate
       local_repair:
         description: Read-only jack local branch-repair pilot (no canonical writer)
@@ -195,6 +195,10 @@ jobs:
             python circuit/routing/issue189/core-ground-link/prepare.py
             replay=.circuit-cache/issue189-core-ground-link/copper.json
             label=issue189-ground-link
+            extra=()
+          elif [[ $CORE_REPLAY == outer-filtered ]]; then
+            replay=circuit/routing/issue189/core-outer-filtered/copper.json
+            label=issue189-outer-filtered
             extra=()
           elif [[ $CORE_REPLAY == aggregate ]]; then
             replay=circuit/routing/issue189/concurrent-core/aggregate-copper.json

@@ -1,3 +1,33 @@
+# Current checkpoint — 2026-10-09 06:53 UTC
+
+Core outer run37881591885 is finished and REJECTED1509→1430. Native DRC/parity0/0,
+no new warnings, independent fresh agreement; all132953 originals retained with
+317new outer segments. Two original AGND groups split:1928→1922+3+2+1 and9→5+4.
+Native-reverted netX6971D913D0096F4F900D is absent from the retained replay.
+Receipt-only bot11520126bc8c2ef589ca0ee374c05ed165621601 is preserved via cherry-pick
+56be690. Canonical core SHA34955... and1509 unchanged. Artifact11599719955 verified.
+
+Next core candidate excludes six complete new net transactions within8mm of the
+four detached branches, retaining56nets/216outersegments,zero original removals,
+zero vias/inner tracks. This is a bounded attribution hypothesis, not proof of
+causality or acceptance. core-outer-filtered/prepare.py pins native donor/canonical
+hashes, records nearest-net distances and original full multiset retention.
+Dispatch one recover_core=true/core_replay=outer-filtered writer on a new isolated
+agent-fix/189-core-filtered branch at this reviewed source; old core writer is terminal.
+Full native original membership/warning/fresh/cache gates remain unchanged.
+
+JR U7509 tail pilot37893521710 is NATIVE ELIGIBLE155→154. Candidate
+7c9bc0e97f79573fb32d0e8212edc53d4be76d575f5980605ab3f7bf8483d2a3, replay
+ba52b79a56f890f5149788e7226e7a2273098ef5f2be0dad93baddde2c724973.
+All original pad groups/returns preserved,no new warnings,DRC/parity0/0,fresh agrees.
+Artifact11599459103 verified. JR ground canonical writer37894363972 is now running;
+wait for its accepted bot output, then source-check/rebind this disjoint signal
+transaction onto the accepted input before another canonical replay. Never replace
+accepted ground copper with the old155 board. JL junction pilot37894907581 still
+running; no new JL acceptance yet. Main remains135/155/1509 and issue189 OPEN.
+
+## Earlier checkpoint history (superseded above)
+
 # Current checkpoint — 2026-10-09 06:42 UTC
 
 JR canonical ground replay37894363972 is queued on
