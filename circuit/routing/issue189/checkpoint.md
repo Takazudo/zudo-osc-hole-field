@@ -1,3 +1,38 @@
+# Current checkpoint — 2026-10-09 04:10 UTC
+
+PR#192 branch agent-fix/189-isolated-rail-replay. PR#190 merged da615cc and#191
+merged1beddde after all five checks passed; both post-merge CI runs passed.
+Actual executor shell/GitHub/artifact/guarded-routing calls work after disconnect callback.
+
+JL canonical replay37881515385 adopted139→138 at f154db5af24636296b0a4af46308647f5e4eceda.
+One added segment, no removals, all32784 existing physical objects retained.
+Native DRC/parity0/0,477 existing warnings, no new warning identities or split
+pad groups, fresh-copy connectivity agrees. Final board SHA
+f9eff29fc92c4533ab518ebdc6dbc2ead2a53e5d0f03f2eb5891814608bfa65e.
+Subsequent0.075mm additive search found0paths/108failures, no changes.
+
+JR13-path pilot37881842517 rejected for original -12V membership change. Exact
+terminal receipt retained; raw candidate dump was omitted by old artifact glob,
+now corrected. Counts after the rejected batch are unknown. Canonical stays162.
+Next read-only plan isolates only U4647.13:23 segments/one via/no removals.
+
+Core outer-only native replay37881591885 remains active:63complete net transactions,
+333outer-layer segments, zero removals/vias. Do not duplicate writer or infer success.
+Core canonical remains1509 complete experimental edges (committed DRC499 is capped).
+Previous reviewed replay37872907194 finished rejected1509→1400, three AGND groups
+split, zero DRC/parity errors. Its original branch and receipts are retained.
+
+Check active runs first. Next JR dispatch, if not already running:
+```sh
+gh workflow run 378789207 --ref agent-fix/189-isolated-rail-replay \
+  -f board=osc-jack-right -f local_repair=true -f local_mode=coupled
+```
+Await terminal native receipts, then promote only eligible replay through unchanged
+full native merger gates. Follow exact current PR head through required CI before
+normal incremental merge; retain branches and keep#189open. No fabrication/qualification.
+
+## Earlier checkpoint history (superseded above)
+
 # Issue 189 resumable implementation checkpoint
 
 Snapshot 2026-10-09 03:57 UTC. Incomplete; keep #189 open. Current branch
