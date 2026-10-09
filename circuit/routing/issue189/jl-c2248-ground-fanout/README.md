@@ -1,0 +1,1 @@
+Bounded raster experiment on the native cut dump. All saved variants failed to produce a complete ground-plus-victim transaction. No partial proposal was submitted or adopted. The original native memberships, physical rules and accepted board remain authoritative. Do not repeat these configurations unchanged; this is bounded search evidence, not proof of physical impossibility.

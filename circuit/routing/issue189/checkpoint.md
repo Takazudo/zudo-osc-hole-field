@@ -16,7 +16,7 @@ All accepted boards have zero native DRC/parity errors, no new warning identitie
 | JL |37953994482|`agent-fix/189-jl-c2248-ground-worker`|`ab36b23ae2afbf371a72ff9990a5f353293a94df`|
 | JR |37953998528|`agent-fix/189-jr-r7609-ground-worker`|`ab36b23ae2afbf371a72ff9990a5f353293a94df`|
 
-All three were in progress at this checkpoint. The core run is the sole core writer:38 ground groups/382objects/38vias/zero cuts, full0.3mm AGND tracks. Jack runs are disposable cut/restoration pilots, not canonical writers. Each selects three unchanged original signal segments on one victim net, F/B restoration,300000 cap. Neither cuts PR207's new copper. Do not dispatch overlapping trials or change pinned worker branches.
+The core run remains in progress. Both jack runs are now terminal/rejected; their exact artifacts and retained-object proofs are saved. The core run is the sole core writer:38 ground groups/382objects/38vias/zero cuts, full0.3mm AGND tracks. Jack runs are disposable cut/restoration pilots, not canonical writers. Each selects three unchanged original signal segments on one victim net, F/B restoration,300000 cap. Neither cuts PR207's new copper. Do not dispatch overlapping trials or change pinned worker branches.
 
 ## Exact next actions
 
@@ -92,3 +92,14 @@ The saved94-case/120-segment supply heuristic has one static conflict with pendi
 
 
 The supply successor now has a guarded `rebase_proposal.py`, native `prepare.py` and workflow replay choice `supply-away-from-splits`. It requires the actual accepted SHA, retains all original full blocks, and permits only exact whole known ground382 and/or short-signal19 additions. It drops whole unaccepted supply cases that conflict with accepted additions and records exclusions. Five regression tests pass; workflow YAML/all12shell steps pass syntax checks. Actual rebase, native serialization and acceptance are NOT RUN. See its README for commands. The19-segment signal trial remains the immediate core successor after current reconciliation.
+
+
+## C2248/R7609 terminal controls and alternate scopes
+
+JL37953994482 rejected120→120: AGND17→16after cut→17after restoration,10adds/3cuts,all33291uncut objects identical,0DRC/parity,477unchanged warnings,no original splits,fresh agrees. Candidatea9d3abdb77cd78fe21b1facaf1be1353b5cbe67a25e420794bd5d1a8eb6a1984; replay243b810ad831be18b935a794869d0faced708e2beb42895059fcdbe3f69691db. Artifact11628245582 ZIP11209263dd7578c5167d4bfab56224f5559cf8fafcb915038c5a2257befe5701. Saved under jl120-c2248-2-ground-cut/.
+
+JR37953998528 rejected136→136: AGND25→24→25,12adds/3cuts,all51060uncut objects identical,0DRC/parity,520unchanged warnings,no original splits,fresh agrees. Candidate4f8819718a91544d53a17962ad748d85a6b89a63b349abc0523c2bb41bff4fb0; replay1d2f270a9233d5d5e7225f533e34d6ed5a8c42d8c1cfb20d77335b7c62e21101. Artifact11627612924 ZIP8f1fd70bbd4a1688902391d683790a827ea1fa2cb1bc678edde7dc234bc4f7e6. Saved under jr136-r7609-2-ground-cut/.
+
+Both scopes then failed complete bounded joint routing on F/B and F/In2/B at0.025mm, a finer0.0125mm access comparison, and explicit ground-to-In1 fanout at0.025/0.0125mm. All local searches completed under heavy guard; no partial proposal was submitted. Stop those unchanged configurations. The endpoint search exhausts well below300000, so raising caps is not justified.
+
+New distinct native cut/restoration scopes target JL U1518.10 (four original segments/two victim nets,16.25x13.1325mm) and JR R4207.2 (four segments/one victim,14.4x13.96mm). Source preparation verifies exact selected geometry against accepted JL120/JR136, target disconnection, finite bounds and existing repair limits; it does not cut newly accepted PR207 copper. Plans are in jl120-u1518-10-ground-cut/ and jr136-r4207-2-ground-cut/. These are new disposable native trials, not accepted gains.
