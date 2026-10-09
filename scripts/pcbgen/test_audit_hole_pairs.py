@@ -3,9 +3,17 @@ import random
 import unittest
 from scripts.pcbgen.audit_hole_pairs import possible_pairs, pack_pairs
 from scripts.pcbgen.compare_hole_audits import compare
+from scripts.pcbgen.audit_added_mask import unchanged_nonrouting
 
 
 class HoleCoverageTests(unittest.TestCase):
+    def test_added_mask_scope_rejects_changed_artwork_or_removed_copper(self):
+        before='(kicad_pcb (footprint "U1" (fp_text "unchanged")) (via (at 1 2)))'
+        after=before[:-1]+' (via (at 3 4)))'
+        self.assertEqual(unchanged_nonrouting(before,after),1)
+        with self.assertRaises(ValueError):unchanged_nonrouting(before,after.replace('unchanged','moved'))
+        with self.assertRaises(ValueError):unchanged_nonrouting(before,after.replace('(via (at 1 2))',''))
+
     def test_spatial_cover_matches_all_pairs_with_negative_coordinates_and_large_drills(self):
         rng = random.Random(189)
         holes = [dict(xy=[rng.randrange(-5000000,5000000) for _ in range(2)],
