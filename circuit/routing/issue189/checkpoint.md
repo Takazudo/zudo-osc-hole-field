@@ -90,3 +90,11 @@ JL37940189931 is now terminal/rejected for no strict improvement:121→121,0DRC/
 All252core ground groups have now been screened at0.0125mm, without skipped frames:39positive groups/394objects. Pair-spacing selection excludes one0.025mm via conflict, retaining38groups/382objects/38vias. The saved batch and dynamic rebase helper are updated, but NOT rebased/dispatched while core26 remains active. Original .025/.0125 first24 comparison remains identical-input evidence; later groups have no speedup claim.
 
 JR37940194109 is terminal; its artifact11622010297 (ZIPa40c3cb959ab9c67286dfe612b25b36fdef0aa000a52a382f41b9940acaefd3e) is downloaded/verified. Receipt says137→137,0DRC/parity,520unchanged warnings,no original splits,not adopted. Finish retention/topology reconciliation before a next JR trial.
+
+## Next native trial sources after afc0edb
+
+JL joint trial37942916185 is active on `agent-fix/189-jl-u2204-joint-worker`, exact source `afc0edb05e980739b52f9275a360cc75f3cd36d8`. It is read-only;51objects/3vias/1reviewedcut,explicit ground plus signal,F/B only. The previous JL outer control remains rejected.
+
+JR37940194109 is fully reconciled/rejected137→137:14adds/2cuts,all51024uncut objects identical,0DRC/parity,520unchanged warnings,no splits,fresh agrees. Cut AGND26→25returned26after signal restoration; victim1→2→1. Candidate6861070eb3d554c0f25e7dce6075d0df4c8085ecba14c9da80a59b7e93467b06; replayb67a21c204a25f0f8585fba7dab690a92d6893658da05dd50a8b7ef3031c4112. JR joint F/B candidate now pins36objects/1via/2cuts after reserving explicit ground and restoring only the two native parts of the original cut component. Full original memberships remain the native acceptance baseline. Native NOT RUN at this commit.
+
+Core38-group saved batch has exactly one proposal/proposal conflict with pendingcore26: J900237.2,−0.3375mm. If that exact core26 stage is accepted, explicitly exclude this entire unaccepted group with `select_candidates.py --exclude-pad J900237.2`, then rebase against the actual accepted hash and inspect proof. If it rejects, keep38groups. No exclusion/rebase has been applied while pending.
