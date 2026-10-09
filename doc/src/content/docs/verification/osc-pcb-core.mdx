@@ -78,9 +78,8 @@ The earlier field-solver ground/current extraction is parked and is not a routin
 
 ## Issue #189 implementation checkpoint
 
-[Draft PR #190](https://github.com/Takazudo/zudo-osc-hole-field/pull/190) preserves
-the canonical 1,509-edge core while its identical-input obstacle comparison runs
-in [37824207235](https://github.com/Takazudo/zudo-osc-hole-field/actions/runs/37824207235).
+[Merged PR #190](https://github.com/Takazudo/zudo-osc-hole-field/pull/190) preserves
+the canonical 1,509-edge core after its identical-input obstacle comparison in [37824207235](https://github.com/Takazudo/zudo-osc-hole-field/actions/runs/37824207235).
 No unfinished job result is counted as progress.
 
 The separate eight-shard run 37775496177 reached a reported 1,400 edges but worsened
@@ -104,6 +103,13 @@ dangling-via warning identities. It was not adopted. Canonical core remains 1,50
 
 A source-defined local replay now omits ten suspected ground-splitting net
 changes and repairs the overlapping signal-via cluster without changing layer or
-electrical constraints. Its native acceptance is pending. Full CI passed on
-`7ca5bed`; source proposals and exact failed receipts are retained in the #189
-checkpoint. These are unvalidated drafts, not hardware qualification.
+electrical constraints. Native replay 37872907194 finished at 1,400 but was rejected: three original
+AGND groups split into four extra pieces. Errors/parity were 0/0 and fresh
+connectivity agreed. Newly reported hole-warning identities involved unchanged
+original geometry; KiCad 10.0.6 caps each warning code at 199 records, so inventory
+changes require investigation and are not waived. Exact evidence is retained in
+`circuit/routing/issue189/core-reviewed/native-result-diagnosis.json`.
+
+A new native replay 37881591885 selects 63 complete net transactions, 333 outer-layer
+segments and zero removals or new vias. Its acceptance is pending; canonical core
+remains 1,509. Source and exact native receipts remain in the #189 checkpoint. These are unvalidated drafts, not hardware qualification.
