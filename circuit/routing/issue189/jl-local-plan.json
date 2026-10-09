@@ -1,25 +1,26 @@
 {
   "board": "osc-jack-left",
-  "input_board_sha256": "54b4c9718f652dfdc98b4dab615845962dc8e3025f51a76541a50e0ba3d579d9",
-  "scope": "Disposable U106.12 nearest-component repair: three exact local signal segments on two victim nets. All full native memberships, original-baseline gates and victim restoration required; no canonical promotion.",
+  "input_board_sha256": "95d10f2b21ee75831b370a97c2035e209ae296d0dfb2ec74f5bed610133d5070",
+  "scope": "Disposable U2204 ground repair: one exact7.35mm B.Cu segment on X1350D6DDB5A475CC1BA8,19.35x12.955mm search frame,300000-expansion cap. Raster-only ground14-object path is not a valid complete transaction. Native cut topology must reconnect the victim and preserve every original pad group; no canonical promotion by pilot.",
   "stage": {
-    "name": "189-jl126-u106-pair-cut",
-    "repair": true,
     "repair_targets": [
-      "XE696508C2D9B11400F0C"
+      "AGND"
+    ],
+    "repair_ground_pad_uuids": [
+      "c4cfb0c6-28d9-5d14-9f92-759291cc0dee"
     ],
     "repair_source_uuids": [
-      "41029fa4-d64d-551e-9c7a-74ca518743b5",
-      "b9103000-e591-5bd2-8e04-b6be838a6747",
-      "ee3e3926-713a-5c94-8bf2-4892ab8edfb1"
+      "2d8eecb6-988e-5775-92cf-6c381fdf744d"
     ],
     "repair_bounds_mm": [
-      197.226065,
-      182.696066,
-      212.313933,
-      197.993934
+      207.5,
+      127.15,
+      226.85,
+      140.105
     ],
-    "clearance": 0.2,
+    "name": "189-jl121-u2204-ground-cut",
+    "repair": true,
+    "clearance": 0.25,
     "signal_width": 0.2,
     "signal_via_diameter": 0.6,
     "grow": {
@@ -29,7 +30,6 @@
       "AGND": 0.05
     },
     "res": 0.025,
-    "window_mm": 6,
-    "repair_search_weight": 2.5
+    "window_mm": 6
   }
 }
