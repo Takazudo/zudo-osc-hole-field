@@ -1,3 +1,19 @@
+# Additive JL U106 alternative — 2026-10-09 10:31 UTC
+
+Saved native126input,identical15mm frame,0.025mm raster,weight2.5 and300000
+expansions/window: disallowingIn2produced a71-object outer-layer path withZERO
+cuts. F/In3/B and F/B both produce the exact same proposal; F/In2/B producesnone.
+GuardPASS(10s). No original victim copper needs removal. Native NOTRUN until
+replay_jl=true,jl_replay=u106-outer on this continuation. Preparation is pinned to
+54b4c9718f652dfdc98b4dab615845962dc8e3025f51a76541a50e0ba3d579d9 and full gates remain.
+The failed two-original-segment restoration probe is separately retained as negative
+evidence; it is not incorporated into the additive proposal.
+
+PR200:https://github.com/Takazudo/zudo-osc-hole-field/pull/200.
+JR83-object writer37917534758 at93392c84d883c30ef7207fdad507afc1787624c5 is active.
+PR199 frozenbd41809 requiredCI37917295454 pending. Core37907147442 still solewriter;
+short-power143proposal remains unreconciled/unsubmitted until it finishes.
+
 # JL U106 native result — 2026-10-09 10:25 UTC
 
 Pilot37915918722 REJECTED126→127:target joined but both cut victim nets remained
