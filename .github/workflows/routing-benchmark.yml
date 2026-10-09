@@ -305,28 +305,24 @@ jobs:
         with:
           python-version: '3.10'
       - run: python -m pip install -r scripts/pcbgen/numerical-requirements.txt
-      - name: Check the local cut and reroute with native topology
+      - name: Verify JR133 against regenerated source without publication
         run: |
+          [[ $BOARD == osc-jack-right ]]
           mkdir -p .circuit-cache
           set -o pipefail
-          args=(--board "$BOARD")
-          if [[ $LOCAL_MODE == coupled ]]; then
-            args+=(--coupled)
-          elif [[ $LOCAL_MODE != cut ]]; then
-            exit 1
-          fi
-          timeout --signal=INT --kill-after=2m 80m python -u scripts/pcbgen/local_repair_pilot.py "${args[@]}" \
-            2>&1 | tee .circuit-cache/local-repair.log
+          timeout --signal=INT --kill-after=2m 80m python -u circuit/routing/issue189/jr-source-adoption/pilot.py \
+            2>&1 | tee .circuit-cache/jr-source-adoption.log
       - name: Retain local proposal and native rejection or eligibility
         if: always()
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
         with:
-          name: obstacle-local-${{ inputs.board }}-${{ github.run_id }}
+          name: issue189-jr-source-${{ github.run_id }}
           path: |
-            .circuit-cache/issue189-local-${{ inputs.board }}/
-            .circuit-cache/${{ inputs.board }}-grid-189-local-base/
-            .circuit-cache/${{ inputs.board }}-grid-189-j*/
-            .circuit-cache/local-repair.log
+            .circuit-cache/issue189-jr-source-adoption/
+            .circuit-cache/issue189-rb4413-move/
+            .circuit-cache/osc-jack-right-grid-189-jr-rb4413-*/
+            .circuit-cache/osc-jack-right-grid-189-source-*/
+            .circuit-cache/jr-source-adoption.log
             !.circuit-cache/**/~*.lck
           include-hidden-files: true
           retention-days: 30
