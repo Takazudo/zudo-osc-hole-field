@@ -1,3 +1,18 @@
+# JL rejected; receipts recovered — 2026-10-09 11:08 UTC
+
+JL run 37919613559 rejected U2119: 125→126, one signal join and two new
+AGND splits. Native DRC/parity 0/0, 477 warnings, no new identities, fresh
+connectivity agrees. The later push raced twice; fallback creation was denied
+workflow-write permission. Digest-verified artifact 11611786768 recovered the
+receipt/replay locally without copying rejected copper. See jl-u2119-outer/result.json.
+
+Actual accepted branch boards remain JL125/JR143/core1441. JR two-route run
+37920931258 uses source 191b3c21f8d1bc12a8f45890ec804be73f40ca1d and is active.
+Sole core writer 37907147442 is still active on the retained ground-signal branch.
+Do not duplicate either writer. Reconcile terminal receipts and board-only deltas
+before explicitly rebasing core-short-power's 143-object proposal on actual output.
+Keep issue189 OPEN. Complete connectivity and qualification are not achieved.
+
 # Protected JR alternative rejected; isolate remaining50 — 2026-10-09 10:59 UTC
 
 JR37919363686 finished143→142 but REJECTED:the same R7505.2/R7530.2 AGND splits
