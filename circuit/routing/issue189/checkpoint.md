@@ -111,3 +111,8 @@ A read-only source-defined R7609 placement comparison tested288translations with
 
 
 The expanded1680-case R7609±2mm translation comparison also yields zero candidates after applying the exact JR source outline and0.30mm inset. The preliminary panel-envelope outputs are retained and explicitly superseded; six apparently pad-clear larger shifts were outside JR and were ruled out before routing. Authoritative results pin the exact partition/floorplan hashes. No source placement or physical constraint changed.
+
+
+JL37956537948 is now terminal/rejected120→120:AGND17→16→17,5adds/4cuts,all33290uncut objects identical,0DRC/parity,477unchanged warnings,no original splits,fresh agreement. Artifact11630850236 ZIP72c63a28cc78d4f140149fdc192eb29f580f3dc465179380a65d6af6d61a7013; candidate749845e4071e2fc51fae37c8e790b44cef86282bdab91c30b0cd86176583eaa6; replayba6cbb4144fa498a67fc31e56694c5417e0bf1b98455d684f6ac05a56b963954. Receipts are in jl120-u1518-10-ground-cut/.
+
+The distinct joint U1518 search reserves explicit AGND then restores both actual native-cut victim components. First declared order completes58segments/no vias with the same4cuts at0.0125mm, F/In2/B,300000cap,original finite frame; heavy guardPASS6s. jl-u1518-joint/ and jl-coupled-plan.json pin this complete proposal for a strict native pilot, without automatic repair. Raster completeness is not native eligibility; retained-endpoint and all original acceptance gates remain mandatory. JR37956542080 and core37950004600 are still pending.
