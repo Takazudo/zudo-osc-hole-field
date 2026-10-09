@@ -1,3 +1,18 @@
+# Active power batch and zero-via alternative — 2026-10-09 11:53 UTC
+
+Sole core writer is now37925863664 on97e3a28b54ca2a4071ab36b2a4a644fa187debcf,
+core-short-power143objects. The old31-object run is terminal/reconciled/rejected.
+No second core writer. A changed26-segment/no-via U1513 alternative is saved under
+core-u1513-alternatives; its gap to pending143is2.4844459391092233mm. It remains
+UNREBASED/UNSUBMITTED until actual power output is inspected. Helper and exact
+commands are in that directory. Three changed screens completed in27s,guardPASS.
+
+JR233-object37925027262 remains soleJRwriter. The9-object/one-via D7504 outer
+alternative likewise waits for its terminal result and exact rebase. No activeJLwriter.
+Main200postmerge37925223945 has docs+allthree native DRC jobsPASS; final test job
+still running. Do not claim full postmergePASS until it finishes. Accepted canonical
+counts remain125/141/1441 with0DRC/parity;189staysOPEN.
+
 # Core terminal result reconciled; power batch ready — 2026-10-09 11:46 UTC
 
 Core37907147442 REJECTED1441→1443:one signal joined,three AGND groups split.
