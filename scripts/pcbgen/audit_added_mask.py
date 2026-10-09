@@ -1,9 +1,9 @@
-"""Native evidence for new via/silkscreen interactions; never promote a board.
+"""Native evidence for every new copper/silkscreen interaction; never promote a board.
 
 Requires exact non-copper/non-zone invariance, additive copper, unmasked new
 tracks, no mask zones/custom silk rules, and zero mask-healing width. A fixture
 contains all unchanged silkscreen and outline geometry, no old mask objects,
-and one new via. Both silk warning categories are checked below their caps. Any cap hit or
+and one new copper object. Both silk warning categories are checked below their caps. Any cap hit or
 unsupported scope fails closed. Full-board checks remain mandatory.
 """
 import collections
@@ -67,13 +67,15 @@ def main(before_path, after_path, out):
         elif item.Type()!=pcbnew.PCB_TRACE_T or item.HasSolderMask():
             raise ValueError('new non-via mask geometry unsupported')
     if len(vias)!=38:raise ValueError('expected38new vias')
+    # Native silk_overlap also tests Cu shapes of unmasked tracks: checking
+    # HasSolderMask alone cannot exclude them. Audit every added copper object.
     # Retain the exact native-serialized silk/context bytes; remove only pads,
     # copper and copper/rule zones from disposable fixtures.
     text=after_path.read_text();edits=[];via_blocks={}
     for a,b in top_level_spans(text):
         block=text[a:b];kind=block[1:].split(None,1)[0].rstrip(')')
         if kind in ('segment','via','zone'):
-            if kind=='via':
+            if kind in ('via','segment'):
                 uid=UUID_RE.search(block)[1]
                 if uid not in old_ids:via_blocks[uid]=block
             edits.append((a,b,''))
@@ -98,7 +100,7 @@ def main(before_path, after_path, out):
     if any(x.IsOnLayer(l) for x in artwork for l in (pcbnew.F_Mask,pcbnew.B_Mask)):
         raise ValueError('non-pad mask artwork unsupported')
     out.mkdir(parents=True,exist_ok=True);receipts=[];identities=set()
-    for i,via in enumerate(sorted(vias,key=lambda v:v.m_Uuid.AsString())):
+    for i,via in enumerate(sorted(added,key=lambda v:v.m_Uuid.AsString())):
         folder=out/f'fixture-{i:03d}';folder.mkdir(exist_ok=True)
         path=folder/after_path.name
         for suffix in ('.kicad_pro','.kicad_dru'):
@@ -108,8 +110,12 @@ def main(before_path, after_path, out):
         scoped=replace_spans(common,[(a,b,'') for a,b,u in scoped_blocks if u not in selected])
         end=scoped.rfind(')');path.write_text(scoped[:end]+via_blocks[via.m_Uuid.AsString()]+'\n'+scoped[end:])
         loaded=pcbnew.LoadBoard(str(path));tracks=list(loaded.GetTracks())
-        if len(tracks)!=1 or tracks[0].m_Uuid.AsString()!=via.m_Uuid.AsString():raise ValueError('fixture via identity changed')
+        if len(tracks)!=1 or tracks[0].m_Uuid.AsString()!=via.m_Uuid.AsString():raise ValueError('fixture copper identity changed')
         def signature(v):
+            if v.Type()==pcbnew.PCB_TRACE_T:
+                return ('segment',v.GetStart().x,v.GetStart().y,v.GetEnd().x,v.GetEnd().y,v.GetWidth(),
+                        v.GetLayer(),v.HasSolderMask(),v.GetSolderMaskExpansion(),
+                        v.IsTented(pcbnew.F_SilkS),v.IsTented(pcbnew.B_SilkS))
             return (v.GetPosition().x,v.GetPosition().y,v.GetDrillValue(),v.GetWidth(pcbnew.F_Cu),
                     list(v.GetLayerSet().Seq()),v.GetSolderMaskExpansion(),
                     v.IsTented(pcbnew.F_SilkS),v.IsTented(pcbnew.B_SilkS))
@@ -122,14 +128,15 @@ def main(before_path, after_path, out):
         drc=json.loads(report.read_text());rows=new_silk_identities(drc,via.m_Uuid.AsString())
         for v in rows:
             ids=tuple(sorted(x['uuid'] for x in v['items']))
-            if via.m_Uuid.AsString() not in ids:raise ValueError('mask warning not attributable to sole new via')
+            if via.m_Uuid.AsString() not in ids:raise ValueError('silk warning not attributable to sole new copper object')
             identities.add((v['type'],v['severity'],ids))
-        receipts.append(dict(via_uuid=via.m_Uuid.AsString(),native_mask_signature=signature(via),selected_native_bbox_uuids=sorted(selected),conservative_bbox_margin_nm=margin,
+        receipts.append(dict(copper_uuid=via.m_Uuid.AsString(),kind='via' if via.Type()==pcbnew.PCB_VIA_T else 'segment',native_mask_signature=signature(via),selected_native_bbox_uuids=sorted(selected),conservative_bbox_margin_nm=margin,
                              violations=rows,report_sha256=hashlib.sha256(report.read_bytes()).hexdigest()))
-        print(f'{i+1}/{len(vias)} via fixtures, {len(identities)} new mask identities',flush=True)
+        print(f'{i+1}/{len(added)} copper fixtures, {len(identities)} new silk identities',flush=True)
     result=dict(status='READ-ONLY NATIVE ADDED-MASK EVIDENCE; PROMOTION GATE UNCHANGED',version=version,
                 before_sha256=hashlib.sha256(before_path.read_bytes()).hexdigest(),after_sha256=hashlib.sha256(after_path.read_bytes()).hexdigest(),
                 unchanged_nonrouting_objects=count,added_unmasked_tracks=len(added)-len(vias),
+                added_copper_scope_complete=True,
                 new_mask_identities=sorted(identities),fixtures=receipts)
     (out/'result.json').write_text(json.dumps(result,indent=2)+'\n')
 

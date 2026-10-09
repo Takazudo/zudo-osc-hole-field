@@ -131,18 +131,25 @@ def complete_reports(before_board, after_board, before_drc, after_drc, before_au
     expected={h['uuid'] for h in added}
     if len(expected)!=len(added):raise ValueError('new via UUID ambiguity')
     root=Path(mask_audit);mask=read(root/'result.json')
+    if not mask.get('added_copper_scope_complete'):
+        raise ValueError('new track silk interactions are not covered by via-only evidence')
     if mask['version']!='10.0.6' or mask['before_sha256']!=sha(before_board) or mask['after_sha256']!=sha(after_board):
         raise ValueError('silk audit native version/source mismatch')
     if mask['unchanged_nonrouting_objects']!=count:raise ValueError('silk invariance mismatch')
-    if len(mask['fixtures'])!=len(expected) or {f['via_uuid'] for f in mask['fixtures']}!=expected:
-        raise ValueError('silk audit omits added vias')
+    from scripts.pcbgen.route_shards import copper_block_groups
+    old_ids=set(copper_block_groups(before_board.read_text()));new_ids=set(copper_block_groups(after_board.read_text()))
+    expected_copper=new_ids-old_ids
+    if len(mask['fixtures'])!=len(expected_copper) or {f['copper_uuid'] for f in mask['fixtures']}!=expected_copper:
+        raise ValueError('silk audit omits added copper')
+    if {f['copper_uuid'] for f in mask['fixtures'] if f['kind']=='via'}!=expected:
+        raise ValueError('silk audit added via scope mismatch')
     found=set()
     for i,f in enumerate(mask['fixtures']):
         folder=root/f'fixture-{i:03d}';report=folder/'drc.json'
         if sha(report)!=f['report_sha256']:raise ValueError('silk fixture report hash mismatch')
         for suffix,key in (('.kicad_pro','project_sha256'),('.kicad_dru','rules_sha256')):
             if sha(folder/after_board.with_suffix(suffix).name)!=context[key]:raise ValueError('silk fixture context changed')
-        rows=new_silk_identities(read(report),f['via_uuid'])
+        rows=new_silk_identities(read(report),f['copper_uuid'])
         if rows!=f['violations']:raise ValueError('silk receipt differs from raw native report')
         found.update(identity(v) for v in rows)
     if found!=normalized(mask['new_mask_identities']):raise ValueError('silk identity union incomplete')

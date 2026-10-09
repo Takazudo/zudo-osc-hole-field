@@ -449,7 +449,7 @@ jobs:
           bash scripts/kicad/run.sh python3 scripts/pcbgen/audit_zone_silk_scope.py \
             .circuit-cache/hole-audit-input/.circuit-cache/osc-core-grid-shards-start/osc-core.kicad_pcb \
             .circuit-cache/hole-audit-input/.circuit-cache/osc-core-grid-shards-merge/osc-core.kicad_pcb \
-            .circuit-cache/zone-silk-audit
+            .circuit-cache/zone-silk-audit --classify
       - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
         if: always()
         with:
