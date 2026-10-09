@@ -22,7 +22,7 @@ on:
       jr_replay:
         description: Fixed reviewed JR transaction (used only with replay_jr)
         type: choice
-        options: [return-restored, original-ground, u7509-on-ground, rail-finer, two-on-supply, bounded-one, bounded-two, three-compatible, two-without-d7504, next-three, three-protected]
+        options: [return-restored, original-ground, u7509-on-ground, rail-finer, two-on-supply, bounded-one, bounded-two, three-compatible, two-without-d7504, next-three, three-protected, two-after-protected]
         default: return-restored
       jl_replay:
         description: Fixed reviewed JL transaction (used only with replay_jl)
@@ -183,11 +183,11 @@ jobs:
           mkdir -p .circuit-cache
           set -o pipefail
           case "$JR_REPLAY" in
-            return-restored|original-ground|u7509-on-ground|rail-finer|two-on-supply|bounded-one|bounded-two|three-compatible|two-without-d7504|next-three|three-protected) ;;
+            return-restored|original-ground|u7509-on-ground|rail-finer|two-on-supply|bounded-one|bounded-two|three-compatible|two-without-d7504|next-three|three-protected|two-after-protected) ;;
             *) exit 1 ;;
           esac
           replay="circuit/routing/issue189/jr-${JR_REPLAY}-copper.json"
-          if [[ $JR_REPLAY == bounded-one || $JR_REPLAY == bounded-two || $JR_REPLAY == three-compatible || $JR_REPLAY == two-without-d7504 || $JR_REPLAY == next-three || $JR_REPLAY == three-protected ]]; then
+          if [[ $JR_REPLAY == bounded-one || $JR_REPLAY == bounded-two || $JR_REPLAY == three-compatible || $JR_REPLAY == two-without-d7504 || $JR_REPLAY == next-three || $JR_REPLAY == three-protected || $JR_REPLAY == two-after-protected ]]; then
             python "circuit/routing/issue189/jr-${JR_REPLAY}/prepare.py"
             replay=".circuit-cache/issue189-jr-${JR_REPLAY}/copper.json"
           fi

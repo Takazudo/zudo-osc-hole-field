@@ -1,3 +1,20 @@
+# Protected JR alternative rejected; isolate remaining50 — 2026-10-09 10:59 UTC
+
+JR37919363686 finished143→142 but REJECTED:the same R7505.2/R7530.2 AGND splits
+persisted despite more conservative ground obstacle inflation.0DRC/parity,520warnings,
+no new identities,fresh agrees. Receipt-only fa83d12 integrated; no board changed.
+Artifact11611402953 digest verified. Candidate6f8f67a5175abf0297510f0810d06c60c00955a87937c7e033114f01f27ff72b.
+
+Next native isolation removes the entire7-object D7504 alternative,retaining the
+other50objects on2nets. Input remains actual143SHA72a24ee996ae454c099ed165de1bd857721c42bef37861907a98ba5a4bf39d0c.
+Dispatch replay_jr=true,jr_replay=two-after-protected; do not count unrun results.
+Native fill connectivity,not simple pad clearance,is the remaining D7504 blocker;
+retain this negative evidence instead of repeating unchanged clearance growth.
+
+Main199postmergeCI37918769043 passed allfivechecks; snapshotci-main-7af7489.json.
+JL91-object writer37919613559 and solecore37907147442 remain active. Actual branch
+boards125/143/1441. Core short-power143remains unsubmitted until terminal reconciliation.
+
 # Duplicate-ID cut guard hardened — 2026-10-09 10:48 UTC
 
 A synthetic regression reproduced a bounded-cut bug: duplicate legacy IDs could
