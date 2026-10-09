@@ -26,6 +26,10 @@ def main():
     work = ROOT / '.circuit-cache/issue189-jr-u8303-endpoints'
     work.mkdir(parents=True, exist_ok=True)
     candidate = work / board.name
+    # Reviewed cuts require the original project beside the disposable copy.
+    # Never let LoadBoard silently substitute default net classes.
+    for suffix in ('.kicad_pro', '.kicad_dru'):
+        candidate.with_suffix(suffix).write_bytes(board.with_suffix(suffix).read_bytes())
     subprocess.run(['bash', 'scripts/kicad/run.sh', 'python3',
                     'scripts/pcbgen/grid_apply.py', str(board.relative_to(ROOT)),
                     str(proposal.relative_to(ROOT)), '--output',

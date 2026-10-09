@@ -1,0 +1,133 @@
+adopt	Replay reviewed JL copper through full native gates	﻿2026-10-09T14:52:36.2449180Z ##[group]Run mkdir -p .circuit-cache
+adopt	Replay reviewed JL copper through full native gates	2026-10-09T14:52:36.2449586Z [36;1mmkdir -p .circuit-cache[0m
+adopt	Replay reviewed JL copper through full native gates	2026-10-09T14:52:36.2449904Z [36;1mset -o pipefail[0m
+adopt	Replay reviewed JL copper through full native gates	2026-10-09T14:52:36.2450188Z [36;1mif [[ $JL_REPLAY == paired-corridors ]]; then[0m
+adopt	Replay reviewed JL copper through full native gates	2026-10-09T14:52:36.2450641Z [36;1m  python circuit/routing/issue189/jl-paired-corridors-prepare.py[0m
+adopt	Replay reviewed JL copper through full native gates	2026-10-09T14:52:36.2451190Z [36;1m  replay=circuit/routing/issue189/jl-paired-corridors-copper.json[0m
+adopt	Replay reviewed JL copper through full native gates	2026-10-09T14:52:36.2451942Z [36;1m  label=issue189-paired-corridors[0m
+adopt	Replay reviewed JL copper through full native gates	2026-10-09T14:52:36.2452293Z [36;1melif [[ $JL_REPLAY == corridor ]]; then[0m
+adopt	Replay reviewed JL copper through full native gates	2026-10-09T14:52:36.2452701Z [36;1m  replay=circuit/routing/issue189/jl-corridor-copper.json[0m
+adopt	Replay reviewed JL copper through full native gates	2026-10-09T14:52:36.2453089Z [36;1m  label=issue189-corridor[0m
+adopt	Replay reviewed JL copper through full native gates	2026-10-09T14:52:36.2453392Z [36;1melif [[ $JL_REPLAY == rail-leaf ]]; then[0m
+adopt	Replay reviewed JL copper through full native gates	2026-10-09T14:52:36.2453793Z [36;1m  replay=circuit/routing/issue189/jl-rail-leaf-copper.json[0m
+adopt	Replay reviewed JL copper through full native gates	2026-10-09T14:52:36.2454185Z [36;1m  label=issue189-rail-leaf[0m
+adopt	Replay reviewed JL copper through full native gates	2026-10-09T14:52:36.2454552Z [36;1melif [[ $JL_REPLAY == ground-junction ]]; then[0m
+adopt	Replay reviewed JL copper through full native gates	2026-10-09T14:52:36.2455003Z [36;1m  replay=circuit/routing/issue189/jl-ground-junction-copper.json[0m
+adopt	Replay reviewed JL copper through full native gates	2026-10-09T14:52:36.2455431Z [36;1m  label=issue189-ground-junction[0m
+adopt	Replay reviewed JL copper through full native gates	2026-10-09T14:52:36.2455753Z [36;1melif [[ $JL_REPLAY == rail-finer ]]; then[0m
+adopt	Replay reviewed JL copper through full native gates	2026-10-09T14:52:36.2456159Z [36;1m  replay=circuit/routing/issue189/jl-rail-finer-copper.json[0m
+adopt	Replay reviewed JL copper through full native gates	2026-10-09T14:52:36.2456563Z [36;1m  label=issue189-rail-finer[0m
+adopt	Replay reviewed JL copper through full native gates	2026-10-09T14:52:36.2457516Z [36;1melif [[ $JL_REPLAY == u106-outer || $JL_REPLAY == u2119-outer || $JL_REPLAY == u2119-via-avoid || $JL_REPLAY == u2119-ground-corridor || $JL_REPLAY == c8143-fanout || $JL_REPLAY == three-finer-ground || $JL_REPLAY == u2204-endpoints ]]; then[0m
+adopt	Replay reviewed JL copper through full native gates	2026-10-09T14:52:36.2458586Z [36;1m  python "circuit/routing/issue189/jl-$JL_REPLAY/prepare.py"[0m
+adopt	Replay reviewed JL copper through full native gates	2026-10-09T14:52:36.2459060Z [36;1m  replay=".circuit-cache/issue189-jl-$JL_REPLAY/copper.json"[0m
+adopt	Replay reviewed JL copper through full native gates	2026-10-09T14:52:36.2459444Z [36;1m  label="issue189-$JL_REPLAY"[0m
+adopt	Replay reviewed JL copper through full native gates	2026-10-09T14:52:36.2459746Z [36;1melif [[ $JL_REPLAY == d2326 ]]; then[0m
+adopt	Replay reviewed JL copper through full native gates	2026-10-09T14:52:36.2460313Z [36;1m  replay=circuit/routing/issue189/jl-d2326-copper.json[0m
+adopt	Replay reviewed JL copper through full native gates	2026-10-09T14:52:36.2460656Z [36;1m  label=issue189-d2326[0m
+adopt	Replay reviewed JL copper through full native gates	2026-10-09T14:52:36.2460899Z [36;1melse[0m
+adopt	Replay reviewed JL copper through full native gates	2026-10-09T14:52:36.2461088Z [36;1m  exit 1[0m
+adopt	Replay reviewed JL copper through full native gates	2026-10-09T14:52:36.2461285Z [36;1mfi[0m
+adopt	Replay reviewed JL copper through full native gates	2026-10-09T14:52:36.2461868Z [36;1mtimeout --signal=INT --kill-after=2m 80m python -u scripts/pcbgen/route_shards.py merge osc-jack-left \[0m
+adopt	Replay reviewed JL copper through full native gates	2026-10-09T14:52:36.2462402Z [36;1m  "$replay" --label "$label" \[0m
+adopt	Replay reviewed JL copper through full native gates	2026-10-09T14:52:36.2462701Z [36;1m  2>&1 | tee .circuit-cache/adoption.log[0m
+adopt	Replay reviewed JL copper through full native gates	2026-10-09T14:52:36.2527908Z shell: /usr/bin/bash -e {0}
+adopt	Replay reviewed JL copper through full native gates	2026-10-09T14:52:36.2528181Z env:
+adopt	Replay reviewed JL copper through full native gates	2026-10-09T14:52:36.2528394Z   BOARD: osc-jack-left
+adopt	Replay reviewed JL copper through full native gates	2026-10-09T14:52:36.2528640Z   BENCHMARK_RUN:
+adopt	Replay reviewed JL copper through full native gates	2026-10-09T14:52:36.2528872Z   RECOVER_CORE: false
+adopt	Replay reviewed JL copper through full native gates	2026-10-09T14:52:36.2529117Z   CORE_REPLAY: aggregate
+adopt	Replay reviewed JL copper through full native gates	2026-10-09T14:52:36.2529377Z   REPLAY_JR: false
+adopt	Replay reviewed JL copper through full native gates	2026-10-09T14:52:36.2529618Z   JR_REPLAY: return-restored
+adopt	Replay reviewed JL copper through full native gates	2026-10-09T14:52:36.2529885Z   REPLAY_JL: true
+adopt	Replay reviewed JL copper through full native gates	2026-10-09T14:52:36.2530110Z   JL_REPLAY: u2204-endpoints
+adopt	Replay reviewed JL copper through full native gates	2026-10-09T14:52:36.2530443Z   pythonLocation: /opt/hostedtoolcache/Python/3.10.22/x64
+adopt	Replay reviewed JL copper through full native gates	2026-10-09T14:52:36.2530934Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.10.22/x64/lib/pkgconfig
+adopt	Replay reviewed JL copper through full native gates	2026-10-09T14:52:36.2531420Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.10.22/x64
+adopt	Replay reviewed JL copper through full native gates	2026-10-09T14:52:36.2532037Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.10.22/x64
+adopt	Replay reviewed JL copper through full native gates	2026-10-09T14:52:36.2532478Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.10.22/x64
+adopt	Replay reviewed JL copper through full native gates	2026-10-09T14:52:36.2532923Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.10.22/x64/lib
+adopt	Replay reviewed JL copper through full native gates	2026-10-09T14:52:36.2533291Z ##[endgroup]
+adopt	Replay reviewed JL copper through full native gates	2026-10-09T14:52:36.4372632Z Unable to find image 'kicad/kicad@sha256:18693567392b80da435f9fa952ce3a3e534c66eb5a6033f5b9c80aa3b19dd3ec' locally
+adopt	Replay reviewed JL copper through full native gates	2026-10-09T14:52:37.0421989Z docker.io/kicad/kicad@sha256:18693567392b80da435f9fa952ce3a3e534c66eb5a6033f5b9c80aa3b19dd3ec: Pulling from kicad/kicad
+adopt	Replay reviewed JL copper through full native gates	2026-10-09T14:52:37.3118291Z f072f58012e5: Pulling fs layer
+adopt	Replay reviewed JL copper through full native gates	2026-10-09T14:52:37.3118951Z 7a697221ed08: Pulling fs layer
+adopt	Replay reviewed JL copper through full native gates	2026-10-09T14:52:37.3119677Z 2a725967b0c1: Pulling fs layer
+adopt	Replay reviewed JL copper through full native gates	2026-10-09T14:52:37.3120185Z d59c8d6b4ee3: Pulling fs layer
+adopt	Replay reviewed JL copper through full native gates	2026-10-09T14:52:37.3120611Z 06396e02790e: Pulling fs layer
+adopt	Replay reviewed JL copper through full native gates	2026-10-09T14:52:37.3120993Z 2378ea4a3f01: Pulling fs layer
+adopt	Replay reviewed JL copper through full native gates	2026-10-09T14:52:37.3121276Z a5fac0bcdf2f: Pulling fs layer
+adopt	Replay reviewed JL copper through full native gates	2026-10-09T14:52:37.3123537Z 2a4cad830bcc: Pulling fs layer
+adopt	Replay reviewed JL copper through full native gates	2026-10-09T14:52:37.3124038Z 247e0200b7e4: Pulling fs layer
+adopt	Replay reviewed JL copper through full native gates	2026-10-09T14:52:37.3124331Z 9a99e09d41bb: Pulling fs layer
+adopt	Replay reviewed JL copper through full native gates	2026-10-09T14:52:37.3124607Z 51707baaa5e0: Pulling fs layer
+adopt	Replay reviewed JL copper through full native gates	2026-10-09T14:52:37.3125011Z b5ecfc164241: Pulling fs layer
+adopt	Replay reviewed JL copper through full native gates	2026-10-09T14:52:37.3125284Z 2c012cda8801: Pulling fs layer
+adopt	Replay reviewed JL copper through full native gates	2026-10-09T14:52:37.3125553Z 2a4cad830bcc: Waiting
+adopt	Replay reviewed JL copper through full native gates	2026-10-09T14:52:37.3125796Z d59c8d6b4ee3: Waiting
+adopt	Replay reviewed JL copper through full native gates	2026-10-09T14:52:37.3126147Z 06396e02790e: Waiting
+adopt	Replay reviewed JL copper through full native gates	2026-10-09T14:52:37.3126414Z 247e0200b7e4: Waiting
+adopt	Replay reviewed JL copper through full native gates	2026-10-09T14:52:37.3126874Z 2378ea4a3f01: Waiting
+adopt	Replay reviewed JL copper through full native gates	2026-10-09T14:52:37.3127304Z 9a99e09d41bb: Waiting
+adopt	Replay reviewed JL copper through full native gates	2026-10-09T14:52:37.3127621Z 51707baaa5e0: Waiting
+adopt	Replay reviewed JL copper through full native gates	2026-10-09T14:52:37.3127855Z a5fac0bcdf2f: Waiting
+adopt	Replay reviewed JL copper through full native gates	2026-10-09T14:52:37.3128083Z 2c012cda8801: Waiting
+adopt	Replay reviewed JL copper through full native gates	2026-10-09T14:52:37.3128309Z b5ecfc164241: Waiting
+adopt	Replay reviewed JL copper through full native gates	2026-10-09T14:52:37.6264452Z f072f58012e5: Verifying Checksum
+adopt	Replay reviewed JL copper through full native gates	2026-10-09T14:52:37.6269289Z f072f58012e5: Download complete
+adopt	Replay reviewed JL copper through full native gates	2026-10-09T14:52:37.7564664Z 2a725967b0c1: Verifying Checksum
+adopt	Replay reviewed JL copper through full native gates	2026-10-09T14:52:37.7565615Z 2a725967b0c1: Download complete
+adopt	Replay reviewed JL copper through full native gates	2026-10-09T14:52:37.9968719Z d59c8d6b4ee3: Verifying Checksum
+adopt	Replay reviewed JL copper through full native gates	2026-10-09T14:52:37.9970032Z d59c8d6b4ee3: Download complete
+adopt	Replay reviewed JL copper through full native gates	2026-10-09T14:52:38.0291468Z 06396e02790e: Verifying Checksum
+adopt	Replay reviewed JL copper through full native gates	2026-10-09T14:52:38.0292221Z 06396e02790e: Download complete
+adopt	Replay reviewed JL copper through full native gates	2026-10-09T14:52:38.2492620Z a5fac0bcdf2f: Verifying Checksum
+adopt	Replay reviewed JL copper through full native gates	2026-10-09T14:52:38.2493286Z a5fac0bcdf2f: Download complete
+adopt	Replay reviewed JL copper through full native gates	2026-10-09T14:52:38.4611608Z 2a4cad830bcc: Download complete
+adopt	Replay reviewed JL copper through full native gates	2026-10-09T14:52:38.6682309Z 247e0200b7e4: Verifying Checksum
+adopt	Replay reviewed JL copper through full native gates	2026-10-09T14:52:38.6683065Z 247e0200b7e4: Download complete
+adopt	Replay reviewed JL copper through full native gates	2026-10-09T14:52:38.7424467Z 2378ea4a3f01: Verifying Checksum
+adopt	Replay reviewed JL copper through full native gates	2026-10-09T14:52:38.7425075Z 2378ea4a3f01: Download complete
+adopt	Replay reviewed JL copper through full native gates	2026-10-09T14:52:38.8783548Z 9a99e09d41bb: Verifying Checksum
+adopt	Replay reviewed JL copper through full native gates	2026-10-09T14:52:38.8784258Z 9a99e09d41bb: Download complete
+adopt	Replay reviewed JL copper through full native gates	2026-10-09T14:52:38.9555445Z 51707baaa5e0: Verifying Checksum
+adopt	Replay reviewed JL copper through full native gates	2026-10-09T14:52:38.9556889Z 51707baaa5e0: Download complete
+adopt	Replay reviewed JL copper through full native gates	2026-10-09T14:52:39.0117534Z f072f58012e5: Pull complete
+adopt	Replay reviewed JL copper through full native gates	2026-10-09T14:52:39.0874582Z b5ecfc164241: Verifying Checksum
+adopt	Replay reviewed JL copper through full native gates	2026-10-09T14:52:39.0874976Z b5ecfc164241: Download complete
+adopt	Replay reviewed JL copper through full native gates	2026-10-09T14:52:39.1859281Z 2c012cda8801: Download complete
+adopt	Replay reviewed JL copper through full native gates	2026-10-09T14:52:39.5557157Z 7a697221ed08: Verifying Checksum
+adopt	Replay reviewed JL copper through full native gates	2026-10-09T14:52:39.5557711Z 7a697221ed08: Download complete
+adopt	Replay reviewed JL copper through full native gates	2026-10-09T14:52:51.9348477Z 7a697221ed08: Pull complete
+adopt	Replay reviewed JL copper through full native gates	2026-10-09T14:52:52.8450231Z 2a725967b0c1: Pull complete
+adopt	Replay reviewed JL copper through full native gates	2026-10-09T14:52:59.0933935Z d59c8d6b4ee3: Pull complete
+adopt	Replay reviewed JL copper through full native gates	2026-10-09T14:52:59.2417234Z 06396e02790e: Pull complete
+adopt	Replay reviewed JL copper through full native gates	2026-10-09T14:53:01.2933784Z 2378ea4a3f01: Pull complete
+adopt	Replay reviewed JL copper through full native gates	2026-10-09T14:53:01.3025968Z a5fac0bcdf2f: Pull complete
+adopt	Replay reviewed JL copper through full native gates	2026-10-09T14:53:01.3173217Z 2a4cad830bcc: Pull complete
+adopt	Replay reviewed JL copper through full native gates	2026-10-09T14:53:01.3320809Z 247e0200b7e4: Pull complete
+adopt	Replay reviewed JL copper through full native gates	2026-10-09T14:53:01.3448745Z 9a99e09d41bb: Pull complete
+adopt	Replay reviewed JL copper through full native gates	2026-10-09T14:53:01.3564716Z 51707baaa5e0: Pull complete
+adopt	Replay reviewed JL copper through full native gates	2026-10-09T14:53:01.3685334Z b5ecfc164241: Pull complete
+adopt	Replay reviewed JL copper through full native gates	2026-10-09T14:53:01.3771732Z 2c012cda8801: Pull complete
+adopt	Replay reviewed JL copper through full native gates	2026-10-09T14:53:01.3810744Z Digest: sha256:18693567392b80da435f9fa952ce3a3e534c66eb5a6033f5b9c80aa3b19dd3ec
+adopt	Replay reviewed JL copper through full native gates	2026-10-09T14:53:01.3820039Z Status: Downloaded newer image for kicad/kicad@sha256:18693567392b80da435f9fa952ce3a3e534c66eb5a6033f5b9c80aa3b19dd3ec
+adopt	Replay reviewed JL copper through full native gates	2026-10-09T14:53:04.2140669Z Traceback (most recent call last):
+adopt	Replay reviewed JL copper through full native gates	2026-10-09T14:53:04.2190312Z   File "/work/scripts/pcbgen/grid_apply.py", line 56, in <module>
+adopt	Replay reviewed JL copper through full native gates	2026-10-09T14:53:04.2191195Z     if __name__=='__main__':main()
+adopt	Replay reviewed JL copper through full native gates	2026-10-09T14:53:04.2191950Z                             ~~~~^^
+adopt	Replay reviewed JL copper through full native gates	2026-10-09T14:53:04.2192973Z   File "/work/scripts/pcbgen/grid_apply.py", line 54, in main
+adopt	Replay reviewed JL copper through full native gates	2026-10-09T14:53:04.2193755Z     apply(a.board,json.loads(a.proposal.read_text()),a.output)
+adopt	Replay reviewed JL copper through full native gates	2026-10-09T14:53:04.2194427Z     ~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+adopt	Replay reviewed JL copper through full native gates	2026-10-09T14:53:04.2195133Z   File "/work/scripts/pcbgen/grid_apply.py", line 34, in apply
+adopt	Replay reviewed JL copper through full native gates	2026-10-09T14:53:04.2196013Z     if not project.exists():raise ValueError(f'{project} missing: net classes unknown')
+adopt	Replay reviewed JL copper through full native gates	2026-10-09T14:53:04.2196827Z                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+adopt	Replay reviewed JL copper through full native gates	2026-10-09T14:53:04.2197835Z ValueError: .circuit-cache/issue189-jl-u2204-endpoints/osc-jack-left.kicad_pro missing: net classes unknown
+adopt	Replay reviewed JL copper through full native gates	2026-10-09T14:53:04.2861868Z Traceback (most recent call last):
+adopt	Replay reviewed JL copper through full native gates	2026-10-09T14:53:04.2863319Z   File "/home/runner/work/zudo-osc-hole-field/zudo-osc-hole-field/circuit/routing/issue189/jl-u2204-endpoints/prepare.py", line 43, in <module>
+adopt	Replay reviewed JL copper through full native gates	2026-10-09T14:53:04.2864185Z     main()
+adopt	Replay reviewed JL copper through full native gates	2026-10-09T14:53:04.2864969Z   File "/home/runner/work/zudo-osc-hole-field/zudo-osc-hole-field/circuit/routing/issue189/jl-u2204-endpoints/prepare.py", line 29, in main
+adopt	Replay reviewed JL copper through full native gates	2026-10-09T14:53:04.2865887Z     subprocess.run(['bash', 'scripts/kicad/run.sh', 'python3',
+adopt	Replay reviewed JL copper through full native gates	2026-10-09T14:53:04.2866570Z   File "/opt/hostedtoolcache/Python/3.10.22/x64/lib/python3.10/subprocess.py", line 526, in run
+adopt	Replay reviewed JL copper through full native gates	2026-10-09T14:53:04.3431099Z     raise CalledProcessError(retcode, process.args,
+adopt	Replay reviewed JL copper through full native gates	2026-10-09T14:53:04.3434220Z subprocess.CalledProcessError: Command '['bash', 'scripts/kicad/run.sh', 'python3', 'scripts/pcbgen/grid_apply.py', 'boards/osc-jack-left/osc-jack-left.kicad_pcb', 'circuit/routing/issue189/jl-u2204-endpoints/proposal.json', '--output', '.circuit-cache/issue189-jl-u2204-endpoints/osc-jack-left.kicad_pcb']' returned non-zero exit status 1.
+adopt	Replay reviewed JL copper through full native gates	2026-10-09T14:53:04.3509690Z ##[error]Process completed with exit code 1.

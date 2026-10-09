@@ -1,6 +1,6 @@
 # Issue 189 exact continuation checkpoint
 
-Updated 2026-10-09 14:43 UTC. **Issue189 remains OPEN.** Zero-edge connectivity and final completion gates are unmet. No fabrication/hardware qualification is claimed. Fixed panel/electrical rules, accepted copper and other sessions are preserved.
+Updated 2026-10-09 14:53 UTC. **Issue189 remains OPEN.** Zero-edge connectivity and final completion gates are unmet. No fabrication/hardware qualification is claimed. Fixed panel/electrical rules, accepted copper and other sessions are preserved.
 
 ## Current authoritative state
 
@@ -22,10 +22,10 @@ All three accepted boards have0native DRC/parity errors. JL477/JR520/core619 war
 | Board | Run | Source | Worker | Scope |
 | --- | --- | --- | --- | --- |
 | Core |37936741388|`cba4755227b52145a9dc9cd9e5e0f9880787ff1f`|`agent-fix/189-core-u1513-worker`|26 B.Cu signal segments,no vias/cuts; ordinary gated adoption |
-| JL |37945793199|`0b38d659151730dad5fd65500fe9319dbb92df8c`|`agent-fix/189-jl-u2204-endpoints-worker`|Read-only joint53objects/3vias/1reviewedcut,including exact retained endpoint links; no automatic repair |
+| JL |37947364213|`330975fde822e4872fe0b5219788b1ab46b094c4`|`agent-fix/189-jl-u2204-adopt-worker`|Gated adoption replay of eligible native endpoint pilot:53objects/3vias/1reviewedcut |
 | JR |37945797248|`0b38d659151730dad5fd65500fe9319dbb92df8c`|`agent-fix/189-jr-u8303-endpoints-worker`|Read-only joint39objects/1via/2reviewedcuts,including both retained endpoint links; no automatic repair |
 
-Do not write these worker branches, duplicate same-board trials or count their pending output. The jack pilots cannot promote canonical boards. Reconcile actual terminal receipts/artifacts before selecting any next same-board action. Core alternatives must not be rebased before core26 is terminal/reconciled.
+Do not write these worker branches, duplicate same-board trials or count their pending output. The JR pilot cannot promote canonical boards; the JL gated adoption worker may publish only after all native gates. Reconcile actual terminal receipts/artifacts before selecting any next same-board action. Core alternatives must not be rebased before core26 is terminal/reconciled.
 
 ## Accepted immutable boards and retention
 
@@ -114,3 +114,7 @@ The first48 plus next48 core signal cases now yield a conservative saved15-segme
 JL endpoint pilot37945793199 is terminal/eligible121→120:0DRC/parity,477unchanged warnings,no new warning identities/splits,fresh native agreement. Full33241uncut objects identical,+53/1reviewedcut. Artifact11624457321 ZIPda72aebbaa496eb93a4e43fdfe5e0b844bbcece35fe1bb9d3e8e0ab2b4a23c50; candidate2068e5e7fc0ab3f091423e3685e6793c36de24c6308c681233465b3ce100b437; replay8ec99ea42016282c19fcd4860c82a9ee402ff218eafb80d20c558d32354c847d. Native adoption replay is the next JL action; canonical remains121 until it succeeds.
 
 Third core no-via screen completed48cases,6positivecases/92segments,zero vias,344.347644239s (guardPASS349). Short saved successor is now19segments/11nets; no rebase or native acceptance. Other longer paths remain separate evidence.
+
+JL adoption37947364213 failed before routing: the newly copied additive prepare helper lacked the .kicad_pro required by grid_apply for cuts. Canonical copper is unchanged; no native adoption check passed in that failed job. Both endpoint prepare helpers now copy the original .kicad_pro and .kicad_dru beside the disposable output; the strict missing-project guard is unchanged. Retry through a new source-pinned worker after this correction.
+
+JR endpoint pilot37945797248 is terminal/eligible137→136:0DRC/parity,520unchanged warnings,no new identities/splits,fresh agreement. All51024uncut objects identical,+39/2reviewedcuts. Artifact11624043283 ZIP990c17f4155dc6ad98b4f0db0c091f1b25bd265c16d834afa2bfa9fb68b6293b; candidate33747bfc15d66bc92e7fb7c563dfa853b13058a0056075626551ef3d385d6b84; replay88f040c0318eccb93cf002f7a35e8d464b21c38c41d44f5bf765688468bcd953. Canonical remains137 pending gated adoption.
