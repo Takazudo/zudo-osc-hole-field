@@ -1,3 +1,22 @@
+# Core terminal result reconciled; power batch ready — 2026-10-09 11:46 UTC
+
+Core37907147442 REJECTED1441→1443:one signal joined,three AGND groups split.
+Native DRC/parity0/0,619unchanged warnings,no new identities,fresh agrees;all
+133169oldobjects identical. Canonical core remainsa0e3cff1ebc211564b8be10f6a993d50fb6d4372edde86a056ebc8dda3ea5932.
+Receipt-onlybot405d6fa7e05aa3bbf95850d4073f22db12a042bf cherry-picked as5b530d8.
+Artifact11613123740 ZIP4411add4a3ce07f19a80992a4eccca75be7a185fe87b6cec8a00e52e4dca0254 downloaded/verified.
+
+core-short-power143is now explicitly rebased on that unchanged accepted input:
+all133169objects retained,zero cuts/collisions,new/newgap1.335124218810462mm.
+109supply targets+4ground fanouts,139full-width segments+4vias. NativeNOTYETRUN
+at this checkpoint. Submit once withrecover_core=true,core_replay=short-power,
+board=osc-core on this continuation. The old core branch stays retained but has
+no active writer. Do not repeat the failed31-object proposal unchanged.
+
+JR233-object37925027262 remains active. No activeJLwriter. Main200postmergeCI
+37925223945 remains running. Main and branch acceptedcounts125/141/1441.
+Keep189OPEN; useactualterminalreceipts before any further rebase or adoption.
+
 # PR200 merged; latest exact continuation — 2026-10-09 11:43 UTC
 
 PR200 normal merge b215be72058ac77e5b2be04b2b4de5ae93a60541 at11:40:43Z after
