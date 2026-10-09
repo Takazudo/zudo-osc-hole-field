@@ -17,7 +17,7 @@ class PrecisionVendorSweepGate(unittest.TestCase):
             cwd=ROOT, capture_output=True, text=True,
         )
         self.assertEqual(result.returncode, 1, result.stderr)
-        self.assertIn("0/1 pass; 1 fail", result.stdout)
+        self.assertIn("0/1 pass; 1 fail", result.stdout, result.stderr)
 
     def test_unrounded_thresholds_are_strict(self):
         case = {"overshoot_percent": 10.00001, "positive_error_mV": 0,

@@ -4,6 +4,12 @@ No native probe has run. No acceptance code, workflow, source placement, or
 canonical copper is changed by this preparation. The existing sole core worker
 37984573591 remains authoritative for its own terminal result; do not duplicate it.
 
+The follow-on branch also exposes already-captured stderr when the precision
+vendor sweep stdout assertion fails. Expected exit status and stdout are
+unchanged. This improves the next failure's diagnosis; it does not establish the
+cause of the earlier empty-stdout failures. That native sweep remains unrun here,
+and PR213 stays at803bba6 for its unchanged-head retry.
+
 Run37983410773 stopped at its 80-minute bound with exit124. Its first zone completed
 only stage0 items0..133 of144. Upload succeeded: artifact11644814747, archive SHA256
 925d83879571b2127af73526ead4cef86472138f3093fc909dfcf19a22f54c1b. The downloaded ZIP
