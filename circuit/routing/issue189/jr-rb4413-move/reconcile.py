@@ -36,7 +36,8 @@ def main():
     meta = read(HERE / 'download.json')
     assert sha(Path(meta['zip_path'])) == meta['zip_sha256']
     plan = read(HERE / 'plan.json')
-    paths = {s: ROOT / '.circuit-cache' / ('osc-jack-right-grid-189-jr-rb4413-' + s)
+    cache = ROOT / '.circuit-cache' if (ROOT / '.circuit-cache').is_dir() else ROOT
+    paths = {s: cache / ('osc-jack-right-grid-189-jr-rb4413-' + s)
              for s in ('base', 'candidate', 'fresh')}
     dumps = {s: read(p / 'dump.json') for s, p in paths.items()}
     drc = {s: read(p / 'drc.json') for s, p in paths.items()}

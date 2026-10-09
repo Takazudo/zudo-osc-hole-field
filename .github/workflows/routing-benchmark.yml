@@ -283,6 +283,7 @@ jobs:
             .circuit-cache/adoption.log
             .circuit-cache/*-grid-shards-*/
             boards/${{ inputs.board }}/reports/grid-routing/
+            !.circuit-cache/**/~*.lck
           include-hidden-files: true
           retention-days: 30
   local-pilot:
@@ -326,6 +327,7 @@ jobs:
             .circuit-cache/${{ inputs.board }}-grid-189-local-base/
             .circuit-cache/${{ inputs.board }}-grid-189-j*/
             .circuit-cache/local-repair.log
+            !.circuit-cache/**/~*.lck
           include-hidden-files: true
           retention-days: 30
 
@@ -455,7 +457,9 @@ jobs:
         if: always()
         with:
           name: issue189-zone-audit-${{ github.run_id }}
-          path: .circuit-cache/zone-silk-audit
+          path: |
+            .circuit-cache/zone-silk-audit
+            !.circuit-cache/zone-silk-audit/**/~*.lck
           retention-days: 30
           include-hidden-files: true
           if-no-files-found: error
