@@ -1,6 +1,6 @@
 # Issue 189 exact continuation checkpoint
 
-Updated 2026-10-09 19:48 UTC. **Issue #189 remains OPEN.** Main `2ca29f2550366d5b31f6eb2ce9dbdbfd9a6b27c2` accepts **JL119 / JR134 / core1441**. Draft branch now accepts **JL118 / JR134 / core1441**. PR211 is frozen at57aa5247c5cdd8bfb559ae65a9bd202c2d0d7f90 on `agent-fix/189-finer-jack-continuation`. Current follow-up branch is `agent-fix/189-ground-scope-continuation`, containing read-only movement comparisons and an audit timeout that retains upload time. Zero-edge completion, final regeneration/P/EL/O and renders remain unmet. No fabrication or hardware qualification is claimed.
+Updated 2026-10-09 19:49 UTC. **Issue #189 remains OPEN.** Main `835f4036c82aed4333f6323cf8571f085d1d767d` accepts **JL118 / JR134 / core1441**. PR211 merged exact head57aa5247c5cdd8bfb559ae65a9bd202c2d0d7f90 after all five checks37980437155 passed. Post-merge37982818544 is active. Current follow-up branch is `agent-fix/189-ground-scope-continuation`, containing read-only movement comparisons and an audit timeout that retains upload time. Zero-edge completion, final regeneration/P/EL/O and renders remain unmet. No fabrication or hardware qualification is claimed.
 
 ## Active work and hard gates
 
@@ -13,20 +13,22 @@ Parent steering at18:34UTC explicitly authorizes incremental merges once exact g
 
 ## Merges and validation
 
+PR211 merged as835f4036c82aed4333f6323cf8571f085d1d767d at19:49UTC after all five exact-head checks37980437155 passed (`ci-57aa524.json`), with clean state and no comments/reviews. Other-session refs were unchanged immediately before merge. Post-merge37982818544 is active; do not claim it passed yet.
+
 PR209 merged head2c3afdedf9e999ef0b091db74805d10fc5687d44 as98820acfefa293f7c2558aacb2059d3de8da5ae8 after all five exact-head checks37972341588 passed. It adopted JR134. Its post-merge run37975245292 was cancelled/superseded, **not passed**.
 
 PR210 merged heada95f936cca551742267e36dde9276a8b813739f1 as2ca29f2550366d5b31f6eb2ce9dbdbfd9a6b27c2 after all five exact-head checks37974947048 passed. It changed verification, not canonical boards. Post-merge37977274128: all five checks passed, including native regeneration (`ci-main-2ca29f2.json`). Exact-head receipts are `ci-2c3afde.json` and `ci-a95f936.json`. Earlier main4db1d3c all-five post-check proof is `ci-main-4db1d3c.json`.
 
-## Accepted immutable boards (main and current draft)
+## Accepted immutable boards
 
 | Board | Published SHA256 | Latest accepted evidence |
 | --- | --- | --- |
-| JL118 draft | `a01df89dcab3d4fab8eb0ae80195b2825d2d47adc517cd73452d9b9aa6ea079a` | 37978945582:119→118,+75segments/2reviewed cuts,all33346uncut objects identical |
-| JL119 main | `554fa85a44d74c2ad2105e34f1bbc4de9b674e46dd7531ddc3e00c6d8e1c1291` | 37960073108:120→119,+58segments/4reviewed cuts,all33290uncut objects identical |
+| JL118 main | `a01df89dcab3d4fab8eb0ae80195b2825d2d47adc517cd73452d9b9aa6ea079a` | 37978945582:119→118,+75segments/2reviewed cuts,all33346uncut objects identical |
+| JL119 historical | `554fa85a44d74c2ad2105e34f1bbc4de9b674e46dd7531ddc3e00c6d8e1c1291` | 37960073108:120→119,+58segments/4reviewed cuts,all33290uncut objects identical |
 | JR134 | `35b52972dd70b4186cf3f3b7ee2ac3d70432f3476c2f56c9fcf9c1c4d7d4d445` | 37967123290:135→134,+37segments/5reviewed cuts,all51140uncut objects identical |
 | Core1441 | `a0e3cff1ebc211564b8be10f6a993d50fb6d4372edde86a056ebc8dda3ea5932` | 37895925149:1509→1441,+216segments/zero cuts,all132953original objects identical |
 
-All three have0native DRC/parity, no new reported warning identities, no original pad-group splits and fresh agreement. Reported warnings477/520/619. Native10.0.6 is pinned by `scripts/kicad/run.sh`; local9.0.2 is not acceptance. Fixed panel/placements/pads/outline/rule areas/layers and project/rules remain unchanged. Jack rails are fully joined. JL103signal+15AGND on the draft (16AGND on main); JR111signal+23AGND; core80+12V/80−12V/252AGND/1029signal edges.
+All three have0native DRC/parity, no new reported warning identities, no original pad-group splits and fresh agreement. Reported warnings477/520/619. Native10.0.6 is pinned by `scripts/kicad/run.sh`; local9.0.2 is not acceptance. Fixed panel/placements/pads/outline/rule areas/layers and project/rules remain unchanged. Jack rails are fully joined. JL103signal+15AGND; JR111signal+23AGND; core80+12V/80−12V/252AGND/1029signal edges.
 
 JR134bot a59ef3669cdac3d6ca31131722c082aefd92b507, cherry133f2f6; replay3c3495b6442d463366c39ccdee4c010f9ca3c030cb321cda4d1780c4a6971c61; artifact11633969149,ZIPafa07c7a1c2315162bcc62fa780a0e6e805f0082c4f59e5739ec000a097b8b5a. Proof `jr-c7413-endpoints/`.
 
@@ -36,7 +38,7 @@ JR134bot a59ef3669cdac3d6ca31131722c082aefd92b507, cherry133f2f6; replay3c3495b6
 
 Pilot37976521780 atd1dd53fea72278434ae40e6ef4c4d02ac2c54afd:119→118,+75segments/zero vias/2reviewed cuts,all33346uncut full objects identical,33348→33421. Native0DRC/0parity,477unchanged warnings,no original splits,fresh agreement,physical/context invariance. Candidate `a01df89dcab3d4fab8eb0ae80195b2825d2d47adc517cd73452d9b9aa6ea079a`; replay `b1678187a5365202fe12a97e80ff4f33bc264a0616b8269af0ffa84aaa253f67`. Artifact11639497498,ZIP0d643e9bfa906f9f45f2daa8ec87835a64ca2ec8c05bbc9ad2d3071fb5fd12b6.
 
-`jl-r8276-joint/` contains proposal, native pilot, full retention proof, exact source/UUID preparation and adoption plan. First reserve the permanent AGND join, then restore both actual native cut victim groups within the same14.9×16.45mm frame, F/In2/B at0.0125mm/300k. The earlier cut-and-restore pilot37973959441 was119→119 and rejected; the changed joint method is material. Adoption37978945582 reproduced both hashes and all native gates. Artifact11641021167,ZIP83335f6ba6e189458a6d5b66caa5ba0f96590a7838dabaf92f6d5b7f70f56610. `reconcile_adoption.py` passed under the guard in8s: all start/merge/fresh DRC/parity0,warnings477,exact physical/context invariance and full copper retention. Published candidatea01df89d is now on the draft branch; main remainsJL119 until exact-head PR checks and authorized merge.
+`jl-r8276-joint/` contains proposal, native pilot, full retention proof, exact source/UUID preparation and adoption plan. First reserve the permanent AGND join, then restore both actual native cut victim groups within the same14.9×16.45mm frame, F/In2/B at0.0125mm/300k. The earlier cut-and-restore pilot37973959441 was119→119 and rejected; the changed joint method is material. Adoption37978945582 reproduced both hashes and all native gates. Artifact11641021167,ZIP83335f6ba6e189458a6d5b66caa5ba0f96590a7838dabaf92f6d5b7f70f56610. `reconcile_adoption.py` passed under the guard in8s: all start/merge/fresh DRC/parity0,warnings477,exact physical/context invariance and full copper retention. Published candidatea01df89d is now on main viaPR211/835f403. Post-merge CI remains pending.
 
 ## Core19 rejected and reconciled
 
@@ -84,9 +86,9 @@ No speedup claim. Immutable inputs/toolchain/source/results: `jl-benchmark.json`
 
 ## Exact continuation
 
-1. Refresh main, PR211 and other-session refs. Query active zone run37976003780 and exact-current PR211 CI. JL adoption37978945582 and post-main37977274128 are completed/pass and independently reconciled. CLI API authentication works again. Never restart unrelated watches or duplicate a writer.
-2. JL adoption is already integrated asd50853d; do not replay/cherry-pick twice. Freeze PR211 after evidence updates, run exact-head CI, review and merge only under the existing incremental-merge authorization. Keep worker-only workflow out and verify post-merge main.
+1. Refresh main, PR211 and other-session refs. Query active zone run37976003780 and post-merge37982818544 and the current follow-up PR CI. JL adoption37978945582 and post-main37977274128 are completed/pass and independently reconciled. CLI API authentication works again. Never restart unrelated watches or duplicate a writer.
+2. JL adoption is already integrated asd50853d; do not replay/cherry-pick twice. PR211 is already merged; verify post-merge37982818544 rather than replaying it. Keep worker-only workflow out and verify post-merge main.
 3. For terminal zone classification: download SHA-verified artifact, retain raw DRC/project/rules and `result.json` at `.circuit-cache/issue189-downloaded/native-zone-classification/`. Run `bash "$HOME/.codex/scripts/heavy-guard.sh" -- .circuit-cache/route-venv/bin/python circuit/routing/issue189/native-hole-audit/reassess.py`. Full382copper data is at `native-all-copper-silk`, holes at `native-hole-context`, candidate at `core-finer-ground-batch/.circuit-cache`, under the same download root. Any new zone warning rejects; preserve exact identities and change the proposal, never waive them.
 4. Only after complete evidence passes and fresh main still has actual corea0e3cff1: run guarded `core-finer-ground-batch/rebase_proposal.py --accepted-sha256 a0e3cff1ebc211564b8be10f6a993d50fb6d4372edde86a056ebc8dda3ea5932`. Check whole old copper and new geometry. Push isolated worker and run ordinary merge with `--complete-native-warnings`; regenerate native evidence against actual candidate. CLI dispatch choice is `finer-ground-complete-warnings` if auth returns; otherwise use equivalent exact-branch push trigger as for JL, worker-only. Native ground adoption remains NOT RUN.
-5. Keep PR211 draft until all exact-head gates and review complete. After an authorized merge, verify main and post-merge checks; distinguish cancelled from passed. Preserve issue189OPEN until all3boards are zero edges with required settled/fresh repeats, final regeneration/P/EL/O/docs/renders.
+5. Keep the follow-up PR draft until all exact-head gates and review complete. After an authorized merge, verify main and post-merge checks; distinguish cancelled from passed. Preserve issue189OPEN until all3boards are zero edges with required settled/fresh repeats, final regeneration/P/EL/O/docs/renders.
 6. Continue remaining JL/JR signals/grounds and core supplies/signals through bounded native checks. `core-supply-away-from-splits/` is only prepared:94wholecases/120segments,zero cuts/vias; conditional ground conflict removes one whole U4439.4 case only if ground is actually adopted. No native acceptance claimed. After two negligible comparable trials change cause/method, not just budget.
