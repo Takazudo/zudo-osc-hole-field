@@ -36,6 +36,8 @@ def main(before_path, after_path, out):
     import pcbnew
     version=subprocess.check_output(['kicad-cli','version'],text=True).strip()
     if version!='10.0.6':raise ValueError('requires pinned native10.0.6')
+    out.mkdir(parents=True,exist_ok=True)
+    (out/'started.json').write_text(json.dumps(dict(status='STARTED; NO NATIVE MASK RESULT YET',version=version,before_sha256=hashlib.sha256(before_path.read_bytes()).hexdigest(),after_sha256=hashlib.sha256(after_path.read_bytes()).hexdigest()),indent=2)+'\n')
     count=unchanged_nonrouting(before_path.read_text(),after_path.read_text())
     for suffix in ('.kicad_pro','.kicad_dru'):
         if before_path.with_suffix(suffix).read_bytes()!=after_path.with_suffix(suffix).read_bytes():
@@ -73,7 +75,7 @@ def main(before_path, after_path, out):
     def shown_text(board):
         items=list(board.GetDrawings())
         for fp in board.GetFootprints():items.extend([*fp.GetFields(),*fp.GraphicalItems()])
-        return sorted((x.m_Uuid.AsString(),x.GetShownText()) for x in items if hasattr(x,'GetShownText'))
+        return sorted((x.m_Uuid.AsString(),x.GetShownText(True)) for x in items if hasattr(x,'GetShownText'))
     source_text=shown_text(after)
     artwork=list(after.GetDrawings())+[x for fp in after.GetFootprints() for x in [*fp.GetFields(),*fp.GraphicalItems()]]
     if any(x.IsOnLayer(l) for x in artwork for l in (pcbnew.F_Mask,pcbnew.B_Mask)):
