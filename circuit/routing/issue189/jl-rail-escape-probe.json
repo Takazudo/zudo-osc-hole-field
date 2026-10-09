@@ -1,0 +1,219 @@
+{
+  "status": "RASTER ONLY; NATIVE NOT RUN",
+  "input_dump_sha256": "8d593d00963d16d7553fe574eaa519c4d6fd3bf6f166b7371b5ad6a5fe08feb2",
+  "scope": "Same native input and same plane-access parameters, comparing no extensions with source-defined0.4mm lead extensions. No removals, no changed pads/rules. Full native gates mandatory.",
+  "variants": {
+    "original": {
+      "elapsed_seconds": 4.633669220995216,
+      "results": [
+        {
+          "net": "-12V",
+          "island": [
+            "U204.11"
+          ],
+          "path": null
+        },
+        {
+          "net": "-12V",
+          "island": [
+            "U3102.11"
+          ],
+          "path": null
+        },
+        {
+          "net": "-12V",
+          "island": [
+            "U3202.11"
+          ],
+          "path": null
+        }
+      ],
+      "diagnostics": [
+        {
+          "net": "-12V",
+          "endpoints": [
+            "U204.11"
+          ],
+          "reason": "unknown",
+          "phase": "plane_fanout",
+          "attempts": [
+            {
+              "window_cells": [
+                1642,
+                1741,
+                1347,
+                1433
+              ],
+              "expanded": 112,
+              "limit": 300000
+            }
+          ]
+        },
+        {
+          "net": "-12V",
+          "endpoints": [
+            "U3102.11"
+          ],
+          "reason": "no_legal_via_site",
+          "phase": "plane_fanout",
+          "attempts": []
+        },
+        {
+          "net": "-12V",
+          "endpoints": [
+            "U3202.11"
+          ],
+          "reason": "unknown",
+          "phase": "plane_fanout",
+          "attempts": [
+            {
+              "window_cells": [
+                1602,
+                1701,
+                667,
+                753
+              ],
+              "expanded": 112,
+              "limit": 300000
+            }
+          ]
+        }
+      ],
+      "links": [],
+      "proposal": {
+        "board_sha256": "3d40f1db27f350ce063bf601cab2eeb9f6394b47da9930fca21b6bc0258d2352",
+        "removed_uuids": [],
+        "copper": []
+      }
+    },
+    "lead_extensions": {
+      "elapsed_seconds": 4.478901839000173,
+      "results": [
+        {
+          "net": "-12V",
+          "island": [
+            "U204.11"
+          ],
+          "path": null
+        },
+        {
+          "net": "-12V",
+          "island": [
+            "U3102.11"
+          ],
+          "path": null
+        },
+        {
+          "net": "-12V",
+          "island": [
+            "U3202.11"
+          ],
+          "path": null
+        }
+      ],
+      "diagnostics": [
+        {
+          "net": "-12V",
+          "endpoints": [
+            "U204.11"
+          ],
+          "reason": "unknown",
+          "phase": "plane_fanout",
+          "attempts": [
+            {
+              "window_cells": [
+                1636,
+                1741,
+                1347,
+                1433
+              ],
+              "expanded": 1186,
+              "limit": 300000
+            }
+          ]
+        },
+        {
+          "net": "-12V",
+          "endpoints": [
+            "U3102.11"
+          ],
+          "reason": "no_legal_via_site",
+          "phase": "plane_fanout",
+          "attempts": []
+        },
+        {
+          "net": "-12V",
+          "endpoints": [
+            "U3202.11"
+          ],
+          "reason": "unknown",
+          "phase": "plane_fanout",
+          "attempts": [
+            {
+              "window_cells": [
+                1596,
+                1701,
+                667,
+                753
+              ],
+              "expanded": 846,
+              "limit": 300000
+            }
+          ]
+        }
+      ],
+      "links": [],
+      "proposal": {
+        "board_sha256": "3d40f1db27f350ce063bf601cab2eeb9f6394b47da9930fca21b6bc0258d2352",
+        "removed_uuids": [],
+        "copper": [
+          {
+            "kind": "segment",
+            "uuid": "41c45c02-84f6-5df3-a735-87bdd37cc919",
+            "net": "-12V",
+            "start_nm": [
+              208130000,
+              196757500
+            ],
+            "end_nm": [
+              208130000,
+              195620000
+            ],
+            "width_nm": 400000,
+            "layer": "F.Cu"
+          },
+          {
+            "kind": "segment",
+            "uuid": "6c9b83a5-d2e1-52ea-846e-edae290aaaab",
+            "net": "-12V",
+            "start_nm": [
+              123130000,
+              193757500
+            ],
+            "end_nm": [
+              123130000,
+              192620000
+            ],
+            "width_nm": 400000,
+            "layer": "F.Cu"
+          },
+          {
+            "kind": "segment",
+            "uuid": "65b4a6d0-3278-5270-b34b-b6434ace9687",
+            "net": "-12V",
+            "start_nm": [
+              157130000,
+              193757500
+            ],
+            "end_nm": [
+              157130000,
+              192620000
+            ],
+            "width_nm": 400000,
+            "layer": "F.Cu"
+          }
+        ]
+      }
+    }
+  }
+}

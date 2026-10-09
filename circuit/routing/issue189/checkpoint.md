@@ -1,3 +1,40 @@
+# Current checkpoint — 2026-10-09 06:16 UTC
+
+PR#194 merged at002427f1e036f0b998221e2de073284e6c425be7 after all five checks
+passed on1defd95 (CI37889964779). Issue#189 remains OPEN. Main accepted native
+counts are JL135/JR155/core1509, DRC/parity0/0. PR#195 is now based on main;
+active branch agent-fix/189-return-continuation includes that merge atdc6b86f.
+Post-merge194 CI must still be checked; no executor blockage is present.
+
+JR pilot37890000088 rejected155→156: AGND's original main group splits off
+R7532.2/C7512.2/R7434.2 and R7530.2. One further0.07071mm dangling tail appears
+on the repaired victim. Native error/parity0/0 and fresh reload agrees, but full
+membership/warning gate rejects.50707 prior copper objects unchanged;5removed,
+48added in disposable candidate only. Artifact11597949920 digest verified;
+result/diagnosis retained. Explicit two-group ground routing found0paths in11.75s
+with.075grid/.25clearance/.3width/.6via; searches exhausted reachable states.
+Do not repeat this configuration unchanged.
+
+Next JR pilot isolates the independent U7509.9 transaction:32additions/7cuts
+(six original blockers and the donor's exact warned0.05mm victim tail). No signal
+pad groups split for these nets in the donor. Actual isolated return impact is
+unknown. jr-u7509-corridor-prepare.py pins original155, donor and replay hashes;
+jr-coupled-plan.json now selects it. Dispatch read-only coupled pilot after push.
+Keep all original membership, warning, DRC/parity and fresh reload gates.
+
+JL alternate-layer cut pilot37891092578 runs on902c12e (input135), excludingIn3
+for new signal repair. Inspect its actual receipt before any follow-up. Separate
+source-lead extension comparison found0/3 routes both without and with extensions
+(4.634/4.479s); exact same input/parameters. No native run for empty routing result.
+
+Core sole writer37881591885 remains active on retained
+agent-fix/189-isolated-rail-replay. Do not duplicate or infer acceptance. Its
+335-minute compute cap bounds runtime; active logs are unavailable until terminal.
+Inspect native acceptance/cache-equivalence/retention and reconcile bot output
+before any ground-link replay; successful adoption makes the34955 input stale.
+
+## Earlier checkpoint history (superseded above)
+
 # Current checkpoint — 2026-10-09 05:57 UTC
 
 Active execution branch: agent-fix/189-return-continuation. PR#194 is frozen at
