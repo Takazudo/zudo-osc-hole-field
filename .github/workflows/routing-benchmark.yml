@@ -27,7 +27,7 @@ on:
       jl_replay:
         description: Fixed native-eligible JL transaction (used only with replay_jl)
         type: choice
-        options: [rail-leaf, corridor, paired-corridors]
+        options: [rail-leaf, corridor, paired-corridors, ground-junction]
         default: rail-leaf
       recover_core:
         description: Replay the preserved core aggregate and repair split AGND before the full native gate
@@ -158,6 +158,9 @@ jobs:
           elif [[ $JL_REPLAY == rail-leaf ]]; then
             replay=circuit/routing/issue189/jl-rail-leaf-copper.json
             label=issue189-rail-leaf
+          elif [[ $JL_REPLAY == ground-junction ]]; then
+            replay=circuit/routing/issue189/jl-ground-junction-copper.json
+            label=issue189-ground-junction
           else
             exit 1
           fi

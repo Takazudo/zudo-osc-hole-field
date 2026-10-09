@@ -1,3 +1,32 @@
+# Current checkpoint — 2026-10-09 06:55 UTC
+
+JL ground-junction pilot37894907581 is NATIVE ELIGIBLE135→134. Native errors/parity0/0,
+no new warnings, no original pad-group/return splits, independent fresh agreement.
+33103 original objects retained,21removed,28added. Candidate
+892c31f6d97081723864996d601ece6ecf272c25140fd1169f9e534b1adcda6a;
+replay4e30062818692c712c156dce37c0a37712d5e435b1ca9e01921652b6e3332456.
+Artifact11600556242 ZIP verified, exact result/replay retained. Workflow option
+jl_replay=ground-junction now permits canonical replay through unchanged full gates.
+Dispatch replay_jl=true/jl_replay=ground-junction after push; do not duplicate it.
+This removes only the exact diagnosed terminal copper; fixed panel/electrical
+requirements and every original connected pad group remain protected.
+
+JR ground canonical writer37894363972 is active on3b5c056. JR U7509-tail donor
+is separately native eligible155→154, but must be rebound to the eventual accepted
+JR ground input before replay. Do not overwrite accepted ground additions.
+Core new sole writer37895925149 is active on agent-fix/189-core-filtered at
+0e6697df2bde94e3b3397da9ae0727bcdf4de464 (56nets/216outersegments/zero removals).
+Previous outer writer is terminal/rejected; canonical core remains1509.
+
+Task PR195 branch agent-fix/189-return-continuation. Main postmerge194 checks PASS;
+main remainsJL135/JR155/core1509 until task replay commits and PR checks complete.
+Issue189 OPEN. Next: reconcile each bot commit and exact native receipts; rebind
+JR tail; freeze verified PR head for full CI, merge under existing authorization,
+and continue ground-corridor cases on the accepted inputs. Native eligibility is
+not canonical adoption, completion, or hardware qualification.
+
+## Earlier checkpoint history (superseded above)
+
 # Current checkpoint — 2026-10-09 06:53 UTC
 
 Core outer run37881591885 is finished and REJECTED1509→1430. Native DRC/parity0/0,
