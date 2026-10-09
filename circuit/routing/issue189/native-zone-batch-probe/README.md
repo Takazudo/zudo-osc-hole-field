@@ -1,14 +1,15 @@
-# Inactive, read-only zone batching comparison
+# Read-only native zone batching comparison
 
-No native probe has run. No acceptance code, workflow, source placement, or
-canonical copper is changed by this preparation. The existing sole core worker
-37984573591 remains authoritative for its own terminal result; do not duplicate it.
+Run38002541870 at`b19d387d62bb2a016638efff740051b8a0f15eb5` is active,
+with a40-minute native command bound starting23:05:06UTC October9. No timing or
+equivalence result is claimed yet. No acceptance code, source placement or
+canonical copper changes. The sole core writer37984573591 remains untouched.
 
-The follow-on branch also exposes already-captured stderr when the precision
-vendor sweep stdout assertion fails. Expected exit status and stdout are
-unchanged. This improves the next failure's diagnosis; it does not establish the
-cause of the earlier empty-stdout failures. That native sweep remains unrun here,
-and PR213 stays at803bba6 for its unchanged-head retry.
+Supported pinned-native CI has recovered: PR213 and PR215 exact heads passed all
+five checks and merged. This branch also exposes already-captured stderr when
+the precision vendor sweep stdout assertion fails; criteria are unchanged and
+the earlier empty-stdout cause remains unproven. Local image extraction remains
+blocked; no more local unpacking or cleanup.
 
 Run37983410773 stopped at its 80-minute bound with exit124. Its first zone completed
 only stage0 items0..133 of144. Upload succeeded: artifact11644814747, archive SHA256
@@ -47,8 +48,8 @@ bash "$HOME/.codex/scripts/heavy-guard.sh" -- \
 ## Reproducible execution after native access is restored
 
 Use a supported runner with the repository's exact pinned KiCad10.0.6 image
-already available. Current cloud storage and CI pull-quota blockers are recorded
-in issue214. Do not retry local image unpacking, alter Docker configuration,
+already available. The remaining local cloud storage blocker is recorded in issue214;
+supported CI is available. Do not retry local image unpacking, alter Docker configuration,
 substitute an oracle, or dispatch another core writer to run this probe.
 
 The current session's immutable inputs are:
@@ -70,6 +71,11 @@ bash "$HOME/.codex/scripts/heavy-guard.sh" -- \
   .circuit-cache/issue189-zone-batch-input/golden.zip \
   .circuit-cache/issue189-zone-batch-result
 ```
+
+The active run already uses these immutable inputs; do not dispatch an unchanged
+duplicate. `reconcile.py` is prepared to verify its terminal artifact independently.
+The134 saved reports have no zone-linked positive findings, so positive controls
+in `controls-plan.md` are required before any production batching change.
 
 The output directory must not already exist. Retain all raw reports/fixtures,
 `result.json`, console log, input hashes and output archive digest. Compare the
