@@ -183,6 +183,14 @@ def repair_nets(dump,targets,cut):
     return list(targets)+sorted(affected-set(targets))
 
 
+def repair_layers(spec):
+    """A local pilot may restrict signal layers, never add a reserved plane."""
+    layers=spec.get('repair_layers',SIGNAL_LAYERS)
+    if not layers or len(set(layers))!=len(layers) or not set(layers)<=set(SIGNAL_LAYERS):
+        raise ValueError('repair_layers must be a nonempty subset of existing signal layers')
+    return list(layers)
+
+
 def repair_selection(dump,spec):
     """Use a source-pinned corridor cut, or the existing terminal-local selection."""
     if 'repair_source_uuids' not in spec:
@@ -263,6 +271,7 @@ def stage(board_id,current,spec,definition,log):
     elif spec.get('repair'):
         # Phase A: cut foreign signal copper beside the failed pins; native islands then
         # describe exactly what each cut net must reconnect.
+        layers=repair_layers(spec)
         targets,cut=repair_selection(dump,spec)
         if not targets:return None,None
         nets_to_repair=repair_nets(dump,targets,cut)
@@ -275,7 +284,7 @@ def stage(board_id,current,spec,definition,log):
         # Keep padless fragments and native component identities: they remain
         # boundary anchors/obligations, rather than disappearing from the metric.
         kwargs={k:v for k,v in spec.items() if k in ('clearance','signal_width','signal_via_diameter','grow','res','window_mm','escape_halo_mm')}
-        results,removed=route(dump,nets_to_repair,allowed_layers=SIGNAL_LAYERS,layer_cost=LAYER_COST,rail_nets=RAILS,
+        results,removed=route(dump,nets_to_repair,allowed_layers=layers,layer_cost=LAYER_COST,rail_nets=RAILS,
                               fill_guards={'-12V':'In3.Cu'},diagnostics=repair_details['routing_diagnostics'],log=log,**kwargs,**neck_kwargs(board_id))
         rows,links=copper_rows(results,board_id,'grid-'+spec['name'])
         current=cut_board;removed=[]

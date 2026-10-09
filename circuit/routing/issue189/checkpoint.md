@@ -39,6 +39,14 @@ paths/107 failures in140.7846s and rolled back all changes (guard PASS). Archive
 original plan:jl-corridor-plan.json. Current jl-local-plan.json is the new native
 pilot, NOT the already-adopted seven-object transaction. Native not yet run.
 
+JL six-corridor pilot37887005318 is active from4f15044. No canonical writer.
+JR follow-on source plan now selects23 objects over six disjoint corridors on
+native-eligible155, excluding In3 signal routes. Its all-net bounded probe had
+0 accepted paths/121 failures in177.1664s (guard PASS); no copper changed.
+Do not dispatch the follow-on cut until JR writer37886650433 finishes and its
+adopted board hash matches the plan. Current jr-local-plan.json is this next
+pilot; the old terminal-only plan is archived separately.
+
 ## Earlier checkpoint history (superseded above)
 
 # Current checkpoint — 2026-10-09 04:34 UTC
