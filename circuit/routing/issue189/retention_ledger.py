@@ -14,4 +14,4 @@ for name,r in out['boards'].items():
   count=v.get('copper_removed',0)
   if receipt.name=='issue189-benchmark.json':count=len(json.loads(receipt.with_name('issue189-benchmark-copper.json').read_text())['removed'])
   if count:r['accepted_reroutes'].append({'receipt':str(receipt),'removed_objects':count,'before_open_edges':v['open_edges_before'],'after_open_edges':v['open_edges_after'],'native_errors':v.get('native_errors'),'drc_errors':v['drc_errors'],'parity':v['parity'],'split_pad_groups':v['split_pad_groups'],'new_warning_identities':v['new_warning_identities']})
-Path('circuit/routing/issue189/current-retention-ledger.json').write_text(json.dumps(out,indent=2)+'\n')
+Path(f"circuit/routing/issue189/retention-ledger-{out['current_commit'][:7]}.json").write_text(json.dumps(out,indent=2)+'\n')

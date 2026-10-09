@@ -1,3 +1,25 @@
+# PR200 merged; latest exact continuation — 2026-10-09 11:43 UTC
+
+PR200 normal merge b215be72058ac77e5b2be04b2b4de5ae93a60541 at11:40:43Z after
+all five checks37923371952 passed on exacthead1686c77cefa7874a765fbf768adf071557ff469e.
+Main acceptedJL125/JR141/core1441. Branch retained;189OPEN. Postmerge CI37925223945
+is running and must still be verified. PR201 now targets main and includes this merge.
+
+JL87-object37923946134 REJECTED125→125:signal joined,C2148.2ground split remains.
+0DRC/parity,477warnings,no new identities,fresh agrees,all33220oldobjects retained.
+Artifact11613726627 ZIP17b5144dfc796aa8b7bc496d5851d76cf4a0c9171d6eabfb80514c82a40c9761 verified.
+Publication raced; fallback denied workflow-write permission. Receipt/replay recovered
+from artifact; no credentials changed, no rejected board adopted. No active JL writer.
+
+JR233-object37925027262 is sole JR writer on source5b7f5a41c11ee666577c9aa37949d1c082140dd5.
+A changed9-object/one-via outer-only D7504 proposal is saved but UNREBASED/UNSUBMITTED;
+after terminal reconciliation usejr-d7504-outer-avoid/rebase_proposal.py with actual
+published SHA. Do not submit before then. Core37907147442 remains solecorewriter;
+core-short-power143still waits for its terminal receipt before explicit rebase.
+
+A transient exec-server disconnection recovered on retry; current workspace intact.
+Complete connectivity/hardware qualification remain unmet; never close189yet.
+
 # JR via alternative rejected; next233ready — 2026-10-09 11:37 UTC
 
 JR37923452631 REJECTED141→141:signal joined,but R7530.2AGNDsplit remains;
