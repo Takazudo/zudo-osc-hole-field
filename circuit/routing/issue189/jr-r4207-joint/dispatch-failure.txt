@@ -1,0 +1,33 @@
+adopt	Replay reviewed JR copper through the native gate	﻿2026-10-09T16:39:03.8430013Z ##[group]Run mkdir -p .circuit-cache
+adopt	Replay reviewed JR copper through the native gate	2026-10-09T16:39:03.8430382Z [36;1mmkdir -p .circuit-cache[0m
+adopt	Replay reviewed JR copper through the native gate	2026-10-09T16:39:03.8430644Z [36;1mset -o pipefail[0m
+adopt	Replay reviewed JR copper through the native gate	2026-10-09T16:39:03.8430898Z [36;1mcase "$JR_REPLAY" in[0m
+adopt	Replay reviewed JR copper through the native gate	2026-10-09T16:39:03.8432082Z [36;1m  return-restored|original-ground|u7509-on-ground|rail-finer|two-on-supply|bounded-one|bounded-two|three-compatible|two-without-d7504|next-three|three-protected|two-after-protected|d7504-via-avoid|three-remaining|d7504-outer-avoid|d7208-no-via|two-no-via|r8487-no-via|two-fine-ground|u8303-endpoints) ;;[0m
+adopt	Replay reviewed JR copper through the native gate	2026-10-09T16:39:03.8433297Z [36;1m  *) exit 1 ;;[0m
+adopt	Replay reviewed JR copper through the native gate	2026-10-09T16:39:03.8433503Z [36;1mesac[0m
+adopt	Replay reviewed JR copper through the native gate	2026-10-09T16:39:03.8433804Z [36;1mreplay="circuit/routing/issue189/jr-${JR_REPLAY}-copper.json"[0m
+adopt	Replay reviewed JR copper through the native gate	2026-10-09T16:39:03.8435844Z [36;1mif [[ $JR_REPLAY == bounded-one || $JR_REPLAY == bounded-two || $JR_REPLAY == three-compatible || $JR_REPLAY == two-without-d7504 || $JR_REPLAY == next-three || $JR_REPLAY == three-protected || $JR_REPLAY == two-after-protected || $JR_REPLAY == d7504-via-avoid || $JR_REPLAY == three-remaining || $JR_REPLAY == d7504-outer-avoid || $JR_REPLAY == d7208-no-via || $JR_REPLAY == two-no-via || $JR_REPLAY == r8487-no-via || $JR_REPLAY == two-fine-ground || $JR_REPLAY == u8303-endpoints || $JR_REPLAY == r4207-joint ]]; then[0m
+adopt	Replay reviewed JR copper through the native gate	2026-10-09T16:39:03.8437638Z [36;1m  python "circuit/routing/issue189/jr-${JR_REPLAY}/prepare.py"[0m
+adopt	Replay reviewed JR copper through the native gate	2026-10-09T16:39:03.8438083Z [36;1m  replay=".circuit-cache/issue189-jr-${JR_REPLAY}/copper.json"[0m
+adopt	Replay reviewed JR copper through the native gate	2026-10-09T16:39:03.8438438Z [36;1mfi[0m
+adopt	Replay reviewed JR copper through the native gate	2026-10-09T16:39:03.8438885Z [36;1mtimeout --signal=INT --kill-after=2m 80m python -u scripts/pcbgen/route_shards.py merge osc-jack-right \[0m
+adopt	Replay reviewed JR copper through the native gate	2026-10-09T16:39:03.8439438Z [36;1m  "$replay" --label "issue189-${JR_REPLAY}" \[0m
+adopt	Replay reviewed JR copper through the native gate	2026-10-09T16:39:03.8439774Z [36;1m  2>&1 | tee .circuit-cache/adoption.log[0m
+adopt	Replay reviewed JR copper through the native gate	2026-10-09T16:39:03.8504471Z shell: /usr/bin/bash -e {0}
+adopt	Replay reviewed JR copper through the native gate	2026-10-09T16:39:03.8504738Z env:
+adopt	Replay reviewed JR copper through the native gate	2026-10-09T16:39:03.8504937Z   BOARD: osc-jack-right
+adopt	Replay reviewed JR copper through the native gate	2026-10-09T16:39:03.8505173Z   BENCHMARK_RUN:
+adopt	Replay reviewed JR copper through the native gate	2026-10-09T16:39:03.8505382Z   RECOVER_CORE: false
+adopt	Replay reviewed JR copper through the native gate	2026-10-09T16:39:03.8505602Z   CORE_REPLAY: aggregate
+adopt	Replay reviewed JR copper through the native gate	2026-10-09T16:39:03.8505814Z   REPLAY_JR: true
+adopt	Replay reviewed JR copper through the native gate	2026-10-09T16:39:03.8506176Z   JR_REPLAY: r4207-joint
+adopt	Replay reviewed JR copper through the native gate	2026-10-09T16:39:03.8506388Z   REPLAY_JL: false
+adopt	Replay reviewed JR copper through the native gate	2026-10-09T16:39:03.8506589Z   JL_REPLAY: rail-leaf
+adopt	Replay reviewed JR copper through the native gate	2026-10-09T16:39:03.8506869Z   pythonLocation: /opt/hostedtoolcache/Python/3.10.22/x64
+adopt	Replay reviewed JR copper through the native gate	2026-10-09T16:39:03.8507322Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.10.22/x64/lib/pkgconfig
+adopt	Replay reviewed JR copper through the native gate	2026-10-09T16:39:03.8507745Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.10.22/x64
+adopt	Replay reviewed JR copper through the native gate	2026-10-09T16:39:03.8508123Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.10.22/x64
+adopt	Replay reviewed JR copper through the native gate	2026-10-09T16:39:03.8508505Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.10.22/x64
+adopt	Replay reviewed JR copper through the native gate	2026-10-09T16:39:03.8508883Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.10.22/x64/lib
+adopt	Replay reviewed JR copper through the native gate	2026-10-09T16:39:03.8509203Z ##[endgroup]
+adopt	Replay reviewed JR copper through the native gate	2026-10-09T16:39:03.8613839Z ##[error]Process completed with exit code 1.
