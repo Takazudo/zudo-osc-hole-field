@@ -1,5 +1,5 @@
 name: Routing obstacle benchmark
-run-name: "Issue 189 ${{ inputs.recover_core && 'core return repair' || inputs.adopt_run && 'copper adoption' || 'same-input benchmark' }} — ${{ inputs.board }}"
+run-name: "Issue 189 ${{ inputs.local_repair && 'read-only local repair' || inputs.recover_core && 'core return repair' || inputs.adopt_run && 'copper adoption' || 'same-input benchmark' }} — ${{ inputs.board }}"
 on:
   workflow_dispatch:
     inputs:
@@ -20,8 +20,8 @@ on:
         type: choice
         options: [aggregate, reviewed]
         default: aggregate
-      local_jr:
-        description: Read-only JR local branch-repair pilot (no canonical writer)
+      local_repair:
+        description: Read-only jack local branch-repair pilot (no canonical writer)
         type: boolean
         default: false
 permissions:
@@ -31,7 +31,7 @@ concurrency:
   cancel-in-progress: false
 jobs:
   benchmark:
-    if: inputs.adopt_run == '' && !inputs.recover_core && !inputs.local_jr
+    if: inputs.adopt_run == '' && !inputs.recover_core && !inputs.local_repair
     runs-on: ubuntu-latest
     timeout-minutes: 355
     strategy:
@@ -70,7 +70,7 @@ jobs:
           if-no-files-found: error
           include-hidden-files: true
   adopt:
-    if: (inputs.adopt_run != '' || inputs.recover_core) && !inputs.local_jr
+    if: (inputs.adopt_run != '' || inputs.recover_core) && !inputs.local_repair
     runs-on: ubuntu-latest
     timeout-minutes: 355
     permissions:
@@ -150,7 +150,7 @@ jobs:
           include-hidden-files: true
           retention-days: 30
   local-pilot:
-    if: inputs.local_jr
+    if: inputs.local_repair
     runs-on: ubuntu-latest
     timeout-minutes: 90
     permissions:
@@ -160,8 +160,8 @@ jobs:
       ADOPT_RUN: ${{ inputs.adopt_run }}
       RECOVER_CORE: ${{ inputs.recover_core }}
     steps:
-      - name: Require a read-only JR request
-        run: '[[ $BOARD == osc-jack-right && -z $ADOPT_RUN && $RECOVER_CORE == false ]]'
+      - name: Require a read-only jack request
+        run: '[[ ( $BOARD == osc-jack-left || $BOARD == osc-jack-right ) && -z $ADOPT_RUN && $RECOVER_CORE == false ]]'
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
       - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97
         with:
@@ -171,17 +171,17 @@ jobs:
         run: |
           mkdir -p .circuit-cache
           set -o pipefail
-          timeout --signal=INT --kill-after=2m 80m python -u scripts/pcbgen/local_repair_pilot.py \
+          timeout --signal=INT --kill-after=2m 80m python -u scripts/pcbgen/local_repair_pilot.py --board "$BOARD" \
             2>&1 | tee .circuit-cache/local-repair.log
       - name: Retain local proposal and native rejection or eligibility
         if: always()
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
         with:
-          name: obstacle-local-jr-${{ github.run_id }}
+          name: obstacle-local-${{ inputs.board }}-${{ github.run_id }}
           path: |
-            .circuit-cache/issue189-jr-local/
-            .circuit-cache/osc-jack-right-grid-189-local-base/
-            .circuit-cache/osc-jack-right-grid-189-jr-local*/
+            .circuit-cache/issue189-local-${{ inputs.board }}/
+            .circuit-cache/${{ inputs.board }}-grid-189-local-base/
+            .circuit-cache/${{ inputs.board }}-grid-189-j*-local*/
             .circuit-cache/local-repair.log
           include-hidden-files: true
           retention-days: 30

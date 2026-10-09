@@ -40,7 +40,12 @@ A separate **read-only** JR local repair is prepared in `jr-local-plan.json` and
 signal nets within1.2mm, obtain native topology, keep padless fragments as boundary
 obligations, and route only the target plus those four nets. It restores the -12V
 fill guard and does not move parts or promote automatically. This is a changed
-local branch method after the failed whole-net rip-up probes. Native NOT RUN yet.
+local branch method after the failed whole-net rip-up probes. JR native read-only run **37873299470** is in progress at `cca3c22`; do not
+duplicate it. A JL plan uses the same bounded method for U2119.12↔U2117.13,
+cutting only three local objects on one blocker net. `jl-short-connections.json`
+records20 current native endpoint pairs against the exact accepted JL board SHA.
+The JL pilot is not dispatched yet. Workflow input for future read-only pilots
+is `local_repair=true`; the older running JR request used `local_jr=true`.
 
 Concurrent branch `agent-fix/jack-replace-region-2` advanced to30db43e with JL140→140
 and JR162→162 region attempts. It was read, not changed. Do not repeat that

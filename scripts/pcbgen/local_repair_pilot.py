@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-"""Read-only native JR local-repair pilot for #189; never promotes a board."""
-import hashlib,json,shutil,sys
+"""Read-only native jack local-repair pilot for #189; never promotes a board."""
+import argparse,hashlib,json,shutil,sys
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[2]
 sys.path.insert(0,str(ROOT))
@@ -10,12 +10,16 @@ from scripts.pcbgen.copper_identity import retention
 
 
 def main():
-    plan_path=ROOT/'circuit/routing/issue189/jr-local-plan.json'
+    parser=argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--board',choices=('osc-jack-left','osc-jack-right'),default='osc-jack-right')
+    args=parser.parse_args();short='jl' if args.board=='osc-jack-left' else 'jr'
+    plan_path=ROOT/f'circuit/routing/issue189/{short}-local-plan.json'
     plan=json.loads(plan_path.read_text());board_id=plan['board']
+    if board_id!=args.board:raise ValueError('plan board differs from requested board')
     source=ROOT/'boards'/board_id/f'{board_id}.kicad_pcb'
     source_hash=hashlib.sha256(source.read_bytes()).hexdigest()
     if source_hash!=plan['input_board_sha256']:raise ValueError('stale local-repair input')
-    out=ROOT/'.circuit-cache/issue189-jr-local';out.mkdir(exist_ok=True)
+    out=ROOT/f'.circuit-cache/issue189-local-{board_id}';out.mkdir(exist_ok=True)
     receipt={'status':'RUNNING','adopted':False,'input_board_sha256':source_hash,
              'plan_sha256':hashlib.sha256(plan_path.read_bytes()).hexdigest()}
     def save(): (out/'result.json').write_text(json.dumps(receipt,indent=2,sort_keys=True)+'\n')
