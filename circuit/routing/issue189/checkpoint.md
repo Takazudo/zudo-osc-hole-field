@@ -1,3 +1,162 @@
+# PR201 verification checkpoint — 2026-10-09 12:04 UTC
+
+PR200 merged as `b215be72058ac77e5b2be04b2b4de5ae93a60541`. All five exact-head
+checks (`37923371952`) and all five post-merge checks (`37925223945`) passed.
+Main and the continuation retain **JL125 / JR141 / core1441**, with native DRC
+and parity errors both zero. Issue #189 remains open; full connectivity is unmet.
+
+JR run `37925027262` was rejected. The initial 233-object candidate split −12 V
+at C4616.1/U4602.4 and ground at C8431.2/U8403.5–8. The driver retained the failed
+workspace and reverted the 115-object X6522EE2C05A9BE92D3C2 transaction. The final
+118-object candidate joined two signals but left two ground splits (141→141),
+so nothing was adopted. Both attempts retain all 50,964 prior objects unchanged.
+Artifact `11613823860` was downloaded and its ZIP digest verified. Exact results
+and both retention proofs are in `jr-three-remaining/`.
+
+Next steps:
+
+1. Freeze this PR201 head and require all five exact-head checks before normal
+   merge; retain its branch and verify post-merge CI.
+2. Dispatch the rebased nine-object D7504 outer alternative on a dedicated
+   `agent-fix/189-jr-outer-worker` branch from this head. Do not push human changes
+   onto that worker branch. Reconcile its eventual board-only delta and actual
+   native receipt; never replace another board from its older snapshot.
+3. Core run `37925863664` remains the sole core writer, using source
+   `97e3a28b54ca2a4071ab36b2a4a644fa187debcf` on the retained ground-fill branch.
+   Its 143-object power batch has not been accepted yet. After terminal results
+   are reconciled, the saved 26-segment/no-via alternative requires an explicit
+   rebase against the actual accepted SHA; see `core-u1513-alternatives/README.md`.
+4. No JL writer is active. Ground-first C2148 reinforcement yielded ground
+   candidates, but all six subsequent signal searches failed. Evidence is saved
+   in `jl-c2148-reinforcement/`; no combined copper was submitted or adopted.
+
+Local validation: 97 affected tests passed for the diagnostic correction;
+`pnpm circuit:check`, `pnpm check`, and workflow YAML/shell validation passed.
+Fixed panel, project/rule files, electrical limits and native acceptance gates
+remain unchanged. Hardware qualification is not claimed.
+
+# Active power batch and zero-via alternative — 2026-10-09 11:53 UTC
+
+Sole core writer is now37925863664 on97e3a28b54ca2a4071ab36b2a4a644fa187debcf,
+core-short-power143objects. The old31-object run is terminal/reconciled/rejected.
+No second core writer. A changed26-segment/no-via U1513 alternative is saved under
+core-u1513-alternatives; its gap to pending143is2.4844459391092233mm. It remains
+UNREBASED/UNSUBMITTED until actual power output is inspected. Helper and exact
+commands are in that directory. Three changed screens completed in27s,guardPASS.
+
+JR233-object37925027262 remains soleJRwriter. The9-object/one-via D7504 outer
+alternative likewise waits for its terminal result and exact rebase. No activeJLwriter.
+Main200postmerge37925223945 has docs+allthree native DRC jobsPASS; final test job
+still running. Do not claim full postmergePASS until it finishes. Accepted canonical
+counts remain125/141/1441 with0DRC/parity;189staysOPEN.
+
+# Core terminal result reconciled; power batch ready — 2026-10-09 11:46 UTC
+
+Core37907147442 REJECTED1441→1443:one signal joined,three AGND groups split.
+Native DRC/parity0/0,619unchanged warnings,no new identities,fresh agrees;all
+133169oldobjects identical. Canonical core remainsa0e3cff1ebc211564b8be10f6a993d50fb6d4372edde86a056ebc8dda3ea5932.
+Receipt-onlybot405d6fa7e05aa3bbf95850d4073f22db12a042bf cherry-picked as5b530d8.
+Artifact11613123740 ZIP4411add4a3ce07f19a80992a4eccca75be7a185fe87b6cec8a00e52e4dca0254 downloaded/verified.
+
+core-short-power143is now explicitly rebased on that unchanged accepted input:
+all133169objects retained,zero cuts/collisions,new/newgap1.335124218810462mm.
+109supply targets+4ground fanouts,139full-width segments+4vias. NativeNOTYETRUN
+at this checkpoint. Submit once withrecover_core=true,core_replay=short-power,
+board=osc-core on this continuation. The old core branch stays retained but has
+no active writer. Do not repeat the failed31-object proposal unchanged.
+
+JR233-object37925027262 remains active. No activeJLwriter. Main200postmergeCI
+37925223945 remains running. Main and branch acceptedcounts125/141/1441.
+Keep189OPEN; useactualterminalreceipts before any further rebase or adoption.
+
+# PR200 merged; latest exact continuation — 2026-10-09 11:43 UTC
+
+PR200 normal merge b215be72058ac77e5b2be04b2b4de5ae93a60541 at11:40:43Z after
+all five checks37923371952 passed on exacthead1686c77cefa7874a765fbf768adf071557ff469e.
+Main acceptedJL125/JR141/core1441. Branch retained;189OPEN. Postmerge CI37925223945
+is running and must still be verified. PR201 now targets main and includes this merge.
+
+JL87-object37923946134 REJECTED125→125:signal joined,C2148.2ground split remains.
+0DRC/parity,477warnings,no new identities,fresh agrees,all33220oldobjects retained.
+Artifact11613726627 ZIP17b5144dfc796aa8b7bc496d5851d76cf4a0c9171d6eabfb80514c82a40c9761 verified.
+Publication raced; fallback denied workflow-write permission. Receipt/replay recovered
+from artifact; no credentials changed, no rejected board adopted. No active JL writer.
+
+JR233-object37925027262 is sole JR writer on source5b7f5a41c11ee666577c9aa37949d1c082140dd5.
+A changed9-object/one-via outer-only D7504 proposal is saved but UNREBASED/UNSUBMITTED;
+after terminal reconciliation usejr-d7504-outer-avoid/rebase_proposal.py with actual
+published SHA. Do not submit before then. Core37907147442 remains solecorewriter;
+core-short-power143still waits for its terminal receipt before explicit rebase.
+
+A transient exec-server disconnection recovered on retry; current workspace intact.
+Complete connectivity/hardware qualification remain unmet; never close189yet.
+
+# JR via alternative rejected; next233ready — 2026-10-09 11:37 UTC
+
+JR37923452631 REJECTED141→141:signal joined,but R7530.2AGNDsplit remains;
+R7505split is avoided.0DRC/parity,520unchanged warnings,no new identities,fresh
+agrees. All50964oldobjects identical. Artifact11614010702 ZIP0824da7ca61708b51bce5627b1e540353fa0678223dd4ce343ad25c88c2bd9a2 verified.
+Receipt-onlybotac793c8 integrated; canonical JR unchanged141.
+
+Three separate remaining signal transactions233objects rebased on actual141SHA
+3d9940791131e31d22ea65e4457ccb77d5250d629eaa2b5d3c6b03024ac3405c;all50964
+objects retained,zero cuts/UUID conflicts,new/newgap18.329622949229602mm.
+Submit replay_jr=true,jr_replay=three-remaining once on this continuation.
+JL87-object37923946134 remains active. Solecore37907147442 remains active.
+PR200 final CI37923371952 has allthree native DRC jobs+docsPASS; final test job
+still pending. Frozenhead1686c77must stay unchanged. Keep189OPEN.
+
+Native-exported pad/net,outline,keepout,layer invariance passed allthree accepted
+stages; boards' KiCad project/rule files are unchanged from original1fe06ad.
+Evidence physical-invariants.json; this is not hardware qualification.
+
+# Next compatible JR batch prepared — 2026-10-09 11:33 UTC
+
+JR141 fresh-input screen found6raster candidates in35s(guardPASS). Two conflict
+with active34-object D7504 output; D7208 is held aside for prior supply-split
+investigation. The other3transactions total233objects,mutually compatible and
+clear of the pending34. Saved asjr-three-remaining/proposal-original.json,not
+rebased or natively checked. Only after JR37923452631 is terminal and reconciled,
+run its rebase_proposal.py with ACTUAL_PUBLISHED_SHA256,inspect plan/gaps,then add
+workflow choice three-remaining and submit one writer. Do not duplicateJR jobs.
+
+JL87-object37923946134 is active on26f83f7674be04fd7691fb3c9b22d6b1d1a3f2d7.
+Core37907147442 remains sole core writer; prepared143-object short-power batch
+still waits for its actual terminal output. PR200 frozen1686c77,CI37923371952
+pending. Accepted branches125/141/1441;main126/143/1441. Keep189OPEN.
+
+# JL remaining ground split isolated — 2026-10-09 11:30 UTC
+
+JL83-object37922377985 is REJECTED125→125:target signal joined,but C2148.2 AGND
+split remains; U2102split is avoided.0DRC/parity,477unchanged warnings,no new
+identities,fresh agrees. All33220oldobjects retained. Artifact11613280814 digest
+b479463bd1a0da8aabc07f1b4d7d70e0fd179497bfa8a78ced3c4bef31ae2fca verified.
+Receipt-only fallbackci-route/osc-jack-left-37922377985 atca900652ee14a76650f3764a4278328a8c034135
+retained and cherry-picked as51c97eb. Rejected copper is not canonical.
+
+C2148fanout on this changed candidate still finds0paths. Native filled polygons
+show back-layer loss; a search-only exclusion above the pad yields87additive
+objects on unchanged JL125. Two other exclusions find0paths. Submit exactly one
+JL writer asreplay_jl=true,jl_replay=u2119-ground-corridor. Native NOTYETRUN here.
+JR34-object37923452631 runs on source124172dbe5ba00a89cc7ee30248283130b86363d.
+Core37907147442 remains sole core writer. PR200 stays frozen1686c77,CI37923371952.
+Actual accepted branchesJL125/JR141/core1441;main still126/143/1441. Keep189OPEN.
+
+# JR141 integrated; continuation replay prepared — 2026-10-09 11:25 UTC
+
+PR200 is frozen at1686c77cefa7874a765fbf768adf071557ff469e, final CI37923371952.
+It contains native-accepted JL125/JR141/core1441; do not change that head while
+checks run. Normal merge is authorized only after all five exact-head checks pass.
+PR201 incorporated this exact accepted state viae76850a; no old copper overwritten.
+
+The34-object D7504 via-location alternative is explicitly rebased on actual JR141
+SHA3d9940791131e31d22ea65e4457ccb77d5250d629eaa2b5d3c6b03024ac3405c.
+All50964oldobjects retained,including50new; zero removals/UUID conflicts; minimum
+cross-net gap to that accepted delta8.755479677707605mm. Submit once with
+replay_jr=true,jr_replay=d7504-via-avoid on PR201. This is not native acceptance.
+JL83-object37922377985 remains its sole JL writer. Core37907147442 remains sole
+core writer on retained ground-signal branch. Keep189OPEN and allbranches retained.
+
 # PR200 frozen for final CI — 2026-10-09 11:23 UTC
 
 JR37920931258 ADOPTED143→141:50additions,zero removals,all50914oldobjects
@@ -16,6 +175,40 @@ accepted JR delta into it before rebasing its34-object JR via-avoid proposal.
 JL83-object37922377985 remains active there on sourcec8259332ed4755fe171a481a22abc9708ffd6245.
 Core37907147442 remains sole core writer on retained ground-signal branch; inspect
 terminal output before core-short-power143rebase/submission. Keep189OPEN.
+# Active writers and diagnostic refinement — 2026-10-09 11:18 UTC
+
+PR201 https://github.com/Takazudo/zudo-osc-hole-field/pull/201 is draft, based on
+PR200's short-power branch. JL83-object native run37922377985 uses immutable
+c8259332ed4755fe171a481a22abc9708ffd6245. JR50-object37920931258 remains active
+on PR200; sole core37907147442 remains active on retained ground-signal branch.
+Do not create duplicate writers. No pending result is claimed accepted.
+
+PR200 exact-head CI37921781202 is still running on82ce9b4a20dc7d42f766927ef259912ba607433f.
+All five checks must pass on the actual current PR head before normal merge;
+check for JR bot deltas first, preserve branches, and verify postmerge CI.
+Main199 postmerge checks already passed; issue189 remains OPEN.
+
+Longer additive JL screen tested24pairs with computed frames<=100mm,0.05mm grid,
+weight2.5,300000expansions:0paths in68.37447359000362s,guardPASS. A red regression
+exposed exhausted searches reported as unknown; fixed diagnostic only,97affected
+testsPASS. Native U2119 rejected91-object retention proves all33220oldobjects
+unchanged. See jl125-long-pairs and jl-u2119-outer/retention.json.
+
+# Ground-fill continuation — 2026-10-09 11:12 UTC
+
+New isolated branch agent-fix/189-ground-fill-continuation starts at 82ce9b4.
+PR200 remains on short-power-continuation for exact-head CI; JR37920931258 is
+still its sole JR writer. Core37907147442 remains the sole core writer on the
+retained ground-signal branch. Reconcile those results before any next JR/core run.
+
+JL U2119 rejected125→126; ground repairs found no legal paths at unchanged rules.
+A search-only via exclusion near C2148 produces a different83-object additive
+proposal on actual JL125, preserving all33220objects. Submit once as replay_jl=true,
+jl_replay=u2119-via-avoid; native results NOT YET RUN at this checkpoint.
+
+JR native fill-loss polygons are saved under jr-d7504-fill-diagnosis. Avoiding the
+first failed via site yields34objects; excluding both sites yields0. This JR
+alternative is not rebased/submitted. Do not adopt raster-only output.
 
 # JL rejected; receipts recovered — 2026-10-09 11:08 UTC
 

@@ -459,7 +459,9 @@ def route(dump,nets=(),rip=(),rip_first=False,res=0.1,layer_cost=None,via_cost=3
             limit=max_expansions if k else min(max_expansions,300_000)
             path,expanded=astar(free,via_ok,s,gl,layer_cost,via_cost,limit,weight,penalty)
             search_failure['attempts'].append({'window_cells':list(map(int,(y0,y1,x0,x1))),'expanded':int(expanded),'limit':int(limit)})
-            if path is None and expanded>=limit:search_failure['reason']='expansion_limit'
+            if path is None:
+                if expanded>=limit:search_failure['reason']='expansion_limit'
+                elif search_failure['reason']=='unknown':search_failure['reason']='search_exhausted'
             if path is not None and soft is not None:
                 blockers=set()
                 for i,(l,y,x) in enumerate(path):

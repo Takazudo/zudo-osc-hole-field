@@ -1,0 +1,3 @@
+Additive-only longer-component screen: exact JL125 native input, computed frames capped at 100 mm per dimension, 0.05 mm grid, weight2.5,300000expansions,zero cuts.24pairs,0paths,68.37447359000362 seconds; heavy guard PASS.18 expansion-limit events,6 exhausted searches mislabeled unknown,1 fill-guard disconnection (a retry can add another event).
+
+The saved result predates the reporting fix. exhaustion-before.txt proves the synthetic enclosed-pad regression was red;97affected tests pass after reporting search_exhausted distinctly. Routing geometry and limits are unchanged. No native adoption is claimed for this screen. The 50 mm limit remains unchanged for bounded cuts; these larger additive-only frames cannot remove old copper.

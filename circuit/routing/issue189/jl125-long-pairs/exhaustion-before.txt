@@ -1,0 +1,16 @@
+F
+======================================================================
+FAIL: test_boxed_pad_reports_exhausted_search (scripts.pcbgen.test_grid_router.GridRouterTests.test_boxed_pad_reports_exhausted_search)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/zudo-osc-hole-field/scripts/pcbgen/test_grid_router.py", line 82, in test_boxed_pad_reports_exhausted_search
+    self.assertEqual(events[0]['reason'],'search_exhausted')
+AssertionError: 'unknown' != 'search_exhausted'
+- unknown
++ search_exhausted
+
+
+----------------------------------------------------------------------
+Ran 1 test in 0.021s
+
+FAILED (failures=1)

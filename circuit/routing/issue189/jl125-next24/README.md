@@ -1,0 +1,1 @@
+The first execution stopped before routing because the next ranked pair exceeded the 50 mm frame limit. After explicitly filtering for that unchanged limit, no further pairs qualified; guard PASS, no paths searched or claimed. Larger-distance work needs a separately designed bounded corridor strategy.

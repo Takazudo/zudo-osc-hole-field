@@ -73,9 +73,22 @@ class GridRouterTests(unittest.TestCase):
         first=next(r for r in results if r['island']==['R0.1'])
         self.assertLess(max(x for _,x,_,*_ in first['path']),3.2*MM)
 
-    def test_boxed_pad_reports_no_path(self):
-        results=self.route(board(ring=True))
+    def test_boxed_pad_reports_exhausted_search(self):
+        events=[]
+        results,removed=route(board(ring=True),res=.1,clearance=.2,
+                              signal_width=.2,diagnostics=events,log=lambda m:None)
         self.assertIsNone(results[0]['path'])
+        self.assertFalse(removed)
+        self.assertEqual(events[0]['reason'],'search_exhausted')
+        self.assertTrue(events[0]['attempts'])
+        self.assertTrue(all(a['expanded']<a['limit'] for a in events[0]['attempts']))
+
+    def test_expansion_limit_is_distinct_from_exhaustion(self):
+        events=[]
+        results,_=route(board(),res=.1,max_expansions=1,
+                        diagnostics=events,log=lambda m:None)
+        self.assertIsNone(results[0]['path'])
+        self.assertEqual(events[0]['reason'],'expansion_limit')
 
     def test_six_layer_board_uses_only_allowed_layers(self):
         dump=board(walls=((6,'B.Cu'),));dump['layers']=['F.Cu','In1.Cu','In2.Cu','In3.Cu','In4.Cu','B.Cu']
