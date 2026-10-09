@@ -99,5 +99,57 @@
     "artifact_zip_sha256": "0bd16fa13d1bc30adb33d4a9eeb5398593dd238d66e99e7344da6245da401415",
     "result_sha256": "d3ab5dce1a31f292783072a493d33b56375c365134d79548a8a46b1b5dae56c5",
     "adoption_status": "REJECTED: target improved by one, -12V and AGND each worsened by one; original supply membership not restored"
+  },
+  {
+    "board": "osc-jack-left",
+    "run": 37878622291,
+    "artifact_id": 11593858317,
+    "artifact_zip_sha256": "f51ba63f0596d048a0fa680222d8b693426860c03dec81b0f30cf7e9420fb57a",
+    "result_sha256": "a2c87cff273b37d6aa54e5b0c4f00c29e44e3461cf4bf183266a4dcdb6a3f58b",
+    "adoption_status": "REJECTED:139\u2192138 but C2148.2 still split from original AGND group; zero errors/parity/new warnings"
+  },
+  {
+    "board": "osc-core",
+    "run": 37872907194,
+    "artifact_id": 11594280873,
+    "artifact_zip_sha256": "711a1f0607fc555ff7909d767c1e9043b5fd65eedd5b58e58a7cedf9a1d8dd13",
+    "adoption_status": "REJECTED:1509\u21921400 but three old AGND groups split and27 new warning identities; no canonical copper changed"
+  },
+  {
+    "board": "osc-jack-left",
+    "run": 37880632743,
+    "artifact_id": 11595090452,
+    "artifact_zip_sha256": "a549af48ecac7da209387d21567401a1fab584a5fc9c63457975ffb03f52b719",
+    "result_sha256": "07eb5be7e4952d5c0b97875f4758bd9ca6e61b989f0172df449a83bb47d12a4c",
+    "before": 139,
+    "after": 138,
+    "status": "NATIVE ELIGIBLE READ-ONLY; CANONICAL ADOPTION STILL REQUIRED"
+  },
+  {
+    "board": "osc-jack-left",
+    "run": 37881515385,
+    "artifact_id": 11595345351,
+    "artifact_zip_sha256": "59eab0d221ac43d9609d4464846f261425630c78941ea88591e62932643d35b5",
+    "adoption_commit": "f154db5af24636296b0a4af46308647f5e4eceda",
+    "before": 139,
+    "after": 138,
+    "status": "ADOPTED; ZERO REMOVALS; ERRORS/PARITY0/0; FULL MEMBERSHIP AND FRESH RELOAD PASS"
+  },
+  {
+    "board": "osc-jack-right",
+    "run": 37881842517,
+    "artifact_id": 11595286599,
+    "artifact_zip_sha256": "e504a6a17d86004965d8ff6640b731ce3dd1a5f904be2e33d05323d6b4cdce1f",
+    "status": "REJECTED: original -12V connectivity changed; canonical unchanged",
+    "evidence_limit": "Named additive candidate workspace missed the old artifact glob. Raw candidate DRC/dump unavailable; do not infer exact final counts. Subsequent workflow retains all named jack workspaces."
+  },
+  {
+    "board": "osc-jack-right",
+    "run": 37882523777,
+    "artifact_id": 11594563303,
+    "artifact_zip_sha256": "dae2f3c2ee5ea213a2980277c1021ffdac4d0cf2e38fd5cebe5995d126dc64af",
+    "before": 162,
+    "after": 163,
+    "status": "REJECTED; original -12V and AGND groups split; errors/parity0/0, no new warnings; original50311 copper objects retained"
   }
 ]

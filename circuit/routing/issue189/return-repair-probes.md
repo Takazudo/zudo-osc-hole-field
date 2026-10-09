@@ -35,3 +35,26 @@ The follow-up JL native pilot selects the existing `rail-links` stage to connect
 components rather than fan out into a disconnected plane fragment. It must restore
 all original supply membership, optionally stitch AGND, pass the independent
 reload, and improve the original canonical result without warning regressions.
+
+
+## Terminal direct-link outcome and isolated segment
+
+Native JL run37878622291 (artifact11593858317, SHA256
+`f51ba63f0596d048a0fa680222d8b693426860c03dec81b0f30cf7e9420fb57a`)
+finished139→138, zero native errors/parity/new warnings, but rejected because
+C2148.2 remains split from original AGND. Extract under
+`.circuit-cache/issue189-downloaded/jl-links/`. The direct ground-link probe uses
+that exact fresh dump and original ground dimensions0.3mm/0.25mm/0.6mm via; zero
+paths, no copper. Its narrowed search scope is never an acceptance metric.
+
+`jr-rail-blocker-probe.py` uses the frozen original JR dump. It permits only the
+three signal nets with source tracks within2mm of U7106.11, max2 victims/one round,
+with original dimensions and limits. All five supply probes failed, no copper
+was added/removed. Detailed reasons remain in its JSON; failure does not prove
+physical impossibility.
+
+The next leaf proposal selects only the native0.65mm -12V segment at(258,183)mm,
+far from the rejected C2148 repair. It adds one track and removes nothing; all72
+nearby original physical objects are unchanged. It is NOT independently native
+checked yet and must never inherit the rejected parent's lower count as accepted
+progress. Its plan rejects any supply/ground split without extra repairs.

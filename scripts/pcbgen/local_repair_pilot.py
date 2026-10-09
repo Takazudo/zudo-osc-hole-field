@@ -10,7 +10,7 @@ from scripts.pcbgen.copper_identity import retention
 
 
 def coupled_candidate(board_id,base,before,plan,definition):
-    """Check one fixed signal replay, then restore supply/return membership.
+    """Check one fixed copper replay, then optionally restore supply/return membership.
 
     This disposable transaction does not weaken the ordinary router's fill
     guard. Its intermediate signal topology is never eligible for promotion.
@@ -18,8 +18,9 @@ def coupled_candidate(board_id,base,before,plan,definition):
     rail_method=plan.get('rail_method','rail-fanout')
     if rail_method not in ('rail-fanout','rail-links'):
         raise ValueError('unsupported coupled rail method')
-    proposal=ROOT/plan['signal_proposal']
-    if hashlib.sha256(proposal.read_bytes()).hexdigest()!=plan['signal_proposal_sha256']:
+    field='proposal' if 'proposal' in plan else 'signal_proposal'
+    proposal=ROOT/plan[field]
+    if hashlib.sha256(proposal.read_bytes()).hexdigest()!=plan[field+'_sha256']:
         raise ValueError('coupled proposal changed')
     if hashlib.sha256(base.read_bytes()).hexdigest()!=plan['input_board_sha256']:
         raise ValueError('native baseline bytes differ from coupled proposal input')
@@ -29,11 +30,13 @@ def coupled_candidate(board_id,base,before,plan,definition):
     drc,after=driver.check(candidate)
     if any(v['severity']=='error' for v in drc['violations']) or drc['schematic_parity']:
         raise driver.StageRejected('coupled signal proposal has native DRC/parity errors')
-    phases={'signal_open_edges':after['open_edges']}
+    phases={'proposal_open_edges':after['open_edges']}
     splits=driver.split_pad_groups(before,after)
     prior_minus=len(before['islands'].get('-12V',[None]))-1
     needs_rail=any(s['net']=='-12V' for s in splits) or len(after['islands'].get('-12V',[None]))-1>prior_minus
     if needs_rail:
+        if not plan.get('restore_connectivity',True):
+            raise driver.StageRejected('isolated replay changed original -12V connectivity')
         rail={**next(s for s in driver.STAGES if s['name']==rail_method),
               'name':plan['name']+'-rail','nets':['-12V'],'res':.05,'window_mm':6}
         if rail_method=='rail-fanout':rail['planes']={'-12V':'In3.Cu'}
@@ -44,6 +47,8 @@ def coupled_candidate(board_id,base,before,plan,definition):
     if any(s['net']=='-12V' for s in driver.split_pad_groups(before,after)) or len(after['islands'].get('-12V',[None]))-1>prior_minus:
         raise driver.StageRejected('coupled transaction did not restore original -12V connectivity')
     if any(s['net']=='AGND' for s in driver.split_pad_groups(before,after)):
+        if not plan.get('restore_connectivity',True):
+            raise driver.StageRejected('isolated replay split original AGND connectivity')
         initial={'open_edges_before':before['open_edges'],'open_edges_after':after['open_edges'],
                  'open_by_net_after':{n:len(g)-1 for n,g in after['islands'].items()}}
         candidate,phases['ground']=driver.stitched(board_id,base,candidate,initial,{'name':plan['name']},definition,print)
@@ -62,7 +67,7 @@ def coupled_candidate(board_id,base,before,plan,definition):
 def main():
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--board',choices=('osc-jack-left','osc-jack-right'),default='osc-jack-right')
-    parser.add_argument('--coupled',action='store_true',help='fixed jack signal replay with mandatory native supply restoration')
+    parser.add_argument('--coupled',action='store_true',help='fixed jack copper replay with mandatory native connectivity gates')
     args=parser.parse_args();short='jl' if args.board=='osc-jack-left' else 'jr'
     mode='coupled' if args.coupled else 'local'
     plan_path=ROOT/f'circuit/routing/issue189/{short}-{mode}-plan.json'

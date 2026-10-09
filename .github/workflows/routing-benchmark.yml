@@ -11,6 +11,10 @@ on:
         description: Optional completed benchmark run ID to replay and natively recheck before adoption
         type: string
         required: false
+      replay_jl:
+        description: Replay the native-eligible isolated JL supply segment through full adoption gates
+        type: boolean
+        default: false
       recover_core:
         description: Replay the preserved core aggregate and repair split AGND before the full native gate
         type: boolean
@@ -18,7 +22,7 @@ on:
       core_replay:
         description: Reviewed recovery transaction (used only with recover_core)
         type: choice
-        options: [aggregate, reviewed]
+        options: [aggregate, reviewed, outer]
         default: aggregate
       local_repair:
         description: Read-only jack local branch-repair pilot (no canonical writer)
@@ -36,7 +40,7 @@ concurrency:
   cancel-in-progress: false
 jobs:
   benchmark:
-    if: inputs.adopt_run == '' && !inputs.recover_core && !inputs.local_repair
+    if: inputs.adopt_run == '' && !inputs.recover_core && !inputs.replay_jl && !inputs.local_repair
     runs-on: ubuntu-latest
     timeout-minutes: 355
     strategy:
@@ -75,7 +79,7 @@ jobs:
           if-no-files-found: error
           include-hidden-files: true
   adopt:
-    if: (inputs.adopt_run != '' || inputs.recover_core) && !inputs.local_repair
+    if: (inputs.adopt_run != '' || inputs.recover_core || inputs.replay_jl) && !inputs.local_repair
     runs-on: ubuntu-latest
     timeout-minutes: 355
     permissions:
@@ -89,11 +93,14 @@ jobs:
       BENCHMARK_RUN: ${{ inputs.adopt_run }}
       RECOVER_CORE: ${{ inputs.recover_core }}
       CORE_REPLAY: ${{ inputs.core_replay }}
+      REPLAY_JL: ${{ inputs.replay_jl }}
     steps:
       - name: Restrict adoption to the isolated issue branch
         run: |
           [[ $GITHUB_REF_NAME == agent-fix/189-* ]] || exit 1
-          if [[ $RECOVER_CORE == true ]]; then
+          if [[ $REPLAY_JL == true ]]; then
+            [[ $BOARD == osc-jack-left && -z $BENCHMARK_RUN && $RECOVER_CORE == false ]] || exit 1
+          elif [[ $RECOVER_CORE == true ]]; then
             [[ $BOARD == osc-core && -z $BENCHMARK_RUN ]] || exit 1
           else
             [[ $BENCHMARK_RUN =~ ^[0-9]+$ ]] || exit 1
@@ -104,18 +111,26 @@ jobs:
           python-version: '3.10'
       - run: python -m pip install -r scripts/pcbgen/numerical-requirements.txt
       - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c
-        if: inputs.recover_core == false
+        if: inputs.adopt_run != ''
         with:
           name: obstacle-benchmark-${{ inputs.board }}-${{ inputs.adopt_run }}
           run-id: ${{ inputs.adopt_run }}
           github-token: ${{ secrets.GITHUB_TOKEN }}
           path: .circuit-cache/benchmark-download
       - name: Replay eligible copper and recheck native connectivity
-        if: inputs.recover_core == false
+        if: inputs.adopt_run != ''
         run: |
           set -o pipefail
           timeout --signal=INT --kill-after=2m 335m python -u scripts/pcbgen/adopt_obstacle_benchmark.py \
             ".circuit-cache/benchmark-download/issue189-$BOARD" --promote \
+            2>&1 | tee .circuit-cache/adoption.log
+      - name: Replay isolated native-eligible JL supply copper
+        if: inputs.replay_jl
+        run: |
+          mkdir -p .circuit-cache
+          set -o pipefail
+          timeout --signal=INT --kill-after=2m 80m python -u scripts/pcbgen/route_shards.py merge osc-jack-left \
+            circuit/routing/issue189/jl-rail-leaf-copper.json --label issue189-rail-leaf \
             2>&1 | tee .circuit-cache/adoption.log
       - name: Recover preserved core copper and repair split returns
         if: inputs.recover_core
@@ -126,6 +141,11 @@ jobs:
             python circuit/routing/issue189/core-reviewed/prepare.py
             replay=circuit/routing/issue189/core-reviewed/copper.json
             label=issue189-reviewed
+            extra=()
+          elif [[ $CORE_REPLAY == outer ]]; then
+            python circuit/routing/issue189/core-outer/prepare.py
+            replay=circuit/routing/issue189/core-outer/copper.json
+            label=issue189-outer
             extra=()
           elif [[ $CORE_REPLAY == aggregate ]]; then
             replay=circuit/routing/issue189/concurrent-core/aggregate-copper.json
@@ -150,12 +170,12 @@ jobs:
             .circuit-cache/*-grid-189-*/
             .circuit-cache/*-189-adoption.json
             .circuit-cache/adoption.log
-            .circuit-cache/osc-core-grid-shards-*/
+            .circuit-cache/*-grid-shards-*/
             boards/${{ inputs.board }}/reports/grid-routing/
           include-hidden-files: true
           retention-days: 30
   local-pilot:
-    if: inputs.local_repair
+    if: inputs.local_repair && !inputs.replay_jl
     runs-on: ubuntu-latest
     timeout-minutes: 90
     permissions:
@@ -193,8 +213,7 @@ jobs:
           path: |
             .circuit-cache/issue189-local-${{ inputs.board }}/
             .circuit-cache/${{ inputs.board }}-grid-189-local-base/
-            .circuit-cache/${{ inputs.board }}-grid-189-j*-local*/
-            .circuit-cache/${{ inputs.board }}-grid-189-j*-coupled*/
+            .circuit-cache/${{ inputs.board }}-grid-189-j*/
             .circuit-cache/local-repair.log
           include-hidden-files: true
           retention-days: 30
