@@ -3,10 +3,32 @@ import json
 import hashlib
 from pathlib import Path
 import unittest
-from scripts.pcbgen.complete_native_warnings import append_observations, check_caps, hole_evidence, unchanged_silk_zones
+from scripts.pcbgen.complete_native_warnings import append_observations, check_caps, hole_evidence, unchanged_silk_zones, zone_evidence
 
 
 class CompleteWarningTests(unittest.TestCase):
+    def test_native_zone_pair_warning_blocks_even_when_added_copper_is_clean(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root=Path(directory);uid='00000000-0000-4000-8000-000000000001'
+            before=root/'before.kicad_pcb';after=root/'after.kicad_pcb'
+            for p,fill in [(before,'old'),(after,'new')]:p.write_text(f'(kicad_pcb (zone (uuid "{uid}") (layer "F.Cu") (filled_polygon {fill})))')
+            context={key:hashlib.sha256(b'context').hexdigest() for key in ['project_sha256','rules_sha256']}
+            item=('silk_overlap','warning',tuple(sorted([uid,'text'])))
+            fixtures=[]
+            for stage in (0,1):
+                folder=root/('zone-'+uid)/f'{stage}-0000';folder.mkdir(parents=True)
+                for suffix in ['.kicad_pro','.kicad_dru']:(folder/after.with_suffix(suffix).name).write_bytes(b'context')
+                rows=[] if stage==0 else [dict(type=item[0],severity=item[1],items=[{'uuid':u} for u in item[2]])]
+                report=folder/'drc.json';report.write_text(json.dumps({'violations':rows}))
+                fixtures.append(dict(stage=stage,item_uuid='text',report_sha256=hashlib.sha256(report.read_bytes()).hexdigest(),identities=[] if stage==0 else [item]))
+            result=dict(version='10.0.6',before_sha256=hashlib.sha256(before.read_bytes()).hexdigest(),after_sha256=hashlib.sha256(after.read_bytes()).hexdigest(),zone_silk_scope_complete=True,zones=[dict(uuid=uid,layer='F.Cu',native_added_shape_empty=False,native_silk_pairs=dict(selected_item_uuids=['text'],fixtures=fixtures,before_identities=[],after_identities=[item],new_identities=[item]))],new_zone_silk_identities=[item])
+            (root/'result.json').write_text(json.dumps(result))
+            with self.assertRaisesRegex(ValueError,'new complete native zone'):
+                zone_evidence(root,before,after,context)
+            result['zone_silk_scope_complete']=False;(root/'result.json').write_text(json.dumps(result))
+            with self.assertRaisesRegex(ValueError,'classification incomplete'):
+                zone_evidence(root,before,after,context)
+
     def test_new_via_audit_cannot_hide_changed_outer_zone_fill(self):
         def board(layer,fill):return f'(kicad_pcb (zone (layer "{layer}") (filled_polygon (pts {fill}))))'
         unchanged_silk_zones(board('F.Cu','old'),board('F.Cu','old'))

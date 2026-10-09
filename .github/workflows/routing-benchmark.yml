@@ -27,7 +27,7 @@ on:
       jl_replay:
         description: Fixed reviewed JL transaction (used only with replay_jl)
         type: choice
-        options: [rail-leaf, corridor, paired-corridors, ground-junction, rail-finer, d2326, u106-outer, u2119-outer, u2119-via-avoid, u2119-ground-corridor, c8143-fanout, three-finer-ground, u2204-endpoints, u1518-joint]
+        options: [rail-leaf, corridor, paired-corridors, ground-junction, rail-finer, d2326, u106-outer, u2119-outer, u2119-via-avoid, u2119-ground-corridor, c8143-fanout, three-finer-ground, u2204-endpoints, u1518-joint, r8276-joint]
         default: rail-leaf
       recover_core:
         description: Replay the preserved core aggregate and repair split AGND before the full native gate
@@ -36,7 +36,7 @@ on:
       core_replay:
         description: Reviewed recovery transaction (used only with recover_core)
         type: choice
-        options: [aggregate, reviewed, outer, outer-filtered, ground-link, bounded-one, short-supplies, short-power, u1513-alternatives, finer-ground-batch, finer-ground-complete-warnings, short-no-via, supply-away-from-splits, native-hole-audit, native-mask-audit]
+        options: [aggregate, reviewed, outer, outer-filtered, ground-link, bounded-one, short-supplies, short-power, u1513-alternatives, finer-ground-batch, finer-ground-complete-warnings, short-no-via, supply-away-from-splits, native-hole-audit, native-mask-audit, native-zone-audit]
         default: aggregate
       local_repair:
         description: Read-only jack local branch-repair pilot (no canonical writer)
@@ -93,7 +93,7 @@ jobs:
           if-no-files-found: error
           include-hidden-files: true
   adopt:
-    if: (inputs.adopt_run != '' || inputs.recover_core || inputs.replay_jl || inputs.replay_jr) && !inputs.local_repair && inputs.core_replay != 'native-hole-audit' && inputs.core_replay != 'native-mask-audit'
+    if: (inputs.adopt_run != '' || inputs.recover_core || inputs.replay_jl || inputs.replay_jr) && !inputs.local_repair && inputs.core_replay != 'native-hole-audit' && inputs.core_replay != 'native-mask-audit' && inputs.core_replay != 'native-zone-audit'
     runs-on: ubuntu-latest
     timeout-minutes: 355
     permissions:
@@ -164,7 +164,7 @@ jobs:
           elif [[ $JL_REPLAY == rail-finer ]]; then
             replay=circuit/routing/issue189/jl-rail-finer-copper.json
             label=issue189-rail-finer
-          elif [[ $JL_REPLAY == u106-outer || $JL_REPLAY == u2119-outer || $JL_REPLAY == u2119-via-avoid || $JL_REPLAY == u2119-ground-corridor || $JL_REPLAY == c8143-fanout || $JL_REPLAY == three-finer-ground || $JL_REPLAY == u2204-endpoints || $JL_REPLAY == u1518-joint ]]; then
+          elif [[ $JL_REPLAY == u106-outer || $JL_REPLAY == u2119-outer || $JL_REPLAY == u2119-via-avoid || $JL_REPLAY == u2119-ground-corridor || $JL_REPLAY == c8143-fanout || $JL_REPLAY == three-finer-ground || $JL_REPLAY == u2204-endpoints || $JL_REPLAY == u1518-joint || $JL_REPLAY == r8276-joint ]]; then
             python "circuit/routing/issue189/jl-$JL_REPLAY/prepare.py"
             replay=".circuit-cache/issue189-jl-$JL_REPLAY/copper.json"
             label="issue189-$JL_REPLAY"
@@ -415,6 +415,46 @@ jobs:
         with:
           name: issue189-mask-audit-${{ github.run_id }}
           path: .circuit-cache/added-mask-audit
+          retention-days: 30
+          include-hidden-files: true
+          if-no-files-found: error
+
+  zone-audit:
+    if: inputs.recover_core && inputs.core_replay == 'native-zone-audit' && inputs.board == 'osc-core' && !inputs.local_repair && !inputs.replay_jl && !inputs.replay_jr && inputs.adopt_run == ''
+    permissions:
+      contents: read
+      actions: read
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+      - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c
+        with:
+          name: obstacle-adoption-osc-core-37950004600
+          run-id: 37950004600
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: .circuit-cache/hole-audit-input
+      - name: Verify immutable native inputs
+        run: |
+          python3 - <<'PY'
+          import hashlib
+          from pathlib import Path
+          root=Path('.circuit-cache/hole-audit-input/.circuit-cache')
+          for stage,expected in [('start','95c815b2178511621f97cd7021938023b96d4ee19c9282ae99b35fb387ba10c5'),('merge','b9f5ca13f83c7ffdbe5836fd271e7c1099e04b901ca1798a7be06f025bd02d66')]:
+              p=root/('osc-core-grid-shards-'+stage)/'osc-core.kicad_pcb'
+              assert hashlib.sha256(p.read_bytes()).hexdigest()==expected
+          PY
+      - name: Audit new via mask interactions against unchanged native artwork
+        run: |
+          bash scripts/kicad/run.sh python3 scripts/pcbgen/audit_zone_silk_scope.py \
+            .circuit-cache/hole-audit-input/.circuit-cache/osc-core-grid-shards-start/osc-core.kicad_pcb \
+            .circuit-cache/hole-audit-input/.circuit-cache/osc-core-grid-shards-merge/osc-core.kicad_pcb \
+            .circuit-cache/zone-silk-audit --classify
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        if: always()
+        with:
+          name: issue189-zone-audit-${{ github.run_id }}
+          path: .circuit-cache/zone-silk-audit
           retention-days: 30
           include-hidden-files: true
           if-no-files-found: error

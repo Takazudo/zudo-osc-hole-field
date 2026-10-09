@@ -1,7 +1,7 @@
 """Validate native fixture evidence, then append full hole observations to DRC.
 
 Never delete or waive a native finding. Only additive, context-invariant boards
-are supported. Both capped silk domains require the independent added-via audit.
+are supported. Both capped silk domains require all-added-copper and zone audits.
 The ordinary promotion gate still decides connectivity, errors and warnings.
 """
 import collections
@@ -16,7 +16,7 @@ import subprocess
 
 from scripts.pcbgen.audit_hole_pairs import possible_pairs
 from scripts.pcbgen.audit_added_mask import unchanged_nonrouting, new_silk_identities
-from scripts.pcbgen.uuid_tools import top_level_spans
+from scripts.pcbgen.uuid_tools import top_level_spans,UUID_RE
 
 HOLE_TYPES={'hole_to_hole','holes_co_located'}
 SUPPORTED_CAPS=HOLE_TYPES | {'silk_overlap','silk_over_copper'}
@@ -108,11 +108,58 @@ def hole_evidence(root, board, drc, context):
     return audit,observations,objects
 
 
-def complete_reports(before_board, after_board, before_drc, after_drc, before_audit, after_audit, mask_audit):
+def zone_evidence(root,before_board,after_board,context):
+    from scripts.pcbgen.audit_zone_silk_scope import zone_metadata
+    root=Path(root);result=read(root/'result.json')
+    if result['version']!='10.0.6' or result['before_sha256']!=sha(before_board) or result['after_sha256']!=sha(after_board):
+        raise ValueError('zone audit native version/source mismatch')
+    if not result.get('zone_silk_scope_complete'):raise ValueError('zone silk classification incomplete')
+    before_text=Path(before_board).read_text();after_text=Path(after_board).read_text()
+    if zone_metadata(before_text)!=zone_metadata(after_text):raise ValueError('zone context or outline changed')
+    expected=set()
+    for a,b in top_level_spans(after_text):
+        block=after_text[a:b]
+        if not block.startswith('(zone') or re.search(r'\(keepout\s',block):continue
+        layers=re.search(r'\(layers?\s+([^)]*)\)',block)
+        if not layers:raise ValueError('zone layers missing')
+        expected.update((UUID_RE.search(block)[1],layer) for layer in re.findall(r'"([^"]+)"',layers[1]) if layer in SILK_TARGET_LAYERS)
+    if len(result['zones'])!=len(expected) or {(r['uuid'],r['layer']) for r in result['zones']}!=expected:
+        raise ValueError('zone scope incomplete')
+    newly_found=set();fixture_count=0
+    for row in result['zones']:
+        if row['native_added_shape_empty']:
+            if row['native_added_area_nm2']!=0 or row['native_added_outline_count']!=0:raise ValueError('inconsistent native zone shape evidence')
+            continue
+        pairs=row.get('native_silk_pairs')
+        if pairs is None:raise ValueError('growing zone has no native pair evidence')
+        selected=pairs['selected_item_uuids'];fixtures=pairs['fixtures']
+        if len(set(selected))!=len(selected) or len(fixtures)!=2*len(selected):raise ValueError('incomplete zone fixture coverage')
+        expected_pairs={(stage,uid) for stage in (0,1) for uid in selected}
+        if {(f['stage'],f['item_uuid']) for f in fixtures}!=expected_pairs:raise ValueError('incomplete paired zone fixtures')
+        unions=[set(),set()]
+        for f in fixtures:
+            index=selected.index(f['item_uuid']);folder=root/('zone-'+row['uuid'])/f"{f['stage']}-{index:04d}"
+            report=folder/'drc.json'
+            if sha(report)!=f['report_sha256']:raise ValueError('zone fixture report hash mismatch')
+            for suffix,key in (('.kicad_pro','project_sha256'),('.kicad_dru','rules_sha256')):
+                if sha(folder/Path(after_board).with_suffix(suffix).name)!=context[key]:raise ValueError('zone fixture context changed')
+            observations={identity(v) for v in new_silk_identities(read(report),row['uuid'])}
+            if observations!=normalized(f['identities']):raise ValueError('zone receipt differs from raw native report')
+            unions[f['stage']].update(observations);fixture_count+=1
+        if unions[0]!=normalized(pairs['before_identities']) or unions[1]!=normalized(pairs['after_identities']):raise ValueError('zone identity union incomplete')
+        delta=unions[1]-unions[0]
+        if delta!=normalized(pairs['new_identities']):raise ValueError('zone identity delta mismatch')
+        newly_found.update(delta)
+    if newly_found!=normalized(result['new_zone_silk_identities']):raise ValueError('zone new identity union incomplete')
+    if newly_found:raise ValueError('new complete native zone silk warning identities')
+    return dict(zone_fixture_count=fixture_count,zone_result_sha256=sha(root/'result.json'),new_zone_silk_identities=[])
+
+
+def complete_reports(before_board, after_board, before_drc, after_drc, before_audit, after_audit, mask_audit, zone_audit=None):
     before_board,after_board=Path(before_board),Path(after_board)
     for drc in (before_drc,after_drc):check_caps(drc)
     count=unchanged_nonrouting(before_board.read_text(),after_board.read_text())
-    unchanged_silk_zones(before_board.read_text(),after_board.read_text())
+    if zone_audit is None:unchanged_silk_zones(before_board.read_text(),after_board.read_text())
     context={}
     for suffix,key in (('.kicad_pro','project_sha256'),('.kicad_dru','rules_sha256')):
         context[key]=sha(before_board.with_suffix(suffix))
@@ -121,6 +168,7 @@ def complete_reports(before_board, after_board, before_drc, after_drc, before_au
     if re.search(r'\(\s*constraint\s+(?:hole|drilled|silk|solder)',rules):
         raise ValueError('custom audited-domain constraint unsupported')
     context['clearance_nm']=math.ceil(read(before_board.with_suffix('.kicad_pro'))['board']['design_settings']['rules']['min_hole_to_hole']*1e6)
+    zone_proof=zone_evidence(zone_audit,before_board,after_board,context) if zone_audit is not None else dict(zone_shapes_byte_identical=True)
     a,old,old_objects=hole_evidence(before_audit,before_board,before_drc,context)
     b,new,new_objects=hole_evidence(after_audit,after_board,after_drc,context)
     if new_objects-old_objects:raise ValueError('new complete native hole warning identities')
@@ -131,18 +179,25 @@ def complete_reports(before_board, after_board, before_drc, after_drc, before_au
     expected={h['uuid'] for h in added}
     if len(expected)!=len(added):raise ValueError('new via UUID ambiguity')
     root=Path(mask_audit);mask=read(root/'result.json')
+    if not mask.get('added_copper_scope_complete'):
+        raise ValueError('new track silk interactions are not covered by via-only evidence')
     if mask['version']!='10.0.6' or mask['before_sha256']!=sha(before_board) or mask['after_sha256']!=sha(after_board):
         raise ValueError('silk audit native version/source mismatch')
     if mask['unchanged_nonrouting_objects']!=count:raise ValueError('silk invariance mismatch')
-    if len(mask['fixtures'])!=len(expected) or {f['via_uuid'] for f in mask['fixtures']}!=expected:
-        raise ValueError('silk audit omits added vias')
+    from scripts.pcbgen.route_shards import copper_block_groups
+    old_ids=set(copper_block_groups(before_board.read_text()));new_ids=set(copper_block_groups(after_board.read_text()))
+    expected_copper=new_ids-old_ids
+    if len(mask['fixtures'])!=len(expected_copper) or {f['copper_uuid'] for f in mask['fixtures']}!=expected_copper:
+        raise ValueError('silk audit omits added copper')
+    if {f['copper_uuid'] for f in mask['fixtures'] if f['kind']=='via'}!=expected:
+        raise ValueError('silk audit added via scope mismatch')
     found=set()
     for i,f in enumerate(mask['fixtures']):
         folder=root/f'fixture-{i:03d}';report=folder/'drc.json'
         if sha(report)!=f['report_sha256']:raise ValueError('silk fixture report hash mismatch')
         for suffix,key in (('.kicad_pro','project_sha256'),('.kicad_dru','rules_sha256')):
             if sha(folder/after_board.with_suffix(suffix).name)!=context[key]:raise ValueError('silk fixture context changed')
-        rows=new_silk_identities(read(report),f['via_uuid'])
+        rows=new_silk_identities(read(report),f['copper_uuid'])
         if rows!=f['violations']:raise ValueError('silk receipt differs from raw native report')
         found.update(identity(v) for v in rows)
     if found!=normalized(mask['new_mask_identities']):raise ValueError('silk identity union incomplete')
@@ -151,6 +206,7 @@ def complete_reports(before_board, after_board, before_drc, after_drc, before_au
         status='COMPLETE NATIVE HOLE OBSERVATIONS APPENDED; NO ORIGINAL FINDING REMOVED',
         before_hole_identities=len(old),after_hole_identities=len(new),new_hole_object_identities=[],
         new_silk_identities=[],before_source_sha256=sha(before_board),after_source_sha256=sha(after_board),
+        zone_evidence=zone_proof,
         audit_result_sha256=[sha(Path(p)/'result.json') for p in (before_audit,after_audit,mask_audit)])
 
 
@@ -159,15 +215,16 @@ def audit_current_reports(before_board, after_board, before_drc, after_drc, outp
     root=Path(__file__).resolve().parents[2]
     output=Path(output)
     output.mkdir(parents=True,exist_ok=False)
-    before_audit=output/'holes-before';after_audit=output/'holes-after';mask_audit=output/'silk'
+    before_audit=output/'holes-before';after_audit=output/'holes-after';mask_audit=output/'silk';zone_audit=output/'zones'
     # The pinned container mounts the checkout at /work, not the host path.
     relative=lambda p:str(Path(p).resolve().relative_to(root))
     commands=[['scripts/pcbgen/audit_hole_pairs.py',relative(before_board),relative(before_audit)],
               ['scripts/pcbgen/audit_hole_pairs.py',relative(after_board),relative(after_audit)],
-              ['scripts/pcbgen/audit_added_mask.py',relative(before_board),relative(after_board),relative(mask_audit)]]
+              ['scripts/pcbgen/audit_added_mask.py',relative(before_board),relative(after_board),relative(mask_audit)],
+              ['scripts/pcbgen/audit_zone_silk_scope.py',relative(before_board),relative(after_board),relative(zone_audit),'--classify']]
     for command in commands:
         subprocess.run(['bash','scripts/kicad/run.sh','python3',*command],cwd=root,check=True)
-    result=complete_reports(before_board,after_board,before_drc,after_drc,before_audit,after_audit,mask_audit)
+    result=complete_reports(before_board,after_board,before_drc,after_drc,before_audit,after_audit,mask_audit,zone_audit)
     for name,value in zip(('complete-before-drc','complete-after-drc','proof'),result):
         (output/(name+'.json')).write_text(json.dumps(value,indent=2)+'\n')
     return result
