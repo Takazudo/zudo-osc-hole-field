@@ -19,11 +19,11 @@ A cut-line bound (`scripts/pcbgen/cut_capacity.py`) showed that the four-layer h
 | Native check | JL / `osc-jack-left` | JR / `osc-jack-right` |
 | --- | --- | --- |
 | Status | ROUTED DRAFT IN PROGRESS | ROUTED DRAFT IN PROGRESS |
-| Native open edges (DRC, settled zone refill) | **119** | **135** |
+| Native open edges (DRC, settled zone refill) | **119** | **134** |
 | Remaining signal edges | 103 | 111 |
-| Remaining rail / ground edges | +12V 0, +5V 0, -12V 0, AGND 16 | +12V 0, +5V 0, -12V 0, AGND 24 |
+| Remaining rail / ground edges | +12V 0, +5V 0, -12V 0, AGND 16 | +12V 0, +5V 0, -12V 0, AGND 23 |
 | DRC errors / schematic parity | 0 / 0 | 0 / 0 |
-| Track segments / vias | 30487 / 2861 | 48029 / 3116 |
+| Track segments / vias | 30487 / 2861 | 48061 / 3116 |
 | Native warnings | hole to hole 2, silk edge clearance 8, silk over copper 199, silk overlap 199, text height 43, track dangling 4, via dangling 22 | hole to hole 24, silk edge clearance 13, silk over copper 199, silk overlap 199, text height 59, track dangling 3, via dangling 23 |
 
 Routing uses `scripts/pcbgen/route_jack_grid.py`: terminal via arrays, ±12 V plane fanouts, rail links, then a negotiated-congestion (PathFinder) pass over every signal net on a 0.05 mm grid (region stages re-run on a 0.035 mm grid inside the neck-down areas), rip-up-and-reroute batches for what it leaves open, with AGND stitching vias where new copper cuts a surface pour. Each stage is applied to a disposable copy, checked with native DRC, schematic parity and zone refill, and kept only when the native open-edge count falls. Rip-up-and-reroute re-offers still-open islands with 4, 8, 12 and then 20 victim nets per probe, and a stranded island joins whichever island of its net is cheapest to reach, not only the largest. Stage receipts are in `boards/<board-id>/reports/grid-routing/`; `reports/ratsnest.json` holds the native per-net topology after a single zone refill; the open-edge figures above come from DRC with refilled zones, which can be higher. Silkscreen/text warnings remain [#44](https://github.com/Takazudo/zudo-osc-hole-field/issues/44).
@@ -295,3 +295,12 @@ replay hashes exactly match the eligible pilot. The first adoption attempt
 failed before routing at a workflow allowlist and is not native evidence; its
 regression and correction are retained. Evidence is in
 `circuit/routing/issue189/jr-r4207-joint`.
+
+
+Run `37967123290` accepted **JR135→134** after the C7413 endpoint pilot passed.
+The replay adds 37 segments with five reviewed cuts and retains all 51,140 uncut
+objects. It has zero native DRC/parity errors, unchanged 520 warning identities,
+no original pad-group splits and fresh native agreement. Published board and
+replay hashes exactly match the eligible pilot; pad, outline, keepout, layer,
+project and electrical-rule invariants remain unchanged. Complete evidence is
+in `circuit/routing/issue189/jr-c7413-endpoints/`. This remains a routed draft.

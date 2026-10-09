@@ -3,10 +3,18 @@ import random
 import unittest
 from scripts.pcbgen.audit_hole_pairs import possible_pairs, pack_pairs
 from scripts.pcbgen.compare_hole_audits import compare
-from scripts.pcbgen.audit_added_mask import unchanged_nonrouting
+from scripts.pcbgen.audit_added_mask import unchanged_nonrouting, new_silk_identities
 
 
 class HoleCoverageTests(unittest.TestCase):
+    def test_copper_layer_silk_warning_is_not_missed(self):
+        row=dict(type='silk_overlap',severity='warning',items=[{'uuid':'via'},{'uuid':'text'}])
+        self.assertEqual(new_silk_identities({'violations':[row]},'via'),[row])
+
+    def test_old_silk_cap_cannot_hide_new_via_warning(self):
+        row=dict(type='silk_overlap',severity='warning',items=[{'uuid':'old-a'},{'uuid':'old-b'}])
+        with self.assertRaises(ValueError):new_silk_identities({'violations':[row]*199},'new-via')
+
     def test_added_mask_scope_rejects_changed_artwork_or_removed_copper(self):
         before='(kicad_pcb (footprint "U1" (fp_text "unchanged")) (via (at 1 2)))'
         after=before[:-1]+' (via (at 3 4)))'
