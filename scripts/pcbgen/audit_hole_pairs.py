@@ -39,12 +39,16 @@ def possible_pairs(holes, clearance):
     return pairs
 
 
-def pack_pairs(pairs, limit=14):
+def pack_pairs(pairs, limit=14, uuids=None):
     if not 2 <= limit <= 14:
         raise ValueError('fixture must stay below the native per-code cap')
     groups = []; current = set()
     for pair in pairs:
-        if len(current | set(pair)) > limit:
+        if uuids and len({uuids[i] for i in pair}) != len(set(pair)):
+            raise ValueError('nearby duplicate UUID pair needs a separate native identity strategy')
+        combined=current | set(pair)
+        ambiguous=uuids is not None and len({uuids[i] for i in combined}) != len(combined)
+        if len(combined) > limit or ambiguous:
             groups.append(sorted(current)); current = set()
         current.update(pair)
     if current:
@@ -71,13 +75,14 @@ def native_holes(board, pcbnew):
         else:
             continue
         uid = item.m_Uuid.AsString()
-        if uid in objects:
-            raise ValueError('duplicate hole UUID cannot identify native pair: ' + uid)
-        objects[uid] = item
-        rows.append(dict(uuid=uid, kind=kind, subtype=subtype,
+        row=dict(uuid=uid, kind=kind, subtype=subtype,
                          xy=[item.GetPosition().x, item.GetPosition().y], radius=drill//2,
-                         drill=drill, layers=list(item.GetLayerSet().Seq()), net=item.GetNetname()))
-    return sorted(rows, key=lambda h:h['uuid']), objects
+                         drill=drill, layers=list(item.GetLayerSet().Seq()), net=item.GetNetname())
+        key=hashlib.sha256(json.dumps(row,sort_keys=True).encode()).hexdigest()
+        if key in objects:
+            raise ValueError('identical duplicate hole objects require explicit multiplicity handling')
+        row['object_key']=key;objects[key]=item;rows.append(row)
+    return sorted(rows, key=lambda h:(h['uuid'],h['object_key'])), objects
 
 
 def make_fixture(source, objects, selected, path, pcbnew):
@@ -89,6 +94,8 @@ def make_fixture(source, objects, selected, path, pcbnew):
         name = objects[uid].GetNetname()
         if name not in nets:
             net = pcbnew.NETINFO_ITEM(board, name); board.Add(net); nets[name] = net
+    selected_uuids={objects[k].m_Uuid.AsString() for k in selected}
+    if len(selected_uuids)!=len(selected):raise ValueError('fixture UUIDs must be unambiguous')
     footprints = {}
     for uid in selected:
         item = objects[uid]
@@ -100,7 +107,7 @@ def make_fixture(source, objects, selected, path, pcbnew):
             if key not in footprints:
                 clone = pcbnew.Cast_to_FOOTPRINT(pcbnew.Cast_to_BOARD_ITEM(fp.Clone())); clone.SetParent(board)
                 for pad in list(clone.Pads()):
-                    if pad.m_Uuid.AsString() not in selected:
+                    if pad.m_Uuid.AsString() not in selected_uuids:
                         clone.Remove(pad)
                     else:
                         pad.SetNet(nets[pad.GetNetname()])
@@ -124,18 +131,19 @@ def audit(path, output):
     clearance = math.ceil(minimum * 1_000_000)
     source = pcbnew.LoadBoard(str(path))
     holes, objects = native_holes(source, pcbnew)
-    pairs = possible_pairs(holes, clearance); groups = pack_pairs(pairs)
+    pairs = possible_pairs(holes, clearance); groups = pack_pairs(pairs,uuids=[h['uuid'] for h in holes])
     output.mkdir(parents=True, exist_ok=True)
-    identities = set(); receipts = []
+    identities = set(); object_identities=set(); receipts = []
     for i, group in enumerate(groups):
         folder = output / f'fixture-{i:04d}'; folder.mkdir(exist_ok=True)
         fixture = folder / path.name
         for suffix in ('.kicad_pro','.kicad_dru'):
             shutil.copyfile(path.with_suffix(suffix), fixture.with_suffix(suffix))
-        selected = {holes[j]['uuid'] for j in group}
+        selected = {holes[j]['object_key'] for j in group}
+        uuid_to_key={holes[j]['uuid']:holes[j]['object_key'] for j in group}
         make_fixture(source, objects, selected, fixture, pcbnew)
         actual, _ = native_holes(pcbnew.LoadBoard(str(fixture)), pcbnew)
-        expected = [h for h in holes if h['uuid'] in selected]
+        expected = [h for h in holes if h['object_key'] in selected]
         if actual != expected:
             raise ValueError('fixture changed native hole geometry or identity')
         report = folder / 'drc.json'
@@ -147,10 +155,11 @@ def audit(path, output):
             if violation['type'] not in ('hole_to_hole', 'holes_co_located'):
                 continue
             ids = tuple(sorted(item['uuid'] for item in violation['items']))
-            if len(ids) != 2 or not set(ids) <= selected:
+            if len(ids) != 2 or not set(ids) <= set(uuid_to_key):
                 raise ValueError('unexpected hole violation identity')
             identity = (violation['type'], violation['severity'], ids)
             identities.add(identity); found.append(identity)
+            object_identities.add((violation['type'],violation['severity'],tuple(sorted(uuid_to_key[u] for u in ids))))
         if len(found) > len(group)*(len(group)-1):
             raise ValueError('unexpected duplicate pair reporting')
         receipts.append(dict(fixture=str(fixture),holes=sorted(selected),identities=found,
@@ -161,7 +170,7 @@ def audit(path, output):
                   project_sha256=hashlib.sha256(project.read_bytes()).hexdigest(),
                   rules_sha256=hashlib.sha256(rules.read_bytes()).hexdigest(),
                   clearance_nm=clearance, holes=holes, covered_pairs=pairs,
-                  identities=sorted(identities), fixtures=receipts)
+                  identities=sorted(identities), object_identities=sorted(object_identities), fixtures=receipts)
     (output/'result.json').write_text(json.dumps(result,indent=2)+'\n')
 
 

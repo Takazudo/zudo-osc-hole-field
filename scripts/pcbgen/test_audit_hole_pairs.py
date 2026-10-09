@@ -31,18 +31,23 @@ class HoleCoverageTests(unittest.TestCase):
     def test_oversized_fixture_refused(self):
         with self.assertRaises(ValueError):pack_pairs([(0,1)],15)
 
+    def test_duplicate_uuid_objects_are_kept_in_separate_fixtures(self):
+        pairs=[(0,1),(2,3)]
+        self.assertEqual(pack_pairs(pairs,uuids=['duplicate','b','duplicate','d']),[[0,1],[2,3]])
+        with self.assertRaises(ValueError):pack_pairs([(0,2)],uuids=['duplicate','b','duplicate'])
+
     def test_hidden_new_warning_is_not_lost_when_full_report_is_capped(self):
         old=('hole_to_hole','warning',('old-a','old-b'))
         new=('hole_to_hole','warning',('new-a','new-b'))
         context=dict(version='10.0.6',project_sha256='p',rules_sha256='r',
                      clearance_nm=250000,source_sha256='b')
         capped={'violations':[dict(type=old[0],severity=old[1],items=[{'uuid':u} for u in old[2]])]}
-        result=compare(dict(context,identities=[old]),dict(context,identities=[old,new]),capped,capped)
+        result=compare(dict(context,identities=[old],object_identities=[old]),dict(context,identities=[old,new],object_identities=[old,new]),capped,capped)
         self.assertEqual(result['new_identities'],[new])
 
     def test_missing_original_native_identity_fails_closed(self):
         context=dict(version='10.0.6',project_sha256='p',rules_sha256='r',
-                     clearance_nm=250000,source_sha256='b',identities=[])
+                     clearance_nm=250000,source_sha256='b',identities=[],object_identities=[])
         report={'violations':[dict(type='hole_to_hole',severity='warning',items=[{'uuid':'a'},{'uuid':'b'}])]}
         with self.assertRaises(ValueError):compare(context,context,report,report)
 
