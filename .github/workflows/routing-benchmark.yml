@@ -314,7 +314,7 @@ jobs:
           elif [[ $LOCAL_MODE != cut ]]; then
             exit 1
           fi
-          timeout --signal=INT --kill-after=2m 80m python -u scripts/pcbgen/local_repair_pilot.py "${args[@]}" \
+          timeout --signal=INT --kill-after=2m 80m python -u circuit/routing/issue189/jr-rb4413-move/pilot.py \
             2>&1 | tee .circuit-cache/local-repair.log
       - name: Retain local proposal and native rejection or eligibility
         if: always()
@@ -323,6 +323,7 @@ jobs:
           name: obstacle-local-${{ inputs.board }}-${{ github.run_id }}
           path: |
             .circuit-cache/issue189-local-${{ inputs.board }}/
+            .circuit-cache/issue189-rb4413-move/
             .circuit-cache/${{ inputs.board }}-grid-189-local-base/
             .circuit-cache/${{ inputs.board }}-grid-189-j*/
             .circuit-cache/local-repair.log
