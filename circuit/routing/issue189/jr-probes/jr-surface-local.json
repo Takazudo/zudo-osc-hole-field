@@ -1,0 +1,92 @@
+{
+  "status": "RASTER ONLY; NATIVE NOT RUN",
+  "input_dump_sha256": "b53fc851992843175db2669ec12540e1e6e27b4eda4c28a5834ce349c11f377b",
+  "net": "XC13372BA423E9AD7226E",
+  "res_mm": 0.05,
+  "elapsed_seconds": 9.240126024999881,
+  "peak_python_rss_kb": 1435980,
+  "results": [
+    {
+      "net": "XC13372BA423E9AD7226E",
+      "island": [
+        "RB4611.1"
+      ],
+      "path": null
+    }
+  ],
+  "diagnostics": [
+    {
+      "net": "XC13372BA423E9AD7226E",
+      "endpoints": [
+        "RB4611.1"
+      ],
+      "reason": "unknown",
+      "phase": "route",
+      "attempts": [
+        {
+          "window_cells": [
+            257,
+            759,
+            2221,
+            2734
+          ],
+          "expanded": 11705,
+          "limit": 100000
+        },
+        {
+          "window_cells": [
+            257,
+            861,
+            2063,
+            2734
+          ],
+          "expanded": 11705,
+          "limit": 100000
+        }
+      ],
+      "max_expansions": 100000,
+      "window_mm": 12.0
+    },
+    {
+      "net": "XC13372BA423E9AD7226E",
+      "endpoints": [
+        "RB4611.1"
+      ],
+      "reason": "expansion_limit",
+      "phase": "probe",
+      "victims": [],
+      "victim_budget": 4,
+      "shard_restricted": true,
+      "attempts": [
+        {
+          "window_cells": [
+            257,
+            759,
+            2221,
+            2734
+          ],
+          "expanded": 84575,
+          "limit": 100000
+        },
+        {
+          "window_cells": [
+            257,
+            861,
+            2063,
+            2734
+          ],
+          "expanded": 100001,
+          "limit": 100000
+        }
+      ],
+      "removable_source_uuids": [],
+      "committed_victim_paths": []
+    }
+  ],
+  "links": [],
+  "proposal": {
+    "board_sha256": "3d9bfccb3e201756fb7a32847f4b3c754f1a92bf22315115e150c239dbcc7f7e",
+    "removed_uuids": [],
+    "copper": []
+  }
+}

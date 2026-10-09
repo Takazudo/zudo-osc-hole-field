@@ -74,3 +74,36 @@ The renders below are from this 1,509-edge revision. Native checks of this revis
 ## Qualification remains NOT RUN
 
 The earlier field-solver ground/current extraction is parked and is not a routing gate. Rail and return resistance, the ≤0.5 mΩ combined AGND neck and hot distribution drop remain unqualified. So do the 2.1 A / 2 A / 0.5 A load-wire terminal transfers and GH contact current. Protection (#59), source/inlet (#57) and installed fit (#65) also remain open.
+
+
+## Issue #189 implementation checkpoint
+
+[Draft PR #190](https://github.com/Takazudo/zudo-osc-hole-field/pull/190) preserves
+the canonical 1,509-edge core while its identical-input obstacle comparison runs
+in [37824207235](https://github.com/Takazudo/zudo-osc-hole-field/actions/runs/37824207235).
+No unfinished job result is counted as progress.
+
+The separate eight-shard run 37775496177 reached a reported 1,400 edges but worsened
+AGND from 252 to 272 and failed to push its oversized filled board. Its exact
+copper deltas and artifact digests are preserved under
+`circuit/routing/issue189/concurrent-core/`; they are **not adopted**. The next
+native pilot must repair affected returns, retain connected pad groups, reject
+new warnings and agree after independent reload. A cache-free publication path
+is prepared for the storage limit, but requires native refill equivalence before
+use. No zone definition, physical constraint or successful copper is discarded.
+#189 remains open; source replay is not hardware qualification.
+
+### Issue #189 resumed native results (2026-10-09)
+
+The identical-input core comparison finished: both old and corrected routers
+reported 1,509→1,499, but both split two existing AGND pad groups and were rejected.
+The subsequent recovered-copper plus stitching transaction reached 1,391 with
+zero rule/parity errors and independent-copy agreement; it still split four
+previous AGND groups, left AGND at 263 versus 252, and introduced hole-to-hole and
+dangling-via warning identities. It was not adopted. Canonical core remains 1,509.
+
+A source-defined local replay now omits ten suspected ground-splitting net
+changes and repairs the overlapping signal-via cluster without changing layer or
+electrical constraints. Its native acceptance is pending. Full CI passed on
+`7ca5bed`; source proposals and exact failed receipts are retained in the #189
+checkpoint. These are unvalidated drafts, not hardware qualification.

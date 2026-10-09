@@ -1,0 +1,200 @@
+name: Routing obstacle benchmark
+run-name: "Issue 189 ${{ inputs.local_repair && 'read-only local repair' || inputs.recover_core && 'core return repair' || inputs.adopt_run && 'copper adoption' || 'same-input benchmark' }} — ${{ inputs.board }}"
+on:
+  workflow_dispatch:
+    inputs:
+      board:
+        type: choice
+        options: [osc-jack-left, osc-jack-right, osc-core]
+        required: true
+      adopt_run:
+        description: Optional completed benchmark run ID to replay and natively recheck before adoption
+        type: string
+        required: false
+      recover_core:
+        description: Replay the preserved core aggregate and repair split AGND before the full native gate
+        type: boolean
+        default: false
+      core_replay:
+        description: Reviewed recovery transaction (used only with recover_core)
+        type: choice
+        options: [aggregate, reviewed]
+        default: aggregate
+      local_repair:
+        description: Read-only jack local branch-repair pilot (no canonical writer)
+        type: boolean
+        default: false
+      local_mode:
+        description: Local cut pilot, or fixed JR signal proposal with native supply restoration
+        type: choice
+        options: [cut, coupled]
+        default: cut
+permissions:
+  contents: read
+concurrency:
+  group: obstacle-benchmark-${{ github.ref }}-${{ inputs.board }}
+  cancel-in-progress: false
+jobs:
+  benchmark:
+    if: inputs.adopt_run == '' && !inputs.recover_core && !inputs.local_repair
+    runs-on: ubuntu-latest
+    timeout-minutes: 355
+    strategy:
+      fail-fast: false
+      matrix:
+        board: ${{ fromJSON(inputs.board && format('["{0}"]', inputs.board) || '["osc-jack-left","osc-jack-right","osc-core"]') }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97
+        with:
+          python-version: '3.10'
+      - run: python -m pip install -r scripts/pcbgen/numerical-requirements.txt
+      - name: Compare old and corrected routers on identical saved inputs
+        env:
+          BOARD: ${{ matrix.board }}
+        run: |
+          mkdir -p .circuit-cache
+          set -o pipefail
+          # Core's measured native refill takes nine minutes; keep the routing
+          # search budget fixed but allow its mandatory settled/fresh checks.
+          budget=90
+          [[ $BOARD == osc-core ]] && budget=335
+          timeout --signal=INT --kill-after=2m "${budget}m" python -u scripts/pcbgen/benchmark_obstacles.py "$BOARD" 2>&1 | tee .circuit-cache/benchmark.log
+      - name: Preserve inputs, negative results, proposals and native receipts
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: obstacle-benchmark-${{ matrix.board }}-${{ github.run_id }}
+          path: |
+            .circuit-cache/issue189-*/
+            .circuit-cache/benchmark.log
+            .circuit-cache/*-grid-189-*/
+          retention-days: 30
+          if-no-files-found: error
+          include-hidden-files: true
+  adopt:
+    if: (inputs.adopt_run != '' || inputs.recover_core) && !inputs.local_repair
+    runs-on: ubuntu-latest
+    timeout-minutes: 355
+    permissions:
+      contents: write
+      actions: read
+    concurrency:
+      group: route-${{ inputs.board }}-${{ github.ref_name }}
+      cancel-in-progress: false
+    env:
+      BOARD: ${{ inputs.board }}
+      BENCHMARK_RUN: ${{ inputs.adopt_run }}
+      RECOVER_CORE: ${{ inputs.recover_core }}
+      CORE_REPLAY: ${{ inputs.core_replay }}
+    steps:
+      - name: Restrict adoption to the isolated issue branch
+        run: |
+          [[ $GITHUB_REF_NAME == agent-fix/189-* ]] || exit 1
+          if [[ $RECOVER_CORE == true ]]; then
+            [[ $BOARD == osc-core && -z $BENCHMARK_RUN ]] || exit 1
+          else
+            [[ $BENCHMARK_RUN =~ ^[0-9]+$ ]] || exit 1
+          fi
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97
+        with:
+          python-version: '3.10'
+      - run: python -m pip install -r scripts/pcbgen/numerical-requirements.txt
+      - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c
+        if: inputs.recover_core == false
+        with:
+          name: obstacle-benchmark-${{ inputs.board }}-${{ inputs.adopt_run }}
+          run-id: ${{ inputs.adopt_run }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: .circuit-cache/benchmark-download
+      - name: Replay eligible copper and recheck native connectivity
+        if: inputs.recover_core == false
+        run: |
+          set -o pipefail
+          timeout --signal=INT --kill-after=2m 335m python -u scripts/pcbgen/adopt_obstacle_benchmark.py \
+            ".circuit-cache/benchmark-download/issue189-$BOARD" --promote \
+            2>&1 | tee .circuit-cache/adoption.log
+      - name: Recover preserved core copper and repair split returns
+        if: inputs.recover_core
+        run: |
+          mkdir -p .circuit-cache
+          set -o pipefail
+          if [[ $CORE_REPLAY == reviewed ]]; then
+            python circuit/routing/issue189/core-reviewed/prepare.py
+            replay=circuit/routing/issue189/core-reviewed/copper.json
+            label=issue189-reviewed
+            extra=()
+          elif [[ $CORE_REPLAY == aggregate ]]; then
+            replay=circuit/routing/issue189/concurrent-core/aggregate-copper.json
+            label=issue189-recovered
+            extra=(--repair-ground)
+          else
+            exit 1
+          fi
+          timeout --signal=INT --kill-after=2m 335m python -u scripts/pcbgen/route_shards.py merge osc-core \
+            "$replay" --label "$label" "${extra[@]}" 2>&1 | tee .circuit-cache/adoption.log
+      - name: Push accepted draft copper with replay and native receipts
+        run: |
+          message=$(mktemp)
+          echo "Record native-rechecked $BOARD copper (benchmark $BENCHMARK_RUN, recovered core $RECOVER_CORE)" > "$message"
+          bash scripts/pcbgen/ci_push_route.sh "$BOARD" "$GITHUB_REF_NAME" "$message"
+      - name: Retain native acceptance and rejected candidates
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: obstacle-adoption-${{ inputs.board }}-${{ github.run_id }}
+          path: |
+            .circuit-cache/*-grid-189-*/
+            .circuit-cache/*-189-adoption.json
+            .circuit-cache/adoption.log
+            .circuit-cache/osc-core-grid-shards-*/
+            boards/${{ inputs.board }}/reports/grid-routing/
+          include-hidden-files: true
+          retention-days: 30
+  local-pilot:
+    if: inputs.local_repair
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    permissions:
+      contents: read
+    env:
+      BOARD: ${{ inputs.board }}
+      ADOPT_RUN: ${{ inputs.adopt_run }}
+      RECOVER_CORE: ${{ inputs.recover_core }}
+      LOCAL_MODE: ${{ inputs.local_mode }}
+    steps:
+      - name: Require a read-only jack request
+        run: '[[ ( $BOARD == osc-jack-left || $BOARD == osc-jack-right ) && -z $ADOPT_RUN && $RECOVER_CORE == false ]]'
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97
+        with:
+          python-version: '3.10'
+      - run: python -m pip install -r scripts/pcbgen/numerical-requirements.txt
+      - name: Check the local cut and reroute with native topology
+        run: |
+          mkdir -p .circuit-cache
+          set -o pipefail
+          args=(--board "$BOARD")
+          if [[ $LOCAL_MODE == coupled ]]; then
+            args+=(--coupled)
+          elif [[ $LOCAL_MODE != cut ]]; then
+            exit 1
+          fi
+          timeout --signal=INT --kill-after=2m 80m python -u scripts/pcbgen/local_repair_pilot.py "${args[@]}" \
+            2>&1 | tee .circuit-cache/local-repair.log
+      - name: Retain local proposal and native rejection or eligibility
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: obstacle-local-${{ inputs.board }}-${{ github.run_id }}
+          path: |
+            .circuit-cache/issue189-local-${{ inputs.board }}/
+            .circuit-cache/${{ inputs.board }}-grid-189-local-base/
+            .circuit-cache/${{ inputs.board }}-grid-189-j*-local*/
+            .circuit-cache/${{ inputs.board }}-grid-189-j*-coupled*/
+            .circuit-cache/local-repair.log
+          include-hidden-files: true
+          retention-days: 30

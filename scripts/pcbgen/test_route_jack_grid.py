@@ -64,15 +64,16 @@ class StageRejectionTests(unittest.TestCase):
 
 
 class SettledRefillTests(unittest.TestCase):
-    def passes(self,counts):
+    def passes(self,counts,memberships=None):
         """check() against a fake oracle whose successive refills report these AGND island counts."""
-        files={};seq=iter(counts)
+        files={};seq=iter(counts);groups=iter(memberships) if memberships is not None else None
         class Path_:
             def __init__(self,name):self.name=name
             def with_name(self,name):return Path_(name)
             def read_text(self):return files[self.name]
         def run(*args):
-            if any(a.endswith('grid_dump.py') for a in args):n=next(seq);files['dump.json']=json.dumps({'open_edges':n-1,'islands':{'AGND':[[i] for i in range(n)]}})
+            if any(a.endswith('grid_dump.py') for a in args):
+                n=next(seq);files['dump.json']=json.dumps({'open_edges':n-1,'islands':{'AGND':next(groups) if groups is not None else [[i] for i in range(n)]}})
             else:files['drc.json']=json.dumps({'violations':[],'schematic_parity':[]})
         saved=driver.run,driver.rel;driver.run,driver.rel=run,lambda p:p.name
         try:return driver.check(Path_('board.kicad_pcb'))[1]['open_edges']
@@ -83,6 +84,13 @@ class SettledRefillTests(unittest.TestCase):
 
     def test_refills_that_never_hold_raise(self):
         with self.assertRaises(driver.FillUnsettled):self.passes([24,30,24,30,24,30])
+
+    def test_equal_counts_with_changing_memberships_are_not_settled(self):
+        a=[['a','b'],['c']];b=[['a'],['b','c']]
+        with self.assertRaises(driver.FillUnsettled):self.passes([2]*6,[a,b,a,b,a,b])
+
+    def test_island_enumeration_does_not_prevent_convergence(self):
+        self.assertEqual(self.passes([2]*3,[[['a','b'],['c']],[['c'],['b','a']],[['a','b'],['c']]]),1)
 
 
 class StitchedCandidateTests(unittest.TestCase):

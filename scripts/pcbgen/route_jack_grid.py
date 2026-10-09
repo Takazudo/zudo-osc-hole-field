@@ -22,7 +22,7 @@ from scipy.sparse import coo_matrix
 from scipy.sparse.csgraph import connected_components
 from scripts.pcbgen.grid_router import route,copper_rows,negotiate
 from scripts.pcbgen.uuid_tools import stable_uuid
-from scripts.pcbgen.route_shards import area_plan,plan,region_key,region_nets
+from scripts.pcbgen.route_shards import area_plan,plan,region_key,region_nets,delta
 
 PLANES={'+12V':'In4.Cu','-12V':'In3.Cu'}
 FAILED=set()  # signal nets with an unroutable island in an earlier batch; retried by the escape stage
@@ -104,7 +104,7 @@ class FillUnsettled(RuntimeError):
 
 
 def check(board,max_refills=6,stable=3):
-    """Native DRC with zone refill, repeated until the island counts hold for `stable` passes.
+    """Native DRC with zone refill, repeated until island memberships hold for `stable` passes.
 
     A single refill of a freshly edited board can leave the pours in a state the next
     refill changes (AGND islands 22 -> 28 on a neck-down candidate). Two equal passes were
@@ -115,11 +115,16 @@ def check(board,max_refills=6,stable=3):
     for _ in range(max_refills):
         run('bash','scripts/kicad/run.sh','kicad-cli','pcb','drc','--schematic-parity','--refill-zones','--save-board','--format','json','--severity-all','-o',rel(drc),rel(board))
         run('bash','scripts/kicad/run.sh','python3','scripts/pcbgen/grid_dump.py',rel(board),rel(dump))
-        state=json.loads(dump.read_text());seen.append({n:len(g) for n,g in state['islands'].items()})
+        state=json.loads(dump.read_text());seen.append(connectivity_signature(state))
         print(f"  refill pass {len(seen)}: {state['open_edges']} open edges",flush=True)
         if len(seen)>=stable and all(x==seen[-1] for x in seen[-stable:]):break
-    else:raise FillUnsettled(f"{rel(board)}: island counts still changing after {max_refills} refills")
+    else:raise FillUnsettled(f"{rel(board)}: island memberships still changing after {max_refills} refills")
     return json.loads(drc.read_text()),state
+
+
+def connectivity_signature(dump):
+    """Compare all native islands, including padless copper, independent of enumeration."""
+    return dump['open_edges'],{n:sorted(sorted(g) for g in groups) for n,groups in dump['islands'].items()}
 
 
 def terminal_array(dump,board_id,definition):
@@ -149,14 +154,14 @@ def signal_chunk(dump,chunk,min_span_mm=None,max_span_mm=None,skip=(),only=None)
     return nets[:chunk] if chunk else nets
 
 
-def repair_batch(dump,radius_mm=1.2,limit=30):
+def repair_batch(dump,radius_mm=1.2,limit=30,only=None):
     """Open signal nets plus the nearby foreign signal copper to cut; batches never share a net."""
     pads={p['uuid']:p for p in dump['pads']};used=set();targets=[];cut=set()
     r2=(radius_mm*1e6)**2
     def near(x,y,t):
         ax,ay=t['a'];bx,by=t['b'];dx,dy=bx-ax,by-ay;length=dx*dx+dy*dy or 1
         u=max(0,min(1,((x-ax)*dx+(y-ay)*dy)/length));return (ax+u*dx-x)**2+(ay+u*dy-y)**2<=r2
-    for net in signal_chunk(dump,None):
+    for net in signal_chunk(dump,None,only=only):
         groups=dump['islands'][net];main=max(range(len(groups)),key=lambda i:len(groups[i]))
         pts=[pads[u]['xy'] for i,g in enumerate(groups) if i!=main for u in g if u in pads]
         hits={t['uuid']:t['net'] for t in dump['tracks'] if t['net'] not in (*RAILS,'AGND',net) and any(near(x,y,t) for x,y in pts)}
@@ -167,6 +172,15 @@ def repair_batch(dump,radius_mm=1.2,limit=30):
         targets.append(net);cut|=set(hits);used|=nets|{net}
         if len(targets)>=limit:break
     return targets,cut
+
+
+def repair_nets(dump,targets,cut):
+    """Only the selected targets and nets whose local copper was actually cut."""
+    objects={i['uuid']:i for kind in ('tracks','vias') for i in dump[kind]}
+    if not set(cut)<=objects.keys():raise ValueError('repair cut contains unknown source copper')
+    affected={objects[u]['net'] for u in cut}
+    if affected&{*RAILS,'AGND'}:raise ValueError('local signal repair cannot cut supply/ground copper')
+    return list(targets)+sorted(affected-set(targets))
 
 
 class StageRejected(RuntimeError):
@@ -230,6 +244,7 @@ def hotspot_regions(dump,eps_mm):
 
 def stage(board_id,current,spec,definition,log):
     original=current
+    repair_details=None
     dump=json.loads((current.with_name('dump.json')).read_text())
     if spec.get('terminal_arrays'):
         if 'load_terminal_transfer' not in definition['routing']:return None,None
@@ -237,21 +252,20 @@ def stage(board_id,current,spec,definition,log):
     elif spec.get('repair'):
         # Phase A: cut foreign signal copper beside the failed pins; native islands then
         # describe exactly what each cut net must reconnect.
-        targets,cut=repair_batch(dump)
+        targets,cut=repair_batch(dump,radius_mm=spec.get('repair_radius_mm',1.2),only=spec.get('repair_targets'))
         if not targets:return None,None
+        nets_to_repair=repair_nets(dump,targets,cut)
         work=workspace(board_id,spec['name']+'-cut');cut_board=work/f'{board_id}.kicad_pcb';proposal=work/'proposal.json'
         proposal.write_text(json.dumps({'board_sha256':hashlib.sha256(current.read_bytes()).hexdigest(),'removed_uuids':sorted(cut),'copper':[]})+'\n')
         run('bash','scripts/kicad/run.sh','python3','scripts/pcbgen/grid_apply.py',rel(current),rel(proposal),'--output',rel(cut_board))
         _,dump=check(cut_board)
-        floating=[u for n,groups in dump['islands'].items() for g in groups if not any(x in {p['uuid'] for p in dump['pads']} for x in g) for u in g]
-        if floating:
-            # Pad-less fragments are dead copper: drop them instead of reconnecting them.
-            proposal.write_text(json.dumps({'board_sha256':hashlib.sha256(current.read_bytes()).hexdigest(),'removed_uuids':sorted(cut|set(floating)),'copper':[]})+'\n')
-            run('bash','scripts/kicad/run.sh','python3','scripts/pcbgen/grid_apply.py',rel(current),rel(proposal),'--output',rel(cut_board))
-            _,dump=check(cut_board);cut|=set(floating)
-        cut_nets=sorted({n for n in dump['islands'] if n not in (*RAILS,'AGND')}-set(targets))
+        repair_details={'targets':targets,'affected_nets':nets_to_repair,'removed_source_uuids':sorted(cut),
+                        'cut_native_open_edges':dump['open_edges'],'routing_diagnostics':[]}
+        # Keep padless fragments and native component identities: they remain
+        # boundary anchors/obligations, rather than disappearing from the metric.
         kwargs={k:v for k,v in spec.items() if k in ('clearance','signal_width','signal_via_diameter','grow','res','window_mm','escape_halo_mm')}
-        results,removed=route(dump,targets+[n for n in cut_nets if n not in targets],allowed_layers=SIGNAL_LAYERS,layer_cost=LAYER_COST,rail_nets=RAILS,log=log,**kwargs,**neck_kwargs(board_id))
+        results,removed=route(dump,nets_to_repair,allowed_layers=SIGNAL_LAYERS,layer_cost=LAYER_COST,rail_nets=RAILS,
+                              fill_guards={'-12V':'In3.Cu'},diagnostics=repair_details['routing_diagnostics'],log=log,**kwargs,**neck_kwargs(board_id))
         rows,links=copper_rows(results,board_id,'grid-'+spec['name'])
         current=cut_board;removed=[]
     elif spec.get('agnd_stitch'):
@@ -361,16 +375,51 @@ def stage(board_id,current,spec,definition,log):
     # (jack-right AGND 21 vs 28), so adoption counts a copy checked in a new workspace.
     verify=workspace(board_id,spec['name']+'-verify')/candidate.name;shutil.copyfile(candidate,verify)
     drc_v,fresh=check(verify)
-    if fresh['open_edges']!=after['open_edges']:
-        log(f"{spec['name']}: in-place check {after['open_edges']} open edges, fresh copy {fresh['open_edges']}; the fresh count is used")
+    if connectivity_signature(fresh)!=connectivity_signature(after):
+        raise StageRejected('fresh copy connectivity differs from settled candidate')
     if any(v['severity']=='error' for v in drc_v['violations']) or drc_v['schematic_parity']:raise StageRejected("fresh copy has DRC errors or parity findings")
     candidate,after,drc=verify,fresh,drc_v
     before=json.loads(original.with_name('dump.json').read_text())['open_edges']
     receipt={'stage':spec['name'],'status':'NATIVE CHECKED DRAFT STAGE','open_edges_before':before,'open_edges_after':after['open_edges'],
-             'links_added':len(links),'links_dropped_for_drc':len(dropped),'copper_rows':len(rows),'ripped':len(removed),
+             'links_added':len(links),'links_dropped_for_drc':len(dropped),'copper_rows':len(rows),
+             'ripped':len(removed)+(len(repair_details['removed_source_uuids']) if repair_details else 0),
              'drc_errors':0,'drc_warnings':sum(v['severity']=='warning' for v in drc['violations']),'parity':0,
              'open_by_net_after':{n:len(g)-1 for n,g in after['islands'].items()}}
+    if repair_details:receipt['local_repair']=repair_details
     return candidate,receipt
+
+
+def connected_pad_groups(dump):
+    """Native pad memberships; absent open nets are fully connected, not absent."""
+    pads={p['uuid']:p for p in dump['pads'] if p['net']}
+    by_net=collections.defaultdict(list)
+    for uid,p in pads.items():by_net[p['net']].append(uid)
+    return {n:sorted(sorted(u for u in g if u in pads) for g in dump['islands'].get(n,[ids]))
+            for n,ids in sorted(by_net.items())}
+
+
+def split_pad_groups(before,after):
+    old,new=connected_pad_groups(before),connected_pad_groups(after);bad=[]
+    for net,groups in old.items():
+        labels={u:i for i,g in enumerate(new.get(net,[])) for u in g}
+        for g in groups:
+            if any(u not in labels for u in g) or len({labels[u] for u in g if u in labels})>1:
+                bad.append({'net':net,'previously_connected_pads':g})
+    return bad
+
+
+def warning_identities(drc):
+    return sorted((v['type'],tuple(sorted(i.get('uuid','') for i in v.get('items',[]))))
+                  for v in drc['violations'] if v['severity']=='warning')
+
+
+def promotion_gate(before,after,before_drc,after_drc):
+    splits=split_pad_groups(before,after)
+    previous=set(warning_identities(before_drc))
+    new_warnings=[w for w in warning_identities(after_drc) if w not in previous]
+    native_errors=any(v['severity']=='error' for v in after_drc['violations']) or bool(after_drc.get('schematic_parity'))
+    return {'adopted':after['open_edges']<before['open_edges'] and not splits and not new_warnings and not native_errors,
+            'split_pad_groups':splits,'new_warning_identities':new_warnings,'native_errors':native_errors}
 
 
 def main():
@@ -430,13 +479,34 @@ def main():
         if candidate is None and receipt:
             receipt['adopted']=False;(reports/f"{spec['name']}.json").write_text(json.dumps(receipt,indent=1,sort_keys=True)+'\n');continue
         if candidate is None:print(f"{spec['name']}: nothing to do",flush=True);continue
-        if receipt['open_edges_after']>=receipt['open_edges_before']:
+        if (receipt['open_edges_after']>=receipt['open_edges_before'] or
+            split_pad_groups(json.loads(current.with_name('dump.json').read_text()),
+                             json.loads(candidate.with_name('dump.json').read_text()))):
             candidate,receipt=stitched(a.board_id,current,candidate,receipt,spec,definition,lambda m:print(m,flush=True))
-        receipt['adopted']=receipt['open_edges_after']<receipt['open_edges_before']
+        # Count improvements can conceal disconnected feeds/returns on another net.
+        # Check after the optional stitching transaction, so temporary AGND splits
+        # may be repaired in the disposable candidate but never promoted.
+        receipt.update(promotion_gate(json.loads(current.with_name('dump.json').read_text()),
+                                      json.loads(candidate.with_name('dump.json').read_text()),
+                                      json.loads(current.with_name('drc.json').read_text()),
+                                      json.loads(candidate.with_name('drc.json').read_text())))
+        receipt['input_board_sha256']=hashlib.sha256(current.read_bytes()).hexdigest()
+        receipt['candidate_board_sha256']=hashlib.sha256(candidate.read_bytes()).hexdigest()
+        if receipt['split_pad_groups'] or receipt['new_warning_identities']:
+            receipt['rejection_reason']='connected_pad_group_split' if receipt['split_pad_groups'] else 'new_native_warning'
+            print(f"{spec['name']}: rejected: {receipt['rejection_reason']}",flush=True)
+        if receipt['adopted']:
+            # Retain a source replay against the canonical bytes that will be
+            # replaced. Refill is intentionally repeated after replay.
+            replay=delta((board if a.promote else current).read_text(),candidate.read_text())
+            replay_path=reports/f"{spec['name']}-copper.json"
+            replay_path.write_text(json.dumps(replay,sort_keys=True)+'\n')
+            receipt['copper_replay']={'path':rel(replay_path),'sha256':hashlib.sha256(replay_path.read_bytes()).hexdigest(),
+                                     'base_sha256':replay['base_sha256']}
         if spec.get('rrr_rounds') and receipt['adopted']:RRR_ROUND['adopted']=True
         (reports/f"{spec['name']}.json").write_text(json.dumps(receipt,indent=1,sort_keys=True)+'\n')
         print(f"{spec['name']}: {receipt['open_edges_before']} -> {receipt['open_edges_after']} open edges",flush=True)
-        if receipt['open_edges_after']<receipt['open_edges_before']:
+        if receipt['adopted']:
             current=candidate
             # Promote every adopted stage so a later interruption keeps checked progress.
             if a.promote:shutil.copyfile(current,board);print('promoted',rel(board),flush=True)

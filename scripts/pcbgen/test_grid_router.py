@@ -75,6 +75,13 @@ class GridRouterTests(unittest.TestCase):
         b,_=copper_rows(self.route(board(walls=((6,'B.Cu'),))),'fixture','t')
         self.assertEqual(a,b)
 
+    def test_repeated_stage_different_geometry_has_different_uuids(self):
+        result={'net':'A','island':['P.1'],'path':[['B.Cu',1000000,1000000,0],['B.Cu',2000000,1000000,0]],'width_nm':200000}
+        first=copper_rows([result],'fixture','repeated-stage')[0][0]['uuid']
+        for changed in ({**result,'width_nm':300000},
+                        {**result,'path':[['B.Cu',1000000,2000000,0],['B.Cu',2000000,2000000,0]]}):
+            self.assertNotEqual(first,copper_rows([changed],'fixture','repeated-stage')[0][0]['uuid'])
+
 
 def crossing_board():
     edges=[[0,0,12*MM,0],[12*MM,0,12*MM,8*MM],[12*MM,8*MM,0,8*MM],[0,8*MM,0,0]]

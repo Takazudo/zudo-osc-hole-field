@@ -19,14 +19,16 @@ A cut-line bound (`scripts/pcbgen/cut_capacity.py`) showed that the four-layer h
 | Native check | JL / `osc-jack-left` | JR / `osc-jack-right` |
 | --- | --- | --- |
 | Status | ROUTED DRAFT IN PROGRESS | ROUTED DRAFT IN PROGRESS |
-| Native open edges (DRC, settled zone refill) | **140** | **162** |
-| Remaining signal edges | 109 | 128 |
+| Native open edges (DRC, settled zone refill) | **139** | **162** |
+| Remaining signal edges | 108 | 128 |
 | Remaining rail / ground edges | +12V 3, +5V 0, -12V 5, AGND 23 | +12V 0, +5V 0, -12V 5, AGND 29 |
 | DRC errors / schematic parity | 0 / 0 | 0 / 0 |
-| Track segments / vias | 29912 / 2956 | 47236 / 3229 |
-| Native warnings | hole to hole 2, silk edge clearance 8, silk over copper 199, silk overlap 199, text height 43, track dangling 5, via dangling 22 | hole to hole 24, silk edge clearance 13, silk over copper 199, silk overlap 199, text height 59, track dangling 3, via dangling 23 |
+| Track segments / vias | 29946 / 2838 | 47236 / 3075 |
+| Native warnings | hole to hole 2, silk edge clearance 8, silk over copper 199, silk overlap 199, text height 43, track dangling 4, via dangling 22 | hole to hole 24, silk edge clearance 13, silk over copper 199, silk overlap 199, text height 59, track dangling 3, via dangling 23 |
 
 Routing uses `scripts/pcbgen/route_jack_grid.py`: terminal via arrays, ±12 V plane fanouts, rail links, then a negotiated-congestion (PathFinder) pass over every signal net on a 0.05 mm grid (region stages re-run on a 0.035 mm grid inside the neck-down areas), rip-up-and-reroute batches for what it leaves open, with AGND stitching vias where new copper cuts a surface pour. Each stage is applied to a disposable copy, checked with native DRC, schematic parity and zone refill, and kept only when the native open-edge count falls. Rip-up-and-reroute re-offers still-open islands with 4, 8, 12 and then 20 victim nets per probe, and a stranded island joins whichever island of its net is cheapest to reach, not only the largest. Stage receipts are in `boards/<board-id>/reports/grid-routing/`; `reports/ratsnest.json` holds the native per-net topology after a single zone refill; the open-edge figures above come from DRC with refilled zones, which can be higher. Silkscreen/text warnings remain [#44](https://github.com/Takazudo/zudo-osc-hole-field/issues/44).
+
+The images below predate the #189 JL transaction; refreshed renders remain part of final integration. The table and native receipts describe the current copper.
 
 ![JL top: unvalidated routed draft](/assets/osc-hole-field/osc-jack-left-top.png)
 
@@ -66,3 +68,39 @@ The [partition source](../architecture/osc-board-stack.mdx) preserves the gross 
 `boards/osc-jack/reports/replication-feasibility.json` compares 22 repeated J module pairs against the exact source face and footprint centres. None has a complete single translation, so whole-module route replay would require a source placement revision. `routing-attempt-1.json` records the first timeout; `routing.json` records the second. Both left 5,611 native ratsnest edges and no copper. A revised J partition or placement/routing strategy is required before #38 can close. The current `boards/osc-jack/reports/drc.json` and top/bottom PNGs are the native KiCad 10.0.6 evidence.
 
 Physical seated fit, jack nut/shoulder clearance, supports, looms, factory load wires, hot resistance, and enclosure depth: **NOT RUN #65**. Selector coupon **NOT RUN #55**; physical source/inlet **NOT RUN #57**; LED optical/hot qualification **NOT RUN #64**. The 82 output and 16 precision-sense protection obligations remain **OPEN #59**. The 0.35 mm compact-LED/jack nominal courtyard gap is drawing-derived and does not establish assembled fit.
+
+
+## Issue #189 implementation checkpoint
+
+[Draft PR #190](https://github.com/Takazudo/zudo-osc-hole-field/pull/190) reproduces
+and fixes removed-via drill exclusions and soft probes through fixed pads. On
+identical saved native inputs, the old router left JL at 140; the correction
+reached 139 with no pad-membership split or new warning. The replay was independently
+checked and adopted in `e0efa315`; a subsequent bounded rip-up stage remained at
+139 without changing copper. JR stayed at 162 in both variants. Three diagnosed
+local JR probes also produced no copper and are retained as negative evidence.
+
+JL retains 32,667 physical copper objects unchanged, replaces 78 and adds 117.
+Eleven legacy duplicated copper UUIDs are preserved; the original benchmark's
+UUID-map counts undercounted physical objects by eleven. The separate retention
+audit corrects that metric. All 1,099 footprints, outline/setup and 128 zone
+definitions are unchanged. Existing hole-to-hole warnings remain recorded, not
+waived as cosmetic. Exact native results, warning identities, hashes and next
+interventions are in `circuit/routing/issue189/`. #189 and hardware qualification
+remain open.
+
+### Targeted branch-repair pilots (2026-10-09)
+
+Read-only native local repairs retained cut fragments as reconnection obligations.
+JL went 139→141 after its three-segment cut, then returned to 139; no gain was
+adopted. JR went 162→168 after its 23-segment cut, then 163; one victim pad group
+and dangling-copper warnings regressed, so that proposal was rejected. Independent
+checks agreed with both experimental counts. Canonical JL/JR remain 139/162.
+
+The JR target and failed victim were blocked by the −12 V fill guard. A subsequent
+source proposal is being evaluated as a joint signal/supply transaction: native
+supply restoration and the original baseline's membership/warning gates remain
+mandatory. Its intermediate signal-only proposal is not acceptable copper. The
+ordinary routing fill guard, dimensions, fixed geometry and final native gates
+remain unchanged. Exact negative results and replay hashes are retained under
+`circuit/routing/issue189/`.

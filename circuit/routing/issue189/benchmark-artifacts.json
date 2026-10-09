@@ -1,0 +1,95 @@
+[
+  {
+    "board": "osc-jack-left",
+    "run": 37824198833,
+    "artifact_id": 11571446848,
+    "artifact_zip_sha256": "de531ec9d8b2cba9336570a543cb4b7737003200d2c672c7908adf771f02cd7f",
+    "result_sha256": "dbb0159c990122c511b41a6c94b24ded1b13b415d084f824dbab2291ee1f6964",
+    "old_native_edges": 140,
+    "new_native_edges": 139,
+    "new_remaining_signal_edges": 108,
+    "new_remaining_rail_ground_edges": {
+      "+12V": 3,
+      "-12V": 5,
+      "+5V": 0,
+      "AGND": 23
+    },
+    "adoption_status": "ADOPTED AFTER INDEPENDENT NATIVE REPLAY",
+    "adoption_run": 37826672368,
+    "adoption_commit": "e0efa3152f01bd343eb8597cedeb146d2d0ae4f3",
+    "follow_on": {
+      "run": 37828529257,
+      "before": 139,
+      "after": 139,
+      "copper_added": 0,
+      "copper_removed": 0,
+      "receipt_commit": "5932578181ca9fa88991ae5067d6ec1ac6ed6f86"
+    }
+  },
+  {
+    "board": "osc-jack-right",
+    "run": 37824203279,
+    "artifact_id": 11572210336,
+    "artifact_zip_sha256": "4216483ee7e284de2b0160344034f839bc71ab0233fb2ba01bdb527502958244",
+    "result_sha256": "775655ae60eb93bd2af8ee4469546a0c473544412a67881592ab1c8fd4ac875a",
+    "old_native_edges": 162,
+    "new_native_edges": 162,
+    "new_remaining_signal_edges": 128,
+    "new_remaining_rail_ground_edges": {
+      "+12V": 0,
+      "-12V": 5,
+      "+5V": 0,
+      "AGND": 29
+    },
+    "adoption_status": "INELIGIBLE: NO GAIN"
+  },
+  {
+    "board": "osc-core",
+    "run": 37824207235,
+    "artifact_id": 11580597028,
+    "artifact_zip_sha256": "cd24cd29a8dc75ced471a58f387203261094b0a425c17c6dc444e80349964a0f",
+    "result_sha256": "a0e3bf3fb7b55e6f6a19699f410103b72082c9b35a1313252dcc17d48aff81e5",
+    "old_native_edges": 1499,
+    "new_native_edges": 1499,
+    "adoption_status": "INELIGIBLE: BOTH VARIANTS SPLIT TWO PRIOR AGND PAD GROUPS",
+    "old_stage_seconds": 3545.314994042,
+    "new_stage_seconds": 4729.80222295,
+    "old_routing_seconds": 117.27211346800004,
+    "new_routing_seconds": 189.0070201440003,
+    "accepted_edges_per_hour": 0
+  },
+  {
+    "board": "osc-jack-right",
+    "kind": "read-only local branch repair",
+    "run": 37873299470,
+    "artifact_id": 11591696679,
+    "artifact_zip_sha256": "7fcf86a87a534b1d9849acc4dc43533d9a82a248176d0f4b8da061439773691f",
+    "result_sha256": "a6324aa4191a4e3741659b99fa775910dda61d8bfc4d906f7690cbbe1fac8075",
+    "copper_replay_sha256": "d69403813d184d0c2c04ad531fc917888e087057bf620f5c012f32a1076b1146",
+    "native_edges_before": 162,
+    "native_edges_after_cut": 168,
+    "native_edges_after_repair": 163,
+    "adoption_status": "REJECTED: strict improvement, victim pad membership and warning gates fail; canonical unchanged"
+  },
+  {
+    "board": "osc-jack-left",
+    "kind": "read-only local branch repair",
+    "run": 37874044551,
+    "artifact_id": 11591249714,
+    "artifact_zip_sha256": "8068c26c93a1efe088472dda14a12480a141258e92b8010cbbe607d7e8b2a610",
+    "result_sha256": "b42775e8b23a95f848ed4f906bcb192579258872c5c3962028d3cb6e68456319",
+    "copper_replay_sha256": "d6ed8ab3a9bcdd019da68322d10fd2f70e651eac4ee81528635a86652034a490",
+    "native_edges_before": 139,
+    "native_edges_after_cut": 141,
+    "native_edges_after_repair": 139,
+    "adoption_status": "REJECTED: no strict improvement; canonical unchanged"
+  },
+  {
+    "board": "osc-jack-right",
+    "run": 37875619974,
+    "artifact_id": 11592851696,
+    "artifact_zip_sha256": "0a74c371c14b3b4b2b67547db013d9edc61d4a02eabbaa2c00a4fdec63d9aac5",
+    "result_sha256": "4009a43ecc28191776416d7c3917a5d3784f6938a06647f751c6a65ee39e84e5",
+    "adoption_status": "REJECTED; canonical copper unchanged; rail fanout did not restore -12V membership"
+  }
+]

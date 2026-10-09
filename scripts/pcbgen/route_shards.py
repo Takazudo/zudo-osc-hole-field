@@ -4,16 +4,17 @@
 Every shard starts from the same base board and renegotiates only the signal nets
 it owns, so the deltas never touch the same net. Each delta is the set of
 segment/via blocks the shard removed and added. The merge applies all deltas to
-the base board as text, runs the native DRC/parity/refill gate once, and reverts
+the base board as text, runs settled and independent native gates, and reverts
 whole nets whose new copper still fails, as a route_jack_grid.py stage does.
 Draft only: electrical and physical qualification remain NOT RUN.
 """
 from __future__ import annotations
-import argparse,hashlib,json,re,shutil,sys
+import argparse,collections,hashlib,json,re,shutil,sys
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[2]
 sys.path.insert(0,str(ROOT))
 from scripts.pcbgen.uuid_tools import top_level_spans,UUID_RE
+from scripts.pcbgen.copper_identity import reject_new_uuid_collisions
 
 NET_RE=re.compile(r'\(net\s+"((?:[^"\\]|\\.)*)"\)')
 LAYER_RE=re.compile(r'\(layer\s+"([^"]+)"\)')
@@ -101,22 +102,35 @@ def area_plan(points,shards):
     return split(sorted(points),shards)
 
 
-def copper_blocks(text):
-    """{uuid: (net, layer or None, block)} for every top-level segment and via."""
-    out={}
+def copper_block_groups(text):
+    """Keep every block even when legacy copper shares a UUID."""
+    out=collections.defaultdict(list)
     for start,end in top_level_spans(text):
         block=text[start:end]
         if not block.startswith(('(segment','(via')):continue
         uid=UUID_RE.search(block);net=NET_RE.search(block)
         if not uid or not net:raise ValueError('copper item without uuid or net: '+block[:80])
         layer=LAYER_RE.search(block) if block.startswith('(segment') else None
-        out[uid[1]]=(net[1],layer[1] if layer else None,block)
-    return out
+        out[uid[1]].append((net[1],layer[1] if layer else None,block))
+    return dict(out)
+
+
+def copper_blocks(text):
+    """Unique-ID view; use copper_block_groups when comparing complete geometry."""
+    return {u:items[-1] for u,items in copper_block_groups(text).items()}
 
 
 def delta(base_text,final_text):
     """Copper removed from and added to base_text by one shard, with the nets it touched."""
-    base=copper_blocks(base_text);final=copper_blocks(final_text)
+    bg,fg=copper_block_groups(base_text),copper_block_groups(final_text)
+    ambiguous={u for u in bg.keys()|fg.keys() if len(bg.get(u,[]))>1 or len(fg.get(u,[]))>1}
+    for u in ambiguous:
+        if sorted(x[2] for x in bg.get(u,[]))!=sorted(x[2] for x in fg.get(u,[])):
+            raise ValueError('ambiguous duplicate copper UUID changed: '+u)
+    # Unchanged duplicates remain byte-for-byte in the base; never select one
+    # arbitrary object as the representative of a removal or modification.
+    base={u:v[-1] for u,v in bg.items() if u not in ambiguous}
+    final={u:v[-1] for u,v in fg.items() if u not in ambiguous}
     removed=sorted(set(base)-set(final));added=sorted(set(final)-set(base))
     changed=sorted(u for u in set(base)&set(final) if base[u][2]!=final[u][2])
     if changed:raise ValueError(f'shard edited {len(changed)} copper items in place; only removal and addition are mergeable')
@@ -138,7 +152,8 @@ def merge_text(base_text,deltas,reverted=frozenset()):
     """Base board with every delta applied, except for disjoint-check losers and reverted nets."""
     keep=disjoint(deltas)
     removed={r['uuid'] for d,k in zip(deltas,keep) for r in d['removed'] if r['net'] in k and r['net'] not in reverted}
-    added=[a['block'] for d,k in zip(deltas,keep) for a in d['added'] if a['net'] in k and a['net'] not in reverted]
+    added_rows=[a for d,k in zip(deltas,keep) for a in d['added'] if a['net'] in k and a['net'] not in reverted]
+    added=[a['block'] for a in added_rows];surviving=set()
     chunks=[];last=0;spans=list(top_level_spans(base_text));dropped=0
     for start,end in spans:
         block=base_text[start:end]
@@ -147,7 +162,9 @@ def merge_text(base_text,deltas,reverted=frozenset()):
             if uid and uid[1] in removed:
                 # Drop the block and the indentation/newline that preceded it.
                 cut=base_text.rfind('\n',last,start);chunks.append(base_text[last:cut if cut>=0 else start]);last=end;dropped+=1
+            elif uid:surviving.add(uid[1])
     if dropped!=len(removed):raise ValueError(f'removed copper not found in base: {dropped}/{len(removed)}')
+    reject_new_uuid_collisions(surviving,added_rows)
     tail=base_text[last:];close=tail.rstrip().rfind(')')
     if close<0:raise ValueError('board text has no closing parenthesis')
     # Spans start at '(' and keep their inner lines' absolute indentation.
@@ -156,9 +173,9 @@ def merge_text(base_text,deltas,reverted=frozenset()):
     return ''.join(chunks)
 
 
-def merge(board_id,delta_paths,label):
+def merge(board_id,delta_paths,label,repair_ground=False):
     """Apply every shard delta to the board, gate it natively, and promote it if open edges fall."""
-    from scripts.pcbgen.route_jack_grid import PLANES,workspace,check
+    from scripts.pcbgen.route_jack_grid import PLANES,workspace,check,promotion_gate,connectivity_signature,split_pad_groups,stitched
     board=ROOT/'boards'/board_id/f'{board_id}.kicad_pcb';base_text=board.read_text()
     sha=hashlib.sha256(base_text.encode()).hexdigest()
     deltas=[json.loads(Path(p).read_text()) for p in delta_paths]
@@ -167,9 +184,10 @@ def merge(board_id,delta_paths,label):
     deltas=[d for d in deltas if d['added'] or d['removed']]
     if not deltas:print('no shard changed copper');return None
     start=workspace(board_id,'shards-start');base=start/board.name;shutil.copyfile(board,base)
-    drc,before=check(base)
-    if [v for v in drc['violations'] if v['severity']=='error'] or drc['schematic_parity']:raise RuntimeError('base board not clean')
-    lost=sorted(set().union(*map(set,(d['nets'] for d in deltas)))-set().union(*disjoint(deltas)))
+    before_drc,before=check(base)
+    if [v for v in before_drc['violations'] if v['severity']=='error'] or before_drc['schematic_parity']:raise RuntimeError('base board not clean')
+    ownership=disjoint(deltas)
+    lost=sorted(set().union(*(set(d['nets'])-k for d,k in zip(deltas,ownership))))
     if lost:print(f'{len(lost)} nets claimed by two shards; the later shard loses them: {lost[:10]}')
     added={a['uuid']:a for d in deltas for a in d['added']}
     reverted=set()
@@ -190,17 +208,54 @@ def merge(board_id,delta_paths,label):
         if not culprits:break
         reverted|=culprits;print(f'merge attempt {attempt+1}: reverting {len(culprits)} nets with failing copper',flush=True)
     else:raise RuntimeError('merged DRC errors persist after reverting nets')
+    stitch_receipt=None
+    if repair_ground and split_pad_groups(before,after):
+        staged={'open_edges_before':before['open_edges'],'open_edges_after':after['open_edges'],
+                'open_by_net_after':{n:len(g)-1 for n,g in after['islands'].items()}}
+        definition=json.loads((ROOT/'design/boards'/f'{board_id}.json').read_text())
+        candidate,stitch_receipt=stitched(board_id,base,candidate,staged,{'name':f'shards-{label}'},definition,print)
+        drc=json.loads(candidate.with_name('drc.json').read_text());after=json.loads(candidate.with_name('dump.json').read_text())
+    fresh=workspace(board_id,'shards-fresh')/board.name;shutil.copyfile(candidate,fresh)
+    fresh_drc,fresh_dump=check(fresh)
+    agreement=connectivity_signature(after)==connectivity_signature(fresh_dump)
+    candidate,drc,after=fresh,fresh_drc,fresh_dump
     receipt={'stage':f'shards-{label}','status':'NATIVE CHECKED DRAFT STAGE','shards':len(deltas),
              'open_edges_before':before['open_edges'],'open_edges_after':after['open_edges'],
              'nets_merged':len(set().union(*disjoint(deltas))-reverted),'nets_reverted':sorted(reverted),'nets_lost_to_overlap':lost,
-             'copper_added':sum(a['net'] not in reverted for a in added.values()),'drc_errors':0,
-             'drc_warnings':sum(v['severity']=='warning' for v in drc['violations']),'parity':0,
+             'copper_added':sum(a['net'] not in reverted for a in added.values()),'drc_errors':sum(v['severity']=='error' for v in drc['violations']),
+             'drc_warnings':sum(v['severity']=='warning' for v in drc['violations']),'parity':len(drc['schematic_parity']),
              'open_by_net_after':{n:len(g)-1 for n,g in after['islands'].items()}}
-    receipt['adopted']=receipt['open_edges_after']<receipt['open_edges_before']
+    receipt.update(promotion_gate(before,after,before_drc,drc))
+    if stitch_receipt and 'agnd_stitch' in stitch_receipt:receipt['agnd_stitch']=stitch_receipt['agnd_stitch']
+    if receipt['native_errors']:receipt['status']='REJECTED: fresh native DRC/parity errors'
+    receipt['independent_connectivity_agrees']=agreement
+    if not agreement:
+        receipt['adopted']=False;receipt['rejection_reason']='independent_connectivity_changed'
+    receipt['input_board_sha256']=sha
+    receipt['candidate_board_sha256']=hashlib.sha256(candidate.read_bytes()).hexdigest()
     reports=board.parent/'reports'/'grid-routing';reports.mkdir(parents=True,exist_ok=True)
+    # Retain the exact candidate even when a membership/warning gate rejects it.
+    replay=delta(base_text,candidate.read_text())
+    replay_path=reports/f'shards-{label}-copper.json'
+    replay_path.write_text(json.dumps(replay,sort_keys=True)+'\n')
+    receipt['copper_added']=len(replay['added']);receipt['copper_removed']=len(replay['removed'])
+    receipt['copper_replay']={'path':str(replay_path.relative_to(ROOT)),
+                            'sha256':hashlib.sha256(replay_path.read_bytes()).hexdigest(),'base_sha256':sha}
+    if receipt['adopted']:
+        from scripts.pcbgen.adopt_obstacle_benchmark import publication_copy
+        if hashlib.sha256(board.read_bytes()).hexdigest()!=sha:
+            raise RuntimeError('canonical board changed during native checks; refuse stale promotion')
+        native_candidate=candidate
+        candidate,cache=publication_copy(board_id,candidate,drc,after)
+        receipt['native_filled_board_sha256']=hashlib.sha256(native_candidate.read_bytes()).hexdigest()
+        receipt['candidate_board_sha256']=hashlib.sha256(candidate.read_bytes()).hexdigest()
+        receipt['publication_cache']=cache
     (reports/f'shards-{label}.json').write_text(json.dumps(receipt,indent=1,sort_keys=True)+'\n')
     print(f"shards-{label}: {receipt['open_edges_before']} -> {receipt['open_edges_after']} open edges",flush=True)
-    if receipt['adopted']:shutil.copyfile(candidate,board);print('promoted',board.relative_to(ROOT),flush=True)
+    if receipt['adopted']:
+        if hashlib.sha256(board.read_bytes()).hexdigest()!=sha:
+            raise RuntimeError('canonical board changed during native checks; refuse stale promotion')
+        shutil.copyfile(candidate,board);print('promoted',board.relative_to(ROOT),flush=True)
     return receipt
 
 
@@ -209,11 +264,12 @@ def main():
     d=sub.add_parser('delta',help='copper delta between a base and a shard board');d.add_argument('base',type=Path);d.add_argument('final',type=Path);d.add_argument('-o','--output',type=Path,required=True)
     m=sub.add_parser('merge',help='apply shard deltas to boards/<id>/<id>.kicad_pcb (KiCad via scripts/kicad/run.sh)')
     m.add_argument('board_id',choices=('osc-jack-left','osc-jack-right','osc-core'));m.add_argument('deltas',nargs='+');m.add_argument('--label',required=True)
+    m.add_argument('--repair-ground',action='store_true',help='try existing AGND stitching before the complete membership gate')
     a=p.parse_args()
     if a.cmd=='delta':
         out=delta(a.base.read_text(),a.final.read_text());a.output.write_text(json.dumps(out)+'\n')
         print(f"delta: {len(out['removed'])} removed, {len(out['added'])} added, {len(out['nets'])} nets")
-    else:merge(a.board_id,a.deltas,a.label)
+    else:merge(a.board_id,a.deltas,a.label,a.repair_ground)
 
 
 if __name__=='__main__':main()
