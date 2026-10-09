@@ -1,10 +1,10 @@
 # Issue 189 exact continuation checkpoint
 
-Updated 2026-10-09 17:22 UTC. **Issue #189 remains OPEN.** Accepted draft boards are **JL119 / JR135 / core1441**. Main remains **JL120 / JR136 / core1441**, commit `9de20ab442dca2940da0a201d5ef5e764dcdbea3`. Completion gates are unmet; no fabrication or hardware qualification is claimed.
+Updated 2026-10-09 17:38 UTC. **Issue #189 remains OPEN.** Accepted draft boards are **JL119 / JR135 / core1441**. Main is also **JL119 / JR135 / core1441**, commit `4db1d3c009dbf7744541c01692bc626213832ca6`. Completion gates are unmet; no fabrication or hardware qualification is claimed.
 
 ## Authoritative state — supersedes historical pending entries below
 
-PR208, `agent-fix/189-next-ground-continuation`, frozen `2d59eb83d413b1dcd5997b6aaa6c878d43fa1f35`: all five exact-head CI jobs passed in37962980438 (`ci-2d59eb8.json`). It remains open; no merge was performed in this continuation. Draft PR209 on `agent-fix/189-following-ground-continuation` contains the subsequent receipts and trials, stacked on208. Preserve both branches and other sessions. Refresh remote state before integration; respect the user's no-merge instruction unless separately superseded by explicit authorization.
+PR208 merged after all five exact-head checks passed at2d59eb83, CI37962980438. Merge4db1d3c009dbf7744541c01692bc626213832ca6 at17:24:56UTC; post-merge CI37966103089 is still pending. Explicit user steering authorized verified incremental merges. PR209 now targets main and carries the merge forward as0aa91f52. Preserve branches; never merge unverified heads or close189.
 
 All accepted boards have0native DRC/parity errors, no new reported warning identities or split original pad groups, and fresh native agreement. Warnings477/520/619. Latest complete retention ledger is `retention-ledger-6b72bc2.json`: every uncut object survives the latest stages, every original core object survives, and jack removals are explicitly reviewed rather than claimed retained. Fixed physical/electrical requirements remain unchanged.
 
@@ -19,15 +19,23 @@ All accepted boards have0native DRC/parity errors, no new reported warning ident
 | Purpose | Run | Worker | Exact source |
 | --- | --- | --- | --- |
 | Core19short signal segments/11nets, no vias/cuts |37965185751|`agent-fix/189-core-short-no-via-worker`|`08aec29e83d24d291f4d41a7bb10300e072a7260`|
-| JR37segment endpoint-complete disposable pilot |37965489217|`agent-fix/189-jr-c7413-endpoints-worker`|`61dcf368f6d29f32b33f5d6b0baa4aacb162e419`|
+| JR37segment endpoint-complete adoption |37967123290|`agent-fix/189-jr-c7413-adopt-worker`|`01d88b8599a5b302e21f984fb4be520a64797152`|
+| Read-only native hole identity audit |37967430188|`agent-fix/189-native-hole-geometry-worker`|`1814eff56816948ee37311b6290f4aee4b73d03c`|
+| JL119 C8142.2 disposable cut pilot |37967648679|`agent-fix/189-jl-c8142-ground-worker`|`6d76d17712c63c3ec72c910211dfa2322c45a924`|
 
-Core19 was explicitly rebased onto accepted a0e3cff1 with all133169objects retained and no accepted ground additions. See `core-short-no-via/rebase.json`; it supersedes older statements that this rebase has not run. This is the sole current core writer. JR pilot remains read-only; canonical JR135 is unchanged.
+Core19 was explicitly rebased onto accepted a0e3cff1 with all133169objects retained and no accepted ground additions. See `core-short-no-via/rebase.json`; it supersedes older statements that this rebase has not run. This is the sole current core writer; the hole audit is strictly read-only. Canonical JR135 is unchanged until adoption37967123290 completes and reconciles.
+
+JR pilot37965489217 is terminal/eligible135→134:37segments/5cuts,all51140uncut objects identical,0DRC/parity,520unchanged warnings,no original splits,fresh agrees,physical/project/rule invariants verified. Candidate35b52972dd70b4186cf3f3b7ee2ac3d70432f3476c2f56c9fcf9c1c4d7d4d445; replay3c3495b6442d463366c39ccdee4c010f9ca3c030cb321cda4d1780c4a6971c61. Artifact11633417223 ZIPc9691383c024c5e0fcfb2d3694e637c0c4d0080cf464752e8ac9d85b463f12f1. See jr-c7413-endpoints/ for independent proofs and pinned native prepare. Eligibility is not canonical adoption.
+
+The supplemental hole audit is implemented without changing any promotion gate. It covers potentially violating pairs in at most14-hole native fixtures (at most182reports including repeated via/pad visits), copies original project/rules, verifies reloaded exact native hole geometry/types/layers/nets/UUIDs, and collects UUID plus geometry-object identities. Custom hole constraints and unresolved duplicate identity cases fail closed. It must cover every original native report identity. First native run37966866612 failed closed on two legacy duplicate via UUIDs; logs saved. Corrected geometry-keyed run37967430188 is pending. Eight audit regressions plus two workflow-dispatch tests pass; localKiCad9 API smoke is not acceptance. No claim of complete native audit results yet.
+
+JL C8142.2 uses eleven exact original cuts on one victim within15.3x14.25mm. Original ground-only prefilter is positive; source preparation proves all selected geometry unchanged on JL119 and no newly accepted U1518 copper cut. Disposable pilot pending; no canonical gain.
 
 ## Exact continuation
 
-1. Refresh both runs with `gh run view RUN --json status,conclusion,headSha,jobs`, PR208/209, main and other-session refs. Other-session heads last verified unchanged: core-rrr-escalate8315af55, jack-replace-region-230db43e0, jack-replace-jl-1470b3f0e. Do not restart unrelated watches.
-2. Download terminal native artifacts, verify published ZIP SHA, independently compare full-object multisets including duplicates, original memberships, physical invariants, warning identities, DRC/parity and fresh signature. Workflow success is not adoption. For JR endpoint pilot, gate.adopted is eligibility only; if eligible, pin a separate prepare/adoption replay with original project/rules and exact37-add/5-remove sets. Never replace a newer accepted board from an old worker.
-3. Keep core1402 rejected. Do not rerun unchanged or waive the warning. Investigate an uncapped pinned-native hole audit with exact constraint/epsilon/layer/slot/microvia semantics and fixture/native regression evidence if pursuing that proposal. Local pcbnew exposes no DRC_ENGINE/EvalRules; localKiCad9 is not acceptance. Such an audit is NOT implemented or validated. `--all-track-errors` does not lift the per-code199 cap.
+1. Refresh all active runs with `gh run view RUN --json status,conclusion,headSha,jobs`, PR208/209, main and other-session refs. Other-session heads last verified unchanged: core-rrr-escalate8315af55, jack-replace-region-230db43e0, jack-replace-jl-1470b3f0e. Do not restart unrelated watches.
+2. Download terminal native artifacts, verify published ZIP SHA, independently compare full-object multisets including duplicates, original memberships, physical invariants, warning identities, DRC/parity and fresh signature. Workflow success is not adoption. JR endpoint pilot is already reconciled/eligible; inspect its separate adoption37967123290 and require exact candidate/replay equivalence plus every original gate. Never replace a newer accepted board from an old worker.
+3. Keep core1402 rejected. Do not rerun unchanged or waive the warning. Investigate an uncapped pinned-native hole audit with exact constraint/epsilon/layer/slot/microvia semantics and fixture/native regression evidence if pursuing that proposal. Local pcbnew exposes no DRC_ENGINE/EvalRules; localKiCad9 is not acceptance. The supplemental fixture audit is implemented and running; native validation is pending. It cannot yet justify a promotion-gate change. `--all-track-errors` does not lift the per-code199 cap.
 4. JL's two joint orders and two-resolution plane-fanout comparison are terminal negative controls; no budget-only retry. Change a demonstrated geometric cause or use a source-defined movable-component comparison under all existing constraints.
 5. Keep189 open until canonical JL/JR/core reach zero native edges and all settled/fresh, regeneration/P/EL/O, unchanged-context and same-revision documentation/render gates pass. Accepted intermediate copper is not hardware qualification.
 

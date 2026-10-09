@@ -51,5 +51,17 @@ class HoleCoverageTests(unittest.TestCase):
         report={'violations':[dict(type='hole_to_hole',severity='warning',items=[{'uuid':'a'},{'uuid':'b'}])]}
         with self.assertRaises(ValueError):compare(context,context,report,report)
 
+    def test_same_uuid_identity_cannot_hide_a_different_hole_pair(self):
+        uuid_identity=('hole_to_hole','warning',('duplicate','other'))
+        old_object=('hole_to_hole','warning',('geometry-a','geometry-b'))
+        new_object=('hole_to_hole','warning',('geometry-c','geometry-b'))
+        context=dict(version='10.0.6',project_sha256='p',rules_sha256='r',
+                     clearance_nm=250000,source_sha256='b',identities=[uuid_identity])
+        report={'violations':[]}
+        result=compare(dict(context,object_identities=[old_object]),
+                       dict(context,object_identities=[old_object,new_object]),report,report)
+        self.assertEqual(result['new_identities'],[])
+        self.assertEqual(result['new_object_identities'],[new_object])
+
 
 if __name__=='__main__':unittest.main()
