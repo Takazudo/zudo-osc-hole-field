@@ -1,3 +1,29 @@
+# Ground and signal continuation — 2026-10-09 08:29 UTC
+
+PR197 remains frozen at58026c3bd0c288b3a4ebcbf830fe5be6dde2f233 for CI37904748777.
+Do not move its head; merge only after all five required checks pass,then retarget
+this follow-up to main. Current branch agent-fix/189-ground-signal-continuation
+preserves acceptedJL127/JR148/core1509; jack supply edges0/0.
+
+JR filtered two-net pilot37902237082 at ee6c0aa is NATIVE ELIGIBLE153→151:
+all50756oldobjects retained,33added,zero removals;0errors/parity,no new warnings,
+no original-group splits,independent fresh agrees. CandidateSHA
+410a49e6d81a9fba3645f92385ff9d2599c952727674383884c01ea63f1b7860; replaySHA
+586f2601155c97d72429eaa48d8abfc175d18da69e91ed10d303e257b42b7b8a.
+Artifact11603853248 ZIPf9600ebe778ed3c37312154c6a27e31acf8466ac8b74f6ae691d8feda9ea40ca
+verified. The whole D7208 transaction is excluded,so originalC7221.1 membership
+survives. This eligible old153 result must not overwrite the accepted148 supplies.
+
+jr-two-on-supply-prepare.py rebinds only its33additions onto exactea5f09c78cd1146ad5c4f8a1f9e573bb644e9e96cd3ee0d02ab5c8a64b3cf6e2,
+proving all50766current objects INCLUDING all10new supply objects remain unchanged,
+no removals or UUID collisions. The combined148-input native gate is NOT RUN yet;
+canonical replay will require that exact input and all existing native gates.
+
+JL read-only D2326 pilot37904498108 at43e3fe8 remains running on accepted127.
+Core sole writer37895925149 at0e6697d remains active; do not duplicate or overwrite
+its eventual accepted copper. No local heavy probes remain active. Core24 bounded
+comparison and all prior native evidence remain committed. Issue189 stays OPEN.
+
 # Frozen PR197 supply milestone — 2026-10-09 08:25 UTC
 
 PR197 agent-fix/189-fine-escape-replays now contains acceptedJL127/JR148/core1509.
