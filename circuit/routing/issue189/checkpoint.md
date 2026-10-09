@@ -1,10 +1,10 @@
 # Issue 189 exact continuation checkpoint
 
-Updated 2026-10-09 16:42 UTC. **Issue #189 remains OPEN.** Accepted native open edges are **JL120 / JR136 / core1441**. Zero-edge connectivity and final completion gates are unmet. No fabrication or hardware qualification is claimed.
+Updated 2026-10-09 16:49 UTC. **Issue #189 remains OPEN.** Accepted native open edges on the draft branch are **JL119 / JR136 / core1441**; main remains120/136/1441. Zero-edge connectivity and final completion gates are unmet. No fabrication or hardware qualification is claimed.
 
 ## Current authoritative state
 
-Main is merged PR207, commit `9de20ab442dca2940da0a201d5ef5e764dcdbea3`. Its exact-head CI37950014675 and post-merge CI37952715447 passed all five jobs; receipts are `ci-0d6a444.json` and `ci-main-9de20ab.json`. Current continuation is draft PR208, branch `agent-fix/189-next-ground-continuation`. It preserves negative evidence and prepares bounded successors; it adds no accepted copper beyond PR207. Refresh its exact head and checks before any merge.
+Main is merged PR207, commit `9de20ab442dca2940da0a201d5ef5e764dcdbea3`. Its exact-head CI37950014675 and post-merge CI37952715447 passed all five jobs; receipts are `ci-0d6a444.json` and `ci-main-9de20ab.json`. Current continuation is draft PR208, branch `agent-fix/189-next-ground-continuation`. It includes native-accepted JL119 plus negative evidence and guarded successors; JR/core remain136/1441. Refresh its exact head and checks before any merge.
 
 All accepted boards have zero native DRC/parity errors, no new warning identities or split original pad groups, and fresh native agreement. Warnings: JL477/JR520/core619. Fixed panel/electrical rules, accepted copper and other sessions remain preserved. PR202 post-CI was cancelled/superseded, never passed; subsequent accepted main states have passed post-CI.
 
@@ -13,10 +13,9 @@ All accepted boards have zero native DRC/parity errors, no new warning identitie
 | Board | Run | Dedicated worker branch | Pinned source |
 | --- | --- | --- | --- |
 | Core |37950004600|`agent-fix/189-core-finer-ground-worker`|`0d6a444aa1ad648ce6146d0e893e93307bd98f14`|
-| JL adoption |37960073108|`agent-fix/189-jl-u1518-adopt-worker`|`72f563f09865426d8965b1780972479887f944c0`|
 | JR adoption |37960834229|`agent-fix/189-jr-r4207-adopt-dispatch-worker`|`4ad55bd217e0a079d2c85e3ed0eccaf04bf3c49e`|
 
-All three runs in this table remain in progress. Each is the sole writer for its board. Core tests38 ground groups/382objects/38vias/zero cuts, full0.3mm AGND tracks. JL replays58segments/no vias/four reviewed cuts after eligible pilot37958624929 (120→119). JR replays85segments/one via/four reviewed cuts after eligible pilot37959238545 (136→135). Both pilots have0DRC/parity,unchanged warnings/groups,fresh agreement and complete retained-copper/physical proofs in their case directories. Eligible pilots are not canonical promotion.
+Both runs in this table remain in progress. Each is the sole writer for its board. Core tests38 ground groups/382objects/38vias/zero cuts, full0.3mm AGND tracks. JL adoption37960073108 is complete and integrated as67d2a1e:58segments/no vias/four reviewed cuts,120→119. JR replays85segments/one via/four reviewed cuts after eligible pilot37959238545 (136→135). Both pilots have0DRC/parity,unchanged warnings/groups,fresh agreement and complete retained-copper/physical proofs in their case directories. Eligible pilots are not canonical promotion.
 
 JR's first adoption37960568111 failed before routing because its declared replay choice was missing from a separate shell allowlist. The correction has a reproduced failing regression and two passing tests, including unknown-choice rejection. The retry uses the new source/worker above; do not resume or treat the failed run as native evidence.
 
@@ -42,17 +41,17 @@ Core143 run37925863664 rejected1441→1343 despite109 supply joins: original AGN
 
 | Board | Published SHA256 | Latest accepted stage |
 | --- | --- | --- |
-|JL120|`2068e5e7fc0ab3f091423e3685e6793c36de24c6308c681233465b3ce100b437`|37947934139:121→120,+53/1reviewedcut,all33241uncut objects identical|
+|JL119|`554fa85a44d74c2ad2105e34f1bbc4de9b674e46dd7531ddc3e00c6d8e1c1291`|37960073108:120→119,+58segments/4reviewedcuts,all33290uncut objects identical|
 |JR136|`33747bfc15d66bc92e7fb7c563dfa853b13058a0056075626551ef3d385d6b84`|37947938555:137→136,+39/2reviewedcuts,all51024uncut objects identical|
 |Core1441|`a0e3cff1ebc211564b8be10f6a993d50fb6d4372edde86a056ebc8dda3ea5932`|37895925149:1509→1441,+216segments/0cuts,all132953original objects identical|
 
-JL bot`abd7af3bcbbcdd25f553c5ed2aa7ea5863f60acb`, cherry`a8c0876`; artifact11625415141 ZIP`71a7b0d79fe22dbc99dfe4d089c154807cdcd5e43895b72fa883073c5f3fb123`; replay`8ec99ea42016282c19fcd4860c82a9ee402ff218eafb80d20c558d32354c847d`.
+Previous PR207 JL bot`abd7af3bcbbcdd25f553c5ed2aa7ea5863f60acb`, cherry`a8c0876`; artifact11625415141 ZIP`71a7b0d79fe22dbc99dfe4d089c154807cdcd5e43895b72fa883073c5f3fb123`; replay`8ec99ea42016282c19fcd4860c82a9ee402ff218eafb80d20c558d32354c847d`.
 
 JR bot`574025484e6b1413f97b9b761041ab4f3973b85f`, cherry`2b38e2e`; artifact11625175772 ZIP`d278a0f56c37007eea57ecab8e45d7bf17968ccc945e9c61e1c99ab04c422105`; replay`88f040c0318eccb93cf002f7a35e8d464b21c38c41d44f5bf765688468bcd953`.
 
 Both adoption outputs exactly match their eligible pilot board and replay hashes. Native DRC/parity0/0,warnings477/520,no new identities/splits,fresh agreement. Full-object retention and physical invariants are in `{jl-u2204,jr-u8303}-endpoints/`: JL3925/JR3655pads,four outline edges,123/154rule areas,six layers unchanged; project/rules byte-identical.
 
-JL30433segments/2861vias,103signal+17AGNDedges. JR47948segments/3115vias,111signal+25AGNDedges. Both jack supply rails have zero open edges. Core80+12V/80−12V/252AGND/1029signal edges. Latest cumulative full-object ledger records reviewed jack removals; do not claim all original jack copper survives. All original core copper survives. Fixed panel, electrical rules and placements remain unchanged.
+JL30487segments/2861vias,103signal+16AGNDedges. JR47948segments/3115vias,111signal+25AGNDedges. Both jack supply rails have zero open edges. Core80+12V/80−12V/252AGND/1029signal edges. Latest cumulative full-object ledger records reviewed jack removals; do not claim all original jack copper survives. All original core copper survives. Fixed panel, electrical rules and placements remain unchanged.
 
 Core native-filled hash`95c815b2178511621f97cd7021938023b96d4ee19c9282ae99b35fb387ba10c5`; cache-only publication equivalence proved. Artifact11603564190 ZIP`a01f06e5458221d6d013c5331110e0f60c849d756cec84dfdcf835750bda4cfc`.
 
@@ -141,3 +140,8 @@ JL adoption37960073108 uses agent-fix/189-jl-u1518-adopt-worker, source72f563f09
 JR adoption37960568111 (source5b25f2f097fb849b82f3737e70b9c42d30ca8781) failed before routing: r4207-joint was declared as an input/preparation option but missing from the separate shell allowlist. No native adoption ran and canonical JR remains136. The new dispatch regression reproduced that exact failure; adding the declared choice to the strict allowlist makes both tests pass, including unknown-choice rejection. YAML/all12shell steps pass. Failed logs are retained in jr-r4207-joint/dispatch-failure.txt. Retry on a new pinned worker after this correction, not the old worker.
 
 JR adoption retry37960834229 is now active at exact source4ad55bd217e0a079d2c85e3ed0eccaf04bf3c49e; it supersedes the failed pre-routing attempt37960568111. The authoritative active table above has been refreshed.
+
+
+JL adoption37960073108 is terminal/accepted120→119 and integrated on the draft branch via cherry67d2a1e from bot3f841f829d7eaab0dd02113264f16f43d257e4be. Published/native-filled board and replay exactly equal the eligible pilot hashes above; native adoption fresh signature/physical invariants were independently checked. Artifact11630024645 ZIPe3eeb406fbad529573cb72929e634349085d030d4c6fa0ee4bbf11a598526830. New native totals on the draft branch119/136/1441; JL30487segments/2861vias,103signals+16AGND,all railszero. Main is still9de20ab with120/136/1441 pending verified PR integration. JR retry37960834229 and core37950004600 remain active.
+
+Local `pnpm circuit:check` and `pnpm check` pass after JL119 integration and current documentation updates. Exact-head CI still must pass before merge; issue189 stays open.
