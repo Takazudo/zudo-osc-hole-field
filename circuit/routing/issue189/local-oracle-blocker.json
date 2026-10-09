@@ -1,0 +1,29 @@
+{
+  "status": "BLOCKED; NATIVE VERSION CHECK NOT RUN SUCCESSFULLY",
+  "command": "bash scripts/kicad/run.sh kicad-cli version",
+  "pinned_image": "kicad/kicad@sha256:18693567392b80da435f9fa952ce3a3e534c66eb5a6033f5b9c80aa3b19dd3ec",
+  "attempts": [
+    {
+      "exit_code": 1,
+      "error": "failed to register layer: no space left on device",
+      "workspace_free_after_gib": 1.9
+    },
+    {
+      "exit_code": 1,
+      "error": "failed to register layer: no space left on device",
+      "guard_verdict": "FAIL",
+      "guard_seconds": 70,
+      "workspace_free_after_gib": 8.6
+    }
+  ],
+  "docker_root": "/var/lib/docker",
+  "storage_driver": "vfs",
+  "filesystem_gib": 32,
+  "inode_use_percent": 6,
+  "installed_images": 0,
+  "containers": 0,
+  "verified_recoverable_bytes_released": 7831323387,
+  "deferred_issue": "https://github.com/Takazudo/zudo-osc-hole-field/issues/214",
+  "execution_transport": "RECOVERED; no fresh environment required for shell execution",
+  "needed": "Working pinned CI pull access or a larger compatible Docker store; a fresh saved environment is useful only if it supplies that missing capacity or cached oracle"
+}

@@ -29,6 +29,12 @@ explicit source overrides take precedence, and repeat sync stays byte-identical.
 
 Current limitations: the stackup JSON records intent while KiCad receives thickness and copper count; detailed dielectric/material rule values await the board-stack decision. Fillets require a strictly convex polygon. The fixture cannot establish physical jack-panel fit or electrical function.
 
+## Reviewed routing translations
+
+`design/partition/routing-placement-translations.json` is an explicit source input to the floorplan generator. Its default empty list changes no placement. A reviewed translation binds the complete expected source row, a nonempty evidence reference and a nonzero 0.1mm-grid delta within ±2mm. It is restricted to movable JL/JR resistors outside bypass clusters; side and orientation cannot change. The generator rejects stale source rows, duplicate entries, source-edge clearance below0.30mm and courtyard separation below0.35mm. It does not repack other components.
+
+This source geometry mechanism does not accept routed copper. Any activation still needs native10.0.6 placement, DRC/parity, warnings, original pad-group membership, settled/fresh agreement and full retained-copper checks after schematic/source regeneration. Fixed panel hardware remains bound to the original lockfile. Never edit the generated floorplan JSON to adopt a movement.
+
 ## Region placement for repeated clusters
 
 After sync, `place.py` positions generator-owned, unlocked free footprints within the optional `regions` in a board definition. Each region names a schematic `Block` instance and a repeated `family`, plus a panel-frame `rect` `[left, top, right, bottom]` in millimetres, `side` (`F.Cu` or `B.Cu`), `edge_clearance_mm`, and `mounting_clearance_mm`. See `fixture-place-six.json` for six 17 mm translated regions. One block may declare both faces when each part has an explicit `BoardSide`. A part with `FootprintOriginMm` is checked at that exact source coordinate against its native courtyard and obstacles; it is never searched onto a different position. The placement UIDs and fixed hardware coordinates still come solely from the grid lockfile. Locked or unowned free footprints keep their locations; an absent or moved fixed footprint is an error.

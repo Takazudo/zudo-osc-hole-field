@@ -225,6 +225,8 @@ def build():
     debounce_source=json.loads((ROOT/'design/partition/control-debounce-locality.json').read_text())
     placements,control_debounce=apply_debounce_locality(placements,io,source,connector,lock,shapes,debounce_source,optical_source)
     for row in placements:row['kicad_orientation_deg']=((180 if row['side']=='B.Cu' else 0)-row['rotation_deg'])%360
+    from scripts.checks.routing_placement_translations import apply_translations
+    placements=apply_translations(placements,source,json.loads((ROOT/'design/partition/routing-placement-translations.json').read_text()))
     if Counter(p['ref'] for p in placements)!=Counter(p['ref'] for p in parts):errors.append('package roster mismatch')
     bypass,bypass_errors=check_bypasses(parts,placements,pin_nets);errors.extend(bypass_errors)
     return {'schema_version':1,'status':'FAIL' if errors else 'PASS - conservative courtyard capacity proposal only',
