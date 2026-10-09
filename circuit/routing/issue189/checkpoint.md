@@ -1,3 +1,30 @@
+# Current checkpoint — 2026-10-09 06:42 UTC
+
+JR canonical ground replay37894363972 is queued on
+3b5c056ed4ab5496ce450baebfa980c7dc9cea75, behind read-only tail pilot37893521710.
+Its donor pilot is native eligible155→154 with zero removals and all50712 original
+objects unchanged. Do not dispatch another JR writer. Reconcile its eventual bot
+commit before further JR proposals; successful adoption changes the155 input.
+
+Prepared JL ground-junction correction from native rejected134 candidate52ccc...:
+new F route endpoint now meets the retained branch at143.2,122.2mm; new In2
+endpoint meets the preserved13mm original track at146.8,123.6mm. Remove only
+newly redundant old terminal copper: eighteen In2 staircase segments totaling
+3.672792mm, one0.2mm F tail, and trim the adjacent F diagonal at the new junction.
+The first ten-track screen stopped at its explicit bound; examination found the
+preserved long-track boundary. Final screen is capped20segments/5mm and stops
+there; it does not delete the long13mm branch. Every selected original object
+has a unique UUID and exact baseline/candidate geometry asserted.
+Final proposal28adds/21removes; full native gate NOT RUN. Current jl-coupled-plan
+selects it. Dispatch read-only local_mode=coupled after push. No canonical JL change.
+
+Accepted main remains JL135/JR155/core1509, DRC/parity0/0; postmerge194 CI PASS.
+Core sole writer37881591885 still active within335min compute cap; never duplicate.
+Issue189 OPEN. Source preparation and git diff checks pass;73 affected tests and
+pnpm check previously passed for unchanged routing implementation.
+
+## Earlier checkpoint history (superseded above)
+
 # Current checkpoint — 2026-10-09 06:35 UTC
 
 JR original-ground pilot37892918965 is NATIVE ELIGIBLE155→154: full original pad
