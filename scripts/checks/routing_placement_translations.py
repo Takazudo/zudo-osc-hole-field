@@ -10,7 +10,7 @@ import re
 from scripts.pcbgen.placement_geometry import Box, inside_outline
 
 
-def apply_translations(placements, source, adjustments):
+def apply_translations(placements, source, adjustments, *, headers):
     if set(adjustments) != {'schema_version', 'translations'} or adjustments['schema_version'] != 1:
         raise ValueError('unsupported routing placement translation schema')
     rows = copy.deepcopy(placements)
@@ -50,6 +50,13 @@ def apply_translations(placements, source, adjustments):
         courtyard = Box(*row['courtyard_mm'])
         if not inside_outline(courtyard, source['boards'][row['board']]['outline'], .30):
             raise ValueError('translated courtyard violates source board edge')
+        for header in headers:
+            if (header['board'], header['side']) != (row['board'], row['side']):
+                continue
+            # Reserve 0.05mm native cache expansion on each drawn courtyard.
+            # Native regeneration still checks the exact envelopes and THT pads.
+            if courtyard.intersects(Box(*header['land_courtyard_mm']), .35 - 1e-8):
+                raise ValueError('translated courtyard violates source connector separation: ' + header['id'])
         for other in rows:
             if other['ref'] == ref or (other['board'], other['side']) != (row['board'], row['side']):
                 continue

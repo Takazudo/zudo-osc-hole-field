@@ -5,7 +5,7 @@ sys.path.insert(0,str(Path.cwd()))
 from scripts.pcbgen.grid_router import route,copper_rows
 from scripts.pcbgen.route_jack_grid import LAYER_COST,RAILS,neck_kwargs
 parser=argparse.ArgumentParser();parser.add_argument('ref',choices=['RB4614','R4611','RB4615','RB4413','RB4414','R8490','R4409','RB4613']);args=parser.parse_args();ref=args.ref
-here=Path(__file__).parent/ref;p=Path('.circuit-cache/issue189-downloaded/jr-c7413-adoption/.circuit-cache/osc-jack-right-grid-shards-fresh/dump.json');d=json.loads(p.read_text());screen=json.loads((here/'result.json').read_text());side=screen['part']['side']
+here=Path(__file__).resolve().parent.parent/'jr134-movable-ground-connectors'/ref;p=Path('.circuit-cache/issue189-downloaded/jr-c7413-adoption/.circuit-cache/osc-jack-right-grid-shards-fresh/dump.json');d=json.loads(p.read_text());screen=json.loads((here/'result.json').read_text());side=screen['part']['side']
 assert d['board_sha256']==screen['board_sha256']==hashlib.sha256(Path('boards/osc-jack-right/osc-jack-right.kicad_pcb').read_bytes()).hexdigest()
 original=next(p for p in d['pads'] if p['ref']==ref and p['net']=='AGND');group=next(g for g in d['islands']['AGND'] if original['uuid'] in g);assert group==[original['uuid']];main=max(d['islands']['AGND'],key=len)
 out=[];started=time.monotonic();positive=False
