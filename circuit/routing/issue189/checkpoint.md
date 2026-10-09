@@ -1,3 +1,18 @@
+# JR141 integrated; continuation replay prepared — 2026-10-09 11:25 UTC
+
+PR200 is frozen at1686c77cefa7874a765fbf768adf071557ff469e, final CI37923371952.
+It contains native-accepted JL125/JR141/core1441; do not change that head while
+checks run. Normal merge is authorized only after all five exact-head checks pass.
+PR201 incorporated this exact accepted state viae76850a; no old copper overwritten.
+
+The34-object D7504 via-location alternative is explicitly rebased on actual JR141
+SHA3d9940791131e31d22ea65e4457ccb77d5250d629eaa2b5d3c6b03024ac3405c.
+All50964oldobjects retained,including50new; zero removals/UUID conflicts; minimum
+cross-net gap to that accepted delta8.755479677707605mm. Submit once with
+replay_jr=true,jr_replay=d7504-via-avoid on PR201. This is not native acceptance.
+JL83-object37922377985 remains its sole JL writer. Core37907147442 remains sole
+core writer on retained ground-signal branch. Keep189OPEN and allbranches retained.
+
 # PR200 frozen for final CI — 2026-10-09 11:23 UTC
 
 JR37920931258 ADOPTED143→141:50additions,zero removals,all50914oldobjects
