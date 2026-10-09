@@ -1,3 +1,13 @@
+# JR preparation failure corrected
+
+JR run37909861297 at1ad8b28 FAILED BEFORE NATIVE ROUTING: local select.py shadowed
+Python stdlib select while prepare.py imported subprocess. No native gate ran and
+no canonical copper changed. Renamed it to rebase_proposal.py; the analogous core
+selector is now select_proposal.py. Fresh-interpreter select/subprocess smoke
+checks pass from all four affected preparation directories. Retry only the same
+hash-bound31-object proposal on unchangedJR145 after pushing this correction.
+This is a script-name failure,not a native DRC result or environment blocker.
+
 # Full core supply inventory selected — 2026-10-09 09:16 UTC
 
 Current follow-up PR199,branch agent-fix/189-short-escape-continuation,source1ad8b28.
@@ -7,7 +17,7 @@ no duplicate core writer. PR198 frozen563c099 has requiredCI37909660345 pending.
 
 Core supply screen completed all160targets on identical accepted1441 native geometry:
 130raster paths/437objects,total1143.965605s; both guarded batchesPASS.
-core-short-supplies/select.py selects109targets(59+12V/50-12V),135segments,
+core-short-supplies/select_proposal.py selects109targets(59+12V/50-12V),135segments,
 all250000nm wide,zero vias/removals/UUID collisions,total length<=2mm per target
 (observed maximum1.75mm). All133169input objects preserved. Selection is NOT native
 checked and must be reconciled against the active core writer's actual terminal
@@ -28,7 +38,7 @@ pass on the exact current head; preserve the sole core writer37907147442 on that
 branch and inspect its real receipt if it changes the head. Keep189OPEN.
 
 New work is isolated on agent-fix/189-short-escape-continuation, based on563c099.
-JR bounded-two/select.py rebinds two saved paths,D7504.1 and R7626.1,from146 to
+JR bounded-two/rebase_proposal.py rebinds two saved paths,D7504.1 and R7626.1,from146 to
 accepted145,proving all50821current objects (including22new U7403objects) remain
 unchanged,31new objects,zero removals/UUID collisions. prepare.py requires exact
 145inputSHA7e548f08e57c5b982c707583b537c7364939f4e336c1f2e8cfc2b2b7bf0253b6
