@@ -1,3 +1,38 @@
+# Current checkpoint — 2026-10-09 05:04 UTC
+
+PR #193 branch `agent-fix/189-corridor-repair`; JL adoption commit `7b8898c`.
+PR #192 merged `da551253b2b3fb057ba352e39179c9a7d1233e93`; exact-head and
+post-merge CI 37884892166 passed. Issue #189 remains open.
+
+Task branch canonical JL137 / JR162 / core1509. JL corridor adoption37885619978
+passed:138→137, DRC/parity0/0, independent reload agrees, no split groups or
+new warning identities. Removed7/added157, retained32778 original objects.
+Candidate SHA b91bc8f1194dbaf9534863534ef2a090fae165b63f0aa01eaea2d367e7c94dbc.
+
+JR read-only pilot37885622256 passed its full gate:162→155, no native errors,
+no split groups/new warning identities, all50311 original objects retained,
+401 added/0 removed. This is NOT canonical adoption. Artifact11596192828,
+ZIP SHA 0b632955551285ac5a716372483de9bf46b2f94e9596ec8656417cd26a1ee37a.
+Fixed replay/result are jr-return-restored-copper.json and -result.json.
+Next canonical command after push (check active runs first):
+```sh
+gh workflow run 378789207 --ref agent-fix/189-corridor-repair \
+  -f board=osc-jack-right -f replay_jr=true
+```
+
+Core sole writer37881591885 remains on retained branch
+agent-fix/189-isolated-rail-replay, source78ebdcf. Do not duplicate or delete.
+Inspect its final native receipt and reconcile any bot commit before a new core
+transaction. Prepared core-ground-link is raster-only, 11 additions/0 removals,
+not native-validated; rebind/recompute if current writer changes canonical core.
+
+H1/H2 proofs and same-input benchmarks remain in merged#190 evidence. Corridor
+implementation passed68 affected tests. Await current exact-head CI and canonical
+JR replay before recording further accepted progress. Completion still requires
+JL/JR/core zero native open edges and full integration checks; no qualification claim.
+
+## Earlier checkpoint history (superseded above)
+
 # Current checkpoint — 2026-10-09 04:34 UTC
 
 Active execution branch: `agent-fix/189-corridor-repair`, based on PR#192 head

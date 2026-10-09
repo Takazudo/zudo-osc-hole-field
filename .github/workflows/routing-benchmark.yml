@@ -1,5 +1,5 @@
 name: Routing obstacle benchmark
-run-name: "Issue 189 ${{ inputs.local_repair && 'read-only local repair' || inputs.recover_core && 'core return repair' || inputs.adopt_run && 'copper adoption' || 'same-input benchmark' }} — ${{ inputs.board }}"
+run-name: "Issue 189 ${{ inputs.local_repair && 'read-only local repair' || inputs.recover_core && 'core return repair' || (inputs.adopt_run || inputs.replay_jl || inputs.replay_jr) && 'copper adoption' || 'same-input benchmark' }} — ${{ inputs.board }}"
 on:
   workflow_dispatch:
     inputs:
@@ -13,6 +13,10 @@ on:
         required: false
       replay_jl:
         description: Replay a fixed native-eligible JL transaction through full adoption gates
+        type: boolean
+        default: false
+      replay_jr:
+        description: Replay the fixed native-eligible JR seven-signal and supply transaction
         type: boolean
         default: false
       jl_replay:
@@ -45,7 +49,7 @@ concurrency:
   cancel-in-progress: false
 jobs:
   benchmark:
-    if: inputs.adopt_run == '' && !inputs.recover_core && !inputs.replay_jl && !inputs.local_repair
+    if: inputs.adopt_run == '' && !inputs.recover_core && !inputs.replay_jl && !inputs.replay_jr && !inputs.local_repair
     runs-on: ubuntu-latest
     timeout-minutes: 355
     strategy:
@@ -84,7 +88,7 @@ jobs:
           if-no-files-found: error
           include-hidden-files: true
   adopt:
-    if: (inputs.adopt_run != '' || inputs.recover_core || inputs.replay_jl) && !inputs.local_repair
+    if: (inputs.adopt_run != '' || inputs.recover_core || inputs.replay_jl || inputs.replay_jr) && !inputs.local_repair
     runs-on: ubuntu-latest
     timeout-minutes: 355
     permissions:
@@ -98,13 +102,16 @@ jobs:
       BENCHMARK_RUN: ${{ inputs.adopt_run }}
       RECOVER_CORE: ${{ inputs.recover_core }}
       CORE_REPLAY: ${{ inputs.core_replay }}
+      REPLAY_JR: ${{ inputs.replay_jr }}
       REPLAY_JL: ${{ inputs.replay_jl }}
       JL_REPLAY: ${{ inputs.jl_replay }}
     steps:
       - name: Restrict adoption to the isolated issue branch
         run: |
           [[ $GITHUB_REF_NAME == agent-fix/189-* ]] || exit 1
-          if [[ $REPLAY_JL == true ]]; then
+          if [[ $REPLAY_JR == true ]]; then
+            [[ $BOARD == osc-jack-right && -z $BENCHMARK_RUN && $RECOVER_CORE == false && $REPLAY_JL == false ]] || exit 1
+          elif [[ $REPLAY_JL == true ]]; then
             [[ $BOARD == osc-jack-left && -z $BENCHMARK_RUN && $RECOVER_CORE == false ]] || exit 1
           elif [[ $RECOVER_CORE == true ]]; then
             [[ $BOARD == osc-core && -z $BENCHMARK_RUN ]] || exit 1
@@ -146,6 +153,14 @@ jobs:
           fi
           timeout --signal=INT --kill-after=2m 80m python -u scripts/pcbgen/route_shards.py merge osc-jack-left \
             "$replay" --label "$label" \
+            2>&1 | tee .circuit-cache/adoption.log
+      - name: Replay fixed native-eligible JR copper
+        if: inputs.replay_jr
+        run: |
+          mkdir -p .circuit-cache
+          set -o pipefail
+          timeout --signal=INT --kill-after=2m 80m python -u scripts/pcbgen/route_shards.py merge osc-jack-right \
+            circuit/routing/issue189/jr-return-restored-copper.json --label issue189-return-restored \
             2>&1 | tee .circuit-cache/adoption.log
       - name: Recover preserved core copper and repair split returns
         if: inputs.recover_core
@@ -190,7 +205,7 @@ jobs:
           include-hidden-files: true
           retention-days: 30
   local-pilot:
-    if: inputs.local_repair && !inputs.replay_jl
+    if: inputs.local_repair && !inputs.replay_jl && !inputs.replay_jr
     runs-on: ubuntu-latest
     timeout-minutes: 90
     permissions:
