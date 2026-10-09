@@ -1,3 +1,31 @@
+# Current checkpoint — 2026-10-09 05:44 UTC
+
+PR#193 merged at652dab95ba3f2da44ad941c2b972ad074bfdf8fc after all five exact-head
+checks passed on52362ff (run37887923010). Issue#189 remains OPEN. PR#194 now
+bases on main; merge commitcd2366b preserves accepted JL135/JR155/core1509.
+Core sole writer37881591885 is still running on retained
+agent-fix/189-isolated-rail-replay; do not treat it as accepted or duplicate it.
+
+JR six-corridor pilot37887951545 was rejected155→157: three signal victim nets
+split, AGND29→31,13 new dangling warnings, DRC/parity0/0. Detached return pads
+are R7532.2/C7512.2/R7434.2 and R7530.2. Exact result/replay and artifact digest
+are committed. Canonical JR remains155 with all previous accepted copper.
+
+Prepared next read-only JR coupled plan isolates D7504.1 and its complete victim
+repair:48 additions/five removals. Four are the source corridor blockers; the
+fifth is one diagnosed0.55mm In2 dangling tail on the replaced victim branch.
+Source asserts exact UUID/geometry and prior native warning; original signal pad
+groups were intact in the donor. Return/fill effect of isolated subset is unknown.
+Existing native coupled restoration and full original-baseline gates must pass.
+Dispatch local_repair=true/local_mode=coupled on this branch after push, checking
+active runs first. No automatic canonical promotion by the pilot.
+
+JL first-corridor coupled pilot37889308541 remains active on8b191ce, input135.
+No new canonical writer is active for either jack. PR#194 CI is pending after
+merging main. Executor remains usable after the transient05:22 disconnect.
+
+## Earlier checkpoint history (superseded above)
+
 # Accepted follow-up — 2026-10-09 05:35 UTC
 
 PR#194 agent-fix/189-corridor-followup adopted JL137→135 at002a8bf via
