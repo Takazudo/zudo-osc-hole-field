@@ -1,3 +1,22 @@
+# Three bounded native transactions — 2026-10-09 08:55 UTC
+
+Current pushed head75f599e21a70175dfc035de26aba120fcee8b041; PR198 targets main.
+Exactly one native writer per board:
+- JL37906767213 source46a599c: fixed eligible D2326 replay127→126 candidate.
+- JR37907617523 source75f599e: new22-object U7403.2 bounded escape on146.
+- Core37907147442 sourceaf724ad: new31-object U1513.9 bounded escape on1441.
+None has a terminal native receipt yet. Preserve their eventual copper,including
+fallback ci-route branches if publication races; never infer adoption from green CI.
+
+Accepted counts remain JL127/JR146/core1441,all DRC/parity0/0; warnings477/520/619.
+JR146-bounded-screen:24nets,9raster paths/414objects/120.062891s,guardPASS.
+Only22objects are submitted; eight other paths are proposals,not native progress.
+Core paired bounded screen has identical source,nets,frames and budgets:
+0.025mm5paths/283objects/187.959573s;0.05mm3paths/78objects/155.845891s.
+The two coarser-only paths are retained; neither resolution dominates.
+Local core full-width0.025mm supply screen is ongoing from accepted1441.
+Any next proposal must be reconciled to the terminal core writer's actual board.
+
 # Active native replays — 2026-10-09 08:50 UTC
 
 Sole core writer37907147442 ataf724ad816ccf837cc3494f10bf3137f8025ae5e
