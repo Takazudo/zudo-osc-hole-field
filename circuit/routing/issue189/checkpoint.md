@@ -1,3 +1,22 @@
+# Active writers and diagnostic refinement — 2026-10-09 11:18 UTC
+
+PR201 https://github.com/Takazudo/zudo-osc-hole-field/pull/201 is draft, based on
+PR200's short-power branch. JL83-object native run37922377985 uses immutable
+c8259332ed4755fe171a481a22abc9708ffd6245. JR50-object37920931258 remains active
+on PR200; sole core37907147442 remains active on retained ground-signal branch.
+Do not create duplicate writers. No pending result is claimed accepted.
+
+PR200 exact-head CI37921781202 is still running on82ce9b4a20dc7d42f766927ef259912ba607433f.
+All five checks must pass on the actual current PR head before normal merge;
+check for JR bot deltas first, preserve branches, and verify postmerge CI.
+Main199 postmerge checks already passed; issue189 remains OPEN.
+
+Longer additive JL screen tested24pairs with computed frames<=100mm,0.05mm grid,
+weight2.5,300000expansions:0paths in68.37447359000362s,guardPASS. A red regression
+exposed exhausted searches reported as unknown; fixed diagnostic only,97affected
+testsPASS. Native U2119 rejected91-object retention proves all33220oldobjects
+unchanged. See jl125-long-pairs and jl-u2119-outer/retention.json.
+
 # Ground-fill continuation — 2026-10-09 11:12 UTC
 
 New isolated branch agent-fix/189-ground-fill-continuation starts at 82ce9b4.
