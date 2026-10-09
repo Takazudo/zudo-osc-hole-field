@@ -1,0 +1,3 @@
+# Pending finer-ground alternatives
+
+Three distinct ground groups on acceptedJL125: R2209.2, RB2217.2 and the U3402/C3404/C3305 group. Twenty additive objects at unchanged ground dimensions. Original saved proposal intentionally retains the JL125 input hash. Do not dispatch it now. First wait for C8143 native run37932246042, inspect its receipt/artifact and reconcile accepted copper. Then explicitly rebase this proposal onto the actual canonical board, retaining every old object and checking new-via separation. Keep full original native pad memberships and all warning/DRC/parity/fresh-copy gates. A positive fine-grid screen is not native acceptance.
