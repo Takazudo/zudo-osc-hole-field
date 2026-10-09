@@ -1,3 +1,20 @@
+# JL remaining ground split isolated — 2026-10-09 11:30 UTC
+
+JL83-object37922377985 is REJECTED125→125:target signal joined,but C2148.2 AGND
+split remains; U2102split is avoided.0DRC/parity,477unchanged warnings,no new
+identities,fresh agrees. All33220oldobjects retained. Artifact11613280814 digest
+b479463bd1a0da8aabc07f1b4d7d70e0fd179497bfa8a78ced3c4bef31ae2fca verified.
+Receipt-only fallbackci-route/osc-jack-left-37922377985 atca900652ee14a76650f3764a4278328a8c034135
+retained and cherry-picked as51c97eb. Rejected copper is not canonical.
+
+C2148fanout on this changed candidate still finds0paths. Native filled polygons
+show back-layer loss; a search-only exclusion above the pad yields87additive
+objects on unchanged JL125. Two other exclusions find0paths. Submit exactly one
+JL writer asreplay_jl=true,jl_replay=u2119-ground-corridor. Native NOTYETRUN here.
+JR34-object37923452631 runs on source124172dbe5ba00a89cc7ee30248283130b86363d.
+Core37907147442 remains sole core writer. PR200 stays frozen1686c77,CI37923371952.
+Actual accepted branchesJL125/JR141/core1441;main still126/143/1441. Keep189OPEN.
+
 # JR141 integrated; continuation replay prepared — 2026-10-09 11:25 UTC
 
 PR200 is frozen at1686c77cefa7874a765fbf768adf071557ff469e, final CI37923371952.
