@@ -1,0 +1,143 @@
+{
+  "run": 38069793801,
+  "tested_sha": "63f9541aa68ae3e05ee9700ae71dcaea6dfe02f6",
+  "artifact_metadata": {
+    "run": 38069793801,
+    "tested_sha": "63f9541aa68ae3e05ee9700ae71dcaea6dfe02f6",
+    "native": {
+      "id": 11679236513,
+      "node_id": "MDg6QXJ0aWZhY3QxMTY3OTIzNjUxMw==",
+      "name": "issue189-core236-isolated-native-38069793801",
+      "size_in_bytes": 1052742754,
+      "url": "https://api.github.com/repos/Takazudo/zudo-osc-hole-field/actions/artifacts/11679236513",
+      "archive_download_url": "https://api.github.com/repos/Takazudo/zudo-osc-hole-field/actions/artifacts/11679236513/zip",
+      "expired": false,
+      "digest": "sha256:aa953bd5537e320eabe7ef1119065856bad5f65fad4af3aab750040e9dda6dcb",
+      "created_at": "2026-10-10T18:42:10Z",
+      "updated_at": "2026-10-10T18:42:10Z",
+      "expires_at": "2026-11-09T18:40:00Z",
+      "workflow_run": {
+        "id": 38069793801,
+        "repository_id": 1391226919,
+        "head_repository_id": 1391226919,
+        "head_branch": "agent-fix/189-core236-isolated-audit-recovery",
+        "head_sha": "63f9541aa68ae3e05ee9700ae71dcaea6dfe02f6"
+      }
+    },
+    "diagnostics": {
+      "id": 11679136451,
+      "node_id": "MDg6QXJ0aWZhY3QxMTY3OTEzNjQ1MQ==",
+      "name": "issue189-core236-isolated-diagnostics-38069793801",
+      "size_in_bytes": 1028502,
+      "url": "https://api.github.com/repos/Takazudo/zudo-osc-hole-field/actions/artifacts/11679136451",
+      "archive_download_url": "https://api.github.com/repos/Takazudo/zudo-osc-hole-field/actions/artifacts/11679136451/zip",
+      "expired": false,
+      "digest": "sha256:b2f5f4d7356eed1b0954e64a6eb7bef7b6195f7ff5a2d1535633eeae42ba2342",
+      "created_at": "2026-10-10T18:39:59Z",
+      "updated_at": "2026-10-10T18:39:59Z",
+      "expires_at": "2026-11-09T18:39:58Z",
+      "workflow_run": {
+        "id": 38069793801,
+        "repository_id": 1391226919,
+        "head_repository_id": 1391226919,
+        "head_branch": "agent-fix/189-core236-isolated-audit-recovery",
+        "head_sha": "63f9541aa68ae3e05ee9700ae71dcaea6dfe02f6"
+      }
+    }
+  },
+  "diagnostic_zip_sha256": "b2f5f4d7356eed1b0954e64a6eb7bef7b6195f7ff5a2d1535633eeae42ba2342",
+  "nested_diagnostics_sha256": "eaad6218ebb8964a42fc11448a83fc4dbdbc893a79716bac1ec542989d79cb8d",
+  "native_raw_zip_digest_locally_verified": false,
+  "controller": {
+    "status": "INCONCLUSIVE_100_MINUTE_BUDGET",
+    "adopted": false,
+    "phases": [],
+    "budget_seconds": 6000,
+    "minimum_available_kib": 2097152,
+    "maximum_process_tree_rss_kib": 12582912,
+    "resume_reports": 221,
+    "error_type": "KeyboardInterrupt",
+    "error": "external fixed-budget stop",
+    "exit_status": 137
+  },
+  "required_total": 426,
+  "required_new": 205,
+  "zones": [
+    {
+      "zone_uuid": "601e02b2-8ccb-5c28-83e5-03789d47fbbd",
+      "layer": "F.Cu",
+      "planned": 220,
+      "completed": 220,
+      "reused": 220,
+      "missing": 0
+    },
+    {
+      "zone_uuid": "e389d344-872d-538e-9bfc-39577adb1686",
+      "layer": "B.Cu",
+      "planned": 206,
+      "completed": 15,
+      "reused": 1,
+      "missing": 191
+    }
+  ],
+  "reused_reports": 221,
+  "new_reports": 14,
+  "total_completed": 235,
+  "completed_fixture_error_count": 0,
+  "unreceipted_reports": [],
+  "raw_fixture_warning_counts": {
+    "isolated_copper": 46765,
+    "lib_footprint_issues": 3626,
+    "silk_overlap": 103,
+    "silk_edge_clearance": 9
+  },
+  "other_raw_fixture_warning_domains_complete": false,
+  "timings": {
+    "native_validation": {
+      "started": 236,
+      "completed": 236,
+      "failed": 0,
+      "unfinished": 0,
+      "total_seconds": 3688.8491567270003,
+      "median_seconds": 13.334935891999976,
+      "maximum_seconds": 54.13863366700025
+    },
+    "verified_report": {
+      "started": 221,
+      "completed": 221,
+      "failed": 0,
+      "unfinished": 0,
+      "total_seconds": 3.3727042809987893,
+      "median_seconds": 0.01525933899984011,
+      "maximum_seconds": 0.016633232999993197
+    },
+    "native_DRC": {
+      "started": 15,
+      "completed": 14,
+      "failed": 0,
+      "unfinished": 1,
+      "total_seconds": 2017.2778180089986,
+      "median_seconds": 138.03862037349995,
+      "maximum_seconds": 182.1463558759997
+    }
+  },
+  "telemetry": {
+    "samples": 2939,
+    "peak_tree_rss_kib": 2836588,
+    "minimum_available_kib": 12489536,
+    "cleanup": [
+      {
+        "epoch": 1791657588.7189345,
+        "phase": "after_cleanup",
+        "operation": "audit",
+        "tree_rss_kib": {},
+        "owned_containers_remaining": [],
+        "available_kib": 15289188
+      }
+    ]
+  },
+  "adopted": false,
+  "publication_equivalence": "NOT RUN; REQUIRED LATER",
+  "remaining_action": "STOP FOR PARENT REVIEW; NO AUTOMATIC RECOVERY RETRY/EXTENSION",
+  "reconciliation": "PASS; compact reports/receipts and exact fixture/context reconstruction match retained full output inventory; full ZIP byte verification separately required"
+}
