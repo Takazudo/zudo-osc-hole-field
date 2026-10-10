@@ -7,6 +7,13 @@ class PilotTests(unittest.TestCase):
  setUp=fixtures.TaskTests.setUp
  bundle=fixtures.TaskTests.bundle
  verify=fixtures.TaskTests.verify
+ def test_cli_subcommand_and_execution_mode_are_independent(self):
+  for mode in ('before-wave','geometry-bootstrap'):
+   with patch('sys.argv',['pilot','controller','--source-root','source','--config','config','--output','output','--reviewed-commit','reviewed','--mode',mode]),patch.object(p,'controller') as call:
+    p.main()
+    self.assertEqual(call.call_args.args[6],mode)
+  with patch('sys.argv',['pilot','worker','--packet','packet','--output','output','--mode','geometry-bootstrap']),patch.object(p,'worker') as call,patch.object(p.Path,'exists',return_value=True):
+   p.main();call.assert_called_once_with('packet','output','geometry-bootstrap')
  def test_registered_wrapper_preserves_original_jobs_and_exact_host_steps(self):
   import subprocess,re
   repo=Path(__file__).resolve().parents[2]
@@ -105,7 +112,7 @@ class PilotTests(unittest.TestCase):
   def spawn(cmd,**kwargs):
    child=actual_spawn([sys.executable,'-c','import time; time.sleep(60)'],**kwargs);children.append(child);return child
   try:
-   with patch.dict('os.environ',{'GITHUB_RUN_ID':'42'}),patch.object(p,'revision',return_value={}),patch.object(a,'policy',return_value=self.kernel),patch.object(a,'validate_manifest'),patch.object(a,'reviewed_legacy_anchor'),patch.object(a,'import_legacy',return_value=(leaves,bindings)),patch.object(p.subprocess,'check_output',side_effect=check),patch.object(p.subprocess,'run',return_value=SimpleNamespace(returncode=0)),patch.object(p.subprocess,'Popen',side_effect=spawn),patch.object(p.resource,'available',side_effect=[99999999,99999999,99999999,1]):
+   with patch.dict('os.environ',{'GITHUB_RUN_ID':'42'}),patch.object(p,'revision',return_value={}),patch.object(a,'policy',return_value=self.kernel),patch.object(a,'validate_manifest'),patch.object(a,'reviewed_legacy_anchor'),patch.object(p,'load_approved',return_value=(leaves,bindings)),patch.object(p.subprocess,'check_output',side_effect=check),patch.object(p.subprocess,'run',return_value=SimpleNamespace(returncode=0)),patch.object(p.subprocess,'Popen',side_effect=spawn),patch.object(p.resource,'available',side_effect=[99999999,99999999,99999999,1]):
     with self.assertRaises(SystemExit):p.controller(self.root,self.root,config,out,'a'*40,time.monotonic()+2400)
    self.assertEqual(len(children),2);self.assertTrue(all(c.poll() is not None for c in children));result=json.loads((out/'producer.json').read_bytes());self.assertEqual(result['status'],'INCOMPLETE_MEMORY_GUARD');self.assertEqual(result['owned_containers_remaining'],[]);self.assertEqual(result['process_tree_after_cleanup'],{})
   finally:
