@@ -9,3 +9,7 @@ Input e984c0a01156b5f282f0c849077c61572df30ee0c70dfe6c9db94fbfcfe52107 from nati
 Retained boundaries: In2.Cu(234.9,157.3)mm and In3.Cu(238.4,152.1)mm on X9231A7A2CB5A5CD78220. Native cut topology NOT RUN. Run routing-benchmark.yml with board=osc-jack-left,local_repair=true,local_mode=cut. No competing JL worker or approval bypass. Issue189 stays open.
 
 Circuit checks before/after and16repair/coupled tests PASS; source cut invariance/selection/bounds PASS using route-venv. Initial system Python lacks shapely and failed before writes; rerun with the existing supported route environment succeeded. Native aggregate regeneration remains deferred to exact-head CI because pinned KiCad cannot unpack within32GB; no fallback oracle.
+
+Native pilot38040356008 is terminal/rejected; independent reconciliation PASS63s.117→118 aftercut→117candidate/fresh,112ground objects added,33422uncut retained,3exactcuts,1111nonrouting unchanged,0DRC/parity but2new dangling warnings and split original victim. Native boundary components have19/14members and together cover every original victim pad. No complete-warning adoption was run for that rejected candidate.
+
+The next distinct fixed186object joint proposal reserves ground while explicitly reconnecting those native boundaries. prepare_adoption.py pins its input/proposal/cut/addition geometry. Full dispatch u8202-via-branch requires complete warnings,batch16,exact source-bound cut plan and all original native/fresh/retention gates. Never adopt the rejected112object ground-only result or bypass PR230 integration approval.

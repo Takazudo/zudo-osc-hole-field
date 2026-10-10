@@ -55,7 +55,7 @@ class RoutingWorkflowDispatchTests(unittest.TestCase):
         source=(ROOT/'.github/workflows/routing-benchmark.yml').read_text()
         step=source.split('      - name: Replay reviewed JL copper through full native gates\n',1)[1].split('      - name:',1)[0]
         body=textwrap.dedent(step.split('        run: |\n',1)[1])
-        for choice,complete in [('r8127-via-branch',True),('r8276-joint',False)]:
+        for choice,complete in [('r8127-via-branch',True),('u8202-via-branch',True),('r8276-joint',False)]:
             with self.subTest(choice=choice),tempfile.TemporaryDirectory() as directory:
                 prefix='python() { printf "%s\\n" "$@" > prepare-args; }; timeout() { printf "%s\\n" "$@" > native-args; };\n'
                 result=subprocess.run(['bash','-c',prefix+body],cwd=directory,env={**os.environ,'JL_REPLAY':choice},capture_output=True,text=True)
@@ -66,7 +66,8 @@ class RoutingWorkflowDispatchTests(unittest.TestCase):
                 self.assertIn('120m' if complete else '80m',args)
                 if complete:
                     self.assertEqual(args[args.index('--native-zone-batch-size')+1],'16')
-                    self.assertEqual(args[args.index('--reviewed-cut-plan')+1],'circuit/routing/issue189/jl118-r8127-via-branch/plan.json')
+                    folder='jl117-u8202-via-branch' if choice=='u8202-via-branch' else 'jl118-r8127-via-branch'
+                    self.assertEqual(args[args.index('--reviewed-cut-plan')+1],'circuit/routing/issue189/'+folder+'/plan.json')
 
 
 if __name__ == '__main__':
