@@ -457,21 +457,25 @@ jobs:
       contents: read
       actions: read
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
-      - name: Inspect failed recovery artifact without native execution
+      - name: Download exact saved inputs and reports
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          mkdir -p .circuit-cache/core236-failure-inspection
-          gh api repos/Takazudo/zudo-osc-hole-field/actions/artifacts/11673646039/zip > .circuit-cache/core236-failure-inspection/original.zip
-          python3 circuit/routing/issue189/core236-audit-recovery/inspect_failure.py .circuit-cache/core236-failure-inspection/original.zip .circuit-cache/core236-failure-inspection/export
+          mkdir -p .circuit-cache
+          gh api repos/Takazudo/zudo-osc-hole-field/actions/artifacts/11671963117/zip > .circuit-cache/original.zip
+          gh api repos/Takazudo/zudo-osc-hole-field/actions/artifacts/11673646039/zip > .circuit-cache/failure.zip
+          python3 circuit/routing/issue189/core236-audit-failure/bounded_compare.py prepare circuit/routing/issue189/core236-audit-failure/18-fixture-manifest.json
+      - name: One bounded serial original-versus-isolated comparison
+        run: |
+          timeout --signal=INT --kill-after=30s 15m python3 circuit/routing/issue189/core236-audit-failure/bounded_compare.py controller
       - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
         if: always()
         with:
-          name: issue189-core236-failure-inspection-${{ github.run_id }}
-          path: .circuit-cache/core236-failure-inspection/export
+          name: issue189-core236-18fixture-comparison-${{ github.run_id }}
+          path: .circuit-cache/core236-18compare
           retention-days: 30
           include-hidden-files: true
           if-no-files-found: error
