@@ -1,0 +1,125 @@
+{
+  "artifact_sha256": "c695ea8f653546e443daa8aba67811441b31787684e162f2583465f2dfd11601",
+  "artifact_bytes": 226534869,
+  "comparison": {
+    "status": "18CONTROLS_EQUIVALENT; FULL STABILITY/WARNING COVERAGE NOT ESTABLISHED",
+    "adopted": false,
+    "modes": [
+      {
+        "mode": "original",
+        "exit_status": 0,
+        "reason": null
+      },
+      {
+        "mode": "isolated",
+        "exit_status": 0,
+        "reason": null
+      }
+    ]
+  },
+  "manifest_sha256": "52a0024b423e2ba1f4764f72074181efe078ac884ac9082d2ccef6c36cf1757a",
+  "native_version": "10.0.6",
+  "adopted": false,
+  "source_board_hashes": {
+    "before": "b9f5ca13f83c7ffdbe5836fd271e7c1099e04b901ca1798a7be06f025bd02d66",
+    "after": "f27efe521f4ed4f6c0ceb53f45f58a82a824c05475ef012a2034a0d1d2a154d1"
+  },
+  "baseline_sha256": "3c77945e5cd52ae225995c63cdd06acaab79e2d438d085a62fb1fe528ef59100",
+  "case_counts": {
+    "original": 18,
+    "isolated": 18
+  },
+  "reports": [
+    {
+      "mode": "original",
+      "case": 16,
+      "batch_index": 0,
+      "sha256": "24e201ac1af901af45c72d7803adac434897f3cf76c885001d5cf2e72fb10f8d",
+      "scoped_identities": 0,
+      "raw_warning_counts": {
+        "isolated_copper": 199,
+        "lib_footprint_issues": 15
+      },
+      "raw_error_count": 0
+    },
+    {
+      "mode": "original",
+      "case": 17,
+      "batch_index": 1,
+      "sha256": "df4ec17ecbfd82db788cb01417db46d7e7104174cc8e144a9695fb41c38d28a3",
+      "scoped_identities": 0,
+      "raw_warning_counts": {
+        "isolated_copper": 199,
+        "lib_footprint_issues": 16
+      },
+      "raw_error_count": 0
+    },
+    {
+      "mode": "isolated",
+      "case": 16,
+      "batch_index": 0,
+      "sha256": "0110e8045a572c0b5957de114fc5ff03dcaa2528e10d7fb0777abe09adf700da",
+      "scoped_identities": 0,
+      "raw_warning_counts": {
+        "isolated_copper": 199,
+        "lib_footprint_issues": 15
+      },
+      "raw_error_count": 0
+    },
+    {
+      "mode": "isolated",
+      "case": 17,
+      "batch_index": 1,
+      "sha256": "41b6a13f8aef9da8d98652390fe2e2e18a6c09ae5ac1a213332acd152560953d",
+      "scoped_identities": 0,
+      "raw_warning_counts": {
+        "isolated_copper": 199,
+        "lib_footprint_issues": 16
+      },
+      "raw_error_count": 0
+    }
+  ],
+  "telemetry": {
+    "original": {
+      "samples": 219,
+      "peak_tree_rss_kib": 3601436,
+      "minimum_available_kib": 11937212,
+      "elapsed_sample_seconds": 446.2496221065521,
+      "cleanup": {
+        "epoch": 1791649578.2653205,
+        "mode": "original",
+        "phase": "after_cleanup",
+        "tree_rss_kib": {},
+        "owned_containers_remaining": [],
+        "available_kib": 15332772
+      }
+    },
+    "isolated": {
+      "samples": 205,
+      "peak_tree_rss_kib": 2361044,
+      "minimum_available_kib": 13176652,
+      "elapsed_sample_seconds": 417.6700291633606,
+      "cleanup": {
+        "epoch": 1791649995.9657996,
+        "mode": "isolated",
+        "phase": "after_cleanup",
+        "tree_rss_kib": {},
+        "owned_containers_remaining": [],
+        "available_kib": 15338116
+      }
+    }
+  },
+  "reconciliation": "PASS; exact archived inputs, frozen baseline, completed receipt/report/context checks and owned cleanup verified",
+  "full_warning_coverage": false,
+  "full_stability_established": false,
+  "run": 38067093430,
+  "tested_sha": "7add2a44e5cd3ef1f28be55a9ef5af71897f8dd8",
+  "pr": 239,
+  "artifact_id": 11676280694,
+  "prerequisite_ci_run": 38066067047,
+  "prerequisite_ci": "ALL FIVE SUCCESS",
+  "native_image": "kicad/kicad@sha256:18693567392b80da435f9fa952ce3a3e534c66eb5a6033f5b9c80aa3b19dd3ec",
+  "timing_limitations": "Original mode includes first image pull; serial isolated mode uses cached image. Sample durations are observed wall times, not a controlled speed comparison.",
+  "scope_limitations": "18 fixed fixtures only; raw isolated_copper199 fixture findings remain incomplete for that domain. Full warning coverage and long-run memory stability not established. No full audit resume, adoption, routing or merge.",
+  "remaining_action": "STOP FOR PARENT REVIEW; no automatic retry or full recovery authorized"
+}

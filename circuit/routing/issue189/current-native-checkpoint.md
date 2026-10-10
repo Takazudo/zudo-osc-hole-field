@@ -1,3 +1,17 @@
+## Corrected 18-fixture native comparison passed — 2026-10-10 16:40 UTC
+
+**STOP FOR PARENT REVIEW.** Parent confirmed the namespace fix and authorized one corrected comparison only. Run [38067093430](https://github.com/Takazudo/zudo-osc-hole-field/actions/runs/38067093430) tested PR239 head **7add2a44e5cd3ef1f28be55a9ef5af71897f8dd8**, after all five exact-head CI jobs passed in38066067047 and37 focused tests passed. The sole corrected attempt completed within one shared900-second command/20-minute job, with no extension or retry.
+
+**18 original and18 isolated controls completed; allfour B.Cu DRC calls completed.** Exact archived fixture bytes, context, native geometry, artwork/rendered text and raw/scoped identities agree. Known B.Cu batch0 matches saved native report; formerly stopped B.Cu batch1 completed in both modes with matching findings. Allfour reports have zero errors/zone-silk findings. Raw isolated_copper199 and library-footprint findings remain retained, with no complete evidence claim for those other warning domains.
+
+Observed aggregate process-tree peak RSS original3,601,436 KiB versus isolated2,361,044 KiB (34.4% lower in this bounded sample). Minimum MemAvailable11,937,212/13,176,652 KiB. Sample durations446.25/417.67seconds include first image pull only in original; no controlled speedup claim. Both modes exited0, no guard-stop, cleanup empty owned process trees/containers. Full220+/206-fixture stability and complete warning coverage remain unproven.
+
+Artifact **11676280694**,226,534,869bytes, SHA256 **c695ea8f653546e443daa8aba67811441b31787684e162f2583465f2dfd11601** independently reconciled PASS. See core236-audit-failure/bounded18-result.json, bounded18-comparison.json, bounded18-review.md and reconcile_bounded18.py for hashes, exact report results, telemetry and read-only reproduction.
+
+Accepted main remains65cefd41fc39e064d38319115ad96016a1c6b71c: JL117/JR129/core1402/native DRC-parity0/0. Core1312 remains rejected/unpublished. All accepted copper unchanged. PR239 remains draft on unchanged tested head; issue189 OPEN.
+
+**Exact continuation:** review bounded18 result/telemetry and independent reconciliation. No full warning resume, routing, adoption or merge authorized by this step. Specify any further bounded recovery only after parent review. Do not automatically retry or extend. Previous failure/checkpoint history follows.
+
 ## Original-inline namespace fix awaiting confirmation — 2026-10-10 16:04 UTC
 
 Independentreview CONFIRMEDthe originalzone/silk fixture-domain correction,then identified a separate deterministic exec namespace bug. Beforefix, actualoriginalblock executedviaexec(code,env,state) withpcbnew/texts onlyinlocals; nestedgenerators useglobals. New regression runs the REALoriginalleg/frozen617statementblock withfake nativeboards, includingdrawing/textcomprehensions. It reproduciblyfailed **NameError:texts** insideEXACT617INLINE generator,notasimplifiedfragment.
