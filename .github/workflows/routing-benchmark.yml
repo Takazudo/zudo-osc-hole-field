@@ -457,39 +457,21 @@ jobs:
       contents: read
       actions: read
     runs-on: ubuntu-latest
-    timeout-minutes: 90
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
-      - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c
-        with:
-          name: obstacle-adoption-osc-core-37950004600
-          run-id: 37950004600
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          path: .circuit-cache/hole-audit-input
-      - name: Verify immutable native inputs
+      - name: Download and inspect exact core236 archive without native execution
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
-          python3 - <<'PY'
-          import hashlib
-          from pathlib import Path
-          root=Path('.circuit-cache/hole-audit-input/.circuit-cache')
-          for stage,expected in [('start','95c815b2178511621f97cd7021938023b96d4ee19c9282ae99b35fb387ba10c5'),('merge','b9f5ca13f83c7ffdbe5836fd271e7c1099e04b901ca1798a7be06f025bd02d66')]:
-              p=root/('osc-core-grid-shards-'+stage)/'osc-core.kicad_pcb'
-              assert hashlib.sha256(p.read_bytes()).hexdigest()==expected
-          PY
-      - name: Classify changed outer-zone silkscreen interactions
-        run: |
-          # Leave time to upload incomplete evidence if classification times out.
-          timeout --signal=INT --kill-after=2m 80m bash scripts/kicad/run.sh python3 scripts/pcbgen/audit_zone_silk_scope.py \
-            .circuit-cache/hole-audit-input/.circuit-cache/osc-core-grid-shards-start/osc-core.kicad_pcb \
-            .circuit-cache/hole-audit-input/.circuit-cache/osc-core-grid-shards-merge/osc-core.kicad_pcb \
-            .circuit-cache/zone-silk-audit --classify
+          mkdir -p .circuit-cache/core236-inspection
+          gh api repos/Takazudo/zudo-osc-hole-field/actions/artifacts/11671963117/zip > .circuit-cache/core236-inspection/original.zip
+          python3 circuit/routing/issue189/core236-audit-recovery/inspect_archive.py .circuit-cache/core236-inspection/original.zip .circuit-cache/core236-inspection/export
       - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
         if: always()
         with:
-          name: issue189-zone-audit-${{ github.run_id }}
-          path: |
-            .circuit-cache/zone-silk-audit
-            !.circuit-cache/zone-silk-audit/**/~*.lck
+          name: issue189-core236-archive-inspection-${{ github.run_id }}
+          path: .circuit-cache/core236-inspection/export
           retention-days: 30
           include-hidden-files: true
           if-no-files-found: error
