@@ -30,7 +30,7 @@ reconciled all5fixtures (0/1/1/0/2identities); raw proof is in
 Current: one read-only40-minute native paired audit on the exact95c815before and
 b9f5caafter boards from artifact11631867897, with original context. Preserve all
 scope/progress records, raw reports, fixtures, geometry signatures and source
-hashes. No adoption step. Keep the sole core writer37984573591 untouched.
+hashes. No adoption step. Core writer 37984573591 is terminal and rejected: zone exit 137 left incomplete coverage. Its exact artifact is independently reconciled in `../core-complete-terminal/`; no PCB was published and no replacement writer is active.
 
 ```sh
 timeout --signal=INT --kill-after=2m 40m \
