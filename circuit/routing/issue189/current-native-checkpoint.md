@@ -2,6 +2,14 @@
 
 Issue189 is OPEN and connectivity remains incomplete. No fabrication, release, deployment or hardware qualification is authorized. Incremental OSC merges were explicitly authorized during this session; retain all exact-head native/CI/integration gates. Do not restart unrelated watches or change credentials/toolchains.
 
+## Current accepted main — JR129 integrated
+
+Main **65cefd41fc39e064d38319115ad96016a1c6b71c**, tree **59a7285ddf1083758ebe452491463a46bfe75724**, accepted **JL117/JR129/core1402**,nativeDRC/parity0/0. JR129 has107signal/22AGND/0rails,48468segments/3130vias,total51598objects;51571uncut/3reviewedcuts/27new,1080nonroutingunchanged. JRPCB9e164f9e8e23a5c3911d117fd08973fc877e5f2f382be20500b8e01040b20a55. Everyunrelatedboardbytepreserved. Actualmerge matchespreview. MainpostCI **38046984631** IN_PROGRESS.
+
+PR232 new1d488332fb8401ac97aa7a8f6d97b03c340098b1 all5CI38046207359PASS; normalmain-into-topic merge fixedGithubconflictstatus; authorized expected-head appmerge completed65cefd4. No forcepush/gatebypass. Priororiginal7a CI38042777010allPASS, PR235postmain074CI38045632870allPASS. Exactproof `jr130-rb4615-via-branch/merge-proof.json`.
+
+Soleexistingcore38044514132/source4768f2fstillIN_PROGRESS. No newlongstrategytrial launched. Waitterminal,reconcilestrictly,reportlargeeligible result/proposednextstepto parentbeforeadoptionforrequestedhigher-modelreview. Preserve allconstraints andoriginalgroups. Stopcomparablenegligiblelocalreturn-searchsettings asrecordedbelow.
+
 ## Latest routine state — 2026-10-10 10:58 UTC
 
 Main074eaa6488fb94f70dcbfe3902eac966d010ffbd,JL117/JR130/core1402; PR235 integrated and post-mainCI38045632870SUCCESS. JR129 original7a245c7 CI38042777010all5PASS. GitHub mergeAPI405conflict persisted despite cleanlocal59a7285preview. CLI subsequently401/GitHTTPScredentialunavailable; no authchanges. ConnectedGitHubapp remainsfunctional and is the supportedfallback.
