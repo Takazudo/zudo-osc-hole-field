@@ -1,18 +1,23 @@
-# Supply subset away from observed ground regressions
+# Supply subset after the accepted ground transaction
 
-Core143 native run37925863664 was rejected, despite109 joined supply edges, because existing AGND groups split and a new warning identity appeared. This saved subset excludes15 of109 supply transactions within3mm of pads in the smaller split pieces and excludes all four ground fanouts. It retains94targets/120segments, all0.25mm wide, without vias or cuts. Proximity is an explicit heuristic, not causal attribution or a safety proof.
+The original core143 native trial37925863664 joined109 supply edges but was rejected for original AGND group splits and a new warning identity. This saved subset excludes15 of109 supply transactions within3mm of pads in the smaller split pieces and all four ground fanouts. Its original94cases/120segments are full-width0.25mm outer copper, without vias or cuts. Proximity is a heuristic, not causal attribution or a native safety proof.
 
-The subset is tied to the original acceptedcore1441 input. It is NOT rebased, dispatched or accepted. Reconcile active core37950004600 first, preserve every accepted addition, then recheck compatibility and full native topology. Prefer the separately prepared ground batch as the next core experiment; do not launch competing writers. The existing reported hole-warning pair is unchanged in native input/output, but the warning gate is not waived.
+Ground worker38011194282/source44d1151cd41f285d5168c433c76664c44a3d97ac is now terminal and independently validated:1441→1402, all133169prior copper objects retained plus344segments/38vias, zero cuts/native DRC/parity errors. Botcebde33e63436b22e257ee29c419c305f8bed08f publishes PCB SHA256fa60b4e1587a67501782fb55374f0e5d5133f65cd0bbe62624aef502441fda10. Its exact-head CI is running; canonical main still holds core1441. This supply proposal is NOT rebased, dispatched or native accepted.
 
-Core26 is now rejected and canonical core remains1441; the active successor is ground run37950004600. Static comparison of this94-case/120-segment supply subset against its382ground objects finds one conflict: the entire U4439.4 +12V case (two segments) has minimum gap0.1947073557mm, below the conservative0.25mm requirement. If and only if those ground objects are accepted, omit or redesign that complete unaccepted supply case before rebasing (93cases/118segments would remain). This is not causal proof of fill preservation or native acceptance; the source proximity heuristic and all original native gates still apply. Never remove accepted ground copper to fit this proposal. Exact case UUIDs and both proposal hashes are in pending-ground-gaps.json.
-
-
-A guarded future replay is now prepared, but has NOT been rebased or dispatched. After reconciling the sole core writer (and any intervening short-signal trial), run:
+After the ground increment is integrated and its exact accepted bytes are refreshed, run:
 
 ```sh
 .circuit-cache/route-venv/bin/python circuit/routing/issue189/core-supply-away-from-splits/rebase_proposal.py --accepted-sha256 ACTUAL_ACCEPTED_SHA256
 ```
 
-The helper retains every original full copper block and accepts only exact whole known ground382 and/or short-signal19 additions, with native geometry checked rather than UUIDs alone. Unknown changes or partial known batches require explicit reconciliation. It excludes whole unaccepted supply cases with less than0.25mm gap to accepted new copper and records every exclusion. It never removes accepted copper. On unchanged core all94cases remain; against the exact ground382 proposal it excludes U4439.4's entire two-segment case, leaving93cases/118segments. Five regression tests pass, including partial/unknown accepted additions and missing case membership. Workflow YAML and all12shell steps pass syntax checks. Actual native serialization and native acceptance are still unrun.
+The helper retains every original full copper block and permits only exact whole known ground382 and/or short-signal19 additions. It checks geometry as well as UUIDs, rejects unknown or partial batches, excludes whole unaccepted supply cases below0.25mm separation, and records each exclusion. Against the accepted ground382 geometry it must omit the entire U4439.4 +12V two-segment case (gap0.1947073557mm), leaving93cases/118segments. Never remove accepted ground copper to fit the proposal. Five existing guard regressions cover partial/unknown additions and missing membership.
 
-After reviewing generated proposal/plan/rebase receipts, commit and push a dedicated worker and use `gh workflow run routing-benchmark.yml --ref NEW_WORKER -f board=osc-core -f recover_core=true -f core_replay=supply-away-from-splits`. The short19 signal trial remains the preferred immediate successor. Do not overlap core writers; all original native gates apply, including preservation of AGND fill and warning identities.
+The replay workflow now requires `--complete-native-warnings --native-zone-batch-size 16`, preserving all four audits, source-derived additive scope, all original findings, settled/fresh connectivity, original pad groups and native publication equivalence. Its argument regression failed before this fix and passes afterward;33 targeted tests pass. The source-scope fix3553574 is required because the old standalone382/38 mask defaults cannot validate this118-segment scope.
+
+Review and commit generated proposal/plan/rebase receipts on an isolated branch based on integrated main, then check that no other core writer is active before dispatch:
+
+```sh
+gh workflow run routing-benchmark.yml --ref NEW_WORKER -f board=osc-core -f recover_core=true -f core_replay=supply-away-from-splits
+```
+
+Record the exact commit, input/output/artifact hashes and run ID. Own the run through terminal artifact reconciliation and all complete warning audits; workflow success alone is insufficient. CLI currently returns401 and the connected app has no dispatch tool, so dispatch needs the existing authorized host/user path. Do not change credentials or omit any native gate. Keep issue189 open; this trial does not imply hardware qualification.

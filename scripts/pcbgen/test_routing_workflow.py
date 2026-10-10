@@ -50,6 +50,24 @@ class RoutingWorkflowDispatchTests(unittest.TestCase):
     def test_unknown_jr_replay_is_rejected(self):
         self.assertNotEqual(self.dispatch('unknown-replay'), 0)
 
+    def test_core_supply_replay_requires_all_batched_native_audits(self):
+        source = (ROOT / '.github/workflows/routing-benchmark.yml').read_text()
+        step = source.split('      - name: Recover preserved core copper and repair split returns\n', 1)[1].split('      - name:', 1)[0]
+        body = textwrap.dedent(step.split('        run: |\n', 1)[1])
+        with tempfile.TemporaryDirectory() as directory:
+            prefix = 'python() { printf "%s\\n" "$@" > prepare-args; }; timeout() { printf "%s\\n" "$@" > native-args; };\n'
+            result = subprocess.run(['bash', '-c', prefix + body], cwd=directory,
+                env={**os.environ, 'CORE_REPLAY': 'supply-away-from-splits'}, capture_output=True, text=True)
+            self.assertEqual(result.returncode, 0, result.stderr)
+            args = (Path(directory) / 'native-args').read_text().splitlines()
+            self.assertIn('--complete-native-warnings', args)
+            self.assertEqual(args[args.index('--native-zone-batch-size') + 1], '16')
+            self.assertIn('335m', args)
+            self.assertIn('osc-core', args)
+            self.assertIn('.circuit-cache/issue189-core-supply-away-from-splits/copper.json', args)
+            self.assertEqual((Path(directory) / 'prepare-args').read_text().splitlines(),
+                ['circuit/routing/issue189/core-supply-away-from-splits/prepare.py'])
+
 
 if __name__ == '__main__':
     unittest.main()
