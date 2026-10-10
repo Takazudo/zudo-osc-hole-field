@@ -12,7 +12,7 @@ The source-bound118-segment proposal retains all133551old copper objects, remove
 bash "$HOME/.codex/scripts/heavy-guard.sh" -- /workspace/zudo-osc-hole-field/.circuit-cache/route-venv/bin/python circuit/routing/issue189/core-supply-away-from-splits/reconcile_terminal.py
 ```
 
-The checker writes `/tmp/issue189-core-supply-partial-proof.json`. It verifies completed fixture/report hashes and ordered partial progress, not unrun native reconstruction or complete audit acceptance.
+Independent reconciliation completed **PASS197s**; `terminal-native-rejection.json` records the result. The checker writes `/tmp/issue189-core-supply-partial-proof.json`. It verifies completed fixture/report hashes and ordered partial progress, not unrun native reconstruction or complete audit acceptance.
 
 The new regression reproduces four unnecessary audit calls before the fix. `route_shards.merge` now rejects native errors, original-group splits, fresh disagreement and missing gain before supplemental audits. Eligible candidates still require complete warning evidence. All33affected tests and the circuit contract check pass; native CI remains required.
 
