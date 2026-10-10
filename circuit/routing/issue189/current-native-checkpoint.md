@@ -1,17 +1,18 @@
-# Issue189 checkpoint — 2026-10-10 04:20 UTC
+# Issue189 checkpoint — 2026-10-10 04:36 UTC
 
 Issue189 remains OPEN. PR220 merged at9f953c53e9b777ba517d7f0aa29d7c83a9139f1d and PR218 merged atd25854092d89fa1253d05c95c21a225629f8c3f9 after all five exact-head checks passed for each and explicit OSC merge authorization was supplied. The earlier automatic-review rejection is resolved; retry succeeded without changing gates. Main now has JL118/JR133/core1402. Actual main PCB hashes independently match the accepted worker bytes:
 - JL:a01df89dcab3d4fab8eb0ae80195b2825d2d47adc517cd73452d9b9aa6ea079a
 - JR:22189b127579271b2f2c219da5e4b7e2af59673cb04e002b0dc4966afe2170dd
 - core:fa60b4e1587a67501782fb55374f0e5d5133f65cd0bbe62624aef502441fda10
 
-Post-main CI38023410816 atd258540 is RUNNING (documentation and both jack DRC gates passed; Python/core DRC pending). Do not claim its final result yet. CLI connection now succeeds without credential/config changes. No unrelated projects, watches, branches or fabrication actions were touched.
+Post-main CI38023410816 atd258540 PASSES ALL FIVE jobs, including aggregate regeneration and all native DRC/parity gates. CLI connection now succeeds without credential/config changes. No unrelated projects, watches, branches or fabrication actions were touched.
 
 ## Sole active routing runs — do not duplicate
 
 - Core38023611361, source47bb19a42f6612a114e4aff51c4b120301fe5e71, branchagent-fix/189-core-supply-complete, draftPR222. Native adoption replay of93whole supply cases/118full-width0.25mm outer segments, zero vias/cuts. Input core hashfa60b4e...; proposal SHA25656121445db0986dbf846fd4e7f95339bd195f101ae876b8106353f4112b1564d. Guarded rebase PASS18s retained every133551current core copper object, including all382accepted ground additions, and excluded the entire U4439.4 case for0.194707mm separation. All33targeted regressions and five rebase guards pass. Complete warning audits with batch16 are mandatory. Native acceptance and output counts are UNKNOWN. Own through terminal artifact validation; workflow success alone is insufficient.
-- JL38023623800, sourcec6fda679ba8cb58b9b1e3a85b1db2b08f7d0bda9, branchagent-fix/189-jl-layer-escape, draftPR221. Read-only coupled pilot, no automatic restoration. One whole U2119.12–U2117.13 candidate111segments/4vias onF/In2/B; inputJL118 hashabove. Proposal46c07604968b3e84a870efe4c2d2888ae9d5ccb435d8238f882f704296765844. Native result UNKNOWN. Historical outer-only candidates split C2148 AGND; every original group remains mandatory. Prepared local checker /tmp/issue189-reconcile-jl-layer-pilot.py is compiled but UNRUN; invoke with actual run/artifact/SHA. Even a positive raw pilot still requires full source-bound warning audits and fresh adoption.
-- No JR routing worker is active. All earlier native workers are terminal. Active-run list was empty before these two dispatches.
+- JR38024014269, source1bc65260a482daaf07d71d9909560487eced1f0e, branchagent-fix/189-jr-layer-escape, draftPR223, ACTIVE read-only coupled pilot. Two whole signal obligations143segments/3vias,0cuts/moves; inputJR133 hashabove. Proposal7df6ac18203c1b54d5e9f4d95b3a541530f1d3d32fb4e3eee9a98bf77d340c59. Twelve same-input bounded trials (PASS64s) found3In3 alternatives while all4full-layer cases failed. Two alternatives intersect, so one whole unaccepted case was omitted; selected pair has6.655825mm minimum new cross-net gap. All51256prior copper objects, original pad groups, settled/fresh topology and full native gates remain mandatory. No automatic restoration/publication; a positive pilot still needs full warning audits/adoption.
+- JL38023623800/sourcec6fda679 is TERMINAL REJECTED. Independent reconciliation PASS52s:118→118 because C2148.2 splits from original AGND; all33421old+115new retained,0cuts,1111nonrouting unchanged,0DRC/parity,477raw warnings. Candidate19f46a21e720c2d58156dedad30ea95d12f6d01047aac781cc3d115588297afe; artifact11660126174 SHA2565ac42049f7f6685e1b54f9f79eea0a640739e4bb2817fcbd2b6795011967a90e. No fresh stage/full audit was run after rejection. Three direct/plane repair trials negative(PASS7s), three stronger search-only return exclusions negative(PASS14s). Exact evidence/probes are committed onPR221 at a30a0548b1eaa854e0c76d4edb6f23c5b6b24a4c. No PCB changes, accepted cuts or physical keepouts; do not repeat unchanged settings. No active JL native worker remains.
+- Exactly core and JR remain active. All earlier native workers are terminal. Active-run list was empty before these two dispatches.
 
 PR222 remote47bb19a tree3dec9728f5ef29d0bdc75528873a87f147c4db1e matches local53745d4; remote preserves prior2a867b5 and integratedd258540 ancestry. Retargeted to main. Six source/proposal files differ; all PCB bytes equal integrated main. Require checks on each final bot head before later integration. Never overwrite successful copper with stale branches.
 
@@ -25,10 +26,13 @@ Remaining native groups: JL103signals/15AGND/0rails; JR110signals/23AGND/0rails;
 
 ## Continuation and constraints
 
-Follow both current runs and post-main CI. Download complete terminal artifacts, pin ZIP/source/output/replay hashes, independently verify settled/fresh native topology, original groups, complete raw warning fixtures/context, zero DRC/parity errors and all retained copper. For successful adoption verify published bot PCB hash and exact final-head CI before authorized integration; for rejection preserve receipts and do not promote candidate copper. One writer per board.
+Follow both current native runs; post-main CI is fully passed. Download complete terminal artifacts, pin ZIP/source/output/replay hashes, independently verify settled/fresh native topology, original groups, complete raw warning fixtures/context, zero DRC/parity errors and all retained copper. For successful adoption verify published bot PCB hash and exact final-head CI before authorized integration; for rejection preserve receipts and do not promote candidate copper. One writer per board.
 
 H1/H2 both reproduced on1fe06ad5: removed-via ghost drill exclusion and soft probing through fixed foreign pads. Fix/regressions mergedPR190. Identical-input benchmarks: JL old140→140 vsfixed140→139(325.514/328.869s); JRboth162→162(327.293/321.953s); coreboth1509→1499(3545.315/4729.802s), both rejected for2AGND splits. No speedup claim. Immutable inputs/receipts remain in benchmark-artifacts.json and jl/jr/core-benchmark.json.
 
 Preserve318×298fixed panel, all electrical constraints,438locked centres, successful copper and original pad groups. Full zero-edge connectivity and final P/EL/O/full regeneration/docs/renders remain unmet. Keep189OPEN. No fabrication/order/deploy/hardware-qualification claim. Separate ZFB prototype remains unmerged.
 
 Local pinned KiCad10.0.6 unpack blocker remains; do not retry Docker cleanup/reconfiguration or substitute9.x. Cloud native runners supply the pinned toolchain. Runtime startup loader was fully consumed earlier in this unchanged session; do not rerun it.
+
+
+Local JR pilot checker /tmp/issue189-reconcile-jr-layer-pilot.py is prepared and compiled, not yet run; invoke from /workspace/issue189-jack-neighbour-worker with actual artifact/run/hash. JL checker was run successfully and is committed atPR221. CLI artifact redirects can return Forbidden; the existing GitHub download-artifact app and its reusable file URL succeeded, with exact ZIP hash validation. Do not print signed URLs or change authentication. All current runs are owned; no unrelated watches were restarted.
