@@ -32,7 +32,7 @@ class RoutingWorkflowDispatchTests(unittest.TestCase):
         source=(ROOT/'.github/workflows/routing-benchmark.yml').read_text()
         step=source.split('      - name: Replay reviewed JR copper through the native gate\n',1)[1].split('      - name:',1)[0]
         body=textwrap.dedent(step.split('        run: |\n',1)[1])
-        for choice,limit,complete in [('d7604-return-joint','120m',True),('c7413-endpoints','80m',False)]:
+        for choice,limit,complete in [('d7604-return-joint','120m',True),('in3-two-whole','120m',True),('d7411-last-via-avoid','120m',True),('c7413-endpoints','80m',False)]:
             with self.subTest(choice=choice), tempfile.TemporaryDirectory() as directory:
                 prefix='python() { printf "%s\\n" "$@" > prepare-args; }; timeout() { printf "%s\\n" "$@" > native-args; };\n'
                 result=subprocess.run(['bash','-c',prefix+body],cwd=directory,
@@ -44,8 +44,9 @@ class RoutingWorkflowDispatchTests(unittest.TestCase):
                 self.assertEqual('--native-zone-batch-size' in args,complete)
                 if complete:
                     self.assertEqual(args[args.index('--native-zone-batch-size')+1],'16')
+                    directory_name = {'in3-two-whole':'jr-layer-escape', 'd7411-last-via-avoid':'jr131-d7411-last-via-avoid'}.get(choice, 'jr-neighbour-return-repair')
                     self.assertEqual((Path(directory)/'prepare-args').read_text().splitlines(),
-                        ['circuit/routing/issue189/jr-neighbour-return-repair/prepare_adoption.py'])
+                        ['circuit/routing/issue189/' + directory_name + '/prepare_adoption.py'])
 
     def test_unknown_jr_replay_is_rejected(self):
         self.assertNotEqual(self.dispatch('unknown-replay'), 0)
@@ -67,6 +68,23 @@ class RoutingWorkflowDispatchTests(unittest.TestCase):
             self.assertIn('.circuit-cache/issue189-core-supply-away-from-splits/copper.json', args)
             self.assertEqual((Path(directory) / 'prepare-args').read_text().splitlines(),
                 ['circuit/routing/issue189/core-supply-away-from-splits/prepare.py'])
+
+    def test_reviewed_jl_cut_cannot_dispatch_without_complete_bound_audit(self):
+        source=(ROOT/'.github/workflows/routing-benchmark.yml').read_text()
+        step=source.split('      - name: Replay reviewed JL copper through full native gates\n',1)[1].split('      - name:',1)[0]
+        body=textwrap.dedent(step.split('        run: |\n',1)[1])
+        for choice,complete in [('r8127-via-branch',True),('r8276-joint',False)]:
+            with self.subTest(choice=choice),tempfile.TemporaryDirectory() as directory:
+                prefix='python() { printf "%s\\n" "$@" > prepare-args; }; timeout() { printf "%s\\n" "$@" > native-args; };\n'
+                result=subprocess.run(['bash','-c',prefix+body],cwd=directory,env={**os.environ,'JL_REPLAY':choice},capture_output=True,text=True)
+                self.assertEqual(result.returncode,0,result.stderr)
+                args=(Path(directory)/'native-args').read_text().splitlines()
+                for flag in ('--complete-native-warnings','--native-zone-batch-size','--reviewed-cut-plan'):
+                    self.assertEqual(flag in args,complete)
+                self.assertIn('120m' if complete else '80m',args)
+                if complete:
+                    self.assertEqual(args[args.index('--native-zone-batch-size')+1],'16')
+                    self.assertEqual(args[args.index('--reviewed-cut-plan')+1],'circuit/routing/issue189/jl118-r8127-via-branch/plan.json')
 
 
 if __name__ == '__main__':

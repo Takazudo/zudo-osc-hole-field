@@ -1,0 +1,107 @@
+{
+  "status": "RASTER GROUND-ONLY PREFILTER; NATIVE CUT TOPOLOGY AND ALL VICTIM RESTORATION NOT RUN; NO ADOPTION",
+  "board_sha256": "a01df89dcab3d4fab8eb0ae80195b2825d2d47adc517cd73452d9b9aa6ea079a",
+  "dump_sha256": "9d193cd974148e58b576d247edb5bce804f06a29d075098513a1292c21fbf136",
+  "transaction": {
+    "pad": "R8127.2",
+    "spec": {
+      "repair_targets": [
+        "AGND"
+      ],
+      "repair_ground_pad_uuids": [
+        "e74eccb3-9c8b-580f-981f-1b8410a1e063"
+      ],
+      "repair_source_uuids": [
+        "4f352af3-8251-5a46-8d5b-3d3fb3c7cd06",
+        "98629e4d-6262-5980-babd-a3c37649c219",
+        "bdeec471-c294-5580-afaf-f61d36ae1873"
+      ],
+      "repair_bounds_mm": [
+        250.69,
+        94.5,
+        262.8,
+        107.71
+      ]
+    },
+    "via": {
+      "uuid": "98629e4d-6262-5980-babd-a3c37649c219",
+      "net": "XDFE73EDB3AA45015AAD2",
+      "xy": [
+        256800000,
+        100600000
+      ],
+      "diameter": 600000,
+      "drill": 300000
+    },
+    "cut_segments": [
+      {
+        "uuid": "4f352af3-8251-5a46-8d5b-3d3fb3c7cd06",
+        "net": "XDFE73EDB3AA45015AAD2",
+        "a": [
+          256800000,
+          100600000
+        ],
+        "b": [
+          256800000,
+          100900000
+        ],
+        "width": 200000,
+        "layer": "F.Cu"
+      },
+      {
+        "uuid": "bdeec471-c294-5580-afaf-f61d36ae1873",
+        "net": "XDFE73EDB3AA45015AAD2",
+        "a": [
+          256700000,
+          100500000
+        ],
+        "b": [
+          256800000,
+          100600000
+        ],
+        "width": 200000,
+        "layer": "In2.Cu"
+      }
+    ],
+    "boundary_endpoints": [
+      {
+        "cut_uuid": "4f352af3-8251-5a46-8d5b-3d3fb3c7cd06",
+        "xy": [
+          256800000,
+          100900000
+        ],
+        "layer": "F.Cu",
+        "victim_net": "XDFE73EDB3AA45015AAD2"
+      },
+      {
+        "cut_uuid": "bdeec471-c294-5580-afaf-f61d36ae1873",
+        "xy": [
+          256700000,
+          100500000
+        ],
+        "layer": "In2.Cu",
+        "victim_net": "XDFE73EDB3AA45015AAD2"
+      }
+    ],
+    "elapsed_seconds": 4.175451873015845,
+    "ground_path_found": true,
+    "ground_copper": [
+      {
+        "kind": "segment",
+        "net": "AGND",
+        "start_nm": [
+          256487500,
+          101287500
+        ],
+        "end_nm": [
+          256487500,
+          99737500
+        ],
+        "width_nm": 300000,
+        "layer": "B.Cu",
+        "uuid": "ba050da0-a999-5559-837e-6b57c099f963"
+      }
+    ],
+    "diagnostics": []
+  }
+}

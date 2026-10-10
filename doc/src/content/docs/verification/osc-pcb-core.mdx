@@ -48,7 +48,7 @@ Four layers fall below the 1.5× margin used for the jack halves, so the core ta
 | --- | --- |
 | Outline / stack | 310 × 284 mm minus the 56 × 46 mm notch; six copper layers, 1.6 mm, 2 oz proposal |
 | Footprints | 3,594 netlisted (8 DNP), 13,406 pads |
-| Native open edges | **1,441**: +12 V 80, −12 V 80, +5 V 0, AGND 252, signals 1,029 |
+| Native open edges | **1,402**: +12 V 80, −12 V 80, +5 V 0, AGND 213, signals 1,029 |
 | DRC errors / schematic parity | **0 / 0** |
 
 `scripts/pcbgen/route_jack_grid.py` ran these stages:
@@ -65,7 +65,7 @@ Each stage is applied to a disposable copy and checked with native DRC, schemati
 
 Still to run under #43: further rip-up rounds and hotspot-region renegotiation for the remaining signal edges, and ±12 V rail escapes.
 
-The renders below predate the accepted 1,441-edge revision. Native receipts and the table describe current copper.
+The renders below predate the accepted 1,402-edge revision. Native receipts and the table describe current copper.
 
 ![Core top: unvalidated routed draft in progress](/assets/osc-hole-field/osc-core-top.png)
 
@@ -125,7 +125,31 @@ existing warnings remain unresolved. Removing derived fill-cache fields for
 publication passed native refill equivalence for connectivity, warnings and geometry.
 The published board SHA is `a0e3cff1ebc211564b8be10f6a993d50fb6d4372edde86a056ebc8dda3ea5932`.
 
-Further bounded signal and ground work must start from this accepted board and
-preserve its copper. Exact replay and continuation evidence remain in
-`circuit/routing/issue189/checkpoint.md`. These are incomplete routed drafts,
-not hardware qualification.
+### Accepted ground continuation (2026-10-10)
+
+[PR #218](https://github.com/Takazudo/zudo-osc-hole-field/pull/218) adopted
+**1,441→1,402** after
+[run 38011194282](https://github.com/Takazudo/zudo-osc-hole-field/actions/runs/38011194282).
+The transaction adds 344 segments and 38 vias, retains all 133,169 old copper
+objects, and makes no cuts or component moves. AGND falls from 252 to 213;
+signal and supply counts are unchanged. All 3,807 nonrouting board objects and
+original connected pad groups are preserved. Native DRC/parity are 0/0, and
+fresh-copy connectivity agrees.
+
+The complete native warning audit preserves 1,407 hole-warning identities,
+checks 382 added-copper fixtures and 42 paired-zone fixtures, and preserves all
+1,827 complete findings on both sides. The ordinary capped report still contains
+619 findings; that smaller number is not a complete warning inventory. Removing
+derived fill-cache fields for publication passes native refill equivalence.
+The current published board SHA256 is
+`fa60b4e1587a67501782fb55374f0e5d5133f65cd0bbe62624aef502441fda10`.
+
+Continue from this accepted board and preserve its 133,551 copper objects.
+[PR #222](https://github.com/Takazudo/zudo-osc-hole-field/pull/222) has a separate
+118-segment supply replay under native evaluation; its unfinished run is not
+accepted routing progress. [PR #227](https://github.com/Takazudo/zudo-osc-hole-field/pull/227)
+corrects an implicit plane-search budget cap while retaining the default budget.
+Its identical-input larger-budget comparison still finds no route and changes
+no board. Exact digests, checks and continuation commands are in the
+[immutable routing checkpoint](https://github.com/Takazudo/zudo-osc-hole-field/blob/f920d594ab6a435c2523e3605c15f64b055b799e/circuit/routing/issue189/current-native-checkpoint.md).
+Issue #189 remains open; these are incomplete routed drafts, not hardware qualification.

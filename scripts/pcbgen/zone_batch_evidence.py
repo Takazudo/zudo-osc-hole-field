@@ -60,13 +60,13 @@ def normalized(rows):
     return result
 
 
-def verify_result(read_bytes,before,after):
+def verify_result(read_bytes,before,after,reviewed_removed_uuids=()):
     """Validate complete native batch evidence through a read-only file accessor."""
     source_hashes=[SHA(p.read_bytes()) for p in (before,after)]
     read=lambda name:json.loads(read_bytes(name))
     sources=[before,after];texts=[p.read_text() for p in sources]
     if zone_metadata(texts[0])!=zone_metadata(texts[1]):raise ValueError('zone metadata changed')
-    unchanged_nonrouting(*texts)
+    unchanged_nonrouting(*texts,reviewed_removed_uuids)
     art=[artwork_ids(t) for t in texts]
     if art[0]!=art[1]:raise ValueError('artwork scope changed')
     context={suffix:before.with_suffix(suffix).read_bytes() for suffix in ('.kicad_pro','.kicad_dru')}
