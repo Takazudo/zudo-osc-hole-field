@@ -39,4 +39,20 @@ class WaveTests(unittest.TestCase):
   self.assertFalse(p.approved_orchestration(pin,'0'*64,root))
   other=pin|{'producer_commit':'b'*40}
   with patch.object(p,'revision',side_effect=[pin['orchestration'],{'sha256':'changed'}]):self.assertFalse(p.approved_orchestration(other,'x',root))
+ def test_exact_five_successful_waves_only_historical_compatibility(self):
+  root=Path(__file__).resolve().parents[2];data=root/'circuit/routing/issue189/core236-task-checkpoints/owner-waves-a56f204'
+  refs=json.loads((data/'all-five-wave-resume-approvals.json').read_bytes())
+  self.assertEqual(len(p.REVIEWED_WAVES),5)
+  for ref in refs:
+   pin=ref['approval'];sha=ref['approval_sha256']
+   self.assertEqual(a.SHA(a.canonical(pin)+b'\n'),sha)
+   self.assertTrue(p.approved_orchestration(pin,sha,root))
+   for field,value in [('producer_commit','0'*40),('run',0),('artifact_id',0),('artifact_sha256','0'*64)]:
+    with patch.object(p,'revision',return_value={'sha256':'changed'}):self.assertFalse(p.approved_orchestration(pin|{field:value},sha,root))
+   self.assertFalse(p.approved_orchestration(pin,'0'*64,root))
+   changed=copy.deepcopy(pin);changed['orchestration']['blobs']['scripts/pcbgen/core_audit_geometry.py']='0'*64
+   self.assertFalse(p.approved_orchestration(changed,sha,root))
+   with patch.object(p,'revision',return_value=pin['orchestration']|{'sha256':'changed'}):self.assertFalse(p.approved_orchestration(pin,sha,root))
+  failed=data/'geometry-failed-38095685843/authenticated-artifact-approval.json';pin=json.loads(failed.read_bytes())
+  self.assertFalse(p.approved_orchestration(pin,a.SHA(failed.read_bytes()),root))
 if __name__=='__main__':unittest.main()

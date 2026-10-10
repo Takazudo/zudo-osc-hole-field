@@ -26,6 +26,16 @@ def validate_packets(m,leaves,plan,bindings):
 
 OLD_APPROVAL_SHA='fe548a14a5e6aa810d0a39178a38ed2defa7b09c7eb6307d15c7e635c74044c1'
 OLD_PRODUCER='53c3034aea893f4f64848789f3d57302c066919a'
+# Only the five complete, independently accepted before-wave artifacts.
+# The failed bootstrap is deliberately absent. Original approvals never change.
+REVIEWED_WAVE_ORCHESTRATION='2c6bf3e38116aeff707a5b218574ca5e6c9655a90198ac93e827c6fa043b542d'
+REVIEWED_WAVES={
+ ('f67bef8211b40e43e93a8e16004ac1d77079f12f', 38085831915, 11682309044, 'fdaf3588096971f2100f2911e4c54e0667eb70388e7b513743161f6330ab59a4', '7283f40ef77d149a334642fa4b98c079f52f1f8dcb4ecc05a138d0b96bef9974'),
+ ('a56f2041484231066b2248ff873d3863ccb0802a', 38089049943, 11682929243, 'fa3fa35ec67b820fde98489626f337bc4296041a6eed715b4a587f62a822960f', '28718d64dabd5a9ff41b7d7fb8e6a78507a4e0ccf09322e9a48463a5179d2eb1'),
+ ('a56f2041484231066b2248ff873d3863ccb0802a', 38090289618, 11684820415, '9fb008673bc220fcac938081232909e5dece071daa0e933d1da3741eeee5a859', 'd61b8654cfc6647d3a39184c285622d543086fcb9aca9ddf0fd537f64d8ba4cb'),
+ ('a56f2041484231066b2248ff873d3863ccb0802a', 38092513020, 11685885272, 'f600bd16eff60453c3b65bf5986d484de2fe2224997a706c027b6dea9009c692', '83897aeed9a8514b8f0b4c48984f6566ccb19f87b3f56c16ecc033f3af76ded9'),
+ ('a56f2041484231066b2248ff873d3863ccb0802a', 38094496794, 11685642798, '8444360cb096f468cf5f9348a86a3b1f2bdfaa34df25856322214cf4b48c9f93', 'b183e03d688e680d556a2316f89af57120b59897d2b31c6d51c696f4242b8576'),
+}
 def approved_orchestration(pin,approval_sha,repo):
  if pin['producer_commit']==OLD_PRODUCER:
   if approval_sha!=OLD_APPROVAL_SHA or pin['run']!=38081076014 or pin['artifact_id']!=11681470375 or pin['artifact_sha256']!='448b59dc66125efbb3a3027ccf5fc1752325dc8e46025956a39a53611a3cf7ec' or pin['orchestration']['sha256']!='9233e904a77736ca0eb61a201c2fe88002b1805d29c7dc5597d313b36773be79':return False
@@ -33,6 +43,12 @@ def approved_orchestration(pin,approval_sha,repo):
   # recompute/rewrite its revision using the new orchestration file list.
   blobs={name:a.SHA(subprocess.check_output(['git','show',OLD_PRODUCER+':'+name],cwd=repo)) for name in pin['orchestration']['blobs']}
   return pin['orchestration']==dict(blobs=blobs,sha256=a.identity(blobs))
+ key=(pin['producer_commit'],pin['run'],pin['artifact_id'],pin['artifact_sha256'],approval_sha)
+ if key in REVIEWED_WAVES:
+  # Rehash all nine ORIGINAL source blobs; exact artifact/approval identities
+  # are reviewed exceptions, not producer-wide or kernel-only equivalence.
+  original=revision(repo,pin['producer_commit'])
+  return original['sha256']==REVIEWED_WAVE_ORCHESTRATION and pin['orchestration']==original
  return pin['orchestration']==revision(repo,pin['producer_commit'])==revision(repo)
 def load_approved(m,kernel,source_root,config,repo,resume):
  before=source_root/'before/osc-core.kicad_pcb';after=source_root/'after/osc-core.kicad_pcb'

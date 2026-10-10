@@ -22,7 +22,7 @@ def snapshot(m,before,after,kernel,native=None):
   if stage not in boards:boards[stage]=native.LoadBoard(str(paths[stage]))
   board=boards[stage];zones=[z for z in board.Zones() if z.m_Uuid.AsString()==uid]
   lid=native.F_Cu if layer=='F.Cu' else native.B_Cu
-  if len(zones)!=1 or zones[0].IsRuleArea() or list(zones[0].GetLayerSet().Seq())!=[lid] or zones[0].GetNetname()!='AGND':raise ValueError('zone UUID/layer/net identity changed')
+  if len(zones)!=1 or zones[0].GetIsRuleArea() or list(zones[0].GetLayerSet().Seq())!=[lid] or zones[0].GetNetname()!='AGND':raise ValueError('zone UUID/layer/net identity changed')
   signature=a.native_zone_signature(zones[0].GetFilledPolysList(lid))
   rows.append(dict(geometry_reference=ref,reference_sha256=a.identity(ref),stage=stage,zone_uuid=uid,layer=layer,net='AGND',signature=signature))
  # Read-only mounts are enforced by the host; additionally prove no bytes
