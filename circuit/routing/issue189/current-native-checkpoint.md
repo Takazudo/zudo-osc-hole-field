@@ -22,7 +22,7 @@ Earlier In2 pilot38023623800/sourcec6fda679 rejected118→118 for C2148 alone; i
 
 Conditional JR131 screen in jr131-conditional-next/ at6b2201a5de86076f305befa268d953313ee15f6d:8trials PASS40s on provisional native131dump a9f1b738f0e541ca5f01d7057f7bb002289e0bf43b90cb223253287f4e5abd84. D7411.1–U7409.6 completes with96objects/4vias(four layers) or119objects/3vias(In2); other6trials negative. No successor selected/dispatched; wait for131integration and refresh actual accepted bytes. This is not a same-input comparison against old133and not a speedup claim.
 
-JL118 longer screen is locally RUNNING under heavy-guard, session95245, script/output /workspace/zudo-osc-hole-field/.circuit-cache/issue189-jl118-next-short/. All10nets with <=24mm axis-span were already covered, so an initial six-case preparation assertion stopped before routing; no extra short obligations exist. Current screen selects six shortest remaining obligations with36mm axis-span cap, same0.025mm/300000/6mm routing bounds and original constraints,18trials. Inspect terminal guard verdict/result before claiming anything. No board or active branch changed by this screen.
+JL118 longer screen is TERMINAL:18trials on six shortest remaining obligations under36mm axis-span all failed(PASS94s). Ten capped cases were compared on identical inputs with a600000-expansion bound; all ten still failed(PASS46s). No native candidate, PCB change or new JL worker. Full scripts/results preserved underjl118-longer-bounded/. Earlier six-extra-short preparation assertion stopped before routing because all10nets <=24mm were already covered. No padless-island omission was found. Do not repeat unchanged settings. No local heavy process remains active.
 
 ## Immediate continuation
 
