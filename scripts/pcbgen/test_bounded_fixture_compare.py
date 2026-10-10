@@ -6,6 +6,13 @@ FILE=Path('circuit/routing/issue189/core236-audit-failure/bounded_compare.py')
 spec=importlib.util.spec_from_file_location('compare',FILE);compare=importlib.util.module_from_spec(spec);spec.loader.exec_module(compare)
 MANIFEST=FILE.with_name('18-fixture-manifest.json')
 class BoundedComparisonTests(unittest.TestCase):
+    def test_fixture_scope_keeps_original_silk_caps_and_does_not_change_full_board_gate(self):
+        from scripts.pcbgen.complete_native_warnings import check_caps
+        report={'kicad_version':'10.0.6','included_severities':['error','warning','exclusion'],'violations':[{'type':'isolated_copper','severity':'warning','items':[{'uuid':'zone'}]} for _ in range(199)]}
+        self.assertEqual(compare.identities(report,'zone'),[])
+        with self.assertRaisesRegex(ValueError,'unsupported'):check_caps(report)
+        report['violations']=[{'type':'silk_overlap','severity':'warning','items':[{'uuid':'zone'}]} for _ in range(199)]
+        with self.assertRaisesRegex(ValueError,'cap'):compare.identities(report,'zone')
     def test_exact_manifest_pairs_and_shared_total_budget(self):
         m=compare.validate_manifest(compare.read(MANIFEST));self.assertEqual(m['budget']['total_seconds'],900)
         for mutate in [lambda m:m['cases'].pop(),lambda m:m['cases'].__setitem__(1,m['cases'][0]),lambda m:m['budget'].__setitem__('total_seconds',1800)]:
