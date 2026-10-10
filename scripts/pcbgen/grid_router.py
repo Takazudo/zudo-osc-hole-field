@@ -348,7 +348,7 @@ def route(dump,nets=(),rip=(),rip_first=False,res=0.1,layer_cost=None,via_cost=3
           hole_clearance=0.25,edge_clearance=0.5,max_expansions=4_000_000,allowed_layers=None,log=print,
           planes=None,signal_via_diameter=None,grow=None,window_mm=12.0,weight=1.0,full_board=False,
           escape_halo_mm=0.0,escape_halo_cost=4.0,fill_guards=None,fill_clearance=0.45,neck_width=None,neck_clearance=None,
-          rrr_rounds=0,rrr_max_rip=4,rrr_soft_cost=12.0,rip_only=None,diagnostics=None,bounds_mm=None,plane_window_mm=3.0):
+          rrr_rounds=0,rrr_max_rip=4,rrr_soft_cost=12.0,rip_only=None,diagnostics=None,bounds_mm=None,plane_window_mm=3.0,plane_max_expansions=300_000):
     """Return (results, removed_uuids). Each result has net, island pad names and a [layer,x,y,through] path or None.
 
     planes maps a net to its plane layer: every island of that net gets a short
@@ -359,12 +359,16 @@ def route(dump,nets=(),rip=(),rip_first=False,res=0.1,layer_cost=None,via_cost=3
     to the grown (rail/ground) nets. rip_only, when given, limits
     rip-up-and-reroute to those signal nets (a CI shard may only rip the nets it owns).
     plane_window_mm explicitly bounds fanout search (default3mm); window_mm
-    controls component-to-component searches. Neither changes physical rules.
+    controls component-to-component searches. plane_max_expansions bounds the single
+    fanout attempt (default300000), also capped by max_expansions. These controls
+    do not change physical rules or the signal search budgets.
     bounds_mm limits raster allocation for additive search only; it never changes
     the input geometry or native membership used for whole-board acceptance.
     """
     if not math.isfinite(plane_window_mm) or plane_window_mm<=0:
         raise ValueError('plane window must be finite and positive')
+    if isinstance(plane_max_expansions,bool) or not isinstance(plane_max_expansions,int) or plane_max_expansions<=0:
+        raise ValueError('plane expansion budget must be a positive integer')
     rip=list(rip);planes=planes or {}
     if bounds_mm is not None and (rip or rip_first or rrr_rounds):
         raise ValueError('bounded search is additive only; rip-up is forbidden')
@@ -462,7 +466,8 @@ def route(dump,nets=(),rip=(),rip_first=False,res=0.1,layer_cost=None,via_cost=3
                 penalty=[np.where(soft_near[li]>0,base[li]*rrr_soft_cost,base[li]) if soft_near[li] is not None else base[li] for li in range(L)]
                 if soft_any.any():
                     dvia,vidx=ndimage.distance_transform_edt(~soft_any,return_indices=True)
-            limit=max_expansions if k else min(max_expansions,300_000)
+            limit=(min(max_expansions,plane_max_expansions) if goal_is_via
+                   else max_expansions if k else min(max_expansions,300_000))
             path,expanded=astar(free,via_ok,s,gl,layer_cost,via_cost,limit,weight,penalty)
             search_failure['attempts'].append({'window_cells':list(map(int,(y0,y1,x0,x1))),'expanded':int(expanded),'limit':int(limit)})
             if path is None:
@@ -1037,6 +1042,7 @@ def main():
     p.add_argument('--signal-width',type=float,default=0.3);p.add_argument('--rail-width',type=float,default=0.4)
     p.add_argument('--via-cost',type=float,default=30.0);p.add_argument('--layer-cost',default='',help='one cost per copper layer; default 3 outer, 1 inner')
     p.add_argument('--planes',default='',help='NET:LAYER pairs whose islands fan out to a via into that plane')
+    p.add_argument('--plane-max-expansions',type=int,default=300_000,help='single plane-fanout budget, also capped by --max-expansions')
     p.add_argument('--grow',default='',help='NET:mm pairs of extra clearance around existing copper')
     p.add_argument('--signal-via-diameter',type=float);p.add_argument('--window-mm',type=float,default=12.0)
     p.add_argument('--weight',type=float,default=1.0,help='heuristic inflation (>1 is faster, bounded suboptimal)')
@@ -1050,7 +1056,7 @@ def main():
     results,removed=route(dump,split(a.nets),split(a.rip),a.rip_first,a.res,[float(x) for x in split(a.layer_cost)] or None,a.via_cost,
                           a.clearance,split(a.rail_nets),a.rail_width,a.signal_width,max_expansions=a.max_expansions,
                           allowed_layers=split(a.layers) or None,log=lambda m:print(m,flush=True),
-                          planes=dict(x.rsplit(':',1) for x in split(a.planes)),signal_via_diameter=a.signal_via_diameter,
+                          planes=dict(x.rsplit(':',1) for x in split(a.planes)),plane_max_expansions=a.plane_max_expansions,signal_via_diameter=a.signal_via_diameter,
                           grow={k:float(v) for k,v in (x.rsplit(':',1) for x in split(a.grow))},window_mm=a.window_mm,weight=a.weight,full_board=a.full_board,escape_halo_mm=a.escape_halo_mm,
                           fill_guards=dict(x.rsplit(':',1) for x in split(a.fill_guards)))
     rows,links=copper_rows(results,a.board_id,a.tag)
