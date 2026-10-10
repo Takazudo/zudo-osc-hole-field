@@ -125,12 +125,13 @@ def classify_zone(before_path,after_path,output,before,after,uid,layer,growth,pc
     return dict(**({} if batch_size==1 else {'artwork_batch_size':batch_size}),selected_item_uuids=selected,conservative_margin_nm=margin,native_geometry_method='exact_native_coordinates_no_arcs',source_geometry_sha256=source_signatures,fixtures=receipts,before_identities=sorted(unions[0]),after_identities=sorted(unions[1]),new_identities=sorted(unions[1]-unions[0]))
 
 
-def main(before_path,after_path,output,classify=False,batch_size=1,resume=None):
+def main(before_path,after_path,output,classify=False,batch_size=1,resume=None,reviewed_removed_uuids=()):
     import pcbnew
     artwork_batches([],batch_size)
     version=subprocess.check_output(['kicad-cli','version'],text=True).strip()
     if version!='10.0.6':raise ValueError('requires pinned native10.0.6')
     if resume is not None:
+        if reviewed_removed_uuids:raise ValueError('reviewed cuts require fresh zone fixtures; resume unsupported')
         from scripts.pcbgen.zone_batch_resume import validate_source
         if not classify:raise ValueError('resume requires full classification')
         resume=validate_source(resume,before_path,after_path,batch_size,output)
@@ -140,7 +141,7 @@ def main(before_path,after_path,output,classify=False,batch_size=1,resume=None):
     for suffix in ('.kicad_pro','.kicad_dru'):
         if before_path.with_suffix(suffix).read_bytes()!=after_path.with_suffix(suffix).read_bytes():raise ValueError('source context changed')
     if zone_metadata(before_path.read_text())!=zone_metadata(after_path.read_text()):raise ValueError('zone metadata or outline changed')
-    unchanged_nonrouting(before_path.read_text(),after_path.read_text())
+    unchanged_nonrouting(before_path.read_text(),after_path.read_text(),reviewed_removed_uuids)
     before=pcbnew.LoadBoard(str(before_path));after=pcbnew.LoadBoard(str(after_path))
     old={z.m_Uuid.AsString():z for z in before.Zones()};new={z.m_Uuid.AsString():z for z in after.Zones()}
     if old.keys()!=new.keys():raise ValueError('native zone identities changed')
@@ -162,4 +163,4 @@ def main(before_path,after_path,output,classify=False,batch_size=1,resume=None):
 
 
 if __name__=='__main__':
-    parser=argparse.ArgumentParser();parser.add_argument('before',type=Path);parser.add_argument('after',type=Path);parser.add_argument('output',type=Path);parser.add_argument('--classify',action='store_true');parser.add_argument('--batch-size',type=int,default=1);parser.add_argument('--resume-from',type=Path);args=parser.parse_args();main(args.before,args.after,args.output,args.classify,args.batch_size,args.resume_from)
+    parser=argparse.ArgumentParser();parser.add_argument('before',type=Path);parser.add_argument('after',type=Path);parser.add_argument('output',type=Path);parser.add_argument('--classify',action='store_true');parser.add_argument('--batch-size',type=int,default=1);parser.add_argument('--resume-from',type=Path);parser.add_argument('--reviewed-cut-uuid',action='append',default=[]);args=parser.parse_args();main(args.before,args.after,args.output,args.classify,args.batch_size,args.resume_from,args.reviewed_cut_uuid)

@@ -1,0 +1,22 @@
+....EE
+======================================================================
+ERROR: test_reviewed_cut_cannot_remove_ambiguous_duplicate_or_exceed_bound (scripts.pcbgen.test_audit_added_mask.AddedCopperScopeTests.test_reviewed_cut_cannot_remove_ambiguous_duplicate_or_exceed_bound)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/issue189-plane-budget/scripts/pcbgen/test_audit_added_mask.py", line 32, in test_reviewed_cut_cannot_remove_ambiguous_duplicate_or_exceed_bound
+    added_copper_scope(board(item(0),item(0)),board(item(1)),reviewed_removed_uuids=[uid(0)])
+TypeError: added_copper_scope() got an unexpected keyword argument 'reviewed_removed_uuids'
+
+======================================================================
+ERROR: test_reviewed_cuts_preserve_every_other_object_and_scope_every_addition (scripts.pcbgen.test_audit_added_mask.AddedCopperScopeTests.test_reviewed_cuts_preserve_every_other_object_and_scope_every_addition)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/issue189-plane-budget/scripts/pcbgen/test_audit_added_mask.py", line 18, in test_reviewed_cuts_preserve_every_other_object_and_scope_every_addition
+    scope=added_copper_scope(before,after,2,1,reviewed_removed_uuids=[cut])
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: added_copper_scope() got an unexpected keyword argument 'reviewed_removed_uuids'
+
+----------------------------------------------------------------------
+Ran 6 tests in 0.018s
+
+FAILED (errors=2)
