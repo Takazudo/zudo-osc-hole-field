@@ -1,28 +1,31 @@
 {
   "board": "osc-jack-right",
-  "input_board_sha256": "35b52972dd70b4186cf3f3b7ee2ac3d70432f3476c2f56c9fcf9c1c4d7d4d445",
-  "scope": "Disposable RB4614.2 ground repair: two exact unchanged existing signal cuts/two victims; source frame retained; no accepted JR134 copper removed. Full native original-membership,DRC/parity,warning,fresh,retention gates mandatory. Positive old ground prefilter is not eligibility.",
+  "input_board_sha256": "e06b7471ddc8f5c8c498c5eb5bf8655cc6de539e92826a5701cf1de06356e136",
+  "scope": "READ-ONLY pilot on native-verified JR130 candidate; main integration still requires PR224 exact CI approval. One exact signal via and two attached segments in12.69x13.61mm. Native cut components and both retained endpoints must reconnect. No canonical writer; raster joint proposal is not accepted by this plan.",
   "stage": {
     "repair_targets": [
       "AGND"
     ],
     "repair_ground_pad_uuids": [
-      "39d6be8f-f486-5bef-b690-8424c94627a2"
+      "da76d06e-b458-5bf4-8fcd-43566242159d"
     ],
     "repair_source_uuids": [
-      "442e7644-a809-56c5-ab71-def9002bb651",
-      "bdd4ac83-1db1-508d-9e60-d7412a183e2d"
+      "0db6fa04-3952-5b76-a6b2-709e310934f1",
+      "6bc17675-fb04-5cbc-8222-fde0538f0a12",
+      "78c173db-0b3f-5ae2-8911-4e25a1f46b7f"
     ],
     "repair_bounds_mm": [
-      405.7,
-      129.65,
-      419.3,
-      154.85
+      404.3,
+      128.9,
+      416.99,
+      142.51
     ],
-    "name": "189-jr134-rb4614-2-ground-cut",
+    "name": "189-jr130-rb4615-via-branch",
     "repair": true,
     "repair_layers": [
       "F.Cu",
+      "In2.Cu",
+      "In3.Cu",
       "B.Cu"
     ],
     "clearance": 0.25,
@@ -34,7 +37,7 @@
       "+5V": 0.05,
       "AGND": 0.05
     },
-    "res": 0.025,
+    "res": 0.0125,
     "window_mm": 6
   }
 }

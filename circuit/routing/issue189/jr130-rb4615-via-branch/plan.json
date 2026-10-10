@@ -1,0 +1,43 @@
+{
+  "board": "osc-jack-right",
+  "input_board_sha256": "e06b7471ddc8f5c8c498c5eb5bf8655cc6de539e92826a5701cf1de06356e136",
+  "scope": "READ-ONLY pilot on native-verified JR130 candidate; main integration still requires PR224 exact CI approval. One exact signal via and two attached segments in12.69x13.61mm. Native cut components and both retained endpoints must reconnect. No canonical writer; raster joint proposal is not accepted by this plan.",
+  "stage": {
+    "repair_targets": [
+      "AGND"
+    ],
+    "repair_ground_pad_uuids": [
+      "da76d06e-b458-5bf4-8fcd-43566242159d"
+    ],
+    "repair_source_uuids": [
+      "0db6fa04-3952-5b76-a6b2-709e310934f1",
+      "6bc17675-fb04-5cbc-8222-fde0538f0a12",
+      "78c173db-0b3f-5ae2-8911-4e25a1f46b7f"
+    ],
+    "repair_bounds_mm": [
+      404.3,
+      128.9,
+      416.99,
+      142.51
+    ],
+    "name": "189-jr130-rb4615-via-branch",
+    "repair": true,
+    "repair_layers": [
+      "F.Cu",
+      "In2.Cu",
+      "In3.Cu",
+      "B.Cu"
+    ],
+    "clearance": 0.25,
+    "signal_width": 0.2,
+    "signal_via_diameter": 0.6,
+    "grow": {
+      "+12V": 0.05,
+      "-12V": 0.05,
+      "+5V": 0.05,
+      "AGND": 0.05
+    },
+    "res": 0.0125,
+    "window_mm": 6
+  }
+}
