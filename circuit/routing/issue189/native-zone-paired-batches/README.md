@@ -8,17 +8,20 @@ native zone coordinates, source artwork IDs/rendered text, project/rules and
 both warning caps are checked. Both before/after stages and every growing
 silk-relevant zone still run. Incomplete output cannot certify coverage.
 
-The acceptance consumer explicitly rejects the new batch format until independent
-coverage support and artifact reconciliation are implemented and validated.
+This isolated branch adds strict source-bound acceptance support for the batch
+format and an opt-in `--native-zone-batch-size 16` merge argument. It requires
+`--complete-native-warnings`; all four native audit commands remain mandatory.
+The default stays single-item. Main is unchanged, and no writer may use this
+preparation until the full real paired artifact is reconciled and checks pass.
 No existing warning or other gate is waived. No canonical board changes.
 All21saved native sample fixture bytes also reconstruct exactly with the new
 serializer (heavy-guardPASS16s); `native-sample-serialization.json` binds each hash.
 Reproduce with `verify_sample_serialization.py BEFORE_BOARD TIMING_ZIP OUTPUT_JSON`.
 No native tool is invoked by that check.
 
-Twenty-six focused tests pass, including bounded tail coverage, unknown/duplicate
-scope rejection, unchanged single-item serialization and unsupported batch-proof
-rejection. Native performance sample38002541870 independently established3.66x/
+Forty-three focused tests pass, including bounded tail coverage, unknown/duplicate
+scope rejection, unchanged single-item serialization and malformed batch-proof
+rejection, native-error/split/fresh-copy gates and opt-in command propagation. Native performance sample38002541870 independently established3.66x/
 11.03x gains at4/16items on identical saved inputs, but was all-negative and
 before-only. Native detection controls38004636645 at3629a72 passed and independently
 reconciled all5fixtures (0/1/1/0/2identities); raw proof is in
@@ -55,4 +58,7 @@ bytes, versions/severities, hashes, caps and identity unions. Tests reject alter
 fixture bytes even when the receipt hash is updated, changed context, wrong
 version/severity scope, capped reports and incomplete pairs. New warning
 identities are preserved in its result, never erased or treated as adoption.
-The acceptance consumer still explicitly rejects batch-format evidence.
+The isolated consumer rejects any incomplete pair, stale source, altered fixture,
+context/version/severity mismatch, capped report or new zone warning. Existing
+ordinary/fresh DRC/parity, topology and retained-copper gates remain in force.
+The real full paired artifact is still pending, so no eligibility is claimed.

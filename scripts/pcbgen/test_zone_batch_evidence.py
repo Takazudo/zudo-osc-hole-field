@@ -84,11 +84,22 @@ class BatchArtifactBindingTests(unittest.TestCase):
                 with zipfile.ZipFile(archive,'w') as z:
                     for name,data in f.items():z.writestr(prefix+name,data)
                 with self.subTest(mode=mode),patch.object(evidence,'BEFORE',r['before_sha256']),patch.object(evidence,'AFTER',r['after_sha256']),contextlib.redirect_stdout(io.StringIO()):
+                    proof=root/('proof-'+mode)
+                    for name,data in f.items():
+                        path=proof/name;path.parent.mkdir(parents=True,exist_ok=True);path.write_bytes(data)
+                    from scripts.pcbgen.complete_native_warnings import zone_evidence
+                    gate_context={'project_sha256':sha(context['.kicad_pro']),'rules_sha256':sha(context['.kicad_dru'])}
                     if mode in ('valid','new-warning'):
                         evidence.main(archive,sha(archive.read_bytes()),*sources,root/'receipt.json')
                         out=json.loads((root/'receipt.json').read_text());self.assertFalse(out['adopted']);self.assertTrue(out['full_paired_zone_coverage'])
                         self.assertEqual(len(out['new_zone_silk_identities']),1 if mode=='new-warning' else 0)
+                        if mode=='valid':
+                            self.assertEqual(zone_evidence(proof,*sources,gate_context)['zone_fixture_count'],2)
+                        else:
+                            with self.assertRaisesRegex(ValueError,'new complete native zone'):
+                                zone_evidence(proof,*sources,gate_context)
                     else:
                         with self.assertRaises(ValueError):evidence.main(archive,sha(archive.read_bytes()),*sources,root/'receipt.json')
+                        with self.assertRaises(ValueError):zone_evidence(proof,*sources,gate_context)
 
 if __name__=='__main__':unittest.main()

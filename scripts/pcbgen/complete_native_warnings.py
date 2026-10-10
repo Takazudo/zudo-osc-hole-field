@@ -114,6 +114,18 @@ def zone_evidence(root,before_board,after_board,context):
     if result['version']!='10.0.6' or result['before_sha256']!=sha(before_board) or result['after_sha256']!=sha(after_board):
         raise ValueError('zone audit native version/source mismatch')
     if not result.get('zone_silk_scope_complete'):raise ValueError('zone silk classification incomplete')
+    growing=[r.get('native_silk_pairs',{}) for r in result['zones'] if not r['native_added_shape_empty']]
+    if any('artwork_batch_size' in pairs for pairs in growing):
+        from scripts.pcbgen.zone_batch_evidence import validate_coverage,verify_result
+        if not all('artwork_batch_size' in pairs for pairs in growing):raise ValueError('mixed zone fixture formats')
+        for pairs in growing:validate_coverage(pairs)
+        for suffix,key in (('.kicad_pro','project_sha256'),('.kicad_dru','rules_sha256')):
+            if sha(Path(before_board).with_suffix(suffix))!=context[key]:raise ValueError('source native context mismatch')
+        proof=verify_result(lambda name:(root/name).read_bytes(),Path(before_board),Path(after_board))
+        if proof['new_zone_silk_identities']:raise ValueError('new complete native zone silk warning identities')
+        return dict(zone_fixture_count=sum(r['fixtures'] for r in proof['zones']),
+                    zone_result_sha256=sha(root/'result.json'),new_zone_silk_identities=[],
+                    zone_evidence_method='complete paired artwork batches')
     before_text=Path(before_board).read_text();after_text=Path(after_board).read_text()
     if zone_metadata(before_text)!=zone_metadata(after_text):raise ValueError('zone context or outline changed')
     expected=set()
@@ -132,7 +144,6 @@ def zone_evidence(root,before_board,after_board,context):
             continue
         pairs=row.get('native_silk_pairs')
         if pairs is None:raise ValueError('growing zone has no native pair evidence')
-        if 'artwork_batch_size' in pairs:raise ValueError('batched zone evidence requires independent coverage support')
         selected=pairs['selected_item_uuids'];fixtures=pairs['fixtures']
         geometry=pairs.get('source_geometry_sha256')
         if 'native_geometry_method' in pairs or geometry is not None:
@@ -219,8 +230,9 @@ def complete_reports(before_board, after_board, before_drc, after_drc, before_au
         audit_result_sha256=[sha(Path(p)/'result.json') for p in (before_audit,after_audit,mask_audit)])
 
 
-def audit_current_reports(before_board, after_board, before_drc, after_drc, output):
+def audit_current_reports(before_board, after_board, before_drc, after_drc, output, zone_batch_size=1):
     """Produce evidence for these exact native boards; never reuse stale audits."""
+    if type(zone_batch_size) is not int or zone_batch_size not in (1,4,16):raise ValueError('native zone batch size must be1,4or16')
     root=Path(__file__).resolve().parents[2]
     output=Path(output)
     output.mkdir(parents=True,exist_ok=False)
@@ -231,6 +243,7 @@ def audit_current_reports(before_board, after_board, before_drc, after_drc, outp
               ['scripts/pcbgen/audit_hole_pairs.py',relative(after_board),relative(after_audit)],
               ['scripts/pcbgen/audit_added_mask.py',relative(before_board),relative(after_board),relative(mask_audit)],
               ['scripts/pcbgen/audit_zone_silk_scope.py',relative(before_board),relative(after_board),relative(zone_audit),'--classify']]
+    if zone_batch_size!=1:commands[-1].extend(['--batch-size',str(zone_batch_size)])
     for command in commands:
         subprocess.run(['bash','scripts/kicad/run.sh','python3',*command],cwd=root,check=True)
     result=complete_reports(before_board,after_board,before_drc,after_drc,before_audit,after_audit,mask_audit,zone_audit)

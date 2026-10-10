@@ -1,7 +1,7 @@
 """Independent read-only reconciliation of full paired native batch artifacts.
 
-This module is not called by the acceptance gate; that gate rejects this format
-until separate integration and regression validation are complete.
+The opt-in warning gate uses the same read-only verifier. It never publishes a
+board; ordinary/fresh native checks and retention remain mandatory.
 """
 import argparse
 import hashlib
@@ -33,6 +33,7 @@ def validate_coverage(pairs):
     expected=[(stage,index,ids) for stage in (0,1) for index,ids in enumerate(batches)]
     actual=[]
     for f in pairs['fixtures']:
+        if not {'stage','batch_index','item_uuids'}<=set(f):raise ValueError('invalid paired batch fixture schema')
         if type(f['stage']) is not int or type(f['batch_index']) is not int:
             raise ValueError('invalid stage/batch index')
         actual.append((f['stage'],f['batch_index'],f['item_uuids']))
