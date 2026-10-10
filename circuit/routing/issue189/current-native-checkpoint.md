@@ -2,16 +2,18 @@
 
 Issue #189 remains OPEN. Connectivity is incomplete; no fabrication or hardware qualification is claimed. The previous detailed history is preserved at evidence commit 906d6faf66ab53935254185ffac271dff66a2920.
 
-## Canonical accepted state
+## Canonical accepted state — updated 2026-10-10 08:34 UTC
 
-Main `a7bfa66cd3799d07fadf7fd51f43ab36dea0a9a6`, tree `60234967908ab501f378bd9545d77ca921fceb57`: **JL118 / JR131 / core1402**, native KiCad 10.0.6 DRC/parity **0/0**. Existing warnings remain. Remaining partitions: JL103 signal/15 AGND; JR108 signal/23 AGND; core1029 signal/213 AGND/80 +12V/80 −12V. Fixed panel, electrical requirements and P/EL/O candidates are unchanged.
+Main **4807b73072a9af9282b9b2657ecce78cc4827ddc**, tree **8711d89c123dadd70ae4b2ec174c57cedfebd9f1**: JL118 / JR131 / core1402, native KiCad10.0.6 DRC/parity0/0. PR228 documentation reconciliation merged after all five exact-head CI38036447787 checks PASS. Actual merge tree equals the reviewed preview. Post-main CI38037382793 is still running; preceding maina7bfa66 CI38035633556 all five PASS. PCB hashes unchanged:
+- JL a01df89dcab3d4fab8eb0ae80195b2825d2d47adc517cd73452d9b9aa6ea079a
+- JR 7bb70ac47e12c8bb2e2362d78f7602bdf99c2a69214c68aebeef273b0ce11965
+- core fa60b4e1587a67501782fb55374f0e5d5133f65cd0bbe62624aef502441fda10
 
-PCB SHA256:
-- JL `a01df89dcab3d4fab8eb0ae80195b2825d2d47adc517cd73452d9b9aa6ea079a`
-- JR `7bb70ac47e12c8bb2e2362d78f7602bdf99c2a69214c68aebeef273b0ce11965`
-- core `fa60b4e1587a67501782fb55374f0e5d5133f65cd0bbe62624aef502441fda10`
+Current active native runs: original core38023611361 and distinct read-only JL R8127 cut pilot38037812466. No active JR native worker. JR exact bot CI38033682423 remains action_required; no user approval received. R8107 pilot38036682185 is terminal/rejected, independently reconciled. The08:23UTC transport disconnect was transient: failed process never started, read-only retry succeeded, exact command then ran. No environment replacement or startup-loader repeat; no duplicate dispatch.
 
-PR227 merged the explicit plane search-budget control after all five exact-head checks passed (38034226396). It changes no board, design, schematic or footprint. Actual merged tree matches the reviewed tree. Post-main CI38035633556 subsequently completed all five checks PASS, including aggregate regeneration. Earlier main16a248fc post-CI38028250566 passed all five checks.
+Draft PR231 strict complete-warning support for reviewed cuts: source **fafe6e815c5d81e276059099f743649d97558bf9**, branch `agent-fix/189-reviewed-cut-warning-audits`, worktree `/workspace/issue189-plane-budget`. Two regressions RED before,63 targeted tests PASS; saved JR130 complete proof exactly unchanged and R8107 original native gate still rejects (guardPASS77s); circuit checks PASS. No board changes. Fresh native fixture production for a cut transaction is NOT RUN, so do not claim that integration completed. Exact-head CI pending. Scope requires source hash, bounded exact cut plan, all uncut objects/holes unchanged, both hole audits, every new copper fixture, all paired-zone evidence and unchanged original promotion gates.
+
+Draft PR230 R8127: source **46b8562ca57f1b73ade36f48a35188b4be60be15**, branch `agent-fix/189-jl118-r8127-via-branch`, worktree `/workspace/issue189-jl-layer-escape`. Native pilot **38037812466** and source CI38037813141 running. Three exact cuts/one victim,12.11×13.21mm. Native output UNKNOWN; provisional seven-object joint proposal is not acceptance. Do not redispatch. Parent source PR229 R8107 rejection evidence is committed **38113a5** on `agent-fix/189-jl118-r8107-via-branch`.
 
 ## Sole active native worker: core — do not redispatch
 
@@ -35,7 +37,7 @@ Artifact11662823283,84045972bytes, ZIP SHA `dbbac06e0e996cdeb3ae93695ea94b0964a1
 
 Published/fresh SHA `e06b7471ddc8f5c8c498c5eb5bf8655cc6de539e92826a5701cf1de06356e136`; replay `36cbbc37b39985df631ba3e39dde6351b9a30c194483925c472e4a598b5e7a2f`. No optional publication compaction/refill was used. Proof and checker: `jr131-d7411-last-via-avoid/full-adoption-evidence.json`, `reconcile_full.py`. Local ZIP/proof `/tmp/issue189-jr130-full.zip`, `/tmp/issue189-jr130-full-proof.json`.
 
-Current clean merge preview against a7bfa66: **`3480cb77ddf420d100a17ef42bf16c63c3db99a1`**, preserving all nine PR227 files and JL/core bytes. Bot-only delta is JR board, native receipt and replay. Once approval and all five exact-head checks pass: refresh main/head/reviews, recompute preview if base changed, use existing incremental OSC merge authorization, verify actual tree/PCB hashes and post-main checks. Do not merge while action_required. No active JR native worker.
+Current clean merge preview against main4807b73: **`dc8d6f29731eb60d0ce5f7dfb699627934bf81b1`**, preserving all PR227 files, the three merged PR228 docs and JL/core bytes. The only delta from prior reviewed preview3480cb77 is the exact three accepted documentation files. Bot-only delta is JR board, native receipt and replay. Once approval and all five exact-head checks pass: refresh main/head/reviews, recompute preview if base changed, use existing incremental OSC merge authorization, verify actual tree/PCB hashes and post-main checks. Do not merge while action_required. No active JR native worker.
 
 ## JL rejected candidates and bounded negative work
 
@@ -80,3 +82,13 @@ The read-only placement screen above includes a coarse repeat/control of a previ
 All screen files below are read-only predictions, NOT native acceptance. R8107 explicit endpoint restoration at300k fails both three/four-layer cases (PASS12s). Weighted1.2m still fails (PASS9s): the three-layer final window exhausts643575 states below its1.2m limit, though the summary reason retains the earlier300k cap; four-layer final window reaches1200001. Do not claim the three-layer final domain remains budget-limited or repeat it at a larger budget.
 
 Nine other via-branch candidates received one .025mm/300k four-layer endpoint restoration comparison (PASS21s):3positive—U8202.16 combined186objects, two R8127.2 alternatives combined7/30objects. The smallest provisional R8127 proposal is `jl118-via-branch-screen/r8127-seven-provisional.json`, SHA256 `e691e431345bdd84fa86919be8b42704226620f7c8fd0921c457176fc07cd6f1`. It cuts one via and two attached segments on XDFE73EDB3AA45015AAD2, with endpoint obligations F.Cu(256.8,100.9) and In2.Cu(256.7,100.5)mm. Canonical native cut components have NOT been derived for this alternative. Preserve it for the next distinct bounded native cut pilot only after the current R8107 worker is terminal and reconciled. Do not dispatch overlapping JL native workers. No canonical copper changed.
+
+## R8107 terminal artifact and reviewed-cut continuation
+
+Run38036682185/sourceea69bb9367164adadbc69c63bb2df7ab941a3bef, artifact11663659694,34229780bytes,ZIP SHA256e807c6ad8e9ed9e2d1813a2b8c0a23d74eb8940ea49dc9a23d8fcc1e8879d963. `/tmp/issue189-r8107-native.zip`, `/tmp/issue189-r8107-native-proof.json`, `/tmp/issue189-reconcile-r8107-cut.py`; checker/evidence committed on PR229. Independent PASS63s:118→119 after cut→118 candidate/fresh,AGND15→14 but X1B46EF588B84E21C6E0C remains split. Both exact boundary tracks gain track_dangling warnings.33418uncut retained,3exact cuts,4new objects,1111nonrouting unchanged,0DRC/parity,479warnings. Candidate0c16f5607c8bf4cf9bb4f33289eb9c853b9639e227c79b05c3d42546da43cdef; replay44b4fa6617ba7f37e58689a131dae7f4bc2b99edeef4c87f0c44cd66eea2b0a2. Native victim search exhausts101737states below300k. No larger-budget retry or adoption.
+
+First independent checker stopped on an additive-only helper; final checker separates exact nonrouting invariance from mandatory three-cut/all-uncut retention checks. No native gate was waived. This also exposed that complete warning audits need an explicit cut scope; PR231 implements that strict opt-in rather than disabling complete warnings.
+
+On R8127 terminal completion: download exact artifact, verify source/ID/digest, adapt the R8107 checker to the exact new source/run/plan and boundary tracks, then independently inspect native cut memberships and all candidate/fresh gates. If the ordinary pilot fails victim routing, the pinned seven-object provisional alternative may be compared only after its two boundary components are confirmed by that native cut dump. Do not count raster geometry as eligibility. Any adoption must include PR231's implementation, `--complete-native-warnings --native-zone-batch-size16 --reviewed-cut-plan EXACT_PLAN`, and retain original source/native/fresh/retention gates. No complete-cut native audit has yet run. Do not merge PR231 merely from synthetic tests; establish actual native-cut audit evidence as part of this continuation.
+
+R8127 source includes provisional endpoint_screen.py copied from the shared nine-case screen. Its required source-screen JSON path has not yet been made self-contained in that folder; fix that replay script/input packaging after the frozen pilot completes (the native pilot uses only plan.json and is unaffected). The complete original screen/script/results remain on this evidence branch under jl118-via-branch-screen/. No file or native output should be fabricated to fill the gap.
