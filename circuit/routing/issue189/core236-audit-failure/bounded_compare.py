@@ -63,21 +63,21 @@ def leg(mode):
     import pcbnew
     from scripts.pcbgen.zone_fixture_validation import isolated_fixture_check
     m=validate_manifest(read(ROOT/'manifest.json'));version=subprocess.check_output(['kicad-cli','version'],text=True).strip();assert version=='10.0.6'
-    code,helper=original_code((ROOT/'original-inline.py').read_text(),m['baseline_file_sha256']);env={'hashlib':hashlib};exec(helper,env)
+    code,helper=original_code((ROOT/'original-inline.py').read_text(),m['baseline_file_sha256']);state={'hashlib':hashlib,'pcbnew':pcbnew};exec(helper,state,state)
     boards=[pcbnew.LoadBoard(str(ROOT/'inputs'/s/'osc-core.kicad_pcb')) for s in ('start','fresh')]
-    texts=[env['text_rows'](b) for b in boards];state={'pcbnew':pcbnew};output=ROOT/mode;output.mkdir()
+    texts=[state['text_rows'](b) for b in boards];output=ROOT/mode;output.mkdir()
     receipts=[]
     for i,c in enumerate(m['cases']):
         folder=output/f'case-{i:02d}';shutil.copytree(ROOT/'inputs'/f'case-{i:02d}',folder);fixture=folder/'osc-core.kicad_pcb'
         layer=pcbnew.F_Cu if c['layer']=='F.Cu' else pcbnew.B_Cu
         actual_zone=next(z for z in boards[c['stage']].Zones() if z.m_Uuid.AsString()==c['zone_uuid'])
-        assert env['native_zone_signature'](actual_zone.GetFilledPolysList(layer))==c['native_geometry_sha256']
+        assert state['native_zone_signature'](actual_zone.GetFilledPolysList(layer))==c['native_geometry_sha256']
         if c['saved_report_sha256']:identities(read(folder/'saved-drc.json'),c['zone_uuid'])
         if mode=='original':
             # Execute exact original statement bytes in one persistent loop
             # namespace: never substitute refactored flag-off validation.
             state.update(fixture=fixture,uid=c['zone_uuid'],layer=layer,item_uids=c['item_uuids'],texts=texts[c['stage']],stage=c['stage'],source_signatures={str(c['stage']):c['native_geometry_sha256']})
-            exec(code,env,state);geometry=state['geometry_signature']
+            exec(code,state,state);geometry=state['geometry_signature']
         elif mode=='isolated':geometry=isolated_fixture_check(fixture,c['zone_uuid'],layer,c['item_uuids'],texts[c['stage']],c['native_geometry_sha256'])
         else:raise ValueError('unknown mode')
         receipt=dict(case=i,fixture_sha256=SHA(fixture.read_bytes()),native_geometry_sha256=geometry,version=version)

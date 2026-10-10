@@ -1,0 +1,18 @@
+E
+======================================================================
+ERROR: test_real_original_leg_executes_exact_block_comprehensions_and_retains_loop_state (scripts.pcbgen.test_bounded_fixture_compare.BoundedComparisonTests.test_real_original_leg_executes_exact_block_comprehensions_and_retains_loop_state)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/issue189-core236-isolation/scripts/pcbgen/test_bounded_fixture_compare.py", line 42, in test_real_original_leg_executes_exact_block_comprehensions_and_retains_loop_state
+    compare.leg('original')
+  File "/workspace/issue189-core236-isolation/circuit/routing/issue189/core236-audit-failure/bounded_compare.py", line 80, in leg
+    exec(code,env,state);geometry=state['geometry_signature']
+    ^^^^^^^^^^^^^^^^^^^^
+  File "EXACT617INLINE", line 7, in <module>
+  File "EXACT617INLINE", line 7, in <genexpr>
+NameError: name 'texts' is not defined. Did you mean: 'next'?
+
+----------------------------------------------------------------------
+Ran 1 test in 0.015s
+
+FAILED (errors=1)

@@ -1,11 +1,47 @@
-import copy,importlib.util,json,subprocess,unittest
+import contextlib,copy,hashlib,importlib.util,io,json,subprocess,tempfile,unittest,weakref
 from pathlib import Path
+from types import SimpleNamespace
 from unittest.mock import Mock,patch
 
 FILE=Path('circuit/routing/issue189/core236-audit-failure/bounded_compare.py')
 spec=importlib.util.spec_from_file_location('compare',FILE);compare=importlib.util.module_from_spec(spec);spec.loader.exec_module(compare)
 MANIFEST=FILE.with_name('18-fixture-manifest.json')
 class BoundedComparisonTests(unittest.TestCase):
+    def test_real_original_leg_executes_exact_block_comprehensions_and_retains_loop_state(self):
+        m=copy.deepcopy(compare.read(MANIFEST));shape=hashlib.sha256(b'exact fake filled polygons').hexdigest();fixture_bytes=b'fake native fixture'
+        for c in m['cases']:c['native_geometry_sha256']=shape;c['fixture_sha256']=hashlib.sha256(fixture_bytes).hexdigest()
+        all_ids={uid for c in m['cases'] for uid in c['item_uuids']};zone_ids={c['zone_uuid'] for c in m['cases']}
+        uid=lambda value:SimpleNamespace(AsString=lambda:value)
+        def fp(value):
+            text=SimpleNamespace(m_Uuid=uid('field-'+value),GetShownText=lambda enabled:'rendered-'+value)
+            return SimpleNamespace(m_Uuid=uid(value),Pads=lambda:[],GetFields=lambda:[text],GraphicalItems=lambda:[])
+        class Board:
+            def __init__(self,art,zones):self.art=art;self.zones=zones
+            def Zones(self):return [SimpleNamespace(m_Uuid=uid(z),GetFilledPolysList=lambda layer:SimpleNamespace(ArcCount=lambda:0,Format=lambda:'exact fake filled polygons')) for z in self.zones]
+            def GetTracks(self):return []
+            def GetFootprints(self):return [fp(v) for v in self.art]
+            # Forces the ORIGINAL drawing comprehension to resolve pcbnew;
+            # fields force its rendered-text generator to resolve texts.
+            def GetDrawings(self):return [SimpleNamespace(GetLayer=lambda:44)]
+        previous=None;retained=[];loads=[]
+        def load(path):
+            nonlocal previous
+            if Path(path).parent.name in ('start','fresh'):return Board(all_ids,zone_ids)
+            if previous is not None:retained.append(previous() is not None)
+            index=int(Path(path).parent.name.split('-')[1]);c=m['cases'][index];board=Board(c['item_uuids'],[c['zone_uuid']]);previous=weakref.ref(board);loads.append(index);return board
+        native=SimpleNamespace(LoadBoard=load,F_Cu=0,B_Cu=31,Edge_Cuts=44)
+        report={'kicad_version':'10.0.6','included_severities':['error','warning','exclusion'],'violations':[]}
+        def drc(args,**kwargs):Path(args[args.index('--output')+1]).write_text(json.dumps(report))
+        with tempfile.TemporaryDirectory() as tmp:
+            root=Path(tmp);(root/'manifest.json').write_text(json.dumps(m));(root/'original-inline.py').write_text(FILE.with_name('baseline-original.py.txt').read_text())
+            for name in ['start','fresh',*[f'case-{i:02d}' for i in range(18)]]:
+                folder=root/'inputs'/name;folder.mkdir(parents=True)
+                for suffix,data in [('.kicad_pcb',fixture_bytes),('.kicad_pro',b'project'),('.kicad_dru',b'rules')]: (folder/('osc-core'+suffix)).write_bytes(data)
+                (folder/'saved-drc.json').write_text(json.dumps(report))
+            with patch.object(compare,'ROOT',root),patch.dict('sys.modules',{'pcbnew':native}),patch.object(compare.subprocess,'check_output',return_value='10.0.6'),patch.object(compare.subprocess,'run',side_effect=drc) as calls,contextlib.redirect_stdout(io.StringIO()):
+                compare.leg('original')
+            self.assertEqual(loads,list(range(18)));self.assertEqual(retained,[True]*17);self.assertEqual(calls.call_count,2)
+            self.assertEqual(len(compare.read(root/'original/complete.json')['cases']),18)
     def test_fixture_scope_keeps_original_silk_caps_and_does_not_change_full_board_gate(self):
         from scripts.pcbgen.complete_native_warnings import check_caps
         report={'kicad_version':'10.0.6','included_severities':['error','warning','exclusion'],'violations':[{'type':'isolated_copper','severity':'warning','items':[{'uuid':'zone'}]} for _ in range(199)]}
