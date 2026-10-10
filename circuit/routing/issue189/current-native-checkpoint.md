@@ -11,7 +11,7 @@ PCB SHA256:
 - JR `7bb70ac47e12c8bb2e2362d78f7602bdf99c2a69214c68aebeef273b0ce11965`
 - core `fa60b4e1587a67501782fb55374f0e5d5133f65cd0bbe62624aef502441fda10`
 
-PR227 merged the explicit plane search-budget control after all five exact-head checks passed (38034226396). It changes no board, design, schematic or footprint. Actual merged tree matches the reviewed tree. Post-main CI38035633556 was still running at this checkpoint; do not call it passed. Earlier main16a248fc post-CI38028250566 passed all five checks.
+PR227 merged the explicit plane search-budget control after all five exact-head checks passed (38034226396). It changes no board, design, schematic or footprint. Actual merged tree matches the reviewed tree. Post-main CI38035633556 subsequently completed all five checks PASS, including aggregate regeneration. Earlier main16a248fc post-CI38028250566 passed all five checks.
 
 ## Sole active native worker: core — do not redispatch
 
@@ -74,3 +74,9 @@ Documentation reconciliation **PR228**, branch `agent-fix/189-current-native-doc
 Main post-CI38035633556: all three native gates and docs PASS; Python unit step PASS, aggregate source regeneration still running. Core38023611361 remains running; JR38033682423 remains action_required, exact bot3b3e543 unchanged. Issue189 confirmedOPEN. No approval received.
 
 The read-only placement screen above includes a coarse repeat/control of a previously preserved negative configuration: `jl118-movable-ground/README.md` records315 earlier routing comparisons. The new finer29case comparison is also negative. Do not repeat those source-defined placement scopes or merely increase their budget; the via-branch method changes a diagnosed obstruction and uses a separate native cut transaction.
+
+## Provisional endpoint screens (2026-10-10 08:15 UTC)
+
+All screen files below are read-only predictions, NOT native acceptance. R8107 explicit endpoint restoration at300k fails both three/four-layer cases (PASS12s). Weighted1.2m still fails (PASS9s): the three-layer final window exhausts643575 states below its1.2m limit, though the summary reason retains the earlier300k cap; four-layer final window reaches1200001. Do not claim the three-layer final domain remains budget-limited or repeat it at a larger budget.
+
+Nine other via-branch candidates received one .025mm/300k four-layer endpoint restoration comparison (PASS21s):3positive—U8202.16 combined186objects, two R8127.2 alternatives combined7/30objects. The smallest provisional R8127 proposal is `jl118-via-branch-screen/r8127-seven-provisional.json`, SHA256 `e691e431345bdd84fa86919be8b42704226620f7c8fd0921c457176fc07cd6f1`. It cuts one via and two attached segments on XDFE73EDB3AA45015AAD2, with endpoint obligations F.Cu(256.8,100.9) and In2.Cu(256.7,100.5)mm. Canonical native cut components have NOT been derived for this alternative. Preserve it for the next distinct bounded native cut pilot only after the current R8107 worker is terminal and reconciled. Do not dispatch overlapping JL native workers. No canonical copper changed.

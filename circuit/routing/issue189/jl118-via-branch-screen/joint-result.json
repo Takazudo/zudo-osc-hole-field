@@ -1,0 +1,256 @@
+{
+  "status": "PROVISIONAL RASTER ENDPOINT RECONNECTION ONLY; NATIVE CUT COMPONENTS, ALL VICTIMS AND COMPLETE BASELINE GATES STILL REQUIRED; NOT ELIGIBLE",
+  "board_sha256": "a01df89dcab3d4fab8eb0ae80195b2825d2d47adc517cd73452d9b9aa6ea079a",
+  "dump_sha256": "9d193cd974148e58b576d247edb5bce804f06a29d075098513a1292c21fbf136",
+  "boundary_endpoints": [
+    {
+      "cut_uuid": "cff5b083-bb04-5f90-b162-55e1d16232d4",
+      "xy": [
+        271900000,
+        104800000
+      ],
+      "layer": "F.Cu",
+      "victim_net": "X1B46EF588B84E21C6E0C"
+    },
+    {
+      "cut_uuid": "f790c694-82bd-5517-b41f-bd96f700ec41",
+      "xy": [
+        269100000,
+        102000000
+      ],
+      "layer": "In2.Cu",
+      "victim_net": "X1B46EF588B84E21C6E0C"
+    }
+  ],
+  "transactions": [
+    {
+      "layers": [
+        "F.Cu",
+        "In2.Cu",
+        "B.Cu"
+      ],
+      "endpoint_path_found": false,
+      "elapsed_seconds": 4.511837341007777,
+      "diagnostics": [
+        {
+          "net": "X1B46EF588B84E21C6E0C",
+          "endpoints": [
+            "SEARCH_ONLY_RETAINED_ENDPOINT.1"
+          ],
+          "reason": "expansion_limit",
+          "phase": "route",
+          "attempts": [
+            {
+              "window_cells": [
+                1,
+                962,
+                1,
+                962
+              ],
+              "expanded": 300001,
+              "limit": 300000
+            },
+            {
+              "window_cells": [
+                1,
+                1186,
+                1,
+                1076
+              ],
+              "expanded": 300001,
+              "limit": 300000
+            }
+          ],
+          "max_expansions": 300000,
+          "window_mm": 6
+        }
+      ],
+      "proposal": {
+        "board_sha256": "a01df89dcab3d4fab8eb0ae80195b2825d2d47adc517cd73452d9b9aa6ea079a",
+        "removed_uuids": [
+          "4a1614a1-6047-581c-83ba-e5c3d90d2e8d",
+          "cff5b083-bb04-5f90-b162-55e1d16232d4",
+          "f790c694-82bd-5517-b41f-bd96f700ec41"
+        ],
+        "copper": [
+          {
+            "kind": "segment",
+            "net": "AGND",
+            "start_nm": [
+              273087500,
+              104275000
+            ],
+            "end_nm": [
+              270862500,
+              104275000
+            ],
+            "width_nm": 300000,
+            "layer": "F.Cu",
+            "uuid": "15b3a923-d974-5a19-86cc-c0705dc04bab"
+          },
+          {
+            "kind": "via",
+            "net": "AGND",
+            "at_nm": [
+              270862500,
+              104275000
+            ],
+            "diameter_nm": 600000,
+            "drill_nm": 300000,
+            "layers": [
+              "F.Cu",
+              "B.Cu"
+            ],
+            "locked": false,
+            "uuid": "2f25847e-e4b8-53f9-b114-bed43fe2c3a7"
+          },
+          {
+            "kind": "segment",
+            "net": "AGND",
+            "start_nm": [
+              270862500,
+              104275000
+            ],
+            "end_nm": [
+              270862500,
+              104462500
+            ],
+            "width_nm": 300000,
+            "layer": "B.Cu",
+            "uuid": "755f5913-a01b-5166-9098-c25fec841707"
+          },
+          {
+            "kind": "segment",
+            "net": "AGND",
+            "start_nm": [
+              270862500,
+              104462500
+            ],
+            "end_nm": [
+              270737500,
+              104587500
+            ],
+            "width_nm": 300000,
+            "layer": "B.Cu",
+            "uuid": "53d0c869-d597-5a1f-8c01-b53169765ca7"
+          }
+        ]
+      }
+    },
+    {
+      "layers": [
+        "F.Cu",
+        "In3.Cu",
+        "In2.Cu",
+        "B.Cu"
+      ],
+      "endpoint_path_found": false,
+      "elapsed_seconds": 6.117380329989828,
+      "diagnostics": [
+        {
+          "net": "X1B46EF588B84E21C6E0C",
+          "endpoints": [
+            "SEARCH_ONLY_RETAINED_ENDPOINT.1"
+          ],
+          "reason": "expansion_limit",
+          "phase": "route",
+          "attempts": [
+            {
+              "window_cells": [
+                1,
+                962,
+                1,
+                962
+              ],
+              "expanded": 300001,
+              "limit": 300000
+            },
+            {
+              "window_cells": [
+                1,
+                1186,
+                1,
+                1076
+              ],
+              "expanded": 300001,
+              "limit": 300000
+            }
+          ],
+          "max_expansions": 300000,
+          "window_mm": 6
+        }
+      ],
+      "proposal": {
+        "board_sha256": "a01df89dcab3d4fab8eb0ae80195b2825d2d47adc517cd73452d9b9aa6ea079a",
+        "removed_uuids": [
+          "4a1614a1-6047-581c-83ba-e5c3d90d2e8d",
+          "cff5b083-bb04-5f90-b162-55e1d16232d4",
+          "f790c694-82bd-5517-b41f-bd96f700ec41"
+        ],
+        "copper": [
+          {
+            "kind": "segment",
+            "net": "AGND",
+            "start_nm": [
+              273087500,
+              104275000
+            ],
+            "end_nm": [
+              270862500,
+              104275000
+            ],
+            "width_nm": 300000,
+            "layer": "F.Cu",
+            "uuid": "15b3a923-d974-5a19-86cc-c0705dc04bab"
+          },
+          {
+            "kind": "via",
+            "net": "AGND",
+            "at_nm": [
+              270862500,
+              104275000
+            ],
+            "diameter_nm": 600000,
+            "drill_nm": 300000,
+            "layers": [
+              "F.Cu",
+              "B.Cu"
+            ],
+            "locked": false,
+            "uuid": "2f25847e-e4b8-53f9-b114-bed43fe2c3a7"
+          },
+          {
+            "kind": "segment",
+            "net": "AGND",
+            "start_nm": [
+              270862500,
+              104275000
+            ],
+            "end_nm": [
+              270862500,
+              104462500
+            ],
+            "width_nm": 300000,
+            "layer": "B.Cu",
+            "uuid": "755f5913-a01b-5166-9098-c25fec841707"
+          },
+          {
+            "kind": "segment",
+            "net": "AGND",
+            "start_nm": [
+              270862500,
+              104462500
+            ],
+            "end_nm": [
+              270737500,
+              104587500
+            ],
+            "width_nm": 300000,
+            "layer": "B.Cu",
+            "uuid": "53d0c869-d597-5a1f-8c01-b53169765ca7"
+          }
+        ]
+      }
+    }
+  ]
+}
