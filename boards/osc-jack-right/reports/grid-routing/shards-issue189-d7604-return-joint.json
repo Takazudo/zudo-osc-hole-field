@@ -1,6 +1,26 @@
 {
- "adopted": false,
+ "adopted": true,
  "candidate_board_sha256": "22189b127579271b2f2c219da5e4b7e2af59673cb04e002b0dc4966afe2170dd",
+ "complete_native_warning_evidence": {
+  "after_hole_identities": 24,
+  "after_source_sha256": "22189b127579271b2f2c219da5e4b7e2af59673cb04e002b0dc4966afe2170dd",
+  "audit_result_sha256": [
+   "573dd788087d0340395e96150f095686feec09874cd619313665c7a640bc924b",
+   "548819e6f792ee1e292e2f35c1fad2d07a693d67c99db583373a7042a2b61086",
+   "e947b7b8ad08de81d9771098fe4b66b07b4d5c3f1e9c683828c61166203ce768"
+  ],
+  "before_hole_identities": 24,
+  "before_source_sha256": "35b52972dd70b4186cf3f3b7ee2ac3d70432f3476c2f56c9fcf9c1c4d7d4d445",
+  "new_hole_object_identities": [],
+  "new_silk_identities": [],
+  "status": "COMPLETE NATIVE HOLE OBSERVATIONS APPENDED; NO ORIGINAL FINDING REMOVED",
+  "zone_evidence": {
+   "new_zone_silk_identities": [],
+   "zone_evidence_method": "complete paired artwork batches",
+   "zone_fixture_count": 50,
+   "zone_result_sha256": "97a065d0929830c28f0ae40d380331ba86a504425aa5339bc6956b9668af16ef"
+  }
+ },
  "copper_added": 79,
  "copper_removed": 0,
  "copper_replay": {
@@ -13,7 +33,7 @@
  "independent_connectivity_agrees": true,
  "input_board_sha256": "35b52972dd70b4186cf3f3b7ee2ac3d70432f3476c2f56c9fcf9c1c4d7d4d445",
  "native_errors": false,
- "native_warning_evidence_error": "Command '['bash', 'scripts/kicad/run.sh', 'python3', 'scripts/pcbgen/audit_added_mask.py', '.circuit-cache/osc-jack-right-grid-shards-start/osc-jack-right.kicad_pcb', '.circuit-cache/osc-jack-right-grid-shards-fresh/osc-jack-right.kicad_pcb', '.circuit-cache/osc-jack-right-grid-shards-complete-warnings/native-audits/silk']' returned non-zero exit status 1.",
+ "native_filled_board_sha256": "22189b127579271b2f2c219da5e4b7e2af59673cb04e002b0dc4966afe2170dd",
  "native_zone_batch_size": 16,
  "nets_lost_to_overlap": [],
  "nets_merged": 2,
@@ -105,6 +125,7 @@
  "open_edges_after": 133,
  "open_edges_before": 134,
  "parity": 0,
+ "publication_cache": {},
  "raw_promotion_gate": {
   "adopted": true,
   "native_errors": false,
@@ -112,7 +133,6 @@
   "split_pad_groups": []
  },
  "rejected_attempts": [],
- "rejection_reason": "incomplete_native_warning_evidence",
  "shards": 1,
  "split_pad_groups": [],
  "stage": "shards-issue189-d7604-return-joint",
