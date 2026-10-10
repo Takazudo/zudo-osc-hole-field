@@ -4,7 +4,8 @@ from pathlib import Path
 sys.path.insert(0,str(Path.cwd()))
 from scripts.pcbgen.grid_router import route,copper_rows
 from scripts.pcbgen.route_jack_grid import LAYER_COST,RAILS,neck_kwargs
-HERE=Path(__file__).resolve().parent;P=HERE.parent/'issue189-downloaded/jl-r8276-adoption/.circuit-cache/osc-jack-left-grid-shards-fresh/dump.json';d=json.loads(P.read_text());screen=json.loads((HERE/'result.json').read_text());all_results=[]
+HERE=Path(__file__).resolve().parent;import argparse
+parser=argparse.ArgumentParser();parser.add_argument('--dump',type=Path,required=True);parser.add_argument('--output',type=Path,required=True);args=parser.parse_args();P=args.dump;d=json.loads(P.read_text());screen=json.loads((HERE/'source-screen.json').read_text());all_results=[]
 for candidate in screen['transactions']:
  if not candidate['ground_path_found'] or candidate['pad']=='R8107.2':continue
  selected={**screen,'transaction':candidate}
@@ -22,4 +23,4 @@ for candidate in screen['transactions']:
   rows,_=copper_rows(paths,'osc-jack-left','issue189-via-branch-joint-'+x['pad']+'-'+x['via']['uuid']+'-'+','.join(layers));ok=bool(rows) and bool(paths) and all(p['path'] for p in paths);out.append({'layers':layers,'endpoint_path_found':ok,'elapsed_seconds':time.monotonic()-start,'diagnostics':events,'proposal':{'board_sha256':selected['board_sha256'],'removed_uuids':sorted(cut),'copper':x['ground_copper']+rows}});print(layers,ok,len(rows),flush=True)
  all_results.append({'pad':candidate['pad'],'cut_spec':candidate['spec'],'via_uuid':candidate['via']['uuid'],'boundary_endpoints':candidate['boundary_endpoints'],'transactions':out})
  print(candidate['pad'],out[0]['endpoint_path_found'],flush=True)
- (HERE/'other-joint-result.json').write_text(json.dumps({'status':'PROVISIONAL RASTER ONLY; NATIVE CUT TOPOLOGY AND FULL BASELINE ACCEPTANCE REQUIRED','board_sha256':screen['board_sha256'],'dump_sha256':screen['dump_sha256'],'cases':all_results},indent=2)+'\n')
+ args.output.write_text(json.dumps({'status':'PROVISIONAL RASTER ONLY; NATIVE CUT TOPOLOGY AND FULL BASELINE ACCEPTANCE REQUIRED','board_sha256':screen['board_sha256'],'dump_sha256':screen['dump_sha256'],'cases':all_results},indent=2)+'\n')
