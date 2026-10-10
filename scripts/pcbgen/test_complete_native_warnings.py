@@ -7,6 +7,34 @@ from scripts.pcbgen.complete_native_warnings import append_observations, check_c
 
 
 class CompleteWarningTests(unittest.TestCase):
+    def test_removed_holes_must_match_exact_reviewed_vias(self):
+        from scripts.pcbgen.complete_native_warnings import verify_removed_holes
+        old={'pad':{'uuid':'pad','kind':'pad'},'via':{'uuid':'cut','kind':'via'}}
+        after={'pad':old['pad']}
+        verify_removed_holes(old,after,{'cut':'via','track':'segment'})
+        for new,scope in ((after,{}),(after,{'cut':'segment'}),({}, {'cut':'via'}),
+                          (old,{'cut':'via'}),({**after,'replacement':{'uuid':'cut','kind':'via'}},{'cut':'via'})):
+            with self.subTest(new=new,scope=scope),self.assertRaises(ValueError):
+                verify_removed_holes(old,new,scope)
+
+    def test_reviewed_cuts_keep_both_hole_audits_and_every_mask_zone_gate(self):
+        from unittest.mock import patch
+        from scripts.pcbgen.complete_native_warnings import audit_current_reports
+        from scripts.pcbgen.test_audit_added_mask import board,item
+        root=Path(__file__).resolve().parents[2];uid='00000000-0000-4000-8000-000000000001'
+        with tempfile.TemporaryDirectory(dir=root) as folder:
+            before=Path(folder)/'before.kicad_pcb';after=Path(folder)/'after.kicad_pcb'
+            before.write_text(board(item(0),item(1,'via')));after.write_text(board(item(0),item(2,'via')))
+            with patch('scripts.pcbgen.complete_native_warnings.subprocess.run') as run,patch('scripts.pcbgen.complete_native_warnings.complete_reports',return_value=({}, {}, {})) as verify:
+                output=Path(folder)/'audit';audit_current_reports(before,after,{}, {},output,zone_batch_size=16,reviewed_removed_uuids=[uid])
+                commands=[c.args[0] for c in run.call_args_list];self.assertEqual(len(commands),4)
+                self.assertTrue(all('scripts/pcbgen/audit_hole_pairs.py' in c for c in commands[:2]))
+                self.assertTrue(all(c[-2:]==['--reviewed-cut-uuid',uid] for c in commands[2:]))
+                self.assertEqual(verify.call_args.kwargs,{'reviewed_removed_uuids':[uid]})
+                manifest=json.loads((output/'added-copper-scope.json').read_text())
+                self.assertEqual(manifest['reviewed_copper_removals'],{uid:'via'})
+                self.assertEqual(len(manifest['copper']),1)
+
     def test_native_zone_pair_warning_blocks_even_when_added_copper_is_clean(self):
         with tempfile.TemporaryDirectory() as directory:
             root=Path(directory);uid='00000000-0000-4000-8000-000000000001'

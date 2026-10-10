@@ -1,7 +1,8 @@
 """Validate native fixture evidence, then append full hole observations to DRC.
 
-Never delete or waive a native finding. Only additive, context-invariant boards
-are supported. Both capped silk domains require all-added-copper and zone audits.
+Never delete or waive a native finding. Context-invariant additive changes are
+the default; explicitly reviewed unique cuts retain all other copper and holes.
+Both capped silk domains require all-added-copper and zone audits.
 The ordinary promotion gate still decides connectivity, errors and warnings.
 """
 import collections
@@ -15,7 +16,7 @@ import re
 import subprocess
 
 from scripts.pcbgen.audit_hole_pairs import possible_pairs
-from scripts.pcbgen.audit_added_mask import unchanged_nonrouting, new_silk_identities, added_copper_scope
+from scripts.pcbgen.audit_added_mask import unchanged_nonrouting, new_silk_identities, added_copper_scope, reviewed_copper_removals
 from scripts.pcbgen.uuid_tools import top_level_spans,UUID_RE
 
 HOLE_TYPES={'hole_to_hole','holes_co_located'}
@@ -108,7 +109,7 @@ def hole_evidence(root, board, drc, context):
     return audit,observations,objects
 
 
-def zone_evidence(root,before_board,after_board,context):
+def zone_evidence(root,before_board,after_board,context,reviewed_removed_uuids=()):
     from scripts.pcbgen.audit_zone_silk_scope import zone_metadata
     root=Path(root);result=read(root/'result.json')
     if result['version']!='10.0.6' or result['before_sha256']!=sha(before_board) or result['after_sha256']!=sha(after_board):
@@ -121,7 +122,7 @@ def zone_evidence(root,before_board,after_board,context):
         for pairs in growing:validate_coverage(pairs)
         for suffix,key in (('.kicad_pro','project_sha256'),('.kicad_dru','rules_sha256')):
             if sha(Path(before_board).with_suffix(suffix))!=context[key]:raise ValueError('source native context mismatch')
-        proof=verify_result(lambda name:(root/name).read_bytes(),Path(before_board),Path(after_board))
+        proof=verify_result(lambda name:(root/name).read_bytes(),Path(before_board),Path(after_board),reviewed_removed_uuids)
         if proof['new_zone_silk_identities']:raise ValueError('new complete native zone silk warning identities')
         return dict(zone_fixture_count=sum(r['fixtures'] for r in proof['zones']),
                     zone_result_sha256=sha(root/'result.json'),new_zone_silk_identities=[],
@@ -175,10 +176,22 @@ def zone_evidence(root,before_board,after_board,context):
     return dict(zone_fixture_count=fixture_count,zone_result_sha256=sha(root/'result.json'),new_zone_silk_identities=[])
 
 
-def complete_reports(before_board, after_board, before_drc, after_drc, before_audit, after_audit, mask_audit, zone_audit=None):
+def verify_removed_holes(old_holes,new_holes,cut_scope):
+    """Every vanished hole must be the exact source via explicitly cut."""
+    removed=[h for k,h in old_holes.items() if k not in new_holes]
+    expected={u for u,kind in cut_scope.items() if kind=='via'}
+    if (any(h['kind']!='via' or h['uuid'] not in expected for h in removed)
+            or {h['uuid'] for h in removed}!=expected or len(removed)!=len(expected)):
+        raise ValueError('old holes removed/changed outside reviewed via cuts')
+    if any(h['uuid'] in cut_scope for h in new_holes.values()):
+        raise ValueError('reviewed cut hole UUID reused')
+
+
+def complete_reports(before_board, after_board, before_drc, after_drc, before_audit, after_audit, mask_audit, zone_audit=None, reviewed_removed_uuids=()):
     before_board,after_board=Path(before_board),Path(after_board)
     for drc in (before_drc,after_drc):check_caps(drc)
-    count=unchanged_nonrouting(before_board.read_text(),after_board.read_text())
+    count=unchanged_nonrouting(before_board.read_text(),after_board.read_text(),reviewed_removed_uuids)
+    cut_scope=reviewed_copper_removals(before_board.read_text(),after_board.read_text(),reviewed_removed_uuids)
     if zone_audit is None:unchanged_silk_zones(before_board.read_text(),after_board.read_text())
     context={}
     for suffix,key in (('.kicad_pro','project_sha256'),('.kicad_dru','rules_sha256')):
@@ -188,12 +201,12 @@ def complete_reports(before_board, after_board, before_drc, after_drc, before_au
     if re.search(r'\(\s*constraint\s+(?:hole|drilled|silk|solder)',rules):
         raise ValueError('custom audited-domain constraint unsupported')
     context['clearance_nm']=math.ceil(read(before_board.with_suffix('.kicad_pro'))['board']['design_settings']['rules']['min_hole_to_hole']*1e6)
-    zone_proof=zone_evidence(zone_audit,before_board,after_board,context) if zone_audit is not None else dict(zone_shapes_byte_identical=True)
+    zone_proof=zone_evidence(zone_audit,before_board,after_board,context,reviewed_removed_uuids) if zone_audit is not None else dict(zone_shapes_byte_identical=True)
     a,old,old_objects=hole_evidence(before_audit,before_board,before_drc,context)
     b,new,new_objects=hole_evidence(after_audit,after_board,after_drc,context)
     if new_objects-old_objects:raise ValueError('new complete native hole warning identities')
     old_holes={h['object_key']:h for h in a['holes']};new_holes={h['object_key']:h for h in b['holes']}
-    if not old_holes.keys()<=new_holes.keys():raise ValueError('old holes removed/changed')
+    verify_removed_holes(old_holes,new_holes,cut_scope)
     added=[h for k,h in new_holes.items() if k not in old_holes]
     if any(h['kind']!='via' for h in added):raise ValueError('new pad geometry unsupported')
     expected={h['uuid'] for h in added}
@@ -204,7 +217,8 @@ def complete_reports(before_board, after_board, before_drc, after_drc, before_au
     if mask['version']!='10.0.6' or mask['before_sha256']!=sha(before_board) or mask['after_sha256']!=sha(after_board):
         raise ValueError('silk audit native version/source mismatch')
     if mask['unchanged_nonrouting_objects']!=count:raise ValueError('silk invariance mismatch')
-    scope=added_copper_scope(before_board.read_text(),after_board.read_text())
+    scope=added_copper_scope(before_board.read_text(),after_board.read_text(),reviewed_removed_uuids=reviewed_removed_uuids)
+    if mask.get('reviewed_copper_removals',{})!=cut_scope:raise ValueError('silk reviewed cut scope mismatch')
     expected_copper=set(scope)
     if 'added_copper_source_scope' in mask and mask['added_copper_source_scope']!=scope:
         raise ValueError('silk source scope mismatch')
@@ -230,10 +244,11 @@ def complete_reports(before_board, after_board, before_drc, after_drc, before_au
         before_hole_identities=len(old),after_hole_identities=len(new),new_hole_object_identities=[],
         new_silk_identities=[],before_source_sha256=sha(before_board),after_source_sha256=sha(after_board),
         zone_evidence=zone_proof,
-        audit_result_sha256=[sha(Path(p)/'result.json') for p in (before_audit,after_audit,mask_audit)])
+        audit_result_sha256=[sha(Path(p)/'result.json') for p in (before_audit,after_audit,mask_audit)],
+        **({'reviewed_copper_removals':cut_scope} if cut_scope else {}))
 
 
-def audit_current_reports(before_board, after_board, before_drc, after_drc, output, zone_batch_size=1):
+def audit_current_reports(before_board, after_board, before_drc, after_drc, output, zone_batch_size=1, reviewed_removed_uuids=()):
     """Produce evidence for these exact native boards; never reuse stale audits."""
     if type(zone_batch_size) is not int or zone_batch_size not in (1,4,16):raise ValueError('native zone batch size must be1,4or16')
     root=Path(__file__).resolve().parents[2]
@@ -242,16 +257,20 @@ def audit_current_reports(before_board, after_board, before_drc, after_drc, outp
     before_audit=output/'holes-before';after_audit=output/'holes-after';mask_audit=output/'silk';zone_audit=output/'zones'
     # The pinned container mounts the checkout at /work, not the host path.
     relative=lambda p:str(Path(p).resolve().relative_to(root))
-    scope=added_copper_scope(Path(before_board).read_text(),Path(after_board).read_text())
-    (output/'added-copper-scope.json').write_text(json.dumps(dict(before_sha256=sha(before_board),after_sha256=sha(after_board),copper=scope),indent=2)+'\n')
+    scope=added_copper_scope(Path(before_board).read_text(),Path(after_board).read_text(),reviewed_removed_uuids=reviewed_removed_uuids)
+    cuts=reviewed_copper_removals(Path(before_board).read_text(),Path(after_board).read_text(),reviewed_removed_uuids)
+    (output/'added-copper-scope.json').write_text(json.dumps(dict(before_sha256=sha(before_board),after_sha256=sha(after_board),copper=scope,**({'reviewed_copper_removals':cuts} if cuts else {})),indent=2)+'\n')
     commands=[['scripts/pcbgen/audit_hole_pairs.py',relative(before_board),relative(before_audit)],
               ['scripts/pcbgen/audit_hole_pairs.py',relative(after_board),relative(after_audit)],
               ['scripts/pcbgen/audit_added_mask.py',relative(before_board),relative(after_board),relative(mask_audit),'--expected-copper',str(len(scope)),'--expected-vias',str(sum(k=='via' for k in scope.values()))],
               ['scripts/pcbgen/audit_zone_silk_scope.py',relative(before_board),relative(after_board),relative(zone_audit),'--classify']]
     if zone_batch_size!=1:commands[-1].extend(['--batch-size',str(zone_batch_size)])
+    for command in commands[2:]:
+        for uid in sorted(cuts):command.extend(['--reviewed-cut-uuid',uid])
     for command in commands:
         subprocess.run(['bash','scripts/kicad/run.sh','python3',*command],cwd=root,check=True)
-    result=complete_reports(before_board,after_board,before_drc,after_drc,before_audit,after_audit,mask_audit,zone_audit)
+    result=complete_reports(before_board,after_board,before_drc,after_drc,before_audit,after_audit,mask_audit,zone_audit,
+                            **({'reviewed_removed_uuids':sorted(cuts)} if cuts else {}))
     for name,value in zip(('complete-before-drc','complete-after-drc','proof'),result):
         (output/(name+'.json')).write_text(json.dumps(value,indent=2)+'\n')
     return result
