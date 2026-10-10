@@ -22,7 +22,7 @@ on:
       jr_replay:
         description: Fixed reviewed JR transaction (used only with replay_jr)
         type: choice
-        options: [return-restored, original-ground, u7509-on-ground, rail-finer, two-on-supply, bounded-one, bounded-two, three-compatible, two-without-d7504, next-three, three-protected, two-after-protected, d7504-via-avoid, three-remaining, d7504-outer-avoid, d7208-no-via, two-no-via, r8487-no-via, two-fine-ground, u8303-endpoints, r4207-joint, c7413-endpoints]
+        options: [return-restored, original-ground, u7509-on-ground, rail-finer, two-on-supply, bounded-one, bounded-two, three-compatible, two-without-d7504, next-three, three-protected, two-after-protected, d7504-via-avoid, three-remaining, d7504-outer-avoid, d7208-no-via, two-no-via, r8487-no-via, two-fine-ground, u8303-endpoints, r4207-joint, c7413-endpoints, d7604-return-joint]
         default: return-restored
       jl_replay:
         description: Fixed reviewed JL transaction (used only with replay_jl)
@@ -183,16 +183,23 @@ jobs:
           mkdir -p .circuit-cache
           set -o pipefail
           case "$JR_REPLAY" in
-            return-restored|original-ground|u7509-on-ground|rail-finer|two-on-supply|bounded-one|bounded-two|three-compatible|two-without-d7504|next-three|three-protected|two-after-protected|d7504-via-avoid|three-remaining|d7504-outer-avoid|d7208-no-via|two-no-via|r8487-no-via|two-fine-ground|u8303-endpoints|r4207-joint|c7413-endpoints) ;;
+            return-restored|original-ground|u7509-on-ground|rail-finer|two-on-supply|bounded-one|bounded-two|three-compatible|two-without-d7504|next-three|three-protected|two-after-protected|d7504-via-avoid|three-remaining|d7504-outer-avoid|d7208-no-via|two-no-via|r8487-no-via|two-fine-ground|u8303-endpoints|r4207-joint|c7413-endpoints|d7604-return-joint) ;;
             *) exit 1 ;;
           esac
           replay="circuit/routing/issue189/jr-${JR_REPLAY}-copper.json"
-          if [[ $JR_REPLAY == bounded-one || $JR_REPLAY == bounded-two || $JR_REPLAY == three-compatible || $JR_REPLAY == two-without-d7504 || $JR_REPLAY == next-three || $JR_REPLAY == three-protected || $JR_REPLAY == two-after-protected || $JR_REPLAY == d7504-via-avoid || $JR_REPLAY == three-remaining || $JR_REPLAY == d7504-outer-avoid || $JR_REPLAY == d7208-no-via || $JR_REPLAY == two-no-via || $JR_REPLAY == r8487-no-via || $JR_REPLAY == two-fine-ground || $JR_REPLAY == u8303-endpoints || $JR_REPLAY == r4207-joint || $JR_REPLAY == c7413-endpoints ]]; then
+          extra=()
+          native_limit=80m
+          if [[ $JR_REPLAY == d7604-return-joint ]]; then
+            python circuit/routing/issue189/jr-neighbour-return-repair/prepare_adoption.py
+            replay=.circuit-cache/issue189-jr-d7604-return-joint/copper.json
+            extra=(--complete-native-warnings --native-zone-batch-size 16)
+            native_limit=120m
+          elif [[ $JR_REPLAY == bounded-one || $JR_REPLAY == bounded-two || $JR_REPLAY == three-compatible || $JR_REPLAY == two-without-d7504 || $JR_REPLAY == next-three || $JR_REPLAY == three-protected || $JR_REPLAY == two-after-protected || $JR_REPLAY == d7504-via-avoid || $JR_REPLAY == three-remaining || $JR_REPLAY == d7504-outer-avoid || $JR_REPLAY == d7208-no-via || $JR_REPLAY == two-no-via || $JR_REPLAY == r8487-no-via || $JR_REPLAY == two-fine-ground || $JR_REPLAY == u8303-endpoints || $JR_REPLAY == r4207-joint || $JR_REPLAY == c7413-endpoints ]]; then
             python "circuit/routing/issue189/jr-${JR_REPLAY}/prepare.py"
             replay=".circuit-cache/issue189-jr-${JR_REPLAY}/copper.json"
           fi
-          timeout --signal=INT --kill-after=2m 80m python -u scripts/pcbgen/route_shards.py merge osc-jack-right \
-            "$replay" --label "issue189-${JR_REPLAY}" \
+          timeout --signal=INT --kill-after=2m "$native_limit" python -u scripts/pcbgen/route_shards.py merge osc-jack-right \
+            "$replay" --label "issue189-${JR_REPLAY}" "${extra[@]}" \
             2>&1 | tee .circuit-cache/adoption.log
       - name: Recover preserved core copper and repair split returns
         if: inputs.recover_core

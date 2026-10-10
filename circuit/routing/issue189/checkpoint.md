@@ -1,3 +1,21 @@
+# Current continuation — 2026-10-10 02:22 UTC
+
+Main `bf2daa9a62d3ce173363b5f3f25211965926fc02` merges PR219 exact `c393ea416877950a064917a1c7f46b1a6b6ff8d9`; exact38014043304 and post-main38015093504 both pass all five checks. Canonical boards remain **JL118 / JR134 / core1441**, zero native DRC/parity errors, warnings remain. #189 remains OPEN; no qualification/fabrication claim.
+
+**Sole active core writer remains38011194282 at44d1151cd41f285d5168c433c76664c44a3d97ac, PR218. Do not duplicate, modify or cancel it.** All complete audits and native gates must finish; cached1402 evidence is not canonical. The earlier checkpoint below gives exact artifacts and reconciliation order.
+
+PR220 (`agent-fix/189-jr-neighbour-pilot`) preserves20current-input signal probes and a rejected three-case pilot, then prepares one explicitly repaired transaction. Rejected38014685459 at4c462ea:134→135 with original -12V/AGND splits, all51177old objects+118additions,0DRC/parity, no fresh check. Artifact11656065119 SHA25689d3b9b245998063c77e031190bd123e5b2abcb868129773626e75e5b57eb2d1; independent guardPASS45s. Do not replay the three cases unchanged.
+
+Changed joint pilot38015774133 at0867a05a01f321d890847c5fa4b1bd6a8d6e866d passes baseline134x3/candidate133x3/fresh133x3: D7604.1–D7603.1 plus explicit U7607/C7615/C7622 ground return, all51177old objects retained+74segments/5vias, zero cuts/moves,1080nonrouting objects unchanged,0DRC/parity, no splits/new raw warning identities. Artifact11656122445 SHA256a42f92f62ba59b71b9321e0e1dce50e47c468ef5039c5fc49c5b236744ca9365 independently reconciled (guardPASS75s). Candidate22189b127579271b2f2c219da5e4b7e2af59673cb04e002b0dc4966afe2170dd and replayc4b7910f964b56f9231bf6dd3e21b07b4ce8c8bbca430f09f80ea08acdd34411 are **NOT canonical**. Complete silk evidence is still required because both raw categories cap at199.
+
+This source prepares the dedicated `jr_replay=d7604-return-joint` fresh adoption with mandatory `--complete-native-warnings --native-zone-batch-size 16`, all original native/retention/publication gates and120-minute command bound.28 focused workflow/merge/warning tests pass. Before any dispatch, inspect PR220's current body and branch run list: **if an adoption run is already active, own that run and never duplicate or push over it**. Exact active run/source are recorded in the PR body after dispatch. A successful workflow alone is not adoption; reconcile complete fixture/report/context hashes, original groups, native counts, exact retained/new copper and bot blobs, then run all five checks on the final resulting head and current base before an authorized incremental merge.
+
+Optional owner bundle is local `.circuit-cache/issue189-owner-pilot-20.zip`,19,200,162bytes, SHA256866d48c077fd38012efce88d58d7b694c6378879369395b0656b90c84a975227.209files/20signal-component pairs with exact accepted board/project/rules/schematics/libraries/native evidence/endpoints/failure traces; manifest verified. No human pilot performed. `jack-post-adoption-neighbours/bundle.py` reproduces it. Keep ZIP local/ignored; no LFS.
+
+Continue bounded JL/JR/core work after terminal reconciliation. Full connectivity and final P/EL/O/regeneration/docs/renders remain unmet. Local pinned-image extraction remains blocked under214; supported native CI is available. No more Docker unpack/cleanup/auth/daemon changes or recurring automations. Do not restart unrelated watches.
+
+---
+
 # Issue 189 current checkpoint — 2026-10-10 01:33 UTC
 
 **Issue #189 remains OPEN.** Canonical native connectivity is **JL118 / JR134 / core1441**, each with zero native DRC/parity errors, settled/fresh agreement and no original pad-group splits. Warnings are not zero. No qualification or fabrication claim is made.
