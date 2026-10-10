@@ -1,0 +1,2158 @@
+{
+  "status": "COMPLETE BOUNDED SEARCH; NATIVE NOT RUN",
+  "board_sha256": "a01df89dcab3d4fab8eb0ae80195b2825d2d47adc517cd73452d9b9aa6ea079a",
+  "dump_sha256": "9d193cd974148e58b576d247edb5bce804f06a29d075098513a1292c21fbf136",
+  "router_sha256": "73141fa9e22ff184fe6fe1aeeb45592b5923bd2078b3de5ab358617d85ebd38a",
+  "excluded_previous_nets": [
+    "X0ACA9FAE16CB353A0CB1",
+    "X33F44349EA8F20BA807C",
+    "X37DEB0D3B35ED7C3B732",
+    "X508B7C84413321BA0F22",
+    "X632AF8DD6216ED26A96D",
+    "X7524FCE1337109215C77",
+    "XA1376930C555476901BB",
+    "XA31851703CA7C8D2D0C4",
+    "XED7C19D453619667580D",
+    "XFA9179FF4E8D01632C80"
+  ],
+  "maximum_axis_span_mm": 36,
+  "lattice_mm": 0.05,
+  "baseline_result_sha256": "bbf80623f3aeff235a8501a885f3b620ab8a1abec01e207f0cf2ec71ae3411dc",
+  "historical_selection_sha256": "48fc21c01db56c8ded607f195293cb7d34a0be82040d5278f27984e6270a9d15",
+  "selection": "Six shortest current signal obligations outside prior ten cut-neighbour nets, maximum36mm axis span; distance is heuristic only",
+  "cases": [
+    {
+      "net": "X50A8C3F00D253C65AB68",
+      "source_group_indices": [
+        0,
+        2
+      ],
+      "native_groups": [
+        [
+          "591982a9-46cd-5291-84d7-1c1987b0f8de"
+        ],
+        [
+          "558cbc55-0b8d-577a-b8f5-214750142889"
+        ]
+      ],
+      "endpoints": [
+        {
+          "uuid": "591982a9-46cd-5291-84d7-1c1987b0f8de",
+          "ref": "U2302",
+          "pad": "2",
+          "net": "X50A8C3F00D253C65AB68",
+          "xy": [
+            239954999,
+            132242500
+          ],
+          "layers": [
+            "F.Cu"
+          ]
+        },
+        {
+          "uuid": "558cbc55-0b8d-577a-b8f5-214750142889",
+          "ref": "R2308",
+          "pad": "1",
+          "net": "X50A8C3F00D253C65AB68",
+          "xy": [
+            237390000,
+            105810000
+          ],
+          "layers": [
+            "B.Cu"
+          ]
+        }
+      ],
+      "pad_distance_mm": 26.556661614743692,
+      "bounds_mm": [
+        231.39,
+        99.81,
+        245.954999,
+        138.2425
+      ],
+      "domain": "four-layer",
+      "elapsed_seconds": 2.2032598900113953,
+      "complete": false,
+      "diagnostics": [
+        {
+          "net": "X50A8C3F00D253C65AB68",
+          "endpoints": [
+            "R2308.1"
+          ],
+          "reason": "search_exhausted",
+          "phase": "route",
+          "attempts": [
+            {
+              "window_cells": [
+                0,
+                772,
+                0,
+                296
+              ],
+              "expanded": 2113,
+              "limit": 300000
+            }
+          ],
+          "max_expansions": 300000,
+          "window_mm": 6
+        }
+      ],
+      "routes": [
+        {
+          "net": "X50A8C3F00D253C65AB68",
+          "island": [
+            "R2308.1"
+          ],
+          "path": null
+        }
+      ],
+      "proposal": {
+        "board_sha256": "a01df89dcab3d4fab8eb0ae80195b2825d2d47adc517cd73452d9b9aa6ea079a",
+        "removed_uuids": [],
+        "copper": []
+      }
+    },
+    {
+      "net": "X50A8C3F00D253C65AB68",
+      "source_group_indices": [
+        0,
+        2
+      ],
+      "native_groups": [
+        [
+          "591982a9-46cd-5291-84d7-1c1987b0f8de"
+        ],
+        [
+          "558cbc55-0b8d-577a-b8f5-214750142889"
+        ]
+      ],
+      "endpoints": [
+        {
+          "uuid": "591982a9-46cd-5291-84d7-1c1987b0f8de",
+          "ref": "U2302",
+          "pad": "2",
+          "net": "X50A8C3F00D253C65AB68",
+          "xy": [
+            239954999,
+            132242500
+          ],
+          "layers": [
+            "F.Cu"
+          ]
+        },
+        {
+          "uuid": "558cbc55-0b8d-577a-b8f5-214750142889",
+          "ref": "R2308",
+          "pad": "1",
+          "net": "X50A8C3F00D253C65AB68",
+          "xy": [
+            237390000,
+            105810000
+          ],
+          "layers": [
+            "B.Cu"
+          ]
+        }
+      ],
+      "pad_distance_mm": 26.556661614743692,
+      "bounds_mm": [
+        231.39,
+        99.81,
+        245.954999,
+        138.2425
+      ],
+      "domain": "in2",
+      "elapsed_seconds": 1.9205116289958823,
+      "complete": false,
+      "diagnostics": [
+        {
+          "net": "X50A8C3F00D253C65AB68",
+          "endpoints": [
+            "R2308.1"
+          ],
+          "reason": "search_exhausted",
+          "phase": "route",
+          "attempts": [
+            {
+              "window_cells": [
+                0,
+                772,
+                0,
+                296
+              ],
+              "expanded": 2113,
+              "limit": 300000
+            }
+          ],
+          "max_expansions": 300000,
+          "window_mm": 6
+        }
+      ],
+      "routes": [
+        {
+          "net": "X50A8C3F00D253C65AB68",
+          "island": [
+            "R2308.1"
+          ],
+          "path": null
+        }
+      ],
+      "proposal": {
+        "board_sha256": "a01df89dcab3d4fab8eb0ae80195b2825d2d47adc517cd73452d9b9aa6ea079a",
+        "removed_uuids": [],
+        "copper": []
+      }
+    },
+    {
+      "net": "X50A8C3F00D253C65AB68",
+      "source_group_indices": [
+        0,
+        2
+      ],
+      "native_groups": [
+        [
+          "591982a9-46cd-5291-84d7-1c1987b0f8de"
+        ],
+        [
+          "558cbc55-0b8d-577a-b8f5-214750142889"
+        ]
+      ],
+      "endpoints": [
+        {
+          "uuid": "591982a9-46cd-5291-84d7-1c1987b0f8de",
+          "ref": "U2302",
+          "pad": "2",
+          "net": "X50A8C3F00D253C65AB68",
+          "xy": [
+            239954999,
+            132242500
+          ],
+          "layers": [
+            "F.Cu"
+          ]
+        },
+        {
+          "uuid": "558cbc55-0b8d-577a-b8f5-214750142889",
+          "ref": "R2308",
+          "pad": "1",
+          "net": "X50A8C3F00D253C65AB68",
+          "xy": [
+            237390000,
+            105810000
+          ],
+          "layers": [
+            "B.Cu"
+          ]
+        }
+      ],
+      "pad_distance_mm": 26.556661614743692,
+      "bounds_mm": [
+        231.39,
+        99.81,
+        245.954999,
+        138.2425
+      ],
+      "domain": "in3",
+      "elapsed_seconds": 1.8965092080034083,
+      "complete": false,
+      "diagnostics": [
+        {
+          "net": "X50A8C3F00D253C65AB68",
+          "endpoints": [
+            "R2308.1"
+          ],
+          "reason": "search_exhausted",
+          "phase": "route",
+          "attempts": [
+            {
+              "window_cells": [
+                0,
+                772,
+                0,
+                296
+              ],
+              "expanded": 2113,
+              "limit": 300000
+            }
+          ],
+          "max_expansions": 300000,
+          "window_mm": 6
+        }
+      ],
+      "routes": [
+        {
+          "net": "X50A8C3F00D253C65AB68",
+          "island": [
+            "R2308.1"
+          ],
+          "path": null
+        }
+      ],
+      "proposal": {
+        "board_sha256": "a01df89dcab3d4fab8eb0ae80195b2825d2d47adc517cd73452d9b9aa6ea079a",
+        "removed_uuids": [],
+        "copper": []
+      }
+    },
+    {
+      "net": "X1B64D2A971AB89E1AF19",
+      "source_group_indices": [
+        0,
+        1
+      ],
+      "native_groups": [
+        [
+          "77be702c-af7d-525a-80c2-039a9b90636e"
+        ],
+        [
+          "01855033-3a60-5a44-a23b-157dd43c92bf",
+          "0468523c-fe4a-5dff-a143-bd9cdd68c9cd",
+          "04a1849a-29ed-564f-8238-47e16ee19d12",
+          "054260d9-718b-549a-906a-87299bdd60bb",
+          "0542e059-02bd-5e35-8bc1-e6838846479b",
+          "063af628-5e8e-5b76-a772-6cba5c375f9d",
+          "080b09f5-3818-5511-82d6-4f37a1a31d6c",
+          "0a64607e-27f3-5153-9d52-3d9eceda44b7",
+          "0aa12e33-66c9-5ce5-8072-71ebf9eb26f8",
+          "0dbd6da9-a60d-5dbb-983c-2410a07f9f2c",
+          "119602e3-3d41-5049-a5f5-2253b6ddc379",
+          "124a43b5-e6f6-5775-bcad-53d6187f97e6",
+          "125c059c-43c3-5c71-983b-6c2ceb64524e",
+          "12a80d49-af0a-52ef-b7ff-61f1c86d00f2",
+          "15a5a599-e02b-551d-ba7e-76a39ee5a352",
+          "17a8f101-1ba4-5dd3-bfe8-53080cee55fc",
+          "193eda06-8780-56b2-8d54-a59aeb2d87da",
+          "1b7e4925-a21b-5a99-b639-875c9aa54c8c",
+          "1c259a40-069b-50a0-93ba-1b9ce832e5cf",
+          "1ec6ff86-27a1-5777-9637-97ac552a3758",
+          "1efee04f-0671-5a5d-92a0-7ddf4d5305ce",
+          "201977c3-98d1-59e8-81a6-fe0f0aa8bf97",
+          "21b1bb6a-5b85-5bd0-bcbf-9fce7a81167b",
+          "23f06a67-3d71-5256-860f-3e9e7c656306",
+          "24f32619-bf5d-5317-b77d-93e721d06601",
+          "27494468-d6f3-5a1e-90e2-63808c63fb8d",
+          "27c051a6-0efa-58ba-a46b-d6796e70b27f",
+          "28f191ff-ca00-5027-9404-9f82a3a74058",
+          "29fa39f1-e68c-593d-a595-f48e4413b213",
+          "2bf36348-8509-5236-b9ef-c523377a8eef",
+          "2c1092aa-00ce-53f0-8279-a38fa4cca243",
+          "2cf1bbe0-cbf8-58b4-b01d-65e7ca01f0e3",
+          "2f04ccf8-e8f3-5e1c-9b36-0aeac764fddc",
+          "3251c8ce-8e71-5ea1-98ff-2e7a02b30a11",
+          "328f104e-ad10-5ad8-801e-d44ea02cc974",
+          "358ca3a5-3d4f-5172-9b2f-fbbdd84ea4bf",
+          "359f1f0a-dbcd-54e6-87e1-e42b09230121",
+          "360fe054-7672-5ff2-a09c-34f1f2c39089",
+          "3800da80-4282-5f5b-b0f8-4157ee8003fa",
+          "39987081-5d10-534b-a085-8e049c93c78e",
+          "3a2194c2-a037-5a22-8215-f827c54d0d54",
+          "3c6fb158-b610-5ef2-9474-8aa8dc83679c",
+          "3ca58414-6abe-5b82-931a-ca32ee921cb1",
+          "3cfd58e4-ccf7-504a-8120-6bf0ca443cfb",
+          "3d1f7654-9419-5e78-9b32-df84e0b89417",
+          "401aa033-222f-566e-8f6a-9b77b69f3a05",
+          "40dbe5b1-9afe-5883-9d25-987d46f10005",
+          "4176131c-3475-503d-b5d5-820a62d206ba",
+          "4699e129-a24a-508e-9c86-06e2f6a730e3",
+          "4b225996-e0af-50d0-bec3-fd7d36b9d0c9",
+          "4c81baff-db0a-599b-98fd-d6354b90d1bf",
+          "4e6981e4-b564-58f1-8f73-7bb3df282876",
+          "4ec34b99-a9dc-514a-bb9b-cf159d68be15",
+          "4f5c5b58-92fe-5eba-8171-e901190344e5",
+          "52f53872-52c1-5cd7-a1fd-001d0314068b",
+          "541baee1-b4f4-5e5f-ac58-3bc43fefb11a",
+          "5681a5f9-e2d3-50f9-8a7c-89f3f2d745d6",
+          "59bae0dd-76b3-5973-8e2a-f1b0cdc40966",
+          "5ce5a5dc-807f-538e-80d7-4e72d8d79f11",
+          "5e583daf-bc6e-5554-b6b9-37dafe1e57a3",
+          "5e7ccdae-a91c-5811-985d-d0661877d43a",
+          "60744563-f244-5de8-83a4-c17271fb8fcb",
+          "60fae21a-6303-5b77-a2bf-25eb3be1e047",
+          "630ece42-28c2-521a-8fc6-c49a43096595",
+          "633c2ca1-4215-554a-953d-724e8b2d5a7d",
+          "6484ef18-7c87-5f99-8a9a-e64c6876d74b",
+          "671395fc-241f-545e-bb8e-9bdb2b689e8c",
+          "689c5896-327e-54f4-9714-9cea80831d5d",
+          "6c7329e7-b675-5bc8-abc7-fbe1b686cb8f",
+          "6dcc28d4-2c22-52c9-b204-6ec28289d648",
+          "6fa334ad-a5aa-5798-8fe1-67a7f7754aa6",
+          "754c2f2e-04d7-5074-90cd-8d046f3dab7c",
+          "754d3a92-8406-5e4b-9a63-b9b3febc4a8c",
+          "761aa8f8-c2ec-58d7-a63f-df9b12fd8c23",
+          "78cd0d8f-3b42-51f8-8b6f-791fd784f771",
+          "7bda1c62-7d92-5f32-9406-d8e3ab846170",
+          "7f890f80-0c62-5a8d-ac6f-f99a9341d353",
+          "7f8f0881-4a2d-517e-84f4-dda1a221e7a9",
+          "800974eb-d727-5423-8b49-1fc7315a970b",
+          "8219c328-0232-5a7e-b81a-34754b96cafc",
+          "868e7984-b9e8-5834-b142-cda91263a5ff",
+          "86fc5b83-e5b8-5e64-b4d7-4818b7148d97",
+          "8896bad2-c8c7-5716-bfa9-68987e0c1bfc",
+          "8b04cf70-1d1f-55a4-b03f-be4e05484867",
+          "8ea6bfbe-8e29-5b8b-ab9c-0692d1d88baf",
+          "90237692-b107-5852-88fc-acc07ab49429",
+          "9085db72-a395-5ca6-8fee-1f91bbec687b",
+          "90ac5268-c976-5d03-a768-305ddce870e2",
+          "90db97e7-4d46-51c3-8ef7-c7cbbdf768ca",
+          "9519a6e6-ce40-51b5-b8de-2d0b0e9ba73b",
+          "9cb6eef8-4b62-5a32-a316-cc61029d7af5",
+          "9d985008-ea13-5606-b999-c326716259a2",
+          "9ee44835-69cd-5d74-a58d-c0fc4e01211e",
+          "9f8d785d-8b41-584e-b7c0-08990db9518f",
+          "9fa77dfe-9dfa-5719-8f70-5032194a300a",
+          "a0a7fe43-feaf-5f5b-9ad2-de690eb14cb5",
+          "a1d90964-46ba-55a5-b933-91e419d2aa4a",
+          "a1fd7be9-f7a4-591f-87f9-3ecf28bc10c9",
+          "a2c09209-4a8d-5ed4-8f4b-2cd101e91d1e",
+          "a2e443da-3658-52c3-99cd-4841e50fa8d9",
+          "a36f8021-1e66-5b0f-bc5a-9ced16fdc84e",
+          "a5bbc179-a52f-5865-9ff4-48dfc94f6b48",
+          "a8508bea-e340-5cf4-a891-29b09124e4c9",
+          "a8e04d5e-5054-56a7-bff1-883a5d5f90e0",
+          "aa2bfad0-e20e-579c-bab5-1074a4f23488",
+          "ab84d24d-1e1f-55ce-934f-b7a9cabee911",
+          "ad6c0e13-3225-5d9b-aed3-3baa3cb1b846",
+          "aef86173-907b-5351-8443-3ad52b7d7ed0",
+          "af1d97f9-2a13-5d76-9525-a06da618ffa3",
+          "b116a197-c2c6-5f11-a384-6fd1225b763f",
+          "b11cc128-44f5-5e2d-80c8-76a459f79da8",
+          "b43dfab3-9ac9-5bc0-b6a3-7b9b486543a8",
+          "b5732679-2a76-5a11-84ca-c3bbb6d07050",
+          "b644c3d4-a90b-529f-bf94-8e45a602cec7",
+          "b9f02e2c-9b10-5ab9-9225-3202c71489a9",
+          "bb4b6666-da7c-5994-b0a2-4452e28008b8",
+          "bd987f22-59e0-58ab-8aeb-166120ca2a3e",
+          "bf557c34-7731-546e-998f-18552ff692d9",
+          "c165a04b-c29e-57ef-8848-6e2edf2d2bd1",
+          "c17ac1c6-037e-5b2b-8053-ce14ddb44a08",
+          "c18eab74-0d7f-521e-9754-2ba640822860",
+          "c1cc5f07-0226-52be-8957-a14b84f6caf5",
+          "c26bc309-5c6e-57ad-9ad8-55553749218a",
+          "c33976cc-6f4c-5bc4-9362-5a366a493196",
+          "c34dc828-1598-5707-b84b-44e1d870e372",
+          "c39d28a0-2efe-5e53-b3ce-54cf327f8b30",
+          "c789a72d-29ad-599c-afe6-63cfd479adce",
+          "cb872c2b-1821-551d-98a0-c65f2245e7a8",
+          "ccd958e1-8255-5b0d-ab74-6bc3fe2cd314",
+          "cd79f852-04b0-5089-b366-201d02bcdebe",
+          "cda8cc75-b29b-5e71-854d-219d09c9382e",
+          "ceccac09-79e1-5608-9f00-17b0c29edb60",
+          "d4206aa3-0d2c-565b-b65f-766674a6e665",
+          "d64d2c6a-e948-5bd3-bb41-061c65db8499",
+          "d69d3657-f8fb-5baa-89e7-906639b50539",
+          "d726e3d2-409b-5c8d-903c-20fa948e330e",
+          "d7edc949-6b0b-5e41-8721-3436db444bc1",
+          "d9d1c18d-a7fb-5faa-a322-2c9eb4e61b73",
+          "da5580e0-73b0-58a0-86d9-ba3531956c17",
+          "db723199-3cb7-5958-b9a2-aa683aea8f5c",
+          "dbc6a4f3-8639-5703-baae-10cf42da6770",
+          "dbe2cb33-f333-5fff-a936-84a58126131d",
+          "ddd065eb-188e-51da-b4dd-aac95c96d9bd",
+          "ddd34d06-9ed8-5ebf-9ad8-c5b3c07972ae",
+          "dea82097-ac76-5bca-93ce-956a25c73635",
+          "dfbb0190-51f0-53dc-a1cf-8555e6137829",
+          "e0cdd7d7-0381-588a-adac-b48d968e598e",
+          "e0f95491-25e8-5421-a55d-171c8704b7a6",
+          "e2169056-5bb5-52f3-b23c-0059933f12a0",
+          "e3087698-e48a-53a2-aaeb-b602d809ed1e",
+          "e31f34c4-245a-5dba-be25-00374a2ddec2",
+          "e47f20fa-785b-5dc0-ab68-e65d5520e7d6",
+          "e7bd2743-9eed-565e-a102-200549f5cded",
+          "e7c29948-6790-545a-b5e3-7c2261b291be",
+          "e8ea7220-e3a7-5f3b-b967-011f8c427122",
+          "edf1d331-636c-5421-a238-58c6cad26fd7",
+          "f08987ca-0552-5980-9444-69a4b372de74",
+          "f140837c-b310-51cf-87de-5af807518802",
+          "f4bf5416-5dcb-536d-81a4-68284cf655db",
+          "f911d379-22c6-57b6-beb2-bdeaeeaaafd1",
+          "fad4efbe-44ac-5fd7-a29c-16564d9f7684",
+          "fc0262c7-5324-5a53-b36a-24d158626218"
+        ]
+      ],
+      "endpoints": [
+        {
+          "uuid": "77be702c-af7d-525a-80c2-039a9b90636e",
+          "ref": "R8248",
+          "pad": "2",
+          "net": "X1B64D2A971AB89E1AF19",
+          "xy": [
+            260289999,
+            110810000
+          ],
+          "layers": [
+            "F.Cu"
+          ]
+        },
+        {
+          "uuid": "0a64607e-27f3-5153-9d52-3d9eceda44b7",
+          "ref": "U8215",
+          "pad": "3",
+          "net": "X1B64D2A971AB89E1AF19",
+          "xy": [
+            257194999,
+            139350000
+          ],
+          "layers": [
+            "B.Cu"
+          ]
+        }
+      ],
+      "pad_distance_mm": 28.707327026388228,
+      "bounds_mm": [
+        251.194999,
+        104.81,
+        266.289999,
+        145.35
+      ],
+      "domain": "four-layer",
+      "elapsed_seconds": 2.042999511002563,
+      "complete": false,
+      "diagnostics": [
+        {
+          "net": "X1B64D2A971AB89E1AF19",
+          "endpoints": [
+            "R8248.2"
+          ],
+          "reason": "search_exhausted",
+          "phase": "route",
+          "attempts": [
+            {
+              "window_cells": [
+                0,
+                814,
+                0,
+                306
+              ],
+              "expanded": 151582,
+              "limit": 300000
+            }
+          ],
+          "max_expansions": 300000,
+          "window_mm": 6
+        }
+      ],
+      "routes": [
+        {
+          "net": "X1B64D2A971AB89E1AF19",
+          "island": [
+            "R8248.2"
+          ],
+          "path": null
+        }
+      ],
+      "proposal": {
+        "board_sha256": "a01df89dcab3d4fab8eb0ae80195b2825d2d47adc517cd73452d9b9aa6ea079a",
+        "removed_uuids": [],
+        "copper": []
+      }
+    },
+    {
+      "net": "X1B64D2A971AB89E1AF19",
+      "source_group_indices": [
+        0,
+        1
+      ],
+      "native_groups": [
+        [
+          "77be702c-af7d-525a-80c2-039a9b90636e"
+        ],
+        [
+          "01855033-3a60-5a44-a23b-157dd43c92bf",
+          "0468523c-fe4a-5dff-a143-bd9cdd68c9cd",
+          "04a1849a-29ed-564f-8238-47e16ee19d12",
+          "054260d9-718b-549a-906a-87299bdd60bb",
+          "0542e059-02bd-5e35-8bc1-e6838846479b",
+          "063af628-5e8e-5b76-a772-6cba5c375f9d",
+          "080b09f5-3818-5511-82d6-4f37a1a31d6c",
+          "0a64607e-27f3-5153-9d52-3d9eceda44b7",
+          "0aa12e33-66c9-5ce5-8072-71ebf9eb26f8",
+          "0dbd6da9-a60d-5dbb-983c-2410a07f9f2c",
+          "119602e3-3d41-5049-a5f5-2253b6ddc379",
+          "124a43b5-e6f6-5775-bcad-53d6187f97e6",
+          "125c059c-43c3-5c71-983b-6c2ceb64524e",
+          "12a80d49-af0a-52ef-b7ff-61f1c86d00f2",
+          "15a5a599-e02b-551d-ba7e-76a39ee5a352",
+          "17a8f101-1ba4-5dd3-bfe8-53080cee55fc",
+          "193eda06-8780-56b2-8d54-a59aeb2d87da",
+          "1b7e4925-a21b-5a99-b639-875c9aa54c8c",
+          "1c259a40-069b-50a0-93ba-1b9ce832e5cf",
+          "1ec6ff86-27a1-5777-9637-97ac552a3758",
+          "1efee04f-0671-5a5d-92a0-7ddf4d5305ce",
+          "201977c3-98d1-59e8-81a6-fe0f0aa8bf97",
+          "21b1bb6a-5b85-5bd0-bcbf-9fce7a81167b",
+          "23f06a67-3d71-5256-860f-3e9e7c656306",
+          "24f32619-bf5d-5317-b77d-93e721d06601",
+          "27494468-d6f3-5a1e-90e2-63808c63fb8d",
+          "27c051a6-0efa-58ba-a46b-d6796e70b27f",
+          "28f191ff-ca00-5027-9404-9f82a3a74058",
+          "29fa39f1-e68c-593d-a595-f48e4413b213",
+          "2bf36348-8509-5236-b9ef-c523377a8eef",
+          "2c1092aa-00ce-53f0-8279-a38fa4cca243",
+          "2cf1bbe0-cbf8-58b4-b01d-65e7ca01f0e3",
+          "2f04ccf8-e8f3-5e1c-9b36-0aeac764fddc",
+          "3251c8ce-8e71-5ea1-98ff-2e7a02b30a11",
+          "328f104e-ad10-5ad8-801e-d44ea02cc974",
+          "358ca3a5-3d4f-5172-9b2f-fbbdd84ea4bf",
+          "359f1f0a-dbcd-54e6-87e1-e42b09230121",
+          "360fe054-7672-5ff2-a09c-34f1f2c39089",
+          "3800da80-4282-5f5b-b0f8-4157ee8003fa",
+          "39987081-5d10-534b-a085-8e049c93c78e",
+          "3a2194c2-a037-5a22-8215-f827c54d0d54",
+          "3c6fb158-b610-5ef2-9474-8aa8dc83679c",
+          "3ca58414-6abe-5b82-931a-ca32ee921cb1",
+          "3cfd58e4-ccf7-504a-8120-6bf0ca443cfb",
+          "3d1f7654-9419-5e78-9b32-df84e0b89417",
+          "401aa033-222f-566e-8f6a-9b77b69f3a05",
+          "40dbe5b1-9afe-5883-9d25-987d46f10005",
+          "4176131c-3475-503d-b5d5-820a62d206ba",
+          "4699e129-a24a-508e-9c86-06e2f6a730e3",
+          "4b225996-e0af-50d0-bec3-fd7d36b9d0c9",
+          "4c81baff-db0a-599b-98fd-d6354b90d1bf",
+          "4e6981e4-b564-58f1-8f73-7bb3df282876",
+          "4ec34b99-a9dc-514a-bb9b-cf159d68be15",
+          "4f5c5b58-92fe-5eba-8171-e901190344e5",
+          "52f53872-52c1-5cd7-a1fd-001d0314068b",
+          "541baee1-b4f4-5e5f-ac58-3bc43fefb11a",
+          "5681a5f9-e2d3-50f9-8a7c-89f3f2d745d6",
+          "59bae0dd-76b3-5973-8e2a-f1b0cdc40966",
+          "5ce5a5dc-807f-538e-80d7-4e72d8d79f11",
+          "5e583daf-bc6e-5554-b6b9-37dafe1e57a3",
+          "5e7ccdae-a91c-5811-985d-d0661877d43a",
+          "60744563-f244-5de8-83a4-c17271fb8fcb",
+          "60fae21a-6303-5b77-a2bf-25eb3be1e047",
+          "630ece42-28c2-521a-8fc6-c49a43096595",
+          "633c2ca1-4215-554a-953d-724e8b2d5a7d",
+          "6484ef18-7c87-5f99-8a9a-e64c6876d74b",
+          "671395fc-241f-545e-bb8e-9bdb2b689e8c",
+          "689c5896-327e-54f4-9714-9cea80831d5d",
+          "6c7329e7-b675-5bc8-abc7-fbe1b686cb8f",
+          "6dcc28d4-2c22-52c9-b204-6ec28289d648",
+          "6fa334ad-a5aa-5798-8fe1-67a7f7754aa6",
+          "754c2f2e-04d7-5074-90cd-8d046f3dab7c",
+          "754d3a92-8406-5e4b-9a63-b9b3febc4a8c",
+          "761aa8f8-c2ec-58d7-a63f-df9b12fd8c23",
+          "78cd0d8f-3b42-51f8-8b6f-791fd784f771",
+          "7bda1c62-7d92-5f32-9406-d8e3ab846170",
+          "7f890f80-0c62-5a8d-ac6f-f99a9341d353",
+          "7f8f0881-4a2d-517e-84f4-dda1a221e7a9",
+          "800974eb-d727-5423-8b49-1fc7315a970b",
+          "8219c328-0232-5a7e-b81a-34754b96cafc",
+          "868e7984-b9e8-5834-b142-cda91263a5ff",
+          "86fc5b83-e5b8-5e64-b4d7-4818b7148d97",
+          "8896bad2-c8c7-5716-bfa9-68987e0c1bfc",
+          "8b04cf70-1d1f-55a4-b03f-be4e05484867",
+          "8ea6bfbe-8e29-5b8b-ab9c-0692d1d88baf",
+          "90237692-b107-5852-88fc-acc07ab49429",
+          "9085db72-a395-5ca6-8fee-1f91bbec687b",
+          "90ac5268-c976-5d03-a768-305ddce870e2",
+          "90db97e7-4d46-51c3-8ef7-c7cbbdf768ca",
+          "9519a6e6-ce40-51b5-b8de-2d0b0e9ba73b",
+          "9cb6eef8-4b62-5a32-a316-cc61029d7af5",
+          "9d985008-ea13-5606-b999-c326716259a2",
+          "9ee44835-69cd-5d74-a58d-c0fc4e01211e",
+          "9f8d785d-8b41-584e-b7c0-08990db9518f",
+          "9fa77dfe-9dfa-5719-8f70-5032194a300a",
+          "a0a7fe43-feaf-5f5b-9ad2-de690eb14cb5",
+          "a1d90964-46ba-55a5-b933-91e419d2aa4a",
+          "a1fd7be9-f7a4-591f-87f9-3ecf28bc10c9",
+          "a2c09209-4a8d-5ed4-8f4b-2cd101e91d1e",
+          "a2e443da-3658-52c3-99cd-4841e50fa8d9",
+          "a36f8021-1e66-5b0f-bc5a-9ced16fdc84e",
+          "a5bbc179-a52f-5865-9ff4-48dfc94f6b48",
+          "a8508bea-e340-5cf4-a891-29b09124e4c9",
+          "a8e04d5e-5054-56a7-bff1-883a5d5f90e0",
+          "aa2bfad0-e20e-579c-bab5-1074a4f23488",
+          "ab84d24d-1e1f-55ce-934f-b7a9cabee911",
+          "ad6c0e13-3225-5d9b-aed3-3baa3cb1b846",
+          "aef86173-907b-5351-8443-3ad52b7d7ed0",
+          "af1d97f9-2a13-5d76-9525-a06da618ffa3",
+          "b116a197-c2c6-5f11-a384-6fd1225b763f",
+          "b11cc128-44f5-5e2d-80c8-76a459f79da8",
+          "b43dfab3-9ac9-5bc0-b6a3-7b9b486543a8",
+          "b5732679-2a76-5a11-84ca-c3bbb6d07050",
+          "b644c3d4-a90b-529f-bf94-8e45a602cec7",
+          "b9f02e2c-9b10-5ab9-9225-3202c71489a9",
+          "bb4b6666-da7c-5994-b0a2-4452e28008b8",
+          "bd987f22-59e0-58ab-8aeb-166120ca2a3e",
+          "bf557c34-7731-546e-998f-18552ff692d9",
+          "c165a04b-c29e-57ef-8848-6e2edf2d2bd1",
+          "c17ac1c6-037e-5b2b-8053-ce14ddb44a08",
+          "c18eab74-0d7f-521e-9754-2ba640822860",
+          "c1cc5f07-0226-52be-8957-a14b84f6caf5",
+          "c26bc309-5c6e-57ad-9ad8-55553749218a",
+          "c33976cc-6f4c-5bc4-9362-5a366a493196",
+          "c34dc828-1598-5707-b84b-44e1d870e372",
+          "c39d28a0-2efe-5e53-b3ce-54cf327f8b30",
+          "c789a72d-29ad-599c-afe6-63cfd479adce",
+          "cb872c2b-1821-551d-98a0-c65f2245e7a8",
+          "ccd958e1-8255-5b0d-ab74-6bc3fe2cd314",
+          "cd79f852-04b0-5089-b366-201d02bcdebe",
+          "cda8cc75-b29b-5e71-854d-219d09c9382e",
+          "ceccac09-79e1-5608-9f00-17b0c29edb60",
+          "d4206aa3-0d2c-565b-b65f-766674a6e665",
+          "d64d2c6a-e948-5bd3-bb41-061c65db8499",
+          "d69d3657-f8fb-5baa-89e7-906639b50539",
+          "d726e3d2-409b-5c8d-903c-20fa948e330e",
+          "d7edc949-6b0b-5e41-8721-3436db444bc1",
+          "d9d1c18d-a7fb-5faa-a322-2c9eb4e61b73",
+          "da5580e0-73b0-58a0-86d9-ba3531956c17",
+          "db723199-3cb7-5958-b9a2-aa683aea8f5c",
+          "dbc6a4f3-8639-5703-baae-10cf42da6770",
+          "dbe2cb33-f333-5fff-a936-84a58126131d",
+          "ddd065eb-188e-51da-b4dd-aac95c96d9bd",
+          "ddd34d06-9ed8-5ebf-9ad8-c5b3c07972ae",
+          "dea82097-ac76-5bca-93ce-956a25c73635",
+          "dfbb0190-51f0-53dc-a1cf-8555e6137829",
+          "e0cdd7d7-0381-588a-adac-b48d968e598e",
+          "e0f95491-25e8-5421-a55d-171c8704b7a6",
+          "e2169056-5bb5-52f3-b23c-0059933f12a0",
+          "e3087698-e48a-53a2-aaeb-b602d809ed1e",
+          "e31f34c4-245a-5dba-be25-00374a2ddec2",
+          "e47f20fa-785b-5dc0-ab68-e65d5520e7d6",
+          "e7bd2743-9eed-565e-a102-200549f5cded",
+          "e7c29948-6790-545a-b5e3-7c2261b291be",
+          "e8ea7220-e3a7-5f3b-b967-011f8c427122",
+          "edf1d331-636c-5421-a238-58c6cad26fd7",
+          "f08987ca-0552-5980-9444-69a4b372de74",
+          "f140837c-b310-51cf-87de-5af807518802",
+          "f4bf5416-5dcb-536d-81a4-68284cf655db",
+          "f911d379-22c6-57b6-beb2-bdeaeeaaafd1",
+          "fad4efbe-44ac-5fd7-a29c-16564d9f7684",
+          "fc0262c7-5324-5a53-b36a-24d158626218"
+        ]
+      ],
+      "endpoints": [
+        {
+          "uuid": "77be702c-af7d-525a-80c2-039a9b90636e",
+          "ref": "R8248",
+          "pad": "2",
+          "net": "X1B64D2A971AB89E1AF19",
+          "xy": [
+            260289999,
+            110810000
+          ],
+          "layers": [
+            "F.Cu"
+          ]
+        },
+        {
+          "uuid": "0a64607e-27f3-5153-9d52-3d9eceda44b7",
+          "ref": "U8215",
+          "pad": "3",
+          "net": "X1B64D2A971AB89E1AF19",
+          "xy": [
+            257194999,
+            139350000
+          ],
+          "layers": [
+            "B.Cu"
+          ]
+        }
+      ],
+      "pad_distance_mm": 28.707327026388228,
+      "bounds_mm": [
+        251.194999,
+        104.81,
+        266.289999,
+        145.35
+      ],
+      "domain": "in2",
+      "elapsed_seconds": 1.961231831999612,
+      "complete": false,
+      "diagnostics": [
+        {
+          "net": "X1B64D2A971AB89E1AF19",
+          "endpoints": [
+            "R8248.2"
+          ],
+          "reason": "search_exhausted",
+          "phase": "route",
+          "attempts": [
+            {
+              "window_cells": [
+                0,
+                814,
+                0,
+                306
+              ],
+              "expanded": 97905,
+              "limit": 300000
+            }
+          ],
+          "max_expansions": 300000,
+          "window_mm": 6
+        }
+      ],
+      "routes": [
+        {
+          "net": "X1B64D2A971AB89E1AF19",
+          "island": [
+            "R8248.2"
+          ],
+          "path": null
+        }
+      ],
+      "proposal": {
+        "board_sha256": "a01df89dcab3d4fab8eb0ae80195b2825d2d47adc517cd73452d9b9aa6ea079a",
+        "removed_uuids": [],
+        "copper": []
+      }
+    },
+    {
+      "net": "X1B64D2A971AB89E1AF19",
+      "source_group_indices": [
+        0,
+        1
+      ],
+      "native_groups": [
+        [
+          "77be702c-af7d-525a-80c2-039a9b90636e"
+        ],
+        [
+          "01855033-3a60-5a44-a23b-157dd43c92bf",
+          "0468523c-fe4a-5dff-a143-bd9cdd68c9cd",
+          "04a1849a-29ed-564f-8238-47e16ee19d12",
+          "054260d9-718b-549a-906a-87299bdd60bb",
+          "0542e059-02bd-5e35-8bc1-e6838846479b",
+          "063af628-5e8e-5b76-a772-6cba5c375f9d",
+          "080b09f5-3818-5511-82d6-4f37a1a31d6c",
+          "0a64607e-27f3-5153-9d52-3d9eceda44b7",
+          "0aa12e33-66c9-5ce5-8072-71ebf9eb26f8",
+          "0dbd6da9-a60d-5dbb-983c-2410a07f9f2c",
+          "119602e3-3d41-5049-a5f5-2253b6ddc379",
+          "124a43b5-e6f6-5775-bcad-53d6187f97e6",
+          "125c059c-43c3-5c71-983b-6c2ceb64524e",
+          "12a80d49-af0a-52ef-b7ff-61f1c86d00f2",
+          "15a5a599-e02b-551d-ba7e-76a39ee5a352",
+          "17a8f101-1ba4-5dd3-bfe8-53080cee55fc",
+          "193eda06-8780-56b2-8d54-a59aeb2d87da",
+          "1b7e4925-a21b-5a99-b639-875c9aa54c8c",
+          "1c259a40-069b-50a0-93ba-1b9ce832e5cf",
+          "1ec6ff86-27a1-5777-9637-97ac552a3758",
+          "1efee04f-0671-5a5d-92a0-7ddf4d5305ce",
+          "201977c3-98d1-59e8-81a6-fe0f0aa8bf97",
+          "21b1bb6a-5b85-5bd0-bcbf-9fce7a81167b",
+          "23f06a67-3d71-5256-860f-3e9e7c656306",
+          "24f32619-bf5d-5317-b77d-93e721d06601",
+          "27494468-d6f3-5a1e-90e2-63808c63fb8d",
+          "27c051a6-0efa-58ba-a46b-d6796e70b27f",
+          "28f191ff-ca00-5027-9404-9f82a3a74058",
+          "29fa39f1-e68c-593d-a595-f48e4413b213",
+          "2bf36348-8509-5236-b9ef-c523377a8eef",
+          "2c1092aa-00ce-53f0-8279-a38fa4cca243",
+          "2cf1bbe0-cbf8-58b4-b01d-65e7ca01f0e3",
+          "2f04ccf8-e8f3-5e1c-9b36-0aeac764fddc",
+          "3251c8ce-8e71-5ea1-98ff-2e7a02b30a11",
+          "328f104e-ad10-5ad8-801e-d44ea02cc974",
+          "358ca3a5-3d4f-5172-9b2f-fbbdd84ea4bf",
+          "359f1f0a-dbcd-54e6-87e1-e42b09230121",
+          "360fe054-7672-5ff2-a09c-34f1f2c39089",
+          "3800da80-4282-5f5b-b0f8-4157ee8003fa",
+          "39987081-5d10-534b-a085-8e049c93c78e",
+          "3a2194c2-a037-5a22-8215-f827c54d0d54",
+          "3c6fb158-b610-5ef2-9474-8aa8dc83679c",
+          "3ca58414-6abe-5b82-931a-ca32ee921cb1",
+          "3cfd58e4-ccf7-504a-8120-6bf0ca443cfb",
+          "3d1f7654-9419-5e78-9b32-df84e0b89417",
+          "401aa033-222f-566e-8f6a-9b77b69f3a05",
+          "40dbe5b1-9afe-5883-9d25-987d46f10005",
+          "4176131c-3475-503d-b5d5-820a62d206ba",
+          "4699e129-a24a-508e-9c86-06e2f6a730e3",
+          "4b225996-e0af-50d0-bec3-fd7d36b9d0c9",
+          "4c81baff-db0a-599b-98fd-d6354b90d1bf",
+          "4e6981e4-b564-58f1-8f73-7bb3df282876",
+          "4ec34b99-a9dc-514a-bb9b-cf159d68be15",
+          "4f5c5b58-92fe-5eba-8171-e901190344e5",
+          "52f53872-52c1-5cd7-a1fd-001d0314068b",
+          "541baee1-b4f4-5e5f-ac58-3bc43fefb11a",
+          "5681a5f9-e2d3-50f9-8a7c-89f3f2d745d6",
+          "59bae0dd-76b3-5973-8e2a-f1b0cdc40966",
+          "5ce5a5dc-807f-538e-80d7-4e72d8d79f11",
+          "5e583daf-bc6e-5554-b6b9-37dafe1e57a3",
+          "5e7ccdae-a91c-5811-985d-d0661877d43a",
+          "60744563-f244-5de8-83a4-c17271fb8fcb",
+          "60fae21a-6303-5b77-a2bf-25eb3be1e047",
+          "630ece42-28c2-521a-8fc6-c49a43096595",
+          "633c2ca1-4215-554a-953d-724e8b2d5a7d",
+          "6484ef18-7c87-5f99-8a9a-e64c6876d74b",
+          "671395fc-241f-545e-bb8e-9bdb2b689e8c",
+          "689c5896-327e-54f4-9714-9cea80831d5d",
+          "6c7329e7-b675-5bc8-abc7-fbe1b686cb8f",
+          "6dcc28d4-2c22-52c9-b204-6ec28289d648",
+          "6fa334ad-a5aa-5798-8fe1-67a7f7754aa6",
+          "754c2f2e-04d7-5074-90cd-8d046f3dab7c",
+          "754d3a92-8406-5e4b-9a63-b9b3febc4a8c",
+          "761aa8f8-c2ec-58d7-a63f-df9b12fd8c23",
+          "78cd0d8f-3b42-51f8-8b6f-791fd784f771",
+          "7bda1c62-7d92-5f32-9406-d8e3ab846170",
+          "7f890f80-0c62-5a8d-ac6f-f99a9341d353",
+          "7f8f0881-4a2d-517e-84f4-dda1a221e7a9",
+          "800974eb-d727-5423-8b49-1fc7315a970b",
+          "8219c328-0232-5a7e-b81a-34754b96cafc",
+          "868e7984-b9e8-5834-b142-cda91263a5ff",
+          "86fc5b83-e5b8-5e64-b4d7-4818b7148d97",
+          "8896bad2-c8c7-5716-bfa9-68987e0c1bfc",
+          "8b04cf70-1d1f-55a4-b03f-be4e05484867",
+          "8ea6bfbe-8e29-5b8b-ab9c-0692d1d88baf",
+          "90237692-b107-5852-88fc-acc07ab49429",
+          "9085db72-a395-5ca6-8fee-1f91bbec687b",
+          "90ac5268-c976-5d03-a768-305ddce870e2",
+          "90db97e7-4d46-51c3-8ef7-c7cbbdf768ca",
+          "9519a6e6-ce40-51b5-b8de-2d0b0e9ba73b",
+          "9cb6eef8-4b62-5a32-a316-cc61029d7af5",
+          "9d985008-ea13-5606-b999-c326716259a2",
+          "9ee44835-69cd-5d74-a58d-c0fc4e01211e",
+          "9f8d785d-8b41-584e-b7c0-08990db9518f",
+          "9fa77dfe-9dfa-5719-8f70-5032194a300a",
+          "a0a7fe43-feaf-5f5b-9ad2-de690eb14cb5",
+          "a1d90964-46ba-55a5-b933-91e419d2aa4a",
+          "a1fd7be9-f7a4-591f-87f9-3ecf28bc10c9",
+          "a2c09209-4a8d-5ed4-8f4b-2cd101e91d1e",
+          "a2e443da-3658-52c3-99cd-4841e50fa8d9",
+          "a36f8021-1e66-5b0f-bc5a-9ced16fdc84e",
+          "a5bbc179-a52f-5865-9ff4-48dfc94f6b48",
+          "a8508bea-e340-5cf4-a891-29b09124e4c9",
+          "a8e04d5e-5054-56a7-bff1-883a5d5f90e0",
+          "aa2bfad0-e20e-579c-bab5-1074a4f23488",
+          "ab84d24d-1e1f-55ce-934f-b7a9cabee911",
+          "ad6c0e13-3225-5d9b-aed3-3baa3cb1b846",
+          "aef86173-907b-5351-8443-3ad52b7d7ed0",
+          "af1d97f9-2a13-5d76-9525-a06da618ffa3",
+          "b116a197-c2c6-5f11-a384-6fd1225b763f",
+          "b11cc128-44f5-5e2d-80c8-76a459f79da8",
+          "b43dfab3-9ac9-5bc0-b6a3-7b9b486543a8",
+          "b5732679-2a76-5a11-84ca-c3bbb6d07050",
+          "b644c3d4-a90b-529f-bf94-8e45a602cec7",
+          "b9f02e2c-9b10-5ab9-9225-3202c71489a9",
+          "bb4b6666-da7c-5994-b0a2-4452e28008b8",
+          "bd987f22-59e0-58ab-8aeb-166120ca2a3e",
+          "bf557c34-7731-546e-998f-18552ff692d9",
+          "c165a04b-c29e-57ef-8848-6e2edf2d2bd1",
+          "c17ac1c6-037e-5b2b-8053-ce14ddb44a08",
+          "c18eab74-0d7f-521e-9754-2ba640822860",
+          "c1cc5f07-0226-52be-8957-a14b84f6caf5",
+          "c26bc309-5c6e-57ad-9ad8-55553749218a",
+          "c33976cc-6f4c-5bc4-9362-5a366a493196",
+          "c34dc828-1598-5707-b84b-44e1d870e372",
+          "c39d28a0-2efe-5e53-b3ce-54cf327f8b30",
+          "c789a72d-29ad-599c-afe6-63cfd479adce",
+          "cb872c2b-1821-551d-98a0-c65f2245e7a8",
+          "ccd958e1-8255-5b0d-ab74-6bc3fe2cd314",
+          "cd79f852-04b0-5089-b366-201d02bcdebe",
+          "cda8cc75-b29b-5e71-854d-219d09c9382e",
+          "ceccac09-79e1-5608-9f00-17b0c29edb60",
+          "d4206aa3-0d2c-565b-b65f-766674a6e665",
+          "d64d2c6a-e948-5bd3-bb41-061c65db8499",
+          "d69d3657-f8fb-5baa-89e7-906639b50539",
+          "d726e3d2-409b-5c8d-903c-20fa948e330e",
+          "d7edc949-6b0b-5e41-8721-3436db444bc1",
+          "d9d1c18d-a7fb-5faa-a322-2c9eb4e61b73",
+          "da5580e0-73b0-58a0-86d9-ba3531956c17",
+          "db723199-3cb7-5958-b9a2-aa683aea8f5c",
+          "dbc6a4f3-8639-5703-baae-10cf42da6770",
+          "dbe2cb33-f333-5fff-a936-84a58126131d",
+          "ddd065eb-188e-51da-b4dd-aac95c96d9bd",
+          "ddd34d06-9ed8-5ebf-9ad8-c5b3c07972ae",
+          "dea82097-ac76-5bca-93ce-956a25c73635",
+          "dfbb0190-51f0-53dc-a1cf-8555e6137829",
+          "e0cdd7d7-0381-588a-adac-b48d968e598e",
+          "e0f95491-25e8-5421-a55d-171c8704b7a6",
+          "e2169056-5bb5-52f3-b23c-0059933f12a0",
+          "e3087698-e48a-53a2-aaeb-b602d809ed1e",
+          "e31f34c4-245a-5dba-be25-00374a2ddec2",
+          "e47f20fa-785b-5dc0-ab68-e65d5520e7d6",
+          "e7bd2743-9eed-565e-a102-200549f5cded",
+          "e7c29948-6790-545a-b5e3-7c2261b291be",
+          "e8ea7220-e3a7-5f3b-b967-011f8c427122",
+          "edf1d331-636c-5421-a238-58c6cad26fd7",
+          "f08987ca-0552-5980-9444-69a4b372de74",
+          "f140837c-b310-51cf-87de-5af807518802",
+          "f4bf5416-5dcb-536d-81a4-68284cf655db",
+          "f911d379-22c6-57b6-beb2-bdeaeeaaafd1",
+          "fad4efbe-44ac-5fd7-a29c-16564d9f7684",
+          "fc0262c7-5324-5a53-b36a-24d158626218"
+        ]
+      ],
+      "endpoints": [
+        {
+          "uuid": "77be702c-af7d-525a-80c2-039a9b90636e",
+          "ref": "R8248",
+          "pad": "2",
+          "net": "X1B64D2A971AB89E1AF19",
+          "xy": [
+            260289999,
+            110810000
+          ],
+          "layers": [
+            "F.Cu"
+          ]
+        },
+        {
+          "uuid": "0a64607e-27f3-5153-9d52-3d9eceda44b7",
+          "ref": "U8215",
+          "pad": "3",
+          "net": "X1B64D2A971AB89E1AF19",
+          "xy": [
+            257194999,
+            139350000
+          ],
+          "layers": [
+            "B.Cu"
+          ]
+        }
+      ],
+      "pad_distance_mm": 28.707327026388228,
+      "bounds_mm": [
+        251.194999,
+        104.81,
+        266.289999,
+        145.35
+      ],
+      "domain": "in3",
+      "elapsed_seconds": 2.0356256200029748,
+      "complete": false,
+      "diagnostics": [
+        {
+          "net": "X1B64D2A971AB89E1AF19",
+          "endpoints": [
+            "R8248.2"
+          ],
+          "reason": "search_exhausted",
+          "phase": "route",
+          "attempts": [
+            {
+              "window_cells": [
+                0,
+                814,
+                0,
+                306
+              ],
+              "expanded": 122904,
+              "limit": 300000
+            }
+          ],
+          "max_expansions": 300000,
+          "window_mm": 6
+        }
+      ],
+      "routes": [
+        {
+          "net": "X1B64D2A971AB89E1AF19",
+          "island": [
+            "R8248.2"
+          ],
+          "path": null
+        }
+      ],
+      "proposal": {
+        "board_sha256": "a01df89dcab3d4fab8eb0ae80195b2825d2d47adc517cd73452d9b9aa6ea079a",
+        "removed_uuids": [],
+        "copper": []
+      }
+    },
+    {
+      "net": "XC88BD03BBA8813E56671",
+      "source_group_indices": [
+        0,
+        2
+      ],
+      "native_groups": [
+        [
+          "27bb73f1-ce50-57d0-88af-2227ff003684",
+          "2f8216e2-8434-5e85-b7b4-421240433fa9",
+          "72c48a4b-b2fb-5769-8bcf-5e1d611cffcb"
+        ],
+        [
+          "e7691253-45cf-5755-ae5a-c2c66be4c081"
+        ]
+      ],
+      "endpoints": [
+        {
+          "uuid": "27bb73f1-ce50-57d0-88af-2227ff003684",
+          "ref": "U3405",
+          "pad": "6",
+          "net": "XC88BD03BBA8813E56671",
+          "xy": [
+            260430000,
+            202542499
+          ],
+          "layers": [
+            "F.Cu"
+          ]
+        },
+        {
+          "uuid": "e7691253-45cf-5755-ae5a-c2c66be4c081",
+          "ref": "U3404",
+          "pad": "5",
+          "net": "XC88BD03BBA8813E56671",
+          "xy": [
+            245145000,
+            176520000
+          ],
+          "layers": [
+            "B.Cu"
+          ]
+        }
+      ],
+      "pad_distance_mm": 30.179491036215325,
+      "bounds_mm": [
+        239.145,
+        170.52,
+        266.43,
+        208.542499
+      ],
+      "domain": "four-layer",
+      "elapsed_seconds": 2.264095828999416,
+      "complete": false,
+      "diagnostics": [
+        {
+          "net": "XC88BD03BBA8813E56671",
+          "endpoints": [
+            "U3404.5"
+          ],
+          "reason": "search_exhausted",
+          "phase": "route",
+          "attempts": [
+            {
+              "window_cells": [
+                0,
+                764,
+                0,
+                550
+              ],
+              "expanded": 24713,
+              "limit": 300000
+            }
+          ],
+          "max_expansions": 300000,
+          "window_mm": 6
+        }
+      ],
+      "routes": [
+        {
+          "net": "XC88BD03BBA8813E56671",
+          "island": [
+            "U3404.5"
+          ],
+          "path": null
+        }
+      ],
+      "proposal": {
+        "board_sha256": "a01df89dcab3d4fab8eb0ae80195b2825d2d47adc517cd73452d9b9aa6ea079a",
+        "removed_uuids": [],
+        "copper": []
+      }
+    },
+    {
+      "net": "XC88BD03BBA8813E56671",
+      "source_group_indices": [
+        0,
+        2
+      ],
+      "native_groups": [
+        [
+          "27bb73f1-ce50-57d0-88af-2227ff003684",
+          "2f8216e2-8434-5e85-b7b4-421240433fa9",
+          "72c48a4b-b2fb-5769-8bcf-5e1d611cffcb"
+        ],
+        [
+          "e7691253-45cf-5755-ae5a-c2c66be4c081"
+        ]
+      ],
+      "endpoints": [
+        {
+          "uuid": "27bb73f1-ce50-57d0-88af-2227ff003684",
+          "ref": "U3405",
+          "pad": "6",
+          "net": "XC88BD03BBA8813E56671",
+          "xy": [
+            260430000,
+            202542499
+          ],
+          "layers": [
+            "F.Cu"
+          ]
+        },
+        {
+          "uuid": "e7691253-45cf-5755-ae5a-c2c66be4c081",
+          "ref": "U3404",
+          "pad": "5",
+          "net": "XC88BD03BBA8813E56671",
+          "xy": [
+            245145000,
+            176520000
+          ],
+          "layers": [
+            "B.Cu"
+          ]
+        }
+      ],
+      "pad_distance_mm": 30.179491036215325,
+      "bounds_mm": [
+        239.145,
+        170.52,
+        266.43,
+        208.542499
+      ],
+      "domain": "in2",
+      "elapsed_seconds": 2.1927885559998685,
+      "complete": false,
+      "diagnostics": [
+        {
+          "net": "XC88BD03BBA8813E56671",
+          "endpoints": [
+            "U3404.5"
+          ],
+          "reason": "search_exhausted",
+          "phase": "route",
+          "attempts": [
+            {
+              "window_cells": [
+                0,
+                764,
+                0,
+                550
+              ],
+              "expanded": 19359,
+              "limit": 300000
+            }
+          ],
+          "max_expansions": 300000,
+          "window_mm": 6
+        }
+      ],
+      "routes": [
+        {
+          "net": "XC88BD03BBA8813E56671",
+          "island": [
+            "U3404.5"
+          ],
+          "path": null
+        }
+      ],
+      "proposal": {
+        "board_sha256": "a01df89dcab3d4fab8eb0ae80195b2825d2d47adc517cd73452d9b9aa6ea079a",
+        "removed_uuids": [],
+        "copper": []
+      }
+    },
+    {
+      "net": "XC88BD03BBA8813E56671",
+      "source_group_indices": [
+        0,
+        2
+      ],
+      "native_groups": [
+        [
+          "27bb73f1-ce50-57d0-88af-2227ff003684",
+          "2f8216e2-8434-5e85-b7b4-421240433fa9",
+          "72c48a4b-b2fb-5769-8bcf-5e1d611cffcb"
+        ],
+        [
+          "e7691253-45cf-5755-ae5a-c2c66be4c081"
+        ]
+      ],
+      "endpoints": [
+        {
+          "uuid": "27bb73f1-ce50-57d0-88af-2227ff003684",
+          "ref": "U3405",
+          "pad": "6",
+          "net": "XC88BD03BBA8813E56671",
+          "xy": [
+            260430000,
+            202542499
+          ],
+          "layers": [
+            "F.Cu"
+          ]
+        },
+        {
+          "uuid": "e7691253-45cf-5755-ae5a-c2c66be4c081",
+          "ref": "U3404",
+          "pad": "5",
+          "net": "XC88BD03BBA8813E56671",
+          "xy": [
+            245145000,
+            176520000
+          ],
+          "layers": [
+            "B.Cu"
+          ]
+        }
+      ],
+      "pad_distance_mm": 30.179491036215325,
+      "bounds_mm": [
+        239.145,
+        170.52,
+        266.43,
+        208.542499
+      ],
+      "domain": "in3",
+      "elapsed_seconds": 2.1490570979949553,
+      "complete": false,
+      "diagnostics": [
+        {
+          "net": "XC88BD03BBA8813E56671",
+          "endpoints": [
+            "U3404.5"
+          ],
+          "reason": "search_exhausted",
+          "phase": "route",
+          "attempts": [
+            {
+              "window_cells": [
+                0,
+                764,
+                0,
+                550
+              ],
+              "expanded": 22704,
+              "limit": 300000
+            }
+          ],
+          "max_expansions": 300000,
+          "window_mm": 6
+        }
+      ],
+      "routes": [
+        {
+          "net": "XC88BD03BBA8813E56671",
+          "island": [
+            "U3404.5"
+          ],
+          "path": null
+        }
+      ],
+      "proposal": {
+        "board_sha256": "a01df89dcab3d4fab8eb0ae80195b2825d2d47adc517cd73452d9b9aa6ea079a",
+        "removed_uuids": [],
+        "copper": []
+      }
+    },
+    {
+      "net": "XF33834373CE4E1458596",
+      "source_group_indices": [
+        0,
+        2
+      ],
+      "native_groups": [
+        [
+          "20aafab8-ba68-5a52-87f8-2e6341719792",
+          "4a935c8c-bc15-5af9-8498-eb658fb1e21b",
+          "73306624-8a82-596e-a841-100687674a0d"
+        ],
+        [
+          "d64d3c76-2adf-573d-b41a-9db4b045ac63"
+        ]
+      ],
+      "endpoints": [
+        {
+          "uuid": "73306624-8a82-596e-a841-100687674a0d",
+          "ref": "U3405",
+          "pad": "1",
+          "net": "XF33834373CE4E1458596",
+          "xy": [
+            257180000,
+            202542499
+          ],
+          "layers": [
+            "F.Cu"
+          ]
+        },
+        {
+          "uuid": "d64d3c76-2adf-573d-b41a-9db4b045ac63",
+          "ref": "U3404",
+          "pad": "3",
+          "net": "XF33834373CE4E1458596",
+          "xy": [
+            245145000,
+            173980000
+          ],
+          "layers": [
+            "B.Cu"
+          ]
+        }
+      ],
+      "pad_distance_mm": 30.99447650993643,
+      "bounds_mm": [
+        239.145,
+        167.98,
+        263.18,
+        208.542499
+      ],
+      "domain": "four-layer",
+      "elapsed_seconds": 2.288577179002459,
+      "complete": false,
+      "diagnostics": [
+        {
+          "net": "XF33834373CE4E1458596",
+          "endpoints": [
+            "U3404.3"
+          ],
+          "reason": "search_exhausted",
+          "phase": "route",
+          "attempts": [
+            {
+              "window_cells": [
+                0,
+                815,
+                0,
+                485
+              ],
+              "expanded": 1093,
+              "limit": 300000
+            }
+          ],
+          "max_expansions": 300000,
+          "window_mm": 6
+        }
+      ],
+      "routes": [
+        {
+          "net": "XF33834373CE4E1458596",
+          "island": [
+            "U3404.3"
+          ],
+          "path": null
+        }
+      ],
+      "proposal": {
+        "board_sha256": "a01df89dcab3d4fab8eb0ae80195b2825d2d47adc517cd73452d9b9aa6ea079a",
+        "removed_uuids": [],
+        "copper": []
+      }
+    },
+    {
+      "net": "XF33834373CE4E1458596",
+      "source_group_indices": [
+        0,
+        2
+      ],
+      "native_groups": [
+        [
+          "20aafab8-ba68-5a52-87f8-2e6341719792",
+          "4a935c8c-bc15-5af9-8498-eb658fb1e21b",
+          "73306624-8a82-596e-a841-100687674a0d"
+        ],
+        [
+          "d64d3c76-2adf-573d-b41a-9db4b045ac63"
+        ]
+      ],
+      "endpoints": [
+        {
+          "uuid": "73306624-8a82-596e-a841-100687674a0d",
+          "ref": "U3405",
+          "pad": "1",
+          "net": "XF33834373CE4E1458596",
+          "xy": [
+            257180000,
+            202542499
+          ],
+          "layers": [
+            "F.Cu"
+          ]
+        },
+        {
+          "uuid": "d64d3c76-2adf-573d-b41a-9db4b045ac63",
+          "ref": "U3404",
+          "pad": "3",
+          "net": "XF33834373CE4E1458596",
+          "xy": [
+            245145000,
+            173980000
+          ],
+          "layers": [
+            "B.Cu"
+          ]
+        }
+      ],
+      "pad_distance_mm": 30.99447650993643,
+      "bounds_mm": [
+        239.145,
+        167.98,
+        263.18,
+        208.542499
+      ],
+      "domain": "in2",
+      "elapsed_seconds": 2.1341218139859848,
+      "complete": false,
+      "diagnostics": [
+        {
+          "net": "XF33834373CE4E1458596",
+          "endpoints": [
+            "U3404.3"
+          ],
+          "reason": "search_exhausted",
+          "phase": "route",
+          "attempts": [
+            {
+              "window_cells": [
+                0,
+                815,
+                0,
+                485
+              ],
+              "expanded": 1093,
+              "limit": 300000
+            }
+          ],
+          "max_expansions": 300000,
+          "window_mm": 6
+        }
+      ],
+      "routes": [
+        {
+          "net": "XF33834373CE4E1458596",
+          "island": [
+            "U3404.3"
+          ],
+          "path": null
+        }
+      ],
+      "proposal": {
+        "board_sha256": "a01df89dcab3d4fab8eb0ae80195b2825d2d47adc517cd73452d9b9aa6ea079a",
+        "removed_uuids": [],
+        "copper": []
+      }
+    },
+    {
+      "net": "XF33834373CE4E1458596",
+      "source_group_indices": [
+        0,
+        2
+      ],
+      "native_groups": [
+        [
+          "20aafab8-ba68-5a52-87f8-2e6341719792",
+          "4a935c8c-bc15-5af9-8498-eb658fb1e21b",
+          "73306624-8a82-596e-a841-100687674a0d"
+        ],
+        [
+          "d64d3c76-2adf-573d-b41a-9db4b045ac63"
+        ]
+      ],
+      "endpoints": [
+        {
+          "uuid": "73306624-8a82-596e-a841-100687674a0d",
+          "ref": "U3405",
+          "pad": "1",
+          "net": "XF33834373CE4E1458596",
+          "xy": [
+            257180000,
+            202542499
+          ],
+          "layers": [
+            "F.Cu"
+          ]
+        },
+        {
+          "uuid": "d64d3c76-2adf-573d-b41a-9db4b045ac63",
+          "ref": "U3404",
+          "pad": "3",
+          "net": "XF33834373CE4E1458596",
+          "xy": [
+            245145000,
+            173980000
+          ],
+          "layers": [
+            "B.Cu"
+          ]
+        }
+      ],
+      "pad_distance_mm": 30.99447650993643,
+      "bounds_mm": [
+        239.145,
+        167.98,
+        263.18,
+        208.542499
+      ],
+      "domain": "in3",
+      "elapsed_seconds": 2.115959948991076,
+      "complete": false,
+      "diagnostics": [
+        {
+          "net": "XF33834373CE4E1458596",
+          "endpoints": [
+            "U3404.3"
+          ],
+          "reason": "search_exhausted",
+          "phase": "route",
+          "attempts": [
+            {
+              "window_cells": [
+                0,
+                815,
+                0,
+                485
+              ],
+              "expanded": 1093,
+              "limit": 300000
+            }
+          ],
+          "max_expansions": 300000,
+          "window_mm": 6
+        }
+      ],
+      "routes": [
+        {
+          "net": "XF33834373CE4E1458596",
+          "island": [
+            "U3404.3"
+          ],
+          "path": null
+        }
+      ],
+      "proposal": {
+        "board_sha256": "a01df89dcab3d4fab8eb0ae80195b2825d2d47adc517cd73452d9b9aa6ea079a",
+        "removed_uuids": [],
+        "copper": []
+      }
+    },
+    {
+      "net": "XF42D14B0EBCC2F1F61CE",
+      "source_group_indices": [
+        1,
+        2
+      ],
+      "native_groups": [
+        [
+          "94314410-c302-59a5-87de-94e702b08b32"
+        ],
+        [
+          "22e1a287-d132-590b-8a57-8b879a52708d"
+        ]
+      ],
+      "endpoints": [
+        {
+          "uuid": "94314410-c302-59a5-87de-94e702b08b32",
+          "ref": "R8148",
+          "pad": "2",
+          "net": "XF42D14B0EBCC2F1F61CE",
+          "xy": [
+            212010000,
+            119990000
+          ],
+          "layers": [
+            "B.Cu"
+          ]
+        },
+        {
+          "uuid": "22e1a287-d132-590b-8a57-8b879a52708d",
+          "ref": "U8115",
+          "pad": "3",
+          "net": "XF42D14B0EBCC2F1F61CE",
+          "xy": [
+            242680000,
+            108855000
+          ],
+          "layers": [
+            "B.Cu"
+          ]
+        }
+      ],
+      "pad_distance_mm": 32.628777559081186,
+      "bounds_mm": [
+        206.01,
+        102.855,
+        248.68,
+        125.99
+      ],
+      "domain": "four-layer",
+      "elapsed_seconds": 2.194470453003305,
+      "complete": false,
+      "diagnostics": [
+        {
+          "net": "XF42D14B0EBCC2F1F61CE",
+          "endpoints": [
+            "U8115.3"
+          ],
+          "reason": "search_exhausted",
+          "phase": "route",
+          "attempts": [
+            {
+              "window_cells": [
+                0,
+                466,
+                0,
+                857
+              ],
+              "expanded": 2375,
+              "limit": 300000
+            }
+          ],
+          "max_expansions": 300000,
+          "window_mm": 6
+        }
+      ],
+      "routes": [
+        {
+          "net": "XF42D14B0EBCC2F1F61CE",
+          "island": [
+            "U8115.3"
+          ],
+          "path": null
+        }
+      ],
+      "proposal": {
+        "board_sha256": "a01df89dcab3d4fab8eb0ae80195b2825d2d47adc517cd73452d9b9aa6ea079a",
+        "removed_uuids": [],
+        "copper": []
+      }
+    },
+    {
+      "net": "XF42D14B0EBCC2F1F61CE",
+      "source_group_indices": [
+        1,
+        2
+      ],
+      "native_groups": [
+        [
+          "94314410-c302-59a5-87de-94e702b08b32"
+        ],
+        [
+          "22e1a287-d132-590b-8a57-8b879a52708d"
+        ]
+      ],
+      "endpoints": [
+        {
+          "uuid": "94314410-c302-59a5-87de-94e702b08b32",
+          "ref": "R8148",
+          "pad": "2",
+          "net": "XF42D14B0EBCC2F1F61CE",
+          "xy": [
+            212010000,
+            119990000
+          ],
+          "layers": [
+            "B.Cu"
+          ]
+        },
+        {
+          "uuid": "22e1a287-d132-590b-8a57-8b879a52708d",
+          "ref": "U8115",
+          "pad": "3",
+          "net": "XF42D14B0EBCC2F1F61CE",
+          "xy": [
+            242680000,
+            108855000
+          ],
+          "layers": [
+            "B.Cu"
+          ]
+        }
+      ],
+      "pad_distance_mm": 32.628777559081186,
+      "bounds_mm": [
+        206.01,
+        102.855,
+        248.68,
+        125.99
+      ],
+      "domain": "in2",
+      "elapsed_seconds": 2.1273675779957557,
+      "complete": false,
+      "diagnostics": [
+        {
+          "net": "XF42D14B0EBCC2F1F61CE",
+          "endpoints": [
+            "U8115.3"
+          ],
+          "reason": "search_exhausted",
+          "phase": "route",
+          "attempts": [
+            {
+              "window_cells": [
+                0,
+                466,
+                0,
+                857
+              ],
+              "expanded": 2375,
+              "limit": 300000
+            }
+          ],
+          "max_expansions": 300000,
+          "window_mm": 6
+        }
+      ],
+      "routes": [
+        {
+          "net": "XF42D14B0EBCC2F1F61CE",
+          "island": [
+            "U8115.3"
+          ],
+          "path": null
+        }
+      ],
+      "proposal": {
+        "board_sha256": "a01df89dcab3d4fab8eb0ae80195b2825d2d47adc517cd73452d9b9aa6ea079a",
+        "removed_uuids": [],
+        "copper": []
+      }
+    },
+    {
+      "net": "XF42D14B0EBCC2F1F61CE",
+      "source_group_indices": [
+        1,
+        2
+      ],
+      "native_groups": [
+        [
+          "94314410-c302-59a5-87de-94e702b08b32"
+        ],
+        [
+          "22e1a287-d132-590b-8a57-8b879a52708d"
+        ]
+      ],
+      "endpoints": [
+        {
+          "uuid": "94314410-c302-59a5-87de-94e702b08b32",
+          "ref": "R8148",
+          "pad": "2",
+          "net": "XF42D14B0EBCC2F1F61CE",
+          "xy": [
+            212010000,
+            119990000
+          ],
+          "layers": [
+            "B.Cu"
+          ]
+        },
+        {
+          "uuid": "22e1a287-d132-590b-8a57-8b879a52708d",
+          "ref": "U8115",
+          "pad": "3",
+          "net": "XF42D14B0EBCC2F1F61CE",
+          "xy": [
+            242680000,
+            108855000
+          ],
+          "layers": [
+            "B.Cu"
+          ]
+        }
+      ],
+      "pad_distance_mm": 32.628777559081186,
+      "bounds_mm": [
+        206.01,
+        102.855,
+        248.68,
+        125.99
+      ],
+      "domain": "in3",
+      "elapsed_seconds": 2.1592837660136865,
+      "complete": false,
+      "diagnostics": [
+        {
+          "net": "XF42D14B0EBCC2F1F61CE",
+          "endpoints": [
+            "U8115.3"
+          ],
+          "reason": "search_exhausted",
+          "phase": "route",
+          "attempts": [
+            {
+              "window_cells": [
+                0,
+                466,
+                0,
+                857
+              ],
+              "expanded": 2375,
+              "limit": 300000
+            }
+          ],
+          "max_expansions": 300000,
+          "window_mm": 6
+        }
+      ],
+      "routes": [
+        {
+          "net": "XF42D14B0EBCC2F1F61CE",
+          "island": [
+            "U8115.3"
+          ],
+          "path": null
+        }
+      ],
+      "proposal": {
+        "board_sha256": "a01df89dcab3d4fab8eb0ae80195b2825d2d47adc517cd73452d9b9aa6ea079a",
+        "removed_uuids": [],
+        "copper": []
+      }
+    },
+    {
+      "net": "XB8780C34DCDC50D9A9BA",
+      "source_group_indices": [
+        0,
+        1
+      ],
+      "native_groups": [
+        [
+          "9aab76ee-96ec-5c88-8880-246356872744"
+        ],
+        [
+          "92a8d570-5ad3-5ec9-b655-19c7152d63c9"
+        ]
+      ],
+      "endpoints": [
+        {
+          "uuid": "9aab76ee-96ec-5c88-8880-246356872744",
+          "ref": "U8215",
+          "pad": "5",
+          "net": "XB8780C34DCDC50D9A9BA",
+          "xy": [
+            257194999,
+            136810000
+          ],
+          "layers": [
+            "B.Cu"
+          ]
+        },
+        {
+          "uuid": "92a8d570-5ad3-5ec9-b655-19c7152d63c9",
+          "ref": "U8216",
+          "pad": "12",
+          "net": "XB8780C34DCDC50D9A9BA",
+          "xy": [
+            261950000,
+            104295000
+          ],
+          "layers": [
+            "B.Cu"
+          ]
+        }
+      ],
+      "pad_distance_mm": 32.8608469079846,
+      "bounds_mm": [
+        251.194999,
+        98.295,
+        267.95,
+        142.81
+      ],
+      "domain": "four-layer",
+      "elapsed_seconds": 2.1119070919958176,
+      "complete": false,
+      "diagnostics": [
+        {
+          "net": "XB8780C34DCDC50D9A9BA",
+          "endpoints": [
+            "U8216.12"
+          ],
+          "reason": "search_exhausted",
+          "phase": "route",
+          "attempts": [
+            {
+              "window_cells": [
+                0,
+                895,
+                0,
+                339
+              ],
+              "expanded": 220778,
+              "limit": 300000
+            }
+          ],
+          "max_expansions": 300000,
+          "window_mm": 6
+        }
+      ],
+      "routes": [
+        {
+          "net": "XB8780C34DCDC50D9A9BA",
+          "island": [
+            "U8216.12"
+          ],
+          "path": null
+        }
+      ],
+      "proposal": {
+        "board_sha256": "a01df89dcab3d4fab8eb0ae80195b2825d2d47adc517cd73452d9b9aa6ea079a",
+        "removed_uuids": [],
+        "copper": []
+      }
+    },
+    {
+      "net": "XB8780C34DCDC50D9A9BA",
+      "source_group_indices": [
+        0,
+        1
+      ],
+      "native_groups": [
+        [
+          "9aab76ee-96ec-5c88-8880-246356872744"
+        ],
+        [
+          "92a8d570-5ad3-5ec9-b655-19c7152d63c9"
+        ]
+      ],
+      "endpoints": [
+        {
+          "uuid": "9aab76ee-96ec-5c88-8880-246356872744",
+          "ref": "U8215",
+          "pad": "5",
+          "net": "XB8780C34DCDC50D9A9BA",
+          "xy": [
+            257194999,
+            136810000
+          ],
+          "layers": [
+            "B.Cu"
+          ]
+        },
+        {
+          "uuid": "92a8d570-5ad3-5ec9-b655-19c7152d63c9",
+          "ref": "U8216",
+          "pad": "12",
+          "net": "XB8780C34DCDC50D9A9BA",
+          "xy": [
+            261950000,
+            104295000
+          ],
+          "layers": [
+            "B.Cu"
+          ]
+        }
+      ],
+      "pad_distance_mm": 32.8608469079846,
+      "bounds_mm": [
+        251.194999,
+        98.295,
+        267.95,
+        142.81
+      ],
+      "domain": "in2",
+      "elapsed_seconds": 2.0639245130005293,
+      "complete": false,
+      "diagnostics": [
+        {
+          "net": "XB8780C34DCDC50D9A9BA",
+          "endpoints": [
+            "U8216.12"
+          ],
+          "reason": "search_exhausted",
+          "phase": "route",
+          "attempts": [
+            {
+              "window_cells": [
+                0,
+                895,
+                0,
+                339
+              ],
+              "expanded": 136315,
+              "limit": 300000
+            }
+          ],
+          "max_expansions": 300000,
+          "window_mm": 6
+        }
+      ],
+      "routes": [
+        {
+          "net": "XB8780C34DCDC50D9A9BA",
+          "island": [
+            "U8216.12"
+          ],
+          "path": null
+        }
+      ],
+      "proposal": {
+        "board_sha256": "a01df89dcab3d4fab8eb0ae80195b2825d2d47adc517cd73452d9b9aa6ea079a",
+        "removed_uuids": [],
+        "copper": []
+      }
+    },
+    {
+      "net": "XB8780C34DCDC50D9A9BA",
+      "source_group_indices": [
+        0,
+        1
+      ],
+      "native_groups": [
+        [
+          "9aab76ee-96ec-5c88-8880-246356872744"
+        ],
+        [
+          "92a8d570-5ad3-5ec9-b655-19c7152d63c9"
+        ]
+      ],
+      "endpoints": [
+        {
+          "uuid": "9aab76ee-96ec-5c88-8880-246356872744",
+          "ref": "U8215",
+          "pad": "5",
+          "net": "XB8780C34DCDC50D9A9BA",
+          "xy": [
+            257194999,
+            136810000
+          ],
+          "layers": [
+            "B.Cu"
+          ]
+        },
+        {
+          "uuid": "92a8d570-5ad3-5ec9-b655-19c7152d63c9",
+          "ref": "U8216",
+          "pad": "12",
+          "net": "XB8780C34DCDC50D9A9BA",
+          "xy": [
+            261950000,
+            104295000
+          ],
+          "layers": [
+            "B.Cu"
+          ]
+        }
+      ],
+      "pad_distance_mm": 32.8608469079846,
+      "bounds_mm": [
+        251.194999,
+        98.295,
+        267.95,
+        142.81
+      ],
+      "domain": "in3",
+      "elapsed_seconds": 2.110269295008038,
+      "complete": false,
+      "diagnostics": [
+        {
+          "net": "XB8780C34DCDC50D9A9BA",
+          "endpoints": [
+            "U8216.12"
+          ],
+          "reason": "search_exhausted",
+          "phase": "route",
+          "attempts": [
+            {
+              "window_cells": [
+                0,
+                895,
+                0,
+                339
+              ],
+              "expanded": 178453,
+              "limit": 300000
+            }
+          ],
+          "max_expansions": 300000,
+          "window_mm": 6
+        }
+      ],
+      "routes": [
+        {
+          "net": "XB8780C34DCDC50D9A9BA",
+          "island": [
+            "U8216.12"
+          ],
+          "path": null
+        }
+      ],
+      "proposal": {
+        "board_sha256": "a01df89dcab3d4fab8eb0ae80195b2825d2d47adc517cd73452d9b9aa6ea079a",
+        "removed_uuids": [],
+        "copper": []
+      }
+    }
+  ]
+}
