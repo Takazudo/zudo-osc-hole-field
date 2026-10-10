@@ -117,24 +117,29 @@ gates: JL120→119. A joint R4207 repair similarly accepts JR136→135 with 85
 segments, one via and four reviewed cuts, preserving all uncut copper and the
 same native gates. A C7413 repair adds 37 segments with five reviewed cuts and
 restores both exposed retained endpoints, passing the same gates: JR135→134.
-Subsequent accepted transactions reach **JL117 / JR130 / core1,402**:
+Subsequent accepted transactions reach **JL117 / JR129 / core1,402**:
 JL's R8276 repair retains all 33,346 uncut objects after two reviewed cuts;
 PR #230 then retains 33,418 uncut objects through three exact R8127 cuts and
 adds seven objects, passing complete native audits and all exact-head CI checks;
 PR #220, PR #223 and PR #224 add JR copper without cuts; PR #218 adds 382 core ground
-objects while retaining all 133,169 old objects. Current native DRC/parity are
+objects while retaining all 133,169 old objects. PR #232 retains 51,571 uncut
+JR objects after three reviewed cuts and adds 27 objects, accepting JR130→129.
+Current native DRC/parity are
 0/0 on all three boards. Original connected groups and complete warning
 inventories are preserved, with independent fresh-copy agreement. The
 [jack](../verification/osc-pcb-jack.mdx) and
 [core](../verification/osc-pcb-core.mdx) pages pin the accepted board hashes.
 
-PR #224 and PR #230 passed all exact-head CI checks before main integration.
-Further U8202/RB4615 joint proposals and the PR #222 core supply work are
-tracked separately. Only merged native-accepted boards contribute to these totals. PR #227 fixes the plane-search budget
+PR #224, PR #230 and PR #232 passed all checks on their accepted PR commits
+before main integration. The U8202 joint proposal rolled back after splitting
+−12V. The PR #222 core supply candidate reached 1,311 but split two original
+AGND groups and was rejected; accepted core remains 1,402. The distinct PR #236
+trial remains under native evaluation. Only merged native-accepted boards
+contribute to these totals. PR #227 fixes the plane-search budget
 control; its identical-input comparison remains negative and changes no board.
 Continue with the exact unresolved endpoints and source-defined local repairs,
 not unchanged larger rerouting budgets. The
-[immutable continuation checkpoint](https://github.com/Takazudo/zudo-osc-hole-field/blob/892749dbdd53cfbab2d0876424fc4aecf1fa4311/circuit/routing/issue189/current-native-checkpoint.md)
+[immutable continuation checkpoint](https://github.com/Takazudo/zudo-osc-hole-field/blob/e39760b1845695b986997067195ab96e64bd844c/circuit/routing/issue189/current-native-checkpoint.md)
 records active runs, exact artifact digests, H1/H2 regression evidence,
 same-input benchmarks and commands for terminal artifact reconciliation.
 Issue #189 stays open until all routing and regression criteria are met. Existing
