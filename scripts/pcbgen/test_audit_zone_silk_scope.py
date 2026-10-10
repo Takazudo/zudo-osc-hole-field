@@ -1,5 +1,5 @@
 import unittest
-from scripts.pcbgen.audit_zone_silk_scope import zone_metadata,zone_fixture_parts,zone_fixture_text,native_zone_signature
+from scripts.pcbgen.audit_zone_silk_scope import zone_metadata,zone_fixture_parts,zone_fixture_text,native_zone_signature,zone_fixture_batch_text,artwork_batches
 
 
 class ZoneScopeTests(unittest.TestCase):
@@ -26,6 +26,26 @@ class ZoneScopeTests(unittest.TestCase):
                 expected=expected.replace(art,'') if selected==footprint else expected.replace(fp,'')
                 expected=expected.replace('(pad "1" smd rect)','')
                 self.assertEqual(zone_fixture_text(parts,selected),expected)
+
+    def test_batches_cover_every_selected_item_once_with_bounded_tail(self):
+        selected=[str(i) for i in range(35)]
+        batches=artwork_batches(selected,16)
+        self.assertEqual([len(b) for b in batches],[16,16,3])
+        self.assertEqual([item for batch in batches for item in batch],selected)
+        self.assertEqual(artwork_batches([],16),[])
+        for size in (0,17,True,1.5):
+            with self.assertRaisesRegex(ValueError,'size'):
+                artwork_batches(selected,size)
+        with self.assertRaisesRegex(ValueError,'duplicate'):
+            artwork_batches(['a','a'],16)
+
+    def test_batch_retains_exact_common_bytes_and_rejects_scope_errors(self):
+        parts=[(None,'header'),('b','B'),(None,'full zone'),('a','A'),('c','C'),(None,'end')]
+        self.assertEqual(zone_fixture_batch_text(parts,['a','b']),'headerBfull zoneAend')
+        self.assertEqual(zone_fixture_batch_text(parts,['a']),zone_fixture_text(parts,'a'))
+        for ids in ([],['a','a'],['missing']):
+            with self.assertRaises(ValueError):
+                zone_fixture_batch_text(parts,ids)
 
     def test_fill_changes_do_not_hide_outline_or_context_changes(self):
         def board(fill,outline='(xy 0 0)',net='AGND'):

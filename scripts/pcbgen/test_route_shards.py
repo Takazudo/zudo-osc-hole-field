@@ -22,6 +22,14 @@ def board(*items):
 
 
 class MergeAcceptanceTests(unittest.TestCase):
+    def test_batch_option_cannot_skip_full_warning_evidence(self):
+        from scripts.pcbgen.route_shards import merge
+        with self.assertRaisesRegex(ValueError,'requires complete warning'):
+            merge('osc-core',[],'must-not-run',native_zone_batch_size=16)
+        for size in (0,8,True):
+            with self.assertRaisesRegex(ValueError,'batch size'):
+                merge('osc-core',[],'must-not-run',complete_native_warnings=True,native_zone_batch_size=size)
+
     def test_complete_native_observations_do_not_bypass_errors_splits_or_failed_evidence(self):
         from scripts.pcbgen import route_shards,route_jack_grid as driver
         from scripts.pcbgen.test_grid_router import crossing_board

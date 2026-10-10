@@ -173,8 +173,10 @@ def merge_text(base_text,deltas,reverted=frozenset()):
     return ''.join(chunks)
 
 
-def merge(board_id,delta_paths,label,repair_ground=False,complete_native_warnings=False):
+def merge(board_id,delta_paths,label,repair_ground=False,complete_native_warnings=False,native_zone_batch_size=1):
     """Apply every shard delta to the board, gate it natively, and promote it if open edges fall."""
+    if type(native_zone_batch_size) is not int or native_zone_batch_size not in (1,4,16):raise ValueError('native zone batch size must be1,4or16')
+    if native_zone_batch_size!=1 and not complete_native_warnings:raise ValueError('native zone batching requires complete warning audits')
     from scripts.pcbgen.route_jack_grid import PLANES,workspace,check,promotion_gate,connectivity_signature,split_pad_groups,stitched
     board=ROOT/'boards'/board_id/f'{board_id}.kicad_pcb';base_text=board.read_text()
     sha=hashlib.sha256(base_text.encode()).hexdigest()
@@ -243,13 +245,14 @@ def merge(board_id,delta_paths,label,repair_ground=False,complete_native_warning
              'open_by_net_after':{n:len(g)-1 for n,g in after['islands'].items()}}
     receipt.update(promotion_gate(before,after,before_drc,drc))
     if complete_native_warnings:
+        receipt['native_zone_batch_size']=native_zone_batch_size
         # Supplemental observations are opt-in and source-bound. Existing
         # findings survive, and the same ordinary gate evaluates the result.
         from scripts.pcbgen.complete_native_warnings import audit_current_reports
         receipt['raw_promotion_gate']=promotion_gate(before,after,before_drc,drc)
         evidence=workspace(board_id,'shards-complete-warnings')/'native-audits'
         try:
-            complete_before,complete_after,proof=audit_current_reports(base,candidate,before_drc,drc,evidence)
+            complete_before,complete_after,proof=audit_current_reports(base,candidate,before_drc,drc,evidence,**({} if native_zone_batch_size==1 else {'zone_batch_size':native_zone_batch_size}))
             receipt['complete_native_warning_evidence']=proof
             receipt.update(promotion_gate(before,after,complete_before,complete_after))
         except (ValueError,RuntimeError,OSError,subprocess.SubprocessError) as error:
@@ -295,12 +298,13 @@ def main():
     m=sub.add_parser('merge',help='apply shard deltas to boards/<id>/<id>.kicad_pcb (KiCad via scripts/kicad/run.sh)')
     m.add_argument('board_id',choices=('osc-jack-left','osc-jack-right','osc-core'));m.add_argument('deltas',nargs='+');m.add_argument('--label',required=True)
     m.add_argument('--repair-ground',action='store_true',help='try existing AGND stitching before the complete membership gate')
+    m.add_argument('--native-zone-batch-size',type=int,choices=(1,4,16),default=1,help='opt-in bounded artwork batches; requires complete native warning audits')
     m.add_argument('--complete-native-warnings',action='store_true',help='require source-bound complete native hole/silk evidence; unsupported scope rejects')
     a=p.parse_args()
     if a.cmd=='delta':
         out=delta(a.base.read_text(),a.final.read_text());a.output.write_text(json.dumps(out)+'\n')
         print(f"delta: {len(out['removed'])} removed, {len(out['added'])} added, {len(out['nets'])} nets")
-    else:merge(a.board_id,a.deltas,a.label,a.repair_ground,a.complete_native_warnings)
+    else:merge(a.board_id,a.deltas,a.label,a.repair_ground,a.complete_native_warnings,a.native_zone_batch_size)
 
 
 if __name__=='__main__':main()

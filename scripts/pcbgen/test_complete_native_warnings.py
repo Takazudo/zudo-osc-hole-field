@@ -26,6 +26,11 @@ class CompleteWarningTests(unittest.TestCase):
             with self.assertRaisesRegex(ValueError,'new complete native zone'):
                 zone_evidence(root,before,after,context)
             pairs=result['zones'][0]['native_silk_pairs']
+            pairs['artwork_batch_size']=16
+            (root/'result.json').write_text(json.dumps(result))
+            with self.assertRaisesRegex(ValueError,'paired batch fixture'):
+                zone_evidence(root,before,after,context)
+            del pairs['artwork_batch_size']
             pairs['native_geometry_method']='exact_native_coordinates_no_arcs'
             pairs['source_geometry_sha256']={'0':'a'*64,'1':'b'*64}
             for f in pairs['fixtures']:f['native_geometry_sha256']=pairs['source_geometry_sha256'][str(f['stage'])]
@@ -36,6 +41,26 @@ class CompleteWarningTests(unittest.TestCase):
             result['zone_silk_scope_complete']=False;(root/'result.json').write_text(json.dumps(result))
             with self.assertRaisesRegex(ValueError,'classification incomplete'):
                 zone_evidence(root,before,after,context)
+
+    def test_opt_in_batching_retains_all_native_audit_commands(self):
+        from unittest.mock import patch
+        from scripts.pcbgen.complete_native_warnings import audit_current_reports
+        root=Path(__file__).resolve().parents[2]
+        board=root/'boards/osc-core/osc-core.kicad_pcb'
+        with tempfile.TemporaryDirectory(dir=root) as folder:
+            for size in (1,16):
+                with patch('scripts.pcbgen.complete_native_warnings.subprocess.run') as run,patch('scripts.pcbgen.complete_native_warnings.complete_reports',return_value=({}, {}, {})):
+                    audit_current_reports(board,board,{}, {},Path(folder)/str(size),zone_batch_size=size)
+                    self.assertEqual(run.call_count,4)
+                    commands=[c.args[0] for c in run.call_args_list]
+                    self.assertIn('scripts/pcbgen/audit_hole_pairs.py',commands[0])
+                    self.assertIn('scripts/pcbgen/audit_hole_pairs.py',commands[1])
+                    self.assertIn('scripts/pcbgen/audit_added_mask.py',commands[2])
+                    self.assertIn('scripts/pcbgen/audit_zone_silk_scope.py',commands[3])
+                    self.assertEqual('--batch-size' in commands[3],size!=1)
+                    if size!=1:self.assertEqual(commands[3][-3:],['--classify','--batch-size','16'])
+            with self.assertRaises(ValueError):
+                audit_current_reports(board,board,{}, {},Path(folder)/'invalid',zone_batch_size=8)
 
     def test_new_via_audit_cannot_hide_changed_outer_zone_fill(self):
         def board(layer,fill):return f'(kicad_pcb (zone (layer "{layer}") (filled_polygon (pts {fill}))))'
