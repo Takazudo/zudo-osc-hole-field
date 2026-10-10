@@ -1,0 +1,65 @@
+$ zudo-circuit-doc models && zudo-circuit-doc generate && pnpm --dir doc build
+models          31 selected; 0 written, 31 unchanged
+provider        circuit-component-spec (contract v1)
+view model      v2
+records         58 selected of 68 available
+sources         122 selected of 140 available, 118 linkable
+fields          91 publish, 8 deny (662 values withheld)
+urls            118 allowed of 122 considered
+generatedPages  62
+publishedCoverageDomains 295
+publishedFacts  528
+publishedIntegrationRules 2
+publishedInteractions 56
+publishedPinMaps 58
+publishedRecords 58
+publishedSources 122
+pages           0 written, 62 unchanged, 0 removed
+preflight       circuit/generated/preflight.json
+$ zfb build
+zfb info: [plugin:@takazudo/zudo-doc-claude-resources] claude-resources: 1 CLAUDE.md, 0 commands, 37 skills, 0 agents
+zfb info: [plugin:doc-history] [doc-history-meta] wrote 85 entries → .zfb/doc-history-meta.json
+info package route `/docs/[[...slug]]` (from plugin `@takazudo/zudo-doc/plugins/routes`) is shadowed by a user pages/ route (user wins); skipping
+info package route `/404` → pages/404.tsx
+info package route `/robots.txt` → pages/robots.txt.tsx
+info package route `/files/[[...path]]` → pages/files/[[...path]].tsx
+zfb info: [plugin:doc-history] Skipping doc history generation (local default — set GEN_DOC_HISTORY=1 to generate)
+zfb info: [plugin:search-index] Generated search index with 186 entries
+zfb info: [plugin:llms-txt] Generated llms.txt and llms-full.txt (186 pages)
+✓ 297 pages built in 15.54s
+$ node scripts/checks/check-site-host.mjs && node scripts/checks/check-site-assets.mjs && zudo-circuit-doc check-built && zudo-circuit-doc scan && pnpm --dir doc check:links -- --strict-anchors --strict-broken --allowlist=../scripts/checks/check-site-links-allowlist.txt
+site host: zudo-osc-hole-field.zudolab.dev matches Wrangler route
+site asset size check passed: 531 files are at most 25 MiB
+built component references passed: 58 record(s), 31 footprint SVG(s), 31 model(s); catalog viewer-free
+artifact scan: no denied value reached a published artifact
+public scope           ok: no raw evidence/CAD file is publicly reachable outside its allowlist
+
+OWNED tier             351 canaries x 127 artifacts, 0 hits
+  generated MDX              62 scanned,  0 binary, 0 hit(s)
+  preflight report            1 scanned,  0 binary, 0 hit(s)
+  built component pages      62 scanned,  0 binary, 0 hit(s)
+  search + llms slices        2 scanned,  0 binary, 0 hit(s)
+  docs-to-agent components    0 scanned,  0 binary, 0 hit(s)
+positive controls      18 per full-text surface, 4 on discovery surfaces (record c-hold)
+
+SITE tier              318 canaries x 381 artifacts, 0 hits
+                       33 canary/canaries withheld (published by another content source)
+                       40 binary artifact(s) not text-scanned
+
+built pages            62 under /docs/components/
+searchable records     61 entries in search-index.json
+hydration payloads     1247 checked, none carrying evidence-model keys
+docs-to-agent          not scanned (pass --agent-skill <dir>)
+$ node scripts/check-links.js -- --strict-anchors --strict-broken --allowlist=../scripts/checks/check-site-links-allowlist.txt
+Checking links (base: /, trailingSlash: false)...
+Source scan: src/content/docs; dist/ pass enabled
+
+=== Broken Links in Built HTML ===
+  dist/assets/osc-hole-field/workbench.html:245  ${esc(x.url)}
+
+✗ Found 1 broken link
+
+Built HTML scan: 27643 internal links and 3912 ID attributes inspected.
+
+Allowlist: 1 known exception excluded from strict-mode counts (/workspace/issue189-plane-budget/scripts/checks/check-site-links-allowlist.txt).
+heavy-guard: verdict=PASS exit=0 secs=35 min_mem_mb=11477 reason=-
