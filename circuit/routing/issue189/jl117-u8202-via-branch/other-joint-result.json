@@ -1,0 +1,2865 @@
+{
+  "status": "PROVISIONAL RASTER ONLY; NATIVE CUT TOPOLOGY AND FULL BASELINE ACCEPTANCE REQUIRED",
+  "board_sha256": "e984c0a01156b5f282f0c849077c61572df30ee0c70dfe6c9db94fbfcfe52107",
+  "dump_sha256": "89430f34beaa157040e6222ad9c6c7ea0cc974c63c22363fbdd9ec6b199c3c6e",
+  "cases": [
+    {
+      "pad": "U8202.16",
+      "cut_spec": {
+        "repair_targets": [
+          "AGND"
+        ],
+        "repair_ground_pad_uuids": [
+          "6975e90e-b67f-50cd-863b-4b65183570b6"
+        ],
+        "repair_source_uuids": [
+          "1aaa021e-0c77-599d-ac32-153bad4f58f2",
+          "5ebb4cb1-5a45-5826-b5ce-9de38cccc091",
+          "cf4ee744-86a7-52de-b93b-b587ca94bac3"
+        ],
+        "repair_bounds_mm": [
+          228.9,
+          146.1,
+          245.705,
+          163.3
+        ]
+      },
+      "via_uuid": "5ebb4cb1-5a45-5826-b5ce-9de38cccc091",
+      "boundary_endpoints": [
+        {
+          "cut_uuid": "1aaa021e-0c77-599d-ac32-153bad4f58f2",
+          "xy": [
+            234900000,
+            157300000
+          ],
+          "layer": "In2.Cu",
+          "victim_net": "X9231A7A2CB5A5CD78220"
+        },
+        {
+          "cut_uuid": "cf4ee744-86a7-52de-b93b-b587ca94bac3",
+          "xy": [
+            238400000,
+            152100000
+          ],
+          "layer": "In3.Cu",
+          "victim_net": "X9231A7A2CB5A5CD78220"
+        }
+      ],
+      "transactions": [
+        {
+          "layers": [
+            "F.Cu",
+            "In2.Cu",
+            "In3.Cu",
+            "B.Cu"
+          ],
+          "endpoint_path_found": true,
+          "elapsed_seconds": 2.6509048490261193,
+          "diagnostics": [],
+          "proposal": {
+            "board_sha256": "e984c0a01156b5f282f0c849077c61572df30ee0c70dfe6c9db94fbfcfe52107",
+            "removed_uuids": [
+              "1aaa021e-0c77-599d-ac32-153bad4f58f2",
+              "5ebb4cb1-5a45-5826-b5ce-9de38cccc091",
+              "cf4ee744-86a7-52de-b93b-b587ca94bac3"
+            ],
+            "copper": [
+              {
+                "kind": "segment",
+                "net": "AGND",
+                "start_nm": [
+                  239512500,
+                  153800000
+                ],
+                "end_nm": [
+                  238637500,
+                  153800000
+                ],
+                "width_nm": 300000,
+                "layer": "F.Cu",
+                "uuid": "7c032af4-0e7a-5f9c-924c-a208cf3d419c"
+              },
+              {
+                "kind": "via",
+                "net": "AGND",
+                "at_nm": [
+                  238637500,
+                  153800000
+                ],
+                "diameter_nm": 600000,
+                "drill_nm": 300000,
+                "layers": [
+                  "F.Cu",
+                  "B.Cu"
+                ],
+                "locked": false,
+                "uuid": "268eb911-fca9-53ed-8c42-a30cc3b79dcc"
+              },
+              {
+                "kind": "segment",
+                "net": "AGND",
+                "start_nm": [
+                  238637500,
+                  153800000
+                ],
+                "end_nm": [
+                  238300000,
+                  153800000
+                ],
+                "width_nm": 300000,
+                "layer": "In2.Cu",
+                "uuid": "63b50123-47e5-56d3-b23e-907f366e040d"
+              },
+              {
+                "kind": "segment",
+                "net": "AGND",
+                "start_nm": [
+                  238300000,
+                  153800000
+                ],
+                "end_nm": [
+                  238175000,
+                  153925000
+                ],
+                "width_nm": 300000,
+                "layer": "In2.Cu",
+                "uuid": "b86dccba-11c6-5444-8634-a6a1ebc910bb"
+              },
+              {
+                "kind": "segment",
+                "net": "AGND",
+                "start_nm": [
+                  238175000,
+                  153925000
+                ],
+                "end_nm": [
+                  238162500,
+                  153925000
+                ],
+                "width_nm": 300000,
+                "layer": "In2.Cu",
+                "uuid": "3111a5f2-6729-50b3-9977-52675c5ff15b"
+              },
+              {
+                "kind": "segment",
+                "net": "AGND",
+                "start_nm": [
+                  238162500,
+                  153925000
+                ],
+                "end_nm": [
+                  238150000,
+                  153937500
+                ],
+                "width_nm": 300000,
+                "layer": "In2.Cu",
+                "uuid": "e57b339d-628b-501f-afbb-3aaa08f9b37b"
+              },
+              {
+                "kind": "segment",
+                "net": "AGND",
+                "start_nm": [
+                  238150000,
+                  153937500
+                ],
+                "end_nm": [
+                  238137500,
+                  153937500
+                ],
+                "width_nm": 300000,
+                "layer": "In2.Cu",
+                "uuid": "841ffd60-8f61-5143-b6d6-a2eb99bb57b0"
+              },
+              {
+                "kind": "segment",
+                "net": "AGND",
+                "start_nm": [
+                  238137500,
+                  153937500
+                ],
+                "end_nm": [
+                  238125000,
+                  153950000
+                ],
+                "width_nm": 300000,
+                "layer": "In2.Cu",
+                "uuid": "45982067-3ec9-59ef-94b4-488ad4b3d5b0"
+              },
+              {
+                "kind": "segment",
+                "net": "AGND",
+                "start_nm": [
+                  238125000,
+                  153950000
+                ],
+                "end_nm": [
+                  238112500,
+                  153950000
+                ],
+                "width_nm": 300000,
+                "layer": "In2.Cu",
+                "uuid": "fe384943-0be9-5123-a9ed-05900abb105d"
+              },
+              {
+                "kind": "segment",
+                "net": "AGND",
+                "start_nm": [
+                  238112500,
+                  153950000
+                ],
+                "end_nm": [
+                  238100000,
+                  153962500
+                ],
+                "width_nm": 300000,
+                "layer": "In2.Cu",
+                "uuid": "edee9b51-2c92-55a3-8b49-431f21bc1bc1"
+              },
+              {
+                "kind": "segment",
+                "net": "AGND",
+                "start_nm": [
+                  238100000,
+                  153962500
+                ],
+                "end_nm": [
+                  238075000,
+                  153962500
+                ],
+                "width_nm": 300000,
+                "layer": "In2.Cu",
+                "uuid": "e4450d00-a74e-57e8-8a56-42a03f011057"
+              },
+              {
+                "kind": "segment",
+                "net": "AGND",
+                "start_nm": [
+                  238075000,
+                  153962500
+                ],
+                "end_nm": [
+                  238062500,
+                  153975000
+                ],
+                "width_nm": 300000,
+                "layer": "In2.Cu",
+                "uuid": "c9e54d28-9c0f-5ed9-b8ad-3790bd1614e9"
+              },
+              {
+                "kind": "segment",
+                "net": "AGND",
+                "start_nm": [
+                  238062500,
+                  153975000
+                ],
+                "end_nm": [
+                  238050000,
+                  153975000
+                ],
+                "width_nm": 300000,
+                "layer": "In2.Cu",
+                "uuid": "3a87b336-ffb0-56c0-b6c5-314655ba661c"
+              },
+              {
+                "kind": "segment",
+                "net": "AGND",
+                "start_nm": [
+                  238050000,
+                  153975000
+                ],
+                "end_nm": [
+                  238037500,
+                  153987500
+                ],
+                "width_nm": 300000,
+                "layer": "In2.Cu",
+                "uuid": "0df321e5-de4b-5057-be54-0fab0f273bde"
+              },
+              {
+                "kind": "segment",
+                "net": "AGND",
+                "start_nm": [
+                  238037500,
+                  153987500
+                ],
+                "end_nm": [
+                  238025000,
+                  153987500
+                ],
+                "width_nm": 300000,
+                "layer": "In2.Cu",
+                "uuid": "86c7d42b-2b45-5452-af58-936b3c136bab"
+              },
+              {
+                "kind": "segment",
+                "net": "AGND",
+                "start_nm": [
+                  238025000,
+                  153987500
+                ],
+                "end_nm": [
+                  238012500,
+                  154000000
+                ],
+                "width_nm": 300000,
+                "layer": "In2.Cu",
+                "uuid": "10032a78-0bd2-5a39-bcb2-39609cf8cda8"
+              },
+              {
+                "kind": "segment",
+                "net": "AGND",
+                "start_nm": [
+                  238012500,
+                  154000000
+                ],
+                "end_nm": [
+                  238000000,
+                  154000000
+                ],
+                "width_nm": 300000,
+                "layer": "In2.Cu",
+                "uuid": "31dd26e3-708b-5dd3-a438-e530a69e8f75"
+              },
+              {
+                "kind": "segment",
+                "net": "AGND",
+                "start_nm": [
+                  238000000,
+                  154000000
+                ],
+                "end_nm": [
+                  237987500,
+                  154012500
+                ],
+                "width_nm": 300000,
+                "layer": "In2.Cu",
+                "uuid": "52e95ac5-8bf3-5102-9db6-6c895a813e46"
+              },
+              {
+                "kind": "segment",
+                "net": "AGND",
+                "start_nm": [
+                  237987500,
+                  154012500
+                ],
+                "end_nm": [
+                  237975000,
+                  154012500
+                ],
+                "width_nm": 300000,
+                "layer": "In2.Cu",
+                "uuid": "18fa2695-74fd-5844-93aa-947e1a482197"
+              },
+              {
+                "kind": "segment",
+                "net": "AGND",
+                "start_nm": [
+                  237975000,
+                  154012500
+                ],
+                "end_nm": [
+                  237962500,
+                  154025000
+                ],
+                "width_nm": 300000,
+                "layer": "In2.Cu",
+                "uuid": "641fe8e1-f15f-51bc-a21a-402b1847ccfb"
+              },
+              {
+                "kind": "segment",
+                "net": "AGND",
+                "start_nm": [
+                  237962500,
+                  154025000
+                ],
+                "end_nm": [
+                  237937500,
+                  154025000
+                ],
+                "width_nm": 300000,
+                "layer": "In2.Cu",
+                "uuid": "02455333-d421-5faa-8ce8-bb809e7b2c0e"
+              },
+              {
+                "kind": "segment",
+                "net": "AGND",
+                "start_nm": [
+                  237937500,
+                  154025000
+                ],
+                "end_nm": [
+                  237925000,
+                  154037500
+                ],
+                "width_nm": 300000,
+                "layer": "In2.Cu",
+                "uuid": "b0b3af95-6aec-5f94-88d4-d7818ad6726f"
+              },
+              {
+                "kind": "segment",
+                "net": "AGND",
+                "start_nm": [
+                  237925000,
+                  154037500
+                ],
+                "end_nm": [
+                  237912500,
+                  154037500
+                ],
+                "width_nm": 300000,
+                "layer": "In2.Cu",
+                "uuid": "9113b87b-594b-587e-834e-09fedc17a28d"
+              },
+              {
+                "kind": "segment",
+                "net": "AGND",
+                "start_nm": [
+                  237912500,
+                  154037500
+                ],
+                "end_nm": [
+                  237900000,
+                  154050000
+                ],
+                "width_nm": 300000,
+                "layer": "In2.Cu",
+                "uuid": "d585e617-df7c-5d1c-8c65-eae7c030c4b7"
+              },
+              {
+                "kind": "segment",
+                "net": "AGND",
+                "start_nm": [
+                  237900000,
+                  154050000
+                ],
+                "end_nm": [
+                  237887500,
+                  154050000
+                ],
+                "width_nm": 300000,
+                "layer": "In2.Cu",
+                "uuid": "6aeb53c5-dcb5-532c-a956-d5d30cfe66be"
+              },
+              {
+                "kind": "segment",
+                "net": "AGND",
+                "start_nm": [
+                  237887500,
+                  154050000
+                ],
+                "end_nm": [
+                  237875000,
+                  154062500
+                ],
+                "width_nm": 300000,
+                "layer": "In2.Cu",
+                "uuid": "f498742e-8f9c-5551-b6fb-83be56375522"
+              },
+              {
+                "kind": "segment",
+                "net": "AGND",
+                "start_nm": [
+                  237875000,
+                  154062500
+                ],
+                "end_nm": [
+                  237862500,
+                  154062500
+                ],
+                "width_nm": 300000,
+                "layer": "In2.Cu",
+                "uuid": "01d0aa41-9ef1-5b8c-8b0a-925535e884fa"
+              },
+              {
+                "kind": "segment",
+                "net": "AGND",
+                "start_nm": [
+                  237862500,
+                  154062500
+                ],
+                "end_nm": [
+                  237850000,
+                  154075000
+                ],
+                "width_nm": 300000,
+                "layer": "In2.Cu",
+                "uuid": "921e6f7f-f593-596c-a7ff-e02771bdb4ac"
+              },
+              {
+                "kind": "segment",
+                "net": "AGND",
+                "start_nm": [
+                  237850000,
+                  154075000
+                ],
+                "end_nm": [
+                  237837500,
+                  154075000
+                ],
+                "width_nm": 300000,
+                "layer": "In2.Cu",
+                "uuid": "04f4e492-722d-5b13-9b1d-262fd5dba126"
+              },
+              {
+                "kind": "segment",
+                "net": "AGND",
+                "start_nm": [
+                  237837500,
+                  154075000
+                ],
+                "end_nm": [
+                  237825000,
+                  154087500
+                ],
+                "width_nm": 300000,
+                "layer": "In2.Cu",
+                "uuid": "bc1ced6b-58e9-5237-8852-0a8de60328f1"
+              },
+              {
+                "kind": "segment",
+                "net": "AGND",
+                "start_nm": [
+                  237825000,
+                  154087500
+                ],
+                "end_nm": [
+                  237800000,
+                  154087500
+                ],
+                "width_nm": 300000,
+                "layer": "In2.Cu",
+                "uuid": "2543ab0a-3e4e-5661-af86-6fd9971765b9"
+              },
+              {
+                "kind": "segment",
+                "net": "AGND",
+                "start_nm": [
+                  237800000,
+                  154087500
+                ],
+                "end_nm": [
+                  237787500,
+                  154100000
+                ],
+                "width_nm": 300000,
+                "layer": "In2.Cu",
+                "uuid": "aaf8beb5-7131-5c40-a016-9fa2b303e9cd"
+              },
+              {
+                "kind": "segment",
+                "net": "AGND",
+                "start_nm": [
+                  237787500,
+                  154100000
+                ],
+                "end_nm": [
+                  237775000,
+                  154100000
+                ],
+                "width_nm": 300000,
+                "layer": "In2.Cu",
+                "uuid": "1a4abc66-a36e-5438-bb9c-9f3d4c2ed855"
+              },
+              {
+                "kind": "segment",
+                "net": "AGND",
+                "start_nm": [
+                  237775000,
+                  154100000
+                ],
+                "end_nm": [
+                  237762500,
+                  154112500
+                ],
+                "width_nm": 300000,
+                "layer": "In2.Cu",
+                "uuid": "ae2e4f86-da47-5410-a177-937978819714"
+              },
+              {
+                "kind": "segment",
+                "net": "AGND",
+                "start_nm": [
+                  237762500,
+                  154112500
+                ],
+                "end_nm": [
+                  237750000,
+                  154112500
+                ],
+                "width_nm": 300000,
+                "layer": "In2.Cu",
+                "uuid": "5b3deef9-e125-5f7d-850c-173da65731b9"
+              },
+              {
+                "kind": "segment",
+                "net": "AGND",
+                "start_nm": [
+                  237750000,
+                  154112500
+                ],
+                "end_nm": [
+                  237737500,
+                  154125000
+                ],
+                "width_nm": 300000,
+                "layer": "In2.Cu",
+                "uuid": "a8f695f0-b94a-5ac5-bb86-0b8b2fc0ba55"
+              },
+              {
+                "kind": "segment",
+                "net": "AGND",
+                "start_nm": [
+                  237737500,
+                  154125000
+                ],
+                "end_nm": [
+                  237725000,
+                  154125000
+                ],
+                "width_nm": 300000,
+                "layer": "In2.Cu",
+                "uuid": "7a525e38-3e42-5450-8799-9e0e90b6cb0d"
+              },
+              {
+                "kind": "segment",
+                "net": "AGND",
+                "start_nm": [
+                  237725000,
+                  154125000
+                ],
+                "end_nm": [
+                  237712500,
+                  154137500
+                ],
+                "width_nm": 300000,
+                "layer": "In2.Cu",
+                "uuid": "3d9783ad-611c-502b-8c1e-643790cc6316"
+              },
+              {
+                "kind": "segment",
+                "net": "AGND",
+                "start_nm": [
+                  237712500,
+                  154137500
+                ],
+                "end_nm": [
+                  237700000,
+                  154137500
+                ],
+                "width_nm": 300000,
+                "layer": "In2.Cu",
+                "uuid": "14bf0abe-2aed-5e4a-a288-1c6e5db8bb7e"
+              },
+              {
+                "kind": "segment",
+                "net": "AGND",
+                "start_nm": [
+                  237700000,
+                  154137500
+                ],
+                "end_nm": [
+                  237687500,
+                  154150000
+                ],
+                "width_nm": 300000,
+                "layer": "In2.Cu",
+                "uuid": "b8f12408-5507-5658-8305-59e3ece3b3d9"
+              },
+              {
+                "kind": "segment",
+                "net": "AGND",
+                "start_nm": [
+                  237687500,
+                  154150000
+                ],
+                "end_nm": [
+                  237662500,
+                  154150000
+                ],
+                "width_nm": 300000,
+                "layer": "In2.Cu",
+                "uuid": "76ceab28-7f7c-5860-91a1-f62ec07f6d0b"
+              },
+              {
+                "kind": "segment",
+                "net": "AGND",
+                "start_nm": [
+                  237662500,
+                  154150000
+                ],
+                "end_nm": [
+                  237650000,
+                  154162500
+                ],
+                "width_nm": 300000,
+                "layer": "In2.Cu",
+                "uuid": "42bc6d48-2786-58cb-94d6-3496fef1b76d"
+              },
+              {
+                "kind": "segment",
+                "net": "AGND",
+                "start_nm": [
+                  237650000,
+                  154162500
+                ],
+                "end_nm": [
+                  237637500,
+                  154162500
+                ],
+                "width_nm": 300000,
+                "layer": "In2.Cu",
+                "uuid": "c55a3a82-d2ad-503b-9326-05a40181483d"
+              },
+              {
+                "kind": "segment",
+                "net": "AGND",
+                "start_nm": [
+                  237637500,
+                  154162500
+                ],
+                "end_nm": [
+                  237625000,
+                  154175000
+                ],
+                "width_nm": 300000,
+                "layer": "In2.Cu",
+                "uuid": "db19fee7-9fdb-58f0-8c12-42f74def4d38"
+              },
+              {
+                "kind": "segment",
+                "net": "AGND",
+                "start_nm": [
+                  237625000,
+                  154175000
+                ],
+                "end_nm": [
+                  237612500,
+                  154175000
+                ],
+                "width_nm": 300000,
+                "layer": "In2.Cu",
+                "uuid": "764dbc9f-aab8-56d3-baca-5db04433c6e6"
+              },
+              {
+                "kind": "segment",
+                "net": "AGND",
+                "start_nm": [
+                  237612500,
+                  154175000
+                ],
+                "end_nm": [
+                  237600000,
+                  154187500
+                ],
+                "width_nm": 300000,
+                "layer": "In2.Cu",
+                "uuid": "17d757df-c026-5b58-a324-3b07add55774"
+              },
+              {
+                "kind": "segment",
+                "net": "AGND",
+                "start_nm": [
+                  237600000,
+                  154187500
+                ],
+                "end_nm": [
+                  237587500,
+                  154187500
+                ],
+                "width_nm": 300000,
+                "layer": "In2.Cu",
+                "uuid": "d7c5128f-cb5a-50df-a6f2-293632266d5a"
+              },
+              {
+                "kind": "segment",
+                "net": "AGND",
+                "start_nm": [
+                  237587500,
+                  154187500
+                ],
+                "end_nm": [
+                  237575000,
+                  154200000
+                ],
+                "width_nm": 300000,
+                "layer": "In2.Cu",
+                "uuid": "08c8e32e-3eb5-5e80-8f5b-f9edc275c0b8"
+              },
+              {
+                "kind": "segment",
+                "net": "AGND",
+                "start_nm": [
+                  237575000,
+                  154200000
+                ],
+                "end_nm": [
+                  237562500,
+                  154200000
+                ],
+                "width_nm": 300000,
+                "layer": "In2.Cu",
+                "uuid": "fa782500-03bf-5a12-b456-6fea289749f2"
+              },
+              {
+                "kind": "segment",
+                "net": "AGND",
+                "start_nm": [
+                  237562500,
+                  154200000
+                ],
+                "end_nm": [
+                  237550000,
+                  154212500
+                ],
+                "width_nm": 300000,
+                "layer": "In2.Cu",
+                "uuid": "6ff96669-87f9-52a9-be72-df89c0079c72"
+              },
+              {
+                "kind": "segment",
+                "net": "AGND",
+                "start_nm": [
+                  237550000,
+                  154212500
+                ],
+                "end_nm": [
+                  237537500,
+                  154212500
+                ],
+                "width_nm": 300000,
+                "layer": "In2.Cu",
+                "uuid": "22c51904-5e54-57b6-b252-0a7eca05a6e1"
+              },
+              {
+                "kind": "segment",
+                "net": "AGND",
+                "start_nm": [
+                  237537500,
+                  154212500
+                ],
+                "end_nm": [
+                  237525000,
+                  154225000
+                ],
+                "width_nm": 300000,
+                "layer": "In2.Cu",
+                "uuid": "72e17149-b7dd-5627-837b-1ff49412d84e"
+              },
+              {
+                "kind": "segment",
+                "net": "AGND",
+                "start_nm": [
+                  237525000,
+                  154225000
+                ],
+                "end_nm": [
+                  237500000,
+                  154225000
+                ],
+                "width_nm": 300000,
+                "layer": "In2.Cu",
+                "uuid": "6f6949f6-606f-5418-9982-4911d43a4810"
+              },
+              {
+                "kind": "segment",
+                "net": "AGND",
+                "start_nm": [
+                  237500000,
+                  154225000
+                ],
+                "end_nm": [
+                  237487500,
+                  154237500
+                ],
+                "width_nm": 300000,
+                "layer": "In2.Cu",
+                "uuid": "4b81e145-9694-52ab-8a95-3f86bf2b1338"
+              },
+              {
+                "kind": "segment",
+                "net": "AGND",
+                "start_nm": [
+                  237487500,
+                  154237500
+                ],
+                "end_nm": [
+                  237475000,
+                  154237500
+                ],
+                "width_nm": 300000,
+                "layer": "In2.Cu",
+                "uuid": "fe0f28ae-76ba-5f6a-9c56-8ea1d84ef641"
+              },
+              {
+                "kind": "segment",
+                "net": "AGND",
+                "start_nm": [
+                  237475000,
+                  154237500
+                ],
+                "end_nm": [
+                  237462500,
+                  154250000
+                ],
+                "width_nm": 300000,
+                "layer": "In2.Cu",
+                "uuid": "68e7bf07-e833-50fc-966e-134155b62065"
+              },
+              {
+                "kind": "segment",
+                "net": "AGND",
+                "start_nm": [
+                  237462500,
+                  154250000
+                ],
+                "end_nm": [
+                  237450000,
+                  154250000
+                ],
+                "width_nm": 300000,
+                "layer": "In2.Cu",
+                "uuid": "4cd36177-e5b4-569a-b0ee-0013877ca6d1"
+              },
+              {
+                "kind": "segment",
+                "net": "AGND",
+                "start_nm": [
+                  237450000,
+                  154250000
+                ],
+                "end_nm": [
+                  237437500,
+                  154262500
+                ],
+                "width_nm": 300000,
+                "layer": "In2.Cu",
+                "uuid": "22f73a53-bca1-5683-ac3f-94b9bd4a7c04"
+              },
+              {
+                "kind": "segment",
+                "net": "AGND",
+                "start_nm": [
+                  237437500,
+                  154262500
+                ],
+                "end_nm": [
+                  237425000,
+                  154262500
+                ],
+                "width_nm": 300000,
+                "layer": "In2.Cu",
+                "uuid": "04eccb30-b65c-540b-8104-e255537172e4"
+              },
+              {
+                "kind": "segment",
+                "net": "AGND",
+                "start_nm": [
+                  237425000,
+                  154262500
+                ],
+                "end_nm": [
+                  237412500,
+                  154275000
+                ],
+                "width_nm": 300000,
+                "layer": "In2.Cu",
+                "uuid": "0f3f8bf5-ad33-5316-bc11-a688f6fd239a"
+              },
+              {
+                "kind": "segment",
+                "net": "AGND",
+                "start_nm": [
+                  237412500,
+                  154275000
+                ],
+                "end_nm": [
+                  237387500,
+                  154275000
+                ],
+                "width_nm": 300000,
+                "layer": "In2.Cu",
+                "uuid": "f4015ea7-8817-5218-bbce-c3175f126b06"
+              },
+              {
+                "kind": "segment",
+                "net": "AGND",
+                "start_nm": [
+                  237387500,
+                  154275000
+                ],
+                "end_nm": [
+                  237375000,
+                  154287500
+                ],
+                "width_nm": 300000,
+                "layer": "In2.Cu",
+                "uuid": "8df06314-98fd-5bc4-bf98-6674f63ef589"
+              },
+              {
+                "kind": "segment",
+                "net": "AGND",
+                "start_nm": [
+                  237375000,
+                  154287500
+                ],
+                "end_nm": [
+                  237362500,
+                  154287500
+                ],
+                "width_nm": 300000,
+                "layer": "In2.Cu",
+                "uuid": "1d74e06e-cbab-5360-bf34-2b7c23f715a7"
+              },
+              {
+                "kind": "segment",
+                "net": "AGND",
+                "start_nm": [
+                  237362500,
+                  154287500
+                ],
+                "end_nm": [
+                  237350000,
+                  154300000
+                ],
+                "width_nm": 300000,
+                "layer": "In2.Cu",
+                "uuid": "d43f78a4-86b8-5942-a76f-0926b77d8e82"
+              },
+              {
+                "kind": "segment",
+                "net": "AGND",
+                "start_nm": [
+                  237350000,
+                  154300000
+                ],
+                "end_nm": [
+                  237337500,
+                  154300000
+                ],
+                "width_nm": 300000,
+                "layer": "In2.Cu",
+                "uuid": "8cb321ff-6b5a-54a5-89aa-d9a38eb0b4b4"
+              },
+              {
+                "kind": "segment",
+                "net": "AGND",
+                "start_nm": [
+                  237337500,
+                  154300000
+                ],
+                "end_nm": [
+                  237325000,
+                  154312500
+                ],
+                "width_nm": 300000,
+                "layer": "In2.Cu",
+                "uuid": "27e60d7f-01b7-5b3f-98c9-ba551c933993"
+              },
+              {
+                "kind": "segment",
+                "net": "AGND",
+                "start_nm": [
+                  237325000,
+                  154312500
+                ],
+                "end_nm": [
+                  237312500,
+                  154312500
+                ],
+                "width_nm": 300000,
+                "layer": "In2.Cu",
+                "uuid": "9e39820d-792b-576d-ab50-a1da11799fa0"
+              },
+              {
+                "kind": "segment",
+                "net": "AGND",
+                "start_nm": [
+                  237312500,
+                  154312500
+                ],
+                "end_nm": [
+                  237300000,
+                  154325000
+                ],
+                "width_nm": 300000,
+                "layer": "In2.Cu",
+                "uuid": "4b324395-467f-5078-b2ea-5ab9c204364d"
+              },
+              {
+                "kind": "segment",
+                "net": "AGND",
+                "start_nm": [
+                  237300000,
+                  154325000
+                ],
+                "end_nm": [
+                  237287500,
+                  154325000
+                ],
+                "width_nm": 300000,
+                "layer": "In2.Cu",
+                "uuid": "0be7c5f4-ae78-5f2c-b950-4a00b2768c62"
+              },
+              {
+                "kind": "segment",
+                "net": "AGND",
+                "start_nm": [
+                  237287500,
+                  154325000
+                ],
+                "end_nm": [
+                  237275000,
+                  154337500
+                ],
+                "width_nm": 300000,
+                "layer": "In2.Cu",
+                "uuid": "27eb1cde-3718-5c46-9a91-656aa3f8b6c0"
+              },
+              {
+                "kind": "segment",
+                "net": "AGND",
+                "start_nm": [
+                  237275000,
+                  154337500
+                ],
+                "end_nm": [
+                  237262500,
+                  154337500
+                ],
+                "width_nm": 300000,
+                "layer": "In2.Cu",
+                "uuid": "e29546c3-1672-5cbb-a8b2-0a4eb26ef7cf"
+              },
+              {
+                "kind": "segment",
+                "net": "AGND",
+                "start_nm": [
+                  237262500,
+                  154337500
+                ],
+                "end_nm": [
+                  237250000,
+                  154350000
+                ],
+                "width_nm": 300000,
+                "layer": "In2.Cu",
+                "uuid": "35f8acf3-dd5f-5fd6-b785-9cea7b0b8041"
+              },
+              {
+                "kind": "segment",
+                "net": "AGND",
+                "start_nm": [
+                  237250000,
+                  154350000
+                ],
+                "end_nm": [
+                  237225000,
+                  154350000
+                ],
+                "width_nm": 300000,
+                "layer": "In2.Cu",
+                "uuid": "79f7f111-42fc-59e9-afea-d771ab18655e"
+              },
+              {
+                "kind": "segment",
+                "net": "AGND",
+                "start_nm": [
+                  237225000,
+                  154350000
+                ],
+                "end_nm": [
+                  237212500,
+                  154362500
+                ],
+                "width_nm": 300000,
+                "layer": "In2.Cu",
+                "uuid": "44951cc0-a7be-51f8-bacb-13f564de5ad5"
+              },
+              {
+                "kind": "segment",
+                "net": "AGND",
+                "start_nm": [
+                  237212500,
+                  154362500
+                ],
+                "end_nm": [
+                  237200000,
+                  154362500
+                ],
+                "width_nm": 300000,
+                "layer": "In2.Cu",
+                "uuid": "66f772ac-b562-574c-9384-ee103d0af994"
+              },
+              {
+                "kind": "segment",
+                "net": "AGND",
+                "start_nm": [
+                  237200000,
+                  154362500
+                ],
+                "end_nm": [
+                  237187500,
+                  154375000
+                ],
+                "width_nm": 300000,
+                "layer": "In2.Cu",
+                "uuid": "9bb1a49f-800c-5bb0-8c81-29e71cc9da65"
+              },
+              {
+                "kind": "segment",
+                "net": "AGND",
+                "start_nm": [
+                  237187500,
+                  154375000
+                ],
+                "end_nm": [
+                  237175000,
+                  154375000
+                ],
+                "width_nm": 300000,
+                "layer": "In2.Cu",
+                "uuid": "bfa39088-6203-500c-8b57-c820ceb5a5c9"
+              },
+              {
+                "kind": "segment",
+                "net": "AGND",
+                "start_nm": [
+                  237175000,
+                  154375000
+                ],
+                "end_nm": [
+                  237162500,
+                  154387500
+                ],
+                "width_nm": 300000,
+                "layer": "In2.Cu",
+                "uuid": "27f3742e-c71e-5c6d-a51d-76f224b3b95b"
+              },
+              {
+                "kind": "segment",
+                "net": "AGND",
+                "start_nm": [
+                  237162500,
+                  154387500
+                ],
+                "end_nm": [
+                  237150000,
+                  154387500
+                ],
+                "width_nm": 300000,
+                "layer": "In2.Cu",
+                "uuid": "0b5c781c-a848-5cc8-9a3d-5d4a5bd6f084"
+              },
+              {
+                "kind": "segment",
+                "net": "AGND",
+                "start_nm": [
+                  237150000,
+                  154387500
+                ],
+                "end_nm": [
+                  237137500,
+                  154400000
+                ],
+                "width_nm": 300000,
+                "layer": "In2.Cu",
+                "uuid": "2e015585-08cc-5071-96cc-1b00a72af82f"
+              },
+              {
+                "kind": "segment",
+                "net": "AGND",
+                "start_nm": [
+                  237137500,
+                  154400000
+                ],
+                "end_nm": [
+                  237125000,
+                  154400000
+                ],
+                "width_nm": 300000,
+                "layer": "In2.Cu",
+                "uuid": "6074828f-c021-5dcd-80b1-058e968547ef"
+              },
+              {
+                "kind": "segment",
+                "net": "AGND",
+                "start_nm": [
+                  237125000,
+                  154400000
+                ],
+                "end_nm": [
+                  237112500,
+                  154412500
+                ],
+                "width_nm": 300000,
+                "layer": "In2.Cu",
+                "uuid": "93dd76c3-1ccc-5dcf-b777-78061ec87285"
+              },
+              {
+                "kind": "segment",
+                "net": "AGND",
+                "start_nm": [
+                  237112500,
+                  154412500
+                ],
+                "end_nm": [
+                  237087500,
+                  154412500
+                ],
+                "width_nm": 300000,
+                "layer": "In2.Cu",
+                "uuid": "dd612136-c6ee-5e44-8fda-58a04e522f4f"
+              },
+              {
+                "kind": "segment",
+                "net": "AGND",
+                "start_nm": [
+                  237087500,
+                  154412500
+                ],
+                "end_nm": [
+                  237075000,
+                  154425000
+                ],
+                "width_nm": 300000,
+                "layer": "In2.Cu",
+                "uuid": "3855a765-a620-5b4f-b292-2d66909dd8c0"
+              },
+              {
+                "kind": "segment",
+                "net": "AGND",
+                "start_nm": [
+                  237075000,
+                  154425000
+                ],
+                "end_nm": [
+                  237062500,
+                  154425000
+                ],
+                "width_nm": 300000,
+                "layer": "In2.Cu",
+                "uuid": "80e82e54-9abf-590c-9cdd-471dae06c7e6"
+              },
+              {
+                "kind": "segment",
+                "net": "AGND",
+                "start_nm": [
+                  237062500,
+                  154425000
+                ],
+                "end_nm": [
+                  237050000,
+                  154437500
+                ],
+                "width_nm": 300000,
+                "layer": "In2.Cu",
+                "uuid": "1a9e7121-f332-54b2-bf6e-d2317236f805"
+              },
+              {
+                "kind": "segment",
+                "net": "AGND",
+                "start_nm": [
+                  237050000,
+                  154437500
+                ],
+                "end_nm": [
+                  237037500,
+                  154437500
+                ],
+                "width_nm": 300000,
+                "layer": "In2.Cu",
+                "uuid": "f88c1254-0167-5ee8-b58e-a4d2e248f70d"
+              },
+              {
+                "kind": "segment",
+                "net": "AGND",
+                "start_nm": [
+                  237037500,
+                  154437500
+                ],
+                "end_nm": [
+                  237025000,
+                  154450000
+                ],
+                "width_nm": 300000,
+                "layer": "In2.Cu",
+                "uuid": "c6a5707d-4728-5a56-9c41-6135748a8a93"
+              },
+              {
+                "kind": "segment",
+                "net": "AGND",
+                "start_nm": [
+                  237025000,
+                  154450000
+                ],
+                "end_nm": [
+                  237012500,
+                  154450000
+                ],
+                "width_nm": 300000,
+                "layer": "In2.Cu",
+                "uuid": "83156449-dc4a-595a-9a48-c432cb85208c"
+              },
+              {
+                "kind": "segment",
+                "net": "AGND",
+                "start_nm": [
+                  237012500,
+                  154450000
+                ],
+                "end_nm": [
+                  237000000,
+                  154462500
+                ],
+                "width_nm": 300000,
+                "layer": "In2.Cu",
+                "uuid": "2eda8a7a-b43b-5bd1-9c92-cce9c7910a8f"
+              },
+              {
+                "kind": "segment",
+                "net": "AGND",
+                "start_nm": [
+                  237000000,
+                  154462500
+                ],
+                "end_nm": [
+                  236987500,
+                  154462500
+                ],
+                "width_nm": 300000,
+                "layer": "In2.Cu",
+                "uuid": "2a1990d1-316b-5fbf-8ac4-6e45d19a06b4"
+              },
+              {
+                "kind": "segment",
+                "net": "AGND",
+                "start_nm": [
+                  236987500,
+                  154462500
+                ],
+                "end_nm": [
+                  236975000,
+                  154475000
+                ],
+                "width_nm": 300000,
+                "layer": "In2.Cu",
+                "uuid": "ca96fd89-dbe5-58e4-9866-83e7751b015e"
+              },
+              {
+                "kind": "segment",
+                "net": "AGND",
+                "start_nm": [
+                  236975000,
+                  154475000
+                ],
+                "end_nm": [
+                  236950000,
+                  154475000
+                ],
+                "width_nm": 300000,
+                "layer": "In2.Cu",
+                "uuid": "22907272-9d60-5edc-b1c4-774de19f7f8c"
+              },
+              {
+                "kind": "segment",
+                "net": "AGND",
+                "start_nm": [
+                  236950000,
+                  154475000
+                ],
+                "end_nm": [
+                  236937500,
+                  154487500
+                ],
+                "width_nm": 300000,
+                "layer": "In2.Cu",
+                "uuid": "5321da41-924c-5ef1-aeba-639129015755"
+              },
+              {
+                "kind": "segment",
+                "net": "AGND",
+                "start_nm": [
+                  236937500,
+                  154487500
+                ],
+                "end_nm": [
+                  236925000,
+                  154487500
+                ],
+                "width_nm": 300000,
+                "layer": "In2.Cu",
+                "uuid": "872e15c1-f87e-5870-9841-28f4aeb3941b"
+              },
+              {
+                "kind": "segment",
+                "net": "AGND",
+                "start_nm": [
+                  236925000,
+                  154487500
+                ],
+                "end_nm": [
+                  236912500,
+                  154500000
+                ],
+                "width_nm": 300000,
+                "layer": "In2.Cu",
+                "uuid": "40085a85-af45-5a1b-92a0-0f8664c486ac"
+              },
+              {
+                "kind": "segment",
+                "net": "AGND",
+                "start_nm": [
+                  236912500,
+                  154500000
+                ],
+                "end_nm": [
+                  236900000,
+                  154500000
+                ],
+                "width_nm": 300000,
+                "layer": "In2.Cu",
+                "uuid": "6f434169-e74e-599e-a68d-0e156c0fec55"
+              },
+              {
+                "kind": "segment",
+                "net": "AGND",
+                "start_nm": [
+                  236900000,
+                  154500000
+                ],
+                "end_nm": [
+                  236887500,
+                  154512500
+                ],
+                "width_nm": 300000,
+                "layer": "In2.Cu",
+                "uuid": "5d0477b1-2c6c-503a-abea-0212f761a669"
+              },
+              {
+                "kind": "segment",
+                "net": "AGND",
+                "start_nm": [
+                  236887500,
+                  154512500
+                ],
+                "end_nm": [
+                  236875000,
+                  154512500
+                ],
+                "width_nm": 300000,
+                "layer": "In2.Cu",
+                "uuid": "53477e3c-189c-5db6-9d02-b3d2bb385f7c"
+              },
+              {
+                "kind": "segment",
+                "net": "AGND",
+                "start_nm": [
+                  236875000,
+                  154512500
+                ],
+                "end_nm": [
+                  236862500,
+                  154525000
+                ],
+                "width_nm": 300000,
+                "layer": "In2.Cu",
+                "uuid": "935592af-7007-5795-aa48-6c3305186cd9"
+              },
+              {
+                "kind": "segment",
+                "net": "AGND",
+                "start_nm": [
+                  236862500,
+                  154525000
+                ],
+                "end_nm": [
+                  236850000,
+                  154525000
+                ],
+                "width_nm": 300000,
+                "layer": "In2.Cu",
+                "uuid": "a7a723cb-447d-5b01-95a0-4ae15aa0e4e5"
+              },
+              {
+                "kind": "segment",
+                "net": "AGND",
+                "start_nm": [
+                  236850000,
+                  154525000
+                ],
+                "end_nm": [
+                  236837500,
+                  154537500
+                ],
+                "width_nm": 300000,
+                "layer": "In2.Cu",
+                "uuid": "91bcf06d-ed38-5cd0-8fd6-be6fc329bf7f"
+              },
+              {
+                "kind": "segment",
+                "net": "AGND",
+                "start_nm": [
+                  236837500,
+                  154537500
+                ],
+                "end_nm": [
+                  236812500,
+                  154537500
+                ],
+                "width_nm": 300000,
+                "layer": "In2.Cu",
+                "uuid": "99cc6318-b09b-5d9d-b6fd-7cacfa783c1f"
+              },
+              {
+                "kind": "segment",
+                "net": "AGND",
+                "start_nm": [
+                  236812500,
+                  154537500
+                ],
+                "end_nm": [
+                  236800000,
+                  154550000
+                ],
+                "width_nm": 300000,
+                "layer": "In2.Cu",
+                "uuid": "d59e419c-d229-5b53-a7fc-d8ed8c1f6434"
+              },
+              {
+                "kind": "segment",
+                "net": "AGND",
+                "start_nm": [
+                  236800000,
+                  154550000
+                ],
+                "end_nm": [
+                  236787500,
+                  154550000
+                ],
+                "width_nm": 300000,
+                "layer": "In2.Cu",
+                "uuid": "e1d6bde7-fc2d-5724-8682-e8bc23773cf9"
+              },
+              {
+                "kind": "segment",
+                "net": "AGND",
+                "start_nm": [
+                  236787500,
+                  154550000
+                ],
+                "end_nm": [
+                  236775000,
+                  154562500
+                ],
+                "width_nm": 300000,
+                "layer": "In2.Cu",
+                "uuid": "07f05062-8cd6-5ab8-b4fe-77dbbf1675c0"
+              },
+              {
+                "kind": "segment",
+                "net": "AGND",
+                "start_nm": [
+                  236775000,
+                  154562500
+                ],
+                "end_nm": [
+                  235550000,
+                  154562500
+                ],
+                "width_nm": 300000,
+                "layer": "In2.Cu",
+                "uuid": "e9022a61-1db7-5f30-827f-0f5b38b2754d"
+              },
+              {
+                "kind": "segment",
+                "net": "AGND",
+                "start_nm": [
+                  235550000,
+                  154562500
+                ],
+                "end_nm": [
+                  234525000,
+                  155587500
+                ],
+                "width_nm": 300000,
+                "layer": "In2.Cu",
+                "uuid": "15f11d2f-004d-523e-acfa-53ad8394a931"
+              },
+              {
+                "kind": "segment",
+                "net": "AGND",
+                "start_nm": [
+                  234525000,
+                  155587500
+                ],
+                "end_nm": [
+                  234512500,
+                  155587500
+                ],
+                "width_nm": 300000,
+                "layer": "In2.Cu",
+                "uuid": "774a98b2-7bbf-5e27-88a9-121292422126"
+              },
+              {
+                "kind": "segment",
+                "net": "AGND",
+                "start_nm": [
+                  234512500,
+                  155587500
+                ],
+                "end_nm": [
+                  234500000,
+                  155600000
+                ],
+                "width_nm": 300000,
+                "layer": "In2.Cu",
+                "uuid": "1c9a638b-48a6-525f-b45d-1d2ca771feb3"
+              },
+              {
+                "kind": "segment",
+                "net": "AGND",
+                "start_nm": [
+                  234500000,
+                  155600000
+                ],
+                "end_nm": [
+                  234475000,
+                  155600000
+                ],
+                "width_nm": 300000,
+                "layer": "In2.Cu",
+                "uuid": "21c59890-6fd9-58ce-b9fc-c1bf9570a85a"
+              },
+              {
+                "kind": "segment",
+                "net": "AGND",
+                "start_nm": [
+                  234475000,
+                  155600000
+                ],
+                "end_nm": [
+                  234462500,
+                  155612500
+                ],
+                "width_nm": 300000,
+                "layer": "In2.Cu",
+                "uuid": "2c3c94d8-8600-5c80-8119-145e8ea2e710"
+              },
+              {
+                "kind": "segment",
+                "net": "X9231A7A2CB5A5CD78220",
+                "start_nm": [
+                  238400000,
+                  152100000
+                ],
+                "end_nm": [
+                  237500000,
+                  153000000
+                ],
+                "width_nm": 150000,
+                "layer": "In3.Cu",
+                "uuid": "18d22e55-c76f-5f79-8cd2-1c1c8999f928"
+              },
+              {
+                "kind": "segment",
+                "net": "X9231A7A2CB5A5CD78220",
+                "start_nm": [
+                  237500000,
+                  153000000
+                ],
+                "end_nm": [
+                  236650000,
+                  153000000
+                ],
+                "width_nm": 150000,
+                "layer": "In3.Cu",
+                "uuid": "aece23b1-1c31-5414-9a4a-51e3601b4d6a"
+              },
+              {
+                "kind": "segment",
+                "net": "X9231A7A2CB5A5CD78220",
+                "start_nm": [
+                  236650000,
+                  153000000
+                ],
+                "end_nm": [
+                  236625000,
+                  153000000
+                ],
+                "width_nm": 150000,
+                "layer": "In3.Cu",
+                "uuid": "0d2f86ad-5e86-5e8d-b0e0-a11d61dbe458"
+              },
+              {
+                "kind": "segment",
+                "net": "X9231A7A2CB5A5CD78220",
+                "start_nm": [
+                  236625000,
+                  153000000
+                ],
+                "end_nm": [
+                  235500000,
+                  153000000
+                ],
+                "width_nm": 200000,
+                "layer": "In3.Cu",
+                "uuid": "06354104-47b0-5094-9a82-5f4ffd5bd3fc"
+              },
+              {
+                "kind": "segment",
+                "net": "X9231A7A2CB5A5CD78220",
+                "start_nm": [
+                  235500000,
+                  153000000
+                ],
+                "end_nm": [
+                  235475000,
+                  152975000
+                ],
+                "width_nm": 200000,
+                "layer": "In3.Cu",
+                "uuid": "62583ca5-102d-54ab-974b-fc5c286f7823"
+              },
+              {
+                "kind": "segment",
+                "net": "X9231A7A2CB5A5CD78220",
+                "start_nm": [
+                  235475000,
+                  152975000
+                ],
+                "end_nm": [
+                  235450000,
+                  152975000
+                ],
+                "width_nm": 200000,
+                "layer": "In3.Cu",
+                "uuid": "b55ffe8d-0275-5d19-a5bc-816bdc32d9ad"
+              },
+              {
+                "kind": "segment",
+                "net": "X9231A7A2CB5A5CD78220",
+                "start_nm": [
+                  235450000,
+                  152975000
+                ],
+                "end_nm": [
+                  235425000,
+                  152950000
+                ],
+                "width_nm": 200000,
+                "layer": "In3.Cu",
+                "uuid": "ddc63333-2f37-5bfa-b14e-7d1c48901879"
+              },
+              {
+                "kind": "segment",
+                "net": "X9231A7A2CB5A5CD78220",
+                "start_nm": [
+                  235425000,
+                  152950000
+                ],
+                "end_nm": [
+                  235400000,
+                  152950000
+                ],
+                "width_nm": 200000,
+                "layer": "In3.Cu",
+                "uuid": "176b0e96-8948-5560-ad32-b29d92381e2c"
+              },
+              {
+                "kind": "segment",
+                "net": "X9231A7A2CB5A5CD78220",
+                "start_nm": [
+                  235400000,
+                  152950000
+                ],
+                "end_nm": [
+                  235375000,
+                  152925000
+                ],
+                "width_nm": 200000,
+                "layer": "In3.Cu",
+                "uuid": "0e138950-ed37-5f32-a266-17fab8f1e259"
+              },
+              {
+                "kind": "segment",
+                "net": "X9231A7A2CB5A5CD78220",
+                "start_nm": [
+                  235375000,
+                  152925000
+                ],
+                "end_nm": [
+                  235350000,
+                  152925000
+                ],
+                "width_nm": 200000,
+                "layer": "In3.Cu",
+                "uuid": "c4a0e064-05bc-5004-9de2-18fc34377e48"
+              },
+              {
+                "kind": "segment",
+                "net": "X9231A7A2CB5A5CD78220",
+                "start_nm": [
+                  235350000,
+                  152925000
+                ],
+                "end_nm": [
+                  235325000,
+                  152900000
+                ],
+                "width_nm": 200000,
+                "layer": "In3.Cu",
+                "uuid": "95c86b52-ea05-5543-927f-13895a744047"
+              },
+              {
+                "kind": "segment",
+                "net": "X9231A7A2CB5A5CD78220",
+                "start_nm": [
+                  235325000,
+                  152900000
+                ],
+                "end_nm": [
+                  235250000,
+                  152900000
+                ],
+                "width_nm": 200000,
+                "layer": "In3.Cu",
+                "uuid": "9769f9ca-3c30-51aa-add3-0cf862ce6fdd"
+              },
+              {
+                "kind": "segment",
+                "net": "X9231A7A2CB5A5CD78220",
+                "start_nm": [
+                  235250000,
+                  152900000
+                ],
+                "end_nm": [
+                  235225000,
+                  152875000
+                ],
+                "width_nm": 200000,
+                "layer": "In3.Cu",
+                "uuid": "e2f0c5d8-89d3-5f57-a2fb-3ebbebac6f74"
+              },
+              {
+                "kind": "segment",
+                "net": "X9231A7A2CB5A5CD78220",
+                "start_nm": [
+                  235225000,
+                  152875000
+                ],
+                "end_nm": [
+                  235175000,
+                  152875000
+                ],
+                "width_nm": 200000,
+                "layer": "In3.Cu",
+                "uuid": "672af7e5-a449-554e-a862-f0e0d743f1db"
+              },
+              {
+                "kind": "segment",
+                "net": "X9231A7A2CB5A5CD78220",
+                "start_nm": [
+                  235175000,
+                  152875000
+                ],
+                "end_nm": [
+                  233700000,
+                  151400000
+                ],
+                "width_nm": 200000,
+                "layer": "In3.Cu",
+                "uuid": "36d4a301-f502-5126-b938-2c09025eaacf"
+              },
+              {
+                "kind": "segment",
+                "net": "X9231A7A2CB5A5CD78220",
+                "start_nm": [
+                  233700000,
+                  151400000
+                ],
+                "end_nm": [
+                  233675000,
+                  151400000
+                ],
+                "width_nm": 200000,
+                "layer": "In3.Cu",
+                "uuid": "1d953708-b8ce-5583-93fc-baaa54921ee4"
+              },
+              {
+                "kind": "segment",
+                "net": "X9231A7A2CB5A5CD78220",
+                "start_nm": [
+                  233675000,
+                  151400000
+                ],
+                "end_nm": [
+                  233650000,
+                  151375000
+                ],
+                "width_nm": 200000,
+                "layer": "In3.Cu",
+                "uuid": "4741b6ff-176d-525a-8110-c6f78f51b664"
+              },
+              {
+                "kind": "segment",
+                "net": "X9231A7A2CB5A5CD78220",
+                "start_nm": [
+                  233650000,
+                  151375000
+                ],
+                "end_nm": [
+                  233625000,
+                  151375000
+                ],
+                "width_nm": 200000,
+                "layer": "In3.Cu",
+                "uuid": "b0ef11c3-005b-52b3-9bf8-7467ed0c5385"
+              },
+              {
+                "kind": "segment",
+                "net": "X9231A7A2CB5A5CD78220",
+                "start_nm": [
+                  233625000,
+                  151375000
+                ],
+                "end_nm": [
+                  233600000,
+                  151350000
+                ],
+                "width_nm": 200000,
+                "layer": "In3.Cu",
+                "uuid": "9e20f2ff-7b0e-5463-aa98-cd4b9897452c"
+              },
+              {
+                "kind": "segment",
+                "net": "X9231A7A2CB5A5CD78220",
+                "start_nm": [
+                  233600000,
+                  151350000
+                ],
+                "end_nm": [
+                  233575000,
+                  151350000
+                ],
+                "width_nm": 200000,
+                "layer": "In3.Cu",
+                "uuid": "e998ca10-8516-5472-94ea-64ed0f956998"
+              },
+              {
+                "kind": "segment",
+                "net": "X9231A7A2CB5A5CD78220",
+                "start_nm": [
+                  233575000,
+                  151350000
+                ],
+                "end_nm": [
+                  233550000,
+                  151325000
+                ],
+                "width_nm": 200000,
+                "layer": "In3.Cu",
+                "uuid": "12d844be-de76-5c31-80b2-9cb98ea75466"
+              },
+              {
+                "kind": "segment",
+                "net": "X9231A7A2CB5A5CD78220",
+                "start_nm": [
+                  233550000,
+                  151325000
+                ],
+                "end_nm": [
+                  233475000,
+                  151325000
+                ],
+                "width_nm": 200000,
+                "layer": "In3.Cu",
+                "uuid": "33fac6d7-7f4f-5bb7-8260-53acb05ed4d4"
+              },
+              {
+                "kind": "segment",
+                "net": "X9231A7A2CB5A5CD78220",
+                "start_nm": [
+                  233475000,
+                  151325000
+                ],
+                "end_nm": [
+                  233450000,
+                  151300000
+                ],
+                "width_nm": 200000,
+                "layer": "In3.Cu",
+                "uuid": "691a027c-b721-5161-aa75-a5587af31990"
+              },
+              {
+                "kind": "segment",
+                "net": "X9231A7A2CB5A5CD78220",
+                "start_nm": [
+                  233450000,
+                  151300000
+                ],
+                "end_nm": [
+                  233150000,
+                  151300000
+                ],
+                "width_nm": 200000,
+                "layer": "In3.Cu",
+                "uuid": "e8f6792f-cd37-5caf-b7bd-32ae3a0025a4"
+              },
+              {
+                "kind": "segment",
+                "net": "X9231A7A2CB5A5CD78220",
+                "start_nm": [
+                  233150000,
+                  151300000
+                ],
+                "end_nm": [
+                  233125000,
+                  151325000
+                ],
+                "width_nm": 200000,
+                "layer": "In3.Cu",
+                "uuid": "c8231a5b-b31e-531b-bc0c-6b3c03fb3665"
+              },
+              {
+                "kind": "segment",
+                "net": "X9231A7A2CB5A5CD78220",
+                "start_nm": [
+                  233125000,
+                  151325000
+                ],
+                "end_nm": [
+                  233050000,
+                  151325000
+                ],
+                "width_nm": 200000,
+                "layer": "In3.Cu",
+                "uuid": "734446d0-a60a-573c-95b7-ce99a98f8c45"
+              },
+              {
+                "kind": "segment",
+                "net": "X9231A7A2CB5A5CD78220",
+                "start_nm": [
+                  233050000,
+                  151325000
+                ],
+                "end_nm": [
+                  233025000,
+                  151350000
+                ],
+                "width_nm": 150000,
+                "layer": "In3.Cu",
+                "uuid": "30e43973-64a1-5db5-9387-26a14df1940a"
+              },
+              {
+                "kind": "segment",
+                "net": "X9231A7A2CB5A5CD78220",
+                "start_nm": [
+                  233025000,
+                  151350000
+                ],
+                "end_nm": [
+                  232700000,
+                  151675000
+                ],
+                "width_nm": 150000,
+                "layer": "In3.Cu",
+                "uuid": "b4fc5fda-6d99-50fd-87db-a2dce3ab98db"
+              },
+              {
+                "kind": "segment",
+                "net": "X9231A7A2CB5A5CD78220",
+                "start_nm": [
+                  232700000,
+                  151675000
+                ],
+                "end_nm": [
+                  232300000,
+                  151675000
+                ],
+                "width_nm": 150000,
+                "layer": "In3.Cu",
+                "uuid": "cd0698fc-556f-59b0-8414-78efb9d2e4f1"
+              },
+              {
+                "kind": "segment",
+                "net": "X9231A7A2CB5A5CD78220",
+                "start_nm": [
+                  232300000,
+                  151675000
+                ],
+                "end_nm": [
+                  232275000,
+                  151700000
+                ],
+                "width_nm": 150000,
+                "layer": "In3.Cu",
+                "uuid": "6bd38e4e-3dd3-519e-b072-3ae0cf7563eb"
+              },
+              {
+                "kind": "segment",
+                "net": "X9231A7A2CB5A5CD78220",
+                "start_nm": [
+                  232275000,
+                  151700000
+                ],
+                "end_nm": [
+                  232225000,
+                  151700000
+                ],
+                "width_nm": 150000,
+                "layer": "In3.Cu",
+                "uuid": "1fdffbf5-a201-5eed-909d-e7e7f99692a4"
+              },
+              {
+                "kind": "segment",
+                "net": "X9231A7A2CB5A5CD78220",
+                "start_nm": [
+                  232225000,
+                  151700000
+                ],
+                "end_nm": [
+                  232200000,
+                  151725000
+                ],
+                "width_nm": 150000,
+                "layer": "In3.Cu",
+                "uuid": "38ce208d-6760-571a-900c-68102ff92958"
+              },
+              {
+                "kind": "segment",
+                "net": "X9231A7A2CB5A5CD78220",
+                "start_nm": [
+                  232200000,
+                  151725000
+                ],
+                "end_nm": [
+                  232175000,
+                  151725000
+                ],
+                "width_nm": 150000,
+                "layer": "In3.Cu",
+                "uuid": "b583733c-0775-5c88-b34b-3e547c1790b5"
+              },
+              {
+                "kind": "segment",
+                "net": "X9231A7A2CB5A5CD78220",
+                "start_nm": [
+                  232175000,
+                  151725000
+                ],
+                "end_nm": [
+                  232150000,
+                  151750000
+                ],
+                "width_nm": 150000,
+                "layer": "In3.Cu",
+                "uuid": "abc37aff-83c0-5b5b-a878-45b38b62b668"
+              },
+              {
+                "kind": "segment",
+                "net": "X9231A7A2CB5A5CD78220",
+                "start_nm": [
+                  232150000,
+                  151750000
+                ],
+                "end_nm": [
+                  232125000,
+                  151750000
+                ],
+                "width_nm": 150000,
+                "layer": "In3.Cu",
+                "uuid": "615d2792-f7bb-5136-91a3-eb2b833652c7"
+              },
+              {
+                "kind": "segment",
+                "net": "X9231A7A2CB5A5CD78220",
+                "start_nm": [
+                  232125000,
+                  151750000
+                ],
+                "end_nm": [
+                  231950000,
+                  151925000
+                ],
+                "width_nm": 150000,
+                "layer": "In3.Cu",
+                "uuid": "d6d7aa79-fbb3-5da7-b22a-d3a0defe8768"
+              },
+              {
+                "kind": "segment",
+                "net": "X9231A7A2CB5A5CD78220",
+                "start_nm": [
+                  231950000,
+                  151925000
+                ],
+                "end_nm": [
+                  231950000,
+                  151950000
+                ],
+                "width_nm": 150000,
+                "layer": "In3.Cu",
+                "uuid": "bae846e1-b12f-50e0-b99e-4a88d1c798b3"
+              },
+              {
+                "kind": "segment",
+                "net": "X9231A7A2CB5A5CD78220",
+                "start_nm": [
+                  231950000,
+                  151950000
+                ],
+                "end_nm": [
+                  231925000,
+                  151975000
+                ],
+                "width_nm": 150000,
+                "layer": "In3.Cu",
+                "uuid": "4cee36f9-982c-515f-8c57-6b863db192dd"
+              },
+              {
+                "kind": "segment",
+                "net": "X9231A7A2CB5A5CD78220",
+                "start_nm": [
+                  231925000,
+                  151975000
+                ],
+                "end_nm": [
+                  231925000,
+                  152000000
+                ],
+                "width_nm": 150000,
+                "layer": "In3.Cu",
+                "uuid": "cd640242-6de7-5e44-b861-b433c15a78c8"
+              },
+              {
+                "kind": "segment",
+                "net": "X9231A7A2CB5A5CD78220",
+                "start_nm": [
+                  231925000,
+                  152000000
+                ],
+                "end_nm": [
+                  231900000,
+                  152025000
+                ],
+                "width_nm": 150000,
+                "layer": "In3.Cu",
+                "uuid": "d5093d34-82b8-5d11-8356-63bad8720dac"
+              },
+              {
+                "kind": "segment",
+                "net": "X9231A7A2CB5A5CD78220",
+                "start_nm": [
+                  231900000,
+                  152025000
+                ],
+                "end_nm": [
+                  231900000,
+                  152075000
+                ],
+                "width_nm": 150000,
+                "layer": "In3.Cu",
+                "uuid": "1d662002-bde0-5d7a-804f-8d7da6829165"
+              },
+              {
+                "kind": "segment",
+                "net": "X9231A7A2CB5A5CD78220",
+                "start_nm": [
+                  231900000,
+                  152075000
+                ],
+                "end_nm": [
+                  231875000,
+                  152100000
+                ],
+                "width_nm": 150000,
+                "layer": "In3.Cu",
+                "uuid": "a559c6e7-9e95-5204-b348-128762ff0624"
+              },
+              {
+                "kind": "segment",
+                "net": "X9231A7A2CB5A5CD78220",
+                "start_nm": [
+                  231875000,
+                  152100000
+                ],
+                "end_nm": [
+                  231875000,
+                  156375000
+                ],
+                "width_nm": 150000,
+                "layer": "In3.Cu",
+                "uuid": "591ce788-546b-5856-a6d7-6d2ef70b904b"
+              },
+              {
+                "kind": "via",
+                "net": "X9231A7A2CB5A5CD78220",
+                "at_nm": [
+                  231875000,
+                  156375000
+                ],
+                "diameter_nm": 600000,
+                "drill_nm": 300000,
+                "layers": [
+                  "F.Cu",
+                  "B.Cu"
+                ],
+                "locked": false,
+                "uuid": "f7cc3883-be3f-5674-9275-bddda1a14221"
+              },
+              {
+                "kind": "segment",
+                "net": "X9231A7A2CB5A5CD78220",
+                "start_nm": [
+                  231875000,
+                  156375000
+                ],
+                "end_nm": [
+                  232100000,
+                  156600000
+                ],
+                "width_nm": 150000,
+                "layer": "In2.Cu",
+                "uuid": "7459732b-a4cf-53ab-a41a-781f73eb8558"
+              },
+              {
+                "kind": "segment",
+                "net": "X9231A7A2CB5A5CD78220",
+                "start_nm": [
+                  232100000,
+                  156600000
+                ],
+                "end_nm": [
+                  232100000,
+                  157500000
+                ],
+                "width_nm": 150000,
+                "layer": "In2.Cu",
+                "uuid": "31e1b0d3-71b9-5288-b4f0-42505f2aeafe"
+              },
+              {
+                "kind": "segment",
+                "net": "X9231A7A2CB5A5CD78220",
+                "start_nm": [
+                  232100000,
+                  157500000
+                ],
+                "end_nm": [
+                  232125000,
+                  157525000
+                ],
+                "width_nm": 150000,
+                "layer": "In2.Cu",
+                "uuid": "1dea17c7-15be-5b84-8ad3-2efbafdb6d8f"
+              },
+              {
+                "kind": "segment",
+                "net": "X9231A7A2CB5A5CD78220",
+                "start_nm": [
+                  232125000,
+                  157525000
+                ],
+                "end_nm": [
+                  232125000,
+                  157600000
+                ],
+                "width_nm": 150000,
+                "layer": "In2.Cu",
+                "uuid": "6b9ca03e-c512-5b40-afd0-79bb80ebcbb8"
+              },
+              {
+                "kind": "segment",
+                "net": "X9231A7A2CB5A5CD78220",
+                "start_nm": [
+                  232125000,
+                  157600000
+                ],
+                "end_nm": [
+                  232150000,
+                  157625000
+                ],
+                "width_nm": 150000,
+                "layer": "In2.Cu",
+                "uuid": "6dc84bee-f3d7-5b0d-9ea9-82a130c37bcd"
+              },
+              {
+                "kind": "segment",
+                "net": "X9231A7A2CB5A5CD78220",
+                "start_nm": [
+                  232150000,
+                  157625000
+                ],
+                "end_nm": [
+                  232150000,
+                  157650000
+                ],
+                "width_nm": 150000,
+                "layer": "In2.Cu",
+                "uuid": "7fc18dd8-642b-51c7-98c6-9cdb0fc04ebe"
+              },
+              {
+                "kind": "segment",
+                "net": "X9231A7A2CB5A5CD78220",
+                "start_nm": [
+                  232150000,
+                  157650000
+                ],
+                "end_nm": [
+                  232325000,
+                  157825000
+                ],
+                "width_nm": 150000,
+                "layer": "In2.Cu",
+                "uuid": "0603d805-3930-5597-8d31-8e8e506cf446"
+              },
+              {
+                "kind": "segment",
+                "net": "X9231A7A2CB5A5CD78220",
+                "start_nm": [
+                  232325000,
+                  157825000
+                ],
+                "end_nm": [
+                  232350000,
+                  157825000
+                ],
+                "width_nm": 150000,
+                "layer": "In2.Cu",
+                "uuid": "030e0361-d110-5fe7-8361-24fd645cd3f7"
+              },
+              {
+                "kind": "segment",
+                "net": "X9231A7A2CB5A5CD78220",
+                "start_nm": [
+                  232350000,
+                  157825000
+                ],
+                "end_nm": [
+                  232375000,
+                  157850000
+                ],
+                "width_nm": 150000,
+                "layer": "In2.Cu",
+                "uuid": "336c4278-03ca-5c61-94f8-a6951986ace0"
+              },
+              {
+                "kind": "segment",
+                "net": "X9231A7A2CB5A5CD78220",
+                "start_nm": [
+                  232375000,
+                  157850000
+                ],
+                "end_nm": [
+                  232450000,
+                  157850000
+                ],
+                "width_nm": 150000,
+                "layer": "In2.Cu",
+                "uuid": "9045619e-2e49-532a-87af-e9fef6e71944"
+              },
+              {
+                "kind": "segment",
+                "net": "X9231A7A2CB5A5CD78220",
+                "start_nm": [
+                  232450000,
+                  157850000
+                ],
+                "end_nm": [
+                  232475000,
+                  157875000
+                ],
+                "width_nm": 150000,
+                "layer": "In2.Cu",
+                "uuid": "272883e2-39cb-5919-bd07-158c24fc7200"
+              },
+              {
+                "kind": "segment",
+                "net": "X9231A7A2CB5A5CD78220",
+                "start_nm": [
+                  232475000,
+                  157875000
+                ],
+                "end_nm": [
+                  233000000,
+                  157875000
+                ],
+                "width_nm": 150000,
+                "layer": "In2.Cu",
+                "uuid": "ece2011f-55da-52d1-9925-1231f3a61852"
+              },
+              {
+                "kind": "segment",
+                "net": "X9231A7A2CB5A5CD78220",
+                "start_nm": [
+                  233000000,
+                  157875000
+                ],
+                "end_nm": [
+                  233025000,
+                  157900000
+                ],
+                "width_nm": 150000,
+                "layer": "In2.Cu",
+                "uuid": "e125b339-99e3-547a-a4a0-987ddf9713a8"
+              },
+              {
+                "kind": "segment",
+                "net": "X9231A7A2CB5A5CD78220",
+                "start_nm": [
+                  233025000,
+                  157900000
+                ],
+                "end_nm": [
+                  233050000,
+                  157900000
+                ],
+                "width_nm": 150000,
+                "layer": "In2.Cu",
+                "uuid": "401386f6-6beb-5b64-bdce-df459d319afc"
+              },
+              {
+                "kind": "segment",
+                "net": "X9231A7A2CB5A5CD78220",
+                "start_nm": [
+                  233050000,
+                  157900000
+                ],
+                "end_nm": [
+                  234525000,
+                  157900000
+                ],
+                "width_nm": 200000,
+                "layer": "In2.Cu",
+                "uuid": "0e4ed589-16f9-5982-9973-3f57a6f4ce0b"
+              },
+              {
+                "kind": "segment",
+                "net": "X9231A7A2CB5A5CD78220",
+                "start_nm": [
+                  234525000,
+                  157900000
+                ],
+                "end_nm": [
+                  234550000,
+                  157875000
+                ],
+                "width_nm": 200000,
+                "layer": "In2.Cu",
+                "uuid": "5a170474-5bd0-5d10-875d-54cd5adb76b7"
+              },
+              {
+                "kind": "segment",
+                "net": "X9231A7A2CB5A5CD78220",
+                "start_nm": [
+                  234550000,
+                  157875000
+                ],
+                "end_nm": [
+                  234625000,
+                  157875000
+                ],
+                "width_nm": 200000,
+                "layer": "In2.Cu",
+                "uuid": "3541b255-fb08-5c45-84b0-83b3b06260cf"
+              },
+              {
+                "kind": "segment",
+                "net": "X9231A7A2CB5A5CD78220",
+                "start_nm": [
+                  234625000,
+                  157875000
+                ],
+                "end_nm": [
+                  234650000,
+                  157850000
+                ],
+                "width_nm": 200000,
+                "layer": "In2.Cu",
+                "uuid": "b37a2fcd-3c0d-5f92-96f6-01f4381d6e3e"
+              },
+              {
+                "kind": "segment",
+                "net": "X9231A7A2CB5A5CD78220",
+                "start_nm": [
+                  234650000,
+                  157850000
+                ],
+                "end_nm": [
+                  234675000,
+                  157850000
+                ],
+                "width_nm": 200000,
+                "layer": "In2.Cu",
+                "uuid": "90f6acdc-6778-5cc4-bb38-01d5499e6421"
+              },
+              {
+                "kind": "segment",
+                "net": "X9231A7A2CB5A5CD78220",
+                "start_nm": [
+                  234675000,
+                  157850000
+                ],
+                "end_nm": [
+                  234700000,
+                  157825000
+                ],
+                "width_nm": 200000,
+                "layer": "In2.Cu",
+                "uuid": "c597cd1e-e10e-500f-85b2-02382800d130"
+              },
+              {
+                "kind": "segment",
+                "net": "X9231A7A2CB5A5CD78220",
+                "start_nm": [
+                  234700000,
+                  157825000
+                ],
+                "end_nm": [
+                  234725000,
+                  157825000
+                ],
+                "width_nm": 200000,
+                "layer": "In2.Cu",
+                "uuid": "be68fe65-e2f9-58e7-8423-52b1f8784af1"
+              },
+              {
+                "kind": "segment",
+                "net": "X9231A7A2CB5A5CD78220",
+                "start_nm": [
+                  234725000,
+                  157825000
+                ],
+                "end_nm": [
+                  234850000,
+                  157700000
+                ],
+                "width_nm": 200000,
+                "layer": "In2.Cu",
+                "uuid": "e9347307-142c-5e2e-9877-639a9e7d9a4d"
+              },
+              {
+                "kind": "segment",
+                "net": "X9231A7A2CB5A5CD78220",
+                "start_nm": [
+                  234850000,
+                  157700000
+                ],
+                "end_nm": [
+                  234850000,
+                  157675000
+                ],
+                "width_nm": 200000,
+                "layer": "In2.Cu",
+                "uuid": "06a15536-53bf-5be3-8015-1fb186816d44"
+              },
+              {
+                "kind": "segment",
+                "net": "X9231A7A2CB5A5CD78220",
+                "start_nm": [
+                  234850000,
+                  157675000
+                ],
+                "end_nm": [
+                  234875000,
+                  157650000
+                ],
+                "width_nm": 200000,
+                "layer": "In2.Cu",
+                "uuid": "3a1f2441-ad7e-58a6-80b0-4b68bed997a1"
+              },
+              {
+                "kind": "segment",
+                "net": "X9231A7A2CB5A5CD78220",
+                "start_nm": [
+                  234875000,
+                  157650000
+                ],
+                "end_nm": [
+                  234875000,
+                  157625000
+                ],
+                "width_nm": 200000,
+                "layer": "In2.Cu",
+                "uuid": "e55d8209-be1f-5aa8-9a33-4d7c85e3d01e"
+              },
+              {
+                "kind": "segment",
+                "net": "X9231A7A2CB5A5CD78220",
+                "start_nm": [
+                  234875000,
+                  157625000
+                ],
+                "end_nm": [
+                  234900000,
+                  157600000
+                ],
+                "width_nm": 200000,
+                "layer": "In2.Cu",
+                "uuid": "2482b749-7e57-5224-8102-95a5ad149603"
+              },
+              {
+                "kind": "segment",
+                "net": "X9231A7A2CB5A5CD78220",
+                "start_nm": [
+                  234900000,
+                  157600000
+                ],
+                "end_nm": [
+                  234900000,
+                  157525000
+                ],
+                "width_nm": 200000,
+                "layer": "In2.Cu",
+                "uuid": "38d36d9d-2aa8-5a57-8694-7a25cd1616a9"
+              },
+              {
+                "kind": "segment",
+                "net": "X9231A7A2CB5A5CD78220",
+                "start_nm": [
+                  234900000,
+                  157525000
+                ],
+                "end_nm": [
+                  234925000,
+                  157500000
+                ],
+                "width_nm": 200000,
+                "layer": "In2.Cu",
+                "uuid": "8a232486-e211-5eae-bfd4-eb691aaf3e18"
+              },
+              {
+                "kind": "segment",
+                "net": "X9231A7A2CB5A5CD78220",
+                "start_nm": [
+                  234925000,
+                  157500000
+                ],
+                "end_nm": [
+                  234925000,
+                  157300000
+                ],
+                "width_nm": 200000,
+                "layer": "In2.Cu",
+                "uuid": "746b0bba-415e-5f70-b7c4-ba8d3ea4669b"
+              },
+              {
+                "kind": "segment",
+                "net": "X9231A7A2CB5A5CD78220",
+                "start_nm": [
+                  234925000,
+                  157300000
+                ],
+                "end_nm": [
+                  234900000,
+                  157300000
+                ],
+                "width_nm": 200000,
+                "layer": "In2.Cu",
+                "uuid": "d1a0e1b3-9d42-59f8-96b7-51d4193a1e9d"
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}
