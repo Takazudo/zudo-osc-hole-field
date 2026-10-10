@@ -29,7 +29,7 @@ For rejection/partial output, reconcile actual evidence separately; never weaken
 
 Portable replays: all18JR130endpoint outcomes/diagnostics/proposals identical (PASS70s), oneJL117U8202 endpoint identical(PASS3s); timingexcluded/no speedupclaim. `portable_endpoints.py --dump DUMP --source-screen SCREEN --output OUTPUT` under respective evidencefolders, using pinnedboardadjacenttodump. Nativeacceptance remains authoritative.
 
-**Storage:** oldercore1402 duplicate native-auditsextraction733785207bytes removedonlyafterimmutableZIP+all3412disk/archivefixturesverified; ZIP/proof/successfulboards/start/merge/freshdumpsretained. Seeverified-audit-deduplication.json. Lastfree~1.5GB; checkbefore newcoreextraction. OldJR131native-audits300MB is an optional exactduplicate cleanup onlyafter archive/proof/allfixtureverification; no deletionyet. Neverdeletecanonicalcopper or unrelatedwork.
+**Storage:** oldercore1402 duplicate native-auditsextraction733785207bytes removedonlyafterimmutableZIP+all3412disk/archivefixturesverified; ZIP/proof/successfulboards/start/merge/freshdumpsretained. Seeverified-audit-deduplication.json. Lastfree~1.5GB; checkbefore newcoreextraction. Old JR131 duplicate native-audits extraction310817544bytes removed after verifying immutable ZIPbcd28d26cd32ef717ff0c3383e85260f805f6e323e48ac3268855e4d8835406e and all1103fixture paths/sizes/hashes against saved proof. ZIP/proof/all successful boards/native dumps retained; seejr131-verified-audit-deduplication.json. Free disk1.8GB at09:38UTC. Neverdeletecanonicalcopper or unrelatedwork.
 
 Lower chronological sections are historical; this current-state section takes precedence. Issue189 remains OPEN, full connectivity and final integration still unmet.
 
@@ -146,3 +146,9 @@ Both require native baseline+cut evidence, exactly3reviewed cuts, every uncut co
 ## 09:14 UTC approval update
 
 Parent reports user replied “did it” after bundled JL CI38039767141 and JR CI38033682423 approval request. Both exact runs independently observed in_progress; no redispatch/approval API called. This confirms approval, NOT successful tests. Existing incremental merge authorization applies once native evidence, all five exact-head checks and fresh current-main compatibility pass. Recompute remaining candidate preview after merging the first; preserve PR232/233 newer descendant work. Main still f702/JL118/JR131/core1402. Older pending-approval statements below are historical.
+
+## 09:38 UTC documentation and environment checkpoint
+
+Draft PR234 / `agent-fix/189-jl117-current-docs`, source **da5d8a1356b6cabfe9c74d5b4389a36b72f69c7e**, worktree `/workspace/issue189-jr131-next` clean. Two authored pages reflect accepted JL117/JR130/core1402, exact current hashes, reviewed cuts/retained copper and full native proof; newer U8202/RB4615/core proposals explicitly excluded. Circuitbefore/after andpnpmcheckPASS; guardedbuild+sitePASS37s with the existing one allowlisted workbench-template link exception. Exact CI38042089755 running. No board/generator/physical/electrical changes. Wait allfiveexactCI before authorized integration and preview actual currentmain. Oldlocal3f239b0sourcebranch remains preserved; remotePR224bot alreadymerged, no overwrite.
+
+Post-main CI38041900562: JL/JR native gates and docs PASS; core/Python-aggregate running. Originalcore38023611361 stillactive. FullJL38041226566/fullJR38041389680 stillactive. No worker redispatched. Any earlier “noapproval”/“read-onlyactive” statements are historical.
