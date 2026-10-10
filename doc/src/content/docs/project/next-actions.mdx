@@ -117,9 +117,23 @@ gates: JL120→119. A joint R4207 repair similarly accepts JR136→135 with 85
 segments, one via and four reviewed cuts, preserving all uncut copper and the
 same native gates. A C7413 repair adds 37 segments with five reviewed cuts and
 restores both exposed retained endpoints, passing the same gates: JR135→134.
-Current native totals are **JL119 / JR134 / core1,441**.
+Subsequent accepted transactions reach **JL118 / JR131 / core1,402**:
+JL's R8276 repair retains all 33,346 uncut objects after two reviewed cuts;
+PR #220 and PR #223 add JR copper without cuts; PR #218 adds 382 core ground
+objects while retaining all 133,169 old objects. Current native DRC/parity are
+0/0 on all three boards. Original connected groups and complete warning
+inventories are preserved, with independent fresh-copy agreement. The
+[jack](../verification/osc-pcb-jack.mdx) and
+[core](../verification/osc-pcb-core.mdx) pages pin the accepted board hashes.
+
+JR130 in PR #224 has passed native acceptance but awaits exact-head CI approval
+and integration; the PR #222 core supply worker has no accepted result yet.
+Neither is counted in the totals above. PR #227 fixes the plane-search budget
+control; its identical-input comparison remains negative and changes no board.
 Continue with the exact unresolved endpoints and source-defined local repairs,
-not unchanged larger rerouting budgets. The resumable implementation note is
-`circuit/routing/issue189/checkpoint.md` in the repository.
+not unchanged larger rerouting budgets. The
+[immutable continuation checkpoint](https://github.com/Takazudo/zudo-osc-hole-field/blob/f920d594ab6a435c2523e3605c15f64b055b799e/circuit/routing/issue189/current-native-checkpoint.md)
+records active runs, exact artifact digests, H1/H2 regression evidence,
+same-input benchmarks and commands for terminal artifact reconciliation.
 Issue #189 stays open until all routing and regression criteria are met. Existing
 protection, mechanical, electrical and manufacturing gates remain open.
