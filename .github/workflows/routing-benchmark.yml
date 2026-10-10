@@ -36,7 +36,7 @@ on:
       core_replay:
         description: Reviewed recovery transaction (used only with recover_core)
         type: choice
-        options: [aggregate, reviewed, outer, outer-filtered, ground-link, bounded-one, short-supplies, short-power, u1513-alternatives, finer-ground-batch, finer-ground-complete-warnings, short-no-via, supply-away-from-splits, native-hole-audit, native-mask-audit, native-zone-audit]
+        options: [aggregate, reviewed, outer, outer-filtered, ground-link, bounded-one, short-supplies, short-power, u1513-alternatives, finer-ground-batch, finer-ground-complete-warnings, short-no-via, supply-away-from-splits, supply-two-split-guards, native-hole-audit, native-mask-audit, native-zone-audit]
         default: aggregate
       local_repair:
         description: Read-only jack local branch-repair pilot (no canonical writer)
@@ -263,6 +263,11 @@ jobs:
             python circuit/routing/issue189/core-supply-away-from-splits/prepare.py
             replay=.circuit-cache/issue189-core-supply-away-from-splits/copper.json
             label=issue189-supply-away-from-splits
+            extra=(--complete-native-warnings --native-zone-batch-size 16)
+          elif [[ $CORE_REPLAY == supply-two-split-guards ]]; then
+            python circuit/routing/issue189/core-supply-two-split-guards/prepare.py
+            replay=.circuit-cache/issue189-core-supply-two-split-guards/copper.json
+            label=issue189-supply-two-split-guards
             extra=(--complete-native-warnings --native-zone-batch-size 16)
           elif [[ $CORE_REPLAY == short-power ]]; then
             python circuit/routing/issue189/core-short-power/prepare.py
