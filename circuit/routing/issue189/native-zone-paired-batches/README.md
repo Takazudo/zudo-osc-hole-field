@@ -1,4 +1,23 @@
-# Optional full paired native batching — preparation only
+# Complete source-bound native batch evidence
+
+Update 2026-10-10: continuation 38008640020 at ca1e681 completed all 42
+paired fixtures (18 front, 24 back; 144/177 selected artwork items in both
+stages). Artifact 11653113141 has SHA256
+f63fff8145c2033a7ab0d3da38f49e1aed6ff735f80aaafbf3cd435f6c8d9cd4.
+`complete-receipt.json` independently reconciles it (guard PASS, 124 seconds).
+`combined-eligibility.json` checks the exact terminal hole/silk evidence plus
+this complete zone proof through the ordinary promotion gate (guard PASS,
+330 seconds). Both complete hole sets have 1,407 identities; no new hole,
+added-copper silk or zone finding exists. All original 619 findings survive,
+expanding additively to 1,827 per board. Saved evidence is eligible; no board
+is adopted by these read-only checks.
+
+PR217 at c9d11ad passed all five exact-head checks in 38008620676 and merged
+as fab639d790e453d4ff7af4a61d896f83730edf6f. The following preparation notes
+are historical. The next isolated replay reruns all four audits on its own
+exact boards with `--complete-native-warnings --native-zone-batch-size 16`,
+and retains all settled/fresh, copper-retention and publication checks.
+Canonical JL/JR/core remain 118/134/1441 until that replay is accepted.
 
 Read-only native run 38005209241 at d727b49 timed out with exit 124 after
 35 of 42 batches. Artifact 11652255919 has SHA256
