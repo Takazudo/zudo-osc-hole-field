@@ -174,9 +174,9 @@ def merge_text(base_text,deltas,reverted=frozenset()):
 
 
 def merge(board_id,delta_paths,label,repair_ground=False,complete_native_warnings=False,native_zone_batch_size=1):
+    """Apply every shard delta to the board, gate it natively, and promote it if open edges fall."""
     if type(native_zone_batch_size) is not int or native_zone_batch_size not in (1,4,16):raise ValueError('native zone batch size must be1,4or16')
     if native_zone_batch_size!=1 and not complete_native_warnings:raise ValueError('native zone batching requires complete warning audits')
-    """Apply every shard delta to the board, gate it natively, and promote it if open edges fall."""
     from scripts.pcbgen.route_jack_grid import PLANES,workspace,check,promotion_gate,connectivity_signature,split_pad_groups,stitched
     board=ROOT/'boards'/board_id/f'{board_id}.kicad_pcb';base_text=board.read_text()
     sha=hashlib.sha256(base_text.encode()).hexdigest()
