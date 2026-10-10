@@ -31,9 +31,26 @@ Beforeb9f5ca13f83c7ffdbe5836fd271e7c1099e04b901ca1798a7be06f025bd02d66; merge/fr
 
 Independent negative checker `/tmp/issue189-reconcile-core-supply-partial.py` runs through heavy guard, verifies exactZIP/snapshots/retention/rejection and completed fixture hashes; success proof `/tmp/issue189-core-supply-partial-proof.json`. It does not claim unrun native reconstruction/full warning audit. Initial checker correctly failed an acceptance assertion, exposing these splits. Negative reconciliation PASS197s (guard verdict=PASS). All completed146fixture/report hashes and ordered progress verified; full audit remains incomplete.
 
-New isolated branch `agent-fix/189-core-supply-rejection-evidence`, current **aaa2649936cd2782746d11c44e6dfe9f4fc8a964**, `/workspace/issue189-core-supply-complete`. It preserves old PR222/source47bb, merges accepted main, adds exact rejection evidence and rejects structurally ineligible outcomes before expensive supplemental audits. Four regression cases RED→GREEN;33affected tests and circuit check PASS. No native gate weakened: eligible candidates still need every complete warning audit. Pushed draft **PR235**; exactCI **38044313314** pending. Worktree clean. Do not merge before all five exact checks and fresh current-main preview.
+New isolated branch `agent-fix/189-core-supply-rejection-evidence`, current **aaa2649936cd2782746d11c44e6dfe9f4fc8a964**, `/workspace/issue189-core-supply-complete` (worktree now advanced to PR236 below; remote PR235 retained). It preserves old PR222/source47bb, merges accepted main, adds exact rejection evidence and rejects structurally ineligible outcomes before expensive supplemental audits. Four regression cases RED→GREEN;33affected tests and circuit check PASS. No native gate weakened: eligible candidates still need every complete warning audit. Pushed draft **PR235**; exactCI **38044313314** pending. Worktree clean. Do not merge before all five exact checks and fresh current-main preview.
 
-Next routing work: identify and repair or omit whole supply cases causing these two original-group splits, using saved native memberships/geometry. Proximity is not causal proof. Require bounded native snapshots showing original groups preserved before full warning/publication checks. Current core1402 remains canonical. No active core native worker; no duplicate dispatch.
+Next routing work: identify and repair or omit whole supply cases causing these two original-group splits, using saved native memberships/geometry. Proximity is not causal proof. Require bounded native snapshots showing original groups preserved before full warning/publication checks. Current core1402 remains canonical. The old worker is terminal; see the distinct single continuation below.
+
+## Sole active core continuation — PR236
+
+Branch **agent-fix/189-core-supply-two-split-guards**, source **4768f2f82e8a4d634f8dc2905429616bfcd20c37**, native run **38044514132**, sourceCI **38044514616**. Worktree `/workspace/issue189-core-supply-complete` clean at this source. Native result UNKNOWN. Do not dispatch another core worker.
+
+Distinct90whole-case/115segment trial excludes exactly U4106.13,U4206.4,U4206.13 from rejected118segment proposal. Nearest same-layer detached-pad gaps5.22/6.86/9.98mm; geometric prioritization is not causal proof. Exact subset proof PASS; preserves every accepted object,0.25mm widths,zero vias/cuts. Proposal SHA256 **d2dd097a47a26386ca44c35dccd83187912d3a332b7a8d53d1312c55bd11f9b9**. Dispatch regression RED→GREEN;34affected tests,circuitcontract,whitespace checks PASS. Completewarnings/batch16 and all original settled/fresh/group/DRC/parity/publication gates mandatory. Inherits PR235 early rejection guard.
+
+Watch the existing run:
+```sh
+gh run view 38044514132 --repo Takazudo/zudo-osc-hole-field --json status,conclusion,jobs
+```
+After terminal, download artifact `obstacle-adoption-osc-core-38044514132` through connected GitHub app if CLI redirect fails. Record artifactID and ZIP SHA256 before parsing; do not expose signed URL. Successful full proof checker `core-supply-two-split-guards/reconcile_full.py` on evidence branch (local `/tmp/issue189-reconcile-core-two-split-full.py`) is prepared and py_compilePASS **but UNRUN**:
+```sh
+cd /workspace/issue189-core-supply-complete
+bash /home/agent/.codex/scripts/heavy-guard.sh -- /workspace/zudo-osc-hole-field/.circuit-cache/route-venv/bin/python /tmp/issue189-reconcile-core-two-split-full.py osc-core ZIP --sha256 SHA256 --artifact ARTIFACT_ID --destination NEW_DIRECTORY --output PROOF.json
+```
+Requires full adopted receipt, fresh<1402,133551old+115new/0cuts,3807nonrouting,all complete audit evidence and original-group/source/context/pad/edge/layer/keepout/publication equivalence. Do not weaken for timeout/rejection; reconcile actual negatives separately. Check disk before extraction (~1.5GBfree). On native acceptance verify bot delta, exact-head all5CI, current-main preview and unrelated-board retention before authorized incremental merge/postCI. Keep189OPEN until actualcompletioncriteria.
 
 ## JL U8202 full candidate rejected and rolled back
 
