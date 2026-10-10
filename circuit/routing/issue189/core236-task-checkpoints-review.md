@@ -159,3 +159,39 @@ approve an exact commit and manifest digest for one pilot. Do not invoke
 Future B.Cu-after bootstrap still requires a reviewed pinned-native artifact
 binding exact after-board/context/zone/layer/source-zone bytes and geometry;
 none of the 103 after tasks is scheduled by this pilot.
+
+## Registered-workflow wrapper (parent review required; no dispatch)
+
+GitHub does not register the standalone new workflow before it exists on the
+default branch. Its workflow endpoint returns 404; it exists at reviewed803dcd0
+but not main. No merge or default-branch edit is proposed.
+
+The registered `.github/workflows/routing-benchmark.yml` now has an explicit
+`core_audit_task_pilot` boolean, default false, plus optional reviewed commit and
+manifest digest inputs. The new `core-audit-task-pilot` job requires that flag,
+`board=osc-core`, and all existing routing/adoption/recovery flags false. Every
+old job is additionally gated by the pilot flag being false; all six old job
+bodies, original predicate logic, default behavior, global permissions and
+concurrency are preserved. The pilot job copies the standalone host steps exactly
+and adds job-level read-only permissions and the same dedicated concurrency lock.
+
+The wrapper still verifies the exact parent-reviewed commit and manifest file
+SHA, prepares authenticated immutable artifacts, and invokes the guarded host
+controller once. Its 50-minute job, one shared 40-minute command, two workers,
+exact before-batches15–22/23–30, hard6GiB container caps, aggregate12GiB/available2GiB
+memory guards, owned cleanup and always-upload partial checkpoints are unchanged.
+It adds no new native scope, after tasks, routing, adoption or eligibility gate.
+
+The registered workflow is separately included in orchestration-revision.json;
+new checkpoint artifact authentication accepts this exact workflow path rather
+than the unregistered standalone path. Kernel bindings, task IDs, manifest digest,
+235prior receipts,191missing tasks and three geometry bindings remain unchanged.
+
+Inexpensive verification:38focused tests PASS, including a frozen803dcd0 comparison
+of every original job body/predicate and exact pilot-step equality; Python compile,
+YAML parse, separate orchestration revision binding and diff checks PASS. Require
+parent review of this wrapper revision AND successful new exact-head CI before
+any dispatch. Planned dispatch inputs are core_audit_task_pilot=true,
+board=osc-core, reviewed_commit=<new reviewed exact head>, and
+reviewed_manifest_sha256=e32424ccb6b44bde66cab3eb1214928eb20c8c6d46678011a06e719d5132a35e.
+No dispatch occurred while preparing this plumbing correction.

@@ -3,6 +3,18 @@ run-name: "Issue 189 ${{ inputs.local_repair && 'read-only local repair' || inpu
 on:
   workflow_dispatch:
     inputs:
+      core_audit_task_pilot:
+        description: Reviewed bounded core audit task pilot; disables every other job
+        type: boolean
+        default: false
+      reviewed_commit:
+        description: Exact parent-reviewed pilot source commit
+        type: string
+        required: false
+      reviewed_manifest_sha256:
+        description: Exact parent-reviewed pilot manifest digest
+        type: string
+        required: false
       board:
         type: choice
         options: [osc-jack-left, osc-jack-right, osc-core]
@@ -54,7 +66,7 @@ concurrency:
   cancel-in-progress: false
 jobs:
   benchmark:
-    if: inputs.adopt_run == '' && !inputs.recover_core && !inputs.replay_jl && !inputs.replay_jr && !inputs.local_repair
+    if: ${{ !inputs.core_audit_task_pilot && (inputs.adopt_run == '' && !inputs.recover_core && !inputs.replay_jl && !inputs.replay_jr && !inputs.local_repair) }}
     runs-on: ubuntu-latest
     timeout-minutes: 355
     strategy:
@@ -93,7 +105,7 @@ jobs:
           if-no-files-found: error
           include-hidden-files: true
   adopt:
-    if: (inputs.adopt_run != '' || inputs.recover_core || inputs.replay_jl || inputs.replay_jr) && !inputs.local_repair && inputs.core_replay != 'native-hole-audit' && inputs.core_replay != 'native-mask-audit' && inputs.core_replay != 'native-zone-audit'
+    if: ${{ !inputs.core_audit_task_pilot && ((inputs.adopt_run != '' || inputs.recover_core || inputs.replay_jl || inputs.replay_jr) && !inputs.local_repair && inputs.core_replay != 'native-hole-audit' && inputs.core_replay != 'native-mask-audit' && inputs.core_replay != 'native-zone-audit') }}
     runs-on: ubuntu-latest
     timeout-minutes: 355
     permissions:
@@ -317,7 +329,7 @@ jobs:
           include-hidden-files: true
           retention-days: 30
   local-pilot:
-    if: inputs.local_repair && !inputs.replay_jl && !inputs.replay_jr
+    if: ${{ !inputs.core_audit_task_pilot && (inputs.local_repair && !inputs.replay_jl && !inputs.replay_jr) }}
     runs-on: ubuntu-latest
     timeout-minutes: 90
     permissions:
@@ -362,7 +374,7 @@ jobs:
           retention-days: 30
 
   hole-audit:
-    if: inputs.recover_core && inputs.core_replay == 'native-hole-audit' && inputs.board == 'osc-core' && !inputs.local_repair && !inputs.replay_jl && !inputs.replay_jr && inputs.adopt_run == ''
+    if: ${{ !inputs.core_audit_task_pilot && (inputs.recover_core && inputs.core_replay == 'native-hole-audit' && inputs.board == 'osc-core' && !inputs.local_repair && !inputs.replay_jl && !inputs.replay_jr && inputs.adopt_run == '') }}
     permissions:
       contents: read
       actions: read
@@ -412,7 +424,7 @@ jobs:
           if-no-files-found: error
 
   mask-audit:
-    if: inputs.recover_core && inputs.core_replay == 'native-mask-audit' && inputs.board == 'osc-core' && !inputs.local_repair && !inputs.replay_jl && !inputs.replay_jr && inputs.adopt_run == ''
+    if: ${{ !inputs.core_audit_task_pilot && (inputs.recover_core && inputs.core_replay == 'native-mask-audit' && inputs.board == 'osc-core' && !inputs.local_repair && !inputs.replay_jl && !inputs.replay_jr && inputs.adopt_run == '') }}
     permissions:
       contents: read
       actions: read
@@ -452,7 +464,7 @@ jobs:
           if-no-files-found: error
 
   zone-audit:
-    if: inputs.recover_core && inputs.core_replay == 'native-zone-audit' && inputs.board == 'osc-core' && !inputs.local_repair && !inputs.replay_jl && !inputs.replay_jr && inputs.adopt_run == ''
+    if: ${{ !inputs.core_audit_task_pilot && (inputs.recover_core && inputs.core_replay == 'native-zone-audit' && inputs.board == 'osc-core' && !inputs.local_repair && !inputs.replay_jl && !inputs.replay_jr && inputs.adopt_run == '') }}
     permissions:
       contents: read
       actions: read
@@ -510,3 +522,47 @@ jobs:
           retention-days: 30
           include-hidden-files: true
           if-no-files-found: error
+  core-audit-task-pilot:
+    if: inputs.core_audit_task_pilot && inputs.board == 'osc-core' && inputs.adopt_run == '' && !inputs.recover_core && !inputs.replay_jl && !inputs.replay_jr && !inputs.local_repair
+    permissions:
+      contents: read
+      actions: read
+    concurrency:
+      group: issue189-core-audit-task-pilot
+      cancel-in-progress: false
+    runs-on: ubuntu-latest
+    timeout-minutes: 50
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          fetch-depth: 0
+      - name: Verify explicit reviewed source and manifest
+        env:
+          REVIEWED_COMMIT: ${{ inputs.reviewed_commit }}
+          REVIEWED_MANIFEST: ${{ inputs.reviewed_manifest_sha256 }}
+        run: |
+          python3 - <<'PY'
+          import hashlib,os,subprocess
+          from pathlib import Path
+          assert subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip()==os.environ['REVIEWED_COMMIT']
+          assert hashlib.sha256(Path('circuit/routing/issue189/core236-task-checkpoints/manifest.json').read_bytes()).hexdigest()==os.environ['REVIEWED_MANIFEST']
+          PY
+      - name: Authenticate and prepare immutable inputs
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python3 scripts/pcbgen/core_audit_pilot.py prepare --output .circuit-cache/core-task-inputs
+      - name: Two packets under one shared forty-minute budget
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REVIEWED_COMMIT: ${{ inputs.reviewed_commit }}
+        run: |
+          timeout --signal=INT --kill-after=30s 40m python3 scripts/pcbgen/core_audit_pilot.py controller --source-root .circuit-cache/core-task-inputs --config circuit/routing/issue189/core236-task-checkpoints --output .circuit-cache/core-task-output --reviewed-commit "$REVIEWED_COMMIT"
+      - name: Preserve all completed and partial checkpoints on every exit
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: core-audit-task-pilot-${{ github.run_id }}
+          path: .circuit-cache/core-task-output/
+          include-hidden-files: true
+          if-no-files-found: warn
+          retention-days: 30

@@ -3,7 +3,7 @@ import argparse,hashlib,importlib.util,json,os,signal,subprocess,sys,time,zipfil
 from pathlib import Path
 sys.path.insert(0,str(Path(__file__).resolve().parents[2]))
 from scripts.pcbgen import audit_fixture_tasks as a
-ORCHESTRATION_FILES=('scripts/pcbgen/audit_fixture_tasks.py','scripts/pcbgen/core_audit_pilot.py','scripts/pcbgen/freeze_core_audit_tasks.py','circuit/routing/issue189/core236-audit-recovery/recover_isolated.py','.github/workflows/core-audit-task-pilot.yml')
+ORCHESTRATION_FILES=('scripts/pcbgen/audit_fixture_tasks.py','scripts/pcbgen/core_audit_pilot.py','scripts/pcbgen/freeze_core_audit_tasks.py','circuit/routing/issue189/core236-audit-recovery/recover_isolated.py','.github/workflows/core-audit-task-pilot.yml','.github/workflows/routing-benchmark.yml')
 REPO=Path(__file__).resolve().parents[2]
 spec=importlib.util.spec_from_file_location('audit_resource_util',REPO/ORCHESTRATION_FILES[3]);resource=importlib.util.module_from_spec(spec);spec.loader.exec_module(resource)
 def revision(repo,commit=None):
@@ -34,7 +34,7 @@ from the original native kernel. No leaf JSON can create a VerifiedAuthority.
  pin=json.loads(Path(approval).read_bytes())
  if pin['manifest_sha256']!=a.identity(m) or pin['policy']!=kernel or pin['orchestration']!=revision(repo,pin['producer_commit']) or pin['orchestration']!=revision(repo):raise ValueError('producer/manifest/kernel/orchestration changed')
  artifact,execution=a.authenticate_artifact(pin['artifact_id'],pin['run'],pin['producer_commit'],pin['artifact_sha256'])
- if execution['path']!='.github/workflows/core-audit-task-pilot.yml':raise ValueError('unapproved producer workflow')
+ if execution['path']!='.github/workflows/routing-benchmark.yml':raise ValueError('unapproved producer workflow')
  with Path(archive).open('rb') as f:
   if hashlib.file_digest(f,'sha256').hexdigest()!=pin['artifact_sha256']:raise ValueError('native checkpoint artifact digest mismatch')
  destination=Path(destination)

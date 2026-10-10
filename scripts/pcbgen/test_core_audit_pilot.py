@@ -7,6 +7,26 @@ class PilotTests(unittest.TestCase):
  setUp=fixtures.TaskTests.setUp
  bundle=fixtures.TaskTests.bundle
  verify=fixtures.TaskTests.verify
+ def test_registered_wrapper_preserves_original_jobs_and_exact_host_steps(self):
+  import subprocess,re
+  repo=Path(__file__).resolve().parents[2]
+  original=subprocess.check_output(['git','show','803dcd00b83b5182857e0c3fc1c345152d831cff:.github/workflows/routing-benchmark.yml'],cwd=repo,text=True)
+  wrapped=(repo/'.github/workflows/routing-benchmark.yml').read_text()
+  def jobs(text):
+   parts=re.split(r'^  ([a-z][a-z-]*):\n',text.split('jobs:\n',1)[1],flags=re.M)
+   return dict(zip(parts[1::2],parts[2::2]))
+  old=jobs(original);new=jobs(wrapped)
+  self.assertEqual(set(new),set(old)|{'core-audit-task-pilot'})
+  for key,body in old.items():
+   condition=next(line for line in body.splitlines() if line.startswith('    if: '))
+   replacement='    if: ${{ !inputs.core_audit_task_pilot && ('+condition[len('    if: '):]+') }}'
+   self.assertEqual(new[key],body.replace(condition,replacement,1))
+  standalone=(repo/'.github/workflows/core-audit-task-pilot.yml').read_text()
+  self.assertEqual(new['core-audit-task-pilot'].split('    steps:\n',1)[1],standalone.split('    steps:\n',1)[1])
+  self.assertIn('    timeout-minutes: 50',new['core-audit-task-pilot'])
+  self.assertIn('      group: issue189-core-audit-task-pilot',new['core-audit-task-pilot'])
+  self.assertIn('        default: false',wrapped.split('      core_audit_task_pilot:',1)[1].split('      reviewed_commit:',1)[0])
+  self.assertIn('.github/workflows/routing-benchmark.yml',p.ORCHESTRATION_FILES)
  def test_aggregate_guard_and_shared_deadline(self):
   sample=dict(available_kib=2097152,total_rss_kib=12582912)
   self.assertIsNone(p.stop_reason(sample,2399,2400))
@@ -39,7 +59,7 @@ class PilotTests(unittest.TestCase):
   approval=self.root/'fabricated-approval.json';commit='b'*40;orchestration={'sha256':'forged'}
   pin=dict(manifest_sha256=a.identity(self.m),policy=self.kernel,orchestration=orchestration,producer_commit=commit,artifact_id=42,run=8,artifact_sha256='a'*64,ledgers={})
   a.atomic(approval,pin)
-  artifact=dict(id=42,expired=False,digest='sha256:'+'c'*64,workflow_run=dict(id=8,head_sha=commit));run=dict(id=8,head_sha=commit,path='.github/workflows/core-audit-task-pilot.yml')
+  artifact=dict(id=42,expired=False,digest='sha256:'+'c'*64,workflow_run=dict(id=8,head_sha=commit));run=dict(id=8,head_sha=commit,path='.github/workflows/routing-benchmark.yml')
   with patch.object(p,'revision',return_value=orchestration),patch.object(a,'github_json',side_effect=[artifact,run]):
    with self.assertRaisesRegex(ValueError,'authenticated artifact'):p.authenticate_checkpoints('fabricated.zip',approval,a.SHA(approval.read_bytes()),self.m,self.kernel,self.root,self.root/'fabricated-output')
  def test_packet_scope_overlap_budget_mutations(self):
