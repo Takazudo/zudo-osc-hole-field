@@ -1,0 +1,1183 @@
+{
+  "status": "REVIEW-ONLY20-CONNECTION SET; NO ROUTING/PLACEMENT OR NATIVE COUNTERFACTUAL RUN",
+  "source_main": "65cefd41fc39e064d38319115ad96016a1c6b71c",
+  "canonical_board_sha256": "fa60b4e1587a67501782fb55374f0e5d5133f65cd0bbe62624aef502441fda10",
+  "native_dump_sha256": "7e7402b32dbde81f6392f3a0b6129cf7b0f46117cb067d0a78f356c4e4a5ad86",
+  "native_filled_board_sha256": "b9f5ca13f83c7ffdbe5836fd271e7c1099e04b901ca1798a7be06f025bd02d66",
+  "context_sha256": {
+    ".kicad_pro": "118d3a49c306babe3ec88c0fb2906cbc29792164c76a677f47c670ba9c0136fe",
+    ".kicad_dru": "14989a90b6d8bec5967487b7bbc915f4382bab17e7759a30517a00e6c11c27ac",
+    ".kicad_sch": "cf3e98d9179ab1d96505d29612a4bd7138cdf782dcce53d145c73ef8789b41c6"
+  },
+  "native_open_edges": 1402,
+  "scope": "E2 electrical ownership;10signal/6supply/4return obligations; disjoint signalnets, shared supply/return pours mean safe batchcompatibility UNPROVEN",
+  "constraints": [
+    "Fixed318x298panel/438fixedcentres,headers,outlines,stack,electricalrules and outsidecopper preserved",
+    "No placement changes in this preparation; any future permittedfreepart changes must preserve IC/bypass/sensitive islands and be source-replayable",
+    "No fictitious EXT protection bridge, home jumpers, fabrication/order/deployment or service contact",
+    "Before any new longtrial: parent higher-model review; predeclare input/budget/minimumusefulacceptedgain; after two comparable negligible results change method",
+    "Any returnedmanualcopper must be converted to source/replay and pass originalgroup/fullwarning/DRC/parity/settled/fresh/publication gates"
+  ],
+  "connections": [
+    {
+      "net": "X10852B4E217E1D395843",
+      "nearest_pad_distance_mm": 0.65,
+      "endpoints": [
+        {
+          "uuid": "4e2b7c0b-2507-5752-9e12-c2715206e8bd",
+          "ref": "U4241",
+          "pad": "8",
+          "net": "X10852B4E217E1D395843",
+          "xy": [
+            323910000,
+            301342500
+          ],
+          "layers": [
+            "F.Cu"
+          ],
+          "locked": false,
+          "Block": "E2",
+          "Role": "envelope:ENV_BUFFER",
+          "Island": "ENV_CORE:E2",
+          "Sensitive": "",
+          "PanelUid": ""
+        },
+        {
+          "uuid": "d92e0174-fe7f-5ef4-be57-66cb0448088a",
+          "ref": "U4241",
+          "pad": "9",
+          "net": "X10852B4E217E1D395843",
+          "xy": [
+            324560000,
+            301342500
+          ],
+          "layers": [
+            "F.Cu"
+          ],
+          "locked": false,
+          "Block": "E2",
+          "Role": "envelope:ENV_BUFFER",
+          "Island": "ENV_CORE:E2",
+          "Sensitive": "",
+          "PanelUid": ""
+        }
+      ],
+      "native_groups": [
+        {
+          "member_count": 1,
+          "pad_count": 1,
+          "sorted_members_sha256": "d9c103f7768aab9ad04bba2b9ff16470af9dc19f951a142f1bdde71ab95c1dfe"
+        },
+        {
+          "member_count": 1,
+          "pad_count": 1,
+          "sorted_members_sha256": "53e333c74f640a382d2f8cbc90fdeea96979c431508160d3d65c61517a58c69f"
+        }
+      ],
+      "attribution": "unknown; representative native disconnected groups, not diagnosed obstruction",
+      "kind": "signal-short-pin-access"
+    },
+    {
+      "net": "X9A343D229ADA66A13020",
+      "nearest_pad_distance_mm": 0.65,
+      "endpoints": [
+        {
+          "uuid": "44b5fe5a-d420-517b-b025-feac5edb0715",
+          "ref": "U4239",
+          "pad": "2",
+          "net": "X9A343D229ADA66A13020",
+          "xy": [
+            309580000,
+            314232500
+          ],
+          "layers": [
+            "F.Cu"
+          ],
+          "locked": false,
+          "Block": "E2",
+          "Role": "envelope:REF8",
+          "Island": "ENV_CORE:E2",
+          "Sensitive": "",
+          "PanelUid": ""
+        },
+        {
+          "uuid": "6879afa9-6b51-5c95-9c75-db80433a3c06",
+          "ref": "U4239",
+          "pad": "1",
+          "net": "X9A343D229ADA66A13020",
+          "xy": [
+            308930000,
+            314232500
+          ],
+          "layers": [
+            "F.Cu"
+          ],
+          "locked": false,
+          "Block": "E2",
+          "Role": "envelope:REF8",
+          "Island": "ENV_CORE:E2",
+          "Sensitive": "",
+          "PanelUid": ""
+        }
+      ],
+      "native_groups": [
+        {
+          "member_count": 1,
+          "pad_count": 1,
+          "sorted_members_sha256": "848eea234efedc6b73c1c4e3c3605f63f69b8b08a0597f022734d77461a2422c"
+        },
+        {
+          "member_count": 1,
+          "pad_count": 1,
+          "sorted_members_sha256": "0e4d4484ced27e4940551fcd7c6623524653845bfc13c3af1c4c1b159d44dfd4"
+        }
+      ],
+      "attribution": "unknown; representative native disconnected groups, not diagnosed obstruction",
+      "kind": "signal-short-pin-access"
+    },
+    {
+      "net": "X756F7DE1A2CA67408C88",
+      "nearest_pad_distance_mm": 2.120288895410246,
+      "endpoints": [
+        {
+          "uuid": "05089c25-3da9-57ac-a3e6-687debc12331",
+          "ref": "Q4204",
+          "pad": "1",
+          "net": "X756F7DE1A2CA67408C88",
+          "xy": [
+            343760000,
+            290012500
+          ],
+          "layers": [
+            "F.Cu"
+          ],
+          "locked": false,
+          "Block": "E2",
+          "Role": "envelope:FALL_PAIR",
+          "Island": "ENV_CORE:E2",
+          "Sensitive": "",
+          "PanelUid": ""
+        },
+        {
+          "uuid": "e9d6da70-385f-5eb8-b767-fef3f19a7d38",
+          "ref": "Q4204",
+          "pad": "4",
+          "net": "X756F7DE1A2CA67408C88",
+          "xy": [
+            342460000,
+            291687500
+          ],
+          "layers": [
+            "F.Cu"
+          ],
+          "locked": false,
+          "Block": "E2",
+          "Role": "envelope:FALL_PAIR",
+          "Island": "ENV_CORE:E2",
+          "Sensitive": "",
+          "PanelUid": ""
+        }
+      ],
+      "native_groups": [
+        {
+          "member_count": 1,
+          "pad_count": 1,
+          "sorted_members_sha256": "85cc7599029adafd1d2c9edf6171d508e8a0cc69fb939c21820ac0c11af3d07b"
+        },
+        {
+          "member_count": 1,
+          "pad_count": 1,
+          "sorted_members_sha256": "88f4b288f9b23752515c41202f0ce0edc3702416ff7cc6454f6969cbed5a882d"
+        }
+      ],
+      "attribution": "unknown; representative native disconnected groups, not diagnosed obstruction",
+      "kind": "signal-short-pin-access"
+    },
+    {
+      "net": "XF691FA0FCF8D66AE54E9",
+      "nearest_pad_distance_mm": 2.120288895410246,
+      "endpoints": [
+        {
+          "uuid": "93676ae6-27f9-53fa-b454-3d7ee3c4aa9e",
+          "ref": "Q4201",
+          "pad": "4",
+          "net": "XF691FA0FCF8D66AE54E9",
+          "xy": [
+            309187500,
+            280680000
+          ],
+          "layers": [
+            "F.Cu"
+          ],
+          "locked": false,
+          "Block": "E2",
+          "Role": "envelope:RISE_PAIR",
+          "Island": "ENV_CORE:E2",
+          "Sensitive": "",
+          "PanelUid": ""
+        },
+        {
+          "uuid": "dbd608af-9547-5738-9a5f-0c390c819885",
+          "ref": "Q4201",
+          "pad": "1",
+          "net": "XF691FA0FCF8D66AE54E9",
+          "xy": [
+            307512500,
+            279380000
+          ],
+          "layers": [
+            "F.Cu"
+          ],
+          "locked": false,
+          "Block": "E2",
+          "Role": "envelope:RISE_PAIR",
+          "Island": "ENV_CORE:E2",
+          "Sensitive": "",
+          "PanelUid": ""
+        }
+      ],
+      "native_groups": [
+        {
+          "member_count": 1,
+          "pad_count": 1,
+          "sorted_members_sha256": "0bd8d7fb4102ec242fbd56d82d12b9bfb75b24bf3bbb5195ed3626299ac2327b"
+        },
+        {
+          "member_count": 1,
+          "pad_count": 1,
+          "sorted_members_sha256": "0cf580f8e4ec4f205cf951d2c0756d0de386d37bf3aff132c18a750578ac438c"
+        }
+      ],
+      "attribution": "unknown; representative native disconnected groups, not diagnosed obstruction",
+      "kind": "signal-short-pin-access"
+    },
+    {
+      "net": "X6971D913D0096F4F900D",
+      "nearest_pad_distance_mm": 2.5,
+      "endpoints": [
+        {
+          "uuid": "c3bca7af-e4e7-5d06-9be8-889278a44cfd",
+          "ref": "R4253",
+          "pad": "2",
+          "net": "X6971D913D0096F4F900D",
+          "xy": [
+            354409999,
+            325640000
+          ],
+          "layers": [
+            "F.Cu"
+          ],
+          "locked": false,
+          "Block": "E2",
+          "Role": "envelope:R_RISE_TIME_FB",
+          "Island": "ENV_CORE:E2",
+          "Sensitive": "",
+          "PanelUid": ""
+        },
+        {
+          "uuid": "dace633c-06c4-530d-880d-76f8b9f852ef",
+          "ref": "R4251",
+          "pad": "2",
+          "net": "X6971D913D0096F4F900D",
+          "xy": [
+            351909999,
+            325640000
+          ],
+          "layers": [
+            "F.Cu"
+          ],
+          "locked": false,
+          "Block": "E2",
+          "Role": "envelope:R_RISE_MAN",
+          "Island": "ENV_CORE:E2",
+          "Sensitive": "",
+          "PanelUid": ""
+        }
+      ],
+      "native_groups": [
+        {
+          "member_count": 1,
+          "pad_count": 1,
+          "sorted_members_sha256": "24916f291702e3faeac8d3928ad03c9ef7a4b09ac8b5381a1c5a88de4545d80e"
+        },
+        {
+          "member_count": 1,
+          "pad_count": 1,
+          "sorted_members_sha256": "c9e5efdcb67dc69eb0c82a69baa915f5563ef9aaff51270811c3dd8e31487be1"
+        }
+      ],
+      "attribution": "unknown; representative native disconnected groups, not diagnosed obstruction",
+      "kind": "signal-short-pin-access"
+    },
+    {
+      "net": "XF4F21BF06172AE0DE2B1",
+      "nearest_pad_distance_mm": 81.94667320886187,
+      "endpoints": [
+        {
+          "uuid": "688b1243-807a-5520-b4f7-ea358c521c69",
+          "ref": "U4215",
+          "pad": "5",
+          "net": "XF4F21BF06172AE0DE2B1",
+          "xy": [
+            345975000,
+            282220000
+          ],
+          "layers": [
+            "F.Cu"
+          ],
+          "locked": false,
+          "Block": "E2",
+          "Role": "envelope:logic supply",
+          "Island": "ENV_CORE:E2",
+          "Sensitive": "",
+          "PanelUid": ""
+        },
+        {
+          "uuid": "fa66bb66-04fe-56a3-a455-59aa3fb032b6",
+          "ref": "U4214",
+          "pad": "8",
+          "net": "XF4F21BF06172AE0DE2B1",
+          "xy": [
+            277460000,
+            327175000
+          ],
+          "layers": [
+            "B.Cu"
+          ],
+          "locked": false,
+          "Block": "E2",
+          "Role": "envelope:NAND8",
+          "Island": "ENV_CORE:E2",
+          "Sensitive": "",
+          "PanelUid": ""
+        }
+      ],
+      "native_groups": [
+        {
+          "member_count": 1,
+          "pad_count": 1,
+          "sorted_members_sha256": "50c8e029ccb418a1228a6bb3ae62101711fd2c06b30d8a5623ba770f28d1802a"
+        },
+        {
+          "member_count": 1,
+          "pad_count": 1,
+          "sorted_members_sha256": "1cec198a499541e59100a6cdbebac58258b0dba087dc06747ef511caa7d6346a"
+        }
+      ],
+      "attribution": "unknown; representative native disconnected groups, not diagnosed obstruction",
+      "kind": "signal-longer-channel"
+    },
+    {
+      "net": "X43FA9082F43CAA3CD5CC",
+      "nearest_pad_distance_mm": 96.9277695235478,
+      "endpoints": [
+        {
+          "uuid": "62e2e4bf-6d5e-5658-9481-3073431a26ab",
+          "ref": "R4252",
+          "pad": "1",
+          "net": "X43FA9082F43CAA3CD5CC",
+          "xy": [
+            348909999,
+            228640000
+          ],
+          "layers": [
+            "F.Cu"
+          ],
+          "locked": false,
+          "Block": "E2",
+          "Role": "envelope:R_RISE_CV",
+          "Island": "ENV_CORE:E2",
+          "Sensitive": "",
+          "PanelUid": ""
+        },
+        {
+          "uuid": "ef1e9521-4731-51ff-ab2e-f99e6134e00e",
+          "ref": "J900080",
+          "pad": "3",
+          "net": "X43FA9082F43CAA3CD5CC",
+          "xy": [
+            342125000,
+            131949999
+          ],
+          "layers": [
+            "F.Cu"
+          ],
+          "locked": true,
+          "Block": "INTERFACES_K-P2",
+          "Role": "",
+          "Island": "",
+          "Sensitive": "",
+          "PanelUid": ""
+        }
+      ],
+      "native_groups": [
+        {
+          "member_count": 1,
+          "pad_count": 1,
+          "sorted_members_sha256": "345ef7b35f6ce7e03b7c70293a74f2f7fc7bf259c833407ad270e279cc066e15"
+        },
+        {
+          "member_count": 1,
+          "pad_count": 1,
+          "sorted_members_sha256": "a218cbe0b5998808b292bc2be4004ddd32f3fd5fdb9bd0ba1b0270db4d8a4820"
+        }
+      ],
+      "attribution": "unknown; representative native disconnected groups, not diagnosed obstruction",
+      "kind": "signal-longer-channel"
+    },
+    {
+      "net": "X78BDC6ABACC4E8D7872D",
+      "nearest_pad_distance_mm": 134.42077106128352,
+      "endpoints": [
+        {
+          "uuid": "eb972ea3-68f3-531b-bdb8-c057ef047c70",
+          "ref": "U4205",
+          "pad": "4",
+          "net": "X78BDC6ABACC4E8D7872D",
+          "xy": [
+            342445000,
+            265805000
+          ],
+          "layers": [
+            "B.Cu"
+          ],
+          "locked": false,
+          "Block": "E2",
+          "Role": "envelope:EOC_TIMER",
+          "Island": "ENV_CORE:E2",
+          "Sensitive": "",
+          "PanelUid": ""
+        },
+        {
+          "uuid": "efa92239-b9e0-5aa7-b7d7-508c6324a6cf",
+          "ref": "J900078",
+          "pad": "7",
+          "net": "X78BDC6ABACC4E8D7872D",
+          "xy": [
+            330125000,
+            131949999
+          ],
+          "layers": [
+            "F.Cu"
+          ],
+          "locked": true,
+          "Block": "INTERFACES_K-P2",
+          "Role": "",
+          "Island": "",
+          "Sensitive": "",
+          "PanelUid": ""
+        }
+      ],
+      "native_groups": [
+        {
+          "member_count": 23,
+          "pad_count": 3,
+          "sorted_members_sha256": "e0e5c79791869ea0d400f60306f28d269da031913fc1ace2d7fb447177c60932"
+        },
+        {
+          "member_count": 1,
+          "pad_count": 1,
+          "sorted_members_sha256": "21bf289bbf0b738003ee763289217e9d554ac86ce190ea86d52ce85fc8eda9d9"
+        }
+      ],
+      "attribution": "unknown; representative native disconnected groups, not diagnosed obstruction",
+      "kind": "signal-longer-channel"
+    },
+    {
+      "net": "XD2CD8F2DD019093785A4",
+      "nearest_pad_distance_mm": 152.86747627765692,
+      "endpoints": [
+        {
+          "uuid": "c2ed871a-8fd0-5efd-8cc9-77b8ae8bc480",
+          "ref": "U4224",
+          "pad": "11",
+          "net": "XD2CD8F2DD019093785A4",
+          "xy": [
+            328675000,
+            283700000
+          ],
+          "layers": [
+            "F.Cu"
+          ],
+          "locked": false,
+          "Block": "E2",
+          "Role": "envelope:NAND58",
+          "Island": "ENV_CORE:E2",
+          "Sensitive": "",
+          "PanelUid": ""
+        },
+        {
+          "uuid": "76f9544e-c3fd-53d0-8c23-1e94731057d0",
+          "ref": "J900080",
+          "pad": "7",
+          "net": "XD2CD8F2DD019093785A4",
+          "xy": [
+            347125000,
+            131949999
+          ],
+          "layers": [
+            "F.Cu"
+          ],
+          "locked": true,
+          "Block": "INTERFACES_K-P2",
+          "Role": "",
+          "Island": "",
+          "Sensitive": "",
+          "PanelUid": ""
+        }
+      ],
+      "native_groups": [
+        {
+          "member_count": 1,
+          "pad_count": 1,
+          "sorted_members_sha256": "39c0d1e3b8e6a33e6dfe98f4221a09dc9d04631f191d0a7462bdd87439036879"
+        },
+        {
+          "member_count": 1,
+          "pad_count": 1,
+          "sorted_members_sha256": "28013ca8bf808af903de5fe43951aac9fe6825defcec9d285b243eb2dc9066b1"
+        }
+      ],
+      "attribution": "unknown; representative native disconnected groups, not diagnosed obstruction",
+      "kind": "signal-longer-channel"
+    },
+    {
+      "net": "XFD6D3BC4F6CA8CDDDA78",
+      "nearest_pad_distance_mm": 172.49090360074064,
+      "endpoints": [
+        {
+          "uuid": "78b9ca79-9ac3-5860-a01b-ceae392f0a4e",
+          "ref": "RB4203",
+          "pad": "1",
+          "net": "XFD6D3BC4F6CA8CDDDA78",
+          "xy": [
+            328390000,
+            304409999
+          ],
+          "layers": [
+            "F.Cu"
+          ],
+          "locked": false,
+          "Block": "E2",
+          "Role": "envelope:R_BIP_FB",
+          "Island": "ENV_CORE:E2",
+          "Sensitive": "",
+          "PanelUid": ""
+        },
+        {
+          "uuid": "4b218fae-fa09-5514-a6e5-a71697da7436",
+          "ref": "J900078",
+          "pad": "3",
+          "net": "XFD6D3BC4F6CA8CDDDA78",
+          "xy": [
+            325125000,
+            131949999
+          ],
+          "layers": [
+            "F.Cu"
+          ],
+          "locked": true,
+          "Block": "INTERFACES_K-P2",
+          "Role": "",
+          "Island": "",
+          "Sensitive": "",
+          "PanelUid": ""
+        }
+      ],
+      "native_groups": [
+        {
+          "member_count": 11,
+          "pad_count": 2,
+          "sorted_members_sha256": "fb8c35dc8bb3a2458315c4d310b3f051c5914b28493ab6fc539bba8c51b482e0"
+        },
+        {
+          "member_count": 1,
+          "pad_count": 1,
+          "sorted_members_sha256": "a35b74bda7b8b1ef4427f3962b2d01fbe1573d72ff89532aef9c59115884c516"
+        }
+      ],
+      "attribution": "unknown; representative native disconnected groups, not diagnosed obstruction",
+      "kind": "signal-longer-channel"
+    },
+    {
+      "net": "+12V",
+      "nearest_pad_distance_mm": 2.2774990000002195,
+      "endpoints": [
+        {
+          "uuid": "1e42e8e0-2884-541f-86ea-39ec91051366",
+          "ref": "C4222",
+          "pad": "1",
+          "net": "+12V",
+          "xy": [
+            342804999,
+            316709999
+          ],
+          "layers": [
+            "F.Cu"
+          ],
+          "locked": false,
+          "Block": "E2",
+          "Role": "envelope:C_DEC_CORE_SLOPE_SELECT_0",
+          "Island": "ENV_CORE:E2",
+          "Sensitive": "",
+          "PanelUid": ""
+        },
+        {
+          "uuid": "7d901446-f075-566f-b20a-34a3b2d3d83d",
+          "ref": "U4206",
+          "pad": "13",
+          "net": "+12V",
+          "xy": [
+            342805000,
+            314432500
+          ],
+          "layers": [
+            "F.Cu"
+          ],
+          "locked": false,
+          "Block": "E2",
+          "Role": "envelope:SLOPE_SELECT",
+          "Island": "ENV_CORE:E2",
+          "Sensitive": "",
+          "PanelUid": ""
+        }
+      ],
+      "native_groups": [
+        {
+          "member_count": 1996,
+          "pad_count": 501,
+          "sorted_members_sha256": "416c3e7d1ae3b2ec292536d1fe2e0de24071ef6761056818e540cad00dae49df"
+        },
+        {
+          "member_count": 1,
+          "pad_count": 1,
+          "sorted_members_sha256": "94fb0c37f1b02e2f5a967814db8a7312e64aca26b981e5cb054b6ddc95f4280e"
+        }
+      ],
+      "attribution": "unknown; representative native disconnected groups, not diagnosed obstruction",
+      "kind": "supply-feed"
+    },
+    {
+      "net": "+12V",
+      "nearest_pad_distance_mm": 2.2775,
+      "endpoints": [
+        {
+          "uuid": "3058a1da-f786-53e0-acd7-dbe066a1bbc6",
+          "ref": "C4262",
+          "pad": "1",
+          "net": "+12V",
+          "xy": [
+            325860000,
+            293340000
+          ],
+          "layers": [
+            "F.Cu"
+          ],
+          "locked": false,
+          "Block": "E2",
+          "Role": "envelope:C_DEC_CORE_PACK_OPA4197IPWR_2_0",
+          "Island": "IO_CORE:E2",
+          "Sensitive": "",
+          "PanelUid": ""
+        },
+        {
+          "uuid": "6ff0293c-7ce9-5389-8ef7-a61f987db341",
+          "ref": "U4241",
+          "pad": "4",
+          "net": "+12V",
+          "xy": [
+            325860000,
+            295617500
+          ],
+          "layers": [
+            "F.Cu"
+          ],
+          "locked": false,
+          "Block": "E2",
+          "Role": "envelope:ENV_BUFFER",
+          "Island": "ENV_CORE:E2",
+          "Sensitive": "",
+          "PanelUid": ""
+        }
+      ],
+      "native_groups": [
+        {
+          "member_count": 1996,
+          "pad_count": 501,
+          "sorted_members_sha256": "416c3e7d1ae3b2ec292536d1fe2e0de24071ef6761056818e540cad00dae49df"
+        },
+        {
+          "member_count": 1,
+          "pad_count": 1,
+          "sorted_members_sha256": "63f080d3a1f6286cd1a79481e24e5e0de81c84052d5891cbfc4a72eaeb5274f6"
+        }
+      ],
+      "attribution": "unknown; representative native disconnected groups, not diagnosed obstruction",
+      "kind": "supply-feed"
+    },
+    {
+      "net": "+12V",
+      "nearest_pad_distance_mm": 2.2975,
+      "endpoints": [
+        {
+          "uuid": "57a38e87-cd02-54f9-88a4-6ed19c1f3483",
+          "ref": "C4260",
+          "pad": "1",
+          "net": "+12V",
+          "xy": [
+            310880000,
+            303530000
+          ],
+          "layers": [
+            "F.Cu"
+          ],
+          "locked": false,
+          "Block": "E2",
+          "Role": "envelope:C_DEC_CORE_PACK_OPA4197IPWR_1_0",
+          "Island": "IO_CORE:E2",
+          "Sensitive": "",
+          "PanelUid": ""
+        },
+        {
+          "uuid": "e355aabe-aa9a-53e8-b1df-098dd90cb497",
+          "ref": "U4240",
+          "pad": "4",
+          "net": "+12V",
+          "xy": [
+            310880000,
+            301232500
+          ],
+          "layers": [
+            "F.Cu"
+          ],
+          "locked": false,
+          "Block": "E2",
+          "Role": "envelope:REF9",
+          "Island": "ENV_CORE:E2",
+          "Sensitive": "",
+          "PanelUid": ""
+        }
+      ],
+      "native_groups": [
+        {
+          "member_count": 1996,
+          "pad_count": 501,
+          "sorted_members_sha256": "416c3e7d1ae3b2ec292536d1fe2e0de24071ef6761056818e540cad00dae49df"
+        },
+        {
+          "member_count": 1,
+          "pad_count": 1,
+          "sorted_members_sha256": "7d0474239778a7f83ea15aad21d2aadf4933f9a18fb1f579feca3628c8d98a26"
+        }
+      ],
+      "attribution": "unknown; representative native disconnected groups, not diagnosed obstruction",
+      "kind": "supply-feed"
+    },
+    {
+      "net": "-12V",
+      "nearest_pad_distance_mm": 2.2775,
+      "endpoints": [
+        {
+          "uuid": "b1a6c6ff-ff06-5f50-a98d-40f613496750",
+          "ref": "U4241",
+          "pad": "11",
+          "net": "-12V",
+          "xy": [
+            325860000,
+            301342500
+          ],
+          "layers": [
+            "F.Cu"
+          ],
+          "locked": false,
+          "Block": "E2",
+          "Role": "envelope:ENV_BUFFER",
+          "Island": "ENV_CORE:E2",
+          "Sensitive": "",
+          "PanelUid": ""
+        },
+        {
+          "uuid": "d4f99fcf-c062-5544-9352-2958fe17881f",
+          "ref": "C4263",
+          "pad": "1",
+          "net": "-12V",
+          "xy": [
+            325860000,
+            303620000
+          ],
+          "layers": [
+            "F.Cu"
+          ],
+          "locked": false,
+          "Block": "E2",
+          "Role": "envelope:C_DEC_CORE_PACK_OPA4197IPWR_2_1",
+          "Island": "IO_CORE:E2",
+          "Sensitive": "",
+          "PanelUid": ""
+        }
+      ],
+      "native_groups": [
+        {
+          "member_count": 1,
+          "pad_count": 1,
+          "sorted_members_sha256": "1dcbf7f9f89e5bf01f591c6ea99f25bcb1486b1d9f801f9b0593fd179b66e3ef"
+        },
+        {
+          "member_count": 1382,
+          "pad_count": 332,
+          "sorted_members_sha256": "3d71288a2c6accb1c93e034c90aaf5d603c6a7e1168758f4e60a4a6babb972c3"
+        }
+      ],
+      "attribution": "unknown; representative native disconnected groups, not diagnosed obstruction",
+      "kind": "supply-feed"
+    },
+    {
+      "net": "-12V",
+      "nearest_pad_distance_mm": 2.2975,
+      "endpoints": [
+        {
+          "uuid": "0dc97646-33ff-54e7-b905-5d989b70512a",
+          "ref": "U4240",
+          "pad": "11",
+          "net": "-12V",
+          "xy": [
+            310880000,
+            295507500
+          ],
+          "layers": [
+            "F.Cu"
+          ],
+          "locked": false,
+          "Block": "E2",
+          "Role": "envelope:REF9",
+          "Island": "ENV_CORE:E2",
+          "Sensitive": "",
+          "PanelUid": ""
+        },
+        {
+          "uuid": "7b020fb4-f189-51aa-9c7c-093417bc2247",
+          "ref": "C4261",
+          "pad": "1",
+          "net": "-12V",
+          "xy": [
+            310880000,
+            293210000
+          ],
+          "layers": [
+            "F.Cu"
+          ],
+          "locked": false,
+          "Block": "E2",
+          "Role": "envelope:C_DEC_CORE_PACK_OPA4197IPWR_1_1",
+          "Island": "IO_CORE:E2",
+          "Sensitive": "",
+          "PanelUid": ""
+        }
+      ],
+      "native_groups": [
+        {
+          "member_count": 1,
+          "pad_count": 1,
+          "sorted_members_sha256": "0230a7a59fe27fb79358749b61bd331c1fd1d7456bb315861ce2b80744c0e5bd"
+        },
+        {
+          "member_count": 1382,
+          "pad_count": 332,
+          "sorted_members_sha256": "3d71288a2c6accb1c93e034c90aaf5d603c6a7e1168758f4e60a4a6babb972c3"
+        }
+      ],
+      "attribution": "unknown; representative native disconnected groups, not diagnosed obstruction",
+      "kind": "supply-feed"
+    },
+    {
+      "net": "-12V",
+      "nearest_pad_distance_mm": 2.2975,
+      "endpoints": [
+        {
+          "uuid": "26aded5b-f41e-5c9a-a4fe-6b99f6940c9a",
+          "ref": "U4239",
+          "pad": "11",
+          "net": "-12V",
+          "xy": [
+            310880000,
+            308507500
+          ],
+          "layers": [
+            "F.Cu"
+          ],
+          "locked": false,
+          "Block": "E2",
+          "Role": "envelope:REF8",
+          "Island": "ENV_CORE:E2",
+          "Sensitive": "",
+          "PanelUid": ""
+        },
+        {
+          "uuid": "4a0e60ab-09af-5f00-8eea-62e42d1bf53a",
+          "ref": "C4259",
+          "pad": "1",
+          "net": "-12V",
+          "xy": [
+            310880000,
+            306210000
+          ],
+          "layers": [
+            "F.Cu"
+          ],
+          "locked": false,
+          "Block": "E2",
+          "Role": "envelope:C_DEC_CORE_PACK_OPA4197IPWR_0_1",
+          "Island": "IO_CORE:E2",
+          "Sensitive": "",
+          "PanelUid": ""
+        }
+      ],
+      "native_groups": [
+        {
+          "member_count": 1,
+          "pad_count": 1,
+          "sorted_members_sha256": "e73633c6ba441a7b301f2e5f72eb1f7b18172ddc9b2c74df04ab27a29716566a"
+        },
+        {
+          "member_count": 1382,
+          "pad_count": 332,
+          "sorted_members_sha256": "3d71288a2c6accb1c93e034c90aaf5d603c6a7e1168758f4e60a4a6babb972c3"
+        }
+      ],
+      "attribution": "unknown; representative native disconnected groups, not diagnosed obstruction",
+      "kind": "supply-feed"
+    },
+    {
+      "net": "AGND",
+      "nearest_pad_distance_mm": 0.44592600283006595,
+      "endpoints": [
+        {
+          "uuid": "1cb4c05a-6281-5be9-96df-93a4ca674b15",
+          "ref": "C4228",
+          "pad": "2",
+          "net": "AGND",
+          "xy": [
+            325895000,
+            267440000
+          ],
+          "layers": [
+            "F.Cu"
+          ],
+          "locked": false,
+          "Block": "E2",
+          "Role": "envelope:C_DEC_CORE_LOGIC_LM393BIDR_0_0",
+          "Island": "ENV_CORE:E2",
+          "Sensitive": "",
+          "PanelUid": ""
+        },
+        {
+          "uuid": "415dbe4e-b212-5904-844a-49c851515bf0",
+          "ref": "U4228",
+          "pad": "7",
+          "net": "AGND",
+          "xy": [
+            326120000,
+            267055000
+          ],
+          "layers": [
+            "B.Cu"
+          ],
+          "locked": false,
+          "Block": "E2",
+          "Role": "envelope:logic supply",
+          "Island": "ENV_CORE:E2",
+          "Sensitive": "",
+          "PanelUid": ""
+        }
+      ],
+      "native_groups": [
+        {
+          "member_count": 1,
+          "pad_count": 1,
+          "sorted_members_sha256": "6222b0c47366275ed4a29b272a6a0dd1047899a561c1b78ee8621ddea5ee9f22"
+        },
+        {
+          "member_count": 2912,
+          "pad_count": 1988,
+          "sorted_members_sha256": "298c0d07b654d8655d617dad1e24d21ff99efbbd4d2419159b549657d14d8482"
+        }
+      ],
+      "attribution": "unknown; representative native disconnected groups, not diagnosed obstruction",
+      "kind": "return-feed"
+    },
+    {
+      "net": "AGND",
+      "nearest_pad_distance_mm": 1.4122409709398038,
+      "endpoints": [
+        {
+          "uuid": "30e0b435-3b04-56f8-b0d9-91a97f63b383",
+          "ref": "R4265",
+          "pad": "2",
+          "net": "AGND",
+          "xy": [
+            276140000,
+            278159999
+          ],
+          "layers": [
+            "F.Cu"
+          ],
+          "locked": false,
+          "Block": "E2",
+          "Role": "envelope:R_RISE_OFFSET_RETURN",
+          "Island": "ENV_CORE:E2",
+          "Sensitive": "",
+          "PanelUid": ""
+        },
+        {
+          "uuid": "b72bb811-fb2e-58a1-a322-6c705c3df254",
+          "ref": "C4225",
+          "pad": "2",
+          "net": "AGND",
+          "xy": [
+            274745000,
+            277940000
+          ],
+          "layers": [
+            "B.Cu"
+          ],
+          "locked": false,
+          "Block": "E2",
+          "Role": "envelope:C_DEC_CORE_OTA_1",
+          "Island": "ENV_CORE:E2",
+          "Sensitive": "",
+          "PanelUid": ""
+        }
+      ],
+      "native_groups": [
+        {
+          "member_count": 2,
+          "pad_count": 2,
+          "sorted_members_sha256": "06bc6e194e9992f0eb79d1e0681a00fe75df043836e617e37593393fe7049782"
+        },
+        {
+          "member_count": 2912,
+          "pad_count": 1988,
+          "sorted_members_sha256": "298c0d07b654d8655d617dad1e24d21ff99efbbd4d2419159b549657d14d8482"
+        }
+      ],
+      "attribution": "unknown; representative native disconnected groups, not diagnosed obstruction",
+      "kind": "return-feed"
+    },
+    {
+      "net": "AGND",
+      "nearest_pad_distance_mm": 2.6977953962448673,
+      "endpoints": [
+        {
+          "uuid": "306e4dd7-711e-527b-b6cc-07370d3c6069",
+          "ref": "C4240",
+          "pad": "2",
+          "net": "AGND",
+          "xy": [
+            276440000,
+            269710000
+          ],
+          "layers": [
+            "B.Cu"
+          ],
+          "locked": false,
+          "Block": "E2",
+          "Role": "envelope:C_DEC_CORE_LOGIC_SN74HC00DR_8_0",
+          "Island": "ENV_CORE:E2",
+          "Sensitive": "",
+          "PanelUid": ""
+        },
+        {
+          "uuid": "702cffe4-794f-5b60-a68b-106c9f20643e",
+          "ref": "C5229",
+          "pad": "2",
+          "net": "AGND",
+          "xy": [
+            273780000,
+            269260000
+          ],
+          "layers": [
+            "B.Cu"
+          ],
+          "locked": false,
+          "Block": "W1",
+          "Role": "wavefolder:C_DEC_PACK_OPA4197IPWR_0_1",
+          "Island": "IO_CORE:W1",
+          "Sensitive": "",
+          "PanelUid": ""
+        }
+      ],
+      "native_groups": [
+        {
+          "member_count": 1,
+          "pad_count": 1,
+          "sorted_members_sha256": "adc1cf3b3eaccfe3104efad8f8bb068981dab83d7e40e0eef2a463d3b8cc0969"
+        },
+        {
+          "member_count": 2912,
+          "pad_count": 1988,
+          "sorted_members_sha256": "298c0d07b654d8655d617dad1e24d21ff99efbbd4d2419159b549657d14d8482"
+        }
+      ],
+      "attribution": "unknown; representative native disconnected groups, not diagnosed obstruction",
+      "kind": "return-feed"
+    },
+    {
+      "net": "AGND",
+      "nearest_pad_distance_mm": 2.889231082831555,
+      "endpoints": [
+        {
+          "uuid": "6aacc5ee-3c71-5640-9f55-176266113477",
+          "ref": "C4227",
+          "pad": "2",
+          "net": "AGND",
+          "xy": [
+            312305000,
+            339870000
+          ],
+          "layers": [
+            "F.Cu"
+          ],
+          "locked": false,
+          "Block": "E2",
+          "Role": "envelope:C_DEC_CORE_STORAGE_CLAMP_1",
+          "Island": "ENV_CORE:E2",
+          "Sensitive": "",
+          "PanelUid": ""
+        },
+        {
+          "uuid": "f74ace8d-ab41-534b-b76d-e795df97c327",
+          "ref": "U4208",
+          "pad": "6",
+          "net": "AGND",
+          "xy": [
+            312205000,
+            336982500
+          ],
+          "layers": [
+            "F.Cu"
+          ],
+          "locked": false,
+          "Block": "E2",
+          "Role": "envelope:STORAGE_CLAMP",
+          "Island": "ENV_CORE:E2",
+          "Sensitive": "",
+          "PanelUid": ""
+        }
+      ],
+      "native_groups": [
+        {
+          "member_count": 2912,
+          "pad_count": 1988,
+          "sorted_members_sha256": "298c0d07b654d8655d617dad1e24d21ff99efbbd4d2419159b549657d14d8482"
+        },
+        {
+          "member_count": 4,
+          "pad_count": 4,
+          "sorted_members_sha256": "d1319a84155158e30c4fdbb268125934f53f82e3713b75800a06924f265d1d37"
+        }
+      ],
+      "attribution": "unknown; representative native disconnected groups, not diagnosed obstruction",
+      "kind": "return-feed"
+    }
+  ]
+}

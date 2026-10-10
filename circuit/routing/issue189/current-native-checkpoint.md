@@ -1,3 +1,13 @@
+## Status refresh — 2026-10-10 11:22 UTC
+
+Accepted main **65cefd41fc39e064d38319115ad96016a1c6b71c**; exact post-main CI **38046984631 SUCCESS**. Native accepted counts remain **JL117 / JR129 / core1402**, DRC/parity **0/0**. Sole native core worker **38044514132 remains IN_PROGRESS** at source **4768f2f82e8a4d634f8dc2905429616bfcd20c37**; no new dispatch, no result inferred.
+
+Documentation-only draft **PR237**, branch **agent-fix/189-jr129-current-docs**, head **fa5908de40d730b8979e91581bb7eb30f22320b7**, tree **f16ca44a1972e046470b4d426b8c07a525c1cec5**, parent accepted65cefd4. Exact CI **38047319084 IN_PROGRESS** (JL/JR native and docs checks passed; Python/core still active). Local pnpm check/circuit check/whitespace PASS. Two documentation paths only, all boards inherited unchanged. Before any authorized integration verify exact head/all five checks/current main and resulting tree. No merge claimed.
+
+New review-only evidence: `feasibility/e2-review-connections.json` and replay preparation `feasibility/e2_review_connections.py`. Frozen native1402 baseline with exact board/dump/context hashes, 10 signal / 6 supply / 4 return examples. Each native group has exact sorted-members SHA256, member/pad counts and endpoint UUIDs; reconstruct full membership from pinned dump. This is selection only: no routing, placement, native counterfactual, safe batch proof or copper adoption. Replay from PR236 source with PYTHONPATH=. and the exact terminal ZIP at /tmp/issue189-core-supply-terminal.zip (immutable ZIP identifier below); script output /tmp/issue189-e2-review-connections.json. Successful preparation rerun ~5s. A direct run without PYTHONPATH failed imports, corrected command passed; no verification hidden.
+
+Before a materially new long strategy trial or large core adoption, send actual native evidence and proposed bounded comparison to parent for higher-model review. If PR236 still splits AGND, causally isolate or explicitly repair the actual return groups; do not keep omitting cases by proximity. Both comparable 0.05mm/0.025mm screens exhausted without a path: stopped configuration. Keep issue189 OPEN.
+
 # Issue189 exact continuation — 2026-10-10
 
 Issue189 is OPEN and connectivity remains incomplete. No fabrication, release, deployment or hardware qualification is authorized. Incremental OSC merges were explicitly authorized during this session; retain all exact-head native/CI/integration gates. Do not restart unrelated watches or change credentials/toolchains.
