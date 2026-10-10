@@ -1,0 +1,293 @@
+{
+  "status": "COMPLETE BOUNDED SCREEN; ACTUAL FUTURE REBASE AND NATIVE GATES STILL REQUIRED",
+  "dump_sha256": "5218becd38f6bb612f9a169230bd8e6657776a09fc12af5baa6113825e671ffb",
+  "published_board_sha256": "fa60b4e1587a67501782fb55374f0e5d5133f65cd0bbe62624aef502441fda10",
+  "router_sha256": "4b33e99e6628cf2b2f5c3340865f78c6958122e6aed6025e1fbe962a9f606974",
+  "selection": "only historical expansion-limited ground group U4231.7/J900249.2/C4248.2; compare300000vs5000000bound and3vs6mm windows on identical current1402 input",
+  "transactions": [
+    {
+      "source_group": [
+        "2568b088-4da9-5d61-b504-3424f3ecb751",
+        "cc58677e-4e7f-50a0-967f-0f2a476c6532",
+        "f3f20eee-4446-5581-8741-541e7673f381"
+      ],
+      "pads": [
+        [
+          "U4231",
+          "7"
+        ],
+        [
+          "J900249",
+          "2"
+        ],
+        [
+          "C4248",
+          "2"
+        ]
+      ],
+      "plane_window_mm": 3,
+      "maximum_expansions": 300000,
+      "bounds_mm": [
+        276.55,
+        264.2,
+        297.105,
+        297.0
+      ],
+      "elapsed_seconds": 20.25909266900271,
+      "complete": false,
+      "diagnostics": [
+        {
+          "net": "AGND",
+          "endpoints": [
+            "U4231.7",
+            "J900249.2",
+            "C4248.2"
+          ],
+          "reason": "expansion_limit",
+          "phase": "plane_fanout",
+          "attempts": [
+            {
+              "window_cells": [
+                205,
+                2410,
+                173,
+                1484
+              ],
+              "expanded": 300001,
+              "limit": 300000
+            }
+          ]
+        }
+      ],
+      "routes": [
+        {
+          "net": "AGND",
+          "island": [
+            "U4231.7",
+            "J900249.2",
+            "C4248.2"
+          ],
+          "path": null
+        }
+      ],
+      "proposal": {
+        "board_sha256": "fa60b4e1587a67501782fb55374f0e5d5133f65cd0bbe62624aef502441fda10",
+        "removed_uuids": [],
+        "copper": []
+      }
+    },
+    {
+      "source_group": [
+        "2568b088-4da9-5d61-b504-3424f3ecb751",
+        "cc58677e-4e7f-50a0-967f-0f2a476c6532",
+        "f3f20eee-4446-5581-8741-541e7673f381"
+      ],
+      "pads": [
+        [
+          "U4231",
+          "7"
+        ],
+        [
+          "J900249",
+          "2"
+        ],
+        [
+          "C4248",
+          "2"
+        ]
+      ],
+      "plane_window_mm": 3,
+      "maximum_expansions": 5000000,
+      "bounds_mm": [
+        276.55,
+        264.2,
+        297.105,
+        297.0
+      ],
+      "elapsed_seconds": 13.77048915901105,
+      "complete": false,
+      "diagnostics": [
+        {
+          "net": "AGND",
+          "endpoints": [
+            "U4231.7",
+            "J900249.2",
+            "C4248.2"
+          ],
+          "reason": "search_exhausted",
+          "phase": "plane_fanout",
+          "attempts": [
+            {
+              "window_cells": [
+                205,
+                2410,
+                173,
+                1484
+              ],
+              "expanded": 432733,
+              "limit": 5000000
+            }
+          ]
+        }
+      ],
+      "routes": [
+        {
+          "net": "AGND",
+          "island": [
+            "U4231.7",
+            "J900249.2",
+            "C4248.2"
+          ],
+          "path": null
+        }
+      ],
+      "proposal": {
+        "board_sha256": "fa60b4e1587a67501782fb55374f0e5d5133f65cd0bbe62624aef502441fda10",
+        "removed_uuids": [],
+        "copper": []
+      }
+    },
+    {
+      "source_group": [
+        "2568b088-4da9-5d61-b504-3424f3ecb751",
+        "cc58677e-4e7f-50a0-967f-0f2a476c6532",
+        "f3f20eee-4446-5581-8741-541e7673f381"
+      ],
+      "pads": [
+        [
+          "U4231",
+          "7"
+        ],
+        [
+          "J900249",
+          "2"
+        ],
+        [
+          "C4248",
+          "2"
+        ]
+      ],
+      "plane_window_mm": 6,
+      "maximum_expansions": 300000,
+      "bounds_mm": [
+        276.55,
+        264.2,
+        297.105,
+        297.0
+      ],
+      "elapsed_seconds": 14.01394919201266,
+      "complete": false,
+      "diagnostics": [
+        {
+          "net": "AGND",
+          "endpoints": [
+            "U4231.7",
+            "J900249.2",
+            "C4248.2"
+          ],
+          "reason": "expansion_limit",
+          "phase": "plane_fanout",
+          "attempts": [
+            {
+              "window_cells": [
+                0,
+                2627,
+                0,
+                1648
+              ],
+              "expanded": 300001,
+              "limit": 300000
+            }
+          ]
+        }
+      ],
+      "routes": [
+        {
+          "net": "AGND",
+          "island": [
+            "U4231.7",
+            "J900249.2",
+            "C4248.2"
+          ],
+          "path": null
+        }
+      ],
+      "proposal": {
+        "board_sha256": "fa60b4e1587a67501782fb55374f0e5d5133f65cd0bbe62624aef502441fda10",
+        "removed_uuids": [],
+        "copper": []
+      }
+    },
+    {
+      "source_group": [
+        "2568b088-4da9-5d61-b504-3424f3ecb751",
+        "cc58677e-4e7f-50a0-967f-0f2a476c6532",
+        "f3f20eee-4446-5581-8741-541e7673f381"
+      ],
+      "pads": [
+        [
+          "U4231",
+          "7"
+        ],
+        [
+          "J900249",
+          "2"
+        ],
+        [
+          "C4248",
+          "2"
+        ]
+      ],
+      "plane_window_mm": 6,
+      "maximum_expansions": 5000000,
+      "bounds_mm": [
+        276.55,
+        264.2,
+        297.105,
+        297.0
+      ],
+      "elapsed_seconds": 13.537989454023773,
+      "complete": false,
+      "diagnostics": [
+        {
+          "net": "AGND",
+          "endpoints": [
+            "U4231.7",
+            "J900249.2",
+            "C4248.2"
+          ],
+          "reason": "search_exhausted",
+          "phase": "plane_fanout",
+          "attempts": [
+            {
+              "window_cells": [
+                0,
+                2627,
+                0,
+                1648
+              ],
+              "expanded": 445329,
+              "limit": 5000000
+            }
+          ]
+        }
+      ],
+      "routes": [
+        {
+          "net": "AGND",
+          "island": [
+            "U4231.7",
+            "J900249.2",
+            "C4248.2"
+          ],
+          "path": null
+        }
+      ],
+      "proposal": {
+        "board_sha256": "fa60b4e1587a67501782fb55374f0e5d5133f65cd0bbe62624aef502441fda10",
+        "removed_uuids": [],
+        "copper": []
+      }
+    }
+  ]
+}
