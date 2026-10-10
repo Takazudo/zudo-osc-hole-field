@@ -457,21 +457,64 @@ jobs:
       contents: read
       actions: read
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 120
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
-      - name: Download and inspect exact core236 archive without native execution
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97
+        with:
+          python-version: '3.12'
+      - run: python -m pip install -r scripts/pcbgen/numerical-requirements.txt
+      - name: Download and hash-check original archive and inspected inventory
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          mkdir -p .circuit-cache/core236-inspection
-          gh api repos/Takazudo/zudo-osc-hole-field/actions/artifacts/11671963117/zip > .circuit-cache/core236-inspection/original.zip
-          python3 circuit/routing/issue189/core236-audit-recovery/inspect_archive.py .circuit-cache/core236-inspection/original.zip .circuit-cache/core236-inspection/export
+          mkdir -p .circuit-cache/core236-recovery-input
+          gh api repos/Takazudo/zudo-osc-hole-field/actions/artifacts/11671963117/zip > .circuit-cache/core236-recovery-input/original.zip
+          gh api repos/Takazudo/zudo-osc-hole-field/actions/artifacts/11671779973/zip > .circuit-cache/core236-recovery-input/inspection.zip
+          python3 - <<'PY'
+          import hashlib,zipfile
+          from pathlib import Path
+          p=Path('.circuit-cache/core236-recovery-input/inspection.zip')
+          with p.open('rb') as f: assert hashlib.file_digest(f,'sha256').hexdigest()=='c5971fa98d5235861294e015150242572cb71dd5fc94a862c0587f8f979d881e'
+          with zipfile.ZipFile(p) as z:
+              names=[n for n in z.namelist() if n.endswith('archive-inventory.json')];assert len(names)==1
+              Path('.circuit-cache/core236-recovery-input/archive-inventory.json').write_bytes(z.read(names[0]))
+          PY
+          python3 circuit/routing/issue189/core236-audit-recovery/recover_audit.py extract .circuit-cache/core236-recovery-input/original.zip .circuit-cache/core236-original .circuit-cache/core236-recovery-input/archive-inventory.json
+      - name: Bounded audit-only batch16 resume with exact archived inputs
+        run: |
+          mkdir -p .circuit-cache/core236-recovery-telemetry
+          df -h > .circuit-cache/core236-recovery-telemetry/disk-before.txt
+          free -m > .circuit-cache/core236-recovery-telemetry/memory-before.txt
+          python3 circuit/routing/issue189/core236-audit-recovery/resource_telemetry.py .circuit-cache/core236-recovery-telemetry/resource.jsonl &
+          observer=$!
+          trap 'kill "$observer" 2>/dev/null || true; wait "$observer" 2>/dev/null || true' EXIT
+          set +e
+          /usr/bin/time -v timeout --signal=INT --kill-after=2m 100m bash scripts/kicad/run.sh python3 scripts/pcbgen/audit_zone_silk_scope.py \
+            .circuit-cache/core236-original/.circuit-cache/osc-core-grid-shards-start/osc-core.kicad_pcb \
+            .circuit-cache/core236-original/.circuit-cache/osc-core-grid-shards-fresh/osc-core.kicad_pcb \
+            .circuit-cache/core236-zone-recovery --classify --batch-size 16 \
+            --resume-from .circuit-cache/core236-original/.circuit-cache/osc-core-grid-shards-complete-warnings/native-audits/zones \
+            > .circuit-cache/core236-recovery-telemetry/audit.log 2> .circuit-cache/core236-recovery-telemetry/audit.stderr
+          audit_status=$?
+          printf '%s\\n' "$audit_status" > .circuit-cache/core236-recovery-telemetry/exit-status.txt
+          df -h > .circuit-cache/core236-recovery-telemetry/disk-after.txt
+          free -m > .circuit-cache/core236-recovery-telemetry/memory-after.txt
+          tail -n 20 .circuit-cache/core236-recovery-telemetry/audit.log
+          exit "$audit_status"
+      - name: Require full complete_reports and original-group promotion gates without publishing
+        run: |
+          python3 circuit/routing/issue189/core236-audit-recovery/recover_audit.py combine .circuit-cache/core236-original .circuit-cache/core236-zone-recovery .circuit-cache/core236-complete-eligibility
       - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
         if: always()
         with:
-          name: issue189-core236-archive-inspection-${{ github.run_id }}
-          path: .circuit-cache/core236-inspection/export
+          name: issue189-core236-zone-recovery-${{ github.run_id }}
+          path: |
+            .circuit-cache/core236-zone-recovery
+            .circuit-cache/core236-complete-eligibility
+            .circuit-cache/core236-recovery-telemetry
+            .circuit-cache/core236-recovery-input/archive-inventory.json
+            !.circuit-cache/**/~*.lck
           retention-days: 30
           include-hidden-files: true
           if-no-files-found: error
