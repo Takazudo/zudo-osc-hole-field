@@ -263,7 +263,7 @@ jobs:
             python circuit/routing/issue189/core-supply-away-from-splits/prepare.py
             replay=.circuit-cache/issue189-core-supply-away-from-splits/copper.json
             label=issue189-supply-away-from-splits
-            extra=()
+            extra=(--complete-native-warnings --native-zone-batch-size 16)
           elif [[ $CORE_REPLAY == short-power ]]; then
             python circuit/routing/issue189/core-short-power/prepare.py
             replay=.circuit-cache/issue189-core-short-power/copper.json
