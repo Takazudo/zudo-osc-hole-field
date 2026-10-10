@@ -1,3 +1,15 @@
+## Requested live checkpoint — 2026-10-10 17:35 UTC
+
+**Existing run38069793801 is IN_PROGRESS**, draft PR240, branch agent-fix/189-core236-isolated-audit-recovery, exact source **63f9541aa68ae3e05ee9700ae71dcaea6dfe02f6**. It started16:58:03UTC; guarded command started16:59:48UTC. Current step: One guarded100-minute fresh-process continuation and original eligibility gates. Shared command limit18:39:48UTC (plus bounded cleanup); job120-minute limit18:58:03UTC. No replacement or restart dispatched.
+
+**Executor access is currently AVAILABLE:** successful workspace pwd/git status/head command and live GitHub run query17:35:14UTC. Worktree /workspace/issue189-core236-recovery is clean and matches source63f9541. Disconnect callback has not produced an observable execution/access blocker.
+
+All five exact-head CI jobs **38069711817 SUCCESS**,43focused local tests/circuit contract/py_compile/diffcheck PASS,221saved fixture/report/context hashes independently reconstructed under heavy-guard109s/PASS. Saved resume source is11673646039 (F.Cu220+B.Cu1), exact b9f5/f27e boards; original215prefix is not used. Full ZIP/inventory checks passed remotely before native execution.
+
+Native recovery terminal result, native required-scope file, completed/new counts and telemetry remain **PENDING**, not passed. Native job runs outside this workspace; preserve it even if executor connectivity changes. Canonical main remains JL117/JR129/core1402, issue189OPEN.
+
+**Exact continuation:** observe existing run38069793801 only; do not redispatch/restart. When terminal, obtain isolated-diagnostics and isolated-native artifacts, pin actual IDs/digests, independently verify whole required native scope, strict completed prefix and reuse, new reports, raw findings, original eligibility gates, per-fixture timings/resource guards and owned cleanup. STOP for parent review before adoption/publication/merge; no automatic extension/retry. Current local read-only checker /tmp/issue189-reconcile-isolated-recovery.py and raw ZIP inspector /tmp/issue189-inspect-native-zip.py are prepared; exact source/subset inputs remain under /tmp/issue189-core236-reconciliation-inputs.zip and previous failure diagnostic/inventory paths. Prior active checkpoint and implementation constraints follow.
+
 ## One changed isolated audit recovery active — 2026-10-10 17:00 UTC
 
 Parent independent review authorized ONE changed audit-only continuation after bounded18 comparison passed. **Draft PR240**, branch **agent-fix/189-core236-isolated-audit-recovery**, source **63f9541aa68ae3e05ee9700ae71dcaea6dfe02f6**, stacked on PR239 unchanged7add2a44. Single run [38069793801](https://github.com/Takazudo/zudo-osc-hole-field/actions/runs/38069793801) ACTIVE; terminal result UNRUN/unavailable. No other routing/recovery run was active at dispatch; only independent read-only CI38069711817.
