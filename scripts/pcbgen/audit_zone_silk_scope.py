@@ -5,6 +5,7 @@ sys.path.insert(0,str(Path(__file__).resolve().parents[2]))
 from scripts.pcbgen.complete_native_warnings import SILK_TARGET_LAYERS
 from scripts.pcbgen.uuid_tools import top_level_spans,replace_spans,UUID_RE
 from scripts.pcbgen.audit_added_mask import unchanged_nonrouting,new_silk_identities
+from scripts.pcbgen.zone_fixture_validation import text_rows,native_fixture_check,isolated_fixture_check
 
 
 def zone_metadata(text):
@@ -63,7 +64,7 @@ def native_zone_signature(poly):
     return hashlib.sha256(poly.Format().encode()).hexdigest()
 
 
-def classify_zone(before_path,after_path,output,before,after,uid,layer,growth,pcbnew,batch_size=1,resume=None):
+def classify_zone(before_path,after_path,output,before,after,uid,layer,growth,pcbnew,batch_size=1,resume=None,isolate_fixtures=False):
     """Native full-zone/silk pairs wherever added filled area could collide."""
     settings=json.loads(after_path.with_suffix('.kicad_pro').read_text())['board']['design_settings']['rules']
     margin=max(0,math.ceil(settings['min_silk_clearance']*1e6))+5_000_000
@@ -86,10 +87,6 @@ def classify_zone(before_path,after_path,output,before,after,uid,layer,growth,pc
     (output/f'zone-{uid}-scope.json').write_text(json.dumps(scope,indent=2)+'\n')
     progress=output/f'zone-{uid}-progress.jsonl';progress.write_text('')
     print(f'zone {uid}: {len(selected)}/{len(items)} artwork items, {2*len(batches)} paired fixtures',flush=True)
-    def text_rows(board):
-        objects=list(board.GetDrawings())
-        for fp in board.GetFootprints():objects.extend([*fp.GetFields(),*fp.GraphicalItems()])
-        return {x.m_Uuid.AsString():x.GetShownText(True) for x in objects if hasattr(x,'GetShownText')}
     sources=[(before_path,before),(after_path,after)];receipts=[];unions=[set(),set()];source_signatures={}
     for stage,(source,board) in enumerate(sources):
         source_text=source.read_text();texts=text_rows(board);native_zone=next(z for z in board.Zones() if z.m_Uuid.AsString()==uid)
@@ -101,15 +98,10 @@ def classify_zone(before_path,after_path,output,before,after,uid,layer,growth,pc
             fixture=folder/source.name
             fixture.write_text(zone_fixture_text(parts,item_uids[0]) if batch_size==1 else zone_fixture_batch_text(parts,item_uids))
             for suffix in ('.kicad_pro','.kicad_dru'):shutil.copyfile(source.with_suffix(suffix),fixture.with_suffix(suffix))
-            loaded=pcbnew.LoadBoard(str(fixture));zones=list(loaded.Zones())
-            if len(zones)!=1 or zones[0].m_Uuid.AsString()!=uid:raise ValueError('fixture zone identity changed')
-            if list(loaded.GetTracks()) or any(list(fp.Pads()) for fp in loaded.GetFootprints()):raise ValueError('unrelated fixture copper remains')
-            actual_ids=[x.m_Uuid.AsString() for x in list(loaded.GetFootprints())+[x for x in loaded.GetDrawings() if x.GetLayer()!=pcbnew.Edge_Cuts]]
-            if len(actual_ids)!=len(set(actual_ids)) or set(actual_ids)!=set(item_uids):raise ValueError('fixture artwork scope changed')
-            actual=text_rows(loaded)
-            if any(texts.get(k)!=v for k,v in actual.items()):raise ValueError('fixture rendered text changed')
-            geometry_signature=native_zone_signature(zones[0].GetFilledPolysList(layer))
-            if geometry_signature!=source_signatures[str(stage)]:raise ValueError('fixture native zone shape changed')
+            if isolate_fixtures:
+                geometry_signature=isolated_fixture_check(fixture,uid,layer,item_uids,texts,source_signatures[str(stage)])
+            else:
+                geometry_signature=native_fixture_check(fixture,uid,layer,item_uids,texts,source_signatures[str(stage)],pcbnew)
             report=folder/'drc.json'
             if (stage,index) in completed:
                 report.write_bytes(verified_report(resume,uid,label,fixture,completed[(stage,index)],geometry_signature))
@@ -125,7 +117,7 @@ def classify_zone(before_path,after_path,output,before,after,uid,layer,growth,pc
     return dict(**({} if batch_size==1 else {'artwork_batch_size':batch_size}),selected_item_uuids=selected,conservative_margin_nm=margin,native_geometry_method='exact_native_coordinates_no_arcs',source_geometry_sha256=source_signatures,fixtures=receipts,before_identities=sorted(unions[0]),after_identities=sorted(unions[1]),new_identities=sorted(unions[1]-unions[0]))
 
 
-def main(before_path,after_path,output,classify=False,batch_size=1,resume=None,reviewed_removed_uuids=()):
+def main(before_path,after_path,output,classify=False,batch_size=1,resume=None,reviewed_removed_uuids=(),isolate_fixtures=False):
     import pcbnew
     artwork_batches([],batch_size)
     version=subprocess.check_output(['kicad-cli','version'],text=True).strip()
@@ -155,7 +147,7 @@ def main(before_path,after_path,output,classify=False,batch_size=1,resume=None,r
             p=z.GetFilledPolysList(layer).CloneDropTriangulation();q=prior.GetFilledPolysList(layer)
             before_area=q.Area();after_area=p.Area();p.BooleanSubtract(q)
             rows.append(dict(uuid=uid,layer=pcbnew.LayerName(layer),net=z.GetNetname(),before_area_nm2=before_area,after_area_nm2=after_area,native_added_area_nm2=p.Area(),native_added_shape_empty=p.IsEmpty(),native_added_outline_count=p.OutlineCount()))
-            if classify and not p.IsEmpty():rows[-1]['native_silk_pairs']=classify_zone(before_path,after_path,output,before,after,uid,layer,p,pcbnew,batch_size,resume)
+            if classify and not p.IsEmpty():rows[-1]['native_silk_pairs']=classify_zone(before_path,after_path,output,before,after,uid,layer,p,pcbnew,batch_size,resume,isolate_fixtures)
     result.update(status='READ-ONLY NATIVE ZONE SHAPE EVIDENCE; NO PROMOTION',zone_metadata_and_outline_unchanged=True,zones=rows,all_silk_relevant_zone_shapes_are_subsets=all(r['native_added_shape_empty'] for r in rows))
     result['zone_silk_scope_complete']=classify
     result['new_zone_silk_identities']=sorted({tuple([a,b,tuple(c)]) for row in rows for a,b,c in row.get('native_silk_pairs',{}).get('new_identities',[])})
@@ -163,4 +155,4 @@ def main(before_path,after_path,output,classify=False,batch_size=1,resume=None,r
 
 
 if __name__=='__main__':
-    parser=argparse.ArgumentParser();parser.add_argument('before',type=Path);parser.add_argument('after',type=Path);parser.add_argument('output',type=Path);parser.add_argument('--classify',action='store_true');parser.add_argument('--batch-size',type=int,default=1);parser.add_argument('--resume-from',type=Path);parser.add_argument('--reviewed-cut-uuid',action='append',default=[]);args=parser.parse_args();main(args.before,args.after,args.output,args.classify,args.batch_size,args.resume_from,args.reviewed_cut_uuid)
+    parser=argparse.ArgumentParser();parser.add_argument('before',type=Path);parser.add_argument('after',type=Path);parser.add_argument('output',type=Path);parser.add_argument('--classify',action='store_true');parser.add_argument('--batch-size',type=int,default=1);parser.add_argument('--resume-from',type=Path);parser.add_argument('--reviewed-cut-uuid',action='append',default=[]);parser.add_argument('--isolate-fixture-processes',action='store_true');args=parser.parse_args();main(args.before,args.after,args.output,args.classify,args.batch_size,args.resume_from,args.reviewed_cut_uuid,args.isolate_fixture_processes)
