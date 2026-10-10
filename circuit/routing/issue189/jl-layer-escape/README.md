@@ -19,3 +19,8 @@ repair_probe.py uses that exact rejected native geometry to try a full-width0.3m
 
 
 Three stronger search-only B.Cu protection squares around C2148 (half-width0.8/1.2/1.6mm) also fail on the exact original JL118 dump9d193cd9, with the same F/In2/B domain,0.025mm lattice,300000expansions and6mm bounds (PASS14s). protect_return_probe.py and protect-return-result.json preserve all negative trials. No physical keepout, changed PCB or new native candidate was produced. The initial invocation used the later pilot dump and correctly stopped at the immutable input-hash assertion before routing; rerun used the original saved input. Do not repeat these unchanged tests or infer physical impossibility.
+
+
+## Distinct outer-only97-object trial
+
+Four additional same-input F/B-only trials retain identical0.025mm/300000/6mm limits (PASS13s). Only U2119 completes, producing95segments/2vias. This differs from prior91/83/87-object outer variants and the rejected115-object In2 proposal; all earlier rejections remain preserved. The other three cases fail. outer-only-result.json pins all outcomes, geometry and timings; outer-only-proposal.json and outer-only-plan.json pin the separate native pilot. Its native result is UNRUN in this commit. C2148 AGND and every original group remain mandatory; no automatic restoration, physical changes or copper removal. A positive pilot still requires full warning audits and fresh adoption. The global JL coupled plan now selects this separate trial; original plan.json/proposal.json continue to identify the reconciled c6fda679 rejection.
