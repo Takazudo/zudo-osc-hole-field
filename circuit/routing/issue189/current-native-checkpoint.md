@@ -1,3 +1,29 @@
+## Core236 terminal reconciliation and audit-only continuation — 2026-10-10 14:16 UTC
+
+Accepted main remains **65cefd41fc39e064d38319115ad96016a1c6b71c**, **JL117/JR129/core1402**, nativeDRC/parity0/0. Issue189OPEN. No candidate copper adopted.
+
+Original core worker **38044514132 completed**, source4768f2f82e8a4d634f8dc2905429616bfcd20c37, botreceiptcommit424e0a715424471afc25d45a3c23bbdac025db2b changed ONLY2receipt files. Candidate1402→1312 is **REJECTED: incomplete_native_warning_evidence**; zone subprocessexit137. Exit cause UNKNOWN. Raw native passes1402x3→1312x3/fresh1312x3,DRC/parity0/0,nooriginal-group splits. Native startSHA256b9f5ca13f83c7ffdbe5836fd271e7c1099e04b901ca1798a7be06f025bd02d66,merge/freshf27efe521f4ed4f6c0ceb53f45f58a82a824c05475ef012a2034a0d1d2a154d1.
+
+Original artifact **11671963117**,713393322bytes,SHA256 **d02155c0775df089f8ba84310014671436f427dc11b00e94cd551f30e1d6ede5**. Direct connectordownload failed its512MiBcap; CLI/curl redirects403 even with supported escalation. No successfullocal fullZIPdownload claimed. Narrow read-only remoteinspection **38058125832 PASS**,source5eeeedadb39d965ed97ec0db062dbdc76830a432,verifiedfulloriginalZIPdigest and all3188files/3149099594uncompressedbytes. Inspectionartifact11671779973,SHA256c5971fa98d5235861294e015150242572cb71dd5fc94a862c0587f8f979d881e,100551415bytes. CompactsubsetSHA2564211d6ae2ebe9861e17ae45f133c8e6318fcbaa74998740aa10ba879d70bd9ef. Local ZIPhash and everyexported entry compared with originalverifiedinventory.
+
+Independentlocalreconciliation **heavy-guardPASS211s**: all133551acceptedobjects retained,115exactproposal additions/0cuts,3807nonrouting,zone/context/pad/edge/layer/keepout/native-signature preservation,settled/fresh/rawgate agreement. Proof/core236-audit-recovery/terminal-proof.json and checkerreconcile_subset.py. No localnativefixture reconstruction claimed. Originalarchiveretains holes-before128fixtures,holes-after128,completeall-added-copper mask115fixtures; final complete_reports still pending fullzone result.
+
+Firstzone601e02b2-8ccb-5c28-83e5-03789d47fbbd:1757selectedartwork,220paired batch16reports,**215hash-verified ordered prefix**,nextstage1batch105,5missing THISzone. Laterzones/totalremainingwork UNKNOWN. Originalzone resultSTARTED and fullnativeproof absent.
+
+Parent independenthigher-level review authorized conditional audit-only recovery after thisvalidation. **SOLE active recovery run38058774479**, branch **agent-fix/189-core236-audit-recovery**, exactsource **617082dc9b7a7f457fd3363b6999d6bb2f341dc5**, draft **PR238** https://github.com/Takazudo/zudo-osc-hole-field/pull/238. Do not redispatch or change this activehead. Exactarchives hash/inventorychecked before extraction/nativeexecution; archivedstart/fresh are used, NEVER currentmain substituted. Batch16existing --resume-from checks source/scope/orderedprefix, freshly reconstructed nativefixture bytes/geometry/context/reporthash/identities intoNEWoutput. Completesmissingreports AND laterzonecoverage; requirescomplete_reports and promotion_gate. 100minutecommand/120minutejob limit. Records resource/time/exit/log/progress/rawfixtures; resource readings do not prove an exitcause. No rerouting,sourcePCB edits,botcopperpublication orcanonicaladoption. Successeligibility remainsadopted=false; publicationequivalence/exact-headCI/current-main preservation and parentreview of completeadoptionproof REQUIRED before largecoremerge. Ifitdiesagain, STOPunchangedreruns; identify exactfailingfixture and observedtelemetry,then isolate/fixverifiedfailure.
+
+Exactcontinuation:
+```sh
+gh run view 38058774479 --repo Takazudo/zudo-osc-hole-field --json status,conclusion,jobs
+# After terminal list artifact issue189-core236-zone-recovery-38058774479.
+# Record artifactID,size,SHA256; preserve ALL source/raw warning/native gates.
+# If artifact exceeds connector512MiBcap, use analogous read-only digest/inventory/compact-export inspection,
+# never reroute, substitute main, waive warnings, or reuse unvalidated progress.
+```
+Recoverycode/workflow/proof instructions in PR238 pathcircuit/routing/issue189/core236-audit-recovery. Localrecoverypy_compile/YAML/bashsyntaxPASS; nativefullwarning/publicationchecks NOTyetcomplete. No fullboardadoptionreceipt exists.
+
+PR237docs exactCI38047319084all5SUCCESS,headfa5908de40d730b8979e91581bb7eb30f22320b7. Scopeverifiedonly2MDX. Remainsdraft/open; **no integration performed during this reconciliation**; separate authorization/current-head/main checks apply.
+
 ## Status refresh — 2026-10-10 11:22 UTC
 
 Accepted main **65cefd41fc39e064d38319115ad96016a1c6b71c**; exact post-main CI **38046984631 SUCCESS**. Native accepted counts remain **JL117 / JR129 / core1402**, DRC/parity **0/0**. Sole native core worker **38044514132 remains IN_PROGRESS** at source **4768f2f82e8a4d634f8dc2905429616bfcd20c37**; no new dispatch, no result inferred.
