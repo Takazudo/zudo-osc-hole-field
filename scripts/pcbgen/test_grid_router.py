@@ -48,6 +48,25 @@ class GridRouterTests(unittest.TestCase):
                 self.assertEqual(events[0]['attempts'],[])
                 self.assertEqual(dump['islands']['A'],[['p0'],['p1']])
 
+    def test_explicit_plane_window_reaches_beyond_default_without_relaxing_keepout(self):
+        dump=board();dump['pads']=dump['pads'][:1];dump['islands']={'A':[['p0']]}
+        dump['keepouts']=[{'name':'via exclusion','poly':[[0,0],[6*MM,0],[6*MM,8*MM],[0,8*MM]],
+                          'layers':['F.Cu','In1.Cu','In2.Cu','B.Cu'],'tracks':False,'vias':True}]
+        kwargs=dict(planes={'A':'In1.Cu'},res=.1,allowed_layers=['B.Cu'],log=lambda m:None)
+        events=[];old,cuts=route(dump,['A'],diagnostics=events,**kwargs)
+        self.assertFalse(cuts);self.assertIsNone(old[0]['path'])
+        self.assertEqual(events[0]['reason'],'no_legal_via_site')
+        new,cuts=route(dump,['A'],plane_window_mm=6,**kwargs)
+        self.assertFalse(cuts);self.assertTrue(new[0]['path'])
+        rows,_=copper_rows(new,'fixture','plane-window')
+        vias=[r for r in rows if r['kind']=='via'];self.assertEqual(len(vias),1)
+        self.assertGreater(vias[0]['at_nm'][0],6*MM)
+
+    def test_plane_window_rejects_nonfinite_or_nonpositive_values(self):
+        for value in (0,-1,float('nan'),float('inf')):
+            with self.subTest(value=value), self.assertRaisesRegex(ValueError,'finite and positive'):
+                route(board(),plane_window_mm=value,log=lambda m:None)
+
     def test_open_layer_routes_without_via(self):
         rows,_=copper_rows(self.route(board(),layer_cost=(1,1,1,1)),'fixture','t')
         self.assertTrue(rows)

@@ -27,6 +27,8 @@ Branch `agent-fix/189-jr-paired-placement`, evidence commit `eb4eb0a7fd1e269495e
 
 Paired movement:1152 joint cases screened on identical saved JR134 inputs;40 static candidates. Twelve round-robin proposals tested direct/plane (24 bounded trials):zero complete,18search_exhausted,6no_legal_via_site; max43623 expansions of300000. The remaining28 static candidates are untested, not negative. Anchored90/180/270-degree rotations:27 cases,zero viable candidates. Four source-legal poses have foreign pad/via blockers; no small track-only restoration scope. Exact integer native/source centre binding handles the recorded1nm conversion effect without widening tolerance. Preserve negative evidence and change diagnosed cause/method before repeating; do not implement a source rotation or native pilot without a qualifying proposal.
 
+Plane-fanout follow-up: the default hard-coded3mm window omits legal6mm via sites in the saved failed cases. An opt-in `plane_window_mm` retains the default and all constraints. Identical unchanged R8490/RB4615 comparisons at3/6mm produce zero complete routes;6mm searches exhaust21187/43982 states below300000.32router+15bounded/driver tests pass. `jr134-plane-window-diagnostic/` preserves hashes and results; no native pilot or geometry change is warranted.
+
 ## Exact continuation order
 
 1. Refresh main, PR218/219 and concurrent branch heads before any adoption. Preserve unrelated work. Do not rerun the already consumed personal loader or attempt local Docker unpack/cleanup/auth/daemon changes. Supported pinned KiCad10.0.6 CI works; local image storage is still blocked under issue214.
