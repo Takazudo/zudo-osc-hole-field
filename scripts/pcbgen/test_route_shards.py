@@ -22,6 +22,30 @@ def board(*items):
 
 
 class MergeAcceptanceTests(unittest.TestCase):
+    def test_reviewed_cuts_require_full_audit_and_exact_bounded_source_plan(self):
+        import copy
+        from scripts.pcbgen.route_shards import merge,reviewed_cut_scope
+        with self.assertRaisesRegex(ValueError,'require complete warning'):
+            merge('osc-jack-left',[],'no-work',reviewed_cut_plan=Path('must-not-read'))
+        dump={'pads':[{'uuid':'ground','net':'AGND','xy':[5e6,5e6]}],
+              'tracks':[{'uuid':U[0],'net':'signal','a':[4e6,5e6],'b':[6e6,5e6],'width':.2e6}],
+              'vias':[],'islands':{'AGND':[['ground'],['main']]}}
+        spec={'repair':True,'repair_targets':['AGND'],'repair_ground_pad_uuids':['ground'],
+              'repair_source_uuids':[U[0]],'repair_bounds_mm':[3,3,7,7]}
+        plan={'board':'osc-jack-left','input_board_sha256':'source','stage':spec};removed=[{'uuid':U[0],'net':'signal'}]
+        self.assertEqual(reviewed_cut_scope(plan,'osc-jack-left','source',dump,removed),[U[0]])
+        for mutation in ('source','board','bounds','duplicate','extra-removal','missing-removal','rail'):
+            p=copy.deepcopy(plan);d=copy.deepcopy(dump);r=copy.deepcopy(removed)
+            if mutation=='source':p['input_board_sha256']='other'
+            if mutation=='board':p['board']='osc-core'
+            if mutation=='bounds':p['stage']['repair_bounds_mm']=[4,3,7,7]
+            if mutation=='duplicate':p['stage']['repair_source_uuids']*=2
+            if mutation=='extra-removal':r.append({'uuid':U[1]})
+            if mutation=='missing-removal':r=[]
+            if mutation=='rail':d['tracks'][0]['net']='AGND'
+            with self.subTest(mutation=mutation),self.assertRaises(ValueError):
+                reviewed_cut_scope(p,'osc-jack-left','source',d,r)
+
     def test_batch_option_cannot_skip_full_warning_evidence(self):
         from scripts.pcbgen.route_shards import merge
         with self.assertRaisesRegex(ValueError,'requires complete warning'):

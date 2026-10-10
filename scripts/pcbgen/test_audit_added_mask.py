@@ -11,6 +11,28 @@ def board(*items):
 
 
 class AddedCopperScopeTests(unittest.TestCase):
+    def test_reviewed_cuts_preserve_every_other_object_and_scope_every_addition(self):
+        cut='00000000-0000-4000-8000-000000000001'
+        before=board(item(0),item(0),item(1,'via'))
+        after=board(item(0),item(0),item(2),item(3,'via'))
+        scope=added_copper_scope(before,after,2,1,reviewed_removed_uuids=[cut])
+        self.assertEqual(sorted(scope.values()),['segment','via'])
+        for wrong in ([],[cut,cut],['missing'],[cut,'00000000-0000-4000-8000-000000000000']):
+            with self.subTest(wrong=wrong),self.assertRaises(ValueError):
+                added_copper_scope(before,after,reviewed_removed_uuids=wrong)
+        for changed in (board(item(0),item(2)),board(item(0),item(0,width=2),item(2)),
+                        board(item(0),item(0),item(1,'via',width=2),item(2)),
+                        after.replace('(version 20260101)','(version 20260102)')):
+            with self.subTest(changed=changed),self.assertRaises(ValueError):
+                added_copper_scope(before,changed,reviewed_removed_uuids=[cut])
+
+    def test_reviewed_cut_cannot_remove_ambiguous_duplicate_or_exceed_bound(self):
+        uid=lambda i:f'00000000-0000-4000-8000-{i:012d}'
+        with self.assertRaises(ValueError):
+            added_copper_scope(board(item(0),item(0)),board(item(1)),reviewed_removed_uuids=[uid(0)])
+        with self.assertRaises(ValueError):
+            added_copper_scope(board(*(item(i) for i in range(13))),board(item(14)),reviewed_removed_uuids=[uid(i) for i in range(13)])
+
     def test_core_and_jr_exact_scopes(self):
         for count, vias in ((382, 38), (79, 5)):
             added=[item(i, 'via' if i<=vias else 'segment') for i in range(1,count+1)]

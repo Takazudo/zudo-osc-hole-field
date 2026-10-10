@@ -101,5 +101,17 @@ class BatchArtifactBindingTests(unittest.TestCase):
                     else:
                         with self.assertRaises(ValueError):evidence.main(archive,sha(archive.read_bytes()),*sources,root/'receipt.json')
                         with self.assertRaises(ValueError):zone_evidence(proof,*sources,gate_context)
+            # A reviewed cut never changes or skips either paired native fixture.
+            cut='00000000-0000-4000-8000-000000000003'
+            original=sources[0].read_text()
+            sources[0].write_text(original[:-1]+f'(segment (uuid "{cut}"))'+')')
+            result['before_sha256']=sha(sources[0].read_bytes())
+            files['result.json']=json.dumps(result).encode()
+            proof=root/'reviewed-cut-proof'
+            for name,data in files.items():
+                p=proof/name;p.parent.mkdir(parents=True,exist_ok=True);p.write_bytes(data)
+            with self.assertRaisesRegex(ValueError,'additive'):
+                zone_evidence(proof,*sources,gate_context)
+            self.assertEqual(zone_evidence(proof,*sources,gate_context,reviewed_removed_uuids=[cut])['zone_fixture_count'],2)
 
 if __name__=='__main__':unittest.main()

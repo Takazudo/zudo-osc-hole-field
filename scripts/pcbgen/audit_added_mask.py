@@ -1,10 +1,11 @@
 """Native evidence for every new copper/silkscreen interaction; never promote a board.
 
-Requires exact non-copper/non-zone invariance, additive copper, unmasked new
+Requires exact non-copper/non-zone invariance, additive copper by default, unmasked new
 tracks, no mask zones/custom silk rules, and zero mask-healing width. A fixture
 contains all unchanged silkscreen and outline geometry, no old mask objects,
 and one new copper object. Both silk warning categories are checked below their caps. Any cap hit or
-unsupported scope fails closed. Full-board checks remain mandatory.
+unsupported scope fails closed. Explicit unique reviewed cuts are checked separately;
+every uncut object remains immutable. Full-board checks remain mandatory.
 """
 import collections
 import hashlib
@@ -20,22 +21,47 @@ sys.path.insert(0,str(Path(__file__).resolve().parents[2]))
 from scripts.pcbgen.uuid_tools import top_level_spans, replace_spans, UUID_RE
 
 
-def unchanged_nonrouting(before, after):
+def reviewed_copper_removals(before, after, reviewed_removed_uuids=()):
+    """Permit only explicitly named, unique cuts; never permit replacement in place."""
+    cuts=list(reviewed_removed_uuids)
+    if len(cuts)>12 or len(cuts)!=len(set(cuts)) or any(not isinstance(u,str) or not re.fullmatch(r'[0-9a-fA-F]{8}(?:-[0-9a-fA-F]{4}){3}-[0-9a-fA-F]{12}',u) for u in cuts):
+        raise ValueError('reviewed cuts require at most twelve distinct UUIDs')
+    def copper(text):
+        return collections.Counter(text[a:b] for a,b in top_level_spans(text)
+            if text[a+1:b].split(None,1)[0].rstrip(')') in ('segment','via'))
+    old,new=copper(before),copper(after);removed=old-new
+    if removed and not cuts:raise ValueError('not additive copper')
+    if not cuts:return {}
+    by_id=collections.defaultdict(list)
+    for block,n in old.items():
+        match=UUID_RE.search(block)
+        if not match:raise ValueError('source copper UUID missing')
+        by_id[match[1]].extend([block]*n)
+    scope={}
+    for uid in cuts:
+        blocks=by_id.get(uid,[])
+        if len(blocks)!=1 or removed[blocks[0]]!=1:
+            raise ValueError('reviewed cut is missing, retained or ambiguous')
+        if any(UUID_RE.search(block)[1]==uid for block in new):
+            raise ValueError('reviewed cut UUID reused')
+        scope[uid]=blocks[0][1:].split(None,1)[0].rstrip(')')
+    if sum(removed.values())!=len(cuts):raise ValueError('unreviewed copper removed or changed')
+    return scope
+
+
+def unchanged_nonrouting(before, after, reviewed_removed_uuids=()):
     def blocks(text):
         return collections.Counter(text[a:b] for a,b in top_level_spans(text)
             if text[a+1:b].split(None,1)[0].rstrip(')') not in ('segment','via','zone'))
     a,b=blocks(before),blocks(after)
     if a!=b:raise ValueError('nonrouting geometry/settings changed')
-    def copper(text):
-        return collections.Counter(text[a:b] for a,b in top_level_spans(text) if text[a+1:b].split(None,1)[0].rstrip(')') in ('segment','via'))
-    ca,cb=copper(before),copper(after)
-    if ca-cb:raise ValueError('not additive copper')
+    reviewed_copper_removals(before,after,reviewed_removed_uuids)
     return sum(a.values())
 
 
-def added_copper_scope(before, after, expected_copper=None, expected_vias=None):
+def added_copper_scope(before, after, expected_copper=None, expected_vias=None, reviewed_removed_uuids=()):
     """Bind every additive source object; retained historical UUID duplicates are allowed."""
-    unchanged_nonrouting(before, after)
+    unchanged_nonrouting(before, after, reviewed_removed_uuids)
     def copper(text):
         return collections.Counter(text[a:b] for a,b in top_level_spans(text)
             if text[a+1:b].split(None,1)[0].rstrip(')') in ('segment','via'))
@@ -64,14 +90,14 @@ def new_silk_identities(drc, via_uuid):
     return [v for v in rows if any(i['uuid']==via_uuid for i in v['items'])]
 
 
-def main(before_path, after_path, out, expected_copper=382, expected_vias=38):
+def main(before_path, after_path, out, expected_copper=382, expected_vias=38, reviewed_removed_uuids=()):
     import pcbnew
     version=subprocess.check_output(['kicad-cli','version'],text=True).strip()
     if version!='10.0.6':raise ValueError('requires pinned native10.0.6')
     out.mkdir(parents=True,exist_ok=True)
     (out/'started.json').write_text(json.dumps(dict(status='STARTED; NO NATIVE MASK RESULT YET',version=version,before_sha256=hashlib.sha256(before_path.read_bytes()).hexdigest(),after_sha256=hashlib.sha256(after_path.read_bytes()).hexdigest()),indent=2)+'\n')
-    count=unchanged_nonrouting(before_path.read_text(),after_path.read_text())
-    scope=added_copper_scope(before_path.read_text(),after_path.read_text(),expected_copper,expected_vias)
+    count=unchanged_nonrouting(before_path.read_text(),after_path.read_text(),reviewed_removed_uuids)
+    scope=added_copper_scope(before_path.read_text(),after_path.read_text(),expected_copper,expected_vias,reviewed_removed_uuids)
     for suffix in ('.kicad_pro','.kicad_dru'):
         if before_path.with_suffix(suffix).read_bytes()!=after_path.with_suffix(suffix).read_bytes():
             raise ValueError('project/rules changed')
@@ -163,6 +189,8 @@ def main(before_path, after_path, out, expected_copper=382, expected_vias=38):
                 unchanged_nonrouting_objects=count,added_unmasked_tracks=len(added)-len(vias),
                 added_copper_scope_complete=True,added_copper_source_scope=scope,
                 new_mask_identities=sorted(identities),fixtures=receipts)
+    if reviewed_removed_uuids:
+        result['reviewed_copper_removals']=reviewed_copper_removals(before_path.read_text(),after_path.read_text(),reviewed_removed_uuids)
     (out/'result.json').write_text(json.dumps(result,indent=2)+'\n')
 
 
@@ -172,5 +200,6 @@ if __name__=='__main__':
     for name in ('before','after','output'):parser.add_argument(name,type=Path)
     parser.add_argument('--expected-copper',type=int,default=382)
     parser.add_argument('--expected-vias',type=int,default=38)
+    parser.add_argument('--reviewed-cut-uuid',action='append',default=[])
     args=parser.parse_args()
-    main(args.before,args.after,args.output,args.expected_copper,args.expected_vias)
+    main(args.before,args.after,args.output,args.expected_copper,args.expected_vias,args.reviewed_cut_uuid)

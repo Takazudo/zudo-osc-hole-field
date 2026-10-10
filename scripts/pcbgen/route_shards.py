@@ -173,10 +173,31 @@ def merge_text(base_text,deltas,reverted=frozenset()):
     return ''.join(chunks)
 
 
-def merge(board_id,delta_paths,label,repair_ground=False,complete_native_warnings=False,native_zone_batch_size=1):
+def reviewed_cut_scope(plan,board_id,source_sha,dump,removed):
+    """Bind complete-warning cuts to the same bounded source plan as native repair."""
+    from scripts.pcbgen.route_jack_grid import repair_selection,repair_bounds
+    if plan.get('board')!=board_id or plan.get('input_board_sha256')!=source_sha:
+        raise ValueError('reviewed cut plan board/source mismatch')
+    spec=plan.get('stage',{})
+    if spec.get('repair') is not True or 'repair_source_uuids' not in spec:
+        raise ValueError('reviewed cut plan requires explicit repair cuts')
+    ids=spec['repair_source_uuids']
+    if len(ids)!=len(set(ids)):raise ValueError('duplicate reviewed cut UUID')
+    targets,cuts=repair_selection(dump,spec)
+    if repair_bounds(dump,spec,targets,cuts) is None:
+        raise ValueError('reviewed cut plan requires bounded geometry')
+    if len(removed)!=len(cuts) or {r['uuid'] for r in removed}!=cuts:
+        raise ValueError('actual removals differ from reviewed cuts')
+    return sorted(cuts)
+
+
+def merge(board_id,delta_paths,label,repair_ground=False,complete_native_warnings=False,native_zone_batch_size=1,reviewed_cut_plan=None):
     """Apply every shard delta to the board, gate it natively, and promote it if open edges fall."""
     if type(native_zone_batch_size) is not int or native_zone_batch_size not in (1,4,16):raise ValueError('native zone batch size must be1,4or16')
     if native_zone_batch_size!=1 and not complete_native_warnings:raise ValueError('native zone batching requires complete warning audits')
+    if reviewed_cut_plan is not None and not complete_native_warnings:raise ValueError('reviewed cuts require complete warning audits')
+    cut_plan_bytes=Path(reviewed_cut_plan).read_bytes() if reviewed_cut_plan is not None else None
+    cut_plan=json.loads(cut_plan_bytes) if cut_plan_bytes is not None else None
     from scripts.pcbgen.route_jack_grid import PLANES,workspace,check,promotion_gate,connectivity_signature,split_pad_groups,stitched
     board=ROOT/'boards'/board_id/f'{board_id}.kicad_pcb';base_text=board.read_text()
     sha=hashlib.sha256(base_text.encode()).hexdigest()
@@ -252,7 +273,13 @@ def merge(board_id,delta_paths,label,repair_ground=False,complete_native_warning
         receipt['raw_promotion_gate']=promotion_gate(before,after,before_drc,drc)
         evidence=workspace(board_id,'shards-complete-warnings')/'native-audits'
         try:
-            complete_before,complete_after,proof=audit_current_reports(base,candidate,before_drc,drc,evidence,**({} if native_zone_batch_size==1 else {'zone_batch_size':native_zone_batch_size}))
+            options={} if native_zone_batch_size==1 else {'zone_batch_size':native_zone_batch_size}
+            if cut_plan is not None:
+                actual=delta(base_text,candidate.read_text())
+                cuts=reviewed_cut_scope(cut_plan,board_id,sha,before,actual['removed'])
+                options['reviewed_removed_uuids']=cuts
+                receipt['reviewed_cut_plan']={'path':str(reviewed_cut_plan),'sha256':hashlib.sha256(cut_plan_bytes).hexdigest(),'removed_uuids':cuts,'bounds_mm':cut_plan['stage']['repair_bounds_mm']}
+            complete_before,complete_after,proof=audit_current_reports(base,candidate,before_drc,drc,evidence,**options)
             receipt['complete_native_warning_evidence']=proof
             receipt.update(promotion_gate(before,after,complete_before,complete_after))
         except (ValueError,RuntimeError,OSError,subprocess.SubprocessError) as error:
@@ -300,11 +327,12 @@ def main():
     m.add_argument('--repair-ground',action='store_true',help='try existing AGND stitching before the complete membership gate')
     m.add_argument('--native-zone-batch-size',type=int,choices=(1,4,16),default=1,help='opt-in bounded artwork batches; requires complete native warning audits')
     m.add_argument('--complete-native-warnings',action='store_true',help='require source-bound complete native hole/silk evidence; unsupported scope rejects')
+    m.add_argument('--reviewed-cut-plan',type=Path,help='exact source-bound bounded repair plan; requires complete native warning audits')
     a=p.parse_args()
     if a.cmd=='delta':
         out=delta(a.base.read_text(),a.final.read_text());a.output.write_text(json.dumps(out)+'\n')
         print(f"delta: {len(out['removed'])} removed, {len(out['added'])} added, {len(out['nets'])} nets")
-    else:merge(a.board_id,a.deltas,a.label,a.repair_ground,a.complete_native_warnings,a.native_zone_batch_size)
+    else:merge(a.board_id,a.deltas,a.label,a.repair_ground,a.complete_native_warnings,a.native_zone_batch_size,a.reviewed_cut_plan)
 
 
 if __name__=='__main__':main()
