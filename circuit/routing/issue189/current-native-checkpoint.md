@@ -2,9 +2,38 @@
 
 Issue189 is OPEN and connectivity remains incomplete. No fabrication, release, deployment or hardware qualification is authorized. Incremental OSC merges were explicitly authorized during this session; retain all exact-head native/CI/integration gates. Do not restart unrelated watches or change credentials/toolchains.
 
+## Model-switch boundary and immediate actions — 10:36 UTC
+
+User explicitly requested routine continuation on **Sol Low**, with stronger-model review at major strategy/adoption decisions. End this current turn at the saved boundary; do not claim the model changed mid-turn. Do not spawn costly workers. Parent will arrange stronger reviews.
+
+1. **PR235** headaaa2649936cd2782746d11c44e6dfe9f4fc8a964 / CI38044313314 IN_PROGRESS. Documentation and all3native board jobs PASS; Python aggregate regeneration still running. Prepared `/tmp/issue189-pr235-merge-proof.json`: basea0f2408,preview0acd60aa8b660ea6d5cda341370d42960af2b5f3,allboardbytesunchanged. After all5exact checks pass, refresh actualmain/head/preview, authorizedincrementalmerge,verifyactualtree/postCI. Do not merge before gates.
+2. **PR232 JR129** exact7a245c7 / CI38042777010 is now IN_PROGRESS after approval released. Verify all5, then currentmain mergepreview and retainedboards before authorizedmerge. Earliered6preview is stale afterdocs/possiblePR235.
+3. **PR236 sole core worker38044514132** remainsIN_PROGRESS, source4768f2f82e8a4d634f8dc2905429616bfcd20c37; sourceCI38044514616 alsoIN_PROGRESS. Keep running, do not cancel/redispatch. Reconcile terminal exactly using instructions below. Existing1311candidate remainsREJECTED,notbaseline.
+4. Maina0f2408postCI38044061215 isSUCCESS; acceptedcounts117/130/1402 unchanged. Issue189OPEN.
+
+### Strategy assessment requested by user
+
+Do not launch more long one-edge pilots automatically. User questioned whether this trajectory is sensible; parent agreed repeated one-edge repairs are not an evidenced completion strategy. Count is sum(k−1) for native disconnected groups pernet,nottracecount/completionpercentage. JR129 has79signalnets/107signalobligations and23AGNDgroups/22obligations; zero rails. Accepted baseline remains117+130+1402=1649board-scoped obligations.
+
+Core1402 contains482signalnets/1029signalobligations,AGND213,+12V80,−12V80. JL117 has89signalnets/103plusAGND14; JR13079signalnets/107plusAGND23. No current disconnected group is padless. Many groups are single terminals:141JL/127JR/1252core signalcomponents. These are classifications,notproof that all failures are pin-escape defects.
+
+Measured native-worker walltimes excluding localsearch/reconciliation/CI: JL118→11715.33min; JR131→13022.33min; JR130→12923.58min; acceptedcore1441→1402(39gain)161.30min; rejectedcore1402→1311337.78min,0acceptedgain. Never extrapolate an unsupported completiontime. Old1311joined93rails(+12V80→28,−12V80→39)butAGND213→215,breaking2originalgroups.
+
+Electrical ownership prioritization finds632ofcore1029signalobligations in6envelopeblocks (E2=208,E4=108,E5=87,E6=80,E3=78,E1=71). This suggests coordinated circuit-level work,notindiscriminate tinysearches. Fields come from source netlist Block ownership; safe batching/routeability remainUNPROVEN. Shared AGND/rail pours mean disjoint windows/cutUUIDs alone do not establish safe batching.
+
+Recommendation: finishexistingcore236; measure actualacceptedmulti-connectiongain and separate search/native/CItime. If it stillsplits AGND, causallyisolate offending wholecases or explicitlyrestore exactreturngroups; do not repeat proximity-based omissions. Nextcomparison must predeclarefixed representativeinput,budget andminimumusefulacceptedgain. Applyissue189two-comparable-negligible-results stoprule/max3unchangedstrategy. If stillstalled,use bounded coordinatedrepair or permittedfreepart/localplacement/human-guided20connectioncomparison,notbiggerblindsearch. Fixedpanel/outlines/layers/electricalconditions and successful outsidecopper stayfixed; broaderrelaxation requiresapproval. No physicalunrouteability proof yet. Earlyreject improvesruntime,notconnectivity.
+
+### Read-only local continuation evidence preserved; no native dispatch
+
+JR localbranch `agent-fix/189-jr129-next`,commit700ce8367810f13765f015b7ead35eaf831ad5ce,worktree `/workspace/issue189-plane-budget` clean. Parent7a245c7 preserved.40groundcases→18paths(PASS187s);18endpointcases→2jointcandidates(C7220.2/36objects,J900065.4/61objects)(PASS58s);portable sameinput18/18exact outcomes/diagnostics/proposals(PASS60s),no speedclaim.26tests/circuitPASS. PreparedC7220cutplan,12.38x18.85mm,3exactcuts. Native topology/acceptance NOTRUN. **Do not automatically dispatch** after strategy reassessment. Files durably copied to evidencebranch; localtopiccommit is not remotelypushed to avoid starting another unnecessaryCI before strategydecision.
+
+JL localbranch `agent-fix/189-jl-u8202-minus12-repair`,commitf02fa77123fe2fb9852f28bf932729eeb2c651ae,worktree `/workspace/issue189-jl-layer-escape` clean. Exact6pad−12restoration inputdump032346a47796ab47c2e684ab065a84d69aee02d8d1e1847ab589504f55b240ab,failednativeboard4b85b3. Outerlayer300k exhausted270370states. Fourlayer300k hitlimit; sameinput1m exhausted568598states;0paths both. GuardPASS9s/5s. **STOP this configuration**,no largerbudgetretry,no newnativeworker. Source scripts/results/README on evidencebranch. Initial assertion accidentally counted copperobjects as pads,corrected beforesearch; nativegroupmembers1002/17,pads264/6. No copperchanged/adopted.
+
+All localheavy sessions areterminal; no active terminalwatches were restarted. No localKiCad/Docker fallback. Both localbranches arecommitted,clean and saved to remoteevidencepaths for reconstruction from their statedparents; no newroutingjobsstarted in this continuation turn.
+
 ## Accepted main
 
-Main **a0f240887f80786e1df1791fe15b5074b2af73d7**, tree **7d5dc4d0737441ecb5e231a95e151609110f2455**: **JL117 / JR130 / core1402**, native DRC/parity0/0. PR231 strict cut audits, PR230 JL117, PR224 JR130 and PR234 current documentation are merged. Every PR passed all five exact-head checks. Mained6f158 CI38041900562 passed all five; current post-doc main CI38044061215 is pending. PR234 actual tree matches preview and changes only two documentation pages; all board bytes unchanged.
+Main **a0f240887f80786e1df1791fe15b5074b2af73d7**, tree **7d5dc4d0737441ecb5e231a95e151609110f2455**: **JL117 / JR130 / core1402**, native DRC/parity0/0. PR231 strict cut audits, PR230 JL117, PR224 JR130 and PR234 current documentation are merged. Every PR passed all five exact-head checks. Mained6f158 CI38041900562 passed all five; current post-doc main CI38044061215 SUCCESS. PR234 actual tree matches preview and changes only two documentation pages; all board bytes unchanged.
 
 Board SHA256:
 - JL e984c0a01156b5f282f0c849077c61572df30ee0c70dfe6c9db94fbfcfe52107
@@ -15,11 +44,11 @@ JL117:103signal/14AGND/0rails,30564segments/2861vias. JR130:107signal/23AGND/0ra
 
 ## JR129 fully native accepted, unmerged pending exact-head CI approval
 
-PR232, branch `agent-fix/189-jr130-rb4615-via-branch`, source2a10cae7ef3bd7d4df8e9500c25cada930419432, bot **7a245c751e1bcf8e15d7d1e49aaf6c324a5b75f4**. Native38041389680 and sourceCI38041392709 SUCCESS. **BotCI38042777010 action_required**; user asked once and has not replied. Earlier09:14approval covered only PR230/224; do not reuse it.
+PR232, branch `agent-fix/189-jr130-rb4615-via-branch`, source2a10cae7ef3bd7d4df8e9500c25cada930419432, bot **7a245c751e1bcf8e15d7d1e49aaf6c324a5b75f4**. Native38041389680 and sourceCI38041392709 SUCCESS. **BotCI38042777010 now IN_PROGRESS at exact7a245c7 head** (observed10:34–10:36UTC); its approval gate was released. Do not treat in-progress as passed. Earlier approval history is superseded only by this actual run state.
 
 Artifact11665973838, ZIP SHA09a205f6fad78aabc490ee07124c827a18cacfde575cc1afdb2b8d3bad47f2d1. Independent full reconciliation PASS121s:130×3→129×3/fresh129×3,51571uncut retained/3exactcuts/27new,1080nonrouting unchanged,0DRC/parity/nooriginalsplits/newwarningidentities,520complete findings,24hole identities per side,27copper fixtures,34pairedzone fixtures. Published/fresh PCB9e164f9e8e23a5c3911d117fd08973fc877e5f2f382be20500b8e01040b20a55; replay5d7aa24e5927e9f2148ccc3ac1a19eec7253bc66a67e0dc6c641da7ea52ecd7c. No optional publication compaction/refill; ordinaryfreshPASS.
 
-After user approval, query actual bot head and all5exact checks. Refresh actual main via `git/ref/heads/main` (PR base.sha may be stale), fetch bothrefs, recompute `git merge-tree --write-tree BASE HEAD`, require only expected JR PCB/receipts and preserve JL/core/P/EL/O. Then authorized ready+merge with expected head, verify actual merge tree and post-mainCI. Do not push older local2a source over the bot.
+Query actual bot head and wait for all5exact checks on this released run. Refresh actual main via `git/ref/heads/main` (PR base.sha may be stale), fetch bothrefs, recompute `git merge-tree --write-tree BASE HEAD`, require only expected JR PCB/receipts and preserve JL/core/P/EL/O. Then authorized ready+merge with expected head, verify actual merge tree and post-mainCI. Do not push older local2a source over the bot.
 
 ## Core worker terminal: REJECTED, not an audit-only continuation
 

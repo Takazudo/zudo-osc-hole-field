@@ -1,0 +1,157 @@
+{
+  "status": "READ-ONLY JR129 VERIFIED CANDIDATE, MAIN INTEGRATION STILL AWAITS CI APPROVAL; RASTER GROUND-ONLY PREFILTER; NATIVE CUT TOPOLOGY AND ALL VICTIM RESTORATION NOT RUN; NO ADOPTION",
+  "board_sha256": "9e164f9e8e23a5c3911d117fd08973fc877e5f2f382be20500b8e01040b20a55",
+  "dump_sha256": "e90beeadf69cc2210d34c377b000335ea55a6815064772c81e0f925b1cd21e71",
+  "elapsed_seconds": 185.87145859599696,
+  "skipped": [],
+  "transactions": [
+    {
+      "pad": "C7220.2",
+      "spec": {
+        "repair_targets": [
+          "AGND"
+        ],
+        "repair_ground_pad_uuids": [
+          "eb9882be-c371-518c-9fd9-2f6340a17036"
+        ],
+        "repair_source_uuids": [
+          "93b40959-306f-5899-9eea-e037845eb7bc",
+          "a9d4b7ed-4297-5e5a-8301-4de8aee0443a",
+          "eddd8b2c-4200-5407-afb3-b145067608da"
+        ],
+        "repair_bounds_mm": [
+          339.15,
+          190.0,
+          351.53,
+          208.85
+        ]
+      },
+      "via": {
+        "uuid": "93b40959-306f-5899-9eea-e037845eb7bc",
+        "net": "X3AFCEC5B2537486E1F80",
+        "xy": [
+          345150000,
+          202250000
+        ],
+        "diameter": 600000,
+        "drill": 300000
+      },
+      "cut_segments": [
+        {
+          "uuid": "eddd8b2c-4200-5407-afb3-b145067608da",
+          "net": "X3AFCEC5B2537486E1F80",
+          "a": [
+            345150000,
+            202850000
+          ],
+          "b": [
+            345150000,
+            202250000
+          ],
+          "width": 200000,
+          "layer": "F.Cu"
+        },
+        {
+          "uuid": "a9d4b7ed-4297-5e5a-8301-4de8aee0443a",
+          "net": "X3AFCEC5B2537486E1F80",
+          "a": [
+            345150000,
+            202250000
+          ],
+          "b": [
+            345150000,
+            196000000
+          ],
+          "width": 200000,
+          "layer": "In3.Cu"
+        }
+      ],
+      "boundary_endpoints": [
+        {
+          "cut_uuid": "eddd8b2c-4200-5407-afb3-b145067608da",
+          "xy": [
+            345150000,
+            202850000
+          ],
+          "layer": "F.Cu",
+          "victim_net": "X3AFCEC5B2537486E1F80"
+        },
+        {
+          "cut_uuid": "a9d4b7ed-4297-5e5a-8301-4de8aee0443a",
+          "xy": [
+            345150000,
+            196000000
+          ],
+          "layer": "In3.Cu",
+          "victim_net": "X3AFCEC5B2537486E1F80"
+        }
+      ],
+      "elapsed_seconds": 4.911753943015356,
+      "ground_path_found": true,
+      "ground_copper": [
+        {
+          "kind": "segment",
+          "net": "AGND",
+          "start_nm": [
+            345262500,
+            201425000
+          ],
+          "end_nm": [
+            345262500,
+            201762500
+          ],
+          "width_nm": 300000,
+          "layer": "F.Cu",
+          "uuid": "156785df-f7ff-5e83-81b8-a288451766f9"
+        },
+        {
+          "kind": "via",
+          "net": "AGND",
+          "at_nm": [
+            345262500,
+            201762500
+          ],
+          "diameter_nm": 600000,
+          "drill_nm": 300000,
+          "layers": [
+            "F.Cu",
+            "B.Cu"
+          ],
+          "locked": false,
+          "uuid": "112d46c5-80ba-5540-a7f9-4b50b7cb35d3"
+        },
+        {
+          "kind": "segment",
+          "net": "AGND",
+          "start_nm": [
+            345262500,
+            201762500
+          ],
+          "end_nm": [
+            345262500,
+            199212500
+          ],
+          "width_nm": 300000,
+          "layer": "B.Cu",
+          "uuid": "cacef194-98ba-5427-bb0c-54733c4e8b11"
+        },
+        {
+          "kind": "segment",
+          "net": "AGND",
+          "start_nm": [
+            345262500,
+            199212500
+          ],
+          "end_nm": [
+            345575000,
+            198900000
+          ],
+          "width_nm": 300000,
+          "layer": "B.Cu",
+          "uuid": "1b1bc04a-e405-559e-b404-1bacd8b407a4"
+        }
+      ],
+      "diagnostics": []
+    }
+  ]
+}
