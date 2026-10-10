@@ -13,11 +13,17 @@ class TaskTests(unittest.TestCase):
   scope=dict(zone_uuid=self.uid,layer='F.Cu',artwork_count=2,selected_item_uuids=self.ids,conservative_margin_nm=5000000,growth_boxes_nm=[[0,0,1,1]],planned_paired_fixtures=2,resume_prefix_count=0,required_new_reports=2)
   required=dict(version=a.VERSION,batch_size=16,before_sha256=a.SHA(self.paths[0].read_bytes()),after_sha256=a.SHA(self.paths[1].read_bytes()),planned_paired_fixtures=2,zones=[dict(uuid=self.uid,layer='F.Cu',net='AGND',before_area_nm2=1,after_area_nm2=2,native_added_area_nm2=1,native_added_shape_empty=False,native_added_outline_count=1,required_scope=scope)])
   self.m=a.build_manifest(required,*self.paths,self.kernel);self.bindings={a.identity(t['expected_geometry']):str(t['stage'])*64 for t in self.m['tasks']};self.bundles=[self.bundle(t) for t in self.m['tasks']]
+  authority=a.VerifiedAuthority(a._SEAL,self.m,self.kernel,{b['task_id']:a.identity(b['receipt']) for b in self.bundles},{'test_only':True})
+  for b in self.bundles:b['provenance']=authority
  def bundle(self,t):
   paths,raw,texts,ctx=a.sources(*self.paths);pcb=a.fixture_bytes(t,texts,[set(self.ids),set(self.ids)],{});geo=self.bindings[a.identity(t['expected_geometry'])];native=a.canonical(dict(version=a.VERSION,fixture_sha256=a.SHA(pcb),context_sha256={s:a.SHA(v) for s,v in ctx.items()},native_geometry_sha256=geo));report=a.canonical(dict(kicad_version=a.VERSION,included_severities=['error','warning','exclusion'],violations=[]));r=dict(task_id=t['task_id'],fixture_sha256=a.SHA(pcb),native_validation_sha256=a.SHA(native),report_sha256=a.SHA(report),native_geometry_sha256=geo,identities=[])
   return dict(task_id=t['task_id'],fixture=pcb,context=ctx,native_validation=native,report=report,receipt=r,provenance={'policy':self.kernel})
  def verify(self,b=None,kernel=None):
   return a.verify_leaf(self.m,self.m['tasks'][0],b or self.bundles[0],*self.paths,kernel or self.kernel,self.bindings[a.identity(self.m['tasks'][0]['expected_geometry'])],(b or self.bundles[0])['provenance'])
+ def test_fabricated_self_consistent_proof_cannot_enter_production_verifier(self):
+  b=copy.deepcopy(self.bundles[0]);b['provenance']={'policy':self.kernel,'run':38069793801,'pass':True}
+  with self.assertRaisesRegex(ValueError,'authenticated'):self.verify(b)
+  with self.assertRaisesRegex(ValueError,'authenticated'):a.import_legacy('unused',{'policy':self.kernel},self.m,*self.paths,self.kernel)
  def test_exact_union_invokes_original_full_coverage_verifier(self):
   result,proof=a.final_union(self.m,*self.paths,self.bundles,self.kernel,self.bindings);self.assertTrue(proof['full_paired_zone_coverage']);self.assertEqual(proof['zones'][0]['fixtures'],2);self.assertNotIn('adopted',result);self.assertFalse(proof['adopted'])
  def test_stale_source_context_and_validator_fail_closed(self):
@@ -41,8 +47,9 @@ class TaskTests(unittest.TestCase):
   native=folder/'native-validation.json';native.write_bytes(b'{}')
   b=a.read_checkpoint(out,t['task_id'],digest,origin)
   with self.assertRaises(ValueError):self.verify(b)
+  native.write_bytes(self.bundles[0]['native_validation'])
   (folder/'drc.json').unlink()
-  with self.assertRaises(FileNotFoundError):a.read_checkpoint(out,t['task_id'],digest,origin)
+  with self.assertRaises(FileNotFoundError):self.verify(a.read_checkpoint(out,t['task_id'],digest,origin))
  def test_duplicate_wrong_ids_and_incomplete_union(self):
   for bundles in ([self.bundles[0]],[self.bundles[0],self.bundles[0]],self.bundles+[dict(task_id='wrong')]):
    with self.assertRaisesRegex(ValueError,'coverage|ID'):a.final_union(self.m,*self.paths,bundles,self.kernel,self.bindings)

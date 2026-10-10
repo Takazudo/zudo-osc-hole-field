@@ -14,10 +14,27 @@ from scripts.pcbgen.complete_native_warnings import SILK_TARGET_LAYERS
 from scripts.pcbgen.uuid_tools import top_level_spans,UUID_RE
 IMAGE='kicad/kicad@sha256:18693567392b80da435f9fa952ce3a3e534c66eb5a6033f5b9c80aa3b19dd3ec'
 VERSION='10.0.6'
-KERNEL_FILES=('scripts/pcbgen/zone_fixture_validation.py','scripts/pcbgen/audit_zone_silk_scope.py','scripts/pcbgen/zone_batch_resume.py','scripts/pcbgen/audit_added_mask.py','scripts/pcbgen/zone_batch_evidence.py','scripts/pcbgen/complete_native_warnings.py','scripts/kicad/run.sh','scripts/kicad/pin.env')
+KERNEL_FILES=('scripts/pcbgen/uuid_tools.py','scripts/pcbgen/zone_fixture_validation.py','scripts/pcbgen/audit_zone_silk_scope.py','scripts/pcbgen/zone_batch_resume.py','scripts/pcbgen/audit_added_mask.py','scripts/pcbgen/zone_batch_evidence.py','scripts/pcbgen/complete_native_warnings.py','scripts/kicad/run.sh','scripts/kicad/pin.env')
 SHA=lambda b:hashlib.sha256(b).hexdigest()
 def canonical(v):return json.dumps(v,sort_keys=True,separators=(',',':')).encode()
 def identity(v):return SHA(canonical(v))
+_SEAL=object()
+class VerifiedAuthority:
+ def __init__(self,seal,manifest,kernel,receipts,origin):
+  if seal is not _SEAL:raise ValueError('unauthenticated proof authority')
+  self._seal=seal;self.manifest=identity(manifest);self.kernel=copy.deepcopy(kernel);self.receipts=copy.deepcopy(receipts);self.origin=copy.deepcopy(origin)
+ def __deepcopy__(self,memo):return self
+ def authorize(self,m,t,receipt,kernel):
+  if self._seal is not _SEAL or self.manifest!=identity(m) or self.kernel!=kernel:raise ValueError('stale authenticated manifest/kernel provenance')
+  if self.receipts.get(t['task_id'])!=identity(receipt):raise ValueError('receipt absent from authenticated producer ledger')
+class LegacyAnchor(dict):
+ pass
+def github_json(path):
+ return json.loads(subprocess.check_output(['gh','api','repos/Takazudo/zudo-osc-hole-field/'+path],text=True))
+def authenticate_artifact(artifact_id,run,commit,digest):
+ artifact=github_json('actions/artifacts/'+str(artifact_id));execution=github_json('actions/runs/'+str(run))
+ if (artifact['id']!=artifact_id or artifact.get('expired') or artifact['digest']!='sha256:'+digest or artifact['workflow_run']['id']!=run or artifact['workflow_run']['head_sha']!=commit or execution['id']!=run or execution['head_sha']!=commit):raise ValueError('authenticated artifact producer/run/digest mismatch')
+ return artifact,execution
 def policy(repo,revision=None):
  repo=Path(repo);blobs={}
  for name in KERNEL_FILES:
@@ -81,9 +98,13 @@ def fixture_bytes(t,texts,art,parts):
  if key not in parts:parts[key]=zone_fixture_parts(texts[t['stage']],t['zone_uuid'],art[t['stage']])
  return zone_fixture_batch_text(parts[key],t['item_uuids']).encode()
 def verify_leaf(m,t,bundle,before,after,kernel,geometry,provenance,source_cache=None):
+ if not isinstance(provenance,VerifiedAuthority):raise ValueError('authenticated producer authority required')
+ provenance.authorize(m,t,bundle['receipt'],kernel)
+ return _verify_leaf_bytes(m,t,bundle,before,after,kernel,geometry,source_cache)
+def _verify_leaf_bytes(m,t,bundle,before,after,kernel,geometry,source_cache=None):
  # Provenance is provided by a pinned artifact/ledger reader, never by a
  # boolean inside the leaf. Its kernel identity is independently compared.
- if provenance['policy']!=kernel or t['policy']!=kernel:raise ValueError('stale native image/validator provenance')
+ if t['policy']!=kernel:raise ValueError('stale native image/validator provenance')
  if bundle['task_id']!=t['task_id']:raise ValueError('wrong task ID')
  if source_cache is None:
   paths,raw,texts,ctx=sources(before,after);source_cache=(texts,ctx,[artwork_ids(x) for x in texts],{})
@@ -115,7 +136,11 @@ def reviewed_legacy_anchor(compact,metadata,repo,kernel):
   names=[n for n in z.namelist() if n.endswith('terminal-inventory.json')]
   if len(names)!=1:raise ValueError('ambiguous legacy inventory')
   inventory_sha=SHA(z.read(names[0]))
- return dict(kind='externally reviewed immutable GitHub producer',run=38069793801,producer_commit=expected_source,compact_sha256=compact_sha,native_archive_sha256=native_sha,inventory_sha256=inventory_sha,policy=kernel,raw_report_ancestry=[dict(artifact=11671963117,sha256='d02155c0775df089f8ba84310014671436f427dc11b00e94cd551f30e1d6ede5'),dict(artifact=11673646039,sha256='2cd2463554fdd63a672bf3b59dae5e3473a960017f51c142f9fc0fd7e4ebeaf4')])
+ authenticate_artifact(11679136451,38069793801,expected_source,compact_sha)
+ authenticate_artifact(11679236513,38069793801,expected_source,native_sha)
+ result=LegacyAnchor(kind='externally reviewed immutable GitHub producer',run=38069793801,producer_commit=expected_source,compact_sha256=compact_sha,native_archive_sha256=native_sha,inventory_sha256=inventory_sha,policy=kernel,raw_report_ancestry=[dict(artifact=11671963117,sha256='d02155c0775df089f8ba84310014671436f427dc11b00e94cd551f30e1d6ede5'),dict(artifact=11673646039,sha256='2cd2463554fdd63a672bf3b59dae5e3473a960017f51c142f9fc0fd7e4ebeaf4')])
+ result._seal=_SEAL
+ return result
 
 def import_legacy(compact,anchor,m,before,after,kernel):
  """External approval of this exact immutable producer is REQUIRED.
@@ -125,6 +150,7 @@ model: its pinned worker code generated bound native receipts and inventory.
 The full raw artifact remains separately pinned; this does not claim to have
 locally downloaded that ZIP. No caller-controlled leaf pass flag is used.
  """
+ if not isinstance(anchor,LegacyAnchor) or getattr(anchor,'_seal',None) is not _SEAL:raise ValueError('authenticated legacy anchor required')
  blob=Path(compact).read_bytes()
  if SHA(blob)!=anchor['compact_sha256'] or anchor['policy']!=kernel:raise ValueError('legacy anchor image/validator/archive changed')
  if not re.fullmatch('[0-9a-f]{40}',anchor['producer_commit']) or not re.fullmatch('[0-9a-f]{64}',anchor['native_archive_sha256']):raise ValueError('unbound producer provenance')
@@ -171,6 +197,8 @@ locally downloaded that ZIP. No caller-controlled leaf pass flag is used.
    if json.loads(json.dumps(actual))!=r['identities']:raise ValueError('legacy identity receipt changed')
    if t['task_id'] in leaves:raise ValueError('duplicate legacy task')
    leaves[t['task_id']]=bundle
+ authority=VerifiedAuthority(_SEAL,m,kernel,{k:identity(b['receipt']) for k,b in leaves.items()},dict(anchor))
+ for b in leaves.values():b['provenance']=authority
  return leaves,bindings
 
 def selection(m,leaves,packets):
@@ -194,7 +222,7 @@ def read_checkpoint(root,task_id,expected_hash,provenance):
  if SHA(path.read_bytes())!=expected_hash:raise ValueError('checkpoint ledger hash mismatch')
  receipt=json.loads(path.read_bytes())
  if receipt['task_id']!=task_id:raise ValueError('checkpoint wrong ID')
- return dict(task_id=task_id,fixture=(folder/'osc-core.kicad_pcb').read_bytes(),context={s:(folder/('osc-core'+s)).read_bytes() for s in ('.kicad_pro','.kicad_dru')},native_validation=(folder/'native-validation.json').read_bytes(),report=(folder/'drc.json').read_bytes(),receipt=receipt,provenance=provenance)
+ return Bundle(task_id=task_id,fixture=lambda:(folder/'osc-core.kicad_pcb').read_bytes(),context={s:(folder/('osc-core'+s)).read_bytes() for s in ('.kicad_pro','.kicad_dru')},native_validation=lambda:(folder/'native-validation.json').read_bytes(),report=lambda:(folder/'drc.json').read_bytes(),receipt=receipt,provenance=provenance)
 def run_missing(m,before,after,task_ids,output,kernel,bindings):
  """Run only explicitly selected tasks; new tasks always use fresh validator.
 
@@ -223,7 +251,7 @@ controller. This function alone never supplies an image provenance anchor.
   native=(folder/'native-validation.json').read_bytes();raw_report=report.read_bytes();rows=sorted((v['type'],v['severity'],tuple(sorted(i['uuid'] for i in v['items']))) for v in new_silk_identities(json.loads(raw_report),t['zone_uuid']))
   receipt=dict(task_id=task_id,fixture_sha256=SHA(fixture.read_bytes()),native_validation_sha256=SHA(native),report_sha256=SHA(raw_report),native_geometry_sha256=sig,identities=json.loads(json.dumps(rows)))
   bundle=dict(task_id=task_id,fixture=fixture.read_bytes(),context={s:fixture.with_suffix(s).read_bytes() for s in ctx},native_validation=native,report=raw_report,receipt=receipt)
-  verify_leaf(m,t,bundle,before,after,kernel,sig,dict(policy=kernel),(texts,ctx,art,parts))
+  _verify_leaf_bytes(m,t,bundle,before,after,kernel,sig,(texts,ctx,art,parts))
   ledger[task_id]=write_checkpoint(output,t,bundle);atomic(output/'ledger.json',dict(status='PARTIAL TASK CHECKPOINTS; NOT FULL COVERAGE',tasks=ledger))
  return ledger
 
@@ -248,13 +276,13 @@ def final_union(m,before,after,bundles,kernel,bindings):
   for t in m['tasks']:
    if t['zone_uuid']!=uid:continue
    b=by_id[t['task_id']];r=b['receipt'];geometry[str(t['stage'])]=r['native_geometry_sha256'];folder=f"zone-{uid}/{t['stage']}-batch-{t['batch_index']:04d}/"
-   access[folder+'osc-core.kicad_pcb']=b['fixture'];access[folder+'drc.json']=b['report']
+   access[folder+'osc-core.kicad_pcb']=lambda b=b:b['fixture'];access[folder+'drc.json']=lambda b=b:b['report']
    for suffix,data in b['context'].items():access[folder+'osc-core'+suffix]=data
    fixtures.append(dict(stage=t['stage'],batch_index=t['batch_index'],item_uuids=t['item_uuids'],fixture_sha256=r['fixture_sha256'],native_geometry_sha256=r['native_geometry_sha256'],report_sha256=r['report_sha256'],identities=r['identities']))
    unions[t['stage']].update((a,c,tuple(ids)) for a,c,ids in r['identities'])
   delta=unions[1]-unions[0];all_new.update(delta);row['native_silk_pairs']=dict(artwork_batch_size=16,selected_item_uuids=s['selected_item_uuids'],conservative_margin_nm=s['conservative_margin_nm'],native_geometry_method='exact_native_coordinates_no_arcs',source_geometry_sha256=geometry,fixtures=fixtures,before_identities=sorted(unions[0]),after_identities=sorted(unions[1]),new_identities=sorted(delta))
  result['new_zone_silk_identities']=sorted(all_new);access['result.json']=canonical(result)
- proof=verify_result(lambda name:access[name],Path(before),Path(after))
+ proof=verify_result(lambda name:access[name]() if callable(access[name]) else access[name],Path(before),Path(after))
  if proof['new_zone_silk_identities']:raise ValueError('new full native zone warning identities')
  # Never perform publication or infer complete_reports success here.
  return result,proof

@@ -57,9 +57,9 @@ reviewed producer provenance rather than claiming that verification.
 A matching version string or caller-supplied pass flag is insufficient. The
 anchor must come from authenticated GitHub metadata and explicit producer
 review. New output ledgers likewise require externally pinned artifact/producer
-provenance and ledger hashes before reuse. The Python API assumes its caller
-provides that trusted anchor; arbitrary caller-provided provenance is not an
-approved trust root. Parent must review this boundary before any native skip.
+provenance and ledger hashes before reuse. The production loader authenticates GitHub metadata and mints an in-process
+authority; arbitrary caller-provided JSON provenance is rejected. Parent must
+review this boundary before any native skip.
 
 New tasks always reconstruct source bytes and run the unchanged fresh-process
 validator plus native DRC. Each completed task has atomic completion metadata;
@@ -77,17 +77,16 @@ owned RSS ceiling 12 GiB and available-memory floor 2 GiB; disjoint task output
 directories; upload partial completed checkpoints on every exit. Sixteen passing
 new reports would bring coverage to 251/426, never full eligibility.
 
-The packet plan is committed as data. A host controller enforcing pinned image,
-aggregate guards, timeout/cleanup and always-upload behavior is still required
-and must be reviewed before dispatch. There is no workflow dispatch entry point
-in this proposal. Do not launch run_missing directly as a substitute.
+The packet plan and proposed guarded host/controller workflow are committed.
+They require parent source review before dispatch. Do not launch run_missing
+directly as a substitute.
 
 ## Exact continuation
 
 1. Review this source, trust anchor, native geometry-reference binding and tests.
 2. Authenticate the saved artifact metadata and approve or reject producer-proof
    equivalence; full raw artifact download may be required by that review.
-3. Build/review bounded pilot host controller using the committed packet IDs,
+3. Review the proposed bounded pilot host controller using the committed packet IDs,
    unchanged KiCad image and validator kernel, before a single dispatch.
 4. Retain each completed pilot task through an immutable artifact/ledger anchor;
    resume only explicit missing IDs. Obtain reviewed B.Cu-after geometry binding
@@ -109,6 +108,54 @@ bash /home/agent/.codex/scripts/heavy-guard.sh -- \
 ```
 
 Focused verification: `python -m unittest scripts.pcbgen.test_audit_fixture_tasks
-scripts.pcbgen.test_zone_fixture_validation scripts.pcbgen.test_zone_batch_resume
+scripts.pcbgen.test_core_audit_pilot scripts.pcbgen.test_zone_fixture_validation scripts.pcbgen.test_zone_batch_resume
 scripts.pcbgen.test_zone_batch_evidence scripts.pcbgen.test_isolated_audit_recovery`
-(27 tests). No fresh native validation or native DRC was run in this proposal.
+(37 tests). No fresh native validation or native DRC was run in this proposal.
+
+## Parent-review corrections (no dispatch)
+
+`uuid_tools.py` is now part of the native kernel binding. Task IDs and all
+receipt/missing/packet lists were regenerated from the same source and raw
+reports. The manifest file SHA256 is
+`e32424ccb6b44bde66cab3eb1214928eb20c8c6d46678011a06e719d5132a35e`.
+The taskrunner/controller/aggregation and workflow revision is bound separately
+in `orchestration-revision.json`; the host checks it before launching workers.
+
+Production prior loading authenticates exact artifact/run/head/digest through
+`gh api` against this repository, then validates immutable bytes and receipts.
+It mints an in-process verified authority binding the manifest, kernel and exact
+receipt hashes. `verify_leaf` and final aggregation reject JSON provenance,
+including self-consistent fabricated receipts/reports. No authority is loaded
+from serialized pass flags. New checkpoint loading additionally requires a
+reviewed approval-file SHA, authenticated artifact metadata, exact immutable
+producer source and orchestration blobs, artifact bytes, producer image evidence,
+and approved ledger hashes. Its CLI subsequently reconstructs each fixture and
+checks native/report hashes and identities. The private worker byte checker is
+for newly executed native tasks; it does not create reusable prior authority.
+
+Final aggregation uses lazy fixture/report readers and retains no access-map
+copy of all 426 large PCB blobs. The original verify_result interface and all
+coverage/raw-report/identity checks remain unchanged.
+
+`core_audit_pilot.py` and `core-audit-task-pilot.yml` provide the proposed guarded
+host path. Two explicit packets share one 2400-second deadline; the job is
+50 minutes. The host checks aggregate process-tree RSS including its own process
+and both native containers, the 2 GiB available-memory floor and 12 GiB RSS
+ceiling, uses two 6 GiB hard-capped containers, verifies actual Docker image IDs,
+cleans only owned workers, and seals partial ledgers even on failure. The workflow
+uploads completed and partial outputs with `if: always()`. It never calls
+connectivity/publication/adoption gates or changes a PCB.
+
+New output reuse approval fields are `producer_commit`, `run`, `artifact_id`,
+`artifact_sha256`, canonical `manifest_sha256`, `policy`, `orchestration`, and
+`ledgers` (relative ledger paths to exact file digests). Obtain artifact metadata
+through authenticated GitHub and independently pin the approval-file digest;
+do not accept producer.json as its own approval. `verify-checkpoints` requires
+that external approval digest. Ordinary checkpoint JSON cannot mint authority.
+
+Continuation: review this corrected source and controller, then explicitly
+approve an exact commit and manifest digest for one pilot. Do not invoke
+`run_missing` or the worker directly to bypass the host. No dispatch has occurred.
+Future B.Cu-after bootstrap still requires a reviewed pinned-native artifact
+binding exact after-board/context/zone/layer/source-zone bytes and geometry;
+none of the 103 after tasks is scheduled by this pilot.

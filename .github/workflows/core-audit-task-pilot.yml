@@ -1,0 +1,56 @@
+name: Reviewed core audit task pilot
+on:
+  workflow_dispatch:
+    inputs:
+      reviewed_commit:
+        description: Exact source commit explicitly reviewed for this one pilot
+        required: true
+        type: string
+      reviewed_manifest_sha256:
+        description: Reviewed manifest file digest
+        required: true
+        type: string
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: issue189-core-audit-task-pilot
+  cancel-in-progress: false
+jobs:
+  pilot:
+    runs-on: ubuntu-latest
+    timeout-minutes: 50
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          fetch-depth: 0
+      - name: Verify explicit reviewed source and manifest
+        env:
+          REVIEWED_COMMIT: ${{ inputs.reviewed_commit }}
+          REVIEWED_MANIFEST: ${{ inputs.reviewed_manifest_sha256 }}
+        run: |
+          python3 - <<'PY'
+          import hashlib,os,subprocess
+          from pathlib import Path
+          assert subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip()==os.environ['REVIEWED_COMMIT']
+          assert hashlib.sha256(Path('circuit/routing/issue189/core236-task-checkpoints/manifest.json').read_bytes()).hexdigest()==os.environ['REVIEWED_MANIFEST']
+          PY
+      - name: Authenticate and prepare immutable inputs
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python3 scripts/pcbgen/core_audit_pilot.py prepare --output .circuit-cache/core-task-inputs
+      - name: Two packets under one shared forty-minute budget
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REVIEWED_COMMIT: ${{ inputs.reviewed_commit }}
+        run: |
+          timeout --signal=INT --kill-after=30s 40m python3 scripts/pcbgen/core_audit_pilot.py controller --source-root .circuit-cache/core-task-inputs --config circuit/routing/issue189/core236-task-checkpoints --output .circuit-cache/core-task-output --reviewed-commit "$REVIEWED_COMMIT"
+      - name: Preserve all completed and partial checkpoints on every exit
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: core-audit-task-pilot-${{ github.run_id }}
+          path: .circuit-cache/core-task-output/
+          include-hidden-files: true
+          if-no-files-found: warn
+          retention-days: 30

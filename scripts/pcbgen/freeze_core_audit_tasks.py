@@ -23,6 +23,8 @@ packets=[[t['task_id'] for t in missing if t['stage']==0][i:i+8] for i in (0,8)]
 a.selection(m,leaves,packets)
 assert len(m['tasks'])==426 and len(leaves)==235 and len(missing)==191 and len(bindings)==3
 out=Path(args.output);out.mkdir(parents=True,exist_ok=True)
+from scripts.pcbgen.core_audit_pilot import revision
+a.atomic(out/'orchestration-revision.json',revision(Path.cwd()))
 a.atomic(out/'manifest.json',m);a.atomic(out/'prior-proof-anchor.json',anchor);a.atomic(out/'native-geometry-bindings.json',bindings)
 a.atomic(out/'completed-receipts.json',{k:v['receipt'] for k,v in leaves.items()})
 a.atomic(out/'missing-task-ids.json',[t['task_id'] for t in missing])
