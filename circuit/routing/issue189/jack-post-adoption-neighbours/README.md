@@ -1,0 +1,9 @@
+# Current native jack obligations near the last accepted repairs
+
+A fresh bounded comparison uses exact accepted JL118/JR134 dumps after the latest two/five reviewed cuts and all75/37 accepted restoration segments. Per board, select ten open signal-component pairs nearest those cut geometries, keeping native UUID memberships and the full current obstacle geometry. Proximity is a selection heuristic, not proof that a channel opened. No existing copper or source placement changes.
+
+Twenty trials completed under the guard (PASS98s): JL0/10 complete; JR3/10 complete. Same0.025mm grid,300000 expansion cap, at most24mm endpoint separation plus6mm bounds,0.2mm signal width/clearance,0.6/0.3mm vias, existing scoped signal neckdown rules and -12V guard. Individual pairs are searched; whole-board native acceptance still checks every original group. No partial failed route is submitted.
+
+Three JR transactions target D7503.1–D7504.1, U7406.6–U7409.5 and D7604.1–D7603.1. Their110segments/8vias are mutually separated by at least17.043381mm; new drill-edge gap is at least2.367630mm. All51177 accepted JR objects remain. These are raster proposals, NOT native acceptance or a claim of131edges. `prepare.py` combines only complete whole cases and pins the exact proposal and input. The native coupled pilot uses `restore_connectivity:false`; any original AGND/-12V split rejects rather than silently adding a repair. Settled/fresh DRC/parity, warnings and every original group remain mandatory.
+
+`bundle.py SAVED_ROOT NEW_OUTPUT.zip` prepares an optional20-connection owner KiCad reproduction bundle with exact boards/projects/rules/schematics/custom libraries/native dumps/DRC, endpoint UUIDs, constraints and failure traces. It verifies every ZIP member against its SHA manifest and refuses overwriting an existing ZIP. No human pilot has been performed and no fabrication or qualification is implied. Keep large ZIPs local and ignored; never use Git LFS.
