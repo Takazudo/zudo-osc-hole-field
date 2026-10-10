@@ -1,0 +1,89 @@
+{
+  "status": "FAILED AUDIT EVIDENCE RECONCILED; NO RETRY OR ADOPTION",
+  "source": "617082dc9b7a7f457fd3363b6999d6bb2f341dc5",
+  "run": 38058774479,
+  "artifact": 11673646039,
+  "archive_sha256": "2cd2463554fdd63a672bf3b59dae5e3473a960017f51c142f9fc0fd7e4ebeaf4",
+  "inspection_run": 38062381542,
+  "export_artifact": 11673986827,
+  "export_sha256": "c6ae91f2848f6a164983847e8ba78c0729238968cd905caa759eda25efc28e7e",
+  "before_sha256": "b9f5ca13f83c7ffdbe5836fd271e7c1099e04b901ca1798a7be06f025bd02d66",
+  "after_sha256": "f27efe521f4ed4f6c0ceb53f45f58a82a824c05475ef012a2034a0d1d2a154d1",
+  "zones": [
+    {
+      "zone_uuid": "601e02b2-8ccb-5c28-83e5-03789d47fbbd",
+      "layer": "F.Cu",
+      "selected_artwork": 1757,
+      "planned_paired_batches": 220,
+      "verified_prefix": 220,
+      "missing": 0
+    },
+    {
+      "zone_uuid": "e389d344-872d-538e-9bfc-39577adb1686",
+      "layer": "B.Cu",
+      "selected_artwork": 1635,
+      "planned_paired_batches": 206,
+      "verified_prefix": 1,
+      "missing": 205,
+      "stopped_operation": {
+        "stage": 0,
+        "batch_index": 1,
+        "fixture_path": "core236-zone-recovery/zone-e389d344-872d-538e-9bfc-39577adb1686/0-batch-0001/osc-core.kicad_pcb",
+        "fixture_sha256": "2796bb916b51f96282bcf047bb11690d0d83bc53d5246c8868118964c1418172",
+        "fixture_bytes": 12441364,
+        "item_uuids": [
+          "01ad1434-d2b7-54ae-9517-85732681e614",
+          "026964e6-ad8f-5d59-a319-71efff7e55cc",
+          "02d767b3-f1a4-583c-b191-674dae6fb46c",
+          "0314a2c0-2fc5-5110-a15f-3de8b4c8a1e2",
+          "033718da-6ec8-5073-8f93-bca8e842da27",
+          "0338037d-a976-5150-907b-0ff281dff4b7",
+          "039a3178-9cbc-5e80-8b80-8cb53715783e",
+          "03bb2871-218f-5b73-9a1e-2a97d6247515",
+          "041156ed-8a4d-5cec-ae5a-dd08e973637d",
+          "041aef17-6d6a-5375-9610-c05cd6122cf8",
+          "049e11ad-46b8-5726-acc5-9f0fc1b14f8a",
+          "04cfe4bf-1353-5182-bae3-c3d720ab72dc",
+          "04e1d575-c001-5760-889d-1e189c71a93d",
+          "04eda897-1044-5a45-9fc8-40c8ffacc793",
+          "051a7dce-001b-517f-8315-4d00d9951ac9",
+          "056910a3-849b-58ac-9144-23a53815b645"
+        ],
+        "native_DRC_report": "ABSENT; NO COMPLETED RECEIPT"
+      }
+    }
+  ],
+  "telemetry": {
+    "samples": 236,
+    "native_auditor_pid": 2709,
+    "first_auditor": {
+      "epoch": 1791641708.0459733,
+      "rss_kib": 358436,
+      "vsz_kib": 519556,
+      "mem_available_kib": 14679208,
+      "swap_free_kib": 3145724
+    },
+    "peak_auditor": {
+      "epoch": 1791643990.3949718,
+      "rss_kib": 15050928,
+      "vsz_kib": 18651024,
+      "mem_available_kib": 248144,
+      "swap_free_kib": 216
+    },
+    "last_auditor": {
+      "epoch": 1791644020.442044,
+      "rss_kib": 15050724,
+      "vsz_kib": 18651024,
+      "mem_available_kib": 116832,
+      "swap_free_kib": 216
+    },
+    "min_mem_available_kib": 4896,
+    "minimum_disk_free_bytes": 82040487936,
+    "cgroup_events": "NOT CAPTURED; NO CGROUP FIELDS AVAILABLE",
+    "wall_time": "42:04.96",
+    "wrapper_maxRSS_kib": 30256,
+    "wrapper_RSS_is_not_native_auditor_RSS": true
+  },
+  "diagnosis": "Severe memory pressure and growth in long-lived native auditor observed; exact allocation defect and kernel OOM decision unproven",
+  "remaining_native_gates": "Full zone/warning/promotion/publication INCOMPLETE; later coverage unknown; no copper adopted"
+}

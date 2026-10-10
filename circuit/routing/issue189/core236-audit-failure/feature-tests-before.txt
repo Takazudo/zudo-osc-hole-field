@@ -1,0 +1,18 @@
+E
+======================================================================
+ERROR: test_zone_fixture_validation (unittest.loader._FailedTest.test_zone_fixture_validation)
+----------------------------------------------------------------------
+ImportError: Failed to import test module: test_zone_fixture_validation
+Traceback (most recent call last):
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/loader.py", line 137, in loadTestsFromName
+    module = __import__(module_name)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/issue189-core236-isolation/scripts/pcbgen/test_zone_fixture_validation.py", line 5, in <module>
+    from scripts.pcbgen.zone_fixture_validation import native_fixture_check,isolated_fixture_check,worker
+ModuleNotFoundError: No module named 'scripts.pcbgen.zone_fixture_validation'
+
+
+----------------------------------------------------------------------
+Ran 1 test in 0.000s
+
+FAILED (errors=1)
