@@ -1,3 +1,17 @@
+## One changed isolated audit recovery active — 2026-10-10 17:00 UTC
+
+Parent independent review authorized ONE changed audit-only continuation after bounded18 comparison passed. **Draft PR240**, branch **agent-fix/189-core236-isolated-audit-recovery**, source **63f9541aa68ae3e05ee9700ae71dcaea6dfe02f6**, stacked on PR239 unchanged7add2a44. Single run [38069793801](https://github.com/Takazudo/zudo-osc-hole-field/actions/runs/38069793801) ACTIVE; terminal result UNRUN/unavailable. No other routing/recovery run was active at dispatch; only independent read-only CI38069711817.
+
+Pre-dispatch43focused tests/circuit contract/py_compile/diffcheck PASS. Exact saved b9f5/f27e inputs and all221saved fixture/report/context hashes independently reconstructed PASS under heavy guard109s/verdictPASS. Four remote immutable artifact digests and availability rechecked: original11671963117/d02155..., inspection11671779973/c5971f..., recovery11673646039/2cd246..., failure-inspection11673986827/c6ae91... . Remote prepare rechecks complete ZIP hashes, every inventory entry and precisely F.Cu220+B.Cu1 before native execution. Resume is from11673646039, NOT original215prefix.
+
+Saved source has351zone blocks (346rule areas, five copper zones). Target outer copper zones F.Cu601e02... andB.Cue389d3...; other three copper zones In1/In3/In4 are outside unchanged silk target layers. Native required-scope.json enumerates EVERY relevant zone's actual growth/artwork/batch16 counts/strict prefix BEFORE fixtures.205known missing visited B.Cu reports is not used as total-scope proof. Full native scope/result remains PENDING.
+
+Audit uses --isolate-fixture-processes and unchanged strict fresh fixture/report resume verification. One6000-second command/120-minute job covers BOTH native audit and unchanged complete_reports/preservation/group eligibility checks.2GiBavailable/12GiBowned-tree RSS guards;2-second telemetry; per-validation/DRC/reuse timing; owned process-group/container cleanup. Always-upload full partial native evidence plus compact diagnostics and complete output hash inventory, including failures.417.7-second isolated sample does not predict full completion.
+
+**Exact continuation:** observe run38069793801 to terminal; fetch both isolated-diagnostics and isolated-native artifacts; verify actual hashes, required whole native scope, saved/new completed prefixes, native warnings/errors, controller/eligibility and cleanup/telemetry. No automatic repeat or extension if incomplete. Then STOP FOR PARENT REVIEW before1312adoption/publication/merge. Publication equivalence is mandatory later, not performed or waived here. Canonical main65cefd41/JL117/JR129/core1402/nativeDRC-parity0/0 unchanged; issue189OPEN.
+
+Implementation, input hashes, local checks and precise bounds are in PR240 ISOLATED-RECOVERY.md/isolated-preflight-evidence.json. Previous comparison and failure evidence follows.
+
 ## Corrected 18-fixture native comparison passed — 2026-10-10 16:40 UTC
 
 **STOP FOR PARENT REVIEW.** Parent confirmed the namespace fix and authorized one corrected comparison only. Run [38067093430](https://github.com/Takazudo/zudo-osc-hole-field/actions/runs/38067093430) tested PR239 head **7add2a44e5cd3ef1f28be55a9ef5af71897f8dd8**, after all five exact-head CI jobs passed in38066067047 and37 focused tests passed. The sole corrected attempt completed within one shared900-second command/20-minute job, with no extension or retry.
