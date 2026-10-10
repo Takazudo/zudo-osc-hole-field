@@ -1,5 +1,6 @@
 """Read-only native outer-zone fill growth audit; never promote or waive findings."""
-import argparse,hashlib,json,math,re,shutil,subprocess,sys
+import argparse,hashlib,json,math,re,shutil,subprocess,sys,time
+from contextlib import contextmanager
 from pathlib import Path
 sys.path.insert(0,str(Path(__file__).resolve().parents[2]))
 from scripts.pcbgen.complete_native_warnings import SILK_TARGET_LAYERS
@@ -64,8 +65,8 @@ def native_zone_signature(poly):
     return hashlib.sha256(poly.Format().encode()).hexdigest()
 
 
-def classify_zone(before_path,after_path,output,before,after,uid,layer,growth,pcbnew,batch_size=1,resume=None,isolate_fixtures=False):
-    """Native full-zone/silk pairs wherever added filled area could collide."""
+def classification_scope(after_path,after,uid,layer,growth,pcbnew,batch_size):
+    """The original conservative artwork scope, shared by planning and execution."""
     settings=json.loads(after_path.with_suffix('.kicad_pro').read_text())['board']['design_settings']['rules']
     margin=max(0,math.ceil(settings['min_silk_clearance']*1e6))+5_000_000
     boxes=[growth.Outline(i).BBox() for i in range(growth.OutlineCount())]
@@ -82,11 +83,31 @@ def classify_zone(before_path,after_path,output,before,after,uid,layer,growth,pc
         zone_uuid=uid,layer=pcbnew.LayerName(layer),artwork_count=len(items),
         selected_item_uuids=selected,conservative_margin_nm=margin,
         growth_boxes_nm=[[b.GetX(),b.GetY(),b.GetWidth(),b.GetHeight()] for b in boxes])
+    return scope,batches,all_ids
+
+
+@contextmanager
+def fixture_timing(output,uid,stage,index,operation,resumed=False):
+    started=time.monotonic();event=dict(zone_uuid=uid,stage=stage,batch_index=index,operation=operation,resumed_report=resumed)
+    path=output/'fixture-timings.jsonl'
+    with path.open('a') as f:f.write(json.dumps(dict(event,phase='started',epoch=time.time()))+'\n')
+    success=False
+    try:
+        yield
+        success=True
+    finally:
+        with path.open('a') as f:f.write(json.dumps(dict(event,phase='completed' if success else 'failed',seconds=time.monotonic()-started,epoch=time.time()))+'\n')
+
+
+def classify_zone(before_path,after_path,output,before,after,uid,layer,growth,pcbnew,batch_size=1,resume=None,isolate_fixtures=False):
+    """Native full-zone/silk pairs wherever added filled area could collide."""
+    scope,batches,all_ids=classification_scope(after_path,after,uid,layer,growth,pcbnew,batch_size)
+    selected=scope['selected_item_uuids'];margin=scope['conservative_margin_nm']
     from scripts.pcbgen.zone_batch_resume import completed_prefix,verified_report
     completed=completed_prefix(resume,uid,scope,batches)
     (output/f'zone-{uid}-scope.json').write_text(json.dumps(scope,indent=2)+'\n')
     progress=output/f'zone-{uid}-progress.jsonl';progress.write_text('')
-    print(f'zone {uid}: {len(selected)}/{len(items)} artwork items, {2*len(batches)} paired fixtures',flush=True)
+    print(f'zone {uid}: {len(selected)}/{scope["artwork_count"]} artwork items, {2*len(batches)} paired fixtures',flush=True)
     sources=[(before_path,before),(after_path,after)];receipts=[];unions=[set(),set()];source_signatures={}
     for stage,(source,board) in enumerate(sources):
         source_text=source.read_text();texts=text_rows(board);native_zone=next(z for z in board.Zones() if z.m_Uuid.AsString()==uid)
@@ -98,15 +119,17 @@ def classify_zone(before_path,after_path,output,before,after,uid,layer,growth,pc
             fixture=folder/source.name
             fixture.write_text(zone_fixture_text(parts,item_uids[0]) if batch_size==1 else zone_fixture_batch_text(parts,item_uids))
             for suffix in ('.kicad_pro','.kicad_dru'):shutil.copyfile(source.with_suffix(suffix),fixture.with_suffix(suffix))
-            if isolate_fixtures:
-                geometry_signature=isolated_fixture_check(fixture,uid,layer,item_uids,texts,source_signatures[str(stage)])
-            else:
-                geometry_signature=native_fixture_check(fixture,uid,layer,item_uids,texts,source_signatures[str(stage)],pcbnew)
+            with fixture_timing(output,uid,stage,index,'native_validation'):
+                if isolate_fixtures:
+                    geometry_signature=isolated_fixture_check(fixture,uid,layer,item_uids,texts,source_signatures[str(stage)])
+                else:
+                    geometry_signature=native_fixture_check(fixture,uid,layer,item_uids,texts,source_signatures[str(stage)],pcbnew)
             report=folder/'drc.json'
-            if (stage,index) in completed:
-                report.write_bytes(verified_report(resume,uid,label,fixture,completed[(stage,index)],geometry_signature))
-            else:
-                subprocess.run(['kicad-cli','pcb','drc','--format','json','--severity-all','--output',str(report),str(fixture)],check=True,stdout=subprocess.DEVNULL)
+            with fixture_timing(output,uid,stage,index,'verified_report' if (stage,index) in completed else 'native_DRC',(stage,index) in completed):
+                if (stage,index) in completed:
+                    report.write_bytes(verified_report(resume,uid,label,fixture,completed[(stage,index)],geometry_signature))
+                else:
+                    subprocess.run(['kicad-cli','pcb','drc','--format','json','--severity-all','--output',str(report),str(fixture)],check=True,stdout=subprocess.DEVNULL)
             for suffix in ('.kicad_pro','.kicad_dru'):
                 if source.with_suffix(suffix).read_bytes()!=fixture.with_suffix(suffix).read_bytes():raise ValueError('fixture native context changed')
             rows=new_silk_identities(json.loads(report.read_text()),uid)
@@ -137,7 +160,7 @@ def main(before_path,after_path,output,classify=False,batch_size=1,resume=None,r
     before=pcbnew.LoadBoard(str(before_path));after=pcbnew.LoadBoard(str(after_path))
     old={z.m_Uuid.AsString():z for z in before.Zones()};new={z.m_Uuid.AsString():z for z in after.Zones()}
     if old.keys()!=new.keys():raise ValueError('native zone identities changed')
-    rows=[]
+    rows=[];required=[]
     for uid,z in new.items():
         if z.GetIsRuleArea():continue
         prior=old[uid]
@@ -147,7 +170,19 @@ def main(before_path,after_path,output,classify=False,batch_size=1,resume=None,r
             p=z.GetFilledPolysList(layer).CloneDropTriangulation();q=prior.GetFilledPolysList(layer)
             before_area=q.Area();after_area=p.Area();p.BooleanSubtract(q)
             rows.append(dict(uuid=uid,layer=pcbnew.LayerName(layer),net=z.GetNetname(),before_area_nm2=before_area,after_area_nm2=after_area,native_added_area_nm2=p.Area(),native_added_shape_empty=p.IsEmpty(),native_added_outline_count=p.OutlineCount()))
-            if classify and not p.IsEmpty():rows[-1]['native_silk_pairs']=classify_zone(before_path,after_path,output,before,after,uid,layer,p,pcbnew,batch_size,resume,isolate_fixtures)
+            if classify and not p.IsEmpty():
+                scope,batches,_=classification_scope(after_path,after,uid,layer,p,pcbnew,batch_size)
+                from scripts.pcbgen.zone_batch_resume import completed_prefix
+                prefix=completed_prefix(resume,uid,scope,batches)
+                rows[-1]['required_scope']=dict(scope,planned_paired_fixtures=2*len(batches),resume_prefix_count=len(prefix),required_new_reports=2*len(batches)-len(prefix))
+                required.append((rows[-1],uid,layer))
+    # Enumerate EVERY outer zone before the first expensive fixture. This does
+    # not assume the previously visited B.Cu zone is the complete remainder.
+    scope_receipt=dict(status='REQUIRED NATIVE SCOPE; NO COMPLETION CLAIM',version=version,batch_size=batch_size,before_sha256=result['before_sha256'],after_sha256=result['after_sha256'],zones=rows,planned_paired_fixtures=sum(r.get('required_scope',{}).get('planned_paired_fixtures',0) for r in rows),resume_prefix_count=sum(r.get('required_scope',{}).get('resume_prefix_count',0) for r in rows),required_new_reports=sum(r.get('required_scope',{}).get('required_new_reports',0) for r in rows))
+    (output/'required-scope.json').write_text(json.dumps(scope_receipt,indent=2)+'\n')
+    for row,uid,layer in required:
+        growth=new[uid].GetFilledPolysList(layer).CloneDropTriangulation();growth.BooleanSubtract(old[uid].GetFilledPolysList(layer))
+        row['native_silk_pairs']=classify_zone(before_path,after_path,output,before,after,uid,layer,growth,pcbnew,batch_size,resume,isolate_fixtures)
     result.update(status='READ-ONLY NATIVE ZONE SHAPE EVIDENCE; NO PROMOTION',zone_metadata_and_outline_unchanged=True,zones=rows,all_silk_relevant_zone_shapes_are_subsets=all(r['native_added_shape_empty'] for r in rows))
     result['zone_silk_scope_complete']=classify
     result['new_zone_silk_identities']=sorted({tuple([a,b,tuple(c)]) for row in rows for a,b,c in row.get('native_silk_pairs',{}).get('new_identities',[])})

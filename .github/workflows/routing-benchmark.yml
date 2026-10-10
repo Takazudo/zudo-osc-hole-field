@@ -457,25 +457,56 @@ jobs:
       contents: read
       actions: read
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 120
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
-      - name: Download exact saved inputs and reports
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97
+        with:
+          python-version: '3.12'
+      - run: python -m pip install -r scripts/pcbgen/numerical-requirements.txt
+      - name: Download and verify exact archives and all221 saved reports
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          mkdir -p .circuit-cache
-          gh api repos/Takazudo/zudo-osc-hole-field/actions/artifacts/11671963117/zip > .circuit-cache/original.zip
-          gh api repos/Takazudo/zudo-osc-hole-field/actions/artifacts/11673646039/zip > .circuit-cache/failure.zip
-          python3 circuit/routing/issue189/core236-audit-failure/bounded_compare.py prepare circuit/routing/issue189/core236-audit-failure/18-fixture-manifest.json
-      - name: One bounded serial original-versus-isolated comparison
+          mkdir -p .circuit-cache/core236-isolated-input
+          gh api repos/Takazudo/zudo-osc-hole-field/actions/artifacts/11671963117/zip > .circuit-cache/core236-isolated-input/original.zip
+          gh api repos/Takazudo/zudo-osc-hole-field/actions/artifacts/11671779973/zip > .circuit-cache/core236-isolated-input/original-inspection.zip
+          gh api repos/Takazudo/zudo-osc-hole-field/actions/artifacts/11673646039/zip > .circuit-cache/core236-isolated-input/recovery.zip
+          gh api repos/Takazudo/zudo-osc-hole-field/actions/artifacts/11673986827/zip > .circuit-cache/core236-isolated-input/recovery-inspection.zip
+          python3 circuit/routing/issue189/core236-audit-recovery/recover_isolated.py prepare
+      - name: One guarded100-minute fresh-process continuation and original eligibility gates
         run: |
-          timeout --signal=INT --kill-after=30s 15m python3 circuit/routing/issue189/core236-audit-failure/bounded_compare.py controller
+          timeout --signal=INT --kill-after=30s 100m python3 circuit/routing/issue189/core236-audit-recovery/recover_isolated.py controller
+      - name: Seal partial prefix and diagnostics without a completion assumption
+        if: always()
+        run: python3 circuit/routing/issue189/core236-audit-recovery/recover_isolated.py seal
       - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
         if: always()
         with:
-          name: issue189-core236-18fixture-comparison-${{ github.run_id }}
-          path: .circuit-cache/core236-18compare
+          name: issue189-core236-isolated-diagnostics-${{ github.run_id }}
+          path: |
+            .circuit-cache/core236-isolated-recovery/diagnostics.zip
+            .circuit-cache/core236-isolated-recovery/terminal-inventory.json
+          retention-days: 30
+          include-hidden-files: true
+          if-no-files-found: error
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        if: always()
+        with:
+          name: issue189-core236-isolated-native-${{ github.run_id }}
+          path: |
+            .circuit-cache/core236-isolated-recovery/zones
+            .circuit-cache/core236-isolated-recovery/eligibility
+            .circuit-cache/core236-isolated-recovery/audit.stdout
+            .circuit-cache/core236-isolated-recovery/audit.stderr
+            .circuit-cache/core236-isolated-recovery/original_downstream_gates.stdout
+            .circuit-cache/core236-isolated-recovery/original_downstream_gates.stderr
+            .circuit-cache/core236-isolated-recovery/controller-result.json
+            .circuit-cache/core236-isolated-recovery/verified-inputs.json
+            .circuit-cache/core236-isolated-recovery/preflight-failure.json
+            .circuit-cache/core236-isolated-recovery/telemetry.jsonl
+            .circuit-cache/core236-isolated-recovery/terminal-inventory.json
+            !.circuit-cache/**/~*.lck
           retention-days: 30
           include-hidden-files: true
           if-no-files-found: error
