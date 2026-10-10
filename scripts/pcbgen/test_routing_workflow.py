@@ -32,7 +32,7 @@ class RoutingWorkflowDispatchTests(unittest.TestCase):
         source=(ROOT/'.github/workflows/routing-benchmark.yml').read_text()
         step=source.split('      - name: Replay reviewed JR copper through the native gate\n',1)[1].split('      - name:',1)[0]
         body=textwrap.dedent(step.split('        run: |\n',1)[1])
-        for choice,limit,complete in [('d7604-return-joint','120m',True),('in3-two-whole','120m',True),('d7411-last-via-avoid','120m',True),('c7413-endpoints','80m',False)]:
+        for choice,limit,complete in [('d7604-return-joint','120m',True),('in3-two-whole','120m',True),('d7411-last-via-avoid','120m',True),('rb4615-via-branch','120m',True),('c7413-endpoints','80m',False)]:
             with self.subTest(choice=choice), tempfile.TemporaryDirectory() as directory:
                 prefix='python() { printf "%s\\n" "$@" > prepare-args; }; timeout() { printf "%s\\n" "$@" > native-args; };\n'
                 result=subprocess.run(['bash','-c',prefix+body],cwd=directory,
@@ -42,9 +42,12 @@ class RoutingWorkflowDispatchTests(unittest.TestCase):
                 self.assertIn(limit,args)
                 self.assertEqual('--complete-native-warnings' in args,complete)
                 self.assertEqual('--native-zone-batch-size' in args,complete)
+                self.assertEqual('--reviewed-cut-plan' in args,choice=='rb4615-via-branch')
+                if choice=='rb4615-via-branch':
+                    self.assertEqual(args[args.index('--reviewed-cut-plan')+1],'circuit/routing/issue189/jr130-rb4615-via-branch/plan.json')
                 if complete:
                     self.assertEqual(args[args.index('--native-zone-batch-size')+1],'16')
-                    directory_name = {'in3-two-whole':'jr-layer-escape', 'd7411-last-via-avoid':'jr131-d7411-last-via-avoid'}.get(choice, 'jr-neighbour-return-repair')
+                    directory_name = {'in3-two-whole':'jr-layer-escape', 'd7411-last-via-avoid':'jr131-d7411-last-via-avoid', 'rb4615-via-branch':'jr130-rb4615-via-branch'}.get(choice, 'jr-neighbour-return-repair')
                     self.assertEqual((Path(directory)/'prepare-args').read_text().splitlines(),
                         ['circuit/routing/issue189/' + directory_name + '/prepare_adoption.py'])
 
