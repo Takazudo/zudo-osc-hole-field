@@ -46,21 +46,29 @@ class CompleteWarningTests(unittest.TestCase):
         from unittest.mock import patch
         from scripts.pcbgen.complete_native_warnings import audit_current_reports
         root=Path(__file__).resolve().parents[2]
-        board=root/'boards/osc-core/osc-core.kicad_pcb'
         with tempfile.TemporaryDirectory(dir=root) as folder:
+            from scripts.pcbgen.test_audit_added_mask import board as text_board, item
+            board=Path(folder)/'before.kicad_pcb';after=Path(folder)/'after.kicad_pcb'
+            board.write_text(text_board(item(0)))
+            after.write_text(text_board(item(0),item(1),item(2,'via')))
             for size in (1,16):
                 with patch('scripts.pcbgen.complete_native_warnings.subprocess.run') as run,patch('scripts.pcbgen.complete_native_warnings.complete_reports',return_value=({}, {}, {})):
-                    audit_current_reports(board,board,{}, {},Path(folder)/str(size),zone_batch_size=size)
+                    audit_current_reports(board,after,{}, {},Path(folder)/str(size),zone_batch_size=size)
                     self.assertEqual(run.call_count,4)
+                    manifest=json.loads((Path(folder)/str(size)/'added-copper-scope.json').read_text())
+                    self.assertEqual(manifest['before_sha256'],hashlib.sha256(board.read_bytes()).hexdigest())
+                    self.assertEqual(manifest['after_sha256'],hashlib.sha256(after.read_bytes()).hexdigest())
+                    self.assertEqual(sorted(manifest['copper'].values()),['segment','via'])
                     commands=[c.args[0] for c in run.call_args_list]
                     self.assertIn('scripts/pcbgen/audit_hole_pairs.py',commands[0])
                     self.assertIn('scripts/pcbgen/audit_hole_pairs.py',commands[1])
                     self.assertIn('scripts/pcbgen/audit_added_mask.py',commands[2])
+                    self.assertEqual(commands[2][-4:],['--expected-copper','2','--expected-vias','1'])
                     self.assertIn('scripts/pcbgen/audit_zone_silk_scope.py',commands[3])
                     self.assertEqual('--batch-size' in commands[3],size!=1)
                     if size!=1:self.assertEqual(commands[3][-3:],['--classify','--batch-size','16'])
             with self.assertRaises(ValueError):
-                audit_current_reports(board,board,{}, {},Path(folder)/'invalid',zone_batch_size=8)
+                audit_current_reports(board,after,{}, {},Path(folder)/'invalid',zone_batch_size=8)
 
     def test_new_via_audit_cannot_hide_changed_outer_zone_fill(self):
         def board(layer,fill):return f'(kicad_pcb (zone (layer "{layer}") (filled_polygon (pts {fill}))))'

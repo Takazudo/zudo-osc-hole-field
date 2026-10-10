@@ -1,3 +1,21 @@
+# Current continuation — 2026-10-10 02:49 UTC
+
+Canonical **JL118 / JR134 / core1441**, zero native DRC/parity errors; warnings remain. Main bf2daa9a62d3ce173363b5f3f25211965926fc02. Issue189 stays OPEN. PR220 branch agent-fix/189-jr-neighbour-pilot contains this correction; no board changes.
+
+JR full-warning38016800065 at86a4233a01a2244a16c8eabe65821e5e1de9a46b is TERMINAL REJECTED. Bot386760705321ae33da416fe59e55e690199aeb5a adds two receipts only. Artifact11656548075 SHA256eea30c08925c060754a521868ef8f8b3766864bb2237d1efcd2212b8e7ca3dfd independently reconciled (guardPASS97s):134→133/fresh133,0DRC/parity, all51177old objects+79new,zero cuts,1080nonrouting objects unchanged. Both hole results exist; silk only started, zones did not produce a result. Exact failure: mask auditor hard-coded382copper/38vias. Raw gate eligibility does not override missing complete warnings. See jr-neighbour-return-repair/full-audit-rejection.json and reconcile_rejected_full.py.
+
+Correction derives exact additive UUID/type scope from both source boards, rejects old copper changes/removals and ambiguous new UUIDs (retained historical duplicates allowed), writes source-SHA-bound scope manifest, and passes exact counts to native audit. Native objects must match the source scope. Legacy standalone defaults remain382/38. Every mask fixture, native version, text/context, report cap, holes/zones, original findings, retained copper and promotion gate remain required.32 targeted regressions pass. Both exact saved native source pairs also pass the scope regression (guardPASS77s): JR79/5 and core382/38, pinned archive and before/after hashes, complete UUID/type maps in saved-source-scopes.json. This is source coverage verification; new native acceptance is NOT yet run.
+
+**CI approval blocker:** exact bot-head run38017605765 is action_required with zero jobs. Its GitHub page says “This workflow is awaiting approval from a maintainer in #220”. No approval or replacement CI dispatch was submitted. A repository maintainer must review and approve the pending workflow in https://github.com/Takazudo/zudo-osc-hole-field/actions/runs/38017605765 (or the current pending PR run after this reviewed fix). Do not bypass this gate. Source86a4233's all-five successful CI38016779017 does not cover bot3867607 or this correction. See ci-bot-approval-required.json and ci-86a4233.json.
+
+**Sole core writer38011194282 remains active at44d1151cd41f285d5168c433c76664c44a3d97ac / PR218; do not duplicate, cancel or push its branch.** Other concurrent session refs remain unchanged. Preserve its terminal output even if rejected. The independent full-adoption checker is /tmp/issue189-reconcile-full-adoption.py; it is prepared, not yet executed on this run.
+
+Next JR replay, only after verifying no active JR writer and resolving applicable workflow approval, uses the corrected immutable branch head:
+`gh workflow run routing-benchmark.yml --ref agent-fix/189-jr-neighbour-pilot -f board=osc-jack-right -f replay_jr=true -f jr_replay=d7604-return-joint`
+This starts all native passes and all four fresh audits with zone batch16; never use cached pilot evidence for adoption. Record exact run/source immediately and own it through terminal reconciliation. Compare artifact, receipt, retained copper, complete reports and bot blobs; require all five exact final-head checks/current base before authorized integration. /tmp full-adoption checker's JR run/source constants must be updated to the actual new run first. Keep original rejected receipt in history. No router budget increase, physical/electrical requirement change, Docker retry, recurring automation, fabrication or qualification.
+
+---
+
 # Current continuation — 2026-10-10 02:22 UTC
 
 Main `bf2daa9a62d3ce173363b5f3f25211965926fc02` merges PR219 exact `c393ea416877950a064917a1c7f46b1a6b6ff8d9`; exact38014043304 and post-main38015093504 both pass all five checks. Canonical boards remain **JL118 / JR134 / core1441**, zero native DRC/parity errors, warnings remain. #189 remains OPEN; no qualification/fabrication claim.
