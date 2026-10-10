@@ -1,0 +1,4282 @@
+{
+  "status": "VIRTUAL COMPARISON COMPLETE; NO BOARD CHANGE; NATIVE SOURCE/DRC/PARITY/TOPOLOGY/WARNING/RETENTION NOT RUN",
+  "board_sha256": "35b52972dd70b4186cf3f3b7ee2ac3d70432f3476c2f56c9fcf9c1c4d7d4d445",
+  "dump_sha256": "f885375bc4a8ac5cc0ca879f841a4d3768a560876e43c023e2abe14e38a86c8a",
+  "screen_sha256": "19b966094e4346d0250a69ac567673bc149093a2c8b34f260b56c8647a6f6a75",
+  "selected_candidates": 12,
+  "compatible_static_candidates": 40,
+  "saved_controls": {
+    "R4611": {
+      "path": "circuit/routing/issue189/jr134-movable-ground/R4611/route-result.json",
+      "sha256": "90d2f13a0cd994f5f6a561ae9f670d68c3e38a44850320de7504a118b8186aae",
+      "unmoved_direct_complete": false,
+      "unmoved_plane_complete": false
+    },
+    "R8490": {
+      "path": "circuit/routing/issue189/jr134-movable-ground/R8490/route-result.json",
+      "sha256": "e811136cd9f862cfc63e6ef0b218245d88f1cc8dcef1dcab3c931cbf612c0358",
+      "unmoved_direct_complete": false,
+      "unmoved_plane_complete": false
+    },
+    "RB4413": {
+      "path": "circuit/routing/issue189/jr134-movable-ground-connectors/RB4413/route-result.json",
+      "sha256": "006f47c8c3164a19aafcce6a1594322d2f24e1e71905eb817493a12351dae5e7",
+      "unmoved_direct_complete": false,
+      "unmoved_plane_complete": false
+    },
+    "RB4414": {
+      "path": "circuit/routing/issue189/jr134-movable-ground/RB4414/route-result.json",
+      "sha256": "57c32b4075c539644f9e076def3892d4ceb08f6ed25252c673ba2fb8841e9abe",
+      "unmoved_direct_complete": false,
+      "unmoved_plane_complete": false
+    },
+    "RB4614": {
+      "path": "circuit/routing/issue189/jr134-movable-ground/RB4614/route-result.json",
+      "sha256": "99e61b6f401045de4ee03b41e4010d02aaafd4c2d693c43c4cad9e8521bd1ef2",
+      "unmoved_direct_complete": false,
+      "unmoved_plane_complete": false
+    },
+    "RB4615": {
+      "path": "circuit/routing/issue189/jr134-movable-ground/RB4615/route-result.json",
+      "sha256": "b0d61ea9d0f7f162a59de815d21cb22b1fd8d7c2aeaa968606338bcaef224542",
+      "unmoved_direct_complete": false,
+      "unmoved_plane_complete": false
+    }
+  },
+  "transactions": [
+    {
+      "candidate_index": 0,
+      "target": "R4611",
+      "peer": "R4513",
+      "delta_mm": {
+        "R4611": [
+          0,
+          -0.1
+        ],
+        "R4513": [
+          0,
+          -0.1
+        ]
+      },
+      "mode": "direct",
+      "complete_raster_transaction": false,
+      "bounds_mm": [
+        404.41,
+        89.59,
+        420.41,
+        105.59
+      ],
+      "results": [
+        {
+          "net": "AGND",
+          "island": [
+            "R4611.2"
+          ],
+          "path": null
+        }
+      ],
+      "diagnostics": [
+        {
+          "net": "AGND",
+          "endpoints": [
+            "R4611.2"
+          ],
+          "reason": "search_exhausted",
+          "phase": "route",
+          "attempts": [
+            {
+              "window_cells": [
+                121,
+                1146,
+                128,
+                772
+              ],
+              "expanded": 9207,
+              "limit": 300000
+            },
+            {
+              "window_cells": [
+                0,
+                1284,
+                0,
+                772
+              ],
+              "expanded": 9207,
+              "limit": 300000
+            }
+          ],
+          "max_expansions": 300000,
+          "window_mm": 6
+        }
+      ],
+      "virtual_proposal": {
+        "board_sha256": "35b52972dd70b4186cf3f3b7ee2ac3d70432f3476c2f56c9fcf9c1c4d7d4d445",
+        "source_translations": {
+          "schema_version": 1,
+          "translations": [
+            {
+              "ref": "R4611",
+              "expected_source": {
+                "ref": "R4611",
+                "board": "JR",
+                "fixed": false,
+                "x_mm": 312.41,
+                "y_mm": 46.84,
+                "rotation_deg": 90,
+                "side": "F.Cu",
+                "courtyard_mm": [
+                  311.5,
+                  45.2,
+                  313.32000000000005,
+                  48.480000000000004
+                ],
+                "kicad_orientation_deg": 270
+              },
+              "delta_mm": [
+                0,
+                -0.1
+              ],
+              "evidence": "issue189 bounded paired movement; native NOT RUN"
+            },
+            {
+              "ref": "R4513",
+              "expected_source": {
+                "ref": "R4513",
+                "board": "JR",
+                "fixed": false,
+                "x_mm": 312.41,
+                "y_mm": 50.54,
+                "rotation_deg": 90,
+                "side": "F.Cu",
+                "courtyard_mm": [
+                  311.5,
+                  48.9,
+                  313.32000000000005,
+                  52.18
+                ],
+                "kicad_orientation_deg": 270
+              },
+              "delta_mm": [
+                0,
+                -0.1
+              ],
+              "evidence": "issue189 bounded paired movement; native NOT RUN"
+            }
+          ]
+        },
+        "removed_uuids": [],
+        "copper": [
+          {
+            "kind": "segment",
+            "uuid": "ff1d409e-6287-50e7-a5a6-09d255faa409",
+            "net": "X2F13D2752E29C14C1184",
+            "layer": "F.Cu",
+            "start_nm": [
+              412410000,
+              96090000
+            ],
+            "end_nm": [
+              412410000,
+              95990000
+            ],
+            "width_nm": 200000
+          },
+          {
+            "kind": "segment",
+            "uuid": "28626e01-3b02-59a8-83c9-3d2300e1e68c",
+            "net": "AGND",
+            "layer": "F.Cu",
+            "start_nm": [
+              412410000,
+              97590000
+            ],
+            "end_nm": [
+              412410000,
+              97490000
+            ],
+            "width_nm": 300000
+          },
+          {
+            "kind": "segment",
+            "uuid": "b000db37-719d-54d8-8538-47d9d03b6225",
+            "net": "X36F94B4A688508955B7D",
+            "layer": "F.Cu",
+            "start_nm": [
+              412410000,
+              99789999
+            ],
+            "end_nm": [
+              412410000,
+              99689999
+            ],
+            "width_nm": 200000
+          },
+          {
+            "kind": "segment",
+            "uuid": "ebfb6f9d-f58d-5cfd-b546-5f4e05cb378b",
+            "net": "AGND",
+            "layer": "F.Cu",
+            "start_nm": [
+              412410000,
+              101289999
+            ],
+            "end_nm": [
+              412410000,
+              101189999
+            ],
+            "width_nm": 300000
+          }
+        ]
+      }
+    },
+    {
+      "candidate_index": 0,
+      "target": "R4611",
+      "peer": "R4513",
+      "delta_mm": {
+        "R4611": [
+          0,
+          -0.1
+        ],
+        "R4513": [
+          0,
+          -0.1
+        ]
+      },
+      "mode": "plane",
+      "complete_raster_transaction": false,
+      "bounds_mm": [
+        404.41,
+        89.59,
+        420.41,
+        105.59
+      ],
+      "results": [
+        {
+          "net": "AGND",
+          "island": [
+            "R4611.2"
+          ],
+          "path": null
+        }
+      ],
+      "diagnostics": [
+        {
+          "net": "AGND",
+          "endpoints": [
+            "R4611.2"
+          ],
+          "reason": "search_exhausted",
+          "phase": "plane_fanout",
+          "attempts": [
+            {
+              "window_cells": [
+                361,
+                906,
+                368,
+                772
+              ],
+              "expanded": 9207,
+              "limit": 300000
+            }
+          ]
+        }
+      ],
+      "virtual_proposal": {
+        "board_sha256": "35b52972dd70b4186cf3f3b7ee2ac3d70432f3476c2f56c9fcf9c1c4d7d4d445",
+        "source_translations": {
+          "schema_version": 1,
+          "translations": [
+            {
+              "ref": "R4611",
+              "expected_source": {
+                "ref": "R4611",
+                "board": "JR",
+                "fixed": false,
+                "x_mm": 312.41,
+                "y_mm": 46.84,
+                "rotation_deg": 90,
+                "side": "F.Cu",
+                "courtyard_mm": [
+                  311.5,
+                  45.2,
+                  313.32000000000005,
+                  48.480000000000004
+                ],
+                "kicad_orientation_deg": 270
+              },
+              "delta_mm": [
+                0,
+                -0.1
+              ],
+              "evidence": "issue189 bounded paired movement; native NOT RUN"
+            },
+            {
+              "ref": "R4513",
+              "expected_source": {
+                "ref": "R4513",
+                "board": "JR",
+                "fixed": false,
+                "x_mm": 312.41,
+                "y_mm": 50.54,
+                "rotation_deg": 90,
+                "side": "F.Cu",
+                "courtyard_mm": [
+                  311.5,
+                  48.9,
+                  313.32000000000005,
+                  52.18
+                ],
+                "kicad_orientation_deg": 270
+              },
+              "delta_mm": [
+                0,
+                -0.1
+              ],
+              "evidence": "issue189 bounded paired movement; native NOT RUN"
+            }
+          ]
+        },
+        "removed_uuids": [],
+        "copper": [
+          {
+            "kind": "segment",
+            "uuid": "ff1d409e-6287-50e7-a5a6-09d255faa409",
+            "net": "X2F13D2752E29C14C1184",
+            "layer": "F.Cu",
+            "start_nm": [
+              412410000,
+              96090000
+            ],
+            "end_nm": [
+              412410000,
+              95990000
+            ],
+            "width_nm": 200000
+          },
+          {
+            "kind": "segment",
+            "uuid": "28626e01-3b02-59a8-83c9-3d2300e1e68c",
+            "net": "AGND",
+            "layer": "F.Cu",
+            "start_nm": [
+              412410000,
+              97590000
+            ],
+            "end_nm": [
+              412410000,
+              97490000
+            ],
+            "width_nm": 300000
+          },
+          {
+            "kind": "segment",
+            "uuid": "b000db37-719d-54d8-8538-47d9d03b6225",
+            "net": "X36F94B4A688508955B7D",
+            "layer": "F.Cu",
+            "start_nm": [
+              412410000,
+              99789999
+            ],
+            "end_nm": [
+              412410000,
+              99689999
+            ],
+            "width_nm": 200000
+          },
+          {
+            "kind": "segment",
+            "uuid": "ebfb6f9d-f58d-5cfd-b546-5f4e05cb378b",
+            "net": "AGND",
+            "layer": "F.Cu",
+            "start_nm": [
+              412410000,
+              101289999
+            ],
+            "end_nm": [
+              412410000,
+              101189999
+            ],
+            "width_nm": 300000
+          }
+        ]
+      }
+    },
+    {
+      "candidate_index": 1,
+      "target": "R8490",
+      "peer": "R5271",
+      "delta_mm": {
+        "R8490": [
+          0,
+          -0.1
+        ],
+        "R5271": [
+          0,
+          -0.1
+        ]
+      },
+      "mode": "direct",
+      "complete_raster_transaction": false,
+      "bounds_mm": [
+        309.09,
+        143.209999,
+        325.09,
+        159.209999
+      ],
+      "results": [
+        {
+          "net": "AGND",
+          "island": [
+            "R8490.2"
+          ],
+          "path": null
+        }
+      ],
+      "diagnostics": [
+        {
+          "net": "AGND",
+          "endpoints": [
+            "R8490.2"
+          ],
+          "reason": "search_exhausted",
+          "phase": "route",
+          "attempts": [
+            {
+              "window_cells": [
+                120,
+                1149,
+                129,
+                1154
+              ],
+              "expanded": 20912,
+              "limit": 300000
+            },
+            {
+              "window_cells": [
+                0,
+                1284,
+                0,
+                1284
+              ],
+              "expanded": 20912,
+              "limit": 300000
+            }
+          ],
+          "max_expansions": 300000,
+          "window_mm": 6
+        }
+      ],
+      "virtual_proposal": {
+        "board_sha256": "35b52972dd70b4186cf3f3b7ee2ac3d70432f3476c2f56c9fcf9c1c4d7d4d445",
+        "source_translations": {
+          "schema_version": 1,
+          "translations": [
+            {
+              "ref": "R8490",
+              "expected_source": {
+                "ref": "R8490",
+                "board": "JR",
+                "fixed": false,
+                "x_mm": 217.83999999999997,
+                "y_mm": 101.21,
+                "rotation_deg": 0,
+                "side": "B.Cu",
+                "courtyard_mm": [
+                  216.2,
+                  100.3,
+                  219.47999999999996,
+                  102.11999999999999
+                ],
+                "kicad_orientation_deg": 180
+              },
+              "delta_mm": [
+                0,
+                -0.1
+              ],
+              "evidence": "issue189 bounded paired movement; native NOT RUN"
+            },
+            {
+              "ref": "R5271",
+              "expected_source": {
+                "ref": "R5271",
+                "board": "JR",
+                "fixed": false,
+                "x_mm": 213.17000000000002,
+                "y_mm": 109.19999999999999,
+                "rotation_deg": 0,
+                "side": "B.Cu",
+                "courtyard_mm": [
+                  210.9,
+                  107.6,
+                  215.44000000000003,
+                  110.79999999999998
+                ],
+                "kicad_orientation_deg": 180
+              },
+              "delta_mm": [
+                0,
+                -0.1
+              ],
+              "evidence": "issue189 bounded paired movement; native NOT RUN"
+            }
+          ]
+        },
+        "removed_uuids": [],
+        "copper": [
+          {
+            "kind": "segment",
+            "uuid": "28443e35-16d7-5d4d-9756-75e37de287ef",
+            "net": "X9FB7DB33D0774EE87032",
+            "layer": "B.Cu",
+            "start_nm": [
+              318590000,
+              151209999
+            ],
+            "end_nm": [
+              318590000,
+              151109999
+            ],
+            "width_nm": 200000
+          },
+          {
+            "kind": "segment",
+            "uuid": "f5379941-2fa3-5dc2-b2c2-e495f87332af",
+            "net": "AGND",
+            "layer": "B.Cu",
+            "start_nm": [
+              317090000,
+              151209999
+            ],
+            "end_nm": [
+              317090000,
+              151109999
+            ],
+            "width_nm": 300000
+          },
+          {
+            "kind": "segment",
+            "uuid": "41f9108c-ad07-5a28-955d-4794bf24447f",
+            "net": "XE3E6E571CABACACF1B49",
+            "layer": "B.Cu",
+            "start_nm": [
+              314632500,
+              159200000
+            ],
+            "end_nm": [
+              314632500,
+              159100000
+            ],
+            "width_nm": 200000
+          },
+          {
+            "kind": "segment",
+            "uuid": "1af89157-1654-5fa1-9dc9-b161adc4275b",
+            "net": "X96D59B926187170471D5",
+            "layer": "B.Cu",
+            "start_nm": [
+              311707500,
+              159200000
+            ],
+            "end_nm": [
+              311707500,
+              159100000
+            ],
+            "width_nm": 200000
+          }
+        ]
+      }
+    },
+    {
+      "candidate_index": 1,
+      "target": "R8490",
+      "peer": "R5271",
+      "delta_mm": {
+        "R8490": [
+          0,
+          -0.1
+        ],
+        "R5271": [
+          0,
+          -0.1
+        ]
+      },
+      "mode": "plane",
+      "complete_raster_transaction": false,
+      "bounds_mm": [
+        309.09,
+        143.209999,
+        325.09,
+        159.209999
+      ],
+      "results": [
+        {
+          "net": "AGND",
+          "island": [
+            "R8490.2"
+          ],
+          "path": null
+        }
+      ],
+      "diagnostics": [
+        {
+          "net": "AGND",
+          "endpoints": [
+            "R8490.2"
+          ],
+          "reason": "no_legal_via_site",
+          "phase": "plane_fanout",
+          "attempts": []
+        }
+      ],
+      "virtual_proposal": {
+        "board_sha256": "35b52972dd70b4186cf3f3b7ee2ac3d70432f3476c2f56c9fcf9c1c4d7d4d445",
+        "source_translations": {
+          "schema_version": 1,
+          "translations": [
+            {
+              "ref": "R8490",
+              "expected_source": {
+                "ref": "R8490",
+                "board": "JR",
+                "fixed": false,
+                "x_mm": 217.83999999999997,
+                "y_mm": 101.21,
+                "rotation_deg": 0,
+                "side": "B.Cu",
+                "courtyard_mm": [
+                  216.2,
+                  100.3,
+                  219.47999999999996,
+                  102.11999999999999
+                ],
+                "kicad_orientation_deg": 180
+              },
+              "delta_mm": [
+                0,
+                -0.1
+              ],
+              "evidence": "issue189 bounded paired movement; native NOT RUN"
+            },
+            {
+              "ref": "R5271",
+              "expected_source": {
+                "ref": "R5271",
+                "board": "JR",
+                "fixed": false,
+                "x_mm": 213.17000000000002,
+                "y_mm": 109.19999999999999,
+                "rotation_deg": 0,
+                "side": "B.Cu",
+                "courtyard_mm": [
+                  210.9,
+                  107.6,
+                  215.44000000000003,
+                  110.79999999999998
+                ],
+                "kicad_orientation_deg": 180
+              },
+              "delta_mm": [
+                0,
+                -0.1
+              ],
+              "evidence": "issue189 bounded paired movement; native NOT RUN"
+            }
+          ]
+        },
+        "removed_uuids": [],
+        "copper": [
+          {
+            "kind": "segment",
+            "uuid": "28443e35-16d7-5d4d-9756-75e37de287ef",
+            "net": "X9FB7DB33D0774EE87032",
+            "layer": "B.Cu",
+            "start_nm": [
+              318590000,
+              151209999
+            ],
+            "end_nm": [
+              318590000,
+              151109999
+            ],
+            "width_nm": 200000
+          },
+          {
+            "kind": "segment",
+            "uuid": "f5379941-2fa3-5dc2-b2c2-e495f87332af",
+            "net": "AGND",
+            "layer": "B.Cu",
+            "start_nm": [
+              317090000,
+              151209999
+            ],
+            "end_nm": [
+              317090000,
+              151109999
+            ],
+            "width_nm": 300000
+          },
+          {
+            "kind": "segment",
+            "uuid": "41f9108c-ad07-5a28-955d-4794bf24447f",
+            "net": "XE3E6E571CABACACF1B49",
+            "layer": "B.Cu",
+            "start_nm": [
+              314632500,
+              159200000
+            ],
+            "end_nm": [
+              314632500,
+              159100000
+            ],
+            "width_nm": 200000
+          },
+          {
+            "kind": "segment",
+            "uuid": "1af89157-1654-5fa1-9dc9-b161adc4275b",
+            "net": "X96D59B926187170471D5",
+            "layer": "B.Cu",
+            "start_nm": [
+              311707500,
+              159200000
+            ],
+            "end_nm": [
+              311707500,
+              159100000
+            ],
+            "width_nm": 200000
+          }
+        ]
+      }
+    },
+    {
+      "candidate_index": 2,
+      "target": "R8490",
+      "peer": "R8489",
+      "delta_mm": {
+        "R8490": [
+          0,
+          -0.1
+        ],
+        "R8489": [
+          0.1,
+          0
+        ]
+      },
+      "mode": "direct",
+      "complete_raster_transaction": false,
+      "bounds_mm": [
+        309.09,
+        143.209999,
+        325.09,
+        159.209999
+      ],
+      "results": [
+        {
+          "net": "AGND",
+          "island": [
+            "R8490.2"
+          ],
+          "path": null
+        }
+      ],
+      "diagnostics": [
+        {
+          "net": "AGND",
+          "endpoints": [
+            "R8490.2"
+          ],
+          "reason": "search_exhausted",
+          "phase": "route",
+          "attempts": [
+            {
+              "window_cells": [
+                120,
+                1149,
+                129,
+                1154
+              ],
+              "expanded": 20912,
+              "limit": 300000
+            },
+            {
+              "window_cells": [
+                0,
+                1284,
+                0,
+                1284
+              ],
+              "expanded": 20912,
+              "limit": 300000
+            }
+          ],
+          "max_expansions": 300000,
+          "window_mm": 6
+        }
+      ],
+      "virtual_proposal": {
+        "board_sha256": "35b52972dd70b4186cf3f3b7ee2ac3d70432f3476c2f56c9fcf9c1c4d7d4d445",
+        "source_translations": {
+          "schema_version": 1,
+          "translations": [
+            {
+              "ref": "R8490",
+              "expected_source": {
+                "ref": "R8490",
+                "board": "JR",
+                "fixed": false,
+                "x_mm": 217.83999999999997,
+                "y_mm": 101.21,
+                "rotation_deg": 0,
+                "side": "B.Cu",
+                "courtyard_mm": [
+                  216.2,
+                  100.3,
+                  219.47999999999996,
+                  102.11999999999999
+                ],
+                "kicad_orientation_deg": 180
+              },
+              "delta_mm": [
+                0,
+                -0.1
+              ],
+              "evidence": "issue189 bounded paired movement; native NOT RUN"
+            },
+            {
+              "ref": "R8489",
+              "expected_source": {
+                "ref": "R8489",
+                "board": "JR",
+                "fixed": false,
+                "x_mm": 211.71,
+                "y_mm": 95.04,
+                "rotation_deg": 90,
+                "side": "B.Cu",
+                "courtyard_mm": [
+                  210.8,
+                  93.4,
+                  212.62,
+                  96.68
+                ],
+                "kicad_orientation_deg": 90
+              },
+              "delta_mm": [
+                0.1,
+                0
+              ],
+              "evidence": "issue189 bounded paired movement; native NOT RUN"
+            }
+          ]
+        },
+        "removed_uuids": [],
+        "copper": [
+          {
+            "kind": "segment",
+            "uuid": "28443e35-16d7-5d4d-9756-75e37de287ef",
+            "net": "X9FB7DB33D0774EE87032",
+            "layer": "B.Cu",
+            "start_nm": [
+              318590000,
+              151209999
+            ],
+            "end_nm": [
+              318590000,
+              151109999
+            ],
+            "width_nm": 200000
+          },
+          {
+            "kind": "segment",
+            "uuid": "f5379941-2fa3-5dc2-b2c2-e495f87332af",
+            "net": "AGND",
+            "layer": "B.Cu",
+            "start_nm": [
+              317090000,
+              151209999
+            ],
+            "end_nm": [
+              317090000,
+              151109999
+            ],
+            "width_nm": 300000
+          },
+          {
+            "kind": "segment",
+            "uuid": "36df950e-ff5c-50a0-bc0a-fcce17c66963",
+            "net": "XE8801B1CF3B344ACD7C2",
+            "layer": "B.Cu",
+            "start_nm": [
+              311710000,
+              145790000
+            ],
+            "end_nm": [
+              311810000,
+              145790000
+            ],
+            "width_nm": 200000
+          },
+          {
+            "kind": "segment",
+            "uuid": "cab5cdef-e6a0-5534-935e-8b59862f5de9",
+            "net": "X9FB7DB33D0774EE87032",
+            "layer": "B.Cu",
+            "start_nm": [
+              311710000,
+              144290000
+            ],
+            "end_nm": [
+              311810000,
+              144290000
+            ],
+            "width_nm": 200000
+          }
+        ]
+      }
+    },
+    {
+      "candidate_index": 2,
+      "target": "R8490",
+      "peer": "R8489",
+      "delta_mm": {
+        "R8490": [
+          0,
+          -0.1
+        ],
+        "R8489": [
+          0.1,
+          0
+        ]
+      },
+      "mode": "plane",
+      "complete_raster_transaction": false,
+      "bounds_mm": [
+        309.09,
+        143.209999,
+        325.09,
+        159.209999
+      ],
+      "results": [
+        {
+          "net": "AGND",
+          "island": [
+            "R8490.2"
+          ],
+          "path": null
+        }
+      ],
+      "diagnostics": [
+        {
+          "net": "AGND",
+          "endpoints": [
+            "R8490.2"
+          ],
+          "reason": "no_legal_via_site",
+          "phase": "plane_fanout",
+          "attempts": []
+        }
+      ],
+      "virtual_proposal": {
+        "board_sha256": "35b52972dd70b4186cf3f3b7ee2ac3d70432f3476c2f56c9fcf9c1c4d7d4d445",
+        "source_translations": {
+          "schema_version": 1,
+          "translations": [
+            {
+              "ref": "R8490",
+              "expected_source": {
+                "ref": "R8490",
+                "board": "JR",
+                "fixed": false,
+                "x_mm": 217.83999999999997,
+                "y_mm": 101.21,
+                "rotation_deg": 0,
+                "side": "B.Cu",
+                "courtyard_mm": [
+                  216.2,
+                  100.3,
+                  219.47999999999996,
+                  102.11999999999999
+                ],
+                "kicad_orientation_deg": 180
+              },
+              "delta_mm": [
+                0,
+                -0.1
+              ],
+              "evidence": "issue189 bounded paired movement; native NOT RUN"
+            },
+            {
+              "ref": "R8489",
+              "expected_source": {
+                "ref": "R8489",
+                "board": "JR",
+                "fixed": false,
+                "x_mm": 211.71,
+                "y_mm": 95.04,
+                "rotation_deg": 90,
+                "side": "B.Cu",
+                "courtyard_mm": [
+                  210.8,
+                  93.4,
+                  212.62,
+                  96.68
+                ],
+                "kicad_orientation_deg": 90
+              },
+              "delta_mm": [
+                0.1,
+                0
+              ],
+              "evidence": "issue189 bounded paired movement; native NOT RUN"
+            }
+          ]
+        },
+        "removed_uuids": [],
+        "copper": [
+          {
+            "kind": "segment",
+            "uuid": "28443e35-16d7-5d4d-9756-75e37de287ef",
+            "net": "X9FB7DB33D0774EE87032",
+            "layer": "B.Cu",
+            "start_nm": [
+              318590000,
+              151209999
+            ],
+            "end_nm": [
+              318590000,
+              151109999
+            ],
+            "width_nm": 200000
+          },
+          {
+            "kind": "segment",
+            "uuid": "f5379941-2fa3-5dc2-b2c2-e495f87332af",
+            "net": "AGND",
+            "layer": "B.Cu",
+            "start_nm": [
+              317090000,
+              151209999
+            ],
+            "end_nm": [
+              317090000,
+              151109999
+            ],
+            "width_nm": 300000
+          },
+          {
+            "kind": "segment",
+            "uuid": "36df950e-ff5c-50a0-bc0a-fcce17c66963",
+            "net": "XE8801B1CF3B344ACD7C2",
+            "layer": "B.Cu",
+            "start_nm": [
+              311710000,
+              145790000
+            ],
+            "end_nm": [
+              311810000,
+              145790000
+            ],
+            "width_nm": 200000
+          },
+          {
+            "kind": "segment",
+            "uuid": "cab5cdef-e6a0-5534-935e-8b59862f5de9",
+            "net": "X9FB7DB33D0774EE87032",
+            "layer": "B.Cu",
+            "start_nm": [
+              311710000,
+              144290000
+            ],
+            "end_nm": [
+              311810000,
+              144290000
+            ],
+            "width_nm": 200000
+          }
+        ]
+      }
+    },
+    {
+      "candidate_index": 3,
+      "target": "RB4413",
+      "peer": "R4411",
+      "delta_mm": {
+        "RB4413": [
+          0.1,
+          0
+        ],
+        "R4411": [
+          0,
+          -0.1
+        ]
+      },
+      "mode": "direct",
+      "complete_raster_transaction": false,
+      "bounds_mm": [
+        376.59,
+        84.31,
+        392.59,
+        100.31
+      ],
+      "results": [
+        {
+          "net": "AGND",
+          "island": [
+            "RB4413.2"
+          ],
+          "path": null
+        }
+      ],
+      "diagnostics": [
+        {
+          "net": "AGND",
+          "endpoints": [
+            "RB4413.2"
+          ],
+          "reason": "search_exhausted",
+          "phase": "route",
+          "attempts": [
+            {
+              "window_cells": [
+                128,
+                1157,
+                137,
+                1162
+              ],
+              "expanded": 15732,
+              "limit": 300000
+            },
+            {
+              "window_cells": [
+                0,
+                1284,
+                0,
+                1284
+              ],
+              "expanded": 15732,
+              "limit": 300000
+            }
+          ],
+          "max_expansions": 300000,
+          "window_mm": 6
+        }
+      ],
+      "virtual_proposal": {
+        "board_sha256": "35b52972dd70b4186cf3f3b7ee2ac3d70432f3476c2f56c9fcf9c1c4d7d4d445",
+        "source_translations": {
+          "schema_version": 1,
+          "translations": [
+            {
+              "ref": "RB4413",
+              "expected_source": {
+                "ref": "RB4413",
+                "board": "JR",
+                "fixed": false,
+                "x_mm": 285.34,
+                "y_mm": 42.309999999999995,
+                "rotation_deg": 0,
+                "side": "B.Cu",
+                "courtyard_mm": [
+                  283.7,
+                  41.4,
+                  286.97999999999996,
+                  43.21999999999999
+                ],
+                "kicad_orientation_deg": 180
+              },
+              "delta_mm": [
+                0.1,
+                0
+              ],
+              "evidence": "issue189 bounded paired movement; native NOT RUN"
+            },
+            {
+              "ref": "R4411",
+              "expected_source": {
+                "ref": "R4411",
+                "board": "JR",
+                "fixed": false,
+                "x_mm": 278.71000000000004,
+                "y_mm": 44.54,
+                "rotation_deg": 90,
+                "side": "B.Cu",
+                "courtyard_mm": [
+                  277.8,
+                  42.9,
+                  279.62000000000006,
+                  46.18
+                ],
+                "kicad_orientation_deg": 90
+              },
+              "delta_mm": [
+                0,
+                -0.1
+              ],
+              "evidence": "issue189 bounded paired movement; native NOT RUN"
+            }
+          ]
+        },
+        "removed_uuids": [],
+        "copper": [
+          {
+            "kind": "segment",
+            "uuid": "cab6445c-5f49-5230-8431-e7e0bc67d38b",
+            "net": "X34EC684E00B004F73024",
+            "layer": "B.Cu",
+            "start_nm": [
+              386090000,
+              92310000
+            ],
+            "end_nm": [
+              386190000,
+              92310000
+            ],
+            "width_nm": 200000
+          },
+          {
+            "kind": "segment",
+            "uuid": "7e24b8e5-d105-5a41-b182-cbf8354e3b4e",
+            "net": "AGND",
+            "layer": "B.Cu",
+            "start_nm": [
+              384590000,
+              92310000
+            ],
+            "end_nm": [
+              384690000,
+              92310000
+            ],
+            "width_nm": 300000
+          },
+          {
+            "kind": "segment",
+            "uuid": "4c7f7c5e-a2e3-58ed-9659-39cc5c630d69",
+            "net": "X273FE174B610F626FB54",
+            "layer": "B.Cu",
+            "start_nm": [
+              378710000,
+              95289999
+            ],
+            "end_nm": [
+              378710000,
+              95189999
+            ],
+            "width_nm": 200000
+          },
+          {
+            "kind": "segment",
+            "uuid": "902bf87c-4498-5310-a47f-22625b07a096",
+            "net": "AGND",
+            "layer": "B.Cu",
+            "start_nm": [
+              378710000,
+              93789999
+            ],
+            "end_nm": [
+              378710000,
+              93689999
+            ],
+            "width_nm": 300000
+          }
+        ]
+      }
+    },
+    {
+      "candidate_index": 3,
+      "target": "RB4413",
+      "peer": "R4411",
+      "delta_mm": {
+        "RB4413": [
+          0.1,
+          0
+        ],
+        "R4411": [
+          0,
+          -0.1
+        ]
+      },
+      "mode": "plane",
+      "complete_raster_transaction": false,
+      "bounds_mm": [
+        376.59,
+        84.31,
+        392.59,
+        100.31
+      ],
+      "results": [
+        {
+          "net": "AGND",
+          "island": [
+            "RB4413.2"
+          ],
+          "path": null
+        }
+      ],
+      "diagnostics": [
+        {
+          "net": "AGND",
+          "endpoints": [
+            "RB4413.2"
+          ],
+          "reason": "search_exhausted",
+          "phase": "plane_fanout",
+          "attempts": [
+            {
+              "window_cells": [
+                368,
+                917,
+                377,
+                922
+              ],
+              "expanded": 15732,
+              "limit": 300000
+            }
+          ]
+        }
+      ],
+      "virtual_proposal": {
+        "board_sha256": "35b52972dd70b4186cf3f3b7ee2ac3d70432f3476c2f56c9fcf9c1c4d7d4d445",
+        "source_translations": {
+          "schema_version": 1,
+          "translations": [
+            {
+              "ref": "RB4413",
+              "expected_source": {
+                "ref": "RB4413",
+                "board": "JR",
+                "fixed": false,
+                "x_mm": 285.34,
+                "y_mm": 42.309999999999995,
+                "rotation_deg": 0,
+                "side": "B.Cu",
+                "courtyard_mm": [
+                  283.7,
+                  41.4,
+                  286.97999999999996,
+                  43.21999999999999
+                ],
+                "kicad_orientation_deg": 180
+              },
+              "delta_mm": [
+                0.1,
+                0
+              ],
+              "evidence": "issue189 bounded paired movement; native NOT RUN"
+            },
+            {
+              "ref": "R4411",
+              "expected_source": {
+                "ref": "R4411",
+                "board": "JR",
+                "fixed": false,
+                "x_mm": 278.71000000000004,
+                "y_mm": 44.54,
+                "rotation_deg": 90,
+                "side": "B.Cu",
+                "courtyard_mm": [
+                  277.8,
+                  42.9,
+                  279.62000000000006,
+                  46.18
+                ],
+                "kicad_orientation_deg": 90
+              },
+              "delta_mm": [
+                0,
+                -0.1
+              ],
+              "evidence": "issue189 bounded paired movement; native NOT RUN"
+            }
+          ]
+        },
+        "removed_uuids": [],
+        "copper": [
+          {
+            "kind": "segment",
+            "uuid": "cab6445c-5f49-5230-8431-e7e0bc67d38b",
+            "net": "X34EC684E00B004F73024",
+            "layer": "B.Cu",
+            "start_nm": [
+              386090000,
+              92310000
+            ],
+            "end_nm": [
+              386190000,
+              92310000
+            ],
+            "width_nm": 200000
+          },
+          {
+            "kind": "segment",
+            "uuid": "7e24b8e5-d105-5a41-b182-cbf8354e3b4e",
+            "net": "AGND",
+            "layer": "B.Cu",
+            "start_nm": [
+              384590000,
+              92310000
+            ],
+            "end_nm": [
+              384690000,
+              92310000
+            ],
+            "width_nm": 300000
+          },
+          {
+            "kind": "segment",
+            "uuid": "4c7f7c5e-a2e3-58ed-9659-39cc5c630d69",
+            "net": "X273FE174B610F626FB54",
+            "layer": "B.Cu",
+            "start_nm": [
+              378710000,
+              95289999
+            ],
+            "end_nm": [
+              378710000,
+              95189999
+            ],
+            "width_nm": 200000
+          },
+          {
+            "kind": "segment",
+            "uuid": "902bf87c-4498-5310-a47f-22625b07a096",
+            "net": "AGND",
+            "layer": "B.Cu",
+            "start_nm": [
+              378710000,
+              93789999
+            ],
+            "end_nm": [
+              378710000,
+              93689999
+            ],
+            "width_nm": 300000
+          }
+        ]
+      }
+    },
+    {
+      "candidate_index": 4,
+      "target": "RB4413",
+      "peer": "R4412",
+      "delta_mm": {
+        "RB4413": [
+          0.1,
+          0
+        ],
+        "R4412": [
+          0,
+          -0.1
+        ]
+      },
+      "mode": "direct",
+      "complete_raster_transaction": false,
+      "bounds_mm": [
+        376.59,
+        84.31,
+        392.59,
+        100.31
+      ],
+      "results": [
+        {
+          "net": "AGND",
+          "island": [
+            "RB4413.2"
+          ],
+          "path": null
+        }
+      ],
+      "diagnostics": [
+        {
+          "net": "AGND",
+          "endpoints": [
+            "RB4413.2"
+          ],
+          "reason": "search_exhausted",
+          "phase": "route",
+          "attempts": [
+            {
+              "window_cells": [
+                128,
+                1157,
+                137,
+                1162
+              ],
+              "expanded": 15671,
+              "limit": 300000
+            },
+            {
+              "window_cells": [
+                0,
+                1284,
+                0,
+                1284
+              ],
+              "expanded": 15671,
+              "limit": 300000
+            }
+          ],
+          "max_expansions": 300000,
+          "window_mm": 6
+        }
+      ],
+      "virtual_proposal": {
+        "board_sha256": "35b52972dd70b4186cf3f3b7ee2ac3d70432f3476c2f56c9fcf9c1c4d7d4d445",
+        "source_translations": {
+          "schema_version": 1,
+          "translations": [
+            {
+              "ref": "RB4413",
+              "expected_source": {
+                "ref": "RB4413",
+                "board": "JR",
+                "fixed": false,
+                "x_mm": 285.34,
+                "y_mm": 42.309999999999995,
+                "rotation_deg": 0,
+                "side": "B.Cu",
+                "courtyard_mm": [
+                  283.7,
+                  41.4,
+                  286.97999999999996,
+                  43.21999999999999
+                ],
+                "kicad_orientation_deg": 180
+              },
+              "delta_mm": [
+                0.1,
+                0
+              ],
+              "evidence": "issue189 bounded paired movement; native NOT RUN"
+            },
+            {
+              "ref": "R4412",
+              "expected_source": {
+                "ref": "R4412",
+                "board": "JR",
+                "fixed": false,
+                "x_mm": 281.64,
+                "y_mm": 42.51,
+                "rotation_deg": 0,
+                "side": "B.Cu",
+                "courtyard_mm": [
+                  280.0,
+                  41.6,
+                  283.28,
+                  43.419999999999995
+                ],
+                "kicad_orientation_deg": 180
+              },
+              "delta_mm": [
+                0,
+                -0.1
+              ],
+              "evidence": "issue189 bounded paired movement; native NOT RUN"
+            }
+          ]
+        },
+        "removed_uuids": [],
+        "copper": [
+          {
+            "kind": "segment",
+            "uuid": "cab6445c-5f49-5230-8431-e7e0bc67d38b",
+            "net": "X34EC684E00B004F73024",
+            "layer": "B.Cu",
+            "start_nm": [
+              386090000,
+              92310000
+            ],
+            "end_nm": [
+              386190000,
+              92310000
+            ],
+            "width_nm": 200000
+          },
+          {
+            "kind": "segment",
+            "uuid": "7e24b8e5-d105-5a41-b182-cbf8354e3b4e",
+            "net": "AGND",
+            "layer": "B.Cu",
+            "start_nm": [
+              384590000,
+              92310000
+            ],
+            "end_nm": [
+              384690000,
+              92310000
+            ],
+            "width_nm": 300000
+          },
+          {
+            "kind": "segment",
+            "uuid": "73570761-d8e5-5315-9f3b-b3ff6b4a43e5",
+            "net": "X273FE174B610F626FB54",
+            "layer": "B.Cu",
+            "start_nm": [
+              382390000,
+              92509999
+            ],
+            "end_nm": [
+              382390000,
+              92409999
+            ],
+            "width_nm": 200000
+          },
+          {
+            "kind": "segment",
+            "uuid": "ab447210-9141-5241-92fe-5d53c4c1a685",
+            "net": "X7C6C3D961AB885E85EB8",
+            "layer": "B.Cu",
+            "start_nm": [
+              380890000,
+              92509999
+            ],
+            "end_nm": [
+              380890000,
+              92409999
+            ],
+            "width_nm": 200000
+          }
+        ]
+      }
+    },
+    {
+      "candidate_index": 4,
+      "target": "RB4413",
+      "peer": "R4412",
+      "delta_mm": {
+        "RB4413": [
+          0.1,
+          0
+        ],
+        "R4412": [
+          0,
+          -0.1
+        ]
+      },
+      "mode": "plane",
+      "complete_raster_transaction": false,
+      "bounds_mm": [
+        376.59,
+        84.31,
+        392.59,
+        100.31
+      ],
+      "results": [
+        {
+          "net": "AGND",
+          "island": [
+            "RB4413.2"
+          ],
+          "path": null
+        }
+      ],
+      "diagnostics": [
+        {
+          "net": "AGND",
+          "endpoints": [
+            "RB4413.2"
+          ],
+          "reason": "search_exhausted",
+          "phase": "plane_fanout",
+          "attempts": [
+            {
+              "window_cells": [
+                368,
+                917,
+                377,
+                922
+              ],
+              "expanded": 15671,
+              "limit": 300000
+            }
+          ]
+        }
+      ],
+      "virtual_proposal": {
+        "board_sha256": "35b52972dd70b4186cf3f3b7ee2ac3d70432f3476c2f56c9fcf9c1c4d7d4d445",
+        "source_translations": {
+          "schema_version": 1,
+          "translations": [
+            {
+              "ref": "RB4413",
+              "expected_source": {
+                "ref": "RB4413",
+                "board": "JR",
+                "fixed": false,
+                "x_mm": 285.34,
+                "y_mm": 42.309999999999995,
+                "rotation_deg": 0,
+                "side": "B.Cu",
+                "courtyard_mm": [
+                  283.7,
+                  41.4,
+                  286.97999999999996,
+                  43.21999999999999
+                ],
+                "kicad_orientation_deg": 180
+              },
+              "delta_mm": [
+                0.1,
+                0
+              ],
+              "evidence": "issue189 bounded paired movement; native NOT RUN"
+            },
+            {
+              "ref": "R4412",
+              "expected_source": {
+                "ref": "R4412",
+                "board": "JR",
+                "fixed": false,
+                "x_mm": 281.64,
+                "y_mm": 42.51,
+                "rotation_deg": 0,
+                "side": "B.Cu",
+                "courtyard_mm": [
+                  280.0,
+                  41.6,
+                  283.28,
+                  43.419999999999995
+                ],
+                "kicad_orientation_deg": 180
+              },
+              "delta_mm": [
+                0,
+                -0.1
+              ],
+              "evidence": "issue189 bounded paired movement; native NOT RUN"
+            }
+          ]
+        },
+        "removed_uuids": [],
+        "copper": [
+          {
+            "kind": "segment",
+            "uuid": "cab6445c-5f49-5230-8431-e7e0bc67d38b",
+            "net": "X34EC684E00B004F73024",
+            "layer": "B.Cu",
+            "start_nm": [
+              386090000,
+              92310000
+            ],
+            "end_nm": [
+              386190000,
+              92310000
+            ],
+            "width_nm": 200000
+          },
+          {
+            "kind": "segment",
+            "uuid": "7e24b8e5-d105-5a41-b182-cbf8354e3b4e",
+            "net": "AGND",
+            "layer": "B.Cu",
+            "start_nm": [
+              384590000,
+              92310000
+            ],
+            "end_nm": [
+              384690000,
+              92310000
+            ],
+            "width_nm": 300000
+          },
+          {
+            "kind": "segment",
+            "uuid": "73570761-d8e5-5315-9f3b-b3ff6b4a43e5",
+            "net": "X273FE174B610F626FB54",
+            "layer": "B.Cu",
+            "start_nm": [
+              382390000,
+              92509999
+            ],
+            "end_nm": [
+              382390000,
+              92409999
+            ],
+            "width_nm": 200000
+          },
+          {
+            "kind": "segment",
+            "uuid": "ab447210-9141-5241-92fe-5d53c4c1a685",
+            "net": "X7C6C3D961AB885E85EB8",
+            "layer": "B.Cu",
+            "start_nm": [
+              380890000,
+              92509999
+            ],
+            "end_nm": [
+              380890000,
+              92409999
+            ],
+            "width_nm": 200000
+          }
+        ]
+      }
+    },
+    {
+      "candidate_index": 5,
+      "target": "RB4414",
+      "peer": "R4508",
+      "delta_mm": {
+        "RB4414": [
+          0,
+          0.1
+        ],
+        "R4508": [
+          0,
+          0.1
+        ]
+      },
+      "mode": "direct",
+      "complete_raster_transaction": false,
+      "bounds_mm": [
+        376.19,
+        129.209999,
+        392.19,
+        145.209999
+      ],
+      "results": [
+        {
+          "net": "AGND",
+          "island": [
+            "RB4414.2"
+          ],
+          "path": null
+        }
+      ],
+      "diagnostics": [
+        {
+          "net": "AGND",
+          "endpoints": [
+            "RB4414.2"
+          ],
+          "reason": "search_exhausted",
+          "phase": "route",
+          "attempts": [
+            {
+              "window_cells": [
+                136,
+                1165,
+                129,
+                1154
+              ],
+              "expanded": 19280,
+              "limit": 300000
+            },
+            {
+              "window_cells": [
+                0,
+                1284,
+                0,
+                1284
+              ],
+              "expanded": 19280,
+              "limit": 300000
+            }
+          ],
+          "max_expansions": 300000,
+          "window_mm": 6
+        }
+      ],
+      "virtual_proposal": {
+        "board_sha256": "35b52972dd70b4186cf3f3b7ee2ac3d70432f3476c2f56c9fcf9c1c4d7d4d445",
+        "source_translations": {
+          "schema_version": 1,
+          "translations": [
+            {
+              "ref": "RB4414",
+              "expected_source": {
+                "ref": "RB4414",
+                "board": "JR",
+                "fixed": false,
+                "x_mm": 284.94,
+                "y_mm": 87.21,
+                "rotation_deg": 0,
+                "side": "B.Cu",
+                "courtyard_mm": [
+                  283.3,
+                  86.3,
+                  286.58,
+                  88.11999999999999
+                ],
+                "kicad_orientation_deg": 180
+              },
+              "delta_mm": [
+                0,
+                0.1
+              ],
+              "evidence": "issue189 bounded paired movement; native NOT RUN"
+            },
+            {
+              "ref": "R4508",
+              "expected_source": {
+                "ref": "R4508",
+                "board": "JR",
+                "fixed": false,
+                "x_mm": 282.74,
+                "y_mm": 91.71,
+                "rotation_deg": 0,
+                "side": "B.Cu",
+                "courtyard_mm": [
+                  281.1,
+                  90.8,
+                  284.38,
+                  92.61999999999999
+                ],
+                "kicad_orientation_deg": 180
+              },
+              "delta_mm": [
+                0,
+                0.1
+              ],
+              "evidence": "issue189 bounded paired movement; native NOT RUN"
+            }
+          ]
+        },
+        "removed_uuids": [],
+        "copper": [
+          {
+            "kind": "segment",
+            "uuid": "8b1c47df-a99e-5d03-8a40-4eb72fd01753",
+            "net": "XDD8BDD7DC38943261718",
+            "layer": "B.Cu",
+            "start_nm": [
+              385690000,
+              137209999
+            ],
+            "end_nm": [
+              385690000,
+              137309999
+            ],
+            "width_nm": 200000
+          },
+          {
+            "kind": "segment",
+            "uuid": "abcc9734-3aa0-528f-93ef-59ff93e9c8da",
+            "net": "AGND",
+            "layer": "B.Cu",
+            "start_nm": [
+              384190000,
+              137209999
+            ],
+            "end_nm": [
+              384190000,
+              137309999
+            ],
+            "width_nm": 300000
+          },
+          {
+            "kind": "segment",
+            "uuid": "edacbee0-195b-51a0-a4e0-e24a500616a3",
+            "net": "XA732A58BCD459A5A6E4B",
+            "layer": "B.Cu",
+            "start_nm": [
+              383490000,
+              141709999
+            ],
+            "end_nm": [
+              383490000,
+              141809999
+            ],
+            "width_nm": 200000
+          },
+          {
+            "kind": "segment",
+            "uuid": "99d982b3-8542-5b02-a6da-b64f7dd6dcb7",
+            "net": "XA89E257B7EDA63EE26AF",
+            "layer": "B.Cu",
+            "start_nm": [
+              381990000,
+              141709999
+            ],
+            "end_nm": [
+              381990000,
+              141809999
+            ],
+            "width_nm": 200000
+          }
+        ]
+      }
+    },
+    {
+      "candidate_index": 5,
+      "target": "RB4414",
+      "peer": "R4508",
+      "delta_mm": {
+        "RB4414": [
+          0,
+          0.1
+        ],
+        "R4508": [
+          0,
+          0.1
+        ]
+      },
+      "mode": "plane",
+      "complete_raster_transaction": false,
+      "bounds_mm": [
+        376.19,
+        129.209999,
+        392.19,
+        145.209999
+      ],
+      "results": [
+        {
+          "net": "AGND",
+          "island": [
+            "RB4414.2"
+          ],
+          "path": null
+        }
+      ],
+      "diagnostics": [
+        {
+          "net": "AGND",
+          "endpoints": [
+            "RB4414.2"
+          ],
+          "reason": "search_exhausted",
+          "phase": "plane_fanout",
+          "attempts": [
+            {
+              "window_cells": [
+                376,
+                925,
+                369,
+                914
+              ],
+              "expanded": 19280,
+              "limit": 300000
+            }
+          ]
+        }
+      ],
+      "virtual_proposal": {
+        "board_sha256": "35b52972dd70b4186cf3f3b7ee2ac3d70432f3476c2f56c9fcf9c1c4d7d4d445",
+        "source_translations": {
+          "schema_version": 1,
+          "translations": [
+            {
+              "ref": "RB4414",
+              "expected_source": {
+                "ref": "RB4414",
+                "board": "JR",
+                "fixed": false,
+                "x_mm": 284.94,
+                "y_mm": 87.21,
+                "rotation_deg": 0,
+                "side": "B.Cu",
+                "courtyard_mm": [
+                  283.3,
+                  86.3,
+                  286.58,
+                  88.11999999999999
+                ],
+                "kicad_orientation_deg": 180
+              },
+              "delta_mm": [
+                0,
+                0.1
+              ],
+              "evidence": "issue189 bounded paired movement; native NOT RUN"
+            },
+            {
+              "ref": "R4508",
+              "expected_source": {
+                "ref": "R4508",
+                "board": "JR",
+                "fixed": false,
+                "x_mm": 282.74,
+                "y_mm": 91.71,
+                "rotation_deg": 0,
+                "side": "B.Cu",
+                "courtyard_mm": [
+                  281.1,
+                  90.8,
+                  284.38,
+                  92.61999999999999
+                ],
+                "kicad_orientation_deg": 180
+              },
+              "delta_mm": [
+                0,
+                0.1
+              ],
+              "evidence": "issue189 bounded paired movement; native NOT RUN"
+            }
+          ]
+        },
+        "removed_uuids": [],
+        "copper": [
+          {
+            "kind": "segment",
+            "uuid": "8b1c47df-a99e-5d03-8a40-4eb72fd01753",
+            "net": "XDD8BDD7DC38943261718",
+            "layer": "B.Cu",
+            "start_nm": [
+              385690000,
+              137209999
+            ],
+            "end_nm": [
+              385690000,
+              137309999
+            ],
+            "width_nm": 200000
+          },
+          {
+            "kind": "segment",
+            "uuid": "abcc9734-3aa0-528f-93ef-59ff93e9c8da",
+            "net": "AGND",
+            "layer": "B.Cu",
+            "start_nm": [
+              384190000,
+              137209999
+            ],
+            "end_nm": [
+              384190000,
+              137309999
+            ],
+            "width_nm": 300000
+          },
+          {
+            "kind": "segment",
+            "uuid": "edacbee0-195b-51a0-a4e0-e24a500616a3",
+            "net": "XA732A58BCD459A5A6E4B",
+            "layer": "B.Cu",
+            "start_nm": [
+              383490000,
+              141709999
+            ],
+            "end_nm": [
+              383490000,
+              141809999
+            ],
+            "width_nm": 200000
+          },
+          {
+            "kind": "segment",
+            "uuid": "99d982b3-8542-5b02-a6da-b64f7dd6dcb7",
+            "net": "XA89E257B7EDA63EE26AF",
+            "layer": "B.Cu",
+            "start_nm": [
+              381990000,
+              141709999
+            ],
+            "end_nm": [
+              381990000,
+              141809999
+            ],
+            "width_nm": 200000
+          }
+        ]
+      }
+    },
+    {
+      "candidate_index": 6,
+      "target": "RB4614",
+      "peer": "RB4615",
+      "delta_mm": {
+        "RB4614": [
+          0,
+          0.1
+        ],
+        "RB4615": [
+          0.1,
+          0
+        ]
+      },
+      "mode": "direct",
+      "complete_raster_transaction": false,
+      "bounds_mm": [
+        404.41,
+        135.89,
+        420.41,
+        151.89
+      ],
+      "results": [
+        {
+          "net": "AGND",
+          "island": [
+            "RB4614.2"
+          ],
+          "path": null
+        }
+      ],
+      "diagnostics": [
+        {
+          "net": "AGND",
+          "endpoints": [
+            "RB4614.2"
+          ],
+          "reason": "search_exhausted",
+          "phase": "route",
+          "attempts": [
+            {
+              "window_cells": [
+                137,
+                1162,
+                128,
+                772
+              ],
+              "expanded": 12109,
+              "limit": 300000
+            },
+            {
+              "window_cells": [
+                0,
+                1284,
+                0,
+                772
+              ],
+              "expanded": 12109,
+              "limit": 300000
+            }
+          ],
+          "max_expansions": 300000,
+          "window_mm": 6
+        }
+      ],
+      "virtual_proposal": {
+        "board_sha256": "35b52972dd70b4186cf3f3b7ee2ac3d70432f3476c2f56c9fcf9c1c4d7d4d445",
+        "source_translations": {
+          "schema_version": 1,
+          "translations": [
+            {
+              "ref": "RB4614",
+              "expected_source": {
+                "ref": "RB4614",
+                "board": "JR",
+                "fixed": false,
+                "x_mm": 312.41,
+                "y_mm": 93.14,
+                "rotation_deg": 90,
+                "side": "F.Cu",
+                "courtyard_mm": [
+                  311.5,
+                  91.5,
+                  313.32000000000005,
+                  94.78
+                ],
+                "kicad_orientation_deg": 270
+              },
+              "delta_mm": [
+                0,
+                0.1
+              ],
+              "evidence": "issue189 bounded paired movement; native NOT RUN"
+            },
+            {
+              "ref": "RB4615",
+              "expected_source": {
+                "ref": "RB4615",
+                "board": "JR",
+                "fixed": false,
+                "x_mm": 310.24,
+                "y_mm": 86.50999999999999,
+                "rotation_deg": 0,
+                "side": "F.Cu",
+                "courtyard_mm": [
+                  308.6,
+                  85.6,
+                  311.88,
+                  87.41999999999999
+                ],
+                "kicad_orientation_deg": 0
+              },
+              "delta_mm": [
+                0.1,
+                0
+              ],
+              "evidence": "issue189 bounded paired movement; native NOT RUN"
+            }
+          ]
+        },
+        "removed_uuids": [],
+        "copper": [
+          {
+            "kind": "segment",
+            "uuid": "a1dac3a8-edc3-5c9f-b847-87905df6b8ee",
+            "net": "XEA7C7050656B2E06AA0A",
+            "layer": "F.Cu",
+            "start_nm": [
+              412410000,
+              142390000
+            ],
+            "end_nm": [
+              412410000,
+              142490000
+            ],
+            "width_nm": 200000
+          },
+          {
+            "kind": "segment",
+            "uuid": "9724bbca-2991-51f9-8aa3-7a8bd483a883",
+            "net": "AGND",
+            "layer": "F.Cu",
+            "start_nm": [
+              412410000,
+              143890000
+            ],
+            "end_nm": [
+              412410000,
+              143990000
+            ],
+            "width_nm": 300000
+          },
+          {
+            "kind": "segment",
+            "uuid": "71271a4c-c27b-5b2a-b2d3-c8e85ca761d1",
+            "net": "X34683CFE3D709E727518",
+            "layer": "F.Cu",
+            "start_nm": [
+              409490000,
+              136510000
+            ],
+            "end_nm": [
+              409590000,
+              136510000
+            ],
+            "width_nm": 200000
+          },
+          {
+            "kind": "segment",
+            "uuid": "9ff7876d-8c92-5f67-8abc-2ffb790b94c0",
+            "net": "AGND",
+            "layer": "F.Cu",
+            "start_nm": [
+              410990000,
+              136510000
+            ],
+            "end_nm": [
+              411090000,
+              136510000
+            ],
+            "width_nm": 300000
+          }
+        ]
+      }
+    },
+    {
+      "candidate_index": 6,
+      "target": "RB4614",
+      "peer": "RB4615",
+      "delta_mm": {
+        "RB4614": [
+          0,
+          0.1
+        ],
+        "RB4615": [
+          0.1,
+          0
+        ]
+      },
+      "mode": "plane",
+      "complete_raster_transaction": false,
+      "bounds_mm": [
+        404.41,
+        135.89,
+        420.41,
+        151.89
+      ],
+      "results": [
+        {
+          "net": "AGND",
+          "island": [
+            "RB4614.2"
+          ],
+          "path": null
+        }
+      ],
+      "diagnostics": [
+        {
+          "net": "AGND",
+          "endpoints": [
+            "RB4614.2"
+          ],
+          "reason": "search_exhausted",
+          "phase": "plane_fanout",
+          "attempts": [
+            {
+              "window_cells": [
+                377,
+                922,
+                368,
+                772
+              ],
+              "expanded": 12109,
+              "limit": 300000
+            }
+          ]
+        }
+      ],
+      "virtual_proposal": {
+        "board_sha256": "35b52972dd70b4186cf3f3b7ee2ac3d70432f3476c2f56c9fcf9c1c4d7d4d445",
+        "source_translations": {
+          "schema_version": 1,
+          "translations": [
+            {
+              "ref": "RB4614",
+              "expected_source": {
+                "ref": "RB4614",
+                "board": "JR",
+                "fixed": false,
+                "x_mm": 312.41,
+                "y_mm": 93.14,
+                "rotation_deg": 90,
+                "side": "F.Cu",
+                "courtyard_mm": [
+                  311.5,
+                  91.5,
+                  313.32000000000005,
+                  94.78
+                ],
+                "kicad_orientation_deg": 270
+              },
+              "delta_mm": [
+                0,
+                0.1
+              ],
+              "evidence": "issue189 bounded paired movement; native NOT RUN"
+            },
+            {
+              "ref": "RB4615",
+              "expected_source": {
+                "ref": "RB4615",
+                "board": "JR",
+                "fixed": false,
+                "x_mm": 310.24,
+                "y_mm": 86.50999999999999,
+                "rotation_deg": 0,
+                "side": "F.Cu",
+                "courtyard_mm": [
+                  308.6,
+                  85.6,
+                  311.88,
+                  87.41999999999999
+                ],
+                "kicad_orientation_deg": 0
+              },
+              "delta_mm": [
+                0.1,
+                0
+              ],
+              "evidence": "issue189 bounded paired movement; native NOT RUN"
+            }
+          ]
+        },
+        "removed_uuids": [],
+        "copper": [
+          {
+            "kind": "segment",
+            "uuid": "a1dac3a8-edc3-5c9f-b847-87905df6b8ee",
+            "net": "XEA7C7050656B2E06AA0A",
+            "layer": "F.Cu",
+            "start_nm": [
+              412410000,
+              142390000
+            ],
+            "end_nm": [
+              412410000,
+              142490000
+            ],
+            "width_nm": 200000
+          },
+          {
+            "kind": "segment",
+            "uuid": "9724bbca-2991-51f9-8aa3-7a8bd483a883",
+            "net": "AGND",
+            "layer": "F.Cu",
+            "start_nm": [
+              412410000,
+              143890000
+            ],
+            "end_nm": [
+              412410000,
+              143990000
+            ],
+            "width_nm": 300000
+          },
+          {
+            "kind": "segment",
+            "uuid": "71271a4c-c27b-5b2a-b2d3-c8e85ca761d1",
+            "net": "X34683CFE3D709E727518",
+            "layer": "F.Cu",
+            "start_nm": [
+              409490000,
+              136510000
+            ],
+            "end_nm": [
+              409590000,
+              136510000
+            ],
+            "width_nm": 200000
+          },
+          {
+            "kind": "segment",
+            "uuid": "9ff7876d-8c92-5f67-8abc-2ffb790b94c0",
+            "net": "AGND",
+            "layer": "F.Cu",
+            "start_nm": [
+              410990000,
+              136510000
+            ],
+            "end_nm": [
+              411090000,
+              136510000
+            ],
+            "width_nm": 300000
+          }
+        ]
+      }
+    },
+    {
+      "candidate_index": 7,
+      "target": "RB4615",
+      "peer": "R7627",
+      "delta_mm": {
+        "RB4615": [
+          0.1,
+          0
+        ],
+        "R7627": [
+          0.1,
+          0
+        ]
+      },
+      "mode": "direct",
+      "complete_raster_transaction": false,
+      "bounds_mm": [
+        402.99,
+        128.51,
+        418.99,
+        144.51
+      ],
+      "results": [
+        {
+          "net": "AGND",
+          "island": [
+            "RB4615.2"
+          ],
+          "path": null
+        }
+      ],
+      "diagnostics": [
+        {
+          "net": "AGND",
+          "endpoints": [
+            "RB4615.2"
+          ],
+          "reason": "search_exhausted",
+          "phase": "route",
+          "attempts": [
+            {
+              "window_cells": [
+                128,
+                1157,
+                137,
+                885
+              ],
+              "expanded": 43623,
+              "limit": 300000
+            },
+            {
+              "window_cells": [
+                0,
+                1284,
+                0,
+                885
+              ],
+              "expanded": 43623,
+              "limit": 300000
+            }
+          ],
+          "max_expansions": 300000,
+          "window_mm": 6
+        }
+      ],
+      "virtual_proposal": {
+        "board_sha256": "35b52972dd70b4186cf3f3b7ee2ac3d70432f3476c2f56c9fcf9c1c4d7d4d445",
+        "source_translations": {
+          "schema_version": 1,
+          "translations": [
+            {
+              "ref": "RB4615",
+              "expected_source": {
+                "ref": "RB4615",
+                "board": "JR",
+                "fixed": false,
+                "x_mm": 310.24,
+                "y_mm": 86.50999999999999,
+                "rotation_deg": 0,
+                "side": "F.Cu",
+                "courtyard_mm": [
+                  308.6,
+                  85.6,
+                  311.88,
+                  87.41999999999999
+                ],
+                "kicad_orientation_deg": 0
+              },
+              "delta_mm": [
+                0.1,
+                0
+              ],
+              "evidence": "issue189 bounded paired movement; native NOT RUN"
+            },
+            {
+              "ref": "R7627",
+              "expected_source": {
+                "ref": "R7627",
+                "board": "JR",
+                "fixed": false,
+                "x_mm": 310.87,
+                "y_mm": 83.6,
+                "rotation_deg": 0,
+                "side": "F.Cu",
+                "courtyard_mm": [
+                  308.6,
+                  82.0,
+                  313.14,
+                  85.19999999999999
+                ],
+                "kicad_orientation_deg": 0
+              },
+              "delta_mm": [
+                0.1,
+                0
+              ],
+              "evidence": "issue189 bounded paired movement; native NOT RUN"
+            }
+          ]
+        },
+        "removed_uuids": [],
+        "copper": [
+          {
+            "kind": "segment",
+            "uuid": "71271a4c-c27b-5b2a-b2d3-c8e85ca761d1",
+            "net": "X34683CFE3D709E727518",
+            "layer": "F.Cu",
+            "start_nm": [
+              409490000,
+              136510000
+            ],
+            "end_nm": [
+              409590000,
+              136510000
+            ],
+            "width_nm": 200000
+          },
+          {
+            "kind": "segment",
+            "uuid": "9ff7876d-8c92-5f67-8abc-2ffb790b94c0",
+            "net": "AGND",
+            "layer": "F.Cu",
+            "start_nm": [
+              410990000,
+              136510000
+            ],
+            "end_nm": [
+              411090000,
+              136510000
+            ],
+            "width_nm": 300000
+          },
+          {
+            "kind": "segment",
+            "uuid": "3a300d80-7cfa-545c-843e-1de63e47f35e",
+            "net": "X1755C1725708CB94F3AB",
+            "layer": "F.Cu",
+            "start_nm": [
+              409407500,
+              133600000
+            ],
+            "end_nm": [
+              409507500,
+              133600000
+            ],
+            "width_nm": 200000
+          },
+          {
+            "kind": "segment",
+            "uuid": "92684dfe-23d4-50a5-9f90-5a043a1bb4af",
+            "net": "X67A5B6E02FA33495DE9E",
+            "layer": "F.Cu",
+            "start_nm": [
+              412332500,
+              133600000
+            ],
+            "end_nm": [
+              412432500,
+              133600000
+            ],
+            "width_nm": 200000
+          }
+        ]
+      }
+    },
+    {
+      "candidate_index": 7,
+      "target": "RB4615",
+      "peer": "R7627",
+      "delta_mm": {
+        "RB4615": [
+          0.1,
+          0
+        ],
+        "R7627": [
+          0.1,
+          0
+        ]
+      },
+      "mode": "plane",
+      "complete_raster_transaction": false,
+      "bounds_mm": [
+        402.99,
+        128.51,
+        418.99,
+        144.51
+      ],
+      "results": [
+        {
+          "net": "AGND",
+          "island": [
+            "RB4615.2"
+          ],
+          "path": null
+        }
+      ],
+      "diagnostics": [
+        {
+          "net": "AGND",
+          "endpoints": [
+            "RB4615.2"
+          ],
+          "reason": "no_legal_via_site",
+          "phase": "plane_fanout",
+          "attempts": []
+        }
+      ],
+      "virtual_proposal": {
+        "board_sha256": "35b52972dd70b4186cf3f3b7ee2ac3d70432f3476c2f56c9fcf9c1c4d7d4d445",
+        "source_translations": {
+          "schema_version": 1,
+          "translations": [
+            {
+              "ref": "RB4615",
+              "expected_source": {
+                "ref": "RB4615",
+                "board": "JR",
+                "fixed": false,
+                "x_mm": 310.24,
+                "y_mm": 86.50999999999999,
+                "rotation_deg": 0,
+                "side": "F.Cu",
+                "courtyard_mm": [
+                  308.6,
+                  85.6,
+                  311.88,
+                  87.41999999999999
+                ],
+                "kicad_orientation_deg": 0
+              },
+              "delta_mm": [
+                0.1,
+                0
+              ],
+              "evidence": "issue189 bounded paired movement; native NOT RUN"
+            },
+            {
+              "ref": "R7627",
+              "expected_source": {
+                "ref": "R7627",
+                "board": "JR",
+                "fixed": false,
+                "x_mm": 310.87,
+                "y_mm": 83.6,
+                "rotation_deg": 0,
+                "side": "F.Cu",
+                "courtyard_mm": [
+                  308.6,
+                  82.0,
+                  313.14,
+                  85.19999999999999
+                ],
+                "kicad_orientation_deg": 0
+              },
+              "delta_mm": [
+                0.1,
+                0
+              ],
+              "evidence": "issue189 bounded paired movement; native NOT RUN"
+            }
+          ]
+        },
+        "removed_uuids": [],
+        "copper": [
+          {
+            "kind": "segment",
+            "uuid": "71271a4c-c27b-5b2a-b2d3-c8e85ca761d1",
+            "net": "X34683CFE3D709E727518",
+            "layer": "F.Cu",
+            "start_nm": [
+              409490000,
+              136510000
+            ],
+            "end_nm": [
+              409590000,
+              136510000
+            ],
+            "width_nm": 200000
+          },
+          {
+            "kind": "segment",
+            "uuid": "9ff7876d-8c92-5f67-8abc-2ffb790b94c0",
+            "net": "AGND",
+            "layer": "F.Cu",
+            "start_nm": [
+              410990000,
+              136510000
+            ],
+            "end_nm": [
+              411090000,
+              136510000
+            ],
+            "width_nm": 300000
+          },
+          {
+            "kind": "segment",
+            "uuid": "3a300d80-7cfa-545c-843e-1de63e47f35e",
+            "net": "X1755C1725708CB94F3AB",
+            "layer": "F.Cu",
+            "start_nm": [
+              409407500,
+              133600000
+            ],
+            "end_nm": [
+              409507500,
+              133600000
+            ],
+            "width_nm": 200000
+          },
+          {
+            "kind": "segment",
+            "uuid": "92684dfe-23d4-50a5-9f90-5a043a1bb4af",
+            "net": "X67A5B6E02FA33495DE9E",
+            "layer": "F.Cu",
+            "start_nm": [
+              412332500,
+              133600000
+            ],
+            "end_nm": [
+              412432500,
+              133600000
+            ],
+            "width_nm": 200000
+          }
+        ]
+      }
+    },
+    {
+      "candidate_index": 8,
+      "target": "RB4615",
+      "peer": "RB4614",
+      "delta_mm": {
+        "RB4615": [
+          0.1,
+          0
+        ],
+        "RB4614": [
+          0,
+          0.1
+        ]
+      },
+      "mode": "direct",
+      "complete_raster_transaction": false,
+      "bounds_mm": [
+        402.99,
+        128.51,
+        418.99,
+        144.51
+      ],
+      "results": [
+        {
+          "net": "AGND",
+          "island": [
+            "RB4615.2"
+          ],
+          "path": null
+        }
+      ],
+      "diagnostics": [
+        {
+          "net": "AGND",
+          "endpoints": [
+            "RB4615.2"
+          ],
+          "reason": "search_exhausted",
+          "phase": "route",
+          "attempts": [
+            {
+              "window_cells": [
+                128,
+                1157,
+                137,
+                885
+              ],
+              "expanded": 42874,
+              "limit": 300000
+            },
+            {
+              "window_cells": [
+                0,
+                1284,
+                0,
+                885
+              ],
+              "expanded": 42874,
+              "limit": 300000
+            }
+          ],
+          "max_expansions": 300000,
+          "window_mm": 6
+        }
+      ],
+      "virtual_proposal": {
+        "board_sha256": "35b52972dd70b4186cf3f3b7ee2ac3d70432f3476c2f56c9fcf9c1c4d7d4d445",
+        "source_translations": {
+          "schema_version": 1,
+          "translations": [
+            {
+              "ref": "RB4615",
+              "expected_source": {
+                "ref": "RB4615",
+                "board": "JR",
+                "fixed": false,
+                "x_mm": 310.24,
+                "y_mm": 86.50999999999999,
+                "rotation_deg": 0,
+                "side": "F.Cu",
+                "courtyard_mm": [
+                  308.6,
+                  85.6,
+                  311.88,
+                  87.41999999999999
+                ],
+                "kicad_orientation_deg": 0
+              },
+              "delta_mm": [
+                0.1,
+                0
+              ],
+              "evidence": "issue189 bounded paired movement; native NOT RUN"
+            },
+            {
+              "ref": "RB4614",
+              "expected_source": {
+                "ref": "RB4614",
+                "board": "JR",
+                "fixed": false,
+                "x_mm": 312.41,
+                "y_mm": 93.14,
+                "rotation_deg": 90,
+                "side": "F.Cu",
+                "courtyard_mm": [
+                  311.5,
+                  91.5,
+                  313.32000000000005,
+                  94.78
+                ],
+                "kicad_orientation_deg": 270
+              },
+              "delta_mm": [
+                0,
+                0.1
+              ],
+              "evidence": "issue189 bounded paired movement; native NOT RUN"
+            }
+          ]
+        },
+        "removed_uuids": [],
+        "copper": [
+          {
+            "kind": "segment",
+            "uuid": "71271a4c-c27b-5b2a-b2d3-c8e85ca761d1",
+            "net": "X34683CFE3D709E727518",
+            "layer": "F.Cu",
+            "start_nm": [
+              409490000,
+              136510000
+            ],
+            "end_nm": [
+              409590000,
+              136510000
+            ],
+            "width_nm": 200000
+          },
+          {
+            "kind": "segment",
+            "uuid": "9ff7876d-8c92-5f67-8abc-2ffb790b94c0",
+            "net": "AGND",
+            "layer": "F.Cu",
+            "start_nm": [
+              410990000,
+              136510000
+            ],
+            "end_nm": [
+              411090000,
+              136510000
+            ],
+            "width_nm": 300000
+          },
+          {
+            "kind": "segment",
+            "uuid": "a1dac3a8-edc3-5c9f-b847-87905df6b8ee",
+            "net": "XEA7C7050656B2E06AA0A",
+            "layer": "F.Cu",
+            "start_nm": [
+              412410000,
+              142390000
+            ],
+            "end_nm": [
+              412410000,
+              142490000
+            ],
+            "width_nm": 200000
+          },
+          {
+            "kind": "segment",
+            "uuid": "9724bbca-2991-51f9-8aa3-7a8bd483a883",
+            "net": "AGND",
+            "layer": "F.Cu",
+            "start_nm": [
+              412410000,
+              143890000
+            ],
+            "end_nm": [
+              412410000,
+              143990000
+            ],
+            "width_nm": 300000
+          }
+        ]
+      }
+    },
+    {
+      "candidate_index": 8,
+      "target": "RB4615",
+      "peer": "RB4614",
+      "delta_mm": {
+        "RB4615": [
+          0.1,
+          0
+        ],
+        "RB4614": [
+          0,
+          0.1
+        ]
+      },
+      "mode": "plane",
+      "complete_raster_transaction": false,
+      "bounds_mm": [
+        402.99,
+        128.51,
+        418.99,
+        144.51
+      ],
+      "results": [
+        {
+          "net": "AGND",
+          "island": [
+            "RB4615.2"
+          ],
+          "path": null
+        }
+      ],
+      "diagnostics": [
+        {
+          "net": "AGND",
+          "endpoints": [
+            "RB4615.2"
+          ],
+          "reason": "no_legal_via_site",
+          "phase": "plane_fanout",
+          "attempts": []
+        }
+      ],
+      "virtual_proposal": {
+        "board_sha256": "35b52972dd70b4186cf3f3b7ee2ac3d70432f3476c2f56c9fcf9c1c4d7d4d445",
+        "source_translations": {
+          "schema_version": 1,
+          "translations": [
+            {
+              "ref": "RB4615",
+              "expected_source": {
+                "ref": "RB4615",
+                "board": "JR",
+                "fixed": false,
+                "x_mm": 310.24,
+                "y_mm": 86.50999999999999,
+                "rotation_deg": 0,
+                "side": "F.Cu",
+                "courtyard_mm": [
+                  308.6,
+                  85.6,
+                  311.88,
+                  87.41999999999999
+                ],
+                "kicad_orientation_deg": 0
+              },
+              "delta_mm": [
+                0.1,
+                0
+              ],
+              "evidence": "issue189 bounded paired movement; native NOT RUN"
+            },
+            {
+              "ref": "RB4614",
+              "expected_source": {
+                "ref": "RB4614",
+                "board": "JR",
+                "fixed": false,
+                "x_mm": 312.41,
+                "y_mm": 93.14,
+                "rotation_deg": 90,
+                "side": "F.Cu",
+                "courtyard_mm": [
+                  311.5,
+                  91.5,
+                  313.32000000000005,
+                  94.78
+                ],
+                "kicad_orientation_deg": 270
+              },
+              "delta_mm": [
+                0,
+                0.1
+              ],
+              "evidence": "issue189 bounded paired movement; native NOT RUN"
+            }
+          ]
+        },
+        "removed_uuids": [],
+        "copper": [
+          {
+            "kind": "segment",
+            "uuid": "71271a4c-c27b-5b2a-b2d3-c8e85ca761d1",
+            "net": "X34683CFE3D709E727518",
+            "layer": "F.Cu",
+            "start_nm": [
+              409490000,
+              136510000
+            ],
+            "end_nm": [
+              409590000,
+              136510000
+            ],
+            "width_nm": 200000
+          },
+          {
+            "kind": "segment",
+            "uuid": "9ff7876d-8c92-5f67-8abc-2ffb790b94c0",
+            "net": "AGND",
+            "layer": "F.Cu",
+            "start_nm": [
+              410990000,
+              136510000
+            ],
+            "end_nm": [
+              411090000,
+              136510000
+            ],
+            "width_nm": 300000
+          },
+          {
+            "kind": "segment",
+            "uuid": "a1dac3a8-edc3-5c9f-b847-87905df6b8ee",
+            "net": "XEA7C7050656B2E06AA0A",
+            "layer": "F.Cu",
+            "start_nm": [
+              412410000,
+              142390000
+            ],
+            "end_nm": [
+              412410000,
+              142490000
+            ],
+            "width_nm": 200000
+          },
+          {
+            "kind": "segment",
+            "uuid": "9724bbca-2991-51f9-8aa3-7a8bd483a883",
+            "net": "AGND",
+            "layer": "F.Cu",
+            "start_nm": [
+              412410000,
+              143890000
+            ],
+            "end_nm": [
+              412410000,
+              143990000
+            ],
+            "width_nm": 300000
+          }
+        ]
+      }
+    },
+    {
+      "candidate_index": 9,
+      "target": "R4611",
+      "peer": "R4513",
+      "delta_mm": {
+        "R4611": [
+          0,
+          -0.2
+        ],
+        "R4513": [
+          0,
+          -0.1
+        ]
+      },
+      "mode": "direct",
+      "complete_raster_transaction": false,
+      "bounds_mm": [
+        404.41,
+        89.59,
+        420.41,
+        105.59
+      ],
+      "results": [
+        {
+          "net": "AGND",
+          "island": [
+            "R4611.2"
+          ],
+          "path": null
+        }
+      ],
+      "diagnostics": [
+        {
+          "net": "AGND",
+          "endpoints": [
+            "R4611.2"
+          ],
+          "reason": "search_exhausted",
+          "phase": "route",
+          "attempts": [
+            {
+              "window_cells": [
+                113,
+                1138,
+                128,
+                772
+              ],
+              "expanded": 9485,
+              "limit": 300000
+            },
+            {
+              "window_cells": [
+                0,
+                1284,
+                0,
+                772
+              ],
+              "expanded": 9485,
+              "limit": 300000
+            }
+          ],
+          "max_expansions": 300000,
+          "window_mm": 6
+        }
+      ],
+      "virtual_proposal": {
+        "board_sha256": "35b52972dd70b4186cf3f3b7ee2ac3d70432f3476c2f56c9fcf9c1c4d7d4d445",
+        "source_translations": {
+          "schema_version": 1,
+          "translations": [
+            {
+              "ref": "R4611",
+              "expected_source": {
+                "ref": "R4611",
+                "board": "JR",
+                "fixed": false,
+                "x_mm": 312.41,
+                "y_mm": 46.84,
+                "rotation_deg": 90,
+                "side": "F.Cu",
+                "courtyard_mm": [
+                  311.5,
+                  45.2,
+                  313.32000000000005,
+                  48.480000000000004
+                ],
+                "kicad_orientation_deg": 270
+              },
+              "delta_mm": [
+                0,
+                -0.2
+              ],
+              "evidence": "issue189 bounded paired movement; native NOT RUN"
+            },
+            {
+              "ref": "R4513",
+              "expected_source": {
+                "ref": "R4513",
+                "board": "JR",
+                "fixed": false,
+                "x_mm": 312.41,
+                "y_mm": 50.54,
+                "rotation_deg": 90,
+                "side": "F.Cu",
+                "courtyard_mm": [
+                  311.5,
+                  48.9,
+                  313.32000000000005,
+                  52.18
+                ],
+                "kicad_orientation_deg": 270
+              },
+              "delta_mm": [
+                0,
+                -0.1
+              ],
+              "evidence": "issue189 bounded paired movement; native NOT RUN"
+            }
+          ]
+        },
+        "removed_uuids": [],
+        "copper": [
+          {
+            "kind": "segment",
+            "uuid": "0875ee77-660b-5e23-80e6-643800115305",
+            "net": "X2F13D2752E29C14C1184",
+            "layer": "F.Cu",
+            "start_nm": [
+              412410000,
+              96090000
+            ],
+            "end_nm": [
+              412410000,
+              95890000
+            ],
+            "width_nm": 200000
+          },
+          {
+            "kind": "segment",
+            "uuid": "d2a09fbf-ba1f-536f-b069-2aaea1a82dff",
+            "net": "AGND",
+            "layer": "F.Cu",
+            "start_nm": [
+              412410000,
+              97590000
+            ],
+            "end_nm": [
+              412410000,
+              97390000
+            ],
+            "width_nm": 300000
+          },
+          {
+            "kind": "segment",
+            "uuid": "b000db37-719d-54d8-8538-47d9d03b6225",
+            "net": "X36F94B4A688508955B7D",
+            "layer": "F.Cu",
+            "start_nm": [
+              412410000,
+              99789999
+            ],
+            "end_nm": [
+              412410000,
+              99689999
+            ],
+            "width_nm": 200000
+          },
+          {
+            "kind": "segment",
+            "uuid": "ebfb6f9d-f58d-5cfd-b546-5f4e05cb378b",
+            "net": "AGND",
+            "layer": "F.Cu",
+            "start_nm": [
+              412410000,
+              101289999
+            ],
+            "end_nm": [
+              412410000,
+              101189999
+            ],
+            "width_nm": 300000
+          }
+        ]
+      }
+    },
+    {
+      "candidate_index": 9,
+      "target": "R4611",
+      "peer": "R4513",
+      "delta_mm": {
+        "R4611": [
+          0,
+          -0.2
+        ],
+        "R4513": [
+          0,
+          -0.1
+        ]
+      },
+      "mode": "plane",
+      "complete_raster_transaction": false,
+      "bounds_mm": [
+        404.41,
+        89.59,
+        420.41,
+        105.59
+      ],
+      "results": [
+        {
+          "net": "AGND",
+          "island": [
+            "R4611.2"
+          ],
+          "path": null
+        }
+      ],
+      "diagnostics": [
+        {
+          "net": "AGND",
+          "endpoints": [
+            "R4611.2"
+          ],
+          "reason": "search_exhausted",
+          "phase": "plane_fanout",
+          "attempts": [
+            {
+              "window_cells": [
+                353,
+                898,
+                368,
+                772
+              ],
+              "expanded": 9485,
+              "limit": 300000
+            }
+          ]
+        }
+      ],
+      "virtual_proposal": {
+        "board_sha256": "35b52972dd70b4186cf3f3b7ee2ac3d70432f3476c2f56c9fcf9c1c4d7d4d445",
+        "source_translations": {
+          "schema_version": 1,
+          "translations": [
+            {
+              "ref": "R4611",
+              "expected_source": {
+                "ref": "R4611",
+                "board": "JR",
+                "fixed": false,
+                "x_mm": 312.41,
+                "y_mm": 46.84,
+                "rotation_deg": 90,
+                "side": "F.Cu",
+                "courtyard_mm": [
+                  311.5,
+                  45.2,
+                  313.32000000000005,
+                  48.480000000000004
+                ],
+                "kicad_orientation_deg": 270
+              },
+              "delta_mm": [
+                0,
+                -0.2
+              ],
+              "evidence": "issue189 bounded paired movement; native NOT RUN"
+            },
+            {
+              "ref": "R4513",
+              "expected_source": {
+                "ref": "R4513",
+                "board": "JR",
+                "fixed": false,
+                "x_mm": 312.41,
+                "y_mm": 50.54,
+                "rotation_deg": 90,
+                "side": "F.Cu",
+                "courtyard_mm": [
+                  311.5,
+                  48.9,
+                  313.32000000000005,
+                  52.18
+                ],
+                "kicad_orientation_deg": 270
+              },
+              "delta_mm": [
+                0,
+                -0.1
+              ],
+              "evidence": "issue189 bounded paired movement; native NOT RUN"
+            }
+          ]
+        },
+        "removed_uuids": [],
+        "copper": [
+          {
+            "kind": "segment",
+            "uuid": "0875ee77-660b-5e23-80e6-643800115305",
+            "net": "X2F13D2752E29C14C1184",
+            "layer": "F.Cu",
+            "start_nm": [
+              412410000,
+              96090000
+            ],
+            "end_nm": [
+              412410000,
+              95890000
+            ],
+            "width_nm": 200000
+          },
+          {
+            "kind": "segment",
+            "uuid": "d2a09fbf-ba1f-536f-b069-2aaea1a82dff",
+            "net": "AGND",
+            "layer": "F.Cu",
+            "start_nm": [
+              412410000,
+              97590000
+            ],
+            "end_nm": [
+              412410000,
+              97390000
+            ],
+            "width_nm": 300000
+          },
+          {
+            "kind": "segment",
+            "uuid": "b000db37-719d-54d8-8538-47d9d03b6225",
+            "net": "X36F94B4A688508955B7D",
+            "layer": "F.Cu",
+            "start_nm": [
+              412410000,
+              99789999
+            ],
+            "end_nm": [
+              412410000,
+              99689999
+            ],
+            "width_nm": 200000
+          },
+          {
+            "kind": "segment",
+            "uuid": "ebfb6f9d-f58d-5cfd-b546-5f4e05cb378b",
+            "net": "AGND",
+            "layer": "F.Cu",
+            "start_nm": [
+              412410000,
+              101289999
+            ],
+            "end_nm": [
+              412410000,
+              101189999
+            ],
+            "width_nm": 300000
+          }
+        ]
+      }
+    },
+    {
+      "candidate_index": 10,
+      "target": "R8490",
+      "peer": "R5271",
+      "delta_mm": {
+        "R8490": [
+          0,
+          0.1
+        ],
+        "R5271": [
+          0,
+          -0.1
+        ]
+      },
+      "mode": "direct",
+      "complete_raster_transaction": false,
+      "bounds_mm": [
+        309.09,
+        143.209999,
+        325.09,
+        159.209999
+      ],
+      "results": [
+        {
+          "net": "AGND",
+          "island": [
+            "R8490.2"
+          ],
+          "path": null
+        }
+      ],
+      "diagnostics": [
+        {
+          "net": "AGND",
+          "endpoints": [
+            "R8490.2"
+          ],
+          "reason": "search_exhausted",
+          "phase": "route",
+          "attempts": [
+            {
+              "window_cells": [
+                136,
+                1165,
+                129,
+                1154
+              ],
+              "expanded": 21771,
+              "limit": 300000
+            },
+            {
+              "window_cells": [
+                0,
+                1284,
+                0,
+                1284
+              ],
+              "expanded": 21772,
+              "limit": 300000
+            }
+          ],
+          "max_expansions": 300000,
+          "window_mm": 6
+        }
+      ],
+      "virtual_proposal": {
+        "board_sha256": "35b52972dd70b4186cf3f3b7ee2ac3d70432f3476c2f56c9fcf9c1c4d7d4d445",
+        "source_translations": {
+          "schema_version": 1,
+          "translations": [
+            {
+              "ref": "R8490",
+              "expected_source": {
+                "ref": "R8490",
+                "board": "JR",
+                "fixed": false,
+                "x_mm": 217.83999999999997,
+                "y_mm": 101.21,
+                "rotation_deg": 0,
+                "side": "B.Cu",
+                "courtyard_mm": [
+                  216.2,
+                  100.3,
+                  219.47999999999996,
+                  102.11999999999999
+                ],
+                "kicad_orientation_deg": 180
+              },
+              "delta_mm": [
+                0,
+                0.1
+              ],
+              "evidence": "issue189 bounded paired movement; native NOT RUN"
+            },
+            {
+              "ref": "R5271",
+              "expected_source": {
+                "ref": "R5271",
+                "board": "JR",
+                "fixed": false,
+                "x_mm": 213.17000000000002,
+                "y_mm": 109.19999999999999,
+                "rotation_deg": 0,
+                "side": "B.Cu",
+                "courtyard_mm": [
+                  210.9,
+                  107.6,
+                  215.44000000000003,
+                  110.79999999999998
+                ],
+                "kicad_orientation_deg": 180
+              },
+              "delta_mm": [
+                0,
+                -0.1
+              ],
+              "evidence": "issue189 bounded paired movement; native NOT RUN"
+            }
+          ]
+        },
+        "removed_uuids": [],
+        "copper": [
+          {
+            "kind": "segment",
+            "uuid": "4ea95bef-3809-5a65-b072-1a454a36f10c",
+            "net": "X9FB7DB33D0774EE87032",
+            "layer": "B.Cu",
+            "start_nm": [
+              318590000,
+              151209999
+            ],
+            "end_nm": [
+              318590000,
+              151309999
+            ],
+            "width_nm": 200000
+          },
+          {
+            "kind": "segment",
+            "uuid": "36980b69-1eb4-5e93-be15-876e56b58c75",
+            "net": "AGND",
+            "layer": "B.Cu",
+            "start_nm": [
+              317090000,
+              151209999
+            ],
+            "end_nm": [
+              317090000,
+              151309999
+            ],
+            "width_nm": 300000
+          },
+          {
+            "kind": "segment",
+            "uuid": "41f9108c-ad07-5a28-955d-4794bf24447f",
+            "net": "XE3E6E571CABACACF1B49",
+            "layer": "B.Cu",
+            "start_nm": [
+              314632500,
+              159200000
+            ],
+            "end_nm": [
+              314632500,
+              159100000
+            ],
+            "width_nm": 200000
+          },
+          {
+            "kind": "segment",
+            "uuid": "1af89157-1654-5fa1-9dc9-b161adc4275b",
+            "net": "X96D59B926187170471D5",
+            "layer": "B.Cu",
+            "start_nm": [
+              311707500,
+              159200000
+            ],
+            "end_nm": [
+              311707500,
+              159100000
+            ],
+            "width_nm": 200000
+          }
+        ]
+      }
+    },
+    {
+      "candidate_index": 10,
+      "target": "R8490",
+      "peer": "R5271",
+      "delta_mm": {
+        "R8490": [
+          0,
+          0.1
+        ],
+        "R5271": [
+          0,
+          -0.1
+        ]
+      },
+      "mode": "plane",
+      "complete_raster_transaction": false,
+      "bounds_mm": [
+        309.09,
+        143.209999,
+        325.09,
+        159.209999
+      ],
+      "results": [
+        {
+          "net": "AGND",
+          "island": [
+            "R8490.2"
+          ],
+          "path": null
+        }
+      ],
+      "diagnostics": [
+        {
+          "net": "AGND",
+          "endpoints": [
+            "R8490.2"
+          ],
+          "reason": "no_legal_via_site",
+          "phase": "plane_fanout",
+          "attempts": []
+        }
+      ],
+      "virtual_proposal": {
+        "board_sha256": "35b52972dd70b4186cf3f3b7ee2ac3d70432f3476c2f56c9fcf9c1c4d7d4d445",
+        "source_translations": {
+          "schema_version": 1,
+          "translations": [
+            {
+              "ref": "R8490",
+              "expected_source": {
+                "ref": "R8490",
+                "board": "JR",
+                "fixed": false,
+                "x_mm": 217.83999999999997,
+                "y_mm": 101.21,
+                "rotation_deg": 0,
+                "side": "B.Cu",
+                "courtyard_mm": [
+                  216.2,
+                  100.3,
+                  219.47999999999996,
+                  102.11999999999999
+                ],
+                "kicad_orientation_deg": 180
+              },
+              "delta_mm": [
+                0,
+                0.1
+              ],
+              "evidence": "issue189 bounded paired movement; native NOT RUN"
+            },
+            {
+              "ref": "R5271",
+              "expected_source": {
+                "ref": "R5271",
+                "board": "JR",
+                "fixed": false,
+                "x_mm": 213.17000000000002,
+                "y_mm": 109.19999999999999,
+                "rotation_deg": 0,
+                "side": "B.Cu",
+                "courtyard_mm": [
+                  210.9,
+                  107.6,
+                  215.44000000000003,
+                  110.79999999999998
+                ],
+                "kicad_orientation_deg": 180
+              },
+              "delta_mm": [
+                0,
+                -0.1
+              ],
+              "evidence": "issue189 bounded paired movement; native NOT RUN"
+            }
+          ]
+        },
+        "removed_uuids": [],
+        "copper": [
+          {
+            "kind": "segment",
+            "uuid": "4ea95bef-3809-5a65-b072-1a454a36f10c",
+            "net": "X9FB7DB33D0774EE87032",
+            "layer": "B.Cu",
+            "start_nm": [
+              318590000,
+              151209999
+            ],
+            "end_nm": [
+              318590000,
+              151309999
+            ],
+            "width_nm": 200000
+          },
+          {
+            "kind": "segment",
+            "uuid": "36980b69-1eb4-5e93-be15-876e56b58c75",
+            "net": "AGND",
+            "layer": "B.Cu",
+            "start_nm": [
+              317090000,
+              151209999
+            ],
+            "end_nm": [
+              317090000,
+              151309999
+            ],
+            "width_nm": 300000
+          },
+          {
+            "kind": "segment",
+            "uuid": "41f9108c-ad07-5a28-955d-4794bf24447f",
+            "net": "XE3E6E571CABACACF1B49",
+            "layer": "B.Cu",
+            "start_nm": [
+              314632500,
+              159200000
+            ],
+            "end_nm": [
+              314632500,
+              159100000
+            ],
+            "width_nm": 200000
+          },
+          {
+            "kind": "segment",
+            "uuid": "1af89157-1654-5fa1-9dc9-b161adc4275b",
+            "net": "X96D59B926187170471D5",
+            "layer": "B.Cu",
+            "start_nm": [
+              311707500,
+              159200000
+            ],
+            "end_nm": [
+              311707500,
+              159100000
+            ],
+            "width_nm": 200000
+          }
+        ]
+      }
+    },
+    {
+      "candidate_index": 11,
+      "target": "R8490",
+      "peer": "R8489",
+      "delta_mm": {
+        "R8490": [
+          0,
+          0.1
+        ],
+        "R8489": [
+          0.1,
+          0
+        ]
+      },
+      "mode": "direct",
+      "complete_raster_transaction": false,
+      "bounds_mm": [
+        309.09,
+        143.209999,
+        325.09,
+        159.209999
+      ],
+      "results": [
+        {
+          "net": "AGND",
+          "island": [
+            "R8490.2"
+          ],
+          "path": null
+        }
+      ],
+      "diagnostics": [
+        {
+          "net": "AGND",
+          "endpoints": [
+            "R8490.2"
+          ],
+          "reason": "search_exhausted",
+          "phase": "route",
+          "attempts": [
+            {
+              "window_cells": [
+                136,
+                1165,
+                129,
+                1154
+              ],
+              "expanded": 21771,
+              "limit": 300000
+            },
+            {
+              "window_cells": [
+                0,
+                1284,
+                0,
+                1284
+              ],
+              "expanded": 21772,
+              "limit": 300000
+            }
+          ],
+          "max_expansions": 300000,
+          "window_mm": 6
+        }
+      ],
+      "virtual_proposal": {
+        "board_sha256": "35b52972dd70b4186cf3f3b7ee2ac3d70432f3476c2f56c9fcf9c1c4d7d4d445",
+        "source_translations": {
+          "schema_version": 1,
+          "translations": [
+            {
+              "ref": "R8490",
+              "expected_source": {
+                "ref": "R8490",
+                "board": "JR",
+                "fixed": false,
+                "x_mm": 217.83999999999997,
+                "y_mm": 101.21,
+                "rotation_deg": 0,
+                "side": "B.Cu",
+                "courtyard_mm": [
+                  216.2,
+                  100.3,
+                  219.47999999999996,
+                  102.11999999999999
+                ],
+                "kicad_orientation_deg": 180
+              },
+              "delta_mm": [
+                0,
+                0.1
+              ],
+              "evidence": "issue189 bounded paired movement; native NOT RUN"
+            },
+            {
+              "ref": "R8489",
+              "expected_source": {
+                "ref": "R8489",
+                "board": "JR",
+                "fixed": false,
+                "x_mm": 211.71,
+                "y_mm": 95.04,
+                "rotation_deg": 90,
+                "side": "B.Cu",
+                "courtyard_mm": [
+                  210.8,
+                  93.4,
+                  212.62,
+                  96.68
+                ],
+                "kicad_orientation_deg": 90
+              },
+              "delta_mm": [
+                0.1,
+                0
+              ],
+              "evidence": "issue189 bounded paired movement; native NOT RUN"
+            }
+          ]
+        },
+        "removed_uuids": [],
+        "copper": [
+          {
+            "kind": "segment",
+            "uuid": "4ea95bef-3809-5a65-b072-1a454a36f10c",
+            "net": "X9FB7DB33D0774EE87032",
+            "layer": "B.Cu",
+            "start_nm": [
+              318590000,
+              151209999
+            ],
+            "end_nm": [
+              318590000,
+              151309999
+            ],
+            "width_nm": 200000
+          },
+          {
+            "kind": "segment",
+            "uuid": "36980b69-1eb4-5e93-be15-876e56b58c75",
+            "net": "AGND",
+            "layer": "B.Cu",
+            "start_nm": [
+              317090000,
+              151209999
+            ],
+            "end_nm": [
+              317090000,
+              151309999
+            ],
+            "width_nm": 300000
+          },
+          {
+            "kind": "segment",
+            "uuid": "36df950e-ff5c-50a0-bc0a-fcce17c66963",
+            "net": "XE8801B1CF3B344ACD7C2",
+            "layer": "B.Cu",
+            "start_nm": [
+              311710000,
+              145790000
+            ],
+            "end_nm": [
+              311810000,
+              145790000
+            ],
+            "width_nm": 200000
+          },
+          {
+            "kind": "segment",
+            "uuid": "cab5cdef-e6a0-5534-935e-8b59862f5de9",
+            "net": "X9FB7DB33D0774EE87032",
+            "layer": "B.Cu",
+            "start_nm": [
+              311710000,
+              144290000
+            ],
+            "end_nm": [
+              311810000,
+              144290000
+            ],
+            "width_nm": 200000
+          }
+        ]
+      }
+    },
+    {
+      "candidate_index": 11,
+      "target": "R8490",
+      "peer": "R8489",
+      "delta_mm": {
+        "R8490": [
+          0,
+          0.1
+        ],
+        "R8489": [
+          0.1,
+          0
+        ]
+      },
+      "mode": "plane",
+      "complete_raster_transaction": false,
+      "bounds_mm": [
+        309.09,
+        143.209999,
+        325.09,
+        159.209999
+      ],
+      "results": [
+        {
+          "net": "AGND",
+          "island": [
+            "R8490.2"
+          ],
+          "path": null
+        }
+      ],
+      "diagnostics": [
+        {
+          "net": "AGND",
+          "endpoints": [
+            "R8490.2"
+          ],
+          "reason": "no_legal_via_site",
+          "phase": "plane_fanout",
+          "attempts": []
+        }
+      ],
+      "virtual_proposal": {
+        "board_sha256": "35b52972dd70b4186cf3f3b7ee2ac3d70432f3476c2f56c9fcf9c1c4d7d4d445",
+        "source_translations": {
+          "schema_version": 1,
+          "translations": [
+            {
+              "ref": "R8490",
+              "expected_source": {
+                "ref": "R8490",
+                "board": "JR",
+                "fixed": false,
+                "x_mm": 217.83999999999997,
+                "y_mm": 101.21,
+                "rotation_deg": 0,
+                "side": "B.Cu",
+                "courtyard_mm": [
+                  216.2,
+                  100.3,
+                  219.47999999999996,
+                  102.11999999999999
+                ],
+                "kicad_orientation_deg": 180
+              },
+              "delta_mm": [
+                0,
+                0.1
+              ],
+              "evidence": "issue189 bounded paired movement; native NOT RUN"
+            },
+            {
+              "ref": "R8489",
+              "expected_source": {
+                "ref": "R8489",
+                "board": "JR",
+                "fixed": false,
+                "x_mm": 211.71,
+                "y_mm": 95.04,
+                "rotation_deg": 90,
+                "side": "B.Cu",
+                "courtyard_mm": [
+                  210.8,
+                  93.4,
+                  212.62,
+                  96.68
+                ],
+                "kicad_orientation_deg": 90
+              },
+              "delta_mm": [
+                0.1,
+                0
+              ],
+              "evidence": "issue189 bounded paired movement; native NOT RUN"
+            }
+          ]
+        },
+        "removed_uuids": [],
+        "copper": [
+          {
+            "kind": "segment",
+            "uuid": "4ea95bef-3809-5a65-b072-1a454a36f10c",
+            "net": "X9FB7DB33D0774EE87032",
+            "layer": "B.Cu",
+            "start_nm": [
+              318590000,
+              151209999
+            ],
+            "end_nm": [
+              318590000,
+              151309999
+            ],
+            "width_nm": 200000
+          },
+          {
+            "kind": "segment",
+            "uuid": "36980b69-1eb4-5e93-be15-876e56b58c75",
+            "net": "AGND",
+            "layer": "B.Cu",
+            "start_nm": [
+              317090000,
+              151209999
+            ],
+            "end_nm": [
+              317090000,
+              151309999
+            ],
+            "width_nm": 300000
+          },
+          {
+            "kind": "segment",
+            "uuid": "36df950e-ff5c-50a0-bc0a-fcce17c66963",
+            "net": "XE8801B1CF3B344ACD7C2",
+            "layer": "B.Cu",
+            "start_nm": [
+              311710000,
+              145790000
+            ],
+            "end_nm": [
+              311810000,
+              145790000
+            ],
+            "width_nm": 200000
+          },
+          {
+            "kind": "segment",
+            "uuid": "cab5cdef-e6a0-5534-935e-8b59862f5de9",
+            "net": "X9FB7DB33D0774EE87032",
+            "layer": "B.Cu",
+            "start_nm": [
+              311710000,
+              144290000
+            ],
+            "end_nm": [
+              311810000,
+              144290000
+            ],
+            "width_nm": 200000
+          }
+        ]
+      }
+    }
+  ],
+  "elapsed_seconds": 110.21822799199435,
+  "positive_virtual_transaction": false,
+  "completed_trials": 24,
+  "untested_selected_candidates": 0
+}

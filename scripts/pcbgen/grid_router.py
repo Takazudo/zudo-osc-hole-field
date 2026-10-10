@@ -348,7 +348,7 @@ def route(dump,nets=(),rip=(),rip_first=False,res=0.1,layer_cost=None,via_cost=3
           hole_clearance=0.25,edge_clearance=0.5,max_expansions=4_000_000,allowed_layers=None,log=print,
           planes=None,signal_via_diameter=None,grow=None,window_mm=12.0,weight=1.0,full_board=False,
           escape_halo_mm=0.0,escape_halo_cost=4.0,fill_guards=None,fill_clearance=0.45,neck_width=None,neck_clearance=None,
-          rrr_rounds=0,rrr_max_rip=4,rrr_soft_cost=12.0,rip_only=None,diagnostics=None,bounds_mm=None):
+          rrr_rounds=0,rrr_max_rip=4,rrr_soft_cost=12.0,rip_only=None,diagnostics=None,bounds_mm=None,plane_window_mm=3.0):
     """Return (results, removed_uuids). Each result has net, island pad names and a [layer,x,y,through] path or None.
 
     planes maps a net to its plane layer: every island of that net gets a short
@@ -358,9 +358,13 @@ def route(dump,nets=(),rip=(),rip_first=False,res=0.1,layer_cost=None,via_cost=3
     to signal tracks inside NECKDOWN rule areas: closer to other signal copper only, never
     to the grown (rail/ground) nets. rip_only, when given, limits
     rip-up-and-reroute to those signal nets (a CI shard may only rip the nets it owns).
+    plane_window_mm explicitly bounds fanout search (default3mm); window_mm
+    controls component-to-component searches. Neither changes physical rules.
     bounds_mm limits raster allocation for additive search only; it never changes
     the input geometry or native membership used for whole-board acceptance.
     """
+    if not math.isfinite(plane_window_mm) or plane_window_mm<=0:
+        raise ValueError('plane window must be finite and positive')
     rip=list(rip);planes=planes or {}
     if bounds_mm is not None and (rip or rip_first or rrr_rounds):
         raise ValueError('bounded search is additive only; rip-up is forbidden')
@@ -641,7 +645,7 @@ def route(dump,nets=(),rip=(),rip_first=False,res=0.1,layer_cost=None,via_cost=3
             for g in groups:
                 src=island_mask(raster,dump,g)
                 if src.all(0).any():continue  # through-hole copper already reaches every layer
-                path,expanded=search(N,w,vd,src,None,True,3.0)
+                path,expanded=search(N,w,vd,src,None,True,plane_window_mm)
                 if path is None:
                     event(net,name(g),search_failure['reason'],phase='plane_fanout',attempts=search_failure.get('attempts',[]))
                     log(f'NOPATH {net} {name(g)} plane fanout');results.append({'net':net,'island':name(g),'path':None});continue

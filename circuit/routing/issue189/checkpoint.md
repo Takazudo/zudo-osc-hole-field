@@ -1,3 +1,46 @@
+# Issue 189 current checkpoint — 2026-10-10 01:33 UTC
+
+**Issue #189 remains OPEN.** Canonical native connectivity is **JL118 / JR134 / core1441**, each with zero native DRC/parity errors, settled/fresh agreement and no original pad-group splits. Warnings are not zero. No qualification or fabrication claim is made.
+
+Main is `fab639d790e453d4ff7af4a61d896f83730edf6f`. PR217 merged exact `c9d11adf4f302760bd82574ebd5019ce5a79c767` after all five checks in38008620676 passed; post-main38011121272 also passed all five. PR217 adds opt-in native paired zone batches, strict complete-evidence consumption and source-bound exact resumption;46 focused regressions passed. No canonical PCB changed.
+
+## Sole active core writer
+
+Draft PR218: https://github.com/Takazudo/zudo-osc-hole-field/pull/218
+Branch `agent-fix/189-core-batched-warning-worker`, immutable source `44d1151cd41f285d5168c433c76664c44a3d97ac`.
+Run https://github.com/Takazudo/zudo-osc-hole-field/actions/runs/38011194282 began00:57 UTC and remains in native recovery. Its command bound is335minutes, job355minutes. **Do not duplicate, cancel, modify or push to this worker while it runs.** All four complete warning audits rerun against this worker's exact native boards with zone batch16; no cached proof substitutes for acceptance. Initial source CI passed all five, but this does not certify a future bot commit.
+
+The proposed1441→1402 change retains all133169 previous copper objects and adds344segments/38vias, zero cuts. The candidate is NOT canonical. Terminal reconciliation must verify source/artifact hashes, three settled baseline/candidate/fresh passes, all original pad-group memberships, zero DRC/parity errors, complete holes/silk/zones, warning identities and publication equivalence. Workflow success alone is insufficient; require the receipt's adoption result and exact published blobs.
+
+## Completed independent warning evidence
+
+Original core37984573591 was rejected with incomplete zone evidence (exit137, cause unknown); no PCB changed. Its exact artifact11650664778 has SHA256 `b5c112a5c9336a27cb08369ec42a11b7cc51a39bb569215d24075ccd3ab11567`. Reassembly/reconciliation is preserved under `core-complete-terminal/`.
+
+Read-only paired38005209241 timed out after35/42batches. Exact continuation38008640020 at `ca1e681b7905dc76d735adff1582dab3c79c3569` completed all42 (35 exact reused,7 fresh), covering both stages of all144front/177back selected items with zero new zone identities. Artifact11653113141 SHA256 `f63fff8145c2033a7ab0d3da38f49e1aed6ff735f80aaafbf3cd435f6c8d9cd4` passed independent complete validation (guardPASS124s). Combined unchanged promotion-gate evaluation also passed (guardPASS330s): all1407hole identities and382added-copper silk fixtures retained,619original findings extended additively to1827each, no new identities or splits/errors. This is exact saved evidence eligibility, explicitly NOT adoption. Full receipts and replay scripts are in PR218's `native-zone-paired-batches/`.
+
+Same16saved native fixture timing: single638.280514482s, batch4 174.569181217s, batch16 57.869251212s. Native positive controls preserve both injected identities and negative controls remain negative. This is an audit timing improvement, not a router speedup claim.
+
+## JR changed-method results
+
+Draft PR219: https://github.com/Takazudo/zudo-osc-hole-field/pull/219
+Branch `agent-fix/189-jr-paired-placement`, evidence commit `eb4eb0a7fd1e269495e02a16008a050d5a135a1b` (checkpoint may advance it). No board/source placement changes.
+
+Paired movement:1152 joint cases screened on identical saved JR134 inputs;40 static candidates. Twelve round-robin proposals tested direct/plane (24 bounded trials):zero complete,18search_exhausted,6no_legal_via_site; max43623 expansions of300000. The remaining28 static candidates are untested, not negative. Anchored90/180/270-degree rotations:27 cases,zero viable candidates. Four source-legal poses have foreign pad/via blockers; no small track-only restoration scope. Exact integer native/source centre binding handles the recorded1nm conversion effect without widening tolerance. Preserve negative evidence and change diagnosed cause/method before repeating; do not implement a source rotation or native pilot without a qualifying proposal.
+
+Plane-fanout follow-up: the default hard-coded3mm window omits legal6mm via sites in the saved failed cases. An opt-in `plane_window_mm` retains the default and all constraints. Identical unchanged R8490/RB4615 comparisons at3/6mm produce zero complete routes;6mm searches exhaust21187/43982 states below300000.32router+15bounded/driver tests pass. `jr134-plane-window-diagnostic/` preserves hashes and results; no native pilot or geometry change is warranted.
+
+## Exact continuation order
+
+1. Refresh main, PR218/219 and concurrent branch heads before any adoption. Preserve unrelated work. Do not rerun the already consumed personal loader or attempt local Docker unpack/cleanup/auth/daemon changes. Supported pinned KiCad10.0.6 CI works; local image storage is still blocked under issue214.
+2. Observe `gh run view 38011194282 --json status,conclusion,jobs`. Once terminal, obtain its exact artifact and native receipts; reconcile all gates above and the bot's published file blobs. Do not equate workflow success, cached1402 evidence or source CI with adoption. Keep the worker branch frozen until terminal.
+3. For a successful adopted result, integrate only exact accepted copper/receipts into current main on an isolated review branch, preserving intervening copper and excluding worker-only workflow changes. Require all five exact resulting-head checks and review before an authorized incremental merge, then verify post-main checks. If rejected, retain exact native failure identities and change the cause/method, never waive the gate.
+4. Only after terminal reconciliation, evaluate the prepared `core-supply-away-from-splits/rebase_proposal.py --accepted-sha256 ACTUAL_ACCEPTED_SHA256`. It requires exact known whole accepted additions and preserves all copper. Against the known ground382 additions it excludes the entire conflicting U4439.4 proposal, leaving93cases/118segments. This is not native acceptance. Use one isolated subsequent core writer with all full native gates; never overlap writers.
+5. Continue JL/JR/core bounded routing to zero, final required P/EL/O/regeneration/docs/renders and repeated native evidence. The rejected JR source move RB4413[0,-0.2] violates header courtyard clearance (0.06<0.25mm); do not replay/apply it. Fixed panel/electrical constraints remain unchanged. Keep #189 open until all completion criteria, and keep all designs explicitly unqualified drafts.
+
+---
+
+# Historical checkpoint (superseded by the current checkpoint above)
+
 # Issue 189 exact continuation checkpoint
 
 Updated 2026-10-09 23:22 UTC. **Issue #189 remains OPEN.** Main `b850687830eb2a4c31b14f138aacf2288d223c81` accepts **JL118 / JR134 / core1441**. PR215 merged exact`5420104c164d748d8094bfd76761d01ab2ed7b92` after all five checks passed in38002434995 (`ci-5420104.json`). Post-main38004002105 is pending. PR213 exact803bba6 attempt2 and post-main d644b52 also passed all five checks. CI pinned-native access recovered; local image storage remains blocked. No canonical copper or source placement changed in PR213/215.
