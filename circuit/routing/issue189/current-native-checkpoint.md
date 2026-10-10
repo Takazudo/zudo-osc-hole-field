@@ -1,4 +1,4 @@
-# Issue 189 continuation — 2026-10-10 07:58 UTC
+# Issue 189 continuation — 2026-10-10 09:00 UTC
 
 Issue #189 remains OPEN. Connectivity is incomplete; no fabrication or hardware qualification is claimed. The previous detailed history is preserved at evidence commit 906d6faf66ab53935254185ffac271dff66a2920.
 
@@ -11,7 +11,7 @@ Main **4807b73072a9af9282b9b2657ecce78cc4827ddc**, tree **8711d89c123dadd70ae4b2
 
 Current active native runs: original core38023611361 and full-audit JL R8127 joint replay38038883190. No active JR native worker. JR exact bot CI38033682423 remains action_required; no user approval received. R8107 pilot38036682185 is terminal/rejected, independently reconciled. The08:23UTC transport disconnect was transient: failed process never started, read-only retry succeeded, exact command then ran. No environment replacement or startup-loader repeat; no duplicate dispatch.
 
-Draft PR231 strict complete-warning support for reviewed cuts: source **fafe6e815c5d81e276059099f743649d97558bf9**, branch `agent-fix/189-reviewed-cut-warning-audits`, worktree `/workspace/issue189-plane-budget`. Two regressions RED before,63 targeted tests PASS; saved JR130 complete proof exactly unchanged and R8107 original native gate still rejects (guardPASS77s); circuit checks PASS. No board changes. Fresh native fixture production for a cut transaction is NOT RUN, so do not claim that integration completed. Exact-head CI pending. Scope requires source hash, bounded exact cut plan, all uncut objects/holes unchanged, both hole audits, every new copper fixture, all paired-zone evidence and unchanged original promotion gates.
+Draft PR231 strict complete-warning support for reviewed cuts: source **fafe6e815c5d81e276059099f743649d97558bf9**, branch `agent-fix/189-reviewed-cut-warning-audits`, worktree `/workspace/issue189-plane-budget`. Two regressions RED before,63 targeted tests PASS; saved JR130 complete proof exactly unchanged and R8107 original native gate still rejects (guardPASS77s); circuit checks PASS. No board changes. Fresh native fixture production for a cut transaction is pending on JL run38038883190, so do not claim that integration completed. Exact-head CI38038405468 now SUCCESS; actual cut fixture integration remains unproven. Scope requires source hash, bounded exact cut plan, all uncut objects/holes unchanged, both hole audits, every new copper fixture, all paired-zone evidence and unchanged original promotion gates.
 
 Draft PR230 R8127: current source **ccf1ae15619d7d8a9a027ef198bd742f9f350ac6**, branch `agent-fix/189-jl118-r8127-via-branch`, worktree `/workspace/issue189-jl-layer-escape`. Full native acceptance **38038883190** and source CI38038887003 running. It includes PR231/fafe6e8 and explicitly requires complete warnings, batch16 and exact reviewed cut plan. Fixed joint proposal7objects (6segments/1via),3reviewed cuts,33418uncut retained if accepted. Output/count UNKNOWN. Do not redispatch. Prior read-only pilot38037812466/source46b8562 is terminal/reconciledPASS72s, not eligible; its source CI38037813141 was automatically cancelled when the newer source was pushed, not a failed native test. R8107 rejection evidence remains at38113a5 on PR229.
 
@@ -24,7 +24,7 @@ bash /home/agent/.codex/scripts/heavy-guard.sh -- /workspace/zudo-osc-hole-field
 It requires a fresh count below118, exact3cuts/7additions/all33418uncut objects/1111nonrouting, source-bound cut-plan receipt, complete hole/mask/zone fixtures and unchanged original native gates. A rejected or partial artifact needs separate diagnostic reconciliation; never weaken these success assertions.
 
 
-## Sole active native worker: core — do not redispatch
+## Sole active core native worker — do not redispatch
 
 PR222 / `agent-fix/189-core-supply-complete`, source `47bb19a42f6612a114e4aff51c4b120301fe5e71`, run **38023611361**, still running. Started 2026-10-10 04:18 UTC, command335min/job355min. Native result/count UNKNOWN. Source CI38023556124 all five PASS.
 
@@ -107,3 +107,9 @@ R8127 source includes provisional endpoint_screen.py copied from the shared nine
 PR231 sourcefafe6e815c5d81e276059099f743649d97558bf9 exact-headCI38038405468 pending. It is already integrated into the isolated R8127 sourceccf1ae1, but has NOT merged to main and has no completed fresh cut-fixture run yet. Keep it draft until actual native-cut audit evidence exists. Main4807b73 post-CI38037382793 allfivePASS, unchanged118/131/1402. JR exactCI38033682423 stillaction_required; originalcore38023611361stillrunning.
 
 Local free disk about1.2GB. Do not retry pinned image unpack or delete unrelated work. The prior accepted core artifact ZIP remains `/tmp/issue189-core-complete-accepted.zip` SHA1ed58a9cd4c5796654a9e3e5c9b6e1c1129c353f3451e04c990b95032012479f; its extracted native-audits folder is a710MB disposable duplicate. If required for new artifact space, first verify archive SHA and every duplicate fixture against its recorded proof, retain immutable ZIP/proof and canonical successful boards, and only then remove that owned duplicate fixture extraction. No such removal has happened yet. No LFS.
+
+## JR130 provisional via-branch screen and storage checkpoint (09:00 UTC)
+
+Read-only saved JR130 input (not yet main) e06b7471ddc8f5c8c498c5eb5bf8655cc6de539e92826a5701cf1de06356e136; native dump9b9af0516701b72623187b1a6539c33cdbe7e53d0ff1a385ba00b47f699dcee8. Exactly40 bounded ground-only comparisons gave18 positives (guardPASS211s). All18 received one .025mm/300k four-layer endpoint-restoration comparison (guardPASS64s):3 provisional joint positives, C7220.2/36objects, RB4615.2/27objects, J900065.4/61objects. Each cuts one signal via and two exact attached segments. No placement, source board or canonical copper changed. Native cut topology, complete victim restoration and complete native acceptance NOT RUN. No JR native worker dispatched; JR130 integration still waits exact CI38033682423 approval. Do not promote these raster results. Scripts/results retained under jr130-via-branch-screen; script paths are local and require adjustment on another machine.
+
+Freed733785207bytes by removing only the older core1402 duplicate native-audits extraction after verifying its immutable ZIP SHA256 and all3412 fixture paths/sizes/hashes against both ZIP and saved proof. ZIP /tmp/issue189-core-complete-accepted.zip (SHA1ed58a9cd4c5796654a9e3e5c9b6e1c1129c353f3451e04c990b95032012479f), proof, successful published PCB and start/merge/fresh boards/dumps retained. Exact cleanup receipt verified-audit-deduplication.json. Re-extract native-audits from that ZIP if replaying the old core1402 proof. No canonical successful copper removed.
