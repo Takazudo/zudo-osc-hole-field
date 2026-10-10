@@ -1,0 +1,89 @@
+EEEEEEEEE
+======================================================================
+ERROR: test_default_and_global_bound_remain_in_force (scripts.pcbgen.test_plane_search_budget.PlaneSearchBudgetTests.test_default_and_global_bound_remain_in_force)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/issue189-plane-budget/scripts/pcbgen/test_plane_search_budget.py", line 32, in test_default_and_global_bound_remain_in_force
+    self.assertEqual(self.limits(max_expansions=7,
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/issue189-plane-budget/scripts/pcbgen/test_plane_search_budget.py", line 16, in limits
+    results, removed = route(board(), ['A'], res=.1,
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: route() got an unexpected keyword argument 'plane_max_expansions'
+
+======================================================================
+ERROR: test_explicit_plane_budget_reaches_astar_and_diagnostics (scripts.pcbgen.test_plane_search_budget.PlaneSearchBudgetTests.test_explicit_plane_budget_reaches_astar_and_diagnostics)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/issue189-plane-budget/scripts/pcbgen/test_plane_search_budget.py", line 27, in test_explicit_plane_budget_reaches_astar_and_diagnostics
+    self.assertEqual(self.limits(max_expansions=5_000_000,
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/issue189-plane-budget/scripts/pcbgen/test_plane_search_budget.py", line 16, in limits
+    results, removed = route(board(), ['A'], res=.1,
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: route() got an unexpected keyword argument 'plane_max_expansions'
+
+======================================================================
+ERROR: test_plane_budget_does_not_change_signal_attempts (scripts.pcbgen.test_plane_search_budget.PlaneSearchBudgetTests.test_plane_budget_does_not_change_signal_attempts)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/issue189-plane-budget/scripts/pcbgen/test_plane_search_budget.py", line 37, in test_plane_budget_does_not_change_signal_attempts
+    after = self.limits(plane=False, max_expansions=5_000_000,
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/issue189-plane-budget/scripts/pcbgen/test_plane_search_budget.py", line 16, in limits
+    results, removed = route(board(), ['A'], res=.1,
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: route() got an unexpected keyword argument 'plane_max_expansions'
+
+======================================================================
+ERROR: test_plane_budget_must_be_a_positive_integer (scripts.pcbgen.test_plane_search_budget.PlaneSearchBudgetTests.test_plane_budget_must_be_a_positive_integer) (value=0)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/issue189-plane-budget/scripts/pcbgen/test_plane_search_budget.py", line 46, in test_plane_budget_must_be_a_positive_integer
+    route(board(), plane_max_expansions=value)
+TypeError: route() got an unexpected keyword argument 'plane_max_expansions'
+
+======================================================================
+ERROR: test_plane_budget_must_be_a_positive_integer (scripts.pcbgen.test_plane_search_budget.PlaneSearchBudgetTests.test_plane_budget_must_be_a_positive_integer) (value=-1)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/issue189-plane-budget/scripts/pcbgen/test_plane_search_budget.py", line 46, in test_plane_budget_must_be_a_positive_integer
+    route(board(), plane_max_expansions=value)
+TypeError: route() got an unexpected keyword argument 'plane_max_expansions'
+
+======================================================================
+ERROR: test_plane_budget_must_be_a_positive_integer (scripts.pcbgen.test_plane_search_budget.PlaneSearchBudgetTests.test_plane_budget_must_be_a_positive_integer) (value=0.5)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/issue189-plane-budget/scripts/pcbgen/test_plane_search_budget.py", line 46, in test_plane_budget_must_be_a_positive_integer
+    route(board(), plane_max_expansions=value)
+TypeError: route() got an unexpected keyword argument 'plane_max_expansions'
+
+======================================================================
+ERROR: test_plane_budget_must_be_a_positive_integer (scripts.pcbgen.test_plane_search_budget.PlaneSearchBudgetTests.test_plane_budget_must_be_a_positive_integer) (value=inf)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/issue189-plane-budget/scripts/pcbgen/test_plane_search_budget.py", line 46, in test_plane_budget_must_be_a_positive_integer
+    route(board(), plane_max_expansions=value)
+TypeError: route() got an unexpected keyword argument 'plane_max_expansions'
+
+======================================================================
+ERROR: test_plane_budget_must_be_a_positive_integer (scripts.pcbgen.test_plane_search_budget.PlaneSearchBudgetTests.test_plane_budget_must_be_a_positive_integer) (value=nan)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/issue189-plane-budget/scripts/pcbgen/test_plane_search_budget.py", line 46, in test_plane_budget_must_be_a_positive_integer
+    route(board(), plane_max_expansions=value)
+TypeError: route() got an unexpected keyword argument 'plane_max_expansions'
+
+======================================================================
+ERROR: test_plane_budget_must_be_a_positive_integer (scripts.pcbgen.test_plane_search_budget.PlaneSearchBudgetTests.test_plane_budget_must_be_a_positive_integer) (value=True)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/issue189-plane-budget/scripts/pcbgen/test_plane_search_budget.py", line 46, in test_plane_budget_must_be_a_positive_integer
+    route(board(), plane_max_expansions=value)
+TypeError: route() got an unexpected keyword argument 'plane_max_expansions'
+
+----------------------------------------------------------------------
+Ran 4 tests in 0.017s
+
+FAILED (errors=9)
