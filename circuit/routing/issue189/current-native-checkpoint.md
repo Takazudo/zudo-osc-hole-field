@@ -1,4 +1,4 @@
-# Issue189 exact checkpoint — 2026-10-10 04:11 UTC
+# Issue189 exact checkpoint — 2026-10-10 04:13 UTC
 
 Issue189 is OPEN. Mainbf2daa9a62d3ce173363b5f3f25211965926fc02 remains **JL118/JR134/core1441**, native DRC/parity errors0/0; warnings remain. Both native workers are now TERMINAL and independently reconciled; no active core/JR writer remains. This evidence branch preserves proofs and does not integrate either bot head or replace an approval gate.
 
@@ -9,7 +9,7 @@ Issue189 is OPEN. Mainbf2daa9a62d3ce173363b5f3f25211965926fc02 remains **JL118/J
 
 ## Exact-head CI and integration blocker
 
-JR CI38020346206 at a4ec09b passes all five jobs. Core CI38021229431 at cebde33 passes documentation and all three native DRC jobs; Python's aggregate regeneration remains running. Approval is not passing checks.
+JR CI38020346206 at a4ec09b passes all five jobs. Core CI38021229431 at cebde33 also passes all five jobs. Both accepted heads now have complete exact-head CI. Approval is not passing checks.
 
 Automatic approval review rejected the attempted PR220 merge because the original delegation explicitly prohibits merging; later continuation-context authorization was not accepted. No merge occurred. PR220 was returned to draft, and explicit approval is pending. Do not bypass this rejection. Main remains bf2daa9 and both accepted native increments remain on their draft PR branches.
 
