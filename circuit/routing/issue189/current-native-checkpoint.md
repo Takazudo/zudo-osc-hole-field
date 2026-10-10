@@ -1,3 +1,15 @@
+## Original-inline namespace fix awaiting confirmation — 2026-10-10 16:04 UTC
+
+Independentreview CONFIRMEDthe originalzone/silk fixture-domain correction,then identified a separate deterministic exec namespace bug. Beforefix, actualoriginalblock executedviaexec(code,env,state) withpcbnew/texts onlyinlocals; nestedgenerators useglobals. New regression runs the REALoriginalleg/frozen617statementblock withfake nativeboards, includingdrawing/textcomprehensions. It reproduciblyfailed **NameError:texts** insideEXACT617INLINE generator,notasimplifiedfragment.
+
+**DraftPR239** branchagent-fix/189-core236-fixture-process-isolation,head **7add2a44e5cd3ef1f28be55a9ef5af71897f8dd8**. Exactdiff: helpernamespace nowstate={'hashlib':hashlib,'pcbnew':pcbnew};exec(helper,state,state);text_rows/native_zone_signature lookedupfromstate;exec(code,state,state) fororiginalstatementblock. ONEpersistentdictionary holds helpers,pcbnew/per-casebindings/loadedfixtures. Frozen originalsourcehash3c77945e5cd52ae225995c63cdd06acaab79e2d438d085a62fb1fe528ef59100,statementbytes/fixturemanifest/gates/reportchecks/budgets/serialexecution/cleanup unchanged.
+
+Regression GREEN:18originalfake-boardcases,twofakeB.CuDRCcalls,previousfixture references retainedacrossall17transitions. **37focused harness/fixture/scope/resume/complete-warning testsPASS**,py_compile/diffcheckPASS. Testbeforelog core236-audit-failure/original-namespace-before.txt;actualharness/newregression inPR239. Thisis inexpensive fake-native evidence;NO executednativecomparisonormemory-improvementclaim.
+
+**STOP: parentexplicitlyrequires confirmationofthisexactcorrectionbeforeanyreplacementdispatch.** No newdispatch,nofullresume/routing/adoption/merge. TheONLYattemptremains38064683589/source5d128...:preflightfailedbeforebothlegs/allfourDRCcalls;nativecomparisonUNRUN. Itsartifact11674346443/SHA25678d852ae... andfullpreflightoutcomeremainpreserved. Original37?Localtesttotalis37;newheadCIunconfirmed. Acceptedmain JL117/JR129/core1402/nativeDRCparity0/0 unchanged;candidate1312REJECTED;issue189OPEN. Executoravailable.
+
+Exactcontinuation: reviewPR239head7add2a44 and thefour-line namespace diff plusreal-blockregression;obtainparentconfirmationbeforetrigger. Onceconfirmed, onlythepreviouslyapprovedsingle18-caseSERIALcomparison mayrun underONE15minutecommand/20minutejob withfixedmanifests/earlymemorystops/ownedcleanup. No unchangedfullauditretry. Collectexplicitcomparison/partialoutcomeandstopforparentreviewbeforefullrecovery/adoption.
+
 ## Bounded comparison preflight failure — 2026-10-10 15:55 UTC
 
 Executor remainsavailable;15:51/15:52disconnect notifications didNOTblockwork. Main **65cefd41fc39e064d38319115ad96016a1c6b71c**, **JL117/JR129/core1402**,nativeDRC/parity0/0,unchanged. Candidate1312REJECTED;issue189OPEN;no fullresume/rerouting/adoption/merge.
