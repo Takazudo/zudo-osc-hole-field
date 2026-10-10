@@ -33,6 +33,29 @@ def unchanged_nonrouting(before, after):
     return sum(a.values())
 
 
+def added_copper_scope(before, after, expected_copper=None, expected_vias=None):
+    """Bind every additive source object; retained historical UUID duplicates are allowed."""
+    unchanged_nonrouting(before, after)
+    def copper(text):
+        return collections.Counter(text[a:b] for a,b in top_level_spans(text)
+            if text[a+1:b].split(None,1)[0].rstrip(')') in ('segment','via'))
+    old,new=copper(before),copper(after)
+    old_ids={UUID_RE.search(block)[1] for block in old}
+    scope={}
+    for block,n in (new-old).items():
+        match=UUID_RE.search(block)
+        if not match:raise ValueError('new copper UUID missing')
+        uid=match[1]
+        if n!=1 or uid in old_ids or uid in scope:raise ValueError('new copper UUID reused or duplicated')
+        scope[uid]=block[1:].split(None,1)[0].rstrip(')')
+    if not scope:raise ValueError('empty added copper scope')
+    actual=(len(scope),sum(kind=='via' for kind in scope.values()))
+    for expected,found in zip((expected_copper,expected_vias),actual):
+        if expected is not None and (type(expected) is not int or expected<0 or expected!=found):
+            raise ValueError('added copper/via count mismatch')
+    return scope
+
+
 def new_silk_identities(drc, via_uuid):
     types=('silk_over_copper','silk_overlap')
     rows=[v for v in drc['violations'] if v['type'] in types]
@@ -41,13 +64,14 @@ def new_silk_identities(drc, via_uuid):
     return [v for v in rows if any(i['uuid']==via_uuid for i in v['items'])]
 
 
-def main(before_path, after_path, out):
+def main(before_path, after_path, out, expected_copper=382, expected_vias=38):
     import pcbnew
     version=subprocess.check_output(['kicad-cli','version'],text=True).strip()
     if version!='10.0.6':raise ValueError('requires pinned native10.0.6')
     out.mkdir(parents=True,exist_ok=True)
     (out/'started.json').write_text(json.dumps(dict(status='STARTED; NO NATIVE MASK RESULT YET',version=version,before_sha256=hashlib.sha256(before_path.read_bytes()).hexdigest(),after_sha256=hashlib.sha256(after_path.read_bytes()).hexdigest()),indent=2)+'\n')
     count=unchanged_nonrouting(before_path.read_text(),after_path.read_text())
+    scope=added_copper_scope(before_path.read_text(),after_path.read_text(),expected_copper,expected_vias)
     for suffix in ('.kicad_pro','.kicad_dru'):
         if before_path.with_suffix(suffix).read_bytes()!=after_path.with_suffix(suffix).read_bytes():
             raise ValueError('project/rules changed')
@@ -60,13 +84,14 @@ def main(before_path, after_path, out):
             raise ValueError('mask zones unsupported')
     old_ids={x.m_Uuid.AsString() for x in before.GetTracks()}
     added=[x for x in after.GetTracks() if x.m_Uuid.AsString() not in old_ids]
-    if len(added)!=382:raise ValueError('not the pinned382-object ground trial')
+    native_scope={x.m_Uuid.AsString():('via' if x.Type()==pcbnew.PCB_VIA_T else 'segment') for x in added}
+    if len(added)!=len(scope) or native_scope!=scope:raise ValueError('native/source added copper scope mismatch')
     vias=[]
     for item in added:
         if item.Type()==pcbnew.PCB_VIA_T:vias.append(item)
         elif item.Type()!=pcbnew.PCB_TRACE_T or item.HasSolderMask():
             raise ValueError('new non-via mask geometry unsupported')
-    if len(vias)!=38:raise ValueError('expected38new vias')
+    if len(vias)!=expected_vias:raise ValueError('native added via count mismatch')
     # Native silk_overlap also tests Cu shapes of unmasked tracks: checking
     # HasSolderMask alone cannot exclude them. Audit every added copper object.
     # Retain the exact native-serialized silk/context bytes; remove only pads,
@@ -136,9 +161,16 @@ def main(before_path, after_path, out):
     result=dict(status='READ-ONLY NATIVE ADDED-MASK EVIDENCE; PROMOTION GATE UNCHANGED',version=version,
                 before_sha256=hashlib.sha256(before_path.read_bytes()).hexdigest(),after_sha256=hashlib.sha256(after_path.read_bytes()).hexdigest(),
                 unchanged_nonrouting_objects=count,added_unmasked_tracks=len(added)-len(vias),
-                added_copper_scope_complete=True,
+                added_copper_scope_complete=True,added_copper_source_scope=scope,
                 new_mask_identities=sorted(identities),fixtures=receipts)
     (out/'result.json').write_text(json.dumps(result,indent=2)+'\n')
 
 
-if __name__=='__main__':main(*(Path(p) for p in sys.argv[1:4]))
+if __name__=='__main__':
+    import argparse
+    parser=argparse.ArgumentParser()
+    for name in ('before','after','output'):parser.add_argument(name,type=Path)
+    parser.add_argument('--expected-copper',type=int,default=382)
+    parser.add_argument('--expected-vias',type=int,default=38)
+    args=parser.parse_args()
+    main(args.before,args.after,args.output,args.expected_copper,args.expected_vias)

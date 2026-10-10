@@ -15,7 +15,7 @@ import re
 import subprocess
 
 from scripts.pcbgen.audit_hole_pairs import possible_pairs
-from scripts.pcbgen.audit_added_mask import unchanged_nonrouting, new_silk_identities
+from scripts.pcbgen.audit_added_mask import unchanged_nonrouting, new_silk_identities, added_copper_scope
 from scripts.pcbgen.uuid_tools import top_level_spans,UUID_RE
 
 HOLE_TYPES={'hole_to_hole','holes_co_located'}
@@ -204,11 +204,14 @@ def complete_reports(before_board, after_board, before_drc, after_drc, before_au
     if mask['version']!='10.0.6' or mask['before_sha256']!=sha(before_board) or mask['after_sha256']!=sha(after_board):
         raise ValueError('silk audit native version/source mismatch')
     if mask['unchanged_nonrouting_objects']!=count:raise ValueError('silk invariance mismatch')
-    from scripts.pcbgen.route_shards import copper_block_groups
-    old_ids=set(copper_block_groups(before_board.read_text()));new_ids=set(copper_block_groups(after_board.read_text()))
-    expected_copper=new_ids-old_ids
+    scope=added_copper_scope(before_board.read_text(),after_board.read_text())
+    expected_copper=set(scope)
+    if 'added_copper_source_scope' in mask and mask['added_copper_source_scope']!=scope:
+        raise ValueError('silk source scope mismatch')
     if len(mask['fixtures'])!=len(expected_copper) or {f['copper_uuid'] for f in mask['fixtures']}!=expected_copper:
         raise ValueError('silk audit omits added copper')
+    if {f['copper_uuid']:f['kind'] for f in mask['fixtures']}!=scope:
+        raise ValueError('silk fixture source kind mismatch')
     if {f['copper_uuid'] for f in mask['fixtures'] if f['kind']=='via'}!=expected:
         raise ValueError('silk audit added via scope mismatch')
     found=set()
@@ -239,9 +242,11 @@ def audit_current_reports(before_board, after_board, before_drc, after_drc, outp
     before_audit=output/'holes-before';after_audit=output/'holes-after';mask_audit=output/'silk';zone_audit=output/'zones'
     # The pinned container mounts the checkout at /work, not the host path.
     relative=lambda p:str(Path(p).resolve().relative_to(root))
+    scope=added_copper_scope(Path(before_board).read_text(),Path(after_board).read_text())
+    (output/'added-copper-scope.json').write_text(json.dumps(dict(before_sha256=sha(before_board),after_sha256=sha(after_board),copper=scope),indent=2)+'\n')
     commands=[['scripts/pcbgen/audit_hole_pairs.py',relative(before_board),relative(before_audit)],
               ['scripts/pcbgen/audit_hole_pairs.py',relative(after_board),relative(after_audit)],
-              ['scripts/pcbgen/audit_added_mask.py',relative(before_board),relative(after_board),relative(mask_audit)],
+              ['scripts/pcbgen/audit_added_mask.py',relative(before_board),relative(after_board),relative(mask_audit),'--expected-copper',str(len(scope)),'--expected-vias',str(sum(k=='via' for k in scope.values()))],
               ['scripts/pcbgen/audit_zone_silk_scope.py',relative(before_board),relative(after_board),relative(zone_audit),'--classify']]
     if zone_batch_size!=1:commands[-1].extend(['--batch-size',str(zone_batch_size)])
     for command in commands:
