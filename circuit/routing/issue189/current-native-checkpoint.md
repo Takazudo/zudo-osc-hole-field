@@ -2,6 +2,18 @@
 
 Issue189 is OPEN and connectivity remains incomplete. No fabrication, release, deployment or hardware qualification is authorized. Incremental OSC merges were explicitly authorized during this session; retain all exact-head native/CI/integration gates. Do not restart unrelated watches or change credentials/toolchains.
 
+## Latest routine state — 2026-10-10 10:58 UTC
+
+Main074eaa6488fb94f70dcbfe3902eac966d010ffbd,JL117/JR130/core1402; PR235 integrated and post-mainCI38045632870SUCCESS. JR129 original7a245c7 CI38042777010all5PASS. GitHub mergeAPI405conflict persisted despite cleanlocal59a7285preview. CLI subsequently401/GitHTTPScredentialunavailable; no authchanges. ConnectedGitHubapp remainsfunctional and is the supportedfallback.
+
+PR232 refreshed by **normal fast-forward** merge of main074 into oldhead7a: **newhead1d488332fb8401ac97aa7a8f6d97b03c340098b1**, tree **59a7285ddf1083758ebe452491463a46bfe75724**, additionalparents7a/074. Appcreatedexactlocalpreviewtree and commit,updatedref with expected7a andforce=false. JRPCBstill9e164f9e8e23a5c3911d117fd08973fc877e5f2f382be20500b8e01040b20a55; everyunrelatedboard matchesmain. **NewCI38046207359IN_PROGRESS**,no newapprovalquestionneededsofar. Do notmergeuntilall5exactnewheadchecksPASS; refreshactualmain/head/tree viaappbeforeexpected-headmerge. PRbodyupdated. No forcepush or acceptancegatebypass.
+
+Solecore38044514132/source4768f2fstillIN_PROGRESS. SourceCI38044514616SUCCESS. No additionalnative strategytrial dispatched. Existingnativejoblogunavailablewhileactive; waitterminalartifact. Beforelargeadoption or materiallynewlongtrial,reportresult/proposednextstepto parentforhigher-modelreview.
+
+Additionalboundedread-onlyreturnrepairdiagnosis against exactrejected4f90nativeafter: targetonlythe2native originalAGNDgroups;30.02x20.13mm and38.33x26.43mmframes;clearance.25,groundwidth.3,via.6,fillguardsretained,no removals.0.05mmrasterexhausted12583/17792statesbelow200k(PASS15s);sameinput0.025mmrasterexhausted53507/69553below200k(PASS21s). **0paths,STOPthisconfiguration** undertwo-comparable-negligible-resultsrule. NativeacceptanceNOTRUN/noadoption. Preserve exactdiagnostics,do nottrylargerbudget. A change ofcause/method isrequired: causalsupply-caseisolation,coordinatedlocalrepair,permittedlocalplacementorhuman-guidedcomparison,subjectto parentreviewbeforelongtrial.
+
+Thislatestsection supersedes older pending/7a-ready states below. Connectedapp read/write tools can continue evenwhileCLIcredentialsareunavailable. Do notreconfigureauth or installfallbackCAD. Localstate/canonicalcopper unchanged.
+
 ## Current routine continuation — PR235 integrated
 
 Main **074eaa6488fb94f70dcbfe3902eac966d010ffbd**, tree **0acd60aa8b660ea6d5cda341370d42960af2b5f3**, acceptedJL117/JR130/core1402. PR235 all5exact CI38044313314PASS; authorizedmerge complete, actualtree equalsrefreshedpreview; everyboardbyteunchanged. Post-mainCI **38045632870** running. Prior a0f2408 CI38044061215allPASS.
