@@ -271,21 +271,29 @@ def merge(board_id,delta_paths,label,repair_ground=False,complete_native_warning
         # findings survive, and the same ordinary gate evaluates the result.
         from scripts.pcbgen.complete_native_warnings import audit_current_reports
         receipt['raw_promotion_gate']=promotion_gate(before,after,before_drc,drc)
-        evidence=workspace(board_id,'shards-complete-warnings')/'native-audits'
-        try:
-            options={} if native_zone_batch_size==1 else {'zone_batch_size':native_zone_batch_size}
-            if cut_plan is not None:
-                actual=delta(base_text,candidate.read_text())
-                cuts=reviewed_cut_scope(cut_plan,board_id,sha,before,actual['removed'])
-                options['reviewed_removed_uuids']=cuts
-                receipt['reviewed_cut_plan']={'path':str(reviewed_cut_plan),'sha256':hashlib.sha256(cut_plan_bytes).hexdigest(),'removed_uuids':cuts,'bounds_mm':cut_plan['stage']['repair_bounds_mm']}
-            complete_before,complete_after,proof=audit_current_reports(base,candidate,before_drc,drc,evidence,**options)
-            receipt['complete_native_warning_evidence']=proof
-            receipt.update(promotion_gate(before,after,complete_before,complete_after))
-        except (ValueError,RuntimeError,OSError,subprocess.SubprocessError) as error:
+        # Complete warning inventories can reconcile sampled warnings, but
+        # cannot repair copper connectivity, native errors, or a missing gain.
+        # Reject these outcomes before spending hours on supplemental fixtures.
+        if receipt['split_pad_groups'] or receipt['native_errors'] or not agreement or after['open_edges']>=before['open_edges']:
             receipt['adopted']=False
-            receipt['rejection_reason']='incomplete_native_warning_evidence'
-            receipt['native_warning_evidence_error']=str(error)
+            receipt['rejection_reason']='failed_native_prerequisites'
+            receipt['complete_native_warning_evidence_status']='NOT RUN: native prerequisites failed'
+        else:
+            evidence=workspace(board_id,'shards-complete-warnings')/'native-audits'
+            try:
+                options={} if native_zone_batch_size==1 else {'zone_batch_size':native_zone_batch_size}
+                if cut_plan is not None:
+                    actual=delta(base_text,candidate.read_text())
+                    cuts=reviewed_cut_scope(cut_plan,board_id,sha,before,actual['removed'])
+                    options['reviewed_removed_uuids']=cuts
+                    receipt['reviewed_cut_plan']={'path':str(reviewed_cut_plan),'sha256':hashlib.sha256(cut_plan_bytes).hexdigest(),'removed_uuids':cuts,'bounds_mm':cut_plan['stage']['repair_bounds_mm']}
+                complete_before,complete_after,proof=audit_current_reports(base,candidate,before_drc,drc,evidence,**options)
+                receipt['complete_native_warning_evidence']=proof
+                receipt.update(promotion_gate(before,after,complete_before,complete_after))
+            except (ValueError,RuntimeError,OSError,subprocess.SubprocessError) as error:
+                receipt['adopted']=False
+                receipt['rejection_reason']='incomplete_native_warning_evidence'
+                receipt['native_warning_evidence_error']=str(error)
     if stitch_receipt and 'agnd_stitch' in stitch_receipt:receipt['agnd_stitch']=stitch_receipt['agnd_stitch']
     if receipt['native_errors']:receipt['status']='REJECTED: fresh native DRC/parity errors'
     receipt['independent_connectivity_agrees']=agreement

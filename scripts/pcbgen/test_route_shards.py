@@ -62,7 +62,7 @@ class MergeAcceptanceTests(unittest.TestCase):
         shifted=('hole_to_hole','warning',('old-c','old-d'))
         def report(item):
             return {'violations':[dict(type=item[0],severity=item[1],items=[{'uuid':u} for u in item[2]])],'schematic_parity':[]}
-        for failure in ('none','evidence','error','split','fresh'):
+        for failure in ('none','evidence','error','split','fresh','no_gain'):
             with self.subTest(failure=failure),tempfile.TemporaryDirectory() as directory:
                 root=Path(directory);target=root/'boards/osc-jack-left/osc-jack-left.kicad_pcb'
                 target.parent.mkdir(parents=True);original=board(seg(U[0],'A'));target.write_text(original)
@@ -70,6 +70,7 @@ class MergeAcceptanceTests(unittest.TestCase):
                 before={**crossing_board(),'open_edges':3,'islands':{'A':[['a0','a1']],'B':[['b0'],['b1']]}}
                 after={**before,'open_edges':1,'islands':{}}
                 if failure=='split':after['islands']={'A':[['a0'],['a1']]}
+                if failure=='no_gain':after['open_edges']=before['open_edges']
                 fresh=after if failure!='fresh' else {**after,'islands':{'B':[['b0'],['b1']]}}
                 bd,ad=report(old),report(shifted)
                 if failure=='error':ad['violations'].append(dict(type='clearance',severity='error',items=[]))
@@ -80,8 +81,9 @@ class MergeAcceptanceTests(unittest.TestCase):
                     return append_observations(bd,{old,shifted}),append_observations(ad,{old,shifted}),{'status':'test native observations'}
                 with patch.object(route_shards,'ROOT',root),patch.object(driver,'workspace',side_effect=workspace),\
                      patch.object(driver,'check',side_effect=[(bd,before),(report(shifted),after),(ad,fresh)]),\
-                     patch('scripts.pcbgen.complete_native_warnings.audit_current_reports',side_effect=evidence):
+                     patch('scripts.pcbgen.complete_native_warnings.audit_current_reports',side_effect=evidence) as audit:
                     receipt=route_shards.merge('osc-jack-left',[proposal],'complete',complete_native_warnings=True)
+                self.assertEqual(audit.call_count,0 if failure in ('error','split','fresh','no_gain') else 1)
                 self.assertFalse(receipt['raw_promotion_gate']['adopted'])
                 self.assertEqual(receipt['adopted'],failure=='none')
                 if failure!='none':self.assertEqual(target.read_text(),original)

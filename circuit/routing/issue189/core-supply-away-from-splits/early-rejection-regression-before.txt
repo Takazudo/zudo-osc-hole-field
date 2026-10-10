@@ -1,0 +1,44 @@
+shards-complete: 3 -> 1 open edges
+promoted boards/osc-jack-left/osc-jack-left.kicad_pcb
+shards-complete: 3 -> 1 open edges
+shards-complete: 3 -> 1 open edges
+Fshards-complete: 3 -> 1 open edges
+Fshards-complete: 3 -> 1 open edges
+Fshards-complete: 3 -> 3 open edges
+F
+======================================================================
+FAIL: test_complete_native_observations_do_not_bypass_errors_splits_or_failed_evidence (scripts.pcbgen.test_route_shards.MergeAcceptanceTests.test_complete_native_observations_do_not_bypass_errors_splits_or_failed_evidence) (failure='error')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/issue189-core-supply-complete/scripts/pcbgen/test_route_shards.py", line 86, in test_complete_native_observations_do_not_bypass_errors_splits_or_failed_evidence
+    self.assertEqual(audit.call_count,0 if failure in ('error','split','fresh','no_gain') else 1)
+AssertionError: 1 != 0
+
+======================================================================
+FAIL: test_complete_native_observations_do_not_bypass_errors_splits_or_failed_evidence (scripts.pcbgen.test_route_shards.MergeAcceptanceTests.test_complete_native_observations_do_not_bypass_errors_splits_or_failed_evidence) (failure='split')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/issue189-core-supply-complete/scripts/pcbgen/test_route_shards.py", line 86, in test_complete_native_observations_do_not_bypass_errors_splits_or_failed_evidence
+    self.assertEqual(audit.call_count,0 if failure in ('error','split','fresh','no_gain') else 1)
+AssertionError: 1 != 0
+
+======================================================================
+FAIL: test_complete_native_observations_do_not_bypass_errors_splits_or_failed_evidence (scripts.pcbgen.test_route_shards.MergeAcceptanceTests.test_complete_native_observations_do_not_bypass_errors_splits_or_failed_evidence) (failure='fresh')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/issue189-core-supply-complete/scripts/pcbgen/test_route_shards.py", line 86, in test_complete_native_observations_do_not_bypass_errors_splits_or_failed_evidence
+    self.assertEqual(audit.call_count,0 if failure in ('error','split','fresh','no_gain') else 1)
+AssertionError: 1 != 0
+
+======================================================================
+FAIL: test_complete_native_observations_do_not_bypass_errors_splits_or_failed_evidence (scripts.pcbgen.test_route_shards.MergeAcceptanceTests.test_complete_native_observations_do_not_bypass_errors_splits_or_failed_evidence) (failure='no_gain')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/issue189-core-supply-complete/scripts/pcbgen/test_route_shards.py", line 86, in test_complete_native_observations_do_not_bypass_errors_splits_or_failed_evidence
+    self.assertEqual(audit.call_count,0 if failure in ('error','split','fresh','no_gain') else 1)
+AssertionError: 1 != 0
+
+----------------------------------------------------------------------
+Ran 1 test in 0.682s
+
+FAILED (failures=4)
