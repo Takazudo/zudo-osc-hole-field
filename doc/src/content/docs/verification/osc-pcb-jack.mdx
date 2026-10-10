@@ -19,11 +19,11 @@ A cut-line bound (`scripts/pcbgen/cut_capacity.py`) showed that the four-layer h
 | Native check | JL / `osc-jack-left` | JR / `osc-jack-right` |
 | --- | --- | --- |
 | Status | ROUTED DRAFT IN PROGRESS | ROUTED DRAFT IN PROGRESS |
-| Native open edges (DRC, settled zone refill) | **118** | **131** |
-| Remaining signal edges | 103 | 108 |
-| Remaining rail / ground edges | +12V 0, +5V 0, -12V 0, AGND 15 | +12V 0, +5V 0, -12V 0, AGND 23 |
+| Native open edges (DRC, settled zone refill) | **117** | **130** |
+| Remaining signal edges | 103 | 107 |
+| Remaining rail / ground edges | +12V 0, +5V 0, -12V 0, AGND 14 | +12V 0, +5V 0, -12V 0, AGND 23 |
 | DRC errors / schematic parity | 0 / 0 | 0 / 0 |
-| Track segments / vias | 30560 / 2861 | 48278 / 3124 |
+| Track segments / vias | 30564 / 2861 | 48445 / 3129 |
 | Native warnings | hole to hole 2, silk edge clearance 8, silk over copper 199, silk overlap 199, text height 43, track dangling 4, via dangling 22 | hole to hole 24, silk edge clearance 13, silk over copper 199, silk overlap 199, text height 59, track dangling 3, via dangling 23 |
 
 Routing uses `scripts/pcbgen/route_jack_grid.py`: terminal via arrays, ±12 V plane fanouts, rail links, then a negotiated-congestion (PathFinder) pass over every signal net on a 0.05 mm grid (region stages re-run on a 0.035 mm grid inside the neck-down areas), rip-up-and-reroute batches for what it leaves open, with AGND stitching vias where new copper cuts a surface pour. Each stage is applied to a disposable copy, checked with native DRC, schematic parity and zone refill, and kept only when the native open-edge count falls. Rip-up-and-reroute re-offers still-open islands with 4, 8, 12 and then 20 victim nets per probe, and a stranded island joins whichever island of its net is cheapest to reach, not only the largest. Stage receipts are in `boards/<board-id>/reports/grid-routing/`; `reports/ratsnest.json` holds the native per-net topology after a single zone refill; the open-edge figures above come from DRC with refilled zones, which can be higher. Silkscreen/text warnings remain [#44](https://github.com/Takazudo/zudo-osc-hole-field/issues/44).
@@ -311,8 +311,21 @@ in `circuit/routing/issue189/jr-c7413-endpoints/`. This remains a routed draft.
 accepted **JL119→118** with the R8276 joint repair: 75 added segments, two reviewed
 cuts, and all 33,346 uncut copper objects retained. Native DRC/parity are 0/0,
 original connected pad groups remain intact, warning identities are unchanged,
-and fresh-copy connectivity agrees. The canonical board has 33,421 copper objects
+and fresh-copy connectivity agrees. That accepted revision has 33,421 copper objects
 and SHA256 `a01df89dcab3d4fab8eb0ae80195b2825d2d47adc517cd73452d9b9aa6ea079a`.
+
+[PR #230](https://github.com/Takazudo/zudo-osc-hole-field/pull/230) subsequently
+accepted **JL118→117** with the R8127 joint repair. It retains all 33,418 uncut
+objects, removes exactly one reviewed via and two attached segments, and adds
+six segments and one via. All 1,111 nonrouting objects are unchanged. Native
+KiCad 10.0.6 settled and independent fresh checks agree at 117, with DRC/parity
+0/0, no original group split and all 477 warning findings preserved. Complete
+audits cover two hole identities on each side, seven new-copper fixtures and
+20 paired-zone fixtures. The current JL board has 33,425 copper objects and
+SHA256 `e984c0a01156b5f282f0c849077c61572df30ee0c70dfe6c9db94fbfcfe52107`.
+Its full native run is
+[38038883190](https://github.com/Takazudo/zudo-osc-hole-field/actions/runs/38038883190);
+all five exact bot CI checks passed before merge.
 
 [PR #220](https://github.com/Takazudo/zudo-osc-hole-field/pull/220) accepted
 **JR134→133**, adding 74 segments and five vias while retaining all 51,177 old
@@ -320,14 +333,24 @@ objects. [PR #223](https://github.com/Takazudo/zudo-osc-hole-field/pull/223)
 then accepted **JR133→131**, adding 143 segments and three vias while retaining
 all 51,256 old objects. Neither transaction cuts copper or moves components.
 Both pass complete native warning inventories, DRC/parity, original pad-group
-preservation and independent fresh-copy checks. The current board has 51,402
+preservation and independent fresh-copy checks. That accepted revision has 51,402
 copper objects and SHA256 `7bb70ac47e12c8bb2e2362d78f7602bdf99c2a69214c68aebeef273b0ce11965`.
 
-The subsequent JR130 candidate in
-[PR #224](https://github.com/Takazudo/zudo-osc-hole-field/pull/224) has passed
-native acceptance but is not included in the table: its exact-head CI approval
-and main integration remain pending at this checkpoint. Two newer JL U8215
+[PR #224](https://github.com/Takazudo/zudo-osc-hole-field/pull/224) subsequently
+accepted **JR131→130**, adding 167 segments and five vias without cuts or moves.
+All 51,402 old copper objects and 1,080 nonrouting objects remain unchanged.
+Settled and independent fresh checks agree at 130, with native DRC/parity 0/0,
+no original group split and all 520 complete warning findings preserved. Full
+audits cover 24 hole identities on each side, 172 new-copper fixtures and
+50 paired-zone fixtures. The current JR board has 51,574 copper objects and
+SHA256 `e06b7471ddc8f5c8c498c5eb5bf8655cc6de539e92826a5701cf1de06356e136`.
+Its full native run is
+[38032373766](https://github.com/Takazudo/zudo-osc-hole-field/actions/runs/38032373766);
+all five exact bot CI checks passed before merge.
+
+The U8202 and RB4615 joint proposals are tracked separately and are not
+included in the accepted table. Earlier JL U8215
 pilots were rejected because they split existing J900035 ground groups and
 raised native open edges to 120; no rejected copper was adopted. Exact artifact
 digests, retained-copper proofs and continuation commands are in the
-[immutable routing checkpoint](https://github.com/Takazudo/zudo-osc-hole-field/blob/f920d594ab6a435c2523e3605c15f64b055b799e/circuit/routing/issue189/current-native-checkpoint.md).
+[immutable routing checkpoint](https://github.com/Takazudo/zudo-osc-hole-field/blob/892749dbdd53cfbab2d0876424fc4aecf1fa4311/circuit/routing/issue189/current-native-checkpoint.md).

@@ -27,7 +27,7 @@ on:
       jl_replay:
         description: Fixed reviewed JL transaction (used only with replay_jl)
         type: choice
-        options: [rail-leaf, corridor, paired-corridors, ground-junction, rail-finer, d2326, u106-outer, u2119-outer, u2119-via-avoid, u2119-ground-corridor, c8143-fanout, three-finer-ground, u2204-endpoints, u1518-joint, r8276-joint]
+        options: [rail-leaf, corridor, paired-corridors, ground-junction, rail-finer, d2326, u106-outer, u2119-outer, u2119-via-avoid, u2119-ground-corridor, c8143-fanout, three-finer-ground, u2204-endpoints, u1518-joint, r8276-joint, r8127-via-branch]
         default: rail-leaf
       recover_core:
         description: Replay the preserved core aggregate and repair split AGND before the full native gate
@@ -148,7 +148,15 @@ jobs:
         run: |
           mkdir -p .circuit-cache
           set -o pipefail
-          if [[ $JL_REPLAY == paired-corridors ]]; then
+          extra=()
+          budget=80
+          if [[ $JL_REPLAY == r8127-via-branch ]]; then
+            python circuit/routing/issue189/jl118-r8127-via-branch/prepare_adoption.py
+            replay=.circuit-cache/issue189-jl118-r8127-via-branch/copper.json
+            label=issue189-r8127-via-branch
+            extra=(--complete-native-warnings --native-zone-batch-size 16 --reviewed-cut-plan circuit/routing/issue189/jl118-r8127-via-branch/plan.json)
+            budget=120
+          elif [[ $JL_REPLAY == paired-corridors ]]; then
             python circuit/routing/issue189/jl-paired-corridors-prepare.py
             replay=circuit/routing/issue189/jl-paired-corridors-copper.json
             label=issue189-paired-corridors
@@ -174,8 +182,8 @@ jobs:
           else
             exit 1
           fi
-          timeout --signal=INT --kill-after=2m 80m python -u scripts/pcbgen/route_shards.py merge osc-jack-left \
-            "$replay" --label "$label" \
+          timeout --signal=INT --kill-after=2m "${budget}m" python -u scripts/pcbgen/route_shards.py merge osc-jack-left \
+            "$replay" --label "$label" "${extra[@]}" \
             2>&1 | tee .circuit-cache/adoption.log
       - name: Replay reviewed JR copper through the native gate
         if: inputs.replay_jr
@@ -260,7 +268,7 @@ jobs:
             python circuit/routing/issue189/core-supply-away-from-splits/prepare.py
             replay=.circuit-cache/issue189-core-supply-away-from-splits/copper.json
             label=issue189-supply-away-from-splits
-            extra=()
+            extra=(--complete-native-warnings --native-zone-batch-size 16)
           elif [[ $CORE_REPLAY == short-power ]]; then
             python circuit/routing/issue189/core-short-power/prepare.py
             replay=.circuit-cache/issue189-core-short-power/copper.json
