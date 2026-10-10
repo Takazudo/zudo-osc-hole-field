@@ -234,8 +234,8 @@ jobs:
           elif [[ $CORE_REPLAY == finer-ground-complete-warnings ]]; then
             python circuit/routing/issue189/core-finer-ground-batch/prepare.py
             replay=.circuit-cache/issue189-core-finer-ground-batch/copper.json
-            label=issue189-finer-ground-complete-warnings
-            extra=(--complete-native-warnings)
+            label=issue189-finer-ground-batched-warnings
+            extra=(--complete-native-warnings --native-zone-batch-size 16)
           elif [[ $CORE_REPLAY == short-no-via ]]; then
             python circuit/routing/issue189/core-short-no-via/prepare.py
             replay=.circuit-cache/issue189-core-short-no-via/copper.json
