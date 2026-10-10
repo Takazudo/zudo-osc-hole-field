@@ -2,6 +2,16 @@
 
 Issue189 is OPEN and connectivity remains incomplete. No fabrication, release, deployment or hardware qualification is authorized. Incremental OSC merges were explicitly authorized during this session; retain all exact-head native/CI/integration gates. Do not restart unrelated watches or change credentials/toolchains.
 
+## Current routine continuation — PR235 integrated
+
+Main **074eaa6488fb94f70dcbfe3902eac966d010ffbd**, tree **0acd60aa8b660ea6d5cda341370d42960af2b5f3**, acceptedJL117/JR130/core1402. PR235 all5exact CI38044313314PASS; authorizedmerge complete, actualtree equalsrefreshedpreview; everyboardbyteunchanged. Post-mainCI **38045632870** running. Prior a0f2408 CI38044061215allPASS.
+
+JR129 PR232 exact7a245c7 CI38042777010stillIN_PROGRESS; approval released,do notmergebeforeall5PASS. Solecoreworker38044514132/source4768f2fstillIN_PROGRESS; sourceCI38044514616SUCCESS. No newnative routing trial dispatched.
+
+Bounded saved-pour diagnosis **PASS22s**, results `feasibility/core-pour-loss-diagnosis.json` and script `core_pour_loss_diagnosis.py`: exactnativebeforeb9f5/after4f90,artifact11666004488/ZIP0855bdbc. Within12mm beyonddetached-pad boundingboxes, lostsurfaceAGND area E1(B.Cu)=0.4815335mm², overlapwithU4106.13clearanceenvelope0.472163mm². E2(F.Cu)=2.2653648mm²; overlapsU4206.4=0.943093,U4241.4=0.467374,U4206.13=0.235913mm². **Geometric overlap only,notcausalproof/nativecounterfactual.** Current236omitsU4106.13/U4206.4/U4206.13butretainsU4241.4. Wait236exactnative result. Ifstillfails, proposecausalisolation/returnrepair for higher-modelreview; donotblindlyomitadditionalnearbycases or dispatch before review.
+
+Read-only observer `/tmp/issue189-wait-jr-ci.py` session43421 polls existingJR129CI every50seconds and stopsatcompletion; no mutation/redispatch. It is this task's newobserver,notanunrelatedwatch. Nativecore live-joblog endpointreturned404BlobNotFoundwhilejobactive; logs/artifactsawaitterminal,notavailableforreconciliationyet.
+
 ## Model-switch boundary and immediate actions — 10:36 UTC
 
 User explicitly requested routine continuation on **Sol Low**, with stronger-model review at major strategy/adoption decisions. End this current turn at the saved boundary; do not claim the model changed mid-turn. Do not spawn costly workers. Parent will arrange stronger reviews.
