@@ -1,0 +1,107 @@
+{
+  "status": "SOURCE-REVIEWED LAUNCH READY; NOT ADMITTED OR DISPATCHED",
+  "case": "F3/K1402 route only",
+  "orchestration_sha": "4aade25ec10edd3fdada3deedfe7f55d275fd7b8",
+  "method_sha": "6f0783335fa23d760877a91db3b63f93c039b4b4",
+  "packet_sha256": "10be49ae32997a36c54436e48226a295678e47dda1fc1c14f4569c72ef4bdd92",
+  "fixture_lock_sha256": "0ee20e3e409a93f1f4b1417c8e2ed64b18564f00213edd1aeaf6cd3af4ffbf7b",
+  "orchestration_files_sha256": {
+    ".github/workflows/epic242-f3-k1402-access.yml": "8b37648f3a684e206d00a1098303a711d3de6c0996af0aaca50a6656f1335977",
+    "circuit/routing/epic-242/decision-pilots/terminal-access/run_f3_k1402.py": "e4d3cd954846a804b02c6e1fb50c38d080cd813e5f326ba29ad70d10409ef97b",
+    "circuit/routing/epic-242/decision-pilots/terminal-access/test_f3_orchestration.py": "db5779c169749735f2e0d6b36ede4497f1fa5e8e3d4cce931302d72471eb8e44"
+  },
+  "execution_branch": "integration/epic-242-f3-k1402-access-v1",
+  "proposed_admission_identity": "epic242-f3-k1402-access-v1",
+  "identity_status": "Proposed exact token; NOT an existing admission or capacity reservation",
+  "worker_pattern": "f3-k1402-access-v1-{GITHUB_RUN_ID}-1",
+  "future_launch_only_after_parent_admission": [
+    "git",
+    "push",
+    "origin",
+    "4aade25ec10edd3fdada3deedfe7f55d275fd7b8:refs/heads/integration/epic-242-f3-k1402-access-v1"
+  ],
+  "launch_gate": "Parent must admit this exact orchestration/method/packet/case and reserve global capacity before creating the execution branch. Never force/reset/recreate/retry the branch. It is absent at preparation closeout.",
+  "one_shot": "push creation + Actions attempt1 + complete branch run history containing exactly this workflow/run/head; prior use/incomplete census refuses",
+  "controls": {
+    "source_files": 426,
+    "outer_wrapper_files": 1,
+    "fixture_files": 297,
+    "immutable_method_checkout": true,
+    "python": "actual absolute Python3.11 executable/resolved path/binarySHA/sys.version + pinned versions before and after host provisioning",
+    "versions": {
+      "numpy": "2.2.6",
+      "scipy": "1.15.3",
+      "shapely": "2.1.2"
+    },
+    "image_helper": "unchanged scripts.kicad.settle_only_pilot.prepare_image",
+    "image": "kicad/kicad@sha256:18693567392b80da435f9fa952ce3a3e534c66eb5a6033f5b9c80aa3b19dd3ec",
+    "hosted_dispatch": "unchanged scripts/pcbgen/with_route_guard.sh",
+    "native_guard": "unchanged scripts/kicad/native_resource_guard.py",
+    "route_argv": "exact K1402 packet argv, substituting only actualPython/newadmission/uniqueworker/freshguardJSON; no board/method/fixture/budget change",
+    "route_seconds_including_both_probes": 300,
+    "enclosing_job_minutes": 43,
+    "image_preparation_seconds": 300,
+    "dependency_install_seconds": 180,
+    "artifact_metadata_seconds": 120,
+    "artifact_download_seconds": 120,
+    "fixture_prepare_seconds": 120,
+    "pre_native_remaining_job_seconds_min": 600,
+    "worker_memory_gib": 6,
+    "aggregate_memory_gib": 12,
+    "global_workers_max": 2,
+    "required_free_gib": 2,
+    "early_abort_free_gib": 2.5,
+    "additional_swap": false
+  },
+  "retention": {
+    "artifact_name": "epic242-f3-k1402-access-v1-{GITHUB_RUN_ID}",
+    "days": 30,
+    "always_steps": [
+      "full/partialfixture copy + explicitoutputinventory",
+      "artifact upload"
+    ],
+    "missing_output": "NOT PRODUCED; missing/partialreceipts never prove successful execution or cleanup",
+    "failure": "retain bootstrap/initialization/dependencies/image/authentication/route logs and receipts even when blocked; separate retention-failure receipt iffinalization fails",
+    "platform_limit": "Job cancellation/timeout may prevent final upload; absent proof blocks subsequent admission and cannot count as cleanup"
+  },
+  "credit": "All4 original demands and blocked rails explicit; accepted/adopted/native_exact_pair_closed/coupled_connectivity_success false. Signal-only gain never means complete cohort/architecture success.",
+  "review": {
+    "baseline_review": "PASS source and committedfreeze review",
+    "architecture_astra": "PASS independent source review",
+    "tests": {
+      "terminal_access_total": 48,
+      "new_orchestration_and_retained_receipt_boundaries": 13,
+      "native_or_savedboard_search": 0
+    },
+    "other_checks": [
+      "YAML/bash syntax PASS",
+      "result_summary AST unchanged from1420 exceptmethodbinding",
+      "all427method/controlhashes equalfrozen6f",
+      "packetdigestunchanged",
+      "pnpm circuit:check PASS",
+      "pnpm check PASS",
+      "baseline1881inputs/195harnesses/390endpointmaps PASS"
+    ],
+    "component_scope": "manual68lines/zero declaredplacements; schematic/placementbinding notperformed"
+  },
+  "not_run": [
+    "actualhostprovisioning",
+    "imagepull",
+    "probecontainers",
+    "C/nativeA*",
+    "savedboardrouting",
+    "apply",
+    "settle",
+    "fresh",
+    "fullwarningaudit"
+  ],
+  "out_of_scope": [
+    "two-A dispatch",
+    "automaticretry",
+    "newguardframework",
+    "repeatqualification",
+    "nativeclosure/adoption",
+    "canonicalhardwarewrites",
+    "merge/closure/deploy/fabrication"
+  ]
+}
