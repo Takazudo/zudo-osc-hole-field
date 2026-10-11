@@ -1,0 +1,5597 @@
+{
+  "schema_version": 1,
+  "status": "RETAINED SOURCE CONSISTENCY ONLY / UNVALIDATED DRAFT",
+  "input_source_sha": "65cefd41fc39e064d38319115ad96016a1c6b71c",
+  "summary": {
+    "trimmers": 100,
+    "roles": 28,
+    "mpn_counts": {
+      "TC33X-2-102E": 21,
+      "TC33X-2-103E": 56,
+      "UNRESOLVED": 23
+    },
+    "faces": {
+      "B.Cu": 56,
+      "F.Cu": 44
+    }
+  },
+  "trimmers": [
+    {
+      "ref": "RV1601",
+      "block": "OCTAVE_REF",
+      "role": "octave_reference:RV_GAIN",
+      "family": "octave_reference",
+      "part_key": "octave_reference_J_O1_1V_SHARED__RV_GAIN.0",
+      "value": "TC33X-2-102E",
+      "mpn": "TC33X-2-102E",
+      "manufacturer": "Bourns",
+      "footprint": "zudo-osc-hole-field:Potentiometer_Bourns_TC33X_Vertical",
+      "symbol": "zudo-osc-hole-field:TC33X-2-102E",
+      "module_label": "ALL OSC",
+      "function_label": "OCT SPAN",
+      "label": "ALL OSC OCT SPAN",
+      "reference_label": "RV1601",
+      "nominal_resistance": "1 kΩ",
+      "mpn_status": "SOURCE ASSIGNED / NOT QUALIFIED",
+      "source_locator": {
+        "path": "design/standard/electrical-standard.json",
+        "anchor": "cells.octave_reference.parts RV_GAIN / R_FIXED / TOPDRV; 1k nominal from trim_102 pin map"
+      },
+      "calibration_reference": "doc/src/content/docs/verification/osc-trimmer-calibration.mdx#octave-reference-rv-gain",
+      "calibration_status": "NEEDS BENCH",
+      "rotation_direction": "UNKNOWN / NEEDS BENCH",
+      "source_pins": {
+        "1": "/OCTAVE_REF/C5c0054_GAIN_TRIM",
+        "2": "/OCTAVE_REF/OCT_TOP",
+        "3": "/OCTAVE_REF/OCT_TOP"
+      },
+      "pins": {
+        "1": "X94A4BCA1470969C2176E",
+        "2": "XB9E24820D3BDE0650995",
+        "3": "XB9E24820D3BDE0650995"
+      },
+      "placement": {
+        "board": "K",
+        "board_id": "osc-core",
+        "x_mm": 24.849999999999994,
+        "y_mm": 216.3,
+        "kicad_orientation_deg": 0,
+        "side": "F.Cu",
+        "native_x_mm": 124.85,
+        "native_y_mm": 266.3,
+        "native_orientation_deg": 0,
+        "rotation_deg": 0,
+        "courtyard_mm": [
+          22.0,
+          214.25,
+          27.3,
+          218.15
+        ]
+      }
+    },
+    {
+      "ref": "RV2107",
+      "block": "F1",
+      "role": "filter:EXPO_SCALE_TRIM",
+      "family": "filter",
+      "part_key": "CORE_EXPO_SCALE_TRIM.0",
+      "value": "1 kΩ",
+      "mpn": "TC33X-2-102E",
+      "manufacturer": "Bourns",
+      "footprint": "zudo-osc-hole-field:Potentiometer_Bourns_TC33X_Vertical",
+      "symbol": "zudo-osc-hole-field:TC33X-2-102E",
+      "module_label": "VCF1",
+      "function_label": "FREQ SCALE",
+      "label": "VCF1 FREQ SCALE",
+      "reference_label": "RV2107",
+      "nominal_resistance": "1 kΩ",
+      "mpn_status": "SOURCE ASSIGNED / NOT QUALIFIED",
+      "source_locator": {
+        "path": "design/spec/modules/filter.py",
+        "line": 88,
+        "anchor": "source trim call for filter:EXPO_SCALE_TRIM"
+      },
+      "calibration_reference": "doc/src/content/docs/verification/osc-trimmer-calibration.mdx#filter-expo-scale-trim",
+      "calibration_status": "NEEDS BENCH",
+      "rotation_direction": "UNKNOWN / NEEDS BENCH",
+      "source_pins": {
+        "1": "/F1/EXPO_SCALE_TRIM",
+        "2": "/F1/EXPO_SCALE_SUM",
+        "3": "/F1/EXPO_SCALE_SUM"
+      },
+      "pins": {
+        "1": "X6AC22A3DBBEB03BD4DAB",
+        "2": "XC47289B2D63E8F79DF30",
+        "3": "XC47289B2D63E8F79DF30"
+      },
+      "placement": {
+        "board": "K",
+        "board_id": "osc-core",
+        "x_mm": 72.85,
+        "y_mm": 118.19999999999999,
+        "kicad_orientation_deg": 90.0,
+        "side": "B.Cu",
+        "native_x_mm": 172.85,
+        "native_y_mm": 168.2,
+        "native_orientation_deg": 90.0,
+        "rotation_deg": 90,
+        "courtyard_mm": [
+          71.0,
+          115.75,
+          74.89999999999999,
+          121.05
+        ]
+      }
+    },
+    {
+      "ref": "RV2108",
+      "block": "F1",
+      "role": "filter:EXPO_BASE_TRIM",
+      "family": "filter",
+      "part_key": "CORE_EXPO_BASE_TRIM.0",
+      "value": "50 kΩ",
+      "mpn": "",
+      "manufacturer": "",
+      "footprint": "zudo-osc-hole-field:Potentiometer_Bourns_TC33X_Vertical",
+      "symbol": "zudo-osc-hole-field:TC33X-2-103E",
+      "module_label": "VCF1",
+      "function_label": "BASE FREQ",
+      "label": "VCF1 BASE FREQ",
+      "reference_label": "RV2108",
+      "nominal_resistance": "50 kΩ",
+      "mpn_status": "UNRESOLVED",
+      "source_locator": {
+        "path": "design/spec/modules/filter.py",
+        "line": 91,
+        "anchor": "source trim call for filter:EXPO_BASE_TRIM"
+      },
+      "calibration_reference": "doc/src/content/docs/verification/osc-trimmer-calibration.mdx#filter-expo-base-trim",
+      "calibration_status": "NEEDS BENCH",
+      "rotation_direction": "UNKNOWN / NEEDS BENCH",
+      "source_pins": {
+        "1": "/F1/EXPO_REF_TRIM",
+        "2": "/F1/EXPO_REFERENCE",
+        "3": "/F1/EXPO_REFERENCE"
+      },
+      "pins": {
+        "1": "X7F52A3A75BAC03DFC565",
+        "2": "X9A591EC2CF76B3860AE6",
+        "3": "X9A591EC2CF76B3860AE6"
+      },
+      "placement": {
+        "board": "K",
+        "board_id": "osc-core",
+        "x_mm": 72.19999999999999,
+        "y_mm": 108.05000000000001,
+        "kicad_orientation_deg": 180.0,
+        "side": "B.Cu",
+        "native_x_mm": 172.2,
+        "native_y_mm": 158.05,
+        "native_orientation_deg": 180.0,
+        "rotation_deg": 0,
+        "courtyard_mm": [
+          69.75,
+          106.0,
+          75.05,
+          109.89999999999999
+        ]
+      }
+    },
+    {
+      "ref": "RV2109",
+      "block": "F1",
+      "role": "filter:BP_OFFSET",
+      "family": "filter",
+      "part_key": "CORE_BP_OFFSET.0",
+      "value": "10 kΩ",
+      "mpn": "TC33X-2-103E",
+      "manufacturer": "Bourns",
+      "footprint": "zudo-osc-hole-field:Potentiometer_Bourns_TC33X_Vertical",
+      "symbol": "zudo-osc-hole-field:TC33X-2-103E",
+      "module_label": "VCF1",
+      "function_label": "BP OFFSET",
+      "label": "VCF1 BP OFFSET",
+      "reference_label": "RV2109",
+      "nominal_resistance": "10 kΩ",
+      "mpn_status": "SOURCE ASSIGNED / NOT QUALIFIED",
+      "source_locator": {
+        "path": "design/spec/modules/filter.py",
+        "line": 105,
+        "anchor": "source trim call for filter:BP_OFFSET"
+      },
+      "calibration_reference": "doc/src/content/docs/verification/osc-trimmer-calibration.mdx#filter-bp-offset",
+      "calibration_status": "NEEDS BENCH",
+      "rotation_direction": "UNKNOWN / NEEDS BENCH",
+      "source_pins": {
+        "1": "/F1/REFN5",
+        "2": "/F1/BP_OFFSET_TRIM",
+        "3": "/F1/REF5"
+      },
+      "pins": {
+        "1": "XC5025765F7BDD89F24FA",
+        "2": "X7CEF15A4DB002837A875",
+        "3": "XA82AFE6CDE755FEB4702"
+      },
+      "placement": {
+        "board": "K",
+        "board_id": "osc-core",
+        "x_mm": 47.349999999999994,
+        "y_mm": 104.80000000000001,
+        "kicad_orientation_deg": 0,
+        "side": "F.Cu",
+        "native_x_mm": 147.35,
+        "native_y_mm": 154.8,
+        "native_orientation_deg": 0,
+        "rotation_deg": 0,
+        "courtyard_mm": [
+          44.5,
+          102.75,
+          49.800000000000004,
+          106.64999999999999
+        ]
+      }
+    },
+    {
+      "ref": "RV2110",
+      "block": "F1",
+      "role": "filter:LP_OFFSET",
+      "family": "filter",
+      "part_key": "CORE_LP_OFFSET.0",
+      "value": "10 kΩ",
+      "mpn": "TC33X-2-103E",
+      "manufacturer": "Bourns",
+      "footprint": "zudo-osc-hole-field:Potentiometer_Bourns_TC33X_Vertical",
+      "symbol": "zudo-osc-hole-field:TC33X-2-103E",
+      "module_label": "VCF1",
+      "function_label": "LP OFFSET",
+      "label": "VCF1 LP OFFSET",
+      "reference_label": "RV2110",
+      "nominal_resistance": "10 kΩ",
+      "mpn_status": "SOURCE ASSIGNED / NOT QUALIFIED",
+      "source_locator": {
+        "path": "design/spec/modules/filter.py",
+        "line": 105,
+        "anchor": "source trim call for filter:LP_OFFSET"
+      },
+      "calibration_reference": "doc/src/content/docs/verification/osc-trimmer-calibration.mdx#filter-lp-offset",
+      "calibration_status": "NEEDS BENCH",
+      "rotation_direction": "UNKNOWN / NEEDS BENCH",
+      "source_pins": {
+        "1": "/F1/REFN5",
+        "2": "/F1/LP_OFFSET_TRIM",
+        "3": "/F1/REF5"
+      },
+      "pins": {
+        "1": "XC5025765F7BDD89F24FA",
+        "2": "X71FE9D19F3BAD5E1F9CA",
+        "3": "XA82AFE6CDE755FEB4702"
+      },
+      "placement": {
+        "board": "K",
+        "board_id": "osc-core",
+        "x_mm": 60.599999999999994,
+        "y_mm": 127.19999999999999,
+        "kicad_orientation_deg": 90.0,
+        "side": "B.Cu",
+        "native_x_mm": 160.6,
+        "native_y_mm": 177.2,
+        "native_orientation_deg": 90.0,
+        "rotation_deg": 90,
+        "courtyard_mm": [
+          58.75,
+          124.75,
+          62.65,
+          130.05
+        ]
+      }
+    },
+    {
+      "ref": "RV2111",
+      "block": "F1",
+      "role": "filter:RES_OFFSET",
+      "family": "filter",
+      "part_key": "CORE_RES_OFFSET.0",
+      "value": "10 kΩ",
+      "mpn": "TC33X-2-103E",
+      "manufacturer": "Bourns",
+      "footprint": "zudo-osc-hole-field:Potentiometer_Bourns_TC33X_Vertical",
+      "symbol": "zudo-osc-hole-field:TC33X-2-103E",
+      "module_label": "VCF1",
+      "function_label": "RES OFFSET",
+      "label": "VCF1 RES OFFSET",
+      "reference_label": "RV2111",
+      "nominal_resistance": "10 kΩ",
+      "mpn_status": "SOURCE ASSIGNED / NOT QUALIFIED",
+      "source_locator": {
+        "path": "design/spec/modules/filter.py",
+        "line": 105,
+        "anchor": "source trim call for filter:RES_OFFSET"
+      },
+      "calibration_reference": "doc/src/content/docs/verification/osc-trimmer-calibration.mdx#filter-res-offset",
+      "calibration_status": "NEEDS BENCH",
+      "rotation_direction": "UNKNOWN / NEEDS BENCH",
+      "source_pins": {
+        "1": "/F1/REFN5",
+        "2": "/F1/RES_OFFSET_TRIM",
+        "3": "/F1/REF5"
+      },
+      "pins": {
+        "1": "XC5025765F7BDD89F24FA",
+        "2": "X3FDB5C3A9C702DA3237E",
+        "3": "XA82AFE6CDE755FEB4702"
+      },
+      "placement": {
+        "board": "K",
+        "board_id": "osc-core",
+        "x_mm": 56.099999999999994,
+        "y_mm": 130.7,
+        "kicad_orientation_deg": 90.0,
+        "side": "B.Cu",
+        "native_x_mm": 156.1,
+        "native_y_mm": 180.7,
+        "native_orientation_deg": 90.0,
+        "rotation_deg": 90,
+        "courtyard_mm": [
+          54.25,
+          128.25,
+          58.15,
+          133.54999999999998
+        ]
+      }
+    },
+    {
+      "ref": "RV2112",
+      "block": "F1",
+      "role": "filter:DRY_OFFSET",
+      "family": "filter",
+      "part_key": "CORE_DRY_OFFSET.0",
+      "value": "10 kΩ",
+      "mpn": "TC33X-2-103E",
+      "manufacturer": "Bourns",
+      "footprint": "zudo-osc-hole-field:Potentiometer_Bourns_TC33X_Vertical",
+      "symbol": "zudo-osc-hole-field:TC33X-2-103E",
+      "module_label": "VCF1",
+      "function_label": "DRY OFFSET",
+      "label": "VCF1 DRY OFFSET",
+      "reference_label": "RV2112",
+      "nominal_resistance": "10 kΩ",
+      "mpn_status": "SOURCE ASSIGNED / NOT QUALIFIED",
+      "source_locator": {
+        "path": "design/spec/modules/filter.py",
+        "line": 105,
+        "anchor": "source trim call for filter:DRY_OFFSET"
+      },
+      "calibration_reference": "doc/src/content/docs/verification/osc-trimmer-calibration.mdx#filter-dry-offset",
+      "calibration_status": "NEEDS BENCH",
+      "rotation_direction": "UNKNOWN / NEEDS BENCH",
+      "source_pins": {
+        "1": "/F1/REFN5",
+        "2": "/F1/DRY_OFFSET_TRIM",
+        "3": "/F1/REF5"
+      },
+      "pins": {
+        "1": "XC5025765F7BDD89F24FA",
+        "2": "X82DACB5D97927516216B",
+        "3": "XA82AFE6CDE755FEB4702"
+      },
+      "placement": {
+        "board": "K",
+        "board_id": "osc-core",
+        "x_mm": 37.69999999999999,
+        "y_mm": 106.30000000000001,
+        "kicad_orientation_deg": 180.0,
+        "side": "B.Cu",
+        "native_x_mm": 137.7,
+        "native_y_mm": 156.3,
+        "native_orientation_deg": 180.0,
+        "rotation_deg": 0,
+        "courtyard_mm": [
+          35.25,
+          104.25,
+          40.550000000000004,
+          108.14999999999999
+        ]
+      }
+    },
+    {
+      "ref": "RV2113",
+      "block": "F1",
+      "role": "filter:RESONANCE_MAX",
+      "family": "filter",
+      "part_key": "CORE_RESONANCE_MAX.0",
+      "value": "500 kΩ",
+      "mpn": "",
+      "manufacturer": "",
+      "footprint": "zudo-osc-hole-field:Potentiometer_Bourns_TC33X_Vertical",
+      "symbol": "zudo-osc-hole-field:TC33X-2-103E",
+      "module_label": "VCF1",
+      "function_label": "RES MAX",
+      "label": "VCF1 RES MAX",
+      "reference_label": "RV2113",
+      "nominal_resistance": "500 kΩ",
+      "mpn_status": "UNRESOLVED",
+      "source_locator": {
+        "path": "design/spec/modules/filter.py",
+        "line": 134,
+        "anchor": "source trim call for filter:RESONANCE_MAX"
+      },
+      "calibration_reference": "doc/src/content/docs/verification/osc-trimmer-calibration.mdx#filter-resonance-max",
+      "calibration_status": "NEEDS BENCH",
+      "rotation_direction": "UNKNOWN / NEEDS BENCH",
+      "source_pins": {
+        "1": "/F1/RESONANCE_TRIM",
+        "2": "/F1/RES_INT",
+        "3": "/F1/RES_INT"
+      },
+      "pins": {
+        "1": "X3149377C3AC6C3F8E3BE",
+        "2": "X419E27ECCE370EBEF72E",
+        "3": "X419E27ECCE370EBEF72E"
+      },
+      "placement": {
+        "board": "K",
+        "board_id": "osc-core",
+        "x_mm": 21.099999999999994,
+        "y_mm": 118.19999999999999,
+        "kicad_orientation_deg": 90.0,
+        "side": "B.Cu",
+        "native_x_mm": 121.1,
+        "native_y_mm": 168.2,
+        "native_orientation_deg": 90.0,
+        "rotation_deg": 90,
+        "courtyard_mm": [
+          19.25,
+          115.75,
+          23.150000000000002,
+          121.05
+        ]
+      }
+    },
+    {
+      "ref": "RV2207",
+      "block": "F2",
+      "role": "filter:EXPO_SCALE_TRIM",
+      "family": "filter",
+      "part_key": "CORE_EXPO_SCALE_TRIM.0",
+      "value": "1 kΩ",
+      "mpn": "TC33X-2-102E",
+      "manufacturer": "Bourns",
+      "footprint": "zudo-osc-hole-field:Potentiometer_Bourns_TC33X_Vertical",
+      "symbol": "zudo-osc-hole-field:TC33X-2-102E",
+      "module_label": "VCF2",
+      "function_label": "FREQ SCALE",
+      "label": "VCF2 FREQ SCALE",
+      "reference_label": "RV2207",
+      "nominal_resistance": "1 kΩ",
+      "mpn_status": "SOURCE ASSIGNED / NOT QUALIFIED",
+      "source_locator": {
+        "path": "design/spec/modules/filter.py",
+        "line": 88,
+        "anchor": "source trim call for filter:EXPO_SCALE_TRIM"
+      },
+      "calibration_reference": "doc/src/content/docs/verification/osc-trimmer-calibration.mdx#filter-expo-scale-trim",
+      "calibration_status": "NEEDS BENCH",
+      "rotation_direction": "UNKNOWN / NEEDS BENCH",
+      "source_pins": {
+        "1": "/F2/EXPO_SCALE_TRIM",
+        "2": "/F2/EXPO_SCALE_SUM",
+        "3": "/F2/EXPO_SCALE_SUM"
+      },
+      "pins": {
+        "1": "X78EF9D04BC1BBC685DF1",
+        "2": "XA43D9910ABB9C5D8EBAA",
+        "3": "XA43D9910ABB9C5D8EBAA"
+      },
+      "placement": {
+        "board": "K",
+        "board_id": "osc-core",
+        "x_mm": 81.85,
+        "y_mm": 57.05,
+        "kicad_orientation_deg": 0,
+        "side": "F.Cu",
+        "native_x_mm": 181.85,
+        "native_y_mm": 107.05,
+        "native_orientation_deg": 0,
+        "rotation_deg": 0,
+        "courtyard_mm": [
+          79.0,
+          55.0,
+          84.3,
+          58.9
+        ]
+      }
+    },
+    {
+      "ref": "RV2208",
+      "block": "F2",
+      "role": "filter:EXPO_BASE_TRIM",
+      "family": "filter",
+      "part_key": "CORE_EXPO_BASE_TRIM.0",
+      "value": "50 kΩ",
+      "mpn": "",
+      "manufacturer": "",
+      "footprint": "zudo-osc-hole-field:Potentiometer_Bourns_TC33X_Vertical",
+      "symbol": "zudo-osc-hole-field:TC33X-2-103E",
+      "module_label": "VCF2",
+      "function_label": "BASE FREQ",
+      "label": "VCF2 BASE FREQ",
+      "reference_label": "RV2208",
+      "nominal_resistance": "50 kΩ",
+      "mpn_status": "UNRESOLVED",
+      "source_locator": {
+        "path": "design/spec/modules/filter.py",
+        "line": 91,
+        "anchor": "source trim call for filter:EXPO_BASE_TRIM"
+      },
+      "calibration_reference": "doc/src/content/docs/verification/osc-trimmer-calibration.mdx#filter-expo-base-trim",
+      "calibration_status": "NEEDS BENCH",
+      "rotation_direction": "UNKNOWN / NEEDS BENCH",
+      "source_pins": {
+        "1": "/F2/EXPO_REF_TRIM",
+        "2": "/F2/EXPO_REFERENCE",
+        "3": "/F2/EXPO_REFERENCE"
+      },
+      "pins": {
+        "1": "X81AE9767B60B482E7C92",
+        "2": "X3470B64811CEDC9F86E6",
+        "3": "X3470B64811CEDC9F86E6"
+      },
+      "placement": {
+        "board": "K",
+        "board_id": "osc-core",
+        "x_mm": 102.19999999999999,
+        "y_mm": 55.05,
+        "kicad_orientation_deg": 180.0,
+        "side": "B.Cu",
+        "native_x_mm": 202.2,
+        "native_y_mm": 105.05,
+        "native_orientation_deg": 180.0,
+        "rotation_deg": 0,
+        "courtyard_mm": [
+          99.75,
+          53.0,
+          105.05,
+          56.9
+        ]
+      }
+    },
+    {
+      "ref": "RV2209",
+      "block": "F2",
+      "role": "filter:BP_OFFSET",
+      "family": "filter",
+      "part_key": "CORE_BP_OFFSET.0",
+      "value": "10 kΩ",
+      "mpn": "TC33X-2-103E",
+      "manufacturer": "Bourns",
+      "footprint": "zudo-osc-hole-field:Potentiometer_Bourns_TC33X_Vertical",
+      "symbol": "zudo-osc-hole-field:TC33X-2-103E",
+      "module_label": "VCF2",
+      "function_label": "BP OFFSET",
+      "label": "VCF2 BP OFFSET",
+      "reference_label": "RV2209",
+      "nominal_resistance": "10 kΩ",
+      "mpn_status": "SOURCE ASSIGNED / NOT QUALIFIED",
+      "source_locator": {
+        "path": "design/spec/modules/filter.py",
+        "line": 105,
+        "anchor": "source trim call for filter:BP_OFFSET"
+      },
+      "calibration_reference": "doc/src/content/docs/verification/osc-trimmer-calibration.mdx#filter-bp-offset",
+      "calibration_status": "NEEDS BENCH",
+      "rotation_direction": "UNKNOWN / NEEDS BENCH",
+      "source_pins": {
+        "1": "/F2/REFN5",
+        "2": "/F2/BP_OFFSET_TRIM",
+        "3": "/F2/REF5"
+      },
+      "pins": {
+        "1": "X9BC55CB24132DBE1E40E",
+        "2": "X65E952248FA7DF68F858",
+        "3": "XC19387F5B49A211AD2BD"
+      },
+      "placement": {
+        "board": "K",
+        "board_id": "osc-core",
+        "x_mm": 95.6,
+        "y_mm": 85.55000000000001,
+        "kicad_orientation_deg": 0,
+        "side": "F.Cu",
+        "native_x_mm": 195.6,
+        "native_y_mm": 135.55,
+        "native_orientation_deg": 0,
+        "rotation_deg": 0,
+        "courtyard_mm": [
+          92.75,
+          83.5,
+          98.05,
+          87.39999999999999
+        ]
+      }
+    },
+    {
+      "ref": "RV2210",
+      "block": "F2",
+      "role": "filter:LP_OFFSET",
+      "family": "filter",
+      "part_key": "CORE_LP_OFFSET.0",
+      "value": "10 kΩ",
+      "mpn": "TC33X-2-103E",
+      "manufacturer": "Bourns",
+      "footprint": "zudo-osc-hole-field:Potentiometer_Bourns_TC33X_Vertical",
+      "symbol": "zudo-osc-hole-field:TC33X-2-103E",
+      "module_label": "VCF2",
+      "function_label": "LP OFFSET",
+      "label": "VCF2 LP OFFSET",
+      "reference_label": "RV2210",
+      "nominal_resistance": "10 kΩ",
+      "mpn_status": "SOURCE ASSIGNED / NOT QUALIFIED",
+      "source_locator": {
+        "path": "design/spec/modules/filter.py",
+        "line": 105,
+        "anchor": "source trim call for filter:LP_OFFSET"
+      },
+      "calibration_reference": "doc/src/content/docs/verification/osc-trimmer-calibration.mdx#filter-lp-offset",
+      "calibration_status": "NEEDS BENCH",
+      "rotation_direction": "UNKNOWN / NEEDS BENCH",
+      "source_pins": {
+        "1": "/F2/REFN5",
+        "2": "/F2/LP_OFFSET_TRIM",
+        "3": "/F2/REF5"
+      },
+      "pins": {
+        "1": "X9BC55CB24132DBE1E40E",
+        "2": "XCDDA6C558DA382D7DA2D",
+        "3": "XC19387F5B49A211AD2BD"
+      },
+      "placement": {
+        "board": "K",
+        "board_id": "osc-core",
+        "x_mm": 72.85,
+        "y_mm": 77.2,
+        "kicad_orientation_deg": 90.0,
+        "side": "B.Cu",
+        "native_x_mm": 172.85,
+        "native_y_mm": 127.2,
+        "native_orientation_deg": 90.0,
+        "rotation_deg": 90,
+        "courtyard_mm": [
+          71.0,
+          74.75,
+          74.89999999999999,
+          80.05
+        ]
+      }
+    },
+    {
+      "ref": "RV2211",
+      "block": "F2",
+      "role": "filter:RES_OFFSET",
+      "family": "filter",
+      "part_key": "CORE_RES_OFFSET.0",
+      "value": "10 kΩ",
+      "mpn": "TC33X-2-103E",
+      "manufacturer": "Bourns",
+      "footprint": "zudo-osc-hole-field:Potentiometer_Bourns_TC33X_Vertical",
+      "symbol": "zudo-osc-hole-field:TC33X-2-103E",
+      "module_label": "VCF2",
+      "function_label": "RES OFFSET",
+      "label": "VCF2 RES OFFSET",
+      "reference_label": "RV2211",
+      "nominal_resistance": "10 kΩ",
+      "mpn_status": "SOURCE ASSIGNED / NOT QUALIFIED",
+      "source_locator": {
+        "path": "design/spec/modules/filter.py",
+        "line": 105,
+        "anchor": "source trim call for filter:RES_OFFSET"
+      },
+      "calibration_reference": "doc/src/content/docs/verification/osc-trimmer-calibration.mdx#filter-res-offset",
+      "calibration_status": "NEEDS BENCH",
+      "rotation_direction": "UNKNOWN / NEEDS BENCH",
+      "source_pins": {
+        "1": "/F2/REFN5",
+        "2": "/F2/RES_OFFSET_TRIM",
+        "3": "/F2/REF5"
+      },
+      "pins": {
+        "1": "X9BC55CB24132DBE1E40E",
+        "2": "X34C003B95F51E457536E",
+        "3": "XC19387F5B49A211AD2BD"
+      },
+      "placement": {
+        "board": "K",
+        "board_id": "osc-core",
+        "x_mm": 109.1,
+        "y_mm": 93.19999999999999,
+        "kicad_orientation_deg": 90.0,
+        "side": "B.Cu",
+        "native_x_mm": 209.1,
+        "native_y_mm": 143.2,
+        "native_orientation_deg": 90.0,
+        "rotation_deg": 90,
+        "courtyard_mm": [
+          107.25,
+          90.75,
+          111.14999999999999,
+          96.05
+        ]
+      }
+    },
+    {
+      "ref": "RV2212",
+      "block": "F2",
+      "role": "filter:DRY_OFFSET",
+      "family": "filter",
+      "part_key": "CORE_DRY_OFFSET.0",
+      "value": "10 kΩ",
+      "mpn": "TC33X-2-103E",
+      "manufacturer": "Bourns",
+      "footprint": "zudo-osc-hole-field:Potentiometer_Bourns_TC33X_Vertical",
+      "symbol": "zudo-osc-hole-field:TC33X-2-103E",
+      "module_label": "VCF2",
+      "function_label": "DRY OFFSET",
+      "label": "VCF2 DRY OFFSET",
+      "reference_label": "RV2212",
+      "nominal_resistance": "10 kΩ",
+      "mpn_status": "SOURCE ASSIGNED / NOT QUALIFIED",
+      "source_locator": {
+        "path": "design/spec/modules/filter.py",
+        "line": 105,
+        "anchor": "source trim call for filter:DRY_OFFSET"
+      },
+      "calibration_reference": "doc/src/content/docs/verification/osc-trimmer-calibration.mdx#filter-dry-offset",
+      "calibration_status": "NEEDS BENCH",
+      "rotation_direction": "UNKNOWN / NEEDS BENCH",
+      "source_pins": {
+        "1": "/F2/REFN5",
+        "2": "/F2/DRY_OFFSET_TRIM",
+        "3": "/F2/REF5"
+      },
+      "pins": {
+        "1": "X9BC55CB24132DBE1E40E",
+        "2": "X10F7DEF7DC2E86C6C743",
+        "3": "XC19387F5B49A211AD2BD"
+      },
+      "placement": {
+        "board": "K",
+        "board_id": "osc-core",
+        "x_mm": 96.69999999999999,
+        "y_mm": 61.05,
+        "kicad_orientation_deg": 180.0,
+        "side": "B.Cu",
+        "native_x_mm": 196.7,
+        "native_y_mm": 111.05,
+        "native_orientation_deg": 180.0,
+        "rotation_deg": 0,
+        "courtyard_mm": [
+          94.25,
+          59.0,
+          99.55,
+          62.9
+        ]
+      }
+    },
+    {
+      "ref": "RV2213",
+      "block": "F2",
+      "role": "filter:RESONANCE_MAX",
+      "family": "filter",
+      "part_key": "CORE_RESONANCE_MAX.0",
+      "value": "500 kΩ",
+      "mpn": "",
+      "manufacturer": "",
+      "footprint": "zudo-osc-hole-field:Potentiometer_Bourns_TC33X_Vertical",
+      "symbol": "zudo-osc-hole-field:TC33X-2-103E",
+      "module_label": "VCF2",
+      "function_label": "RES MAX",
+      "label": "VCF2 RES MAX",
+      "reference_label": "RV2213",
+      "nominal_resistance": "500 kΩ",
+      "mpn_status": "UNRESOLVED",
+      "source_locator": {
+        "path": "design/spec/modules/filter.py",
+        "line": 134,
+        "anchor": "source trim call for filter:RESONANCE_MAX"
+      },
+      "calibration_reference": "doc/src/content/docs/verification/osc-trimmer-calibration.mdx#filter-resonance-max",
+      "calibration_status": "NEEDS BENCH",
+      "rotation_direction": "UNKNOWN / NEEDS BENCH",
+      "source_pins": {
+        "1": "/F2/RESONANCE_TRIM",
+        "2": "/F2/RES_INT",
+        "3": "/F2/RES_INT"
+      },
+      "pins": {
+        "1": "X5654AD6D3086D9EBB30E",
+        "2": "XC1149D74CCC833EBF9A8",
+        "3": "XC1149D74CCC833EBF9A8"
+      },
+      "placement": {
+        "board": "K",
+        "board_id": "osc-core",
+        "x_mm": 102.35,
+        "y_mm": 88.44999999999999,
+        "kicad_orientation_deg": 90.0,
+        "side": "B.Cu",
+        "native_x_mm": 202.35,
+        "native_y_mm": 138.45,
+        "native_orientation_deg": 90.0,
+        "rotation_deg": 90,
+        "courtyard_mm": [
+          100.5,
+          86.0,
+          104.39999999999999,
+          91.3
+        ]
+      }
+    },
+    {
+      "ref": "RV2307",
+      "block": "F3",
+      "role": "filter:EXPO_SCALE_TRIM",
+      "family": "filter",
+      "part_key": "CORE_EXPO_SCALE_TRIM.0",
+      "value": "1 kΩ",
+      "mpn": "TC33X-2-102E",
+      "manufacturer": "Bourns",
+      "footprint": "zudo-osc-hole-field:Potentiometer_Bourns_TC33X_Vertical",
+      "symbol": "zudo-osc-hole-field:TC33X-2-102E",
+      "module_label": "VCF3",
+      "function_label": "FREQ SCALE",
+      "label": "VCF3 FREQ SCALE",
+      "reference_label": "RV2307",
+      "nominal_resistance": "1 kΩ",
+      "mpn_status": "SOURCE ASSIGNED / NOT QUALIFIED",
+      "source_locator": {
+        "path": "design/spec/modules/filter.py",
+        "line": 88,
+        "anchor": "source trim call for filter:EXPO_SCALE_TRIM"
+      },
+      "calibration_reference": "doc/src/content/docs/verification/osc-trimmer-calibration.mdx#filter-expo-scale-trim",
+      "calibration_status": "NEEDS BENCH",
+      "rotation_direction": "UNKNOWN / NEEDS BENCH",
+      "source_pins": {
+        "1": "/F3/EXPO_SCALE_TRIM",
+        "2": "/F3/EXPO_SCALE_SUM",
+        "3": "/F3/EXPO_SCALE_SUM"
+      },
+      "pins": {
+        "1": "X8865BFEB7A8BC769197A",
+        "2": "XC12A5C4EF4E6A6244DC2",
+        "3": "XC12A5C4EF4E6A6244DC2"
+      },
+      "placement": {
+        "board": "K",
+        "board_id": "osc-core",
+        "x_mm": 113.1,
+        "y_mm": 175.05,
+        "kicad_orientation_deg": 0,
+        "side": "F.Cu",
+        "native_x_mm": 213.1,
+        "native_y_mm": 225.05,
+        "native_orientation_deg": 0,
+        "rotation_deg": 0,
+        "courtyard_mm": [
+          110.25,
+          173.0,
+          115.55,
+          176.9
+        ]
+      }
+    },
+    {
+      "ref": "RV2308",
+      "block": "F3",
+      "role": "filter:EXPO_BASE_TRIM",
+      "family": "filter",
+      "part_key": "CORE_EXPO_BASE_TRIM.0",
+      "value": "50 kΩ",
+      "mpn": "",
+      "manufacturer": "",
+      "footprint": "zudo-osc-hole-field:Potentiometer_Bourns_TC33X_Vertical",
+      "symbol": "zudo-osc-hole-field:TC33X-2-103E",
+      "module_label": "VCF3",
+      "function_label": "BASE FREQ",
+      "label": "VCF3 BASE FREQ",
+      "reference_label": "RV2308",
+      "nominal_resistance": "50 kΩ",
+      "mpn_status": "UNRESOLVED",
+      "source_locator": {
+        "path": "design/spec/modules/filter.py",
+        "line": 91,
+        "anchor": "source trim call for filter:EXPO_BASE_TRIM"
+      },
+      "calibration_reference": "doc/src/content/docs/verification/osc-trimmer-calibration.mdx#filter-expo-base-trim",
+      "calibration_status": "NEEDS BENCH",
+      "rotation_direction": "UNKNOWN / NEEDS BENCH",
+      "source_pins": {
+        "1": "/F3/EXPO_REF_TRIM",
+        "2": "/F3/EXPO_REFERENCE",
+        "3": "/F3/EXPO_REFERENCE"
+      },
+      "pins": {
+        "1": "X6B198689616F45B6B0B3",
+        "2": "XD9FC48F3F9F8150432DE",
+        "3": "XD9FC48F3F9F8150432DE"
+      },
+      "placement": {
+        "board": "K",
+        "board_id": "osc-core",
+        "x_mm": 134.1,
+        "y_mm": 192.3,
+        "kicad_orientation_deg": 0,
+        "side": "F.Cu",
+        "native_x_mm": 234.1,
+        "native_y_mm": 242.3,
+        "native_orientation_deg": 0,
+        "rotation_deg": 0,
+        "courtyard_mm": [
+          131.25,
+          190.25,
+          136.54999999999998,
+          194.15
+        ]
+      }
+    },
+    {
+      "ref": "RV2309",
+      "block": "F3",
+      "role": "filter:BP_OFFSET",
+      "family": "filter",
+      "part_key": "CORE_BP_OFFSET.0",
+      "value": "10 kΩ",
+      "mpn": "TC33X-2-103E",
+      "manufacturer": "Bourns",
+      "footprint": "zudo-osc-hole-field:Potentiometer_Bourns_TC33X_Vertical",
+      "symbol": "zudo-osc-hole-field:TC33X-2-103E",
+      "module_label": "VCF3",
+      "function_label": "BP OFFSET",
+      "label": "VCF3 BP OFFSET",
+      "reference_label": "RV2309",
+      "nominal_resistance": "10 kΩ",
+      "mpn_status": "SOURCE ASSIGNED / NOT QUALIFIED",
+      "source_locator": {
+        "path": "design/spec/modules/filter.py",
+        "line": 105,
+        "anchor": "source trim call for filter:BP_OFFSET"
+      },
+      "calibration_reference": "doc/src/content/docs/verification/osc-trimmer-calibration.mdx#filter-bp-offset",
+      "calibration_status": "NEEDS BENCH",
+      "rotation_direction": "UNKNOWN / NEEDS BENCH",
+      "source_pins": {
+        "1": "/F3/REFN5",
+        "2": "/F3/BP_OFFSET_TRIM",
+        "3": "/F3/REF5"
+      },
+      "pins": {
+        "1": "XCAFA40AF9494E073CDBA",
+        "2": "XF5C940639BF958F9B92F",
+        "3": "XE15497AEEB69BDAA0843"
+      },
+      "placement": {
+        "board": "K",
+        "board_id": "osc-core",
+        "x_mm": 115.1,
+        "y_mm": 192.3,
+        "kicad_orientation_deg": 0,
+        "side": "F.Cu",
+        "native_x_mm": 215.1,
+        "native_y_mm": 242.3,
+        "native_orientation_deg": 0,
+        "rotation_deg": 0,
+        "courtyard_mm": [
+          112.25,
+          190.25,
+          117.55,
+          194.15
+        ]
+      }
+    },
+    {
+      "ref": "RV2310",
+      "block": "F3",
+      "role": "filter:LP_OFFSET",
+      "family": "filter",
+      "part_key": "CORE_LP_OFFSET.0",
+      "value": "10 kΩ",
+      "mpn": "TC33X-2-103E",
+      "manufacturer": "Bourns",
+      "footprint": "zudo-osc-hole-field:Potentiometer_Bourns_TC33X_Vertical",
+      "symbol": "zudo-osc-hole-field:TC33X-2-103E",
+      "module_label": "VCF3",
+      "function_label": "LP OFFSET",
+      "label": "VCF3 LP OFFSET",
+      "reference_label": "RV2310",
+      "nominal_resistance": "10 kΩ",
+      "mpn_status": "SOURCE ASSIGNED / NOT QUALIFIED",
+      "source_locator": {
+        "path": "design/spec/modules/filter.py",
+        "line": 105,
+        "anchor": "source trim call for filter:LP_OFFSET"
+      },
+      "calibration_reference": "doc/src/content/docs/verification/osc-trimmer-calibration.mdx#filter-lp-offset",
+      "calibration_status": "NEEDS BENCH",
+      "rotation_direction": "UNKNOWN / NEEDS BENCH",
+      "source_pins": {
+        "1": "/F3/REFN5",
+        "2": "/F3/LP_OFFSET_TRIM",
+        "3": "/F3/REF5"
+      },
+      "pins": {
+        "1": "XCAFA40AF9494E073CDBA",
+        "2": "X93B51A3CD40492429370",
+        "3": "XE15497AEEB69BDAA0843"
+      },
+      "placement": {
+        "board": "K",
+        "board_id": "osc-core",
+        "x_mm": 148.85,
+        "y_mm": 190.45,
+        "kicad_orientation_deg": 90.0,
+        "side": "B.Cu",
+        "native_x_mm": 248.85,
+        "native_y_mm": 240.45,
+        "native_orientation_deg": 90.0,
+        "rotation_deg": 90,
+        "courtyard_mm": [
+          147.0,
+          188.0,
+          150.9,
+          193.29999999999998
+        ]
+      }
+    },
+    {
+      "ref": "RV2311",
+      "block": "F3",
+      "role": "filter:RES_OFFSET",
+      "family": "filter",
+      "part_key": "CORE_RES_OFFSET.0",
+      "value": "10 kΩ",
+      "mpn": "TC33X-2-103E",
+      "manufacturer": "Bourns",
+      "footprint": "zudo-osc-hole-field:Potentiometer_Bourns_TC33X_Vertical",
+      "symbol": "zudo-osc-hole-field:TC33X-2-103E",
+      "module_label": "VCF3",
+      "function_label": "RES OFFSET",
+      "label": "VCF3 RES OFFSET",
+      "reference_label": "RV2311",
+      "nominal_resistance": "10 kΩ",
+      "mpn_status": "SOURCE ASSIGNED / NOT QUALIFIED",
+      "source_locator": {
+        "path": "design/spec/modules/filter.py",
+        "line": 105,
+        "anchor": "source trim call for filter:RES_OFFSET"
+      },
+      "calibration_reference": "doc/src/content/docs/verification/osc-trimmer-calibration.mdx#filter-res-offset",
+      "calibration_status": "NEEDS BENCH",
+      "rotation_direction": "UNKNOWN / NEEDS BENCH",
+      "source_pins": {
+        "1": "/F3/REFN5",
+        "2": "/F3/RES_OFFSET_TRIM",
+        "3": "/F3/REF5"
+      },
+      "pins": {
+        "1": "XCAFA40AF9494E073CDBA",
+        "2": "XB2476C897A43616D2B8F",
+        "3": "XE15497AEEB69BDAA0843"
+      },
+      "placement": {
+        "board": "K",
+        "board_id": "osc-core",
+        "x_mm": 115.1,
+        "y_mm": 205.3,
+        "kicad_orientation_deg": 0,
+        "side": "F.Cu",
+        "native_x_mm": 215.1,
+        "native_y_mm": 255.3,
+        "native_orientation_deg": 0,
+        "rotation_deg": 0,
+        "courtyard_mm": [
+          112.25,
+          203.25,
+          117.55,
+          207.15
+        ]
+      }
+    },
+    {
+      "ref": "RV2312",
+      "block": "F3",
+      "role": "filter:DRY_OFFSET",
+      "family": "filter",
+      "part_key": "CORE_DRY_OFFSET.0",
+      "value": "10 kΩ",
+      "mpn": "TC33X-2-103E",
+      "manufacturer": "Bourns",
+      "footprint": "zudo-osc-hole-field:Potentiometer_Bourns_TC33X_Vertical",
+      "symbol": "zudo-osc-hole-field:TC33X-2-103E",
+      "module_label": "VCF3",
+      "function_label": "DRY OFFSET",
+      "label": "VCF3 DRY OFFSET",
+      "reference_label": "RV2312",
+      "nominal_resistance": "10 kΩ",
+      "mpn_status": "SOURCE ASSIGNED / NOT QUALIFIED",
+      "source_locator": {
+        "path": "design/spec/modules/filter.py",
+        "line": 105,
+        "anchor": "source trim call for filter:DRY_OFFSET"
+      },
+      "calibration_reference": "doc/src/content/docs/verification/osc-trimmer-calibration.mdx#filter-dry-offset",
+      "calibration_status": "NEEDS BENCH",
+      "rotation_direction": "UNKNOWN / NEEDS BENCH",
+      "source_pins": {
+        "1": "/F3/REFN5",
+        "2": "/F3/DRY_OFFSET_TRIM",
+        "3": "/F3/REF5"
+      },
+      "pins": {
+        "1": "XCAFA40AF9494E073CDBA",
+        "2": "X21277E53CF9685D0C806",
+        "3": "XE15497AEEB69BDAA0843"
+      },
+      "placement": {
+        "board": "K",
+        "board_id": "osc-core",
+        "x_mm": 110.35,
+        "y_mm": 197.6,
+        "kicad_orientation_deg": 270.0,
+        "side": "F.Cu",
+        "native_x_mm": 210.35,
+        "native_y_mm": 247.6,
+        "native_orientation_deg": -90.0,
+        "rotation_deg": 90,
+        "courtyard_mm": [
+          108.5,
+          194.75,
+          112.39999999999999,
+          200.04999999999998
+        ]
+      }
+    },
+    {
+      "ref": "RV2313",
+      "block": "F3",
+      "role": "filter:RESONANCE_MAX",
+      "family": "filter",
+      "part_key": "CORE_RESONANCE_MAX.0",
+      "value": "500 kΩ",
+      "mpn": "",
+      "manufacturer": "",
+      "footprint": "zudo-osc-hole-field:Potentiometer_Bourns_TC33X_Vertical",
+      "symbol": "zudo-osc-hole-field:TC33X-2-103E",
+      "module_label": "VCF3",
+      "function_label": "RES MAX",
+      "label": "VCF3 RES MAX",
+      "reference_label": "RV2313",
+      "nominal_resistance": "500 kΩ",
+      "mpn_status": "UNRESOLVED",
+      "source_locator": {
+        "path": "design/spec/modules/filter.py",
+        "line": 134,
+        "anchor": "source trim call for filter:RESONANCE_MAX"
+      },
+      "calibration_reference": "doc/src/content/docs/verification/osc-trimmer-calibration.mdx#filter-resonance-max",
+      "calibration_status": "NEEDS BENCH",
+      "rotation_direction": "UNKNOWN / NEEDS BENCH",
+      "source_pins": {
+        "1": "/F3/RESONANCE_TRIM",
+        "2": "/F3/RES_INT",
+        "3": "/F3/RES_INT"
+      },
+      "pins": {
+        "1": "X18D5886012D3CD3C858B",
+        "2": "XAF8F046B41DDE12F9296",
+        "3": "XAF8F046B41DDE12F9296"
+      },
+      "placement": {
+        "board": "K",
+        "board_id": "osc-core",
+        "x_mm": 119.19999999999999,
+        "y_mm": 169.05,
+        "kicad_orientation_deg": 180.0,
+        "side": "B.Cu",
+        "native_x_mm": 219.2,
+        "native_y_mm": 219.05,
+        "native_orientation_deg": 180.0,
+        "rotation_deg": 0,
+        "courtyard_mm": [
+          116.75,
+          167.0,
+          122.05,
+          170.9
+        ]
+      }
+    },
+    {
+      "ref": "RV4102",
+      "block": "E1",
+      "role": "envelope:RISE_SCALE",
+      "family": "envelope",
+      "part_key": "CORE_RISE_SCALE.0",
+      "value": "1 kΩ",
+      "mpn": "TC33X-2-102E",
+      "manufacturer": "Bourns",
+      "footprint": "zudo-osc-hole-field:Potentiometer_Bourns_TC33X_Vertical",
+      "symbol": "zudo-osc-hole-field:TC33X-2-102E",
+      "module_label": "AR1",
+      "function_label": "RISE SCALE",
+      "label": "AR1 RISE SCALE",
+      "reference_label": "RV4102",
+      "nominal_resistance": "1 kΩ",
+      "mpn_status": "SOURCE ASSIGNED / NOT QUALIFIED",
+      "source_locator": {
+        "path": "design/spec/modules/envelope.py",
+        "line": 196,
+        "anchor": "source trim call for envelope:RISE_SCALE"
+      },
+      "calibration_reference": "doc/src/content/docs/verification/osc-trimmer-calibration.mdx#envelope-rise-scale",
+      "calibration_status": "NEEDS BENCH",
+      "rotation_direction": "UNKNOWN / NEEDS BENCH",
+      "source_pins": {
+        "1": "/E1/RISE_SCALE_TRIM",
+        "2": "/E1/RISE_EXPO_SUM",
+        "3": "/E1/RISE_EXPO_SUM"
+      },
+      "pins": {
+        "1": "XE16DF9710AFE695C83CF",
+        "2": "X8A880EACFE751F68BB4D",
+        "3": "X8A880EACFE751F68BB4D"
+      },
+      "placement": {
+        "board": "K",
+        "board_id": "osc-core",
+        "x_mm": 208.35000000000002,
+        "y_mm": 53.05,
+        "kicad_orientation_deg": 0,
+        "side": "F.Cu",
+        "native_x_mm": 308.35,
+        "native_y_mm": 103.05,
+        "native_orientation_deg": 0,
+        "rotation_deg": 0,
+        "courtyard_mm": [
+          205.5,
+          51.0,
+          210.79999999999998,
+          54.9
+        ]
+      }
+    },
+    {
+      "ref": "RV4103",
+      "block": "E1",
+      "role": "envelope:RISE_BASE",
+      "family": "envelope",
+      "part_key": "CORE_RISE_BASE.0",
+      "value": "50 kΩ",
+      "mpn": "",
+      "manufacturer": "",
+      "footprint": "zudo-osc-hole-field:Potentiometer_Bourns_TC33X_Vertical",
+      "symbol": "zudo-osc-hole-field:TC33X-2-103E",
+      "module_label": "AR1",
+      "function_label": "RISE BASE",
+      "label": "AR1 RISE BASE",
+      "reference_label": "RV4103",
+      "nominal_resistance": "50 kΩ",
+      "mpn_status": "UNRESOLVED",
+      "source_locator": {
+        "path": "design/spec/modules/envelope.py",
+        "line": 199,
+        "anchor": "source trim call for envelope:RISE_BASE"
+      },
+      "calibration_reference": "doc/src/content/docs/verification/osc-trimmer-calibration.mdx#envelope-rise-base",
+      "calibration_status": "NEEDS BENCH",
+      "rotation_direction": "UNKNOWN / NEEDS BENCH",
+      "source_pins": {
+        "1": "/E1/RISE_REF_TRIM",
+        "2": "/E1/RISE_EXPO_REF",
+        "3": "/E1/RISE_EXPO_REF"
+      },
+      "pins": {
+        "1": "X933A94DFC541891C8EF6",
+        "2": "X2BABCD1F4A2DFB270E50",
+        "3": "X2BABCD1F4A2DFB270E50"
+      },
+      "placement": {
+        "board": "K",
+        "board_id": "osc-core",
+        "x_mm": 218.2,
+        "y_mm": 53.3,
+        "kicad_orientation_deg": 180.0,
+        "side": "B.Cu",
+        "native_x_mm": 318.2,
+        "native_y_mm": 103.3,
+        "native_orientation_deg": 180.0,
+        "rotation_deg": 0,
+        "courtyard_mm": [
+          215.75,
+          51.25,
+          221.04999999999998,
+          55.15
+        ]
+      }
+    },
+    {
+      "ref": "RV4104",
+      "block": "E1",
+      "role": "envelope:RISE_OFFSET",
+      "family": "envelope",
+      "part_key": "CORE_RISE_OFFSET.0",
+      "value": "10 kΩ",
+      "mpn": "TC33X-2-103E",
+      "manufacturer": "Bourns",
+      "footprint": "zudo-osc-hole-field:Potentiometer_Bourns_TC33X_Vertical",
+      "symbol": "zudo-osc-hole-field:TC33X-2-103E",
+      "module_label": "AR1",
+      "function_label": "RISE OFFSET",
+      "label": "AR1 RISE OFFSET",
+      "reference_label": "RV4104",
+      "nominal_resistance": "10 kΩ",
+      "mpn_status": "SOURCE ASSIGNED / NOT QUALIFIED",
+      "source_locator": {
+        "path": "design/spec/modules/envelope.py",
+        "line": 205,
+        "anchor": "source trim call for envelope:RISE_OFFSET"
+      },
+      "calibration_reference": "doc/src/content/docs/verification/osc-trimmer-calibration.mdx#envelope-rise-offset",
+      "calibration_status": "NEEDS BENCH",
+      "rotation_direction": "UNKNOWN / NEEDS BENCH",
+      "source_pins": {
+        "1": "/E1/REFN5",
+        "2": "/E1/RISE_OFFSET_TRIM",
+        "3": "/E1/REF5"
+      },
+      "pins": {
+        "1": "XFB0644432B15DB7BBF4C",
+        "2": "X904DAC27D0407C5CAAF0",
+        "3": "X214ED5A8892039CF8AA7"
+      },
+      "placement": {
+        "board": "K",
+        "board_id": "osc-core",
+        "x_mm": 182.10000000000002,
+        "y_mm": 67.3,
+        "kicad_orientation_deg": 0,
+        "side": "F.Cu",
+        "native_x_mm": 282.1,
+        "native_y_mm": 117.3,
+        "native_orientation_deg": 0,
+        "rotation_deg": 0,
+        "courtyard_mm": [
+          179.25,
+          65.25,
+          184.54999999999998,
+          69.14999999999999
+        ]
+      }
+    },
+    {
+      "ref": "RV4106",
+      "block": "E1",
+      "role": "envelope:FALL_SCALE",
+      "family": "envelope",
+      "part_key": "CORE_FALL_SCALE.0",
+      "value": "1 kΩ",
+      "mpn": "TC33X-2-102E",
+      "manufacturer": "Bourns",
+      "footprint": "zudo-osc-hole-field:Potentiometer_Bourns_TC33X_Vertical",
+      "symbol": "zudo-osc-hole-field:TC33X-2-102E",
+      "module_label": "AR1",
+      "function_label": "FALL SCALE",
+      "label": "AR1 FALL SCALE",
+      "reference_label": "RV4106",
+      "nominal_resistance": "1 kΩ",
+      "mpn_status": "SOURCE ASSIGNED / NOT QUALIFIED",
+      "source_locator": {
+        "path": "design/spec/modules/envelope.py",
+        "line": 196,
+        "anchor": "source trim call for envelope:FALL_SCALE"
+      },
+      "calibration_reference": "doc/src/content/docs/verification/osc-trimmer-calibration.mdx#envelope-fall-scale",
+      "calibration_status": "NEEDS BENCH",
+      "rotation_direction": "UNKNOWN / NEEDS BENCH",
+      "source_pins": {
+        "1": "/E1/FALL_SCALE_TRIM",
+        "2": "/E1/FALL_EXPO_SUM",
+        "3": "/E1/FALL_EXPO_SUM"
+      },
+      "pins": {
+        "1": "X71E2D0CA02FED9642DA1",
+        "2": "XD525C1521D6573A10FC6",
+        "3": "XD525C1521D6573A10FC6"
+      },
+      "placement": {
+        "board": "K",
+        "board_id": "osc-core",
+        "x_mm": 227.85000000000002,
+        "y_mm": 89.1,
+        "kicad_orientation_deg": 270.0,
+        "side": "F.Cu",
+        "native_x_mm": 327.85,
+        "native_y_mm": 139.1,
+        "native_orientation_deg": -90.0,
+        "rotation_deg": 90,
+        "courtyard_mm": [
+          226.0,
+          86.25,
+          229.9,
+          91.55
+        ]
+      }
+    },
+    {
+      "ref": "RV4107",
+      "block": "E1",
+      "role": "envelope:FALL_BASE",
+      "family": "envelope",
+      "part_key": "CORE_FALL_BASE.0",
+      "value": "50 kΩ",
+      "mpn": "",
+      "manufacturer": "",
+      "footprint": "zudo-osc-hole-field:Potentiometer_Bourns_TC33X_Vertical",
+      "symbol": "zudo-osc-hole-field:TC33X-2-103E",
+      "module_label": "AR1",
+      "function_label": "FALL BASE",
+      "label": "AR1 FALL BASE",
+      "reference_label": "RV4107",
+      "nominal_resistance": "50 kΩ",
+      "mpn_status": "UNRESOLVED",
+      "source_locator": {
+        "path": "design/spec/modules/envelope.py",
+        "line": 199,
+        "anchor": "source trim call for envelope:FALL_BASE"
+      },
+      "calibration_reference": "doc/src/content/docs/verification/osc-trimmer-calibration.mdx#envelope-fall-base",
+      "calibration_status": "NEEDS BENCH",
+      "rotation_direction": "UNKNOWN / NEEDS BENCH",
+      "source_pins": {
+        "1": "/E1/FALL_REF_TRIM",
+        "2": "/E1/FALL_EXPO_REF",
+        "3": "/E1/FALL_EXPO_REF"
+      },
+      "pins": {
+        "1": "XBA48267F34D7D0FB64EC",
+        "2": "X0E4A19C71F03DA55B745",
+        "3": "X0E4A19C71F03DA55B745"
+      },
+      "placement": {
+        "board": "K",
+        "board_id": "osc-core",
+        "x_mm": 203.2,
+        "y_mm": 114.05000000000001,
+        "kicad_orientation_deg": 180.0,
+        "side": "B.Cu",
+        "native_x_mm": 303.2,
+        "native_y_mm": 164.05,
+        "native_orientation_deg": 180.0,
+        "rotation_deg": 0,
+        "courtyard_mm": [
+          200.75,
+          112.0,
+          206.04999999999998,
+          115.89999999999999
+        ]
+      }
+    },
+    {
+      "ref": "RV4108",
+      "block": "E1",
+      "role": "envelope:FALL_OFFSET",
+      "family": "envelope",
+      "part_key": "CORE_FALL_OFFSET.0",
+      "value": "10 kΩ",
+      "mpn": "TC33X-2-103E",
+      "manufacturer": "Bourns",
+      "footprint": "zudo-osc-hole-field:Potentiometer_Bourns_TC33X_Vertical",
+      "symbol": "zudo-osc-hole-field:TC33X-2-103E",
+      "module_label": "AR1",
+      "function_label": "FALL OFFSET",
+      "label": "AR1 FALL OFFSET",
+      "reference_label": "RV4108",
+      "nominal_resistance": "10 kΩ",
+      "mpn_status": "SOURCE ASSIGNED / NOT QUALIFIED",
+      "source_locator": {
+        "path": "design/spec/modules/envelope.py",
+        "line": 205,
+        "anchor": "source trim call for envelope:FALL_OFFSET"
+      },
+      "calibration_reference": "doc/src/content/docs/verification/osc-trimmer-calibration.mdx#envelope-fall-offset",
+      "calibration_status": "NEEDS BENCH",
+      "rotation_direction": "UNKNOWN / NEEDS BENCH",
+      "source_pins": {
+        "1": "/E1/REFN5",
+        "2": "/E1/FALL_OFFSET_TRIM",
+        "3": "/E1/REF5"
+      },
+      "pins": {
+        "1": "XFB0644432B15DB7BBF4C",
+        "2": "X716C83E78788AEFFA25E",
+        "3": "X214ED5A8892039CF8AA7"
+      },
+      "placement": {
+        "board": "K",
+        "board_id": "osc-core",
+        "x_mm": 218.2,
+        "y_mm": 61.3,
+        "kicad_orientation_deg": 180.0,
+        "side": "B.Cu",
+        "native_x_mm": 318.2,
+        "native_y_mm": 111.3,
+        "native_orientation_deg": 180.0,
+        "rotation_deg": 0,
+        "courtyard_mm": [
+          215.75,
+          59.25,
+          221.04999999999998,
+          63.15
+        ]
+      }
+    },
+    {
+      "ref": "RV4202",
+      "block": "E2",
+      "role": "envelope:RISE_SCALE",
+      "family": "envelope",
+      "part_key": "CORE_RISE_SCALE.0",
+      "value": "1 kΩ",
+      "mpn": "TC33X-2-102E",
+      "manufacturer": "Bourns",
+      "footprint": "zudo-osc-hole-field:Potentiometer_Bourns_TC33X_Vertical",
+      "symbol": "zudo-osc-hole-field:TC33X-2-102E",
+      "module_label": "AR2",
+      "function_label": "RISE SCALE",
+      "label": "AR2 RISE SCALE",
+      "reference_label": "RV4202",
+      "nominal_resistance": "1 kΩ",
+      "mpn_status": "SOURCE ASSIGNED / NOT QUALIFIED",
+      "source_locator": {
+        "path": "design/spec/modules/envelope.py",
+        "line": 196,
+        "anchor": "source trim call for envelope:RISE_SCALE"
+      },
+      "calibration_reference": "doc/src/content/docs/verification/osc-trimmer-calibration.mdx#envelope-rise-scale",
+      "calibration_status": "NEEDS BENCH",
+      "rotation_direction": "UNKNOWN / NEEDS BENCH",
+      "source_pins": {
+        "1": "/E2/RISE_SCALE_TRIM",
+        "2": "/E2/RISE_EXPO_SUM",
+        "3": "/E2/RISE_EXPO_SUM"
+      },
+      "pins": {
+        "1": "XD1659AD85AEF1B22ED6F",
+        "2": "XC22FB55511DF5FFC558F",
+        "3": "XC22FB55511DF5FFC558F"
+      },
+      "placement": {
+        "board": "K",
+        "board_id": "osc-core",
+        "x_mm": 217.85000000000002,
+        "y_mm": 213.05,
+        "kicad_orientation_deg": 0,
+        "side": "F.Cu",
+        "native_x_mm": 317.85,
+        "native_y_mm": 263.05,
+        "native_orientation_deg": 0,
+        "rotation_deg": 0,
+        "courtyard_mm": [
+          215.0,
+          211.0,
+          220.29999999999998,
+          214.9
+        ]
+      }
+    },
+    {
+      "ref": "RV4203",
+      "block": "E2",
+      "role": "envelope:RISE_BASE",
+      "family": "envelope",
+      "part_key": "CORE_RISE_BASE.0",
+      "value": "50 kΩ",
+      "mpn": "",
+      "manufacturer": "",
+      "footprint": "zudo-osc-hole-field:Potentiometer_Bourns_TC33X_Vertical",
+      "symbol": "zudo-osc-hole-field:TC33X-2-103E",
+      "module_label": "AR2",
+      "function_label": "RISE BASE",
+      "label": "AR2 RISE BASE",
+      "reference_label": "RV4203",
+      "nominal_resistance": "50 kΩ",
+      "mpn_status": "UNRESOLVED",
+      "source_locator": {
+        "path": "design/spec/modules/envelope.py",
+        "line": 199,
+        "anchor": "source trim call for envelope:RISE_BASE"
+      },
+      "calibration_reference": "doc/src/content/docs/verification/osc-trimmer-calibration.mdx#envelope-rise-base",
+      "calibration_status": "NEEDS BENCH",
+      "rotation_direction": "UNKNOWN / NEEDS BENCH",
+      "source_pins": {
+        "1": "/E2/RISE_REF_TRIM",
+        "2": "/E2/RISE_EXPO_REF",
+        "3": "/E2/RISE_EXPO_REF"
+      },
+      "pins": {
+        "1": "X2962895DC9EE122A86A7",
+        "2": "XBC74706F69BBC78AD976",
+        "3": "XBC74706F69BBC78AD976"
+      },
+      "placement": {
+        "board": "K",
+        "board_id": "osc-core",
+        "x_mm": 227.35000000000002,
+        "y_mm": 212.55,
+        "kicad_orientation_deg": 0,
+        "side": "F.Cu",
+        "native_x_mm": 327.35,
+        "native_y_mm": 262.55,
+        "native_orientation_deg": 0,
+        "rotation_deg": 0,
+        "courtyard_mm": [
+          224.5,
+          210.5,
+          229.79999999999998,
+          214.4
+        ]
+      }
+    },
+    {
+      "ref": "RV4204",
+      "block": "E2",
+      "role": "envelope:RISE_OFFSET",
+      "family": "envelope",
+      "part_key": "CORE_RISE_OFFSET.0",
+      "value": "10 kΩ",
+      "mpn": "TC33X-2-103E",
+      "manufacturer": "Bourns",
+      "footprint": "zudo-osc-hole-field:Potentiometer_Bourns_TC33X_Vertical",
+      "symbol": "zudo-osc-hole-field:TC33X-2-103E",
+      "module_label": "AR2",
+      "function_label": "RISE OFFSET",
+      "label": "AR2 RISE OFFSET",
+      "reference_label": "RV4204",
+      "nominal_resistance": "10 kΩ",
+      "mpn_status": "SOURCE ASSIGNED / NOT QUALIFIED",
+      "source_locator": {
+        "path": "design/spec/modules/envelope.py",
+        "line": 205,
+        "anchor": "source trim call for envelope:RISE_OFFSET"
+      },
+      "calibration_reference": "doc/src/content/docs/verification/osc-trimmer-calibration.mdx#envelope-rise-offset",
+      "calibration_status": "NEEDS BENCH",
+      "rotation_direction": "UNKNOWN / NEEDS BENCH",
+      "source_pins": {
+        "1": "/E2/REFN5",
+        "2": "/E2/RISE_OFFSET_TRIM",
+        "3": "/E2/REF5"
+      },
+      "pins": {
+        "1": "X6854898EE6CD6B1E9DE9",
+        "2": "XED05C71AF04E590894E2",
+        "3": "X9A343D229ADA66A13020"
+      },
+      "placement": {
+        "board": "K",
+        "board_id": "osc-core",
+        "x_mm": 211.85000000000002,
+        "y_mm": 239.8,
+        "kicad_orientation_deg": 0,
+        "side": "F.Cu",
+        "native_x_mm": 311.85,
+        "native_y_mm": 289.8,
+        "native_orientation_deg": 0,
+        "rotation_deg": 0,
+        "courtyard_mm": [
+          209.0,
+          237.75,
+          214.29999999999998,
+          241.65
+        ]
+      }
+    },
+    {
+      "ref": "RV4206",
+      "block": "E2",
+      "role": "envelope:FALL_SCALE",
+      "family": "envelope",
+      "part_key": "CORE_FALL_SCALE.0",
+      "value": "1 kΩ",
+      "mpn": "TC33X-2-102E",
+      "manufacturer": "Bourns",
+      "footprint": "zudo-osc-hole-field:Potentiometer_Bourns_TC33X_Vertical",
+      "symbol": "zudo-osc-hole-field:TC33X-2-102E",
+      "module_label": "AR2",
+      "function_label": "FALL SCALE",
+      "label": "AR2 FALL SCALE",
+      "reference_label": "RV4206",
+      "nominal_resistance": "1 kΩ",
+      "mpn_status": "SOURCE ASSIGNED / NOT QUALIFIED",
+      "source_locator": {
+        "path": "design/spec/modules/envelope.py",
+        "line": 196,
+        "anchor": "source trim call for envelope:FALL_SCALE"
+      },
+      "calibration_reference": "doc/src/content/docs/verification/osc-trimmer-calibration.mdx#envelope-fall-scale",
+      "calibration_status": "NEEDS BENCH",
+      "rotation_direction": "UNKNOWN / NEEDS BENCH",
+      "source_pins": {
+        "1": "/E2/FALL_SCALE_TRIM",
+        "2": "/E2/FALL_EXPO_SUM",
+        "3": "/E2/FALL_EXPO_SUM"
+      },
+      "pins": {
+        "1": "X1A4524A018E739A7C70C",
+        "2": "X633E5FD4C423E149AC96",
+        "3": "X633E5FD4C423E149AC96"
+      },
+      "placement": {
+        "board": "K",
+        "board_id": "osc-core",
+        "x_mm": 262.95,
+        "y_mm": 243.3,
+        "kicad_orientation_deg": 180.0,
+        "side": "B.Cu",
+        "native_x_mm": 362.95,
+        "native_y_mm": 293.3,
+        "native_orientation_deg": 180.0,
+        "rotation_deg": 0,
+        "courtyard_mm": [
+          260.5,
+          241.25,
+          265.8,
+          245.15
+        ]
+      }
+    },
+    {
+      "ref": "RV4207",
+      "block": "E2",
+      "role": "envelope:FALL_BASE",
+      "family": "envelope",
+      "part_key": "CORE_FALL_BASE.0",
+      "value": "50 kΩ",
+      "mpn": "",
+      "manufacturer": "",
+      "footprint": "zudo-osc-hole-field:Potentiometer_Bourns_TC33X_Vertical",
+      "symbol": "zudo-osc-hole-field:TC33X-2-103E",
+      "module_label": "AR2",
+      "function_label": "FALL BASE",
+      "label": "AR2 FALL BASE",
+      "reference_label": "RV4207",
+      "nominal_resistance": "50 kΩ",
+      "mpn_status": "UNRESOLVED",
+      "source_locator": {
+        "path": "design/spec/modules/envelope.py",
+        "line": 199,
+        "anchor": "source trim call for envelope:FALL_BASE"
+      },
+      "calibration_reference": "doc/src/content/docs/verification/osc-trimmer-calibration.mdx#envelope-fall-base",
+      "calibration_status": "NEEDS BENCH",
+      "rotation_direction": "UNKNOWN / NEEDS BENCH",
+      "source_pins": {
+        "1": "/E2/FALL_REF_TRIM",
+        "2": "/E2/FALL_EXPO_REF",
+        "3": "/E2/FALL_EXPO_REF"
+      },
+      "pins": {
+        "1": "X50CCAA357B64F996260A",
+        "2": "X12A74203B09D8C450F8E",
+        "3": "X12A74203B09D8C450F8E"
+      },
+      "placement": {
+        "board": "K",
+        "board_id": "osc-core",
+        "x_mm": 245.10000000000002,
+        "y_mm": 222.35000000000002,
+        "kicad_orientation_deg": 270.0,
+        "side": "F.Cu",
+        "native_x_mm": 345.1,
+        "native_y_mm": 272.35,
+        "native_orientation_deg": -90.0,
+        "rotation_deg": 90,
+        "courtyard_mm": [
+          243.25,
+          219.5,
+          247.15,
+          224.79999999999998
+        ]
+      }
+    },
+    {
+      "ref": "RV4208",
+      "block": "E2",
+      "role": "envelope:FALL_OFFSET",
+      "family": "envelope",
+      "part_key": "CORE_FALL_OFFSET.0",
+      "value": "10 kΩ",
+      "mpn": "TC33X-2-103E",
+      "manufacturer": "Bourns",
+      "footprint": "zudo-osc-hole-field:Potentiometer_Bourns_TC33X_Vertical",
+      "symbol": "zudo-osc-hole-field:TC33X-2-103E",
+      "module_label": "AR2",
+      "function_label": "FALL OFFSET",
+      "label": "AR2 FALL OFFSET",
+      "reference_label": "RV4208",
+      "nominal_resistance": "10 kΩ",
+      "mpn_status": "SOURCE ASSIGNED / NOT QUALIFIED",
+      "source_locator": {
+        "path": "design/spec/modules/envelope.py",
+        "line": 205,
+        "anchor": "source trim call for envelope:FALL_OFFSET"
+      },
+      "calibration_reference": "doc/src/content/docs/verification/osc-trimmer-calibration.mdx#envelope-fall-offset",
+      "calibration_status": "NEEDS BENCH",
+      "rotation_direction": "UNKNOWN / NEEDS BENCH",
+      "source_pins": {
+        "1": "/E2/REFN5",
+        "2": "/E2/FALL_OFFSET_TRIM",
+        "3": "/E2/REF5"
+      },
+      "pins": {
+        "1": "X6854898EE6CD6B1E9DE9",
+        "2": "XB0BE9F5A801357F02E53",
+        "3": "X9A343D229ADA66A13020"
+      },
+      "placement": {
+        "board": "K",
+        "board_id": "osc-core",
+        "x_mm": 204.10000000000002,
+        "y_mm": 248.3,
+        "kicad_orientation_deg": 0,
+        "side": "F.Cu",
+        "native_x_mm": 304.1,
+        "native_y_mm": 298.3,
+        "native_orientation_deg": 0,
+        "rotation_deg": 0,
+        "courtyard_mm": [
+          201.25,
+          246.25,
+          206.54999999999998,
+          250.15
+        ]
+      }
+    },
+    {
+      "ref": "RV4302",
+      "block": "E3",
+      "role": "envelope:RISE_SCALE",
+      "family": "envelope",
+      "part_key": "CORE_RISE_SCALE.0",
+      "value": "1 kΩ",
+      "mpn": "TC33X-2-102E",
+      "manufacturer": "Bourns",
+      "footprint": "zudo-osc-hole-field:Potentiometer_Bourns_TC33X_Vertical",
+      "symbol": "zudo-osc-hole-field:TC33X-2-102E",
+      "module_label": "AR3",
+      "function_label": "RISE SCALE",
+      "label": "AR3 RISE SCALE",
+      "reference_label": "RV4302",
+      "nominal_resistance": "1 kΩ",
+      "mpn_status": "SOURCE ASSIGNED / NOT QUALIFIED",
+      "source_locator": {
+        "path": "design/spec/modules/envelope.py",
+        "line": 196,
+        "anchor": "source trim call for envelope:RISE_SCALE"
+      },
+      "calibration_reference": "doc/src/content/docs/verification/osc-trimmer-calibration.mdx#envelope-rise-scale",
+      "calibration_status": "NEEDS BENCH",
+      "rotation_direction": "UNKNOWN / NEEDS BENCH",
+      "source_pins": {
+        "1": "/E3/RISE_SCALE_TRIM",
+        "2": "/E3/RISE_EXPO_SUM",
+        "3": "/E3/RISE_EXPO_SUM"
+      },
+      "pins": {
+        "1": "XF15F90BA5572340B3BAF",
+        "2": "X9A93297CD6D5A3C0028A",
+        "3": "X9A93297CD6D5A3C0028A"
+      },
+      "placement": {
+        "board": "K",
+        "board_id": "osc-core",
+        "x_mm": 242.10000000000002,
+        "y_mm": 49.95,
+        "kicad_orientation_deg": 90.0,
+        "side": "B.Cu",
+        "native_x_mm": 342.1,
+        "native_y_mm": 99.95,
+        "native_orientation_deg": 90.0,
+        "rotation_deg": 90,
+        "courtyard_mm": [
+          240.25,
+          47.5,
+          244.15,
+          52.800000000000004
+        ]
+      }
+    },
+    {
+      "ref": "RV4303",
+      "block": "E3",
+      "role": "envelope:RISE_BASE",
+      "family": "envelope",
+      "part_key": "CORE_RISE_BASE.0",
+      "value": "50 kΩ",
+      "mpn": "",
+      "manufacturer": "",
+      "footprint": "zudo-osc-hole-field:Potentiometer_Bourns_TC33X_Vertical",
+      "symbol": "zudo-osc-hole-field:TC33X-2-103E",
+      "module_label": "AR3",
+      "function_label": "RISE BASE",
+      "label": "AR3 RISE BASE",
+      "reference_label": "RV4303",
+      "nominal_resistance": "50 kΩ",
+      "mpn_status": "UNRESOLVED",
+      "source_locator": {
+        "path": "design/spec/modules/envelope.py",
+        "line": 199,
+        "anchor": "source trim call for envelope:RISE_BASE"
+      },
+      "calibration_reference": "doc/src/content/docs/verification/osc-trimmer-calibration.mdx#envelope-rise-base",
+      "calibration_status": "NEEDS BENCH",
+      "rotation_direction": "UNKNOWN / NEEDS BENCH",
+      "source_pins": {
+        "1": "/E3/RISE_REF_TRIM",
+        "2": "/E3/RISE_EXPO_REF",
+        "3": "/E3/RISE_EXPO_REF"
+      },
+      "pins": {
+        "1": "XDA5781E448273B3A34F5",
+        "2": "X7C649B11D66500924F09",
+        "3": "X7C649B11D66500924F09"
+      },
+      "placement": {
+        "board": "K",
+        "board_id": "osc-core",
+        "x_mm": 265.6,
+        "y_mm": 18.299999999999997,
+        "kicad_orientation_deg": 0,
+        "side": "F.Cu",
+        "native_x_mm": 365.6,
+        "native_y_mm": 68.3,
+        "native_orientation_deg": 0,
+        "rotation_deg": 0,
+        "courtyard_mm": [
+          262.75,
+          16.25,
+          268.05,
+          20.150000000000002
+        ]
+      }
+    },
+    {
+      "ref": "RV4304",
+      "block": "E3",
+      "role": "envelope:RISE_OFFSET",
+      "family": "envelope",
+      "part_key": "CORE_RISE_OFFSET.0",
+      "value": "10 kΩ",
+      "mpn": "TC33X-2-103E",
+      "manufacturer": "Bourns",
+      "footprint": "zudo-osc-hole-field:Potentiometer_Bourns_TC33X_Vertical",
+      "symbol": "zudo-osc-hole-field:TC33X-2-103E",
+      "module_label": "AR3",
+      "function_label": "RISE OFFSET",
+      "label": "AR3 RISE OFFSET",
+      "reference_label": "RV4304",
+      "nominal_resistance": "10 kΩ",
+      "mpn_status": "SOURCE ASSIGNED / NOT QUALIFIED",
+      "source_locator": {
+        "path": "design/spec/modules/envelope.py",
+        "line": 205,
+        "anchor": "source trim call for envelope:RISE_OFFSET"
+      },
+      "calibration_reference": "doc/src/content/docs/verification/osc-trimmer-calibration.mdx#envelope-rise-offset",
+      "calibration_status": "NEEDS BENCH",
+      "rotation_direction": "UNKNOWN / NEEDS BENCH",
+      "source_pins": {
+        "1": "/E3/REFN5",
+        "2": "/E3/RISE_OFFSET_TRIM",
+        "3": "/E3/REF5"
+      },
+      "pins": {
+        "1": "XF26A929B7CFAC028786A",
+        "2": "X5CDFE315C31033F695D9",
+        "3": "X69F956D2CD0D8F7D7812"
+      },
+      "placement": {
+        "board": "K",
+        "board_id": "osc-core",
+        "x_mm": 278.35,
+        "y_mm": 68.3,
+        "kicad_orientation_deg": 0,
+        "side": "F.Cu",
+        "native_x_mm": 378.35,
+        "native_y_mm": 118.3,
+        "native_orientation_deg": 0,
+        "rotation_deg": 0,
+        "courtyard_mm": [
+          275.5,
+          66.25,
+          280.8,
+          70.14999999999999
+        ]
+      }
+    },
+    {
+      "ref": "RV4306",
+      "block": "E3",
+      "role": "envelope:FALL_SCALE",
+      "family": "envelope",
+      "part_key": "CORE_FALL_SCALE.0",
+      "value": "1 kΩ",
+      "mpn": "TC33X-2-102E",
+      "manufacturer": "Bourns",
+      "footprint": "zudo-osc-hole-field:Potentiometer_Bourns_TC33X_Vertical",
+      "symbol": "zudo-osc-hole-field:TC33X-2-102E",
+      "module_label": "AR3",
+      "function_label": "FALL SCALE",
+      "label": "AR3 FALL SCALE",
+      "reference_label": "RV4306",
+      "nominal_resistance": "1 kΩ",
+      "mpn_status": "SOURCE ASSIGNED / NOT QUALIFIED",
+      "source_locator": {
+        "path": "design/spec/modules/envelope.py",
+        "line": 196,
+        "anchor": "source trim call for envelope:FALL_SCALE"
+      },
+      "calibration_reference": "doc/src/content/docs/verification/osc-trimmer-calibration.mdx#envelope-fall-scale",
+      "calibration_status": "NEEDS BENCH",
+      "rotation_direction": "UNKNOWN / NEEDS BENCH",
+      "source_pins": {
+        "1": "/E3/FALL_SCALE_TRIM",
+        "2": "/E3/FALL_EXPO_SUM",
+        "3": "/E3/FALL_EXPO_SUM"
+      },
+      "pins": {
+        "1": "X6944ADF93ED14D03649E",
+        "2": "XE27181901B0CE18BFC8D",
+        "3": "XE27181901B0CE18BFC8D"
+      },
+      "placement": {
+        "board": "K",
+        "board_id": "osc-core",
+        "x_mm": 245.60000000000002,
+        "y_mm": 70.95,
+        "kicad_orientation_deg": 90.0,
+        "side": "B.Cu",
+        "native_x_mm": 345.6,
+        "native_y_mm": 120.95,
+        "native_orientation_deg": 90.0,
+        "rotation_deg": 90,
+        "courtyard_mm": [
+          243.75,
+          68.5,
+          247.65,
+          73.8
+        ]
+      }
+    },
+    {
+      "ref": "RV4307",
+      "block": "E3",
+      "role": "envelope:FALL_BASE",
+      "family": "envelope",
+      "part_key": "CORE_FALL_BASE.0",
+      "value": "50 kΩ",
+      "mpn": "",
+      "manufacturer": "",
+      "footprint": "zudo-osc-hole-field:Potentiometer_Bourns_TC33X_Vertical",
+      "symbol": "zudo-osc-hole-field:TC33X-2-103E",
+      "module_label": "AR3",
+      "function_label": "FALL BASE",
+      "label": "AR3 FALL BASE",
+      "reference_label": "RV4307",
+      "nominal_resistance": "50 kΩ",
+      "mpn_status": "UNRESOLVED",
+      "source_locator": {
+        "path": "design/spec/modules/envelope.py",
+        "line": 199,
+        "anchor": "source trim call for envelope:FALL_BASE"
+      },
+      "calibration_reference": "doc/src/content/docs/verification/osc-trimmer-calibration.mdx#envelope-fall-base",
+      "calibration_status": "NEEDS BENCH",
+      "rotation_direction": "UNKNOWN / NEEDS BENCH",
+      "source_pins": {
+        "1": "/E3/FALL_REF_TRIM",
+        "2": "/E3/FALL_EXPO_REF",
+        "3": "/E3/FALL_EXPO_REF"
+      },
+      "pins": {
+        "1": "X8CD8AAA9269108B29A3E",
+        "2": "X0378AD2C65B9A8B5DD60",
+        "3": "X0378AD2C65B9A8B5DD60"
+      },
+      "placement": {
+        "board": "K",
+        "board_id": "osc-core",
+        "x_mm": 283.85,
+        "y_mm": 22.099999999999994,
+        "kicad_orientation_deg": 270.0,
+        "side": "F.Cu",
+        "native_x_mm": 383.85,
+        "native_y_mm": 72.1,
+        "native_orientation_deg": -90.0,
+        "rotation_deg": 90,
+        "courtyard_mm": [
+          282.0,
+          19.25,
+          285.90000000000003,
+          24.55
+        ]
+      }
+    },
+    {
+      "ref": "RV4308",
+      "block": "E3",
+      "role": "envelope:FALL_OFFSET",
+      "family": "envelope",
+      "part_key": "CORE_FALL_OFFSET.0",
+      "value": "10 kΩ",
+      "mpn": "TC33X-2-103E",
+      "manufacturer": "Bourns",
+      "footprint": "zudo-osc-hole-field:Potentiometer_Bourns_TC33X_Vertical",
+      "symbol": "zudo-osc-hole-field:TC33X-2-103E",
+      "module_label": "AR3",
+      "function_label": "FALL OFFSET",
+      "label": "AR3 FALL OFFSET",
+      "reference_label": "RV4308",
+      "nominal_resistance": "10 kΩ",
+      "mpn_status": "SOURCE ASSIGNED / NOT QUALIFIED",
+      "source_locator": {
+        "path": "design/spec/modules/envelope.py",
+        "line": 205,
+        "anchor": "source trim call for envelope:FALL_OFFSET"
+      },
+      "calibration_reference": "doc/src/content/docs/verification/osc-trimmer-calibration.mdx#envelope-fall-offset",
+      "calibration_status": "NEEDS BENCH",
+      "rotation_direction": "UNKNOWN / NEEDS BENCH",
+      "source_pins": {
+        "1": "/E3/REFN5",
+        "2": "/E3/FALL_OFFSET_TRIM",
+        "3": "/E3/REF5"
+      },
+      "pins": {
+        "1": "XF26A929B7CFAC028786A",
+        "2": "XAA2B21CE6933CF45701D",
+        "3": "X69F956D2CD0D8F7D7812"
+      },
+      "placement": {
+        "board": "K",
+        "board_id": "osc-core",
+        "x_mm": 301.85,
+        "y_mm": 54.45,
+        "kicad_orientation_deg": 90.0,
+        "side": "B.Cu",
+        "native_x_mm": 401.85,
+        "native_y_mm": 104.45,
+        "native_orientation_deg": 90.0,
+        "rotation_deg": 90,
+        "courtyard_mm": [
+          300.0,
+          52.0,
+          303.90000000000003,
+          57.300000000000004
+        ]
+      }
+    },
+    {
+      "ref": "RV4402",
+      "block": "E4",
+      "role": "envelope:RISE_SCALE",
+      "family": "envelope",
+      "part_key": "CORE_RISE_SCALE.0",
+      "value": "1 kΩ",
+      "mpn": "TC33X-2-102E",
+      "manufacturer": "Bourns",
+      "footprint": "zudo-osc-hole-field:Potentiometer_Bourns_TC33X_Vertical",
+      "symbol": "zudo-osc-hole-field:TC33X-2-102E",
+      "module_label": "AR4",
+      "function_label": "RISE SCALE",
+      "label": "AR4 RISE SCALE",
+      "reference_label": "RV4402",
+      "nominal_resistance": "1 kΩ",
+      "mpn_status": "SOURCE ASSIGNED / NOT QUALIFIED",
+      "source_locator": {
+        "path": "design/spec/modules/envelope.py",
+        "line": 196,
+        "anchor": "source trim call for envelope:RISE_SCALE"
+      },
+      "calibration_reference": "doc/src/content/docs/verification/osc-trimmer-calibration.mdx#envelope-rise-scale",
+      "calibration_status": "NEEDS BENCH",
+      "rotation_direction": "UNKNOWN / NEEDS BENCH",
+      "source_pins": {
+        "1": "/E4/RISE_SCALE_TRIM",
+        "2": "/E4/RISE_EXPO_SUM",
+        "3": "/E4/RISE_EXPO_SUM"
+      },
+      "pins": {
+        "1": "X3CAFA431F9E467FA3BC2",
+        "2": "XCEE55A37C6E228277850",
+        "3": "XCEE55A37C6E228277850"
+      },
+      "placement": {
+        "board": "K",
+        "board_id": "osc-core",
+        "x_mm": 246.35000000000002,
+        "y_mm": 213.10000000000002,
+        "kicad_orientation_deg": 270.0,
+        "side": "F.Cu",
+        "native_x_mm": 346.35,
+        "native_y_mm": 263.1,
+        "native_orientation_deg": -90.0,
+        "rotation_deg": 90,
+        "courtyard_mm": [
+          244.5,
+          210.25,
+          248.4,
+          215.54999999999998
+        ]
+      }
+    },
+    {
+      "ref": "RV4403",
+      "block": "E4",
+      "role": "envelope:RISE_BASE",
+      "family": "envelope",
+      "part_key": "CORE_RISE_BASE.0",
+      "value": "50 kΩ",
+      "mpn": "",
+      "manufacturer": "",
+      "footprint": "zudo-osc-hole-field:Potentiometer_Bourns_TC33X_Vertical",
+      "symbol": "zudo-osc-hole-field:TC33X-2-103E",
+      "module_label": "AR4",
+      "function_label": "RISE BASE",
+      "label": "AR4 RISE BASE",
+      "reference_label": "RV4403",
+      "nominal_resistance": "50 kΩ",
+      "mpn_status": "UNRESOLVED",
+      "source_locator": {
+        "path": "design/spec/modules/envelope.py",
+        "line": 199,
+        "anchor": "source trim call for envelope:RISE_BASE"
+      },
+      "calibration_reference": "doc/src/content/docs/verification/osc-trimmer-calibration.mdx#envelope-rise-base",
+      "calibration_status": "NEEDS BENCH",
+      "rotation_direction": "UNKNOWN / NEEDS BENCH",
+      "source_pins": {
+        "1": "/E4/RISE_REF_TRIM",
+        "2": "/E4/RISE_EXPO_REF",
+        "3": "/E4/RISE_EXPO_REF"
+      },
+      "pins": {
+        "1": "XFF8AA17C0E1F34B14271",
+        "2": "X286DDDC3E2B74B97DC94",
+        "3": "X286DDDC3E2B74B97DC94"
+      },
+      "placement": {
+        "board": "K",
+        "board_id": "osc-core",
+        "x_mm": 270.1,
+        "y_mm": 216.7,
+        "kicad_orientation_deg": 90.0,
+        "side": "B.Cu",
+        "native_x_mm": 370.1,
+        "native_y_mm": 266.7,
+        "native_orientation_deg": 90.0,
+        "rotation_deg": 90,
+        "courtyard_mm": [
+          268.25,
+          214.25,
+          272.15000000000003,
+          219.54999999999998
+        ]
+      }
+    },
+    {
+      "ref": "RV4404",
+      "block": "E4",
+      "role": "envelope:RISE_OFFSET",
+      "family": "envelope",
+      "part_key": "CORE_RISE_OFFSET.0",
+      "value": "10 kΩ",
+      "mpn": "TC33X-2-103E",
+      "manufacturer": "Bourns",
+      "footprint": "zudo-osc-hole-field:Potentiometer_Bourns_TC33X_Vertical",
+      "symbol": "zudo-osc-hole-field:TC33X-2-103E",
+      "module_label": "AR4",
+      "function_label": "RISE OFFSET",
+      "label": "AR4 RISE OFFSET",
+      "reference_label": "RV4404",
+      "nominal_resistance": "10 kΩ",
+      "mpn_status": "SOURCE ASSIGNED / NOT QUALIFIED",
+      "source_locator": {
+        "path": "design/spec/modules/envelope.py",
+        "line": 205,
+        "anchor": "source trim call for envelope:RISE_OFFSET"
+      },
+      "calibration_reference": "doc/src/content/docs/verification/osc-trimmer-calibration.mdx#envelope-rise-offset",
+      "calibration_status": "NEEDS BENCH",
+      "rotation_direction": "UNKNOWN / NEEDS BENCH",
+      "source_pins": {
+        "1": "/E4/REFN5",
+        "2": "/E4/RISE_OFFSET_TRIM",
+        "3": "/E4/REF5"
+      },
+      "pins": {
+        "1": "XC6FACB0F3F210856521E",
+        "2": "X1D2905710F7095314259",
+        "3": "X89D5E3CA45DE92E8F54F"
+      },
+      "placement": {
+        "board": "K",
+        "board_id": "osc-core",
+        "x_mm": 284.35,
+        "y_mm": 199.3,
+        "kicad_orientation_deg": 0,
+        "side": "F.Cu",
+        "native_x_mm": 384.35,
+        "native_y_mm": 249.3,
+        "native_orientation_deg": 0,
+        "rotation_deg": 0,
+        "courtyard_mm": [
+          281.5,
+          197.25,
+          286.8,
+          201.15
+        ]
+      }
+    },
+    {
+      "ref": "RV4406",
+      "block": "E4",
+      "role": "envelope:FALL_SCALE",
+      "family": "envelope",
+      "part_key": "CORE_FALL_SCALE.0",
+      "value": "1 kΩ",
+      "mpn": "TC33X-2-102E",
+      "manufacturer": "Bourns",
+      "footprint": "zudo-osc-hole-field:Potentiometer_Bourns_TC33X_Vertical",
+      "symbol": "zudo-osc-hole-field:TC33X-2-102E",
+      "module_label": "AR4",
+      "function_label": "FALL SCALE",
+      "label": "AR4 FALL SCALE",
+      "reference_label": "RV4406",
+      "nominal_resistance": "1 kΩ",
+      "mpn_status": "SOURCE ASSIGNED / NOT QUALIFIED",
+      "source_locator": {
+        "path": "design/spec/modules/envelope.py",
+        "line": 196,
+        "anchor": "source trim call for envelope:FALL_SCALE"
+      },
+      "calibration_reference": "doc/src/content/docs/verification/osc-trimmer-calibration.mdx#envelope-fall-scale",
+      "calibration_status": "NEEDS BENCH",
+      "rotation_direction": "UNKNOWN / NEEDS BENCH",
+      "source_pins": {
+        "1": "/E4/FALL_SCALE_TRIM",
+        "2": "/E4/FALL_EXPO_SUM",
+        "3": "/E4/FALL_EXPO_SUM"
+      },
+      "pins": {
+        "1": "XF4CA5DCFDABC750B445E",
+        "2": "XA7EA78821ED6EC755972",
+        "3": "XA7EA78821ED6EC755972"
+      },
+      "placement": {
+        "board": "K",
+        "board_id": "osc-core",
+        "x_mm": 251.95,
+        "y_mm": 172.8,
+        "kicad_orientation_deg": 180.0,
+        "side": "B.Cu",
+        "native_x_mm": 351.95,
+        "native_y_mm": 222.8,
+        "native_orientation_deg": 180.0,
+        "rotation_deg": 0,
+        "courtyard_mm": [
+          249.5,
+          170.75,
+          254.79999999999998,
+          174.65
+        ]
+      }
+    },
+    {
+      "ref": "RV4407",
+      "block": "E4",
+      "role": "envelope:FALL_BASE",
+      "family": "envelope",
+      "part_key": "CORE_FALL_BASE.0",
+      "value": "50 kΩ",
+      "mpn": "",
+      "manufacturer": "",
+      "footprint": "zudo-osc-hole-field:Potentiometer_Bourns_TC33X_Vertical",
+      "symbol": "zudo-osc-hole-field:TC33X-2-103E",
+      "module_label": "AR4",
+      "function_label": "FALL BASE",
+      "label": "AR4 FALL BASE",
+      "reference_label": "RV4407",
+      "nominal_resistance": "50 kΩ",
+      "mpn_status": "UNRESOLVED",
+      "source_locator": {
+        "path": "design/spec/modules/envelope.py",
+        "line": 199,
+        "anchor": "source trim call for envelope:FALL_BASE"
+      },
+      "calibration_reference": "doc/src/content/docs/verification/osc-trimmer-calibration.mdx#envelope-fall-base",
+      "calibration_status": "NEEDS BENCH",
+      "rotation_direction": "UNKNOWN / NEEDS BENCH",
+      "source_pins": {
+        "1": "/E4/FALL_REF_TRIM",
+        "2": "/E4/FALL_EXPO_REF",
+        "3": "/E4/FALL_EXPO_REF"
+      },
+      "pins": {
+        "1": "XE219DA8CFAB78541F232",
+        "2": "XEAB0A8F9BE52E35B2801",
+        "3": "XEAB0A8F9BE52E35B2801"
+      },
+      "placement": {
+        "board": "K",
+        "board_id": "osc-core",
+        "x_mm": 245.60000000000002,
+        "y_mm": 179.7,
+        "kicad_orientation_deg": 90.0,
+        "side": "B.Cu",
+        "native_x_mm": 345.6,
+        "native_y_mm": 229.7,
+        "native_orientation_deg": 90.0,
+        "rotation_deg": 90,
+        "courtyard_mm": [
+          243.75,
+          177.25,
+          247.65,
+          182.54999999999998
+        ]
+      }
+    },
+    {
+      "ref": "RV4408",
+      "block": "E4",
+      "role": "envelope:FALL_OFFSET",
+      "family": "envelope",
+      "part_key": "CORE_FALL_OFFSET.0",
+      "value": "10 kΩ",
+      "mpn": "TC33X-2-103E",
+      "manufacturer": "Bourns",
+      "footprint": "zudo-osc-hole-field:Potentiometer_Bourns_TC33X_Vertical",
+      "symbol": "zudo-osc-hole-field:TC33X-2-103E",
+      "module_label": "AR4",
+      "function_label": "FALL OFFSET",
+      "label": "AR4 FALL OFFSET",
+      "reference_label": "RV4408",
+      "nominal_resistance": "10 kΩ",
+      "mpn_status": "SOURCE ASSIGNED / NOT QUALIFIED",
+      "source_locator": {
+        "path": "design/spec/modules/envelope.py",
+        "line": 205,
+        "anchor": "source trim call for envelope:FALL_OFFSET"
+      },
+      "calibration_reference": "doc/src/content/docs/verification/osc-trimmer-calibration.mdx#envelope-fall-offset",
+      "calibration_status": "NEEDS BENCH",
+      "rotation_direction": "UNKNOWN / NEEDS BENCH",
+      "source_pins": {
+        "1": "/E4/REFN5",
+        "2": "/E4/FALL_OFFSET_TRIM",
+        "3": "/E4/REF5"
+      },
+      "pins": {
+        "1": "XC6FACB0F3F210856521E",
+        "2": "XF6FD63623A71C0E3EAC1",
+        "3": "X89D5E3CA45DE92E8F54F"
+      },
+      "placement": {
+        "board": "K",
+        "board_id": "osc-core",
+        "x_mm": 247.85000000000002,
+        "y_mm": 184.6,
+        "kicad_orientation_deg": 270.0,
+        "side": "F.Cu",
+        "native_x_mm": 347.85,
+        "native_y_mm": 234.6,
+        "native_orientation_deg": -90.0,
+        "rotation_deg": 90,
+        "courtyard_mm": [
+          246.0,
+          181.75,
+          249.9,
+          187.04999999999998
+        ]
+      }
+    },
+    {
+      "ref": "RV4502",
+      "block": "E5",
+      "role": "envelope:RISE_SCALE",
+      "family": "envelope",
+      "part_key": "CORE_RISE_SCALE.0",
+      "value": "1 kΩ",
+      "mpn": "TC33X-2-102E",
+      "manufacturer": "Bourns",
+      "footprint": "zudo-osc-hole-field:Potentiometer_Bourns_TC33X_Vertical",
+      "symbol": "zudo-osc-hole-field:TC33X-2-102E",
+      "module_label": "AR5",
+      "function_label": "RISE SCALE",
+      "label": "AR5 RISE SCALE",
+      "reference_label": "RV4502",
+      "nominal_resistance": "1 kΩ",
+      "mpn_status": "SOURCE ASSIGNED / NOT QUALIFIED",
+      "source_locator": {
+        "path": "design/spec/modules/envelope.py",
+        "line": 196,
+        "anchor": "source trim call for envelope:RISE_SCALE"
+      },
+      "calibration_reference": "doc/src/content/docs/verification/osc-trimmer-calibration.mdx#envelope-rise-scale",
+      "calibration_status": "NEEDS BENCH",
+      "rotation_direction": "UNKNOWN / NEEDS BENCH",
+      "source_pins": {
+        "1": "/E5/RISE_SCALE_TRIM",
+        "2": "/E5/RISE_EXPO_SUM",
+        "3": "/E5/RISE_EXPO_SUM"
+      },
+      "pins": {
+        "1": "X15F35935EE308294E30D",
+        "2": "XDD8714CB850BA1F0D3F8",
+        "3": "XDD8714CB850BA1F0D3F8"
+      },
+      "placement": {
+        "board": "K",
+        "board_id": "osc-core",
+        "x_mm": 169.35000000000002,
+        "y_mm": 172.55,
+        "kicad_orientation_deg": 0,
+        "side": "F.Cu",
+        "native_x_mm": 269.35,
+        "native_y_mm": 222.55,
+        "native_orientation_deg": 0,
+        "rotation_deg": 0,
+        "courtyard_mm": [
+          166.5,
+          170.5,
+          171.79999999999998,
+          174.4
+        ]
+      }
+    },
+    {
+      "ref": "RV4503",
+      "block": "E5",
+      "role": "envelope:RISE_BASE",
+      "family": "envelope",
+      "part_key": "CORE_RISE_BASE.0",
+      "value": "50 kΩ",
+      "mpn": "",
+      "manufacturer": "",
+      "footprint": "zudo-osc-hole-field:Potentiometer_Bourns_TC33X_Vertical",
+      "symbol": "zudo-osc-hole-field:TC33X-2-103E",
+      "module_label": "AR5",
+      "function_label": "RISE BASE",
+      "label": "AR5 RISE BASE",
+      "reference_label": "RV4503",
+      "nominal_resistance": "50 kΩ",
+      "mpn_status": "UNRESOLVED",
+      "source_locator": {
+        "path": "design/spec/modules/envelope.py",
+        "line": 199,
+        "anchor": "source trim call for envelope:RISE_BASE"
+      },
+      "calibration_reference": "doc/src/content/docs/verification/osc-trimmer-calibration.mdx#envelope-rise-base",
+      "calibration_status": "NEEDS BENCH",
+      "rotation_direction": "UNKNOWN / NEEDS BENCH",
+      "source_pins": {
+        "1": "/E5/RISE_REF_TRIM",
+        "2": "/E5/RISE_EXPO_REF",
+        "3": "/E5/RISE_EXPO_REF"
+      },
+      "pins": {
+        "1": "X72EA8955D5926ED47883",
+        "2": "XFBBF4FE2ED52A893DC14",
+        "3": "XFBBF4FE2ED52A893DC14"
+      },
+      "placement": {
+        "board": "K",
+        "board_id": "osc-core",
+        "x_mm": 176.10000000000002,
+        "y_mm": 186.7,
+        "kicad_orientation_deg": 90.0,
+        "side": "B.Cu",
+        "native_x_mm": 276.1,
+        "native_y_mm": 236.7,
+        "native_orientation_deg": 90.0,
+        "rotation_deg": 90,
+        "courtyard_mm": [
+          174.25,
+          184.25,
+          178.15,
+          189.54999999999998
+        ]
+      }
+    },
+    {
+      "ref": "RV4504",
+      "block": "E5",
+      "role": "envelope:RISE_OFFSET",
+      "family": "envelope",
+      "part_key": "CORE_RISE_OFFSET.0",
+      "value": "10 kΩ",
+      "mpn": "TC33X-2-103E",
+      "manufacturer": "Bourns",
+      "footprint": "zudo-osc-hole-field:Potentiometer_Bourns_TC33X_Vertical",
+      "symbol": "zudo-osc-hole-field:TC33X-2-103E",
+      "module_label": "AR5",
+      "function_label": "RISE OFFSET",
+      "label": "AR5 RISE OFFSET",
+      "reference_label": "RV4504",
+      "nominal_resistance": "10 kΩ",
+      "mpn_status": "SOURCE ASSIGNED / NOT QUALIFIED",
+      "source_locator": {
+        "path": "design/spec/modules/envelope.py",
+        "line": 205,
+        "anchor": "source trim call for envelope:RISE_OFFSET"
+      },
+      "calibration_reference": "doc/src/content/docs/verification/osc-trimmer-calibration.mdx#envelope-rise-offset",
+      "calibration_status": "NEEDS BENCH",
+      "rotation_direction": "UNKNOWN / NEEDS BENCH",
+      "source_pins": {
+        "1": "/E5/REFN5",
+        "2": "/E5/RISE_OFFSET_TRIM",
+        "3": "/E5/REF5"
+      },
+      "pins": {
+        "1": "XED7D09C8F09F1C63B74B",
+        "2": "X856F998094D94C6332D7",
+        "3": "XED165ED96D75C15A85C4"
+      },
+      "placement": {
+        "board": "K",
+        "board_id": "osc-core",
+        "x_mm": 193.35000000000002,
+        "y_mm": 181.2,
+        "kicad_orientation_deg": 90.0,
+        "side": "B.Cu",
+        "native_x_mm": 293.35,
+        "native_y_mm": 231.2,
+        "native_orientation_deg": 90.0,
+        "rotation_deg": 90,
+        "courtyard_mm": [
+          191.5,
+          178.75,
+          195.4,
+          184.04999999999998
+        ]
+      }
+    },
+    {
+      "ref": "RV4506",
+      "block": "E5",
+      "role": "envelope:FALL_SCALE",
+      "family": "envelope",
+      "part_key": "CORE_FALL_SCALE.0",
+      "value": "1 kΩ",
+      "mpn": "TC33X-2-102E",
+      "manufacturer": "Bourns",
+      "footprint": "zudo-osc-hole-field:Potentiometer_Bourns_TC33X_Vertical",
+      "symbol": "zudo-osc-hole-field:TC33X-2-102E",
+      "module_label": "AR5",
+      "function_label": "FALL SCALE",
+      "label": "AR5 FALL SCALE",
+      "reference_label": "RV4506",
+      "nominal_resistance": "1 kΩ",
+      "mpn_status": "SOURCE ASSIGNED / NOT QUALIFIED",
+      "source_locator": {
+        "path": "design/spec/modules/envelope.py",
+        "line": 196,
+        "anchor": "source trim call for envelope:FALL_SCALE"
+      },
+      "calibration_reference": "doc/src/content/docs/verification/osc-trimmer-calibration.mdx#envelope-fall-scale",
+      "calibration_status": "NEEDS BENCH",
+      "rotation_direction": "UNKNOWN / NEEDS BENCH",
+      "source_pins": {
+        "1": "/E5/FALL_SCALE_TRIM",
+        "2": "/E5/FALL_EXPO_SUM",
+        "3": "/E5/FALL_EXPO_SUM"
+      },
+      "pins": {
+        "1": "X44C3263A0F15EFC08049",
+        "2": "X6ACC8608A6CCE61E473D",
+        "3": "X6ACC8608A6CCE61E473D"
+      },
+      "placement": {
+        "board": "K",
+        "board_id": "osc-core",
+        "x_mm": 158.7,
+        "y_mm": 124.80000000000001,
+        "kicad_orientation_deg": 180.0,
+        "side": "B.Cu",
+        "native_x_mm": 258.7,
+        "native_y_mm": 174.8,
+        "native_orientation_deg": 180.0,
+        "rotation_deg": 0,
+        "courtyard_mm": [
+          156.25,
+          122.75,
+          161.54999999999998,
+          126.64999999999999
+        ]
+      }
+    },
+    {
+      "ref": "RV4507",
+      "block": "E5",
+      "role": "envelope:FALL_BASE",
+      "family": "envelope",
+      "part_key": "CORE_FALL_BASE.0",
+      "value": "50 kΩ",
+      "mpn": "",
+      "manufacturer": "",
+      "footprint": "zudo-osc-hole-field:Potentiometer_Bourns_TC33X_Vertical",
+      "symbol": "zudo-osc-hole-field:TC33X-2-103E",
+      "module_label": "AR5",
+      "function_label": "FALL BASE",
+      "label": "AR5 FALL BASE",
+      "reference_label": "RV4507",
+      "nominal_resistance": "50 kΩ",
+      "mpn_status": "UNRESOLVED",
+      "source_locator": {
+        "path": "design/spec/modules/envelope.py",
+        "line": 199,
+        "anchor": "source trim call for envelope:FALL_BASE"
+      },
+      "calibration_reference": "doc/src/content/docs/verification/osc-trimmer-calibration.mdx#envelope-fall-base",
+      "calibration_status": "NEEDS BENCH",
+      "rotation_direction": "UNKNOWN / NEEDS BENCH",
+      "source_pins": {
+        "1": "/E5/FALL_REF_TRIM",
+        "2": "/E5/FALL_EXPO_REF",
+        "3": "/E5/FALL_EXPO_REF"
+      },
+      "pins": {
+        "1": "X4FDA5049D58C14E5BB5C",
+        "2": "X3423123E5A42F3C7244E",
+        "3": "X3423123E5A42F3C7244E"
+      },
+      "placement": {
+        "board": "K",
+        "board_id": "osc-core",
+        "x_mm": 188.2,
+        "y_mm": 122.30000000000001,
+        "kicad_orientation_deg": 180.0,
+        "side": "B.Cu",
+        "native_x_mm": 288.2,
+        "native_y_mm": 172.3,
+        "native_orientation_deg": 180.0,
+        "rotation_deg": 0,
+        "courtyard_mm": [
+          185.75,
+          120.25,
+          191.04999999999998,
+          124.14999999999999
+        ]
+      }
+    },
+    {
+      "ref": "RV4508",
+      "block": "E5",
+      "role": "envelope:FALL_OFFSET",
+      "family": "envelope",
+      "part_key": "CORE_FALL_OFFSET.0",
+      "value": "10 kΩ",
+      "mpn": "TC33X-2-103E",
+      "manufacturer": "Bourns",
+      "footprint": "zudo-osc-hole-field:Potentiometer_Bourns_TC33X_Vertical",
+      "symbol": "zudo-osc-hole-field:TC33X-2-103E",
+      "module_label": "AR5",
+      "function_label": "FALL OFFSET",
+      "label": "AR5 FALL OFFSET",
+      "reference_label": "RV4508",
+      "nominal_resistance": "10 kΩ",
+      "mpn_status": "SOURCE ASSIGNED / NOT QUALIFIED",
+      "source_locator": {
+        "path": "design/spec/modules/envelope.py",
+        "line": 205,
+        "anchor": "source trim call for envelope:FALL_OFFSET"
+      },
+      "calibration_reference": "doc/src/content/docs/verification/osc-trimmer-calibration.mdx#envelope-fall-offset",
+      "calibration_status": "NEEDS BENCH",
+      "rotation_direction": "UNKNOWN / NEEDS BENCH",
+      "source_pins": {
+        "1": "/E5/REFN5",
+        "2": "/E5/FALL_OFFSET_TRIM",
+        "3": "/E5/REF5"
+      },
+      "pins": {
+        "1": "XED7D09C8F09F1C63B74B",
+        "2": "XD94E94DED6EDAB459E28",
+        "3": "XED165ED96D75C15A85C4"
+      },
+      "placement": {
+        "board": "K",
+        "board_id": "osc-core",
+        "x_mm": 174.60000000000002,
+        "y_mm": 167.05,
+        "kicad_orientation_deg": 0,
+        "side": "F.Cu",
+        "native_x_mm": 274.6,
+        "native_y_mm": 217.05,
+        "native_orientation_deg": 0,
+        "rotation_deg": 0,
+        "courtyard_mm": [
+          171.75,
+          165.0,
+          177.04999999999998,
+          168.9
+        ]
+      }
+    },
+    {
+      "ref": "RV4602",
+      "block": "E6",
+      "role": "envelope:RISE_SCALE",
+      "family": "envelope",
+      "part_key": "CORE_RISE_SCALE.0",
+      "value": "1 kΩ",
+      "mpn": "TC33X-2-102E",
+      "manufacturer": "Bourns",
+      "footprint": "zudo-osc-hole-field:Potentiometer_Bourns_TC33X_Vertical",
+      "symbol": "zudo-osc-hole-field:TC33X-2-102E",
+      "module_label": "AR6",
+      "function_label": "RISE SCALE",
+      "label": "AR6 RISE SCALE",
+      "reference_label": "RV4602",
+      "nominal_resistance": "1 kΩ",
+      "mpn_status": "SOURCE ASSIGNED / NOT QUALIFIED",
+      "source_locator": {
+        "path": "design/spec/modules/envelope.py",
+        "line": 196,
+        "anchor": "source trim call for envelope:RISE_SCALE"
+      },
+      "calibration_reference": "doc/src/content/docs/verification/osc-trimmer-calibration.mdx#envelope-rise-scale",
+      "calibration_status": "NEEDS BENCH",
+      "rotation_direction": "UNKNOWN / NEEDS BENCH",
+      "source_pins": {
+        "1": "/E6/RISE_SCALE_TRIM",
+        "2": "/E6/RISE_EXPO_SUM",
+        "3": "/E6/RISE_EXPO_SUM"
+      },
+      "pins": {
+        "1": "XE8F2DB9E4B93B56F3FFF",
+        "2": "X88F1EF3CE73F96642CD0",
+        "3": "X88F1EF3CE73F96642CD0"
+      },
+      "placement": {
+        "board": "K",
+        "board_id": "osc-core",
+        "x_mm": 279.45,
+        "y_mm": 88.55000000000001,
+        "kicad_orientation_deg": 180.0,
+        "side": "B.Cu",
+        "native_x_mm": 379.45,
+        "native_y_mm": 138.55,
+        "native_orientation_deg": 180.0,
+        "rotation_deg": 0,
+        "courtyard_mm": [
+          277.0,
+          86.5,
+          282.3,
+          90.39999999999999
+        ]
+      }
+    },
+    {
+      "ref": "RV4603",
+      "block": "E6",
+      "role": "envelope:RISE_BASE",
+      "family": "envelope",
+      "part_key": "CORE_RISE_BASE.0",
+      "value": "50 kΩ",
+      "mpn": "",
+      "manufacturer": "",
+      "footprint": "zudo-osc-hole-field:Potentiometer_Bourns_TC33X_Vertical",
+      "symbol": "zudo-osc-hole-field:TC33X-2-103E",
+      "module_label": "AR6",
+      "function_label": "RISE BASE",
+      "label": "AR6 RISE BASE",
+      "reference_label": "RV4603",
+      "nominal_resistance": "50 kΩ",
+      "mpn_status": "UNRESOLVED",
+      "source_locator": {
+        "path": "design/spec/modules/envelope.py",
+        "line": 199,
+        "anchor": "source trim call for envelope:RISE_BASE"
+      },
+      "calibration_reference": "doc/src/content/docs/verification/osc-trimmer-calibration.mdx#envelope-rise-base",
+      "calibration_status": "NEEDS BENCH",
+      "rotation_direction": "UNKNOWN / NEEDS BENCH",
+      "source_pins": {
+        "1": "/E6/RISE_REF_TRIM",
+        "2": "/E6/RISE_EXPO_REF",
+        "3": "/E6/RISE_EXPO_REF"
+      },
+      "pins": {
+        "1": "XA1D6CC2B12D4194D2E9D",
+        "2": "X75E2097BD6AB8D07260A",
+        "3": "X75E2097BD6AB8D07260A"
+      },
+      "placement": {
+        "board": "K",
+        "board_id": "osc-core",
+        "x_mm": 265.45,
+        "y_mm": 89.30000000000001,
+        "kicad_orientation_deg": 180.0,
+        "side": "B.Cu",
+        "native_x_mm": 365.45,
+        "native_y_mm": 139.3,
+        "native_orientation_deg": 180.0,
+        "rotation_deg": 0,
+        "courtyard_mm": [
+          263.0,
+          87.25,
+          268.3,
+          91.14999999999999
+        ]
+      }
+    },
+    {
+      "ref": "RV4604",
+      "block": "E6",
+      "role": "envelope:RISE_OFFSET",
+      "family": "envelope",
+      "part_key": "CORE_RISE_OFFSET.0",
+      "value": "10 kΩ",
+      "mpn": "TC33X-2-103E",
+      "manufacturer": "Bourns",
+      "footprint": "zudo-osc-hole-field:Potentiometer_Bourns_TC33X_Vertical",
+      "symbol": "zudo-osc-hole-field:TC33X-2-103E",
+      "module_label": "AR6",
+      "function_label": "RISE OFFSET",
+      "label": "AR6 RISE OFFSET",
+      "reference_label": "RV4604",
+      "nominal_resistance": "10 kΩ",
+      "mpn_status": "SOURCE ASSIGNED / NOT QUALIFIED",
+      "source_locator": {
+        "path": "design/spec/modules/envelope.py",
+        "line": 205,
+        "anchor": "source trim call for envelope:RISE_OFFSET"
+      },
+      "calibration_reference": "doc/src/content/docs/verification/osc-trimmer-calibration.mdx#envelope-rise-offset",
+      "calibration_status": "NEEDS BENCH",
+      "rotation_direction": "UNKNOWN / NEEDS BENCH",
+      "source_pins": {
+        "1": "/E6/REFN5",
+        "2": "/E6/RISE_OFFSET_TRIM",
+        "3": "/E6/REF5"
+      },
+      "pins": {
+        "1": "X6E646CB5B4FD67AFB14D",
+        "2": "XE9ACCFE49C60EC22E908",
+        "3": "XC22E458B0CC1481C514F"
+      },
+      "placement": {
+        "board": "K",
+        "board_id": "osc-core",
+        "x_mm": 263.85,
+        "y_mm": 141.55,
+        "kicad_orientation_deg": 0,
+        "side": "F.Cu",
+        "native_x_mm": 363.85,
+        "native_y_mm": 191.55,
+        "native_orientation_deg": 0,
+        "rotation_deg": 0,
+        "courtyard_mm": [
+          261.0,
+          139.5,
+          266.3,
+          143.4
+        ]
+      }
+    },
+    {
+      "ref": "RV4606",
+      "block": "E6",
+      "role": "envelope:FALL_SCALE",
+      "family": "envelope",
+      "part_key": "CORE_FALL_SCALE.0",
+      "value": "1 kΩ",
+      "mpn": "TC33X-2-102E",
+      "manufacturer": "Bourns",
+      "footprint": "zudo-osc-hole-field:Potentiometer_Bourns_TC33X_Vertical",
+      "symbol": "zudo-osc-hole-field:TC33X-2-102E",
+      "module_label": "AR6",
+      "function_label": "FALL SCALE",
+      "label": "AR6 FALL SCALE",
+      "reference_label": "RV4606",
+      "nominal_resistance": "1 kΩ",
+      "mpn_status": "SOURCE ASSIGNED / NOT QUALIFIED",
+      "source_locator": {
+        "path": "design/spec/modules/envelope.py",
+        "line": 196,
+        "anchor": "source trim call for envelope:FALL_SCALE"
+      },
+      "calibration_reference": "doc/src/content/docs/verification/osc-trimmer-calibration.mdx#envelope-fall-scale",
+      "calibration_status": "NEEDS BENCH",
+      "rotation_direction": "UNKNOWN / NEEDS BENCH",
+      "source_pins": {
+        "1": "/E6/FALL_SCALE_TRIM",
+        "2": "/E6/FALL_EXPO_SUM",
+        "3": "/E6/FALL_EXPO_SUM"
+      },
+      "pins": {
+        "1": "X13973266902E4C17EDA8",
+        "2": "XEBADF49433D187353003",
+        "3": "XEBADF49433D187353003"
+      },
+      "placement": {
+        "board": "K",
+        "board_id": "osc-core",
+        "x_mm": 298.1,
+        "y_mm": 103.6,
+        "kicad_orientation_deg": 270.0,
+        "side": "F.Cu",
+        "native_x_mm": 398.1,
+        "native_y_mm": 153.6,
+        "native_orientation_deg": -90.0,
+        "rotation_deg": 90,
+        "courtyard_mm": [
+          296.25,
+          100.75,
+          300.15000000000003,
+          106.05
+        ]
+      }
+    },
+    {
+      "ref": "RV4607",
+      "block": "E6",
+      "role": "envelope:FALL_BASE",
+      "family": "envelope",
+      "part_key": "CORE_FALL_BASE.0",
+      "value": "50 kΩ",
+      "mpn": "",
+      "manufacturer": "",
+      "footprint": "zudo-osc-hole-field:Potentiometer_Bourns_TC33X_Vertical",
+      "symbol": "zudo-osc-hole-field:TC33X-2-103E",
+      "module_label": "AR6",
+      "function_label": "FALL BASE",
+      "label": "AR6 FALL BASE",
+      "reference_label": "RV4607",
+      "nominal_resistance": "50 kΩ",
+      "mpn_status": "UNRESOLVED",
+      "source_locator": {
+        "path": "design/spec/modules/envelope.py",
+        "line": 199,
+        "anchor": "source trim call for envelope:FALL_BASE"
+      },
+      "calibration_reference": "doc/src/content/docs/verification/osc-trimmer-calibration.mdx#envelope-fall-base",
+      "calibration_status": "NEEDS BENCH",
+      "rotation_direction": "UNKNOWN / NEEDS BENCH",
+      "source_pins": {
+        "1": "/E6/FALL_REF_TRIM",
+        "2": "/E6/FALL_EXPO_REF",
+        "3": "/E6/FALL_EXPO_REF"
+      },
+      "pins": {
+        "1": "X397FF51868343A219B35",
+        "2": "X1A56FAC2909B66A3BA00",
+        "3": "X1A56FAC2909B66A3BA00"
+      },
+      "placement": {
+        "board": "K",
+        "board_id": "osc-core",
+        "x_mm": 307.1,
+        "y_mm": 112.94999999999999,
+        "kicad_orientation_deg": 90.0,
+        "side": "B.Cu",
+        "native_x_mm": 407.1,
+        "native_y_mm": 162.95,
+        "native_orientation_deg": 90.0,
+        "rotation_deg": 90,
+        "courtyard_mm": [
+          305.25,
+          110.5,
+          309.15000000000003,
+          115.8
+        ]
+      }
+    },
+    {
+      "ref": "RV4608",
+      "block": "E6",
+      "role": "envelope:FALL_OFFSET",
+      "family": "envelope",
+      "part_key": "CORE_FALL_OFFSET.0",
+      "value": "10 kΩ",
+      "mpn": "TC33X-2-103E",
+      "manufacturer": "Bourns",
+      "footprint": "zudo-osc-hole-field:Potentiometer_Bourns_TC33X_Vertical",
+      "symbol": "zudo-osc-hole-field:TC33X-2-103E",
+      "module_label": "AR6",
+      "function_label": "FALL OFFSET",
+      "label": "AR6 FALL OFFSET",
+      "reference_label": "RV4608",
+      "nominal_resistance": "10 kΩ",
+      "mpn_status": "SOURCE ASSIGNED / NOT QUALIFIED",
+      "source_locator": {
+        "path": "design/spec/modules/envelope.py",
+        "line": 205,
+        "anchor": "source trim call for envelope:FALL_OFFSET"
+      },
+      "calibration_reference": "doc/src/content/docs/verification/osc-trimmer-calibration.mdx#envelope-fall-offset",
+      "calibration_status": "NEEDS BENCH",
+      "rotation_direction": "UNKNOWN / NEEDS BENCH",
+      "source_pins": {
+        "1": "/E6/REFN5",
+        "2": "/E6/FALL_OFFSET_TRIM",
+        "3": "/E6/REF5"
+      },
+      "pins": {
+        "1": "X6E646CB5B4FD67AFB14D",
+        "2": "XE0CCF29B1B7AD12B34E4",
+        "3": "XC22E458B0CC1481C514F"
+      },
+      "placement": {
+        "board": "K",
+        "board_id": "osc-core",
+        "x_mm": 247.60000000000002,
+        "y_mm": 122.19999999999999,
+        "kicad_orientation_deg": 90.0,
+        "side": "B.Cu",
+        "native_x_mm": 347.6,
+        "native_y_mm": 172.2,
+        "native_orientation_deg": 90.0,
+        "rotation_deg": 90,
+        "courtyard_mm": [
+          245.75,
+          119.75,
+          249.65,
+          125.05
+        ]
+      }
+    },
+    {
+      "ref": "RV5104",
+      "block": "W2",
+      "role": "wavefolder:OTA_OFFSET",
+      "family": "wavefolder",
+      "part_key": "CORE_OTA_OFFSET.0",
+      "value": "10 kΩ",
+      "mpn": "TC33X-2-103E",
+      "manufacturer": "Bourns",
+      "footprint": "zudo-osc-hole-field:Potentiometer_Bourns_TC33X_Vertical",
+      "symbol": "zudo-osc-hole-field:TC33X-2-103E",
+      "module_label": "WAVE2",
+      "function_label": "OTA OFFSET",
+      "label": "WAVE2 OTA OFFSET",
+      "reference_label": "RV5104",
+      "nominal_resistance": "10 kΩ",
+      "mpn_status": "SOURCE ASSIGNED / NOT QUALIFIED",
+      "source_locator": {
+        "path": "design/spec/modules/wavefolder.py",
+        "line": 84,
+        "anchor": "source trim call for wavefolder:OTA_OFFSET"
+      },
+      "calibration_reference": "doc/src/content/docs/verification/osc-trimmer-calibration.mdx#wavefolder-ota-offset",
+      "calibration_status": "NEEDS BENCH",
+      "rotation_direction": "UNKNOWN / NEEDS BENCH",
+      "source_pins": {
+        "1": "/W2/REFN5",
+        "2": "/W2/OFFSET_TRIM",
+        "3": "/W2/REF5"
+      },
+      "pins": {
+        "1": "X80E184FE788FFBE8EA58",
+        "2": "XB82888CE97D412667F36",
+        "3": "XB26BE8615EDC7481E388"
+      },
+      "placement": {
+        "board": "K",
+        "board_id": "osc-core",
+        "x_mm": 143.35,
+        "y_mm": 257.2,
+        "kicad_orientation_deg": 90.0,
+        "side": "B.Cu",
+        "native_x_mm": 243.35,
+        "native_y_mm": 307.2,
+        "native_orientation_deg": 90.0,
+        "rotation_deg": 90,
+        "courtyard_mm": [
+          141.5,
+          254.75,
+          145.4,
+          260.05
+        ]
+      }
+    },
+    {
+      "ref": "RV5105",
+      "block": "W2",
+      "role": "wavefolder:PRE_GAIN_MAX",
+      "family": "wavefolder",
+      "part_key": "CORE_PRE_GAIN_MAX.0",
+      "value": "10 kΩ",
+      "mpn": "TC33X-2-103E",
+      "manufacturer": "Bourns",
+      "footprint": "zudo-osc-hole-field:Potentiometer_Bourns_TC33X_Vertical",
+      "symbol": "zudo-osc-hole-field:TC33X-2-103E",
+      "module_label": "WAVE2",
+      "function_label": "PRE GAIN MAX",
+      "label": "WAVE2 PRE GAIN MAX",
+      "reference_label": "RV5105",
+      "nominal_resistance": "10 kΩ",
+      "mpn_status": "SOURCE ASSIGNED / NOT QUALIFIED",
+      "source_locator": {
+        "path": "design/spec/modules/wavefolder.py",
+        "line": 87,
+        "anchor": "source trim call for wavefolder:PRE_GAIN_MAX"
+      },
+      "calibration_reference": "doc/src/content/docs/verification/osc-trimmer-calibration.mdx#wavefolder-pre-gain-max",
+      "calibration_status": "NEEDS BENCH",
+      "rotation_direction": "UNKNOWN / NEEDS BENCH",
+      "source_pins": {
+        "1": "/W2/PRE_GAIN_TRIM",
+        "2": "/W2/PRE_GAIN_SUM",
+        "3": "/W2/PRE_GAIN_SUM"
+      },
+      "pins": {
+        "1": "X178E67E4351A2A009065",
+        "2": "XECC8CCC5204F6D992744",
+        "3": "XECC8CCC5204F6D992744"
+      },
+      "placement": {
+        "board": "K",
+        "board_id": "osc-core",
+        "x_mm": 150.35,
+        "y_mm": 275.3,
+        "kicad_orientation_deg": 0,
+        "side": "F.Cu",
+        "native_x_mm": 250.35,
+        "native_y_mm": 325.3,
+        "native_orientation_deg": 0,
+        "rotation_deg": 0,
+        "courtyard_mm": [
+          147.5,
+          273.25,
+          152.79999999999998,
+          277.15000000000003
+        ]
+      }
+    },
+    {
+      "ref": "RV5204",
+      "block": "W1",
+      "role": "wavefolder:OTA_OFFSET",
+      "family": "wavefolder",
+      "part_key": "CORE_OTA_OFFSET.0",
+      "value": "10 kΩ",
+      "mpn": "TC33X-2-103E",
+      "manufacturer": "Bourns",
+      "footprint": "zudo-osc-hole-field:Potentiometer_Bourns_TC33X_Vertical",
+      "symbol": "zudo-osc-hole-field:TC33X-2-103E",
+      "module_label": "WAVE1",
+      "function_label": "OTA OFFSET",
+      "label": "WAVE1 OTA OFFSET",
+      "reference_label": "RV5204",
+      "nominal_resistance": "10 kΩ",
+      "mpn_status": "SOURCE ASSIGNED / NOT QUALIFIED",
+      "source_locator": {
+        "path": "design/spec/modules/wavefolder.py",
+        "line": 84,
+        "anchor": "source trim call for wavefolder:OTA_OFFSET"
+      },
+      "calibration_reference": "doc/src/content/docs/verification/osc-trimmer-calibration.mdx#wavefolder-ota-offset",
+      "calibration_status": "NEEDS BENCH",
+      "rotation_direction": "UNKNOWN / NEEDS BENCH",
+      "source_pins": {
+        "1": "/W1/REFN5",
+        "2": "/W1/OFFSET_TRIM",
+        "3": "/W1/REF5"
+      },
+      "pins": {
+        "1": "X06C7F5D4F085BBED1E86",
+        "2": "X578004916FE691275340",
+        "3": "XAC9F56A148C41BDAFC02"
+      },
+      "placement": {
+        "board": "K",
+        "board_id": "osc-core",
+        "x_mm": 164.35000000000002,
+        "y_mm": 219.3,
+        "kicad_orientation_deg": 0,
+        "side": "F.Cu",
+        "native_x_mm": 264.35,
+        "native_y_mm": 269.3,
+        "native_orientation_deg": 0,
+        "rotation_deg": 0,
+        "courtyard_mm": [
+          161.5,
+          217.25,
+          166.79999999999998,
+          221.15
+        ]
+      }
+    },
+    {
+      "ref": "RV5205",
+      "block": "W1",
+      "role": "wavefolder:PRE_GAIN_MAX",
+      "family": "wavefolder",
+      "part_key": "CORE_PRE_GAIN_MAX.0",
+      "value": "10 kΩ",
+      "mpn": "TC33X-2-103E",
+      "manufacturer": "Bourns",
+      "footprint": "zudo-osc-hole-field:Potentiometer_Bourns_TC33X_Vertical",
+      "symbol": "zudo-osc-hole-field:TC33X-2-103E",
+      "module_label": "WAVE1",
+      "function_label": "PRE GAIN MAX",
+      "label": "WAVE1 PRE GAIN MAX",
+      "reference_label": "RV5205",
+      "nominal_resistance": "10 kΩ",
+      "mpn_status": "SOURCE ASSIGNED / NOT QUALIFIED",
+      "source_locator": {
+        "path": "design/spec/modules/wavefolder.py",
+        "line": 87,
+        "anchor": "source trim call for wavefolder:PRE_GAIN_MAX"
+      },
+      "calibration_reference": "doc/src/content/docs/verification/osc-trimmer-calibration.mdx#wavefolder-pre-gain-max",
+      "calibration_status": "NEEDS BENCH",
+      "rotation_direction": "UNKNOWN / NEEDS BENCH",
+      "source_pins": {
+        "1": "/W1/PRE_GAIN_TRIM",
+        "2": "/W1/PRE_GAIN_SUM",
+        "3": "/W1/PRE_GAIN_SUM"
+      },
+      "pins": {
+        "1": "X05F9F6EE1FCD716C89F6",
+        "2": "X5A473FB4372951F035E4",
+        "3": "X5A473FB4372951F035E4"
+      },
+      "placement": {
+        "board": "K",
+        "board_id": "osc-core",
+        "x_mm": 145.6,
+        "y_mm": 216.45,
+        "kicad_orientation_deg": 90.0,
+        "side": "B.Cu",
+        "native_x_mm": 245.6,
+        "native_y_mm": 266.45,
+        "native_orientation_deg": 90.0,
+        "rotation_deg": 90,
+        "courtyard_mm": [
+          143.75,
+          214.0,
+          147.65,
+          219.29999999999998
+        ]
+      }
+    },
+    {
+      "ref": "RV6101",
+      "block": "N1",
+      "role": "noise:WHITE_LEVEL_TRIM",
+      "family": "noise",
+      "part_key": "WHITE_LEVEL_TRIM.0",
+      "value": "10 kΩ",
+      "mpn": "TC33X-2-103E",
+      "manufacturer": "Bourns",
+      "footprint": "zudo-osc-hole-field:Potentiometer_Bourns_TC33X_Vertical",
+      "symbol": "zudo-osc-hole-field:TC33X-2-103E",
+      "module_label": "NOISE",
+      "function_label": "WHITE LEVEL",
+      "label": "NOISE WHITE LEVEL",
+      "reference_label": "RV6101",
+      "nominal_resistance": "10 kΩ",
+      "mpn_status": "SOURCE ASSIGNED / NOT QUALIFIED",
+      "source_locator": {
+        "path": "design/spec/modules/noise.py",
+        "line": 103,
+        "anchor": "source trim call for noise:WHITE_LEVEL_TRIM"
+      },
+      "calibration_reference": "doc/src/content/docs/verification/osc-trimmer-calibration.mdx#noise-white-level-trim",
+      "calibration_status": "NEEDS BENCH",
+      "rotation_direction": "UNKNOWN / NEEDS BENCH",
+      "source_pins": {
+        "1": "/N1/WHITE_TRIM",
+        "2": "/N1/WHITE_LEVEL_SUM",
+        "3": "/N1/WHITE_LEVEL_SUM"
+      },
+      "pins": {
+        "1": "XFDA935B1C162E7FE0831",
+        "2": "XEE34650816FB4A002A7D",
+        "3": "XEE34650816FB4A002A7D"
+      },
+      "placement": {
+        "board": "K",
+        "board_id": "osc-core",
+        "x_mm": 210.60000000000002,
+        "y_mm": 117.94999999999999,
+        "kicad_orientation_deg": 90.0,
+        "side": "B.Cu",
+        "native_x_mm": 310.6,
+        "native_y_mm": 167.95,
+        "native_orientation_deg": 90.0,
+        "rotation_deg": 90,
+        "courtyard_mm": [
+          208.75,
+          115.5,
+          212.65,
+          120.8
+        ]
+      }
+    },
+    {
+      "ref": "RV6102",
+      "block": "N1",
+      "role": "noise:PINK_LEVEL_TRIM",
+      "family": "noise",
+      "part_key": "PINK_LEVEL_TRIM.0",
+      "value": "10 kΩ",
+      "mpn": "TC33X-2-103E",
+      "manufacturer": "Bourns",
+      "footprint": "zudo-osc-hole-field:Potentiometer_Bourns_TC33X_Vertical",
+      "symbol": "zudo-osc-hole-field:TC33X-2-103E",
+      "module_label": "NOISE",
+      "function_label": "PINK LEVEL",
+      "label": "NOISE PINK LEVEL",
+      "reference_label": "RV6102",
+      "nominal_resistance": "10 kΩ",
+      "mpn_status": "SOURCE ASSIGNED / NOT QUALIFIED",
+      "source_locator": {
+        "path": "design/spec/modules/noise.py",
+        "line": 103,
+        "anchor": "source trim call for noise:PINK_LEVEL_TRIM"
+      },
+      "calibration_reference": "doc/src/content/docs/verification/osc-trimmer-calibration.mdx#noise-pink-level-trim",
+      "calibration_status": "NEEDS BENCH",
+      "rotation_direction": "UNKNOWN / NEEDS BENCH",
+      "source_pins": {
+        "1": "/N1/PINK_TRIM",
+        "2": "/N1/PINK_LEVEL_SUM",
+        "3": "/N1/PINK_LEVEL_SUM"
+      },
+      "pins": {
+        "1": "X738181E238C2074F2B25",
+        "2": "X608D26FD73D81607E29C",
+        "3": "X608D26FD73D81607E29C"
+      },
+      "placement": {
+        "board": "K",
+        "board_id": "osc-core",
+        "x_mm": 220.85000000000002,
+        "y_mm": 116.05000000000001,
+        "kicad_orientation_deg": 0,
+        "side": "F.Cu",
+        "native_x_mm": 320.85,
+        "native_y_mm": 166.05,
+        "native_orientation_deg": 0,
+        "rotation_deg": 0,
+        "courtyard_mm": [
+          218.0,
+          114.0,
+          223.29999999999998,
+          117.89999999999999
+        ]
+      }
+    },
+    {
+      "ref": "RV6103",
+      "block": "N1",
+      "role": "noise:BLUE_LEVEL_TRIM",
+      "family": "noise",
+      "part_key": "BLUE_LEVEL_TRIM.0",
+      "value": "10 kΩ",
+      "mpn": "TC33X-2-103E",
+      "manufacturer": "Bourns",
+      "footprint": "zudo-osc-hole-field:Potentiometer_Bourns_TC33X_Vertical",
+      "symbol": "zudo-osc-hole-field:TC33X-2-103E",
+      "module_label": "NOISE",
+      "function_label": "BLUE LEVEL",
+      "label": "NOISE BLUE LEVEL",
+      "reference_label": "RV6103",
+      "nominal_resistance": "10 kΩ",
+      "mpn_status": "SOURCE ASSIGNED / NOT QUALIFIED",
+      "source_locator": {
+        "path": "design/spec/modules/noise.py",
+        "line": 103,
+        "anchor": "source trim call for noise:BLUE_LEVEL_TRIM"
+      },
+      "calibration_reference": "doc/src/content/docs/verification/osc-trimmer-calibration.mdx#noise-blue-level-trim",
+      "calibration_status": "NEEDS BENCH",
+      "rotation_direction": "UNKNOWN / NEEDS BENCH",
+      "source_pins": {
+        "1": "/N1/BLUE_TRIM",
+        "2": "/N1/BLUE_LEVEL_SUM",
+        "3": "/N1/BLUE_LEVEL_SUM"
+      },
+      "pins": {
+        "1": "X7B1F6DFFA481A993D18E",
+        "2": "X8633A35600F141A7772E",
+        "3": "X8633A35600F141A7772E"
+      },
+      "placement": {
+        "board": "K",
+        "board_id": "osc-core",
+        "x_mm": 220.95,
+        "y_mm": 111.80000000000001,
+        "kicad_orientation_deg": 180.0,
+        "side": "B.Cu",
+        "native_x_mm": 320.95,
+        "native_y_mm": 161.8,
+        "native_orientation_deg": 180.0,
+        "rotation_deg": 0,
+        "courtyard_mm": [
+          218.5,
+          109.75,
+          223.79999999999998,
+          113.64999999999999
+        ]
+      }
+    },
+    {
+      "ref": "RV6104",
+      "block": "N1",
+      "role": "noise:BROWN_LEVEL_TRIM",
+      "family": "noise",
+      "part_key": "BROWN_LEVEL_TRIM.0",
+      "value": "10 kΩ",
+      "mpn": "TC33X-2-103E",
+      "manufacturer": "Bourns",
+      "footprint": "zudo-osc-hole-field:Potentiometer_Bourns_TC33X_Vertical",
+      "symbol": "zudo-osc-hole-field:TC33X-2-103E",
+      "module_label": "NOISE",
+      "function_label": "BROWN LEVEL",
+      "label": "NOISE BROWN LEVEL",
+      "reference_label": "RV6104",
+      "nominal_resistance": "10 kΩ",
+      "mpn_status": "SOURCE ASSIGNED / NOT QUALIFIED",
+      "source_locator": {
+        "path": "design/spec/modules/noise.py",
+        "line": 103,
+        "anchor": "source trim call for noise:BROWN_LEVEL_TRIM"
+      },
+      "calibration_reference": "doc/src/content/docs/verification/osc-trimmer-calibration.mdx#noise-brown-level-trim",
+      "calibration_status": "NEEDS BENCH",
+      "rotation_direction": "UNKNOWN / NEEDS BENCH",
+      "source_pins": {
+        "1": "/N1/BROWN_TRIM",
+        "2": "/N1/BROWN_LEVEL_SUM",
+        "3": "/N1/BROWN_LEVEL_SUM"
+      },
+      "pins": {
+        "1": "X5995718AB655A903BEA3",
+        "2": "X9278A8F7541FFBE1C6AF",
+        "3": "X9278A8F7541FFBE1C6AF"
+      },
+      "placement": {
+        "board": "K",
+        "board_id": "osc-core",
+        "x_mm": 217.7,
+        "y_mm": 139.3,
+        "kicad_orientation_deg": 180.0,
+        "side": "B.Cu",
+        "native_x_mm": 317.7,
+        "native_y_mm": 189.3,
+        "native_orientation_deg": 180.0,
+        "rotation_deg": 0,
+        "courtyard_mm": [
+          215.25,
+          137.25,
+          220.54999999999998,
+          141.15
+        ]
+      }
+    },
+    {
+      "ref": "RV8307",
+      "block": "M4A",
+      "role": "mix4_vca:FEEDTHROUGH",
+      "family": "mix4_vca",
+      "part_key": "G1_FEEDTHROUGH.0",
+      "value": "10 kΩ",
+      "mpn": "TC33X-2-103E",
+      "manufacturer": "Bourns",
+      "footprint": "zudo-osc-hole-field:Potentiometer_Bourns_TC33X_Vertical",
+      "symbol": "zudo-osc-hole-field:TC33X-2-103E",
+      "module_label": "MIX4A",
+      "function_label": "FEEDTHROUGH",
+      "label": "MIX4A FEEDTHROUGH",
+      "reference_label": "RV8307",
+      "nominal_resistance": "10 kΩ",
+      "mpn_status": "SOURCE ASSIGNED / NOT QUALIFIED",
+      "source_locator": {
+        "path": "design/spec/modules/mix4_vca.py",
+        "line": 71,
+        "anchor": "source trim call for mix4_vca:FEEDTHROUGH"
+      },
+      "calibration_reference": "doc/src/content/docs/verification/osc-trimmer-calibration.mdx#mix4-vca-feedthrough",
+      "calibration_status": "NEEDS BENCH",
+      "rotation_direction": "UNKNOWN / NEEDS BENCH",
+      "source_pins": {
+        "1": "/M4A/REFN5",
+        "2": "/M4A/OFFSET_W",
+        "3": "/M4A/REF5"
+      },
+      "pins": {
+        "1": "XACB4939E4CA4AAFF80B0",
+        "2": "XDF85AE003026630AB996",
+        "3": "X7B5C74E08F15CF029DD6"
+      },
+      "placement": {
+        "board": "K",
+        "board_id": "osc-core",
+        "x_mm": 239.60000000000002,
+        "y_mm": 153.45,
+        "kicad_orientation_deg": 90.0,
+        "side": "B.Cu",
+        "native_x_mm": 339.6,
+        "native_y_mm": 203.45,
+        "native_orientation_deg": 90.0,
+        "rotation_deg": 90,
+        "courtyard_mm": [
+          237.75,
+          151.0,
+          241.65,
+          156.29999999999998
+        ]
+      }
+    },
+    {
+      "ref": "RV8308",
+      "block": "M4A",
+      "role": "mix4_vca:TIA_CAL",
+      "family": "mix4_vca",
+      "part_key": "G1_TIA_CAL.0",
+      "value": "10 kΩ",
+      "mpn": "TC33X-2-103E",
+      "manufacturer": "Bourns",
+      "footprint": "zudo-osc-hole-field:Potentiometer_Bourns_TC33X_Vertical",
+      "symbol": "zudo-osc-hole-field:TC33X-2-103E",
+      "module_label": "MIX4A",
+      "function_label": "VCA GAIN",
+      "label": "MIX4A VCA GAIN",
+      "reference_label": "RV8308",
+      "nominal_resistance": "10 kΩ",
+      "mpn_status": "SOURCE ASSIGNED / NOT QUALIFIED",
+      "source_locator": {
+        "path": "design/spec/modules/mix4_vca.py",
+        "line": 81,
+        "anchor": "source trim call for mix4_vca:TIA_CAL"
+      },
+      "calibration_reference": "doc/src/content/docs/verification/osc-trimmer-calibration.mdx#mix4-vca-tia-cal",
+      "calibration_status": "NEEDS BENCH",
+      "rotation_direction": "UNKNOWN / NEEDS BENCH",
+      "source_pins": {
+        "1": "/M4A/TIA_TRIM",
+        "2": "/M4A/OTA_CURRENT",
+        "3": "/M4A/OTA_CURRENT"
+      },
+      "pins": {
+        "1": "X8F1B578D3860FDE9AA50",
+        "2": "X3AB54520A2932F40FFB8",
+        "3": "X3AB54520A2932F40FFB8"
+      },
+      "placement": {
+        "board": "K",
+        "board_id": "osc-core",
+        "x_mm": 227.60000000000002,
+        "y_mm": 144.05,
+        "kicad_orientation_deg": 0,
+        "side": "F.Cu",
+        "native_x_mm": 327.6,
+        "native_y_mm": 194.05,
+        "native_orientation_deg": 0,
+        "rotation_deg": 0,
+        "courtyard_mm": [
+          224.75,
+          142.0,
+          230.04999999999998,
+          145.9
+        ]
+      }
+    },
+    {
+      "ref": "RV8407",
+      "block": "M4B",
+      "role": "mix4_vca:FEEDTHROUGH",
+      "family": "mix4_vca",
+      "part_key": "G1_FEEDTHROUGH.0",
+      "value": "10 kΩ",
+      "mpn": "TC33X-2-103E",
+      "manufacturer": "Bourns",
+      "footprint": "zudo-osc-hole-field:Potentiometer_Bourns_TC33X_Vertical",
+      "symbol": "zudo-osc-hole-field:TC33X-2-103E",
+      "module_label": "MIX4B",
+      "function_label": "FEEDTHROUGH",
+      "label": "MIX4B FEEDTHROUGH",
+      "reference_label": "RV8407",
+      "nominal_resistance": "10 kΩ",
+      "mpn_status": "SOURCE ASSIGNED / NOT QUALIFIED",
+      "source_locator": {
+        "path": "design/spec/modules/mix4_vca.py",
+        "line": 71,
+        "anchor": "source trim call for mix4_vca:FEEDTHROUGH"
+      },
+      "calibration_reference": "doc/src/content/docs/verification/osc-trimmer-calibration.mdx#mix4-vca-feedthrough",
+      "calibration_status": "NEEDS BENCH",
+      "rotation_direction": "UNKNOWN / NEEDS BENCH",
+      "source_pins": {
+        "1": "/M4B/REFN5",
+        "2": "/M4B/OFFSET_W",
+        "3": "/M4B/REF5"
+      },
+      "pins": {
+        "1": "XB9F7C7FAA057C204FF64",
+        "2": "X8C5AC7F086620BD395BC",
+        "3": "X2235AA409133311006A2"
+      },
+      "placement": {
+        "board": "K",
+        "board_id": "osc-core",
+        "x_mm": 204.60000000000002,
+        "y_mm": 202.95,
+        "kicad_orientation_deg": 90.0,
+        "side": "B.Cu",
+        "native_x_mm": 304.6,
+        "native_y_mm": 252.95,
+        "native_orientation_deg": 90.0,
+        "rotation_deg": 90,
+        "courtyard_mm": [
+          202.75,
+          200.5,
+          206.65,
+          205.79999999999998
+        ]
+      }
+    },
+    {
+      "ref": "RV8408",
+      "block": "M4B",
+      "role": "mix4_vca:TIA_CAL",
+      "family": "mix4_vca",
+      "part_key": "G1_TIA_CAL.0",
+      "value": "10 kΩ",
+      "mpn": "TC33X-2-103E",
+      "manufacturer": "Bourns",
+      "footprint": "zudo-osc-hole-field:Potentiometer_Bourns_TC33X_Vertical",
+      "symbol": "zudo-osc-hole-field:TC33X-2-103E",
+      "module_label": "MIX4B",
+      "function_label": "VCA GAIN",
+      "label": "MIX4B VCA GAIN",
+      "reference_label": "RV8408",
+      "nominal_resistance": "10 kΩ",
+      "mpn_status": "SOURCE ASSIGNED / NOT QUALIFIED",
+      "source_locator": {
+        "path": "design/spec/modules/mix4_vca.py",
+        "line": 81,
+        "anchor": "source trim call for mix4_vca:TIA_CAL"
+      },
+      "calibration_reference": "doc/src/content/docs/verification/osc-trimmer-calibration.mdx#mix4-vca-tia-cal",
+      "calibration_status": "NEEDS BENCH",
+      "rotation_direction": "UNKNOWN / NEEDS BENCH",
+      "source_pins": {
+        "1": "/M4B/TIA_TRIM",
+        "2": "/M4B/OTA_CURRENT",
+        "3": "/M4B/OTA_CURRENT"
+      },
+      "pins": {
+        "1": "X7EEE222FB78D795E1039",
+        "2": "XE71F9B1073D3C5A3C006",
+        "3": "XE71F9B1073D3C5A3C006"
+      },
+      "placement": {
+        "board": "K",
+        "board_id": "osc-core",
+        "x_mm": 235.60000000000002,
+        "y_mm": 184.6,
+        "kicad_orientation_deg": 270.0,
+        "side": "F.Cu",
+        "native_x_mm": 335.6,
+        "native_y_mm": 234.6,
+        "native_orientation_deg": -90.0,
+        "rotation_deg": 90,
+        "courtyard_mm": [
+          233.75,
+          181.75,
+          237.65,
+          187.04999999999998
+        ]
+      }
+    },
+    {
+      "ref": "RVO1106",
+      "block": "O1",
+      "role": "oscillator:BASE_TRIM",
+      "family": "oscillator",
+      "part_key": "BASE_TRIM.0",
+      "value": "10 kΩ",
+      "mpn": "TC33X-2-103E",
+      "manufacturer": "Bourns",
+      "footprint": "zudo-osc-hole-field:Potentiometer_Bourns_TC33X_Vertical",
+      "symbol": "zudo-osc-hole-field:TC33X-2-103E",
+      "module_label": "OSC1",
+      "function_label": "BASE PITCH",
+      "label": "OSC1 BASE PITCH",
+      "reference_label": "RVO1106",
+      "nominal_resistance": "10 kΩ",
+      "mpn_status": "SOURCE ASSIGNED / NOT QUALIFIED",
+      "source_locator": {
+        "path": "design/spec/modules/oscillator.py",
+        "line": 156,
+        "anchor": "source trim call for oscillator:BASE_TRIM"
+      },
+      "calibration_reference": "doc/src/content/docs/verification/osc-trimmer-calibration.mdx#oscillator-base-trim",
+      "calibration_status": "NEEDS BENCH",
+      "rotation_direction": "UNKNOWN / NEEDS BENCH",
+      "source_pins": {
+        "1": "/O1/BASE_REFN5",
+        "2": "/O1/BASE_ADJ",
+        "3": "/O1/BASE_REF5"
+      },
+      "pins": {
+        "1": "X1F43213A02655CCA2673",
+        "2": "XE23CA6065976CA4970D0",
+        "3": "XC6D63AA9EAFF9BA1AE05"
+      },
+      "placement": {
+        "board": "K",
+        "board_id": "osc-core",
+        "x_mm": 49.849999999999994,
+        "y_mm": 167.6,
+        "kicad_orientation_deg": 270.0,
+        "side": "F.Cu",
+        "native_x_mm": 149.85,
+        "native_y_mm": 217.6,
+        "native_orientation_deg": -90.0,
+        "rotation_deg": 90,
+        "courtyard_mm": [
+          48.0,
+          164.75,
+          51.9,
+          170.04999999999998
+        ]
+      }
+    },
+    {
+      "ref": "RVO1107",
+      "block": "O1",
+      "role": "oscillator:RZ_TRIM",
+      "family": "oscillator",
+      "part_key": "RZ_TRIM.0",
+      "value": "10 kΩ",
+      "mpn": "TC33X-2-103E",
+      "manufacturer": "Bourns",
+      "footprint": "zudo-osc-hole-field:Potentiometer_Bourns_TC33X_Vertical",
+      "symbol": "zudo-osc-hole-field:TC33X-2-103E",
+      "module_label": "OSC1",
+      "function_label": "TEMP COMP",
+      "label": "OSC1 TEMP COMP",
+      "reference_label": "RVO1107",
+      "nominal_resistance": "10 kΩ",
+      "mpn_status": "SOURCE ASSIGNED / NOT QUALIFIED",
+      "source_locator": {
+        "path": "design/spec/modules/oscillator.py",
+        "line": 162,
+        "anchor": "source trim call for oscillator:RZ_TRIM"
+      },
+      "calibration_reference": "doc/src/content/docs/verification/osc-trimmer-calibration.mdx#oscillator-rz-trim",
+      "calibration_status": "NEEDS BENCH",
+      "rotation_direction": "UNKNOWN / NEEDS BENCH",
+      "source_pins": {
+        "1": "/O1/RZ_TRIM",
+        "2": "AGND",
+        "3": "AGND"
+      },
+      "pins": {
+        "1": "XF7EA89F146B5CCC921B7",
+        "2": "AGND",
+        "3": "AGND"
+      },
+      "placement": {
+        "board": "K",
+        "board_id": "osc-core",
+        "x_mm": 10.349999999999994,
+        "y_mm": 174.45,
+        "kicad_orientation_deg": 90.0,
+        "side": "B.Cu",
+        "native_x_mm": 110.35,
+        "native_y_mm": 224.45,
+        "native_orientation_deg": 90.0,
+        "rotation_deg": 90,
+        "courtyard_mm": [
+          8.5,
+          172.0,
+          12.399999999999999,
+          177.29999999999998
+        ]
+      }
+    },
+    {
+      "ref": "RVO1108",
+      "block": "O1",
+      "role": "oscillator:SCALE_TRIM",
+      "family": "oscillator",
+      "part_key": "SCALE_TRIM.0",
+      "value": "1 kΩ",
+      "mpn": "TC33X-2-102E",
+      "manufacturer": "Bourns",
+      "footprint": "zudo-osc-hole-field:Potentiometer_Bourns_TC33X_Vertical",
+      "symbol": "zudo-osc-hole-field:TC33X-2-102E",
+      "module_label": "OSC1",
+      "function_label": "V/OCT",
+      "label": "OSC1 V/OCT",
+      "reference_label": "RVO1108",
+      "nominal_resistance": "1 kΩ",
+      "mpn_status": "SOURCE ASSIGNED / NOT QUALIFIED",
+      "source_locator": {
+        "path": "design/spec/modules/oscillator.py",
+        "line": 164,
+        "anchor": "source trim call for oscillator:SCALE_TRIM"
+      },
+      "calibration_reference": "doc/src/content/docs/verification/osc-trimmer-calibration.mdx#oscillator-scale-trim",
+      "calibration_status": "NEEDS BENCH",
+      "rotation_direction": "UNKNOWN / NEEDS BENCH",
+      "source_pins": {
+        "1": "/O1/SCALE_ADJ",
+        "2": "AGND",
+        "3": "AGND"
+      },
+      "pins": {
+        "1": "X2EDDFA4BD6FE39CB6327",
+        "2": "AGND",
+        "3": "AGND"
+      },
+      "placement": {
+        "board": "K",
+        "board_id": "osc-core",
+        "x_mm": 28.69999899999999,
+        "y_mm": 147.05,
+        "kicad_orientation_deg": 180.0,
+        "side": "B.Cu",
+        "native_x_mm": 128.699999,
+        "native_y_mm": 197.05,
+        "native_orientation_deg": 180.0,
+        "rotation_deg": 0,
+        "courtyard_mm": [
+          26.25,
+          145.0,
+          31.55,
+          148.9
+        ]
+      }
+    },
+    {
+      "ref": "RVO1109",
+      "block": "O1",
+      "role": "oscillator:HF_TRIM",
+      "family": "oscillator",
+      "part_key": "HF_TRIM.0",
+      "value": "20 kΩ",
+      "mpn": "",
+      "manufacturer": "",
+      "footprint": "zudo-osc-hole-field:Potentiometer_Bourns_TC33X_Vertical",
+      "symbol": "zudo-osc-hole-field:TC33X-2-103E",
+      "module_label": "OSC1",
+      "function_label": "HF TRACK",
+      "label": "OSC1 HF TRACK",
+      "reference_label": "RVO1109",
+      "nominal_resistance": "20 kΩ",
+      "mpn_status": "UNRESOLVED",
+      "source_locator": {
+        "path": "design/spec/modules/oscillator.py",
+        "line": 167,
+        "anchor": "source trim call for oscillator:HF_TRIM"
+      },
+      "calibration_reference": "doc/src/content/docs/verification/osc-trimmer-calibration.mdx#oscillator-hf-trim",
+      "calibration_status": "NEEDS BENCH",
+      "rotation_direction": "UNKNOWN / NEEDS BENCH",
+      "source_pins": {
+        "1": "/O1/HF_PIN",
+        "2": "/O1/LINEAR_REF",
+        "3": "AGND"
+      },
+      "pins": {
+        "1": "X4F4C65A27511338D257C",
+        "2": "XD6A1F9F8DC2B19A4D354",
+        "3": "AGND"
+      },
+      "placement": {
+        "board": "K",
+        "board_id": "osc-core",
+        "x_mm": 7.599999999999994,
+        "y_mm": 180.45,
+        "kicad_orientation_deg": 90.0,
+        "side": "B.Cu",
+        "native_x_mm": 107.6,
+        "native_y_mm": 230.45,
+        "native_orientation_deg": 90.0,
+        "rotation_deg": 90,
+        "courtyard_mm": [
+          5.75,
+          178.0,
+          9.649999999999999,
+          183.29999999999998
+        ]
+      }
+    },
+    {
+      "ref": "RVO1110",
+      "block": "O1",
+      "role": "oscillator:SINE_SYMMETRY",
+      "family": "oscillator",
+      "part_key": "SINE_SYMMETRY.0",
+      "value": "10 kΩ",
+      "mpn": "TC33X-2-103E",
+      "manufacturer": "Bourns",
+      "footprint": "zudo-osc-hole-field:Potentiometer_Bourns_TC33X_Vertical",
+      "symbol": "zudo-osc-hole-field:TC33X-2-103E",
+      "module_label": "OSC1",
+      "function_label": "SINE SYM",
+      "label": "OSC1 SINE SYM",
+      "reference_label": "RVO1110",
+      "nominal_resistance": "10 kΩ",
+      "mpn_status": "SOURCE ASSIGNED / NOT QUALIFIED",
+      "source_locator": {
+        "path": "design/spec/modules/oscillator.py",
+        "line": 191,
+        "anchor": "source trim call for oscillator:SINE_SYMMETRY"
+      },
+      "calibration_reference": "doc/src/content/docs/verification/osc-trimmer-calibration.mdx#oscillator-sine-symmetry",
+      "calibration_status": "NEEDS BENCH",
+      "rotation_direction": "UNKNOWN / NEEDS BENCH",
+      "source_pins": {
+        "1": "/O1/SINE_REFN5",
+        "2": "/O1/SINE_OFFSET",
+        "3": "/O1/SINE_REF5"
+      },
+      "pins": {
+        "1": "XBD85EECA989B96798CD8",
+        "2": "X0999457B7EE4B0B47AC6",
+        "3": "XF7E00CDC39C343B166E7"
+      },
+      "placement": {
+        "board": "K",
+        "board_id": "osc-core",
+        "x_mm": 48.94999999999999,
+        "y_mm": 156.55,
+        "kicad_orientation_deg": 180.0,
+        "side": "B.Cu",
+        "native_x_mm": 148.95,
+        "native_y_mm": 206.55,
+        "native_orientation_deg": 180.0,
+        "rotation_deg": 0,
+        "courtyard_mm": [
+          46.5,
+          154.5,
+          51.800000000000004,
+          158.4
+        ]
+      }
+    },
+    {
+      "ref": "RVO1111",
+      "block": "O1",
+      "role": "oscillator:SINE_LEVEL",
+      "family": "oscillator",
+      "part_key": "SINE_LEVEL.0",
+      "value": "10 kΩ",
+      "mpn": "TC33X-2-103E",
+      "manufacturer": "Bourns",
+      "footprint": "zudo-osc-hole-field:Potentiometer_Bourns_TC33X_Vertical",
+      "symbol": "zudo-osc-hole-field:TC33X-2-103E",
+      "module_label": "OSC1",
+      "function_label": "SINE LEVEL",
+      "label": "OSC1 SINE LEVEL",
+      "reference_label": "RVO1111",
+      "nominal_resistance": "10 kΩ",
+      "mpn_status": "SOURCE ASSIGNED / NOT QUALIFIED",
+      "source_locator": {
+        "path": "design/spec/modules/oscillator.py",
+        "line": 197,
+        "anchor": "source trim call for oscillator:SINE_LEVEL"
+      },
+      "calibration_reference": "doc/src/content/docs/verification/osc-trimmer-calibration.mdx#oscillator-sine-level",
+      "calibration_status": "NEEDS BENCH",
+      "rotation_direction": "UNKNOWN / NEEDS BENCH",
+      "source_pins": {
+        "1": "/O1/SINE_GAIN_TRIM",
+        "2": "/O1/SINE_GAIN_SUM",
+        "3": "/O1/SINE_GAIN_SUM"
+      },
+      "pins": {
+        "1": "X43F52BB22568DC01B6EA",
+        "2": "X8A34FB719E211DCF932D",
+        "3": "X8A34FB719E211DCF932D"
+      },
+      "placement": {
+        "board": "K",
+        "board_id": "osc-core",
+        "x_mm": 47.099999999999994,
+        "y_mm": 173.6,
+        "kicad_orientation_deg": 270.0,
+        "side": "F.Cu",
+        "native_x_mm": 147.1,
+        "native_y_mm": 223.6,
+        "native_orientation_deg": -90.0,
+        "rotation_deg": 90,
+        "courtyard_mm": [
+          45.25,
+          170.75,
+          49.15,
+          176.04999999999998
+        ]
+      }
+    },
+    {
+      "ref": "RVO1206",
+      "block": "O2",
+      "role": "oscillator:BASE_TRIM",
+      "family": "oscillator",
+      "part_key": "BASE_TRIM.0",
+      "value": "10 kΩ",
+      "mpn": "TC33X-2-103E",
+      "manufacturer": "Bourns",
+      "footprint": "zudo-osc-hole-field:Potentiometer_Bourns_TC33X_Vertical",
+      "symbol": "zudo-osc-hole-field:TC33X-2-103E",
+      "module_label": "OSC2",
+      "function_label": "BASE PITCH",
+      "label": "OSC2 BASE PITCH",
+      "reference_label": "RVO1206",
+      "nominal_resistance": "10 kΩ",
+      "mpn_status": "SOURCE ASSIGNED / NOT QUALIFIED",
+      "source_locator": {
+        "path": "design/spec/modules/oscillator.py",
+        "line": 156,
+        "anchor": "source trim call for oscillator:BASE_TRIM"
+      },
+      "calibration_reference": "doc/src/content/docs/verification/osc-trimmer-calibration.mdx#oscillator-base-trim",
+      "calibration_status": "NEEDS BENCH",
+      "rotation_direction": "UNKNOWN / NEEDS BENCH",
+      "source_pins": {
+        "1": "/O2/BASE_REFN5",
+        "2": "/O2/BASE_ADJ",
+        "3": "/O2/BASE_REF5"
+      },
+      "pins": {
+        "1": "X1B26CE7C17DC28E88025",
+        "2": "X6594A313DB0BD7CE2642",
+        "3": "X37D3732191FF34D4A8EF"
+      },
+      "placement": {
+        "board": "K",
+        "board_id": "osc-core",
+        "x_mm": 88.94999999999999,
+        "y_mm": 141.05,
+        "kicad_orientation_deg": 180.0,
+        "side": "B.Cu",
+        "native_x_mm": 188.95,
+        "native_y_mm": 191.05,
+        "native_orientation_deg": 180.0,
+        "rotation_deg": 0,
+        "courtyard_mm": [
+          86.5,
+          139.0,
+          91.8,
+          142.9
+        ]
+      }
+    },
+    {
+      "ref": "RVO1207",
+      "block": "O2",
+      "role": "oscillator:RZ_TRIM",
+      "family": "oscillator",
+      "part_key": "RZ_TRIM.0",
+      "value": "10 kΩ",
+      "mpn": "TC33X-2-103E",
+      "manufacturer": "Bourns",
+      "footprint": "zudo-osc-hole-field:Potentiometer_Bourns_TC33X_Vertical",
+      "symbol": "zudo-osc-hole-field:TC33X-2-103E",
+      "module_label": "OSC2",
+      "function_label": "TEMP COMP",
+      "label": "OSC2 TEMP COMP",
+      "reference_label": "RVO1207",
+      "nominal_resistance": "10 kΩ",
+      "mpn_status": "SOURCE ASSIGNED / NOT QUALIFIED",
+      "source_locator": {
+        "path": "design/spec/modules/oscillator.py",
+        "line": 162,
+        "anchor": "source trim call for oscillator:RZ_TRIM"
+      },
+      "calibration_reference": "doc/src/content/docs/verification/osc-trimmer-calibration.mdx#oscillator-rz-trim",
+      "calibration_status": "NEEDS BENCH",
+      "rotation_direction": "UNKNOWN / NEEDS BENCH",
+      "source_pins": {
+        "1": "/O2/RZ_TRIM",
+        "2": "AGND",
+        "3": "AGND"
+      },
+      "pins": {
+        "1": "XD90BCA73D92A618F8370",
+        "2": "AGND",
+        "3": "AGND"
+      },
+      "placement": {
+        "board": "K",
+        "board_id": "osc-core",
+        "x_mm": 103.6,
+        "y_mm": 155.45,
+        "kicad_orientation_deg": 90.0,
+        "side": "B.Cu",
+        "native_x_mm": 203.6,
+        "native_y_mm": 205.45,
+        "native_orientation_deg": 90.0,
+        "rotation_deg": 90,
+        "courtyard_mm": [
+          101.75,
+          153.0,
+          105.64999999999999,
+          158.29999999999998
+        ]
+      }
+    },
+    {
+      "ref": "RVO1208",
+      "block": "O2",
+      "role": "oscillator:SCALE_TRIM",
+      "family": "oscillator",
+      "part_key": "SCALE_TRIM.0",
+      "value": "1 kΩ",
+      "mpn": "TC33X-2-102E",
+      "manufacturer": "Bourns",
+      "footprint": "zudo-osc-hole-field:Potentiometer_Bourns_TC33X_Vertical",
+      "symbol": "zudo-osc-hole-field:TC33X-2-102E",
+      "module_label": "OSC2",
+      "function_label": "V/OCT",
+      "label": "OSC2 V/OCT",
+      "reference_label": "RVO1208",
+      "nominal_resistance": "1 kΩ",
+      "mpn_status": "SOURCE ASSIGNED / NOT QUALIFIED",
+      "source_locator": {
+        "path": "design/spec/modules/oscillator.py",
+        "line": 164,
+        "anchor": "source trim call for oscillator:SCALE_TRIM"
+      },
+      "calibration_reference": "doc/src/content/docs/verification/osc-trimmer-calibration.mdx#oscillator-scale-trim",
+      "calibration_status": "NEEDS BENCH",
+      "rotation_direction": "UNKNOWN / NEEDS BENCH",
+      "source_pins": {
+        "1": "/O2/SCALE_ADJ",
+        "2": "AGND",
+        "3": "AGND"
+      },
+      "pins": {
+        "1": "X8883FE0F6182536E5030",
+        "2": "AGND",
+        "3": "AGND"
+      },
+      "placement": {
+        "board": "K",
+        "board_id": "osc-core",
+        "x_mm": 63.099999999999994,
+        "y_mm": 150.35,
+        "kicad_orientation_deg": 270.0,
+        "side": "F.Cu",
+        "native_x_mm": 163.1,
+        "native_y_mm": 200.35,
+        "native_orientation_deg": -90.0,
+        "rotation_deg": 90,
+        "courtyard_mm": [
+          61.25,
+          147.5,
+          65.15,
+          152.79999999999998
+        ]
+      }
+    },
+    {
+      "ref": "RVO1209",
+      "block": "O2",
+      "role": "oscillator:HF_TRIM",
+      "family": "oscillator",
+      "part_key": "HF_TRIM.0",
+      "value": "20 kΩ",
+      "mpn": "",
+      "manufacturer": "",
+      "footprint": "zudo-osc-hole-field:Potentiometer_Bourns_TC33X_Vertical",
+      "symbol": "zudo-osc-hole-field:TC33X-2-103E",
+      "module_label": "OSC2",
+      "function_label": "HF TRACK",
+      "label": "OSC2 HF TRACK",
+      "reference_label": "RVO1209",
+      "nominal_resistance": "20 kΩ",
+      "mpn_status": "UNRESOLVED",
+      "source_locator": {
+        "path": "design/spec/modules/oscillator.py",
+        "line": 167,
+        "anchor": "source trim call for oscillator:HF_TRIM"
+      },
+      "calibration_reference": "doc/src/content/docs/verification/osc-trimmer-calibration.mdx#oscillator-hf-trim",
+      "calibration_status": "NEEDS BENCH",
+      "rotation_direction": "UNKNOWN / NEEDS BENCH",
+      "source_pins": {
+        "1": "/O2/HF_PIN",
+        "2": "/O2/LINEAR_REF",
+        "3": "AGND"
+      },
+      "pins": {
+        "1": "X283C96745F9A97C9F70D",
+        "2": "X6E4708860137D063713F",
+        "3": "AGND"
+      },
+      "placement": {
+        "board": "K",
+        "board_id": "osc-core",
+        "x_mm": 68.6,
+        "y_mm": 151.55,
+        "kicad_orientation_deg": 0,
+        "side": "F.Cu",
+        "native_x_mm": 168.6,
+        "native_y_mm": 201.55,
+        "native_orientation_deg": 0,
+        "rotation_deg": 0,
+        "courtyard_mm": [
+          65.75,
+          149.5,
+          71.05,
+          153.4
+        ]
+      }
+    },
+    {
+      "ref": "RVO1210",
+      "block": "O2",
+      "role": "oscillator:SINE_SYMMETRY",
+      "family": "oscillator",
+      "part_key": "SINE_SYMMETRY.0",
+      "value": "10 kΩ",
+      "mpn": "TC33X-2-103E",
+      "manufacturer": "Bourns",
+      "footprint": "zudo-osc-hole-field:Potentiometer_Bourns_TC33X_Vertical",
+      "symbol": "zudo-osc-hole-field:TC33X-2-103E",
+      "module_label": "OSC2",
+      "function_label": "SINE SYM",
+      "label": "OSC2 SINE SYM",
+      "reference_label": "RVO1210",
+      "nominal_resistance": "10 kΩ",
+      "mpn_status": "SOURCE ASSIGNED / NOT QUALIFIED",
+      "source_locator": {
+        "path": "design/spec/modules/oscillator.py",
+        "line": 191,
+        "anchor": "source trim call for oscillator:SINE_SYMMETRY"
+      },
+      "calibration_reference": "doc/src/content/docs/verification/osc-trimmer-calibration.mdx#oscillator-sine-symmetry",
+      "calibration_status": "NEEDS BENCH",
+      "rotation_direction": "UNKNOWN / NEEDS BENCH",
+      "source_pins": {
+        "1": "/O2/SINE_REFN5",
+        "2": "/O2/SINE_OFFSET",
+        "3": "/O2/SINE_REF5"
+      },
+      "pins": {
+        "1": "XBAFAADEA6FE714FBE0D5",
+        "2": "X2891C8B5F105CAF8E53B",
+        "3": "XB172D67E93F368A1180E"
+      },
+      "placement": {
+        "board": "K",
+        "board_id": "osc-core",
+        "x_mm": 96.35,
+        "y_mm": 172.7,
+        "kicad_orientation_deg": 90.0,
+        "side": "B.Cu",
+        "native_x_mm": 196.35,
+        "native_y_mm": 222.7,
+        "native_orientation_deg": 90.0,
+        "rotation_deg": 90,
+        "courtyard_mm": [
+          94.5,
+          170.25,
+          98.39999999999999,
+          175.54999999999998
+        ]
+      }
+    },
+    {
+      "ref": "RVO1211",
+      "block": "O2",
+      "role": "oscillator:SINE_LEVEL",
+      "family": "oscillator",
+      "part_key": "SINE_LEVEL.0",
+      "value": "10 kΩ",
+      "mpn": "TC33X-2-103E",
+      "manufacturer": "Bourns",
+      "footprint": "zudo-osc-hole-field:Potentiometer_Bourns_TC33X_Vertical",
+      "symbol": "zudo-osc-hole-field:TC33X-2-103E",
+      "module_label": "OSC2",
+      "function_label": "SINE LEVEL",
+      "label": "OSC2 SINE LEVEL",
+      "reference_label": "RVO1211",
+      "nominal_resistance": "10 kΩ",
+      "mpn_status": "SOURCE ASSIGNED / NOT QUALIFIED",
+      "source_locator": {
+        "path": "design/spec/modules/oscillator.py",
+        "line": 197,
+        "anchor": "source trim call for oscillator:SINE_LEVEL"
+      },
+      "calibration_reference": "doc/src/content/docs/verification/osc-trimmer-calibration.mdx#oscillator-sine-level",
+      "calibration_status": "NEEDS BENCH",
+      "rotation_direction": "UNKNOWN / NEEDS BENCH",
+      "source_pins": {
+        "1": "/O2/SINE_GAIN_TRIM",
+        "2": "/O2/SINE_GAIN_SUM",
+        "3": "/O2/SINE_GAIN_SUM"
+      },
+      "pins": {
+        "1": "XCB9A67475A24D2E7FEE9",
+        "2": "X9207009C66911DAAEE94",
+        "3": "X9207009C66911DAAEE94"
+      },
+      "placement": {
+        "board": "K",
+        "board_id": "osc-core",
+        "x_mm": 98.85,
+        "y_mm": 162.35,
+        "kicad_orientation_deg": 270.0,
+        "side": "F.Cu",
+        "native_x_mm": 198.85,
+        "native_y_mm": 212.35,
+        "native_orientation_deg": -90.0,
+        "rotation_deg": 90,
+        "courtyard_mm": [
+          97.0,
+          159.5,
+          100.89999999999999,
+          164.79999999999998
+        ]
+      }
+    },
+    {
+      "ref": "RVO1306",
+      "block": "O3",
+      "role": "oscillator:BASE_TRIM",
+      "family": "oscillator",
+      "part_key": "BASE_TRIM.0",
+      "value": "10 kΩ",
+      "mpn": "TC33X-2-103E",
+      "manufacturer": "Bourns",
+      "footprint": "zudo-osc-hole-field:Potentiometer_Bourns_TC33X_Vertical",
+      "symbol": "zudo-osc-hole-field:TC33X-2-103E",
+      "module_label": "OSC3",
+      "function_label": "BASE PITCH",
+      "label": "OSC3 BASE PITCH",
+      "reference_label": "RVO1306",
+      "nominal_resistance": "10 kΩ",
+      "mpn_status": "SOURCE ASSIGNED / NOT QUALIFIED",
+      "source_locator": {
+        "path": "design/spec/modules/oscillator.py",
+        "line": 156,
+        "anchor": "source trim call for oscillator:BASE_TRIM"
+      },
+      "calibration_reference": "doc/src/content/docs/verification/osc-trimmer-calibration.mdx#oscillator-base-trim",
+      "calibration_status": "NEEDS BENCH",
+      "rotation_direction": "UNKNOWN / NEEDS BENCH",
+      "source_pins": {
+        "1": "/O3/BASE_REFN5",
+        "2": "/O3/BASE_ADJ",
+        "3": "/O3/BASE_REF5"
+      },
+      "pins": {
+        "1": "XFF797ADD997B736FC7D7",
+        "2": "XD0DD7C8C9FD6FD1D00E1",
+        "3": "X3704315FCE39A9A8C581"
+      },
+      "placement": {
+        "board": "K",
+        "board_id": "osc-core",
+        "x_mm": 30.69999899999999,
+        "y_mm": 272.55,
+        "kicad_orientation_deg": 180.0,
+        "side": "B.Cu",
+        "native_x_mm": 130.699999,
+        "native_y_mm": 322.55,
+        "native_orientation_deg": 180.0,
+        "rotation_deg": 0,
+        "courtyard_mm": [
+          28.25,
+          270.5,
+          33.55,
+          274.40000000000003
+        ]
+      }
+    },
+    {
+      "ref": "RVO1307",
+      "block": "O3",
+      "role": "oscillator:RZ_TRIM",
+      "family": "oscillator",
+      "part_key": "RZ_TRIM.0",
+      "value": "10 kΩ",
+      "mpn": "TC33X-2-103E",
+      "manufacturer": "Bourns",
+      "footprint": "zudo-osc-hole-field:Potentiometer_Bourns_TC33X_Vertical",
+      "symbol": "zudo-osc-hole-field:TC33X-2-103E",
+      "module_label": "OSC3",
+      "function_label": "TEMP COMP",
+      "label": "OSC3 TEMP COMP",
+      "reference_label": "RVO1307",
+      "nominal_resistance": "10 kΩ",
+      "mpn_status": "SOURCE ASSIGNED / NOT QUALIFIED",
+      "source_locator": {
+        "path": "design/spec/modules/oscillator.py",
+        "line": 162,
+        "anchor": "source trim call for oscillator:RZ_TRIM"
+      },
+      "calibration_reference": "doc/src/content/docs/verification/osc-trimmer-calibration.mdx#oscillator-rz-trim",
+      "calibration_status": "NEEDS BENCH",
+      "rotation_direction": "UNKNOWN / NEEDS BENCH",
+      "source_pins": {
+        "1": "/O3/RZ_TRIM",
+        "2": "AGND",
+        "3": "AGND"
+      },
+      "pins": {
+        "1": "X178317F81EE7702E7108",
+        "2": "AGND",
+        "3": "AGND"
+      },
+      "placement": {
+        "board": "K",
+        "board_id": "osc-core",
+        "x_mm": 8.349999999999994,
+        "y_mm": 248.35000000000002,
+        "kicad_orientation_deg": 270.0,
+        "side": "F.Cu",
+        "native_x_mm": 108.35,
+        "native_y_mm": 298.35,
+        "native_orientation_deg": -90.0,
+        "rotation_deg": 90,
+        "courtyard_mm": [
+          6.5,
+          245.5,
+          10.399999999999999,
+          250.79999999999998
+        ]
+      }
+    },
+    {
+      "ref": "RVO1308",
+      "block": "O3",
+      "role": "oscillator:SCALE_TRIM",
+      "family": "oscillator",
+      "part_key": "SCALE_TRIM.0",
+      "value": "1 kΩ",
+      "mpn": "TC33X-2-102E",
+      "manufacturer": "Bourns",
+      "footprint": "zudo-osc-hole-field:Potentiometer_Bourns_TC33X_Vertical",
+      "symbol": "zudo-osc-hole-field:TC33X-2-102E",
+      "module_label": "OSC3",
+      "function_label": "V/OCT",
+      "label": "OSC3 V/OCT",
+      "reference_label": "RVO1308",
+      "nominal_resistance": "1 kΩ",
+      "mpn_status": "SOURCE ASSIGNED / NOT QUALIFIED",
+      "source_locator": {
+        "path": "design/spec/modules/oscillator.py",
+        "line": 164,
+        "anchor": "source trim call for oscillator:SCALE_TRIM"
+      },
+      "calibration_reference": "doc/src/content/docs/verification/osc-trimmer-calibration.mdx#oscillator-scale-trim",
+      "calibration_status": "NEEDS BENCH",
+      "rotation_direction": "UNKNOWN / NEEDS BENCH",
+      "source_pins": {
+        "1": "/O3/SCALE_ADJ",
+        "2": "AGND",
+        "3": "AGND"
+      },
+      "pins": {
+        "1": "XDDC5AE4A9EEF80CD646B",
+        "2": "AGND",
+        "3": "AGND"
+      },
+      "placement": {
+        "board": "K",
+        "board_id": "osc-core",
+        "x_mm": 48.849999999999994,
+        "y_mm": 228.7,
+        "kicad_orientation_deg": 90.0,
+        "side": "B.Cu",
+        "native_x_mm": 148.85,
+        "native_y_mm": 278.7,
+        "native_orientation_deg": 90.0,
+        "rotation_deg": 90,
+        "courtyard_mm": [
+          47.0,
+          226.25,
+          50.9,
+          231.54999999999998
+        ]
+      }
+    },
+    {
+      "ref": "RVO1309",
+      "block": "O3",
+      "role": "oscillator:HF_TRIM",
+      "family": "oscillator",
+      "part_key": "HF_TRIM.0",
+      "value": "20 kΩ",
+      "mpn": "",
+      "manufacturer": "",
+      "footprint": "zudo-osc-hole-field:Potentiometer_Bourns_TC33X_Vertical",
+      "symbol": "zudo-osc-hole-field:TC33X-2-103E",
+      "module_label": "OSC3",
+      "function_label": "HF TRACK",
+      "label": "OSC3 HF TRACK",
+      "reference_label": "RVO1309",
+      "nominal_resistance": "20 kΩ",
+      "mpn_status": "UNRESOLVED",
+      "source_locator": {
+        "path": "design/spec/modules/oscillator.py",
+        "line": 167,
+        "anchor": "source trim call for oscillator:HF_TRIM"
+      },
+      "calibration_reference": "doc/src/content/docs/verification/osc-trimmer-calibration.mdx#oscillator-hf-trim",
+      "calibration_status": "NEEDS BENCH",
+      "rotation_direction": "UNKNOWN / NEEDS BENCH",
+      "source_pins": {
+        "1": "/O3/HF_PIN",
+        "2": "/O3/LINEAR_REF",
+        "3": "AGND"
+      },
+      "pins": {
+        "1": "X3EE60370B74B579C2DE9",
+        "2": "XBA00A3C6EF612B611E92",
+        "3": "AGND"
+      },
+      "placement": {
+        "board": "K",
+        "board_id": "osc-core",
+        "x_mm": 16.849999999999994,
+        "y_mm": 234.3,
+        "kicad_orientation_deg": 0,
+        "side": "F.Cu",
+        "native_x_mm": 116.85,
+        "native_y_mm": 284.3,
+        "native_orientation_deg": 0,
+        "rotation_deg": 0,
+        "courtyard_mm": [
+          14.000000000000002,
+          232.25,
+          19.3,
+          236.15
+        ]
+      }
+    },
+    {
+      "ref": "RVO1310",
+      "block": "O3",
+      "role": "oscillator:SINE_SYMMETRY",
+      "family": "oscillator",
+      "part_key": "SINE_SYMMETRY.0",
+      "value": "10 kΩ",
+      "mpn": "TC33X-2-103E",
+      "manufacturer": "Bourns",
+      "footprint": "zudo-osc-hole-field:Potentiometer_Bourns_TC33X_Vertical",
+      "symbol": "zudo-osc-hole-field:TC33X-2-103E",
+      "module_label": "OSC3",
+      "function_label": "SINE SYM",
+      "label": "OSC3 SINE SYM",
+      "reference_label": "RVO1310",
+      "nominal_resistance": "10 kΩ",
+      "mpn_status": "SOURCE ASSIGNED / NOT QUALIFIED",
+      "source_locator": {
+        "path": "design/spec/modules/oscillator.py",
+        "line": 191,
+        "anchor": "source trim call for oscillator:SINE_SYMMETRY"
+      },
+      "calibration_reference": "doc/src/content/docs/verification/osc-trimmer-calibration.mdx#oscillator-sine-symmetry",
+      "calibration_status": "NEEDS BENCH",
+      "rotation_direction": "UNKNOWN / NEEDS BENCH",
+      "source_pins": {
+        "1": "/O3/SINE_REFN5",
+        "2": "/O3/SINE_OFFSET",
+        "3": "/O3/SINE_REF5"
+      },
+      "pins": {
+        "1": "X83EC03D998166A708B13",
+        "2": "X0541E095952FDD29D8F4",
+        "3": "X01FF8FA844AA63688EED"
+      },
+      "placement": {
+        "board": "K",
+        "board_id": "osc-core",
+        "x_mm": 13.099999999999994,
+        "y_mm": 257.7,
+        "kicad_orientation_deg": 90.0,
+        "side": "B.Cu",
+        "native_x_mm": 113.1,
+        "native_y_mm": 307.7,
+        "native_orientation_deg": 90.0,
+        "rotation_deg": 90,
+        "courtyard_mm": [
+          11.25,
+          255.25,
+          15.149999999999999,
+          260.55
+        ]
+      }
+    },
+    {
+      "ref": "RVO1311",
+      "block": "O3",
+      "role": "oscillator:SINE_LEVEL",
+      "family": "oscillator",
+      "part_key": "SINE_LEVEL.0",
+      "value": "10 kΩ",
+      "mpn": "TC33X-2-103E",
+      "manufacturer": "Bourns",
+      "footprint": "zudo-osc-hole-field:Potentiometer_Bourns_TC33X_Vertical",
+      "symbol": "zudo-osc-hole-field:TC33X-2-103E",
+      "module_label": "OSC3",
+      "function_label": "SINE LEVEL",
+      "label": "OSC3 SINE LEVEL",
+      "reference_label": "RVO1311",
+      "nominal_resistance": "10 kΩ",
+      "mpn_status": "SOURCE ASSIGNED / NOT QUALIFIED",
+      "source_locator": {
+        "path": "design/spec/modules/oscillator.py",
+        "line": 197,
+        "anchor": "source trim call for oscillator:SINE_LEVEL"
+      },
+      "calibration_reference": "doc/src/content/docs/verification/osc-trimmer-calibration.mdx#oscillator-sine-level",
+      "calibration_status": "NEEDS BENCH",
+      "rotation_direction": "UNKNOWN / NEEDS BENCH",
+      "source_pins": {
+        "1": "/O3/SINE_GAIN_TRIM",
+        "2": "/O3/SINE_GAIN_SUM",
+        "3": "/O3/SINE_GAIN_SUM"
+      },
+      "pins": {
+        "1": "XF37E34E02DB6E5E9FDA5",
+        "2": "X7C941708F64519E8F815",
+        "3": "X7C941708F64519E8F815"
+      },
+      "placement": {
+        "board": "K",
+        "board_id": "osc-core",
+        "x_mm": 25.450000000000003,
+        "y_mm": 267.55,
+        "kicad_orientation_deg": 180.0,
+        "side": "B.Cu",
+        "native_x_mm": 125.45,
+        "native_y_mm": 317.55,
+        "native_orientation_deg": 180.0,
+        "rotation_deg": 0,
+        "courtyard_mm": [
+          23.0,
+          265.5,
+          28.3,
+          269.40000000000003
+        ]
+      }
+    },
+    {
+      "ref": "RVO1406",
+      "block": "O4",
+      "role": "oscillator:BASE_TRIM",
+      "family": "oscillator",
+      "part_key": "BASE_TRIM.0",
+      "value": "10 kΩ",
+      "mpn": "TC33X-2-103E",
+      "manufacturer": "Bourns",
+      "footprint": "zudo-osc-hole-field:Potentiometer_Bourns_TC33X_Vertical",
+      "symbol": "zudo-osc-hole-field:TC33X-2-103E",
+      "module_label": "OSC4",
+      "function_label": "BASE PITCH",
+      "label": "OSC4 BASE PITCH",
+      "reference_label": "RVO1406",
+      "nominal_resistance": "10 kΩ",
+      "mpn_status": "SOURCE ASSIGNED / NOT QUALIFIED",
+      "source_locator": {
+        "path": "design/spec/modules/oscillator.py",
+        "line": 156,
+        "anchor": "source trim call for oscillator:BASE_TRIM"
+      },
+      "calibration_reference": "doc/src/content/docs/verification/osc-trimmer-calibration.mdx#oscillator-base-trim",
+      "calibration_status": "NEEDS BENCH",
+      "rotation_direction": "UNKNOWN / NEEDS BENCH",
+      "source_pins": {
+        "1": "/O4/BASE_REFN5",
+        "2": "/O4/BASE_ADJ",
+        "3": "/O4/BASE_REF5"
+      },
+      "pins": {
+        "1": "XAD4B84CEAD60B8EC35EB",
+        "2": "X88BE562810A4F10EE019",
+        "3": "XB0C6340C216F125DBC15"
+      },
+      "placement": {
+        "board": "K",
+        "board_id": "osc-core",
+        "x_mm": 66.85,
+        "y_mm": 194.3,
+        "kicad_orientation_deg": 0,
+        "side": "F.Cu",
+        "native_x_mm": 166.85,
+        "native_y_mm": 244.3,
+        "native_orientation_deg": 0,
+        "rotation_deg": 0,
+        "courtyard_mm": [
+          63.99999999999999,
+          192.25,
+          69.3,
+          196.15
+        ]
+      }
+    },
+    {
+      "ref": "RVO1407",
+      "block": "O4",
+      "role": "oscillator:RZ_TRIM",
+      "family": "oscillator",
+      "part_key": "RZ_TRIM.0",
+      "value": "10 kΩ",
+      "mpn": "TC33X-2-103E",
+      "manufacturer": "Bourns",
+      "footprint": "zudo-osc-hole-field:Potentiometer_Bourns_TC33X_Vertical",
+      "symbol": "zudo-osc-hole-field:TC33X-2-103E",
+      "module_label": "OSC4",
+      "function_label": "TEMP COMP",
+      "label": "OSC4 TEMP COMP",
+      "reference_label": "RVO1407",
+      "nominal_resistance": "10 kΩ",
+      "mpn_status": "SOURCE ASSIGNED / NOT QUALIFIED",
+      "source_locator": {
+        "path": "design/spec/modules/oscillator.py",
+        "line": 162,
+        "anchor": "source trim call for oscillator:RZ_TRIM"
+      },
+      "calibration_reference": "doc/src/content/docs/verification/osc-trimmer-calibration.mdx#oscillator-rz-trim",
+      "calibration_status": "NEEDS BENCH",
+      "rotation_direction": "UNKNOWN / NEEDS BENCH",
+      "source_pins": {
+        "1": "/O4/RZ_TRIM",
+        "2": "AGND",
+        "3": "AGND"
+      },
+      "pins": {
+        "1": "X5B8B360EBF4F11DF3096",
+        "2": "AGND",
+        "3": "AGND"
+      },
+      "placement": {
+        "board": "K",
+        "board_id": "osc-core",
+        "x_mm": 40.099999999999994,
+        "y_mm": 204.7,
+        "kicad_orientation_deg": 90.0,
+        "side": "B.Cu",
+        "native_x_mm": 140.1,
+        "native_y_mm": 254.7,
+        "native_orientation_deg": 90.0,
+        "rotation_deg": 90,
+        "courtyard_mm": [
+          38.25,
+          202.25,
+          42.15,
+          207.54999999999998
+        ]
+      }
+    },
+    {
+      "ref": "RVO1408",
+      "block": "O4",
+      "role": "oscillator:SCALE_TRIM",
+      "family": "oscillator",
+      "part_key": "SCALE_TRIM.0",
+      "value": "1 kΩ",
+      "mpn": "TC33X-2-102E",
+      "manufacturer": "Bourns",
+      "footprint": "zudo-osc-hole-field:Potentiometer_Bourns_TC33X_Vertical",
+      "symbol": "zudo-osc-hole-field:TC33X-2-102E",
+      "module_label": "OSC4",
+      "function_label": "V/OCT",
+      "label": "OSC4 V/OCT",
+      "reference_label": "RVO1408",
+      "nominal_resistance": "1 kΩ",
+      "mpn_status": "SOURCE ASSIGNED / NOT QUALIFIED",
+      "source_locator": {
+        "path": "design/spec/modules/oscillator.py",
+        "line": 164,
+        "anchor": "source trim call for oscillator:SCALE_TRIM"
+      },
+      "calibration_reference": "doc/src/content/docs/verification/osc-trimmer-calibration.mdx#oscillator-scale-trim",
+      "calibration_status": "NEEDS BENCH",
+      "rotation_direction": "UNKNOWN / NEEDS BENCH",
+      "source_pins": {
+        "1": "/O4/SCALE_ADJ",
+        "2": "AGND",
+        "3": "AGND"
+      },
+      "pins": {
+        "1": "X6D5A56540D673957805B",
+        "2": "AGND",
+        "3": "AGND"
+      },
+      "placement": {
+        "board": "K",
+        "board_id": "osc-core",
+        "x_mm": 41.599999999999994,
+        "y_mm": 218.7,
+        "kicad_orientation_deg": 90.0,
+        "side": "B.Cu",
+        "native_x_mm": 141.6,
+        "native_y_mm": 268.7,
+        "native_orientation_deg": 90.0,
+        "rotation_deg": 90,
+        "courtyard_mm": [
+          39.75,
+          216.25,
+          43.65,
+          221.54999999999998
+        ]
+      }
+    },
+    {
+      "ref": "RVO1409",
+      "block": "O4",
+      "role": "oscillator:HF_TRIM",
+      "family": "oscillator",
+      "part_key": "HF_TRIM.0",
+      "value": "20 kΩ",
+      "mpn": "",
+      "manufacturer": "",
+      "footprint": "zudo-osc-hole-field:Potentiometer_Bourns_TC33X_Vertical",
+      "symbol": "zudo-osc-hole-field:TC33X-2-103E",
+      "module_label": "OSC4",
+      "function_label": "HF TRACK",
+      "label": "OSC4 HF TRACK",
+      "reference_label": "RVO1409",
+      "nominal_resistance": "20 kΩ",
+      "mpn_status": "UNRESOLVED",
+      "source_locator": {
+        "path": "design/spec/modules/oscillator.py",
+        "line": 167,
+        "anchor": "source trim call for oscillator:HF_TRIM"
+      },
+      "calibration_reference": "doc/src/content/docs/verification/osc-trimmer-calibration.mdx#oscillator-hf-trim",
+      "calibration_status": "NEEDS BENCH",
+      "rotation_direction": "UNKNOWN / NEEDS BENCH",
+      "source_pins": {
+        "1": "/O4/HF_PIN",
+        "2": "/O4/LINEAR_REF",
+        "3": "AGND"
+      },
+      "pins": {
+        "1": "X7355BCC8FF97C5BB91AE",
+        "2": "X4D9690800E6BDB473824",
+        "3": "AGND"
+      },
+      "placement": {
+        "board": "K",
+        "board_id": "osc-core",
+        "x_mm": 81.85,
+        "y_mm": 198.6,
+        "kicad_orientation_deg": 270.0,
+        "side": "F.Cu",
+        "native_x_mm": 181.85,
+        "native_y_mm": 248.6,
+        "native_orientation_deg": -90.0,
+        "rotation_deg": 90,
+        "courtyard_mm": [
+          80.0,
+          195.75,
+          83.89999999999999,
+          201.04999999999998
+        ]
+      }
+    },
+    {
+      "ref": "RVO1410",
+      "block": "O4",
+      "role": "oscillator:SINE_SYMMETRY",
+      "family": "oscillator",
+      "part_key": "SINE_SYMMETRY.0",
+      "value": "10 kΩ",
+      "mpn": "TC33X-2-103E",
+      "manufacturer": "Bourns",
+      "footprint": "zudo-osc-hole-field:Potentiometer_Bourns_TC33X_Vertical",
+      "symbol": "zudo-osc-hole-field:TC33X-2-103E",
+      "module_label": "OSC4",
+      "function_label": "SINE SYM",
+      "label": "OSC4 SINE SYM",
+      "reference_label": "RVO1410",
+      "nominal_resistance": "10 kΩ",
+      "mpn_status": "SOURCE ASSIGNED / NOT QUALIFIED",
+      "source_locator": {
+        "path": "design/spec/modules/oscillator.py",
+        "line": 191,
+        "anchor": "source trim call for oscillator:SINE_SYMMETRY"
+      },
+      "calibration_reference": "doc/src/content/docs/verification/osc-trimmer-calibration.mdx#oscillator-sine-symmetry",
+      "calibration_status": "NEEDS BENCH",
+      "rotation_direction": "UNKNOWN / NEEDS BENCH",
+      "source_pins": {
+        "1": "/O4/SINE_REFN5",
+        "2": "/O4/SINE_OFFSET",
+        "3": "/O4/SINE_REF5"
+      },
+      "pins": {
+        "1": "X28EC889F0C4CD762D061",
+        "2": "XB0C1756D21C6778D28FA",
+        "3": "XD71A341469CB38F48F2E"
+      },
+      "placement": {
+        "board": "K",
+        "board_id": "osc-core",
+        "x_mm": 52.94999999999999,
+        "y_mm": 194.3,
+        "kicad_orientation_deg": 180.0,
+        "side": "B.Cu",
+        "native_x_mm": 152.95,
+        "native_y_mm": 244.3,
+        "native_orientation_deg": 180.0,
+        "rotation_deg": 0,
+        "courtyard_mm": [
+          50.5,
+          192.25,
+          55.800000000000004,
+          196.15
+        ]
+      }
+    },
+    {
+      "ref": "RVO1411",
+      "block": "O4",
+      "role": "oscillator:SINE_LEVEL",
+      "family": "oscillator",
+      "part_key": "SINE_LEVEL.0",
+      "value": "10 kΩ",
+      "mpn": "TC33X-2-103E",
+      "manufacturer": "Bourns",
+      "footprint": "zudo-osc-hole-field:Potentiometer_Bourns_TC33X_Vertical",
+      "symbol": "zudo-osc-hole-field:TC33X-2-103E",
+      "module_label": "OSC4",
+      "function_label": "SINE LEVEL",
+      "label": "OSC4 SINE LEVEL",
+      "reference_label": "RVO1411",
+      "nominal_resistance": "10 kΩ",
+      "mpn_status": "SOURCE ASSIGNED / NOT QUALIFIED",
+      "source_locator": {
+        "path": "design/spec/modules/oscillator.py",
+        "line": 197,
+        "anchor": "source trim call for oscillator:SINE_LEVEL"
+      },
+      "calibration_reference": "doc/src/content/docs/verification/osc-trimmer-calibration.mdx#oscillator-sine-level",
+      "calibration_status": "NEEDS BENCH",
+      "rotation_direction": "UNKNOWN / NEEDS BENCH",
+      "source_pins": {
+        "1": "/O4/SINE_GAIN_TRIM",
+        "2": "/O4/SINE_GAIN_SUM",
+        "3": "/O4/SINE_GAIN_SUM"
+      },
+      "pins": {
+        "1": "X2AA3374E8678E9BA0A93",
+        "2": "X3E0F21BF8D9F13295ECB",
+        "3": "X3E0F21BF8D9F13295ECB"
+      },
+      "placement": {
+        "board": "K",
+        "board_id": "osc-core",
+        "x_mm": 53.849999999999994,
+        "y_mm": 230.95,
+        "kicad_orientation_deg": 90.0,
+        "side": "B.Cu",
+        "native_x_mm": 153.85,
+        "native_y_mm": 280.95,
+        "native_orientation_deg": 90.0,
+        "rotation_deg": 90,
+        "courtyard_mm": [
+          52.0,
+          228.5,
+          55.9,
+          233.79999999999998
+        ]
+      }
+    },
+    {
+      "ref": "RVO1506",
+      "block": "O5",
+      "role": "oscillator:BASE_TRIM",
+      "family": "oscillator",
+      "part_key": "BASE_TRIM.0",
+      "value": "10 kΩ",
+      "mpn": "TC33X-2-103E",
+      "manufacturer": "Bourns",
+      "footprint": "zudo-osc-hole-field:Potentiometer_Bourns_TC33X_Vertical",
+      "symbol": "zudo-osc-hole-field:TC33X-2-103E",
+      "module_label": "OSC5",
+      "function_label": "BASE PITCH",
+      "label": "OSC5 BASE PITCH",
+      "reference_label": "RVO1506",
+      "nominal_resistance": "10 kΩ",
+      "mpn_status": "SOURCE ASSIGNED / NOT QUALIFIED",
+      "source_locator": {
+        "path": "design/spec/modules/oscillator.py",
+        "line": 156,
+        "anchor": "source trim call for oscillator:BASE_TRIM"
+      },
+      "calibration_reference": "doc/src/content/docs/verification/osc-trimmer-calibration.mdx#oscillator-base-trim",
+      "calibration_status": "NEEDS BENCH",
+      "rotation_direction": "UNKNOWN / NEEDS BENCH",
+      "source_pins": {
+        "1": "/O5/BASE_REFN5",
+        "2": "/O5/BASE_ADJ",
+        "3": "/O5/BASE_REF5"
+      },
+      "pins": {
+        "1": "X62A2707EE8FA5460FB50",
+        "2": "X4C5B9D1927F731909366",
+        "3": "X6E8E4EF00B0B36A9BBA0"
+      },
+      "placement": {
+        "board": "K",
+        "board_id": "osc-core",
+        "x_mm": 94.1,
+        "y_mm": 266.55,
+        "kicad_orientation_deg": 0,
+        "side": "F.Cu",
+        "native_x_mm": 194.1,
+        "native_y_mm": 316.55,
+        "native_orientation_deg": 0,
+        "rotation_deg": 0,
+        "courtyard_mm": [
+          91.25,
+          264.5,
+          96.55,
+          268.40000000000003
+        ]
+      }
+    },
+    {
+      "ref": "RVO1507",
+      "block": "O5",
+      "role": "oscillator:RZ_TRIM",
+      "family": "oscillator",
+      "part_key": "RZ_TRIM.0",
+      "value": "10 kΩ",
+      "mpn": "TC33X-2-103E",
+      "manufacturer": "Bourns",
+      "footprint": "zudo-osc-hole-field:Potentiometer_Bourns_TC33X_Vertical",
+      "symbol": "zudo-osc-hole-field:TC33X-2-103E",
+      "module_label": "OSC5",
+      "function_label": "TEMP COMP",
+      "label": "OSC5 TEMP COMP",
+      "reference_label": "RVO1507",
+      "nominal_resistance": "10 kΩ",
+      "mpn_status": "SOURCE ASSIGNED / NOT QUALIFIED",
+      "source_locator": {
+        "path": "design/spec/modules/oscillator.py",
+        "line": 162,
+        "anchor": "source trim call for oscillator:RZ_TRIM"
+      },
+      "calibration_reference": "doc/src/content/docs/verification/osc-trimmer-calibration.mdx#oscillator-rz-trim",
+      "calibration_status": "NEEDS BENCH",
+      "rotation_direction": "UNKNOWN / NEEDS BENCH",
+      "source_pins": {
+        "1": "/O5/RZ_TRIM",
+        "2": "AGND",
+        "3": "AGND"
+      },
+      "pins": {
+        "1": "X392AC41CFD17951B15DD",
+        "2": "AGND",
+        "3": "AGND"
+      },
+      "placement": {
+        "board": "K",
+        "board_id": "osc-core",
+        "x_mm": 83.85,
+        "y_mm": 234.3,
+        "kicad_orientation_deg": 0,
+        "side": "F.Cu",
+        "native_x_mm": 183.85,
+        "native_y_mm": 284.3,
+        "native_orientation_deg": 0,
+        "rotation_deg": 0,
+        "courtyard_mm": [
+          81.0,
+          232.25,
+          86.3,
+          236.15
+        ]
+      }
+    },
+    {
+      "ref": "RVO1508",
+      "block": "O5",
+      "role": "oscillator:SCALE_TRIM",
+      "family": "oscillator",
+      "part_key": "SCALE_TRIM.0",
+      "value": "1 kΩ",
+      "mpn": "TC33X-2-102E",
+      "manufacturer": "Bourns",
+      "footprint": "zudo-osc-hole-field:Potentiometer_Bourns_TC33X_Vertical",
+      "symbol": "zudo-osc-hole-field:TC33X-2-102E",
+      "module_label": "OSC5",
+      "function_label": "V/OCT",
+      "label": "OSC5 V/OCT",
+      "reference_label": "RVO1508",
+      "nominal_resistance": "1 kΩ",
+      "mpn_status": "SOURCE ASSIGNED / NOT QUALIFIED",
+      "source_locator": {
+        "path": "design/spec/modules/oscillator.py",
+        "line": 164,
+        "anchor": "source trim call for oscillator:SCALE_TRIM"
+      },
+      "calibration_reference": "doc/src/content/docs/verification/osc-trimmer-calibration.mdx#oscillator-scale-trim",
+      "calibration_status": "NEEDS BENCH",
+      "rotation_direction": "UNKNOWN / NEEDS BENCH",
+      "source_pins": {
+        "1": "/O5/SCALE_ADJ",
+        "2": "AGND",
+        "3": "AGND"
+      },
+      "pins": {
+        "1": "X31D32736C26AEE368EC7",
+        "2": "AGND",
+        "3": "AGND"
+      },
+      "placement": {
+        "board": "K",
+        "board_id": "osc-core",
+        "x_mm": 76.85,
+        "y_mm": 256.45,
+        "kicad_orientation_deg": 90.0,
+        "side": "B.Cu",
+        "native_x_mm": 176.85,
+        "native_y_mm": 306.45,
+        "native_orientation_deg": 90.0,
+        "rotation_deg": 90,
+        "courtyard_mm": [
+          75.0,
+          254.0,
+          78.89999999999999,
+          259.3
+        ]
+      }
+    },
+    {
+      "ref": "RVO1509",
+      "block": "O5",
+      "role": "oscillator:HF_TRIM",
+      "family": "oscillator",
+      "part_key": "HF_TRIM.0",
+      "value": "20 kΩ",
+      "mpn": "",
+      "manufacturer": "",
+      "footprint": "zudo-osc-hole-field:Potentiometer_Bourns_TC33X_Vertical",
+      "symbol": "zudo-osc-hole-field:TC33X-2-103E",
+      "module_label": "OSC5",
+      "function_label": "HF TRACK",
+      "label": "OSC5 HF TRACK",
+      "reference_label": "RVO1509",
+      "nominal_resistance": "20 kΩ",
+      "mpn_status": "UNRESOLVED",
+      "source_locator": {
+        "path": "design/spec/modules/oscillator.py",
+        "line": 167,
+        "anchor": "source trim call for oscillator:HF_TRIM"
+      },
+      "calibration_reference": "doc/src/content/docs/verification/osc-trimmer-calibration.mdx#oscillator-hf-trim",
+      "calibration_status": "NEEDS BENCH",
+      "rotation_direction": "UNKNOWN / NEEDS BENCH",
+      "source_pins": {
+        "1": "/O5/HF_PIN",
+        "2": "/O5/LINEAR_REF",
+        "3": "AGND"
+      },
+      "pins": {
+        "1": "X46F500A6E2D8313AC04C",
+        "2": "XFF25EE86908887869B5B",
+        "3": "AGND"
+      },
+      "placement": {
+        "board": "K",
+        "board_id": "osc-core",
+        "x_mm": 109.85,
+        "y_mm": 234.05,
+        "kicad_orientation_deg": 0,
+        "side": "F.Cu",
+        "native_x_mm": 209.85,
+        "native_y_mm": 284.05,
+        "native_orientation_deg": 0,
+        "rotation_deg": 0,
+        "courtyard_mm": [
+          107.0,
+          232.0,
+          112.3,
+          235.9
+        ]
+      }
+    },
+    {
+      "ref": "RVO1510",
+      "block": "O5",
+      "role": "oscillator:SINE_SYMMETRY",
+      "family": "oscillator",
+      "part_key": "SINE_SYMMETRY.0",
+      "value": "10 kΩ",
+      "mpn": "TC33X-2-103E",
+      "manufacturer": "Bourns",
+      "footprint": "zudo-osc-hole-field:Potentiometer_Bourns_TC33X_Vertical",
+      "symbol": "zudo-osc-hole-field:TC33X-2-103E",
+      "module_label": "OSC5",
+      "function_label": "SINE SYM",
+      "label": "OSC5 SINE SYM",
+      "reference_label": "RVO1510",
+      "nominal_resistance": "10 kΩ",
+      "mpn_status": "SOURCE ASSIGNED / NOT QUALIFIED",
+      "source_locator": {
+        "path": "design/spec/modules/oscillator.py",
+        "line": 191,
+        "anchor": "source trim call for oscillator:SINE_SYMMETRY"
+      },
+      "calibration_reference": "doc/src/content/docs/verification/osc-trimmer-calibration.mdx#oscillator-sine-symmetry",
+      "calibration_status": "NEEDS BENCH",
+      "rotation_direction": "UNKNOWN / NEEDS BENCH",
+      "source_pins": {
+        "1": "/O5/SINE_REFN5",
+        "2": "/O5/SINE_OFFSET",
+        "3": "/O5/SINE_REF5"
+      },
+      "pins": {
+        "1": "X4061D7D91D6A9735804B",
+        "2": "X921836E1517A72C27BFD",
+        "3": "X54B767EE3EF15D42FCDB"
+      },
+      "placement": {
+        "board": "K",
+        "board_id": "osc-core",
+        "x_mm": 99.19999999999999,
+        "y_mm": 227.55,
+        "kicad_orientation_deg": 180.0,
+        "side": "B.Cu",
+        "native_x_mm": 199.2,
+        "native_y_mm": 277.55,
+        "native_orientation_deg": 180.0,
+        "rotation_deg": 0,
+        "courtyard_mm": [
+          96.75,
+          225.5,
+          102.05,
+          229.4
+        ]
+      }
+    },
+    {
+      "ref": "RVO1511",
+      "block": "O5",
+      "role": "oscillator:SINE_LEVEL",
+      "family": "oscillator",
+      "part_key": "SINE_LEVEL.0",
+      "value": "10 kΩ",
+      "mpn": "TC33X-2-103E",
+      "manufacturer": "Bourns",
+      "footprint": "zudo-osc-hole-field:Potentiometer_Bourns_TC33X_Vertical",
+      "symbol": "zudo-osc-hole-field:TC33X-2-103E",
+      "module_label": "OSC5",
+      "function_label": "SINE LEVEL",
+      "label": "OSC5 SINE LEVEL",
+      "reference_label": "RVO1511",
+      "nominal_resistance": "10 kΩ",
+      "mpn_status": "SOURCE ASSIGNED / NOT QUALIFIED",
+      "source_locator": {
+        "path": "design/spec/modules/oscillator.py",
+        "line": 197,
+        "anchor": "source trim call for oscillator:SINE_LEVEL"
+      },
+      "calibration_reference": "doc/src/content/docs/verification/osc-trimmer-calibration.mdx#oscillator-sine-level",
+      "calibration_status": "NEEDS BENCH",
+      "rotation_direction": "UNKNOWN / NEEDS BENCH",
+      "source_pins": {
+        "1": "/O5/SINE_GAIN_TRIM",
+        "2": "/O5/SINE_GAIN_SUM",
+        "3": "/O5/SINE_GAIN_SUM"
+      },
+      "pins": {
+        "1": "XDCCA587447EF436FA48E",
+        "2": "XFBB77182E7A1D927C8DA",
+        "3": "XFBB77182E7A1D927C8DA"
+      },
+      "placement": {
+        "board": "K",
+        "board_id": "osc-core",
+        "x_mm": 77.35,
+        "y_mm": 242.45,
+        "kicad_orientation_deg": 90.0,
+        "side": "B.Cu",
+        "native_x_mm": 177.35,
+        "native_y_mm": 292.45,
+        "native_orientation_deg": 90.0,
+        "rotation_deg": 90,
+        "courtyard_mm": [
+          75.5,
+          240.0,
+          79.39999999999999,
+          245.29999999999998
+        ]
+      }
+    }
+  ],
+  "input_sha256": {
+    "boards/osc-core/osc-core.kicad_pcb": "fa60b4e1587a67501782fb55374f0e5d5133f65cd0bbe62624aef502441fda10",
+    "design/partition/floorplan-candidate.json": "913b1362bf927fc1b09a73f204c4b61230d49724f78c10c4c4c03f765720a597",
+    "design/partition/partition.json": "d84b710ec5b6fe134ace159c4e3b4088c86f2cda658a5d386b23d9d540a48de1",
+    "design/service/trimmer-functions.json": "ac79b72fe4e2198d578510c69cd9b3020157b7bf94efeb87c5487a4dc3e3ec33",
+    "design/spec/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "design/spec/cells/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "design/spec/cells/_builder.py": "aefd73ab43e83f167ecd9cf3fb257e53dd4c837e0414b24ba46c289494150639",
+    "design/spec/cells/bipolar_attenuverter.py": "90610e8b6778ce0ac7cc9a68fcf77528f2320d252006488d61617fd06f94b313",
+    "design/spec/cells/build_current.py": "d7d7f99fcde96c7800770f2272141481226ce7bfa3f0eb2387f85297fc3e5b2b",
+    "design/spec/cells/build_doc.py": "b03bf6b9a2f7e73dab34a2e318f9ef5cd6c6ae667291e5cfc5f9687c6174bbc9",
+    "design/spec/cells/clip_detector.py": "2a67faeb272cd3e76c2e2f7c62e0f1b3df58dbde1dc4bf8ea4653fae5bd6ab8a",
+    "design/spec/cells/dc_control_source.py": "6a172089db649a9c36dc4ffc30a4aeaee7c815c5b1002ea7b2a160cdf82f3da3",
+    "design/spec/cells/decoupling_bulk.py": "536afd5eaeac1f1bdfbb437cbf649dc91446fd7db751b8f92fa174fdd3ab29bb",
+    "design/spec/cells/gate_trigger_input.py": "730a1d49657cd10ad68676f4f3db63348b98b2264cb131bcc3b722e64541f2a1",
+    "design/spec/cells/general_output.py": "1190b1398bd4c8bf835ba77983fa795e9ba3d1fae8987afa5fdb58409f3b36de",
+    "design/spec/cells/harness.py": "e7fffd75025e1393ba2751ac344517d538a42b6195f5240c6d8263a2e02da1af",
+    "design/spec/cells/high_impedance_input.py": "6f95bd91328db08eff2cecc281676457a7c8e4e346e7dbf8596c24c62b60fb90",
+    "design/spec/cells/input_fault_switch.py": "4c0ba2c46fd2dc5878341ae7bd91a4b667b0d5a8c59b705d0c0068e01a1a0ef7",
+    "design/spec/cells/level_attenuator.py": "7df406b65fd8d700251a2bcc204e506827f9d0effe991015398d852518129fe8",
+    "design/spec/cells/magnitude_indicator.py": "32fdd3bb20740c948dd4fd41747eebb77d55b6386c30444e6d6aaf462d81196d",
+    "design/spec/cells/octave_reference.py": "bdd67e03a1f143608b25b2118ed381f6ba8f4019fb785b41395e537e00e90b7e",
+    "design/spec/cells/precision_output.py": "243792ea52e932e2bb087841cf08705cce4001b1484a413c26a24f59931cabb1",
+    "design/spec/cells/reference_generator.py": "e5d0a017d936931656d7577e1e26651d8a6f14174ba22a0d68e7f2fdf852b545",
+    "design/spec/cells/remote_buffer.py": "d2ecd69d7f4369b74b2ea71a8a9bfd92fec8d7c9e71a76094e2493c389e34ff3",
+    "design/spec/cells/run_spice.py": "8239b551081d5953df08474b4400fcc048bb282a0df231a8a942f6d8f8945c36",
+    "design/spec/cells/slew_island.py": "4daf7fce5a6174334b80f639dcdef07ee41451868c18fc21671bf485795a1db6",
+    "design/spec/cells/stage_indicator.py": "8e1e53a4d1184cb71d7f74dae4916655b5c340bd763e288841d92b4ce39ce7c7",
+    "design/spec/cells/summing_node_input.py": "33142daaf31f02c490fcd99cc62b5f586116d5e7271660cef8d78ff2234e32e1",
+    "design/spec/cells/sweep_precision.py": "058c15044ab60f26088fb6f0b89a35e4a40392e9bdfc5ad198ea81f16098436e",
+    "design/spec/cells/sweep_precision_vendor.py": "31c77c207c3b3da770cbc3800c3d2c75cd96492a5a3e3c6cd246d27239d87eae",
+    "design/spec/cells/switch_button_input.py": "94aa63d3399f9d7167bd329e9729884835cfed7fd51765915d5d1e2862b838f4",
+    "design/spec/cells/test_cells.py": "bd83219dbb9a6fcded43b6a9a4ce9493b1aebf9143536db02f17dc142248ff77",
+    "design/spec/cells/test_sweep_precision_vendor.py": "bc805d32effaed5f5fc92b8ac3e886e53d0b1555f52ccfe00bb436e705034d23",
+    "design/spec/cells/trimmer.py": "9c81e0833506fae8a2cd7624a61baea092d5c8c057d79a9ea734d677d25539c7",
+    "design/spec/instrument.py": "873dda5b03ba38de6bfbb7178235bd2b8ab8b780346ebfdae2dd90b555cf65f1",
+    "design/spec/model_contracts.py": "45e397af7a0278d981f76e291adbd363dcb80bcf6da0686aaea99eb3953269d2",
+    "design/spec/modules/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "design/spec/modules/build_envelope_current.py": "90a54bf956118ca3ce0d42c0f64eb7fee7be440bae7a9649705f57ef3eb5ceb5",
+    "design/spec/modules/build_filter_current.py": "60a68dbf74e13b1dacba1f33fdb33ea355a55ea4fb6a45ac1fb9818ccf51259d",
+    "design/spec/modules/build_manual_ab_current.py": "121a2dcff3334fe8a6431e25e4d6068e76f66615ff087976572f1d722dff9533",
+    "design/spec/modules/build_mixer_current.py": "05e3c64b28b3342fd26c460293990a0fbfe07f4ec262d98ed6268668a3177b2c",
+    "design/spec/modules/build_mult_current.py": "a9e44d53b26ea941add8d988fa9b571ea809e0ae65583a13081d89fddb565e55",
+    "design/spec/modules/build_noise_current.py": "b81893d1f9c8579afcdabcb6232953fd777f79e5bc84e760b26f8ce7f85639c4",
+    "design/spec/modules/build_offset_current.py": "02cb28f37c963ac4984c5a05abeae5f3a71d6f7c97c3248df69734fc5d22f245",
+    "design/spec/modules/build_oscillator_current.py": "d92820139626c1e77aa4525e89c6f071fd9adb5bbdd0783efa3eb10c7a8cfa28",
+    "design/spec/modules/build_sample_hold_current.py": "29ac5e57157c0fbacc7fb6730dd99de9ed492a4cabc1ebc6d9c40e311d36b1b0",
+    "design/spec/modules/build_wavefolder_current.py": "dbbf45e22c65f812d74e22bcb7f53c9cde43561ac129aca26cd4beafffd8f01a",
+    "design/spec/modules/check_oscillator_reference.py": "e7cc3feb383772a86d013ecb4b05e88e8282fd966663bcd740448701096d5901",
+    "design/spec/modules/envelope.py": "4aa4737afd1f6ed9f47161fd2ccb3d51fc69367bd9b9a21f2506a460f400e6bb",
+    "design/spec/modules/envelope_logic.py": "860cb283d2712da94bca2b7e43148f0306fb6c35ba272f8efd3df947d36c6d73",
+    "design/spec/modules/filter.py": "9d8d71be2c5bcd18f76061301434bb13dee2f9370565df5535854c7fa7cfed0c",
+    "design/spec/modules/io_partition.py": "3372b2b650e34d0323c080ec094715c2ed44864418864db3b95a84eb82f18980",
+    "design/spec/modules/manual_ab.py": "c072c5ce20213f44da9597b5b952a862e343b6dcfef89f597929ad2dccb54ada",
+    "design/spec/modules/mix4_vca.py": "46d1efae983c32e763da7d3934d7fa01a7e0473c5b0c0bd586b28c9c85cf80e2",
+    "design/spec/modules/mix5.py": "037e1a79aa57f5f00044bfd5e004c0df870d72f9326f3436f22c0971544e1cc1",
+    "design/spec/modules/mixer_common.py": "f5d8a92b4e138a174a274e445c2de9b49f443f1803ebb2cc2dcc5a361031de0e",
+    "design/spec/modules/mult.py": "f40b65f937569979431d9adeb067e25d9d3406dd3c27465cbd30b2389710aff3",
+    "design/spec/modules/noise.py": "9dc3ac15f7b0c307e857cf36ea764671a8d8b1086326b564e11fa7873613e362",
+    "design/spec/modules/noise_model_contract.py": "f64105729c3664fc5fe84808591317bc05409e8e346ddd7bc9607866707bffb0",
+    "design/spec/modules/offset.py": "f25f3430ae1263dad830d255b653707afc8b2d502e1e7070cf3a977e51d1b642",
+    "design/spec/modules/offset_model_contract.py": "886ef0ed3c84ce4207f6967f5dd0fcef12f0ba6040e60aaa448441b6913b36ba",
+    "design/spec/modules/oscillator-reference.json": "0a6f259b109c91ace3fc03c5b7e3205de8a3bce13a6d1d93313257a9a9ca0883",
+    "design/spec/modules/oscillator.py": "c83a10adb792265798ae453af4380300b6fde8d1e26afe6dca240412eb965d3e",
+    "design/spec/modules/oscillator_sine_projection.py": "6f29420196400c08af8a98e492aed5ec0574e75433035e497cd57b5d30567f09",
+    "design/spec/modules/plot_wavefolder.py": "a21beeb02e3bfcf54d87f43d365198cfa3124ab95339baf63ea7e730524b181f",
+    "design/spec/modules/power.py": "16e884bb8db08e8690e27daee42ab497cb2b8e0b08cbdae630ef3b9c2e4a2379",
+    "design/spec/modules/run_envelope_spice.py": "2eafb29b6ed4fe0131617a07a60f07eee0c06277f744be5c2d148d31d09926f2",
+    "design/spec/modules/run_filter_spice.py": "e5b3253e7ab4c974b7b4ae7d45814c1db5697e05f1d6d39f027d7d75a385d567",
+    "design/spec/modules/run_manual_ab_spice.py": "a4de9a71e7860ee85274c066ed681798125049e5f1b18afaccc56dd5fbdc779c",
+    "design/spec/modules/run_mixer_spice.py": "7063e8854762f3c148c7135a282b1dd2f5d138c8841bdf458cb88107915ac108",
+    "design/spec/modules/run_noise_spice.py": "41d6eb9c87ea4c8ce87c65449cab0be52ac5af5e7a91b4d2d702e6d51dcd2a36",
+    "design/spec/modules/run_offset_spice.py": "7989efc35242606ec919e8776acc3cd0cd6c36f9c8fe559d3c7d9a8c1356a284",
+    "design/spec/modules/run_oscillator_reference_model.py": "0b1d9fab6a621cb078b87b2b7d6208ac4a6921ae4343c446b5d6522a1552fae2",
+    "design/spec/modules/run_oscillator_spice.py": "a4fa4b43c2de2bb67a0b97c78820bb328c4223098b81bc72baec03bc612bb1aa",
+    "design/spec/modules/run_sample_hold_spice.py": "e21d8bd60728cefb04839fb934097aae3cdcb49faffd81f57851985fa1651fc6",
+    "design/spec/modules/run_wavefolder_spice.py": "511745db43d67e4ecb7c32acc2b7dd60ef1dc0d7a067a396147761020e155431",
+    "design/spec/modules/sample_hold.py": "0fa352022e5ea991866dd8583042932da382f66aec17110de07e1fcf569fe45a",
+    "design/spec/modules/sample_hold_model_contract.py": "5008d1ca74041672b8978cd709d0993f4ea0299b7a0ec54e163e4bb0bfdfad35",
+    "design/spec/modules/spice/filter-model/source-receipt.json": "4fccca4d3f22888b979e9d45258a116b53b9edfb513b9ebc4e9e059ceb2fff09",
+    "design/spec/modules/spice_trace.py": "3234148d53ec6241468e172e28340a2f0aee1acd299b68c4eea8a6cc7927f964",
+    "design/spec/modules/synthetic.py": "df5d16acc2867ca551f9701780c41e882c38dd1f48ea7373955b8313240b96cc",
+    "design/spec/modules/test_envelope.py": "fc8c154eda266c161f853658bde865ed3a8b911a95be489cc7d67f404d35a55b",
+    "design/spec/modules/test_filter.py": "cb7bdbaedc071bd464ddb992ecc46da6e128a6ad6e5565ba54893a3969d676be",
+    "design/spec/modules/test_manual_ab.py": "5b5ea66bd5ba4f59095722db1397d63396549871be6e9b5b716b4c842909f0f4",
+    "design/spec/modules/test_mixers.py": "05a30af7592293e60ff3d33af10a539788579bb0a93b142583e96873b1047b35",
+    "design/spec/modules/test_mult.py": "1a4cc0ed71757e4ed4e955701e16826653d006d759a5874554b206fd2e6db65e",
+    "design/spec/modules/test_noise_model.py": "ff2d343ac519528713ff80fe37831cad01fcf409714659d7dfb467d5900321ae",
+    "design/spec/modules/test_offset_model.py": "0740f01e12db89d4081f43addcda0e0a4cfa6fb7cd6f03c4445ee53ec91a1ffb",
+    "design/spec/modules/test_oscillator.py": "732bcaced27745881ea2da33596952bfd49463db6f697546c57906e684ee3d4a",
+    "design/spec/modules/test_oscillator_model.py": "a478d4fc3243f2bcc42586839b519e5f39eab42d072faa22be775e6c8e2b4eee",
+    "design/spec/modules/test_oscillator_reference.py": "3652a17eb9398c39121ebabf0ec67e416d590a1be01067c9fdbd10d45e1a7aca",
+    "design/spec/modules/test_power.py": "3b89b15f988168b60787cba64a9c15cf19e4c41082a712905ca3fc2410bf6c46",
+    "design/spec/modules/test_sample_hold.py": "58b55574cdce2d6b744e21dc0a8e0aa7613ec1cc8c47b8c6e75d3b462c34fa07",
+    "design/spec/modules/test_sample_hold_model.py": "84269cfca8fca976e97e29742b3ad6f3bc1c498159f502291bd6e9f7af441829",
+    "design/spec/modules/test_spice_trace.py": "d0585390fabecff3e3bed8b8c2ecc4f1b6bf6cd4c69e6dec511d0e92e700a71e",
+    "design/spec/modules/test_wavefolder.py": "3a4f1498aa96216ecb6fde7f1457024c162ff32819cc8e3108fd7574b2d5d4d5",
+    "design/spec/modules/test_wavefolder_model_pins.py": "43c5f1dce402f27bd700ad05389de3ef96bf4e194c8646d517a215f2714af5f3",
+    "design/spec/modules/wavefolder.py": "fa57b4e7bd5761703a9267fa20cd0ce0d73a1b0419161952a27ee18ca8e1b10e",
+    "design/spec/test_model_contracts.py": "b0dfa045636df0163c50bbeaf8172c1247cd32329eb69832df8fe21acb2d4ed2",
+    "design/standard/catalogue-publication.json": "2d87aa0da40e06ea23ef95564d2bb86320cb24d0e687ca3efe293dd315c80b45",
+    "design/standard/check_standard.py": "c7a9b056e05b4d397ceb555f5b0bc5bed6e97c47cc3ecf9276f624ae06f09239",
+    "design/standard/electrical-standard.json": "185f4775082a36873954323a2377844e0694631418ac510db08e3a0d39b56e53",
+    "design/standard/ic-library-capture.json": "eb3d06c6a9ef49d377bba6bd8cf363e27c065f487589ba4962f92a1ce6a2e8f5",
+    "design/standard/parts-shortlist.json": "cd27a8abd9fc586b9ee18cb7070ff7dce918254404188ca30626f52b20df4f21",
+    "design/standard/pin-maps/c_bulk.json": "3e57c4dc0e10945107c8c63f0ae460f1f1a6335b9d91dcd2f76faf737ec6ca9b",
+    "design/standard/pin-maps/c_bypass.json": "10d50a1f0558d3ece83e60c79c6308f6add6608646d40a8abf26cc9f79080f1b",
+    "design/standard/pin-maps/c_feedback.json": "fc483ddc929bc9854622f86a2f5dff12ed1c063e85c848ec70e7240791cf2339",
+    "design/standard/pin-maps/c_hold.json": "c745aee60047b15ed4fda8a51016a083b90ef8c0a0be57c1dd2a3f94cc31a8ba",
+    "design/standard/pin-maps/c_slew.json": "6d699e4658809be0e3f905fe740719ea2f35647c14d195e7d04da9d83e92bd23",
+    "design/standard/pin-maps/c_small.json": "4dbfee629e8cbe184b2d05c039947034d0487bb40b0c52d3e1c8bd8aedb4961a",
+    "design/standard/pin-maps/clamp_diode.json": "6a3d765530eaa7c5b63f324f6e94c2147a9775a525355c2a02be9eea15165156",
+    "design/standard/pin-maps/comparator.json": "e617d33f4a3ee61c5dd07a9efe15f2394b4b4b4623720c8d0e9b923a86938693",
+    "design/standard/pin-maps/fault_switch.json": "4355312bc8bcb7d0d0dba6dfa250b723e504c72c8904ba533a2f91b5bfdeca9e",
+    "design/standard/pin-maps/flipflop.json": "55296fd5c88f4bf5932004d7ab575ec5ecb28a7e04226efebbe090eb07e76b8d",
+    "design/standard/pin-maps/matched_npn.json": "c753d7b8f360d573262ef882f642a769d57258db60618dcf7f910bd42b745363",
+    "design/standard/pin-maps/mosfet.json": "576e2b1784c7b3f610b82ba0514996b2e2adfdae1bab878f1f7ba50b31f3e0c0",
+    "design/standard/pin-maps/nand.json": "bd18a18547a1ed0abae80ed7b0717d99e2bdae1ee7fa0a8746e0365a4520ee39",
+    "design/standard/pin-maps/noise.json": "ad42e021c40a6688d2f564e23605254f9e50f312d5c52cc3b1e20e820a9059b2",
+    "design/standard/pin-maps/npn.json": "b4c6005f067852ef0093ee590b4647d8e636fbf08b50db57f29d1e89aef7b681",
+    "design/standard/pin-maps/one_shot.json": "2a523c37e44b49303af16ae6cda6af9d1aa9ed6dd44da91e221cf7f0eac7516a",
+    "design/standard/pin-maps/op_audio.json": "0171171c946dd77d9f9ff26f56e8ea43a8302e9fa433f0d350d449be2b31bf2c",
+    "design/standard/pin-maps/op_precision.json": "f0f686332478331df760737ca05a4972dc168ac215723278a244e07fa7280693",
+    "design/standard/pin-maps/ota.json": "a0a40c995ef2fa07245687a830b29b5f19eccee9a98d3ebc893fb62def6cf94d",
+    "design/standard/pin-maps/pnp.json": "74353c4d4ba104dc6425c867d596eca6091c27f9d3064b90e52fcd291524f418",
+    "design/standard/pin-maps/r_feedback.json": "ac4f77c62ef3afbcc05add2b2d3a28467bbcaeb1c061f60e12e8957f6dde78ab",
+    "design/standard/pin-maps/r_general.json": "135fbbff0f5d0256a5fbca662bd69a46463dc4afe1814921dc094a5dc437b8ec",
+    "design/standard/pin-maps/r_ladder.json": "5b7bbadcfa722e83d6227af43a53a1505fbdc7ed5c4ada2db5856507289d2f46",
+    "design/standard/pin-maps/r_power.json": "cdeca1246c3e6ba781c714332ba0362f6aa2fa10f283b38eb7a302b26096b14a",
+    "design/standard/pin-maps/r_precision.json": "17c1c18b778c68f0fdb5ffc91781dd315c84471f72ace26e5798a27e82d04989",
+    "design/standard/pin-maps/reference.json": "6299f598d371104dc091b4e54ec35a258962e8efc817ce1f487d919ba357b62e",
+    "design/standard/pin-maps/regulator_3v3.json": "35e5f60fc25aa9f5235e1f3812795e7fd482497dab4454b19ca328ac7b03d62a",
+    "design/standard/pin-maps/sample_hold.json": "dae6f7ee0026d4cd8d6d359de2893bd1962bb753414198243f85b1c0b024c3dc",
+    "design/standard/pin-maps/schmitt.json": "212904b30737f93d3455ff3f1e1bf187e05cb8e2bd848a0e2cc731ef8625eaec",
+    "design/standard/pin-maps/signal_diode.json": "4212532f0960b7b78468ca78a30bc56653c006e5dc653246fa0945a8634b450c",
+    "design/standard/pin-maps/trim_102.json": "eb6ae91421c74249d207fc5c98c5631d20acad1ba863662f29f7ad3bc2d8e8ea",
+    "design/standard/pin-maps/trim_103.json": "efc11180252e20204c7e7a93666b52ba7d2337b1bb91a23c210c7826ba353487",
+    "design/standard/pin-maps/vco.json": "2b7fafd2bcb19c9aedd6e4d395f87a402c01d003f75352ae01b3bcd9c70ea300",
+    "design/standard/precision-feedback-bindings.json": "18841b7987b146c34cac3dd9f043856f5a55b80a5c42f9f42e32fa6c11a2b476",
+    "design/standard/rail-budget-preliminary.json": "4fa11e8d7dab0373ad2a22c437fd47fbeb9dea661dccefb5f340f21593847fc2",
+    "design/standard/source-metadata-audit.json": "49993889ef29f555a11d8efdb4867ff9bc6294bacf7844f0637145e763ff9e5e",
+    "design/standard/source-receipts.json": "0325c7f2966cc7b9bbdac01543ed3eeccf2ae8a7f26c6b6167dcf34f5a21f0b6",
+    "design/standard/sourcing-risks.json": "2c679a08c497f71a492129c66b1a873da41e1b3bef3b0750a661032be5dc2fae",
+    "footprints/kicad/zudo-osc-hole-field.pretty/Potentiometer_Bourns_TC33X_Vertical.kicad_mod": "f21f7dc38797a77839ca9a8af5f79774ea724cb1996e8e8ac8d0007831e3d851",
+    "schematic/boards/osc-core.net": "b550a5fbe80c63df12f89aac867894d8448ac61d2bb4e4d623130f31f0a08242",
+    "scripts/pcbgen/place.py": "e235d5b9e5b1960431dc68806df03e619c6e3b743783dc1f8c05556b1b8b5a6c",
+    "scripts/schgen/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "scripts/schgen/analyze_rail_options.py": "fce1139ad5264bc363a0c880dc7b78236bcad943b6b5580e4773c29a3a23f3d5",
+    "scripts/schgen/audit_master.py": "74221df0bef68b6c2759e153ce6de2130d7ffacc681eeae81ddc7a5d98cf80d7",
+    "scripts/schgen/build_board_docs.py": "d59ecb2082bcf85ee99c6d562add4d2c36bf83fbf9e34b61d6790f5cc151722e",
+    "scripts/schgen/build_master_budget.py": "b5b42ecd8b06c356b3855c9b0827383ebd71adff83c0c569bd69a5d8903ac121",
+    "scripts/schgen/build_rail_ledger.py": "a1d7de6e7c02e4569e2d4fc89808df63d065c8cbeab5bd168feb721755af3e24",
+    "scripts/schgen/build_schematic_status.py": "929e7f3b8f4b13e912735279e5d4f13528326c5fa59e1003f22e2e5e9c9a5fe2",
+    "scripts/schgen/build_supply_architecture.py": "21900ef3585d1817f7db91f4f26a5d4c8ac835261a013c1ee79b4b366343acf4",
+    "scripts/schgen/build_supply_documentation.py": "db0e21dbe5de98e04d269a2f7bac7ee453499ff1b1b1ec32725b051fa23b7554",
+    "scripts/schgen/check_board_erc.py": "b03515b720666861110e32eb7763dc870ef0ff16064d5418b89d12c035155774",
+    "scripts/schgen/check_erc_warnings.py": "d4f985f32683e2aaeeb5886bdce9f60684b2e4a1351d35750baaca1bc0a90b71",
+    "scripts/schgen/check_power_boundary.py": "eb7e1e17d0a400d15740d4200f8397887e2ca0aedbb8011a4034300418559d85",
+    "scripts/schgen/core.py": "674670237a9c41dc17f71989d0da0ef12dfe6d27186498225cdc892498fe6083",
+    "scripts/schgen/generate.py": "e3ef1c60e52679508f463d280beac1d922a481a34d7364553ae197726b75a0c6",
+    "scripts/schgen/generate_monitor_permit.py": "6df50a85a024ae2e676272c34b0b3e1dbdbaf33c841e614010d1c85eac1e499b",
+    "scripts/schgen/normalize_exports.py": "57917754927f15460abb82b0814db05d90f6dde3f2ca881f2ec413b02219a4fb",
+    "scripts/schgen/project_boards.py": "853460ee35eba411ed525f780ea827944af904337e5292170328e97417661f08",
+    "scripts/schgen/test_board_erc_digest.py": "57eb37d62faa4d18f00a4338f26464264d8dafa2206bd766351cf4f391155a2b",
+    "scripts/schgen/test_board_projection.py": "af79175b7418a23409d03880961a83028fcfb1fddbb56f150f39851453e7d543",
+    "scripts/schgen/test_core.py": "4f5ab499ee927ba41eb3ad99834b0b0bd44dc1420e5b546b5c1309de3870f696",
+    "scripts/schgen/test_master_audit.py": "18df20218ed3616a75cdb6859a6c6ecdd86e3694040d65fa6a14d8b716871efb",
+    "scripts/schgen/test_master_budget.py": "c941f5784336efbf443222e8c283910d0b756722b111d7a18a3bdf517e8ad37c",
+    "scripts/schgen/test_power_boundary.py": "1a44d21107a3fec2569f68499c641152bfebcb61e1eff6fad9e08dd64b93af60",
+    "scripts/schgen/test_projection_coverage.py": "e98af75e16b2750945d0bad2a3ce01df5fb67c1f72e830763fe4263ff3cd36c7",
+    "scripts/schgen/test_rail_ledger.py": "74edc13d7f6be648afb64a281a319df434649e66f0b9eb99e623feb89875014f",
+    "scripts/schgen/test_rail_options.py": "2c660300c3ceb2d92d703d0af072ba538c51ba100a8c116d29435565a30542a4",
+    "scripts/schgen/test_schematic_status.py": "22d2ae5b0da82b87d2d475ff0a1da62579753ca40ba6b11609a42bafd5c739f0",
+    "scripts/schgen/test_supply_architecture.py": "8c51af24d3d49d83f868ee48955ff3e02df28869b331751c997b987e25b1a97e",
+    "scripts/schgen/verify_cross_board.py": "533982a24574d482c389ceda975e3e87ccaccaf98bde041109d9fcdd2377120a",
+    "scripts/schgen/verify_netlist.py": "fcd33536d90eedaf7d4a3a76218df58df82c4e9abda8200e205622dfbf527baa",
+    "scripts/service/build_trimmer_inventory.py": "305ee2296a6a3d708d007c028f1ca1bb9c9a7329e04840628e8d29326ce0596f"
+  }
+}
