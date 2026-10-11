@@ -9,4 +9,4 @@ for x in c['connectors']:
 for k in ['JL','JR','K']:
  x=b['boards'][k];r=json.loads((R/x['receipt']['path']).read_text());assert r['adopted'] and r['candidate_board_sha256']==x['published']['sha256']; assert sum(x['open_by_net'].values())==x['open_edges']; assert r['drc_errors']==0 and r['parity']==0
 # Frozen source equality is the gate; documentation/ledger commits may advance independently.
-print(f'PASS: {count} frozen input files unchanged; 195 harnesses/390 complete endpoint refs/pin maps/poses; current117/129/1402 adopted receipts, DRC/parity0/0; owned tracked diff only')
+print(f'PASS: {count} frozen input files unchanged; 195 harnesses/390 complete endpoint refs/pin maps/poses; current117/129/1402 adopted receipts, DRC/parity0/0; source invariants unchanged')

@@ -30,9 +30,14 @@ with fresh-copy agreement in the original runs. This session recomputed publishe
 hashes and receipt bindings, not native connectivity. Older jack `routing.json`
 reports are stale and are not current evidence. K published `fa60…` differs from
 settled `b9f5…` because of publication cache removal; do not compare interchangeably.
-Full per-net obligations are retained in `baseline.json`; full endpoint memberships
-and native workspace context digests must be recovered from artifact snapshots
-or reconstructed before routing proposals. Null is unknown, not an empty context.
+Full per-net obligations are retained in `baseline.json`. Full accepted JL/JR/K
+artifacts have now been recovered and digest-verified: `accepted-artifacts.json`
+and `accepted-runs.json` pin their successful source/run/ZIP identities. The three
+`*-endpoints.json` files retain all unresolved pad identities and complete-group
+member digests from exact fresh dumps. Full group UUID lists remain in those ZIPs.
+All97 native workspace context files match current source bytes. Their manifest
+digest is explicitly defined here; lanes still run original validator context
+authentication before native proposals. No fresh native rerun is claimed.
 
 P's zero-edge routed candidate (`7488a643…`) is not its canonical layout
 (`a34e150f…`); canonical geometry/adoption remains open. EL and all five octaves
@@ -129,7 +134,8 @@ Pre-edit `pnpm circuit:check` PASS: manual provider,68 lines,0 declared placemen
 no schematic/placement binding; pin-asset check performed. Initial sandbox pnpm
 store failure was resolved by scoped escalation. Regeneration was attempted after
 hash-preserving all committed boards. Its initial image bootstrap was interrupted
-while downloading the pinned oracle; no native result is claimed. Follow-up results
+while downloading the pinned oracle; a follow-up version-only probe timed out
+after60 seconds during download. No native result is claimed. Follow-up results
 and independent review are recorded in `verification.json` and `review.md`.
 
 Startup instructions arrived through the supplied workspace AGENTS message, not
@@ -141,3 +147,26 @@ explicit context-loading limitation, not proof of successful native discovery.
 
 No merge, closure, deployment, fabrication/order, supplier communication or
 energization is authorized. #243 is baseline coordination, not completion of #242.
+
+## Reproducing retained endpoint recovery
+
+Download the full artifacts listed in `accepted-artifacts.json` to an external
+cache as `jl117.zip`, `jr129.zip`, `k1402.zip`. The connected GitHub artifact tool
+works for all three; direct `gh api repos/Takazudo/zudo-osc-hole-field/actions/artifacts/ID/zip`
+may return403 on its blob redirect in this environment. Compare full bytes against
+metadata before using any member. Then run:
+
+```sh
+python3 circuit/routing/epic-242/baseline/recover_endpoints.py /path/to/cache
+python3 circuit/routing/epic-242/baseline/verify_inputs.py
+```
+
+Recovery is source/retained-artifact work only. The script asserts all per-net
+edge counts against adopted receipts and exact settled board/dump hashes.
+Do not commit full boards/ZIPs or use Git LFS. Metadata carries expiry dates;
+retain the exact archives using supported project artifact storage before expiry.
+
+Initial source readiness was released at `f2cdcc45aace9ebfe0490187159aeedd2d83cad8`
+in draft PR260. This later retained-evidence addition leaves the hardware/code
+epoch unchanged. Parent may assign new workers to the latest reviewed PR260 SHA;
+existing e0 workers reconcile the ledger but do not rewrite their original inputs.
