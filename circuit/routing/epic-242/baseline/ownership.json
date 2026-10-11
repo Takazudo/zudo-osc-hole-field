@@ -587,16 +587,16 @@
       ]
     },
     {
-      "branch": null,
-      "head": null,
+      "branch": "agent-fix/244-audit-recovery-20261011",
+      "head": "91d5e0b9d48e0094188cf38a734fe3d260debec7",
       "input_epoch": "epic242-e0",
       "issue": 244,
       "native_run": null,
-      "next_action": "Source/evidence preparation only; parent admission required before heavy native jobs",
+      "next_action": "No waves/transport admitted;355/426 authenticated,71missing; fulloriginalForbidden/sizecap; finalgatesNOTRUN",
       "owner": "audit recovery",
       "parent_sha": "1da1909846dc3255888ecd36c88cee9737c85834",
       "session": "01a12985-7c4d-749e-86e0-9e6652d3a090",
-      "status": "ASSIGNED_SOURCE_EVIDENCE_ONLY",
+      "status": "KEEP_K1402_BLOCKED_DISPOSITION_ACCEPTED",
       "write_set": [
         "circuit/routing/epic-242/audit-recovery/**",
         "existing PR #241 continuation/evidence paths when ownership is transferred",
@@ -609,11 +609,11 @@
       "input_epoch": "epic242-e0",
       "issue": 245,
       "native_run": null,
-      "next_action": "Review fixture provenance/tests; no native admission; guards not executable in manifest",
+      "next_action": "15tests/determinism/291portablethreeAseals reviewed; no nativeadmission; reconcile actualpowerplacements",
       "owner": "partition/capacity",
       "parent_sha": "65cefd41fc39e064d38319115ad96016a1c6b71c",
       "session": "01a12973-32ea-7343-844a-1302c6afc095",
-      "status": "SOURCE_REVIEW_RUNNING",
+      "status": "REVIEWED_SOURCE_INTEGRATED",
       "write_set": [
         "design/partition/core-split/candidates/**",
         "scripts/partition/core_split_candidates.py (new)",
@@ -622,15 +622,15 @@
     },
     {
       "branch": null,
-      "head": "d04cb553cf25be88fb405832d8422c89ce15f2d4",
+      "head": "eff65d5a23a4a8e763fd63e29cda0c7c16a43c12",
       "input_epoch": "epic242-e0",
       "issue": 246,
       "native_run": null,
-      "next_action": "Corrected build check and9tests pass; reconcile actual power reservations and #249 labels; browser263 deferred",
+      "next_action": "10tests/determinism reviewed; conditional3.6mmcorridor deficit, unplacedactualfeed/service geometry and browser263 remainopen",
       "owner": "mechanics",
       "parent_sha": "65cefd41fc39e064d38319115ad96016a1c6b71c",
       "session": "01a12973-e002-77de-aeb8-856a17e8a0be",
-      "status": "REVIEWED_SOURCE_INTEGRATED_WITH_DETERMINISM_FIX",
+      "status": "CORRECTED_SOURCE_INTEGRATED",
       "write_set": [
         "design/partition/core-split/mechanical/**",
         "doc/src/content/docs/research/osc-core-split-mechanical.mdx"
@@ -689,15 +689,15 @@
     },
     {
       "branch": null,
-      "head": null,
+      "head": "06228d71d69cccb418082d5ce074a8be82be5b4a",
       "input_epoch": "epic242-e0",
       "issue": 251,
       "native_run": null,
-      "next_action": "Source/evidence preparation only; parent admission required before heavy native jobs",
+      "next_action": "9tests/sourcepreflight pass; exactJR129 diagnostic only; fix timeoutcleanup/localdaemon/freefloormonitor beforeadmission",
       "owner": "JR",
       "parent_sha": "1da1909846dc3255888ecd36c88cee9737c85834",
       "session": "01a12985-d542-7307-ade0-f3becde190b0",
-      "status": "ASSIGNED_SOURCE_EVIDENCE_ONLY",
+      "status": "REVIEWED_SOURCE_INTEGRATED_NATIVE_HELD",
       "write_set": [
         "circuit/routing/epic-242/jr/**",
         "private disposable project/cache only; canonical board adoption by coordinator"
@@ -705,17 +705,34 @@
     },
     {
       "branch": null,
-      "head": null,
+      "head": "082b49af6fc205872bf949642b521dc04f70b397",
       "input_epoch": "epic242-e0",
       "issue": 249,
       "native_run": null,
-      "next_action": "Consume reviewed LABEL_CONTRACT_READY; no topology selection or heavy/native admission",
+      "next_action": "6tests pass; retain native renders/reloadsemantic evidence and executable resourcebounds beforeadmission",
       "owner": "label/service annotation",
       "parent_sha": "6700ccb1a9a64630cd26bccf751f537f3cc25d42",
       "session": "01a12974-3374-7348-8910-388855c7c0b4",
-      "status": "ASSIGNED_SOURCE_ONLY",
+      "status": "REVIEWED_SOURCE_INTEGRATED_NATIVE_HELD",
       "write_set": [
         "Parent-assigned #249 annotation paths; reviewed through coordinator"
+      ]
+    },
+    {
+      "branch": null,
+      "disposition_sha": "91d5e0b9d48e0094188cf38a734fe3d260debec7",
+      "head": null,
+      "input_epoch": "epic242-e0",
+      "issue": 252,
+      "native_run": null,
+      "next_action": "Consume core-252-handoff.md at published integrationSHA; source only, no nativeortransport",
+      "owner": "Parent to assign core comparison owner",
+      "parent_sha": "65cefd41fc39e064d38319115ad96016a1c6b71c",
+      "session": null,
+      "status": "CORE_BASELINE_READY_SOURCE_ONLY",
+      "write_set": [
+        "circuit/routing/epic-242/core-pilot/**",
+        "private native copies; eligible delta to sole coordinator"
       ]
     }
   ],
