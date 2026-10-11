@@ -1,0 +1,54 @@
+{
+  "status": "PASS_FINITE_DOMAIN_NEGATIVE_CERTIFICATE",
+  "blocking_findings": [],
+  "source_commit": "4a1c3ec2ef1906ad5bfeb9a8f5ceef1f964d7b18",
+  "source_sha256": "c7c5ee623b3f3ecb5a88fe8a04faa0ab88488d445f0802cad483707a31f4a2e2",
+  "contract_sha256": "da96e8a60bd8232116a067a6cf1f3fffee713791b952090df7db91e0221312b9",
+  "evidence_sha256": {
+    "pose-screens.jsonl.gz": "abe08a8688f5e9c6d9ca3ac03ee8fe5ffd9dc0f9bdf7eb540ba6e21ba3e56a3e",
+    "prior-conflict-reconciliation.json": "2fe4f751449556a2cf9dbe201b779f0a148c09b995e8e40a1cfb9e0cbe3d1e5d",
+    "object-dispositions.json": "3c755891da550f03c192053ac5cc56bd41f081dafc195ebd869093be84395918",
+    "result.json": "3b89354e38848ed884c5484e47cf87cd1ed1e10a7d37c6e2103377eedbf41d7b",
+    "execution-start.json": "84ff26febef80a5f1f592c3c0db3eb8a504758419cd13ec09f099f4cc94148d9"
+  },
+  "independent_checks": {
+    "complete_unique_domain_records": 16184,
+    "poses_per_ref": 2312,
+    "IC_first_refusal_witnesses_recomputed": 4624,
+    "IC_witness_counts": {
+      "FIXED_COURTYARD": 2420,
+      "FIXED_RESERVATION": 1299,
+      "PRESERVED_FOREIGN_COPPER": 615,
+      "PRESERVED_VIA_SMD": 290
+    },
+    "all_accepted_object_hashes": 133902,
+    "complete_segment_via_geometries": 133551,
+    "inherited_duplicate_uuids": [
+      "068d8b75-2a29-587e-ad91-2a5fd680fc8e",
+      "5d905700-2dea-5407-bfdb-7d54a9887d2f",
+      "6ad7a8ef-06c4-5daf-8c20-536f50fb0495",
+      "7a9f1a78-0122-5c1a-807d-edd14509239d",
+      "7bc22643-4022-5e36-b5d2-8117e4041966",
+      "8ed29fa2-46b9-5922-8b00-41d148dd7308",
+      "9dd204e2-36b2-5742-bd54-f78d414e5f80",
+      "d97e2b87-75be-5022-a172-0d789754bbe1"
+    ],
+    "duplicate_uuids_in_classification": 0,
+    "object_dispositions": 63,
+    "complete_segment_and_fixture_pad_contact_sets_verified": 29,
+    "prior_pairs_objects_fixture_absent": [
+      67,
+      57,
+      18
+    ],
+    "joint_assignments": 0,
+    "input_seals_match": true
+  },
+  "conclusion": "Both ICs have empty optimistic individual domains, so no joint assignment exists in this exact sealed finite pose domain with these preservation/hole policies. This is not continuous or global infeasibility, nor authorization to cut additional copper.",
+  "limits": [
+    "29 exact segment reconstruction obligations and six other movable footprints were omitted during each individual screen.",
+    "No selected candidate, continuity reconstruction, native routing, DRC/parity/refill or adoption.",
+    "Recorded first-failure witnesses independently verified; verification does not independently replay every preceding passing gate."
+  ],
+  "review_activity": "Recorded-pose certificate geometry and source hashes only; no main/search/selection rerun, new domain or alternative pose."
+}
