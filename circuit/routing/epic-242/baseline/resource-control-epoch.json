@@ -1,9 +1,9 @@
 {
   "hardware_epoch": "epic242-e0",
-  "tool_epoch": "epic242-tools-e3-serialized-cleanup",
+  "tool_epoch": "epic242-tools-e4-settle-only",
   "historical_manifest": "input-files.json",
-  "source_base_sha": "4f5abd0da5bea8a4fa3085cea5b1b2d941d5ef75",
-  "reason": "Reviewed source correction for observed harmless qualification cleanup race, authenticated per-worker cleanup lease and final-state evidence; historical hardware inputs and failed runtime receipt preserved. No retry admitted/dispatched.",
+  "source_base_sha": "d549078a9664bf64221b8a3a950788777d203203",
+  "reason": "Isolated #245 before-board settle-only Actions source route; bounded pinned-image preparation accounts for disjoint Docker/containerd cgroups and host pressure without daemon changes; immutable sealed snapshot and positive/negative receipts. Native NOT RUN.",
   "historical_overrides": {
     "scripts/kicad/README.md": {
       "historical_sha256": "f8273d7d1056393a1b3102b6520a795ab79bd4f170ef57b42b5b3c08fb3d5a4f",
@@ -26,11 +26,13 @@
     "scripts/kicad/test_ci_native_admission.py": "7b206e72e89b2ba79a1f179208bf81d0b2f641fe4a4eb6fa34ffcc8ed61bef5f",
     "scripts/checks/run-ci-native-python.sh": "17d2e9a205d818572fcf9dcb638f60665f99aa665c60df897b190741df8b2b05",
     "scripts/checks/run-ci-native-board.sh": "f01c425c22c987bbaa062650e480010faede25e773d2353d8077b038d30688db",
-    ".github/workflows/routing-benchmark.yml": "b8b57faaadefb6cc6910b0eee9079d20c113273e5e3e722f242dc827c00ab346",
+    ".github/workflows/routing-benchmark.yml": "68b2e9e93ed063e32dcc05fbef5a7180b22c0cb3ce8bd91b2baa78b999f651af",
     "scripts/kicad/qualify_resource_guard.py": "06e783d370da6b938b1bb65c60a107e5760cae623c77ed4605142d5a044afb0f",
     "scripts/kicad/run_resource_fixture.py": "b38c12fda3091ce998f8cfec7b744b8d2a5da9e089bdba32350c9aa87dc93480",
-    "scripts/kicad/test_resource_qualification.py": "89a571e0ae9f8751e96db11f48cde38a8d32f2711916bac7fc11db7546cc918e"
+    "scripts/kicad/test_resource_qualification.py": "4a67add4646de5fc8ad37394c11399e24e7289493eef2de30397ad0a7d993f2c",
+    "scripts/kicad/settle_only_pilot.py": "ba879c4e3843608e33e38e2d4dcbf0bf2ac7d709d5b1973f801382e000aba914",
+    "scripts/kicad/test_settle_only_pilot.py": "27a27807fe3c185cb09df4e3eaddb58d3e9a709caeb47e5d3ee7a7b9495a3fd1"
   },
   "native_acceptance": false,
-  "previous_tool_epoch": "epic242-tools-e2-harmless-qualification"
+  "previous_tool_epoch": "epic242-tools-e3-serialized-cleanup"
 }

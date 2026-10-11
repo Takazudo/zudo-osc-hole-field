@@ -185,7 +185,7 @@ class QualificationBoundaries(unittest.TestCase):
         for name, existing in workflow['jobs'].items():
             if name != 'qualify':
                 self.assertIn('!inputs.resource_qualification', existing['if'])
-        self.assertEqual(len(workflow['jobs']), 7)
+        self.assertEqual(len(workflow['jobs']), 8)
         self.assertEqual(job['runs-on'], 'ubuntu-24.04')
         self.assertEqual(job['timeout-minutes'], '10')
         commands = '\n'.join(step.get('run', '') for step in job['steps'])

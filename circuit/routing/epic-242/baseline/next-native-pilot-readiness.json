@@ -1,6 +1,6 @@
 {
   "status": "SOURCE READY / NATIVE NOT ADMITTED",
-  "candidate_source_sha": "6cf7a6c7d8670eef6da96ac86a8a81a3673220da",
+  "candidate_source_sha": "Exact pushed integration SHA supplied in dispatch request; reviewed_commit must equal workflow GITHUB_SHA",
   "qualification_receipt": "resource-qualification-run38121547543-ledger.json",
   "selected_issue": 245,
   "selected_step": "three-A complete before-board settle ONLY; no focus/search/apply/fresh-copy/audit yet",
@@ -17,7 +17,7 @@
   "preconditions": [
     "Parent authenticates reviewed source SHA and reserves ONE global slot, excluding other native work",
     "Selected already-capable runner matches systemd/localDocker/cgroupv2 memory+swap prerequisites; no daemon/security reconfiguration",
-    "Exact digest-pinned image separately preloaded/authenticated before native admission; guard never pulls; harmless proof did not establish image availability",
+    "One bounded300-second digest-pinned Docker pull; verify RepoDigests, charge disjoint Docker/containerd service cgroups, refuse unaccounted backends, monitor host floor. No daemon configuration or security change. Preparation threshold is sampled, not a hard cap; cancellation does not prove residual daemon work absence. Failure blocks native.",
     "Approved source interpreter numpy2.2.6/scipy1.15.3/shapely2.1.2; clean reviewed checkout; new worker ID/fresh retained evidence destination",
     "Source-only materialize in ignored candidates/pilots/generated/decision-three-A-native-a1; authenticate all293files and291portable seals, bind path-dependent commands/manifest hashes freshly",
     "Before guard invocation, copy the COMPLETE materialized293-file input tree plus sha256.json to fresh retained EVIDENCE_DIRECTORY/input-snapshot, authenticate every copied file, and freeze/record its manifest; settle overwrites the working beforePCB via native --save-board. Verify snapshot hashes unchanged again after run. Never rely on post-settle beforePCB as original input.",
@@ -40,7 +40,7 @@
     "--worker",
     "three-a-settle-245-a1",
     "--sha",
-    "6cf7a6c7d8670eef6da96ac86a8a81a3673220da",
+    "FULL_REVIEWED_PUSHED_SHA",
     "--hook-sha256",
     "8631e1222942b8396bf566c88deaed0e287234146c4adb1afa9aa87d0d1055a5",
     "--seconds",
@@ -80,6 +80,24 @@
     "compare all saved/reloaded owned text: UUID/text/layer/position/angle/mirror/size/stroke and reference/non-annotation preservation, plus second apply/remove semantics",
     "source tests for evidence retention, both faces and failure artifacts; return reviewed immutable source patch before native proposal"
   ],
-  "independent_source_review": "PASS after explicit immutable pre-settle snapshot requirement and correction of full-severity versus uncapped-warning scope; no native execution or slot admission.",
-  "logging_limit": "route_jack_grid.check captures child CLI/dump output internally; successful child stdout is not automatically persisted by an external tee. No complete subordinate stdout/stderr retention claim. Raw reports and driver/version/errors provide settle-only evidence; richer logging requires a separately reviewed source change."
+  "independent_source_review": "PASS: separate reviewer approved final isolation, disjoint backend accounting, absolute preparation deadline, sealed immutable snapshot, result and negative evidence retention. Source approval only; native admission NOT GRANTED.",
+  "logging_limit": "route_jack_grid.check captures child CLI/dump output internally; successful child stdout is not automatically persisted by an external tee. No complete subordinate stdout/stderr retention claim. Raw reports and driver/version/errors provide settle-only evidence; richer logging requires a separately reviewed source change.",
+  "workflow": "routing-benchmark.yml",
+  "dispatch_mode": {
+    "settle_only": "true",
+    "board": "osc-core",
+    "resource_qualification": "false",
+    "reviewed_commit": "FULL_REVIEWED_PUSHED_SHA",
+    "reviewed_hook_sha256": "8631e1222942b8396bf566c88deaed0e287234146c4adb1afa9aa87d0d1055a5",
+    "parent_admission_id": "FRESH_PARENT_EXCLUSIVE_ADMISSION_ID"
+  },
+  "preparation_limit": "300 seconds plus at most10 seconds client cancellation cleanup; sampled6GiB aggregate Docker/containerd ceiling and2.5GiB host free-memory early abort. Existing daemon caps recorded; no daemon hard-cap enforcement claim.",
+  "route_checks": {
+    "focused_source_tests": 35,
+    "complete_fixture_snapshot": "293 input files plus manifest,291 portable seals; source-only materialization/snapshot/hash verification PASS",
+    "compile": "PASS",
+    "circuit_check": "PASS",
+    "pnpm_check": "PASS",
+    "frozen_inputs": "1881 original inputs unchanged;195 harnesses/390 endpoint refs/pin maps/poses; accepted117/129/1402 DRC/parity0/0"
+  }
 }
