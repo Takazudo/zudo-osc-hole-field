@@ -1,14 +1,14 @@
 {
   "status": "SOURCE-REVIEWED LAUNCH READY; NOT ADMITTED OR DISPATCHED",
   "case": "F3/K1402 route only",
-  "orchestration_sha": "4aade25ec10edd3fdada3deedfe7f55d275fd7b8",
+  "orchestration_sha": "4a948fbbabaa94fcdc030c15d5922a7b4e8b300b",
   "method_sha": "6f0783335fa23d760877a91db3b63f93c039b4b4",
   "packet_sha256": "10be49ae32997a36c54436e48226a295678e47dda1fc1c14f4569c72ef4bdd92",
   "fixture_lock_sha256": "0ee20e3e409a93f1f4b1417c8e2ed64b18564f00213edd1aeaf6cd3af4ffbf7b",
   "orchestration_files_sha256": {
-    ".github/workflows/epic242-f3-k1402-access.yml": "8b37648f3a684e206d00a1098303a711d3de6c0996af0aaca50a6656f1335977",
-    "circuit/routing/epic-242/decision-pilots/terminal-access/run_f3_k1402.py": "e4d3cd954846a804b02c6e1fb50c38d080cd813e5f326ba29ad70d10409ef97b",
-    "circuit/routing/epic-242/decision-pilots/terminal-access/test_f3_orchestration.py": "db5779c169749735f2e0d6b36ede4497f1fa5e8e3d4cce931302d72471eb8e44"
+    ".github/workflows/epic242-f3-k1402-access.yml": "07e7277d1a9284d4d2cda186abfbaef1c78bf76815a7224f7df4c76a15092df8",
+    "circuit/routing/epic-242/decision-pilots/terminal-access/run_f3_k1402.py": "5e857fe21222b5a3a6fd5dfa8104700a7ed562e5f477b917b17d977a5d3da80b",
+    "circuit/routing/epic-242/decision-pilots/terminal-access/test_f3_orchestration.py": "ce109a983f185a07f306fc12e04e431e16321b28e81778567c6257255746387a"
   },
   "execution_branch": "integration/epic-242-f3-k1402-access-v1",
   "proposed_admission_identity": "epic242-f3-k1402-access-v1",
@@ -18,7 +18,7 @@
     "git",
     "push",
     "origin",
-    "4aade25ec10edd3fdada3deedfe7f55d275fd7b8:refs/heads/integration/epic-242-f3-k1402-access-v1"
+    "4a948fbbabaa94fcdc030c15d5922a7b4e8b300b:refs/heads/integration/epic-242-f3-k1402-access-v1"
   ],
   "launch_gate": "Parent must admit this exact orchestration/method/packet/case and reserve global capacity before creating the execution branch. Never force/reset/recreate/retry the branch. It is absent at preparation closeout.",
   "one_shot": "push creation + Actions attempt1 + complete branch run history containing exactly this workflow/run/head; prior use/incomplete census refuses",
@@ -66,11 +66,11 @@
   },
   "credit": "All4 original demands and blocked rails explicit; accepted/adopted/native_exact_pair_closed/coupled_connectivity_success false. Signal-only gain never means complete cohort/architecture success.",
   "review": {
-    "baseline_review": "PASS source and committedfreeze review",
+    "baseline_review": "PASS original orchestration plus independent full-history correction review",
     "architecture_astra": "PASS independent source review",
     "tests": {
-      "terminal_access_total": 48,
-      "new_orchestration_and_retained_receipt_boundaries": 13,
+      "terminal_access_total": 51,
+      "new_orchestration_and_retained_receipt_boundaries": 16,
       "native_or_savedboard_search": 0
     },
     "other_checks": [
@@ -80,7 +80,8 @@
       "packetdigestunchanged",
       "pnpm circuit:check PASS",
       "pnpm check PASS",
-      "baseline1881inputs/195harnesses/390endpointmaps PASS"
+      "baseline1881inputs/195harnesses/390endpointmaps PASS",
+      "Full historical cohort availability and exact digest verified before provisioning"
     ],
     "component_scope": "manual68lines/zero declaredplacements; schematic/placementbinding notperformed"
   },
@@ -103,5 +104,14 @@
     "nativeclosure/adoption",
     "canonicalhardwarewrites",
     "merge/closure/deploy/fabrication"
-  ]
+  ],
+  "superseded_orchestration_sha": "4aade25ec10edd3fdada3deedfe7f55d275fd7b8",
+  "historical_evidence": {
+    "method_checkout_fetch_depth": 0,
+    "commit": "191a4db30d90fe43025ec2633e23f9b069f12b85",
+    "path": "circuit/routing/epic-242/decision-pilots/terminal-access/cohort-validation.json",
+    "sha256": "beb352adf77edbafa74afd5cee1ec4b38593448c6233d55d19fd9751861ee89b",
+    "gate": "git show exact historical bytes and verify frozen packet hash before provisioning, repeated by source verification",
+    "review": "Independent baseline_review PASS; missingcommit/wrongbytes refusal tests PASS"
+  }
 }

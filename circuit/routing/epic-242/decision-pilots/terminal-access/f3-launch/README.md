@@ -2,7 +2,7 @@
 
 **Source-reviewed and ready for parent admission. No dispatch or native work.**
 
-Exact orchestration commit: `4aade25ec10edd3fdada3deedfe7f55d275fd7b8`.
+Exact orchestration commit: `4a948fbbabaa94fcdc030c15d5922a7b4e8b300b`.
 Exact routing method: `6f0783335fa23d760877a91db3b63f93c039b4b4`.
 The [frozen request](../f3-packet/request.json) remains SHA256
 `10be49ae32997a36c54436e48226a295678e47dda1fc1c14f4569c72ef4bdd92`.
@@ -22,6 +22,12 @@ branch-run census also rejects earlier use of this workflow or an incomplete
 history. The orchestrator binds its checkout to the Actions SHA, loads the
 literal frozen packet, and checks the separate clean method checkout and all
 426 method hashes plus the outer dispatch wrapper before execution.
+The method checkout uses `fetch-depth: 0`. Before provisioning, source checks
+read the exact historical cohort commit
+`191a4db30d90fe43025ec2633e23f9b069f12b85` and verify its bytes against the frozen
+packet hash. Missing history or altered bytes fail closed. This correction
+supersedes orchestration `4aade25ec10edd3fdada3deedfe7f55d275fd7b8`; independent delta review and
+historical-availability regressions pass.
 
 ## What the first job will do after admission
 
@@ -56,8 +62,8 @@ retained for 30 days. Failed finalization produces a separate negative receipt.
 Platform cancellation or timeout can prevent upload; missing evidence never
 proves successful execution or cleanup and blocks subsequent admission.
 
-Both independent reviewers cleared the source orchestration. All 48 source
-tests passed, including 13 orchestration/receipt regressions. YAML and shell
+Both independent reviewers cleared the source orchestration. All 51 source
+tests passed, including 16 orchestration/receipt regressions. YAML and shell
 syntax, circuit/docs/TypeScript and frozen baseline checks passed. The prior
 two-probe result checker is unchanged except for its method binding; no new
 guard framework or repeated native qualification was introduced. The pinned
