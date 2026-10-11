@@ -1,0 +1,46 @@
+{
+  "status": "SOURCE_AND_RETAINED_EVIDENCE_ONLY",
+  "tests": {
+    "transport": {
+      "count": 10,
+      "result": "PASS"
+    },
+    "original_audit_unit": {
+      "count": 34,
+      "result": "PASS"
+    },
+    "circuit_pre": "PASS",
+    "circuit_post": "PASS",
+    "original_semantic_replay": "PASS_355_OF_426",
+    "final_union": "REJECTED_INCOMPLETE",
+    "regeneration": "NOT_RUN_PARENT_NATIVE_ADMISSION_REQUIRED",
+    "current_head_ci": "NOT_RUN_DEFERRED_GLOBAL_CAP",
+    "fresh_native": "NOT_RUN",
+    "complete_original_bytes": "NOT_RUN_TRANSPORT_BLOCKED",
+    "legacy_native11679236513_full_bytes": "NOT_RUN_METADATA_ONLY"
+  },
+  "source_file_sha256": {
+    "circuit/routing/epic-242/audit-recovery/recover_retained.py": "cc7a8a2062c94d4fc263a1c234d9b617d99c0d7e596d5b7df6c4ee22f2103cff",
+    "circuit/routing/epic-242/audit-recovery/test_transport_original.py": "501d6a83fed60d0f699b338a956c5b280899ab3635c3af3853f401237b61dc74",
+    "circuit/routing/epic-242/audit-recovery/transport_original.py": "58e11f0ca0bea74fbda69b50acd00109fac02a88c0ab39f199184819253491fa"
+  },
+  "assigned_integration": "1da1909846dc3255888ecd36c88cee9737c85834",
+  "execution_source": "b350905989de9b441aa4ff709a8491d3c753332b",
+  "newer_integration_inspected": "6700ccb1a9a64630cd26bccf751f537f3cc25d42",
+  "commands": [
+    "pnpm circuit:check",
+    "timeout --signal=INT --kill-after=10s 600s python3 -u circuit/routing/epic-242/audit-recovery/recover_retained.py /workspace/audit244-evidence /workspace/audit244-evidence/replay-01",
+    "python3 -m unittest discover -s circuit/routing/epic-242/audit-recovery -p test_*.py",
+    "python3 -m unittest scripts.pcbgen.test_core_audit_after scripts.pcbgen.test_core_audit_pilot scripts.pcbgen.test_core_audit_waves scripts.pcbgen.test_core_audit_geometry",
+    "git diff --check"
+  ],
+  "transport_observations": {
+    "gh_metadata": "SUCCESS",
+    "gh_full_zip": "Forbidden at blob redirect",
+    "gh_full_zip_escalated": "Forbidden at blob redirect",
+    "connector": "713393322 exceeds536870912byte limit",
+    "credentials_created": false
+  },
+  "native_admission": false,
+  "adopted": false
+}

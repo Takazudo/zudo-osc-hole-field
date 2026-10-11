@@ -52,7 +52,31 @@ run_docker() {
   local docker_bin=$1
   local home_dir=$2
   shift 2
-  "$docker_bin" run --rm --platform linux/amd64 --network none \
+  local resource_args=()
+  local bounded_command=()
+  if [[ -n ${EPIC242_NATIVE_SLICE:-} ]]; then
+    [[ ${EPIC242_NATIVE_WORKER:-} =~ ^[a-z0-9][a-z0-9-]{0,60}$ ]] || {
+      printf 'Invalid bounded worker identity.\n' >&2; return 1;
+    }
+    # Slice hyphens encode hierarchy in systemd: hex keeps worker a single child.
+    local encoded_worker
+    encoded_worker=$(printf '%s' "$EPIC242_NATIVE_WORKER" | od -An -v -tx1 | tr -d ' \n')
+    [[ $EPIC242_NATIVE_SLICE == "epic242-w${encoded_worker}.slice" ]] || {
+      printf 'Bounded worker identity differs from slice.\n' >&2; return 1;
+    }
+    [[ ${EPIC242_NATIVE_DEADLINE:-} =~ ^[0-9]{10}$ ]] || {
+      printf 'Invalid bounded worker deadline.\n' >&2; return 1;
+    }
+    local remaining=$((10#$EPIC242_NATIVE_DEADLINE - $(date +%s)))
+    ((remaining > 0 && remaining <= 2580)) || {
+      printf 'Bounded worker deadline expired or exceeds 43 minutes.\n' >&2; return 1;
+    }
+    bounded_command=(timeout --signal=TERM --kill-after=5s "${remaining}s")
+    resource_args=(--pull=never --memory=6442450944 --memory-swap=6442450944
+      --cgroup-parent="$EPIC242_NATIVE_SLICE"
+      --label "epic242.native.worker=$EPIC242_NATIVE_WORKER")
+  fi
+  "$docker_bin" run "${resource_args[@]}" --rm --platform linux/amd64 --network none \
     --user "$(id -u):$(id -g)" \
     --volume "$repo_root:/work" \
     --volume "$home_dir:/tmp/kicad-home" \
@@ -65,7 +89,7 @@ run_docker() {
     --entrypoint /bin/sh \
     "$KICAD_IMAGE" \
     -c 'mkdir -p "$HOME/.config" "$HOME/.cache" "$HOME/.local/share" "$XDG_RUNTIME_DIR"; chmod 700 "$XDG_RUNTIME_DIR"; exec "$@"' \
-    kicad-oracle "$@"
+    kicad-oracle "${bounded_command[@]}" "$@"
 }
 
 run_with_docker() {
@@ -84,9 +108,25 @@ run_with_docker() {
     return 1
   fi
   check_version "$actual_version"
+  if [[ -n ${EPIC242_NATIVE_SLICE:-} && $actual_version != 10.0.6 ]]; then
+    printf 'Bounded worker requires KiCad 10.0.6, got %s\n' "$actual_version" >&2
+    return 1
+  fi
 
   run_docker "$docker_bin" "$home_dir" "$@"
 }
+
+if [[ -n ${EPIC242_NATIVE_SLICE:-} ]]; then
+  if [[ -n ${KICAD_CLI_BIN:-} ]] || [[ -n ${DOCKER_HOST:-} ]] || [[ -n ${DOCKER_CONTEXT:-} ]]; then
+    printf 'Bounded mode requires the local Docker oracle without native fallback.\n' >&2
+    exit 1
+  fi
+  [[ -n ${EPIC242_NATIVE_WORKER:-} && -n ${EPIC242_NATIVE_DEADLINE:-} ]] || exit 1
+  if ! command -v docker >/dev/null; then
+    printf 'Bounded mode requires local Docker.\n' >&2
+    exit 1
+  fi
+fi
 
 if [[ -n ${KICAD_CLI_BIN:-} ]]; then
   if [[ ! -x $KICAD_CLI_BIN ]]; then

@@ -1,0 +1,75 @@
+{
+  "adopted": false,
+  "assigned_parent_sha": "1da1909846dc3255888ecd36c88cee9737c85834",
+  "baseline_epoch": "epic242-e0",
+  "branch": "agent/245-core-candidates-1011",
+  "changed_candidate_inputs": [],
+  "determinism": {
+    "command": [
+      "scripts/partition/core_split_candidates.py",
+      "check"
+    ],
+    "cumulative_children_peak_rss_kib": 543884,
+    "elapsed_seconds": 13.889,
+    "exit_code": 0,
+    "native": "NOT RUN"
+  },
+  "independent_reviews": {
+    "fixture_review": "Read-only separate agent; resolved full candidate context, strict DRC fields, executable fresh/full-warning steps, closed-target classification, empty-proposal negative receipt, 0.5 mm ground width and plane-group bound.",
+    "inventory_review": "Read-only separate agent; found and resolved trimmer counting, complete mechanical exclusions, rule-area disposition, main blob binding and missing code/runtime lock. Final review found no material ownership/geometry/copper/scope defect."
+  },
+  "issue": 245,
+  "latest_integration_changed_paths": [
+    "circuit/routing/epic-242/baseline/ci-scheduling-proposal.patch",
+    "circuit/routing/epic-242/baseline/coordination-update.md",
+    "circuit/routing/epic-242/baseline/ownership.json",
+    "design/service/component-review/README.md",
+    "design/service/component-review/lane-verification.json",
+    "design/service/component-review/review.json",
+    "design/service/trimmer-functions.json",
+    "design/service/trimmer-inventory.json",
+    "doc/src/content/docs/verification/osc-trimmer-calibration.mdx",
+    "scripts/service/build_trimmer_inventory.py",
+    "scripts/service/test_trimmer_inventory.py"
+  ],
+  "latest_integration_checked_sha": "6700ccb1a9a64630cd26bccf751f537f3cc25d42",
+  "native_readiness": "NOT RUN / global slot not assigned",
+  "next_coordination": "Review source PR on integration branch; assign one global 300-second/6-GiB slot to settle smallest three-A fixture, then review demand and later pilots. Do not start default CI or adopt a topology.",
+  "not_run": {
+    "build_check_site_full_python_native_regressions": "Integration milestone scope; not run in source-only lane",
+    "ci": "Explicit parent restriction: four-job default matrix exceeds global native budget. Commit uses [skip ci]; no workflow dispatch.",
+    "initial_regen_all": "Requires native; parent did not assign global slot. No competing regeneration published.",
+    "native_fixture_parse_parity_drc_refill": "No native slot assigned; no substitute oracle/mock acceptance",
+    "native_routing_complete_warnings_and_fresh": "Decision owner executes bounded command manifest after admission",
+    "physical_fit_supply_return_and_envelope_qualification": "Not established by source arithmetic"
+  },
+  "other_checks": {
+    "comparison.svg": "Rendered with CairoSVG 2.8.2 and visually inspected; label spacing corrected",
+    "coordinator verify_inputs.py": "PASS: all 1883 frozen inputs and 195 harnesses/390 complete endpoint identities match",
+    "five_fixture_materializations": "PASS: 293 files each, pure source generation; portable hashes in pilots/source-fixture-seals.json",
+    "git diff --check": "PASS",
+    "pnpm check": "PASS: evidence, generated pages/preflight/models, 31 previews, collection/type checks",
+    "pnpm circuit:check pre/post": "PASS: manual inventory; 68 lines, 0 declared placements; no schematic/placement binding; pin-asset check performed"
+  },
+  "source_input_files": 510,
+  "source_main_sha": "65cefd41fc39e064d38319115ad96016a1c6b71c",
+  "source_readiness": "CANDIDATE_DATA_AND_SOURCE_FIXTURES_READY_FOR_REVIEW",
+  "startup": {
+    "host_delivery": "workspace AGENTS user message, no demonstrated saved startup field",
+    "read_only_loader": "AUTO-REVIEW REJECTED: reads /root/.codex",
+    "restore_runtime": "AUTO-REVIEW REJECTED: potentially modifies /root/.codex",
+    "workaround": false
+  },
+  "tests": {
+    "command": [
+      "-m",
+      "unittest",
+      "scripts.partition.test_core_split_candidates",
+      "-v"
+    ],
+    "cumulative_children_peak_rss_kib": 543884,
+    "elapsed_seconds": 13.814,
+    "exit_code": 0,
+    "native": "NOT RUN"
+  }
+}
