@@ -228,10 +228,11 @@ class Inputs:
         # imported by this partition generator or packaged into a fixture.
         # Keep the accepted #245 input epoch stable while binding every actual
         # board/context/router input to the original source commit below.
-        unrelated_labels = {'trimmer_labels.py', 'test_trimmer_labels.py',
-                            'trimmer_labels_native_regression.py'}
+        unrelated_labels = {'scripts/pcbgen/trimmer_labels.py',
+                            'scripts/pcbgen/test_trimmer_labels.py',
+                            'scripts/pcbgen/trimmer_labels_native_regression.py'}
         paths.update(str(p.relative_to(ROOT)) for p in (ROOT/'scripts/pcbgen').rglob('*.py')
-                     if p.name not in unrelated_labels)
+                     if str(p.relative_to(ROOT)) not in unrelated_labels)
         paths.update(f'scripts/pcbgen/{n}.py' for n in ('grid_dump', 'grid_router', 'grid_apply', 'route_jack_grid', 'uuid_tools', 'complete_native_warnings', 'netlist', 'route', 'copper_identity', 'audit_added_mask', 'audit_hole_pairs', 'audit_zone_silk_scope', 'native_companion_binding'))
         # Bind every declared input to the immutable source commit; a dirty or newer
         # source must not silently inherit the old epoch label.
