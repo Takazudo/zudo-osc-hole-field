@@ -29,8 +29,8 @@ def output_path(env):
 def settle_budget(env):
     seconds = env.get('SETTLE_SECONDS', '')
     pilot = env.get('SETTLE_PILOT', '')
-    if seconds not in ('300', '600') or (seconds == '600' and pilot != 'two-A'):
-        raise ValueError('only reviewed 300-second pilots or the two-A 600-second amendment permitted')
+    if pilot not in PILOTS or seconds not in ('300', '600'):
+        raise ValueError('only sealed pilots with reviewed 300- or 600-second budgets permitted')
     return int(seconds)
 
 
