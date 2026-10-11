@@ -1,0 +1,136 @@
+{
+  "admission_id": "epic242-o1-two-a-route-20261011-1438",
+  "verdict": "NO IMPROVEMENT",
+  "accepted": false,
+  "run_id": 38148185181,
+  "job_id": 114495848565,
+  "worker": "o1-two-a-r1438-38148185181-1",
+  "launcher_source_sha": "ab94128d779803fb10ecf2196a2b83f2c4081f5b",
+  "orchestration_sha": "0a9dd48e16002db1335abc451ed63954d919fd66",
+  "method_sha": "29140d4e19d526eed3a02a73c33f8ce4219c78f0",
+  "artifact": {
+    "id": 11705755937,
+    "bytes": 20195283,
+    "sha256": "ed8de7933f40369ecefb3ea28f382662923b414298e0cdb72ed5e32578e64e3f",
+    "members": 319,
+    "all_crcs_pass": true
+  },
+  "proposal": {
+    "copper_additions": 0,
+    "cuts": 0,
+    "links": 0,
+    "unrouted_demands": 4,
+    "search_wall_seconds": 4.688842145999985
+  },
+  "verified_bindings": {
+    "complete_input_zips": 6,
+    "unchanged_input_files_including_lock": 297,
+    "fixture_lock_files": 296,
+    "primary_method_sources": 14,
+    "transitive_method_tool_hashes": 418
+  },
+  "resources": {
+    "native_seconds_limit": 300,
+    "worker_bytes_limit": 6442450944,
+    "aggregate_bytes_limit": 12884901888,
+    "free_bytes_floor": 2147483648,
+    "swap_bytes_extra": 0,
+    "whole_worker_peak_bytes": 235540480,
+    "minimum_sampled_free_bytes": 15386996736,
+    "guard_samples": 10,
+    "events": {
+      "low": 0,
+      "high": 0,
+      "max": 0,
+      "oom": 0,
+      "oom_kill": 0,
+      "oom_group_kill": 0
+    }
+  },
+  "cleanup": {
+    "both_full_id_probes_retained_exit": 0,
+    "containers_remaining": 0,
+    "owned_units": 3,
+    "all_owned_units_inactive_not_found": true,
+    "errors": [],
+    "cleanup_failures": [],
+    "workload_absent": true,
+    "reservation": "ELIGIBLE FOR PARENT RELEASE; no surviving task workload"
+  },
+  "prior_reservation": {
+    "id": "epic242-o1-k1402-route-20261011-1420",
+    "state": "RELEASED BY PARENT",
+    "empty_proposal_applied": false
+  },
+  "independent_review": {
+    "reviewer": "/root/baseline_review",
+    "source_gate": "PASS",
+    "actual_evidence_gate": "PASS: bounded NO IMPROVEMENT",
+    "checks": [
+      "full ZIP size/SHA and319CRCs",
+      "297retained initial/final hashes",
+      "14primary and418transitive method source bindings",
+      "six complete ZIP metadata/digest bindings",
+      "authenticated two-A original board/dump and exact payload",
+      "both full-ID ACK/livePID/cgroup/retained-exit0",
+      "caps, whole-worker peak/events, complete resource absence",
+      "same four demands/windows/budgets/policies/numerical bindings as1420"
+    ]
+  },
+  "comparison": {
+    "K1402": {
+      "run_id": 38147266896,
+      "verdict": "NO IMPROVEMENT",
+      "copper_additions": 0,
+      "cuts": 0,
+      "links": 0,
+      "unrouted_demands": 4,
+      "search_wall_seconds": 9.273817893
+    },
+    "two-A": {
+      "run_id": 38148185181,
+      "verdict": "NO IMPROVEMENT",
+      "copper_additions": 0,
+      "cuts": 0,
+      "links": 0,
+      "unrouted_demands": 4,
+      "search_wall_seconds": 4.688842145999985
+    },
+    "same_controls": [
+      "frozen method and hook",
+      "four exact O1 demands and pad polygons",
+      "bounds",
+      "raster/clearance/widths/vias",
+      "search caps and windows",
+      "routing policy",
+      "numerical versions",
+      "300-second total including both probes",
+      "6GiB no-swap/12GiB aggregate/free floor"
+    ],
+    "interpretation": "Both bounded searches produced no route proposal. No impossibility, architecture advantage, closure or acceptance inference; timings on separate runners are descriptive only."
+  },
+  "unadmitted": [
+    "retry",
+    "apply",
+    "settle",
+    "fresh-copy",
+    "full-warning audit"
+  ],
+  "evidence_files_sha256": {
+    "actions-log.json": "4fbf9bbd2f993e1dffc3fc2e0d6550cff103fc651ad98395a902def4a8dbcd79",
+    "admission.json": "33aff35b9cc77cf1218aee30a9093bc9b0654dda13527d0834e9243fe42419a7",
+    "artifact-authentication.json": "8793855ad0c6e0ce5809ac318e34e293b3846e6bb5748d49a4c99906ee492070",
+    "artifact-members.json": "fca3b2c0ae72b012aa5a4a3a221d7fb5480bd0d1361eea114512a090f6c1e3a5",
+    "bootstrap.json": "b04f08d20a4002ef9a30a2354ecdac1e0a36ec37c505fe49c7cc13f990b1c8b4",
+    "fixture-lock.json": "3e91754cb6b2fbea31ab4e4436fae09fcf8b4371dcff10be2f7b6ba9f3371c19",
+    "host.json": "58e8eeafef5120ec6dffbc065d2d873b27813424e2ef1375a445c3cc2c3f21f0",
+    "image-preparation.json": "c44915c807f79986d3cbf985457811261c5281258c121468664880bf1ce3c93c",
+    "initial-fixture-hashes.json": "c7e1eed937fdc7cdd9aa87592c535e0333a1ce2c3b928109bf50b2d5ce04f825",
+    "job-outcome.json": "01d18466b2ecd3df02312c60f6bbdaeb571a3a979c7b990270680a4136af1346",
+    "matched-proposal.json": "22b33922219b241b35aae9fa8e78553a97bd31780eaec868d8f2bcc1878ef202",
+    "matched-search-diagnostics.json": "fd5cc048e3be579e25379d1fe9538e7a0d196b3743e88de020c227ad67749536",
+    "native-guard.json": "1d93626bad3718b160050c8696711a3031b6d4bca2af71bddb5cdd7c0494daf3",
+    "raw-logs.json": "771bf8f03deaad7d135783908b5c0f63b443ff22436a565abec31eb9d7980c16",
+    "route.json": "f1bfeef4b4c946e88bd5c7d2d4def518a380db8deaae2234f2bacbbf01ea6453"
+  }
+}
