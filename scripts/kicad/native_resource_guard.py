@@ -129,7 +129,7 @@ def command_error(error):
     return str(error) + (': ' + stderr.strip() if stderr else '')
 
 
-def inspect_owned_container(cid, worker, slice_path, verified, transitions):
+def inspect_owned_container(cid, worker, slice_path, verified, transitions, states=None):
     """A vanished, previously verified full ID is absence, never exit success."""
     if not re.fullmatch(r'[0-9a-f]{64}', cid):
         raise ValueError('full Docker container identity required')
@@ -159,6 +159,8 @@ def inspect_owned_container(cid, worker, slice_path, verified, transitions):
         raise ValueError('Docker container worker label differs')
     docker_limits(inspected, slice_path)
     state = inspected['State']
+    if states is not None:
+        states[cid] = state
     if state.get('OOMKilled') or state.get('Error'):
         raise ValueError('Docker container failure: ' + json.dumps(state))
     if not state['Running']:
@@ -196,6 +198,119 @@ def observe_container(cid, worker, slice_path, verified, transitions, membership
                             for name in ('Memory', 'MemorySwap', 'CgroupParent')}, 'state': inspected['State']}
         return inspected
     raise AssertionError('bounded observation exhausted')
+
+
+def private_gate_path(path, directory=False):
+    info = path.lstat()
+    import stat
+    expected = stat.S_ISDIR if directory else stat.S_ISREG
+    if not expected(info.st_mode) or info.st_uid != os.getuid() or info.st_mode & (0o077 if directory else 0o022):
+        raise ValueError('unsafe handshake path: ' + str(path))
+    return path
+
+
+def gate_request(inspected, root, worker, deadline, image):
+    """Bind a private request and readonly entrypoint to an inspected full ID."""
+    private_gate_path(root, True)
+    private_gate_path(root / 'gates', True)
+    labels = inspected['Config'].get('Labels', {})
+    token = labels.get('epic242.native.gate', '')
+    if not re.fullmatch(r'gate\.[a-zA-Z0-9]{12}', token):
+        raise ValueError('missing or invalid unique gate identity')
+    gate = private_gate_path(root / 'gates' / token, True)
+    request = json.loads(private_gate_path(gate / 'request.json').read_text())
+    cid = inspected['Id']
+    if (request.get('container_id') != cid or request.get('token') != token or
+            request.get('worker') != worker or request.get('deadline') != deadline or
+            request.get('image') != image or
+            private_gate_path(gate / 'container-id').read_text() != cid + '\n'):
+        raise ValueError('gate request identity differs')
+    command = request.get('command')
+    if not isinstance(command, list) or not command or any(not isinstance(arg, str) for arg in command):
+        raise ValueError('gate command missing')
+    config = inspected['Config']
+    if (config.get('Image') != image or config.get('Entrypoint') != ['/bin/sh'] or
+            config.get('Cmd') != ['/epic242-start.sh', '/epic242-gate', str(deadline), token, *command] or
+            inspected['HostConfig'].get('AutoRemove') is not False):
+        raise ValueError('gate entrypoint, command, image or retention differs')
+    expected = {'/epic242-gate': str(gate), '/epic242-start.sh': str(root / 'start-gate.sh')}
+    found = set()
+    for mount in inspected.get('Mounts', []):
+        destination = mount.get('Destination', '')
+        if destination in expected:
+            if (destination in found or mount.get('Type') != 'bind' or mount.get('RW') is not False or
+                    mount.get('Source') != expected[destination]):
+                raise ValueError('gate mount differs or is writable')
+            found.add(destination)
+        elif any(destination == '/' or destination.startswith(target + '/') for target in expected):
+            raise ValueError('overlapping gate mount')
+        # No writable alias into the private handshake tree.
+        source = Path(mount.get('Source', '/invalid')).resolve()
+        if mount.get('RW') and (source == root or root in source.parents or source in root.parents):
+            raise ValueError('writable alias to handshake root')
+    if found != set(expected):
+        raise ValueError('missing readonly gate mounts')
+    return gate, request
+
+
+def observe_gated_container(cid, worker, slice_path, root, deadline, image, evidence, final=False):
+    # Retained containers must NEVER disappear, even after prior membership proof.
+    inspected = inspect_owned_container(cid, worker, slice_path, set(), evidence['container_lifecycle'], evidence['container_states'])
+    state = inspected['State']
+    evidence['container_states'][cid] = state
+    if state.get('Status') == 'created' and not final:
+        return
+    gate, request = gate_request(inspected, root, worker, deadline, image)
+    admitted = evidence['container_admissions']
+    expected_ack = request['token'] + ':' + cid + '\n'
+    if cid not in admitted:
+        if not state['Running']:
+            raise ValueError('container exited before verified admission: ' + cid)
+        if (gate / 'ack').exists() or (gate / 'ack').is_symlink():
+            raise ValueError('stale or unsolicited gate acknowledgement')
+        # Gate is blocked until this exact live process passes PID/cgroup checks.
+        memberships = evidence['container_memberships']
+        verified = set()
+        observed = observe_container(cid, worker, slice_path, verified,
+                                     evidence['container_lifecycle'], memberships)
+        if observed is None or cid not in verified:
+            raise ValueError('gate process disappeared before admission')
+        # A fixed snapshot prevents changes through the writable repository mount.
+        if hashlib.sha256(private_gate_path(root / 'start-gate.sh').read_bytes()).hexdigest() != evidence['gate_script_sha256']:
+            raise ValueError('gate script snapshot changed')
+        temporary = gate / 'ack.tmp'
+        with temporary.open('x') as output:
+            output.write(expected_ack)
+        temporary.replace(gate / 'ack')
+        admitted[cid] = {'request': request, 'verified_at': time.time(), 'ack': expected_ack.strip()}
+    elif private_gate_path(gate / 'ack').read_text() != expected_ack or admitted[cid]['request'] != request:
+        raise ValueError('gate acknowledgement or request changed')
+    if cid in admitted and state['Running']:
+        # Keep checking actual membership after admission, not just Docker caps.
+        observe_container(cid, worker, slice_path, set(), evidence['container_lifecycle'],
+                          evidence['container_memberships'])
+    if final and (state['Running'] or state.get('Status') != 'exited' or state.get('ExitCode') != 0):
+        raise ValueError('retained container not successfully exited: ' + cid)
+
+
+def gated_inventory(root, worker, evidence, final=False):
+    """Union of durable requests, admitted IDs and daemon labels; no lost helpers."""
+    requested = set()
+    for gate in (root / 'gates').iterdir():
+        private_gate_path(gate, True)
+        request_file = gate / 'request.json'
+        if not request_file.exists() and not final:
+            continue  # create/request publication is still in flight; entrypoint cannot start yet.
+        request = json.loads(private_gate_path(request_file).read_text())
+        cid = request.get('container_id', '')
+        if not re.fullmatch(r'[0-9a-f]{64}', cid) or cid in requested:
+            raise ValueError('invalid or reused container request identity')
+        requested.add(cid)
+    listed = set(worker_containers(worker))
+    admitted = set(evidence['container_admissions'])
+    if final and (not requested or requested != listed or requested != admitted):
+        raise ValueError('final requested/listed/admitted container inventories differ')
+    return requested | listed | admitted
 
 
 def capture_memory(cgroup):
@@ -475,7 +590,7 @@ def execute(args):
     # This opt-in must be wired only by a separately reviewed run.sh patch.
     hook = Path('scripts/kicad/run.sh').read_bytes()
     required_hook = (b'--memory=6442450944', b'--memory-swap=6442450944', b'--cgroup-parent=',
-                     b'EPIC242_NATIVE_DEADLINE', b'epic242.native.worker=', b'--kill-after=5s',
+                     b'EPIC242_NATIVE_DEADLINE', b'epic242.native.worker=', b'EPIC242_NATIVE_HANDSHAKE',
                      b'10.0.6', b'--pull=never')
     if any(token not in hook for token in required_hook) or not args.hook_sha256 or hashlib.sha256(hook).hexdigest() != args.hook_sha256:
         raise ValueError('exact reviewed Docker resource hook digest required; fail closed')
@@ -483,7 +598,7 @@ def execute(args):
     if getattr(args, 'harmless_fixture_image', None):
         require_harmless_fixture(args.harmless_fixture_image, args.command)
     else:
-        require_local_image()
+        native_image = require_local_image()
     if memory_available() < CAP + FLOOR:
         raise ValueError('less than8GiB available for6GiB worker+2GiB floor')
     # Refuse BEFORE claiming identity or entering cleanup: never delete another run.
@@ -521,6 +636,11 @@ def execute(args):
     claimed = False
     watch_unit = 'epic242-' + worker + '-watchdog.service'
     private_dir = Path(tempfile.mkdtemp(prefix='epic242-' + worker + '-', dir='/tmp'))
+    (private_dir / 'gates').mkdir(mode=0o700)
+    gate_script = Path(__file__).with_name('native_start_gate.sh').read_bytes()
+    (private_dir / 'start-gate.sh').write_bytes(gate_script)
+    (private_dir / 'start-gate.sh').chmod(0o444)
+    native_deadline = int(time.time()) + args.seconds
     watch_config = private_dir / 'watchdog.json'
     watch_result = Path(str(watch_config) + '.result')
     closing = private_dir / 'closing'
@@ -530,7 +650,8 @@ def execute(args):
     process = None
     cgroup = None
     evidence = {'plan': plan, 'samples': [], 'status': 'FAIL / NOT ACCEPTED',
-                'container_lifecycle': [], 'container_memberships': {}}
+                'container_lifecycle': [], 'container_memberships': {}, 'container_admissions': {},
+                'container_states': {}, 'gate_script_sha256': hashlib.sha256(gate_script).hexdigest()}
     observed_containers = set()
     interrupted = []
     def terminate(signum, frame):
@@ -574,7 +695,8 @@ def execute(args):
                    '--property=User=' + str(os.getuid()), '--property=WorkingDirectory=' + str(Path.cwd()),
                    '--setenv=EPIC242_NATIVE_SLICE=' + slice_unit,
                    '--setenv=EPIC242_NATIVE_WORKER=' + worker,
-                   '--setenv=EPIC242_NATIVE_DEADLINE=' + str(int(time.time()) + args.seconds),
+                   '--setenv=EPIC242_NATIVE_DEADLINE=' + str(native_deadline),
+                   '--setenv=EPIC242_NATIVE_HANDSHAKE=' + str(private_dir),
                    '--setenv=PATH=' + os.environ['PATH'], '--', *args.command]
         units.insert(0, checks)
         process = subprocess.Popen(command)
@@ -592,7 +714,13 @@ def execute(args):
                 reason = 'signal ' + str(interrupted[-1])
             cgroup_limits(cgroup)
             cgroup_limits(Path('/sys/fs/cgroup/epic242.slice'), AGGREGATE_CAP)
-            for cid in worker_containers(worker):
+            if reason:
+                raise ValueError(reason)
+            if not getattr(args, 'harmless_fixture_image', None):
+                for cid in gated_inventory(private_dir, worker, evidence):
+                    observe_gated_container(cid, worker, cg, private_dir, native_deadline, native_image, evidence)
+                observed_containers.update(evidence['container_admissions'])
+            for cid in worker_containers(worker) if getattr(args, 'harmless_fixture_image', None) else []:
                 inspected = observe_container(cid, worker, cg, observed_containers,
                                               evidence['container_lifecycle'], evidence['container_memberships'])
                 if inspected is not None:
@@ -611,6 +739,9 @@ def execute(args):
                 evidence['exit_code'] = code
                 if code:
                     raise ValueError('native command nonzero exit')
+                if not getattr(args, 'harmless_fixture_image', None):
+                    for cid in gated_inventory(private_dir, worker, evidence, final=True):
+                        observe_gated_container(cid, worker, cg, private_dir, native_deadline, native_image, evidence, final=True)
                 break
             time.sleep(1)
         if not observed_containers:

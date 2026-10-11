@@ -1,5 +1,5 @@
 {
-  "status": "SECOND ADMITTED RUN COMPLETED NEGATIVE; NATIVE ON HOLD",
+  "status": "STARTUP HANDSHAKE SOURCE REVIEWED; NATIVE ON HOLD",
   "candidate_source_sha": "Exact pushed integration SHA supplied in dispatch request; reviewed_commit must equal workflow GITHUB_SHA",
   "qualification_receipt": "resource-qualification-run38121547543-ledger.json",
   "selected_issue": 245,
@@ -10,8 +10,8 @@
   "worker_memory_bytes": 6442450944,
   "aggregate_parent_memory_bytes": 12884901888,
   "minimum_free_bytes": 2147483648,
-  "hook_sha256": "8631e1222942b8396bf566c88deaed0e287234146c4adb1afa9aa87d0d1055a5",
-  "guard_sha256": "32034716e8cb47c21a24482952211268998647502bc107917a3c008b30fe0acc",
+  "hook_sha256": "f91b2c8846856a6d38a10eb9e6314b6ebec3222b68df37942f3716ab860d8c91",
+  "guard_sha256": "3310d64de53aebb6b337736d0dfc7cc3d97aa8b8ef3ebc298767bb0ec7fb92d6",
   "pinned_image": "kicad/kicad@sha256:18693567392b80da435f9fa952ce3a3e534c66eb5a6033f5b9c80aa3b19dd3ec",
   "required_native_version": "10.0.6",
   "preconditions": [
@@ -21,7 +21,8 @@
     "Approved source interpreter numpy2.2.6/scipy1.15.3/shapely2.1.2; clean reviewed checkout; new worker ID/fresh retained evidence destination",
     "Source-only materialize in ignored candidates/pilots/generated/decision-three-A-native-a1; authenticate all293files and291portable seals, bind path-dependent commands/manifest hashes freshly",
     "Before guard invocation, copy the COMPLETE materialized293-file input tree plus sha256.json to fresh retained EVIDENCE_DIRECTORY/input-snapshot, authenticate every copied file, and freeze/record its manifest; settle overwrites the working beforePCB via native --save-board. Verify snapshot hashes unchanged again after run. Never rely on post-settle beforePCB as original input.",
-    "Native regeneration remains held; no canonical generation/board/partition edits admitted"
+    "Native regeneration remains held; no canonical generation/board/partition edits admitted",
+    "Every bounded helper including version probes waits for identity-bound guard ACK before native exec; retained containers require complete requested/listed/admitted identity equality and exited0 evidence before cleanup."
   ],
   "materialize_argv": [
     "SOURCE_PYTHON",
@@ -42,7 +43,7 @@
     "--sha",
     "FULL_REVIEWED_PUSHED_SHA",
     "--hook-sha256",
-    "8631e1222942b8396bf566c88deaed0e287234146c4adb1afa9aa87d0d1055a5",
+    "f91b2c8846856a6d38a10eb9e6314b6ebec3222b68df37942f3716ab860d8c91",
     "--seconds",
     "300",
     "--evidence",
@@ -80,7 +81,7 @@
     "compare all saved/reloaded owned text: UUID/text/layer/position/angle/mirror/size/stroke and reference/non-annotation preservation, plus second apply/remove semantics",
     "source tests for evidence retention, both faces and failure artifacts; return reviewed immutable source patch before native proposal"
   ],
-  "independent_source_review": "PASS: separately reviewed narrow lifecycle correction and final-state/kernel-memory evidence retention; native retry NOT ADMITTED.",
+  "independent_source_review": "PASS: baseline_review independently reviewed gate binding, persistent exit evidence, repeated running PID/cgroup checks, strict final inventory and existing producer-first cleanup; source/mock evidence only.",
   "logging_limit": "route_jack_grid.check captures child CLI/dump output internally; successful child stdout is not automatically persisted by an external tee. No complete subordinate stdout/stderr retention claim. Raw reports and driver/version/errors provide settle-only evidence; richer logging requires a separately reviewed source change.",
   "workflow": "routing-benchmark.yml",
   "dispatch_mode": {
@@ -88,12 +89,12 @@
     "board": "osc-core",
     "resource_qualification": "false",
     "reviewed_commit": "FULL_REVIEWED_PUSHED_SHA",
-    "reviewed_hook_sha256": "8631e1222942b8396bf566c88deaed0e287234146c4adb1afa9aa87d0d1055a5",
-    "parent_admission_id": "epic242-three-a-settle-02"
+    "reviewed_hook_sha256": "f91b2c8846856a6d38a10eb9e6314b6ebec3222b68df37942f3716ab860d8c91",
+    "parent_admission_id": "NEW_PARENT_ADMISSION_REQUIRED"
   },
   "preparation_limit": "300 seconds plus at most10 seconds client cancellation cleanup; sampled6GiB aggregate Docker/containerd ceiling and2.5GiB host free-memory early abort. Existing daemon caps recorded; no daemon hard-cap enforcement claim.",
   "route_checks": {
-    "focused_source_tests": 45,
+    "focused_source_tests": 61,
     "complete_fixture_snapshot": "293 input files plus manifest,291 portable seals; source-only materialization/snapshot/hash verification PASS",
     "compile": "PASS",
     "circuit_check": "PASS",
@@ -106,8 +107,10 @@
     "ledger": "settle-run38125854892-ledger.json",
     "outcome": "FAIL / NOT ACCEPTED",
     "blocker": "NEW FAIL-CLOSED GUARD OBSERVATION: a listed full-ID container disappeared before any running membership proof for that ID. Original prior-verified case is distinct. Exact underlying container exit cause not established.",
-    "next": "Parent source/control review of distinct unverified-container case required. No third run or fallback admitted."
+    "next": "Admission settle02 released. Complete source proposal reviewed; no third run or fallback admitted. Parent must review immutable published SHA before any new native admission."
   },
   "retry_diagnosis": "settle-run38124807606-diagnosis.json",
-  "earlier_native_run": "settle-run38124807606-ledger.json"
+  "earlier_native_run": "settle-run38124807606-ledger.json",
+  "tool_epoch": "epic242-tools-e6-startup-handshake",
+  "lifecycle_proposal": "native-startup-handshake-proposal.json"
 }

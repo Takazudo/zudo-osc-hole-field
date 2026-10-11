@@ -233,32 +233,74 @@ class GuardTests(unittest.TestCase):
                                'import json, os, sys\n'
                                'with open(os.environ["FAKE_DOCKER_CALLS"], "a") as out:\n'
                                '    out.write(json.dumps(sys.argv[1:]) + "\\n")\n'
-                               'print("10.0.6")\n')
+                               'print("a" * 64 if sys.argv[1] == "create" else "10.0.6")\n')
             binpath.chmod(0o755)
+            handshake = Path(directory) / 'handshake'
+            (handshake / 'gates').mkdir(parents=True)
+            (handshake / 'start-gate.sh').write_text('fixture')
             root = Path(__file__).resolve().parents[2]
             env = os.environ.copy()
             env.update(PATH=directory + os.pathsep + env['PATH'], FAKE_DOCKER_CALLS=str(output),
+                       EPIC242_NATIVE_HANDSHAKE=str(handshake),
                        EPIC242_NATIVE_SLICE='epic242-w61.slice', EPIC242_NATIVE_WORKER='a',
                        EPIC242_NATIVE_DEADLINE=str(int(time.time()) + 60))
             result = subprocess.run(['bash', 'scripts/kicad/run.sh', 'kicad-cli', 'version'],
                                     cwd=root, env=env, capture_output=True, text=True, timeout=5)
             self.assertEqual(result.returncode, 0, result.stderr)
             calls = [json.loads(line) for line in output.read_text().splitlines()]
-            self.assertEqual(len(calls), 2)  # Version probe and requested command.
-            for call in calls:
+            self.assertEqual([call[0] for call in calls], ['create', 'start', 'create', 'start'])
+            for call in calls[::2]:
+                self.assertNotIn('--rm', call)
                 self.assertIn('--pull=never', call)
                 self.assertIn('--memory=6442450944', call)
                 self.assertIn('--memory-swap=6442450944', call)
                 self.assertIn('--cgroup-parent=epic242-w61.slice', call)
                 self.assertIn('--label', call)
                 self.assertIn('epic242.native.worker=a', call)
-                self.assertIn('timeout', call)
+                self.assertIn('/epic242-start.sh', call)
+                self.assertIn('/epic242-gate', call)
+                self.assertTrue(any(arg.endswith(':/epic242-gate:ro') for arg in call))
 
             binpath.write_text(binpath.read_text().replace('10.0.6', '10.0.5'))
             result = subprocess.run(['bash', 'scripts/kicad/run.sh', 'kicad-cli', 'version'],
                                     cwd=root, env=env, capture_output=True, text=True, timeout=5)
             self.assertNotEqual(result.returncode, 0)
             self.assertIn('requires KiCad 10.0.6', result.stderr)
+
+    def test_hook_create_request_and_start_failures_do_not_launch_followup_work(self):
+        with tempfile.TemporaryDirectory() as directory:
+            base = Path(directory)
+            handshake = base / 'handshake'
+            (handshake / 'gates').mkdir(parents=True)
+            (handshake / 'start-gate.sh').write_text('fixture')
+            output = base / 'calls.jsonl'
+            docker = base / 'docker'
+            docker.write_text('#!' + sys.executable + '\n' +
+                'import json, os, sys\n'
+                'with open(os.environ["FAKE_DOCKER_CALLS"], "a") as out:\n'
+                '    out.write(json.dumps(sys.argv[1:]) + "\\n")\n'
+                'mode=os.environ["FAIL_MODE"]\n'
+                'if sys.argv[1] == "create":\n'
+                '    if mode == "create": sys.exit(9)\n'
+                '    print("bad-id" if mode == "identity" else "a" * 64)\n'
+                'else: sys.exit(7)\n')
+            docker.chmod(0o755)
+            env = dict(os.environ, PATH=directory + os.pathsep + os.environ['PATH'],
+                FAKE_DOCKER_CALLS=str(output), EPIC242_NATIVE_HANDSHAKE=str(handshake),
+                EPIC242_NATIVE_SLICE='epic242-w61.slice', EPIC242_NATIVE_WORKER='a',
+                EPIC242_NATIVE_DEADLINE=str(int(time.time()) + 60))
+            for mode in ('create', 'identity', 'start', 'request'):
+                if output.exists(): output.unlink()
+                if mode == 'request':
+                    fake_python = base / 'python3'
+                    fake_python.write_text('#!/bin/sh\nexit 8\n')
+                    fake_python.chmod(0o755)
+                env['FAIL_MODE'] = mode
+                result = subprocess.run(['bash', 'scripts/kicad/run.sh', '/bin/true'],
+                    cwd=Path(__file__).resolve().parents[2], env=env, capture_output=True, text=True, timeout=5)
+                self.assertNotEqual(result.returncode, 0, mode)
+                calls = [json.loads(line)[0] for line in output.read_text().splitlines()]
+                self.assertEqual(calls, ['create', 'start'] if mode == 'start' else ['create'], mode)
 
     def test_hook_refuses_native_fallback(self):
         root = Path(__file__).resolve().parents[2]

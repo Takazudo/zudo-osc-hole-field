@@ -43,3 +43,18 @@ The schematic and PCB files produced by these tools are unvalidated drafts. A cl
 The explicit harmless proof helper `prove_resource_limits.py --run-harmless-proof --evidence FRESH.json` compiles a small static C process tree and imports it locally into Docker, without pulling any image or running KiCad. Two children each allocate 40 MiB beneath a shared 64 MiB cap; a separate sleeping process tree must be terminated after one second. The helper checks actual OOM/exit state and removes its owned containers and image. This proves Docker kernel controls only; it cannot qualify systemd whole-worker membership, independent supervisor or the 6 GiB/12 GiB native setup.
 
 The separately admitted `qualify_resource_guard.py` uses a locally compiled/imported tiny static fixture and requires no KiCad image. Its restricted launcher mode accepts only the reviewed fixture command and exact local image ID. On the existing manual `routing-benchmark.yml`, `resource_qualification=true` disables every routing job and enables only a ten-minute qualification job. Read-only capability checks precede control/image changes; sequential smoke, whole-command timeout, frontend death and watchdog death phases retain actual membership and cleanup receipts. This chosen implementation requires systemd and a local systemd-cgroup-v2 Docker daemon; those are implementation prerequisites, not universal Epic 242 architecture requirements. Source publication does not grant execution admission.
+
+Bounded native helpers use `docker create` followed by `docker start --attach`.
+Each helper (including the version probe) waits in a read-only startup gate
+outside the writable repository. The guard binds the full container ID, worker,
+unique gate, pinned image, command and original absolute deadline, verifies live
+PID/cgroup membership and memory caps, then atomically acknowledges admission.
+The gate executes the command with the remaining deadline; admission never resets
+the budget. Containers are retained until the guard checks every request against
+the admitted and labeled inventories and records each successful terminal status.
+Missing containers, unadmitted exits, failed exits and unknown states fail closed.
+The existing producer-first cleanup then removes only owned containers and proves
+final absence. The separate harmless qualification fixture retains its existing
+control protocol; its results do not qualify this new native handshake. Native
+execution remains on hold until independent source review and explicit parent
+admission of an immutable source SHA.

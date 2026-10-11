@@ -1,0 +1,104 @@
+{
+  "status": "SOURCE REVIEW COMPLETE; NOT NATIVE QUALIFICATION; NO RUN ADMITTED",
+  "issue": 243,
+  "epic": 242,
+  "hardware_epoch": "epic242-e0",
+  "tool_epoch": "epic242-tools-e6-startup-handshake",
+  "source_base_sha": "bd4ee23e4c71c3c66533c263beeb06af99d4ad17",
+  "authenticated_failure": {
+    "run_id": 38125854892,
+    "source_sha": "fe2e6d20c50587e223f1357f34c865db385fa5b0",
+    "artifact_id": 11697436855,
+    "artifact_sha256": "fab07dbc30f2fa65d366233847d363755fe7c07bc35cf47810d524b083aa25b7",
+    "bytes": 17875440,
+    "ledger": "settle-run38125854892-ledger.json",
+    "failure_class": "A short-lived labeled container disappeared before first live membership proof. Its exit cause is unknown; guard correctly refused unverified disappearance. Poll frequency cannot make this admission race impossible."
+  },
+  "design": [
+    "Reuse Docker create/start/inspect and existing guard; no new daemon, queue, service or credential mechanism.",
+    "Create retained container with unchanged pinned image, worker identity, 6GiB memory/swap caps and worker slice. No --rm in bounded native mode.",
+    "Host creates a unique private gate under guard-owned /tmp root outside writable /work and home mounts. Immutable guard snapshot of the shell entrypoint and per-container gate directory are mounted read-only.",
+    "Before start, atomically publish request binding full Docker ID, token, worker, pinned image, original absolute deadline and exact command. docker start --attach supplies normal output and command exit status.",
+    "Entrypoint can only wait for ACK until the same absolute deadline; it cannot execute requested native command before ACK. Guard verifies full inspect identity/caps, exact Config/readonly Mounts, request and live PID/start/cgroup membership, then atomically publishes token:fullCID ACK.",
+    "After ACK, gate execs timeout with remaining original budget and original argv (no eval). Guard continues actual running membership checks on each observation.",
+    "Retained exited containers preserve State.ExitCode/OOMKilled/Error. Before success, union durable requests, admitted IDs and daemon labels; require exact nonempty inventory equality and every retained container admitted and exited0. A missing container always fails, including previously verified IDs.",
+    "Existing serialized, time-bounded cleanup stops producer before removing owned containers and stopping anchor/watchdog; final owned container/unit absence remains mandatory."
+  ],
+  "class_coverage": {
+    "before_first_observation": "Legitimate helpers cannot finish native work before membership observation: startup blocks for ACK. An externally failed/killed gate remains retained and is rejected as unadmitted or nonzero. Missing gate/identity is never accepted.",
+    "after_verified_observation": "Short native commands may finish between polls; immutable retained ID and terminal status remain inspectable until guard cleanup, eliminating --rm disappearance. Generic inspection errors remain fatal.",
+    "failed_exits": "Native exec preserves nonzero status; guard captures terminal state before rejecting. A swallowed helper error still fails final per-container validation.",
+    "cleanup": "All created containers remain worker labeled for existing targeted cleanup even if create/start/request publication fails. Empty/unpublished gate requests or unmatched labels block final success. Cleanup success is not native success."
+  },
+  "source_files": {
+    "scripts/kicad/run.sh": "f91b2c8846856a6d38a10eb9e6314b6ebec3222b68df37942f3716ab860d8c91",
+    "scripts/kicad/native_resource_guard.py": "3310d64de53aebb6b337736d0dfc7cc3d97aa8b8ef3ebc298767bb0ec7fb92d6",
+    "scripts/kicad/native_start_gate.sh": "6763496a773f4a4cd69a47f20eb2f2c07aec33b9351a7bbd861e0d368ed0083d",
+    "scripts/kicad/test_native_start_gate.py": "a5f6e6d22ab257c7138d95668fa3a7e2a5f1eb162ad7971ca48088c453135eda",
+    "scripts/kicad/test_native_resource_guard.py": "9f4f12a0b75790296bba5cc62ef2228eb4ec3a3feea6336048050a0c15f75fc5"
+  },
+  "deterministic_tests": {
+    "total": 61,
+    "command": "python3 -m unittest scripts.kicad.test_native_start_gate scripts.kicad.test_native_resource_lifecycle scripts.kicad.test_native_resource_guard scripts.kicad.test_resource_qualification scripts.kicad.test_settle_only_pilot scripts.kicad.test_ci_native_admission",
+    "result": "PASS",
+    "coverage": [
+      "actual harmless shell command blocked until verified ACK then instant exit0",
+      "missing before and after admission",
+      "unadmitted exited0",
+      "nonzero retained exit",
+      "wrong token/ID/request/image/command/mount/AutoRemove",
+      "stale ACK and changed script",
+      "live cgroup changed after ACK",
+      "create/start/request failure propagation",
+      "inventory missing/extra/unpublished requests",
+      "no ACK and expired absolute deadline",
+      "symlink rejection",
+      "producer-first cleanup/lease/survivor/final-state existing regressions"
+    ]
+  },
+  "independent_review": {
+    "agent": "baseline_review",
+    "verdict": "PASS / recommend source publication",
+    "separate_tests": 36,
+    "review_fixes": [
+      "Restore repeated actual membership after ACK",
+      "Explicit shell returns for gate creation and request publication failures"
+    ],
+    "scope": "Read-only source/mock/shell review; no Docker/native execution."
+  },
+  "limits": [
+    "No native run dispatched for this change. Docker/cgroup runner qualification of new handshake remains NOT RUN.",
+    "On early abort, cleanup may terminate a container before its natural terminal status is observed. Negative receipts retain observed states and do not establish original exit cause.",
+    "Separate harmless fixture protocol remains unchanged and does not qualify this native handshake.",
+    "Artifact and historical failures remain negative; no routability, adoption, or architecture selection claim."
+  ],
+  "admission": {
+    "settle02": "RELEASED by parent",
+    "next_native": "HOLD; reviewed published immutable source SHA plus new explicit parent admission required"
+  },
+  "publication": {
+    "existing_draft_pr": 260,
+    "remote_head_at_readonly_check": "fe2e6d20c50587e223f1357f34c865db385fa5b0",
+    "unpublished_evidence_checkpoint": "bd4ee23e4c71c3c66533c263beeb06af99d4ad17",
+    "prior_push_error": "fatal: could not read Username for 'https://github.com': No such device or address",
+    "readonly_checks": [
+      "git ls-remote succeeded at remote_head_at_readonly_check",
+      "gh api repository permissions reports push=true",
+      "git config --show-origin --get-all credential.helper: no configured helper (exit1)"
+    ],
+    "interpretation": "GitHub API read access/declared permissions do not prove Git HTTPS push authentication. No credentials, git authentication configuration or bypass changed. Source retained locally for supported publication recovery."
+  },
+  "references": [
+    "https://docs.docker.com/reference/cli/docker/container/create/",
+    "https://docs.docker.com/reference/cli/docker/container/start/",
+    "https://raw.githubusercontent.com/docker/cli/master/cli/command/container/start.go"
+  ],
+  "repository_checks": {
+    "python_compile": "PASS",
+    "bash_and_sh_syntax": "PASS",
+    "git_diff_check": "PASS",
+    "pnpm_circuit_check": "PASS;68-line offline contract; schematic/placement binding not performed; pin-asset check performed",
+    "pnpm_check": "PASS; generated pages/preflight/models/31footprint previews current; one collection and tsc no errors",
+    "frozen_inputs": "PASS;1881original inputs unchanged;195harnesses/390complete endpoint refs/pinmaps/poses;accepted117/129/1402 DRC/parity0/0;source-only invariant proof"
+  }
+}
