@@ -1,0 +1,82 @@
+{
+  "status": "ONE POSE NO FIT; NO COMBINED GEOMETRY OR NATIVE",
+  "execution_source_commit": "f6f95aff815c87684303b1491670196ce15a9989",
+  "input_checkpoint": "8b82fabd546cae859deade6c05ae110c4d0090b2",
+  "pose_epochs": 1,
+  "moved_refs": [
+    "C2312",
+    "C2337",
+    "C2338",
+    "C2339",
+    "C2340",
+    "U2312",
+    "U2313"
+  ],
+  "closure_refs": 24,
+  "fixed_U2306": true,
+  "source_screen": {
+    "same_face_gap_violations": 0,
+    "edge_violations": 0,
+    "analytic_hole_conflicts": 0,
+    "hook_reservation_conflicts": [
+      {
+        "ref": "C2338",
+        "reservation": "K-P-50-K-hook",
+        "overlap_mm2": 0.984,
+        "prior_closure_overlap_mm2": 2.88
+      },
+      {
+        "ref": "U2313",
+        "reservation": "K-P-45-K-hook",
+        "overlap_mm2": 1.7296,
+        "prior_closure_overlap_mm2": 1.7296
+      }
+    ],
+    "accepted_copper_clearance_conflicts": 67,
+    "conflict_pairs_against_fixture_objects": 49,
+    "conflict_pairs_against_objects_absent_in_fixture": 18,
+    "old_pad_contact_pairs": 33,
+    "direct_impact_object_count": 63,
+    "net_recheck_obligations": 26,
+    "objects_in_recheck_selectors": 5001,
+    "bp_int_copper_objects": 42,
+    "all_accepted_index_spans_authenticated": 133902
+  },
+  "proximity_objective_is_owner_constraint": false,
+  "smallest_justified_continuation": "Current24refs; U2313+bypasses and C2338/U2312 relationship need changed poses around fixed hooks. No external group expansion justified or alternative pose tested. Exact copper replay obligations retained.",
+  "original_demands_preserved": true,
+  "native_executed": false,
+  "adopted": false,
+  "routes_searched": 0,
+  "whole_chain_cross_path_fill": "NOT RUN after failed placement prerequisite",
+  "validation": {
+    "focused_tests": 5,
+    "pnpm_check": "PASS",
+    "circuit_check": "PASS before/after; manual68lines/0declared placements, no schematic/placement binding",
+    "baseline_verifier": "PASS; all frozen accepted inputs unchanged",
+    "independent_source_and_result_review": "PASS",
+    "full_regeneration": "NOT RUN; includes native outside explicit source-only scope"
+  },
+  "runtime_seconds": 4.546924180998758,
+  "peak_memory": "NOT MEASURED",
+  "native_admission": "NONE; no slot reserved",
+  "file_sha256": {
+    "README.md": "5d998fbd3150b02a8be11ad20b85f710044f40d611bb242e505e66399350af6a",
+    "WORK-NOTE.md": "1856f1efeb08478a44fd532dd2d7195f1c91e31b0b0aecb3dfff0308b6f0c8de",
+    "check_pose.py": "001ee908ddc68bfe1f43e670ea1890f86c326baa31df8613185a9054521a4718",
+    "evidence/baseline-check.txt": "32a44c8562aea8a4789470f03ae2211f7bf1c702bb02e3a20d0f2745e3021946",
+    "evidence/candidate-pads.json": "63859190020ef31893dfeab4f5aed37ff31ac9ab57dbd0afa84706c6775c4c51",
+    "evidence/circuit-check.txt": "07a2f28172f86ec3ebb60044f4eaad6da83999d0a61d5b14bf6b088ac70acca4",
+    "evidence/copper-accounting.json": "b9b058c4c007b0d73ecec2430048d3b8e10c9d88640b74e4c27747dbfb6898c8",
+    "evidence/demands.json": "7378ec4e9448a5aeebef770f7b05ee06ef4939f532437d8cff9e98284f0fa317",
+    "evidence/execution-receipt.json": "d8801d99889134892f04a33e2e652f73afb1706e10d520ba64eeb0a2db64a4d8",
+    "evidence/independent-review.json": "df8af5375349daad8d3fdeb7191c9123e378558bfdc8b3458fa89a4c87e31253",
+    "evidence/placement-checks.json": "121d57e96c731a73f7ec0daf63437be998854ce0c3089d8052648dabfebd1741",
+    "evidence/pnpm-check.txt": "028e9fcfd2ffee79cf33af7bbc9d7d82931c5ef9d31847ea177e04bdffe0b04e",
+    "evidence/result.json": "13fd00a875169fc55ae6abd4c0da7f81e915df5eac49ee73ed8005bd4a6d4820",
+    "evidence/tests.txt": "d43e884cf75fb21645b7f07684821e83b91cf56d696e5b70eadcf1c21baddc79",
+    "pose-epoch.json": "008cb8e318005bb8db36a75cf3ea321ef45de473a878697c0c3241fe8b96a47f",
+    "pre-run-review.json": "e950770324f7069ad15440d0913b0d6ff0bf14091bcda4513dcae00316d9b2d3",
+    "test_check_pose.py": "50dceb5754a66fca5b9edfb9fce7d6e0199c0db84b3a55209477f3e15f48f4dc"
+  }
+}
