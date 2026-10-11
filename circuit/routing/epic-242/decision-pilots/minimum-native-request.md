@@ -31,7 +31,7 @@ the packet's source-only command. Use a new output under
 `design/partition/core-split/candidates/pilots/generated/`. Check the numerical
 Python path/versions on the execution host. Each route, apply, after-settle,
 fresh-settle and full-warning audit phase requires its own **new parent admission**
-and resource-guard evidence directory. The packet specifies the guard syntax
+and resource-guard evidence JSON file (new path, not an existing directory). The packet specifies the guard syntax
 without a standalone `--`. After after-settle, run the source-only fresh-copy
 step before fresh-settle. Save evaluator stdout as `matched-result.json`.
 Wrap each admitted guard invocation in

@@ -1,4 +1,5 @@
 {
+  "checkpoint_parent": "031220db0b0b779d249ee1bb43b6988e209a1221",
   "checks": [
     {
       "command": "python check.py --check",
@@ -47,6 +48,18 @@
     {
       "command": "Correction checks:10geometry tests, frozen29140d4e packet hashes, bash -n corrected payload, pnpm circuit:check",
       "result": "PASS; geometry values unchanged; no native execution"
+    },
+    {
+      "command": "pinned Python robust_curve.py --check; reconcile.py --check",
+      "result": "PASS deterministic reproduction; independent baseline_review also reproduced curve"
+    },
+    {
+      "command": "pinned Python unittest discovery feed-arrangement and decision-pilots",
+      "result": "PASS16 geometry tests and24 decision/matching tests"
+    },
+    {
+      "command": "baseline/verify_inputs.py; pnpm circuit:check; pnpm check",
+      "result": "PASS1881 original inputs+2reviewedtoolreplacements;195harnesses/390completeendpoints;117/129/1402 DRC/parity0/0; inventory/manualscope; docs/model/typechecks"
     }
   ],
   "correction": {
@@ -55,7 +68,7 @@
     "tolerance": "Manufacturer upper OD already modeled; all other process/position/warp/deflection/service-shape tolerances unqualified.0.145325mm is nominal separation only, not a positive physical margin."
   },
   "files_sha256": {
-    "README.md": "f43b6ee6b14c56a6b1344a9ba0415275456fe4c1eb75b05a620cff3a8aa4fccc",
+    "README.md": "05adf4a7978856f0e18a1ffe2e853468695b52dfffd2764111aedd22f9388631",
     "check.py": "4d7d0799348686fa4427fe895a49d146638cbcfe15ffc6ae696b4d75856d38cf",
     "clamps.py": "6be09a8c3435e3f8b12f3171e45e8db191e0ec727e874b0db207868f4368164b",
     "face-provenance-and-tolerance.md": "097f70a3741f396c4069e6d4b12d458e7b90a58c11807ef3447c14b9b5ab3ec8",
@@ -63,24 +76,42 @@
     "offset.py": "0a515ee99d19b6c86b6584a713b35cedf84f9d52f69297fc662555dc81101227",
     "preview.py": "e631c748ddff83921bdfbee209592a9da267a007a5e4b9fe255297cd35dd057f",
     "preview.svg": "970fe27a28796406e25cbd681d25e589c7b0a71cec005b913b947265eb44d86f",
+    "process-budget.md": "85af1cc851cd77f683db1de2a381de54af857115c82cb9902b84c84cbeb10512",
     "proposal.json": "14efa4f5346fb24522f6dd7aafbaa5245142c7c593053ce02cbc755d7c69fcda",
+    "reconcile.py": "066e935ef88508ad33870e0dce87d755fd21b2088fc1deb79121070f90b291fa",
+    "reconciled-contract.json": "01b77387f568a5b246c7e33e635e8d867f09b23ea200d13dd0c17db251ada30d",
+    "robust-curve.json": "cfab1993ecd661054927e8c855470f16618bf04607b12af89cc6ba4099e7dfda",
+    "robust_curve.py": "12cb2cb82f8282c92e8a50c51b4060ba96eb826a35f8b7577c7b6442ff458d91",
     "source-lock.json": "a5f6ce05cafb3c0ec2966a1794d9f892ba43e7e26b390b878f6c0316887e0345",
-    "test_geometry.py": "b847b333bc01c88d87f07284d0378acc940aec0f87184be564b0366b589792c4"
+    "test_geometry.py": "b847b333bc01c88d87f07284d0378acc940aec0f87184be564b0366b589792c4",
+    "test_robust_curve.py": "96a1303d07042bde6ba56eadd3af7f7a3cc97c9dd9045dd4ecbccb1196184616"
   },
   "input_epoch": "29140d4e19d526eed3a02a73c33f8ce4219c78f0",
+  "native_capability_checkpoint": {
+    "artifact_id": 11704591168,
+    "native_workers": 0,
+    "probe_containers": 0,
+    "reason": "Actions outerheavyguard missing and pinnedimage absent; localPID1tail",
+    "reservation": "parent notified releasable; no native resources created",
+    "route": "NOT_STARTED",
+    "run_id": 38145097428,
+    "status": "CAPABILITY_BLOCKED",
+    "zip_sha256": "a9e17909f736bd951f26714c90efd48c2abfa974225071702ed82b525b7d64b9",
+    "zip_size": 4578
+  },
   "native_packet_publication": "82b9f469f7668e5c7a87e880bdf3cb3e18f56d03",
   "not_run": [
-    "Native/routing/apply/settle/full-warning execution",
+    "Native route/probes/apply/settle/full-warning execution (capability failed before preparation)",
     "Canonical aggregate regeneration",
-    "Physical fit, retention, tolerance, copper extraction or cut qualification",
-    "Current-head CI: commits use [skip ci]"
+    "Complete revised wire/arm/collet collision sweep",
+    "Physical fit, supplier/assembly process capability, actual C0/C1/C2 shape, retention, copper extraction or cuts"
   ],
   "remaining": [
-    "Producer face-contract reconciliation under existing design authorization; no new user permission needed",
-    "Qualified104/78mm cuts and0.15/0.20mohm actual global copper",
-    "Collet/terminal/material/side-frame joint/fastener/stiffness/insulation qualification",
-    "Complete existing cable sweeps, peripheral returns and all100 adjustment access",
-    "Fresh parent admission then exact minimum native comparison"
+    "Dimension thicker carrier arms/joints and recompute full revised finite-wire/clamp/source/enclosure sweeps against explicit worst-case closure budgets",
+    "Qualify actual continuous wire shape and collet transitions; position-only or sampled curves cannot prove bend safety",
+    "Qualify104/85mm cut ceilings, preparation and0.1/0.1mohm actual global hot copper",
+    "Complete peripheral returns, source protection, assembly service and all100 adjustment access",
+    "Parent review of runnable environment/control plan after capability blocker; no retry or further phase admitted"
   ],
   "review": {
     "findings_resolved": [
@@ -95,5 +126,21 @@
     "reviewer": "independent architecture_astra, Astra High",
     "scope": "Read-only geometry, source-envelope, clamp, budget and implementation review; no native execution"
   },
-  "status": "SOURCE-ONLY VERIFIED; NOT ADOPTED; NATIVE NOT ADMITTED / NOT RUN"
+  "status": "SOURCE CHECKPOINT VERIFIED; revised geometry/physical qualification incomplete; admitted route CAPABILITY_BLOCKED before execution",
+  "tolerance_checkpoint": {
+    "conditional_actual_radius_lower_mm": 26.63465767096143,
+    "conditional_worst_drop_mV": 19.8119,
+    "main_cut_class_mm": [
+      103.5,
+      104.0
+    ],
+    "new_cut_class_mm": [
+      84.5,
+      85.0
+    ],
+    "other_preparation_min_mm": 5.085133059479091,
+    "reference_radius_lower_mm": 28.73734988692934,
+    "reviewer": "independent architecture_astra construction and baseline_review reproduction/source review",
+    "scope": "Process/datum/C0C1C2 acceptance requirements, not demonstrated supplier or actual assembly capability; complete new arm/collision sweep remains open"
+  }
 }

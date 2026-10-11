@@ -1,5 +1,16 @@
 # Conditional paired-row feed proposal
 
+The latest source checkpoint is the [process/datum/tolerance budget](process-budget.md),
+`robust_curve.py` / `robust-curve.json`, and the generated
+`reconciled-contract.json` overlay. It proposes58mm offset,2mm anchors,
+66mm free reference length and85mm cut ceiling. The conditional bend/length/
+electrical allocations pass; complete revised arm/collision and physical
+qualification remain open. The52mm nominal construction and preview documented
+below are retained historical evidence, not a preview or clearance certificate
+for the revised family. Reproduce the new checkpoint with the pinned numerical
+environment and `robust_curve.py --check`, `reconcile.py --check`, and
+`python -m unittest discover -s <this-directory> -p 'test*.py'`.
+
 **SOURCE PROPOSAL ONLY — NOT APPLIED, NOT ADOPTED, NOT PHYSICAL FIT.**
 This is a concrete six-wire, twelve-collet, four-rail arrangement with continuous
 10 mm withdrawal envelopes and joined electrical arithmetic. It is owned by the
@@ -10,7 +21,8 @@ The current power contract specifies F.Cu at both new endpoints. This alternativ
 uses **KA B.Cu → KB F.Cu**. F/F was a provisional generator choice, not a fixed
 user or connector requirement. This reversible proposal is permitted under the
 epic without a new user permission question; the historical power contract is
-unchanged pending source-owner reconciliation. See the
+unchanged; the new integration-owned overlay reconciles the proposed identities
+and faces without rewriting historical lane output. See the
 [provenance and tolerance correction](face-provenance-and-tolerance.md).
 Neither source review nor this face choice authorizes native execution or physical
 changes. The proposal does not prove every other permitted arrangement impossible.
@@ -55,7 +67,8 @@ Solder carries neither board weight nor the carrier attachment load.
 
 The first two constructions' reproducible rejection arithmetic is in
 `check.py`/`proposal.json`; those files retain their own deliberately rejected
-shared-XY coordinates. `offset.py`/`offset-proposal.json` is the current alternative.
+shared-XY coordinates. `offset.py`/`offset-proposal.json` is the historical
+nominal alternative; the revised tolerance study is linked above.
 
 The rejection theorem is explicitly restricted to a fixed-length centreline
 L≤πR. Project its tangent onto the midpoint tangent: the curvature limit bounds
