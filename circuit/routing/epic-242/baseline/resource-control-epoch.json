@@ -1,0 +1,31 @@
+{
+  "hardware_epoch": "epic242-e0",
+  "tool_epoch": "epic242-tools-e1-resourceguard",
+  "historical_manifest": "input-files.json",
+  "source_base_sha": "40aa1cec58190487dc70aa5048a366e29a6b32a1",
+  "reason": "Owner-authorized guard implementation and CI wiring; shared tooling serialized by integration coordinator. Historical hardware/source manifest retained unchanged; all prior candidate/native receipts remain historical, require tool binding reconciliation before new execution.",
+  "historical_overrides": {
+    "scripts/kicad/README.md": {
+      "historical_sha256": "f8273d7d1056393a1b3102b6520a795ab79bd4f170ef57b42b5b3c08fb3d5a4f",
+      "reviewed_sha256": "f33313055fdc76f3dc9ea9b0822d6dad64f4973012bb0334cff6320947932cc5"
+    },
+    "scripts/kicad/run.sh": {
+      "historical_sha256": "bc74f0ade82c29d64c44119ea435bc7bfd164fc06e9afff240a3cb2b44b272a0",
+      "reviewed_sha256": "8631e1222942b8396bf566c88deaed0e287234146c4adb1afa9aa87d0d1055a5"
+    }
+  },
+  "tool_files": {
+    ".github/workflows/check.yml": "5f374519f301daea0c0cf43f8a74d96be12ff374f77da6db728f62deae64b9aa",
+    "scripts/kicad/run.sh": "8631e1222942b8396bf566c88deaed0e287234146c4adb1afa9aa87d0d1055a5",
+    "scripts/kicad/README.md": "f33313055fdc76f3dc9ea9b0822d6dad64f4973012bb0334cff6320947932cc5",
+    "scripts/kicad/native_resource_guard.py": "4b1370df288764073c6d25ffb2f45ee574260fac14517d8f40a9b00f49491304",
+    "scripts/kicad/ci_native_admission.py": "89bf381dc606330073bda3fe51cdc711894e3e452d7ab7f3072a7873be39655a",
+    "scripts/kicad/prove_resource_limits.py": "b5dcd7a6e5566618e3326540afd46b5bb9fa537eab8c1e618139a5e292f20fb5",
+    "scripts/kicad/fixtures/resource_guard_fixture.c": "12523b25e61cf54869743702949dca7c1873ac8089bf46476c15a11e03f7573a",
+    "scripts/kicad/test_native_resource_guard.py": "f8b8eb9c638e4c3d1d25ce81ce267d0153bbde2efc79862fdc1839ba800017a5",
+    "scripts/kicad/test_ci_native_admission.py": "7b206e72e89b2ba79a1f179208bf81d0b2f641fe4a4eb6fa34ffcc8ed61bef5f",
+    "scripts/checks/run-ci-native-python.sh": "17d2e9a205d818572fcf9dcb638f60665f99aa665c60df897b190741df8b2b05",
+    "scripts/checks/run-ci-native-board.sh": "f01c425c22c987bbaa062650e480010faede25e773d2353d8077b038d30688db"
+  },
+  "native_acceptance": false
+}

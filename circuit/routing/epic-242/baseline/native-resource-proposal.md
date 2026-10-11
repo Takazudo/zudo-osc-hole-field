@@ -1,4 +1,15 @@
-# Native scheduling and resource proposal — NOT APPLIED / NOT RUN
+# Native scheduling and resource proposal — SOURCE IMPLEMENTED / NATIVE NOT RUN
+
+Implementation update: `scripts/kicad/native_resource_guard.py` and the opt-in
+`scripts/kicad/run.sh` bounded hook now contain the source implementation.
+`.github/workflows/check.yml` serializes the shared CI group, runs Python checks
+before all three board DRC jobs, and caps board parallelism at two. Every native
+CI command now goes through `ci_native_admission.py`, which refuses missing or
+stale parent admission variables before invoking the guard. Its harmless source
+tests pass; systemd
+slice, Docker membership, watchdog death, cleanup and 6 GiB aggregate behavior
+have **not** been qualified on a native runner. The rest of this retained document
+records the original admission proposal and must not be read as authorization.
 
 Scope: schedule existing checks safely; no new routing search, changed electrical gates or native dispatch. Parent must review the full patch/runner choice and reserve slots before any execution. The scheduling patch alongside this file is necessary but not sufficient.
 
@@ -8,7 +19,7 @@ Reserve both global native slots for the complete workflow. Admit only one queue
 
 Sequence: existing python-tests job (one worker, all its current tests/fixture checks/regen --check, sequential); then all three existing board-drc matrix entries (max two workers, full severity/parity/refill checks and original45min job timeout). Documentation remains on a separate runner, with parent accounting for any colocated resources. No board is omitted. Existing audit40min controller/50min job guards remain unchanged; CI job timeouts stay unchanged. No long routing in baseline recovery.
 
-## Complete memory controls to be reviewed before implementation
+## Original proposal retained for provenance
 
 Use Linux runners with systemd+cgroupv2+local Docker daemon. Fail preflight for remote Docker, absent supported memory controller, unsupported Docker cgroup parent, unknown runner placement, native-binary fallback or insufficient RAM. Require at least8GiB **MemAvailable** before starting each6GiB worker (6GiB limit+2GiB floor), including image already pulled and runner overhead. Standard runners that cannot satisfy this must remain blocked; parent supplies a suitable larger runner, never lower floor/cap silently.
 
@@ -47,11 +58,11 @@ A follow-up reviewed source patch must supply slice creation/cleanup, watchdog, 
 
 ## Startup clarification
 
-The tracked repository AGENTS.md delegates to circuit/WORKFLOW.md and does not itself require the personal loader. The stop requirement was supplied in the managed cloud startup block: "Stop on real conflicts or a missing loader" and "If the task requires stopping when canonical host instructions are absent, stop". The denial additionally forbids workaround/indirect execution; #250 reports no verified installed profile. That is its unresolved startup contract, not evidence that another environment's successful loader applies here. An explicit user instruction waiving unavailable optional personal-profile initialization **for repository-only work** would suffice to authorize that narrower continuation; it would not authorize denied runtime paths, link/config changes or claim personal context was loaded. Until such a waiver, retain #250 blocked. #246 reports its own successful read-only loader; do not generalize it to #250. No protected path was read for this diagnosis.
+The tracked repository AGENTS.md delegates to circuit/WORKFLOW.md and does not itself require the personal loader. The stop requirement was supplied in the managed cloud startup block: "Stop on real conflicts or a missing loader" and "If the task requires stopping when canonical host instructions are absent, stop". The denial additionally forbids workaround/indirect execution; #250 reports no verified installed profile. That is its unresolved startup contract, not evidence that another environment's successful loader applies here. An explicit user instruction waiving unavailable optional personal-profile initialization **for repository-only work** would suffice to authorize that narrower continuation; it would not authorize denied runtime paths, link/config changes or claim personal context was loaded. The owner subsequently granted this repository-only waiver for #250. #250 is now resumed for source preparation only; the denied runtime paths remain prohibited. #246 reports its own successful read-only loader; do not generalize it to #250. No protected path was read for this diagnosis.
 
-## Executable proposal candidate
+## Historical unwired proposal candidate (superseded)
 
-`native_guard_proposal.py` is an **unwired proposal**, not an accepted guard. `native-docker-hook-proposal.patch` is unapplied; `scripts/kicad/run.sh` remains unchanged. Eight non-native boundary tests pass; proposed shell syntax passes. `--plan` prints the proposed command with no Docker/systemd/native execution.
+`native_guard_proposal.py` is an **unwired proposal**, not an accepted guard. `native-docker-hook-proposal.patch` is unapplied; `scripts/kicad/run.sh` was unchanged at that proposal epoch; the source implementation above supersedes it. Eight non-native boundary tests pass; proposed shell syntax passes. `--plan` prints the proposed command with no Docker/systemd/native execution.
 
 The candidate refuses existing worker labels/units/configs before entering owned cleanup, creates a dedicated bounded slice, checks exact reviewed hook digest, adds an independent systemd watchdog monitoring parent identity/free memory/OOM/deadline, watches supervisor health, uses RuntimeMaxSec on driver and absolute remaining-time timeout inside each proposed Docker container. Parent reserves all global slots; local flock only coordinates guard instances on this host. All real cgroup/Docker membership/version, signal/death/cleanup and global-runner qualification remain NOT RUN. The existing heavy guard remains required for admitted managed local work; denied home paths are not accessed by this proposal.
 
