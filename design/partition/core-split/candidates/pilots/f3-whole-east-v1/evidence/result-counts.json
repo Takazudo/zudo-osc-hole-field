@@ -1,0 +1,348 @@
+{
+  "pad-clearance-conflicts.json.gz": [
+    {
+      "origin": "LOCATION_DEPENDENT",
+      "scope": "FIXED_TWO_A",
+      "count": 20
+    },
+    {
+      "origin": "LOCATION_DEPENDENT",
+      "scope": "OTHER_SOURCE_FOOTPRINT",
+      "count": 298
+    }
+  ],
+  "pad-copper-conflicts.json.gz": [
+    {
+      "origin": "INTRINSIC_PRESERVED",
+      "scope": "TWO_A",
+      "count": 14
+    },
+    {
+      "origin": "LOCATION_DEPENDENT",
+      "scope": "OTHER_CANDIDATE",
+      "count": 722
+    },
+    {
+      "origin": "LOCATION_DEPENDENT",
+      "scope": "SHARED_RAIL",
+      "count": 113
+    },
+    {
+      "origin": "LOCATION_DEPENDENT",
+      "scope": "TWO_A",
+      "count": 57
+    }
+  ],
+  "all-drilled-hole-conflicts.json.gz": [
+    {
+      "origin": "INTRINSIC_PRESERVED",
+      "scope": "NOT_CLASSIFIED_IN_RECEIPT",
+      "count": 4
+    },
+    {
+      "origin": "LOCATION_DEPENDENT",
+      "scope": "NOT_CLASSIFIED_IN_RECEIPT",
+      "count": 66
+    }
+  ],
+  "transformed_copper": {
+    "edge": [],
+    "fixed_pads": [
+      {
+        "origin": "LOCATION_DEPENDENT",
+        "scope": "FIXED_TWO_A",
+        "count": 26
+      },
+      {
+        "origin": "LOCATION_DEPENDENT",
+        "scope": "OTHER_SOURCE_FOOTPRINT",
+        "count": 854
+      }
+    ],
+    "foreign_copper": [
+      {
+        "origin": "INTRINSIC_PRESERVED",
+        "scope": "TWO_A",
+        "count": 25
+      },
+      {
+        "origin": "LOCATION_DEPENDENT",
+        "scope": "OTHER_CANDIDATE",
+        "count": 5642
+      },
+      {
+        "origin": "LOCATION_DEPENDENT",
+        "scope": "SHARED_RAIL",
+        "count": 707
+      },
+      {
+        "origin": "LOCATION_DEPENDENT",
+        "scope": "TWO_A",
+        "count": 224
+      }
+    ],
+    "keepouts": [],
+    "pad_drills": [
+      {
+        "origin": "LOCATION_DEPENDENT",
+        "scope": "OTHER_SOURCE_FOOTPRINT",
+        "count": 25
+      }
+    ]
+  },
+  "boundary": {
+    "original_contacts": 112,
+    "distinct_original_objects": 109,
+    "moved_pads_with_original_contacts": 89,
+    "broken_original_contacts": 112,
+    "contact_classes": {
+      "SHARED_RAIL_RETURN": 77,
+      "BOUNDARY_SIGNAL": 35
+    },
+    "nets": [
+      {
+        "net": "+12V",
+        "classification": "SHARED_RAIL_RETURN",
+        "fixed_source_objects": 1495,
+        "original_moved_pad_contacts": 31,
+        "moved_pads_without_original_copper_contact": [
+          "8424a90d-57da-58b3-a834-ee489de11963",
+          "1a5f4a4f-2012-58d7-a7ee-a4d63a5903f2"
+        ]
+      },
+      {
+        "net": "-12V",
+        "classification": "SHARED_RAIL_RETURN",
+        "fixed_source_objects": 1050,
+        "original_moved_pad_contacts": 22,
+        "moved_pads_without_original_copper_contact": [
+          "c81a54f8-435c-5b7e-b210-795b94ae6d95",
+          "20b93c1d-4aea-591b-8e13-9dede9cb6eb4"
+        ]
+      },
+      {
+        "net": "AGND",
+        "classification": "SHARED_RAIL_RETURN",
+        "fixed_source_objects": 932,
+        "original_moved_pad_contacts": 24,
+        "moved_pads_without_original_copper_contact": [
+          "9a65d3bc-b8ce-54e2-b17e-341bcd96d6dd",
+          "55ec32e1-b568-511a-a147-8ae33074c684",
+          "9370dd71-9fe4-5dce-bc56-199d60f17714",
+          "ab7e44bf-d9ed-5612-9fb5-17159a47da45",
+          "1dd5ef41-dea5-5d43-88f6-8f55a6a519c1",
+          "fd549f0e-51ca-5352-9fc6-be621ee1b89b",
+          "fbfb166f-7387-5521-96c5-9de59c970ed8",
+          "003e5e36-a849-503f-9496-21a38ec7c802",
+          "cb981a03-066e-5df2-a56f-cec2023eacc0",
+          "29e04c47-fdc1-56d6-b9b5-cae467cb30e5",
+          "58bbce53-80a9-51e3-8b90-a4606a08c571",
+          "8cedcd54-9955-5fd2-9b64-729a6099b44e",
+          "21119882-d367-5fe9-bfed-5334c4a38d9d",
+          "d1fe029c-17e7-5a5c-b9af-8f60ae62c9c6",
+          "85fc5079-6582-5260-91c1-c8913e26728d",
+          "e2f7ab95-24cc-5050-85ed-f0aaec0b12d7",
+          "f51ec462-2b37-5729-b9e5-54007e5aaaef",
+          "3e4b81a6-ab08-5461-8160-9a07bfb53d8c",
+          "081029b6-f3ec-5437-aeef-0cd8add38598",
+          "d078673a-162f-5265-9d89-486989932b2b",
+          "eb3c1adb-c614-51ce-8664-475f1010b6da",
+          "5ad2f3b3-d6d3-5ff2-85e0-8d4cc3751e9e",
+          "f047600c-d635-51cf-b06d-996eb724a0e2",
+          "479cffd0-fb60-5b23-a676-6d02fad33adc",
+          "7ce73473-4282-577c-966c-37c188124b71",
+          "e0b86ea4-5607-5a12-b3af-ea4144f1261b",
+          "b156a6a4-7038-5eae-ae2c-d0e3f9e47788",
+          "a7eac653-95b0-541b-bbc6-0c514cdb1fd7",
+          "07249ee2-674c-5787-b71a-0f4bd81ce7f0",
+          "3b2e5e5e-3212-52d3-8ea4-97499fc00b0f",
+          "3fb38a72-ea8d-5bc3-b037-184f3d540ceb",
+          "29f24cc6-a05b-5758-b392-a1d261ce36fa",
+          "41dddfad-b447-5fab-a6b0-df9d6a189d92",
+          "bcfc7540-3096-5fc8-9b80-f9cf6b962de3",
+          "d2c8e5d2-adb0-5709-b98c-ca367a0a7602",
+          "b9bff712-3378-51d9-9379-ab77abde6210",
+          "931cf0fd-6b2e-58cc-b78f-66809da76bca",
+          "0af192cc-0cd8-582c-ad37-59f810d7cb23",
+          "7553bdff-55b1-5d5e-accb-5403a889392c",
+          "3617ce29-d860-5adc-af10-70d417d3f95e",
+          "6d75c19c-4d1a-5851-af77-59379768de3f",
+          "7c601031-a2d2-5afe-81b1-470a0cf8fd8b",
+          "eab5673d-a8e0-5bb9-bfb0-4edc6a7f5d65",
+          "928aa927-85a7-5315-a12b-42f2b1df938c",
+          "2693b037-796d-5c4a-9251-ada519b98f83",
+          "e9bf3189-1c1b-5488-81df-1f485e2bedd0",
+          "90a13f20-5446-55c4-a76c-1cb64cda3975",
+          "8c35da7d-167b-59fe-a9da-49ddbde67376",
+          "5da7ca99-8983-5e75-bf9c-e0fd13e53027",
+          "d4d1a109-d10b-5cc0-b440-091db330eaae",
+          "a0fd0914-07d7-5643-8aa8-0a3edfc983e9",
+          "27642670-6b28-5726-b3e7-34b2beea94ca",
+          "8fd19337-cd9f-5eca-adc4-b09fcf2d5bd9",
+          "80dd2546-d0b3-5d45-be44-1c3481d6f186",
+          "006e7c27-695b-5e5e-b937-c68745f2240f",
+          "118acdfc-28df-5ad2-b843-3daccc68d853",
+          "4919d7df-fd92-50b7-9037-2aed6274f1af"
+        ]
+      },
+      {
+        "net": "/F3/RES_BUFFER",
+        "classification": "BOUNDARY_SIGNAL",
+        "fixed_source_objects": 236,
+        "original_moved_pad_contacts": 2,
+        "moved_pads_without_original_copper_contact": []
+      },
+      {
+        "net": "/F3/FREQ_BUFFER",
+        "classification": "BOUNDARY_SIGNAL",
+        "fixed_source_objects": 199,
+        "original_moved_pad_contacts": 1,
+        "moved_pads_without_original_copper_contact": [
+          "fe3cebc8-1c19-5010-82a0-312aedd0432c"
+        ]
+      },
+      {
+        "net": "/F3/Cb3b460_W",
+        "classification": "BOUNDARY_SIGNAL",
+        "fixed_source_objects": 38,
+        "original_moved_pad_contacts": 1,
+        "moved_pads_without_original_copper_contact": []
+      },
+      {
+        "net": "/F3/RES_REMOTE",
+        "classification": "BOUNDARY_SIGNAL",
+        "fixed_source_objects": 33,
+        "original_moved_pad_contacts": 3,
+        "moved_pads_without_original_copper_contact": []
+      },
+      {
+        "net": "/F3/DRY_CORE",
+        "classification": "BOUNDARY_SIGNAL",
+        "fixed_source_objects": 174,
+        "original_moved_pad_contacts": 3,
+        "moved_pads_without_original_copper_contact": []
+      },
+      {
+        "net": "/F3/C8c344f_W",
+        "classification": "BOUNDARY_SIGNAL",
+        "fixed_source_objects": 3,
+        "original_moved_pad_contacts": 1,
+        "moved_pads_without_original_copper_contact": []
+      },
+      {
+        "net": "/F3/HP_CORE",
+        "classification": "BOUNDARY_SIGNAL",
+        "fixed_source_objects": 0,
+        "original_moved_pad_contacts": 0,
+        "moved_pads_without_original_copper_contact": [
+          "36d3f3ad-ceb2-5009-a158-e5d62f6c33c0",
+          "dac1e486-7cfa-52a8-aa2e-409910c7731b",
+          "1b810850-51f3-5de0-a7c2-eb8c564a07f5"
+        ]
+      },
+      {
+        "net": "/F3/BP_CORE",
+        "classification": "BOUNDARY_SIGNAL",
+        "fixed_source_objects": 1,
+        "original_moved_pad_contacts": 2,
+        "moved_pads_without_original_copper_contact": [
+          "1ea092cb-6e27-502f-8963-9c6c002ba371",
+          "ab0e2d5f-be93-522f-b1d7-aafb5ab0167f",
+          "70563d18-c87f-540b-9067-8280a2e26488"
+        ]
+      },
+      {
+        "net": "/F3/Ca72ec0_W",
+        "classification": "BOUNDARY_SIGNAL",
+        "fixed_source_objects": 22,
+        "original_moved_pad_contacts": 1,
+        "moved_pads_without_original_copper_contact": []
+      },
+      {
+        "net": "/F3/C14689f_W",
+        "classification": "BOUNDARY_SIGNAL",
+        "fixed_source_objects": 6,
+        "original_moved_pad_contacts": 2,
+        "moved_pads_without_original_copper_contact": []
+      },
+      {
+        "net": "/F3/IN_BUFFER",
+        "classification": "BOUNDARY_SIGNAL",
+        "fixed_source_objects": 225,
+        "original_moved_pad_contacts": 4,
+        "moved_pads_without_original_copper_contact": []
+      },
+      {
+        "net": "/F3/FREQ_REMOTE",
+        "classification": "BOUNDARY_SIGNAL",
+        "fixed_source_objects": 70,
+        "original_moved_pad_contacts": 2,
+        "moved_pads_without_original_copper_contact": []
+      },
+      {
+        "net": "/F3/LP_CORE",
+        "classification": "BOUNDARY_SIGNAL",
+        "fixed_source_objects": 1,
+        "original_moved_pad_contacts": 2,
+        "moved_pads_without_original_copper_contact": [
+          "b89d7e36-6b02-5b56-961a-ec63f2a2e5bb"
+        ]
+      },
+      {
+        "net": "/F3/GAIN_REMOTE",
+        "classification": "BOUNDARY_SIGNAL",
+        "fixed_source_objects": 38,
+        "original_moved_pad_contacts": 2,
+        "moved_pads_without_original_copper_contact": []
+      },
+      {
+        "net": "/F3/REF5",
+        "classification": "BOUNDARY_SIGNAL",
+        "fixed_source_objects": 3,
+        "original_moved_pad_contacts": 4,
+        "moved_pads_without_original_copper_contact": [
+          "b3fa71ab-4e6f-52ed-b40d-fd54120d9174",
+          "502c527c-7b39-5b03-b03e-9b1441fde70b",
+          "98cd595a-bc3b-521c-9b2b-6d0f7799dda3",
+          "1e6258de-0d40-591d-b1f8-3d8191111eac",
+          "2adea29c-5e7e-5260-b007-e0870bec3577",
+          "84fb8c47-5d0d-5b8f-bab6-0f4f02ba1ca6",
+          "0df8f45d-aca7-5e4f-ae6a-ff171938b70f",
+          "16b43fd8-4292-5d0c-b58c-a54aba5221e4",
+          "8d53fa59-e790-5eba-ad45-1d78724993de",
+          "59a99846-77b3-5351-b930-bbd216d57543"
+        ]
+      },
+      {
+        "net": "/F3/C2b474d_W",
+        "classification": "BOUNDARY_SIGNAL",
+        "fixed_source_objects": 16,
+        "original_moved_pad_contacts": 2,
+        "moved_pads_without_original_copper_contact": []
+      },
+      {
+        "net": "/F3/GAIN_BUFFER",
+        "classification": "BOUNDARY_SIGNAL",
+        "fixed_source_objects": 202,
+        "original_moved_pad_contacts": 2,
+        "moved_pads_without_original_copper_contact": []
+      },
+      {
+        "net": "/F3/Cb5b1dc_W",
+        "classification": "BOUNDARY_SIGNAL",
+        "fixed_source_objects": 10,
+        "original_moved_pad_contacts": 1,
+        "moved_pads_without_original_copper_contact": []
+      }
+    ]
+  },
+  "internal": {
+    "kinds": {
+      "segment": 4210,
+      "via": 281
+    },
+    "same_net_contact_records_directed": 14492,
+    "original_pad_contact_records": 367,
+    "scope": "Source polygon contacts; no native or zone acceptance."
+  }
+}

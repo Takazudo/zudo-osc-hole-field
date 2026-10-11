@@ -22,3 +22,16 @@ receipts and atomic timeout checkpoints. Four synthetic safety tests pass.
 Source preparatory reads authenticated full artifact and unchanged3793footprints;
 no relocated geometry was evaluated during preparation or review. System memory
 before execution:5015MiBfree/11538MiBavailable; native worker admission remainszero.
+
+Source commit e565e2783a442ce2e732ed25b7f4f6b0417ecc92 ran once. Receipt:
+10.691887s,697300KiBpeak,return0,zero retries/native. COMPLETE_SOURCE_CENSUS_NOFIT:
+24foreign/1intrinsiccourtyard failures,10reservations,3serviceholes; all4491
+source-contact-closed copper records represented in translated disposable model.
+112oldfixedcontacts separated (35signal/77rail), one new AGNDcontact. No canonical
+edit. Other-candidate copper/pads remain separately classified, not alltwo-A
+blockers. No fresh escape/routing analysis or open-edge improvement claim.
+Independent saved-result review PASS; final source baseline/circuit/pnpm checksPASS.
+Evidence and SVG were summarized from saved outputs only, without another census.
+Next owner decision is whether to authorize planning internal F3 repacking with
+fixed surrounding geometry and an exact copper contract. This exact transform is
+rejected; no new pose/search/native/merge follows.
