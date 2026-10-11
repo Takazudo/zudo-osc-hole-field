@@ -1,5 +1,5 @@
 {
-  "status": "NO IMPROVEMENT; FIRST ADMITTED F3/TWO-A ROUTE COMPLETE; PARENT RECEIPT REVIEW PENDING",
+  "status": "NO IMPROVEMENT; PARENT ACCEPTED NEGATIVE RESULT; RESERVATION RELEASED",
   "identity": {
     "run_id": "38156907050",
     "attempt": "1",
@@ -242,7 +242,7 @@
       "workload_absent": true
     },
     "cleanup_failures": [],
-    "reservation_status": "NO ACTIVE WORKLOAD; PARENT RELEASE/RECEIPT REVIEW PENDING"
+    "reservation_status": "RELEASED BY PARENT; NO ACTIVE WORKLOAD"
   },
   "holds": [
     "No repeat dispatch or automaticretry",
@@ -266,5 +266,13 @@
     "baseline_verify_inputs": "PASS;1881originalinputs+2reviewedtoolreplacements;195harnesses/390completeendpointmaps/poses;inherited117/129/1402DRCparity0/0",
     "component_scope": "manual68lines,zero declaredplacements; no schematic/placement binding",
     "native_board_gates": "NOT RUN; no apply/settle/fresh/fullwarningaudit admitted"
+  },
+  "parent_closeout": {
+    "source_thread_id": "01a1183e-017b-75a9-bb91-a66aa5947004",
+    "instruction": "Accept verified F3/two-A negative result and release reservation1641; stop unchanged matched route trials",
+    "reservation": "epic242-f3-two-a-route-20261011-1641",
+    "status": "RELEASED",
+    "all_native_slots": "FREE",
+    "proposal_applied": false
   }
 }

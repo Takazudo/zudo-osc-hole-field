@@ -1,0 +1,161 @@
+{
+  "status": "PASS SOURCE-ONLY EXACT GEOMETRY; NOT NATIVE ACCEPTANCE",
+  "board": "two-A",
+  "original_dump_sha256": "613a358b340962e2d1fb13cd898fe8a9558edcbf1a5d69cb93b6d2bd7629e97c",
+  "original_board_sha256": "66710513146c22f31595f794d608914fcfb8b61552c82fc5fd680f9ac4b0b978",
+  "start_mm": [
+    213.7,
+    264.1
+  ],
+  "via_mm": [
+    216.8,
+    263.3
+  ],
+  "segment_length_mm": 3.201562118716449,
+  "track_width_mm": 0.3,
+  "via_diameter_drill_mm": [
+    0.6,
+    0.3
+  ],
+  "clearance_mm": 0.25,
+  "source_contact": {
+    "pass": true,
+    "reason": "center strictly inside exact named anchor",
+    "interior_margin_mm": 0.009999999999990905,
+    "anchor_uuid": "a94ae2bb-13fe-5e3d-a7ab-10ddb6bd4222"
+  },
+  "segment": {
+    "pass": true,
+    "checked_margins_mm": {
+      "foreign_copper": 0.11724653109774796,
+      "board_edge": 77.24999999999999,
+      "keepout": null
+    },
+    "nearest_foreign": "2bdd7bfd-4621-5c13-961b-81ea50c34a75",
+    "margin_scope": "Censored collision-screen values, not global minimum clearance. None means no potentially violating object within the complete bounding-box query; no infinite physical margin is claimed."
+  },
+  "via": {
+    "pass": true,
+    "checked_margins_mm": {
+      "foreign_copper": 0.07195444572929494,
+      "board_edge": 77.89999999999998,
+      "keepout": null,
+      "existing_hole": 0.22195444572929496,
+      "smd": null
+    },
+    "nearest_foreign": "5c0e2b48-e6b8-50a6-af33-fc51f5fe0026",
+    "margin_scope": "Censored collision-screen values, not global minimum clearance. None means no potentially violating object within the complete bounding-box query; no infinite physical margin is claimed.",
+    "scope": "New through-via disk on every copper layer; all holes and own/foreign SMD restrictions; no native acceptance."
+  },
+  "limiting_segment_owner": {
+    "kind": "pads",
+    "record": {
+      "uuid": "2bdd7bfd-4621-5c13-961b-81ea50c34a75",
+      "ref": "R2372",
+      "pad": "2",
+      "net": "X800D23429C778122F4A1",
+      "xy": [
+        216640000,
+        264409999
+      ],
+      "layers": [
+        "B.Cu"
+      ],
+      "poly": [
+        [
+          217045000,
+          264839999
+        ],
+        [
+          216235000,
+          264839999
+        ],
+        [
+          216235000,
+          263979999
+        ],
+        [
+          217045000,
+          263979999
+        ]
+      ],
+      "drill": 0,
+      "npth": false,
+      "locked": false
+    },
+    "net_pad_members": [
+      {
+        "ref": "R2373",
+        "pad": "1",
+        "uuid": "0f5825bc-b021-5d2a-a2fd-5f316efe0ada"
+      },
+      {
+        "ref": "U2307",
+        "pad": "4",
+        "uuid": "306222cc-e632-5816-8e06-31c32269adc0"
+      },
+      {
+        "ref": "R2372",
+        "pad": "2",
+        "uuid": "2bdd7bfd-4621-5c13-961b-81ea50c34a75"
+      }
+    ]
+  },
+  "limiting_via_owner": {
+    "kind": "vias",
+    "record": {
+      "uuid": "5c0e2b48-e6b8-50a6-af33-fc51f5fe0026",
+      "net": "XBACFAB119A723846F935",
+      "xy": [
+        216200000,
+        262600000
+      ],
+      "diameter": 600000,
+      "drill": 300000
+    },
+    "net_pad_members": [
+      {
+        "ref": "R2390",
+        "pad": "2",
+        "uuid": "3074f105-9455-5151-a7fe-89e264c5601a"
+      },
+      {
+        "ref": "U2307",
+        "pad": "1",
+        "uuid": "9f055270-a824-5551-9da7-0db9ce137675"
+      }
+    ]
+  },
+  "via_physical_foreign_edge_gap_mm": 0.3219544457292949,
+  "cumulative_fill_source_screen": "PASS; unchanged originalbaseline partition obligations; nativefill NOT RUN",
+  "preservation": {
+    "original_dump_bytes_unchanged": true,
+    "pads_circuits_harnesses_poses_existing_copper_changed": false,
+    "native_groups_changed": false,
+    "preview_segments": 1,
+    "preview_vias": 1,
+    "native_copper_applied": 0,
+    "cuts": 0
+  },
+  "diagnostic_template_change": "This3.201562mm localbreakout is beyond the old2mm straight-witness templates. It is a new named localrepair, not an unchanged frozen-method trial or relaxed clearance.",
+  "negative_control": {
+    "via_mm": [
+      216.8,
+      263.2
+    ],
+    "validation": {
+      "pass": false,
+      "checked_margins_mm": {
+        "foreign_copper": -0.0014718625761508952,
+        "board_edge": 78.00000000000003,
+        "keepout": null,
+        "existing_hole": 0.14852813742384902,
+        "smd": null
+      },
+      "nearest_foreign": "5c0e2b48-e6b8-50a6-af33-fc51f5fe0026",
+      "margin_scope": "Censored collision-screen values, not global minimum clearance. None means no potentially violating object within the complete bounding-box query; no infinite physical margin is claimed.",
+      "scope": "New through-via disk on every copper layer; all holes and own/foreign SMD restrictions; no native acceptance."
+    },
+    "explanation": "A neighboring site fails the unchanged0.25mm clearance rule; the repair does not globally open via transitions or relax the predicate."
+  }
+}
