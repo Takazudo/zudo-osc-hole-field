@@ -1,0 +1,57 @@
+{
+  "status": "SOURCE REVIEWED; EXACTLY ONE FINAL WEIGHTED ATTEMPT AUTHORIZED, NOT YET EXECUTED",
+  "id": "epic242-final-weight2-source-20261011-1746",
+  "starting_checkpoint": "5357a4dab249f12d61c9f309d6e4c6054eabafb9",
+  "connectivity": {
+    "confirmed_utc": "2026-10-11 17:46:51 UTC",
+    "shell": "successful date/pwd/git commands",
+    "workspace": "/workspace/zudo-osc-hole-field",
+    "local_head": "5357a4dab249f12d61c9f309d6e4c6054eabafb9",
+    "remote_integration_head": "5357a4dab249f12d61c9f309d6e4c6054eabafb9",
+    "worktree": "clean",
+    "unpushed_work": false,
+    "native_admitted": false
+  },
+  "ordering": {
+    "weight": 2,
+    "tie_break": "higher positive g, then deterministic node",
+    "variants": 0
+  },
+  "unchanged": {
+    "exact_gate_sha256": "f0c87c62c12b7353511c0d3c9e6f34d9485a6c469288a4ce75b8cb2d45639457",
+    "window_cells": [
+      99,
+      343,
+      37,
+      420
+    ],
+    "expanded_states_cap": 50000,
+    "exact_checks_cap": 250000,
+    "soft_feasibility_search_wall_seconds": 300,
+    "original_terminals": [
+      "C2312.1",
+      "U2306.5"
+    ],
+    "geometry": "unchanged full obstacles, widths, clearance, edge/keepout, layer, hole/via and goal rules"
+  },
+  "input": {
+    "candidate": "design/partition/core-split/candidates/pilots/generated/f3-two-a-c2312-breakout-v1-reviewed",
+    "source_binding_sha256": "c25b5c9948c194cd7e21b3d4228f8c6da89f52f7fb7421d88762132d5ba22000",
+    "dump_sha256": "613a358b340962e2d1fb13cd898fe8a9558edcbf1a5d69cb93b6d2bd7629e97c"
+  },
+  "source_sha256": {
+    "circuit/routing/epic-242/decision-pilots/terminal-access/weighted_transition_candidate.py": "4d6202b2f4156e5a9038b4f3801ae430944bcf54be4476bcbe3dd5dda80325d9",
+    "circuit/routing/epic-242/decision-pilots/terminal-access/test_weighted_transition_candidate.py": "43bc439c186e08d5fd511661edbeb2984d8e8a3cb43462dadffc0a3b1571c76c"
+  },
+  "prelaunch_review": {
+    "reviewer": "baseline_review",
+    "status": "PASS",
+    "tests": 7,
+    "actual_board_search_by_reviewer": false
+  },
+  "output": "/tmp/epic242-f3-repair/weighted-final-attempt",
+  "interruption_rule": "Read existing execution-source/result receipts; do not rerun when SEARCH_STARTED exists without a terminal result",
+  "success_gate": "Complete stitched exact-validated original pair, including emitted continuity/new-via spacing and cumulative fill; local witness insufficient",
+  "failure_disposition": "Retire unchanged-placement case and return a concrete candidate-placement recommendation; no variants or budget increases",
+  "native_admission": "NONE; all slots free"
+}
