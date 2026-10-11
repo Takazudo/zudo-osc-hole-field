@@ -72,7 +72,7 @@
   "retain": [
     "complete293-file source input tree and exact sha256 manifest",
     "Immutable full pre-run input snapshot plus exact original beforePCB; resulting settledPCB, full-severity raw drc.json (potentially capped), dump.json and settled-receipt.json. Independent uncapped full-warning audit NOT RUN in this step.",
-    "full command/environment/version/image/source hashes, stdout/stderr, guard/watchdog receipts, elapsed/peak/free floor samples and verified final owned-state cleanup"
+    "Exact command/interpreter/version/image/source hashes, actually captured driver stdout/stderr and error output, guard/watchdog receipts, elapsed/peak/free-memory samples and final owned-state cleanup"
   ],
   "interpretation": "Settle only; NOT COMPLETE ACCEPTANCE. Missing version/image/report or nonzero result retained as negative/blocked evidence. No improvement/adoption/routability or selected architecture claim. Stop after one command; no automatic retry or subsequent routing. Full-severity raw DRC is not an uncapped independent warning audit; that later acceptance gate remains NOT RUN.",
   "issue249_required_owner_fix": [
@@ -80,5 +80,6 @@
     "compare all saved/reloaded owned text: UUID/text/layer/position/angle/mirror/size/stroke and reference/non-annotation preservation, plus second apply/remove semantics",
     "source tests for evidence retention, both faces and failure artifacts; return reviewed immutable source patch before native proposal"
   ],
-  "independent_source_review": "PASS after explicit immutable pre-settle snapshot requirement and correction of full-severity versus uncapped-warning scope; no native execution or slot admission."
+  "independent_source_review": "PASS after explicit immutable pre-settle snapshot requirement and correction of full-severity versus uncapped-warning scope; no native execution or slot admission.",
+  "logging_limit": "route_jack_grid.check captures child CLI/dump output internally; successful child stdout is not automatically persisted by an external tee. No complete subordinate stdout/stderr retention claim. Raw reports and driver/version/errors provide settle-only evidence; richer logging requires a separately reviewed source change."
 }
