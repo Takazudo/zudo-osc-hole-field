@@ -1,0 +1,32 @@
+name: Epic242 O1 K1402 admitted runner preflight
+on:
+  push:
+    branches: [integration/epic-242-o1-k1402-route-1347]
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: epic242-o1-k1402-route-1347
+  cancel-in-progress: false
+jobs:
+  capability:
+    runs-on: ubuntu-latest
+    timeout-minutes: 43
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          path: request
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          ref: 29140d4e19d526eed3a02a73c33f8ce4219c78f0
+          path: method
+      - name: Read-only capability checks; no native worker or Docker probe
+        run: python3 request/circuit/routing/epic-242/decision-pilots/route-1347/preflight.py method evidence
+      - name: Preserve capability and zero-worker receipt
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: epic242-route-1347-preflight-${{ github.run_id }}
+          path: evidence/
+          retention-days: 30
+          if-no-files-found: error
