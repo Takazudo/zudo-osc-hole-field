@@ -1,0 +1,32 @@
+{
+  "source_sha": "153e72c3047f3e65c08c762b31558d1652eb6ca2",
+  "hook_sha256": "8631e1222942b8396bf566c88deaed0e287234146c4adb1afa9aa87d0d1055a5",
+  "admission_id": "epic242-three-a-settle-01",
+  "scope": "one three-A before-board settle only; NOT COMPLETE ACCEPTANCE",
+  "subordinate_logging": "Driver stdout/stderr retained; check internally captures successful subordinate output. Raw DRC can be capped; uncapped warning audit NOT RUN.",
+  "status": "NEGATIVE / INCOMPLETE",
+  "command": [
+    "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python",
+    "scripts/kicad/native_resource_guard.py",
+    "--admission-id",
+    "epic242-three-a-settle-01",
+    "--worker",
+    "three-a-38124807606-1",
+    "--sha",
+    "153e72c3047f3e65c08c762b31558d1652eb6ca2",
+    "--hook-sha256",
+    "8631e1222942b8396bf566c88deaed0e287234146c4adb1afa9aa87d0d1055a5",
+    "--seconds",
+    "300",
+    "--evidence",
+    "/home/runner/work/_temp/epic242-three-a-settle-only/guard.json",
+    "--",
+    "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python",
+    "scripts/partition/core_split_candidates.py",
+    "settle",
+    "--board",
+    "design/partition/core-split/candidates/pilots/generated/decision-three-A-native-a1/before/osc-core.kicad_pcb"
+  ],
+  "exit_code": 1,
+  "snapshot_unchanged": true
+}

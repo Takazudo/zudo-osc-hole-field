@@ -1,5 +1,5 @@
 {
-  "status": "SOURCE READY / NATIVE NOT ADMITTED",
+  "status": "ONE ADMITTED RUN COMPLETED NEGATIVE; NO RETRY ADMITTED",
   "candidate_source_sha": "Exact pushed integration SHA supplied in dispatch request; reviewed_commit must equal workflow GITHUB_SHA",
   "qualification_receipt": "resource-qualification-run38121547543-ledger.json",
   "selected_issue": 245,
@@ -99,5 +99,13 @@
     "circuit_check": "PASS",
     "pnpm_check": "PASS",
     "frozen_inputs": "1881 original inputs unchanged;195 harnesses/390 endpoint refs/pin maps/poses; accepted117/129/1402 DRC/parity0/0"
+  },
+  "latest_native_run": {
+    "run_id": 38124807606,
+    "source_sha": "153e72c3047f3e65c08c762b31558d1652eb6ca2",
+    "ledger": "settle-run38124807606-ledger.json",
+    "outcome": "STARTED, THEN FAIL / NOT ACCEPTED; NO SETTLED RECEIPT",
+    "blocker": "Command '['docker', 'inspect', 'ecb8f97b42d3']' returned non-zero exit status 1.",
+    "next": "Source review of membership observation failure and explicit final-state receipt gap; new immutable source review and fresh parent admission before any further native request"
   }
 }
