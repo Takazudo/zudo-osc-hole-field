@@ -1,0 +1,270 @@
+{
+  "status": "NO IMPROVEMENT; FIRST ADMITTED F3/TWO-A ROUTE COMPLETE; PARENT RECEIPT REVIEW PENDING",
+  "identity": {
+    "run_id": "38156907050",
+    "attempt": "1",
+    "orchestration_sha": "791195aac846841926357c480894421fff562b9e",
+    "worker": "f3-two-a-access-v1-38156907050-1",
+    "admission_id": "epic242-f3-two-a-route-20261011-1641"
+  },
+  "method_sha": "6f0783335fa23d760877a91db3b63f93c039b4b4",
+  "packet_sha256": "10be49ae32997a36c54436e48226a295678e47dda1fc1c14f4569c72ef4bdd92",
+  "fixture_lock_sha256": "00dd82fa7c42d770204b0177e1f48eb0592a6595696b16bf8f9a76ae4c729f60",
+  "artifact": {
+    "artifact_id": 11709240803,
+    "run_id": 38156907050,
+    "job_id": 114521653053,
+    "name": "epic242-f3-two-a-access-v1-38156907050",
+    "bytes": 17573972,
+    "sha256": "552347595d8d0dd2bcca5437cbf83cb31ce92ea96cb8a395598faaa493240040",
+    "crc_members": 317,
+    "transport": "Connected GitHub artifact/log transport succeeded; downloaded fullZIP digest matches GitHub API and job upload log. No new credentials created.",
+    "full_archive_location": "https://github.com/Takazudo/zudo-osc-hole-field/actions/runs/38156907050/artifacts/11709240803",
+    "large_boards_policy": "Complete recovered fixture boards remain in authenticated artifact and ignored localstorage; no LFS"
+  },
+  "outcome": {
+    "additions": 0,
+    "cuts": 0,
+    "links": 0,
+    "unrouted_demands": 4,
+    "adapter_wall_seconds": 38.42783600199999,
+    "accepted": false,
+    "adopted": false,
+    "coupled_connectivity_success": false,
+    "native_exact_pair_closures": "NOT MEASURED; no new copper or subsequent nativeboard gates"
+  },
+  "demands": [
+    {
+      "kind": "positive_supply",
+      "net": "+12V",
+      "anchors": [
+        "8424a90d-57da-58b3-a834-ee489de11963",
+        "07fff8b7-d5b5-5545-8f39-4375ff72c082"
+      ],
+      "portal_counts": [
+        0,
+        12
+      ],
+      "status": "NO_VALID_SAVED_ACCESS; original demand retained",
+      "search_diagnostics": [],
+      "rejected_witnesses": []
+    },
+    {
+      "kind": "negative_supply",
+      "net": "-12V",
+      "anchors": [
+        "c81a54f8-435c-5b7e-b210-795b94ae6d95",
+        "24dc6f34-bd64-5041-933f-b492416d59e8"
+      ],
+      "portal_counts": [
+        0,
+        6
+      ],
+      "status": "NO_VALID_SAVED_ACCESS; original demand retained",
+      "search_diagnostics": [],
+      "rejected_witnesses": []
+    },
+    {
+      "kind": "return",
+      "net": "AGND",
+      "anchors": [
+        "6d75c19c-4d1a-5851-af77-59379768de3f",
+        "479cffd0-fb60-5b23-a676-6d02fad33adc"
+      ],
+      "portal_counts": [
+        3,
+        3
+      ],
+      "status": "NO_GRID_PATH; original demand retained",
+      "search_diagnostics": [
+        {
+          "net": "AGND",
+          "endpoints": [
+            "ACCESS.access-6c3eed0b8e9615d43435852da9d0f67a2abdc4748ab47495cd5921623961d9fd",
+            "ACCESS.access-c1118860aada2eab1bde25ba5e1c51f4d580bd4039d29da2dbf61a498300a16d",
+            "ACCESS.access-1a908d363d6f5b05ff11109f265f3e07c795e1f24a124f8f24d645f272a772dc"
+          ],
+          "reason": "search_exhausted",
+          "phase": "route",
+          "attempts": [
+            {
+              "window_cells": [
+                0,
+                216,
+                2,
+                151
+              ],
+              "expanded": 149,
+              "limit": 50000
+            }
+          ],
+          "max_expansions": 50000,
+          "window_mm": 6
+        }
+      ],
+      "rejected_witnesses": []
+    },
+    {
+      "kind": "signal",
+      "net": "XDEDA32D515C912ED69C7",
+      "anchors": [
+        "27917993-70a2-5f19-bf83-ba1057f34dac",
+        "a94ae2bb-13fe-5e3d-a7ab-10ddb6bd4222"
+      ],
+      "portal_counts": [
+        6,
+        3
+      ],
+      "status": "NO_GRID_PATH; original demand retained",
+      "search_diagnostics": [
+        {
+          "net": "XDEDA32D515C912ED69C7",
+          "endpoints": [
+            "ACCESS.access-607a078d35b0ecb5b983f1bd7c04bbd56620cdb88939f37d2a7013b36197d9ed",
+            "ACCESS.access-9646ceecdcfc54bf0f7a406c04be685633e3323bc4d3d1710a716ecb1a138a87",
+            "ACCESS.access-aac421f8e08fda747d6de868619b3f74a64a1f66e05f37d0a8ee03e3ffe80e03"
+          ],
+          "reason": "search_exhausted",
+          "phase": "route",
+          "attempts": [
+            {
+              "window_cells": [
+                99,
+                343,
+                37,
+                420
+              ],
+              "expanded": 1077,
+              "limit": 50000
+            }
+          ],
+          "max_expansions": 50000,
+          "window_mm": 6
+        }
+      ],
+      "rejected_witnesses": []
+    }
+  ],
+  "comparison": {
+    "k1402_run": 38155571727,
+    "k1402_additions": 0,
+    "two_a_additions": 0,
+    "return_expansions": {
+      "K1402": 149,
+      "two-A": 149
+    },
+    "signal_expansions": {
+      "K1402": 1077,
+      "two-A": 1077
+    },
+    "claim": "Both frozen bounded cases yielded zero additions. Two-A additional signal portals did not yield a complete route. No physical impossibility or architecture winner established; all rail/return debt retained."
+  },
+  "source_authentication": {
+    "method_control_hashes": 427,
+    "fixture_files": 297,
+    "original_before_context_members": 203,
+    "historical_cohort": {
+      "commit": "191a4db30d90fe43025ec2633e23f9b069f12b85",
+      "path": "circuit/routing/epic-242/decision-pilots/terminal-access/cohort-validation.json",
+      "sha256": "beb352adf77edbafa74afd5cee1ec4b38593448c6233d55d19fd9751861ee89b",
+      "status": "AVAILABLE AND AUTHENTICATED"
+    },
+    "inputs_unchanged": true,
+    "actual_python": {
+      "path": "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python",
+      "resolved_path": "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python3.11",
+      "executable_sha256": "d601e62487858384d3000725c3b2e16e86ff11a6ad0b0810b76281e45426ea62",
+      "version": "3.11.17 (main, Oct  1 2026, 14:32:31) [GCC 13.3.0]",
+      "packages": {
+        "numpy": "2.2.6",
+        "scipy": "1.15.3",
+        "shapely": "2.1.2"
+      }
+    },
+    "image": "kicad/kicad@sha256:18693567392b80da435f9fa952ce3a3e534c66eb5a6033f5b9c80aa3b19dd3ec"
+  },
+  "resources": {
+    "worker_memory_max": 6442450944,
+    "worker_swap_max": 0,
+    "aggregate_memory_max": 12884901888,
+    "free_floor_bytes": 2147483648,
+    "early_abort_free_bytes": 2684354560,
+    "peak_bytes": 323182592,
+    "minimum_sampled_free_bytes": 15322365952,
+    "samples": 42,
+    "last_sample_seconds": 43.23460268400001,
+    "events_before_cleanup": {
+      "low": 0,
+      "high": 0,
+      "max": 0,
+      "oom": 0,
+      "oom_kill": 0,
+      "oom_group_kill": 0
+    },
+    "events_after_producer_cleanup": {
+      "low": 0,
+      "high": 0,
+      "max": 0,
+      "oom": 0,
+      "oom_kill": 0,
+      "oom_group_kill": 0
+    },
+    "both_probes_retained_exit0": true,
+    "full_container_ids": [
+      "4575800ac1cd05e68b81484546898f5a1e3a27ebfb99cbfaefdcaf025eea3f7b",
+      "4df4ba06e4d8973455cb523c69bc2768fec3a0b26b1ba19b9763bbab1124c784"
+    ]
+  },
+  "cleanup": {
+    "guard_exit_code": 0,
+    "driver_exit_before_cleanup": 0,
+    "driver_exit_after_cleanup": 0,
+    "final_owned_state": {
+      "containers": [],
+      "units": {
+        "epic242-f3-two-a-access-v1-38156907050-1-checks.service": {
+          "load": "not-found",
+          "active": "inactive",
+          "settled": true
+        },
+        "epic242-f3-two-a-access-v1-38156907050-1-anchor.service": {
+          "load": "not-found",
+          "active": "inactive",
+          "settled": true
+        },
+        "epic242-f3-two-a-access-v1-38156907050-1-watchdog.service": {
+          "load": "not-found",
+          "active": "inactive",
+          "settled": true
+        }
+      },
+      "errors": [],
+      "workload_absent": true
+    },
+    "cleanup_failures": [],
+    "reservation_status": "NO ACTIVE WORKLOAD; PARENT RELEASE/RECEIPT REVIEW PENDING"
+  },
+  "holds": [
+    "No repeat dispatch or automaticretry",
+    "apply unadmitted",
+    "settle unadmitted",
+    "fresh-copy unadmitted",
+    "full-warning audit unadmitted",
+    "No architecture/hardware adoption or merges/closures"
+  ],
+  "accepted_baseline": "65cefd41fc39e064d38319115ad96016a1c6b71c:JL117/JR129/K1402,DRC/parity0/0 inherited unchanged; not freshly remeasured",
+  "independent_execution_review": {
+    "status": "PASS",
+    "receipt_sha256": "26d8433b84992be1900cd2df84e3dbdfbbe9b9420caaf175e8c18b591dc9be10"
+  },
+  "validation": {
+    "prelaunch_source_tests": 70,
+    "independent_binding_tests": 19,
+    "retained_execution_verification": "PASS; no replay",
+    "circuit_check": "PASS",
+    "pnpm_check": "PASS; generateddocs/models/previews/TypeScript",
+    "baseline_verify_inputs": "PASS;1881originalinputs+2reviewedtoolreplacements;195harnesses/390completeendpointmaps/poses;inherited117/129/1402DRCparity0/0",
+    "component_scope": "manual68lines,zero declaredplacements; no schematic/placement binding",
+    "native_board_gates": "NOT RUN; no apply/settle/fresh/fullwarningaudit admitted"
+  }
+}

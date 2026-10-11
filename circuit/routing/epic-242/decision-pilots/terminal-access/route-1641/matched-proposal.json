@@ -1,0 +1,162 @@
+{
+  "status": "UNCHECKED PROPOSAL; all four original native demands and obligations pending",
+  "accepted": false,
+  "adopted": false,
+  "coupled_connectivity_success": false,
+  "board_sha256": "66710513146c22f31595f794d608914fcfb8b61552c82fc5fd680f9ac4b0b978",
+  "removed_uuids": [],
+  "copper": [],
+  "links": [],
+  "demands": [
+    {
+      "kind": "positive_supply",
+      "net": "+12V",
+      "anchors": [
+        "8424a90d-57da-58b3-a834-ee489de11963",
+        "07fff8b7-d5b5-5545-8f39-4375ff72c082"
+      ],
+      "portal_counts": [
+        0,
+        12
+      ],
+      "rejected_witnesses": [],
+      "search_direction": "second original anchor toward first; never reverse on availability",
+      "native_exact_pair_closed": false,
+      "accepted": false,
+      "status": "NO_VALID_SAVED_ACCESS; original demand retained"
+    },
+    {
+      "kind": "negative_supply",
+      "net": "-12V",
+      "anchors": [
+        "c81a54f8-435c-5b7e-b210-795b94ae6d95",
+        "24dc6f34-bd64-5041-933f-b492416d59e8"
+      ],
+      "portal_counts": [
+        0,
+        6
+      ],
+      "rejected_witnesses": [],
+      "search_direction": "second original anchor toward first; never reverse on availability",
+      "native_exact_pair_closed": false,
+      "accepted": false,
+      "status": "NO_VALID_SAVED_ACCESS; original demand retained"
+    },
+    {
+      "kind": "return",
+      "net": "AGND",
+      "anchors": [
+        "6d75c19c-4d1a-5851-af77-59379768de3f",
+        "479cffd0-fb60-5b23-a676-6d02fad33adc"
+      ],
+      "portal_counts": [
+        3,
+        3
+      ],
+      "rejected_witnesses": [],
+      "search_direction": "second original anchor toward first; never reverse on availability",
+      "native_exact_pair_closed": false,
+      "accepted": false,
+      "search_diagnostics": [
+        {
+          "net": "AGND",
+          "endpoints": [
+            "ACCESS.access-6c3eed0b8e9615d43435852da9d0f67a2abdc4748ab47495cd5921623961d9fd",
+            "ACCESS.access-c1118860aada2eab1bde25ba5e1c51f4d580bd4039d29da2dbf61a498300a16d",
+            "ACCESS.access-1a908d363d6f5b05ff11109f265f3e07c795e1f24a124f8f24d645f272a772dc"
+          ],
+          "reason": "search_exhausted",
+          "phase": "route",
+          "attempts": [
+            {
+              "window_cells": [
+                0,
+                216,
+                2,
+                151
+              ],
+              "expanded": 149,
+              "limit": 50000
+            }
+          ],
+          "max_expansions": 50000,
+          "window_mm": 6
+        }
+      ],
+      "status": "NO_GRID_PATH; original demand retained"
+    },
+    {
+      "kind": "signal",
+      "net": "XDEDA32D515C912ED69C7",
+      "anchors": [
+        "27917993-70a2-5f19-bf83-ba1057f34dac",
+        "a94ae2bb-13fe-5e3d-a7ab-10ddb6bd4222"
+      ],
+      "portal_counts": [
+        6,
+        3
+      ],
+      "rejected_witnesses": [],
+      "search_direction": "second original anchor toward first; never reverse on availability",
+      "native_exact_pair_closed": false,
+      "accepted": false,
+      "search_diagnostics": [
+        {
+          "net": "XDEDA32D515C912ED69C7",
+          "endpoints": [
+            "ACCESS.access-607a078d35b0ecb5b983f1bd7c04bbd56620cdb88939f37d2a7013b36197d9ed",
+            "ACCESS.access-9646ceecdcfc54bf0f7a406c04be685633e3323bc4d3d1710a716ecb1a138a87",
+            "ACCESS.access-aac421f8e08fda747d6de868619b3f74a64a1f66e05f37d0a8ee03e3ffe80e03"
+          ],
+          "reason": "search_exhausted",
+          "phase": "route",
+          "attempts": [
+            {
+              "window_cells": [
+                99,
+                343,
+                37,
+                420
+              ],
+              "expanded": 1077,
+              "limit": 50000
+            }
+          ],
+          "max_expansions": 50000,
+          "window_mm": 6
+        }
+      ],
+      "status": "NO_GRID_PATH; original demand retained"
+    }
+  ],
+  "unrouted": [
+    {
+      "net": "+12V",
+      "island": [
+        "8424a90d-57da-58b3-a834-ee489de11963",
+        "07fff8b7-d5b5-5545-8f39-4375ff72c082"
+      ]
+    },
+    {
+      "net": "-12V",
+      "island": [
+        "c81a54f8-435c-5b7e-b210-795b94ae6d95",
+        "24dc6f34-bd64-5041-933f-b492416d59e8"
+      ]
+    },
+    {
+      "net": "AGND",
+      "island": [
+        "6d75c19c-4d1a-5851-af77-59379768de3f",
+        "479cffd0-fb60-5b23-a676-6d02fad33adc"
+      ]
+    },
+    {
+      "net": "XDEDA32D515C912ED69C7",
+      "island": [
+        "27917993-70a2-5f19-bf83-ba1057f34dac",
+        "a94ae2bb-13fe-5e3d-a7ab-10ddb6bd4222"
+      ]
+    }
+  ]
+}

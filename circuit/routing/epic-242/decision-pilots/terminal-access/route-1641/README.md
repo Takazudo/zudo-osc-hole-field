@@ -1,65 +1,78 @@
-# F3/two-A execution binding awaiting admission
+# First F3/two-A route: no improvement
 
-**Source preparation only. No native execution is admitted.** Parent accepted
-the verified F3/K1402 no-improvement result and released reservation1623. Its
-empty proposal remains byte-identical and unapplied. All native slots are free.
+[Run38156907050](https://github.com/Takazudo/zudo-osc-hole-field/actions/runs/38156907050),
+job114521653053, attempt1 completed once under admission
+`epic242-f3-two-a-route-20261011-1641`. It produced **zero additions, cuts or links**;
+all four original demands remain unresolved. No proposal was applied.
+Independent evidence review passed. The worker has exited and cleanup is verified;
+parent receipt review and reservation1641 release remain pending.
 
-Prospective admission: `epic242-f3-two-a-route-20261011-1641`.
-Prospective execution branch: `integration/epic-242-f3-two-a-access-v1`.
-Worker: `f3-two-a-access-v1-<GITHUB_RUN_ID>-1`.
-The branch has not been created. Parent must admit the exact orchestration commit
-before its one-time branch-creation push. Exact proposed orchestration: `791195aac846841926357c480894421fff562b9e`.
-[source-pin.json](source-pin.json) records this immutable admission target; later
-integration evidence commits are not substituted for it.
-
-Frozen method: `6f0783335fa23d760877a91db3b63f93c039b4b4`.
-Frozen packet SHA256:
-`10be49ae32997a36c54436e48226a295678e47dda1fc1c14f4569c72ef4bdd92`.
-Two-A fixture-lock SHA256:
+Orchestration: `791195aac846841926357c480894421fff562b9e`.
+Method: `6f0783335fa23d760877a91db3b63f93c039b4b4`.
+Fixture-lock SHA256:
 `00dd82fa7c42d770204b0177e1f48eb0592a6595696b16bf8f9a76ae4c729f60`.
+Worker: `f3-two-a-access-v1-38156907050-1`.
+Execution branch `integration/epic-242-f3-two-a-access-v1` is frozen at the admitted
+orchestration. Do not push it again, reset, recreate, retry or rerun it.
 
-[request.json](request.json) binds the exact fixture, source hashes, command,
-worker and evidence identities. The runner and workflow differ from reviewed
-K1402 orchestration `bf671866e73e8d133726090c0e8295ccdd41c5c1` only in the
-selected existing two-A case and corresponding branch, admission, worker,
-script and evidence identities. The adapter, shared router, guard and packet
-are unchanged. Admission1641 is identical in the workflow and runtime check.
+## Matched bounded result
 
-## Unchanged comparison and limits
+| Original demand | K1402 portals first/second | Two-A portals first/second | Result on both |
+|---|---:|---:|---|
+| +12V U2309.4 → C2331.1 | 0/6 | 0/12 | No valid saved access; original demand retained |
+| −12V U2309.11 → C2332.1 | 0/3 | 0/6 | No valid saved access; original demand retained |
+| AGND C2338.2 → U2312.5 | 3/3 | 3/3 | Search exhausted after149 expansions |
+| BP_INT U2306.5 → C2312.1 | 3/3 | 6/3 | Search exhausted after1,077 expansions |
 
-The four demands remain +12V U2309.4–C2331.1, −12V U2309.11–C2332.1,
-AGND C2338.2–U2312.5 and BP_INT U2306.5–C2312.1. Both rail demands remain
-blocked and explicit. Shared bounds are `[205.15,236.02,246.775,270.91]` mm;
-0.1mm raster, 50,000 expansions/search, 6mm window, 0.5/0.3mm rail/signal
-widths, 0.25mm clearance and 0.6/0.3mm via diameter/drill remain fixed.
+The same four demands, bounds, search windows and50,000-expansion caps were used.
+Two-A's additional signal landing portals did not yield a complete path. Both
+cases produced zero additions; this finite method establishes neither physical
+impossibility nor an architecture winner. Rail and return debt remain explicit.
+K1402 reservation1623 was released by the parent; its empty proposal is unchanged.
 
-Exactly one worker and 300 seconds including both gated probes and routing;
-6GiB memory with no swap, 12GiB global cap, 2GiB free floor and 2.5GiB early
-abort. The reviewed host checks, pinned Python dependencies/KiCad image,
-complete-history method checkout, 43-minute job cap, first-attempt-only
-branch-creation guard, failure retention and cleanup checks are unchanged.
-No repeat, retry, fallback, rip-up, cut or increased budget is authorized.
+The two-A adapter reported38.427836002seconds, including its geometry/validation
+work; this is not pure A* timing. The last guard sample was43.234602684seconds
+within the unchanged300-second phase including both gated probes. No timeout,
+repeat, retry, larger budget, changed target, fallback, rip-up or cut occurred.
 
-## Source verification
+## Complete retained evidence
 
-[Independent review](independent-review.json) passed with no findings. The
-reviewer compared runner/workflow bytes directly against bf671866 and verified
-the exact permitted delta, frozen method/packet/lock and generated route argv.
-All70 terminal-access source tests pass, including19 matching two-A orchestration
-and inherited receipt regressions; the independent reviewer also reran all19
-final binding tests successfully. Native execution is mocked
-or forbidden in these tests. Circuit contract, docs/generated-output/TypeScript,
-and baseline input preservation checks pass. Component scope is manual68lines,
-zero declared placements; schematic/placement binding was not performed.
+[Full artifact11709240803](https://github.com/Takazudo/zudo-osc-hole-field/actions/runs/38156907050/artifacts/11709240803):
+17,573,972bytes, SHA256
+`552347595d8d0dd2bcca5437cbf83cb31ce92ea96cb8a395598faaa493240040`.
+All317 ZIP CRCs and extracted-byte comparisons pass. Complete fixture boards
+remain in the authenticated artifact and ignored local storage; no LFS.
+Connected GitHub transport recovered the full artifact and decoded job log.
 
-[Input verification](input-verification.json) rechecks the complete20,195,283-byte
-artifact11705755937 from run38148185181, SHA256
-`ed8de7933f40369ecefb3ea28f382662923b414298e0cdb72ed5e32578e64e3f`.
-All319 CRCs,203 original before/context members,297 fixture files and427
-method/control hashes pass. The board, dump and access-plan hashes match the
-frozen packet. No saved-board search or fixture regeneration was performed.
-Full regeneration is NOT RUN because it invokes native KiCad and this scope
-admits source preparation only. No canonical hardware or copper changed.
+[Result ledger](result-ledger.json), [execution verification](execution-verification.json)
+and [independent execution review](independent-execution-review.json) bind the
+raw proposal, diagnostics, fixture/access plan, source/input/control receipts,
+full resource guard, container records, cleanup and complete decoded logs
+retained here. Original [preparation](preparation.md), submitted [request](request.json)
+and its [source review](independent-review.json) remain historical records;
+[admission.json](admission.json) records the subsequently admitted execution.
 
-Actual-host qualification and native execution remain NOT RUN. Apply, settle,
-fresh-copy, full-warning audit, adoption, merges and closures remain unadmitted.
+Actual host provisioning and exact history/source/packet/image checks passed.
+Python3.11.17 with pinned numpy2.2.6/scipy1.15.3/shapely2.1.2 used the retained
+absolute executable and binary digest. The complete recovery artifact,
+427source/control hashes and all297 fixture files authenticate before/after;
+all203 original before/context members match the prior artifact byte-for-byte.
+
+Both probes have full container identities, matching gate ACK, live PID/cgroup
+membership and retained exit0. Kernel worker peak was **323,182,592bytes**;
+minimum sampled free memory was **15,322,365,952bytes** across42 samples. All
+memory-limit/OOM counters stayed0. Worker6GiB/no-swap, aggregate12GiB,
+2GiB free floor,2.5GiB early abort and the43-minute job cap remained unchanged.
+Guard and driver exits were0. Final containers were empty; all three owned units
+were not-found/inactive/settled, with no errors or cleanup failures.
+
+No native board closure, fresh DRC/parity, full-warning or eligibility gates
+were run. Fixed panel,circuits,harness identities/fullpinorder,non-core poses,
+successful copper and accepted JL117/JR129/K1402 remain unchanged.
+**Stop for parent receipt review.** Apply, settle, fresh-copy, full-warning audit,
+adoption, further routes, merges and closures remain unadmitted.
+
+Post-run circuit/docs/generated-output/TypeScript and frozen baseline checks pass.
+The70 prelaunch source tests remain applicable; no routing source changed.
+Component validation scope is manual68lines,zero declaredplacements, with no
+schematic/placement binding. These checks do not add native acceptance evidence.
