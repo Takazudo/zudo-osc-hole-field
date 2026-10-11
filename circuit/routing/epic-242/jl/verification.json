@@ -1,0 +1,116 @@
+{
+  "branch": "agent/epic242-250-jl-diagnostic-20261011",
+  "checks": [
+    {
+      "command": "pnpm circuit:check",
+      "result": "PASS before/after; manual inventory68lines/0declaredplacements, no schematic/placement binding; pin-asset performed"
+    },
+    {
+      "command": "python3 circuit/routing/epic-242/baseline/verify_inputs.py",
+      "result": "PASS before/after1883frozenfiles;195harnesses390completeRefs/pins/poses;accepted117/129/1402"
+    },
+    {
+      "command": "/workspace/jl250-venv/bin/python circuit/routing/epic-242/jl/prepare_diagnostic.py /workspace/jl250-cache/jl117.zip --check",
+      "result": "PASS deterministic source replay; no search/native"
+    },
+    {
+      "command": "/workspace/jl250-venv/bin/python circuit/routing/epic-242/jl/test_diagnostic.py /workspace/jl250-cache/jl117.zip",
+      "result": "PASS14tests,6.025seconds"
+    },
+    {
+      "command": "/workspace/jl250-venv/bin/python circuit/routing/epic-242/jl/native_diagnostic.py /workspace/jl250-cache/jl117.zip --label 250-u8202-firstvia-a1",
+      "result": "PASS source preflight only, no --execute/native admission"
+    },
+    {
+      "command": "pnpm check",
+      "result": "PASS validator/generatedcomponentpages/preflight/models31/previews31/TypeScript"
+    },
+    {
+      "command": "python3 -m py_compile circuit/routing/epic-242/jl/prepare_diagnostic.py circuit/routing/epic-242/jl/native_diagnostic.py circuit/routing/epic-242/jl/test_diagnostic.py",
+      "result": "PASS"
+    },
+    {
+      "command": "git diff --check",
+      "result": "PASS; final staged diff checked before commit"
+    },
+    {
+      "command": "git ls-remote origin refs/heads/main refs/heads/integration/epic-242-core-routing",
+      "result": "main65cefd41fc39e064d38319115ad96016a1c6b71c;integration40aa1cec58190487dc70aa5048a366e29a6b32a1"
+    }
+  ],
+  "epoch": "epic242-e0",
+  "independent_source_review": {
+    "native": "NOT RUN; no slot/adoption",
+    "reviewer": "jl_source_review",
+    "scope": "bounded first-via semantics, ownership/source binding, no-copper baseline/fresh and failclosed native runner; no coupledrouting-method selection or operational guard qualification",
+    "status": "PASS; no source correctness blocker",
+    "tests": "14focused tests and1883frozeninput verifier independently PASS"
+  },
+  "issue": 250,
+  "native": {
+    "admitted_slots": 0,
+    "adopted": false,
+    "complete_warnings": "NOT RUN",
+    "default_heavy_ci": "NOT RUN; [skip ci] protects global two-worker cap",
+    "executed": false,
+    "fresh_native": "NOT RUN",
+    "global_aggregate_bytes": 12884901888,
+    "global_workers_max": 2,
+    "proposed_seconds": 600,
+    "proposed_swap_bytes": 0,
+    "proposed_whole_worker_memory_bytes": 6442450944,
+    "qualification": "Guard is unwired/unqualified and Dockerhook unapplied; failclosed. A reviewed source/hook change requires impacted seals re-prepared.",
+    "regen_all": "NOT RUN; native invoked by script; parent prohibition overrides initial regeneration requirement",
+    "required_free_floor_bytes": 2147483648,
+    "routing": "NOT RUN"
+  },
+  "observed_setup_limits": [
+    "Default pnpmstore inaccessible; dependencies installed with isolated /workspace/jl250-pnpm-store, no protected-path escalation",
+    "Host router --help initially missing Shapely; isolatedvenv installed source-only dependencies; realCLI inspected",
+    "/usr/bin/time absent; source resources measured with Python stdlib",
+    "Accepted native dump contains11duplicate trackUUIDs; initial overlybroad unique-object preflight stopped; corrected to unique pads and exact authenticated copper rows, with no deduplication or board edits"
+  ],
+  "original_parent_sha": "1da1909846dc3255888ecd36c88cee9737c85834",
+  "output_sha256": {
+    "circuit/routing/epic-242/jl/README.md": "71b57bc83b8fa2e08ab4ff482c430ae24050ea809e72e4f961d7f468c29ce783",
+    "circuit/routing/epic-242/jl/cases.json": "2d7cdb7f2d720dda8e88e3b4c60b0a49d8557bfd1ea171af8fd112c24061ca22",
+    "circuit/routing/epic-242/jl/diagnostic-plan.json": "f7894bf1152cdb18745a50b94b541146276d6af20cf893e137b73755fccb0b3b",
+    "circuit/routing/epic-242/jl/native_diagnostic.py": "dbb0006ed4bc9c7e2aa7ee5b0d3db7a52827f76a2763fed4ae11a2844e6cf3a4",
+    "circuit/routing/epic-242/jl/no-copper-proposal.json": "6fa069df78fbec05da8172a68fd5bb93ab75f55d0886cbc1b7ed859176596e6a",
+    "circuit/routing/epic-242/jl/prepare_diagnostic.py": "da47cf9f0c80a5542bdd0cdc99f863f925f6f5cd202cbca7446fe06a79cceee6",
+    "circuit/routing/epic-242/jl/prior-rejections.json": "db69077917d0621cab30af95ff796fb96470120c516d26e7c53481713a3a77c5",
+    "circuit/routing/epic-242/jl/requirements-source.txt": "37edcdf0acc2029d995600bba88d90d0228b863088ca350c1df5abbce84a1c4b",
+    "circuit/routing/epic-242/jl/test_diagnostic.py": "5ea9cee741e53ccb54ee2cdb41e794353875dd3a5a87322102ab0525fb2a70e8"
+  },
+  "parent_sha": "40aa1cec58190487dc70aa5048a366e29a6b32a1",
+  "preserved_routed_inputs": {
+    "handoff_source": "All canonical bytes reproducible from immutable40aa1cec and accepted GitHub artifacts; local archive not solehandoff",
+    "local_preservation_archive_sha256": "08afba0fa235b41e58e3f50bd41974eac2c8f40b4cb94f9f5cd1c353343ecb1e"
+  },
+  "remaining": [
+    "117complete nativeopenedges remain103signal+14AGND",
+    "Stronger coupled packageescape/firstvia and six-padminus12 preservation review before proposing copper",
+    "Qualified existing nativeguard and exact parent slot/head/hook admission before any nativework",
+    "Fullwarning/originalgroup/retainedboundary/DRC-parity/settled-fresh/replay/integration gates remain open"
+  ],
+  "retained_archive": {
+    "artifact_id": 11664813688,
+    "context_files_authenticated": 26,
+    "group_memberships": "Full sorted member digests and unresolved Ref/pad/UUID/pose/layer projections match baseline",
+    "retention_expires": "2026-11-09",
+    "run_id": 38038883190,
+    "sha256": "452ffc9a1cf5e6e8d41e5e636e75d1e101fa28bd7ab23f2a21ebd461391d6138",
+    "size": 45476297,
+    "source": "GitHub artifact API/connected download, not an ephemeral signed URL"
+  },
+  "source_generation_resources": {
+    "elapsed_seconds": 3.8987365469997712,
+    "measurement": "Python time.monotonic + resource.RUSAGE_CHILDREN; source geometry only",
+    "peak_rss_kib": 208124
+  },
+  "startup": "Owner session-specific optional-profile waiver communicated by parent; denied startup commands/protectedpaths not retried; no successful loader claim",
+  "status": "NEGATIVE_DIAGNOSTIC_READY; ISSUE INCOMPLETE; NATIVE NOT RUN",
+  "write_set": [
+    "circuit/routing/epic-242/jl/**"
+  ]
+}
