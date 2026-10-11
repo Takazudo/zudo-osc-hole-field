@@ -1,0 +1,241 @@
+{
+  "status": "NO IMPROVEMENT; FIRST ADMITTED F3/K1402 ROUTE COMPLETE; PARENT RECEIPT REVIEW PENDING",
+  "identity": {
+    "run_id": "38155571727",
+    "attempt": "1",
+    "orchestration_sha": "bf671866e73e8d133726090c0e8295ccdd41c5c1",
+    "worker": "f3-k1402-access-v1-38155571727-1",
+    "admission_id": "epic242-f3-k1402-route-20261011-1623"
+  },
+  "method_sha": "6f0783335fa23d760877a91db3b63f93c039b4b4",
+  "packet_sha256": "10be49ae32997a36c54436e48226a295678e47dda1fc1c14f4569c72ef4bdd92",
+  "fixture_lock_sha256": "0ee20e3e409a93f1f4b1417c8e2ed64b18564f00213edd1aeaf6cd3af4ffbf7b",
+  "artifact": {
+    "artifact_id": 11708068429,
+    "run_id": 38155571727,
+    "job_id": 114517741476,
+    "name": "epic242-f3-k1402-access-v1-38155571727",
+    "bytes": 33392129,
+    "sha256": "3076bfacc28b76e663fe111c3faa6c62c5c98f328656929a16b1627eb271fd32",
+    "crc_members": 317,
+    "transport": "Direct gh metadata succeeded; signed-blob artifact/log download returned403. Connected GitHub artifact/log transport succeeded; no credentials created. Complete downloadedZIP digest matches GitHub API.",
+    "full_archive_location": "https://github.com/Takazudo/zudo-osc-hole-field/actions/runs/38155571727/artifacts/11708068429",
+    "large_boards_policy": "Full original retained fixture remains in authenticated artifact/localignored storage; no LFS"
+  },
+  "outcome": {
+    "additions": 0,
+    "cuts": 0,
+    "links": 0,
+    "unrouted_demands": 4,
+    "adapter_wall_seconds": 73.58801698299996,
+    "accepted": false,
+    "adopted": false,
+    "coupled_connectivity_success": false,
+    "native_exact_pair_closures": "NOT MEASURED; no new copper or subsequent nativeboard gates"
+  },
+  "demands": [
+    {
+      "kind": "positive_supply",
+      "net": "+12V",
+      "anchors": [
+        "8424a90d-57da-58b3-a834-ee489de11963",
+        "07fff8b7-d5b5-5545-8f39-4375ff72c082"
+      ],
+      "portal_counts": [
+        0,
+        6
+      ],
+      "status": "NO_VALID_SAVED_ACCESS; original demand retained",
+      "search_diagnostics": []
+    },
+    {
+      "kind": "negative_supply",
+      "net": "-12V",
+      "anchors": [
+        "c81a54f8-435c-5b7e-b210-795b94ae6d95",
+        "24dc6f34-bd64-5041-933f-b492416d59e8"
+      ],
+      "portal_counts": [
+        0,
+        3
+      ],
+      "status": "NO_VALID_SAVED_ACCESS; original demand retained",
+      "search_diagnostics": []
+    },
+    {
+      "kind": "return",
+      "net": "AGND",
+      "anchors": [
+        "6d75c19c-4d1a-5851-af77-59379768de3f",
+        "479cffd0-fb60-5b23-a676-6d02fad33adc"
+      ],
+      "portal_counts": [
+        3,
+        3
+      ],
+      "status": "NO_GRID_PATH; original demand retained",
+      "search_diagnostics": [
+        {
+          "net": "AGND",
+          "endpoints": [
+            "ACCESS.access-6c3eed0b8e9615d43435852da9d0f67a2abdc4748ab47495cd5921623961d9fd",
+            "ACCESS.access-c1118860aada2eab1bde25ba5e1c51f4d580bd4039d29da2dbf61a498300a16d",
+            "ACCESS.access-1a908d363d6f5b05ff11109f265f3e07c795e1f24a124f8f24d645f272a772dc"
+          ],
+          "reason": "search_exhausted",
+          "phase": "route",
+          "attempts": [
+            {
+              "window_cells": [
+                0,
+                216,
+                2,
+                151
+              ],
+              "expanded": 149,
+              "limit": 50000
+            }
+          ],
+          "max_expansions": 50000,
+          "window_mm": 6
+        }
+      ]
+    },
+    {
+      "kind": "signal",
+      "net": "XDEDA32D515C912ED69C7",
+      "anchors": [
+        "27917993-70a2-5f19-bf83-ba1057f34dac",
+        "a94ae2bb-13fe-5e3d-a7ab-10ddb6bd4222"
+      ],
+      "portal_counts": [
+        3,
+        3
+      ],
+      "status": "NO_GRID_PATH; original demand retained",
+      "search_diagnostics": [
+        {
+          "net": "XDEDA32D515C912ED69C7",
+          "endpoints": [
+            "ACCESS.access-607a078d35b0ecb5b983f1bd7c04bbd56620cdb88939f37d2a7013b36197d9ed",
+            "ACCESS.access-9646ceecdcfc54bf0f7a406c04be685633e3323bc4d3d1710a716ecb1a138a87",
+            "ACCESS.access-aac421f8e08fda747d6de868619b3f74a64a1f66e05f37d0a8ee03e3ffe80e03"
+          ],
+          "reason": "search_exhausted",
+          "phase": "route",
+          "attempts": [
+            {
+              "window_cells": [
+                99,
+                343,
+                37,
+                420
+              ],
+              "expanded": 1077,
+              "limit": 50000
+            }
+          ],
+          "max_expansions": 50000,
+          "window_mm": 6
+        }
+      ]
+    }
+  ],
+  "observation": "Both supplystartanchors lack saved validaccess. AGND andBP_INT bounded searches exhausted149/1077 expansions under50000cap. Three candidate signal witnesses rejected by retained -12Vvia0f9ff359-2b0a-56f9-94e7-82b2c291d170. This is one finite-methodKnegative, not physicalimpossibility or architectureselection.",
+  "actual_host": {
+    "path": "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python",
+    "resolved_path": "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python3.11",
+    "executable_sha256": "d601e62487858384d3000725c3b2e16e86ff11a6ad0b0810b76281e45426ea62",
+    "version": "3.11.17 (main, Oct  1 2026, 14:32:31) [GCC 13.3.0]",
+    "packages": {
+      "numpy": "2.2.6",
+      "scipy": "1.15.3",
+      "shapely": "2.1.2"
+    }
+  },
+  "image": "kicad/kicad@sha256:18693567392b80da435f9fa952ce3a3e534c66eb5a6033f5b9c80aa3b19dd3ec",
+  "historical_evidence": {
+    "commit": "191a4db30d90fe43025ec2633e23f9b069f12b85",
+    "path": "circuit/routing/epic-242/decision-pilots/terminal-access/cohort-validation.json",
+    "sha256": "beb352adf77edbafa74afd5cee1ec4b38593448c6233d55d19fd9751861ee89b",
+    "status": "AVAILABLE AND AUTHENTICATED"
+  },
+  "preservation": {
+    "fixture_files_verified": 297,
+    "recovered_original_before_context_members": 203,
+    "method_hashes_verified": 426,
+    "outer_wrapper_hashes_verified": 1,
+    "all_source_input_hashes_before_after_equal": true,
+    "canonical_hardware_changed": false,
+    "originalfourdemands_retained": true,
+    "blockedrails_retained": true
+  },
+  "resource": {
+    "guard_seconds_cap": 300,
+    "worker_memory_cap_bytes": 6442450944,
+    "worker_swap_cap_bytes": 0,
+    "aggregate_cap_bytes": 12884901888,
+    "free_floor_bytes": 2147483648,
+    "early_abort_free_bytes": 2684354560,
+    "worker_peak_bytes": 581754880,
+    "samples": 76,
+    "minimum_sampled_free_bytes": 15066083328,
+    "last_sample_seconds": 78.83742640099999,
+    "memory_events": {
+      "low": 0,
+      "high": 0,
+      "max": 0,
+      "oom": 0,
+      "oom_kill": 0,
+      "oom_group_kill": 0
+    },
+    "both_probes_retained_exit0": true,
+    "full_container_ids": [
+      "580f91a678b19a50c1a3260fd4876329c60ecd22767a065aa822b9dcfe729a76",
+      "aa0e0687b89036d80fa0c00d52aee83e0ea70ab7ede1eff1d24049e7eaeca044"
+    ]
+  },
+  "cleanup": {
+    "guard_exit_code": 0,
+    "driver_exit_before_cleanup": 0,
+    "driver_exit_after_cleanup": 0,
+    "final_owned_state": {
+      "containers": [],
+      "units": {
+        "epic242-f3-k1402-access-v1-38155571727-1-checks.service": {
+          "load": "not-found",
+          "active": "inactive",
+          "settled": true
+        },
+        "epic242-f3-k1402-access-v1-38155571727-1-anchor.service": {
+          "load": "not-found",
+          "active": "inactive",
+          "settled": true
+        },
+        "epic242-f3-k1402-access-v1-38155571727-1-watchdog.service": {
+          "load": "not-found",
+          "active": "inactive",
+          "settled": true
+        }
+      },
+      "errors": [],
+      "workload_absent": true
+    },
+    "cleanup_failures": [],
+    "reservation_status": "NO ACTIVE WORKLOAD; PARENT RELEASE/RECEIPT REVIEW PENDING"
+  },
+  "holds": [
+    "No repeat dispatch or automaticretry",
+    "two-A unadmitted",
+    "apply unadmitted",
+    "settle unadmitted",
+    "fresh-copy unadmitted",
+    "full-warning audit unadmitted",
+    "No architecture/hardware adoption or merges/closures"
+  ],
+  "accepted_baseline": "65cefd41fc39e064d38319115ad96016a1c6b71c: JL117/JR129/K1402,DRC/parity0/0 inherited unchanged; not freshly remeasured",
+  "independent_review": {
+    "status": "PASS",
+    "receipt_sha256": "4eac77bed857116ecfddb63a4d18b43bf74dc054caaea240d7b0a656600d230d"
+  }
+}

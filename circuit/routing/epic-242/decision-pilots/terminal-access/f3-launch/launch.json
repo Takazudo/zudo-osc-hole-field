@@ -1,5 +1,5 @@
 {
-  "status": "IDENTITY BINDING REVIEWED; EXACT ORCHESTRATION ADMISSION RECONCILIATION REQUIRED; NOT DISPATCHED",
+  "status": "ADMITTED AND EXECUTED ONCE; NO IMPROVEMENT; STOPPED FOR PARENT RECEIPT REVIEW",
   "case": "F3/K1402 route only",
   "orchestration_sha": "bf671866e73e8d133726090c0e8295ccdd41c5c1",
   "method_sha": "6f0783335fa23d760877a91db3b63f93c039b4b4",
@@ -11,16 +11,9 @@
     "circuit/routing/epic-242/decision-pilots/terminal-access/test_f3_orchestration.py": "ce109a983f185a07f306fc12e04e431e16321b28e81778567c6257255746387a"
   },
   "execution_branch": "integration/epic-242-f3-k1402-access-v1",
-  "proposed_admission_identity": "epic242-f3-k1402-route-20261011-1623",
-  "identity_status": "Parent admitted identity1623 at4a948fbb, whose code hardcodes oldv1 identity. Reviewed two-line substitution yields bf671866; parent must reconcile this new exact SHA before branch creation.",
+  "identity_status": "Parent explicitly extended same unconsumed1623 admission to bf671866; branch created once; run38155571727 completed with clean retained evidence.",
   "worker_pattern": "f3-k1402-access-v1-{GITHUB_RUN_ID}-1",
-  "future_launch_only_after_parent_admission": [
-    "git",
-    "push",
-    "origin",
-    "bf671866e73e8d133726090c0e8295ccdd41c5c1:refs/heads/integration/epic-242-f3-k1402-access-v1"
-  ],
-  "launch_gate": "Parent must admit this exact orchestration/method/packet/case and reserve global capacity before creating the execution branch. Never force/reset/recreate/retry the branch. It is absent at preparation closeout.",
+  "launch_gate": "CONSUMED. Execution branch is frozen atbf671866. Never repeat/force/reset/recreate. New phases need separate parent admission.",
   "one_shot": "push creation + Actions attempt1 + complete branch run history containing exactly this workflow/run/head; prior use/incomplete census refuses",
   "controls": {
     "source_files": 426,
@@ -86,11 +79,7 @@
     "component_scope": "manual68lines/zero declaredplacements; schematic/placementbinding notperformed"
   },
   "not_run": [
-    "actualhostprovisioning",
-    "imagepull",
-    "probecontainers",
-    "C/nativeA*",
-    "savedboardrouting",
+    "two-A",
     "apply",
     "settle",
     "fresh",
@@ -121,8 +110,19 @@
     "changed_lines": 2,
     "changed_values": "workflow PARENT_ADMISSION_ID and runner ADMISSION only",
     "independent_review": "baseline_review PASS;16source orchestrationtests PASS",
-    "native_resources_created": 0,
-    "execution_branch_created": false,
-    "required": "Parent confirms identity-only bf671866 as the admitted orchestration; all other scope and limits unchanged"
-  }
+    "execution_branch_created": true,
+    "required": "Parent confirms identity-only bf671866 as the admitted orchestration; all other scope and limits unchanged",
+    "status": "CONFIRMED BY PARENT; identity-onlySHA admitted",
+    "native_workers_started": 1,
+    "probe_containers_started": 2,
+    "active_native_workloads": 0
+  },
+  "execution_receipt": "../route-1623/result-ledger.json",
+  "consumed_launch_argv": [
+    "git",
+    "push",
+    "origin",
+    "bf671866e73e8d133726090c0e8295ccdd41c5c1:refs/heads/integration/epic-242-f3-k1402-access-v1"
+  ],
+  "admission_id": "epic242-f3-k1402-route-20261011-1623"
 }

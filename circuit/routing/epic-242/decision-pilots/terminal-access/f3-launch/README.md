@@ -1,6 +1,12 @@
 # First F3/K1402 launch binding
 
-**Identity binding reviewed; exact-SHA admission reconciliation required. No dispatch or native work.**
+**Admission consumed once.** Parent reconciled the exact identity-bound SHA and
+the first run completed with NO IMPROVEMENT. See the
+[actual result and cleanup evidence](../route-1623/README.md). The execution
+branch now exists and is frozen; the preparation instructions below are
+historical and must not be executed again. All downstream phases remain held.
+
+**Historical preparation record:** the following prelaunch details are superseded by the completed run above.
 
 Exact identity-bound orchestration commit: `bf671866e73e8d133726090c0e8295ccdd41c5c1`.
 Exact routing method: `6f0783335fa23d760877a91db3b63f93c039b4b4`.
