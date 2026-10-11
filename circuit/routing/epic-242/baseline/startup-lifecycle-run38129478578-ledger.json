@@ -121,7 +121,7 @@
   "local_full_suite_incident": {
     "command": "PATH=/tmp/epic242-python-ci-venv/bin:$PATH bash scripts/checks/run-python-tests.sh",
     "scope": "unadmitted local full Python suite; should not be repeated without parent admission",
-    "native_attempt": "design/spec/modules/run_wavefolder_spice.py attempted bash scripts/kicad/run.sh ngspice -b <generated deck>; pinned KiCad image pulled, then Docker run returned no space left on device before an observed container ID",
+    "native_attempt": "design/spec/cells/test_sweep_precision_vendor.py invoked python3 -m design.spec.cells.sweep_precision_vendor --fixture-original --offline, which attempted bash scripts/kicad/run.sh ngspice -b .circuit-cache/sources/opa197-model/precision-vendor-case.cir. The pinned image pulled; Docker run returned no space left on device before any container ID was observed.",
     "result": "local 138-test group had one failure and one error from disk exhaustion; no reliable full-suite verdict",
     "cleanup": "Removed task-created /tmp/epic242-python-ci-venv and unused pinned KiCad Docker image. Docker ps -a and image ls empty afterward; overlay returned to 26GiB free. No surviving local container observed. Transient native execution before failure is not independently proved absent."
   },
