@@ -1,0 +1,39 @@
+{
+  "run_id": 38120648409,
+  "url": "https://github.com/Takazudo/zudo-osc-hole-field/actions/runs/38120648409",
+  "workflow_source_sha": "6c6542ce2f32c0bbc02581573cab2d5c1e0b32f7",
+  "reviewed_checkout_sha": "70ee331eed8f7228a7d5f06fce58ff042e7d3d43",
+  "admission_id": "epic242-harmless-qualification-01",
+  "dispatch_count": 1,
+  "terminal_conclusion": "failure",
+  "duration_seconds": 37,
+  "artifact_id": 11694783151,
+  "archive_bytes": 2942,
+  "archive_sha256": "513be8f47fa8a9d3bc299e18aac50d6ea56bfe8e03d7d4e7f55986566727a14b",
+  "receipt_sha256": "ba6817072c4378d15d89e82406e68448476f448c135ec483dde54f791573a499",
+  "qualified": false,
+  "proven": [
+    "live systemd/local Docker systemd cgroupv2/memory+swap capability",
+    "smoke command passed with actual container membership beneath6GiB worker/12GiB parent no-swap limits",
+    "whole-command deadline observed on timeout phase"
+  ],
+  "not_proven": [
+    "cleanup acceptance (FAIL_CLEANUP)",
+    "frontend-death behavior (NOT RUN)",
+    "watchdog-death behavior (NOT RUN)",
+    "two simultaneous workers, native KiCad, routing, electrical or hardware acceptance"
+  ],
+  "cleanup_warning": "Timeout watchdog recorded failed docker rm and transient labeled survivors; frontend/driver recorded anchor stop exit5. Driver owned_image_removed=false; no unconditional cleanup success claim. Run terminal; no remote remediation or rerun performed.",
+  "jobs": {
+    "Harmless resource guard qualification": "failure",
+    "local-pilot": "skipped",
+    "hole-audit": "skipped",
+    "zone-audit": "skipped",
+    "adopt": "skipped",
+    "mask-audit": "skipped",
+    "benchmark": "skipped"
+  },
+  "transport": "CLI redirected artifact download403; supported connected GitHub download succeeded; archive SHA/CRC independently verified",
+  "next": "Source-only cleanup diagnosis/review; retain native hold. Any rerun needs new parent capacity admission.",
+  "hardware_unchanged": true
+}

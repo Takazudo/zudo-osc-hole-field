@@ -28,3 +28,7 @@ This host uses PID1 tail and Docker cgroupfs. It cannot qualify the required sys
 ## Source-only qualification request
 
 The registered manual benchmark workflow now has a default-false qualification flag that excludes every native job when true. The tiny fixture needs no KiCad image. E1 tooling hashes are retained in `resource-control-epoch-e1.json`; E2 seals the reviewed qualification source and workflow while keeping hardware E0 unchanged. See `resource-qualification-ci-request.md` for the exact bounded request. No dispatch/admission or runtime qualification occurred.
+
+## Approved single run: partial evidence, qualification FAIL
+
+Run38120648409 completed failure in37seconds, workflow source6c6542ce, exact checkout70ee331e, admissionepic242-harmless-qualification-01. All six native jobs skipped. Supported GitHub artifact11694783151 downloaded and authenticated (2942bytes/SHA513be8f47fa8a9d3bc299e18aac50d6ea56bfe8e03d7d4e7f55986566727a14b). Live capability and smoke membership/caps passed. Timeout deadline fired, but cleanup errors caused FAIL_CLEANUP; parent-death/watchdog-death did not run. Raw receipt and bounded ledger retained alongside this file. No rerun, security/daemon configuration, native job or copper change. Qualification remains held; source-only cleanup investigation is next.
