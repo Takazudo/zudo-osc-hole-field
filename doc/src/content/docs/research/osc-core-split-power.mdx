@@ -234,3 +234,144 @@ Primary references retained by the source contracts are
 [NBS Copper Wire Tables](https://nvlpubs.nist.gov/nistpubs/Legacy/hb/nbshandbook100.pdf).
 Retained byte hashes and source locators govern these calculations; the links
 alone do not establish the state of installed hardware.
+
+## Joined feasibility follow-up after #253
+
+The follow-up in `design/partition/core-split/power/joined/` starts from
+integration `9e0aceda2f1d55052a8c9c03f958e8d93271a81c`. It leaves the earlier
+source study intact. Architecture remains **BLOCKED**, accepted K1402 remains
+unchanged, and no new native work is admitted.
+
+The generated interface join preserves all 195 harnesses, 390 endpoint records
+and 18 existing main wires. It binds candidate aliases to KA/KB/KC, checks exact
+legacy Refs and full pin maps, leaves NC positions unwired, and pairs each new
+CS247 conductor with two distinct terminals. The three AGND wires retain
+separate identities. Every candidate currently has **zero CS247 terminals**;
+satellites have no main-feed lands. Repeating +12V/−12V/+5V/AGND net names on
+separate boards does not connect their copper. Logical pairing passes; new
+terminal realization, local copper, actual wires and complete source-to-load
+continuity remain separate blocked/unrun gates. No connection across CN301/XB301
+is inferred.
+
+### One joined budget, including missing returns
+
+`joined/check.py` builds an explicit conditional return network for each of the
+five mechanical alternatives: **380 individual GH AGND conductors**, plus
+12 dedicated main returns for two cores or 15 for three. The four JL–P utility
+harnesses, EL and all octave boards are included. It removes every individual
+main return, each same-branch pair, and each complete three-return branch,
+then solves the changed network. No patch-sleeve path is credited.
+
+For a candidate GH conductor, remove it, set other wire/contact resistances to
+their admitted maxima, and solve the one-ampere effective resistance `Ralt`.
+With its own cold cable lower resistance `Rmin`, the upper current is:
+
+```text
+Ibound = 4.6 A × Ralt / (Rmin + Ralt)
+```
+
+The balanced signed-injection class has total positive and negative magnitudes
+each at most 4.6 A; opposite rail currents are not cancelled and equal sharing
+is not assumed. Reciprocity and the passive-network maximum principle bound
+transfer voltage; Rayleigh monotonicity bounds the alternative resistance.
+A disconnected alternative gives the full current bound, never zero. The
+solver rejects invalid resistances and checks its Kirchhoff residual.
+
+GH cable lower resistance is the particular alternative's sampled centreline
+length times 0.1 Ω/m. Its hot alternative uses admitted cut length times
+0.17 Ω/m plus the inherited 0.1 Ω two-end contact/crimp allowance. These are
+assembled acceptance conditions; the cold minimum is not a manufacturer
+minimum. Main branches use Alpha Wire **5859 BK005**, at the unchanged
+0.013 Ω/m hot requirement, ≤110 mm cut and 0.2 mΩ combined terminations.
+GH loom identity remains Alpha Wire **6821 BK005** and the existing JST
+header/housing/contact variants. Source hashes bind the retained primary PDFs.
+
+The lumped board nodes are **not native connected components**. The screen adds
+one 0.5 mΩ bound for the **sum of all omitted copper/access resistance maxima**
+to wire-only `Ralt`. This is a stronger sufficient condition than the original
+path budget, not a measured allocation or a new allowance per board. Every
+collapsed terminal group must actually be connected and admit the lifted flow;
+isolated same-net zones cannot satisfy it. Unknown EL/octave accesses are not
+assumed physically zero. Actual extraction/equivalence remains blocked.
+
+| Mechanical input | Powered core/front GH upper bound, A | Worst conductor | Remaining total access allowance at 0.5 A, mΩ |
+| --- | ---: | --- | ---: |
+| two-compact | 0.703990 | JR-K-19:2 | 0.214415 |
+| two-deep | 0.488136 | JR-K-19:2 | 0.524063 |
+| three-compact | 0.708295 | K-P-55:2 | 0.218688 |
+| three-deep | 0.486412 | JL-K-7:2 | 0.527548 |
+| three-120mm-rejected | 1.286517 | K-P-55:2 | −0.081823 |
+
+These are all-mates-present conditional bounds for 333 powered core/front return
+conductors. The complete certificate remains **BLOCKED in all alternatives**.
+The report separately retains 12 EL and 35 passive-octave return conductors:
+applying the deliberately conservative whole-domain 4.6 A class to those leaves
+47 exceedances even in the deep options. The known EL rail contract remains
+50/50/70 mA (170 mA return sum); worksheet module responsibilities are not
+physical board current maxima. A smaller injection class needs a source-backed
+port/access network that also bounds induced circulating currents. It cannot
+be substituted merely to obtain a passing number. A failed upper bound means
+**not proven**, not measured overload or proof that no valid allocation exists.
+All missing-return states retain the #59 protection block regardless of their
+numerical result. Missing/late rails, external patch injection and capacitor
+stored-energy faults are outside this normal current class.
+
+### Serial feeds cannot restart the voltage budget
+
+KA is the abstract **load-side** star; no upstream AWG14 section or implemented
+source boundary is invented. Direct star branches retain the original scalar
+screen. If a proposal actually introduces two serial sections, both wires and
+both termination pairs must be charged, with copper charged only once:
+
+| Screen | +12 V | −12 V | +5 V |
+| --- | ---: | ---: | ---: |
+| Direct 110 mm branch, mV | 15.321 | 15.058 | 11.113 |
+| Two 110 mm sections, global copper once, mV | 26.242 | 25.816 | 19.426 |
+| Maximum combined two-section cut, mm | 148.335 | 152.214 | 228.658 |
+
+The last row assumes equal aggregate lengths for rail and concentrated return,
+uses the full 1 mΩ rail / 0.5 mΩ AGND allowances, and pays two termination pairs.
+The unchanged ≤110 mm **per-section** limit still applies; thus +5 V cannot use
+228.658 mm across two such sections. Both analog rails fail the hypothetical
+220 mm case. This correct global-once test is distinct from the earlier,
+explicitly rejected duplication of entire distribution allowances. Actual
+unequal segment currents and shared source/return impedances require their own
+joined path calculation; a copied island is never an extra source.
+
+### Mechanical reconciliation and executable gates
+
+The independent [mechanical follow-up #270](https://github.com/Takazudo/zudo-osc-hole-field/pull/270)
+is consumed at `b3d72e107c166e472ba6fe6476d34304e807b4ad`; every source hash in
+its feasibility report matches this input. Under the retained courtyard,
+tool/loom/support masks, the unchanged 91×34 mm endpoint projection has **zero
+KA cardinal origins**. KB has 24 horizontal event origins, but none is a paired
+feed solution. There is no cardinal 91×28 mm external escape inside retained
+XY. The 34.6 mm pitch meets 28+5+1.6 only at zero margin and does not resolve KA
+XY. Its 40 capacitor-shift proposals are **unapplied**.
+
+No row/service reservation was shrunk. A future evidenced segmented envelope or
+service lifecycle must preserve W1…W6 nets/identities, 4×4 lands, 5×5 courtyards,
+6×6 reservations, ≥25.908 mm bends, complete ≤110 mm cuts including preparation,
+slack and travel, and independently supported strain relief. Wire OD alone does
+not justify deleting tool or service space. There is no present paired route,
+clamp/extraction arrangement or qualified alternative to the blocked envelope.
+
+`budget.json:pass_block_criteria` makes the remaining gates explicit: exact
+terminal Ref/pad/UUIDs; complete local components and matched cross-board wires;
+all required rail/AGND source-to-load paths; ≤0.5 A GH bounds; globally charged
+≤1/0.5 mΩ and ≤20 mV; supported service geometry; and retained source/protection,
+startup and physical qualification. Passing source consistency closes none of
+those missing realization gates.
+
+```sh
+# Fetch this separately reviewed input if the object is absent; do not apply it.
+git fetch origin b3d72e107c166e472ba6fe6476d34304e807b4ad
+python3 design/partition/core-split/power/joined/check.py --check
+python3 -m unittest discover -s design/partition/core-split/power/joined -p 'test_*.py' -v
+```
+
+The checks perform no downloads or native jobs themselves. Analytical fixtures
+and mutation tests cover resistor topology, unequal sharing, open returns,
+thresholds, exact endpoint sets, altered Refs, feed duplication, pin swaps and
+stale/duplicate route identities. Physical continuity, aggregate regeneration,
+heavy CI and new native acceptance remain **NOT RUN**.
