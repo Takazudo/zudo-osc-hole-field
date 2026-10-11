@@ -605,15 +605,15 @@
     },
     {
       "branch": null,
-      "head": null,
+      "head": "c3c480f5db4ad4dcde7a379f015d6078668d1d48",
       "input_epoch": "epic242-e0",
       "issue": 245,
       "native_run": null,
-      "next_action": "Read assigned issue; compare source manifest and interface contract; report branch/head; request parent native slot before heavy jobs",
+      "next_action": "Review fixture provenance/tests; no native admission; guards not executable in manifest",
       "owner": "partition/capacity",
       "parent_sha": "65cefd41fc39e064d38319115ad96016a1c6b71c",
       "session": "01a12973-32ea-7343-844a-1302c6afc095",
-      "status": "RUNNING",
+      "status": "SOURCE_REVIEW_RUNNING",
       "write_set": [
         "design/partition/core-split/candidates/**",
         "scripts/partition/core_split_candidates.py (new)",
@@ -622,31 +622,31 @@
     },
     {
       "branch": null,
-      "head": null,
+      "head": "d04cb553cf25be88fb405832d8422c89ce15f2d4",
       "input_epoch": "epic242-e0",
       "issue": 246,
       "native_run": null,
-      "next_action": "Read assigned issue; compare source manifest and interface contract; report branch/head; request parent native slot before heavy jobs",
+      "next_action": "Corrected build check and9tests pass; reconcile actual power reservations and #249 labels; browser263 deferred",
       "owner": "mechanics",
       "parent_sha": "65cefd41fc39e064d38319115ad96016a1c6b71c",
       "session": "01a12973-e002-77de-aeb8-856a17e8a0be",
-      "status": "RUNNING",
+      "status": "REVIEWED_SOURCE_INTEGRATED_WITH_DETERMINISM_FIX",
       "write_set": [
         "design/partition/core-split/mechanical/**",
         "doc/src/content/docs/research/osc-core-split-mechanical.mdx"
       ]
     },
     {
-      "branch": null,
-      "head": null,
+      "branch": "agent/247-core-power-1011",
+      "head": "6494b3b40b50b999e52fb064c1384aec7381ea8d",
       "input_epoch": "epic242-e0",
       "issue": 247,
       "native_run": null,
-      "next_action": "Read assigned issue; compare source manifest and interface contract; report branch/head; request parent native slot before heavy jobs",
+      "next_action": "Reconcile actual paired feed/service placement with #245/#246; retain #253 architecture and #57/#59/#65 qualifications open",
       "owner": "power/AGND",
       "parent_sha": "65cefd41fc39e064d38319115ad96016a1c6b71c",
       "session": "01a12973-8a2a-7569-adb0-d848f9071097",
-      "status": "RUNNING",
+      "status": "REVIEWED_SOURCE_INTEGRATED",
       "write_set": [
         "design/partition/core-split/power/**",
         "doc/src/content/docs/research/osc-core-split-power.mdx"
@@ -701,6 +701,21 @@
       "write_set": [
         "circuit/routing/epic-242/jr/**",
         "private disposable project/cache only; canonical board adoption by coordinator"
+      ]
+    },
+    {
+      "branch": null,
+      "head": null,
+      "input_epoch": "epic242-e0",
+      "issue": 249,
+      "native_run": null,
+      "next_action": "Consume reviewed LABEL_CONTRACT_READY; no topology selection or heavy/native admission",
+      "owner": "label/service annotation",
+      "parent_sha": "6700ccb1a9a64630cd26bccf751f537f3cc25d42",
+      "session": "01a12974-3374-7348-8910-388855c7c0b4",
+      "status": "ASSIGNED_SOURCE_ONLY",
+      "write_set": [
+        "Parent-assigned #249 annotation paths; reviewed through coordinator"
       ]
     }
   ],
