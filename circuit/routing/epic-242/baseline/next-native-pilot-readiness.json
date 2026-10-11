@@ -1,5 +1,5 @@
 {
-  "status": "ONE ADMITTED RUN COMPLETED NEGATIVE; NO RETRY ADMITTED",
+  "status": "REVIEWED SOURCE FIX READY; ONE RETRY PROPOSED, NOT ADMITTED",
   "candidate_source_sha": "Exact pushed integration SHA supplied in dispatch request; reviewed_commit must equal workflow GITHUB_SHA",
   "qualification_receipt": "resource-qualification-run38121547543-ledger.json",
   "selected_issue": 245,
@@ -11,7 +11,7 @@
   "aggregate_parent_memory_bytes": 12884901888,
   "minimum_free_bytes": 2147483648,
   "hook_sha256": "8631e1222942b8396bf566c88deaed0e287234146c4adb1afa9aa87d0d1055a5",
-  "guard_sha256": "c4d2ab68192cbf4cb1dc7c1f56219e8b47bb72cfe8bd449febce8fdbfdfa26e5",
+  "guard_sha256": "32034716e8cb47c21a24482952211268998647502bc107917a3c008b30fe0acc",
   "pinned_image": "kicad/kicad@sha256:18693567392b80da435f9fa952ce3a3e534c66eb5a6033f5b9c80aa3b19dd3ec",
   "required_native_version": "10.0.6",
   "preconditions": [
@@ -80,7 +80,7 @@
     "compare all saved/reloaded owned text: UUID/text/layer/position/angle/mirror/size/stroke and reference/non-annotation preservation, plus second apply/remove semantics",
     "source tests for evidence retention, both faces and failure artifacts; return reviewed immutable source patch before native proposal"
   ],
-  "independent_source_review": "PASS: separate reviewer approved final isolation, disjoint backend accounting, absolute preparation deadline, sealed immutable snapshot, result and negative evidence retention. Source approval only; native admission NOT GRANTED.",
+  "independent_source_review": "PASS: separately reviewed narrow lifecycle correction and final-state/kernel-memory evidence retention; native retry NOT ADMITTED.",
   "logging_limit": "route_jack_grid.check captures child CLI/dump output internally; successful child stdout is not automatically persisted by an external tee. No complete subordinate stdout/stderr retention claim. Raw reports and driver/version/errors provide settle-only evidence; richer logging requires a separately reviewed source change.",
   "workflow": "routing-benchmark.yml",
   "dispatch_mode": {
@@ -89,11 +89,11 @@
     "resource_qualification": "false",
     "reviewed_commit": "FULL_REVIEWED_PUSHED_SHA",
     "reviewed_hook_sha256": "8631e1222942b8396bf566c88deaed0e287234146c4adb1afa9aa87d0d1055a5",
-    "parent_admission_id": "FRESH_PARENT_EXCLUSIVE_ADMISSION_ID"
+    "parent_admission_id": "epic242-three-a-settle-02"
   },
   "preparation_limit": "300 seconds plus at most10 seconds client cancellation cleanup; sampled6GiB aggregate Docker/containerd ceiling and2.5GiB host free-memory early abort. Existing daemon caps recorded; no daemon hard-cap enforcement claim.",
   "route_checks": {
-    "focused_source_tests": 35,
+    "focused_source_tests": 45,
     "complete_fixture_snapshot": "293 input files plus manifest,291 portable seals; source-only materialization/snapshot/hash verification PASS",
     "compile": "PASS",
     "circuit_check": "PASS",
@@ -106,6 +106,7 @@
     "ledger": "settle-run38124807606-ledger.json",
     "outcome": "STARTED, THEN FAIL / NOT ACCEPTED; NO SETTLED RECEIPT",
     "blocker": "Command '['docker', 'inspect', 'ecb8f97b42d3']' returned non-zero exit status 1.",
-    "next": "Source review of membership observation failure and explicit final-state receipt gap; new immutable source review and fresh parent admission before any further native request"
-  }
+    "next": "Minimal lifecycle observation source fix and evidence retention reviewed; proposed same245settle requires fresh parent admission. No retry dispatched."
+  },
+  "retry_diagnosis": "settle-run38124807606-diagnosis.json"
 }
