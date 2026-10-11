@@ -20,3 +20,10 @@ One source worker,2GiB address-space cap,30s hardparent wall,zero retries. Seven
 synthetic algebra/curved-boundary/boundary-remainder tests passed. Independent
 source review PASS before execution.
 Pre-edit circuit checkPASS. Full regenerationNOT RUN: unadmitted native work.
+
+The one run at ececa973 failed after1.7185s at the nested-bounds assertion;
+no region verdict saved. Zero retries. Synthetic reproduction exposes valid
+empty-lower rejection; actual failed pair unknown. Prepared empty-case repair,
+failure witness persistence, and two additional synthetic tests; no project run
+of repaired source. Northern containment impossible by existing dimensions;
+eastern domain remains unresolved. Final packet retains failure honestly.

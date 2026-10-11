@@ -38,5 +38,17 @@ class StaticRegionTests(unittest.TestCase):
     def test_concave_input_refused(self):
         with self.assertRaises(AssertionError):
             s.convex_geometry([(0,0),(2,0),(1,1),(2,2),(0,2)])
+    def test_empty_clipped_lower_bound_is_valid(self):
+        from shapely.geometry import box
+        lower,upper=s.forbidden_bounds(box(0,0,1,1),0)
+        domain=box(1.0001,.25,1.0005,.75)
+        lo,hi=lower.intersection(domain),upper.intersection(domain)
+        self.assertTrue(lo.is_empty)
+        self.assertFalse(hi.is_empty)
+        self.assertFalse(hi.buffer(1e-9).covers(lo))
+        self.assertTrue(s.bounds_nested(lo,hi))
+    def test_nonempty_outside_lower_bound_still_rejected(self):
+        from shapely.geometry import box
+        self.assertFalse(s.bounds_nested(box(2,2,3,3),box(0,0,1,1)))
 
 if __name__=='__main__':unittest.main()

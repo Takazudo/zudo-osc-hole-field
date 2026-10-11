@@ -70,6 +70,10 @@ def excluded(lower,domain):
     return lower.covers(domain) and domain.difference(lower).is_empty
 
 
+def bounds_nested(lower,upper):
+    return lower.is_empty or upper.buffer(1e-9).covers(lower)
+
+
 def worker(out):
     resource.setrlimit(resource.RLIMIT_AS,(2*1024**3,2*1024**3))
     import shapely
@@ -122,7 +126,11 @@ def worker(out):
                 lower,upper=forbidden_bounds(core,expansion)
                 if not upper.intersects(domain):continue
                 lo=lower.intersection(domain);hi=upper.intersection(domain)
-                assert hi.buffer(1e-9).covers(lo)
+                if not bounds_nested(lo,hi):
+                    save(out,'failed-pair.json',{'moving_ref':ref,'face':face,'fixed_id':obs['id'],
+                        'piece':obs['piece'],'kind':obs['kind'],'domain':mapping(domain),
+                        'core':mapping(core),'lower':mapping(lo),'upper':mapping(hi)})
+                    raise AssertionError('Nonempty lower region outside upper; see failed-pair.json')
                 lower_sets.append(lo);upper_sets.append(hi)
                 records.append({'moving_ref':ref,'face':face,'fixed_id':obs['id'],'piece':obs['piece'],'kind':obs['kind'],
                     'spacing_or_radius_mm':expansion,'lower_forbidden':mapping(lo),'upper_forbidden':mapping(hi)})
