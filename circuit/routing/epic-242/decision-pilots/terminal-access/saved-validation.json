@@ -1,0 +1,3340 @@
+{
+  "boards": {
+    "K1402": {
+      "artifact_sha256": "9232ff3212f41604a72b3f49a9d3a8b10884186884bf50f367a57693a7e082a5",
+      "board_sha256": "b9f5ca13f83c7ffdbe5836fd271e7c1099e04b901ca1798a7be06f025bd02d66",
+      "demands": [
+        {
+          "endpoints": [
+            {
+              "anchor": "U1109.4",
+              "best_start_cap": {
+                "minimum_checked_margin_mm": -0.05000000000001137,
+                "sweep": {
+                  "checked_margins_mm": {
+                    "board_edge": 28.73249999999999,
+                    "foreign_copper": -0.05000000000001137,
+                    "keepout": null
+                  },
+                  "margin_scope": "Censored collision-screen values, not global minimum clearance. None means no potentially violating object within the complete bounding-box query; no infinite physical margin is claimed.",
+                  "nearest_foreign": "7f977276-bb98-54e9-94f4-3e517f9ba1c0",
+                  "pass": false
+                },
+                "xy_mm": [
+                  133.4825,
+                  213.88
+                ]
+              },
+              "edge_and_via_witnesses": [],
+              "edge_witnesses": [],
+              "foreign_clear_full_width_start_caps": 0,
+              "interior_start_centers": 60,
+              "layer": "B.Cu",
+              "scope": "Sufficient center-inside contact; full-width capsules, original foreign obstacles and same rules. Finite local templates only, not exhaustive off-grid/curved escape or whole-route proof.",
+              "straight_templates_checked": 0,
+              "uuid": "2b0c6980-ea70-5b84-92e6-75dafbe673f9",
+              "valid_edges_ending_in_new_through_via": 0,
+              "valid_swept_terminal_edges": 0,
+              "verdict": "NO_LOCAL_EDGE_PLUS_VIA_CERTIFICATE_IN_THIS_FINITE_TEMPLATE_SET",
+              "whole_pad_start_certificate": {
+                "best_sample_mm": [
+                  132.74572021484374,
+                  213.8801953125
+                ],
+                "cells_split": 181,
+                "foreign_pad_uuids": [
+                  "0fe6dd23-a4a9-5529-8a80-25388913bcf6",
+                  "7f977276-bb98-54e9-94f4-3e517f9ba1c0"
+                ],
+                "maximum_center_clearance_lower_mm": 0.4605303470170701,
+                "maximum_center_clearance_upper_mm": 0.46139500104026926,
+                "method": "Distance to each exact polygon is1-Lipschitz; minimum retains that bound. Every intersecting pad-box cell has upper=f(center)+half-diagonal+1e-9. Two-obstacle subset overestimates clearance to all obstacles. Ordinary floating engineering enclosure, not directed-rounding proof.",
+                "required_center_clearance_mm": 0.5,
+                "scope": "Any start center within this exact pad under full-width capsule and unchanged clearance; off-pad pad-end contacts and altered widths are outside this certificate.",
+                "status": "CENTER_INSIDE_CONTACT_BLOCKED_BY_FOREIGN_PADS",
+                "tolerance_mm": 0.001,
+                "upper_margin_mm": -0.03860499895973074
+              },
+              "width_mm": 0.5
+            },
+            {
+              "anchor": "C1134.1",
+              "best_start_cap": {
+                "minimum_checked_margin_mm": 0.666714014387265,
+                "sweep": {
+                  "checked_margins_mm": {
+                    "board_edge": 31.349999999999994,
+                    "foreign_copper": 0.666714014387265,
+                    "keepout": null
+                  },
+                  "margin_scope": "Censored collision-screen values, not global minimum clearance. None means no potentially violating object within the complete bounding-box query; no infinite physical margin is claimed.",
+                  "nearest_foreign": "82169c09-efd7-5fcf-ad44-f28ba072b899",
+                  "pass": true
+                },
+                "xy_mm": [
+                  136.1,
+                  214.1
+                ]
+              },
+              "edge_and_via_witnesses": [],
+              "edge_witnesses": [
+                {
+                  "end_mm": [
+                    136.65,
+                    213.5
+                  ],
+                  "start_mm": [
+                    135.4,
+                    213.5
+                  ],
+                  "validation": {
+                    "contact": {
+                      "anchor_uuid": "56a428c1-0a2c-5efd-b862-e39856d8a593",
+                      "interior_margin_mm": 0.020000000000010235,
+                      "pass": true,
+                      "reason": "center strictly inside exact named anchor"
+                    },
+                    "pass": true,
+                    "scope": "Full-width swept capsule and sufficient named-anchor geometric contact only; no thermal/current/native acceptance.",
+                    "sweep": {
+                      "checked_margins_mm": {
+                        "board_edge": 30.65000000000001,
+                        "foreign_copper": 0.09337841926027823,
+                        "keepout": null
+                      },
+                      "margin_scope": "Censored collision-screen values, not global minimum clearance. None means no potentially violating object within the complete bounding-box query; no infinite physical margin is claimed.",
+                      "nearest_foreign": "f464ee13-be54-5c8a-9789-21a6d990968e",
+                      "pass": true
+                    }
+                  }
+                },
+                {
+                  "end_mm": [
+                    134.9,
+                    213.5
+                  ],
+                  "start_mm": [
+                    135.4,
+                    213.5
+                  ],
+                  "validation": {
+                    "contact": {
+                      "anchor_uuid": "56a428c1-0a2c-5efd-b862-e39856d8a593",
+                      "interior_margin_mm": 0.020000000000010235,
+                      "pass": true,
+                      "reason": "center strictly inside exact named anchor"
+                    },
+                    "pass": true,
+                    "scope": "Full-width swept capsule and sufficient named-anchor geometric contact only; no thermal/current/native acceptance.",
+                    "sweep": {
+                      "checked_margins_mm": {
+                        "board_edge": 30.150000000000006,
+                        "foreign_copper": 0.12000000000000455,
+                        "keepout": null
+                      },
+                      "margin_scope": "Censored collision-screen values, not global minimum clearance. None means no potentially violating object within the complete bounding-box query; no infinite physical margin is claimed.",
+                      "nearest_foreign": "b510db36-0c12-5fa2-9d4a-679e46ecefd4",
+                      "pass": true
+                    }
+                  }
+                },
+                {
+                  "end_mm": [
+                    136.460660172,
+                    214.560660172
+                  ],
+                  "start_mm": [
+                    135.4,
+                    213.5
+                  ],
+                  "validation": {
+                    "contact": {
+                      "anchor_uuid": "56a428c1-0a2c-5efd-b862-e39856d8a593",
+                      "interior_margin_mm": 0.020000000000010235,
+                      "pass": true,
+                      "reason": "center strictly inside exact named anchor"
+                    },
+                    "pass": true,
+                    "scope": "Full-width swept capsule and sufficient named-anchor geometric contact only; no thermal/current/native acceptance.",
+                    "sweep": {
+                      "checked_margins_mm": {
+                        "board_edge": 30.65000000000001,
+                        "foreign_copper": 0.12000000000000455,
+                        "keepout": null
+                      },
+                      "margin_scope": "Censored collision-screen values, not global minimum clearance. None means no potentially violating object within the complete bounding-box query; no infinite physical margin is claimed.",
+                      "nearest_foreign": "b510db36-0c12-5fa2-9d4a-679e46ecefd4",
+                      "pass": true
+                    }
+                  }
+                }
+              ],
+              "foreign_clear_full_width_start_caps": 73,
+              "interior_start_centers": 73,
+              "layer": "B.Cu",
+              "scope": "Sufficient center-inside contact; full-width capsules, original foreign obstacles and same rules. Finite local templates only, not exhaustive off-grid/curved escape or whole-route proof.",
+              "straight_templates_checked": 5451,
+              "uuid": "56a428c1-0a2c-5efd-b862-e39856d8a593",
+              "valid_edges_ending_in_new_through_via": 0,
+              "valid_swept_terminal_edges": 978,
+              "verdict": "NO_LOCAL_EDGE_PLUS_VIA_CERTIFICATE_IN_THIS_FINITE_TEMPLATE_SET",
+              "whole_pad_start_certificate": {
+                "status": "NOT NEEDED: valid full-width start caps exist"
+              },
+              "width_mm": 0.5
+            }
+          ],
+          "kind": "positive_supply",
+          "net": "+12V"
+        },
+        {
+          "endpoints": [
+            {
+              "anchor": "U1109.11",
+              "best_start_cap": {
+                "minimum_checked_margin_mm": -0.05000000000001137,
+                "sweep": {
+                  "checked_margins_mm": {
+                    "board_edge": 23.007499999999993,
+                    "foreign_copper": -0.05000000000001137,
+                    "keepout": null
+                  },
+                  "margin_scope": "Censored collision-screen values, not global minimum clearance. None means no potentially violating object within the complete bounding-box query; no infinite physical margin is claimed.",
+                  "nearest_foreign": "dd4049aa-7b25-5e17-b4fa-3ab8e15f4eaf",
+                  "pass": false
+                },
+                "xy_mm": [
+                  127.7575,
+                  213.88
+                ]
+              },
+              "edge_and_via_witnesses": [],
+              "edge_witnesses": [],
+              "foreign_clear_full_width_start_caps": 0,
+              "interior_start_centers": 57,
+              "layer": "B.Cu",
+              "scope": "Sufficient center-inside contact; full-width capsules, original foreign obstacles and same rules. Finite local templates only, not exhaustive off-grid/curved escape or whole-route proof.",
+              "straight_templates_checked": 0,
+              "uuid": "a40db1fe-2473-5035-bc12-87d1d1b0fdea",
+              "valid_edges_ending_in_new_through_via": 0,
+              "valid_swept_terminal_edges": 0,
+              "verdict": "NO_LOCAL_EDGE_PLUS_VIA_CERTIFICATE_IN_THIS_FINITE_TEMPLATE_SET",
+              "whole_pad_start_certificate": {
+                "best_sample_mm": [
+                  128.49427978515627,
+                  213.8801953125
+                ],
+                "cells_split": 181,
+                "foreign_pad_uuids": [
+                  "ab585796-dcd6-5061-9b47-45502d4d9921",
+                  "dd4049aa-7b25-5e17-b4fa-3ab8e15f4eaf"
+                ],
+                "maximum_center_clearance_lower_mm": 0.4605303470170701,
+                "maximum_center_clearance_upper_mm": 0.4613950010402611,
+                "method": "Distance to each exact polygon is1-Lipschitz; minimum retains that bound. Every intersecting pad-box cell has upper=f(center)+half-diagonal+1e-9. Two-obstacle subset overestimates clearance to all obstacles. Ordinary floating engineering enclosure, not directed-rounding proof.",
+                "required_center_clearance_mm": 0.5,
+                "scope": "Any start center within this exact pad under full-width capsule and unchanged clearance; off-pad pad-end contacts and altered widths are outside this certificate.",
+                "status": "CENTER_INSIDE_CONTACT_BLOCKED_BY_FOREIGN_PADS",
+                "tolerance_mm": 0.001,
+                "upper_margin_mm": -0.0386049989597389
+              },
+              "width_mm": 0.5
+            },
+            {
+              "anchor": "C1135.1",
+              "best_start_cap": {
+                "minimum_checked_margin_mm": 0.7199999999999989,
+                "sweep": {
+                  "checked_margins_mm": {
+                    "board_edge": 20.349999999999994,
+                    "foreign_copper": 0.7199999999999989,
+                    "keepout": null
+                  },
+                  "margin_scope": "Censored collision-screen values, not global minimum clearance. None means no potentially violating object within the complete bounding-box query; no infinite physical margin is claimed.",
+                  "nearest_foreign": "fc5c1745-c938-5469-bc02-ff486afa125a",
+                  "pass": true
+                },
+                "xy_mm": [
+                  125.1,
+                  214.1
+                ]
+              },
+              "edge_and_via_witnesses": [
+                {
+                  "edge": {
+                    "contact": {
+                      "anchor_uuid": "77253764-a510-53c0-a715-6ed853e8bea0",
+                      "interior_margin_mm": 0.0899999999999892,
+                      "pass": true,
+                      "reason": "center strictly inside exact named anchor"
+                    },
+                    "pass": true,
+                    "scope": "Full-width swept capsule and sufficient named-anchor geometric contact only; no thermal/current/native acceptance.",
+                    "sweep": {
+                      "checked_margins_mm": {
+                        "board_edge": 19.819669914,
+                        "foreign_copper": 0.3199999999999932,
+                        "keepout": null
+                      },
+                      "margin_scope": "Censored collision-screen values, not global minimum clearance. None means no potentially violating object within the complete bounding-box query; no infinite physical margin is claimed.",
+                      "nearest_foreign": "fc5c1745-c938-5469-bc02-ff486afa125a",
+                      "pass": true
+                    }
+                  },
+                  "end_mm": [
+                    124.569669914,
+                    214.230330086
+                  ],
+                  "start_mm": [
+                    125.1,
+                    213.7
+                  ],
+                  "via": {
+                    "checked_margins_mm": {
+                      "board_edge": 19.769669913999998,
+                      "existing_hole": 0.07831472492400454,
+                      "foreign_copper": 0.00033108599999992494,
+                      "keepout": null,
+                      "smd": null
+                    },
+                    "margin_scope": "Censored collision-screen values, not global minimum clearance. None means no potentially violating object within the complete bounding-box query; no infinite physical margin is claimed.",
+                    "nearest_foreign": "ff91789a-6167-554e-aac8-1fe337cdd6cd",
+                    "pass": true,
+                    "scope": "New through-via disk on every copper layer; all holes and own/foreign SMD restrictions; no native acceptance."
+                  }
+                },
+                {
+                  "edge": {
+                    "contact": {
+                      "anchor_uuid": "77253764-a510-53c0-a715-6ed853e8bea0",
+                      "interior_margin_mm": 0.0899999999999892,
+                      "pass": true,
+                      "reason": "center strictly inside exact named anchor"
+                    },
+                    "pass": true,
+                    "scope": "Full-width swept capsule and sufficient named-anchor geometric contact only; no thermal/current/native acceptance.",
+                    "sweep": {
+                      "checked_margins_mm": {
+                        "board_edge": 19.642893219000005,
+                        "foreign_copper": 0.23007534436481658,
+                        "keepout": null
+                      },
+                      "margin_scope": "Censored collision-screen values, not global minimum clearance. None means no potentially violating object within the complete bounding-box query; no infinite physical margin is claimed.",
+                      "nearest_foreign": "e38af98b-5b6f-5363-98e2-4f5a629f5a51",
+                      "pass": true
+                    }
+                  },
+                  "end_mm": [
+                    124.392893219,
+                    214.407106781
+                  ],
+                  "start_mm": [
+                    125.1,
+                    213.7
+                  ],
+                  "via": {
+                    "checked_margins_mm": {
+                      "board_edge": 19.592893219000004,
+                      "existing_hole": 0.10892835360886882,
+                      "foreign_copper": 0.047056275111527046,
+                      "keepout": null,
+                      "smd": null
+                    },
+                    "margin_scope": "Censored collision-screen values, not global minimum clearance. None means no potentially violating object within the complete bounding-box query; no infinite physical margin is claimed.",
+                    "nearest_foreign": "2e50b57d-da6e-5831-b92e-7c7d875c7796",
+                    "pass": true,
+                    "scope": "New through-via disk on every copper layer; all holes and own/foreign SMD restrictions; no native acceptance."
+                  }
+                },
+                {
+                  "edge": {
+                    "contact": {
+                      "anchor_uuid": "77253764-a510-53c0-a715-6ed853e8bea0",
+                      "interior_margin_mm": 0.0899999999999892,
+                      "pass": true,
+                      "reason": "center strictly inside exact named anchor"
+                    },
+                    "pass": true,
+                    "scope": "Full-width swept capsule and sufficient named-anchor geometric contact only; no thermal/current/native acceptance.",
+                    "sweep": {
+                      "checked_margins_mm": {
+                        "board_edge": 19.819669914,
+                        "foreign_copper": 0.4188184698627869,
+                        "keepout": null
+                      },
+                      "margin_scope": "Censored collision-screen values, not global minimum clearance. None means no potentially violating object within the complete bounding-box query; no infinite physical margin is claimed.",
+                      "nearest_foreign": "e38af98b-5b6f-5363-98e2-4f5a629f5a51",
+                      "pass": true
+                    }
+                  },
+                  "end_mm": [
+                    124.569669914,
+                    214.330330086
+                  ],
+                  "start_mm": [
+                    125.1,
+                    213.8
+                  ],
+                  "via": {
+                    "checked_margins_mm": {
+                      "board_edge": 19.769669913999998,
+                      "existing_hole": 0.008406541636604203,
+                      "foreign_copper": 0.10033108599999424,
+                      "keepout": null,
+                      "smd": null
+                    },
+                    "margin_scope": "Censored collision-screen values, not global minimum clearance. None means no potentially violating object within the complete bounding-box query; no infinite physical margin is claimed.",
+                    "nearest_foreign": "ff91789a-6167-554e-aac8-1fe337cdd6cd",
+                    "pass": true,
+                    "scope": "New through-via disk on every copper layer; all holes and own/foreign SMD restrictions; no native acceptance."
+                  }
+                }
+              ],
+              "edge_witnesses": [
+                {
+                  "end_mm": [
+                    126.35,
+                    213.5
+                  ],
+                  "start_mm": [
+                    125.1,
+                    213.5
+                  ],
+                  "validation": {
+                    "contact": {
+                      "anchor_uuid": "77253764-a510-53c0-a715-6ed853e8bea0",
+                      "interior_margin_mm": 0.020000000000010232,
+                      "pass": true,
+                      "reason": "center strictly inside exact named anchor"
+                    },
+                    "pass": true,
+                    "scope": "Full-width swept capsule and sufficient named-anchor geometric contact only; no thermal/current/native acceptance.",
+                    "sweep": {
+                      "checked_margins_mm": {
+                        "board_edge": 20.349999999999994,
+                        "foreign_copper": 0.12000000000000455,
+                        "keepout": null
+                      },
+                      "margin_scope": "Censored collision-screen values, not global minimum clearance. None means no potentially violating object within the complete bounding-box query; no infinite physical margin is claimed.",
+                      "nearest_foreign": "fc5c1745-c938-5469-bc02-ff486afa125a",
+                      "pass": true
+                    }
+                  }
+                },
+                {
+                  "end_mm": [
+                    124.6,
+                    213.5
+                  ],
+                  "start_mm": [
+                    125.1,
+                    213.5
+                  ],
+                  "validation": {
+                    "contact": {
+                      "anchor_uuid": "77253764-a510-53c0-a715-6ed853e8bea0",
+                      "interior_margin_mm": 0.020000000000010232,
+                      "pass": true,
+                      "reason": "center strictly inside exact named anchor"
+                    },
+                    "pass": true,
+                    "scope": "Full-width swept capsule and sufficient named-anchor geometric contact only; no thermal/current/native acceptance.",
+                    "sweep": {
+                      "checked_margins_mm": {
+                        "board_edge": 19.849999999999998,
+                        "foreign_copper": 0.12000000000000455,
+                        "keepout": null
+                      },
+                      "margin_scope": "Censored collision-screen values, not global minimum clearance. None means no potentially violating object within the complete bounding-box query; no infinite physical margin is claimed.",
+                      "nearest_foreign": "fc5c1745-c938-5469-bc02-ff486afa125a",
+                      "pass": true
+                    }
+                  }
+                },
+                {
+                  "end_mm": [
+                    124.35,
+                    213.5
+                  ],
+                  "start_mm": [
+                    125.1,
+                    213.5
+                  ],
+                  "validation": {
+                    "contact": {
+                      "anchor_uuid": "77253764-a510-53c0-a715-6ed853e8bea0",
+                      "interior_margin_mm": 0.020000000000010232,
+                      "pass": true,
+                      "reason": "center strictly inside exact named anchor"
+                    },
+                    "pass": true,
+                    "scope": "Full-width swept capsule and sufficient named-anchor geometric contact only; no thermal/current/native acceptance.",
+                    "sweep": {
+                      "checked_margins_mm": {
+                        "board_edge": 19.599999999999998,
+                        "foreign_copper": 0.12000000000000455,
+                        "keepout": null
+                      },
+                      "margin_scope": "Censored collision-screen values, not global minimum clearance. None means no potentially violating object within the complete bounding-box query; no infinite physical margin is claimed.",
+                      "nearest_foreign": "fc5c1745-c938-5469-bc02-ff486afa125a",
+                      "pass": true
+                    }
+                  }
+                }
+              ],
+              "foreign_clear_full_width_start_caps": 72,
+              "interior_start_centers": 73,
+              "layer": "B.Cu",
+              "scope": "Sufficient center-inside contact; full-width capsules, original foreign obstacles and same rules. Finite local templates only, not exhaustive off-grid/curved escape or whole-route proof.",
+              "straight_templates_checked": 5372,
+              "uuid": "77253764-a510-53c0-a715-6ed853e8bea0",
+              "valid_edges_ending_in_new_through_via": 33,
+              "valid_swept_terminal_edges": 1634,
+              "verdict": "LOCAL_GEOMETRIC_ACCESS_WITNESS_ONLY",
+              "whole_pad_start_certificate": {
+                "status": "NOT NEEDED: valid full-width start caps exist"
+              },
+              "width_mm": 0.5
+            }
+          ],
+          "kind": "negative_supply",
+          "net": "-12V"
+        },
+        {
+          "endpoints": [
+            {
+              "anchor": "U1105.12",
+              "best_start_cap": {
+                "minimum_checked_margin_mm": 0.46999999999999886,
+                "sweep": {
+                  "checked_margins_mm": {
+                    "board_edge": 17.444999999999993,
+                    "foreign_copper": 0.46999999999999886,
+                    "keepout": null
+                  },
+                  "margin_scope": "Censored collision-screen values, not global minimum clearance. None means no potentially violating object within the complete bounding-box query; no infinite physical margin is claimed.",
+                  "nearest_foreign": "2832f604-ed6e-5737-b0f1-0619b11e92b1",
+                  "pass": true
+                },
+                "xy_mm": [
+                  122.195,
+                  222.225
+                ]
+              },
+              "edge_and_via_witnesses": [],
+              "edge_witnesses": [],
+              "foreign_clear_full_width_start_caps": 108,
+              "interior_start_centers": 114,
+              "layer": "F.Cu",
+              "scope": "Sufficient center-inside contact; full-width capsules, original foreign obstacles and same rules. Finite local templates only, not exhaustive off-grid/curved escape or whole-route proof.",
+              "straight_templates_checked": 7497,
+              "uuid": "608c587b-7aab-54c1-b46c-3773193ec4c0",
+              "valid_edges_ending_in_new_through_via": 0,
+              "valid_swept_terminal_edges": 0,
+              "verdict": "NO_LOCAL_EDGE_PLUS_VIA_CERTIFICATE_IN_THIS_FINITE_TEMPLATE_SET",
+              "whole_pad_start_certificate": {
+                "status": "NOT NEEDED: valid full-width start caps exist"
+              },
+              "width_mm": 0.5
+            },
+            {
+              "anchor": "C1111.2",
+              "best_start_cap": {
+                "minimum_checked_margin_mm": 0.8100000000000023,
+                "sweep": {
+                  "checked_margins_mm": {
+                    "board_edge": 6.150000000000007,
+                    "foreign_copper": 0.8100000000000023,
+                    "keepout": null
+                  },
+                  "margin_scope": "Censored collision-screen values, not global minimum clearance. None means no potentially violating object within the complete bounding-box query; no infinite physical margin is claimed.",
+                  "nearest_foreign": "07c3263b-8e36-529c-ba2f-98ac5f6e32fe",
+                  "pass": true
+                },
+                "xy_mm": [
+                  110.9,
+                  225.4
+                ]
+              },
+              "edge_and_via_witnesses": [
+                {
+                  "edge": {
+                    "contact": {
+                      "anchor_uuid": "6e370474-ba32-594b-8c28-3b65ab475ff1",
+                      "interior_margin_mm": 0.09000000000000342,
+                      "pass": true,
+                      "reason": "center strictly inside exact named anchor"
+                    },
+                    "pass": true,
+                    "scope": "Full-width swept capsule and sufficient named-anchor geometric contact only; no thermal/current/native acceptance.",
+                    "sweep": {
+                      "checked_margins_mm": {
+                        "board_edge": 5.355572808999994,
+                        "foreign_copper": 0.11039355616170221,
+                        "keepout": null
+                      },
+                      "margin_scope": "Censored collision-screen values, not global minimum clearance. None means no potentially violating object within the complete bounding-box query; no infinite physical margin is claimed.",
+                      "nearest_foreign": "7212932e-34ff-5ddd-b278-78eadbb89669",
+                      "pass": true
+                    }
+                  },
+                  "end_mm": [
+                    110.105572809,
+                    227.188854382
+                  ],
+                  "start_mm": [
+                    111.0,
+                    225.4
+                  ],
+                  "via": {
+                    "checked_margins_mm": {
+                      "board_edge": 5.305572808999994,
+                      "existing_hole": 0.21039355616170224,
+                      "foreign_copper": 0.06039355616170222,
+                      "keepout": null,
+                      "smd": null
+                    },
+                    "margin_scope": "Censored collision-screen values, not global minimum clearance. None means no potentially violating object within the complete bounding-box query; no infinite physical margin is claimed.",
+                    "nearest_foreign": "7212932e-34ff-5ddd-b278-78eadbb89669",
+                    "pass": true,
+                    "scope": "New through-via disk on every copper layer; all holes and own/foreign SMD restrictions; no native acceptance."
+                  }
+                },
+                {
+                  "edge": {
+                    "contact": {
+                      "anchor_uuid": "6e370474-ba32-594b-8c28-3b65ab475ff1",
+                      "interior_margin_mm": 0.18999999999999773,
+                      "pass": true,
+                      "reason": "center strictly inside exact named anchor"
+                    },
+                    "pass": true,
+                    "scope": "Full-width swept capsule and sufficient named-anchor geometric contact only; no thermal/current/native acceptance.",
+                    "sweep": {
+                      "checked_margins_mm": {
+                        "board_edge": 5.455572809000003,
+                        "foreign_copper": 0.24026925000249966,
+                        "keepout": null
+                      },
+                      "margin_scope": "Censored collision-screen values, not global minimum clearance. None means no potentially violating object within the complete bounding-box query; no infinite physical margin is claimed.",
+                      "nearest_foreign": "7212932e-34ff-5ddd-b278-78eadbb89669",
+                      "pass": true
+                    }
+                  },
+                  "end_mm": [
+                    110.205572809,
+                    227.088854382
+                  ],
+                  "start_mm": [
+                    111.1,
+                    225.3
+                  ],
+                  "via": {
+                    "checked_margins_mm": {
+                      "board_edge": 5.405572809000003,
+                      "existing_hole": 0.34026925000249975,
+                      "foreign_copper": 0.04451861375464844,
+                      "keepout": null,
+                      "smd": 0.04981263056206575
+                    },
+                    "margin_scope": "Censored collision-screen values, not global minimum clearance. None means no potentially violating object within the complete bounding-box query; no infinite physical margin is claimed.",
+                    "nearest_foreign": "7a507328-2dd7-5f1d-aa43-6f9de8bd72b7",
+                    "pass": true,
+                    "scope": "New through-via disk on every copper layer; all holes and own/foreign SMD restrictions; no native acceptance."
+                  }
+                },
+                {
+                  "edge": {
+                    "contact": {
+                      "anchor_uuid": "6e370474-ba32-594b-8c28-3b65ab475ff1",
+                      "interior_margin_mm": 0.09000000000000342,
+                      "pass": true,
+                      "reason": "center strictly inside exact named anchor"
+                    },
+                    "pass": true,
+                    "scope": "Full-width swept capsule and sufficient named-anchor geometric contact only; no thermal/current/native acceptance.",
+                    "sweep": {
+                      "checked_margins_mm": {
+                        "board_edge": 5.455572809000003,
+                        "foreign_copper": 0.2049532272204342,
+                        "keepout": null
+                      },
+                      "margin_scope": "Censored collision-screen values, not global minimum clearance. None means no potentially violating object within the complete bounding-box query; no infinite physical margin is claimed.",
+                      "nearest_foreign": "7212932e-34ff-5ddd-b278-78eadbb89669",
+                      "pass": true
+                    }
+                  },
+                  "end_mm": [
+                    110.205572809,
+                    227.188854382
+                  ],
+                  "start_mm": [
+                    111.1,
+                    225.4
+                  ],
+                  "via": {
+                    "checked_margins_mm": {
+                      "board_edge": 5.405572809000003,
+                      "existing_hole": 0.3049532272204343,
+                      "foreign_copper": 0.09126691673650594,
+                      "keepout": null,
+                      "smd": null
+                    },
+                    "margin_scope": "Censored collision-screen values, not global minimum clearance. None means no potentially violating object within the complete bounding-box query; no infinite physical margin is claimed.",
+                    "nearest_foreign": "7a507328-2dd7-5f1d-aa43-6f9de8bd72b7",
+                    "pass": true,
+                    "scope": "New through-via disk on every copper layer; all holes and own/foreign SMD restrictions; no native acceptance."
+                  }
+                }
+              ],
+              "edge_witnesses": [
+                {
+                  "end_mm": [
+                    112.05,
+                    224.7
+                  ],
+                  "start_mm": [
+                    110.8,
+                    224.7
+                  ],
+                  "validation": {
+                    "contact": {
+                      "anchor_uuid": "6e370474-ba32-594b-8c28-3b65ab475ff1",
+                      "interior_margin_mm": 0.009999999999990907,
+                      "pass": true,
+                      "reason": "center strictly inside exact named anchor"
+                    },
+                    "pass": true,
+                    "scope": "Full-width swept capsule and sufficient named-anchor geometric contact only; no thermal/current/native acceptance.",
+                    "sweep": {
+                      "checked_margins_mm": {
+                        "board_edge": 6.049999999999997,
+                        "foreign_copper": 0.006225774829855091,
+                        "keepout": null
+                      },
+                      "margin_scope": "Censored collision-screen values, not global minimum clearance. None means no potentially violating object within the complete bounding-box query; no infinite physical margin is claimed.",
+                      "nearest_foreign": "a91cd1ad-f290-5090-8b6a-77bd7931fc63",
+                      "pass": true
+                    }
+                  }
+                },
+                {
+                  "end_mm": [
+                    110.8,
+                    225.95
+                  ],
+                  "start_mm": [
+                    110.8,
+                    224.7
+                  ],
+                  "validation": {
+                    "contact": {
+                      "anchor_uuid": "6e370474-ba32-594b-8c28-3b65ab475ff1",
+                      "interior_margin_mm": 0.009999999999990907,
+                      "pass": true,
+                      "reason": "center strictly inside exact named anchor"
+                    },
+                    "pass": true,
+                    "scope": "Full-width swept capsule and sufficient named-anchor geometric contact only; no thermal/current/native acceptance.",
+                    "sweep": {
+                      "checked_margins_mm": {
+                        "board_edge": 6.049999999999997,
+                        "foreign_copper": 0.10999999999998522,
+                        "keepout": null
+                      },
+                      "margin_scope": "Censored collision-screen values, not global minimum clearance. None means no potentially violating object within the complete bounding-box query; no infinite physical margin is claimed.",
+                      "nearest_foreign": "07c3263b-8e36-529c-ba2f-98ac5f6e32fe",
+                      "pass": true
+                    }
+                  }
+                },
+                {
+                  "end_mm": [
+                    110.8,
+                    226.2
+                  ],
+                  "start_mm": [
+                    110.8,
+                    224.7
+                  ],
+                  "validation": {
+                    "contact": {
+                      "anchor_uuid": "6e370474-ba32-594b-8c28-3b65ab475ff1",
+                      "interior_margin_mm": 0.009999999999990907,
+                      "pass": true,
+                      "reason": "center strictly inside exact named anchor"
+                    },
+                    "pass": true,
+                    "scope": "Full-width swept capsule and sufficient named-anchor geometric contact only; no thermal/current/native acceptance.",
+                    "sweep": {
+                      "checked_margins_mm": {
+                        "board_edge": 6.049999999999997,
+                        "foreign_copper": 0.10999999999998522,
+                        "keepout": null
+                      },
+                      "margin_scope": "Censored collision-screen values, not global minimum clearance. None means no potentially violating object within the complete bounding-box query; no infinite physical margin is claimed.",
+                      "nearest_foreign": "07c3263b-8e36-529c-ba2f-98ac5f6e32fe",
+                      "pass": true
+                    }
+                  }
+                }
+              ],
+              "foreign_clear_full_width_start_caps": 73,
+              "interior_start_centers": 73,
+              "layer": "F.Cu",
+              "scope": "Sufficient center-inside contact; full-width capsules, original foreign obstacles and same rules. Finite local templates only, not exhaustive off-grid/curved escape or whole-route proof.",
+              "straight_templates_checked": 5442,
+              "uuid": "6e370474-ba32-594b-8c28-3b65ab475ff1",
+              "valid_edges_ending_in_new_through_via": 4,
+              "valid_swept_terminal_edges": 2581,
+              "verdict": "LOCAL_GEOMETRIC_ACCESS_WITNESS_ONLY",
+              "whole_pad_start_certificate": {
+                "status": "NOT NEEDED: valid full-width start caps exist"
+              },
+              "width_mm": 0.5
+            }
+          ],
+          "kind": "return",
+          "net": "AGND"
+        },
+        {
+          "endpoints": [
+            {
+              "anchor": "R1177.2",
+              "best_start_cap": {
+                "minimum_checked_margin_mm": 0.6259430606176294,
+                "sweep": {
+                  "checked_margins_mm": {
+                    "board_edge": 24.95,
+                    "foreign_copper": 0.6259430606176294,
+                    "keepout": null
+                  },
+                  "margin_scope": "Censored collision-screen values, not global minimum clearance. None means no potentially violating object within the complete bounding-box query; no infinite physical margin is claimed.",
+                  "nearest_foreign": "acc869a4-1630-5da0-a86e-31702540fcbd",
+                  "pass": true
+                },
+                "xy_mm": [
+                  129.6,
+                  208.7
+                ]
+              },
+              "edge_and_via_witnesses": [],
+              "edge_witnesses": [
+                {
+                  "end_mm": [
+                    129.25,
+                    208.3
+                  ],
+                  "start_mm": [
+                    129.5,
+                    208.3
+                  ],
+                  "validation": {
+                    "contact": {
+                      "anchor_uuid": "954f2210-a69f-5adf-a5d4-d0dcff6dcf91",
+                      "interior_margin_mm": 0.015001000000012255,
+                      "pass": true,
+                      "reason": "center strictly inside exact named anchor"
+                    },
+                    "pass": true,
+                    "scope": "Full-width swept capsule and sufficient named-anchor geometric contact only; no thermal/current/native acceptance.",
+                    "sweep": {
+                      "checked_margins_mm": {
+                        "board_edge": 24.600000000000005,
+                        "foreign_copper": 0.14889634231749616,
+                        "keepout": null
+                      },
+                      "margin_scope": "Censored collision-screen values, not global minimum clearance. None means no potentially violating object within the complete bounding-box query; no infinite physical margin is claimed.",
+                      "nearest_foreign": "e3849182-f1cf-5965-915b-c0fe3342064c",
+                      "pass": true
+                    }
+                  }
+                },
+                {
+                  "end_mm": [
+                    129.0,
+                    208.3
+                  ],
+                  "start_mm": [
+                    129.5,
+                    208.3
+                  ],
+                  "validation": {
+                    "contact": {
+                      "anchor_uuid": "954f2210-a69f-5adf-a5d4-d0dcff6dcf91",
+                      "interior_margin_mm": 0.015001000000012255,
+                      "pass": true,
+                      "reason": "center strictly inside exact named anchor"
+                    },
+                    "pass": true,
+                    "scope": "Full-width swept capsule and sufficient named-anchor geometric contact only; no thermal/current/native acceptance.",
+                    "sweep": {
+                      "checked_margins_mm": {
+                        "board_edge": 24.35,
+                        "foreign_copper": 0.125000000000017,
+                        "keepout": null
+                      },
+                      "margin_scope": "Censored collision-screen values, not global minimum clearance. None means no potentially violating object within the complete bounding-box query; no infinite physical margin is claimed.",
+                      "nearest_foreign": "e3849182-f1cf-5965-915b-c0fe3342064c",
+                      "pass": true
+                    }
+                  }
+                },
+                {
+                  "end_mm": [
+                    128.75,
+                    208.3
+                  ],
+                  "start_mm": [
+                    129.5,
+                    208.3
+                  ],
+                  "validation": {
+                    "contact": {
+                      "anchor_uuid": "954f2210-a69f-5adf-a5d4-d0dcff6dcf91",
+                      "interior_margin_mm": 0.015001000000012255,
+                      "pass": true,
+                      "reason": "center strictly inside exact named anchor"
+                    },
+                    "pass": true,
+                    "scope": "Full-width swept capsule and sufficient named-anchor geometric contact only; no thermal/current/native acceptance.",
+                    "sweep": {
+                      "checked_margins_mm": {
+                        "board_edge": 24.1,
+                        "foreign_copper": 0.125000000000017,
+                        "keepout": null
+                      },
+                      "margin_scope": "Censored collision-screen values, not global minimum clearance. None means no potentially violating object within the complete bounding-box query; no infinite physical margin is claimed.",
+                      "nearest_foreign": "e3849182-f1cf-5965-915b-c0fe3342064c",
+                      "pass": true
+                    }
+                  }
+                }
+              ],
+              "foreign_clear_full_width_start_caps": 65,
+              "interior_start_centers": 65,
+              "layer": "B.Cu",
+              "scope": "Sufficient center-inside contact; full-width capsules, original foreign obstacles and same rules. Finite local templates only, not exhaustive off-grid/curved escape or whole-route proof.",
+              "straight_templates_checked": 5375,
+              "uuid": "954f2210-a69f-5adf-a5d4-d0dcff6dcf91",
+              "valid_edges_ending_in_new_through_via": 0,
+              "valid_swept_terminal_edges": 1709,
+              "verdict": "NO_LOCAL_EDGE_PLUS_VIA_CERTIFICATE_IN_THIS_FINITE_TEMPLATE_SET",
+              "whole_pad_start_certificate": {
+                "status": "NOT NEEDED: valid full-width start caps exist"
+              },
+              "width_mm": 0.3
+            },
+            {
+              "anchor": "U1114.6",
+              "best_start_cap": {
+                "minimum_checked_margin_mm": 0.5699999999999987,
+                "sweep": {
+                  "checked_margins_mm": {
+                    "board_edge": 28.544999999999995,
+                    "foreign_copper": 0.5699999999999987,
+                    "keepout": null
+                  },
+                  "margin_scope": "Censored collision-screen values, not global minimum clearance. None means no potentially violating object within the complete bounding-box query; no infinite physical margin is claimed.",
+                  "nearest_foreign": "d76b9493-34e5-5bae-9161-ee7a735ec4d7",
+                  "pass": true
+                },
+                "xy_mm": [
+                  133.195,
+                  225.99
+                ]
+              },
+              "edge_and_via_witnesses": [],
+              "edge_witnesses": [
+                {
+                  "end_mm": [
+                    132.05,
+                    225.8
+                  ],
+                  "start_mm": [
+                    132.3,
+                    225.8
+                  ],
+                  "validation": {
+                    "contact": {
+                      "anchor_uuid": "6e15d402-0eb9-568f-8091-ded54ac532ea",
+                      "interior_margin_mm": 0.06669229571923256,
+                      "pass": true,
+                      "reason": "center strictly inside exact named anchor"
+                    },
+                    "pass": true,
+                    "scope": "Full-width swept capsule and sufficient named-anchor geometric contact only; no thermal/current/native acceptance.",
+                    "sweep": {
+                      "checked_margins_mm": {
+                        "board_edge": 27.400000000000016,
+                        "foreign_copper": 0.2158910531638355,
+                        "keepout": null
+                      },
+                      "margin_scope": "Censored collision-screen values, not global minimum clearance. None means no potentially violating object within the complete bounding-box query; no infinite physical margin is claimed.",
+                      "nearest_foreign": "74929e9e-8190-5b8a-b74f-01171cdce2f5",
+                      "pass": true
+                    }
+                  }
+                },
+                {
+                  "end_mm": [
+                    131.8,
+                    225.8
+                  ],
+                  "start_mm": [
+                    132.3,
+                    225.8
+                  ],
+                  "validation": {
+                    "contact": {
+                      "anchor_uuid": "6e15d402-0eb9-568f-8091-ded54ac532ea",
+                      "interior_margin_mm": 0.06669229571923256,
+                      "pass": true,
+                      "reason": "center strictly inside exact named anchor"
+                    },
+                    "pass": true,
+                    "scope": "Full-width swept capsule and sufficient named-anchor geometric contact only; no thermal/current/native acceptance.",
+                    "sweep": {
+                      "checked_margins_mm": {
+                        "board_edge": 27.150000000000013,
+                        "foreign_copper": 0.1828250141873854,
+                        "keepout": null
+                      },
+                      "margin_scope": "Censored collision-screen values, not global minimum clearance. None means no potentially violating object within the complete bounding-box query; no infinite physical margin is claimed.",
+                      "nearest_foreign": "5d985f14-54b0-57bb-ac0d-ca6a360fcf6c",
+                      "pass": true
+                    }
+                  }
+                },
+                {
+                  "end_mm": [
+                    131.55,
+                    225.8
+                  ],
+                  "start_mm": [
+                    132.3,
+                    225.8
+                  ],
+                  "validation": {
+                    "contact": {
+                      "anchor_uuid": "6e15d402-0eb9-568f-8091-ded54ac532ea",
+                      "interior_margin_mm": 0.06669229571923256,
+                      "pass": true,
+                      "reason": "center strictly inside exact named anchor"
+                    },
+                    "pass": true,
+                    "scope": "Full-width swept capsule and sufficient named-anchor geometric contact only; no thermal/current/native acceptance.",
+                    "sweep": {
+                      "checked_margins_mm": {
+                        "board_edge": 26.900000000000013,
+                        "foreign_copper": 0.1254998001598404,
+                        "keepout": null
+                      },
+                      "margin_scope": "Censored collision-screen values, not global minimum clearance. None means no potentially violating object within the complete bounding-box query; no infinite physical margin is claimed.",
+                      "nearest_foreign": "5d985f14-54b0-57bb-ac0d-ca6a360fcf6c",
+                      "pass": true
+                    }
+                  }
+                }
+              ],
+              "foreign_clear_full_width_start_caps": 111,
+              "interior_start_centers": 113,
+              "layer": "B.Cu",
+              "scope": "Sufficient center-inside contact; full-width capsules, original foreign obstacles and same rules. Finite local templates only, not exhaustive off-grid/curved escape or whole-route proof.",
+              "straight_templates_checked": 8600,
+              "uuid": "6e15d402-0eb9-568f-8091-ded54ac532ea",
+              "valid_edges_ending_in_new_through_via": 0,
+              "valid_swept_terminal_edges": 1599,
+              "verdict": "NO_LOCAL_EDGE_PLUS_VIA_CERTIFICATE_IN_THIS_FINITE_TEMPLATE_SET",
+              "whole_pad_start_certificate": {
+                "status": "NOT NEEDED: valid full-width start caps exist"
+              },
+              "width_mm": 0.3
+            }
+          ],
+          "kind": "signal",
+          "net": "X0A34A50EAB62B0C19178"
+        }
+      ],
+      "dump_sha256": "2dae7737731cb9d6f230e3f61848d01f6939fd7e7e6b56d3ed23f74ea8684807",
+      "source_objects": {
+        "pads": 13406,
+        "tracks": 123905,
+        "vias": 9646
+      }
+    },
+    "two-A": {
+      "artifact_sha256": "ed8de7933f40369ecefb3ea28f382662923b414298e0cdb72ed5e32578e64e3f",
+      "board_sha256": "66710513146c22f31595f794d608914fcfb8b61552c82fc5fd680f9ac4b0b978",
+      "demands": [
+        {
+          "endpoints": [
+            {
+              "anchor": "U1109.4",
+              "best_start_cap": {
+                "minimum_checked_margin_mm": -0.05000000000001137,
+                "sweep": {
+                  "checked_margins_mm": {
+                    "board_edge": 28.73249999999999,
+                    "foreign_copper": -0.05000000000001137,
+                    "keepout": null
+                  },
+                  "margin_scope": "Censored collision-screen values, not global minimum clearance. None means no potentially violating object within the complete bounding-box query; no infinite physical margin is claimed.",
+                  "nearest_foreign": "7f977276-bb98-54e9-94f4-3e517f9ba1c0",
+                  "pass": false
+                },
+                "xy_mm": [
+                  133.4825,
+                  213.88
+                ]
+              },
+              "edge_and_via_witnesses": [],
+              "edge_witnesses": [],
+              "foreign_clear_full_width_start_caps": 0,
+              "interior_start_centers": 60,
+              "layer": "B.Cu",
+              "scope": "Sufficient center-inside contact; full-width capsules, original foreign obstacles and same rules. Finite local templates only, not exhaustive off-grid/curved escape or whole-route proof.",
+              "straight_templates_checked": 0,
+              "uuid": "2b0c6980-ea70-5b84-92e6-75dafbe673f9",
+              "valid_edges_ending_in_new_through_via": 0,
+              "valid_swept_terminal_edges": 0,
+              "verdict": "NO_LOCAL_EDGE_PLUS_VIA_CERTIFICATE_IN_THIS_FINITE_TEMPLATE_SET",
+              "whole_pad_start_certificate": {
+                "best_sample_mm": [
+                  132.74572021484374,
+                  213.8801953125
+                ],
+                "cells_split": 181,
+                "foreign_pad_uuids": [
+                  "0fe6dd23-a4a9-5529-8a80-25388913bcf6",
+                  "7f977276-bb98-54e9-94f4-3e517f9ba1c0"
+                ],
+                "maximum_center_clearance_lower_mm": 0.4605303470170701,
+                "maximum_center_clearance_upper_mm": 0.46139500104026926,
+                "method": "Distance to each exact polygon is1-Lipschitz; minimum retains that bound. Every intersecting pad-box cell has upper=f(center)+half-diagonal+1e-9. Two-obstacle subset overestimates clearance to all obstacles. Ordinary floating engineering enclosure, not directed-rounding proof.",
+                "required_center_clearance_mm": 0.5,
+                "scope": "Any start center within this exact pad under full-width capsule and unchanged clearance; off-pad pad-end contacts and altered widths are outside this certificate.",
+                "status": "CENTER_INSIDE_CONTACT_BLOCKED_BY_FOREIGN_PADS",
+                "tolerance_mm": 0.001,
+                "upper_margin_mm": -0.03860499895973074
+              },
+              "width_mm": 0.5
+            },
+            {
+              "anchor": "C1134.1",
+              "best_start_cap": {
+                "minimum_checked_margin_mm": 0.666714014387265,
+                "sweep": {
+                  "checked_margins_mm": {
+                    "board_edge": 31.349999999999994,
+                    "foreign_copper": 0.666714014387265,
+                    "keepout": null
+                  },
+                  "margin_scope": "Censored collision-screen values, not global minimum clearance. None means no potentially violating object within the complete bounding-box query; no infinite physical margin is claimed.",
+                  "nearest_foreign": "82169c09-efd7-5fcf-ad44-f28ba072b899",
+                  "pass": true
+                },
+                "xy_mm": [
+                  136.1,
+                  214.1
+                ]
+              },
+              "edge_and_via_witnesses": [
+                {
+                  "edge": {
+                    "contact": {
+                      "anchor_uuid": "56a428c1-0a2c-5efd-b862-e39856d8a593",
+                      "interior_margin_mm": 0.020000000000010235,
+                      "pass": true,
+                      "reason": "center strictly inside exact named anchor"
+                    },
+                    "pass": true,
+                    "scope": "Full-width swept capsule and sufficient named-anchor geometric contact only; no thermal/current/native acceptance.",
+                    "sweep": {
+                      "checked_margins_mm": {
+                        "board_edge": 30.65000000000001,
+                        "foreign_copper": 0.12000000000000455,
+                        "keepout": null
+                      },
+                      "margin_scope": "Censored collision-screen values, not global minimum clearance. None means no potentially violating object within the complete bounding-box query; no infinite physical margin is claimed.",
+                      "nearest_foreign": "b510db36-0c12-5fa2-9d4a-679e46ecefd4",
+                      "pass": true
+                    }
+                  },
+                  "end_mm": [
+                    136.460660172,
+                    214.560660172
+                  ],
+                  "start_mm": [
+                    135.4,
+                    213.5
+                  ],
+                  "via": {
+                    "checked_margins_mm": {
+                      "board_edge": 31.660660171999993,
+                      "existing_hole": 0.6435874659039122,
+                      "foreign_copper": 0.035660171999978785,
+                      "keepout": null,
+                      "smd": 0.06328259949266207
+                    },
+                    "margin_scope": "Censored collision-screen values, not global minimum clearance. None means no potentially violating object within the complete bounding-box query; no infinite physical margin is claimed.",
+                    "nearest_foreign": "6d6bfda3-bf80-58f7-a032-eb651ba61044",
+                    "pass": true,
+                    "scope": "New through-via disk on every copper layer; all holes and own/foreign SMD restrictions; no native acceptance."
+                  }
+                },
+                {
+                  "edge": {
+                    "contact": {
+                      "anchor_uuid": "56a428c1-0a2c-5efd-b862-e39856d8a593",
+                      "interior_margin_mm": 0.06999999999999318,
+                      "pass": true,
+                      "reason": "center strictly inside exact named anchor"
+                    },
+                    "pass": true,
+                    "scope": "Full-width swept capsule and sufficient named-anchor geometric contact only; no thermal/current/native acceptance.",
+                    "sweep": {
+                      "checked_margins_mm": {
+                        "board_edge": 30.65000000000001,
+                        "foreign_copper": 0.21999999999999886,
+                        "keepout": null
+                      },
+                      "margin_scope": "Censored collision-screen values, not global minimum clearance. None means no potentially violating object within the complete bounding-box query; no infinite physical margin is claimed.",
+                      "nearest_foreign": "b510db36-0c12-5fa2-9d4a-679e46ecefd4",
+                      "pass": true
+                    }
+                  },
+                  "end_mm": [
+                    136.460660172,
+                    214.660660172
+                  ],
+                  "start_mm": [
+                    135.4,
+                    213.6
+                  ],
+                  "via": {
+                    "checked_margins_mm": {
+                      "board_edge": 31.660660171999993,
+                      "existing_hole": 0.5756799414171676,
+                      "foreign_copper": 0.035660171999978785,
+                      "keepout": null,
+                      "smd": null
+                    },
+                    "margin_scope": "Censored collision-screen values, not global minimum clearance. None means no potentially violating object within the complete bounding-box query; no infinite physical margin is claimed.",
+                    "nearest_foreign": "6d6bfda3-bf80-58f7-a032-eb651ba61044",
+                    "pass": true,
+                    "scope": "New through-via disk on every copper layer; all holes and own/foreign SMD restrictions; no native acceptance."
+                  }
+                },
+                {
+                  "edge": {
+                    "contact": {
+                      "anchor_uuid": "56a428c1-0a2c-5efd-b862-e39856d8a593",
+                      "interior_margin_mm": 0.06999999999999318,
+                      "pass": true,
+                      "reason": "center strictly inside exact named anchor"
+                    },
+                    "pass": true,
+                    "scope": "Full-width swept capsule and sufficient named-anchor geometric contact only; no thermal/current/native acceptance.",
+                    "sweep": {
+                      "checked_margins_mm": {
+                        "board_edge": 30.65000000000001,
+                        "foreign_copper": 0.25113004713390386,
+                        "keepout": null
+                      },
+                      "margin_scope": "Censored collision-screen values, not global minimum clearance. None means no potentially violating object within the complete bounding-box query; no infinite physical margin is claimed.",
+                      "nearest_foreign": "e10bd18a-2f29-57a2-9ea9-4500d4ee240d",
+                      "pass": true
+                    }
+                  },
+                  "end_mm": [
+                    136.460660172,
+                    214.760660172
+                  ],
+                  "start_mm": [
+                    135.4,
+                    213.7
+                  ],
+                  "via": {
+                    "checked_margins_mm": {
+                      "board_edge": 31.660660171999993,
+                      "existing_hole": 0.512225782325272,
+                      "foreign_copper": 0.035660171999978785,
+                      "keepout": null,
+                      "smd": null
+                    },
+                    "margin_scope": "Censored collision-screen values, not global minimum clearance. None means no potentially violating object within the complete bounding-box query; no infinite physical margin is claimed.",
+                    "nearest_foreign": "6d6bfda3-bf80-58f7-a032-eb651ba61044",
+                    "pass": true,
+                    "scope": "New through-via disk on every copper layer; all holes and own/foreign SMD restrictions; no native acceptance."
+                  }
+                }
+              ],
+              "edge_witnesses": [
+                {
+                  "end_mm": [
+                    136.65,
+                    213.5
+                  ],
+                  "start_mm": [
+                    135.4,
+                    213.5
+                  ],
+                  "validation": {
+                    "contact": {
+                      "anchor_uuid": "56a428c1-0a2c-5efd-b862-e39856d8a593",
+                      "interior_margin_mm": 0.020000000000010235,
+                      "pass": true,
+                      "reason": "center strictly inside exact named anchor"
+                    },
+                    "pass": true,
+                    "scope": "Full-width swept capsule and sufficient named-anchor geometric contact only; no thermal/current/native acceptance.",
+                    "sweep": {
+                      "checked_margins_mm": {
+                        "board_edge": 30.65000000000001,
+                        "foreign_copper": 0.09337841926027823,
+                        "keepout": null
+                      },
+                      "margin_scope": "Censored collision-screen values, not global minimum clearance. None means no potentially violating object within the complete bounding-box query; no infinite physical margin is claimed.",
+                      "nearest_foreign": "f464ee13-be54-5c8a-9789-21a6d990968e",
+                      "pass": true
+                    }
+                  }
+                },
+                {
+                  "end_mm": [
+                    134.9,
+                    213.5
+                  ],
+                  "start_mm": [
+                    135.4,
+                    213.5
+                  ],
+                  "validation": {
+                    "contact": {
+                      "anchor_uuid": "56a428c1-0a2c-5efd-b862-e39856d8a593",
+                      "interior_margin_mm": 0.020000000000010235,
+                      "pass": true,
+                      "reason": "center strictly inside exact named anchor"
+                    },
+                    "pass": true,
+                    "scope": "Full-width swept capsule and sufficient named-anchor geometric contact only; no thermal/current/native acceptance.",
+                    "sweep": {
+                      "checked_margins_mm": {
+                        "board_edge": 30.150000000000006,
+                        "foreign_copper": 0.12000000000000455,
+                        "keepout": null
+                      },
+                      "margin_scope": "Censored collision-screen values, not global minimum clearance. None means no potentially violating object within the complete bounding-box query; no infinite physical margin is claimed.",
+                      "nearest_foreign": "b510db36-0c12-5fa2-9d4a-679e46ecefd4",
+                      "pass": true
+                    }
+                  }
+                },
+                {
+                  "end_mm": [
+                    136.460660172,
+                    214.560660172
+                  ],
+                  "start_mm": [
+                    135.4,
+                    213.5
+                  ],
+                  "validation": {
+                    "contact": {
+                      "anchor_uuid": "56a428c1-0a2c-5efd-b862-e39856d8a593",
+                      "interior_margin_mm": 0.020000000000010235,
+                      "pass": true,
+                      "reason": "center strictly inside exact named anchor"
+                    },
+                    "pass": true,
+                    "scope": "Full-width swept capsule and sufficient named-anchor geometric contact only; no thermal/current/native acceptance.",
+                    "sweep": {
+                      "checked_margins_mm": {
+                        "board_edge": 30.65000000000001,
+                        "foreign_copper": 0.12000000000000455,
+                        "keepout": null
+                      },
+                      "margin_scope": "Censored collision-screen values, not global minimum clearance. None means no potentially violating object within the complete bounding-box query; no infinite physical margin is claimed.",
+                      "nearest_foreign": "b510db36-0c12-5fa2-9d4a-679e46ecefd4",
+                      "pass": true
+                    }
+                  }
+                }
+              ],
+              "foreign_clear_full_width_start_caps": 73,
+              "interior_start_centers": 73,
+              "layer": "B.Cu",
+              "scope": "Sufficient center-inside contact; full-width capsules, original foreign obstacles and same rules. Finite local templates only, not exhaustive off-grid/curved escape or whole-route proof.",
+              "straight_templates_checked": 5451,
+              "uuid": "56a428c1-0a2c-5efd-b862-e39856d8a593",
+              "valid_edges_ending_in_new_through_via": 154,
+              "valid_swept_terminal_edges": 978,
+              "verdict": "LOCAL_GEOMETRIC_ACCESS_WITNESS_ONLY",
+              "whole_pad_start_certificate": {
+                "status": "NOT NEEDED: valid full-width start caps exist"
+              },
+              "width_mm": 0.5
+            }
+          ],
+          "kind": "positive_supply",
+          "net": "+12V"
+        },
+        {
+          "endpoints": [
+            {
+              "anchor": "U1109.11",
+              "best_start_cap": {
+                "minimum_checked_margin_mm": -0.05000000000001137,
+                "sweep": {
+                  "checked_margins_mm": {
+                    "board_edge": 23.007499999999993,
+                    "foreign_copper": -0.05000000000001137,
+                    "keepout": null
+                  },
+                  "margin_scope": "Censored collision-screen values, not global minimum clearance. None means no potentially violating object within the complete bounding-box query; no infinite physical margin is claimed.",
+                  "nearest_foreign": "dd4049aa-7b25-5e17-b4fa-3ab8e15f4eaf",
+                  "pass": false
+                },
+                "xy_mm": [
+                  127.7575,
+                  213.88
+                ]
+              },
+              "edge_and_via_witnesses": [],
+              "edge_witnesses": [],
+              "foreign_clear_full_width_start_caps": 0,
+              "interior_start_centers": 57,
+              "layer": "B.Cu",
+              "scope": "Sufficient center-inside contact; full-width capsules, original foreign obstacles and same rules. Finite local templates only, not exhaustive off-grid/curved escape or whole-route proof.",
+              "straight_templates_checked": 0,
+              "uuid": "a40db1fe-2473-5035-bc12-87d1d1b0fdea",
+              "valid_edges_ending_in_new_through_via": 0,
+              "valid_swept_terminal_edges": 0,
+              "verdict": "NO_LOCAL_EDGE_PLUS_VIA_CERTIFICATE_IN_THIS_FINITE_TEMPLATE_SET",
+              "whole_pad_start_certificate": {
+                "best_sample_mm": [
+                  128.49427978515627,
+                  213.8801953125
+                ],
+                "cells_split": 181,
+                "foreign_pad_uuids": [
+                  "ab585796-dcd6-5061-9b47-45502d4d9921",
+                  "dd4049aa-7b25-5e17-b4fa-3ab8e15f4eaf"
+                ],
+                "maximum_center_clearance_lower_mm": 0.4605303470170701,
+                "maximum_center_clearance_upper_mm": 0.4613950010402611,
+                "method": "Distance to each exact polygon is1-Lipschitz; minimum retains that bound. Every intersecting pad-box cell has upper=f(center)+half-diagonal+1e-9. Two-obstacle subset overestimates clearance to all obstacles. Ordinary floating engineering enclosure, not directed-rounding proof.",
+                "required_center_clearance_mm": 0.5,
+                "scope": "Any start center within this exact pad under full-width capsule and unchanged clearance; off-pad pad-end contacts and altered widths are outside this certificate.",
+                "status": "CENTER_INSIDE_CONTACT_BLOCKED_BY_FOREIGN_PADS",
+                "tolerance_mm": 0.001,
+                "upper_margin_mm": -0.0386049989597389
+              },
+              "width_mm": 0.5
+            },
+            {
+              "anchor": "C1135.1",
+              "best_start_cap": {
+                "minimum_checked_margin_mm": 0.7199999999999989,
+                "sweep": {
+                  "checked_margins_mm": {
+                    "board_edge": 20.349999999999994,
+                    "foreign_copper": 0.7199999999999989,
+                    "keepout": null
+                  },
+                  "margin_scope": "Censored collision-screen values, not global minimum clearance. None means no potentially violating object within the complete bounding-box query; no infinite physical margin is claimed.",
+                  "nearest_foreign": "fc5c1745-c938-5469-bc02-ff486afa125a",
+                  "pass": true
+                },
+                "xy_mm": [
+                  125.1,
+                  214.1
+                ]
+              },
+              "edge_and_via_witnesses": [
+                {
+                  "edge": {
+                    "contact": {
+                      "anchor_uuid": "77253764-a510-53c0-a715-6ed853e8bea0",
+                      "interior_margin_mm": 0.020000000000010232,
+                      "pass": true,
+                      "reason": "center strictly inside exact named anchor"
+                    },
+                    "pass": true,
+                    "scope": "Full-width swept capsule and sufficient named-anchor geometric contact only; no thermal/current/native acceptance.",
+                    "sweep": {
+                      "checked_margins_mm": {
+                        "board_edge": 20.349999999999994,
+                        "foreign_copper": 0.12000000000000466,
+                        "keepout": null
+                      },
+                      "margin_scope": "Censored collision-screen values, not global minimum clearance. None means no potentially violating object within the complete bounding-box query; no infinite physical margin is claimed.",
+                      "nearest_foreign": "fc5c1745-c938-5469-bc02-ff486afa125a",
+                      "pass": true
+                    }
+                  },
+                  "end_mm": [
+                    125.1,
+                    214.75
+                  ],
+                  "start_mm": [
+                    125.1,
+                    213.5
+                  ],
+                  "via": {
+                    "checked_margins_mm": {
+                      "board_edge": 20.299999999999994,
+                      "existing_hole": 0.39201648339208783,
+                      "foreign_copper": 0.17500000000001154,
+                      "keepout": null,
+                      "smd": null
+                    },
+                    "margin_scope": "Censored collision-screen values, not global minimum clearance. None means no potentially violating object within the complete bounding-box query; no infinite physical margin is claimed.",
+                    "nearest_foreign": "e1856b96-caf8-58ea-b7d2-6e3f3386a32a",
+                    "pass": true,
+                    "scope": "New through-via disk on every copper layer; all holes and own/foreign SMD restrictions; no native acceptance."
+                  }
+                },
+                {
+                  "edge": {
+                    "contact": {
+                      "anchor_uuid": "77253764-a510-53c0-a715-6ed853e8bea0",
+                      "interior_margin_mm": 0.020000000000010232,
+                      "pass": true,
+                      "reason": "center strictly inside exact named anchor"
+                    },
+                    "pass": true,
+                    "scope": "Full-width swept capsule and sufficient named-anchor geometric contact only; no thermal/current/native acceptance.",
+                    "sweep": {
+                      "checked_margins_mm": {
+                        "board_edge": 20.349999999999994,
+                        "foreign_copper": 0.05440037453176272,
+                        "keepout": null
+                      },
+                      "margin_scope": "Censored collision-screen values, not global minimum clearance. None means no potentially violating object within the complete bounding-box query; no infinite physical margin is claimed.",
+                      "nearest_foreign": "3f64aefa-11c6-5b01-b804-1c0b0c88b993",
+                      "pass": true
+                    }
+                  },
+                  "end_mm": [
+                    125.1,
+                    215.0
+                  ],
+                  "start_mm": [
+                    125.1,
+                    213.5
+                  ],
+                  "via": {
+                    "checked_margins_mm": {
+                      "board_edge": 20.299999999999994,
+                      "existing_hole": 0.15440037453176275,
+                      "foreign_copper": 0.00440037453176273,
+                      "keepout": null,
+                      "smd": null
+                    },
+                    "margin_scope": "Censored collision-screen values, not global minimum clearance. None means no potentially violating object within the complete bounding-box query; no infinite physical margin is claimed.",
+                    "nearest_foreign": "3f64aefa-11c6-5b01-b804-1c0b0c88b993",
+                    "pass": true,
+                    "scope": "New through-via disk on every copper layer; all holes and own/foreign SMD restrictions; no native acceptance."
+                  }
+                },
+                {
+                  "edge": {
+                    "contact": {
+                      "anchor_uuid": "77253764-a510-53c0-a715-6ed853e8bea0",
+                      "interior_margin_mm": 0.020000000000010232,
+                      "pass": true,
+                      "reason": "center strictly inside exact named anchor"
+                    },
+                    "pass": true,
+                    "scope": "Full-width swept capsule and sufficient named-anchor geometric contact only; no thermal/current/native acceptance.",
+                    "sweep": {
+                      "checked_margins_mm": {
+                        "board_edge": 19.902786405,
+                        "foreign_copper": 0.12000000000000466,
+                        "keepout": null
+                      },
+                      "margin_scope": "Censored collision-screen values, not global minimum clearance. None means no potentially violating object within the complete bounding-box query; no infinite physical margin is claimed.",
+                      "nearest_foreign": "fc5c1745-c938-5469-bc02-ff486afa125a",
+                      "pass": true
+                    }
+                  },
+                  "end_mm": [
+                    124.652786405,
+                    214.394427191
+                  ],
+                  "start_mm": [
+                    125.1,
+                    213.5
+                  ],
+                  "via": {
+                    "checked_margins_mm": {
+                      "board_edge": 19.852786405,
+                      "existing_hole": 0.713261038857645,
+                      "foreign_copper": 0.16442819099999612,
+                      "keepout": null,
+                      "smd": null
+                    },
+                    "margin_scope": "Censored collision-screen values, not global minimum clearance. None means no potentially violating object within the complete bounding-box query; no infinite physical margin is claimed.",
+                    "nearest_foreign": "ff91789a-6167-554e-aac8-1fe337cdd6cd",
+                    "pass": true,
+                    "scope": "New through-via disk on every copper layer; all holes and own/foreign SMD restrictions; no native acceptance."
+                  }
+                }
+              ],
+              "edge_witnesses": [
+                {
+                  "end_mm": [
+                    126.35,
+                    213.5
+                  ],
+                  "start_mm": [
+                    125.1,
+                    213.5
+                  ],
+                  "validation": {
+                    "contact": {
+                      "anchor_uuid": "77253764-a510-53c0-a715-6ed853e8bea0",
+                      "interior_margin_mm": 0.020000000000010232,
+                      "pass": true,
+                      "reason": "center strictly inside exact named anchor"
+                    },
+                    "pass": true,
+                    "scope": "Full-width swept capsule and sufficient named-anchor geometric contact only; no thermal/current/native acceptance.",
+                    "sweep": {
+                      "checked_margins_mm": {
+                        "board_edge": 20.349999999999994,
+                        "foreign_copper": 0.12000000000000455,
+                        "keepout": null
+                      },
+                      "margin_scope": "Censored collision-screen values, not global minimum clearance. None means no potentially violating object within the complete bounding-box query; no infinite physical margin is claimed.",
+                      "nearest_foreign": "fc5c1745-c938-5469-bc02-ff486afa125a",
+                      "pass": true
+                    }
+                  }
+                },
+                {
+                  "end_mm": [
+                    124.6,
+                    213.5
+                  ],
+                  "start_mm": [
+                    125.1,
+                    213.5
+                  ],
+                  "validation": {
+                    "contact": {
+                      "anchor_uuid": "77253764-a510-53c0-a715-6ed853e8bea0",
+                      "interior_margin_mm": 0.020000000000010232,
+                      "pass": true,
+                      "reason": "center strictly inside exact named anchor"
+                    },
+                    "pass": true,
+                    "scope": "Full-width swept capsule and sufficient named-anchor geometric contact only; no thermal/current/native acceptance.",
+                    "sweep": {
+                      "checked_margins_mm": {
+                        "board_edge": 19.849999999999998,
+                        "foreign_copper": 0.12000000000000455,
+                        "keepout": null
+                      },
+                      "margin_scope": "Censored collision-screen values, not global minimum clearance. None means no potentially violating object within the complete bounding-box query; no infinite physical margin is claimed.",
+                      "nearest_foreign": "fc5c1745-c938-5469-bc02-ff486afa125a",
+                      "pass": true
+                    }
+                  }
+                },
+                {
+                  "end_mm": [
+                    124.35,
+                    213.5
+                  ],
+                  "start_mm": [
+                    125.1,
+                    213.5
+                  ],
+                  "validation": {
+                    "contact": {
+                      "anchor_uuid": "77253764-a510-53c0-a715-6ed853e8bea0",
+                      "interior_margin_mm": 0.020000000000010232,
+                      "pass": true,
+                      "reason": "center strictly inside exact named anchor"
+                    },
+                    "pass": true,
+                    "scope": "Full-width swept capsule and sufficient named-anchor geometric contact only; no thermal/current/native acceptance.",
+                    "sweep": {
+                      "checked_margins_mm": {
+                        "board_edge": 19.599999999999998,
+                        "foreign_copper": 0.12000000000000455,
+                        "keepout": null
+                      },
+                      "margin_scope": "Censored collision-screen values, not global minimum clearance. None means no potentially violating object within the complete bounding-box query; no infinite physical margin is claimed.",
+                      "nearest_foreign": "fc5c1745-c938-5469-bc02-ff486afa125a",
+                      "pass": true
+                    }
+                  }
+                }
+              ],
+              "foreign_clear_full_width_start_caps": 72,
+              "interior_start_centers": 73,
+              "layer": "B.Cu",
+              "scope": "Sufficient center-inside contact; full-width capsules, original foreign obstacles and same rules. Finite local templates only, not exhaustive off-grid/curved escape or whole-route proof.",
+              "straight_templates_checked": 5372,
+              "uuid": "77253764-a510-53c0-a715-6ed853e8bea0",
+              "valid_edges_ending_in_new_through_via": 282,
+              "valid_swept_terminal_edges": 1634,
+              "verdict": "LOCAL_GEOMETRIC_ACCESS_WITNESS_ONLY",
+              "whole_pad_start_certificate": {
+                "status": "NOT NEEDED: valid full-width start caps exist"
+              },
+              "width_mm": 0.5
+            }
+          ],
+          "kind": "negative_supply",
+          "net": "-12V"
+        },
+        {
+          "endpoints": [
+            {
+              "anchor": "U1105.12",
+              "best_start_cap": {
+                "minimum_checked_margin_mm": 0.46999999999999886,
+                "sweep": {
+                  "checked_margins_mm": {
+                    "board_edge": 17.444999999999993,
+                    "foreign_copper": 0.46999999999999886,
+                    "keepout": null
+                  },
+                  "margin_scope": "Censored collision-screen values, not global minimum clearance. None means no potentially violating object within the complete bounding-box query; no infinite physical margin is claimed.",
+                  "nearest_foreign": "2832f604-ed6e-5737-b0f1-0619b11e92b1",
+                  "pass": true
+                },
+                "xy_mm": [
+                  122.195,
+                  222.225
+                ]
+              },
+              "edge_and_via_witnesses": [],
+              "edge_witnesses": [],
+              "foreign_clear_full_width_start_caps": 108,
+              "interior_start_centers": 114,
+              "layer": "F.Cu",
+              "scope": "Sufficient center-inside contact; full-width capsules, original foreign obstacles and same rules. Finite local templates only, not exhaustive off-grid/curved escape or whole-route proof.",
+              "straight_templates_checked": 7497,
+              "uuid": "608c587b-7aab-54c1-b46c-3773193ec4c0",
+              "valid_edges_ending_in_new_through_via": 0,
+              "valid_swept_terminal_edges": 0,
+              "verdict": "NO_LOCAL_EDGE_PLUS_VIA_CERTIFICATE_IN_THIS_FINITE_TEMPLATE_SET",
+              "whole_pad_start_certificate": {
+                "status": "NOT NEEDED: valid full-width start caps exist"
+              },
+              "width_mm": 0.5
+            },
+            {
+              "anchor": "C1111.2",
+              "best_start_cap": {
+                "minimum_checked_margin_mm": 0.8100000000000023,
+                "sweep": {
+                  "checked_margins_mm": {
+                    "board_edge": 6.150000000000007,
+                    "foreign_copper": 0.8100000000000023,
+                    "keepout": null
+                  },
+                  "margin_scope": "Censored collision-screen values, not global minimum clearance. None means no potentially violating object within the complete bounding-box query; no infinite physical margin is claimed.",
+                  "nearest_foreign": "07c3263b-8e36-529c-ba2f-98ac5f6e32fe",
+                  "pass": true
+                },
+                "xy_mm": [
+                  110.9,
+                  225.4
+                ]
+              },
+              "edge_and_via_witnesses": [
+                {
+                  "edge": {
+                    "contact": {
+                      "anchor_uuid": "6e370474-ba32-594b-8c28-3b65ab475ff1",
+                      "interior_margin_mm": 0.09000000000000342,
+                      "pass": true,
+                      "reason": "center strictly inside exact named anchor"
+                    },
+                    "pass": true,
+                    "scope": "Full-width swept capsule and sufficient named-anchor geometric contact only; no thermal/current/native acceptance.",
+                    "sweep": {
+                      "checked_margins_mm": {
+                        "board_edge": 5.355572808999994,
+                        "foreign_copper": 0.11039355616170221,
+                        "keepout": null
+                      },
+                      "margin_scope": "Censored collision-screen values, not global minimum clearance. None means no potentially violating object within the complete bounding-box query; no infinite physical margin is claimed.",
+                      "nearest_foreign": "7212932e-34ff-5ddd-b278-78eadbb89669",
+                      "pass": true
+                    }
+                  },
+                  "end_mm": [
+                    110.105572809,
+                    227.188854382
+                  ],
+                  "start_mm": [
+                    111.0,
+                    225.4
+                  ],
+                  "via": {
+                    "checked_margins_mm": {
+                      "board_edge": 5.305572808999994,
+                      "existing_hole": 0.21039355616170224,
+                      "foreign_copper": 0.06039355616170222,
+                      "keepout": null,
+                      "smd": null
+                    },
+                    "margin_scope": "Censored collision-screen values, not global minimum clearance. None means no potentially violating object within the complete bounding-box query; no infinite physical margin is claimed.",
+                    "nearest_foreign": "7212932e-34ff-5ddd-b278-78eadbb89669",
+                    "pass": true,
+                    "scope": "New through-via disk on every copper layer; all holes and own/foreign SMD restrictions; no native acceptance."
+                  }
+                },
+                {
+                  "edge": {
+                    "contact": {
+                      "anchor_uuid": "6e370474-ba32-594b-8c28-3b65ab475ff1",
+                      "interior_margin_mm": 0.18999999999999773,
+                      "pass": true,
+                      "reason": "center strictly inside exact named anchor"
+                    },
+                    "pass": true,
+                    "scope": "Full-width swept capsule and sufficient named-anchor geometric contact only; no thermal/current/native acceptance.",
+                    "sweep": {
+                      "checked_margins_mm": {
+                        "board_edge": 5.455572809000003,
+                        "foreign_copper": 0.24026925000249966,
+                        "keepout": null
+                      },
+                      "margin_scope": "Censored collision-screen values, not global minimum clearance. None means no potentially violating object within the complete bounding-box query; no infinite physical margin is claimed.",
+                      "nearest_foreign": "7212932e-34ff-5ddd-b278-78eadbb89669",
+                      "pass": true
+                    }
+                  },
+                  "end_mm": [
+                    110.205572809,
+                    227.088854382
+                  ],
+                  "start_mm": [
+                    111.1,
+                    225.3
+                  ],
+                  "via": {
+                    "checked_margins_mm": {
+                      "board_edge": 5.405572809000003,
+                      "existing_hole": 0.34026925000249975,
+                      "foreign_copper": 0.04451861375464844,
+                      "keepout": null,
+                      "smd": 0.04981263056206575
+                    },
+                    "margin_scope": "Censored collision-screen values, not global minimum clearance. None means no potentially violating object within the complete bounding-box query; no infinite physical margin is claimed.",
+                    "nearest_foreign": "7a507328-2dd7-5f1d-aa43-6f9de8bd72b7",
+                    "pass": true,
+                    "scope": "New through-via disk on every copper layer; all holes and own/foreign SMD restrictions; no native acceptance."
+                  }
+                },
+                {
+                  "edge": {
+                    "contact": {
+                      "anchor_uuid": "6e370474-ba32-594b-8c28-3b65ab475ff1",
+                      "interior_margin_mm": 0.09000000000000342,
+                      "pass": true,
+                      "reason": "center strictly inside exact named anchor"
+                    },
+                    "pass": true,
+                    "scope": "Full-width swept capsule and sufficient named-anchor geometric contact only; no thermal/current/native acceptance.",
+                    "sweep": {
+                      "checked_margins_mm": {
+                        "board_edge": 5.455572809000003,
+                        "foreign_copper": 0.2049532272204342,
+                        "keepout": null
+                      },
+                      "margin_scope": "Censored collision-screen values, not global minimum clearance. None means no potentially violating object within the complete bounding-box query; no infinite physical margin is claimed.",
+                      "nearest_foreign": "7212932e-34ff-5ddd-b278-78eadbb89669",
+                      "pass": true
+                    }
+                  },
+                  "end_mm": [
+                    110.205572809,
+                    227.188854382
+                  ],
+                  "start_mm": [
+                    111.1,
+                    225.4
+                  ],
+                  "via": {
+                    "checked_margins_mm": {
+                      "board_edge": 5.405572809000003,
+                      "existing_hole": 0.3049532272204343,
+                      "foreign_copper": 0.09126691673650594,
+                      "keepout": null,
+                      "smd": null
+                    },
+                    "margin_scope": "Censored collision-screen values, not global minimum clearance. None means no potentially violating object within the complete bounding-box query; no infinite physical margin is claimed.",
+                    "nearest_foreign": "7a507328-2dd7-5f1d-aa43-6f9de8bd72b7",
+                    "pass": true,
+                    "scope": "New through-via disk on every copper layer; all holes and own/foreign SMD restrictions; no native acceptance."
+                  }
+                }
+              ],
+              "edge_witnesses": [
+                {
+                  "end_mm": [
+                    112.05,
+                    224.7
+                  ],
+                  "start_mm": [
+                    110.8,
+                    224.7
+                  ],
+                  "validation": {
+                    "contact": {
+                      "anchor_uuid": "6e370474-ba32-594b-8c28-3b65ab475ff1",
+                      "interior_margin_mm": 0.009999999999990907,
+                      "pass": true,
+                      "reason": "center strictly inside exact named anchor"
+                    },
+                    "pass": true,
+                    "scope": "Full-width swept capsule and sufficient named-anchor geometric contact only; no thermal/current/native acceptance.",
+                    "sweep": {
+                      "checked_margins_mm": {
+                        "board_edge": 6.049999999999997,
+                        "foreign_copper": 0.006225774829855091,
+                        "keepout": null
+                      },
+                      "margin_scope": "Censored collision-screen values, not global minimum clearance. None means no potentially violating object within the complete bounding-box query; no infinite physical margin is claimed.",
+                      "nearest_foreign": "a91cd1ad-f290-5090-8b6a-77bd7931fc63",
+                      "pass": true
+                    }
+                  }
+                },
+                {
+                  "end_mm": [
+                    110.8,
+                    225.95
+                  ],
+                  "start_mm": [
+                    110.8,
+                    224.7
+                  ],
+                  "validation": {
+                    "contact": {
+                      "anchor_uuid": "6e370474-ba32-594b-8c28-3b65ab475ff1",
+                      "interior_margin_mm": 0.009999999999990907,
+                      "pass": true,
+                      "reason": "center strictly inside exact named anchor"
+                    },
+                    "pass": true,
+                    "scope": "Full-width swept capsule and sufficient named-anchor geometric contact only; no thermal/current/native acceptance.",
+                    "sweep": {
+                      "checked_margins_mm": {
+                        "board_edge": 6.049999999999997,
+                        "foreign_copper": 0.10999999999998522,
+                        "keepout": null
+                      },
+                      "margin_scope": "Censored collision-screen values, not global minimum clearance. None means no potentially violating object within the complete bounding-box query; no infinite physical margin is claimed.",
+                      "nearest_foreign": "07c3263b-8e36-529c-ba2f-98ac5f6e32fe",
+                      "pass": true
+                    }
+                  }
+                },
+                {
+                  "end_mm": [
+                    110.8,
+                    226.2
+                  ],
+                  "start_mm": [
+                    110.8,
+                    224.7
+                  ],
+                  "validation": {
+                    "contact": {
+                      "anchor_uuid": "6e370474-ba32-594b-8c28-3b65ab475ff1",
+                      "interior_margin_mm": 0.009999999999990907,
+                      "pass": true,
+                      "reason": "center strictly inside exact named anchor"
+                    },
+                    "pass": true,
+                    "scope": "Full-width swept capsule and sufficient named-anchor geometric contact only; no thermal/current/native acceptance.",
+                    "sweep": {
+                      "checked_margins_mm": {
+                        "board_edge": 6.049999999999997,
+                        "foreign_copper": 0.10999999999998522,
+                        "keepout": null
+                      },
+                      "margin_scope": "Censored collision-screen values, not global minimum clearance. None means no potentially violating object within the complete bounding-box query; no infinite physical margin is claimed.",
+                      "nearest_foreign": "07c3263b-8e36-529c-ba2f-98ac5f6e32fe",
+                      "pass": true
+                    }
+                  }
+                }
+              ],
+              "foreign_clear_full_width_start_caps": 73,
+              "interior_start_centers": 73,
+              "layer": "F.Cu",
+              "scope": "Sufficient center-inside contact; full-width capsules, original foreign obstacles and same rules. Finite local templates only, not exhaustive off-grid/curved escape or whole-route proof.",
+              "straight_templates_checked": 5442,
+              "uuid": "6e370474-ba32-594b-8c28-3b65ab475ff1",
+              "valid_edges_ending_in_new_through_via": 4,
+              "valid_swept_terminal_edges": 2581,
+              "verdict": "LOCAL_GEOMETRIC_ACCESS_WITNESS_ONLY",
+              "whole_pad_start_certificate": {
+                "status": "NOT NEEDED: valid full-width start caps exist"
+              },
+              "width_mm": 0.5
+            }
+          ],
+          "kind": "return",
+          "net": "AGND"
+        },
+        {
+          "endpoints": [
+            {
+              "anchor": "R1177.2",
+              "best_start_cap": {
+                "minimum_checked_margin_mm": 0.6259430606176294,
+                "sweep": {
+                  "checked_margins_mm": {
+                    "board_edge": 24.95,
+                    "foreign_copper": 0.6259430606176294,
+                    "keepout": null
+                  },
+                  "margin_scope": "Censored collision-screen values, not global minimum clearance. None means no potentially violating object within the complete bounding-box query; no infinite physical margin is claimed.",
+                  "nearest_foreign": "acc869a4-1630-5da0-a86e-31702540fcbd",
+                  "pass": true
+                },
+                "xy_mm": [
+                  129.6,
+                  208.7
+                ]
+              },
+              "edge_and_via_witnesses": [],
+              "edge_witnesses": [
+                {
+                  "end_mm": [
+                    129.25,
+                    208.3
+                  ],
+                  "start_mm": [
+                    129.5,
+                    208.3
+                  ],
+                  "validation": {
+                    "contact": {
+                      "anchor_uuid": "954f2210-a69f-5adf-a5d4-d0dcff6dcf91",
+                      "interior_margin_mm": 0.015001000000012255,
+                      "pass": true,
+                      "reason": "center strictly inside exact named anchor"
+                    },
+                    "pass": true,
+                    "scope": "Full-width swept capsule and sufficient named-anchor geometric contact only; no thermal/current/native acceptance.",
+                    "sweep": {
+                      "checked_margins_mm": {
+                        "board_edge": 24.600000000000005,
+                        "foreign_copper": 0.14889634231749616,
+                        "keepout": null
+                      },
+                      "margin_scope": "Censored collision-screen values, not global minimum clearance. None means no potentially violating object within the complete bounding-box query; no infinite physical margin is claimed.",
+                      "nearest_foreign": "e3849182-f1cf-5965-915b-c0fe3342064c",
+                      "pass": true
+                    }
+                  }
+                },
+                {
+                  "end_mm": [
+                    129.0,
+                    208.3
+                  ],
+                  "start_mm": [
+                    129.5,
+                    208.3
+                  ],
+                  "validation": {
+                    "contact": {
+                      "anchor_uuid": "954f2210-a69f-5adf-a5d4-d0dcff6dcf91",
+                      "interior_margin_mm": 0.015001000000012255,
+                      "pass": true,
+                      "reason": "center strictly inside exact named anchor"
+                    },
+                    "pass": true,
+                    "scope": "Full-width swept capsule and sufficient named-anchor geometric contact only; no thermal/current/native acceptance.",
+                    "sweep": {
+                      "checked_margins_mm": {
+                        "board_edge": 24.35,
+                        "foreign_copper": 0.125000000000017,
+                        "keepout": null
+                      },
+                      "margin_scope": "Censored collision-screen values, not global minimum clearance. None means no potentially violating object within the complete bounding-box query; no infinite physical margin is claimed.",
+                      "nearest_foreign": "e3849182-f1cf-5965-915b-c0fe3342064c",
+                      "pass": true
+                    }
+                  }
+                },
+                {
+                  "end_mm": [
+                    128.75,
+                    208.3
+                  ],
+                  "start_mm": [
+                    129.5,
+                    208.3
+                  ],
+                  "validation": {
+                    "contact": {
+                      "anchor_uuid": "954f2210-a69f-5adf-a5d4-d0dcff6dcf91",
+                      "interior_margin_mm": 0.015001000000012255,
+                      "pass": true,
+                      "reason": "center strictly inside exact named anchor"
+                    },
+                    "pass": true,
+                    "scope": "Full-width swept capsule and sufficient named-anchor geometric contact only; no thermal/current/native acceptance.",
+                    "sweep": {
+                      "checked_margins_mm": {
+                        "board_edge": 24.1,
+                        "foreign_copper": 0.125000000000017,
+                        "keepout": null
+                      },
+                      "margin_scope": "Censored collision-screen values, not global minimum clearance. None means no potentially violating object within the complete bounding-box query; no infinite physical margin is claimed.",
+                      "nearest_foreign": "e3849182-f1cf-5965-915b-c0fe3342064c",
+                      "pass": true
+                    }
+                  }
+                }
+              ],
+              "foreign_clear_full_width_start_caps": 65,
+              "interior_start_centers": 65,
+              "layer": "B.Cu",
+              "scope": "Sufficient center-inside contact; full-width capsules, original foreign obstacles and same rules. Finite local templates only, not exhaustive off-grid/curved escape or whole-route proof.",
+              "straight_templates_checked": 5375,
+              "uuid": "954f2210-a69f-5adf-a5d4-d0dcff6dcf91",
+              "valid_edges_ending_in_new_through_via": 0,
+              "valid_swept_terminal_edges": 1709,
+              "verdict": "NO_LOCAL_EDGE_PLUS_VIA_CERTIFICATE_IN_THIS_FINITE_TEMPLATE_SET",
+              "whole_pad_start_certificate": {
+                "status": "NOT NEEDED: valid full-width start caps exist"
+              },
+              "width_mm": 0.3
+            },
+            {
+              "anchor": "U1114.6",
+              "best_start_cap": {
+                "minimum_checked_margin_mm": 0.5699999999999987,
+                "sweep": {
+                  "checked_margins_mm": {
+                    "board_edge": 28.544999999999995,
+                    "foreign_copper": 0.5699999999999987,
+                    "keepout": null
+                  },
+                  "margin_scope": "Censored collision-screen values, not global minimum clearance. None means no potentially violating object within the complete bounding-box query; no infinite physical margin is claimed.",
+                  "nearest_foreign": "d76b9493-34e5-5bae-9161-ee7a735ec4d7",
+                  "pass": true
+                },
+                "xy_mm": [
+                  133.195,
+                  225.99
+                ]
+              },
+              "edge_and_via_witnesses": [
+                {
+                  "edge": {
+                    "contact": {
+                      "anchor_uuid": "6e15d402-0eb9-568f-8091-ded54ac532ea",
+                      "interior_margin_mm": 0.06669229571923256,
+                      "pass": true,
+                      "reason": "center strictly inside exact named anchor"
+                    },
+                    "pass": true,
+                    "scope": "Full-width swept capsule and sufficient named-anchor geometric contact only; no thermal/current/native acceptance.",
+                    "sweep": {
+                      "checked_margins_mm": {
+                        "board_edge": 26.308359214000014,
+                        "foreign_copper": 0.22773987916860816,
+                        "keepout": null
+                      },
+                      "margin_scope": "Censored collision-screen values, not global minimum clearance. None means no potentially violating object within the complete bounding-box query; no infinite physical margin is claimed.",
+                      "nearest_foreign": "6c42d42f-a000-5b30-b196-bd71bc7cc080",
+                      "pass": true
+                    }
+                  },
+                  "end_mm": [
+                    130.958359214,
+                    226.470820393
+                  ],
+                  "start_mm": [
+                    132.3,
+                    225.8
+                  ],
+                  "via": {
+                    "checked_margins_mm": {
+                      "board_edge": 26.15835921400001,
+                      "existing_hole": 0.19281625132126284,
+                      "foreign_copper": 0.0777398791686082,
+                      "keepout": null,
+                      "smd": null
+                    },
+                    "margin_scope": "Censored collision-screen values, not global minimum clearance. None means no potentially violating object within the complete bounding-box query; no infinite physical margin is claimed.",
+                    "nearest_foreign": "6c42d42f-a000-5b30-b196-bd71bc7cc080",
+                    "pass": true,
+                    "scope": "New through-via disk on every copper layer; all holes and own/foreign SMD restrictions; no native acceptance."
+                  }
+                },
+                {
+                  "edge": {
+                    "contact": {
+                      "anchor_uuid": "6e15d402-0eb9-568f-8091-ded54ac532ea",
+                      "interior_margin_mm": 0.0800000000000125,
+                      "pass": true,
+                      "reason": "center strictly inside exact named anchor"
+                    },
+                    "pass": true,
+                    "scope": "Full-width swept capsule and sufficient named-anchor geometric contact only; no thermal/current/native acceptance.",
+                    "sweep": {
+                      "checked_margins_mm": {
+                        "board_edge": 26.308359214000014,
+                        "foreign_copper": 0.2984505572872589,
+                        "keepout": null
+                      },
+                      "margin_scope": "Censored collision-screen values, not global minimum clearance. None means no potentially violating object within the complete bounding-box query; no infinite physical margin is claimed.",
+                      "nearest_foreign": "6c42d42f-a000-5b30-b196-bd71bc7cc080",
+                      "pass": true
+                    }
+                  },
+                  "end_mm": [
+                    130.958359214,
+                    226.570820393
+                  ],
+                  "start_mm": [
+                    132.3,
+                    225.9
+                  ],
+                  "via": {
+                    "checked_margins_mm": {
+                      "board_edge": 26.15835921400001,
+                      "existing_hole": 0.2650310550564394,
+                      "foreign_copper": 0.036473683204486795,
+                      "keepout": null,
+                      "smd": null
+                    },
+                    "margin_scope": "Censored collision-screen values, not global minimum clearance. None means no potentially violating object within the complete bounding-box query; no infinite physical margin is claimed.",
+                    "nearest_foreign": "c5862a1f-d4f3-588d-a91d-5ed3cf3a0656",
+                    "pass": true,
+                    "scope": "New through-via disk on every copper layer; all holes and own/foreign SMD restrictions; no native acceptance."
+                  }
+                },
+                {
+                  "edge": {
+                    "contact": {
+                      "anchor_uuid": "6e15d402-0eb9-568f-8091-ded54ac532ea",
+                      "interior_margin_mm": 0.009999999999990905,
+                      "pass": true,
+                      "reason": "center strictly inside exact named anchor"
+                    },
+                    "pass": true,
+                    "scope": "Full-width swept capsule and sufficient named-anchor geometric contact only; no thermal/current/native acceptance.",
+                    "sweep": {
+                      "checked_margins_mm": {
+                        "board_edge": 26.408359214000008,
+                        "foreign_copper": 0.22773987916860827,
+                        "keepout": null
+                      },
+                      "margin_scope": "Censored collision-screen values, not global minimum clearance. None means no potentially violating object within the complete bounding-box query; no infinite physical margin is claimed.",
+                      "nearest_foreign": "6c42d42f-a000-5b30-b196-bd71bc7cc080",
+                      "pass": true
+                    }
+                  },
+                  "end_mm": [
+                    131.058359214,
+                    226.370820393
+                  ],
+                  "start_mm": [
+                    132.4,
+                    225.7
+                  ],
+                  "via": {
+                    "checked_margins_mm": {
+                      "board_edge": 26.258359214000006,
+                      "existing_hole": 0.051417741887538615,
+                      "foreign_copper": 0.0777398791686083,
+                      "keepout": null,
+                      "smd": null
+                    },
+                    "margin_scope": "Censored collision-screen values, not global minimum clearance. None means no potentially violating object within the complete bounding-box query; no infinite physical margin is claimed.",
+                    "nearest_foreign": "6c42d42f-a000-5b30-b196-bd71bc7cc080",
+                    "pass": true,
+                    "scope": "New through-via disk on every copper layer; all holes and own/foreign SMD restrictions; no native acceptance."
+                  }
+                }
+              ],
+              "edge_witnesses": [
+                {
+                  "end_mm": [
+                    132.05,
+                    225.8
+                  ],
+                  "start_mm": [
+                    132.3,
+                    225.8
+                  ],
+                  "validation": {
+                    "contact": {
+                      "anchor_uuid": "6e15d402-0eb9-568f-8091-ded54ac532ea",
+                      "interior_margin_mm": 0.06669229571923256,
+                      "pass": true,
+                      "reason": "center strictly inside exact named anchor"
+                    },
+                    "pass": true,
+                    "scope": "Full-width swept capsule and sufficient named-anchor geometric contact only; no thermal/current/native acceptance.",
+                    "sweep": {
+                      "checked_margins_mm": {
+                        "board_edge": 27.400000000000016,
+                        "foreign_copper": 0.2158910531638355,
+                        "keepout": null
+                      },
+                      "margin_scope": "Censored collision-screen values, not global minimum clearance. None means no potentially violating object within the complete bounding-box query; no infinite physical margin is claimed.",
+                      "nearest_foreign": "74929e9e-8190-5b8a-b74f-01171cdce2f5",
+                      "pass": true
+                    }
+                  }
+                },
+                {
+                  "end_mm": [
+                    131.8,
+                    225.8
+                  ],
+                  "start_mm": [
+                    132.3,
+                    225.8
+                  ],
+                  "validation": {
+                    "contact": {
+                      "anchor_uuid": "6e15d402-0eb9-568f-8091-ded54ac532ea",
+                      "interior_margin_mm": 0.06669229571923256,
+                      "pass": true,
+                      "reason": "center strictly inside exact named anchor"
+                    },
+                    "pass": true,
+                    "scope": "Full-width swept capsule and sufficient named-anchor geometric contact only; no thermal/current/native acceptance.",
+                    "sweep": {
+                      "checked_margins_mm": {
+                        "board_edge": 27.150000000000013,
+                        "foreign_copper": 0.1828250141873854,
+                        "keepout": null
+                      },
+                      "margin_scope": "Censored collision-screen values, not global minimum clearance. None means no potentially violating object within the complete bounding-box query; no infinite physical margin is claimed.",
+                      "nearest_foreign": "5d985f14-54b0-57bb-ac0d-ca6a360fcf6c",
+                      "pass": true
+                    }
+                  }
+                },
+                {
+                  "end_mm": [
+                    131.55,
+                    225.8
+                  ],
+                  "start_mm": [
+                    132.3,
+                    225.8
+                  ],
+                  "validation": {
+                    "contact": {
+                      "anchor_uuid": "6e15d402-0eb9-568f-8091-ded54ac532ea",
+                      "interior_margin_mm": 0.06669229571923256,
+                      "pass": true,
+                      "reason": "center strictly inside exact named anchor"
+                    },
+                    "pass": true,
+                    "scope": "Full-width swept capsule and sufficient named-anchor geometric contact only; no thermal/current/native acceptance.",
+                    "sweep": {
+                      "checked_margins_mm": {
+                        "board_edge": 26.900000000000013,
+                        "foreign_copper": 0.1254998001598404,
+                        "keepout": null
+                      },
+                      "margin_scope": "Censored collision-screen values, not global minimum clearance. None means no potentially violating object within the complete bounding-box query; no infinite physical margin is claimed.",
+                      "nearest_foreign": "5d985f14-54b0-57bb-ac0d-ca6a360fcf6c",
+                      "pass": true
+                    }
+                  }
+                }
+              ],
+              "foreign_clear_full_width_start_caps": 111,
+              "interior_start_centers": 113,
+              "layer": "B.Cu",
+              "scope": "Sufficient center-inside contact; full-width capsules, original foreign obstacles and same rules. Finite local templates only, not exhaustive off-grid/curved escape or whole-route proof.",
+              "straight_templates_checked": 8600,
+              "uuid": "6e15d402-0eb9-568f-8091-ded54ac532ea",
+              "valid_edges_ending_in_new_through_via": 11,
+              "valid_swept_terminal_edges": 1599,
+              "verdict": "LOCAL_GEOMETRIC_ACCESS_WITNESS_ONLY",
+              "whole_pad_start_certificate": {
+                "status": "NOT NEEDED: valid full-width start caps exist"
+              },
+              "width_mm": 0.3
+            }
+          ],
+          "kind": "signal",
+          "net": "X0A34A50EAB62B0C19178"
+        }
+      ],
+      "dump_sha256": "613a358b340962e2d1fb13cd898fe8a9558edcbf1a5d69cb93b6d2bd7629e97c",
+      "source_objects": {
+        "pads": 6121,
+        "tracks": 60512,
+        "vias": 4235
+      }
+    }
+  },
+  "cross_board_same_geometry_checks": [
+    {
+      "anchor": "C1135.1",
+      "end_mm": [
+        124.569669914,
+        214.230330086
+      ],
+      "other_board": "two-A",
+      "other_edge": {
+        "contact": {
+          "anchor_uuid": "77253764-a510-53c0-a715-6ed853e8bea0",
+          "interior_margin_mm": 0.0899999999999892,
+          "pass": true,
+          "reason": "center strictly inside exact named anchor"
+        },
+        "pass": true,
+        "scope": "Full-width swept capsule and sufficient named-anchor geometric contact only; no thermal/current/native acceptance.",
+        "sweep": {
+          "checked_margins_mm": {
+            "board_edge": 19.819669914,
+            "foreign_copper": 0.3199999999999932,
+            "keepout": null
+          },
+          "margin_scope": "Censored collision-screen values, not global minimum clearance. None means no potentially violating object within the complete bounding-box query; no infinite physical margin is claimed.",
+          "nearest_foreign": "fc5c1745-c938-5469-bc02-ff486afa125a",
+          "pass": true
+        }
+      },
+      "other_via": {
+        "checked_margins_mm": {
+          "board_edge": 19.769669913999998,
+          "existing_hole": 0.8864789905427488,
+          "foreign_copper": 0.00033108599999992494,
+          "keepout": null,
+          "smd": null
+        },
+        "margin_scope": "Censored collision-screen values, not global minimum clearance. None means no potentially violating object within the complete bounding-box query; no infinite physical margin is claimed.",
+        "nearest_foreign": "ff91789a-6167-554e-aac8-1fe337cdd6cd",
+        "pass": true,
+        "scope": "New through-via disk on every copper layer; all holes and own/foreign SMD restrictions; no native acceptance."
+      },
+      "same_local_geometry_passes_both": true,
+      "start_mm": [
+        125.1,
+        213.7
+      ],
+      "witness_board": "K1402"
+    },
+    {
+      "anchor": "C1135.1",
+      "end_mm": [
+        124.392893219,
+        214.407106781
+      ],
+      "other_board": "two-A",
+      "other_edge": {
+        "contact": {
+          "anchor_uuid": "77253764-a510-53c0-a715-6ed853e8bea0",
+          "interior_margin_mm": 0.0899999999999892,
+          "pass": true,
+          "reason": "center strictly inside exact named anchor"
+        },
+        "pass": true,
+        "scope": "Full-width swept capsule and sufficient named-anchor geometric contact only; no thermal/current/native acceptance.",
+        "sweep": {
+          "checked_margins_mm": {
+            "board_edge": 19.642893219000005,
+            "foreign_copper": 0.23007534436481658,
+            "keepout": null
+          },
+          "margin_scope": "Censored collision-screen values, not global minimum clearance. None means no potentially violating object within the complete bounding-box query; no infinite physical margin is claimed.",
+          "nearest_foreign": "e38af98b-5b6f-5363-98e2-4f5a629f5a51",
+          "pass": true
+        }
+      },
+      "other_via": {
+        "checked_margins_mm": {
+          "board_edge": 19.592893219000004,
+          "existing_hole": 0.7511676163256829,
+          "foreign_copper": 0.047056275111527046,
+          "keepout": null,
+          "smd": null
+        },
+        "margin_scope": "Censored collision-screen values, not global minimum clearance. None means no potentially violating object within the complete bounding-box query; no infinite physical margin is claimed.",
+        "nearest_foreign": "2e50b57d-da6e-5831-b92e-7c7d875c7796",
+        "pass": true,
+        "scope": "New through-via disk on every copper layer; all holes and own/foreign SMD restrictions; no native acceptance."
+      },
+      "same_local_geometry_passes_both": true,
+      "start_mm": [
+        125.1,
+        213.7
+      ],
+      "witness_board": "K1402"
+    },
+    {
+      "anchor": "C1135.1",
+      "end_mm": [
+        124.569669914,
+        214.330330086
+      ],
+      "other_board": "two-A",
+      "other_edge": {
+        "contact": {
+          "anchor_uuid": "77253764-a510-53c0-a715-6ed853e8bea0",
+          "interior_margin_mm": 0.0899999999999892,
+          "pass": true,
+          "reason": "center strictly inside exact named anchor"
+        },
+        "pass": true,
+        "scope": "Full-width swept capsule and sufficient named-anchor geometric contact only; no thermal/current/native acceptance.",
+        "sweep": {
+          "checked_margins_mm": {
+            "board_edge": 19.819669914,
+            "foreign_copper": 0.4188184698627869,
+            "keepout": null
+          },
+          "margin_scope": "Censored collision-screen values, not global minimum clearance. None means no potentially violating object within the complete bounding-box query; no infinite physical margin is claimed.",
+          "nearest_foreign": "e38af98b-5b6f-5363-98e2-4f5a629f5a51",
+          "pass": true
+        }
+      },
+      "other_via": {
+        "checked_margins_mm": {
+          "board_edge": 19.769669913999998,
+          "existing_hole": 0.7876093588820807,
+          "foreign_copper": 0.10033108599999424,
+          "keepout": null,
+          "smd": null
+        },
+        "margin_scope": "Censored collision-screen values, not global minimum clearance. None means no potentially violating object within the complete bounding-box query; no infinite physical margin is claimed.",
+        "nearest_foreign": "ff91789a-6167-554e-aac8-1fe337cdd6cd",
+        "pass": true,
+        "scope": "New through-via disk on every copper layer; all holes and own/foreign SMD restrictions; no native acceptance."
+      },
+      "same_local_geometry_passes_both": true,
+      "start_mm": [
+        125.1,
+        213.8
+      ],
+      "witness_board": "K1402"
+    },
+    {
+      "anchor": "C1111.2",
+      "end_mm": [
+        110.105572809,
+        227.188854382
+      ],
+      "other_board": "two-A",
+      "other_edge": {
+        "contact": {
+          "anchor_uuid": "6e370474-ba32-594b-8c28-3b65ab475ff1",
+          "interior_margin_mm": 0.09000000000000342,
+          "pass": true,
+          "reason": "center strictly inside exact named anchor"
+        },
+        "pass": true,
+        "scope": "Full-width swept capsule and sufficient named-anchor geometric contact only; no thermal/current/native acceptance.",
+        "sweep": {
+          "checked_margins_mm": {
+            "board_edge": 5.355572808999994,
+            "foreign_copper": 0.11039355616170221,
+            "keepout": null
+          },
+          "margin_scope": "Censored collision-screen values, not global minimum clearance. None means no potentially violating object within the complete bounding-box query; no infinite physical margin is claimed.",
+          "nearest_foreign": "7212932e-34ff-5ddd-b278-78eadbb89669",
+          "pass": true
+        }
+      },
+      "other_via": {
+        "checked_margins_mm": {
+          "board_edge": 5.305572808999994,
+          "existing_hole": 0.21039355616170224,
+          "foreign_copper": 0.06039355616170222,
+          "keepout": null,
+          "smd": null
+        },
+        "margin_scope": "Censored collision-screen values, not global minimum clearance. None means no potentially violating object within the complete bounding-box query; no infinite physical margin is claimed.",
+        "nearest_foreign": "7212932e-34ff-5ddd-b278-78eadbb89669",
+        "pass": true,
+        "scope": "New through-via disk on every copper layer; all holes and own/foreign SMD restrictions; no native acceptance."
+      },
+      "same_local_geometry_passes_both": true,
+      "start_mm": [
+        111.0,
+        225.4
+      ],
+      "witness_board": "K1402"
+    },
+    {
+      "anchor": "C1111.2",
+      "end_mm": [
+        110.205572809,
+        227.088854382
+      ],
+      "other_board": "two-A",
+      "other_edge": {
+        "contact": {
+          "anchor_uuid": "6e370474-ba32-594b-8c28-3b65ab475ff1",
+          "interior_margin_mm": 0.18999999999999773,
+          "pass": true,
+          "reason": "center strictly inside exact named anchor"
+        },
+        "pass": true,
+        "scope": "Full-width swept capsule and sufficient named-anchor geometric contact only; no thermal/current/native acceptance.",
+        "sweep": {
+          "checked_margins_mm": {
+            "board_edge": 5.455572809000003,
+            "foreign_copper": 0.24026925000249966,
+            "keepout": null
+          },
+          "margin_scope": "Censored collision-screen values, not global minimum clearance. None means no potentially violating object within the complete bounding-box query; no infinite physical margin is claimed.",
+          "nearest_foreign": "7212932e-34ff-5ddd-b278-78eadbb89669",
+          "pass": true
+        }
+      },
+      "other_via": {
+        "checked_margins_mm": {
+          "board_edge": 5.405572809000003,
+          "existing_hole": 0.34026925000249975,
+          "foreign_copper": 0.04451861375464844,
+          "keepout": null,
+          "smd": 0.04981263056206575
+        },
+        "margin_scope": "Censored collision-screen values, not global minimum clearance. None means no potentially violating object within the complete bounding-box query; no infinite physical margin is claimed.",
+        "nearest_foreign": "7a507328-2dd7-5f1d-aa43-6f9de8bd72b7",
+        "pass": true,
+        "scope": "New through-via disk on every copper layer; all holes and own/foreign SMD restrictions; no native acceptance."
+      },
+      "same_local_geometry_passes_both": true,
+      "start_mm": [
+        111.1,
+        225.3
+      ],
+      "witness_board": "K1402"
+    },
+    {
+      "anchor": "C1111.2",
+      "end_mm": [
+        110.205572809,
+        227.188854382
+      ],
+      "other_board": "two-A",
+      "other_edge": {
+        "contact": {
+          "anchor_uuid": "6e370474-ba32-594b-8c28-3b65ab475ff1",
+          "interior_margin_mm": 0.09000000000000342,
+          "pass": true,
+          "reason": "center strictly inside exact named anchor"
+        },
+        "pass": true,
+        "scope": "Full-width swept capsule and sufficient named-anchor geometric contact only; no thermal/current/native acceptance.",
+        "sweep": {
+          "checked_margins_mm": {
+            "board_edge": 5.455572809000003,
+            "foreign_copper": 0.2049532272204342,
+            "keepout": null
+          },
+          "margin_scope": "Censored collision-screen values, not global minimum clearance. None means no potentially violating object within the complete bounding-box query; no infinite physical margin is claimed.",
+          "nearest_foreign": "7212932e-34ff-5ddd-b278-78eadbb89669",
+          "pass": true
+        }
+      },
+      "other_via": {
+        "checked_margins_mm": {
+          "board_edge": 5.405572809000003,
+          "existing_hole": 0.3049532272204343,
+          "foreign_copper": 0.09126691673650594,
+          "keepout": null,
+          "smd": null
+        },
+        "margin_scope": "Censored collision-screen values, not global minimum clearance. None means no potentially violating object within the complete bounding-box query; no infinite physical margin is claimed.",
+        "nearest_foreign": "7a507328-2dd7-5f1d-aa43-6f9de8bd72b7",
+        "pass": true,
+        "scope": "New through-via disk on every copper layer; all holes and own/foreign SMD restrictions; no native acceptance."
+      },
+      "same_local_geometry_passes_both": true,
+      "start_mm": [
+        111.1,
+        225.4
+      ],
+      "witness_board": "K1402"
+    },
+    {
+      "anchor": "C1134.1",
+      "end_mm": [
+        136.460660172,
+        214.560660172
+      ],
+      "other_board": "K1402",
+      "other_edge": {
+        "contact": {
+          "anchor_uuid": "56a428c1-0a2c-5efd-b862-e39856d8a593",
+          "interior_margin_mm": 0.020000000000010235,
+          "pass": true,
+          "reason": "center strictly inside exact named anchor"
+        },
+        "pass": true,
+        "scope": "Full-width swept capsule and sufficient named-anchor geometric contact only; no thermal/current/native acceptance.",
+        "sweep": {
+          "checked_margins_mm": {
+            "board_edge": 30.65000000000001,
+            "foreign_copper": 0.12000000000000455,
+            "keepout": null
+          },
+          "margin_scope": "Censored collision-screen values, not global minimum clearance. None means no potentially violating object within the complete bounding-box query; no infinite physical margin is claimed.",
+          "nearest_foreign": "b510db36-0c12-5fa2-9d4a-679e46ecefd4",
+          "pass": true
+        }
+      },
+      "other_via": {
+        "checked_margins_mm": {
+          "board_edge": 31.660660171999993,
+          "existing_hole": -0.5552132266602405,
+          "foreign_copper": 0.035660171999978785,
+          "keepout": null,
+          "smd": 0.06328259949266207
+        },
+        "margin_scope": "Censored collision-screen values, not global minimum clearance. None means no potentially violating object within the complete bounding-box query; no infinite physical margin is claimed.",
+        "nearest_foreign": "6d6bfda3-bf80-58f7-a032-eb651ba61044",
+        "pass": false,
+        "scope": "New through-via disk on every copper layer; all holes and own/foreign SMD restrictions; no native acceptance."
+      },
+      "same_local_geometry_passes_both": false,
+      "start_mm": [
+        135.4,
+        213.5
+      ],
+      "witness_board": "two-A"
+    },
+    {
+      "anchor": "C1134.1",
+      "end_mm": [
+        136.460660172,
+        214.660660172
+      ],
+      "other_board": "K1402",
+      "other_edge": {
+        "contact": {
+          "anchor_uuid": "56a428c1-0a2c-5efd-b862-e39856d8a593",
+          "interior_margin_mm": 0.06999999999999318,
+          "pass": true,
+          "reason": "center strictly inside exact named anchor"
+        },
+        "pass": true,
+        "scope": "Full-width swept capsule and sufficient named-anchor geometric contact only; no thermal/current/native acceptance.",
+        "sweep": {
+          "checked_margins_mm": {
+            "board_edge": 30.65000000000001,
+            "foreign_copper": 0.21999999999999886,
+            "keepout": null
+          },
+          "margin_scope": "Censored collision-screen values, not global minimum clearance. None means no potentially violating object within the complete bounding-box query; no infinite physical margin is claimed.",
+          "nearest_foreign": "b510db36-0c12-5fa2-9d4a-679e46ecefd4",
+          "pass": true
+        }
+      },
+      "other_via": {
+        "checked_margins_mm": {
+          "board_edge": 31.660660171999993,
+          "existing_hole": -0.548028804919676,
+          "foreign_copper": 0.035660171999978785,
+          "keepout": null,
+          "smd": null
+        },
+        "margin_scope": "Censored collision-screen values, not global minimum clearance. None means no potentially violating object within the complete bounding-box query; no infinite physical margin is claimed.",
+        "nearest_foreign": "6d6bfda3-bf80-58f7-a032-eb651ba61044",
+        "pass": false,
+        "scope": "New through-via disk on every copper layer; all holes and own/foreign SMD restrictions; no native acceptance."
+      },
+      "same_local_geometry_passes_both": false,
+      "start_mm": [
+        135.4,
+        213.6
+      ],
+      "witness_board": "two-A"
+    },
+    {
+      "anchor": "C1134.1",
+      "end_mm": [
+        136.460660172,
+        214.760660172
+      ],
+      "other_board": "K1402",
+      "other_edge": {
+        "contact": {
+          "anchor_uuid": "56a428c1-0a2c-5efd-b862-e39856d8a593",
+          "interior_margin_mm": 0.06999999999999318,
+          "pass": true,
+          "reason": "center strictly inside exact named anchor"
+        },
+        "pass": true,
+        "scope": "Full-width swept capsule and sufficient named-anchor geometric contact only; no thermal/current/native acceptance.",
+        "sweep": {
+          "checked_margins_mm": {
+            "board_edge": 30.65000000000001,
+            "foreign_copper": 0.25113004713390386,
+            "keepout": null
+          },
+          "margin_scope": "Censored collision-screen values, not global minimum clearance. None means no potentially violating object within the complete bounding-box query; no infinite physical margin is claimed.",
+          "nearest_foreign": "e10bd18a-2f29-57a2-9ea9-4500d4ee240d",
+          "pass": true
+        }
+      },
+      "other_via": {
+        "checked_margins_mm": {
+          "board_edge": 31.660660171999993,
+          "existing_hole": -0.48733293970588054,
+          "foreign_copper": 0.035660171999978785,
+          "keepout": null,
+          "smd": null
+        },
+        "margin_scope": "Censored collision-screen values, not global minimum clearance. None means no potentially violating object within the complete bounding-box query; no infinite physical margin is claimed.",
+        "nearest_foreign": "6d6bfda3-bf80-58f7-a032-eb651ba61044",
+        "pass": false,
+        "scope": "New through-via disk on every copper layer; all holes and own/foreign SMD restrictions; no native acceptance."
+      },
+      "same_local_geometry_passes_both": false,
+      "start_mm": [
+        135.4,
+        213.7
+      ],
+      "witness_board": "two-A"
+    },
+    {
+      "anchor": "C1135.1",
+      "end_mm": [
+        125.1,
+        214.75
+      ],
+      "other_board": "K1402",
+      "other_edge": {
+        "contact": {
+          "anchor_uuid": "77253764-a510-53c0-a715-6ed853e8bea0",
+          "interior_margin_mm": 0.020000000000010232,
+          "pass": true,
+          "reason": "center strictly inside exact named anchor"
+        },
+        "pass": true,
+        "scope": "Full-width swept capsule and sufficient named-anchor geometric contact only; no thermal/current/native acceptance.",
+        "sweep": {
+          "checked_margins_mm": {
+            "board_edge": 20.349999999999994,
+            "foreign_copper": 0.12000000000000466,
+            "keepout": null
+          },
+          "margin_scope": "Censored collision-screen values, not global minimum clearance. None means no potentially violating object within the complete bounding-box query; no infinite physical margin is claimed.",
+          "nearest_foreign": "fc5c1745-c938-5469-bc02-ff486afa125a",
+          "pass": true
+        }
+      },
+      "other_via": {
+        "checked_margins_mm": {
+          "board_edge": 20.299999999999994,
+          "existing_hole": -0.6499999999999886,
+          "foreign_copper": 0.17500000000001154,
+          "keepout": null,
+          "smd": null
+        },
+        "margin_scope": "Censored collision-screen values, not global minimum clearance. None means no potentially violating object within the complete bounding-box query; no infinite physical margin is claimed.",
+        "nearest_foreign": "e1856b96-caf8-58ea-b7d2-6e3f3386a32a",
+        "pass": false,
+        "scope": "New through-via disk on every copper layer; all holes and own/foreign SMD restrictions; no native acceptance."
+      },
+      "same_local_geometry_passes_both": false,
+      "start_mm": [
+        125.1,
+        213.5
+      ],
+      "witness_board": "two-A"
+    },
+    {
+      "anchor": "C1135.1",
+      "end_mm": [
+        125.1,
+        215.0
+      ],
+      "other_board": "K1402",
+      "other_edge": {
+        "contact": {
+          "anchor_uuid": "77253764-a510-53c0-a715-6ed853e8bea0",
+          "interior_margin_mm": 0.020000000000010232,
+          "pass": true,
+          "reason": "center strictly inside exact named anchor"
+        },
+        "pass": true,
+        "scope": "Full-width swept capsule and sufficient named-anchor geometric contact only; no thermal/current/native acceptance.",
+        "sweep": {
+          "checked_margins_mm": {
+            "board_edge": 20.349999999999994,
+            "foreign_copper": 0.05440037453176272,
+            "keepout": null
+          },
+          "margin_scope": "Censored collision-screen values, not global minimum clearance. None means no potentially violating object within the complete bounding-box query; no infinite physical margin is claimed.",
+          "nearest_foreign": "3f64aefa-11c6-5b01-b804-1c0b0c88b993",
+          "pass": true
+        }
+      },
+      "other_via": {
+        "checked_margins_mm": {
+          "board_edge": 20.299999999999994,
+          "existing_hole": -0.5000000000000113,
+          "foreign_copper": 0.00440037453176273,
+          "keepout": null,
+          "smd": null
+        },
+        "margin_scope": "Censored collision-screen values, not global minimum clearance. None means no potentially violating object within the complete bounding-box query; no infinite physical margin is claimed.",
+        "nearest_foreign": "3f64aefa-11c6-5b01-b804-1c0b0c88b993",
+        "pass": false,
+        "scope": "New through-via disk on every copper layer; all holes and own/foreign SMD restrictions; no native acceptance."
+      },
+      "same_local_geometry_passes_both": false,
+      "start_mm": [
+        125.1,
+        213.5
+      ],
+      "witness_board": "two-A"
+    },
+    {
+      "anchor": "C1135.1",
+      "end_mm": [
+        124.652786405,
+        214.394427191
+      ],
+      "other_board": "K1402",
+      "other_edge": {
+        "contact": {
+          "anchor_uuid": "77253764-a510-53c0-a715-6ed853e8bea0",
+          "interior_margin_mm": 0.020000000000010232,
+          "pass": true,
+          "reason": "center strictly inside exact named anchor"
+        },
+        "pass": true,
+        "scope": "Full-width swept capsule and sufficient named-anchor geometric contact only; no thermal/current/native acceptance.",
+        "sweep": {
+          "checked_margins_mm": {
+            "board_edge": 19.902786405,
+            "foreign_copper": 0.12000000000000466,
+            "keepout": null
+          },
+          "margin_scope": "Censored collision-screen values, not global minimum clearance. None means no potentially violating object within the complete bounding-box query; no infinite physical margin is claimed.",
+          "nearest_foreign": "fc5c1745-c938-5469-bc02-ff486afa125a",
+          "pass": true
+        }
+      },
+      "other_via": {
+        "checked_margins_mm": {
+          "board_edge": 19.852786405,
+          "existing_hole": -0.09627050514905783,
+          "foreign_copper": 0.16442819099999612,
+          "keepout": null,
+          "smd": null
+        },
+        "margin_scope": "Censored collision-screen values, not global minimum clearance. None means no potentially violating object within the complete bounding-box query; no infinite physical margin is claimed.",
+        "nearest_foreign": "ff91789a-6167-554e-aac8-1fe337cdd6cd",
+        "pass": false,
+        "scope": "New through-via disk on every copper layer; all holes and own/foreign SMD restrictions; no native acceptance."
+      },
+      "same_local_geometry_passes_both": false,
+      "start_mm": [
+        125.1,
+        213.5
+      ],
+      "witness_board": "two-A"
+    },
+    {
+      "anchor": "C1111.2",
+      "end_mm": [
+        110.105572809,
+        227.188854382
+      ],
+      "other_board": "K1402",
+      "other_edge": {
+        "contact": {
+          "anchor_uuid": "6e370474-ba32-594b-8c28-3b65ab475ff1",
+          "interior_margin_mm": 0.09000000000000342,
+          "pass": true,
+          "reason": "center strictly inside exact named anchor"
+        },
+        "pass": true,
+        "scope": "Full-width swept capsule and sufficient named-anchor geometric contact only; no thermal/current/native acceptance.",
+        "sweep": {
+          "checked_margins_mm": {
+            "board_edge": 5.355572808999994,
+            "foreign_copper": 0.11039355616170221,
+            "keepout": null
+          },
+          "margin_scope": "Censored collision-screen values, not global minimum clearance. None means no potentially violating object within the complete bounding-box query; no infinite physical margin is claimed.",
+          "nearest_foreign": "7212932e-34ff-5ddd-b278-78eadbb89669",
+          "pass": true
+        }
+      },
+      "other_via": {
+        "checked_margins_mm": {
+          "board_edge": 5.305572808999994,
+          "existing_hole": 0.21039355616170224,
+          "foreign_copper": 0.06039355616170222,
+          "keepout": null,
+          "smd": null
+        },
+        "margin_scope": "Censored collision-screen values, not global minimum clearance. None means no potentially violating object within the complete bounding-box query; no infinite physical margin is claimed.",
+        "nearest_foreign": "7212932e-34ff-5ddd-b278-78eadbb89669",
+        "pass": true,
+        "scope": "New through-via disk on every copper layer; all holes and own/foreign SMD restrictions; no native acceptance."
+      },
+      "same_local_geometry_passes_both": true,
+      "start_mm": [
+        111.0,
+        225.4
+      ],
+      "witness_board": "two-A"
+    },
+    {
+      "anchor": "C1111.2",
+      "end_mm": [
+        110.205572809,
+        227.088854382
+      ],
+      "other_board": "K1402",
+      "other_edge": {
+        "contact": {
+          "anchor_uuid": "6e370474-ba32-594b-8c28-3b65ab475ff1",
+          "interior_margin_mm": 0.18999999999999773,
+          "pass": true,
+          "reason": "center strictly inside exact named anchor"
+        },
+        "pass": true,
+        "scope": "Full-width swept capsule and sufficient named-anchor geometric contact only; no thermal/current/native acceptance.",
+        "sweep": {
+          "checked_margins_mm": {
+            "board_edge": 5.455572809000003,
+            "foreign_copper": 0.24026925000249966,
+            "keepout": null
+          },
+          "margin_scope": "Censored collision-screen values, not global minimum clearance. None means no potentially violating object within the complete bounding-box query; no infinite physical margin is claimed.",
+          "nearest_foreign": "7212932e-34ff-5ddd-b278-78eadbb89669",
+          "pass": true
+        }
+      },
+      "other_via": {
+        "checked_margins_mm": {
+          "board_edge": 5.405572809000003,
+          "existing_hole": 0.34026925000249975,
+          "foreign_copper": 0.04451861375464844,
+          "keepout": null,
+          "smd": 0.04981263056206575
+        },
+        "margin_scope": "Censored collision-screen values, not global minimum clearance. None means no potentially violating object within the complete bounding-box query; no infinite physical margin is claimed.",
+        "nearest_foreign": "7a507328-2dd7-5f1d-aa43-6f9de8bd72b7",
+        "pass": true,
+        "scope": "New through-via disk on every copper layer; all holes and own/foreign SMD restrictions; no native acceptance."
+      },
+      "same_local_geometry_passes_both": true,
+      "start_mm": [
+        111.1,
+        225.3
+      ],
+      "witness_board": "two-A"
+    },
+    {
+      "anchor": "C1111.2",
+      "end_mm": [
+        110.205572809,
+        227.188854382
+      ],
+      "other_board": "K1402",
+      "other_edge": {
+        "contact": {
+          "anchor_uuid": "6e370474-ba32-594b-8c28-3b65ab475ff1",
+          "interior_margin_mm": 0.09000000000000342,
+          "pass": true,
+          "reason": "center strictly inside exact named anchor"
+        },
+        "pass": true,
+        "scope": "Full-width swept capsule and sufficient named-anchor geometric contact only; no thermal/current/native acceptance.",
+        "sweep": {
+          "checked_margins_mm": {
+            "board_edge": 5.455572809000003,
+            "foreign_copper": 0.2049532272204342,
+            "keepout": null
+          },
+          "margin_scope": "Censored collision-screen values, not global minimum clearance. None means no potentially violating object within the complete bounding-box query; no infinite physical margin is claimed.",
+          "nearest_foreign": "7212932e-34ff-5ddd-b278-78eadbb89669",
+          "pass": true
+        }
+      },
+      "other_via": {
+        "checked_margins_mm": {
+          "board_edge": 5.405572809000003,
+          "existing_hole": 0.3049532272204343,
+          "foreign_copper": 0.09126691673650594,
+          "keepout": null,
+          "smd": null
+        },
+        "margin_scope": "Censored collision-screen values, not global minimum clearance. None means no potentially violating object within the complete bounding-box query; no infinite physical margin is claimed.",
+        "nearest_foreign": "7a507328-2dd7-5f1d-aa43-6f9de8bd72b7",
+        "pass": true,
+        "scope": "New through-via disk on every copper layer; all holes and own/foreign SMD restrictions; no native acceptance."
+      },
+      "same_local_geometry_passes_both": true,
+      "start_mm": [
+        111.1,
+        225.4
+      ],
+      "witness_board": "two-A"
+    },
+    {
+      "anchor": "U1114.6",
+      "end_mm": [
+        130.958359214,
+        226.470820393
+      ],
+      "other_board": "K1402",
+      "other_edge": {
+        "contact": {
+          "anchor_uuid": "6e15d402-0eb9-568f-8091-ded54ac532ea",
+          "interior_margin_mm": 0.06669229571923256,
+          "pass": true,
+          "reason": "center strictly inside exact named anchor"
+        },
+        "pass": true,
+        "scope": "Full-width swept capsule and sufficient named-anchor geometric contact only; no thermal/current/native acceptance.",
+        "sweep": {
+          "checked_margins_mm": {
+            "board_edge": 26.308359214000014,
+            "foreign_copper": 0.22773987916860816,
+            "keepout": null
+          },
+          "margin_scope": "Censored collision-screen values, not global minimum clearance. None means no potentially violating object within the complete bounding-box query; no infinite physical margin is claimed.",
+          "nearest_foreign": "6c42d42f-a000-5b30-b196-bd71bc7cc080",
+          "pass": true
+        }
+      },
+      "other_via": {
+        "checked_margins_mm": {
+          "board_edge": 26.15835921400001,
+          "existing_hole": 0.19281625132126284,
+          "foreign_copper": -0.6173900279351525,
+          "keepout": null,
+          "smd": null
+        },
+        "margin_scope": "Censored collision-screen values, not global minimum clearance. None means no potentially violating object within the complete bounding-box query; no infinite physical margin is claimed.",
+        "nearest_foreign": "824fadd1-c28c-5361-bd3c-3d1e0c23a5a8",
+        "pass": false,
+        "scope": "New through-via disk on every copper layer; all holes and own/foreign SMD restrictions; no native acceptance."
+      },
+      "same_local_geometry_passes_both": false,
+      "start_mm": [
+        132.3,
+        225.8
+      ],
+      "witness_board": "two-A"
+    },
+    {
+      "anchor": "U1114.6",
+      "end_mm": [
+        130.958359214,
+        226.570820393
+      ],
+      "other_board": "K1402",
+      "other_edge": {
+        "contact": {
+          "anchor_uuid": "6e15d402-0eb9-568f-8091-ded54ac532ea",
+          "interior_margin_mm": 0.0800000000000125,
+          "pass": true,
+          "reason": "center strictly inside exact named anchor"
+        },
+        "pass": true,
+        "scope": "Full-width swept capsule and sufficient named-anchor geometric contact only; no thermal/current/native acceptance.",
+        "sweep": {
+          "checked_margins_mm": {
+            "board_edge": 26.308359214000014,
+            "foreign_copper": 0.2984505572872589,
+            "keepout": null
+          },
+          "margin_scope": "Censored collision-screen values, not global minimum clearance. None means no potentially violating object within the complete bounding-box query; no infinite physical margin is claimed.",
+          "nearest_foreign": "6c42d42f-a000-5b30-b196-bd71bc7cc080",
+          "pass": true
+        }
+      },
+      "other_via": {
+        "checked_margins_mm": {
+          "board_edge": 26.15835921400001,
+          "existing_hole": 0.2650310550564394,
+          "foreign_copper": -0.6881007060538024,
+          "keepout": null,
+          "smd": null
+        },
+        "margin_scope": "Censored collision-screen values, not global minimum clearance. None means no potentially violating object within the complete bounding-box query; no infinite physical margin is claimed.",
+        "nearest_foreign": "824fadd1-c28c-5361-bd3c-3d1e0c23a5a8",
+        "pass": false,
+        "scope": "New through-via disk on every copper layer; all holes and own/foreign SMD restrictions; no native acceptance."
+      },
+      "same_local_geometry_passes_both": false,
+      "start_mm": [
+        132.3,
+        225.9
+      ],
+      "witness_board": "two-A"
+    },
+    {
+      "anchor": "U1114.6",
+      "end_mm": [
+        131.058359214,
+        226.370820393
+      ],
+      "other_board": "K1402",
+      "other_edge": {
+        "contact": {
+          "anchor_uuid": "6e15d402-0eb9-568f-8091-ded54ac532ea",
+          "interior_margin_mm": 0.009999999999990905,
+          "pass": true,
+          "reason": "center strictly inside exact named anchor"
+        },
+        "pass": true,
+        "scope": "Full-width swept capsule and sufficient named-anchor geometric contact only; no thermal/current/native acceptance.",
+        "sweep": {
+          "checked_margins_mm": {
+            "board_edge": 26.408359214000008,
+            "foreign_copper": 0.22773987916860827,
+            "keepout": null
+          },
+          "margin_scope": "Censored collision-screen values, not global minimum clearance. None means no potentially violating object within the complete bounding-box query; no infinite physical margin is claimed.",
+          "nearest_foreign": "6c42d42f-a000-5b30-b196-bd71bc7cc080",
+          "pass": true
+        }
+      },
+      "other_via": {
+        "checked_margins_mm": {
+          "board_edge": 26.258359214000006,
+          "existing_hole": 0.051417741887538615,
+          "foreign_copper": -0.4759686716978517,
+          "keepout": null,
+          "smd": null
+        },
+        "margin_scope": "Censored collision-screen values, not global minimum clearance. None means no potentially violating object within the complete bounding-box query; no infinite physical margin is claimed.",
+        "nearest_foreign": "824fadd1-c28c-5361-bd3c-3d1e0c23a5a8",
+        "pass": false,
+        "scope": "New through-via disk on every copper layer; all holes and own/foreign SMD restrictions; no native acceptance."
+      },
+      "same_local_geometry_passes_both": false,
+      "start_mm": [
+        132.4,
+        225.7
+      ],
+      "witness_board": "two-A"
+    }
+  ],
+  "manifest_sha256": "4766e57af16f3ae50c9bd6edad099c9595984c8dd3eda0154a5433a19270550b",
+  "method_input": "29140d4e19d526eed3a02a73c33f8ce4219c78f0",
+  "spec_sha256": "e17c8f01b0fe08164cee514d41b3f2bfea2a2fe23da181bcb4c3dae479404c99",
+  "status": "SOURCE-ONLY SUFFICIENT LOCAL GEOMETRY VALIDATION; NO NATIVE ADMISSION, SEARCH, COPPER OR ACCEPTANCE",
+  "template_contract": {
+    "budget_changed": false,
+    "clearance_changed": false,
+    "common_bounds_mm": [
+      104.76,
+      202.23,
+      142.23,
+      232.29
+    ],
+    "directions": [
+      [
+        1.0,
+        0.0
+      ],
+      [
+        -1.0,
+        0.0
+      ],
+      [
+        0.0,
+        1.0
+      ],
+      [
+        0.0,
+        -1.0
+      ],
+      [
+        0.7071067811865475,
+        0.7071067811865475
+      ],
+      [
+        0.7071067811865475,
+        -0.7071067811865475
+      ],
+      [
+        -0.7071067811865475,
+        0.7071067811865475
+      ],
+      [
+        -0.7071067811865475,
+        -0.7071067811865475
+      ],
+      [
+        0.8944271909999159,
+        0.4472135954999579
+      ],
+      [
+        0.8944271909999159,
+        -0.4472135954999579
+      ],
+      [
+        -0.8944271909999159,
+        0.4472135954999579
+      ],
+      [
+        -0.8944271909999159,
+        -0.4472135954999579
+      ],
+      [
+        0.4472135954999579,
+        0.8944271909999159
+      ],
+      [
+        0.4472135954999579,
+        -0.8944271909999159
+      ],
+      [
+        -0.4472135954999579,
+        0.8944271909999159
+      ],
+      [
+        -0.4472135954999579,
+        -0.8944271909999159
+      ]
+    ],
+    "include_original_pad_center": true,
+    "lengths_mm": [
+      0.25,
+      0.5,
+      0.75,
+      1.0,
+      1.25,
+      1.5,
+      2.0
+    ],
+    "raster_or_router_modified": false,
+    "start_grid_mm": 0.1,
+    "trace_or_via_width_changed": false
+  },
+  "tool_sha256": {
+    "check_saved.py": "8612f2f17c58b7075d49605de555718c5d642456ebe557c82f3a6e49c46120cb",
+    "exact_access.py": "271125f120b8c8c66a5a83e6f26510c9e3a06dd2c7f8e4a33c3da024759de015"
+  },
+  "versions": {
+    "numpy": "2.2.6",
+    "scipy": "1.15.3",
+    "shapely": "2.1.2"
+  }
+}

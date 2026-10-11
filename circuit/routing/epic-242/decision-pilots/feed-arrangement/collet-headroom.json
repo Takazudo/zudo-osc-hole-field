@@ -1,0 +1,319 @@
+{
+  "accepted": false,
+  "axis_sensitivity": [
+    {
+      "C1_needed_to_cover_entire_axis_cone": 0.0,
+      "axis_cone_deg": 0.0,
+      "diagnostic_preparation_bound_pass": true,
+      "diagnostic_preparation_remaining_mm": 5.871418870771379,
+      "diagnostic_shape_radius_bound_mm": 27.17544910821491,
+      "diagnostic_shape_radius_bound_pass": true,
+      "local_board_bound_pass": true,
+      "local_board_gap_mm": 0.46718823486090405,
+      "within_current_C1_requirement": true
+    },
+    {
+      "C1_needed_to_cover_entire_axis_cone": 0.01,
+      "axis_cone_deg": 0.5729673448571527,
+      "diagnostic_preparation_bound_pass": true,
+      "diagnostic_preparation_remaining_mm": 5.085133059479091,
+      "diagnostic_shape_radius_bound_mm": 26.63465767096143,
+      "diagnostic_shape_radius_bound_pass": true,
+      "local_board_bound_pass": true,
+      "local_board_gap_mm": 0.44796603482335345,
+      "within_current_C1_requirement": true
+    },
+    {
+      "C1_needed_to_cover_entire_axis_cone": 0.01745240643728351,
+      "axis_cone_deg": 1.0,
+      "diagnostic_preparation_bound_pass": false,
+      "diagnostic_preparation_remaining_mm": 4.499160915317162,
+      "diagnostic_shape_radius_bound_mm": 26.23517241698068,
+      "diagnostic_shape_radius_bound_pass": true,
+      "local_board_bound_pass": true,
+      "local_board_gap_mm": 0.4337145488841017,
+      "within_current_C1_requirement": false
+    },
+    {
+      "C1_needed_to_cover_entire_axis_cone": 0.03489949670250097,
+      "axis_cone_deg": 2.0,
+      "diagnostic_preparation_bound_pass": false,
+      "diagnostic_preparation_remaining_mm": 3.127320962929545,
+      "diagnostic_shape_radius_bound_mm": 25.31172912922981,
+      "diagnostic_shape_radius_bound_pass": false,
+      "local_board_bound_pass": true,
+      "local_board_gap_mm": 0.4005961247537702,
+      "within_current_C1_requirement": false
+    },
+    {
+      "C1_needed_to_cover_entire_axis_cone": 0.0697564737441253,
+      "axis_cone_deg": 4.0,
+      "diagnostic_preparation_bound_pass": false,
+      "diagnostic_preparation_remaining_mm": 0.3865663156925194,
+      "diagnostic_shape_radius_bound_mm": 23.516356905129946,
+      "diagnostic_shape_radius_bound_pass": false,
+      "local_board_bound_pass": true,
+      "local_board_gap_mm": 0.3354653035146205,
+      "within_current_C1_requirement": false
+    },
+    {
+      "C1_needed_to_cover_entire_axis_cone": 0.11666902787535771,
+      "axis_cone_deg": 6.699901395283699,
+      "diagnostic_preparation_bound_pass": false,
+      "diagnostic_preparation_remaining_mm": -3.302101252794415,
+      "diagnostic_shape_radius_bound_mm": 21.20428567888751,
+      "diagnostic_shape_radius_bound_pass": false,
+      "local_board_bound_pass": true,
+      "local_board_gap_mm": 0.2500000000000005,
+      "within_current_C1_requirement": false
+    },
+    {
+      "C1_needed_to_cover_entire_axis_cone": 0.12186934340514748,
+      "axis_cone_deg": 7.0,
+      "diagnostic_preparation_bound_pass": false,
+      "diagnostic_preparation_remaining_mm": -3.7109946843260815,
+      "diagnostic_shape_radius_bound_mm": 20.955354318540177,
+      "diagnostic_shape_radius_bound_pass": false,
+      "local_board_bound_pass": false,
+      "local_board_gap_mm": 0.24068205985147678,
+      "within_current_C1_requirement": false
+    }
+  ],
+  "closure_sensitivity": [
+    {
+      "meets_residual_criterion": true,
+      "remaining_gap_mm": 0.5979660348233535,
+      "total_closure_mm": 0.2
+    },
+    {
+      "meets_residual_criterion": true,
+      "remaining_gap_mm": 0.44796603482335345,
+      "total_closure_mm": 0.35000000000000003
+    },
+    {
+      "meets_residual_criterion": true,
+      "remaining_gap_mm": 0.3479660348233535,
+      "total_closure_mm": 0.45
+    },
+    {
+      "meets_residual_criterion": true,
+      "remaining_gap_mm": 0.25,
+      "total_closure_mm": 0.5479660348233535
+    },
+    {
+      "meets_residual_criterion": false,
+      "remaining_gap_mm": 0.24,
+      "total_closure_mm": 0.5579660348233535
+    }
+  ],
+  "counterexamples": {
+    "spending_full_shared_headroom_on_two_closures": {
+      "combined_remaining_gap_mm": 0.052033965176646546,
+      "combined_total_closure_mm": 0.7459320696467069,
+      "each_individually_reaches_its_one_variable_boundary": true,
+      "meets_residual_criterion": false
+    },
+    "unmodeled_0p25mm_extension_toward_board": {
+      "meets_residual_criterion": false,
+      "remaining_gap_mm": 0.19796603482335345,
+      "scope": "An illustrative exterior feature outside the cylinder, not an authorized added flange or a claim that such a feature exists."
+    }
+  },
+  "coupled_C1_diagnostics": {
+    "current_requirement": 0.01,
+    "cut_and_preparation_certificate_boundary": 0.01744173494009016,
+    "local_collet_clearance_only_boundary": 0.11666902787535771,
+    "scope": "Other source values remain fixed. A local angular clearance pass does not authorize a larger C1 error. Radius and preparation are conditional certificate bounds, not proof that a failing bound implies actual physical failure. Existing C1 requirement is unchanged.",
+    "shape_radius_certificate_boundary": 0.023598182500314202
+  },
+  "current_local_board_bound": {
+    "allocated_total_closure_mm": 0.35000000000000003,
+    "maximum_total_closure_at_current_geometry_mm": 0.5479660348233535,
+    "remaining_gap_mm": 0.44796603482335345,
+    "required_residual_mm": 0.25,
+    "single_shared_headroom_mm": 0.19796603482335345
+  },
+  "gates": {
+    "actual_measurements": false,
+    "all_100_trim_access": false,
+    "complete_new_feed_collision_sweep": false,
+    "conditional_local_headroom_arithmetic": true,
+    "native": false,
+    "physical_fit": false,
+    "qualified_process_margin": false,
+    "requirement_changes_authorized": false,
+    "source_bindings_verified": true,
+    "supplier_capability": false
+  },
+  "input_sha256": {
+    "collet-clearance.json": "e717b4dde85394d230fa005a302adeed814410f8929193a66664138684c828e8",
+    "collet_clearance.py": "9037f883e66bc6856abaa8f83dd5f2e1184a7a2fea5f388a08d1f68ddbcc44f0",
+    "process-budget.md": "85af1cc851cd77f683db1de2a381de54af857115c82cb9902b84c84cbeb10512",
+    "reconciled-contract.json": "01b77387f568a5b246c7e33e635e8d867f09b23ea200d13dd0c17db251ada30d",
+    "robust-curve.json": "cfab1993ecd661054927e8c855470f16618bf04607b12af89cc6ba4099e7dfda",
+    "source-lock.json": "a5f6ce05cafb3c0ec2966a1794d9f892ba43e7e26b390b878f6c0316887e0345"
+  },
+  "one_closure_at_a_time": [
+    {
+      "current_mm": 0.1,
+      "name": "board_warp",
+      "one_at_a_time_boundary_mm": 0.2979660348233535,
+      "other_allocations_held_fixed": true,
+      "qualified_capability": false
+    },
+    {
+      "current_mm": 0.05,
+      "name": "outer_profile",
+      "one_at_a_time_boundary_mm": 0.24796603482335344,
+      "other_allocations_held_fixed": true,
+      "qualified_capability": false
+    },
+    {
+      "current_mm": 0.1,
+      "name": "registration",
+      "one_at_a_time_boundary_mm": 0.2979660348233535,
+      "other_allocations_held_fixed": true,
+      "qualified_capability": false
+    },
+    {
+      "current_mm": 0.05,
+      "name": "retention",
+      "one_at_a_time_boundary_mm": 0.24796603482335344,
+      "other_allocations_held_fixed": true,
+      "qualified_capability": false
+    },
+    {
+      "current_mm": 0.05,
+      "name": "thermal",
+      "one_at_a_time_boundary_mm": 0.24796603482335344,
+      "other_allocations_held_fixed": true,
+      "qualified_capability": false
+    }
+  ],
+  "one_variable_local_boundaries": {
+    "axis_half_cone_fail_boundary_deg": 6.699901395283699,
+    "axis_half_cone_fail_boundary_rad": 0.11693533890666263,
+    "axis_half_cone_pass_boundary_deg": 6.699901395283699,
+    "axis_half_cone_pass_boundary_rad": 0.11693533890666262,
+    "diagnostic_only": true,
+    "maximum_outer_radius_mm": 2.2345275906648885,
+    "minimum_anchor_height_mm": 1.7520339651766466,
+    "minimum_grip_start_mm": 0.6307823643992722,
+    "numerics": "Double-precision diagnostic boundaries, not directed-rounding interval certificates. Degree conversion may merge adjacent radian values. Acceptance requires the original tolerances, not operation at these limiting values.",
+    "scope": "Hold all other local inputs fixed. These boundaries are not accepted dimensions and do not update the curve, cut, source-clearance, bore or carrier proofs. Changing a dimension requires all dependent checks again."
+  },
+  "qualification_ledger": [
+    {
+      "classification": "Proposed dimensional acceptance",
+      "id": "measured_anchor_height",
+      "proposed_value": [
+        1.95,
+        2.05
+      ],
+      "qualification_evidence": null,
+      "qualified": false,
+      "required_evidence": "Inspect assembled height in the measured board-face datum, with measurement uncertainty inside the interval."
+    },
+    {
+      "classification": "Geometric model assumption",
+      "id": "flat_ended_outer_cylinder",
+      "proposed_value": {
+        "grip_mm": [
+          1.0,
+          2.5
+        ],
+        "radius_mm": 2.0
+      },
+      "qualification_evidence": null,
+      "qualified": false,
+      "required_evidence": "Inspect complete exterior containment. Lugs, fasteners, end caps and arms outside this cylinder require separate solids and clearance checks."
+    },
+    {
+      "classification": "Conditional directional assumption",
+      "id": "collet_axis_alignment",
+      "proposed_value": {
+        "half_cone_deg": 0.5729673448571527
+      },
+      "qualification_evidence": null,
+      "qualified": false,
+      "required_evidence": "Measure bore-axis alignment to the straight gripped wire and registered datum. Position inspection alone does not establish the angular bound."
+    },
+    {
+      "classification": "Proposed machining acceptance",
+      "id": "outer_profile",
+      "proposed_value": 0.05,
+      "qualification_evidence": null,
+      "qualified": false,
+      "required_evidence": "Measure all noncontact exterior surfaces and end planes; no supplier capability is inferred."
+    },
+    {
+      "classification": "Proposed assembled-board acceptance",
+      "id": "board_warp",
+      "proposed_value": 0.1,
+      "qualification_evidence": null,
+      "qualified": false,
+      "required_evidence": "Measure the complete relevant board surface relative to datum A under the intended assembly condition."
+    },
+    {
+      "classification": "Proposed datum-location acceptance",
+      "id": "registration",
+      "proposed_value": 0.1,
+      "qualification_evidence": null,
+      "qualified": false,
+      "required_evidence": "Inspect the A/B/C registration after assembly. Loose retention holes are not precision datums; no cancellation credit is taken."
+    },
+    {
+      "classification": "Proposed service/load displacement bound",
+      "id": "retention",
+      "proposed_value": 0.05,
+      "qualification_evidence": null,
+      "qualified": false,
+      "required_evidence": "Qualify repeated service and applied loads for the selected material, grip and attachment. Static CAD does not establish retention."
+    },
+    {
+      "classification": "Proposed operating-condition displacement bound",
+      "id": "thermal",
+      "proposed_value": 0.05,
+      "qualification_evidence": null,
+      "qualified": false,
+      "required_evidence": "Qualify relative displacement across the specified operating conditions after selecting actual materials and load paths."
+    },
+    {
+      "classification": "Conditional continuous-shape requirements",
+      "id": "wire_C0_C1_C2",
+      "proposed_value": {
+        "C0_mm": 0.2,
+        "C1": 0.01,
+        "C2_per_mm": 0.002
+      },
+      "qualification_evidence": null,
+      "qualified": false,
+      "required_evidence": "Qualify the continuous shape including collet exits and strain transitions. Position samples alone are insufficient; material length remains fixed through withdrawal."
+    },
+    {
+      "classification": "Proposed factory-process acceptance",
+      "id": "new_cut_and_preparation",
+      "proposed_value": {
+        "cut_mm": [
+          84.5,
+          85.0
+        ],
+        "other_preparation_min_mm": 4.5
+      },
+      "qualification_evidence": null,
+      "qualified": false,
+      "required_evidence": "Inspect cut lengths and validate stripping/solder preparation on the actual assembly. The geometric path already spends both bridges and C1 length growth."
+    },
+    {
+      "classification": "Design criterion",
+      "id": "residual_clearance",
+      "proposed_value": 0.25,
+      "qualification_evidence": null,
+      "qualified": false,
+      "required_evidence": "A proposed service-clearance criterion, not a regulatory insulation rating or manufactured-process capability."
+    }
+  ],
+  "source_epoch": "29140d4e19d526eed3a02a73c33f8ce4219c78f0",
+  "status": "CONDITIONAL SENSITIVITY AND QUALIFICATION LEDGER; NO REQUIREMENT RELAXATION OR PROCESS QUALIFICATION",
+  "tool_sha256": "5005f4fde36771e5a7e0823713a3fabd15875c2042cf2d68c56d8ac3c6d41aed"
+}
