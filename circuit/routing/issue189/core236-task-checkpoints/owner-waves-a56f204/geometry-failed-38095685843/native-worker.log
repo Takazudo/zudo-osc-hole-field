@@ -1,0 +1,39 @@
+23:41:59: Error: Directory '/.cache' couldn't be created (error 13: Permission denied)
+23:41:59: Error: Directory '/.local' couldn't be created (error 13: Permission denied)
+23:41:59: Error: Directory '/.local' couldn't be created (error 13: Permission denied)
+23:41:59: Error: Directory '/.local' couldn't be created (error 13: Permission denied)
+23:41:59: Error: Directory '/.local' couldn't be created (error 13: Permission denied)
+23:41:59: Error: Directory '/.local' couldn't be created (error 13: Permission denied)
+23:41:59: Error: Directory '/.local' couldn't be created (error 13: Permission denied)
+23:41:59: Error: Directory '/.local' couldn't be created (error 13: Permission denied)
+23:41:59: Error: Directory '/.local' couldn't be created (error 13: Permission denied)
+23:41:59: Error: Directory '/.config' couldn't be created (error 13: Permission denied)
+23:41:59: Error: Directory '/.config/kicad/10.0/colors' couldn't be created (error 2: No such file or directory)
+23:41:59: Error: Directory '/.config/kicad/10.0' couldn't be created (error 2: No such file or directory)
+23:41:59: Error: Directory '/.config/kicad/10.0' couldn't be created (error 2: No such file or directory)
+23:41:59: Error: Directory '/.config/kicad/10.0' couldn't be created (error 2: No such file or directory)
+23:42:06: Error: Directory '/.config' couldn't be created (error 13: Permission denied)
+Traceback (most recent call last):
+  File "/repo/scripts/pcbgen/core_audit_geometry.py", line 59, in <module>
+    a.atomic(args.output,snapshot(json.loads(Path(args.manifest).read_bytes()),args.before,args.after,a.policy(Path(__file__).resolve().parents[2])))
+                         ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/repo/scripts/pcbgen/core_audit_geometry.py", line 25, in snapshot
+    if len(zones)!=1 or zones[0].IsRuleArea() or list(zones[0].GetLayerSet().Seq())!=[lid] or zones[0].GetNetname()!='AGND':raise ValueError('zone UUID/layer/net identity changed')
+                        ^^^^^^^^^^^^^^^^^^^
+AttributeError: 'ZONE' object has no attribute 'IsRuleArea'. Did you mean: 'GetIsRuleArea'?
+Traceback (most recent call last):
+  File "/repo/scripts/pcbgen/core_audit_pilot.py", line 251, in <module>
+    if __name__=='__main__':main()
+                            ~~~~^^
+  File "/repo/scripts/pcbgen/core_audit_pilot.py", line 242, in main
+    worker(args.packet,args.output,args.mode)
+    ~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/repo/scripts/pcbgen/core_audit_pilot.py", line 197, in worker
+    return bootstrap(m,'/inputs/before/osc-core.kicad_pcb','/inputs/after/osc-core.kicad_pcb',bindings,output,kernel)
+  File "/repo/scripts/pcbgen/core_audit_geometry.py", line 53, in bootstrap
+    subprocess.run([sys.executable,__file__,'--manifest',str(manifest),'--before',str(before),'--after',str(after),'--output',str(path)],check=True)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.13/subprocess.py", line 577, in run
+    raise CalledProcessError(retcode, process.args,
+                             output=stdout, stderr=stderr)
+subprocess.CalledProcessError: Command '['/usr/bin/python3', '/repo/scripts/pcbgen/core_audit_geometry.py', '--manifest', '/output/shard-0/manifest-input.json', '--before', '/inputs/before/osc-core.kicad_pcb', '--after', '/inputs/after/osc-core.kicad_pcb', '--output', '/output/shard-0/independent-reload-0.json']' returned non-zero exit status 1.

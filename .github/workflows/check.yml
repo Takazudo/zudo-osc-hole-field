@@ -100,6 +100,20 @@ jobs:
       - name: Run native main-ground connectivity regression
         run: bash scripts/kicad/run.sh python3 scripts/pcbgen/power_locality_native_regression.py
 
+      - name: Check pinned bootstrap binding contract without DRC
+        timeout-minutes: 5
+        run: |
+          source scripts/kicad/pin.env
+          name="core189-api-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"
+          trap 'docker rm -f "$name" >/dev/null 2>&1 || true' EXIT
+          timeout --signal=INT --kill-after=15s 180s docker run --rm --name "$name" \
+            --platform linux/amd64 --network none --read-only \
+            --memory 1g --memory-swap 1g --cpus 1 --pids-limit 64 \
+            --tmpfs /tmp:rw,mode=1777,size=64m --user "$(id -u):$(id -g)" \
+            --env HOME=/tmp --env XDG_CONFIG_HOME=/tmp/config --env XDG_CACHE_HOME=/tmp/cache \
+            --volume "$PWD:/repo:ro" --workdir /repo "$KICAD_IMAGE" \
+            python3 scripts/pcbgen/core_audit_geometry_api_smoke.py
+
       - name: Check update-in-place PCB sync
         run: bash scripts/pcbgen/test_fixture.sh
 
