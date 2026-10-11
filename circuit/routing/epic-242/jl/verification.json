@@ -15,7 +15,7 @@
     },
     {
       "command": "/workspace/jl250-venv/bin/python circuit/routing/epic-242/jl/test_diagnostic.py /workspace/jl250-cache/jl117.zip",
-      "result": "PASS14tests,6.025seconds"
+      "result": "PASS21tests,16.106seconds; independent repeat21PASS18.449seconds"
     },
     {
       "command": "/workspace/jl250-venv/bin/python circuit/routing/epic-242/jl/native_diagnostic.py /workspace/jl250-cache/jl117.zip --label 250-u8202-firstvia-a1",
@@ -26,8 +26,8 @@
       "result": "PASS validator/generatedcomponentpages/preflight/models31/previews31/TypeScript"
     },
     {
-      "command": "python3 -m py_compile circuit/routing/epic-242/jl/prepare_diagnostic.py circuit/routing/epic-242/jl/native_diagnostic.py circuit/routing/epic-242/jl/test_diagnostic.py",
-      "result": "PASS"
+      "command": "python3 -m py_compile circuit/routing/epic-242/jl/*.py",
+      "result": "PASS all source modules"
     },
     {
       "command": "git diff --check",
@@ -35,16 +35,25 @@
     },
     {
       "command": "git ls-remote origin refs/heads/main refs/heads/integration/epic-242-core-routing",
-      "result": "main65cefd41fc39e064d38319115ad96016a1c6b71c;integration40aa1cec58190487dc70aa5048a366e29a6b32a1"
+      "result": "Historical initial check retained; newer integration inspected read-only at3b00fd45857990bcc2769e150a4e009388c442fc; no shared tool adoption/rebase"
+    },
+    {
+      "command": "/workspace/jl250-venv/bin/python -m unittest discover -s circuit/routing/epic-242/jl -p test_admission.py",
+      "result": "PASS5 tests; exact hex slice/direct parent, worker/aggregate cap and expired-deadline refusal; no native"
+    },
+    {
+      "command": "Current reviewed scripts/kicad/native_resource_guard.py --plan with README command arguments (isolated source copy)",
+      "result": "PASS command parse only;600seconds6GiBworker12GiBaggregate/no swap; no Docker/cgroup/native reads or execution"
     }
   ],
   "epoch": "epic242-e0",
   "independent_source_review": {
-    "native": "NOT RUN; no slot/adoption",
+    "claim_limit": "Bounded conservative source masks, poured zones ignored; no physical impossibility, routing improvement or native acceptance",
+    "native": "NOT RUN; no slots/search/adoption",
     "reviewer": "jl_source_review",
-    "scope": "bounded first-via semantics, ownership/source binding, no-copper baseline/fresh and failclosed native runner; no coupledrouting-method selection or operational guard qualification",
-    "status": "PASS; no source correctness blocker",
-    "tests": "14focused tests and1883frozeninput verifier independently PASS"
+    "scope": "Exact effective blocker rules/objects and overlapping site seals; distinct original component goal hypothesis; duplicate track row identity preserved; current guarded admission reconciliation",
+    "status": "PASS refined source; no remaining source correctness blockers",
+    "tests": "21focused tests PASS18.449s;5admissiontests PASS;1883frozeninputs PASS"
   },
   "issue": 250,
   "native": {
@@ -59,11 +68,12 @@
     "proposed_seconds": 600,
     "proposed_swap_bytes": 0,
     "proposed_whole_worker_memory_bytes": 6442450944,
-    "qualification": "Guard is unwired/unqualified and Dockerhook unapplied; failclosed. A reviewed source/hook change requires impacted seals re-prepared.",
+    "qualification": "Current guard source/scaled Docker proof implemented at newer integration; full operational systemd6/12GiB path unqualified. Historical branch retains oldwrapper. Execute refuses mismatched current seals; assembledhead/currenttoolregen-review/parentcommand+slot required.",
     "regen_all": "NOT RUN; native invoked by script; parent prohibition overrides initial regeneration requirement",
     "required_free_floor_bytes": 2147483648,
     "routing": "NOT RUN"
   },
+  "newer_integration_inspected_sha": "3b00fd45857990bcc2769e150a4e009388c442fc",
   "observed_setup_limits": [
     "Default pnpmstore inaccessible; dependencies installed with isolated /workspace/jl250-pnpm-store, no protected-path escalation",
     "Host router --help initially missing Shapely; isolatedvenv installed source-only dependencies; realCLI inspected",
@@ -72,20 +82,54 @@
   ],
   "original_parent_sha": "1da1909846dc3255888ecd36c88cee9737c85834",
   "output_sha256": {
-    "circuit/routing/epic-242/jl/README.md": "71b57bc83b8fa2e08ab4ff482c430ae24050ea809e72e4f961d7f468c29ce783",
+    "circuit/routing/epic-242/jl/README.md": "4a69da395d8c004c0b0a73ae9c3b00cb86ba5077117a4ef6172602a272bdad1b",
+    "circuit/routing/epic-242/jl/attribution.py": "d0ebc0456e897e5c9d50164d71dc8aefc364de8666fbd7a4c216bdff587220ee",
     "circuit/routing/epic-242/jl/cases.json": "2d7cdb7f2d720dda8e88e3b4c60b0a49d8557bfd1ea171af8fd112c24061ca22",
-    "circuit/routing/epic-242/jl/diagnostic-plan.json": "f7894bf1152cdb18745a50b94b541146276d6af20cf893e137b73755fccb0b3b",
-    "circuit/routing/epic-242/jl/native_diagnostic.py": "dbb0006ed4bc9c7e2aa7ee5b0d3db7a52827f76a2763fed4ae11a2844e6cf3a4",
+    "circuit/routing/epic-242/jl/diagnostic-plan.json": "f4c39f0e89a8ac322034506ebbeeb7659b96dc5d01c6aaf03a4863dc94576fc9",
+    "circuit/routing/epic-242/jl/native_diagnostic.py": "ac0c5259da631152e55860bd39ef5bc42b71fffe17ef6f9d2ac535fc1b758c22",
     "circuit/routing/epic-242/jl/no-copper-proposal.json": "6fa069df78fbec05da8172a68fd5bb93ab75f55d0886cbc1b7ed859176596e6a",
-    "circuit/routing/epic-242/jl/prepare_diagnostic.py": "da47cf9f0c80a5542bdd0cdc99f863f925f6f5cd202cbca7446fe06a79cceee6",
+    "circuit/routing/epic-242/jl/prepare_diagnostic.py": "e275b812f38ba0193f9c51baa8e08d7538a62973b9ddc935d686bc74e1bd8692",
     "circuit/routing/epic-242/jl/prior-rejections.json": "db69077917d0621cab30af95ff796fb96470120c516d26e7c53481713a3a77c5",
     "circuit/routing/epic-242/jl/requirements-source.txt": "37edcdf0acc2029d995600bba88d90d0228b863088ca350c1df5abbce84a1c4b",
-    "circuit/routing/epic-242/jl/test_diagnostic.py": "5ea9cee741e53ccb54ee2cdb41e794353875dd3a5a87322102ab0525fb2a70e8"
+    "circuit/routing/epic-242/jl/test_admission.py": "d9d9d73c31c1b548ebfcd4034bf73cea02ead5c417bf81d79833f3fb75d1a057",
+    "circuit/routing/epic-242/jl/test_diagnostic.py": "eb008c31fab88510146daded6fa4292963975b47f8b654d5b2ff1d7171b69aeb",
+    "circuit/routing/epic-242/jl/tooling-reconciliation.json": "ce0e6ee9cb405ad7fde77bd195d918c5f7212956fb0eb850e000540018dd5c77"
   },
   "parent_sha": "40aa1cec58190487dc70aa5048a366e29a6b32a1",
   "preserved_routed_inputs": {
     "handoff_source": "All canonical bytes reproducible from immutable40aa1cec and accepted GitHub artifacts; local archive not solehandoff",
     "local_preservation_archive_sha256": "08afba0fa235b41e58e3f50bd41974eac2c8f40b4cb94f9f5cd1c353343ecb1e"
+  },
+  "previous_source_commit": "220772f844afab9d87f01a4598a360b52534310e",
+  "refined_diagnostic": {
+    "claim_limit": "Optimistic mask-only flood; overlap counts nonadditive; zones ignored; no cuts/rule relaxation/search/native",
+    "existing_component_goal": {
+      "computational_window_mm": 100,
+      "exact_row_anchors_in_allocation": 14,
+      "goal_cells": 14818,
+      "original_member_count": 1389,
+      "reachable_goal_cells": 0,
+      "same_allocation": true,
+      "through_copper_anchors": 1
+    },
+    "first_via_windows": [
+      {
+        "contributing_rule_object_rows": 90,
+        "frontier_sites": 668,
+        "reachable_cells": 11020,
+        "rejected_via_sites": 8230,
+        "unattributed_sites": 0,
+        "window_mm": 3
+      },
+      {
+        "contributing_rule_object_rows": 128,
+        "frontier_sites": 988,
+        "reachable_cells": 15807,
+        "rejected_via_sites": 13017,
+        "unattributed_sites": 0,
+        "window_mm": 6
+      }
+    ]
   },
   "remaining": [
     "117complete nativeopenedges remain103signal+14AGND",
@@ -107,6 +151,12 @@
     "elapsed_seconds": 3.8987365469997712,
     "measurement": "Python time.monotonic + resource.RUSAGE_CHILDREN; source geometry only",
     "peak_rss_kib": 208124
+  },
+  "source_refinement_resources": {
+    "elapsed_seconds": 13.94884994999984,
+    "exit_code": 0,
+    "measurement": "Python time.monotonic + resource.RUSAGE_CHILDREN; source geometry only",
+    "peak_rss_kib": 232964
   },
   "startup": "Owner session-specific optional-profile waiver communicated by parent; denied startup commands/protectedpaths not retried; no successful loader claim",
   "status": "NEGATIVE_DIAGNOSTIC_READY; ISSUE INCOMPLETE; NATIVE NOT RUN",

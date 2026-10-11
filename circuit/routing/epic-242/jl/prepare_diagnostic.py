@@ -2,6 +2,7 @@
 import argparse
 import copy
 import hashlib
+import inspect
 import json
 import sys
 import zipfile
@@ -132,15 +133,23 @@ def probe_masks(dump):
     from scripts.pcbgen import grid_router as router
     probe = copy.deepcopy(dump)
     probe['islands'] = {'AGND': [target_members(dump)]}
+    from attribution import explain, existing_anchors
     observed = []
+    anchor_observation = None
     # Hold allocation, lattice, obstacles, rules and budget fixed. Only the
     # computational first-via search window changes from 3 to 6 mm.
     bounds = [232.7, 147.25, 248.1, 161.3]
-    for window in (3, 6):
+    for window in (3, 6, 100):
         masks = []
 
         def observe(*args):
-            masks.append(first_via_mask(*args))
+            context = inspect.currentframe().f_back.f_locals
+            result = first_via_mask(*args)
+            if window == 100:
+                result['existing_anchor_hypothesis'] = existing_anchors(context, args[0], args[2], dump, target_members(dump))
+            else:
+                result['attribution'] = explain(context, args[0], args[1], args[2])
+            masks.append(result)
             return None, 0
 
         with patch.object(router, 'astar', observe), patch.object(
@@ -156,7 +165,10 @@ def probe_masks(dump):
         if cuts or any(r['path'] is not None for r in results) or len(masks) != 1:
             raise ValueError('mask-only diagnostic unexpectedly routed or removed copper')
         # Mock-generated router failure reasons are not measured search evidence.
-        observed.append({'plane_window_mm': window, **masks[0]})
+        if window == 100:
+            anchor_observation = masks[0]['existing_anchor_hypothesis']
+        else:
+            observed.append({'plane_window_mm': window, **masks[0]})
     return {'status': 'SOURCE MASK DIAGNOSTIC; NO SEARCH / NO COPPER / NATIVE NOT RUN',
             'target': list(TARGET), 'target_uuids': sorted(target_members(dump)),
             'bounds_mm': bounds, 'res_mm': 0.025, 'track_width_mm': 0.3,
@@ -166,6 +178,8 @@ def probe_masks(dump):
                               else 'first-via availability; path and native legality unresolved',
             'scope': 'bounded conservative router geometry only; not physical impossibility or native acceptance',
             'observations': observed,
+            'existing_anchor_hypothesis': anchor_observation,
+            'zone_pour_scope': 'Poured zones ignored by router mask: no poured-zone blocker/connectivity attribution',
             'dependencies': {'numpy': numpy.__version__, 'scipy': scipy.__version__, 'shapely': shapely.__version__}}
 
 
@@ -193,7 +207,7 @@ def products(archive):
     inputs = {p: sha((ROOT / p).read_bytes()) for p in TOOLS}
     inputs.update({str(p.relative_to(ROOT)): sha(p.read_bytes()) for p in (
         BASELINE / 'jl-endpoints.json', BASELINE / 'accepted-artifacts.json',
-        BASELINE / 'harness-contract.json', HERE / 'prior-rejections.json')})
+        BASELINE / 'harness-contract.json', HERE / 'prior-rejections.json', HERE / 'attribution.py')})
     plan = {'status': 'BOUNDED NEGATIVE SOURCE DIAGNOSTIC READY; NATIVE NOT RUN',
             'issue': 250, 'parent_sha': PARENT, 'original_parent_sha': ORIGINAL_PARENT,
             'epoch': 'epic242-e0', 'board': BOARD, 'adopted': False,

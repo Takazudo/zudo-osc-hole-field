@@ -18,12 +18,14 @@ def require_admission(slot, label):
     slice_name = os.environ.get('EPIC242_NATIVE_SLICE', '')
     if not worker or not slice_name or not os.environ.get('EPIC242_NATIVE_DEADLINE'):
         raise ValueError('qualified parent-reviewed bounded guard required; no direct execution')
-    if slice_name != 'epic242-' + worker + '.slice' or any(
-            c not in 'abcdefghijklmnopqrstuvwxyz0123456789-' for c in worker):
+    if (not 1 <= len(worker) <= 61 or worker[0] not in 'abcdefghijklmnopqrstuvwxyz0123456789'
+            or any(c not in 'abcdefghijklmnopqrstuvwxyz0123456789-' for c in worker)
+            or slice_name != 'epic242-w' + worker.encode('ascii').hex() + '.slice'):
         raise ValueError('invalid bounded worker identity')
     lines = Path('/proc/self/cgroup').read_text().splitlines()
     unified = [line[3:] for line in lines if line.startswith('0::')]
-    if len(unified) != 1 or slice_name not in Path(unified[0]).parts:
+    expected = '/epic242.slice/' + slice_name
+    if len(unified) != 1 or not unified[0].startswith(expected + '/'):
         raise ValueError('driver is outside the assigned cgroupv2 slice')
     relative = Path(unified[0].lstrip('/'))
     slice_path = next((p for p in (relative, *relative.parents) if p.name == slice_name), None)
@@ -33,12 +35,20 @@ def require_admission(slot, label):
     if (cgroup / 'memory.max').read_text().strip() != '6442450944' or (
             cgroup / 'memory.swap.max').read_text().strip() != '0':
         raise ValueError('whole-worker 6 GiB/no-swap cap is not enforced')
+    parent = Path('/sys/fs/cgroup/epic242.slice')
+    if (parent / 'memory.max').read_text().strip() != '12884901888' or (
+            parent / 'memory.swap.max').read_text().strip() != '0':
+        raise ValueError('aggregate 12 GiB/no-swap cap is not enforced')
     if time.time() >= int(os.environ['EPIC242_NATIVE_DEADLINE']):
         raise ValueError('native deadline expired')
 
 
 def execute(archive, label, slot):
     require_admission(slot, label)
+    tooling = read(HERE / 'tooling-reconciliation.json')
+    for name, expected in tooling['reviewed_current_tool_sha256'].items():
+        if sha((ROOT / name).read_bytes()) != expected:
+            raise ValueError('current reviewed wrapper/guard seal unavailable; historical input remains source-only')
     # Fail on source drift before importing anything that can launch KiCad.
     prepare(archive, HERE, check=True)
     retained, endpoints, _ = authenticate(archive)

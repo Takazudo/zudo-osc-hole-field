@@ -31,8 +31,14 @@ Hold the same 15.4 × 14.05 mm allocation, 0.025 mm lattice, 0.3 mm AGND width, 
 
 | Window | Legal via cells anywhere in window | F.Cu source cells | Optimistically reachable cells | Reachable first-via cells |
 | --- | ---: | ---: | ---: | ---: |
-| 3 mm | 1 | 2,790 | 10,104 | 0 |
+| 3 mm | 1 | 2,790 | 11,020 | 0 |
 | 6 mm | 958 | 2,790 | 15,807 | 0 |
+
+`diagnostic-plan.json` now attributes every measured F.Cu frontier and reachable rejected-via cell to the applied source mask rules. The 3 mm observation has 668 frontier cells and 8,230 reachable rejected-via cells; the 6 mm observation has 988 and 13,017 respectively. Both have zero unattributed cells. Each contributing pad/track/via row records its exact UUID, object type, source row index and row digest, applied threshold, rail growth and raster half-diagonal. Site counts, deterministic complete row-major site digests, and the first five exact cell/coordinate samples are retained. Counts overlap: attribution does not select cuts or establish a minimum blocker set. Duplicate track UUIDs remain separate rows. Keepouts use their retained names/row digests because the dump has no keepout UUID; the computational fence has no fabricated UUID.
+
+The rules include SMD-pad via prohibition (including same-net pads), same-layer foreign copper for tracks, foreign copper on any layer for vias, existing drills, keepouts, and the computational allocation fence/board-edge distance. Rail copper grows by 0.05 mm before conservative rasterization; obstacle rasterization adds a half-diagonal and distance thresholds add another half-diagonal plus 0.01 mm. **Poured zones are ignored by these router masks.** This attribution makes no claim about poured-zone obstruction, poured connectivity, exact continuous geometry or native legality.
+
+A separate bounded no-cut hypothesis changes the goal from a new via to an existing **distinct original AGND component**, including existing through-copper anchors. It keeps the same allocation, lattice, width, clearance, via/drill sizes, growth and fixed copper. Its computational window is enlarged to 100 mm and clipped to the full allocation; this is a separate full-allocation mask observation, not the original 3/6 mm observations. Optimistic F.Cu flood uses `free OR source OR distinct-component goal`, allowing the goal's existing copper as the router does. The existing 1,389-member AGND component contributes in-allocation anchors but has zero reachable goal cells. Full original member lists/counts/digests and each exact anchor row's UUID/type/geometry digest/through-copper status are retained in the plan. Reaching the source's own component is excluded and would not count as progress. No A*, copper removal or electrical rule relaxation runs in this hypothesis.
 
 Both are bounded negatives: the problem precedes A* expansion budget on this tested no-cut fanout. Neither proves physical impossibility, a board-wide disconnected domain, or an absence of other legal layer/escape methods. The intercepted router's synthetic `search_exhausted` message is deliberately not published as measured search evidence. `no-copper-proposal.json` uses the existing grid format with zero cuts/additions; it is an identity diagnostic, never a copper improvement.
 
@@ -45,12 +51,13 @@ Provision source dependencies in an isolated workspace venv using `requirements-
 ```bash
 /workspace/jl250-venv/bin/python circuit/routing/epic-242/jl/prepare_diagnostic.py /workspace/jl250-cache/jl117.zip --check
 /workspace/jl250-venv/bin/python circuit/routing/epic-242/jl/test_diagnostic.py /workspace/jl250-cache/jl117.zip
+/workspace/jl250-venv/bin/python -m unittest discover -s circuit/routing/epic-242/jl -p test_admission.py
 /workspace/jl250-venv/bin/python circuit/routing/epic-242/jl/native_diagnostic.py /workspace/jl250-cache/jl117.zip --label 250-u8202-firstvia-a1
 python3 circuit/routing/epic-242/baseline/verify_inputs.py
 pnpm circuit:check
 ```
 
-Fourteen focused tests pass: full archive/input/context/pose/group binding, same-count changed membership, unexpected target copper, disconnected legal-via sites, unavailable starting layers, deterministic no-search regeneration and missing guard/admission, actual cgroup membership and whole-worker memory-cap refusal. Initial source generation took 3.90 seconds / 208,124 KiB peak RSS. All output/tool/input hashes and final checks are recorded in `verification.json`. Circuit contract validation is manual inventory only: 68 lines, zero declared placements, no schematic/placement binding; pin-asset check performed.
+Twenty-one focused diagnostic tests and five admission tests pass: full archive/input/context/pose/group binding, same-count changed membership, unexpected target copper, disconnected legal-via sites, unavailable starting layers, deterministic no-search regeneration and missing guard/admission, actual direct hex-encoded cgroup membership and whole-worker/aggregate memory-cap refusal, plus same-net SMD prohibition, all-layer via clearance, growth/raster thresholds, repeated-UUID blocker/anchor row identity, computational fence identity and distinct existing-component goal semantics. Initial source generation took 3.90 seconds / 208,124 KiB peak RSS; the attribution/full-allocation refinement is measured separately in `verification.json`. All output/tool/input hashes and final checks are recorded in `verification.json`. Circuit contract validation is manual inventory only: 68 lines, zero declared placements, no schematic/placement binding; pin-asset check performed.
 
 Real CLI help was inspected. `local_repair_pilot.py` accepts only `--board` and `--coupled`, with fixed issue189 plans; there is no `--plan`. `route_shards.py merge` can write canonical copper and is never invoked here. The lane does not replace the routing engine or exchange formats.
 
@@ -61,17 +68,17 @@ Only if the parent finds an optional fresh baseline observation useful, admit **
 Proposed command shape, to be pinned to the reviewed **actual lane head** at admission:
 
 ```bash
-python3 circuit/routing/epic-242/baseline/native_guard_proposal.py \
+python3 scripts/kicad/native_resource_guard.py \
   --admission-id PARENT_ASSIGNED_SLOT --worker jl250-firstvia-a1 \
-  --sha REVIEWED_LANE_HEAD --seconds 600 \
-  --hook-sha256 REVIEWED_INSTALLED_HOOK_SHA256 \
-  --evidence /workspace/jl250-cache/native-guard-a1.json \
+  --sha REVIEWED_ASSEMBLED_HEAD --seconds 600 \
+  --hook-sha256 8631e1222942b8396bf566c88deaed0e287234146c4adb1afa9aa87d0d1055a5 \
+  --evidence PRIVATE_NEW_GUARD_RECEIPT \
   -- /workspace/jl250-venv/bin/python circuit/routing/epic-242/jl/native_diagnostic.py \
   /workspace/jl250-cache/jl117.zip --label 250-u8202-firstvia-a1 \
   --native-slot PARENT_ASSIGNED_SLOT --execute
 ```
 
-This is not executable authorization. Current guard is an unwired, operationally unqualified proposal and Docker hook is unapplied, so it fails closed. The parent must first qualify the existing Linux/systemd/local-Docker/version/cgroup/death/cleanup guard, preserve the 6 GiB whole-worker cap/no swap, 2 GiB free floor and 600-second deadline, and respect at most two native workers/12 GiB globally. Its current guard proposal excludes other native work during its admission. The parent must also provide any applicable existing managed-machine heavy guard through an accessible approved path; denied home paths are never read. No bypass or fallback is allowed.
+This is not executable authorization. Newer integration tooling was inspected read-only through `3b00fd45857990bcc2769e150a4e009388c442fc` and is sealed in `tooling-reconciliation.json`; historical lane input/tool proofs remain pinned to `40aa1cec`. The current resource-guard source and scaled Docker kernel proof are implemented, but the full Linux/systemd/local-Docker 6 GiB worker / 12 GiB aggregate operational path remains unqualified and no slot is assigned. The current wrapper is not present on this historical lane branch. The assembled current-integration head, regenerated/reviewed tool bindings, operational qualification, exact parent slot and command review are all required before execution. Preserve no swap, the 2 GiB free floor, 600-second deadline and at most two workers globally. The parent must also provide any applicable existing managed-machine heavy guard through an accessible approved path; denied home paths are never read. No bypass or fallback is allowed.
 
 A reviewed hook change/new integration input requires impact review and re-preparation of this lane's tool seals before admission; do not rewrite hashes to force old evidence. Native script refuses missing slot, missing bounded-guard environment, source drift and existing workspace labels. The exact head/hook/slot are admission inputs, presently unassigned. The command is optional topology evidence, not a cause remedy or a proposal to replay PR233. Prefer the retained negative unless stronger review needs current native observation. Full regeneration, full warning audit, native routing improvement, independent fresh candidate acceptance and canonical adoption remain NOT RUN.
 
