@@ -89,3 +89,29 @@ and cap preservation, new-file/fixture refusal cases, the repository's existing
 hosted/local dispatch tests and independent review. Actual runtime hard-limit
 enforcement is inherited historical evidence until a newly admitted execution
 records it again; provisioning alone does not prove new native membership.
+
+## Provisioning-only measured result
+
+[Run38146298766](https://github.com/Takazudo/zudo-osc-hole-field/actions/runs/38146298766)
+passed on orchestration84339974f72e77f6bcf4e0edb72eb5b6b7356005, source driver
+59b0c2c21ccf2ded58cd2031e4a4289d546feca3, immutable method29140d4e.
+Actual Python was `/opt/hostedtoolcache/Python/3.11.17/x64/bin/python`, with
+numpy2.2.6/scipy1.15.3/shapely2.1.2. All14 method hashes matched before and after;
+the checkout remained tracked-clean. Hosted dispatch, systemd PID1, cgroupv2
+memory, sudo and local Docker memory/swap capability checks passed. The official
+image digest/ID above were authenticated after successful pull-client exit0.
+
+The101 preparation samples recorded minimum available memory15,282,429,952bytes
+and maximum combined backend use3,128,696,832bytes. Those are sampled observations,
+not a new native hard-limit qualification. **No native worker, KiCad probe or
+container was started. No fixture/route/apply/settle/fresh/audit ran.**
+
+[Artifact11705061761](https://github.com/Takazudo/zudo-osc-hole-field/actions/runs/38146298766/artifacts/11705061761)
+is10,371bytes, SHA256
+`d9e24a42e4d173cf56f7fc7f5e2eaead8a8677c7d0636ab3774718185e109fea`.
+The downloaded full ZIP passed local SHA/size/CRC and all7 member hashes.
+`host.json`, `image-preparation.json`, bootstrap/job outcome are exact artifact
+members. Complete artifact logs are losslessly stored as strings in
+`provision-logs.json`; complete decoded Actions log is `actions-log.json`.
+`verification.json` records checks and provenance. This proves the preparation
+recipe works, not persistent host readiness or renewed native admission.
