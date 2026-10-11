@@ -6,8 +6,18 @@ poses and Ref/Block/Role values come from the reviewed #248 inventory at the
 coordinator input `6700ccb1a9a64630cd26bccf751f537f3cc25d42`.
 
 Run focused checks with `python3 -m unittest scripts.pcbgen.test_trimmer_labels`.
-The native fixture command is
-`bash scripts/kicad/run.sh python3 scripts/pcbgen/trimmer_labels_native_regression.py`.
+The native fixture command requires a **fresh retained directory** accessible
+through the pinned KiCad container, for example:
+
+```sh
+bash scripts/kicad/run.sh python3 scripts/pcbgen/trimmer_labels_native_regression.py \
+  --evidence-dir /work/retained-evidence/trimmer-labels-249-a1
+```
+
+It retains the exact input, inventory, policies, candidate, duplicate application,
+removal result, native reload, both SVGs, semantic snapshots and a SHA-256 receipt.
+On failure it retains a traceback and hashes every file produced so far; its
+receipt says `FAIL / NATIVE ACCEPTANCE NOT ESTABLISHED`.
 The latter must be scheduled within the epic's global two-worker limit; until
 then native load, SVG render, reload and physical clearance remain **NOT RUN**.
 
@@ -35,6 +45,8 @@ the reviewed function label. Example (replace hashes with actual full digests):
 For an update/removal pass, add `base_board` as a policy-relative path to the
 original input board. The input may then be a previous candidate, but after
 removing this tool's annotations all remaining bytes must match the original.
+An empty explicit `labels` list removes this tool's labels and restores the
+original bytes.
 Only UUIDs derived from `uuid_tools.stable_uuid(board_id,
 "trimmer-labels-v1", ref)` belong to this tool. Repeated application gives
 identical bytes. Existing Ref fields, hidden Block/Role, owner artwork, copper,
