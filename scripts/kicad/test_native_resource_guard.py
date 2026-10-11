@@ -45,6 +45,10 @@ class GuardTests(unittest.TestCase):
 
             with patch.object(Path, 'read_text', read):
                 guard.cgroup_limits(cg)
+                (cg / 'memory.max').write_text(str(guard.AGGREGATE_CAP))
+                guard.cgroup_limits(cg, guard.AGGREGATE_CAP)
+                with self.assertRaisesRegex(ValueError, 'shared slice cap'):
+                    guard.cgroup_limits(cg)
                 (cg / 'memory.max').write_text('max')
                 with self.assertRaisesRegex(ValueError, 'shared slice cap'):
                     guard.cgroup_limits(cg)

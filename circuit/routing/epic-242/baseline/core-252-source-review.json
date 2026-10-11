@@ -1,0 +1,99 @@
+{
+  "source_sha": "b3ced3bfa733285d5bcdae1772d6b53b46d59ed4",
+  "tests": "three source tests PASS; no raster/native search",
+  "artifact_id": 11658776367,
+  "run_id": 38011194282,
+  "zip_size": 272898272,
+  "zip_sha256": "1ed58a9cd4c5796654a9e3e5c9b6e1c1129c353f3451e04c990b95032012479f",
+  "zip_crc_all_3754_entries": "PASS",
+  "authorized_existing_copy_authenticated": true,
+  "native_dump_sha256": "5218becd38f6bb612f9a169230bd8e6657776a09fc12af5baa6113825e671ffb",
+  "settled_native_board_sha256": "b9f5ca13f83c7ffdbe5836fd271e7c1099e04b901ca1798a7be06f025bd02d66",
+  "cases": [
+    {
+      "case": "opa-osc-plus",
+      "net": "+12V",
+      "ref": "U1602",
+      "pad": "4",
+      "group_members": 1,
+      "full_dump_group_and_target_hash_match": true
+    },
+    {
+      "case": "opa-osc-minus",
+      "net": "-12V",
+      "ref": "U1602",
+      "pad": "11",
+      "group_members": 1,
+      "full_dump_group_and_target_hash_match": true
+    },
+    {
+      "case": "opa-osc-neighbour-plus",
+      "net": "+12V",
+      "ref": "U1603",
+      "pad": "4",
+      "group_members": 1,
+      "full_dump_group_and_target_hash_match": true
+    },
+    {
+      "case": "opa-osc-neighbour-minus",
+      "net": "-12V",
+      "ref": "U1604",
+      "pad": "11",
+      "group_members": 1,
+      "full_dump_group_and_target_hash_match": true
+    },
+    {
+      "case": "adg-filter-plus",
+      "net": "+12V",
+      "ref": "U4206",
+      "pad": "13",
+      "group_members": 1,
+      "full_dump_group_and_target_hash_match": true
+    },
+    {
+      "case": "adg-filter-minus",
+      "net": "-12V",
+      "ref": "U4206",
+      "pad": "4",
+      "group_members": 1,
+      "full_dump_group_and_target_hash_match": true
+    },
+    {
+      "case": "adg-filter-return",
+      "net": "AGND",
+      "ref": "U4206",
+      "pad": "5",
+      "group_members": 9,
+      "full_dump_group_and_target_hash_match": true
+    },
+    {
+      "case": "adg-filter-signal",
+      "net": "XD9992CFFE3B9C146B5E5",
+      "ref": "U4206",
+      "pad": "3",
+      "group_members": 1,
+      "full_dump_group_and_target_hash_match": true
+    },
+    {
+      "case": "filter-reference-return",
+      "net": "AGND",
+      "ref": "U4231",
+      "pad": "7",
+      "group_members": 3,
+      "full_dump_group_and_target_hash_match": true
+    }
+  ],
+  "native_execution": "NOT RUN",
+  "architecture_comparison": "SOURCE READY only; no timing/route-quality conclusion",
+  "owner_access": "Owner session Forbidden remains a local access blocker; no denied download repeated or alternate transport. Parent may explicitly authorize providing this already authenticated complete copy to owner private retained cache, followed by independent checksum verification.",
+  "distinct_from_core1312": true,
+  "independent_source_review": "PASS: all nine exact pad/group identities independently checked against authenticated archive; API/additive-only source valid. SOURCE READY, execution HOLD.",
+  "execution_cautions": [
+    "12x12mm source bounds can exclude target copper; no_goal_in_search_bounds is window-limited, not unroutability/exhaustion.",
+    "AGND uses plane fanout with default3mm search window, not generic6mm; largest other pad group is not the plane fanout target.",
+    "complete_raster_path is only emitted copper/all returned paths, never native plane attachment/connectivity acceptance.",
+    "Replay regenerates manifest; execution must pin exact reviewed SHA and unchanged provenance rather than silently rebinding stale cases.",
+    "Owner README403 status is lane-historical; coordinator has authenticated complete ZIP. Owner private copy transfer still requires explicit parent-authorized delivery.",
+    "Resource tooling changed after lane40aa parent; reconcile to current integration tool epoch before any execution."
+  ]
+}
