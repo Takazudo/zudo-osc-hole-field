@@ -1,0 +1,84 @@
+{
+  "status": "SOURCE READY / NATIVE NOT ADMITTED",
+  "candidate_source_sha": "6cf7a6c7d8670eef6da96ac86a8a81a3673220da",
+  "qualification_receipt": "resource-qualification-run38121547543-ledger.json",
+  "selected_issue": 245,
+  "selected_step": "three-A complete before-board settle ONLY; no focus/search/apply/fresh-copy/audit yet",
+  "selection_reason": "249 native fixture still deletes SVG/reload outputs and lacks full semantic reload comparison;245 has independently reviewed complete source fixture and minimal existing settle entrypoint",
+  "exclusive_workers": 1,
+  "deadline_seconds": 300,
+  "worker_memory_bytes": 6442450944,
+  "aggregate_parent_memory_bytes": 12884901888,
+  "minimum_free_bytes": 2147483648,
+  "hook_sha256": "8631e1222942b8396bf566c88deaed0e287234146c4adb1afa9aa87d0d1055a5",
+  "guard_sha256": "c4d2ab68192cbf4cb1dc7c1f56219e8b47bb72cfe8bd449febce8fdbfdfa26e5",
+  "pinned_image": "kicad/kicad@sha256:18693567392b80da435f9fa952ce3a3e534c66eb5a6033f5b9c80aa3b19dd3ec",
+  "required_native_version": "10.0.6",
+  "preconditions": [
+    "Parent authenticates reviewed source SHA and reserves ONE global slot, excluding other native work",
+    "Selected already-capable runner matches systemd/localDocker/cgroupv2 memory+swap prerequisites; no daemon/security reconfiguration",
+    "Exact digest-pinned image separately preloaded/authenticated before native admission; guard never pulls; harmless proof did not establish image availability",
+    "Approved source interpreter numpy2.2.6/scipy1.15.3/shapely2.1.2; clean reviewed checkout; new worker ID/fresh retained evidence destination",
+    "Source-only materialize in ignored candidates/pilots/generated/decision-three-A-native-a1; authenticate all293files and291portable seals, bind path-dependent commands/manifest hashes freshly",
+    "Before guard invocation, copy the COMPLETE materialized293-file input tree plus sha256.json to fresh retained EVIDENCE_DIRECTORY/input-snapshot, authenticate every copied file, and freeze/record its manifest; settle overwrites the working beforePCB via native --save-board. Verify snapshot hashes unchanged again after run. Never rely on post-settle beforePCB as original input.",
+    "Native regeneration remains held; no canonical generation/board/partition edits admitted"
+  ],
+  "materialize_argv": [
+    "SOURCE_PYTHON",
+    "scripts/partition/core_split_candidates.py",
+    "materialize",
+    "--pilot",
+    "three-A",
+    "--output",
+    "design/partition/core-split/candidates/pilots/generated/decision-three-A-native-a1"
+  ],
+  "guard_argv": [
+    "python3",
+    "scripts/kicad/native_resource_guard.py",
+    "--admission-id",
+    "PARENT_ADMISSION_ID",
+    "--worker",
+    "three-a-settle-245-a1",
+    "--sha",
+    "6cf7a6c7d8670eef6da96ac86a8a81a3673220da",
+    "--hook-sha256",
+    "8631e1222942b8396bf566c88deaed0e287234146c4adb1afa9aa87d0d1055a5",
+    "--seconds",
+    "300",
+    "--evidence",
+    "EVIDENCE_DIRECTORY/three-a-settle-245-a1.json",
+    "--",
+    "SOURCE_PYTHON",
+    "scripts/partition/core_split_candidates.py",
+    "settle",
+    "--board",
+    "design/partition/core-split/candidates/pilots/generated/decision-three-A-native-a1/before/osc-core.kicad_pcb"
+  ],
+  "source_checks": {
+    "trimmer_tests": 6,
+    "partition_tests": 15,
+    "numerical_versions": "2.2.6/1.15.3/2.1.2",
+    "materialized_manifest_entries": 293,
+    "portable_seals_matched": 291,
+    "before_pcb_sha256": "4d8e238d5d504d55a0f5defe19671d7825f3a356a56ab143e38dd9c918110819",
+    "coordinator_source_probe_manifest_sha256": "345b61737e344c617a3a7c35fed0fe8800a3593010b65ba4f9c8893f41137b31",
+    "manifest_note": "This probe used external temporary path; commands.json/sha256.json are path-dependent, never reuse its manifest digest for in-repository native directory",
+    "fixture_source_files_sha256": {
+      "scripts/partition/core_split_candidates.py": "7b9ff2633bd9ef4c68eec4d0be02f3b33046ab87d65e2e7793e42af5aa619396",
+      "design/partition/core-split/candidates/input-lock.json": "e9dac208ff2cd816aea8f95a8b1708d16859be9bd8d2cf2becf0840531ccae27",
+      "design/partition/core-split/candidates/pilots/source-fixture-seals.json": "9b6cdb960d63549feffeb7f4b8b249c63964126ca3fc041adf60eb569a5b1e57"
+    }
+  },
+  "retain": [
+    "complete293-file source input tree and exact sha256 manifest",
+    "Immutable full pre-run input snapshot plus exact original beforePCB; resulting settledPCB, full-severity raw drc.json (potentially capped), dump.json and settled-receipt.json. Independent uncapped full-warning audit NOT RUN in this step.",
+    "full command/environment/version/image/source hashes, stdout/stderr, guard/watchdog receipts, elapsed/peak/free floor samples and verified final owned-state cleanup"
+  ],
+  "interpretation": "Settle only; NOT COMPLETE ACCEPTANCE. Missing version/image/report or nonzero result retained as negative/blocked evidence. No improvement/adoption/routability or selected architecture claim. Stop after one command; no automatic retry or subsequent routing. Full-severity raw DRC is not an uncapped independent warning audit; that later acceptance gate remains NOT RUN.",
+  "issue249_required_owner_fix": [
+    "fresh explicit evidence-directory option; retain input/policy/candidate/native-reload/front/back SVGs and content hashes",
+    "compare all saved/reloaded owned text: UUID/text/layer/position/angle/mirror/size/stroke and reference/non-annotation preservation, plus second apply/remove semantics",
+    "source tests for evidence retention, both faces and failure artifacts; return reviewed immutable source patch before native proposal"
+  ],
+  "independent_source_review": "PASS after explicit immutable pre-settle snapshot requirement and correction of full-severity versus uncapped-warning scope; no native execution or slot admission."
+}
