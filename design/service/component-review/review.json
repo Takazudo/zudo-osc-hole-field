@@ -1,0 +1,969 @@
+{
+  "schema_version": 1,
+  "issue": 248,
+  "base_main_sha": "65cefd41fc39e064d38319115ad96016a1c6b71c",
+  "status": "COMPONENT_REVIEW_READY",
+  "status_scope": "23 existing MPN gaps reviewed with primary candidate data and envelope effects; no component selection, procurement, circuit qualification or native acceptance implied",
+  "source_locks": [
+    {
+      "source_id": "tc33-rev0819",
+      "authority_class": "MANUFACTURER_PRIMARY",
+      "availability": "AVAILABLE",
+      "url": "https://www.bourns.com/docs/product-datasheets/tc33.pdf",
+      "retrieved_on": "2026-10-11",
+      "revision": "08/19",
+      "document_title": "TC33 3 mm SMD Trimpot Trimming Potentiometer",
+      "retained_path": "circuit/sources/ic-library/TC33X.pdf",
+      "sha256": "b13258ee9f777b70198554ad4ed43cab2167b2bdf31bdcbe52c4956bfff1adbf",
+      "fresh_download_matches_retained": true,
+      "cache_headers_path": "/tmp/issue248-component-cache/tc33-headers.txt",
+      "printed_page_labels": "unlabeled; physical indices 0 and 1 are authoritative",
+      "locators": {
+        "electrical": "physical_pdf_page_index=0; Electrical Characteristics",
+        "mechanical": "physical_pdf_page_index=0; Product Dimensions; right-hand TC33X-2 plan/side/underside drawing; dimensions in mm and general tolerance note",
+        "adjustment": "physical_pdf_page_index=0; Physical Characteristics, adjustment-tool footnote and bottom terminal diagram",
+        "ordering": "physical_pdf_page_index=1; Standard Resistance Table rows 203/503/504 and How To Order (-2/E); footer REV. 08/19",
+        "processing": "physical_pdf_page_index=1; Cautions and Recommended Reflow Solder Profile"
+      },
+      "minimal_normalized_extract": "203: 20000 ohm; 503: 50000 ohm; 504: 500000 ohm. -2: rotational stop. E: 2500 pieces, 7 inch reel. Tolerance: ±25%. Adjustment: 270° ±20°."
+    }
+  ],
+  "project_source_locks": [
+    {
+      "path": "design/spec/modules/oscillator.py",
+      "sha256": "c83a10adb792265798ae453af4380300b6fde8d1e26afe6dca240412eb965d3e"
+    },
+    {
+      "path": "design/spec/modules/filter.py",
+      "sha256": "9d8d71be2c5bcd18f76061301434bb13dee2f9370565df5535854c7fa7cfed0c"
+    },
+    {
+      "path": "design/spec/modules/envelope.py",
+      "sha256": "4aa4737afd1f6ed9f47161fd2ccb3d51fc69367bd9b9a21f2506a460f400e6bb"
+    },
+    {
+      "path": "scripts/schgen/core.py",
+      "sha256": "674670237a9c41dc17f71989d0da0ef12dfe6d27186498225cdc892498fe6083"
+    },
+    {
+      "path": "schematic/boards/osc-core.net",
+      "sha256": "b550a5fbe80c63df12f89aac867894d8448ac61d2bb4e4d623130f31f0a08242"
+    },
+    {
+      "path": "footprints/kicad/zudo-osc-hole-field.pretty/Potentiometer_Bourns_TC33X_Vertical.kicad_mod",
+      "sha256": "f21f7dc38797a77839ca9a8af5f79774ea724cb1996e8e8ac8d0007831e3d851"
+    }
+  ],
+  "review_counts": {
+    "total_mpn_gaps": 23,
+    "oscillator_hf_20k": 5,
+    "vcf_base_and_ar_rise_fall_base_50k": 15,
+    "vcf_res_max_500k": 3
+  },
+  "candidates": [
+    {
+      "candidate_id": "TC33X-2-203E",
+      "manufacturer": "Bourns",
+      "complete_mpn": "TC33X-2-203E",
+      "package": "TC33X-2 3 mm SMD, top adjustment, rotational stop, E reel",
+      "nominal_resistance_ohm": 20000,
+      "actual_total_resistance_range_ohm": [
+        15000.0,
+        25000.0
+      ],
+      "nominal_endpoint_resistance_upper_ohm": 400.0,
+      "worst_tolerance_endpoint_resistance_upper_ohm": 500.0,
+      "range_calculation_conditions": "Total resistance is nominal times (1±0.25). Endpoint bound is at most 2% of actual total; it is not a zero-ohm guarantee or a precision rheostat accuracy claim.",
+      "mechanical_and_electrical": {
+        "source_id": "tc33-rev0819",
+        "verdict": "PASS - primary-source confirmed",
+        "body_width_mm": 3.0,
+        "terminal_inclusive_width_mm": 3.6,
+        "terminal_inclusive_depth_mm": 3.8,
+        "height_mm": 1.2,
+        "general_dimension_tolerance_mm": 0.3,
+        "conservative_axiswise_envelope_mm": [
+          3.9,
+          4.1,
+          1.5
+        ],
+        "envelope_status": "CALCULATED: nominal drawing dimensions plus general tolerance; no seated-stack or tool-volume qualification",
+        "adjustment_type": "top cross-slot; TC33X-2 rotational stop",
+        "adjustment_angle_deg": 270,
+        "adjustment_angle_tolerance_deg": 20,
+        "recommended_cross_slot_tool_mm": 1.7,
+        "pushing_static_force_N_upper_exclusive": 4.9,
+        "resistance_tolerance_percent": 25,
+        "absolute_minimum_resistance_percent_of_actual_total_max": 2,
+        "contact_resistance_variation_percent_max": 5,
+        "temperature_coefficient_ppm_per_degC": 250,
+        "power_rating_W_at_70degC": 0.15,
+        "voltage_rating_VDC_max": 50,
+        "rotation_direction_system_effect": "UNKNOWN - manufacturer terminal diagram cannot establish calibrated circuit response, especially mirrored B.Cu installations",
+        "pins": {
+          "1": "CCW terminal",
+          "2": "wiper",
+          "3": "CW terminal"
+        },
+        "qualification": "NEEDS BENCH",
+        "component_selection": "OPTION ONLY - not selected or populated"
+      },
+      "manufacturer_ordering_verdict": "PASS - primary-source confirmed",
+      "manufacturer_identity_basis": "Synthesized from manufacturer How To Order and exact Standard Resistance Table row; full MPN not asserted to be printed verbatim.",
+      "supplier_observation": {
+        "supplier": "DigiKey",
+        "url": "https://www.digikey.com/en/products/detail/bourns-inc/TC33X-2-203E/2566887",
+        "observed_on": "2026-10-11",
+        "observed_manufacturer": "Bourns Inc.",
+        "observed_complete_mpn": "TC33X-2-203E",
+        "observed_order_codes": [
+          "TC33X-2-203ETR-ND",
+          "TC33X-2-203ECT-ND",
+          "TC33X-2-203EDKR-ND"
+        ],
+        "locator": "Product header; DigiKey Part Number; Manufacturer; Manufacturer Product Number",
+        "observation_scope": "Web tool rendered page confirms identity only; raw HTML download rejected HTTP 403. No stock/allocation/lead-time assertion.",
+        "raw_source_availability": "SOURCE UNAVAILABLE",
+        "raw_source_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+        "retained_identity_verdict": "UNSOURCED",
+        "current_allocation": "UNKNOWN",
+        "lcsc_order_code": "UNKNOWN",
+        "jlcpcb_assembly": "UNKNOWN"
+      }
+    },
+    {
+      "candidate_id": "TC33X-2-503E",
+      "manufacturer": "Bourns",
+      "complete_mpn": "TC33X-2-503E",
+      "package": "TC33X-2 3 mm SMD, top adjustment, rotational stop, E reel",
+      "nominal_resistance_ohm": 50000,
+      "actual_total_resistance_range_ohm": [
+        37500.0,
+        62500.0
+      ],
+      "nominal_endpoint_resistance_upper_ohm": 1000.0,
+      "worst_tolerance_endpoint_resistance_upper_ohm": 1250.0,
+      "range_calculation_conditions": "Total resistance is nominal times (1±0.25). Endpoint bound is at most 2% of actual total; it is not a zero-ohm guarantee or a precision rheostat accuracy claim.",
+      "mechanical_and_electrical": {
+        "source_id": "tc33-rev0819",
+        "verdict": "PASS - primary-source confirmed",
+        "body_width_mm": 3.0,
+        "terminal_inclusive_width_mm": 3.6,
+        "terminal_inclusive_depth_mm": 3.8,
+        "height_mm": 1.2,
+        "general_dimension_tolerance_mm": 0.3,
+        "conservative_axiswise_envelope_mm": [
+          3.9,
+          4.1,
+          1.5
+        ],
+        "envelope_status": "CALCULATED: nominal drawing dimensions plus general tolerance; no seated-stack or tool-volume qualification",
+        "adjustment_type": "top cross-slot; TC33X-2 rotational stop",
+        "adjustment_angle_deg": 270,
+        "adjustment_angle_tolerance_deg": 20,
+        "recommended_cross_slot_tool_mm": 1.7,
+        "pushing_static_force_N_upper_exclusive": 4.9,
+        "resistance_tolerance_percent": 25,
+        "absolute_minimum_resistance_percent_of_actual_total_max": 2,
+        "contact_resistance_variation_percent_max": 5,
+        "temperature_coefficient_ppm_per_degC": 250,
+        "power_rating_W_at_70degC": 0.15,
+        "voltage_rating_VDC_max": 50,
+        "rotation_direction_system_effect": "UNKNOWN - manufacturer terminal diagram cannot establish calibrated circuit response, especially mirrored B.Cu installations",
+        "pins": {
+          "1": "CCW terminal",
+          "2": "wiper",
+          "3": "CW terminal"
+        },
+        "qualification": "NEEDS BENCH",
+        "component_selection": "OPTION ONLY - not selected or populated"
+      },
+      "manufacturer_ordering_verdict": "PASS - primary-source confirmed",
+      "manufacturer_identity_basis": "Synthesized from manufacturer How To Order and exact Standard Resistance Table row; full MPN not asserted to be printed verbatim.",
+      "supplier_observation": {
+        "supplier": "DigiKey",
+        "url": "https://www.digikey.com/en/products/detail/bourns-inc/TC33X-2-503E/612862",
+        "observed_on": "2026-10-11",
+        "observed_manufacturer": "Bourns Inc.",
+        "observed_complete_mpn": "TC33X-2-503E",
+        "observed_order_codes": [
+          "TC33X-503ETR-ND",
+          "TC33X-503ECT-ND",
+          "TC33X-503EDKR-ND"
+        ],
+        "locator": "Product header; DigiKey Part Number; Manufacturer; Manufacturer Product Number",
+        "observation_scope": "Web tool rendered page confirms identity only; raw HTML download rejected HTTP 403. No stock/allocation/lead-time assertion.",
+        "raw_source_availability": "SOURCE UNAVAILABLE",
+        "raw_source_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+        "retained_identity_verdict": "UNSOURCED",
+        "current_allocation": "UNKNOWN",
+        "lcsc_order_code": "UNKNOWN",
+        "jlcpcb_assembly": "UNKNOWN"
+      }
+    },
+    {
+      "candidate_id": "TC33X-2-504E",
+      "manufacturer": "Bourns",
+      "complete_mpn": "TC33X-2-504E",
+      "package": "TC33X-2 3 mm SMD, top adjustment, rotational stop, E reel",
+      "nominal_resistance_ohm": 500000,
+      "actual_total_resistance_range_ohm": [
+        375000.0,
+        625000.0
+      ],
+      "nominal_endpoint_resistance_upper_ohm": 10000.0,
+      "worst_tolerance_endpoint_resistance_upper_ohm": 12500.0,
+      "range_calculation_conditions": "Total resistance is nominal times (1±0.25). Endpoint bound is at most 2% of actual total; it is not a zero-ohm guarantee or a precision rheostat accuracy claim.",
+      "mechanical_and_electrical": {
+        "source_id": "tc33-rev0819",
+        "verdict": "PASS - primary-source confirmed",
+        "body_width_mm": 3.0,
+        "terminal_inclusive_width_mm": 3.6,
+        "terminal_inclusive_depth_mm": 3.8,
+        "height_mm": 1.2,
+        "general_dimension_tolerance_mm": 0.3,
+        "conservative_axiswise_envelope_mm": [
+          3.9,
+          4.1,
+          1.5
+        ],
+        "envelope_status": "CALCULATED: nominal drawing dimensions plus general tolerance; no seated-stack or tool-volume qualification",
+        "adjustment_type": "top cross-slot; TC33X-2 rotational stop",
+        "adjustment_angle_deg": 270,
+        "adjustment_angle_tolerance_deg": 20,
+        "recommended_cross_slot_tool_mm": 1.7,
+        "pushing_static_force_N_upper_exclusive": 4.9,
+        "resistance_tolerance_percent": 25,
+        "absolute_minimum_resistance_percent_of_actual_total_max": 2,
+        "contact_resistance_variation_percent_max": 5,
+        "temperature_coefficient_ppm_per_degC": 250,
+        "power_rating_W_at_70degC": 0.15,
+        "voltage_rating_VDC_max": 50,
+        "rotation_direction_system_effect": "UNKNOWN - manufacturer terminal diagram cannot establish calibrated circuit response, especially mirrored B.Cu installations",
+        "pins": {
+          "1": "CCW terminal",
+          "2": "wiper",
+          "3": "CW terminal"
+        },
+        "qualification": "NEEDS BENCH",
+        "component_selection": "OPTION ONLY - not selected or populated"
+      },
+      "manufacturer_ordering_verdict": "PASS - primary-source confirmed",
+      "manufacturer_identity_basis": "Synthesized from manufacturer How To Order and exact Standard Resistance Table row; full MPN not asserted to be printed verbatim.",
+      "supplier_observation": {
+        "supplier": "DigiKey",
+        "url": "https://www.digikey.com/en/products/detail/bourns-inc/TC33X-2-504E/2566902",
+        "observed_on": "2026-10-11",
+        "observed_manufacturer": "Bourns Inc.",
+        "observed_complete_mpn": "TC33X-2-504E",
+        "observed_order_codes": [
+          "TC33X-2-504ETR-ND",
+          "TC33X-2-504ECT-ND",
+          "TC33X-2-504EDKR-ND"
+        ],
+        "locator": "Product header; DigiKey Part Number; Manufacturer; Manufacturer Product Number",
+        "observation_scope": "Web tool rendered page confirms identity only; raw HTML download rejected HTTP 403. No stock/allocation/lead-time assertion.",
+        "raw_source_availability": "SOURCE UNAVAILABLE",
+        "raw_source_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+        "retained_identity_verdict": "UNSOURCED",
+        "current_allocation": "UNKNOWN",
+        "lcsc_order_code": "UNKNOWN",
+        "jlcpcb_assembly": "UNKNOWN"
+      }
+    }
+  ],
+  "gaps": [
+    {
+      "ref": "RVO1109",
+      "instance": "O1",
+      "source_role": "oscillator:HF_TRIM",
+      "source_value": "20 kΩ",
+      "source_pins": {
+        "1": "HF_PIN",
+        "2": "LINEAR_REF",
+        "3": "AGND"
+      },
+      "native_netlist_pin_nets": {
+        "1": "X4F4C65A27511338D257C",
+        "2": "XD6A1F9F8DC2B19A4D354",
+        "3": "AGND"
+      },
+      "existing_footprint": "zudo-osc-hole-field:Potentiometer_Bourns_TC33X_Vertical",
+      "production_mpn": "",
+      "candidate_id": "TC33X-2-203E",
+      "disposition": "REVIEWED - same-value same-package candidate option; production gap remains open",
+      "primary_review_verdict": "PASS - primary-source confirmed",
+      "source_ids": [
+        "tc33-rev0819"
+      ],
+      "envelope_review": "Reviewed shared TC33X-2 dimensions and adjustment access; installed fit, orientation and tool clearance remain NEEDS BENCH",
+      "electrical_qualification": "NEEDS BENCH",
+      "rotation_direction": "UNKNOWN",
+      "architecture_change": "none selected"
+    },
+    {
+      "ref": "RVO1209",
+      "instance": "O2",
+      "source_role": "oscillator:HF_TRIM",
+      "source_value": "20 kΩ",
+      "source_pins": {
+        "1": "HF_PIN",
+        "2": "LINEAR_REF",
+        "3": "AGND"
+      },
+      "native_netlist_pin_nets": {
+        "1": "X283C96745F9A97C9F70D",
+        "2": "X6E4708860137D063713F",
+        "3": "AGND"
+      },
+      "existing_footprint": "zudo-osc-hole-field:Potentiometer_Bourns_TC33X_Vertical",
+      "production_mpn": "",
+      "candidate_id": "TC33X-2-203E",
+      "disposition": "REVIEWED - same-value same-package candidate option; production gap remains open",
+      "primary_review_verdict": "PASS - primary-source confirmed",
+      "source_ids": [
+        "tc33-rev0819"
+      ],
+      "envelope_review": "Reviewed shared TC33X-2 dimensions and adjustment access; installed fit, orientation and tool clearance remain NEEDS BENCH",
+      "electrical_qualification": "NEEDS BENCH",
+      "rotation_direction": "UNKNOWN",
+      "architecture_change": "none selected"
+    },
+    {
+      "ref": "RVO1309",
+      "instance": "O3",
+      "source_role": "oscillator:HF_TRIM",
+      "source_value": "20 kΩ",
+      "source_pins": {
+        "1": "HF_PIN",
+        "2": "LINEAR_REF",
+        "3": "AGND"
+      },
+      "native_netlist_pin_nets": {
+        "1": "X3EE60370B74B579C2DE9",
+        "2": "XBA00A3C6EF612B611E92",
+        "3": "AGND"
+      },
+      "existing_footprint": "zudo-osc-hole-field:Potentiometer_Bourns_TC33X_Vertical",
+      "production_mpn": "",
+      "candidate_id": "TC33X-2-203E",
+      "disposition": "REVIEWED - same-value same-package candidate option; production gap remains open",
+      "primary_review_verdict": "PASS - primary-source confirmed",
+      "source_ids": [
+        "tc33-rev0819"
+      ],
+      "envelope_review": "Reviewed shared TC33X-2 dimensions and adjustment access; installed fit, orientation and tool clearance remain NEEDS BENCH",
+      "electrical_qualification": "NEEDS BENCH",
+      "rotation_direction": "UNKNOWN",
+      "architecture_change": "none selected"
+    },
+    {
+      "ref": "RVO1409",
+      "instance": "O4",
+      "source_role": "oscillator:HF_TRIM",
+      "source_value": "20 kΩ",
+      "source_pins": {
+        "1": "HF_PIN",
+        "2": "LINEAR_REF",
+        "3": "AGND"
+      },
+      "native_netlist_pin_nets": {
+        "1": "X7355BCC8FF97C5BB91AE",
+        "2": "X4D9690800E6BDB473824",
+        "3": "AGND"
+      },
+      "existing_footprint": "zudo-osc-hole-field:Potentiometer_Bourns_TC33X_Vertical",
+      "production_mpn": "",
+      "candidate_id": "TC33X-2-203E",
+      "disposition": "REVIEWED - same-value same-package candidate option; production gap remains open",
+      "primary_review_verdict": "PASS - primary-source confirmed",
+      "source_ids": [
+        "tc33-rev0819"
+      ],
+      "envelope_review": "Reviewed shared TC33X-2 dimensions and adjustment access; installed fit, orientation and tool clearance remain NEEDS BENCH",
+      "electrical_qualification": "NEEDS BENCH",
+      "rotation_direction": "UNKNOWN",
+      "architecture_change": "none selected"
+    },
+    {
+      "ref": "RVO1509",
+      "instance": "O5",
+      "source_role": "oscillator:HF_TRIM",
+      "source_value": "20 kΩ",
+      "source_pins": {
+        "1": "HF_PIN",
+        "2": "LINEAR_REF",
+        "3": "AGND"
+      },
+      "native_netlist_pin_nets": {
+        "1": "X46F500A6E2D8313AC04C",
+        "2": "XFF25EE86908887869B5B",
+        "3": "AGND"
+      },
+      "existing_footprint": "zudo-osc-hole-field:Potentiometer_Bourns_TC33X_Vertical",
+      "production_mpn": "",
+      "candidate_id": "TC33X-2-203E",
+      "disposition": "REVIEWED - same-value same-package candidate option; production gap remains open",
+      "primary_review_verdict": "PASS - primary-source confirmed",
+      "source_ids": [
+        "tc33-rev0819"
+      ],
+      "envelope_review": "Reviewed shared TC33X-2 dimensions and adjustment access; installed fit, orientation and tool clearance remain NEEDS BENCH",
+      "electrical_qualification": "NEEDS BENCH",
+      "rotation_direction": "UNKNOWN",
+      "architecture_change": "none selected"
+    },
+    {
+      "ref": "RV2108",
+      "instance": "F1",
+      "source_role": "filter:EXPO_BASE_TRIM",
+      "source_value": "50 kΩ",
+      "source_pins": {
+        "1": "EXPO_REF_TRIM",
+        "2": "EXPO_REFERENCE",
+        "3": "EXPO_REFERENCE"
+      },
+      "native_netlist_pin_nets": {
+        "1": "X7F52A3A75BAC03DFC565",
+        "2": "X9A591EC2CF76B3860AE6",
+        "3": "X9A591EC2CF76B3860AE6"
+      },
+      "existing_footprint": "zudo-osc-hole-field:Potentiometer_Bourns_TC33X_Vertical",
+      "production_mpn": "",
+      "candidate_id": "TC33X-2-503E",
+      "disposition": "REVIEWED - same-value same-package candidate option; production gap remains open",
+      "primary_review_verdict": "PASS - primary-source confirmed",
+      "source_ids": [
+        "tc33-rev0819"
+      ],
+      "envelope_review": "Reviewed shared TC33X-2 dimensions and adjustment access; installed fit, orientation and tool clearance remain NEEDS BENCH",
+      "electrical_qualification": "NEEDS BENCH",
+      "rotation_direction": "UNKNOWN",
+      "architecture_change": "none selected"
+    },
+    {
+      "ref": "RV2113",
+      "instance": "F1",
+      "source_role": "filter:RESONANCE_MAX",
+      "source_value": "500 kΩ",
+      "source_pins": {
+        "1": "RESONANCE_TRIM",
+        "2": "RES_INT",
+        "3": "RES_INT"
+      },
+      "native_netlist_pin_nets": {
+        "1": "X3149377C3AC6C3F8E3BE",
+        "2": "X419E27ECCE370EBEF72E",
+        "3": "X419E27ECCE370EBEF72E"
+      },
+      "existing_footprint": "zudo-osc-hole-field:Potentiometer_Bourns_TC33X_Vertical",
+      "production_mpn": "",
+      "candidate_id": "TC33X-2-504E",
+      "disposition": "REVIEWED - same-value same-package candidate option; production gap remains open",
+      "primary_review_verdict": "PASS - primary-source confirmed",
+      "source_ids": [
+        "tc33-rev0819"
+      ],
+      "envelope_review": "Reviewed shared TC33X-2 dimensions and adjustment access; installed fit, orientation and tool clearance remain NEEDS BENCH",
+      "electrical_qualification": "NEEDS BENCH",
+      "rotation_direction": "UNKNOWN",
+      "architecture_change": "none selected"
+    },
+    {
+      "ref": "RV2208",
+      "instance": "F2",
+      "source_role": "filter:EXPO_BASE_TRIM",
+      "source_value": "50 kΩ",
+      "source_pins": {
+        "1": "EXPO_REF_TRIM",
+        "2": "EXPO_REFERENCE",
+        "3": "EXPO_REFERENCE"
+      },
+      "native_netlist_pin_nets": {
+        "1": "X81AE9767B60B482E7C92",
+        "2": "X3470B64811CEDC9F86E6",
+        "3": "X3470B64811CEDC9F86E6"
+      },
+      "existing_footprint": "zudo-osc-hole-field:Potentiometer_Bourns_TC33X_Vertical",
+      "production_mpn": "",
+      "candidate_id": "TC33X-2-503E",
+      "disposition": "REVIEWED - same-value same-package candidate option; production gap remains open",
+      "primary_review_verdict": "PASS - primary-source confirmed",
+      "source_ids": [
+        "tc33-rev0819"
+      ],
+      "envelope_review": "Reviewed shared TC33X-2 dimensions and adjustment access; installed fit, orientation and tool clearance remain NEEDS BENCH",
+      "electrical_qualification": "NEEDS BENCH",
+      "rotation_direction": "UNKNOWN",
+      "architecture_change": "none selected"
+    },
+    {
+      "ref": "RV2213",
+      "instance": "F2",
+      "source_role": "filter:RESONANCE_MAX",
+      "source_value": "500 kΩ",
+      "source_pins": {
+        "1": "RESONANCE_TRIM",
+        "2": "RES_INT",
+        "3": "RES_INT"
+      },
+      "native_netlist_pin_nets": {
+        "1": "X5654AD6D3086D9EBB30E",
+        "2": "XC1149D74CCC833EBF9A8",
+        "3": "XC1149D74CCC833EBF9A8"
+      },
+      "existing_footprint": "zudo-osc-hole-field:Potentiometer_Bourns_TC33X_Vertical",
+      "production_mpn": "",
+      "candidate_id": "TC33X-2-504E",
+      "disposition": "REVIEWED - same-value same-package candidate option; production gap remains open",
+      "primary_review_verdict": "PASS - primary-source confirmed",
+      "source_ids": [
+        "tc33-rev0819"
+      ],
+      "envelope_review": "Reviewed shared TC33X-2 dimensions and adjustment access; installed fit, orientation and tool clearance remain NEEDS BENCH",
+      "electrical_qualification": "NEEDS BENCH",
+      "rotation_direction": "UNKNOWN",
+      "architecture_change": "none selected"
+    },
+    {
+      "ref": "RV2308",
+      "instance": "F3",
+      "source_role": "filter:EXPO_BASE_TRIM",
+      "source_value": "50 kΩ",
+      "source_pins": {
+        "1": "EXPO_REF_TRIM",
+        "2": "EXPO_REFERENCE",
+        "3": "EXPO_REFERENCE"
+      },
+      "native_netlist_pin_nets": {
+        "1": "X6B198689616F45B6B0B3",
+        "2": "XD9FC48F3F9F8150432DE",
+        "3": "XD9FC48F3F9F8150432DE"
+      },
+      "existing_footprint": "zudo-osc-hole-field:Potentiometer_Bourns_TC33X_Vertical",
+      "production_mpn": "",
+      "candidate_id": "TC33X-2-503E",
+      "disposition": "REVIEWED - same-value same-package candidate option; production gap remains open",
+      "primary_review_verdict": "PASS - primary-source confirmed",
+      "source_ids": [
+        "tc33-rev0819"
+      ],
+      "envelope_review": "Reviewed shared TC33X-2 dimensions and adjustment access; installed fit, orientation and tool clearance remain NEEDS BENCH",
+      "electrical_qualification": "NEEDS BENCH",
+      "rotation_direction": "UNKNOWN",
+      "architecture_change": "none selected"
+    },
+    {
+      "ref": "RV2313",
+      "instance": "F3",
+      "source_role": "filter:RESONANCE_MAX",
+      "source_value": "500 kΩ",
+      "source_pins": {
+        "1": "RESONANCE_TRIM",
+        "2": "RES_INT",
+        "3": "RES_INT"
+      },
+      "native_netlist_pin_nets": {
+        "1": "X18D5886012D3CD3C858B",
+        "2": "XAF8F046B41DDE12F9296",
+        "3": "XAF8F046B41DDE12F9296"
+      },
+      "existing_footprint": "zudo-osc-hole-field:Potentiometer_Bourns_TC33X_Vertical",
+      "production_mpn": "",
+      "candidate_id": "TC33X-2-504E",
+      "disposition": "REVIEWED - same-value same-package candidate option; production gap remains open",
+      "primary_review_verdict": "PASS - primary-source confirmed",
+      "source_ids": [
+        "tc33-rev0819"
+      ],
+      "envelope_review": "Reviewed shared TC33X-2 dimensions and adjustment access; installed fit, orientation and tool clearance remain NEEDS BENCH",
+      "electrical_qualification": "NEEDS BENCH",
+      "rotation_direction": "UNKNOWN",
+      "architecture_change": "none selected"
+    },
+    {
+      "ref": "RV4103",
+      "instance": "E1",
+      "source_role": "envelope:RISE_BASE",
+      "source_value": "50 kΩ",
+      "source_pins": {
+        "1": "RISE_REF_TRIM",
+        "2": "RISE_EXPO_REF",
+        "3": "RISE_EXPO_REF"
+      },
+      "native_netlist_pin_nets": {
+        "1": "X933A94DFC541891C8EF6",
+        "2": "X2BABCD1F4A2DFB270E50",
+        "3": "X2BABCD1F4A2DFB270E50"
+      },
+      "existing_footprint": "zudo-osc-hole-field:Potentiometer_Bourns_TC33X_Vertical",
+      "production_mpn": "",
+      "candidate_id": "TC33X-2-503E",
+      "disposition": "REVIEWED - same-value same-package candidate option; production gap remains open",
+      "primary_review_verdict": "PASS - primary-source confirmed",
+      "source_ids": [
+        "tc33-rev0819"
+      ],
+      "envelope_review": "Reviewed shared TC33X-2 dimensions and adjustment access; installed fit, orientation and tool clearance remain NEEDS BENCH",
+      "electrical_qualification": "NEEDS BENCH",
+      "rotation_direction": "UNKNOWN",
+      "architecture_change": "none selected"
+    },
+    {
+      "ref": "RV4107",
+      "instance": "E1",
+      "source_role": "envelope:FALL_BASE",
+      "source_value": "50 kΩ",
+      "source_pins": {
+        "1": "FALL_REF_TRIM",
+        "2": "FALL_EXPO_REF",
+        "3": "FALL_EXPO_REF"
+      },
+      "native_netlist_pin_nets": {
+        "1": "XBA48267F34D7D0FB64EC",
+        "2": "X0E4A19C71F03DA55B745",
+        "3": "X0E4A19C71F03DA55B745"
+      },
+      "existing_footprint": "zudo-osc-hole-field:Potentiometer_Bourns_TC33X_Vertical",
+      "production_mpn": "",
+      "candidate_id": "TC33X-2-503E",
+      "disposition": "REVIEWED - same-value same-package candidate option; production gap remains open",
+      "primary_review_verdict": "PASS - primary-source confirmed",
+      "source_ids": [
+        "tc33-rev0819"
+      ],
+      "envelope_review": "Reviewed shared TC33X-2 dimensions and adjustment access; installed fit, orientation and tool clearance remain NEEDS BENCH",
+      "electrical_qualification": "NEEDS BENCH",
+      "rotation_direction": "UNKNOWN",
+      "architecture_change": "none selected"
+    },
+    {
+      "ref": "RV4203",
+      "instance": "E2",
+      "source_role": "envelope:RISE_BASE",
+      "source_value": "50 kΩ",
+      "source_pins": {
+        "1": "RISE_REF_TRIM",
+        "2": "RISE_EXPO_REF",
+        "3": "RISE_EXPO_REF"
+      },
+      "native_netlist_pin_nets": {
+        "1": "X2962895DC9EE122A86A7",
+        "2": "XBC74706F69BBC78AD976",
+        "3": "XBC74706F69BBC78AD976"
+      },
+      "existing_footprint": "zudo-osc-hole-field:Potentiometer_Bourns_TC33X_Vertical",
+      "production_mpn": "",
+      "candidate_id": "TC33X-2-503E",
+      "disposition": "REVIEWED - same-value same-package candidate option; production gap remains open",
+      "primary_review_verdict": "PASS - primary-source confirmed",
+      "source_ids": [
+        "tc33-rev0819"
+      ],
+      "envelope_review": "Reviewed shared TC33X-2 dimensions and adjustment access; installed fit, orientation and tool clearance remain NEEDS BENCH",
+      "electrical_qualification": "NEEDS BENCH",
+      "rotation_direction": "UNKNOWN",
+      "architecture_change": "none selected"
+    },
+    {
+      "ref": "RV4207",
+      "instance": "E2",
+      "source_role": "envelope:FALL_BASE",
+      "source_value": "50 kΩ",
+      "source_pins": {
+        "1": "FALL_REF_TRIM",
+        "2": "FALL_EXPO_REF",
+        "3": "FALL_EXPO_REF"
+      },
+      "native_netlist_pin_nets": {
+        "1": "X50CCAA357B64F996260A",
+        "2": "X12A74203B09D8C450F8E",
+        "3": "X12A74203B09D8C450F8E"
+      },
+      "existing_footprint": "zudo-osc-hole-field:Potentiometer_Bourns_TC33X_Vertical",
+      "production_mpn": "",
+      "candidate_id": "TC33X-2-503E",
+      "disposition": "REVIEWED - same-value same-package candidate option; production gap remains open",
+      "primary_review_verdict": "PASS - primary-source confirmed",
+      "source_ids": [
+        "tc33-rev0819"
+      ],
+      "envelope_review": "Reviewed shared TC33X-2 dimensions and adjustment access; installed fit, orientation and tool clearance remain NEEDS BENCH",
+      "electrical_qualification": "NEEDS BENCH",
+      "rotation_direction": "UNKNOWN",
+      "architecture_change": "none selected"
+    },
+    {
+      "ref": "RV4303",
+      "instance": "E3",
+      "source_role": "envelope:RISE_BASE",
+      "source_value": "50 kΩ",
+      "source_pins": {
+        "1": "RISE_REF_TRIM",
+        "2": "RISE_EXPO_REF",
+        "3": "RISE_EXPO_REF"
+      },
+      "native_netlist_pin_nets": {
+        "1": "XDA5781E448273B3A34F5",
+        "2": "X7C649B11D66500924F09",
+        "3": "X7C649B11D66500924F09"
+      },
+      "existing_footprint": "zudo-osc-hole-field:Potentiometer_Bourns_TC33X_Vertical",
+      "production_mpn": "",
+      "candidate_id": "TC33X-2-503E",
+      "disposition": "REVIEWED - same-value same-package candidate option; production gap remains open",
+      "primary_review_verdict": "PASS - primary-source confirmed",
+      "source_ids": [
+        "tc33-rev0819"
+      ],
+      "envelope_review": "Reviewed shared TC33X-2 dimensions and adjustment access; installed fit, orientation and tool clearance remain NEEDS BENCH",
+      "electrical_qualification": "NEEDS BENCH",
+      "rotation_direction": "UNKNOWN",
+      "architecture_change": "none selected"
+    },
+    {
+      "ref": "RV4307",
+      "instance": "E3",
+      "source_role": "envelope:FALL_BASE",
+      "source_value": "50 kΩ",
+      "source_pins": {
+        "1": "FALL_REF_TRIM",
+        "2": "FALL_EXPO_REF",
+        "3": "FALL_EXPO_REF"
+      },
+      "native_netlist_pin_nets": {
+        "1": "X8CD8AAA9269108B29A3E",
+        "2": "X0378AD2C65B9A8B5DD60",
+        "3": "X0378AD2C65B9A8B5DD60"
+      },
+      "existing_footprint": "zudo-osc-hole-field:Potentiometer_Bourns_TC33X_Vertical",
+      "production_mpn": "",
+      "candidate_id": "TC33X-2-503E",
+      "disposition": "REVIEWED - same-value same-package candidate option; production gap remains open",
+      "primary_review_verdict": "PASS - primary-source confirmed",
+      "source_ids": [
+        "tc33-rev0819"
+      ],
+      "envelope_review": "Reviewed shared TC33X-2 dimensions and adjustment access; installed fit, orientation and tool clearance remain NEEDS BENCH",
+      "electrical_qualification": "NEEDS BENCH",
+      "rotation_direction": "UNKNOWN",
+      "architecture_change": "none selected"
+    },
+    {
+      "ref": "RV4403",
+      "instance": "E4",
+      "source_role": "envelope:RISE_BASE",
+      "source_value": "50 kΩ",
+      "source_pins": {
+        "1": "RISE_REF_TRIM",
+        "2": "RISE_EXPO_REF",
+        "3": "RISE_EXPO_REF"
+      },
+      "native_netlist_pin_nets": {
+        "1": "XFF8AA17C0E1F34B14271",
+        "2": "X286DDDC3E2B74B97DC94",
+        "3": "X286DDDC3E2B74B97DC94"
+      },
+      "existing_footprint": "zudo-osc-hole-field:Potentiometer_Bourns_TC33X_Vertical",
+      "production_mpn": "",
+      "candidate_id": "TC33X-2-503E",
+      "disposition": "REVIEWED - same-value same-package candidate option; production gap remains open",
+      "primary_review_verdict": "PASS - primary-source confirmed",
+      "source_ids": [
+        "tc33-rev0819"
+      ],
+      "envelope_review": "Reviewed shared TC33X-2 dimensions and adjustment access; installed fit, orientation and tool clearance remain NEEDS BENCH",
+      "electrical_qualification": "NEEDS BENCH",
+      "rotation_direction": "UNKNOWN",
+      "architecture_change": "none selected"
+    },
+    {
+      "ref": "RV4407",
+      "instance": "E4",
+      "source_role": "envelope:FALL_BASE",
+      "source_value": "50 kΩ",
+      "source_pins": {
+        "1": "FALL_REF_TRIM",
+        "2": "FALL_EXPO_REF",
+        "3": "FALL_EXPO_REF"
+      },
+      "native_netlist_pin_nets": {
+        "1": "XE219DA8CFAB78541F232",
+        "2": "XEAB0A8F9BE52E35B2801",
+        "3": "XEAB0A8F9BE52E35B2801"
+      },
+      "existing_footprint": "zudo-osc-hole-field:Potentiometer_Bourns_TC33X_Vertical",
+      "production_mpn": "",
+      "candidate_id": "TC33X-2-503E",
+      "disposition": "REVIEWED - same-value same-package candidate option; production gap remains open",
+      "primary_review_verdict": "PASS - primary-source confirmed",
+      "source_ids": [
+        "tc33-rev0819"
+      ],
+      "envelope_review": "Reviewed shared TC33X-2 dimensions and adjustment access; installed fit, orientation and tool clearance remain NEEDS BENCH",
+      "electrical_qualification": "NEEDS BENCH",
+      "rotation_direction": "UNKNOWN",
+      "architecture_change": "none selected"
+    },
+    {
+      "ref": "RV4503",
+      "instance": "E5",
+      "source_role": "envelope:RISE_BASE",
+      "source_value": "50 kΩ",
+      "source_pins": {
+        "1": "RISE_REF_TRIM",
+        "2": "RISE_EXPO_REF",
+        "3": "RISE_EXPO_REF"
+      },
+      "native_netlist_pin_nets": {
+        "1": "X72EA8955D5926ED47883",
+        "2": "XFBBF4FE2ED52A893DC14",
+        "3": "XFBBF4FE2ED52A893DC14"
+      },
+      "existing_footprint": "zudo-osc-hole-field:Potentiometer_Bourns_TC33X_Vertical",
+      "production_mpn": "",
+      "candidate_id": "TC33X-2-503E",
+      "disposition": "REVIEWED - same-value same-package candidate option; production gap remains open",
+      "primary_review_verdict": "PASS - primary-source confirmed",
+      "source_ids": [
+        "tc33-rev0819"
+      ],
+      "envelope_review": "Reviewed shared TC33X-2 dimensions and adjustment access; installed fit, orientation and tool clearance remain NEEDS BENCH",
+      "electrical_qualification": "NEEDS BENCH",
+      "rotation_direction": "UNKNOWN",
+      "architecture_change": "none selected"
+    },
+    {
+      "ref": "RV4507",
+      "instance": "E5",
+      "source_role": "envelope:FALL_BASE",
+      "source_value": "50 kΩ",
+      "source_pins": {
+        "1": "FALL_REF_TRIM",
+        "2": "FALL_EXPO_REF",
+        "3": "FALL_EXPO_REF"
+      },
+      "native_netlist_pin_nets": {
+        "1": "X4FDA5049D58C14E5BB5C",
+        "2": "X3423123E5A42F3C7244E",
+        "3": "X3423123E5A42F3C7244E"
+      },
+      "existing_footprint": "zudo-osc-hole-field:Potentiometer_Bourns_TC33X_Vertical",
+      "production_mpn": "",
+      "candidate_id": "TC33X-2-503E",
+      "disposition": "REVIEWED - same-value same-package candidate option; production gap remains open",
+      "primary_review_verdict": "PASS - primary-source confirmed",
+      "source_ids": [
+        "tc33-rev0819"
+      ],
+      "envelope_review": "Reviewed shared TC33X-2 dimensions and adjustment access; installed fit, orientation and tool clearance remain NEEDS BENCH",
+      "electrical_qualification": "NEEDS BENCH",
+      "rotation_direction": "UNKNOWN",
+      "architecture_change": "none selected"
+    },
+    {
+      "ref": "RV4603",
+      "instance": "E6",
+      "source_role": "envelope:RISE_BASE",
+      "source_value": "50 kΩ",
+      "source_pins": {
+        "1": "RISE_REF_TRIM",
+        "2": "RISE_EXPO_REF",
+        "3": "RISE_EXPO_REF"
+      },
+      "native_netlist_pin_nets": {
+        "1": "XA1D6CC2B12D4194D2E9D",
+        "2": "X75E2097BD6AB8D07260A",
+        "3": "X75E2097BD6AB8D07260A"
+      },
+      "existing_footprint": "zudo-osc-hole-field:Potentiometer_Bourns_TC33X_Vertical",
+      "production_mpn": "",
+      "candidate_id": "TC33X-2-503E",
+      "disposition": "REVIEWED - same-value same-package candidate option; production gap remains open",
+      "primary_review_verdict": "PASS - primary-source confirmed",
+      "source_ids": [
+        "tc33-rev0819"
+      ],
+      "envelope_review": "Reviewed shared TC33X-2 dimensions and adjustment access; installed fit, orientation and tool clearance remain NEEDS BENCH",
+      "electrical_qualification": "NEEDS BENCH",
+      "rotation_direction": "UNKNOWN",
+      "architecture_change": "none selected"
+    },
+    {
+      "ref": "RV4607",
+      "instance": "E6",
+      "source_role": "envelope:FALL_BASE",
+      "source_value": "50 kΩ",
+      "source_pins": {
+        "1": "FALL_REF_TRIM",
+        "2": "FALL_EXPO_REF",
+        "3": "FALL_EXPO_REF"
+      },
+      "native_netlist_pin_nets": {
+        "1": "X397FF51868343A219B35",
+        "2": "X1A56FAC2909B66A3BA00",
+        "3": "X1A56FAC2909B66A3BA00"
+      },
+      "existing_footprint": "zudo-osc-hole-field:Potentiometer_Bourns_TC33X_Vertical",
+      "production_mpn": "",
+      "candidate_id": "TC33X-2-503E",
+      "disposition": "REVIEWED - same-value same-package candidate option; production gap remains open",
+      "primary_review_verdict": "PASS - primary-source confirmed",
+      "source_ids": [
+        "tc33-rev0819"
+      ],
+      "envelope_review": "Reviewed shared TC33X-2 dimensions and adjustment access; installed fit, orientation and tool clearance remain NEEDS BENCH",
+      "electrical_qualification": "NEEDS BENCH",
+      "rotation_direction": "UNKNOWN",
+      "architecture_change": "none selected"
+    }
+  ],
+  "architecture_envelope_effects": [
+    {
+      "topic": "existing footprint and accepted copper",
+      "verdict": "NEEDS BENCH",
+      "effect": "All three options use the manufacturer TC33X-2 drawing and same family footprint already present; nominal package envelope delta is zero relative to existing TC33X-2 1k/10k references. This does not certify the provisional footprint. Preserve all pads, poses and copper.",
+      "existing_courtyard_bounds_mm": [
+        -2.85,
+        -2.05,
+        2.45,
+        1.85
+      ],
+      "existing_courtyard_dimensions_mm": [
+        5.3,
+        3.9
+      ],
+      "source": "footprints/kicad/zudo-osc-hole-field.pretty/Potentiometer_Bourns_TC33X_Vertical.kicad_mod; four F.CrtYd lines",
+      "risk": "Body axis, centroid, seating and B.Cu transforms need aligned comparison; rectangle dimensions alone cannot prove clearances."
+    },
+    {
+      "topic": "service access",
+      "verdict": "NEEDS BENCH",
+      "effect": "Reserve actual top tool approach to every back-face trim, keeping 1.7 mm cross-slot engagement and force below 4.9 N. Drawing envelope does not include driver shaft, hand access, harness sweep or adjacent plane clearance.",
+      "change_if_failed": "Report measured conflicts; wider/taller alternatives or remote adjustment require separate review, fixed panel remains unchanged."
+    },
+    {
+      "topic": "resistance span",
+      "verdict": "NEEDS BENCH",
+      "effect": "20k total spans 15k–25k, 50k 37.5k–62.5k and 500k 375k–625k. Endpoint maximum scales with actual total. Do not assume exact 0–nominal range or that the intended calibration target is reachable."
+    },
+    {
+      "topic": "family lifecycle and assembly",
+      "verdict": "UNSOURCED",
+      "effect": "Supplier identity can be observed, but retained raw order-page bytes, allocation, JLC assembly eligibility, lot/lifecycle confirmation and installed process evidence remain absent. Reflow/flux/cleaning cautions require assembly process review."
+    }
+  ],
+  "verification": {
+    "source_gap_enumeration": "PASS - source specification and committed osc-core netlist agree on all 23 refs/values/roles and blank MPNs",
+    "primary_bytes": "PASS - fresh manufacturer PDF SHA256 matches committed TC33X.pdf; plan/side/terminal drawings visually reviewed",
+    "native": "NOT RUN - research lane has no global native slot",
+    "physical": "NOT RUN - no prototype, fitted stack, adjustment or calibration measurements",
+    "production_changes": "none"
+  },
+  "next_needed_coordination": [
+    "Parent builder tests should independently compare every gap ref/value/role/candidate against generated service inventory.",
+    "Annotation lane consumes labels only; no CW/CCW arrows from these candidate records.",
+    "Architecture lanes consume nominal and conservative envelopes plus explicit unmeasured tool approach; do not alter accepted production poses.",
+    "Exact candidate selection and owner-bundle adoption need separate authorized workflow after physical/electrical/process evidence."
+  ]
+}

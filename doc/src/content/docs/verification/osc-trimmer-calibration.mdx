@@ -1,0 +1,310 @@
+---
+title: "Trimmer function and calibration contract"
+description: "All 100 existing trimmers, their source functions, component identity risks and unmeasured calibration targets."
+sidebar_position: 48
+---
+
+This is the issue [#248](https://github.com/Takazudo/zudo-osc-hole-field/issues/248)
+service contract for epic [#242](https://github.com/Takazudo/zudo-osc-hole-field/issues/242),
+reviewed from immutable main `65cefd41fc39e064d38319115ad96016a1c6b71c`.
+All boards remain unvalidated drafts. No calibration performance, physical fit,
+routing acceptance or manufacturing release is claimed.
+
+## Labels and source ownership
+
+The authored `design/service/trimmer-functions.json` contains 100 unique rows and
+28 explicit Role definitions. Join a row by **existing Ref + Block + Role**.
+The label contains the short English module and function, and `reference_label`
+retains the Ref. A label such as **OSC1 SINE LEVEL / RVO1111** must never become
+SINE SHAPE. RV1601 is **ALL OSC OCT SPAN**, not an individual oscillator trim.
+RVO references and blank-MPN trims are included by footprint/symbol recognition;
+prefix-only or nonempty-MPN filtering omits required parts.
+
+The function dictionary contains no XY, rotation, face or board assignment.
+`scripts/service/build_trimmer_inventory.py` joins source parts via `designator()`
+to the retained core netlist, PCB footprints/pads and current source floorplan.
+Its generated `design/service/trimmer-inventory.json` records 44 F.Cu and 56 B.Cu
+trimmers, complete pins and source/native poses. Source XY uses the source frame;
+native XY includes the existing +100/+50 mm translation in `scripts/pcbgen/place.py`.
+Orientations are normalized modulo 360 for comparison; raw native orientation is
+also retained. Pin tokens use the existing board projection `net_token()` mapping.
+These consistency checks read saved KiCad files; they do not run native KiCad.
+
+For the annotation lane, `label` is the functional text and `reference_label` is
+retained visibly alongside it. Placement comes from the current inventory and
+must be refreshed against an assigned integration input. Unknown roles, missing
+rows, duplicate Refs, MPN loss, changed pads or poses fail explicitly. A new trim
+requires a reviewed contract update; no automatic label from a guessed Role.
+All `rotation_direction` values are **UNKNOWN / NEEDS BENCH**. Manufacturer
+CCW/wiper/CW terminal identities do not establish a frequency/time/gain arrow,
+especially after back-face installation. No direction arrow is authorized here.
+
+## Component identity review
+
+The 77 source-assigned identities remain unchanged: 21 Bourns TC33X-2-102E and
+56 TC33X-2-103E. Presence of an MPN is not qualification. The 23 remaining source
+MPNs stay blank: five 20 kΩ HF trims, fifteen 50 kΩ base trims and three 500 kΩ
+resonance trims. Every gap is individually reviewed in
+`design/service/component-review/review.json`; its README describes the envelope,
+source locks, exact supplier observations and unresolved qualification.
+
+Same-value **options only** are TC33X-2-203E, TC33X-2-503E and TC33X-2-504E.
+[Bourns TC33 rev.08/19](https://www.bourns.com/docs/product-datasheets/tc33.pdf)
+is retained at `circuit/sources/ic-library/TC33X.pdf`, SHA-256
+`b13258ee9f777b70198554ad4ed43cab2167b2bdf31bdcbe52c4956bfff1adbf`.
+Physical PDF index 1, Standard Resistance Table and How To Order support the
+values, rotational-stop `-2` variant and E reel. Index 0, right-hand TC33X-2
+Product Dimensions supports the 3.6 × 3.8 × 1.2 mm terminal-inclusive nominal
+body and general ±0.3 mm tolerance. The corresponding conservative independent
+axis bounds are 3.9 × 4.1 × 1.5 mm; these exclude tool, hand and cable access.
+The existing footprint courtyard is provisional and requires installed fit review.
+No larger package or different resistance is silently substituted.
+
+The primary ±25% total-resistance tolerance gives 15–25 kΩ, 37.5–62.5 kΩ and
+375–625 kΩ ranges. The 2% endpoint-resistance bound for values above 1 kΩ means
+zero-ohm adjustment is not guaranteed. These limits require calibration-range
+analysis of the unchanged surrounding networks, not just an order-code match.
+Supplier raw-page acquisition was blocked; stock, factory allocation and assembly
+acceptance remain unknown. `COMPONENT_REVIEW_READY` means all 23 risks have
+reviewed dispositions; it does not select the candidates or close production gaps.
+Source-integration and exact-component owners decide any adoption separately.
+
+## Proposed calibration sequence
+
+All targets below describe source intent and remain **NEEDS BENCH**. Record the
+actual populated revision, component identities, rail conditions, warm-up,
+ambient/temperature range, instruments, load/bandwidth, knob/CV settings and
+raw observations before assigning a measured result. Numeric test tolerances and
+qualified ranges must be agreed by the circuit/bench owners, never invented from
+these labels. This page does not authorize energization.
+
+First qualify references and loaded shared octave span. Then characterize each
+oscillator base pitch, temperature compensation, V/OCT and HF tracking together;
+repeat interacting settings before symmetry and final sine level. Check filter
+base frequency and slope before maximum resonance, then each OTA balance under
+specified controls. Characterize both AR time-current paths with the selected
+thresholds, independently checking scale, base timing and offset. Set MIX4 gain
+and balance across a control sweep; check wavefolder offset and drive ceiling.
+Measure noise levels over a defined bandwidth/load without treating gain trims
+as spectral corrections. Mechanical lane #246 and assembly lane #258 must verify
+access to every F.Cu/B.Cu adjustment in the actual stack, with harnesses present.
+
+## Function references
+
+### envelope-fall-base
+
+**FALL BASE** — RV4107, RV4207, RV4307, RV4407, RV4507, RV4607.
+
+Set reference bias current and base timing at an agreed control datum. Physical timing accuracy remains open. **NEEDS BENCH.** Source: `design/spec/modules/envelope.py:199`. Rotation direction: **UNKNOWN / NEEDS BENCH**.
+
+### envelope-fall-offset
+
+**FALL OFFSET** — RV4108, RV4208, RV4308, RV4408, RV4508, RV4608.
+
+Reduce OTA offset in the timing-current path; verify residual drift at low bias. Physical timing accuracy remains open. **NEEDS BENCH.** Source: `design/spec/modules/envelope.py:205`. Rotation direction: **UNKNOWN / NEEDS BENCH**.
+
+### envelope-fall-scale
+
+**FALL SCALE** — RV4106, RV4206, RV4306, RV4406, RV4506, RV4606.
+
+Adjust exponential time-control slope. Physical timing accuracy remains open. **NEEDS BENCH.** Source: `design/spec/modules/envelope.py:196`. Rotation direction: **UNKNOWN / NEEDS BENCH**.
+
+### envelope-rise-base
+
+**RISE BASE** — RV4103, RV4203, RV4303, RV4403, RV4503, RV4603.
+
+Set reference bias current and base timing at an agreed control datum. Physical timing accuracy remains open. **NEEDS BENCH.** Source: `design/spec/modules/envelope.py:199`. Rotation direction: **UNKNOWN / NEEDS BENCH**.
+
+### envelope-rise-offset
+
+**RISE OFFSET** — RV4104, RV4204, RV4304, RV4404, RV4504, RV4604.
+
+Reduce OTA offset in the timing-current path; verify residual drift at low bias. Physical timing accuracy remains open. **NEEDS BENCH.** Source: `design/spec/modules/envelope.py:205`. Rotation direction: **UNKNOWN / NEEDS BENCH**.
+
+### envelope-rise-scale
+
+**RISE SCALE** — RV4102, RV4202, RV4302, RV4402, RV4502, RV4602.
+
+Adjust exponential time-control slope. Physical timing accuracy remains open. **NEEDS BENCH.** Source: `design/spec/modules/envelope.py:196`. Rotation direction: **UNKNOWN / NEEDS BENCH**.
+
+### filter-bp-offset
+
+**BP OFFSET** — RV2109, RV2209, RV2309.
+
+Reduce BP OTA offset at the agreed zero-input/control state; physical residual remains open. **NEEDS BENCH.** Source: `design/spec/modules/filter.py:105`. Rotation direction: **UNKNOWN / NEEDS BENCH**.
+
+### filter-dry-offset
+
+**DRY OFFSET** — RV2112, RV2212, RV2312.
+
+Reduce DRY OTA offset at the agreed zero-input/control state; physical residual remains open. **NEEDS BENCH.** Source: `design/spec/modules/filter.py:105`. Rotation direction: **UNKNOWN / NEEDS BENCH**.
+
+### filter-expo-base-trim
+
+**BASE FREQ** — RV2108, RV2208, RV2308.
+
+Set reference current and base cutoff frequency at an agreed control datum. **NEEDS BENCH.** Source: `design/spec/modules/filter.py:91`. Rotation direction: **UNKNOWN / NEEDS BENCH**.
+
+### filter-expo-scale-trim
+
+**FREQ SCALE** — RV2107, RV2207, RV2307.
+
+Adjust exponential cutoff control slope toward the source nominal 1 V/oct law. **NEEDS BENCH.** Source: `design/spec/modules/filter.py:88`. Rotation direction: **UNKNOWN / NEEDS BENCH**.
+
+### filter-lp-offset
+
+**LP OFFSET** — RV2110, RV2210, RV2310.
+
+Reduce LP OTA offset at the agreed zero-input/control state; physical residual remains open. **NEEDS BENCH.** Source: `design/spec/modules/filter.py:105`. Rotation direction: **UNKNOWN / NEEDS BENCH**.
+
+### filter-resonance-max
+
+**RES MAX** — RV2113, RV2213, RV2313.
+
+Set maximum resonance transimpedance and assess self-oscillation limit; qualified amplitude remains open. **NEEDS BENCH.** Source: `design/spec/modules/filter.py:134`. Rotation direction: **UNKNOWN / NEEDS BENCH**.
+
+### filter-res-offset
+
+**RES OFFSET** — RV2111, RV2211, RV2311.
+
+Reduce RES OTA offset at the agreed zero-input/control state; physical residual remains open. **NEEDS BENCH.** Source: `design/spec/modules/filter.py:105`. Rotation direction: **UNKNOWN / NEEDS BENCH**.
+
+### mix4-vca-feedthrough
+
+**FEEDTHROUGH** — RV8307, RV8407.
+
+Reduce VCA control feedthrough across agreed gain commands; one setting does not prove cancellation over all commands. **NEEDS BENCH.** Source: `design/spec/modules/mix4_vca.py:71`. Rotation direction: **UNKNOWN / NEEDS BENCH**.
+
+### mix4-vca-tia-cal
+
+**VCA GAIN** — RV8308, RV8408.
+
+Tune VCA transimpedance for source nominal unity gain at +5 V command; physical gain/headroom remains open. **NEEDS BENCH.** Source: `design/spec/modules/mix4_vca.py:81`. Rotation direction: **UNKNOWN / NEEDS BENCH**.
+
+### noise-blue-level-trim
+
+**BLUE LEVEL** — RV6103.
+
+Adjust blue output level over the agreed bandwidth/load; RMS target and spectral behavior remain bench questions. **NEEDS BENCH.** Source: `design/spec/modules/noise.py:103`. Rotation direction: **UNKNOWN / NEEDS BENCH**.
+
+### noise-brown-level-trim
+
+**BROWN LEVEL** — RV6104.
+
+Adjust brown output level over the agreed bandwidth/load; RMS target and spectral behavior remain bench questions. **NEEDS BENCH.** Source: `design/spec/modules/noise.py:103`. Rotation direction: **UNKNOWN / NEEDS BENCH**.
+
+### noise-pink-level-trim
+
+**PINK LEVEL** — RV6102.
+
+Adjust pink output level over the agreed bandwidth/load; RMS target and spectral behavior remain bench questions. **NEEDS BENCH.** Source: `design/spec/modules/noise.py:103`. Rotation direction: **UNKNOWN / NEEDS BENCH**.
+
+### noise-white-level-trim
+
+**WHITE LEVEL** — RV6101.
+
+Adjust white output level over the agreed bandwidth/load; RMS target and spectral behavior remain bench questions. **NEEDS BENCH.** Source: `design/spec/modules/noise.py:103`. Rotation direction: **UNKNOWN / NEEDS BENCH**.
+
+### octave-reference-rv-gain
+
+**OCT SPAN** — RV1601.
+
+Set shared ladder span for nominal 1 V octave steps at loaded receiver references; physical precision remains open. **NEEDS BENCH.** Source: `design/standard/electrical-standard.json — cells.octave_reference.parts RV_GAIN / R_FIXED / TOPDRV; 1k nominal from trim_102 pin map`. Rotation direction: **UNKNOWN / NEEDS BENCH**.
+
+### oscillator-base-trim
+
+**BASE PITCH** — RVO1106, RVO1206, RVO1306, RVO1406, RVO1506.
+
+Set base pitch at the chosen zero-CV tuning datum; numeric datum remains a bench decision. **NEEDS BENCH.** Source: `design/spec/modules/oscillator.py:156`. Rotation direction: **UNKNOWN / NEEDS BENCH**.
+
+### oscillator-hf-trim
+
+**HF TRACK** — RVO1109, RVO1209, RVO1309, RVO1409, RVO1509.
+
+Reduce high-frequency tracking error after low-frequency scale setup; qualified range remains open. **NEEDS BENCH.** Source: `design/spec/modules/oscillator.py:167`. Rotation direction: **UNKNOWN / NEEDS BENCH**.
+
+### oscillator-rz-trim
+
+**TEMP COMP** — RVO1107, RVO1207, RVO1307, RVO1407, RVO1507.
+
+Minimize tracking change over the agreed temperature range; no measured compensation is claimed. **NEEDS BENCH.** Source: `design/spec/modules/oscillator.py:162`. Rotation direction: **UNKNOWN / NEEDS BENCH**.
+
+### oscillator-scale-trim
+
+**V/OCT** — RVO1108, RVO1208, RVO1308, RVO1408, RVO1508.
+
+Tune exponential frequency ratio toward 2:1 per +1 V after reference and base pitch setup. **NEEDS BENCH.** Source: `design/spec/modules/oscillator.py:164`. Rotation direction: **UNKNOWN / NEEDS BENCH**.
+
+### oscillator-sine-level
+
+**SINE LEVEL** — RVO1111, RVO1211, RVO1311, RVO1411, RVO1511.
+
+Adjust final sine output gain; this is not a separate sine-shape adjustment. **NEEDS BENCH.** Source: `design/spec/modules/oscillator.py:197`. Rotation direction: **UNKNOWN / NEEDS BENCH**.
+
+### oscillator-sine-symmetry
+
+**SINE SYM** — RVO1110, RVO1210, RVO1310, RVO1410, RVO1510.
+
+Balance sine shaping symmetry via differential-pair input offset; distortion target remains open. **NEEDS BENCH.** Source: `design/spec/modules/oscillator.py:191`. Rotation direction: **UNKNOWN / NEEDS BENCH**.
+
+### wavefolder-ota-offset
+
+**OTA OFFSET** — RV5104, RV5204.
+
+Reduce OTA offset/feedthrough at zero input; physical cancellation remains open. **NEEDS BENCH.** Source: `design/spec/modules/wavefolder.py:84`. Rotation direction: **UNKNOWN / NEEDS BENCH**.
+
+### wavefolder-pre-gain-max
+
+**PRE GAIN MAX** — RV5105, RV5205.
+
+Set pre-fold gain ceiling; transfer, symmetry and clipping require bench checks. **NEEDS BENCH.** Source: `design/spec/modules/wavefolder.py:87`. Rotation direction: **UNKNOWN / NEEDS BENCH**.
+
+## Useful optional provisions
+
+The selected AS3340D source already provides distinct BASE PITCH (pin 15 summing
+feed), TEMP COMP (Scale1 pin 1 RZ), V/OCT (Scale pin 14 Rs) and HF TRACK (pin 7)
+adjustments. RZ covers temperature-compensation current matching; an extra RT
+trim is not justified until measured existing range fails.
+
+An independent **pin 13 linear-reference/current trim** is an explicit option,
+not a circuit change. Current `oscillator.py` fixes a 1.2 MΩ feed from +12 V to
+LINEAR_REF; BASE_TRIM does not independently set that current. The retained
+ALFA [AS3340/AS3345 v7 primary source](https://www.alfatriode.lv/eng/sc/AS3340.pdf)
+at `circuit/sources/ic-library/AS3340.pdf`, SHA-256
+`66108a3ddcc78a158d66974a497801ce6a429d465b338f6c8d656fd7ddce815e`,
+physical index 0/printed page 1 General Description and index 1/printed page 2
+AS3340 connection diagram separate Scale1/Scale2 compensation current, Scale
+and RR/pin 13 reference functions. This supports investigating an independent
+current setting; it does not prove an improvement or supply stability.
+
+A concrete option study would add one bounded trim plus fixed limiting/feed
+resistance per oscillator (five trims total), or a separately qualified local
+reference/feed network. Value, range, package, load and exact topology are **NOT
+SELECTED**. The architecture owner must reserve five additional component
+courtyards plus tool access, account for reference/buffer load and sensitive
+locality, and compare pitch/HF/temperature/supply behavior before selection.
+No zero-area or invented 1 kΩ/10 kΩ reservation is implied. Pin 9 guidance for
+AS3340A must not be copied to the selected AS3340D SOFT-sync connection.
+Broader component/circuit work remains with #21/#29/#30/#31; source, protection
+and physical gates remain open.
+
+## Reproduction and evidence boundary
+
+Run `python3 scripts/service/build_trimmer_inventory.py` to regenerate only the
+owned inventory; `python3 scripts/service/build_trimmer_inventory.py --check`
+compares exact deterministic bytes. Run
+`python3 -m unittest scripts.service.test_trimmer_inventory` for focused source
+coverage, unknown role, MPN-loss, pin/pose drift and stale-output regressions.
+The builder never regenerates boards or edits the dictionary.
+
+The lane publishes `LABEL_CONTRACT_READY` after source/inventory checks and
+independent semantic review; #249 can consume that pinned contract separately
+from the 23-gap `COMPONENT_REVIEW_READY` required for #253. Refresh changed
+source hashes and regenerate at the coordinator's assigned integration SHA.
+Initial circuit validation was blocked by pnpm runtime permissions; the later
+workspace-cache offline circuit check passed (manual inventory, 68 lines, zero
+declared placements, no schematic/placement binding, pin-asset check performed).
+Initial full regeneration includes native work and awaits an explicit bounded
+global slot assignment. Native, physical fit and calibration checks remain **NOT RUN**;
+retained-file parsing is not a substitute. See the committed lane verification
+record under `design/service/component-review/` for exact checks and hashes.
