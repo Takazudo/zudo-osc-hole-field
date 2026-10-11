@@ -43,6 +43,15 @@ def fresh(path):
     require(not path.exists() and not path.is_symlink(), 'existing evidence/path; no retry: '+str(path))
 
 
+def historical_evidence(method, packet):
+    name = DRIVER+'cohort-validation.json'
+    commit = packet['cohort_evidence_commit']
+    raw = subprocess.check_output(['git','show',commit+':'+name], cwd=method, timeout=30)
+    sha = hashlib.sha256(raw).hexdigest()
+    require(sha == packet['input_file_sha256'][name], 'historical cohort evidence hash mismatch')
+    return {'commit':commit, 'path':name, 'sha256':sha, 'status':'AVAILABLE AND AUTHENTICATED'}
+
+
 def verify_sources(method, packet):
     require(packet['source_commit'] == METHOD, 'wrong packet method')
     require(command(['git','rev-parse','HEAD'], method) == METHOD, 'exact method checkout required')
@@ -50,6 +59,7 @@ def verify_sources(method, packet):
     expected = packet['input_file_sha256'] | packet['orchestration_control_sha256']
     for name, sha in expected.items():
         require(digest(method/name) == sha, 'method/control hash mismatch: '+name)
+    historical_evidence(method, packet)  # Fail before provisioning if checkout lacks history.
     return expected
 
 
@@ -87,7 +97,8 @@ def initialize(method, evidence):
     require(len(own) == 1 and str(own[0]['id']) == ident['run_id'] and own[0]['head_sha'] == ident['orchestration_sha'], 'execution branch already used or run identity missing')
     fresh(evidence/'one-shot.json'); write(evidence/'one-shot.json', ident)
     write(evidence/'source-binding.json', {'identity':ident, 'packet_sha256':PACKET_SHA,
-        'method_sha':METHOD, 'hashes':verify_sources(method, packet), 'native_started':False})
+        'method_sha':METHOD, 'hashes':verify_sources(method, packet),
+        'historical_evidence':historical_evidence(method, packet), 'native_started':False})
 
 
 def python_binding(packet):

@@ -76,6 +76,22 @@ class F3OrchestrationTests(unittest.TestCase):
             with patch.object(r,'command',side_effect=[r.METHOD,'']):
                 with self.assertRaisesRegex(ValueError,'hash mismatch'):r.verify_sources(p,packet)
 
+    def test_required_historical_cohort_is_available_and_authenticated(self):
+        receipt=r.historical_evidence(r.REQUEST_ROOT,PACKET)
+        self.assertEqual(receipt['commit'],'191a4db30d90fe43025ec2633e23f9b069f12b85')
+        self.assertEqual(receipt['status'],'AVAILABLE AND AUTHENTICATED')
+        self.assertEqual(receipt['sha256'],PACKET['input_file_sha256'][r.DRIVER+'cohort-validation.json'])
+
+    def test_missing_historical_commit_fails_closed(self):
+        error=r.subprocess.CalledProcessError(128,['git','show'])
+        with patch.object(r.subprocess,'check_output',side_effect=error):
+            with self.assertRaises(r.subprocess.CalledProcessError):r.historical_evidence(Path('/method'),PACKET)
+
+    def test_wrong_historical_cohort_bytes_fail_closed(self):
+        with patch.object(r.subprocess,'check_output',return_value=b'wrong cohort'):
+            with self.assertRaisesRegex(ValueError,'historical cohort evidence hash mismatch'):
+                r.historical_evidence(Path('/method'),PACKET)
+
     def test_workflow_has_only_one_shot_branch_and_failure_retention(self):
         import yaml
         workflow=yaml.safe_load((r.REQUEST_ROOT/'.github/workflows'/r.WORKFLOW).read_text())
@@ -84,6 +100,9 @@ class F3OrchestrationTests(unittest.TestCase):
         job=workflow['jobs']['route'];self.assertEqual(job['timeout-minutes'],43)
         self.assertEqual(job['if'],'github.event.created && github.run_attempt == 1')
         self.assertNotIn('strategy',job)
+        checkout=next(s for s in job['steps'] if s.get('with',{}).get('path')=='method')
+        self.assertEqual(checkout['with']['ref'],r.METHOD)
+        self.assertEqual(checkout['with']['fetch-depth'],0)
         retention=[s for s in job['steps'] if s.get('if')=='always()']
         self.assertEqual(len(retention),2)
         self.assertEqual(retention[-1]['with']['retention-days'],30)
