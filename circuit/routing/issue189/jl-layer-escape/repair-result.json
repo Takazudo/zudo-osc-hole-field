@@ -1,0 +1,134 @@
+{
+  "status": "COMPLETE BOUNDED RESTORATION SCREEN; NATIVE NOT RUN",
+  "input_dump_sha256": "918a1e47ad0f595917be3931daf00ac1c99861a8814f4c94867bc6ad9f0be30f",
+  "original_board_sha256": "a01df89dcab3d4fab8eb0ae80195b2825d2d47adc517cd73452d9b9aa6ea079a",
+  "rejected_board_sha256": "19f46a21e720c2d58156dedad30ea95d12f6d01047aac781cc3d115588297afe",
+  "trials": [
+    {
+      "mode": "direct",
+      "plane_window_mm": 3,
+      "complete": false,
+      "elapsed_seconds": 1.8927669120021164,
+      "diagnostics": [
+        {
+          "net": "AGND",
+          "endpoints": [
+            "C2148.2"
+          ],
+          "reason": "search_exhausted",
+          "phase": "route",
+          "attempts": [
+            {
+              "window_cells": [
+                0,
+                483,
+                0,
+                484
+              ],
+              "expanded": 2008,
+              "limit": 300000
+            },
+            {
+              "window_cells": [
+                0,
+                483,
+                0,
+                484
+              ],
+              "expanded": 2008,
+              "limit": 300000
+            }
+          ],
+          "max_expansions": 300000,
+          "window_mm": 6
+        }
+      ],
+      "routes": [
+        {
+          "net": "AGND",
+          "island": [
+            "C2148.2"
+          ],
+          "path": null
+        }
+      ],
+      "copper": []
+    },
+    {
+      "mode": "plane",
+      "plane_window_mm": 3,
+      "complete": false,
+      "elapsed_seconds": 1.705343207999249,
+      "diagnostics": [
+        {
+          "net": "AGND",
+          "endpoints": [
+            "C2148.2"
+          ],
+          "reason": "search_exhausted",
+          "phase": "plane_fanout",
+          "attempts": [
+            {
+              "window_cells": [
+                105,
+                378,
+                104,
+                380
+              ],
+              "expanded": 2008,
+              "limit": 300000
+            }
+          ]
+        }
+      ],
+      "routes": [
+        {
+          "net": "AGND",
+          "island": [
+            "C2148.2"
+          ],
+          "path": null
+        }
+      ],
+      "copper": []
+    },
+    {
+      "mode": "plane",
+      "plane_window_mm": 6,
+      "complete": false,
+      "elapsed_seconds": 1.722536246990785,
+      "diagnostics": [
+        {
+          "net": "AGND",
+          "endpoints": [
+            "C2148.2"
+          ],
+          "reason": "search_exhausted",
+          "phase": "plane_fanout",
+          "attempts": [
+            {
+              "window_cells": [
+                0,
+                483,
+                0,
+                484
+              ],
+              "expanded": 2008,
+              "limit": 300000
+            }
+          ]
+        }
+      ],
+      "routes": [
+        {
+          "net": "AGND",
+          "island": [
+            "C2148.2"
+          ],
+          "path": null
+        }
+      ],
+      "copper": []
+    }
+  ]
+}
