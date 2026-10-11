@@ -1,0 +1,277 @@
+{
+  "schema": "epic253-matched-demand-spec-1",
+  "input_commit": "9e0aceda2f1d55052a8c9c03f958e8d93271a81c",
+  "selection": "Source-reviewed before native results. Same exact anchor pads, geometry and budgets across each domain; complete native groups remain preservation obligations, not alternate routing landing masks.",
+  "domains": {
+    "O1": {
+      "boards": [
+        "K1402",
+        "two-A",
+        "three-A"
+      ],
+      "module": "O1",
+      "packages": [
+        "U1105",
+        "U1109",
+        "U1114"
+      ],
+      "related_refs": [
+        "C1111",
+        "R1176",
+        "R1177"
+      ],
+      "targets": {
+        "positive_supply": {
+          "source_net": "+12V",
+          "anchors": [
+            {
+              "ref": "U1109",
+              "pad": "4"
+            },
+            {
+              "ref": "C1134",
+              "pad": "1"
+            }
+          ],
+          "reason": "Existing OPA4197 supply to its source-declared bypass; signal-package U1114 rail already connected in K and excluded as baseline gain."
+        },
+        "negative_supply": {
+          "source_net": "-12V",
+          "anchors": [
+            {
+              "ref": "U1109",
+              "pad": "11"
+            },
+            {
+              "ref": "C1135",
+              "pad": "1"
+            }
+          ],
+          "reason": "Existing OPA4197 negative supply to its own bypass."
+        },
+        "signal": {
+          "source_net": "/O1/TRI_SUM",
+          "anchors": [
+            {
+              "ref": "R1177",
+              "pad": "2"
+            },
+            {
+              "ref": "U1114",
+              "pad": "6"
+            }
+          ],
+          "reason": "Actual sensitive summing-net open demand; remote U1114.6 shares original group with R1176.2."
+        },
+        "return": {
+          "source_net": "AGND",
+          "anchors": [
+            {
+              "ref": "U1105",
+              "pad": "12"
+            },
+            {
+              "ref": "C1111",
+              "pad": "2"
+            }
+          ],
+          "reason": "Existing O1 timing-return demand. Separate timing control in same oscillator domain, not falsely one package with TRI_SUM. Preserve U1114 bypass-ground group as a separate obligation."
+        }
+      }
+    },
+    "F3": {
+      "boards": [
+        "K1402",
+        "two-A",
+        "three-B"
+      ],
+      "module": "F3",
+      "packages": [
+        "U2306",
+        "U2309",
+        "U2312"
+      ],
+      "related_refs": [
+        "C2312"
+      ],
+      "targets": {
+        "positive_supply": {
+          "source_net": "+12V",
+          "anchors": [
+            {
+              "ref": "U2309",
+              "pad": "4"
+            },
+            {
+              "ref": "C2331",
+              "pad": "1"
+            }
+          ],
+          "reason": "Source-declared U2309 bypass, not nearer unrelated C2335; U2312/U2306 rails already connected in K."
+        },
+        "negative_supply": {
+          "source_net": "-12V",
+          "anchors": [
+            {
+              "ref": "U2309",
+              "pad": "11"
+            },
+            {
+              "ref": "C2332",
+              "pad": "1"
+            }
+          ],
+          "reason": "Source-declared U2309 negative bypass."
+        },
+        "signal": {
+          "source_net": "/F3/BP_INT",
+          "anchors": [
+            {
+              "ref": "U2306",
+              "pad": "5"
+            },
+            {
+              "ref": "C2312",
+              "pad": "1"
+            }
+          ],
+          "reason": "Actual F3 integrator signal demand; remote storage capacitor C2312.1 shares original group with U2312.12."
+        },
+        "return": {
+          "source_net": "AGND",
+          "anchors": [
+            {
+              "ref": "C2338",
+              "pad": "2"
+            },
+            {
+              "ref": "U2312",
+              "pad": "5"
+            }
+          ],
+          "reason": "Signal receiver negative-bypass return to existing grounded receiver pin; preserve positive-bypass C2337.2 group."
+        }
+      }
+    },
+    "E1": {
+      "boards": [
+        "K1402",
+        "two-B",
+        "three-C"
+      ],
+      "module": "E1",
+      "packages": [
+        "U4141"
+      ],
+      "related_refs": [
+        "C4113",
+        "R4195",
+        "R4196",
+        "R4197",
+        "R4198"
+      ],
+      "targets": {
+        "positive_supply": {
+          "source_net": "+12V",
+          "anchors": [
+            {
+              "ref": "U4141",
+              "pad": "4"
+            },
+            {
+              "ref": "C4162",
+              "pad": "1"
+            }
+          ],
+          "reason": "Signal-package OPA4197 positive supply to own source bypass."
+        },
+        "negative_supply": {
+          "source_net": "-12V",
+          "anchors": [
+            {
+              "ref": "U4141",
+              "pad": "11"
+            },
+            {
+              "ref": "C4163",
+              "pad": "1"
+            }
+          ],
+          "reason": "Signal-package negative supply to own source bypass."
+        },
+        "signal": {
+          "source_net": "/E1/ENV_STORAGE",
+          "anchors": [
+            {
+              "ref": "U4141",
+              "pad": "10"
+            },
+            {
+              "ref": "C4113",
+              "pad": "1"
+            }
+          ],
+          "reason": "Actual storage-node demand to capacitor C4113.1; remote group includes R4195/6/7/8.2."
+        },
+        "return": {
+          "source_net": "AGND",
+          "anchors": [
+            {
+              "ref": "C4163",
+              "pad": "2"
+            },
+            {
+              "ref": "U4141",
+              "pad": "12"
+            }
+          ],
+          "reason": "Signal-package negative-bypass return to its existing grounded input group."
+        }
+      }
+    }
+  },
+  "budget": {
+    "wall_seconds_route": 300,
+    "wall_seconds_settle_each": 600,
+    "max_expansions_per_search": 50000,
+    "window_margin_mm": 6,
+    "raster_mm": 0.1,
+    "rail_width_mm": 0.5,
+    "signal_width_mm": 0.3,
+    "clearance_mm": 0.25,
+    "via_diameter_mm": 0.6,
+    "via_drill_mm": 0.3,
+    "max_refills": 6,
+    "stable_full_signatures": 3,
+    "native_workers": 1,
+    "worker_memory_gib": 6,
+    "global_workers_max": 2,
+    "global_memory_gib": 12,
+    "required_free_gib": 2,
+    "automatic_retries": 0
+  },
+  "route_policy": {
+    "planes": {},
+    "rail_nets": [
+      "+12V",
+      "-12V",
+      "+5V",
+      "AGND"
+    ],
+    "fill_guards": {
+      "+12V": "In4.Cu",
+      "-12V": "In3.Cu",
+      "AGND": "In1.Cu"
+    },
+    "rip": [],
+    "full_board_fallback": false,
+    "target_order": [
+      "positive_supply",
+      "negative_supply",
+      "return",
+      "signal"
+    ],
+    "bounds": "Shared endpoint polygon envelope for all four pairs, expanded6mm; same exact rectangle on K/two/three. Full original dump obstacles retained.",
+    "acceptance": "Exact pair closures only after full native gates. No links/count-only successes; partition-induced repairs cannot be baseline improvements."
+  }
+}

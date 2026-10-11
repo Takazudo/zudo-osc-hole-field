@@ -29,7 +29,7 @@ input requires reviewed source-lock/contract/report changes. Promoting this inte
 decision requires a reviewed checker change too; editing a readiness flag cannot
 silently admit production work.
 
-Important result: four sensitive-signal samples have no recorded open demand.
+Historical checkpoint result: four sensitive-signal samples have no recorded open demand.
 Only three-C currently supplies an open signal pair; two-B's return pair is an
 added partition obligation rather than a matched K repair. Remaining one-pad
 supply/return samples require remote landings. Current manifests are not ready
@@ -42,3 +42,20 @@ installed fit, calibration, order or energization is claimed. Aggregate
 outputs; no new parent admission exists. The historical panel provenance CI
 failure remains independent and open. Current-head CI is not claimed by local
 checks.
+
+## Corrected source method
+
+`matching-spec.json` and `matched-demands.json` now replace those unsuitable samples
+for the proposed comparison, without rewriting historical lane manifests. All12
+predeclared exact pairs are open on their K/two/three owners (nine board/domain
+cases). Full group and touched-package/bypass obligations remain separately
+recorded. `matching.py --artifacts /path/to/verified-zips --check` replays this
+source result. `prepare_matched.py` creates a new private fixture; it performs no
+native work. `route_matched.py` refuses to search without an admitted guard.
+`evaluate_matched.py` replays raw full-warning proofs and tests exact closures
+plus every return/rail obligation after and fresh. It never grants adoption.
+
+See `native-proposal.md` for the complete minimal transaction, exact budgets and
+stop rules; it is NOT ADMITTED. `owner-exchange.json` records disjoint path owners.
+The original decision/verification files remain an explicitly historical source
+checkpoint; the corrected method does not retroactively change their measurements.
