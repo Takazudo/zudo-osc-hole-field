@@ -224,7 +224,14 @@ class Inputs:
                  'scripts/kicad/pin.env', 'scripts/pcbgen/numerical-requirements.txt', 'scripts/schgen/project_boards.py'}
         paths.update(str(p.relative_to(ROOT)) for p in (ROOT/'boards/osc-core').rglob('*') if p.is_file() and 'reports' not in p.parts)
         paths.update(str(p.relative_to(ROOT)) for d in ('symbols', 'footprints/kicad/zudo-osc-hole-field.pretty', 'scripts/schgen/fixtures') for p in (ROOT/d).glob('*') if p.is_file())
-        paths.update(str(p.relative_to(ROOT)) for p in (ROOT/'scripts/pcbgen').rglob('*.py'))
+        # Issue 249's annotation-only trimmer helper and regression are not
+        # imported by this partition generator or packaged into a fixture.
+        # Keep the accepted #245 input epoch stable while binding every actual
+        # board/context/router input to the original source commit below.
+        unrelated_labels = {'trimmer_labels.py', 'test_trimmer_labels.py',
+                            'trimmer_labels_native_regression.py'}
+        paths.update(str(p.relative_to(ROOT)) for p in (ROOT/'scripts/pcbgen').rglob('*.py')
+                     if p.name not in unrelated_labels)
         paths.update(f'scripts/pcbgen/{n}.py' for n in ('grid_dump', 'grid_router', 'grid_apply', 'route_jack_grid', 'uuid_tools', 'complete_native_warnings', 'netlist', 'route', 'copper_identity', 'audit_added_mask', 'audit_hole_pairs', 'audit_zone_silk_scope', 'native_companion_binding'))
         # Bind every declared input to the immutable source commit; a dirty or newer
         # source must not silently inherit the old epoch label.
