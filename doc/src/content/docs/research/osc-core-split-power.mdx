@@ -1,0 +1,236 @@
+---
+title: "Core split power and return contracts"
+description: "Issue 247 source-bound two/three-core load ownership, preserved harnesses, finite feed and decoupling reserves, and unresolved electrical gates."
+sidebar_position: 76
+---
+
+**Unvalidated comparison draft; no topology selected.** This implements the power
+input for [#247](https://github.com/Takazudo/zudo-osc-hole-field/issues/247) and
+[#242](https://github.com/Takazudo/zudo-osc-hole-field/issues/242). Main was verified
+at `65cefd41fc39e064d38319115ad96016a1c6b71c`. The reviewed integration input is
+`1da1909846dc3255888ecd36c88cee9737c85834`, epoch `epic242-e0`; all consumed source
+and published board bytes matched. Production circuits, generators, panel,
+non-core poses and accepted copper are unchanged.
+
+The executable contract is `design/partition/core-split/power/`: `input.json`
+authors the alternatives, `build.py` derives `contract.json`,
+`harness-contract.json` and `package-ownership.csv`, and `manifest.json` pins
+source/code/output SHA256 values. The CSV covers all 5,904 physical packages,
+including literal pin nets, value, DNP, bypass target, physical courtyard and
+both candidate owners. This is source accounting, not native connectivity or a
+physical current measurement.
+
+## Keep three different quantities separate
+
+1. **Physical ownership:** 3,385 existing K parts include 425 fitted IC packages,
+   eight DNP capacitors and thirteen POWER parts. Every fitted IC's supply pins,
+   each bypass owner, and 1,903 fitted AGND contacts have a candidate core owner.
+   Other physical packages retain their current board owner.
+2. **Module responsibility:** the 347 existing worksheet rows include core,
+   jack, control and LED circuitry. Their totals below are bookkeeping for whole
+   modules, **not the current in a core feed**. The source does not resolve every
+   dynamic/resistor/output term into physical board currents. No part-count
+   allocation or speculative current saving is used.
+3. **Conductor envelope:** use the unchanged whole-source concentration screen
+   of 2.1 / 2.0 / 0.5 A on +12 / −12 / +5 V and 4.6 A in any one intended AGND
+   return. These are conditional source/interface requirements, not measured
+   capacity, guaranteed IC current or stored-energy/fault bounds. Per-core and
+   per-contact physical maxima stay **null**.
+
+The source ledger has **650 fitted IC packages**. The older rail-ledger prose
+still says 640 and contains historical current tables; this lane uses the pinned
+JSON and source generators, and reports that prose drift without editing it.
+Do not confuse the earlier independent-source A/B comparison with these core
+board names: both options retain the single `EXT` domain.
+
+| Option/core | Modules retained together | Existing parts including assigned POWER | Fitted ICs | K harnesses | Module responsibility +12 / −12 / +5 mA |
+| --- | --- | ---: | ---: | ---: | --- |
+| Two KA | O1–O5 + OCTAVE_REF; F1–F3; W1/W2; M4A/M4B; N1 | 1795 | 131 | 106 | 701.738138 / 677.938138 / 52.400000 |
+| Two KB | E1–E6; A01–A06; H1/H2; M5A/M5B | 1590 | 294 | 85 | 744.550000 / 672.750000 / 148.048934 |
+| Three KA | O1–O5 + OCTAVE_REF; H1/H2 | 919 | 83 | 58 | 457.200000 / 440.300000 / 46.000000 |
+| Three KB | F1–F3; W1/W2; M4A/M4B; M5A/M5B; N1 | 1134 | 84 | 70 | 441.438138 / 416.138138 / 23.400000 |
+| Three KC | E1–E6; A01–A06 | 1332 | 258 | 63 | 547.650000 / 494.250000 / 131.048934 |
+
+The table includes existing sensitivities: H1/H2 each receive +4 mA reference
+and +8 mA logic allowances; N1 receives another +10 mA on +5 V. Non-core-only
+B1/B2/X1/X2 retain **61.801 / 58.201 / 0.450 mA**. Charge inlet bleeders
+5.730028 / 5.679522 / 2.387511 mA, leakage 1 mA/rail, and future protection
+20 mA/rail **once globally**. The resulting planning total remains
+**1534.819166 / 1435.568660 / 224.286445 mA**. Against the 1700 / 1600 / 300 mA
+continuous requirement, remaining planning reserves are
+**165.180834 / 164.431340 / 75.713555 mA**. They are not available measured margin.
+
+The existing 20 mA/rail auxiliary reservation is assigned KA/KB = 10/10 mA,
+or KA/KB/KC = 10/5/5 mA, for review. These shares do not select a protection
+circuit. The inherited 45.5 mA positive-rail local-quad protection sensitivity
+would exceed that 20 mA allocation by **25.5 mA** if adopted unchanged. Keep
+that deterministic conditional violation visible; no circuit was adopted.
+
+The contract separately shows the OPA4196IDR/OPA4197IPWR quiescent subset:
+232/272 mA per analog rail for two cores, and 182/124/198 mA for three. This
+uses 1/6 mA per whole quad at zero output current, from
+`fact-op-audio-quiescent-current` and `fact-op-precision-quiescent-current`
+(retained TI datasheets, PDF index 7 / printed page 8). It is already inside the
+worksheets; it must not be added again or promoted to complete core demand.
+
+## POWER, main feeds and the unimplemented boundary
+
+All thirteen existing physical POWER parts belong to **KA** in both comparisons:
+
+| Load rail | Existing identities |
+| --- | --- |
+| +12 V | C301 Murata GRM188R71H104KA93D, 100 nF; C302 Samsung CL10A105KB8NNNC, 1 µF; R301 Yageo RC0603FR-072K2L, 2.2 kΩ; TP301 |
+| −12 V | C303 / C304 / R302 / TP302, same respective identities and values |
+| +5 V | C305 / C306 / R303 / TP303, same respective identities and values |
+| AGND | TP304 |
+
+These identities are inherited circuit state, not new component qualification.
+The source courtyard envelopes are 3.28×1.92 mm per capacitor, 3.28×1.82 mm per
+resistor and 2×2 mm per test pad; total lower-bound face area is 71.6944 mm².
+Local spacing, assembly and routing require additional area.
+
+CN301 and XB301 are **abstract, footprint-free, non-BOM requirements** and are
+not part of those thirteen physical parts. Raw +12V_IN/−12V_IN/+5V_IN remain
+separate from load +12V/−12V/+5V. This study creates no physical bridge across
+XB301 and does not select an external source, inlet or protection circuit.
+The [existing external-source contract](../decisions/osc-supply-architecture.mdx)
+and its voltage/current limits remain unchanged.
+
+Keep all eighteen K main lands on KA, with their existing Refs
+(even-numbered TP990002–TP990036), nets and non-core mates. The original
+JL/JR/P main wire IDs and endpoint geometry remain frozen. Each satellite gets
+a **new six-wire load-side feed** directly from KA: `CS247-KA-KB` and, for
+three cores, `CS247-KA-KC`. Each wire has explicit `-W1`…`-W6` and paired
+`-SRC-1`…`-SRC-6` / `-DST-1`…`-DST-6` terminal identities. Order is
++12 V, −12 V, +5 V, AGND1, AGND2, AGND3. These logical IDs are distinct from
+production Refs; the future source owner must allocate collision-free native
+Refs without changing old ones.
+
+Candidate construction reuses **Alpha Wire 5859 BK005** and custom factory-soldered
+4×4 mm copper lands with 5×5 mm courtyard, inside 6×6 mm per-terminal reserves.
+It introduces no guessed orderable connector. Finished cuts remain ≤110 mm,
+including the existing 10 mm preparation/slack allowance; maximum OD envelope
+is 2.5908 mm and minimum bend radius 25.908 mm. Five-ampere assembled capability,
+hot resistance and the two-end termination allowance are requirements awaiting
+qualification, not ratings inferred from AWG.
+
+| Increment over one K | Two cores | Three cores |
+| --- | ---: | ---: |
+| New main wires / lands | 6 / 12 | 12 / 24 |
+| Maximum total new wire cut | 660 mm | 1320 mm |
+| Terminal-cell area, both ends | 432 mm² | 864 mm² |
+| Reserved 91×6 mm rows, both ends | 1092 mm² | 2184 mm² |
+| Separate 91×28×28 mm cable/service boxes | 2 | 4 |
+| Added 4.7 µF bulk parts / face area | 3 / 45 mm² | 6 / 90 mm² |
+| Added satellite monitor capacity | 20×20×5 mm | two 20×20×5 mm |
+
+The terminal cells are **inside** the row reservations and are not added twice.
+Local row centres use 17 mm pitch; the adjacent corridor starts beyond the row.
+These are explicit conservative **placement inputs**, not installed fit results.
+Global origins remain unassigned for #245/#246 to place and collision-check;
+clamp/strain-relief identity, wire routing and service displacement are unresolved.
+Solder joints must not carry mechanical service loads. Preserve KA's full
+76×70 mm B-face future rail/octave-protection reserve (5320 mm²); satellite
+monitor rectangles are additional capacity with unknown circuit identity.
+
+## Returns, copper and deterministic rejection screens
+
+Retain the six-layer roles: In1.Cu continuous AGND, In2.Cu inner signals,
+In3.Cu signals with −12 V fill, In4.Cu +12 V, and surface signal/local AGND.
+Keep each bypass and local timing, hold, summing, integrator and feedback group
+with its source owner. O1–O5 and OCTAVE_REF remain together on KA. Existing
+adjacent Kelvin AGND and reference harness ≤300 mm / ≤1 nF conditions remain;
+local reference feedback does not cancel remote contact or ground drop.
+
+The preserved 191 K harnesses contain **505 signal + 376 AGND + 6 of each rail
++ 4 NC = 903 positions per end**. `harness-contract.json` retains both endpoint
+Refs, every numbered pin, exact header/housing/contact identities and original
+poses. Each harness has one core destination in both options, including the
+shared Noise/mixer JR harnesses. Four unchanged JL/P utility harnesses are outside
+this subset and remain source-hash protected. Existing GH connections are not
+repacked to create supply feeds. NC positions remain unwired.
+
+One conditional new feed reproduces the existing arithmetic:
+
+- Wire plus two terminations: 0.013 Ω/m × 0.110 m + 0.0002 Ω = **0.00163 Ω**.
+- With rail copper ≤1 mΩ and total common AGND copper ≤0.5 mΩ,
+  rail-plus-one-return losses are **15.321 / 15.058 / 11.113 mV**.
+- Residual to 20 mV is **4.679 / 4.942 / 8.887 mV**. One return wire and its
+  ends dissipate **34.4908 mW** at the assumed 4.6 A concentration.
+- Copying the complete allowance into two serial sections gives
+  **30.642 / 30.116 / 22.226 mV**, a **deterministic violation** of 20 mV.
+  The KA star, branches, satellite, all accesses, necks and vias share one
+  global path budget; it cannot restart at a board boundary.
+
+The retained NBS copper reference gives nominal 70 °C resistivity
+2.064351135×10⁻⁵ Ω·mm. At proposed 70 µm foil, a uniform strip has
+0.294907305 mΩ/square; 1 mΩ allows 3.390896 total squares and 0.5 mΩ allows
+1.695448. This is only `R = ρL/(wt)`: no real plane spreading, barrel, neck,
+contact class, layer-sharing or hot material acceptance follows. The completed
+old K nominal field model is specific to its geometry; this lane does not restart
+that parked work or present it as split-board evidence.
+
+New core-to-front and core-to-core parallel AGND paths invalidate direct reuse
+of the old GH return extrema. All mates present, unbalanced demand, a missing
+return and a partly powered core require fresh joined current/return analysis.
+Do not subtract opposite-rail currents, assume equal sharing, or count patch
+sleeves as intentional supply returns. Local capacitor discharge and circulating
+currents are outside the simple source-concentration screen.
+
+## Decoupling and startup envelope
+
+Keep C106/C146–148 and C206/C246–248 **DNP**. In particular, six optional
+4.7 µF footprints are not fitted bulk. Each existing bypass follows its IC.
+Retained nominal fitted rail capacitances are 49.9 / 42.7 / 24.5 µF.
+
+| Option | Powered boards including JL/JR/P/EL | Fitted + reserved bulk, µF | Remaining nominal ceiling, µF | +20%, 10 ms charging increment, mA |
+| --- | ---: | --- | --- | --- |
+| Two cores | 6 | 78.1 / 70.9 / 52.7 | 71.9 / 79.1 / 47.3 | 123.7104 / 112.3056 / 34.7820 |
+| Three cores | 7 | 82.8 / 75.6 / 57.4 | 67.2 / 74.4 / 42.6 | 131.1552 / 119.7504 / 37.8840 |
+
+Order is +12 / −12 / +5 V. This conservatively reserves 4.7 µF per rail on
+all powered boards, including a currently unused rail; passive octave boards
+receive no invented reservoir. Each core bulk candidate has an explicit
+5×3×5 mm B-face slot near its feed. Exact MPN, voltage/temperature behaviour,
+effective ceramic capacitance, ESR, leakage and fit remain unknown. Protection
+and later capacitors must consume the remaining 150/150/100 µF nominal ceilings.
+The startup calculation uses the existing partition screen's 13.2/13.2/5.5 V,
++20% capacitance and ≥10 ms ramp; it fits the 2000/1900/400 mA transient
+requirement after adding 1700/1600/300 mA continuous delivery. It is not an
+inrush measurement or permission for a faster ramp.
+
+## Open gates and reproducible checks
+
+The contract's focused tests reject missing/duplicate modules, split reference
+or bypass ownership, endpoint pin changes, new-feed repacking and duplicated
+auxiliary reserves. Run from the repository root:
+
+```sh
+python3 design/partition/core-split/power/build.py --check
+python3 -m unittest discover -s design/partition/core-split/power -p 'test_*.py' -v
+python3 design/partition/core-split/power/build.py --compare-ref 1da1909846dc3255888ecd36c88cee9737c85834
+```
+
+Missing/late rails and unplugged cores can receive injection through signals,
+outputs and references. #59 still owns load-side monitoring, reverse blocking,
+inhibited enables, bounded injection, coordinated shutdown/discharge and
+independently observable return integrity: 82 outputs, 16 feedback paths and
+30 octave receivers remain obligations. Ground is never switched or fused to
+hide a loop. Power down the source and external patched equipment before service.
+
+[Source realization #57](https://github.com/Takazudo/zudo-osc-hole-field/issues/57),
+[protection #59](https://github.com/Takazudo/zudo-osc-hole-field/issues/59), and
+[mechanical/hot qualification #65](https://github.com/Takazudo/zudo-osc-hole-field/issues/65)
+remain open. Native routing/DRC, complete split-network copper/current acceptance,
+installed hot loss, source capacity, startup/fault tests and physical fit are
+**NOT RUN**. The result is ready as a reviewed architecture input with those
+gates, not ready for production geometry adoption, energization or fabrication.
+
+Primary references retained by the source contracts are
+[JST eGH](https://www.jst-mfg.com/product/pdf/eng/eGH.pdf),
+[Alpha Wire 5859](https://www.alphawire.com/disteAPI/SpecPDF/DownloadProductSpecPdf?productPartNumber=5859),
+[TI OPA4196](https://www.ti.com/lit/ds/symlink/opa4196.pdf),
+[TI OPA4197](https://www.ti.com/lit/ds/symlink/opa4197.pdf), and
+[NBS Copper Wire Tables](https://nvlpubs.nist.gov/nistpubs/Legacy/hb/nbshandbook100.pdf).
+Retained byte hashes and source locators govern these calculations; the links
+alone do not establish the state of installed hardware.
