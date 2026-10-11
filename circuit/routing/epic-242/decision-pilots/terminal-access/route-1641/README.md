@@ -8,8 +8,9 @@ Prospective admission: `epic242-f3-two-a-route-20261011-1641`.
 Prospective execution branch: `integration/epic-242-f3-two-a-access-v1`.
 Worker: `f3-two-a-access-v1-<GITHUB_RUN_ID>-1`.
 The branch has not been created. Parent must admit the exact orchestration commit
-before its one-time branch-creation push. The commit containing this preparation,
-linked from the PR/issue handoff, is the proposed orchestration source.
+before its one-time branch-creation push. Exact proposed orchestration: `791195aac846841926357c480894421fff562b9e`.
+[source-pin.json](source-pin.json) records this immutable admission target; later
+integration evidence commits are not substituted for it.
 
 Frozen method: `6f0783335fa23d760877a91db3b63f93c039b4b4`.
 Frozen packet SHA256:
