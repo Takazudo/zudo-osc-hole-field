@@ -1,0 +1,1384 @@
+{
+  "input_sha256": {
+    "design/partition/core-split/candidates/two.json": "65fa0983a515b7977753be1ec70ca71b200c1abfd9a2fc53660a44534436654d",
+    "design/partition/core-split/candidates/three.json": "bfeb6805721093d5d9d64f808ebd76c4a1e156311ed89a168ec5af36719a9bd9",
+    "design/partition/core-split/candidates/copper-index.jsonl.gz": "1fd9f4191b76cbc391ff4d4eedbea985a501e5417959c950903add3b99efb74c",
+    "design/reports/board-net-tokens.json": "2191a7c460dca125a296735c709ea15bb4921dc75eeb4fd87bb6f75528062d7e",
+    "boards/osc-core/osc-core.kicad_pcb": "fa60b4e1587a67501782fb55374f0e5d5133f65cd0bbe62624aef502441fda10"
+  },
+  "coordinate_frame": "Candidate XY mm; accepted PCB XY = candidate +(100,50)",
+  "scope": "Descriptive existing geometry in three predeclared windows; no pose, optimized region, candidate fit or connectivity proof.",
+  "windows": [
+    {
+      "id": "N-two-A",
+      "candidate": "two-A",
+      "rect_mm": [
+        124,
+        88,
+        164,
+        168
+      ],
+      "area_mm2": 3200.0,
+      "faces": {
+        "F.Cu": {
+          "courtyard_area_mm2": 63.24199999999995,
+          "reservation_area_mm2": 40.493859923445086,
+          "unoccupied_after_035_clearance_mm2": 3115.0880264815055,
+          "largest_connected_polygon_area_mm2": 3115.0880264815055,
+          "claim": "Free polygon area is not an inscribed placement envelope or copper-free space; polygonized circular reserves only, no installed fit.",
+          "occupied_refs": [
+            {
+              "ref": "J900050",
+              "module": "header_or_mechanical",
+              "intersection_mm2": 48.61699999999995
+            },
+            {
+              "ref": "TP990012",
+              "module": "header_or_mechanical",
+              "intersection_mm2": 14.625
+            }
+          ],
+          "reservations": [
+            {
+              "id": "POWER-JL-6",
+              "intersection_mm2": 24.0
+            },
+            {
+              "id": "JL-K-25-K-hole",
+              "intersection_mm2": 3.799799222764012
+            },
+            {
+              "id": "JL-K-25-K-hook",
+              "intersection_mm2": 15.329999999999998
+            }
+          ]
+        },
+        "B.Cu": {
+          "courtyard_area_mm2": 5.969599999999979,
+          "reservation_area_mm2": 16.493859923445086,
+          "unoccupied_after_035_clearance_mm2": 3173.582312886463,
+          "largest_connected_polygon_area_mm2": 3173.582312886463,
+          "claim": "Free polygon area is not an inscribed placement envelope or copper-free space; polygonized circular reserves only, no installed fit.",
+          "occupied_refs": [
+            {
+              "ref": "R302",
+              "module": "POWER",
+              "intersection_mm2": 5.969599999999979
+            }
+          ],
+          "reservations": [
+            {
+              "id": "JL-K-25-K-hole",
+              "intersection_mm2": 3.799799222764012
+            },
+            {
+              "id": "JL-K-25-K-hook",
+              "intersection_mm2": 15.329999999999998
+            }
+          ]
+        }
+      },
+      "all_layer_source_copper": {
+        "by_ownership_class": {
+          "SHARED_RETURN_SUPPLY": 479,
+          "OTHER_CANDIDATE_NET": 3768,
+          "SAME_CANDIDATE_NET": 527
+        },
+        "selector": "Every accepted straight segment/circular via whose width/annulus intersects the physical window; no pad clearances applied. Whole-net candidate ownership is a source filter, not native retention acceptance.",
+        "object_multiset_sha256": "fde9431f360bb23961afb8d4244ad871d1f153e92ba35ba09795597ffc033ea3",
+        "leading_retained_or_shared_nets": [
+          [
+            "+5V",
+            297
+          ],
+          [
+            "/W2/BIAS_BUFFER",
+            97
+          ],
+          [
+            "/W2/FOLD_BUFFER",
+            81
+          ],
+          [
+            "+12V",
+            76
+          ],
+          [
+            "/O2/SIN_SCALED",
+            68
+          ],
+          [
+            "-12V",
+            64
+          ],
+          [
+            "/O2/TRI_SCALED",
+            57
+          ],
+          [
+            "/F2/RES_REMOTE",
+            47
+          ]
+        ],
+        "zones": "All five original zones remain full native refill/continuity obligations; not included in these segment/via counts."
+      }
+    },
+    {
+      "id": "E-two-A",
+      "candidate": "two-A",
+      "rect_mm": [
+        164,
+        48,
+        244,
+        168
+      ],
+      "area_mm2": 9600.0,
+      "faces": {
+        "F.Cu": {
+          "courtyard_area_mm2": 713.8308032800009,
+          "reservation_area_mm2": 262.95438911961844,
+          "unoccupied_after_035_clearance_mm2": 8528.103830733466,
+          "largest_connected_polygon_area_mm2": 8528.103830733466,
+          "claim": "Free polygon area is not an inscribed placement envelope or copper-free space; polygonized circular reserves only, no installed fit.",
+          "occupied_refs": [
+            {
+              "ref": "C6115",
+              "module": "N1",
+              "intersection_mm2": 6.297599999999961
+            },
+            {
+              "ref": "C6116",
+              "module": "N1",
+              "intersection_mm2": 6.297599999999961
+            },
+            {
+              "ref": "C8301",
+              "module": "M4A",
+              "intersection_mm2": 6.297599999999961
+            },
+            {
+              "ref": "C8305",
+              "module": "M4A",
+              "intersection_mm2": 6.297599999999961
+            },
+            {
+              "ref": "C8307",
+              "module": "M4A",
+              "intersection_mm2": 6.297599999999961
+            },
+            {
+              "ref": "C8308",
+              "module": "M4A",
+              "intersection_mm2": 6.297599999999961
+            },
+            {
+              "ref": "C8310",
+              "module": "M4A",
+              "intersection_mm2": 6.297599999999961
+            },
+            {
+              "ref": "C8332",
+              "module": "M4A",
+              "intersection_mm2": 6.297599999999961
+            },
+            {
+              "ref": "C8333",
+              "module": "M4A",
+              "intersection_mm2": 6.297600000000054
+            },
+            {
+              "ref": "D8313",
+              "module": "M4A",
+              "intersection_mm2": 13.973200000000068
+            },
+            {
+              "ref": "J900036",
+              "module": "header_or_mechanical",
+              "intersection_mm2": 12.016999999999982
+            },
+            {
+              "ref": "J900102",
+              "module": "header_or_mechanical",
+              "intersection_mm2": 85.0340000000003
+            },
+            {
+              "ref": "J900104",
+              "module": "header_or_mechanical",
+              "intersection_mm2": 85.0340000000003
+            },
+            {
+              "ref": "J900106",
+              "module": "header_or_mechanical",
+              "intersection_mm2": 85.0340000000003
+            },
+            {
+              "ref": "J900108",
+              "module": "header_or_mechanical",
+              "intersection_mm2": 42.51700000000015
+            },
+            {
+              "ref": "R6102",
+              "module": "N1",
+              "intersection_mm2": 5.969599999999979
+            },
+            {
+              "ref": "R6110",
+              "module": "N1",
+              "intersection_mm2": 5.969599999999979
+            },
+            {
+              "ref": "R8322",
+              "module": "M4A",
+              "intersection_mm2": 5.969599999999979
+            },
+            {
+              "ref": "R8332",
+              "module": "M4A",
+              "intersection_mm2": 5.969599999999979
+            },
+            {
+              "ref": "R8333",
+              "module": "M4A",
+              "intersection_mm2": 5.969599999999979
+            },
+            {
+              "ref": "R8334",
+              "module": "M4A",
+              "intersection_mm2": 5.969599999999979
+            },
+            {
+              "ref": "R8342",
+              "module": "M4A",
+              "intersection_mm2": 5.969599999999979
+            },
+            {
+              "ref": "R8343",
+              "module": "M4A",
+              "intersection_mm2": 5.969599999999979
+            },
+            {
+              "ref": "R8349",
+              "module": "M4A",
+              "intersection_mm2": 2.4600032799999925
+            },
+            {
+              "ref": "R8361",
+              "module": "M4A",
+              "intersection_mm2": 5.969599999999979
+            },
+            {
+              "ref": "R8362",
+              "module": "M4A",
+              "intersection_mm2": 5.969599999999979
+            },
+            {
+              "ref": "R8365",
+              "module": "M4A",
+              "intersection_mm2": 5.969599999999979
+            },
+            {
+              "ref": "R8370",
+              "module": "M4A",
+              "intersection_mm2": 5.969599999999979
+            },
+            {
+              "ref": "R8375",
+              "module": "M4A",
+              "intersection_mm2": 5.969599999999979
+            },
+            {
+              "ref": "R8376",
+              "module": "M4A",
+              "intersection_mm2": 5.969599999999979
+            },
+            {
+              "ref": "R8379",
+              "module": "M4A",
+              "intersection_mm2": 5.969599999999979
+            },
+            {
+              "ref": "R8446",
+              "module": "M4B",
+              "intersection_mm2": 5.969599999999979
+            },
+            {
+              "ref": "R8448",
+              "module": "M4B",
+              "intersection_mm2": 5.969599999999979
+            },
+            {
+              "ref": "RV6102",
+              "module": "N1",
+              "intersection_mm2": 20.670000000000073
+            },
+            {
+              "ref": "RV8308",
+              "module": "M4A",
+              "intersection_mm2": 20.670000000000073
+            },
+            {
+              "ref": "TP990014",
+              "module": "header_or_mechanical",
+              "intersection_mm2": 20.25
+            },
+            {
+              "ref": "TP990016",
+              "module": "header_or_mechanical",
+              "intersection_mm2": 20.25
+            },
+            {
+              "ref": "TP990018",
+              "module": "header_or_mechanical",
+              "intersection_mm2": 20.25
+            },
+            {
+              "ref": "TP990020",
+              "module": "header_or_mechanical",
+              "intersection_mm2": 10.125
+            },
+            {
+              "ref": "U6104",
+              "module": "N1",
+              "intersection_mm2": 71.26200000000001
+            },
+            {
+              "ref": "U8308",
+              "module": "M4A",
+              "intersection_mm2": 46.123000000000005
+            }
+          ],
+          "reservations": [
+            {
+              "id": "POWER-JR-1",
+              "intersection_mm2": 36.0
+            },
+            {
+              "id": "POWER-JR-2",
+              "intersection_mm2": 36.0
+            },
+            {
+              "id": "POWER-JR-3",
+              "intersection_mm2": 36.0
+            },
+            {
+              "id": "POWER-JR-4",
+              "intersection_mm2": 18.0
+            },
+            {
+              "id": "JL-K-18-K-hole",
+              "intersection_mm2": 3.799799222764012
+            },
+            {
+              "id": "JL-K-18-K-hook",
+              "intersection_mm2": 6.704999999999998
+            },
+            {
+              "id": "JR-K-8-K-hole",
+              "intersection_mm2": 3.7997992227640127
+            },
+            {
+              "id": "JR-K-8-K-hook",
+              "intersection_mm2": 15.329999999999998
+            },
+            {
+              "id": "JR-K-9-K-hole",
+              "intersection_mm2": 3.7997992227640074
+            },
+            {
+              "id": "JR-K-9-K-hook",
+              "intersection_mm2": 9.449999999999996
+            },
+            {
+              "id": "JR-K-10-K-hole",
+              "intersection_mm2": 3.7997992227640074
+            },
+            {
+              "id": "JR-K-10-K-hook",
+              "intersection_mm2": 9.449999999999996
+            },
+            {
+              "id": "JR-K-11-K-hole",
+              "intersection_mm2": 1.8998996113820037
+            },
+            {
+              "id": "JR-K-11-K-hook",
+              "intersection_mm2": 4.724999999999998
+            },
+            {
+              "id": "JR-K-15-K-hole",
+              "intersection_mm2": 3.7997992227640127
+            },
+            {
+              "id": "JR-K-15-K-hook",
+              "intersection_mm2": 15.329999999999998
+            },
+            {
+              "id": "JR-K-16-K-hole",
+              "intersection_mm2": 3.7997992227640074
+            },
+            {
+              "id": "JR-K-16-K-hook",
+              "intersection_mm2": 9.449999999999996
+            },
+            {
+              "id": "JR-K-17-K-hole",
+              "intersection_mm2": 3.7997992227640074
+            },
+            {
+              "id": "JR-K-17-K-hook",
+              "intersection_mm2": 9.449999999999996
+            },
+            {
+              "id": "JR-K-18-K-hole",
+              "intersection_mm2": 1.8998996113820037
+            },
+            {
+              "id": "JR-K-18-K-hook",
+              "intersection_mm2": 4.724999999999998
+            },
+            {
+              "id": "JR-K-22-K-hole",
+              "intersection_mm2": 3.799799222764023
+            },
+            {
+              "id": "JR-K-22-K-hook",
+              "intersection_mm2": 15.329999999999998
+            },
+            {
+              "id": "JR-K-23-K-hole",
+              "intersection_mm2": 3.799799222764006
+            },
+            {
+              "id": "JR-K-23-K-hook",
+              "intersection_mm2": 9.450000000000017
+            },
+            {
+              "id": "JR-K-24-K-hole",
+              "intersection_mm2": 3.799799222764006
+            },
+            {
+              "id": "JR-K-24-K-hook",
+              "intersection_mm2": 9.450000000000017
+            },
+            {
+              "id": "JR-K-25-K-hole",
+              "intersection_mm2": 1.8998996113820033
+            },
+            {
+              "id": "JR-K-25-K-hook",
+              "intersection_mm2": 4.7250000000000085
+            }
+          ]
+        },
+        "B.Cu": {
+          "courtyard_area_mm2": 1014.1640065599972,
+          "reservation_area_mm2": 136.9543891196184,
+          "unoccupied_after_035_clearance_mm2": 8126.4065136328345,
+          "largest_connected_polygon_area_mm2": 8126.3939924419665,
+          "claim": "Free polygon area is not an inscribed placement envelope or copper-free space; polygonized circular reserves only, no installed fit.",
+          "occupied_refs": [
+            {
+              "ref": "C6101",
+              "module": "N1",
+              "intersection_mm2": 6.297599999999961
+            },
+            {
+              "ref": "C6102",
+              "module": "N1",
+              "intersection_mm2": 6.297599999999961
+            },
+            {
+              "ref": "C6103",
+              "module": "N1",
+              "intersection_mm2": 6.297600000000008
+            },
+            {
+              "ref": "C6104",
+              "module": "N1",
+              "intersection_mm2": 6.297600000000008
+            },
+            {
+              "ref": "C6105",
+              "module": "N1",
+              "intersection_mm2": 6.297600000000008
+            },
+            {
+              "ref": "C6106",
+              "module": "N1",
+              "intersection_mm2": 6.297600000000008
+            },
+            {
+              "ref": "C6107",
+              "module": "N1",
+              "intersection_mm2": 6.297599999999961
+            },
+            {
+              "ref": "C6108",
+              "module": "N1",
+              "intersection_mm2": 6.297599999999961
+            },
+            {
+              "ref": "C6109",
+              "module": "N1",
+              "intersection_mm2": 6.297599999999961
+            },
+            {
+              "ref": "C6110",
+              "module": "N1",
+              "intersection_mm2": 6.297600000000054
+            },
+            {
+              "ref": "C6111",
+              "module": "N1",
+              "intersection_mm2": 6.297599999999961
+            },
+            {
+              "ref": "C6112",
+              "module": "N1",
+              "intersection_mm2": 6.297599999999961
+            },
+            {
+              "ref": "C6113",
+              "module": "N1",
+              "intersection_mm2": 6.297599999999953
+            },
+            {
+              "ref": "C6114",
+              "module": "N1",
+              "intersection_mm2": 6.297599999999907
+            },
+            {
+              "ref": "C8302",
+              "module": "M4A",
+              "intersection_mm2": 6.297599999999961
+            },
+            {
+              "ref": "C8304",
+              "module": "M4A",
+              "intersection_mm2": 6.297599999999961
+            },
+            {
+              "ref": "C8306",
+              "module": "M4A",
+              "intersection_mm2": 6.297599999999961
+            },
+            {
+              "ref": "C8326",
+              "module": "M4A",
+              "intersection_mm2": 6.297599999999961
+            },
+            {
+              "ref": "C8327",
+              "module": "M4A",
+              "intersection_mm2": 6.297599999999961
+            },
+            {
+              "ref": "C8334",
+              "module": "M4A",
+              "intersection_mm2": 6.297599999999961
+            },
+            {
+              "ref": "C8335",
+              "module": "M4A",
+              "intersection_mm2": 6.297599999999961
+            },
+            {
+              "ref": "C8336",
+              "module": "M4A",
+              "intersection_mm2": 6.297599999999907
+            },
+            {
+              "ref": "C8337",
+              "module": "M4A",
+              "intersection_mm2": 6.297599999999907
+            },
+            {
+              "ref": "C8338",
+              "module": "M4A",
+              "intersection_mm2": 2.1797999999999713
+            },
+            {
+              "ref": "C8339",
+              "module": "M4A",
+              "intersection_mm2": 2.4191999999999667
+            },
+            {
+              "ref": "C8340",
+              "module": "M4A",
+              "intersection_mm2": 6.297599999999907
+            },
+            {
+              "ref": "C8341",
+              "module": "M4A",
+              "intersection_mm2": 6.297599999999907
+            },
+            {
+              "ref": "C8342",
+              "module": "M4A",
+              "intersection_mm2": 5.739999999999952
+            },
+            {
+              "ref": "R303",
+              "module": "POWER",
+              "intersection_mm2": 5.969599999999979
+            },
+            {
+              "ref": "R6101",
+              "module": "N1",
+              "intersection_mm2": 5.969599999999979
+            },
+            {
+              "ref": "R6103",
+              "module": "N1",
+              "intersection_mm2": 5.969599999999979
+            },
+            {
+              "ref": "R6104",
+              "module": "N1",
+              "intersection_mm2": 5.969599999999979
+            },
+            {
+              "ref": "R6105",
+              "module": "N1",
+              "intersection_mm2": 5.969599999999979
+            },
+            {
+              "ref": "R6106",
+              "module": "N1",
+              "intersection_mm2": 5.969599999999979
+            },
+            {
+              "ref": "R6107",
+              "module": "N1",
+              "intersection_mm2": 5.969599999999979
+            },
+            {
+              "ref": "R6108",
+              "module": "N1",
+              "intersection_mm2": 5.969599999999979
+            },
+            {
+              "ref": "R6109",
+              "module": "N1",
+              "intersection_mm2": 5.969599999999979
+            },
+            {
+              "ref": "R6111",
+              "module": "N1",
+              "intersection_mm2": 5.969599999999979
+            },
+            {
+              "ref": "R6114",
+              "module": "N1",
+              "intersection_mm2": 5.969599999999979
+            },
+            {
+              "ref": "R6115",
+              "module": "N1",
+              "intersection_mm2": 5.969599999999979
+            },
+            {
+              "ref": "R6118",
+              "module": "N1",
+              "intersection_mm2": 5.969599999999979
+            },
+            {
+              "ref": "R6119",
+              "module": "N1",
+              "intersection_mm2": 5.969599999999979
+            },
+            {
+              "ref": "R6122",
+              "module": "N1",
+              "intersection_mm2": 5.969599999999979
+            },
+            {
+              "ref": "R6123",
+              "module": "N1",
+              "intersection_mm2": 5.969599999999979
+            },
+            {
+              "ref": "R8301",
+              "module": "M4A",
+              "intersection_mm2": 5.969599999999979
+            },
+            {
+              "ref": "R8302",
+              "module": "M4A",
+              "intersection_mm2": 5.969599999999979
+            },
+            {
+              "ref": "R8313",
+              "module": "M4A",
+              "intersection_mm2": 2.4600032799999925
+            },
+            {
+              "ref": "R8319",
+              "module": "M4A",
+              "intersection_mm2": 5.969599999999979
+            },
+            {
+              "ref": "R8320",
+              "module": "M4A",
+              "intersection_mm2": 5.969599999999979
+            },
+            {
+              "ref": "R8344",
+              "module": "M4A",
+              "intersection_mm2": 5.969599999999979
+            },
+            {
+              "ref": "R8357",
+              "module": "M4A",
+              "intersection_mm2": 5.969599999999979
+            },
+            {
+              "ref": "R8364",
+              "module": "M4A",
+              "intersection_mm2": 5.969599999999979
+            },
+            {
+              "ref": "R8366",
+              "module": "M4A",
+              "intersection_mm2": 5.969599999999979
+            },
+            {
+              "ref": "R8367",
+              "module": "M4A",
+              "intersection_mm2": 5.969599999999979
+            },
+            {
+              "ref": "R8368",
+              "module": "M4A",
+              "intersection_mm2": 1.6400032799999922
+            },
+            {
+              "ref": "R8369",
+              "module": "M4A",
+              "intersection_mm2": 0.9099999999999966
+            },
+            {
+              "ref": "R8371",
+              "module": "M4A",
+              "intersection_mm2": 5.969599999999979
+            },
+            {
+              "ref": "R8377",
+              "module": "M4A",
+              "intersection_mm2": 5.969599999999979
+            },
+            {
+              "ref": "R8378",
+              "module": "M4A",
+              "intersection_mm2": 5.969599999999979
+            },
+            {
+              "ref": "R8380",
+              "module": "M4A",
+              "intersection_mm2": 5.969599999999979
+            },
+            {
+              "ref": "R8447",
+              "module": "M4B",
+              "intersection_mm2": 3.6399999999999864
+            },
+            {
+              "ref": "R8449",
+              "module": "M4B",
+              "intersection_mm2": 3.184999999999988
+            },
+            {
+              "ref": "RV6101",
+              "module": "N1",
+              "intersection_mm2": 20.67000000000002
+            },
+            {
+              "ref": "RV6103",
+              "module": "N1",
+              "intersection_mm2": 20.670000000000073
+            },
+            {
+              "ref": "RV6104",
+              "module": "N1",
+              "intersection_mm2": 20.670000000000073
+            },
+            {
+              "ref": "RV8307",
+              "module": "M4A",
+              "intersection_mm2": 20.670000000000073
+            },
+            {
+              "ref": "U6101",
+              "module": "N1",
+              "intersection_mm2": 104.7816
+            },
+            {
+              "ref": "U6102",
+              "module": "N1",
+              "intersection_mm2": 71.26199999999974
+            },
+            {
+              "ref": "U6103",
+              "module": "N1",
+              "intersection_mm2": 71.26199999999989
+            },
+            {
+              "ref": "U8307",
+              "module": "M4A",
+              "intersection_mm2": 80.6599999999998
+            },
+            {
+              "ref": "U8309",
+              "module": "M4A",
+              "intersection_mm2": 71.26199999999974
+            },
+            {
+              "ref": "U8310",
+              "module": "M4A",
+              "intersection_mm2": 71.26199999999974
+            },
+            {
+              "ref": "U8311",
+              "module": "M4A",
+              "intersection_mm2": 36.999999999999886
+            },
+            {
+              "ref": "U8312",
+              "module": "M4A",
+              "intersection_mm2": 71.26199999999974
+            }
+          ],
+          "reservations": [
+            {
+              "id": "JL-K-18-K-hole",
+              "intersection_mm2": 3.799799222764012
+            },
+            {
+              "id": "JL-K-18-K-hook",
+              "intersection_mm2": 6.704999999999998
+            },
+            {
+              "id": "JR-K-8-K-hole",
+              "intersection_mm2": 3.7997992227640127
+            },
+            {
+              "id": "JR-K-8-K-hook",
+              "intersection_mm2": 15.329999999999998
+            },
+            {
+              "id": "JR-K-9-K-hole",
+              "intersection_mm2": 3.7997992227640074
+            },
+            {
+              "id": "JR-K-9-K-hook",
+              "intersection_mm2": 9.449999999999996
+            },
+            {
+              "id": "JR-K-10-K-hole",
+              "intersection_mm2": 3.7997992227640074
+            },
+            {
+              "id": "JR-K-10-K-hook",
+              "intersection_mm2": 9.449999999999996
+            },
+            {
+              "id": "JR-K-11-K-hole",
+              "intersection_mm2": 1.8998996113820037
+            },
+            {
+              "id": "JR-K-11-K-hook",
+              "intersection_mm2": 4.724999999999998
+            },
+            {
+              "id": "JR-K-15-K-hole",
+              "intersection_mm2": 3.7997992227640127
+            },
+            {
+              "id": "JR-K-15-K-hook",
+              "intersection_mm2": 15.329999999999998
+            },
+            {
+              "id": "JR-K-16-K-hole",
+              "intersection_mm2": 3.7997992227640074
+            },
+            {
+              "id": "JR-K-16-K-hook",
+              "intersection_mm2": 9.449999999999996
+            },
+            {
+              "id": "JR-K-17-K-hole",
+              "intersection_mm2": 3.7997992227640074
+            },
+            {
+              "id": "JR-K-17-K-hook",
+              "intersection_mm2": 9.449999999999996
+            },
+            {
+              "id": "JR-K-18-K-hole",
+              "intersection_mm2": 1.8998996113820037
+            },
+            {
+              "id": "JR-K-18-K-hook",
+              "intersection_mm2": 4.724999999999998
+            },
+            {
+              "id": "JR-K-22-K-hole",
+              "intersection_mm2": 3.799799222764023
+            },
+            {
+              "id": "JR-K-22-K-hook",
+              "intersection_mm2": 15.329999999999998
+            },
+            {
+              "id": "JR-K-23-K-hole",
+              "intersection_mm2": 3.799799222764006
+            },
+            {
+              "id": "JR-K-23-K-hook",
+              "intersection_mm2": 9.450000000000017
+            },
+            {
+              "id": "JR-K-24-K-hole",
+              "intersection_mm2": 3.799799222764006
+            },
+            {
+              "id": "JR-K-24-K-hook",
+              "intersection_mm2": 9.450000000000017
+            },
+            {
+              "id": "JR-K-25-K-hole",
+              "intersection_mm2": 1.8998996113820033
+            },
+            {
+              "id": "JR-K-25-K-hook",
+              "intersection_mm2": 4.7250000000000085
+            }
+          ]
+        }
+      },
+      "all_layer_source_copper": {
+        "by_ownership_class": {
+          "SHARED_RETURN_SUPPLY": 1624,
+          "SAME_CANDIDATE_NET": 2654,
+          "OTHER_CANDIDATE_NET": 13284
+        },
+        "selector": "Every accepted straight segment/circular via whose width/annulus intersects the physical window; no pad clearances applied. Whole-net candidate ownership is a source filter, not native retention acceptance.",
+        "object_multiset_sha256": "ac25a750e97378600b12b8dc30b7f205fda20b9b34e4733cf8b1ed03eebd4895",
+        "leading_retained_or_shared_nets": [
+          [
+            "+5V",
+            1139
+          ],
+          [
+            "AGND",
+            197
+          ],
+          [
+            "+12V",
+            171
+          ],
+          [
+            "/M4A/Cd90fa0_GATE_RAW",
+            124
+          ],
+          [
+            "-12V",
+            117
+          ],
+          [
+            "/M4A/OTA_CURRENT",
+            117
+          ],
+          [
+            "/M4A/4_GAIN",
+            81
+          ],
+          [
+            "/N1/PINK_AC",
+            81
+          ]
+        ],
+        "zones": "All five original zones remain full native refill/continuity obligations; not included in these segment/via counts."
+      }
+    },
+    {
+      "id": "SW-three-B",
+      "candidate": "three-B",
+      "rect_mm": [
+        4,
+        208,
+        64,
+        288
+      ],
+      "area_mm2": 4800.0,
+      "faces": {
+        "F.Cu": {
+          "courtyard_area_mm2": 46.969999999999885,
+          "reservation_area_mm2": 199.1630798344966,
+          "unoccupied_after_035_clearance_mm2": 4526.047692975405,
+          "largest_connected_polygon_area_mm2": 4526.047692975405,
+          "claim": "Free polygon area is not an inscribed placement envelope or copper-free space; polygonized circular reserves only, no installed fit.",
+          "occupied_refs": [
+            {
+              "ref": "J900275",
+              "module": "header_or_mechanical",
+              "intersection_mm2": 46.969999999999885
+            }
+          ],
+          "reservations": [
+            {
+              "id": "support-4",
+              "intersection_mm2": 8.039247760955998
+            },
+            {
+              "id": "support-6",
+              "intersection_mm2": 0.07435345152891978
+            },
+            {
+              "id": "K-P-72-K-hole",
+              "intersection_mm2": 3.7997992227640114
+            },
+            {
+              "id": "K-P-72-K-hook",
+              "intersection_mm2": 9.449999999999996
+            },
+            {
+              "id": "K-P-81-K-hole",
+              "intersection_mm2": 3.7997992227640345
+            },
+            {
+              "id": "K-P-81-K-hook",
+              "intersection_mm2": 9.450000000000001
+            },
+            {
+              "id": "K-P-82-K-hole",
+              "intersection_mm2": 3.7997992227640345
+            },
+            {
+              "id": "K-P-82-K-hook",
+              "intersection_mm2": 9.450000000000001
+            },
+            {
+              "id": "K-P-83-K-hole",
+              "intersection_mm2": 3.7997992227640167
+            },
+            {
+              "id": "K-P-83-K-hook",
+              "intersection_mm2": 9.450000000000001
+            },
+            {
+              "id": "K-P-85-K-hole",
+              "intersection_mm2": 3.799799222764012
+            },
+            {
+              "id": "K-P-85-K-hook",
+              "intersection_mm2": 9.450000000000001
+            },
+            {
+              "id": "K-P-86-K-hole",
+              "intersection_mm2": 3.7997992227640114
+            },
+            {
+              "id": "K-P-86-K-hook",
+              "intersection_mm2": 9.449999999999996
+            },
+            {
+              "id": "K-P-87-K-hole",
+              "intersection_mm2": 3.799799222764012
+            },
+            {
+              "id": "K-P-87-K-hook",
+              "intersection_mm2": 9.450000000000001
+            },
+            {
+              "id": "K-P-88-K-hole",
+              "intersection_mm2": 3.7997992227640354
+            },
+            {
+              "id": "K-P-88-K-hook",
+              "intersection_mm2": 9.449999999999996
+            },
+            {
+              "id": "K-P-89-K-hole",
+              "intersection_mm2": 3.7997992227640354
+            },
+            {
+              "id": "K-P-89-K-hook",
+              "intersection_mm2": 9.449999999999996
+            },
+            {
+              "id": "K-P-90-K-hole",
+              "intersection_mm2": 3.799799222764016
+            },
+            {
+              "id": "K-P-90-K-hook",
+              "intersection_mm2": 9.449999999999996
+            },
+            {
+              "id": "K-P-92-K-hole",
+              "intersection_mm2": 3.7997992227640114
+            },
+            {
+              "id": "K-P-92-K-hook",
+              "intersection_mm2": 9.449999999999996
+            },
+            {
+              "id": "K-P-93-K-hole",
+              "intersection_mm2": 3.799799222764012
+            },
+            {
+              "id": "K-P-93-K-hook",
+              "intersection_mm2": 9.450000000000001
+            },
+            {
+              "id": "K-P-94-K-hole",
+              "intersection_mm2": 3.7997992227640114
+            },
+            {
+              "id": "K-P-94-K-hook",
+              "intersection_mm2": 9.449999999999996
+            },
+            {
+              "id": "K-P-95-K-hole",
+              "intersection_mm2": 3.7997992227640354
+            },
+            {
+              "id": "K-P-95-K-hook",
+              "intersection_mm2": 9.449999999999996
+            },
+            {
+              "id": "K-P-96-K-hole",
+              "intersection_mm2": 3.7997992227640354
+            },
+            {
+              "id": "K-P-96-K-hook",
+              "intersection_mm2": 9.449999999999996
+            },
+            {
+              "id": "K-P-97-K-hole",
+              "intersection_mm2": 3.799799222764016
+            },
+            {
+              "id": "K-P-97-K-hook",
+              "intersection_mm2": 9.449999999999996
+            },
+            {
+              "id": "K-P-99-K-hole",
+              "intersection_mm2": 3.7997992227640114
+            },
+            {
+              "id": "K-P-99-K-hook",
+              "intersection_mm2": 9.449999999999996
+            },
+            {
+              "id": "K-P-101-K-hole",
+              "intersection_mm2": 3.7997992227640114
+            },
+            {
+              "id": "K-P-101-K-hook",
+              "intersection_mm2": 9.449999999999996
+            }
+          ]
+        },
+        "B.Cu": {
+          "courtyard_area_mm2": 0.0,
+          "reservation_area_mm2": 199.1630798344966,
+          "unoccupied_after_035_clearance_mm2": 4576.836920165496,
+          "largest_connected_polygon_area_mm2": 4576.836920165496,
+          "claim": "Free polygon area is not an inscribed placement envelope or copper-free space; polygonized circular reserves only, no installed fit.",
+          "occupied_refs": [],
+          "reservations": [
+            {
+              "id": "support-4",
+              "intersection_mm2": 8.039247760955998
+            },
+            {
+              "id": "support-6",
+              "intersection_mm2": 0.07435345152891978
+            },
+            {
+              "id": "K-P-72-K-hole",
+              "intersection_mm2": 3.7997992227640114
+            },
+            {
+              "id": "K-P-72-K-hook",
+              "intersection_mm2": 9.449999999999996
+            },
+            {
+              "id": "K-P-81-K-hole",
+              "intersection_mm2": 3.7997992227640345
+            },
+            {
+              "id": "K-P-81-K-hook",
+              "intersection_mm2": 9.450000000000001
+            },
+            {
+              "id": "K-P-82-K-hole",
+              "intersection_mm2": 3.7997992227640345
+            },
+            {
+              "id": "K-P-82-K-hook",
+              "intersection_mm2": 9.450000000000001
+            },
+            {
+              "id": "K-P-83-K-hole",
+              "intersection_mm2": 3.7997992227640167
+            },
+            {
+              "id": "K-P-83-K-hook",
+              "intersection_mm2": 9.450000000000001
+            },
+            {
+              "id": "K-P-85-K-hole",
+              "intersection_mm2": 3.799799222764012
+            },
+            {
+              "id": "K-P-85-K-hook",
+              "intersection_mm2": 9.450000000000001
+            },
+            {
+              "id": "K-P-86-K-hole",
+              "intersection_mm2": 3.7997992227640114
+            },
+            {
+              "id": "K-P-86-K-hook",
+              "intersection_mm2": 9.449999999999996
+            },
+            {
+              "id": "K-P-87-K-hole",
+              "intersection_mm2": 3.799799222764012
+            },
+            {
+              "id": "K-P-87-K-hook",
+              "intersection_mm2": 9.450000000000001
+            },
+            {
+              "id": "K-P-88-K-hole",
+              "intersection_mm2": 3.7997992227640354
+            },
+            {
+              "id": "K-P-88-K-hook",
+              "intersection_mm2": 9.449999999999996
+            },
+            {
+              "id": "K-P-89-K-hole",
+              "intersection_mm2": 3.7997992227640354
+            },
+            {
+              "id": "K-P-89-K-hook",
+              "intersection_mm2": 9.449999999999996
+            },
+            {
+              "id": "K-P-90-K-hole",
+              "intersection_mm2": 3.799799222764016
+            },
+            {
+              "id": "K-P-90-K-hook",
+              "intersection_mm2": 9.449999999999996
+            },
+            {
+              "id": "K-P-92-K-hole",
+              "intersection_mm2": 3.7997992227640114
+            },
+            {
+              "id": "K-P-92-K-hook",
+              "intersection_mm2": 9.449999999999996
+            },
+            {
+              "id": "K-P-93-K-hole",
+              "intersection_mm2": 3.799799222764012
+            },
+            {
+              "id": "K-P-93-K-hook",
+              "intersection_mm2": 9.450000000000001
+            },
+            {
+              "id": "K-P-94-K-hole",
+              "intersection_mm2": 3.7997992227640114
+            },
+            {
+              "id": "K-P-94-K-hook",
+              "intersection_mm2": 9.449999999999996
+            },
+            {
+              "id": "K-P-95-K-hole",
+              "intersection_mm2": 3.7997992227640354
+            },
+            {
+              "id": "K-P-95-K-hook",
+              "intersection_mm2": 9.449999999999996
+            },
+            {
+              "id": "K-P-96-K-hole",
+              "intersection_mm2": 3.7997992227640354
+            },
+            {
+              "id": "K-P-96-K-hook",
+              "intersection_mm2": 9.449999999999996
+            },
+            {
+              "id": "K-P-97-K-hole",
+              "intersection_mm2": 3.799799222764016
+            },
+            {
+              "id": "K-P-97-K-hook",
+              "intersection_mm2": 9.449999999999996
+            },
+            {
+              "id": "K-P-99-K-hole",
+              "intersection_mm2": 3.7997992227640114
+            },
+            {
+              "id": "K-P-99-K-hook",
+              "intersection_mm2": 9.449999999999996
+            },
+            {
+              "id": "K-P-101-K-hole",
+              "intersection_mm2": 3.7997992227640114
+            },
+            {
+              "id": "K-P-101-K-hook",
+              "intersection_mm2": 9.449999999999996
+            }
+          ]
+        }
+      },
+      "all_layer_source_copper": {
+        "by_ownership_class": {
+          "SHARED_RETURN_SUPPLY": 238,
+          "OTHER_CANDIDATE_NET": 7156,
+          "SAME_CANDIDATE_NET": 49
+        },
+        "selector": "Every accepted straight segment/circular via whose width/annulus intersects the physical window; no pad clearances applied. Whole-net candidate ownership is a source filter, not native retention acceptance.",
+        "object_multiset_sha256": "092f6aaad04a5d7642ae9513e63cb529e7eaa75aef39b933eae1c05238544775",
+        "leading_retained_or_shared_nets": [
+          [
+            "+5V",
+            102
+          ],
+          [
+            "+12V",
+            74
+          ],
+          [
+            "-12V",
+            43
+          ],
+          [
+            "/M5A/C445167_W",
+            33
+          ],
+          [
+            "AGND",
+            19
+          ],
+          [
+            "/M5A/C2c2153_W",
+            16
+          ]
+        ],
+        "zones": "All five original zones remain full native refill/continuity obligations; not included in these segment/via counts."
+      }
+    }
+  ]
+}
