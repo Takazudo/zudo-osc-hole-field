@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Exclusive #245 before-board settle; never routes, adopts or admits itself."""
+"""Exclusive #245 reviewed-fixture before-board settle; never routes or adopts."""
 import hashlib
 import json
 import os
@@ -15,7 +15,15 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 from scripts.kicad import native_resource_guard as guard
 
 ROOT = Path(__file__).resolve().parents[2]
-OUTPUT = ROOT / 'design/partition/core-split/candidates/pilots/generated/decision-three-A-native-a1'
+PILOTS = ('two-A', 'two-B', 'three-A', 'three-B', 'three-C')
+
+
+def output_path(env):
+    pilot = env.get('SETTLE_PILOT', '')
+    run_id, attempt = env.get('GITHUB_RUN_ID', ''), env.get('GITHUB_RUN_ATTEMPT', '')
+    if pilot not in PILOTS or not run_id.isdecimal() or not attempt.isdecimal():
+        raise ValueError('reviewed pilot and unique Actions run/attempt required')
+    return ROOT/'design/partition/core-split/candidates/pilots/generated'/f'decision-{pilot}-native-{run_id}-{attempt}'
 
 
 def write(path, value):
@@ -27,11 +35,12 @@ def sha(path):
 
 
 def validate(env):
+    output_path(env)
     commit = env.get('REVIEWED_COMMIT', '')
     hook = env.get('REVIEWED_HOOK_SHA256', '')
     if not re.fullmatch('[0-9a-f]{40}', commit) or guard.run(['git', 'rev-parse', 'HEAD']) != commit:
         raise ValueError('exact reviewed checkout required')
-    if env.get('GITHUB_SHA') and env['GITHUB_SHA'] != commit:
+    if env.get('GITHUB_SHA') != commit:
         raise ValueError('dispatch workflow SHA must equal reviewed checkout')
     if not re.fullmatch('[0-9a-f]{64}', hook) or sha(ROOT/'scripts/kicad/run.sh') != hook:
         raise ValueError('reviewed hook mismatch')
@@ -52,12 +61,12 @@ def verify_tree(directory, files):
             raise ValueError('input hash differs: '+name)
 
 
-def snapshot(output, destination):
+def snapshot(output, destination, pilot):
     manifest = json.loads((output/'sha256.json').read_text())
     if len(manifest) != 293:
         raise ValueError('expected complete 293-file fixture')
     verify_tree(output, manifest | {'sha256.json': sha(output/'sha256.json')})
-    seals = json.loads((ROOT/'design/partition/core-split/candidates/pilots/source-fixture-seals.json').read_text())['three-A']['files_sha256']
+    seals = json.loads((ROOT/'design/partition/core-split/candidates/pilots/source-fixture-seals.json').read_text())[pilot]['files_sha256']
     if len(seals) != 291 or any(manifest.get(name) != value for name, value in seals.items()):
         raise ValueError('portable fixture seals differ')
     shutil.copytree(output, destination)
@@ -210,12 +219,14 @@ def prepare_image(evidence):
 
 def execute(env):
     commit, hook = validate(env)
-    evidence = Path(env['RUNNER_TEMP'])/'epic242-three-a-settle-only'
+    pilot = env['SETTLE_PILOT']
+    output = output_path(env)
+    evidence = Path(env['RUNNER_TEMP'])/'epic242-candidate-settle-only'
     evidence.mkdir(exist_ok=True)
     if (evidence/'pilot.json').exists():
         raise ValueError('pilot receipt already exists')
     receipt = {'source_sha': commit, 'hook_sha256': hook, 'admission_id': env['PARENT_ADMISSION_ID'],
-               'scope': 'one three-A before-board settle only; NOT COMPLETE ACCEPTANCE',
+               'pilot': pilot, 'scope': 'one reviewed complete-fixture before-board settle only; NOT COMPLETE ACCEPTANCE',
                'subordinate_logging': 'Driver stdout/stderr retained; check internally captures successful subordinate output. Raw DRC can be capped; uncapped warning audit NOT RUN.',
                'status': 'STARTED'}
     files = None
@@ -224,14 +235,14 @@ def execute(env):
             subprocess.run([sys.executable,'-m','pip','install','-r','scripts/pcbgen/numerical-requirements.txt'], stdout=log,stderr=subprocess.STDOUT,check=True,timeout=180)
         prepare_image(evidence)
         with (evidence/'materialize.log').open('w') as log:
-            subprocess.run([sys.executable,'scripts/partition/core_split_candidates.py','materialize','--pilot','three-A','--output',str(OUTPUT.relative_to(ROOT))], stdout=log, stderr=subprocess.STDOUT, check=True, timeout=120)
-        files = snapshot(OUTPUT, evidence/'input-snapshot')
+            subprocess.run([sys.executable,'scripts/partition/core_split_candidates.py','materialize','--pilot',pilot,'--output',str(output.relative_to(ROOT))], stdout=log, stderr=subprocess.STDOUT, check=True, timeout=120)
+        files = snapshot(output, evidence/'input-snapshot', pilot)
         write(evidence/'input-snapshot-sha256.json',files)
-        worker = guard.identity('three-a-'+env['GITHUB_RUN_ID']+'-'+env['GITHUB_RUN_ATTEMPT'])
+        worker = guard.identity('settle-'+pilot.lower()+'-'+env['GITHUB_RUN_ID']+'-'+env['GITHUB_RUN_ATTEMPT'])
         command = [sys.executable,'scripts/kicad/native_resource_guard.py','--admission-id',env['PARENT_ADMISSION_ID'],
                    '--worker',worker,'--sha',commit,'--hook-sha256',hook,'--seconds','300',
                    '--evidence',str(evidence/'guard.json'),'--',sys.executable,
-                   'scripts/partition/core_split_candidates.py','settle','--board',str((OUTPUT/'before/osc-core.kicad_pcb').relative_to(ROOT))]
+                   'scripts/partition/core_split_candidates.py','settle','--board',str((output/'before/osc-core.kicad_pcb').relative_to(ROOT))]
         receipt['command'] = command
         write(evidence/'pilot.json',receipt)
         with (evidence/'settle-driver.log').open('w') as log:
@@ -245,9 +256,9 @@ def execute(env):
         receipt.update(status='BLOCKED',error=str(error))
         return 1
     finally:
-        if OUTPUT.exists():
+        if output.exists():
             try:
-                shutil.copytree(OUTPUT,evidence/'working-result')
+                shutil.copytree(output,evidence/'working-result')
             except Exception as error:
                 receipt.update(status='EVIDENCE INTEGRITY FAILURE',retention_error=str(error))
                 write(evidence/'pilot.json',receipt)

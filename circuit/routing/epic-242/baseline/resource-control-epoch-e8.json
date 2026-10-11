@@ -1,0 +1,44 @@
+{
+  "hardware_epoch": "epic242-e0",
+  "tool_epoch": "epic242-tools-e8-python-test-dependency",
+  "historical_manifest": "input-files.json",
+  "source_base_sha": "f12b8fbf2500a372308b5d01a2dfde78c144d327",
+  "reason": "Pin PyYAML 6.0.3 in Documentation CI Python test environment so existing workflow-structure tests execute without relaxing their assertions; no native run or hardware source change.",
+  "historical_overrides": {
+    "scripts/kicad/README.md": {
+      "historical_sha256": "f8273d7d1056393a1b3102b6520a795ab79bd4f170ef57b42b5b3c08fb3d5a4f",
+      "reviewed_sha256": "969b529cdff30bd4d80f58d4514e76c38197e62c5afe4a014f58aa11b18e9cf3"
+    },
+    "scripts/kicad/run.sh": {
+      "historical_sha256": "bc74f0ade82c29d64c44119ea435bc7bfd164fc06e9afff240a3cb2b44b272a0",
+      "reviewed_sha256": "f91b2c8846856a6d38a10eb9e6314b6ebec3222b68df37942f3716ab860d8c91"
+    }
+  },
+  "tool_files": {
+    ".github/workflows/check.yml": "351dd5a9b3a5196962ea894707cb1d5d58799782fa5b48336c95787a6eba48ee",
+    "scripts/kicad/run.sh": "f91b2c8846856a6d38a10eb9e6314b6ebec3222b68df37942f3716ab860d8c91",
+    "scripts/kicad/README.md": "969b529cdff30bd4d80f58d4514e76c38197e62c5afe4a014f58aa11b18e9cf3",
+    "scripts/kicad/native_resource_guard.py": "ee755233af405e60cf592956dcf42ca1069f5face6c20c1cdfcdf6f8479ef8ca",
+    "scripts/kicad/ci_native_admission.py": "89bf381dc606330073bda3fe51cdc711894e3e452d7ab7f3072a7873be39655a",
+    "scripts/kicad/prove_resource_limits.py": "b5dcd7a6e5566618e3326540afd46b5bb9fa537eab8c1e618139a5e292f20fb5",
+    "scripts/kicad/fixtures/resource_guard_fixture.c": "12523b25e61cf54869743702949dca7c1873ac8089bf46476c15a11e03f7573a",
+    "scripts/kicad/test_native_resource_guard.py": "9f4f12a0b75790296bba5cc62ef2228eb4ec3a3feea6336048050a0c15f75fc5",
+    "scripts/kicad/test_ci_native_admission.py": "7b206e72e89b2ba79a1f179208bf81d0b2f641fe4a4eb6fa34ffcc8ed61bef5f",
+    "scripts/checks/run-ci-native-python.sh": "17d2e9a205d818572fcf9dcb638f60665f99aa665c60df897b190741df8b2b05",
+    "scripts/checks/run-ci-native-board.sh": "f01c425c22c987bbaa062650e480010faede25e773d2353d8077b038d30688db",
+    ".github/workflows/routing-benchmark.yml": "83e1455d65373962a9054256803f2bfeb7f42304e221dd6886df0738c07dfab8",
+    "scripts/kicad/qualify_resource_guard.py": "06e783d370da6b938b1bb65c60a107e5760cae623c77ed4605142d5a044afb0f",
+    "scripts/kicad/run_resource_fixture.py": "b38c12fda3091ce998f8cfec7b744b8d2a5da9e089bdba32350c9aa87dc93480",
+    "scripts/kicad/test_resource_qualification.py": "67a031d2ab014203b5ecf1988725c20d7215c0ce6018bd9f3819660c80d20aa0",
+    "scripts/kicad/settle_only_pilot.py": "ba879c4e3843608e33e38e2d4dcbf0bf2ac7d709d5b1973f801382e000aba914",
+    "scripts/kicad/test_settle_only_pilot.py": "27a27807fe3c185cb09df4e3eaddb58d3e9a709caeb47e5d3ee7a7b9495a3fd1",
+    "scripts/kicad/test_native_resource_lifecycle.py": "2c754a99a615f153c8e206777a98ba7a56666d161661a26413d954a20a439461",
+    "scripts/kicad/native_start_gate.sh": "6763496a773f4a4cd69a47f20eb2f2c07aec33b9351a7bbd861e0d368ed0083d",
+    "scripts/kicad/test_native_start_gate.py": "a5f6e6d22ab257c7138d95668fa3a7e2a5f1eb162ad7971ca48088c453135eda",
+    "scripts/kicad/qualify_startup_handshake.py": "15c977c003b517043c5cc2ab368d4b57f5821314f811929d0d5e6ab7c2223dc0",
+    "scripts/kicad/test_qualify_startup_handshake.py": "b8d2d4857776405455949e57730eb2fe89ad9d60d8d29ebcdd8306f38317b764",
+    "scripts/checks/python-test-requirements.txt": "312aa65d307b0ba587a3d7d122df103089d9da13f537d6f2a8fee94e88f9e6ec"
+  },
+  "native_acceptance": false,
+  "previous_tool_epoch": "epic242-tools-e7-lifecycle-ci"
+}

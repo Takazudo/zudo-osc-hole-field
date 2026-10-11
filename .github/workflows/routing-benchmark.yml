@@ -1,5 +1,5 @@
 name: Routing obstacle benchmark
-run-name: "Issue 189 ${{ inputs.lifecycle_qualification && 'startup lifecycle qualification' || inputs.settle_only && 'three-A settle only' || inputs.resource_qualification && 'resource guard qualification' || inputs.local_repair && 'read-only local repair' || inputs.recover_core && 'core return repair' || (inputs.adopt_run || inputs.replay_jl || inputs.replay_jr) && 'copper adoption' || 'same-input benchmark' }} — ${{ inputs.board }}"
+run-name: "Issue 189 ${{ inputs.lifecycle_qualification && 'startup lifecycle qualification' || inputs.settle_only && format('{0} settle only', inputs.settle_pilot) || inputs.resource_qualification && 'resource guard qualification' || inputs.local_repair && 'read-only local repair' || inputs.recover_core && 'core return repair' || (inputs.adopt_run || inputs.replay_jl || inputs.replay_jr) && 'copper adoption' || 'same-input benchmark' }} — ${{ inputs.board }}"
 on:
   workflow_dispatch:
     inputs:
@@ -48,9 +48,14 @@ on:
         options: [cut, coupled]
         default: cut
       settle_only:
-        description: Exclusive admitted three-A before-board settle only
+        description: Exclusive admitted reviewed candidate before-board settle only
         type: boolean
         default: false
+      settle_pilot:
+        description: Reviewed complete candidate fixture for settle_only
+        type: choice
+        options: [two-A, two-B, three-A, three-B, three-C]
+        default: three-A
       lifecycle_qualification:
         description: Exclusive admitted short-lived startup/exit lifecycle check
         type: boolean
@@ -651,15 +656,16 @@ jobs:
       REVIEWED_HOOK_SHA256: ${{ inputs.reviewed_hook_sha256 }}
       PARENT_ADMISSION_ID: ${{ inputs.parent_admission_id }}
       REQUEST_BOARD: ${{ inputs.board }}
+      SETTLE_PILOT: ${{ inputs.settle_pilot }}
       CONFLICTING_MODES: ${{ inputs.resource_qualification || inputs.recover_core || inputs.replay_jl || inputs.replay_jr || inputs.local_repair || inputs.adopt_run != '' }}
     steps:
       - name: Initialize retained request before checkout or validation
         run: |
-          mkdir "$RUNNER_TEMP/epic242-three-a-settle-only"
+          mkdir "$RUNNER_TEMP/epic242-candidate-settle-only"
           python3 - <<'PYTHON'
           import json, os
           from pathlib import Path
-          Path(os.environ['RUNNER_TEMP'],'epic242-three-a-settle-only','bootstrap.json').write_text(json.dumps({'status':'BOOTSTRAP INCOMPLETE; NATIVE NOT RUN','reviewed_sha':os.environ['REVIEWED_COMMIT'],'admission_id':os.environ['PARENT_ADMISSION_ID']}))
+          Path(os.environ['RUNNER_TEMP'],'epic242-candidate-settle-only','bootstrap.json').write_text(json.dumps({'status':'BOOTSTRAP INCOMPLETE; NATIVE NOT RUN','reviewed_sha':os.environ['REVIEWED_COMMIT'],'admission_id':os.environ['PARENT_ADMISSION_ID'],'pilot':os.environ['SETTLE_PILOT']}))
           PYTHON
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
@@ -680,7 +686,7 @@ jobs:
           python3 - <<'PYTHON'
           import json, os
           from pathlib import Path
-          root=Path(os.environ['RUNNER_TEMP'],'epic242-three-a-settle-only')
+          root=Path(os.environ['RUNNER_TEMP'],'epic242-candidate-settle-only')
           root.mkdir(exist_ok=True)
           (root/'job-outcome.json').write_text(json.dumps({'job_status':os.environ['JOB_OUTCOME'],'native_status':'See pilot/guard receipts; absent receipt means native NOT RUN'}))
           PYTHON
@@ -688,8 +694,8 @@ jobs:
         if: ${{ always() }}
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
         with:
-          name: epic242-three-a-settle-only
-          path: ${{ runner.temp }}/epic242-three-a-settle-only/
+          name: epic242-candidate-settle-only
+          path: ${{ runner.temp }}/epic242-candidate-settle-only/
           include-hidden-files: true
           if-no-files-found: error
           retention-days: 7

@@ -15,15 +15,24 @@ class PilotTests(unittest.TestCase):
             self.assertIn('!inputs.settle_only',section)
         self.assertIn('if: ${{ always() }}',text.split('  settle-only:\n',1)[1])
         self.assertIn('retention-days: 7',text.split('  settle-only:\n',1)[1])
+        self.assertIn('SETTLE_PILOT: ${{ inputs.settle_pilot }}',text.split('  settle-only:\n',1)[1])
 
     def test_request_sha_hook_and_modes(self):
         env={'REVIEWED_COMMIT':'a'*40,'GITHUB_SHA':'a'*40,'REVIEWED_HOOK_SHA256':'b'*64,
-             'PARENT_ADMISSION_ID':'admitted-one','REQUEST_BOARD':'osc-core','CONFLICTING_MODES':'false'}
+             'PARENT_ADMISSION_ID':'admitted-one','REQUEST_BOARD':'osc-core','CONFLICTING_MODES':'false',
+             'SETTLE_PILOT':'three-A','GITHUB_RUN_ID':'38130450410','GITHUB_RUN_ATTEMPT':'1'}
         with patch.object(pilot.guard,'run',side_effect=lambda cmd: 'a'*40 if cmd[1]=='rev-parse' else ''),patch.object(pilot,'sha',return_value='b'*64):
             self.assertEqual(pilot.validate(env),('a'*40,'b'*64))
-            for changes in ({'GITHUB_SHA':'c'*40},{'REVIEWED_COMMIT':''},{'REVIEWED_HOOK_SHA256':'c'*64},{'REQUEST_BOARD':'osc-jack-left'},{'CONFLICTING_MODES':'true'},{'PARENT_ADMISSION_ID':''}):
+            for changes in ({'GITHUB_SHA':'c'*40},{'GITHUB_SHA':''},{'REVIEWED_COMMIT':''},{'REVIEWED_HOOK_SHA256':'c'*64},{'REQUEST_BOARD':'osc-jack-left'},{'CONFLICTING_MODES':'true'},{'PARENT_ADMISSION_ID':''},{'SETTLE_PILOT':'other'},{'GITHUB_RUN_ID':'bad/run'},{'GITHUB_RUN_ATTEMPT':'bad/run'}):
                 with self.subTest(changes=changes),self.assertRaises(ValueError):
                     pilot.validate(env|changes)
+
+    def test_all_reviewed_ids_have_seals_and_distinct_outputs(self):
+        seals=json.loads((pilot.ROOT/'design/partition/core-split/candidates/pilots/source-fixture-seals.json').read_text())
+        self.assertEqual(set(pilot.PILOTS),set(seals))
+        paths=[pilot.output_path({'SETTLE_PILOT':name,'GITHUB_RUN_ID':'42','GITHUB_RUN_ATTEMPT':'2'}) for name in pilot.PILOTS]
+        self.assertEqual(len(set(paths)),5)
+        self.assertTrue(all(len(seals[name]['files_sha256'])==291 for name in pilot.PILOTS))
 
     def test_tree_detects_changed_missing_extra_and_symlink(self):
         with tempfile.TemporaryDirectory() as tmp:
@@ -59,10 +68,11 @@ class PilotTests(unittest.TestCase):
                     pilot.accounting_groups()
 
     def test_preparation_failure_retained_and_no_materialization(self):
-        with tempfile.TemporaryDirectory() as tmp,patch.object(pilot,'validate',return_value=('a'*40,'b'*64)),patch.object(pilot,'prepare_image',side_effect=ValueError('daemon proof missing')),patch.object(pilot,'OUTPUT',Path(tmp)/'absent'),patch.object(pilot.subprocess,'run') as run:
-            self.assertEqual(pilot.execute({'RUNNER_TEMP':tmp,'PARENT_ADMISSION_ID':'slot-one'}),1)
-            receipt=json.loads((Path(tmp)/'epic242-three-a-settle-only/pilot.json').read_text())
+        with tempfile.TemporaryDirectory() as tmp,patch.object(pilot,'validate',return_value=('a'*40,'b'*64)),patch.object(pilot,'prepare_image',side_effect=ValueError('daemon proof missing')),patch.object(pilot,'output_path',return_value=Path(tmp)/'absent'),patch.object(pilot.subprocess,'run') as run:
+            self.assertEqual(pilot.execute({'RUNNER_TEMP':tmp,'PARENT_ADMISSION_ID':'slot-one','SETTLE_PILOT':'two-A'}),1)
+            receipt=json.loads((Path(tmp)/'epic242-candidate-settle-only/pilot.json').read_text())
             self.assertEqual(receipt['status'],'BLOCKED')
+            self.assertEqual(receipt['pilot'],'two-A')
             self.assertEqual(run.call_count,1)
             self.assertIn('pip',run.call_args.args[0])
 
