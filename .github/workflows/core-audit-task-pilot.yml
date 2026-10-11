@@ -3,16 +3,20 @@ on:
   workflow_dispatch:
     inputs:
       core_audit_task_mode:
-        description: Reviewed before wave or read-only geometry bootstrap; pilot is completed
+        description: Reviewed bounded before/after wave or read-only geometry bootstrap
         type: choice
-        options: [pilot, before-wave, geometry-bootstrap]
+        options: [pilot, before-wave, geometry-bootstrap, after-wave]
         default: pilot
       core_audit_wave:
-        description: Fixed before-stage wave index0–4
+        description: Separate before0–4 or after0–6 wave index
         type: string
         default: '0'
       core_audit_resume:
         description: Authenticated approvals for fully reconciled preceding waves
+        type: string
+        default: '[]'
+      core_audit_after_resume:
+        description: Separate authenticated preceding after-wave approvals
         type: string
         default: '[]'
       reviewed_commit:
@@ -52,7 +56,9 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
           RESUME_JSON: ${{ inputs.core_audit_resume }}
-        run: python3 scripts/pcbgen/core_audit_pilot.py prepare --output .circuit-cache/core-task-inputs --resume-json "$RESUME_JSON"
+          AFTER_RESUME_JSON: ${{ inputs.core_audit_after_resume }}
+          AUDIT_MODE: ${{ inputs.core_audit_task_mode }}
+        run: python3 scripts/pcbgen/core_audit_pilot.py prepare --output .circuit-cache/core-task-inputs --mode "$AUDIT_MODE" --resume-json "$RESUME_JSON" --after-resume-json "$AFTER_RESUME_JSON"
       - name: Reviewed wave or read-only bootstrap under one shared forty-minute budget
         env:
           GH_TOKEN: ${{ github.token }}
@@ -60,8 +66,9 @@ jobs:
           AUDIT_MODE: ${{ inputs.core_audit_task_mode }}
           AUDIT_WAVE: ${{ inputs.core_audit_wave }}
           RESUME_JSON: ${{ inputs.core_audit_resume }}
+          AFTER_RESUME_JSON: ${{ inputs.core_audit_after_resume }}
         run: |
-          timeout --signal=INT --kill-after=30s 40m python3 scripts/pcbgen/core_audit_pilot.py controller --source-root .circuit-cache/core-task-inputs --config circuit/routing/issue189/core236-task-checkpoints --output .circuit-cache/core-task-output --reviewed-commit "$REVIEWED_COMMIT" --mode "$AUDIT_MODE" --wave "$AUDIT_WAVE" --resume-json "$RESUME_JSON"
+          timeout --signal=INT --kill-after=30s 40m python3 scripts/pcbgen/core_audit_pilot.py controller --source-root .circuit-cache/core-task-inputs --config circuit/routing/issue189/core236-task-checkpoints --output .circuit-cache/core-task-output --reviewed-commit "$REVIEWED_COMMIT" --mode "$AUDIT_MODE" --wave "$AUDIT_WAVE" --resume-json "$RESUME_JSON" --after-resume-json "$AFTER_RESUME_JSON"
       - name: Preserve all completed and partial checkpoints on every exit
         if: always()
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a

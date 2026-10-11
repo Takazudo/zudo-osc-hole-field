@@ -97,11 +97,13 @@ def fixture_bytes(t,texts,art,parts):
  key=(t['zone_uuid'],t['stage'])
  if key not in parts:parts[key]=zone_fixture_parts(texts[t['stage']],t['zone_uuid'],art[t['stage']])
  return zone_fixture_batch_text(parts[key],t['item_uuids']).encode()
-def verify_leaf(m,t,bundle,before,after,kernel,geometry,provenance,source_cache=None):
+def verify_leaf(m,t,bundle,before,after,kernel,geometry,provenance,source_cache=None,stage_geometry=None):
  if not isinstance(provenance,VerifiedAuthority):raise ValueError('authenticated producer authority required')
  provenance.authorize(m,t,bundle['receipt'],kernel)
- return _verify_leaf_bytes(m,t,bundle,before,after,kernel,geometry,source_cache)
-def _verify_leaf_bytes(m,t,bundle,before,after,kernel,geometry,source_cache=None):
+ from scripts.pcbgen.core_audit_after import is_after
+ if is_after(t) and (stage_geometry is None or provenance.origin.get('stage_geometry_sha256')!=stage_geometry):raise ValueError('after leaf producer lacks authenticated bootstrap binding')
+ return _verify_leaf_bytes(m,t,bundle,before,after,kernel,geometry,source_cache,stage_geometry)
+def _verify_leaf_bytes(m,t,bundle,before,after,kernel,geometry,source_cache=None,stage_geometry=None):
  # Provenance is provided by a pinned artifact/ledger reader, never by a
  # boolean inside the leaf. Its kernel identity is independently compared.
  if t['policy']!=kernel:raise ValueError('stale native image/validator provenance')
@@ -118,6 +120,9 @@ def _verify_leaf_bytes(m,t,bundle,before,after,kernel,geometry,source_cache=None
  if report.get('kicad_version')!=VERSION or set(report.get('included_severities',[]))!={'error','warning','exclusion'}:raise ValueError('raw native report scope changed')
  identities=sorted((v['type'],v['severity'],tuple(sorted(x['uuid'] for x in v['items']))) for v in new_silk_identities(report,t['zone_uuid']))
  receipt=bundle['receipt']
+ from scripts.pcbgen.core_audit_after import is_after
+ if is_after(t) and (stage_geometry is None or receipt.get('stage_geometry_sha256')!=stage_geometry):raise ValueError('after leaf missing/altered bootstrap binding')
+ if not is_after(t) and (stage_geometry is not None or 'stage_geometry_sha256' in receipt):raise ValueError('bootstrap binding substituted into wrong stage')
  if (receipt['task_id']!=t['task_id'] or receipt['fixture_sha256']!=SHA(pcb) or receipt['native_validation_sha256']!=SHA(bundle['native_validation']) or receipt['report_sha256']!=SHA(raw_report) or receipt['native_geometry_sha256']!=geometry or receipt['identities']!=json.loads(json.dumps(identities))):raise ValueError('leaf native/report/identity hash mismatch')
  return receipt
 
@@ -238,7 +243,8 @@ controller. This function alone never supplies an image provenance anchor.
  if output.exists():raise ValueError('worker output must be disjoint/new')
  output.mkdir(parents=True)
  for task_id in task_ids:
-  t=tasks[task_id];ref=identity(t['expected_geometry'])
+  from scripts.pcbgen.core_audit_after import require_binding
+  t=tasks[task_id];ref=identity(t['expected_geometry']);stage_geometry=require_binding(m,t,kernel,bindings)
   if ref not in bindings:raise ValueError('expected native geometry lacks reviewed binding')
   stage=t['stage']
   if stage not in native_sources:native_sources[stage]=pcbnew.LoadBoard(str(paths[stage]))
@@ -250,8 +256,9 @@ controller. This function alone never supplies an image provenance anchor.
   report=folder/'drc.json';subprocess.run(['kicad-cli','pcb','drc','--format','json','--severity-all','--output',str(report),str(fixture)],check=True)
   native=(folder/'native-validation.json').read_bytes();raw_report=report.read_bytes();rows=sorted((v['type'],v['severity'],tuple(sorted(i['uuid'] for i in v['items']))) for v in new_silk_identities(json.loads(raw_report),t['zone_uuid']))
   receipt=dict(task_id=task_id,fixture_sha256=SHA(fixture.read_bytes()),native_validation_sha256=SHA(native),report_sha256=SHA(raw_report),native_geometry_sha256=sig,identities=json.loads(json.dumps(rows)))
+  if stage_geometry is not None:receipt['stage_geometry_sha256']=stage_geometry
   bundle=dict(task_id=task_id,fixture=fixture.read_bytes(),context={s:fixture.with_suffix(s).read_bytes() for s in ctx},native_validation=native,report=raw_report,receipt=receipt)
-  _verify_leaf_bytes(m,t,bundle,before,after,kernel,sig,(texts,ctx,art,parts))
+  _verify_leaf_bytes(m,t,bundle,before,after,kernel,sig,(texts,ctx,art,parts),stage_geometry)
   ledger[task_id]=write_checkpoint(output,t,bundle);atomic(output/'ledger.json',dict(status='PARTIAL TASK CHECKPOINTS; NOT FULL COVERAGE',tasks=ledger))
  return ledger
 
@@ -266,7 +273,8 @@ def final_union(m,before,after,bundles,kernel,bindings):
  for key,b in by_id.items():
   t=tasks[key];ref=identity(t['expected_geometry'])
   if ref not in bindings:raise ValueError('missing native geometry binding')
-  verify_leaf(m,t,b,before,after,kernel,bindings[ref],b['provenance'],source_cache)
+  from scripts.pcbgen.core_audit_after import require_binding
+  verify_leaf(m,t,b,before,after,kernel,bindings[ref],b['provenance'],source_cache,stage_geometry=require_binding(m,t,kernel,bindings))
  result=dict(status='DERIVED FULL TASK UNION; CALLER GATES STILL REQUIRED',version=VERSION,before_sha256=m['source_sha256'][0],after_sha256=m['source_sha256'][1],zone_silk_scope_complete=True,zones=copy.deepcopy(m['required_scope']['zones']),new_zone_silk_identities=[])
  access={};all_new=set()
  for row in result['zones']:
@@ -281,7 +289,10 @@ def final_union(m,before,after,bundles,kernel,bindings):
    fixtures.append(dict(stage=t['stage'],batch_index=t['batch_index'],item_uuids=t['item_uuids'],fixture_sha256=r['fixture_sha256'],native_geometry_sha256=r['native_geometry_sha256'],report_sha256=r['report_sha256'],identities=r['identities']))
    unions[t['stage']].update((a,c,tuple(ids)) for a,c,ids in r['identities'])
   delta=unions[1]-unions[0];all_new.update(delta);row['native_silk_pairs']=dict(artwork_batch_size=16,selected_item_uuids=s['selected_item_uuids'],conservative_margin_nm=s['conservative_margin_nm'],native_geometry_method='exact_native_coordinates_no_arcs',source_geometry_sha256=geometry,fixtures=fixtures,before_identities=sorted(unions[0]),after_identities=sorted(unions[1]),new_identities=sorted(delta))
- result['new_zone_silk_identities']=sorted(all_new);access['result.json']=canonical(result)
+ result['new_zone_silk_identities']=sorted(all_new)
+ from scripts.pcbgen.core_audit_after import StageBindings
+ if isinstance(bindings,StageBindings):result['stage_geometry_sha256']=bindings.evidence(m,kernel);result['stage_geometry_fact']=bindings.fact
+ access['result.json']=canonical(result)
  proof=verify_result(lambda name:access[name]() if callable(access[name]) else access[name],Path(before),Path(after))
  if proof['new_zone_silk_identities']:raise ValueError('new full native zone warning identities')
  # Never perform publication or infer complete_reports success here.

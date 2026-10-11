@@ -52,7 +52,7 @@ class WaveTests(unittest.TestCase):
    self.assertFalse(p.approved_orchestration(pin,'0'*64,root))
    changed=copy.deepcopy(pin);changed['orchestration']['blobs']['scripts/pcbgen/core_audit_geometry.py']='0'*64
    self.assertFalse(p.approved_orchestration(changed,sha,root))
-   with patch.object(p,'revision',return_value=pin['orchestration']|{'sha256':'changed'}):self.assertFalse(p.approved_orchestration(pin,sha,root))
+   with patch.object(p,'historical_orchestration',return_value=False):self.assertFalse(p.approved_orchestration(pin,sha,root))
   failed=data/'geometry-failed-38095685843/authenticated-artifact-approval.json';pin=json.loads(failed.read_bytes())
   self.assertFalse(p.approved_orchestration(pin,a.SHA(failed.read_bytes()),root))
 if __name__=='__main__':unittest.main()
