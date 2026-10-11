@@ -118,6 +118,43 @@ class QualificationBoundaries(unittest.TestCase):
             with self.assertRaises(ValueError):
                 qualification.phase_result('parent-death', -9, {}, [bad], True, fault)
 
+    def test_watchdog_cleanup_error_cannot_be_hidden_by_quiet_state(self):
+        receipt = {'status': 'FAIL', 'observed_containers': ['owned'], 'reason': 'whole-command deadline'}
+        for embedded, external in (({'cleanup_failures': ['removal failed']}, []), ({}, [{'cleanup_failures': ['survivor']}])):
+            with self.assertRaisesRegex(ValueError, 'cleanup failure'):
+                qualification.phase_result('timeout', 1, {**receipt, 'watchdog': embedded}, external, True)
+
+    def test_final_owned_observation_requires_every_unit_and_no_container(self):
+        with patch.object(guard, 'worker_containers', return_value=[]), patch.object(guard, 'run', side_effect=['inactive', 'failed', 'inactive']):
+            state = qualification.observe_owned_worker('q-test')
+            self.assertTrue(state['workload_absent'])
+            self.assertEqual(len(state['unit_states']), 3)
+        with patch.object(guard, 'worker_containers', return_value=['owned']), patch.object(guard, 'run', return_value='inactive'):
+            self.assertFalse(qualification.observe_owned_worker('q-test')['workload_absent'])
+        with patch.object(guard, 'worker_containers', return_value=[]), patch.object(guard, 'run', side_effect=['inactive', 'active', 'inactive']):
+            self.assertFalse(qualification.observe_owned_worker('q-test')['workload_absent'])
+        with patch.object(guard, 'worker_containers', side_effect=ValueError('daemon unavailable')):
+            with self.assertRaisesRegex(ValueError, 'daemon unavailable'):
+                qualification.observe_owned_worker('q-test')
+
+    def test_qualifier_final_cleanup_uses_same_guard_lease(self):
+        from contextlib import contextmanager
+        entered = []
+        @contextmanager
+        def lease(*args):
+            entered.append(True)
+            yield
+            entered.pop()
+        def cleanup(*args):
+            self.assertTrue(entered)
+            return []
+        with patch.object(Path, 'glob', return_value=[Path('/tmp/owned/cleanup.lock')]), patch.object(guard, 'cleanup_lease', side_effect=lease), patch.object(guard, 'cleanup', side_effect=cleanup):
+            self.assertEqual(qualification.cleanup_started_worker('q-test'), [])
+        with patch.object(Path, 'glob', return_value=[]), patch.object(qualification, 'observe_owned_worker', return_value={'workload_absent': False}), patch.object(guard, 'cleanup') as mutation:
+            with self.assertRaisesRegex(ValueError, 'lease unavailable'):
+                qualification.cleanup_started_worker('q-test')
+            mutation.assert_not_called()
+
     def test_preflight_failure_retains_receipt_without_image_or_worker(self):
         with tempfile.TemporaryDirectory() as tmp:
             evidence = Path(tmp) / 'fresh'

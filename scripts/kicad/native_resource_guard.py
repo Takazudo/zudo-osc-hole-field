@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Opt-in admitted Linux/systemd/Docker worker guard. Never admits a job itself."""
 import argparse
+from contextlib import contextmanager
 import hashlib
 import fcntl
 import json
@@ -8,6 +9,7 @@ import os
 from pathlib import Path
 import re
 import signal
+import stat
 import subprocess
 import sys
 import tempfile
@@ -118,6 +120,62 @@ def worker_containers(worker, timeout=20):
                timeout=timeout).splitlines()
 
 
+def command_error(error):
+    stderr = getattr(error, 'stderr', None)
+    return str(error) + (': ' + stderr.strip() if stderr else '')
+
+
+@contextmanager
+def cleanup_lease(path, owner_uid, deadline):
+    """One worker's guard/watchdog cleanup lease; root may open the user's file."""
+    fd = os.open(path, os.O_RDONLY | os.O_NOFOLLOW)
+    try:
+        info = os.fstat(fd)
+        if not stat.S_ISREG(info.st_mode) or info.st_uid != owner_uid or info.st_mode & 0o077:
+            raise ValueError('untrusted worker cleanup lock')
+        while True:
+            try:
+                fcntl.flock(fd, fcntl.LOCK_EX | fcntl.LOCK_NB)
+                break
+            except BlockingIOError:
+                if time.monotonic() >= deadline:
+                    raise TimeoutError('worker cleanup lease unavailable within deadline')
+                time.sleep(0.1)
+        yield
+    finally:
+        os.close(fd)
+
+
+def unit_state(unit, remaining):
+    load = run(['systemctl', 'show', unit, '--property=LoadState', '--value'], timeout=remaining())
+    active = run(['systemctl', 'show', unit, '--property=ActiveState', '--value'], timeout=remaining())
+    return load, active
+
+
+def unit_settled(load, active):
+    return (load == 'not-found' and active == 'inactive') or (load != 'not-found' and active in ('inactive', 'failed'))
+
+
+def stop_unit_if_present(unit, remaining):
+    load, active = unit_state(unit, remaining)
+    if unit_settled(load, active):
+        return None
+    stop_error = None
+    try:
+        run(['sudo', '-n', 'systemctl', 'stop', unit], timeout=remaining())
+    except Exception as error:
+        stop_error = command_error(error)
+    # Even a successful stop must prove its final state. Transient units can
+    # disappear while systemctl is answering and may return nonzero then.
+    try:
+        final = unit_state(unit, remaining)
+    except Exception as state_error:
+        return (stop_error + '; ' if stop_error else '') + 'final unit state unknown: ' + command_error(state_error)
+    if unit_settled(*final):
+        return None
+    return (stop_error + '; ' if stop_error else 'stop returned without settling; ') + 'final unit state=' + repr(final)
+
+
 def cleanup(worker, producer_units, anchor=None):
     failures = []
     deadline = time.monotonic() + 60
@@ -129,37 +187,57 @@ def cleanup(worker, producer_units, anchor=None):
     # Stop producers before containers; keep the independent watchdog alive.
     for unit in producer_units:
         try:
-            state = run(['systemctl', 'show', unit, '--property=LoadState', '--value'], timeout=remaining())
-            if state != 'not-found':
-                run(['sudo', '-n', 'systemctl', 'stop', unit], timeout=remaining())
+            failure = stop_unit_if_present(unit, remaining)
+            if failure:
+                failures.append('producer stop failed: ' + unit + ': ' + failure)
         except Exception as error:
-            failures.append(str(error))
-    try:
-        containers = worker_containers(worker, timeout=remaining())
-    except Exception as error:
-        containers = []
-        failures.append('container discovery failed: ' + str(error))
-    for cid in containers:
+            failures.append('producer state unknown: ' + unit + ': ' + command_error(error))
+    removal_errors = {}
+    def record_survivors():
         try:
-            run(['docker', 'rm', '-f', cid], timeout=remaining())
+            survivors = worker_containers(worker, timeout=3)
+            if survivors:
+                failures.append('labeled container survivors after cleanup: ' + repr(survivors) +
+                                '; removal errors=' + repr({cid: removal_errors.get(cid) for cid in survivors}))
         except Exception as error:
-            failures.append('container removal failed: ' + cid + ': ' + str(error))
-    try:
-        if worker_containers(worker, timeout=remaining()):
-            failures.append('labeled container survivors after cleanup')
-    except Exception as error:
-        failures.append('container survivor check failed: ' + str(error))
+            failures.append('container survivor state unknown: ' + command_error(error) +
+                            '; removal errors=' + repr(removal_errors))
+    while True:
+        try:
+            containers = worker_containers(worker, timeout=remaining())
+        except TimeoutError:
+            record_survivors()
+            break
+        except Exception as error:
+            failures.append('container discovery/final state unknown: ' + command_error(error))
+            break
+        if not containers:
+            break
+        for cid in containers:
+            try:
+                run(['docker', 'rm', '-f', cid], timeout=remaining())
+            except Exception as error:
+                removal_errors[cid] = command_error(error)
+        try:
+            remaining()
+            time.sleep(min(0.2, max(0, deadline - time.monotonic())))
+        except TimeoutError:
+            record_survivors()
+            break
     if anchor:
         try:
-            run(['sudo', '-n', 'systemctl', 'stop', anchor], timeout=remaining())
+            failure = stop_unit_if_present(anchor, remaining)
+            if failure:
+                failures.append('anchor stop failed: ' + failure)
         except Exception as error:
-            failures.append('anchor stop failed: ' + str(error))
+            failures.append('anchor state unknown: ' + command_error(error))
     for unit in producer_units:
         try:
-            if run(['systemctl', 'show', unit, '--property=ActiveState', '--value'], timeout=remaining()) not in ('inactive', 'failed'):
-                failures.append('producer service survivor: ' + unit)
+            load, active = unit_state(unit, remaining)
+            if not unit_settled(load, active):
+                failures.append('producer service survivor: ' + unit + ': ' + repr((load, active)))
         except Exception as error:
-            failures.append('producer survivor check failed: ' + str(error))
+            failures.append('producer survivor state unknown: ' + command_error(error))
     return failures
 
 
@@ -244,8 +322,20 @@ def watchdog(config_path):
             reason = 'watchdog read/parent failure: ' + str(error)
         if reason is None:
             time.sleep(1)
-    failures = cleanup(worker, config['units'], config['anchor'])
-    Path(config['result']).write_text(json.dumps({'reason': reason, 'cleanup_failures': failures, 'worker': worker, 'parent_pid': config['parent_pid'], 'parent_start': config['parent_start'], 'finished_at': time.time()}) + '\n')
+    try:
+        with cleanup_lease(config['cleanup_lock'], config['owner_uid'], time.monotonic() + 60):
+            failures = cleanup(worker, config['units'], config['anchor'])
+            result = {'reason': reason, 'cleanup_failures': failures, 'worker': worker,
+                      'parent_pid': config['parent_pid'], 'parent_start': config['parent_start'],
+                      'finished_at': time.time()}
+            temporary = Path(config['result'] + '.tmp')
+            temporary.write_text(json.dumps(result) + '\n')
+            temporary.replace(config['result'])
+    except Exception as error:
+        failures = ['watchdog cleanup state unknown: ' + command_error(error)]
+        Path(config['result']).write_text(json.dumps({'reason': reason, 'cleanup_failures': failures,
+            'worker': worker, 'parent_pid': config['parent_pid'], 'parent_start': config['parent_start'],
+            'finished_at': time.time()}) + '\n')
     return 1 if failures else 0
 
 
@@ -327,6 +417,9 @@ def execute(args):
     watch_config = private_dir / 'watchdog.json'
     watch_result = Path(str(watch_config) + '.result')
     closing = private_dir / 'closing'
+    cleanup_lock = private_dir / 'cleanup.lock'
+    lock_fd = os.open(cleanup_lock, os.O_CREAT | os.O_EXCL | os.O_RDONLY | os.O_NOFOLLOW, 0o600)
+    os.close(lock_fd)
     process = None
     evidence = {'plan': plan, 'samples': [], 'status': 'FAIL / NOT ACCEPTED'}
     observed_containers = set()
@@ -358,7 +451,8 @@ def execute(args):
         initial = events.copy()
         watch_data = {'worker': worker, 'parent_pid': os.getpid(), 'parent_start': process_identity(os.getpid()),
                       'deadline': time.time() + args.seconds, 'cgroup': str(cgroup),
-                      'units': [checks], 'anchor': anchor, 'closing': str(closing), 'result': str(watch_result)}
+                      'units': [checks], 'anchor': anchor, 'closing': str(closing), 'result': str(watch_result),
+                      'cleanup_lock': str(cleanup_lock), 'owner_uid': os.getuid()}
         # O_EXCL: no reuse/overwrite of watchdog configuration.
         with watch_config.open('x') as output:
             json.dump(watch_data, output)
@@ -421,16 +515,39 @@ def execute(args):
         evidence['reason'] = str(error)
     finally:
         evidence['observed_containers'] = sorted(observed_containers)
-        failures = cleanup(worker, [checks] if checks in units else []) if claimed else []
-        if claimed and not failures:
+        failures = []
+        if claimed:
             try:
-                closing.write_text('producer and labeled container cleanup complete\n')
-                run(['sudo', '-n', 'systemctl', 'stop', anchor], timeout=3)
-                # Stop independent watchdog LAST, after driver stopped and containers gone.
-                if run(['systemctl', 'show', watch_unit, '--property=LoadState', '--value'], timeout=3) != 'not-found':
-                    run(['sudo', '-n', 'systemctl', 'stop', watch_unit], timeout=3)
+                with cleanup_lease(str(cleanup_lock), os.getuid(), time.monotonic() + 60):
+                    failures = cleanup(worker, [checks] if checks in units else [])
+                    if not failures and evidence.get('reason') != 'whole-command deadline':
+                        closing.write_text('producer and labeled container cleanup complete\n')
+                        failure = stop_unit_if_present(anchor, lambda: 3)
+                        if failure:
+                            failures.append('anchor stop failed: ' + failure)
             except Exception as error:
-                failures.append(str(error))
+                failures.append('guard cleanup state unknown: ' + command_error(error))
+            if not failures:
+                # A deadline watchdog may be waiting for the lease. Let it record
+                # its own cause before stopping it, without holding the lock.
+                if evidence.get('reason') == 'whole-command deadline':
+                    watch_deadline = time.monotonic() + 15
+                    while not watch_result.exists() and time.monotonic() < watch_deadline:
+                        time.sleep(0.1)
+                    if not watch_result.exists():
+                        failures.append('deadline watchdog result missing after cleanup')
+                if not failures:
+                    try:
+                        if evidence.get('reason') == 'whole-command deadline':
+                            failure = stop_unit_if_present(anchor, lambda: 3)
+                            if failure:
+                                failures.append('anchor stop failed: ' + failure)
+                        if not failures:
+                            failure = stop_unit_if_present(watch_unit, lambda: 3)
+                            if failure:
+                                failures.append('watchdog stop failed: ' + failure)
+                    except Exception as error:
+                        failures.append('watchdog stop state unknown: ' + command_error(error))
         if watch_result.exists():
             evidence['watchdog'] = json.loads(watch_result.read_text())
             evidence['status'] = 'FAIL / WATCHDOG TERMINATION'

@@ -32,3 +32,7 @@ The registered manual benchmark workflow now has a default-false qualification f
 ## Approved single run: partial evidence, qualification FAIL
 
 Run38120648409 completed failure in37seconds, workflow source6c6542ce, exact checkout70ee331e, admissionepic242-harmless-qualification-01. All six native jobs skipped. Supported GitHub artifact11694783151 downloaded and authenticated (2942bytes/SHA513be8f47fa8a9d3bc299e18aac50d6ea56bfe8e03d7d4e7f55986566727a14b). Live capability and smoke membership/caps passed. Timeout deadline fired, but cleanup errors caused FAIL_CLEANUP; parent-death/watchdog-death did not run. Raw receipt and bounded ledger retained alongside this file. No rerun, security/daemon configuration, native job or copper change. Qualification remains held; source-only cleanup investigation is next.
+
+## Cleanup correction source candidate
+
+ToolingE3 serializes all three cleanup actors, persists independent receipts before lock release, verifies stopped/absent final states, and records final workload/image observations separately. E2 seals retained unchanged in resource-control-epoch-e2.json.32source tests, Python syntax, circuit and documentation/type checks pass; independent source review found no publication blocker. Historical run remains failed; no retry dispatched. See resource-qualification-cleanup-correction.md.

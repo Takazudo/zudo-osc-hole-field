@@ -9,6 +9,7 @@ from pathlib import Path
 import subprocess
 import sys
 import tempfile
+import threading
 import time
 import unittest
 from unittest.mock import patch
@@ -97,11 +98,14 @@ class GuardTests(unittest.TestCase):
 
     def test_cleanup_orders_producer_container_anchor_and_checks_survivors(self):
         calls = []
+        stopped = set()
 
         def command(args, **_):
             calls.append(args)
             if args[:2] == ['systemctl', 'show']:
-                return 'loaded' if 'LoadState' in args else 'inactive'
+                return 'loaded' if '--property=LoadState' in args else ('inactive' if args[2] in stopped else 'active')
+            if args[:3] == ['sudo', '-n', 'systemctl']:
+                stopped.add(args[-1])
             return ''
 
         with patch.object(guard, 'worker_containers', side_effect=[['owned123'], []]), \
@@ -111,6 +115,80 @@ class GuardTests(unittest.TestCase):
                         calls.index(['docker', 'rm', '-f', 'owned123']))
         self.assertLess(calls.index(['docker', 'rm', '-f', 'owned123']),
                         calls.index(['sudo', '-n', 'systemctl', 'stop', 'anchor.service']))
+
+    def test_cleanup_lease_serializes_guard_and_watchdog(self):
+        with tempfile.TemporaryDirectory() as directory:
+            lock = Path(directory) / 'cleanup.lock'
+            lock.touch(mode=0o600)
+            entered = threading.Event()
+            finished = threading.Event()
+
+            def contender():
+                with guard.cleanup_lease(str(lock), os.getuid(), time.monotonic() + 2):
+                    entered.set()
+                finished.set()
+
+            with guard.cleanup_lease(str(lock), os.getuid(), time.monotonic() + 2):
+                thread = threading.Thread(target=contender)
+                thread.start()
+                self.assertFalse(entered.wait(0.15))
+            self.assertTrue(finished.wait(1))
+            thread.join()
+
+    def test_cleanup_tolerates_transient_removal_and_disappeared_anchor(self):
+        calls = []
+        listed = iter([['owned123'], ['owned123'], []])
+
+        def command(args, **_):
+            calls.append(args)
+            if args[:3] == ['systemctl', 'show', 'anchor.service']:
+                return 'not-found' if '--property=LoadState' in args else 'inactive'
+            if args[:2] == ['docker', 'rm']:
+                raise subprocess.CalledProcessError(1, args, stderr='removal of container owned123 is already in progress')
+            return ''
+
+        with patch.object(guard, 'worker_containers', side_effect=lambda *a, **k: next(listed)), \
+                patch.object(guard, 'run', side_effect=command):
+            self.assertEqual(guard.cleanup('a', [], 'anchor.service'), [])
+        self.assertFalse(any(args[:3] == ['sudo', '-n', 'systemctl'] for args in calls))
+
+    def test_unit_stop_success_must_prove_final_inactive_state(self):
+        def command(args, **_):
+            if args[:2] == ['systemctl', 'show']:
+                return 'loaded' if '--property=LoadState' in args else 'active'
+            return ''  # systemctl stop reports success, unit remains active.
+        with patch.object(guard, 'run', side_effect=command):
+            failure = guard.stop_unit_if_present('anchor.service', lambda: 3)
+        self.assertIn("final unit state=('loaded', 'active')", failure)
+
+    def test_unit_stop_error_preserves_stderr_when_still_active(self):
+        def command(args, **_):
+            if args[:2] == ['systemctl', 'show']:
+                return 'loaded' if '--property=LoadState' in args else 'active'
+            raise subprocess.CalledProcessError(5, args, stderr='permission denied')
+        with patch.object(guard, 'run', side_effect=command):
+            failure = guard.stop_unit_if_present('anchor.service', lambda: 3)
+        self.assertIn('permission denied', failure)
+        self.assertIn("('loaded', 'active')", failure)
+        self.assertFalse(guard.unit_settled('not-found', 'active'))
+
+    def test_cleanup_preserves_real_survivor_and_stderr(self):
+        clock = [0.0]
+        def tick():
+            return clock[0]
+        def sleep(_):
+            clock[0] += 20
+        def command(args, **_):
+            if args[:2] == ['docker', 'rm']:
+                raise subprocess.CalledProcessError(1, args, stderr='permission denied')
+            return ''
+
+        with patch.object(guard, 'worker_containers', return_value=['owned123']), \
+                patch.object(guard, 'run', side_effect=command), \
+                patch.object(guard.time, 'monotonic', side_effect=tick), \
+                patch.object(guard.time, 'sleep', side_effect=sleep):
+            failures = guard.cleanup('a', [])
+        self.assertTrue(any('owned123' in item and 'permission denied' in item for item in failures))
 
     def test_pinned_image_must_be_local_no_pull(self):
         image = 'kicad/kicad@sha256:' + '1' * 64

@@ -48,11 +48,28 @@ def owned_units(worker):
             ('-checks.service', '-anchor.service', '-watchdog.service')]
 
 
+def observe_owned_worker(worker):
+    containers = guard.worker_containers(worker, timeout=3)
+    units = {unit: guard.run(['systemctl', 'show', unit, '--property=ActiveState', '--value'],
+                            timeout=3) for unit in owned_units(worker)}
+    return {'worker': worker, 'observed_at': time.time(), 'containers': containers,
+            'unit_states': units,
+            'workload_absent': not containers and all(state in ('inactive', 'failed') for state in units.values())}
+
+
 def quiet(worker):
-    if guard.worker_containers(worker, timeout=3):
-        return False
-    return all(guard.run(['systemctl', 'show', unit, '--property=ActiveState', '--value'],
-                         timeout=3) in ('inactive', 'failed') for unit in owned_units(worker))
+    return observe_owned_worker(worker)['workload_absent']
+
+
+def cleanup_started_worker(worker):
+    locks = list(Path('/tmp').glob('epic242-' + worker + '-*/cleanup.lock'))
+    if len(locks) != 1:
+        # A guard refused before starting; absence must be proved before skipping mutation.
+        if not locks and observe_owned_worker(worker)['workload_absent']:
+            return []
+        raise ValueError('exact guard-owned cleanup lease unavailable')
+    with guard.cleanup_lease(str(locks[0]), os.getuid(), time.monotonic() + 60):
+        return guard.cleanup(worker, [owned_units(worker)[0]], owned_units(worker)[1])
 
 
 def wait_for(worker, predicate, process=None, seconds=60):
@@ -90,6 +107,8 @@ def ready(worker, expected_sha, image):
 
 
 def phase_result(phase, code, evidence, watch_results, is_quiet, fault=None):
+    if evidence.get('cleanup_failures') or evidence.get('watchdog', {}).get('cleanup_failures') or any(r.get('cleanup_failures') for r in watch_results):
+        raise ValueError('cleanup failure receipt cannot qualify: ' + phase)
     if not is_quiet:
         raise ValueError('owned service/container survivors after ' + phase)
     if phase == 'smoke':
@@ -168,6 +187,7 @@ def qualify(args):
                 evidence_path = directory / (phase + '.json')
                 evidence = json.loads(evidence_path.read_text()) if evidence_path.exists() else {}
                 report['phases'][phase] = phase_result(phase, code, evidence, watch_results, True, fault)
+                report['phases'][phase]['final_owned_state'] = observe_owned_worker(worker)
                 report['phases'][phase]['fault_injection'] = fault
                 report['phases'][phase]['verified_membership'] = membership(worker, args.sha, image)
                 report['phases'][phase]['guard_stdout'] = (directory / (phase + '.stdout.txt')).read_bytes()[:65536].decode('utf-8', errors='replace')
@@ -186,7 +206,11 @@ def qualify(args):
                 process.wait(timeout=5)
         # Cleanup only a worker actually started by this driver, never a prior label.
         if active_worker:
-            failures.extend(guard.cleanup(active_worker, [owned_units(active_worker)[0]], owned_units(active_worker)[1]))
+            try:
+                failures.extend(cleanup_started_worker(active_worker))
+            except Exception as error:
+                failures.append('serialized owned cleanup unavailable: ' + str(error))
+        report['final_owned_states'] = {}
         for worker in workers:
             try:
                 wait_for(worker, lambda: quiet(worker), seconds=60)
@@ -198,6 +222,14 @@ def qualify(args):
                         guard.run(['sudo', '-n', 'systemctl', 'stop', watch], timeout=3)
             except Exception as error:
                 failures.append(str(error))
+            try:
+                final_state = observe_owned_worker(worker)
+                report['final_owned_states'][worker] = final_state
+                if not final_state['workload_absent']:
+                    failures.append('final owned workload not absent: ' + worker)
+            except Exception as error:
+                report['final_owned_states'][worker] = {'workload_absent': None, 'error': str(error)}
+                failures.append('final owned state unknown: ' + worker + ': ' + str(error))
         if image:
             try:
                 guard.run(['docker', 'image', 'rm', image], timeout=3)
@@ -223,7 +255,19 @@ def qualify(args):
                 except Exception as error:
                     raw[key + '_read_error'] = str(error)
             report['raw_phase_evidence'][phase] = raw
-        report['owned_image_removed'] = bool(image) and not failures
+        report['owned_image_removed'] = None if image else False
+        if image:
+            try:
+                # Successful daemon enumeration proves absence independently of other cleanup errors.
+                report['owned_image_removed'] = image not in guard.run(['docker', 'image', 'ls', '--no-trunc', '--quiet'], timeout=3).splitlines()
+                if not report['owned_image_removed']:
+                    report.setdefault('cleanup_failures', []).append('owned image still present')
+                    report['status'] = 'FAIL_CLEANUP'
+            except Exception as error:
+                report['owned_image_observation_error'] = str(error)
+                report.setdefault('cleanup_failures', []).append('owned image absence unknown')
+                report['status'] = 'FAIL_CLEANUP'
+        report['owned_workloads_absent'] = all(state.get('workload_absent') is True for state in report['final_owned_states'].values())
         (directory / 'qualification.json').write_text(json.dumps(report, indent=2) + '\n')
     return 0 if report['status'].startswith('PASS_SINGLE') else 1
 
