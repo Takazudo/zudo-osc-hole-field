@@ -5,6 +5,7 @@ import unittest
 from pathlib import Path
 
 from scripts.pcbgen.trimmer_labels import ROOT, _owned, _strip_owned, apply, digest
+from scripts.pcbgen.trimmer_labels_native_regression import prepare_source_evidence, run
 from scripts.pcbgen.uuid_tools import stable_uuid
 
 FIXTURE = ROOT/'scripts/pcbgen/fixtures/trimmer-labels/two-face.kicad_pcb'
@@ -103,6 +104,58 @@ class TrimmerLabelsTests(unittest.TestCase):
         self.policy['labels'][0]['text'] = 'DIFFERENT FUNCTION'
         with self.assertRaisesRegex(ValueError, 'reviewed function dictionary'):
             self.run_apply()
+
+    def test_retained_source_artifacts_include_both_faces_and_removal(self):
+        evidence = self.path/'retained'
+        candidate = prepare_source_evidence(evidence)
+        self.assertEqual((evidence/'second-apply.kicad_pcb').read_bytes(), candidate.read_bytes())
+        self.assertEqual((evidence/'removed.kicad_pcb').read_bytes(), (evidence/'input.kicad_pcb').read_bytes())
+        result = candidate.read_text()
+        self.assertIn('(layer "F.SilkS")', result)
+        self.assertIn('(layer "B.SilkS")', result)
+        self.assertIn('(justify mirror)', result)
+        self.assertTrue((evidence/'policy.json').is_file())
+        self.assertTrue((evidence/'removal-policy.json').is_file())
+        with self.assertRaises(FileExistsError):
+            prepare_source_evidence(evidence)
+
+    def test_native_preflight_failure_retains_hashes_and_negative_status(self):
+        class WrongVersion:
+            @staticmethod
+            def GetBuildVersion():
+                return '0.0.0 (source-test stand-in, not native acceptance)'
+
+        evidence = self.path/'failure-evidence'
+        with self.assertRaisesRegex(ValueError, 'pinned KiCad'):
+            run(evidence, WrongVersion)
+        receipt = json.loads((evidence/'receipt.json').read_text())
+        self.assertEqual(receipt['status'], 'FAIL / NATIVE ACCEPTANCE NOT ESTABLISHED')
+        self.assertIn('failure.txt', receipt['files_sha256'])
+        for name in ('input.kicad_pcb','inventory.json','policy.json','candidate.kicad_pcb',
+                     'second-apply.kicad_pcb','removal-policy.json','removed.kicad_pcb'):
+            path = evidence/'source'/name
+            self.assertEqual(receipt['files_sha256']['source/'+name], digest(path.read_bytes()))
+        with self.assertRaises(FileExistsError):
+            run(evidence, WrongVersion)
+
+    def test_native_load_failure_keeps_candidate_and_explicit_failure(self):
+        class LoadFailure:
+            @staticmethod
+            def GetBuildVersion():
+                return '10.0.6'
+
+            @staticmethod
+            def LoadBoard(_path):
+                return None
+
+        evidence = self.path/'load-failure'
+        with self.assertRaisesRegex(ValueError, 'failed to load candidate'):
+            run(evidence, LoadFailure)
+        receipt = json.loads((evidence/'receipt.json').read_text())
+        self.assertEqual(receipt['status'], 'FAIL / NATIVE ACCEPTANCE NOT ESTABLISHED')
+        self.assertEqual(receipt['error'], 'KiCad failed to load candidate')
+        self.assertTrue((evidence/'source/candidate.kicad_pcb').is_file())
+        self.assertEqual(receipt['files_sha256']['failure.txt'], digest((evidence/'failure.txt').read_bytes()))
 
 
 if __name__ == '__main__':

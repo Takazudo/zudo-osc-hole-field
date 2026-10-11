@@ -166,8 +166,8 @@ def apply(board_path: Path, policy_path: Path, output_path: Path, *, check=False
     footprints = _footprints(board, set(rows))
     owned, all_ids = _owned(board, policy['board_id'])
     placements = policy.get('labels')
-    if not isinstance(placements, list) or not placements:
-        raise ValueError('explicit nonempty labels policy required')
+    if not isinstance(placements, list):
+        raise ValueError('explicit labels policy required')
     expected = {}
     for entry in placements:
         ref = entry.get('ref')
@@ -195,7 +195,7 @@ def apply(board_path: Path, policy_path: Path, output_path: Path, *, check=False
     closing = result.rfind(')')
     if closing < 0 or result[closing+1:].strip():
         raise ValueError('invalid board end')
-    additions = '\n' + '\n'.join(expected.values()) + '\n'
+    additions = '\n' + '\n'.join(expected.values()) + '\n' if expected else ''
     result = result[:closing] + additions + result[closing:]
     # Existing owned blocks may have occupied arbitrary positions. Verify
     # removing only our additions recovers the exact non-owned input bytes.
