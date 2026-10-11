@@ -21,7 +21,7 @@ REPOSITORY = 'Takazudo/zudo-osc-hole-field'
 BRANCH = 'integration/epic-242-f3-k1402-access-v1'
 WORKFLOW = 'epic242-f3-k1402-access.yml'
 # Proposed identity only. Publishing this source does not grant admission.
-ADMISSION = 'epic242-f3-k1402-access-v1'
+ADMISSION = 'epic242-f3-k1402-route-20261011-1623'
 DRIVER = 'circuit/routing/epic-242/decision-pilots/terminal-access/'
 
 
