@@ -1,5 +1,5 @@
 {
-  "status": "REVIEWED SOURCE FIX READY; ONE RETRY PROPOSED, NOT ADMITTED",
+  "status": "SECOND ADMITTED RUN COMPLETED NEGATIVE; NATIVE ON HOLD",
   "candidate_source_sha": "Exact pushed integration SHA supplied in dispatch request; reviewed_commit must equal workflow GITHUB_SHA",
   "qualification_receipt": "resource-qualification-run38121547543-ledger.json",
   "selected_issue": 245,
@@ -101,12 +101,13 @@
     "frozen_inputs": "1881 original inputs unchanged;195 harnesses/390 endpoint refs/pin maps/poses; accepted117/129/1402 DRC/parity0/0"
   },
   "latest_native_run": {
-    "run_id": 38124807606,
-    "source_sha": "153e72c3047f3e65c08c762b31558d1652eb6ca2",
-    "ledger": "settle-run38124807606-ledger.json",
-    "outcome": "STARTED, THEN FAIL / NOT ACCEPTED; NO SETTLED RECEIPT",
-    "blocker": "Command '['docker', 'inspect', 'ecb8f97b42d3']' returned non-zero exit status 1.",
-    "next": "Minimal lifecycle observation source fix and evidence retention reviewed; proposed same245settle requires fresh parent admission. No retry dispatched."
+    "run_id": 38125854892,
+    "source_sha": "fe2e6d20c50587e223f1357f34c865db385fa5b0",
+    "ledger": "settle-run38125854892-ledger.json",
+    "outcome": "FAIL / NOT ACCEPTED",
+    "blocker": "NEW FAIL-CLOSED GUARD OBSERVATION: a listed full-ID container disappeared before any running membership proof for that ID. Original prior-verified case is distinct. Exact underlying container exit cause not established.",
+    "next": "Parent source/control review of distinct unverified-container case required. No third run or fallback admitted."
   },
-  "retry_diagnosis": "settle-run38124807606-diagnosis.json"
+  "retry_diagnosis": "settle-run38124807606-diagnosis.json",
+  "earlier_native_run": "settle-run38124807606-ledger.json"
 }
