@@ -1,8 +1,8 @@
 # First F3/K1402 launch binding
 
-**Source-reviewed and ready for parent admission. No dispatch or native work.**
+**Identity binding reviewed; exact-SHA admission reconciliation required. No dispatch or native work.**
 
-Exact orchestration commit: `4a948fbbabaa94fcdc030c15d5922a7b4e8b300b`.
+Exact identity-bound orchestration commit: `bf671866e73e8d133726090c0e8295ccdd41c5c1`.
 Exact routing method: `6f0783335fa23d760877a91db3b63f93c039b4b4`.
 The [frozen request](../f3-packet/request.json) remains SHA256
 `10be49ae32997a36c54436e48226a295678e47dda1fc1c14f4569c72ef4bdd92`.
@@ -13,8 +13,12 @@ The K1402 fixture lock remains
 The only launch action, **after parent approval of this exact tuple and a fresh
 global capacity reservation**, is creation of
 `integration/epic-242-f3-k1402-access-v1` at the orchestration commit above. The
-proposed admission token is `epic242-f3-k1402-access-v1`; it is not an existing
-admission. The execution branch remains absent. Do not push the later integration
+parent admitted token `epic242-f3-k1402-route-20261011-1623` at orchestration
+`4a948fbbabaa94fcdc030c15d5922a7b4e8b300b`, but that immutable source hardcodes the
+earlier proposed token. The reviewed two-line identity substitution produces
+`bf671866e73e8d133726090c0e8295ccdd41c5c1`; parent must reconcile this new SHA before
+launch. Worker naming, evidence paths, method, packet and limits are unchanged.
+The execution branch remains absent. Do not push the later integration
 or documentation head to it, force/reset/recreate it, or rerun an attempt.
 
 The workflow runs only on creation of that branch and attempt 1. A complete

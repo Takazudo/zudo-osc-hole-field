@@ -1,24 +1,24 @@
 {
-  "status": "SOURCE-REVIEWED LAUNCH READY; NOT ADMITTED OR DISPATCHED",
+  "status": "IDENTITY BINDING REVIEWED; EXACT ORCHESTRATION ADMISSION RECONCILIATION REQUIRED; NOT DISPATCHED",
   "case": "F3/K1402 route only",
-  "orchestration_sha": "4a948fbbabaa94fcdc030c15d5922a7b4e8b300b",
+  "orchestration_sha": "bf671866e73e8d133726090c0e8295ccdd41c5c1",
   "method_sha": "6f0783335fa23d760877a91db3b63f93c039b4b4",
   "packet_sha256": "10be49ae32997a36c54436e48226a295678e47dda1fc1c14f4569c72ef4bdd92",
   "fixture_lock_sha256": "0ee20e3e409a93f1f4b1417c8e2ed64b18564f00213edd1aeaf6cd3af4ffbf7b",
   "orchestration_files_sha256": {
-    ".github/workflows/epic242-f3-k1402-access.yml": "07e7277d1a9284d4d2cda186abfbaef1c78bf76815a7224f7df4c76a15092df8",
-    "circuit/routing/epic-242/decision-pilots/terminal-access/run_f3_k1402.py": "5e857fe21222b5a3a6fd5dfa8104700a7ed562e5f477b917b17d977a5d3da80b",
+    ".github/workflows/epic242-f3-k1402-access.yml": "159df4d37ac383e7214cc994b8d05c2fd834773d3e31e91c71a9edf626cdfce3",
+    "circuit/routing/epic-242/decision-pilots/terminal-access/run_f3_k1402.py": "3a90d67555d632aa3bb9965251f5cfe087d18fd8576bfc36bd26cb9c0badd893",
     "circuit/routing/epic-242/decision-pilots/terminal-access/test_f3_orchestration.py": "ce109a983f185a07f306fc12e04e431e16321b28e81778567c6257255746387a"
   },
   "execution_branch": "integration/epic-242-f3-k1402-access-v1",
-  "proposed_admission_identity": "epic242-f3-k1402-access-v1",
-  "identity_status": "Proposed exact token; NOT an existing admission or capacity reservation",
+  "proposed_admission_identity": "epic242-f3-k1402-route-20261011-1623",
+  "identity_status": "Parent admitted identity1623 at4a948fbb, whose code hardcodes oldv1 identity. Reviewed two-line substitution yields bf671866; parent must reconcile this new exact SHA before branch creation.",
   "worker_pattern": "f3-k1402-access-v1-{GITHUB_RUN_ID}-1",
   "future_launch_only_after_parent_admission": [
     "git",
     "push",
     "origin",
-    "4a948fbbabaa94fcdc030c15d5922a7b4e8b300b:refs/heads/integration/epic-242-f3-k1402-access-v1"
+    "bf671866e73e8d133726090c0e8295ccdd41c5c1:refs/heads/integration/epic-242-f3-k1402-access-v1"
   ],
   "launch_gate": "Parent must admit this exact orchestration/method/packet/case and reserve global capacity before creating the execution branch. Never force/reset/recreate/retry the branch. It is absent at preparation closeout.",
   "one_shot": "push creation + Actions attempt1 + complete branch run history containing exactly this workflow/run/head; prior use/incomplete census refuses",
@@ -105,7 +105,7 @@
     "canonicalhardwarewrites",
     "merge/closure/deploy/fabrication"
   ],
-  "superseded_orchestration_sha": "4aade25ec10edd3fdada3deedfe7f55d275fd7b8",
+  "superseded_orchestration_sha": "4a948fbbabaa94fcdc030c15d5922a7b4e8b300b",
   "historical_evidence": {
     "method_checkout_fetch_depth": 0,
     "commit": "191a4db30d90fe43025ec2633e23f9b069f12b85",
@@ -113,5 +113,16 @@
     "sha256": "beb352adf77edbafa74afd5cee1ec4b38593448c6233d55d19fd9751861ee89b",
     "gate": "git show exact historical bytes and verify frozen packet hash before provisioning, repeated by source verification",
     "review": "Independent baseline_review PASS; missingcommit/wrongbytes refusal tests PASS"
+  },
+  "admission_reconciliation": {
+    "parent_admitted_orchestration_sha": "4a948fbbabaa94fcdc030c15d5922a7b4e8b300b",
+    "identity_bound_orchestration_sha": "bf671866e73e8d133726090c0e8295ccdd41c5c1",
+    "admission_id": "epic242-f3-k1402-route-20261011-1623",
+    "changed_lines": 2,
+    "changed_values": "workflow PARENT_ADMISSION_ID and runner ADMISSION only",
+    "independent_review": "baseline_review PASS;16source orchestrationtests PASS",
+    "native_resources_created": 0,
+    "execution_branch_created": false,
+    "required": "Parent confirms identity-only bf671866 as the admitted orchestration; all other scope and limits unchanged"
   }
 }
