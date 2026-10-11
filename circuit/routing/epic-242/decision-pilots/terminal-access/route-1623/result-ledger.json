@@ -1,5 +1,5 @@
 {
-  "status": "NO IMPROVEMENT; FIRST ADMITTED F3/K1402 ROUTE COMPLETE; PARENT RECEIPT REVIEW PENDING",
+  "status": "NO IMPROVEMENT; PARENT ACCEPTED NEGATIVE RESULT; RESERVATION RELEASED",
   "identity": {
     "run_id": "38155571727",
     "attempt": "1",
@@ -222,7 +222,7 @@
       "workload_absent": true
     },
     "cleanup_failures": [],
-    "reservation_status": "NO ACTIVE WORKLOAD; PARENT RELEASE/RECEIPT REVIEW PENDING"
+    "reservation_status": "RELEASED BY PARENT; NO ACTIVE WORKLOAD"
   },
   "holds": [
     "No repeat dispatch or automaticretry",
@@ -237,5 +237,13 @@
   "independent_review": {
     "status": "PASS",
     "receipt_sha256": "4eac77bed857116ecfddb63a4d18b43bf74dc054caaea240d7b0a656600d230d"
+  },
+  "parent_closeout": {
+    "source_thread_id": "01a1183e-017b-75a9-bb91-a66aa5947004",
+    "instruction": "Accept F3/K1402 verified no-improvement result and release reservation1623; preserve empty proposal without apply",
+    "reservation": "epic242-f3-k1402-route-20261011-1623",
+    "status": "RELEASED",
+    "proposal_applied": false,
+    "all_native_slots": "FREE; two-A preparation grants no admission"
   }
 }
