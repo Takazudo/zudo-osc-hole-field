@@ -94,3 +94,5 @@ At most6refill passes/3equal complete signatures; parse/parity/stability evidenc
 ## CI wiring
 
 Every former native Python check and all three DRC board entries now use ci_native_admission.py. Parent must supply exact EPIC242_PARENT_ADMISSION_RUN_ID, EPIC242_PARENT_ADMISSION_SHA matching current run/GITHUB_SHA/clean HEAD, and EPIC242_REVIEWED_HOOK_SHA256. Values are not set here. Python28minute command runs before at most2board43minute commands; job30/45minute limits and all original gates remain. Standard ubuntu-latest placement is not automatically upgraded to a capable runner; absent capacity/control capability fails closed.
+
+The native/preloaded-image pilot proposal above is superseded for the first qualification step by `resource-qualification-ci-request.md`: one sequential harmless worker, no KiCad prerequisite, no admission or dispatch yet. Native pilots require subsequent separate review.

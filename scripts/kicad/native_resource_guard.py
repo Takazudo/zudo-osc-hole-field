@@ -101,6 +101,18 @@ def require_local_image():
     return image
 
 
+def require_harmless_fixture(image, command):
+    if not re.fullmatch(r'sha256:[0-9a-f]{64}', image):
+        raise ValueError('immutable locally imported harmless fixture image required')
+    entry = str(Path('scripts/kicad/run_resource_fixture.py').resolve())
+    prefix = [sys.executable, entry, '--image', image, '--mode']
+    if command[:len(prefix)] != prefix or command[len(prefix):] not in (['aggregate'], ['hold']):
+        raise ValueError('harmless qualification permits only the reviewed fixture runner')
+    metadata = json.loads(run(['docker', 'image', 'inspect', image]))[0]
+    if metadata.get('Id') != image or metadata.get('Config', {}).get('Entrypoint') != ['/fixture']:
+        raise ValueError('local fixture image identity/entrypoint mismatch')
+
+
 def worker_containers(worker, timeout=20):
     return run(['docker', 'ps', '-aq', '--filter', 'label=epic242.native.worker=' + worker],
                timeout=timeout).splitlines()
@@ -211,7 +223,14 @@ def watchdog(config_path):
     reason = None
     while reason is None:
         try:
-            if process_identity(config['parent_pid']) != config['parent_start']:
+            try:
+                parent_start = process_identity(config['parent_pid'])
+            except FileNotFoundError:
+                reason = 'parent guard identity missing'
+                parent_start = None
+            if reason is not None:
+                pass
+            elif parent_start != config['parent_start']:
                 reason = 'parent guard identity changed'
             elif Path(config['closing']).exists():
                 # Parent already stopped producers and proved no labeled survivors.
@@ -226,7 +245,7 @@ def watchdog(config_path):
         if reason is None:
             time.sleep(1)
     failures = cleanup(worker, config['units'], config['anchor'])
-    Path(config['result']).write_text(json.dumps({'reason': reason, 'cleanup_failures': failures}) + '\n')
+    Path(config['result']).write_text(json.dumps({'reason': reason, 'cleanup_failures': failures, 'worker': worker, 'parent_pid': config['parent_pid'], 'parent_start': config['parent_start'], 'finished_at': time.time()}) + '\n')
     return 1 if failures else 0
 
 
@@ -264,7 +283,10 @@ def execute(args):
     if any(token not in hook for token in required_hook) or not args.hook_sha256 or hashlib.sha256(hook).hexdigest() != args.hook_sha256:
         raise ValueError('exact reviewed Docker resource hook digest required; fail closed')
     local_docker()
-    require_local_image()
+    if getattr(args, 'harmless_fixture_image', None):
+        require_harmless_fixture(args.harmless_fixture_image, args.command)
+    else:
+        require_local_image()
     if memory_available() < CAP + FLOOR:
         raise ValueError('less than8GiB available for6GiB worker+2GiB floor')
     # Refuse BEFORE claiming identity or entering cleanup: never delete another run.
@@ -373,6 +395,14 @@ def execute(args):
                     pid = inspected['State']['Pid']
                     docker_membership(inspected, Path('/proc/' + str(pid) + '/cgroup').read_text(), cg)
                     observed_containers.add(cid)
+                    if getattr(args, 'harmless_fixture_image', None):
+                        ready_file = private_dir / 'membership.json'
+                        temporary_ready = private_dir / 'membership.tmp'
+                        temporary_ready.write_text(json.dumps({'worker': worker, 'sha': args.sha,
+                            'parent_pid': os.getpid(), 'parent_start': process_identity(os.getpid()),
+                            'image_id': args.harmless_fixture_image, 'container_id': cid,
+                            'slice_path': cg, 'verified_at': time.time()}) + '\n')
+                        temporary_ready.replace(ready_file)
             if reason:
                 raise ValueError(reason)
             code = process.poll()
@@ -390,6 +420,7 @@ def execute(args):
     except Exception as error:
         evidence['reason'] = str(error)
     finally:
+        evidence['observed_containers'] = sorted(observed_containers)
         failures = cleanup(worker, [checks] if checks in units else []) if claimed else []
         if claimed and not failures:
             try:
@@ -430,6 +461,7 @@ def main():
         return watchdog(sys.argv[2])
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--hook-sha256', help='Exact SHA256 of separately reviewed installed resource hook')
+    parser.add_argument('--harmless-fixture-image', help='Only the reviewed non-native fixture runner; native image preflight not required')
     parser.add_argument('--plan', action='store_true', help='No commands/reads of cgroups/Docker; print proposed invocation')
     parser.add_argument('--admission-id', required=True)
     parser.add_argument('--worker', required=True)

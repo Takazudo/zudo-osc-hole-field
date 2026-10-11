@@ -1,5 +1,5 @@
 name: Routing obstacle benchmark
-run-name: "Issue 189 ${{ inputs.local_repair && 'read-only local repair' || inputs.recover_core && 'core return repair' || (inputs.adopt_run || inputs.replay_jl || inputs.replay_jr) && 'copper adoption' || 'same-input benchmark' }} — ${{ inputs.board }}"
+run-name: "Issue 189 ${{ inputs.resource_qualification && 'resource guard qualification' || inputs.local_repair && 'read-only local repair' || inputs.recover_core && 'core return repair' || (inputs.adopt_run || inputs.replay_jl || inputs.replay_jr) && 'copper adoption' || 'same-input benchmark' }} — ${{ inputs.board }}"
 on:
   workflow_dispatch:
     inputs:
@@ -47,6 +47,22 @@ on:
         type: choice
         options: [cut, coupled]
         default: cut
+      resource_qualification:
+        description: Run only the admitted harmless resource guard qualification
+        type: boolean
+        default: false
+      reviewed_commit:
+        description: Full reviewed checkout SHA for qualification
+        type: string
+        required: false
+      reviewed_hook_sha256:
+        description: Reviewed SHA-256 of scripts/kicad/run.sh
+        type: string
+        required: false
+      parent_admission_id:
+        description: Nonsecret parent admission ID for qualification
+        type: string
+        required: false
 permissions:
   contents: read
 concurrency:
@@ -54,7 +70,7 @@ concurrency:
   cancel-in-progress: false
 jobs:
   benchmark:
-    if: inputs.adopt_run == '' && !inputs.recover_core && !inputs.replay_jl && !inputs.replay_jr && !inputs.local_repair
+    if: ${{ !inputs.resource_qualification && (inputs.adopt_run == '' && !inputs.recover_core && !inputs.replay_jl && !inputs.replay_jr && !inputs.local_repair) }}
     runs-on: ubuntu-latest
     timeout-minutes: 355
     strategy:
@@ -93,7 +109,7 @@ jobs:
           if-no-files-found: error
           include-hidden-files: true
   adopt:
-    if: (inputs.adopt_run != '' || inputs.recover_core || inputs.replay_jl || inputs.replay_jr) && !inputs.local_repair && inputs.core_replay != 'native-hole-audit' && inputs.core_replay != 'native-mask-audit' && inputs.core_replay != 'native-zone-audit'
+    if: ${{ !inputs.resource_qualification && ((inputs.adopt_run != '' || inputs.recover_core || inputs.replay_jl || inputs.replay_jr) && !inputs.local_repair && inputs.core_replay != 'native-hole-audit' && inputs.core_replay != 'native-mask-audit' && inputs.core_replay != 'native-zone-audit') }}
     runs-on: ubuntu-latest
     timeout-minutes: 355
     permissions:
@@ -317,7 +333,7 @@ jobs:
           include-hidden-files: true
           retention-days: 30
   local-pilot:
-    if: inputs.local_repair && !inputs.replay_jl && !inputs.replay_jr
+    if: ${{ !inputs.resource_qualification && (inputs.local_repair && !inputs.replay_jl && !inputs.replay_jr) }}
     runs-on: ubuntu-latest
     timeout-minutes: 90
     permissions:
@@ -362,7 +378,7 @@ jobs:
           retention-days: 30
 
   hole-audit:
-    if: inputs.recover_core && inputs.core_replay == 'native-hole-audit' && inputs.board == 'osc-core' && !inputs.local_repair && !inputs.replay_jl && !inputs.replay_jr && inputs.adopt_run == ''
+    if: ${{ !inputs.resource_qualification && (inputs.recover_core && inputs.core_replay == 'native-hole-audit' && inputs.board == 'osc-core' && !inputs.local_repair && !inputs.replay_jl && !inputs.replay_jr && inputs.adopt_run == '') }}
     permissions:
       contents: read
       actions: read
@@ -412,7 +428,7 @@ jobs:
           if-no-files-found: error
 
   mask-audit:
-    if: inputs.recover_core && inputs.core_replay == 'native-mask-audit' && inputs.board == 'osc-core' && !inputs.local_repair && !inputs.replay_jl && !inputs.replay_jr && inputs.adopt_run == ''
+    if: ${{ !inputs.resource_qualification && (inputs.recover_core && inputs.core_replay == 'native-mask-audit' && inputs.board == 'osc-core' && !inputs.local_repair && !inputs.replay_jl && !inputs.replay_jr && inputs.adopt_run == '') }}
     permissions:
       contents: read
       actions: read
@@ -452,7 +468,7 @@ jobs:
           if-no-files-found: error
 
   zone-audit:
-    if: inputs.recover_core && inputs.core_replay == 'native-zone-audit' && inputs.board == 'osc-core' && !inputs.local_repair && !inputs.replay_jl && !inputs.replay_jr && inputs.adopt_run == ''
+    if: ${{ !inputs.resource_qualification && (inputs.recover_core && inputs.core_replay == 'native-zone-audit' && inputs.board == 'osc-core' && !inputs.local_repair && !inputs.replay_jl && !inputs.replay_jr && inputs.adopt_run == '') }}
     permissions:
       contents: read
       actions: read
@@ -493,3 +509,70 @@ jobs:
           retention-days: 30
           include-hidden-files: true
           if-no-files-found: error
+
+  qualify:
+    if: ${{ inputs.resource_qualification }}
+    concurrency:
+      group: issue189-core-audit-task-pilot
+      cancel-in-progress: false
+    name: Harmless resource guard qualification
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - name: Check out reviewed commit
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ inputs.reviewed_commit }}
+          persist-credentials: false
+
+      - name: Verify exact checkout and reviewed hook
+        env:
+          REVIEWED_COMMIT: ${{ inputs.reviewed_commit }}
+          REVIEWED_HOOK_SHA256: ${{ inputs.reviewed_hook_sha256 }}
+        run: |
+          set -euo pipefail
+          [[ $REVIEWED_COMMIT =~ ^[0-9a-f]{40}$ ]] || { echo 'Full lowercase reviewed commit SHA required' >&2; exit 1; }
+          [[ $REVIEWED_HOOK_SHA256 =~ ^[0-9a-f]{64}$ ]] || { echo 'Full lowercase hook SHA-256 required' >&2; exit 1; }
+          [[ $(git rev-parse HEAD) == "$REVIEWED_COMMIT" ]] || { echo 'Checkout differs from reviewed commit' >&2; exit 1; }
+          [[ $(sha256sum scripts/kicad/run.sh | cut -d ' ' -f 1) == "$REVIEWED_HOOK_SHA256" ]] || {
+            echo 'KiCad hook differs from reviewed digest' >&2; exit 1;
+          }
+
+      - name: Run admitted harmless qualification
+        env:
+          PARENT_ADMISSION_ID: ${{ inputs.parent_admission_id }}
+          REVIEWED_COMMIT: ${{ inputs.reviewed_commit }}
+          REVIEWED_HOOK_SHA256: ${{ inputs.reviewed_hook_sha256 }}
+        run: |
+          set -euo pipefail
+          [[ $PARENT_ADMISSION_ID =~ ^[a-z0-9][a-z0-9-]{0,60}$ ]] || {
+            echo 'A short nonsecret parent admission ID is required' >&2; exit 1;
+          }
+          evidence_dir="$RUNNER_TEMP/epic242-qualification"
+          raw_output="$RUNNER_TEMP/epic242-qualification-output.raw"
+          [[ ! -e $evidence_dir && ! -L $evidence_dir && ! -e $raw_output && ! -L $raw_output ]] || {
+            echo 'Qualification evidence or temporary output path already exists' >&2; exit 1;
+          }
+          status=0
+          python3 scripts/kicad/qualify_resource_guard.py \
+            --admission-id "$PARENT_ADMISSION_ID" \
+            --sha "$REVIEWED_COMMIT" \
+            --hook-sha256 "$REVIEWED_HOOK_SHA256" \
+            --evidence-directory "$evidence_dir" \
+            > "$raw_output" 2>&1 || status=$?
+          mkdir -p -- "$evidence_dir"
+          head -c 1048576 "$raw_output" > "$evidence_dir/stdout.txt"
+          rm -- "$raw_output"
+          cat "$evidence_dir/stdout.txt"
+          exit "$status"
+
+      - name: Retain harmless qualification receipt
+        if: ${{ always() }}
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: epic242-resource-guard-qualification
+          path: |
+            ${{ runner.temp }}/epic242-qualification/qualification.json
+            ${{ runner.temp }}/epic242-qualification/stdout.txt
+          if-no-files-found: ignore
+          retention-days: 7
