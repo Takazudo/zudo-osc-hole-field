@@ -1,0 +1,126 @@
+{
+  "adopted": false,
+  "archive": {
+    "archive_download_url": "https://api.github.com/repos/Takazudo/zudo-osc-hole-field/actions/artifacts/11665973838/zip",
+    "created_at": "2026-10-10T09:50:02Z",
+    "digest": "sha256:09a205f6fad78aabc490ee07124c827a18cacfde575cc1afdb2b8d3bad47f2d1",
+    "expired": false,
+    "expires_at": "2026-11-09T09:49:52Z",
+    "id": 11665973838,
+    "name": "obstacle-adoption-osc-jack-right-38041389680",
+    "node_id": "MDg6QXJ0aWZhY3QxMTY2NTk3MzgzOA==",
+    "size_in_bytes": 64355646,
+    "updated_at": "2026-10-10T09:50:02Z",
+    "url": "https://api.github.com/repos/Takazudo/zudo-osc-hole-field/actions/artifacts/11665973838",
+    "workflow_run": {
+      "head_branch": "agent-fix/189-jr130-rb4615-via-branch",
+      "head_repository_id": 1391226919,
+      "head_sha": "2a10cae7ef3bd7d4df8e9500c25cada930419432",
+      "id": 38041389680,
+      "repository_id": 1391226919
+    }
+  },
+  "board": "osc-jack-right",
+  "boundary_endpoints": [
+    {
+      "cut_uuid": "442e7644-a809-56c5-ab71-def9002bb651",
+      "layer": "F.Cu",
+      "net": "X67A5B6E02FA33495DE9E",
+      "retained_touching_uuids": [
+        "f3a5c41b-6ec0-5823-bf27-b7962a34f17a"
+      ],
+      "xy_nm": [
+        413300000,
+        148850000
+      ]
+    },
+    {
+      "cut_uuid": "442e7644-a809-56c5-ab71-def9002bb651",
+      "layer": "F.Cu",
+      "net": "X67A5B6E02FA33495DE9E",
+      "retained_touching_uuids": [
+        "22a432cd-29d7-5a68-a4c9-cf806b4849ba"
+      ],
+      "xy_nm": [
+        413300000,
+        135650000
+      ]
+    },
+    {
+      "cut_uuid": "bdd4ac83-1db1-508d-9e60-d7412a183e2d",
+      "layer": "F.Cu",
+      "net": "XEA7C7050656B2E06AA0A",
+      "retained_touching_uuids": [
+        "7f250bad-9979-5611-8ea6-fa595712bb10"
+      ],
+      "xy_nm": [
+        412000000,
+        142700000
+      ]
+    },
+    {
+      "cut_uuid": "bdd4ac83-1db1-508d-9e60-d7412a183e2d",
+      "layer": "F.Cu",
+      "net": "XEA7C7050656B2E06AA0A",
+      "retained_touching_uuids": [
+        "e2eaf73c-a939-5278-87ba-4731f3850adf"
+      ],
+      "xy_nm": [
+        411700000,
+        142700000
+      ]
+    }
+  ],
+  "complete_warning_audit": "NOT RUN",
+  "diagnosed_change": "measure current native cut topology before choosing a victim reconnect strategy; no A* budget increase",
+  "epoch": "epic242-e0",
+  "input_board_sha256": "9e164f9e8e23a5c3911d117fd08973fc877e5f2f382be20500b8e01040b20a55",
+  "input_dump_sha256": "e90beeadf69cc2210d34c377b000335ea55a6815064772c81e0f925b1cd21e71",
+  "issue": 251,
+  "native_acceptance": "NOT RUN",
+  "parent_sha": "1da1909846dc3255888ecd36c88cee9737c85834",
+  "removed_objects": [
+    {
+      "a": [
+        413300000,
+        148850000
+      ],
+      "b": [
+        413300000,
+        135650000
+      ],
+      "layer": "F.Cu",
+      "net": "X67A5B6E02FA33495DE9E",
+      "uuid": "442e7644-a809-56c5-ab71-def9002bb651",
+      "width": 200000
+    },
+    {
+      "a": [
+        412000000,
+        142700000
+      ],
+      "b": [
+        411700000,
+        142700000
+      ],
+      "layer": "F.Cu",
+      "net": "XEA7C7050656B2E06AA0A",
+      "uuid": "bdd4ac83-1db1-508d-9e60-d7412a183e2d",
+      "width": 200000
+    }
+  ],
+  "repair_bounds_mm": [
+    405.7,
+    129.65,
+    419.3,
+    154.85
+  ],
+  "restoration_obligations": [
+    "every original group on both victim nets",
+    "all four retained boundaries",
+    "AGND source and original groups",
+    "all +12V/-12V/+5V groups"
+  ],
+  "source_ground_pad_uuid": "39d6be8f-f486-5bef-b690-8424c94627a2",
+  "status": "PROPOSED CUT-ONLY NEGATIVE DIAGNOSTIC; NATIVE NOT RUN; NEVER ADOPT"
+}
