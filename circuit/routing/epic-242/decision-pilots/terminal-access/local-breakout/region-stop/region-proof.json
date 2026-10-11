@@ -1,0 +1,786 @@
+{
+  "status": "STOP THIS IN2-ONLY REPAIR; NO USEFUL FULL-ROUTE REACHABILITY",
+  "diagnostic": "Graph components and exact transitions only; no router A*, native search, copper proposal or PCB apply",
+  "candidate_source_binding_sha256": "c25b5c9948c194cd7e21b3d4228f8c6da89f52f7fb7421d88762132d5ba22000",
+  "input_dump_sha256": "613a358b340962e2d1fb13cd898fe8a9558edcbf1a5d69cb93b6d2bd7629e97c",
+  "method_base_sha": "6f0783335fa23d760877a91db3b63f93c039b4b4",
+  "source_sha256": {
+    "circuit/routing/epic-242/decision-pilots/terminal-access/analyze_f3_breakout_region.py": "a4c4de781e8f87812ce11429a8e867e351622153feed290a1cb77804884aac0d",
+    "circuit/routing/epic-242/decision-pilots/terminal-access/test_f3_breakout_region.py": "ec4591a3a112c7b33e05656e13e659f8f633ef2a3325092af47209b2e555ba2a",
+    "circuit/routing/epic-242/decision-pilots/diagnosis-o1/analyze.py": "c80069a1b36209a2f525af850dda861bfc4e69715b87998057068e83f75e82e2"
+  },
+  "same_window_cells": [
+    99,
+    343,
+    37,
+    420
+  ],
+  "same_free_via_goal_masks": true,
+  "added_source_node": [
+    2,
+    175,
+    81
+  ],
+  "mask_sha256": {
+    "before": {
+      "free": "52c9a730c19a34496ff85a6e487ccf673db6dc8a3485ae74f25824f3e895efaf",
+      "via": "d2edbc0e4db97f6b10b608cbcc7052d267918779662c35de355ffbb72e2fda43",
+      "src": "14ed880ef095b600106d2ffdab0ea6453df898b72fe5470df0305d7db9df04e1",
+      "goal": "5e3c576e130cd15d2c3c3fc20ed8384f776ad07e839a7d1c2ec6be03542011ca"
+    },
+    "after": {
+      "free": "52c9a730c19a34496ff85a6e487ccf673db6dc8a3485ae74f25824f3e895efaf",
+      "via": "d2edbc0e4db97f6b10b608cbcc7052d267918779662c35de355ffbb72e2fda43",
+      "src": "fdb04c2574b9f43cdd1d250ae6ddcb12af52cca230677d600591ae3a0dbd020e",
+      "goal": "5e3c576e130cd15d2c3c3fc20ed8384f776ad07e839a7d1c2ec6be03542011ca"
+    }
+  },
+  "graph": {
+    "before": {
+      "reachable_nodes": 1034,
+      "reachable_by_layer": {
+        "F.Cu": 0,
+        "In1.Cu": 0,
+        "In2.Cu": 0,
+        "In3.Cu": 0,
+        "In4.Cu": 0,
+        "B.Cu": 1034
+      },
+      "goal_nodes_reached": 0,
+      "raster_via_sites": 0,
+      "through_sites": 0,
+      "touches_window_edge": false,
+      "local_nodes_sha256": "82c6ab3cd657140bfdef4735cc7107e27ed62ed26daf3ab4e7b9ffb95bfb6d7c"
+    },
+    "old_sources_on_repaired_graph": {
+      "reachable_nodes": 1034,
+      "reachable_by_layer": {
+        "F.Cu": 0,
+        "In1.Cu": 0,
+        "In2.Cu": 0,
+        "In3.Cu": 0,
+        "In4.Cu": 0,
+        "B.Cu": 1034
+      },
+      "goal_nodes_reached": 0,
+      "raster_via_sites": 0,
+      "through_sites": 0,
+      "touches_window_edge": false,
+      "local_nodes_sha256": "82c6ab3cd657140bfdef4735cc7107e27ed62ed26daf3ab4e7b9ffb95bfb6d7c"
+    },
+    "new_seed_only": {
+      "reachable_nodes": 416,
+      "reachable_by_layer": {
+        "F.Cu": 0,
+        "In1.Cu": 0,
+        "In2.Cu": 416,
+        "In3.Cu": 0,
+        "In4.Cu": 0,
+        "B.Cu": 0
+      },
+      "goal_nodes_reached": 0,
+      "raster_via_sites": 0,
+      "through_sites": 0,
+      "touches_window_edge": false,
+      "local_nodes_sha256": "e0980c7f4d1a175f4153f3fd5c65a6811c49a0ae71673bbd82b9282a35fe68fc"
+    },
+    "combined_after": {
+      "reachable_nodes": 1450,
+      "reachable_by_layer": {
+        "F.Cu": 0,
+        "In1.Cu": 0,
+        "In2.Cu": 416,
+        "In3.Cu": 0,
+        "In4.Cu": 0,
+        "B.Cu": 1034
+      },
+      "goal_nodes_reached": 0,
+      "raster_via_sites": 0,
+      "through_sites": 0,
+      "touches_window_edge": false,
+      "local_nodes_sha256": "3a576d8489209fd470173f403854df67d26c36b056b6b9efd6f32a61f5dd465d"
+    }
+  },
+  "new_seed_exact_geometry": {
+    "scope": "Complete original obstacle model; exact swept full-width edges and all-layer via/hole/SMD checks. No new graph transitions or physical copper.",
+    "reachable_bounds_mm": [
+      215.2,
+      262.9,
+      218.6,
+      265.9
+    ],
+    "internal_legal_edges": 1444,
+    "internal_exact_failures": 0,
+    "internal_edges_sha256": "54aa5b8dc011e9f19337823d948113a8a8b227c54521a3564d93f5c81573c4bd",
+    "boundary_cardinal_edges": 148,
+    "boundary_exact_pass": 130,
+    "boundary_exact_fail": 18,
+    "original_exact_via_sites": 10,
+    "distinct_exact_vias_after_breakout": 0
+  },
+  "original_goal_portals": [
+    {
+      "anchor": "27917993-70a2-5f19-bf83-ba1057f34dac",
+      "path": [
+        [
+          "B.Cu",
+          240200000,
+          252300000,
+          0
+        ],
+        [
+          "B.Cu",
+          241094427,
+          254088854,
+          0
+        ],
+        [
+          "In2.Cu",
+          241094427,
+          254088854,
+          0
+        ],
+        [
+          "In2.Cu",
+          241100000,
+          254100000,
+          0
+        ]
+      ],
+      "pad": {
+        "uuid": "access-a8de9bf620b0a955cff51d7a4dfc3bef0f9d5d5eb448d7d7dec8ef88a6c78bd7",
+        "ref": "ACCESS",
+        "pad": "access-a8de9bf620b0a955cff51d7a4dfc3bef0f9d5d5eb448d7d7dec8ef88a6c78bd7",
+        "net": "XDEDA32D515C912ED69C7",
+        "xy": [
+          241100000,
+          254100000
+        ],
+        "poly": [
+          [
+            241099999,
+            254099999
+          ],
+          [
+            241100001,
+            254099999
+          ],
+          [
+            241100001,
+            254100001
+          ],
+          [
+            241099999,
+            254100001
+          ]
+        ],
+        "layers": [
+          "In2.Cu"
+        ],
+        "drill": 0,
+        "npth": false,
+        "locked": false
+      },
+      "node": [
+        "In2.Cu",
+        241100000,
+        254100000
+      ],
+      "witness_id": "a8de9bf620b0a955cff51d7a4dfc3bef0f9d5d5eb448d7d7dec8ef88a6c78bd7"
+    },
+    {
+      "anchor": "27917993-70a2-5f19-bf83-ba1057f34dac",
+      "path": [
+        [
+          "B.Cu",
+          240200000,
+          251800000,
+          0
+        ],
+        [
+          "B.Cu",
+          239950000,
+          251800000,
+          0
+        ],
+        [
+          "B.Cu",
+          240000000,
+          251800000,
+          0
+        ]
+      ],
+      "pad": {
+        "uuid": "access-86f551787204088ce9014ecf29587cbe90a4e6775e359ee401c48136e875461f",
+        "ref": "ACCESS",
+        "pad": "access-86f551787204088ce9014ecf29587cbe90a4e6775e359ee401c48136e875461f",
+        "net": "XDEDA32D515C912ED69C7",
+        "xy": [
+          240000000,
+          251800000
+        ],
+        "poly": [
+          [
+            239999999,
+            251799999
+          ],
+          [
+            240000001,
+            251799999
+          ],
+          [
+            240000001,
+            251800001
+          ],
+          [
+            239999999,
+            251800001
+          ]
+        ],
+        "layers": [
+          "B.Cu"
+        ],
+        "drill": 0,
+        "npth": false,
+        "locked": false
+      },
+      "node": [
+        "B.Cu",
+        240000000,
+        251800000
+      ],
+      "witness_id": "86f551787204088ce9014ecf29587cbe90a4e6775e359ee401c48136e875461f"
+    },
+    {
+      "anchor": "27917993-70a2-5f19-bf83-ba1057f34dac",
+      "path": [
+        [
+          "B.Cu",
+          240200000,
+          251800000,
+          0
+        ],
+        [
+          "B.Cu",
+          240950000,
+          251800000,
+          0
+        ],
+        [
+          "B.Cu",
+          241000000,
+          251800000,
+          0
+        ]
+      ],
+      "pad": {
+        "uuid": "access-b0c0b03b6152c823f8924bbcf5f973ca1df395963a025f725c7deb85a1b29e22",
+        "ref": "ACCESS",
+        "pad": "access-b0c0b03b6152c823f8924bbcf5f973ca1df395963a025f725c7deb85a1b29e22",
+        "net": "XDEDA32D515C912ED69C7",
+        "xy": [
+          241000000,
+          251800000
+        ],
+        "poly": [
+          [
+            240999999,
+            251799999
+          ],
+          [
+            241000001,
+            251799999
+          ],
+          [
+            241000001,
+            251800001
+          ],
+          [
+            240999999,
+            251800001
+          ]
+        ],
+        "layers": [
+          "B.Cu"
+        ],
+        "drill": 0,
+        "npth": false,
+        "locked": false
+      },
+      "node": [
+        "B.Cu",
+        241000000,
+        251800000
+      ],
+      "witness_id": "b0c0b03b6152c823f8924bbcf5f973ca1df395963a025f725c7deb85a1b29e22"
+    },
+    {
+      "anchor": "27917993-70a2-5f19-bf83-ba1057f34dac",
+      "path": [
+        [
+          "B.Cu",
+          240200000,
+          252200000,
+          0
+        ],
+        [
+          "B.Cu",
+          241094427,
+          253988854,
+          0
+        ],
+        [
+          "In2.Cu",
+          241094427,
+          253988854,
+          0
+        ],
+        [
+          "In2.Cu",
+          241100000,
+          254000000,
+          0
+        ]
+      ],
+      "pad": {
+        "uuid": "access-e00e2ab0147916fcd70ef11301f7dc3a79c0cc7975758a030889efbc8493e8e5",
+        "ref": "ACCESS",
+        "pad": "access-e00e2ab0147916fcd70ef11301f7dc3a79c0cc7975758a030889efbc8493e8e5",
+        "net": "XDEDA32D515C912ED69C7",
+        "xy": [
+          241100000,
+          254000000
+        ],
+        "poly": [
+          [
+            241099999,
+            253999999
+          ],
+          [
+            241100001,
+            253999999
+          ],
+          [
+            241100001,
+            254000001
+          ],
+          [
+            241099999,
+            254000001
+          ]
+        ],
+        "layers": [
+          "In2.Cu"
+        ],
+        "drill": 0,
+        "npth": false,
+        "locked": false
+      },
+      "node": [
+        "In2.Cu",
+        241100000,
+        254000000
+      ],
+      "witness_id": "e00e2ab0147916fcd70ef11301f7dc3a79c0cc7975758a030889efbc8493e8e5"
+    },
+    {
+      "anchor": "27917993-70a2-5f19-bf83-ba1057f34dac",
+      "path": [
+        [
+          "B.Cu",
+          240200000,
+          251800000,
+          0
+        ],
+        [
+          "B.Cu",
+          240200000,
+          253800000,
+          0
+        ],
+        [
+          "B.Cu",
+          240200000,
+          253800000,
+          0
+        ]
+      ],
+      "pad": {
+        "uuid": "access-814c7106e0326d6cc2115b88d784df63b8d32a076546c9f1340fcde26714bcbd",
+        "ref": "ACCESS",
+        "pad": "access-814c7106e0326d6cc2115b88d784df63b8d32a076546c9f1340fcde26714bcbd",
+        "net": "XDEDA32D515C912ED69C7",
+        "xy": [
+          240200000,
+          253800000
+        ],
+        "poly": [
+          [
+            240199999,
+            253799999
+          ],
+          [
+            240200001,
+            253799999
+          ],
+          [
+            240200001,
+            253800001
+          ],
+          [
+            240199999,
+            253800001
+          ]
+        ],
+        "layers": [
+          "B.Cu"
+        ],
+        "drill": 0,
+        "npth": false,
+        "locked": false
+      },
+      "node": [
+        "B.Cu",
+        240200000,
+        253800000
+      ],
+      "witness_id": "814c7106e0326d6cc2115b88d784df63b8d32a076546c9f1340fcde26714bcbd"
+    },
+    {
+      "anchor": "27917993-70a2-5f19-bf83-ba1057f34dac",
+      "path": [
+        [
+          "B.Cu",
+          240200000,
+          252400000,
+          0
+        ],
+        [
+          "B.Cu",
+          241094427,
+          254188854,
+          0
+        ],
+        [
+          "In2.Cu",
+          241094427,
+          254188854,
+          0
+        ],
+        [
+          "In2.Cu",
+          241100000,
+          254200000,
+          0
+        ]
+      ],
+      "pad": {
+        "uuid": "access-473f8349d50fb7bab771e7968bc4cd4bd92508d2f3426353bf57ad18d120e1b1",
+        "ref": "ACCESS",
+        "pad": "access-473f8349d50fb7bab771e7968bc4cd4bd92508d2f3426353bf57ad18d120e1b1",
+        "net": "XDEDA32D515C912ED69C7",
+        "xy": [
+          241100000,
+          254200000
+        ],
+        "poly": [
+          [
+            241099999,
+            254199999
+          ],
+          [
+            241100001,
+            254199999
+          ],
+          [
+            241100001,
+            254200001
+          ],
+          [
+            241099999,
+            254200001
+          ]
+        ],
+        "layers": [
+          "In2.Cu"
+        ],
+        "drill": 0,
+        "npth": false,
+        "locked": false
+      },
+      "node": [
+        "In2.Cu",
+        241100000,
+        254200000
+      ],
+      "witness_id": "473f8349d50fb7bab771e7968bc4cd4bd92508d2f3426353bf57ad18d120e1b1"
+    }
+  ],
+  "original_source_portals": [
+    {
+      "anchor": "a94ae2bb-13fe-5e3d-a7ab-10ddb6bd4222",
+      "path": [
+        [
+          "B.Cu",
+          213700000,
+          264100000,
+          0
+        ],
+        [
+          "B.Cu",
+          214700000,
+          264100000,
+          0
+        ],
+        [
+          "B.Cu",
+          214700000,
+          264100000,
+          0
+        ]
+      ],
+      "pad": {
+        "uuid": "access-607a078d35b0ecb5b983f1bd7c04bbd56620cdb88939f37d2a7013b36197d9ed",
+        "ref": "ACCESS",
+        "pad": "access-607a078d35b0ecb5b983f1bd7c04bbd56620cdb88939f37d2a7013b36197d9ed",
+        "net": "XDEDA32D515C912ED69C7",
+        "xy": [
+          214700000,
+          264100000
+        ],
+        "poly": [
+          [
+            214699999,
+            264099999
+          ],
+          [
+            214700001,
+            264099999
+          ],
+          [
+            214700001,
+            264100001
+          ],
+          [
+            214699999,
+            264100001
+          ]
+        ],
+        "layers": [
+          "B.Cu"
+        ],
+        "drill": 0,
+        "npth": false,
+        "locked": false
+      },
+      "node": [
+        "B.Cu",
+        214700000,
+        264100000
+      ],
+      "witness_id": "607a078d35b0ecb5b983f1bd7c04bbd56620cdb88939f37d2a7013b36197d9ed"
+    },
+    {
+      "anchor": "a94ae2bb-13fe-5e3d-a7ab-10ddb6bd4222",
+      "path": [
+        [
+          "B.Cu",
+          213700000,
+          264100000,
+          0
+        ],
+        [
+          "B.Cu",
+          215200000,
+          264100000,
+          0
+        ],
+        [
+          "B.Cu",
+          215200000,
+          264100000,
+          0
+        ]
+      ],
+      "pad": {
+        "uuid": "access-9646ceecdcfc54bf0f7a406c04be685633e3323bc4d3d1710a716ecb1a138a87",
+        "ref": "ACCESS",
+        "pad": "access-9646ceecdcfc54bf0f7a406c04be685633e3323bc4d3d1710a716ecb1a138a87",
+        "net": "XDEDA32D515C912ED69C7",
+        "xy": [
+          215200000,
+          264100000
+        ],
+        "poly": [
+          [
+            215199999,
+            264099999
+          ],
+          [
+            215200001,
+            264099999
+          ],
+          [
+            215200001,
+            264100001
+          ],
+          [
+            215199999,
+            264100001
+          ]
+        ],
+        "layers": [
+          "B.Cu"
+        ],
+        "drill": 0,
+        "npth": false,
+        "locked": false
+      },
+      "node": [
+        "B.Cu",
+        215200000,
+        264100000
+      ],
+      "witness_id": "9646ceecdcfc54bf0f7a406c04be685633e3323bc4d3d1710a716ecb1a138a87"
+    },
+    {
+      "anchor": "a94ae2bb-13fe-5e3d-a7ab-10ddb6bd4222",
+      "path": [
+        [
+          "B.Cu",
+          213700000,
+          264100000,
+          0
+        ],
+        [
+          "B.Cu",
+          214950000,
+          264100000,
+          0
+        ],
+        [
+          "B.Cu",
+          215000000,
+          264100000,
+          0
+        ]
+      ],
+      "pad": {
+        "uuid": "access-aac421f8e08fda747d6de868619b3f74a64a1f66e05f37d0a8ee03e3ffe80e03",
+        "ref": "ACCESS",
+        "pad": "access-aac421f8e08fda747d6de868619b3f74a64a1f66e05f37d0a8ee03e3ffe80e03",
+        "net": "XDEDA32D515C912ED69C7",
+        "xy": [
+          215000000,
+          264100000
+        ],
+        "poly": [
+          [
+            214999999,
+            264099999
+          ],
+          [
+            215000001,
+            264099999
+          ],
+          [
+            215000001,
+            264100001
+          ],
+          [
+            214999999,
+            264100001
+          ]
+        ],
+        "layers": [
+          "B.Cu"
+        ],
+        "drill": 0,
+        "npth": false,
+        "locked": false
+      },
+      "node": [
+        "B.Cu",
+        215000000,
+        264100000
+      ],
+      "witness_id": "aac421f8e08fda747d6de868619b3f74a64a1f66e05f37d0a8ee03e3ffe80e03"
+    },
+    {
+      "anchor": "a94ae2bb-13fe-5e3d-a7ab-10ddb6bd4222",
+      "path": [
+        [
+          "B.Cu",
+          213700000,
+          264100000,
+          0
+        ],
+        [
+          "B.Cu",
+          216800000,
+          263300000,
+          0
+        ],
+        [
+          "In2.Cu",
+          216800000,
+          263300000,
+          0
+        ],
+        [
+          "In2.Cu",
+          216800000,
+          263300000,
+          0
+        ]
+      ],
+      "pad": {
+        "uuid": "access-0381261da00bba512239f52eae2714bc1c4e8fc381dd29216a80e5471d97f2e2",
+        "ref": "ACCESS",
+        "pad": "access-0381261da00bba512239f52eae2714bc1c4e8fc381dd29216a80e5471d97f2e2",
+        "net": "XDEDA32D515C912ED69C7",
+        "xy": [
+          216800000,
+          263300000
+        ],
+        "poly": [
+          [
+            216799999,
+            263299999
+          ],
+          [
+            216800001,
+            263299999
+          ],
+          [
+            216800001,
+            263300001
+          ],
+          [
+            216799999,
+            263300001
+          ]
+        ],
+        "layers": [
+          "In2.Cu"
+        ],
+        "drill": 0,
+        "npth": false,
+        "locked": false
+      },
+      "node": [
+        "In2.Cu",
+        216800000,
+        263300000
+      ],
+      "witness_id": "0381261da00bba512239f52eae2714bc1c4e8fc381dd29216a80e5471d97f2e2"
+    }
+  ],
+  "negative_scope": "Current graph remains disconnected. Exact-clear raster-blocked exits exist; this is not physical impossibility. Reusing the attachment through-via on another layer would be a separately justified transition change, absent here.",
+  "blocked_demands": "All four original demands retained. U2309 rails remain blocked by own adjacent pads; AGND unchanged.",
+  "native_executed": false,
+  "proposal_created": false,
+  "adopted": false,
+  "next_native_packet": "NOT CREATED; stop ineffective repair",
+  "native_reservations": "All slots free; no admission"
+}

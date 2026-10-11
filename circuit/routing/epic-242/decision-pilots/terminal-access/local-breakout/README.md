@@ -1,6 +1,11 @@
 # One local C2312.1 breakout repair
 
-**Implemented source-only repair; no new native run or hardware adoption.**
+**STOPPED as an ineffective In2-only routing candidate.** The subsequent
+[complete region proof](region-stop/README.md) finds a 416-node pocket with no
+original goal or permitted exit. The local geometry remains valid; no native
+packet, execution or hardware adoption followed.
+
+**Historical implemented source-only repair:**
 Parent accepted the F3/two-A negative result and released reservation1641. All
 native slots are free. Unchanged O1/F3 matched trials are stopped.
 
@@ -110,6 +115,7 @@ proposals and all four original demands remain retained. Fixed panel,circuit
 intent,harnessIDsRefsfullpinorder,noncoreposes,sensitive groups and accepted
 copper are unchanged; the fill check is only a source screen.
 
-A future native trial would require a newly sealed repair-method/input packet
+This In2-only repair must not be rerun unchanged. Any separately justified future
+method would require a newly sealed repair-method/input packet
 and explicit parent admission. The old frozen method's fixture lock cannot be
 reused for this new witness pool. No execution wrapper or workflow was added.
