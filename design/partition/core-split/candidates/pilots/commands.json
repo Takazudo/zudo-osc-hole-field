@@ -1,0 +1,129 @@
+{
+  "authorization": "Do not execute until parent grants explicit global native slot and bounded command. Materialization itself is pure source processing.",
+  "native_acceptance": "NOT RUN. Use complete warning identities (uncapped independent audit), original connected pad groups, settled/fresh-copy agreement and source/candidate hashes. This manifest does not adopt copper.",
+  "pilots": {
+    "three-A": {
+      "budget": {
+        "global_memory_gib": 12,
+        "global_native_workers": 2,
+        "max_expansions": 50000,
+        "max_refills": 6,
+        "required_free_gib": 2,
+        "rerun_policy": "No automatic retry; diagnose two comparable non-improving runs; at most three unchanged attempts",
+        "stable_refills": 3,
+        "wall_seconds_per_command": 300,
+        "window_mm": 6,
+        "worker_memory_gib": 6
+      },
+      "entrypoint": "{output}/commands.json",
+      "materialize": [
+        "{python}",
+        "scripts/partition/core_split_candidates.py",
+        "materialize",
+        "--pilot",
+        "three-A",
+        "--output",
+        "{output}"
+      ]
+    },
+    "three-B": {
+      "budget": {
+        "global_memory_gib": 12,
+        "global_native_workers": 2,
+        "max_expansions": 50000,
+        "max_refills": 6,
+        "required_free_gib": 2,
+        "rerun_policy": "No automatic retry; diagnose two comparable non-improving runs; at most three unchanged attempts",
+        "stable_refills": 3,
+        "wall_seconds_per_command": 300,
+        "window_mm": 6,
+        "worker_memory_gib": 6
+      },
+      "entrypoint": "{output}/commands.json",
+      "materialize": [
+        "{python}",
+        "scripts/partition/core_split_candidates.py",
+        "materialize",
+        "--pilot",
+        "three-B",
+        "--output",
+        "{output}"
+      ]
+    },
+    "three-C": {
+      "budget": {
+        "global_memory_gib": 12,
+        "global_native_workers": 2,
+        "max_expansions": 50000,
+        "max_refills": 6,
+        "required_free_gib": 2,
+        "rerun_policy": "No automatic retry; diagnose two comparable non-improving runs; at most three unchanged attempts",
+        "stable_refills": 3,
+        "wall_seconds_per_command": 300,
+        "window_mm": 6,
+        "worker_memory_gib": 6
+      },
+      "entrypoint": "{output}/commands.json",
+      "materialize": [
+        "{python}",
+        "scripts/partition/core_split_candidates.py",
+        "materialize",
+        "--pilot",
+        "three-C",
+        "--output",
+        "{output}"
+      ]
+    },
+    "two-A": {
+      "budget": {
+        "global_memory_gib": 12,
+        "global_native_workers": 2,
+        "max_expansions": 50000,
+        "max_refills": 6,
+        "required_free_gib": 2,
+        "rerun_policy": "No automatic retry; diagnose two comparable non-improving runs; at most three unchanged attempts",
+        "stable_refills": 3,
+        "wall_seconds_per_command": 300,
+        "window_mm": 6,
+        "worker_memory_gib": 6
+      },
+      "entrypoint": "{output}/commands.json",
+      "materialize": [
+        "{python}",
+        "scripts/partition/core_split_candidates.py",
+        "materialize",
+        "--pilot",
+        "two-A",
+        "--output",
+        "{output}"
+      ]
+    },
+    "two-B": {
+      "budget": {
+        "global_memory_gib": 12,
+        "global_native_workers": 2,
+        "max_expansions": 50000,
+        "max_refills": 6,
+        "required_free_gib": 2,
+        "rerun_policy": "No automatic retry; diagnose two comparable non-improving runs; at most three unchanged attempts",
+        "stable_refills": 3,
+        "wall_seconds_per_command": 300,
+        "window_mm": 6,
+        "worker_memory_gib": 6
+      },
+      "entrypoint": "{output}/commands.json",
+      "materialize": [
+        "{python}",
+        "scripts/partition/core_split_candidates.py",
+        "materialize",
+        "--pilot",
+        "two-B",
+        "--output",
+        "{output}"
+      ]
+    }
+  },
+  "required_oracle": "KiCad 10.0.6 via scripts/kicad/run.sh and scripts/kicad/pin.env digest",
+  "schema": "core-split-command-manifest-1",
+  "working_directory": "repository root; replace {python} with pinned numerical environment interpreter and {output} with unique private repository-relative directory"
+}
