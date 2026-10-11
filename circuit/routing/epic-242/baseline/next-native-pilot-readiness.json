@@ -1,5 +1,5 @@
 {
-  "status": "STARTUP HANDSHAKE SOURCE REVIEWED; NATIVE ON HOLD",
+  "status": "EXCLUSIVE LIFECYCLE CI SOURCE READY; PARENT ADMISSION REQUIRED; NATIVE SETTLE ON HOLD",
   "candidate_source_sha": "Exact final pushed integration HEAD after metadata rebinding must be supplied as reviewed_commit and equal workflow GITHUB_SHA; implementation is tree-identical to reviewed local721c0956.",
   "qualification_receipt": "resource-qualification-run38121547543-ledger.json",
   "selected_issue": 245,
@@ -11,7 +11,7 @@
   "aggregate_parent_memory_bytes": 12884901888,
   "minimum_free_bytes": 2147483648,
   "hook_sha256": "f91b2c8846856a6d38a10eb9e6314b6ebec3222b68df37942f3716ab860d8c91",
-  "guard_sha256": "3310d64de53aebb6b337736d0dfc7cc3d97aa8b8ef3ebc298767bb0ec7fb92d6",
+  "guard_sha256": "ee755233af405e60cf592956dcf42ca1069f5face6c20c1cdfcdf6f8479ef8ca",
   "pinned_image": "kicad/kicad@sha256:18693567392b80da435f9fa952ce3a3e534c66eb5a6033f5b9c80aa3b19dd3ec",
   "required_native_version": "10.0.6",
   "preconditions": [
@@ -94,7 +94,7 @@
   },
   "preparation_limit": "300 seconds plus at most10 seconds client cancellation cleanup; sampled6GiB aggregate Docker/containerd ceiling and2.5GiB host free-memory early abort. Existing daemon caps recorded; no daemon hard-cap enforcement claim.",
   "route_checks": {
-    "focused_source_tests": 61,
+    "focused_source_tests": 68,
     "complete_fixture_snapshot": "293 input files plus manifest,291 portable seals; source-only materialization/snapshot/hash verification PASS",
     "compile": "PASS",
     "circuit_check": "PASS",
@@ -107,12 +107,13 @@
     "ledger": "settle-run38125854892-ledger.json",
     "outcome": "FAIL / NOT ACCEPTED",
     "blocker": "NEW FAIL-CLOSED GUARD OBSERVATION: a listed full-ID container disappeared before any running membership proof for that ID. Original prior-verified case is distinct. Exact underlying container exit cause not established.",
-    "next": "Admission settle02 released. Complete source proposal reviewed; no third run or fallback admitted. Parent must review immutable published SHA before any new native admission."
+    "next": "First admit and inspect one bounded startup/exit lifecycle CI job after exact published SHA review. Third settle remains on hold until that lifecycle receipt passes and parent grants a separate native admission."
   },
   "retry_diagnosis": "settle-run38124807606-diagnosis.json",
   "earlier_native_run": "settle-run38124807606-ledger.json",
-  "tool_epoch": "epic242-tools-e6-startup-handshake",
+  "tool_epoch": "epic242-tools-e7-lifecycle-ci",
   "lifecycle_proposal": "native-startup-handshake-proposal.json",
   "reviewed_implementation_sha": "9950a864fbc02ff63734c4c9358b8a79a6abcd49",
-  "publication_mapping": "connector-publication-map.json"
+  "publication_mapping": "connector-publication-map.json",
+  "lifecycle_qualification": "next-lifecycle-qualification.json"
 }

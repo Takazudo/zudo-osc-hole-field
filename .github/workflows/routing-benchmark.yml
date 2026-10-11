@@ -1,5 +1,5 @@
 name: Routing obstacle benchmark
-run-name: "Issue 189 ${{ inputs.settle_only && 'three-A settle only' || inputs.resource_qualification && 'resource guard qualification' || inputs.local_repair && 'read-only local repair' || inputs.recover_core && 'core return repair' || (inputs.adopt_run || inputs.replay_jl || inputs.replay_jr) && 'copper adoption' || 'same-input benchmark' }} — ${{ inputs.board }}"
+run-name: "Issue 189 ${{ inputs.lifecycle_qualification && 'startup lifecycle qualification' || inputs.settle_only && 'three-A settle only' || inputs.resource_qualification && 'resource guard qualification' || inputs.local_repair && 'read-only local repair' || inputs.recover_core && 'core return repair' || (inputs.adopt_run || inputs.replay_jl || inputs.replay_jr) && 'copper adoption' || 'same-input benchmark' }} — ${{ inputs.board }}"
 on:
   workflow_dispatch:
     inputs:
@@ -51,6 +51,10 @@ on:
         description: Exclusive admitted three-A before-board settle only
         type: boolean
         default: false
+      lifecycle_qualification:
+        description: Exclusive admitted short-lived startup/exit lifecycle check
+        type: boolean
+        default: false
       resource_qualification:
         description: Run only the admitted harmless resource guard qualification
         type: boolean
@@ -74,7 +78,7 @@ concurrency:
   cancel-in-progress: false
 jobs:
   benchmark:
-    if: ${{ !inputs.settle_only && !inputs.resource_qualification && (inputs.adopt_run == '' && !inputs.recover_core && !inputs.replay_jl && !inputs.replay_jr && !inputs.local_repair) }}
+    if: ${{ !inputs.lifecycle_qualification && !inputs.settle_only && !inputs.resource_qualification && (inputs.adopt_run == '' && !inputs.recover_core && !inputs.replay_jl && !inputs.replay_jr && !inputs.local_repair) }}
     runs-on: ubuntu-latest
     timeout-minutes: 355
     strategy:
@@ -113,7 +117,7 @@ jobs:
           if-no-files-found: error
           include-hidden-files: true
   adopt:
-    if: ${{ !inputs.settle_only && !inputs.resource_qualification && ((inputs.adopt_run != '' || inputs.recover_core || inputs.replay_jl || inputs.replay_jr) && !inputs.local_repair && inputs.core_replay != 'native-hole-audit' && inputs.core_replay != 'native-mask-audit' && inputs.core_replay != 'native-zone-audit') }}
+    if: ${{ !inputs.lifecycle_qualification && !inputs.settle_only && !inputs.resource_qualification && ((inputs.adopt_run != '' || inputs.recover_core || inputs.replay_jl || inputs.replay_jr) && !inputs.local_repair && inputs.core_replay != 'native-hole-audit' && inputs.core_replay != 'native-mask-audit' && inputs.core_replay != 'native-zone-audit') }}
     runs-on: ubuntu-latest
     timeout-minutes: 355
     permissions:
@@ -337,7 +341,7 @@ jobs:
           include-hidden-files: true
           retention-days: 30
   local-pilot:
-    if: ${{ !inputs.settle_only && !inputs.resource_qualification && (inputs.local_repair && !inputs.replay_jl && !inputs.replay_jr) }}
+    if: ${{ !inputs.lifecycle_qualification && !inputs.settle_only && !inputs.resource_qualification && (inputs.local_repair && !inputs.replay_jl && !inputs.replay_jr) }}
     runs-on: ubuntu-latest
     timeout-minutes: 90
     permissions:
@@ -382,7 +386,7 @@ jobs:
           retention-days: 30
 
   hole-audit:
-    if: ${{ !inputs.settle_only && !inputs.resource_qualification && (inputs.recover_core && inputs.core_replay == 'native-hole-audit' && inputs.board == 'osc-core' && !inputs.local_repair && !inputs.replay_jl && !inputs.replay_jr && inputs.adopt_run == '') }}
+    if: ${{ !inputs.lifecycle_qualification && !inputs.settle_only && !inputs.resource_qualification && (inputs.recover_core && inputs.core_replay == 'native-hole-audit' && inputs.board == 'osc-core' && !inputs.local_repair && !inputs.replay_jl && !inputs.replay_jr && inputs.adopt_run == '') }}
     permissions:
       contents: read
       actions: read
@@ -432,7 +436,7 @@ jobs:
           if-no-files-found: error
 
   mask-audit:
-    if: ${{ !inputs.settle_only && !inputs.resource_qualification && (inputs.recover_core && inputs.core_replay == 'native-mask-audit' && inputs.board == 'osc-core' && !inputs.local_repair && !inputs.replay_jl && !inputs.replay_jr && inputs.adopt_run == '') }}
+    if: ${{ !inputs.lifecycle_qualification && !inputs.settle_only && !inputs.resource_qualification && (inputs.recover_core && inputs.core_replay == 'native-mask-audit' && inputs.board == 'osc-core' && !inputs.local_repair && !inputs.replay_jl && !inputs.replay_jr && inputs.adopt_run == '') }}
     permissions:
       contents: read
       actions: read
@@ -472,7 +476,7 @@ jobs:
           if-no-files-found: error
 
   zone-audit:
-    if: ${{ !inputs.settle_only && !inputs.resource_qualification && (inputs.recover_core && inputs.core_replay == 'native-zone-audit' && inputs.board == 'osc-core' && !inputs.local_repair && !inputs.replay_jl && !inputs.replay_jr && inputs.adopt_run == '') }}
+    if: ${{ !inputs.lifecycle_qualification && !inputs.settle_only && !inputs.resource_qualification && (inputs.recover_core && inputs.core_replay == 'native-zone-audit' && inputs.board == 'osc-core' && !inputs.local_repair && !inputs.replay_jl && !inputs.replay_jr && inputs.adopt_run == '') }}
     permissions:
       contents: read
       actions: read
@@ -515,7 +519,7 @@ jobs:
           if-no-files-found: error
 
   qualify:
-    if: ${{ !inputs.settle_only && inputs.resource_qualification }}
+    if: ${{ !inputs.lifecycle_qualification && !inputs.settle_only && inputs.resource_qualification }}
     concurrency:
       group: issue189-core-audit-task-pilot
       cancel-in-progress: false
@@ -581,8 +585,62 @@ jobs:
           if-no-files-found: ignore
           retention-days: 7
 
+  lifecycle-qualification:
+    if: ${{ inputs.lifecycle_qualification }}
+    concurrency:
+      group: issue189-core-audit-task-pilot
+      cancel-in-progress: false
+    name: Bounded startup and exit lifecycle
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    env:
+      REVIEWED_COMMIT: ${{ inputs.reviewed_commit }}
+      REVIEWED_HOOK_SHA256: ${{ inputs.reviewed_hook_sha256 }}
+      PARENT_ADMISSION_ID: ${{ inputs.parent_admission_id }}
+      REQUEST_BOARD: ${{ inputs.board }}
+      CONFLICTING_MODES: ${{ inputs.settle_only || inputs.resource_qualification || inputs.recover_core || inputs.replay_jl || inputs.replay_jr || inputs.local_repair || inputs.adopt_run != '' }}
+    steps:
+      - name: Retain request before checkout or validation
+        run: |
+          mkdir "$RUNNER_TEMP/epic242-startup-lifecycle"
+          python3 - <<'PYTHON'
+          import json, os
+          from pathlib import Path
+          Path(os.environ['RUNNER_TEMP'],'epic242-startup-lifecycle','bootstrap.json').write_text(json.dumps({'status':'BOOTSTRAP INCOMPLETE; NO LIFECYCLE CHECK','reviewed_sha':os.environ['REVIEWED_COMMIT'],'admission_id':os.environ['PARENT_ADMISSION_ID']}))
+          PYTHON
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          ref: ${{ inputs.reviewed_commit }}
+          persist-credentials: false
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97
+        with:
+          python-version: '3.11'
+      - name: Prepare pinned image and check two sequential short-lived helpers
+        run: python scripts/kicad/qualify_startup_handshake.py run
+      - name: Retain job outcome
+        if: ${{ always() }}
+        env:
+          JOB_OUTCOME: ${{ job.status }}
+        run: |
+          python3 - <<'PYTHON'
+          import json, os
+          from pathlib import Path
+          root=Path(os.environ['RUNNER_TEMP'],'epic242-startup-lifecycle')
+          root.mkdir(exist_ok=True)
+          (root/'job-outcome.json').write_text(json.dumps({'job_status':os.environ['JOB_OUTCOME'],'qualification':'See lifecycle/guard receipts; absent receipt means NOT RUN'}))
+          PYTHON
+      - name: Retain positive and negative lifecycle evidence
+        if: ${{ always() }}
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: epic242-startup-lifecycle
+          path: ${{ runner.temp }}/epic242-startup-lifecycle/
+          include-hidden-files: true
+          if-no-files-found: error
+          retention-days: 7
+
   settle-only:
-    if: ${{ inputs.settle_only && !inputs.resource_qualification }}
+    if: ${{ !inputs.lifecycle_qualification && inputs.settle_only && !inputs.resource_qualification }}
     concurrency:
       group: issue189-core-audit-task-pilot
       cancel-in-progress: false

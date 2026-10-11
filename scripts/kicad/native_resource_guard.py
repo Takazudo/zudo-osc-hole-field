@@ -313,6 +313,31 @@ def gated_inventory(root, worker, evidence, final=False):
     return requested | listed | admitted
 
 
+def snapshot_failed_containers(worker, slice_path, root, evidence):
+    """Retain authentic terminal states before failure cleanup; never infer them."""
+    errors = []
+    try:
+        snapshot_ids = gated_inventory(root, worker, evidence)
+        for cid in sorted(snapshot_ids):
+            try:
+                inspect_owned_container(cid, worker, slice_path, set(),
+                                        evidence['container_lifecycle'], evidence['container_states'])
+            except ValueError as snapshot_error:
+                state = evidence['container_states'].get(cid, {})
+                expected_terminal = ('terminal state' in str(snapshot_error) and
+                                     state.get('Status') == 'exited' and
+                                     isinstance(state.get('ExitCode'), int) and
+                                     state['ExitCode'] != 0 and not state.get('OOMKilled') and
+                                     not state.get('Error'))
+                if not expected_terminal:
+                    errors.append(cid + ': ' + str(snapshot_error))
+            except Exception as snapshot_error:
+                errors.append(cid + ': ' + command_error(snapshot_error))
+    except Exception as snapshot_error:
+        errors.append('inventory: ' + command_error(snapshot_error))
+    return errors
+
+
 def capture_memory(cgroup):
     if cgroup is None:
         return {'status': 'UNAVAILABLE', 'error': 'worker cgroup was not established'}
@@ -573,6 +598,7 @@ def execute(args):
     anchor = 'epic242-' + worker + '-anchor.service'
     checks = 'epic242-' + worker + '-checks.service'
     plan = {'admission_id': args.admission_id, 'worker': worker, 'sha': args.sha,
+            'hook_sha256': args.hook_sha256,
             'command': args.command, 'seconds': args.seconds, 'memory_max': CAP,
             'memory_swap_max': 0, 'aggregate_memory_max': AGGREGATE_CAP, 'free_floor': FLOOR, 'early_abort_free': ABORT_FREE,
             'slice': slice_unit, 'global_admission': 'parent excludes ALL other native jobs; local flock covers only this guard'}
@@ -752,6 +778,13 @@ def execute(args):
     except Exception as error:
         evidence['reason'] = command_error(error)
     finally:
+        if evidence.get('reason') and cgroup is not None and not getattr(args, 'harmless_fixture_image', None):
+            # A fast failed helper can interrupt the polling loop before the
+            # other retained helper's terminal state is copied. Inspect every
+            # owned ID before producer cleanup, without changing the cause.
+            observed_containers.update(evidence['container_admissions'])
+            evidence['pre_cleanup_state_errors'] = snapshot_failed_containers(
+                worker, cg, private_dir, evidence)
         evidence['observed_containers'] = sorted(observed_containers)
         evidence['driver_exit_before_cleanup'] = process.poll() if process is not None else None
         evidence['memory_before_cleanup'] = capture_memory(cgroup)
