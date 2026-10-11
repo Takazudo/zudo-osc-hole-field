@@ -1,0 +1,1162 @@
+{
+  "artifacts": {
+    "K1402": {
+      "artifact_id": 11658776367,
+      "board_sha256": "b9f5ca13f83c7ffdbe5836fd271e7c1099e04b901ca1798a7be06f025bd02d66",
+      "dump_member": ".circuit-cache/osc-core-grid-189-compact-refill/dump.json",
+      "dump_sha256": "2dae7737731cb9d6f230e3f61848d01f6939fd7e7e6b56d3ed23f74ea8684807",
+      "file": "k1402.zip",
+      "run_id": 38011194282,
+      "sha256": "1ed58a9cd4c5796654a9e3e5c9b6e1c1129c353f3451e04c990b95032012479f"
+    },
+    "two-A": {
+      "artifact_id": 11699982799,
+      "board_sha256": "66710513146c22f31595f794d608914fcfb8b61552c82fc5fd680f9ac4b0b978",
+      "dump_member": "working-result/before/dump.json",
+      "dump_sha256": "613a358b340962e2d1fb13cd898fe8a9558edcbf1a5d69cb93b6d2bd7629e97c",
+      "file": "epic242-two-a-600-run38133584276.zip",
+      "run_id": 38133584276,
+      "sha256": "1bdd84bce237cc864db19bf831f44f51425ce2f7e41b1de774c0da1068881b56"
+    }
+  },
+  "between_after_and_fresh": [
+    "/tmp/pr265-review-env/bin/python",
+    "scripts/partition/core_split_candidates.py",
+    "fresh-copy",
+    "--output",
+    "{FIXTURE}"
+  ],
+  "budget": {
+    "automatic_retries": 0,
+    "clearance_mm": 0.25,
+    "global_memory_gib": 12,
+    "global_workers_max": 2,
+    "max_expansions_per_search": 50000,
+    "max_refills": 6,
+    "native_workers": 1,
+    "rail_width_mm": 0.5,
+    "raster_mm": 0.1,
+    "required_free_gib": 2,
+    "signal_width_mm": 0.3,
+    "stable_full_signatures": 3,
+    "via_diameter_mm": 0.6,
+    "via_drill_mm": 0.3,
+    "wall_seconds_route": 300,
+    "wall_seconds_settle_each": 600,
+    "window_margin_mm": 6,
+    "worker_memory_gib": 6
+  },
+  "common_native_bounds_mm": [
+    104.76,
+    202.23,
+    142.23,
+    232.29
+  ],
+  "execution_checkout": "Clean isolated checkout of source_commit; later packaging commits must not silently change the method epoch.",
+  "image": "kicad/kicad@sha256:18693567392b80da435f9fa952ce3a3e534c66eb5a6033f5b9c80aa3b19dd3ec",
+  "image_version": "10.0.6",
+  "input_file_sha256": {
+    "circuit/routing/epic-242/decision-pilots/matched-demands.json": "4766e57af16f3ae50c9bd6edad099c9595984c8dd3eda0154a5433a19270550b",
+    "circuit/routing/epic-242/decision-pilots/matching-spec.json": "e17c8f01b0fe08164cee514d41b3f2bfea2a2fe23da181bcb4c3dae479404c99",
+    "scripts/kicad/native_resource_guard.py": "ee755233af405e60cf592956dcf42ca1069f5face6c20c1cdfcdf6f8479ef8ca",
+    "scripts/kicad/pin.env": "769e2be0b61e7d92a6930684f13166b7dc098522008de3969cd30d6c4a363246",
+    "scripts/kicad/run.sh": "f91b2c8846856a6d38a10eb9e6314b6ebec3222b68df37942f3716ab860d8c91"
+  },
+  "limits": {
+    "automatic_retries": 0,
+    "free_memory_min_bytes": 2147483648,
+    "global_memory_bytes": 12884901888,
+    "global_workers_max": 2,
+    "max_native_wall_seconds_per_case": 2100,
+    "max_native_wall_seconds_two_cases": 4200,
+    "sequential_workers": 1,
+    "worker_memory_bytes": 6442450944
+  },
+  "minimum_comparison": [
+    "O1/K1402",
+    "O1/two-A"
+  ],
+  "native_wrapper": [
+    "/tmp/pr265-review-env/bin/python",
+    "scripts/kicad/native_resource_guard.py",
+    "--admission-id",
+    "{NEW_PARENT_RECEIPT}",
+    "--worker",
+    "{UNIQUE_WORKER}",
+    "--sha",
+    "29140d4e19d526eed3a02a73c33f8ce4219c78f0",
+    "--hook-sha256",
+    "f91b2c8846856a6d38a10eb9e6314b6ebec3222b68df37942f3716ab860d8c91",
+    "--seconds",
+    "{PHASE_SECONDS}",
+    "--evidence",
+    "{NEW_EVIDENCE_DIRECTORY}",
+    "{PAYLOAD_ARGV}"
+  ],
+  "outputs_required": [
+    "fixture-lock.json",
+    "matched-proposal.json",
+    "matched-search-diagnostics.json",
+    "before/after/fresh full PCB+project+rules+dump+DRC+settle receipts",
+    "complete-warnings raw native fixtures/reports/proof",
+    "pilot-receipt.json",
+    "matched-result.json",
+    "every phase admission/resource/cleanup receipt"
+  ],
+  "phases": [
+    {
+      "id": "route",
+      "payload": [
+        "/tmp/pr265-review-env/bin/python",
+        "circuit/routing/epic-242/decision-pilots/route_matched.py",
+        "--domain",
+        "O1",
+        "--board",
+        "{BOARD}",
+        "--fixture",
+        "{FIXTURE}"
+      ],
+      "seconds": 300
+    },
+    {
+      "id": "apply",
+      "payload": [
+        "bash",
+        "scripts/kicad/run.sh",
+        "python3",
+        "scripts/pcbgen/grid_apply.py",
+        "{FIXTURE}/before/osc-core.kicad_pcb",
+        "{FIXTURE}/matched-proposal.json",
+        "--output",
+        "{FIXTURE}/after/osc-core.kicad_pcb"
+      ],
+      "seconds": 300
+    },
+    {
+      "id": "settle-after",
+      "payload": [
+        "/tmp/pr265-review-env/bin/python",
+        "scripts/partition/core_split_candidates.py",
+        "settle",
+        "--board",
+        "{FIXTURE}/after/osc-core.kicad_pcb"
+      ],
+      "seconds": 600
+    },
+    {
+      "id": "settle-fresh",
+      "payload": [
+        "/tmp/pr265-review-env/bin/python",
+        "scripts/partition/core_split_candidates.py",
+        "settle",
+        "--board",
+        "{FIXTURE}/fresh/osc-core.kicad_pcb"
+      ],
+      "seconds": 600
+    },
+    {
+      "id": "full-warning-audit",
+      "payload": [
+        "/tmp/pr265-review-env/bin/python",
+        "scripts/partition/core_split_candidates.py",
+        "audit-pilot",
+        "--output",
+        "{FIXTURE}"
+      ],
+      "seconds": 300
+    }
+  ],
+  "preparation_artifacts": {
+    "K1402": {
+      "artifact_id": 11658776367,
+      "dump_member": ".circuit-cache/osc-core-grid-189-compact-refill/dump.json",
+      "file": "k1402.zip",
+      "run_id": 38011194282,
+      "sha256": "1ed58a9cd4c5796654a9e3e5c9b6e1c1129c353f3451e04c990b95032012479f"
+    },
+    "three-A": {
+      "artifact_id": 11698474605,
+      "dump_member": "working-result/before/dump.json",
+      "file": "epic242-three-a-settle-only-38130450410.zip",
+      "run_id": 38130450410,
+      "sha256": "d1f381019e13814b1f6d1b027d501610e7fc640362db8f6d1cfcf4be8ee282cb"
+    },
+    "three-B": {
+      "artifact_id": 11701063059,
+      "dump_member": "working-result/before/dump.json",
+      "file": "epic242-three-b-run38135827447.zip",
+      "run_id": 38135827447,
+      "sha256": "3eb9bfd8aaf2aa011c2bbc41fe969d0145814c70d790d04d68330b2f3a28cbfa"
+    },
+    "three-C": {
+      "artifact_id": 11700659890,
+      "dump_member": "working-result/before/dump.json",
+      "file": "epic242-three-c-run38136206699.zip",
+      "run_id": 38136206699,
+      "sha256": "b2973a892b5454d8cc4499ed897b2a9b79067138996ef25889fbe8982e150b0c"
+    },
+    "two-A": {
+      "artifact_id": 11699982799,
+      "dump_member": "working-result/before/dump.json",
+      "file": "epic242-two-a-600-run38133584276.zip",
+      "run_id": 38133584276,
+      "sha256": "1bdd84bce237cc864db19bf831f44f51425ce2f7e41b1de774c0da1068881b56"
+    },
+    "two-B": {
+      "artifact_id": 11700304065,
+      "dump_member": "working-result/before/dump.json",
+      "file": "epic242-two-b-run38135093123.zip",
+      "run_id": 38135093123,
+      "sha256": "a8566c8996b71fbda8b718b5eeb60f56a8c6b52d16eac02b6e4c2b2e3063a164"
+    }
+  },
+  "python": {
+    "path_verified_on_this_host": "/tmp/pr265-review-env/bin/python",
+    "policy": "Recheck path and versions on execution host before admission; no installation or credential creation implied.",
+    "versions": {
+      "numpy": "2.2.6",
+      "scipy": "1.15.3",
+      "shapely": "2.1.2"
+    }
+  },
+  "review": "Independent baseline_review source/metadata inspection; no fixture/native commands executed in review.",
+  "route_policy": {
+    "acceptance": "Exact pair closures only after full native gates. No links/count-only successes; partition-induced repairs cannot be baseline improvements.",
+    "bounds": "Shared endpoint polygon envelope for all four pairs, expanded6mm; same exact rectangle on K/two/three. Full original dump obstacles retained.",
+    "fill_guards": {
+      "+12V": "In4.Cu",
+      "-12V": "In3.Cu",
+      "AGND": "In1.Cu"
+    },
+    "full_board_fallback": false,
+    "planes": {},
+    "rail_nets": [
+      "+12V",
+      "-12V",
+      "+5V",
+      "AGND"
+    ],
+    "rip": [],
+    "target_order": [
+      "positive_supply",
+      "negative_supply",
+      "return",
+      "signal"
+    ]
+  },
+  "source_commit": "29140d4e19d526eed3a02a73c33f8ce4219c78f0",
+  "source_only_evaluate": [
+    "/tmp/pr265-review-env/bin/python",
+    "circuit/routing/epic-242/decision-pilots/evaluate_matched.py",
+    "--fixture",
+    "{FIXTURE}"
+  ],
+  "source_only_prepare": [
+    "/tmp/pr265-review-env/bin/python",
+    "circuit/routing/epic-242/decision-pilots/prepare_matched.py",
+    "--artifacts",
+    "{AUTHENTICATED_SIX_ZIP_DIRECTORY}",
+    "--domain",
+    "O1",
+    "--board",
+    "{BOARD}",
+    "--output",
+    "{NEW_PRIVATE_FIXTURE}"
+  ],
+  "source_to_native_offset_mm": [
+    100,
+    50
+  ],
+  "status": "REQUEST ONLY; NO ADMISSION; NO NATIVE RUN",
+  "stop_criteria": [
+    "Parent admission absent: do not run.",
+    "Any guard capability, capacity, source/image/input mismatch: refuse.",
+    "Timeout/OOM/error/missing proof/identity drift/new warnings/group or copper loss/fresh mismatch: stop, preserve negative evidence.",
+    "Zero added copper: NO IMPROVEMENT; no automatic retry or expanded budget.",
+    "Cleanup uncertainty: withhold next admission.",
+    "Partition repair earns zero K-relative credit; any return/rail debt blocks coupled success.",
+    "No architecture adoption, canonical hardware mutation, merge or issue closure."
+  ],
+  "targets": {
+    "negative_supply": {
+      "anchor_records": [
+        {
+          "drill": 0,
+          "layers": [
+            "B.Cu"
+          ],
+          "locked": false,
+          "net": "-12V",
+          "npth": false,
+          "pad": "11",
+          "poly": [
+            [
+              128495000,
+              213980000
+            ],
+            [
+              128487388,
+              214018268
+            ],
+            [
+              128465711,
+              214050711
+            ],
+            [
+              128433268,
+              214072388
+            ],
+            [
+              128395000,
+              214080000
+            ],
+            [
+              127120000,
+              214080000
+            ],
+            [
+              127081732,
+              214072388
+            ],
+            [
+              127049289,
+              214050711
+            ],
+            [
+              127027612,
+              214018268
+            ],
+            [
+              127020000,
+              213980000
+            ],
+            [
+              127020000,
+              213780000
+            ],
+            [
+              127027612,
+              213741732
+            ],
+            [
+              127049289,
+              213709289
+            ],
+            [
+              127081732,
+              213687612
+            ],
+            [
+              127120000,
+              213680000
+            ],
+            [
+              128395000,
+              213680000
+            ],
+            [
+              128433268,
+              213687612
+            ],
+            [
+              128465711,
+              213709289
+            ],
+            [
+              128487388,
+              213741732
+            ],
+            [
+              128495000,
+              213780000
+            ]
+          ],
+          "ref": "U1109",
+          "uuid": "a40db1fe-2473-5035-bc12-87d1d1b0fdea",
+          "xy": [
+            127757500,
+            213880000
+          ]
+        },
+        {
+          "drill": 0,
+          "layers": [
+            "B.Cu"
+          ],
+          "locked": false,
+          "net": "-12V",
+          "npth": false,
+          "pad": "1",
+          "poly": [
+            [
+              125010000,
+              214280000
+            ],
+            [
+              125010000,
+              213480000
+            ],
+            [
+              125910000,
+              213480000
+            ],
+            [
+              125910000,
+              214280000
+            ]
+          ],
+          "ref": "C1135",
+          "uuid": "77253764-a510-53c0-a715-6ed853e8bea0",
+          "xy": [
+            125460000,
+            213880000
+          ]
+        }
+      ],
+      "anchors": [
+        {
+          "pad": "11",
+          "ref": "U1109"
+        },
+        {
+          "pad": "1",
+          "ref": "C1135"
+        }
+      ],
+      "boards": {
+        "K1402": {
+          "classification": "BOTH_OPEN",
+          "original_groups": [
+            {
+              "all_member_count": 1,
+              "all_members_sha256": "021ffd6075c1dc6ba286c91da58fedd20476a6d792b5205499ca9535d99276ba",
+              "locator": {
+                "contains_pad_uuid": "a40db1fe-2473-5035-bc12-87d1d1b0fdea",
+                "net_token": "-12V"
+              },
+              "status": "RECORDED_OPEN_NET_GROUP"
+            },
+            {
+              "all_member_count": 1382,
+              "all_members_sha256": "e86f383c5f3ccbc33987e43dae0f3a7cd9c241bbe088c8a2f2bcfa0ef68ae7b4",
+              "locator": {
+                "contains_pad_uuid": "77253764-a510-53c0-a715-6ed853e8bea0",
+                "net_token": "-12V"
+              },
+              "status": "RECORDED_OPEN_NET_GROUP"
+            }
+          ]
+        },
+        "three-A": {
+          "classification": "BOTH_OPEN",
+          "original_groups": [
+            {
+              "all_member_count": 1,
+              "all_members_sha256": "021ffd6075c1dc6ba286c91da58fedd20476a6d792b5205499ca9535d99276ba",
+              "locator": {
+                "contains_pad_uuid": "a40db1fe-2473-5035-bc12-87d1d1b0fdea",
+                "net_token": "-12V"
+              },
+              "status": "RECORDED_OPEN_NET_GROUP"
+            },
+            {
+              "all_member_count": 1,
+              "all_members_sha256": "f75b0f9e18601620948985bcad329d4819e2e2089ab0fd5c3748da4f0e33b29b",
+              "locator": {
+                "contains_pad_uuid": "77253764-a510-53c0-a715-6ed853e8bea0",
+                "net_token": "-12V"
+              },
+              "status": "RECORDED_OPEN_NET_GROUP"
+            }
+          ]
+        },
+        "two-A": {
+          "classification": "BOTH_OPEN",
+          "original_groups": [
+            {
+              "all_member_count": 1,
+              "all_members_sha256": "021ffd6075c1dc6ba286c91da58fedd20476a6d792b5205499ca9535d99276ba",
+              "locator": {
+                "contains_pad_uuid": "a40db1fe-2473-5035-bc12-87d1d1b0fdea",
+                "net_token": "-12V"
+              },
+              "status": "RECORDED_OPEN_NET_GROUP"
+            },
+            {
+              "all_member_count": 1,
+              "all_members_sha256": "f75b0f9e18601620948985bcad329d4819e2e2089ab0fd5c3748da4f0e33b29b",
+              "locator": {
+                "contains_pad_uuid": "77253764-a510-53c0-a715-6ed853e8bea0",
+                "net_token": "-12V"
+              },
+              "status": "RECORDED_OPEN_NET_GROUP"
+            }
+          ]
+        }
+      },
+      "net_token": "-12V",
+      "reason": "Existing OPA4197 negative supply to its own bypass.",
+      "source_net": "-12V"
+    },
+    "positive_supply": {
+      "anchor_records": [
+        {
+          "drill": 0,
+          "layers": [
+            "B.Cu"
+          ],
+          "locked": false,
+          "net": "+12V",
+          "npth": false,
+          "pad": "4",
+          "poly": [
+            [
+              134220000,
+              213980000
+            ],
+            [
+              134212388,
+              214018268
+            ],
+            [
+              134190711,
+              214050711
+            ],
+            [
+              134158268,
+              214072388
+            ],
+            [
+              134120000,
+              214080000
+            ],
+            [
+              132845000,
+              214080000
+            ],
+            [
+              132806732,
+              214072388
+            ],
+            [
+              132774289,
+              214050711
+            ],
+            [
+              132752612,
+              214018268
+            ],
+            [
+              132745000,
+              213980000
+            ],
+            [
+              132745000,
+              213780000
+            ],
+            [
+              132752612,
+              213741732
+            ],
+            [
+              132774289,
+              213709289
+            ],
+            [
+              132806732,
+              213687612
+            ],
+            [
+              132845000,
+              213680000
+            ],
+            [
+              134120000,
+              213680000
+            ],
+            [
+              134158268,
+              213687612
+            ],
+            [
+              134190711,
+              213709289
+            ],
+            [
+              134212388,
+              213741732
+            ],
+            [
+              134220000,
+              213780000
+            ]
+          ],
+          "ref": "U1109",
+          "uuid": "2b0c6980-ea70-5b84-92e6-75dafbe673f9",
+          "xy": [
+            133482500,
+            213880000
+          ]
+        },
+        {
+          "drill": 0,
+          "layers": [
+            "B.Cu"
+          ],
+          "locked": false,
+          "net": "+12V",
+          "npth": false,
+          "pad": "1",
+          "poly": [
+            [
+              135330000,
+              214280000
+            ],
+            [
+              135330000,
+              213480000
+            ],
+            [
+              136230000,
+              213480000
+            ],
+            [
+              136230000,
+              214280000
+            ]
+          ],
+          "ref": "C1134",
+          "uuid": "56a428c1-0a2c-5efd-b862-e39856d8a593",
+          "xy": [
+            135780000,
+            213880000
+          ]
+        }
+      ],
+      "anchors": [
+        {
+          "pad": "4",
+          "ref": "U1109"
+        },
+        {
+          "pad": "1",
+          "ref": "C1134"
+        }
+      ],
+      "boards": {
+        "K1402": {
+          "classification": "BOTH_OPEN",
+          "original_groups": [
+            {
+              "all_member_count": 1,
+              "all_members_sha256": "8d1edfdae5829c5d2c3dd35043b3ae49405818a7aaa64b3074e89b8855437faf",
+              "locator": {
+                "contains_pad_uuid": "2b0c6980-ea70-5b84-92e6-75dafbe673f9",
+                "net_token": "+12V"
+              },
+              "status": "RECORDED_OPEN_NET_GROUP"
+            },
+            {
+              "all_member_count": 1996,
+              "all_members_sha256": "7341a1647099dfc792b99467cb3ef9c27829d5d1e03d45d1a152b7ae8c5e6480",
+              "locator": {
+                "contains_pad_uuid": "56a428c1-0a2c-5efd-b862-e39856d8a593",
+                "net_token": "+12V"
+              },
+              "status": "RECORDED_OPEN_NET_GROUP"
+            }
+          ]
+        },
+        "three-A": {
+          "classification": "BOTH_OPEN",
+          "original_groups": [
+            {
+              "all_member_count": 1,
+              "all_members_sha256": "8d1edfdae5829c5d2c3dd35043b3ae49405818a7aaa64b3074e89b8855437faf",
+              "locator": {
+                "contains_pad_uuid": "2b0c6980-ea70-5b84-92e6-75dafbe673f9",
+                "net_token": "+12V"
+              },
+              "status": "RECORDED_OPEN_NET_GROUP"
+            },
+            {
+              "all_member_count": 1,
+              "all_members_sha256": "53016a96459b14c0ab18357063d698fa40b6e9b09d4b8ff2899aa23d2e75bee1",
+              "locator": {
+                "contains_pad_uuid": "56a428c1-0a2c-5efd-b862-e39856d8a593",
+                "net_token": "+12V"
+              },
+              "status": "RECORDED_OPEN_NET_GROUP"
+            }
+          ]
+        },
+        "two-A": {
+          "classification": "BOTH_OPEN",
+          "original_groups": [
+            {
+              "all_member_count": 1,
+              "all_members_sha256": "8d1edfdae5829c5d2c3dd35043b3ae49405818a7aaa64b3074e89b8855437faf",
+              "locator": {
+                "contains_pad_uuid": "2b0c6980-ea70-5b84-92e6-75dafbe673f9",
+                "net_token": "+12V"
+              },
+              "status": "RECORDED_OPEN_NET_GROUP"
+            },
+            {
+              "all_member_count": 1,
+              "all_members_sha256": "53016a96459b14c0ab18357063d698fa40b6e9b09d4b8ff2899aa23d2e75bee1",
+              "locator": {
+                "contains_pad_uuid": "56a428c1-0a2c-5efd-b862-e39856d8a593",
+                "net_token": "+12V"
+              },
+              "status": "RECORDED_OPEN_NET_GROUP"
+            }
+          ]
+        }
+      },
+      "net_token": "+12V",
+      "reason": "Existing OPA4197 supply to its source-declared bypass; signal-package U1114 rail already connected in K and excluded as baseline gain.",
+      "source_net": "+12V"
+    },
+    "return": {
+      "anchor_records": [
+        {
+          "drill": 0,
+          "layers": [
+            "F.Cu"
+          ],
+          "locked": false,
+          "net": "AGND",
+          "npth": false,
+          "pad": "12",
+          "poly": [
+            [
+              121220000,
+              222075000
+            ],
+            [
+              121231418,
+              222017597
+            ],
+            [
+              121263934,
+              221968934
+            ],
+            [
+              121312597,
+              221936418
+            ],
+            [
+              121370000,
+              221925000
+            ],
+            [
+              123020000,
+              221925000
+            ],
+            [
+              123077403,
+              221936418
+            ],
+            [
+              123126066,
+              221968934
+            ],
+            [
+              123158582,
+              222017597
+            ],
+            [
+              123170000,
+              222075000
+            ],
+            [
+              123170000,
+              222375000
+            ],
+            [
+              123158582,
+              222432403
+            ],
+            [
+              123126066,
+              222481066
+            ],
+            [
+              123077403,
+              222513582
+            ],
+            [
+              123020000,
+              222525000
+            ],
+            [
+              121370000,
+              222525000
+            ],
+            [
+              121312597,
+              222513582
+            ],
+            [
+              121263934,
+              222481066
+            ],
+            [
+              121231418,
+              222432403
+            ],
+            [
+              121220000,
+              222375000
+            ]
+          ],
+          "ref": "U1105",
+          "uuid": "608c587b-7aab-54c1-b46c-3773193ec4c0",
+          "xy": [
+            122195000,
+            222225000
+          ]
+        },
+        {
+          "drill": 0,
+          "layers": [
+            "F.Cu"
+          ],
+          "locked": false,
+          "net": "AGND",
+          "npth": false,
+          "pad": "2",
+          "poly": [
+            [
+              111660000,
+              224690000
+            ],
+            [
+              111660000,
+              225490000
+            ],
+            [
+              110760000,
+              225490000
+            ],
+            [
+              110760000,
+              224690000
+            ]
+          ],
+          "ref": "C1111",
+          "uuid": "6e370474-ba32-594b-8c28-3b65ab475ff1",
+          "xy": [
+            111210000,
+            225090000
+          ]
+        }
+      ],
+      "anchors": [
+        {
+          "pad": "12",
+          "ref": "U1105"
+        },
+        {
+          "pad": "2",
+          "ref": "C1111"
+        }
+      ],
+      "boards": {
+        "K1402": {
+          "classification": "BOTH_OPEN",
+          "original_groups": [
+            {
+              "all_member_count": 1,
+              "all_members_sha256": "7002c3b22ba16f7a35711139dfdc649da4cbbcd3ea3567cbe10f659afa81d8d2",
+              "locator": {
+                "contains_pad_uuid": "608c587b-7aab-54c1-b46c-3773193ec4c0",
+                "net_token": "AGND"
+              },
+              "status": "RECORDED_OPEN_NET_GROUP"
+            },
+            {
+              "all_member_count": 2912,
+              "all_members_sha256": "b7d27d4a8eeb364f8a6df485c2056b6f216b71c36fe911ab29489d085c1a8a84",
+              "locator": {
+                "contains_pad_uuid": "6e370474-ba32-594b-8c28-3b65ab475ff1",
+                "net_token": "AGND"
+              },
+              "status": "RECORDED_OPEN_NET_GROUP"
+            }
+          ]
+        },
+        "three-A": {
+          "classification": "BOTH_OPEN",
+          "original_groups": [
+            {
+              "all_member_count": 1,
+              "all_members_sha256": "7002c3b22ba16f7a35711139dfdc649da4cbbcd3ea3567cbe10f659afa81d8d2",
+              "locator": {
+                "contains_pad_uuid": "608c587b-7aab-54c1-b46c-3773193ec4c0",
+                "net_token": "AGND"
+              },
+              "status": "RECORDED_OPEN_NET_GROUP"
+            },
+            {
+              "all_member_count": 229,
+              "all_members_sha256": "1de5587b16f636b35025b44bc9383328e214d0a8d58d76a2506032146bb02037",
+              "locator": {
+                "contains_pad_uuid": "6e370474-ba32-594b-8c28-3b65ab475ff1",
+                "net_token": "AGND"
+              },
+              "status": "RECORDED_OPEN_NET_GROUP"
+            }
+          ]
+        },
+        "two-A": {
+          "classification": "BOTH_OPEN",
+          "original_groups": [
+            {
+              "all_member_count": 1,
+              "all_members_sha256": "7002c3b22ba16f7a35711139dfdc649da4cbbcd3ea3567cbe10f659afa81d8d2",
+              "locator": {
+                "contains_pad_uuid": "608c587b-7aab-54c1-b46c-3773193ec4c0",
+                "net_token": "AGND"
+              },
+              "status": "RECORDED_OPEN_NET_GROUP"
+            },
+            {
+              "all_member_count": 903,
+              "all_members_sha256": "f4f5ed94dd8e631b118b4fa376328a47a8d28b3bcac70b3cb87d611fbf40e4e0",
+              "locator": {
+                "contains_pad_uuid": "6e370474-ba32-594b-8c28-3b65ab475ff1",
+                "net_token": "AGND"
+              },
+              "status": "RECORDED_OPEN_NET_GROUP"
+            }
+          ]
+        }
+      },
+      "net_token": "AGND",
+      "reason": "Existing O1 timing-return demand. Separate timing control in same oscillator domain, not falsely one package with TRI_SUM. Preserve U1114 bypass-ground group as a separate obligation.",
+      "source_net": "AGND"
+    },
+    "signal": {
+      "anchor_records": [
+        {
+          "drill": 0,
+          "layers": [
+            "B.Cu"
+          ],
+          "locked": false,
+          "net": "X0A34A50EAB62B0C19178",
+          "npth": false,
+          "pad": "2",
+          "poly": [
+            [
+              130294999,
+              209090000
+            ],
+            [
+              129484999,
+              209090000
+            ],
+            [
+              129484999,
+              208230000
+            ],
+            [
+              130294999,
+              208230000
+            ]
+          ],
+          "ref": "R1177",
+          "uuid": "954f2210-a69f-5adf-a5d4-d0dcff6dcf91",
+          "xy": [
+            129889999,
+            208660000
+          ]
+        },
+        {
+          "drill": 0,
+          "layers": [
+            "B.Cu"
+          ],
+          "locked": false,
+          "net": "X0A34A50EAB62B0C19178",
+          "npth": false,
+          "pad": "6",
+          "poly": [
+            [
+              134170000,
+              226140000
+            ],
+            [
+              134158582,
+              226197403
+            ],
+            [
+              134126066,
+              226246066
+            ],
+            [
+              134077403,
+              226278582
+            ],
+            [
+              134020000,
+              226290000
+            ],
+            [
+              132370000,
+              226290000
+            ],
+            [
+              132312597,
+              226278582
+            ],
+            [
+              132263934,
+              226246066
+            ],
+            [
+              132231418,
+              226197403
+            ],
+            [
+              132220000,
+              226140000
+            ],
+            [
+              132220000,
+              225840000
+            ],
+            [
+              132231418,
+              225782597
+            ],
+            [
+              132263934,
+              225733934
+            ],
+            [
+              132312597,
+              225701418
+            ],
+            [
+              132370000,
+              225690000
+            ],
+            [
+              134020000,
+              225690000
+            ],
+            [
+              134077403,
+              225701418
+            ],
+            [
+              134126066,
+              225733934
+            ],
+            [
+              134158582,
+              225782597
+            ],
+            [
+              134170000,
+              225840000
+            ]
+          ],
+          "ref": "U1114",
+          "uuid": "6e15d402-0eb9-568f-8091-ded54ac532ea",
+          "xy": [
+            133195000,
+            225990000
+          ]
+        }
+      ],
+      "anchors": [
+        {
+          "pad": "2",
+          "ref": "R1177"
+        },
+        {
+          "pad": "6",
+          "ref": "U1114"
+        }
+      ],
+      "boards": {
+        "K1402": {
+          "classification": "BOTH_OPEN",
+          "original_groups": [
+            {
+              "all_member_count": 1,
+              "all_members_sha256": "1962efa1189dd7e9c5deb0eb06741fdedbc190a25cf13a272bedb635acc815a8",
+              "locator": {
+                "contains_pad_uuid": "954f2210-a69f-5adf-a5d4-d0dcff6dcf91",
+                "net_token": "X0A34A50EAB62B0C19178"
+              },
+              "status": "RECORDED_OPEN_NET_GROUP"
+            },
+            {
+              "all_member_count": 32,
+              "all_members_sha256": "c429ed4057bf7eaa8120eb88d04c37723b110270e381367ca5e8823ff987fea4",
+              "locator": {
+                "contains_pad_uuid": "6e15d402-0eb9-568f-8091-ded54ac532ea",
+                "net_token": "X0A34A50EAB62B0C19178"
+              },
+              "status": "RECORDED_OPEN_NET_GROUP"
+            }
+          ]
+        },
+        "three-A": {
+          "classification": "BOTH_OPEN",
+          "original_groups": [
+            {
+              "all_member_count": 1,
+              "all_members_sha256": "1962efa1189dd7e9c5deb0eb06741fdedbc190a25cf13a272bedb635acc815a8",
+              "locator": {
+                "contains_pad_uuid": "954f2210-a69f-5adf-a5d4-d0dcff6dcf91",
+                "net_token": "X0A34A50EAB62B0C19178"
+              },
+              "status": "RECORDED_OPEN_NET_GROUP"
+            },
+            {
+              "all_member_count": 32,
+              "all_members_sha256": "c429ed4057bf7eaa8120eb88d04c37723b110270e381367ca5e8823ff987fea4",
+              "locator": {
+                "contains_pad_uuid": "6e15d402-0eb9-568f-8091-ded54ac532ea",
+                "net_token": "X0A34A50EAB62B0C19178"
+              },
+              "status": "RECORDED_OPEN_NET_GROUP"
+            }
+          ]
+        },
+        "two-A": {
+          "classification": "BOTH_OPEN",
+          "original_groups": [
+            {
+              "all_member_count": 1,
+              "all_members_sha256": "1962efa1189dd7e9c5deb0eb06741fdedbc190a25cf13a272bedb635acc815a8",
+              "locator": {
+                "contains_pad_uuid": "954f2210-a69f-5adf-a5d4-d0dcff6dcf91",
+                "net_token": "X0A34A50EAB62B0C19178"
+              },
+              "status": "RECORDED_OPEN_NET_GROUP"
+            },
+            {
+              "all_member_count": 32,
+              "all_members_sha256": "c429ed4057bf7eaa8120eb88d04c37723b110270e381367ca5e8823ff987fea4",
+              "locator": {
+                "contains_pad_uuid": "6e15d402-0eb9-568f-8091-ded54ac532ea",
+                "net_token": "X0A34A50EAB62B0C19178"
+              },
+              "status": "RECORDED_OPEN_NET_GROUP"
+            }
+          ]
+        }
+      },
+      "net_token": "X0A34A50EAB62B0C19178",
+      "reason": "Actual sensitive summing-net open demand; remote U1114.6 shares original group with R1176.2.",
+      "source_net": "/O1/TRI_SUM"
+    }
+  }
+}
