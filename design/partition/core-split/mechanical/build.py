@@ -138,11 +138,11 @@ def source_lock(inputs, cfg):
                   '.claude/skills/circuit-spec-integration/references/rules.json',
                   'design/connectors/sources/jst-gh.pdf', 'design/partition/sources/alpha-6821.pdf',
                   'design/partition/sources/alpha-5859.pdf', 'circuit/sources/ic-library/TC33X.pdf'])
-    return {'baseline_sha': cfg['baseline_sha'], 'tool_sha256': {p.name: digest(p) for p in [HERE/'build.py', HERE/'candidates.json', HERE/'preview-template.html', HERE/'inputs/trimmer-functions.json', HERE/'inputs/component-review.json']}, 'sha256': {p: digest(ROOT/p) for p in sorted(paths)}}
+    return {'baseline_sha': cfg['baseline_sha'], 'tool_sha256': {p.name: digest(p) for p in [HERE/'build.py', HERE/'candidates.json', HERE/'preview-template.html', HERE/'inputs/trimmer-functions.json', HERE/'inputs/component-review.json', HERE/'inputs/power-input.json', HERE/'inputs/power-contract.json']}, 'sha256': {p: digest(ROOT/p) for p in sorted(paths)}}
 
 
 def model_inventory(parts):
-    receipts = [json.loads(p.read_text()) for p in (ROOT/'circuit/cad-receipts').glob('*.json')]
+    receipts = [json.loads(p.read_text()) for p in sorted((ROOT/'circuit/cad-receipts').glob('*.json'))]
     rows = []
     for fp, count in sorted(Counter(p['footprint'] for p in parts).items()):
         path = 'footprints/kicad/zudo-osc-hole-field.pretty/'+fp.split(':')[-1]+'.kicad_mod'
@@ -184,7 +184,7 @@ def label_obstacles(board, side, core, assigned, connectors, passages, supports)
     # Conservatively reserve every existing K header on either face, including removed mates.
     boxes += [h['land_courtyard_mm'] for h in connectors.values() if h['board'] == 'K']
     boxes += [a['box_mm'] for a in read('design/partition/partition.json')['K_service_apertures']]
-    boxes += [[180, 220, 256, 290]]
+    if board == 'KA': boxes += [[180, 220, 256, 290]]
     expanded = [[q[0]-.25, q[1]-.25, q[2]+.25, q[3]+.25] for q in boxes]
     buckets = {}
     for k, q in enumerate(expanded):
@@ -196,7 +196,7 @@ def label_obstacles(board, side, core, assigned, connectors, passages, supports)
 
 def reservation_conflicts(box, board, connectors, harnesses, supports, apertures):
     occupied = [('support', str([x, y]), [x-1.6, y-1.6, x+1.6, y+1.6]) for x, y in supports]
-    occupied.append(('protection-feed-reserve', 'unselected feed/protection', [180, 220, 256, 290]))
+    if board == 'KA': occupied.append(('protection-feed-reserve', 'unselected feed/protection', [180, 220, 256, 290]))
     for h in harnesses:
         if not h['unchanged'] and h['core_board'] == board:
             c = connectors[h['id']+'-K']
@@ -204,6 +204,46 @@ def reservation_conflicts(box, board, connectors, harnesses, supports, apertures
     occupied.extend(('service-aperture', a['header_id'], a['box_mm']) for a in apertures)
     return [{'kind': kind, 'id': name, 'overlap_mm': overlap_box(box, other)}
             for kind, name, other in occupied if rect_overlap(box, other)]
+
+
+def reconcile_power(cfg, alt, physical, core, assigned):
+    power = json.loads((HERE/'inputs/power-contract.json').read_text())
+    settings = json.loads((HERE/'inputs/power-input.json').read_text())
+    option = power['options'][alt['partition']]
+    expected = settings['options'][alt['partition']]
+    for part in core:
+        package = physical[part['ref']]
+        target = 'KA' if package['family'] == '01_power_interfaces' else next(
+            (b for b, instances in expected.items() if package['instance'] in instances), None)
+        if assigned[part['ref']] != target:
+            raise ValueError('power/mechanical ownership mismatch '+part['ref'])
+    planes = alt['front_z_mm']
+    endpoints = []
+    for feed in option['new_feeds']:
+        for endpoint in feed['endpoint_envelopes']:
+            z = planes[endpoint['board']]
+            forward = [(b, p) for b, p in planes.items() if p > z]
+            near = min(forward, key=lambda bp: bp[1]-z) if forward else None
+            bare = near[1]-cfg['core_thickness_mm']-z if near else None
+            height = endpoint['corridor_local_box_mm'][5]-endpoint['corridor_local_box_mm'][2]
+            endpoints.append({**endpoint, 'front_z_mm': z,
+                'nearest_core_toward_panel': near[0] if near else None,
+                'bare_face_gap_mm': round(bare, 6) if bare is not None else None,
+                'normal_corridor_deficit_mm': round(max(0, height-bare), 6) if bare is not None else None,
+                'above_front_body_allowance_mm': round(height-cfg['front_body_ceiling_mm'], 6),
+                'screen_scope': 'Conditional same-XY projection over intervening PCB: 28 mm F-side corridor cannot fit a 24.4 mm bare gap. Origins/rotation remain null; edge escape or reviewed opening needs explicit placement. KA front assembly also unqualified.'})
+    return {'source_sha': cfg['power_contract_sha'], 'topology': settings['new_feed']['topology'],
+        'status': 'SOURCE CONTRACT RECONCILED; no topology selection or physical fit',
+        'power_parts_owner': settings['power_parts_owner'],
+        'existing_main_lands_owner': settings['existing_main_lands_owner'],
+        'protection_owner': 'KA', 'protection_rect_mm': [180,220,256,290],
+        'new_feeds': option['new_feeds'], 'endpoint_clearance_screens': endpoints,
+        'bulk_reservations': option['bulk_reservations'],
+        'satellite_monitor_reservations': option['satellite_monitor_reservations'],
+        'mechanical_budget': option['mechanical_budget'],
+        'electrical_budget': power['conductor_screen']['global_budget'],
+        'service_limit': 'Six factory-soldered Alpha Wire 5859 BK005 conductors per star branch; <=110 mm cut ceiling is not extra service slack. No disconnect, desoldering, hinge travel or live service assumed. Clamps/anchors and tray reversibility need geometry and supported loop evidence; no solder-joint load.',
+        'collision_status': 'UNPLACED: no global footprint, label, harness, terminal or sweep clearance accepted for CS247/monitor/bulk. KA protection is the only globally placed power reserve.'}
 
 
 def build(cfg, inputs):
@@ -357,16 +397,16 @@ def build(cfg, inputs):
         power = []
         for route in inputs['loom-candidate']['load_power_routes']:
             a, b = route['points_mm_positive_rear'][0], route['points_mm_positive_rear'][-1]
-            for board, z in planes.items():
-                # Comparison bound only: #247 decides whether each branch is actually fed by this core.
+            for board, z in [('KA', planes['KA'])]:
+                # Pinned #247 keeps every original main land on KA; satellites use CS247.
                 new_end = [b[0], b[1], b[2]+(-z-100)]
                 lower = math.dist(a, new_end)+10
-                power.append({'id': route['id'], 'hypothetical_feed_core': board,
+                power.append({'id': route['id'], 'feed_core': board,
                               'cut_lower_bound_mm': round(lower, 6), 'existing_ceiling_mm': 110,
                               'deterministic_budget_exceedance': lower > 110,
                               'required_bend_radius_mm': src['load_distribution']['minimum_bend_radius_mm'],
                               'diameter_max_mm': src['load_distribution']['diameter_max_mm'],
-                              'status': 'Straight-line necessary bound only, not a realizable bent wire. Existing routes preserved; new feed topology/length/resistance pending #247.'})
+                              'status': 'Straight-line necessary bound only, not a realizable bent wire. Existing endpoint XY retained on KA; original 110 mm ceiling retained. Service-loop/bend fit unqualified; CS247 feeds handled separately.'})
         ordered = sorted(planes.items(), key=lambda x: -x[1])
         gaps = [{'front_board': a, 'rear_board': b, 'plane_pitch_mm': za-zb,
                  'pcb_face_gap_mm': round(za-zb-cfg['core_thickness_mm'], 6),
@@ -379,6 +419,7 @@ def build(cfg, inputs):
                        'harnesses': harnesses, 'through_loom_passages': passages,
                        'hard_conflicts': problems, 'connector_service_passages': connector_service,
                        'trimmers': trims, 'power_bounds': power,
+                       'power_reconciliation': reconcile_power(cfg, alt, physical, core, assigned),
                        'summary': {'harnesses_by_core': dict(Counter(h.get('core_board') for h in harnesses if not h['unchanged'])),
                                    'trimmers_by_core': dict(Counter(t['board'] for t in trims)),
                                    'hard_conflicts': dict(Counter(p['kind'] for p in problems)),
@@ -398,8 +439,8 @@ def build(cfg, inputs):
             'core_placements': [{**p, 'family': physical[p['ref']]['family']} for p in core],
             'trimmer_unresolved_mpn_count': sum(not physical[p['ref']]['mpn'] for p in source_trims),
             'integration_parent_sha': cfg['integration_parent_sha'],
-            'label_contract_sha': cfg['label_contract_sha'],
-            'limitations': ['No route-to-route continuous collision or full harness/support sweep acceptance', 'No measured installation, carrier stiffness/thread engagement, seated component solids or tool/hand sweep', 'Power feed topology and service loops pending #247; no selected component substitution'],
+            'label_contract_sha': cfg['label_contract_sha'], 'power_contract_sha': cfg['power_contract_sha'],
+            'limitations': ['No route-to-route continuous collision or full harness/support sweep acceptance', 'No measured installation, carrier stiffness/thread engagement, seated component solids or tool/hand sweep', 'Pinned #247 candidate star consumed, not selected; endpoint origins, service loops and fit unresolved'],
             'component_review': json.loads((HERE/'inputs/component-review.json').read_text())['architecture_envelope_effects'],
             'alternatives': alternatives}
 

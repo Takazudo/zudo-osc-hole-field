@@ -5,6 +5,7 @@ import json
 import math
 from pathlib import Path
 import unittest
+from unittest.mock import patch
 
 HERE = Path(__file__).resolve().parent
 spec = importlib.util.spec_from_file_location('mechanical', HERE/'build.py')
@@ -18,6 +19,40 @@ class MechanicalTest(unittest.TestCase):
         cls.cfg = json.loads((HERE/'candidates.json').read_text())
         cls.inputs = m.load_inputs()
         cls.report = m.build(cls.cfg, cls.inputs)
+
+    def test_filesystem_enumeration_does_not_change_any_generated_bytes(self):
+        # Fresh checkouts need not enumerate identical files in creation order.
+        normal = m.outputs(self.cfg, self.inputs)
+        original = Path.glob
+        with patch.object(Path, 'glob', lambda path, pattern: iter(reversed(list(original(path, pattern))))):
+            reversed_order = m.outputs(self.cfg, self.inputs)
+        self.assertEqual(set(normal), set(reversed_order))
+        for name in normal:
+            with self.subTest(output=name):
+                self.assertEqual(normal[name], reversed_order[name])
+
+    def test_power_contract_ownership_corridors_and_limits(self):
+        for alt in self.report['alternatives']:
+            contract = alt['power_reconciliation']
+            self.assertEqual(contract['existing_main_lands_owner'], 'KA')
+            self.assertEqual(contract['protection_owner'], 'KA')
+            self.assertEqual(len(alt['power_bounds']), 18)
+            self.assertTrue(all(p['feed_core']=='KA' for p in alt['power_bounds']))
+            count = 1 if alt['partition']=='two' else 2
+            self.assertEqual(len(contract['new_feeds']), count)
+            self.assertEqual(len(contract['endpoint_clearance_screens']), 2*count)
+            for feed in contract['new_feeds']:
+                self.assertEqual([w['net'] for w in feed['wires']], ['+12V','-12V','+5V','AGND','AGND','AGND'])
+                self.assertTrue(all(w['maximum_cut_length_mm']==110 for w in feed['wires']))
+            for endpoint in contract['endpoint_clearance_screens']:
+                self.assertIsNone(endpoint['global_origin_mm'])
+                self.assertEqual(endpoint['land_row_reserve_mm'], [91,6])
+                if endpoint['board']!='KA':
+                    self.assertEqual(endpoint['bare_face_gap_mm'], 24.4)
+                    self.assertEqual(endpoint['normal_corridor_deficit_mm'], 3.6)
+            for passage in alt['through_loom_passages']+alt['connector_service_passages']:
+                if passage.get('board', passage.get('blocking_board'))!='KA':
+                    self.assertFalse(any(c['kind']=='protection-feed-reserve' for c in passage['other_reservation_conflicts']))
 
     def test_harness_pin_and_pose_mutations_fail(self):
         baseline = self.inputs['partition']
