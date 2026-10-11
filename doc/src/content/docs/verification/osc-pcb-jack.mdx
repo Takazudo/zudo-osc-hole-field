@@ -19,11 +19,11 @@ A cut-line bound (`scripts/pcbgen/cut_capacity.py`) showed that the four-layer h
 | Native check | JL / `osc-jack-left` | JR / `osc-jack-right` |
 | --- | --- | --- |
 | Status | ROUTED DRAFT IN PROGRESS | ROUTED DRAFT IN PROGRESS |
-| Native open edges (DRC, settled zone refill) | **117** | **130** |
+| Native open edges (DRC, settled zone refill) | **117** | **129** |
 | Remaining signal edges | 103 | 107 |
-| Remaining rail / ground edges | +12V 0, +5V 0, -12V 0, AGND 14 | +12V 0, +5V 0, -12V 0, AGND 23 |
+| Remaining rail / ground edges | +12V 0, +5V 0, -12V 0, AGND 14 | +12V 0, +5V 0, -12V 0, AGND 22 |
 | DRC errors / schematic parity | 0 / 0 | 0 / 0 |
-| Track segments / vias | 30564 / 2861 | 48445 / 3129 |
+| Track segments / vias | 30564 / 2861 | 48468 / 3130 |
 | Native warnings | hole to hole 2, silk edge clearance 8, silk over copper 199, silk overlap 199, text height 43, track dangling 4, via dangling 22 | hole to hole 24, silk edge clearance 13, silk over copper 199, silk overlap 199, text height 59, track dangling 3, via dangling 23 |
 
 Routing uses `scripts/pcbgen/route_jack_grid.py`: terminal via arrays, ±12 V plane fanouts, rail links, then a negotiated-congestion (PathFinder) pass over every signal net on a 0.05 mm grid (region stages re-run on a 0.035 mm grid inside the neck-down areas), rip-up-and-reroute batches for what it leaves open, with AGND stitching vias where new copper cuts a surface pour. Each stage is applied to a disposable copy, checked with native DRC, schematic parity and zone refill, and kept only when the native open-edge count falls. Rip-up-and-reroute re-offers still-open islands with 4, 8, 12 and then 20 victim nets per probe, and a stranded island joins whichever island of its net is cheapest to reach, not only the largest. Stage receipts are in `boards/<board-id>/reports/grid-routing/`; `reports/ratsnest.json` holds the native per-net topology after a single zone refill; the open-edge figures above come from DRC with refilled zones, which can be higher. Silkscreen/text warnings remain [#44](https://github.com/Takazudo/zudo-osc-hole-field/issues/44).
@@ -342,15 +342,30 @@ All 51,402 old copper objects and 1,080 nonrouting objects remain unchanged.
 Settled and independent fresh checks agree at 130, with native DRC/parity 0/0,
 no original group split and all 520 complete warning findings preserved. Full
 audits cover 24 hole identities on each side, 172 new-copper fixtures and
-50 paired-zone fixtures. The current JR board has 51,574 copper objects and
+50 paired-zone fixtures. That accepted JR130 revision has 51,574 copper objects and
 SHA256 `e06b7471ddc8f5c8c498c5eb5bf8655cc6de539e92826a5701cf1de06356e136`.
 Its full native run is
 [38032373766](https://github.com/Takazudo/zudo-osc-hole-field/actions/runs/38032373766);
 all five exact bot CI checks passed before merge.
 
-The U8202 and RB4615 joint proposals are tracked separately and are not
-included in the accepted table. Earlier JL U8215
+[PR #232](https://github.com/Takazudo/zudo-osc-hole-field/pull/232) subsequently
+accepted **JR130→129** with the RB4615 joint repair. It retains all 51,571 uncut
+objects after three exact reviewed cuts and adds 27 objects. All 1,080 nonrouting
+objects are unchanged. Settled and independent fresh checks agree at 129, with
+native DRC/parity 0/0, no original group split or new warning identity, and all
+520 complete findings preserved. Complete audits cover 24 hole identities on
+each side, 27 new-copper fixtures and 34 paired-zone fixtures. The current JR
+board has 51,598 copper objects and SHA256
+`9e164f9e8e23a5c3911d117fd08973fc877e5f2f382be20500b8e01040b20a55`.
+Its full native run is
+[38041389680](https://github.com/Takazudo/zudo-osc-hole-field/actions/runs/38041389680).
+All five checks passed on the refreshed PR head before integration at
+`65cefd41fc39e064d38319115ad96016a1c6b71c`; the merge tree matches the reviewed
+preview and preserves every unrelated board.
+
+The U8202 full joint proposal was rejected because it split the original −12V
+group; its final native board rolled back byte-for-byte to accepted JL117. Earlier JL U8215
 pilots were rejected because they split existing J900035 ground groups and
 raised native open edges to 120; no rejected copper was adopted. Exact artifact
 digests, retained-copper proofs and continuation commands are in the
-[immutable routing checkpoint](https://github.com/Takazudo/zudo-osc-hole-field/blob/892749dbdd53cfbab2d0876424fc4aecf1fa4311/circuit/routing/issue189/current-native-checkpoint.md).
+[immutable routing checkpoint](https://github.com/Takazudo/zudo-osc-hole-field/blob/e39760b1845695b986997067195ab96e64bd844c/circuit/routing/issue189/current-native-checkpoint.md).
