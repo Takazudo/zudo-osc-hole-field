@@ -1,0 +1,105 @@
+name: Epic242 F3 K1402 exact-access route
+on:
+  push:
+    branches: [integration/epic-242-f3-k1402-access-v1]
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: epic242-f3-k1402-access-v1
+  cancel-in-progress: false
+jobs:
+  route:
+    if: github.event.created && github.run_attempt == 1
+    runs-on: ubuntu-24.04
+    timeout-minutes: 43
+    env:
+      # Proposed identity. Creating this branch is forbidden until parent admission.
+      PARENT_ADMISSION_ID: epic242-f3-k1402-access-v1
+    steps:
+      - name: Initialize evidence before setup
+        run: |
+          python3 - <<'PY'
+          import json,os,time
+          from pathlib import Path
+          p=Path(os.environ['RUNNER_TEMP'])/'epic242-f3-k1402-access-v1'
+          p.mkdir()
+          (p/'bootstrap.json').write_text(json.dumps({'started_epoch':time.time(),'status':'NOT STARTED','native_workers_started':0,'probe_containers_started':0}))
+          PY
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          path: request
+          persist-credentials: false
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          ref: 6f0783335fa23d760877a91db3b63f93c039b4b4
+          path: method
+          persist-credentials: false
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97
+        with:
+          python-version: '3.11'
+      - name: Bind immutable sources and unused first-attempt execution branch
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -o pipefail
+          python request/circuit/routing/epic-242/decision-pilots/terminal-access/run_f3_k1402.py initialize \
+            --method "$GITHUB_WORKSPACE/method" --artifacts "$RUNNER_TEMP/f3-k1402-zips" \
+            --evidence-directory "$RUNNER_TEMP/epic242-f3-k1402-access-v1" \
+            2>&1 | tee "$RUNNER_TEMP/epic242-f3-k1402-access-v1/initialize.log"
+      - name: Install frozen numerical dependencies
+        working-directory: method
+        run: |
+          python - <<'PY'
+          import os,subprocess,sys
+          from pathlib import Path
+          with (Path(os.environ['RUNNER_TEMP'])/'epic242-f3-k1402-access-v1/dependencies.log').open('x') as log:
+              subprocess.run([sys.executable,'-m','pip','install','-r','scripts/pcbgen/numerical-requirements.txt'],stdout=log,stderr=subprocess.STDOUT,check=True,timeout=180)
+          PY
+      - name: Reuse frozen image preparation and hosted dispatch policy
+        working-directory: method
+        run: |
+          set -o pipefail
+          bash scripts/pcbgen/with_route_guard.sh python \
+            "$GITHUB_WORKSPACE/request/circuit/routing/epic-242/decision-pilots/terminal-access/run_f3_k1402.py" provision \
+            --method "$GITHUB_WORKSPACE/method" --artifacts "$RUNNER_TEMP/f3-k1402-zips" \
+            --evidence-directory "$RUNNER_TEMP/epic242-f3-k1402-access-v1" \
+            2>&1 | tee "$RUNNER_TEMP/epic242-f3-k1402-access-v1/provision.log"
+      - name: Authenticate full retained K1402 artifact
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          python request/circuit/routing/epic-242/decision-pilots/terminal-access/run_f3_k1402.py authenticate \
+            --method "$GITHUB_WORKSPACE/method" --artifacts "$RUNNER_TEMP/f3-k1402-zips" \
+            --evidence-directory "$RUNNER_TEMP/epic242-f3-k1402-access-v1"
+      - name: Prepare exact fixture and execute one guarded 300-second route
+        run: |
+          python request/circuit/routing/epic-242/decision-pilots/terminal-access/run_f3_k1402.py execute \
+            --method "$GITHUB_WORKSPACE/method" --artifacts "$RUNNER_TEMP/f3-k1402-zips" \
+            --evidence-directory "$RUNNER_TEMP/epic242-f3-k1402-access-v1"
+      - name: Retain full fixture and explicit failure inventory
+        if: always()
+        env:
+          JOB_STATUS: ${{ job.status }}
+        run: |
+          python3 - <<'PY'
+          import json,os,subprocess,sys
+          from pathlib import Path
+          root=Path(os.environ['GITHUB_WORKSPACE']);e=Path(os.environ['RUNNER_TEMP'])/'epic242-f3-k1402-access-v1'
+          e.mkdir(exist_ok=True)
+          script=root/'request/circuit/routing/epic-242/decision-pilots/terminal-access/run_f3_k1402.py'
+          if script.is_file() and (root/'method').is_dir():
+              result=subprocess.run([sys.executable,str(script),'finalize','--method',str(root/'method'),'--artifacts',os.environ['RUNNER_TEMP']+'/f3-k1402-zips','--evidence-directory',str(e)])
+              if result.returncode==0:sys.exit(0)
+          (e/'retention-failure.json').write_text(json.dumps({'job_status':os.environ['JOB_STATUS'],'status':'SETUP OR RETENTION INCOMPLETE; STOP','proposal':'NOT VERIFIED','diagnostics':'NOT VERIFIED','cleanup':'UNKNOWN; inspect retained guard/logs; absence is not success','accepted':False}))
+          sys.exit(1)
+          PY
+      - name: Upload complete positive or negative evidence
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: epic242-f3-k1402-access-v1-${{ github.run_id }}
+          path: ${{ runner.temp }}/epic242-f3-k1402-access-v1/
+          include-hidden-files: true
+          retention-days: 30
+          if-no-files-found: error
