@@ -1,9 +1,9 @@
 {
   "hardware_epoch": "epic242-e0",
-  "tool_epoch": "epic242-tools-e7-lifecycle-ci",
+  "tool_epoch": "epic242-tools-e8-python-test-dependency",
   "historical_manifest": "input-files.json",
   "source_base_sha": "f12b8fbf2500a372308b5d01a2dfde78c144d327",
-  "reason": "Add one exclusive, admitted CI lifecycle qualification for the existing reviewed startup gate; pinned image, two sequential 60-second short helpers, exact intentional failure proof and retained negative evidence. No native qualification dispatched.",
+  "reason": "Pin PyYAML 6.0.3 in Documentation CI Python test environment so existing workflow-structure tests execute without relaxing their assertions; no native run or hardware source change.",
   "historical_overrides": {
     "scripts/kicad/README.md": {
       "historical_sha256": "f8273d7d1056393a1b3102b6520a795ab79bd4f170ef57b42b5b3c08fb3d5a4f",
@@ -15,7 +15,7 @@
     }
   },
   "tool_files": {
-    ".github/workflows/check.yml": "5f374519f301daea0c0cf43f8a74d96be12ff374f77da6db728f62deae64b9aa",
+    ".github/workflows/check.yml": "351dd5a9b3a5196962ea894707cb1d5d58799782fa5b48336c95787a6eba48ee",
     "scripts/kicad/run.sh": "f91b2c8846856a6d38a10eb9e6314b6ebec3222b68df37942f3716ab860d8c91",
     "scripts/kicad/README.md": "969b529cdff30bd4d80f58d4514e76c38197e62c5afe4a014f58aa11b18e9cf3",
     "scripts/kicad/native_resource_guard.py": "ee755233af405e60cf592956dcf42ca1069f5face6c20c1cdfcdf6f8479ef8ca",
@@ -36,8 +36,9 @@
     "scripts/kicad/native_start_gate.sh": "6763496a773f4a4cd69a47f20eb2f2c07aec33b9351a7bbd861e0d368ed0083d",
     "scripts/kicad/test_native_start_gate.py": "a5f6e6d22ab257c7138d95668fa3a7e2a5f1eb162ad7971ca48088c453135eda",
     "scripts/kicad/qualify_startup_handshake.py": "15c977c003b517043c5cc2ab368d4b57f5821314f811929d0d5e6ab7c2223dc0",
-    "scripts/kicad/test_qualify_startup_handshake.py": "b8d2d4857776405455949e57730eb2fe89ad9d60d8d29ebcdd8306f38317b764"
+    "scripts/kicad/test_qualify_startup_handshake.py": "b8d2d4857776405455949e57730eb2fe89ad9d60d8d29ebcdd8306f38317b764",
+    "scripts/checks/python-test-requirements.txt": "312aa65d307b0ba587a3d7d122df103089d9da13f537d6f2a8fee94e88f9e6ec"
   },
   "native_acceptance": false,
-  "previous_tool_epoch": "epic242-tools-e6-startup-handshake"
+  "previous_tool_epoch": "epic242-tools-e7-lifecycle-ci"
 }
