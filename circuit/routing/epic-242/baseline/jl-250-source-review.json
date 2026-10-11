@@ -1,0 +1,54 @@
+{
+  "issue": 250,
+  "pr": 269,
+  "source_sha": "220772f844afab9d87f01a4598a360b52534310e",
+  "historical_parent_sha": "40aa1cec58190487dc70aa5048a366e29a6b32a1",
+  "integration_review_sha": "103840c334808cf65f6ec07f528f9ebb834d6ccd",
+  "status": "SOURCE_REVIEWED / HOLD_REVISED_HEAD",
+  "integrated_owner_files": false,
+  "tests": {
+    "historical_pinned_dependencies": "numpy2.5.4/scipy1.18.1/shapely2.2.0",
+    "focused_tests": "14 PASS,6.612seconds",
+    "deterministic_prepare_check": "PASS at historical owner head",
+    "initial_old_dependency_trial": "Version-binding mismatch at numpy2.2.6/scipy1.15.3/shapely2.1.2; corrected by isolated pinned environment, not relaxed test"
+  },
+  "preservation": {
+    "owned_files": 10,
+    "accepted_board": "JL117 unchanged",
+    "complete_open_edges": 117,
+    "signal_edges": 103,
+    "agnd_edges": 14,
+    "unresolved_nets": 90,
+    "context_files_authenticated": 26,
+    "full_archive_id": 11664813688,
+    "full_archive_size": 45476297,
+    "full_archive_sha256": "452ffc9a1cf5e6e8d41e5e636e75d1e101fa28bd7ab23f2a21ebd461391d6138",
+    "copper": "preserved including duplicate track UUID row multiplicity; no deduplication/cuts/additions"
+  },
+  "bounded_diagnostic": [
+    {
+      "window_mm": 3,
+      "legal_via_cells": 1,
+      "source_cells": 2790,
+      "reachable_cells": 11020,
+      "reachable_first_via_cells": 0
+    },
+    {
+      "window_mm": 6,
+      "legal_via_cells": 958,
+      "source_cells": 2790,
+      "reachable_cells": 15807,
+      "reachable_first_via_cells": 0
+    }
+  ],
+  "claim_limit": "No reachable first-via on tested conservative raster masks; optimistic eight-neighbour same-layer flood upper bound. No A*/native search or physical-impossibility/boardwide disconnect/routing-method adoption claim.",
+  "required_reconciliation": [
+    "Parent assigned owner README11020 correction and exact blocker attribution source tests; re-review revised head before integration.",
+    "Current wrapper seal differs: historicalbc74f0ade82c29d64c44119ea435bc7bfd164fc06e9afff240a3cb2b44b272a0 vs reviewedcurrent8631e1222942b8396bf566c88deaed0e287234146c4adb1afa9aa87d0d1055a5. Preserve historical evidence and explicitly regenerate/review current seals; do not rewrite old proofs.",
+    "Update native admission mapping to direct /epic242.slice/epic242-w<worker-asciihex>.slice and retain cgroup/cap refusal tests.",
+    "README native command must reference scripts/kicad/native_resource_guard.py and describe source implemented/runtime unqualified, not superseded unwired proposal."
+  ],
+  "coupled_method_review": "Parent higher-capability independent review underway; no duplicate coordinator method work",
+  "native": "NOT RUN; no slots admitted, no copper adoption",
+  "independent_review": "Scope/preservation/mask semantics reviewed; only run.sh differs among available current tool seals"
+}
