@@ -4,7 +4,7 @@
   "epic": 242,
   "hardware_epoch": "epic242-e0",
   "tool_epoch": "epic242-tools-e6-startup-handshake",
-  "source_base_sha": "bd4ee23e4c71c3c66533c263beeb06af99d4ad17",
+  "source_base_sha": "cc04fff085f4c9328137a5443f0d9586eef72aaa",
   "authenticated_failure": {
     "run_id": 38125854892,
     "source_sha": "fe2e6d20c50587e223f1357f34c865db385fa5b0",
@@ -76,18 +76,6 @@
     "settle02": "RELEASED by parent",
     "next_native": "HOLD; reviewed published immutable source SHA plus new explicit parent admission required"
   },
-  "publication": {
-    "existing_draft_pr": 260,
-    "remote_head_at_readonly_check": "fe2e6d20c50587e223f1357f34c865db385fa5b0",
-    "unpublished_evidence_checkpoint": "bd4ee23e4c71c3c66533c263beeb06af99d4ad17",
-    "prior_push_error": "fatal: could not read Username for 'https://github.com': No such device or address",
-    "readonly_checks": [
-      "git ls-remote succeeded at remote_head_at_readonly_check",
-      "gh api repository permissions reports push=true",
-      "git config --show-origin --get-all credential.helper: no configured helper (exit1)"
-    ],
-    "interpretation": "GitHub API read access/declared permissions do not prove Git HTTPS push authentication. No credentials, git authentication configuration or bypass changed. Source retained locally for supported publication recovery."
-  },
   "references": [
     "https://docs.docker.com/reference/cli/docker/container/create/",
     "https://docs.docker.com/reference/cli/docker/container/start/",
@@ -100,5 +88,29 @@
     "pnpm_circuit_check": "PASS;68-line offline contract; schematic/placement binding not performed; pin-asset check performed",
     "pnpm_check": "PASS; generated pages/preflight/models/31footprint previews current; one collection and tsc no errors",
     "frozen_inputs": "PASS;1881original inputs unchanged;195harnesses/390complete endpoint refs/pinmaps/poses;accepted117/129/1402 DRC/parity0/0;source-only invariant proof"
+  },
+  "previous_publication_check": {
+    "existing_draft_pr": 260,
+    "remote_head_at_readonly_check": "fe2e6d20c50587e223f1357f34c865db385fa5b0",
+    "unpublished_evidence_checkpoint": "bd4ee23e4c71c3c66533c263beeb06af99d4ad17",
+    "prior_push_error": "fatal: could not read Username for 'https://github.com': No such device or address",
+    "readonly_checks": [
+      "git ls-remote succeeded at remote_head_at_readonly_check",
+      "gh api repository permissions reports push=true",
+      "git config --show-origin --get-all credential.helper: no configured helper (exit1)"
+    ],
+    "interpretation": "GitHub API read access/declared permissions do not prove Git HTTPS push authentication. No credentials, git authentication configuration or bypass changed. Source retained locally for supported publication recovery."
+  },
+  "publication": {
+    "interface": "authorized GitHub connector Git data tools",
+    "branch": "integration/epic-242-core-routing",
+    "existing_draft_pr": 260,
+    "expected_base_sha": "fe2e6d20c50587e223f1357f34c865db385fa5b0",
+    "force": false,
+    "source_sha": "9950a864fbc02ff63734c4c9358b8a79a6abcd49",
+    "evidence_sha": "cc04fff085f4c9328137a5443f0d9586eef72aaa",
+    "mapping_receipt": "connector-publication-map.json",
+    "metadata_note": "Connector create_commit cannot preserve local author/committer timestamps. Exact tree/blob identity verified; remote SHAs differ. This metadata-only descendant rebinds current source references; original local checkpoints remain in the recovery bundle. Final branch head must be supplied as reviewed_commit/GITHUB_SHA for any future admitted execution.",
+    "native_dispatch": "NONE; parent review and new admission still required"
   }
 }
