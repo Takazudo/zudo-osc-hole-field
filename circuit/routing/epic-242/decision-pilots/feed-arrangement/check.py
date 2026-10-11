@@ -122,7 +122,7 @@ def build():
     return {'status':'REJECTED SERVICE CONSTRUCTION; conditional installed geometry only; NOT ACCEPTED / NOT APPLIED',
         'source_commit':lock['source_commit'],'input_sha256':lock['files'],'tool_sha256':sha(Path(__file__)),
         'current_face_contract':['KA F.Cu','KB F.Cu'],'alternative_faces':['KA B.Cu','KB F.Cu'],
-        'face_change_authorized':False,'geometry_is_conditional_research':True,
+        'face_change_adopted':False,'reversible_face_proposal_permitted':True,'face_requires_user_permission':False,'geometry_is_conditional_research':True,
         'terminals':terminals,'wire_identity_source':feed['id'],'wires':wires,'clamp_envelopes':clamps,'enclosure_side_arms':beams,
         'clamp_load_path':'Two releasable split-guide bars through arms to enclosure side-frame; no new PCB holes and no solder structural load. Material/retention/insulation and fastening geometry NOT QUALIFIED; this construction is rejected before service adoption.',
         'bulk_reserves':bulk,'monitor_reserve':monitor,

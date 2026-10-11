@@ -1468,7 +1468,8 @@
     "termination_scope": "Straight tangent continuations end at recentered land centers. Reserve is checked; stripping, solder and insulation termination remain unqualified. Bare-PCB tube bound covers raised flexible section only.",
     "wires_per_row": 3
   },
-  "face_change_authorized": false,
+  "face_change_adopted": false,
+  "face_requires_user_permission": false,
   "gates": {
     "actual_copper": false,
     "all_100_trim_access": false,
@@ -1614,8 +1615,10 @@
     "required_qualified_main_cut_ceiling_mm": 104,
     "scope": "Stronger performance targets within existing 1mohm/0.5mohm ceilings; actual copper extraction and manufactured cuts NOT PROVEN. Main source geometry is recomputed, not a straight-line lower bound."
   },
+  "manufacturing_tolerance_status": "UNQUALIFIED: no selected dimensional/position/warp/deflection/assembly/shape budget; positive nominal geometry is not positive physical margin",
+  "reversible_face_proposal_permitted": true,
   "source_commit": "29140d4e19d526eed3a02a73c33f8ce4219c78f0",
-  "status": "CONDITIONAL SOURCE PROPOSAL; face change not accepted; NOT APPLIED / NOT PHYSICAL FIT",
+  "status": "CONDITIONAL SOURCE PROPOSAL; provisional face contract unreconciled; NOT APPLIED / NOT PHYSICAL FIT",
   "sweep": {
     "axial_withdrawal_mm": [
       0,
@@ -1720,5 +1723,5 @@
     "source_obstacle_tube_clearance_lower_bound_mm": 0.25459999999998306,
     "wire_wire_clearance_lower_bound_mm": 3.7108721829526763
   },
-  "tool_sha256": "1366fc2bb4250d7d6dd84c0de641395c772b87e9aa89481ffb813f88bf490982"
+  "tool_sha256": "0a515ee99d19b6c86b6584a713b35cedf84f9d52f69297fc662555dc81101227"
 }

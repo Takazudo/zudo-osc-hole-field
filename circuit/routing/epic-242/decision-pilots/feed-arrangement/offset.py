@@ -207,8 +207,8 @@ def build():
     main_cut=math.ceil(max(v['cut_with_10mm_allowance_upper_mm'] for v in main));new_cut=math.ceil(LENGTH+2*TAIL+10)
     allocated={'rail_ohm':.00015,'return_ohm':.0002}
     drops={rail:base.path_drop(amps,4.6,main_cut,new_cut,d,allocated['rail_ohm'],allocated['return_ohm']) for rail,amps in d['rail_max_A'].items()}
-    return {'status':'CONDITIONAL SOURCE PROPOSAL; face change not accepted; NOT APPLIED / NOT PHYSICAL FIT',
-        'source_commit':historical['source_commit'],'tool_sha256':base.sha(Path(__file__)),'clamps_tool_sha256':base.sha(HERE/'clamps.py'),'accepted':False,'face_change_authorized':False,
+    return {'status':'CONDITIONAL SOURCE PROPOSAL; provisional face contract unreconciled; NOT APPLIED / NOT PHYSICAL FIT',
+        'source_commit':historical['source_commit'],'tool_sha256':base.sha(Path(__file__)),'clamps_tool_sha256':base.sha(HERE/'clamps.py'),'accepted':False,'face_change_adopted':False,'reversible_face_proposal_permitted':True,'face_requires_user_permission':False,
         'construction':{'row_count':2,'wires_per_row':3,'KA_side':'B.Cu','KB_side':'F.Cu','fixed_panel_or_canonical_edits':0,
             'terminals':terminals,'bulk_and_monitor_reserves':reserves,'anchor_height_from_face_mm':HEIGHT,'straight_land_bridge_each_mm':BRIDGE,'allowance_remaining_after_two_bridges_mm':10-2*BRIDGE,'termination_scope':'Straight tangent continuations end at recentered land centers. Reserve is checked; stripping, solder and insulation termination remain unqualified. Bare-PCB tube bound covers raised flexible section only.','offset_xy_mm':[OFFSET,0],'free_bezier_length_mm':LENGTH,
             'straight_clamping_tail_each_mm':TAIL,'Y_bow_sign_by_W1_to_W6':signs,'fixed_tail_direction_KA_to_KB_before_Y_sign':V0.tolist(),'fixed_end_direction':V1.tolist(),
@@ -224,6 +224,7 @@ def build():
         'joined_budget':{'actual_main_source_curves':main,'required_qualified_main_cut_ceiling_mm':main_cut,'new_wire_cut_ceiling_mm':new_cut,
             'proposed_global_copper_targets':allocated,'drops_mV_if_all_targets_and_cut_classes_realized':drops,
             'minimum_margin_mV':20-max(drops.values()),'drops_at_existing_full_copper_ceilings_mV':{rail:base.path_drop(amps,4.6,main_cut,new_cut,d) for rail,amps in d['rail_max_A'].items()},'drops_if_main_cut_is_110mm_mV':{rail:base.path_drop(amps,4.6,110,new_cut,d,allocated['rail_ohm'],allocated['return_ohm']) for rail,amps in d['rail_max_A'].items()},'scope':'Stronger performance targets within existing 1mohm/0.5mohm ceilings; actual copper extraction and manufactured cuts NOT PROVEN. Main source geometry is recomputed, not a straight-line lower bound.'},
+        'manufacturing_tolerance_status':'UNQUALIFIED: no selected dimensional/position/warp/deflection/assembly/shape budget; positive nominal geometry is not positive physical margin',
         'gates':{'wire_geometry':radius_min>RADIUS and minimum_clearance>0 and wire_sep>0 and enclosure_clearance>0,
             'arithmetic_allocation':max(drops.values())<20,'face_contract':False,'clamp_assembly':False,'nominal_clamp_collision_envelopes':clamp_wire>0 and clamp_source>0 and clamps['enclosure_XY_margin_mm']>0,'actual_copper':False,'all_100_trim_access':False,'native':False}}
 

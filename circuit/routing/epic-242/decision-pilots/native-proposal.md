@@ -2,6 +2,8 @@
 
 Status: SOURCE PROPOSAL ONLY; NOT ADMITTED, NOT RUN. This is a bounded direct-connectivity diagnostic, not plane-feed completion, a physically realized split, or architecture acceptance. Existing mechanical/power blockers remain independent. The old sample manifests stay as historical evidence; these corrected targets are owned here.
 
+For the smallest two-case request, use `minimum-native-request.json` at its explicit immutable29140d4e method epoch. Its corrected route payload first performs a gated pinned-KiCad version probe, then executes the unchanged host numerical router inside the same300-second worker. A host-only route payload would fail the guard's mandatory Docker observation. Apply the probe equally to every compared case. No admission or execution is implied.
+
 ## Frozen comparison
 
 `matching-spec.json` predeclares 12 real demands: both supply polarities, sensitive signal, and return in each of O1/F3/E1. `matched-demands.json` authenticates their exact pad/net IDs, native geometry and BOTH_OPEN state on K and both candidate owners. Full original groups include track/via UUIDs. Remote routing goals are the same two pad masks on every board, never a larger K copper group. All board obstacles remain loaded. Bounds use native PCB coordinates: source/mechanical coordinates +[100,50] mm. No cuts, rip-up, plane fanout, full-board fallback or retry is allowed.
@@ -35,7 +37,7 @@ Each following native/search command needs a **separate explicit parent admissio
 
 | Step | Command inside guard | Wall limit |
 | --- | --- | --- |
-| Route exact anchors | `python3 "$P/route_matched.py" --domain <domain> --board <board> --fixture "$F"` | 300 s |
+| Route exact anchors | `bash -c 'bash scripts/kicad/run.sh kicad-cli version && exec "$@"' epic242-route-probe python3 "$P/route_matched.py" --domain <domain> --board <board> --fixture "$F"` | 300 s including probe |
 | Apply private proposal | `bash scripts/kicad/run.sh python3 scripts/pcbgen/grid_apply.py "$F/before/osc-core.kicad_pcb" "$F/matched-proposal.json" --output "$F/after/osc-core.kicad_pcb"` | 300 s |
 | Settle after | `python3 scripts/partition/core_split_candidates.py settle --board "$F/after/osc-core.kicad_pcb"` | 600 s |
 | Prepare fresh copy (source-only, outside guard) | `python3 scripts/partition/core_split_candidates.py fresh-copy --output "$F"` | — |

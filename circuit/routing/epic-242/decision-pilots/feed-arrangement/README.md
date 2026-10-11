@@ -7,10 +7,13 @@ integration coordinator; the mechanical and power lanes' frozen producer inputs
 are unchanged. All source inputs are locked to `29140d4e` in `source-lock.json`.
 
 The current power contract specifies F.Cu at both new endpoints. This alternative
-uses **KA B.Cu → KB F.Cu**. That face change is awaiting an owner decision and is
-not written into the power contract. The source proposal can be reviewed without
-authorizing native execution or physical changes. It does not prove every other
-permitted arrangement impossible.
+uses **KA B.Cu → KB F.Cu**. F/F was a provisional generator choice, not a fixed
+user or connector requirement. This reversible proposal is permitted under the
+epic without a new user permission question; the historical power contract is
+unchanged pending source-owner reconciliation. See the
+[provenance and tolerance correction](face-provenance-and-tolerance.md).
+Neither source review nor this face choice authorizes native execution or physical
+changes. The proposal does not prove every other permitted arrangement impossible.
 
 ## Concrete arrangement and comparison evidence
 
@@ -141,7 +144,7 @@ drift. These are source calculations only and do not invoke KiCad or routing.
 Independent Astra High review checked curvature/collision bounding, the corrected
 negative-bow obstacle coverage, full land bridges, carrier geometry and budgets.
 
-Remaining gates: owner face choice; terminal/collet/material/fastener and cut
+Remaining gates: producer face-contract reconciliation; terminal/collet/material/fastener and cut
 qualification; tighter actual global copper extraction; complete peripheral
 return model and all100 adjustment access; native/fresh/full-warning preservation
 gates. `accepted`, `face_contract`, `clamp_assembly`, `actual_copper`,

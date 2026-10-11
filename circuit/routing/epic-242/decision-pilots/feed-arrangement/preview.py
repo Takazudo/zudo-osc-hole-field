@@ -17,7 +17,7 @@ def build():
            '<rect width="1150" height="1550" fill="#f6f7fa"/>',
            '<style>text{font-family:monospace;fill:#263244} .title{font-size:19px;font-weight:bold}.small{font-size:12px}</style>',
            '<text x="28" y="32" class="title">Conditional split-row feed · fixed-tangent withdrawal</text>',
-           '<text x="28" y="55" class="small">SOURCE ONLY / face choice pending / no canonical CAD changes / dimensions in mm</text>']
+           '<text x="28" y="55" class="small">SOURCE ONLY / provisional face contract / no canonical CAD changes / dimensions in mm</text>']
     for panel, travel in enumerate((0, 5, 10)):
         ox, oy, scale = 35, 100+panel*450, 7.8
         out.append(f'<text x="{ox}" y="{oy-15}" class="title">{travel} mm KB withdrawal — XY projection</text>')
