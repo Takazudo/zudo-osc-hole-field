@@ -1,8 +1,10 @@
 # One local C2312.1 breakout repair
 
-**Latest result:** the [candidate-local exact-transition revision](exact-transition/README.md)
-progressed beyond the isolated pocket but reached the 50,000-expansion cap
-without a complete original-pair candidate. No native execution followed.
+**Latest result:** the [one final weight-2 attempt](weighted-final/README.md)
+found a graph path but failed full-chain new-via spacing. No candidate was
+emitted. The unchanged-placement case is retired, with a
+[separate placement recommendation](weighted-final/placement-recommendation.md)
+for #245/#253. No native execution followed.
 
 **STOPPED as an ineffective In2-only routing candidate.** The subsequent
 [complete region proof](region-stop/README.md) finds a 416-node pocket with no
