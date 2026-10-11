@@ -5,6 +5,7 @@ import json
 import math
 from pathlib import Path
 import unittest
+from unittest.mock import patch
 
 HERE = Path(__file__).resolve().parent
 spec = importlib.util.spec_from_file_location('mechanical', HERE/'build.py')
@@ -18,6 +19,16 @@ class MechanicalTest(unittest.TestCase):
         cls.cfg = json.loads((HERE/'candidates.json').read_text())
         cls.inputs = m.load_inputs()
         cls.report = m.build(cls.cfg, cls.inputs)
+
+    def test_receipt_order_is_independent_of_filesystem(self):
+        parts = self.inputs['io-partition']['physical_packages']
+        expected = m.model_inventory(parts)
+        original_glob = Path.glob
+        def reversed_receipts(path, pattern):
+            paths = list(original_glob(path, pattern))
+            return iter(reversed(paths)) if path.name == 'cad-receipts' else iter(paths)
+        with patch.object(Path, 'glob', reversed_receipts):
+            self.assertEqual(expected, m.model_inventory(parts))
 
     def test_harness_pin_and_pose_mutations_fail(self):
         baseline = self.inputs['partition']

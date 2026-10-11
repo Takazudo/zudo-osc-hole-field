@@ -142,7 +142,7 @@ def source_lock(inputs, cfg):
 
 
 def model_inventory(parts):
-    receipts = [json.loads(p.read_text()) for p in (ROOT/'circuit/cad-receipts').glob('*.json')]
+    receipts = [json.loads(p.read_text()) for p in sorted((ROOT/'circuit/cad-receipts').glob('*.json'))]
     rows = []
     for fp, count in sorted(Counter(p['footprint'] for p in parts).items()):
         path = 'footprints/kicad/zudo-osc-hole-field.pretty/'+fp.split(':')[-1]+'.kicad_mod'
