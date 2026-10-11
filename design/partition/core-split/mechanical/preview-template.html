@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Core stack mechanical comparisons — issue 246</title>
+<style>
+body{font:16px/1.45 system-ui,sans-serif;margin:24px;color:#182836;background:#f4f6f7}h1{font-size:26px}select,input,button{font:inherit;padding:6px}label{margin-right:20px}main{display:grid;grid-template-columns:minmax(440px,1fr) minmax(340px,.8fr);gap:20px}section{background:white;padding:18px;border:1px solid #b7c6ce}svg{width:100%;background:#fff}table{border-collapse:collapse;width:100%;font-size:13px}td,th{padding:5px;text-align:left;border-bottom:1px solid #ccc}button.ref{font-size:13px;padding:2px;border:0;color:#075d93;background:none;cursor:pointer}pre{white-space:pre-wrap;max-height:440px;overflow:auto;font-size:12px}.warning{background:#fff1d9;padding:12px}.scroll{max-height:620px;overflow:auto}.selected{background:#fff1d9}a{color:#075d93}@media(max-width:850px){main{display:block}section{margin-bottom:20px}}
+</style>
+<h1>Core stack, harness and adjustment comparison</h1>
+<p class="warning">UNVALIDATED DRAFT. No topology selected. Drawings use source courtyards and proposed height allowances, not measured solids or installed fit. All physical and native acceptance remains NOT RUN. Labels and tool envelopes are reservations; red overlaps require review.</p>
+<p id="baseline"></p>
+<label>Alternative <select id="alternative"></select></label><label>Board <select id="board"></select></label><label>Face <select id="face"><option>F.Cu</option><option>B.Cu</option></select></label>
+<label><input id="showParts" type="checkbox" checked>Courtyards</label>
+<p id="summary"></p>
+<main><section><h2>Source XY / panel-frame plan, mm</h2><p>Green: outline; grey: part courtyards; blue: trimmers; orange: proposed loom passages; red: selected label/tool reserve. B face is shown in the same panel XY datum, not mirrored into a fabrication view.</p><svg id="plan" viewBox="-8 -8 338 318" role="img" aria-label="Selected core board geometry"></svg><p id="detailTitle">Select a trimmer in the table to inspect its function, mounted face and reservations.</p><pre id="detail"></pre></section>
+<section><h2>Dimensioned stack views</h2><p><a id="assembledLink">Assembled SVG</a> · <a id="explodedLink">Exploded SVG</a></p><img id="stack" alt="Dimensioned assembled stack" style="width:100%"><p>Supports: eight source K M2 seats per tray; enclosure-side shelves carry load. No new panel drills. Cable combs anchor to the carrier within 15 mm of ends and at most 25 mm apart.</p><p>Service: disconnect and verify discharge before disassembly. A reversible supported tray/cradle and reviewed service-loop power leads are proposed. Existing soldered main wires do not establish this access. No owner soldering; no energized service procedure is claimed.</p><h2>Trimmer Ref / function / mounted face</h2><label>Filter <input id="filter" placeholder="Ref or function"></label><div class="scroll"><table><thead><tr><th>Ref</th><th>Function</th><th>Face</th><th>Identity/access</th></tr></thead><tbody id="trims"></tbody></table></div></section></main>
+<section><h2>Dimensioned conflicts and route changes</h2><p>All 195 interfaces are frozen, including 191 core-facing and four JL–P. Complete pin maps and endpoint Refs are embedded in this file and comparison.json. Route cut estimates include 10 mm allowance. No cable reuse is qualified.</p><pre id="conflicts"></pre></section>
+<script>
+const report=__REPORT__;
+const $=id=>document.getElementById(id), ns='http://www.w3.org/2000/svg';
+let selected=null;
+function element(type,attrs,text){const e=document.createElementNS(ns,type);for(const [k,v] of Object.entries(attrs))e.setAttribute(k,v);if(text)e.textContent=text;$('plan').append(e);return e}
+function rect(box,attrs){element('rect',{x:box[0],y:box[1],width:box[2]-box[0],height:box[3]-box[1],...attrs})}
+function current(){return report.alternatives.find(a=>a.id===$('alternative').value)}
+function draw(){const a=current(),b=a.boards.find(b=>b.id===$('board').value),face=$('face').value;$('plan').replaceChildren();
+element('polygon',{points:b.outline_mm.map(p=>p.join(',')).join(' '),fill:'#dcece5',stroke:'#17634f','stroke-width':.5});
+if($('showParts').checked)for(const p of report.core_placements){if(a.family_owners[p.family]===b.id&&p.side===face)rect(p.courtyard_mm,{fill:'#71858d',opacity:.2,stroke:'#71858d','stroke-width':.1})}
+for(const xy of b.supports_xy_mm)element('circle',{cx:xy[0],cy:xy[1],r:1.6,fill:'#805f31'});
+rect([180,220,256,290],{fill:'#b68fb9',opacity:.12,stroke:'#7a4c80','stroke-width':.4});
+for(const p of a.through_loom_passages.filter(p=>p.board===b.id))rect(p.box_mm,{fill:'#ffa62e',opacity:.35,stroke:'#a96300','stroke-width':.3});
+for(const p of a.hard_conflicts.filter(p=>p.board===b.id&&p.box_mm))rect(p.box_mm,{fill:'#d33',opacity:.4});
+for(const t of a.trimmers.filter(t=>t.board===b.id&&t.mounted_face===face)){const [x,y]=t.xy_mm;element('circle',{cx:x,cy:y,r:1.4,fill:'#00699b'});if(selected===t.ref){rect(t.label_reservation_mm,{fill:'#ff9999',opacity:.7,stroke:'#b00','stroke-width':.3});element('circle',{cx:x,cy:y,r:1.5,fill:'none',stroke:'#b00','stroke-width':.4});element('text',{x:x+3,y:y-3,'font-size':3.2,fill:'#172c40'},t.ref);$('detailTitle').textContent=t.label+' — '+t.board+' '+t.mounted_face;$('detail').textContent=JSON.stringify(t,null,2)}}
+element('text',{x:6,y:305,'font-size':3.2},b.id+' F Z='+b.front_z_mm+' / B Z='+b.back_z_mm+'; 310 × 284, notch 56 × 46 mm');
+const filter=$('filter').value.toLowerCase();$('trims').replaceChildren();for(const t of a.trimmers.filter(t=>t.board===b.id&&(t.ref+' '+t.function).toLowerCase().includes(filter))){const tr=document.createElement('tr');if(t.ref===selected)tr.className='selected';const td=document.createElement('td'),button=document.createElement('button');button.className='ref';button.textContent=t.ref;button.onclick=()=>{selected=t.ref;$('face').value=t.mounted_face;draw()};td.append(button);tr.append(td);for(const value of [t.function,t.mounted_face,t.mpn||'MPN unresolved']){const td=document.createElement('td');td.textContent=value;tr.append(td)}$('trims').append(tr)}
+$('summary').textContent=JSON.stringify(a.summary);
+$('assembledLink').href=a.id+'-assembled.svg';$('explodedLink').href=a.id+'-exploded.svg';$('stack').src=a.id+'-assembled.svg';
+$('conflicts').textContent=JSON.stringify({hard_conflicts:a.hard_conflicts,through_loom_passages:a.through_loom_passages,connector_service_passages:a.connector_service_passages,power_bounds:a.power_bounds,harnesses:a.harnesses},null,2);
+}
+function changeAlternative(){$('detail').textContent='';$('detailTitle').textContent='Select a trimmer in the table to inspect its function, mounted face and reservations.';const a=current();$('board').replaceChildren(...a.boards.map(b=>new Option(b.id,b.id)));selected=null;draw()}
+$('baseline').textContent='Immutable source: '+report.baseline_sha+' · exact MPN gaps: '+report.trimmer_unresolved_mpn_count;
+$('alternative').replaceChildren(...report.alternatives.map(a=>new Option(a.id,a.id)));$('alternative').onchange=changeAlternative;
+for(const id of ['board','face'])$(id).onchange=()=>{selected=null;$('detailTitle').textContent='Select a trimmer in the table to inspect its function, mounted face and reservations.';$('detail').textContent='';draw()};$('showParts').onchange=draw;$('filter').oninput=draw;changeAlternative();
+</script></html>

@@ -1,0 +1,133 @@
+{
+  "schema_version": 1,
+  "baseline_sha": "65cefd41fc39e064d38319115ad96016a1c6b71c",
+  "status": "UNVALIDATED COMPARISONS; no topology or production geometry selected",
+  "datum": "Panel front Z=0; negative Z is rearward; all dimensions mm",
+  "core_thickness_mm": 1.6,
+  "front_body_ceiling_mm": 7.3,
+  "rear_body_ceiling_mm": 5,
+  "rear_clearance_mm": 13.4,
+  "support_collar_diameter_mm": 3.2,
+  "support_hole_diameter_mm": 2.2,
+  "tool_shaft_diameter_mm": 3,
+  "tool_free_length_mm": 60,
+  "label_size_mm": [
+    16,
+    4
+  ],
+  "label_text_height_mm": 1,
+  "label_stroke_mm": 0.15,
+  "cut_allowance_mm": 10,
+  "passage_edge_margin_mm": 0.5,
+  "partitions": {
+    "two": {
+      "KA": [
+        "oscillator",
+        "octave_reference",
+        "filter",
+        "wavefolder",
+        "mix4_vca",
+        "noise",
+        "01_power_interfaces"
+      ],
+      "KB": [
+        "envelope",
+        "offset",
+        "sample_hold",
+        "mix5"
+      ]
+    },
+    "three": {
+      "KA": [
+        "oscillator",
+        "octave_reference",
+        "sample_hold",
+        "01_power_interfaces"
+      ],
+      "KB": [
+        "filter",
+        "wavefolder",
+        "mix4_vca",
+        "mix5",
+        "noise"
+      ],
+      "KC": [
+        "envelope",
+        "offset"
+      ]
+    }
+  },
+  "alternatives": [
+    {
+      "id": "two-compact",
+      "partition": "two",
+      "front_z_mm": {
+        "KA": -74,
+        "KB": -100
+      },
+      "rear_wall_z_mm": -120
+    },
+    {
+      "id": "two-deep",
+      "partition": "two",
+      "front_z_mm": {
+        "KA": -100,
+        "KB": -126
+      },
+      "rear_wall_z_mm": -146
+    },
+    {
+      "id": "three-compact",
+      "partition": "three",
+      "front_z_mm": {
+        "KA": -74,
+        "KB": -100,
+        "KC": -126
+      },
+      "rear_wall_z_mm": -146
+    },
+    {
+      "id": "three-deep",
+      "partition": "three",
+      "front_z_mm": {
+        "KA": -100,
+        "KB": -126,
+        "KC": -152
+      },
+      "rear_wall_z_mm": -172
+    },
+    {
+      "id": "three-120mm-rejected",
+      "partition": "three",
+      "front_z_mm": {
+        "KA": -48,
+        "KB": -74,
+        "KC": -100
+      },
+      "rear_wall_z_mm": -120
+    }
+  ],
+  "support_contract": "Each core uses the eight source K edge collars and an independently fastened enclosure-side carrier shelf. 24.4 mm clear PCB-face spacer distance at 26 mm pitch. Shelf/support threads, stiffness and extraction are unqualified; no connector/solder structural load, no new panel holes.",
+  "service_contract": "Keep current owner-accepted adjustment intent: all trims reachable without owner soldering. Retained F/B poses below are comparison inputs, not a new rejection of the accepted preview. Propose reversible individual trays and a factory-connected service-loop power loom plus insulated bench cradle; exact loop, power budget and reversible extraction are pending #247/#253/#65. Never treat factory desoldering as owner calibration access.",
+  "new_feed_reservation": {
+    "rect_mm": [
+      180,
+      220,
+      256,
+      290
+    ],
+    "height_mm": 5,
+    "status": "Existing K protection reservation replicated as a candidate holdout, not available free area. Exact per-core feed identity/route and additional bulk budget owned by #247; no source/inlet bridge."
+  },
+  "service_geometry": {
+    "rear_working_depth_mm": 60,
+    "cradle_inner_xy_mm": [
+      322,
+      302
+    ],
+    "proposed_unmating_travel_mm": 10,
+    "status": "PROJECT CHOICE only; not sourced JST release travel. Carrier withdrawal, tray rotation, hand sweep and service power-loop length NOT QUALIFIED; no desoldering access assumption."
+  },
+  "integration_parent_sha": "1da1909846dc3255888ecd36c88cee9737c85834",
+  "label_contract_sha": "7aba720c1246d6ec3f02909af6fb08dc774b3d31"
+}

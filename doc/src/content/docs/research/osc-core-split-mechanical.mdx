@@ -1,0 +1,48 @@
+---
+title: Core split mechanical comparisons
+description: Dimensioned two/three-core stack, harness, support and adjustment alternatives for issue 246.
+---
+
+Issue [#246](https://github.com/Takazudo/zudo-osc-hole-field/issues/246) supplies a source-owned comparison for [epic #242](https://github.com/Takazudo/zudo-osc-hole-field/issues/242). **No topology is selected and no installed fit is claimed.** Two-core remains a comparison preference. Production geometry, accepted copper and the fixed panel are unchanged.
+
+The immutable source epoch is `65cefd41fc39e064d38319115ad96016a1c6b71c`; the reconciled integration parent is `1da1909846dc3255888ecd36c88cee9737c85834`. The [mechanical bundle](https://github.com/Takazudo/zudo-osc-hole-field/tree/topic/246-mechanical-20261011-8f56/design/partition/core-split/mechanical) includes a deterministic generator, numerical/preservation tests, source hashes, complete interface inventory, ten SVG views and an offline interactive `generated/inspection.html`. Open that HTML locally to compare board/face, select any trimmer Ref and inspect dimensioned conflicts. Its embedded data are also in `comparison.json`.
+
+## Stack alternatives
+
+Panel front is Z=0; negative Z is rearward, dimensions in mm. Each core retains the source 310×284 outline with 56×46 notch and 1.6 thickness.
+
+| Alternative | Core front Z | Required inside depth | Core harness cut estimates | Passage/part intersections |
+| --- | --- | --- | --- | --- |
+| Two compact | −74, −100 | 120 | 41–92 | 100 |
+| Two deep | −100, −126 | 146 | 66–118 | 93 |
+| Three compact | −74, −100, −126 | 146 | 41–118 | 76 |
+| Three deep | −100, −126, −152 | 172 | 66–144 | 68 |
+| Three, rejected depth test | −48, −74, −100 | 120 | 27–92 | 89 |
+
+All alternatives need review. Compact front planes collide with all four retained JL–P loops, which reach 79.802 rear depth. The 48 plane also produces 58 bend-radius failures. Deeper options avoid those utility-plane collisions but increase enclosure and power-loop requirements. Every option still has board-material passages, part/tool/reservation conflicts; an empty `hard_conflicts` subset is not an overall fit pass.
+
+The 26 pitch provides 24.4 clear PCB-face distance and 12.1 gap between proposed 7.3 front/5 rear body allowances. This does not establish latch access or exact component fit. Eight source M2 support seats per board retain 2.2 holes/3.2 collar reservations. Independent enclosure-side shelves carry each reversible tray without connector or solder-joint loads; shelf stiffness, thread engagement and extraction remain unqualified. Rear work depth 60, cradle inner 322×302 and proposed unmating travel 10 are dimensioned project reservations, not measured or manufacturer-certified access.
+
+## Harness and service constraints
+
+All 195 existing harness IDs, 390 endpoint Refs and complete signal/AGND/rail/NC pin order are frozen; 191 face a core and four remain JL–P. Two-core assignment is 106/85 harnesses; three-core is 58/70/63. Non-core poses remain fixed. Core cuts include 10 allowance using a conservative continuous arc-length bound; unchanged JL–P cuts reach 204. Cable reuse is unqualified.
+
+The continuous bow-radius bound is checked against 9.398 for the retained AWG26 wire. Through-board reservations check component courtyards, support collars, GH connectors, protection reserves and tool openings. For example, three-compact K-P-10 intersects the KA support at (255.5, 289.5). Full continuous cable-to-cable and hand/support sweeps are not acceptance-tested. Power comparisons give necessary straight-line lower bounds only; deeper destinations exceed the existing 110 cut ceiling. Actual feed ownership, service slack, resistance and loss budgets belong to #247.
+
+## Trimmer intent and component evidence
+
+Preserve the user-accepted adjustment intent: every trim must be accessible without owner soldering. All 100 source Refs remain, with 44 F/56 B poses. Proposed reversible trays and factory-connected service-loop power wiring require mechanical and electrical review; desoldering is not a calibration-access solution.
+
+Function labels consume #248's exact Ref/Block/Role contract at `7aba720c1246d6ec3f02909af6fb08dc774b3d31`. Every view includes Ref, function and mounted face. Reserved labels avoid modeled obstacles, but some move up to 111.832 (two-core) or 82.354 (three-core); local Ref silk, leaders and readable installed association still need #249 review. A zero label collision count does not imply production silkscreen approval.
+
+The retained Bourns TC33X-2 drawing confirms top adjustment, nominal 1.2 height, a conservative candidate envelope 3.9×4.1×1.5, and 1.7 cross-slot engagement. This model reserves a larger 3 shaft and 60 free length. Twenty-three source MPNs remain unresolved; #248's component options are not selected. Exact seating, envelope alignment, B-face transforms, driver/hand sweep and calibrated rotation remain unverified. Family courtyards and generic 3D models are distinguished from exact solids and measured installation.
+
+## Evidence and readiness
+
+Source hashes cover frozen boards, panel, partition/loom/floorplan data, footprints, CAD receipts, models and retained manufacturer PDFs. Primary evidence is the retained JST GH drawing, Alpha 6821/5859 wire specifications and Bourns TC33X drawing; detailed locators and #248 evidence are included in the bundle.
+
+This is **MECHANICAL_COMPARISON_READY for architecture review**, not topology or manufacturing readiness. Focused tests cover identity mutations, complete pin maps, assignments, analytical bounds, known support collisions and label geometry. Native acceptance and physical installation remain **NOT RUN**. Canonical regeneration and heavy CI are deferred because no global native slot was assigned and production writes are outside this lane. Subsequent native work must use pinned KiCad 10.0.6 through `scripts/kicad/run.sh` under the coordinator's bounded global slot.
+
+Next: #245/#249 resolve placement/passages/supports/labels; #247 resolves feed ownership and service loops; #253 and existing physical gates #55/#64/#65 supply measured supported-access evidence. No orders, production adoption or energization follows from this comparison.
+
+Browser interaction/screenshot verification is deferred under [#263](https://github.com/Takazudo/zudo-osc-hole-field/issues/263): three guarded Chromium runs timed out. JavaScript syntax passed; visual acceptance is not claimed.
