@@ -44,8 +44,44 @@
     {
       "command": "Current reviewed scripts/kicad/native_resource_guard.py --plan with README command arguments (isolated source copy)",
       "result": "PASS command parse only;600seconds6GiBworker12GiBaggregate/no swap; no Docker/cgroup/native reads or execution"
+    },
+    {
+      "command": "/workspace/jl250-venv/bin/python circuit/routing/epic-242/jl/test_coupled_escape_spec.py /workspace/jl250-cache/jl117.zip",
+      "result": "PASS8focusedtests1.263s; independent8PASS1.119s"
+    },
+    {
+      "command": "/workspace/jl250-venv/bin/python circuit/routing/epic-242/jl/coupled_escape_spec.py /workspace/jl250-cache/jl117.zip --check",
+      "result": "PASS deterministic negative-spec replay; no routing/search/native"
+    },
+    {
+      "command": "python3 circuit/routing/epic-242/baseline/verify_inputs.py",
+      "result": "PASS after coupled specification:1883frozenfiles/195harnesses390completeendpointidentities unchanged"
     }
   ],
+  "coupled_feasibility": {
+    "anchor": "J807.S distinct original AGND component",
+    "conservative_blocker_rows": 9,
+    "cuts": [],
+    "foreign_nets": 4,
+    "independent_review": "jl_source_review PASS8tests1.119s; SMD endpoint layer regression fix verified",
+    "minimum_cut": "NOT ESTABLISHED; overlapping blocker rows not a cutset",
+    "native_baseline_reproduction": "Parent directed do not spend native time on baseline-only negative; NOT RUN and not next action",
+    "next_case": "XA31851703CA7C8D2D0C4; D8228.2/D8227.2/D1004.1 mandatory,2edges; selection only no feasibility claim",
+    "resources": {
+      "elapsed_seconds": 1.6303492810002354,
+      "exit_code": 0,
+      "measurement": "Python time.monotonic + resource.RUSAGE_CHILDREN; source analytic geometry only",
+      "peak_rss_kib": 144336
+    },
+    "restoration_geometry": "NOT PROVED; source identities and potential boundary contacts retained, exact native outside components absent",
+    "script": "coupled_escape_spec.py",
+    "six_pad_minus12": "Preserved exact original identities and historical group obligation",
+    "source": "U8202.16",
+    "specification": "coupled-escape-spec.json",
+    "status": "ONE BOUNDED CORRIDOR REJECTED; NO COMPLETE COUPLED PLAN",
+    "unexpanded_collision_nets": 3,
+    "unexpanded_envelope_collision_rows": 7
+  },
   "epoch": "epic242-e0",
   "independent_source_review": {
     "claim_limit": "Bounded conservative source masks, poured zones ignored; no physical impossibility, routing improvement or native acceptance",
@@ -82,9 +118,11 @@
   ],
   "original_parent_sha": "1da1909846dc3255888ecd36c88cee9737c85834",
   "output_sha256": {
-    "circuit/routing/epic-242/jl/README.md": "4a69da395d8c004c0b0a73ae9c3b00cb86ba5077117a4ef6172602a272bdad1b",
+    "circuit/routing/epic-242/jl/README.md": "802bd2b4c3f347f877e6e0c5c7d9b3d895d90ca58722779500ecebfa21602200",
     "circuit/routing/epic-242/jl/attribution.py": "d0ebc0456e897e5c9d50164d71dc8aefc364de8666fbd7a4c216bdff587220ee",
     "circuit/routing/epic-242/jl/cases.json": "2d7cdb7f2d720dda8e88e3b4c60b0a49d8557bfd1ea171af8fd112c24061ca22",
+    "circuit/routing/epic-242/jl/coupled-escape-spec.json": "09cced5531e97da9415cf5a21f1a827219d206063b80cd901d45583ac6b9e59f",
+    "circuit/routing/epic-242/jl/coupled_escape_spec.py": "c6dcae5636ccabf1d075edb226a6b66a91a7822d7035a029f3faf0a4ad0846f8",
     "circuit/routing/epic-242/jl/diagnostic-plan.json": "f4c39f0e89a8ac322034506ebbeeb7659b96dc5d01c6aaf03a4863dc94576fc9",
     "circuit/routing/epic-242/jl/native_diagnostic.py": "ac0c5259da631152e55860bd39ef5bc42b71fffe17ef6f9d2ac535fc1b758c22",
     "circuit/routing/epic-242/jl/no-copper-proposal.json": "6fa069df78fbec05da8172a68fd5bb93ab75f55d0886cbc1b7ed859176596e6a",
@@ -92,6 +130,7 @@
     "circuit/routing/epic-242/jl/prior-rejections.json": "db69077917d0621cab30af95ff796fb96470120c516d26e7c53481713a3a77c5",
     "circuit/routing/epic-242/jl/requirements-source.txt": "37edcdf0acc2029d995600bba88d90d0228b863088ca350c1df5abbce84a1c4b",
     "circuit/routing/epic-242/jl/test_admission.py": "d9d9d73c31c1b548ebfcd4034bf73cea02ead5c417bf81d79833f3fb75d1a057",
+    "circuit/routing/epic-242/jl/test_coupled_escape_spec.py": "5448dcc54bdd5097d51ca33361a344bb676019dee1de34920cf7ad8616dcba03",
     "circuit/routing/epic-242/jl/test_diagnostic.py": "eb008c31fab88510146daded6fa4292963975b47f8b654d5b2ff1d7171b69aeb",
     "circuit/routing/epic-242/jl/tooling-reconciliation.json": "ce0e6ee9cb405ad7fde77bd195d918c5f7212956fb0eb850e000540018dd5c77"
   },
@@ -100,7 +139,7 @@
     "handoff_source": "All canonical bytes reproducible from immutable40aa1cec and accepted GitHub artifacts; local archive not solehandoff",
     "local_preservation_archive_sha256": "08afba0fa235b41e58e3f50bd41974eac2c8f40b4cb94f9f5cd1c353343ecb1e"
   },
-  "previous_source_commit": "220772f844afab9d87f01a4598a360b52534310e",
+  "previous_source_commit": "ff1e6a6f3c7e34268230cd86c6c2e3bef015e5ff",
   "refined_diagnostic": {
     "claim_limit": "Optimistic mask-only flood; overlap counts nonadditive; zones ignored; no cuts/rule relaxation/search/native",
     "existing_component_goal": {

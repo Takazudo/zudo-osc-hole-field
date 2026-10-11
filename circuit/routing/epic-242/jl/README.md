@@ -46,12 +46,22 @@ Both are bounded negatives: the problem precedes A* expansion budget on this tes
 
 ## Replay and verification
 
+### Single coupled escape feasibility screen
+
+`coupled-escape-spec.json` records one explicit F.Cu centreline: U8202.16 `(239.705,154.2575)` → `(239.705,156.520)` → existing J807.S through-pad `(233.500,156.520)`, at unchanged 0.3 mm width/0.25 mm clearance. The goal belongs to the distinct original 1,389-member AGND component. This continuous recorded-shape screen finds seven unexpanded-envelope collisions across three nets, plus two additional conservative-margin blockers, for nine exact rows across four nets. It is separate from the router EDT masks and ignores poured zones; it neither identifies a minimum cut nor proves exhaustive physical impossibility.
+
+The specification retains exact blocking geometry, potential endpoint-contact row identities, every affected net's complete source row identities and pad poses, and the historical PR233 victim/two outside anchors/six-pad −12V obligations. Source endpoint contacts do not establish native outside components. **No complete coupled restoration topology or geometry is proved, and no cut set is selected.** Ambiguous repeated-UUID cuts are refused. Reject this corridor for execution; do not repeat it or the historical geometry with a larger budget.
+
+The next selected source-review case is `XA31851703CA7C8D2D0C4`: D8228.2/D8227.2 on B.Cu, with D1004.1 on F.Cu a mandatory third original component. Its two open edges and all three groups remain obligations. Selection makes no feasibility or routing-progress claim. The baseline-only native reproduction is no longer a proposed next action.
+
 Provision source dependencies in an isolated workspace venv using `requirements-source.txt`; these are source geometry dependencies, not a substitute KiCad oracle. From the repository root:
 
 ```bash
 /workspace/jl250-venv/bin/python circuit/routing/epic-242/jl/prepare_diagnostic.py /workspace/jl250-cache/jl117.zip --check
 /workspace/jl250-venv/bin/python circuit/routing/epic-242/jl/test_diagnostic.py /workspace/jl250-cache/jl117.zip
 /workspace/jl250-venv/bin/python -m unittest discover -s circuit/routing/epic-242/jl -p test_admission.py
+/workspace/jl250-venv/bin/python circuit/routing/epic-242/jl/coupled_escape_spec.py /workspace/jl250-cache/jl117.zip --check
+/workspace/jl250-venv/bin/python circuit/routing/epic-242/jl/test_coupled_escape_spec.py /workspace/jl250-cache/jl117.zip
 /workspace/jl250-venv/bin/python circuit/routing/epic-242/jl/native_diagnostic.py /workspace/jl250-cache/jl117.zip --label 250-u8202-firstvia-a1
 python3 circuit/routing/epic-242/baseline/verify_inputs.py
 pnpm circuit:check
@@ -61,7 +71,11 @@ Twenty-one focused diagnostic tests and five admission tests pass: full archive/
 
 Real CLI help was inspected. `local_repair_pilot.py` accepts only `--board` and `--coupled`, with fixed issue189 plans; there is no `--plan`. `route_shards.py merge` can write canonical copper and is never invoked here. The lane does not replace the routing engine or exchange formats.
 
+Eight additional coupled-spec tests pass, independently repeated in 1.119 seconds. Deterministic replay passes in 1.63 seconds / 144,336 KiB peak RSS. They cover envelope/margin separation, rail growth, duplicate cut refusal, endpoint row/layer identities, authenticated fixed endpoints, full obligations and source drift; no routing change is tested or claimed.
+
 ## Exact bounded native proposal — HOLD / NOT RUN
+
+The parent has since directed this lane **not to spend native time reproducing the baseline-only negative**. The command below is retained as a reviewed source command shape and tooling reconciliation, not the next action or an admission request. Any later copper candidate needs its own complete restoration hypothesis and separate native review/admission.
 
 Only if the parent finds an optional fresh baseline observation useful, admit **one** baseline/fresh reproduction of this negative mask, with no search or candidate copper. It measures drift separately; a changed settled board, topology or context stops and preserves evidence. Existing `driver.workspace` copies the project/rules/sheets/both library tables at the required relative depth, and existing `driver.check` retains the max-six/three-equal refill procedure. The entire baseline/fresh directories and receipts remain in cache; transfer them as a retained supported artifact with all hashes after a run. Raw all-severity DRC identities are retained but are not a complete adoption warning audit.
 
@@ -86,4 +100,4 @@ A reviewed hook change/new integration input requires impact review and re-prepa
 
 Personal startup restoration/loader were denied earlier for protected runtime access. The owner explicitly waived optional personal-profile initialization for this session through the parent; no protected paths were retried, access controls changed or startup-success claim made. Accessible tracked AGENTS/WORKFLOW and relevant `.claude/skills/circuit-spec-integration` instructions were read; repository `.agents/skills` is absent.
 
-Issue 250 remains open until zero complete native edges, all original groups/boundaries, zero DRC/parity, settled/fresh candidate agreement and full warning evidence are integrated/reviewable. Next source action is stronger review of the U8202 escape/return case or selection of another diagnosed case from `cases.json`. No merges, issue closure, default heavy CI, deployment, manufacturing, energization or credential creation are authorized.
+Issue 250 remains open until zero complete native edges, all original groups/boundaries, zero DRC/parity, settled/fresh candidate agreement and full warning evidence are integrated/reviewable. Next source action is escape feasibility review of the selected complete D8228/D8227/D1004 case. No merges, issue closure, default heavy CI, deployment, manufacturing, energization or credential creation are authorized.
