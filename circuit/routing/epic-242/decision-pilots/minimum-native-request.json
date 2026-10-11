@@ -20,7 +20,7 @@
     }
   },
   "between_after_and_fresh": [
-    "/tmp/pr265-review-env/bin/python",
+    "{ACTUAL_EXECUTION_PYTHON}",
     "scripts/partition/core_split_candidates.py",
     "fresh-copy",
     "--output",
@@ -68,8 +68,10 @@
     "scripts/kicad/native_start_gate.sh": "6763496a773f4a4cd69a47f20eb2f2c07aec33b9351a7bbd861e0d368ed0083d",
     "scripts/kicad/pin.env": "769e2be0b61e7d92a6930684f13166b7dc098522008de3969cd30d6c4a363246",
     "scripts/kicad/run.sh": "f91b2c8846856a6d38a10eb9e6314b6ebec3222b68df37942f3716ab860d8c91",
+    "scripts/kicad/settle_only_pilot.py": "8bf1e311e08554501e33e099cff164b69704f81df0aabe91cd980fd5fd98b531",
     "scripts/partition/core_split_candidates.py": "5dd09d77e316ceff8312cca1bd011cb1178c9f457bea75c76176abdeedbf05b4",
-    "scripts/pcbgen/numerical-requirements.txt": "4bc0581928a58148957919e9d6af3f0372bb6512f2371d2410bbc24a46c4aee7"
+    "scripts/pcbgen/numerical-requirements.txt": "4bc0581928a58148957919e9d6af3f0372bb6512f2371d2410bbc24a46c4aee7",
+    "scripts/pcbgen/with_route_guard.sh": "29afbe134f0a3c196ab01482382f3042ac32ce5c825ea0728eb416c536ff383e"
   },
   "limits": {
     "automatic_retries": 0,
@@ -89,7 +91,7 @@
     "O1/two-A"
   ],
   "native_wrapper": [
-    "/tmp/pr265-review-env/bin/python",
+    "{ACTUAL_EXECUTION_PYTHON}",
     "scripts/kicad/native_resource_guard.py",
     "--admission-id",
     "{NEW_PARENT_RECEIPT}",
@@ -107,8 +109,7 @@
   ],
   "outer_queue_wrapper": [
     "bash",
-    "{HOME}/.codex/scripts/heavy-guard.sh",
-    "--",
+    "scripts/pcbgen/with_route_guard.sh",
     "{NATIVE_WRAPPER_ARGV}"
   ],
   "outputs_required": [
@@ -129,7 +130,7 @@
         "-c",
         "bash scripts/kicad/run.sh kicad-cli version && exec \"$@\"",
         "epic242-route-probe",
-        "/tmp/pr265-review-env/bin/python",
+        "{ACTUAL_EXECUTION_PYTHON}",
         "circuit/routing/epic-242/decision-pilots/route_matched.py",
         "--domain",
         "O1",
@@ -158,7 +159,7 @@
     {
       "id": "settle-after",
       "payload": [
-        "/tmp/pr265-review-env/bin/python",
+        "{ACTUAL_EXECUTION_PYTHON}",
         "scripts/partition/core_split_candidates.py",
         "settle",
         "--board",
@@ -169,7 +170,7 @@
     {
       "id": "settle-fresh",
       "payload": [
-        "/tmp/pr265-review-env/bin/python",
+        "{ACTUAL_EXECUTION_PYTHON}",
         "scripts/partition/core_split_candidates.py",
         "settle",
         "--board",
@@ -180,7 +181,7 @@
     {
       "id": "full-warning-audit",
       "payload": [
-        "/tmp/pr265-review-env/bin/python",
+        "{ACTUAL_EXECUTION_PYTHON}",
         "scripts/partition/core_split_candidates.py",
         "audit-pilot",
         "--output",
@@ -233,9 +234,18 @@
       "sha256": "a8566c8996b71fbda8b718b5eeb60f56a8c6b52d16eac02b6e4c2b2e3063a164"
     }
   },
+  "provisioning": {
+    "dispatch": "Frozen with_route_guard.sh delegates GitHub-hosted runner directly; local/shared/selfhosted still use HOME heavyguard. Native hardguard mandatory in allcases.",
+    "existing_image_preparer": "scripts.kicad.settle_only_pilot.prepare_image",
+    "helper": "provision_host.py",
+    "image_budget_scope": "separate existing preparation bound within unchanged43min job cap; route remains300s includingbothprobes",
+    "image_seconds": 300,
+    "status": "SOURCE PLAN; no renewed route admission"
+  },
   "python": {
-    "path_verified_on_this_host": "/tmp/pr265-review-env/bin/python",
-    "policy": "Recheck path and versions on execution host before admission; no installation or credential creation implied.",
+    "execution_binding": "Use actual execution-host sys.executable and verify exact versions after pinned CI setup; historical /tmp path is not portable",
+    "historical_local_path_not_portable": "/tmp/pr265-review-env/bin/python",
+    "policy": "Only pinned CI numerical dependency provisioning is authorized. Bind actual host executable and exact versions; no credential creation.",
     "versions": {
       "numpy": "2.2.6",
       "scipy": "1.15.3",
@@ -269,13 +279,13 @@
   },
   "source_commit": "29140d4e19d526eed3a02a73c33f8ce4219c78f0",
   "source_only_evaluate": [
-    "/tmp/pr265-review-env/bin/python",
+    "{ACTUAL_EXECUTION_PYTHON}",
     "circuit/routing/epic-242/decision-pilots/evaluate_matched.py",
     "--fixture",
     "{FIXTURE}"
   ],
   "source_only_prepare": [
-    "/tmp/pr265-review-env/bin/python",
+    "{ACTUAL_EXECUTION_PYTHON}",
     "circuit/routing/epic-242/decision-pilots/prepare_matched.py",
     "--artifacts",
     "{AUTHENTICATED_SIX_ZIP_DIRECTORY}",

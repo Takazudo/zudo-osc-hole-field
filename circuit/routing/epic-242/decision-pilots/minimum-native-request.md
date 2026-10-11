@@ -35,8 +35,15 @@ and resource-guard evidence JSON file (new path, not an existing directory). The
 without a standalone `--`. After after-settle, run the source-only fresh-copy
 step before fresh-settle. Save evaluator stdout as `matched-result.json`.
 Wrap each admitted guard invocation in
-`bash "$HOME/.codex/scripts/heavy-guard.sh" -- ...` for the machine-wide queue.
-This queue precedes the phase deadline and does not create an admission.
+`bash scripts/pcbgen/with_route_guard.sh ...` using the frozen repository policy.
+On GitHub-hosted runners it dispatches directly to the mandatory native guard;
+local/shared/self-hosted execution still enters the HOME heavy-guard queue.
+This dispatch does not create an admission. Provision the exact image first via
+the unchanged `settle_only_pilot.prepare_image` helper (300s preparation cap),
+then use actual execution-host Python with the three pinned dependency versions.
+See `provision_host.py`; it can only provision and emit a plan, never execute a route.
+Admission1347 is released after its retained preparation refusal. A fresh route
+requires renewed parent admission. Method29140d4e and all native controls remain unchanged.
 
 Run sequentially: one 6 GiB worker, within the shared two-worker/12 GiB cap and
 2 GiB free-memory floor. Maximum phase walls are 300/300/600/600/300 seconds:
