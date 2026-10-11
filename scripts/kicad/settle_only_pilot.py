@@ -26,6 +26,14 @@ def output_path(env):
     return ROOT/'design/partition/core-split/candidates/pilots/generated'/f'decision-{pilot}-native-{run_id}-{attempt}'
 
 
+def settle_budget(env):
+    seconds = env.get('SETTLE_SECONDS', '')
+    pilot = env.get('SETTLE_PILOT', '')
+    if seconds not in ('300', '600') or (seconds == '600' and pilot != 'two-A'):
+        raise ValueError('only reviewed 300-second pilots or the two-A 600-second amendment permitted')
+    return int(seconds)
+
+
 def write(path, value):
     path.write_text(json.dumps(value, indent=2) + '\n')
 
@@ -36,6 +44,7 @@ def sha(path):
 
 def validate(env):
     output_path(env)
+    settle_budget(env)
     commit = env.get('REVIEWED_COMMIT', '')
     hook = env.get('REVIEWED_HOOK_SHA256', '')
     if not re.fullmatch('[0-9a-f]{40}', commit) or guard.run(['git', 'rev-parse', 'HEAD']) != commit:
@@ -220,12 +229,14 @@ def prepare_image(evidence):
 def execute(env):
     commit, hook = validate(env)
     pilot = env['SETTLE_PILOT']
+    seconds = settle_budget(env)
     output = output_path(env)
     evidence = Path(env['RUNNER_TEMP'])/'epic242-candidate-settle-only'
     evidence.mkdir(exist_ok=True)
     if (evidence/'pilot.json').exists():
         raise ValueError('pilot receipt already exists')
     receipt = {'source_sha': commit, 'hook_sha256': hook, 'admission_id': env['PARENT_ADMISSION_ID'],
+               'native_seconds_limit': seconds,
                'pilot': pilot, 'scope': 'one reviewed complete-fixture before-board settle only; NOT COMPLETE ACCEPTANCE',
                'subordinate_logging': 'Driver stdout/stderr retained; check internally captures successful subordinate output. Raw DRC can be capped; uncapped warning audit NOT RUN.',
                'status': 'STARTED'}
@@ -240,7 +251,7 @@ def execute(env):
         write(evidence/'input-snapshot-sha256.json',files)
         worker = guard.identity('settle-'+pilot.lower()+'-'+env['GITHUB_RUN_ID']+'-'+env['GITHUB_RUN_ATTEMPT'])
         command = [sys.executable,'scripts/kicad/native_resource_guard.py','--admission-id',env['PARENT_ADMISSION_ID'],
-                   '--worker',worker,'--sha',commit,'--hook-sha256',hook,'--seconds','300',
+                   '--worker',worker,'--sha',commit,'--hook-sha256',hook,'--seconds',str(seconds),
                    '--evidence',str(evidence/'guard.json'),'--',sys.executable,
                    'scripts/partition/core_split_candidates.py','settle','--board',str((output/'before/osc-core.kicad_pcb').relative_to(ROOT))]
         receipt['command'] = command

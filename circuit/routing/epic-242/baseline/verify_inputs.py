@@ -1,7 +1,7 @@
 import json,pathlib,hashlib,subprocess
 O=pathlib.Path(__file__).resolve().parent; R=O.parents[3];b=json.loads((O/'baseline.json').read_text());m=json.loads((O/'input-files.json').read_text());count=0
 epoch=json.loads((O/'resource-control-epoch.json').read_text())
-assert epoch['hardware_epoch']==b['epoch']=='epic242-e0' and epoch['tool_epoch']=='epic242-tools-e9-architecture-settle-choice'
+assert epoch['hardware_epoch']==b['epoch']=='epic242-e0' and epoch['tool_epoch']=='epic242-tools-e10-two-a-600-budget'
 assert set(epoch['historical_overrides'])=={'scripts/kicad/README.md','scripts/kicad/run.sh'}
 for p,change in epoch['historical_overrides'].items():
  assert m['files'][p]==change['historical_sha256'],p

@@ -56,6 +56,11 @@ on:
         type: choice
         options: [two-A, two-B, three-A, three-B, three-C]
         default: three-A
+      settle_seconds:
+        description: Native settle guard budget; 600 only for reviewed two-A amendment
+        type: choice
+        options: ['300', '600']
+        default: '300'
       lifecycle_qualification:
         description: Exclusive admitted short-lived startup/exit lifecycle check
         type: boolean
@@ -650,13 +655,14 @@ jobs:
       group: issue189-core-audit-task-pilot
       cancel-in-progress: false
     runs-on: ubuntu-24.04
-    timeout-minutes: 20
+    timeout-minutes: 25
     env:
       REVIEWED_COMMIT: ${{ inputs.reviewed_commit }}
       REVIEWED_HOOK_SHA256: ${{ inputs.reviewed_hook_sha256 }}
       PARENT_ADMISSION_ID: ${{ inputs.parent_admission_id }}
       REQUEST_BOARD: ${{ inputs.board }}
       SETTLE_PILOT: ${{ inputs.settle_pilot }}
+      SETTLE_SECONDS: ${{ inputs.settle_seconds }}
       CONFLICTING_MODES: ${{ inputs.resource_qualification || inputs.recover_core || inputs.replay_jl || inputs.replay_jr || inputs.local_repair || inputs.adopt_run != '' }}
     steps:
       - name: Initialize retained request before checkout or validation
@@ -665,7 +671,7 @@ jobs:
           python3 - <<'PYTHON'
           import json, os
           from pathlib import Path
-          Path(os.environ['RUNNER_TEMP'],'epic242-candidate-settle-only','bootstrap.json').write_text(json.dumps({'status':'BOOTSTRAP INCOMPLETE; NATIVE NOT RUN','reviewed_sha':os.environ['REVIEWED_COMMIT'],'admission_id':os.environ['PARENT_ADMISSION_ID'],'pilot':os.environ['SETTLE_PILOT']}))
+          Path(os.environ['RUNNER_TEMP'],'epic242-candidate-settle-only','bootstrap.json').write_text(json.dumps({'status':'BOOTSTRAP INCOMPLETE; NATIVE NOT RUN','reviewed_sha':os.environ['REVIEWED_COMMIT'],'admission_id':os.environ['PARENT_ADMISSION_ID'],'pilot':os.environ['SETTLE_PILOT'],'native_seconds_limit':os.environ['SETTLE_SECONDS']}))
           PYTHON
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
