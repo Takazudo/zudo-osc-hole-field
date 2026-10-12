@@ -1,0 +1,3034 @@
+{
+  "status": "THREE_FIXED_POSE_NECESSARY_WITNESS_AUDIT_NOT_COMPLETE_SWEEP",
+  "source_sha256": "2df2c5af7d9208b560be4155c6b4e3cf9495dee996f5c7349bf31adfe391437b",
+  "source_hashes": {
+    "/workspace/zudo-osc-hole-field/circuit/routing/epic-242/decision-pilots/feed-arrangement/robust_curve.py": "12cb2cb82f8282c92e8a50c51b4060ba96eb826a35f8b7577c7b6442ff458d91",
+    "/workspace/zudo-osc-hole-field/circuit/routing/epic-242/decision-pilots/feed-arrangement/robust-curve.json": "cfab1993ecd661054927e8c855470f16618bf04607b12af89cc6ba4099e7dfda",
+    "/workspace/zudo-osc-hole-field/circuit/routing/epic-242/decision-pilots/feed-arrangement/check.py": "4d7d0799348686fa4427fe895a49d146638cbcfe15ffc6ae696b4d75856d38cf",
+    "/workspace/zudo-osc-hole-field/circuit/routing/epic-242/decision-pilots/feed-arrangement/source-lock.json": "a5f6ce05cafb3c0ec2966a1794d9f892ba43e7e26b390b878f6c0316887e0345",
+    "/workspace/zudo-osc-hole-field/circuit/routing/epic-242/decision-pilots/feed-arrangement/reconciled-contract.json": "01b77387f568a5b246c7e33e635e8d867f09b23ea200d13dd0c17db251ada30d",
+    "/workspace/zudo-osc-hole-field/circuit/routing/epic-242/decision-pilots/feed-arrangement/offset-proposal.json": "0340c9d24ae6505e89af65af3bf0634e34a6219a3d7d5d6ffb0ff4c9f9ed0ec5",
+    "/workspace/zudo-osc-hole-field/circuit/routing/epic-242/decision-pilots/feed-arrangement/process-budget.md": "85af1cc851cd77f683db1de2a381de54af857115c82cb9902b84c84cbeb10512"
+  },
+  "nominal_family": {
+    "offset_mm": 58,
+    "anchor_height_mm": 2,
+    "free_length_mm": 66,
+    "tail_mm": 2.5,
+    "bridge_each_mm": 3.6724785996237186,
+    "wire_OD_mm": 2.5908
+  },
+  "obstacle_count": 4569,
+  "land_reservations": [
+    {
+      "board": "KA",
+      "wire": 1,
+      "center_nominal_xyz_mm": [
+        20.821103503778307,
+        13.322958630745152,
+        -101.6
+      ],
+      "reserve_xy_mm": [
+        17.821103503778307,
+        10.322958630745152,
+        23.821103503778307,
+        16.322958630745152
+      ],
+      "source_gap_mm": 9.721103503778307,
+      "source_obstacle": "support",
+      "source_kind": "support"
+    },
+    {
+      "board": "KA",
+      "wire": 2,
+      "center_nominal_xyz_mm": [
+        37.8211035037783,
+        17.677041369254848,
+        -101.6
+      ],
+      "reserve_xy_mm": [
+        34.8211035037783,
+        14.677041369254848,
+        40.8211035037783,
+        20.677041369254848
+      ],
+      "source_gap_mm": 21.022958630745148,
+      "source_obstacle": "JL-K-2-K",
+      "source_kind": "tool-column"
+    },
+    {
+      "board": "KA",
+      "wire": 3,
+      "center_nominal_xyz_mm": [
+        54.8211035037783,
+        13.322958630745152,
+        -101.6
+      ],
+      "reserve_xy_mm": [
+        51.8211035037783,
+        10.322958630745152,
+        57.8211035037783,
+        16.322958630745152
+      ],
+      "source_gap_mm": 25.377041369254844,
+      "source_obstacle": "JL-K-3-K",
+      "source_kind": "tool-column"
+    },
+    {
+      "board": "KA",
+      "wire": 4,
+      "center_nominal_xyz_mm": [
+        20.821103503778307,
+        22.322958630745152,
+        -101.6
+      ],
+      "reserve_xy_mm": [
+        17.821103503778307,
+        19.322958630745152,
+        23.821103503778307,
+        25.322958630745152
+      ],
+      "source_gap_mm": 11.831604843874599,
+      "source_obstacle": "JL-K-1-K",
+      "source_kind": "tool-column"
+    },
+    {
+      "board": "KA",
+      "wire": 5,
+      "center_nominal_xyz_mm": [
+        37.8211035037783,
+        26.677041369254848,
+        -101.6
+      ],
+      "reserve_xy_mm": [
+        34.8211035037783,
+        23.677041369254848,
+        40.8211035037783,
+        29.677041369254848
+      ],
+      "source_gap_mm": 12.022958630745148,
+      "source_obstacle": "JL-K-2-K",
+      "source_kind": "tool-column"
+    },
+    {
+      "board": "KA",
+      "wire": 6,
+      "center_nominal_xyz_mm": [
+        54.8211035037783,
+        22.322958630745152,
+        -101.6
+      ],
+      "reserve_xy_mm": [
+        51.8211035037783,
+        19.322958630745152,
+        57.8211035037783,
+        25.322958630745152
+      ],
+      "source_gap_mm": 16.377041369254844,
+      "source_obstacle": "JL-K-3-K",
+      "source_kind": "tool-column"
+    },
+    {
+      "board": "KB",
+      "wire": 1,
+      "center_nominal_xyz_mm": [
+        83.1788964962217,
+        13.322958630745152,
+        -126.0
+      ],
+      "reserve_xy_mm": [
+        80.1788964962217,
+        10.322958630745152,
+        86.1788964962217,
+        16.322958630745152
+      ],
+      "source_gap_mm": 25.648408136621324,
+      "source_obstacle": "JL-K-5-K",
+      "source_kind": "tool-column"
+    },
+    {
+      "board": "KB",
+      "wire": 2,
+      "center_nominal_xyz_mm": [
+        100.1788964962217,
+        17.677041369254848,
+        -126.0
+      ],
+      "reserve_xy_mm": [
+        97.1788964962217,
+        14.677041369254848,
+        103.1788964962217,
+        20.677041369254848
+      ],
+      "source_gap_mm": 20.597879098462997,
+      "source_obstacle": "J900014",
+      "source_kind": "courtyard"
+    },
+    {
+      "board": "KB",
+      "wire": 3,
+      "center_nominal_xyz_mm": [
+        117.1788964962217,
+        13.322958630745152,
+        -126.0
+      ],
+      "reserve_xy_mm": [
+        114.1788964962217,
+        10.322958630745152,
+        120.1788964962217,
+        16.322958630745152
+      ],
+      "source_gap_mm": 18.62704136925485,
+      "source_obstacle": "J900014",
+      "source_kind": "courtyard"
+    },
+    {
+      "board": "KB",
+      "wire": 4,
+      "center_nominal_xyz_mm": [
+        83.1788964962217,
+        22.322958630745152,
+        -126.0
+      ],
+      "reserve_xy_mm": [
+        80.1788964962217,
+        19.322958630745152,
+        86.1788964962217,
+        25.322958630745152
+      ],
+      "source_gap_mm": 16.794466210514575,
+      "source_obstacle": "JL-K-5-K",
+      "source_kind": "tool-column"
+    },
+    {
+      "board": "KB",
+      "wire": 5,
+      "center_nominal_xyz_mm": [
+        100.1788964962217,
+        26.677041369254848,
+        -126.0
+      ],
+      "reserve_xy_mm": [
+        97.1788964962217,
+        23.677041369254848,
+        103.1788964962217,
+        29.677041369254848
+      ],
+      "source_gap_mm": 12.585632503868863,
+      "source_obstacle": "JL-K-6-K",
+      "source_kind": "tool-column"
+    },
+    {
+      "board": "KB",
+      "wire": 6,
+      "center_nominal_xyz_mm": [
+        117.1788964962217,
+        22.322958630745152,
+        -126.0
+      ],
+      "reserve_xy_mm": [
+        114.1788964962217,
+        19.322958630745152,
+        120.1788964962217,
+        25.322958630745152
+      ],
+      "source_gap_mm": 9.62704136925485,
+      "source_obstacle": "J900014",
+      "source_kind": "courtyard"
+    }
+  ],
+  "poses": [
+    {
+      "travel_mm": 0.0,
+      "free_length_mm": 65.99999999999999,
+      "handle_mm": 29.455375164542275,
+      "wires": [
+        {
+          "wire": 1,
+          "control_points_xyz_mm": [
+            [
+              24.483260172329487,
+              16.98199731475488,
+              -104.96147832161971
+            ],
+            [
+              41.95925410936496,
+              34.44311207433459,
+              -121.00262021829965
+            ],
+            [
+              62.04074589063504,
+              34.44311207433459,
+              -106.59737978170034
+            ],
+            [
+              79.5167398276705,
+              16.98199731475488,
+              -122.63852167838029
+            ]
+          ],
+          "nearest_reserved_box": {
+            "gap_mm": 6.9947968002911916,
+            "obstacle": {
+              "id": "KA-bulk-3",
+              "kind": "new-reserve",
+              "board": "KA",
+              "box": [
+                54,
+                34,
+                -106.6,
+                59,
+                37,
+                -101.6
+              ],
+              "moves": false
+            },
+            "obstacle_box_at_pose": [
+              54.0,
+              34.0,
+              -106.6,
+              59.0,
+              37.0,
+              -101.6
+            ],
+            "wire_center_xyz_mm": [
+              53.4646503545537,
+              30.042422243707236,
+              -113.86487040817491
+            ],
+            "closest_box_point_xyz_mm": [
+              54.0,
+              34.0,
+              -106.6
+            ],
+            "curve_parameter": [
+              "free-curve",
+              0.526
+            ],
+            "required_nominal_gap_mm": 0.7,
+            "violates_nominal_service_budget": false
+          },
+          "enclosure_xy": {
+            "gap_mm": 14.027558630745151,
+            "wire_center_xyz_mm": [
+              20.821103503778307,
+              13.322958630745152,
+              -101.6
+            ],
+            "curve_parameter": [
+              "KA-bridge",
+              0.0
+            ]
+          }
+        },
+        {
+          "wire": 2,
+          "control_points_xyz_mm": [
+            [
+              41.48326017232949,
+              14.018002685245118,
+              -104.96147832161971
+            ],
+            [
+              58.95925410936496,
+              -3.4431120743345893,
+              -121.00262021829965
+            ],
+            [
+              79.04074589063504,
+              -3.4431120743345893,
+              -106.59737978170034
+            ],
+            [
+              96.5167398276705,
+              14.018002685245118,
+              -122.63852167838029
+            ]
+          ],
+          "nearest_reserved_box": {
+            "gap_mm": 15.027558630745151,
+            "obstacle": {
+              "id": "KA-bulk-2",
+              "kind": "new-reserve",
+              "board": "KA",
+              "box": [
+                37,
+                34,
+                -106.6,
+                42,
+                37,
+                -101.6
+              ],
+              "moves": false
+            },
+            "obstacle_box_at_pose": [
+              37.0,
+              34.0,
+              -106.6,
+              42.0,
+              37.0,
+              -101.6
+            ],
+            "wire_center_xyz_mm": [
+              37.8211035037783,
+              17.677041369254848,
+              -101.6
+            ],
+            "closest_box_point_xyz_mm": [
+              37.8211035037783,
+              34.0,
+              -101.6
+            ],
+            "curve_parameter": [
+              "KA-bridge",
+              0.0
+            ],
+            "required_nominal_gap_mm": 0.7,
+            "violates_nominal_service_budget": false
+          },
+          "enclosure_xy": {
+            "gap_mm": 1.6267666155603393,
+            "wire_center_xyz_mm": [
+              69.0,
+              0.9221666155603394,
+              -113.8
+            ],
+            "curve_parameter": [
+              "free-curve",
+              0.5
+            ]
+          }
+        },
+        {
+          "wire": 3,
+          "control_points_xyz_mm": [
+            [
+              58.48326017232949,
+              16.98199731475488,
+              -104.96147832161971
+            ],
+            [
+              75.95925410936496,
+              34.44311207433459,
+              -121.00262021829965
+            ],
+            [
+              96.04074589063504,
+              34.44311207433459,
+              -106.59737978170034
+            ],
+            [
+              113.5167398276705,
+              16.98199731475488,
+              -122.63852167838029
+            ]
+          ],
+          "nearest_reserved_box": {
+            "gap_mm": 1.947842972555433,
+            "obstacle": {
+              "id": "CS247-MON-KB",
+              "kind": "new-monitor",
+              "board": "KB",
+              "box": [
+                120,
+                12,
+                -132.6,
+                140,
+                32,
+                -127.6
+              ],
+              "moves": true
+            },
+            "obstacle_box_at_pose": [
+              120.0,
+              12.0,
+              -132.6,
+              140.0,
+              32.0,
+              -127.6
+            ],
+            "wire_center_xyz_mm": [
+              117.1788964962217,
+              13.322958630745152,
+              -126.0
+            ],
+            "closest_box_point_xyz_mm": [
+              120.0,
+              13.322958630745152,
+              -127.6
+            ],
+            "curve_parameter": [
+              "KB-bridge",
+              1.0
+            ],
+            "required_nominal_gap_mm": 0.7,
+            "violates_nominal_service_budget": false
+          },
+          "enclosure_xy": {
+            "gap_mm": 14.027558630745151,
+            "wire_center_xyz_mm": [
+              54.8211035037783,
+              13.322958630745152,
+              -101.6
+            ],
+            "curve_parameter": [
+              "KA-bridge",
+              0.0
+            ]
+          }
+        },
+        {
+          "wire": 4,
+          "control_points_xyz_mm": [
+            [
+              24.483260172329487,
+              25.98199731475488,
+              -104.96147832161971
+            ],
+            [
+              41.95925410936496,
+              43.44311207433459,
+              -121.00262021829965
+            ],
+            [
+              62.04074589063504,
+              43.44311207433459,
+              -106.59737978170034
+            ],
+            [
+              79.5167398276705,
+              25.98199731475488,
+              -122.63852167838029
+            ]
+          ],
+          "nearest_reserved_box": {
+            "gap_mm": 1.556497560412285,
+            "obstacle": {
+              "id": "KA/F.Cu/JL-K-3-K/809",
+              "kind": "tool-column",
+              "board": "KA",
+              "box": [
+                55.9,
+                41.699999999999996,
+                -160,
+                58.1,
+                43.9,
+                -90
+              ],
+              "moves": false
+            },
+            "obstacle_box_at_pose": [
+              55.9,
+              41.699999999999996,
+              -160.0,
+              58.1,
+              43.9,
+              -90.0
+            ],
+            "wire_center_xyz_mm": [
+              55.547879406540964,
+              38.86992389099734,
+              -113.96981874110419
+            ],
+            "closest_box_point_xyz_mm": [
+              55.9,
+              41.699999999999996,
+              -113.96981874110419
+            ],
+            "curve_parameter": [
+              "free-curve",
+              0.563
+            ],
+            "required_nominal_gap_mm": 0.7,
+            "violates_nominal_service_budget": false
+          },
+          "enclosure_xy": {
+            "gap_mm": 21.525703503778306,
+            "wire_center_xyz_mm": [
+              20.821103503778307,
+              22.322958630745152,
+              -101.6
+            ],
+            "curve_parameter": [
+              "KA-bridge",
+              0.0
+            ]
+          }
+        },
+        {
+          "wire": 5,
+          "control_points_xyz_mm": [
+            [
+              41.48326017232949,
+              23.01800268524512,
+              -104.96147832161971
+            ],
+            [
+              58.95925410936496,
+              5.556887925665411,
+              -121.00262021829965
+            ],
+            [
+              79.04074589063504,
+              5.556887925665411,
+              -106.59737978170034
+            ],
+            [
+              96.5167398276705,
+              23.01800268524512,
+              -122.63852167838029
+            ]
+          ],
+          "nearest_reserved_box": {
+            "gap_mm": 6.027558630745152,
+            "obstacle": {
+              "id": "KA-bulk-2",
+              "kind": "new-reserve",
+              "board": "KA",
+              "box": [
+                37,
+                34,
+                -106.6,
+                42,
+                37,
+                -101.6
+              ],
+              "moves": false
+            },
+            "obstacle_box_at_pose": [
+              37.0,
+              34.0,
+              -106.6,
+              42.0,
+              37.0,
+              -101.6
+            ],
+            "wire_center_xyz_mm": [
+              37.8211035037783,
+              26.677041369254848,
+              -101.6
+            ],
+            "closest_box_point_xyz_mm": [
+              37.8211035037783,
+              34.0,
+              -101.6
+            ],
+            "curve_parameter": [
+              "KA-bridge",
+              0.0
+            ],
+            "required_nominal_gap_mm": 0.7,
+            "violates_nominal_service_budget": false
+          },
+          "enclosure_xy": {
+            "gap_mm": 10.626766615560339,
+            "wire_center_xyz_mm": [
+              69.0,
+              9.92216661556034,
+              -113.8
+            ],
+            "curve_parameter": [
+              "free-curve",
+              0.5
+            ]
+          }
+        },
+        {
+          "wire": 6,
+          "control_points_xyz_mm": [
+            [
+              58.48326017232949,
+              25.98199731475488,
+              -104.96147832161971
+            ],
+            [
+              75.95925410936496,
+              43.44311207433459,
+              -121.00262021829965
+            ],
+            [
+              96.04074589063504,
+              43.44311207433459,
+              -106.59737978170034
+            ],
+            [
+              113.5167398276705,
+              25.98199731475488,
+              -122.63852167838029
+            ]
+          ],
+          "nearest_reserved_box": {
+            "gap_mm": 1.556497560412285,
+            "obstacle": {
+              "id": "KA/F.Cu/JL-K-5-K/811",
+              "kind": "tool-column",
+              "board": "KA",
+              "box": [
+                89.9,
+                41.699999999999996,
+                -160,
+                92.1,
+                43.9,
+                -90
+              ],
+              "moves": false
+            },
+            "obstacle_box_at_pose": [
+              89.9,
+              41.699999999999996,
+              -160.0,
+              92.1,
+              43.9,
+              -90.0
+            ],
+            "wire_center_xyz_mm": [
+              89.54787940654097,
+              38.86992389099734,
+              -113.96981874110419
+            ],
+            "closest_box_point_xyz_mm": [
+              89.9,
+              41.699999999999996,
+              -113.96981874110419
+            ],
+            "curve_parameter": [
+              "free-curve",
+              0.563
+            ],
+            "required_nominal_gap_mm": 0.7,
+            "violates_nominal_service_budget": false
+          },
+          "enclosure_xy": {
+            "gap_mm": 23.02755863074515,
+            "wire_center_xyz_mm": [
+              54.8211035037783,
+              22.322958630745152,
+              -101.6
+            ],
+            "curve_parameter": [
+              "KA-bridge",
+              0.0
+            ]
+          }
+        }
+      ],
+      "wire_pairs": [
+        {
+          "wires": [
+            1,
+            2
+          ],
+          "surface_gap_mm": 8.979194201102654,
+          "points_xyz_mm": [
+            [
+              30.230089434693728,
+              22.028399169191495,
+              -109.17013583190153
+            ],
+            [
+              37.8211035037783,
+              17.677041369254848,
+              -101.6
+            ]
+          ],
+          "parameters": [
+            [
+              "free-curve",
+              0.108
+            ],
+            [
+              "KA-bridge",
+              0.0
+            ]
+          ],
+          "violates_nominal_pair_budget": false
+        },
+        {
+          "wires": [
+            1,
+            3
+          ],
+          "surface_gap_mm": 2.075696299355029,
+          "points_xyz_mm": [
+            [
+              68.26543226920485,
+              25.641959407571754,
+              -116.01460090690128
+            ],
+            [
+              69.73456773079515,
+              25.641959407571754,
+              -111.5853990930987
+            ]
+          ],
+          "parameters": [
+            [
+              "free-curve",
+              0.791
+            ],
+            [
+              "free-curve",
+              0.209
+            ]
+          ],
+          "violates_nominal_pair_budget": false
+        },
+        {
+          "wires": [
+            1,
+            4
+          ],
+          "surface_gap_mm": 4.657354560219547,
+          "points_xyz_mm": [
+            [
+              24.149526633555354,
+              16.648547918935034,
+              -104.65514569925527
+            ],
+            [
+              20.984520740994935,
+              22.486236733439267,
+              -101.75
+            ]
+          ],
+          "parameters": [
+            [
+              "KA-tail",
+              0.775
+            ],
+            [
+              "KA-bridge",
+              0.075
+            ]
+          ],
+          "violates_nominal_pair_budget": false
+        },
+        {
+          "wires": [
+            1,
+            5
+          ],
+          "surface_gap_mm": 6.3061560936942325,
+          "points_xyz_mm": [
+            [
+              79.83193261429054,
+              16.667072885369468,
+              -122.92783582172447
+            ],
+            [
+              83.38995621347027,
+              13.382034121826777,
+              -115.46426990972068
+            ]
+          ],
+          "parameters": [
+            [
+              "KB-tail",
+              0.2125
+            ],
+            [
+              "free-curve",
+              0.757
+            ]
+          ],
+          "violates_nominal_pair_budget": false
+        },
+        {
+          "wires": [
+            1,
+            6
+          ],
+          "surface_gap_mm": 3.7666270878385926,
+          "points_xyz_mm": [
+            [
+              62.11013061708734,
+              28.380613029808515,
+              -114.59681999775714
+            ],
+            [
+              63.74518360083753,
+              30.654539241074133,
+              -108.88956667385143
+            ]
+          ],
+          "parameters": [
+            [
+              "free-curve",
+              0.68
+            ],
+            [
+              "free-curve",
+              0.099
+            ]
+          ],
+          "violates_nominal_pair_budget": false
+        },
+        {
+          "wires": [
+            2,
+            3
+          ],
+          "surface_gap_mm": 8.979194201102656,
+          "points_xyz_mm": [
+            [
+              47.230089434693724,
+              8.971600830808505,
+              -109.17013583190153
+            ],
+            [
+              54.8211035037783,
+              13.322958630745152,
+              -101.6
+            ]
+          ],
+          "parameters": [
+            [
+              "free-curve",
+              0.108
+            ],
+            [
+              "KA-bridge",
+              0.0
+            ]
+          ],
+          "violates_nominal_pair_budget": false
+        },
+        {
+          "wires": [
+            2,
+            4
+          ],
+          "surface_gap_mm": 13.421350856037721,
+          "points_xyz_mm": [
+            [
+              37.8211035037783,
+              17.677041369254848,
+              -101.6
+            ],
+            [
+              25.429465998307144,
+              26.907925308225874,
+              -105.798461227016
+            ]
+          ],
+          "parameters": [
+            [
+              "KA-bridge",
+              0.0
+            ],
+            [
+              "free-curve",
+              0.018
+            ]
+          ],
+          "violates_nominal_pair_budget": false
+        },
+        {
+          "wires": [
+            2,
+            5
+          ],
+          "surface_gap_mm": 4.657354560219549,
+          "points_xyz_mm": [
+            [
+              37.98452074099493,
+              17.513763266560733,
+              -101.75
+            ],
+            [
+              41.149526633555354,
+              23.351452081064966,
+              -104.65514569925527
+            ]
+          ],
+          "parameters": [
+            [
+              "KA-bridge",
+              0.075
+            ],
+            [
+              "KA-tail",
+              0.775
+            ]
+          ],
+          "violates_nominal_pair_budget": false
+        },
+        {
+          "wires": [
+            2,
+            6
+          ],
+          "surface_gap_mm": 13.421350856037721,
+          "points_xyz_mm": [
+            [
+              42.429465998307144,
+              13.092074691774126,
+              -105.798461227016
+            ],
+            [
+              54.8211035037783,
+              22.322958630745152,
+              -101.6
+            ]
+          ],
+          "parameters": [
+            [
+              "free-curve",
+              0.018
+            ],
+            [
+              "KA-bridge",
+              0.0
+            ]
+          ],
+          "violates_nominal_pair_budget": false
+        },
+        {
+          "wires": [
+            3,
+            4
+          ],
+          "surface_gap_mm": 3.7666270878385757,
+          "points_xyz_mm": [
+            [
+              75.88986938291265,
+              28.380613029808515,
+              -113.00318000224286
+            ],
+            [
+              74.25481639916248,
+              30.654539241074133,
+              -118.71043332614855
+            ]
+          ],
+          "parameters": [
+            [
+              "free-curve",
+              0.32
+            ],
+            [
+              "free-curve",
+              0.901
+            ]
+          ],
+          "violates_nominal_pair_budget": false
+        },
+        {
+          "wires": [
+            3,
+            5
+          ],
+          "surface_gap_mm": 6.3061560936942325,
+          "points_xyz_mm": [
+            [
+              100.38995621347027,
+              26.617965878173223,
+              -115.46426990972068
+            ],
+            [
+              96.83193261429054,
+              23.332927114630532,
+              -122.92783582172447
+            ]
+          ],
+          "parameters": [
+            [
+              "free-curve",
+              0.757
+            ],
+            [
+              "KB-tail",
+              0.2125
+            ]
+          ],
+          "violates_nominal_pair_budget": false
+        },
+        {
+          "wires": [
+            3,
+            6
+          ],
+          "surface_gap_mm": 4.657354560219549,
+          "points_xyz_mm": [
+            [
+              58.149526633555354,
+              16.648547918935034,
+              -104.65514569925527
+            ],
+            [
+              54.98452074099493,
+              22.486236733439267,
+              -101.75
+            ]
+          ],
+          "parameters": [
+            [
+              "KA-tail",
+              0.775
+            ],
+            [
+              "KA-bridge",
+              0.075
+            ]
+          ],
+          "violates_nominal_pair_budget": false
+        },
+        {
+          "wires": [
+            4,
+            5
+          ],
+          "surface_gap_mm": 8.979194201102654,
+          "points_xyz_mm": [
+            [
+              30.230089434693728,
+              31.028399169191495,
+              -109.17013583190153
+            ],
+            [
+              37.8211035037783,
+              26.677041369254848,
+              -101.6
+            ]
+          ],
+          "parameters": [
+            [
+              "free-curve",
+              0.108
+            ],
+            [
+              "KA-bridge",
+              0.0
+            ]
+          ],
+          "violates_nominal_pair_budget": false
+        },
+        {
+          "wires": [
+            4,
+            6
+          ],
+          "surface_gap_mm": 2.075696299355029,
+          "points_xyz_mm": [
+            [
+              68.26543226920485,
+              34.641959407571754,
+              -116.01460090690128
+            ],
+            [
+              69.73456773079515,
+              34.641959407571754,
+              -111.5853990930987
+            ]
+          ],
+          "parameters": [
+            [
+              "free-curve",
+              0.791
+            ],
+            [
+              "free-curve",
+              0.209
+            ]
+          ],
+          "violates_nominal_pair_budget": false
+        },
+        {
+          "wires": [
+            5,
+            6
+          ],
+          "surface_gap_mm": 8.979194201102656,
+          "points_xyz_mm": [
+            [
+              47.230089434693724,
+              17.971600830808505,
+              -109.17013583190153
+            ],
+            [
+              54.8211035037783,
+              22.322958630745152,
+              -101.6
+            ]
+          ],
+          "parameters": [
+            [
+              "free-curve",
+              0.108
+            ],
+            [
+              "KA-bridge",
+              0.0
+            ]
+          ],
+          "violates_nominal_pair_budget": false
+        }
+      ],
+      "foreign_land_reservation_failures": []
+    },
+    {
+      "travel_mm": 5.0,
+      "free_length_mm": 66.00000000000009,
+      "handle_mm": 26.625168439298346,
+      "wires": [
+        {
+          "wire": 1,
+          "control_points_xyz_mm": [
+            [
+              24.483260172329487,
+              16.98199731475488,
+              -104.96147832161971
+            ],
+            [
+              40.28008094335961,
+              32.76536856752951,
+              -119.46131417745089
+            ],
+            [
+              63.71991905664039,
+              32.76536856752951,
+              -113.13868582254909
+            ],
+            [
+              79.5167398276705,
+              16.98199731475488,
+              -127.63852167838029
+            ]
+          ],
+          "nearest_reserved_box": {
+            "gap_mm": 8.584969587216296,
+            "obstacle": {
+              "id": "KA-bulk-2",
+              "kind": "new-reserve",
+              "board": "KA",
+              "box": [
+                37,
+                34,
+                -106.6,
+                42,
+                37,
+                -101.6
+              ],
+              "moves": false
+            },
+            "obstacle_box_at_pose": [
+              37.0,
+              34.0,
+              -106.6,
+              42.0,
+              37.0,
+              -101.6
+            ],
+            "wire_center_xyz_mm": [
+              41.26590656214143,
+              27.216440302934036,
+              -113.78366348156224
+            ],
+            "closest_box_point_xyz_mm": [
+              41.26590656214143,
+              34.0,
+              -106.6
+            ],
+            "curve_parameter": [
+              "free-curve",
+              0.316
+            ],
+            "required_nominal_gap_mm": 0.7,
+            "violates_nominal_service_budget": false
+          },
+          "enclosure_xy": {
+            "gap_mm": 14.027558630745151,
+            "wire_center_xyz_mm": [
+              20.821103503778307,
+              13.322958630745152,
+              -101.6
+            ],
+            "curve_parameter": [
+              "KA-bridge",
+              0.0
+            ]
+          }
+        },
+        {
+          "wire": 2,
+          "control_points_xyz_mm": [
+            [
+              41.48326017232949,
+              14.018002685245118,
+              -104.96147832161971
+            ],
+            [
+              57.28008094335961,
+              -1.7653685675295065,
+              -119.46131417745089
+            ],
+            [
+              80.71991905664039,
+              -1.7653685675295065,
+              -113.13868582254909
+            ],
+            [
+              96.5167398276705,
+              14.018002685245118,
+              -127.63852167838029
+            ]
+          ],
+          "nearest_reserved_box": {
+            "gap_mm": 15.027558630745151,
+            "obstacle": {
+              "id": "KA-bulk-2",
+              "kind": "new-reserve",
+              "board": "KA",
+              "box": [
+                37,
+                34,
+                -106.6,
+                42,
+                37,
+                -101.6
+              ],
+              "moves": false
+            },
+            "obstacle_box_at_pose": [
+              37.0,
+              34.0,
+              -106.6,
+              42.0,
+              37.0,
+              -101.6
+            ],
+            "wire_center_xyz_mm": [
+              37.8211035037783,
+              17.677041369254848,
+              -101.6
+            ],
+            "closest_box_point_xyz_mm": [
+              37.8211035037783,
+              34.0,
+              -101.6
+            ],
+            "curve_parameter": [
+              "KA-bridge",
+              0.0
+            ],
+            "required_nominal_gap_mm": 0.7,
+            "violates_nominal_service_budget": false
+          },
+          "enclosure_xy": {
+            "gap_mm": 2.8850742456641507,
+            "wire_center_xyz_mm": [
+              69.0,
+              2.1804742456641506,
+              -116.3
+            ],
+            "curve_parameter": [
+              "free-curve",
+              0.5
+            ]
+          }
+        },
+        {
+          "wire": 3,
+          "control_points_xyz_mm": [
+            [
+              58.48326017232949,
+              16.98199731475488,
+              -104.96147832161971
+            ],
+            [
+              74.28008094335961,
+              32.76536856752951,
+              -119.46131417745089
+            ],
+            [
+              97.71991905664039,
+              32.76536856752951,
+              -113.13868582254909
+            ],
+            [
+              113.5167398276705,
+              16.98199731475488,
+              -127.63852167838029
+            ]
+          ],
+          "nearest_reserved_box": {
+            "gap_mm": 1.947842972555433,
+            "obstacle": {
+              "id": "CS247-MON-KB",
+              "kind": "new-monitor",
+              "board": "KB",
+              "box": [
+                120,
+                12,
+                -132.6,
+                140,
+                32,
+                -127.6
+              ],
+              "moves": true
+            },
+            "obstacle_box_at_pose": [
+              120.0,
+              12.0,
+              -137.6,
+              140.0,
+              32.0,
+              -132.6
+            ],
+            "wire_center_xyz_mm": [
+              117.1788964962217,
+              13.322958630745152,
+              -131.0
+            ],
+            "closest_box_point_xyz_mm": [
+              120.0,
+              13.322958630745152,
+              -132.6
+            ],
+            "curve_parameter": [
+              "KB-bridge",
+              1.0
+            ],
+            "required_nominal_gap_mm": 0.7,
+            "violates_nominal_service_budget": false
+          },
+          "enclosure_xy": {
+            "gap_mm": 14.027558630745151,
+            "wire_center_xyz_mm": [
+              54.8211035037783,
+              13.322958630745152,
+              -101.6
+            ],
+            "curve_parameter": [
+              "KA-bridge",
+              0.0
+            ]
+          }
+        },
+        {
+          "wire": 4,
+          "control_points_xyz_mm": [
+            [
+              24.483260172329487,
+              25.98199731475488,
+              -104.96147832161971
+            ],
+            [
+              40.28008094335961,
+              41.76536856752951,
+              -119.46131417745089
+            ],
+            [
+              63.71991905664039,
+              41.76536856752951,
+              -113.13868582254909
+            ],
+            [
+              79.5167398276705,
+              25.98199731475488,
+              -127.63852167838029
+            ]
+          ],
+          "nearest_reserved_box": {
+            "gap_mm": 2.7725795265811364,
+            "obstacle": {
+              "id": "KA/F.Cu/JL-K-3-K/809",
+              "kind": "tool-column",
+              "board": "KA",
+              "box": [
+                55.9,
+                41.699999999999996,
+                -160,
+                58.1,
+                43.9,
+                -90
+              ],
+              "moves": false
+            },
+            "obstacle_box_at_pose": [
+              55.9,
+              41.699999999999996,
+              -160.0,
+              58.1,
+              43.9,
+              -90.0
+            ],
+            "wire_center_xyz_mm": [
+              55.52799751609613,
+              37.649065344805884,
+              -117.04494397962267
+            ],
+            "closest_box_point_xyz_mm": [
+              55.9,
+              41.699999999999996,
+              -117.04494397962267
+            ],
+            "curve_parameter": [
+              "free-curve",
+              0.56
+            ],
+            "required_nominal_gap_mm": 0.7,
+            "violates_nominal_service_budget": false
+          },
+          "enclosure_xy": {
+            "gap_mm": 21.525703503778306,
+            "wire_center_xyz_mm": [
+              20.821103503778307,
+              22.322958630745152,
+              -101.6
+            ],
+            "curve_parameter": [
+              "KA-bridge",
+              0.0
+            ]
+          }
+        },
+        {
+          "wire": 5,
+          "control_points_xyz_mm": [
+            [
+              41.48326017232949,
+              23.01800268524512,
+              -104.96147832161971
+            ],
+            [
+              57.28008094335961,
+              7.2346314324704935,
+              -119.46131417745089
+            ],
+            [
+              80.71991905664039,
+              7.2346314324704935,
+              -113.13868582254909
+            ],
+            [
+              96.5167398276705,
+              23.01800268524512,
+              -127.63852167838029
+            ]
+          ],
+          "nearest_reserved_box": {
+            "gap_mm": 6.027558630745152,
+            "obstacle": {
+              "id": "KA-bulk-2",
+              "kind": "new-reserve",
+              "board": "KA",
+              "box": [
+                37,
+                34,
+                -106.6,
+                42,
+                37,
+                -101.6
+              ],
+              "moves": false
+            },
+            "obstacle_box_at_pose": [
+              37.0,
+              34.0,
+              -106.6,
+              42.0,
+              37.0,
+              -101.6
+            ],
+            "wire_center_xyz_mm": [
+              37.8211035037783,
+              26.677041369254848,
+              -101.6
+            ],
+            "closest_box_point_xyz_mm": [
+              37.8211035037783,
+              34.0,
+              -101.6
+            ],
+            "curve_parameter": [
+              "KA-bridge",
+              0.0
+            ],
+            "required_nominal_gap_mm": 0.7,
+            "violates_nominal_service_budget": false
+          },
+          "enclosure_xy": {
+            "gap_mm": 11.88507424566415,
+            "wire_center_xyz_mm": [
+              69.0,
+              11.18047424566415,
+              -116.3
+            ],
+            "curve_parameter": [
+              "free-curve",
+              0.5
+            ]
+          }
+        },
+        {
+          "wire": 6,
+          "control_points_xyz_mm": [
+            [
+              58.48326017232949,
+              25.98199731475488,
+              -104.96147832161971
+            ],
+            [
+              74.28008094335961,
+              41.76536856752951,
+              -119.46131417745089
+            ],
+            [
+              97.71991905664039,
+              41.76536856752951,
+              -113.13868582254909
+            ],
+            [
+              113.5167398276705,
+              25.98199731475488,
+              -127.63852167838029
+            ]
+          ],
+          "nearest_reserved_box": {
+            "gap_mm": 1.947842972555433,
+            "obstacle": {
+              "id": "CS247-MON-KB",
+              "kind": "new-monitor",
+              "board": "KB",
+              "box": [
+                120,
+                12,
+                -132.6,
+                140,
+                32,
+                -127.6
+              ],
+              "moves": true
+            },
+            "obstacle_box_at_pose": [
+              120.0,
+              12.0,
+              -137.6,
+              140.0,
+              32.0,
+              -132.6
+            ],
+            "wire_center_xyz_mm": [
+              117.1788964962217,
+              22.322958630745152,
+              -131.0
+            ],
+            "closest_box_point_xyz_mm": [
+              120.0,
+              22.322958630745152,
+              -132.6
+            ],
+            "curve_parameter": [
+              "KB-bridge",
+              1.0
+            ],
+            "required_nominal_gap_mm": 0.7,
+            "violates_nominal_service_budget": false
+          },
+          "enclosure_xy": {
+            "gap_mm": 23.02755863074515,
+            "wire_center_xyz_mm": [
+              54.8211035037783,
+              22.322958630745152,
+              -101.6
+            ],
+            "curve_parameter": [
+              "KA-bridge",
+              0.0
+            ]
+          }
+        }
+      ],
+      "wire_pairs": [
+        {
+          "wires": [
+            1,
+            2
+          ],
+          "surface_gap_mm": 8.925607296206469,
+          "points_xyz_mm": [
+            [
+              30.369483401554902,
+              21.910007754266196,
+              -109.29304818960739
+            ],
+            [
+              37.8211035037783,
+              17.677041369254848,
+              -101.6
+            ]
+          ],
+          "parameters": [
+            [
+              "free-curve",
+              0.118
+            ],
+            [
+              "KA-bridge",
+              0.0
+            ]
+          ],
+          "violates_nominal_pair_budget": false
+        },
+        {
+          "wires": [
+            1,
+            3
+          ],
+          "surface_gap_mm": 6.134185903413185,
+          "points_xyz_mm": [
+            [
+              67.42332500735807,
+              25.4439834946187,
+              -120.36764795981973
+            ],
+            [
+              70.52110144209516,
+              25.418651183757998,
+              -112.21114635378956
+            ]
+          ],
+          "parameters": [
+            [
+              "free-curve",
+              0.767
+            ],
+            [
+              "free-curve",
+              0.232
+            ]
+          ],
+          "violates_nominal_pair_budget": false
+        },
+        {
+          "wires": [
+            1,
+            4
+          ],
+          "surface_gap_mm": 4.657354560219547,
+          "points_xyz_mm": [
+            [
+              24.149526633555354,
+              16.648547918935034,
+              -104.65514569925527
+            ],
+            [
+              20.984520740994935,
+              22.486236733439267,
+              -101.75
+            ]
+          ],
+          "parameters": [
+            [
+              "KA-tail",
+              0.775
+            ],
+            [
+              "KA-bridge",
+              0.075
+            ]
+          ],
+          "violates_nominal_pair_budget": false
+        },
+        {
+          "wires": [
+            1,
+            5
+          ],
+          "surface_gap_mm": 6.454082692254241,
+          "points_xyz_mm": [
+            [
+              79.42186730912451,
+              17.076508141816497,
+              -127.5517721996564
+            ],
+            [
+              83.36287934020923,
+              14.092695642256102,
+              -119.97713095039892
+            ]
+          ],
+          "parameters": [
+            [
+              "free-curve",
+              0.998
+            ],
+            [
+              "free-curve",
+              0.748
+            ]
+          ],
+          "violates_nominal_pair_budget": false
+        },
+        {
+          "wires": [
+            1,
+            6
+          ],
+          "surface_gap_mm": 7.580224282199804,
+          "points_xyz_mm": [
+            [
+              61.007839568094866,
+              27.69657045644344,
+              -118.34103320557098
+            ],
+            [
+              64.21315190338788,
+              30.801055142508297,
+              -109.20112715483363
+            ]
+          ],
+          "parameters": [
+            [
+              "free-curve",
+              0.654
+            ],
+            [
+              "free-curve",
+              0.115
+            ]
+          ],
+          "violates_nominal_pair_budget": false
+        },
+        {
+          "wires": [
+            2,
+            3
+          ],
+          "surface_gap_mm": 8.925607296206469,
+          "points_xyz_mm": [
+            [
+              47.3694834015549,
+              9.089992245733804,
+              -109.29304818960739
+            ],
+            [
+              54.8211035037783,
+              13.322958630745152,
+              -101.6
+            ]
+          ],
+          "parameters": [
+            [
+              "free-curve",
+              0.118
+            ],
+            [
+              "KA-bridge",
+              0.0
+            ]
+          ],
+          "violates_nominal_pair_budget": false
+        },
+        {
+          "wires": [
+            2,
+            4
+          ],
+          "surface_gap_mm": 13.416320080390845,
+          "points_xyz_mm": [
+            [
+              37.8211035037783,
+              17.677041369254848,
+              -101.6
+            ],
+            [
+              25.48843002888097,
+              26.955468303512262,
+              -105.84780553406839
+            ]
+          ],
+          "parameters": [
+            [
+              "KA-bridge",
+              0.0
+            ],
+            [
+              "free-curve",
+              0.021
+            ]
+          ],
+          "violates_nominal_pair_budget": false
+        },
+        {
+          "wires": [
+            2,
+            5
+          ],
+          "surface_gap_mm": 4.657354560219549,
+          "points_xyz_mm": [
+            [
+              37.98452074099493,
+              17.513763266560733,
+              -101.75
+            ],
+            [
+              41.149526633555354,
+              23.351452081064966,
+              -104.65514569925527
+            ]
+          ],
+          "parameters": [
+            [
+              "KA-bridge",
+              0.075
+            ],
+            [
+              "KA-tail",
+              0.775
+            ]
+          ],
+          "violates_nominal_pair_budget": false
+        },
+        {
+          "wires": [
+            2,
+            6
+          ],
+          "surface_gap_mm": 13.416320080390845,
+          "points_xyz_mm": [
+            [
+              42.48843002888097,
+              13.044531696487738,
+              -105.84780553406839
+            ],
+            [
+              54.8211035037783,
+              22.322958630745152,
+              -101.6
+            ]
+          ],
+          "parameters": [
+            [
+              "free-curve",
+              0.021
+            ],
+            [
+              "KA-bridge",
+              0.0
+            ]
+          ],
+          "violates_nominal_pair_budget": false
+        },
+        {
+          "wires": [
+            3,
+            4
+          ],
+          "surface_gap_mm": 7.5802242821998025,
+          "points_xyz_mm": [
+            [
+              76.99216043190513,
+              27.696570456443443,
+              -114.258966794429
+            ],
+            [
+              73.78684809661212,
+              30.801055142508293,
+              -123.39887284516635
+            ]
+          ],
+          "parameters": [
+            [
+              "free-curve",
+              0.346
+            ],
+            [
+              "free-curve",
+              0.885
+            ]
+          ],
+          "violates_nominal_pair_budget": false
+        },
+        {
+          "wires": [
+            3,
+            5
+          ],
+          "surface_gap_mm": 6.454082692254241,
+          "points_xyz_mm": [
+            [
+              100.36287934020923,
+              25.907304357743897,
+              -119.97713095039892
+            ],
+            [
+              96.42186730912451,
+              22.923491858183503,
+              -127.5517721996564
+            ]
+          ],
+          "parameters": [
+            [
+              "free-curve",
+              0.748
+            ],
+            [
+              "free-curve",
+              0.998
+            ]
+          ],
+          "violates_nominal_pair_budget": false
+        },
+        {
+          "wires": [
+            3,
+            6
+          ],
+          "surface_gap_mm": 4.657354560219549,
+          "points_xyz_mm": [
+            [
+              58.149526633555354,
+              16.648547918935034,
+              -104.65514569925527
+            ],
+            [
+              54.98452074099493,
+              22.486236733439267,
+              -101.75
+            ]
+          ],
+          "parameters": [
+            [
+              "KA-tail",
+              0.775
+            ],
+            [
+              "KA-bridge",
+              0.075
+            ]
+          ],
+          "violates_nominal_pair_budget": false
+        },
+        {
+          "wires": [
+            4,
+            5
+          ],
+          "surface_gap_mm": 8.925607296206469,
+          "points_xyz_mm": [
+            [
+              30.369483401554902,
+              30.910007754266196,
+              -109.29304818960739
+            ],
+            [
+              37.8211035037783,
+              26.677041369254848,
+              -101.6
+            ]
+          ],
+          "parameters": [
+            [
+              "free-curve",
+              0.118
+            ],
+            [
+              "KA-bridge",
+              0.0
+            ]
+          ],
+          "violates_nominal_pair_budget": false
+        },
+        {
+          "wires": [
+            4,
+            6
+          ],
+          "surface_gap_mm": 6.134185903413185,
+          "points_xyz_mm": [
+            [
+              67.42332500735807,
+              34.4439834946187,
+              -120.36764795981973
+            ],
+            [
+              70.52110144209516,
+              34.418651183758,
+              -112.21114635378956
+            ]
+          ],
+          "parameters": [
+            [
+              "free-curve",
+              0.767
+            ],
+            [
+              "free-curve",
+              0.232
+            ]
+          ],
+          "violates_nominal_pair_budget": false
+        },
+        {
+          "wires": [
+            5,
+            6
+          ],
+          "surface_gap_mm": 8.925607296206469,
+          "points_xyz_mm": [
+            [
+              47.3694834015549,
+              18.089992245733804,
+              -109.29304818960739
+            ],
+            [
+              54.8211035037783,
+              22.322958630745152,
+              -101.6
+            ]
+          ],
+          "parameters": [
+            [
+              "free-curve",
+              0.118
+            ],
+            [
+              "KA-bridge",
+              0.0
+            ]
+          ],
+          "violates_nominal_pair_budget": false
+        }
+      ],
+      "foreign_land_reservation_failures": []
+    },
+    {
+      "travel_mm": 10.1,
+      "free_length_mm": 66.0,
+      "handle_mm": 21.57603347753593,
+      "wires": [
+        {
+          "wire": 1,
+          "control_points_xyz_mm": [
+            [
+              24.483260172329487,
+              16.98199731475488,
+              -104.96147832161971
+            ],
+            [
+              37.28440862596018,
+              29.772246785462748,
+              -116.71159906010222
+            ],
+            [
+              66.71559137403982,
+              29.772246785462748,
+              -120.98840093989777
+            ],
+            [
+              79.5167398276705,
+              16.98199731475488,
+              -132.7385216783803
+            ]
+          ],
+          "nearest_reserved_box": {
+            "gap_mm": 10.199609492401532,
+            "obstacle": {
+              "id": "KA-bulk-2",
+              "kind": "new-reserve",
+              "board": "KA",
+              "box": [
+                37,
+                34,
+                -106.6,
+                42,
+                37,
+                -101.6
+              ],
+              "moves": false
+            },
+            "obstacle_box_at_pose": [
+              37.0,
+              34.0,
+              -106.6,
+              42.0,
+              37.0,
+              -101.6
+            ],
+            "wire_center_xyz_mm": [
+              37.602609814062646,
+              24.473655717731543,
+              -113.0330403267889
+            ],
+            "closest_box_point_xyz_mm": [
+              37.602609814062646,
+              34.0,
+              -106.6
+            ],
+            "curve_parameter": [
+              "free-curve",
+              0.266
+            ],
+            "required_nominal_gap_mm": 0.7,
+            "violates_nominal_service_budget": false
+          },
+          "enclosure_xy": {
+            "gap_mm": 14.027558630745151,
+            "wire_center_xyz_mm": [
+              20.821103503778307,
+              13.322958630745152,
+              -101.6
+            ],
+            "curve_parameter": [
+              "KA-bridge",
+              0.0
+            ]
+          }
+        },
+        {
+          "wire": 2,
+          "control_points_xyz_mm": [
+            [
+              41.48326017232949,
+              14.018002685245118,
+              -104.96147832161971
+            ],
+            [
+              54.28440862596018,
+              1.22775321453725,
+              -116.71159906010222
+            ],
+            [
+              83.71559137403982,
+              1.22775321453725,
+              -120.98840093989777
+            ],
+            [
+              96.5167398276705,
+              14.018002685245118,
+              -132.7385216783803
+            ]
+          ],
+          "nearest_reserved_box": {
+            "gap_mm": 15.027558630745151,
+            "obstacle": {
+              "id": "KA-bulk-2",
+              "kind": "new-reserve",
+              "board": "KA",
+              "box": [
+                37,
+                34,
+                -106.6,
+                42,
+                37,
+                -101.6
+              ],
+              "moves": false
+            },
+            "obstacle_box_at_pose": [
+              37.0,
+              34.0,
+              -106.6,
+              42.0,
+              37.0,
+              -101.6
+            ],
+            "wire_center_xyz_mm": [
+              37.8211035037783,
+              17.677041369254848,
+              -101.6
+            ],
+            "closest_box_point_xyz_mm": [
+              37.8211035037783,
+              34.0,
+              -101.6
+            ],
+            "curve_parameter": [
+              "KA-bridge",
+              0.0
+            ],
+            "required_nominal_gap_mm": 0.7,
+            "violates_nominal_service_budget": false
+          },
+          "enclosure_xy": {
+            "gap_mm": 5.129915582214218,
+            "wire_center_xyz_mm": [
+              69.0,
+              4.425315582214218,
+              -118.85
+            ],
+            "curve_parameter": [
+              "free-curve",
+              0.5
+            ]
+          }
+        },
+        {
+          "wire": 3,
+          "control_points_xyz_mm": [
+            [
+              58.48326017232949,
+              16.98199731475488,
+              -104.96147832161971
+            ],
+            [
+              71.28440862596018,
+              29.772246785462748,
+              -116.71159906010222
+            ],
+            [
+              100.71559137403982,
+              29.772246785462748,
+              -120.98840093989777
+            ],
+            [
+              113.5167398276705,
+              16.98199731475488,
+              -132.7385216783803
+            ]
+          ],
+          "nearest_reserved_box": {
+            "gap_mm": 1.947842972555433,
+            "obstacle": {
+              "id": "CS247-MON-KB",
+              "kind": "new-monitor",
+              "board": "KB",
+              "box": [
+                120,
+                12,
+                -132.6,
+                140,
+                32,
+                -127.6
+              ],
+              "moves": true
+            },
+            "obstacle_box_at_pose": [
+              120.0,
+              12.0,
+              -142.7,
+              140.0,
+              32.0,
+              -137.7
+            ],
+            "wire_center_xyz_mm": [
+              117.1788964962217,
+              13.322958630745152,
+              -136.1
+            ],
+            "closest_box_point_xyz_mm": [
+              120.0,
+              13.322958630745152,
+              -137.7
+            ],
+            "curve_parameter": [
+              "KB-bridge",
+              1.0
+            ],
+            "required_nominal_gap_mm": 0.7,
+            "violates_nominal_service_budget": false
+          },
+          "enclosure_xy": {
+            "gap_mm": 14.027558630745151,
+            "wire_center_xyz_mm": [
+              54.8211035037783,
+              13.322958630745152,
+              -101.6
+            ],
+            "curve_parameter": [
+              "KA-bridge",
+              0.0
+            ]
+          }
+        },
+        {
+          "wire": 4,
+          "control_points_xyz_mm": [
+            [
+              24.483260172329487,
+              25.98199731475488,
+              -104.96147832161971
+            ],
+            [
+              37.28440862596018,
+              38.77224678546275,
+              -116.71159906010222
+            ],
+            [
+              66.71559137403982,
+              38.77224678546275,
+              -120.98840093989777
+            ],
+            [
+              79.5167398276705,
+              25.98199731475488,
+              -132.7385216783803
+            ]
+          ],
+          "nearest_reserved_box": {
+            "gap_mm": 4.451528856973837,
+            "obstacle": {
+              "id": "KA-bulk-2",
+              "kind": "new-reserve",
+              "board": "KA",
+              "box": [
+                37,
+                34,
+                -106.6,
+                42,
+                37,
+                -101.6
+              ],
+              "moves": false
+            },
+            "obstacle_box_at_pose": [
+              37.0,
+              34.0,
+              -106.6,
+              42.0,
+              37.0,
+              -101.6
+            ],
+            "wire_center_xyz_mm": [
+              34.99254592094515,
+              32.56641774227529,
+              -111.79058390915141
+            ],
+            "closest_box_point_xyz_mm": [
+              37.0,
+              34.0,
+              -106.6
+            ],
+            "curve_parameter": [
+              "free-curve",
+              0.22
+            ],
+            "required_nominal_gap_mm": 0.7,
+            "violates_nominal_service_budget": false
+          },
+          "enclosure_xy": {
+            "gap_mm": 21.525703503778306,
+            "wire_center_xyz_mm": [
+              20.821103503778307,
+              22.322958630745152,
+              -101.6
+            ],
+            "curve_parameter": [
+              "KA-bridge",
+              0.0
+            ]
+          }
+        },
+        {
+          "wire": 5,
+          "control_points_xyz_mm": [
+            [
+              41.48326017232949,
+              23.01800268524512,
+              -104.96147832161971
+            ],
+            [
+              54.28440862596018,
+              10.22775321453725,
+              -116.71159906010222
+            ],
+            [
+              83.71559137403982,
+              10.22775321453725,
+              -120.98840093989777
+            ],
+            [
+              96.5167398276705,
+              23.01800268524512,
+              -132.7385216783803
+            ]
+          ],
+          "nearest_reserved_box": {
+            "gap_mm": 6.027558630745152,
+            "obstacle": {
+              "id": "KA-bulk-2",
+              "kind": "new-reserve",
+              "board": "KA",
+              "box": [
+                37,
+                34,
+                -106.6,
+                42,
+                37,
+                -101.6
+              ],
+              "moves": false
+            },
+            "obstacle_box_at_pose": [
+              37.0,
+              34.0,
+              -106.6,
+              42.0,
+              37.0,
+              -101.6
+            ],
+            "wire_center_xyz_mm": [
+              37.8211035037783,
+              26.677041369254848,
+              -101.6
+            ],
+            "closest_box_point_xyz_mm": [
+              37.8211035037783,
+              34.0,
+              -101.6
+            ],
+            "curve_parameter": [
+              "KA-bridge",
+              0.0
+            ],
+            "required_nominal_gap_mm": 0.7,
+            "violates_nominal_service_budget": false
+          },
+          "enclosure_xy": {
+            "gap_mm": 14.129915582214217,
+            "wire_center_xyz_mm": [
+              69.0,
+              13.425315582214218,
+              -118.85
+            ],
+            "curve_parameter": [
+              "free-curve",
+              0.5
+            ]
+          }
+        },
+        {
+          "wire": 6,
+          "control_points_xyz_mm": [
+            [
+              58.48326017232949,
+              25.98199731475488,
+              -104.96147832161971
+            ],
+            [
+              71.28440862596018,
+              38.77224678546275,
+              -116.71159906010222
+            ],
+            [
+              100.71559137403982,
+              38.77224678546275,
+              -120.98840093989777
+            ],
+            [
+              113.5167398276705,
+              25.98199731475488,
+              -132.7385216783803
+            ]
+          ],
+          "nearest_reserved_box": {
+            "gap_mm": 1.947842972555433,
+            "obstacle": {
+              "id": "CS247-MON-KB",
+              "kind": "new-monitor",
+              "board": "KB",
+              "box": [
+                120,
+                12,
+                -132.6,
+                140,
+                32,
+                -127.6
+              ],
+              "moves": true
+            },
+            "obstacle_box_at_pose": [
+              120.0,
+              12.0,
+              -142.7,
+              140.0,
+              32.0,
+              -137.7
+            ],
+            "wire_center_xyz_mm": [
+              117.1788964962217,
+              22.322958630745152,
+              -136.1
+            ],
+            "closest_box_point_xyz_mm": [
+              120.0,
+              22.322958630745152,
+              -137.7
+            ],
+            "curve_parameter": [
+              "KB-bridge",
+              1.0
+            ],
+            "required_nominal_gap_mm": 0.7,
+            "violates_nominal_service_budget": false
+          },
+          "enclosure_xy": {
+            "gap_mm": 23.02755863074515,
+            "wire_center_xyz_mm": [
+              54.8211035037783,
+              22.322958630745152,
+              -101.6
+            ],
+            "curve_parameter": [
+              "KA-bridge",
+              0.0
+            ]
+          }
+        }
+      ],
+      "wire_pairs": [
+        {
+          "wires": [
+            1,
+            2
+          ],
+          "surface_gap_mm": 8.713490423361486,
+          "points_xyz_mm": [
+            [
+              83.1788964962217,
+              13.322958630745152,
+              -136.1
+            ],
+            [
+              90.05143655495831,
+              9.288270752973116,
+              -128.08273931783916
+            ]
+          ],
+          "parameters": [
+            [
+              "KB-bridge",
+              1.0
+            ],
+            [
+              "free-curve",
+              0.856
+            ]
+          ],
+          "violates_nominal_pair_budget": false
+        },
+        {
+          "wires": [
+            1,
+            3
+          ],
+          "surface_gap_mm": 10.154073704370843,
+          "points_xyz_mm": [
+            [
+              66.33948193877367,
+              24.491574857240003,
+              -124.64047451259215
+            ],
+            [
+              71.66051806122633,
+              24.491574857240003,
+              -113.05952548740784
+            ]
+          ],
+          "parameters": [
+            [
+              "free-curve",
+              0.733
+            ],
+            [
+              "free-curve",
+              0.267
+            ]
+          ],
+          "violates_nominal_pair_budget": false
+        },
+        {
+          "wires": [
+            1,
+            4
+          ],
+          "surface_gap_mm": 4.657354560219547,
+          "points_xyz_mm": [
+            [
+              24.149526633555354,
+              16.648547918935034,
+              -104.65514569925527
+            ],
+            [
+              20.984520740994935,
+              22.486236733439267,
+              -101.75
+            ]
+          ],
+          "parameters": [
+            [
+              "KA-tail",
+              0.775
+            ],
+            [
+              "KA-bridge",
+              0.075
+            ]
+          ],
+          "violates_nominal_pair_budget": false
+        },
+        {
+          "wires": [
+            1,
+            5
+          ],
+          "surface_gap_mm": 6.393853739347069,
+          "points_xyz_mm": [
+            [
+              38.24212497206908,
+              24.66654546999929,
+              -113.32324264379443
+            ],
+            [
+              42.39252660480078,
+              22.15577359767629,
+              -105.76055835128737
+            ]
+          ],
+          "parameters": [
+            [
+              "free-curve",
+              0.277
+            ],
+            [
+              "free-curve",
+              0.023
+            ]
+          ],
+          "violates_nominal_pair_budget": false
+        },
+        {
+          "wires": [
+            1,
+            6
+          ],
+          "surface_gap_mm": 11.465953635026793,
+          "points_xyz_mm": [
+            [
+              58.488550995695306,
+              26.167609147881564,
+              -121.34249213911696
+            ],
+            [
+              63.85064956864704,
+              30.09211840166791,
+              -108.95546470043203
+            ]
+          ],
+          "parameters": [
+            [
+              "free-curve",
+              0.603
+            ],
+            [
+              "free-curve",
+              0.122
+            ]
+          ],
+          "violates_nominal_pair_budget": false
+        },
+        {
+          "wires": [
+            2,
+            3
+          ],
+          "surface_gap_mm": 8.713490423361486,
+          "points_xyz_mm": [
+            [
+              100.1788964962217,
+              17.677041369254848,
+              -136.1
+            ],
+            [
+              107.05143655495831,
+              21.711729247026884,
+              -128.08273931783916
+            ]
+          ],
+          "parameters": [
+            [
+              "KB-bridge",
+              1.0
+            ],
+            [
+              "free-curve",
+              0.856
+            ]
+          ],
+          "violates_nominal_pair_budget": false
+        },
+        {
+          "wires": [
+            2,
+            4
+          ],
+          "surface_gap_mm": 13.392564204627957,
+          "points_xyz_mm": [
+            [
+              37.8211035037783,
+              17.677041369254848,
+              -101.6
+            ],
+            [
+              25.928889996898338,
+              27.313615767649218,
+              -106.20213244798258
+            ]
+          ],
+          "parameters": [
+            [
+              "KA-bridge",
+              0.0
+            ],
+            [
+              "free-curve",
+              0.036
+            ]
+          ],
+          "violates_nominal_pair_budget": false
+        },
+        {
+          "wires": [
+            2,
+            5
+          ],
+          "surface_gap_mm": 4.657354560219549,
+          "points_xyz_mm": [
+            [
+              37.98452074099493,
+              17.513763266560733,
+              -101.75
+            ],
+            [
+              41.149526633555354,
+              23.351452081064966,
+              -104.65514569925527
+            ]
+          ],
+          "parameters": [
+            [
+              "KA-bridge",
+              0.075
+            ],
+            [
+              "KA-tail",
+              0.775
+            ]
+          ],
+          "violates_nominal_pair_budget": false
+        },
+        {
+          "wires": [
+            2,
+            6
+          ],
+          "surface_gap_mm": 13.392564204627961,
+          "points_xyz_mm": [
+            [
+              42.928889996898334,
+              12.68638423235078,
+              -106.20213244798258
+            ],
+            [
+              54.8211035037783,
+              22.322958630745152,
+              -101.6
+            ]
+          ],
+          "parameters": [
+            [
+              "free-curve",
+              0.036
+            ],
+            [
+              "KA-bridge",
+              0.0
+            ]
+          ],
+          "violates_nominal_pair_budget": false
+        },
+        {
+          "wires": [
+            3,
+            4
+          ],
+          "surface_gap_mm": 11.46595363502678,
+          "points_xyz_mm": [
+            [
+              79.5114490043047,
+              26.167609147881564,
+              -116.35750786088305
+            ],
+            [
+              74.14935043135296,
+              30.092118401667914,
+              -128.74453529956796
+            ]
+          ],
+          "parameters": [
+            [
+              "free-curve",
+              0.397
+            ],
+            [
+              "free-curve",
+              0.878
+            ]
+          ],
+          "violates_nominal_pair_budget": false
+        },
+        {
+          "wires": [
+            3,
+            5
+          ],
+          "surface_gap_mm": 6.393853739347069,
+          "points_xyz_mm": [
+            [
+              59.39252660480078,
+              17.84422640232371,
+              -105.76055835128737
+            ],
+            [
+              55.24212497206908,
+              15.333454530000711,
+              -113.32324264379443
+            ]
+          ],
+          "parameters": [
+            [
+              "free-curve",
+              0.023
+            ],
+            [
+              "free-curve",
+              0.277
+            ]
+          ],
+          "violates_nominal_pair_budget": false
+        },
+        {
+          "wires": [
+            3,
+            6
+          ],
+          "surface_gap_mm": 4.657354560219549,
+          "points_xyz_mm": [
+            [
+              58.149526633555354,
+              16.648547918935034,
+              -104.65514569925527
+            ],
+            [
+              54.98452074099493,
+              22.486236733439267,
+              -101.75
+            ]
+          ],
+          "parameters": [
+            [
+              "KA-tail",
+              0.775
+            ],
+            [
+              "KA-bridge",
+              0.075
+            ]
+          ],
+          "violates_nominal_pair_budget": false
+        },
+        {
+          "wires": [
+            4,
+            5
+          ],
+          "surface_gap_mm": 8.713490423361486,
+          "points_xyz_mm": [
+            [
+              83.1788964962217,
+              22.322958630745152,
+              -136.1
+            ],
+            [
+              90.05143655495831,
+              18.288270752973116,
+              -128.08273931783916
+            ]
+          ],
+          "parameters": [
+            [
+              "KB-bridge",
+              1.0
+            ],
+            [
+              "free-curve",
+              0.856
+            ]
+          ],
+          "violates_nominal_pair_budget": false
+        },
+        {
+          "wires": [
+            4,
+            6
+          ],
+          "surface_gap_mm": 10.154073704370843,
+          "points_xyz_mm": [
+            [
+              66.33948193877367,
+              33.49157485724,
+              -124.64047451259215
+            ],
+            [
+              71.66051806122633,
+              33.49157485724,
+              -113.05952548740784
+            ]
+          ],
+          "parameters": [
+            [
+              "free-curve",
+              0.733
+            ],
+            [
+              "free-curve",
+              0.267
+            ]
+          ],
+          "violates_nominal_pair_budget": false
+        },
+        {
+          "wires": [
+            5,
+            6
+          ],
+          "surface_gap_mm": 8.713490423361486,
+          "points_xyz_mm": [
+            [
+              100.1788964962217,
+              26.677041369254848,
+              -136.1
+            ],
+            [
+              107.05143655495831,
+              30.711729247026884,
+              -128.08273931783916
+            ]
+          ],
+          "parameters": [
+            [
+              "KB-bridge",
+              1.0
+            ],
+            [
+              "free-curve",
+              0.856
+            ]
+          ],
+          "violates_nominal_pair_budget": false
+        }
+      ],
+      "foreign_land_reservation_failures": []
+    }
+  ],
+  "limitations": [
+    "All gaps are sampled actual centerline-to-retained-reservation bounds at three fixed nominal poses; absence of witness is not complete-sweep or tolerance acceptance.",
+    "Source reservation boxes conservatively use retained face-height envelopes; intersection proves reservation-model conflict, not necessarily physical component-solid intersection.",
+    "Own solder/land contact permitted; stripped insulation geometry and complete revised carrier absent.",
+    "No curve optimization, alternative family, native, F3 or physical change."
+  ],
+  "elapsed_seconds": 7.613165401000515,
+  "peak_memory_KiB": 194588
+}

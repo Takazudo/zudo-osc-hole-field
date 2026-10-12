@@ -1,0 +1,114 @@
+{
+  "alternatives": [
+    {
+      "drops_mV": {
+        "+12V": 26.242,
+        "+5V": 19.426,
+        "-12V": 25.816
+      },
+      "global_common_return_copper_ohm": 0.0005,
+      "global_rail_copper_ohm": 0.001,
+      "id": "historical-110-plus-110",
+      "main_cut_ceiling_mm": 110,
+      "minimum_margin_mV": -6.242000000000001,
+      "new_cut_ceiling_mm": 110,
+      "parallel_return_paths_per_section": 1,
+      "physical_candidate_ready": false,
+      "scalar_20mV_screen": false,
+      "scope": "Whole-source concentration through one rail path. Parallel case requires actual same-endpoint accessible returns and matched source/load current functionals; no equal sharing or arbitrary signed GH injection credit."
+    },
+    {
+      "drops_mV": {
+        "+12V": 23.541900000000002,
+        "+5V": 17.3707,
+        "-12V": 23.156200000000002
+      },
+      "global_common_return_copper_ohm": 0.0005,
+      "global_rail_copper_ohm": 0.001,
+      "id": "latest-short-cuts-original-copper",
+      "main_cut_ceiling_mm": 104.0,
+      "minimum_margin_mV": -3.541900000000002,
+      "new_cut_ceiling_mm": 85.0,
+      "parallel_return_paths_per_section": 1,
+      "physical_candidate_ready": false,
+      "scalar_20mV_screen": false,
+      "scope": "Whole-source concentration through one rail path. Parallel case requires actual same-endpoint accessible returns and matched source/load current functionals; no equal sharing or arbitrary signed GH injection credit."
+    },
+    {
+      "drops_mV": {
+        "+12V": 19.8119,
+        "+5V": 15.080699999999998,
+        "-12V": 19.516199999999998
+      },
+      "global_common_return_copper_ohm": 0.0001,
+      "global_rail_copper_ohm": 0.0001,
+      "id": "latest-short-cuts-tight-copper",
+      "main_cut_ceiling_mm": 104.0,
+      "minimum_margin_mV": 0.1880999999999986,
+      "new_cut_ceiling_mm": 85.0,
+      "parallel_return_paths_per_section": 1,
+      "physical_candidate_ready": false,
+      "scalar_20mV_screen": true,
+      "scope": "Whole-source concentration through one rail path. Parallel case requires actual same-endpoint accessible returns and matched source/load current functionals; no equal sharing or arbitrary signed GH injection credit."
+    },
+    {
+      "drops_mV": {
+        "+12V": 14.780433333333335,
+        "+5V": 8.609233333333332,
+        "-12V": 14.394733333333333
+      },
+      "global_common_return_copper_ohm": 0.0005,
+      "global_rail_copper_ohm": 0.001,
+      "id": "matched-three-return-subnetwork",
+      "main_cut_ceiling_mm": 104.0,
+      "minimum_margin_mV": 5.219566666666665,
+      "new_cut_ceiling_mm": 85.0,
+      "parallel_return_paths_per_section": 3,
+      "physical_candidate_ready": false,
+      "scalar_20mV_screen": true,
+      "scope": "Whole-source concentration through one rail path. Parallel case requires actual same-endpoint accessible returns and matched source/load current functionals; no equal sharing or arbitrary signed GH injection credit."
+    },
+    {
+      "drops_mV": {
+        "+12V": 16.9708,
+        "+5V": 10.7996,
+        "-12V": 16.585099999999997
+      },
+      "global_common_return_copper_ohm": 0.0005,
+      "global_rail_copper_ohm": 0.001,
+      "id": "matched-two-return-subnetwork",
+      "main_cut_ceiling_mm": 104.0,
+      "minimum_margin_mV": 3.0291999999999994,
+      "new_cut_ceiling_mm": 85.0,
+      "parallel_return_paths_per_section": 2,
+      "physical_candidate_ready": false,
+      "scalar_20mV_screen": true,
+      "scope": "Whole-source concentration through one rail path. Parallel case requires actual same-endpoint accessible returns and matched source/load current functionals; no equal sharing or arbitrary signed GH injection credit."
+    }
+  ],
+  "not_credited": [
+    "Actual source-to-load board copper and via/spreading resistance",
+    "Finite contact/source functionals for new CS247 ends",
+    "Complete 380-GH-return signed network and peripheral port bounds",
+    "Any measured thermal/process capability or physical fit",
+    "Fault/partial-power qualification",
+    "Native validation or architecture adoption"
+  ],
+  "original_copper_one_return": {
+    "combined_cut_limit_mm": 148.33524684270955,
+    "new_cut_limit_with104mm_main_mm": 44.33524684270955,
+    "shortfall_against85mm_feed_mm": 40.66475315729045
+  },
+  "parallel_derivation": "For a genuine two-port return subnetwork, three separate conductors each <=Rs give Reff<=Rs/3 by conductance sum and Rayleigh monotonicity. Equal currents are not asserted. Access and shared necks must be charged once in the expanded graph. Additional externally injected ports require their own joined solution.",
+  "source_hashes": {
+    "circuit/routing/epic-242/decision-pilots/feed-arrangement/robust-curve.json": "cfab1993ecd661054927e8c855470f16618bf04607b12af89cc6ba4099e7dfda",
+    "compare-budgets.py": "f6b178c6188db21dea390c1ad0626070ce05d16a7ee08dececffb23addfbad0a",
+    "design/partition/partition-input.json": "1370eda314dadf2c06f92f0e2386489345c9441e56cefa4687f8f25647ae38df"
+  },
+  "status": "CONDITIONAL_DESIGN_COMPARISON_NOT_SOURCE_REALIZATION",
+  "tight_copper_headroom": {
+    "additional_common_rail_and_return_cut_each_section_sum_mm": 2.159586681974726,
+    "additional_return_mohm_if_rail_unchanged": 0.040891304347825785,
+    "mV": 0.1880999999999986
+  }
+}

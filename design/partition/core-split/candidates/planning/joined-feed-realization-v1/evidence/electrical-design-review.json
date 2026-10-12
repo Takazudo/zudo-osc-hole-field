@@ -1,0 +1,434 @@
+{
+  "GH_and_fault_scope": {
+    "interpretation": "The published sum-of-all-omitted-access <=0.5 mOhm and complete connected subgraphs is a sufficient lifting certificate, not necessary physical feasibility. It is not implied by a 0.1 mOhm selected path target. Expanded actual graph or compatible field bounds can avoid that overstrong surrogate while retaining GH<=0.5 A and original voltage/current requirements.",
+    "old_global_omitted_access_sum_mOhm": 0.5,
+    "upstream": "Preserve external load-side boundary and existing fault obligations; no upstream protection design undertaken or required as the next deliverable of this source-only candidate."
+  },
+  "allowed_alternatives": [
+    {
+      "id": "matched-existing-parallel-return-graph",
+      "priority": 1,
+      "proof": "If each of n paths has R_i<=Rsection and genuinely joins the same bounded-access two ports, conductance sum>=n/Rsection gives effective R<=Rsection/n without equal current sharing. Add global copper/access once. The table assumes the stated number at BOTH serial sections; it is a conditional two-port construction, not the actual full multiport graph.",
+      "results": [
+        {
+          "plus12_drop_mV_original_copper_ceilings": 14.780433333333333,
+          "plus12_drop_mV_strict_targets": 11.050433333333334,
+          "proved_parallel_returns_per_section": 3
+        },
+        {
+          "plus12_drop_mV_original_copper_ceilings": 16.9708,
+          "plus12_drop_mV_strict_targets": 13.2408,
+          "proved_parallel_returns_per_section": 2
+        },
+        {
+          "plus12_drop_mV_original_copper_ceilings": 23.5419,
+          "plus12_drop_mV_strict_targets": 19.8119,
+          "proved_parallel_returns_per_section": 1
+        }
+      ],
+      "scope": "Use the unchanged three return wires. Preserve 4.6 A individual-wire qualification and all required outage/GH limits. All-present/two-present illustrative arithmetic is not acceptance of a failure condition; full branch loss, signed multipoint injection, shared access and GH currents still need their own compatible proof."
+    },
+    {
+      "JL_plus_new_generic_wire_plus12_original_copper_mV": 22.567639600000003,
+      "JL_plus_new_generic_wire_plus12_strict_mV": 18.837639599999996,
+      "id": "matched-main-contact-trial",
+      "priority": 2,
+      "published_main_upper_mOhm": {
+        "JL": 1.406588,
+        "JR": 1.382586,
+        "P_offset": 1.361676,
+        "P_zero": 1.360171
+      },
+      "scope": "Rounded diagnostic only. Exact current/potential trace fields, wetted support and matching operators must be composed. Existing main-wire trial cannot be subtracted from unrelated PCB transfer intervals. It does not apply to angled CS247 contacts by common MPN alone. Source old endpoint adapter allows <=3 degree tilt to its fan; new tangent is about57 degrees from board normal and needs an explicit different/compatible termination construction."
+    },
+    {
+      "id": "finite-compatible-copper-construction",
+      "priority": 3,
+      "scope": "Use existing permitted same-net layer roles, local plated transfers and retained copper; prove all pad/neck/contact fields and continuous return. Finite-conductance extraction can replace an overstrong global sum certificate with the actual joined graph, without relaxing any voltage/current limit or introducing a new interface. No asserted parallel-layer credit."
+    },
+    {
+      "id": "cut-or-load-refinement",
+      "priority": 4,
+      "scope": "Shorter qualified existing wire cuts or supported physical signed-load bounds may improve the model. Current new-cut preparation headroom only0.585133 mm at shortest cut; service, C1/C2, tails, bridges and prep cannot be spent twice. No lower source-current assumption from package count; no new wire/interface/material identity."
+    }
+  ],
+  "checks": {
+    "decimal_assertions": "Drops +12=19.8119, -12=19.5162, +5=15.0807 mV; 3-return original-ceiling two-port +12=14.780433333333333 mV; 1-return original-ceiling +12=23.5419 mV.",
+    "geometry_or_native_executed": false,
+    "independent_decimal_formula_matches_all_three_saved_drops": true,
+    "source_rosters_and_stack_read": true
+  },
+  "copper_and_transfer_bottleneck": {
+    "140mm_width_needed_for_0p1mOhm_before_access_mm": 412.8702269999999,
+    "array_25_via_full_1p6mm_barrel_only_mOhm": 0.05175952737084881,
+    "array_scope": "Ideal uniform annular barrels, finished bore 0.3 mm, plating 0.025 mm, 25 in parallel, rho70 nominal. Full-thickness reference comparison only; actual inner-layer transfer depths, finished thickness/etch, unequal spreading and contact fields are not resolved. Do not charge a full barrel where only a partial depth is traversed. Do not mistake this calculated value for a process maximum.",
+    "design_implication": "0.1 mOhm must pay KA hub, branch/front-board access where applicable, KB spreading, every transfer/neck and matched contact observable. Two full-thickness array comparisons alone exceed it; a single broad 140 mm plane comparison exceeds it. Actual parallel surface/inner AGND may help only with proved connectivity and finite transfers; +12V, -12V and +5V have different available layer roles. No layer-role reallocation or successful copper removal is authorized.",
+    "each_0p1mOhm_global_allowance_total_squares": 0.33908959969641994,
+    "ideal_three_parallel_140x310_planes_mOhm": 0.044394648064516117,
+    "illustrative_140mm_span_one_310mm_wide_70um_strip_mOhm": 0.13318394419354834,
+    "nominal_70um_sheet_mOhm_per_square": 0.29490730499999995,
+    "plus12_mV_if_both_global_paths_each_have_one_ideal_140x310_plane_no_other_access": 20.03423242609677,
+    "rho70_nominal_ohm_mm": 2.0643511349999997e-05,
+    "strip_scope": "Explicit uniform single-plane full-width transport comparison. For a cut-free full-current slab with all injection/extraction beyond opposite ends, R>=rho*L/(t*Wmax) is a relaxation bound; no exact source/measurement slab has been established here. This is not a global impossibility proof for the actual multipoint board or parallel conductor topology. 140 mm is illustrative rounded main-land-to-feed span, not a new geometry measurement.",
+    "two_such_arrays_mOhm": 0.10351905474169762
+  },
+  "existing_fixture_evidence": {
+    "implication": "A proposal adding 12 new lands and six wires alone cannot claim complete feed/distribution; exact owned pads and returns must be joined with preserved local circuits. Historical K rail objects cannot be blindly restored by global net name.",
+    "observation": "The authenticated historical two-A PCB has zero tracks/vias on all four global rails and zero CS247 footprints. Five inherited filled zones do not establish all terminal paths: AGND on F/B/In1, -12 on In3, +12 on In4, no +5 zone. This is existing saved artifact evidence, not a fresh native result or inspection of a new candidate. Both boards genuinely require all four nets.",
+    "source_review": "/tmp/two-a-projection-fixture-review.json",
+    "source_review_sha256": "27659c113aa0df31990b3f89d874efb810aed372e68be0e5d4cb6a7464fedeed"
+  },
+  "gates": {
+    "actual_hot_copper_resistance": false,
+    "actual_shape_cut_process_qualification": false,
+    "architecture_adopted": false,
+    "compatible_new_CS247_contact_class": false,
+    "complete_source_candidate_distribution": false,
+    "full_coupled_return_and_fault_certificate": false,
+    "native_run": false,
+    "physical_load_bounds": false,
+    "updated_scalar_voltage_arithmetic": true
+  },
+  "global_voltage_check": {
+    "each_complete_wire_combined_ends_mOhm": 0.2,
+    "formula": "1000*(Irail*(Rmain+Rnew+Rrail_copper)+4.6*(Rmain+Rnew+Rreturn_copper)); each full wire pays both terminations once; global copper charged once. Does not assume rail cancellation, equal sharing, or reduced board planning current.",
+    "main_wire_and_ends_mOhm": 1.552,
+    "new_wire_and_ends_mOhm": 1.305,
+    "plus12_drop_if_original_copper_ceilings_used_mV": 23.5419,
+    "plus12_equal_extra_two_end_allowance_per_section_mOhm": 0.01403731343283582,
+    "plus12_extra_combined_cut_headroom_mm": 2.15958668197473,
+    "qualification": "13 mOhm/m at 70 C, 0.2 mOhm two-end allowance, 104/85 cut classes and 0.1/0.1 mOhm copper are acceptance requirements, not measurements or Alpha guarantees.",
+    "rows": {
+      "+12V": {
+        "global_copper_mV": 0.67,
+        "margin_mV": 0.1881,
+        "maximum_common_rail_and_return_combined_cut_mm": 191.15958668197473,
+        "maximum_global_rail_mOhm_return_fixed_0p1": 0.18957142857142859,
+        "maximum_global_return_mOhm_rail_fixed_0p1": 0.1408913043478261,
+        "rail_A": 2.1,
+        "single_return_A": 4.6,
+        "total_mV": 19.8119,
+        "wire_and_ends_mV": 19.1419
+      },
+      "+5V": {
+        "global_copper_mV": 0.51,
+        "margin_mV": 4.9193,
+        "maximum_common_rail_and_return_combined_cut_mm": 263.1975867269985,
+        "maximum_global_rail_mOhm_return_fixed_0p1": 9.9386,
+        "maximum_global_return_mOhm_rail_fixed_0p1": 1.1694130434782608,
+        "rail_A": 0.5,
+        "single_return_A": 4.6,
+        "total_mV": 15.0807,
+        "wire_and_ends_mV": 14.5707
+      },
+      "-12V": {
+        "global_copper_mV": 0.66,
+        "margin_mV": 0.4838,
+        "maximum_common_rail_and_return_combined_cut_mm": 194.63869463869463,
+        "maximum_global_rail_mOhm_return_fixed_0p1": 0.3419,
+        "maximum_global_return_mOhm_rail_fixed_0p1": 0.20517391304347826,
+        "rail_A": 2,
+        "single_return_A": 4.6,
+        "total_mV": 19.5162,
+        "wire_and_ends_mV": 18.8562
+      }
+    },
+    "series_wire_and_ends_mOhm": 2.857,
+    "wire_hot_requirement_ohm_per_m": 0.013
+  },
+  "owned_load_and_return": {
+    "boards": {
+      "KA": {
+        "bypass_pair_count": 231,
+        "dynamic_path": "Switching/LED/output current and capacitor charge need signed waveform allocation; no part-count apportionment",
+        "exact_bypass_roster_locator": "design/partition/core-split/power/contract.json#/options/two/boards/KA/bypass_owner_pairs",
+        "exact_supply_pin_roster_locator": "design/partition/core-split/power/contract.json#/options/two/boards/KA/fitted_ic_supply_pins",
+        "exact_supply_roster_sha256": "926580e9f919d7bfcdafb2b3e36a830aff1857779c83fb9a6746225107551249",
+        "fitted_ic_count": 131,
+        "fitted_rail_capacitance_uF": {
+          "+12V": 14.4,
+          "+5V": 6.5,
+          "-12V": 11.8
+        },
+        "fitted_return_contact_count": 799,
+        "fitted_supply_pin_count": {
+          "+12V": 125,
+          "+5V": 6,
+          "-12V": 107
+        },
+        "ic_count_by_exact_symbol": {
+          "AS3340D": 5,
+          "LM13700M_NOPB": 10,
+          "LM393BIDR": 10,
+          "NOISE2": 1,
+          "OPA4196IDR": 64,
+          "OPA4197IPWR": 28,
+          "REF5050AIDR": 8,
+          "SN74HC14DR": 5
+        },
+        "instances": [
+          "O1",
+          "O2",
+          "O3",
+          "O4",
+          "O5",
+          "OCTAVE_REF",
+          "F1",
+          "F2",
+          "F3",
+          "W1",
+          "W2",
+          "M4A",
+          "M4B",
+          "N1"
+        ],
+        "module_responsibility_planning_mA": {
+          "+12V": 701.738138,
+          "+5V": 52.4,
+          "-12V": 677.938138
+        },
+        "opamp_quiescent_subset_mA_per_analog_rail": 232.0,
+        "package_count": 1795,
+        "physical_feed_current_maximum_mA": {
+          "+12V": null,
+          "+5V": null,
+          "-12V": null
+        },
+        "return_path": "IC/passive local return and bypass -> continuous local AGND -> dedicated main wire -> KA hub; GH/sleeve paths remain coupled parallel returns"
+      },
+      "KB": {
+        "bypass_pair_count": 386,
+        "dynamic_path": "Switching/LED/output current and capacitor charge need signed waveform allocation; no part-count apportionment",
+        "exact_bypass_roster_locator": "design/partition/core-split/power/contract.json#/options/two/boards/KB/bypass_owner_pairs",
+        "exact_supply_pin_roster_locator": "design/partition/core-split/power/contract.json#/options/two/boards/KB/fitted_ic_supply_pins",
+        "exact_supply_roster_sha256": "e029e6f1233560b9e3d467c8d858b79637ae78390352fdf9eac0fdbf8040efb7",
+        "fitted_ic_count": 294,
+        "fitted_rail_capacitance_uF": {
+          "+12V": 13.8,
+          "+5V": 17.2,
+          "-12V": 9.2
+        },
+        "fitted_return_contact_count": 1104,
+        "fitted_supply_pin_count": {
+          "+12V": 122,
+          "+5V": 172,
+          "-12V": 92
+        },
+        "ic_count_by_exact_symbol": {
+          "ADG5412FBRUZ": 12,
+          "CD74HC221M96": 8,
+          "LF398M_NOPB": 2,
+          "LM13700M_NOPB": 6,
+          "LM393BIDR": 14,
+          "OPA4196IDR": 32,
+          "OPA4197IPWR": 40,
+          "REF5050AIDR": 16,
+          "SN74HC00DR": 102,
+          "SN74HC14DR": 8,
+          "SN74HC74DR": 54
+        },
+        "instances": [
+          "E1",
+          "E2",
+          "E3",
+          "E4",
+          "E5",
+          "E6",
+          "A01",
+          "A02",
+          "A03",
+          "A04",
+          "A05",
+          "A06",
+          "H1",
+          "H2",
+          "M5A",
+          "M5B"
+        ],
+        "module_responsibility_planning_mA": {
+          "+12V": 744.55,
+          "+5V": 148.048934,
+          "-12V": 672.75
+        },
+        "opamp_quiescent_subset_mA_per_analog_rail": 272.0,
+        "package_count": 1590,
+        "physical_feed_current_maximum_mA": {
+          "+12V": null,
+          "+5V": null,
+          "-12V": null
+        },
+        "return_path": "IC/passive local return and bypass -> continuous local AGND -> dedicated main wire -> KA hub; GH/sleeve paths remain coupled parallel returns"
+      }
+    },
+    "caution": "Whole-module worksheet responsibility spans core and front boards and is not a physical core maximum. Package quiescent subset is not additive to that worksheet. Fitted pad counts are terminal obligations, not independent current sources. Preserve every local derived rail, bypass, paired-rail return, GH return and reference Kelvin contact.",
+    "complete_model_requirement": "Bind each fitted source terminal and exact board/net/pin to a local distribution/access component; include all dedicated main wire endpoints and CS247 twelve endpoints; model actual signed loads and shared necks, coupled GH returns, EL/OCTAVE_REF peripheral paths and required return-open states. Keep every single wire 4.6 A return screen; no patch-sleeve or equal-sharing credit.",
+    "missing_load_bound": "Both published physical_feed_current_maximum_mA maps are null. A supported finer injection class could tighten conservative concentration; module planning numbers cannot supply it.",
+    "new_feed": {
+      "courtyards_mm": [
+        5,
+        5
+      ],
+      "destination": "KB",
+      "ends": [
+        "CS247-KA-KB-SRC-1..6",
+        "CS247-KA-KB-DST-1..6"
+      ],
+      "id": "CS247-KA-KB",
+      "lands_mm": [
+        4,
+        4
+      ],
+      "native_ref_in_published_producer": null,
+      "net_order": [
+        "+12V",
+        "-12V",
+        "+5V",
+        "AGND",
+        "AGND",
+        "AGND"
+      ],
+      "pin": "1",
+      "reserves_mm": [
+        6,
+        6
+      ],
+      "source": "KA load-side star"
+    },
+    "planning_scope": "Whole-module responsibility across K/JL/JR/P/EL; NOT physical core current, not added to separately counted package Iq"
+  },
+  "recommendation": "Continue one load-side source candidate only if its first design deliverable is an exact connected rail/return/contact graph and a compatible resistance/current certificate. 104+85 mm is not rejected by the global 20 mV limit, but the 0.1/0.1 mOhm proposal is an unproved allocation with very little spare margin. Prefer explicit existing parallel-return/access modeling and physical contact matching over asserting the allocation is realizable from copied planes. No architecture adoption or physical-feasibility claim.",
+  "schema": "joined-feed-electrical-design-review-v1",
+  "scope": "Read-only source and lightweight arithmetic; no native, routing, placement, geometry search, hardware edit or lane edit. Upstream CN301/XB301 implementation is outside this review; preserve load-side boundary without using its non-realization to reject the requested candidate.",
+  "smallest_next_design_deliverable": "One source-bound two-core load-side graph, with twelve exact implemented CS247 pad identities, contact/support geometry, every owned rail/return access, genuine stack/layer thickness bounds, and conserved load/source functionals. Compute a compatible worst-case resistance/current certificate before a physical-fit assertion. If this cannot be constructed within preserved geometry/copper, report the specific access/plane/contact deficit rather than changing limits or resuming F3 trials.",
+  "source_geometry": {
+    "complete_clearance_and_actual_shape_qualified": false,
+    "core_thickness_mm": 1.6,
+    "face_gap_mm": [
+      24.3,
+      24.5
+    ],
+    "faces": [
+      "KA B.Cu",
+      "KB F.Cu"
+    ],
+    "fixed_core_outline": [
+      [
+        4,
+        8
+      ],
+      [
+        314,
+        8
+      ],
+      [
+        314,
+        246
+      ],
+      [
+        258,
+        246
+      ],
+      [
+        258,
+        292
+      ],
+      [
+        4,
+        292
+      ]
+    ],
+    "free_curve_range_mm": [
+      65.9,
+      66.1
+    ],
+    "layer_contract": [
+      {
+        "copper_oz": 2,
+        "layer": "F.Cu",
+        "role": "signals / local AGND fill"
+      },
+      {
+        "copper_oz": 2,
+        "layer": "In1.Cu",
+        "role": "continuous AGND"
+      },
+      {
+        "copper_oz": 2,
+        "layer": "In2.Cu",
+        "role": "inner signals"
+      },
+      {
+        "copper_oz": 2,
+        "layer": "In3.Cu",
+        "role": "inner signals with -12V plane fill"
+      },
+      {
+        "copper_oz": 2,
+        "layer": "In4.Cu",
+        "role": "continuous +12V plane"
+      },
+      {
+        "copper_oz": 2,
+        "layer": "B.Cu",
+        "role": "signals / local AGND fill"
+      }
+    ],
+    "main_cut_range_mm": [
+      103.5,
+      104
+    ],
+    "new_cut_range_mm": [
+      84.5,
+      85
+    ],
+    "offset_mm": 58,
+    "shape_and_preparation": {
+      "84mm_cut_other_preparation_before_cut_undersize_mm": 4.585133059479091,
+      "actual_complete_path_upper_if_C1_holds_mm": 79.41486694052091,
+      "main_cut_nominal_mm": 103.75,
+      "main_cut_range_mm": [
+        103.5,
+        104.0
+      ],
+      "main_cut_tolerance_mm": 0.25,
+      "maximum_two_bridge_length_mm": 7.528581129228622,
+      "new_cut_nominal_mm": 84.75,
+      "new_cut_range_mm": [
+        84.5,
+        85.0
+      ],
+      "new_cut_tolerance_mm": 0.25,
+      "nominal_two_bridge_length_mm": 7.344957199247437,
+      "other_preparation_at_shortest_cut_and_longest_path_mm": 5.085133059479091,
+      "preparation_headroom_mm": 0.5851330594790909,
+      "reference_complete_path_upper_mm": 78.62858112922862,
+      "required_other_preparation_min_mm": 4.5,
+      "scope": "Lengths pay both bridges once and allow up to 1% C1 arclength growth of the entire new-wire path. Preparation is reserved outside that path, not available service slack. Existing main-cut qualification is an independent prerequisite; this study does not apply the new-wire shape certificate to main wires."
+    },
+    "withdrawal_mm": [
+      10,
+      10.1
+    ]
+  },
+  "source_sha256": {
+    "circuit/routing/epic-242/decision-pilots/feed-arrangement/face-provenance-and-tolerance.md": "097f70a3741f396c4069e6d4b12d458e7b90a58c11807ef3447c14b9b5ab3ec8",
+    "circuit/routing/epic-242/decision-pilots/feed-arrangement/process-budget.md": "85af1cc851cd77f683db1de2a381de54af857115c82cb9902b84c84cbeb10512",
+    "circuit/routing/epic-242/decision-pilots/feed-arrangement/reconciled-contract.json": "01b77387f568a5b246c7e33e635e8d867f09b23ea200d13dd0c17db251ada30d",
+    "circuit/routing/epic-242/decision-pilots/feed-arrangement/robust-curve.json": "cfab1993ecd661054927e8c855470f16618bf04607b12af89cc6ba4099e7dfda",
+    "circuit/routing/epic-242/decision-pilots/feed-arrangement/robust_curve.py": "12cb2cb82f8282c92e8a50c51b4060ba96eb826a35f8b7577c7b6442ff458d91",
+    "design/boards/osc-core.json": "5d9b9a57e78e26d64708cee49ffd191c23739cf5832de3264e8e3ae95a877f6a",
+    "design/partition/core-split/mechanical/candidates.json": "aa86ab27a2fe2950cdd2a03e6fc597e483273859776eb901ca68a8aef8772cd8",
+    "design/partition/core-split/power/build.py": "dd5c66067ca53dfcef48abc4221b6b7aa5bfad5418d9ae1b3f51e0d71bedb114",
+    "design/partition/core-split/power/contract.json": "c8dc5292853c8cbd50759b49592d2a576cbdc98d22a4d87fcbb4864552fe1a5c",
+    "design/partition/core-split/power/input.json": "e68c3d929e4cf085222ee80f902f5dc1745f59e92c050972be5251d6fcd98ee7",
+    "design/partition/core-split/power/joined/budget.json": "9ca36a6b6358453635776a16493b2ee866eed5c553b68ed7425bfcaf9b7de3f9",
+    "design/partition/core-split/power/joined/check.py": "278957313f51e9d232570f9e02d0709a1b41fdc8aa5cabda7732ca8c0543d154",
+    "design/partition/ground-material-evidence.json": "85e81625d8b3e629336df098c831dd97b7d01e6703dfcedf50f9ebe368be394b",
+    "design/partition/harness-wire-evidence.json": "f2e67dc157b6643ff4857aaa9b3e1ce60c1a76739ed4734b7672d11d63a172c6",
+    "design/partition/individual-wire-cores.md": "512394443858f1e0426e35ed18b99181152ebfc587c9a13fedfa67f17e7dbe18",
+    "design/partition/main-wire-reference.md": "1d5289da1b1219200632769ca431e200170bf7d7e78026e322688fa0cf0af141",
+    "design/partition/partition-input.json": "1370eda314dadf2c06f92f0e2386489345c9441e56cefa4687f8f25647ae38df",
+    "design/partition/physical-contact-model.md": "4b2014e7d7dea64b71da353b511a7c83cbe8566a7dadf5a48d8dbe7b3e0e41a5"
+  },
+  "status": "CONDITIONAL ARITHMETIC PASS; complete physically instantiated distribution/return design NOT ESTABLISHED"
+}

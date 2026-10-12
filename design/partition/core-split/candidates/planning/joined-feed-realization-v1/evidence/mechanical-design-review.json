@@ -1,0 +1,71 @@
+{
+  "status": "SOURCE_DESIGN_CAN_PROCEED_WITH_EXPLICIT_OPEN_GATES_NO_PHYSICAL_FIT_CLAIM",
+  "scope": "Independent read-only artifact/code review and light arithmetic only; no geometry trial, native, routing, upstream redesign, fixture or lane edits.",
+  "source_hashes": {
+    "circuit/routing/epic-242/decision-pilots/feed-arrangement/README.md": "05adf4a7978856f0e18a1ffe2e853468695b52dfffd2764111aedd22f9388631",
+    "circuit/routing/epic-242/decision-pilots/feed-arrangement/process-budget.md": "85af1cc851cd77f683db1de2a381de54af857115c82cb9902b84c84cbeb10512",
+    "circuit/routing/epic-242/decision-pilots/feed-arrangement/robust_curve.py": "12cb2cb82f8282c92e8a50c51b4060ba96eb826a35f8b7577c7b6442ff458d91",
+    "circuit/routing/epic-242/decision-pilots/feed-arrangement/robust-curve.json": "cfab1993ecd661054927e8c855470f16618bf04607b12af89cc6ba4099e7dfda",
+    "circuit/routing/epic-242/decision-pilots/feed-arrangement/reconciled-contract.json": "01b77387f568a5b246c7e33e635e8d867f09b23ea200d13dd0c17db251ada30d",
+    "circuit/routing/epic-242/decision-pilots/feed-arrangement/reconcile.py": "066e935ef88508ad33870e0dce87d755fd21b2088fc1deb79121070f90b291fa",
+    "circuit/routing/epic-242/decision-pilots/feed-arrangement/clamps.py": "6be09a8c3435e3f8b12f3171e45e8db191e0ec727e874b0db207868f4368164b",
+    "circuit/routing/epic-242/decision-pilots/feed-arrangement/collet_clearance.py": "9037f883e66bc6856abaa8f83dd5f2e1184a7a2fea5f388a08d1f68ddbcc44f0",
+    "circuit/routing/epic-242/decision-pilots/feed-arrangement/collet-clearance.json": "e717b4dde85394d230fa005a302adeed814410f8929193a66664138684c828e8",
+    "circuit/routing/epic-242/decision-pilots/feed-arrangement/collet-headroom.json": "9f03bb5d57107958ffb3754f4ec878e1427ead86862a46b26200171351e3b4a0"
+  },
+  "conditional_positive_evidence": {
+    "reference_offset_mm": 58,
+    "free_reference_length_range_mm": [
+      65.9,
+      66.1
+    ],
+    "gap_range_mm": [
+      20.2,
+      30.7
+    ],
+    "new_cut_range_mm": [
+      84.5,
+      85
+    ],
+    "main_cut_range_mm": [
+      103.5,
+      104
+    ],
+    "actual_radius_lower_if_C1_C2_hold_mm": 26.63465767096143,
+    "radius_margin_mm": 0.7266576709614299,
+    "other_preparation_min_mm": 5.085133059479091,
+    "preparation_margin_over4_5mm": 0.5851330594790909,
+    "collet_remaining_board_gap_mm": 0.447966035,
+    "collet_margin_over0_25mm": 0.197966035,
+    "collet_source_XY_remaining_gap_mm": 3.233304,
+    "electrical_worst_drop_mV": 19.8119,
+    "electrical_margin_mV": 0.1881,
+    "electrical_global_targets_ohm": {
+      "rail": 0.0001,
+      "return": 0.0001
+    }
+  },
+  "source_design_requirements_before_claiming_integrated_candidate": [
+    "Dimension full revised58mm carrier/arms/stems/splits/fasteners and assembly interfaces, including fixedKA and translatingKB attachment/load path through existing permitted structure; no new boardholes or reliance on solder as structural support.",
+    "Dimension bore, grip, wire exit/strain transition, stripped conductor, solder envelope and insulation separation at all12lands; 0.25mm service gap is not dielectric or creepage qualification.",
+    "Recompute complete continuous wire/arm/collet/source/enclosure/board/foreign-wire collision bounds through10.1mm stop range and worst tolerances, including all6wires,12collets, all100 adjustment/service envelopes and displaced monitor reserve.",
+    "Include exterior screwheads/flanges/lugs and their independent tolerance closures; local bare cylinder proof does not contain them.",
+    "Realize unique terminal Ref/pad/UUID/face/net mapping and preserve legacy harness identities/full pin order; mechanical feed geometry alone does not implement per-board rail/return connectivity.",
+    "Enforce effective85mm feed and104mm main cut ceilings in actual candidate contract despite inherited per-wire maximum_cut_length_mm110 metadata; avoid ambiguous active electrical limit.",
+    "Obtain actual candidate copper-length/cross-section/return model supporting0.1mOhm targets; conditional voltage arithmetic alone is not realized supply design."
+  ],
+  "qualification_that_may_remain_explicitly_open_after_source_design": [
+    "Supplier/material/process capability and metrology receipts for stated dimensions.",
+    "Measured passive wire C0<=0.20mm,C1<=0.01,C2<=0.002/mm across service travel, including clamped exit transitions; CAD endpoints do not establish actual equilibrium.",
+    "Load/creep/retention/thermal displacement, insulation and repeated service tests; selected material and geometry require explicit assumptions pending measurement.",
+    "Main/new cut and preparation production qualification, measured source/current capability, native/full-warning/preservation gates before adoption."
+  ],
+  "do_not_inherit": [
+    "Historical52mm preview/nominal wire-arm0.145325mm clearance: fails revised0.60mm nominal criterion and does not represent new geometry.",
+    "clamps.py hardcoded52mm offset,1.5mm anchor,1.7954mm radius,0.3mm stems; not revised carrier source.",
+    "Local collet/source XY separation does not establish full wire/carrier or service-access feasibility.",
+    "The0.197966mm collet headroom is a single shared budget, not independently spendable per feature."
+  ],
+  "decision": "No demonstrated geometric impossibility in retained revised family. Proceed with one complete source candidate if authorized; missing physical process measurements alone are not a source-design veto. If complete carrier/insulation/access/copper geometry cannot be supplied within frozen constraints, report that exact uncompleted design obligation rather than claiming no physical solution.",
+  "blockers_to_source_review_work": []
+}
