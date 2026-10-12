@@ -1,0 +1,40 @@
+{
+  "status": "PASS_SOURCE_ACCOUNTING_ONLY",
+  "checks": [
+    {
+      "command": "python3 design/partition/core-split/candidates/planning/two-a-rail-projection-v1/check-contract.py",
+      "exit_code": 0,
+      "evidence": "evidence/contract-check.log",
+      "unsafe_mutations_rejected": 13
+    },
+    {
+      "command": "pnpm circuit:check",
+      "exit_code": 0,
+      "evidence": "evidence/circuit-check.log"
+    },
+    {
+      "command": "pnpm check",
+      "exit_code": 0,
+      "evidence": "evidence/repo-check.log"
+    },
+    {
+      "command": "python3 circuit/routing/epic-242/baseline/verify_inputs.py",
+      "exit_code": 0,
+      "evidence": "evidence/baseline-check.log",
+      "frozen_original_inputs": 1881
+    },
+    {
+      "command": "git diff --check",
+      "exit_code": 0
+    }
+  ],
+  "native_runs": 0,
+  "placement_runs": 0,
+  "routing_runs": 0,
+  "physical_fixture_edits": 0,
+  "canonical_edits": 0,
+  "limitations": [
+    "No candidate rail/return topology approval or connectivity credit",
+    "Physical feed realization and exact branch/plane split decisions remain open"
+  ]
+}
