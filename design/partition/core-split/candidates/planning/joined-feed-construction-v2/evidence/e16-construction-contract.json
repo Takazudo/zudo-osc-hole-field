@@ -85,5 +85,34 @@
       "monotonicity": "A thinner real wall (e.g. the 18 um average) shrinks the band, so coverage is easier and fewer foreign bores can cut it. No connection credited at 0.025 mm can be lost at a thinner wall, and the retained runs had no wall cuts (connectivity.py raises on any). The graph and census therefore do not change, and E16 r1-t2 keep this one configuration."
     },
     "stack_unchanged": "Through vias only; the authored six-layer 2 oz stack and sheet budgets are unchanged; staged micro/buried vias are not restored."
+  },
+  "corrections_2026_10_13_process_refresh": {
+    "scope": "Fresh read of manufacturer-primary pages on 2026-10-13 (evidence/e16/process-evidence-20261013.json, quotes and section labels retained there). No supplier contact, quote, account or upload. Earlier text, including corrections_2026_10_13, is retained as written; the entries below supersede the listed statements.",
+    "superseded": [
+      {
+        "statement": "corrections_2026_10_13: the 'no wider than 0.5 mm' filled-via limit 'belongs to soldermask-plugged vias'",
+        "correction": "The via-covering guide states 'Plugged and epoxy-filled vias holes should not be larger than 0.5 mm' (process-evidence G1): an advisory HOLE limit that also covers epoxy-filled vias. E16's 0.3 mm hole is inside it; the 0.6 mm land is not the hole."
+      },
+      {
+        "statement": "open question: filled-via size limits refer to the hole or the pad",
+        "correction": "Resolved for the guide (hole). The capability row 'Compatible with via diameters from 0.15 to 0.55 mm' leaves its quantity undefined; its 0.15 mm lower bound equals the minimum via hole, so a hole range is the likely reading (inference, not stated). E16 fails it only under a pad reading (0.6 > 0.55)."
+      },
+      {
+        "statement": "no published cap or surface copper value",
+        "correction": "The guide's epoxy/copper filled-and-capped column states 'Hole surface copper thickness >= 5um' (G3). The page does not say whether this is the cap over the filled hole or the barrel wall, so it is retained as a cap/surface condition only; it is not a barrel-wall minimum and not a cap thickness for resistance."
+      },
+      {
+        "statement": "e16_contract: filled and capped only for via-in-pad",
+        "correction": "Open: the capabilities page makes filled-and-capped the default for 6+ layer boards (C2) and the guide's ordering row says all through-hole solder pads are filled (G6). Whether every E16 via is filled on a default order is unresolved; no supplier contact is authorized."
+      }
+    ],
+    "unchanged_open": [
+      "Applicability of the 2 oz PTH annular ring >= 0.254 mm (a row labelled PTH annular ring) to 0.15 mm-ring vias",
+      "Guaranteed minimum barrel plating (only an 18 um average is published)",
+      "A published 2 oz six-layer stackup with dielectric thicknesses",
+      "Drill versus finished-hole mapping for 0.3 mm (only a finished-hole tolerance is published)",
+      "Qualification of this exact stack"
+    ],
+    "consequence": "No E16 geometry changes. The finite model keeps plating, foil and stack depth as declared parameter/conditional cases (evidence/e16/process-cases.json, evidence/e16/coupled-network-config.json); process-cases.json is left byte-identical because the historical finite-network receipts bind its hash, and its 'limits' text describes that historical single-board model."
   }
 }
