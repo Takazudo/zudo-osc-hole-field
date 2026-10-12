@@ -13,6 +13,9 @@ documented seal fields (SEALS) are excluded. For every requested round this chec
 - the round's added objects against the retained delta bundle of its span
   (r1-r3: K?-access-delta.json.gz, r4-t2: K?-access-delta-r4-t2.json.gz), each
   span composed exactly once, and the round's access report against the retained one;
+- the normalized base copper against the content digest retained by the first
+  independent base-r3 comparison (replay/20261013-r4-t2/K?-replay-comparison.json),
+  so a base-copper change that leaves connectivity unchanged still fails;
 - the final round's full graph, physical ports and complete census.
 
 Clipped sheets and caps are not retained as files, so their geometry is compared
@@ -25,6 +28,7 @@ SEALS={'input_sha256','parent_sha256','output_sha256','elapsed_seconds','peak_Ki
 ROUNDS=['r1','r2','r3','r4','t1','t2']
 SPANS={'K-access-delta.json.gz':['r1','r2','r3'],'K-access-delta-r4-t2.json.gz':['r4','t1','t2']}
 SUCCESS={'PLACED','ROUTED','ROUTED_FED_TRANSITION'}
+NORMALIZED_REFERENCE='replay/20261013-r4-t2/{board}-replay-comparison.json'
 # Retained r1/r2 reports predate later construct_access.py report fields (index.json method_note).
 # Only these exact replay-side additions, with these exact values, are removed before comparison.
 LEGACY_REPORT_ADDITIONS={'r1':{'top':{'method':'via'},'parameters_mm':{'route_widths':[0.25,0.2],'route_pitch':0.05,'route_half_window':3.0},'result':{}},
@@ -91,7 +95,9 @@ def compare(board,run,ev,rounds):
  idx=load(ev/'index.json')['boards'][board];norm=load(run/f'{board}-normalized.json');base_ids=[o['id'] for o in norm['objects']]
  need(len(base_ids)==len(set(base_ids)),'normalized object ids are not unique')
  deltas=retained_deltas(board,ev,rounds,base_ids);exp=expected_residuals(board,ev,idx,rounds)
- checks={'normalized_objects':{'objects':len(norm['objects']),'loads':len(norm['loads']),'content_sha256':digest(strip(norm))},
+ ref=load(ev/NORMALIZED_REFERENCE.format(board=board))['checks']['normalized_objects']
+ mine={'objects':len(norm['objects']),'loads':len(norm['loads']),'content_sha256':digest(strip(norm))}
+ checks={'normalized_objects':mine,'normalized_content_equals_retained':mine==ref,
          'retained_delta_spans':{f:len(d) for f,d in deltas.items()}}
  rows={};prev=None;before=norm['objects'];added_by_span={f:{} for f in deltas}
  for r in ['base']+rounds:

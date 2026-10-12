@@ -30,6 +30,8 @@ class Fixture:
    self.wj(self.ev/f'KA-{r}-port-obligations.json',self.census(res,'/other'))
    self.wgz(self.ev/f'KA-{r}-port-graph.json.gz',self.graph(r,'/other'))
   self.wj(self.ev/'index.json',{'boards':{'KA':{'rounds':rounds}}})
+  norm=self.rj(self.run/'KA-normalized.json');(self.ev/'replay/20261013-r4-t2').mkdir(parents=True)
+  self.wj(self.ev/'replay/20261013-r4-t2/KA-replay-comparison.json',{'checks':{'normalized_objects':{'objects':2,'loads':0,'content_sha256':cr.digest(cr.strip(norm))}}})
  def counts(self,res):return {'unresolved':len(res),'direct':len(res),'supplemental':0}
  def census(self,res,where):return {'unresolved':[{'pad_id':p} for p in res],'physical_pad_count':len(PADS),'input_sha256':{where:'s'},'graph_sha256':where}
  def graph(self,r,where):return {'physical_ports':[{'id':p} for p in PADS],'round':r,'input_sha256':{where:'s'}}
@@ -71,6 +73,11 @@ class CompareReplay(unittest.TestCase):
    self.f.wj(p,d)
   out=self.result();self.assertIn('r4.added_objects_in_own_span_delta',out['failed'])
   self.assertIn('span_K-access-delta-r4-t2.json.gz_equal',out['failed'])
+ def test_changed_base_copper_fails_even_if_connectivity_is_unchanged(self):
+  p=self.f.run/'KA-normalized.json';d=self.f.rj(p);d['objects'][1]['width_mm']=.3;self.f.wj(p,d)
+  for r in cr.ROUNDS:                                  # keep every later round consistent with the altered base
+   q=self.f.run/f'KA-access-{r}.json';e=self.f.rj(q);e['objects'][1]['width_mm']=.3;self.f.wj(q,e)
+  out=self.result();self.assertIn('normalized_content_equals_retained',out['failed']);self.assertEqual(self.f.cli(),1)
  def test_rewritten_prior_object_fails_prefix(self):
   p=self.f.run/'KA-access-t1.json';d=self.f.rj(p);d['objects'][0]['width_mm']=.3;self.f.wj(p,d)
   self.assertIn('t1.source_objects_prefix_preserved',self.result()['failed'])
