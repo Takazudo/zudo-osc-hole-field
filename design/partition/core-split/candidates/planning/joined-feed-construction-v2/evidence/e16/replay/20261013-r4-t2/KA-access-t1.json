@@ -1,0 +1,46 @@
+{
+ "inputs": {
+  "KA-access-r4.json": "1c7a8a4e47179cad1d808fe9a752d8342e8fd36aeb1604ffbf9b7dffc6d27a05",
+  "KA-eval-r4/port-graph.json": "a1420cbdcafdd55c629d98c4416f5be3e547aa5ae2b1153cdd1d4c1c9590b202",
+  "KA-eval-r4/port-obligations.json": "bbcf60167694e327de4d3336dfb2db5dfe97b03350485348835e53e64020efcd",
+  "KA-eval-r4/clipped-sheets.json": "44e6167c7cedb852587ff80c39f5d354b6f40777ef01e9bd927c2987769e2c0f",
+  "design/partition/core-split/candidates/planning/joined-feed-construction-v2/evidence/e16/t1-batch.json": "d521bdaf4443eabc7aea460c934328bba7e46088eb7bd544615a80d4c9e32e59"
+ },
+ "methods": {
+  "design/partition/core-split/candidates/planning/joined-feed-construction-v2/two_face.py": "5a0a3d893eae1631d4bd0d7d24f63d4dcbd4cd51641e737a9035318327c4e409",
+  "design/partition/core-split/candidates/planning/joined-feed-construction-v2/construct_access.py": "8b1ded187add59a8c384f2fd43a71097016e0c7b87040b7a0a3e8d8d1e0dc451"
+ },
+ "command": [
+  "two_face.py",
+  "--use-fed-transitions",
+  "--only",
+  "evidence/e16/t1-batch.json",
+  "--planes",
+  "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/cfe74c9b-74ea-403e-a296-8046c4b13f60/scratchpad/replay-kb/KA-eval-r4/clipped-sheets.json",
+  "--source",
+  "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/cfe74c9b-74ea-403e-a296-8046c4b13f60/scratchpad/replay-kb/KA-access-r4.json",
+  "--graph",
+  "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/cfe74c9b-74ea-403e-a296-8046c4b13f60/scratchpad/replay-kb/KA-eval-r4/port-graph.json",
+  "--census",
+  "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/cfe74c9b-74ea-403e-a296-8046c4b13f60/scratchpad/replay-kb/KA-eval-r4/port-obligations.json",
+  "--output",
+  "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/cfe74c9b-74ea-403e-a296-8046c4b13f60/scratchpad/replay-kb/KA-access-t1.json",
+  "--report",
+  "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/cfe74c9b-74ea-403e-a296-8046c4b13f60/scratchpad/replay-kb/KA-access-t1-report.json"
+ ],
+ "step": "KA-access-t1",
+ "exit_code": 0,
+ "elapsed_seconds": 9.364,
+ "stdout_tail": "{\"board\": \"KA\", \"counts\": {\"ROUTED_FED_TRANSITION\": 1}, \"elapsed_seconds\": 9.16, \"peak_KiB\": 1232060}\n",
+ "stderr_tail": "",
+ "peak_rss_KiB": 1232060,
+ "outputs": {
+  "KA-access-t1.json": {
+   "": "40be73ad4212bbac2217dd08ffcbcaee5746c348eb179ccc4d920fea49946204"
+  },
+  "KA-access-t1-report.json": {
+   "": "6afa3f74ddea20eea9967b363ea4914e4ebfbfd05ff8dbfeaba6ab957223616d"
+  }
+ },
+ "native_calls": 0
+}

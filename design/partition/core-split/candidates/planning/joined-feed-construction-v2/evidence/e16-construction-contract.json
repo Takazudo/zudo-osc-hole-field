@@ -55,5 +55,35 @@
     "Hole-plating minimum and cap thickness are not published; owner-side supplier confirmation is required before physical acceptance (no supplier contact was made).",
     "2 oz inner copper with the dense through-via access field is a standard-process build, but its resin fill/etch-back behaviour at 0.25 mm spacing is not qualified."
   ],
-  "native_calls": 0
+  "native_calls": 0,
+  "corrections_2026_10_13": {
+    "scope": "Re-read of manufacturer-primary pages on 2026-10-12/13; no supplier contact, quote, account or upload. Original findings above are retained as written; the entries below supersede the listed statements.",
+    "sources_read": [
+      "https://jlcpcb.com/capabilities/pcb-capabilities",
+      "https://jlcpcb.com/impedance",
+      "https://jlcpcb.com/help/article/hdi-pcb-capabilities-faq"
+    ],
+    "superseded": [
+      {
+        "statement": "findings[0].evidence / findings[1].evidence: \"JLCPCB ... no 2 oz inner stackup\" and \"JLCPCB publishes only 1 oz inner 6-layer stackups\"",
+        "correction": "The JLCPCB capabilities page lists inner copper 0.5 oz / 1 oz / 2 oz without a layer-count qualifier (finished inner copper is 0.5 oz by default), and the impedance page 6-layer header lists inner 0.5/1/2 oz. What is absent is a published 6-layer stackup ROW with 2 oz inner copper: every listed row shows 0.0152 mm inner foil. So 2 oz inner copper is advertised; a specific 2 oz 6-layer stackup with its dielectric thicknesses is not published."
+      },
+      {
+        "statement": "e16_contract.plating_for_finite_resistance: \"Use the published 18 um average hole plating ... in any finite barrel resistance bound\"",
+        "correction": "18 um is an AVERAGE (\"Average Hole Plating Thickness\"), not a guaranteed minimum, so it cannot bound a barrel resistance from above. E16 finite models treat plating as a parameter (evidence/e16/process-cases.json: 18 um nominal-average, 10 um sensitivity, 25 um legacy conditional requirement) and leave physical acceptance unresolved until a guaranteed minimum exists."
+      }
+    ],
+    "additional_open_capability_questions": [
+      "The capabilities page states an annular ring of \"0.254 mm or above\" for 2 oz copper (2-layer and multilayer). E16 access vias are 0.3/0.6 mm (0.15 mm ring) and terminal vias 0.3/0.7 mm (0.20 mm ring) on an all-2 oz stack. The page does not say whether this figure applies to vias or only to component PTHs; until resolved, the 0.6 mm access via is NOT shown compatible with a 2 oz build.",
+      "Via filling: for epoxy or copper-paste filled-and-capped vias (the default for 6+ layer boards) the page states \"Compatible with via diameters from 0.15 to 0.55 mm\"; the \"Filled vias must be no wider than 0.5 mm diameter\" limit belongs to soldermask-plugged vias. Whether 0.15-0.55 mm refers to the finished hole (0.3 mm: inside) or the via pad (0.6/0.7 mm: outside) is not stated, so the via-in-pad and terminal-field capping remain unqualified.",
+      "Cap plating thickness and a minimum hole-wall thickness are not published by any page read."
+    ],
+    "barrel_wall_in_graph": {
+      "value_mm": 0.025,
+      "file": "connectivity.py",
+      "meaning": "Geometric test band only: the plated body must cover the annulus [r, r+0.025] and no other bore may cut it. It is not a plating claim and supplies no resistance.",
+      "monotonicity": "A thinner real wall (e.g. the 18 um average) shrinks the band, so coverage is easier and fewer foreign bores can cut it. No connection credited at 0.025 mm can be lost at a thinner wall, and the retained runs had no wall cuts (connectivity.py raises on any). The graph and census therefore do not change, and E16 r1-t2 keep this one configuration."
+    },
+    "stack_unchanged": "Through vias only; the authored six-layer 2 oz stack and sheet budgets are unchanged; staged micro/buried vias are not restored."
+  }
 }

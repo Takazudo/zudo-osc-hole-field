@@ -33,3 +33,5 @@ No native process, F3 placement trial, canonical board change, adoption, merge o
 ## Reproduction
 
 Use the pinned Python, NumPy, SciPy, Shapely and GEOS versions in the final evidence ledger. Run each source operation with its 180-second and 2 GiB bounds. Choose a fresh output directory outside the tracked repository, then run `construct.py --output DIR`, `wire_contract.py --candidate DIR --output DIR/wire-family.json`, `check_geometry.py --candidate DIR --output sweep.json`, and `check_solids.py --candidate DIR --output solids.json`. The end, joint and board-access helpers provide separate evidence; no single passing screen is whole-candidate acceptance.
+
+The E16 access epoch replays with `bash replay_e16.sh PYTHON ABS_OUTDIR [--board KA|KB] [--through ROUND] [--resume]`. Each step is hash-ledgered. `compare_replay.py` checks a replay against the retained receipts by content, and `run_finite_network.sh` plus `summarize_network.py` rebuild the conditional finite network. `WORK.md` records the current rounds, results and limits.

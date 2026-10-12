@@ -1,0 +1,19 @@
+{
+ "schema": "e16-gate-status-v1",
+ "date": "2026-10-13",
+ "decision_file": "design/partition/core-split/decision.json is unchanged: design/partition/core-split/power/joined/check.py pins its reviewed SHA-256 (43c8fffe...) and refuses a changed input. These E16 reasons are recorded here and on #253 instead of rewriting a reviewed hash.",
+ "interim_disposition": "KEEP_K1402_INCUMBENT",
+ "architecture_selection_ready": false,
+ "production_generalization_ready": false,
+ "gates": {
+  "G1-placed-source-contract": "OPEN. E16 does not move any placement, outline or Z; the 3.6 mm satellite service deficit is untouched.",
+  "G2-joined-power-service": "OPEN. Source access after t2: KA 196 (144 direct / 52 supplemental) and KB 486 (343 / 143) of 3,849 reviewed rail pads lack complete feed connection, with 0 newly disconnected identities in any round. The conditional per-board finite network (finite-network-t2.json) is a partial model, neither an upper nor a lower bound. +5V/-12V ports are under-resolved at 0.5 mm, process inputs are unguaranteed, per-pad currents are unassigned, and the partner board and KA main-hub incidence are not modelled. KB AGND is not shown within 20 mV (model figure 25.0 mV). Not satisfied.",
+  "G3-matched-native-pilot": "NOT RUN / NOT ADMITTED. No native admission requested by this increment.",
+  "G4-native-eligibility": "NOT RUN. No native fill/DRC of E16 access copper.",
+  "G5-label-panel-release": "OPEN for the #249 native label gate. The stale panel receipt was requalified at 082b883 against the changed run.sh (pinned KiCad 10.0.6: 0 DRC, 438/438 lock centres, render reviewed); its bound inputs are unchanged by this increment.",
+  "G6-installed-qualification": "NEEDS BENCH / NOT RUN."
+ },
+ "process": "Through vias only; the authored six-layer 2 oz stack is unchanged. Open capability questions: 2 oz annular ring >=0.254 mm vs the 0.15 mm access-via ring; filled-via size limits (hole or pad); no published minimum hole plating or cap thickness (e16-construction-contract.json corrections_2026_10_13).",
+ "native_calls": 0,
+ "accepted": false
+}

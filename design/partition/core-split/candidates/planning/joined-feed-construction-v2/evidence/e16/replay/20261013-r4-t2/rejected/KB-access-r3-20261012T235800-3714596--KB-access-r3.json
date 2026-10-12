@@ -1,0 +1,43 @@
+{
+ "inputs": {
+  "KB-access-r2.json": "138e1f7517180376ee5c698b162014f50a28ff20b479ac469e13c41cbeb9a712",
+  "KB-eval-r2/port-graph.json": "4834c1bde151591e53292572803ee8ee8b4e0700d4f3d3b60f715db592c880e0",
+  "KB-eval-r2/port-obligations.json": "df36aa4a45be8323d891789b1000dea2c13bd997c93b4c9fee0bb3603232956f",
+  "KB-eval-r2/clipped-sheets.json": "3894e830fe6db52654da6be823ef95d38b8ec9f6297adbe87a7af867dd19540e"
+ },
+ "methods": {
+  "design/partition/core-split/candidates/planning/joined-feed-construction-v2/construct_access.py": "bda057c00790437ffd9029304864a82cbe6345ae844ecdec9ea5e7affc2dbfcd"
+ },
+ "command": [
+  "construct_access.py",
+  "--method",
+  "route",
+  "--planes",
+  "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/cfe74c9b-74ea-403e-a296-8046c4b13f60/scratchpad/replay-kb/KB-eval-r2/clipped-sheets.json",
+  "--source",
+  "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/cfe74c9b-74ea-403e-a296-8046c4b13f60/scratchpad/replay-kb/KB-access-r2.json",
+  "--graph",
+  "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/cfe74c9b-74ea-403e-a296-8046c4b13f60/scratchpad/replay-kb/KB-eval-r2/port-graph.json",
+  "--census",
+  "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/cfe74c9b-74ea-403e-a296-8046c4b13f60/scratchpad/replay-kb/KB-eval-r2/port-obligations.json",
+  "--output",
+  "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/cfe74c9b-74ea-403e-a296-8046c4b13f60/scratchpad/replay-kb/KB-access-r3.json",
+  "--report",
+  "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/cfe74c9b-74ea-403e-a296-8046c4b13f60/scratchpad/replay-kb/KB-access-r3-report.json"
+ ],
+ "step": "KB-access-r3",
+ "exit_code": 0,
+ "elapsed_seconds": 103.325,
+ "stdout_tail": "{\"board\": \"KB\", \"counts\": {\"NO_ROUTE\": 521, \"ROUTED\": 103}, \"elapsed_seconds\": 103.07, \"peak_KiB\": 1392900}\n",
+ "stderr_tail": "",
+ "peak_rss_KiB": 1392900,
+ "outputs": {
+  "KB-access-r3.json": {
+   "": "35e0e62977996a1f7192bae382d528e70bf787210d44ade8c0fe0a7c36f2d0d0"
+  },
+  "KB-access-r3-report.json": {
+   "": "1a8a33e375058958c8edd595bc40120c9f652d7860fc0ae79dcd5def0c626212"
+  }
+ },
+ "native_calls": 0
+}
