@@ -5,3 +5,16 @@ Construct one disposable load-side candidate using the existing six-wire interfa
 Input HEAD: `8b2384a927fbd3c58669614fb40c7e722b78974e`. No original copper, fixed panel, non-core poses, harness identities or canonical boards change. No native run, F3 placement trial, adoption or merge is authorized by this packet.
 
 The latest parent instruction supersedes the previous incomplete-source stop: ordinary unconstructed work must be implemented, not presented as an external blocker. Independent electrical and mechanical design reviews precede the construction. Repository precheck passed.
+
+
+## Active electrical continuation after candidate05
+
+Candidate05 geometry is published at `e59512bc2d150f9ef85913a226c297c4bcf4b361`; its physical wire/carrier source checks remain separate from board electrical construction. The 76 local access obligations in v9 were not a whole-board connectivity result.
+
+The independent graph review added complete drill subtraction, whole-port fragment accounting, and annular barrel-wall integrity checks. The actual KA v9 run refused a proposed LOCAL via crossing an original via bore. Exhaustive diagnostics found 29 KA and 42 KB noncoaxial overlapping pairs involving 41 and 63 proposed vias respectively. There were no original-versus-original findings. The source epoch is rejected; full hash-bound witnesses are in `evidence/rejected-access-v9.json` and its referenced compressed files. Retained copper is not changed to accommodate these proposals.
+
+A separately reviewed closed-stage material model now specifies each new micro/buried via's actual .025mm annular wall through the dielectric interval and continuous .07mm copper caps in its two endpoint foil bands. Fill conductivity is not credited. Cap identity, dimensions, exact six-foil depth, same-net source-pad association and via binding are checked. Original/open bores remain open. Depth-aware checks reject other bores cutting a wall or cap and different-net cap overlap. Finite cap spreading, registration and manufacturing qualification remain obligations; graph connectivity does not certify resistance.
+
+`staged_caps.py` materializes these explicit volumes into a normalized source epoch. `connectivity.py` consumes that epoch plus matching clipped sheet polygons and emits all physical port components. `board_context.py` emits disposable, unfilled PCB contexts and binds the same solid model in its receipt. It does not execute KiCad or manufacture filled polygons. The independent staged-cap/serializer tests and reviews are retained alongside these helpers.
+
+Repaired LOCAL placements and subsequent access construction are still active. v12 intermediate artifacts are diagnostic pending complete depth-aware validation; a successful constructor or a local route receipt is not acceptance. The complete signed-load finite network remains unproved. No native run, canonical adoption, merge, fabrication or energization is authorized by this continuation.
