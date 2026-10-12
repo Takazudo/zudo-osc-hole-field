@@ -1,0 +1,33 @@
+{
+ "inputs": {
+  "cand05/KB.kicad_pcb": "05ce8d2b8121dc9ec6f9063a06d9e1f2f3dec49116e3a46ec253bc0556ada427",
+  "cand05/terminals.json": "43a99e800e538e39145fc40c3621c5502243e8a74020d9ed7ca9c76264649a44",
+  "design/partition/core-split/candidates/planning/joined-feed-construction-v2/evidence/mandatory-physical-ports-review.json": "783726fe52e6f510df2fcf80bfb4ebd8e4da5f0c4059ab33902ff8a9a0d84bc8"
+ },
+ "methods": {
+  "design/partition/core-split/candidates/planning/joined-feed-construction-v2/normalize_board.py": "00c30dec12063f81b04fb8125046039e14d140fd75ee60e93f89c07975258811"
+ },
+ "command": [
+  "normalize_board.py",
+  "--board-id",
+  "KB",
+  "--pcb",
+  "/home/takazudo/.cache/zudo-e16-runs/20261013-replay2-t2/cand05/KB.kicad_pcb",
+  "--terminals",
+  "/home/takazudo/.cache/zudo-e16-runs/20261013-replay2-t2/cand05/terminals.json",
+  "--output",
+  "/home/takazudo/.cache/zudo-e16-runs/20261013-replay2-t2/KB-normalized.json"
+ ],
+ "step": "KB-normalize",
+ "exit_code": 0,
+ "elapsed_seconds": 3.186,
+ "stdout_tail": "{\"board\": \"KB\", \"objects\": {\"keepout\": 199, \"pad\": 7291, \"segment\": 55585, \"via\": 4239, \"rule_area\": 346}, \"loads\": 1490, \"elapsed_seconds\": 3.1, \"peak_KiB\": 351804, \"output_sha256\": \"d43819b54a1b713bac5c17605e13ff358d1b7108f8d207098802a4e776c47e36\"}\n",
+ "stderr_tail": "",
+ "peak_rss_KiB": 351804,
+ "outputs": {
+  "KB-normalized.json": {
+   "": "d43819b54a1b713bac5c17605e13ff358d1b7108f8d207098802a4e776c47e36"
+  }
+ },
+ "native_calls": 0
+}

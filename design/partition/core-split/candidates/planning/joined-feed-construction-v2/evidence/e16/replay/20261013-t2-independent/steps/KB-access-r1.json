@@ -1,0 +1,43 @@
+{
+ "inputs": {
+  "KB-normalized.json": "d43819b54a1b713bac5c17605e13ff358d1b7108f8d207098802a4e776c47e36",
+  "KB-eval-base/port-graph.json": "2f0801c6f061e2b966b8f5dd1a88a9d25d82bb03e83d96da1f5fc2a9d97756e5",
+  "KB-eval-base/port-obligations.json": "18640f33886379fbea54ed96731108893afe48a732b323ffd76feb095eea0a9f",
+  "KB-eval-base/clipped-sheets.json": "00dcd95eb1e985d49f15ebcf394090684f269a478fdcd44924599b8a02aab3a2"
+ },
+ "methods": {
+  "design/partition/core-split/candidates/planning/joined-feed-construction-v2/construct_access.py": "8b1ded187add59a8c384f2fd43a71097016e0c7b87040b7a0a3e8d8d1e0dc451"
+ },
+ "command": [
+  "construct_access.py",
+  "--method",
+  "via",
+  "--planes",
+  "/home/takazudo/.cache/zudo-e16-runs/20261013-replay2-t2/KB-eval-base/clipped-sheets.json",
+  "--source",
+  "/home/takazudo/.cache/zudo-e16-runs/20261013-replay2-t2/KB-normalized.json",
+  "--graph",
+  "/home/takazudo/.cache/zudo-e16-runs/20261013-replay2-t2/KB-eval-base/port-graph.json",
+  "--census",
+  "/home/takazudo/.cache/zudo-e16-runs/20261013-replay2-t2/KB-eval-base/port-obligations.json",
+  "--output",
+  "/home/takazudo/.cache/zudo-e16-runs/20261013-replay2-t2/KB-access-r1.json",
+  "--report",
+  "/home/takazudo/.cache/zudo-e16-runs/20261013-replay2-t2/KB-access-r1-report.json"
+ ],
+ "step": "KB-access-r1",
+ "exit_code": 0,
+ "elapsed_seconds": 35.761,
+ "stdout_tail": "{\"board\": \"KB\", \"counts\": {\"NO_LEGAL_SITE\": 812, \"PLACED\": 1463}, \"elapsed_seconds\": 35.6, \"peak_KiB\": 1116212}\n",
+ "stderr_tail": "",
+ "peak_rss_KiB": 1116212,
+ "outputs": {
+  "KB-access-r1.json": {
+   "": "8e6d76bc6f04aff8a9de317bb92601e1edcaea687b12c7ee84e7528da6aa680e"
+  },
+  "KB-access-r1-report.json": {
+   "": "18dffbe2811445c5af1938ffcae604c0990dfe40aa3a177f901f4af4392dc883"
+  }
+ },
+ "native_calls": 0
+}
