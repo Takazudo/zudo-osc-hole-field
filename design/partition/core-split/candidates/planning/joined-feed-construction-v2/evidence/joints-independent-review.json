@@ -1,0 +1,42 @@
+{
+  "status": "PASS_SOURCE_GEOMETRIC_JOINT_INTERFACES_WITH_STATED_ASSEMBLY_REQUIREMENTS",
+  "candidate": "/tmp/feed-v2-candidate-05",
+  "hashes": {
+    "/tmp/feed-v2-joints.py": "a02801c7ee9a24b5b731059a524da77b1473c3b7de1001e93b21cfba7c266a3d",
+    "/tmp/feed-v2-joints-05-complete.json": "bda6ffacd99781959323cbf943f29e132eb1d8b02f75492af2fc6d6aa9bef92d",
+    "/tmp/feed-v2-candidate-05/mechanical.json.gz": "63732b0112fddb492257af0ed010ced58253d7ee2b0515a5d3312161c888311e",
+    "/tmp/feed-v2-candidate-05/receipt.json": "a27a676aec18d09868c10e93ce70436f74782b9abafb23b68d3e5bf946df48b4",
+    "/tmp/feed-v2-candidate-05/support-bindings.json": "2569ac70b42927cbe5cbcba861820dcfe8db4cf3b9cce10aae7e95453428a4df"
+  },
+  "joint_count": 94,
+  "direct_joint_interfaces": 90,
+  "collar_clamps_verified_by_separate_axial_stack": 4,
+  "fastener_and_attachment_checks": {
+    "AXIAL_BEARING_PLANES_COINCIDE": 12,
+    "POSITIVE_AREA_PATCH": 24,
+    "NO_INTERIOR_WITNESS": 8,
+    "PROVED_COAXIAL_SHAFT_CLEARANCE": 8,
+    "DEDICATED_CLEARANCE_BORE_PRESENT": 8,
+    "POSITIVE_AREA_ANALYTIC_BEARING": 44,
+    "POSITIVE_VOLUME_METAL_JOIN": 8,
+    "SOURCE_PLANE_ANNULAR_PATCH": 8,
+    "SOURCE_PLANE_BOND_PATCH": 12
+  },
+  "findings": [
+    "M1 head now contacts lug plane and overlaps shaft; all twelve head/nut stacks have annular bearing patches.",
+    "All eight M2 dielectric cap/shaft intersections are fully removed by coaxial cutter interval unions with positive radial clearance; opposite floor bearing patches remain.",
+    "All twenty-four M1 cap/lug bond patches and twelve shroud/board plane patches have positive analytic area accounting actual holes.",
+    "Beam/core exact cavity interface needs declared insert-molding; parent confirmed this intended process."
+  ],
+  "conditions": [
+    "M1 caps require bonded attachment to lug; shrouds require declared bond to suitable retained substrate land. Geometry supplies patches, not adhesive qualification.",
+    "Collet halves, tool access, preload, tolerances, dielectric properties, creep and structural capacity remain separate qualification obligations.",
+    "Full wire/obstacle sweep, conductive-contact solids and electrical realization are reviewed separately by coordinator. No full mechanical acceptance is inferred from joint witnesses."
+  ],
+  "resources": {
+    "seconds": 0.19370906299991475,
+    "peak_KiB": 34988,
+    "native_calls": 0
+  },
+  "scope": "Saved candidate05 analytic primitive checks only; no geometry generation, routing or new placement."
+}

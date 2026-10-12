@@ -1,0 +1,36 @@
+{
+  "status": "GEOMETRY_CHECKPOINT_SOURCE_CHECKS_PASS",
+  "commands": [
+    {
+      "command": "python3 circuit/routing/epic-242/baseline/verify_inputs.py",
+      "exit_code": 0,
+      "log": "verify-inputs.log"
+    },
+    {
+      "command": "pnpm circuit:check",
+      "exit_code": 0,
+      "log": "circuit-check.log"
+    },
+    {
+      "command": "pnpm check",
+      "exit_code": 0,
+      "log": "pnpm-check.log"
+    },
+    {
+      "command": "python test_end_proofs.py",
+      "tests": 5,
+      "exit_code": 0
+    },
+    {
+      "command": "python verify_geometry.py --candidate /tmp/feed-v2-candidate-05",
+      "exit_code": 0
+    }
+  ],
+  "not_run": [
+    "native KiCad",
+    "full regen-all",
+    "physical assembly/measurement",
+    "adoption"
+  ],
+  "ongoing": "Board-access/electrical construction remains active; this is a completed geometry substep, not the final joined electrical verdict."
+}

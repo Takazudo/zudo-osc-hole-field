@@ -1,0 +1,200 @@
+{
+  "analytic_checks": {
+    "bulk_below_existing13mOhm_per_m": true,
+    "combined_ends_below_existing0p2mOhm": true,
+    "local_wetted_support_positive_margin": true,
+    "nineteen_centres": true,
+    "polygon_area_above_0p096": true,
+    "positive_new_family_normal_resistance_lower": true
+  },
+  "decision": "Use the three existing AGND wires with explicit access graph and finite contact fields. The angled cut-and-solder-prism construction below supplies a compatible new terminal current class without a vertical fan or legacy3-degree adapter. It is reasonable to materialize one source/test candidate under these stated conditional process requirements. Unqualified process capability does not prevent defining this candidate; physical adoption remains separate.",
+  "endpoint_geometry": {
+    "all_actual_exposed_metal_normal_radius_upper_mm": 1.0,
+    "all_metal_condition": "The stripped conductor plus wetted metal above the foil must lie in the dimensioned1.0mm-radius endpoint bundle envelope, apart from solder intentionally covering the4x4mm land. Solder may not wet foreign copper. This is a proposed assembly requirement, not an Alpha diameter guarantee. Insulation OD is not used as conductive area; its stripping/cutback envelope must be included by the mechanical constructor.",
+    "cap_requirement": "Propose continuous copper cap/foil thickness>=0.070mm at injection supports, hot rho<=2.3e-5 ohm mm; retain all actual cap/foil thickness bounds in extraction. Conditional manufacturing requirement only; not attributed to a supplier.",
+    "construction": "Keep nineteen strand axes parallel to v over the exposed straight endpoint. Factory trim actual copper strand ends in the common planez=h, parallel to PCB. Fill inclined solder prisms from each cut tip down to its corresponding foil footprint atz=0. Upper/lower cross sections are translations alongv. No strand bend, axial-to-vertical adapter or fan is required by this current class.",
+    "contained_core_radius_mm": 0.175,
+    "core_bundle_normal_radius_bound_mm": 0.915,
+    "core_centres_in_normal_plane_mm": [
+      [
+        -0.74,
+        0.0
+      ],
+      [
+        -0.5549999999999999,
+        0.3204293994002423
+      ],
+      [
+        -0.37,
+        0.6408587988004846
+      ],
+      [
+        -0.5549999999999999,
+        -0.3204293994002423
+      ],
+      [
+        -0.37,
+        0.0
+      ],
+      [
+        -0.185,
+        0.3204293994002423
+      ],
+      [
+        0.0,
+        0.6408587988004846
+      ],
+      [
+        -0.37,
+        -0.6408587988004846
+      ],
+      [
+        -0.185,
+        -0.3204293994002423
+      ],
+      [
+        0.0,
+        0.0
+      ],
+      [
+        0.185,
+        0.3204293994002423
+      ],
+      [
+        0.37,
+        0.6408587988004846
+      ],
+      [
+        0.0,
+        -0.6408587988004846
+      ],
+      [
+        0.185,
+        -0.3204293994002423
+      ],
+      [
+        0.37,
+        0.0
+      ],
+      [
+        0.5549999999999999,
+        0.3204293994002423
+      ],
+      [
+        0.37,
+        -0.6408587988004846
+      ],
+      [
+        0.5549999999999999,
+        -0.3204293994002423
+      ],
+      [
+        0.74,
+        0.0
+      ]
+    ],
+    "core_nonoverlap_gap_mm": 0.020000000000000018,
+    "core_polygon_sides": 64,
+    "full_wetted_support": "Entire4x4mm same-net land plus explicitly owned capped array copper; no contact outside it. Maximum solder envelope overz in[0,.05] is the convex hull of the permitted tip footprints and their foil projections, contained in the4x4 land under the stated closure budget. Extra passive solder inside that support may carry zero upper-trial current.",
+    "local_coordinates": "Board foil atz=0; z points outward into interboard gap. A unit outgoing axisv=(a,b,c), c>0. At KA world outgoing=(vx,sign*vy,-c); at KB outgoing=(-vx,sign*vy,+c). Signs follow existing [+,-,+,+,-,+]. Reflect geometry, do not change net order.",
+    "nominal_axis": {
+      "abs_xy": [
+        0.5933040689317951,
+        0.5927989259019525
+      ],
+      "normal_cosine": 0.5445913286478836,
+      "tilt_from_board_normal_deg": 57.00325911402522
+    },
+    "normal_core_area_mm2": 0.09605679752296938,
+    "normal_hex_pitch_mm": 0.37,
+    "solder_height_upper_mm": 0.05,
+    "support_map": "Take e1=(-b/s,a/s,0), e2=(-c*a/s,-c*b/s,s), s=sqrt(a\u00b2+b\u00b2); both perpendicular tov. For normal vectorq=u*e1+w*e2, project to foilT(q)=q-v*q.z/c. Each normal regular64-gon centered on a listed normal-plane centre maps to an affine polygon on the foil. At heightz its horizontal section isT(q).xy+(a,b)*z/c. The foil patch area isA/c. Use these exact transformed polygons as PCB injection supports, not old0.24mm squares.",
+    "via_array": "Retain proposed5x5 array,0.7mm pitch,0.7mm annulus,0.3mm drill,>=0.025mm finished barrel plating. Nineteen transformed source patches can cross drill locations: use explicit factory-filled/capped via-in-pad with continuous same-net conductive cap under each patch, no void in the injection support. Model actual cap thickness/conductivity and foil/barrel junction in the PCB operator. An ordinary uncapped empty drill underneath a patch INVALIDATES this source functional."
+  },
+  "finite_current_field": {
+    "bulk_compatibility": "Require the actual nineteen contained normal cores to join these straight endpoint cores with matched position/roll and normal flux. Along the interior use the existing conditional core path class: rhoCu<=2.3e-5, mean strand length/axis<=1.025, r*kappa<=.1, trial-frame spin<=.1rad/mm. With regular64-gon area and conservative second moment<=r\u00b2, the computed bulk upper per metre remains below13mOhm/m. No ordinary assembled DCR measurement alone proves contained-path trial compatibility.",
+    "bulk_upper_ohm_per_m_under_existing_contained_path_requirements": 0.012921643431556246,
+    "cap_and_PCB_energy": "Do not hide spreading/caps/barrels in this endpoint debit. Foil trace is the nineteen affine-polygon support functional above. Add actual compatible PCB Gram energy once, including capped regions, vias, necks and distribution. The0.2mOhm allowance is not restarted at each end.",
+    "combined_interfaces_mOhm": 0.0552495418429673,
+    "combined_solder_mOhm": 0.02070368994322771,
+    "combined_termination_upper_mOhm": 0.075953231786195,
+    "energy_formula": "For both ends: R_solder<=2*rho_s*h/(19*A*c_min); four horizontal metallurgical interfaces contribute R_interface<=4*mu*c_max/(19*A). These are trial-energy upper bounds, not assertions of uniform physical current or equipotential cuts.",
+    "existing85mm_wire_plus_ends_ceiling_mOhm": 1.305,
+    "field": "In each normal core and its solder prism use J=I*v/(19*A), with sign toward or away from foil as appropriate. The normal flux on horizontal foil/tip isI*c/(19*A); integrating overA/c gives exactlyI/19. Each prism side is parallel tov, so side normal flux is zero. At copper/solder and solder/foil interfaces normal traces agree; tangential jumps are allowed. Sum all19 supports as one balanced wire source functional.",
+    "generic85mm_wire_bulk_plus_this_termination_mOhm": 1.180953231786195,
+    "normal_interface_areal_resistance_upper_ohm_mm2": 4.5e-05,
+    "qualification": "Coefficients are reused as project requirements over the newly specified supports, not inherited physical qualification. New factory-trim, tip planes, contained cores, cap coverage and interface applicability need qualification.",
+    "remaining_existing_0p2mOhm_termination_allowance_mOhm": 0.12404676821380502,
+    "rho_solder_upper_ohm_mm": 0.0002
+  },
+  "finite_potential_field": {
+    "actual_bend_radius_lower_if_C1_C2_hold_mm": 26.63465767096143,
+    "all_metal_normal_area_upper_mm2": 2.3,
+    "bulk_all_metal_radius_upper_mm": 1.2954,
+    "conditional_complete_wire_resistance_lower_mOhm": 0.26986063733917887,
+    "construction": "For the paired lower witness constrain the entire possible wetted land, its owned capped-array contacts and all connected endpoint metal to one trial value. Keep this potential constant through both complete straight bridge/tail end regions. Vary one continuous bundle-coordinate potential only over the interior free curve; all touching strands share it. No physical equipotential cut is asserted.",
+    "formula": "rho_min*(1-r_metal/Ractual)*Lfree_min/Amax. This sacrifices endpoint resistance and must be extended through every possible contacting conductor using the same potential. New-family tube coordinates must be globally single-valued over all actual bulk metal; no shortcuts outside the declared tube.",
+    "free_actual_arclength_lower_mm": 65.241,
+    "normal_material_rho_lower_ohm_mm": 1e-05,
+    "scope": "New-family conditional lower witness, not the old axial-main lower copied to57-degree ends. Constant complete bridge/tail regions cover angled-tip staggering; verify actual exposed metal stays within those regions. Normal material and area bounds remain unqualified. The lower alone does not pass GH current limits.",
+    "tube_Jacobian_lower": 0.9513641205378691
+  },
+  "joined_assembly": "Glue each PCB normal injection trace to the corresponding prism trace exactly. Complete upper operator is PCB current Gram plus wire-current map transpose*diag(R_wire_upper)*map. Complete lower operator uses continuous potential traces on full wetted supports and R_wire_lower. Use the same external load/source/measurement functionals in both. Solve the actual three-AGND/380-GH graph and required fault states with the unchanged supported current classes; no scalar subtraction from unrelated old extraction.",
+  "next_materialization": "Create12 unique source pad/ref/UUID identities at the existing reconciled land centres, corresponding capped-via arrays and19 affine source-support polygons per endpoint. Keep copper cap/material/interface requirements attached to those identities. Implement retained-layer distribution and finite access graph on both boards. This construction supplies defined inputs for that work; do not defer construction merely because physical measurements are not yet available.",
+  "not_claimed": [
+    "Actual assembled material/shape/contact capability",
+    "Complete source/carrier/insulation clearance",
+    "Completed board distribution or380-GH certificate",
+    "Native closure",
+    "Physical feasibility/adoption"
+  ],
+  "primitive_helper": {
+    "call": "endpoint_primitives(local_outgoing_axis, copper_axis_end_station_mm=2/abs(vz)+2.5); returned vertices are local to exact land centre. Four handednesses supported; supply root board/world transform separately.",
+    "path": "/tmp/feed-v2-contact-primitives.py",
+    "sha256": "172d5f8035c86e360a218e16acf90207c926e9d982eba241b9433e5bf6fa979a"
+  },
+  "schema": "feed-v2-electrical-design-v1",
+  "scope": "Design review before new geometry construction. Analytic endpoint/support/energy formulas only; no candidate CAD, collisions, placement, routing or native. Existing58mm offset,66mm free curve,104mm main and85mm new cut classes and all interfaces preserved. No upstream protection work.",
+  "source_sha256": {
+    "circuit/routing/epic-242/decision-pilots/feed-arrangement/process-budget.md": "85af1cc851cd77f683db1de2a381de54af857115c82cb9902b84c84cbeb10512",
+    "circuit/routing/epic-242/decision-pilots/feed-arrangement/reconciled-contract.json": "01b77387f568a5b246c7e33e635e8d867f09b23ea200d13dd0c17db251ada30d",
+    "circuit/routing/epic-242/decision-pilots/feed-arrangement/robust-curve.json": "cfab1993ecd661054927e8c855470f16618bf04607b12af89cc6ba4099e7dfda",
+    "circuit/routing/epic-242/decision-pilots/feed-arrangement/robust_curve.py": "12cb2cb82f8282c92e8a50c51b4060ba96eb826a35f8b7577c7b6442ff458d91",
+    "design/boards/osc-core.json": "5d9b9a57e78e26d64708cee49ffd191c23739cf5832de3264e8e3ae95a877f6a",
+    "design/partition/contact-transfer-proposal.json": "b80331314d1b8c83268c7baa4054fc1fa708f5aeb30d118146a44b3bbf280229",
+    "design/partition/partition-input.json": "1370eda314dadf2c06f92f0e2386489345c9441e56cefa4687f8f25647ae38df",
+    "design/partition/wire-transfer-proposal.json": "2939702c7bb28c8270fb6bb8002e09aa16eeb156032b866e43b6aab2a585bf4d"
+  },
+  "status": "CONCRETE CONDITIONAL SOURCE CONSTRUCTION FOR PHYSICAL TEST CANDIDATE; NOT QUALIFIED OR ADOPTED",
+  "tolerance_envelope": {
+    "C1_error_max": 0.01,
+    "actual_abs_XY_component_upper": 0.6093980494260557,
+    "actual_unit_axis_normal_cosine_range": [
+      0.5292983451959243,
+      0.5601932612604885
+    ],
+    "additional_total_lateral_registration_closure_mm": 0.35,
+    "all_metal_solder_sweep_each_XY_half_extent_bound_mm": 1.5825469395017127,
+    "closure_allocation": "0.20mm C0 endpoint position +0.10mm carrier/datum registration +0.05mm local land/process registration; worst-case sum. No extra term may reuse this budget. This is a new conditional endpoint allocation, not a claim the complete process is qualified.",
+    "remaining_land_edge_margin_mm": 0.06745306049828736,
+    "scope": "Analytic local footprint containment only. Not a source-component/carrier/insulation collision screen. C1 unit-direction bounds use|q_s| in[.99,1.01]."
+  },
+  "topology": {
+    "copper": "Use retained layer roles. Every foil/source/load port, plated transfer, shared neck and GH branch remains explicit until legitimately condensed. No arbitrary zero-impedance node or duplicated copper allowance.",
+    "feed": "CS247-KA-KB",
+    "lands": 12,
+    "nets": [
+      "+12V",
+      "-12V",
+      "+5V",
+      "AGND",
+      "AGND",
+      "AGND"
+    ],
+    "returns": "All three W4/W5/W6 physically connect to the same owned AGND access network on each board; preserve separate terminal identities and finite access impedances. No equal sharing assumption. Every return retains4.6A individual screen.",
+    "scope": "Two-port monotonicity examples only; actual380-GH multiport and signed loads must be assembled with compatible fields. No outage or whole-network acceptance is inferred.",
+    "three_return_conditional_two_port_plus12_mV_original_copper_ceilings": 14.780433333333333,
+    "two_return_conditional_two_port_plus12_mV_original_copper_ceilings": 16.9708,
+    "wires": 6
+  }
+}

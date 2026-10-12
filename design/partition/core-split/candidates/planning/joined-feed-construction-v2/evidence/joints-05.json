@@ -1,0 +1,4168 @@
+{
+  "status": "GEOMETRIC_JOINT_AUDIT_NOT_STRENGTH_OR_ASSEMBLY_QUALIFICATION",
+  "input_mechanical_sha256": "63732b0112fddb492257af0ed010ced58253d7ee2b0515a5d3312161c888311e",
+  "candidate_receipt_sha256": "a27a676aec18d09868c10e93ce70436f74782b9abafb23b68d3e5bf946df48b4",
+  "helper_sha256": "a02801c7ee9a24b5b731059a524da77b1473c3b7de1001e93b21cfba7c266a3d",
+  "support_bindings_sha256": "2569ac70b42927cbe5cbcba861820dcfe8db4cf3b9cce10aae7e95453428a4df",
+  "candidate": "/tmp/feed-v2-candidate-05",
+  "intended_joint_count": 94,
+  "joint_status_counts": {
+    "PROVED_GEOMETRIC_INTERFACE": 90,
+    "REQUIRES_AXIAL_STACK_NOT_SHAFT_RADIAL_CONTACT": 4
+  },
+  "joints": [
+    {
+      "a": "KA/top-beam",
+      "b": "KA/top-beam-metal-core",
+      "type": "captured_sleeve_fit",
+      "status": "PROVED_GEOMETRIC_INTERFACE",
+      "proof": {
+        "type": "EXACT_CAVITY_INTERFACE",
+        "shared_surface_area_mm2": 7486.0,
+        "proof": "Cavity primitive exactly equals inserted solid; interface is boundary, not overlapping material.",
+        "limit": "Geometric interface only; fabrication sequence, fit tolerance and axial retention are separate. Other holes may subtract portions of this interface; nominal total area is not qualified bearing area."
+      }
+    },
+    {
+      "a": "KA/top-beam",
+      "b": "KA/support-1/lug",
+      "type": "monolithic_overlap",
+      "status": "PROVED_GEOMETRIC_INTERFACE",
+      "proof": {
+        "type": "POSITIVE_VOLUME_ANALYTIC_BALL",
+        "center_xyz_mm": [
+          4.1,
+          6.5,
+          -103.65
+        ],
+        "radius_mm": 0.499999999,
+        "volume_lower_mm3": 0.523598772456706,
+        "proof": "Exact signed distances to both outer analytic primitives and all actual boolean holes exceed ballradius; no AABB-only inference."
+      }
+    },
+    {
+      "a": "KA/support-1/lug",
+      "b": "KA/support-1/M2-shaft",
+      "existing_support_xy_mm": [
+        6.5,
+        10.5
+      ],
+      "source_hole_mm": 2.2,
+      "type": "own_support_hole_clamp",
+      "status": "REQUIRES_AXIAL_STACK_NOT_SHAFT_RADIAL_CONTACT",
+      "shaft_radius_mm": 1.0,
+      "bore_radius_mm": 1.1
+    },
+    {
+      "a": "KA/top-beam",
+      "b": "KA/support-2/lug",
+      "type": "monolithic_overlap",
+      "status": "PROVED_GEOMETRIC_INTERFACE",
+      "proof": {
+        "type": "POSITIVE_VOLUME_ANALYTIC_BALL",
+        "center_xyz_mm": [
+          309.1,
+          6.5,
+          -103.65
+        ],
+        "radius_mm": 0.499999999,
+        "volume_lower_mm3": 0.523598772456706,
+        "proof": "Exact signed distances to both outer analytic primitives and all actual boolean holes exceed ballradius; no AABB-only inference."
+      }
+    },
+    {
+      "a": "KA/support-2/lug",
+      "b": "KA/support-2/M2-shaft",
+      "existing_support_xy_mm": [
+        311.5,
+        10.5
+      ],
+      "source_hole_mm": 2.2,
+      "type": "own_support_hole_clamp",
+      "status": "REQUIRES_AXIAL_STACK_NOT_SHAFT_RADIAL_CONTACT",
+      "shaft_radius_mm": 1.0,
+      "bore_radius_mm": 1.1
+    },
+    {
+      "a": "KA/w1/collet",
+      "b": "KA/w1/lug-tongue",
+      "type": "monolithic_overlap",
+      "status": "PROVED_GEOMETRIC_INTERFACE",
+      "proof": {
+        "type": "POSITIVE_VOLUME_ANALYTIC_BALL",
+        "center_xyz_mm": [
+          22.67691580058906,
+          15.870406688729902,
+          -105.77580936967242
+        ],
+        "radius_mm": 0.10674527428573125,
+        "volume_lower_mm3": 0.0050948873003067744,
+        "proof": "Exact signed distances to both outer analytic primitives and all actual boolean holes exceed ballradius; no AABB-only inference."
+      }
+    },
+    {
+      "a": "KA/w1/lug-tongue",
+      "b": "KA/w1/lug",
+      "type": "monolithic_overlap",
+      "status": "PROVED_GEOMETRIC_INTERFACE",
+      "proof": {
+        "type": "POSITIVE_AREA_SHARED_FACE_DISK",
+        "center_xyz_mm": [
+          21.773157298229318,
+          15.97053582645153,
+          -106.35244491700334
+        ],
+        "normal_xyz": [
+          -0.38524818797406446,
+          -0.38492018510486964,
+          -0.8387015468934899
+        ],
+        "radius_mm": 0.04999999899999977,
+        "area_lower_mm2": 0.007853981319815148,
+        "proof": "Opposing coincident oriented-box planes, interior tangentdisk separated from every remaining outer edge and all true holes."
+      }
+    },
+    {
+      "a": "KA/w1/lug",
+      "b": "KA/w1/finger-0",
+      "type": "monolithic_overlap",
+      "status": "PROVED_GEOMETRIC_INTERFACE",
+      "proof": {
+        "type": "POSITIVE_VOLUME_ANALYTIC_BALL",
+        "center_xyz_mm": [
+          21.37017184807265,
+          14.636246970056337,
+          -108.597819416967
+        ],
+        "radius_mm": 0.19129120529334473,
+        "volume_lower_mm3": 0.02932065177211973,
+        "proof": "Exact signed distances to both outer analytic primitives and all actual boolean holes exceed ballradius; no AABB-only inference."
+      }
+    },
+    {
+      "a": "KA/w1/finger-0",
+      "b": "KA/w1/finger-1",
+      "type": "monolithic_overlap",
+      "status": "PROVED_GEOMETRIC_INTERFACE",
+      "proof": {
+        "type": "POSITIVE_VOLUME_ANALYTIC_BALL",
+        "center_xyz_mm": [
+          21.326113017841493,
+          9.827538176349682,
+          -108.62130200440009
+        ],
+        "radius_mm": 0.9999999989999858,
+        "volume_lower_mm3": 4.188790192219842,
+        "proof": "Exact signed distances to both outer analytic primitives and all actual boolean holes exceed ballradius; no AABB-only inference."
+      }
+    },
+    {
+      "a": "KA/w1/finger-1",
+      "b": "KA/w1/finger-2",
+      "type": "monolithic_overlap",
+      "status": "PROVED_GEOMETRIC_INTERFACE",
+      "proof": {
+        "type": "POSITIVE_VOLUME_ANALYTIC_BALL",
+        "center_xyz_mm": [
+          21.326113017841493,
+          9.827538176349682,
+          -103.25
+        ],
+        "radius_mm": 0.999999999,
+        "volume_lower_mm3": 4.18879019222002,
+        "proof": "Exact signed distances to both outer analytic primitives and all actual boolean holes exceed ballradius; no AABB-only inference."
+      }
+    },
+    {
+      "a": "KA/w1/finger-2",
+      "b": "KA/w1/finger-3",
+      "type": "monolithic_overlap",
+      "status": "PROVED_GEOMETRIC_INTERFACE",
+      "proof": {
+        "type": "POSITIVE_VOLUME_ANALYTIC_BALL",
+        "center_xyz_mm": [
+          17.0,
+          9.827538176349682,
+          -103.25
+        ],
+        "radius_mm": 0.999999999,
+        "volume_lower_mm3": 4.18879019222002,
+        "proof": "Exact signed distances to both outer analytic primitives and all actual boolean holes exceed ballradius; no AABB-only inference."
+      }
+    },
+    {
+      "a": "KA/w1/finger-3",
+      "b": "KA/top-beam",
+      "type": "monolithic_overlap",
+      "status": "PROVED_GEOMETRIC_INTERFACE",
+      "proof": {
+        "type": "POSITIVE_VOLUME_ANALYTIC_BALL",
+        "center_xyz_mm": [
+          16.6,
+          6.5,
+          -103.65
+        ],
+        "radius_mm": 0.499999999,
+        "volume_lower_mm3": 0.523598772456706,
+        "proof": "Exact signed distances to both outer analytic primitives and all actual boolean holes exceed ballradius; no AABB-only inference."
+      }
+    },
+    {
+      "a": "KA/w2/collet",
+      "b": "KA/w2/lug-tongue",
+      "type": "monolithic_overlap",
+      "status": "PROVED_GEOMETRIC_INTERFACE",
+      "proof": {
+        "type": "POSITIVE_VOLUME_ANALYTIC_BALL",
+        "center_xyz_mm": [
+          39.676915800589065,
+          15.129593311270094,
+          -105.77580936967242
+        ],
+        "radius_mm": 0.10674527428573058,
+        "volume_lower_mm3": 0.005094887300306679,
+        "proof": "Exact signed distances to both outer analytic primitives and all actual boolean holes exceed ballradius; no AABB-only inference."
+      }
+    },
+    {
+      "a": "KA/w2/lug-tongue",
+      "b": "KA/w2/lug",
+      "type": "monolithic_overlap",
+      "status": "PROVED_GEOMETRIC_INTERFACE",
+      "proof": {
+        "type": "POSITIVE_AREA_SHARED_FACE_DISK",
+        "center_xyz_mm": [
+          40.46949066906232,
+          16.72724304460275,
+          -106.35244491700334
+        ],
+        "normal_xyz": [
+          -0.38524818797406446,
+          0.38492018510486964,
+          -0.8387015468934899
+        ],
+        "radius_mm": 0.04999999899999999,
+        "area_lower_mm2": 0.007853981319815217,
+        "proof": "Opposing coincident oriented-box planes, interior tangentdisk separated from every remaining outer edge and all true holes."
+      }
+    },
+    {
+      "a": "KA/w2/lug",
+      "b": "KA/w2/finger-0",
+      "type": "monolithic_overlap",
+      "status": "PROVED_GEOMETRIC_INTERFACE",
+      "proof": {
+        "type": "POSITIVE_VOLUME_ANALYTIC_BALL",
+        "center_xyz_mm": [
+          38.37017184807266,
+          16.363753029943663,
+          -108.597819416967
+        ],
+        "radius_mm": 0.19129120529334295,
+        "volume_lower_mm3": 0.029320651772118914,
+        "proof": "Exact signed distances to both outer analytic primitives and all actual boolean holes exceed ballradius; no AABB-only inference."
+      }
+    },
+    {
+      "a": "KA/w2/finger-0",
+      "b": "KA/w2/finger-1",
+      "type": "monolithic_overlap",
+      "status": "PROVED_GEOMETRIC_INTERFACE",
+      "proof": {
+        "type": "POSITIVE_VOLUME_ANALYTIC_BALL",
+        "center_xyz_mm": [
+          38.32611301784149,
+          21.17246182365032,
+          -108.62130200440009
+        ],
+        "radius_mm": 0.9999999989999858,
+        "volume_lower_mm3": 4.188790192219842,
+        "proof": "Exact signed distances to both outer analytic primitives and all actual boolean holes exceed ballradius; no AABB-only inference."
+      }
+    },
+    {
+      "a": "KA/w2/finger-1",
+      "b": "KA/w2/finger-2",
+      "type": "monolithic_overlap",
+      "status": "PROVED_GEOMETRIC_INTERFACE",
+      "proof": {
+        "type": "POSITIVE_VOLUME_ANALYTIC_BALL",
+        "center_xyz_mm": [
+          38.32611301784149,
+          21.17246182365032,
+          -103.25
+        ],
+        "radius_mm": 0.999999999,
+        "volume_lower_mm3": 4.18879019222002,
+        "proof": "Exact signed distances to both outer analytic primitives and all actual boolean holes exceed ballradius; no AABB-only inference."
+      }
+    },
+    {
+      "a": "KA/w2/finger-2",
+      "b": "KA/w2/finger-3",
+      "type": "monolithic_overlap",
+      "status": "PROVED_GEOMETRIC_INTERFACE",
+      "proof": {
+        "type": "POSITIVE_VOLUME_ANALYTIC_BALL",
+        "center_xyz_mm": [
+          34.0,
+          21.17246182365032,
+          -103.25
+        ],
+        "radius_mm": 0.999999999,
+        "volume_lower_mm3": 4.18879019222002,
+        "proof": "Exact signed distances to both outer analytic primitives and all actual boolean holes exceed ballradius; no AABB-only inference."
+      }
+    },
+    {
+      "a": "KA/w2/finger-3",
+      "b": "KA/top-beam",
+      "type": "monolithic_overlap",
+      "status": "PROVED_GEOMETRIC_INTERFACE",
+      "proof": {
+        "type": "POSITIVE_VOLUME_ANALYTIC_BALL",
+        "center_xyz_mm": [
+          33.6,
+          6.5,
+          -103.65
+        ],
+        "radius_mm": 0.499999999,
+        "volume_lower_mm3": 0.523598772456706,
+        "proof": "Exact signed distances to both outer analytic primitives and all actual boolean holes exceed ballradius; no AABB-only inference."
+      }
+    },
+    {
+      "a": "KA/w3/collet",
+      "b": "KA/w3/lug-tongue",
+      "type": "monolithic_overlap",
+      "status": "PROVED_GEOMETRIC_INTERFACE",
+      "proof": {
+        "type": "POSITIVE_VOLUME_ANALYTIC_BALL",
+        "center_xyz_mm": [
+          56.676915800589065,
+          15.870406688729902,
+          -105.77580936967242
+        ],
+        "radius_mm": 0.10674527428573125,
+        "volume_lower_mm3": 0.0050948873003067744,
+        "proof": "Exact signed distances to both outer analytic primitives and all actual boolean holes exceed ballradius; no AABB-only inference."
+      }
+    },
+    {
+      "a": "KA/w3/lug-tongue",
+      "b": "KA/w3/lug",
+      "type": "monolithic_overlap",
+      "status": "PROVED_GEOMETRIC_INTERFACE",
+      "proof": {
+        "type": "POSITIVE_AREA_SHARED_FACE_DISK",
+        "center_xyz_mm": [
+          55.77315729822932,
+          15.970535826451528,
+          -106.35244491700334
+        ],
+        "normal_xyz": [
+          -0.38524818797406446,
+          -0.38492018510486964,
+          -0.8387015468934899
+        ],
+        "radius_mm": 0.04999999899999996,
+        "area_lower_mm2": 0.007853981319815209,
+        "proof": "Opposing coincident oriented-box planes, interior tangentdisk separated from every remaining outer edge and all true holes."
+      }
+    },
+    {
+      "a": "KA/w3/lug",
+      "b": "KA/w3/finger-0",
+      "type": "monolithic_overlap",
+      "status": "PROVED_GEOMETRIC_INTERFACE",
+      "proof": {
+        "type": "POSITIVE_VOLUME_ANALYTIC_BALL",
+        "center_xyz_mm": [
+          55.37017184807266,
+          14.636246970056337,
+          -108.597819416967
+        ],
+        "radius_mm": 0.19129120529334473,
+        "volume_lower_mm3": 0.02932065177211973,
+        "proof": "Exact signed distances to both outer analytic primitives and all actual boolean holes exceed ballradius; no AABB-only inference."
+      }
+    },
+    {
+      "a": "KA/w3/finger-0",
+      "b": "KA/w3/finger-1",
+      "type": "monolithic_overlap",
+      "status": "PROVED_GEOMETRIC_INTERFACE",
+      "proof": {
+        "type": "POSITIVE_VOLUME_ANALYTIC_BALL",
+        "center_xyz_mm": [
+          55.32611301784149,
+          9.827538176349682,
+          -108.62130200440009
+        ],
+        "radius_mm": 0.9999999989999858,
+        "volume_lower_mm3": 4.188790192219842,
+        "proof": "Exact signed distances to both outer analytic primitives and all actual boolean holes exceed ballradius; no AABB-only inference."
+      }
+    },
+    {
+      "a": "KA/w3/finger-1",
+      "b": "KA/w3/finger-2",
+      "type": "monolithic_overlap",
+      "status": "PROVED_GEOMETRIC_INTERFACE",
+      "proof": {
+        "type": "POSITIVE_VOLUME_ANALYTIC_BALL",
+        "center_xyz_mm": [
+          55.32611301784149,
+          9.827538176349682,
+          -103.25
+        ],
+        "radius_mm": 0.999999999,
+        "volume_lower_mm3": 4.18879019222002,
+        "proof": "Exact signed distances to both outer analytic primitives and all actual boolean holes exceed ballradius; no AABB-only inference."
+      }
+    },
+    {
+      "a": "KA/w3/finger-2",
+      "b": "KA/w3/finger-3",
+      "type": "monolithic_overlap",
+      "status": "PROVED_GEOMETRIC_INTERFACE",
+      "proof": {
+        "type": "POSITIVE_VOLUME_ANALYTIC_BALL",
+        "center_xyz_mm": [
+          51.0,
+          9.827538176349682,
+          -103.25
+        ],
+        "radius_mm": 0.999999999,
+        "volume_lower_mm3": 4.18879019222002,
+        "proof": "Exact signed distances to both outer analytic primitives and all actual boolean holes exceed ballradius; no AABB-only inference."
+      }
+    },
+    {
+      "a": "KA/w3/finger-3",
+      "b": "KA/top-beam",
+      "type": "monolithic_overlap",
+      "status": "PROVED_GEOMETRIC_INTERFACE",
+      "proof": {
+        "type": "POSITIVE_VOLUME_ANALYTIC_BALL",
+        "center_xyz_mm": [
+          50.6,
+          6.5,
+          -103.65
+        ],
+        "radius_mm": 0.499999999,
+        "volume_lower_mm3": 0.523598772456706,
+        "proof": "Exact signed distances to both outer analytic primitives and all actual boolean holes exceed ballradius; no AABB-only inference."
+      }
+    },
+    {
+      "a": "KA/w4/collet",
+      "b": "KA/w4/lug-tongue",
+      "type": "monolithic_overlap",
+      "status": "PROVED_GEOMETRIC_INTERFACE",
+      "proof": {
+        "type": "POSITIVE_VOLUME_ANALYTIC_BALL",
+        "center_xyz_mm": [
+          22.67691580058906,
+          24.870406688729904,
+          -105.77580936967242
+        ],
+        "radius_mm": 0.10674527428573125,
+        "volume_lower_mm3": 0.0050948873003067744,
+        "proof": "Exact signed distances to both outer analytic primitives and all actual boolean holes exceed ballradius; no AABB-only inference."
+      }
+    },
+    {
+      "a": "KA/w4/lug-tongue",
+      "b": "KA/w4/lug",
+      "type": "monolithic_overlap",
+      "status": "PROVED_GEOMETRIC_INTERFACE",
+      "proof": {
+        "type": "POSITIVE_AREA_SHARED_FACE_DISK",
+        "center_xyz_mm": [
+          21.773157298229318,
+          24.970535826451528,
+          -106.35244491700334
+        ],
+        "normal_xyz": [
+          -0.38524818797406446,
+          -0.38492018510486964,
+          -0.8387015468934899
+        ],
+        "radius_mm": 0.04999999899999988,
+        "area_lower_mm2": 0.007853981319815182,
+        "proof": "Opposing coincident oriented-box planes, interior tangentdisk separated from every remaining outer edge and all true holes."
+      }
+    },
+    {
+      "a": "KA/w4/lug",
+      "b": "KA/w4/finger-0",
+      "type": "monolithic_overlap",
+      "status": "PROVED_GEOMETRIC_INTERFACE",
+      "proof": {
+        "type": "POSITIVE_VOLUME_ANALYTIC_BALL",
+        "center_xyz_mm": [
+          21.37017184807265,
+          23.636246970056337,
+          -108.597819416967
+        ],
+        "radius_mm": 0.19129120529334295,
+        "volume_lower_mm3": 0.029320651772118914,
+        "proof": "Exact signed distances to both outer analytic primitives and all actual boolean holes exceed ballradius; no AABB-only inference."
+      }
+    },
+    {
+      "a": "KA/w4/finger-0",
+      "b": "KA/w4/finger-1",
+      "type": "monolithic_overlap",
+      "status": "PROVED_GEOMETRIC_INTERFACE",
+      "proof": {
+        "type": "POSITIVE_VOLUME_ANALYTIC_BALL",
+        "center_xyz_mm": [
+          21.326113017841493,
+          18.82753817634968,
+          -108.62130200440009
+        ],
+        "radius_mm": 0.9999999989999858,
+        "volume_lower_mm3": 4.188790192219842,
+        "proof": "Exact signed distances to both outer analytic primitives and all actual boolean holes exceed ballradius; no AABB-only inference."
+      }
+    },
+    {
+      "a": "KA/w4/finger-1",
+      "b": "KA/w4/finger-2",
+      "type": "monolithic_overlap",
+      "status": "PROVED_GEOMETRIC_INTERFACE",
+      "proof": {
+        "type": "POSITIVE_VOLUME_ANALYTIC_BALL",
+        "center_xyz_mm": [
+          21.326113017841493,
+          18.82753817634968,
+          -103.25
+        ],
+        "radius_mm": 0.999999999,
+        "volume_lower_mm3": 4.18879019222002,
+        "proof": "Exact signed distances to both outer analytic primitives and all actual boolean holes exceed ballradius; no AABB-only inference."
+      }
+    },
+    {
+      "a": "KA/w4/finger-2",
+      "b": "KA/w4/finger-3",
+      "type": "monolithic_overlap",
+      "status": "PROVED_GEOMETRIC_INTERFACE",
+      "proof": {
+        "type": "POSITIVE_VOLUME_ANALYTIC_BALL",
+        "center_xyz_mm": [
+          17.0,
+          18.82753817634968,
+          -103.25
+        ],
+        "radius_mm": 0.999999999,
+        "volume_lower_mm3": 4.18879019222002,
+        "proof": "Exact signed distances to both outer analytic primitives and all actual boolean holes exceed ballradius; no AABB-only inference."
+      }
+    },
+    {
+      "a": "KA/w4/finger-3",
+      "b": "KA/top-beam",
+      "type": "monolithic_overlap",
+      "status": "PROVED_GEOMETRIC_INTERFACE",
+      "proof": {
+        "type": "POSITIVE_VOLUME_ANALYTIC_BALL",
+        "center_xyz_mm": [
+          16.6,
+          6.5,
+          -103.65
+        ],
+        "radius_mm": 0.499999999,
+        "volume_lower_mm3": 0.523598772456706,
+        "proof": "Exact signed distances to both outer analytic primitives and all actual boolean holes exceed ballradius; no AABB-only inference."
+      }
+    },
+    {
+      "a": "KA/w5/collet",
+      "b": "KA/w5/lug-tongue",
+      "type": "monolithic_overlap",
+      "status": "PROVED_GEOMETRIC_INTERFACE",
+      "proof": {
+        "type": "POSITIVE_VOLUME_ANALYTIC_BALL",
+        "center_xyz_mm": [
+          39.676915800589065,
+          24.129593311270096,
+          -105.77580936967242
+        ],
+        "radius_mm": 0.10674527428573125,
+        "volume_lower_mm3": 0.0050948873003067744,
+        "proof": "Exact signed distances to both outer analytic primitives and all actual boolean holes exceed ballradius; no AABB-only inference."
+      }
+    },
+    {
+      "a": "KA/w5/lug-tongue",
+      "b": "KA/w5/lug",
+      "type": "monolithic_overlap",
+      "status": "PROVED_GEOMETRIC_INTERFACE",
+      "proof": {
+        "type": "POSITIVE_AREA_SHARED_FACE_DISK",
+        "center_xyz_mm": [
+          40.46949066906232,
+          25.72724304460275,
+          -106.35244491700334
+        ],
+        "normal_xyz": [
+          -0.38524818797406446,
+          0.38492018510486964,
+          -0.8387015468934899
+        ],
+        "radius_mm": 0.04999999899999999,
+        "area_lower_mm2": 0.007853981319815217,
+        "proof": "Opposing coincident oriented-box planes, interior tangentdisk separated from every remaining outer edge and all true holes."
+      }
+    },
+    {
+      "a": "KA/w5/lug",
+      "b": "KA/w5/finger-0",
+      "type": "monolithic_overlap",
+      "status": "PROVED_GEOMETRIC_INTERFACE",
+      "proof": {
+        "type": "POSITIVE_VOLUME_ANALYTIC_BALL",
+        "center_xyz_mm": [
+          38.37017184807266,
+          25.363753029943663,
+          -108.597819416967
+        ],
+        "radius_mm": 0.19129120529334295,
+        "volume_lower_mm3": 0.029320651772118914,
+        "proof": "Exact signed distances to both outer analytic primitives and all actual boolean holes exceed ballradius; no AABB-only inference."
+      }
+    },
+    {
+      "a": "KA/w5/finger-0",
+      "b": "KA/w5/finger-1",
+      "type": "monolithic_overlap",
+      "status": "PROVED_GEOMETRIC_INTERFACE",
+      "proof": {
+        "type": "POSITIVE_VOLUME_ANALYTIC_BALL",
+        "center_xyz_mm": [
+          38.32611301784149,
+          30.17246182365032,
+          -108.62130200440009
+        ],
+        "radius_mm": 0.9999999989999858,
+        "volume_lower_mm3": 4.188790192219842,
+        "proof": "Exact signed distances to both outer analytic primitives and all actual boolean holes exceed ballradius; no AABB-only inference."
+      }
+    },
+    {
+      "a": "KA/w5/finger-1",
+      "b": "KA/w5/finger-2",
+      "type": "monolithic_overlap",
+      "status": "PROVED_GEOMETRIC_INTERFACE",
+      "proof": {
+        "type": "POSITIVE_VOLUME_ANALYTIC_BALL",
+        "center_xyz_mm": [
+          38.32611301784149,
+          30.17246182365032,
+          -103.25
+        ],
+        "radius_mm": 0.999999999,
+        "volume_lower_mm3": 4.18879019222002,
+        "proof": "Exact signed distances to both outer analytic primitives and all actual boolean holes exceed ballradius; no AABB-only inference."
+      }
+    },
+    {
+      "a": "KA/w5/finger-2",
+      "b": "KA/w5/finger-3",
+      "type": "monolithic_overlap",
+      "status": "PROVED_GEOMETRIC_INTERFACE",
+      "proof": {
+        "type": "POSITIVE_VOLUME_ANALYTIC_BALL",
+        "center_xyz_mm": [
+          34.0,
+          30.17246182365032,
+          -103.25
+        ],
+        "radius_mm": 0.999999999,
+        "volume_lower_mm3": 4.18879019222002,
+        "proof": "Exact signed distances to both outer analytic primitives and all actual boolean holes exceed ballradius; no AABB-only inference."
+      }
+    },
+    {
+      "a": "KA/w5/finger-3",
+      "b": "KA/top-beam",
+      "type": "monolithic_overlap",
+      "status": "PROVED_GEOMETRIC_INTERFACE",
+      "proof": {
+        "type": "POSITIVE_VOLUME_ANALYTIC_BALL",
+        "center_xyz_mm": [
+          33.6,
+          6.5,
+          -103.65
+        ],
+        "radius_mm": 0.499999999,
+        "volume_lower_mm3": 0.523598772456706,
+        "proof": "Exact signed distances to both outer analytic primitives and all actual boolean holes exceed ballradius; no AABB-only inference."
+      }
+    },
+    {
+      "a": "KA/w6/collet",
+      "b": "KA/w6/lug-tongue",
+      "type": "monolithic_overlap",
+      "status": "PROVED_GEOMETRIC_INTERFACE",
+      "proof": {
+        "type": "POSITIVE_VOLUME_ANALYTIC_BALL",
+        "center_xyz_mm": [
+          56.676915800589065,
+          24.870406688729904,
+          -105.77580936967242
+        ],
+        "radius_mm": 0.10674527428573125,
+        "volume_lower_mm3": 0.0050948873003067744,
+        "proof": "Exact signed distances to both outer analytic primitives and all actual boolean holes exceed ballradius; no AABB-only inference."
+      }
+    },
+    {
+      "a": "KA/w6/lug-tongue",
+      "b": "KA/w6/lug",
+      "type": "monolithic_overlap",
+      "status": "PROVED_GEOMETRIC_INTERFACE",
+      "proof": {
+        "type": "POSITIVE_AREA_SHARED_FACE_DISK",
+        "center_xyz_mm": [
+          55.77315729822932,
+          24.970535826451528,
+          -106.35244491700334
+        ],
+        "normal_xyz": [
+          -0.38524818797406446,
+          -0.38492018510486964,
+          -0.8387015468934899
+        ],
+        "radius_mm": 0.04999999899999999,
+        "area_lower_mm2": 0.007853981319815217,
+        "proof": "Opposing coincident oriented-box planes, interior tangentdisk separated from every remaining outer edge and all true holes."
+      }
+    },
+    {
+      "a": "KA/w6/lug",
+      "b": "KA/w6/finger-0",
+      "type": "monolithic_overlap",
+      "status": "PROVED_GEOMETRIC_INTERFACE",
+      "proof": {
+        "type": "POSITIVE_VOLUME_ANALYTIC_BALL",
+        "center_xyz_mm": [
+          55.37017184807266,
+          23.636246970056337,
+          -108.597819416967
+        ],
+        "radius_mm": 0.19129120529334295,
+        "volume_lower_mm3": 0.029320651772118914,
+        "proof": "Exact signed distances to both outer analytic primitives and all actual boolean holes exceed ballradius; no AABB-only inference."
+      }
+    },
+    {
+      "a": "KA/w6/finger-0",
+      "b": "KA/w6/finger-1",
+      "type": "monolithic_overlap",
+      "status": "PROVED_GEOMETRIC_INTERFACE",
+      "proof": {
+        "type": "POSITIVE_VOLUME_ANALYTIC_BALL",
+        "center_xyz_mm": [
+          55.32611301784149,
+          18.82753817634968,
+          -108.62130200440009
+        ],
+        "radius_mm": 0.9999999989999858,
+        "volume_lower_mm3": 4.188790192219842,
+        "proof": "Exact signed distances to both outer analytic primitives and all actual boolean holes exceed ballradius; no AABB-only inference."
+      }
+    },
+    {
+      "a": "KA/w6/finger-1",
+      "b": "KA/w6/finger-2",
+      "type": "monolithic_overlap",
+      "status": "PROVED_GEOMETRIC_INTERFACE",
+      "proof": {
+        "type": "POSITIVE_VOLUME_ANALYTIC_BALL",
+        "center_xyz_mm": [
+          55.32611301784149,
+          18.82753817634968,
+          -103.25
+        ],
+        "radius_mm": 0.999999999,
+        "volume_lower_mm3": 4.18879019222002,
+        "proof": "Exact signed distances to both outer analytic primitives and all actual boolean holes exceed ballradius; no AABB-only inference."
+      }
+    },
+    {
+      "a": "KA/w6/finger-2",
+      "b": "KA/w6/finger-3",
+      "type": "monolithic_overlap",
+      "status": "PROVED_GEOMETRIC_INTERFACE",
+      "proof": {
+        "type": "POSITIVE_VOLUME_ANALYTIC_BALL",
+        "center_xyz_mm": [
+          51.0,
+          18.82753817634968,
+          -103.25
+        ],
+        "radius_mm": 0.999999999,
+        "volume_lower_mm3": 4.18879019222002,
+        "proof": "Exact signed distances to both outer analytic primitives and all actual boolean holes exceed ballradius; no AABB-only inference."
+      }
+    },
+    {
+      "a": "KA/w6/finger-3",
+      "b": "KA/top-beam",
+      "type": "monolithic_overlap",
+      "status": "PROVED_GEOMETRIC_INTERFACE",
+      "proof": {
+        "type": "POSITIVE_VOLUME_ANALYTIC_BALL",
+        "center_xyz_mm": [
+          50.6,
+          6.5,
+          -103.65
+        ],
+        "radius_mm": 0.499999999,
+        "volume_lower_mm3": 0.523598772456706,
+        "proof": "Exact signed distances to both outer analytic primitives and all actual boolean holes exceed ballradius; no AABB-only inference."
+      }
+    },
+    {
+      "a": "KB/top-beam",
+      "b": "KB/top-beam-metal-core",
+      "type": "captured_sleeve_fit",
+      "status": "PROVED_GEOMETRIC_INTERFACE",
+      "proof": {
+        "type": "EXACT_CAVITY_INTERFACE",
+        "shared_surface_area_mm2": 7486.0,
+        "proof": "Cavity primitive exactly equals inserted solid; interface is boundary, not overlapping material.",
+        "limit": "Geometric interface only; fabrication sequence, fit tolerance and axial retention are separate. Other holes may subtract portions of this interface; nominal total area is not qualified bearing area."
+      }
+    },
+    {
+      "a": "KB/top-beam",
+      "b": "KB/support-1/lug",
+      "type": "monolithic_overlap",
+      "status": "PROVED_GEOMETRIC_INTERFACE",
+      "proof": {
+        "type": "POSITIVE_VOLUME_ANALYTIC_BALL",
+        "center_xyz_mm": [
+          4.1,
+          6.5,
+          -124.75
+        ],
+        "radius_mm": 0.499999999,
+        "volume_lower_mm3": 0.523598772456706,
+        "proof": "Exact signed distances to both outer analytic primitives and all actual boolean holes exceed ballradius; no AABB-only inference."
+      }
+    },
+    {
+      "a": "KB/support-1/lug",
+      "b": "KB/support-1/M2-shaft",
+      "existing_support_xy_mm": [
+        6.5,
+        10.5
+      ],
+      "source_hole_mm": 2.2,
+      "type": "own_support_hole_clamp",
+      "status": "REQUIRES_AXIAL_STACK_NOT_SHAFT_RADIAL_CONTACT",
+      "shaft_radius_mm": 1.0,
+      "bore_radius_mm": 1.1
+    },
+    {
+      "a": "KB/top-beam",
+      "b": "KB/support-2/lug",
+      "type": "monolithic_overlap",
+      "status": "PROVED_GEOMETRIC_INTERFACE",
+      "proof": {
+        "type": "POSITIVE_VOLUME_ANALYTIC_BALL",
+        "center_xyz_mm": [
+          309.1,
+          6.5,
+          -124.75
+        ],
+        "radius_mm": 0.499999999,
+        "volume_lower_mm3": 0.523598772456706,
+        "proof": "Exact signed distances to both outer analytic primitives and all actual boolean holes exceed ballradius; no AABB-only inference."
+      }
+    },
+    {
+      "a": "KB/support-2/lug",
+      "b": "KB/support-2/M2-shaft",
+      "existing_support_xy_mm": [
+        311.5,
+        10.5
+      ],
+      "source_hole_mm": 2.2,
+      "type": "own_support_hole_clamp",
+      "status": "REQUIRES_AXIAL_STACK_NOT_SHAFT_RADIAL_CONTACT",
+      "shaft_radius_mm": 1.0,
+      "bore_radius_mm": 1.1
+    },
+    {
+      "a": "KB/w1/collet",
+      "b": "KB/w1/lug-tongue",
+      "type": "monolithic_overlap",
+      "status": "PROVED_GEOMETRIC_INTERFACE",
+      "proof": {
+        "type": "POSITIVE_VOLUME_ANALYTIC_BALL",
+        "center_xyz_mm": [
+          81.32308419941093,
+          15.870406688729902,
+          -121.82419063032758
+        ],
+        "radius_mm": 0.10674527428573125,
+        "volume_lower_mm3": 0.0050948873003067744,
+        "proof": "Exact signed distances to both outer analytic primitives and all actual boolean holes exceed ballradius; no AABB-only inference."
+      }
+    },
+    {
+      "a": "KB/w1/lug-tongue",
+      "b": "KB/w1/lug",
+      "type": "monolithic_overlap",
+      "status": "PROVED_GEOMETRIC_INTERFACE",
+      "proof": {
+        "type": "POSITIVE_AREA_SHARED_FACE_DISK",
+        "center_xyz_mm": [
+          80.53050933093768,
+          14.272756955397252,
+          -121.24755508299666
+        ],
+        "normal_xyz": [
+          0.38524818797406446,
+          -0.38492018510486964,
+          0.8387015468934899
+        ],
+        "radius_mm": 0.04999999899999999,
+        "area_lower_mm2": 0.007853981319815217,
+        "proof": "Opposing coincident oriented-box planes, interior tangentdisk separated from every remaining outer edge and all true holes."
+      }
+    },
+    {
+      "a": "KB/w1/lug",
+      "b": "KB/w1/finger-0",
+      "type": "monolithic_overlap",
+      "status": "PROVED_GEOMETRIC_INTERFACE",
+      "proof": {
+        "type": "POSITIVE_VOLUME_ANALYTIC_BALL",
+        "center_xyz_mm": [
+          82.43863991797359,
+          14.636246970056337,
+          -119.19748406554638
+        ],
+        "radius_mm": 0.19129120529334473,
+        "volume_lower_mm3": 0.02932065177211973,
+        "proof": "Exact signed distances to both outer analytic primitives and all actual boolean holes exceed ballradius; no AABB-only inference."
+      }
+    },
+    {
+      "a": "KB/w1/finger-0",
+      "b": "KB/w1/finger-1",
+      "type": "monolithic_overlap",
+      "status": "PROVED_GEOMETRIC_INTERFACE",
+      "proof": {
+        "type": "POSITIVE_VOLUME_ANALYTIC_BALL",
+        "center_xyz_mm": [
+          82.67388698215852,
+          9.827538176349682,
+          -118.9786979955999
+        ],
+        "radius_mm": 0.9999999989999858,
+        "volume_lower_mm3": 4.188790192219842,
+        "proof": "Exact signed distances to both outer analytic primitives and all actual boolean holes exceed ballradius; no AABB-only inference."
+      }
+    },
+    {
+      "a": "KB/w1/finger-1",
+      "b": "KB/w1/finger-2",
+      "type": "monolithic_overlap",
+      "status": "PROVED_GEOMETRIC_INTERFACE",
+      "proof": {
+        "type": "POSITIVE_VOLUME_ANALYTIC_BALL",
+        "center_xyz_mm": [
+          82.67388698215854,
+          9.827538176349682,
+          -124.35
+        ],
+        "radius_mm": 0.9999999989999858,
+        "volume_lower_mm3": 4.188790192219842,
+        "proof": "Exact signed distances to both outer analytic primitives and all actual boolean holes exceed ballradius; no AABB-only inference."
+      }
+    },
+    {
+      "a": "KB/w1/finger-2",
+      "b": "KB/w1/finger-3",
+      "type": "monolithic_overlap",
+      "status": "PROVED_GEOMETRIC_INTERFACE",
+      "proof": {
+        "type": "POSITIVE_VOLUME_ANALYTIC_BALL",
+        "center_xyz_mm": [
+          87.0,
+          9.827538176349682,
+          -124.35
+        ],
+        "radius_mm": 0.999999999,
+        "volume_lower_mm3": 4.18879019222002,
+        "proof": "Exact signed distances to both outer analytic primitives and all actual boolean holes exceed ballradius; no AABB-only inference."
+      }
+    },
+    {
+      "a": "KB/w1/finger-3",
+      "b": "KB/top-beam",
+      "type": "monolithic_overlap",
+      "status": "PROVED_GEOMETRIC_INTERFACE",
+      "proof": {
+        "type": "POSITIVE_VOLUME_ANALYTIC_BALL",
+        "center_xyz_mm": [
+          86.6,
+          6.5,
+          -124.75
+        ],
+        "radius_mm": 0.499999999,
+        "volume_lower_mm3": 0.523598772456706,
+        "proof": "Exact signed distances to both outer analytic primitives and all actual boolean holes exceed ballradius; no AABB-only inference."
+      }
+    },
+    {
+      "a": "KB/w2/collet",
+      "b": "KB/w2/lug-tongue",
+      "type": "monolithic_overlap",
+      "status": "PROVED_GEOMETRIC_INTERFACE",
+      "proof": {
+        "type": "POSITIVE_VOLUME_ANALYTIC_BALL",
+        "center_xyz_mm": [
+          98.32308419941093,
+          15.129593311270094,
+          -121.82419063032758
+        ],
+        "radius_mm": 0.10674527428573058,
+        "volume_lower_mm3": 0.005094887300306679,
+        "proof": "Exact signed distances to both outer analytic primitives and all actual boolean holes exceed ballradius; no AABB-only inference."
+      }
+    },
+    {
+      "a": "KB/w2/lug-tongue",
+      "b": "KB/w2/lug",
+      "type": "monolithic_overlap",
+      "status": "PROVED_GEOMETRIC_INTERFACE",
+      "proof": {
+        "type": "POSITIVE_AREA_SHARED_FACE_DISK",
+        "center_xyz_mm": [
+          99.22684270177068,
+          15.02946417354847,
+          -121.24755508299666
+        ],
+        "normal_xyz": [
+          0.38524818797406446,
+          0.38492018510486964,
+          0.8387015468934899
+        ],
+        "radius_mm": 0.04999999899999999,
+        "area_lower_mm2": 0.007853981319815217,
+        "proof": "Opposing coincident oriented-box planes, interior tangentdisk separated from every remaining outer edge and all true holes."
+      }
+    },
+    {
+      "a": "KB/w2/lug",
+      "b": "KB/w2/finger-0",
+      "type": "monolithic_overlap",
+      "status": "PROVED_GEOMETRIC_INTERFACE",
+      "proof": {
+        "type": "POSITIVE_VOLUME_ANALYTIC_BALL",
+        "center_xyz_mm": [
+          99.43863991797359,
+          16.363753029943663,
+          -119.19748406554638
+        ],
+        "radius_mm": 0.19129120529334295,
+        "volume_lower_mm3": 0.029320651772118914,
+        "proof": "Exact signed distances to both outer analytic primitives and all actual boolean holes exceed ballradius; no AABB-only inference."
+      }
+    },
+    {
+      "a": "KB/w2/finger-0",
+      "b": "KB/w2/finger-1",
+      "type": "monolithic_overlap",
+      "status": "PROVED_GEOMETRIC_INTERFACE",
+      "proof": {
+        "type": "POSITIVE_VOLUME_ANALYTIC_BALL",
+        "center_xyz_mm": [
+          99.67388698215852,
+          21.17246182365032,
+          -118.9786979955999
+        ],
+        "radius_mm": 0.9999999989999858,
+        "volume_lower_mm3": 4.188790192219842,
+        "proof": "Exact signed distances to both outer analytic primitives and all actual boolean holes exceed ballradius; no AABB-only inference."
+      }
+    },
+    {
+      "a": "KB/w2/finger-1",
+      "b": "KB/w2/finger-2",
+      "type": "monolithic_overlap",
+      "status": "PROVED_GEOMETRIC_INTERFACE",
+      "proof": {
+        "type": "POSITIVE_VOLUME_ANALYTIC_BALL",
+        "center_xyz_mm": [
+          99.67388698215854,
+          21.17246182365032,
+          -124.35
+        ],
+        "radius_mm": 0.9999999989999858,
+        "volume_lower_mm3": 4.188790192219842,
+        "proof": "Exact signed distances to both outer analytic primitives and all actual boolean holes exceed ballradius; no AABB-only inference."
+      }
+    },
+    {
+      "a": "KB/w2/finger-2",
+      "b": "KB/w2/finger-3",
+      "type": "monolithic_overlap",
+      "status": "PROVED_GEOMETRIC_INTERFACE",
+      "proof": {
+        "type": "POSITIVE_VOLUME_ANALYTIC_BALL",
+        "center_xyz_mm": [
+          104.0,
+          21.17246182365032,
+          -124.35
+        ],
+        "radius_mm": 0.999999999,
+        "volume_lower_mm3": 4.18879019222002,
+        "proof": "Exact signed distances to both outer analytic primitives and all actual boolean holes exceed ballradius; no AABB-only inference."
+      }
+    },
+    {
+      "a": "KB/w2/finger-3",
+      "b": "KB/top-beam",
+      "type": "monolithic_overlap",
+      "status": "PROVED_GEOMETRIC_INTERFACE",
+      "proof": {
+        "type": "POSITIVE_VOLUME_ANALYTIC_BALL",
+        "center_xyz_mm": [
+          103.6,
+          6.5,
+          -124.75
+        ],
+        "radius_mm": 0.499999999,
+        "volume_lower_mm3": 0.523598772456706,
+        "proof": "Exact signed distances to both outer analytic primitives and all actual boolean holes exceed ballradius; no AABB-only inference."
+      }
+    },
+    {
+      "a": "KB/w3/collet",
+      "b": "KB/w3/lug-tongue",
+      "type": "monolithic_overlap",
+      "status": "PROVED_GEOMETRIC_INTERFACE",
+      "proof": {
+        "type": "POSITIVE_VOLUME_ANALYTIC_BALL",
+        "center_xyz_mm": [
+          115.32308419941093,
+          15.870406688729902,
+          -121.82419063032758
+        ],
+        "radius_mm": 0.10674527428573125,
+        "volume_lower_mm3": 0.0050948873003067744,
+        "proof": "Exact signed distances to both outer analytic primitives and all actual boolean holes exceed ballradius; no AABB-only inference."
+      }
+    },
+    {
+      "a": "KB/w3/lug-tongue",
+      "b": "KB/w3/lug",
+      "type": "monolithic_overlap",
+      "status": "PROVED_GEOMETRIC_INTERFACE",
+      "proof": {
+        "type": "POSITIVE_AREA_SHARED_FACE_DISK",
+        "center_xyz_mm": [
+          114.53050933093768,
+          14.272756955397252,
+          -121.24755508299666
+        ],
+        "normal_xyz": [
+          0.38524818797406446,
+          -0.38492018510486964,
+          0.8387015468934899
+        ],
+        "radius_mm": 0.04999999899999999,
+        "area_lower_mm2": 0.007853981319815217,
+        "proof": "Opposing coincident oriented-box planes, interior tangentdisk separated from every remaining outer edge and all true holes."
+      }
+    },
+    {
+      "a": "KB/w3/lug",
+      "b": "KB/w3/finger-0",
+      "type": "monolithic_overlap",
+      "status": "PROVED_GEOMETRIC_INTERFACE",
+      "proof": {
+        "type": "POSITIVE_VOLUME_ANALYTIC_BALL",
+        "center_xyz_mm": [
+          116.43863991797359,
+          14.636246970056337,
+          -119.19748406554638
+        ],
+        "radius_mm": 0.19129120529334473,
+        "volume_lower_mm3": 0.02932065177211973,
+        "proof": "Exact signed distances to both outer analytic primitives and all actual boolean holes exceed ballradius; no AABB-only inference."
+      }
+    },
+    {
+      "a": "KB/w3/finger-0",
+      "b": "KB/w3/finger-1",
+      "type": "monolithic_overlap",
+      "status": "PROVED_GEOMETRIC_INTERFACE",
+      "proof": {
+        "type": "POSITIVE_VOLUME_ANALYTIC_BALL",
+        "center_xyz_mm": [
+          116.67388698215852,
+          9.827538176349682,
+          -118.9786979955999
+        ],
+        "radius_mm": 0.9999999989999858,
+        "volume_lower_mm3": 4.188790192219842,
+        "proof": "Exact signed distances to both outer analytic primitives and all actual boolean holes exceed ballradius; no AABB-only inference."
+      }
+    },
+    {
+      "a": "KB/w3/finger-1",
+      "b": "KB/w3/finger-2",
+      "type": "monolithic_overlap",
+      "status": "PROVED_GEOMETRIC_INTERFACE",
+      "proof": {
+        "type": "POSITIVE_VOLUME_ANALYTIC_BALL",
+        "center_xyz_mm": [
+          116.67388698215854,
+          9.827538176349682,
+          -124.35
+        ],
+        "radius_mm": 0.9999999989999858,
+        "volume_lower_mm3": 4.188790192219842,
+        "proof": "Exact signed distances to both outer analytic primitives and all actual boolean holes exceed ballradius; no AABB-only inference."
+      }
+    },
+    {
+      "a": "KB/w3/finger-2",
+      "b": "KB/w3/finger-3",
+      "type": "monolithic_overlap",
+      "status": "PROVED_GEOMETRIC_INTERFACE",
+      "proof": {
+        "type": "POSITIVE_VOLUME_ANALYTIC_BALL",
+        "center_xyz_mm": [
+          121.0,
+          9.827538176349682,
+          -124.35
+        ],
+        "radius_mm": 0.999999999,
+        "volume_lower_mm3": 4.18879019222002,
+        "proof": "Exact signed distances to both outer analytic primitives and all actual boolean holes exceed ballradius; no AABB-only inference."
+      }
+    },
+    {
+      "a": "KB/w3/finger-3",
+      "b": "KB/top-beam",
+      "type": "monolithic_overlap",
+      "status": "PROVED_GEOMETRIC_INTERFACE",
+      "proof": {
+        "type": "POSITIVE_VOLUME_ANALYTIC_BALL",
+        "center_xyz_mm": [
+          120.6,
+          6.5,
+          -124.75
+        ],
+        "radius_mm": 0.499999999,
+        "volume_lower_mm3": 0.523598772456706,
+        "proof": "Exact signed distances to both outer analytic primitives and all actual boolean holes exceed ballradius; no AABB-only inference."
+      }
+    },
+    {
+      "a": "KB/w4/collet",
+      "b": "KB/w4/lug-tongue",
+      "type": "monolithic_overlap",
+      "status": "PROVED_GEOMETRIC_INTERFACE",
+      "proof": {
+        "type": "POSITIVE_VOLUME_ANALYTIC_BALL",
+        "center_xyz_mm": [
+          81.32308419941093,
+          24.870406688729904,
+          -121.82419063032758
+        ],
+        "radius_mm": 0.10674527428573125,
+        "volume_lower_mm3": 0.0050948873003067744,
+        "proof": "Exact signed distances to both outer analytic primitives and all actual boolean holes exceed ballradius; no AABB-only inference."
+      }
+    },
+    {
+      "a": "KB/w4/lug-tongue",
+      "b": "KB/w4/lug",
+      "type": "monolithic_overlap",
+      "status": "PROVED_GEOMETRIC_INTERFACE",
+      "proof": {
+        "type": "POSITIVE_AREA_SHARED_FACE_DISK",
+        "center_xyz_mm": [
+          80.53050933093768,
+          23.272756955397252,
+          -121.24755508299666
+        ],
+        "normal_xyz": [
+          0.38524818797406446,
+          -0.38492018510486964,
+          0.8387015468934899
+        ],
+        "radius_mm": 0.04999999899999999,
+        "area_lower_mm2": 0.007853981319815217,
+        "proof": "Opposing coincident oriented-box planes, interior tangentdisk separated from every remaining outer edge and all true holes."
+      }
+    },
+    {
+      "a": "KB/w4/lug",
+      "b": "KB/w4/finger-0",
+      "type": "monolithic_overlap",
+      "status": "PROVED_GEOMETRIC_INTERFACE",
+      "proof": {
+        "type": "POSITIVE_VOLUME_ANALYTIC_BALL",
+        "center_xyz_mm": [
+          82.43863991797359,
+          23.636246970056337,
+          -119.19748406554638
+        ],
+        "radius_mm": 0.19129120529334295,
+        "volume_lower_mm3": 0.029320651772118914,
+        "proof": "Exact signed distances to both outer analytic primitives and all actual boolean holes exceed ballradius; no AABB-only inference."
+      }
+    },
+    {
+      "a": "KB/w4/finger-0",
+      "b": "KB/w4/finger-1",
+      "type": "monolithic_overlap",
+      "status": "PROVED_GEOMETRIC_INTERFACE",
+      "proof": {
+        "type": "POSITIVE_VOLUME_ANALYTIC_BALL",
+        "center_xyz_mm": [
+          82.67388698215852,
+          18.82753817634968,
+          -118.9786979955999
+        ],
+        "radius_mm": 0.9999999989999858,
+        "volume_lower_mm3": 4.188790192219842,
+        "proof": "Exact signed distances to both outer analytic primitives and all actual boolean holes exceed ballradius; no AABB-only inference."
+      }
+    },
+    {
+      "a": "KB/w4/finger-1",
+      "b": "KB/w4/finger-2",
+      "type": "monolithic_overlap",
+      "status": "PROVED_GEOMETRIC_INTERFACE",
+      "proof": {
+        "type": "POSITIVE_VOLUME_ANALYTIC_BALL",
+        "center_xyz_mm": [
+          82.67388698215854,
+          18.82753817634968,
+          -124.35
+        ],
+        "radius_mm": 0.9999999989999858,
+        "volume_lower_mm3": 4.188790192219842,
+        "proof": "Exact signed distances to both outer analytic primitives and all actual boolean holes exceed ballradius; no AABB-only inference."
+      }
+    },
+    {
+      "a": "KB/w4/finger-2",
+      "b": "KB/w4/finger-3",
+      "type": "monolithic_overlap",
+      "status": "PROVED_GEOMETRIC_INTERFACE",
+      "proof": {
+        "type": "POSITIVE_VOLUME_ANALYTIC_BALL",
+        "center_xyz_mm": [
+          87.0,
+          18.82753817634968,
+          -124.35
+        ],
+        "radius_mm": 0.999999999,
+        "volume_lower_mm3": 4.18879019222002,
+        "proof": "Exact signed distances to both outer analytic primitives and all actual boolean holes exceed ballradius; no AABB-only inference."
+      }
+    },
+    {
+      "a": "KB/w4/finger-3",
+      "b": "KB/top-beam",
+      "type": "monolithic_overlap",
+      "status": "PROVED_GEOMETRIC_INTERFACE",
+      "proof": {
+        "type": "POSITIVE_VOLUME_ANALYTIC_BALL",
+        "center_xyz_mm": [
+          86.6,
+          6.5,
+          -124.75
+        ],
+        "radius_mm": 0.499999999,
+        "volume_lower_mm3": 0.523598772456706,
+        "proof": "Exact signed distances to both outer analytic primitives and all actual boolean holes exceed ballradius; no AABB-only inference."
+      }
+    },
+    {
+      "a": "KB/w5/collet",
+      "b": "KB/w5/lug-tongue",
+      "type": "monolithic_overlap",
+      "status": "PROVED_GEOMETRIC_INTERFACE",
+      "proof": {
+        "type": "POSITIVE_VOLUME_ANALYTIC_BALL",
+        "center_xyz_mm": [
+          98.32308419941093,
+          24.129593311270096,
+          -121.82419063032758
+        ],
+        "radius_mm": 0.10674527428573125,
+        "volume_lower_mm3": 0.0050948873003067744,
+        "proof": "Exact signed distances to both outer analytic primitives and all actual boolean holes exceed ballradius; no AABB-only inference."
+      }
+    },
+    {
+      "a": "KB/w5/lug-tongue",
+      "b": "KB/w5/lug",
+      "type": "monolithic_overlap",
+      "status": "PROVED_GEOMETRIC_INTERFACE",
+      "proof": {
+        "type": "POSITIVE_AREA_SHARED_FACE_DISK",
+        "center_xyz_mm": [
+          99.22684270177068,
+          24.02946417354847,
+          -121.24755508299666
+        ],
+        "normal_xyz": [
+          0.38524818797406446,
+          0.38492018510486964,
+          0.8387015468934899
+        ],
+        "radius_mm": 0.04999999899999999,
+        "area_lower_mm2": 0.007853981319815217,
+        "proof": "Opposing coincident oriented-box planes, interior tangentdisk separated from every remaining outer edge and all true holes."
+      }
+    },
+    {
+      "a": "KB/w5/lug",
+      "b": "KB/w5/finger-0",
+      "type": "monolithic_overlap",
+      "status": "PROVED_GEOMETRIC_INTERFACE",
+      "proof": {
+        "type": "POSITIVE_VOLUME_ANALYTIC_BALL",
+        "center_xyz_mm": [
+          99.43863991797359,
+          25.363753029943663,
+          -119.19748406554638
+        ],
+        "radius_mm": 0.19129120529334295,
+        "volume_lower_mm3": 0.029320651772118914,
+        "proof": "Exact signed distances to both outer analytic primitives and all actual boolean holes exceed ballradius; no AABB-only inference."
+      }
+    },
+    {
+      "a": "KB/w5/finger-0",
+      "b": "KB/w5/finger-1",
+      "type": "monolithic_overlap",
+      "status": "PROVED_GEOMETRIC_INTERFACE",
+      "proof": {
+        "type": "POSITIVE_VOLUME_ANALYTIC_BALL",
+        "center_xyz_mm": [
+          99.67388698215852,
+          30.17246182365032,
+          -118.9786979955999
+        ],
+        "radius_mm": 0.9999999989999858,
+        "volume_lower_mm3": 4.188790192219842,
+        "proof": "Exact signed distances to both outer analytic primitives and all actual boolean holes exceed ballradius; no AABB-only inference."
+      }
+    },
+    {
+      "a": "KB/w5/finger-1",
+      "b": "KB/w5/finger-2",
+      "type": "monolithic_overlap",
+      "status": "PROVED_GEOMETRIC_INTERFACE",
+      "proof": {
+        "type": "POSITIVE_VOLUME_ANALYTIC_BALL",
+        "center_xyz_mm": [
+          99.67388698215854,
+          30.17246182365032,
+          -124.35
+        ],
+        "radius_mm": 0.9999999989999858,
+        "volume_lower_mm3": 4.188790192219842,
+        "proof": "Exact signed distances to both outer analytic primitives and all actual boolean holes exceed ballradius; no AABB-only inference."
+      }
+    },
+    {
+      "a": "KB/w5/finger-2",
+      "b": "KB/w5/finger-3",
+      "type": "monolithic_overlap",
+      "status": "PROVED_GEOMETRIC_INTERFACE",
+      "proof": {
+        "type": "POSITIVE_VOLUME_ANALYTIC_BALL",
+        "center_xyz_mm": [
+          104.0,
+          30.17246182365032,
+          -124.35
+        ],
+        "radius_mm": 0.999999999,
+        "volume_lower_mm3": 4.18879019222002,
+        "proof": "Exact signed distances to both outer analytic primitives and all actual boolean holes exceed ballradius; no AABB-only inference."
+      }
+    },
+    {
+      "a": "KB/w5/finger-3",
+      "b": "KB/top-beam",
+      "type": "monolithic_overlap",
+      "status": "PROVED_GEOMETRIC_INTERFACE",
+      "proof": {
+        "type": "POSITIVE_VOLUME_ANALYTIC_BALL",
+        "center_xyz_mm": [
+          103.6,
+          6.5,
+          -124.75
+        ],
+        "radius_mm": 0.499999999,
+        "volume_lower_mm3": 0.523598772456706,
+        "proof": "Exact signed distances to both outer analytic primitives and all actual boolean holes exceed ballradius; no AABB-only inference."
+      }
+    },
+    {
+      "a": "KB/w6/collet",
+      "b": "KB/w6/lug-tongue",
+      "type": "monolithic_overlap",
+      "status": "PROVED_GEOMETRIC_INTERFACE",
+      "proof": {
+        "type": "POSITIVE_VOLUME_ANALYTIC_BALL",
+        "center_xyz_mm": [
+          115.32308419941093,
+          24.870406688729904,
+          -121.82419063032758
+        ],
+        "radius_mm": 0.10674527428573125,
+        "volume_lower_mm3": 0.0050948873003067744,
+        "proof": "Exact signed distances to both outer analytic primitives and all actual boolean holes exceed ballradius; no AABB-only inference."
+      }
+    },
+    {
+      "a": "KB/w6/lug-tongue",
+      "b": "KB/w6/lug",
+      "type": "monolithic_overlap",
+      "status": "PROVED_GEOMETRIC_INTERFACE",
+      "proof": {
+        "type": "POSITIVE_AREA_SHARED_FACE_DISK",
+        "center_xyz_mm": [
+          114.53050933093768,
+          23.272756955397252,
+          -121.24755508299666
+        ],
+        "normal_xyz": [
+          0.38524818797406446,
+          -0.38492018510486964,
+          0.8387015468934899
+        ],
+        "radius_mm": 0.04999999899999999,
+        "area_lower_mm2": 0.007853981319815217,
+        "proof": "Opposing coincident oriented-box planes, interior tangentdisk separated from every remaining outer edge and all true holes."
+      }
+    },
+    {
+      "a": "KB/w6/lug",
+      "b": "KB/w6/finger-0",
+      "type": "monolithic_overlap",
+      "status": "PROVED_GEOMETRIC_INTERFACE",
+      "proof": {
+        "type": "POSITIVE_VOLUME_ANALYTIC_BALL",
+        "center_xyz_mm": [
+          116.43863991797359,
+          23.636246970056337,
+          -119.19748406554638
+        ],
+        "radius_mm": 0.19129120529334295,
+        "volume_lower_mm3": 0.029320651772118914,
+        "proof": "Exact signed distances to both outer analytic primitives and all actual boolean holes exceed ballradius; no AABB-only inference."
+      }
+    },
+    {
+      "a": "KB/w6/finger-0",
+      "b": "KB/w6/finger-1",
+      "type": "monolithic_overlap",
+      "status": "PROVED_GEOMETRIC_INTERFACE",
+      "proof": {
+        "type": "POSITIVE_VOLUME_ANALYTIC_BALL",
+        "center_xyz_mm": [
+          116.67388698215852,
+          18.82753817634968,
+          -118.9786979955999
+        ],
+        "radius_mm": 0.9999999989999858,
+        "volume_lower_mm3": 4.188790192219842,
+        "proof": "Exact signed distances to both outer analytic primitives and all actual boolean holes exceed ballradius; no AABB-only inference."
+      }
+    },
+    {
+      "a": "KB/w6/finger-1",
+      "b": "KB/w6/finger-2",
+      "type": "monolithic_overlap",
+      "status": "PROVED_GEOMETRIC_INTERFACE",
+      "proof": {
+        "type": "POSITIVE_VOLUME_ANALYTIC_BALL",
+        "center_xyz_mm": [
+          116.67388698215854,
+          18.82753817634968,
+          -124.35
+        ],
+        "radius_mm": 0.9999999989999858,
+        "volume_lower_mm3": 4.188790192219842,
+        "proof": "Exact signed distances to both outer analytic primitives and all actual boolean holes exceed ballradius; no AABB-only inference."
+      }
+    },
+    {
+      "a": "KB/w6/finger-2",
+      "b": "KB/w6/finger-3",
+      "type": "monolithic_overlap",
+      "status": "PROVED_GEOMETRIC_INTERFACE",
+      "proof": {
+        "type": "POSITIVE_VOLUME_ANALYTIC_BALL",
+        "center_xyz_mm": [
+          121.0,
+          18.82753817634968,
+          -124.35
+        ],
+        "radius_mm": 0.999999999,
+        "volume_lower_mm3": 4.18879019222002,
+        "proof": "Exact signed distances to both outer analytic primitives and all actual boolean holes exceed ballradius; no AABB-only inference."
+      }
+    },
+    {
+      "a": "KB/w6/finger-3",
+      "b": "KB/top-beam",
+      "type": "monolithic_overlap",
+      "status": "PROVED_GEOMETRIC_INTERFACE",
+      "proof": {
+        "type": "POSITIVE_VOLUME_ANALYTIC_BALL",
+        "center_xyz_mm": [
+          120.6,
+          6.5,
+          -124.75
+        ],
+        "radius_mm": 0.499999999,
+        "volume_lower_mm3": 0.523598772456706,
+        "proof": "Exact signed distances to both outer analytic primitives and all actual boolean holes exceed ballradius; no AABB-only inference."
+      }
+    }
+  ],
+  "fastener_checks": [
+    {
+      "id": "KA/w1/M1-clamp-stack",
+      "head_to_lug_axial_gap_mm": -5.551115123125783e-17,
+      "nut_to_lug_axial_gap_mm": 4.440892098500626e-16,
+      "status": "AXIAL_BEARING_PLANES_COINCIDE",
+      "head_shaft_join": {
+        "type": "POSITIVE_VOLUME_ANALYTIC_BALL",
+        "center_xyz_mm": [
+          21.125966102292598,
+          15.988238960963649,
+          -108.10784101270775
+        ],
+        "radius_mm": 0.13003831954046477,
+        "volume_lower_mm3": 0.009210912463498637,
+        "proof": "Exact signed distances to both outer analytic primitives and all actual boolean holes exceed ballradius; no AABB-only inference."
+      },
+      "nut_shaft_join": {
+        "type": "POSITIVE_VOLUME_ANALYTIC_BALL",
+        "center_xyz_mm": [
+          23.840219953977176,
+          13.653642440324298,
+          -108.00784101270774
+        ],
+        "radius_mm": 0.3999999990000003,
+        "volume_lower_mm3": 0.26808257109571026,
+        "proof": "Exact signed distances to both outer analytic primitives and all actual boolean holes exceed ballradius; no AABB-only inference."
+      },
+      "scope": "Coincident bearingplanes necessary; annular bearingarea is independently verified by bounded tangentdisk below."
+    },
+    {
+      "id": "KA/w1/head-bearing-patch",
+      "point_xyz_mm": [
+        21.16740728038191,
+        15.789385044744453,
+        -108.49493209553319
+      ],
+      "radius_mm": 0.02,
+      "status": "POSITIVE_AREA_PATCH",
+      "scope": "0.02mm tangentdisk at0.70mm radialstation; stays within lugbox, outsideR.55hole and within metalR>=1 head/nut. Material neighborhoods confirm sides."
+    },
+    {
+      "id": "KA/w1/nut-bearing-patch",
+      "point_xyz_mm": [
+        23.28782399392316,
+        13.667161455926601,
+        -108.49493209553319
+      ],
+      "radius_mm": 0.02,
+      "status": "POSITIVE_AREA_PATCH",
+      "scope": "0.02mm tangentdisk at0.70mm radialstation; stays within lugbox, outsideR.55hole and within metalR>=1 head/nut. Material neighborhoods confirm sides."
+    },
+    {
+      "id": "KA/w2/M1-clamp-stack",
+      "head_to_lug_axial_gap_mm": 1.6653345369377348e-16,
+      "nut_to_lug_axial_gap_mm": -3.1086244689504383e-15,
+      "status": "AXIAL_BEARING_PLANES_COINCIDE",
+      "head_shaft_join": {
+        "type": "POSITIVE_VOLUME_ANALYTIC_BALL",
+        "center_xyz_mm": [
+          40.86861263517617,
+          16.992804201145773,
+          -108.10784101270775
+        ],
+        "radius_mm": 0.13003831954046718,
+        "volume_lower_mm3": 0.009210912463499149,
+        "proof": "Exact signed distances to both outer analytic primitives and all actual boolean holes exceed ballradius; no AABB-only inference."
+      },
+      "nut_shaft_join": {
+        "type": "POSITIVE_VOLUME_ANALYTIC_BALL",
+        "center_xyz_mm": [
+          38.154358783491595,
+          14.658207680506422,
+          -108.00784101270774
+        ],
+        "radius_mm": 0.39999999899999905,
+        "volume_lower_mm3": 0.2680825710957078,
+        "proof": "Exact signed distances to both outer analytic primitives and all actual boolean holes exceed ballradius; no AABB-only inference."
+      },
+      "scope": "Coincident bearingplanes necessary; annular bearingarea is independently verified by bounded tangentdisk below."
+    },
+    {
+      "id": "KA/w2/head-bearing-patch",
+      "point_xyz_mm": [
+        40.28782399392316,
+        17.332838544073393,
+        -108.49493209553319
+      ],
+      "radius_mm": 0.02,
+      "status": "POSITIVE_AREA_PATCH",
+      "scope": "0.02mm tangentdisk at0.70mm radialstation; stays within lugbox, outsideR.55hole and within metalR>=1 head/nut. Material neighborhoods confirm sides."
+    },
+    {
+      "id": "KA/w2/nut-bearing-patch",
+      "point_xyz_mm": [
+        38.16740728038191,
+        15.210614955255544,
+        -108.49493209553319
+      ],
+      "radius_mm": 0.02,
+      "status": "POSITIVE_AREA_PATCH",
+      "scope": "0.02mm tangentdisk at0.70mm radialstation; stays within lugbox, outsideR.55hole and within metalR>=1 head/nut. Material neighborhoods confirm sides."
+    },
+    {
+      "id": "KA/w3/M1-clamp-stack",
+      "head_to_lug_axial_gap_mm": -5.828670879282072e-15,
+      "nut_to_lug_axial_gap_mm": 0.0,
+      "status": "AXIAL_BEARING_PLANES_COINCIDE",
+      "head_shaft_join": {
+        "type": "POSITIVE_VOLUME_ANALYTIC_BALL",
+        "center_xyz_mm": [
+          55.1259661022926,
+          15.988238960963647,
+          -108.10784101270775
+        ],
+        "radius_mm": 0.13003831954046585,
+        "volume_lower_mm3": 0.009210912463498866,
+        "proof": "Exact signed distances to both outer analytic primitives and all actual boolean holes exceed ballradius; no AABB-only inference."
+      },
+      "nut_shaft_join": {
+        "type": "POSITIVE_VOLUME_ANALYTIC_BALL",
+        "center_xyz_mm": [
+          57.840219953977176,
+          13.653642440324298,
+          -108.00784101270774
+        ],
+        "radius_mm": 0.3999999990000003,
+        "volume_lower_mm3": 0.26808257109571026,
+        "proof": "Exact signed distances to both outer analytic primitives and all actual boolean holes exceed ballradius; no AABB-only inference."
+      },
+      "scope": "Coincident bearingplanes necessary; annular bearingarea is independently verified by bounded tangentdisk below."
+    },
+    {
+      "id": "KA/w3/head-bearing-patch",
+      "point_xyz_mm": [
+        55.16740728038191,
+        15.789385044744456,
+        -108.49493209553319
+      ],
+      "radius_mm": 0.02,
+      "status": "POSITIVE_AREA_PATCH",
+      "scope": "0.02mm tangentdisk at0.70mm radialstation; stays within lugbox, outsideR.55hole and within metalR>=1 head/nut. Material neighborhoods confirm sides."
+    },
+    {
+      "id": "KA/w3/nut-bearing-patch",
+      "point_xyz_mm": [
+        57.28782399392316,
+        13.667161455926605,
+        -108.49493209553319
+      ],
+      "radius_mm": 0.02,
+      "status": "POSITIVE_AREA_PATCH",
+      "scope": "0.02mm tangentdisk at0.70mm radialstation; stays within lugbox, outsideR.55hole and within metalR>=1 head/nut. Material neighborhoods confirm sides."
+    },
+    {
+      "id": "KA/w4/M1-clamp-stack",
+      "head_to_lug_axial_gap_mm": 2.3869795029440866e-15,
+      "nut_to_lug_axial_gap_mm": 8.881784197001252e-16,
+      "status": "AXIAL_BEARING_PLANES_COINCIDE",
+      "head_shaft_join": {
+        "type": "POSITIVE_VOLUME_ANALYTIC_BALL",
+        "center_xyz_mm": [
+          21.125966102292598,
+          24.988238960963653,
+          -108.10784101270775
+        ],
+        "radius_mm": 0.13003831954046477,
+        "volume_lower_mm3": 0.009210912463498637,
+        "proof": "Exact signed distances to both outer analytic primitives and all actual boolean holes exceed ballradius; no AABB-only inference."
+      },
+      "nut_shaft_join": {
+        "type": "POSITIVE_VOLUME_ANALYTIC_BALL",
+        "center_xyz_mm": [
+          23.840219953977176,
+          22.653642440324298,
+          -108.00784101270774
+        ],
+        "radius_mm": 0.3999999990000003,
+        "volume_lower_mm3": 0.26808257109571026,
+        "proof": "Exact signed distances to both outer analytic primitives and all actual boolean holes exceed ballradius; no AABB-only inference."
+      },
+      "scope": "Coincident bearingplanes necessary; annular bearingarea is independently verified by bounded tangentdisk below."
+    },
+    {
+      "id": "KA/w4/head-bearing-patch",
+      "point_xyz_mm": [
+        21.16740728038191,
+        24.789385044744456,
+        -108.49493209553319
+      ],
+      "radius_mm": 0.02,
+      "status": "POSITIVE_AREA_PATCH",
+      "scope": "0.02mm tangentdisk at0.70mm radialstation; stays within lugbox, outsideR.55hole and within metalR>=1 head/nut. Material neighborhoods confirm sides."
+    },
+    {
+      "id": "KA/w4/nut-bearing-patch",
+      "point_xyz_mm": [
+        23.287823993923162,
+        22.667161455926603,
+        -108.49493209553319
+      ],
+      "radius_mm": 0.02,
+      "status": "POSITIVE_AREA_PATCH",
+      "scope": "0.02mm tangentdisk at0.70mm radialstation; stays within lugbox, outsideR.55hole and within metalR>=1 head/nut. Material neighborhoods confirm sides."
+    },
+    {
+      "id": "KA/w5/M1-clamp-stack",
+      "head_to_lug_axial_gap_mm": -2.7755575615628914e-16,
+      "nut_to_lug_axial_gap_mm": -3.1086244689504383e-15,
+      "status": "AXIAL_BEARING_PLANES_COINCIDE",
+      "head_shaft_join": {
+        "type": "POSITIVE_VOLUME_ANALYTIC_BALL",
+        "center_xyz_mm": [
+          40.86861263517617,
+          25.992804201145773,
+          -108.10784101270775
+        ],
+        "radius_mm": 0.1300383195404671,
+        "volume_lower_mm3": 0.009210912463499131,
+        "proof": "Exact signed distances to both outer analytic primitives and all actual boolean holes exceed ballradius; no AABB-only inference."
+      },
+      "nut_shaft_join": {
+        "type": "POSITIVE_VOLUME_ANALYTIC_BALL",
+        "center_xyz_mm": [
+          38.154358783491595,
+          23.658207680506422,
+          -108.00784101270774
+        ],
+        "radius_mm": 0.3999999990000003,
+        "volume_lower_mm3": 0.26808257109571026,
+        "proof": "Exact signed distances to both outer analytic primitives and all actual boolean holes exceed ballradius; no AABB-only inference."
+      },
+      "scope": "Coincident bearingplanes necessary; annular bearingarea is independently verified by bounded tangentdisk below."
+    },
+    {
+      "id": "KA/w5/head-bearing-patch",
+      "point_xyz_mm": [
+        40.28782399392316,
+        26.332838544073397,
+        -108.49493209553319
+      ],
+      "radius_mm": 0.02,
+      "status": "POSITIVE_AREA_PATCH",
+      "scope": "0.02mm tangentdisk at0.70mm radialstation; stays within lugbox, outsideR.55hole and within metalR>=1 head/nut. Material neighborhoods confirm sides."
+    },
+    {
+      "id": "KA/w5/nut-bearing-patch",
+      "point_xyz_mm": [
+        38.16740728038191,
+        24.210614955255544,
+        -108.49493209553319
+      ],
+      "radius_mm": 0.02,
+      "status": "POSITIVE_AREA_PATCH",
+      "scope": "0.02mm tangentdisk at0.70mm radialstation; stays within lugbox, outsideR.55hole and within metalR>=1 head/nut. Material neighborhoods confirm sides."
+    },
+    {
+      "id": "KA/w6/M1-clamp-stack",
+      "head_to_lug_axial_gap_mm": -3.3861802251067274e-15,
+      "nut_to_lug_axial_gap_mm": 0.0,
+      "status": "AXIAL_BEARING_PLANES_COINCIDE",
+      "head_shaft_join": {
+        "type": "POSITIVE_VOLUME_ANALYTIC_BALL",
+        "center_xyz_mm": [
+          55.1259661022926,
+          24.98823896096365,
+          -108.10784101270775
+        ],
+        "radius_mm": 0.1300383195404671,
+        "volume_lower_mm3": 0.009210912463499131,
+        "proof": "Exact signed distances to both outer analytic primitives and all actual boolean holes exceed ballradius; no AABB-only inference."
+      },
+      "nut_shaft_join": {
+        "type": "POSITIVE_VOLUME_ANALYTIC_BALL",
+        "center_xyz_mm": [
+          57.840219953977176,
+          22.653642440324298,
+          -108.00784101270774
+        ],
+        "radius_mm": 0.3999999990000003,
+        "volume_lower_mm3": 0.26808257109571026,
+        "proof": "Exact signed distances to both outer analytic primitives and all actual boolean holes exceed ballradius; no AABB-only inference."
+      },
+      "scope": "Coincident bearingplanes necessary; annular bearingarea is independently verified by bounded tangentdisk below."
+    },
+    {
+      "id": "KA/w6/head-bearing-patch",
+      "point_xyz_mm": [
+        55.16740728038191,
+        24.789385044744456,
+        -108.49493209553319
+      ],
+      "radius_mm": 0.02,
+      "status": "POSITIVE_AREA_PATCH",
+      "scope": "0.02mm tangentdisk at0.70mm radialstation; stays within lugbox, outsideR.55hole and within metalR>=1 head/nut. Material neighborhoods confirm sides."
+    },
+    {
+      "id": "KA/w6/nut-bearing-patch",
+      "point_xyz_mm": [
+        57.28782399392316,
+        22.667161455926607,
+        -108.49493209553319
+      ],
+      "radius_mm": 0.02,
+      "status": "POSITIVE_AREA_PATCH",
+      "scope": "0.02mm tangentdisk at0.70mm radialstation; stays within lugbox, outsideR.55hole and within metalR>=1 head/nut. Material neighborhoods confirm sides."
+    },
+    {
+      "id": "KA/support-1/head-cap-shaft",
+      "status": "NO_INTERIOR_WITNESS",
+      "overlap": null,
+      "scope": "No-interior-witness alone is not global nonintersection proof; coaxial bore dimensions below must certify separation."
+    },
+    {
+      "id": "KA/support-1/head-coaxial-separation",
+      "status": "PROVED_COAXIAL_SHAFT_CLEARANCE",
+      "shaft_cap_axial_intersection_mm": [
+        0.0,
+        1.0
+      ],
+      "hole_intervals": [
+        [
+          -0.25,
+          0.75,
+          "KA/support-1/head-metal",
+          0.8999999999999999
+        ],
+        [
+          0.0,
+          1.0999999999999943,
+          "KA/support-1/head-shaft-clearance",
+          0.050000000000000044
+        ]
+      ],
+      "proof": "Parallel coaxial cylinder cutters with strict radial clearance cover the entire shaft/cap axial intersection; union coverage excludes all shaft material from dielectric cap, including floor crossings."
+    },
+    {
+      "id": "KA/support-1/head-shaft-floor-bore",
+      "status": "DEDICATED_CLEARANCE_BORE_PRESENT",
+      "bores": [
+        {
+          "id": "KA/support-1/head-shaft-clearance",
+          "radius_mm": 1.05
+        }
+      ]
+    },
+    {
+      "id": "KA/support-1/nut-cap-shaft",
+      "status": "NO_INTERIOR_WITNESS",
+      "overlap": null,
+      "scope": "No-interior-witness alone is not global nonintersection proof; coaxial bore dimensions below must certify separation."
+    },
+    {
+      "id": "KA/support-1/nut-coaxial-separation",
+      "status": "PROVED_COAXIAL_SHAFT_CLEARANCE",
+      "shaft_cap_axial_intersection_mm": [
+        7.75,
+        8.25
+      ],
+      "hole_intervals": [
+        [
+          8.0,
+          8.5,
+          "KA/support-1/nut-metal",
+          0.8999999999999999
+        ],
+        [
+          7.599999999999994,
+          8.25,
+          "KA/support-1/nut-shaft-clearance",
+          0.050000000000000044
+        ]
+      ],
+      "proof": "Parallel coaxial cylinder cutters with strict radial clearance cover the entire shaft/cap axial intersection; union coverage excludes all shaft material from dielectric cap, including floor crossings."
+    },
+    {
+      "id": "KA/support-1/nut-shaft-floor-bore",
+      "status": "DEDICATED_CLEARANCE_BORE_PRESENT",
+      "bores": [
+        {
+          "id": "KA/support-1/nut-shaft-clearance",
+          "radius_mm": 1.05
+        }
+      ]
+    },
+    {
+      "id": "KA/support-2/head-cap-shaft",
+      "status": "NO_INTERIOR_WITNESS",
+      "overlap": null,
+      "scope": "No-interior-witness alone is not global nonintersection proof; coaxial bore dimensions below must certify separation."
+    },
+    {
+      "id": "KA/support-2/head-coaxial-separation",
+      "status": "PROVED_COAXIAL_SHAFT_CLEARANCE",
+      "shaft_cap_axial_intersection_mm": [
+        0.0,
+        1.0
+      ],
+      "hole_intervals": [
+        [
+          -0.25,
+          0.75,
+          "KA/support-2/head-metal",
+          0.8999999999999999
+        ],
+        [
+          0.0,
+          1.0999999999999943,
+          "KA/support-2/head-shaft-clearance",
+          0.050000000000000044
+        ]
+      ],
+      "proof": "Parallel coaxial cylinder cutters with strict radial clearance cover the entire shaft/cap axial intersection; union coverage excludes all shaft material from dielectric cap, including floor crossings."
+    },
+    {
+      "id": "KA/support-2/head-shaft-floor-bore",
+      "status": "DEDICATED_CLEARANCE_BORE_PRESENT",
+      "bores": [
+        {
+          "id": "KA/support-2/head-shaft-clearance",
+          "radius_mm": 1.05
+        }
+      ]
+    },
+    {
+      "id": "KA/support-2/nut-cap-shaft",
+      "status": "NO_INTERIOR_WITNESS",
+      "overlap": null,
+      "scope": "No-interior-witness alone is not global nonintersection proof; coaxial bore dimensions below must certify separation."
+    },
+    {
+      "id": "KA/support-2/nut-coaxial-separation",
+      "status": "PROVED_COAXIAL_SHAFT_CLEARANCE",
+      "shaft_cap_axial_intersection_mm": [
+        7.75,
+        8.25
+      ],
+      "hole_intervals": [
+        [
+          8.0,
+          8.5,
+          "KA/support-2/nut-metal",
+          0.8999999999999999
+        ],
+        [
+          7.599999999999994,
+          8.25,
+          "KA/support-2/nut-shaft-clearance",
+          0.050000000000000044
+        ]
+      ],
+      "proof": "Parallel coaxial cylinder cutters with strict radial clearance cover the entire shaft/cap axial intersection; union coverage excludes all shaft material from dielectric cap, including floor crossings."
+    },
+    {
+      "id": "KA/support-2/nut-shaft-floor-bore",
+      "status": "DEDICATED_CLEARANCE_BORE_PRESENT",
+      "bores": [
+        {
+          "id": "KA/support-2/nut-shaft-clearance",
+          "radius_mm": 1.05
+        }
+      ]
+    },
+    {
+      "id": "KB/w1/M1-clamp-stack",
+      "head_to_lug_axial_gap_mm": 4.829470157119431e-15,
+      "nut_to_lug_axial_gap_mm": -4.440892098500626e-16,
+      "status": "AXIAL_BEARING_PLANES_COINCIDE",
+      "head_shaft_join": {
+        "type": "POSITIVE_VOLUME_ANALYTIC_BALL",
+        "center_xyz_mm": [
+          80.13138736482384,
+          14.007195798854221,
+          -119.89215898729225
+        ],
+        "radius_mm": 0.13003831954046363,
+        "volume_lower_mm3": 0.009210912463498396,
+        "proof": "Exact signed distances to both outer analytic primitives and all actual boolean holes exceed ballradius; no AABB-only inference."
+      },
+      "nut_shaft_join": {
+        "type": "POSITIVE_VOLUME_ANALYTIC_BALL",
+        "center_xyz_mm": [
+          82.84564121650841,
+          16.341792319493575,
+          -119.79215898729224
+        ],
+        "radius_mm": 0.3999999990000003,
+        "volume_lower_mm3": 0.26808257109571026,
+        "proof": "Exact signed distances to both outer analytic primitives and all actual boolean holes exceed ballradius; no AABB-only inference."
+      },
+      "scope": "Coincident bearingplanes necessary; annular bearingarea is independently verified by bounded tangentdisk below."
+    },
+    {
+      "id": "KB/w1/head-bearing-patch",
+      "point_xyz_mm": [
+        80.71217600607685,
+        13.667161455926601,
+        -119.10506790446681
+      ],
+      "radius_mm": 0.02,
+      "status": "POSITIVE_AREA_PATCH",
+      "scope": "0.02mm tangentdisk at0.70mm radialstation; stays within lugbox, outsideR.55hole and within metalR>=1 head/nut. Material neighborhoods confirm sides."
+    },
+    {
+      "id": "KB/w1/nut-bearing-patch",
+      "point_xyz_mm": [
+        82.83259271961809,
+        15.789385044744456,
+        -119.10506790446681
+      ],
+      "radius_mm": 0.02,
+      "status": "POSITIVE_AREA_PATCH",
+      "scope": "0.02mm tangentdisk at0.70mm radialstation; stays within lugbox, outsideR.55hole and within metalR>=1 head/nut. Material neighborhoods confirm sides."
+    },
+    {
+      "id": "KB/w2/M1-clamp-stack",
+      "head_to_lug_axial_gap_mm": 1.887379141862766e-15,
+      "nut_to_lug_axial_gap_mm": 4.884981308350689e-15,
+      "status": "AXIAL_BEARING_PLANES_COINCIDE",
+      "head_shaft_join": {
+        "type": "POSITIVE_VOLUME_ANALYTIC_BALL",
+        "center_xyz_mm": [
+          99.87403389770739,
+          15.011761039036347,
+          -119.89215898729225
+        ],
+        "radius_mm": 0.13003831954046355,
+        "volume_lower_mm3": 0.009210912463498377,
+        "proof": "Exact signed distances to both outer analytic primitives and all actual boolean holes exceed ballradius; no AABB-only inference."
+      },
+      "nut_shaft_join": {
+        "type": "POSITIVE_VOLUME_ANALYTIC_BALL",
+        "center_xyz_mm": [
+          97.15978004602282,
+          17.346357559675702,
+          -119.79215898729224
+        ],
+        "radius_mm": 0.3999999990000003,
+        "volume_lower_mm3": 0.26808257109571026,
+        "proof": "Exact signed distances to both outer analytic primitives and all actual boolean holes exceed ballradius; no AABB-only inference."
+      },
+      "scope": "Coincident bearingplanes necessary; annular bearingarea is independently verified by bounded tangentdisk below."
+    },
+    {
+      "id": "KB/w2/head-bearing-patch",
+      "point_xyz_mm": [
+        99.83259271961809,
+        15.21061495525554,
+        -119.10506790446681
+      ],
+      "radius_mm": 0.02,
+      "status": "POSITIVE_AREA_PATCH",
+      "scope": "0.02mm tangentdisk at0.70mm radialstation; stays within lugbox, outsideR.55hole and within metalR>=1 head/nut. Material neighborhoods confirm sides."
+    },
+    {
+      "id": "KB/w2/nut-bearing-patch",
+      "point_xyz_mm": [
+        97.71217600607683,
+        17.332838544073393,
+        -119.10506790446681
+      ],
+      "radius_mm": 0.02,
+      "status": "POSITIVE_AREA_PATCH",
+      "scope": "0.02mm tangentdisk at0.70mm radialstation; stays within lugbox, outsideR.55hole and within metalR>=1 head/nut. Material neighborhoods confirm sides."
+    },
+    {
+      "id": "KB/w3/M1-clamp-stack",
+      "head_to_lug_axial_gap_mm": 4.829470157119431e-15,
+      "nut_to_lug_axial_gap_mm": -4.440892098500626e-16,
+      "status": "AXIAL_BEARING_PLANES_COINCIDE",
+      "head_shaft_join": {
+        "type": "POSITIVE_VOLUME_ANALYTIC_BALL",
+        "center_xyz_mm": [
+          114.13138736482384,
+          14.007195798854221,
+          -119.89215898729225
+        ],
+        "radius_mm": 0.13003831954046363,
+        "volume_lower_mm3": 0.009210912463498396,
+        "proof": "Exact signed distances to both outer analytic primitives and all actual boolean holes exceed ballradius; no AABB-only inference."
+      },
+      "nut_shaft_join": {
+        "type": "POSITIVE_VOLUME_ANALYTIC_BALL",
+        "center_xyz_mm": [
+          116.84564121650841,
+          16.341792319493575,
+          -119.79215898729224
+        ],
+        "radius_mm": 0.3999999990000003,
+        "volume_lower_mm3": 0.26808257109571026,
+        "proof": "Exact signed distances to both outer analytic primitives and all actual boolean holes exceed ballradius; no AABB-only inference."
+      },
+      "scope": "Coincident bearingplanes necessary; annular bearingarea is independently verified by bounded tangentdisk below."
+    },
+    {
+      "id": "KB/w3/head-bearing-patch",
+      "point_xyz_mm": [
+        114.71217600607685,
+        13.667161455926601,
+        -119.10506790446681
+      ],
+      "radius_mm": 0.02,
+      "status": "POSITIVE_AREA_PATCH",
+      "scope": "0.02mm tangentdisk at0.70mm radialstation; stays within lugbox, outsideR.55hole and within metalR>=1 head/nut. Material neighborhoods confirm sides."
+    },
+    {
+      "id": "KB/w3/nut-bearing-patch",
+      "point_xyz_mm": [
+        116.83259271961809,
+        15.789385044744456,
+        -119.10506790446681
+      ],
+      "radius_mm": 0.02,
+      "status": "POSITIVE_AREA_PATCH",
+      "scope": "0.02mm tangentdisk at0.70mm radialstation; stays within lugbox, outsideR.55hole and within metalR>=1 head/nut. Material neighborhoods confirm sides."
+    },
+    {
+      "id": "KB/w4/M1-clamp-stack",
+      "head_to_lug_axial_gap_mm": 4.829470157119431e-15,
+      "nut_to_lug_axial_gap_mm": 1.7763568394002505e-15,
+      "status": "AXIAL_BEARING_PLANES_COINCIDE",
+      "head_shaft_join": {
+        "type": "POSITIVE_VOLUME_ANALYTIC_BALL",
+        "center_xyz_mm": [
+          80.13138736482384,
+          23.00719579885422,
+          -119.89215898729225
+        ],
+        "radius_mm": 0.13003831954046238,
+        "volume_lower_mm3": 0.009210912463498129,
+        "proof": "Exact signed distances to both outer analytic primitives and all actual boolean holes exceed ballradius; no AABB-only inference."
+      },
+      "nut_shaft_join": {
+        "type": "POSITIVE_VOLUME_ANALYTIC_BALL",
+        "center_xyz_mm": [
+          82.84564121650841,
+          25.341792319493578,
+          -119.79215898729224
+        ],
+        "radius_mm": 0.3999999990000003,
+        "volume_lower_mm3": 0.26808257109571026,
+        "proof": "Exact signed distances to both outer analytic primitives and all actual boolean holes exceed ballradius; no AABB-only inference."
+      },
+      "scope": "Coincident bearingplanes necessary; annular bearingarea is independently verified by bounded tangentdisk below."
+    },
+    {
+      "id": "KB/w4/head-bearing-patch",
+      "point_xyz_mm": [
+        80.71217600607685,
+        22.6671614559266,
+        -119.10506790446681
+      ],
+      "radius_mm": 0.02,
+      "status": "POSITIVE_AREA_PATCH",
+      "scope": "0.02mm tangentdisk at0.70mm radialstation; stays within lugbox, outsideR.55hole and within metalR>=1 head/nut. Material neighborhoods confirm sides."
+    },
+    {
+      "id": "KB/w4/nut-bearing-patch",
+      "point_xyz_mm": [
+        82.83259271961809,
+        24.789385044744456,
+        -119.10506790446681
+      ],
+      "radius_mm": 0.02,
+      "status": "POSITIVE_AREA_PATCH",
+      "scope": "0.02mm tangentdisk at0.70mm radialstation; stays within lugbox, outsideR.55hole and within metalR>=1 head/nut. Material neighborhoods confirm sides."
+    },
+    {
+      "id": "KB/w5/M1-clamp-stack",
+      "head_to_lug_axial_gap_mm": 1.7208456881689926e-15,
+      "nut_to_lug_axial_gap_mm": 4.884981308350689e-15,
+      "status": "AXIAL_BEARING_PLANES_COINCIDE",
+      "head_shaft_join": {
+        "type": "POSITIVE_VOLUME_ANALYTIC_BALL",
+        "center_xyz_mm": [
+          99.87403389770739,
+          24.011761039036344,
+          -119.89215898729225
+        ],
+        "radius_mm": 0.13003831954046238,
+        "volume_lower_mm3": 0.009210912463498129,
+        "proof": "Exact signed distances to both outer analytic primitives and all actual boolean holes exceed ballradius; no AABB-only inference."
+      },
+      "nut_shaft_join": {
+        "type": "POSITIVE_VOLUME_ANALYTIC_BALL",
+        "center_xyz_mm": [
+          97.15978004602282,
+          26.346357559675702,
+          -119.79215898729224
+        ],
+        "radius_mm": 0.3999999990000003,
+        "volume_lower_mm3": 0.26808257109571026,
+        "proof": "Exact signed distances to both outer analytic primitives and all actual boolean holes exceed ballradius; no AABB-only inference."
+      },
+      "scope": "Coincident bearingplanes necessary; annular bearingarea is independently verified by bounded tangentdisk below."
+    },
+    {
+      "id": "KB/w5/head-bearing-patch",
+      "point_xyz_mm": [
+        99.83259271961809,
+        24.21061495525554,
+        -119.10506790446681
+      ],
+      "radius_mm": 0.02,
+      "status": "POSITIVE_AREA_PATCH",
+      "scope": "0.02mm tangentdisk at0.70mm radialstation; stays within lugbox, outsideR.55hole and within metalR>=1 head/nut. Material neighborhoods confirm sides."
+    },
+    {
+      "id": "KB/w5/nut-bearing-patch",
+      "point_xyz_mm": [
+        97.71217600607683,
+        26.332838544073393,
+        -119.10506790446681
+      ],
+      "radius_mm": 0.02,
+      "status": "POSITIVE_AREA_PATCH",
+      "scope": "0.02mm tangentdisk at0.70mm radialstation; stays within lugbox, outsideR.55hole and within metalR>=1 head/nut. Material neighborhoods confirm sides."
+    },
+    {
+      "id": "KB/w6/M1-clamp-stack",
+      "head_to_lug_axial_gap_mm": 4.829470157119431e-15,
+      "nut_to_lug_axial_gap_mm": 1.7763568394002505e-15,
+      "status": "AXIAL_BEARING_PLANES_COINCIDE",
+      "head_shaft_join": {
+        "type": "POSITIVE_VOLUME_ANALYTIC_BALL",
+        "center_xyz_mm": [
+          114.13138736482384,
+          23.00719579885422,
+          -119.89215898729225
+        ],
+        "radius_mm": 0.13003831954046238,
+        "volume_lower_mm3": 0.009210912463498129,
+        "proof": "Exact signed distances to both outer analytic primitives and all actual boolean holes exceed ballradius; no AABB-only inference."
+      },
+      "nut_shaft_join": {
+        "type": "POSITIVE_VOLUME_ANALYTIC_BALL",
+        "center_xyz_mm": [
+          116.84564121650841,
+          25.341792319493578,
+          -119.79215898729224
+        ],
+        "radius_mm": 0.3999999990000003,
+        "volume_lower_mm3": 0.26808257109571026,
+        "proof": "Exact signed distances to both outer analytic primitives and all actual boolean holes exceed ballradius; no AABB-only inference."
+      },
+      "scope": "Coincident bearingplanes necessary; annular bearingarea is independently verified by bounded tangentdisk below."
+    },
+    {
+      "id": "KB/w6/head-bearing-patch",
+      "point_xyz_mm": [
+        114.71217600607685,
+        22.6671614559266,
+        -119.10506790446681
+      ],
+      "radius_mm": 0.02,
+      "status": "POSITIVE_AREA_PATCH",
+      "scope": "0.02mm tangentdisk at0.70mm radialstation; stays within lugbox, outsideR.55hole and within metalR>=1 head/nut. Material neighborhoods confirm sides."
+    },
+    {
+      "id": "KB/w6/nut-bearing-patch",
+      "point_xyz_mm": [
+        116.83259271961809,
+        24.789385044744456,
+        -119.10506790446681
+      ],
+      "radius_mm": 0.02,
+      "status": "POSITIVE_AREA_PATCH",
+      "scope": "0.02mm tangentdisk at0.70mm radialstation; stays within lugbox, outsideR.55hole and within metalR>=1 head/nut. Material neighborhoods confirm sides."
+    },
+    {
+      "id": "KB/support-1/head-cap-shaft",
+      "status": "NO_INTERIOR_WITNESS",
+      "overlap": null,
+      "scope": "No-interior-witness alone is not global nonintersection proof; coaxial bore dimensions below must certify separation."
+    },
+    {
+      "id": "KB/support-1/head-coaxial-separation",
+      "status": "PROVED_COAXIAL_SHAFT_CLEARANCE",
+      "shaft_cap_axial_intersection_mm": [
+        0.0,
+        1.0
+      ],
+      "hole_intervals": [
+        [
+          -0.25,
+          0.75,
+          "KB/support-1/head-metal",
+          0.8999999999999999
+        ],
+        [
+          0.0,
+          1.0999999999999943,
+          "KB/support-1/head-shaft-clearance",
+          0.050000000000000044
+        ]
+      ],
+      "proof": "Parallel coaxial cylinder cutters with strict radial clearance cover the entire shaft/cap axial intersection; union coverage excludes all shaft material from dielectric cap, including floor crossings."
+    },
+    {
+      "id": "KB/support-1/head-shaft-floor-bore",
+      "status": "DEDICATED_CLEARANCE_BORE_PRESENT",
+      "bores": [
+        {
+          "id": "KB/support-1/head-shaft-clearance",
+          "radius_mm": 1.05
+        }
+      ]
+    },
+    {
+      "id": "KB/support-1/nut-cap-shaft",
+      "status": "NO_INTERIOR_WITNESS",
+      "overlap": null,
+      "scope": "No-interior-witness alone is not global nonintersection proof; coaxial bore dimensions below must certify separation."
+    },
+    {
+      "id": "KB/support-1/nut-coaxial-separation",
+      "status": "PROVED_COAXIAL_SHAFT_CLEARANCE",
+      "shaft_cap_axial_intersection_mm": [
+        7.75,
+        8.25
+      ],
+      "hole_intervals": [
+        [
+          8.0,
+          8.5,
+          "KB/support-1/nut-metal",
+          0.8999999999999999
+        ],
+        [
+          7.599999999999994,
+          8.25,
+          "KB/support-1/nut-shaft-clearance",
+          0.050000000000000044
+        ]
+      ],
+      "proof": "Parallel coaxial cylinder cutters with strict radial clearance cover the entire shaft/cap axial intersection; union coverage excludes all shaft material from dielectric cap, including floor crossings."
+    },
+    {
+      "id": "KB/support-1/nut-shaft-floor-bore",
+      "status": "DEDICATED_CLEARANCE_BORE_PRESENT",
+      "bores": [
+        {
+          "id": "KB/support-1/nut-shaft-clearance",
+          "radius_mm": 1.05
+        }
+      ]
+    },
+    {
+      "id": "KB/support-2/head-cap-shaft",
+      "status": "NO_INTERIOR_WITNESS",
+      "overlap": null,
+      "scope": "No-interior-witness alone is not global nonintersection proof; coaxial bore dimensions below must certify separation."
+    },
+    {
+      "id": "KB/support-2/head-coaxial-separation",
+      "status": "PROVED_COAXIAL_SHAFT_CLEARANCE",
+      "shaft_cap_axial_intersection_mm": [
+        0.0,
+        1.0
+      ],
+      "hole_intervals": [
+        [
+          -0.25,
+          0.75,
+          "KB/support-2/head-metal",
+          0.8999999999999999
+        ],
+        [
+          0.0,
+          1.0999999999999943,
+          "KB/support-2/head-shaft-clearance",
+          0.050000000000000044
+        ]
+      ],
+      "proof": "Parallel coaxial cylinder cutters with strict radial clearance cover the entire shaft/cap axial intersection; union coverage excludes all shaft material from dielectric cap, including floor crossings."
+    },
+    {
+      "id": "KB/support-2/head-shaft-floor-bore",
+      "status": "DEDICATED_CLEARANCE_BORE_PRESENT",
+      "bores": [
+        {
+          "id": "KB/support-2/head-shaft-clearance",
+          "radius_mm": 1.05
+        }
+      ]
+    },
+    {
+      "id": "KB/support-2/nut-cap-shaft",
+      "status": "NO_INTERIOR_WITNESS",
+      "overlap": null,
+      "scope": "No-interior-witness alone is not global nonintersection proof; coaxial bore dimensions below must certify separation."
+    },
+    {
+      "id": "KB/support-2/nut-coaxial-separation",
+      "status": "PROVED_COAXIAL_SHAFT_CLEARANCE",
+      "shaft_cap_axial_intersection_mm": [
+        7.75,
+        8.25
+      ],
+      "hole_intervals": [
+        [
+          8.0,
+          8.5,
+          "KB/support-2/nut-metal",
+          0.8999999999999999
+        ],
+        [
+          7.599999999999994,
+          8.25,
+          "KB/support-2/nut-shaft-clearance",
+          0.050000000000000044
+        ]
+      ],
+      "proof": "Parallel coaxial cylinder cutters with strict radial clearance cover the entire shaft/cap axial intersection; union coverage excludes all shaft material from dielectric cap, including floor crossings."
+    },
+    {
+      "id": "KB/support-2/nut-shaft-floor-bore",
+      "status": "DEDICATED_CLEARANCE_BORE_PRESENT",
+      "bores": [
+        {
+          "id": "KB/support-2/nut-shaft-clearance",
+          "radius_mm": 1.05
+        }
+      ]
+    },
+    {
+      "id": "KA/support-1/facewasher-lug",
+      "status": "POSITIVE_AREA_ANALYTIC_BEARING",
+      "center_xyz_mm": [
+        7.9,
+        10.5,
+        -102.25
+      ],
+      "normal_xyz": [
+        0.0,
+        0.0,
+        -1.0
+      ],
+      "disk_radius_mm": 0.02,
+      "area_lower_mm2": 0.0012566370614359172,
+      "material_side_margins_mm": [
+        [
+          9.999999974752427e-07,
+          -9.999999974752427e-07
+        ],
+        [
+          -9.999999974752427e-07,
+          9.999999974752427e-07
+        ]
+      ],
+      "proof": "Entire tangentdisk satisfies analytic outer constraints and actual hole exclusions; permitted shared cavityboundaries exact. Opposite material neighborhoods establish bearing, not AABB overlap."
+    },
+    {
+      "id": "KA/support-1/headcap-oppositewasher",
+      "status": "POSITIVE_AREA_ANALYTIC_BEARING",
+      "center_xyz_mm": [
+        7.9,
+        10.5,
+        -99.5
+      ],
+      "normal_xyz": [
+        0.0,
+        0.0,
+        -1.0
+      ],
+      "disk_radius_mm": 0.02,
+      "area_lower_mm2": 0.0012566370614359172,
+      "material_side_margins_mm": [
+        [
+          9.999999974752427e-07,
+          -9.999999974752427e-07
+        ],
+        [
+          -9.999999974752427e-07,
+          9.999999974752427e-07
+        ]
+      ],
+      "proof": "Entire tangentdisk satisfies analytic outer constraints and actual hole exclusions; permitted shared cavityboundaries exact. Opposite material neighborhoods establish bearing, not AABB overlap."
+    },
+    {
+      "id": "KA/support-1/nutcap-lug",
+      "status": "POSITIVE_AREA_ANALYTIC_BEARING",
+      "center_xyz_mm": [
+        7.9,
+        10.5,
+        -106.25
+      ],
+      "normal_xyz": [
+        0.0,
+        0.0,
+        -1.0
+      ],
+      "disk_radius_mm": 0.02,
+      "area_lower_mm2": 0.0012566370614359172,
+      "material_side_margins_mm": [
+        [
+          -9.999999974752427e-07,
+          9.999999974752427e-07
+        ],
+        [
+          9.999999974752427e-07,
+          -9.999999974752427e-07
+        ]
+      ],
+      "proof": "Entire tangentdisk satisfies analytic outer constraints and actual hole exclusions; permitted shared cavityboundaries exact. Opposite material neighborhoods establish bearing, not AABB overlap."
+    },
+    {
+      "id": "KA/support-1/headmetal-capfloor",
+      "status": "POSITIVE_AREA_ANALYTIC_BEARING",
+      "center_xyz_mm": [
+        7.9,
+        10.5,
+        -99.25
+      ],
+      "normal_xyz": [
+        0.0,
+        0.0,
+        -1.0
+      ],
+      "disk_radius_mm": 0.02,
+      "area_lower_mm2": 0.0012566370614359172,
+      "material_side_margins_mm": [
+        [
+          9.999999974752427e-07,
+          -9.999999974752427e-07
+        ],
+        [
+          -9.999999974752427e-07,
+          9.999999974752427e-07
+        ]
+      ],
+      "proof": "Entire tangentdisk satisfies analytic outer constraints and actual hole exclusions; permitted shared cavityboundaries exact. Opposite material neighborhoods establish bearing, not AABB overlap."
+    },
+    {
+      "id": "KA/support-1/nutmetal-capfloor",
+      "status": "POSITIVE_AREA_ANALYTIC_BEARING",
+      "center_xyz_mm": [
+        7.9,
+        10.5,
+        -106.5
+      ],
+      "normal_xyz": [
+        0.0,
+        0.0,
+        -1.0
+      ],
+      "disk_radius_mm": 0.02,
+      "area_lower_mm2": 0.0012566370614359172,
+      "material_side_margins_mm": [
+        [
+          -9.999999974752427e-07,
+          9.999999974752427e-07
+        ],
+        [
+          9.999999974752427e-07,
+          -9.999999974752427e-07
+        ]
+      ],
+      "proof": "Entire tangentdisk satisfies analytic outer constraints and actual hole exclusions; permitted shared cavityboundaries exact. Opposite material neighborhoods establish bearing, not AABB overlap."
+    },
+    {
+      "id": "KA/support-1/headshaft",
+      "status": "POSITIVE_VOLUME_METAL_JOIN",
+      "proof": {
+        "type": "POSITIVE_VOLUME_ANALYTIC_BALL",
+        "center_xyz_mm": [
+          5.9,
+          10.5,
+          -98.875
+        ],
+        "radius_mm": 0.374999999,
+        "volume_lower_mm3": 0.22089323168838645,
+        "proof": "Exact signed distances to both outer analytic primitives and all actual boolean holes exceed ballradius; no AABB-only inference."
+      }
+    },
+    {
+      "id": "KA/support-1/nutshaft",
+      "status": "POSITIVE_VOLUME_METAL_JOIN",
+      "proof": {
+        "type": "POSITIVE_VOLUME_ANALYTIC_BALL",
+        "center_xyz_mm": [
+          5.7,
+          10.3,
+          -106.625
+        ],
+        "radius_mm": 0.124999999,
+        "volume_lower_mm3": 0.008181230672373882,
+        "proof": "Exact signed distances to both outer analytic primitives and all actual boolean holes exceed ballradius; no AABB-only inference."
+      }
+    },
+    {
+      "id": "KA/support-1/boardface-washer",
+      "status": "SOURCE_PLANE_ANNULAR_PATCH",
+      "center_xyz_mm": [
+        7.9,
+        10.5,
+        -101.6
+      ],
+      "disk_radius_mm": 0.02,
+      "source_board_thickness_mm": 1.6,
+      "source_hole_radius_mm": 1.1,
+      "scope": "Patchradial1.4\u00b1.02 liesoutside originalNPTH andinside retainedboardoutline at topcollar; sourcehole/ref identity sealed separately. No PCBstrength orpreloadqualification."
+    },
+    {
+      "id": "KA/support-1/boardback-washer",
+      "status": "SOURCE_PLANE_ANNULAR_PATCH",
+      "center_xyz_mm": [
+        7.9,
+        10.5,
+        -100.0
+      ],
+      "disk_radius_mm": 0.02,
+      "source_board_thickness_mm": 1.6,
+      "source_hole_radius_mm": 1.1,
+      "scope": "Patchradial1.4\u00b1.02 liesoutside originalNPTH andinside retainedboardoutline at topcollar; sourcehole/ref identity sealed separately. No PCBstrength orpreloadqualification."
+    },
+    {
+      "id": "KA/support-2/facewasher-lug",
+      "status": "POSITIVE_AREA_ANALYTIC_BEARING",
+      "center_xyz_mm": [
+        312.9,
+        10.5,
+        -102.25
+      ],
+      "normal_xyz": [
+        0.0,
+        0.0,
+        -1.0
+      ],
+      "disk_radius_mm": 0.02,
+      "area_lower_mm2": 0.0012566370614359172,
+      "material_side_margins_mm": [
+        [
+          9.999999974752427e-07,
+          -9.999999974752427e-07
+        ],
+        [
+          -9.999999974752427e-07,
+          9.999999974752427e-07
+        ]
+      ],
+      "proof": "Entire tangentdisk satisfies analytic outer constraints and actual hole exclusions; permitted shared cavityboundaries exact. Opposite material neighborhoods establish bearing, not AABB overlap."
+    },
+    {
+      "id": "KA/support-2/headcap-oppositewasher",
+      "status": "POSITIVE_AREA_ANALYTIC_BEARING",
+      "center_xyz_mm": [
+        312.9,
+        10.5,
+        -99.5
+      ],
+      "normal_xyz": [
+        0.0,
+        0.0,
+        -1.0
+      ],
+      "disk_radius_mm": 0.02,
+      "area_lower_mm2": 0.0012566370614359172,
+      "material_side_margins_mm": [
+        [
+          9.999999974752427e-07,
+          -9.999999974752427e-07
+        ],
+        [
+          -9.999999974752427e-07,
+          9.999999974752427e-07
+        ]
+      ],
+      "proof": "Entire tangentdisk satisfies analytic outer constraints and actual hole exclusions; permitted shared cavityboundaries exact. Opposite material neighborhoods establish bearing, not AABB overlap."
+    },
+    {
+      "id": "KA/support-2/nutcap-lug",
+      "status": "POSITIVE_AREA_ANALYTIC_BEARING",
+      "center_xyz_mm": [
+        312.9,
+        10.5,
+        -106.25
+      ],
+      "normal_xyz": [
+        0.0,
+        0.0,
+        -1.0
+      ],
+      "disk_radius_mm": 0.02,
+      "area_lower_mm2": 0.0012566370614359172,
+      "material_side_margins_mm": [
+        [
+          -9.999999974752427e-07,
+          9.999999974752427e-07
+        ],
+        [
+          9.999999974752427e-07,
+          -9.999999974752427e-07
+        ]
+      ],
+      "proof": "Entire tangentdisk satisfies analytic outer constraints and actual hole exclusions; permitted shared cavityboundaries exact. Opposite material neighborhoods establish bearing, not AABB overlap."
+    },
+    {
+      "id": "KA/support-2/headmetal-capfloor",
+      "status": "POSITIVE_AREA_ANALYTIC_BEARING",
+      "center_xyz_mm": [
+        312.9,
+        10.5,
+        -99.25
+      ],
+      "normal_xyz": [
+        0.0,
+        0.0,
+        -1.0
+      ],
+      "disk_radius_mm": 0.02,
+      "area_lower_mm2": 0.0012566370614359172,
+      "material_side_margins_mm": [
+        [
+          9.999999974752427e-07,
+          -9.999999974752427e-07
+        ],
+        [
+          -9.999999974752427e-07,
+          9.999999974752427e-07
+        ]
+      ],
+      "proof": "Entire tangentdisk satisfies analytic outer constraints and actual hole exclusions; permitted shared cavityboundaries exact. Opposite material neighborhoods establish bearing, not AABB overlap."
+    },
+    {
+      "id": "KA/support-2/nutmetal-capfloor",
+      "status": "POSITIVE_AREA_ANALYTIC_BEARING",
+      "center_xyz_mm": [
+        312.9,
+        10.5,
+        -106.5
+      ],
+      "normal_xyz": [
+        0.0,
+        0.0,
+        -1.0
+      ],
+      "disk_radius_mm": 0.02,
+      "area_lower_mm2": 0.0012566370614359172,
+      "material_side_margins_mm": [
+        [
+          -9.999999974752427e-07,
+          9.999999974752427e-07
+        ],
+        [
+          9.999999974752427e-07,
+          -9.999999974752427e-07
+        ]
+      ],
+      "proof": "Entire tangentdisk satisfies analytic outer constraints and actual hole exclusions; permitted shared cavityboundaries exact. Opposite material neighborhoods establish bearing, not AABB overlap."
+    },
+    {
+      "id": "KA/support-2/headshaft",
+      "status": "POSITIVE_VOLUME_METAL_JOIN",
+      "proof": {
+        "type": "POSITIVE_VOLUME_ANALYTIC_BALL",
+        "center_xyz_mm": [
+          310.9,
+          10.5,
+          -98.875
+        ],
+        "radius_mm": 0.374999999,
+        "volume_lower_mm3": 0.22089323168838645,
+        "proof": "Exact signed distances to both outer analytic primitives and all actual boolean holes exceed ballradius; no AABB-only inference."
+      }
+    },
+    {
+      "id": "KA/support-2/nutshaft",
+      "status": "POSITIVE_VOLUME_METAL_JOIN",
+      "proof": {
+        "type": "POSITIVE_VOLUME_ANALYTIC_BALL",
+        "center_xyz_mm": [
+          310.7,
+          10.3,
+          -106.625
+        ],
+        "radius_mm": 0.124999999,
+        "volume_lower_mm3": 0.008181230672373882,
+        "proof": "Exact signed distances to both outer analytic primitives and all actual boolean holes exceed ballradius; no AABB-only inference."
+      }
+    },
+    {
+      "id": "KA/support-2/boardface-washer",
+      "status": "SOURCE_PLANE_ANNULAR_PATCH",
+      "center_xyz_mm": [
+        312.9,
+        10.5,
+        -101.6
+      ],
+      "disk_radius_mm": 0.02,
+      "source_board_thickness_mm": 1.6,
+      "source_hole_radius_mm": 1.1,
+      "scope": "Patchradial1.4\u00b1.02 liesoutside originalNPTH andinside retainedboardoutline at topcollar; sourcehole/ref identity sealed separately. No PCBstrength orpreloadqualification."
+    },
+    {
+      "id": "KA/support-2/boardback-washer",
+      "status": "SOURCE_PLANE_ANNULAR_PATCH",
+      "center_xyz_mm": [
+        312.9,
+        10.5,
+        -100.0
+      ],
+      "disk_radius_mm": 0.02,
+      "source_board_thickness_mm": 1.6,
+      "source_hole_radius_mm": 1.1,
+      "scope": "Patchradial1.4\u00b1.02 liesoutside originalNPTH andinside retainedboardoutline at topcollar; sourcehole/ref identity sealed separately. No PCBstrength orpreloadqualification."
+    },
+    {
+      "id": "KA/w1/shroud-board-bondpatch",
+      "status": "SOURCE_PLANE_BOND_PATCH",
+      "proof": {
+        "center_xyz_mm": [
+          18.571103503778307,
+          11.072958630745152,
+          -101.6
+        ],
+        "radius_mm": 0.02,
+        "area_mm2": 0.0012566370614359172
+      },
+      "scope": "Positive-area actual dielectric base patch on nominal boardplane, outside cavity/entry holes. Requires declared adhesive and retained bare substrate bond land; no strength/material qualification."
+    },
+    {
+      "id": "KA/w1/head-cap-lug-bondpatch",
+      "status": "POSITIVE_AREA_ANALYTIC_BEARING",
+      "center_xyz_mm": [
+        20.93625836759747,
+        15.55843293368153,
+        -108.99815302366929
+      ],
+      "normal_xyz": [
+        0.7068055711804171,
+        -0.7074078629392837,
+        0.0
+      ],
+      "disk_radius_mm": 0.02,
+      "area_lower_mm2": 0.0012566370614359172,
+      "material_side_margins_mm": [
+        [
+          1.0000000004728449e-06,
+          -9.999999999177334e-07
+        ],
+        [
+          -1.000000000139778e-06,
+          1.000000000139778e-06
+        ]
+      ],
+      "proof": "Entire tangentdisk satisfies analytic outer constraints and actual hole exclusions; permitted shared cavityboundaries exact. Opposite material neighborhoods establish bearing, not AABB overlap."
+    },
+    {
+      "id": "KA/w1/nut-cap-lug-bondpatch",
+      "status": "POSITIVE_AREA_ANALYTIC_BEARING",
+      "center_xyz_mm": [
+        23.05667508113872,
+        13.436209344863679,
+        -108.99815302366929
+      ],
+      "normal_xyz": [
+        0.7068055711804171,
+        -0.7074078629392837,
+        0.0
+      ],
+      "disk_radius_mm": 0.02,
+      "area_lower_mm2": 0.0012566370614359172,
+      "material_side_margins_mm": [
+        [
+          -1.0000000007033941e-06,
+          9.99999999641281e-07
+        ],
+        [
+          1.000000001250001e-06,
+          -9.999999992515995e-07
+        ]
+      ],
+      "proof": "Entire tangentdisk satisfies analytic outer constraints and actual hole exclusions; permitted shared cavityboundaries exact. Opposite material neighborhoods establish bearing, not AABB overlap."
+    },
+    {
+      "id": "KA/w2/shroud-board-bondpatch",
+      "status": "SOURCE_PLANE_BOND_PATCH",
+      "proof": {
+        "center_xyz_mm": [
+          35.5711035037783,
+          15.427041369254848,
+          -101.6
+        ],
+        "radius_mm": 0.02,
+        "area_mm2": 0.0012566370614359172
+      },
+      "scope": "Positive-area actual dielectric base patch on nominal boardplane, outside cavity/entry holes. Requires declared adhesive and retained bare substrate bond land; no strength/material qualification."
+    },
+    {
+      "id": "KA/w2/head-cap-lug-bondpatch",
+      "status": "POSITIVE_AREA_ANALYTIC_BEARING",
+      "center_xyz_mm": [
+        40.05667508113873,
+        17.563790655136316,
+        -108.99815302366929
+      ],
+      "normal_xyz": [
+        -0.7068055711804172,
+        -0.7074078629392835,
+        0.0
+      ],
+      "disk_radius_mm": 0.02,
+      "area_lower_mm2": 0.0012566370614359172,
+      "material_side_margins_mm": [
+        [
+          1.0000000013610233e-06,
+          -1.0000000014720456e-06
+        ],
+        [
+          -1.0000000019161348e-06,
+          1.0000000010279564e-06
+        ]
+      ],
+      "proof": "Entire tangentdisk satisfies analytic outer constraints and actual hole exclusions; permitted shared cavityboundaries exact. Opposite material neighborhoods establish bearing, not AABB overlap."
+    },
+    {
+      "id": "KA/w2/nut-cap-lug-bondpatch",
+      "status": "POSITIVE_AREA_ANALYTIC_BEARING",
+      "center_xyz_mm": [
+        37.936258367597475,
+        15.441567066318466,
+        -108.99815302366929
+      ],
+      "normal_xyz": [
+        -0.7068055711804172,
+        -0.7074078629392835,
+        0.0
+      ],
+      "disk_radius_mm": 0.02,
+      "area_lower_mm2": 0.0012566370614359172,
+      "material_side_margins_mm": [
+        [
+          -9.999999970519198e-07,
+          1.0000000032927535e-06
+        ],
+        [
+          1.000000000139778e-06,
+          -1.0000000003618226e-06
+        ]
+      ],
+      "proof": "Entire tangentdisk satisfies analytic outer constraints and actual hole exclusions; permitted shared cavityboundaries exact. Opposite material neighborhoods establish bearing, not AABB overlap."
+    },
+    {
+      "id": "KA/w3/shroud-board-bondpatch",
+      "status": "SOURCE_PLANE_BOND_PATCH",
+      "proof": {
+        "center_xyz_mm": [
+          52.5711035037783,
+          11.072958630745152,
+          -101.6
+        ],
+        "radius_mm": 0.02,
+        "area_mm2": 0.0012566370614359172
+      },
+      "scope": "Positive-area actual dielectric base patch on nominal boardplane, outside cavity/entry holes. Requires declared adhesive and retained bare substrate bond land; no strength/material qualification."
+    },
+    {
+      "id": "KA/w3/head-cap-lug-bondpatch",
+      "status": "POSITIVE_AREA_ANALYTIC_BEARING",
+      "center_xyz_mm": [
+        54.936258367597475,
+        15.558432933681534,
+        -108.99815302366929
+      ],
+      "normal_xyz": [
+        0.7068055711804174,
+        -0.7074078629392833,
+        0.0
+      ],
+      "disk_radius_mm": 0.02,
+      "area_lower_mm2": 0.0012566370614359172,
+      "material_side_margins_mm": [
+        [
+          1.0000000054688485e-06,
+          -9.999999948107074e-07
+        ],
+        [
+          -1.0000000003618226e-06,
+          1.000000000139778e-06
+        ]
+      ],
+      "proof": "Entire tangentdisk satisfies analytic outer constraints and actual hole exclusions; permitted shared cavityboundaries exact. Opposite material neighborhoods establish bearing, not AABB overlap."
+    },
+    {
+      "id": "KA/w3/nut-cap-lug-bondpatch",
+      "status": "POSITIVE_AREA_ANALYTIC_BEARING",
+      "center_xyz_mm": [
+        57.05667508113873,
+        13.436209344863682,
+        -108.99815302366929
+      ],
+      "normal_xyz": [
+        0.7068055711804174,
+        -0.7074078629392833,
+        0.0
+      ],
+      "disk_radius_mm": 0.02,
+      "area_lower_mm2": 0.0012566370614359172,
+      "material_side_margins_mm": [
+        [
+          -9.999999990536268e-07,
+          1.0000000012910471e-06
+        ],
+        [
+          9.999999985854657e-07,
+          -1.0000000019161348e-06
+        ]
+      ],
+      "proof": "Entire tangentdisk satisfies analytic outer constraints and actual hole exclusions; permitted shared cavityboundaries exact. Opposite material neighborhoods establish bearing, not AABB overlap."
+    },
+    {
+      "id": "KA/w4/shroud-board-bondpatch",
+      "status": "SOURCE_PLANE_BOND_PATCH",
+      "proof": {
+        "center_xyz_mm": [
+          18.571103503778307,
+          20.072958630745152,
+          -101.6
+        ],
+        "radius_mm": 0.02,
+        "area_mm2": 0.0012566370614359172
+      },
+      "scope": "Positive-area actual dielectric base patch on nominal boardplane, outside cavity/entry holes. Requires declared adhesive and retained bare substrate bond land; no strength/material qualification."
+    },
+    {
+      "id": "KA/w4/head-cap-lug-bondpatch",
+      "status": "POSITIVE_AREA_ANALYTIC_BEARING",
+      "center_xyz_mm": [
+        20.93625836759747,
+        24.558432933681534,
+        -108.99815302366929
+      ],
+      "normal_xyz": [
+        0.7068055711804171,
+        -0.7074078629392837,
+        0.0
+      ],
+      "disk_radius_mm": 0.02,
+      "area_lower_mm2": 0.0012566370614359172,
+      "material_side_margins_mm": [
+        [
+          1.0000000016940902e-06,
+          -1.0000000011389787e-06
+        ],
+        [
+          -1.0000000039145363e-06,
+          9.999999988075103e-07
+        ]
+      ],
+      "proof": "Entire tangentdisk satisfies analytic outer constraints and actual hole exclusions; permitted shared cavityboundaries exact. Opposite material neighborhoods establish bearing, not AABB overlap."
+    },
+    {
+      "id": "KA/w4/nut-cap-lug-bondpatch",
+      "status": "POSITIVE_AREA_ANALYTIC_BEARING",
+      "center_xyz_mm": [
+        23.056675081138724,
+        22.43620934486368,
+        -108.99815302366929
+      ],
+      "normal_xyz": [
+        0.7068055711804171,
+        -0.7074078629392837,
+        0.0
+      ],
+      "disk_radius_mm": 0.02,
+      "area_lower_mm2": 0.0012566370614359172,
+      "material_side_margins_mm": [
+        [
+          -1.0000000015516286e-06,
+          1.0000000012507519e-06
+        ],
+        [
+          1.0000000010279564e-06,
+          -1.0000000016940902e-06
+        ]
+      ],
+      "proof": "Entire tangentdisk satisfies analytic outer constraints and actual hole exclusions; permitted shared cavityboundaries exact. Opposite material neighborhoods establish bearing, not AABB overlap."
+    },
+    {
+      "id": "KA/w5/shroud-board-bondpatch",
+      "status": "SOURCE_PLANE_BOND_PATCH",
+      "proof": {
+        "center_xyz_mm": [
+          35.5711035037783,
+          24.427041369254848,
+          -101.6
+        ],
+        "radius_mm": 0.02,
+        "area_mm2": 0.0012566370614359172
+      },
+      "scope": "Positive-area actual dielectric base patch on nominal boardplane, outside cavity/entry holes. Requires declared adhesive and retained bare substrate bond land; no strength/material qualification."
+    },
+    {
+      "id": "KA/w5/head-cap-lug-bondpatch",
+      "status": "POSITIVE_AREA_ANALYTIC_BEARING",
+      "center_xyz_mm": [
+        40.05667508113873,
+        26.56379065513632,
+        -108.99815302366929
+      ],
+      "normal_xyz": [
+        -0.7068055711804174,
+        -0.7074078629392833,
+        0.0
+      ],
+      "disk_radius_mm": 0.02,
+      "area_lower_mm2": 0.0012566370614359172,
+      "material_side_margins_mm": [
+        [
+          1.0000000039145363e-06,
+          -9.999999989185326e-07
+        ],
+        [
+          -1.0000000043586255e-06,
+          9.999999985854657e-07
+        ]
+      ],
+      "proof": "Entire tangentdisk satisfies analytic outer constraints and actual hole exclusions; permitted shared cavityboundaries exact. Opposite material neighborhoods establish bearing, not AABB overlap."
+    },
+    {
+      "id": "KA/w5/nut-cap-lug-bondpatch",
+      "status": "POSITIVE_AREA_ANALYTIC_BEARING",
+      "center_xyz_mm": [
+        37.936258367597475,
+        24.441567066318466,
+        -108.99815302366929
+      ],
+      "normal_xyz": [
+        -0.7068055711804174,
+        -0.7074078629392833,
+        0.0
+      ],
+      "disk_radius_mm": 0.02,
+      "area_lower_mm2": 0.0012566370614359172,
+      "material_side_margins_mm": [
+        [
+          -9.99999997864219e-07,
+          1.0000000049936713e-06
+        ],
+        [
+          1.000000001250001e-06,
+          -1.0000000014720456e-06
+        ]
+      ],
+      "proof": "Entire tangentdisk satisfies analytic outer constraints and actual hole exclusions; permitted shared cavityboundaries exact. Opposite material neighborhoods establish bearing, not AABB overlap."
+    },
+    {
+      "id": "KA/w6/shroud-board-bondpatch",
+      "status": "SOURCE_PLANE_BOND_PATCH",
+      "proof": {
+        "center_xyz_mm": [
+          52.5711035037783,
+          20.072958630745152,
+          -101.6
+        ],
+        "radius_mm": 0.02,
+        "area_mm2": 0.0012566370614359172
+      },
+      "scope": "Positive-area actual dielectric base patch on nominal boardplane, outside cavity/entry holes. Requires declared adhesive and retained bare substrate bond land; no strength/material qualification."
+    },
+    {
+      "id": "KA/w6/head-cap-lug-bondpatch",
+      "status": "POSITIVE_AREA_ANALYTIC_BEARING",
+      "center_xyz_mm": [
+        54.936258367597475,
+        24.558432933681534,
+        -108.99815302366929
+      ],
+      "normal_xyz": [
+        0.7068055711804174,
+        -0.7074078629392833,
+        0.0
+      ],
+      "disk_radius_mm": 0.02,
+      "area_lower_mm2": 0.0012566370614359172,
+      "material_side_margins_mm": [
+        [
+          1.0000000042476032e-06,
+          -9.999999985854657e-07
+        ],
+        [
+          -1.0000000014720456e-06,
+          1.000000001250001e-06
+        ]
+      ],
+      "proof": "Entire tangentdisk satisfies analytic outer constraints and actual hole exclusions; permitted shared cavityboundaries exact. Opposite material neighborhoods establish bearing, not AABB overlap."
+    },
+    {
+      "id": "KA/w6/nut-cap-lug-bondpatch",
+      "status": "POSITIVE_AREA_ANALYTIC_BEARING",
+      "center_xyz_mm": [
+        57.05667508113873,
+        22.436209344863684,
+        -108.99815302366929
+      ],
+      "normal_xyz": [
+        0.7068055711804174,
+        -0.7074078629392833,
+        0.0
+      ],
+      "disk_radius_mm": 0.02,
+      "area_lower_mm2": 0.0012566370614359172,
+      "material_side_margins_mm": [
+        [
+          -1.000000002455374e-06,
+          1.0000000004025162e-06
+        ],
+        [
+          1.0000000010279564e-06,
+          -1.0000000019161348e-06
+        ]
+      ],
+      "proof": "Entire tangentdisk satisfies analytic outer constraints and actual hole exclusions; permitted shared cavityboundaries exact. Opposite material neighborhoods establish bearing, not AABB overlap."
+    },
+    {
+      "id": "KB/support-1/facewasher-lug",
+      "status": "POSITIVE_AREA_ANALYTIC_BEARING",
+      "center_xyz_mm": [
+        7.9,
+        10.5,
+        -125.35
+      ],
+      "normal_xyz": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "disk_radius_mm": 0.02,
+      "area_lower_mm2": 0.0012566370614359172,
+      "material_side_margins_mm": [
+        [
+          9.999999974752427e-07,
+          -9.999999974752427e-07
+        ],
+        [
+          -9.999999974752427e-07,
+          9.999999974752427e-07
+        ]
+      ],
+      "proof": "Entire tangentdisk satisfies analytic outer constraints and actual hole exclusions; permitted shared cavityboundaries exact. Opposite material neighborhoods establish bearing, not AABB overlap."
+    },
+    {
+      "id": "KB/support-1/headcap-oppositewasher",
+      "status": "POSITIVE_AREA_ANALYTIC_BEARING",
+      "center_xyz_mm": [
+        7.9,
+        10.5,
+        -128.1
+      ],
+      "normal_xyz": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "disk_radius_mm": 0.02,
+      "area_lower_mm2": 0.0012566370614359172,
+      "material_side_margins_mm": [
+        [
+          9.999999974752427e-07,
+          -9.999999974752427e-07
+        ],
+        [
+          -9.999999974752427e-07,
+          9.999999974752427e-07
+        ]
+      ],
+      "proof": "Entire tangentdisk satisfies analytic outer constraints and actual hole exclusions; permitted shared cavityboundaries exact. Opposite material neighborhoods establish bearing, not AABB overlap."
+    },
+    {
+      "id": "KB/support-1/nutcap-lug",
+      "status": "POSITIVE_AREA_ANALYTIC_BEARING",
+      "center_xyz_mm": [
+        7.9,
+        10.5,
+        -121.35
+      ],
+      "normal_xyz": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "disk_radius_mm": 0.02,
+      "area_lower_mm2": 0.0012566370614359172,
+      "material_side_margins_mm": [
+        [
+          -9.999999974752427e-07,
+          9.999999974752427e-07
+        ],
+        [
+          9.999999974752427e-07,
+          -9.999999974752427e-07
+        ]
+      ],
+      "proof": "Entire tangentdisk satisfies analytic outer constraints and actual hole exclusions; permitted shared cavityboundaries exact. Opposite material neighborhoods establish bearing, not AABB overlap."
+    },
+    {
+      "id": "KB/support-1/headmetal-capfloor",
+      "status": "POSITIVE_AREA_ANALYTIC_BEARING",
+      "center_xyz_mm": [
+        7.9,
+        10.5,
+        -128.35
+      ],
+      "normal_xyz": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "disk_radius_mm": 0.02,
+      "area_lower_mm2": 0.0012566370614359172,
+      "material_side_margins_mm": [
+        [
+          9.999999974752427e-07,
+          -9.999999974752427e-07
+        ],
+        [
+          -9.999999974752427e-07,
+          9.999999974752427e-07
+        ]
+      ],
+      "proof": "Entire tangentdisk satisfies analytic outer constraints and actual hole exclusions; permitted shared cavityboundaries exact. Opposite material neighborhoods establish bearing, not AABB overlap."
+    },
+    {
+      "id": "KB/support-1/nutmetal-capfloor",
+      "status": "POSITIVE_AREA_ANALYTIC_BEARING",
+      "center_xyz_mm": [
+        7.9,
+        10.5,
+        -121.1
+      ],
+      "normal_xyz": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "disk_radius_mm": 0.02,
+      "area_lower_mm2": 0.0012566370614359172,
+      "material_side_margins_mm": [
+        [
+          -9.999999974752427e-07,
+          9.999999974752427e-07
+        ],
+        [
+          9.999999974752427e-07,
+          -9.999999974752427e-07
+        ]
+      ],
+      "proof": "Entire tangentdisk satisfies analytic outer constraints and actual hole exclusions; permitted shared cavityboundaries exact. Opposite material neighborhoods establish bearing, not AABB overlap."
+    },
+    {
+      "id": "KB/support-1/headshaft",
+      "status": "POSITIVE_VOLUME_METAL_JOIN",
+      "proof": {
+        "type": "POSITIVE_VOLUME_ANALYTIC_BALL",
+        "center_xyz_mm": [
+          5.9,
+          10.5,
+          -128.725
+        ],
+        "radius_mm": 0.374999999,
+        "volume_lower_mm3": 0.22089323168838645,
+        "proof": "Exact signed distances to both outer analytic primitives and all actual boolean holes exceed ballradius; no AABB-only inference."
+      }
+    },
+    {
+      "id": "KB/support-1/nutshaft",
+      "status": "POSITIVE_VOLUME_METAL_JOIN",
+      "proof": {
+        "type": "POSITIVE_VOLUME_ANALYTIC_BALL",
+        "center_xyz_mm": [
+          5.7,
+          10.3,
+          -120.975
+        ],
+        "radius_mm": 0.124999999,
+        "volume_lower_mm3": 0.008181230672373882,
+        "proof": "Exact signed distances to both outer analytic primitives and all actual boolean holes exceed ballradius; no AABB-only inference."
+      }
+    },
+    {
+      "id": "KB/support-1/boardface-washer",
+      "status": "SOURCE_PLANE_ANNULAR_PATCH",
+      "center_xyz_mm": [
+        7.9,
+        10.5,
+        -126.0
+      ],
+      "disk_radius_mm": 0.02,
+      "source_board_thickness_mm": 1.6,
+      "source_hole_radius_mm": 1.1,
+      "scope": "Patchradial1.4\u00b1.02 liesoutside originalNPTH andinside retainedboardoutline at topcollar; sourcehole/ref identity sealed separately. No PCBstrength orpreloadqualification."
+    },
+    {
+      "id": "KB/support-1/boardback-washer",
+      "status": "SOURCE_PLANE_ANNULAR_PATCH",
+      "center_xyz_mm": [
+        7.9,
+        10.5,
+        -127.6
+      ],
+      "disk_radius_mm": 0.02,
+      "source_board_thickness_mm": 1.6,
+      "source_hole_radius_mm": 1.1,
+      "scope": "Patchradial1.4\u00b1.02 liesoutside originalNPTH andinside retainedboardoutline at topcollar; sourcehole/ref identity sealed separately. No PCBstrength orpreloadqualification."
+    },
+    {
+      "id": "KB/support-2/facewasher-lug",
+      "status": "POSITIVE_AREA_ANALYTIC_BEARING",
+      "center_xyz_mm": [
+        312.9,
+        10.5,
+        -125.35
+      ],
+      "normal_xyz": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "disk_radius_mm": 0.02,
+      "area_lower_mm2": 0.0012566370614359172,
+      "material_side_margins_mm": [
+        [
+          9.999999974752427e-07,
+          -9.999999974752427e-07
+        ],
+        [
+          -9.999999974752427e-07,
+          9.999999974752427e-07
+        ]
+      ],
+      "proof": "Entire tangentdisk satisfies analytic outer constraints and actual hole exclusions; permitted shared cavityboundaries exact. Opposite material neighborhoods establish bearing, not AABB overlap."
+    },
+    {
+      "id": "KB/support-2/headcap-oppositewasher",
+      "status": "POSITIVE_AREA_ANALYTIC_BEARING",
+      "center_xyz_mm": [
+        312.9,
+        10.5,
+        -128.1
+      ],
+      "normal_xyz": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "disk_radius_mm": 0.02,
+      "area_lower_mm2": 0.0012566370614359172,
+      "material_side_margins_mm": [
+        [
+          9.999999974752427e-07,
+          -9.999999974752427e-07
+        ],
+        [
+          -9.999999974752427e-07,
+          9.999999974752427e-07
+        ]
+      ],
+      "proof": "Entire tangentdisk satisfies analytic outer constraints and actual hole exclusions; permitted shared cavityboundaries exact. Opposite material neighborhoods establish bearing, not AABB overlap."
+    },
+    {
+      "id": "KB/support-2/nutcap-lug",
+      "status": "POSITIVE_AREA_ANALYTIC_BEARING",
+      "center_xyz_mm": [
+        312.9,
+        10.5,
+        -121.35
+      ],
+      "normal_xyz": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "disk_radius_mm": 0.02,
+      "area_lower_mm2": 0.0012566370614359172,
+      "material_side_margins_mm": [
+        [
+          -9.999999974752427e-07,
+          9.999999974752427e-07
+        ],
+        [
+          9.999999974752427e-07,
+          -9.999999974752427e-07
+        ]
+      ],
+      "proof": "Entire tangentdisk satisfies analytic outer constraints and actual hole exclusions; permitted shared cavityboundaries exact. Opposite material neighborhoods establish bearing, not AABB overlap."
+    },
+    {
+      "id": "KB/support-2/headmetal-capfloor",
+      "status": "POSITIVE_AREA_ANALYTIC_BEARING",
+      "center_xyz_mm": [
+        312.9,
+        10.5,
+        -128.35
+      ],
+      "normal_xyz": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "disk_radius_mm": 0.02,
+      "area_lower_mm2": 0.0012566370614359172,
+      "material_side_margins_mm": [
+        [
+          9.999999974752427e-07,
+          -9.999999974752427e-07
+        ],
+        [
+          -9.999999974752427e-07,
+          9.999999974752427e-07
+        ]
+      ],
+      "proof": "Entire tangentdisk satisfies analytic outer constraints and actual hole exclusions; permitted shared cavityboundaries exact. Opposite material neighborhoods establish bearing, not AABB overlap."
+    },
+    {
+      "id": "KB/support-2/nutmetal-capfloor",
+      "status": "POSITIVE_AREA_ANALYTIC_BEARING",
+      "center_xyz_mm": [
+        312.9,
+        10.5,
+        -121.1
+      ],
+      "normal_xyz": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "disk_radius_mm": 0.02,
+      "area_lower_mm2": 0.0012566370614359172,
+      "material_side_margins_mm": [
+        [
+          -9.999999974752427e-07,
+          9.999999974752427e-07
+        ],
+        [
+          9.999999974752427e-07,
+          -9.999999974752427e-07
+        ]
+      ],
+      "proof": "Entire tangentdisk satisfies analytic outer constraints and actual hole exclusions; permitted shared cavityboundaries exact. Opposite material neighborhoods establish bearing, not AABB overlap."
+    },
+    {
+      "id": "KB/support-2/headshaft",
+      "status": "POSITIVE_VOLUME_METAL_JOIN",
+      "proof": {
+        "type": "POSITIVE_VOLUME_ANALYTIC_BALL",
+        "center_xyz_mm": [
+          310.9,
+          10.5,
+          -128.725
+        ],
+        "radius_mm": 0.374999999,
+        "volume_lower_mm3": 0.22089323168838645,
+        "proof": "Exact signed distances to both outer analytic primitives and all actual boolean holes exceed ballradius; no AABB-only inference."
+      }
+    },
+    {
+      "id": "KB/support-2/nutshaft",
+      "status": "POSITIVE_VOLUME_METAL_JOIN",
+      "proof": {
+        "type": "POSITIVE_VOLUME_ANALYTIC_BALL",
+        "center_xyz_mm": [
+          310.7,
+          10.3,
+          -120.975
+        ],
+        "radius_mm": 0.124999999,
+        "volume_lower_mm3": 0.008181230672373882,
+        "proof": "Exact signed distances to both outer analytic primitives and all actual boolean holes exceed ballradius; no AABB-only inference."
+      }
+    },
+    {
+      "id": "KB/support-2/boardface-washer",
+      "status": "SOURCE_PLANE_ANNULAR_PATCH",
+      "center_xyz_mm": [
+        312.9,
+        10.5,
+        -126.0
+      ],
+      "disk_radius_mm": 0.02,
+      "source_board_thickness_mm": 1.6,
+      "source_hole_radius_mm": 1.1,
+      "scope": "Patchradial1.4\u00b1.02 liesoutside originalNPTH andinside retainedboardoutline at topcollar; sourcehole/ref identity sealed separately. No PCBstrength orpreloadqualification."
+    },
+    {
+      "id": "KB/support-2/boardback-washer",
+      "status": "SOURCE_PLANE_ANNULAR_PATCH",
+      "center_xyz_mm": [
+        312.9,
+        10.5,
+        -127.6
+      ],
+      "disk_radius_mm": 0.02,
+      "source_board_thickness_mm": 1.6,
+      "source_hole_radius_mm": 1.1,
+      "scope": "Patchradial1.4\u00b1.02 liesoutside originalNPTH andinside retainedboardoutline at topcollar; sourcehole/ref identity sealed separately. No PCBstrength orpreloadqualification."
+    },
+    {
+      "id": "KB/w1/shroud-board-bondpatch",
+      "status": "SOURCE_PLANE_BOND_PATCH",
+      "proof": {
+        "center_xyz_mm": [
+          80.9288964962217,
+          11.072958630745152,
+          -126.0
+        ],
+        "radius_mm": 0.02,
+        "area_mm2": 0.0012566370614359172
+      },
+      "scope": "Positive-area actual dielectric base patch on nominal boardplane, outside cavity/entry holes. Requires declared adhesive and retained bare substrate bond land; no strength/material qualification."
+    },
+    {
+      "id": "KB/w1/head-cap-lug-bondpatch",
+      "status": "POSITIVE_AREA_ANALYTIC_BEARING",
+      "center_xyz_mm": [
+        80.94332491886128,
+        13.436209344863679,
+        -118.6018469763307
+      ],
+      "normal_xyz": [
+        0.7068055711804168,
+        0.707407862939284,
+        0.0
+      ],
+      "disk_radius_mm": 0.02,
+      "area_lower_mm2": 0.0012566370614359172,
+      "material_side_margins_mm": [
+        [
+          9.999999889265254e-07,
+          -1.0000000014720456e-06
+        ],
+        [
+          -9.999999941445736e-07,
+          9.99999996142975e-07
+        ]
+      ],
+      "proof": "Entire tangentdisk satisfies analytic outer constraints and actual hole exclusions; permitted shared cavityboundaries exact. Opposite material neighborhoods establish bearing, not AABB overlap."
+    },
+    {
+      "id": "KB/w1/nut-cap-lug-bondpatch",
+      "status": "POSITIVE_AREA_ANALYTIC_BEARING",
+      "center_xyz_mm": [
+        83.06374163240253,
+        15.558432933681534,
+        -118.6018469763307
+      ],
+      "normal_xyz": [
+        0.7068055711804168,
+        0.707407862939284,
+        0.0
+      ],
+      "disk_radius_mm": 0.02,
+      "area_lower_mm2": 0.0012566370614359172,
+      "material_side_margins_mm": [
+        [
+          -9.999999949829236e-07,
+          9.99999995314232e-07
+        ],
+        [
+          9.99999995032752e-07,
+          -9.999999952547967e-07
+        ]
+      ],
+      "proof": "Entire tangentdisk satisfies analytic outer constraints and actual hole exclusions; permitted shared cavityboundaries exact. Opposite material neighborhoods establish bearing, not AABB overlap."
+    },
+    {
+      "id": "KB/w2/shroud-board-bondpatch",
+      "status": "SOURCE_PLANE_BOND_PATCH",
+      "proof": {
+        "center_xyz_mm": [
+          97.9288964962217,
+          15.427041369254848,
+          -126.0
+        ],
+        "radius_mm": 0.02,
+        "area_mm2": 0.0012566370614359172
+      },
+      "scope": "Positive-area actual dielectric base patch on nominal boardplane, outside cavity/entry holes. Requires declared adhesive and retained bare substrate bond land; no strength/material qualification."
+    },
+    {
+      "id": "KB/w2/head-cap-lug-bondpatch",
+      "status": "POSITIVE_AREA_ANALYTIC_BEARING",
+      "center_xyz_mm": [
+        100.06374163240253,
+        15.441567066318463,
+        -118.6018469763307
+      ],
+      "normal_xyz": [
+        -0.7068055711804169,
+        0.7074078629392838,
+        0.0
+      ],
+      "disk_radius_mm": 0.02,
+      "area_lower_mm2": 0.0012566370614359172,
+      "material_side_margins_mm": [
+        [
+          9.999999963650197e-07,
+          -9.99999993922529e-07
+        ],
+        [
+          -9.999999976972873e-07,
+          9.999999925902614e-07
+        ]
+      ],
+      "proof": "Entire tangentdisk satisfies analytic outer constraints and actual hole exclusions; permitted shared cavityboundaries exact. Opposite material neighborhoods establish bearing, not AABB overlap."
+    },
+    {
+      "id": "KB/w2/nut-cap-lug-bondpatch",
+      "status": "POSITIVE_AREA_ANALYTIC_BEARING",
+      "center_xyz_mm": [
+        97.94332491886126,
+        17.563790655136316,
+        -118.6018469763307
+      ],
+      "normal_xyz": [
+        -0.7068055711804169,
+        0.7074078629392838,
+        0.0
+      ],
+      "disk_radius_mm": 0.02,
+      "area_lower_mm2": 0.0012566370614359172,
+      "material_side_margins_mm": [
+        [
+          -9.999999974593704e-07,
+          9.999999953510014e-07
+        ],
+        [
+          9.999999910359492e-07,
+          -1.0000000019161348e-06
+        ]
+      ],
+      "proof": "Entire tangentdisk satisfies analytic outer constraints and actual hole exclusions; permitted shared cavityboundaries exact. Opposite material neighborhoods establish bearing, not AABB overlap."
+    },
+    {
+      "id": "KB/w3/shroud-board-bondpatch",
+      "status": "SOURCE_PLANE_BOND_PATCH",
+      "proof": {
+        "center_xyz_mm": [
+          114.9288964962217,
+          11.072958630745152,
+          -126.0
+        ],
+        "radius_mm": 0.02,
+        "area_mm2": 0.0012566370614359172
+      },
+      "scope": "Positive-area actual dielectric base patch on nominal boardplane, outside cavity/entry holes. Requires declared adhesive and retained bare substrate bond land; no strength/material qualification."
+    },
+    {
+      "id": "KB/w3/head-cap-lug-bondpatch",
+      "status": "POSITIVE_AREA_ANALYTIC_BEARING",
+      "center_xyz_mm": [
+        114.94332491886128,
+        13.436209344863679,
+        -118.6018469763307
+      ],
+      "normal_xyz": [
+        0.7068055711804168,
+        0.707407862939284,
+        0.0
+      ],
+      "disk_radius_mm": 0.02,
+      "area_lower_mm2": 0.0012566370614359172,
+      "material_side_margins_mm": [
+        [
+          9.999999889265254e-07,
+          -1.0000000014720456e-06
+        ],
+        [
+          -9.999999941445736e-07,
+          9.99999996142975e-07
+        ]
+      ],
+      "proof": "Entire tangentdisk satisfies analytic outer constraints and actual hole exclusions; permitted shared cavityboundaries exact. Opposite material neighborhoods establish bearing, not AABB overlap."
+    },
+    {
+      "id": "KB/w3/nut-cap-lug-bondpatch",
+      "status": "POSITIVE_AREA_ANALYTIC_BEARING",
+      "center_xyz_mm": [
+        117.06374163240253,
+        15.558432933681534,
+        -118.6018469763307
+      ],
+      "normal_xyz": [
+        0.7068055711804168,
+        0.707407862939284,
+        0.0
+      ],
+      "disk_radius_mm": 0.02,
+      "area_lower_mm2": 0.0012566370614359172,
+      "material_side_margins_mm": [
+        [
+          -9.999999949829236e-07,
+          9.99999995314232e-07
+        ],
+        [
+          9.99999995032752e-07,
+          -9.999999952547967e-07
+        ]
+      ],
+      "proof": "Entire tangentdisk satisfies analytic outer constraints and actual hole exclusions; permitted shared cavityboundaries exact. Opposite material neighborhoods establish bearing, not AABB overlap."
+    },
+    {
+      "id": "KB/w4/shroud-board-bondpatch",
+      "status": "SOURCE_PLANE_BOND_PATCH",
+      "proof": {
+        "center_xyz_mm": [
+          80.9288964962217,
+          20.072958630745152,
+          -126.0
+        ],
+        "radius_mm": 0.02,
+        "area_mm2": 0.0012566370614359172
+      },
+      "scope": "Positive-area actual dielectric base patch on nominal boardplane, outside cavity/entry holes. Requires declared adhesive and retained bare substrate bond land; no strength/material qualification."
+    },
+    {
+      "id": "KB/w4/head-cap-lug-bondpatch",
+      "status": "POSITIVE_AREA_ANALYTIC_BEARING",
+      "center_xyz_mm": [
+        80.94332491886128,
+        22.436209344863677,
+        -118.6018469763307
+      ],
+      "normal_xyz": [
+        0.7068055711804168,
+        0.707407862939284,
+        0.0
+      ],
+      "disk_radius_mm": 0.02,
+      "area_lower_mm2": 0.0012566370614359172,
+      "material_side_margins_mm": [
+        [
+          9.99999991369016e-07,
+          -1.0000000014720456e-06
+        ],
+        [
+          -9.999999968091089e-07,
+          9.99999996142975e-07
+        ]
+      ],
+      "proof": "Entire tangentdisk satisfies analytic outer constraints and actual hole exclusions; permitted shared cavityboundaries exact. Opposite material neighborhoods establish bearing, not AABB overlap."
+    },
+    {
+      "id": "KB/w4/nut-cap-lug-bondpatch",
+      "status": "POSITIVE_AREA_ANALYTIC_BEARING",
+      "center_xyz_mm": [
+        83.06374163240253,
+        24.558432933681534,
+        -118.6018469763307
+      ],
+      "normal_xyz": [
+        0.7068055711804168,
+        0.707407862939284,
+        0.0
+      ],
+      "disk_radius_mm": 0.02,
+      "area_lower_mm2": 0.0012566370614359172,
+      "material_side_margins_mm": [
+        [
+          -9.99999997864219e-07,
+          9.999999949461529e-07
+        ],
+        [
+          9.999999963650197e-07,
+          -9.999999965870643e-07
+        ]
+      ],
+      "proof": "Entire tangentdisk satisfies analytic outer constraints and actual hole exclusions; permitted shared cavityboundaries exact. Opposite material neighborhoods establish bearing, not AABB overlap."
+    },
+    {
+      "id": "KB/w5/shroud-board-bondpatch",
+      "status": "SOURCE_PLANE_BOND_PATCH",
+      "proof": {
+        "center_xyz_mm": [
+          97.9288964962217,
+          24.427041369254848,
+          -126.0
+        ],
+        "radius_mm": 0.02,
+        "area_mm2": 0.0012566370614359172
+      },
+      "scope": "Positive-area actual dielectric base patch on nominal boardplane, outside cavity/entry holes. Requires declared adhesive and retained bare substrate bond land; no strength/material qualification."
+    },
+    {
+      "id": "KB/w5/head-cap-lug-bondpatch",
+      "status": "POSITIVE_AREA_ANALYTIC_BEARING",
+      "center_xyz_mm": [
+        100.06374163240253,
+        24.441567066318463,
+        -118.6018469763307
+      ],
+      "normal_xyz": [
+        -0.7068055711804168,
+        0.707407862939284,
+        0.0
+      ],
+      "disk_radius_mm": 0.02,
+      "area_lower_mm2": 0.0012566370614359172,
+      "material_side_margins_mm": [
+        [
+          9.999999966980866e-07,
+          -9.99999996142975e-07
+        ],
+        [
+          -9.99999999029555e-07,
+          9.999999937004844e-07
+        ]
+      ],
+      "proof": "Entire tangentdisk satisfies analytic outer constraints and actual hole exclusions; permitted shared cavityboundaries exact. Opposite material neighborhoods establish bearing, not AABB overlap."
+    },
+    {
+      "id": "KB/w5/nut-cap-lug-bondpatch",
+      "status": "POSITIVE_AREA_ANALYTIC_BEARING",
+      "center_xyz_mm": [
+        97.94332491886126,
+        26.563790655136316,
+        -118.6018469763307
+      ],
+      "normal_xyz": [
+        -0.7068055711804168,
+        0.707407862939284,
+        0.0
+      ],
+      "disk_radius_mm": 0.02,
+      "area_lower_mm2": 0.0012566370614359172,
+      "material_side_margins_mm": [
+        [
+          -9.999999974593704e-07,
+          9.999999953510014e-07
+        ],
+        [
+          9.999999910359492e-07,
+          -1.0000000019161348e-06
+        ]
+      ],
+      "proof": "Entire tangentdisk satisfies analytic outer constraints and actual hole exclusions; permitted shared cavityboundaries exact. Opposite material neighborhoods establish bearing, not AABB overlap."
+    },
+    {
+      "id": "KB/w6/shroud-board-bondpatch",
+      "status": "SOURCE_PLANE_BOND_PATCH",
+      "proof": {
+        "center_xyz_mm": [
+          114.9288964962217,
+          20.072958630745152,
+          -126.0
+        ],
+        "radius_mm": 0.02,
+        "area_mm2": 0.0012566370614359172
+      },
+      "scope": "Positive-area actual dielectric base patch on nominal boardplane, outside cavity/entry holes. Requires declared adhesive and retained bare substrate bond land; no strength/material qualification."
+    },
+    {
+      "id": "KB/w6/head-cap-lug-bondpatch",
+      "status": "POSITIVE_AREA_ANALYTIC_BEARING",
+      "center_xyz_mm": [
+        114.94332491886128,
+        22.436209344863677,
+        -118.6018469763307
+      ],
+      "normal_xyz": [
+        0.7068055711804168,
+        0.707407862939284,
+        0.0
+      ],
+      "disk_radius_mm": 0.02,
+      "area_lower_mm2": 0.0012566370614359172,
+      "material_side_margins_mm": [
+        [
+          9.99999991369016e-07,
+          -1.0000000014720456e-06
+        ],
+        [
+          -9.999999968091089e-07,
+          9.99999996142975e-07
+        ]
+      ],
+      "proof": "Entire tangentdisk satisfies analytic outer constraints and actual hole exclusions; permitted shared cavityboundaries exact. Opposite material neighborhoods establish bearing, not AABB overlap."
+    },
+    {
+      "id": "KB/w6/nut-cap-lug-bondpatch",
+      "status": "POSITIVE_AREA_ANALYTIC_BEARING",
+      "center_xyz_mm": [
+        117.06374163240253,
+        24.558432933681534,
+        -118.6018469763307
+      ],
+      "normal_xyz": [
+        0.7068055711804168,
+        0.707407862939284,
+        0.0
+      ],
+      "disk_radius_mm": 0.02,
+      "area_lower_mm2": 0.0012566370614359172,
+      "material_side_margins_mm": [
+        [
+          -9.99999997864219e-07,
+          9.999999949461529e-07
+        ],
+        [
+          9.999999963650197e-07,
+          -9.999999965870643e-07
+        ]
+      ],
+      "proof": "Entire tangentdisk satisfies analytic outer constraints and actual hole exclusions; permitted shared cavityboundaries exact. Opposite material neighborhoods establish bearing, not AABB overlap."
+    }
+  ],
+  "assembly_findings": [
+    "Closed beam sleeve/captured core requires explicit insert-molding or split-shell fabrication sequence; no insertion path established by coincident cavity.",
+    "Splitcollet has two removable halves: preassemble finger/beam, route wire before final clamp tightening, then solder; actual access/tool envelopes must be validated.",
+    "Collet neck geometry is not a shear/creep/load proof; material, preload and retention remain unqualified.",
+    "M1 caps with clearance to head/nut need declared attachment to lug or mechanical retention; cavity containment alone does not retain them.",
+    "M2 board stack requires original PCB/collar and washer interfaces, no newholes; recorded source2.2mm holes do not prove torque/structural capacity."
+  ],
+  "limits": [
+    "Analytic ball/sharedface witnesses account actual primitiveholes; conservative outerpolyhedra not mistaken for material overlap.",
+    "Witness search only on fixed savedgeometry, no candidate modifications or newplacement/routing.",
+    "No-witness result is UNPROVED, never disjointness or strength PASS."
+  ],
+  "elapsed_seconds": 0.20987453300040215,
+  "peak_memory_KiB": 34704,
+  "native_calls": 0
+}
