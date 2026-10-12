@@ -103,6 +103,32 @@ class StagedCapsTests(unittest.TestCase):
         source,_=fixture();source['objects'].append(stage('bad',['F.Cu','In2.Cu']))
         with self.assertRaisesRegex(ValueError,'adjacent staged foils'):caps.materialize(source)
 
+    def test_fully_erased_nonterminal_pad_has_explicit_disconnected_export(self):
+        source,planes=fixture()
+        source['objects'] += [pad('erased-nonterminal','+12V',2,radius=.04),
+                              dict(id='erasing-hole',kind='keepout',net='FOREIGN',
+                                   layers=['F.Cu'],center_mm=[2,0],drill_mm=.2)]
+        result=graph.build(caps.materialize(source),planes)
+        row=result['object_connections']['erased-nonterminal']
+        self.assertEqual(row,dict(net='+12V',component_ids=[],
+                                 all_fragments_connected_to_feed=False,
+                                 any_fragment_connected=False,fragment_count=0))
+        physical=next(p for p in result['physical_ports'] if p['id']=='erased-nonterminal')
+        self.assertFalse(physical['all_port_fragments_connected_to_feed'])
+        self.assertEqual(physical['component_ids'],[])
+        self.assertEqual(result['status'],'SOURCE_ALL_DIRECT_LOADS_CONNECTED')
+
+    def test_plane_source_and_cross_net_plane_identity_collision_refused(self):
+        for collision in ['source','cross-net']:
+            with self.subTest(collision=collision):
+                source,planes=fixture()
+                identity='CS247-KA-W1' if collision=='source' else 'same-plane'
+                plane=dict(id=identity,polygon_mm=[[2,2],[3,2],[3,3],[2,3]])
+                planes['clipped_sheets']['+12V']=[plane]
+                if collision=='cross-net':planes['clipped_sheets']['AGND']=[copy.deepcopy(plane)]
+                with self.assertRaisesRegex(ValueError,'plane/source identity collision'):
+                    graph.build(caps.materialize(source),planes)
+
     def test_remote_split_foil_piece_does_not_join_barrel(self):
         source,planes=fixture();source['objects'][0]=pad('CS247-KA-W1','+12V',.22,radius=.025)
         source['objects'] += [dict(id='split',kind='via',net='+12V',layers=['F.Cu','B.Cu'],

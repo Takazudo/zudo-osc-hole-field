@@ -27,6 +27,8 @@ def build(source,planes):
  complete=source['objects']+planes['new_objects']
  rows=[o for o in complete if o.get('net') in NET_LAYER and o['kind'] in ('pad','segment','via')]
  need(len({o['id'] for o in rows})==len(rows),'duplicate physical object identity')
+ identities=[o['id'] for o in rows]+[p['id'] for pieces in planes['clipped_sheets'].values() for p in pieces]
+ need(len(identities)==len(set(identities)),'plane/source identity collision')
  bynet=defaultdict(list)
  for o in rows:bynet[o['net']].append(o)
  need(set(bynet)==set(NET_LAYER) and {o['net'] for o in source['loads']}==set(NET_LAYER),'complete four-net census')
@@ -64,7 +66,7 @@ def build(source,planes):
    other=caps[int(raw)]
    if cap['layer']!=other['layer'] or cap['net']==other['net']:continue
    need(math.dist(cap['center_mm'],other['center_mm'])>=cap['radius_mm']+other['radius_mm']-1e-10,'different-net cap solids overlap')
- summaries={};ports=[];missing=[];terminal_ports=[];counts=Counter()
+ summaries={};ports=[];missing=[];terminal_ports=[];counts=Counter();object_connections={}
  for net,objs in bynet.items():
   nodes=[];nodeids=[];node_layers=[];portnodes=defaultdict(list);barrels=defaultdict(list)
   def add(identity,g,layer,barrel_band=None):
@@ -126,6 +128,10 @@ def build(source,planes):
   source_roots={root(i) for o in terminals for i in portnodes[o['id']]}
   for o in terminals:
    terminal_ports.append({'id':o['id'],'net':net,'component_ids':sorted({nodeids[root(i)] for i in portnodes[o['id']]})})
+  for identity in sorted(set(portnodes)|{o['id'] for o in objs}|{p['id'] for p in planes['clipped_sheets'][net]}):
+   members=portnodes[identity]
+   components={root(i) for i in members}
+   object_connections[identity]={'net':net,'component_ids':sorted(nodeids[i] for i in components),'all_fragments_connected_to_feed':bool(components) and components<=source_roots,'any_fragment_connected':bool(components&source_roots),'fragment_count':len(members)}
   for o in objs:
    if o['kind']!='pad':continue
    components={root(i) for i in portnodes[o['id']]};connected=bool(components) and components<=source_roots
@@ -137,7 +143,7 @@ def build(source,planes):
    if not byid[load['pad_id']]['all_port_fragments_connected_to_feed']:missing.append(load|{'component_ids':byid[load['pad_id']]['component_ids']})
   summaries[net]={'nodes':len(nodes),'positive_area_edges':edges,'uncredited_tangent_pairs':near,'components':len({root(i) for i in range(len(nodes))}),'source_components':len(source_roots),'all_three_returns_one_board_component':len(source_roots)==1 if net=='AGND' else None}
   counts['nodes']+=len(nodes);counts['edges']+=edges
- return {'status':'SOURCE_ALL_DIRECT_LOADS_CONNECTED' if not missing else 'SOURCE_DISCONNECTED_LOAD_PORTS','board':source['board'],'physical_ports':ports,'terminal_ports':terminal_ports,'graph':summaries,'counts':dict(counts),'explicit_closed_cap_count':len(caps),'complete_drill_inventory_count':len(drill_sources),'complete_drill_inventory_sha256':hashlib.sha256(json.dumps(sorted(drill_sources)).encode()).hexdigest(),'disconnected_loads':missing,'direct_load_count':len(source['loads']),'downstream_active_or_resistive_paths_not_shortened':source.get('downstream_loads',[]),'limits':['Contained source conductors. Legacy/open bores subtract conservatively from every touched foil. Explicit new staged caps occupy their full specified foil bands; their closed bores occupy dielectric only. Unspecified fill supplies no conductivity.','Explicit plated-body cross-layer edges require positive foil-piece contact with the declared .025mm annular wall. Other drill volumes may not cut that wall or a closed cap. Plating/cap process is conditional and unqualified; graph connectivity implies no equipotential or zero resistance.','Positive-area connectivity is not a finite resistance/current/drop certificate. Full net loads, source and GH incidence must use finite field operators.','Unknown source-pad approximation and physical process still require native/physical verification.'],'native_calls':0,'accepted':False}
+ return {'status':'SOURCE_ALL_DIRECT_LOADS_CONNECTED' if not missing else 'SOURCE_DISCONNECTED_LOAD_PORTS','board':source['board'],'physical_ports':ports,'object_connections':object_connections,'terminal_ports':terminal_ports,'graph':summaries,'counts':dict(counts),'explicit_closed_cap_count':len(caps),'complete_drill_inventory_count':len(drill_sources),'complete_drill_inventory_sha256':hashlib.sha256(json.dumps(sorted(drill_sources)).encode()).hexdigest(),'disconnected_loads':missing,'direct_load_count':len(source['loads']),'downstream_active_or_resistive_paths_not_shortened':source.get('downstream_loads',[]),'limits':['Contained source conductors. Legacy/open bores subtract conservatively from every touched foil. Explicit new staged caps occupy their full specified foil bands; their closed bores occupy dielectric only. Unspecified fill supplies no conductivity.','Explicit plated-body cross-layer edges require positive foil-piece contact with the declared .025mm annular wall. Other drill volumes may not cut that wall or a closed cap. Plating/cap process is conditional and unqualified; graph connectivity implies no equipotential or zero resistance.','Positive-area connectivity is not a finite resistance/current/drop certificate. Full net loads, source and GH incidence must use finite field operators.','Unknown source-pad approximation and physical process still require native/physical verification.'],'native_calls':0,'accepted':False}
 def main():
  resource.setrlimit(resource.RLIMIT_AS,(2*1024**3,2*1024**3));p=argparse.ArgumentParser();p.add_argument('--board',type=Path,required=True);p.add_argument('--planes',type=Path,required=True);p.add_argument('--output',type=Path,required=True);a=p.parse_args();need(not a.output.exists(),'fresh output')
  seals={str(q):sha(q) for q in [a.board,a.planes,Path(__file__),Path(staged_caps.__file__)]};s=json.loads(a.board.read_text());g=json.loads(a.planes.read_text());need(g['input_sha256']['filtered_board']==sha(a.board),'clipped/normalized epoch mismatch');start=time.monotonic();out=build(s,g)
