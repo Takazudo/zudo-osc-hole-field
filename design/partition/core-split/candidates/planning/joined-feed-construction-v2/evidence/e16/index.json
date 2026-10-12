@@ -1,0 +1,924 @@
+{
+ "schema": "e16-index-v1",
+ "epoch": "E16",
+ "replay": {
+  "status": "PARTIAL",
+  "KA": "unguarded replay from tracked sources reproduced the content of every KA artifact (normalized, sheets, r1-r3 sources, final graph/census); file hashes differ only through path-bound seal metadata",
+  "KB": "normalized board content reproduced; KB access-round replay NOT RUN (clip step exceeded 180 s under machine load; the guarded rerun was stopped by the host for low memory)",
+  "seal_note": "Execution receipts seal absolute input paths and the method bytes in use; byte hashes are therefore run-local. Content comparison excludes those seal fields."
+ },
+ "native_calls": 0,
+ "accepted": false,
+ "candidate05": {
+  "KA.kicad_pcb": "ba6202f857c97d62411e3f6c27bca962c4d45b65e60e9fedd767c03c9d1fe6d6",
+  "KB.kicad_pcb": "05ce8d2b8121dc9ec6f9063a06d9e1f2f3dec49116e3a46ec253bc0556ada427",
+  "terminals.json": "43a99e800e538e39145fc40c3621c5502243e8a74020d9ed7ca9c76264649a44",
+  "contacts.json.gz": "1c17c5a638d4a254af4601ca43f437289c71aa3607900b4e3f0fe13eafd3faab",
+  "mechanical.json.gz": "63732b0112fddb492257af0ed010ced58253d7ee2b0515a5d3312161c888311e",
+  "source-dispositions.json.gz": "fb7110b8a69d92b1b91b40724f949540e5f4483ed59c4d25053068181f8e4f48"
+ },
+ "methods": {
+  "construct.py": "34ba428a641ae295bafc76ecf1f03a705d9d1faea530e0e873075976cff1b524",
+  "normalize_board.py": "00c30dec12063f81b04fb8125046039e14d140fd75ee60e93f89c07975258811",
+  "clip_sheets.py": "6f3df61dd649729b3e58796c067cc9924dc3d776c645592c62e5f6ab3ac5c235",
+  "staged_caps.py": "f51a2f073e0051c520555ef6de59d1dbbf91ccbd2420ab89aead44736a1956e7",
+  "connectivity.py": "6d84330093d5e5b998aae3c5582a3b3b7f40d7548288e0e43e48fb3645352ce0",
+  "port_obligations.py": "c1aeeb5be28156448365fc78c03e986ef6402602ebfdaa03f2123d0411236375",
+  "evaluate_access.py": "0a3c4d1d721895063b9d155d96e8aed8148448cfdc451e944240d655f6f915bf",
+  "construct_access.py": "8b1ded187add59a8c384f2fd43a71097016e0c7b87040b7a0a3e8d8d1e0dc451",
+  "replay_e16.sh": "ad2d1ff04009b7770bf05525a1f8b233055dc2f35a6a699dd0d706a60a2b1cae"
+ },
+ "boards": {
+  "KA": {
+   "normalized_sha256": "f6a084294698f71793298c95a937ebdabd21805e9a0abdf046d6f77d2cdb6dde",
+   "access_objects": 2279,
+   "rounds": {
+    "base": {
+     "unresolved": 1557,
+     "direct": 1026,
+     "supplemental": 531,
+     "source_sha256": "f6a084294698f71793298c95a937ebdabd21805e9a0abdf046d6f77d2cdb6dde",
+     "steps": [
+      {
+       "step": "caps",
+       "exit_code": 0,
+       "elapsed_seconds": 1.5098637649789453,
+       "output_sha256": "97d2a44272d4308fc5d1f8de6da21480b3cd1479a2953b65a0e0715cbe8e7835",
+       "command": [
+        "timeout",
+        "180s",
+        "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/34b85f10-f889-4ac8-97a0-7f4228cf221c/scratchpad/venv/bin/python",
+        "/home/takazudo/repos/circuits/zudo-osc-hole-field/design/partition/core-split/candidates/planning/joined-feed-construction-v2/staged_caps.py",
+        "--board",
+        "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/34b85f10-f889-4ac8-97a0-7f4228cf221c/scratchpad/e16/KA-normalized.json",
+        "--output",
+        "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/34b85f10-f889-4ac8-97a0-7f4228cf221c/scratchpad/e16/KA-eval-base/normalized-caps.json"
+       ]
+      },
+      {
+       "step": "clip",
+       "exit_code": 0,
+       "elapsed_seconds": 46.16758868301986,
+       "output_sha256": "8557e73df68e3d1a8e04e8a18722c691ff10237e58d100824de37414b0c2171e",
+       "command": [
+        "timeout",
+        "180s",
+        "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/34b85f10-f889-4ac8-97a0-7f4228cf221c/scratchpad/venv/bin/python",
+        "/home/takazudo/repos/circuits/zudo-osc-hole-field/design/partition/core-split/candidates/planning/joined-feed-construction-v2/clip_sheets.py",
+        "--filtered-board",
+        "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/34b85f10-f889-4ac8-97a0-7f4228cf221c/scratchpad/e16/KA-eval-base/normalized-caps.json",
+        "--design",
+        "/home/takazudo/repos/circuits/zudo-osc-hole-field/design/partition/core-split/candidates/planning/joined-feed-construction-v2/evidence/board-access-design.json",
+        "--clip-only",
+        "--output",
+        "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/34b85f10-f889-4ac8-97a0-7f4228cf221c/scratchpad/e16/KA-eval-base/clipped-sheets.json"
+       ]
+      },
+      {
+       "step": "graph",
+       "exit_code": 0,
+       "elapsed_seconds": 10.367536544974428,
+       "output_sha256": "f1179f3e3044704e24ffc063d9140b30845263e1ae8e0b2d2489c70c1a98a8cf",
+       "command": [
+        "timeout",
+        "180s",
+        "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/34b85f10-f889-4ac8-97a0-7f4228cf221c/scratchpad/venv/bin/python",
+        "/home/takazudo/repos/circuits/zudo-osc-hole-field/design/partition/core-split/candidates/planning/joined-feed-construction-v2/connectivity.py",
+        "--board",
+        "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/34b85f10-f889-4ac8-97a0-7f4228cf221c/scratchpad/e16/KA-eval-base/normalized-caps.json",
+        "--planes",
+        "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/34b85f10-f889-4ac8-97a0-7f4228cf221c/scratchpad/e16/KA-eval-base/clipped-sheets.json",
+        "--output",
+        "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/34b85f10-f889-4ac8-97a0-7f4228cf221c/scratchpad/e16/KA-eval-base/port-graph.json"
+       ]
+      },
+      {
+       "step": "census",
+       "exit_code": 0,
+       "elapsed_seconds": 2.5372238580021076,
+       "output_sha256": "5533cca077087d5ee0b49381f1c7e8df6b180129bdf71ed2da23f470586336ed",
+       "command": [
+        "timeout",
+        "180s",
+        "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/34b85f10-f889-4ac8-97a0-7f4228cf221c/scratchpad/venv/bin/python",
+        "/home/takazudo/repos/circuits/zudo-osc-hole-field/design/partition/core-split/candidates/planning/joined-feed-construction-v2/port_obligations.py",
+        "--board",
+        "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/34b85f10-f889-4ac8-97a0-7f4228cf221c/scratchpad/e16/KA-eval-base/normalized-caps.json",
+        "--planes",
+        "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/34b85f10-f889-4ac8-97a0-7f4228cf221c/scratchpad/e16/KA-eval-base/clipped-sheets.json",
+        "--graph",
+        "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/34b85f10-f889-4ac8-97a0-7f4228cf221c/scratchpad/e16/KA-eval-base/port-graph.json",
+        "--output",
+        "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/34b85f10-f889-4ac8-97a0-7f4228cf221c/scratchpad/e16/KA-eval-base/port-obligations.json"
+       ]
+      }
+     ],
+     "newly_disconnected_vs_previous": [],
+     "closed_vs_previous": 0
+    },
+    "r1": {
+     "unresolved": 425,
+     "direct": 328,
+     "supplemental": 97,
+     "source_sha256": "3912f6ba8e596cd2aaa53d72ebb149fe516b2e1c12728037c7ffc358fe549c4a",
+     "steps": [
+      {
+       "step": "caps",
+       "exit_code": 0,
+       "elapsed_seconds": 1.6210843439912423,
+       "output_sha256": "023573d9b4d978eeeb86ce5d76bf573d351b06064c648711e81cdcb727a7632a",
+       "command": [
+        "timeout",
+        "180s",
+        "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/34b85f10-f889-4ac8-97a0-7f4228cf221c/scratchpad/venv/bin/python",
+        "/home/takazudo/repos/circuits/zudo-osc-hole-field/design/partition/core-split/candidates/planning/joined-feed-construction-v2/staged_caps.py",
+        "--board",
+        "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/34b85f10-f889-4ac8-97a0-7f4228cf221c/scratchpad/e16/KA-access-r1.json",
+        "--output",
+        "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/34b85f10-f889-4ac8-97a0-7f4228cf221c/scratchpad/e16/KA-eval-r1/normalized-caps.json"
+       ]
+      },
+      {
+       "step": "clip",
+       "exit_code": 0,
+       "elapsed_seconds": 59.945563438988756,
+       "output_sha256": "cf9e867b25a3cfc40bc21cd8552340deec2bb0a7ba2a1b5041c1ece6b34b5bb0",
+       "command": [
+        "timeout",
+        "180s",
+        "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/34b85f10-f889-4ac8-97a0-7f4228cf221c/scratchpad/venv/bin/python",
+        "/home/takazudo/repos/circuits/zudo-osc-hole-field/design/partition/core-split/candidates/planning/joined-feed-construction-v2/clip_sheets.py",
+        "--filtered-board",
+        "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/34b85f10-f889-4ac8-97a0-7f4228cf221c/scratchpad/e16/KA-eval-r1/normalized-caps.json",
+        "--design",
+        "/home/takazudo/repos/circuits/zudo-osc-hole-field/design/partition/core-split/candidates/planning/joined-feed-construction-v2/evidence/board-access-design.json",
+        "--clip-only",
+        "--output",
+        "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/34b85f10-f889-4ac8-97a0-7f4228cf221c/scratchpad/e16/KA-eval-r1/clipped-sheets.json"
+       ]
+      },
+      {
+       "step": "graph",
+       "exit_code": 0,
+       "elapsed_seconds": 20.71929998701671,
+       "output_sha256": "938e9d948bbe121b1833ee35cdfa68830c33546fef879decbfd620189a6cdd48",
+       "command": [
+        "timeout",
+        "180s",
+        "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/34b85f10-f889-4ac8-97a0-7f4228cf221c/scratchpad/venv/bin/python",
+        "/home/takazudo/repos/circuits/zudo-osc-hole-field/design/partition/core-split/candidates/planning/joined-feed-construction-v2/connectivity.py",
+        "--board",
+        "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/34b85f10-f889-4ac8-97a0-7f4228cf221c/scratchpad/e16/KA-eval-r1/normalized-caps.json",
+        "--planes",
+        "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/34b85f10-f889-4ac8-97a0-7f4228cf221c/scratchpad/e16/KA-eval-r1/clipped-sheets.json",
+        "--output",
+        "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/34b85f10-f889-4ac8-97a0-7f4228cf221c/scratchpad/e16/KA-eval-r1/port-graph.json"
+       ]
+      },
+      {
+       "step": "census",
+       "exit_code": 0,
+       "elapsed_seconds": 3.471059430972673,
+       "output_sha256": "3890764f5a3a0d657a4372c29192ad0b44f5fa98b5ffc191485be1c0398dcc4f",
+       "command": [
+        "timeout",
+        "180s",
+        "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/34b85f10-f889-4ac8-97a0-7f4228cf221c/scratchpad/venv/bin/python",
+        "/home/takazudo/repos/circuits/zudo-osc-hole-field/design/partition/core-split/candidates/planning/joined-feed-construction-v2/port_obligations.py",
+        "--board",
+        "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/34b85f10-f889-4ac8-97a0-7f4228cf221c/scratchpad/e16/KA-eval-r1/normalized-caps.json",
+        "--planes",
+        "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/34b85f10-f889-4ac8-97a0-7f4228cf221c/scratchpad/e16/KA-eval-r1/clipped-sheets.json",
+        "--graph",
+        "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/34b85f10-f889-4ac8-97a0-7f4228cf221c/scratchpad/e16/KA-eval-r1/port-graph.json",
+        "--output",
+        "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/34b85f10-f889-4ac8-97a0-7f4228cf221c/scratchpad/e16/KA-eval-r1/port-obligations.json"
+       ]
+      }
+     ],
+     "access_report": {
+      "output_sha256": "3912f6ba8e596cd2aaa53d72ebb149fe516b2e1c12728037c7ffc358fe549c4a",
+      "parameters_mm": {
+       "via_diameter": 0.6,
+       "via_drill": 0.3,
+       "trace_width": 0.25,
+       "clearance": 0.25,
+       "hole_clearance": 0.25,
+       "grid": 0.25,
+       "radius": 2.0
+      },
+      "counts": {
+       "PLACED": 1131,
+       "NO_LEGAL_SITE": 426
+      },
+      "elapsed_seconds": 25.17,
+      "peak_KiB": 1124312
+     },
+     "newly_disconnected_vs_previous": [],
+     "closed_vs_previous": 1132
+    },
+    "r2": {
+     "unresolved": 293,
+     "direct": 213,
+     "supplemental": 80,
+     "source_sha256": "ab196396ba942423478d133a2b102cbc67861a5b6ac1662919356f6e2392ec35",
+     "steps": [
+      {
+       "step": "caps",
+       "exit_code": 0,
+       "elapsed_seconds": 3.0317489649751224,
+       "output_sha256": "0d6808237d3ce7f515ce01b9b3c35239f96efc3110f432cc0e43c558f0848627",
+       "command": [
+        "timeout",
+        "180s",
+        "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/34b85f10-f889-4ac8-97a0-7f4228cf221c/scratchpad/venv/bin/python",
+        "/home/takazudo/repos/circuits/zudo-osc-hole-field/design/partition/core-split/candidates/planning/joined-feed-construction-v2/staged_caps.py",
+        "--board",
+        "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/34b85f10-f889-4ac8-97a0-7f4228cf221c/scratchpad/e16/KA-access-r2.json",
+        "--output",
+        "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/34b85f10-f889-4ac8-97a0-7f4228cf221c/scratchpad/e16/KA-eval-r2/normalized-caps.json"
+       ]
+      },
+      {
+       "step": "clip",
+       "exit_code": 0,
+       "elapsed_seconds": 79.9382911780267,
+       "output_sha256": "78735198aa67e725bc9fc0375dce3eec6761836fbaa23cf5f0cb7df99663901c",
+       "command": [
+        "timeout",
+        "180s",
+        "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/34b85f10-f889-4ac8-97a0-7f4228cf221c/scratchpad/venv/bin/python",
+        "/home/takazudo/repos/circuits/zudo-osc-hole-field/design/partition/core-split/candidates/planning/joined-feed-construction-v2/clip_sheets.py",
+        "--filtered-board",
+        "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/34b85f10-f889-4ac8-97a0-7f4228cf221c/scratchpad/e16/KA-eval-r2/normalized-caps.json",
+        "--design",
+        "/home/takazudo/repos/circuits/zudo-osc-hole-field/design/partition/core-split/candidates/planning/joined-feed-construction-v2/evidence/board-access-design.json",
+        "--clip-only",
+        "--output",
+        "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/34b85f10-f889-4ac8-97a0-7f4228cf221c/scratchpad/e16/KA-eval-r2/clipped-sheets.json"
+       ]
+      },
+      {
+       "step": "graph",
+       "exit_code": 0,
+       "elapsed_seconds": 17.60768492205534,
+       "output_sha256": "fa7df04a3d2f78b5e37b3dc669edc14536e5861c7d160b60da282d67246b0cb9",
+       "command": [
+        "timeout",
+        "180s",
+        "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/34b85f10-f889-4ac8-97a0-7f4228cf221c/scratchpad/venv/bin/python",
+        "/home/takazudo/repos/circuits/zudo-osc-hole-field/design/partition/core-split/candidates/planning/joined-feed-construction-v2/connectivity.py",
+        "--board",
+        "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/34b85f10-f889-4ac8-97a0-7f4228cf221c/scratchpad/e16/KA-eval-r2/normalized-caps.json",
+        "--planes",
+        "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/34b85f10-f889-4ac8-97a0-7f4228cf221c/scratchpad/e16/KA-eval-r2/clipped-sheets.json",
+        "--output",
+        "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/34b85f10-f889-4ac8-97a0-7f4228cf221c/scratchpad/e16/KA-eval-r2/port-graph.json"
+       ]
+      },
+      {
+       "step": "census",
+       "exit_code": 0,
+       "elapsed_seconds": 3.0054143620072864,
+       "output_sha256": "bcc43cfd126b7bc5cc2aeaa1543fd424f89662d7e98338228be1ce97d88114ab",
+       "command": [
+        "timeout",
+        "180s",
+        "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/34b85f10-f889-4ac8-97a0-7f4228cf221c/scratchpad/venv/bin/python",
+        "/home/takazudo/repos/circuits/zudo-osc-hole-field/design/partition/core-split/candidates/planning/joined-feed-construction-v2/port_obligations.py",
+        "--board",
+        "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/34b85f10-f889-4ac8-97a0-7f4228cf221c/scratchpad/e16/KA-eval-r2/normalized-caps.json",
+        "--planes",
+        "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/34b85f10-f889-4ac8-97a0-7f4228cf221c/scratchpad/e16/KA-eval-r2/clipped-sheets.json",
+        "--graph",
+        "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/34b85f10-f889-4ac8-97a0-7f4228cf221c/scratchpad/e16/KA-eval-r2/port-graph.json",
+        "--output",
+        "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/34b85f10-f889-4ac8-97a0-7f4228cf221c/scratchpad/e16/KA-eval-r2/port-obligations.json"
+       ]
+      }
+     ],
+     "access_report": {
+      "output_sha256": "ab196396ba942423478d133a2b102cbc67861a5b6ac1662919356f6e2392ec35",
+      "method": "route",
+      "parameters_mm": {
+       "route_widths": [
+        0.25,
+        0.2
+       ],
+       "route_pitch": 0.05,
+       "route_half_window": 3.0,
+       "via_diameter": 0.6,
+       "via_drill": 0.3,
+       "trace_width": 0.25,
+       "clearance": 0.25,
+       "hole_clearance": 0.25,
+       "grid": 0.25,
+       "radius": 2.0
+      },
+      "counts": {
+       "NO_ROUTE": 293,
+       "ROUTED": 132
+      },
+      "elapsed_seconds": 23.18,
+      "peak_KiB": 296676
+     },
+     "newly_disconnected_vs_previous": [],
+     "closed_vs_previous": 132
+    },
+    "r3": {
+     "unresolved": 226,
+     "direct": 166,
+     "supplemental": 60,
+     "source_sha256": "f040365389ffef5ba3c4eb384c7be2503b2c7762722a59619a64b87bbc6d8fba",
+     "steps": [
+      {
+       "step": "caps",
+       "exit_code": 0,
+       "elapsed_seconds": 1.4285689569660462,
+       "output_sha256": "f779f1c1caf89bfbbd7b02848e065c695c6a0e72488c2ea28b1791d9bff166f7",
+       "command": [
+        "timeout",
+        "180s",
+        "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/34b85f10-f889-4ac8-97a0-7f4228cf221c/scratchpad/venv/bin/python",
+        "/home/takazudo/repos/circuits/zudo-osc-hole-field/design/partition/core-split/candidates/planning/joined-feed-construction-v2/staged_caps.py",
+        "--board",
+        "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/34b85f10-f889-4ac8-97a0-7f4228cf221c/scratchpad/e16/KA-access-r3.json",
+        "--output",
+        "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/34b85f10-f889-4ac8-97a0-7f4228cf221c/scratchpad/e16/KA-eval-r3/normalized-caps.json"
+       ]
+      },
+      {
+       "step": "clip",
+       "exit_code": 0,
+       "elapsed_seconds": 56.855651556979865,
+       "output_sha256": "88833595123e5d93fa0bd37293c5255815c3001d3aeade57d178d57f428ecfb6",
+       "command": [
+        "timeout",
+        "180s",
+        "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/34b85f10-f889-4ac8-97a0-7f4228cf221c/scratchpad/venv/bin/python",
+        "/home/takazudo/repos/circuits/zudo-osc-hole-field/design/partition/core-split/candidates/planning/joined-feed-construction-v2/clip_sheets.py",
+        "--filtered-board",
+        "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/34b85f10-f889-4ac8-97a0-7f4228cf221c/scratchpad/e16/KA-eval-r3/normalized-caps.json",
+        "--design",
+        "/home/takazudo/repos/circuits/zudo-osc-hole-field/design/partition/core-split/candidates/planning/joined-feed-construction-v2/evidence/board-access-design.json",
+        "--clip-only",
+        "--output",
+        "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/34b85f10-f889-4ac8-97a0-7f4228cf221c/scratchpad/e16/KA-eval-r3/clipped-sheets.json"
+       ]
+      },
+      {
+       "step": "graph",
+       "exit_code": 0,
+       "elapsed_seconds": 17.822090103989467,
+       "output_sha256": "cc899f1c4d392a2091e9869d3db6b2153f2901c018b01b405dcbc2e82d227fea",
+       "command": [
+        "timeout",
+        "180s",
+        "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/34b85f10-f889-4ac8-97a0-7f4228cf221c/scratchpad/venv/bin/python",
+        "/home/takazudo/repos/circuits/zudo-osc-hole-field/design/partition/core-split/candidates/planning/joined-feed-construction-v2/connectivity.py",
+        "--board",
+        "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/34b85f10-f889-4ac8-97a0-7f4228cf221c/scratchpad/e16/KA-eval-r3/normalized-caps.json",
+        "--planes",
+        "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/34b85f10-f889-4ac8-97a0-7f4228cf221c/scratchpad/e16/KA-eval-r3/clipped-sheets.json",
+        "--output",
+        "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/34b85f10-f889-4ac8-97a0-7f4228cf221c/scratchpad/e16/KA-eval-r3/port-graph.json"
+       ]
+      },
+      {
+       "step": "census",
+       "exit_code": 0,
+       "elapsed_seconds": 2.954991747974418,
+       "output_sha256": "bc4449da0535bff27737f3fc52d9c6e710a0c6d2fa00be30acd92d15fa110212",
+       "command": [
+        "timeout",
+        "180s",
+        "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/34b85f10-f889-4ac8-97a0-7f4228cf221c/scratchpad/venv/bin/python",
+        "/home/takazudo/repos/circuits/zudo-osc-hole-field/design/partition/core-split/candidates/planning/joined-feed-construction-v2/port_obligations.py",
+        "--board",
+        "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/34b85f10-f889-4ac8-97a0-7f4228cf221c/scratchpad/e16/KA-eval-r3/normalized-caps.json",
+        "--planes",
+        "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/34b85f10-f889-4ac8-97a0-7f4228cf221c/scratchpad/e16/KA-eval-r3/clipped-sheets.json",
+        "--graph",
+        "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/34b85f10-f889-4ac8-97a0-7f4228cf221c/scratchpad/e16/KA-eval-r3/port-graph.json",
+        "--output",
+        "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/34b85f10-f889-4ac8-97a0-7f4228cf221c/scratchpad/e16/KA-eval-r3/port-obligations.json"
+       ]
+      }
+     ],
+     "access_report": {
+      "output_sha256": "f040365389ffef5ba3c4eb384c7be2503b2c7762722a59619a64b87bbc6d8fba",
+      "method": "route",
+      "parameters_mm": {
+       "route_widths": [
+        0.25,
+        0.2
+       ],
+       "route_pitch": 0.05,
+       "route_half_window": 3.0,
+       "via_diameter": 0.6,
+       "via_drill": 0.3,
+       "trace_width": 0.25,
+       "clearance": 0.25,
+       "hole_clearance": 0.25,
+       "grid": 0.25,
+       "radius": 2.0
+      },
+      "counts": {
+       "NO_ROUTE": 226,
+       "ROUTED": 67
+      },
+      "elapsed_seconds": 61.53,
+      "peak_KiB": 1363616
+     },
+     "newly_disconnected_vs_previous": [],
+     "closed_vs_previous": 67
+    }
+   }
+  },
+  "KB": {
+   "normalized_sha256": "8c00a7999e9f3ce2b9f094eeef3f1bac6c491160c56b6b1c3c8fcecd146cfd10",
+   "access_objects": 2898,
+   "rounds": {
+    "base": {
+     "unresolved": 2275,
+     "direct": 1490,
+     "supplemental": 785,
+     "source_sha256": "8c00a7999e9f3ce2b9f094eeef3f1bac6c491160c56b6b1c3c8fcecd146cfd10",
+     "steps": [
+      {
+       "step": "caps",
+       "exit_code": 0,
+       "elapsed_seconds": 1.56713459698949,
+       "output_sha256": "4ae53d0331c705e14d7e16bc3aab9456c6afffd65dc9374101c4f9204d144048",
+       "command": [
+        "timeout",
+        "180s",
+        "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/34b85f10-f889-4ac8-97a0-7f4228cf221c/scratchpad/venv/bin/python",
+        "/home/takazudo/repos/circuits/zudo-osc-hole-field/design/partition/core-split/candidates/planning/joined-feed-construction-v2/staged_caps.py",
+        "--board",
+        "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/34b85f10-f889-4ac8-97a0-7f4228cf221c/scratchpad/e16/KB-normalized.json",
+        "--output",
+        "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/34b85f10-f889-4ac8-97a0-7f4228cf221c/scratchpad/e16/KB-eval-base/normalized-caps.json"
+       ]
+      },
+      {
+       "step": "clip",
+       "exit_code": 0,
+       "elapsed_seconds": 46.56672136700945,
+       "output_sha256": "be836cda07519babfa2d95cb3388fb4739af0a661e82810d28b0d601269d07d9",
+       "command": [
+        "timeout",
+        "180s",
+        "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/34b85f10-f889-4ac8-97a0-7f4228cf221c/scratchpad/venv/bin/python",
+        "/home/takazudo/repos/circuits/zudo-osc-hole-field/design/partition/core-split/candidates/planning/joined-feed-construction-v2/clip_sheets.py",
+        "--filtered-board",
+        "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/34b85f10-f889-4ac8-97a0-7f4228cf221c/scratchpad/e16/KB-eval-base/normalized-caps.json",
+        "--design",
+        "/home/takazudo/repos/circuits/zudo-osc-hole-field/design/partition/core-split/candidates/planning/joined-feed-construction-v2/evidence/board-access-design.json",
+        "--clip-only",
+        "--output",
+        "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/34b85f10-f889-4ac8-97a0-7f4228cf221c/scratchpad/e16/KB-eval-base/clipped-sheets.json"
+       ]
+      },
+      {
+       "step": "graph",
+       "exit_code": 0,
+       "elapsed_seconds": 10.011810248950496,
+       "output_sha256": "b8a60fef8e9a40e9ab8561a4cd457b8265275309cdc14de5cbd025d034df031a",
+       "command": [
+        "timeout",
+        "180s",
+        "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/34b85f10-f889-4ac8-97a0-7f4228cf221c/scratchpad/venv/bin/python",
+        "/home/takazudo/repos/circuits/zudo-osc-hole-field/design/partition/core-split/candidates/planning/joined-feed-construction-v2/connectivity.py",
+        "--board",
+        "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/34b85f10-f889-4ac8-97a0-7f4228cf221c/scratchpad/e16/KB-eval-base/normalized-caps.json",
+        "--planes",
+        "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/34b85f10-f889-4ac8-97a0-7f4228cf221c/scratchpad/e16/KB-eval-base/clipped-sheets.json",
+        "--output",
+        "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/34b85f10-f889-4ac8-97a0-7f4228cf221c/scratchpad/e16/KB-eval-base/port-graph.json"
+       ]
+      },
+      {
+       "step": "census",
+       "exit_code": 0,
+       "elapsed_seconds": 2.4460692389984615,
+       "output_sha256": "80250b4ce6a630f19cf5ca511735c30b12034e47516e5c0fb3804955910976f3",
+       "command": [
+        "timeout",
+        "180s",
+        "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/34b85f10-f889-4ac8-97a0-7f4228cf221c/scratchpad/venv/bin/python",
+        "/home/takazudo/repos/circuits/zudo-osc-hole-field/design/partition/core-split/candidates/planning/joined-feed-construction-v2/port_obligations.py",
+        "--board",
+        "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/34b85f10-f889-4ac8-97a0-7f4228cf221c/scratchpad/e16/KB-eval-base/normalized-caps.json",
+        "--planes",
+        "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/34b85f10-f889-4ac8-97a0-7f4228cf221c/scratchpad/e16/KB-eval-base/clipped-sheets.json",
+        "--graph",
+        "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/34b85f10-f889-4ac8-97a0-7f4228cf221c/scratchpad/e16/KB-eval-base/port-graph.json",
+        "--output",
+        "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/34b85f10-f889-4ac8-97a0-7f4228cf221c/scratchpad/e16/KB-eval-base/port-obligations.json"
+       ]
+      }
+     ],
+     "newly_disconnected_vs_previous": [],
+     "closed_vs_previous": 0
+    },
+    "r1": {
+     "unresolved": 816,
+     "direct": 583,
+     "supplemental": 233,
+     "source_sha256": "83ed600eed67865cc278148ae621a8cb0501be4d9d831b206d2faa1aa2e95fcd",
+     "steps": [
+      {
+       "step": "caps",
+       "exit_code": 0,
+       "elapsed_seconds": 1.758848230005242,
+       "output_sha256": "504f71bee7a750f4b53fbf1b08586e7ffed36fa2e3690d03afe19570817b2a05",
+       "command": [
+        "timeout",
+        "180s",
+        "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/34b85f10-f889-4ac8-97a0-7f4228cf221c/scratchpad/venv/bin/python",
+        "/home/takazudo/repos/circuits/zudo-osc-hole-field/design/partition/core-split/candidates/planning/joined-feed-construction-v2/staged_caps.py",
+        "--board",
+        "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/34b85f10-f889-4ac8-97a0-7f4228cf221c/scratchpad/e16/KB-access-r1.json",
+        "--output",
+        "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/34b85f10-f889-4ac8-97a0-7f4228cf221c/scratchpad/e16/KB-eval-r1/normalized-caps.json"
+       ]
+      },
+      {
+       "step": "clip",
+       "exit_code": 0,
+       "elapsed_seconds": 68.49867860699305,
+       "output_sha256": "b9d4dc42a0660ba3bd69f26be5e3db40bc5895b40fbdc88ecef11bf4fef6a5c4",
+       "command": [
+        "timeout",
+        "180s",
+        "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/34b85f10-f889-4ac8-97a0-7f4228cf221c/scratchpad/venv/bin/python",
+        "/home/takazudo/repos/circuits/zudo-osc-hole-field/design/partition/core-split/candidates/planning/joined-feed-construction-v2/clip_sheets.py",
+        "--filtered-board",
+        "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/34b85f10-f889-4ac8-97a0-7f4228cf221c/scratchpad/e16/KB-eval-r1/normalized-caps.json",
+        "--design",
+        "/home/takazudo/repos/circuits/zudo-osc-hole-field/design/partition/core-split/candidates/planning/joined-feed-construction-v2/evidence/board-access-design.json",
+        "--clip-only",
+        "--output",
+        "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/34b85f10-f889-4ac8-97a0-7f4228cf221c/scratchpad/e16/KB-eval-r1/clipped-sheets.json"
+       ]
+      },
+      {
+       "step": "graph",
+       "exit_code": 0,
+       "elapsed_seconds": 22.23990743700415,
+       "output_sha256": "fc84e0f36ab1fba94b0c3d44ede859baa3656b23e2ef15afd7525f21e775ba32",
+       "command": [
+        "timeout",
+        "180s",
+        "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/34b85f10-f889-4ac8-97a0-7f4228cf221c/scratchpad/venv/bin/python",
+        "/home/takazudo/repos/circuits/zudo-osc-hole-field/design/partition/core-split/candidates/planning/joined-feed-construction-v2/connectivity.py",
+        "--board",
+        "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/34b85f10-f889-4ac8-97a0-7f4228cf221c/scratchpad/e16/KB-eval-r1/normalized-caps.json",
+        "--planes",
+        "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/34b85f10-f889-4ac8-97a0-7f4228cf221c/scratchpad/e16/KB-eval-r1/clipped-sheets.json",
+        "--output",
+        "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/34b85f10-f889-4ac8-97a0-7f4228cf221c/scratchpad/e16/KB-eval-r1/port-graph.json"
+       ]
+      },
+      {
+       "step": "census",
+       "exit_code": 0,
+       "elapsed_seconds": 3.5281579840229824,
+       "output_sha256": "1029650c84f9475dc8cfb0e0ee28695ebafbb6adf3f0286d2da9d028230bf40d",
+       "command": [
+        "timeout",
+        "180s",
+        "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/34b85f10-f889-4ac8-97a0-7f4228cf221c/scratchpad/venv/bin/python",
+        "/home/takazudo/repos/circuits/zudo-osc-hole-field/design/partition/core-split/candidates/planning/joined-feed-construction-v2/port_obligations.py",
+        "--board",
+        "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/34b85f10-f889-4ac8-97a0-7f4228cf221c/scratchpad/e16/KB-eval-r1/normalized-caps.json",
+        "--planes",
+        "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/34b85f10-f889-4ac8-97a0-7f4228cf221c/scratchpad/e16/KB-eval-r1/clipped-sheets.json",
+        "--graph",
+        "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/34b85f10-f889-4ac8-97a0-7f4228cf221c/scratchpad/e16/KB-eval-r1/port-graph.json",
+        "--output",
+        "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/34b85f10-f889-4ac8-97a0-7f4228cf221c/scratchpad/e16/KB-eval-r1/port-obligations.json"
+       ]
+      }
+     ],
+     "access_report": {
+      "output_sha256": "83ed600eed67865cc278148ae621a8cb0501be4d9d831b206d2faa1aa2e95fcd",
+      "parameters_mm": {
+       "via_diameter": 0.6,
+       "via_drill": 0.3,
+       "trace_width": 0.25,
+       "clearance": 0.25,
+       "hole_clearance": 0.25,
+       "grid": 0.25,
+       "radius": 2.0
+      },
+      "counts": {
+       "NO_LEGAL_SITE": 812,
+       "PLACED": 1463
+      },
+      "elapsed_seconds": 41.67,
+      "peak_KiB": 1115560
+     },
+     "newly_disconnected_vs_previous": [],
+     "closed_vs_previous": 1459
+    },
+    "r2": {
+     "unresolved": 624,
+     "direct": 451,
+     "supplemental": 173,
+     "source_sha256": "4fc80a5153fd5ad30f0b1ade84c1b0188a3d3ae401a6daab652f59dd5ed9d0e2",
+     "steps": [
+      {
+       "step": "caps",
+       "exit_code": 0,
+       "elapsed_seconds": 1.7379355820012279,
+       "output_sha256": "effed18620ba114b8538fadaaaf44913b89c1a45f25be80993862ad27371a28a",
+       "command": [
+        "timeout",
+        "180s",
+        "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/34b85f10-f889-4ac8-97a0-7f4228cf221c/scratchpad/venv/bin/python",
+        "/home/takazudo/repos/circuits/zudo-osc-hole-field/design/partition/core-split/candidates/planning/joined-feed-construction-v2/staged_caps.py",
+        "--board",
+        "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/34b85f10-f889-4ac8-97a0-7f4228cf221c/scratchpad/e16/KB-access-r2.json",
+        "--output",
+        "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/34b85f10-f889-4ac8-97a0-7f4228cf221c/scratchpad/e16/KB-eval-r2/normalized-caps.json"
+       ]
+      },
+      {
+       "step": "clip",
+       "exit_code": 0,
+       "elapsed_seconds": 67.7756050490425,
+       "output_sha256": "9e783b4d26f0bdfa712312dfb4204f3fd20b3d8512720774beeafdadecfe04c5",
+       "command": [
+        "timeout",
+        "180s",
+        "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/34b85f10-f889-4ac8-97a0-7f4228cf221c/scratchpad/venv/bin/python",
+        "/home/takazudo/repos/circuits/zudo-osc-hole-field/design/partition/core-split/candidates/planning/joined-feed-construction-v2/clip_sheets.py",
+        "--filtered-board",
+        "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/34b85f10-f889-4ac8-97a0-7f4228cf221c/scratchpad/e16/KB-eval-r2/normalized-caps.json",
+        "--design",
+        "/home/takazudo/repos/circuits/zudo-osc-hole-field/design/partition/core-split/candidates/planning/joined-feed-construction-v2/evidence/board-access-design.json",
+        "--clip-only",
+        "--output",
+        "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/34b85f10-f889-4ac8-97a0-7f4228cf221c/scratchpad/e16/KB-eval-r2/clipped-sheets.json"
+       ]
+      },
+      {
+       "step": "graph",
+       "exit_code": 0,
+       "elapsed_seconds": 20.18192577100126,
+       "output_sha256": "e02cd776ee1a18b563a1369fbaba9fd9b7cba19cea30fafe6c0a7921b0ae624b",
+       "command": [
+        "timeout",
+        "180s",
+        "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/34b85f10-f889-4ac8-97a0-7f4228cf221c/scratchpad/venv/bin/python",
+        "/home/takazudo/repos/circuits/zudo-osc-hole-field/design/partition/core-split/candidates/planning/joined-feed-construction-v2/connectivity.py",
+        "--board",
+        "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/34b85f10-f889-4ac8-97a0-7f4228cf221c/scratchpad/e16/KB-eval-r2/normalized-caps.json",
+        "--planes",
+        "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/34b85f10-f889-4ac8-97a0-7f4228cf221c/scratchpad/e16/KB-eval-r2/clipped-sheets.json",
+        "--output",
+        "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/34b85f10-f889-4ac8-97a0-7f4228cf221c/scratchpad/e16/KB-eval-r2/port-graph.json"
+       ]
+      },
+      {
+       "step": "census",
+       "exit_code": 0,
+       "elapsed_seconds": 3.3227985450066626,
+       "output_sha256": "dddc4b0f0ae64322926d6ec3217468ef06389e449daa92e6b5c332ed71a6596a",
+       "command": [
+        "timeout",
+        "180s",
+        "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/34b85f10-f889-4ac8-97a0-7f4228cf221c/scratchpad/venv/bin/python",
+        "/home/takazudo/repos/circuits/zudo-osc-hole-field/design/partition/core-split/candidates/planning/joined-feed-construction-v2/port_obligations.py",
+        "--board",
+        "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/34b85f10-f889-4ac8-97a0-7f4228cf221c/scratchpad/e16/KB-eval-r2/normalized-caps.json",
+        "--planes",
+        "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/34b85f10-f889-4ac8-97a0-7f4228cf221c/scratchpad/e16/KB-eval-r2/clipped-sheets.json",
+        "--graph",
+        "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/34b85f10-f889-4ac8-97a0-7f4228cf221c/scratchpad/e16/KB-eval-r2/port-graph.json",
+        "--output",
+        "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/34b85f10-f889-4ac8-97a0-7f4228cf221c/scratchpad/e16/KB-eval-r2/port-obligations.json"
+       ]
+      }
+     ],
+     "access_report": {
+      "output_sha256": "4fc80a5153fd5ad30f0b1ade84c1b0188a3d3ae401a6daab652f59dd5ed9d0e2",
+      "method": "route",
+      "parameters_mm": {
+       "route_widths": [
+        0.25,
+        0.2
+       ],
+       "route_pitch": 0.05,
+       "route_half_window": 3.0,
+       "via_diameter": 0.6,
+       "via_drill": 0.3,
+       "trace_width": 0.25,
+       "clearance": 0.25,
+       "hole_clearance": 0.25,
+       "grid": 0.25,
+       "radius": 2.0
+      },
+      "counts": {
+       "NO_ROUTE": 628,
+       "ROUTED": 188
+      },
+      "elapsed_seconds": 13.49,
+      "peak_KiB": 303216
+     },
+     "newly_disconnected_vs_previous": [],
+     "closed_vs_previous": 192
+    },
+    "r3": {
+     "unresolved": 521,
+     "direct": 372,
+     "supplemental": 149,
+     "source_sha256": "8a515a92fca8ba64d13686f8cede45694ee9659b7a72e139578284e864fa4891",
+     "steps": [
+      {
+       "step": "caps",
+       "exit_code": 0,
+       "elapsed_seconds": 1.589965271006804,
+       "output_sha256": "084a1755c642e2fa2f39cf4896ddb07cec34a41e073b4e7cd76c5deaf911f62d",
+       "command": [
+        "timeout",
+        "180s",
+        "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/34b85f10-f889-4ac8-97a0-7f4228cf221c/scratchpad/venv/bin/python",
+        "/home/takazudo/repos/circuits/zudo-osc-hole-field/design/partition/core-split/candidates/planning/joined-feed-construction-v2/staged_caps.py",
+        "--board",
+        "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/34b85f10-f889-4ac8-97a0-7f4228cf221c/scratchpad/e16/KB-access-r3.json",
+        "--output",
+        "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/34b85f10-f889-4ac8-97a0-7f4228cf221c/scratchpad/e16/KB-eval-r3/normalized-caps.json"
+       ]
+      },
+      {
+       "step": "clip",
+       "exit_code": 0,
+       "elapsed_seconds": 63.96722848794889,
+       "output_sha256": "082f93e8d848f1022e3f8d55ced873e48552ad7df2b91da17660479870ce3078",
+       "command": [
+        "timeout",
+        "180s",
+        "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/34b85f10-f889-4ac8-97a0-7f4228cf221c/scratchpad/venv/bin/python",
+        "/home/takazudo/repos/circuits/zudo-osc-hole-field/design/partition/core-split/candidates/planning/joined-feed-construction-v2/clip_sheets.py",
+        "--filtered-board",
+        "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/34b85f10-f889-4ac8-97a0-7f4228cf221c/scratchpad/e16/KB-eval-r3/normalized-caps.json",
+        "--design",
+        "/home/takazudo/repos/circuits/zudo-osc-hole-field/design/partition/core-split/candidates/planning/joined-feed-construction-v2/evidence/board-access-design.json",
+        "--clip-only",
+        "--output",
+        "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/34b85f10-f889-4ac8-97a0-7f4228cf221c/scratchpad/e16/KB-eval-r3/clipped-sheets.json"
+       ]
+      },
+      {
+       "step": "graph",
+       "exit_code": 0,
+       "elapsed_seconds": 46.12867730302969,
+       "output_sha256": "d042e459b600ae8b6051a4387e928aea7cef99f56db0acbc9db454254eca09c8",
+       "command": [
+        "timeout",
+        "180s",
+        "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/34b85f10-f889-4ac8-97a0-7f4228cf221c/scratchpad/venv/bin/python",
+        "/home/takazudo/repos/circuits/zudo-osc-hole-field/design/partition/core-split/candidates/planning/joined-feed-construction-v2/connectivity.py",
+        "--board",
+        "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/34b85f10-f889-4ac8-97a0-7f4228cf221c/scratchpad/e16/KB-eval-r3/normalized-caps.json",
+        "--planes",
+        "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/34b85f10-f889-4ac8-97a0-7f4228cf221c/scratchpad/e16/KB-eval-r3/clipped-sheets.json",
+        "--output",
+        "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/34b85f10-f889-4ac8-97a0-7f4228cf221c/scratchpad/e16/KB-eval-r3/port-graph.json"
+       ]
+      },
+      {
+       "step": "census",
+       "exit_code": 0,
+       "elapsed_seconds": 2.976894998049829,
+       "output_sha256": "9aad739c413cd583a41d5830bc498e4c5c40a1b9cab6ee98c709969d8c70e5e4",
+       "command": [
+        "timeout",
+        "180s",
+        "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/34b85f10-f889-4ac8-97a0-7f4228cf221c/scratchpad/venv/bin/python",
+        "/home/takazudo/repos/circuits/zudo-osc-hole-field/design/partition/core-split/candidates/planning/joined-feed-construction-v2/port_obligations.py",
+        "--board",
+        "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/34b85f10-f889-4ac8-97a0-7f4228cf221c/scratchpad/e16/KB-eval-r3/normalized-caps.json",
+        "--planes",
+        "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/34b85f10-f889-4ac8-97a0-7f4228cf221c/scratchpad/e16/KB-eval-r3/clipped-sheets.json",
+        "--graph",
+        "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/34b85f10-f889-4ac8-97a0-7f4228cf221c/scratchpad/e16/KB-eval-r3/port-graph.json",
+        "--output",
+        "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/34b85f10-f889-4ac8-97a0-7f4228cf221c/scratchpad/e16/KB-eval-r3/port-obligations.json"
+       ]
+      }
+     ],
+     "access_report": {
+      "output_sha256": "8a515a92fca8ba64d13686f8cede45694ee9659b7a72e139578284e864fa4891",
+      "method": "route",
+      "parameters_mm": {
+       "route_widths": [
+        0.25,
+        0.2
+       ],
+       "route_pitch": 0.05,
+       "route_half_window": 3.0,
+       "via_diameter": 0.6,
+       "via_drill": 0.3,
+       "trace_width": 0.25,
+       "clearance": 0.25,
+       "hole_clearance": 0.25,
+       "grid": 0.25,
+       "radius": 2.0
+      },
+      "counts": {
+       "NO_ROUTE": 521,
+       "ROUTED": 103
+      },
+      "elapsed_seconds": 104.43,
+      "peak_KiB": 1392308
+     },
+     "newly_disconnected_vs_previous": [],
+     "closed_vs_previous": 103
+    }
+   }
+  }
+ },
+ "files": {
+  "KA-access-delta.json.gz": "f54b4a34231894f2862356f2fba92df589dcb661e580e34ab243cc985ff60693",
+  "KA-access-r1-report.json.gz": "9a975e01014dffcfec061e86bd079d939d9ea721617921d1a9779f79e3144915",
+  "KA-access-r2-report.json.gz": "30157cfc1d656336ab9300579dbbd9b8c089cc1d0f908a6826a22ac7a637bc5d",
+  "KA-access-r3-report.json.gz": "8c471c52646d209acc5c5ac0b42fbbd766a6e50cdb383c2f877febf4ab0989fc",
+  "KA-base-caps-execution.json": "3aab441f071216d530c84991413a87c16dca22eb5f901d39a6c35a2b3b572ee9",
+  "KA-base-census-execution.json": "72123f1d93a48bca806f22578c057c5d679b3fe39f1a9ea5baad77688424bcb1",
+  "KA-base-clip-execution.json": "a9d671f2d918b95469864d48e9ce12ad2594da7a43d2df3e120901b584a4bcdb",
+  "KA-base-graph-execution.json": "8d750c9fad9073d348d281340dc7eab4cefaf2efa08d6ab9280176879010dd2c",
+  "KA-r1-caps-execution.json": "5f2b29f1fc0855044b1a0bb6b1dc652e4f1b9b186dd0b51d49dc38c4b0632180",
+  "KA-r1-census-execution.json": "d82e044397c260ee39695b5595f200b06ae431a637e0bb245918ea8db167d8b9",
+  "KA-r1-clip-execution.json": "abcc80677904128b6b0dc66c42e0cd0ff97bd28e6905e22ff4a4e01793cfb7be",
+  "KA-r1-graph-execution.json": "2a941d016f32f1cb3555f06dd60f009eaade5f5961080b383215bfbfb6406ab8",
+  "KA-r2-caps-execution.json": "2c758d56d132db1b0517b805d525457a209dcf24517b5aa6a56701a9ed4b2aa7",
+  "KA-r2-census-execution.json": "d359c1386531e765b3d44f1470f506a8e4e7b455cf57dc77dc33722f905afe59",
+  "KA-r2-clip-execution.json": "e223cc6f3062b02d6cebd8993e40ad822c9d2260799464cc9a2cb6cda87b70bf",
+  "KA-r2-graph-execution.json": "3582168807acc5cdbe64a9a756fd44baa085aba7c6c84e64f654f6f114a54286",
+  "KA-r3-caps-execution.json": "98a4d12469559090fb4e24c2a595439e934ddf861cd9642d57dccad1846fb941",
+  "KA-r3-census-execution.json": "7ae18f8ffd7832da59451e7fe6a9660ddb4661c7fc1b08c8ac13a9d649e4d15e",
+  "KA-r3-clip-execution.json": "d21e9af78970d010a965ff7f2b6680f07e882f693e15cfe1fd5a11f60609f635",
+  "KA-r3-graph-execution.json": "16f923ddf0450af0b2e14960a3bd7b010ae1bba09dcd0ce38530a0b3132e49e5",
+  "KA-r3-port-graph.json.gz": "5d283a044eb8d4763c1ce3bb048a1465b26b41f99082af9fa4e89315f38d34a2",
+  "KA-r3-port-obligations.json": "bc4449da0535bff27737f3fc52d9c6e710a0c6d2fa00be30acd92d15fa110212",
+  "KB-access-delta.json.gz": "d9dc6237e85db2e7a90010eca2758e7c63189d568d61a4ee9c4a834fafcee9c5",
+  "KB-access-r1-report.json.gz": "43850a08285dc85b8742c6b827aa00717272f1e7f11bb737b1703e98d960d7af",
+  "KB-access-r2-report.json.gz": "fa367b601b68fd69191e63e50c9789da25e19ba5777594effacc4f7510264191",
+  "KB-access-r3-report.json.gz": "b00e15fed3a83ae7db3d6f0a6aae0b86360345b11159432ff0c8dd41448dfdc1",
+  "KB-base-caps-execution.json": "fea0a1ffdcd72189a8dcaad4766575530865604637b89980a8227836e542b921",
+  "KB-base-census-execution.json": "e0aa4bf605f575ed7329ff58c63965289f2fbd5d5cb07ee245e94d5009c7abb1",
+  "KB-base-clip-execution.json": "c5670075651e1f9f7d90b1239d78d8482b809e19c4efb74633bd602330f0d1d5",
+  "KB-base-graph-execution.json": "5a9cc8df562a39b8cafeaf74dac996cc9bb4ab6123c9bab682875c88ea85932d",
+  "KB-r1-caps-execution.json": "2996159fa42f0edcc221e50db4bbebe3e47a05e04e3f1cddfe35e6adb371fee0",
+  "KB-r1-census-execution.json": "b0ad29c3205bd016b303ed7375e13840d6af6d923c51da4e726be66b74e286f7",
+  "KB-r1-clip-execution.json": "4bc644630ba27df05b4ed3eaa14f9c1aa5a006c2d4484d76e3f5176994a9d773",
+  "KB-r1-graph-execution.json": "71bf49219b8e5f840e444d00e62eaf414569846a08582b14dc54556719360c69",
+  "KB-r2-caps-execution.json": "8d3232faeaa81390a9cb2def1e587446f28dfcb39cea2a4f354de1821dd31226",
+  "KB-r2-census-execution.json": "e40fe7be237bc9c5f9273548618e529bcda96bc9d21c107c916d2194a4cb4758",
+  "KB-r2-clip-execution.json": "0307ed870736bff6f6b0a945134dc266b79518748b551aafca65988483008f82",
+  "KB-r2-graph-execution.json": "ba6c416e5815d28e376673493b3459251b04c7c56c45fe98d41e34b70c96b6d9",
+  "KB-r3-caps-execution.json": "25c8a7035092a731207431c351502c1c3c186d329aea1e3f9f538053390b1a60",
+  "KB-r3-census-execution.json": "a22e2984b950553a2f93afe9adb2a9ccf770932f857fcb382878708bf9002aeb",
+  "KB-r3-clip-execution.json": "0c36444f59273e0aa64785f834892e6a63207141810e177ac10456510f3b199a",
+  "KB-r3-graph-execution.json": "eda5bc77fc2f4a3c8217b6eff8503bfb1359c5b82b346675ace043809c8e8a32",
+  "KB-r3-port-graph.json.gz": "5bbad1b34168acea93b2bb1f6ed8219ad940923cdc0bc1a62064a10dee165f0c",
+  "KB-r3-port-obligations.json": "9aad739c413cd583a41d5830bc498e4c5c40a1b9cab6ee98c709969d8c70e5e4"
+ },
+ "representative_direct_load": {
+  "board": "KA",
+  "pad_id": "0ab0435b-6113-530c-b9be-a0088f8575bb",
+  "ref": "U1107",
+  "pad": "11",
+  "net": "AGND",
+  "face": "B.Cu",
+  "obstruction": "every 0.6 mm via site within 2 mm blocked by U1105/U1107 face pads and signal vias; straight path to feed-connected pin 9 crosses no-connect pin 10",
+  "target": "U1107 pin 9 (AGND), feed-connected via its own r1 access via",
+  "construction": {
+   "pad_id": "0ab0435b-6113-530c-b9be-a0088f8575bb",
+   "ref": "U1107",
+   "pad": "11",
+   "net": "AGND",
+   "status": "ROUTED",
+   "width_mm": 0.25,
+   "segments": 3,
+   "length_mm": 2.339273,
+   "face": "B.Cu"
+  },
+  "full_census_before": {
+   "unresolved": 425,
+   "direct": 328
+  },
+  "full_census_after": {
+   "unresolved_physical_pad_count": 424,
+   "unresolved_direct_load_count": 327,
+   "unresolved_supplemental_count": 97
+  },
+  "newly_disconnected": 0,
+  "bounds": "route window 6x6 mm at 0.05 mm pitch; each step under 180 s / 2 GiB"
+ },
+ "method_note": "Rounds r1/r2 were produced while construct_access.py was still gaining the r3 options; the KA replay with the final method reproduced r1-r3 content exactly."
+}
