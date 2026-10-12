@@ -1,0 +1,754 @@
+{
+  "C2325_correction": {
+    "assessment": "Defensible declared source internal rearrangement, not a material panel/harness change. Meets no-worse existing centre-distance test, but does not establish every bypass or copper rule.",
+    "change_mm": -0.0030755715013182083,
+    "delta_mm": [
+      -0.04,
+      0.01
+    ],
+    "distance_formula": "hypot(dx,dy)",
+    "mandatory_debts": [
+      "Exact old/new C2325.1 +12V and C2325.2 AGND pad/contact accounting",
+      "All neighbour courtyards and foreign pad/copper checks",
+      "Bypass relationship and actual applicable limits",
+      "Explicitly distinguish correction from rigid preservation"
+    ],
+    "new_center_distance_mm": 5.997350548367254,
+    "new_courtyard_gap_mm": 0.359999,
+    "new_relative_center_mm": [
+      1.865,
+      5.699999
+    ],
+    "old_center_distance_mm": 6.000426119868572,
+    "old_courtyard_gap_mm": 0.349999,
+    "old_deficit_mm": 1e-06,
+    "old_deficit_nm": 1,
+    "old_relative_center_mm": [
+      1.905,
+      5.689999
+    ],
+    "required_gap_mm": 0.35
+  },
+  "architecture_disposition": "Compare source concepts without changing accepted JL117/JR129/K1402, canonical hardware/copper, fixed panel/harness geometry or architecture adoption. C remains a conditional existing-three-B comparison.",
+  "concepts": [
+    {
+      "board": "two-A",
+      "contract": "Translate entire original24 including U2306, with separately declared C2325 local correction. Preserve all other placements, ownership and fixed endpoints.",
+      "correction_does_not_change_envelope": true,
+      "cost": {
+        "boundary_signal": {
+          "net_labels": 22,
+          "object_kinds": {
+            "segment": 1054,
+            "via": 48,
+            "zone": 0
+          },
+          "source_nets": [
+            "/F3/HP_PLUS",
+            "/F3/RES_DEPTH",
+            "/F3/RES_COMMAND",
+            "/F3/BP_OTA_SIGNAL",
+            "/F3/Ca72ec0_W_SENSE",
+            "/F3/LP_OTA_SIGNAL",
+            "/F3/BP_OFFSET",
+            "/F3/FREQ_NEG",
+            "/F3/GAIN_MANUAL",
+            "/F3/LP_IABC",
+            "/F3/FREQ_MANUAL",
+            "/F3/HP_CORE",
+            "/F3/BP_CORE",
+            "/F3/LP_OFFSET",
+            "/F3/RES_CONTROL_CLAMP",
+            "/F3/RES_NEG",
+            "/F3/LP_CORE",
+            "/F3/REFN5",
+            "/F3/RES_MANUAL",
+            "/F3/BP_IABC",
+            "/F3/FREQ_DEPTH",
+            "/F3/RES_CONTROL_RAW"
+          ],
+          "whole_net_source_objects": 1102
+        },
+        "internal": {
+          "net_labels": 11,
+          "object_kinds": {
+            "segment": 219,
+            "via": 20,
+            "zone": 0
+          },
+          "source_nets": [
+            "/F3/RES_CONTROL_SUM",
+            "/F3/LP_INT",
+            "/F3/RES_CONTROL_NEG",
+            "/F3/FREQ_SUM",
+            "/F3/HP_SUM",
+            "/F3/RES_CONTROL_INV",
+            "/F3/BP_INT",
+            "unconnected-(U2306-Pad8)",
+            "unconnected-(U2306-Pad9)",
+            "unconnected-(U2306A-DIODE_BIAS-Pad15)",
+            "unconnected-(U2306C-DIODE_BIAS-Pad2)"
+          ],
+          "whole_net_source_objects": 239
+        },
+        "shared_rail": {
+          "net_labels": 3,
+          "object_kinds": {
+            "segment": 2486,
+            "via": 991,
+            "zone": 5
+          },
+          "source_nets": [
+            "+12V",
+            "-12V",
+            "AGND"
+          ],
+          "whole_net_source_objects": 3482
+        }
+      },
+      "envelope_size_mm": [
+        37.15,
+        70.67
+      ],
+      "id": "A24-N",
+      "original_courtyard_bbox_mm": [
+        108,
+        144.75,
+        145.15,
+        215.42
+      ],
+      "original_translation_domain_before_obstacles_mm": [
+        16,
+        -56.75,
+        18.85,
+        -47.42
+      ],
+      "refs": [
+        "C2312",
+        "C2313",
+        "C2325",
+        "C2326",
+        "C2337",
+        "C2338",
+        "C2339",
+        "C2340",
+        "R2345",
+        "R2346",
+        "R2347",
+        "R2348",
+        "R2358",
+        "R2359",
+        "R2360",
+        "R2361",
+        "R2380",
+        "R2381",
+        "R2382",
+        "R2383",
+        "R2384",
+        "U2306",
+        "U2312",
+        "U2313"
+      ],
+      "window_mm": [
+        124,
+        88,
+        164,
+        168
+      ]
+    },
+    {
+      "board": "two-A",
+      "combined_cost": {
+        "boundary_signal": {
+          "net_labels": 17,
+          "object_kinds": {
+            "segment": 1130,
+            "via": 55,
+            "zone": 0
+          },
+          "source_nets": [
+            "/F3/RES_DEPTH",
+            "/F3/Cb3b460_W_SENSE",
+            "/F3/RES_COMMAND",
+            "/F3/REF25",
+            "/F3/C8c344f_W_SENSE",
+            "/F3/DRY_CONTROL_RAW",
+            "/F3/RES_BUFFER",
+            "/F3/RES_BASE_DRIVE",
+            "/F3/GAIN_MANUAL",
+            "/F3/C11c270_DRIVE",
+            "/F3/RES_CURRENT",
+            "/F3/Cb5b1dc_W_SENSE",
+            "/F3/RES_BASE",
+            "/F3/RES_MANUAL",
+            "/F3/GAIN_REMOTE",
+            "/F3/REF5",
+            "/F3/GAIN_BUFFER"
+          ],
+          "whole_net_source_objects": 1185
+        },
+        "internal": {
+          "net_labels": 10,
+          "object_kinds": {
+            "segment": 469,
+            "via": 34,
+            "zone": 0
+          },
+          "source_nets": [
+            "/F3/RES_TARGET_SUM",
+            "/F3/GAIN_DEPTH",
+            "/F3/Cb5b1dc_SUM",
+            "/F3/DRY_CONTROL_SUM",
+            "/F3/Cb3b460_SUM",
+            "/F3/C11c270_FB",
+            "/F3/DRY_CONTROL_INV",
+            "/F3/DRY_CONTROL_NEG",
+            "/F3/RES_EMITTER",
+            "/F3/RES_TARGET"
+          ],
+          "whole_net_source_objects": 503
+        },
+        "shared_rail": {
+          "net_labels": 3,
+          "object_kinds": {
+            "segment": 2486,
+            "via": 991,
+            "zone": 5
+          },
+          "source_nets": [
+            "+12V",
+            "-12V",
+            "AGND"
+          ],
+          "whole_net_source_objects": 3482
+        }
+      },
+      "contract": "U2311 block above U2314 block, frozen relative stack at0.36mm envelope separation; translate assembled group. Original24 remains fixed.",
+      "cross_block_net": {
+        "source_net": "/F3/GAIN_DEPTH",
+        "status": "Not eligible for one rigid transplant merely because net is internal to combined25; two block transforms differ.",
+        "whole_net_source_objects": 54
+      },
+      "group_envelope_sizes_mm": [
+        [
+          32.280001,
+          42.569999
+        ],
+        [
+          22.82,
+          27.37
+        ]
+      ],
+      "groups": [
+        [
+          "C2307",
+          "C2309",
+          "C2310",
+          "C2335",
+          "C2336",
+          "R2333",
+          "R2334",
+          "R2338",
+          "R2341",
+          "R2342",
+          "U2311"
+        ],
+        [
+          "C2314",
+          "C2341",
+          "C2342",
+          "D2306",
+          "Q2305",
+          "R2386",
+          "R2387",
+          "R2388",
+          "R2391",
+          "R2392",
+          "R2393",
+          "R2394",
+          "R2395",
+          "U2314"
+        ]
+      ],
+      "id": "B25-FOLD-N",
+      "inherited_C2325_gap_unresolved": true,
+      "separate_group_costs": [
+        {
+          "boundary_signal": {
+            "net_labels": 10,
+            "object_kinds": {
+              "segment": 733,
+              "via": 51,
+              "zone": 0
+            },
+            "source_nets": [
+              "/F3/RES_DEPTH",
+              "/F3/Cb3b460_W_SENSE",
+              "/F3/GAIN_DEPTH",
+              "/F3/C8c344f_W_SENSE",
+              "/F3/RES_BUFFER",
+              "/F3/C11c270_DRIVE",
+              "/F3/Cb5b1dc_W_SENSE",
+              "/F3/RES_MANUAL",
+              "/F3/GAIN_REMOTE",
+              "/F3/GAIN_BUFFER"
+            ],
+            "whole_net_source_objects": 784
+          },
+          "internal": {
+            "net_labels": 3,
+            "object_kinds": {
+              "segment": 249,
+              "via": 9,
+              "zone": 0
+            },
+            "source_nets": [
+              "/F3/Cb5b1dc_SUM",
+              "/F3/Cb3b460_SUM",
+              "/F3/C11c270_FB"
+            ],
+            "whole_net_source_objects": 258
+          },
+          "shared_rail": {
+            "net_labels": 3,
+            "object_kinds": {
+              "segment": 2486,
+              "via": 991,
+              "zone": 5
+            },
+            "source_nets": [
+              "+12V",
+              "-12V",
+              "AGND"
+            ],
+            "whole_net_source_objects": 3482
+          }
+        },
+        {
+          "boundary_signal": {
+            "net_labels": 9,
+            "object_kinds": {
+              "segment": 493,
+              "via": 16,
+              "zone": 0
+            },
+            "source_nets": [
+              "/F3/RES_COMMAND",
+              "/F3/REF25",
+              "/F3/GAIN_DEPTH",
+              "/F3/DRY_CONTROL_RAW",
+              "/F3/RES_BASE_DRIVE",
+              "/F3/GAIN_MANUAL",
+              "/F3/RES_CURRENT",
+              "/F3/RES_BASE",
+              "/F3/REF5"
+            ],
+            "whole_net_source_objects": 509
+          },
+          "internal": {
+            "net_labels": 6,
+            "object_kinds": {
+              "segment": 172,
+              "via": 19,
+              "zone": 0
+            },
+            "source_nets": [
+              "/F3/RES_TARGET_SUM",
+              "/F3/DRY_CONTROL_SUM",
+              "/F3/DRY_CONTROL_INV",
+              "/F3/DRY_CONTROL_NEG",
+              "/F3/RES_EMITTER",
+              "/F3/RES_TARGET"
+            ],
+            "whole_net_source_objects": 191
+          },
+          "shared_rail": {
+            "net_labels": 3,
+            "object_kinds": {
+              "segment": 2486,
+              "via": 991,
+              "zone": 5
+            },
+            "source_nets": [
+              "+12V",
+              "-12V",
+              "AGND"
+            ],
+            "whole_net_source_objects": 3482
+          }
+        }
+      ],
+      "stack_envelope_size_mm": [
+        32.280001,
+        70.299999
+      ],
+      "stack_gap_mm": 0.36,
+      "window_mm": [
+        124,
+        88,
+        164,
+        168
+      ]
+    },
+    {
+      "board": "three-B",
+      "contract": "Existing whole-F3 three-B ownership remains; only local original24 is internally redistributed in same board. All other placements and seven fixed F3 headers remain fixed. No partial-F3 board migration or new interboard signal interface.",
+      "correction": "Same separately declared C2325 correction as A.",
+      "cost": {
+        "boundary_signal": {
+          "net_labels": 22,
+          "object_kinds": {
+            "segment": 1054,
+            "via": 48,
+            "zone": 0
+          },
+          "source_nets": [
+            "/F3/HP_PLUS",
+            "/F3/RES_DEPTH",
+            "/F3/RES_COMMAND",
+            "/F3/BP_OTA_SIGNAL",
+            "/F3/Ca72ec0_W_SENSE",
+            "/F3/LP_OTA_SIGNAL",
+            "/F3/BP_OFFSET",
+            "/F3/FREQ_NEG",
+            "/F3/GAIN_MANUAL",
+            "/F3/LP_IABC",
+            "/F3/FREQ_MANUAL",
+            "/F3/HP_CORE",
+            "/F3/BP_CORE",
+            "/F3/LP_OFFSET",
+            "/F3/RES_CONTROL_CLAMP",
+            "/F3/RES_NEG",
+            "/F3/LP_CORE",
+            "/F3/REFN5",
+            "/F3/RES_MANUAL",
+            "/F3/BP_IABC",
+            "/F3/FREQ_DEPTH",
+            "/F3/RES_CONTROL_RAW"
+          ],
+          "whole_net_source_objects": 1102
+        },
+        "internal": {
+          "net_labels": 11,
+          "object_kinds": {
+            "segment": 219,
+            "via": 20,
+            "zone": 0
+          },
+          "source_nets": [
+            "/F3/RES_CONTROL_SUM",
+            "/F3/LP_INT",
+            "/F3/RES_CONTROL_NEG",
+            "/F3/FREQ_SUM",
+            "/F3/HP_SUM",
+            "/F3/RES_CONTROL_INV",
+            "/F3/BP_INT",
+            "unconnected-(U2306-Pad8)",
+            "unconnected-(U2306-Pad9)",
+            "unconnected-(U2306A-DIODE_BIAS-Pad15)",
+            "unconnected-(U2306C-DIODE_BIAS-Pad2)"
+          ],
+          "whole_net_source_objects": 239
+        },
+        "shared_rail": {
+          "net_labels": 3,
+          "object_kinds": {
+            "segment": 2486,
+            "via": 991,
+            "zone": 5
+          },
+          "source_nets": [
+            "+12V",
+            "-12V",
+            "AGND"
+          ],
+          "whole_net_source_objects": 3482
+        }
+      },
+      "edge_inset_mm": 0.3,
+      "fixed_F3_headers": [
+        "J900010",
+        "J900012",
+        "J900231",
+        "J900233",
+        "J900235",
+        "J900237",
+        "J900239"
+      ],
+      "id": "C24-SW-THREE",
+      "outline_mm": [
+        [
+          4,
+          8
+        ],
+        [
+          314,
+          8
+        ],
+        [
+          314,
+          246
+        ],
+        [
+          258,
+          246
+        ],
+        [
+          258,
+          292
+        ],
+        [
+          4,
+          292
+        ]
+      ],
+      "ownership_and_headers_confirmed_by_source_reads": true,
+      "refs": [
+        "C2312",
+        "C2313",
+        "C2325",
+        "C2326",
+        "C2337",
+        "C2338",
+        "C2339",
+        "C2340",
+        "R2345",
+        "R2346",
+        "R2347",
+        "R2348",
+        "R2358",
+        "R2359",
+        "R2360",
+        "R2361",
+        "R2380",
+        "R2381",
+        "R2382",
+        "R2383",
+        "R2384",
+        "U2306",
+        "U2312",
+        "U2313"
+      ],
+      "whole_F3_count": 171,
+      "whole_F3_refs": [
+        "C2301",
+        "C2302",
+        "C2303",
+        "C2304",
+        "C2305",
+        "C2306",
+        "C2307",
+        "C2308",
+        "C2309",
+        "C2310",
+        "C2311",
+        "C2312",
+        "C2313",
+        "C2314",
+        "C2315",
+        "C2316",
+        "C2325",
+        "C2326",
+        "C2327",
+        "C2328",
+        "C2329",
+        "C2330",
+        "C2331",
+        "C2332",
+        "C2333",
+        "C2334",
+        "C2335",
+        "C2336",
+        "C2337",
+        "C2338",
+        "C2339",
+        "C2340",
+        "C2341",
+        "C2342",
+        "C2343",
+        "C2344",
+        "C2345",
+        "C2346",
+        "D2305",
+        "D2306",
+        "D2307",
+        "D2308",
+        "D2309",
+        "D2310",
+        "D2311",
+        "D2312",
+        "D2313",
+        "D2314",
+        "D2315",
+        "D2316",
+        "D2317",
+        "D2318",
+        "D2319",
+        "D2320",
+        "D2321",
+        "D2322",
+        "D2323",
+        "D2324",
+        "Q2301",
+        "Q2302",
+        "Q2303",
+        "Q2304",
+        "Q2305",
+        "Q2306",
+        "R2301",
+        "R2302",
+        "R2303",
+        "R2304",
+        "R2321",
+        "R2322",
+        "R2323",
+        "R2324",
+        "R2325",
+        "R2326",
+        "R2327",
+        "R2328",
+        "R2329",
+        "R2330",
+        "R2331",
+        "R2332",
+        "R2333",
+        "R2334",
+        "R2335",
+        "R2336",
+        "R2337",
+        "R2338",
+        "R2339",
+        "R2340",
+        "R2341",
+        "R2342",
+        "R2343",
+        "R2344",
+        "R2345",
+        "R2346",
+        "R2347",
+        "R2348",
+        "R2349",
+        "R2350",
+        "R2351",
+        "R2352",
+        "R2353",
+        "R2354",
+        "R2355",
+        "R2356",
+        "R2357",
+        "R2358",
+        "R2359",
+        "R2360",
+        "R2361",
+        "R2362",
+        "R2363",
+        "R2364",
+        "R2365",
+        "R2366",
+        "R2367",
+        "R2368",
+        "R2369",
+        "R2370",
+        "R2371",
+        "R2372",
+        "R2373",
+        "R2374",
+        "R2375",
+        "R2376",
+        "R2377",
+        "R2378",
+        "R2379",
+        "R2380",
+        "R2381",
+        "R2382",
+        "R2383",
+        "R2384",
+        "R2385",
+        "R2386",
+        "R2387",
+        "R2388",
+        "R2389",
+        "R2390",
+        "R2391",
+        "R2392",
+        "R2393",
+        "R2394",
+        "R2395",
+        "R2396",
+        "R2397",
+        "R2398",
+        "R2399",
+        "RB2301",
+        "RB2302",
+        "RB2303",
+        "RB2304",
+        "RB2305",
+        "RV2307",
+        "RV2308",
+        "RV2309",
+        "RV2310",
+        "RV2311",
+        "RV2312",
+        "RV2313",
+        "U2301",
+        "U2306",
+        "U2307",
+        "U2308",
+        "U2309",
+        "U2310",
+        "U2311",
+        "U2312",
+        "U2313",
+        "U2314",
+        "U2315",
+        "U2316"
+      ],
+      "window_mm": [
+        4.3,
+        208,
+        64,
+        288
+      ]
+    }
+  ],
+  "critical_limits": [
+    "All counts are whole-net source inventories, never automatic cut/transform authorization. Four original24 internal net labels are NC with zero source copper; seven internal nets have routed copper.",
+    "Transfer eligibility needs exact contact components belonging to one transform, full source spans/hashes and contact frontier. Shared rail membership never unions the moving blocks.",
+    "All five zones remain preservation/refill obligations. No source-only positive result proves native connectivity or all-warning closure.",
+    "B preserves OTA/integrator relative geometry but moves449 internal objects plus54 cross-block GAIN_DEPTH objects; do not rank by fewer external net labels.",
+    "Original24 migration alone to a different board creates22 signal interfaces under fixed harness geometry. C explicitly does not do that.",
+    "U2309 intrinsic full-width rail access obstruction is not fixed by these regroupings; original four F3 demands remain obligations.",
+    "Prior whole171 current-orientation N/E exclusions are only those bounded rigid-window contracts, not global impossibility.",
+    "B retains the inherited1nm C2325/U2306 courtyard deficit; external region survival is not complete fit.",
+    "The 59-ref closure is not a clean separated filter:37 boundary signals and2175 whole-net boundary objects remain.",
+    "Stage1 courtyard/reservation/hole/edge survival only licenses the next source check; pad, drill, retained copper, calibration/service, complete architecture and native gates remain.",
+    "Earlier review caution about SW y288 exceeding y284 was incorrect:284mm is board height; source outline y8..292. Current [4.3,208,64,288] left-side window fits the0.30mm inset arithmetically."
+  ],
+  "executed_scope": [
+    "JSON source reads",
+    "subgroup net inventory aggregation",
+    "centre-distance and envelope arithmetic"
+  ],
+  "not_executed": [
+    "geometry screen",
+    "pose choice",
+    "placement transform execution",
+    "candidate generation",
+    "routing",
+    "native",
+    "architecture adoption"
+  ],
+  "reviewed_head": "9cc7fce8d7845f2827a1fd71d2b5550c4a4cdea4",
+  "schema": "f3-rearrangement-independent-architecture-review-v1",
+  "screen_recommendation": "Use only predeclared fixed relative constructions and continuous2D translation regions. Filter with actual fixed courtyards, reservations, service holes and outline; if surviving, apply complete retained pad/copper/drill constraints before selecting any robust point. Exact contact preservation and positive margins outrank raw object or net counts.",
+  "source_sha256": {
+    "design/partition/core-split/candidates/planning/f3-next-approach/group-boundary.json": "d2780c1af0e4a1b3f538013427b9be0cab5c85684d6729624ee239200ed2b12a",
+    "design/partition/core-split/candidates/planning/f3-next-approach/source-survey.json": "bcc39f45c00c839625fef3be324b6125d7b64f1614144e6df09295015bba5318",
+    "design/partition/core-split/candidates/planning/f3-next-approach/whole-f3-boundary.json": "f20e4d39bd9c5498721429c3b85effa608517cb2cd04edd9f5441d12b759a3cc",
+    "design/partition/core-split/candidates/planning/f3-rearrangement-v1/WORK-NOTE.md": "840c122a035f6c47939d127c3581f71b459023c61eaf8ab6a0dd739e8cd771ef",
+    "design/partition/core-split/candidates/planning/f3-rearrangement-v1/screen.py": "7de8b67c55d51f0bc178b5779fa31b6fb398d77e0be6bd80eb4bb05be9ba4350",
+    "design/partition/core-split/candidates/three.json": "bfeb6805721093d5d9d64f808ebd76c4a1e156311ed89a168ec5af36719a9bd9",
+    "design/partition/core-split/candidates/two.json": "65fa0983a515b7977753be1ec70ca71b200c1abfd9a2fc53660a44534436654d"
+  },
+  "status": "READ_ONLY_SOURCE_REVIEW_NO_FIT_OR_NATIVE_CREDIT"
+}
