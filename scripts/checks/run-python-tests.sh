@@ -34,7 +34,7 @@ total_tests=0
 
 for directory in "${ordered_discovery_roots[@]}"; do
   printf 'Discovering tests under %s/\n' "$directory"
-  if output=$(python3 -m unittest discover --start-directory "$directory" --pattern 'test_*.py' 2>&1); then
+  if output=$(python3 scripts/checks/run-source-only-python.py "$directory" 2>&1); then
     printf '%s\n' "$output"
   else
     status=$?
