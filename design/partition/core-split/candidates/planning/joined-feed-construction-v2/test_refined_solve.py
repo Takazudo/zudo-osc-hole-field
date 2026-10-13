@@ -186,6 +186,23 @@ class ExtendedResidualKernel(unittest.TestCase):
    self.assert_equivalent(A,np.arange(6,dtype=np.longdouble).reshape(3,2),np.ones((2,2)))
   self.assert_equivalent(sp.csc_matrix((4,5)),np.zeros((5,2)),np.zeros((4,2)))
 
+ def test_csc_boundary_queries_preserve_index_dtype(self):
+  # A scalar int64 query makes NumPy copy the entire int32 index array on
+  # every search. Require matching query types without timing-dependent tests.
+  for index_type in (np.int32,np.int64):
+   with self.subTest(index_type=index_type):
+    A=sp.csc_matrix([[3.,-2.],[0.,7.]])
+    A.indices=A.indices.astype(index_type);A.indptr=A.indptr.astype(index_type)
+    x=np.array([.2,.3],dtype=np.longdouble);b=np.array([.1,.2])
+    expected=self.original_scatter(A,x,b);search=np.searchsorted;calls=[]
+    def checked(array,value,*args,**kwargs):
+     self.assertIs(array,A.indptr)
+     self.assertEqual(np.asarray(value).ndim,0)
+     self.assertEqual(np.asarray(value).dtype,array.dtype)
+     calls.append(int(value));return search(array,value,*args,**kwargs)
+    with patch.object(np,'searchsorted',checked):actual=ns['_extended_residual'](A,x,b)
+    self.assertEqual(calls,[0,A.nnz-1]);np.testing.assert_array_equal(actual,expected)
+
 class DrivingPointProjection(unittest.TestCase):
  def fixture(self):
   A=sp.csc_matrix([[100000001.,-100000000.],[-100000000.,100000000.]])

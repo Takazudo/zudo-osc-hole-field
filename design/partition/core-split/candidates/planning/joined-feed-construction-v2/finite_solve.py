@@ -116,8 +116,10 @@ def _extended_residual(Af,x,b):
     c1=min(c0+65536,Af.shape[1]);stop=int(Af.indptr[c1])
     for lo in range(int(Af.indptr[c0]),stop,65536):
      hi=min(lo+65536,stop)
-     first=max(c0,int(np.searchsorted(Af.indptr,lo,side='right'))-1)
-     last=min(c1-1,int(np.searchsorted(Af.indptr,hi-1,side='right'))-1)
+     # Python-int queries promote an int32 indptr to a full int64 copy.
+     # Both offsets came from indptr, so its own dtype represents them exactly.
+     first=max(c0,int(np.searchsorted(Af.indptr,Af.indptr.dtype.type(lo),side='right'))-1)
+     last=min(c1-1,int(np.searchsorted(Af.indptr,Af.indptr.dtype.type(hi-1),side='right'))-1)
      pointers=np.clip(Af.indptr[first:last+2]-lo,0,hi-lo)
      coefficients=-Af.data[lo:hi].astype(np.longdouble)
      values=xx[first:last+1,j].astype(np.longdouble)
