@@ -1,0 +1,52 @@
+{
+ "inputs": {
+  "design/partition/core-split/candidates/planning/joined-feed-construction-v2/evidence/e16/continuation-20261013b/coupled-network-config.json": "f5146d0c1d77e0626a455df308f52bf953ace9806861c25438adcdf90914c107",
+  "design/partition/core-split/candidates/planning/joined-feed-construction-v2/evidence/e16/continuation-20261013b/load-ledger.json.gz": "241dd36110236d3726e509c76b02e80928a279a67bea028bfa5aa1e965fa5f54",
+  "/home/takazudo/.cache/zudo-e16-runs/20261013-finite-t2b/KA/coverage-+12V.json.gz": "8906376f87a6dec71445de11bf38de3ede6f3a0be6c432363919a414b69cb011",
+  "/home/takazudo/.cache/zudo-e16-runs/20261013-finite-t2b/KA/coverage--12V.json.gz": "7f90434a2ccbda494a38044fa895b767631277c94cd5beeaedad9f423ad41348",
+  "/home/takazudo/.cache/zudo-e16-runs/20261013-finite-t2b/KA/coverage-+5V.json.gz": "0190c4d68a88bbcda12329a9afaa74db82c24b566c52060cdc8770c8338fa5ef",
+  "/home/takazudo/.cache/zudo-e16-runs/20261013-finite-t2b/KA/coverage-AGND.json.gz": "d9bad1009f398b6242046ba19e094aca76deae3fa46990848ae7b4b8fa6d6980",
+  "/home/takazudo/.cache/zudo-e16-runs/20261013-finite-t2b/KB/coverage-+12V.json.gz": "69369e75275d5ec54e078713628bcf36509c530e8688aa6b19b7491fee46c1a4",
+  "/home/takazudo/.cache/zudo-e16-runs/20261013-finite-t2b/KB/coverage--12V.json.gz": "5b35af8ab517b49417cff17aeebe85227724436f9a8f58860b5955003105b2ff",
+  "/home/takazudo/.cache/zudo-e16-runs/20261013-finite-t2b/KB/coverage-+5V.json.gz": "43e5a4d1c9732ba35543bd3416303fc8c4b15b9fe0d00f43eadaa81c85210fba",
+  "/home/takazudo/.cache/zudo-e16-runs/20261013-finite-t2b/KB/coverage-AGND.json.gz": "1de67df34de319e266195968005b96672ee1d34014e74fbc3f49e0a5703ec211"
+ },
+ "methods": {
+  "design/partition/core-split/candidates/planning/joined-feed-construction-v2/finite_solve.py": "68db75f8f13dd7177cc885763857df240e815fa084f16b4fc22632dc3f93a292",
+  "design/partition/core-split/candidates/planning/joined-feed-construction-v2/finite_adapter.py": "f313a87719aba83b169a363c05d36daa5c79cd28ad41620e5d45c5d8eca613f4",
+  "design/partition/core-split/candidates/planning/joined-feed-construction-v2/finite_units.py": "295bb239a0949522dca47e33389ddcd0ec9bc058c3a53db9bdc81789e461a8f5",
+  "design/partition/core-split/candidates/planning/joined-feed-construction-v2/load_ledger.py": "5cbaf6f059b6f1833fd40991e4974db5ff3997748e6bf3ed62141f0245913c64",
+  "design/partition/core-split/candidates/planning/joined-feed-construction-v2/numerical_acceptance.py": "e8c1f0b55784bed3a6d8a1b86854a7cc9cdb0e7685e07efa9feb263e3efecc73"
+ },
+ "command": [
+  "finite_solve.py",
+  "service",
+  "--config",
+  "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-r4/design/partition/core-split/candidates/planning/joined-feed-construction-v2/evidence/e16/continuation-20261013b/coupled-network-config.json",
+  "--ledger",
+  "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-r4/design/partition/core-split/candidates/planning/joined-feed-construction-v2/evidence/e16/continuation-20261013b/load-ledger.json.gz",
+  "--coverage",
+  "/home/takazudo/.cache/zudo-e16-runs/20261013-finite-t2b/KA/coverage-+12V.json.gz",
+  "/home/takazudo/.cache/zudo-e16-runs/20261013-finite-t2b/KA/coverage--12V.json.gz",
+  "/home/takazudo/.cache/zudo-e16-runs/20261013-finite-t2b/KA/coverage-+5V.json.gz",
+  "/home/takazudo/.cache/zudo-e16-runs/20261013-finite-t2b/KA/coverage-AGND.json.gz",
+  "/home/takazudo/.cache/zudo-e16-runs/20261013-finite-t2b/KB/coverage-+12V.json.gz",
+  "/home/takazudo/.cache/zudo-e16-runs/20261013-finite-t2b/KB/coverage--12V.json.gz",
+  "/home/takazudo/.cache/zudo-e16-runs/20261013-finite-t2b/KB/coverage-+5V.json.gz",
+  "/home/takazudo/.cache/zudo-e16-runs/20261013-finite-t2b/KB/coverage-AGND.json.gz",
+  "--output",
+  "/home/takazudo/.cache/zudo-e16-runs/coupled-approved-a73249c-30c5780e/device-service-normal-typ-v1.json"
+ ],
+ "step": "device-service-normal-typ-v1",
+ "exit_code": 0,
+ "elapsed_seconds": 1.054,
+ "stdout_tail": "{\"scenario_id\": \"normal-typ-v1\", \"service_sha256\": \"3a5e822dea7645499ce3bc70f4931fa2d72cb746947765b2aa57d64be9629b1c\", \"summary\": {\"supported\": 151, \"partial\": 59, \"unserved\": 21, \"unmapped\": 194}, \"eligible_pads\": 302, \"included_global_residual_A\": 0.0, \"elapsed_seconds\": 0.27, \"peak_KiB\": 120652}\n",
+ "stderr_tail": "",
+ "peak_rss_KiB": 120652,
+ "outputs": {
+  "device-service-normal-typ-v1.json": {
+   "": "c6fb8ff3f8bd04496987ee8de147ee2c1f665cf264808414b929b28167901bdb"
+  }
+ },
+ "native_calls": 0
+}
