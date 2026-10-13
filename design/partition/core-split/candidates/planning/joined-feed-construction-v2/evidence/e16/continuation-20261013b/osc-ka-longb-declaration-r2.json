@@ -1,0 +1,57 @@
+{
+ "schema": "e16-residual-closure-declaration-v1",
+ "candidate_id": "KA-U2314-11-longB",
+ "board": "KA",
+ "net": "-12V",
+ "target": {
+  "ref": "U2314",
+  "pad": "11",
+  "pad_id": "b0f9dbc5-d3f3-5380-a8d2-0fe230e28db0"
+ },
+ "faces": [
+  "B.Cu"
+ ],
+ "limits": {
+  "window_margin_mm": 20.0,
+  "max_length_mm": 30.0,
+  "max_segments": 20,
+  "pitch_mm": 0.05,
+  "widths_mm": [
+   0.2
+  ],
+  "clearance_mm": 0.25,
+  "hole_clearance_mm": 0.25,
+  "unit_seconds": 180,
+  "unit_address_space_GiB": 2
+ },
+ "inputs": {
+  "source": "/tmp/osc-e16-source/KA-eval-t2/normalized-caps.json",
+  "planes_net": "/tmp/osc-e16-source/KA-eval-t2/clipped-sheets.json",
+  "graph": "/tmp/osc-e16-source/KA-eval-t2/port-graph.json",
+  "census": "/tmp/osc-e16-source/KA-eval-t2/port-obligations.json"
+ },
+ "input_sha256": {
+  "source": "f47195ad29df44c58ca2df5dfc897ffa23a68dcd8245ca63a52d10972ba8bf8a",
+  "planes_net": "4f6b6765602330acc196dbac36e8adc31e82a96e42870a83ee41bfebd7492f1f",
+  "graph": "20d91e5f32c69786cc02b83fe49e41f56c6a3674dfedb369a91aacc1d15ce5b7",
+  "census": "43a38e97f1b54299009e8cd0669aff2b216e36f791ce48eb199620a1b84602d7"
+ },
+ "method_sha256": {
+  "residual_closure.py": "1293519359d5f116260df6a919c1877365960579db37085530fb05675cc59aad",
+  "pilot_preflight.py": "60bd435843aaf47379e5a699bd497a50aa2c0c2ffc407765d393e0105f6d9568",
+  "fragments.py": "a07168cd6649e8f7304e7f7c52e7bf49f55dc0d70de6c9dc12a26f52885407d5",
+  "construct_access.py": "8b1ded187add59a8c384f2fd43a71097016e0c7b87040b7a0a3e8d8d1e0dc451",
+  "connectivity.py": "6d84330093d5e5b998aae3c5582a3b3b7f40d7548288e0e43e48fb3645352ce0"
+ },
+ "history": {
+  "path": "evidence/e16/pilot/KA-pilot-outcome.json",
+  "sha256": "6f3fcb4f6aa553185001a75f17b13b39b2763a990f8f6710c3f398f4332957dd"
+ },
+ "authorization_scope": "One previously documented additive long-B alternative; no expanded search after failure.",
+ "native_adapter_gap": "Source model cannot prove native per-layer nonfunctional annulus removal; that option is not selected.",
+ "construction": "NOT RUN; no new drill, removed copper, moved part or changed layer is authorized here.",
+ "kb_p1": "Separate six-pad structural credit, KB480; its copper-resistance failure remains open.",
+ "constructed": false,
+ "credited": false,
+ "native_calls": 0
+}

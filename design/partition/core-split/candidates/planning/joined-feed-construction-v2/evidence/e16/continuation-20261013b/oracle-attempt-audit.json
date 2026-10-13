@@ -1,0 +1,12 @@
+{
+ "events_command": "docker events --since30m --until capturedUTC --filter type=container",
+ "captured_utc": "2026-10-13T08:25:28.690478+00:00",
+ "events_exit_code": 0,
+ "events_stdout": "{\"status\":\"destroy\",\"id\":\"247f8103d64650d005d9171dfd47de0288119beaf47a319309198e8aa72c6dad\",\"from\":\"kicad/kicad@sha256:18693567392b80da435f9fa952ce3a3e534c66eb5a6033f5b9c80aa3b19dd3ec\",\"Type\":\"container\",\"Action\":\"destroy\",\"Actor\":{\"ID\":\"247f8103d64650d005d9171dfd47de0288119beaf47a319309198e8aa72c6dad\",\"Attributes\":{\"image\":\"kicad/kicad@sha256:18693567392b80da435f9fa952ce3a3e534c66eb5a6033f5b9c80aa3b19dd3ec\",\"name\":\"clever_archimedes\",\"org.opencontainers.image.authors\":\"https://groups.google.com/a/kicad.org/g/devlist\",\"org.opencontainers.image.description\":\"Image containing KiCad EDA, python and the stock symbol and footprint libraries for use in automation workflows\",\"org.opencontainers.image.documentation\":\"https://docs.kicad.org/\",\"org.opencontainers.image.licenses\":\"GPL-3.0-or-later\",\"org.opencontainers.image.source\":\"https://gitlab.com/kicad/kicad-ci/kicad-cli-docker\",\"org.opencontainers.image.url\":\"https://kicad.org\",\"org.opencontainers.image.vendor\":\"KiCad\"}},\"scope\":\"local\",\"time\":1791879335,\"timeNano\":1791879335945877933}\n",
+ "events_stderr": "",
+ "containers": "",
+ "attempts": 2,
+ "first": "image download succeeded; Docker failed to start: no space left on device",
+ "second": "interrupted task-owned Docker client when duplicate unittest discovery changed module prefix",
+ "no_admission_created": true
+}

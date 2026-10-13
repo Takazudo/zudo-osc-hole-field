@@ -1,0 +1,4 @@
+#!/bin/sh
+printf '%s\n' 'NOT ADMITTED: native tool invocation blocked by source-only validation environment.' >&2
+printf '%s\n' 'blocked docker invocation' >> /tmp/osc-native-blocked-invocations.txt
+exit 97

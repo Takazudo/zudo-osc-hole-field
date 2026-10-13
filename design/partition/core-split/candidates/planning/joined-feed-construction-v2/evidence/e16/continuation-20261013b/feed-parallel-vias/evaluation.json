@@ -1,0 +1,133 @@
+{
+  "status": "SOURCE_DISCONNECTED_PHYSICAL_PORTS",
+  "board": "KA",
+  "initial_input_sha256": {
+    "/tmp/osc-feed-remedies-r2/parallel-vias-source.json": "894cc6b211a50d0c3d79bc6300317202a189e42f06140797643901a4212fe16b",
+    "/workspace/zudo-osc-hole-field/design/partition/core-split/candidates/planning/joined-feed-construction-v2/evidence/board-access-design.json": "f2783e9a0a720e431a00512e9017b55c236e7f31e5a579bbe00e6ee442e00eea",
+    "/workspace/zudo-osc-hole-field/design/partition/core-split/candidates/planning/joined-feed-construction-v2/evaluate_access.py": "0a3c4d1d721895063b9d155d96e8aed8148448cfdc451e944240d655f6f915bf",
+    "/workspace/zudo-osc-hole-field/design/partition/core-split/candidates/planning/joined-feed-construction-v2/staged_caps.py": "f51a2f073e0051c520555ef6de59d1dbbf91ccbd2420ab89aead44736a1956e7",
+    "/workspace/zudo-osc-hole-field/design/partition/core-split/candidates/planning/joined-feed-construction-v2/connectivity.py": "6d84330093d5e5b998aae3c5582a3b3b7f40d7548288e0e43e48fb3645352ce0",
+    "/workspace/zudo-osc-hole-field/design/partition/core-split/candidates/planning/joined-feed-construction-v2/port_obligations.py": "c1aeeb5be28156448365fc78c03e986ef6402602ebfdaa03f2123d0411236375",
+    "/workspace/zudo-osc-hole-field/design/partition/core-split/candidates/planning/joined-feed-construction-v2/clip_sheets.py": "6f3df61dd649729b3e58796c067cc9924dc3d776c645592c62e5f6ab3ac5c235"
+  },
+  "steps": [
+    {
+      "step": "caps",
+      "input_sha256": {
+        "/tmp/osc-feed-remedies-r2/parallel-vias-source.json": "894cc6b211a50d0c3d79bc6300317202a189e42f06140797643901a4212fe16b",
+        "/workspace/zudo-osc-hole-field/design/partition/core-split/candidates/planning/joined-feed-construction-v2/staged_caps.py": "f51a2f073e0051c520555ef6de59d1dbbf91ccbd2420ab89aead44736a1956e7"
+      },
+      "command": [
+        "timeout",
+        "180s",
+        "/workspace/osc-venv/bin/python",
+        "/workspace/zudo-osc-hole-field/design/partition/core-split/candidates/planning/joined-feed-construction-v2/staged_caps.py",
+        "--board",
+        "/tmp/osc-feed-remedies-r2/parallel-vias-source.json",
+        "--output",
+        "/tmp/osc-feed-geometry/normalized-caps.json"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 2.3685580540000046,
+      "stdout": "{\"board\": \"KA\", \"caps\": 0, \"barrels\": 0}\n",
+      "stderr": "",
+      "output_sha256": "0a373a2c6c13a60fdbc9670a06dfd0b04d5ae3ce36543b986f55e259db99f209",
+      "inputs_before_after_equal": true,
+      "native_calls": 0
+    },
+    {
+      "step": "clip",
+      "input_sha256": {
+        "/tmp/osc-feed-geometry/normalized-caps.json": "0a373a2c6c13a60fdbc9670a06dfd0b04d5ae3ce36543b986f55e259db99f209",
+        "/workspace/zudo-osc-hole-field/design/partition/core-split/candidates/planning/joined-feed-construction-v2/clip_sheets.py": "6f3df61dd649729b3e58796c067cc9924dc3d776c645592c62e5f6ab3ac5c235",
+        "/workspace/zudo-osc-hole-field/design/partition/core-split/candidates/planning/joined-feed-construction-v2/evidence/board-access-design.json": "f2783e9a0a720e431a00512e9017b55c236e7f31e5a579bbe00e6ee442e00eea"
+      },
+      "command": [
+        "timeout",
+        "180s",
+        "/workspace/osc-venv/bin/python",
+        "/workspace/zudo-osc-hole-field/design/partition/core-split/candidates/planning/joined-feed-construction-v2/clip_sheets.py",
+        "--filtered-board",
+        "/tmp/osc-feed-geometry/normalized-caps.json",
+        "--design",
+        "/workspace/zudo-osc-hole-field/design/partition/core-split/candidates/planning/joined-feed-construction-v2/evidence/board-access-design.json",
+        "--clip-only",
+        "--output",
+        "/tmp/osc-feed-geometry/clipped-sheets.json"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 112.94516663600007,
+      "stdout": "{\"board\": \"KA\", \"report\": {\"AGND\": {\"layer\": \"In1.Cu\", \"cut_count\": 9773, \"pieces\": 8, \"area_mm2\": 79242.391594, \"largest_mm2\": 79241.527042}, \"+5V\": {\"layer\": \"In2.Cu\", \"cut_count\": 38549, \"pieces\": 1549, \"area_mm2\": 68360.252133, \"largest_mm2\": 58637.518809}, \"-12V\": {\"layer\": \"In3.Cu\", \"cut_count\": 23953, \"pieces\": 628, \"area_mm2\": 73013.967115, \"largest_mm2\": 70686.042916}, \"+12V\": {\"layer\": \"In4.Cu\", \"cut_count\": 10803, \"pieces\": 10, \"area_mm2\": 78763.143766, \"largest_mm2\": 78762.087247}}, \"elapsed_seconds\": 112.34, \"peak_KiB\": 1298808}\n",
+      "stderr": "",
+      "output_sha256": "927504a53f0b6188c354ca06ca2738dce617025e8d4e14aafa81e436888b46da",
+      "inputs_before_after_equal": true,
+      "native_calls": 0
+    },
+    {
+      "step": "graph",
+      "input_sha256": {
+        "/tmp/osc-feed-geometry/normalized-caps.json": "0a373a2c6c13a60fdbc9670a06dfd0b04d5ae3ce36543b986f55e259db99f209",
+        "/tmp/osc-feed-geometry/clipped-sheets.json": "927504a53f0b6188c354ca06ca2738dce617025e8d4e14aafa81e436888b46da",
+        "/workspace/zudo-osc-hole-field/design/partition/core-split/candidates/planning/joined-feed-construction-v2/connectivity.py": "6d84330093d5e5b998aae3c5582a3b3b7f40d7548288e0e43e48fb3645352ce0",
+        "/workspace/zudo-osc-hole-field/design/partition/core-split/candidates/planning/joined-feed-construction-v2/staged_caps.py": "f51a2f073e0051c520555ef6de59d1dbbf91ccbd2420ab89aead44736a1956e7"
+      },
+      "command": [
+        "timeout",
+        "180s",
+        "/workspace/osc-venv/bin/python",
+        "/workspace/zudo-osc-hole-field/design/partition/core-split/candidates/planning/joined-feed-construction-v2/connectivity.py",
+        "--board",
+        "/tmp/osc-feed-geometry/normalized-caps.json",
+        "--planes",
+        "/tmp/osc-feed-geometry/clipped-sheets.json",
+        "--output",
+        "/tmp/osc-feed-geometry/port-graph.json"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 27.687662608999744,
+      "stdout": "{\"status\": \"SOURCE_DISCONNECTED_LOAD_PORTS\", \"board\": \"KA\", \"direct_load_count\": 1031, \"counts\": {\"nodes\": 12999, \"edges\": 4423}, \"elapsed_seconds\": 24.02283898299993, \"peak_KiB\": 1373900}\ndisconnected 144\n",
+      "stderr": "",
+      "output_sha256": "e4668522b6088c083258944e86055b17abf3984838e150a0f875da1ed2c001e3",
+      "inputs_before_after_equal": true,
+      "native_calls": 0
+    },
+    {
+      "step": "census",
+      "input_sha256": {
+        "/tmp/osc-feed-geometry/normalized-caps.json": "0a373a2c6c13a60fdbc9670a06dfd0b04d5ae3ce36543b986f55e259db99f209",
+        "/tmp/osc-feed-geometry/clipped-sheets.json": "927504a53f0b6188c354ca06ca2738dce617025e8d4e14aafa81e436888b46da",
+        "/tmp/osc-feed-geometry/port-graph.json": "e4668522b6088c083258944e86055b17abf3984838e150a0f875da1ed2c001e3",
+        "/workspace/zudo-osc-hole-field/design/partition/core-split/candidates/planning/joined-feed-construction-v2/port_obligations.py": "c1aeeb5be28156448365fc78c03e986ef6402602ebfdaa03f2123d0411236375"
+      },
+      "command": [
+        "timeout",
+        "180s",
+        "/workspace/osc-venv/bin/python",
+        "/workspace/zudo-osc-hole-field/design/partition/core-split/candidates/planning/joined-feed-construction-v2/port_obligations.py",
+        "--board",
+        "/tmp/osc-feed-geometry/normalized-caps.json",
+        "--planes",
+        "/tmp/osc-feed-geometry/clipped-sheets.json",
+        "--graph",
+        "/tmp/osc-feed-geometry/port-graph.json",
+        "--output",
+        "/tmp/osc-feed-geometry/port-obligations.json"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 4.052078716000324,
+      "stdout": "{\"board\": \"KA\", \"physical_pad_count\": 1568, \"counts_by_net\": {\"+5V\": 11, \"AGND\": 158, \"+12V\": 11, \"-12V\": 16}, \"direct_loads\": 144, \"supplemental\": 52}\n",
+      "stderr": "",
+      "output_sha256": "216b21c04b43652fbc707d9f3b47b0119cdaea8e7d2b490643e964d71fa13ebf",
+      "inputs_before_after_equal": true,
+      "native_calls": 0
+    }
+  ],
+  "unresolved_physical_pad_count": 196,
+  "unresolved_direct_load_count": 144,
+  "unresolved_supplemental_count": 52,
+  "complete_physical_connectivity": false,
+  "signed_load_proof_complete": false,
+  "manufacturing_qualified": false,
+  "accepted": false,
+  "native_calls": 0
+}
