@@ -78,6 +78,23 @@ class LifecycleQualificationTests(unittest.TestCase):
         self.assertEqual(lifecycle.verify_phase('success', 0, receipt(), SHA, HOOK, 'gate-one', 'life-123-1-ok')['retained_exit_codes'], [0, 0])
         self.assertEqual(lifecycle.verify_phase('intentional-failure', 1, receipt(True), SHA, HOOK, 'gate-one', 'life-123-1-fail')['retained_exit_codes'], [0, 1])
 
+    def test_local_outer_command_does_not_relax_helper_or_cleanup_validation(self):
+        command = ['env', 'EPIC242_ADMISSION_MODE=local', 'python3',
+                   'scripts/kicad/local_native_admission.py', 'worker']
+        item = receipt(True)
+        item['plan']['command'] = command
+        self.assertEqual(lifecycle.verify_phase('intentional-failure', 1, item, SHA, HOOK,
+            'gate-one', 'life-123-1-fail', expected_plan_command=command)['retained_exit_codes'], [0, 1])
+        for mutate in (lambda r: r['plan'].update(command=['different']),
+                       lambda r: r['container_admissions'][CID2]['request'].update(command=['different']),
+                       lambda r: r.update(cleanup_failures=['survivor'])):
+            import copy
+            changed = copy.deepcopy(item)
+            mutate(changed)
+            with self.assertRaises(ValueError):
+                lifecycle.verify_phase('intentional-failure', 1, changed, SHA, HOOK,
+                    'gate-one', 'life-123-1-fail', expected_plan_command=command)
+
     def test_unexpected_failure_cannot_be_reclassified(self):
         for change in (
             lambda r: r.update(status='FAIL / CLEANUP BLOCKER'),

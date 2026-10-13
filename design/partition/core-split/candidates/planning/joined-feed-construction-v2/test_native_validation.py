@@ -316,5 +316,126 @@ class StagingTests(unittest.TestCase):
             nv.load_stage(self.stage, 'KA-t2', root=self.root)
 
 
+class LocalStagingTests(unittest.TestCase):
+    """Real source preparation/authority functions against disposable tiny fixtures."""
+    tearDown = StagingTests.tearDown
+    git_read = StagingTests.git_read
+
+    def setUp(self):
+        StagingTests.setUp(self)
+        for name in ('local_native_admission.py', 'native_start_gate.sh'):
+            shutil.copyfile(REPO / 'scripts/kicad' / name, self.root / 'scripts/kicad' / name)
+        with patch.object(nv, 'ROOT', self.root):
+            self.local = nv.local_admission()
+        self.heavy = self.base / 'heavy.sh'
+        self.heavy.write_text('fixture')
+        self.patches = [patch.object(nv, 'ROOT', self.root), patch.object(nv, 'HERE', self.here),
+                        patch.object(nv, 'local_admission', return_value=self.local),
+                        patch.object(self.local, 'clean_head', return_value='a' * 40)]
+        for item in self.patches:
+            item.start()
+            self.addCleanup(item.stop)
+        original = self.local.prepare
+        def prepare(*args, **kwargs):
+            return original(*args, **kwargs, heavy_guard=self.heavy)
+        with patch.object(nv.subprocess, 'run', self.git_read), patch.object(self.local, 'prepare', prepare):
+            self.packet = nv.prepare([self.out], self.graphs, self.stage, root=self.root,
+                                     local_run_id='b' * 32, run_attempt=2)
+        self.target = 'KA-t2'
+        self.path = self.stage / self.target / 'local-request.json'
+        self.approval = self.path.with_name('operator-approval.json')
+
+    def approved_fixture(self):
+        self.local.approve(self.root, self.path, nv.sha(self.path), str(self.approval.relative_to(self.root)),
+                           'test fixture', 'fixture reservation', 'fixture qualification')
+        worker = self.local.read(self.path)['worker']
+        return {'EPIC242_ADMISSION_MODE': 'local', 'EPIC242_LOCAL_REQUEST': str(self.path.relative_to(self.root)),
+                'EPIC242_PARENT_LOCAL_REQUEST_SHA256': nv.sha(self.path),
+                'EPIC242_LOCAL_APPROVAL': str(self.approval.relative_to(self.root)),
+                'EPIC242_LOCAL_APPROVAL_SHA256': nv.sha(self.approval),
+                'EPIC242_NATIVE_WORKER': worker, 'EPIC242_NATIVE_SLICE': 'epic242-w' + worker.encode().hex() + '.slice',
+                'EPIC242_NATIVE_DEADLINE': str(int(time.time()) + 2580)}
+
+    def test_local_preparation_all_targets_without_approval_or_github_identity(self):
+        self.assertEqual(self.packet['admission_mode'], 'local')
+        self.assertNotIn('github_run_attempt', self.packet)
+        for target in nv.TARGETS:
+            request = self.local.validate_request(self.root, self.stage / target / 'local-request.json')
+            self.assertEqual(request['target'], target)
+            self.assertEqual(request['seconds'], 2580)
+            self.assertFalse((self.stage / target / 'operator-approval.json').exists())
+        with patch.object(nv.subprocess, 'run') as launch, self.assertRaises(FileNotFoundError):
+            nv.execute(self.stage, self.target)
+        launch.assert_not_called()
+
+    def test_local_authority_transport_and_target_is_exact(self):
+        env = self.approved_fixture()
+        nv.verify_authority(self.packet, self.stage / 'request.json', env, 'a' * 40)
+        nv.verify_worker_authority(env, self.target)
+        phases = nv.phase_commands(str(F / 'native_validation.py'), '.circuit-cache/request', self.target, env)
+        for key in self.local.AUTHORITY_KEYS:
+            self.assertIn(key + '=' + env[key], phases[0][1])
+            self.assertIn(key + '=' + env[key], phases[2][1])
+        self.assertFalse(any('GITHUB_' in part for part in phases[0][1]))
+        with self.assertRaises(ValueError):
+            nv.verify_worker_authority(env, 'KB-t2')
+        for changed in (env | {'GITHUB_RUN_ID': '123'}, env | {'EPIC242_ADMISSION_MODE': 'unknown'},
+                        env | {'EPIC242_NATIVE_WORKER': 'ci-1-2-e16-ka-t2'}):
+            with self.assertRaises(ValueError):
+                nv.verify_worker(changed)
+
+    def test_changed_local_request_and_filled_copy_rejected_before_execution(self):
+        self.approved_fixture()
+        filled = self.stage / self.target / 'filled' / (self.target + '.kicad_pcb')
+        filled.write_text('changed before fill')
+        with patch.object(nv.subprocess, 'run') as launch, self.assertRaisesRegex(ValueError, 'sealed input'):
+            nv.execute(self.stage, self.target)
+        launch.assert_not_called()
+
+    def test_native_local_context_needs_real_gate_before_trusting_host_sha(self):
+        env = self.approved_fixture()
+        # A worktree .git pointer is outside /work. No git command is needed in
+        # the container, but real read-only gate proof is required first.
+        with patch.dict(os.environ, env, clear=True), patch.object(nv.subprocess, 'run') as process, \
+             patch.object(nv, 'native_guard_provenance', side_effect=ValueError('no actual gate')):
+            with self.assertRaisesRegex(ValueError, 'actual gate'):
+                nv.native_context(self.stage, self.target, 'native-fill')
+            process.assert_not_called()
+        with patch.dict(os.environ, env, clear=True), patch.object(nv.subprocess, 'run') as process, \
+             patch.object(nv, 'native_guard_provenance') as proof:
+            self.assertEqual(nv.native_context(self.stage, self.target, 'native-fill')[1], self.packet)
+            self.assertTrue(proof.called)
+            process.assert_not_called()
+
+    def test_local_native_gate_binds_full_authority_and_readonly_ack(self):
+        env = self.approved_fixture()
+        gate = self.base / 'local-gate'; gate.mkdir()
+        mounts = self.base / 'local-mounts'
+        mounts.write_text('1 0 0:1 / /epic242-gate ro - bind none ro\n2 0 0:1 / /epic242-start.sh ro - bind none ro\n')
+        cg = self.base / 'local-container'; cg.mkdir()
+        (cg / 'memory.max').write_text('6442450944'); (cg / 'memory.swap.max').write_text('0')
+        cid, token = 'f' * 64, 'gate.abcdefghijkl'
+        (gate / 'container-id').write_text(cid); (gate / 'ack').write_text(token + ':' + cid + '\n')
+        command = nv.phase_commands(str(F / 'native_validation.py'), '.circuit-cache/request', self.target, env)[0][1][2:]
+        image = __import__('re').search(r"^KICAD_IMAGE='([^']+)'$", (self.root / 'scripts/kicad/pin.env').read_text(), __import__('re').M).group(1)
+        entry = dict(container_id=cid, token=token, worker=env['EPIC242_NATIVE_WORKER'],
+                     deadline=int(env['EPIC242_NATIVE_DEADLINE']), image=image, command=command)
+        (gate / 'request.json').write_bytes(nv.canonical(entry))
+        nv.native_guard_provenance(env, self.stage, self.target, 'native-fill', gate, mounts, cg)
+        entry['command'] = [x for x in command if not x.startswith('EPIC242_LOCAL_APPROVAL_SHA256=')]
+        (gate / 'request.json').write_bytes(nv.canonical(entry))
+        with self.assertRaisesRegex(ValueError, 'exact native command'):
+            nv.native_guard_provenance(env, self.stage, self.target, 'native-fill', gate, mounts, cg)
+
+    def test_inner_authority_preserves_filled_chain_but_rejects_method_tamper(self):
+        env = self.approved_fixture()
+        filled = self.stage / self.target / 'filled' / (self.target + '.kicad_pcb')
+        filled.write_text('filled bytes; exact chain checked by native worker')
+        nv.verify_authority(self.packet, self.stage / 'request.json', env, 'a' * 40)
+        (self.root / 'scripts/kicad/native_start_gate.sh').write_text('changed method')
+        with self.assertRaisesRegex(ValueError, 'sealed input'):
+            nv.verify_authority(self.packet, self.stage / 'request.json', env, 'a' * 40)
+
+
 if __name__ == '__main__':
     unittest.main()

@@ -58,3 +58,134 @@ final absence. The separate harmless qualification fixture retains its existing
 control protocol; its results do not qualify this new native handshake. Native
 execution remains on hold until independent source review and explicit parent
 admission of an immutable source SHA.
+
+## Local WSL admission (preparation is not execution authority)
+
+`local_native_admission.py` adds an explicit local lane without inventing a GitHub
+run. CI admission, `run.sh`, the resource guard, native gate and their limits are
+unchanged. Preparation requires a clean immutable checkout and writes a fresh
+request with a 32-hex run nonce, positive attempt, exact checkout/UID, command,
+input/method hashes, evidence path, shared heavy guard and resource contract.
+
+Only these operations are accepted:
+
+| Kind | Target | Command inside the existing guard | Deadline |
+| --- | --- | --- | --- |
+| `startup-success` | `startup-success` | `bash scripts/kicad/run.sh kicad-cli version` | 60 s |
+| `startup-failure` | `startup-failure` | `bash scripts/kicad/run.sh /bin/false` | 60 s |
+| `oracle` | `python` | The one deferred precision-vendor unittest | 1,680 s |
+| `e16` | `KA-t2`, `KB-t2`, `KB-p1` separately | Existing E16 worker | 2,580 s |
+
+Each operation needs a separate operator attestation. The local lane reserves one
+global native slot, uses the existing shared heavy queue, and retains the 6 GiB
+worker / 12 GiB aggregate / zero-swap native limits. The shared guard can impose an
+earlier deadline (its configured default is 1,800 s); no limit is raised. Local
+execution must be launched directly, because it wraps itself in the shared guard;
+a caller-supplied nested-guard bypass or alternate queue is refused. Its existing
+configuration is sealed at preparation and must match at execution. A missing
+flock backend or unavailable queue fails closed before launching the helper.
+
+### Prepare a request
+
+Create a fresh ignored output directory, choose a fresh nonce (for example
+`python3 -c 'import uuid; print(uuid.uuid4().hex)'`), and run from the integration
+checkout, substituting the actual nonce and fresh path:
+
+```sh
+python3 scripts/kicad/local_native_admission.py prepare \
+  --kind startup-success --target startup-success \
+  --run-id <32-hex-nonce> --attempt 1 \
+  --output .circuit-cache/<fresh>/startup-success.json \
+  --evidence .circuit-cache/<fresh>/startup-success-guard.json
+```
+
+This command only reads source and writes the request. It does not approve, pull
+an image, invoke sudo, create a service or run native tools. The other startup
+phase is a separate request. `oracle --target python` prepares only
+`design.spec.cells.test_sweep_precision_vendor.PrecisionVendorSweepGate.test_original_network_returns_nonzero_for_supported_failure`;
+no aggregate discovery is allowed. Its existing TI ZIP/library bytes must be
+available and are sealed in the request.
+
+For the three matched E16 targets, use the existing `native_descriptor.py`
+materializations, graphs, fresh stage and `--run-attempt`, adding
+`--local-run-id <32-hex-nonce>`. This produces one `local-request.json` under each
+target directory. No `GITHUB_*` values are needed or synthesized. Each envelope
+binds the full E16 request, all staged inputs, the target's initial PCB/sidecars,
+protected files and the local/guard methods. Changed HEAD, paths, inputs, method,
+attempt or run identity require new requests and approval.
+
+### Separate operator action
+
+Preparation and execution never call `approve`. Only after independent review,
+actual global reservation, and the applicable qualification work, the operator
+may run the following with the **exact reviewed digest** and genuine references:
+
+```sh
+python3 scripts/kicad/local_native_admission.py approve \
+  --request .circuit-cache/<fresh>/startup-success.json \
+  --request-sha256 <reviewed-request-sha256> \
+  --output .circuit-cache/<fresh>/startup-success-approval.json \
+  --operator <operator-name> \
+  --reservation-reference <separate-global-reservation-reference> \
+  --qualification-reference <applicable-prior-control-evidence-reference>
+```
+
+For startup qualification itself, the qualification reference identifies the
+prior harmless whole-worker/control evidence and the approval to test the native
+startup protocol; it does not assert that the startup test has already passed.
+For oracle and E16 work, it identifies completed applicable runner/control and
+native-startup evidence. The existing `qualify_resource_guard.py` already accepts
+an explicitly admitted local identity; it remains a separate operator-approved
+procedure. No qualification routine is automatically launched by request
+preparation or approval.
+
+An approval file is an **operator attestation**, not cryptographic identity or a
+security boundary against another process using the same Unix account. Agents
+must not create it merely because they can read the request digest. The file
+binds the exact request, run, attempt, target, checkout and source SHA. References
+must describe actual approval/evidence, not placeholders. This implementation
+validates their presence and binding; independent review establishes their truth.
+
+The operator then authenticates and executes in the **same WSL terminal**:
+
+```sh
+sudo -v
+sudo -n systemctl show --property=Version --value
+python3 scripts/kicad/local_native_admission.py execute \
+  --request .circuit-cache/<fresh>/startup-success.json \
+  --approval .circuit-cache/<fresh>/startup-success-approval.json
+```
+
+Successful authentication is only a prerequisite: it does not prove every
+privileged guard operation or grant exact-run approval. Short-lived sudo authentication can expire before a long run finishes; the approved runner context must retain the required privilege through final cleanup. This procedure changes
+no sudo policy or permanent service configuration. No password is passed to an
+agent. For E16, approve each target envelope at its `operator-approval.json` path;
+then the existing `native_validation.py execute --stage ... --target ...` routes
+to the local launcher. Approval of one target does not approve the other targets.
+
+### Execution evidence and retry rules
+
+The launcher rechecks all inputs, writes an exclusive persistent claim under
+`~/.local/state/epic242-native-admission/`, and calls the existing guard through the
+shared heavy queue. A host worker rechecks authority and actual service cgroup,
+limits and deadline after queueing. All guard stdout/stderr is retained in
+`<guard-evidence>.driver.log`; the claim's `.result` records the raw exit status,
+exact command, request/approval/log hashes and post-run immutable-input check.
+A failed launch remains consumed. Never remove claims to retry: prepare a new
+attempt and obtain new approval. Existing `/tmp` guard claims, native receipts
+and filled-board preservation checks remain in effect as additional checks.
+
+Startup phases reuse the complete existing lifecycle verifier, permitting only
+the exact local host-worker outer command. Helper identities, actual membership,
+acknowledgements, terminal states and cleanup evidence stay mandatory. An expected
+`/bin/false` result retains the original failure receipt and produces a separate
+`<guard-evidence>.qualification.json`; an unrelated failure is not relabeled a
+pass. Both phases and the separate whole-worker/control qualification are needed;
+a single startup phase is not complete runner qualification.
+
+Inside Docker, a WSL worktree's `.git` pointer can refer outside `/work`. Local
+native entry therefore verifies the actual read-only startup gate first and then
+checks the host-guard-bound source SHA, exact request/approval and sealed methods.
+It does not invoke Git through that inaccessible pointer. Host entry still checks
+clean Git HEAD. Existing fill/DRC/connectivity hash chains and cap checks remain
+mandatory; a local envelope cannot turn source preparation into native acceptance.

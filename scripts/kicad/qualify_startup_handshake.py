@@ -44,14 +44,14 @@ def guard_command(sha, hook, admission, worker, evidence, failing):
             *([] if failing else ['version'])]
 
 
-def verify_phase(name, code, receipt, sha, hook, admission_id, worker):
+def verify_phase(name, code, receipt, sha, hook, admission_id, worker, *, expected_plan_command=None):
     failing = name == 'intentional-failure'
     command = ['bash', 'scripts/kicad/run.sh', '/bin/false' if failing else 'kicad-cli',
                *([] if failing else ['version'])]
     plan = receipt.get('plan', {})
     if (plan.get('sha') != sha or plan.get('hook_sha256') != hook or
             plan.get('admission_id') != admission_id or plan.get('worker') != worker or
-            plan.get('seconds') != 60 or plan.get('command') != command or
+            plan.get('seconds') != 60 or plan.get('command') != (command if expected_plan_command is None else expected_plan_command) or
             plan.get('memory_max') != guard.CAP or
             plan.get('aggregate_memory_max') != guard.AGGREGATE_CAP):
         raise ValueError(name + ': reviewed source, admission, command or resource plan differs')

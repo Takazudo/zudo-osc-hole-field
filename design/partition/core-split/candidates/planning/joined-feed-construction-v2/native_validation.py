@@ -29,6 +29,25 @@ AUTHORITY_KEYS = ("GITHUB_RUN_ID", "GITHUB_RUN_ATTEMPT", "GITHUB_SHA", "EPIC242_
                   "EPIC242_PARENT_ADMISSION_SHA", "EPIC242_REVIEWED_HOOK_SHA256", "EPIC242_PARENT_REQUEST_SHA256")
 
 
+def local_admission():
+    spec = importlib.util.spec_from_file_location("e16_local_admission", ROOT / "scripts/kicad/local_native_admission.py")
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
+
+
+def authority_keys(env):
+    mode = env.get("EPIC242_ADMISSION_MODE", "ci")
+    need(mode in ("ci", "local"), "unknown admission mode")
+    if mode == "local":
+        module = local_admission()
+        module.no_mixed_authority(env)
+        return module.AUTHORITY_KEYS
+    need(not any(env.get(k) for k in ("EPIC242_LOCAL_REQUEST", "EPIC242_PARENT_LOCAL_REQUEST_SHA256",
+             "EPIC242_LOCAL_APPROVAL", "EPIC242_LOCAL_APPROVAL_SHA256")), "mixed local/CI authority refused")
+    return AUTHORITY_KEYS
+
+
 def need(condition, message):
     if not condition:
         raise ValueError(message)
@@ -140,7 +159,7 @@ def admission_command(root, script, stage, target):
 def phase_commands(script, stage, target, env):
     verify_worker(env)
     prefix = ["bash", "scripts/kicad/run.sh"]
-    native_env = ["env"] + [k + "=" + env[k] for k in (*GUARD_KEYS, *AUTHORITY_KEYS)]
+    native_env = ["env"] + [k + "=" + env[k] for k in (*GUARD_KEYS, *authority_keys(env))]
     base = ["python3", script]
     filled = str(Path(stage) / target / "filled" / (target + ".kicad_pcb"))
     return [
@@ -152,7 +171,10 @@ def phase_commands(script, stage, target, env):
 
 def verify_worker(env, now=None):
     worker = env.get("EPIC242_NATIVE_WORKER", "")
-    need(re.fullmatch(r"ci-[0-9]+-[0-9]+-e16-(ka-t2|kb-t2|kb-p1)", worker), "admitted E16 worker required")
+    authority_keys(env)
+    pattern = (r"local-[0-9a-f]{32}-[1-9][0-9]{0,5}-e16-(ka-t2|kb-t2|kb-p1)"
+               if env.get("EPIC242_ADMISSION_MODE") == "local" else r"ci-[0-9]+-[0-9]+-e16-(ka-t2|kb-t2|kb-p1)")
+    need(re.fullmatch(pattern, worker), "admitted E16 worker required")
     expected_slice = "epic242-w" + worker.encode().hex() + ".slice"
     need(env.get("EPIC242_NATIVE_SLICE") == expected_slice, "worker/slice binding mismatch")
     deadline = env.get("EPIC242_NATIVE_DEADLINE", "")
@@ -243,9 +265,11 @@ def collect_materialized(directories, graphs):
     return data, files
 
 
-def prepare(materialized, graphs, stage, root=None, run_attempt=1):
+def prepare(materialized, graphs, stage, root=None, run_attempt=1, local_run_id=None):
     root = ROOT if root is None else root
-    need(type(run_attempt) is int and run_attempt > 0, "positive exact GitHub run attempt required")
+    need(type(run_attempt) is int and run_attempt > 0, "positive exact run attempt required")
+    if local_run_id is not None:
+        need(re.fullmatch(r"[0-9a-f]{32}", local_run_id) and run_attempt <= 999999, "invalid local run/attempt")
     data, files = collect_materialized(materialized, graphs)
     stage = Path(stage).resolve()
     need((root / ".circuit-cache").resolve().is_relative_to(root.resolve()), "cache must remain within runner repository mount")
@@ -291,7 +315,20 @@ def prepare(materialized, graphs, stage, root=None, run_attempt=1):
               "required_parent_request_digest_variable": "EPIC242_PARENT_REQUEST_SHA256",
               "preservation": "Fill once; DRC and census inspect identical filled bytes; no phase resets the board.",
               "limits": "Source/native differences retained. Native zone fill need not equal analytic clipped sheets. No finite current/resistance or physical qualification is implied."}
+    if local_run_id is not None:
+        packet.pop("github_run_attempt")
+        packet.update(admission_mode="local", local_run_id=local_run_id, local_run_attempt=run_attempt,
+                      admission="Separate operator approval of each local target request is required; preparation cannot approve.")
+        packet["required_parent_request_digest_variable"] = "EPIC242_PARENT_LOCAL_REQUEST_SHA256"
+        packet["requests"] = {target: ["python3", "scripts/kicad/local_native_admission.py", "execute",
+            "--request", relative(root, stage / target / "local-request.json"),
+            "--approval", relative(root, stage / target / "operator-approval.json")] for target in TARGETS}
     write_json(stage / "request.json", packet)
+    if local_run_id is not None:
+        admission = local_admission()
+        for target in TARGETS:
+            admission.prepare(root, relative(root, stage / target / "local-request.json"), "e16", local_run_id,
+                run_attempt, relative(root, stage / target / "guard.json"), stage=relative(root, stage), target=target)
     check_protected(root, protected)
     return packet
 
@@ -343,6 +380,16 @@ def verify_chain(chain, complete=False):
 
 
 def verify_authority(request, request_path, env, head):
+    keys = authority_keys(env)
+    if env.get("EPIC242_ADMISSION_MODE") == "local":
+        need(request.get("admission_mode") == "local", "CI request cannot use local authority")
+        local = local_admission().authority(ROOT, env)
+        need(local["kind"] == "e16" and local["source_sha"] == head == request["orchestration_commit"], "local source SHA differs")
+        need(local["run_id"] == request["local_run_id"] and local["attempt"] == request["local_run_attempt"], "local run/attempt differs")
+        need(local["stage"] == relative(ROOT, request_path.parent) and
+             local["input_sha256"].get(relative(ROOT, request_path)) == sha(request_path), "local E16 request binding differs")
+        return ["env"] + [key + "=" + env[key] for key in keys]
+    need(request.get("admission_mode", "ci") == "ci", "local request cannot use CI authority")
     need(env.get("GITHUB_RUN_ID", "").isdecimal() and
          env.get("EPIC242_PARENT_ADMISSION_RUN_ID") == env["GITHUB_RUN_ID"], "exact parent admission run ID required")
     need(env.get("GITHUB_RUN_ATTEMPT") == str(request["github_run_attempt"]), "exact requested GitHub run attempt differs")
@@ -355,6 +402,11 @@ def verify_authority(request, request_path, env, head):
 
 
 def verify_worker_authority(env, target):
+    if env.get("EPIC242_ADMISSION_MODE") == "local":
+        local = local_admission().authority(ROOT, env)
+        need(local["kind"] == "e16" and local["target"] == target and local["worker"] == verify_worker(env),
+             "local worker differs from exact operator-approved target")
+        return
     expected = "ci-" + env["GITHUB_RUN_ID"] + "-" + env["GITHUB_RUN_ATTEMPT"] + "-e16-" + target.lower()
     need(verify_worker(env) == expected, "guard worker differs from exact parent-approved run/attempt/target")
 
@@ -381,7 +433,7 @@ def native_guard_provenance(env, stage, target, mode, gate=Path("/epic242-gate")
     need(image is not None and request.get("image") == image.group(1), "gate pinned image differs")
     need(request.get("container_id") == cid and request.get("worker") == worker and
          request.get("deadline") == int(env["EPIC242_NATIVE_DEADLINE"]), "native gate worker/deadline mismatch")
-    expected = ["env"] + [key + "=" + env[key] for key in (*GUARD_KEYS, *AUTHORITY_KEYS)] + ["python3",
+    expected = ["env"] + [key + "=" + env[key] for key in (*GUARD_KEYS, *authority_keys(env))] + ["python3",
         relative(ROOT, HERE / "native_validation.py"), mode, "--stage", relative(ROOT, stage), "--target", target]
     need(request.get("command") == expected, "guard gate did not admit this exact native command")
     # Docker may namespace cgroup root; the read-only guard acknowledgement is
@@ -393,7 +445,6 @@ def worker(stage, target):
     identity = verify_worker(os.environ)
     need(identity.endswith("-e16-" + target.lower()), "guard worker names different target")
     stage, request, entry = load_stage(stage, target)
-    need(identity.split("-")[2] == str(request["github_run_attempt"]), "guard worker attempt differs from exact requested GitHub attempt")
     head = subprocess.run(["git", "rev-parse", "HEAD"], cwd=ROOT, capture_output=True, text=True, check=True).stdout.strip()
     verify_authority(request, stage / "request.json", os.environ, head)
     verify_worker_authority(os.environ, target)
@@ -438,8 +489,11 @@ def native_context(stage, target, mode):
     identity = verify_worker(os.environ)
     need(identity.endswith("-e16-" + target.lower()), "native worker target mismatch")
     result = load_stage(stage, target)
-    need(identity.split("-")[2] == str(result[1]["github_run_attempt"]), "native worker attempt differs from request")
-    head = subprocess.run(["git", "rev-parse", "HEAD"], cwd=ROOT, capture_output=True, text=True, check=True).stdout.strip()
+    if os.environ.get("EPIC242_ADMISSION_MODE") == "local":
+        native_guard_provenance(os.environ, result[0], target, mode)
+        head = local_admission().authority(ROOT, os.environ)["source_sha"]
+    else:
+        head = subprocess.run(["git", "rev-parse", "HEAD"], cwd=ROOT, capture_output=True, text=True, check=True).stdout.strip()
     verify_authority(result[1], result[0] / "request.json", os.environ, head)
     verify_worker_authority(os.environ, target)
     native_guard_provenance(os.environ, result[0], target, mode)
@@ -543,6 +597,8 @@ def native_connectivity(stage, target):
 
 def execute(stage, target):
     stage, request, entry = load_stage(stage, target)
+    if request.get("admission_mode") == "local":
+        return local_admission().execute(ROOT, stage / target / "local-request.json", stage / target / "operator-approval.json")
     spec = importlib.util.spec_from_file_location("admission", ROOT / "scripts/kicad/ci_native_admission.py")
     admission = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(admission)
@@ -570,6 +626,7 @@ def main():
     prep.add_argument("--graph", action="append", required=True, help="TARGET=ABS_SOURCE_GRAPH_JSON; repeated for all three targets")
     prep.add_argument("--stage", type=Path, required=True)
     prep.add_argument("--run-attempt", type=int, default=1)
+    prep.add_argument("--local-run-id", help="32-hex local run nonce; requires separate operator approval")
     for name in ("execute", "worker", "native-fill", "native-connectivity"):
         command = commands.add_parser(name)
         command.add_argument("--stage", type=Path, required=True)
@@ -579,7 +636,7 @@ def main():
         if args.mode == "prepare":
             graphs = dict(value.split("=", 1) for value in args.graph)
             need(len(graphs) == len(args.graph), "duplicate graph target")
-            result = prepare(args.materialized, graphs, args.stage, run_attempt=args.run_attempt)
+            result = prepare(args.materialized, graphs, args.stage, run_attempt=args.run_attempt, local_run_id=args.local_run_id)
             print(json.dumps({"status": result["status"], "requests": result["requests"]}))
         elif args.mode == "execute":
             return execute(args.stage, args.target)
