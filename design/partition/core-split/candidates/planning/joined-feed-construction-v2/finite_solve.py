@@ -138,6 +138,22 @@ def refined_solve(lu,Af,b,*,extended_solution=False):
   score=float(np.max(abs(r)))/scale
   if score<worst:best=x.copy();worst=score
  return best,worst
+def refined_interface_solve(lu,Af,B):
+ """Retain precision in the small terminal basis without widening driving-point batches.
+
+ A basis residual normalized by the large terminal stamp can pass while its
+ contribution fails load-relative coupled KCL. Refine one terminal RHS at a time
+ with the same three corrections and retain its extended accumulator for later
+ reconstruction. Report the original whole-B maximum-norm residual normalization.
+ """
+ need(B.ndim==2,'interface RHS must be a matrix')
+ Y=np.empty(B.shape,dtype=np.longdouble);worst_absolute=0.
+ for j in range(B.shape[1]):
+  column=B[:,j];Y[:,j],relative=refined_solve(lu,Af,column,extended_solution=True)
+  need(np.isfinite(relative) and relative>=0,'nonfinite or invalid interface residual')
+  worst_absolute=max(worst_absolute,relative*max(float(np.max(abs(column))),1e-300))
+ scale=max(float(np.max(abs(B))),1e-300) if B.size else 1e-300
+ return Y,worst_absolute/scale
 def terminal_stamps(ops,cfg):
  """Each feed termination: rank-1 distributed conductance w w'/Rt between its pad support and its terminal node."""
  terms=sorted(ops['terminals'],key=wire_of);Rt=cfg['wires']['termination_per_end_ohm']
@@ -214,10 +230,10 @@ def reduce(a):
   need(pid in covered and pid in ops['supports'],'eligible complete-device load has no local finite support: '+pid)
   n,w=ops['supports'][pid];need(not fixed[n].any(),'load on a held source support: '+pid);f[n]-=I*w
  t0=time.monotonic();lu=spla.splu(Af,permc_spec='MMD_AT_PLUS_A',diag_pivot_thresh=0.,options=dict(SymmetricMode=True));tf=time.monotonic()-t0
- Y,resY=refined_solve(lu,Af,Bf) if T else (np.zeros((len(free),0)),0.);S=D-Bf.T@Y
+ Y,resY=refined_interface_solve(lu,Af,Bf);S=np.asarray(D-Bf.T@Y,dtype=np.float64)
  u0,res=refined_solve(lu,Af,f[free],extended_solution=True) if f.any() else (np.zeros(len(free)),0.)
  # The small interface solver uses float64. Keep the full node/load solution
- # extended for back-substitution and independent node-KCL/energy diagnostics.
+ # and terminal basis extended for back-substitution and independent node-KCL/energy diagnostics.
  g=np.asarray(Bf.T@u0,dtype=np.float64)
  pads=sorted(p for p in covered if p in ops['supports'] and p not in terms and p not in src)
  Wr,Wc,Wv=[],[],[]
@@ -228,7 +244,7 @@ def reduce(a):
  Wb=W[:,:BATCH].toarray();U,_=refined_solve(lu,Af,Wb);E=Wb.T@U;recip=float(np.max(abs(E-E.T))/max(np.max(abs(E)),1e-30)) if len(pads) else 0.
  out={'board':a.board,'net':a.net,'case':a.case,'depth':a.depth,'N':N,'free':free,'terms':terms,'S':S,'g':g,'Y':Y,'u0':u0,'pads':pads,'P0':P0,'PY':PY,
       'loads':{p:v for p,v in loads.items()},'device_service_summary':service['device_service']['summary'],'service_excluded_pad_ids':service['device_service']['excluded_pad_ids'],'unserved_loads':unserved,'nonzero_not_injected':skipped,'source_pads':src,
-      'checks':{'reciprocity_relative':recip,'load_solve_residual_relative':res,'interface_solve_residual_relative':resY,'refinement_steps':REFINE_STEPS,'load_solution_dtype':str(u0.dtype),'factor_seconds':round(tf,2),'L_U_nnz':int(lu.L.nnz+lu.U.nnz)},
+      'checks':{'reciprocity_relative':recip,'load_solve_residual_relative':res,'interface_solve_residual_relative':resY,'refinement_steps':REFINE_STEPS,'load_solution_dtype':str(u0.dtype),'interface_solution_dtype':str(Y.dtype),'factor_seconds':round(tf,2),'L_U_nnz':int(lu.L.nnz+lu.U.nnz)},
       'barrel_intervals':len(records),'bindings':{'operator':sha(a.operator),'coverage':sha(a.coverage),'ledger':sha(a.ledger),'service':sha(a.service),'config':sha(a.config),'cases':sha(a.cases),'method':sha(Path(__file__))}}
  psave(a.output,out)
  return {k:out[k] for k in ['board','net','case','depth','N']}|{'pads':len(pads),'loads':len(loads),'unserved':len(unserved),'checks':out['checks']}

@@ -184,6 +184,8 @@ class Coupled(unittest.TestCase):
    for b in ('KA','KB'):
     red=U.pload(cls.d/f'{b}-red-{net}.pkl.gz')
     assert red['g'].dtype==np.dtype(np.float64),'small interface RHS must remain supported by numpy.linalg'
+    assert red['S'].dtype==np.dtype(np.float64),'small interface matrix must remain supported by numpy.linalg'
+    assert red['Y'].dtype==np.dtype(np.longdouble),'serialized terminal basis discarded reconstruction precision'
  def res(self,net):return json.loads(gzip.decompress((self.d/f'res-{net}.json.gz').read_bytes()))
  def test_coverage_is_complete_and_graph_reproduced(self):
   for b in ('KA','KB'):
