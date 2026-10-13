@@ -3,12 +3,13 @@ import argparse
 import importlib.util
 import json
 import os
+import signal
 from pathlib import Path
 import sys
 import tempfile
 import time
 import unittest
-from unittest.mock import patch
+from unittest.mock import Mock, patch
 
 HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
@@ -20,6 +21,59 @@ IMAGE = 'sha256:' + 'a' * 64
 
 
 class QualificationBoundaries(unittest.TestCase):
+    def test_cleanup_exception_still_restores_signal_handlers(self):
+        previous = signal.getsignal(signal.SIGTERM)
+        def failed(args):
+            signal.signal(signal.SIGTERM, signal.SIG_IGN)
+            raise OSError('receipt write failed')
+        with patch.object(qualification, '_qualify', side_effect=failed), self.assertRaises(OSError):
+            qualification.qualify(None)
+        self.assertEqual(signal.getsignal(signal.SIGTERM), previous)
+
+    def test_active_phase_termination_retains_failure_and_owned_cleanup(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            evidence = Path(tmp) / 'fresh'
+            args = argparse.Namespace(admission_id='parent', sha='1' * 40,
+                hook_sha256=qualification.hashlib.sha256((HERE / 'run.sh').read_bytes()).hexdigest(),
+                evidence_directory=str(evidence))
+            commands = []
+            def command(argv, **kwargs):
+                commands.append(argv)
+                if argv[:2] == ['git', 'rev-parse']: return args.sha
+                if argv[:2] == ['git', 'status']: return ''
+                if argv[0] == 'cc' and '-o' in argv:
+                    Path(argv[argv.index('-o') + 1]).write_bytes(b'mocked binary')
+                if argv[:3] == ['docker', 'image', 'import']: return IMAGE
+                if argv[:2] == ['cc', '--version']: return 'mock compiler'
+                if argv[:2] == ['systemctl', 'show']: return 'inactive'
+                return ''
+            child = Mock(); child.poll.return_value = None
+            def wait(timeout):
+                if timeout == 75:
+                    signal.getsignal(signal.SIGTERM)(signal.SIGTERM, None)
+                return 0
+            child.wait.side_effect = wait
+            previous = signal.getsignal(signal.SIGTERM)
+            def cleanup(worker):
+                self.assertEqual(signal.getsignal(signal.SIGTERM), signal.SIG_IGN)
+                return []
+            with patch.object(guard, 'run', side_effect=command), \
+                    patch.object(qualification, 'capability_probe', return_value={}), \
+                    patch.object(qualification.subprocess, 'Popen', return_value=child), \
+                    patch.object(qualification, 'cleanup_started_worker', side_effect=cleanup) as cleaned, \
+                    patch.object(qualification, 'wait_for'), patch.object(qualification, 'quiet', return_value=True), \
+                    patch.object(qualification, 'observe_owned_worker', return_value={'workload_absent': True}), \
+                    patch.object(Path, 'glob', return_value=[]):
+                self.assertEqual(qualification.qualify(args), 1)
+            child.terminate.assert_called_once(); cleaned.assert_called_once()
+            self.assertEqual(signal.getsignal(signal.SIGTERM), previous)
+            self.assertIn(['docker', 'image', 'rm', IMAGE], commands)
+            report = json.loads((evidence / 'qualification.json').read_text())
+            self.assertEqual(report['status'], 'FAIL')
+            self.assertIn('interrupted by signal', report['reason'])
+            self.assertTrue(report['owned_image_removed'])
+            self.assertTrue(report['owned_workloads_absent'])
+
     def test_harmless_mode_requires_exact_fixture_not_arbitrary_native_command(self):
         command = [sys.executable, str(HERE / 'run_resource_fixture.py'), '--image', IMAGE, '--mode', 'aggregate']
         metadata = [{'Id': IMAGE, 'Config': {'Entrypoint': ['/fixture']}}]

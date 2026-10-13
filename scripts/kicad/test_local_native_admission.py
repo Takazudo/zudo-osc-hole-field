@@ -114,6 +114,28 @@ class LocalAdmission(unittest.TestCase):
         self.assertFalse(result['post_run_inputs_unchanged'])
         self.assertTrue(Path(result['driver_log']).is_file())
 
+    def test_interactive_auth_is_request_bound_and_requires_tty_before_claim(self):
+        self.mutate(authentication='operator-pty')
+        self.approve_fixture()
+        with patch.object(a.os,'isatty',return_value=False),patch.object(a.subprocess,'run') as launch, self.assertRaisesRegex(ValueError,'terminal'):
+            a.execute(self.root,self.path,self.approval,env={},claims=self.root/'claims')
+        launch.assert_not_called();self.assertFalse((self.root/'claims').exists())
+
+    def test_interactive_bridge_has_no_transcript_or_password_capture(self):
+        self.mutate(authentication='operator-pty')
+        self.approve_fixture()
+        with patch.object(a.os,'isatty',return_value=True),patch.object(a.subprocess,'run',return_value=subprocess.CompletedProcess([],1)) as launch:
+            self.assertEqual(a.execute(self.root,self.path,self.approval,env={},claims=self.root/'claims'),1)
+        command=launch.call_args.args[0]
+        self.assertEqual(command[:4],['bash',str(self.heavy),'--','/usr/bin/script'])
+        self.assertIn('--return',command);self.assertIn('--echo=never',command)
+        self.assertEqual(command[-1],'/dev/null')
+        self.assertNotIn('stdout',launch.call_args.kwargs);self.assertNotIn('input',launch.call_args.kwargs)
+        import shlex
+        inner=shlex.split(command[command.index('--command')+1])
+        self.assertEqual(inner[:2],['python3','scripts/kicad/operator_terminal.py'])
+        self.assertEqual(inner[-1],str(self.approval.relative_to(self.root)))
+
     def test_prepare_does_not_approve_or_launch(self):
         self.assertFalse(self.approval.exists())
         self.assertEqual(self.request['command'], ['python3', '-m', 'unittest', a.ORACLE_TEST])

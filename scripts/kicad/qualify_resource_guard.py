@@ -6,6 +6,7 @@ import json
 import os
 from pathlib import Path
 import re
+import signal
 import subprocess
 import sys
 import tarfile
@@ -130,6 +131,15 @@ def phase_result(phase, code, evidence, watch_results, is_quiet, fault=None):
 
 
 def qualify(args):
+    old_handlers = {sig: signal.getsignal(sig) for sig in (signal.SIGINT, signal.SIGTERM, signal.SIGHUP)}
+    try:
+        return _qualify(args)
+    finally:
+        for sig, handler in old_handlers.items():
+            signal.signal(sig, handler)
+
+
+def _qualify(args):
     directory = Path(args.evidence_directory)
     if directory.exists():
         raise ValueError('fresh evidence directory required')
@@ -141,6 +151,13 @@ def qualify(args):
     workers = []
     process = None
     active_worker = None
+    interrupted = []
+    def stop(signum, frame):
+        # Unwind through the existing owned-worker/image cleanup, once only.
+        if not interrupted:
+            interrupted.append(signum)
+            raise InterruptedError('operator control interrupted by signal ' + str(signum))
+    old_handlers = {sig: signal.signal(sig, stop) for sig in (signal.SIGINT, signal.SIGTERM, signal.SIGHUP)}
     try:
         if not args.admission_id or not re.fullmatch(r'[0-9a-f]{40}', args.sha):
             raise ValueError('exact SHA and explicit parent admission required')
@@ -196,6 +213,9 @@ def qualify(args):
     except Exception as error:
         report['reason'] = str(error)
     finally:
+        # Repeated terminal signals must not interrupt bounded cleanup.
+        for sig in old_handlers:
+            signal.signal(sig, signal.SIG_IGN)
         failures = []
         if process is not None and process.poll() is None:
             process.terminate()

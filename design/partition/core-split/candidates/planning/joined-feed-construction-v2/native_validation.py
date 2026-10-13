@@ -265,8 +265,9 @@ def collect_materialized(directories, graphs):
     return data, files
 
 
-def prepare(materialized, graphs, stage, root=None, run_attempt=1, local_run_id=None):
+def prepare(materialized, graphs, stage, root=None, run_attempt=1, local_run_id=None, interactive_auth=False):
     root = ROOT if root is None else root
+    need(not interactive_auth or local_run_id is not None, "operator PTY requires explicit local admission")
     need(type(run_attempt) is int and run_attempt > 0, "positive exact run attempt required")
     if local_run_id is not None:
         need(re.fullmatch(r"[0-9a-f]{32}", local_run_id) and run_attempt <= 999999, "invalid local run/attempt")
@@ -328,7 +329,7 @@ def prepare(materialized, graphs, stage, root=None, run_attempt=1, local_run_id=
         admission = local_admission()
         for target in TARGETS:
             admission.prepare(root, relative(root, stage / target / "local-request.json"), "e16", local_run_id,
-                run_attempt, relative(root, stage / target / "guard.json"), stage=relative(root, stage), target=target)
+                run_attempt, relative(root, stage / target / "guard.json"), stage=relative(root, stage), target=target, interactive_auth=interactive_auth)
     check_protected(root, protected)
     return packet
 
@@ -626,6 +627,7 @@ def main():
     prep.add_argument("--graph", action="append", required=True, help="TARGET=ABS_SOURCE_GRAPH_JSON; repeated for all three targets")
     prep.add_argument("--stage", type=Path, required=True)
     prep.add_argument("--run-attempt", type=int, default=1)
+    prep.add_argument("--interactive-auth", action="store_true")
     prep.add_argument("--local-run-id", help="32-hex local run nonce; requires separate operator approval")
     for name in ("execute", "worker", "native-fill", "native-connectivity"):
         command = commands.add_parser(name)
@@ -636,7 +638,7 @@ def main():
         if args.mode == "prepare":
             graphs = dict(value.split("=", 1) for value in args.graph)
             need(len(graphs) == len(args.graph), "duplicate graph target")
-            result = prepare(args.materialized, graphs, args.stage, run_attempt=args.run_attempt, local_run_id=args.local_run_id)
+            result = prepare(args.materialized, graphs, args.stage, run_attempt=args.run_attempt, local_run_id=args.local_run_id, interactive_auth=args.interactive_auth)
             print(json.dumps({"status": result["status"], "requests": result["requests"]}))
         elif args.mode == "execute":
             return execute(args.stage, args.target)

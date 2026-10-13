@@ -12,6 +12,7 @@ import pwd
 from pathlib import Path
 import re
 import shutil
+import shlex
 import subprocess
 import sys
 import time
@@ -26,7 +27,8 @@ CI_KEYS = ('GITHUB_RUN_ID', 'GITHUB_RUN_ATTEMPT', 'GITHUB_SHA',
            'EPIC242_PARENT_ADMISSION_RUN_ID', 'EPIC242_PARENT_ADMISSION_SHA',
            'EPIC242_PARENT_REQUEST_SHA256', 'EPIC242_REVIEWED_HOOK_SHA256')
 METHODS = ('scripts/kicad/local_native_admission.py', 'scripts/kicad/native_resource_guard.py',
-           'scripts/kicad/native_start_gate.sh', 'scripts/kicad/run.sh', 'scripts/kicad/pin.env')
+           'scripts/kicad/native_start_gate.sh', 'scripts/kicad/run.sh', 'scripts/kicad/pin.env',
+           'scripts/kicad/operator_terminal.py')
 LIMITS = {'worker_bytes': 6442450944, 'aggregate_bytes': 12884901888, 'swap_bytes': 0,
           'launch_available_bytes': 8589934592, 'global_slots': 1}
 
@@ -136,7 +138,7 @@ def command_and_inputs(request, root):
             '--target', request['target']], 2580, inputs
 
 
-def prepare(root, output, kind, run_id, attempt, evidence, *, stage=None, target='python', heavy_guard=None):
+def prepare(root, output, kind, run_id, attempt, evidence, *, stage=None, target='python', heavy_guard=None, interactive_auth=False):
     head = clean_head(root)
     destination = local_path(root, output, cache=True)
     need(destination.parent.is_dir() and not destination.exists(), 'fresh request with existing parent required')
@@ -146,6 +148,7 @@ def prepare(root, output, kind, run_id, attempt, evidence, *, stage=None, target
     need(heavy.is_file(), 'shared heavy guard unavailable')
     request = {'schema': 'epic242-local-native-request-v1', 'status': 'PREPARED; NOT ADMITTED',
                'checkout': str(root.resolve()), 'source_sha': head, 'request_path': output,
+               'authentication': 'operator-pty' if interactive_auth else 'preconfigured-noninteractive',
                'run_id': run_id, 'attempt': attempt, 'kind': kind, 'target': target,
                'stage': stage, 'evidence': evidence, 'limits': LIMITS,
                'heavy_guard': str(heavy), 'heavy_guard_sha256': sha(heavy),
@@ -184,6 +187,7 @@ def validate_request(root, path, *, host=True, check_inputs=True):
         if check_inputs or not mutable:
             need(sha(local_path(root, name)) == digest, 'sealed input changed: ' + name)
     local_path(root, request['evidence'], cache=True)
+    need(request.get('authentication') in ('operator-pty', 'preconfigured-noninteractive'), 'explicit authentication mode required')
     return request
 
 
@@ -242,6 +246,29 @@ def claim(request, digest, directory):
     return path
 
 
+def local_context(root, request, path, approval_path):
+    return {'EPIC242_ADMISSION_MODE': 'local', 'EPIC242_LOCAL_REQUEST': request['request_path'],
+            'EPIC242_PARENT_LOCAL_REQUEST_SHA256': sha(path),
+            'EPIC242_LOCAL_APPROVAL': str(approval_path.relative_to(root)),
+            'EPIC242_LOCAL_APPROVAL_SHA256': sha(approval_path)}
+
+
+def guard_command(root, request, context):
+    return [sys.executable, str(root / 'scripts/kicad/native_resource_guard.py'),
+            '--admission-id', 'local-' + request['run_id'] + '-' + str(request['attempt']),
+            '--worker', request['worker'], '--sha', request['source_sha'], '--hook-sha256',
+            request['input_sha256']['scripts/kicad/run.sh'], '--seconds', str(request['seconds']),
+            '--evidence', request['evidence'], '--', 'env',
+            *[key + '=' + context[key] for key in AUTHORITY_KEYS], 'python3',
+            'scripts/kicad/local_native_admission.py', 'worker']
+
+
+def terminal_command(root, path, approval_path):
+    command = ['python3', 'scripts/kicad/operator_terminal.py', '--request', str(path.relative_to(root)),
+               '--approval', str(approval_path.relative_to(root))]
+    return ['/usr/bin/script', '--quiet', '--return', '--echo=never', '--command', shlex.join(command), '/dev/null']
+
+
 def execute(root, path, approval_path, *, env=None, claims=None):
     env = dict(os.environ if env is None else env)
     no_mixed_authority(env)
@@ -251,24 +278,25 @@ def execute(root, path, approval_path, *, env=None, claims=None):
     receipt = local_path(root, request['evidence'], cache=True)
     need(receipt.parent.is_dir() and not any(Path(str(receipt) + suffix).exists() for suffix in
              ('', '.driver.log', '.qualification.json')), 'fresh evidence parent/file required')
-    context = {'EPIC242_ADMISSION_MODE': 'local', 'EPIC242_LOCAL_REQUEST': request['request_path'],
-               'EPIC242_PARENT_LOCAL_REQUEST_SHA256': digest,
-               'EPIC242_LOCAL_APPROVAL': str(approval_path.relative_to(root)),
-               'EPIC242_LOCAL_APPROVAL_SHA256': sha(approval_path)}
+    context = local_context(root, request, path, approval_path)
     authority(root, context, host=True)
     check_shared_guard(request, env)
+    interactive = request['authentication'] == 'operator-pty'
+    if interactive:
+        need(os.isatty(0) and os.isatty(1), 'operator PTY mode requires terminal stdin/stdout; use </dev/tty in a heredoc')
+        need(Path('/usr/bin/script').is_file(), 'util-linux script PTY helper unavailable')
     claimed = claim(request, digest, claims or Path(request['claim_directory']))
-    command = ['bash', request['heavy_guard'], '--', sys.executable, str(root / 'scripts/kicad/native_resource_guard.py'),
-               '--admission-id', 'local-' + request['run_id'] + '-' + str(request['attempt']),
-               '--worker', request['worker'], '--sha', request['source_sha'], '--hook-sha256',
-               request['input_sha256']['scripts/kicad/run.sh'], '--seconds', str(request['seconds']),
-               '--evidence', request['evidence'], '--', 'env',
-               *[key + '=' + context[key] for key in AUTHORITY_KEYS], 'python3',
-               'scripts/kicad/local_native_admission.py', 'worker']
+    guarded = guard_command(root, request, context)
+    command = ['bash', request['heavy_guard'], '--'] + (terminal_command(root, path, approval_path) if interactive else guarded)
     driver_log = Path(str(receipt) + '.driver.log')
     print('Guard output retained at ' + str(driver_log), flush=True)
-    with driver_log.open('x') as output:
-        result = subprocess.run(command, cwd=root, env=env, stdout=output, stderr=subprocess.STDOUT, check=False)
+    if interactive:
+        # Authentication inherits the real operator terminal; only the workload
+        # after successful sudo-v is redirected by operator_terminal.py.
+        result = subprocess.run(command, cwd=root, env=env, check=False)
+    else:
+        with driver_log.open('x') as output:
+            result = subprocess.run(command, cwd=root, env=env, stdout=output, stderr=subprocess.STDOUT, check=False)
     unchanged, error = True, None
     try:
         authority(root, context)  # Approval and immutable inputs still bound.
@@ -277,7 +305,7 @@ def execute(root, path, approval_path, *, env=None, claims=None):
         unchanged, error = False, str(failure)
     write(Path(str(claimed) + '.result'), {'exit_code': result.returncode, 'command': command,
         'request_sha256': digest, 'approval_sha256': context['EPIC242_LOCAL_APPROVAL_SHA256'],
-        'driver_log': str(driver_log), 'driver_log_sha256': sha(driver_log),
+        'driver_log': str(driver_log), 'driver_log_sha256': sha(driver_log) if driver_log.exists() else None,
         'post_run_inputs_unchanged': unchanged, 'post_run_error': error})
     if not unchanged:
         return 1
@@ -293,7 +321,7 @@ def execute(root, path, approval_path, *, env=None, claims=None):
         try:
             status['checked'] = lifecycle.verify_phase(name, result.returncode, read(receipt), request['source_sha'],
                 request['input_sha256']['scripts/kicad/run.sh'], 'local-' + request['run_id'] + '-' + str(request['attempt']),
-                request['worker'], expected_plan_command=command[command.index('--', 3) + 1:])
+                request['worker'], expected_plan_command=guarded[guarded.index('--') + 1:])
             status['status'] = 'PASS BOUNDED STARTUP PHASE ONLY'
         except (ValueError, KeyError, OSError) as error:
             status['reason'] = str(error)
@@ -331,6 +359,7 @@ def main():
     prep.add_argument('--attempt', type=int, required=True)
     prep.add_argument('--evidence', required=True)
     prep.add_argument('--stage')
+    prep.add_argument('--interactive-auth', action='store_true', help='operator authenticates inside a PTY after the shared queue')
     prep.add_argument('--target', default='python')
     approval = subs.add_parser('approve', help='OPERATOR ONLY: explicit attestation; never called by prepare or execute')
     approval.add_argument('--request', required=True)
@@ -347,7 +376,7 @@ def main():
     try:
         if args.action == 'prepare':
             prepare(ROOT, args.output, args.kind, args.run_id, args.attempt, args.evidence,
-                    stage=args.stage, target=args.target)
+                    stage=args.stage, target=args.target, interactive_auth=args.interactive_auth)
             print(json.dumps({'status': 'PREPARED; NOT ADMITTED', 'request_sha256': sha(ROOT / args.output)}))
         elif args.action == 'approve':
             approve(ROOT, local_path(ROOT, args.request, cache=True), args.request_sha256, args.output,

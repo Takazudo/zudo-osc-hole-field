@@ -323,7 +323,7 @@ class LocalStagingTests(unittest.TestCase):
 
     def setUp(self):
         StagingTests.setUp(self)
-        for name in ('local_native_admission.py', 'native_start_gate.sh'):
+        for name in ('local_native_admission.py', 'native_start_gate.sh', 'operator_terminal.py'):
             shutil.copyfile(REPO / 'scripts/kicad' / name, self.root / 'scripts/kicad' / name)
         with patch.object(nv, 'ROOT', self.root):
             self.local = nv.local_admission()

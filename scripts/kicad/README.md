@@ -96,7 +96,8 @@ python3 scripts/kicad/local_native_admission.py prepare \
   --kind startup-success --target startup-success \
   --run-id <32-hex-nonce> --attempt 1 \
   --output .circuit-cache/<fresh>/startup-success.json \
-  --evidence .circuit-cache/<fresh>/startup-success-guard.json
+  --evidence .circuit-cache/<fresh>/startup-success-guard.json \
+  --interactive-auth
 ```
 
 This command only reads source and writes the request. It does not approve, pull
@@ -108,7 +109,7 @@ available and are sealed in the request.
 
 For the three matched E16 targets, use the existing `native_descriptor.py`
 materializations, graphs, fresh stage and `--run-attempt`, adding
-`--local-run-id <32-hex-nonce>`. This produces one `local-request.json` under each
+`--local-run-id <32-hex-nonce> --interactive-auth`. This produces one `local-request.json` under each
 target directory. No `GITHUB_*` values are needed or synthesized. Each envelope
 binds the full E16 request, all staged inputs, the target's initial PCB/sidecars,
 protected files and the local/guard methods. Changed HEAD, paths, inputs, method,
@@ -146,18 +147,29 @@ binds the exact request, run, attempt, target, checkout and source SHA. Referenc
 must describe actual approval/evidence, not placeholders. This implementation
 validates their presence and binding; independent review establishes their truth.
 
-The operator then authenticates and executes in the **same WSL terminal**:
+For requests prepared with `--interactive-auth`, the operator executes from a
+real WSL terminal. Authentication happens inside the shared guard, in a fresh
+controlling PTY supplied by util-linux `script`:
 
 ```sh
-sudo -v
-sudo -n systemctl show --property=Version --value
 python3 scripts/kicad/local_native_admission.py execute \
   --request .circuit-cache/<fresh>/startup-success.json \
-  --approval .circuit-cache/<fresh>/startup-success-approval.json
+  --approval .circuit-cache/<fresh>/startup-success-approval.json </dev/tty
 ```
 
+Do not pipe this command through `tee`: authentication must inherit terminal
+input and output. The helper records no password input, terminal transcript or
+timing; `script` writes to `/dev/null` with input echo disabled. Workload output
+alone is retained after authentication. `sudo -v` before the shared guard is
+insufficient: its `setsid` boundary loses the original controlling terminal and
+therefore the terminal-scoped sudo credential. The helper runs as the original
+user and refreshes the ticket noninteractively every 30 seconds while the
+workload lives. Refresh failure terminates the workload and reports failure;
+cleanup evidence remains mandatory. Requests without `--interactive-auth`
+require a separately provisioned noninteractive privilege context.
+
 Successful authentication is only a prerequisite: it does not prove every
-privileged guard operation or grant exact-run approval. Short-lived sudo authentication can expire before a long run finishes; the approved runner context must retain the required privilege through final cleanup. This procedure changes
+privileged guard operation or grant exact-run approval. This procedure changes
 no sudo policy or permanent service configuration. No password is passed to an
 agent. For E16, approve each target envelope at its `operator-approval.json` path;
 then the existing `native_validation.py execute --stage ... --target ...` routes
