@@ -1,0 +1,75 @@
+{
+ "schema": "e16-pilot-outcome-v1",
+ "board": "KB",
+ "net": "+5V",
+ "target": {
+  "ref": "U4320",
+  "pad": "14",
+  "pad_id": "2fd54753-6c48-5259-8e11-900b51cf407b"
+ },
+ "orphan_component_pads": [
+  {
+   "ref": "C4337",
+   "pad": "1",
+   "pad_id": "1a502004-98e3-5056-b8e4-0dea4f0ee5cf"
+  },
+  {
+   "ref": "C4353",
+   "pad": "1",
+   "pad_id": "a5b49717-985d-5180-b535-5bb123c6de51"
+  },
+  {
+   "ref": "R4334",
+   "pad": "1",
+   "pad_id": "649269e2-e5e8-5846-be7a-3cc95e18a585"
+  },
+  {
+   "ref": "U4320",
+   "pad": "14",
+   "pad_id": "2fd54753-6c48-5259-8e11-900b51cf407b"
+  },
+  {
+   "ref": "U4336",
+   "pad": "10",
+   "pad_id": "d64df77d-0df3-551a-acee-4106d68983ab"
+  },
+  {
+   "ref": "U4336",
+   "pad": "4",
+   "pad_id": "a046aad6-afba-5e7c-b010-8d7726872983"
+  }
+ ],
+ "verified_against_fresh_source": "The fresh independent t2 replay's fragments give exactly the plan's stated members: U4320.14, C4337.1, R4334.1, U4336.4, C4353.1, U4336.10.",
+ "preflights": [
+  {
+   "file": "KB-preflight-b-12mm.json",
+   "sha256": "471533325ab710f17d4c16b539e1e067a6a1ce4d26349ddf8d28b0783eab01fa",
+   "window_margin_mm": 12,
+   "max_length_mm": 30,
+   "result": "NO LEGAL CORRIDOR: neither face has a clear 8-connected path at 0.25 or 0.2 mm from the orphan's face copper to fed +5V face copper inside the window (nearest fed face copper 4.48 mm on B.Cu with 5 other-net objects on the straight corridor, 5.75 mm on F.Cu with 3 objects and 2 drills; residual atlas)."
+  }
+ ],
+ "construction": "NOT ATTEMPTED (no legal preflight). No geometry was added; the t2 candidate is unchanged.",
+ "dimensioned_proposal": {
+  "mechanism": "The orphan's six existing E16 access vias land in clipped In2 +5V island KB-+5V-SHEET-0011 (63.364 mm2, not feed-connected). The island is 0.795 mm from fed sheet KB-+5V-SHEET-0000 at (278.903, 43.901)-(278.173, 44.215).",
+  "obstacle": "AGND via f5cbdfb7-8527-5203-9b49-1460f61801d2 (278.71, 44.46; 0.6/0.3 mm) sits 0.137 mm from that gap. Its clearance joins the clearances of +12V via d8194d6c-636c-5b3d-95b9-fc39ba9df360 (279.61, 44.46) and In2 trace 255fc856-2517-516d-bfdd-34d18ca52370 (net X5E11D4E5DF2B9813D24F), sealing the island. Rule areas 7b51a842/ee8e71c0 crossing the gap allow copper pour and are not obstacles.",
+  "measured": {
+   "agnd_via_to_In2_trace_copper_gap_mm": 0.44,
+   "agnd_via_to_12V_via_copper_gap_mm": 0.3,
+   "required_mm": 0.75,
+   "requirement_basis": "0.25 mm minimum sheet width (clip_sheets.MIN_WIDTH_MM) + 2 x 0.25 mm Rails clearance",
+   "deficits_mm": {
+    "via_to_trace_side": 0.31,
+    "via_to_via_side": 0.45
+   }
+  },
+  "future_change_options": [
+   "relocate AGND via f5cbdfb7 so that one side opens to >= 0.75 mm of other-net-free In2 (>= 0.31 mm away from trace 255fc856 on that side); smallest single change found",
+   "reroute In2 trace 255fc856 >= 0.31 mm away from the AGND via",
+   "removing the AGND via's non-functional In2 annulus gains at most 0.15 mm (0.55 -> 0.40 mm obstacle radius) and is insufficient alone on either side"
+  ],
+  "status": "PROPOSAL ONLY: each option is outside this pilot's rules (no moved part, removed copper or changed layer). It needs the full caps -> clip -> graph -> census re-evaluation; the passage figures are necessary conditions near the narrowest gap, not proof that the island then joins."
+ },
+ "native_calls": 0,
+ "accepted": false
+}
