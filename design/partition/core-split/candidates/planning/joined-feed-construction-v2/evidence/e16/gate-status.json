@@ -1,13 +1,13 @@
 {
  "schema": "e16-gate-status-v1",
- "date": "2026-10-14 (approved baseline batch stopped on first coupled node-KCL failure)",
+ "date": "2026-10-14 (interface precision correction; new production request preparation)",
  "decision_file": "design/partition/core-split/decision.json is unchanged: design/partition/core-split/power/joined/check.py pins its reviewed SHA-256 (43c8fffe...) and refuses a changed input. These E16 reasons are recorded here and on #253 instead of rewriting a reviewed hash.",
  "interim_disposition": "KEEP_K1402_INCUMBENT",
  "architecture_selection_ready": false,
  "production_generalization_ready": false,
  "gates": {
   "G1-placed-source-contract": "OPEN. E16 does not move any placement, outline or Z; the 3.6 mm satellite service deficit is untouched.",
-  "G2-joined-power-service": "OPEN / NUMERICAL FAIL. Baseline attempt3 at0dab96a0 ran once with exact owner approval7daa7460...29b729e8. Service, +12V nominal-average uniform-dielectric KA/KB reductions and six driving-point chunks PASS; first coupled all-present node-KCL FAIL: KA1.515200877665821e-8 /KB7.277530568849482e-9 versus unchanged1e-9. Global KCL, energy and driving-point criteria PASS for that failed state. Remaining nets/cases NOT RUN after first failure; consumed, no retry/resume. Per-unit guard/180s/2GiB/no-swap retained; terminal input/protected-file integrity and cleanup PASS; independent read-only review confirms. Failed-state electrical figures provisional. Physical source/protection absent, service151 supported/59 partial/21 unserved/194 unmapped, GH380 currents NOT EVALUATED, complete loads/full-path resistance unresolved. Next separately approve isolated reconstruction residual diagnosis; no production code change under this admission.",
+  "G2-joined-power-service": "OPEN / NUMERICAL FAIL. Baseline attempt3 at0dab96a0 ran once with exact owner approval7daa7460...29b729e8. Service, +12V nominal-average uniform-dielectric KA/KB reductions and six driving-point chunks PASS; first coupled all-present node-KCL FAIL: KA1.515200877665821e-8 /KB7.277530568849482e-9 versus unchanged1e-9. Global KCL, energy and driving-point criteria PASS for that failed state. Remaining nets/cases NOT RUN after first failure; consumed, no retry/resume. Per-unit guard/180s/2GiB/no-swap retained; terminal input/protected-file integrity and cleanup PASS; independent read-only review confirms. Failed-state electrical figures provisional. Physical source/protection absent, service151 supported/59 partial/21 unserved/194 unmapped, GH380 currents NOT EVALUATED, complete loads/full-path resistance unresolved. The failed attempt authorized no production code change; the subsequent owner instruction separately authorized the correction below. Subsequent owner-authorized isolated diagnosis identifies float64 interface basis/reconstruction error. Source9341dfb2 retains extended basis with unchanged tolerances/refinements/controls. Fixed-vt/u0 +12V candidate diagnostic PASS KA1.7882e-11/KB8.2336e-12,48source tests PASS and independent review PASS. No new production coupled acceptance: fresh full baseline attempt4 remains NOT RUN / NOT ADMITTED pending new exact approval. Old attempt3 remains consumed FAIL.",
   "G3-matched-native-pilot": "MATCHED NATIVE EXECUTION AND RECONCILIATION COMPLETE; ACCEPTANCE OPEN/FAIL. Owner-admitted WSL control/startup/oracle checks PASS; KA-t2/KB-t2/KB-p1 filled once with matched sidecars, full-severity DRC and complete native pad/feed/peer census on identical preserved boards. Zero differences; unresolved196/486/480. Full DRC enumeration INCOMPLETE: per-category report caps, native open edges479/1220/1219 versus DRC-listed479/499/499. No electrical acceptance. See native-wsl-20261013/index.json.",
   "G4-native-eligibility": "FAIL / OPEN. Matched native fill/DRC/census completed; unresolved pad identities 196/486/480 and DRC findings remain. Exhaustive DRC enumeration incomplete due to pinned engine category caps; no electrical or physical acceptance.",
   "G5-label-panel-release": "OPEN for the #249 native label gate. The stale panel receipt was requalified at 082b883 against the changed run.sh (pinned KiCad 10.0.6: 0 DRC, 438/438 lock centres, render reviewed); its bound inputs are unchanged by this increment.",
@@ -83,7 +83,19 @@
     "G6-installed-qualification": "NEEDS BENCH / NOT RUN."
    },
    "continuation_evidence": "numerical-short-wsl-20261013/index.json"
+  },
+  {
+   "date": "2026-10-14 (approved baseline batch stopped on first coupled node-KCL failure)",
+   "gates": {
+    "G1-placed-source-contract": "OPEN. E16 does not move any placement, outline or Z; the 3.6 mm satellite service deficit is untouched.",
+    "G2-joined-power-service": "OPEN / NUMERICAL FAIL. Baseline attempt3 at0dab96a0 ran once with exact owner approval7daa7460...29b729e8. Service, +12V nominal-average uniform-dielectric KA/KB reductions and six driving-point chunks PASS; first coupled all-present node-KCL FAIL: KA1.515200877665821e-8 /KB7.277530568849482e-9 versus unchanged1e-9. Global KCL, energy and driving-point criteria PASS for that failed state. Remaining nets/cases NOT RUN after first failure; consumed, no retry/resume. Per-unit guard/180s/2GiB/no-swap retained; terminal input/protected-file integrity and cleanup PASS; independent read-only review confirms. Failed-state electrical figures provisional. Physical source/protection absent, service151 supported/59 partial/21 unserved/194 unmapped, GH380 currents NOT EVALUATED, complete loads/full-path resistance unresolved. Next separately approve isolated reconstruction residual diagnosis; no production code change under this admission.",
+    "G3-matched-native-pilot": "MATCHED NATIVE EXECUTION AND RECONCILIATION COMPLETE; ACCEPTANCE OPEN/FAIL. Owner-admitted WSL control/startup/oracle checks PASS; KA-t2/KB-t2/KB-p1 filled once with matched sidecars, full-severity DRC and complete native pad/feed/peer census on identical preserved boards. Zero differences; unresolved196/486/480. Full DRC enumeration INCOMPLETE: per-category report caps, native open edges479/1220/1219 versus DRC-listed479/499/499. No electrical acceptance. See native-wsl-20261013/index.json.",
+    "G4-native-eligibility": "FAIL / OPEN. Matched native fill/DRC/census completed; unresolved pad identities 196/486/480 and DRC findings remain. Exhaustive DRC enumeration incomplete due to pinned engine category caps; no electrical or physical acceptance.",
+    "G5-label-panel-release": "OPEN for the #249 native label gate. The stale panel receipt was requalified at 082b883 against the changed run.sh (pinned KiCad 10.0.6: 0 DRC, 438/438 lock centres, render reviewed); its bound inputs are unchanged by this increment.",
+    "G6-installed-qualification": "NEEDS BENCH / NOT RUN."
+   },
+   "continuation_evidence": "numerical-baseline-wsl-20261014/index.json"
   }
  ],
- "continuation_evidence": "numerical-baseline-wsl-20261014/index.json"
+ "continuation_evidence": "interface-precision-wsl-20261014/index.json"
 }
