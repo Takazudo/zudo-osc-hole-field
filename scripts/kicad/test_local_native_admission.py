@@ -150,6 +150,14 @@ class LocalAdmission(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, 'checkout'):
             a.validate_request(self.root, self.path)
 
+    def test_replay_ledger_cannot_move_to_tmp_or_change_with_home(self):
+        expected=a.persistent_claim_directory()
+        with patch.dict(os.environ,{'HOME':str(self.root/'other-home')}):
+            self.assertEqual(a.persistent_claim_directory(),expected)
+        self.mutate(claim_directory=str(self.root/'alternate-claims'))
+        with self.assertRaisesRegex(ValueError,'fixed account'):
+            a.validate_request(self.root,self.path)
+
     def test_command_deadline_limits_target_and_incomplete_seals_refused(self):
         original = self.path.read_text()
         changes = [{'command':['bash','arbitrary.sh']}, {'seconds':2580}, {'limits':{}},

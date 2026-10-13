@@ -8,6 +8,7 @@ import argparse
 import hashlib
 import json
 import os
+import pwd
 from pathlib import Path
 import re
 import shutil
@@ -69,6 +70,11 @@ def clean_head(root):
 
 def no_mixed_authority(env):
     need(not any(env.get(key) for key in CI_KEYS), 'mixed CI/local authority refused')
+
+
+def persistent_claim_directory():
+    # Account identity, not a caller-controlled HOME, fixes the replay ledger.
+    return Path(pwd.getpwuid(os.getuid()).pw_dir) / '.local/state/epic242-native-admission'
 
 
 def heavy_settings(env):
@@ -144,7 +150,7 @@ def prepare(root, output, kind, run_id, attempt, evidence, *, stage=None, target
                'stage': stage, 'evidence': evidence, 'limits': LIMITS,
                'heavy_guard': str(heavy), 'heavy_guard_sha256': sha(heavy),
                'heavy_guard_environment': heavy_settings(os.environ),
-               'uid': os.getuid(), 'claim_directory': str(Path.home() / '.local/state/epic242-native-admission')}
+               'uid': os.getuid(), 'claim_directory': str(persistent_claim_directory())}
     request['worker'] = worker_name(request)
     command, seconds, inputs = command_and_inputs(request, root)
     request.update(command=command, seconds=seconds,
@@ -164,8 +170,8 @@ def validate_request(root, path, *, host=True, check_inputs=True):
         need(request['checkout'] == str(root.resolve()) and request['uid'] == os.getuid(), 'request belongs to another checkout/user')
         need(clean_head(root) == request['source_sha'], 'request source SHA differs')
         need(sha(request['heavy_guard']) == request['heavy_guard_sha256'], 'shared heavy guard changed')
-        need(Path(request['claim_directory']).is_absolute() and
-             Path(request['claim_directory']).resolve() == Path(request['claim_directory']), 'canonical persistent claim directory required')
+        need(Path(request['claim_directory']) == persistent_claim_directory() and
+             Path(request['claim_directory']).resolve() == Path(request['claim_directory']), 'fixed account persistent claim directory required')
     need(request['worker'] == worker_name(request) and request['limits'] == LIMITS, 'worker/resource binding differs')
     command, seconds, inputs = command_and_inputs(request, root)
     need(request['command'] == command and request['seconds'] == seconds, 'exact allowed command/deadline differs')
