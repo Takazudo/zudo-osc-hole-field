@@ -1,0 +1,267 @@
+{
+  "source_sha": "9f69cd8a2e7b80cba813a5bd66546c4d5ac705ec",
+  "scope": "+12V / nominal-average / uniform-dielectric / all-present only",
+  "output_path": "/home/takazudo/.cache/zudo-e16-runs/coupled-approved-9f69cd8-4b95b6c8/coupled-+12V-nominal-average-uniform-dielectric.json.gz",
+  "output_sha256": "d637c087615d367d932bdb8d27165e53219362f6abe6f2972242889e2f18d5c2",
+  "acceptance": {
+    "schema": "e16-reported-numerical-checks-v1",
+    "phase": "couple",
+    "status": "PASS REPORTED NUMERICAL CHECKS ONLY",
+    "checks": [
+      {
+        "name": "all-present.global_kcl_relative",
+        "value": 8.350158171748052e-11,
+        "limit": 1e-09,
+        "tolerance": "kcl_relative",
+        "passed": true
+      },
+      {
+        "name": "all-present.max_free_node_kcl_relative",
+        "value": 1.1921328699180337e-11,
+        "limit": 1e-09,
+        "tolerance": "kcl_relative",
+        "passed": true
+      },
+      {
+        "name": "all-present.driving_point_solve_residual",
+        "value": 2.850814388399312e-10,
+        "limit": 1e-09,
+        "tolerance": "kcl_relative",
+        "passed": true
+      },
+      {
+        "name": "all-present.energy_minus_load_work_relative",
+        "value": 2.4050789107440344e-12,
+        "limit": 1e-09,
+        "tolerance": "energy_relative",
+        "passed": true
+      }
+    ],
+    "failures": [],
+    "electrical_acceptance": false,
+    "output_sha256": "d637c087615d367d932bdb8d27165e53219362f6abe6f2972242889e2f18d5c2",
+    "config_sha256": "f5146d0c1d77e0626a455df308f52bf953ace9806861c25438adcdf90914c107",
+    "solver_sha256": "3c993a2505dc279a4b970aadd13db5274e9f70beaf50caba800597d76287344f",
+    "assessment_sha256": "e8c1f0b55784bed3a6d8a1b86854a7cc9cdb0e7685e07efa9feb263e3efecc73"
+  },
+  "bindings_verified": [
+    "output",
+    "config",
+    "solver",
+    "assessment",
+    "service"
+  ],
+  "loaded_pads": 116,
+  "boards": {
+    "KA": {
+      "load_A": 0.09416000000000001,
+      "source_injection_A": 0.17159999998567113,
+      "terminal_injection_A": [
+        -0.07743999995931267
+      ],
+      "energy_W": {
+        "barrels": 1.4068585243920581e-05,
+        "face_copper": 6.234909853725037e-07,
+        "inner_copper": 6.457531171473041e-06,
+        "terminations": 2.2774400315661273e-07
+      },
+      "pad_count": 275,
+      "loaded_pad_count": 76,
+      "worst_pad_potential": {
+        "pad_id": "88bbe50a-61a6-5a91-8899-3432137dcda9",
+        "identity": {
+          "ref": "U1310",
+          "pad": "4",
+          "board": "KA",
+          "mapping_status": "supported",
+          "current_A": 0.004
+        },
+        "potential_V": -0.00011741917200255041
+      },
+      "copper_ohm_min": 0.00107851311587006,
+      "copper_ohm_max": {
+        "pad_id": "cd455460-f41f-55ef-99ac-a71f4f17243b",
+        "identity": {
+          "ref": "C2141",
+          "pad": "1",
+          "board": "KA",
+          "mapping_status": "passive_zero_dc",
+          "current_A": 0.0
+        },
+        "loaded": false,
+        "R_copper_ohm": 0.005174020386507949,
+        "R_driving_point_ohm": 0.005174020386507949
+      },
+      "copper_over_1mohm_count": 275,
+      "loaded_copper_max": {
+        "pad_id": "3234a7f9-f060-52dc-93a6-f1934bb717f2",
+        "identity": {
+          "ref": "U2111",
+          "pad": "4",
+          "board": "KA",
+          "mapping_status": "supported",
+          "current_A": 0.00056
+        },
+        "loaded": true,
+        "R_copper_ohm": 0.005003293921822708,
+        "R_driving_point_ohm": 0.005003293921822708
+      },
+      "barrel_fraction_of_board_copper_energy": 0.6651936831418894
+    },
+    "KB": {
+      "load_A": 0.07744,
+      "source_injection_A": 0.0,
+      "terminal_injection_A": [
+        0.07743999995931268
+      ],
+      "energy_W": {
+        "barrels": 5.688518631005652e-07,
+        "face_copper": 4.567871984189062e-07,
+        "inner_copper": 2.382940841888901e-06,
+        "terminations": 2.2774400315661286e-07
+      },
+      "pad_count": 250,
+      "loaded_pad_count": 40,
+      "worst_pad_potential": {
+        "pad_id": "2e89552c-b5c9-57ad-bac3-dde5e4d39776",
+        "identity": {
+          "ref": "U4339",
+          "pad": "4",
+          "board": "KB",
+          "mapping_status": "supported",
+          "current_A": 0.004
+        },
+        "potential_V": -0.0002884677849337436
+      },
+      "copper_ohm_min": 0.0021560232815338457,
+      "copper_ohm_max": {
+        "pad_id": "d7fa6c2a-30dc-5b22-96d0-b8a8d098cc20",
+        "identity": {
+          "ref": "U7405",
+          "pad": "4",
+          "board": "KB",
+          "mapping_status": "supported",
+          "current_A": 0.004
+        },
+        "loaded": false,
+        "R_copper_ohm": 0.006480952962895857,
+        "R_driving_point_ohm": 0.007661906193710533
+      },
+      "copper_over_1mohm_count": 250,
+      "loaded_copper_max": {
+        "pad_id": "e97b2d02-463a-5a6d-ab37-748ce29d7cf8",
+        "identity": {
+          "ref": "U7105",
+          "pad": "4",
+          "board": "KB",
+          "mapping_status": "supported",
+          "current_A": 0.004
+        },
+        "loaded": true,
+        "R_copper_ohm": 0.0059921452927738615,
+        "R_driving_point_ohm": 0.0071730985235580035
+      },
+      "barrel_fraction_of_board_copper_energy": 0.16688822888727003
+    }
+  },
+  "energy_W": {
+    "total": 3.164030903152439e-05,
+    "wires_bulk": 6.626633721036672e-06
+  },
+  "wire_current_A": {
+    "W1": 0.07743999995931267
+  },
+  "source_support": {
+    "board": "KA",
+    "mode": "equipotential_patches",
+    "basis": "Conditional: the load-side star is unimplemented (CN301/XB301 abstract; no inlet copper). The fed KA main lands of each net (branches to JL/JR/P) are held at one source potential over their whole land patches, standing in for an ideal load-side star at those lands. No upstream AWG14 section, raw-to-load bridge or protection path is modelled; branch currents to JL/JR/P are external and not injected.",
+    "pads": {
+      "+12V": [
+        {
+          "ref": "TP990002",
+          "pad_id": "982d0043-2374-5b74-b189-fead016006b5"
+        },
+        {
+          "ref": "TP990014",
+          "pad_id": "8ba40524-d0d5-50d2-9a63-f7a23aa882a4"
+        },
+        {
+          "ref": "TP990026",
+          "pad_id": "4837930f-294a-5712-878f-44a71b63bce6"
+        }
+      ],
+      "+5V": [
+        {
+          "ref": "TP990006",
+          "pad_id": "a15d7c25-8fc7-58d4-a269-4ef9fd4d070a"
+        },
+        {
+          "ref": "TP990018",
+          "pad_id": "27e182e8-d9c3-597d-9d72-f16ef156dd63"
+        },
+        {
+          "ref": "TP990030",
+          "pad_id": "6c19f57d-f1a8-589d-9b47-ca3e44db7e3e"
+        }
+      ],
+      "-12V": [
+        {
+          "ref": "TP990004",
+          "pad_id": "d11d9455-e60a-56dd-9150-84b7d725a654"
+        },
+        {
+          "ref": "TP990016",
+          "pad_id": "49e2d494-5003-5138-a8ab-63a436cac0e4"
+        },
+        {
+          "ref": "TP990028",
+          "pad_id": "3cbd2fac-4ce5-570f-8145-410da956c229"
+        }
+      ],
+      "AGND": [
+        {
+          "ref": "TP990008",
+          "pad_id": "a68c8da6-d1a4-5514-b405-80587646b150"
+        },
+        {
+          "ref": "TP990010",
+          "pad_id": "fc75c533-46f8-5971-9f06-31b219b60dac"
+        },
+        {
+          "ref": "TP990012",
+          "pad_id": "cc7eb95f-e57e-5191-9b15-8b3134a654f2"
+        },
+        {
+          "ref": "TP990020",
+          "pad_id": "a3677b23-4355-5d7d-9036-fba2dc425ed7"
+        },
+        {
+          "ref": "TP990022",
+          "pad_id": "f05aec72-0689-5257-84ba-3c8a9398783c"
+        },
+        {
+          "ref": "TP990024",
+          "pad_id": "0c6f2f0d-cd07-5549-8e83-98bf1e1efce3"
+        },
+        {
+          "ref": "TP990032",
+          "pad_id": "e3e17aa0-e051-54f2-ae54-e4ce7021dd7d"
+        },
+        {
+          "ref": "TP990034",
+          "pad_id": "eeac10de-05d8-5d8c-ac8a-93f41f21bc5c"
+        }
+      ]
+    },
+    "excluded": [
+      {
+        "ref": "TP990036",
+        "pad_id": "dbf0db68-b055-5a30-963b-c019de6ab1a2",
+        "net": "AGND",
+        "reason": "structurally unresolved at t2"
+      }
+    ]
+  },
+  "trunk_metric": "NOT AVAILABLE in completed JSON; not inferred from old outputs or pickle extraction",
+  "barrel_fraction_of_total_energy": 0.46261991602033137
+}

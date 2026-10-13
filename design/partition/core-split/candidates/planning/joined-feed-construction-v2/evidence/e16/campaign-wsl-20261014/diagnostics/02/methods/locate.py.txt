@@ -1,0 +1,23 @@
+"""Locate the failed16-RHS group inside the preserved96-pad driving-point unit."""
+from pathlib import Path
+import argparse,json,os,resource,sys,time
+ROOT=Path(__file__).resolve().parents[2];SOURCE=ROOT/'design/partition/core-split/candidates/planning/joined-feed-construction-v2';sys.path.insert(0,str(SOURCE))
+if os.environ.get('E16_DIAGNOSTIC_SCOPE')!='1':
+ os.environ['E16_DIAGNOSTIC_SCOPE']='1';os.execvp('systemd-run',['systemd-run','--user','--scope','-q','-p','MemoryMax=2147483648','-p','MemorySwapMax=0',sys.executable,str(Path(__file__).resolve()),*sys.argv[1:]])
+cg=Path('/sys/fs/cgroup'+Path('/proc/self/cgroup').read_text().strip().split('::',1)[1]);assert (cg/'memory.max').read_text().strip()=='2147483648' and (cg/'memory.swap.max').read_text().strip()=='0'
+import numpy as np
+import finite_solve as S
+p=argparse.ArgumentParser();p.add_argument('--spec',type=Path,required=True);p.add_argument('--output',type=Path,required=True);a=p.parse_args();spec=json.loads(a.spec.read_text());assert spec['maximum_diagnostic_units']==1 and spec['start']==0 and spec['stop']==96 and spec['mode']=='locate_original'
+assert spec['board']=='KB' and spec['net']=='+5V' and spec['case']=='nominal-average' and spec['depth']=='uniform-dielectric';assert not a.output.exists();started=time.monotonic()
+for path,h in spec['input_sha256'].items():assert S.sha(path)==h,path
+args=argparse.Namespace(**{k:Path(spec[k]) if k in ('operator','coverage','config','cases') else spec[k] for k in ('operator','coverage','config','cases','board','net','case','depth')})
+ops,free,pos,Bf,pads,lu,Af=S.factor_board(args);prior=S.pload(spec['failed_output']);assert pads[:96]==prior['pads'];batches=[]
+for k in range(0,96,S.BATCH):
+ chunk=pads[k:k+S.BATCH];W=np.zeros((len(free),len(chunk)))
+ for j,pad in enumerate(chunk):n,w=ops['supports'][pad];assert (pos[n]>=0).all();W[pos[n],j]=w
+ U,res=S.refined_solve(lu,Af,W)
+ batches.append({'start':k,'stop':k+len(chunk),'pads':chunk,'original_batch_relative':res,'passed_original_criterion':res<=1e-9})
+ del U
+report={'source_sha':spec['source_sha'],'spec_sha256':S.sha(a.spec),'scope':str(cg),'batches':batches,'original_chunk_relative':prior['solve_residual_relative'],'reproduced_chunk_relative':max(b['original_batch_relative'] for b in batches),'elapsed_seconds':time.monotonic()-started,'peak_rss_KiB':resource.getrusage(resource.RUSAGE_SELF).ru_maxrss,'memory_peak_bytes':int((cg/'memory.peak').read_text()),'memory_events':(cg/'memory.events').read_text(),'input_hashes_unchanged':all(S.sha(path)==h for path,h in spec['input_sha256'].items()),'interpretation':'Original arithmetic only, per-batch failure localization. Expected numerical failure remainsFAIL; exit0 means diagnostic completed, not numerical acceptance.'}
+with a.output.open('x') as f:json.dump(report,f,indent=2);f.write('\n')
+print(json.dumps({k:v for k,v in report.items() if k!='batches'}),flush=True);assert report['input_hashes_unchanged'];assert report['reproduced_chunk_relative']==report['original_chunk_relative']

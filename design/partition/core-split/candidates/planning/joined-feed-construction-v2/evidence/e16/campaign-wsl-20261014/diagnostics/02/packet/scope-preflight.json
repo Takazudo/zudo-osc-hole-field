@@ -1,0 +1,18 @@
+{
+  "command": [
+    "systemd-run",
+    "--user",
+    "--scope",
+    "-q",
+    "-p",
+    "MemoryMax=2147483648",
+    "-p",
+    "MemorySwapMax=0",
+    "/home/takazudo/.cache/zudo-e16-numerical-venv/bin/python",
+    "-c",
+    "from pathlib import Path;import json;rel=Path('/proc/self/cgroup').read_text().strip().split('::',1)[1];p=Path('/sys/fs/cgroup'+rel);v={k:(p/k).read_text().strip() for k in ('memory.max','memory.swap.max')};assert v=={'memory.max':'2147483648','memory.swap.max':'0'},v;print(json.dumps(dict(cgroup=rel,limits=v)))"
+  ],
+  "exit_code": 0,
+  "stdout": "{\"cgroup\": \"/user.slice/user-1000.slice/user@1000.service/app.slice/run-rb1c89dafb5814125bd41d3a233ad0533.scope\", \"limits\": {\"memory.max\": \"2147483648\", \"memory.swap.max\": \"0\"}}\n",
+  "stderr": ""
+}

@@ -1,0 +1,81 @@
+{
+ "inputs": {
+  ".circuit-cache/e16-dpoint-subbatch-af442e62/diagnostic-spec.json": "685611c5cacf93d8c0e847f748062abd7200f84c3663850579f9b7ce81d890fd",
+  "/home/takazudo/.cache/zudo-e16-runs/20261013-finite-t2b/KB/operator-+5V.pkl.gz": "db2e192c90f76cb755b9b553f5d04f6876e4474acf5d6028e03affa8cd0be5a1",
+  "/home/takazudo/.cache/zudo-e16-runs/20261013-finite-t2b/KB/coverage-+5V.json.gz": "43e5a4d1c9732ba35543bd3416303fc8c4b15b9fe0d00f43eadaa81c85210fba",
+  "design/partition/core-split/candidates/planning/joined-feed-construction-v2/evidence/e16/continuation-20261013b/coupled-network-config.json": "f5146d0c1d77e0626a455df308f52bf953ace9806861c25438adcdf90914c107",
+  "design/partition/core-split/candidates/planning/joined-feed-construction-v2/evidence/e16/process-cases.json": "ea253eee2e1b0dbb85d83a3d885cfe4f0cc6fd534b144bb25e9bf419016d4051",
+  "/home/takazudo/.cache/zudo-e16-runs/coupled-approved-9f69cd8-4b95b6c8/KB-dp-+5V-nominal-average-uniform-dielectric-000.pkl.gz": "05c256453ce5f4d8f113f8b3e22619b437c74d673a2af7ace4d5e51429169e64",
+  "/home/takazudo/.cache/zudo-e16-runs/dpoint-locate-38eb37c2/report.json": "bfa2d4e10512d55fcefc56b71383e2a84cdd42d74f2788f7af7f46983eda3c46"
+ },
+ "methods": {
+  "__inbox/e16-dpoint-diagnostic/subbatch.py": "5367a0c946fa2eb8b9fb768a50ad78db3971400374ac152301421a0a896a5e7e",
+  "__inbox/e16-dpoint-diagnostic/subbatch_driver.py": "08424d85508ec833407939b89231db6843c4e7850c63e729512eb6410ec87526",
+  "design/partition/core-split/candidates/planning/joined-feed-construction-v2/finite_solve.py": "3c993a2505dc279a4b970aadd13db5274e9f70beaf50caba800597d76287344f",
+  "design/partition/core-split/candidates/planning/joined-feed-construction-v2/numerical_unit_guard.py": "513efaf0b4f4a5bb1f94c15190822a2a79d84df399f83e69d7ed0297444ea571",
+  "design/partition/core-split/candidates/planning/joined-feed-construction-v2/replay_steps.py": "06f7cb0facf1674ce52f2f47e8fa22854430de17f3d6786e9c76b4debe9d14f0"
+ },
+ "command": [
+  "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-r4/__inbox/e16-dpoint-diagnostic/subbatch.py",
+  "--spec",
+  "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-r4/.circuit-cache/e16-dpoint-subbatch-af442e62/diagnostic-spec.json",
+  "--output",
+  "/home/takazudo/.cache/zudo-e16-runs/dpoint-subbatch-af442e62/report.json"
+ ],
+ "resource_guard": {
+  "guard": "/home/takazudo/.codex/scripts/heavy-guard.sh",
+  "sha256": "074a463dd6b3a65b7e2168df95b200c0192c414862375bcfb95f979c34c67ee7",
+  "helper_sha256": "513efaf0b4f4a5bb1f94c15190822a2a79d84df399f83e69d7ed0297444ea571",
+  "directory": "/home/takazudo/.agent-guard/heavy",
+  "defaults": {
+   "slots": 1,
+   "wait_seconds": 0,
+   "max_run_seconds": 1800,
+   "min_mem_mb": 2048,
+   "low_mem_mb": 512
+  },
+  "queue_outside_unit_timeout": true
+ },
+ "step": "driving-point-diagnostic",
+ "exit_code": 0,
+ "elapsed_seconds": 54.826,
+ "stdout_tail": "{\"start\": 16, \"stop\": 32, \"batches\": [{\"start\": 16, \"stop\": 32, \"original_batch_relative\": 1.1208868656596437e-09, \"candidate_batch_relative\": 1.1103386484989042e-12, \"float64_8column_batch_relative\": 1.1208868656596437e-09, \"batch_scale\": 0.10238933669048829}], \"elapsed_seconds\": 54.47862519393675, \"memory_peak_bytes\": 1060302848, \"memory_events\": \"low 0\\nhigh 0\\nmax 0\\noom 0\\noom_kill 0\\noom_group_kill 0\\n\", \"input_hashes_unchanged\": true}\n",
+ "stderr_tail": "heavy-guard: verdict=PASS exit=0 secs=57 min_mem_mb=8891 reason=-\n",
+ "peak_rss_KiB": 1061356,
+ "outputs": {
+  "report.json": {
+   "": "41d4c1ae3ce070296260cfdf61307f9173dd4d47edf41976f8555cd3bee1e1fa"
+  }
+ },
+ "native_calls": 0,
+ "launch_command": [
+  "bash",
+  "/home/takazudo/.codex/scripts/heavy-guard.sh",
+  "--",
+  "/home/takazudo/.cache/zudo-e16-numerical-venv/bin/python",
+  "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-r4/design/partition/core-split/candidates/planning/joined-feed-construction-v2/numerical_unit_guard.py",
+  "--inside",
+  "074a463dd6b3a65b7e2168df95b200c0192c414862375bcfb95f979c34c67ee7",
+  "--",
+  "timeout",
+  "180s",
+  "/home/takazudo/.cache/zudo-e16-numerical-venv/bin/python",
+  "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-r4/__inbox/e16-dpoint-diagnostic/subbatch.py",
+  "--spec",
+  "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-r4/.circuit-cache/e16-dpoint-subbatch-af442e62/diagnostic-spec.json",
+  "--output",
+  "/home/takazudo/.cache/zudo-e16-runs/dpoint-subbatch-af442e62/report.json"
+ ],
+ "resource_guard_result": {
+  "passed": true,
+  "verdict": "PASS",
+  "exit": 0,
+  "seconds": 57,
+  "min_mem_mb": "8891",
+  "reason": "-"
+ },
+ "stream_files": {
+  "steps/driving-point-diagnostic.stdout.txt": "32adc2a4fe05b96993a88cd36b23471ac63458f15df3503387f6c7a330fbc612",
+  "steps/driving-point-diagnostic.stderr.txt": "0fbb340b62c7334c042dbcf26f606dde9aeae38687dc1b70c7f2312b6dd82ac6"
+ }
+}

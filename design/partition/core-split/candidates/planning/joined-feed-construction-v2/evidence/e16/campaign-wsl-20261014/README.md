@@ -1,0 +1,41 @@
+# Bounded WSL numerical and source integration campaign
+
+This is an intermediate terminal checkpoint, not full-baseline or electrical acceptance. The standing owner instruction authorizes at most three full baselines (including attempt 4) and 24 guarded production-input diagnostic units. Each execution still requires a fresh exact reviewed request and a single-use delegated authorization receipt. `authority-source.txt` retains the actual authority excerpt; later digests were not personally reviewed by the owner. The live compact campaign note is `/home/takazudo/.cache/zudo-e16-runs/campaign-20261014/campaign-note.json`.
+
+## Executions completed at this checkpoint
+
+Budget consumed: **1/3 full baselines and 5/24 diagnostic units**. All are terminal. No running work is implied by this retained checkpoint.
+
+Attempt 4 ran once at `9f69cd8a2e7b80cba813a5bd66546c4d5ac705ec`, request `e61a727361ad1a2fd0418d6d95c0cdae109a536d8b62a99654970685c0819c87`, run `4b95b6c8d8bf4abf961736ecedd3d72b`. It stopped after 55 successful units at unit 56: KB +5V nominal-average driving-point chunk 000 residual 1.1208868656596437e-9 exceeded unchanged 1e-9. All six +12V/-12V case coupling units completed; remaining +5V and all AGND states did not. The original attempt-3 interface failure was corrected: the new +12V nominal coupled node-KCL maximum is 1.1921328699180337e-11. This does not convert unfinished cases into PASS.
+
+The five diagnostic packets, exact commands, delegated receipts, claims, raw streams, numerical/resource results and independent reviews are in `diagnostics/`:
+
+1. First 16 pads did not reproduce the failed batch. Its passing result was not used as proof of correction.
+2. All 96 pads reproduced the exact failure and isolated pads 16:32; other groups passed.
+3. On that exact failing group, 16-column and 8-column float64 controls both failed at 1.1208868656596437e-9. Eight-column extended accumulation passed at 1.1103386484989042e-12. LU, matrix, RHS, three corrections and original normalization were unchanged.
+4. Actual corrected production 96-pad KB +5V chunk at `c4de08db861114396a2a6913f5a34e55eec63371` passed at 1.1103386484989042e-12 in 97.31 solver seconds. Sampled scope peak 921,583,616 bytes.
+5. Actual corrected production 96-pad KB AGND chunk at the same source reached the unchanged 180-second timeout. Exit 124; no numerical result or verdict. Sampled peak 1,593,954,304 bytes, zero memory events. This is a runtime failure, not a numerical PASS or containment breach. No unchanged full-baseline retry is justified.
+
+Every run retained serialized per-unit shared-heavy-guard ownership, 180-second unit timeout, live user-systemd 2 GiB/no-swap limits and stop-on-first-failure. Attempt 4 took 4248.325 seconds overall; its parent held no heavy slot. All bound inputs remained unchanged and owned processes/scopes/locks were absent after terminal cleanup. The original worktree's 550 protected files include 11 untracked KiCad UI-state files absent from the new worktree; all 539 present tracked protected files match. See `candidate-protected-scope.json`. No native qualification, oracle, fill/census or coverage generation was repeated.
+
+## Source and browser integration candidate
+
+PR272 source commits `810a9dd6c1e1ed25c49c1b4eee0f0040ee6b43ce`, `8528c3211cc2e295ed1f2207653f2ca6eaccb10e` and `3de64799d1402a469e9e73666bb83d2841283abf` were incorporated with provenance into `54f680ac853c3d26b11bb5bf21cfb5a141453da4`, `5269b9724946f95cf51d53a3280ed43c8a2b4c18` and `5d0b34decbe660af23f628b4766bd4c0b399620d`. PR273 commits `7466ae6a5f4de339988101b8288abe092379454b` and `78467f6adbb5466a5332239583c93c5b8e249e3b` became `2b38c943b440243619f432a65dda630824c00e45` and `53d46fd299e3fab0a8ce145e89f39fd3ddc06daa`. These are cherry-picks into the isolated candidate, not topic PR merges or publication to the integration branch.
+
+Commit `86b47b5e0c821265324e72552ded4c8a4097ca85` adds exact oracle-exclusion identity tests and clean/CI-parent fixture restoration regressions. Commit `c4de08db861114396a2a6913f5a34e55eec63371` preserves driving-point accumulator precision in eight-column blocks before small-result projection, within the former 16-column float64 solution byte budget. It retains all acceptance thresholds, loads, matrices and scheduling. Source review and 44 focused tests pass. Combined source selection: **1763 PASS; two exact oracle discovery identities explicitly excluded**. Retained-artifact integration and a new native oracle run are NOT RUN, outside this campaign. Exclusion does not enroll the oracle in another suite.
+
+The Mac evidence remains under `mechanical/evidence/issue263-mac/`. All 61 retained hashes and 19 final-receipt bindings were verified. It covers five alternatives with the same 100 physical Ref identities (500 alternative-specific rows), 13 alternative/board combinations on both faces, ten SVG assets, selection/reset/details and supplemental real Playwright interactions/scrolling. The committed checker run at `7466ae6` and supplemental run at `9f69cd8` have unchanged application/generated assets but distinct checker provenance. The Mac execution did not occur on WSL. Negative Chrome CLI scroll captures and their successful Playwright replacement are preserved. Twenty-two browser source tests and read-only mechanical generated checks PASS. A new integration SHA alone does not invalidate unchanged tested assets. Browser rendering is not installed mechanical fit.
+
+## Electrical meaning and next intervention
+
+See `nominal-plus12-electrical-assessment.md` for trustworthy completed nominal +12V results. All 525 evaluated copper paths exceed the existing 1 mΩ criterion (KA 1.0785–5.1740 mΩ; KB 2.1560–6.4810 mΩ). This negative electrical result is not repaired by numerical accuracy. Source-relative drops are not local-ground error or full-path resistance.
+
+Whole-device service remains 151 supported / 59 partial / 21 unserved / 194 unmapped; partial packages are excluded in full. Unsupported loads, all 380 GH conductors, physical source/protection geometry, full source/load/return path, complete DRC enumeration and physical qualification remain open. Connectivity remains KA196 / KB486, separate KB-P1 480 and distinct prior long-B KA194.
+
+The next concrete intervention is defined in `engineering-candidate-analysis.md` and its exact-identity JSON: complete KA U2314's missing -12V supply (pin 11 and C2342.1) through a separately authorized source-owned short In3 reconnection/padstack experiment. Expected coverage is supported 151→152, partial 59→58 and balanced ±0.56 mA only after demonstrated finite coverage. The existing long-B route's 34.732 mΩ screening value prevents claiming it as an electrical remedy. The seven-via receiving-land candidate remains a separate bounded hypothesis, not an established bottleneck fix. Neither variant is executed or adopted here.
+
+KEEP_K1402_INCUMBENT, canonical boards/accepted copper, fixed panel, electrical targets, manufacturing rules and `decision.json` remain unchanged. PR260 stays draft/unmerged; issue253 remains open. Next: diagnose AGND runtime with source fixtures and a fresh bounded diagnostic, review any supported correction, then prepare a fresh full-baseline request within the remaining budget.
+
+## Storage and recovery
+
+`attempt4/` and `diagnostics/` retain compact requests, receipts, reviews, logs and indices. Large pickle outputs remain at their original absolute WSL cache paths recorded in those indices, with sizes and SHA-256 hashes; attempt 4 has 49 pickles totaling 355,313,861 bytes. Preserve directory structure when copying to another persistent filesystem, verify every indexed size/hash before use, and retain negative originals. Do not use Git LFS, overwrite a consumed output directory, or execute a historical packet against a newer HEAD.

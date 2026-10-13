@@ -1,0 +1,165 @@
+{
+  "schema": "e16-campaign-source-analysis-v1",
+  "source_sha": "9f69cd8a2e7b80cba813a5bd66546c4d5ac705ec",
+  "status": "SOURCE_ANALYSIS_ONLY_NO_ADOPTION",
+  "service_input_path": "/home/takazudo/.cache/zudo-e16-runs/coupled-approved-9f69cd8-4b95b6c8/device-service-normal-typ-v1.json",
+  "service_input_sha256": "5dfea9396561443d219733be0c2fdc93f2f8a95ad8c25880ab12332a6e7433f1",
+  "service_summary": {
+    "partial": 59,
+    "supported": 151,
+    "unmapped": 194,
+    "unserved": 21
+  },
+  "included_board_net_sum_A": {
+    "KA": {
+      "+12V": 0.09416,
+      "+5V": 6e-05,
+      "-12V": -0.09416,
+      "AGND": -6e-05
+    },
+    "KB": {
+      "+12V": 0.07744,
+      "+5V": 0.00118,
+      "-12V": -0.07744,
+      "AGND": -0.00118
+    }
+  },
+  "u2314_device": {
+    "board": "KA",
+    "connectivity_status": "partial",
+    "eligible_for_solve": false,
+    "evidence_status": "supported",
+    "reasons": [
+      "At least one required supply/return pin has no finite path to its feed; no package current is injected."
+    ],
+    "ref": "U2314",
+    "required_pins": [
+      {
+        "current_mapped": true,
+        "net": "-12V",
+        "pad_id": "b0f9dbc5-d3f3-5380-a8d2-0fe230e28db0",
+        "pin": "11",
+        "served": false
+      },
+      {
+        "current_mapped": true,
+        "net": "+12V",
+        "pad_id": "8df78f33-5fd1-51c4-9ed7-e810ba473573",
+        "pin": "4",
+        "served": true
+      }
+    ],
+    "service_status": "partial",
+    "signed_package_residual_A": 0.0,
+    "symbol": "OPA4196IDR"
+  },
+  "u2314_current_rows": [
+    {
+      "pin": "4",
+      "net": "+12V",
+      "current_A": 0.00056,
+      "source": ".claude/skills/component-ti-opa4196idr/facts.json#fact-op-audio-quiescent-current.typical_at_25C"
+    },
+    {
+      "pin": "11",
+      "net": "-12V",
+      "current_A": -0.00056,
+      "source": ".claude/skills/component-ti-opa4196idr/facts.json#fact-op-audio-quiescent-current.typical_at_25C"
+    }
+  ],
+  "feed_variant_accepted_proposals": [
+    {
+      "ref": "TP990026",
+      "pad_id": "4837930f-294a-5712-878f-44a71b63bce6",
+      "via_id": "4cf6b906-bc79-5bcb-b06f-fe661ad1242f",
+      "net": "+12V",
+      "center_mm": [
+        141.0,
+        175.0
+      ],
+      "diameter_mm": 0.6,
+      "drill_mm": 0.3
+    },
+    {
+      "ref": "TP990028",
+      "pad_id": "3cbd2fac-4ce5-570f-8145-410da956c229",
+      "via_id": "cf390c57-d842-5cac-b2f4-5bedcf2cdc25",
+      "net": "-12V",
+      "center_mm": [
+        158.0,
+        175.0
+      ],
+      "diameter_mm": 0.6,
+      "drill_mm": 0.3
+    },
+    {
+      "ref": "TP990028",
+      "pad_id": "3cbd2fac-4ce5-570f-8145-410da956c229",
+      "via_id": "f1751954-3bc6-5a24-9ac3-fbe3dc70ec58",
+      "net": "-12V",
+      "center_mm": [
+        160.0,
+        175.0
+      ],
+      "diameter_mm": 0.6,
+      "drill_mm": 0.3
+    },
+    {
+      "ref": "TP990030",
+      "pad_id": "6c19f57d-f1a8-589d-9b47-ca3e44db7e3e",
+      "via_id": "fc0b259f-78db-55e1-865b-1f42d51ab42c",
+      "net": "+5V",
+      "center_mm": [
+        175.0,
+        175.0
+      ],
+      "diameter_mm": 0.6,
+      "drill_mm": 0.3
+    },
+    {
+      "ref": "TP990030",
+      "pad_id": "6c19f57d-f1a8-589d-9b47-ca3e44db7e3e",
+      "via_id": "db0dae5e-464b-5a5f-bb0e-07cf0b527243",
+      "net": "+5V",
+      "center_mm": [
+        177.0,
+        175.0
+      ],
+      "diameter_mm": 0.6,
+      "drill_mm": 0.3
+    },
+    {
+      "ref": "TP990032",
+      "pad_id": "e3e17aa0-e051-54f2-ae54-e4ce7021dd7d",
+      "via_id": "3f3f37ff-468a-51cb-bdb3-ac91e43a8114",
+      "net": "AGND",
+      "center_mm": [
+        192.0,
+        175.0
+      ],
+      "diameter_mm": 0.6,
+      "drill_mm": 0.3
+    },
+    {
+      "ref": "TP990032",
+      "pad_id": "e3e17aa0-e051-54f2-ae54-e4ce7021dd7d",
+      "via_id": "cf1dc21c-790a-5b92-ab8c-2fe72bab14c7",
+      "net": "AGND",
+      "center_mm": [
+        194.0,
+        175.0
+      ],
+      "diameter_mm": 0.6,
+      "drill_mm": 0.3
+    }
+  ],
+  "retained_evidence_sha256": {
+    "design/partition/core-split/candidates/planning/joined-feed-construction-v2/evidence/e16/continuation-20261013b/feed-plan.json": "91ca55c43dbdedd852522e2b9b51adeb0a3eb5f77dcdbf45e0444f799364d181",
+    "design/partition/core-split/candidates/planning/joined-feed-construction-v2/evidence/e16/continuation-20261013b/feed-parallel-vias-report.json.gz": "7ac6401b9b0a15b6e8c910e18e7ebffd98ce0706aa61540e48bf7d6c58546dc6",
+    "design/partition/core-split/candidates/planning/joined-feed-construction-v2/evidence/e16/continuation-20261013b/source-variant-comparison.json": "8b732d2296b0cd52278365ce692164fcaa83782dba1f0213ea2663a4aaf6d4be",
+    "design/partition/core-split/candidates/planning/joined-feed-construction-v2/evidence/e16/continuation-20261013b/osc-ka-longb-review-r3.md": "2dac1d5262aea146f8ad83eab4f62cfc529543d3e7bfccf918a63251076a5318",
+    "design/partition/core-split/candidates/planning/joined-feed-construction-v2/evidence/e16/pilot/KA-pilot-outcome.json": "6f3fcb4f6aa553185001a75f17b13b39b2763a990f8f6710c3f398f4332957dd",
+    "design/partition/core-split/candidates/planning/joined-feed-construction-v2/evidence/e16/KA-t2-residual-atlas.json.gz": "ade5a53384c567bfaa77aa0376501392dacb70e7614b31fdcbbe9637fd8cc89c",
+    "design/partition/core-split/candidates/planning/joined-feed-construction-v2/evidence/e16/KB-t2-residual-atlas.json.gz": "930b9a565967f053c5b4231a9bef7a5d8877535c4e01c7292c777759abac3dc4"
+  }
+}
