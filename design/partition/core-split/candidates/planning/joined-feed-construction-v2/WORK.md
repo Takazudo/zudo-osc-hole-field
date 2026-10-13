@@ -304,3 +304,24 @@ Stack-depth sensitivity (nominal-average, all returns present; `evidence/e16/cou
 | barrel-upper-1p6-per-interval (each interval's upper bound) | 3.202 / 3.152 / 3.454 / 1.01–1.11 | 14.70 / 18.93 | 79% |
 
 The copper-requirement conclusion does not depend on the unknown stack. The trunk exceeds the allowance in every case.
+
+### Checks and gates (this continuation)
+
+| Check | Result |
+| --- | --- |
+| `pnpm circuit:check` before edits (8ca91b4) and after (0ad49dd) | PASS (manual inventory, 68 lines; schematic/placement binding not performed) |
+| Start-of-task `scripts/checks/regen-all.sh` | Exit 0 with no tracked changes, so there was no pre-task regeneration to commit |
+| `bash scripts/checks/run-python-tests.sh` (pinned numerical venv plus `scripts/checks/python-test-requirements.txt`, as CI installs) at 0ad49dd | PASS, 1,620 tests |
+| `pnpm check` at 0ad49dd | PASS |
+| `regen-all.sh --check` at 0ad49dd, clean tree before and after | PASS, no tracked changes; panel receipt bound inputs unchanged |
+| Native fill/DRC/connectivity of E16 copper, retained-artifact integration, CI at this head (`[skip ci]`) | NOT RUN (no admission; descriptor prepared only) |
+
+An earlier `regen-all.sh --check` failed only because WORK.md and `gate-status.json` were edited while it ran. The first full Python run stopped on two kicad tests that import PyYAML, which the venv lacked; both were resolved before the runs above.
+
+Gates: G1 open (unchanged); G2 OPEN (`evidence/e16/gate-status.json`); G3/G4 NOT RUN / NOT ADMITTED; G5 unchanged; G6 NOT RUN. KEEP_K1402_INCUMBENT. Delivery issues stay open.
+
+**Next continuation:**
+1. A materializer for fresh-copy native validation of t2 (or P1), then an admission request based on the descriptor.
+2. Main-land and CS247-terminal trunk remedies (parallel vias or pours), quantified on the coupled model.
+3. The KA future changes and the remaining 196/480 residuals, using the atlas.
+4. Supported currents for the unmapped ICs, before any full-scope budget claim.
