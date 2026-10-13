@@ -1,0 +1,208 @@
+{
+ "schema": "e16-continuation-index-v1",
+ "date": "2026-10-13",
+ "environment": {
+  "python": "3.12.3",
+  "numpy": "2.2.6",
+  "scipy": "1.15.3",
+  "shapely": "2.1.2",
+  "geos": "3.13.1",
+  "platform": "Linux-6.18.33.2-microsoft-standard-WSL2-x86_64-with-glibc2.39",
+  "requirements": "scripts/pcbgen/numerical-requirements.txt",
+  "venv": "uv venv --python /usr/bin/python3.12 VENV; uv pip install -r scripts/pcbgen/numerical-requirements.txt"
+ },
+ "commands": {
+  "replay": "bash replay_e16.sh PYTHON ABS_OUTDIR  (under bash $HOME/.claude/scripts/heavy-guard.sh --)",
+  "compare": "python3 compare_replay.py --run ABS_OUTDIR --board KA|KB --output evidence/e16/replay/20261013-t2-independent/K?-replay-comparison.json",
+  "finite": "python run_finite_e16.py --python PYTHON --run REPLAY_OUTDIR --output ABS_FINITE_OUTDIR [--resume]",
+  "coverage": "python summarize_coverage.py --finite ABS_FINITE_OUTDIR --ledger evidence/e16/load-ledger-20261013.json.gz --output evidence/e16/finite-coverage-t2.json",
+  "coupled": "python run_coupled_e16.py --python PYTHON --finite ABS_FINITE_OUTDIR --output ABS_COUPLED_OUTDIR [--case ...] [--depth ...] [--resume]",
+  "matrix": "python summarize_coupled.py --coupled ABS_COUPLED_OUTDIR --finite ABS_FINITE_OUTDIR --output evidence/e16/coupled-matrix-t2.json",
+  "ledger": "python3 load_ledger.py --output DIR [--check]",
+  "atlas": "python residual_atlas.py --board K? --source REPLAY/K?-eval-t2/normalized-caps.json --planes-dir ABS_FINITE_OUTDIR/K? --graph ... --census ... --ledger ... --output evidence/e16/K?-t2-residual-atlas.json.gz",
+  "diagnosis": "python diagnose_omissions.py --board K? --net=NET --source REPLAY/K?-access-t2.json --planes ABS_FINITE_OUTDIR/K?/planes-NET.json.gz --graph ... --census ... --retained evidence/e16/finite-network-t2-ports.json.gz --output evidence/e16/omissions/K?-NET.json",
+  "preflight": "python pilot_preflight.py --source ... --planes ... --graph ... --census ... --pad-id UUID [--window-margin-mm M --max-length-mm L] --output evidence/e16/pilot/K?-preflight-*.json"
+ },
+ "resources": {
+  "replay": {
+   "steps": 29,
+   "all_exit_zero": true,
+   "max_elapsed_seconds": 102.062,
+   "max_peak_rss_GiB": 1.336,
+   "slowest": [
+    {
+     "step": "KB-access-r3",
+     "exit_code": 0,
+     "elapsed_seconds": 102.062,
+     "peak_rss_KiB": 1392068
+    },
+    {
+     "step": "KA-eval-r3",
+     "exit_code": 0,
+     "elapsed_seconds": 100.355,
+     "peak_rss_KiB": 1375688
+    },
+    {
+     "step": "KA-eval-r4",
+     "exit_code": 0,
+     "elapsed_seconds": 99.737,
+     "peak_rss_KiB": 1375804
+    }
+   ]
+  },
+  "finite": {
+   "steps": 118,
+   "all_exit_zero": true,
+   "max_elapsed_seconds": 110.007,
+   "max_peak_rss_GiB": 1.343,
+   "slowest": [
+    {
+     "step": "KB-AGND-assemble",
+     "exit_code": 0,
+     "elapsed_seconds": 110.007,
+     "peak_rss_KiB": 1408736
+    },
+    {
+     "step": "KB-+12V-mesh-000",
+     "exit_code": 0,
+     "elapsed_seconds": 67.197,
+     "peak_rss_KiB": 337088
+    },
+    {
+     "step": "KB-AGND-mesh-000",
+     "exit_code": 0,
+     "elapsed_seconds": 66.601,
+     "peak_rss_KiB": 366136
+    }
+   ]
+  },
+  "coupled": {
+   "steps": 245,
+   "all_exit_zero": true,
+   "max_elapsed_seconds": 71.699,
+   "max_peak_rss_GiB": 1.681,
+   "slowest": [
+    {
+     "step": "KB-dpoint-AGND-nominal-average-barrel-upper-1p6-per-interval-007",
+     "exit_code": 0,
+     "elapsed_seconds": 71.699,
+     "peak_rss_KiB": 1761344
+    },
+    {
+     "step": "KB-dpoint-AGND-nominal-average-barrel-upper-1p6-per-interval-006",
+     "exit_code": 0,
+     "elapsed_seconds": 71.554,
+     "peak_rss_KiB": 1757588
+    },
+    {
+     "step": "KB-dpoint-AGND-nominal-average-barrel-upper-1p6-per-interval-009",
+     "exit_code": 0,
+     "elapsed_seconds": 69.651,
+     "peak_rss_KiB": 1759224
+    }
+   ]
+  },
+  "bounds": "every unit: one process, timeout 180 s, RLIMIT_AS 2 GiB, serialized behind the host heavy-run guard"
+ },
+ "run_directories": {
+  "replay": "/home/takazudo/.cache/zudo-e16-runs/20261013-replay2-t2",
+  "finite": "/home/takazudo/.cache/zudo-e16-runs/20261013-finite-t2b",
+  "coupled": "/home/takazudo/.cache/zudo-e16-runs/20261013-coupled-t2r",
+  "note": "Run directories are local caches outside the repository; every retained result binds their inputs by SHA-256 and is reproducible with the commands above from tracked sources (candidate05 replays byte-for-byte)."
+ },
+ "negative_outcomes": [
+  "No legal additive corridor for either pilot target; no construction (pilot/K?-pilot-outcome.json).",
+  "Copper requirements (1 mOhm rail, 0.5 mOhm common AGND) fail at every evaluated pad but one; the KA trunk alone exceeds them on every net, case and stack (coupled-matrix-t2.json, coupled-depth-sensitivity-t2.json).",
+  "Node-level KCL tolerance 1e-9 NOT MET (1.7e-9 to 5.2e-8 at the double-precision evaluation floor; node-kcl-audit-t2.json).",
+  "Supported load on structurally unresolved pads cannot be served (nominal +12V 90.8 mA, -12V 101.0 mA).",
+  "Most fitted-IC supply current is unmapped; full-scope budget acceptance is false (load-ledger-20261013.json.gz)."
+ ],
+ "superseded_runs": {
+  "finite (pre-review: tangent contacts conducted, held lands spilled)": "20261013-finite-t2",
+  "coupled (RLIMIT_AS rejected SuperLU at 1.2 GiB resident)": "20261013-coupled-t2-failed-rlimit / -failed-memory",
+  "coupled (unrefined solves)": "20261013-coupled-t2-superseded-unrefined",
+  "note": "local cache directories next to the run directories; kept, not used for any reported result"
+ },
+ "resume_state": "All runs completed. Every driver accepts --resume and reuses only steps whose input, method and output hashes still match; stale or partial outputs move to rejected/.",
+ "methods_sha256": {
+  "compare_replay.py": "57f95655241fd84e91c869ca4b5c97babe294555da33e16aa474a09d9f5d2542",
+  "fragments.py": "a07168cd6649e8f7304e7f7c52e7bf49f55dc0d70de6c9dc12a26f52885407d5",
+  "finite_adapter.py": "f313a87719aba83b169a363c05d36daa5c79cd28ad41620e5d45c5d8eca613f4",
+  "finite_units.py": "295bb239a0949522dca47e33389ddcd0ec9bc058c3a53db9bdc81789e461a8f5",
+  "finite_solve.py": "274d681a0502b54a4ec263118d02913221a99b59e279f7a877df99aedd57bab0",
+  "run_finite_e16.py": "e88d02fcb793f2f5b62e1aff1e51d36c780eacba631b2871287bc8540da6b8af",
+  "run_coupled_e16.py": "4bdcd4fd7d8229ee5695092d1799248bdcd052dd048f429deb301c6d7c75d5c1",
+  "summarize_coverage.py": "5a30e0f5f7ab2a1e03eb1eeb11b3fc10f3f986d6fc4a951a80605a60b9aca7e7",
+  "summarize_coupled.py": "88885f2dd2f2f9bf7995204d8374bef8268578df4ad693a47770c042f0f213cb",
+  "diagnose_omissions.py": "05e4b32d20c1fad2ee3c5721597a8bfae6144a12011c2a8d3e18d87f99571ec9",
+  "residual_atlas.py": "286dbeca6b458087a7c8ae81b63123cedd09baadf00ce6e52991ab798faad1de",
+  "pilot_preflight.py": "56ee11ca19501e6492e9edf7586e52ca33b4087658e62fe741f22487abdd87d8",
+  "pilot_construct.py": "8747a86b22b95638b3efbc434ba11e77174237b3f00f4a0e020da4ad6d1b10e5",
+  "load_ledger.py": "89e2269231e9b0dc1d772d160d96972c5126e8292dab3f4bd540f2102deca965",
+  "native_descriptor.py": "b2ce322c6c0c72a8de6cf94e4f93643483f15c44f67d78d48e9f6db763360c72",
+  "package_continuation.py": "6c9ec24d45b760b60bb7cc96ae9adb437dab45d8711d4755d239e2db809972b6",
+  "verify_kcl.py": "716c4b1727a13fa88a2682fa8763d5b10c3bae93d58f25027722ec2a6ea5130b",
+  "compare_refinement.py": "3399e5f5f184858c5223f680924c5fb2f94551d1ea98b3638ffcde7dcdfb9ff0"
+ },
+ "files_sha256": {
+  "evidence/e16/KA-t2-residual-atlas.json.gz": "ade5a53384c567bfaa77aa0376501392dacb70e7614b31fdcbbe9637fd8cc89c",
+  "evidence/e16/KB-t2-residual-atlas.json.gz": "930b9a565967f053c5b4231a9bef7a5d8877535c4e01c7292c777759abac3dc4",
+  "evidence/e16/coupled-depth-sensitivity-t2.json": "486af77d946794992bc6144f470a6a5c8ea63519775a7a2bc4cc40753b0d3370",
+  "evidence/e16/coupled-matrix-t2.json": "9c3d46f539b5827324c109a8935159c6146b96459c66fbdf3da8ee1586eb2907",
+  "evidence/e16/coupled-network-config.json": "3a8e189f6f7eb09c87f6b6e6f9b5a6e7f736ca568bfceefb459d68a9b7c87998",
+  "evidence/e16/finite-coverage-t2-rows.json.gz": "cb02604c26a31f99d12c56a733ef0ea78332304427794033a72cb0dee7746154",
+  "evidence/e16/finite-coverage-t2.json": "3afebafd12bd6bfdd7a5e2aab4290435b2145a43a945f84dd6f2f5e468cbfb12",
+  "evidence/e16/gate-status.json": "4a6f1e6a4528baf19a92518837d768822036eef21ba005e2d3dfc34241c03ede",
+  "evidence/e16/load-ledger-20261013.json.gz": "e61aaae526e06a86fbbae0620e0660bc26d6a5cf864e1ad5e043cdc37f5b81d1",
+  "evidence/e16/mesh-sensitivity-KA-+5V.json": "fd3f4b89fa74c8f0059c5d9d6a3b729199e3ef8e1de753c385fa7e25798aa624",
+  "evidence/e16/mesh-sensitivity-KB--12V.json": "5da041ed5ca50b9360d1dfcd90bbf09297fa423e76ddbd8c51bf2b02ca68acda",
+  "evidence/e16/node-kcl-audit-t2.json": "f36035fe87affeb48e7757cdb57f2eb526913ca8c79cb2089e417308a8fd2f63",
+  "evidence/e16/omissions/KA-+5V.json": "a7733e9d8872fed758673104dd1cd7637a4d89675302d42336a73c4ed4a64ea3",
+  "evidence/e16/omissions/KA--12V.json": "0b94d713607aa74d7b09fe04c13d0ceff6497b8899bb28e45b5bdbe796fcea1b",
+  "evidence/e16/omissions/KA-AGND.json": "9199d75cff7d386c81aafc109655a0d9e4a775b1a304e88b68936febbce5fa45",
+  "evidence/e16/omissions/KB-+5V.json": "29b3c94b6a8864da4ceae27509af72e3b78c36015f5d4d03acd54dd1a5ecee36",
+  "evidence/e16/omissions/KB--12V.json": "6dcb47dee1e6151ec68fc9d70f40056142340e1d87036385e6cc3ae5f231d15a",
+  "evidence/e16/omissions/summary.json": "5e4635143d3039a6000c91b718eb31c94bf9102fa0b53455aedfdfc8593f49d0",
+  "evidence/e16/pilot/KA-pilot-outcome.json": "870b7fabc109fb2d23152d4ecfc898f2c808670342c3d1c2cd170d2948f05d37",
+  "evidence/e16/pilot/KA-preflight-a-6mm.json": "d766bbff93b42ec24ecde26b69a8c2513a92814c28efd8c1283503bbeb4e5e5e",
+  "evidence/e16/pilot/KA-preflight-b-12mm.json": "9964b730579ba53aac5ed9946dd84176fcce761c08f9e6788bb084c1ce192669",
+  "evidence/e16/pilot/KB-pilot-outcome.json": "8b313cba5e9028834dff2ceffffc58b49ed02fe230cbed0e85ea92b514499e3e",
+  "evidence/e16/pilot/KB-preflight-b-12mm.json": "471533325ab710f17d4c16b539e1e067a6a1ce4d26349ddf8d28b0783eab01fa",
+  "evidence/e16/process-evidence-20261013.json": "9e24cb792d0f7432bad422a8a9c8fa76da5c1b6074cbaf2a6c8d67b4a00c021b",
+  "evidence/e16/replay/20261013-t2-independent/KA-replay-comparison.json": "aa3053459226077881e08c7e9cbabbf9c1a3e2743143b575f2d8e2b454b3e374",
+  "evidence/e16/replay/20261013-t2-independent/KB-replay-comparison.json": "b0b028a89bc56a52ff854032ffd529e46a82555ffc562683c7bc12660d325519",
+  "evidence/e16/replay/20261013-t2-independent/replay-log.json": "2a109f4b20307aa61737d36a8e5a2d45cf34efc0956cf7be8463ebcd1e4bc1b1",
+  "evidence/e16/replay/20261013-t2-independent/replay-stdout.log": "0670d6c0747cdb45b1e733e177042b7198e291d4934d8df935168906ae6200c8",
+  "evidence/e16/replay/20261013-t2-independent/steps/KA-access-r1.json": "aef47440c0d712d4c92615155ee17f10ab251fce746aca583451929755f5f73d",
+  "evidence/e16/replay/20261013-t2-independent/steps/KA-access-r2.json": "b97d05bac00aef5815937d3db3f0a6d0e592f6ce1db3bd256cda55dfa0e79c39",
+  "evidence/e16/replay/20261013-t2-independent/steps/KA-access-r3.json": "c9fbf953c147bd6aba0724c1c6332475c1d079a92b364812cd0f9621c1dd3939",
+  "evidence/e16/replay/20261013-t2-independent/steps/KA-access-r4.json": "210a429afcd583b75027ab65b1796f74ac8399e9e4d2aba6a7265de97f9fe28e",
+  "evidence/e16/replay/20261013-t2-independent/steps/KA-access-t1.json": "fa075adfd39e26f856bce34238d2885374124061ce8261511dd6ee42ca1364aa",
+  "evidence/e16/replay/20261013-t2-independent/steps/KA-access-t2.json": "0843b208713ff575176f4a10b9a3a8a2c05c796028423ec3a25f239ab52f8d3b",
+  "evidence/e16/replay/20261013-t2-independent/steps/KA-eval-base.json": "f8fb8cf2d836ff9680f648365b2369219585e13cc6a2d11e76633849e9713e73",
+  "evidence/e16/replay/20261013-t2-independent/steps/KA-eval-r1.json": "f04cab3ac7986b6d67e0a368a40618aa25b2923fae5dd3b5ab25a834c9059ef5",
+  "evidence/e16/replay/20261013-t2-independent/steps/KA-eval-r2.json": "7f6c3d3630ebd72aba20e6b7fdd64b6fc5d357493254dd2cda97d00034e822aa",
+  "evidence/e16/replay/20261013-t2-independent/steps/KA-eval-r3.json": "c410507a591936c34cdd590579caa32163b926e913491ca1f087333147bf0224",
+  "evidence/e16/replay/20261013-t2-independent/steps/KA-eval-r4.json": "5c37712689086e56f52e6b84339a006b4f35060a5ea4a3a3e856329845190f4d",
+  "evidence/e16/replay/20261013-t2-independent/steps/KA-eval-t1.json": "b43fcaa4d5e62fa318f8c7893103df65b937e13a8ce36f8e9dcae376fef6711c",
+  "evidence/e16/replay/20261013-t2-independent/steps/KA-eval-t2.json": "cafdeb9d46ec2e0bb9d75cbcf062b441cc73d1d205f393c6cec6a318518a81e1",
+  "evidence/e16/replay/20261013-t2-independent/steps/KA-normalize.json": "2703fbd4f13e1c7ae712801ffd252a65707774f026e77f52344f1dc5af875022",
+  "evidence/e16/replay/20261013-t2-independent/steps/KB-access-r1.json": "cd3cafbfc0e0feec39cfa15dfde385e0ea3b35c566e82beb7fa0761b566c27f2",
+  "evidence/e16/replay/20261013-t2-independent/steps/KB-access-r2.json": "835e5b43ec1ec179a96687fdcc51fb1cb6f8c4d13d1abc6b6ef7780943ae67be",
+  "evidence/e16/replay/20261013-t2-independent/steps/KB-access-r3.json": "ca3065c38dc5039428361769f7cb71d631a8ee52890747a11bfea0a7e5c5b928",
+  "evidence/e16/replay/20261013-t2-independent/steps/KB-access-r4.json": "72f529563afb954598871e4ebfda12795fd4a7f0b760ff9f4540521c48bb20b9",
+  "evidence/e16/replay/20261013-t2-independent/steps/KB-access-t1.json": "e15d43fb3315833fa595f3514e040470a3c3504a6858f034472d839b57f3e98f",
+  "evidence/e16/replay/20261013-t2-independent/steps/KB-access-t2.json": "7a0eb1683c39ec032b38bc8a5e916bdc1e546529febd1612e544ecfe8723d716",
+  "evidence/e16/replay/20261013-t2-independent/steps/KB-eval-base.json": "e29dd79b667e09176cb415fac955f20dc8ebf83a5d781eb949a9eebd538143a0",
+  "evidence/e16/replay/20261013-t2-independent/steps/KB-eval-r1.json": "ed21d4c9a1f48245a10da2575ccfcafbf7c512566f8db486572ce495d5c99c2c",
+  "evidence/e16/replay/20261013-t2-independent/steps/KB-eval-r2.json": "45b5f962288cc4fb0258e94b1cac67189d1fb33b34ef02828476975a23fd848f",
+  "evidence/e16/replay/20261013-t2-independent/steps/KB-eval-r3.json": "3380dde72ec1a905e62fba46f854af04d55a91b20e480fd6eb72bde723e0ca03",
+  "evidence/e16/replay/20261013-t2-independent/steps/KB-eval-r4.json": "1819014f25a8ba1ee165534bac90af98473373921b4bc4c749aa7b780ae00147",
+  "evidence/e16/replay/20261013-t2-independent/steps/KB-eval-t1.json": "e0090e57c9e7c8159f6fd6c815afad3744f3b63ffec1e142276506c4d8cd42a0",
+  "evidence/e16/replay/20261013-t2-independent/steps/KB-eval-t2.json": "0163632b19ebdb402ad12f8bb02110c8a1eca294694c5793f90f3db5aa87e57c",
+  "evidence/e16/replay/20261013-t2-independent/steps/KB-normalize.json": "3af03f7af48c7b48843fbf9ddfcf2816b7c4e1c6c922f61e0056f27303fd5dde",
+  "evidence/e16/replay/20261013-t2-independent/steps/cand05.json": "e7e7176442fc2768a9a3e6738fdcb7f28e360528a9d130a2365e8a02d0f62b06"
+ },
+ "native_calls": 0,
+ "accepted": false
+}

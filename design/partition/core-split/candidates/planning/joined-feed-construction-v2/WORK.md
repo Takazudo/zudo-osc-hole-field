@@ -127,3 +127,152 @@ It also found defects, now fixed:
 2. Solve KA and KB jointly through the six wires, with the KA main-hub incidence.
 3. Assign per-pad signed currents from the module planning rows, as a conditional class.
 4. For access: the remaining residuals (KA 196, KB 486) mostly have no feed copper and no legal via site in the 6 mm window. Further progress needs changed geometry or a new reachable target, not a wider search.
+
+## E16 continuation — 2026-10-13 (second session)
+
+Same branch and epoch. Plan: [#253 continuation comment](https://github.com/Takazudo/zudo-osc-hole-field/issues/253#issuecomment-6130087762). Canonical `boards/`, `placements.lock.json`, `decision.json`, original copper and the retained t2 receipts are untouched. Native calls: 0. KEEP_K1402_INCUMBENT stands; no adoption, qualification or merge. The dated evidence index is `evidence/e16/continuation-20261013/index.json`.
+
+### Replay: independently reproduced through t2
+
+`compare_replay.py` was repaired. It now composes the r1–r3 and r4–t2 delta bundles once each and checks, per round:
+- the exact residual pad identities, from that round's own retained evidence (access-report inputs, r3/t2 obligations, cumulative closed identities);
+- the full access report;
+- an append-only prefix with unique ids;
+- the round's added objects against its own retained bundle.
+
+Each span must be reproduced exactly. Base copper must equal the content digest retained by the first base–r3 replay, and the final graph and census must match. Any mismatch or missing file exits nonzero. Only documented run seals are excluded, plus the exact r1/r2 report fields that later `construct_access.py` revisions added (`index.json` `method_note`). Twelve regressions cover same-count identity swaps, altered base and added copper, rewritten prior objects, missing/duplicate/cross-span deltas, newly disconnected pads, changed reports and the CLI status.
+
+A fresh replay of both boards through t2 ran serialized under the host guard: 29 steps, the longest 102.1 s, peak RSS 1.34 GiB. It is content-equal to the retained evidence on both boards (`evidence/e16/replay/20261013-t2-independent/`). r4, t1 and t2 now have two executions each. The first execution's directory also passes the repaired comparator.
+
+### Process evidence refreshed (no supplier contact)
+
+`evidence/e16/process-evidence-20261013.json` keeps verbatim quotes, the section labels and the process each applies to. The superseded statements are corrected in `e16-construction-contract.json` `corrections_2026_10_13_process_refresh`; the earlier text is kept.
+- The guide's ≤0.5 mm limit is a **hole** limit that also covers epoxy-filled vias; E16's 0.3 mm hole is inside it.
+- "Hole surface copper ≥5 µm" belongs to the filled-and-capped column, but the page does not say whether it is the cap or the wall. It is not a barrel-wall minimum.
+- Open:
+  - whether a six-layer order fills every via by default;
+  - whether the 2 oz PTH ring ≥0.254 mm applies to vias;
+  - the minimum plating;
+  - a published 2 oz six-layer stack;
+  - drill versus finished hole.
+
+`process-cases.json` is unchanged, because the historical finite receipts bind its hash.
+
+### Current ledger: conditional, nonzero, KCL-consistent
+
+`load_ledger.py` writes `evidence/e16/load-ledger-20261013.json.gz`. It has one record per rail pad per scenario: 3,849 pads including the 12 terminals. Each record carries:
+- a signed current and its operating condition;
+- the physical owner, source and provenance class.
+
+Scenario `normal-typ-v1` injects only two kinds of current:
+- datasheet-supported OPA4196/OPA4197 quiescent current at 25 °C: ±147.84 mA on KA, ±177.92 mA on KB;
+- conditional SN74HC14/HC74 static ICC: +5V 0.10 / 2.32 mA, returning through AGND.
+
+Device KCL is exactly zero; ±12 V op-amps carry no AGND current. Planning totals are never divided among pads. Each board's remainder is a pad-less allowance (KA +12V 553.9 mA; KB +12V 566.6 mA). The 70/50/50 mA EL ceiling is a separate external demand: the worksheet charges EL LEDs at 0.55 mA, and how the two relate is unresolved (review finding, fixed). Most fitted ICs are unmapped (KA 34, KB 160 unmapped; KB 62 partial). Full-scope budget acceptance is therefore false.
+
+### Finite coverage: complete at t2 (zero model-only omissions)
+
+The earlier raster model's 552 omissions are now diagnosed, each with a witness. `diagnose_omissions.py` rebuilds that model at component level, and first must reproduce all 552 exactly. Results (`evidence/e16/omissions/`):
+- KA: −12V 146, +5V 21, AGND 1.
+- KB: −12V 78, +5V 306.
+
+| Cause | Pads |
+| --- | ---: |
+| The pad's island attaches only to raster cells cut off by sheet necks narrower than one 0.5 mm cell | 546 |
+| A barrel has no whole raster cell within reach in its own sheet piece | 6 |
+| Whole-object filter, or anything else | 0 |
+
+None is a structural-census defect.
+
+New adapter (`fragments.py`, `finite_adapter.py`, `finite_units.py`, `run_finite_e16.py`):
+- **Fragments match the graph.** It rebuilds the structural graph's drilled per-layer fragments and must reproduce `object_connections` identity by identity before meshing.
+- **One conductor per group.** Fed fragments joined by positive-area edges become one group, so overlapping copper is owned once. Tangent-only contacts inside a group are cut with a 2 µm slit, so, as in the graph, they do not conduct.
+- **Exact meshing.** Each group is meshed by `scripts/pcbgen/sheet_mesh.Sheet` on the exact clipped copper (P1, conforming) at 1 mm inner and 0.25 mm face cells. Large groups are tiled on one aligned grid and merged by coordinate within the group only.
+- **Barrels.** Each tap's bore boundary is one ring node. Consecutive taps are joined once by the annular interval at declared depths. Through vias also tap their non-functional annuli, and the intervals partition F→B exactly once.
+- **Pads and lands.** A pad is a uniform-current finite support (consistent FE load vector). A held source land fixes only the mesh nodes inside its copper.
+
+Coverage criterion: a pad counts only when its whole support lies in a finite component that holds a feed terminal. Result (`evidence/e16/finite-coverage-t2.json` and `-rows.json.gz`):
+- **Census unchanged:** 3,849 pads, 3,837 originals, 682 residuals listed, 3,155 source-connected, 12 terminals.
+- **Coverage:** every source-connected pad and every terminal has a finite path; the 552 old omissions are all covered.
+- **Mesh:** each board net forms one finite component. The largest has 1.87 M nodes and 2.78 M triangles; area error is ≤1.8e-7 mm² per net.
+- **Resources:** every unit ran within 180 s and 2 GiB.
+
+Two review findings changed the meshes before the final run: tangent contacts used to conduct inside a group, and held lands spilled past their copper. A third run failed because the host guard's 30 min max-run expired; it was resumed. The superseded runs are kept outside the repository.
+
+### Residual atlas and new-target pilots: no legal corridor on either board
+
+`residual_atlas.py` covers all 196 KA and 486 KB residuals (`evidence/e16/K?-t2-residual-atlas.json.gz`). Each row lists:
+- the class (direct/supplemental, ledger class) and the disconnected component;
+- every orphan-component identity and pad;
+- the existing transitions;
+- the nearest fed copper per face and on the sheet layer;
+- the straight-corridor obstruction identities and drills at the access rules;
+- the r4/t2 rejection reasons.
+
+Preflights (`pilot_preflight.py`; 0.25/0.2 mm width, 0.25 mm copper and hole clearance, additive face copper only) for the two plan targets:
+- **KA U2314.11 (−12V).** The orphan component is exactly {U2314.11, C2342.1}. A 6 mm window could not reach fed face copper (nearest 10.33 mm). A 12 mm/30 mm preflight found no legal corridor: the F.Cu start annuli lie wholly inside other-net clearance, and B.Cu has no clear path.
+- **KB U4320.14 (+5V).** The orphan component is exactly the plan's six pads. The 12 mm/30 mm preflight found no clear path on either face.
+
+So no construction was attempted, and the t2 candidate is unchanged. Each outcome records the exact future change instead (`evidence/e16/pilot/K?-pilot-outcome.json`):
+- **KA.** The orphan's own access vias sit in an unfed In3 island (6.88 mm²) 0.277 mm from the fed sheet. The passage between AGND via `1e1b90ef` and the In3 trace of net X91D7FB7… is 0.663 mm; 0.75 mm is needed (0.25 mm neck + 2 × 0.25 mm clearance), a deficit of **0.087 mm**.
+- **KB.** The orphan's six vias sit in an unfed In2 island (63.4 mm²) sealed around AGND via `f5cbdfb7`: 0.44 mm to an In2 trace and 0.30 mm to a +12V via, deficits of **0.31 / 0.45 mm**. Removing the via's non-functional In2 annulus alone gains at most 0.15 mm.
+
+Every fix moves non-pilot copper or a pad stack. It is outside this pilot's rules and needs full re-evaluation.
+
+### Coupled KA–KB network: conditional reduced study, copper requirement not met
+
+`finite_solve.py` and `run_coupled_e16.py` (config `evidence/e16/coupled-network-config.json`) reuse the joined-power identities: W1…W6 per `power/joined/interfaces.json`, three separate AGND returns with distinct landings, and KA as the load-side star.
+- **Wires.** Each wire's bulk (85 mm × 13 mΩ/m = 1.105 mΩ) is charged once. Each termination (0.038 mΩ per end, half of the "both ends" 0.0760 mΩ in `electrical-design.json`) is charged once, on its own board, as a distributed stamp over the terminal pad. The old per-board 1.181 mΩ lump would have charged both twice.
+- **Source support.** This is conditional: each net's fed KA main lands are held at one potential over their interior copper, standing in for the unimplemented load-side star. TP990036 is excluded because it is unresolved. No upstream AWG14 section and no raw/load bridge is modelled.
+- **Solve method.** Each board is factored alone (SuperLU, iteratively refined) and reduced onto its terminal nodes. Every return state is then solved on the small interface system and back-substituted. A small monolithic reference matches to 1e-8 (`test_finite_adapter`).
+- **Memory.** Units are bounded by a kernel 2 GiB no-swap memory scope. SuperLU's address-space reservation made the old `RLIMIT_AS` cap fail at 1.2 GiB resident; the measured peak is 1.24 GiB for KB AGND (1.87 M nodes).
+
+Scope is the KA–KB subnetwork only. All 412 KA/KB ends of inherited rail/AGND conductors map to census pads: 376 AGND harness returns, of which 62 are unresolved; 18 EL rail pads; 18 KA main lands. None has a supported current operator, so all are named external boundaries. GH 0.5 A compliance is **NOT EVALUATED**, and patch sleeves are not returns.
+
+Matrix: three process cases × seven KA–KB return states, all executed (21). All-three-open is classified per case: KB AGND floats, and fault obligations stay with #59 and the GH-return analysis. `evidence/e16/coupled-matrix-t2.json` gives per-entry results:
+- pad potentials, local-ground displacement and the signed rail-minus-local-ground error, with an additive screen;
+- wire and source currents;
+- KCL and energy checks;
+- class energies;
+- driving-point and copper-share resistance per pad;
+- the KA trunk resistance.
+
+| Case | Max \|rail − local ground\| (any state) | Pads over 20 mV | Pads over copper requirement | KA trunk to terminal, +12V / −12V / +5V / AGND (mΩ) |
+| --- | ---: | ---: | ---: | --- |
+| nominal-average | 0.574 mV | 0 / 1,294 | all 525 / 347 / 422 / 1,844 | 1.160 / 1.488 / 1.999 / 0.58–0.68 |
+| sensitivity-thin | 0.780 mV | 0 / 1,294 | all | 1.874 / 2.242 / 2.896 / 0.83–0.96 |
+| legacy-conditional | 0.592 mV | 0 / 1,294 | 524/525, then all | 1.134 / 1.521 / 2.089 / 0.61–0.72 |
+
+What this means:
+- **20 mV: within budget only for this lower-load study.** It injects only supported op-amp quiescent current and conditional logic ICC: +12V 235 mA from the source. Unsupported and EL demand are not injected, so this is not a worst case.
+- **Unserved load.** Supported current on structurally unresolved pads cannot be delivered: +12V 90.8 mA, −12V 101.0 mA (nominal).
+- **Copper requirement: not met.** The 1 mΩ rail and 0.5 mΩ common-AGND requirements are charged once along the whole source-to-pad path. They fail at every evaluated pad but one. The shared KA trunk alone, from the source lands to the CS247 terminal support, already exceeds the whole allowance on every net and case.
+- **Dominant contributors** (all-present, nominal):
+  - +12V: KA barrels 40% of dissipation, inner copper 21%, wire 24%;
+  - −12V: KA inner sheet 44%, KA barrels 24%;
+  - +5V and AGND: inner sheets on both boards, then the wire bulk.
+- **Remedies to quantify next:** more parallel access vias at the main lands and CS247 terminals, or wider face pours there.
+- **Return removal.** Removing returns barely changes the voltages at this load (W6 alone carries 1.46 mA). It does change copper-share resistance slightly.
+- **History.** The historical KB AGND 25.027 mV figure stays in `finite-network-t2.json` as a conditional partial-model finding with its own schema. It is not comparable: different loads (planning total × max port R), no partner board, and a lumped wire.
+
+Numerical checks, against tolerances declared before results:
+- **Met:** global KCL ≤1e-9; energy minus load work ≤1e-9; nonnegative class energies; wire/terminal current balance ≤1e-14 A; reduction reciprocity ~1e-11; monolithic-reference agreement 1e-8.
+- **Not met:** node-level KCL relative to the largest injected node current. `verify_kcl.py` (`evidence/e16/node-kcl-audit-t2.json`, all 40 board reductions) measures 1.7e-9 to 5.2e-8 against the declared 1e-9, and three refinement steps do not lower it.
+  - Every row sits at the double-precision evaluation floor; none is above 10× its floor. The floor is eps × the row's current magnitude: 4e-9 to 7e-8 of the largest load current, because 2 µm slit and skinny elements carry conductances up to 8.8e8 S.
+  - The relative residual per row is ≤2.2e-15, and the normwise backward error is ≤1.4e-16, so the solves are backward-stable to machine precision.
+  - The declared criterion stays reported as NOT MET; it cannot be met in double precision on this mesh.
+
+Mesh sensitivity on real copper (`evidence/e16/mesh-sensitivity-K?-*.json`; same fragments, pad supports and source lands; only the cell grid changes; tolerances declared before results):
+- **Half pitch** (0.5 mm inner, 0.125 mm face) raises single-board driving-point resistances by a median 2.9% (KA +5V, 24 pads) and 2.5% (KB −12V, 146 pads), at most 4.2%. Conforming P1 approaches from below, so the reported resistances slightly understate the copper, which only strengthens the copper-requirement failure.
+- **A grid origin shifted** by (0.37, 0.21) mm changes them by at most 1.1%.
+- Both are within the declared 5% report tolerance. Two meshes are not a convergence proof.
+
+Stack-depth sensitivity (nominal-average, all returns present; `evidence/e16/coupled-depth-sensitivity-t2.json`):
+
+| Stack | KA trunk to terminal, +12V / −12V / +5V / AGND (mΩ) | Max pad copper resistance, +12V / AGND (mΩ) | Barrel share of +12V dissipation |
+| --- | --- | --- | ---: |
+| uniform-dielectric (default) | 1.160 / 1.488 / 1.999 / 0.58–0.68 | 6.48 / 15.66 | 42% |
+| staged-caps-bands (rejected staged stack) | 1.222 / 1.624 / 1.780 / 0.56–0.66 | 6.77 / 15.73 | 45% |
+| barrel-upper-1p6-per-interval (each interval's upper bound) | 3.202 / 3.152 / 3.454 / 1.01–1.11 | 14.70 / 18.93 | 79% |
+
+The copper-requirement conclusion does not depend on the unknown stack. The trunk exceeds the allowance in every case.
