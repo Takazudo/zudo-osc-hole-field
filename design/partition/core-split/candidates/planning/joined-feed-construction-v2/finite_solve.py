@@ -102,16 +102,36 @@ def _extended_residual(Af,x,b):
   raise ValueError('refinement requires CSR or CSC sparse storage')
  xx=np.asarray(x);bb=np.asarray(b);vector=bb.ndim==1
  if vector:xx=xx[:,None];bb=bb[:,None]
+ if Af.format=='csc':
+  # Private API in the request-pinned SciPy. Equivalence fixtures cover its
+  # in-place, stored-entry-order accumulation contract; absence is a failure.
+  from scipy.sparse import _sparsetools
  residual=np.empty(bb.shape,dtype=np.float64)
  for j in range(bb.shape[1]):
   rr=bb[:,j].astype(np.longdouble)
-  for lo in range(0,len(Af.data),65536):
-   hi=min(lo+65536,len(Af.data))
-   major=np.searchsorted(Af.indptr,np.arange(lo,hi),side='right')-1
-   minor=Af.indices[lo:hi]
-   row,col=(minor,major) if Af.format=='csc' else (major,minor)
-   product=Af.data[lo:hi].astype(np.longdouble)*xx[col,j].astype(np.longdouble)
-   np.add.at(rr,row,-product)
+  if Af.format=='csc':
+   # Bound pointer/vector scratch as well as coefficient scratch, even for
+   # long empty column spans or a single column exceeding the entry bound.
+   for c0 in range(0,Af.shape[1],65536):
+    c1=min(c0+65536,Af.shape[1]);stop=int(Af.indptr[c1])
+    for lo in range(int(Af.indptr[c0]),stop,65536):
+     hi=min(lo+65536,stop)
+     first=max(c0,int(np.searchsorted(Af.indptr,lo,side='right'))-1)
+     last=min(c1-1,int(np.searchsorted(Af.indptr,hi-1,side='right'))-1)
+     pointers=np.clip(Af.indptr[first:last+2]-lo,0,hi-lo)
+     coefficients=-Af.data[lo:hi].astype(np.longdouble)
+     values=xx[first:last+1,j].astype(np.longdouble)
+     # Same per-row additions as the original scatter, into one extended rr.
+     # No full extended matrix, regrouped row sum, or float64 product.
+     _sparsetools.csc_matvec(Af.shape[0],last-first+1,pointers,
+                           Af.indices[lo:hi],coefficients,values,rr)
+  else:
+   for lo in range(0,len(Af.data),65536):
+    hi=min(lo+65536,len(Af.data))
+    major=np.searchsorted(Af.indptr,np.arange(lo,hi),side='right')-1
+    minor=Af.indices[lo:hi]
+    product=Af.data[lo:hi].astype(np.longdouble)*xx[minor,j].astype(np.longdouble)
+    np.add.at(rr,major,-product)
   residual[:,j]=rr
  return residual[:,0] if vector else residual
 

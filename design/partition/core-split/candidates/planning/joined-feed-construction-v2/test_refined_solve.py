@@ -8,6 +8,7 @@ from unittest.mock import patch
 import numpy as np
 import scipy.sparse as sp
 import scipy.sparse.linalg as spla
+from scipy.sparse import _sparsetools
 
 # Load only the numerical helpers: this regression requires no geometry, native
 # tools, mesh construction, large board operators, or production solver command.
@@ -107,6 +108,83 @@ class Refinement(unittest.TestCase):
  def test_zero_rhs_remains_zero(self):
   A,b,lu=self.fixture();x,res=ns['refined_solve'](lu,A,b*0)
   np.testing.assert_array_equal(x,np.zeros(2));self.assertEqual(res,0.)
+
+class ExtendedResidualKernel(unittest.TestCase):
+ @staticmethod
+ def original_scatter(A,x,b):
+  # Retained pre-optimization arithmetic, independent of the compiled kernel.
+  xx=np.asarray(x);bb=np.asarray(b);vector=bb.ndim==1
+  if vector:xx=xx[:,None];bb=bb[:,None]
+  result=np.empty(bb.shape,dtype=np.float64)
+  for j in range(bb.shape[1]):
+   rr=bb[:,j].astype(np.longdouble)
+   for lo in range(0,len(A.data),65536):
+    hi=min(lo+65536,len(A.data))
+    major=np.searchsorted(A.indptr,np.arange(lo,hi),side='right')-1
+    row,col=(A.indices[lo:hi],major) if A.format=='csc' else (major,A.indices[lo:hi])
+    product=A.data[lo:hi].astype(np.longdouble)*xx[col,j].astype(np.longdouble)
+    np.add.at(rr,row,-product)
+   result[:,j]=rr
+  return result[:,0] if vector else result
+
+ def assert_equivalent(self,A,x,b):
+  before=[v.copy() for v in (A.data,A.indices,A.indptr,x,b)]
+  with np.errstate(invalid='ignore',over='ignore'):
+   expected=self.original_scatter(A,x,b);actual=ns['_extended_residual'](A,x,b)
+  self.assertEqual(actual.dtype,np.dtype(np.float64))
+  np.testing.assert_array_equal(actual,expected)
+  finite=np.isfinite(expected)
+  self.assertEqual(actual[finite].tobytes(),expected[finite].tobytes(),'finite/signed-zero bytes differ')
+  for old,current in zip(before,(A.data,A.indices,A.indptr,x,b)):
+   np.testing.assert_array_equal(old,current)
+
+ def test_cancellation_and_stored_duplicate_order(self):
+  A=sp.csc_matrix([[100000001.,-100000000.],[-100000000.,100000000.]])
+  x=np.array([[1,1],[1+np.longdouble(1)/1e8,1+np.longdouble(3)/1e8]],dtype=np.longdouble)
+  self.assert_equivalent(A,x,np.array([[0.,-2.],[1.,3.]]))
+  # Grouping all products first would give -2 instead of the original -3.
+  A=sp.csc_matrix((np.array([1e20,-1e20,3.]),np.array([0,0,0]),np.array([0,3])),shape=(1,1))
+  self.assert_equivalent(A,np.ones(1,dtype=np.longdouble),np.ones(1))
+  self.assertEqual(ns['_extended_residual'](A,np.ones(1),np.ones(1))[0],-3.)
+
+ def test_unsorted_rows_vector_and_matrix_inputs(self):
+  A=sp.csc_matrix((np.array([3.,1.,2.,-4.]),np.array([1,0,1,0]),np.array([0,3,4])),shape=(2,2))
+  for dtype in (np.float64,np.longdouble):
+   for width in (1,3,8):
+    with self.subTest(dtype=dtype,width=width):
+     x=np.arange(2*width,dtype=dtype).reshape(2,width)/7;b=np.ones((2,width))*1e-8
+     self.assert_equivalent(A,x,b)
+     self.assert_equivalent(A,x[:,0],b[:,0])
+
+ def test_signed_zeros_and_nonfinite_propagation(self):
+  for zero in (0.,-0.):
+   A=sp.csc_matrix((np.array([zero,-zero,3.,-2.]),np.array([1,0,1,0]),np.array([0,2,4])),shape=(2,2))
+   self.assert_equivalent(A,np.array([zero,-zero],dtype=np.longdouble),np.array([-zero,zero]))
+  for value,x in ((np.inf,0.),(np.nan,0.),(1.,np.nan),(1.,np.inf),(0.,np.inf)):
+   with self.subTest(value=value,x=x):
+    A=sp.csc_matrix(([value],([0],[0])),shape=(1,1))
+    self.assert_equivalent(A,np.array([x],dtype=np.longdouble),np.ones(1))
+
+ def test_split_column_and_empty_column_spans_are_bounded(self):
+  matrices=[sp.csc_matrix((np.ones(70001),(np.arange(70001),np.zeros(70001,dtype=int))),shape=(70001,1)),
+            sp.csc_matrix(([2.,-3.],([0,2],[0,70000])),shape=(3,70002))]
+  for A in matrices:
+   calls=[];kernel=_sparsetools.csc_matvec
+   def checked(rows,cols,ptr,indices,data,values,rr):
+    self.assertLessEqual(len(data),65536);self.assertLessEqual(cols,65536);self.assertLessEqual(len(ptr),65537)
+    self.assertTrue(np.shares_memory(indices,A.indices))
+    for array in (data,values,rr):self.assertEqual(array.dtype,np.dtype(np.longdouble))
+    calls.append(rr.ctypes.data)
+    return kernel(rows,cols,ptr,indices,data,values,rr)
+   with patch.object(_sparsetools,'csc_matvec',checked):
+    self.assert_equivalent(A,np.ones(A.shape[1],dtype=np.longdouble)*np.longdouble('.123456789123456789'),np.ones(A.shape[0]))
+   self.assertEqual(len(calls),2);self.assertEqual(len(set(calls)),1,'multiple extended output vectors allocated')
+
+ def test_csr_keeps_original_path_and_empty_matrix_is_supported(self):
+  A=sp.csr_matrix([[3.,-2.,0.],[0.,7.,1.]])
+  with patch.object(_sparsetools,'csc_matvec',side_effect=AssertionError('CSR must not use CSC kernel')):
+   self.assert_equivalent(A,np.arange(6,dtype=np.longdouble).reshape(3,2),np.ones((2,2)))
+  self.assert_equivalent(sp.csc_matrix((4,5)),np.zeros((5,2)),np.zeros((4,2)))
 
 class DrivingPointProjection(unittest.TestCase):
  def fixture(self):
