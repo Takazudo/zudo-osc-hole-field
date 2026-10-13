@@ -1,0 +1,125 @@
+{
+  "status": "PASS_REJECTED_SOURCE_ATTEMPT_EVIDENCE",
+  "source_commit": "f5626849b368fb17cf11ccb729a6460dae43b4e0",
+  "source_sha256": {
+    "circuit/routing/epic-242/decision-pilots/terminal-access/weighted_transition_candidate.py": "4d6202b2f4156e5a9038b4f3801ae430944bcf54be4476bcbe3dd5dda80325d9",
+    "circuit/routing/epic-242/decision-pilots/terminal-access/test_weighted_transition_candidate.py": "43bc439c186e08d5fd511661edbeb2984d8e8a3cb43462dadffc0a3b1571c76c",
+    "circuit/routing/epic-242/decision-pilots/terminal-access/exact_transition_candidate.py": "f0c87c62c12b7353511c0d3c9e6f34d9485a6c469288a4ce75b8cb2d45639457",
+    "circuit/routing/epic-242/decision-pilots/terminal-access/analyze_f3_breakout_region.py": "a4c4de781e8f87812ce11429a8e867e351622153feed290a1cb77804884aac0d"
+  },
+  "artifact_sha256": {
+    "execution-source.json": "0d2b01abca4a41f8dc696a1356d3428f9b6e527d0baadb1dd1425e45f3947cf1",
+    "result.json": "9ac4d889383104907f2594c9bd0ec672251ad380c80106785e2322ace6f4c296",
+    "graph-path.json": "69aa4b908978655d869a282aaec19b72b5a1b53be9e07190713713548c30a8be"
+  },
+  "source_input_budget_seals_match": true,
+  "diagnostic": {
+    "status": "STOPPED_AT_COMPLETE_CHAIN_GATE",
+    "expanded": 15607,
+    "visited": 7164,
+    "exact_checks": 26251,
+    "rejection": "new vias violate existing-hole policy",
+    "failure": null
+  },
+  "method_interval_seconds": 4.544200353004271,
+  "graph_nodes": 272,
+  "stitched_chain_nodes": 277,
+  "anchor_uuids": [
+    "a94ae2bb-13fe-5e3d-a7ab-10ddb6bd4222",
+    "27917993-70a2-5f19-bf83-ba1057f34dac"
+  ],
+  "emitted_diagnostic_only_rows": 74,
+  "via_rows": [
+    {
+      "kind": "via",
+      "net": "XDEDA32D515C912ED69C7",
+      "at_nm": [
+        224500000,
+        261100000
+      ],
+      "diameter_nm": 600000,
+      "drill_nm": 300000,
+      "layers": [
+        "F.Cu",
+        "B.Cu"
+      ],
+      "locked": false,
+      "uuid": "d0130d5e-fba3-540d-81b7-748066e7b5ae"
+    },
+    {
+      "kind": "via",
+      "net": "XDEDA32D515C912ED69C7",
+      "at_nm": [
+        241400000,
+        254500000
+      ],
+      "diameter_nm": 600000,
+      "drill_nm": 300000,
+      "layers": [
+        "F.Cu",
+        "B.Cu"
+      ],
+      "locked": false,
+      "uuid": "fba8ea67-663b-5810-b3d6-6df68dd26617"
+    },
+    {
+      "kind": "via",
+      "net": "XDEDA32D515C912ED69C7",
+      "at_nm": [
+        241094427,
+        254188854
+      ],
+      "diameter_nm": 600000,
+      "drill_nm": 300000,
+      "layers": [
+        "F.Cu",
+        "B.Cu"
+      ],
+      "locked": false,
+      "uuid": "f1cc476a-e415-5dc5-9c08-0cb9db8fe58d"
+    }
+  ],
+  "offending_new_via_pairs": [
+    {
+      "left": {
+        "kind": "via",
+        "net": "XDEDA32D515C912ED69C7",
+        "at_nm": [
+          241400000,
+          254500000
+        ],
+        "diameter_nm": 600000,
+        "drill_nm": 300000,
+        "layers": [
+          "F.Cu",
+          "B.Cu"
+        ],
+        "locked": false,
+        "uuid": "fba8ea67-663b-5810-b3d6-6df68dd26617"
+      },
+      "right": {
+        "kind": "via",
+        "net": "XDEDA32D515C912ED69C7",
+        "at_nm": [
+          241094427,
+          254188854
+        ],
+        "diameter_nm": 600000,
+        "drill_nm": 300000,
+        "layers": [
+          "F.Cu",
+          "B.Cu"
+        ],
+        "locked": false,
+        "uuid": "f1cc476a-e415-5dc5-9c08-0cb9db8fe58d"
+      },
+      "distance_mm": 0.4361039917783372,
+      "required_mm": 0.700001,
+      "deficit_mm": 0.2638970082216628
+    }
+  ],
+  "candidate_created": false,
+  "native_executed": false,
+  "classification": "Graph path found, atomic emitted geometry rejected. Retire unchanged-placement case under parent scope; no graph-disconnection or physical-impossibility claim.",
+  "review_activity": "Read-only sealed-source/artifact verification and stitch/copper_rows reconstruction only; no solve, A*, native or candidate application."
+}

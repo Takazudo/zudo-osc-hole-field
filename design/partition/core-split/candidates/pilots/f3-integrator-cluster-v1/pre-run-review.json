@@ -1,0 +1,20 @@
+{
+  "status": "PASS_SOURCE_REVIEW_BEFORE_SINGLE_POSE_CHECK",
+  "reviewer": "baseline_review",
+  "review_activity": "Source and seal verification; five unit tests; no main execution or alternative pose evaluation",
+  "source_sha256": {
+    "check_pose.py": "001ee908ddc68bfe1f43e670ea1890f86c326baa31df8613185a9054521a4718",
+    "test_check_pose.py": "50dceb5754a66fca5b9edfb9fce7d6e0199c0db84b3a55209477f3e15f48f4dc",
+    "pose-epoch.json": "008cb8e318005bb8db36a75cf3ea321ef45de473a878697c0c3241fe8b96a47f"
+  },
+  "tests": 5,
+  "frozen_inputs": 8,
+  "closure_refs": 24,
+  "moved_refs": 7,
+  "fixed_U2306": true,
+  "limitations": [
+    "Moved-impact same-face checks, not whole-board preexisting fit certification",
+    "Source pad/straight-copper/circular-via screen only",
+    "Zone refill, native acceptance and complete pair closure not validated"
+  ]
+}

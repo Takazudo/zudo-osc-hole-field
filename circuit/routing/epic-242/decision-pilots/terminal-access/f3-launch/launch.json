@@ -1,0 +1,128 @@
+{
+  "status": "ADMITTED AND EXECUTED ONCE; NO IMPROVEMENT; STOPPED FOR PARENT RECEIPT REVIEW",
+  "case": "F3/K1402 route only",
+  "orchestration_sha": "bf671866e73e8d133726090c0e8295ccdd41c5c1",
+  "method_sha": "6f0783335fa23d760877a91db3b63f93c039b4b4",
+  "packet_sha256": "10be49ae32997a36c54436e48226a295678e47dda1fc1c14f4569c72ef4bdd92",
+  "fixture_lock_sha256": "0ee20e3e409a93f1f4b1417c8e2ed64b18564f00213edd1aeaf6cd3af4ffbf7b",
+  "orchestration_files_sha256": {
+    ".github/workflows/epic242-f3-k1402-access.yml": "159df4d37ac383e7214cc994b8d05c2fd834773d3e31e91c71a9edf626cdfce3",
+    "circuit/routing/epic-242/decision-pilots/terminal-access/run_f3_k1402.py": "3a90d67555d632aa3bb9965251f5cfe087d18fd8576bfc36bd26cb9c0badd893",
+    "circuit/routing/epic-242/decision-pilots/terminal-access/test_f3_orchestration.py": "ce109a983f185a07f306fc12e04e431e16321b28e81778567c6257255746387a"
+  },
+  "execution_branch": "integration/epic-242-f3-k1402-access-v1",
+  "identity_status": "Parent explicitly extended same unconsumed1623 admission to bf671866; branch created once; run38155571727 completed with clean retained evidence.",
+  "worker_pattern": "f3-k1402-access-v1-{GITHUB_RUN_ID}-1",
+  "launch_gate": "CONSUMED. Execution branch is frozen atbf671866. Never repeat/force/reset/recreate. New phases need separate parent admission.",
+  "one_shot": "push creation + Actions attempt1 + complete branch run history containing exactly this workflow/run/head; prior use/incomplete census refuses",
+  "controls": {
+    "source_files": 426,
+    "outer_wrapper_files": 1,
+    "fixture_files": 297,
+    "immutable_method_checkout": true,
+    "python": "actual absolute Python3.11 executable/resolved path/binarySHA/sys.version + pinned versions before and after host provisioning",
+    "versions": {
+      "numpy": "2.2.6",
+      "scipy": "1.15.3",
+      "shapely": "2.1.2"
+    },
+    "image_helper": "unchanged scripts.kicad.settle_only_pilot.prepare_image",
+    "image": "kicad/kicad@sha256:18693567392b80da435f9fa952ce3a3e534c66eb5a6033f5b9c80aa3b19dd3ec",
+    "hosted_dispatch": "unchanged scripts/pcbgen/with_route_guard.sh",
+    "native_guard": "unchanged scripts/kicad/native_resource_guard.py",
+    "route_argv": "exact K1402 packet argv, substituting only actualPython/newadmission/uniqueworker/freshguardJSON; no board/method/fixture/budget change",
+    "route_seconds_including_both_probes": 300,
+    "enclosing_job_minutes": 43,
+    "image_preparation_seconds": 300,
+    "dependency_install_seconds": 180,
+    "artifact_metadata_seconds": 120,
+    "artifact_download_seconds": 120,
+    "fixture_prepare_seconds": 120,
+    "pre_native_remaining_job_seconds_min": 600,
+    "worker_memory_gib": 6,
+    "aggregate_memory_gib": 12,
+    "global_workers_max": 2,
+    "required_free_gib": 2,
+    "early_abort_free_gib": 2.5,
+    "additional_swap": false
+  },
+  "retention": {
+    "artifact_name": "epic242-f3-k1402-access-v1-{GITHUB_RUN_ID}",
+    "days": 30,
+    "always_steps": [
+      "full/partialfixture copy + explicitoutputinventory",
+      "artifact upload"
+    ],
+    "missing_output": "NOT PRODUCED; missing/partialreceipts never prove successful execution or cleanup",
+    "failure": "retain bootstrap/initialization/dependencies/image/authentication/route logs and receipts even when blocked; separate retention-failure receipt iffinalization fails",
+    "platform_limit": "Job cancellation/timeout may prevent final upload; absent proof blocks subsequent admission and cannot count as cleanup"
+  },
+  "credit": "All4 original demands and blocked rails explicit; accepted/adopted/native_exact_pair_closed/coupled_connectivity_success false. Signal-only gain never means complete cohort/architecture success.",
+  "review": {
+    "baseline_review": "PASS original orchestration plus independent full-history correction review",
+    "architecture_astra": "PASS independent source review",
+    "tests": {
+      "terminal_access_total": 51,
+      "new_orchestration_and_retained_receipt_boundaries": 16,
+      "native_or_savedboard_search": 0
+    },
+    "other_checks": [
+      "YAML/bash syntax PASS",
+      "result_summary AST unchanged from1420 exceptmethodbinding",
+      "all427method/controlhashes equalfrozen6f",
+      "packetdigestunchanged",
+      "pnpm circuit:check PASS",
+      "pnpm check PASS",
+      "baseline1881inputs/195harnesses/390endpointmaps PASS",
+      "Full historical cohort availability and exact digest verified before provisioning"
+    ],
+    "component_scope": "manual68lines/zero declaredplacements; schematic/placementbinding notperformed"
+  },
+  "not_run": [
+    "two-A",
+    "apply",
+    "settle",
+    "fresh",
+    "fullwarningaudit"
+  ],
+  "out_of_scope": [
+    "two-A dispatch",
+    "automaticretry",
+    "newguardframework",
+    "repeatqualification",
+    "nativeclosure/adoption",
+    "canonicalhardwarewrites",
+    "merge/closure/deploy/fabrication"
+  ],
+  "superseded_orchestration_sha": "4a948fbbabaa94fcdc030c15d5922a7b4e8b300b",
+  "historical_evidence": {
+    "method_checkout_fetch_depth": 0,
+    "commit": "191a4db30d90fe43025ec2633e23f9b069f12b85",
+    "path": "circuit/routing/epic-242/decision-pilots/terminal-access/cohort-validation.json",
+    "sha256": "beb352adf77edbafa74afd5cee1ec4b38593448c6233d55d19fd9751861ee89b",
+    "gate": "git show exact historical bytes and verify frozen packet hash before provisioning, repeated by source verification",
+    "review": "Independent baseline_review PASS; missingcommit/wrongbytes refusal tests PASS"
+  },
+  "admission_reconciliation": {
+    "parent_admitted_orchestration_sha": "4a948fbbabaa94fcdc030c15d5922a7b4e8b300b",
+    "identity_bound_orchestration_sha": "bf671866e73e8d133726090c0e8295ccdd41c5c1",
+    "admission_id": "epic242-f3-k1402-route-20261011-1623",
+    "changed_lines": 2,
+    "changed_values": "workflow PARENT_ADMISSION_ID and runner ADMISSION only",
+    "independent_review": "baseline_review PASS;16source orchestrationtests PASS",
+    "execution_branch_created": true,
+    "required": "Parent confirms identity-only bf671866 as the admitted orchestration; all other scope and limits unchanged",
+    "status": "CONFIRMED BY PARENT; identity-onlySHA admitted",
+    "native_workers_started": 1,
+    "probe_containers_started": 2,
+    "active_native_workloads": 0
+  },
+  "execution_receipt": "../route-1623/result-ledger.json",
+  "consumed_launch_argv": [
+    "git",
+    "push",
+    "origin",
+    "bf671866e73e8d133726090c0e8295ccdd41c5c1:refs/heads/integration/epic-242-f3-k1402-access-v1"
+  ],
+  "admission_id": "epic242-f3-k1402-route-20261011-1623"
+}

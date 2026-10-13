@@ -1,0 +1,176 @@
+{
+  "status": "ONE_AUTHORED_SOURCE_GEOMETRY_PROPOSAL_FOR_INDEPENDENT_COLLISION_REVIEW_NOT_FIT",
+  "scope": "Complete candidate mechanical construction prescription, no native, physical edits, alternative search or fixed geometry changes. Root implements one generator; architect cross-reviews before geometry execution.",
+  "fixed_family": {
+    "KA_face_z_mm": -101.6,
+    "KB_face_z_mm": -126,
+    "KA_outward_normal": [
+      0,
+      0,
+      -1
+    ],
+    "KB_outward_normal": [
+      0,
+      0,
+      1
+    ],
+    "KA_anchor_xy_mm": [
+      [
+        23,
+        15.5
+      ],
+      [
+        40,
+        15.5
+      ],
+      [
+        57,
+        15.5
+      ],
+      [
+        23,
+        24.5
+      ],
+      [
+        40,
+        24.5
+      ],
+      [
+        57,
+        24.5
+      ]
+    ],
+    "KB_anchor_offset_xy_mm": [
+      58,
+      0
+    ],
+    "anchor_depth_mm": 2,
+    "wire_OD_max_mm": 2.5908,
+    "free_length_mm": 66,
+    "tails_mm": 2.5,
+    "travel_mm": [
+      0,
+      10.1
+    ],
+    "feed_cut_mm": [
+      84.5,
+      85
+    ],
+    "main_cut_mm": [
+      103.5,
+      104
+    ],
+    "signs": [
+      1,
+      -1,
+      1,
+      1,
+      -1,
+      1
+    ],
+    "reference_direction": [
+      0.5933040689317951,
+      0.5927989259019525,
+      -0.5445913286478836
+    ]
+  },
+  "coordinates": "Board-local x/y from retained candidates; d positive from feed face into gap. Global z=face_z+normal_z*d; KB entire assembly translates global z by -travel. All given boxes are closed outer solids; boolean holes/bore subtraction is explicit.",
+  "material_proposal": {
+    "collets_and_fingers": "Machined unfilled PEEK, grade unselected; this is a design material class, no claimed supplier tolerance or load rating.",
+    "frame": "Machined aluminum perimeter members inside continuous machined PEEK electrical isolation sleeves; external envelopes below include sleeve1mm minimum.",
+    "fasteners": "M1 collet through-bolts/nuts and M2 carrier support screws, fully captured insulated exterior sleeves/caps. No electrical current through hardware.",
+    "qualification": "Grade, creep, flame/insulation/environment ratings, bond and retention loads remain unqualified; source geometry may be completed before these measurements."
+  },
+  "perimeter_carrier": {
+    "intent": "Replace prior full perimeter proposal by removable topbeam only; preserve existing two-deep independent board carrier/service-guide geometry. No new enclosure receivers or PCBholes.",
+    "topbeam_outer_box_xy_d_mm": [
+      3.5,
+      0,
+      0.65,
+      314.5,
+      7,
+      8.65
+    ],
+    "inner_metal_core_box_xy_d_mm": [
+      4.5,
+      1,
+      1.65,
+      313.5,
+      6,
+      7.65
+    ],
+    "supports_xy_mm": [
+      [
+        6.5,
+        10.5
+      ],
+      [
+        311.5,
+        10.5
+      ]
+    ],
+    "lug_outer_boxes": "[supportx-3,6,.65,supportx+3,13.5,4.65] with2.2mm throughbore",
+    "fastener_geometry": "Explicit M2shafts/insulatingwashers/head/nut envelopes in helper; clamp to existingtopcollars, no newframe orenclosurehole.",
+    "loadpath": "Each finger -> topbeam -> two monolithic topcollarlugs -> existing supportclamps -> retained independently supported carrier. Beam deflection, collar loads/retention remain qualification; existing service-guide clearance must be checked, not rediscovered as newsourcework."
+  },
+  "collet_and_lug": {
+    "outer_cylinder_radius_mm": 2,
+    "bore_radius_mm": 1.2954,
+    "grip_station_mm": [
+      1,
+      2.5
+    ],
+    "split": "Plane spanned by axisw and transverse radialn;0.20mm split gap between halves before setting. Hard compression stop preserves bore envelope; grip preload/insulation retention is qualification, not inferred from OD match.",
+    "basis": "In local(x,y,d), w=(board_sign*.5933040689317951,sign_i*.5927989259019525,.5445913286478836). s=hypot(w_x,w_y); n=(-w_d*w_x/s,-w_d*w_y/s,s) points away from board and is perpendicular to w; v=w cross n lies in board plane. A=(anchorx,anchory,2). This supersedes the negative-Y radial draft.",
+    "lug": "Two collet halves carry matching integral radial lug from n1.7..5.5, w stations1.0..2.5, v[-1.5,1.5], with split|v|<0.10 removed. Material overlaps own shell intentionally. Outer cylinder remains separate union, not enlarged clearance exemption.",
+    "clamp_bolt": "M1x5 screw axisv centered A+1.75w+4n; shaftR0.5 v[-1.8,3.2], headR1 v[-2.3,-1.8], capturednutR1.2 v[1.5,2.3]. Dielectric capsR1.4 v[-2.6,-1.8] and[2.3,3.5]. Subtract0.55mm clearance bore through lug. All head/nut/cap envelopes included in collision checks; no inherited bare-cylinder clearance credit for these additions.",
+    "radial_revision": "Astra design correction accepted by root: lug bolt axis center depth approximately6.308mm and cap minimum depthapproximately4.908mm. Allfullsolids stillrequireactualsourceclearancechecks."
+  },
+  "fingers": {
+    "section_mm": [
+      2,
+      2
+    ],
+    "construction": "One finger per collet. Start P=A+1.75w+5.5n; sweep2x2mm square prism along each following orthogonal segment with complete joint cubes. Section planes normal to each segment; all corner unions include their true material boxes. Own lug attachment is intended; foreign-wire contacts never exempt.",
+    "polyline": "P -> (P.x,P.y,1.65) -> (L,P.y,1.65) -> (L,5.5,1.65). L=anchorx+6 for KA and anchorx-6 for KB, both rows. Repeated same-column segments form an intentional joined carrier finger, not a forbidden foreign-carrier contact. Preserve all12 attachment branches; boolean-union only same-carrier structural solids. Last segment embeds in top carrier rail.",
+    "nominal_board_surface_gap_mm": 0.65,
+    "independent_closure_requirement": "Before any pass subtract full machining/registration/retention/warp/thermal budget;0.25mm residual stillrequired. Do not claim this theoretical gap for slanted joint corners until exact solid bounds checked.",
+    "wire_avoidance_rationale": "Radial departure n is perpendicular to own wire tangent and awayfromboard. Orthogonal descent begins5.5mm fromaxis; nYsign varies bywirebow. Columnlane remains KAanchorx+6 / KBanchorx-6. This is construction, not a clearance certificate; descendingfinger and allotherwires must be checked."
+  },
+  "termination_and_insulation": {
+    "lands": "Unchanged tangent continuation landcenters;4x4mm copper,5x5shroud and6x6reservation.",
+    "insulation": "Original wire OD2.5908mm starts exactly3.0mm axisdistance fromland; flatcut normaltoaxis. No addedbridge sleeve. Beforethat point exposedmetalR1.0 outerenvelope suppliedbyrootcontactproducer.",
+    "metal": "Rootcontactsource19coresR0.175 containedwithin0.915mm,outerenvelopeR1.0,trimmedbyboardparallel locald0.05plane; helper records binding metadata and doesnot generate duplicatecontactcore.",
+    "shroud": "5x5mm footprint,1.5mm height,4x4cavity openbottom to1.0mm,angledentryboreR1.7. Fullouter/cavity geometry explicit.",
+    "solder": "4x4mm contact footprint thickness0.05mm, matchingrootcontactconstruction.",
+    "length_accounting": "Each3mm strippedend lies withininstalledmetal path. Do not add6mm tocutlength or consume4.5mm preparation twice. Existingcut85/main104 ceilings unchanged.",
+    "remaining_scope": "Actual insulationstartstation tolerance and complete board-closure budget must bechecked beforeclearancepass; nominalflatcut gapalone is notacceptance."
+  },
+  "validation_contract": {
+    "before_execution": "Independent architect reviews this one prescription and root instantiation; no supplied dimension is a clearance pass.",
+    "source_checks": [
+      "All carrier/finger/collet/lug/bolt/cap/shroud/sleeve/existing carrier outer solids retained withholes",
+      "Full wire finite-radius continuous sweep at frozen tolerance family and0..10.1mm travel",
+      "All fixedsource courtyards, bothfaces, loom/tool columns, supportreservations, bulk/monitor, enclosure and othercarrier, plusall100adjustment access",
+      "Only explicit owncollar/fastenerjoint/shelllug/ownwirebore/ownland contacts permitted",
+      "All intended structuraljoint contactareas positive and loadpath reachesexisting carrier or existingcarrier supports",
+      "No overlap via generic ownboard exemption; onlyactual landing and supportcontact masks",
+      "No rigid movement of fixedparts/panel/harnessorder; no newPCBhollows or coppercuts"
+    ],
+    "qualification_after_source": "0.05mm retention/thermal allowances, C0/C1/C2 wirebehavior, materialinsulation/creep/load and actualfixturemetrology remain false until evidence. Sourceclearance can still be checked conditional on allocated tolerances.",
+    "failure": "Record concrete named intersectingsolids/pose/clearance. Root may fix sourceconstruction as authorized; no native orF3 work follows automatically."
+  },
+  "source_hashes": {
+    "robust-curve.json": "cfab1993ecd661054927e8c855470f16618bf04607b12af89cc6ba4099e7dfda",
+    "reconciled-contract.json": "01b77387f568a5b246c7e33e635e8d867f09b23ea200d13dd0c17db251ada30d",
+    "process-budget.md": "85af1cc851cd77f683db1de2a381de54af857115c82cb9902b84c84cbeb10512",
+    "collet-clearance.json": "e717b4dde85394d230fa005a302adeed814410f8929193a66664138684c828e8"
+  },
+  "revision": "ROOT_SELECTED_TOP_BEAM_TWO_EXISTING_COLLARS_ONLY",
+  "generator_helper": {
+    "path": "/tmp/feed-v2-mechanical.py",
+    "sha256": "6cd34a2b773838f8a530120d3c5ec453e15fa4da2bf8221f55ef297e703a907b",
+    "execution": "NOT EXECUTED; primitive construction and allgeometryqueries await architect pre-review",
+    "format": "id/board/wire/kind/vertices_xyz_mm plus holes with explicitnegativevertices andanalyticalprimitive. Outer cylinders64facet circumscribed; negativebores inscribed. Original exactorientedbox/cylinder fields retained for intended ownwirebore handling. build(travel_mm) returns globalworld coordinates, allKBsolids moveby-travel."
+  }
+}

@@ -205,7 +205,19 @@ class PrecisionOutputCandidateTests(unittest.TestCase):
 
     def test_generated_bounds_and_model_receipt_match_inputs_without_running_oracle(self):
         run(check=True)
-        report = json.loads((ROOT / "design/power/precision-output-cell-model.json").read_text())
+        model_path = ROOT / "design/power/precision-output-cell-model.json"
+        report = json.loads(model_path.read_text())
+        baseline = json.loads((ROOT / "circuit/routing/epic-242/baseline/input-files.json").read_text())
+        epoch = json.loads((ROOT / "circuit/routing/epic-242/baseline/resource-control-epoch.json").read_text())
+        # This model is a retained simulation receipt, not a newly run oracle.
+        # Bind its whole historical result and historical hook to the frozen
+        # baseline, while requiring the current reviewed hook to match its own
+        # sealed tool epoch. Re-running the model requires a new receipt.
+        self.assertEqual(digest(model_path), baseline["files"]["design/power/precision-output-cell-model.json"])
+        hook = "scripts/kicad/run.sh"
+        self.assertEqual(report["input_sha256"][hook], baseline["files"][hook])
+        self.assertEqual(report["input_sha256"][hook], epoch["historical_overrides"][hook]["historical_sha256"])
+        self.assertEqual(digest(ROOT / hook), epoch["historical_overrides"][hook]["reviewed_sha256"])
         self.assertTrue({
             "scripts/checks/precision_output_cell.py",
             "design/spec/cells/sweep_precision_vendor.py",
@@ -213,7 +225,8 @@ class PrecisionOutputCandidateTests(unittest.TestCase):
             "scripts/kicad/run.sh", "scripts/kicad/pin.env",
         } <= set(report["input_sha256"]))
         for path, expected in report["input_sha256"].items():
-            self.assertEqual(digest(ROOT / path), expected)
+            if path != hook:
+                self.assertEqual(digest(ROOT / path), expected)
         self.assertEqual(len(report["cases"]), 24)
         self.assertEqual(sum(row["stricter_400us_diagnostic_met"] for row in report["cases"]), 12)
         self.assertTrue(all(len(row["deck_sha256"]) == 64 for row in report["cases"]))

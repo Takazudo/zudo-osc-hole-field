@@ -1,0 +1,103 @@
+{
+  "actual_shape_extension": {
+    "actual_curve_registered_reference_axial_derivative_lower": 0.10655869530393687,
+    "actual_radius_lower_if_C1_C2_hold_mm": 26.63465767096143,
+    "axial_at_s0_lower_mm": 1.9943641207710305,
+    "curvature_upper_per_mm": 0.037545066745507866,
+    "m_squared_minus_r_kappa": 0.9457361820925705,
+    "mandatory_boundary_requirements": [
+      "Actual straight gripped centreline lies on/within the measured bore containment mask through the flat exit; actual wire radius does not exceed measured bore radius.",
+      "For this sufficient proof the outgoing actual free-curve centre and unit tangent match the collet exit centre and axis in its registered frame. C0<=.20 and unrestricted C1 alone do NOT establish this boundary condition.",
+      "The complete actual centreline, including clamp transitions, satisfies the declared C1/C2 and material-length constraints. No merely positional point-cloud certificate."
+    ],
+    "near_exit_actual_arclength_limit_mm": 2.0,
+    "near_exit_axial_derivative_lower": 0.9971820603855153,
+    "scope": "Conditional sufficient physical-shape class; not a bench result or an assertion that unqualified hardware enforces exact exit matching. The reference source construction itself matches these endpoint conditions.",
+    "theorem": "At the actual flat exit register centreline point to the measured collet axis and tangent to that axis. Curvature<=kappa gives a(s)>=s*cos(kappa*s0), transverse rho(s)<=kappa*s\u00b2/2 for0<=s<=s0. Thus a\u00b2>=2*r*rho by reported inequality. Beyond s0, a>r and strict positive axial derivative follows from reference tangent lower minus|e_s|. Apply at both ends."
+  },
+  "allowed_contact_mask": {
+    "allowed_contact": "Own straight wire occupies its own cylindrical bore. Boundary contact at bore/cylinder exit circle is allowed; no material overlap in annulus.",
+    "entry_side": "Before the free-curve exit the bridge/tail is straight on the measured bore axis. Metal<=1mm and insulation<=1.2954mm radii fit the declared bore; the occupied bore is an intended contact only.",
+    "near_exit_geometry": "With axial a>=m*t and transverse displacement rho<=M*t\u00b2/2, a\u00b2>=2*r*rho if m\u00b2>=r*M. This implies centre distance>=r to the entire annulus radius>=r behind the exit plane, so even a conservative spherical swept tube cannot penetrate that collet annulus. After t0, axial distance>r and stays increasing.",
+    "not_exempt": [
+      "Lug",
+      "M1 fasteners/nuts/caps",
+      "Fingers",
+      "Foreign collets",
+      "Foreign wires",
+      "PCB slabs",
+      "Shroud",
+      "Solder/foil outside separately declared own landing mask"
+    ],
+    "only_solids": "Same board and wire split_collet analytic finite cylinder, with bore radius>=actual wire radius and axial grip1..2.5; subtracting split slots only removes material."
+  },
+  "insulation_cut": {
+    "C1_normal_cosine_lower": 0.5292983451959243,
+    "additional_closure_charged_mm": 0.45,
+    "angle_and_cut_tolerance_board_gap_lower_mm": 0.85934017621904,
+    "first_nominal_collet_grip_station_from_land_mm": 4.672478599623719,
+    "nominal_mm": 3.75,
+    "nominal_station_3p80_to_first_grip_mm": 0.8724785996237188,
+    "remaining_gap_mm": 0.40934017621904,
+    "required_residual_gap_mm": 0.25,
+    "scope": "Own terminal transition has an explicit mask and this residual-clearance calculation. Do not apply an unrelated free-wire nominal0.70mm threshold in addition to the already enumerated closure. Remaining individual fabrication effects must fit the0.45mm allocation; not measured capability.",
+    "station_range_from_land_mm": [
+      3.7,
+      3.8
+    ]
+  },
+  "integration_rule": "A checker may omit only the same-wire same-board split_collet pair after authenticating this proof and exact bore/grip/exit primitives. It must still check all other material and all straight/end segments. Unsupported shape/axis/bore edits invalidate the mask.",
+  "native": false,
+  "reference_exclusion": {
+    "axial_at_t0_lower_mm": 3.103971859174489,
+    "finite_tube_exclusion": true,
+    "global_axial_derivative_lower": 10.698515235775348,
+    "m_squared_minus_rM": 3532.4998423513634,
+    "near_exit_axial_derivative_lower": 61.15606118807055,
+    "scope": "All g/h corner hulls, both ends and Y reflections; floating engineering bound, not formal roundoff certificate.",
+    "t0": 0.05,
+    "transverse_second_derivative_upper": 160.2315714741901,
+    "wire_radius_mm": 1.2954
+  },
+  "reference_speed_upper_per_Bezier_parameter_mm": 91.78650471230864,
+  "reference_unit_tangent_axial_projection_lower": 0.11655869530393687,
+  "schema": "feed-v2-own-collet-exit-proof-v1",
+  "source_family": {
+    "collet_outer_radius_mm": 2,
+    "control_corners": 4,
+    "free_length_mm": [
+      65.9,
+      66.1
+    ],
+    "gap_mm": [
+      20.200000000000003,
+      30.700000000000003
+    ],
+    "grip_axis_stations_from_anchor_mm": [
+      1,
+      2.5
+    ],
+    "independent_global_handle_box_mm": [
+      20.99875319704997,
+      29.75939780469638
+    ],
+    "same_proof_applies_to_wires": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "transform_scope": "Translations, orthogonal Y reflections and reversal preserve all norms/projections; both endpoints explicitly included in exit_proof.",
+    "wire_radius_mm": 1.2954
+  },
+  "source_sha256": {
+    "/workspace/zudo-osc-hole-field/circuit/routing/epic-242/decision-pilots/feed-arrangement/clamps.py": "6be09a8c3435e3f8b12f3171e45e8db191e0ec727e874b0db207868f4368164b",
+    "/workspace/zudo-osc-hole-field/circuit/routing/epic-242/decision-pilots/feed-arrangement/robust-curve.json": "cfab1993ecd661054927e8c855470f16618bf04607b12af89cc6ba4099e7dfda",
+    "/workspace/zudo-osc-hole-field/circuit/routing/epic-242/decision-pilots/feed-arrangement/robust_curve.py": "12cb2cb82f8282c92e8a50c51b4060ba96eb826a35f8b7577c7b6442ff458d91",
+    "/workspace/zudo-osc-hole-field/design/partition/core-split/candidates/planning/joined-feed-construction-v2/exit_proof.py": "ce0e3ce32caea91d4785abd5f1ff54ef83e6fdefda71c663acab55c690687109"
+  },
+  "status": "PASS_REFERENCE_FAMILY; ACTUAL_FINITE_TUBE_PASS_CONDITIONAL_ON_BOUNDARY_AND_SHAPE_REQUIREMENTS",
+  "sweep_executed": false
+}

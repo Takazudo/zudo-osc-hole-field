@@ -1,0 +1,123 @@
+{
+  "status": "PASS_INVALID_FIXED_POSE_IMPACT_EVIDENCE",
+  "blocking_findings": [],
+  "source_commit": "511447010a84b5a1a0e8a9eba0deab03481d2d30",
+  "source_sha256": "cec4398443f82e4fe19a08339bbd403a9464f6d759d4c7340af86465cf8320a3",
+  "evidence_sha256": {
+    "summary.json": "d209b382429bc7e5b6a72e46021d53bf2847ebc2d11c9285f224a4e3856f81c6",
+    "zone-recheck-obligations.json": "fd9764ef7aed480959158785e786cb8048182fb0fb08da70391c07e717d7e40c",
+    "destination-same-net-contacts.json": "1109c2736446399f84b301ebe33687d095d3e99f74c7b3878ef57b99e75ad93c",
+    "selected-pads.json": "fc32b08ebe3cb42ad7989829b6109cf6692d1e72468148c1ca5686c6f291d5c5",
+    "preserved-frontier.json": "1fbb3016b599c8054f067169579148e67bfbeb8a1ddeae504b43ad308fbe345f",
+    "owner-source-records.json": "0cd01a42b092b348ba804c73af6092b848233d54ab65ac0a31b826f44857c898",
+    "net-ownership.json": "37a94f31f733d3135bb51060e10a5c5215e0bfb38ada593fea982012d615bc72",
+    "affected-objects.json": "9789046cac788a73d264b7c2d48c73092b90bd1b66ce1622a048671fd9ed7f75",
+    "placement-checks.json": "ac5a1144c20c3a8de74a776f9c30c283d65b0f748cea11310aea65d0dee5d9f3",
+    "execution-start.json": "b3a660c710bb41b6717a35ce5a250349dd143fc664a66340d7719e13ab545519"
+  },
+  "independently_verified": {
+    "all_input_seals": 22,
+    "selected_pad_transforms": 38,
+    "accepted_index_hashes": 133902,
+    "source_segment_via_geometries": 133551,
+    "affected_source_records": 52,
+    "prior_obligations": 29,
+    "additional_directly_impacted_records": 23,
+    "selected_conflict_pairs": 55,
+    "old_pad_contact_pairs": 33,
+    "complete_same_net_contacts": 99,
+    "preserved_frontier_objects": 56,
+    "fixture_pad_contacts": 33,
+    "source_net_ownership_records": 23,
+    "courtyard_overlap_witnesses": 3,
+    "moved_pad_conflict_witnesses": 2,
+    "bypass_bound_failures": 1
+  },
+  "additional_net_impacts": [
+    {
+      "net": "AGND",
+      "extra": 2,
+      "outside_ref_count": 1756,
+      "outside_refs_source": "All exact refs independently matched in sealed net-ownership.json; shared-net ownership does not authorize edits to these refs."
+    },
+    {
+      "net": "/F3/HP_PLUS",
+      "extra": 5,
+      "outside_refs": [
+        "R2356",
+        "R2357"
+      ]
+    },
+    {
+      "net": "/F3/RES_CONTROL_SUM",
+      "extra": 1,
+      "outside_refs": []
+    },
+    {
+      "net": "/F2/C2b474d_W",
+      "extra": 1,
+      "outside_refs": [
+        "J900221",
+        "R2223"
+      ]
+    },
+    {
+      "net": "/F3/Cb5b1dc_SUM",
+      "extra": 2,
+      "outside_refs": [
+        "C2307",
+        "R2333",
+        "R2334",
+        "U2311"
+      ]
+    },
+    {
+      "net": "/F3/RES_NEG4",
+      "extra": 2,
+      "outside_refs": [
+        "D2321",
+        "D2322"
+      ]
+    },
+    {
+      "net": "/F3/EXPO_REF_TRIM",
+      "extra": 1,
+      "outside_refs": [
+        "R2352",
+        "RV2308"
+      ]
+    },
+    {
+      "net": "/F3/RES_CONTROL_CLAMP",
+      "extra": 5,
+      "outside_refs": [
+        "D2305",
+        "R2385"
+      ]
+    },
+    {
+      "net": "/F3/RES_CONTROL_INV",
+      "extra": 1,
+      "outside_refs": []
+    },
+    {
+      "net": "/F3/REFN5",
+      "extra": 3,
+      "outside_refs": [
+        "R2302",
+        "RV2309",
+        "RV2310",
+        "RV2311",
+        "RV2312",
+        "U2308"
+      ]
+    }
+  ],
+  "disposition": "Do not authorize reconstruction of this invalid joint pose; retire this specific proposal. Additional23 directly impacted objects are conditional census evidence, not a minimum reconstruction proof or sufficient placement/route solution.",
+  "remaining_gates": [
+    "Joint courtyard/pad/bypass prerequisites fail; C2312 remains about29.98mm from original destination.",
+    "No cuts, reconstructed continuity, native DRC/parity/refill, or adoption.",
+    "Full accepted native pads/groups/zone contacts remain unverified; all5zones are recheck obligations."
+  ],
+  "review_activity": "Independent retained-object collision/contact and ownership verification only, no census-main/search/reselection/new pose."
+}

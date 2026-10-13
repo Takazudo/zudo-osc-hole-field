@@ -1,0 +1,13 @@
+import subprocess,json,time,hashlib,os,shutil
+from pathlib import Path
+commands=[['uname','-a'],['cat','/etc/os-release'],['ps','-p','1','-o','comm='],['systemctl','--version'],['systemctl','--user','is-system-running'],['systemctl','--user','--failed','--no-pager'],['systemctl','--user','show','--property=ControlGroup'],['cat','/sys/fs/cgroup/cgroup.controllers'],['cat','/proc/self/cgroup'],['free','-b'],['df','-B1','.', '/tmp','/var/lib/docker','/var/lib/containerd'],['df','-i','.', '/var/lib/docker','/var/lib/containerd'],['docker','context','inspect','default','--format','{{.Endpoints.docker.Host}}'],['docker','info','--format','{{.ServerVersion}} driver={{.Driver}} root={{.DockerRootDir}} cgroup={{.CgroupDriver}}/{{.CgroupVersion}} memory={{.MemoryLimit}} swap={{.SwapLimit}} containers={{.Containers}}'],['docker','image','inspect','kicad/kicad@sha256:18693567392b80da435f9fa952ce3a3e534c66eb5a6033f5b9c80aa3b19dd3ec','--format','{{json .RepoDigests}} {{.Os}}/{{.Architecture}} reported_size={{.Size}}'],['docker','system','df'],['sudo','-n','systemctl','show','--property=Version','--value'],['cc','--version'],['node','--version'],['pnpm','--version'],['/home/takazudo/.cache/zudo-e16-numerical-venv/bin/python','-c','import sys,numpy,scipy,shapely; print(sys.version); print(numpy.__version__,scipy.__version__,shapely.__version__); print(shapely.geos_version_string)']]
+rows=[]
+for cmd in commands:
+ t=time.monotonic()
+ try:
+  p=subprocess.run(cmd,capture_output=True,text=True,timeout=20);row={'command':cmd,'exit_code':p.returncode,'stdout':p.stdout,'stderr':p.stderr}
+ except Exception as e:row={'command':cmd,'error':str(e)}
+ row['elapsed_seconds']=time.monotonic()-t;rows.append(row)
+out={'observed_at_utc':time.strftime('%Y-%m-%dT%H:%M:%SZ',time.gmtime()),'cwd':str(Path.cwd()),'observations':rows,'paths':{n:shutil.which(n) for n in ['python3','node','pnpm','docker','systemd-run','kicad-cli','ngspice']},'guard_hashes':{str(p):hashlib.sha256(p.read_bytes()).hexdigest() for p in [Path.home()/'.codex/scripts/heavy-guard.sh',Path.home()/'.claude/scripts/heavy-guard.sh']},'native_execution':False,'qualification':'Capability inspection only; actual native startup/watchdog/cleanup qualification NOT RUN; reported image size does not establish peak storage.'}
+Path('/tmp/osc-wsl-20261013/runner.json').write_text(json.dumps(out,indent=2)+'\n')
+for r in rows:print(r['command'],r.get('exit_code'),r.get('stdout','').strip(),r.get('stderr','').strip())

@@ -1,0 +1,105 @@
+"""Profile the actual production CLI after proving its unchanged memory scope."""
+from pathlib import Path
+import argparse
+import cProfile
+import hashlib
+import json
+import os
+import resource
+import runpy
+import sys
+import time
+
+ROOT = Path(__file__).resolve().parents[2]
+SOURCE = ROOT / 'design/partition/core-split/candidates/planning/joined-feed-construction-v2'
+
+
+def sha(path):
+    with Path(path).open('rb') as stream:
+        return hashlib.file_digest(stream, 'sha256').hexdigest()
+
+
+def profile_cli(script, argv, output, scope, bindings, spec_path):
+    """Retain timing on success or ordinary CLI failure; propagate its exception."""
+    raw = output / 'profile.pstats'
+    summary = output / 'profile-summary.json'
+    assert not raw.exists() and not summary.exists()
+    profiler = cProfile.Profile()
+    original_argv = sys.argv
+    started = time.monotonic()
+    completed = False
+    try:
+        sys.argv = [str(script), *map(str, argv)]
+        profiler.enable()
+        runpy.run_path(str(script), run_name='__main__')
+        completed = True
+    finally:
+        profiler.disable()
+        sys.argv = original_argv
+        profiler.dump_stats(str(raw))
+        stats = profiler.getstats()
+        timings = []
+        for entry in stats:
+            code = entry.code
+            label = code if isinstance(code, str) else f'{code.co_filename}:{code.co_firstlineno}:{code.co_name}'
+            timings.append({'function': label, 'calls': entry.callcount,
+                            'recursive_calls': entry.reccallcount,
+                            'total_seconds': entry.totaltime,
+                            'self_seconds': entry.inlinetime})
+        timings.sort(key=lambda item: item['total_seconds'], reverse=True)
+        record = {'schema': 'e16-production-profile-v1', 'completed_cli': completed,
+                  'script': str(script), 'script_sha256': sha(script),
+                  'argv': [str(script), *map(str, argv)], 'spec_sha256': sha(spec_path),
+                  'profile_sha256': sha(raw), 'elapsed_seconds': time.monotonic() - started,
+                  'peak_rss_KiB': resource.getrusage(resource.RUSAGE_SELF).ru_maxrss,
+                  'scope': str(scope),
+                  'scope_values': {key: (scope / key).read_text().strip() for key in (
+                      'memory.max', 'memory.swap.max', 'memory.peak', 'memory.events')},
+                  'input_hashes_unchanged': all(sha(path) == digest for path, digest in bindings.items()),
+                  'timings': timings,
+                  'interpretation': 'cProfile timing of one 16-pad production unit. Profiling adds overhead; '
+                                    'inclusive function times overlap and must not be summed. '
+                                    'Not a full 96-pad runtime or full-baseline acceptance result.'}
+        with summary.open('x') as stream:
+            json.dump(record, stream, indent=2)
+            stream.write('\n')
+        assert record['input_hashes_unchanged']
+
+
+def main():
+    if os.environ.get('E16_PROFILE_SCOPE') != '1':
+        assert 'E16_SOLVE_SCOPE' not in os.environ
+        os.environ['E16_PROFILE_SCOPE'] = '1'
+        os.execvp('systemd-run', ['systemd-run', '--user', '--scope', '-q',
+                  '-p', 'MemoryMax=2147483648', '-p', 'MemorySwapMax=0',
+                  sys.executable, str(Path(__file__).resolve()), *sys.argv[1:]])
+    rel = Path('/proc/self/cgroup').read_text().strip().split('::', 1)[1]
+    scope = Path('/sys/fs/cgroup' + rel)
+    assert (scope / 'memory.max').read_text().strip() == '2147483648'
+    assert (scope / 'memory.swap.max').read_text().strip() == '0'
+    p = argparse.ArgumentParser()
+    p.add_argument('--spec', type=Path, required=True)
+    p.add_argument('--output', type=Path, required=True)
+    a = p.parse_args()
+    s = json.loads(a.spec.read_text())
+    assert s['maximum_diagnostic_units'] == 1
+    assert (s['phase'], s['board'], s['net'], s['case'], s['depth'], s['start'], s['stop']) == (
+        'dpoint', 'KB', 'AGND', 'nominal-average', 'uniform-dielectric', 0, 16)
+    assert a.output.is_absolute() and not a.output.is_relative_to(ROOT)
+    for path, digest in s['input_sha256'].items():
+        assert sha(path) == digest, path
+    result = a.output / 'result.pkl.gz'
+    assert not result.exists() and not Path(str(result) + '.numerical.json').exists()
+    # This marker is set only after proving the live scope. The actual production
+    # main still runs enter_memory_scope(), which independently verifies both caps.
+    os.environ['E16_SOLVE_SCOPE'] = '1'
+    sys.path.insert(0, str(SOURCE))
+    argv = ['dpoint', '--operator', s['operator'], '--coverage', s['coverage'],
+            '--config', s['config'], '--cases', s['cases'], '--board', 'KB',
+            '--net=AGND', '--case', 'nominal-average', '--depth', 'uniform-dielectric',
+            '--start', '0', '--stop', '16', '--output', str(result)]
+    profile_cli(SOURCE / 'finite_solve.py', argv, a.output, scope, s['input_sha256'], a.spec)
+
+
+if __name__ == '__main__':
+    main()

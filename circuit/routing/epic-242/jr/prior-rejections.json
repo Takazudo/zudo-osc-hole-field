@@ -1,0 +1,178 @@
+{
+  "cause": "ground gain is insufficient: victim reconnect and retained boundary obligations remain unresolved",
+  "endpoint_replays": [
+    {
+      "complete": false,
+      "diagnostics": [
+        {
+          "attempts": [
+            {
+              "expanded": 4621,
+              "limit": 300000,
+              "window_cells": [
+                1,
+                1010,
+                65,
+                336
+              ]
+            }
+          ],
+          "endpoints": [
+            "SEARCH_ONLY_ENDPOINT.1"
+          ],
+          "max_expansions": 300000,
+          "net": "X67A5B6E02FA33495DE9E",
+          "phase": "route",
+          "reason": "search_exhausted",
+          "window_mm": 6
+        }
+      ],
+      "resolution": 0.025
+    },
+    {
+      "complete": false,
+      "diagnostics": [
+        {
+          "attempts": [
+            {
+              "expanded": 23938,
+              "limit": 300000,
+              "window_cells": [
+                1,
+                2018,
+                129,
+                668
+              ]
+            }
+          ],
+          "endpoints": [
+            "SEARCH_ONLY_ENDPOINT.1"
+          ],
+          "max_expansions": 300000,
+          "net": "X67A5B6E02FA33495DE9E",
+          "phase": "route",
+          "reason": "search_exhausted",
+          "window_mm": 6
+        }
+      ],
+      "resolution": 0.0125
+    }
+  ],
+  "files_sha256": {
+    "circuit/routing/issue189/jr-rb4614-endpoints/result.json": "269ad333d37ecc99952dd2ae550ccd8530869b8ad59dbb13ce209b70f4d8d330",
+    "circuit/routing/issue189/jr-rb4614-joint/result.json": "577dd5e47e606cf407751c3ac4c5190175ea2a38440c9de9b83aaece0a37695e",
+    "circuit/routing/issue189/jr130-rb4615-via-branch/native-pilot-evidence.json": "2f9766b7a9e0ce99cc88bc476a4a1d99fd9ed6d6db6231b8ef3535918044c834",
+    "circuit/routing/issue189/jr134-rb4614-2-ground-cut/artifact.json": "6561abaf61954a3f5d6821d6fad54d436456615008f409d2ce8dd7eea5ed6f87",
+    "circuit/routing/issue189/jr134-rb4614-2-ground-cut/plan.json": "4006854b9b5f4b2ff57bd27e39b7ae42d7d2ccd167b63f574b604190f5cf1090",
+    "circuit/routing/issue189/jr134-rb4614-2-ground-cut/rejection.json": "8e1190ee36616fe1523e330ec1b700b6d48fae3f950f2ab6f792abb59b4b006b"
+  },
+  "ground_only": {
+    "adopted": false,
+    "candidate_sha256": "d8765ecc82f188e7302ea4525b2aa446ac4aa68e4cf92b06e0577f837d02ab0b",
+    "gate": {
+      "adopted": false,
+      "native_errors": false,
+      "new_warning_identities": [
+        [
+          "track_dangling",
+          [
+            "22a432cd-29d7-5a68-a4c9-cf806b4849ba"
+          ]
+        ],
+        [
+          "track_dangling",
+          [
+            "f3a5c41b-6ec0-5823-bf27-b7962a34f17a"
+          ]
+        ]
+      ],
+      "split_pad_groups": [
+        {
+          "net": "X67A5B6E02FA33495DE9E",
+          "previously_connected_pads": [
+            "34c5358f-a376-5fb3-9ff6-0517c61ab958",
+            "9263ed7e-be0c-5286-a146-0a8788bd3868"
+          ]
+        }
+      ]
+    },
+    "input_board_sha256": "35b52972dd70b4186cf3f3b7ee2ac3d70432f3476c2f56c9fcf9c1c4d7d4d445",
+    "open_edges_after": 133,
+    "open_edges_before": 134
+  },
+  "joint_replays": [
+    {
+      "complete_raster_transaction": false,
+      "diagnostics": [
+        {
+          "attempts": [
+            {
+              "expanded": 300001,
+              "limit": 300000,
+              "window_cells": [
+                0,
+                2019,
+                7,
+                668
+              ]
+            }
+          ],
+          "endpoints": [
+            "R7627.2"
+          ],
+          "max_expansions": 300000,
+          "net": "X67A5B6E02FA33495DE9E",
+          "phase": "route",
+          "reason": "expansion_limit",
+          "window_mm": 6
+        }
+      ],
+      "signal_order": [
+        "X67A5B6E02FA33495DE9E",
+        "XEA7C7050656B2E06AA0A"
+      ]
+    },
+    {
+      "complete_raster_transaction": false,
+      "diagnostics": [
+        {
+          "attempts": [
+            {
+              "expanded": 300001,
+              "limit": 300000,
+              "window_cells": [
+                0,
+                2019,
+                7,
+                668
+              ]
+            }
+          ],
+          "endpoints": [
+            "R7627.2"
+          ],
+          "max_expansions": 300000,
+          "net": "X67A5B6E02FA33495DE9E",
+          "phase": "route",
+          "reason": "expansion_limit",
+          "window_mm": 6
+        }
+      ],
+      "signal_order": [
+        "XEA7C7050656B2E06AA0A",
+        "X67A5B6E02FA33495DE9E"
+      ]
+    }
+  ],
+  "original_artifact": {
+    "adopted": false,
+    "artifact_id": 11638981471,
+    "artifact_sha256": "ed1c64bb976d116756344c672d7743e8df811236f7df235b04bb24d488ce9f4b",
+    "candidate_sha256": "d8765ecc82f188e7302ea4525b2aa446ac4aa68e4cf92b06e0577f837d02ab0b",
+    "replay_sha256": "e1e3011e587df334a6a44782311f526b70a08bb3d931c2ca14add11ffe257d57",
+    "run_id": 37974220440,
+    "source_commit": "b3ba58e8e4c1363efe08e55324cecd68455c9625"
+  },
+  "prior_plan_replay_on_JR129": "REJECTED: exact prior input hash differs; never rewritten",
+  "status": "RETAINED NEGATIVE EVIDENCE; NOT RERUN"
+}

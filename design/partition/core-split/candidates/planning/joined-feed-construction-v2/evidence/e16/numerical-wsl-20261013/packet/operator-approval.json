@@ -1,0 +1,24 @@
+{
+  "schema": "e16-conversation-operator-approval-v1",
+  "approved": true,
+  "operator": "takazudo",
+  "source_sha": "4bde7e8adadd931e8c3655013a9a6223f913933f",
+  "request_sha256": "beb7f4d8bad67fa1d525abdbbe378f3934efccbc68d0f38657c7933ebdbeeca4",
+  "run_id": "3968e3cc6a464ca7a11623404ad959f5",
+  "attempt": 1,
+  "scope": "Baseline t2 only: whole-device normal-typ-v1 service, reductions, driving-point chunks, coupled all-net/all-three-process-case solves at uniform-dielectric depth. Reuses verified finite inputs without rebuilding completed finite coverage. No remedy variants, extra load/depth scenarios, routing, KiCad or physical/electrical acceptance.",
+  "approved_at_unix": 1791896433.5492413,
+  "approval_source": "User replied \"ok continue\" after the exact digest and baseline numerical approval request, with intervening explanation that this batch remained pending.",
+  "reservation": "One serialized baseline batch through the existing shared heavy guard; no concurrent native or numerical work started by this integration owner.",
+  "limits": {
+    "shared_heavy_guard": true,
+    "serialized_units": true,
+    "each_unit_timeout_seconds": 180,
+    "unit_memory_max_bytes": 2147483648,
+    "unit_memory_swap_max_bytes": 0,
+    "scope": "finite_solve.enter_memory_scope uses user-systemd and verifies live cgroup values; Docker/RLIMIT_AS is not a substitute",
+    "stop_on_failure": true,
+    "resume": false
+  },
+  "excludes": "Remedy variants, extra load/depth scenarios, native reruns and changed requests."
+}

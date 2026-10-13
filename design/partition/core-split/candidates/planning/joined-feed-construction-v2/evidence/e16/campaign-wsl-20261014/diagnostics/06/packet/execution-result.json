@@ -1,0 +1,35 @@
+{
+  "request_sha256": "b814dc00c6655cf09c57e0d8689dedeece5689f9e180fc41df1397ff71d0bc69",
+  "source_sha": "9a68f1a87db7afbc20ae16a95ef523a5f8d093ca",
+  "command": [
+    "env",
+    "-u",
+    "E16_SOLVE_SCOPE",
+    "-u",
+    "E16_PROFILE_SCOPE",
+    "OPENBLAS_NUM_THREADS=1",
+    "OMP_NUM_THREADS=1",
+    "MKL_NUM_THREADS=1",
+    "/home/takazudo/.cache/zudo-e16-numerical-venv/bin/python",
+    "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-campaign/__inbox/e16-profile-unit/driver.py",
+    "--spec",
+    "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-campaign/.circuit-cache/e16-agnd-profile-bd4c89d2/diagnostic-spec.json",
+    "--output",
+    "/home/takazudo/.cache/zudo-e16-runs/agnd-profile-bd4c89d2",
+    "--unit-heavy-guard-sha256",
+    "074a463dd6b3a65b7e2168df95b200c0192c414862375bcfb95f979c34c67ee7"
+  ],
+  "exit_code": 0,
+  "process_exit_code": 0,
+  "postrun_integrity": {
+    "request_unchanged": true,
+    "approval_unchanged": true,
+    "head_unchanged": true,
+    "checkout_clean": true
+  },
+  "elapsed_seconds": 41.06650995207019,
+  "child_peak_rss_KiB": 1589068,
+  "changed_inputs": [],
+  "log_sha256": "eb0e37fe2684a3ab19201c62c0201558826e7e41a13657bae9dcb029a52106ac",
+  "scope_observations_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+}

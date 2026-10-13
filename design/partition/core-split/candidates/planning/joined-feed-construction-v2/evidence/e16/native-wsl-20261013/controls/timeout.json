@@ -1,0 +1,234 @@
+{
+  "plan": {
+    "admission_id": "local-control-3f8e1f747ebf47faa4d1b46024df0970-2",
+    "worker": "q-0a6d0b95de-timeout",
+    "sha": "093f14b55c8a85d5d14be26f20868df2551d3b14",
+    "hook_sha256": "f91b2c8846856a6d38a10eb9e6314b6ebec3222b68df37942f3716ab860d8c91",
+    "command": [
+      "/usr/bin/python3",
+      "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-r4/scripts/kicad/run_resource_fixture.py",
+      "--image",
+      "sha256:f6b5daa9d160538845028ea140798ec8861d4b6f37dd3af22a7d4339d796f6e7",
+      "--mode",
+      "hold"
+    ],
+    "seconds": 5,
+    "memory_max": 6442450944,
+    "memory_swap_max": 0,
+    "aggregate_memory_max": 12884901888,
+    "free_floor": 2147483648,
+    "early_abort_free": 2684354560,
+    "slice": "epic242-w712d306136643062393564652d74696d656f7574.slice",
+    "global_admission": "parent excludes ALL other native jobs; local flock covers only this guard"
+  },
+  "samples": [
+    {
+      "seconds": 0.014168741065077484,
+      "available": 10696380416,
+      "worker_current": 323584,
+      "events": {
+        "low": 0,
+        "high": 0,
+        "max": 0,
+        "oom": 0,
+        "oom_kill": 0,
+        "oom_group_kill": 0
+      }
+    },
+    {
+      "seconds": 1.0331055050482973,
+      "available": 10689179648,
+      "worker_current": 18366464,
+      "events": {
+        "low": 0,
+        "high": 0,
+        "max": 0,
+        "oom": 0,
+        "oom_kill": 0,
+        "oom_group_kill": 0
+      }
+    },
+    {
+      "seconds": 2.0655877760145813,
+      "available": 10696523776,
+      "worker_current": 17960960,
+      "events": {
+        "low": 0,
+        "high": 0,
+        "max": 0,
+        "oom": 0,
+        "oom_kill": 0,
+        "oom_group_kill": 0
+      }
+    },
+    {
+      "seconds": 3.0976942389970645,
+      "available": 10695868416,
+      "worker_current": 17960960,
+      "events": {
+        "low": 0,
+        "high": 0,
+        "max": 0,
+        "oom": 0,
+        "oom_kill": 0,
+        "oom_group_kill": 0
+      }
+    },
+    {
+      "seconds": 4.1300065401010215,
+      "available": 10711437312,
+      "worker_current": 17862656,
+      "events": {
+        "low": 0,
+        "high": 0,
+        "max": 0,
+        "oom": 0,
+        "oom_kill": 0,
+        "oom_group_kill": 0
+      }
+    },
+    {
+      "seconds": 5.1621556871104985,
+      "available": 10719105024,
+      "worker_current": 12038144,
+      "events": {
+        "low": 0,
+        "high": 0,
+        "max": 0,
+        "oom": 0,
+        "oom_kill": 0,
+        "oom_group_kill": 0
+      }
+    }
+  ],
+  "status": "FAIL / WATCHDOG TERMINATION",
+  "container_lifecycle": [],
+  "container_memberships": {
+    "46ca41abb5cc92c6dc39762602689ccbf2f082cf532d67892c45c8e72e454f06": {
+      "container_id": "46ca41abb5cc92c6dc39762602689ccbf2f082cf532d67892c45c8e72e454f06",
+      "worker": "q-0a6d0b95de-timeout",
+      "pid": 1532825,
+      "process_start": "55829766",
+      "cgroup": "0::/epic242.slice/epic242-w712d306136643062393564652d74696d656f7574.slice/docker-46ca41abb5cc92c6dc39762602689ccbf2f082cf532d67892c45c8e72e454f06.scope\n",
+      "host_config": {
+        "Memory": 6442450944,
+        "MemorySwap": 6442450944,
+        "CgroupParent": "epic242-w712d306136643062393564652d74696d656f7574.slice"
+      },
+      "state": {
+        "Status": "running",
+        "Running": true,
+        "Paused": false,
+        "Restarting": false,
+        "OOMKilled": false,
+        "Dead": false,
+        "Pid": 1532825,
+        "ExitCode": 0,
+        "Error": "",
+        "StartedAt": "2026-10-13T11:36:06.219295534Z",
+        "FinishedAt": "0001-01-01T00:00:00Z"
+      }
+    }
+  },
+  "container_admissions": {},
+  "container_states": {},
+  "gate_script_sha256": "6763496a773f4a4cd69a47f20eb2f2c07aec33b9351a7bbd861e0d368ed0083d",
+  "reason": "whole-command deadline",
+  "observed_containers": [
+    "46ca41abb5cc92c6dc39762602689ccbf2f082cf532d67892c45c8e72e454f06"
+  ],
+  "driver_exit_before_cleanup": null,
+  "memory_before_cleanup": {
+    "status": "OBSERVED",
+    "cgroup": "/sys/fs/cgroup/epic242.slice/epic242-w712d306136643062393564652d74696d656f7574.slice",
+    "peak": 22077440,
+    "current": 12038144,
+    "events": {
+      "low": 0,
+      "high": 0,
+      "max": 0,
+      "oom": 0,
+      "oom_kill": 0,
+      "oom_group_kill": 0
+    }
+  },
+  "memory_after_producer_cleanup": {
+    "status": "OBSERVED",
+    "cgroup": "/sys/fs/cgroup/epic242.slice/epic242-w712d306136643062393564652d74696d656f7574.slice",
+    "peak": 22077440,
+    "current": 73728,
+    "events": {
+      "low": 0,
+      "high": 0,
+      "max": 0,
+      "oom": 0,
+      "oom_kill": 0,
+      "oom_group_kill": 0
+    }
+  },
+  "watchdog": {
+    "reason": "whole-command deadline",
+    "cleanup_failures": [],
+    "worker": "q-0a6d0b95de-timeout",
+    "parent_pid": 1532665,
+    "parent_start": "55829723",
+    "finished_at": 1791891374.095356,
+    "memory_before_cleanup": {
+      "status": "OBSERVED",
+      "cgroup": "/sys/fs/cgroup/epic242.slice/epic242-w712d306136643062393564652d74696d656f7574.slice",
+      "peak": 22077440,
+      "current": 12308480,
+      "events": {
+        "low": 0,
+        "high": 0,
+        "max": 0,
+        "oom": 0,
+        "oom_kill": 0,
+        "oom_group_kill": 0
+      }
+    },
+    "final_workload_state": {
+      "containers": [],
+      "units": {
+        "epic242-q-0a6d0b95de-timeout-checks.service": {
+          "load": "not-found",
+          "active": "inactive",
+          "settled": true
+        },
+        "epic242-q-0a6d0b95de-timeout-anchor.service": {
+          "load": "not-found",
+          "active": "inactive",
+          "settled": true
+        }
+      },
+      "errors": [],
+      "workload_absent": true
+    }
+  },
+  "driver_exit_after_cleanup": 1,
+  "peak": 22077440,
+  "peak_scope": "after producer cleanup",
+  "final_owned_state": {
+    "containers": [],
+    "units": {
+      "epic242-q-0a6d0b95de-timeout-checks.service": {
+        "load": "not-found",
+        "active": "inactive",
+        "settled": true
+      },
+      "epic242-q-0a6d0b95de-timeout-anchor.service": {
+        "load": "not-found",
+        "active": "inactive",
+        "settled": true
+      },
+      "epic242-q-0a6d0b95de-timeout-watchdog.service": {
+        "load": "not-found",
+        "active": "inactive",
+        "settled": true
+      }
+    },
+    "errors": [],
+    "workload_absent": true
+  },
+  "cleanup_failures": []
+}

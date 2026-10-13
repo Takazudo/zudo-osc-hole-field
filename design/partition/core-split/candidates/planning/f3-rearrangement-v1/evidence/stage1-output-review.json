@@ -1,0 +1,96 @@
+{
+  "status": "PASS_OUTPUT_ONLY_REGION_REVIEW",
+  "sha256": {
+    "receipt.json": "56d288eed3cc100678ddacf1e58449d3564d8831e7ab6a8b430f5c9c8dc33d30",
+    "summary.json": "4c8b575e7924f30a9486dd3e0e1ad035f57ff13f09e05c8f2b2767b77e79bbff",
+    "C24-SW-THREE-result.json": "ec452fad3fe61f1e27029729caf79f79d599c02404e3e68c3c80b5f9cda02326",
+    "C24-SW-THREE-regions.json.gz": "e1629d116b4ee0b57db46420cde43b9c4a03f9a5e57326044f3c3e7c9d6b6e49",
+    "B25-FOLD-N-result.json": "8aae862af8fa5b6ae951140b6ef6273d4420bbba0aa2b810fd5653e6de5b4b8c",
+    "B25-FOLD-N-regions.json.gz": "8c88e49338145c540fbe731767536d167c23f8a05c29b545f74dc249c22f0c2c",
+    "A24-N-result.json": "93fb983ca161ceb30da72053c28efec7d5e996507f0c2a48a5f4730a64999939",
+    "A24-N-regions.json.gz": "9f5a7be57669494c71c5ffe4d485b8a955744616ed8a2019be854c95f8d96f0f",
+    "start.json": "383223a5f66b088f6ffbf318df2e09512082f1dc456d95a9c9c6e1e532ebc33e"
+  },
+  "concepts": [
+    {
+      "concept": "A24-N",
+      "free_area_mm2": 21.83427554469594,
+      "lower_covers_closed_domain": false,
+      "constraints": 2,
+      "raw_intrinsic_pairs_exact_check": [
+        {
+          "refs": [
+            "C2326",
+            "U2306"
+          ],
+          "raw_gap_mm": 0.3499999999999943,
+          "exact_1nm_grid_squared_gap_nm2": 122500000000,
+          "classification": "EQUAL_350000nm_NOT_BELOW"
+        },
+        {
+          "refs": [
+            "C2339",
+            "U2313"
+          ],
+          "raw_gap_mm": 0.34999999999999437,
+          "exact_1nm_grid_squared_gap_nm2": 122500000000,
+          "classification": "EQUAL_350000nm_NOT_BELOW"
+        },
+        {
+          "refs": [
+            "C2340",
+            "U2313"
+          ],
+          "raw_gap_mm": 0.34999999999999437,
+          "exact_1nm_grid_squared_gap_nm2": 122500000000,
+          "classification": "EQUAL_350000nm_NOT_BELOW"
+        }
+      ],
+      "remaining_inherited_gap": false
+    },
+    {
+      "concept": "B25-FOLD-N",
+      "free_area_mm2": 17.97982075205633,
+      "lower_covers_closed_domain": false,
+      "constraints": 9,
+      "raw_intrinsic_pairs_exact_check": [
+        {
+          "refs": [
+            "C2341",
+            "U2314"
+          ],
+          "raw_gap_mm": 0.3499999999999659,
+          "exact_1nm_grid_squared_gap_nm2": 122500000000,
+          "classification": "EQUAL_350000nm_NOT_BELOW"
+        }
+      ],
+      "remaining_inherited_gap": true
+    },
+    {
+      "concept": "C24-SW-THREE",
+      "free_area_mm2": 0.0,
+      "lower_covers_closed_domain": true,
+      "constraints": 138,
+      "raw_intrinsic_pairs_exact_check": [
+        {
+          "refs": [
+            "C2340",
+            "U2313"
+          ],
+          "raw_gap_mm": 0.34999999999999437,
+          "exact_1nm_grid_squared_gap_nm2": 122500000000,
+          "classification": "EQUAL_350000nm_NOT_BELOW"
+        }
+      ],
+      "remaining_inherited_gap": false
+    }
+  ],
+  "blocking_findings": [],
+  "limits": [
+    "Recombinedsavedpolygons only;no projectregionrerun/newpose.",
+    "A/B externalcourtyardregions only;not copperclearance/candidatePASS.",
+    "Reported near.35 floatingfailures equal350000nm on1nm axisrectanglemodel;rawrecords retained. Not waiverforreal.349999mm deficit,whichremains underB.",
+    "Before laterstrictPASS use exactsupportedrectangle gapcomparison;C2325 separatecorrection stillneeds exactcontact/copperaccounting."
+  ],
+  "environment_note": "Old /tmp/epic242-numerical-deps missing;used existing /tmp/osc-arch-source-venv for savedgeometry review."
+}

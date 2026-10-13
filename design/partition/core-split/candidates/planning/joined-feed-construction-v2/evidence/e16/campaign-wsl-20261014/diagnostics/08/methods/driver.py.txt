@@ -1,0 +1,15 @@
+"""One explicitly requested production dpoint unit, using the unchanged Ledger/guard."""
+from pathlib import Path
+import argparse,json,sys
+ROOT=Path(__file__).resolve().parents[2];SOURCE=ROOT/'design/partition/core-split/candidates/planning/joined-feed-construction-v2';sys.path.insert(0,str(SOURCE))
+import replay_steps as rs
+from numerical_unit_guard import UnitGuard
+p=argparse.ArgumentParser();p.add_argument('--spec',type=Path,required=True);p.add_argument('--output',type=Path,required=True);p.add_argument('--unit-heavy-guard-sha256',required=True);a=p.parse_args();s=json.loads(a.spec.read_text())
+assert s['maximum_diagnostic_units']==1 and s['phase']=='dpoint' and s['board']=='KB' and s['net'] in ('+5V','AGND')
+assert s['case']=='nominal-average' and s['depth']=='uniform-dielectric' and s['start']==0 and s['stop']==96
+assert a.output.is_absolute() and not a.output.is_relative_to(ROOT) and not a.output.exists()
+for path,h in s['input_sha256'].items():assert rs.sha(path)==h,path
+out=a.output;out.mkdir();guard=UnitGuard(a.unit_heavy_guard_sha256);guard.check();ledger=rs.Ledger(out,False,sys.executable,unit_guard=guard);result=out/'result.pkl.gz'
+command=['finite_solve.py','dpoint','--operator',s['operator'],'--coverage',s['coverage'],'--config',s['config'],'--cases',s['cases'],'--board',s['board'],'--net='+s['net'],'--case',s['case'],'--depth',s['depth'],'--start','0','--stop','96','--output',result]
+ledger.run('production-dpoint-check',command,[a.spec,*map(Path,s['input_sha256'])],[Path(__file__),SOURCE/'finite_solve.py',SOURCE/'finite_adapter.py',SOURCE/'finite_units.py',SOURCE/'numerical_acceptance.py',SOURCE/'numerical_unit_guard.py',SOURCE/'replay_steps.py'],[result,Path(str(result)+'.numerical.json')])
+assert len(ledger.log)==1

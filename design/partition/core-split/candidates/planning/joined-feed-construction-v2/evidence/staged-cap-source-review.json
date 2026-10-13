@@ -1,0 +1,39 @@
+{
+  "status": "PASS_SOURCE_CONDITIONAL_STAGED_CAP_GRAPH",
+  "sha256": {
+    "/workspace/zudo-osc-hole-field/design/partition/core-split/candidates/planning/joined-feed-construction-v2/staged_caps.py": "f51a2f073e0051c520555ef6de59d1dbbf91ccbd2420ab89aead44736a1956e7",
+    "/workspace/zudo-osc-hole-field/design/partition/core-split/candidates/planning/joined-feed-construction-v2/connectivity.py": "c13696185dbea33dcd18451e178f197632a7a8f33fc0ec73d0095aae5d8fa43e",
+    "/workspace/zudo-osc-hole-field/design/partition/core-split/candidates/planning/joined-feed-construction-v2/test_staged_caps.py": "12ebaded0469dee7b37f82af36d5341b74782b48cac036afffa9b57e4b326877",
+    "/workspace/zudo-osc-hole-field/design/partition/core-split/candidates/planning/joined-feed-construction-v2/board_context.py": "afcfaf0070632312fe02a62299f8a0ace0c614895a2330e44ee935631e86c7ca",
+    "/workspace/zudo-osc-hole-field/design/partition/core-split/candidates/planning/joined-feed-construction-v2/test_board_context.py": "fb9e33b0fb8ee1e6b7f556c0372330dd74be5530be09c4e6368df315ff2233d9"
+  },
+  "independent_tests": 17,
+  "test_seconds": 0.018,
+  "command": "OPENBLAS_NUM_THREADS=1 /tmp/osc-arch-source-venv/bin/python -m unittest test_staged_caps test_board_context -v",
+  "coverage": [
+    "Adjacent cap sharing",
+    "Disjoint dielectric-depth drill separation",
+    "Legacy bore cap collision refusal",
+    "Same-depth annular wall cut refusal",
+    "Different-net cap overlap refusal",
+    "Process/source-pad/cap-via/depth/thickness mutations",
+    "Legacy via remains open",
+    "Nonadjacent stage refusal",
+    "Remote split foil island stays disconnected",
+    "In-place cap/model band mutations cannot alter global expected stack and are rejected"
+  ],
+  "findings": [],
+  "limits": [
+    "Explicit continuous closed-cap/plating source construction remains conditional and process unqualified.",
+    "Finite graph reachability is not resistance/whole-load-network acceptance.",
+    "Final actual normalized/plane epoch and materialized counts require execution evidence review."
+  ],
+  "project_graph_executed": false,
+  "native_calls": 0,
+  "repo_files_written": [
+    "test_staged_caps.py"
+  ],
+  "staged_cap_tests": 10,
+  "serializer_tests": 7,
+  "serializer_delta": "ACK: validates staged material model, seals module, carries exact staged_cap_solids into receipt; native flags remain requirements only."
+}

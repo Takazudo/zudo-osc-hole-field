@@ -1,0 +1,28 @@
+{
+ "step": "graph",
+ "input_sha256": {
+  "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/34b85f10-f889-4ac8-97a0-7f4228cf221c/scratchpad/e16/KA-eval-r2/normalized-caps.json": "0d6808237d3ce7f515ce01b9b3c35239f96efc3110f432cc0e43c558f0848627",
+  "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/34b85f10-f889-4ac8-97a0-7f4228cf221c/scratchpad/e16/KA-eval-r2/clipped-sheets.json": "78735198aa67e725bc9fc0375dce3eec6761836fbaa23cf5f0cb7df99663901c",
+  "/home/takazudo/repos/circuits/zudo-osc-hole-field/design/partition/core-split/candidates/planning/joined-feed-construction-v2/connectivity.py": "6d84330093d5e5b998aae3c5582a3b3b7f40d7548288e0e43e48fb3645352ce0",
+  "/home/takazudo/repos/circuits/zudo-osc-hole-field/design/partition/core-split/candidates/planning/joined-feed-construction-v2/staged_caps.py": "f51a2f073e0051c520555ef6de59d1dbbf91ccbd2420ab89aead44736a1956e7"
+ },
+ "command": [
+  "timeout",
+  "180s",
+  "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/34b85f10-f889-4ac8-97a0-7f4228cf221c/scratchpad/venv/bin/python",
+  "/home/takazudo/repos/circuits/zudo-osc-hole-field/design/partition/core-split/candidates/planning/joined-feed-construction-v2/connectivity.py",
+  "--board",
+  "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/34b85f10-f889-4ac8-97a0-7f4228cf221c/scratchpad/e16/KA-eval-r2/normalized-caps.json",
+  "--planes",
+  "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/34b85f10-f889-4ac8-97a0-7f4228cf221c/scratchpad/e16/KA-eval-r2/clipped-sheets.json",
+  "--output",
+  "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/34b85f10-f889-4ac8-97a0-7f4228cf221c/scratchpad/e16/KA-eval-r2/port-graph.json"
+ ],
+ "exit_code": 0,
+ "elapsed_seconds": 17.60768492205534,
+ "stdout": "{\"status\": \"SOURCE_DISCONNECTED_LOAD_PORTS\", \"board\": \"KA\", \"direct_load_count\": 1031, \"counts\": {\"nodes\": 12360, \"edges\": 3975}, \"elapsed_seconds\": 14.645926227036398, \"peak_KiB\": 1364784}\ndisconnected 213\n",
+ "stderr": "",
+ "output_sha256": "fa7df04a3d2f78b5e37b3dc669edc14536e5861c7d160b60da282d67246b0cb9",
+ "inputs_before_after_equal": true,
+ "native_calls": 0
+}

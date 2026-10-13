@@ -1,0 +1,88 @@
+{
+ "schema": "e16-pilot-p1-electrical-v1",
+ "board": "KB",
+ "net": "+5V",
+ "case": "nominal-average",
+ "depth": "uniform-dielectric",
+ "scenario": "normal-typ-v1",
+ "coverage": {
+  "t2_obligated": 398,
+  "p1_obligated": 404,
+  "newly_obligated_and_covered": [
+   "1a502004-98e3-5056-b8e4-0dea4f0ee5cf",
+   "2fd54753-6c48-5259-8e11-900b51cf407b",
+   "649269e2-e5e8-5846-be7a-3cc95e18a585",
+   "a046aad6-afba-5e7c-b010-8d7726872983",
+   "a5b49717-985d-5180-b535-5bb123c6de51",
+   "d64df77d-0df3-551a-acee-4106d68983ab"
+  ],
+  "no_longer_obligated": [],
+  "p1_obligated_without_finite_path": [],
+  "p1_coverage_sha256": "b1f71ce2695ad9d599390b4b5e3c8276c58ea4b644ec8a17dcfa76e0b53d8a43"
+ },
+ "coupled": {
+  "t2": {
+   "file": "/home/takazudo/.cache/zudo-e16-runs/20261013-coupled-t2r/coupled-+5V-nominal-average-uniform-dielectric.json.gz",
+   "sha256": "cbf2ef0fab919d18d076825c7c4bf746adace4984652675bfe9d91a3ba531942",
+   "wire_current_A": {
+    "W3": 0.0017199999997593426
+   },
+   "max_abs_pad_potential_V": 1.2460503300100235e-05,
+   "copper_resistance_ohm": {
+    "min": 0.0020128588331841486,
+    "median": 0.009544559311281453,
+    "max": 0.021204675557763116,
+    "count": 422
+   },
+   "checks": {
+    "driving_point_solve_residual": 5.021295619005922e-09,
+    "energy_minus_load_work_relative": 3.7960801533884724e-10,
+    "global_kcl_relative": 1.2645330124776722e-10,
+    "max_free_node_kcl_relative": 1.025750809867499e-07,
+    "nonnegative_energy": true,
+    "wire_terminal_balance_A": 1.8431436932253575e-17
+   },
+   "new_pads_copper_resistance_ohm": {
+    "1a502004-98e3-5056-b8e4-0dea4f0ee5cf": null,
+    "2fd54753-6c48-5259-8e11-900b51cf407b": null,
+    "649269e2-e5e8-5846-be7a-3cc95e18a585": null,
+    "a046aad6-afba-5e7c-b010-8d7726872983": null,
+    "a5b49717-985d-5180-b535-5bb123c6de51": null,
+    "d64df77d-0df3-551a-acee-4106d68983ab": null
+   }
+  },
+  "p1": {
+   "file": "/home/takazudo/.cache/zudo-e16-runs/20261013-pilot-KB-p1-coupled/coupled-+5V-nominal-average-uniform-dielectric.json.gz",
+   "sha256": "7c4822124c032eb795dd95bb9483f59699e27e12051bda713588185cfe58634d",
+   "wire_current_A": {
+    "W3": 0.0017199999996653054
+   },
+   "max_abs_pad_potential_V": 1.2460503307501956e-05,
+   "copper_resistance_ohm": {
+    "min": 0.0020128588331900536,
+    "median": 0.009612023504811317,
+    "max": 0.03126472981271436,
+    "count": 428
+   },
+   "checks": {
+    "driving_point_solve_residual": 4.347325480665685e-09,
+    "energy_minus_load_work_relative": 3.71079353586306e-10,
+    "global_kcl_relative": 1.7928306213985892e-10,
+    "max_free_node_kcl_relative": 7.091876453011404e-08,
+    "nonnegative_energy": true,
+    "wire_terminal_balance_A": 7.15573433840433e-18
+   },
+   "new_pads_copper_resistance_ohm": {
+    "1a502004-98e3-5056-b8e4-0dea4f0ee5cf": 0.02996048573397715,
+    "2fd54753-6c48-5259-8e11-900b51cf407b": 0.029847001822870277,
+    "649269e2-e5e8-5846-be7a-3cc95e18a585": 0.03126472981271436,
+    "a046aad6-afba-5e7c-b010-8d7726872983": 0.028766160595973755,
+    "a5b49717-985d-5180-b535-5bb123c6de51": 0.02943978214267001,
+    "d64df77d-0df3-551a-acee-4106d68983ab": 0.029962409769252723
+   }
+  }
+ },
+ "scope": "Only the affected case is rerun (KB +5V, nominal-average, all returns present and the single conditional scenario); KA +5V operator reused unchanged. Other nets and cases of P1 are NOT RUN; t2 results stay the reference.",
+ "native_calls": 0,
+ "accepted": false
+}

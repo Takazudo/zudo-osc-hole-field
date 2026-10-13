@@ -1,0 +1,130 @@
+{
+  "issue": 243,
+  "epic": 242,
+  "run_id": 38129478578,
+  "job_id": 114440630896,
+  "run_url": "https://github.com/Takazudo/zudo-osc-hole-field/actions/runs/38129478578",
+  "run_status": "completed",
+  "run_conclusion": "success",
+  "source_sha": "7d6f7fd568badd1b5afd8bab5405173a42fc4b2a",
+  "source_tree_sha": "f7b4267faa2e3a7153ff80247a077f9f92343d8b",
+  "reviewed_hook_sha256": "f91b2c8846856a6d38a10eb9e6314b6ebec3222b68df37942f3716ab860d8c91",
+  "parent_admission_id": "epic242-startup-lifecycle-01",
+  "dispatch_count": 1,
+  "pre_dispatch_remote_head_exact": true,
+  "pre_dispatch_other_in_progress_or_queued_actions_runs": 0,
+  "pre_dispatch_local_docker_containers": 0,
+  "workflow": "routing-benchmark.yml",
+  "mode": "lifecycle_qualification=true; settle_only/resource_qualification/recover_core/replay_jl/replay_jr/local_repair=false; adopt_run empty",
+  "other_eight_jobs": "SKIPPED; verified all nine jobs through paginated Actions jobs endpoint",
+  "artifact": {
+    "id": 11698222776,
+    "name": "epic242-startup-lifecycle",
+    "size_bytes": 13450,
+    "sha256": "5b9f71deb0b2238258e50708bed188433f07903224d443e625e51f51ba407e01",
+    "expires_at": "2026-10-18T09:46:02Z",
+    "archive_crc": "PASS",
+    "files": [
+      "bootstrap.json",
+      "image-preparation.json",
+      "image-pull.log",
+      "intentional-failure.json",
+      "intentional-failure.log",
+      "job-outcome.json",
+      "lifecycle.json",
+      "success.json",
+      "success.log"
+    ],
+    "local_copy": "/workspace/epic242-recovery/epic242-startup-lifecycle-38129478578.zip"
+  },
+  "image_preparation": {
+    "status": "PASS",
+    "image": "kicad/kicad@sha256:18693567392b80da435f9fa952ce3a3e534c66eb5a6033f5b9c80aa3b19dd3ec",
+    "repo_digest_verified": true,
+    "pull_client_exit": 0,
+    "samples": 115,
+    "max_sampled_backend_bytes": 3113480192,
+    "min_sampled_host_free_bytes": 15173926912,
+    "interpretation": "sampled Docker/containerd preparation bounds, not a daemon hard cap"
+  },
+  "cases": {
+    "success": {
+      "worker": "life-38129478578-1-ok",
+      "command": [
+        "bash",
+        "scripts/kicad/run.sh",
+        "kicad-cli",
+        "version"
+      ],
+      "guard_exit_code": 0,
+      "phase_status": "PASS SHORT SUCCESS",
+      "container_ids": [
+        "42a98ca61631a1e51fbba4d41e39882ab4fde768c90e4b5834386dc7c8fc86ff",
+        "562c9adc7fcd9f2694c2f6ba8a9a9923a7e098fa275ecb8b475947244082990f"
+      ],
+      "retained_exit_codes": [
+        0,
+        0
+      ],
+      "requested_admitted_membership_terminal_state": "EXACT FULL-ID MATCH; independently replayed reviewed verify_phase",
+      "samples": 4,
+      "kernel_peak_bytes": 30806016,
+      "kernel_events_before_cleanup": {
+        "low": 0,
+        "high": 0,
+        "max": 0,
+        "oom": 0,
+        "oom_kill": 0,
+        "oom_group_kill": 0
+      },
+      "cleanup_failures": [],
+      "final_workload_absent": true,
+      "final_units_all_not_found": true,
+      "reason_classification": "short version probe exited0"
+    },
+    "intentional-failure": {
+      "worker": "life-38129478578-1-fail",
+      "command": [
+        "bash",
+        "scripts/kicad/run.sh",
+        "/bin/false"
+      ],
+      "guard_exit_code": 1,
+      "phase_status": "PASS EXPECTED FAILURE",
+      "container_ids": [
+        "21cb257caed5a8b60a571dd8cf9f98fc5c014c7a76cedbb73a247c405424712e",
+        "909f668fafa68caa49d1567ba0b9e5a7fbe11b58051e49ebc1554bbb798720bf"
+      ],
+      "retained_exit_codes": [
+        0,
+        1
+      ],
+      "requested_admitted_membership_terminal_state": "EXACT FULL-ID MATCH; independently replayed reviewed verify_phase",
+      "samples": 4,
+      "kernel_peak_bytes": 29188096,
+      "kernel_events_before_cleanup": {
+        "low": 0,
+        "high": 0,
+        "max": 0,
+        "oom": 0,
+        "oom_kill": 0,
+        "oom_group_kill": 0
+      },
+      "cleanup_failures": [],
+      "final_workload_absent": true,
+      "final_units_all_not_found": true,
+      "reason_classification": "bound terminal exited1 / expected intentional failure"
+    }
+  },
+  "qualification": "PASS BOUNDED STARTUP/EXIT LIFECYCLE ONLY",
+  "verification": "Archive digest, size, ZIP CRC and exact nine-file membership; archived bootstrap/image/lifecycle/job outcome; independently replayed reviewed verify_phase against both full guard receipts; exact source/hook/admission/worker/commands/caps/full IDs, retained exits, observed kernel memory and final absence verified. No board operation.",
+  "local_full_suite_incident": {
+    "command": "PATH=/tmp/epic242-python-ci-venv/bin:$PATH bash scripts/checks/run-python-tests.sh",
+    "scope": "unadmitted local full Python suite; should not be repeated without parent admission",
+    "native_attempt": "design/spec/cells/test_sweep_precision_vendor.py invoked python3 -m design.spec.cells.sweep_precision_vendor --fixture-original --offline, which attempted bash scripts/kicad/run.sh ngspice -b .circuit-cache/sources/opa197-model/precision-vendor-case.cir. The pinned image pulled; Docker run returned no space left on device before any container ID was observed.",
+    "result": "local 138-test group had one failure and one error from disk exhaustion; no reliable full-suite verdict",
+    "cleanup": "Removed task-created /tmp/epic242-python-ci-venv and unused pinned KiCad Docker image. Docker ps -a and image ls empty afterward; overlay returned to 26GiB free. No surviving local container observed. Transient native execution before failure is not independently proved absent."
+  },
+  "other_gate": "Documentation CI run38129117832: documentation success and KiCad 68 source tests pass after PyYAML pin; full Python job fails stale historical panel native-review receipt for current run.sh. No panel receipt hashes refreshed. Separate provenance review required; no full CI pass claim.",
+  "hardware": "UNCHANGED; accepted JL117/JR129/K1402, DRC/parity0/0. This version probe is not routing, native board acceptance, fabrication, order or energization."
+}

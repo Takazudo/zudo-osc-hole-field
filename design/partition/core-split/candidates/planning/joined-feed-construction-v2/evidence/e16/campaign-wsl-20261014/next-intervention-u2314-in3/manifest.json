@@ -1,0 +1,278 @@
+{
+  "schema": "e16-prepared-engineering-followup-v1",
+  "candidate_id": "KA-U2314-11-In3-single-annulus-capability",
+  "prepared_at_utc": "2026-10-13T20:48:39.492579+00:00",
+  "status": "PREPARED FOLLOW-UP ONLY; NO GEOMETRY OR ADAPTER CHANGE; NOT VALIDATED OR ADOPTED",
+  "final_baseline_report_dependency": "PENDING attempt5 terminal numerical and integrity review; no full-baseline outcome assumed",
+  "execution_authority": "This file is not an execution request or authorization. Native and changed-geometry numerical work require separate future scope/admission, outside the current baseline campaign.",
+  "baseline": {
+    "execution_source_sha": "852ffac7f85aff4bb436eb25f7ce993cee48146b",
+    "request_sha256": "ef0213b3b38f4de23804ad192043b082d8e1b2be3086c5e20e4343afea4052d6",
+    "geometry_epoch": "E16 t2; KA196/KB486 residuals",
+    "source_document": {
+      "path": "/home/takazudo/.cache/zudo-e16-runs/20261013-replay2-t2/KA-access-t2.json",
+      "sha256": "b73bc3a7b3b10bab9be357cc41984d515a88e73d8155731ae50db03bf057bffb",
+      "bytes": 15691516,
+      "objects": 73699,
+      "canonical_objects_sha256": "4dd44a9f96b3e2d3190662f240f77ecbe2ecd2066bf52305b75e72b8c3957d1c"
+    },
+    "historical_raw_document_sha256": "e4645b068f47668244a7a9cef19ed9b9d0b4bebcb421d3350f227174d8b1b58d",
+    "document_provenance_note": "Current replay document bytes differ from historical raw document; canonical 73699-object digest exactly matches retained independent long-B review. No old file digest is rewritten or asserted equal.",
+    "completed_service": {
+      "path": "/home/takazudo/.cache/zudo-e16-runs/coupled-approved-852ffac-8262c033/device-service-normal-typ-v1.json",
+      "sha256": "a14a61aa25b9215485dd58e46e54af220776e80f5a70f5a1f335ef21c18cc33d",
+      "summary": {
+        "partial": 59,
+        "supported": 151,
+        "unmapped": 194,
+        "unserved": 21
+      },
+      "eligible_pads": 302,
+      "u2314": {
+        "board": "KA",
+        "connectivity_status": "partial",
+        "eligible_for_solve": false,
+        "evidence_status": "supported",
+        "reasons": [
+          "At least one required supply/return pin has no finite path to its feed; no package current is injected."
+        ],
+        "ref": "U2314",
+        "required_pins": [
+          {
+            "current_mapped": true,
+            "net": "-12V",
+            "pad_id": "b0f9dbc5-d3f3-5380-a8d2-0fe230e28db0",
+            "pin": "11",
+            "served": false
+          },
+          {
+            "current_mapped": true,
+            "net": "+12V",
+            "pad_id": "8df78f33-5fd1-51c4-9ed7-e810ba473573",
+            "pin": "4",
+            "served": true
+          }
+        ],
+        "service_status": "partial",
+        "signed_package_residual_A": 0.0,
+        "symbol": "OPA4196IDR"
+      }
+    }
+  },
+  "target_device": {
+    "manufacturer": "Texas Instruments",
+    "mpn": "OPA4196IDR",
+    "package": "SOIC-14",
+    "supplier": "LCSC",
+    "supplier_order_code": "C2057385",
+    "ref": "U2314",
+    "instance": "F3",
+    "role": "Four-amplifier package; complete existing quiescent supply pair, not full functional load acceptance",
+    "missing_supply": {
+      "pin": "11",
+      "net": "-12V",
+      "pad_id": "b0f9dbc5-d3f3-5380-a8d2-0fe230e28db0"
+    },
+    "existing_served_supply": {
+      "pin": "4",
+      "net": "+12V",
+      "pad_id": "8df78f33-5fd1-51c4-9ed7-e810ba473573"
+    }
+  },
+  "co_target": {
+    "manufacturer": "Murata",
+    "mpn": "GRM188R71H104KA93D",
+    "package": "0603",
+    "supplier_order_code": null,
+    "source_state": "SOURCE UNAVAILABLE in current inventory; no new exact-body/component qualification inferred",
+    "ref": "C2342",
+    "pin": "1",
+    "net": "-12V",
+    "pad_id": "2412205a-2a0a-5aa6-b8ef-6c883912d2b4",
+    "role": "100 nF 50 V X7R bypass for U2314"
+  },
+  "single_affected_via": {
+    "access_for_pad": "118acdfc-28df-5ad2-b843-3daccc68d853",
+    "center_mm": [
+      110.245,
+      184.97
+    ],
+    "diameter_mm": 0.6,
+    "drill_mm": 0.3,
+    "epoch": "E16",
+    "id": "1e1b90ef-f82d-5e94-a82e-416153b33ef3",
+    "kind": "via",
+    "layers": [
+      "F.Cu",
+      "In1.Cu",
+      "In2.Cu",
+      "In3.Cu",
+      "In4.Cu",
+      "B.Cu"
+    ],
+    "net": "AGND",
+    "process": "standard through via; filled and capped when inside its pad (via-in-pad)",
+    "via_in_pad": true
+  },
+  "preserved_agnd_obligation": {
+    "ref": "U2314",
+    "pin": "10",
+    "pad_id": "118acdfc-28df-5ad2-b843-3daccc68d853",
+    "note": "Named via was constructed for this AGND-tied nonsupply pin. Its barrel and functional contacts must stay connected; no current amount is invented."
+  },
+  "diagnosis": {
+    "orphan_sheet": "KA--12V-SHEET-0068",
+    "fed_sheet": "KA--12V-SHEET-0000",
+    "orphan_area_mm2": 6.883,
+    "nearest_fed_sheet_gap_mm": 0.2772,
+    "access_via_ids": [
+      "777f3632-457b-52cb-905e-d88ee0abe7f4",
+      "19a8d3d3-d974-5b5c-9ad6-2feb6a732bf8"
+    ],
+    "orphan_component_identities": [
+      "19a8d3d3-d974-5b5c-9ad6-2feb6a732bf8",
+      "2412205a-2a0a-5aa6-b8ef-6c883912d2b4",
+      "4c961d96-f25b-56b4-818e-cfb2d4f0166f",
+      "777f3632-457b-52cb-905e-d88ee0abe7f4",
+      "9192e920-1a17-5a95-b23f-561c89c70e31",
+      "KA--12V-SHEET-0068",
+      "b0f9dbc5-d3f3-5380-a8d2-0fe230e28db0"
+    ],
+    "blocking_signal_segment_ids": [
+      "127141f3-ffb2-55dd-82f8-f83de6cb72d8",
+      "d3ddf061-51ab-594f-8345-7661bfd81e93"
+    ],
+    "blocking_signal_net": "X91D7FB7B3C74A3368139",
+    "retained_local_screen": {
+      "copper_gap_mm": 0.663,
+      "required_mm": 0.75,
+      "deficit_mm": 0.087,
+      "after_annulus_only_screen_mm": 0.813,
+      "requirement_basis": "0.25 mm sheet minimum width plus two unchanged 0.25 mm clearances",
+      "authority_limit": "Retained local/re-clip witness only. Not a new whole-board connectivity, finite resistance or native padstack proof."
+    }
+  },
+  "candidate_scope": {
+    "initial_work": "Source-owned capability/schema/fixture experiment for exact per-layer nonfunctional annulus representation; do not generate or alter board geometry now.",
+    "future_geometry_exception_if_separately_authorized": "One named E16 AGND via only: omit its nonfunctional In3.Cu annulus while preserving its physical barrel and every other functional layer/annulus. Let unchanged sheet generation determine any -12V reconnection.",
+    "variant_count": 1,
+    "allowed_object_identity": "1e1b90ef-f82d-5e94-a82e-416153b33ef3",
+    "allowed_layer": "In3.Cu",
+    "no_search": "No alternative via sites, moved via/part, rerouted signal, long trace, extra via or global unused-annulus cleanup."
+  },
+  "expected_measurable_changes": {
+    "conditional_on_full_coverage_verification": true,
+    "closed_pad_ids": [
+      "b0f9dbc5-d3f3-5380-a8d2-0fe230e28db0",
+      "2412205a-2a0a-5aa6-b8ef-6c883912d2b4"
+    ],
+    "KA_unresolved": [
+      196,
+      194
+    ],
+    "KB_unresolved": [
+      486,
+      486
+    ],
+    "newly_disconnected": 0,
+    "supported_devices": [
+      151,
+      152
+    ],
+    "partial_devices": [
+      59,
+      58
+    ],
+    "unserved_devices": [
+      21,
+      21
+    ],
+    "unmapped_devices": [
+      194,
+      194
+    ],
+    "eligible_supply_pads": [
+      302,
+      304
+    ],
+    "newly_included_existing_current_A": {
+      "U2314.4 +12V": 0.00056,
+      "U2314.11 -12V": -0.00056
+    },
+    "expected_KA_signed_subset_sum_A": {
+      "+12V": 0.09472,
+      "-12V": -0.09472,
+      "+5V": 6e-05,
+      "AGND": -6e-05
+    },
+    "load_scope": "Existing140uA/amplifier times4, typical25C quiescent IO=0; zero signed package residual. Do not change ledger values or inject either pin before complete-package eligibility.",
+    "resistance_objective": "Establish finite corrected-model path and measure local neck/full modelled copper resistance against unchanged1mOhm rail requirement. No guaranteed resistance target or improvement percentage; upstream bottlenecks may still fail."
+  },
+  "preservation_invariants": [
+    "Canonical boards, accepted copper, all locked panel/part/control/jack positions, circuit intent and decision.json unchanged; KEEP_K1402_INCUMBENT.",
+    "In an authorized disposable variant, every old object except the one explicitly named In3 annulus policy remains byte-identical with original identity; preserve current73699objects and do not silently replace/reidentify a via.",
+    "Named via position(110.245,184.97), netAGND,0.3mm drill,0.6mm functional annulus dimensions and physical barrel/end contacts remain unchanged.",
+    "Prove In3 annulus nonfunctionality and preservation of U2314.10 AGND and all existing same-net groups before removal; a nonfunctional label alone is insufficient.",
+    "Unchanged sheet minimum width,copper/hole clearance,layer stack,copper/process assumptions and electrical targets; no phantom copper inside drill or deleted barrel.",
+    "All unrelated source/feed/harness identities and return incidences remain distinct; no equipotential source extension or new ground assignment."
+  ],
+  "validation_gates": [
+    {
+      "gate": "baseline",
+      "requirement": "Retain final attempt5 report/negative evidence and exactsource, service, operator/coverage bindings; no transfer of numericalPASS to variant."
+    },
+    {
+      "gate": "source-capability",
+      "requirement": "Implement/test per-layer policy only in an authorized isolated source lane. Current materialize_e16 explicitly rejects padstack/remove_unused_layers/keep_end_layers fields. Prove exact single-layer semantics and serialization/round-trip via tiny fixtures; no silent global flag substitution."
+    },
+    {
+      "gate": "geometry-and-census",
+      "requirement": "Under separately authorized guarded variant preparation, caps\u2192clip\u2192graph\u2192complete census; exact2pad closure,zero new disconnected pads,all original groups and namedvia functionalcontacts preserved. Local0.813mm screen is insufficient."
+    },
+    {
+      "gate": "whole-device-coverage",
+      "requirement": "Build fresh variant finite coverage and service manifest; verify both U2314supplypaths,exactbalancedexisting \u00b10.56mA inclusion,expected151\u2192152/59\u219258counts and all other package classifications unchanged. No oldt2 coverage receipt reuse."
+    },
+    {
+      "gate": "variant-numerics",
+      "requirement": "Separate future exact changed-geometry request and authority, existing180s/2GiB/no-swap/sharedguard/stopfirstfailure. Reevaluate +12V and -12V because newly eligible U2314 changes both loadvectors; AGND because its via/annulus changes. Apply declared process/returnstate accuracy gates and unchanged electricalbudgets. Reuse +5V only with reviewed unchanged operator/current bindings, otherwise include it."
+    },
+    {
+      "gate": "native-capability-and-preservation",
+      "requirement": "Future explicitly admitted pinnedKiCad10.0.6 via scripts/kicad/run.sh, disposable candidateonly, adapter round-trip,filledconnectivity,pad/group reconciliation,sidecars and complete applicable DRC differences. Current capped DRC enumeration remains a wider unresolved gate; do not waive it. No currentcampaignnativepermission."
+    },
+    {
+      "gate": "physical/process",
+      "requirement": "Layer-specific annulus/barrel manufacturability,plating/cap/stackup,source/protection/fullpath,mechanical/bench qualification remain open. No fabricationorder,procurement,energization or adoption."
+    }
+  ],
+  "preserved_negative_alternative": {
+    "candidate": "KA-U2314-11-longB",
+    "structural_result": "SeparateKA194,15addedB.Cu segments,all73699oldobjects preserved,zero newdisconnections",
+    "length_mm": 23.554079825569,
+    "width_mm": 0.2,
+    "isolated_strip_screen_milliohm": 34.732173,
+    "status": "Retain unchanged as structural closure with poor resistance screen; not a solved full-path bound or electrical remedy. Do not promote low-load voltage to acceptance."
+  },
+  "source_evidence_sha256": {
+    "design/partition/core-split/candidates/planning/joined-feed-construction-v2/evidence/e16/pilot/KA-pilot-outcome.json": "6f3fcb4f6aa553185001a75f17b13b39b2763a990f8f6710c3f398f4332957dd",
+    "design/partition/core-split/candidates/planning/joined-feed-construction-v2/evidence/e16/KA-t2-residual-atlas.json.gz": "ade5a53384c567bfaa77aa0376501392dacb70e7614b31fdcbbe9637fd8cc89c",
+    "design/partition/core-split/candidates/planning/joined-feed-construction-v2/evidence/e16/continuation-20261013b/osc-ka-longb-review-r3.md": "2dac1d5262aea146f8ad83eab4f62cfc529543d3e7bfccf918a63251076a5318",
+    "design/partition/core-split/candidates/planning/joined-feed-construction-v2/evidence/e16/continuation-20261013b/source-variant-comparison.json": "8b732d2296b0cd52278365ce692164fcaa83782dba1f0213ea2663a4aaf6d4be",
+    "design/partition/core-split/candidates/planning/joined-feed-construction-v2/evidence/e16/continuation-20261013b/load-ledger.json.gz": "241dd36110236d3726e509c76b02e80928a279a67bea028bfa5aa1e965fa5f54",
+    "design/partition/core-split/candidates/planning/joined-feed-construction-v2/materialize_e16.py": "3328edaca211fb4d42779b738a30790ac705cdfa8702d5269731d2258ebf624d",
+    "design/partition/core-split/candidates/planning/joined-feed-construction-v2/native_descriptor.py": "a5f17433fa59240dd62381fa8b12be6ac3bbfc9724bab369fc9b13e08619ec9a",
+    "design/partition/core-split/power/package-ownership.csv": "1988a61ff668b943019f969dbecb490aba313d83844d571fce20d318423eb8c7",
+    ".claude/skills/component-spec-audit/references/inventory.json": "3ff8b15e3834349ec49030487c23a1ae3f8fcebc9ad88de7e3d9fb290f4a9a70",
+    ".claude/skills/component-ti-opa4196idr/facts.json": "617de6d47a978716ef6ad382122258cb6f7b71e3572a271515a9caa690a0aa55",
+    "design/grid/placements.lock.json": "297300b067fd646624b9e501791163fa2d60702862b61568753bf92e5b88dbe8"
+  },
+  "activity": {
+    "geometry_changes": 0,
+    "production_source_changes": 0,
+    "native_calls": 0,
+    "numerical_units": 0,
+    "campaign_budget_consumed": 0,
+    "adopted": false
+  }
+}

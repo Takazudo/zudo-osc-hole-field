@@ -1,0 +1,172 @@
+[
+  {
+    "name": "construct",
+    "command": [
+      "timeout",
+      "180s",
+      "prlimit",
+      "--as=2147483648",
+      "--",
+      "/home/takazudo/.cache/zudo-e16-numerical-venv/bin/python",
+      "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-r4/design/partition/core-split/candidates/planning/joined-feed-construction-v2/construct.py",
+      "--output",
+      "/home/takazudo/.cache/zudo-e16-runs/20261013-wsl-admission/cand05"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 12.663107353029773,
+    "cumulative_child_peak_rss_KiB": 694152
+  },
+  {
+    "name": "normalize-KA",
+    "command": [
+      "timeout",
+      "180s",
+      "prlimit",
+      "--as=2147483648",
+      "--",
+      "/home/takazudo/.cache/zudo-e16-numerical-venv/bin/python",
+      "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-r4/design/partition/core-split/candidates/planning/joined-feed-construction-v2/normalize_board.py",
+      "--board-id",
+      "KA",
+      "--pcb",
+      "/home/takazudo/.cache/zudo-e16-runs/20261013-wsl-admission/cand05/KA.kicad_pcb",
+      "--terminals",
+      "/home/takazudo/.cache/zudo-e16-runs/20261013-wsl-admission/cand05/terminals.json",
+      "--output",
+      "/home/takazudo/.cache/zudo-e16-runs/20261013-wsl-admission/KA-normalized.json"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 3.2479363669408485,
+    "cumulative_child_peak_rss_KiB": 694152
+  },
+  {
+    "name": "materialize-KA",
+    "command": [
+      "timeout",
+      "180s",
+      "prlimit",
+      "--as=2147483648",
+      "--",
+      "/home/takazudo/.cache/zudo-e16-numerical-venv/bin/python",
+      "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-r4/design/partition/core-split/candidates/planning/joined-feed-construction-v2/materialize_e16.py",
+      "--board",
+      "KA",
+      "--candidate",
+      "/home/takazudo/.cache/zudo-e16-runs/20261013-wsl-admission/cand05/KA.kicad_pcb",
+      "--normalized",
+      "/home/takazudo/.cache/zudo-e16-runs/20261013-wsl-admission/KA-normalized.json",
+      "--output",
+      "/home/takazudo/.cache/zudo-e16-runs/20261013-wsl-admission/materialized-KA"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 2.6284475119318813,
+    "cumulative_child_peak_rss_KiB": 694152
+  },
+  {
+    "name": "KA-t2-eval",
+    "command": [
+      "/home/takazudo/.cache/zudo-e16-numerical-venv/bin/python",
+      "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-r4/design/partition/core-split/candidates/planning/joined-feed-construction-v2/evaluate_access.py",
+      "--source",
+      "/home/takazudo/.cache/zudo-e16-runs/20261013-wsl-admission/materialized-KA/KA-t2-source.json",
+      "--clip-helper",
+      "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-r4/design/partition/core-split/candidates/planning/joined-feed-construction-v2/clip_sheets.py",
+      "--design",
+      "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-r4/design/partition/core-split/candidates/planning/joined-feed-construction-v2/evidence/board-access-design.json",
+      "--python",
+      "/home/takazudo/.cache/zudo-e16-numerical-venv/bin/python",
+      "--output",
+      "/home/takazudo/.cache/zudo-e16-runs/20261013-wsl-admission/KA-t2-eval"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 80.88276015000883,
+    "cumulative_child_peak_rss_KiB": 1375728
+  },
+  {
+    "name": "normalize-KB",
+    "command": [
+      "timeout",
+      "180s",
+      "prlimit",
+      "--as=2147483648",
+      "--",
+      "/home/takazudo/.cache/zudo-e16-numerical-venv/bin/python",
+      "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-r4/design/partition/core-split/candidates/planning/joined-feed-construction-v2/normalize_board.py",
+      "--board-id",
+      "KB",
+      "--pcb",
+      "/home/takazudo/.cache/zudo-e16-runs/20261013-wsl-admission/cand05/KB.kicad_pcb",
+      "--terminals",
+      "/home/takazudo/.cache/zudo-e16-runs/20261013-wsl-admission/cand05/terminals.json",
+      "--output",
+      "/home/takazudo/.cache/zudo-e16-runs/20261013-wsl-admission/KB-normalized.json"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 3.1727955320384353,
+    "cumulative_child_peak_rss_KiB": 1375728
+  },
+  {
+    "name": "materialize-KB",
+    "command": [
+      "timeout",
+      "180s",
+      "prlimit",
+      "--as=2147483648",
+      "--",
+      "/home/takazudo/.cache/zudo-e16-numerical-venv/bin/python",
+      "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-r4/design/partition/core-split/candidates/planning/joined-feed-construction-v2/materialize_e16.py",
+      "--board",
+      "KB",
+      "--candidate",
+      "/home/takazudo/.cache/zudo-e16-runs/20261013-wsl-admission/cand05/KB.kicad_pcb",
+      "--normalized",
+      "/home/takazudo/.cache/zudo-e16-runs/20261013-wsl-admission/KB-normalized.json",
+      "--output",
+      "/home/takazudo/.cache/zudo-e16-runs/20261013-wsl-admission/materialized-KB",
+      "--include-kb-p1"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 5.250500953989103,
+    "cumulative_child_peak_rss_KiB": 1375728
+  },
+  {
+    "name": "KB-t2-eval",
+    "command": [
+      "/home/takazudo/.cache/zudo-e16-numerical-venv/bin/python",
+      "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-r4/design/partition/core-split/candidates/planning/joined-feed-construction-v2/evaluate_access.py",
+      "--source",
+      "/home/takazudo/.cache/zudo-e16-runs/20261013-wsl-admission/materialized-KB/KB-t2-source.json",
+      "--clip-helper",
+      "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-r4/design/partition/core-split/candidates/planning/joined-feed-construction-v2/clip_sheets.py",
+      "--design",
+      "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-r4/design/partition/core-split/candidates/planning/joined-feed-construction-v2/evidence/board-access-design.json",
+      "--python",
+      "/home/takazudo/.cache/zudo-e16-numerical-venv/bin/python",
+      "--output",
+      "/home/takazudo/.cache/zudo-e16-runs/20261013-wsl-admission/KB-t2-eval"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 88.99894492002204,
+    "cumulative_child_peak_rss_KiB": 1390708
+  },
+  {
+    "name": "KB-p1-eval",
+    "command": [
+      "/home/takazudo/.cache/zudo-e16-numerical-venv/bin/python",
+      "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-r4/design/partition/core-split/candidates/planning/joined-feed-construction-v2/evaluate_access.py",
+      "--source",
+      "/home/takazudo/.cache/zudo-e16-runs/20261013-wsl-admission/materialized-KB/KB-p1-source.json",
+      "--clip-helper",
+      "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-r4/design/partition/core-split/candidates/planning/joined-feed-construction-v2/clip_sheets.py",
+      "--design",
+      "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-r4/design/partition/core-split/candidates/planning/joined-feed-construction-v2/evidence/board-access-design.json",
+      "--python",
+      "/home/takazudo/.cache/zudo-e16-numerical-venv/bin/python",
+      "--output",
+      "/home/takazudo/.cache/zudo-e16-runs/20261013-wsl-admission/KB-p1-eval"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 88.4812443490373,
+    "cumulative_child_peak_rss_KiB": 1393168
+  }
+]

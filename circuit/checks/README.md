@@ -13,6 +13,26 @@ What each project check establishes, and what it does not. Report a check's actu
 | `pnpm previews:generate`, `pnpm exec zudo-circuit-doc footprints check` | Footprint SVG previews are rendered from, and match, the selected footprints | Dimensional correctness or pin correspondence; a preview is a rendering |
 | `pnpm circuit:doctor` | Which required and optional tools are present | That any check passes |
 
+## Python source tests and the separate oracle obligation
+
+`bash scripts/checks/run-python-tests.sh` uses `run-source-only-python.py` to
+discover source tests. It excludes exactly
+`design.spec.cells.test_sweep_precision_vendor.PrecisionVendorSweepGate.test_original_network_returns_nonzero_for_supported_failure`
+at its two discovery occurrences (`cells.test_sweep_precision_vendor...` and
+`test_sweep_precision_vendor...`). Missing, duplicate or unexpected oracle
+identities stop selection before any case runs. The neighboring strict-threshold
+test runs without vendor-model setup. Report the actual selected count and both
+explicit exclusions; a source-suite pass is not a full native-suite pass.
+
+The excluded test remains a required, separately admitted oracle check through
+the [exact local/CI admission procedures](../../scripts/kicad/README.md).
+`scripts/checks/run-ci-native-python.sh` does not explicitly run this test;
+exclusion from source discovery does not automatically transfer that obligation.
+The retained WSL native evidence records its earlier exact admitted execution.
+Any fresh execution needs matching inputs, resource qualification and admission;
+the bounded numerical campaign does not authorize a rerun. Native gates that
+were not executed remain **NOT RUN**, regardless of source-test results.
+
 ### `check-browser` representative pages
 
 `check-browser` resolves which pages to exercise in this order:

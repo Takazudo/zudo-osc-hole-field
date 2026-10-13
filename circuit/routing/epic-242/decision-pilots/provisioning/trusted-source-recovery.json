@@ -1,0 +1,175 @@
+{
+  "scope": "Authenticated two successful native runs; no inferred HOME guard installation",
+  "runs": [
+    {
+      "run_id": 38133584276,
+      "artifact_id": 11699982799,
+      "zip_file": "epic242-two-a-600-run38133584276.zip",
+      "zip_bytes": 34546173,
+      "zip_sha256": "1bdd84bce237cc864db19bf831f44f51425ce2f7e41b1de774c0da1068881b56",
+      "zip_crc": "PASS",
+      "source_sha": "59d032e3cc22586759e93a860059eb16ef667cb0",
+      "source_files_sha256": {
+        "scripts/kicad/native_resource_guard.py": "ee755233af405e60cf592956dcf42ca1069f5face6c20c1cdfcdf6f8479ef8ca",
+        "scripts/kicad/settle_only_pilot.py": "29510c3f318c48d6ec1e2dfaf4d921283df10cef81da713d96fd1ac4ed95bfc1",
+        "scripts/kicad/run.sh": "f91b2c8846856a6d38a10eb9e6314b6ebec3222b68df37942f3716ab860d8c91",
+        "scripts/kicad/pin.env": "769e2be0b61e7d92a6930684f13166b7dc098522008de3969cd30d6c4a363246",
+        "scripts/pcbgen/with_route_guard.sh": "29afbe134f0a3c196ab01482382f3042ac32ce5c825ea0728eb416c536ff383e"
+      },
+      "pilot_status": "SETTLE COMMAND SUCCEEDED; NOT COMPLETE ACCEPTANCE",
+      "actual_command": [
+        "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python",
+        "scripts/kicad/native_resource_guard.py",
+        "--admission-id",
+        "epic242-two-a-settle-02",
+        "--worker",
+        "settle-two-a-38133584276-1",
+        "--sha",
+        "59d032e3cc22586759e93a860059eb16ef667cb0",
+        "--hook-sha256",
+        "f91b2c8846856a6d38a10eb9e6314b6ebec3222b68df37942f3716ab860d8c91",
+        "--seconds",
+        "600",
+        "--evidence",
+        "/home/runner/work/_temp/epic242-candidate-settle-only/guard.json",
+        "--",
+        "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python",
+        "scripts/partition/core_split_candidates.py",
+        "settle",
+        "--board",
+        "design/partition/core-split/candidates/pilots/generated/decision-two-A-native-38133584276-1/before/osc-core.kicad_pcb"
+      ],
+      "image_receipt": {
+        "image": "kicad/kicad@sha256:18693567392b80da435f9fa952ce3a3e534c66eb5a6033f5b9c80aa3b19dd3ec",
+        "daemon_pid": 1378,
+        "backend_cgroups": [
+          "/sys/fs/cgroup/system.slice/containerd.service",
+          "/sys/fs/cgroup/system.slice/docker.service"
+        ],
+        "backend_memory_max": {
+          "/sys/fs/cgroup/system.slice/containerd.service": "max",
+          "/sys/fs/cgroup/system.slice/docker.service": "max"
+        },
+        "accounting": "sum of disjoint Docker/containerd service cgroups and verified contained backend helpers; sampled abort threshold, not daemon hard-cap enforcement",
+        "seconds_limit": 300,
+        "status": "PASS",
+        "image_id": "sha256:1398ad98bb7f066ff8b445e2be96131f0f461a7765ff0078a0b207461b705f51",
+        "repo_digests": [
+          "kicad/kicad@sha256:18693567392b80da435f9fa952ce3a3e534c66eb5a6033f5b9c80aa3b19dd3ec"
+        ],
+        "pull_client_exit": 0,
+        "failure_scope": "No native start after preparation failure; daemon is not stopped or reconfigured. Client cancellation does not prove absence of residual daemon work."
+      },
+      "image_pull_log_sha256": "fa059240f286459e67e9d52d43de3a6e8b9b918506a08dfd167907aced3080b8",
+      "guard_status": "COMMAND PASS ONLY; native acceptance requires exact complete evidence",
+      "guard_plan": {
+        "admission_id": "epic242-two-a-settle-02",
+        "worker": "settle-two-a-38133584276-1",
+        "sha": "59d032e3cc22586759e93a860059eb16ef667cb0",
+        "hook_sha256": "f91b2c8846856a6d38a10eb9e6314b6ebec3222b68df37942f3716ab860d8c91",
+        "command": [
+          "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python",
+          "scripts/partition/core_split_candidates.py",
+          "settle",
+          "--board",
+          "design/partition/core-split/candidates/pilots/generated/decision-two-A-native-38133584276-1/before/osc-core.kicad_pcb"
+        ],
+        "seconds": 600,
+        "memory_max": 6442450944,
+        "memory_swap_max": 0,
+        "aggregate_memory_max": 12884901888,
+        "free_floor": 2147483648,
+        "early_abort_free": 2684354560,
+        "slice": "epic242-w736574746c652d74776f2d612d33383133333538343237362d31.slice",
+        "global_admission": "parent excludes ALL other native jobs; local flock covers only this guard"
+      },
+      "final_workload_absent": true,
+      "interpretation": "Historical settled-only evidence; demonstrates exact provisioning/native-control path, not a new run or route admission"
+    },
+    {
+      "run_id": 38135093123,
+      "artifact_id": 11700304065,
+      "zip_file": "epic242-two-b-run38135093123.zip",
+      "zip_bytes": 33978528,
+      "zip_sha256": "a8566c8996b71fbda8b718b5eeb60f56a8c6b52d16eac02b6e4c2b2e3063a164",
+      "zip_crc": "PASS",
+      "source_sha": "65d44bc571052a05abe55db150e728570045f701",
+      "source_files_sha256": {
+        "scripts/kicad/native_resource_guard.py": "ee755233af405e60cf592956dcf42ca1069f5face6c20c1cdfcdf6f8479ef8ca",
+        "scripts/kicad/settle_only_pilot.py": "8bf1e311e08554501e33e099cff164b69704f81df0aabe91cd980fd5fd98b531",
+        "scripts/kicad/run.sh": "f91b2c8846856a6d38a10eb9e6314b6ebec3222b68df37942f3716ab860d8c91",
+        "scripts/kicad/pin.env": "769e2be0b61e7d92a6930684f13166b7dc098522008de3969cd30d6c4a363246",
+        "scripts/pcbgen/with_route_guard.sh": "29afbe134f0a3c196ab01482382f3042ac32ce5c825ea0728eb416c536ff383e"
+      },
+      "pilot_status": "SETTLE COMMAND SUCCEEDED; NOT COMPLETE ACCEPTANCE",
+      "actual_command": [
+        "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python",
+        "scripts/kicad/native_resource_guard.py",
+        "--admission-id",
+        "epic242-two-b-settle-02",
+        "--worker",
+        "settle-two-b-38135093123-1",
+        "--sha",
+        "65d44bc571052a05abe55db150e728570045f701",
+        "--hook-sha256",
+        "f91b2c8846856a6d38a10eb9e6314b6ebec3222b68df37942f3716ab860d8c91",
+        "--seconds",
+        "600",
+        "--evidence",
+        "/home/runner/work/_temp/epic242-candidate-settle-only/guard.json",
+        "--",
+        "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python",
+        "scripts/partition/core_split_candidates.py",
+        "settle",
+        "--board",
+        "design/partition/core-split/candidates/pilots/generated/decision-two-B-native-38135093123-1/before/osc-core.kicad_pcb"
+      ],
+      "image_receipt": {
+        "image": "kicad/kicad@sha256:18693567392b80da435f9fa952ce3a3e534c66eb5a6033f5b9c80aa3b19dd3ec",
+        "daemon_pid": 1236,
+        "backend_cgroups": [
+          "/sys/fs/cgroup/system.slice/containerd.service",
+          "/sys/fs/cgroup/system.slice/docker.service"
+        ],
+        "backend_memory_max": {
+          "/sys/fs/cgroup/system.slice/containerd.service": "max",
+          "/sys/fs/cgroup/system.slice/docker.service": "max"
+        },
+        "accounting": "sum of disjoint Docker/containerd service cgroups and verified contained backend helpers; sampled abort threshold, not daemon hard-cap enforcement",
+        "seconds_limit": 300,
+        "status": "PASS",
+        "image_id": "sha256:1398ad98bb7f066ff8b445e2be96131f0f461a7765ff0078a0b207461b705f51",
+        "repo_digests": [
+          "kicad/kicad@sha256:18693567392b80da435f9fa952ce3a3e534c66eb5a6033f5b9c80aa3b19dd3ec"
+        ],
+        "pull_client_exit": 0,
+        "failure_scope": "No native start after preparation failure; daemon is not stopped or reconfigured. Client cancellation does not prove absence of residual daemon work."
+      },
+      "image_pull_log_sha256": "c5f4035f9bc0e28c8ae80443ee9fb14cc2431e987789a74b877995576e1fc7b7",
+      "guard_status": "COMMAND PASS ONLY; native acceptance requires exact complete evidence",
+      "guard_plan": {
+        "admission_id": "epic242-two-b-settle-02",
+        "worker": "settle-two-b-38135093123-1",
+        "sha": "65d44bc571052a05abe55db150e728570045f701",
+        "hook_sha256": "f91b2c8846856a6d38a10eb9e6314b6ebec3222b68df37942f3716ab860d8c91",
+        "command": [
+          "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python",
+          "scripts/partition/core_split_candidates.py",
+          "settle",
+          "--board",
+          "design/partition/core-split/candidates/pilots/generated/decision-two-B-native-38135093123-1/before/osc-core.kicad_pcb"
+        ],
+        "seconds": 600,
+        "memory_max": 6442450944,
+        "memory_swap_max": 0,
+        "aggregate_memory_max": 12884901888,
+        "free_floor": 2147483648,
+        "early_abort_free": 2684354560,
+        "slice": "epic242-w736574746c652d74776f2d622d33383133353039333132332d31.slice",
+        "global_admission": "parent excludes ALL other native jobs; local flock covers only this guard"
+      },
+      "final_workload_absent": true,
+      "interpretation": "Historical settled-only evidence; demonstrates exact provisioning/native-control path, not a new run or route admission"
+    }
+  ]
+}

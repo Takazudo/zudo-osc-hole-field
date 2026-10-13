@@ -1,0 +1,41 @@
+{
+  "schema": "e16-reported-numerical-checks-v1",
+  "phase": "couple",
+  "status": "PASS REPORTED NUMERICAL CHECKS ONLY",
+  "checks": [
+    {
+      "name": "all-present.global_kcl_relative",
+      "value": 8.350158171748052e-11,
+      "limit": 1e-09,
+      "tolerance": "kcl_relative",
+      "passed": true
+    },
+    {
+      "name": "all-present.max_free_node_kcl_relative",
+      "value": 1.1921328699180337e-11,
+      "limit": 1e-09,
+      "tolerance": "kcl_relative",
+      "passed": true
+    },
+    {
+      "name": "all-present.driving_point_solve_residual",
+      "value": 2.850814388399312e-10,
+      "limit": 1e-09,
+      "tolerance": "kcl_relative",
+      "passed": true
+    },
+    {
+      "name": "all-present.energy_minus_load_work_relative",
+      "value": 2.4050789107440344e-12,
+      "limit": 1e-09,
+      "tolerance": "energy_relative",
+      "passed": true
+    }
+  ],
+  "failures": [],
+  "electrical_acceptance": false,
+  "output_sha256": "d637c087615d367d932bdb8d27165e53219362f6abe6f2972242889e2f18d5c2",
+  "config_sha256": "f5146d0c1d77e0626a455df308f52bf953ace9806861c25438adcdf90914c107",
+  "solver_sha256": "3c993a2505dc279a4b970aadd13db5274e9f70beaf50caba800597d76287344f",
+  "assessment_sha256": "e8c1f0b55784bed3a6d8a1b86854a7cc9cdb0e7685e07efa9feb263e3efecc73"
+}

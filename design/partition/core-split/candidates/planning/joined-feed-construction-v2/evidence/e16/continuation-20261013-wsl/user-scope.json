@@ -1,0 +1,18 @@
+{
+  "command": [
+    "systemd-run",
+    "--user",
+    "--scope",
+    "-q",
+    "-p",
+    "MemoryMax=2147483648",
+    "-p",
+    "MemorySwapMax=0",
+    "python3",
+    "/tmp/osc-wsl-20261013/scope_probe.py"
+  ],
+  "cwd": "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-r4",
+  "exit_code": 0,
+  "elapsed_seconds": 0.07595811295323074,
+  "child_peak_rss_KiB": 12464
+}

@@ -1,0 +1,6 @@
+from pathlib import Path
+import json
+rel=Path('/proc/self/cgroup').read_text().strip().split('::',1)[1];cg=Path('/sys/fs/cgroup'+rel)
+fields={n:(cg/n).read_text().strip() for n in ('memory.max','memory.swap.max','memory.current','memory.peak','memory.events')}
+print(json.dumps({'cgroup':rel,'files':fields},indent=2))
+assert fields['memory.max']=='2147483648' and fields['memory.swap.max']=='0'

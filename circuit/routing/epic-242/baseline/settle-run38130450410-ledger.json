@@ -1,0 +1,116 @@
+{
+  "issue": 243,
+  "epic": 242,
+  "selected_issue": 245,
+  "run_id": 38130450410,
+  "job_id": 114443483985,
+  "run_url": "https://github.com/Takazudo/zudo-osc-hole-field/actions/runs/38130450410",
+  "terminal_status": "completed",
+  "terminal_conclusion": "success",
+  "source_sha": "1af6ea997d860951ea7e5f6b74434b4d0fccd9d6",
+  "hook_sha256": "f91b2c8846856a6d38a10eb9e6314b6ebec3222b68df37942f3716ab860d8c91",
+  "admission_id": "epic242-three-a-settle-03",
+  "dispatch_attempts": 1,
+  "pre_dispatch_remote_sha_exact": true,
+  "pre_dispatch_active_queued_pending_waiting_requested_actions_runs": 0,
+  "other_eight_workflow_jobs": "SKIPPED",
+  "scope": "One existing three-A before-board native settle; no focus/search/routing/apply/adoption/fabrication. Previously accepted hardware boards untouched.",
+  "artifact": {
+    "id": 11698474605,
+    "name": "epic242-three-a-settle-only",
+    "size_in_bytes": 19310091,
+    "sha256": "d1f381019e13814b1f6d1b027d501610e7fc640362db8f6d1cfcf4be8ee282cb",
+    "zip_crc": "PASS",
+    "entries": 602,
+    "expires_at": "2026-10-18T10:05:53Z",
+    "local_copy": "/workspace/epic242-recovery/epic242-three-a-settle-only-38130450410.zip"
+  },
+  "source_input": {
+    "snapshot_files": 294,
+    "materialized_manifest_entries": 293,
+    "portable_seals_matched": 291,
+    "snapshot_hashes_verified": 294,
+    "original_before_board_sha256": "4d8e238d5d504d55a0f5defe19671d7825f3a356a56ab143e38dd9c918110819",
+    "snapshot_unchanged_after_settle": true,
+    "working_original_files_unchanged_except_before_board": true,
+    "working_manifest_note": "working-result/sha256.json remains the pre-settle materialization manifest; it is not a post-settle hash for the changed board or added native outputs. The settled-receipt hashes bind the actual resulting board, DRC and dump."
+  },
+  "image_preparation": {
+    "status": "PASS",
+    "image": "kicad/kicad@sha256:18693567392b80da435f9fa952ce3a3e534c66eb5a6033f5b9c80aa3b19dd3ec",
+    "repo_digests": [
+      "kicad/kicad@sha256:18693567392b80da435f9fa952ce3a3e534c66eb5a6033f5b9c80aa3b19dd3ec"
+    ],
+    "pull_client_exit": 0,
+    "samples": 154,
+    "max_sampled_backend_bytes": 3124051968,
+    "min_sampled_host_free_bytes": 15383191552,
+    "limit_note": "6GiB sampled Docker/containerd abort threshold and 2.5GiB sampled free floor, not a daemon hard cap"
+  },
+  "native_guard": {
+    "status": "COMMAND PASS ONLY; native acceptance requires exact complete evidence",
+    "driver_exit_before_cleanup": 0,
+    "driver_exit_after_cleanup": 0,
+    "worker": "three-a-38130450410-1",
+    "seconds_limit": 300,
+    "memory_max_bytes": 6442450944,
+    "aggregate_parent_memory_max_bytes": 12884901888,
+    "sample_count": 167,
+    "max_sampled_worker_bytes": 1197989888,
+    "min_sampled_host_free_bytes": 14511763456,
+    "kernel_peak_bytes": 1217114112,
+    "kernel_events": {
+      "low": 0,
+      "high": 0,
+      "max": 0,
+      "oom": 0,
+      "oom_kill": 0,
+      "oom_group_kill": 0
+    },
+    "full_id_requested_admitted_membership_terminal_counts": {
+      "container_admissions": 14,
+      "container_memberships": 14,
+      "container_states": 14
+    },
+    "all_retained_exit_codes": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "all_14_full_ids_ack_running_membership_and_retained_exits_verified": true,
+    "cleanup_failures": [],
+    "final_workload_absent": true,
+    "final_units_all_not_found": true
+  },
+  "settle_result": {
+    "pilot_status": "SETTLE COMMAND SUCCEEDED; NOT COMPLETE ACCEPTANCE",
+    "pilot_exit_code": 0,
+    "settled_receipt_status": "SETTLED; NOT COMPLETE ACCEPTANCE",
+    "settled_before_board_sha256": "a3ca1a40729d34fa9048678778bda792b4c984d5aa2a445b17a33f70aedc15b6",
+    "drc_sha256": "efd7c273e7de7c797ae2bcb82717cd21b1b350930f3d5b14474d4117af6bec1f",
+    "dump_sha256": "eb41cfd06ff7f8c5562e48cf4b8dd803089eadae6dffe48bf0d578e4b7d0037c",
+    "kicad_version": "10.0.6",
+    "raw_drc_violations_by_severity": {
+      "warning": 800
+    },
+    "raw_drc_unconnected_items": 499,
+    "raw_drc_schematic_parity_items": 0,
+    "dump_open_edges": 538,
+    "interpretation": "Raw DRC lists are potentially capped; 499 listed unconnected items and 800 listed warnings are not full native totals. Dump open_edges=538 is a generated dump field, not final hardware acceptance. No uncapped independent full-warning/eligibility gate, no fresh board adoption or route improvement claim. The candidate partition dump field 538 cannot be compared directly with accepted K1402 as a routing improvement; the board/context differs."
+  },
+  "next_architecture_evidence": "Independent review can now compare the immutable original before-board with settled board, raw DRC and dump, then decide whether separately admitted focus/search/apply and full uncapped warning/eligibility gates are warranted. No automatic fourth settle retry or follow-on routing.",
+  "ci_separation": "Historical panel native-review receipt still rejects current run.sh; Documentation CI is not fully green. This separate provenance gate did not alter the specifically admitted settle result.",
+  "hardware": "UNCHANGED accepted JL117/JR129/K1402; DRC/parity0/0 at accepted main, not inferred for this candidate.",
+  "independent_evidence_review": "PASS (read-only): separate reviewer verified archive bytes/SHA/602 CRC entries, 294 snapshot hashes, 293 manifest entries, 291 three-A source seals against source SHA, all 14 unique full-ID/ACK/worker/PID/start/cgroup/cap/retained exited0 chains, hook/gate hashes, recomputed sampled memory and kernel peak/OOM0, cleanup/three units absent, settled board/DRC/dump hashes and dump board binding. No native run or edits. Run/job/dispatch/other-eight-skipped metadata was separately verified by coordinator through GitHub Actions API."
+}

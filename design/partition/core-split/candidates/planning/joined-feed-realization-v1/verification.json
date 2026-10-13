@@ -1,0 +1,53 @@
+{
+  "status": "CHECKS_PASS_STAGE_ACCEPTANCE_NOT_MET",
+  "stage_acceptance_met": false,
+  "physical_candidate_emitted": false,
+  "native_ready": false,
+  "checks": [
+    {
+      "command": "python3 compare-budgets.py --check",
+      "exit_code": 0,
+      "evidence": "evidence/budget-check.log"
+    },
+    {
+      "command": "python3 -m unittest discover -s . -p test*.py -v",
+      "cwd": "design/partition/core-split/candidates/planning/joined-feed-realization-v1",
+      "exit_code": 0,
+      "tests": 8,
+      "evidence": "evidence/budget-tests.log"
+    },
+    {
+      "command": "pnpm circuit:check",
+      "exit_code": 0,
+      "evidence": "evidence/circuit-check.log"
+    },
+    {
+      "command": "pnpm check",
+      "exit_code": 0,
+      "evidence": "evidence/repo-check.log"
+    },
+    {
+      "command": "python3 circuit/routing/epic-242/baseline/verify_inputs.py",
+      "exit_code": 0,
+      "evidence": "evidence/baseline-check.log"
+    },
+    {
+      "command": "verify31 input-seals SHA256",
+      "exit_code": 0
+    },
+    {
+      "command": "git diff --check",
+      "exit_code": 0
+    }
+  ],
+  "new_source_geometry_runs": 1,
+  "geometry_scope": "Three nominal service positions of unchanged latest58mm feed family; no complete-sweep or carrier/physicalfit claim.",
+  "geometry_elapsed_seconds": 7.613165401000515,
+  "geometry_peak_KiB": 194588,
+  "native_runs": 0,
+  "routing_runs": 0,
+  "F3_placement_runs": 0,
+  "canonical_changes": 0,
+  "fixture_changes": 0,
+  "fallback": "K1402"
+}

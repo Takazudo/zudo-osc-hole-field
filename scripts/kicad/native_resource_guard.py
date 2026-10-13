@@ -1,0 +1,893 @@
+#!/usr/bin/env python3
+"""Opt-in admitted Linux/systemd/Docker worker guard. Never admits a job itself."""
+import argparse
+from contextlib import contextmanager
+import hashlib
+import fcntl
+import json
+import os
+from pathlib import Path
+import re
+import signal
+import stat
+import subprocess
+import sys
+import tempfile
+import time
+
+GIB = 1024 ** 3
+CAP = 6 * GIB
+AGGREGATE_CAP = 12 * GIB
+FLOOR = 2 * GIB
+ABORT_FREE = 5 * GIB // 2
+
+
+def identity(value):
+    if not re.fullmatch(r'[a-z0-9][a-z0-9-]{0,60}', value):
+        raise ValueError('worker identity must be a short lowercase alphanumeric/hyphen token')
+    return value
+
+
+def memory_available():
+    for line in Path('/proc/meminfo').read_text().splitlines():
+        if line.startswith('MemAvailable:'):
+            return int(line.split()[1]) * 1024
+    raise ValueError('MemAvailable missing')
+
+
+def event_values(text):
+    return {k: int(v) for k, v in (line.split() for line in text.splitlines())}
+
+
+def stop_reason(available, events, initial_events, elapsed, deadline):
+    if available <= ABORT_FREE:
+        return 'free-memory guard (2.5GiB early abort; 2GiB mandatory floor)'
+    if any(events.get(k, 0) > initial_events.get(k, 0) for k in ('oom', 'oom_kill')):
+        return 'worker OOM event'
+    if elapsed >= deadline:
+        return 'whole-command deadline'
+    return None
+
+
+def docker_membership(inspect, cgroup_text, slice_path):
+    docker_limits(inspect, slice_path)
+    paths = [line.split(':', 2)[2] for line in cgroup_text.splitlines() if line.startswith('0::')]
+    if len(paths) != 1 or not paths[0].startswith(slice_path.rstrip('/') + '/'):
+        raise ValueError('Docker container outside shared worker slice')
+
+
+def docker_limits(inspect, slice_path):
+    config = inspect['HostConfig']
+    if config['Memory'] != CAP or config['MemorySwap'] != CAP:
+        raise ValueError('Docker memory/swap caps differ from6GiB/no additional swap')
+    if config['CgroupParent'] != slice_path.rsplit('/', 1)[-1]:
+        raise ValueError('Docker slice parent differs')
+
+
+def cgroup_limits(cgroup, cap=CAP):
+    controllers = (Path('/sys/fs/cgroup') / 'cgroup.controllers').read_text().split()
+    if 'memory' not in controllers:
+        raise ValueError('cgroup v2 memory controller missing')
+    if (cgroup / 'memory.max').read_text().strip() != str(cap):
+        raise ValueError('shared slice cap missing: ' + str(cap))
+    if (cgroup / 'memory.swap.max').read_text().strip() != '0':
+        raise ValueError('shared slice zero swap cap missing')
+    for name in ('memory.current', 'memory.peak', 'memory.events'):
+        if not (cgroup / name).is_file():
+            raise ValueError('missing cgroup evidence: ' + name)
+
+
+def run(args, **kwargs):
+    kwargs.setdefault('timeout', 20)
+    return subprocess.run(args, check=True, text=True, capture_output=True, **kwargs).stdout.strip()
+
+
+def local_docker():
+    if os.environ.get('DOCKER_HOST') or os.environ.get('DOCKER_CONTEXT'):
+        raise ValueError('custom Docker endpoint/context not admitted')
+    endpoint = json.loads(run(['docker', 'context', 'inspect']))[0]['Endpoints']['docker']['Host']
+    if endpoint != 'unix:///var/run/docker.sock':
+        raise ValueError('requires verified local system Docker daemon')
+    info = json.loads(run(['docker', 'info', '--format', '{{json .}}']))
+    if info['CgroupDriver'] != 'systemd' or str(info['CgroupVersion']) != '2':
+        raise ValueError('requires systemd cgroupv2 Docker')
+    if not info.get('MemoryLimit') or not info.get('SwapLimit'):
+        raise ValueError('Docker daemon lacks memory/swap support')
+
+
+def require_local_image():
+    pin = Path('scripts/kicad/pin.env').read_text()
+    matched = re.search(r"^KICAD_IMAGE='(kicad/kicad@sha256:[0-9a-f]{64})'$", pin, re.MULTILINE)
+    if not matched:
+        raise ValueError('invalid pinned KiCad image identity')
+    image = matched.group(1)
+    metadata = json.loads(run(['docker', 'image', 'inspect', image]))[0]
+    if image not in metadata.get('RepoDigests', []):
+        raise ValueError('exact pinned image not locally authenticated; never pull during admission')
+    return image
+
+
+def require_harmless_fixture(image, command):
+    if not re.fullmatch(r'sha256:[0-9a-f]{64}', image):
+        raise ValueError('immutable locally imported harmless fixture image required')
+    entry = str(Path('scripts/kicad/run_resource_fixture.py').resolve())
+    prefix = [sys.executable, entry, '--image', image, '--mode']
+    if command[:len(prefix)] != prefix or command[len(prefix):] not in (['aggregate'], ['hold']):
+        raise ValueError('harmless qualification permits only the reviewed fixture runner')
+    metadata = json.loads(run(['docker', 'image', 'inspect', image]))[0]
+    if metadata.get('Id') != image or metadata.get('Config', {}).get('Entrypoint') != ['/fixture']:
+        raise ValueError('local fixture image identity/entrypoint mismatch')
+
+
+def worker_containers(worker, timeout=20):
+    return run(['docker', 'ps', '-aq', '--no-trunc', '--filter', 'label=epic242.native.worker=' + worker],
+               timeout=timeout).splitlines()
+
+
+def command_error(error):
+    stderr = getattr(error, 'stderr', None)
+    return str(error) + (': ' + stderr.strip() if stderr else '')
+
+
+def inspect_owned_container(cid, worker, slice_path, verified, transitions, states=None):
+    """A vanished, previously verified full ID is absence, never exit success."""
+    if not re.fullmatch(r'[0-9a-f]{64}', cid):
+        raise ValueError('full Docker container identity required')
+    try:
+        rows = json.loads(run(['docker', 'inspect', '--type', 'container', cid]))
+    except subprocess.CalledProcessError as error:
+        record = {'container_id': cid, 'event': 'inspect failed', 'returncode': error.returncode,
+                  'stderr': error.stderr, 'stdout': error.stdout}
+        transitions.append(record)
+        missing = re.fullmatch(r'(?:Error: No such (?:object|container): |Error response from daemon: No such container: )' +
+                               re.escape(cid), (error.stderr or '').strip())
+        if error.returncode != 1 or not missing or cid not in verified:
+            raise
+        # Unfiltered listing: a label change must not look like disappearance.
+        present = run(['docker', 'ps', '-aq', '--no-trunc']).splitlines()
+        if any(not re.fullmatch(r'[0-9a-f]{64}', item) for item in present):
+            raise ValueError('invalid full-ID Docker absence observation')
+        if cid in present:
+            raise ValueError('inspect missing but container remains listed: ' + cid)
+        record.update(event='previously verified container absent', absence_verified=True,
+                      exit_status='UNKNOWN; driver exit remains required')
+        return None
+    if len(rows) != 1 or rows[0].get('Id') != cid:
+        raise ValueError('Docker inspect identity differs from requested full ID')
+    inspected = rows[0]
+    if inspected.get('Config', {}).get('Labels', {}).get('epic242.native.worker') != worker:
+        raise ValueError('Docker container worker label differs')
+    docker_limits(inspected, slice_path)
+    state = inspected['State']
+    if states is not None:
+        states[cid] = state
+    if state.get('OOMKilled') or state.get('Error'):
+        raise ValueError('Docker container failure: ' + json.dumps(state))
+    if not state['Running']:
+        transitions.append({'container_id': cid, 'event': 'not running', 'state': state})
+        if state.get('Status') not in ('created', 'exited') or state.get('ExitCode', 0) != 0:
+            raise ValueError('Docker container failed or indeterminate terminal state: ' + json.dumps(state))
+    return inspected
+
+
+def observe_container(cid, worker, slice_path, verified, transitions, memberships):
+    # At most one re-inspect for a /proc disappearance. Readable wrong membership,
+    # changed identity/caps, generic Docker errors and unknown absence stay fatal.
+    for attempt in range(2):
+        inspected = inspect_owned_container(cid, worker, slice_path, verified, transitions)
+        if inspected is None or not inspected['State']['Running']:
+            return None
+        pid = inspected['State']['Pid']
+        if not isinstance(pid, int) or pid <= 0:
+            raise ValueError('running Docker container has invalid PID')
+        try:
+            start = process_identity(pid)
+            cgroup_text = Path('/proc/' + str(pid) + '/cgroup').read_text()
+            docker_membership(inspected, cgroup_text, slice_path)
+            if process_identity(pid) != start:
+                raise ValueError('Docker process identity changed during membership observation')
+        except FileNotFoundError as error:
+            transitions.append({'container_id': cid, 'event': 'process disappeared during observation',
+                                'pid': pid, 'attempt': attempt + 1, 'error': str(error)})
+            if attempt:
+                raise ValueError('Docker process membership indeterminate after re-inspection') from error
+            continue
+        verified.add(cid)
+        memberships[cid] = {'container_id': cid, 'worker': worker, 'pid': pid, 'process_start': start,
+                            'cgroup': cgroup_text, 'host_config': {name: inspected['HostConfig'][name]
+                            for name in ('Memory', 'MemorySwap', 'CgroupParent')}, 'state': inspected['State']}
+        return inspected
+    raise AssertionError('bounded observation exhausted')
+
+
+def private_gate_path(path, directory=False):
+    info = path.lstat()
+    import stat
+    expected = stat.S_ISDIR if directory else stat.S_ISREG
+    if not expected(info.st_mode) or info.st_uid != os.getuid() or info.st_mode & (0o077 if directory else 0o022):
+        raise ValueError('unsafe handshake path: ' + str(path))
+    return path
+
+
+def gate_request(inspected, root, worker, deadline, image):
+    """Bind a private request and readonly entrypoint to an inspected full ID."""
+    private_gate_path(root, True)
+    private_gate_path(root / 'gates', True)
+    labels = inspected['Config'].get('Labels', {})
+    token = labels.get('epic242.native.gate', '')
+    if not re.fullmatch(r'gate\.[a-zA-Z0-9]{12}', token):
+        raise ValueError('missing or invalid unique gate identity')
+    gate = private_gate_path(root / 'gates' / token, True)
+    request = json.loads(private_gate_path(gate / 'request.json').read_text())
+    cid = inspected['Id']
+    if (request.get('container_id') != cid or request.get('token') != token or
+            request.get('worker') != worker or request.get('deadline') != deadline or
+            request.get('image') != image or
+            private_gate_path(gate / 'container-id').read_text() != cid + '\n'):
+        raise ValueError('gate request identity differs')
+    command = request.get('command')
+    if not isinstance(command, list) or not command or any(not isinstance(arg, str) for arg in command):
+        raise ValueError('gate command missing')
+    config = inspected['Config']
+    if (config.get('Image') != image or config.get('Entrypoint') != ['/bin/sh'] or
+            config.get('Cmd') != ['/epic242-start.sh', '/epic242-gate', str(deadline), token, *command] or
+            inspected['HostConfig'].get('AutoRemove') is not False):
+        raise ValueError('gate entrypoint, command, image or retention differs')
+    expected = {'/epic242-gate': str(gate), '/epic242-start.sh': str(root / 'start-gate.sh')}
+    found = set()
+    for mount in inspected.get('Mounts', []):
+        destination = mount.get('Destination', '')
+        if destination in expected:
+            if (destination in found or mount.get('Type') != 'bind' or mount.get('RW') is not False or
+                    mount.get('Source') != expected[destination]):
+                raise ValueError('gate mount differs or is writable')
+            found.add(destination)
+        elif any(destination == '/' or destination.startswith(target + '/') for target in expected):
+            raise ValueError('overlapping gate mount')
+        # No writable alias into the private handshake tree.
+        source = Path(mount.get('Source', '/invalid')).resolve()
+        if mount.get('RW') and (source == root or root in source.parents or source in root.parents):
+            raise ValueError('writable alias to handshake root')
+    if found != set(expected):
+        raise ValueError('missing readonly gate mounts')
+    return gate, request
+
+
+def observe_gated_container(cid, worker, slice_path, root, deadline, image, evidence, final=False):
+    # Retained containers must NEVER disappear, even after prior membership proof.
+    inspected = inspect_owned_container(cid, worker, slice_path, set(), evidence['container_lifecycle'], evidence['container_states'])
+    state = inspected['State']
+    evidence['container_states'][cid] = state
+    if state.get('Status') == 'created' and not final:
+        return
+    gate, request = gate_request(inspected, root, worker, deadline, image)
+    admitted = evidence['container_admissions']
+    expected_ack = request['token'] + ':' + cid + '\n'
+    if cid not in admitted:
+        if not state['Running']:
+            raise ValueError('container exited before verified admission: ' + cid)
+        if (gate / 'ack').exists() or (gate / 'ack').is_symlink():
+            raise ValueError('stale or unsolicited gate acknowledgement')
+        # Gate is blocked until this exact live process passes PID/cgroup checks.
+        memberships = evidence['container_memberships']
+        verified = set()
+        observed = observe_container(cid, worker, slice_path, verified,
+                                     evidence['container_lifecycle'], memberships)
+        if observed is None or cid not in verified:
+            raise ValueError('gate process disappeared before admission')
+        # A fixed snapshot prevents changes through the writable repository mount.
+        if hashlib.sha256(private_gate_path(root / 'start-gate.sh').read_bytes()).hexdigest() != evidence['gate_script_sha256']:
+            raise ValueError('gate script snapshot changed')
+        temporary = gate / 'ack.tmp'
+        with temporary.open('x') as output:
+            output.write(expected_ack)
+        temporary.replace(gate / 'ack')
+        admitted[cid] = {'request': request, 'verified_at': time.time(), 'ack': expected_ack.strip()}
+    elif private_gate_path(gate / 'ack').read_text() != expected_ack or admitted[cid]['request'] != request:
+        raise ValueError('gate acknowledgement or request changed')
+    if cid in admitted and state['Running']:
+        # Keep checking actual membership after admission, not just Docker caps.
+        observe_container(cid, worker, slice_path, set(), evidence['container_lifecycle'],
+                          evidence['container_memberships'])
+    if final and (state['Running'] or state.get('Status') != 'exited' or state.get('ExitCode') != 0):
+        raise ValueError('retained container not successfully exited: ' + cid)
+
+
+def gated_inventory(root, worker, evidence, final=False):
+    """Union of durable requests, admitted IDs and daemon labels; no lost helpers."""
+    requested = set()
+    for gate in (root / 'gates').iterdir():
+        private_gate_path(gate, True)
+        request_file = gate / 'request.json'
+        if not request_file.exists() and not final:
+            continue  # create/request publication is still in flight; entrypoint cannot start yet.
+        request = json.loads(private_gate_path(request_file).read_text())
+        cid = request.get('container_id', '')
+        if not re.fullmatch(r'[0-9a-f]{64}', cid) or cid in requested:
+            raise ValueError('invalid or reused container request identity')
+        requested.add(cid)
+    listed = set(worker_containers(worker))
+    admitted = set(evidence['container_admissions'])
+    if final and (not requested or requested != listed or requested != admitted):
+        raise ValueError('final requested/listed/admitted container inventories differ')
+    return requested | listed | admitted
+
+
+def snapshot_failed_containers(worker, slice_path, root, evidence):
+    """Retain authentic terminal states before failure cleanup; never infer them."""
+    errors = []
+    try:
+        snapshot_ids = gated_inventory(root, worker, evidence)
+        for cid in sorted(snapshot_ids):
+            try:
+                inspect_owned_container(cid, worker, slice_path, set(),
+                                        evidence['container_lifecycle'], evidence['container_states'])
+            except ValueError as snapshot_error:
+                state = evidence['container_states'].get(cid, {})
+                expected_terminal = ('terminal state' in str(snapshot_error) and
+                                     state.get('Status') == 'exited' and
+                                     isinstance(state.get('ExitCode'), int) and
+                                     state['ExitCode'] != 0 and not state.get('OOMKilled') and
+                                     not state.get('Error'))
+                if not expected_terminal:
+                    errors.append(cid + ': ' + str(snapshot_error))
+            except Exception as snapshot_error:
+                errors.append(cid + ': ' + command_error(snapshot_error))
+    except Exception as snapshot_error:
+        errors.append('inventory: ' + command_error(snapshot_error))
+    return errors
+
+
+def capture_memory(cgroup):
+    if cgroup is None:
+        return {'status': 'UNAVAILABLE', 'error': 'worker cgroup was not established'}
+    try:
+        return {'status': 'OBSERVED', 'cgroup': str(cgroup),
+                'peak': int((cgroup / 'memory.peak').read_text()),
+                'current': int((cgroup / 'memory.current').read_text()),
+                'events': event_values((cgroup / 'memory.events').read_text())}
+    except Exception as error:
+        return {'status': 'UNAVAILABLE', 'cgroup': str(cgroup), 'error': command_error(error)}
+
+
+def final_owned_state(worker, units):
+    result = {'containers': None, 'units': {}, 'errors': [], 'workload_absent': None}
+    try:
+        result['containers'] = worker_containers(worker, timeout=3)
+    except Exception as error:
+        result['errors'].append('container discovery: ' + command_error(error))
+    for unit in units:
+        try:
+            load, active = unit_state(unit, lambda: 3)
+            result['units'][unit] = {'load': load, 'active': active, 'settled': unit_settled(load, active)}
+        except Exception as error:
+            result['units'][unit] = {'error': command_error(error), 'settled': None}
+            result['errors'].append('unit discovery: ' + unit + ': ' + command_error(error))
+    if not result['errors']:
+        result['workload_absent'] = not result['containers'] and all(s['settled'] for s in result['units'].values())
+    return result
+
+
+@contextmanager
+def cleanup_lease(path, owner_uid, deadline):
+    """One worker's guard/watchdog cleanup lease; root may open the user's file."""
+    fd = os.open(path, os.O_RDONLY | os.O_NOFOLLOW)
+    try:
+        info = os.fstat(fd)
+        if not stat.S_ISREG(info.st_mode) or info.st_uid != owner_uid or info.st_mode & 0o077:
+            raise ValueError('untrusted worker cleanup lock')
+        while True:
+            try:
+                fcntl.flock(fd, fcntl.LOCK_EX | fcntl.LOCK_NB)
+                break
+            except BlockingIOError:
+                if time.monotonic() >= deadline:
+                    raise TimeoutError('worker cleanup lease unavailable within deadline')
+                time.sleep(0.1)
+        yield
+    finally:
+        os.close(fd)
+
+
+def unit_state(unit, remaining):
+    load = run(['systemctl', 'show', unit, '--property=LoadState', '--value'], timeout=remaining())
+    active = run(['systemctl', 'show', unit, '--property=ActiveState', '--value'], timeout=remaining())
+    return load, active
+
+
+def unit_settled(load, active):
+    return (load == 'not-found' and active == 'inactive') or (load != 'not-found' and active in ('inactive', 'failed'))
+
+
+def stop_unit_if_present(unit, remaining):
+    load, active = unit_state(unit, remaining)
+    if unit_settled(load, active):
+        return None
+    stop_error = None
+    try:
+        run(['sudo', '-n', 'systemctl', 'stop', unit], timeout=remaining())
+    except Exception as error:
+        stop_error = command_error(error)
+    # Even a successful stop must prove its final state. Transient units can
+    # disappear while systemctl is answering and may return nonzero then.
+    try:
+        final = unit_state(unit, remaining)
+    except Exception as state_error:
+        return (stop_error + '; ' if stop_error else '') + 'final unit state unknown: ' + command_error(state_error)
+    if unit_settled(*final):
+        return None
+    return (stop_error + '; ' if stop_error else 'stop returned without settling; ') + 'final unit state=' + repr(final)
+
+
+def cleanup(worker, producer_units, anchor=None):
+    failures = []
+    deadline = time.monotonic() + 60
+    def remaining():
+        left = deadline - time.monotonic()
+        if left <= 0:
+            raise TimeoutError('60-second targeted cleanup budget exhausted')
+        return min(3, left)
+    # Stop producers before containers; keep the independent watchdog alive.
+    for unit in producer_units:
+        try:
+            failure = stop_unit_if_present(unit, remaining)
+            if failure:
+                failures.append('producer stop failed: ' + unit + ': ' + failure)
+        except Exception as error:
+            failures.append('producer state unknown: ' + unit + ': ' + command_error(error))
+    removal_errors = {}
+    def record_survivors():
+        try:
+            survivors = worker_containers(worker, timeout=3)
+            if survivors:
+                failures.append('labeled container survivors after cleanup: ' + repr(survivors) +
+                                '; removal errors=' + repr({cid: removal_errors.get(cid) for cid in survivors}))
+        except Exception as error:
+            failures.append('container survivor state unknown: ' + command_error(error) +
+                            '; removal errors=' + repr(removal_errors))
+    while True:
+        try:
+            containers = worker_containers(worker, timeout=remaining())
+        except TimeoutError:
+            record_survivors()
+            break
+        except Exception as error:
+            failures.append('container discovery/final state unknown: ' + command_error(error))
+            break
+        if not containers:
+            break
+        for cid in containers:
+            try:
+                run(['docker', 'rm', '-f', cid], timeout=remaining())
+            except Exception as error:
+                removal_errors[cid] = command_error(error)
+        try:
+            remaining()
+            time.sleep(min(0.2, max(0, deadline - time.monotonic())))
+        except TimeoutError:
+            record_survivors()
+            break
+    if anchor:
+        try:
+            failure = stop_unit_if_present(anchor, remaining)
+            if failure:
+                failures.append('anchor stop failed: ' + failure)
+        except Exception as error:
+            failures.append('anchor state unknown: ' + command_error(error))
+    for unit in producer_units:
+        try:
+            load, active = unit_state(unit, remaining)
+            if not unit_settled(load, active):
+                failures.append('producer service survivor: ' + unit + ': ' + repr((load, active)))
+        except Exception as error:
+            failures.append('producer survivor state unknown: ' + command_error(error))
+    return failures
+
+
+def populated_workers(parent):
+    # A crashed frontend releases flock; kernel populations still reserve capacity.
+    return [child.name for child in parent.glob('epic242-*.slice')
+            if event_values((child / 'cgroup.events').read_text()).get('populated', 0)]
+
+
+def admission_mutex():
+    directory = Path('/tmp/epic242-native-slots')
+    directory.mkdir(mode=0o700, exist_ok=True)
+    if directory.is_symlink() or directory.stat().st_uid != os.getuid():
+        raise ValueError('untrusted local slot directory')
+    fd = os.open(directory / 'admission', os.O_CREAT | os.O_RDWR | os.O_NOFOLLOW, 0o600)
+    try:
+        fcntl.flock(fd, fcntl.LOCK_EX | fcntl.LOCK_NB)
+    except Exception:
+        os.close(fd)
+        raise ValueError('another worker is entering admission; no automatic retry')
+    return fd
+
+
+def require_capacity(parent, available=None):
+    workers = populated_workers(parent)
+    if len(workers) >= 2:
+        raise ValueError('two populated worker slices already exist, including stale runs')
+    if available is not None:
+        # Reserve the unconsumed headroom of already admitted workers too.
+        reserved = sum(max(0, CAP - int((parent / name / 'memory.current').read_text()))
+                       for name in workers)
+        if available < CAP + FLOOR + reserved:
+            raise ValueError('insufficient free memory for existing worker headroom plus new worker and floor')
+
+
+def acquire_slot():
+    directory = Path('/tmp/epic242-native-slots')
+    directory.mkdir(mode=0o700, exist_ok=True)
+    if directory.is_symlink() or directory.stat().st_uid != os.getuid():
+        raise ValueError('untrusted local slot directory')
+    for index in (1, 2):
+        fd = os.open(directory / str(index), os.O_CREAT | os.O_RDWR | os.O_NOFOLLOW, 0o600)
+        try:
+            fcntl.flock(fd, fcntl.LOCK_EX | fcntl.LOCK_NB)
+            return fd
+        except BlockingIOError:
+            os.close(fd)
+    raise ValueError('both local slots occupied; no automatic queue/retry')
+
+
+def process_identity(pid):
+    # /proc stat comm may contain spaces; field22 follows the final ')' delimiter.
+    return Path('/proc/' + str(pid) + '/stat').read_text().rsplit(')', 1)[1].split()[19]
+
+
+def watchdog(config_path):
+    config = json.loads(Path(config_path).read_text())
+    worker = identity(config['worker'])
+    cg = Path(config['cgroup'])
+    initial = event_values((cg / 'memory.events').read_text())
+    reason = None
+    while reason is None:
+        try:
+            try:
+                parent_start = process_identity(config['parent_pid'])
+            except FileNotFoundError:
+                reason = 'parent guard identity missing'
+                parent_start = None
+            if reason is not None:
+                pass
+            elif parent_start != config['parent_start']:
+                reason = 'parent guard identity changed'
+            elif Path(config['closing']).exists():
+                # Parent already stopped producers and proved no labeled survivors.
+                pass
+            else:
+                cgroup_limits(cg)
+                cgroup_limits(Path('/sys/fs/cgroup/epic242.slice'), AGGREGATE_CAP)
+                reason = stop_reason(memory_available(), event_values((cg / 'memory.events').read_text()),
+                                     initial, time.time(), config['deadline'])
+        except Exception as error:
+            reason = 'watchdog read/parent failure: ' + str(error)
+        if reason is None:
+            time.sleep(1)
+    try:
+        with cleanup_lease(config['cleanup_lock'], config['owner_uid'], time.monotonic() + 60):
+            memory = capture_memory(cg)
+            failures = cleanup(worker, config['units'], config['anchor'])
+            result = {'reason': reason, 'cleanup_failures': failures, 'worker': worker,
+                      'parent_pid': config['parent_pid'], 'parent_start': config['parent_start'],
+                      'finished_at': time.time(), 'memory_before_cleanup': memory,
+                      'final_workload_state': final_owned_state(worker, [*config['units'], config['anchor']])}
+            if result['final_workload_state']['workload_absent'] is not True:
+                failures.append('watchdog final workload absence not proven')
+            temporary = Path(config['result'] + '.tmp')
+            temporary.write_text(json.dumps(result) + '\n')
+            temporary.replace(config['result'])
+    except Exception as error:
+        failures = ['watchdog cleanup state unknown: ' + command_error(error)]
+        Path(config['result']).write_text(json.dumps({'reason': reason, 'cleanup_failures': failures,
+            'worker': worker, 'parent_pid': config['parent_pid'], 'parent_start': config['parent_start'],
+            'finished_at': time.time()}) + '\n')
+    return 1 if failures else 0
+
+
+def execute(args):
+    worker = identity(args.worker)
+    if not args.admission_id or not args.command or args.command[0] == '--':
+        raise ValueError('explicit parent admission ID and command required')
+    if not 0 < args.seconds <= 2580:
+        raise ValueError('deadline must be within existing43min CI bound; use300 for pilot')
+    if os.environ.get('KICAD_CLI_BIN'):
+        raise ValueError('native-binary fallback prohibited in bounded Docker mode')
+    slice_unit = 'epic242-w' + worker.encode('ascii').hex() + '.slice'
+    anchor = 'epic242-' + worker + '-anchor.service'
+    checks = 'epic242-' + worker + '-checks.service'
+    plan = {'admission_id': args.admission_id, 'worker': worker, 'sha': args.sha,
+            'hook_sha256': args.hook_sha256,
+            'command': args.command, 'seconds': args.seconds, 'memory_max': CAP,
+            'memory_swap_max': 0, 'aggregate_memory_max': AGGREGATE_CAP, 'free_floor': FLOOR, 'early_abort_free': ABORT_FREE,
+            'slice': slice_unit, 'global_admission': 'parent excludes ALL other native jobs; local flock covers only this guard'}
+    print(json.dumps({'proposal_plan': plan}), flush=True)
+    if args.plan:
+        return 0
+    if not re.fullmatch(r'[0-9a-f]{40}', args.sha or ''):
+        raise ValueError('full immutable reviewed SHA required')
+    if Path('/proc/1/comm').read_text().strip() != 'systemd':
+        raise ValueError('PID 1 must be systemd for independent watchdog and slice control')
+    if run(['git', 'rev-parse', 'HEAD']) != args.sha:
+        raise ValueError('checkout differs from admitted SHA')
+    if run(['git', 'status', '--porcelain', '--untracked-files=no']):
+        raise ValueError('tracked checkout dirty')
+    # This opt-in must be wired only by a separately reviewed run.sh patch.
+    hook = Path('scripts/kicad/run.sh').read_bytes()
+    required_hook = (b'--memory=6442450944', b'--memory-swap=6442450944', b'--cgroup-parent=',
+                     b'EPIC242_NATIVE_DEADLINE', b'epic242.native.worker=', b'EPIC242_NATIVE_HANDSHAKE',
+                     b'10.0.6', b'--pull=never')
+    if any(token not in hook for token in required_hook) or not args.hook_sha256 or hashlib.sha256(hook).hexdigest() != args.hook_sha256:
+        raise ValueError('exact reviewed Docker resource hook digest required; fail closed')
+    local_docker()
+    if getattr(args, 'harmless_fixture_image', None):
+        require_harmless_fixture(args.harmless_fixture_image, args.command)
+    else:
+        native_image = require_local_image()
+    if memory_available() < CAP + FLOOR:
+        raise ValueError('less than8GiB available for6GiB worker+2GiB floor')
+    # Refuse BEFORE claiming identity or entering cleanup: never delete another run.
+    if worker_containers(worker):
+        raise ValueError('worker label already exists; never overwrite prior run')
+    for existing_unit in (anchor, checks, 'epic242-' + worker + '-watchdog.service'):
+        if run(['systemctl', 'show', existing_unit, '--property=LoadState', '--value']) != 'not-found':
+            raise ValueError('worker unit already exists; no cleanup of prior units')
+    claim = Path('/tmp/epic242-' + worker + '-claim')
+    if claim.exists() or claim.is_symlink():
+        raise ValueError('worker identity already claimed; choose a new worker')
+    for existing_path in (Path('/tmp/epic242-' + worker + '-watchdog.json'),
+                          Path('/tmp/epic242-' + worker + '-watchdog.json.result')):
+        if existing_path.exists() or existing_path.is_symlink():
+            raise ValueError('watchdog identity already exists; choose a new worker')
+    if Path(args.evidence).exists():
+        raise ValueError('evidence destination exists; never overwrite')
+    admission = admission_mutex()
+    try:
+        require_capacity(Path('/sys/fs/cgroup/epic242.slice'), memory_available())
+        slot = acquire_slot()
+    except Exception:
+        os.close(admission)
+        raise
+    # Atomic identity claim closes the gap between refusing old labels and creating units.
+    try:
+        fd = os.open(claim, os.O_WRONLY | os.O_CREAT | os.O_EXCL | os.O_NOFOLLOW, 0o600)
+        os.write(fd, (args.sha + '\n').encode())
+        os.close(fd)
+    except Exception:
+        os.close(slot)
+        os.close(admission)
+        raise
+    units = []
+    claimed = False
+    watch_unit = 'epic242-' + worker + '-watchdog.service'
+    private_dir = Path(tempfile.mkdtemp(prefix='epic242-' + worker + '-', dir='/tmp'))
+    (private_dir / 'gates').mkdir(mode=0o700)
+    gate_script = Path(__file__).with_name('native_start_gate.sh').read_bytes()
+    (private_dir / 'start-gate.sh').write_bytes(gate_script)
+    (private_dir / 'start-gate.sh').chmod(0o444)
+    native_deadline = int(time.time()) + args.seconds
+    watch_config = private_dir / 'watchdog.json'
+    watch_result = Path(str(watch_config) + '.result')
+    closing = private_dir / 'closing'
+    cleanup_lock = private_dir / 'cleanup.lock'
+    lock_fd = os.open(cleanup_lock, os.O_CREAT | os.O_EXCL | os.O_RDONLY | os.O_NOFOLLOW, 0o600)
+    os.close(lock_fd)
+    process = None
+    cgroup = None
+    evidence = {'plan': plan, 'samples': [], 'status': 'FAIL / NOT ACCEPTED',
+                'container_lifecycle': [], 'container_memberships': {}, 'container_admissions': {},
+                'container_states': {}, 'gate_script_sha256': hashlib.sha256(gate_script).hexdigest()}
+    observed_containers = set()
+    interrupted = []
+    def terminate(signum, frame):
+        interrupted.append(signum)
+    old_handlers = {sig: signal.signal(sig, terminate) for sig in (signal.SIGINT, signal.SIGTERM)}
+    try:
+        # Identity was atomically reserved; clean partially started units too.
+        claimed = True
+        # Only the anchor starts before caps; no native command may run yet.
+        run(['sudo', '-n', 'systemd-run', '--unit=' + anchor, '--slice=' + slice_unit,
+             '--property=KillMode=control-group', '--property=TimeoutStopSec=2s',
+             '--property=RuntimeMaxSec=' + str(args.seconds + 120), '/usr/bin/sleep', 'infinity'])
+        units.append(anchor)
+        run(['sudo', '-n', 'systemctl', 'set-property', '--runtime', slice_unit,
+             'MemoryAccounting=yes', 'MemoryMax=' + str(CAP), 'MemorySwapMax=0'])
+        run(['sudo', '-n', 'systemctl', 'set-property', '--runtime', 'epic242.slice',
+             'MemoryAccounting=yes', 'MemoryMax=' + str(AGGREGATE_CAP), 'MemorySwapMax=0'])
+        cgroup_limits(Path('/sys/fs/cgroup/epic242.slice'), AGGREGATE_CAP)
+        cg = run(['systemctl', 'show', slice_unit, '--property=ControlGroup', '--value'])
+        if cg != '/epic242.slice/' + slice_unit:
+            raise ValueError('worker slice path differs from dedicated aggregate parent')
+        cgroup = Path('/sys/fs/cgroup') / cg.lstrip('/')
+        cgroup_limits(cgroup)
+        os.close(admission)
+        admission = None
+        events = event_values((cgroup / 'memory.events').read_text())
+        initial = events.copy()
+        watch_data = {'worker': worker, 'parent_pid': os.getpid(), 'parent_start': process_identity(os.getpid()),
+                      'deadline': time.time() + args.seconds, 'cgroup': str(cgroup),
+                      'units': [checks], 'anchor': anchor, 'closing': str(closing), 'result': str(watch_result),
+                      'cleanup_lock': str(cleanup_lock), 'owner_uid': os.getuid()}
+        # O_EXCL: no reuse/overwrite of watchdog configuration.
+        with watch_config.open('x') as output:
+            json.dump(watch_data, output)
+        run(['sudo', '-n', 'systemd-run', '--unit=' + watch_unit,
+             '--property=RuntimeMaxSec=' + str(args.seconds + 120), '--property=TimeoutStopSec=2s',
+             sys.executable, str(Path(__file__).resolve()), '--watchdog', str(watch_config)])
+        command = ['sudo', '-n', 'systemd-run', '--wait', '--pipe', '--collect',
+                   '--unit=' + checks, '--slice=' + slice_unit, '--property=KillMode=control-group',
+                   '--property=RuntimeMaxSec=' + str(args.seconds), '--property=TimeoutStopSec=2s',
+                   '--property=User=' + str(os.getuid()), '--property=WorkingDirectory=' + str(Path.cwd()),
+                   '--setenv=EPIC242_NATIVE_SLICE=' + slice_unit,
+                   '--setenv=EPIC242_NATIVE_WORKER=' + worker,
+                   '--setenv=EPIC242_NATIVE_DEADLINE=' + str(native_deadline),
+                   '--setenv=EPIC242_NATIVE_HANDSHAKE=' + str(private_dir),
+                   '--setenv=PATH=' + os.environ['PATH'], '--', *args.command]
+        units.insert(0, checks)
+        process = subprocess.Popen(command)
+        started = time.monotonic()
+        while True:
+            if run(['systemctl', 'show', watch_unit, '--property=ActiveState', '--value']) != 'active':
+                raise ValueError('independent watchdog not active')
+            available = memory_available()
+            events = event_values((cgroup / 'memory.events').read_text())
+            elapsed = time.monotonic() - started
+            evidence['samples'].append({'seconds': elapsed, 'available': available,
+                                        'worker_current': int((cgroup / 'memory.current').read_text()), 'events': events})
+            reason = stop_reason(available, events, initial, elapsed, args.seconds)
+            if interrupted:
+                reason = 'signal ' + str(interrupted[-1])
+            cgroup_limits(cgroup)
+            cgroup_limits(Path('/sys/fs/cgroup/epic242.slice'), AGGREGATE_CAP)
+            if reason:
+                raise ValueError(reason)
+            if not getattr(args, 'harmless_fixture_image', None):
+                for cid in gated_inventory(private_dir, worker, evidence):
+                    observe_gated_container(cid, worker, cg, private_dir, native_deadline, native_image, evidence)
+                observed_containers.update(evidence['container_admissions'])
+            for cid in worker_containers(worker) if getattr(args, 'harmless_fixture_image', None) else []:
+                inspected = observe_container(cid, worker, cg, observed_containers,
+                                              evidence['container_lifecycle'], evidence['container_memberships'])
+                if inspected is not None:
+                    if getattr(args, 'harmless_fixture_image', None):
+                        ready_file = private_dir / 'membership.json'
+                        temporary_ready = private_dir / 'membership.tmp'
+                        temporary_ready.write_text(json.dumps({'worker': worker, 'sha': args.sha,
+                            'parent_pid': os.getpid(), 'parent_start': process_identity(os.getpid()),
+                            'image_id': args.harmless_fixture_image, 'container_id': cid,
+                            'slice_path': cg, 'verified_at': time.time()}) + '\n')
+                        temporary_ready.replace(ready_file)
+            if reason:
+                raise ValueError(reason)
+            code = process.poll()
+            if code is not None:
+                evidence['exit_code'] = code
+                if code:
+                    raise ValueError('native command nonzero exit')
+                if not getattr(args, 'harmless_fixture_image', None):
+                    for cid in gated_inventory(private_dir, worker, evidence, final=True):
+                        observe_gated_container(cid, worker, cg, private_dir, native_deadline, native_image, evidence, final=True)
+                break
+            time.sleep(1)
+        if not observed_containers:
+            raise ValueError('no running Docker container membership observed; proof incomplete')
+        evidence['observed_containers'] = sorted(observed_containers)
+        evidence['peak'] = int((cgroup / 'memory.peak').read_text())
+        evidence['status'] = 'COMMAND PASS ONLY; native acceptance requires exact complete evidence'
+    except Exception as error:
+        evidence['reason'] = command_error(error)
+    finally:
+        if evidence.get('reason') and cgroup is not None and not getattr(args, 'harmless_fixture_image', None):
+            # A fast failed helper can interrupt the polling loop before the
+            # other retained helper's terminal state is copied. Inspect every
+            # owned ID before producer cleanup, without changing the cause.
+            observed_containers.update(evidence['container_admissions'])
+            evidence['pre_cleanup_state_errors'] = snapshot_failed_containers(
+                worker, cg, private_dir, evidence)
+        evidence['observed_containers'] = sorted(observed_containers)
+        evidence['driver_exit_before_cleanup'] = process.poll() if process is not None else None
+        evidence['memory_before_cleanup'] = capture_memory(cgroup)
+        failures = []
+        if claimed:
+            try:
+                with cleanup_lease(str(cleanup_lock), os.getuid(), time.monotonic() + 60):
+                    failures = cleanup(worker, [checks] if checks in units else [])
+                    # Anchor still holds the slice here on the ordinary path.
+                    # Preserve its kernel high-water mark after stopping producers.
+                    evidence['memory_after_producer_cleanup'] = capture_memory(cgroup)
+                    if not failures and evidence.get('reason') != 'whole-command deadline':
+                        closing.write_text('producer and labeled container cleanup complete\n')
+                        failure = stop_unit_if_present(anchor, lambda: 3)
+                        if failure:
+                            failures.append('anchor stop failed: ' + failure)
+            except Exception as error:
+                failures.append('guard cleanup state unknown: ' + command_error(error))
+            if not failures:
+                # A deadline watchdog may be waiting for the lease. Let it record
+                # its own cause before stopping it, without holding the lock.
+                if evidence.get('reason') == 'whole-command deadline':
+                    watch_deadline = time.monotonic() + 15
+                    while not watch_result.exists() and time.monotonic() < watch_deadline:
+                        time.sleep(0.1)
+                    if not watch_result.exists():
+                        failures.append('deadline watchdog result missing after cleanup')
+                if not failures:
+                    try:
+                        if evidence.get('reason') == 'whole-command deadline':
+                            failure = stop_unit_if_present(anchor, lambda: 3)
+                            if failure:
+                                failures.append('anchor stop failed: ' + failure)
+                        if not failures:
+                            failure = stop_unit_if_present(watch_unit, lambda: 3)
+                            if failure:
+                                failures.append('watchdog stop failed: ' + failure)
+                    except Exception as error:
+                        failures.append('watchdog stop state unknown: ' + command_error(error))
+        if watch_result.exists():
+            try:
+                evidence['watchdog'] = json.loads(watch_result.read_text())
+                evidence['status'] = 'FAIL / WATCHDOG TERMINATION'
+            except Exception as error:
+                failures.append('watchdog receipt unreadable: ' + command_error(error))
+        if process is not None:
+            try:
+                process.wait(timeout=10)
+            except subprocess.TimeoutExpired:
+                process.kill()
+                process.wait(timeout=5)
+                failures.append('systemd-run frontend required kill')
+        evidence['driver_exit_after_cleanup'] = process.returncode if process is not None else None
+        memories = [evidence.get('memory_after_producer_cleanup', {}), evidence['memory_before_cleanup'],
+                    evidence.get('watchdog', {}).get('memory_before_cleanup', {})]
+        recorded = next((item for item in memories if item.get('status') == 'OBSERVED'), None)
+        if recorded is not None:
+            evidence['peak'] = recorded['peak']
+            evidence['peak_scope'] = ('after producer cleanup' if recorded is memories[0] else
+                                      'before guard/watchdog cleanup; later high-water mark unavailable')
+        elif evidence['status'].startswith('COMMAND PASS'):
+            evidence['status'] = 'FAIL / MEMORY EVIDENCE UNAVAILABLE'
+        if claimed:
+            evidence['final_owned_state'] = final_owned_state(worker, [checks, anchor, watch_unit])
+            if evidence['final_owned_state']['workload_absent'] is not True:
+                failures.append('final owned state is not proven absent: ' + json.dumps(evidence['final_owned_state']))
+        evidence['cleanup_failures'] = failures
+        if failures:
+            evidence['status'] = 'FAIL / CLEANUP BLOCKER'
+        if admission is not None:
+            os.close(admission)
+        os.close(slot)
+        for sig, old in old_handlers.items():
+            signal.signal(sig, old)
+        destination = Path(args.evidence)
+        if destination.exists():
+            raise ValueError('evidence destination exists; never overwrite')
+        destination.write_text(json.dumps(evidence, indent=2) + '\n')
+    return 0 if evidence['status'].startswith('COMMAND PASS') else 1
+
+
+def main():
+    if len(sys.argv) == 3 and sys.argv[1] == '--watchdog':
+        return watchdog(sys.argv[2])
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--hook-sha256', help='Exact SHA256 of separately reviewed installed resource hook')
+    parser.add_argument('--harmless-fixture-image', help='Only the reviewed non-native fixture runner; native image preflight not required')
+    parser.add_argument('--plan', action='store_true', help='No commands/reads of cgroups/Docker; print proposed invocation')
+    parser.add_argument('--admission-id', required=True)
+    parser.add_argument('--worker', required=True)
+    parser.add_argument('--sha', required=True)
+    parser.add_argument('--seconds', required=True, type=int)
+    parser.add_argument('--evidence', required=True)
+    parser.add_argument('command', nargs=argparse.REMAINDER)
+    args = parser.parse_args()
+    if args.command[:1] == ['--']:
+        args.command = args.command[1:]
+    try:
+        return execute(args)
+    except Exception as error:
+        print('GUARD REFUSAL: ' + str(error), file=sys.stderr)
+        return 1
+
+
+if __name__ == '__main__':
+    raise SystemExit(main())

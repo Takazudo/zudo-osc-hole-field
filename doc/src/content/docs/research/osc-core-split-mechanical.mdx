@@ -1,0 +1,70 @@
+---
+title: Core split mechanical comparisons
+description: Dimensioned two/three-core stack, harness, support and adjustment alternatives for issue 246.
+---
+
+Issue [#246](https://github.com/Takazudo/zudo-osc-hole-field/issues/246) supplies a source-owned comparison for [epic #242](https://github.com/Takazudo/zudo-osc-hole-field/issues/242). **No topology is selected and no installed fit is claimed.** Two-core remains a comparison preference. Production geometry, accepted copper and the fixed panel are unchanged.
+
+The immutable source epoch is `65cefd41fc39e064d38319115ad96016a1c6b71c`; the reconciled integration parent is `1da1909846dc3255888ecd36c88cee9737c85834`. The [mechanical bundle](https://github.com/Takazudo/zudo-osc-hole-field/tree/topic/246-mechanical-20261011-8f56/design/partition/core-split/mechanical) includes a deterministic generator, numerical/preservation tests, source hashes, complete interface inventory, ten SVG views and an offline interactive `generated/inspection.html`. Open that HTML locally to compare board/face, select any trimmer Ref and inspect dimensioned conflicts. Its embedded data are also in `comparison.json`.
+
+## Stack alternatives
+
+Panel front is Z=0; negative Z is rearward, dimensions in mm. Each core retains the source 310×284 outline with 56×46 notch and 1.6 thickness.
+
+| Alternative | Core front Z | Required inside depth | Core harness cut estimates | Passage/part intersections |
+| --- | --- | --- | --- | --- |
+| Two compact | −74, −100 | 120 | 41–92 | 100 |
+| Two deep | −100, −126 | 146 | 66–118 | 93 |
+| Three compact | −74, −100, −126 | 146 | 41–118 | 76 |
+| Three deep | −100, −126, −152 | 172 | 66–144 | 68 |
+| Three, rejected depth test | −48, −74, −100 | 120 | 27–92 | 89 |
+
+All alternatives need review. Compact front planes collide with all four retained JL–P loops, which reach 79.802 rear depth. The 48 plane also produces 58 bend-radius failures. Deeper options avoid those utility-plane collisions but increase enclosure and power-loop requirements. Every option still has board-material passages, part/tool/reservation conflicts; an empty `hard_conflicts` subset is not an overall fit pass.
+
+The 26 pitch provides 24.4 clear PCB-face distance and 12.1 gap between proposed 7.3 front/5 rear body allowances. This does not establish latch access or exact component fit. Eight source M2 support seats per board retain 2.2 holes/3.2 collar reservations. Independent enclosure-side shelves carry each reversible tray without connector or solder-joint loads; shelf stiffness, thread engagement and extraction remain unqualified. Rear work depth 60, cradle inner 322×302 and proposed unmating travel 10 are dimensioned project reservations, not measured or manufacturer-certified access.
+
+## Harness and service constraints
+
+All 195 existing harness IDs, 390 endpoint Refs and complete signal/AGND/rail/NC pin order are frozen; 191 face a core and four remain JL–P. Two-core assignment is 106/85 harnesses; three-core is 58/70/63. Non-core poses remain fixed. Core cuts include 10 allowance using a conservative continuous arc-length bound; unchanged JL–P cuts reach 204. Cable reuse is unqualified.
+
+The continuous bow-radius bound is checked against 9.398 for the retained AWG26 wire. Through-board reservations check component courtyards, support collars, GH connectors, protection reserves and tool openings. For example, three-compact K-P-10 intersects the KA support at (255.5, 289.5). Full continuous cable-to-cable and hand/support sweeps are not acceptance-tested. Power comparisons give necessary straight-line lower bounds for the original 18 main wires on KA only. None exceeds 110 in these alternatives; this is not bend or service-loop acceptance. Previously reported deeper KB/KC hypothetical destinations are superseded by the pinned KA-star contract below. New CS247 branch routes have no global origins and remain unqualified within their own 110 cut ceiling.
+
+## Trimmer intent and component evidence
+
+Preserve the user-accepted adjustment intent: every trim must be accessible without owner soldering. All 100 source Refs remain, with 44 F/56 B poses. Proposed reversible trays and factory-connected service-loop power wiring require mechanical and electrical review; desoldering is not a calibration-access solution.
+
+Function labels consume #248's exact Ref/Block/Role contract at `7aba720c1246d6ec3f02909af6fb08dc774b3d31`. Every view includes Ref, function and mounted face. Reserved labels avoid modeled obstacles, but some move up to 111.832 (two-core) or 82.354 (three-core); local Ref silk, leaders and readable installed association still need #249 review. A zero label collision count does not imply production silkscreen approval.
+
+The retained Bourns TC33X-2 drawing confirms top adjustment, nominal 1.2 height, a conservative candidate envelope 3.9×4.1×1.5, and 1.7 cross-slot engagement. This model reserves a larger 3 shaft and 60 free length. Twenty-three source MPNs remain unresolved; #248's component options are not selected. Exact seating, envelope alignment, B-face transforms, driver/hand sweep and calibrated rotation remain unverified. Family courtyards and generic 3D models are distinguished from exact solids and measured installation.
+
+## Evidence and readiness
+
+Source hashes cover frozen boards, panel, partition/loom/floorplan data, footprints, CAD receipts, models and retained manufacturer PDFs. Primary evidence is the retained JST GH drawing, Alpha 6821/5859 wire specifications and Bourns TC33X drawing; detailed locators and #248 evidence are included in the bundle.
+
+This is **MECHANICAL_COMPARISON_READY for architecture review**, not topology or manufacturing readiness. Focused tests cover identity mutations, complete pin maps, assignments, analytical bounds, known support collisions and label geometry. Native acceptance and physical installation remain **NOT RUN**. Canonical regeneration and heavy CI are deferred because no global native slot was assigned and production writes are outside this lane. Subsequent native work must use pinned KiCad 10.0.6 through `scripts/kicad/run.sh` under the coordinator's bounded global slot.
+
+Next: #245/#249 resolve placement/passages/supports/labels; #247 resolves feed ownership and service loops; #253 and existing physical gates #55/#64/#65 supply measured supported-access evidence. No orders, production adoption or energization follows from this comparison.
+
+Browser interaction/screenshot verification is deferred under [#263](https://github.com/Takazudo/zudo-osc-hole-field/issues/263): three guarded Chromium runs timed out. JavaScript syntax passed; visual acceptance is not claimed.
+
+## Power contract reconciliation and deterministic correction
+
+The source correction consumes [power PR #262](https://github.com/Takazudo/zudo-osc-hole-field/pull/262) at exact `6494b3b40b50b999e52fb064c1384aec7381ea8d`. Byte-identical `input.json` and `contract.json` snapshots are kept as `inputs/power-input.json` and `inputs/power-contract.json`, with generator hashes in `generated/source-lock.json`. Every assigned core package is checked against the power module ownership. Neither comparison topology is selected.
+
+All 13 POWER parts, original 18 K main lands and the 76×70 protection reserve stay on KA. The old replicated protection masks on KB/KC have been removed from label/passage checks and views; that removal does **not** free space for adoption, because satellite feed, bulk and monitor envelopes are still unplaced. Each added core receives a separate KA load-side star branch: six factory-soldered Alpha Wire 5859 BK005 wires, in order +12 V, −12 V, +5 V, AGND, AGND, AGND. Existing GH identities/pins are untouched and are not repurposed as full-core power feeds.
+
+Each CS247 branch needs **both** endpoint rows of 91×6 and separate F-side service corridors of 91×28×28. Three 5×3×5 B-side bulk reservations per core and one 20×20×5 B-side monitor per satellite are carried verbatim, with null global origins. At 26 plane pitch, the nearest forward core leaves 24.4 bare face gap: a 28 high normal corridor has a **conditional 3.6 deficit** wherever its XY projection crosses that board (8.6 versus a 5 rear-body allowance). It exceeds the ordinary 7.3 front-body allowance by 20.7. This screen does not invent coordinates or assert a collision at an unknown location. Edge escape, aperture or changed geometry requires explicit placement and collision review; KA's front-assembly clearance is also unknown. These unplaced envelopes are visible in the inspector's power-reconciliation data, not drawn as fabricated global solids.
+
+The 110 cut ceiling does not provide extra slack for tray withdrawal. Soldered branches do not establish removable/reversible service. Factory-connected loops, independent strain relief, hand/tool access and supported adjustment without owner soldering remain requirements needing a realizable route; no desoldering or live internal service is assumed. Global 1 mΩ rail / 0.5 mΩ common-AGND / 20 mV budgets cannot restart at each core. Existing #57/#59/#65 gates remain open.
+
+The coordinator's generation drift was reproduced by reversing filesystem enumeration: four footprint receipt lists changed order while source bytes were identical. CAD receipt paths are now sorted before serialization. The regression reverses every `Path.glob` enumeration and compares all generated outputs byte-for-byte, covering JSON, HTML, source lock and ten SVGs. This proves order independence for that mutation, not native or physical acceptance.
+
+## Integrated two-core feasibility follow-up
+
+From integrated `9e0aceda2f1d55052a8c9c03f958e8d93271a81c`, the new source screen finds a **cardinal-envelope placement blocker on KA**, not a selected architecture. A continuous translation sweep of the complete 91×34 row/service projection against actual serialized courtyards, 0.35 gaps and retained tool/support/loom masks gives zero KA origins in either cardinal orientation. KB has 24 horizontal event origins; one is (8.45,134.52) mm, but no complete paired feed is established. The best horizontal KA grid example (167,43) overlaps JR-K-2/3/4 tool reservations; its vertical counterpart conflicts with C303 and TP990026/28/30.
+
+No 91×28 cardinal edge escape fits around the uncut identical boards within the retained enclosure XY. A pitch increase from 26 to 34.6 closes only the 28+5+1.6 mm normal-space inequality at zero margin, requiring 154.6 inside depth for the deeper option. It does not cure KA's XY blocker or prove physical access. Altered rows, arbitrary angles, aperture/copper changes and revised service obligations require separate evidence and review.
+
+All 40 strict courtyard shortfalls have explicit unapplied 1 µm capacitor-shift proposals, with pad identities. The comparison minimum becomes 0.350999 mm with no new same-face conflicts; the 0.35 requirement is unchanged. Accepted geometry/copper is untouched. These proposals require placement-owner review and connected-copper replay before adoption.
+
+The mechanical bundle's `feasibility-handoff.md`, `feasibility.py` and generated `two-core-feasibility.json`/`.svg` retain the full search model, dimensions, correction records and reproduction commands. #247 must provide an evidenced changed service envelope or budget, or #245/#253 must explicitly rework obstructing obligations. K1402 remains incumbent; native and physical acceptance are NOT RUN.

@@ -1,0 +1,39 @@
+{
+  "status": "PASS_SOURCE_ONLY_PUBLICATION_REVIEW",
+  "scope": "Final README, proposal component identity joins, ledger and independent saved-result reviews. No geometry rerun, search, native, source or candidate edits.",
+  "hashes": {
+    "README.md": "cb087d973563826bc10d1cd9cff8a0154227d280091dbc46d09b493636c0fa57",
+    "proposal-components.json": "e202cee003f351b5b219df7fb1ab551c7575d3615cae39d2fe0829a1f4ef02bd",
+    "ledger.json": "2ea592c19acc0c2010ffc2291b3357903cae68695ecabd3ca4abb65f654f1c5d",
+    "evidence/contact-output-review.json": "e553073d807b2ee43f963be5a065ba4a42fa320fb3db2f348e75042ae6128e74",
+    "evidence/corridor-output-review.json": "bf81ddf56b281ce10d084fde7de099cadd389f640153b19842ce98bb1b76a8d7"
+  },
+  "verified": {
+    "ledger_files": 39,
+    "all_hashes_match": true,
+    "original_component_fields_preserved": true,
+    "selected_objects": 52,
+    "segments": 36,
+    "vias": 16,
+    "rail_objects": 40,
+    "signal_objects": 12,
+    "components": 19,
+    "frontier_objects": 35,
+    "unique_pad_contacts": 14,
+    "pad_projection": "All two-B; not physical two-A terminals",
+    "A_migration_debts": 41,
+    "roster_overlap": 0,
+    "source_geometry_bindings": 87,
+    "native_islands_unrecorded_selected": 33,
+    "native_islands_unrecorded_frontier": 32
+  },
+  "conclusion": "Reject only the specified offset cell / 52-object common-corridor reconstruction. Components 17 and 18 fail; 14-16 remain conditional, not routes. Preserve successful copper and require a new bounded design contract for a different arrangement/domain. No new scope release, execution or architecture selection follows.",
+  "limits": [
+    "Architect independently replayed saved corridor geometry; this final prose review cross-checked that retained review without another geometry computation.",
+    "U2312.7 sweep alone excludes required common through-via domain, not every individual offset or routing method.",
+    "Unlocated zone contacts and unrecorded historical islands remain unknown, not disconnected or closed.",
+    "Original BP_INT/AGND closure, native equivalence and executable replacement geometry are not demonstrated."
+  ],
+  "blockers": [],
+  "nonblocking_note": "The proposal field zone_dependent_one_pad_no_copper_frontier is interpreted as an unresolved plane-contact obligation/one-pad topology marker, not a proven filled-zone connection; README explicitly states connections remain unlocated."
+}

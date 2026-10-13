@@ -1,0 +1,18 @@
+"""Exactly one diagnostic Ledger unit under the unchanged production resource recipe."""
+from pathlib import Path
+import argparse,json,sys
+ROOT=Path(__file__).resolve().parents[2]
+SOURCE=ROOT/'design/partition/core-split/candidates/planning/joined-feed-construction-v2'
+sys.path.insert(0,str(SOURCE))
+import replay_steps as rs
+from numerical_unit_guard import UnitGuard
+p=argparse.ArgumentParser();p.add_argument('--spec',type=Path,required=True);p.add_argument('--output',type=Path,required=True);p.add_argument('--unit-heavy-guard-sha256',required=True);a=p.parse_args()
+spec=json.loads(a.spec.read_text());assert spec['maximum_diagnostic_units']==1
+assert a.output.is_absolute() and not a.output.is_relative_to(ROOT) and not a.output.exists()
+assert spec['mode']=='locate_original' and spec['start']==0 and spec['stop']==96 and spec['start']>=0 and spec['stop']<=96
+for path,h in spec['input_sha256'].items():assert rs.sha(path)==h,path
+out=a.output;out.mkdir();guard=UnitGuard(a.unit_heavy_guard_sha256);guard.check()
+ledger=rs.Ledger(out,False,sys.executable,unit_guard=guard)
+probe=Path(__file__).with_name('locate.py')
+ledger.run('driving-point-diagnostic',[probe,'--spec',a.spec,'--output',out/'report.json'],[a.spec,*map(Path,spec['input_sha256'])],[probe,Path(__file__),SOURCE/'finite_solve.py',SOURCE/'numerical_unit_guard.py',SOURCE/'replay_steps.py'],[out/'report.json'])
+assert len(ledger.log)==1

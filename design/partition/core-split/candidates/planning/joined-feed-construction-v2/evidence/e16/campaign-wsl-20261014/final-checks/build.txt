@@ -1,0 +1,30 @@
+$ zudo-circuit-doc models && zudo-circuit-doc generate && pnpm --dir doc build
+models          31 selected; 0 written, 31 unchanged
+provider        circuit-component-spec (contract v1)
+view model      v2
+records         58 selected of 68 available
+sources         122 selected of 140 available, 118 linkable
+fields          91 publish, 8 deny (662 values withheld)
+urls            118 allowed of 122 considered
+generatedPages  62
+publishedCoverageDomains 295
+publishedFacts  528
+publishedIntegrationRules 2
+publishedInteractions 56
+publishedPinMaps 58
+publishedRecords 58
+publishedSources 122
+pages           0 written, 62 unchanged, 0 removed
+preflight       circuit/generated/preflight.json
+$ zfb build
+zfb info: [plugin:@takazudo/zudo-doc-claude-resources] claude-resources: 1 CLAUDE.md, 0 commands, 37 skills, 0 agents
+zfb info: [plugin:doc-history] [doc-history-meta] wrote 89 entries → .zfb/doc-history-meta.json
+info package route `/docs/[[...slug]]` (from plugin `@takazudo/zudo-doc/plugins/routes`) is shadowed by a user pages/ route (user wins); skipping
+info package route `/404` → pages/404.tsx
+info package route `/robots.txt` → pages/robots.txt.tsx
+info package route `/files/[[...path]]` → pages/files/[[...path]].tsx
+zfb info: [plugin:doc-history] Skipping doc history generation (local default — set GEN_DOC_HISTORY=1 to generate)
+zfb info: [plugin:search-index] Generated search index with 190 entries
+zfb info: [plugin:llms-txt] Generated llms.txt and llms-full.txt (190 pages)
+✓ 301 pages built in 11.78s
+heavy-guard: verdict=PASS exit=0 secs=14 min_mem_mb=8721 reason=-

@@ -1,0 +1,61 @@
+{
+  "status": "STOP IN2-ONLY C2312 REPAIR; NO NATIVE PACKET",
+  "base_integration_sha": "7be89c73e1acc429989818eba5bec1c848fcbd85",
+  "conclusion": "Adds 416 exactly traversable In2 nodes but no original goal and no permitted exit; the earlier full-route graph failure remains",
+  "claims": {
+    "physical_impossibility": false,
+    "complete_pair_path": false,
+    "native_route_executed": false,
+    "native_proposal_packet_created": false,
+    "hardware_adopted": false
+  },
+  "preserved": [
+    "original physical dump and accepted copper",
+    "all original source and goal alternatives",
+    "shared router and adapter predicates",
+    "all four original demands",
+    "fixed panel, circuit intent, harness IDs/references/full pin order, sensitive groups and poses"
+  ],
+  "next_obstruction": {
+    "kind": "retained foreign via",
+    "uuid": "9bc880ec-2717-59d4-98ee-1358bf13df02",
+    "net_members": [
+      "R2372.1",
+      "RV2311.2"
+    ],
+    "failed_In2_edge_mm": [
+      [
+        217.0,
+        263.3
+      ],
+      [
+        217.1,
+        263.3
+      ]
+    ],
+    "clearance_margin_mm": -0.023150681465943707
+  },
+  "validation": {
+    "terminal_access_source_tests": 83,
+    "component_geometry_tests": 6,
+    "exact_internal_edges": 1444,
+    "before_after_window_and_nonsource_masks": "IDENTICAL",
+    "circuit_check": "PASS",
+    "pnpm_check": "PASS",
+    "baseline_verifier": "PASS: 1,881 original inputs plus two reviewed tool replacements; 195 harnesses/390 complete endpoints; inherited JL117/JR129/K1402 DRC/parity 0/0",
+    "component_scope": "manual 68 lines/zero declared placements; no schematic/placement binding",
+    "full_regeneration": "NOT RUN; includes unadmitted native operations",
+    "independent_review": "PASS; no source publication blocker; independent graph, geometry, raster boundary and source-seal checks"
+  },
+  "remaining": [
+    "Rail own-pad and unchanged AGND debts",
+    "Any different transition method needs separate exact reachability proof before packet or native admission",
+    "Full native closure/DRC/parity/refill/full-warning/eligibility NOT RUN"
+  ],
+  "native_admission": "NONE; all slots free",
+  "evidence_sha256": {
+    "region-proof.json": "d1f51819b41f66534d926d4139393c73461bef2833ef0eb4568568f8e750729c",
+    "exact-boundary.json": "2f2f6b9ba308193702a0af3e7a5f111809e27ab825f0f2ef904262ded7257df3",
+    "independent-review.json": "4d1c1ae6f48b585cd239887c88ca10fe98eeff583f86e004e510235dbcd9f023"
+  }
+}

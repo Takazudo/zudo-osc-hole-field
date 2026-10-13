@@ -1,0 +1,43 @@
+{
+  "status": "PASS_SOURCE_ONLY_CLOSEOUT_AND_PLACEMENT_RECOMMENDATION",
+  "blocking_findings": [],
+  "ledger_sha256": "6a9c9b2bedd9063935663f1887a2b042c336c148a803f5206ead93f19a49ff31",
+  "evidence_sha256": {
+    "README.md": "a58c5a664053c1810425affcfee8297a6730e4ca307861148e02ca3312855191",
+    "baseline-check.txt": "32a44c8562aea8a4789470f03ae2211f7bf1c702bb02e3a20d0f2745e3021946",
+    "circuit-check.txt": "e2bf622a485aed751f0dc08a53a8d7e87b08bcd486d512e9c3a71257820c6e97",
+    "execution-source.json": "0d2b01abca4a41f8dc696a1356d3428f9b6e527d0baadb1dd1425e45f3947cf1",
+    "graph-path.json": "69aa4b908978655d869a282aaec19b72b5a1b53be9e07190713713548c30a8be",
+    "independent-review.json": "b3fa3edebe491479dd9de8874c36a1a8647b39226ae8507ad950004983b80f81",
+    "intent.json": "8c3917a8a7e707b3e3dd9a7b3cecef2907049d64e8d68c555fee808aea3b1d23",
+    "new-via-rejection.json": "68e08297ef9568c76964772cf6ee34d69d4f70a382de2ed0f340e463797d62bf",
+    "placement-recommendation.md": "58517db82a1bb489e8a2300d5ec48ab0358a093b54963f8c456ceea91b3a65e2",
+    "placement-source-snapshot.json": "195036d226618090fb297f47eafb35e824258d96a78f0d728a2b38f5a4769189",
+    "pnpm-check.txt": "028e9fcfd2ffee79cf33af7bbc9d7d82931c5ef9d31847ea177e04bdffe0b04e",
+    "result.json": "9ac4d889383104907f2594c9bd0ec672251ad380c80106785e2322ace6f4c296",
+    "tests.txt": "0bca343b760a83f6c00cbc00f3eea008cbeea1e4ae11b631e82e792e6ff3bd96"
+  },
+  "independent_checks": {
+    "all_ledger_content_hashes": 13,
+    "raw_execution_result_path_bytes_equal_original": true,
+    "source_two_json_matches_frozen_commit_and_digest": true,
+    "sensitive_bypass_fixed_point_refs": 24,
+    "touching_sensitive_groups": 6,
+    "all_snapshot_parts_poses_pad_identities_equal_source": true,
+    "mechanical_ref_intersection": [],
+    "physical_pad_positions_match_retained_native_dump": [
+      "U2306.5",
+      "U2312.12",
+      "C2312.1",
+      "C2312.2"
+    ]
+  },
+  "scope_assessment": [
+    "Placement 10mm objective/envelope explicitly unproven planning target; no exact legal pose or vacant area claimed.",
+    "Original goal fixed initially, full sensitive/bypass groups and all touched copper accounting required; candidate-only ownership remains #245.",
+    "Correctly retires unchanged-placement method case without claiming impossible layout or necessary component movement.",
+    "Weighted path rejection and absent cumulative-fill validation accurately reported. No further route/native admission."
+  ],
+  "nonblocking_clarity_note": "C2312.2 is AGND access but is not an original F3 return-demand anchor; the retained AGND pair is C2338.2 to U2312.5. Clarifying the table cell would avoid ambiguity; all-four-demand preservation is otherwise explicit.",
+  "review_actions": "Read-only source/evidence joins and retained test log inspection, no new search/native or candidate edits."
+}

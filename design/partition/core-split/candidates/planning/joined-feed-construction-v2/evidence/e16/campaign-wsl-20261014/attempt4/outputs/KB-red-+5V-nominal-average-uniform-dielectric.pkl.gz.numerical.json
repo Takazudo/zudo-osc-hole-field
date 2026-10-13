@@ -1,0 +1,34 @@
+{
+  "schema": "e16-reported-numerical-checks-v1",
+  "phase": "reduce",
+  "status": "PASS REPORTED NUMERICAL CHECKS ONLY",
+  "checks": [
+    {
+      "name": "reciprocity_relative",
+      "value": 1.0238677705818836e-13,
+      "limit": 1e-09,
+      "tolerance": "reciprocity_relative",
+      "passed": true
+    },
+    {
+      "name": "load_solve_residual_relative",
+      "value": 1.1049181226242204e-11,
+      "limit": 1e-09,
+      "tolerance": "kcl_relative",
+      "passed": true
+    },
+    {
+      "name": "interface_solve_residual_relative",
+      "value": 5.348656643946832e-14,
+      "limit": 1e-09,
+      "tolerance": "kcl_relative",
+      "passed": true
+    }
+  ],
+  "failures": [],
+  "electrical_acceptance": false,
+  "output_sha256": "36a7cd0e254a1412a5aad9dc8c17ed6e305008c76961480a6b5258e8783e9a0c",
+  "config_sha256": "f5146d0c1d77e0626a455df308f52bf953ace9806861c25438adcdf90914c107",
+  "solver_sha256": "3c993a2505dc279a4b970aadd13db5274e9f70beaf50caba800597d76287344f",
+  "assessment_sha256": "e8c1f0b55784bed3a6d8a1b86854a7cc9cdb0e7685e07efa9feb263e3efecc73"
+}

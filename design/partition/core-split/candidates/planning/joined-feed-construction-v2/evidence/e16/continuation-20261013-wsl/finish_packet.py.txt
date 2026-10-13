@@ -1,0 +1,20 @@
+import json,subprocess,time,hashlib,sys,gzip
+from pathlib import Path
+P=Path('/home/takazudo/.cache/zudo-e16-numerical-venv/bin/python');F=Path.cwd()/'design/partition/core-split/candidates/planning/joined-feed-construction-v2';R=Path('/home/takazudo/.cache/zudo-e16-runs/20261013-wsl-admission');T=Path('/tmp/osc-wsl-20261013')
+sha=lambda p:hashlib.sha256(Path(p).read_bytes()).hexdigest()
+records=[]
+for b in ('KA','KB'):
+ cmd=['timeout','180s','prlimit','--as=2147483648','--',str(P),str(F/'materialize_e16.py'),'--board',b,'--candidate',str(R/'cand05'/f'{b}.kicad_pcb'),'--normalized',str(R/f'{b}-normalized.json'),'--output',str(R/f'repeat-{b}')]+(['--include-kb-p1'] if b=='KB' else [])
+ t=time.monotonic();r=subprocess.run(cmd,capture_output=True,text=True);records.append({'command':cmd,'exit_code':r.returncode,'elapsed_seconds':time.monotonic()-t,'stdout':r.stdout,'stderr':r.stderr});assert r.returncode==0,records[-1]
+checks={str(p.relative_to(R)):sha(p)==sha(R/f'repeat-{b}'/p.name) for b in ('KA','KB') for p in (R/f'materialized-{b}').iterdir()};assert len(checks)==15 and all(checks.values());(T/'repeat.json').write_text(json.dumps({'commands':records,'byte_equal':checks},indent=2)+'\n')
+comparisons={}
+for target in ('KA-t2','KB-t2','KB-p1'):
+ fresh=json.loads((R/f'{target}-eval/port-obligations.json').read_text());old=F/('evidence/e16/pilot/KB-p1/port-obligations.json' if target=='KB-p1' else f'evidence/e16/{target}-port-obligations.json');prior=json.loads(old.read_text())
+ fields=['board','physical_pad_count','unresolved','counts_by_net','direct_loads','supplemental']
+ equal={k:fresh[k]==prior[k] for k in fields};assert all(equal.values()),equal
+ comparisons[target]={'unresolved':len(fresh['unresolved']),'complete_census_fields_equal':equal,'fresh_census_sha256':sha(R/f'{target}-eval/port-obligations.json'),'retained_path':str(old.relative_to(Path.cwd())),'retained_sha256':sha(old)}
+(T/'census-comparison.json').write_text(json.dumps(comparisons,indent=2)+'\n')
+cmd=[str(P),str(F/'native_descriptor.py'),'--materialized',str(R/'materialized-KA'),'--materialized',str(R/'materialized-KB')]
+for target in ('KA-t2','KB-t2','KB-p1'):cmd+=['--graph',f'{target}={R}/{target}-eval/port-graph.json']
+cmd+=['--stage','.circuit-cache/e16-native-wsl-source-f1650bba','--output',str(T/'native-descriptor-source.json'),'--run-attempt','1'];t=time.monotonic();r=subprocess.run(cmd,capture_output=True,text=True)
+(T/'descriptor-preparation.json').write_text(json.dumps({'command':cmd,'exit_code':r.returncode,'elapsed_seconds':time.monotonic()-t,'stdout':r.stdout,'stderr':r.stderr},indent=2)+'\n');print(r.stdout,r.stderr);assert r.returncode==0

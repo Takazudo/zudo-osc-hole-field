@@ -1,0 +1,67 @@
+{
+  "artifact_sha256": {
+    "KA.kicad_pcb": "ba6202f857c97d62411e3f6c27bca962c4d45b65e60e9fedd767c03c9d1fe6d6",
+    "KB.kicad_pcb": "05ce8d2b8121dc9ec6f9063a06d9e1f2f3dec49116e3a46ec253bc0556ada427",
+    "contacts.json.gz": "1c17c5a638d4a254af4601ca43f437289c71aa3607900b4e3f0fe13eafd3faab",
+    "mechanical.json.gz": "9968c5ecd00791a4ff6ed9bc7677d53b0d8a54121aad34cb2c41e1d9e4f832d2",
+    "receipt.json": "61bea560aefd46d9287eaec7114e90dece3b8bf0a2051057dc94c6f38632a883",
+    "source-dispositions.json.gz": "fb7110b8a69d92b1b91b40724f949540e5f4483ed59c4d25053068181f8e4f48",
+    "support-bindings.json": "2569ac70b42927cbe5cbcba861820dcfe8db4cf3b9cce10aae7e95453428a4df",
+    "terminals.json": "43a99e800e538e39145fc40c3621c5502243e8a74020d9ed7ca9c76264649a44"
+  },
+  "boards": {
+    "KA": {
+      "PCB_sha256": "ba6202f857c97d62411e3f6c27bca962c4d45b65e60e9fedd767c03c9d1fe6d6",
+      "all_native_UUIDs_unique": true,
+      "new_lands_parsed": 6,
+      "new_vias_parsed": 150
+    },
+    "KB": {
+      "PCB_sha256": "05ce8d2b8121dc9ec6f9063a06d9e1f2f3dec49116e3a46ec253bc0556ada427",
+      "all_native_UUIDs_unique": true,
+      "new_lands_parsed": 6,
+      "new_vias_parsed": 150
+    }
+  },
+  "counts": {
+    "affine_flux_supports": 228,
+    "authenticated_top_supports": 2,
+    "exact_endpoint_refs_pads": 12,
+    "mechanical_solids": 180,
+    "new_footprint_pad_and_via_UUIDs": 324,
+    "parsed_new_vias": 300
+  },
+  "exit_proof": {
+    "path": "/tmp/feed-v2-exit-proof.json",
+    "sha256": "1c2fca82c480442bfa2b0046fb3c16ebb7051eda205a51c9ec30099d62dfc893"
+  },
+  "important_limits": [
+    "ThePCB serializes throughvias andcontinuousland geometry; physical filled/capped0.07mm metal remains a specified manufacturing/source-operator requirement, not proof fromanordinary drilledvia primitive. Actual cap/foil/barrel transfer mustbe included inboardaccessmodel.",
+    "ProjectedPCB contexts presently omit originalglobalrailcopper/zones anddeclare access reconstruction; no powered/connected/acceptedboard claim.",
+    "This outputreview doesnot establish sourcepreservation ofevery268k disposition independently; receipts andnewobjects arechecked here.",
+    "Owncollet skip must consume/authenticate thefiniteexitproof andexact bore/grip/axis; no generic owncomponentexemption.",
+    "Continuous/freecurve checker alone omits ends,actualcontactsolids,cross-carrier solids andfullslab/enclosureuntil explicit additional checks areimplemented."
+  ],
+  "joined_canonical_flux_residual_by_wire_A": {
+    "1": -4.283240429003854e-13,
+    "2": -3.2218672174622043e-13,
+    "3": -1.1868284133242923e-13,
+    "4": 2.1227464230832993e-13,
+    "5": 2.7133850721838826e-13,
+    "6": -4.74953409934642e-13
+  },
+  "native": false,
+  "passed_checks": [
+    "Exact CS247-KA-KB source endpoint/wire identity andRef/pad/UUID/net/face match savedPCB objects.",
+    "All newvia dimensions/layers/nets/coordinates parsed fromactualPCB. No duplicated nativeUUID within eitherboard.",
+    "19affine foil/tip supports perendpoint lie on their own4x4land; source-polygon area and transformed worldnormal flux integrate to1A. KA/KBcanonicalincidence sums tozero perwire.",
+    "Soldertipnormalheight0.05mm andworld/local field basis agree; all contacts retain explicit0.07mm continuouscap requirement.",
+    "Insulation3.75\u00b10.05metadata and180mechanicalprimitives/12nutcaps arepresent; this check doesnot evaluate collisions.",
+    "All receipt sourcebindings stillmatch; actualPCB hashes matchreceipt."
+  ],
+  "physical_fit": false,
+  "schema": "feed-v2-output-independent-review-v1",
+  "scope": "Saved-artifact parse and analytic saved-field checks only; no constructor rerun, geometry screen, route or native.",
+  "source_bindings_verified": 515,
+  "status": "PASS_CONSTRUCTION_01_CONTACT_IDENTITY_AND_FLUX; CLEARANCE_AND_JOINED_DISTRIBUTION_NOT_YET_EVALUATED"
+}

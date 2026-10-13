@@ -1,0 +1,53 @@
+{
+  "status": "CONFIRMED_INCOMPLETE_WITH_REPRODUCED_SYNTHETIC_EMPTY_BOUND_DEFECT",
+  "source_sha256": "b241f89c6b37cd620e177cb93c6670e075738c7a532da575255b502176003990",
+  "retained_sha256": {
+    "/tmp/f3-static-region-screen-result/start.json": "50bfb7c47686fa65e365e6574fe8053c7bad47c27489f02da5d7bace07dfa706",
+    "/tmp/f3-static-region-screen-result/receipt.json": "04d78b80f2cbef7e0f78accc8627bd8023e37c45f320fd20c01818fd4b5c88aa",
+    "/tmp/f3-static-region-screen-execution.log": "e77293674219e6cbcab1567b5232e5b4802ceb1659dadc531aea51cd525c02ca"
+  },
+  "result_absent": true,
+  "receipt": {
+    "elapsed_seconds": 1.7185023119964171,
+    "retries": 0,
+    "returncode": 1,
+    "status": "INCOMPLETE",
+    "workers": 1
+  },
+  "synthetic": {
+    "core": [
+      0,
+      0,
+      1,
+      1
+    ],
+    "domain": [
+      1,
+      0.2,
+      2,
+      0.8
+    ],
+    "expansion_mm": 0,
+    "upper_intersects_domain": true,
+    "lower_intersection_empty": true,
+    "upper_intersection_empty": false,
+    "old_assertion": false,
+    "empty_aware_check": true
+  },
+  "versions": {
+    "shapely": "2.1.2",
+    "geos": "3.13.1"
+  },
+  "causal_scope": "Real log proves only containment assertion failed. No failing pair or lo/hi geometry was retained, so empty lower geometry is a reproduced plausible cause, not authenticated exact cause of this real failure. Nonempty containment discrepancy cannot be excluded from retained evidence.",
+  "prerequisite": [
+    "Correct containment assertion to accept empty lower bound;keep nonempty containment check.",
+    "Add emptyclippedlower,fullyemptyerodedcore,tangent/dimensioncollapsed bounds regressions.",
+    "Retain diagnosticpair metadata,core/lower/upper/domain geometries on future assertion failure before stopping.",
+    "Any real screen retry requires renewed explicit owner authorization;do not infer permission from this source diagnosis."
+  ],
+  "limits": [
+    "No project screen,pose evaluation,geometry replay or native execution.",
+    "No externalclearregion or domainexclusion result was produced.",
+    "30s2GiB configured bounds;no reportedmemorypeak in this negative receipt."
+  ]
+}

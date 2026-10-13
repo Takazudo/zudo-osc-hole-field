@@ -1,0 +1,64 @@
+from pathlib import Path
+import collections, gzip, hashlib, json, os, subprocess, time
+
+root=Path('/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-r4')
+packet=root/'.circuit-cache/e16-numerical-0dab96a-19563d44'
+r=json.loads((packet/'request.json').read_text()); out=Path(r['output'])
+def sha(p):
+    with Path(p).open('rb') as f: return hashlib.file_digest(f,'sha256').hexdigest()
+def run(cmd):
+    p=subprocess.run(cmd,cwd=root,text=True,capture_output=True)
+    return {'command':cmd,'exit_code':p.returncode,'stdout':p.stdout,'stderr':p.stderr}
+changed=[p for p,h in r['input_sha256'].items() if not Path(p).is_file() or sha(p)!=h]
+protected=json.loads(Path('/tmp/osc-wsl-20261013/protected-before.json').read_text())
+bad=[p for p,h in protected.items() if sha(root/p)!=h]
+claim=Path.home()/'.local/state/epic242-native-admission'/f'numerical-{r["run_id"]}-{r["attempt"]}.json'
+receipt=json.loads((packet/'execution-result.json').read_text())
+approval_sha=sha(packet/'operator-approval.json')
+assert approval_sha=='09e52ea40881d4ffad559855e47ebc1b71d87cdcdd71b125aaf29a30966f6bcc'
+assert json.loads(claim.read_text())['approval_sha256']==approval_sha
+assert receipt==json.loads(Path(str(claim)+'.result').read_text())
+assert receipt['log_sha256']==sha(packet/'execution.stdout.log')
+assert receipt['scope_observations_sha256']==sha(packet/'scope-observations.jsonl')
+rows=[json.loads(x) for x in (packet/'scope-observations.jsonl').read_text().splitlines()]
+scopes=[]
+for cg in sorted({x['cgroup'] for x in rows if '/app.slice/run-' in x['cgroup']}):
+    rr=[x for x in rows if x['cgroup']==cg]
+    check=run(['systemctl','--user','is-active',cg.rsplit('/',1)[1]])
+    assert check['stdout'].strip()=='inactive'
+    assert all(x['values']['memory.max']=='2147483648' and x['values']['memory.swap.max']=='0' for x in rr)
+    events=[dict(line.split() for line in x['values']['memory.events'].splitlines()) for x in rr]
+    assert all(int(v)==0 for e in events for v in e.values())
+    scopes.append({'cgroup':cg,'samples':len(rr),'limits':{'memory.max':2147483648,'memory.swap.max':0},'peak_bytes':max(int(x['values']['memory.peak']) for x in rr),'last_memory_events':events[-1],'cleanup':check,'cgroup_exists':Path('/sys/fs/cgroup'+cg).exists()})
+processes=[]
+for p in Path('/proc').iterdir():
+    if not p.name.isdigit() or int(p.name)==os.getpid(): continue
+    try:
+        args=(p/'cmdline').read_bytes().split(b'\0')
+        if any(a.endswith((b'/execute_unit_guard_numerical.py',b'/run_coupled_e16.py',b'/finite_solve.py')) or a==b'finite_solve.py' for a in args):
+            processes.append({'pid':p.name,'argv':[x.decode(errors='replace') for x in args]})
+    except OSError: pass
+locks=json.loads(subprocess.check_output(['lslocks','--json'],text=True))
+locks=[x for x in locks['locks'] if '.agent-guard/heavy' in x.get('path','')]
+head=run(['git','rev-parse','HEAD']); status=run(['git','status','--porcelain'])
+steps=[]
+for p in sorted((out/'steps').glob('*.json')):
+    d=json.loads(p.read_text())
+    for name,h in d['stream_files'].items(): assert sha(out/name)==h
+    for name,entries in d['outputs'].items():
+        for suffix,h in entries.items(): assert sha(out/name/suffix if suffix else out/name)==h
+    for field in ('inputs','methods'):
+        for name,h in d[field].items():
+            source=Path(name) if Path(name).is_absolute() else root/name if (root/name).exists() else out/name
+            assert sha(source)==h,(field,name)
+    steps.append({'step':d['step'],'exit_code':d['exit_code'],'seconds':d['elapsed_seconds'],'peak_rss_KiB':d['peak_rss_KiB'],'guard':d['resource_guard_result']})
+verdicts=[]
+for p in sorted(out.glob('*.numerical.json')):
+    d=json.loads(p.read_text()); assert d['output_sha256']==sha(str(p).removesuffix('.numerical.json'))
+    verdicts.append({'file':p.name,**d})
+report={'checked_at_unix':time.time(),'source_sha':r['source_sha'],'head':head,'git_status':status,'request_sha256':sha(packet/'request.json'),'approval_sha256':approval_sha,'checked_inputs':len(r['input_sha256']),'changed_inputs':changed,'protected_files':len(protected),'changed_protected':bad,'claim_result_matches_packet':True,'solver_scopes':scopes,'scope_observation_note':'Only app.slice/run scopes are solver observations. Matching unbounded launcher rows are retained separately in the raw log. The short service scope was not sampled; its CLI self-verification and guard receipt are retained.','matching_workload_processes':processes,'guard_locks':locks,'guard_owner_file_exists':(Path.home()/'.agent-guard/heavy/slot-0.info').exists(),'steps':steps,'numerical_verdicts':verdicts,'native_calls_this_attempt':0}
+assert not changed and not bad and not processes and not locks and not report['guard_owner_file_exists']
+assert head['stdout'].strip()==r['source_sha'] and not status['stdout'].strip()
+assert len(steps)==10 and sum(x['exit_code']==0 for x in steps)==9
+Path('/tmp/e16-checkpoint-20261014/postrun-integrity.json').write_text(json.dumps(report,indent=2)+'\n')
+print(json.dumps({'inputs':len(r['input_sha256']),'protected':len(protected),'scope_count':len(scopes),'all_inactive':True,'peak_bytes':max(s['peak_bytes'] for s in scopes),'processes':processes,'guard_locks':locks,'steps':len(steps),'status':'PASS terminal integrity and cleanup'},indent=2))

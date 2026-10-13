@@ -1,0 +1,79 @@
+{
+  "status": "REVIEWED_CONSERVATIVE_SOURCE_BOUNDS_UNRESOLVED",
+  "source_run": "/tmp/feed-v2-end-check-03.json",
+  "source_run_sha256": "2db0ce4709f1ee8836d72216bff742286af7bc27c90458fcc50be191cec19d73",
+  "checker_sha256": "4bce04b3bb2d67e0dbed81ce1ae8db0891b6c256085f6b350f25d32508eeab61",
+  "elapsed_seconds": 108.04348265399949,
+  "verified_inputs_unchanged": true,
+  "end_count": 12,
+  "contact_support_count": 228,
+  "minima": {
+    "carrier": [
+      0.4358336571056054,
+      {
+        "axis_cell": 5,
+        "end": "KB/w1",
+        "part": "bare-metal",
+        "solid": "KB/w1/finger-2",
+        "travel_mm": [
+          1.515,
+          1.6159999999999999
+        ]
+      }
+    ],
+    "foreign_end": [
+      4.872330499082673,
+      {
+        "ends": [
+          "KB/w1",
+          "KB/w4"
+        ],
+        "parts": [
+          "original-insulation",
+          "bare-metal"
+        ],
+        "travel_mm": [
+          2.323,
+          2.424
+        ]
+      }
+    ],
+    "foreign_free": [
+      4.101894098071394,
+      {
+        "end": "KB/w2",
+        "free_wire": 5,
+        "gap_interval_mm": [
+          20.200000000000003,
+          20.305000000000003
+        ],
+        "part": "original-insulation"
+      }
+    ],
+    "foreign_land": [
+      null,
+      "Every pair excluded by conservative broad-phase threshold; no narrow candidate."
+    ],
+    "source": [
+      null,
+      "Every pair excluded by conservative broad-phase threshold; no narrow candidate."
+    ]
+  },
+  "limitation": "findings_first1000 is truncated; no claim that only those carrier objects fail. Negative lower bounds are unresolved, not proved collisions. No full-assembly/native/physical pass.",
+  "own_collet_proxy": "Both lug types authenticated wholly within finite collet axial grip and outside bore. Long negative cylinder has identical material intersection with each lug, allowing safe removal only of already proved own-collet annulus overlap.",
+  "candidate04_design_review": {
+    "change": "back_y=P.y-sign*4 instead of P.y-sign*3",
+    "verdict": "COHERENT_FOR_RECONSTRUCTION_AND_COMPLETE_RECHECK",
+    "wire_land_changes": false,
+    "sections_mm": [
+      2,
+      2
+    ],
+    "W5_new_center_y_mm": 30.17246182365032,
+    "W5_outer_y_max_mm": 31.17246182365032,
+    "gap_to_bulk_y34_mm": 2.8275381763496803,
+    "W1_W3_new_center_y_mm": 9.827538176349682,
+    "still_required": "Recheck extended finger0 against foreign free curves, all carrier/source/end solids and full service sweep. No feasibility claimed."
+  },
+  "native": false
+}

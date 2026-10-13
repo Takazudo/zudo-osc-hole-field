@@ -1,0 +1,102 @@
+{
+  "source_sha": "7466ae6a5f4de339988101b8288abe092379454b",
+  "platform": "darwin",
+  "invocation": [
+    "design/partition/core-split/mechanical/check_browser.py",
+    "--output-dir",
+    "design/partition/core-split/mechanical/evidence/issue263-mac/final"
+  ],
+  "guard_held": true,
+  "input_sha256": {
+    "design/partition/core-split/mechanical/check_browser.py": "54856a1d12df1ed4b54fa9447691dae054c8549bc54c83277011e84b323d8eaa",
+    "design/partition/core-split/mechanical/browser_assertions.js": "ca4bc9f7e0b589424ca853f8b9b79e48d136f0b813793011a52d53df3e06893d",
+    "design/partition/core-split/mechanical/preview-template.html": "edfefe8b55ee1bf6b4d767a9f2a20775cb3bad07b79c33b2397c78256956c109",
+    "design/partition/core-split/mechanical/build.py": "0f85c863b8e1efe79b8d9796f20bc966701a9dcd82def2e1e7454b19828cc961",
+    "design/partition/core-split/mechanical/generated/comparison.json": "6caee4d979a89ae0a607f3e6febe23d156523e75c7f7bd59e6dbe67b961d8c60",
+    "design/partition/core-split/mechanical/generated/inspection.html": "e3de675d6e5610ce96f8f98511b711bccf7bc72437556fac0c23284c75a4750d",
+    "design/partition/core-split/mechanical/generated/source-lock.json": "1375813f96f574b1975f4dc723be40421d3554b23ea16a28386a3823f5ba73ec",
+    "design/partition/core-split/mechanical/generated/three-120mm-rejected-assembled.svg": "8d2618b4c0943299d27b71bc2d0677b5c5f16e3df46bf9fca3eab092f63addbb",
+    "design/partition/core-split/mechanical/generated/three-120mm-rejected-exploded.svg": "2ead1ef0b95898ab55b41e43b346897cdc6035deb9033fbdb5dc564a157bbfd0",
+    "design/partition/core-split/mechanical/generated/three-compact-assembled.svg": "da3f5ca2287f382954c7c08ecb9284854a049a44401beaf410ed7e6e2b7cffb0",
+    "design/partition/core-split/mechanical/generated/three-compact-exploded.svg": "00ae03103f923155eb08855514a44bdeb843341e62f54f53d7f251068b2258eb",
+    "design/partition/core-split/mechanical/generated/three-deep-assembled.svg": "9daa21131867e85d2a6a8395dc66063b5c44b6c33b800806065f8ef39c4931d3",
+    "design/partition/core-split/mechanical/generated/three-deep-exploded.svg": "eb46393ccec00507fd9b2e6f5f994cdf157442644494d32476cc6fbb378ee86f",
+    "design/partition/core-split/mechanical/generated/two-compact-assembled.svg": "e257d16ba2a9abbf46e6e6c0d7afd9a5a3ff5fe47ac0a5caf1ebee6dfa57f6c0",
+    "design/partition/core-split/mechanical/generated/two-compact-exploded.svg": "f92a4b2d0cc1e5ba91a8ceaf09d928c94ae107a542f1850faff0f15b95cc3aa7",
+    "design/partition/core-split/mechanical/generated/two-core-feasibility.json": "f5df6c62b0cf77e7fa4704640ae1d27dea8a6747c83e04becc0efc38ec4c35f2",
+    "design/partition/core-split/mechanical/generated/two-core-feasibility.svg": "2fb0c9042365be0dedc02883359f974b5ab627ab64db500c6d3a847077286c89",
+    "design/partition/core-split/mechanical/generated/two-deep-assembled.svg": "a877f2c75272d3c4a8e89762c1f8099514f0f523b324cf29743297136c45757b",
+    "design/partition/core-split/mechanical/generated/two-deep-exploded.svg": "216b77fc97d81168c3560a0feeafde97d3f759da277b3d2a846f7e9ff0c256c0"
+  },
+  "runs": [
+    {
+      "view": "three-compact",
+      "timeout_seconds": 60,
+      "command": [
+        "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+        "--headless",
+        "--disable-background-networking",
+        "--disable-component-update",
+        "--no-proxy-server",
+        "--no-first-run",
+        "--no-default-browser-check",
+        "--timeout=20000",
+        "--allow-file-access-from-files",
+        "--window-size=1500,1600",
+        "--user-data-dir=/var/folders/rh/yslrhq516hx43rh8ln83vmfh0000gn/T/osc263-2viug0gq/profile",
+        "--screenshot=/Users/takazudo/repos/circuits/zudo-osc-hole-field-263/design/partition/core-split/mechanical/evidence/issue263-mac/final/three-compact.png",
+        "--dump-dom",
+        "file:///var/folders/rh/yslrhq516hx43rh8ln83vmfh0000gn/T/osc263-2viug0gq/test.html"
+      ],
+      "exit_status": 0,
+      "browser_result": {
+        "status": "PASS",
+        "assertions": [
+          "two-compact/KA/F.Cu: selected RV2109, full detail and plan match; opposite face clears",
+          "two-compact/KA/B.Cu: selected RV2110, full detail and plan match; opposite face clears",
+          "two-compact/KB/F.Cu: selected RV4104, full detail and plan match; opposite face clears",
+          "two-compact/KB/B.Cu: selected RV4108, full detail and plan match; opposite face clears",
+          "two-compact: 100 unique Ref rows across every board; assembled/exploded assets decoded",
+          "two-deep/KA/F.Cu: selected RV2109, full detail and plan match; opposite face clears",
+          "two-deep/KA/B.Cu: selected RV2110, full detail and plan match; opposite face clears",
+          "two-deep/KB/F.Cu: selected RV4104, full detail and plan match; opposite face clears",
+          "two-deep/KB/B.Cu: selected RV4108, full detail and plan match; opposite face clears",
+          "two-deep: 100 unique Ref rows across every board; assembled/exploded assets decoded",
+          "three-compact/KA/F.Cu: selected RVO1106, full detail and plan match; opposite face clears",
+          "three-compact/KA/B.Cu: selected RVO1110, full detail and plan match; opposite face clears",
+          "three-compact/KB/F.Cu: selected RV2109, full detail and plan match; opposite face clears",
+          "three-compact/KB/B.Cu: selected RV2110, full detail and plan match; opposite face clears",
+          "three-compact/KC/F.Cu: selected RV4104, full detail and plan match; opposite face clears",
+          "three-compact/KC/B.Cu: selected RV4108, full detail and plan match; opposite face clears",
+          "three-compact: 100 unique Ref rows across every board; assembled/exploded assets decoded",
+          "three-deep/KA/F.Cu: selected RVO1106, full detail and plan match; opposite face clears",
+          "three-deep/KA/B.Cu: selected RVO1110, full detail and plan match; opposite face clears",
+          "three-deep/KB/F.Cu: selected RV2109, full detail and plan match; opposite face clears",
+          "three-deep/KB/B.Cu: selected RV2110, full detail and plan match; opposite face clears",
+          "three-deep/KC/F.Cu: selected RV4104, full detail and plan match; opposite face clears",
+          "three-deep/KC/B.Cu: selected RV4108, full detail and plan match; opposite face clears",
+          "three-deep: 100 unique Ref rows across every board; assembled/exploded assets decoded",
+          "three-120mm-rejected/KA/F.Cu: selected RVO1106, full detail and plan match; opposite face clears",
+          "three-120mm-rejected/KA/B.Cu: selected RVO1110, full detail and plan match; opposite face clears",
+          "three-120mm-rejected/KB/F.Cu: selected RV2109, full detail and plan match; opposite face clears",
+          "three-120mm-rejected/KB/B.Cu: selected RV2110, full detail and plan match; opposite face clears",
+          "three-120mm-rejected/KC/F.Cu: selected RV4104, full detail and plan match; opposite face clears",
+          "three-120mm-rejected/KC/B.Cu: selected RV4108, full detail and plan match; opposite face clears",
+          "three-120mm-rejected: 100 unique Ref rows across every board; assembled/exploded assets decoded",
+          "Ref filter, courtyard toggle and table scrolling"
+        ],
+        "errors": [],
+        "alternative_specific_rows": 500,
+        "distinct_physical_trimmers": 100,
+        "capture": {
+          "alternative": "three-compact",
+          "verify": true
+        }
+      },
+      "elapsed_seconds": 2.116
+    }
+  ],
+  "browser": "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+  "version": "Google Chrome 155.0.8059.40",
+  "status": "PASS"
+}

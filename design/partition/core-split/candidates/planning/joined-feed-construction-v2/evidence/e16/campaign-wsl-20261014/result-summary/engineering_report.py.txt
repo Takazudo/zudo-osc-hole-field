@@ -1,0 +1,103 @@
+"""Render a verified snapshot only; no solver/native imports or mutation of run files."""
+import argparse
+import hashlib
+import json
+from pathlib import Path
+
+
+def render(r, summary_digest):
+    s = r['summary']
+    lines = ['# E16 baseline engineering assessment', '',
+        f"Snapshot observed {r['observed_at_utc']}; summary SHA-256 `{summary_digest}`.",
+        f"Execution source `{r['source_sha']}`; request `{r['request_sha256']}`.", '',
+        f"Numerical full baseline complete: **{s['numerical_full_baseline_complete']}**. "
+        f"{s['state']}; {s['completed_ledger_units']}/148 serialized units, "
+        f"{s['verified_coupled_combinations']}/12 net/case combinations and "
+        f"{s['verified_finite_states']}/30 finite states. "
+        'A partial snapshot cannot establish the remaining combinations or terminal cleanup.', '',
+        '**Electrical acceptance is not established.** Numerical residual tests assess solution accuracy; '
+        'copper limits independently assess this conditional electrical model.', '',
+        '## Execution and numerical accuracy', '',
+        f"Integrity errors: {len(r['integrity_errors'])}; numerical failures: {len(r['failed_numerical_checks'])}. "
+        f"Guard-pass receipts: {r['resources']['guard_passed_units']}; max reported RSS "
+        f"{r['resources']['max_reported_peak_rss_KiB']} KiB; max solver elapsed "
+        f"{r['resources']['max_solver_elapsed_seconds']} s. "
+        'Each production unit remains bounded at 180 seconds, 2 GiB memory and zero swap. '
+        'Independent owned-process cleanup must be reported separately.', '',
+        '| Numerical check | Maximum observed | Fixed limit | Step |', '| --- | ---: | ---: | --- |']
+    for name, c in sorted(r['numerical_check_maxima'].items()):
+        lines.append(f"| {name} | {c['value']:.12g} | {c['limit']:.12g} | {c['step']} |")
+    lines += ['', '## Electrical scope and exact budgets', '',
+        'One whole-path allowance is shared across both boards; it does not restart per board. '
+        'Rail copper limit is 1 mΩ; common AGND copper limit is 0.5 mΩ. '
+        'The 20 mV path allowance and 0.5 A GH-conductor requirement are not demonstrated by a source-relative rail potential.', '',
+        'Exact bound configuration budgets: `' + json.dumps(r['budgets'], sort_keys=True) + '`.', '']
+    service = r['service']
+    if service:
+        lines += ['Device groups: `' + json.dumps(service['summary'], sort_keys=True) + '`; '
+            f"eligible supply pads: {service['eligible_pad_count']}. Whole-device gating excludes partial/unserved groups. "
+            'Unmapped groups have unsupported load mappings; counts do not represent an all-device current total.', '',
+            'Included signed board/net currents (A): `' + json.dumps(service['included_board_net_sum_A'], sort_keys=True) + '`.', '']
+    lines += ['Counts below are observations for one net/case/state, not distinct physical identities accumulated across cases. '
+        '“Loaded” means included in the declared load subset; all-pad maxima can identify unenergized pads.', '',
+        '| Net | Case | State | Board | Budget mΩ | All pads over / evaluated | Loaded over / evaluated | Max all mΩ | Max loaded mΩ |',
+        '| --- | --- | --- | --- | ---: | ---: | ---: | ---: | ---: |']
+    for c in r['coupled']:
+        if c.get('interpretation_refused'):
+            continue
+        for state, detail in c['states'].items():
+            for board, b in detail['boards'].items():
+                a, e = b['all_evaluated_pads'], b['energized_pads']
+                ra = a['max_copper']['R_copper_ohm'] * 1000 if a['max_copper'] else None
+                re = e['max_copper']['R_copper_ohm'] * 1000 if e['max_copper'] else None
+                lines.append(f"| {c['net']} | {c['case']} | {state} | {board} | {b['copper_budget_ohm']*1000:g} | {a['over_copper_budget_count']}/{a['count']} | {e['over_copper_budget_count']}/{e['count']} | {ra} | {re} |")
+    lines += ['', 'Source-pad identities, worst-pad identities, signed injections, source-relative potential extrema, '
+        'wire-current vectors, removed wires, energy by board/class and 110 mm wire sensitivity are retained in summary.json. '
+        'Zero unserved entries in a coupled output only means the already-filtered injected subset was served; '
+        'it does not erase the service ledger’s partial/unserved/unmapped groups.', '',
+        '## Limits and engineering consequences', '',
+        'The source model fixes whole KA land patches equipotential. The inlet, load-side star, raw-to-load bridge, '
+        'protection and branch loads are not implemented by this model. TP990036 is excluded as structurally unresolved. '
+        'Return all-three-open is structurally singular/open and deliberately not a finite solution; '
+        'the seven finite AGND states are required separately for each of the three cases. Actual completed states are recorded in the snapshot matrix coverage; missing states are not inferred.', '',
+        'Do not infer rail-to-local-ground device error from these rail-source potentials. '
+        'No nearest-ground return assignment or GH conductor compliance is established. '
+        'The nominal depth is a conditional uniformly divided dielectric, not a qualified six-layer stackup. '
+        'DRC enumeration, exact native reconciliation, manufacturing/process qualification and installed mechanical fit remain separate.', '',
+        'Board-class energy can support an aggregate barrel/access contribution but cannot identify a specific land '
+        'as the dominant resistance. The existing seven-via feed idea is therefore not proven by aggregate energy alone.', '',
+        '## Prepared bounded follow-up', '',
+        'Select the U2314.11/C2342.1 short In3 supply reconnection. The cache manifest '
+        '`../../next-intervention-u2314-in3/manifest.json` binds the exact source identities. '
+        'The single candidate via `1e1b90ef-f82d-5e94-a82e-416153b33ef3` serves U2314.10 AGND; '
+        'only its nonfunctional In3 annulus is proposed for a future capability experiment, preserving the barrel '
+        'and required AGND supports. The present materializer rejects selective unused-annulus policy. '
+        'Adapter/schema fixtures and native roundtrip support must precede any disposable geometry candidate.', '',
+        'Conditional goals are U2314 changing partial→supported, both exact -12V pads becoming fed, '
+        'supported groups 151→152, partial groups 59→58, eligible supply pads 302→304 and KA disconnections 196→194 '
+        'with zero newly disconnected identities. The fixed ledger contributes ±0.56 mA for this package only once '
+        'both supply pins are served. Existing targets and all other load amounts stay fixed. '
+        'Restored coverage is not a promise to meet the copper resistance requirement.', '',
+        'Native/variant numerical execution is outside the present baseline campaign. Future validation must '
+        'reconcile geometry→caps→clip→graph→census, protect AGND access and rerun the affected rail/return operators '
+        'under separately admitted requests. Preserve KEEP_K1402_INCUMBENT, canonical boards/copper, locked panel '
+        'positions, circuit intent and decision.json. The retained long-B alternative remains negative '
+        '(34.732173 mΩ analytic strip estimate, not an accepted full-path remedy).', '']
+    return '\n'.join(lines)
+
+
+def main():
+    p = argparse.ArgumentParser(description=__doc__)
+    p.add_argument('summary', type=Path)
+    p.add_argument('destination', type=Path)
+    a = p.parse_args()
+    raw = a.summary.read_bytes()
+    report = json.loads(raw)
+    if report['integrity_errors']:
+        raise ValueError('refuse engineering interpretation with integrity errors')
+    # Caller selects a new cache file; never replace retained snapshots.
+    with a.destination.open('x') as stream:
+        stream.write(render(report, hashlib.sha256(raw).hexdigest()))
+
+if __name__ == '__main__':
+    main()

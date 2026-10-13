@@ -1,0 +1,42 @@
+{
+  "status": "BOUNDED F3/E1 SOURCE PASS COMPLETE; HARDWARE UNCHANGED",
+  "native_execution": false,
+  "routing_search_execution": false,
+  "new_native_packet": false,
+  "native_packet_gap": "Standalone exact validator is not yet a reviewed routing adapter; unchanged raster need not exercise positive witnesses. This does not reject asymmetric evidence or require all four demands to succeed.",
+  "first_informative_comparison": {
+    "cohort": "F3",
+    "incumbent": "K1402",
+    "candidate": "two-A",
+    "original_signal_demand": "U2306.5 -> C2312.1 on /F3/BP_INT",
+    "all_four_original_demands_retained": true,
+    "positive_on_both_boards_required": false,
+    "new_via_at_both_terminals_required": false,
+    "scope": "Useful local straight-access and candidate edge+via vs exact incumbent obstruction; not complete route or architecture adoption"
+  },
+  "independent_review": {
+    "source": "PASS",
+    "base_replay": "PASS exact match all 24 demand rows / 48 endpoints",
+    "cross_board_witnesses": "PASS all 60 checks including source-positive and counterpart obstacle identities/margins",
+    "documentation": "PASS",
+    "tests": "15 PASS independently"
+  },
+  "checks": {
+    "unit_tests": 15,
+    "baseline_verifier": "PASS;1881original inputs+2reviewedtool replacements;195harnesses/390complete endpoints;JL117/JR129/K1402;inheritedDRC/parity0/0",
+    "circuit": "PASS;manual68lines/0declaredplacements;no schematic/placementbinding",
+    "docs_types": "PASS",
+    "production_validator_and_router_changed": false
+  },
+  "reservations": {
+    "1420": "RELEASED BY PARENT",
+    "1438": "RELEASED BY PARENT"
+  },
+  "native_slots_consumed": 0,
+  "input_sha256": {
+    "check_cohorts.py": "fb74b5d97e65fd98be26a3f2d636880c9196155c2ce61434d4aaa30c161b26b0",
+    "cohort-validation.json": "beb352adf77edbafa74afd5cee1ec4b38593448c6233d55d19fd9751861ee89b",
+    "cohort-report.md": "39ebcfdcbb1ad016f3d21c55ee2b47d2a1c5912680cc97a9ba4d94c573934146",
+    "test_cohorts.py": "75a8a12884797e1e8174bbfd387eadeaa01f93d09df51fec17ea8da1aa3cd840"
+  }
+}

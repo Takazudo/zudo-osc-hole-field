@@ -1,0 +1,185 @@
+#!/usr/bin/env python3
+"""Candidate-local foreign-raster escape; bounded source-only feasibility, no native."""
+import argparse
+import collections
+import hashlib
+import heapq
+import json
+import math
+import time
+from pathlib import Path
+
+import numpy as np
+from scipy import ndimage
+import f3_adapter as a
+import analyze_f3_breakout_region as region
+
+HERE=Path(__file__).resolve().parent
+
+
+class BudgetStop(Exception): pass
+
+
+class ExactTransitions:
+    """Only planar foreign-copper raster exclusions can receive an exact override."""
+    def __init__(self, original, saved, packet):
+        self.original=original;self.saved=saved;self.r=saved['raster'];self.b=packet['budget']
+        self.net=packet['demand_and_preservation_contract']['targets']['signal']['net_token']
+        self.geo=a.Geometry(original);self.y0,self.y1,self.x0,self.x1=saved['window']
+        self.shape=saved['free'].shape;self.cache={};self.via_cache={};self.exact_checks=0
+        self.failures=collections.Counter();self.exceptions={};self.max_edges=250000
+        self.started=time.monotonic();self.seconds=self.b['wall_seconds_route']
+        margin=self.b['raster_mm']/math.sqrt(2)+.01;w=self.b['signal_width_mm'];c=self.b['clearance_mm']
+        win=(slice(self.y0,self.y1),slice(self.x0,self.x1));r=self.r
+        self.hard=np.stack([(r.d_edge[win]>=.5+w/2+margin)&(r.d_keep_track[l][win]>=w/2+margin) for l in range(len(r.layers))])
+        # Independently reproduce the first-window foreign gate, rather than
+        # assuming every zero in free is a foreign-copper exclusion.
+        guard=round(1.5/self.b['raster_mm']);g0,g1=max(0,self.y0-guard),min(r.h,self.y1+guard);h0,h1=max(0,self.x0-guard),min(r.w,self.x1+guard)
+        inner=(slice(self.y0-g0,self.y1-g0),slice(self.x0-h0,self.x1-h0));N=r.net_id[self.net]
+        foreign=[]
+        for l in range(len(r.layers)):
+            lab=r.label[l][g0:g1,h0:h1];fixed=r.fixed_label[l][g0:g1,h0:h1]
+            obstacles=((lab!=0)&(lab!=N))|((fixed!=0)&(fixed!=N))
+            foreign.append(ndimage.distance_transform_edt(~obstacles)[inner]*self.b['raster_mm']>=c+w/2+margin)
+        self.foreign=np.array(foreign)
+        a.require(np.array_equal(self.hard&self.foreign,saved['free']), 'unexplained free-mask predicate; refuse override')
+        a.require(not saved['src'].all(0).any() and not saved['goal'].all(0).any(), 'unexpected all-layer terminal; no invented through switches')
+
+    def limits(self):
+        if time.monotonic()-self.started>=self.seconds:raise BudgetStop('SOURCE_WALL_LIMIT')
+        if self.exact_checks>=self.max_edges:raise BudgetStop('EXACT_EDGE_CHECK_LIMIT')
+
+    def point(self,node):
+        _,y,x=node
+        return [v/1e6 for v in self.r.point(y+self.y0,x+self.x0)]
+
+    def inside(self,node):
+        return len(node)==3 and all(0<=v<n for v,n in zip(node,self.shape))
+
+    def edge(self,left,right):
+        key=tuple(sorted((left,right)))
+        if key in self.cache:return self.cache[key]
+        self.limits()
+        if not(self.inside(left) and self.inside(right)) or left[0]!=right[0]:return False
+        l,y,x=left;_,yy,xx=right;dy,dx=yy-y,xx-x
+        if max(abs(dy),abs(dx))!=1:return False
+        if not(self.hard[left] and self.hard[right]):
+            self.cache[key]=False;self.failures['unchanged_edge_or_keepout_raster']+=1;return False
+        if dy and dx:
+            # Preserve no-corner-cut topology in the revised local edge graph.
+            one=(l,y,xx);two=(l,yy,x)
+            if not all(self.edge(p,q) for p,q in ((left,one),(one,right),(left,two),(two,right))):
+                self.cache[key]=False;self.failures['corner_cut']+=1;return False
+        # Recursive side-edge checks may have consumed the remaining budget.
+        self.limits()
+        self.exact_checks+=1
+        result=self.geo.segment(self.point(left),self.point(right),self.net,self.r.layers[l],self.b['signal_width_mm'],self.b['clearance_mm'])
+        self.cache[key]=result['pass']
+        if not result['pass']:
+            self.failures['exact_segment:'+str(result['nearest_foreign'])]+=1
+        elif not(self.foreign[left] and self.foreign[right]):
+            self.exceptions[key]={'layer':self.r.layers[l],'start_mm':self.point(key[0]),'end_mm':self.point(key[1]),'exact_validation':result,'override':'foreign raster only; hard edge/keepout masks unchanged'}
+        return result['pass']
+
+    def via(self,node,other_layer):
+        l,y,x=node;other=(other_layer,y,x)
+        if not self.inside(other) or other_layer==l or not self.saved['via'][y,x]:return False
+        # Via transitions retain original passability, not the planar exceptions.
+        ordinary=self.saved['free']|self.saved['src']|self.saved['goal']
+        if not(ordinary[node] and ordinary[other]):return False
+        key=(y,x)
+        if key not in self.via_cache:
+            self.limits();self.exact_checks+=1
+            self.via_cache[key]=self.geo.via(self.point(node),self.net,self.b['via_diameter_mm'],self.b['via_drill_mm'],self.b['clearance_mm'])['pass']
+        return self.via_cache[key]
+
+
+def solve(gate, source, goal, max_expansions):
+    """One deterministic finite source feasibility search, with no native/router call."""
+    a.require(source.shape==goal.shape==gate.shape, 'terminal shape drift')
+    a.require(source.any() and goal.any(), 'original terminals required')
+    distance=ndimage.distance_transform_edt(~goal.any(0));best={};previous={};heap=[];expanded=0
+    for row in np.argwhere(source):
+        node=tuple(map(int,row));a.require(gate.hard[node], 'source violates unchanged nonforeign gate')
+        best[node]=0.;heapq.heappush(heap,(float(distance[node[1:]]),0.,node))
+    steps=((-1,0),(1,0),(0,-1),(0,1),(-1,-1),(-1,1),(1,-1),(1,1))
+    status='GRAPH_EXHAUSTED'
+    try:
+        while heap:
+            gate.limits();_,cost,node=heapq.heappop(heap)
+            if cost!=best[node]:continue
+            if expanded>=max_expansions:status='EXPANSION_LIMIT';break
+            expanded+=1
+            if goal[node]:
+                path=[node]
+                while path[-1] in previous:path.append(previous[path[-1]])
+                return list(reversed(path)),{'status':'COMPLETE_SOURCE_GRAPH_PATH','expanded':expanded,'visited':len(best),'exact_checks':gate.exact_checks}
+            l,y,x=node;neighbors=[]
+            for dy,dx in steps:
+                q=(l,y+dy,x+dx)
+                if gate.edge(node,q):neighbors.append((q,math.hypot(dy,dx)*(3 if gate.r.layers[l] in ('F.Cu','B.Cu') else 1)))
+            for layer in range(gate.shape[0]):
+                if gate.via(node,layer):neighbors.append(((layer,y,x),30.))
+            for q,increment in neighbors:
+                value=cost+increment
+                if value<best.get(q,float('inf')):
+                    best[q]=value;previous[q]=node;heapq.heappush(heap,(value+float(distance[q[1:]]),value,q))
+    except BudgetStop as error:status=str(error)
+    return None,{'status':status,'expanded':expanded,'visited':len(best),'exact_checks':gate.exact_checks,
+                 'negative_scope':'One bounded method attempt; exhaustion of a cap is not physical impossibility'}
+
+
+def validate_candidate(original, raw, groups, records, target, packet):
+    """A complete original-anchor pair or no proposal; never retain a partial escape."""
+    b=packet['budget'];bounds=packet['demand_and_preservation_contract']['common_bounds_mm']
+    chain,anchors=a.stitch(raw,groups,records,target)
+    a.require(all(bounds[0]<=p[1]/1e6<=bounds[2] and bounds[1]<=p[2]/1e6<=bounds[3] for p in chain),'chain outside frozen domain')
+    a.path_check(a.Geometry(original),chain,target['net_token'],b['signal_width_mm'],b)
+    result={'net':target['net_token'],'island':[p['ref']+'.'+p['pad'] for p in target['anchor_records']],
+            'path':chain,'width_nm':round(b['signal_width_mm']*1e6),'via_diameter_nm':round(b['via_diameter_mm']*1e6)}
+    rows,_=a.grid.copper_rows([result],'fixture-253-F3-two-A','exact-foreign-transition-v1',via_diameter=b['via_diameter_mm'],via_drill=b['via_drill_mm'])
+    continuity=a.validate_rows(original,rows,target,b)
+    a.require(a.cumulative_fill_ok(original,rows,b,packet['route_policy'],bounds),'cumulative original-baseline fill veto')
+    return {'status':'UNCHECKED COMPLETE ORIGINAL-PAIR SOURCE CANDIDATE','accepted':False,'adopted':False,
+            'native_exact_pair_closed':False,'coupled_connectivity_success':False,'board_sha256':original['board_sha256'],
+            'anchor_uuids':anchors,'removed_uuids':[],'copper':rows,'chain':chain,'continuity':continuity,
+            'original_four_demands_retained':True,'other_demands':'Rails and AGND unchanged/unresolved; no all-demand success'}
+
+
+def main():
+    p=argparse.ArgumentParser(description=__doc__);p.add_argument('--candidate',type=Path,required=True);p.add_argument('--output',type=Path,required=True)
+    args=p.parse_args();a.require(not args.output.exists(),'fresh source-evidence output directory required')
+    original,card,packet,pool,receipt,binding=region.authenticate(args.candidate)
+    original_digest=a.digest(original);domain=packet['demand_and_preservation_contract'];target=domain['targets']['signal']
+    groups,records,_=a.portals(original,target,pool['signal'],packet['budget'],domain['common_bounds_mm'])
+    saved=region.capture(original,groups,records,packet);gate=ExactTransitions(original,saved,packet)
+    a.require(saved['window']==[99,343,37,420], 'reviewed window drift')
+    print('Authenticated original input and unchanged masks; starting one bounded source-only feasibility attempt',flush=True)
+    path,diagnostic=solve(gate,saved['src'],saved['goal'],packet['budget']['max_expansions_per_search'])
+    candidate=None;selected=[]
+    if path:
+        raw=[[gate.r.layers[l],*gate.r.point(y+gate.y0,x+gate.x0),0] for l,y,x in path]
+        for left,right in zip(path,path[1:]):
+            key=tuple(sorted((left,right)))
+            if key in gate.exceptions:selected.append(gate.exceptions[key])
+        try:candidate=validate_candidate(original,raw,groups,records,target,packet)
+        except ValueError as error:diagnostic.update(status='STOPPED_AT_COMPLETE_CHAIN_GATE',rejection=str(error),failure=getattr(error,'receipt',None))
+    a.require(a.digest(original)==original_digest,'physical input mutated')
+    result={'status':'COMPLETE SOURCE CANDIDATE' if candidate else 'STOPPED NEGATIVE; NO PARTIAL COPPER',
+        'method':'one candidate-local planar foreign-raster override, complete exact swept capsule, all other predicates unchanged',
+        'scope':'Original F3 signal demand; no native execution/admission or shared-router replacement',
+        'source_sha256':{str(path.relative_to(a.ROOT)):region.sha(path) for path in (Path(__file__),HERE/'test_exact_transition_candidate.py',HERE/'analyze_f3_breakout_region.py')},
+        'candidate_input_source_binding_sha256':region.sha(args.candidate/'source-binding.json'),'input_dump_sha256':binding['input_dump_sha256'],
+        'reviewed_region_proof_sha256':region.sha(HERE/'local-breakout/region-stop/region-proof.json'),
+        'bounds_mm':domain['common_bounds_mm'],'window_cells':saved['window'],'budget':packet['budget'],
+        'source_only_exact_check_cap':gate.max_edges,'diagnostic':diagnostic,'source_seconds':time.monotonic()-gate.started,
+        'new_exact_overrides_considered':len(gate.exceptions),'selected_exact_overrides':selected,
+        'failure_counts':dict(gate.failures),'proposal_created':candidate is not None,'native_executed':False,'adopted':False,
+        'other_original_demands':'Blocked rails and AGND unchanged; all four original demands retained',
+        'native_admission':'NONE; all slots free'}
+    args.output.mkdir(parents=True);(args.output/'result.json').write_text(json.dumps(result,indent=2)+'\n')
+    if candidate:(args.output/'source-candidate.json').write_text(json.dumps(candidate,indent=2)+'\n')
+    print(json.dumps({k:result[k] for k in ('status','diagnostic','source_seconds','new_exact_overrides_considered','proposal_created','native_executed')}),flush=True)
+
+
+if __name__=='__main__':main()

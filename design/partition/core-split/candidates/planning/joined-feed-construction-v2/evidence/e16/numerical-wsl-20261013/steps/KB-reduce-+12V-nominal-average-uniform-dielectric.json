@@ -1,0 +1,60 @@
+{
+ "inputs": {
+  "/home/takazudo/.cache/zudo-e16-runs/20261013-finite-t2b/KB/operator-+12V.pkl.gz": "62286d5cdfca36bd69fe1fa52b783b54818f1f1beb85c57675c36f4e732c94b1",
+  "/home/takazudo/.cache/zudo-e16-runs/20261013-finite-t2b/KB/coverage-+12V.json.gz": "69369e75275d5ec54e078713628bcf36509c530e8688aa6b19b7491fee46c1a4",
+  "design/partition/core-split/candidates/planning/joined-feed-construction-v2/evidence/e16/continuation-20261013b/coupled-network-config.json": "f5146d0c1d77e0626a455df308f52bf953ace9806861c25438adcdf90914c107",
+  "design/partition/core-split/candidates/planning/joined-feed-construction-v2/evidence/e16/process-cases.json": "ea253eee2e1b0dbb85d83a3d885cfe4f0cc6fd534b144bb25e9bf419016d4051",
+  "design/partition/core-split/candidates/planning/joined-feed-construction-v2/evidence/e16/continuation-20261013b/load-ledger.json.gz": "241dd36110236d3726e509c76b02e80928a279a67bea028bfa5aa1e965fa5f54",
+  "device-service-normal-typ-v1.json": "0bb1caae10549ab2c2eb1ea7cffebb9a2dc3183b5a3c428bae0e2af05223c5ad",
+  "/home/takazudo/.cache/zudo-e16-runs/20261013-finite-t2b/KA/coverage-+12V.json.gz": "8906376f87a6dec71445de11bf38de3ede6f3a0be6c432363919a414b69cb011",
+  "/home/takazudo/.cache/zudo-e16-runs/20261013-finite-t2b/KA/coverage--12V.json.gz": "7f90434a2ccbda494a38044fa895b767631277c94cd5beeaedad9f423ad41348",
+  "/home/takazudo/.cache/zudo-e16-runs/20261013-finite-t2b/KA/coverage-+5V.json.gz": "0190c4d68a88bbcda12329a9afaa74db82c24b566c52060cdc8770c8338fa5ef",
+  "/home/takazudo/.cache/zudo-e16-runs/20261013-finite-t2b/KA/coverage-AGND.json.gz": "d9bad1009f398b6242046ba19e094aca76deae3fa46990848ae7b4b8fa6d6980",
+  "/home/takazudo/.cache/zudo-e16-runs/20261013-finite-t2b/KB/coverage--12V.json.gz": "5b35af8ab517b49417cff17aeebe85227724436f9a8f58860b5955003105b2ff",
+  "/home/takazudo/.cache/zudo-e16-runs/20261013-finite-t2b/KB/coverage-+5V.json.gz": "43e5a4d1c9732ba35543bd3416303fc8c4b15b9fe0d00f43eadaa81c85210fba",
+  "/home/takazudo/.cache/zudo-e16-runs/20261013-finite-t2b/KB/coverage-AGND.json.gz": "1de67df34de319e266195968005b96672ee1d34014e74fbc3f49e0a5703ec211"
+ },
+ "methods": {
+  "design/partition/core-split/candidates/planning/joined-feed-construction-v2/finite_solve.py": "eb2472fd871b47b20a018ee241b5c0c16e4afc6dbb818baf4c6bbdbc8127d926",
+  "design/partition/core-split/candidates/planning/joined-feed-construction-v2/finite_adapter.py": "f313a87719aba83b169a363c05d36daa5c79cd28ad41620e5d45c5d8eca613f4",
+  "design/partition/core-split/candidates/planning/joined-feed-construction-v2/finite_units.py": "295bb239a0949522dca47e33389ddcd0ec9bc058c3a53db9bdc81789e461a8f5",
+  "design/partition/core-split/candidates/planning/joined-feed-construction-v2/load_ledger.py": "5cbaf6f059b6f1833fd40991e4974db5ff3997748e6bf3ed62141f0245913c64"
+ },
+ "command": [
+  "finite_solve.py",
+  "reduce",
+  "--operator",
+  "/home/takazudo/.cache/zudo-e16-runs/20261013-finite-t2b/KB/operator-+12V.pkl.gz",
+  "--coverage",
+  "/home/takazudo/.cache/zudo-e16-runs/20261013-finite-t2b/KB/coverage-+12V.json.gz",
+  "--config",
+  "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-r4/design/partition/core-split/candidates/planning/joined-feed-construction-v2/evidence/e16/continuation-20261013b/coupled-network-config.json",
+  "--cases",
+  "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-r4/design/partition/core-split/candidates/planning/joined-feed-construction-v2/evidence/e16/process-cases.json",
+  "--case",
+  "nominal-average",
+  "--depth",
+  "uniform-dielectric",
+  "--board",
+  "KB",
+  "--net=+12V",
+  "--ledger",
+  "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-r4/design/partition/core-split/candidates/planning/joined-feed-construction-v2/evidence/e16/continuation-20261013b/load-ledger.json.gz",
+  "--service",
+  "/home/takazudo/.cache/zudo-e16-runs/coupled-approved-4bde7e8-3968e3cc/device-service-normal-typ-v1.json",
+  "--output",
+  "/home/takazudo/.cache/zudo-e16-runs/coupled-approved-4bde7e8-3968e3cc/KB-red-+12V-nominal-average-uniform-dielectric.pkl.gz"
+ ],
+ "step": "KB-reduce-+12V-nominal-average-uniform-dielectric",
+ "exit_code": 0,
+ "elapsed_seconds": 44.93,
+ "stdout_tail": "{\"board\": \"KB\", \"net\": \"+12V\", \"case\": \"nominal-average\", \"depth\": \"uniform-dielectric\", \"N\": 1541278, \"pads\": 250, \"loads\": 40, \"unserved\": 0, \"checks\": {\"reciprocity_relative\": 1.0712628061069046e-14, \"load_solve_residual_relative\": 1.227478631500586e-09, \"interface_solve_residual_relative\": 2.355131885196278e-11, \"refinement_steps\": 3, \"factor_seconds\": 3.38, \"L_U_nnz\": 21002074}, \"elapsed_seconds\": 44.56, \"peak_KiB\": 1636932}\n",
+ "stderr_tail": "",
+ "peak_rss_KiB": 1636932,
+ "outputs": {
+  "KB-red-+12V-nominal-average-uniform-dielectric.pkl.gz": {
+   "": "d653abab066e4893f2d56c27afecc42ab921062a2690a574a967a9dc3c8bd8a4"
+  }
+ },
+ "native_calls": 0
+}

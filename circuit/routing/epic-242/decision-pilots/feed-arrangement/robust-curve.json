@@ -1,0 +1,120 @@
+{
+  "accepted": false,
+  "actual_shape_requirement": {
+    "bend_margin_if_requirements_hold_mm": 0.7266576709614299,
+    "derivation": "|q_s|>=1-eta1 and |q_ss|<=1/R_reference+eta2 imply curvature<= (1/R_reference+eta2)/(1-eta1)^2.",
+    "qualification": "C0 position error alone does not bound curvature. Fixture, endpoint-axis, collet-exit strain transition, insulation, formed-wire equilibrium and the complete continuous actual centerline must be qualified against C1/C2 requirements. Actual material length must stay constant through withdrawal; eta1 is a reference-shape comparison, not permission to stretch wire. A point-cloud or position-tube check alone cannot pass this gate.",
+    "radius_lower_bound_if_requirements_hold_mm": 26.63465767096143,
+    "registration": "q(s)=r(s)+e(s), with s the reference centerline arclength, including both straight tails and bridges. Require global C1 matching and piecewise C2 bounds, including transitions at both collet exits."
+  },
+  "cut_and_preparation": {
+    "84mm_cut_other_preparation_before_cut_undersize_mm": 4.585133059479091,
+    "actual_complete_path_upper_if_C1_holds_mm": 79.41486694052091,
+    "main_cut_nominal_mm": 103.75,
+    "main_cut_range_mm": [
+      103.5,
+      104.0
+    ],
+    "main_cut_tolerance_mm": 0.25,
+    "maximum_two_bridge_length_mm": 7.528581129228622,
+    "new_cut_nominal_mm": 84.75,
+    "new_cut_range_mm": [
+      84.5,
+      85.0
+    ],
+    "new_cut_tolerance_mm": 0.25,
+    "nominal_two_bridge_length_mm": 7.344957199247437,
+    "other_preparation_at_shortest_cut_and_longest_path_mm": 5.085133059479091,
+    "preparation_headroom_mm": 0.5851330594790909,
+    "reference_complete_path_upper_mm": 78.62858112922862,
+    "required_other_preparation_min_mm": 4.5,
+    "scope": "Lengths pay both bridges once and allow up to 1% C1 arclength growth of the entire new-wire path. Preparation is reserved outside that path, not available service slack. Existing main-cut qualification is an independent prerequisite; this study does not apply the new-wire shape certificate to main wires."
+  },
+  "datums": {
+    "derivation": "Face gap [24.3,24.5] minus independently bounded anchor heights [1.95,2.05], plus continuous withdrawal through an actual stop in [10,10.1].",
+    "gap_range_mm": [
+      20.200000000000003,
+      30.700000000000003
+    ],
+    "scope": "Proposed acceptance requirements, not supplier capabilities. XY offset and fixed tangent are reference values; residual position/tangent/shape errors require the complete C0/C1/C2 bound after datum registration. A common rigid transform does not affect curvature; it DOES affect obstacle clearance."
+  },
+  "family": {
+    "anchor_height_nominal_mm": 2.0,
+    "anchor_height_range_mm": [
+      1.95,
+      2.05
+    ],
+    "curve_cells": 512,
+    "direction": [
+      0.5933040689317951,
+      0.5927989259019525,
+      -0.5445913286478836
+    ],
+    "face_gap_range_mm": [
+      24.3,
+      24.5
+    ],
+    "first_derivative_error_max": 0.01,
+    "free_length_nominal_mm": 66.0,
+    "free_length_range_mm": [
+      65.9,
+      66.1
+    ],
+    "gap_cells": 200,
+    "length_cells": 8,
+    "minimum_bend_radius_mm": 25.908,
+    "offset_mm": 58.0,
+    "position_error_max_mm": 0.2,
+    "required_withdrawal_mm": 10.0,
+    "second_derivative_error_max_per_mm": 0.002,
+    "stop_travel_range_mm": [
+      10.0,
+      10.1
+    ],
+    "tail_each_mm": 2.5
+  },
+  "gates": {
+    "actual_C0_C1_C2_qualification": false,
+    "actual_copper": false,
+    "actual_cut_and_preparation_qualification": false,
+    "all_100_trim_access": false,
+    "conditional_C1_C2_radius_arithmetic": true,
+    "conditional_electrical_arithmetic": true,
+    "conditional_preparation_arithmetic": true,
+    "existing_main_cut_qualification": false,
+    "face_contract": false,
+    "native": false,
+    "new_carrier_geometry": false,
+    "new_geometry_collision_sweep": false,
+    "physical_fit": false,
+    "reference_radius_arithmetic": true
+  },
+  "joined_budget": {
+    "drops_mV_if_all_requirements_hold": {
+      "+12V": 19.8119,
+      "+5V": 15.080699999999998,
+      "-12V": 19.516199999999998
+    },
+    "global_rail_target_ohm": 0.0001,
+    "global_return_target_ohm": 0.0001,
+    "minimum_margin_mV": 0.1880999999999986,
+    "scope": "Targets are stricter than existing global ceilings, charged once, with original hot-wire/contact/current assumptions. No realized copper extraction or new-main cut qualification is claimed."
+  },
+  "reference_curve": {
+    "bend_margin_mm": 2.8293498869293394,
+    "handle_range_mm": [
+      20.998753297049973,
+      29.75939770469638
+    ],
+    "maximum_Z_derivative_upper_mm": -1.9049654422960611,
+    "maximum_positive_Y_bow_upper_mm": 14.713153023168225,
+    "method": "200 gap x 8 free-length x 512 curve cells. Cubic derivative/position boxes enclose the gap/handle rectangle; convex length in handle and negative Z derivative establish the positive rising root and its ordering. Handles have 1e-7 mm padding; arithmetic has 1e-9 padding. Floating engineering bounds, not certified directed interval arithmetic.",
+    "quadrature_disagreement_mm": 2.8421709430404007e-13,
+    "radius_lower_bound_mm": 28.73734988692934,
+    "zero_handle_length_max_mm": 61.7365275826304
+  },
+  "source_commit": "29140d4e19d526eed3a02a73c33f8ce4219c78f0",
+  "source_lock_sha256": "a5f6ce05cafb3c0ec2966a1794d9f892ba43e7e26b390b878f6c0316887e0345",
+  "status": "CONDITIONAL SOURCE TOLERANCE STUDY; NOT APPLIED; COLLISIONS AND PHYSICAL QUALIFICATION NOT RUN",
+  "tool_sha256": "12cb2cb82f8282c92e8a50c51b4060ba96eb826a35f8b7577c7b6442ff458d91"
+}

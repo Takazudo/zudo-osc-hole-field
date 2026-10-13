@@ -1,0 +1,62 @@
+{
+ "schema": "e16-omission-diagnosis-v1",
+ "subject": "Ports the 2026-10-13 partial finite model (finite_network.py, 0.5 mm raster, nominal-average) left without a finite path while the structural graph connects them",
+ "method": "diagnose_omissions.py rebuilds that model at component level (fed face objects joined by positive raw-polygon overlap, 4-neighbour raster cells wholly inside fed sheet pieces, barrels attached to the nearest cell of the piece containing their centre) and must reproduce the retained omission list exactly before classifying each port by a witness.",
+ "per_board_net": {
+  "KA|+5V": {
+   "reproduced_retained_omissions": 21,
+   "classes": {
+    "SUB_PITCH_SHEET_NECK": 21
+   },
+   "file": "KA-+5V.json",
+   "sha256": "a7733e9d8872fed758673104dd1cd7637a4d89675302d42336a73c4ed4a64ea3"
+  },
+  "KA|-12V": {
+   "reproduced_retained_omissions": 146,
+   "classes": {
+    "SUB_PITCH_SHEET_NECK": 143,
+    "BARREL_WITHOUT_SHEET_CELL": 3
+   },
+   "file": "KA--12V.json",
+   "sha256": "0b94d713607aa74d7b09fe04c13d0ceff6497b8899bb28e45b5bdbe796fcea1b"
+  },
+  "KA|AGND": {
+   "reproduced_retained_omissions": 1,
+   "classes": {
+    "SUB_PITCH_SHEET_NECK": 1
+   },
+   "file": "KA-AGND.json",
+   "sha256": "9199d75cff7d386c81aafc109655a0d9e4a775b1a304e88b68936febbce5fa45"
+  },
+  "KB|+5V": {
+   "reproduced_retained_omissions": 306,
+   "classes": {
+    "SUB_PITCH_SHEET_NECK": 305,
+    "BARREL_WITHOUT_SHEET_CELL": 1
+   },
+   "file": "KB-+5V.json",
+   "sha256": "29b3c94b6a8864da4ceae27509af72e3b78c36015f5d4d03acd54dd1a5ecee36"
+  },
+  "KB|-12V": {
+   "reproduced_retained_omissions": 78,
+   "classes": {
+    "SUB_PITCH_SHEET_NECK": 76,
+    "BARREL_WITHOUT_SHEET_CELL": 2
+   },
+   "file": "KB--12V.json",
+   "sha256": "6dcb47dee1e6151ec68fc9d70f40056142340e1d87036385e6cc3ae5f231d15a"
+  }
+ },
+ "total": 552,
+ "classes_total": {
+  "SUB_PITCH_SHEET_NECK": 546,
+  "BARREL_WITHOUT_SHEET_CELL": 6
+ },
+ "classes": {
+  "SUB_PITCH_SHEET_NECK": "the island's barrels attach to raster cells cut off from the fed raster by sheet necks narrower than one 0.5 mm cell (witness: barrels, sheet piece, dead raster component and its cell count)",
+  "BARREL_WITHOUT_SHEET_CELL": "a through object on the island has no whole raster cell within reach inside the sheet piece containing its centre (witness: barrels and pieces)",
+  "WHOLE_OBJECT_FILTER": "not observed: no omission is caused by dropping partially fed objects",
+  "OTHER": "not observed"
+ },
+ "resolution": "Every one of these ports has a finite path in the fragment-level conforming adapter (finite-coverage-t2.json partial_model_omissions_now_covered); no structural-census defect was found."
+}

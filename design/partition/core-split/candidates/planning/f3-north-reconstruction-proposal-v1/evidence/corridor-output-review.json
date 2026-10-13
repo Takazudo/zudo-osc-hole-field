@@ -1,0 +1,467 @@
+{
+  "component17_failure": {
+    "all_layer_geometric_via_center_domain_area_mm2": 3.1334846817699313,
+    "all_other_recorded_via_obstacles": [
+      {
+        "expanded_radius_mm": 0.851,
+        "key": "33012491:33012649:27f11bac87ab05820768d2ebc423b1b08f4795cc80637188e80e3245bc2931a5",
+        "kind": "COPPER",
+        "net_token": "XC19387F5B49A211AD2BD",
+        "polygon_sha256": "e5806e28ce133236d1b5f42911b56d2a8f0b6247fe26398894a00116bee26b53",
+        "scope": "A_OWNED",
+        "source_net": "/F2/REF5",
+        "source_object": {
+          "kind": "via",
+          "net_token": "XC19387F5B49A211AD2BD",
+          "sha256": "27f11bac87ab05820768d2ebc423b1b08f4795cc80637188e80e3245bc2931a5",
+          "source_span": [
+            33012491,
+            33012649
+          ],
+          "uuid": "325101f0-ef98-5b43-9a0c-3ef4257eefd3"
+        }
+      },
+      {
+        "expanded_radius_mm": 0.551,
+        "key": "ac44cf61-71cd-5d30-b3fb-3da8ed865f2d",
+        "kind": "PAD",
+        "net_token": "X3833DA0E2047F401FB91",
+        "pad": "7",
+        "polygon_sha256": "e3c1d337fd64a7a50f2acf6f0896374edeca99b65cbd44180c6c9b978d5723d6",
+        "ref": "U2312",
+        "scope": "MOVED_A_PAD_SWEEP",
+        "source_net": "/F3/FREQ_NEG"
+      },
+      {
+        "expanded_radius_mm": 0.551,
+        "key": "05b96ec7-fb8e-5d76-bea0-2fc48d17a068",
+        "kind": "PAD",
+        "net_token": "XB9F035FC2AF2925E1E25",
+        "pad": "6",
+        "polygon_sha256": "cb5bd1c06dd414fcc0e7ce47e1124d4e09b6f37195cbcea1e2e3c7c1055d96c0",
+        "ref": "U2312",
+        "scope": "MOVED_A_PAD_SWEEP",
+        "source_net": "/F3/FREQ_SUM"
+      },
+      {
+        "expanded_radius_mm": 0.751,
+        "key": "28429537:28429685:9d1a7c4eb55ec43eb56e050ee3e7eaa9a3f2f4ba072507c5b0fa41c2960962ef",
+        "kind": "COPPER",
+        "net_token": "+5V",
+        "polygon_sha256": "8e151a6dc78f1a924467e530a963be49b2ca4dad53142ec39f8c453a5b685276",
+        "scope": "SHARED_RETAINED",
+        "source_net": "+5V",
+        "source_object": {
+          "kind": "segment",
+          "net_token": "+5V",
+          "sha256": "9d1a7c4eb55ec43eb56e050ee3e7eaa9a3f2f4ba072507c5b0fa41c2960962ef",
+          "source_span": [
+            28429537,
+            28429685
+          ],
+          "uuid": "10182ee5-22b9-538e-b159-f2190c68667a"
+        }
+      }
+    ],
+    "construction": "Mandatory replacementthroughvia in original-layer copper-exterior+1mm envelope, common to alloffsets.",
+    "implication": "Releasing additional retained copper cannot fix this mandatory-via common-envelope construction while the movedU2312.7 sweep and stateddimensions remain. This is not a per-offset or universal routing impossibility.",
+    "net": "/W2/FOLD_BUFFER",
+    "proof": "Saved guarded moving U2312.7/FREQ_NEG pad-sweep forbidden polygon alone covers entire joint all-layer geometricvia-center domain; exact saved-set difference empty.",
+    "single_sufficient_blocker": {
+      "expanded_radius_mm": 0.551,
+      "key": "ac44cf61-71cd-5d30-b3fb-3da8ed865f2d",
+      "kind": "PAD",
+      "net_token": "X3833DA0E2047F401FB91",
+      "pad": "7",
+      "polygon_sha256": "e3c1d337fd64a7a50f2acf6f0896374edeca99b65cbd44180c6c9b978d5723d6",
+      "ref": "U2312",
+      "scope": "MOVED_A_PAD_SWEEP",
+      "source_net": "/F3/FREQ_NEG"
+    },
+    "terminal_roots": [
+      [
+        0
+      ],
+      [
+        4
+      ]
+    ]
+  },
+  "component18_failure": {
+    "barrier_subset": [
+      {
+        "expanded_radius_mm": 0.451,
+        "key": "36457954:36458118:bcff2a8c330884ccd9a72b811a0fabebe47989c325399cb445c8f804e1f17938",
+        "kind": "COPPER",
+        "net_token": "XBC2CF0337E9CFDADBBCA",
+        "polygon_sha256": "a7f611ac3f3ace24c9d47f08d38f45cf0a21a7af599619d29410fe835f585298",
+        "scope": "A_OWNED",
+        "source_net": "/F3/HP_SUM",
+        "source_object": {
+          "kind": "segment",
+          "net_token": "XBC2CF0337E9CFDADBBCA",
+          "sha256": "bcff2a8c330884ccd9a72b811a0fabebe47989c325399cb445c8f804e1f17938",
+          "source_span": [
+            36457954,
+            36458118
+          ],
+          "uuid": "ae0317f4-75bd-581d-818f-1565dcc705cb"
+        }
+      },
+      {
+        "expanded_radius_mm": 0.451,
+        "key": "36457624:36457788:34ed4ed1c661fad6906a56bec5f306db78c5d81228362e41db78f8cf706e3edb",
+        "kind": "COPPER",
+        "net_token": "XBC2CF0337E9CFDADBBCA",
+        "polygon_sha256": "526cbbdac32e6943d03eeed50af81bb4aca80e1be477915d22001d39d6113e40",
+        "scope": "A_OWNED",
+        "source_net": "/F3/HP_SUM",
+        "source_object": {
+          "kind": "segment",
+          "net_token": "XBC2CF0337E9CFDADBBCA",
+          "sha256": "34ed4ed1c661fad6906a56bec5f306db78c5d81228362e41db78f8cf706e3edb",
+          "source_span": [
+            36457624,
+            36457788
+          ],
+          "uuid": "7e7356ca-a1ba-5a2a-9450-b9475bfcd2af"
+        }
+      },
+      {
+        "expanded_radius_mm": 0.351,
+        "key": "8e0603c3-c7fe-5d8d-b9c8-8ca51af35d8b",
+        "kind": "PAD",
+        "net_token": "XBC2CF0337E9CFDADBBCA",
+        "pad": "2",
+        "polygon_sha256": "8cf74816d8cf649017e356b393005d34ee879ade55c5c4c5c4724688dd1a160d",
+        "ref": "R2359",
+        "scope": "MOVED_A_PAD_SWEEP",
+        "source_net": "/F3/HP_SUM"
+      },
+      {
+        "expanded_radius_mm": 0.701,
+        "key": "28273943:28274083:8895fc659da0fa6f1666e75b967e4dd4fa609cbd7019b0e3eb6ac60299a43714",
+        "kind": "COPPER",
+        "net_token": "+5V",
+        "polygon_sha256": "0100331c77c508ec89c3e5545514ce685728e75fef5ebfdc46fe7e9e44442ad2",
+        "scope": "SHARED_RETAINED",
+        "source_net": "+5V",
+        "source_object": {
+          "kind": "via",
+          "net_token": "+5V",
+          "sha256": "8895fc659da0fa6f1666e75b967e4dd4fa609cbd7019b0e3eb6ac60299a43714",
+          "source_span": [
+            28273943,
+            28274083
+          ],
+          "uuid": "2beea854-62c0-514e-a368-9a624379fc6b"
+        }
+      }
+    ],
+    "barrier_subset_result": {
+      "free_components": 2,
+      "frontier_component_indices": [
+        [
+          1
+        ],
+        [
+          0
+        ]
+      ]
+    },
+    "construction": "0.2mm trace on originalF.Cu within1mm copper-exterior envelope, common to alloffsets.",
+    "frontiers": [
+      {
+        "access_via_retained_source_component": false,
+        "attachment_policy": "Optimistic attachment anywhere on unchanged full frontier object; exact old contact-locus reconstruction remains unproved.",
+        "frontier_key": "34269713:34269877:25fc2d8a7ba56181a4bf01fb52c74438aea391f5bd22018a13c14b7dff03052d",
+        "layers": [
+          "F.Cu"
+        ],
+        "reachable_equivalence_components": [
+          1
+        ],
+        "reachable_node_indices": [
+          1
+        ],
+        "retained_source_component_key": "34285880:34286044:d0e69d6979300e8a0d57813827968c8e5b05b1d67404b81bbe52f4fca724793b",
+        "source_points_physical_mm": [
+          [
+            233.8,
+            148.9
+          ],
+          [
+            234.5,
+            149.6
+          ]
+        ]
+      },
+      {
+        "access_via_retained_source_component": false,
+        "attachment_policy": "Optimistic attachment anywhere on unchanged full frontier object; exact old contact-locus reconstruction remains unproved.",
+        "frontier_key": "34276985:34277141:3c9693a49e024b2a41ef574ada1462ef9dae493249de177cafd02b1112c18711",
+        "layers": [
+          "F.Cu",
+          "In1.Cu",
+          "In2.Cu",
+          "In3.Cu",
+          "In4.Cu",
+          "B.Cu"
+        ],
+        "reachable_equivalence_components": [
+          0
+        ],
+        "reachable_node_indices": [
+          0
+        ],
+        "retained_source_component_key": "34288552:34288716:c8472388489511915e32424579b9d00b0a1ef41d8e09049f4a240ea99d20d4da",
+        "source_points_physical_mm": [
+          [
+            228.9,
+            149.0
+          ]
+        ]
+      }
+    ],
+    "net": "/O2/PUL_SCALED",
+    "proof": "The saved HP_SUM obstacles (two swept eligible sourcesegments and moved R2359.2 pad) together with retained +5Vvia split the allowedF.Cu corridor; each frontier remainsaccessible but on distinct components. R2358.1/BP_CORE is additional recorded obstacle, unnecessary for this subset separator.",
+    "qualification": "This subset is sufficient, not claimed minimum. HP_SUM group alone and +5V alone each leave one connected polygon in this saved envelope. Sharedrailprojection remains a separate gate."
+  },
+  "disposition": "Reject this exact52-object reconstruction/common-corridor proposal. No progressive copper-release widening, alternate cell, rerouting or native follows. Components14-16 only pass an optimistic necessarytopology condition and do not outweigh failures17-18.",
+  "limits": [
+    "Does not prove wholeA24north or everyindividualoffset impossible.",
+    "Does not establish an architecture switch is necessary.",
+    "40rail projection/repair obligations,41A migrationdebts and originalF3access remainunresolved.",
+    "All14unique historicalrailpadcontacts belongtwoB, not physicalA terminals.",
+    "No nativeclosures, newroutes, cuts orcanonicaledits performed."
+  ],
+  "method": "Recombined saved outer/free/obstacle polygons; replayed direct frontier hits from saved contact geometry, via links, retainedcomponent-label bridging, indirectaccess and finalrootsets. No project dump loading, new placement, screen, sourcegeometry generation, graph search or route. RetainedDSU labels checked for consistent use, not recalculated from full source graph.",
+  "receipt": {
+    "elapsed_seconds": 6.634106112000154,
+    "returncode": 0,
+    "status": "COMPLETE"
+  },
+  "replay": [
+    {
+      "component_id": 14,
+      "direct_frontier_hits_replayed": true,
+      "saved_geometry_replay_max_symmetric_difference_area_mm2": 0,
+      "saved_retained_component_labels_used_consistently": true,
+      "status": "CONDITIONAL_NECESSARY_CORRIDOR_ONLY",
+      "terminal_and_via_root_sets_replayed": true,
+      "terminal_roots": [
+        [
+          0
+        ],
+        [
+          0
+        ],
+        [
+          0
+        ]
+      ],
+      "via_layer_areas": {
+        "B.Cu": {
+          "after_obstacles_area_mm2": 1.5512797883300018,
+          "via_center_before_obstacles_area_mm2": 3.133484681769933
+        },
+        "F.Cu": {
+          "after_obstacles_area_mm2": 0.3832104344341077,
+          "via_center_before_obstacles_area_mm2": 3.133484681769933
+        },
+        "In1.Cu": {
+          "after_obstacles_area_mm2": 1.632101268712065,
+          "via_center_before_obstacles_area_mm2": 3.133484681769933
+        },
+        "In2.Cu": {
+          "after_obstacles_area_mm2": 1.632101268712065,
+          "via_center_before_obstacles_area_mm2": 3.133484681769933
+        },
+        "In3.Cu": {
+          "after_obstacles_area_mm2": 1.632101268712065,
+          "via_center_before_obstacles_area_mm2": 3.133484681769933
+        },
+        "In4.Cu": {
+          "after_obstacles_area_mm2": 1.632101268712065,
+          "via_center_before_obstacles_area_mm2": 3.133484681769933
+        }
+      }
+    },
+    {
+      "component_id": 15,
+      "direct_frontier_hits_replayed": true,
+      "saved_geometry_replay_max_symmetric_difference_area_mm2": 0,
+      "saved_retained_component_labels_used_consistently": true,
+      "status": "CONDITIONAL_NECESSARY_CORRIDOR_ONLY",
+      "terminal_and_via_root_sets_replayed": true,
+      "terminal_roots": [
+        [
+          0
+        ],
+        [
+          0
+        ],
+        [
+          0
+        ],
+        [
+          0
+        ],
+        [
+          0
+        ],
+        [
+          0
+        ]
+      ],
+      "via_layer_areas": {}
+    },
+    {
+      "component_id": 16,
+      "direct_frontier_hits_replayed": true,
+      "saved_geometry_replay_max_symmetric_difference_area_mm2": 0,
+      "saved_retained_component_labels_used_consistently": true,
+      "status": "CONDITIONAL_NECESSARY_CORRIDOR_ONLY",
+      "terminal_and_via_root_sets_replayed": true,
+      "terminal_roots": [
+        [
+          0
+        ],
+        [
+          0
+        ],
+        [
+          0
+        ],
+        [
+          0
+        ],
+        [
+          0
+        ]
+      ],
+      "via_layer_areas": {}
+    },
+    {
+      "component_id": 17,
+      "direct_frontier_hits_replayed": true,
+      "saved_geometry_replay_max_symmetric_difference_area_mm2": 0,
+      "saved_retained_component_labels_used_consistently": true,
+      "status": "NO_COMMON_CORRIDOR_IN_FROZEN_ENVELOPE",
+      "terminal_and_via_root_sets_replayed": true,
+      "terminal_roots": [
+        [
+          0
+        ],
+        [
+          4
+        ]
+      ],
+      "via_layer_areas": {
+        "B.Cu": {
+          "after_obstacles_area_mm2": 2.3273405079463503,
+          "via_center_before_obstacles_area_mm2": 6.631883205071147
+        },
+        "F.Cu": {
+          "after_obstacles_area_mm2": 3.058626762230641,
+          "via_center_before_obstacles_area_mm2": 3.133484681769933
+        },
+        "In1.Cu": {
+          "after_obstacles_area_mm2": 3.058626762230641,
+          "via_center_before_obstacles_area_mm2": 3.133484681769933
+        },
+        "In2.Cu": {
+          "after_obstacles_area_mm2": 1.7720898676029648,
+          "via_center_before_obstacles_area_mm2": 3.133484681769933
+        },
+        "In3.Cu": {
+          "after_obstacles_area_mm2": 3.058626762230641,
+          "via_center_before_obstacles_area_mm2": 3.133484681769933
+        },
+        "In4.Cu": {
+          "after_obstacles_area_mm2": 3.058626762230641,
+          "via_center_before_obstacles_area_mm2": 3.133484681769933
+        }
+      }
+    },
+    {
+      "component_id": 18,
+      "direct_frontier_hits_replayed": true,
+      "saved_geometry_replay_max_symmetric_difference_area_mm2": 0,
+      "saved_retained_component_labels_used_consistently": true,
+      "status": "NO_COMMON_CORRIDOR_IN_FROZEN_ENVELOPE",
+      "terminal_and_via_root_sets_replayed": true,
+      "terminal_roots": [
+        [
+          1
+        ],
+        [
+          0
+        ]
+      ],
+      "via_layer_areas": {}
+    }
+  ],
+  "reviewed_source_commit": "edfdb326",
+  "source_sha256": {
+    "/tmp/f3-north-contacts-1/preserved-frontier.json.gz": "997ee5bf573645ff8f25110d53e56452b6a20af7cc00c7d8739282da12198978",
+    "/tmp/f3-north-contacts-1/selected-object-contacts.json.gz": "0aa7a90ea9f05eaff760be89099ec82030d4eaae682ed0c99e8410f6855d1ddd",
+    "/tmp/f3-north-corridors-1/corridor-results.json.gz": "3b40578bc41253d1fb50e1efc7b1af8d0823d5bbeadd6e1c29e73de623bf0d7f",
+    "/tmp/f3-north-corridors-1/receipt.json": "876e89c9b76c22e6b6a3706256406de0a9918fe1fdff01c1ed9ba86272995b92",
+    "/tmp/f3-north-corridors-1/start.json": "062b5d193f9ba043bdbaa29e2b2fed349d6bc29c3f2a6c3ace3ee50ca0ab74a1",
+    "/tmp/f3-north-corridors-1/summary.json": "cd84cea2f00c505cb810dc3db2223f6396dea3cd86f8c5bb1777aa518e01daf5",
+    "/tmp/review-f3-corridor-output.py": "46906bc2c2643739e95cd2e74da6f700f7686ed35ab2b75b19a2fb545d850613"
+  },
+  "status": "PASS_INDEPENDENT_SAVED_OUTPUT_REVIEW_REJECT_FROZEN_COMMON_CORRIDOR_PROPOSAL",
+  "summary": {
+    "components": [
+      {
+        "component_id": 14,
+        "net_token": "X0D86E0A439E02BD765B6",
+        "status": "CONDITIONAL_NECESSARY_CORRIDOR_ONLY",
+        "terminal_count": 3,
+        "terminals_without_access": 0,
+        "through_via_landing_area_mm2": 0.37892684795807297
+      },
+      {
+        "component_id": 15,
+        "net_token": "XE692835EDF89A5E9950F",
+        "status": "CONDITIONAL_NECESSARY_CORRIDOR_ONLY",
+        "terminal_count": 6,
+        "terminals_without_access": 0,
+        "through_via_landing_area_mm2": 0.0
+      },
+      {
+        "component_id": 16,
+        "net_token": "XE692835EDF89A5E9950F",
+        "status": "CONDITIONAL_NECESSARY_CORRIDOR_ONLY",
+        "terminal_count": 5,
+        "terminals_without_access": 0,
+        "through_via_landing_area_mm2": 0.0
+      },
+      {
+        "component_id": 17,
+        "net_token": "XE692835EDF89A5E9950F",
+        "status": "NO_COMMON_CORRIDOR_IN_FROZEN_ENVELOPE",
+        "terminal_count": 2,
+        "terminals_without_access": 0,
+        "through_via_landing_area_mm2": 0.0
+      },
+      {
+        "component_id": 18,
+        "net_token": "X245C8A88BDE6BBB78DF6",
+        "status": "NO_COMMON_CORRIDOR_IN_FROZEN_ENVELOPE",
+        "terminal_count": 2,
+        "terminals_without_access": 0,
+        "through_via_landing_area_mm2": 0.0
+      }
+    ],
+    "constraint_count": 70,
+    "elapsed_seconds": 6.3514664550002635,
+    "native_calls": 0,
+    "peak_memory_KiB": 594556,
+    "quantifier": "One corridor common to the entire frozen offset square; failure is not every individual offset or all routing strategies",
+    "replacement_routes": 0,
+    "status": "COMPLETE_ONE_COMMON_CORRIDOR_CONSTRUCTION"
+  }
+}

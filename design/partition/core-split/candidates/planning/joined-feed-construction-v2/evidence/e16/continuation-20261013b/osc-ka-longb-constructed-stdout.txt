@@ -1,0 +1,12 @@
+pilot: re-evaluation failed: es/planning/joined-feed-construction-v2/evaluate_access.py", line 28, in <module>
+    if __name__=='__main__':main()
+                            ^^^^^^
+  File "/workspace/zudo-osc-hole-field/design/partition/core-split/candidates/planning/joined-feed-construction-v2/evaluate_access.py", line 25, in main
+    need(unchanged,'inputs/methods changed during source check');need(result.returncode==0,'source step failed: '+name)
+                                                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/zudo-osc-hole-field/design/partition/core-split/candidates/planning/joined-feed-construction-v2/evaluate_access.py", line 8, in need
+    if not c:raise ValueError(m)
+             ^^^^^^^^^^^^^^^^^^^
+ValueError: source step failed: caps
+
+heavy-guard: verdict=FAIL exit=1 secs=3 min_mem_mb=16171 reason=-

@@ -1,0 +1,37 @@
+{
+  "status": "PASS_PRE_RUN_SOURCE_REVIEW",
+  "sha256": {
+    "audit.py": "a367f8bfc3d42ef02a548fbe1389c2be301462c81e1da1ad52338b1088293a80",
+    "test_audit.py": "14a95d7bfa92678b9a582de2c3bedc0194996fbb4cd929d13fcdb82b38456423",
+    "input-seals.json": "73a02266581ac03d6df18a92a4ab4035fd9735944f69825ac5c49fed6a313363",
+    "full-footprint-source-join.json": "b5c31bf49ea44627db9838670e0b2fc252896a1fa9884495be7d375acfe11bcc",
+    "retained-artifact.json": "b9a8ff41aaef15427ceca81fb9bcf9eedfaa33099b03721a718bbeb922647282"
+  },
+  "blocking_findings": [],
+  "checks": [
+    "All listed input seals match current bytes.",
+    "Full-source footprint join and retained-artifact receipts sealed, validated and retained.",
+    "Via/pad drilled-hole checks include same-net and symmetric via-annulus clearances.",
+    "Padless or externally dependent internal copper components remain blocked.",
+    "Destination same-net contact receipts retained.",
+    "Atomic checkpoints and supervisor malformed-progress handling verified.",
+    "One171-ref rigid transform only;source child2GiB RLIMIT_AS and parent180s timeout;no retry/native."
+  ],
+  "synthetic_tests": {
+    "passed": 4,
+    "failed": 0,
+    "command": "python3 -m unittest discover -s design/partition/core-split/candidates/pilots/f3-whole-east-v1 -p test_audit.py -v"
+  },
+  "limits": [
+    "No actual census or transformed geometry evaluated by reviewer.",
+    "Source contact closure is not native/zone continuity or eligibility.",
+    "Retained native polygon approximation and inherited strict-placement failures remain explicit.",
+    "PASS covers source readiness for exactly owner-authorized source audit only;not native/adoption."
+  ],
+  "output_only_delta": {
+    "previous_sha256": "fc0d75fa61e6705b2c5660624f1e42b30d67154b6b249f5585f9bd0fe732b22b",
+    "classification": "Only selected-courtyards serialization added; removal exactly reproduces previously reviewed source bytes.",
+    "review": "Same171refs and existing rigid delta;candidate-to-physical +(100,50) then delta. No selector,gate,search or geometry-census changes.",
+    "tests": "Prior4 synthetic passes retained;no rerun needed for output-only delta."
+  }
+}

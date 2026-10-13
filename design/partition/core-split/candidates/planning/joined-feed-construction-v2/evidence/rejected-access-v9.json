@@ -1,0 +1,48 @@
+{
+  "status": "REJECTED_SOURCE_CONSTRUCTION_EPOCH",
+  "boards": [
+    {
+      "board": "KA",
+      "directed_wall_cuts": 446,
+      "counts": {
+        "OFFSET:True:False": 14,
+        "OFFSET:False:False": 30,
+        "OFFSET:False:True": 14,
+        "COAXIAL:False:False": 388
+      },
+      "offset_unique_pairs": 29,
+      "affected_new_vias": 41,
+      "compressed_file": "rejected-v9-KA-drill-cuts.json.gz",
+      "sha256": "d8601da8f1a79eb49eb072f03fa44725f889313b18b651c6ffcac21916cf145e",
+      "uncompressed_sha256": "3549f4c2a806fc4f0ae8bcc4d34fa1b9b46f1257ef41695fb73ed127ef7f5530",
+      "input_sha256": {
+        "/tmp/feed-v2-KA-filtered-v9.json": "ef544f299213b3b0ded363e66e4805383e6730fa3d9606438cd89deebcf51f26",
+        "/tmp/feed-v2-KA-planes-v9.json": "78d245091ee942257e00cab86af081ce183adaa2ecae41db7fca1cd75f1486ce"
+      }
+    },
+    {
+      "board": "KB",
+      "directed_wall_cuts": 611,
+      "counts": {
+        "OFFSET:True:False": 18,
+        "OFFSET:False:False": 48,
+        "OFFSET:False:True": 18,
+        "COAXIAL:False:False": 527
+      },
+      "offset_unique_pairs": 42,
+      "affected_new_vias": 63,
+      "compressed_file": "rejected-v9-KB-drill-cuts.json.gz",
+      "sha256": "ef1f025ff95007944a105737f8e747be9169b53d920b4ceb29e25fd4972219c0",
+      "uncompressed_sha256": "329f465defe319bf513123b5022e6205274d0ab0e82d2d461d0795aed6b28ee0",
+      "input_sha256": {
+        "/tmp/feed-v2-KB-filtered-v9.json": "b03ac31a144447d4dfb1c97ccc3eca5d067a926d263f84d8af865f71aa0a173c",
+        "/tmp/feed-v2-KB-planes-v9.json": "11be2ce0256423bfbc8ffe9353ded1ed3aaa8f2f048c5bbd502df6f00e025117"
+      }
+    }
+  ],
+  "reason": "Proposed LOCAL through-via drills overlap retained or proposed annular walls. Coaxial staged micro/buried interfaces additionally lack explicit closed-cap volume in this epoch.",
+  "accepted": false,
+  "native_calls": 0,
+  "geometry_candidate05_unchanged": true,
+  "next": "Repair new LOCAL placements and instantiate independently reviewed explicit staged copper caps, then reconstruct and check named load connections."
+}

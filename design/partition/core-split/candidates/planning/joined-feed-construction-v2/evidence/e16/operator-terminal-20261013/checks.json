@@ -1,0 +1,81 @@
+{
+  "source_sha": "26cfc65d5699b7e5c2edbd4957c1f4e231de4e1c",
+  "checks": [
+    {
+      "command": [
+        "python3",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "scripts/kicad",
+        "-p",
+        "test_*.py",
+        "-q"
+      ],
+      "cwd": "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-r4",
+      "exit_code": 0,
+      "elapsed_seconds": 2.9772080939728767,
+      "child_peak_rss_KiB": 28376,
+      "log": "pty-final-source-tests.txt"
+    },
+    {
+      "command": [
+        "/home/takazudo/.cache/zudo-e16-numerical-venv/bin/python",
+        "/tmp/osc-wsl-20261013/targeted_tests.py"
+      ],
+      "cwd": "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-r4",
+      "exit_code": 0,
+      "elapsed_seconds": 1.0448744660243392,
+      "child_peak_rss_KiB": 69256,
+      "log": "pty-final-targeted-tests.txt"
+    },
+    {
+      "command": [
+        "pnpm",
+        "circuit:check"
+      ],
+      "cwd": "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-r4",
+      "exit_code": 0,
+      "elapsed_seconds": 2.526412890991196,
+      "child_peak_rss_KiB": 128384,
+      "log": "pty-final-circuit.txt"
+    },
+    {
+      "command": [
+        "pnpm",
+        "check"
+      ],
+      "cwd": "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-r4",
+      "exit_code": 0,
+      "elapsed_seconds": 4.850208885036409,
+      "child_peak_rss_KiB": 279544,
+      "log": "pty-final-doccheck.txt"
+    },
+    {
+      "command": [
+        "bash",
+        "/home/takazudo/.codex/scripts/heavy-guard.sh",
+        "--",
+        "pnpm",
+        "build"
+      ],
+      "cwd": "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-r4",
+      "exit_code": 0,
+      "elapsed_seconds": 18.342641939991154,
+      "child_peak_rss_KiB": 1075248,
+      "log": "pty-final-build.txt"
+    },
+    {
+      "command": [
+        "pnpm",
+        "check:site"
+      ],
+      "cwd": "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-r4",
+      "exit_code": 0,
+      "elapsed_seconds": 10.149573797010817,
+      "child_peak_rss_KiB": 553200,
+      "log": "pty-final-site.txt"
+    }
+  ]
+}

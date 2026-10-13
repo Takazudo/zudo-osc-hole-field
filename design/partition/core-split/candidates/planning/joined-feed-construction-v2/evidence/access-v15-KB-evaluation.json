@@ -1,0 +1,133 @@
+{
+  "status": "SOURCE_DISCONNECTED_PHYSICAL_PORTS",
+  "board": "KB",
+  "initial_input_sha256": {
+    "/tmp/feed-v2-KB-filtered-v15-supp-532.json": "eecae3db28754d394de7198434fb4eb8e609fb7f34959c50445509677d7fe492",
+    "/tmp/feed-v2-board-access-design.json": "f2783e9a0a720e431a00512e9017b55c236e7f31e5a579bbe00e6ee442e00eea",
+    "/workspace/zudo-osc-hole-field/design/partition/core-split/candidates/planning/joined-feed-construction-v2/evaluate_access.py": "0a3c4d1d721895063b9d155d96e8aed8148448cfdc451e944240d655f6f915bf",
+    "/workspace/zudo-osc-hole-field/design/partition/core-split/candidates/planning/joined-feed-construction-v2/staged_caps.py": "f51a2f073e0051c520555ef6de59d1dbbf91ccbd2420ab89aead44736a1956e7",
+    "/workspace/zudo-osc-hole-field/design/partition/core-split/candidates/planning/joined-feed-construction-v2/connectivity.py": "6d84330093d5e5b998aae3c5582a3b3b7f40d7548288e0e43e48fb3645352ce0",
+    "/workspace/zudo-osc-hole-field/design/partition/core-split/candidates/planning/joined-feed-construction-v2/port_obligations.py": "c1aeeb5be28156448365fc78c03e986ef6402602ebfdaa03f2123d0411236375",
+    "/tmp/feed-v2-board-access.py": "18b4daebd09fc7e2bf802ace16195584b7fce40c3b55e72efe7a81faa4b5c2e5"
+  },
+  "steps": [
+    {
+      "step": "caps",
+      "input_sha256": {
+        "/tmp/feed-v2-KB-filtered-v15-supp-532.json": "eecae3db28754d394de7198434fb4eb8e609fb7f34959c50445509677d7fe492",
+        "/workspace/zudo-osc-hole-field/design/partition/core-split/candidates/planning/joined-feed-construction-v2/staged_caps.py": "f51a2f073e0051c520555ef6de59d1dbbf91ccbd2420ab89aead44736a1956e7"
+      },
+      "command": [
+        "timeout",
+        "180s",
+        "/tmp/osc-arch-source-venv/bin/python",
+        "/workspace/zudo-osc-hole-field/design/partition/core-split/candidates/planning/joined-feed-construction-v2/staged_caps.py",
+        "--board",
+        "/tmp/feed-v2-KB-filtered-v15-supp-532.json",
+        "--output",
+        "/tmp/feed-v2-KB-evaluation-v15/normalized-caps.json"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 2.395482333000473,
+      "stdout": "{\"board\": \"KB\", \"caps\": 4744, \"barrels\": 2372}\n",
+      "stderr": "",
+      "output_sha256": "a59a10845d55e98f2df325061c25379fa19c43848ae1145f1cdcd30967f610da",
+      "inputs_before_after_equal": true,
+      "native_calls": 0
+    },
+    {
+      "step": "clip",
+      "input_sha256": {
+        "/tmp/feed-v2-KB-evaluation-v15/normalized-caps.json": "a59a10845d55e98f2df325061c25379fa19c43848ae1145f1cdcd30967f610da",
+        "/tmp/feed-v2-board-access.py": "18b4daebd09fc7e2bf802ace16195584b7fce40c3b55e72efe7a81faa4b5c2e5",
+        "/tmp/feed-v2-board-access-design.json": "f2783e9a0a720e431a00512e9017b55c236e7f31e5a579bbe00e6ee442e00eea"
+      },
+      "command": [
+        "timeout",
+        "180s",
+        "/tmp/osc-arch-source-venv/bin/python",
+        "/tmp/feed-v2-board-access.py",
+        "--filtered-board",
+        "/tmp/feed-v2-KB-evaluation-v15/normalized-caps.json",
+        "--design",
+        "/tmp/feed-v2-board-access-design.json",
+        "--clip-only",
+        "--output",
+        "/tmp/feed-v2-KB-evaluation-v15/clipped-sheets.json"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 42.414312120999966,
+      "stdout": "{\"status\": \"SOURCE_CLIPPED_POLYGONS_ONLY_CONNECTIVITY_UNTESTED\", \"board\": \"KB\", \"sheet_components\": {\"AGND\": 11, \"+5V\": 1305, \"-12V\": 503, \"+12V\": 11}, \"loads\": 0}\n",
+      "stderr": "",
+      "output_sha256": "fadd97519f13c99d9e69b9a0d98da696da9939229225c425f097e3d4b64dfbbe",
+      "inputs_before_after_equal": true,
+      "native_calls": 0
+    },
+    {
+      "step": "graph",
+      "input_sha256": {
+        "/tmp/feed-v2-KB-evaluation-v15/normalized-caps.json": "a59a10845d55e98f2df325061c25379fa19c43848ae1145f1cdcd30967f610da",
+        "/tmp/feed-v2-KB-evaluation-v15/clipped-sheets.json": "fadd97519f13c99d9e69b9a0d98da696da9939229225c425f097e3d4b64dfbbe",
+        "/workspace/zudo-osc-hole-field/design/partition/core-split/candidates/planning/joined-feed-construction-v2/connectivity.py": "6d84330093d5e5b998aae3c5582a3b3b7f40d7548288e0e43e48fb3645352ce0",
+        "/workspace/zudo-osc-hole-field/design/partition/core-split/candidates/planning/joined-feed-construction-v2/staged_caps.py": "f51a2f073e0051c520555ef6de59d1dbbf91ccbd2420ab89aead44736a1956e7"
+      },
+      "command": [
+        "timeout",
+        "180s",
+        "/tmp/osc-arch-source-venv/bin/python",
+        "/workspace/zudo-osc-hole-field/design/partition/core-split/candidates/planning/joined-feed-construction-v2/connectivity.py",
+        "--board",
+        "/tmp/feed-v2-KB-evaluation-v15/normalized-caps.json",
+        "--planes",
+        "/tmp/feed-v2-KB-evaluation-v15/clipped-sheets.json",
+        "--output",
+        "/tmp/feed-v2-KB-evaluation-v15/port-graph.json"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 22.078716910998992,
+      "stdout": "{\"status\": \"SOURCE_DISCONNECTED_LOAD_PORTS\", \"board\": \"KB\", \"direct_load_count\": 1490, \"counts\": {\"nodes\": 17808, \"edges\": 9569}, \"elapsed_seconds\": 19.431469383998774, \"peak_KiB\": 1479876}\ndisconnected 69\n",
+      "stderr": "",
+      "output_sha256": "9e21776478dfa1220b128a36cb12396f7df67f920f47c7926d44740d9323b560",
+      "inputs_before_after_equal": true,
+      "native_calls": 0
+    },
+    {
+      "step": "census",
+      "input_sha256": {
+        "/tmp/feed-v2-KB-evaluation-v15/normalized-caps.json": "a59a10845d55e98f2df325061c25379fa19c43848ae1145f1cdcd30967f610da",
+        "/tmp/feed-v2-KB-evaluation-v15/clipped-sheets.json": "fadd97519f13c99d9e69b9a0d98da696da9939229225c425f097e3d4b64dfbbe",
+        "/tmp/feed-v2-KB-evaluation-v15/port-graph.json": "9e21776478dfa1220b128a36cb12396f7df67f920f47c7926d44740d9323b560",
+        "/workspace/zudo-osc-hole-field/design/partition/core-split/candidates/planning/joined-feed-construction-v2/port_obligations.py": "c1aeeb5be28156448365fc78c03e986ef6402602ebfdaa03f2123d0411236375"
+      },
+      "command": [
+        "timeout",
+        "180s",
+        "/tmp/osc-arch-source-venv/bin/python",
+        "/workspace/zudo-osc-hole-field/design/partition/core-split/candidates/planning/joined-feed-construction-v2/port_obligations.py",
+        "--board",
+        "/tmp/feed-v2-KB-evaluation-v15/normalized-caps.json",
+        "--planes",
+        "/tmp/feed-v2-KB-evaluation-v15/clipped-sheets.json",
+        "--graph",
+        "/tmp/feed-v2-KB-evaluation-v15/port-graph.json",
+        "--output",
+        "/tmp/feed-v2-KB-evaluation-v15/port-obligations.json"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 2.766781660999186,
+      "stdout": "{\"board\": \"KB\", \"physical_pad_count\": 2281, \"counts_by_net\": {\"+5V\": 169, \"AGND\": 32, \"+12V\": 5, \"-12V\": 11}, \"direct_loads\": 69, \"supplemental\": 148}\n",
+      "stderr": "",
+      "output_sha256": "868cd812fb6435289a71fd2e0b26f7b8665db88550759556941de1967372b582",
+      "inputs_before_after_equal": true,
+      "native_calls": 0
+    }
+  ],
+  "unresolved_physical_pad_count": 217,
+  "unresolved_direct_load_count": 69,
+  "unresolved_supplemental_count": 148,
+  "complete_physical_connectivity": false,
+  "signed_load_proof_complete": false,
+  "manufacturing_qualified": false,
+  "accepted": false,
+  "native_calls": 0
+}

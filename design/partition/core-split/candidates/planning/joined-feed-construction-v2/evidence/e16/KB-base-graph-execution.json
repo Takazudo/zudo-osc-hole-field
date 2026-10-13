@@ -1,0 +1,28 @@
+{
+ "step": "graph",
+ "input_sha256": {
+  "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/34b85f10-f889-4ac8-97a0-7f4228cf221c/scratchpad/e16/KB-eval-base/normalized-caps.json": "4ae53d0331c705e14d7e16bc3aab9456c6afffd65dc9374101c4f9204d144048",
+  "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/34b85f10-f889-4ac8-97a0-7f4228cf221c/scratchpad/e16/KB-eval-base/clipped-sheets.json": "be836cda07519babfa2d95cb3388fb4739af0a661e82810d28b0d601269d07d9",
+  "/home/takazudo/repos/circuits/zudo-osc-hole-field/design/partition/core-split/candidates/planning/joined-feed-construction-v2/connectivity.py": "6d84330093d5e5b998aae3c5582a3b3b7f40d7548288e0e43e48fb3645352ce0",
+  "/home/takazudo/repos/circuits/zudo-osc-hole-field/design/partition/core-split/candidates/planning/joined-feed-construction-v2/staged_caps.py": "f51a2f073e0051c520555ef6de59d1dbbf91ccbd2420ab89aead44736a1956e7"
+ },
+ "command": [
+  "timeout",
+  "180s",
+  "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/34b85f10-f889-4ac8-97a0-7f4228cf221c/scratchpad/venv/bin/python",
+  "/home/takazudo/repos/circuits/zudo-osc-hole-field/design/partition/core-split/candidates/planning/joined-feed-construction-v2/connectivity.py",
+  "--board",
+  "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/34b85f10-f889-4ac8-97a0-7f4228cf221c/scratchpad/e16/KB-eval-base/normalized-caps.json",
+  "--planes",
+  "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/34b85f10-f889-4ac8-97a0-7f4228cf221c/scratchpad/e16/KB-eval-base/clipped-sheets.json",
+  "--output",
+  "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/34b85f10-f889-4ac8-97a0-7f4228cf221c/scratchpad/e16/KB-eval-base/port-graph.json"
+ ],
+ "exit_code": 0,
+ "elapsed_seconds": 10.011810248950496,
+ "stdout": "{\"status\": \"SOURCE_DISCONNECTED_LOAD_PORTS\", \"board\": \"KB\", \"direct_load_count\": 1490, \"counts\": {\"nodes\": 4711, \"edges\": 300}, \"elapsed_seconds\": 7.512434556032531, \"peak_KiB\": 1110544}\ndisconnected 1490\n",
+ "stderr": "",
+ "output_sha256": "b8a60fef8e9a40e9ab8561a4cd457b8265275309cdc14de5cbd025d034df031a",
+ "inputs_before_after_equal": true,
+ "native_calls": 0
+}

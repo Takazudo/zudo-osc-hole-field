@@ -1,0 +1,100 @@
+{
+  "status": "SOURCE REVIEW AND HOST PROVISIONING PASS; route NOT ADMITTED / NOT STARTED",
+  "source_commit": "59b0c2c21ccf2ded58cd2031e4a4289d546feca3",
+  "method_commit": "29140d4e19d526eed3a02a73c33f8ce4219c78f0",
+  "checks": [
+    "28decision tests including4newsource-onlyprovisioning tests PASS",
+    "existing hosted/local dispatch boundary test PASS",
+    "all14packet file bindings checked against gitshow29140d4e PASS",
+    "YAML parsing/onejob43mincap/shellsyntax PASS",
+    "baseline1881original+2reviewedoverrides/195harnesses390fullendpoints PASS",
+    "pnpmcircuit:check pre/post PASS; pnpmcheck PASS",
+    "independent baseline_review inspection and4focusedtests PASS",
+    "Provision-only Actions succeeded; fullZIP SHA/size/CRC and7member hashes authenticated locally"
+  ],
+  "untouched": [
+    "frozen method29140d4e and scripts/kicad sources",
+    "canonicalhardware",
+    "c4a4e824sourcegeometry",
+    "prior1347refusalreceipt+logs",
+    "mechanical/powerlaneproducers"
+  ],
+  "route_not_run": [
+    "probecontainers",
+    "nativeworker",
+    "sixZIPfixturepreparation",
+    "router",
+    "apply",
+    "settle",
+    "freshcopy",
+    "audit"
+  ],
+  "renewal_required": true,
+  "run": {
+    "id": 38146298766,
+    "url": "https://github.com/Takazudo/zudo-osc-hole-field/actions/runs/38146298766",
+    "orchestration_sha": "84339974f72e77f6bcf4e0edb72eb5b6b7356005",
+    "job_id": 114490265714,
+    "conclusion": "success",
+    "artifact_id": 11705061761,
+    "artifact_zip_bytes": 10371,
+    "artifact_zip_sha256": "d9e24a42e4d173cf56f7fc7f5e2eaead8a8677c7d0636ab3774718185e109fea",
+    "zip_crc_members_passed": 7
+  },
+  "provisioning": {
+    "python": {
+      "path": "/opt/hostedtoolcache/Python/3.11.17/x64/bin/python",
+      "version": "3.11.17 (main, Oct  1 2026, 14:32:31) [GCC 13.3.0]",
+      "packages": {
+        "numpy": "2.2.6",
+        "scipy": "1.15.3",
+        "shapely": "2.1.2"
+      }
+    },
+    "image_digest": "kicad/kicad@sha256:18693567392b80da435f9fa952ce3a3e534c66eb5a6033f5b9c80aa3b19dd3ec",
+    "image_id": "sha256:1398ad98bb7f066ff8b445e2be96131f0f461a7765ff0078a0b207461b705f51",
+    "pull_client_exit": 0,
+    "memory_samples": 101,
+    "minimum_sampled_free_bytes": 15282429952,
+    "maximum_sampled_backend_bytes": 3128696832,
+    "accounting_limitation": "sum of disjoint Docker/containerd service cgroups and verified contained backend helpers; sampled abort threshold, not daemon hard-cap enforcement",
+    "source_bindings_before_after_unchanged": true,
+    "source_binding_count": 14,
+    "native_workers": 0,
+    "probe_containers": 0,
+    "recipe_only": "Fresh future host must repeat setup; no image persistence or route admission inferred"
+  },
+  "capabilities_checked_by_successful_source_path": [
+    "GITHUB_ACTIONS=true and RUNNER_ENVIRONMENT=github-hosted",
+    "PID1systemd",
+    "cgroupv2memorycontroller",
+    "noninteractive sudo",
+    "verifiedlocalDockerunixsocket/systemd cgroupdriver/v2/memoryandswapsupport",
+    "reviewed Dockerstorageandbackendcgroupaccounting",
+    ">=8GiBfreebeforeandafterpreparation",
+    "exactRepoDigestlocallyauthenticated"
+  ],
+  "source_files_sha256_at_source_commit": {
+    "provision_host.py": "04d2f1fc1ef1495059e850dcc0939981b9035910dc765797651cb3bed03b30dd",
+    "provision-host.workflow.yml": "afb86705b8ecba964ad3fbee31445ebd87ea2d258d0d19a3f15ca4b897d5e6da",
+    "test_provision_host.py": "0ce9bdf25929a9b5717a0a116b932077d796f96e6a03d38b666c159194f725c2",
+    "minimum-native-request.json": "0e1450ee9bdf1bb6bf7c19b2b14516993a001dfb30df99c433bc3d2fb8df2632",
+    "minimum-native-request.md": "4aad2b36bd54cc7781938ab71cc638ac8a2df4f99b18bbc464da29cc960f768e",
+    "provisioning/trusted-source-recovery.json": "4153f4434be12536ba42764b0c4892548571e55372895b769b5b6a36ad24ed70",
+    "provisioning/reservation-release.json": "8d953dda0064ec04d6219845e2babcafebe3d752a370f606c8e470333f87d47f",
+    "provisioning/README.md": "fdc86269ab56ea50f380f50c23048fc3460deb4b32cc7a23a49b47777b53dcc2"
+  },
+  "independent_evidence_review": "PASS full ZIP/CRC/memberbytes;14gitshow method hashes;driver hash at source/orchestration commits;Python/image/accounting receipts. Provisioning-only, no new native hardcapqualification.",
+  "evidence_files_sha256": {
+    "README.md": "dae64833591a79ffde6831117fd862b0211edb972dd4d1be64727ed8eed0010c",
+    "actions-log.json": "4268b26c9f5475c09cb6d6435953f3d1a1ed1bcfcacd62065ff0fda969cd971c",
+    "artifact-members.json": "91f035a2fc645839327d9f36c2cb08de2aa34e62357dd755e1a30d6e74980116",
+    "bootstrap.json": "c8b3accd625cb51e53a8fdb84144a357237c3e55e1c37d1c365939cf66f9912a",
+    "host.json": "568a933421f2fefaa139cb0b55631f253a5576ba7892ab165ff8f96aa9b93011",
+    "image-preparation.json": "c4a30f5a81b58d6ccc3ce1c592ac09dd3b29f644d97702435ea466c9fb75cd1e",
+    "job-outcome.json": "462b349e7c99b7793b45409e0ecf45fe2c2a5ee0cf2812c07d1a526551e132db",
+    "provision-logs.json": "a3b8d0a9302204581318b507a828d156b257054e0395b3165762a31c40861187",
+    "reservation-release.json": "8d953dda0064ec04d6219845e2babcafebe3d752a370f606c8e470333f87d47f",
+    "trusted-source-recovery.json": "4153f4434be12536ba42764b0c4892548571e55372895b769b5b6a36ad24ed70"
+  }
+}

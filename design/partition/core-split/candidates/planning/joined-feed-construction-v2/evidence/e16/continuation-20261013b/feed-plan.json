@@ -1,0 +1,213 @@
+{
+  "schema": "e16-feed-remedies-predeclaration-v1",
+  "declared_before_execution": true,
+  "scope": "P-to-KA six fixed receiving lands only. JL/JR branch lands are outgoing load supports, never source terminals. No CN301/XB301 implementation invented.",
+  "input_sha256": {
+    "source": "e4645b068f47668244a7a9cef19ed9b9d0b4bebcb421d3350f227174d8b1b58d",
+    "planes": "4f6b6765602330acc196dbac36e8adc31e82a96e42870a83ee41bfebd7492f1f",
+    "contract": "c8dc5292853c8cbd50759b49592d2a576cbdc98d22a4d87fcbb4864552fe1a5c"
+  },
+  "baseline": "Exact KA-access-t2 objects without addition or ideal-source credit.",
+  "variants": [
+    {
+      "id": "parallel-vias",
+      "geometry": "Two additional .6mm diameter/.3mm drill through vias per fixed receiving land, at centre +/-1mm x. No site search."
+    },
+    {
+      "id": "wider-face",
+      "geometry": "1.0mm F.Cu straight additive segment TP990034-to-existing-via 2b960070-853b-56b6-a9d2-78d1146f6ec1 and TP990036-to-existing-via f2a503a6-c1fe-5ca2-9b93-0a3ae426e4d5; no new via."
+    },
+    {
+      "id": "combined",
+      "geometry": "Exactly the union of parallel-vias and wider-face proposals; every legal addition considered once in fixed target order."
+    }
+  ],
+  "targets": [
+    {
+      "ref": "TP990026",
+      "net": "+12V",
+      "center_mm": [
+        142.0,
+        175.0
+      ],
+      "pad_id": "4837930f-294a-5712-878f-44a71b63bce6",
+      "parallel_via_centers_mm": [
+        [
+          141.0,
+          175.0
+        ],
+        [
+          143.0,
+          175.0
+        ]
+      ],
+      "face_note": "Existing transfer via is centred in the fixed 4x4mm pad; additive face copper inside the pad would have zero new copper area and is intentionally not proposed."
+    },
+    {
+      "ref": "TP990028",
+      "net": "-12V",
+      "center_mm": [
+        159.0,
+        175.0
+      ],
+      "pad_id": "3cbd2fac-4ce5-570f-8145-410da956c229",
+      "parallel_via_centers_mm": [
+        [
+          158.0,
+          175.0
+        ],
+        [
+          160.0,
+          175.0
+        ]
+      ],
+      "face_note": "Existing transfer via is centred in the fixed 4x4mm pad; additive face copper inside the pad would have zero new copper area and is intentionally not proposed."
+    },
+    {
+      "ref": "TP990030",
+      "net": "+5V",
+      "center_mm": [
+        176.0,
+        175.0
+      ],
+      "pad_id": "6c19f57d-f1a8-589d-9b47-ca3e44db7e3e",
+      "parallel_via_centers_mm": [
+        [
+          175.0,
+          175.0
+        ],
+        [
+          177.0,
+          175.0
+        ]
+      ],
+      "face_note": "Existing transfer via is centred in the fixed 4x4mm pad; additive face copper inside the pad would have zero new copper area and is intentionally not proposed."
+    },
+    {
+      "ref": "TP990032",
+      "net": "AGND",
+      "center_mm": [
+        193.0,
+        175.0
+      ],
+      "pad_id": "e3e17aa0-e051-54f2-ae54-e4ce7021dd7d",
+      "parallel_via_centers_mm": [
+        [
+          192.0,
+          175.0
+        ],
+        [
+          194.0,
+          175.0
+        ]
+      ],
+      "face_note": "Existing transfer via is centred in the fixed 4x4mm pad; additive face copper inside the pad would have zero new copper area and is intentionally not proposed."
+    },
+    {
+      "ref": "TP990034",
+      "net": "AGND",
+      "center_mm": [
+        210.0,
+        179.0
+      ],
+      "pad_id": "eeac10de-05d8-5d8c-ac8a-93f41f21bc5c",
+      "parallel_via_centers_mm": [
+        [
+          209.0,
+          179.0
+        ],
+        [
+          211.0,
+          179.0
+        ]
+      ],
+      "face_target": {
+        "object_id": "2b960070-853b-56b6-a9d2-78d1146f6ec1",
+        "center_mm": [
+          210.605,
+          182.95
+        ],
+        "width_mm": 1.0,
+        "path_mm": [
+          [
+            210.0,
+            179.0
+          ],
+          [
+            210.605,
+            182.95
+          ]
+        ]
+      },
+      "intentional_face_drill_ids": [
+        "7d74590e-f1ea-5449-8835-f67633187c17",
+        "2b960070-853b-56b6-a9d2-78d1146f6ec1"
+      ]
+    },
+    {
+      "ref": "TP990036",
+      "net": "AGND",
+      "center_mm": [
+        227.0,
+        179.0
+      ],
+      "pad_id": "dbf0db68-b055-5a30-963b-c019de6ab1a2",
+      "parallel_via_centers_mm": [
+        [
+          226.0,
+          179.0
+        ],
+        [
+          228.0,
+          179.0
+        ]
+      ],
+      "face_target": {
+        "object_id": "f2a503a6-c1fe-5ca2-9b93-0a3ae426e4d5",
+        "center_mm": [
+          227.3,
+          175.98
+        ],
+        "width_mm": 1.0,
+        "path_mm": [
+          [
+            227.0,
+            179.0
+          ],
+          [
+            227.3,
+            175.98
+          ]
+        ]
+      },
+      "intentional_face_drill_ids": [
+        "f2a503a6-c1fe-5ca2-9b93-0a3ae426e4d5"
+      ]
+    }
+  ],
+  "parameters_mm": {
+    "clearance": 0.25,
+    "hole_clearance": 0.25,
+    "via_diameter": 0.6,
+    "via_drill": 0.3,
+    "face_width": 1.0,
+    "sheet_margin": 0.05,
+    "severance_guard_half": 2.0
+  },
+  "stops": [
+    "Any input seal or fixed ref/pad/net/face/coordinate/endpoint change stops the entire pilot before search.",
+    "Each fixed proposal rejected if any original or prior-added foreign copper/rule-area/drill witness, no positive face contact, no complete same-net sheet ring, cumulative sheet severance or outside fixed land. Every rejection retained. No alternative sites or paths tried. For the two face segments only, exact predeclared same-net endpoint/source-inpad drill IDs are allowed solely on positive annulus contact; every exempt original drill record and annulus area is retained as an intentional contact witness. Bore copper itself is absent and is clipped by the fragment graph.",
+    "At most three variants plus unchanged baseline; twelve fixed via and two face proposals per variant. No old object removed, replaced, widened or reidentified.",
+    "Local legality grants zero complete-path credit. Reclip all sheets and rerun the complete graph/census before finite comparison. Regressions reject a variant, never silently discard old copper.",
+    "Every process/temperature/return state and complete path required by the parent package remains required. No bounded local result closes upstream source, P-side copper or CN301/XB301 raw/load dependency."
+  ],
+  "source_status": "SOURCE_DEPENDENCY_NEGATIVE",
+  "remaining_dependencies": [
+    "Exact source/inlet/protection identities and physical raw-to-load bridge at fixed CN301/XB301 interface",
+    "P-side physical conductor and six POWER-P-* exact Alpha Wire 5859 BK005 wire/end geometry and terminations; maximum110mm metadata is not actual source path",
+    "Full source-to-load and return operator: shared foil/barrel/wires/terminations charged once, no equipotential tie across spatially separated branches",
+    "Process-qualified filled/capped contacts, native materialization/DRC/connectivity and admission"
+  ],
+  "native_calls": 0,
+  "adopted": false
+}

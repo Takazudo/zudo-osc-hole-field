@@ -1,0 +1,129 @@
+{
+  "domain": "O1",
+  "board": "K1402",
+  "spec_sha256": "e17c8f01b0fe08164cee514d41b3f2bfea2a2fe23da181bcb4c3dae479404c99",
+  "bounds_mm": [
+    104.76,
+    202.23,
+    142.23,
+    232.29
+  ],
+  "search_wall_seconds": 9.273817893,
+  "diagnostics": [
+    {
+      "net": "+12V",
+      "endpoints": [
+        "C1134.1"
+      ],
+      "reason": "search_exhausted",
+      "phase": "route",
+      "attempts": [
+        {
+          "window_cells": [
+            54,
+            182,
+            248,
+            377
+          ],
+          "expanded": 211,
+          "limit": 50000
+        },
+        {
+          "window_cells": [
+            54,
+            182,
+            222,
+            377
+          ],
+          "expanded": 211,
+          "limit": 50000
+        }
+      ],
+      "max_expansions": 50000,
+      "window_mm": 6
+    },
+    {
+      "net": "-12V",
+      "endpoints": [
+        "C1135.1"
+      ],
+      "reason": "search_exhausted",
+      "phase": "route",
+      "attempts": [
+        {
+          "window_cells": [
+            54,
+            182,
+            145,
+            274
+          ],
+          "expanded": 23540,
+          "limit": 50000
+        },
+        {
+          "window_cells": [
+            54,
+            182,
+            145,
+            299
+          ],
+          "expanded": 27887,
+          "limit": 50000
+        }
+      ],
+      "max_expansions": 50000,
+      "window_mm": 6
+    },
+    {
+      "net": "AGND",
+      "endpoints": [
+        "C1111.2"
+      ],
+      "reason": "expansion_limit",
+      "phase": "route",
+      "attempts": [
+        {
+          "window_cells": [
+            139,
+            294,
+            2,
+            246
+          ],
+          "expanded": 50001,
+          "limit": 50000
+        }
+      ],
+      "max_expansions": 50000,
+      "window_mm": 6
+    },
+    {
+      "net": "X0A34A50EAB62B0C19178",
+      "endpoints": [
+        "U1114.6"
+      ],
+      "reason": "search_exhausted",
+      "phase": "route",
+      "attempts": [
+        {
+          "window_cells": [
+            2,
+            302,
+            189,
+            356
+          ],
+          "expanded": 403,
+          "limit": 50000
+        }
+      ],
+      "max_expansions": 50000,
+      "window_mm": 6
+    }
+  ],
+  "numerical_versions": {
+    "numpy": "2.2.6",
+    "scipy": "1.15.3",
+    "shapely": "2.1.2"
+  },
+  "python_version": "3.11.17 (main, Oct  1 2026, 14:32:31) [GCC 13.3.0]",
+  "accepted": false
+}

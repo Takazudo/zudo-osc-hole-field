@@ -1,0 +1,2281 @@
+{
+  "reviewer": "/root/review_admission",
+  "checked_at_unix": 1791930086.9789908,
+  "source_sha": "852ffac7f85aff4bb436eb25f7ce993cee48146b",
+  "request_sha256": "ef0213b3b38f4de23804ad192043b082d8e1b2be3086c5e20e4343afea4052d6",
+  "bound_inputs": 339,
+  "protection": {
+    "candidate": {
+      "files": 539,
+      "changed": []
+    },
+    "original": {
+      "files": 550,
+      "changed": []
+    }
+  },
+  "receipt": {
+    "request_sha256": "ef0213b3b38f4de23804ad192043b082d8e1b2be3086c5e20e4343afea4052d6",
+    "source_sha": "852ffac7f85aff4bb436eb25f7ce993cee48146b",
+    "command": [
+      "env",
+      "-u",
+      "E16_SOLVE_SCOPE",
+      "OPENBLAS_NUM_THREADS=1",
+      "OMP_NUM_THREADS=1",
+      "MKL_NUM_THREADS=1",
+      "/home/takazudo/.cache/zudo-e16-numerical-venv/bin/python",
+      "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-campaign/design/partition/core-split/candidates/planning/joined-feed-construction-v2/run_coupled_e16.py",
+      "--python",
+      "/home/takazudo/.cache/zudo-e16-numerical-venv/bin/python",
+      "--finite",
+      "/home/takazudo/.cache/zudo-e16-runs/20261013-finite-t2b",
+      "--output",
+      "/home/takazudo/.cache/zudo-e16-runs/coupled-approved-852ffac-8262c033",
+      "--config",
+      "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-campaign/design/partition/core-split/candidates/planning/joined-feed-construction-v2/evidence/e16/continuation-20261013b/coupled-network-config.json",
+      "--cases",
+      "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-campaign/design/partition/core-split/candidates/planning/joined-feed-construction-v2/evidence/e16/process-cases.json",
+      "--depth",
+      "uniform-dielectric",
+      "--unit-heavy-guard-sha256",
+      "074a463dd6b3a65b7e2168df95b200c0192c414862375bcfb95f979c34c67ee7",
+      "--net=+12V",
+      "--net=-12V",
+      "--net=+5V",
+      "--net=AGND",
+      "--case",
+      "nominal-average",
+      "--case",
+      "sensitivity-thin",
+      "--case",
+      "legacy-conditional-requirement"
+    ],
+    "exit_code": 0,
+    "process_exit_code": 0,
+    "postrun_integrity": {
+      "request_unchanged": true,
+      "approval_unchanged": true,
+      "head_unchanged": true,
+      "checkout_clean": true
+    },
+    "elapsed_seconds": 7891.042612195015,
+    "child_peak_rss_KiB": 2061976,
+    "changed_inputs": [],
+    "log_sha256": "0685a7c55d614caf50d486163c7c7032c960b0202e5cd42dc7a9f75e9277c5c2",
+    "scope_observations_sha256": "f18359c4176c2a29078db6b4ea03b2b3301bb81b61f6376c91ead4a0e92ea7d6"
+  },
+  "step_counts": {
+    "dpoint": 111,
+    "reduce": 24,
+    "couple": 12,
+    "service": 1
+  },
+  "step_count": 148,
+  "failed_steps": [],
+  "numerical_count": 147,
+  "numerical_failures": [],
+  "coupled": [
+    {
+      "file": "coupled-+12V-legacy-conditional-requirement-uniform-dielectric.json.gz",
+      "net": "+12V",
+      "case": "legacy-conditional-requirement",
+      "depth": "uniform-dielectric",
+      "states": [
+        "all-present"
+      ],
+      "not_solved": {}
+    },
+    {
+      "file": "coupled-+12V-nominal-average-uniform-dielectric.json.gz",
+      "net": "+12V",
+      "case": "nominal-average",
+      "depth": "uniform-dielectric",
+      "states": [
+        "all-present"
+      ],
+      "not_solved": {}
+    },
+    {
+      "file": "coupled-+12V-sensitivity-thin-uniform-dielectric.json.gz",
+      "net": "+12V",
+      "case": "sensitivity-thin",
+      "depth": "uniform-dielectric",
+      "states": [
+        "all-present"
+      ],
+      "not_solved": {}
+    },
+    {
+      "file": "coupled-+5V-legacy-conditional-requirement-uniform-dielectric.json.gz",
+      "net": "+5V",
+      "case": "legacy-conditional-requirement",
+      "depth": "uniform-dielectric",
+      "states": [
+        "all-present"
+      ],
+      "not_solved": {}
+    },
+    {
+      "file": "coupled-+5V-nominal-average-uniform-dielectric.json.gz",
+      "net": "+5V",
+      "case": "nominal-average",
+      "depth": "uniform-dielectric",
+      "states": [
+        "all-present"
+      ],
+      "not_solved": {}
+    },
+    {
+      "file": "coupled-+5V-sensitivity-thin-uniform-dielectric.json.gz",
+      "net": "+5V",
+      "case": "sensitivity-thin",
+      "depth": "uniform-dielectric",
+      "states": [
+        "all-present"
+      ],
+      "not_solved": {}
+    },
+    {
+      "file": "coupled--12V-legacy-conditional-requirement-uniform-dielectric.json.gz",
+      "net": "-12V",
+      "case": "legacy-conditional-requirement",
+      "depth": "uniform-dielectric",
+      "states": [
+        "all-present"
+      ],
+      "not_solved": {}
+    },
+    {
+      "file": "coupled--12V-nominal-average-uniform-dielectric.json.gz",
+      "net": "-12V",
+      "case": "nominal-average",
+      "depth": "uniform-dielectric",
+      "states": [
+        "all-present"
+      ],
+      "not_solved": {}
+    },
+    {
+      "file": "coupled--12V-sensitivity-thin-uniform-dielectric.json.gz",
+      "net": "-12V",
+      "case": "sensitivity-thin",
+      "depth": "uniform-dielectric",
+      "states": [
+        "all-present"
+      ],
+      "not_solved": {}
+    },
+    {
+      "file": "coupled-AGND-legacy-conditional-requirement-uniform-dielectric.json.gz",
+      "net": "AGND",
+      "case": "legacy-conditional-requirement",
+      "depth": "uniform-dielectric",
+      "states": [
+        "all-present",
+        "remove-W4",
+        "remove-W4-W5",
+        "remove-W4-W6",
+        "remove-W5",
+        "remove-W5-W6",
+        "remove-W6"
+      ],
+      "not_solved": {
+        "all-three-open": "KB AGND has no conductor to the source: a floating network, no finite result"
+      }
+    },
+    {
+      "file": "coupled-AGND-nominal-average-uniform-dielectric.json.gz",
+      "net": "AGND",
+      "case": "nominal-average",
+      "depth": "uniform-dielectric",
+      "states": [
+        "all-present",
+        "remove-W4",
+        "remove-W4-W5",
+        "remove-W4-W6",
+        "remove-W5",
+        "remove-W5-W6",
+        "remove-W6"
+      ],
+      "not_solved": {
+        "all-three-open": "KB AGND has no conductor to the source: a floating network, no finite result"
+      }
+    },
+    {
+      "file": "coupled-AGND-sensitivity-thin-uniform-dielectric.json.gz",
+      "net": "AGND",
+      "case": "sensitivity-thin",
+      "depth": "uniform-dielectric",
+      "states": [
+        "all-present",
+        "remove-W4",
+        "remove-W4-W5",
+        "remove-W4-W6",
+        "remove-W5",
+        "remove-W5-W6",
+        "remove-W6"
+      ],
+      "not_solved": {
+        "all-three-open": "KB AGND has no conductor to the source: a floating network, no finite result"
+      }
+    }
+  ],
+  "actual_solver_scope_count": 146,
+  "scopes": [
+    {
+      "scope": "/user.slice/user-1000.slice/user@1000.service/app.slice/run-r00e5351d57a14b2d8be8bfe09d4b68b3.scope",
+      "samples": 44,
+      "pids": [
+        1671053
+      ],
+      "peak": 1593954304,
+      "cleanup": {
+        "exit": 4,
+        "stdout": "inactive",
+        "stderr": ""
+      },
+      "cgroup_exists": false
+    },
+    {
+      "scope": "/user.slice/user-1000.slice/user@1000.service/app.slice/run-r00ed23e08230454e9ac5ff5c9b500dfa.scope",
+      "samples": 17,
+      "pids": [
+        1675660
+      ],
+      "peak": 1591365632,
+      "cleanup": {
+        "exit": 4,
+        "stdout": "inactive",
+        "stderr": ""
+      },
+      "cgroup_exists": false
+    },
+    {
+      "scope": "/user.slice/user-1000.slice/user@1000.service/app.slice/run-r02013c33c8c547bfae2a0438bdb62e9f.scope",
+      "samples": 14,
+      "pids": [
+        1653351
+      ],
+      "peak": 1671000064,
+      "cleanup": {
+        "exit": 4,
+        "stdout": "inactive",
+        "stderr": ""
+      },
+      "cgroup_exists": false
+    },
+    {
+      "scope": "/user.slice/user-1000.slice/user@1000.service/app.slice/run-r06ab6f0f8d7e495394cf061fa0b573fc.scope",
+      "samples": 10,
+      "pids": [
+        1662505
+      ],
+      "peak": 1162915840,
+      "cleanup": {
+        "exit": 4,
+        "stdout": "inactive",
+        "stderr": ""
+      },
+      "cgroup_exists": false
+    },
+    {
+      "scope": "/user.slice/user-1000.slice/user@1000.service/app.slice/run-r09d2bd784d594369ad5adc4332d11229.scope",
+      "samples": 44,
+      "pids": [
+        1674743
+      ],
+      "peak": 1592147968,
+      "cleanup": {
+        "exit": 4,
+        "stdout": "inactive",
+        "stderr": ""
+      },
+      "cgroup_exists": false
+    },
+    {
+      "scope": "/user.slice/user-1000.slice/user@1000.service/app.slice/run-r0a1a2d74b82143118af97e3f5fcd8712.scope",
+      "samples": 42,
+      "pids": [
+        1676456
+      ],
+      "peak": 1497690112,
+      "cleanup": {
+        "exit": 4,
+        "stdout": "inactive",
+        "stderr": ""
+      },
+      "cgroup_exists": false
+    },
+    {
+      "scope": "/user.slice/user-1000.slice/user@1000.service/app.slice/run-r0bcd4a76a9ed48fe8e1fd54cd44eb2bf.scope",
+      "samples": 41,
+      "pids": [
+        1669378
+      ],
+      "peak": 1501147136,
+      "cleanup": {
+        "exit": 4,
+        "stdout": "inactive",
+        "stderr": ""
+      },
+      "cgroup_exists": false
+    },
+    {
+      "scope": "/user.slice/user-1000.slice/user@1000.service/app.slice/run-r0d13f7bd2a1e4987a3dd485eb9506349.scope",
+      "samples": 40,
+      "pids": [
+        1669817
+      ],
+      "peak": 1500094464,
+      "cleanup": {
+        "exit": 4,
+        "stdout": "inactive",
+        "stderr": ""
+      },
+      "cgroup_exists": false
+    },
+    {
+      "scope": "/user.slice/user-1000.slice/user@1000.service/app.slice/run-r0d5eac0fc8a641b298fa51e80a7ea22d.scope",
+      "samples": 40,
+      "pids": [
+        1667635
+      ],
+      "peak": 1500831744,
+      "cleanup": {
+        "exit": 4,
+        "stdout": "inactive",
+        "stderr": ""
+      },
+      "cgroup_exists": false
+    },
+    {
+      "scope": "/user.slice/user-1000.slice/user@1000.service/app.slice/run-r0ee90ef00e86428e98be00e6ba54d826.scope",
+      "samples": 6,
+      "pids": [
+        1665208
+      ],
+      "peak": 835211264,
+      "cleanup": {
+        "exit": 4,
+        "stdout": "inactive",
+        "stderr": ""
+      },
+      "cgroup_exists": false
+    },
+    {
+      "scope": "/user.slice/user-1000.slice/user@1000.service/app.slice/run-r1058bbc41bc549f38fee93511e161095.scope",
+      "samples": 22,
+      "pids": [
+        1665769
+      ],
+      "peak": 919195648,
+      "cleanup": {
+        "exit": 4,
+        "stdout": "inactive",
+        "stderr": ""
+      },
+      "cgroup_exists": false
+    },
+    {
+      "scope": "/user.slice/user-1000.slice/user@1000.service/app.slice/run-r115e1eddb1104342a5066fedf6ec566f.scope",
+      "samples": 42,
+      "pids": [
+        1688087
+      ],
+      "peak": 1502212096,
+      "cleanup": {
+        "exit": 4,
+        "stdout": "inactive",
+        "stderr": ""
+      },
+      "cgroup_exists": false
+    },
+    {
+      "scope": "/user.slice/user-1000.slice/user@1000.service/app.slice/run-r128eb43bdf424f66ac19128f217daa43.scope",
+      "samples": 40,
+      "pids": [
+        1679242
+      ],
+      "peak": 1500565504,
+      "cleanup": {
+        "exit": 4,
+        "stdout": "inactive",
+        "stderr": ""
+      },
+      "cgroup_exists": false
+    },
+    {
+      "scope": "/user.slice/user-1000.slice/user@1000.service/app.slice/run-r162c02f2241249be9d8120242ef6ad48.scope",
+      "samples": 21,
+      "pids": [
+        1664312
+      ],
+      "peak": 921133056,
+      "cleanup": {
+        "exit": 4,
+        "stdout": "inactive",
+        "stderr": ""
+      },
+      "cgroup_exists": false
+    },
+    {
+      "scope": "/user.slice/user-1000.slice/user@1000.service/app.slice/run-r18f903d194e044c890d458eb2fd23041.scope",
+      "samples": 2,
+      "pids": [
+        1653310
+      ],
+      "peak": 616845312,
+      "cleanup": {
+        "exit": 4,
+        "stdout": "inactive",
+        "stderr": ""
+      },
+      "cgroup_exists": false
+    },
+    {
+      "scope": "/user.slice/user-1000.slice/user@1000.service/app.slice/run-r19aab49971ab4ae489d76bf9014e7205.scope",
+      "samples": 21,
+      "pids": [
+        1685658
+      ],
+      "peak": 1973149696,
+      "cleanup": {
+        "exit": 4,
+        "stdout": "inactive",
+        "stderr": ""
+      },
+      "cgroup_exists": false
+    },
+    {
+      "scope": "/user.slice/user-1000.slice/user@1000.service/app.slice/run-r1e4353d3b31f4719a42caa112b5a2674.scope",
+      "samples": 4,
+      "pids": [
+        1685595
+      ],
+      "peak": 963014656,
+      "cleanup": {
+        "exit": 4,
+        "stdout": "inactive",
+        "stderr": ""
+      },
+      "cgroup_exists": false
+    },
+    {
+      "scope": "/user.slice/user-1000.slice/user@1000.service/app.slice/run-r24ee69f7f5704fdc91e3821063cd34d5.scope",
+      "samples": 45,
+      "pids": [
+        1682780
+      ],
+      "peak": 1593954304,
+      "cleanup": {
+        "exit": 4,
+        "stdout": "inactive",
+        "stderr": ""
+      },
+      "cgroup_exists": false
+    },
+    {
+      "scope": "/user.slice/user-1000.slice/user@1000.service/app.slice/run-r2614a1b38a174357a8f6057867945a4f.scope",
+      "samples": 34,
+      "pids": [
+        1657590
+      ],
+      "peak": 1323003904,
+      "cleanup": {
+        "exit": 4,
+        "stdout": "inactive",
+        "stderr": ""
+      },
+      "cgroup_exists": false
+    },
+    {
+      "scope": "/user.slice/user-1000.slice/user@1000.service/app.slice/run-r26b4a91be6a44ed99bbc421e606b9f1b.scope",
+      "samples": 45,
+      "pids": [
+        1694766
+      ],
+      "peak": 1594019840,
+      "cleanup": {
+        "exit": 4,
+        "stdout": "inactive",
+        "stderr": ""
+      },
+      "cgroup_exists": false
+    },
+    {
+      "scope": "/user.slice/user-1000.slice/user@1000.service/app.slice/run-r275dbd59e3484aa3ad93f5417c70bd98.scope",
+      "samples": 34,
+      "pids": [
+        1652649
+      ],
+      "peak": 1320665088,
+      "cleanup": {
+        "exit": 4,
+        "stdout": "inactive",
+        "stderr": ""
+      },
+      "cgroup_exists": false
+    },
+    {
+      "scope": "/user.slice/user-1000.slice/user@1000.service/app.slice/run-r2827fedcc33a49e9b44ea98f6e44944b.scope",
+      "samples": 11,
+      "pids": [
+        1661075
+      ],
+      "peak": 1306005504,
+      "cleanup": {
+        "exit": 4,
+        "stdout": "inactive",
+        "stderr": ""
+      },
+      "cgroup_exists": false
+    },
+    {
+      "scope": "/user.slice/user-1000.slice/user@1000.service/app.slice/run-r2e797dbd265844e98e30977e6c5f4dcd.scope",
+      "samples": 43,
+      "pids": [
+        1671994
+      ],
+      "peak": 1593839616,
+      "cleanup": {
+        "exit": 4,
+        "stdout": "inactive",
+        "stderr": ""
+      },
+      "cgroup_exists": false
+    },
+    {
+      "scope": "/user.slice/user-1000.slice/user@1000.service/app.slice/run-r2ef3d87310464bcd8421cc4557d00746.scope",
+      "samples": 21,
+      "pids": [
+        1664072
+      ],
+      "peak": 920899584,
+      "cleanup": {
+        "exit": 4,
+        "stdout": "inactive",
+        "stderr": ""
+      },
+      "cgroup_exists": false
+    },
+    {
+      "scope": "/user.slice/user-1000.slice/user@1000.service/app.slice/run-r3224a05b04b94a49a76c3f978d7ff966.scope",
+      "samples": 25,
+      "pids": [
+        1661615
+      ],
+      "peak": 1017999360,
+      "cleanup": {
+        "exit": 4,
+        "stdout": "inactive",
+        "stderr": ""
+      },
+      "cgroup_exists": false
+    },
+    {
+      "scope": "/user.slice/user-1000.slice/user@1000.service/app.slice/run-r329c61a7f9a8416c9ab6e7b3e0196cad.scope",
+      "samples": 43,
+      "pids": [
+        1672898
+      ],
+      "peak": 1594425344,
+      "cleanup": {
+        "exit": 4,
+        "stdout": "inactive",
+        "stderr": ""
+      },
+      "cgroup_exists": false
+    },
+    {
+      "scope": "/user.slice/user-1000.slice/user@1000.service/app.slice/run-r3643052851444bc78c0829a89c3b4da2.scope",
+      "samples": 22,
+      "pids": [
+        1663420
+      ],
+      "peak": 921083904,
+      "cleanup": {
+        "exit": 4,
+        "stdout": "inactive",
+        "stderr": ""
+      },
+      "cgroup_exists": false
+    },
+    {
+      "scope": "/user.slice/user-1000.slice/user@1000.service/app.slice/run-r37384612a6934008b6f17784b5c2134b.scope",
+      "samples": 3,
+      "pids": [
+        1675852
+      ],
+      "peak": 932605952,
+      "cleanup": {
+        "exit": 4,
+        "stdout": "inactive",
+        "stderr": ""
+      },
+      "cgroup_exists": false
+    },
+    {
+      "scope": "/user.slice/user-1000.slice/user@1000.service/app.slice/run-r391a1ea210564994b93cfd3180f80d76.scope",
+      "samples": 42,
+      "pids": [
+        1677799
+      ],
+      "peak": 1499938816,
+      "cleanup": {
+        "exit": 4,
+        "stdout": "inactive",
+        "stderr": ""
+      },
+      "cgroup_exists": false
+    },
+    {
+      "scope": "/user.slice/user-1000.slice/user@1000.service/app.slice/run-r3977c2383d9e4012a28f7a72279e70e4.scope",
+      "samples": 1,
+      "pids": [
+        1665173
+      ],
+      "peak": 112029696,
+      "cleanup": {
+        "exit": 4,
+        "stdout": "inactive",
+        "stderr": ""
+      },
+      "cgroup_exists": false
+    },
+    {
+      "scope": "/user.slice/user-1000.slice/user@1000.service/app.slice/run-r39898f00e6ee4a379ce706db53bbf410.scope",
+      "samples": 44,
+      "pids": [
+        1683661
+      ],
+      "peak": 1593798656,
+      "cleanup": {
+        "exit": 4,
+        "stdout": "inactive",
+        "stderr": ""
+      },
+      "cgroup_exists": false
+    },
+    {
+      "scope": "/user.slice/user-1000.slice/user@1000.service/app.slice/run-r39dfdd4316854a299ef283e4557de424.scope",
+      "samples": 24,
+      "pids": [
+        1658670
+      ],
+      "peak": 1020223488,
+      "cleanup": {
+        "exit": 4,
+        "stdout": "inactive",
+        "stderr": ""
+      },
+      "cgroup_exists": false
+    },
+    {
+      "scope": "/user.slice/user-1000.slice/user@1000.service/app.slice/run-r3bf5db0622ed4e70bf29748dc4e20888.scope",
+      "samples": 4,
+      "pids": [
+        1665444
+      ],
+      "peak": 674160640,
+      "cleanup": {
+        "exit": 4,
+        "stdout": "inactive",
+        "stderr": ""
+      },
+      "cgroup_exists": false
+    },
+    {
+      "scope": "/user.slice/user-1000.slice/user@1000.service/app.slice/run-r3c50fb0cb25e41f99c3f508f13f0d902.scope",
+      "samples": 12,
+      "pids": [
+        1658507
+      ],
+      "peak": 1207279616,
+      "cleanup": {
+        "exit": 4,
+        "stdout": "inactive",
+        "stderr": ""
+      },
+      "cgroup_exists": false
+    },
+    {
+      "scope": "/user.slice/user-1000.slice/user@1000.service/app.slice/run-r3cc7ca0217624b70b298aa20162bb2c0.scope",
+      "samples": 29,
+      "pids": [
+        1654455
+      ],
+      "peak": 1309028352,
+      "cleanup": {
+        "exit": 4,
+        "stdout": "inactive",
+        "stderr": ""
+      },
+      "cgroup_exists": false
+    },
+    {
+      "scope": "/user.slice/user-1000.slice/user@1000.service/app.slice/run-r3d01f6e09cbe4da690941481fd5a253f.scope",
+      "samples": 41,
+      "pids": [
+        1686674
+      ],
+      "peak": 1500340224,
+      "cleanup": {
+        "exit": 4,
+        "stdout": "inactive",
+        "stderr": ""
+      },
+      "cgroup_exists": false
+    },
+    {
+      "scope": "/user.slice/user-1000.slice/user@1000.service/app.slice/run-r3d7d7bdec579454d84c28a03f869a95e.scope",
+      "samples": 22,
+      "pids": [
+        1665514
+      ],
+      "peak": 922935296,
+      "cleanup": {
+        "exit": 4,
+        "stdout": "inactive",
+        "stderr": ""
+      },
+      "cgroup_exists": false
+    },
+    {
+      "scope": "/user.slice/user-1000.slice/user@1000.service/app.slice/run-r3e0c88907526478da2f63313cba49cfb.scope",
+      "samples": 22,
+      "pids": [
+        1666038
+      ],
+      "peak": 920813568,
+      "cleanup": {
+        "exit": 4,
+        "stdout": "inactive",
+        "stderr": ""
+      },
+      "cgroup_exists": false
+    },
+    {
+      "scope": "/user.slice/user-1000.slice/user@1000.service/app.slice/run-r3e185cc54df04ca09318cd4de707441e.scope",
+      "samples": 42,
+      "pids": [
+        1689657
+      ],
+      "peak": 1499873280,
+      "cleanup": {
+        "exit": 4,
+        "stdout": "inactive",
+        "stderr": ""
+      },
+      "cgroup_exists": false
+    },
+    {
+      "scope": "/user.slice/user-1000.slice/user@1000.service/app.slice/run-r40906ce1b2e8433d9553462b5f025b06.scope",
+      "samples": 3,
+      "pids": [
+        1695507
+      ],
+      "peak": 877969408,
+      "cleanup": {
+        "exit": 4,
+        "stdout": "inactive",
+        "stderr": ""
+      },
+      "cgroup_exists": false
+    },
+    {
+      "scope": "/user.slice/user-1000.slice/user@1000.service/app.slice/run-r433feaa5a3814e3abeb009d5598bd26b.scope",
+      "samples": 6,
+      "pids": [
+        1663785
+      ],
+      "peak": 835174400,
+      "cleanup": {
+        "exit": 4,
+        "stdout": "inactive",
+        "stderr": ""
+      },
+      "cgroup_exists": false
+    },
+    {
+      "scope": "/user.slice/user-1000.slice/user@1000.service/app.slice/run-r450e6a32552c46188f19032c7a123349.scope",
+      "samples": 42,
+      "pids": [
+        1689142
+      ],
+      "peak": 1500024832,
+      "cleanup": {
+        "exit": 4,
+        "stdout": "inactive",
+        "stderr": ""
+      },
+      "cgroup_exists": false
+    },
+    {
+      "scope": "/user.slice/user-1000.slice/user@1000.service/app.slice/run-r4c0573b3feae48b68535002a4aacc97b.scope",
+      "samples": 4,
+      "pids": [
+        1665084
+      ],
+      "peak": 917471232,
+      "cleanup": {
+        "exit": 4,
+        "stdout": "inactive",
+        "stderr": ""
+      },
+      "cgroup_exists": false
+    },
+    {
+      "scope": "/user.slice/user-1000.slice/user@1000.service/app.slice/run-r4c29ae61670447e2b10faa293bbe0b57.scope",
+      "samples": 41,
+      "pids": [
+        1679668
+      ],
+      "peak": 1501401088,
+      "cleanup": {
+        "exit": 4,
+        "stdout": "inactive",
+        "stderr": ""
+      },
+      "cgroup_exists": false
+    },
+    {
+      "scope": "/user.slice/user-1000.slice/user@1000.service/app.slice/run-r4d852156a4bb47ebb857b28337bc0877.scope",
+      "samples": 33,
+      "pids": [
+        1653732
+      ],
+      "peak": 1307697152,
+      "cleanup": {
+        "exit": 4,
+        "stdout": "inactive",
+        "stderr": ""
+      },
+      "cgroup_exists": false
+    },
+    {
+      "scope": "/user.slice/user-1000.slice/user@1000.service/app.slice/run-r4e04d2ceb63a4308a103edea60ab8a1f.scope",
+      "samples": 44,
+      "pids": [
+        1691445
+      ],
+      "peak": 1594040320,
+      "cleanup": {
+        "exit": 4,
+        "stdout": "inactive",
+        "stderr": ""
+      },
+      "cgroup_exists": false
+    },
+    {
+      "scope": "/user.slice/user-1000.slice/user@1000.service/app.slice/run-r4ed6c9fb4c6944b0812d844268e2b0c7.scope",
+      "samples": 6,
+      "pids": [
+        1662432
+      ],
+      "peak": 835362816,
+      "cleanup": {
+        "exit": 4,
+        "stdout": "inactive",
+        "stderr": ""
+      },
+      "cgroup_exists": false
+    },
+    {
+      "scope": "/user.slice/user-1000.slice/user@1000.service/app.slice/run-r512e9352a7be4593a1d4ff7284ea385f.scope",
+      "samples": 26,
+      "pids": [
+        1659989
+      ],
+      "peak": 1021706240,
+      "cleanup": {
+        "exit": 4,
+        "stdout": "inactive",
+        "stderr": ""
+      },
+      "cgroup_exists": false
+    },
+    {
+      "scope": "/user.slice/user-1000.slice/user@1000.service/app.slice/run-r53ae335c77364064b9230aacc2ec6eff.scope",
+      "samples": 29,
+      "pids": [
+        1656879
+      ],
+      "peak": 1309122560,
+      "cleanup": {
+        "exit": 4,
+        "stdout": "inactive",
+        "stderr": ""
+      },
+      "cgroup_exists": false
+    },
+    {
+      "scope": "/user.slice/user-1000.slice/user@1000.service/app.slice/run-r58ebf350ad9e46d48bca94cc67beb482.scope",
+      "samples": 28,
+      "pids": [
+        1651914
+      ],
+      "peak": 1308286976,
+      "cleanup": {
+        "exit": 4,
+        "stdout": "inactive",
+        "stderr": ""
+      },
+      "cgroup_exists": false
+    },
+    {
+      "scope": "/user.slice/user-1000.slice/user@1000.service/app.slice/run-r5a46606caa0542e089b6ccc4ae9b1522.scope",
+      "samples": 35,
+      "pids": [
+        1670692
+      ],
+      "peak": 1498636288,
+      "cleanup": {
+        "exit": 4,
+        "stdout": "inactive",
+        "stderr": ""
+      },
+      "cgroup_exists": false
+    },
+    {
+      "scope": "/user.slice/user-1000.slice/user@1000.service/app.slice/run-r6004cbf2a1874bf082aa3a791644cc97.scope",
+      "samples": 22,
+      "pids": [
+        1664817
+      ],
+      "peak": 922955776,
+      "cleanup": {
+        "exit": 4,
+        "stdout": "inactive",
+        "stderr": ""
+      },
+      "cgroup_exists": false
+    },
+    {
+      "scope": "/user.slice/user-1000.slice/user@1000.service/app.slice/run-r6112683b133d462fae66b8226ae31588.scope",
+      "samples": 22,
+      "pids": [
+        1659273
+      ],
+      "peak": 931426304,
+      "cleanup": {
+        "exit": 4,
+        "stdout": "inactive",
+        "stderr": ""
+      },
+      "cgroup_exists": false
+    },
+    {
+      "scope": "/user.slice/user-1000.slice/user@1000.service/app.slice/run-r627070963362473885354d2832bae63a.scope",
+      "samples": 43,
+      "pids": [
+        1684874
+      ],
+      "peak": 1593352192,
+      "cleanup": {
+        "exit": 4,
+        "stdout": "inactive",
+        "stderr": ""
+      },
+      "cgroup_exists": false
+    },
+    {
+      "scope": "/user.slice/user-1000.slice/user@1000.service/app.slice/run-r644aa07f99e14acf9b2c7220ce8a9280.scope",
+      "samples": 41,
+      "pids": [
+        1688646
+      ],
+      "peak": 1499451392,
+      "cleanup": {
+        "exit": 4,
+        "stdout": "inactive",
+        "stderr": ""
+      },
+      "cgroup_exists": false
+    },
+    {
+      "scope": "/user.slice/user-1000.slice/user@1000.service/app.slice/run-r66d5279609bc4a92be0d492ed5fbeae6.scope",
+      "samples": 35,
+      "pids": [
+        1652236
+      ],
+      "peak": 1324871680,
+      "cleanup": {
+        "exit": 4,
+        "stdout": "inactive",
+        "stderr": ""
+      },
+      "cgroup_exists": false
+    },
+    {
+      "scope": "/user.slice/user-1000.slice/user@1000.service/app.slice/run-r69b99bb982cd43158d2e0c6c8583150d.scope",
+      "samples": 22,
+      "pids": [
+        1666281
+      ],
+      "peak": 922599424,
+      "cleanup": {
+        "exit": 4,
+        "stdout": "inactive",
+        "stderr": ""
+      },
+      "cgroup_exists": false
+    },
+    {
+      "scope": "/user.slice/user-1000.slice/user@1000.service/app.slice/run-r6a2d839314734c66b091ba504eb91cef.scope",
+      "samples": 40,
+      "pids": [
+        1670256
+      ],
+      "peak": 1500319744,
+      "cleanup": {
+        "exit": 4,
+        "stdout": "inactive",
+        "stderr": ""
+      },
+      "cgroup_exists": false
+    },
+    {
+      "scope": "/user.slice/user-1000.slice/user@1000.service/app.slice/run-r70dc19475eaa4a40bce1487f1e0393f4.scope",
+      "samples": 1,
+      "pids": [
+        1662385
+      ],
+      "peak": 324235264,
+      "cleanup": {
+        "exit": 4,
+        "stdout": "inactive",
+        "stderr": ""
+      },
+      "cgroup_exists": false
+    },
+    {
+      "scope": "/user.slice/user-1000.slice/user@1000.service/app.slice/run-r72340de2f24f4b78902fb42b55c6aeb9.scope",
+      "samples": 4,
+      "pids": [
+        1662632
+      ],
+      "peak": 673800192,
+      "cleanup": {
+        "exit": 4,
+        "stdout": "inactive",
+        "stderr": ""
+      },
+      "cgroup_exists": false
+    },
+    {
+      "scope": "/user.slice/user-1000.slice/user@1000.service/app.slice/run-r74f1d63bc84741e6add13893525d8f77.scope",
+      "samples": 45,
+      "pids": [
+        1671505
+      ],
+      "peak": 1593757696,
+      "cleanup": {
+        "exit": 4,
+        "stdout": "inactive",
+        "stderr": ""
+      },
+      "cgroup_exists": false
+    },
+    {
+      "scope": "/user.slice/user-1000.slice/user@1000.service/app.slice/run-r7633547681554c6cb0e3bf6382dd693b.scope",
+      "samples": 21,
+      "pids": [
+        1666906
+      ],
+      "peak": 2041700352,
+      "cleanup": {
+        "exit": 4,
+        "stdout": "inactive",
+        "stderr": ""
+      },
+      "cgroup_exists": false
+    },
+    {
+      "scope": "/user.slice/user-1000.slice/user@1000.service/app.slice/run-r7a17d2ed7c5948d19ee59c81cfc68685.scope",
+      "samples": 44,
+      "pids": [
+        1680477
+      ],
+      "peak": 1594036224,
+      "cleanup": {
+        "exit": 4,
+        "stdout": "inactive",
+        "stderr": ""
+      },
+      "cgroup_exists": false
+    },
+    {
+      "scope": "/user.slice/user-1000.slice/user@1000.service/app.slice/run-r7a863432a80f4e7d9eaff7d25c2d8adb.scope",
+      "samples": 35,
+      "pids": [
+        1680100
+      ],
+      "peak": 1498226688,
+      "cleanup": {
+        "exit": 4,
+        "stdout": "inactive",
+        "stderr": ""
+      },
+      "cgroup_exists": false
+    },
+    {
+      "scope": "/user.slice/user-1000.slice/user@1000.service/app.slice/run-r7b5c6ef217cb41d19435edfad6ff92f8.scope",
+      "samples": 10,
+      "pids": [
+        1658375
+      ],
+      "peak": 1276993536,
+      "cleanup": {
+        "exit": 4,
+        "stdout": "inactive",
+        "stderr": ""
+      },
+      "cgroup_exists": false
+    },
+    {
+      "scope": "/user.slice/user-1000.slice/user@1000.service/app.slice/run-r7bb81d6331c64c6188afb7f8116a22ce.scope",
+      "samples": 33,
+      "pids": [
+        1651544
+      ],
+      "peak": 1307828224,
+      "cleanup": {
+        "exit": 4,
+        "stdout": "inactive",
+        "stderr": ""
+      },
+      "cgroup_exists": false
+    },
+    {
+      "scope": "/user.slice/user-1000.slice/user@1000.service/app.slice/run-r7c4cda1616c1457f84621b7637879bd9.scope",
+      "samples": 39,
+      "pids": [
+        1667173
+      ],
+      "peak": 1497952256,
+      "cleanup": {
+        "exit": 4,
+        "stdout": "inactive",
+        "stderr": ""
+      },
+      "cgroup_exists": false
+    },
+    {
+      "scope": "/user.slice/user-1000.slice/user@1000.service/app.slice/run-r81016525c1884d069e4af73b58d3d5a3.scope",
+      "samples": 45,
+      "pids": [
+        1691911
+      ],
+      "peak": 1592184832,
+      "cleanup": {
+        "exit": 4,
+        "stdout": "inactive",
+        "stderr": ""
+      },
+      "cgroup_exists": false
+    },
+    {
+      "scope": "/user.slice/user-1000.slice/user@1000.service/app.slice/run-r81ac4decda2f4455a961f549825c3efb.scope",
+      "samples": 42,
+      "pids": [
+        1686169
+      ],
+      "peak": 1498378240,
+      "cleanup": {
+        "exit": 4,
+        "stdout": "inactive",
+        "stderr": ""
+      },
+      "cgroup_exists": false
+    },
+    {
+      "scope": "/user.slice/user-1000.slice/user@1000.service/app.slice/run-r838cf44db7354f3bb1104c0b2f2c4214.scope",
+      "samples": 21,
+      "pids": [
+        1662955
+      ],
+      "peak": 920903680,
+      "cleanup": {
+        "exit": 4,
+        "stdout": "inactive",
+        "stderr": ""
+      },
+      "cgroup_exists": false
+    },
+    {
+      "scope": "/user.slice/user-1000.slice/user@1000.service/app.slice/run-r83aea0a3992044d0beb0c9cf5f0f26fb.scope",
+      "samples": 21,
+      "pids": [
+        1653055
+      ],
+      "peak": 1324507136,
+      "cleanup": {
+        "exit": 4,
+        "stdout": "inactive",
+        "stderr": ""
+      },
+      "cgroup_exists": false
+    },
+    {
+      "scope": "/user.slice/user-1000.slice/user@1000.service/app.slice/run-r84c13513a7754269a459c3b801466405.scope",
+      "samples": 10,
+      "pids": [
+        1659722
+      ],
+      "peak": 1275273216,
+      "cleanup": {
+        "exit": 4,
+        "stdout": "inactive",
+        "stderr": ""
+      },
+      "cgroup_exists": false
+    },
+    {
+      "scope": "/user.slice/user-1000.slice/user@1000.service/app.slice/run-r86747df70440435ebf08647e99bd0d52.scope",
+      "samples": 22,
+      "pids": [
+        1676153
+      ],
+      "peak": 2082783232,
+      "cleanup": {
+        "exit": 4,
+        "stdout": "inactive",
+        "stderr": ""
+      },
+      "cgroup_exists": false
+    },
+    {
+      "scope": "/user.slice/user-1000.slice/user@1000.service/app.slice/run-r86d871837cb64355b96728474fcf34bd.scope",
+      "samples": 16,
+      "pids": [
+        1653535
+      ],
+      "peak": 1685778432,
+      "cleanup": {
+        "exit": 4,
+        "stdout": "inactive",
+        "stderr": ""
+      },
+      "cgroup_exists": false
+    },
+    {
+      "scope": "/user.slice/user-1000.slice/user@1000.service/app.slice/run-r873d64d42cc9405cb90e8c89ac56b8a2.scope",
+      "samples": 45,
+      "pids": [
+        1694271
+      ],
+      "peak": 1594068992,
+      "cleanup": {
+        "exit": 4,
+        "stdout": "inactive",
+        "stderr": ""
+      },
+      "cgroup_exists": false
+    },
+    {
+      "scope": "/user.slice/user-1000.slice/user@1000.service/app.slice/run-r8adb6af06e534c278a5b0cc780e4251b.scope",
+      "samples": 12,
+      "pids": [
+        1660858
+      ],
+      "peak": 931344384,
+      "cleanup": {
+        "exit": 4,
+        "stdout": "inactive",
+        "stderr": ""
+      },
+      "cgroup_exists": false
+    },
+    {
+      "scope": "/user.slice/user-1000.slice/user@1000.service/app.slice/run-r8b0541f992674eb4912ea1f97611a4c0.scope",
+      "samples": 22,
+      "pids": [
+        1685922
+      ],
+      "peak": 2038026240,
+      "cleanup": {
+        "exit": 4,
+        "stdout": "inactive",
+        "stderr": ""
+      },
+      "cgroup_exists": false
+    },
+    {
+      "scope": "/user.slice/user-1000.slice/user@1000.service/app.slice/run-r8ce452d4fd82431186352b42bcb4939f.scope",
+      "samples": 41,
+      "pids": [
+        1678799
+      ],
+      "peak": 1500160000,
+      "cleanup": {
+        "exit": 4,
+        "stdout": "inactive",
+        "stderr": ""
+      },
+      "cgroup_exists": false
+    },
+    {
+      "scope": "/user.slice/user-1000.slice/user@1000.service/app.slice/run-r8d6721d113b2465f8618a14bce828312.scope",
+      "samples": 39,
+      "pids": [
+        1668526
+      ],
+      "peak": 1498202112,
+      "cleanup": {
+        "exit": 4,
+        "stdout": "inactive",
+        "stderr": ""
+      },
+      "cgroup_exists": false
+    },
+    {
+      "scope": "/user.slice/user-1000.slice/user@1000.service/app.slice/run-r8de28e97cd3d466ead93cc9e9b827ac8.scope",
+      "samples": 20,
+      "pids": [
+        1675922
+      ],
+      "peak": 1930768384,
+      "cleanup": {
+        "exit": 4,
+        "stdout": "inactive",
+        "stderr": ""
+      },
+      "cgroup_exists": false
+    },
+    {
+      "scope": "/user.slice/user-1000.slice/user@1000.service/app.slice/run-r8ea935cbcfa94134b7c899ac931c7863.scope",
+      "samples": 18,
+      "pids": [
+        1685370
+      ],
+      "peak": 1591255040,
+      "cleanup": {
+        "exit": 4,
+        "stdout": "inactive",
+        "stderr": ""
+      },
+      "cgroup_exists": false
+    },
+    {
+      "scope": "/user.slice/user-1000.slice/user@1000.service/app.slice/run-r8fbd47ef17fc4b15a0b08ce0cb8a8094.scope",
+      "samples": 44,
+      "pids": [
+        1681847
+      ],
+      "peak": 1591828480,
+      "cleanup": {
+        "exit": 4,
+        "stdout": "inactive",
+        "stderr": ""
+      },
+      "cgroup_exists": false
+    },
+    {
+      "scope": "/user.slice/user-1000.slice/user@1000.service/app.slice/run-r90ff3b2565744ba79314b7adf608847e.scope",
+      "samples": 42,
+      "pids": [
+        1687550
+      ],
+      "peak": 1501384704,
+      "cleanup": {
+        "exit": 4,
+        "stdout": "inactive",
+        "stderr": ""
+      },
+      "cgroup_exists": false
+    },
+    {
+      "scope": "/user.slice/user-1000.slice/user@1000.service/app.slice/run-r9140ec6693d2473cbd5970f664ecadc3.scope",
+      "samples": 10,
+      "pids": [
+        1663875
+      ],
+      "peak": 1188339712,
+      "cleanup": {
+        "exit": 4,
+        "stdout": "inactive",
+        "stderr": ""
+      },
+      "cgroup_exists": false
+    },
+    {
+      "scope": "/user.slice/user-1000.slice/user@1000.service/app.slice/run-r963131b45f024e12bb578a3f0e089b5b.scope",
+      "samples": 44,
+      "pids": [
+        1680926
+      ],
+      "peak": 1591734272,
+      "cleanup": {
+        "exit": 4,
+        "stdout": "inactive",
+        "stderr": ""
+      },
+      "cgroup_exists": false
+    },
+    {
+      "scope": "/user.slice/user-1000.slice/user@1000.service/app.slice/run-r9788a52e451d4ac2b04ab349fa4b6adf.scope",
+      "samples": 42,
+      "pids": [
+        1687118
+      ],
+      "peak": 1498832896,
+      "cleanup": {
+        "exit": 4,
+        "stdout": "inactive",
+        "stderr": ""
+      },
+      "cgroup_exists": false
+    },
+    {
+      "scope": "/user.slice/user-1000.slice/user@1000.service/app.slice/run-r9876bdb2f5604d49999e252bcfda7998.scope",
+      "samples": 1,
+      "pids": [
+        1650696
+      ],
+      "peak": 13123584,
+      "cleanup": {
+        "exit": 4,
+        "stdout": "inactive",
+        "stderr": ""
+      },
+      "cgroup_exists": false
+    },
+    {
+      "scope": "/user.slice/user-1000.slice/user@1000.service/app.slice/run-r98fea79823ff45679597a1f5138b5a53.scope",
+      "samples": 34,
+      "pids": [
+        1655158
+      ],
+      "peak": 1323806720,
+      "cleanup": {
+        "exit": 4,
+        "stdout": "inactive",
+        "stderr": ""
+      },
+      "cgroup_exists": false
+    },
+    {
+      "scope": "/user.slice/user-1000.slice/user@1000.service/app.slice/run-r9a619d26d27c40a7bf4dafd1287c150b.scope",
+      "samples": 40,
+      "pids": [
+        1668961
+      ],
+      "peak": 1500155904,
+      "cleanup": {
+        "exit": 4,
+        "stdout": "inactive",
+        "stderr": ""
+      },
+      "cgroup_exists": false
+    },
+    {
+      "scope": "/user.slice/user-1000.slice/user@1000.service/app.slice/run-r9a631521b31044a8a9b547d1194c48c9.scope",
+      "samples": 25,
+      "pids": [
+        1660256
+      ],
+      "peak": 1019092992,
+      "cleanup": {
+        "exit": 4,
+        "stdout": "inactive",
+        "stderr": ""
+      },
+      "cgroup_exists": false
+    },
+    {
+      "scope": "/user.slice/user-1000.slice/user@1000.service/app.slice/run-r9c305a03d47a4cea9ded9945c60a2767.scope",
+      "samples": 10,
+      "pids": [
+        1665288
+      ],
+      "peak": 1161723904,
+      "cleanup": {
+        "exit": 4,
+        "stdout": "inactive",
+        "stderr": ""
+      },
+      "cgroup_exists": false
+    },
+    {
+      "scope": "/user.slice/user-1000.slice/user@1000.service/app.slice/run-r9c71c035a02940e683e72ced4be5a6b6.scope",
+      "samples": 15,
+      "pids": [
+        1655997
+      ],
+      "peak": 1647079424,
+      "cleanup": {
+        "exit": 4,
+        "stdout": "inactive",
+        "stderr": ""
+      },
+      "cgroup_exists": false
+    },
+    {
+      "scope": "/user.slice/user-1000.slice/user@1000.service/app.slice/run-r9d11f13176084df1b24197f77729ff82.scope",
+      "samples": 34,
+      "pids": [
+        1651144
+      ],
+      "peak": 1309593600,
+      "cleanup": {
+        "exit": 4,
+        "stdout": "inactive",
+        "stderr": ""
+      },
+      "cgroup_exists": false
+    },
+    {
+      "scope": "/user.slice/user-1000.slice/user@1000.service/app.slice/run-r9de4189670ac468eb4cdceb93a6f25bb.scope",
+      "samples": 4,
+      "pids": [
+        1664002
+      ],
+      "peak": 674271232,
+      "cleanup": {
+        "exit": 4,
+        "stdout": "inactive",
+        "stderr": ""
+      },
+      "cgroup_exists": false
+    },
+    {
+      "scope": "/user.slice/user-1000.slice/user@1000.service/app.slice/run-ra0383ad27f2c4de2b4aa78af44d4721e.scope",
+      "samples": 22,
+      "pids": [
+        1655545
+      ],
+      "peak": 1321361408,
+      "cleanup": {
+        "exit": 4,
+        "stdout": "inactive",
+        "stderr": ""
+      },
+      "cgroup_exists": false
+    },
+    {
+      "scope": "/user.slice/user-1000.slice/user@1000.service/app.slice/run-ra59ede52b47b4517b5b813e1b233f65b.scope",
+      "samples": 32,
+      "pids": [
+        1654108
+      ],
+      "peak": 1309057024,
+      "cleanup": {
+        "exit": 4,
+        "stdout": "inactive",
+        "stderr": ""
+      },
+      "cgroup_exists": false
+    },
+    {
+      "scope": "/user.slice/user-1000.slice/user@1000.service/app.slice/run-raa6a22a11e4243a180fef39d469f8cc8.scope",
+      "samples": 44,
+      "pids": [
+        1684272
+      ],
+      "peak": 1591861248,
+      "cleanup": {
+        "exit": 4,
+        "stdout": "inactive",
+        "stderr": ""
+      },
+      "cgroup_exists": false
+    },
+    {
+      "scope": "/user.slice/user-1000.slice/user@1000.service/app.slice/run-raa86e23cbe3a47b7b64a69dc713b635e.scope",
+      "samples": 25,
+      "pids": [
+        1658934
+      ],
+      "peak": 1017503744,
+      "cleanup": {
+        "exit": 4,
+        "stdout": "inactive",
+        "stderr": ""
+      },
+      "cgroup_exists": false
+    },
+    {
+      "scope": "/user.slice/user-1000.slice/user@1000.service/app.slice/run-rabf0cbf194b74e9ab231f24600db93dc.scope",
+      "samples": 44,
+      "pids": [
+        1683225
+      ],
+      "peak": 1597886464,
+      "cleanup": {
+        "exit": 4,
+        "stdout": "inactive",
+        "stderr": ""
+      },
+      "cgroup_exists": false
+    },
+    {
+      "scope": "/user.slice/user-1000.slice/user@1000.service/app.slice/run-rac463e83011d43f48ab86a886ff14d6b.scope",
+      "samples": 20,
+      "pids": [
+        1666667
+      ],
+      "peak": 1974484992,
+      "cleanup": {
+        "exit": 4,
+        "stdout": "inactive",
+        "stderr": ""
+      },
+      "cgroup_exists": false
+    },
+    {
+      "scope": "/user.slice/user-1000.slice/user@1000.service/app.slice/run-rb0a6e04166e54589bc927205813ff035.scope",
+      "samples": 44,
+      "pids": [
+        1672435
+      ],
+      "peak": 1591713792,
+      "cleanup": {
+        "exit": 4,
+        "stdout": "inactive",
+        "stderr": ""
+      },
+      "cgroup_exists": false
+    },
+    {
+      "scope": "/user.slice/user-1000.slice/user@1000.service/app.slice/run-rb304cff806794dfba15233a7811aa3f3.scope",
+      "samples": 45,
+      "pids": [
+        1692851
+      ],
+      "peak": 1594007552,
+      "cleanup": {
+        "exit": 4,
+        "stdout": "inactive",
+        "stderr": ""
+      },
+      "cgroup_exists": false
+    },
+    {
+      "scope": "/user.slice/user-1000.slice/user@1000.service/app.slice/run-rb441097592af4c86ab09b7469b1dbee0.scope",
+      "samples": 43,
+      "pids": [
+        1675198
+      ],
+      "peak": 1595809792,
+      "cleanup": {
+        "exit": 4,
+        "stdout": "inactive",
+        "stderr": ""
+      },
+      "cgroup_exists": false
+    },
+    {
+      "scope": "/user.slice/user-1000.slice/user@1000.service/app.slice/run-rb4f6963cf6fc40bbb1a1204630bd0b31.scope",
+      "samples": 4,
+      "pids": [
+        1661913
+      ],
+      "peak": 1015623680,
+      "cleanup": {
+        "exit": 4,
+        "stdout": "inactive",
+        "stderr": ""
+      },
+      "cgroup_exists": false
+    },
+    {
+      "scope": "/user.slice/user-1000.slice/user@1000.service/app.slice/run-rb5051eaea9964d6d9ac6bc4d24912101.scope",
+      "samples": 44,
+      "pids": [
+        1693793
+      ],
+      "peak": 1593802752,
+      "cleanup": {
+        "exit": 4,
+        "stdout": "inactive",
+        "stderr": ""
+      },
+      "cgroup_exists": false
+    },
+    {
+      "scope": "/user.slice/user-1000.slice/user@1000.service/app.slice/run-rb55da2f173f649ac8cface060f0b49c9.scope",
+      "samples": 46,
+      "pids": [
+        1690974
+      ],
+      "peak": 1593683968,
+      "cleanup": {
+        "exit": 4,
+        "stdout": "inactive",
+        "stderr": ""
+      },
+      "cgroup_exists": false
+    },
+    {
+      "scope": "/user.slice/user-1000.slice/user@1000.service/app.slice/run-rb582eb0030e04c0ebe2b840f352c05c1.scope",
+      "samples": 4,
+      "pids": [
+        1666565
+      ],
+      "peak": 916987904,
+      "cleanup": {
+        "exit": 4,
+        "stdout": "inactive",
+        "stderr": ""
+      },
+      "cgroup_exists": false
+    },
+    {
+      "scope": "/user.slice/user-1000.slice/user@1000.service/app.slice/run-rb9b85baeb2224698885a0c73aa9a5eb5.scope",
+      "samples": 22,
+      "pids": [
+        1658092
+      ],
+      "peak": 1322799104,
+      "cleanup": {
+        "exit": 4,
+        "stdout": "inactive",
+        "stderr": ""
+      },
+      "cgroup_exists": false
+    },
+    {
+      "scope": "/user.slice/user-1000.slice/user@1000.service/app.slice/run-rbdfab6975bff495a8224ad3176900063.scope",
+      "samples": 1,
+      "pids": [
+        1655785
+      ],
+      "peak": 280276992,
+      "cleanup": {
+        "exit": 4,
+        "stdout": "inactive",
+        "stderr": ""
+      },
+      "cgroup_exists": false
+    },
+    {
+      "scope": "/user.slice/user-1000.slice/user@1000.service/app.slice/run-rbed716cc44b74ba9b1662cb16f576107.scope",
+      "samples": 2,
+      "pids": [
+        1658335
+      ],
+      "peak": 617000960,
+      "cleanup": {
+        "exit": 4,
+        "stdout": "inactive",
+        "stderr": ""
+      },
+      "cgroup_exists": false
+    },
+    {
+      "scope": "/user.slice/user-1000.slice/user@1000.service/app.slice/run-rc4e6d6b43544483ab82febb4d8f84cd3.scope",
+      "samples": 43,
+      "pids": [
+        1674283
+      ],
+      "peak": 1593479168,
+      "cleanup": {
+        "exit": 4,
+        "stdout": "inactive",
+        "stderr": ""
+      },
+      "cgroup_exists": false
+    },
+    {
+      "scope": "/user.slice/user-1000.slice/user@1000.service/app.slice/run-rc7408674e9624160a3c964bfad082202.scope",
+      "samples": 21,
+      "pids": [
+        1662709
+      ],
+      "peak": 921284608,
+      "cleanup": {
+        "exit": 4,
+        "stdout": "inactive",
+        "stderr": ""
+      },
+      "cgroup_exists": false
+    },
+    {
+      "scope": "/user.slice/user-1000.slice/user@1000.service/app.slice/run-rc8e6a2bb63f14c13b957fd3b96ed70cc.scope",
+      "samples": 22,
+      "pids": [
+        1661978
+      ],
+      "peak": 930439168,
+      "cleanup": {
+        "exit": 4,
+        "stdout": "inactive",
+        "stderr": ""
+      },
+      "cgroup_exists": false
+    },
+    {
+      "scope": "/user.slice/user-1000.slice/user@1000.service/app.slice/run-rcb70f5618f7845a7b0e89650b1efda39.scope",
+      "samples": 44,
+      "pids": [
+        1681385
+      ],
+      "peak": 1593978880,
+      "cleanup": {
+        "exit": 4,
+        "stdout": "inactive",
+        "stderr": ""
+      },
+      "cgroup_exists": false
+    },
+    {
+      "scope": "/user.slice/user-1000.slice/user@1000.service/app.slice/run-rcd596c55414b4527905fa503e793f76b.scope",
+      "samples": 19,
+      "pids": [
+        1695253
+      ],
+      "peak": 1591197696,
+      "cleanup": {
+        "exit": 4,
+        "stdout": "inactive",
+        "stderr": ""
+      },
+      "cgroup_exists": false
+    },
+    {
+      "scope": "/user.slice/user-1000.slice/user@1000.service/app.slice/run-rd13550c69e384354afb808714d2634f9.scope",
+      "samples": 44,
+      "pids": [
+        1682313
+      ],
+      "peak": 1594454016,
+      "cleanup": {
+        "exit": 4,
+        "stdout": "inactive",
+        "stderr": ""
+      },
+      "cgroup_exists": false
+    },
+    {
+      "scope": "/user.slice/user-1000.slice/user@1000.service/app.slice/run-rd1560327cf044c39b99191a28113bc95.scope",
+      "samples": 33,
+      "pids": [
+        1654780
+      ],
+      "peak": 1323098112,
+      "cleanup": {
+        "exit": 4,
+        "stdout": "inactive",
+        "stderr": ""
+      },
+      "cgroup_exists": false
+    },
+    {
+      "scope": "/user.slice/user-1000.slice/user@1000.service/app.slice/run-rd1dfeaab80c6476a9ac5f36a463fb6ee.scope",
+      "samples": 4,
+      "pids": [
+        1660542
+      ],
+      "peak": 1013919744,
+      "cleanup": {
+        "exit": 4,
+        "stdout": "inactive",
+        "stderr": ""
+      },
+      "cgroup_exists": false
+    },
+    {
+      "scope": "/user.slice/user-1000.slice/user@1000.service/app.slice/run-rd33bdd2e80b84d1aba9ae93f78b1f477.scope",
+      "samples": 44,
+      "pids": [
+        1693332
+      ],
+      "peak": 1593438208,
+      "cleanup": {
+        "exit": 4,
+        "stdout": "inactive",
+        "stderr": ""
+      },
+      "cgroup_exists": false
+    },
+    {
+      "scope": "/user.slice/user-1000.slice/user@1000.service/app.slice/run-rd432ad43196e46aa965505dd887a1720.scope",
+      "samples": 34,
+      "pids": [
+        1656167
+      ],
+      "peak": 1309458432,
+      "cleanup": {
+        "exit": 4,
+        "stdout": "inactive",
+        "stderr": ""
+      },
+      "cgroup_exists": false
+    },
+    {
+      "scope": "/user.slice/user-1000.slice/user@1000.service/app.slice/run-rd689357602d44dc5ad123fb37f424d50.scope",
+      "samples": 22,
+      "pids": [
+        1664557
+      ],
+      "peak": 922050560,
+      "cleanup": {
+        "exit": 4,
+        "stdout": "inactive",
+        "stderr": ""
+      },
+      "cgroup_exists": false
+    },
+    {
+      "scope": "/user.slice/user-1000.slice/user@1000.service/app.slice/run-rdd023ef061e940bebdfe254322eafb5f.scope",
+      "samples": 44,
+      "pids": [
+        1692389
+      ],
+      "peak": 1593901056,
+      "cleanup": {
+        "exit": 4,
+        "stdout": "inactive",
+        "stderr": ""
+      },
+      "cgroup_exists": false
+    },
+    {
+      "scope": "/user.slice/user-1000.slice/user@1000.service/app.slice/run-rddcd1fdd0a364af98b4f031f349da321.scope",
+      "samples": 14,
+      "pids": [
+        1655833
+      ],
+      "peak": 1662287872,
+      "cleanup": {
+        "exit": 4,
+        "stdout": "inactive",
+        "stderr": ""
+      },
+      "cgroup_exists": false
+    },
+    {
+      "scope": "/user.slice/user-1000.slice/user@1000.service/app.slice/run-rde805c2659c648b0b69bff5cfd1b0ef3.scope",
+      "samples": 36,
+      "pids": [
+        1690088
+      ],
+      "peak": 1499213824,
+      "cleanup": {
+        "exit": 4,
+        "stdout": "inactive",
+        "stderr": ""
+      },
+      "cgroup_exists": false
+    },
+    {
+      "scope": "/user.slice/user-1000.slice/user@1000.service/app.slice/run-rdedf517863cd4b098ae99caee5797146.scope",
+      "samples": 41,
+      "pids": [
+        1678234
+      ],
+      "peak": 1499811840,
+      "cleanup": {
+        "exit": 4,
+        "stdout": "inactive",
+        "stderr": ""
+      },
+      "cgroup_exists": false
+    },
+    {
+      "scope": "/user.slice/user-1000.slice/user@1000.service/app.slice/run-rdf221c41d04b49fdb317deb8aab00776.scope",
+      "samples": 26,
+      "pids": [
+        1661347
+      ],
+      "peak": 1018306560,
+      "cleanup": {
+        "exit": 4,
+        "stdout": "inactive",
+        "stderr": ""
+      },
+      "cgroup_exists": false
+    },
+    {
+      "scope": "/user.slice/user-1000.slice/user@1000.service/app.slice/run-rdf4d87f5ec344012acd7b879072815d7.scope",
+      "samples": 22,
+      "pids": [
+        1660600
+      ],
+      "peak": 931098624,
+      "cleanup": {
+        "exit": 4,
+        "stdout": "inactive",
+        "stderr": ""
+      },
+      "cgroup_exists": false
+    },
+    {
+      "scope": "/user.slice/user-1000.slice/user@1000.service/app.slice/run-re14422b96de04dbf87090cba051b875f.scope",
+      "samples": 22,
+      "pids": [
+        1663202
+      ],
+      "peak": 920870912,
+      "cleanup": {
+        "exit": 4,
+        "stdout": "inactive",
+        "stderr": ""
+      },
+      "cgroup_exists": false
+    },
+    {
+      "scope": "/user.slice/user-1000.slice/user@1000.service/app.slice/run-re4c0ce91b3ab47c392f81a0e65c27972.scope",
+      "samples": 12,
+      "pids": [
+        1659521
+      ],
+      "peak": 931270656,
+      "cleanup": {
+        "exit": 4,
+        "stdout": "inactive",
+        "stderr": ""
+      },
+      "cgroup_exists": false
+    },
+    {
+      "scope": "/user.slice/user-1000.slice/user@1000.service/app.slice/run-re73fa8562ff74bf39f5c6820492816ef.scope",
+      "samples": 1,
+      "pids": [
+        1661033
+      ],
+      "peak": 166871040,
+      "cleanup": {
+        "exit": 4,
+        "stdout": "inactive",
+        "stderr": ""
+      },
+      "cgroup_exists": false
+    },
+    {
+      "scope": "/user.slice/user-1000.slice/user@1000.service/app.slice/run-re7f6e670cd8d42fba8c1381d0e880226.scope",
+      "samples": 14,
+      "pids": [
+        1650732
+      ],
+      "peak": 1635008512,
+      "cleanup": {
+        "exit": 4,
+        "stdout": "inactive",
+        "stderr": ""
+      },
+      "cgroup_exists": false
+    },
+    {
+      "scope": "/user.slice/user-1000.slice/user@1000.service/app.slice/run-re9fd8312ca444f9db4bf98aa00e85f9f.scope",
+      "samples": 12,
+      "pids": [
+        1662234
+      ],
+      "peak": 931651584,
+      "cleanup": {
+        "exit": 4,
+        "stdout": "inactive",
+        "stderr": ""
+      },
+      "cgroup_exists": false
+    },
+    {
+      "scope": "/user.slice/user-1000.slice/user@1000.service/app.slice/run-reae1dcf8dcaa49a0897c678a45ea2bed.scope",
+      "samples": 1,
+      "pids": [
+        1666630
+      ],
+      "peak": 295247872,
+      "cleanup": {
+        "exit": 4,
+        "stdout": "inactive",
+        "stderr": ""
+      },
+      "cgroup_exists": false
+    },
+    {
+      "scope": "/user.slice/user-1000.slice/user@1000.service/app.slice/run-rebcb941f09b34727b902fbc9b185062a.scope",
+      "samples": 40,
+      "pids": [
+        1668111
+      ],
+      "peak": 1499443200,
+      "cleanup": {
+        "exit": 4,
+        "stdout": "inactive",
+        "stderr": ""
+      },
+      "cgroup_exists": false
+    },
+    {
+      "scope": "/user.slice/user-1000.slice/user@1000.service/app.slice/run-red7d4196df3f472993888e34f8e8801c.scope",
+      "samples": 43,
+      "pids": [
+        1673366
+      ],
+      "peak": 1593991168,
+      "cleanup": {
+        "exit": 4,
+        "stdout": "inactive",
+        "stderr": ""
+      },
+      "cgroup_exists": false
+    },
+    {
+      "scope": "/user.slice/user-1000.slice/user@1000.service/app.slice/run-ref786384fdd84ab39029faa20ec5677a.scope",
+      "samples": 4,
+      "pids": [
+        1659213
+      ],
+      "peak": 1014169600,
+      "cleanup": {
+        "exit": 4,
+        "stdout": "inactive",
+        "stderr": ""
+      },
+      "cgroup_exists": false
+    },
+    {
+      "scope": "/user.slice/user-1000.slice/user@1000.service/app.slice/run-rf115175ae3b34c3ca63b9d255c2faea9.scope",
+      "samples": 11,
+      "pids": [
+        1661211
+      ],
+      "peak": 1176719360,
+      "cleanup": {
+        "exit": 4,
+        "stdout": "inactive",
+        "stderr": ""
+      },
+      "cgroup_exists": false
+    },
+    {
+      "scope": "/user.slice/user-1000.slice/user@1000.service/app.slice/run-rf41da4ed66dd4f2e92a9d7a45ab14906.scope",
+      "samples": 15,
+      "pids": [
+        1650930
+      ],
+      "peak": 1686532096,
+      "cleanup": {
+        "exit": 4,
+        "stdout": "inactive",
+        "stderr": ""
+      },
+      "cgroup_exists": false
+    },
+    {
+      "scope": "/user.slice/user-1000.slice/user@1000.service/app.slice/run-rf56593b2fac449c79a8af5c0a4db13fd.scope",
+      "samples": 34,
+      "pids": [
+        1656534
+      ],
+      "peak": 1307643904,
+      "cleanup": {
+        "exit": 4,
+        "stdout": "inactive",
+        "stderr": ""
+      },
+      "cgroup_exists": false
+    },
+    {
+      "scope": "/user.slice/user-1000.slice/user@1000.service/app.slice/run-rf5903cfd78ba4165bf0ed31aba5d2d08.scope",
+      "samples": 40,
+      "pids": [
+        1677319
+      ],
+      "peak": 1499922432,
+      "cleanup": {
+        "exit": 4,
+        "stdout": "inactive",
+        "stderr": ""
+      },
+      "cgroup_exists": false
+    },
+    {
+      "scope": "/user.slice/user-1000.slice/user@1000.service/app.slice/run-rf81a3282136b4dabbbdbcba462ce41ac.scope",
+      "samples": 41,
+      "pids": [
+        1676891
+      ],
+      "peak": 1501057024,
+      "cleanup": {
+        "exit": 4,
+        "stdout": "inactive",
+        "stderr": ""
+      },
+      "cgroup_exists": false
+    },
+    {
+      "scope": "/user.slice/user-1000.slice/user@1000.service/app.slice/run-rf9367734b9de4bc2ab89651fa3cba6d1.scope",
+      "samples": 4,
+      "pids": [
+        1663681
+      ],
+      "peak": 917131264,
+      "cleanup": {
+        "exit": 4,
+        "stdout": "inactive",
+        "stderr": ""
+      },
+      "cgroup_exists": false
+    },
+    {
+      "scope": "/user.slice/user-1000.slice/user@1000.service/app.slice/run-rf99e56e17e08484688c518abe943fe55.scope",
+      "samples": 44,
+      "pids": [
+        1673824
+      ],
+      "peak": 1593831424,
+      "cleanup": {
+        "exit": 4,
+        "stdout": "inactive",
+        "stderr": ""
+      },
+      "cgroup_exists": false
+    },
+    {
+      "scope": "/user.slice/user-1000.slice/user@1000.service/app.slice/run-rfb1c385ac6c8402e9a68da7285283770.scope",
+      "samples": 11,
+      "pids": [
+        1659850
+      ],
+      "peak": 1211387904,
+      "cleanup": {
+        "exit": 4,
+        "stdout": "inactive",
+        "stderr": ""
+      },
+      "cgroup_exists": false
+    },
+    {
+      "scope": "/user.slice/user-1000.slice/user@1000.service/app.slice/run-rfd249f03f26a4720bed3406f27c90fbf.scope",
+      "samples": 34,
+      "pids": [
+        1657209
+      ],
+      "peak": 1323479040,
+      "cleanup": {
+        "exit": 4,
+        "stdout": "inactive",
+        "stderr": ""
+      },
+      "cgroup_exists": false
+    },
+    {
+      "scope": "/user.slice/user-1000.slice/user@1000.service/app.slice/run-rffe013d287fe4959bb8b0a88b609a40d.scope",
+      "samples": 46,
+      "pids": [
+        1690467
+      ],
+      "peak": 1597513728,
+      "cleanup": {
+        "exit": 4,
+        "stdout": "inactive",
+        "stderr": ""
+      },
+      "cgroup_exists": false
+    }
+  ],
+  "maximum_actual_concurrency": 1,
+  "maximum_sampled_solver_peak_bytes": 2082783232,
+  "startup_python_samples": [],
+  "max_step_seconds": 93.564,
+  "max_child_RSS_KiB": 2061976,
+  "observer_sha256": "8aac696df4d2a9e5b5fca750850d29ad7998402f65ffd059fa10203c10f3ca47",
+  "live_processes": [],
+  "guard_locks": [],
+  "integrity_cleanup": "PASS",
+  "numerical_batch": "PASS"
+}

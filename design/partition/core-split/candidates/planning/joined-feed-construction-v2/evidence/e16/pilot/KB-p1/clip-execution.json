@@ -1,0 +1,28 @@
+{
+  "step": "clip",
+  "input_sha256": {
+    "/home/takazudo/.cache/zudo-e16-runs/20261013-pilot-KB-p1/eval/normalized-caps.json": "4cad950b2aa4b51b86ec88e6956dfb31d567c62e4de20d60782c9a358fd8438f",
+    "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-r4/design/partition/core-split/candidates/planning/joined-feed-construction-v2/clip_sheets.py": "6f3df61dd649729b3e58796c067cc9924dc3d776c645592c62e5f6ab3ac5c235",
+    "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-r4/design/partition/core-split/candidates/planning/joined-feed-construction-v2/evidence/board-access-design.json": "f2783e9a0a720e431a00512e9017b55c236e7f31e5a579bbe00e6ee442e00eea"
+  },
+  "command": [
+    "timeout",
+    "180s",
+    "/home/takazudo/.cache/zudo-e16-numerical-venv/bin/python",
+    "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-r4/design/partition/core-split/candidates/planning/joined-feed-construction-v2/clip_sheets.py",
+    "--filtered-board",
+    "/home/takazudo/.cache/zudo-e16-runs/20261013-pilot-KB-p1/eval/normalized-caps.json",
+    "--design",
+    "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-r4/design/partition/core-split/candidates/planning/joined-feed-construction-v2/evidence/board-access-design.json",
+    "--clip-only",
+    "--output",
+    "/home/takazudo/.cache/zudo-e16-runs/20261013-pilot-KB-p1/eval/clipped-sheets.json"
+  ],
+  "exit_code": 0,
+  "elapsed_seconds": 68.3237208519131,
+  "stdout": "{\"board\": \"KB\", \"report\": {\"AGND\": {\"layer\": \"In1.Cu\", \"cut_count\": 9917, \"pieces\": 9, \"area_mm2\": 79200.652753, \"largest_mm2\": 79199.824006}, \"+5V\": {\"layer\": \"In2.Cu\", \"cut_count\": 34458, \"pieces\": 1223, \"area_mm2\": 68727.912978, \"largest_mm2\": 61833.074102}, \"-12V\": {\"layer\": \"In3.Cu\", \"cut_count\": 22992, \"pieces\": 666, \"area_mm2\": 72257.040667, \"largest_mm2\": 66897.928362}, \"+12V\": {\"layer\": \"In4.Cu\", \"cut_count\": 11309, \"pieces\": 11, \"area_mm2\": 78566.929523, \"largest_mm2\": 78565.386736}}, \"elapsed_seconds\": 67.9, \"peak_KiB\": 1267468}\n",
+  "stderr": "",
+  "output_sha256": "6ce99d4054b6ca65c4edc0d2bf6263c78cd103524a42dd6f10b038141558864c",
+  "inputs_before_after_equal": true,
+  "native_calls": 0
+}

@@ -1,0 +1,64 @@
+"""Compare identical8-column refinement with float64 and extended accumulators."""
+from pathlib import Path
+import argparse, gc, json, os, resource, sys, time
+ROOT=Path(__file__).resolve().parents[2]
+SOURCE=ROOT/'design/partition/core-split/candidates/planning/joined-feed-construction-v2'
+sys.path.insert(0,str(SOURCE))
+if os.environ.get('E16_DIAGNOSTIC_SCOPE') != '1':
+ os.environ['E16_DIAGNOSTIC_SCOPE']='1'
+ os.execvp('systemd-run',['systemd-run','--user','--scope','-q','-p','MemoryMax=2147483648','-p','MemorySwapMax=0',sys.executable,str(Path(__file__).resolve()),*sys.argv[1:]])
+cg=Path('/sys/fs/cgroup'+Path('/proc/self/cgroup').read_text().strip().split('::',1)[1])
+assert (cg/'memory.max').read_text().strip()=='2147483648' and (cg/'memory.swap.max').read_text().strip()=='0'
+import numpy as np
+import finite_solve as S
+p=argparse.ArgumentParser();p.add_argument('--spec',type=Path,required=True);p.add_argument('--output',type=Path,required=True);a=p.parse_args()
+spec=json.loads(a.spec.read_text());assert spec['maximum_diagnostic_units']==1
+assert spec['board']=='KB' and spec['net']=='+5V' and spec['case']=='nominal-average' and spec['depth']=='uniform-dielectric'
+assert 0<=spec['start']<spec['stop']<=96 and spec['stop']-spec['start']<=32
+assert not a.output.exists();started=time.monotonic()
+for path,h in spec['input_sha256'].items():assert S.sha(path)==h,path
+args=argparse.Namespace(**{k:Path(spec[k]) if k in ('operator','coverage','config','cases') else spec[k] for k in ('operator','coverage','config','cases','board','net','case','depth')})
+ops,free,pos,Bf,pads,lu,Af=S.factor_board(args)
+prior=S.pload(spec['failed_output']);assert pads[:96]==prior['pads']
+selected=pads[spec['start']:spec['stop']];rows=[];batches=[]
+for offset in range(0,len(selected),S.BATCH):
+ chunk=selected[offset:offset+S.BATCH];W=np.zeros((len(free),len(chunk)))
+ for j,pad in enumerate(chunk):
+  n,w=ops['supports'][pad];assert (pos[n]>=0).all();W[pos[n],j]=w
+ scale=max(float(np.max(abs(W))),1e-300)
+ U,original=S.refined_solve(lu,Af,W)
+ residual=S._extended_residual(Af,U,W)
+ original_e=np.sum(W*U,axis=0);original_q=Bf.T@U
+ witnesses=[{'node':int(free[int(np.argmax(abs(residual[:,j])))]),'absolute':float(np.max(abs(residual[:,j])))} for j in range(len(chunk))]
+ del U,residual;gc.collect();candidate_absolute=0.;sequential_float64_absolute=0.
+ def refine_block(rhs,wide):
+  assert rhs.shape[1]<=8
+  x=lu.solve(rhs)
+  if wide:x=x.astype(np.longdouble)
+  block_scale=max(float(np.max(abs(rhs))),1e-300)
+  residual=S._extended_residual(Af,x,rhs);best=x.copy();worst=float(np.max(abs(residual)))/block_scale
+  for _ in range(S.REFINE_STEPS):
+   x=x+lu.solve(residual);residual=S._extended_residual(Af,x,rhs)
+   score=float(np.max(abs(residual)))/block_scale
+   if score<worst:best=x.copy();worst=score
+  return best,worst
+ for start in range(0,len(chunk),8):
+  block=W[:,start:start+8];block_scale=max(float(np.max(abs(block))),1e-300)
+  control,control_relative=refine_block(block,False)
+  assert np.isfinite(control_relative) and control_relative>=0
+  sequential_float64_absolute=max(sequential_float64_absolute,control_relative*block_scale)
+  del control
+  U,relative=refine_block(block,True)
+  assert np.isfinite(relative) and relative>=0
+  candidate_absolute=max(candidate_absolute,relative*block_scale)
+  ee=np.asarray(np.sum(block*U,axis=0),dtype=np.float64);qq=np.asarray(Bf.T@U,dtype=np.float64)
+  for col in range(block.shape[1]):
+   j=start+col
+   rows.append({'pad_id':chunk[j],'original_residual':witnesses[j],'original_e':float(original_e[j]),'candidate_e':float(ee[col]),'original_q':original_q[:,j].tolist(),'candidate_q':qq[:,col].tolist()})
+  del U
+ batches.append({'start':spec['start']+offset,'stop':spec['start']+offset+len(chunk),'original_batch_relative':original,'candidate_batch_relative':candidate_absolute/scale,'float64_8column_batch_relative':sequential_float64_absolute/scale,'batch_scale':scale})
+report={'source_sha':spec['source_sha'],'spec_sha256':S.sha(a.spec),'scope':str(cg),'limits':{'memory.max':(cg/'memory.max').read_text().strip(),'memory.swap.max':(cg/'memory.swap.max').read_text().strip()},'start':spec['start'],'stop':spec['stop'],'batches':batches,'rows':rows,'elapsed_seconds':time.monotonic()-started,'peak_rss_KiB':resource.getrusage(resource.RUSAGE_SELF).ru_maxrss,'memory_peak_bytes':int((cg/'memory.peak').read_text()),'memory_events':(cg/'memory.events').read_text(),'input_hashes_unchanged':all(S.sha(path)==h for path,h in spec['input_sha256'].items()),'interpretation':'Read-only causal diagnostic. Original16-column batch, float64 8-column control and extended8-column candidate use identical matrices/RHS,3corrections and whole-batch normalization. Candidate projects extended8-column blocks into float64 e/q; not a production baseline result.'}
+with a.output.open('x') as f:json.dump(report,f,indent=2);f.write('\n')
+print(json.dumps({k:report[k] for k in ('start','stop','batches','elapsed_seconds','memory_peak_bytes','memory_events','input_hashes_unchanged')}),flush=True)
+assert report['input_hashes_unchanged']
+assert all(b['candidate_batch_relative']<=1e-9 for b in batches)

@@ -1,0 +1,52 @@
+"""Prepare a source-bound numerical request only; never approve or execute it."""
+from pathlib import Path
+import json,hashlib,subprocess,uuid,os,gzip,math,sys
+root=Path.cwd();f=root/'design/partition/core-split/candidates/planning/joined-feed-construction-v2'
+e=f/'evidence/e16/native-wsl-20261013';audit=json.loads((e/'finite-input-verification.json').read_text())
+assert audit['status']=='PASS'
+assert not subprocess.check_output(['git','status','--porcelain']).strip()
+head=subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip();nonce=uuid.uuid4().hex
+p=root/'.circuit-cache'/('e16-numerical-'+head[:7]+'-'+nonce[:8]);p.mkdir()
+py=Path('/home/takazudo/.cache/zudo-e16-numerical-venv/bin/python');base=Path(audit['base'])
+output=Path('/home/takazudo/.cache/zudo-e16-runs')/('coupled-approved-'+head[:7]+'-'+nonce[:8]);assert not output.exists()
+def sha(path):
+ with Path(path).open('rb') as stream:return hashlib.file_digest(stream,'sha256').hexdigest()
+# Retained generation inputs remain immutable. Rebind identical source bytes
+# from the original execution checkout into this isolated clean candidate.
+inputs={}
+old_root='/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-r4/'
+for name,h in audit['hashed_files'].items():
+ assert sha(name)==h,name
+ bound=str(root/name[len(old_root):]) if name.startswith(old_root) else name
+ assert sha(bound)==h,bound
+ inputs[bound]=h
+for path in [Path('/tmp/osc-wsl-20261013/execute_unit_guard_numerical.py'),*f.glob('*.py'),f/'evidence/e16/continuation-20261013b/coupled-network-config.json',f/'evidence/e16/continuation-20261013b/load-ledger.json.gz',f/'evidence/e16/process-cases.json',py.resolve(),py.parent.parent/'pyvenv.cfg',e/'finite-input-verification.json',e/'index.json',Path('/home/takazudo/.codex/scripts/heavy-guard.sh')]:inputs[str(path)]=sha(path)
+kernel=Path(subprocess.check_output([str(py),'-c','from scipy.sparse import _sparsetools; print(_sparsetools.__file__)'],text=True).strip());inputs[str(kernel)]=sha(kernel)
+versions=subprocess.check_output([str(py),'-c','import sys,numpy,scipy,shapely,json;print(json.dumps(dict(python=sys.version,numpy=numpy.__version__,scipy=scipy.__version__,shapely=shapely.__version__)))'],text=True)
+guard=Path('/home/takazudo/.codex/scripts/heavy-guard.sh')
+sys.path.insert(0,str(f));from numerical_unit_guard import UnitGuard
+UnitGuard(sha(guard)).check()
+counts={}
+for board in ('KA','KB'):
+ for net in ('+12V','-12V','+5V','AGND'):
+  cov=json.loads(gzip.decompress((base/board/('coverage-'+net+'.json.gz')).read_bytes()))
+  counts[board+'|'+net]={'fed_rows':sum(row['finite_path_to_feed'] for row in cov['rows'])}
+  counts[board+'|'+net]['chunk_upper_bound']=math.ceil(counts[board+'|'+net]['fed_rows']/96)
+chunks=3*sum(c['chunk_upper_bound'] for c in counts.values());assert chunks==111
+command=['env','-u','E16_SOLVE_SCOPE','OPENBLAS_NUM_THREADS=1','OMP_NUM_THREADS=1','MKL_NUM_THREADS=1',str(py),str(f/'run_coupled_e16.py'),'--python',str(py),'--finite',str(base),'--output',str(output),'--config',str(f/'evidence/e16/continuation-20261013b/coupled-network-config.json'),'--cases',str(f/'evidence/e16/process-cases.json'),'--depth','uniform-dielectric','--unit-heavy-guard-sha256',sha(guard)]
+for net in ('+12V','-12V','+5V','AGND'):command+=['--net='+net]
+for case in ('nominal-average','sensitivity-thin','legacy-conditional-requirement'):command+=['--case',case]
+request={'schema':'e16-production-numerical-request-v1','status':'PREPARED ONLY; NOT ADMITTED; NOT RUN','source_sha':head,'checkout':str(root),'uid':os.getuid(),'run_id':nonce,'attempt':5,
+ 'scope':'Baseline t2 only: whole-device normal-typ-v1 service, KA/KB reductions, driving-point chunks and coupled states for exactly +12V/-12V/+5V/AGND and nominal-average/sensitivity-thin/legacy-conditional-requirement at uniform-dielectric depth. Reuses retained finite coverage without regeneration. Maximum148 serialized units. No remedy variants, additional load/depth scenarios, KiCad, routing, physical or electrical acceptance.',
+ 'command':command,'working_directory':str(root),'output':str(output),'input_sha256':inputs,'toolchain':json.loads(versions),
+ 'execution_hook':'/tmp/osc-wsl-20261013/execute_unit_guard_numerical.py',
+ 'guards':{'shared_heavy_guard':True,'per_unit_shared_heavy_guard':True,'parent_holds_no_slot':True,'serialized_units':True,'each_unit_timeout_seconds':180,'unit_memory_max_bytes':2147483648,'unit_memory_swap_max_bytes':0,'maximum_units':148,'shared_heavy_guard_max_run_seconds_per_unit':1800,'shared_guard_configuration':UnitGuard(sha(guard)).binding(),'scope':'finite_solve.enter_memory_scope verifies live user-systemd cgroup values; helper proves shared guard owner/descriptor/lock before workload; queue time is outside the180s timeout','stop_on_failure':True,'both_board_reductions_before_driving_points':True,'resume':False,'automatic_retry':False},
+ 'approval_requirement':'Independent exact request review and a request-specific delegated campaign authorization receipt derived from the actual standing owner instruction are required before launch. Charge the second full-baseline execution of the three-run campaign budget before launch; do not claim new personal owner digest approval. Preparation alone cannot authorize execution.',
+ 'estimated_work':{'coverage_counts':counts,'driving_point_chunks_upper_bound':chunks,'reductions':24,'coupled_units':12,'service_units':1,'maximum_unit_timeout_budget_seconds':148*180,'expected_runtime':'Several hours, roughly4hours if all checks pass; timeout budgets sum to7h24m, plus queue waiting/guard overhead. Each guard owns only one180s unit, not the entire batch.'},
+ 'prior_failed_request':'e61a727361ad1a2fd0418d6d95c0cdae109a536d8b62a99654970685c0819c87',
+ 'prior_short_request':'8f8d104e1b349f063ef7627cc52a66dd64486690b938407ef03916d659ab9665',
+ 'limitations':['Attempt4 completed all six +/-12V case coupling units before the +5V driving-point precision failure. Source corrections require a fresh full baseline; no old partial result counts as this run.','Original failed/partial and successful short results remain unchanged; output is fresh and no receipt is reused.','Future remedy/variant operators require separate matched preparation and admission.','Unsupported loads, absent physical source/protection geometry and complete copper resistance remain unresolved.']}
+(p/'request.json').write_text(json.dumps(request,indent=2)+'\n')
+index={'packet':str(p),'source_sha':head,'request_sha256':sha(p/'request.json'),'native_calls':0,'solves':0,'approval_created':False}
+(p/'index.json').write_text(json.dumps(index,indent=2)+'\n')
+Path('/home/takazudo/.cache/zudo-e16-runs/campaign-20261014/attempt5-packet.json').write_text(json.dumps(index,indent=2)+'\n');print(json.dumps(index,indent=2))

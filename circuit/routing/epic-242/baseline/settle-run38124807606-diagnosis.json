@@ -1,0 +1,56 @@
+{
+  "failed_run_id": 38124807606,
+  "source_sha": "153e72c3047f3e65c08c762b31558d1652eb6ca2",
+  "artifact_id": 11695998875,
+  "artifact_sha256": "c21dbf55a9355cf79b7503edd7ff80bab53cdbd08212dd19ff33c090e65c13e7",
+  "admission_01": "RELEASED by parent; no accepted hardware change",
+  "established": [
+    "The guard raised on docker inspect ecb8f97b42d3 exit1 during membership observation, before obtaining a normal driver exit code.",
+    "ecb8f97b42d3 was already in observed_containers: this guard had previously verified that container running under the required worker slice and memory/swap caps.",
+    "Exact-source finally cleanup stops the producer service after this exception. The retained driver log reports code=killed/status=TERM at87.448seconds; this does not establish a prior native-process failure.",
+    "One refill completed and subsequent rawDRC was retained. No settled receipt exists. Neither successful settlement nor a native-process defect was established.",
+    "The observation path in153e72c3 unconditionally aborts on any failed inspect of a listed --rm container; it does not distinguish normal disappearance from daemon/permission errors.",
+    "The old receipt discarded inspect stderr and contains no terminal container status/event. Exact historical normal-versus-abnormal container exit cause cannot be recovered from this artifact."
+  ],
+  "classification": "Confirmed guard-observation abort; exact underlying inspect/container-exit cause indeterminate. Legitimate short-lived completion is a supported regression scenario, not a proved historical event.",
+  "fix": [
+    "Use full64hex container IDs and check exact inspected ID, worker label, memory/swap caps and parent on every successful inspection.",
+    "Only a previously running-membership-verified ID with an exact missing-object/container error AND a fresh successful unfiltered full-ID absence observation may disappear without abort. Retain error rc/stdout/stderr and label exit status UNKNOWN; command success is still mandatory.",
+    "A disappearing /proc entry permits one re-inspection. Confirm terminal/previously verified absence or fresh running membership. Readable wrong cgroup, PID reuse, changed ID/label/caps, OOM/nonzero terminal exits and unknown errors stay fatal.",
+    "Retain actual running membership tuples, lifecycle transitions, driver exit before/after cleanup, kernel memory peak/current/events before and after producer cleanup where available, watchdog memory observation, and explicit final unit/container inventory. Unknown or surviving final states block acceptance."
+  ],
+  "limits": [
+    "Previously unverified disappearance remains fatal. Completely short-lived containers not sampled running are not runtime-membership proof; guard still requires at least one verified running container plus command success. No claim of exhaustive per-container live observation.",
+    "Kernel peak evidence states capture time; if only before-cleanup evidence survives, no later lifetime-peak claim. Missing evidence is explicit.",
+    "Preparation remains its separately accepted sampled policy; no new daemon/resource/security configuration. Hook and6GiB/12GiB/2GiB controls unchanged.",
+    "Native retry and runtime validation NOT RUN. All prior negative evidence remains immutable."
+  ],
+  "harness_review": {
+    "necessary_controls": "Existing worker/aggregate cgroup caps, zero additional swap, deadline, independent watchdog, exact identities and targeted serialized cleanup implement parent requirements; retain them and the proven run.sh/native tools.",
+    "unnecessary_failure_surface": "Treating list/inspect and inspect/proc snapshots as atomic adds an avoidable lifecycle failure around ordinary --rm containers. Observational code should distinguish positively proved prior-owned disappearance without overriding driver failure or containment evidence.",
+    "scope": "Fix those observation semantics and retain missing evidence; no replacement harness, routing change, native-tool rewrite or broad qualification project."
+  },
+  "validation": {
+    "source_tests": 45,
+    "new_lifecycle_tests": 10,
+    "compile": "PASS",
+    "independent_source_review": "PASS: strict disappearance gate, identity/cap/membership failures remain fatal, bounded reinspection, retained memory/finalstate evidence; no source blocker",
+    "frozen_input_check": "PASS",
+    "circuit_check": "PASS",
+    "project_check": "PASS"
+  },
+  "one_retry_proposal": {
+    "workflow": "routing-benchmark.yml",
+    "ref": "integration/epic-242-core-routing",
+    "reviewed_commit": "Exact new pushed fix SHA supplied in handoff; must equal dispatch workflow SHA",
+    "settle_only": true,
+    "resource_qualification": false,
+    "board": "osc-core",
+    "reviewed_hook_sha256": "8631e1222942b8396bf566c88deaed0e287234146c4adb1afa9aa87d0d1055a5",
+    "parent_admission_id": "epic242-three-a-settle-02",
+    "exclusive_workers": 1,
+    "seconds": 300,
+    "scope": "same three-A before-board settle only; fresh runner/worker/evidence; no automatic retry or routing",
+    "admission": "NOT GRANTED"
+  }
+}

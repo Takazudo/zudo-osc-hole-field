@@ -1,0 +1,53 @@
+[
+  {
+    "name": "circuit-check",
+    "command": [
+      "pnpm",
+      "circuit:check"
+    ],
+    "cwd": "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-r4",
+    "exit_code": 0,
+    "seconds": 0.8575792090268806,
+    "log": "circuit-check.txt",
+    "sha256": "07a2f28172f86ec3ebb60044f4eaad6da83999d0a61d5b14bf6b088ac70acca4"
+  },
+  {
+    "name": "documentation-check",
+    "command": [
+      "pnpm",
+      "check"
+    ],
+    "cwd": "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-r4",
+    "exit_code": 0,
+    "seconds": 4.046122146071866,
+    "log": "documentation-check.txt",
+    "sha256": "be77babd80c8d27a73275f402d054fb535ec15ece9a7aedf73fbbff716428edb"
+  },
+  {
+    "name": "documentation-build",
+    "command": [
+      "bash",
+      "/home/takazudo/.codex/scripts/heavy-guard.sh",
+      "--",
+      "pnpm",
+      "build"
+    ],
+    "cwd": "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-r4",
+    "exit_code": 0,
+    "seconds": 16.062722366070375,
+    "log": "documentation-build.txt",
+    "sha256": "0e5e08a8462c82363b4b2ba02e55fefe39eb7a08ae1e02acbcbe115d82b8a8f9"
+  },
+  {
+    "name": "site-check",
+    "command": [
+      "pnpm",
+      "check:site"
+    ],
+    "cwd": "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-r4",
+    "exit_code": 0,
+    "seconds": 10.035854811081663,
+    "log": "site-check.txt",
+    "sha256": "4491681d6490e8821d45d444833131a88e9cf48190dd68afd790c1134ac4d8c0"
+  }
+]

@@ -1,0 +1,24 @@
+{
+  "interface": "authorized GitHub connector",
+  "branch": "integration/epic-242-core-routing",
+  "draft_pr": 260,
+  "expected_base_sha": "fe2e6d20c50587e223f1357f34c865db385fa5b0",
+  "updates": [
+    {
+      "local_sha": "bd4ee23e4c71c3c66533c263beeb06af99d4ad17",
+      "remote_sha": "cc04fff085f4c9328137a5443f0d9586eef72aaa",
+      "identical_tree": "dbd4082dee2bd94fb913ec2f1c2b4350cd8c1956"
+    },
+    {
+      "local_sha": "721c095688b78aa6ad4a8584a62271dd33b193c9",
+      "remote_sha": "9950a864fbc02ff63734c4c9358b8a79a6abcd49",
+      "identical_tree": "9b671e7f7ac9d1ed0fd40dd2dcbd8df292b5bdd1"
+    }
+  ],
+  "verification": "Every uploaded blob SHA equals local Git blob SHA; both remote commit trees and single-parent chain read back through connector and match expected values. Whole-tree equality includes all unrelated paths and file modes.",
+  "metadata_rebinding": "Only current ledger/proposal/readiness metadata changes after exact implementation tree9950a864; no source or hardware bytes change. Final ref update requires force=false and expected_base_sha; final remote head recorded in coordinator handoff after successful readback.",
+  "commit_metadata": "Connector supports message/tree/parents only; local author/committer timestamps cannot be supplied, so commit hashes differ.",
+  "source_tests": "61 focused tests passed on unchanged implementation; frozen-input verification rerun after metadata rebinding.",
+  "credentials": "No credentials, account switches, git helper setup or authentication configuration changes.",
+  "native_admission": "HOLD; no native dispatch; no PR merge."
+}

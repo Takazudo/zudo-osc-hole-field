@@ -1,0 +1,28 @@
+{
+  "step": "clip",
+  "input_sha256": {
+    "/tmp/osc-feed-geometry/normalized-caps.json": "0a373a2c6c13a60fdbc9670a06dfd0b04d5ae3ce36543b986f55e259db99f209",
+    "/workspace/zudo-osc-hole-field/design/partition/core-split/candidates/planning/joined-feed-construction-v2/clip_sheets.py": "6f3df61dd649729b3e58796c067cc9924dc3d776c645592c62e5f6ab3ac5c235",
+    "/workspace/zudo-osc-hole-field/design/partition/core-split/candidates/planning/joined-feed-construction-v2/evidence/board-access-design.json": "f2783e9a0a720e431a00512e9017b55c236e7f31e5a579bbe00e6ee442e00eea"
+  },
+  "command": [
+    "timeout",
+    "180s",
+    "/workspace/osc-venv/bin/python",
+    "/workspace/zudo-osc-hole-field/design/partition/core-split/candidates/planning/joined-feed-construction-v2/clip_sheets.py",
+    "--filtered-board",
+    "/tmp/osc-feed-geometry/normalized-caps.json",
+    "--design",
+    "/workspace/zudo-osc-hole-field/design/partition/core-split/candidates/planning/joined-feed-construction-v2/evidence/board-access-design.json",
+    "--clip-only",
+    "--output",
+    "/tmp/osc-feed-geometry/clipped-sheets.json"
+  ],
+  "exit_code": 0,
+  "elapsed_seconds": 112.94516663600007,
+  "stdout": "{\"board\": \"KA\", \"report\": {\"AGND\": {\"layer\": \"In1.Cu\", \"cut_count\": 9773, \"pieces\": 8, \"area_mm2\": 79242.391594, \"largest_mm2\": 79241.527042}, \"+5V\": {\"layer\": \"In2.Cu\", \"cut_count\": 38549, \"pieces\": 1549, \"area_mm2\": 68360.252133, \"largest_mm2\": 58637.518809}, \"-12V\": {\"layer\": \"In3.Cu\", \"cut_count\": 23953, \"pieces\": 628, \"area_mm2\": 73013.967115, \"largest_mm2\": 70686.042916}, \"+12V\": {\"layer\": \"In4.Cu\", \"cut_count\": 10803, \"pieces\": 10, \"area_mm2\": 78763.143766, \"largest_mm2\": 78762.087247}}, \"elapsed_seconds\": 112.34, \"peak_KiB\": 1298808}\n",
+  "stderr": "",
+  "output_sha256": "927504a53f0b6188c354ca06ca2738dce617025e8d4e14aafa81e436888b46da",
+  "inputs_before_after_equal": true,
+  "native_calls": 0
+}

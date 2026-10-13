@@ -1,0 +1,65 @@
+{
+  "source_sha": "c8b2db34e7501b5ae5adb46e7b24710b1f3559cb",
+  "tests": 44,
+  "checks": [
+    {
+      "command": [
+        "/home/takazudo/.cache/zudo-e16-numerical-venv/bin/python",
+        "-c",
+        "import sys,unittest;sys.path.insert(0,\"design/partition/core-split/candidates/planning/joined-feed-construction-v2\");s=unittest.defaultTestLoader.loadTestsFromNames([\"test_numerical_acceptance\",\"test_refined_solve\",\"test_replay_steps\",\"test_finite_adapter\"]);r=unittest.TextTestRunner(verbosity=1).run(s);sys.exit(not r.wasSuccessful())"
+      ],
+      "cwd": "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-r4",
+      "exit_code": 0,
+      "elapsed_seconds": 6.275136284995824,
+      "child_peak_rss_KiB": 90852,
+      "log": "numerical-final-source-tests.txt"
+    },
+    {
+      "command": [
+        "pnpm",
+        "circuit:check"
+      ],
+      "cwd": "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-r4",
+      "exit_code": 0,
+      "elapsed_seconds": 3.4866186539875343,
+      "child_peak_rss_KiB": 128316,
+      "log": "numerical-final-circuit.txt"
+    },
+    {
+      "command": [
+        "pnpm",
+        "check"
+      ],
+      "cwd": "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-r4",
+      "exit_code": 0,
+      "elapsed_seconds": 5.231619491940364,
+      "child_peak_rss_KiB": 277796,
+      "log": "numerical-final-doccheck.txt"
+    },
+    {
+      "command": [
+        "bash",
+        "/home/takazudo/.codex/scripts/heavy-guard.sh",
+        "--",
+        "pnpm",
+        "build"
+      ],
+      "cwd": "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-r4",
+      "exit_code": 0,
+      "elapsed_seconds": 22.307632761076093,
+      "child_peak_rss_KiB": 1086956,
+      "log": "numerical-final-build.txt"
+    },
+    {
+      "command": [
+        "pnpm",
+        "check:site"
+      ],
+      "cwd": "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-r4",
+      "exit_code": 0,
+      "elapsed_seconds": 10.117714441032149,
+      "child_peak_rss_KiB": 552984,
+      "log": "numerical-final-site.txt"
+    }
+  ]
+}

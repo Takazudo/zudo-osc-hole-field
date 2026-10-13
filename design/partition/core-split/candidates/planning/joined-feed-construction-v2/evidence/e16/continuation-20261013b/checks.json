@@ -1,0 +1,61 @@
+{
+ "source_commit": "e215b9eb3f9695d74cd9dfc9de182e0882bebcd7",
+ "source_files_changed_after_commit": false,
+ "python_source_only": {
+  "status": "PASS",
+  "tests_run": 1681,
+  "command": "PATH=/tmp/osc-no-native-bin:/workspace/osc-venv/bin:$PATH bash /tmp/osc-source-tests.sh",
+  "selector": "source-test-selection.py.txt",
+  "native_blocker": "source-only-native-blocker.sh.txt",
+  "native_blocker_invocations": 0,
+  "deferred_unique_test": "test_sweep_precision_vendor.PrecisionVendorSweepGate.test_original_network_returns_nonzero_for_supported_failure",
+  "deferred_discovery_occurrences": 2,
+  "repository_tests_modified_for_selection": false
+ },
+ "python_aggregate_unmodified": {
+  "status": "FAIL / native-backed check deferred",
+  "failed_root": "design/spec",
+  "failed_tests": 1,
+  "errors": 1,
+  "reason": "Docker oracle could not start after image download exhausted disk; source cache mkdir failed. Exact logs retained. A later selector alias attempt was stopped; no container start observed."
+ },
+ "checks": {
+  "pnpm circuit:check": {
+   "status": "PASS",
+   "exit_code": 0
+  },
+  "pnpm check": {
+   "status": "PASS",
+   "exit_code": 0
+  },
+  "pnpm build (shared heavy guard)": {
+   "status": "PASS",
+   "exit_code": 0
+  },
+  "pnpm check:site": {
+   "status": "PASS",
+   "exit_code": 0
+  },
+  "git diff --check": {
+   "status": "PASS",
+   "exit_code": 0
+  }
+ },
+ "circuit_scope": "manual inventory68 lines; pin-asset check performed; schematic/placement binding not performed",
+ "protected_files": {
+  "count": 539,
+  "sha256_verification": "PASS"
+ },
+ "independent_reviews": {
+  "source_materialization_native_numerics": "osc-independent-review.md;41 targeted tests PASS at source commit",
+  "electrical_service": "osc-device-service-review.md; reviewed followup applied",
+  "ka_longb": "osc-ka-longb-review-r3.md; geometry PASS, not electrical acceptance"
+ },
+ "production_numerical_validation": "NOT RUN: actual required user-systemd2GiB/no-swap scope unavailable; original failed criteria retained",
+ "native_e16": "NOT RUN / NOT ADMITTED; exact run/attempt/SHA/hook/request digest absent; no admission generated",
+ "full_regeneration": "NOT RUN: contains native phases",
+ "retained_artifact_integration": "NOT RUN: required preserved issue38 local artifacts absent",
+ "ci": "NOT RUN: [skip ci], no native dispatch",
+ "disposition": "KEEP_K1402_INCUMBENT",
+ "accepted": false
+}

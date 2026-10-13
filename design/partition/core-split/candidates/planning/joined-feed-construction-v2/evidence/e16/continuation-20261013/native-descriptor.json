@@ -1,0 +1,92 @@
+{
+ "schema": "e16-native-validation-descriptor-v1",
+ "status": "PREPARED, NOT ADMITTED, NOT DISPATCHED",
+ "orchestration_commit": "e811063a302df20e023e8c40b307e698a27e877e",
+ "candidate": {
+  "epoch": "E16",
+  "round": "t2",
+  "boards": {
+   "KA": {
+    "t2_source_json": "b73bc3a7b3b10bab9be357cc41984d515a88e73d8155731ae50db03bf057bffb",
+    "t2_caps_json": "01c3b391a6609ff3b043ecfa24e9bd8504f3ff8deaf3bdeb5bb6b81ef9058314",
+    "t2_clipped_sheets_json": "6dcc98353b723eb0ff35d0205bb1cf14de8a80cb9fbf8e0cfcb9c55a6529d052",
+    "retained_t2_port_graph_gz": "b6240792224b5ba4491b75b8368c38ced08347f505603d4db6b5818b4281bf6e",
+    "retained_t2_obligations": "8ca6b6ca03499c1f56a892d8e4bef037eff3f1b3b146a32a1eda9df4352dfcda",
+    "retained_delta_r1_r3_gz": "f54b4a34231894f2862356f2fba92df589dcb661e580e34ab243cc985ff60693",
+    "retained_delta_r4_t2_gz": "d62cf9f6d7833150cff6317b5b42ce69b03cc9c6466183654f7b99ea6c0e4d37",
+    "candidate05_pcb": "ba6202f857c97d62411e3f6c27bca962c4d45b65e60e9fedd767c03c9d1fe6d6"
+   },
+   "KB": {
+    "t2_source_json": "5413ff1eac3c27e7f92f4bf756658f97e2c0db48aacf9814cc40a65ada6a751c",
+    "t2_caps_json": "2512405580633d63ef20dfa2880216f44228008fef625f71f55e860c72984f19",
+    "t2_clipped_sheets_json": "4952f6d507c89fbce36c195b277d4c3458325f899ce0435ee8b14d654d7a4e07",
+    "retained_t2_port_graph_gz": "7d844c061d96be056ae206080dc0df2e689bf8e19a208b960347b6c2ee7f4e53",
+    "retained_t2_obligations": "1373210e67eb6fe0d720686c38fc1ad49877856d80b516a8ef95a66afa8ef487",
+    "retained_delta_r1_r3_gz": "d9dc6237e85db2e7a90010eca2758e7c63189d568d61a4ee9c4a834fafcee9c5",
+    "retained_delta_r4_t2_gz": "e8aadb636520c0f8c15bc0a96429b6f6d0a1771972795038a722b0e2e815d800",
+    "candidate05_pcb": "05ce8d2b8121dc9ec6f9063a06d9e1f2f3dec49116e3a46ec253bc0556ada427"
+   }
+  },
+  "reconstruction": "bash replay_e16.sh PYTHON ABS_OUTDIR (replays candidate05 byte-for-byte, then r1..t2; compare_replay.py must exit 0 for both boards)"
+ },
+ "oracle": {
+  "kicad_version": "10.0.6",
+  "image": "kicad/kicad@sha256:18693567392b80da435f9fa952ce3a3e534c66eb5a6033f5b9c80aa3b19dd3ec",
+  "run_sh_sha256": "f91b2c8846856a6d38a10eb9e6314b6ebec3222b68df37942f3716ab860d8c91",
+  "pin_env_sha256": "769e2be0b61e7d92a6930684f13166b7dc098522008de3969cd30d6c4a363246",
+  "native_resource_guard_sha256": "ee755233af405e60cf592956dcf42ca1069f5face6c20c1cdfcdf6f8479ef8ca",
+  "ci_native_admission_sha256": "89bf381dc606330073bda3fe51cdc711894e3e452d7ab7f3072a7873be39655a"
+ },
+ "phases": [
+  {
+   "id": "N0-reconstruct",
+   "native": false,
+   "command": "bash design/partition/core-split/candidates/planning/joined-feed-construction-v2/replay_e16.sh PYTHON ABS_OUTDIR",
+   "pass": "compare_replay.py --board KA and --board KB exit 0; candidate hashes above equal"
+  },
+  {
+   "id": "N1-materialize",
+   "native": false,
+   "command": "write the t2 access delta (segments and vias) into fresh copies of the candidate05 KA/KB .kicad_pcb, never into boards/**",
+   "pass": "fresh-copy hashes recorded; canonical boards/** and placements.lock.json byte-identical before/after",
+   "status": "NOT IMPLEMENTED: no reviewed materializer exists yet; it is source work required before any admission request"
+  },
+  {
+   "id": "N2-zone-fill",
+   "native": true,
+   "command": "scripts/kicad/run.sh pcb ... zone fill on each fresh copy (KiCad 10.0.6, pinned image)",
+   "pass": "fill completes; filled zones exported"
+  },
+  {
+   "id": "N3-drc",
+   "native": true,
+   "command": "scripts/kicad/run.sh pcb drc --severity-all --format json on each filled copy",
+   "pass": "full warning and error list retained (no severity filter); every violation classified, none silently waived"
+  },
+  {
+   "id": "N4-connectivity",
+   "native": true,
+   "command": "native unconnected-item report for +12V/-12V/+5V/AGND on each filled copy",
+   "pass": "native open-edge census reconciled pad-by-pad against K?-t2-port-obligations.json; differences reported, not forced"
+  }
+ ],
+ "checks": {
+  "preservation": "boards/**, design/grid/placements.lock.json and decision.json SHA-256 equal before and after",
+  "full_warnings": "DRC JSON retained unfiltered",
+  "fresh_copy": "every native phase works on a fresh copy made from the reconstructed candidate; inputs re-hashed after each phase"
+ },
+ "resources": {
+  "workers": "at most two native workers globally, reserved by the parent admission",
+  "per_worker": "6 GiB no-swap systemd slice, 12 GiB aggregate, >=8 GiB MemAvailable at launch (native_resource_guard.py)",
+  "deadlines": "Python phase 28 min, board phase 43 min (ci_native_admission.py)",
+  "cleanup": "watchdog removes only containers with this worker label, verifies no survivors, then exits; worker identity single-use"
+ },
+ "binding_fields_unfilled": {
+  "EPIC242_PARENT_ADMISSION_RUN_ID": null,
+  "EPIC242_PARENT_ADMISSION_SHA": null,
+  "EPIC242_REVIEWED_HOOK_SHA256": null,
+  "github_run_attempt": 1,
+  "note": "Only a parent admission of the actual GitHub run may fill these; old tokens/receipts are not reusable. This source continuation neither mints nor dispatches."
+ },
+ "native_calls": 0
+}

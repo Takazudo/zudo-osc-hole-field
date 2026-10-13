@@ -1,0 +1,30 @@
+"""1.8M-node source fixture; bounded synthetic-only residual comparison."""
+import ast,copy,cProfile,json,resource,time,hashlib
+from pathlib import Path
+import numpy as np
+import scipy.sparse as sp
+resource.setrlimit(resource.RLIMIT_AS,(2*1024**3,2*1024**3))
+source=Path('/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-campaign/design/partition/core-split/candidates/planning/joined-feed-construction-v2/finite_solve.py')
+tree=ast.parse(source.read_text());node=next(n for n in tree.body if isinstance(n,ast.FunctionDef) and n.name=='_extended_residual')
+ns={'np':np};exec(compile(ast.Module(body=[node],type_ignores=[]),str(source),'exec'),ns);original=ns['_extended_residual']
+changed=copy.deepcopy(node);changed.name='typed_scalar_residual'
+count=0
+for n in ast.walk(changed):
+ if isinstance(n,ast.Call) and isinstance(n.func,ast.Attribute) and n.func.attr=='searchsorted' and len(n.args)==2 and isinstance(n.args[1],(ast.Name,ast.BinOp)):
+  n.args[1]=ast.Call(func=ast.parse('Af.indptr.dtype.type',mode='eval').body,args=[n.args[1]],keywords=[]);count+=1
+assert count==2
+exec(compile(ast.fix_missing_locations(ast.Module(body=[changed],type_ignores=[])),str(source)+'-typed-query-only','exec'),ns);candidate=ns['typed_scalar_residual']
+n=1800000
+A=sp.diags([-np.ones(n-1)*1e5,np.ones(n)*(2e5+26+.1),-np.ones(n-1)*1e5,-np.ones(n-37)*13,-np.ones(n-37)*13],[-1,0,1,-37,37],format='csc');A.sort_indices()
+x=np.linspace(.1,.2,n,dtype=np.longdouble);b=np.full(n,.01)
+rows=[];reference=None
+for name,fn in [('current_CSC_python_int',original),('candidate_CSC_dtype_scalar',candidate),('current_repeat',original),('candidate_repeat',candidate)]:
+ p=cProfile.Profile();started=time.perf_counter();p.enable();result=fn(A,x,b);p.disable();elapsed=time.perf_counter()-started
+ if reference is None:reference=result
+ else:np.testing.assert_array_equal(result,reference)
+ times=[]
+ for stat in p.getstats():
+  code=stat.code;label=code if isinstance(code,str) else code.co_name
+  if 'searchsorted' in label:times.append({'function':label,'calls':stat.callcount,'total_seconds':stat.totaltime,'self_seconds':stat.inlinetime})
+ rows.append({'method':name,'elapsed_seconds':elapsed,'exact_original_residual_equal':True,'searchsorted_entries':times})
+print(json.dumps({'source_sha256':hashlib.sha256(source.read_bytes()).hexdigest(),'synthetic_only':True,'nodes':n,'nonzeros':A.nnz,'rhs':1,'indptr_dtype':str(A.indptr.dtype),'peak_rss_KiB':resource.getrusage(resource.RUSAGE_SELF).ru_maxrss,'address_limit_bytes':2*1024**3,'measurements':rows},indent=2))

@@ -1,5 +1,5 @@
 name: Routing obstacle benchmark
-run-name: "Issue 189 ${{ inputs.local_repair && 'read-only local repair' || inputs.recover_core && 'core return repair' || (inputs.adopt_run || inputs.replay_jl || inputs.replay_jr) && 'copper adoption' || 'same-input benchmark' }} — ${{ inputs.board }}"
+run-name: "Issue 189 ${{ inputs.lifecycle_qualification && 'startup lifecycle qualification' || inputs.settle_only && format('{0} settle only', inputs.settle_pilot) || inputs.resource_qualification && 'resource guard qualification' || inputs.local_repair && 'read-only local repair' || inputs.recover_core && 'core return repair' || (inputs.adopt_run || inputs.replay_jl || inputs.replay_jr) && 'copper adoption' || 'same-input benchmark' }} — ${{ inputs.board }}"
 on:
   workflow_dispatch:
     inputs:
@@ -47,6 +47,40 @@ on:
         type: choice
         options: [cut, coupled]
         default: cut
+      settle_only:
+        description: Exclusive admitted reviewed candidate before-board settle only
+        type: boolean
+        default: false
+      settle_pilot:
+        description: Reviewed complete candidate fixture for settle_only
+        type: choice
+        options: [two-A, two-B, three-A, three-B, three-C]
+        default: three-A
+      settle_seconds:
+        description: Native settle guard budget for a separately admitted sealed pilot
+        type: choice
+        options: ['300', '600']
+        default: '300'
+      lifecycle_qualification:
+        description: Exclusive admitted short-lived startup/exit lifecycle check
+        type: boolean
+        default: false
+      resource_qualification:
+        description: Run only the admitted harmless resource guard qualification
+        type: boolean
+        default: false
+      reviewed_commit:
+        description: Full reviewed checkout SHA for qualification
+        type: string
+        required: false
+      reviewed_hook_sha256:
+        description: Reviewed SHA-256 of scripts/kicad/run.sh
+        type: string
+        required: false
+      parent_admission_id:
+        description: Nonsecret parent admission ID for qualification
+        type: string
+        required: false
 permissions:
   contents: read
 concurrency:
@@ -54,7 +88,7 @@ concurrency:
   cancel-in-progress: false
 jobs:
   benchmark:
-    if: inputs.adopt_run == '' && !inputs.recover_core && !inputs.replay_jl && !inputs.replay_jr && !inputs.local_repair
+    if: ${{ !inputs.lifecycle_qualification && !inputs.settle_only && !inputs.resource_qualification && (inputs.adopt_run == '' && !inputs.recover_core && !inputs.replay_jl && !inputs.replay_jr && !inputs.local_repair) }}
     runs-on: ubuntu-latest
     timeout-minutes: 355
     strategy:
@@ -93,7 +127,7 @@ jobs:
           if-no-files-found: error
           include-hidden-files: true
   adopt:
-    if: (inputs.adopt_run != '' || inputs.recover_core || inputs.replay_jl || inputs.replay_jr) && !inputs.local_repair && inputs.core_replay != 'native-hole-audit' && inputs.core_replay != 'native-mask-audit' && inputs.core_replay != 'native-zone-audit'
+    if: ${{ !inputs.lifecycle_qualification && !inputs.settle_only && !inputs.resource_qualification && ((inputs.adopt_run != '' || inputs.recover_core || inputs.replay_jl || inputs.replay_jr) && !inputs.local_repair && inputs.core_replay != 'native-hole-audit' && inputs.core_replay != 'native-mask-audit' && inputs.core_replay != 'native-zone-audit') }}
     runs-on: ubuntu-latest
     timeout-minutes: 355
     permissions:
@@ -317,7 +351,7 @@ jobs:
           include-hidden-files: true
           retention-days: 30
   local-pilot:
-    if: inputs.local_repair && !inputs.replay_jl && !inputs.replay_jr
+    if: ${{ !inputs.lifecycle_qualification && !inputs.settle_only && !inputs.resource_qualification && (inputs.local_repair && !inputs.replay_jl && !inputs.replay_jr) }}
     runs-on: ubuntu-latest
     timeout-minutes: 90
     permissions:
@@ -362,7 +396,7 @@ jobs:
           retention-days: 30
 
   hole-audit:
-    if: inputs.recover_core && inputs.core_replay == 'native-hole-audit' && inputs.board == 'osc-core' && !inputs.local_repair && !inputs.replay_jl && !inputs.replay_jr && inputs.adopt_run == ''
+    if: ${{ !inputs.lifecycle_qualification && !inputs.settle_only && !inputs.resource_qualification && (inputs.recover_core && inputs.core_replay == 'native-hole-audit' && inputs.board == 'osc-core' && !inputs.local_repair && !inputs.replay_jl && !inputs.replay_jr && inputs.adopt_run == '') }}
     permissions:
       contents: read
       actions: read
@@ -412,7 +446,7 @@ jobs:
           if-no-files-found: error
 
   mask-audit:
-    if: inputs.recover_core && inputs.core_replay == 'native-mask-audit' && inputs.board == 'osc-core' && !inputs.local_repair && !inputs.replay_jl && !inputs.replay_jr && inputs.adopt_run == ''
+    if: ${{ !inputs.lifecycle_qualification && !inputs.settle_only && !inputs.resource_qualification && (inputs.recover_core && inputs.core_replay == 'native-mask-audit' && inputs.board == 'osc-core' && !inputs.local_repair && !inputs.replay_jl && !inputs.replay_jr && inputs.adopt_run == '') }}
     permissions:
       contents: read
       actions: read
@@ -452,7 +486,7 @@ jobs:
           if-no-files-found: error
 
   zone-audit:
-    if: inputs.recover_core && inputs.core_replay == 'native-zone-audit' && inputs.board == 'osc-core' && !inputs.local_repair && !inputs.replay_jl && !inputs.replay_jr && inputs.adopt_run == ''
+    if: ${{ !inputs.lifecycle_qualification && !inputs.settle_only && !inputs.resource_qualification && (inputs.recover_core && inputs.core_replay == 'native-zone-audit' && inputs.board == 'osc-core' && !inputs.local_repair && !inputs.replay_jl && !inputs.replay_jr && inputs.adopt_run == '') }}
     permissions:
       contents: read
       actions: read
@@ -493,3 +527,181 @@ jobs:
           retention-days: 30
           include-hidden-files: true
           if-no-files-found: error
+
+  qualify:
+    if: ${{ !inputs.lifecycle_qualification && !inputs.settle_only && inputs.resource_qualification }}
+    concurrency:
+      group: issue189-core-audit-task-pilot
+      cancel-in-progress: false
+    name: Harmless resource guard qualification
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - name: Check out reviewed commit
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ inputs.reviewed_commit }}
+          persist-credentials: false
+
+      - name: Verify exact checkout and reviewed hook
+        env:
+          REVIEWED_COMMIT: ${{ inputs.reviewed_commit }}
+          REVIEWED_HOOK_SHA256: ${{ inputs.reviewed_hook_sha256 }}
+        run: |
+          set -euo pipefail
+          [[ $REVIEWED_COMMIT =~ ^[0-9a-f]{40}$ ]] || { echo 'Full lowercase reviewed commit SHA required' >&2; exit 1; }
+          [[ $REVIEWED_HOOK_SHA256 =~ ^[0-9a-f]{64}$ ]] || { echo 'Full lowercase hook SHA-256 required' >&2; exit 1; }
+          [[ $(git rev-parse HEAD) == "$REVIEWED_COMMIT" ]] || { echo 'Checkout differs from reviewed commit' >&2; exit 1; }
+          [[ $(sha256sum scripts/kicad/run.sh | cut -d ' ' -f 1) == "$REVIEWED_HOOK_SHA256" ]] || {
+            echo 'KiCad hook differs from reviewed digest' >&2; exit 1;
+          }
+
+      - name: Run admitted harmless qualification
+        env:
+          PARENT_ADMISSION_ID: ${{ inputs.parent_admission_id }}
+          REVIEWED_COMMIT: ${{ inputs.reviewed_commit }}
+          REVIEWED_HOOK_SHA256: ${{ inputs.reviewed_hook_sha256 }}
+        run: |
+          set -euo pipefail
+          [[ $PARENT_ADMISSION_ID =~ ^[a-z0-9][a-z0-9-]{0,60}$ ]] || {
+            echo 'A short nonsecret parent admission ID is required' >&2; exit 1;
+          }
+          evidence_dir="$RUNNER_TEMP/epic242-qualification"
+          raw_output="$RUNNER_TEMP/epic242-qualification-output.raw"
+          [[ ! -e $evidence_dir && ! -L $evidence_dir && ! -e $raw_output && ! -L $raw_output ]] || {
+            echo 'Qualification evidence or temporary output path already exists' >&2; exit 1;
+          }
+          status=0
+          python3 scripts/kicad/qualify_resource_guard.py \
+            --admission-id "$PARENT_ADMISSION_ID" \
+            --sha "$REVIEWED_COMMIT" \
+            --hook-sha256 "$REVIEWED_HOOK_SHA256" \
+            --evidence-directory "$evidence_dir" \
+            > "$raw_output" 2>&1 || status=$?
+          mkdir -p -- "$evidence_dir"
+          head -c 1048576 "$raw_output" > "$evidence_dir/stdout.txt"
+          rm -- "$raw_output"
+          cat "$evidence_dir/stdout.txt"
+          exit "$status"
+
+      - name: Retain harmless qualification receipt
+        if: ${{ always() }}
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: epic242-resource-guard-qualification
+          path: |
+            ${{ runner.temp }}/epic242-qualification/qualification.json
+            ${{ runner.temp }}/epic242-qualification/stdout.txt
+          if-no-files-found: ignore
+          retention-days: 7
+
+  lifecycle-qualification:
+    if: ${{ inputs.lifecycle_qualification }}
+    concurrency:
+      group: issue189-core-audit-task-pilot
+      cancel-in-progress: false
+    name: Bounded startup and exit lifecycle
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    env:
+      REVIEWED_COMMIT: ${{ inputs.reviewed_commit }}
+      REVIEWED_HOOK_SHA256: ${{ inputs.reviewed_hook_sha256 }}
+      PARENT_ADMISSION_ID: ${{ inputs.parent_admission_id }}
+      REQUEST_BOARD: ${{ inputs.board }}
+      CONFLICTING_MODES: ${{ inputs.settle_only || inputs.resource_qualification || inputs.recover_core || inputs.replay_jl || inputs.replay_jr || inputs.local_repair || inputs.adopt_run != '' }}
+    steps:
+      - name: Retain request before checkout or validation
+        run: |
+          mkdir "$RUNNER_TEMP/epic242-startup-lifecycle"
+          python3 - <<'PYTHON'
+          import json, os
+          from pathlib import Path
+          Path(os.environ['RUNNER_TEMP'],'epic242-startup-lifecycle','bootstrap.json').write_text(json.dumps({'status':'BOOTSTRAP INCOMPLETE; NO LIFECYCLE CHECK','reviewed_sha':os.environ['REVIEWED_COMMIT'],'admission_id':os.environ['PARENT_ADMISSION_ID']}))
+          PYTHON
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          ref: ${{ inputs.reviewed_commit }}
+          persist-credentials: false
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97
+        with:
+          python-version: '3.11'
+      - name: Prepare pinned image and check two sequential short-lived helpers
+        run: python scripts/kicad/qualify_startup_handshake.py run
+      - name: Retain job outcome
+        if: ${{ always() }}
+        env:
+          JOB_OUTCOME: ${{ job.status }}
+        run: |
+          python3 - <<'PYTHON'
+          import json, os
+          from pathlib import Path
+          root=Path(os.environ['RUNNER_TEMP'],'epic242-startup-lifecycle')
+          root.mkdir(exist_ok=True)
+          (root/'job-outcome.json').write_text(json.dumps({'job_status':os.environ['JOB_OUTCOME'],'qualification':'See lifecycle/guard receipts; absent receipt means NOT RUN'}))
+          PYTHON
+      - name: Retain positive and negative lifecycle evidence
+        if: ${{ always() }}
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: epic242-startup-lifecycle
+          path: ${{ runner.temp }}/epic242-startup-lifecycle/
+          include-hidden-files: true
+          if-no-files-found: error
+          retention-days: 7
+
+  settle-only:
+    if: ${{ !inputs.lifecycle_qualification && inputs.settle_only && !inputs.resource_qualification }}
+    concurrency:
+      group: issue189-core-audit-task-pilot
+      cancel-in-progress: false
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    env:
+      REVIEWED_COMMIT: ${{ inputs.reviewed_commit }}
+      REVIEWED_HOOK_SHA256: ${{ inputs.reviewed_hook_sha256 }}
+      PARENT_ADMISSION_ID: ${{ inputs.parent_admission_id }}
+      REQUEST_BOARD: ${{ inputs.board }}
+      SETTLE_PILOT: ${{ inputs.settle_pilot }}
+      SETTLE_SECONDS: ${{ inputs.settle_seconds }}
+      CONFLICTING_MODES: ${{ inputs.resource_qualification || inputs.recover_core || inputs.replay_jl || inputs.replay_jr || inputs.local_repair || inputs.adopt_run != '' }}
+    steps:
+      - name: Initialize retained request before checkout or validation
+        run: |
+          mkdir "$RUNNER_TEMP/epic242-candidate-settle-only"
+          python3 - <<'PYTHON'
+          import json, os
+          from pathlib import Path
+          Path(os.environ['RUNNER_TEMP'],'epic242-candidate-settle-only','bootstrap.json').write_text(json.dumps({'status':'BOOTSTRAP INCOMPLETE; NATIVE NOT RUN','reviewed_sha':os.environ['REVIEWED_COMMIT'],'admission_id':os.environ['PARENT_ADMISSION_ID'],'pilot':os.environ['SETTLE_PILOT'],'native_seconds_limit':os.environ['SETTLE_SECONDS']}))
+          PYTHON
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          ref: ${{ inputs.reviewed_commit }}
+          persist-credentials: false
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97
+        with:
+          python-version: '3.11'
+      - name: Authenticate admitted settle request
+        run: python scripts/kicad/settle_only_pilot.py validate
+      - name: Prepare pinned image and run one guarded settle
+        run: python scripts/kicad/settle_only_pilot.py run
+      - name: Record job outcome including setup and validation failures
+        if: ${{ always() }}
+        env:
+          JOB_OUTCOME: ${{ job.status }}
+        run: |
+          python3 - <<'PYTHON'
+          import json, os
+          from pathlib import Path
+          root=Path(os.environ['RUNNER_TEMP'],'epic242-candidate-settle-only')
+          root.mkdir(exist_ok=True)
+          (root/'job-outcome.json').write_text(json.dumps({'job_status':os.environ['JOB_OUTCOME'],'native_status':'See pilot/guard receipts; absent receipt means native NOT RUN'}))
+          PYTHON
+      - name: Retain complete input snapshot and positive or negative evidence
+        if: ${{ always() }}
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: epic242-candidate-settle-only
+          path: ${{ runner.temp }}/epic242-candidate-settle-only/
+          include-hidden-files: true
+          if-no-files-found: error
+          retention-days: 7

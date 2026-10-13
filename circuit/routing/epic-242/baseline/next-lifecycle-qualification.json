@@ -1,0 +1,54 @@
+{
+  "status": "SOURCE READY; NOT DISPATCHED; NOT NATIVE QUALIFIED",
+  "issue": 243,
+  "epic": 242,
+  "requested_admission_id": "epic242-startup-lifecycle-01",
+  "global_capacity": "ONE admitted worker at a time; two distinct worker IDs sequentially within one CI job; 6GiB each, 12GiB aggregate parent, 2GiB minimum free; parent excludes all other native work",
+  "workflow": ".github/workflows/routing-benchmark.yml",
+  "mode": "lifecycle_qualification=true",
+  "board": "osc-core",
+  "branch": "integration/epic-242-core-routing",
+  "reviewed_commit": "EXACT_FINAL_PUBLISHED_SHA",
+  "reviewed_hook_sha256": "f91b2c8846856a6d38a10eb9e6314b6ebec3222b68df37942f3716ab860d8c91",
+  "command_template": "gh workflow run routing-benchmark.yml --ref integration/epic-242-core-routing -f board=osc-core -f lifecycle_qualification=true -f reviewed_commit=EXACT_FINAL_PUBLISHED_SHA -f reviewed_hook_sha256=f91b2c8846856a6d38a10eb9e6314b6ebec3222b68df37942f3716ab860d8c91 -f parent_admission_id=epic242-startup-lifecycle-01",
+  "runner": "ubuntu-24.04; Python 3.11; no board routing; 20-minute job limit",
+  "preparation": "Reuse settle_only_pilot.prepare_image: bounded 300-second digest-pinned KiCad pull, authenticated RepoDigest, disjoint Docker/containerd backend accounting, sampled 6GiB abort and 2.5GiB free floor. Fail before guard if preparation unproved.",
+  "guard_cases": [
+    {
+      "name": "success",
+      "seconds": 60,
+      "worker": "life-GITHUB_RUN_ID-GITHUB_RUN_ATTEMPT-ok",
+      "command": [
+        "bash",
+        "scripts/kicad/run.sh",
+        "kicad-cli",
+        "version"
+      ],
+      "expected": "guard0, two gate-admitted retained exited0 containers, final workload absent"
+    },
+    {
+      "name": "intentional-failure",
+      "seconds": 60,
+      "worker": "life-GITHUB_RUN_ID-GITHUB_RUN_ATTEMPT-fail",
+      "command": [
+        "bash",
+        "scripts/kicad/run.sh",
+        "/bin/false"
+      ],
+      "expected": "guard1, two gate-admitted retained containers with exit codes0 and1, related terminal/nonzero reason, final workload absent"
+    }
+  ],
+  "required_artifact": "epic242-startup-lifecycle; include bootstrap.json, image-preparation.json, image-pull.log, success.json/log, intentional-failure.json/log, lifecycle.json, job-outcome.json when reached; always upload entire directory on failure",
+  "acceptance": [
+    "Exact checkout and workflow SHA match reviewed SHA; clean tracked checkout; hook SHA exact; no conflicting modes.",
+    "Both workers have two matching requested/admitted/membership/retained-state full IDs and exact reviewed commands; positive exits0/0, intentional negative exits0/1.",
+    "No watchdog/OOM/container error, no cleanup failures, observed kernel memory, and each final owned state proves absence.",
+    "Lifecycle receipt is PASS BOUNDED STARTUP/EXIT LIFECYCLE ONLY. A merely nonzero guard or quiet cleanup is never accepted as expected failure."
+  ],
+  "limits": [
+    "The prior resource_qualification job uses its own direct Docker static fixture and does not exercise this startup gate.",
+    "This job runs the pinned KiCad version probe but no PCB operation, routing, architecture selection or final native acceptance.",
+    "No dispatch or global admission by this source change; parent must reserve capacity and explicitly admit the exact run after source review.",
+    "Native settle retry remains separately held."
+  ]
+}

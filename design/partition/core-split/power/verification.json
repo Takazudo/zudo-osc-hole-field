@@ -1,0 +1,77 @@
+{
+  "source_main_sha": "65cefd41fc39e064d38319115ad96016a1c6b71c",
+  "integration_input_sha": "1da1909846dc3255888ecd36c88cee9737c85834",
+  "scope": "Source-contract and documentation checks only; no native or physical acceptance",
+  "focused_tests": {
+    "command": "python3 -m unittest discover -s design/partition/core-split/power -p 'test_*.py' -v",
+    "count": 11,
+    "result": "PASS",
+    "observed_elapsed_seconds": 11.269,
+    "independent_reviewer_elapsed_seconds": 11.328
+  },
+  "checks": [
+    {
+      "command": "python3 design/partition/core-split/power/build.py --check",
+      "exit_code": 0,
+      "elapsed_seconds": 2.688,
+      "cumulative_child_peak_rss_KiB": 113628,
+      "output": "PASS: source ownership, 191 harnesses/903 positions, load/capacitance conservation and deterministic contracts; native/physical NOT RUN\n"
+    },
+    {
+      "command": "python3 scripts/schgen/build_rail_ledger.py --check",
+      "exit_code": 0,
+      "elapsed_seconds": 6.516,
+      "cumulative_child_peak_rss_KiB": 113628,
+      "output": "PASS: physical IC packages 650 worksheet loads 347\nTwo-feed conditional planning: {'A': {'+12V': 756.024097, '-12V': 712.923591, '+5V': 80.395489}, 'B': {'+12V': 759.725097, '-12V': 707.524591, '+5V': 107.478467}}\n"
+    },
+    {
+      "command": "python3 scripts/schgen/build_supply_architecture.py --check",
+      "exit_code": 0,
+      "elapsed_seconds": 9.497,
+      "cumulative_child_peak_rss_KiB": 113628,
+      "output": "PASS: conditional requirement arithmetic/allocation ONLY; hardware NOT SELECTED; unvalidated draft\nRequired continuous mA: {'+12V': 1700, '-12V': 1600, '+5V': 300}\nRequired transient mA: {'+12V': 2000, '-12V': 1900, '+5V': 400}\nWorst single return A: 4.6\n"
+    },
+    {
+      "command": "python3 scripts/schgen/analyze_rail_options.py --check",
+      "exit_code": 0,
+      "elapsed_seconds": 0.035,
+      "cumulative_child_peak_rss_KiB": 113628,
+      "output": "{'+12V': 837.419166, '-12V': 746.16866, '+5V': 177.286445}\n"
+    },
+    {
+      "command": "pnpm circuit:check",
+      "exit_code": 0,
+      "elapsed_seconds": 1.193,
+      "cumulative_child_peak_rss_KiB": 114936,
+      "output": "$ zudo-circuit-doc validate\nSCOPE: inventory provider=manual; schematic/placement binding not performed (68 lines, 0 declared placements unverified); pin-asset check performed\nPASS: component-spec contract; 68 lines; offline=True; refreshed=none\n"
+    },
+    {
+      "command": "pnpm check",
+      "exit_code": 0,
+      "elapsed_seconds": 3.787,
+      "cumulative_child_peak_rss_KiB": 258200,
+      "output": "$ zudo-circuit-doc check && pnpm --dir doc check\nSCOPE: inventory provider=manual; schematic/placement binding not performed (68 lines, 0 declared placements unverified); pin-asset check performed\nPASS: component-spec contract; 68 lines; offline=True; refreshed=none\nok   validate: canonical validator passed\nprovider        circuit-component-spec (contract v1)\nview model      v2\nrecords         58 selected of 68 available\nsources         122 selected of 140 available, 118 linkable\nfields          91 publish, 8 deny (662 values withheld)\nurls            118 allowed of 122 considered\ngeneratedPages  62\npublishedCoverageDomains 295\npublishedFacts  528\npublishedIntegrationRules 2\npublishedInteractions 56\npublishedPinMaps 58\npublishedRecords 58\npublishedSources 122\nok   generated pages: doc/src/content/docs/components is up to date\nok   preflight: circuit/generated/preflight.json is up to date\nok   models: 31 selected, up to date\n31 committed footprint previews are current and safe\nok   footprints: previews up to date\ncheck passed: generated output is up to date\n$ zfb check\ninfo running /workspace/osc-247-power-1011/doc/node_modules/.bin/tsc --noEmit\n\u2713 checked 1 collection and tsc \u2014 no errors\n"
+    }
+  ],
+  "pre_edit_circuit_check": {
+    "result": "PASS",
+    "scope": "inventory provider=manual; schematic/placement binding not performed (68 lines, 0 declared placements unverified); pin-asset check performed"
+  },
+  "pcb_preservation": {
+    "count": 14,
+    "result": "PASS byte-identical to pre-edit hashes",
+    "hashes": "manifest.json"
+  },
+  "independent_reviews": {
+    "current_return": "No residual blocking source-contract finding after provenance dependency fix",
+    "connector_preservation": "No blocking source-contract finding"
+  },
+  "deferred": [
+    "Initial aggregate regeneration: writes shared outputs and requires globally scheduled native work",
+    "Integration CI: default four native jobs exceeds global two-job limit; commit requests skip ci",
+    "Fresh native routing/DRC and complete split-network acceptance",
+    "Physical/hot/startup/fault tests"
+  ],
+  "native_jobs_run": 0,
+  "timing_note": "Final check peak RSS fields are cumulative child high-water observations, not per-command isolated measurements."
+}

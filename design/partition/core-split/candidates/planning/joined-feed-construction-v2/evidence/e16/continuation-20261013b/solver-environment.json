@@ -1,0 +1,14 @@
+{
+ "probe": [
+  "systemctl",
+  "--user",
+  "is-system-running"
+ ],
+ "exit_code": 1,
+ "stdout": "offline\n",
+ "stderr": "",
+ "required_scope": "finite_solve.enter_memory_scope: real user systemd scope, MemoryMax=2147483648 MemorySwapMax=0",
+ "production_solver_status": "NOT RUN; required user systemd unavailable",
+ "scope_bypassed": false,
+ "native_status": "NOT RUN / NOT ADMITTED"
+}

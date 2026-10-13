@@ -32,6 +32,10 @@ The [rail planning ledger](../architecture/osc-rail-ledger.mdx) records the actu
 
 ## Immediate continuation
 
+Continue the scoped E16 work on [draft PR #260](https://github.com/Takazudo/zudo-osc-hole-field/pull/260) and [issue #253](https://github.com/Takazudo/zudo-osc-hole-field/issues/253). The third 2026-10-13 checkpoint adds deterministic t2 materialization with KB P1 separate, whole-device signed load eligibility, bounded feed/source evidence, and a matched native request packet. KEEP_K1402_INCUMBENT remains in force. The declared production numerical baseline is complete as recorded below. Physical source/protection geometry, complete loads, resistance closure and electrical acceptance remain open; historical matched native results retain their separate scope. See the retained `joined-feed-construction-v2/WORK.md` and dated evidence for source-only results; earlier reduced-load voltage and geometric closure are not electrical acceptance.
+
+The owner-admitted WSL follow-up now completes matched native fill and pad/feed/peer reconciliation for KA-t2, KB-t2 and separate KB-p1. All source/native pad comparisons agree; unresolved identities remain 196 / 486 / 480. Control qualification, both startup phases and the single deferred oracle test passed. Full-severity DRC ran, but pinned KiCad reporting caps prevent exhaustive violation totals: complete native open-edge counts are 479 / 1,220 / 1,219, while DRC lists 479 / 499 / 499 unconnected errors. Board acceptance remains failed/incomplete. The first admitted numerical batch failed the declared load-relative residual criterion on both +12V reductions. Original failures are preserved. The separately admitted short production recheck passed both +12V nominal-average uniform-dielectric reductions at load-relative residuals 2.98033e-12 / 1.30988e-12 against the unchanged 1e-9 limit. Exactly service and two reductions ran; no driving-point or coupled states followed. The separately approved baseline batch ran once on 2026-10-14 at frozen head `0dab96a0`: service, both +12V nominal-average reductions and six driving-point chunks passed, then the first coupled unit failed free-node KCL (KA 1.5152e-8 / KB 7.2775e-9 versus unchanged 1e-9). The batch stopped; remaining nets/cases were NOT RUN and attempt 3 is consumed. Per-unit guards and 180-second / 2 GiB/no-swap controls were retained; integrity and cleanup passed. The owner-authorized isolated follow-up reproduced the failure and identified interface-basis precision loss. Source `9341dfb2` retains extended precision for that small basis; fixed-terminal diagnostics pass at KA 1.7882e-11 / KB 8.2336e-12 and 48 targeted tests pass. The standing owner-authorized WSL campaign subsequently executed attempt 4 once at `9f69cd8a`: all six +12V/-12V case coupling units passed, then the first KB +5V driving-point chunk failed residual accuracy (1.12089e-9 versus unchanged 1e-9). Eight bounded diagnostics isolated and corrected driving-point accumulator precision and AGND residual-evaluation overhead. The actual corrected +5V chunk passed at 1.11034e-12. The largest AGND chunk initially timed out at 180 seconds; after measured source optimization, the same complete chunk passed at 1.68920e-13 in 157.69 seconds, then the final typed-index correction reduced it to 80.48 seconds with exactly the same residual under unchanged controls. Both the timeout and passing run are preserved, and terminal integrity/cleanup passed. The separately reviewed attempt 5 completed once at `852ffac7f85aff4bb436eb25f7ce993cee48146b`, request `ef0213b3b38f4de23804ad192043b082d8e1b2be3086c5e20e4343afea4052d6`: all 148 units completed, with 147 numerical verdicts passing across 12 net/case combinations and 30 finite states. Terminal integrity and owned-process cleanup independently passed. Campaign consumption is two of three full baselines and eight of 24 diagnostics. Numerical accuracy does not establish electrical compliance: every evaluated loaded pad exceeds its fixed copper-resistance budget in every completed state (1 mΩ rail, 0.5 mΩ common AGND, charged once across the modeled path). The worst energy check passes narrowly at 9.97199e-10 against 1e-9; no margin under a changed platform is implied. PR272/PR273 source and unchanged-asset Mac evidence are published on the integration branch; those PRs are closed after cherry-pick incorporation, not merged. Browser issue263 is closed; PR260 stays draft/unmerged and issue253 open. Next, prepare source-owned selective-annulus capability fixtures for the exact U2314.11/C2342.1 In3 reconnection, preserving the named U2314.10 AGND via's functional contacts; native/variant execution requires separate scope and admission. See `joined-feed-construction-v2/evidence/e16/campaign-wsl-20261014/README.md` and its complete engineering report. Partial/unsupported loads, physical source/protection, GH conductors, full-path resistance, complete DRC enumeration and physical qualification remain open. The distinct prior KA long-B remedy remains at 194 without native or electrical acceptance. See `joined-feed-construction-v2/evidence/e16/native-wsl-20261013/README.md` and `scripts/kicad/README.md`.
+
 Use the [engineering continuation checkpoint](./osc-review-checkpoint.mdx) as the authoritative recovery point for the preserved issue-38 work, routing-gate reconciliation, completed nominal K calculation and depth/assembly review. Keep the worktree and recovery artifacts. Issue #38 remains open: current-source physical contact/material/current classes and joined electrical compliance are not established. The current source retains the ten-board, −100 mm K / 120 mm enclosure proposal with a 110 mm main-wire cut requirement and explicit service tethers. Qualify that assembly and complete the protection circuit before accepting dependent routing. The [local R21 sequence](./osc-next-actions.mdx) remains background for mechanical and bench gates.
 
 {/* osc-hole-field-r21-handoff:start */}
@@ -117,25 +121,31 @@ gates: JL120→119. A joint R4207 repair similarly accepts JR136→135 with 85
 segments, one via and four reviewed cuts, preserving all uncut copper and the
 same native gates. A C7413 repair adds 37 segments with five reviewed cuts and
 restores both exposed retained endpoints, passing the same gates: JR135→134.
-Subsequent accepted transactions reach **JL117 / JR130 / core1,402**:
+Subsequent accepted transactions reach **JL117 / JR129 / core1,402**:
 JL's R8276 repair retains all 33,346 uncut objects after two reviewed cuts;
 PR #230 then retains 33,418 uncut objects through three exact R8127 cuts and
 adds seven objects, passing complete native audits and all exact-head CI checks;
 PR #220, PR #223 and PR #224 add JR copper without cuts; PR #218 adds 382 core ground
-objects while retaining all 133,169 old objects. Current native DRC/parity are
+objects while retaining all 133,169 old objects. PR #232 retains 51,571 uncut
+JR objects after three reviewed cuts and adds 27 objects, accepting JR130→129.
+Current native DRC/parity are
 0/0 on all three boards. Original connected groups and complete warning
 inventories are preserved, with independent fresh-copy agreement. The
 [jack](../verification/osc-pcb-jack.mdx) and
 [core](../verification/osc-pcb-core.mdx) pages pin the accepted board hashes.
 
-PR #224 and PR #230 passed all exact-head CI checks before main integration.
-Further U8202/RB4615 joint proposals and the PR #222 core supply work are
-tracked separately. Only merged native-accepted boards contribute to these totals. PR #227 fixes the plane-search budget
+PR #224, PR #230 and PR #232 passed all checks on their accepted PR commits
+before main integration. The U8202 joint proposal rolled back after splitting
+−12V. The PR #222 core supply candidate reached 1,311 but split two original
+AGND groups and was rejected; accepted core remains 1,402. The distinct PR #236
+trial is unadopted; its stopped audit is being recovered under
+[#244](https://github.com/Takazudo/zudo-osc-hole-field/issues/244). Only merged native-accepted boards
+contribute to these totals. PR #227 fixes the plane-search budget
 control; its identical-input comparison remains negative and changes no board.
 Continue with the exact unresolved endpoints and source-defined local repairs,
 not unchanged larger rerouting budgets. The
-[immutable continuation checkpoint](https://github.com/Takazudo/zudo-osc-hole-field/blob/892749dbdd53cfbab2d0876424fc4aecf1fa4311/circuit/routing/issue189/current-native-checkpoint.md)
-records active runs, exact artifact digests, H1/H2 regression evidence,
+[immutable continuation checkpoint](https://github.com/Takazudo/zudo-osc-hole-field/blob/e39760b1845695b986997067195ab96e64bd844c/circuit/routing/issue189/current-native-checkpoint.md)
+records historical runs, exact artifact digests, H1/H2 regression evidence,
 same-input benchmarks and commands for terminal artifact reconciliation.
 Issue #189 stays open until all routing and regression criteria are met. Existing
 protection, mechanical, electrical and manufacturing gates remain open.

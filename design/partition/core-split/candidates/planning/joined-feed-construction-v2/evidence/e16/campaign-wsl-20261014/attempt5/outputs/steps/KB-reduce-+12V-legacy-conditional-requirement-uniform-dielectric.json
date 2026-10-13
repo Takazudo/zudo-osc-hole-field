@@ -1,0 +1,126 @@
+{
+ "inputs": {
+  "/home/takazudo/.cache/zudo-e16-runs/20261013-finite-t2b/KB/operator-+12V.pkl.gz": "62286d5cdfca36bd69fe1fa52b783b54818f1f1beb85c57675c36f4e732c94b1",
+  "/home/takazudo/.cache/zudo-e16-runs/20261013-finite-t2b/KB/coverage-+12V.json.gz": "69369e75275d5ec54e078713628bcf36509c530e8688aa6b19b7491fee46c1a4",
+  "design/partition/core-split/candidates/planning/joined-feed-construction-v2/evidence/e16/continuation-20261013b/coupled-network-config.json": "f5146d0c1d77e0626a455df308f52bf953ace9806861c25438adcdf90914c107",
+  "design/partition/core-split/candidates/planning/joined-feed-construction-v2/evidence/e16/process-cases.json": "ea253eee2e1b0dbb85d83a3d885cfe4f0cc6fd534b144bb25e9bf419016d4051",
+  "design/partition/core-split/candidates/planning/joined-feed-construction-v2/evidence/e16/continuation-20261013b/load-ledger.json.gz": "241dd36110236d3726e509c76b02e80928a279a67bea028bfa5aa1e965fa5f54",
+  "device-service-normal-typ-v1.json": "a14a61aa25b9215485dd58e46e54af220776e80f5a70f5a1f335ef21c18cc33d",
+  "/home/takazudo/.cache/zudo-e16-runs/20261013-finite-t2b/KA/coverage-+12V.json.gz": "8906376f87a6dec71445de11bf38de3ede6f3a0be6c432363919a414b69cb011",
+  "/home/takazudo/.cache/zudo-e16-runs/20261013-finite-t2b/KA/coverage--12V.json.gz": "7f90434a2ccbda494a38044fa895b767631277c94cd5beeaedad9f423ad41348",
+  "/home/takazudo/.cache/zudo-e16-runs/20261013-finite-t2b/KA/coverage-+5V.json.gz": "0190c4d68a88bbcda12329a9afaa74db82c24b566c52060cdc8770c8338fa5ef",
+  "/home/takazudo/.cache/zudo-e16-runs/20261013-finite-t2b/KA/coverage-AGND.json.gz": "d9bad1009f398b6242046ba19e094aca76deae3fa46990848ae7b4b8fa6d6980",
+  "/home/takazudo/.cache/zudo-e16-runs/20261013-finite-t2b/KB/coverage--12V.json.gz": "5b35af8ab517b49417cff17aeebe85227724436f9a8f58860b5955003105b2ff",
+  "/home/takazudo/.cache/zudo-e16-runs/20261013-finite-t2b/KB/coverage-+5V.json.gz": "43e5a4d1c9732ba35543bd3416303fc8c4b15b9fe0d00f43eadaa81c85210fba",
+  "/home/takazudo/.cache/zudo-e16-runs/20261013-finite-t2b/KB/coverage-AGND.json.gz": "1de67df34de319e266195968005b96672ee1d34014e74fbc3f49e0a5703ec211"
+ },
+ "methods": {
+  "design/partition/core-split/candidates/planning/joined-feed-construction-v2/finite_solve.py": "20b1b9e1e7ba8653d3268c4956dc5415b91670e23f07e35ab381d2091f84b044",
+  "design/partition/core-split/candidates/planning/joined-feed-construction-v2/finite_adapter.py": "f313a87719aba83b169a363c05d36daa5c79cd28ad41620e5d45c5d8eca613f4",
+  "design/partition/core-split/candidates/planning/joined-feed-construction-v2/finite_units.py": "295bb239a0949522dca47e33389ddcd0ec9bc058c3a53db9bdc81789e461a8f5",
+  "design/partition/core-split/candidates/planning/joined-feed-construction-v2/load_ledger.py": "5cbaf6f059b6f1833fd40991e4974db5ff3997748e6bf3ed62141f0245913c64",
+  "design/partition/core-split/candidates/planning/joined-feed-construction-v2/numerical_acceptance.py": "e8c1f0b55784bed3a6d8a1b86854a7cc9cdb0e7685e07efa9feb263e3efecc73"
+ },
+ "command": [
+  "finite_solve.py",
+  "reduce",
+  "--operator",
+  "/home/takazudo/.cache/zudo-e16-runs/20261013-finite-t2b/KB/operator-+12V.pkl.gz",
+  "--coverage",
+  "/home/takazudo/.cache/zudo-e16-runs/20261013-finite-t2b/KB/coverage-+12V.json.gz",
+  "--config",
+  "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-campaign/design/partition/core-split/candidates/planning/joined-feed-construction-v2/evidence/e16/continuation-20261013b/coupled-network-config.json",
+  "--cases",
+  "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-campaign/design/partition/core-split/candidates/planning/joined-feed-construction-v2/evidence/e16/process-cases.json",
+  "--case",
+  "legacy-conditional-requirement",
+  "--depth",
+  "uniform-dielectric",
+  "--board",
+  "KB",
+  "--net=+12V",
+  "--ledger",
+  "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-campaign/design/partition/core-split/candidates/planning/joined-feed-construction-v2/evidence/e16/continuation-20261013b/load-ledger.json.gz",
+  "--service",
+  "/home/takazudo/.cache/zudo-e16-runs/coupled-approved-852ffac-8262c033/device-service-normal-typ-v1.json",
+  "--output",
+  "/home/takazudo/.cache/zudo-e16-runs/coupled-approved-852ffac-8262c033/KB-red-+12V-legacy-conditional-requirement-uniform-dielectric.pkl.gz"
+ ],
+ "resource_guard": {
+  "guard": "/home/takazudo/.codex/scripts/heavy-guard.sh",
+  "sha256": "074a463dd6b3a65b7e2168df95b200c0192c414862375bcfb95f979c34c67ee7",
+  "helper_sha256": "513efaf0b4f4a5bb1f94c15190822a2a79d84df399f83e69d7ed0297444ea571",
+  "directory": "/home/takazudo/.agent-guard/heavy",
+  "defaults": {
+   "slots": 1,
+   "wait_seconds": 0,
+   "max_run_seconds": 1800,
+   "min_mem_mb": 2048,
+   "low_mem_mb": 512
+  },
+  "queue_outside_unit_timeout": true
+ },
+ "step": "KB-reduce-+12V-legacy-conditional-requirement-uniform-dielectric",
+ "exit_code": 0,
+ "elapsed_seconds": 30.025,
+ "stdout_tail": "{\"board\": \"KB\", \"net\": \"+12V\", \"case\": \"legacy-conditional-requirement\", \"depth\": \"uniform-dielectric\", \"N\": 1541278, \"pads\": 250, \"loads\": 40, \"unserved\": 0, \"checks\": {\"reciprocity_relative\": 6.942965564940988e-15, \"load_solve_residual_relative\": 1.356665979896602e-12, \"interface_solve_residual_relative\": 3.102429619886419e-14, \"refinement_steps\": 3, \"load_solution_dtype\": \"float128\", \"interface_solution_dtype\": \"float128\", \"factor_seconds\": 3.53, \"L_U_nnz\": 21002074}, \"elapsed_seconds\": 29.59, \"peak_KiB\": 1636976, \"numerical_status\": \"PASS REPORTED NUMERICAL CHECKS ONLY\"}\n",
+ "stderr_tail": "heavy-guard: verdict=PASS exit=0 secs=30 min_mem_mb=8365 reason=-\n",
+ "peak_rss_KiB": 1636976,
+ "outputs": {
+  "KB-red-+12V-legacy-conditional-requirement-uniform-dielectric.pkl.gz": {
+   "": "0e7c159fbb9e17a60e55f9d21a4a5bcb7740a9a6f0efa1eab28b455ac30ebe2a"
+  },
+  "KB-red-+12V-legacy-conditional-requirement-uniform-dielectric.pkl.gz.numerical.json": {
+   "": "3e0b99194c7c8fb4694383892ed405ba730d15c8cc700d8423f9a075f86cdf5e"
+  }
+ },
+ "native_calls": 0,
+ "launch_command": [
+  "bash",
+  "/home/takazudo/.codex/scripts/heavy-guard.sh",
+  "--",
+  "/home/takazudo/.cache/zudo-e16-numerical-venv/bin/python",
+  "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-campaign/design/partition/core-split/candidates/planning/joined-feed-construction-v2/numerical_unit_guard.py",
+  "--inside",
+  "074a463dd6b3a65b7e2168df95b200c0192c414862375bcfb95f979c34c67ee7",
+  "--",
+  "timeout",
+  "180s",
+  "/home/takazudo/.cache/zudo-e16-numerical-venv/bin/python",
+  "finite_solve.py",
+  "reduce",
+  "--operator",
+  "/home/takazudo/.cache/zudo-e16-runs/20261013-finite-t2b/KB/operator-+12V.pkl.gz",
+  "--coverage",
+  "/home/takazudo/.cache/zudo-e16-runs/20261013-finite-t2b/KB/coverage-+12V.json.gz",
+  "--config",
+  "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-campaign/design/partition/core-split/candidates/planning/joined-feed-construction-v2/evidence/e16/continuation-20261013b/coupled-network-config.json",
+  "--cases",
+  "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-campaign/design/partition/core-split/candidates/planning/joined-feed-construction-v2/evidence/e16/process-cases.json",
+  "--case",
+  "legacy-conditional-requirement",
+  "--depth",
+  "uniform-dielectric",
+  "--board",
+  "KB",
+  "--net=+12V",
+  "--ledger",
+  "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-campaign/design/partition/core-split/candidates/planning/joined-feed-construction-v2/evidence/e16/continuation-20261013b/load-ledger.json.gz",
+  "--service",
+  "/home/takazudo/.cache/zudo-e16-runs/coupled-approved-852ffac-8262c033/device-service-normal-typ-v1.json",
+  "--output",
+  "/home/takazudo/.cache/zudo-e16-runs/coupled-approved-852ffac-8262c033/KB-red-+12V-legacy-conditional-requirement-uniform-dielectric.pkl.gz"
+ ],
+ "resource_guard_result": {
+  "passed": true,
+  "verdict": "PASS",
+  "exit": 0,
+  "seconds": 30,
+  "min_mem_mb": "8365",
+  "reason": "-"
+ },
+ "stream_files": {
+  "steps/KB-reduce-+12V-legacy-conditional-requirement-uniform-dielectric.stdout.txt": "17950f249697971197006bf6d61255afda33b1a26d2c30f901179c9fd90de405",
+  "steps/KB-reduce-+12V-legacy-conditional-requirement-uniform-dielectric.stderr.txt": "99e69b61fdbb4c64a53676da74e31a042c7d57717d9ab571d38f63d830dcb02c"
+ }
+}

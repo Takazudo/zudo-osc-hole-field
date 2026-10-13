@@ -1,0 +1,67 @@
+{
+ "schema": "e16-process-cases-v1",
+ "status": "PARAMETER CASES, NOT GUARANTEED PHYSICAL BOUNDS",
+ "sources": {
+  "jlcpcb_capabilities": "https://jlcpcb.com/capabilities/pcb-capabilities (read 2026-10-12): inner copper 0.5/1/2 oz listed without a layer-count qualifier; finished inner copper 0.5 oz by default; 'Average Hole Plating Thickness 18um', no minimum published; 2 oz annular ring '0.254 mm or above'; filled vias 'no wider than 0.5 mm', filled-and-capped default for 6+ layers, 'via diameters from 0.15 to 0.55 mm'",
+  "jlcpcb_impedance": "https://jlcpcb.com/impedance (read 2026-10-12): 6-layer header lists inner 0.5/1/2 oz; every published 6-layer stackup row shows 0.0152 mm inner copper; no 2 oz inner stackup row",
+  "jlcpcb_hdi_faq": "https://jlcpcb.com/help/article/hdi-pcb-capabilities-faq (read 2026-10-12): no hole-plating, cap-thickness, inner-copper or registration values",
+  "stack": "design/boards/osc-core.json: six layers, copper_oz 2 each, thickness_mm 1.6; dielectric z-positions not recorded",
+  "rho70": "design/partition/core-split/power/contract.json conductor_screen nominal_copper_rho70_ohm_mm",
+  "rho_hot_upper": "evidence/electrical-design.json endpoint_geometry.cap_requirement hot rho <= 2.3e-5 ohm mm",
+  "wire": "evidence/electrical-design.json finite_current_field.generic85mm_wire_bulk_plus_this_termination_mOhm"
+ },
+ "cases": {
+  "nominal-average": {
+   "rho_ohm_mm": 2.0644e-05,
+   "inner_copper_mm": 0.07,
+   "outer_copper_mm": 0.07,
+   "barrel_plating_mm": 0.018,
+   "wire_plus_termination_ohm": 0.001180953231786195,
+   "ideal_join_ohm": 1e-09,
+   "basis": "2 oz nominal foil on every layer as authored; published AVERAGE hole plating; 70 C nominal resistivity"
+  },
+  "sensitivity-thin": {
+   "rho_ohm_mm": 2.3e-05,
+   "inner_copper_mm": 0.06,
+   "outer_copper_mm": 0.06,
+   "barrel_plating_mm": 0.01,
+   "wire_plus_termination_ohm": 0.001180953231786195,
+   "ideal_join_ohm": 1e-09,
+   "basis": "sensitivity only: hot resistivity upper, thinner finished foil and 10 um plating; none is a published minimum"
+  },
+  "legacy-conditional-requirement": {
+   "rho_ohm_mm": 2.3e-05,
+   "inner_copper_mm": 0.07,
+   "outer_copper_mm": 0.07,
+   "barrel_plating_mm": 0.025,
+   "wire_plus_termination_ohm": 0.001180953231786195,
+   "ideal_join_ohm": 1e-09,
+   "basis": "the older electrical contract's conditional >=0.025 mm barrel and >=0.070 mm foil requirements; a requirement, not a supplier capability"
+  }
+ },
+ "board_planning_total_A": {
+  "KA": {
+   "+12V": 0.701738138,
+   "-12V": 0.677938138,
+   "+5V": 0.0524,
+   "AGND": 1.432076276
+  },
+  "KB": {
+   "+12V": 0.74455,
+   "-12V": 0.67275,
+   "+5V": 0.148048934,
+   "AGND": 1.565348934
+  }
+ },
+ "planning_note": "design/partition/core-split/power/contract.json options.two.boards.*.module_responsibility_planning_mA; planning allowances, not guaranteed maxima (physical_feed_current_maximum_mA is null). AGND uses the sum of rail magnitudes as a conservative |I| total.",
+ "limits": [
+  "The network is neither an upper nor a lower resistance bound: ideal 1e-9 ohm joins lower it; full-thickness barrel legs and dropped sub-pitch necks raise it. A value above a budget means 'not shown within budget', not proof of failure.",
+  "Every face-to-inner barrel leg is charged at the full 1.6 mm board thickness because dielectric z-positions are not recorded; a face-sheet-face path through one via is charged 3.2 mm. This deliberately overstates barrel resistance, which dominates the worst ports.",
+  "Barrel geometry treats drill_mm as the finished hole, with plating outside it.",
+  "Sheet cells are squares wholly inside a feed-connected sheet piece; a barrel attaches only to cells of the piece containing its centre. Necks narrower than one pitch are dropped and reported as ports without a finite path. Refinement sensitivity (0.5 vs 1.0 mm) is reported; it is not a convergence proof, and 0.25 mm exceeds the 2 GiB bound (NOT RUN).",
+  "Pads, via face annuli and object overlaps are ideal joins (1e-9 ohm) at the segment end nearest the overlap; mid-span T-joints and pad spreading, cap, solder and contact resistances are not modelled.",
+  "Each board is solved alone with its CS247 terminals as the only feed incidence. The partner board, the KA main-hub incidence and the far-end AGND copper between W4/W5/W6 are not modelled; far ends are held at one potential.",
+  "Per-pad signed load currents are not established in the repository. The drop figure uses the board planning total and the maximum solved port resistance, and is null whenever any port lacks a finite path.",
+  "Structurally unresolved ports are excluded and listed; a partial network is not electrical compliance."
+ ]
+}

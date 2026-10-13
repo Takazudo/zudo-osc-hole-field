@@ -1,0 +1,43 @@
+{
+ "inputs": {
+  "KB-access-t1.json": "62ba9f8706109fef6ae9584199c6f9a7931a53a518c99f7d8657e2d502065521",
+  "KB-eval-t1/port-graph.json": "ce33c410090b6dcb421c39828b12fa5fb89e56bbed55adc2c98f4e27fe1b0cf7",
+  "KB-eval-t1/port-obligations.json": "87bcb86d659d69d77bba846594c6645f57195e0936e56ff3beafba30d695536f",
+  "KB-eval-t1/clipped-sheets.json": "32435ecb1b5dd4a5fab7433c6a175aa7cfe02a8ddfe97d352dd54eec2aebfdec"
+ },
+ "methods": {
+  "design/partition/core-split/candidates/planning/joined-feed-construction-v2/two_face.py": "5a0a3d893eae1631d4bd0d7d24f63d4dcbd4cd51641e737a9035318327c4e409",
+  "design/partition/core-split/candidates/planning/joined-feed-construction-v2/construct_access.py": "8b1ded187add59a8c384f2fd43a71097016e0c7b87040b7a0a3e8d8d1e0dc451"
+ },
+ "command": [
+  "two_face.py",
+  "--use-fed-transitions",
+  "--planes",
+  "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/cfe74c9b-74ea-403e-a296-8046c4b13f60/scratchpad/replay-kb/KB-eval-t1/clipped-sheets.json",
+  "--source",
+  "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/cfe74c9b-74ea-403e-a296-8046c4b13f60/scratchpad/replay-kb/KB-access-t1.json",
+  "--graph",
+  "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/cfe74c9b-74ea-403e-a296-8046c4b13f60/scratchpad/replay-kb/KB-eval-t1/port-graph.json",
+  "--census",
+  "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/cfe74c9b-74ea-403e-a296-8046c4b13f60/scratchpad/replay-kb/KB-eval-t1/port-obligations.json",
+  "--output",
+  "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/cfe74c9b-74ea-403e-a296-8046c4b13f60/scratchpad/replay-kb/KB-access-t2.json",
+  "--report",
+  "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/cfe74c9b-74ea-403e-a296-8046c4b13f60/scratchpad/replay-kb/KB-access-t2-report.json"
+ ],
+ "step": "KB-access-t2",
+ "exit_code": 0,
+ "elapsed_seconds": 13.269,
+ "stdout_tail": "{\"board\": \"KB\", \"counts\": {\"NO_TWO_FACE_ROUTE\": 486, \"ROUTED_FED_TRANSITION\": 24}, \"elapsed_seconds\": 13.08, \"peak_KiB\": 1267088}\n",
+ "stderr_tail": "",
+ "peak_rss_KiB": 1267088,
+ "outputs": {
+  "KB-access-t2.json": {
+   "": "368d3def45149bbded1fdd9b8354bd6841fb27e92f6e830b01ca0c1b10a5509e"
+  },
+  "KB-access-t2-report.json": {
+   "": "44673218f73809c51dda8cdb27348ca9c3bf7065bd7598c97944e3634795f502"
+  }
+ },
+ "native_calls": 0
+}

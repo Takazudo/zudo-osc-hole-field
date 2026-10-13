@@ -1,0 +1,27 @@
+{
+  "status": "PASS_PRE_RUN_STATIC_REGION_SOURCE_REVIEW",
+  "sha256": {
+    "screen.py": "b241f89c6b37cd620e177cb93c6670e075738c7a532da575255b502176003990",
+    "test_screen.py": "ec8607187a694c73ad2984bfd032105a7ccd221dd7861a0d6ed67957c554faf3",
+    "input-seals.json": "908f9b7c6850e857f27e8e32a27c41f398eabbd642b2f6524a8018074ad6c4ce"
+  },
+  "tests": {
+    "passed": 7,
+    "failed": 0,
+    "scope": "Synthetic hull,direction,domain,curved lower/upper bounds,rounding perturbation,boundary-only remainder,concavity refusal. No project region run."
+  },
+  "blocking_findings": [],
+  "review": [
+    "Forbidden offset direction fixed-minus-moving correct.",
+    "Full swept bounds broadphase conservatively includes potential source collisions.",
+    "Convex source validation refuses concavity;integer hull avoids silently replacing sourceconcave geometry.",
+    "Lower/upper rounding guards directed appropriately;GEOS numerical certificate explicitly notformalrealproof.",
+    "Exclusion requires covers and emptydifference,notareaalone.",
+    "Windows/Nempty/Ebounded domain and copper/native/internal limits retained.",
+    "Onechild2GiBaddressspace/30sparenttimeout,zero retry;atomicoutput."
+  ],
+  "limitations": [
+    "No actual staticregion computation,candidatepose,search or native performed.",
+    "Source-only prereview;resultneeds independentretainedcertificate review."
+  ]
+}

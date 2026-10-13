@@ -1,0 +1,24 @@
+{
+  "step": "caps",
+  "input_sha256": {
+    "/tmp/osc-ka-longb-constructed/KA-p1-source.json": "ac6736d1a1747be2a3f027db6aa94c106232e1c24c36720dd56fb7751fa20a8d",
+    "/workspace/zudo-osc-hole-field/design/partition/core-split/candidates/planning/joined-feed-construction-v2/staged_caps.py": "f51a2f073e0051c520555ef6de59d1dbbf91ccbd2420ab89aead44736a1956e7"
+  },
+  "command": [
+    "timeout",
+    "180s",
+    "/workspace/osc-venv/bin/python",
+    "/workspace/zudo-osc-hole-field/design/partition/core-split/candidates/planning/joined-feed-construction-v2/staged_caps.py",
+    "--board",
+    "/tmp/osc-ka-longb-constructed/KA-p1-source.json",
+    "--output",
+    "/tmp/osc-ka-longb-constructed/eval/normalized-caps.json"
+  ],
+  "exit_code": 1,
+  "elapsed_seconds": 0.43592455499992866,
+  "stdout": "",
+  "stderr": "Traceback (most recent call last):\n  File \"/workspace/zudo-osc-hole-field/design/partition/core-split/candidates/planning/joined-feed-construction-v2/staged_caps.py\", line 74, in <module>\n    if __name__=='__main__':main()\n                            ^^^^^^\n  File \"/workspace/zudo-osc-hole-field/design/partition/core-split/candidates/planning/joined-feed-construction-v2/staged_caps.py\", line 69, in main\n    need(not a.output.exists(),'fresh output required');seals={str(q):sha(q) for q in [a.board,Path(__file__)]};source=json.loads(a.board.read_text());need('staged_cap_solids' not in source,'materialize once per source epoch')\n                                                                                                                                                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/workspace/zudo-osc-hole-field/design/partition/core-split/candidates/planning/joined-feed-construction-v2/staged_caps.py\", line 9, in need\n    if not c:raise ValueError(m)\n             ^^^^^^^^^^^^^^^^^^^\nValueError: materialize once per source epoch\n",
+  "output_sha256": null,
+  "inputs_before_after_equal": true,
+  "native_calls": 0
+}

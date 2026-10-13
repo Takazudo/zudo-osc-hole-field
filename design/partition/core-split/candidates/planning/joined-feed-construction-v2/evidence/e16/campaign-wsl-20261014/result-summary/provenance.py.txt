@@ -1,0 +1,110 @@
+"""Pure receipt identity/provenance checks; no production imports or decoding opaque files."""
+from collections import Counter
+from pathlib import Path
+
+
+def options(command, flag):
+    result = []
+    for i, value in enumerate(command):
+        if value == flag:
+            j = i + 1
+            while j < len(command) and not command[j].startswith('--'):
+                result.append(command[j]); j += 1
+        elif value.startswith(flag + '='):
+            result.append(value.split('=', 1)[1])
+    return result
+
+
+def one(command, flag):
+    values = options(command, flag)
+    if len(values) != 1:
+        raise ValueError('expected exactly one ' + flag)
+    return values[0]
+
+
+def identity(step):
+    command = step['command']; phase = command[1]
+    if phase == 'service':
+        return ('service',)
+    common = tuple(one(command, f) for f in ('--net', '--case', '--depth'))
+    if phase == 'couple':
+        return (phase, *common)
+    if phase not in ('reduce', 'dpoint'):
+        raise ValueError('unexpected phase ' + phase)
+    result = (phase, one(command, '--board'), *common)
+    if phase == 'dpoint':
+        result += (int(one(command, '--start')), int(one(command, '--stop')))
+    return result
+
+
+def audit(completed, items, request, nets, cases, depths, verify):
+    root, run = Path(request['checkout']), Path(request['output'])
+    errors = []; ids = {}; counts = Counter(); outputs = {}; producer = {}
+    expected = {('service',)}
+    expected |= {('reduce', b, n, c, d) for b in ('KA', 'KB') for n in nets for c in cases for d in depths}
+    expected |= {('couple', n, c, d) for n in nets for c in cases for d in depths}
+    item_by_name = {i['step']: i for i in items}
+    for _, step in completed:
+        try:
+            key = identity(step)
+        except (ValueError, IndexError) as exc:
+            errors.append({'step': step['step'], 'error': str(exc)}); continue
+        ids[step['step']] = key; counts[key] += 1
+        item = item_by_name[step['step']]
+        if item['integrity_verified'] and item['process_and_guard_passed'] and (key[0] == 'service' or item.get('reported_checks_passed')):
+            for path, digest in item['output_hashes_verified'].items():
+                if path in outputs:
+                    errors.append({'step': step['step'], 'error': 'duplicate output producer', 'path': path})
+                outputs[path] = digest; producer[path] = key
+        if key[0] == 'reduce' and key in expected:
+            pads = item.get('reported_pad_count')
+            if isinstance(pads, int) and pads >= 0:
+                expected |= {('dpoint', *key[1:], start, start + 96) for start in range(0, pads, 96)}
+            else:
+                errors.append({'step': step['step'], 'error': 'missing reduction pad count'})
+    for key, count in counts.items():
+        if count != 1:
+            errors.append({'identity': key, 'error': 'duplicate unit identity', 'count': count})
+        if key not in expected:
+            errors.append({'identity': key, 'error': 'unexpected unit identity'})
+    def resolve(name):
+        path = Path(name)
+        if path.is_absolute(): return str(path)
+        candidates = [str(root / path), str(run / path)]
+        found = [p for p in candidates if p in request['input_sha256'] or p in outputs]
+        return found[0] if len(found) == 1 else None
+    inputs_by_step = {}
+    for _, step in completed:
+        key = ids.get(step['step']); declared = {}
+        if not step.get('inputs'):
+            errors.append({'step': step['step'], 'error': 'missing input bindings'})
+        for name, digest in step.get('inputs', {}).items():
+            path = resolve(name)
+            expected_digest = request['input_sha256'].get(path) or outputs.get(path)
+            if path is None or expected_digest != digest:
+                errors.append({'step': step['step'], 'error': 'input not bound to request or verified predecessor', 'path': name})
+            elif not verify(path, digest):
+                errors.append({'step': step['step'], 'error': 'input bytes mismatch', 'path': path})
+            else:
+                declared[path] = digest
+        inputs_by_step[step['step']] = declared
+        # Every file consumed by the command must be represented by a valid binding.
+        for flag in ('--config', '--cases', '--ledger', '--coverage', '--operator', '--service', '--ka-red', '--kb-red', '--ka-op', '--kb-op', '--ka-dp', '--kb-dp'):
+            for name in options(step['command'], flag):
+                path = resolve(name)
+                if path not in declared:
+                    errors.append({'step': step['step'], 'error': 'command input lacks verified binding', 'flag': flag, 'path': name})
+        if key and key[0] == 'couple':
+            for board, flag in [('KA', '--ka-red'), ('KB', '--kb-red')]:
+                names = options(step['command'], flag)
+                if len(names) != 1 or producer.get(resolve(names[0])) != ('reduce', board, *key[1:]):
+                    errors.append({'step': step['step'], 'error': 'coupled reduction identity mismatch', 'board': board})
+                wanted = {k for k in expected if k[:5] == ('dpoint', board, *key[1:])}
+                paths = options(step['command'], '--' + board.lower() + '-dp')
+                observed = [producer.get(resolve(p)) for p in paths]
+                if set(observed) != wanted or len(observed) != len(wanted):
+                    errors.append({'step': step['step'], 'error': 'coupled driving-point identity coverage mismatch', 'board': board})
+    missing = sorted(expected - set(counts))
+    return {'complete': not errors and not missing, 'errors': errors, 'missing_identities': missing,
+            'observed_unique_identities': len(counts), 'expected_known_identities': len(expected),
+            'identities': ids, 'inputs': inputs_by_step}

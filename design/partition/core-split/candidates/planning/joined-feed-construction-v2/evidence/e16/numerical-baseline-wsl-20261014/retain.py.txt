@@ -1,0 +1,38 @@
+from pathlib import Path
+import gzip, hashlib, json, shutil
+
+root=Path('/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-r4')
+f=root/'design/partition/core-split/candidates/planning/joined-feed-construction-v2'
+packet=root/'.circuit-cache/e16-numerical-0dab96a-19563d44'
+r=json.loads((packet/'request.json').read_text()); out=Path(r['output'])
+e=f/'evidence/e16/numerical-baseline-wsl-20261014';e.mkdir(exist_ok=False)
+def sha(p):
+    with Path(p).open('rb') as s:return hashlib.file_digest(s,'sha256').hexdigest()
+records=[]
+def keep(src,name,compress=False):
+    src=Path(src);dest=e/name;dest.parent.mkdir(parents=True,exist_ok=True)
+    data=src.read_bytes();dest.write_bytes(gzip.compress(data,mtime=0) if compress else data)
+    records.append({'original':str(src),'retained':name,'original_bytes':len(data),'original_sha256':sha(src),'retained_bytes':dest.stat().st_size,'retained_sha256':sha(dest)})
+for p in sorted(packet.iterdir()):
+    if p.is_file():
+        compress=p.name in ('request.json','scope-observations.jsonl')
+        keep(p,'packet/'+p.name+('.gz' if compress else '.txt' if p.suffix=='.log' else ''),compress)
+for p in sorted((out/'steps').iterdir()):keep(p,'steps/'+p.name)
+for p in sorted(out.iterdir()):
+    if not p.is_file() or p.name.endswith('.pkl.gz'):continue
+    compress=p.name=='device-service-normal-typ-v1.json'
+    keep(p,'outputs/'+p.name+('.gz' if compress else ''),compress)
+claim=Path.home()/'.local/state/epic242-native-admission'/f'numerical-{r["run_id"]}-{r["attempt"]}.json'
+keep(claim,'persistent-claim.json');keep(str(claim)+'.result','persistent-claim-result.json')
+for name in ('preflight-state.json','preflight-bindings.json','postrun-integrity.json','postrun.py','monitor.py','runtime-observations.jsonl'):
+    keep(Path('/tmp/e16-checkpoint-20261014')/name,name+('.gz' if name.endswith('.jsonl') else '.txt' if name.endswith('.py') else ''),name.endswith('.jsonl'))
+keep('/tmp/osc-wsl-20261013/protected-before.json','protected-before.json.gz',True)
+keep(r['execution_hook'],'execute_unit_guard_numerical.py.txt')
+keep('/home/takazudo/.codex/scripts/heavy-guard.sh','heavy-guard.sh.txt')
+keep('/tmp/e16-checkpoint-20261014/pr.json','github-pr-before.json.gz',True)
+keep('/tmp/e16-checkpoint-20261014/issue.json','github-issue-before.json.gz',True)
+external=[{'path':str(p),'bytes':p.stat().st_size,'sha256':sha(p)} for p in sorted(out.glob('*.pkl.gz'))]
+inputs=[{'path':p,'bytes':Path(p).stat().st_size,'sha256':h} for p,h in r['input_sha256'].items() if not Path(p).is_relative_to(root)]
+index={'schema':'e16-baseline-execution-evidence-v1','execution_head':r['source_sha'],'request_sha256':sha(packet/'request.json'),'run_id':r['run_id'],'attempt':r['attempt'],'terminal_exit':1,'outcome':'FAIL coupled node-KCL; consumed; no retry/resume','records':records,'external_output_artifacts':external,'external_output_bytes':sum(p['bytes'] for p in external),'sealed_external_inputs':inputs,'retention':'Original cache outputs and sealed inputs retained locally; copy paths and verify hashes as described in README. No LFS, PCB or pickle blobs committed.'}
+(e/'index.json').write_text(json.dumps(index,indent=2)+'\n')
+print(json.dumps({'evidence':str(e),'records':len(records),'external_output_bytes':index['external_output_bytes'],'external_input_bytes':sum(x['bytes'] for x in inputs)},indent=2))

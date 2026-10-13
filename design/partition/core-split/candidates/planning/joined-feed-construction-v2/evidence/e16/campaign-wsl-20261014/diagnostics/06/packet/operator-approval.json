@@ -1,0 +1,48 @@
+{
+  "source_sha": "9a68f1a87db7afbc20ae16a95ef523a5f8d093ca",
+  "run_id": "bd4c89d22aa04b5fa1a7cb74d9358b77",
+  "attempt": 1,
+  "scope": "Exactly one guarded production-input diagnostic: profile actual production finite_solve.py dpoint KB AGND nominal-average uniform-dielectric pads 0:16 to diagnose the prior 96-pad timeout. Same baseline geometry, operator, loads, equations and tolerances; no full baseline, native job or variant. cProfile adds overhead and this is not a full-chunk runtime acceptance result.",
+  "approved": true,
+  "operator": "takazudo",
+  "limits": {
+    "shared_heavy_guard": true,
+    "per_unit_shared_heavy_guard": true,
+    "parent_holds_no_slot": true,
+    "serialized_units": true,
+    "each_unit_timeout_seconds": 180,
+    "unit_memory_max_bytes": 2147483648,
+    "unit_memory_swap_max_bytes": 0,
+    "maximum_units": 148,
+    "shared_heavy_guard_max_run_seconds_per_unit": 1800,
+    "shared_guard_configuration": {
+      "guard": "/home/takazudo/.codex/scripts/heavy-guard.sh",
+      "sha256": "074a463dd6b3a65b7e2168df95b200c0192c414862375bcfb95f979c34c67ee7",
+      "helper_sha256": "513efaf0b4f4a5bb1f94c15190822a2a79d84df399f83e69d7ed0297444ea571",
+      "directory": "/home/takazudo/.agent-guard/heavy",
+      "defaults": {
+        "slots": 1,
+        "wait_seconds": 0,
+        "max_run_seconds": 1800,
+        "min_mem_mb": 2048,
+        "low_mem_mb": 512
+      },
+      "queue_outside_unit_timeout": true
+    },
+    "scope": "Profile wrapper enters and proves live user-systemd 2 GiB/no-swap; actual finite_solve main independently verifies same scope. Unchanged per-unit shared guard ownership/lock and Ledger 180-second timeout; no parent slot.",
+    "stop_on_failure": true,
+    "both_board_reductions_before_driving_points": "NOT APPLICABLE: isolateddiagnosticdpoint,no coupled dispatch",
+    "resume": false,
+    "automatic_retry": false,
+    "maximum_diagnostic_units": 1,
+    "maximum_units_note": "148inheritedhookceiling;exactly1diagnosticunitauthorizedandsealeddriverenforced"
+  },
+  "request_sha256": "b814dc00c6655cf09c57e0d8689dedeece5689f9e180fc41df1397ff71d0bc69",
+  "authorization_kind": "delegated_campaign_authorization",
+  "recorded_by": "Codex /root",
+  "operator_field_meaning": "Owner account required by unchanged hook; actual executor is Codex under standing owner authorization.",
+  "approval_source": "Actual standing owner instruction retained at /home/takazudo/.cache/zudo-e16-runs/campaign-20261014/authority-source.txt SHA256 fe57c020772e65fc4438e4f8cce4e48d1903c554b2d6eab66476dbe0289ce00c. Diagnostic6 helper and exact packet independently reviewed by review_sources; delegated authorization, no fresh personal owner digest review claimed.",
+  "authority_source_sha256": "fe57c020772e65fc4438e4f8cce4e48d1903c554b2d6eab66476dbe0289ce00c",
+  "scope_assessment": "One of 24 bounded production diagnostic units, now sixth: profile same baseline KB AGND first16 pads to diagnose demonstrated runtime failure. Same source equations, geometry, loads and tolerances; unchanged 180s/2GiB/no-swap/shared guard. Prior run terminal integrity and cleanup PASS; not a full baseline or variant.",
+  "created_unix": 1791919604.5029585
+}

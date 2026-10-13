@@ -1,0 +1,41 @@
+{
+  "status": "PASS_RETAINED_SOURCE_ACCOUNTING_REVIEW",
+  "method": "Recomputed saved contact graph unions and counts; verified all reached source span hashes, input seals, exact seed dispositions and polygon-status joins. Did not repeat spatial queries, branch census, source geometry or native execution.",
+  "hashes": {
+    "receipt.json": "0fa427c6e1964cafb475a2b13f542d2dece8f50331021d77d33ef06d22083687",
+    "summary.json": "7b2e013373f96e2984feed2434fbad673fd87c36b5a81c818cdcc8fed44b359b",
+    "reached-source-objects.json.gz": "a083c58004ef6b1b684d441018a3801be4d8f1ba401e9a4d1190a2a50b435e38",
+    "filled-polygon-index.json.gz": "654694cd959f911f8b4628bf642d93f81bb65b38ca29d069b84284911a3528c4",
+    "zones.json": "84293d288085cf3c3b0f527548c2cc8c877e2e9550da8fca5b6c9aff54f5b154",
+    "zone-contact-records.json.gz": "ec5d0bfdd51780a16d2facc60e9004335b78e8bd26f2c2d6bf8cc29e772aa25d",
+    "seed-dispositions.json": "70e4f42d3b748e0072825c01f9963ec6c0f40d28fa22be3a409f9761f95496c0",
+    "components.json.gz": "044dbc93e38adf829e89a8179904296ac3c39a71a2a3b98a5f2fe0801ac2750c",
+    "start.json": "7befcf9f0f33ebe3a35f84ee6ce6e2c58005e7d8efc659e59bf5ccbc24e3ea49"
+  },
+  "code_sha256": "a2ff480bbbbcd06005ed0b6fb567495be54f0ddd42c4a70f36f2687d32bbbdc9",
+  "verified": {
+    "source_objects": 5675,
+    "seed_objects": 40,
+    "components": 8,
+    "saved_copper_edges": 16751,
+    "saved_pad_edges": 793,
+    "plus5_component_objects": 5653,
+    "plus5_A_pads": 38,
+    "plus5_B_pads": 510,
+    "other_B_only_components": 7,
+    "other_component_objects": 22,
+    "other_component_pads": 7,
+    "filled_polygons": 440,
+    "invalid_rings_unrepaired": 151,
+    "valid_geometric_contacts": 1,
+    "invalid_bbox_potential_contacts": 19,
+    "all_A_seed_dispositions_unresolved": true
+  },
+  "conclusion": "The 21 +5V seeds belong to a mixed A/B discrete source component; immediate B pad ownership cannot justify A omission. Remaining 19 seeds reach seven B-only discrete components with historical plane interfaces unresolved. No per-object necessity, A/B projection continuity, native eligibility or deletion/copy permission follows.",
+  "limits": [
+    "Saved graph connectivity verified, completeness of spatial contact census rests on reviewed producer, not a second census.",
+    "151 invalid filled rings retain bounding-box uncertainty rather than repaired topology.",
+    "All 40 absent from existing fixture is generator projection behavior, not proof omission preserves source continuity."
+  ],
+  "blockers": []
+}

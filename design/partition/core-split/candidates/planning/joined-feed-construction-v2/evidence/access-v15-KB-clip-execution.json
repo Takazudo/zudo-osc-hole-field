@@ -1,0 +1,28 @@
+{
+  "step": "clip",
+  "input_sha256": {
+    "/tmp/feed-v2-KB-evaluation-v15/normalized-caps.json": "a59a10845d55e98f2df325061c25379fa19c43848ae1145f1cdcd30967f610da",
+    "/tmp/feed-v2-board-access.py": "18b4daebd09fc7e2bf802ace16195584b7fce40c3b55e72efe7a81faa4b5c2e5",
+    "/tmp/feed-v2-board-access-design.json": "f2783e9a0a720e431a00512e9017b55c236e7f31e5a579bbe00e6ee442e00eea"
+  },
+  "command": [
+    "timeout",
+    "180s",
+    "/tmp/osc-arch-source-venv/bin/python",
+    "/tmp/feed-v2-board-access.py",
+    "--filtered-board",
+    "/tmp/feed-v2-KB-evaluation-v15/normalized-caps.json",
+    "--design",
+    "/tmp/feed-v2-board-access-design.json",
+    "--clip-only",
+    "--output",
+    "/tmp/feed-v2-KB-evaluation-v15/clipped-sheets.json"
+  ],
+  "exit_code": 0,
+  "elapsed_seconds": 42.414312120999966,
+  "stdout": "{\"status\": \"SOURCE_CLIPPED_POLYGONS_ONLY_CONNECTIVITY_UNTESTED\", \"board\": \"KB\", \"sheet_components\": {\"AGND\": 11, \"+5V\": 1305, \"-12V\": 503, \"+12V\": 11}, \"loads\": 0}\n",
+  "stderr": "",
+  "output_sha256": "fadd97519f13c99d9e69b9a0d98da696da9939229225c425f097e3d4b64dfbbe",
+  "inputs_before_after_equal": true,
+  "native_calls": 0
+}

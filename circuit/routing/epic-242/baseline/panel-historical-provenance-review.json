@@ -1,0 +1,105 @@
+{
+  "issue": 243,
+  "scope": "historical panel native-review receipt provenance after epic242 bounded startup qualification",
+  "source_review_sha": "334bc8ee7ec32a10436ba4e11cc585444d1e651e",
+  "receipt": "boards/panel/reports/native-review.json",
+  "receipt_sha256": "18ea187ed7ebea89b61dd09d0f7a99582f90214396b52c17967c8a577c9fa3ab",
+  "historical_accepted_source_sha": "65cefd41fc39e064d38319115ad96016a1c6b71c",
+  "historical_run_sh_sha256": "bc74f0ade82c29d64c44119ea435bc7bfd164fc06e9afff240a3cb2b44b272a0",
+  "historical_run_sh_verified_from_accepted_main": true,
+  "reviewed_current_run_sh_sha256": "f91b2c8846856a6d38a10eb9e6314b6ebec3222b68df37942f3716ab860d8c91",
+  "input_output_comparison": [
+    {
+      "group": "inputs",
+      "path": "boards/panel/panel.kicad_pcb",
+      "recorded_sha256": "8584308d9b011bd9cf03f3f283d22677ba30a001fec4bb9d08cd429b695c50e5",
+      "current_sha256": "8584308d9b011bd9cf03f3f283d22677ba30a001fec4bb9d08cd429b695c50e5",
+      "bytes_equal": true,
+      "hash_equal": true
+    },
+    {
+      "group": "inputs",
+      "path": "boards/panel/panel.kicad_pro",
+      "recorded_sha256": "6ef92d66a16fae59400be919c75bd70ba765ef6b24cc9e06aecbd7a706f2d126",
+      "current_sha256": "6ef92d66a16fae59400be919c75bd70ba765ef6b24cc9e06aecbd7a706f2d126",
+      "bytes_equal": true,
+      "hash_equal": true
+    },
+    {
+      "group": "inputs",
+      "path": "design/panel/panel-params.json",
+      "recorded_sha256": "e69cbba6370d6d1f7dc6afdd04f31d7704fa40af012e4ee457fe5c7e999a6148",
+      "current_sha256": "e69cbba6370d6d1f7dc6afdd04f31d7704fa40af012e4ee457fe5c7e999a6148",
+      "bytes_equal": true,
+      "hash_equal": true
+    },
+    {
+      "group": "inputs",
+      "path": "design/grid/placements.lock.json",
+      "recorded_sha256": "297300b067fd646624b9e501791163fa2d60702862b61568753bf92e5b88dbe8",
+      "current_sha256": "297300b067fd646624b9e501791163fa2d60702862b61568753bf92e5b88dbe8",
+      "bytes_equal": true,
+      "hash_equal": true
+    },
+    {
+      "group": "inputs",
+      "path": "scripts/kicad/pin.env",
+      "recorded_sha256": "769e2be0b61e7d92a6930684f13166b7dc098522008de3969cd30d6c4a363246",
+      "current_sha256": "769e2be0b61e7d92a6930684f13166b7dc098522008de3969cd30d6c4a363246",
+      "bytes_equal": true,
+      "hash_equal": true
+    },
+    {
+      "group": "inputs",
+      "path": "scripts/kicad/run.sh",
+      "recorded_sha256": "bc74f0ade82c29d64c44119ea435bc7bfd164fc06e9afff240a3cb2b44b272a0",
+      "current_sha256": "f91b2c8846856a6d38a10eb9e6314b6ebec3222b68df37942f3716ab860d8c91",
+      "bytes_equal": false,
+      "hash_equal": false
+    },
+    {
+      "group": "inputs",
+      "path": "scripts/panel/check_panel.py",
+      "recorded_sha256": "fb79fca1bbde77ef81693ddd8aeac12bc5ab27f03c8dc82aa82b0e2df19e6987",
+      "current_sha256": "fb79fca1bbde77ef81693ddd8aeac12bc5ab27f03c8dc82aa82b0e2df19e6987",
+      "bytes_equal": true,
+      "hash_equal": true
+    },
+    {
+      "group": "outputs",
+      "path": "boards/panel/reports/drc.json",
+      "recorded_sha256": "7d38997849ddd0a4226a31c98ef93605203b1f4a0623b2f77cfe70583d519b51",
+      "current_sha256": "7d38997849ddd0a4226a31c98ef93605203b1f4a0623b2f77cfe70583d519b51",
+      "bytes_equal": true,
+      "hash_equal": true
+    },
+    {
+      "group": "outputs",
+      "path": "boards/panel/reports/feature-table.json",
+      "recorded_sha256": "4a20987e7f25d046db343be3d73ce165c3363f3685442e48a31293b4d208d819",
+      "current_sha256": "4a20987e7f25d046db343be3d73ce165c3363f3685442e48a31293b4d208d819",
+      "bytes_equal": true,
+      "hash_equal": true
+    },
+    {
+      "group": "outputs",
+      "path": "boards/panel/reports/panel-top.png",
+      "recorded_sha256": "a021f30af85255d82f7465a3ce1c72263a66e9cd2e7e207af525bd08e84a41e1",
+      "current_sha256": "a021f30af85255d82f7465a3ce1c72263a66e9cd2e7e207af525bd08e84a41e1",
+      "bytes_equal": true,
+      "hash_equal": true
+    },
+    {
+      "group": "outputs",
+      "path": "doc/public/assets/osc-hole-field/panel-kicad-top.png",
+      "recorded_sha256": "a021f30af85255d82f7465a3ce1c72263a66e9cd2e7e207af525bd08e84a41e1",
+      "current_sha256": "a021f30af85255d82f7465a3ce1c72263a66e9cd2e7e207af525bd08e84a41e1",
+      "bytes_equal": true,
+      "hash_equal": true
+    }
+  ],
+  "finding": "Only scripts/kicad/run.sh differs from the retained native panel receipt; all panel sources and native outputs still match their recorded bytes. The current wrapper adds guarded Docker create/start/ACK behavior in bounded mode and a bounded-only version/fallback gate. No fresh panel DRC/render result under the current hook exists. The verifier correctly rejects current-source qualification; the old receipt remains historical evidence only.",
+  "ci_evidence": "Documentation CI run38129117832 passed 68 KiCad source tests after PyYAML pin but failed panel review tests on stale run.sh; this is independent of bounded lifecycle run38129478578 success.",
+  "disposition": "KEEP historical receipt unchanged; no hash refresh or claim of current panel acceptance. A separate admitted, independently reviewed native panel DRC/render and byte-level output comparison are required to create a current-source receipt, or explicit scope change to a historical-only test classification with its own review. No such run or code change performed.",
+  "hardware": "JL117/JR129/K1402 and DRC/parity0/0 accepted baseline unchanged."
+}

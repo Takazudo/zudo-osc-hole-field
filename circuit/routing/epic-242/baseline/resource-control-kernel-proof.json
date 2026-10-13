@@ -1,0 +1,46 @@
+{
+  "status": "PASS_HARMLESS_DOCKER_KERNEL_CONTROL_PROOF",
+  "native_kicad_execution": false,
+  "scope": "Docker kernel controls only, not systemd whole-worker qualification",
+  "memory_limit_bytes": 67108864,
+  "memory_swap_limit_bytes": 67108864,
+  "daemon": {
+    "CgroupDriver": "cgroupfs",
+    "CgroupVersion": "2",
+    "MemoryLimit": true,
+    "SwapLimit": true,
+    "ServerVersion": "28.4.0"
+  },
+  "source_sha256": "12523b25e61cf54869743702949dca7c1873ac8089bf46476c15a11e03f7573a",
+  "binary_sha256": "6ff0c1f44f953c95a5c6f6afb2632d308dcee341137a2ff56690314859e9c5fc",
+  "compiler": "cc (Debian 14.2.0-19) 14.2.0",
+  "image_digest": "sha256:36c34df9d800f71a7935c85b519c7a75265c223dfb6e0d2fb78c739af371141a",
+  "aggregate": {
+    "elapsed_seconds": 3.2116586570000436,
+    "exit_code": 70,
+    "oom_killed": true,
+    "stdout": "guard-fixture pid=1 mode=aggregate\nallocated child=7 bytes=41943040\nchild=7 status=0\nchild=8 status=9\n",
+    "stderr": ""
+  },
+  "timeout": {
+    "elapsed_seconds": 1.0678858699998273,
+    "exit_code": 137,
+    "running": false,
+    "init_pid": 0,
+    "stdout": "guard-fixture pid=1 mode=hold\nhold pid=1 child=6\nhold pid=6 child=0\n",
+    "stderr": ""
+  },
+  "owned_containers_and_image_removed": true,
+  "preflight_refusals": {
+    "worker_guard": {
+      "exit_code": 1,
+      "reason": "PID 1 must be systemd",
+      "side_effects": "refused before git, Docker, systemd or admission slot operations"
+    },
+    "ci_admission": {
+      "exit_code": 1,
+      "reason": "parent admission must name this exact GitHub run ID",
+      "guard_invocation": false
+    }
+  }
+}

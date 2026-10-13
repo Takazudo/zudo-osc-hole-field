@@ -1,0 +1,127 @@
+{
+  "AGND": {
+    "named_context": [
+      "RV2309.1 and RV2309.3 fixed F.Cu pads obstruct all-layer via opportunities.",
+      "In2 segment da069780-2dfc-5e9d-a276-ba0847ac3937 on U2312.7/R2348.1/R2349.1 net remains fixed because R2349 is outside the moving24."
+    ],
+    "old_region": {
+      "exact_legal_via_sites": 0,
+      "raster_via_sites": 0,
+      "reachable_B_Cu_sites": 149,
+      "scope": "Only149 old reachable grid sites, not global impossibility."
+    },
+    "original_pair": [
+      "C2338.2",
+      "U2312.5"
+    ],
+    "what_A_changes": "C2338 and U2312 move together relative to stationary RV2309 and the retained mixed-owner In2 track; their old pocket context changes. This also creates reconnect obligations on that mixed-owner signal and on the shared ground network.",
+    "what_A_does_not_prove": "No new AGND via/witness/full pair or complete return topology has been demonstrated. Pair-relative geometry is unchanged. C2325 local +12V/AGND correction is separate; it does not relocate C2338 relative to U2312 or close this demand."
+  },
+  "BP_INT": {
+    "BP_preservation": "Saved source component119 has42 copper objects and contacts C2312.1/U2312.12; it is eligible for the same rigid transform subject to remaining gates. It is not the originally open U2306.5 connection.",
+    "named_local_context": [
+      "Via5c0e2b48-e6b8-50a6-af33-fc51f5fe0026 on R2390.2/U2307.1 net at(216.2,262.6)mm limited C2312 breakout raster clearance.",
+      "Via9bc880ec-2717-59d4-98ee-1358bf13df02 on RV2311.2/R2372.1 net, R2372.2 pad and fixed J900213 pads were additional context.",
+      "Retained -12V via0f9ff359-2b0a-56f9-94e7-82b2c291d170 rejected three saved signal launch witnesses."
+    ],
+    "old_signal_source_region": {
+      "exact_legal_via_sites": 10,
+      "raster_via_sites": 0,
+      "reachable_B_Cu_sites": 1034,
+      "scope": "Old method/source epoch only."
+    },
+    "original_pair": [
+      "C2312.1",
+      "U2306.5"
+    ],
+    "weighted_rejection": "Old diagnostic graph chain failed new-via spacing0.436103992mm versus0.700001mm; no candidate. A rigid translation of that bad chain would preserve this failure. A must not claim it repairs the self-spacing issue.",
+    "what_A_changes": "Moves C2312/U2312/U2306 together away from that old stationary context; source dispositions confirm named vias stay fixed. Therefore old local source-pocket obstruction is not invariant under A. This is a mechanism for trying new access, not proof a complete new witness or route exists.",
+    "what_A_preserves": "C2312.1-to-U2306.5 relative span and all same-block sensitive geometry. A does not implement the earlier near-U2306 compaction recommendation."
+  },
+  "intrinsic_rails": {
+    "assessment": "U2309 is outside A24 and unchanged. Even rigidly moving it would preserve this intrinsic adjacent-pad full-width access geometry. North reconstruction does not address either rail-start failure.",
+    "blockers": [
+      "U2309.3/U2309.5 AGND pads around positive supply",
+      "U2309.10/U2309.12 AGND pads around negative supply"
+    ],
+    "unchanged_pairs": [
+      "U2309.4-to-C2331.1 +12V",
+      "U2309.11-to-C2332.1 -12V"
+    ]
+  },
+  "recommendation": "Proceed only with the authorized source reconstruction proposal to expose exact intervention and contact debts. Do not recommend routing/native execution based on it: new BP_INT and AGND terminal access plus route/attachment/new-via spacing and complete return evidence remain needed, and U2309 rails remain unresolved. No evidence establishes architecture switching as necessary.",
+  "stationary_object_bindings": [
+    {
+      "base_offset_mm": [
+        0,
+        0
+      ],
+      "candidate_disposition": "PRESERVED_IN_PLACE",
+      "canonical_disposition": "UNCHANGED",
+      "kind": "via",
+      "net_token": "-12V",
+      "object_key": "27502047:27502186:6bc35b1e17cc585fdbc705b30ac84469c96b0ed42968fc562a0cbb5230dc806d",
+      "scope": "SHARED_RAIL_RETURN",
+      "sha256": "6bc35b1e17cc585fdbc705b30ac84469c96b0ed42968fc562a0cbb5230dc806d",
+      "source_span": [
+        27502047,
+        27502186
+      ],
+      "uuid": "0f9ff359-2b0a-56f9-94e7-82b2c291d170"
+    },
+    {
+      "base_offset_mm": [
+        0,
+        0
+      ],
+      "candidate_disposition": "PRESERVED_IN_PLACE",
+      "canonical_disposition": "UNCHANGED",
+      "kind": "segment",
+      "net_token": "X3833DA0E2047F401FB91",
+      "object_key": "27837437:27837607:2fc3f1ee4de42a79c72e29f6d1627a15418ed2b13e5ed01bc3c2a76b7d019170",
+      "scope": "RETAINED_CANDIDATE_OR_UNKNOWN",
+      "sha256": "2fc3f1ee4de42a79c72e29f6d1627a15418ed2b13e5ed01bc3c2a76b7d019170",
+      "source_span": [
+        27837437,
+        27837607
+      ],
+      "uuid": "da069780-2dfc-5e9d-a276-ba0847ac3937"
+    },
+    {
+      "base_offset_mm": [
+        0,
+        0
+      ],
+      "candidate_disposition": "PRESERVED_IN_PLACE",
+      "canonical_disposition": "UNCHANGED",
+      "kind": "via",
+      "net_token": "XBACFAB119A723846F935",
+      "object_key": "44386572:44386730:cef224ec41a5abb9146b7208d465452b092efdf0f3b43995ed08e7aa0572f08a",
+      "scope": "RETAINED_CANDIDATE_OR_UNKNOWN",
+      "sha256": "cef224ec41a5abb9146b7208d465452b092efdf0f3b43995ed08e7aa0572f08a",
+      "source_span": [
+        44386572,
+        44386730
+      ],
+      "uuid": "5c0e2b48-e6b8-50a6-af33-fc51f5fe0026"
+    },
+    {
+      "base_offset_mm": [
+        0,
+        0
+      ],
+      "candidate_disposition": "PRESERVED_IN_PLACE",
+      "canonical_disposition": "UNCHANGED",
+      "kind": "via",
+      "net_token": "XB2476C897A43616D2B8F",
+      "object_key": "45256907:45257068:a6d628836f7edd7bf92c17f8b3e8f94d6b783dae1654ace510ed8d316b88777d",
+      "scope": "RETAINED_CANDIDATE_OR_UNKNOWN",
+      "sha256": "a6d628836f7edd7bf92c17f8b3e8f94d6b783dae1654ace510ed8d316b88777d",
+      "source_span": [
+        45256907,
+        45257068
+      ],
+      "uuid": "9bc880ec-2717-59d4-98ee-1358bf13df02"
+    }
+  ]
+}

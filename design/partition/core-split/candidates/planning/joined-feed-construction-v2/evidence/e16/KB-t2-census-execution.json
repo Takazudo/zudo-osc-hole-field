@@ -1,0 +1,30 @@
+{
+ "step": "census",
+ "input_sha256": {
+  "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/cfe74c9b-74ea-403e-a296-8046c4b13f60/scratchpad/replay-kb/KB-eval-t2/normalized-caps.json": "61fdb8670e16952da60abcb2dc0ad9b340017b7b185ee7d614b4f43637e6503a",
+  "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/cfe74c9b-74ea-403e-a296-8046c4b13f60/scratchpad/replay-kb/KB-eval-t2/clipped-sheets.json": "7c722a8a062eb2e8ab671bf5818b203a49228ecab7fdbf0ed67112a898bafe66",
+  "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/cfe74c9b-74ea-403e-a296-8046c4b13f60/scratchpad/replay-kb/KB-eval-t2/port-graph.json": "1da17d8cf913521bb5b73e9ce3dc23fd18b1f1c416dcbc3b9d3c2b466b511bac",
+  "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-r4/design/partition/core-split/candidates/planning/joined-feed-construction-v2/port_obligations.py": "c1aeeb5be28156448365fc78c03e986ef6402602ebfdaa03f2123d0411236375"
+ },
+ "command": [
+  "timeout",
+  "180s",
+  "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/cfe74c9b-74ea-403e-a296-8046c4b13f60/scratchpad/venv/bin/python",
+  "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-r4/design/partition/core-split/candidates/planning/joined-feed-construction-v2/port_obligations.py",
+  "--board",
+  "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/cfe74c9b-74ea-403e-a296-8046c4b13f60/scratchpad/replay-kb/KB-eval-t2/normalized-caps.json",
+  "--planes",
+  "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/cfe74c9b-74ea-403e-a296-8046c4b13f60/scratchpad/replay-kb/KB-eval-t2/clipped-sheets.json",
+  "--graph",
+  "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/cfe74c9b-74ea-403e-a296-8046c4b13f60/scratchpad/replay-kb/KB-eval-t2/port-graph.json",
+  "--output",
+  "/tmp/claude-1000/-home-takazudo-repos-circuits-zudo-osc-hole-field/cfe74c9b-74ea-403e-a296-8046c4b13f60/scratchpad/replay-kb/KB-eval-t2/port-obligations.json"
+ ],
+ "exit_code": 0,
+ "elapsed_seconds": 3.2090587010025047,
+ "stdout": "{\"board\": \"KB\", \"physical_pad_count\": 2281, \"counts_by_net\": {\"+5V\": 112, \"-12V\": 46, \"AGND\": 286, \"+12V\": 42}, \"direct_loads\": 343, \"supplemental\": 143}\n",
+ "stderr": "",
+ "output_sha256": "1373210e67eb6fe0d720686c38fc1ad49877856d80b516a8ef95a66afa8ef487",
+ "inputs_before_after_equal": true,
+ "native_calls": 0
+}

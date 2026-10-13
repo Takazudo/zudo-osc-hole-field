@@ -1,0 +1,122 @@
+{
+  "status": "SOURCE-ONLY LOCAL BREAKOUT; NO PAIR CLOSURE OR NATIVE APPLY",
+  "repair_id": "two-a-c2312-signal-breakout-v1",
+  "board": "two-A",
+  "anchor_uuid": "a94ae2bb-13fe-5e3d-a7ab-10ddb6bd4222",
+  "physical_input_unchanged": true,
+  "accepted": false,
+  "adopted": false,
+  "native_exact_pair_closed": false,
+  "coupled_connectivity_success": false,
+  "removed_uuids": [],
+  "source_marker": "access-0381261da00bba512239f52eae2714bc1c4e8fc381dd29216a80e5471d97f2e2",
+  "source_record": {
+    "anchor": "a94ae2bb-13fe-5e3d-a7ab-10ddb6bd4222",
+    "path": [
+      [
+        "B.Cu",
+        213700000,
+        264100000,
+        0
+      ],
+      [
+        "B.Cu",
+        216800000,
+        263300000,
+        0
+      ],
+      [
+        "In2.Cu",
+        216800000,
+        263300000,
+        0
+      ],
+      [
+        "In2.Cu",
+        216800000,
+        263300000,
+        0
+      ]
+    ],
+    "pad": {
+      "uuid": "access-0381261da00bba512239f52eae2714bc1c4e8fc381dd29216a80e5471d97f2e2",
+      "ref": "ACCESS",
+      "pad": "access-0381261da00bba512239f52eae2714bc1c4e8fc381dd29216a80e5471d97f2e2",
+      "net": "XDEDA32D515C912ED69C7",
+      "xy": [
+        216800000,
+        263300000
+      ],
+      "poly": [
+        [
+          216799999,
+          263299999
+        ],
+        [
+          216800001,
+          263299999
+        ],
+        [
+          216800001,
+          263300001
+        ],
+        [
+          216799999,
+          263300001
+        ]
+      ],
+      "layers": [
+        "In2.Cu"
+      ],
+      "drill": 0,
+      "npth": false,
+      "locked": false
+    },
+    "node": [
+      "In2.Cu",
+      216800000,
+      263300000
+    ],
+    "witness_id": "0381261da00bba512239f52eae2714bc1c4e8fc381dd29216a80e5471d97f2e2"
+  },
+  "signal_portal_counts_after": [
+    6,
+    4
+  ],
+  "preview_copper": [
+    {
+      "kind": "segment",
+      "net": "XDEDA32D515C912ED69C7",
+      "start_nm": [
+        213700000,
+        264100000
+      ],
+      "end_nm": [
+        216800000,
+        263300000
+      ],
+      "width_nm": 300000,
+      "layer": "B.Cu",
+      "uuid": "34c49f52-7cda-5f8e-90d9-fcbd0a1198cb"
+    },
+    {
+      "kind": "via",
+      "net": "XDEDA32D515C912ED69C7",
+      "at_nm": [
+        216800000,
+        263300000
+      ],
+      "diameter_nm": 600000,
+      "drill_nm": 300000,
+      "layers": [
+        "F.Cu",
+        "B.Cu"
+      ],
+      "locked": false,
+      "uuid": "2e13dae0-02b8-5b5c-b581-69105d646240"
+    }
+  ],
+  "preview_only": true,
+  "cumulative_original_baseline_fill": "PASS SOURCE SCREEN; native gates not run",
+  "emission_policy": "Preview is never pre-added to physical input. Existing adapter.stitch emits the selected attachment exactly once only after a complete pair passes all gates; failure retains no breakout copper."
+}

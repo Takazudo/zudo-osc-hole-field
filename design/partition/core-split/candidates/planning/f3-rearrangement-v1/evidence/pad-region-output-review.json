@@ -1,0 +1,594 @@
+{
+  "status": "PASS_RETAINED_NECESSARY_PAD_EXCLUSION_REVIEW",
+  "files_sha256": {
+    "receipt.json": "022ff980ee3d45d91cfa3241a8667e48eb1e63c64d3f5a60dd84ed988b1b9274",
+    "summary.json": "8965bfb714c7abe87df6192645336fff77f872537b1b38a17ea112c7f6ac0f98",
+    "B25-FOLD-N-zones-rule-areas.json": "dbcf151265d4c3b6de45d895135fbfc167fd3ee91bb64f9a9b3cfc15cfaf2338",
+    "B25-FOLD-N-object-dispositions.json.gz": "12036307e3a7ce81c576e94b34b48a2075a6068f296626ccb877ac4a0c9b88ed",
+    "B25-FOLD-N-result.json": "81948156bdfed849e82edb95a4b03ec6fe72ab6735ce5b9ff12f0884fd5038e7",
+    "B25-FOLD-N-constraints.json.gz": "8744e047ab38e236e0c1012216c8f00bbad62fd0d382e1800ec34e50ba69839a",
+    "B25-FOLD-N-contacts.json.gz": "8fdb5c736bcc2f9ecea625e0a08d98502132958929cbe04dac001ce280d4f609",
+    "B25-FOLD-N-components.json.gz": "8074fa016a046a30dce8d5bff32fd7b18edc516b96f1fbf4f3800ead2eed2db6",
+    "A24-N-zones-rule-areas.json": "dbcf151265d4c3b6de45d895135fbfc167fd3ee91bb64f9a9b3cfc15cfaf2338",
+    "A24-N-object-dispositions.json.gz": "e8c73b150b48f7b82ccd70caded11b6c70455f5f2f0f3b3f357a66e2b01ccfe2",
+    "A24-N-result.json": "64641b03cdcd7c846376ba46c67a5695bdfaf1853910fc1150e1afb18f6b4742",
+    "A24-N-constraints.json.gz": "1bf9b7141660c29c0e2ea41e3c111b6e27c7831af28b082c28d756a2e37c3c46",
+    "A24-N-contacts.json.gz": "ca9341bf07662fdc18f7b46bf76a8b670fdce2404b9ef089a128f1f35f7eb1b9",
+    "A24-N-components.json.gz": "82f5ee2cfe3d935ab1670535a1c5d40f8132d7366d096b687384d51df96107aa",
+    "start.json": "14717ab80cd26216b3248e21be2091acca8f276de63286217d157969b5ce46f7"
+  },
+  "concepts": [
+    {
+      "concept": "A24-N",
+      "coverage": "COVERS_AVAILABLE_AND_EMPTY_DIFFERENCE",
+      "area_mm2": 21.83427554469594,
+      "constraints": 416,
+      "eligible_objects": 272,
+      "eligible_components": 12,
+      "contacts": 77,
+      "same_transform_contacts": 36,
+      "reconnect_contacts": 41,
+      "constraint_scope_counts": {
+        "SHARED_RAIL_RETURN": 329,
+        "RETAINED_CANDIDATE_OR_UNKNOWN": 86,
+        "FOREIGN_PAD": 1
+      },
+      "copper_constraint_layer_counts": {
+        "ALL_THROUGH": 181,
+        "F.Cu": 91,
+        "B.Cu": 143
+      },
+      "leading_nets": [
+        [
+          "+5V",
+          183
+        ],
+        [
+          "+12V",
+          75
+        ],
+        [
+          "/W2/FOLD_BUFFER",
+          48
+        ],
+        [
+          "-12V",
+          46
+        ],
+        [
+          "AGND",
+          25
+        ],
+        [
+          "/O2/PUL_SCALED",
+          23
+        ],
+        [
+          "/F2/REF5",
+          5
+        ],
+        [
+          "/W2/BIAS_BUFFER",
+          5
+        ]
+      ],
+      "witness_record_indices": [
+        84,
+        225,
+        171,
+        277,
+        232,
+        288,
+        342,
+        316,
+        231,
+        279,
+        275,
+        173,
+        305,
+        233,
+        59,
+        176,
+        365,
+        96,
+        244,
+        202,
+        36,
+        247,
+        296,
+        315
+      ],
+      "witness_count": 24,
+      "witness_nonminimal": true,
+      "witness_identities": [
+        {
+          "expansion_mm": 0.35,
+          "fixed_id": "31878521:31878687:bd530235c31565107adeab2e1a774d8d4e5e381946217678831f91b1f0c3ac11",
+          "kind": "FOREIGN_COPPER",
+          "pad": "2",
+          "ref": "R2345"
+        },
+        {
+          "expansion_mm": 0.4,
+          "fixed_id": "27267165:27267314:0e90ee384bb8189d85f95bccaaf03eb6b39bfa3ca2a818eeb94c85c66e4b7606",
+          "kind": "FOREIGN_COPPER",
+          "pad": "5",
+          "ref": "U2306"
+        },
+        {
+          "expansion_mm": 0.35,
+          "fixed_id": "31886778:31886948:83b2ec219a35a352dc7c9e27796119f82a6036663c8f5474285239098098ae4b",
+          "kind": "FOREIGN_COPPER",
+          "pad": "7",
+          "ref": "U2312"
+        },
+        {
+          "expansion_mm": 0.45,
+          "fixed_id": "28339913:28340055:464d04451bf75ee6f01f298c787ac3c4793687404c03b33fc51ecd93d4f8b3df",
+          "kind": "FOREIGN_COPPER",
+          "pad": "15",
+          "ref": "U2306"
+        },
+        {
+          "expansion_mm": 0.4,
+          "fixed_id": "27267165:27267314:0e90ee384bb8189d85f95bccaaf03eb6b39bfa3ca2a818eeb94c85c66e4b7606",
+          "kind": "FOREIGN_COPPER",
+          "pad": "6",
+          "ref": "U2306"
+        },
+        {
+          "expansion_mm": 0.6,
+          "fixed_id": "27674045:27674186:18a9be542928422876b67cfe26cfd814ed8d2cc46e1ea6f6e41ab023b6ca5c34",
+          "kind": "FOREIGN_COPPER",
+          "pad": "2",
+          "ref": "U2313"
+        },
+        {
+          "expansion_mm": 0.6,
+          "fixed_id": "28288790:28288930:38cf7884192d7cf1b83fcf2e2e370a8888fb51b38646459c8ae3bf4a30669d3f",
+          "kind": "FOREIGN_COPPER",
+          "pad": "12",
+          "ref": "U2313"
+        },
+        {
+          "expansion_mm": 0.45,
+          "fixed_id": "28376819:28376963:3fc2fd1bcf6c85685767614ed86ff147c7cc405e3e59ea737874349bdba6b946",
+          "kind": "FOREIGN_COPPER",
+          "pad": "8",
+          "ref": "U2313"
+        },
+        {
+          "expansion_mm": 0.4,
+          "fixed_id": "27296080:27296230:c0215111245f07f7f8d7e26f7d1fd07e65762b91e86dcbf5e417ea8c7e889963",
+          "kind": "FOREIGN_COPPER",
+          "pad": "6",
+          "ref": "U2306"
+        },
+        {
+          "expansion_mm": 0.45,
+          "fixed_id": "28326105:28326245:800bc7f609a9a1f8cd719e24bf2b829c9bc6c2b878d1e37ab9a0bc9cc3f7a45e",
+          "kind": "FOREIGN_COPPER",
+          "pad": "15",
+          "ref": "U2306"
+        },
+        {
+          "expansion_mm": 0.6,
+          "fixed_id": "28299419:28299559:0d3bfaf9d81ff6e0f11c83b985e2ca3712b06815cb72fdf1b51c87626af74f4a",
+          "kind": "FOREIGN_COPPER",
+          "pad": "15",
+          "ref": "U2306"
+        },
+        {
+          "expansion_mm": 0.6,
+          "fixed_id": "28268138:28268278:3057a0497f1d91ce20c04f0d6bbcfbe0f09562a7371e0239647efb4168baf9b9",
+          "kind": "FOREIGN_COPPER",
+          "pad": "7",
+          "ref": "U2312"
+        },
+        {
+          "expansion_mm": 0.6,
+          "fixed_id": "28271111:28271251:ef0dbbbf04d22956091c7d0c23e2c3ff355d6b284ab6cd8dc9e522089f7520e9",
+          "kind": "FOREIGN_COPPER",
+          "pad": "6",
+          "ref": "U2313"
+        },
+        {
+          "expansion_mm": 0.55,
+          "fixed_id": "27241715:27241858:9cdaf0222d8ad93b2553f2552449c8dd75b97328885b6b6af4688ce2e522af24",
+          "kind": "FOREIGN_COPPER",
+          "pad": "6",
+          "ref": "U2306"
+        },
+        {
+          "expansion_mm": 0.35,
+          "fixed_id": "34274512:34274672:b806bfb183a44d62ead312bd002fffe2d61e068d9e2654c6582b8578453036d3",
+          "kind": "FOREIGN_COPPER",
+          "pad": "2",
+          "ref": "R2358"
+        },
+        {
+          "expansion_mm": 0.45,
+          "fixed_id": "28371237:28371383:1e386df922f1b0371ed9f7871687de02c4568c2fbe70e8d9bc1092b7b7e58d22",
+          "kind": "FOREIGN_COPPER",
+          "pad": "7",
+          "ref": "U2312"
+        },
+        {
+          "expansion_mm": 0.55,
+          "fixed_id": "33015204:33015362:07e8bf07e466d53958f4a1922aa57fbc6c0a2c804e10bd9d8771c830eb2ec4cd",
+          "kind": "FOREIGN_COPPER",
+          "pad": "1",
+          "ref": "C2312"
+        },
+        {
+          "expansion_mm": 0.35,
+          "fixed_id": "34274512:34274672:b806bfb183a44d62ead312bd002fffe2d61e068d9e2654c6582b8578453036d3",
+          "kind": "FOREIGN_COPPER",
+          "pad": "1",
+          "ref": "R2359"
+        },
+        {
+          "expansion_mm": 0.6,
+          "fixed_id": "28287519:28287659:a47956a8ea9bf99a8aa4f2eeca9a1a9ba70e615ba8f998745426c21ce6e72a5c",
+          "kind": "FOREIGN_COPPER",
+          "pad": "9",
+          "ref": "U2306"
+        },
+        {
+          "expansion_mm": 0.6,
+          "fixed_id": "27518294:27518435:a9b651b081383c895121034df73662a3dab6caf3f175af83972d4f61dc12778d",
+          "kind": "FOREIGN_COPPER",
+          "pad": "14",
+          "ref": "U2312"
+        },
+        {
+          "expansion_mm": 0.35,
+          "fixed_id": "31878521:31878687:bd530235c31565107adeab2e1a774d8d4e5e381946217678831f91b1f0c3ac11",
+          "kind": "FOREIGN_COPPER",
+          "pad": "1",
+          "ref": "R2346"
+        },
+        {
+          "expansion_mm": 0.6,
+          "fixed_id": "28287519:28287659:a47956a8ea9bf99a8aa4f2eeca9a1a9ba70e615ba8f998745426c21ce6e72a5c",
+          "kind": "FOREIGN_COPPER",
+          "pad": "10",
+          "ref": "U2306"
+        },
+        {
+          "expansion_mm": 0.6,
+          "fixed_id": "28271111:28271251:ef0dbbbf04d22956091c7d0c23e2c3ff355d6b284ab6cd8dc9e522089f7520e9",
+          "kind": "FOREIGN_COPPER",
+          "pad": "5",
+          "ref": "U2313"
+        },
+        {
+          "expansion_mm": 0.55,
+          "fixed_id": "27231318:27231461:1d74868edae197aa961cd43598518898ab0c9ee514977c27a5793380daa01ac1",
+          "kind": "FOREIGN_COPPER",
+          "pad": "7",
+          "ref": "U2313"
+        }
+      ]
+    },
+    {
+      "concept": "B25-FOLD-N",
+      "coverage": "COVERS_AVAILABLE_AND_EMPTY_DIFFERENCE",
+      "area_mm2": 17.97982075205633,
+      "constraints": 727,
+      "eligible_objects": 505,
+      "eligible_components": 20,
+      "contacts": 94,
+      "same_transform_contacts": 55,
+      "reconnect_contacts": 39,
+      "constraint_scope_counts": {
+        "SHARED_RAIL_RETURN": 318,
+        "RETAINED_CANDIDATE_OR_UNKNOWN": 403,
+        "FIXED_PAD_DRILL": 6
+      },
+      "copper_constraint_layer_counts": {
+        "ALL_THROUGH": 301,
+        "F.Cu": 271,
+        "B.Cu": 149
+      },
+      "leading_nets": [
+        [
+          "/W2/FOLD_BUFFER",
+          141
+        ],
+        [
+          "+5V",
+          122
+        ],
+        [
+          "/O2/TRI_SCALED",
+          110
+        ],
+        [
+          "/F2/REF5",
+          95
+        ],
+        [
+          "-12V",
+          83
+        ],
+        [
+          "AGND",
+          58
+        ],
+        [
+          "+12V",
+          55
+        ],
+        [
+          "/O2/SIN_SCALED",
+          38
+        ]
+      ],
+      "witness_record_indices": [
+        486,
+        646,
+        497,
+        647,
+        175,
+        499,
+        495,
+        49,
+        404,
+        680,
+        405,
+        659,
+        390,
+        606,
+        387,
+        364,
+        388,
+        44,
+        580,
+        302,
+        579,
+        678,
+        578,
+        3,
+        660,
+        310,
+        679,
+        594,
+        409,
+        506,
+        393
+      ],
+      "witness_count": 31,
+      "witness_nonminimal": true,
+      "witness_identities": [
+        {
+          "expansion_mm": 0.35,
+          "fixed_id": "42642809:42642973:1d84328d3e54c627c90c9689f874a9cc402748833c1c1044f1107974e5e8fd96",
+          "kind": "FOREIGN_COPPER",
+          "pad": "4",
+          "ref": "U2311"
+        },
+        {
+          "expansion_mm": 0.6,
+          "fixed_id": "28299277:28299417:640779a025a4ffbf2b21fe2e1d3616d3f66d7641d91bae1d3850eb41d637fb2c",
+          "kind": "FOREIGN_COPPER",
+          "pad": "7",
+          "ref": "U2314"
+        },
+        {
+          "expansion_mm": 0.6,
+          "fixed_id": "27526281:27526422:9d7735309043ef5bb827dcd03a1083e58b6d940e3c929201444b84b9ba15c4cc",
+          "kind": "FOREIGN_COPPER",
+          "pad": "5",
+          "ref": "U2311"
+        },
+        {
+          "expansion_mm": 0.45,
+          "fixed_id": "28313739:28313885:6e95d9c7e71764b02845a335b1a93245267ce659475c3bce77c6fec681aa5a64",
+          "kind": "FOREIGN_COPPER",
+          "pad": "7",
+          "ref": "U2314"
+        },
+        {
+          "expansion_mm": 0.35,
+          "fixed_id": "33011509:33011673:c98332c0dd0eadc36dde927260840bfd58770880c9ac3a3121e5a931d6520e40",
+          "kind": "FOREIGN_COPPER",
+          "pad": "2",
+          "ref": "R2387"
+        },
+        {
+          "expansion_mm": 0.45,
+          "fixed_id": "27592256:27592403:22a1f2b088c904578e29cbd1534cf14c8865552718bc751779c5060528c97d5f",
+          "kind": "FOREIGN_COPPER",
+          "pad": "5",
+          "ref": "U2311"
+        },
+        {
+          "expansion_mm": 0.35,
+          "fixed_id": "42642809:42642973:1d84328d3e54c627c90c9689f874a9cc402748833c1c1044f1107974e5e8fd96",
+          "kind": "FOREIGN_COPPER",
+          "pad": "5",
+          "ref": "U2311"
+        },
+        {
+          "expansion_mm": 0.35,
+          "fixed_id": "41983299:41983468:219d3ebd5f79ae37c73efff48f5ac2105c1fe9abc305c7bc5f2d2e4172174e89",
+          "kind": "FOREIGN_COPPER",
+          "pad": "2",
+          "ref": "C2314"
+        },
+        {
+          "expansion_mm": 0.45,
+          "fixed_id": "27777956:27778103:f3f2936460cf5260696d9105698d2bbae37a1c89876b9a45119230d125c2d748",
+          "kind": "FOREIGN_COPPER",
+          "pad": "2",
+          "ref": "D2306"
+        },
+        {
+          "expansion_mm": 0.55,
+          "fixed_id": "33015843:33016001:2011ff2398e87a42ca801ba5a5e9072b8dd56256875eaeca7ec69fa639f057ff",
+          "kind": "FOREIGN_COPPER",
+          "pad": "10",
+          "ref": "U2314"
+        },
+        {
+          "expansion_mm": 0.6,
+          "fixed_id": "27716828:27716969:f503a514911528763e5d096e8d2c8d4aaf2414ab6d2ac4d921f4dbd9566063a6",
+          "kind": "FOREIGN_COPPER",
+          "pad": "2",
+          "ref": "D2306"
+        },
+        {
+          "expansion_mm": 0.55,
+          "fixed_id": "31883133:31883295:8d3e6463b24e5a1162d328916ad5c57af9a3377323b41c8ac2a73c528be0c324",
+          "kind": "FOREIGN_COPPER",
+          "pad": "8",
+          "ref": "U2314"
+        },
+        {
+          "expansion_mm": 0.45,
+          "fixed_id": "27741959:27742106:be09be6bb87cd43cc76d28f187c4d1a79b305fa03ed769748feb327a960e05e5",
+          "kind": "FOREIGN_COPPER",
+          "pad": "1",
+          "ref": "D2306"
+        },
+        {
+          "expansion_mm": 0.45,
+          "fixed_id": "28376819:28376963:3fc2fd1bcf6c85685767614ed86ff147c7cc405e3e59ea737874349bdba6b946",
+          "kind": "FOREIGN_COPPER",
+          "pad": "2",
+          "ref": "C2341"
+        },
+        {
+          "expansion_mm": 0.45,
+          "fixed_id": "27778695:27778842:9643aee0313c001b09a350fb8d5260ede79acba5e5d324e8c82c796a51ed08d0",
+          "kind": "FOREIGN_COPPER",
+          "pad": "1",
+          "ref": "D2306"
+        },
+        {
+          "expansion_mm": 0.35,
+          "fixed_id": "31886778:31886948:83b2ec219a35a352dc7c9e27796119f82a6036663c8f5474285239098098ae4b",
+          "kind": "FOREIGN_COPPER",
+          "pad": "1",
+          "ref": "C2342"
+        },
+        {
+          "expansion_mm": 0.6,
+          "fixed_id": "27683027:27683168:ea7d798cb8606d4ccc98519c89f122a5679a9e25f7887fc24ad89ef494e51a6b",
+          "kind": "FOREIGN_COPPER",
+          "pad": "1",
+          "ref": "D2306"
+        },
+        {
+          "expansion_mm": 0.35,
+          "fixed_id": "33007863:33008027:34dfb09e2d3e1438c581cf19d6f8ba4a37dcc649d41a417185517c3cc6675bc5",
+          "kind": "FOREIGN_COPPER",
+          "pad": "2",
+          "ref": "C2314"
+        },
+        {
+          "expansion_mm": 0.45,
+          "fixed_id": "27797796:27797943:f4cd973230a9491cc3edd564d27d4d4fe0d74461c70db1eaff2824a241fbb3b7",
+          "kind": "FOREIGN_COPPER",
+          "pad": "2",
+          "ref": "R2341"
+        },
+        {
+          "expansion_mm": 0.35,
+          "fixed_id": "31878857:31879027:457d6a36d958bc9ccbf2b3920f3a65d5745fc55b331b6e7ca6e1141f33e03edb",
+          "kind": "FOREIGN_COPPER",
+          "pad": "2",
+          "ref": "R2388"
+        },
+        {
+          "expansion_mm": 0.6,
+          "fixed_id": "27685879:27686020:ff6d1a96b6db059e65427c261830911c962046c9dd1708bb5301fe579f073fd9",
+          "kind": "FOREIGN_COPPER",
+          "pad": "2",
+          "ref": "R2341"
+        },
+        {
+          "expansion_mm": 0.35,
+          "fixed_id": "31886778:31886948:83b2ec219a35a352dc7c9e27796119f82a6036663c8f5474285239098098ae4b",
+          "kind": "FOREIGN_COPPER",
+          "pad": "10",
+          "ref": "U2314"
+        },
+        {
+          "expansion_mm": 0.6,
+          "fixed_id": "27732960:27733101:b564e10c590f82f6e3474657186098141faeefab4c633987cd1c45812cd0dfaf",
+          "kind": "FOREIGN_COPPER",
+          "pad": "2",
+          "ref": "R2341"
+        },
+        {
+          "expansion_mm": 0.35,
+          "fixed_id": "33007035:33007197:a6a2e3e4fec21017a0e6f54d67ef35ff0165193d43a356a96f99713c7e795146",
+          "kind": "FOREIGN_COPPER",
+          "pad": "1",
+          "ref": "C2314"
+        },
+        {
+          "expansion_mm": 0.55,
+          "fixed_id": "41991329:41991490:60f68bbb86061c91f940d14a6146efe21151806cfe808b7ea2e08b4886972231",
+          "kind": "FOREIGN_COPPER",
+          "pad": "8",
+          "ref": "U2314"
+        },
+        {
+          "expansion_mm": 0.35,
+          "fixed_id": "41989612:41989783:c120ce1495ca6bffa67f4cc82986e357ef7b42c1774088df576af904fba0c671",
+          "kind": "FOREIGN_COPPER",
+          "pad": "2",
+          "ref": "R2388"
+        },
+        {
+          "expansion_mm": 0.55,
+          "fixed_id": "31884103:31884263:8c18be87bfa55c18d2b73d64da6499021d713bcaef13bb078c4810a4a65fc3a8",
+          "kind": "FOREIGN_COPPER",
+          "pad": "10",
+          "ref": "U2314"
+        },
+        {
+          "expansion_mm": 0.55,
+          "fixed_id": "34277463:34277621:f4e8f0cfeba1de8dc26cb6a221ce860bd8805f3441a75d978bed834017114d27",
+          "kind": "FOREIGN_COPPER",
+          "pad": "2",
+          "ref": "R2333"
+        },
+        {
+          "expansion_mm": 0.35,
+          "fixed_id": "42642809:42642973:1d84328d3e54c627c90c9689f874a9cc402748833c1c1044f1107974e5e8fd96",
+          "kind": "FOREIGN_COPPER",
+          "pad": "1",
+          "ref": "C2335"
+        },
+        {
+          "expansion_mm": 0.6,
+          "fixed_id": "27526281:27526422:9d7735309043ef5bb827dcd03a1083e58b6d940e3c929201444b84b9ba15c4cc",
+          "kind": "FOREIGN_COPPER",
+          "pad": "6",
+          "ref": "U2311"
+        },
+        {
+          "expansion_mm": 0.6,
+          "fixed_id": "27501763:27501902:eb7135c1ff56533a8573350157ce57f29c556034f59cb0af9f5d63acd9311015",
+          "kind": "FOREIGN_COPPER",
+          "pad": "1",
+          "ref": "D2306"
+        }
+      ]
+    }
+  ],
+  "blocking_findings": [],
+  "limits": [
+    "Recombinedsavedpolygons/classificationrecords only;no projectgeometryrerun or newpose.",
+    "Both specifiedconstructions rejectedwithinsealedstage1regions;not globalrearrangementimpossibility.",
+    "Movingcopper/internalholes/zones additionalgates cannot restorea pointalreadyexcluded bynecessaryfixedpadobstacles.",
+    "Eligiblecomponents remain conditional sourceaccounting;no adoptedcopper ornativeacceptance.",
+    "Greedywitness isnot minimal;counts canrepeatphysicalobjects."
+  ],
+  "source_sha256": "6a237b8f2ae4323d78488159278febd1b46c8a330f2b0e01d572c04a3bd24a97",
+  "input_seals_match": true
+}

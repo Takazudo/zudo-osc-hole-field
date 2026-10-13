@@ -1,0 +1,27 @@
+from pathlib import Path
+import json,hashlib,time
+root=Path.cwd();base=Path('/home/takazudo/.cache/zudo-e16-runs/20261013-finite-t2b');cache={};fail=[];start=time.monotonic()
+def sha(p):
+ p=Path(p)
+ if str(p) not in cache:
+  with p.open('rb') as f:cache[str(p)]=hashlib.file_digest(f,'sha256').hexdigest()
+ return cache[str(p)]
+def resolve(name,method=False):
+ p=Path(name)
+ return p if p.is_absolute() else (root/name if method or name.startswith('design/') else base/name)
+for p in sorted((base/'steps').glob('*.json')):
+ d=json.loads(p.read_text())
+ if d['exit_code']!=0:fail.append([str(p),'nonzero step'])
+ for group in ('inputs','methods'):
+  for name,h in d[group].items():
+   q=resolve(name,group=='methods')
+   if not q.is_file() or sha(q)!=h:fail.append([str(p),group,str(q)])
+ for name,values in d['outputs'].items():
+  for sub,h in (values or {}).items():
+   q=resolve(name);q=q/sub if sub else q
+   if not q.is_file() or sha(q)!=h:fail.append([str(p),'output',str(q)])
+ sha(p)
+result={'status':'PASS' if not fail else 'FAIL','mode':'read-only hashes; no finite rebuild/solve or pickle load','base':str(base),'steps':len(list((base/'steps').glob('*.json'))),'hashed_files':cache,'failures':fail,'elapsed_seconds':time.monotonic()-start}
+Path('/tmp/osc-wsl-20261013/finite-input-verification.json').write_text(json.dumps(result,indent=2)+'\n')
+print(json.dumps({k:v for k,v in result.items() if k!='hashed_files'}));print('unique files',len(cache))
+raise SystemExit(bool(fail))

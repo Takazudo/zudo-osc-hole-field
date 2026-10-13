@@ -1,0 +1,32 @@
+{
+  "status": "PASS_SOURCE_ONLY_CONTRACT_PUBLICATION_REVIEW",
+  "hashes": {
+    "README.md": "de88471c4741b21b3fad889aa64a384964ad7c23c9d26c5e59c543a60106954c",
+    "projection-contract.json": "077cd815cfe1aa1118d8e31dad5df509a52cc28b77b331ecbb4b31a85d3ed936",
+    "check-contract.py": "873c2e213539251e05e04582a3d8ccec42940bcc10febd7ee860a54df27cca5b",
+    "input-seals.json": "800b50e77b0d77322f043c876eb03e4306fe7581f2c621fb6e21b6a860e9c168",
+    "evidence/provenance.json": "fc6f998d4eb8518669e33d97281172cedfc48101a5c1eb9141a8f00c7550c827",
+    "evidence/independent-output-review.json": "d89d39f4b426a94bc8dd742f01aebfe0d4b9273df5f685c4a1e3f65de5a4e960",
+    "evidence/physical-fixture-review.json": "27659c113aa0df31990b3f89d874efb810aed372e68be0e5d4cb6a7464fedeed",
+    "evidence/feed-source-review.json.gz": "494e00c9e29fdc30b811fdd9d1858b9dcd767ec5348cb13f5f5afb2d4cc4f37d"
+  },
+  "checks": [
+    "check-contract.py PASS; 13 unsafe mutations rejected; source bindings for 5675 objects verified",
+    "Exact40 seed inventory and unresolved future A/B dispositions",
+    "Exact8 branch IDs/net/classification/zone gates and exact5 zone identities/canonical preservation",
+    "Exact7 false authority fields and exact4 zero rail track/via count entries",
+    "README original K, actual diagnostic two-A and conservative F3 obstruction model distinguished",
+    "Reviewed saved physical-fixture and feed-source review consistency; no duplicate geometry or archive extraction"
+  ],
+  "resolved_findings": [
+    "Duplicate branch formerly accepted now rejected",
+    "Zone alias/canonical removal formerly accepted now rejected",
+    "Missing authority and rail-count dictionaries formerly accepted now rejected"
+  ],
+  "conclusion": "Accounting correction is supported; physical rail projection remains blocked. Mixed +5V component and unresolved plane interfaces confer no omission/copy/cut authority. Existing40 absent from fixture does not establish validated power/return topology; proposed physical feeds remain unimplemented. No original BP/AGND closure, U2312 repair or global infeasibility claim follows.",
+  "limits": [
+    "No source geometry, native or census repeated",
+    "Final ledger not present at review time; parent should bind final packet hashes and check receipts before publication"
+  ],
+  "blockers": []
+}

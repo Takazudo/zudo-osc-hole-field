@@ -1,0 +1,118 @@
+{
+  "schema": "e16-construction-contract-v1",
+  "status": "SUPPORTED_SOURCE_CONTRACT_FOR_E16_ACCESS; STAGED_MODEL_CAPABILITY_GAP_RECORDED; NO_PROCESS_QUALIFICATION",
+  "reviewed": "2026-10-12, public manufacturer documents only; no supplier contact, quote, account or upload",
+  "staged_model_under_review": {
+    "method": "staged_caps.py BANDS and board_context.stack()",
+    "foil_mm": 0.07,
+    "dielectric_mm": [0.05, 0.05, 0.98, 0.05, 0.05],
+    "barrel_wall_mm": 0.025,
+    "cap": "continuous 0.07 mm copper in each endpoint foil band, filled/planarized bore, no fill conductivity",
+    "test_fixture_microvia_mm": {"drill": 0.075, "capture": 0.15, "registration_margin": 0.0125},
+    "note": "Exact V15 staged via drill/capture sizes were in the unrecovered normalized source; the committed test fixture is the only retained example."
+  },
+  "sources": {
+    "jlcpcb_capabilities": "https://jlcpcb.com/capabilities/pcb-capabilities",
+    "jlcpcb_hdi_faq": "https://jlcpcb.com/help/article/hdi-pcb-capabilities-faq",
+    "jlcpcb_stackups": "https://jlcpcb.com/impedance",
+    "jlcpcb_via_in_pad": "https://jlcpcb.com/blog/Free-Via-in-Pad-on-6-20-Layer-PCBs-with-POFV",
+    "pcbway_hdi": "https://www.pcbway.com/hdi-pcb.html",
+    "pcbway_advanced": "https://www.pcbway.com/advanced-pcb-capabilities.html",
+    "wurth_hdi_poster": "https://www.we-online.com/files/pdf1/design-rules-poster-hdi-microvia-cbt-en.pdf",
+    "wurth_hdi_guide": "https://www.we-online.com/files/pdf1/design-guide-hdi-cbt-en.pdf",
+    "ncab_microvias": "https://www.ncabgroup.com/microvias/",
+    "eurocircuits_via_filling": "https://www.eurocircuits.com/technical-guidelines/pcb-design-guidelines/via-filling/"
+  },
+  "findings": [
+    {"assumption": "0.05 mm dielectric under 0.07 mm foils", "verdict": "UNSUPPORTED",
+     "evidence": "PCBWay: minimum PP thickness for laser blind vias 0.06 mm; JLCPCB thinnest published 6-layer prepreg 0.0764 mm (1080) and no 2 oz inner stackup; Wurth 55-70 um; NCAB 60-80 um, below 50 um classed Ultra HDI."},
+    {"assumption": "0.07 mm inner foils on microvia layers", "verdict": "UNSUPPORTED_BY_WURTH_NOT_PUBLISHED_ELSEWHERE",
+     "evidence": "Wurth inner rules up to 35 um Cu, microvia layers max 18 um; PCBWay HDI copper 18-70 um without inner/outer split; JLCPCB publishes only 1 oz inner 6-layer stackups."},
+    {"assumption": "0.075 mm microvia with 0.15 mm capture", "verdict": "UNSUPPORTED",
+     "evidence": "JLCPCB blind/buried annular ring >= 0.075 mm (0.225 mm pad for 0.075 drill); NCAB smallest capture 250 um; Wurth 275-300 um; board's own min_microvia_drill is 0.1 mm."},
+    {"assumption": "registration margin 12.5 um", "verdict": "NOT_PUBLISHED_AND_GEOMETRY_UNSUPPORTED",
+     "evidence": "No manufacturer publishes layer-to-layer registration; implied 37.5 um ring is below JLCPCB 75 um and PCBWay 3 mil."},
+    {"assumption": "0.025 mm barrel wall", "verdict": "NOT_PUBLISHED_AS_MINIMUM",
+     "evidence": "JLCPCB average hole plating 18 um; PCBWay 18-25 um, no minimum stated."},
+    {"assumption": "filled and capped vias", "verdict": "SUPPORTED_AS_PROCESS_CAP_THICKNESS_NOT_PUBLISHED",
+     "evidence": "JLCPCB POFV via-in-pad on 6-20 layer boards for 0.2-0.5 mm vias, plating up to 25 um; blind vias copper-filled; buried vias resin plugged and capped."}
+  ],
+  "engineering_consequence": "The staged microvia/buried-stage construction cannot be treated as a manufacturable contract: its 0.05 mm dielectric and 2 oz microvia layers contradict every published laser-via limit. E16 therefore does not use staged vias. Retaining that model would require a different stack (>=0.076 mm prepreg, thinner microvia-layer copper, >=0.1/0.25 mm microvia) that changes the authored 2 oz six-layer stack and every finite sheet-resistance budget, which is an architecture decision for #253/#247, not a source edit.",
+  "e16_contract": {
+    "stack": "design/boards/osc-core.json six layers, 2 oz each, 1.60 mm; no microvia or buried via used",
+    "access_via": {"type": "through", "drill_mm": 0.3, "diameter_mm": 0.6, "annular_mm": 0.15,
+                   "rule_basis": "osc-core.kicad_pro min_via_diameter 0.5, min_via_annular_width 0.1, min_through_hole_diameter 0.3",
+                   "fab_basis": "0.3/0.6 through vias lie inside every published limit above",
+                   "via_in_pad": "filled and capped (JLCPCB POFV range 0.2-0.5 mm) only when the via centre lies inside its own pad"},
+    "terminal_vias": {"drill_mm": 0.3, "diameter_mm": 0.7, "count_per_board": 150, "process": "filled and capped through via; POFV range"},
+    "trace_width_mm": [0.25, 0.2],
+    "clearance_mm": 0.25, "hole_clearance_mm": 0.25, "sheet_min_width_mm": 0.25,
+    "plating_for_finite_resistance": "Use the published 18 um average hole plating, not 25 um, in any finite barrel resistance bound until a supplier capability is obtained by the owner.",
+    "process_qualified": false,
+    "registration_qualified": false
+  },
+  "open_gaps": [
+    "Hole-plating minimum and cap thickness are not published; owner-side supplier confirmation is required before physical acceptance (no supplier contact was made).",
+    "2 oz inner copper with the dense through-via access field is a standard-process build, but its resin fill/etch-back behaviour at 0.25 mm spacing is not qualified."
+  ],
+  "native_calls": 0,
+  "corrections_2026_10_13": {
+    "scope": "Re-read of manufacturer-primary pages on 2026-10-12/13; no supplier contact, quote, account or upload. Original findings above are retained as written; the entries below supersede the listed statements.",
+    "sources_read": [
+      "https://jlcpcb.com/capabilities/pcb-capabilities",
+      "https://jlcpcb.com/impedance",
+      "https://jlcpcb.com/help/article/hdi-pcb-capabilities-faq"
+    ],
+    "superseded": [
+      {
+        "statement": "findings[0].evidence / findings[1].evidence: \"JLCPCB ... no 2 oz inner stackup\" and \"JLCPCB publishes only 1 oz inner 6-layer stackups\"",
+        "correction": "The JLCPCB capabilities page lists inner copper 0.5 oz / 1 oz / 2 oz without a layer-count qualifier (finished inner copper is 0.5 oz by default), and the impedance page 6-layer header lists inner 0.5/1/2 oz. What is absent is a published 6-layer stackup ROW with 2 oz inner copper: every listed row shows 0.0152 mm inner foil. So 2 oz inner copper is advertised; a specific 2 oz 6-layer stackup with its dielectric thicknesses is not published."
+      },
+      {
+        "statement": "e16_contract.plating_for_finite_resistance: \"Use the published 18 um average hole plating ... in any finite barrel resistance bound\"",
+        "correction": "18 um is an AVERAGE (\"Average Hole Plating Thickness\"), not a guaranteed minimum, so it cannot bound a barrel resistance from above. E16 finite models treat plating as a parameter (evidence/e16/process-cases.json: 18 um nominal-average, 10 um sensitivity, 25 um legacy conditional requirement) and leave physical acceptance unresolved until a guaranteed minimum exists."
+      }
+    ],
+    "additional_open_capability_questions": [
+      "The capabilities page states an annular ring of \"0.254 mm or above\" for 2 oz copper (2-layer and multilayer). E16 access vias are 0.3/0.6 mm (0.15 mm ring) and terminal vias 0.3/0.7 mm (0.20 mm ring) on an all-2 oz stack. The page does not say whether this figure applies to vias or only to component PTHs; until resolved, the 0.6 mm access via is NOT shown compatible with a 2 oz build.",
+      "Via filling: for epoxy or copper-paste filled-and-capped vias (the default for 6+ layer boards) the page states \"Compatible with via diameters from 0.15 to 0.55 mm\"; the \"Filled vias must be no wider than 0.5 mm diameter\" limit belongs to soldermask-plugged vias. Whether 0.15-0.55 mm refers to the finished hole (0.3 mm: inside) or the via pad (0.6/0.7 mm: outside) is not stated, so the via-in-pad and terminal-field capping remain unqualified.",
+      "Cap plating thickness and a minimum hole-wall thickness are not published by any page read."
+    ],
+    "barrel_wall_in_graph": {
+      "value_mm": 0.025,
+      "file": "connectivity.py",
+      "meaning": "Geometric test band only: the plated body must cover the annulus [r, r+0.025] and no other bore may cut it. It is not a plating claim and supplies no resistance.",
+      "monotonicity": "A thinner real wall (e.g. the 18 um average) shrinks the band, so coverage is easier and fewer foreign bores can cut it. No connection credited at 0.025 mm can be lost at a thinner wall, and the retained runs had no wall cuts (connectivity.py raises on any). The graph and census therefore do not change, and E16 r1-t2 keep this one configuration."
+    },
+    "stack_unchanged": "Through vias only; the authored six-layer 2 oz stack and sheet budgets are unchanged; staged micro/buried vias are not restored."
+  },
+  "corrections_2026_10_13_process_refresh": {
+    "scope": "Fresh read of manufacturer-primary pages on 2026-10-13 (evidence/e16/process-evidence-20261013.json, quotes and section labels retained there). No supplier contact, quote, account or upload. Earlier text, including corrections_2026_10_13, is retained as written; the entries below supersede the listed statements.",
+    "superseded": [
+      {
+        "statement": "corrections_2026_10_13: the 'no wider than 0.5 mm' filled-via limit 'belongs to soldermask-plugged vias'",
+        "correction": "The via-covering guide states 'Plugged and epoxy-filled vias holes should not be larger than 0.5 mm' (process-evidence G1): an advisory HOLE limit that also covers epoxy-filled vias. E16's 0.3 mm hole is inside it; the 0.6 mm land is not the hole."
+      },
+      {
+        "statement": "open question: filled-via size limits refer to the hole or the pad",
+        "correction": "Resolved for the guide (hole). The capability row 'Compatible with via diameters from 0.15 to 0.55 mm' leaves its quantity undefined; its 0.15 mm lower bound equals the minimum via hole, so a hole range is the likely reading (inference, not stated). E16 fails it only under a pad reading (0.6 > 0.55)."
+      },
+      {
+        "statement": "no published cap or surface copper value",
+        "correction": "The guide's epoxy/copper filled-and-capped column states 'Hole surface copper thickness >= 5um' (G3). The page does not say whether this is the cap over the filled hole or the barrel wall, so it is retained as a cap/surface condition only; it is not a barrel-wall minimum and not a cap thickness for resistance."
+      },
+      {
+        "statement": "e16_contract: filled and capped only for via-in-pad",
+        "correction": "Open: the capabilities page makes filled-and-capped the default for 6+ layer boards (C2) and the guide's ordering row says all through-hole solder pads are filled (G6). Whether every E16 via is filled on a default order is unresolved; no supplier contact is authorized."
+      }
+    ],
+    "unchanged_open": [
+      "Applicability of the 2 oz PTH annular ring >= 0.254 mm (a row labelled PTH annular ring) to 0.15 mm-ring vias",
+      "Guaranteed minimum barrel plating (only an 18 um average is published)",
+      "A published 2 oz six-layer stackup with dielectric thicknesses",
+      "Drill versus finished-hole mapping for 0.3 mm (only a finished-hole tolerance is published)",
+      "Qualification of this exact stack"
+    ],
+    "consequence": "No E16 geometry changes. The finite model keeps plating, foil and stack depth as declared parameter/conditional cases (evidence/e16/process-cases.json, evidence/e16/coupled-network-config.json); process-cases.json is left byte-identical because the historical finite-network receipts bind its hash, and its 'limits' text describes that historical single-board model."
+  }
+}
