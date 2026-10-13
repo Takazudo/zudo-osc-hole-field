@@ -1,0 +1,117 @@
+{
+ "inputs": {
+  "/home/takazudo/.cache/zudo-e16-runs/20261013-finite-t2b/KB/operator-AGND.pkl.gz": "44938e16a0e6f2b2a2ff32c7fd665d15d5eb5fc195b1cc6e3f01b5f7979fac9a",
+  "/home/takazudo/.cache/zudo-e16-runs/20261013-finite-t2b/KB/coverage-AGND.json.gz": "1de67df34de319e266195968005b96672ee1d34014e74fbc3f49e0a5703ec211",
+  "design/partition/core-split/candidates/planning/joined-feed-construction-v2/evidence/e16/continuation-20261013b/coupled-network-config.json": "f5146d0c1d77e0626a455df308f52bf953ace9806861c25438adcdf90914c107",
+  "design/partition/core-split/candidates/planning/joined-feed-construction-v2/evidence/e16/process-cases.json": "ea253eee2e1b0dbb85d83a3d885cfe4f0cc6fd534b144bb25e9bf419016d4051"
+ },
+ "methods": {
+  "design/partition/core-split/candidates/planning/joined-feed-construction-v2/finite_solve.py": "20b1b9e1e7ba8653d3268c4956dc5415b91670e23f07e35ab381d2091f84b044",
+  "design/partition/core-split/candidates/planning/joined-feed-construction-v2/finite_adapter.py": "f313a87719aba83b169a363c05d36daa5c79cd28ad41620e5d45c5d8eca613f4",
+  "design/partition/core-split/candidates/planning/joined-feed-construction-v2/finite_units.py": "295bb239a0949522dca47e33389ddcd0ec9bc058c3a53db9bdc81789e461a8f5",
+  "design/partition/core-split/candidates/planning/joined-feed-construction-v2/load_ledger.py": "5cbaf6f059b6f1833fd40991e4974db5ff3997748e6bf3ed62141f0245913c64",
+  "design/partition/core-split/candidates/planning/joined-feed-construction-v2/numerical_acceptance.py": "e8c1f0b55784bed3a6d8a1b86854a7cc9cdb0e7685e07efa9feb263e3efecc73"
+ },
+ "command": [
+  "finite_solve.py",
+  "dpoint",
+  "--operator",
+  "/home/takazudo/.cache/zudo-e16-runs/20261013-finite-t2b/KB/operator-AGND.pkl.gz",
+  "--coverage",
+  "/home/takazudo/.cache/zudo-e16-runs/20261013-finite-t2b/KB/coverage-AGND.json.gz",
+  "--config",
+  "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-campaign/design/partition/core-split/candidates/planning/joined-feed-construction-v2/evidence/e16/continuation-20261013b/coupled-network-config.json",
+  "--cases",
+  "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-campaign/design/partition/core-split/candidates/planning/joined-feed-construction-v2/evidence/e16/process-cases.json",
+  "--case",
+  "legacy-conditional-requirement",
+  "--depth",
+  "uniform-dielectric",
+  "--board",
+  "KB",
+  "--net=AGND",
+  "--start",
+  "0",
+  "--stop",
+  "96",
+  "--output",
+  "/home/takazudo/.cache/zudo-e16-runs/coupled-approved-852ffac-8262c033/KB-dp-AGND-legacy-conditional-requirement-uniform-dielectric-000.pkl.gz"
+ ],
+ "resource_guard": {
+  "guard": "/home/takazudo/.codex/scripts/heavy-guard.sh",
+  "sha256": "074a463dd6b3a65b7e2168df95b200c0192c414862375bcfb95f979c34c67ee7",
+  "helper_sha256": "513efaf0b4f4a5bb1f94c15190822a2a79d84df399f83e69d7ed0297444ea571",
+  "directory": "/home/takazudo/.agent-guard/heavy",
+  "defaults": {
+   "slots": 1,
+   "wait_seconds": 0,
+   "max_run_seconds": 1800,
+   "min_mem_mb": 2048,
+   "low_mem_mb": 512
+  },
+  "queue_outside_unit_timeout": true
+ },
+ "step": "KB-dpoint-AGND-legacy-conditional-requirement-uniform-dielectric-000",
+ "exit_code": 0,
+ "elapsed_seconds": 93.564,
+ "stdout_tail": "{\"board\": \"KB\", \"net\": \"AGND\", \"pads\": 96, \"solve_residual_relative\": 1.8411434587575037e-13, \"elapsed_seconds\": 93.14, \"peak_KiB\": 1588308, \"numerical_status\": \"PASS REPORTED NUMERICAL CHECKS ONLY\"}\n",
+ "stderr_tail": "heavy-guard: verdict=PASS exit=0 secs=98 min_mem_mb=8538 reason=-\n",
+ "peak_rss_KiB": 1588308,
+ "outputs": {
+  "KB-dp-AGND-legacy-conditional-requirement-uniform-dielectric-000.pkl.gz": {
+   "": "7075fccae808c3d52321e7b04075ce282f0cd5a8de21977fe75e8c177f82e393"
+  },
+  "KB-dp-AGND-legacy-conditional-requirement-uniform-dielectric-000.pkl.gz.numerical.json": {
+   "": "98aa282bfdac8ac6daec83d65ce7ec50ef8e09606fadce49cc6a23ef5a4fef4d"
+  }
+ },
+ "native_calls": 0,
+ "launch_command": [
+  "bash",
+  "/home/takazudo/.codex/scripts/heavy-guard.sh",
+  "--",
+  "/home/takazudo/.cache/zudo-e16-numerical-venv/bin/python",
+  "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-campaign/design/partition/core-split/candidates/planning/joined-feed-construction-v2/numerical_unit_guard.py",
+  "--inside",
+  "074a463dd6b3a65b7e2168df95b200c0192c414862375bcfb95f979c34c67ee7",
+  "--",
+  "timeout",
+  "180s",
+  "/home/takazudo/.cache/zudo-e16-numerical-venv/bin/python",
+  "finite_solve.py",
+  "dpoint",
+  "--operator",
+  "/home/takazudo/.cache/zudo-e16-runs/20261013-finite-t2b/KB/operator-AGND.pkl.gz",
+  "--coverage",
+  "/home/takazudo/.cache/zudo-e16-runs/20261013-finite-t2b/KB/coverage-AGND.json.gz",
+  "--config",
+  "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-campaign/design/partition/core-split/candidates/planning/joined-feed-construction-v2/evidence/e16/continuation-20261013b/coupled-network-config.json",
+  "--cases",
+  "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-campaign/design/partition/core-split/candidates/planning/joined-feed-construction-v2/evidence/e16/process-cases.json",
+  "--case",
+  "legacy-conditional-requirement",
+  "--depth",
+  "uniform-dielectric",
+  "--board",
+  "KB",
+  "--net=AGND",
+  "--start",
+  "0",
+  "--stop",
+  "96",
+  "--output",
+  "/home/takazudo/.cache/zudo-e16-runs/coupled-approved-852ffac-8262c033/KB-dp-AGND-legacy-conditional-requirement-uniform-dielectric-000.pkl.gz"
+ ],
+ "resource_guard_result": {
+  "passed": true,
+  "verdict": "PASS",
+  "exit": 0,
+  "seconds": 98,
+  "min_mem_mb": "8538",
+  "reason": "-"
+ },
+ "stream_files": {
+  "steps/KB-dpoint-AGND-legacy-conditional-requirement-uniform-dielectric-000.stdout.txt": "1ee4462148a1acbd7b9aa8b7dfb77ca1fc92603a38071c445cebea1ee55d1066",
+  "steps/KB-dpoint-AGND-legacy-conditional-requirement-uniform-dielectric-000.stderr.txt": "42f19fd65f8e1ac2832d8dc7f40bbfe2aeed62a8576cdc20bcbbbd74ac03f4b1"
+ }
+}

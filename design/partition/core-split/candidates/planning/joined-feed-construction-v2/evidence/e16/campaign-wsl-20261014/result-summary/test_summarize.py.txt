@@ -1,0 +1,119 @@
+"""Tiny file/receipt fixtures only; no solver or production numerical execution."""
+import hashlib
+import importlib.util
+import json
+from pathlib import Path
+import tempfile
+import unittest
+
+spec=importlib.util.spec_from_file_location('summary_fixture',Path(__file__).with_name('summarize.py'))
+module=importlib.util.module_from_spec(spec);spec.loader.exec_module(module)
+
+class SummaryTests(unittest.TestCase):
+ def setUp(self):
+  self.tmp=tempfile.TemporaryDirectory();self.addCleanup(self.tmp.cleanup);self.base=Path(self.tmp.name)
+  self.root=self.base/'root';self.here=self.root/'source';self.packet=self.base/'packet';self.run=self.base/'run'
+  self.packet.mkdir();(self.run/'steps').mkdir(parents=True)
+  self.config=self.here/'evidence/e16/test/config.json';self.ledger=self.here/'evidence/e16/test/ledger.json'
+  self.write(self.ledger,{'records':[]})
+  self.write(self.config,{'scenario':{'id':'subset','ledger':'evidence/e16/test/ledger.json'},'source_support':{'mode':'conditional'},'numerical_tolerances':{'kcl_relative':1e-9},'wires':{'bulk_ohm':.001105},'budgets':{'rail_copper_ohm':.001,'agnd_copper_ohm':.0005},'return_states':{'single':[[4],[5],[6]],'double':[[4,5],[4,6],[5,6]]}})
+  self.methods={str(self.here/'finite_solve.py'):'a'*64,str(self.here/'numerical_acceptance.py'):'b'*64}
+  self.request={'source_sha':'c'*40,'run_id':'fixture','attempt':1,'checkout':str(self.root),'output':str(self.run),'scope':'synthetic',
+   'command':['driver','--config',str(self.config),'--net=+12V','--case','c','--depth','d'],
+   'guards':{'maximum_units':148,'unit_memory_max_bytes':2147483648},
+   'input_sha256':{str(self.config):module.sha(self.config),str(self.ledger):module.sha(self.ledger),**self.methods}}
+  self.request_path=self.packet/'request.json';self.write(self.request_path,self.request)
+  self.service_path=self.run/'service.json'
+  self.write(self.service_path,{'scenario_id':'subset','device_service':{'summary':{'supported':1},'eligible_pad_ids':['p'],'included_board_net_sum_A':{'KA':{'+12V':.001}},'included_global_residual_A':0.,'devices':[{'board':'KA','service_status':'supported'}]}})
+  self.step('service','service',self.service_path)
+ def write(self,path,value):
+  path.parent.mkdir(parents=True,exist_ok=True);path.write_text(json.dumps(value)+'\n')
+ def step(self,name,phase,path,extra=None,exit_code=0):
+  outputs={str(path):{'':module.sha(path)}}
+  if extra:outputs[str(extra)]={'':module.sha(extra)}
+  self.write(self.run/'steps'/f'{name}.json',{'step':name,'inputs':{str(self.config):module.sha(self.config)},'command':['finite_solve.py',phase,'--config',str(self.config),'--output',str(path)],'exit_code':exit_code,'methods':self.methods,'outputs':outputs,'resource_guard_result':{'passed':exit_code==0},'peak_rss_KiB':100})
+ def predecessor(self,board,phase):
+  path=self.run/(board+'-'+phase+'.bin');path.write_bytes((board+phase).encode())
+  verdict=Path(str(path)+'.numerical.json');self.write(verdict,{'phase':phase,'status':'PASS REPORTED NUMERICAL CHECKS ONLY','checks':[{'name':'residual','value':1e-12,'limit':1e-9,'passed':True}],'failures':[],'output_sha256':module.sha(path),'config_sha256':module.sha(self.config),'solver_sha256':'a'*64,'assessment_sha256':'b'*64})
+  self.step(board+phase,phase,path,verdict)
+  receipt=self.run/'steps'/(board+phase+'.json');step=json.loads(receipt.read_text());step['command'] += ['--board',board,'--net=+12V','--case','c','--depth','d'];step['stdout_tail']=json.dumps({'pads':1})
+  if phase=='dpoint':step['command']+=['--start','0','--stop','96']
+  self.write(receipt,step);return path
+ def coupled(self,failed=False):
+  predecessors={(board,phase):self.predecessor(board,phase) for board in ('KA','KB') for phase in ('reduce','dpoint')}
+  result=self.run/'coupled.json';board={'load_injection_A':-.001,'source_injection_A':.001,'terminal_injection_A':[0.],'energy_W':{'barrels':1e-6},'pad_potential_V':{'p':-.00001}}
+  self.write(result,{'bindings':{'config':module.sha(self.config),'service':module.sha(self.service_path),'method':'a'*64,**{board.lower()+'_reduction':module.sha(predecessors[(board,'reduce')]) for board in ('KA','KB')},'ka_operator':module.sha(self.config),'kb_operator':module.sha(self.config)},'net':'+12V','case':'c','depth':'d','loaded_pads':['p'],'not_solved':{},'unserved_loads':{'KA':[]},'reduction_checks':{},'wire_length_sensitivity_all_present':{'bulk_ohm':.00143},'states':{'all-present':{'checks':{'max_free_node_kcl_relative':1e-12},'wire_current_A':{'W1':0.},'removed_wires':[],'energy_W':{'total':1e-6},'boards':{'KA':board},'driving_point':{'KA':{'pads':['p'],'R_copper_ohm':[.002],'R_driving_point_ohm':[.002]}}}}})
+  verdict=Path(str(result)+'.numerical.json');self.write(verdict,{'phase':'couple','status':'FAIL' if failed else 'PASS REPORTED NUMERICAL CHECKS ONLY','checks':[{'name':'all-present.max_free_node_kcl_relative','value':2e-9 if failed else 1e-12,'limit':1e-9,'passed':not failed}],'failures':['fixture'] if failed else [],'output_sha256':module.sha(result),'config_sha256':module.sha(self.config),'solver_sha256':'a'*64,'assessment_sha256':'b'*64})
+  self.step('couple','couple',result,verdict,exit_code=int(failed))
+  receipt=self.run/'steps/couple.json';step=json.loads(receipt.read_text());step['command']+=['--net=+12V','--case','c','--depth','d','--ka-op',str(self.config),'--kb-op',str(self.config)]
+  for (board,phase),path in predecessors.items():
+   step['command']+=['--'+board.lower()+('-red' if phase=='reduce' else '-dp'),str(path)];step['inputs'][str(path)]=module.sha(path)
+  self.write(receipt,step);return result,verdict
+ def summarize(self):return module.summarize(self.request_path,module.sha(self.request_path))
+ def test_missing_result_remains_incomplete(self):
+  report=self.summarize();self.assertEqual(report['summary']['verified_coupled_combinations'],0);self.assertFalse(report['summary']['numerical_full_baseline_complete']);self.assertEqual(report['matrix_coverage'][0]['missing_states'],['all-present'])
+ def test_completed_combination_without_terminal_is_not_full_pass(self):
+  self.coupled();r=self.summarize();self.assertEqual(r['summary']['verified_finite_states'],1);self.assertFalse(r['summary']['numerical_full_baseline_complete']);self.assertEqual(r['integrity_errors'],[]);self.assertFalse(r['electrical_acceptance'])
+ def test_bound_config_and_sensitivity_fields_are_retained(self):
+  self.coupled();r=self.summarize();self.assertEqual(r['budgets']['agnd_copper_ohm'],.0005);self.assertEqual(r['numerical_tolerances']['kcl_relative'],1e-9);self.assertEqual(r['coupled'][0]['wire_length_sensitivity_all_present']['bulk_ohm'],.00143);self.assertEqual(r['coupled'][0]['unserved_loads'],{'KA':[]});self.assertEqual(r['config_sha256'],module.sha(self.config))
+ def test_tampered_result_is_not_interpreted(self):
+  result,_=self.coupled();result.write_text(result.read_text()+' ');r=self.summarize();self.assertTrue(r['integrity_errors']);self.assertEqual(r['coupled'],[])
+ def test_failed_numerical_result_is_preserved_without_electrical_interpretation(self):
+  self.coupled(failed=True);r=self.summarize();self.assertEqual(len(r['failed_numerical_checks']),1);self.assertEqual(r['coupled'],[])
+ def test_unreceipted_result_is_ignored(self):
+  self.coupled();(self.run/'steps/couple.json').unlink();r=self.summarize();self.assertEqual(r['coupled'],[])
+ def test_opaque_bytes_are_verified_without_decoding(self):
+  result=self.run/'opaque.pkl.gz';result.write_bytes(b'not a gzip or pickle; opaque hash only')
+  verdict=Path(str(result)+'.numerical.json');self.write(verdict,{'phase':'dpoint','status':'PASS REPORTED NUMERICAL CHECKS ONLY','checks':[{'name':'solve_residual_relative','value':1e-12,'limit':1e-9,'passed':True}],'failures':[],'output_sha256':module.sha(result),'config_sha256':module.sha(self.config),'solver_sha256':'a'*64,'assessment_sha256':'b'*64});self.step('dpoint','dpoint',result,verdict)
+  r=self.summarize();self.assertEqual(r['summary']['numerical_passed_units'],1);self.assertTrue(r['steps'][0]['output_hashes_verified'])
+  result.write_bytes(b'tampered');r=self.summarize();self.assertTrue(r['integrity_errors']);self.assertEqual(r['summary']['numerical_passed_units'],0)
+ def terminal(self):
+  for name in ('execution.stdout.log','scope-observations.jsonl'):(self.packet/name).write_text('')
+  self.write(self.packet/'execution-result.json',{'request_sha256':module.sha(self.request_path),'source_sha':self.request['source_sha'],'exit_code':0,'command':self.request['command'],'postrun_integrity':{k:True for k in ('request_unchanged','approval_unchanged','head_unchanged','checkout_clean')},'changed_inputs':[],'log_sha256':module.sha(self.packet/'execution.stdout.log'),'scope_observations_sha256':module.sha(self.packet/'scope-observations.jsonl')})
+ def test_exact_small_grid_can_complete_but_duplicate_board_cannot(self):
+  self.coupled();self.terminal();self.assertTrue(self.summarize()['summary']['numerical_full_baseline_complete'])
+  for phase in ('reduce','dpoint'):
+   path=self.run/'steps'/('KB'+phase+'.json');step=json.loads(path.read_text());i=step['command'].index('--board');step['command'][i+1]='KA';self.write(path,step)
+  r=self.summarize();self.assertFalse(r['summary']['numerical_full_baseline_complete']);self.assertTrue(any(x['error']=='duplicate unit identity' for x in r['integrity_errors']));self.assertTrue(r['unit_identity_coverage']['missing_identities'])
+ def test_incomplete_terminal_integrity_object_rejected(self):
+  self.coupled();self.terminal();path=self.packet/'execution-result.json';t=json.loads(path.read_text());t['postrun_integrity']={'head_unchanged':True};self.write(path,t);r=self.summarize();self.assertFalse(r['summary']['numerical_full_baseline_complete']);self.assertTrue(any('mandatory postrun' in e['error'] for e in r['integrity_errors']))
+ def test_unbound_step_input_rejected(self):
+  self.coupled();path=self.run/'steps/couple.json';step=json.loads(path.read_text());step['inputs']['unbound-input.json']='0'*64;self.write(path,step)
+  r=self.summarize();self.assertTrue(any('input not bound' in x['error'] for x in r['integrity_errors']));self.assertEqual(r['summary']['verified_coupled_combinations'],0)
+ def test_coupled_predecessor_digest_rejected_even_when_output_rehashed(self):
+  result,verdict=self.coupled();data=json.loads(result.read_text());data['bindings']['ka_reduction']='0'*64;self.write(result,data)
+  v=json.loads(verdict.read_text());v['output_sha256']=module.sha(result);self.write(verdict,v)
+  path=self.run/'steps/couple.json';step=json.loads(path.read_text());step['outputs'][str(result)]={'':module.sha(result)};step['outputs'][str(verdict)]={'':module.sha(verdict)};self.write(path,step)
+  r=self.summarize();self.assertEqual(r['summary']['verified_coupled_combinations'],0);self.assertTrue(any('predecessor/method/scope' in x['error'] for x in r['integrity_errors']))
+ def test_missing_driving_point_command_predecessor_rejected(self):
+  self.coupled();path=self.run/'steps/couple.json';step=json.loads(path.read_text());i=step['command'].index('--ka-dp');del step['command'][i:i+2];self.write(path,step)
+  r=self.summarize();self.assertTrue(any('driving-point identity coverage' in x['error'] for x in r['integrity_errors']))
+ def test_duplicate_driving_point_range_cannot_replace_tail(self):
+  self.coupled();path=self.run/'steps/KAdpoint.json';step=json.loads(path.read_text());step['command'][step['command'].index('--start')+1]='96';step['command'][step['command'].index('--stop')+1]='192';self.write(path,step)
+  r=self.summarize();self.assertTrue(any(x['error']=='unexpected unit identity' for x in r['integrity_errors']));self.assertFalse(r['unit_identity_coverage']['complete'])
+ def test_request_mismatch_is_refused(self):
+  with self.assertRaisesRegex(ValueError,'request digest'):module.summarize(self.request_path,'0'*64)
+
+class PhaseCountTests(unittest.TestCase):
+ def assess(self, counts, maximum=148):
+  return module.phase_count_assessment(counts,24,111,12,maximum)
+ def test_exact_full_baseline_counts_match(self):
+  result=self.assess({'service':1,'reduce':24,'dpoint':111,'couple':12})
+  self.assertTrue(result['complete'])
+  self.assertEqual(result['diagnostics'][-1]['observed'],148)
+ def test_extra_coupled_receipt_refused_even_with_room_under_ceiling(self):
+  result=self.assess({'service':1,'reduce':24,'dpoint':111,'couple':13},maximum=200)
+  self.assertFalse(result['complete'])
+  coupled=next(d for d in result['diagnostics'] if d['phase']=='couple')
+  self.assertEqual(coupled['status'],'EXCEEDED')
+  self.assertEqual(coupled['expected'],12)
+ def test_over_budget_run_refused_even_when_phase_counts_match(self):
+  result=self.assess({'service':1,'reduce':24,'dpoint':111,'couple':12},maximum=147)
+  self.assertFalse(result['complete'])
+  self.assertEqual(result['diagnostics'][-1]['status'],'EXCEEDED')
+ def test_unexpected_phase_refused(self):
+  result=self.assess({'service':1,'reduce':24,'dpoint':111,'couple':12,'extra':1},maximum=200)
+  self.assertFalse(result['complete'])
+  self.assertIn({'phase':'extra','observed':1,'status':'UNEXPECTED_PHASE'},result['diagnostics'])
+
+if __name__=='__main__':unittest.main()

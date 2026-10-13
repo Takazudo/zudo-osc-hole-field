@@ -1,0 +1,117 @@
+{
+ "inputs": {
+  "/home/takazudo/.cache/zudo-e16-runs/20261013-finite-t2b/KB/operator--12V.pkl.gz": "da96b802b937c5305f604aea9fa89a92edbc1f2387c7954a246f7b90f29ab1b1",
+  "/home/takazudo/.cache/zudo-e16-runs/20261013-finite-t2b/KB/coverage--12V.json.gz": "5b35af8ab517b49417cff17aeebe85227724436f9a8f58860b5955003105b2ff",
+  "design/partition/core-split/candidates/planning/joined-feed-construction-v2/evidence/e16/continuation-20261013b/coupled-network-config.json": "f5146d0c1d77e0626a455df308f52bf953ace9806861c25438adcdf90914c107",
+  "design/partition/core-split/candidates/planning/joined-feed-construction-v2/evidence/e16/process-cases.json": "ea253eee2e1b0dbb85d83a3d885cfe4f0cc6fd534b144bb25e9bf419016d4051"
+ },
+ "methods": {
+  "design/partition/core-split/candidates/planning/joined-feed-construction-v2/finite_solve.py": "20b1b9e1e7ba8653d3268c4956dc5415b91670e23f07e35ab381d2091f84b044",
+  "design/partition/core-split/candidates/planning/joined-feed-construction-v2/finite_adapter.py": "f313a87719aba83b169a363c05d36daa5c79cd28ad41620e5d45c5d8eca613f4",
+  "design/partition/core-split/candidates/planning/joined-feed-construction-v2/finite_units.py": "295bb239a0949522dca47e33389ddcd0ec9bc058c3a53db9bdc81789e461a8f5",
+  "design/partition/core-split/candidates/planning/joined-feed-construction-v2/load_ledger.py": "5cbaf6f059b6f1833fd40991e4974db5ff3997748e6bf3ed62141f0245913c64",
+  "design/partition/core-split/candidates/planning/joined-feed-construction-v2/numerical_acceptance.py": "e8c1f0b55784bed3a6d8a1b86854a7cc9cdb0e7685e07efa9feb263e3efecc73"
+ },
+ "command": [
+  "finite_solve.py",
+  "dpoint",
+  "--operator",
+  "/home/takazudo/.cache/zudo-e16-runs/20261013-finite-t2b/KB/operator--12V.pkl.gz",
+  "--coverage",
+  "/home/takazudo/.cache/zudo-e16-runs/20261013-finite-t2b/KB/coverage--12V.json.gz",
+  "--config",
+  "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-campaign/design/partition/core-split/candidates/planning/joined-feed-construction-v2/evidence/e16/continuation-20261013b/coupled-network-config.json",
+  "--cases",
+  "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-campaign/design/partition/core-split/candidates/planning/joined-feed-construction-v2/evidence/e16/process-cases.json",
+  "--case",
+  "nominal-average",
+  "--depth",
+  "uniform-dielectric",
+  "--board",
+  "KB",
+  "--net=-12V",
+  "--start",
+  "0",
+  "--stop",
+  "96",
+  "--output",
+  "/home/takazudo/.cache/zudo-e16-runs/coupled-approved-852ffac-8262c033/KB-dp--12V-nominal-average-uniform-dielectric-000.pkl.gz"
+ ],
+ "resource_guard": {
+  "guard": "/home/takazudo/.codex/scripts/heavy-guard.sh",
+  "sha256": "074a463dd6b3a65b7e2168df95b200c0192c414862375bcfb95f979c34c67ee7",
+  "helper_sha256": "513efaf0b4f4a5bb1f94c15190822a2a79d84df399f83e69d7ed0297444ea571",
+  "directory": "/home/takazudo/.agent-guard/heavy",
+  "defaults": {
+   "slots": 1,
+   "wait_seconds": 0,
+   "max_run_seconds": 1800,
+   "min_mem_mb": 2048,
+   "low_mem_mb": 512
+  },
+  "queue_outside_unit_timeout": true
+ },
+ "step": "KB-dpoint--12V-nominal-average-uniform-dielectric-000",
+ "exit_code": 0,
+ "elapsed_seconds": 44.302,
+ "stdout_tail": "{\"board\": \"KB\", \"net\": \"-12V\", \"pads\": 96, \"solve_residual_relative\": 2.9146541779325813e-13, \"elapsed_seconds\": 43.88, \"peak_KiB\": 937936, \"numerical_status\": \"PASS REPORTED NUMERICAL CHECKS ONLY\"}\n",
+ "stderr_tail": "heavy-guard: verdict=PASS exit=0 secs=46 min_mem_mb=9023 reason=-\n",
+ "peak_rss_KiB": 937936,
+ "outputs": {
+  "KB-dp--12V-nominal-average-uniform-dielectric-000.pkl.gz": {
+   "": "2ab7fd0066d7120bac077558054418ce0bece86f13159bee90396b04ae917757"
+  },
+  "KB-dp--12V-nominal-average-uniform-dielectric-000.pkl.gz.numerical.json": {
+   "": "dac46cc19cfca1460a39db3c550408c259f7847e6ebcaea291fce2cd28825c44"
+  }
+ },
+ "native_calls": 0,
+ "launch_command": [
+  "bash",
+  "/home/takazudo/.codex/scripts/heavy-guard.sh",
+  "--",
+  "/home/takazudo/.cache/zudo-e16-numerical-venv/bin/python",
+  "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-campaign/design/partition/core-split/candidates/planning/joined-feed-construction-v2/numerical_unit_guard.py",
+  "--inside",
+  "074a463dd6b3a65b7e2168df95b200c0192c414862375bcfb95f979c34c67ee7",
+  "--",
+  "timeout",
+  "180s",
+  "/home/takazudo/.cache/zudo-e16-numerical-venv/bin/python",
+  "finite_solve.py",
+  "dpoint",
+  "--operator",
+  "/home/takazudo/.cache/zudo-e16-runs/20261013-finite-t2b/KB/operator--12V.pkl.gz",
+  "--coverage",
+  "/home/takazudo/.cache/zudo-e16-runs/20261013-finite-t2b/KB/coverage--12V.json.gz",
+  "--config",
+  "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-campaign/design/partition/core-split/candidates/planning/joined-feed-construction-v2/evidence/e16/continuation-20261013b/coupled-network-config.json",
+  "--cases",
+  "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-campaign/design/partition/core-split/candidates/planning/joined-feed-construction-v2/evidence/e16/process-cases.json",
+  "--case",
+  "nominal-average",
+  "--depth",
+  "uniform-dielectric",
+  "--board",
+  "KB",
+  "--net=-12V",
+  "--start",
+  "0",
+  "--stop",
+  "96",
+  "--output",
+  "/home/takazudo/.cache/zudo-e16-runs/coupled-approved-852ffac-8262c033/KB-dp--12V-nominal-average-uniform-dielectric-000.pkl.gz"
+ ],
+ "resource_guard_result": {
+  "passed": true,
+  "verdict": "PASS",
+  "exit": 0,
+  "seconds": 46,
+  "min_mem_mb": "9023",
+  "reason": "-"
+ },
+ "stream_files": {
+  "steps/KB-dpoint--12V-nominal-average-uniform-dielectric-000.stdout.txt": "9910e4c79d87f8cdc676e511fb6c8a4d3e02c27490499cddda7e2a357467f2de",
+  "steps/KB-dpoint--12V-nominal-average-uniform-dielectric-000.stderr.txt": "df41a302e8c67f6857608cd0b18086082610afa48f8fa36d7f3441757b679eef"
+ }
+}

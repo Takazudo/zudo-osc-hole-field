@@ -1,0 +1,195 @@
+"""Read-only independent terminal audit. Refuses to run before terminal receipt."""
+from pathlib import Path
+import collections
+import gzip
+import hashlib
+import json
+import os
+import subprocess
+import time
+
+B = Path('/home/takazudo/.cache/zudo-e16-runs/campaign-20261014')
+ROOT = Path('/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-campaign')
+OLD_ROOT = Path('/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-r4')
+PACKET = ROOT / '.circuit-cache/e16-numerical-852ffac-8262c033'
+assert (PACKET / 'execution-result.json').is_file(), 'Still live: no terminal audit or cleanup'
+receipt = json.loads((PACKET / 'execution-result.json').read_text())
+request = json.loads((PACKET / 'request.json').read_text())
+output = Path(request['output'])
+hashes = {}
+
+
+def sha(path):
+    path = Path(path)
+    if path not in hashes:
+        with path.open('rb') as stream:
+            hashes[path] = hashlib.file_digest(stream, 'sha256').hexdigest()
+    return hashes[path]
+
+
+def command(args, cwd=ROOT):
+    result = subprocess.run(args, cwd=cwd, text=True, capture_output=True)
+    return {'exit': result.returncode, 'stdout': result.stdout.strip(), 'stderr': result.stderr.strip()}
+
+
+assert sha(PACKET / 'request.json') == receipt['request_sha256'] == 'ef0213b3b38f4de23804ad192043b082d8e1b2be3086c5e20e4343afea4052d6'
+assert request['source_sha'] == receipt['source_sha'] == '852ffac7f85aff4bb436eb25f7ce993cee48146b'
+assert receipt['command'] == request['command']
+assert all(receipt['postrun_integrity'].values()) and not receipt['changed_inputs']
+for name, digest in request['input_sha256'].items():
+    assert sha(name) == digest, name
+approval = json.loads((PACKET / 'operator-approval.json').read_text())
+assert all(approval[key] == request[key] for key in ('source_sha', 'run_id', 'attempt', 'scope'))
+assert approval['request_sha256'] == receipt['request_sha256'] and approval['limits'] == request['guards']
+assert approval['authorization_kind'] == 'delegated_campaign_authorization'
+claim_path = Path.home() / '.local/state/epic242-native-admission' / f'numerical-{request["run_id"]}-{request["attempt"]}.json'
+claim = json.loads(claim_path.read_text())
+assert claim['request_sha256'] == receipt['request_sha256']
+assert claim['source_sha'] == request['source_sha'] and claim['output'] == str(output)
+assert claim['approval_sha256'] == sha(PACKET / 'operator-approval.json') == 'ccf423f29698b6dc4d5341239437721a564f9b18ad3ef3325cb59c3ee9a202e8'
+assert json.loads(Path(str(claim_path) + '.result').read_text()) == receipt
+assert sha(PACKET / 'execution.stdout.log') == receipt['log_sha256']
+assert sha(PACKET / 'scope-observations.jsonl') == receipt['scope_observations_sha256']
+protection = {}
+for label, root, manifest in [('candidate', ROOT, 'candidate-protected-before.json'),
+                              ('original', OLD_ROOT, 'protected-before.json')]:
+    expected = json.loads((B / manifest).read_text())
+    changed = [name for name, digest in expected.items() if sha(root / name) != digest]
+    assert not changed, (label, changed)
+    protection[label] = {'files': len(expected), 'changed': changed}
+assert command(['git', 'rev-parse', 'HEAD'])['stdout'] == request['source_sha']
+assert not command(['git', 'status', '--porcelain'])['stdout']
+steps = {}
+for path in sorted((output / 'steps').glob('*.json')):
+    step = json.loads(path.read_text())
+    assert step['step'] not in steps
+    steps[step['step']] = step
+    assert step['native_calls'] == 0
+    for name, digest in step['stream_files'].items():
+        assert sha(output / name) == digest, name
+    for name, entries in step['outputs'].items():
+        if entries is None:
+            assert not (output / name).exists(), name
+            continue
+        for suffix, digest in entries.items():
+            assert sha(output / name / suffix if suffix else output / name) == digest, name
+    for field in ('inputs', 'methods'):
+        for name, digest in step[field].items():
+            target = Path(name)
+            if not target.is_absolute():
+                target = ROOT / target if (ROOT / target).exists() else output / target
+            assert sha(target) == digest, (field, name)
+    assert step['resource_guard']['sha256'] == request['guards']['shared_guard_configuration']['sha256']
+    if step['exit_code'] == 0:
+        assert step['resource_guard_result']['passed'] is True
+        assert step['resource_guard_result']['verdict'] == 'PASS'
+verdicts = []
+for path in sorted(output.glob('*.numerical.json')):
+    value = json.loads(path.read_text())
+    assert sha(str(path).removesuffix('.numerical.json')) == value['output_sha256']
+    source = ROOT / 'design/partition/core-split/candidates/planning/joined-feed-construction-v2'
+    assert value['solver_sha256'] == sha(source / 'finite_solve.py')
+    assert value['assessment_sha256'] == sha(source / 'numerical_acceptance.py')
+    assert value['config_sha256'] == sha(source / 'evidence/e16/continuation-20261013b/coupled-network-config.json')
+    verdicts.append({'file': path.name, **value})
+done = [json.loads(line) for line in (PACKET / 'execution.stdout.log').read_text().splitlines()
+        if line.startswith('{') and '"exit_code"' in line]
+assert len(done) == len(steps)
+assert len({row['step'] for row in done}) == len(steps)
+assert all(row['step'] in steps and row['exit_code'] == steps[row['step']]['exit_code'] for row in done)
+assert len(steps) <= request['guards']['maximum_units']
+failures = [row for row in done if row['exit_code'] != 0]
+assert len(failures) <= 1 and (not failures or failures[0] == done[-1])
+completed_order = [row['step'] for row in done]
+for index, name in enumerate(completed_order):
+    if '-dpoint-' not in name:
+        continue
+    tag = name.split('-dpoint-', 1)[1].rsplit('-', 1)[0]
+    for board in ('KA', 'KB'):
+        assert completed_order.index(board + '-reduce-' + tag) < index
+coupled = []
+for path in sorted(output.glob('coupled-*.json.gz')):
+    value = json.loads(gzip.decompress(path.read_bytes()))
+    coupled.append({'file': path.name, 'net': value['net'], 'case': value['case'],
+                    'depth': value['depth'], 'states': list(value['states']), 'not_solved': value['not_solved']})
+if receipt['exit_code'] == 0:
+    assert not failures and all(not value['failures'] for value in verdicts)
+    assert all(check['passed'] for value in verdicts for check in value['checks'])
+    assert len(coupled) == 12
+    expected = {(net, case) for net in ('+12V', '-12V', '+5V', 'AGND') for case in (
+        'nominal-average', 'sensitivity-thin', 'legacy-conditional-requirement')}
+    assert {(row['net'], row['case']) for row in coupled} == expected
+    assert all(row['depth'] == 'uniform-dielectric' for row in coupled)
+    assert all(len(row['states']) == (7 if row['net'] == 'AGND' else 1) for row in coupled)
+    assert len(verdicts) == len(steps) - 1
+observed = {}
+last_observation = None
+max_concurrent = 0
+startup_samples = []
+with (B / 'reviewer-process-observations-attempt5.jsonl').open() as stream:
+    for line in stream:
+        row = json.loads(line)
+        last_observation = row
+        active = 0
+        for process in row['processes']:
+            if process['role'] != 'solver':
+                continue
+            if '/app.slice/run-' not in process['cgroup']:
+                startup_samples.append({'time': row['time'], **process})
+                continue
+            active += 1
+            values = process['values']
+            assert values['memory.max'] == '2147483648' and values['memory.swap.max'] == '0'
+            assert all(int(item.split()[1]) == 0 for item in values['memory.events'].splitlines())
+            scope = observed.setdefault(process['cgroup'], {'samples': 0, 'pids': set(), 'peak': 0})
+            scope['samples'] += 1
+            scope['pids'].add(process['pid'])
+            scope['peak'] = max(scope['peak'], int(values['memory.peak']))
+        max_concurrent = max(max_concurrent, active)
+assert max_concurrent <= 1
+assert last_observation['terminal_receipt_exists'] and not last_observation['processes'], 'Wait for observer terminal sample'
+cleanup = []
+for name, scope in sorted(observed.items()):
+    scope['pids'] = sorted(scope['pids'])
+    result = command(['systemctl', '--user', 'is-active', name.rsplit('/', 1)[1]])
+    exists = Path('/sys/fs/cgroup' + name).exists()
+    assert result['stdout'] == 'inactive' and not exists, name
+    cleanup.append({'scope': name, **scope, 'cleanup': result, 'cgroup_exists': exists})
+live = []
+for process in Path('/proc').iterdir():
+    if not process.name.isdigit() or int(process.name) == os.getpid():
+        continue
+    try:
+        args = process.joinpath('cmdline').read_bytes().split(b'\0')
+        if any(arg.endswith((b'/finite_solve.py', b'/run_coupled_e16.py', b'/execute_unit_guard_numerical.py',
+                            b'/reviewer-monitor-baseline.py')) or arg == b'finite_solve.py' for arg in args):
+            live.append({'pid': int(process.name), 'argv': [arg.decode(errors='replace') for arg in args if arg]})
+    except OSError:
+        pass
+assert not live, live
+locks = json.loads(subprocess.check_output(['lslocks', '--json'], text=True))['locks']
+guard_locks = [row for row in locks if '.agent-guard/heavy' in row.get('path', '')]
+assert not guard_locks
+assert not (Path.home() / '.agent-guard/heavy/slot-0.info').exists()
+kinds = collections.Counter('service' if 'service' in name else 'dpoint' if '-dpoint-' in name
+                            else 'reduce' if '-reduce-' in name else 'couple' for name in steps)
+report = {'reviewer': '/root/review_admission', 'checked_at_unix': time.time(),
+          'source_sha': request['source_sha'], 'request_sha256': receipt['request_sha256'],
+          'bound_inputs': len(request['input_sha256']), 'protection': protection,
+          'receipt': receipt, 'step_counts': dict(kinds), 'step_count': len(steps),
+          'failed_steps': failures, 'numerical_count': len(verdicts),
+          'numerical_failures': [row for row in verdicts if row['failures']],
+          'coupled': coupled, 'actual_solver_scope_count': len(observed), 'scopes': cleanup,
+          'maximum_actual_concurrency': max_concurrent,
+          'maximum_sampled_solver_peak_bytes': max(row['peak'] for row in observed.values()),
+          'startup_python_samples': startup_samples,
+          'max_step_seconds': max(row['elapsed_seconds'] for row in steps.values()),
+          'max_child_RSS_KiB': max(row['peak_rss_KiB'] for row in steps.values()),
+          'observer_sha256': sha(B / 'reviewer-process-observations-attempt5.jsonl'),
+          'live_processes': live, 'guard_locks': guard_locks,
+          'integrity_cleanup': 'PASS', 'numerical_batch': 'PASS' if receipt['exit_code'] == 0 else 'FAIL'}
+destination = B / 'reviewer-terminal-audit-attempt5.json'
+with destination.open('x') as stream:
+    json.dump(report, stream, indent=2)
+    stream.write('\n')
+print(json.dumps({key: value for key, value in report.items() if key not in ('scopes', 'startup_python_samples', 'coupled')}, indent=2))

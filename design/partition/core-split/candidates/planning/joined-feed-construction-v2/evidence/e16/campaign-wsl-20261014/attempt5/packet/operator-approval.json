@@ -1,0 +1,46 @@
+{
+  "source_sha": "852ffac7f85aff4bb436eb25f7ce993cee48146b",
+  "run_id": "8262c033387f444581d19ef816622eb5",
+  "attempt": 5,
+  "scope": "Baseline t2 only: whole-device normal-typ-v1 service, KA/KB reductions, driving-point chunks and coupled states for exactly +12V/-12V/+5V/AGND and nominal-average/sensitivity-thin/legacy-conditional-requirement at uniform-dielectric depth. Reuses retained finite coverage without regeneration. Maximum148 serialized units. No remedy variants, additional load/depth scenarios, KiCad, routing, physical or electrical acceptance.",
+  "approved": true,
+  "operator": "takazudo",
+  "limits": {
+    "shared_heavy_guard": true,
+    "per_unit_shared_heavy_guard": true,
+    "parent_holds_no_slot": true,
+    "serialized_units": true,
+    "each_unit_timeout_seconds": 180,
+    "unit_memory_max_bytes": 2147483648,
+    "unit_memory_swap_max_bytes": 0,
+    "maximum_units": 148,
+    "shared_heavy_guard_max_run_seconds_per_unit": 1800,
+    "shared_guard_configuration": {
+      "guard": "/home/takazudo/.codex/scripts/heavy-guard.sh",
+      "sha256": "074a463dd6b3a65b7e2168df95b200c0192c414862375bcfb95f979c34c67ee7",
+      "helper_sha256": "513efaf0b4f4a5bb1f94c15190822a2a79d84df399f83e69d7ed0297444ea571",
+      "directory": "/home/takazudo/.agent-guard/heavy",
+      "defaults": {
+        "slots": 1,
+        "wait_seconds": 0,
+        "max_run_seconds": 1800,
+        "min_mem_mb": 2048,
+        "low_mem_mb": 512
+      },
+      "queue_outside_unit_timeout": true
+    },
+    "scope": "finite_solve.enter_memory_scope verifies live user-systemd cgroup values; helper proves shared guard owner/descriptor/lock before workload; queue time is outside the180s timeout",
+    "stop_on_failure": true,
+    "both_board_reductions_before_driving_points": true,
+    "resume": false,
+    "automatic_retry": false
+  },
+  "request_sha256": "ef0213b3b38f4de23804ad192043b082d8e1b2be3086c5e20e4343afea4052d6",
+  "authorization_kind": "delegated_campaign_authorization",
+  "recorded_by": "Codex /root",
+  "operator_field_meaning": "Owner account required by unchanged reviewed hook; actual executor is Codex under standing owner campaign authorization.",
+  "approval_source": "Actual standing owner campaign instruction retained at /home/takazudo/.cache/zudo-e16-runs/campaign-20261014/authority-source.txt SHA256 fe57c020772e65fc4438e4f8cce4e48d1903c554b2d6eab66476dbe0289ce00c. It authorizes up to three full baselines including attempt4, plus24 guarded production diagnostics. This exact fresh attempt5 request and source were independently reviewed in review-attempt5.md and supporting source reviews. This receipt is delegated campaign authorization, not a new human approval or claim that the owner personally inspected this digest.",
+  "authority_source_sha256": "fe57c020772e65fc4438e4f8cce4e48d1903c554b2d6eab66476dbe0289ce00c",
+  "scope_assessment": "Second of three full baselines in this campaign. Same t2 KA/KB geometry, normal-typ-v1 whole-device subset, four declared nets, three cases and uniform depth; at most148 serialized units,180s each, verified2GiB/no-swap and per-unit shared guard, both board reductions before dpoints and stop-on-first-failure. Justified by diagnosed/fixture-proven driving-point precision correction and measured runtime corrections, with actual corrected+5V96 and largestAGND96 unit PASS. All prior runs terminal with integrity/owned cleanup verified. No native job, variant, architecture/copper/load/tolerance/resource change, main update or root-PR merge.",
+  "created_unix": 1791921798.710378
+}
