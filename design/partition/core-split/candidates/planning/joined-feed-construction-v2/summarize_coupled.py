@@ -8,7 +8,7 @@ that belongs to a referenced part (loaded or not; the loaded subset is reported 
 1 mOhm / 0.5 mOhm requirements applied once over the modelled path. Neutral field
 names; the 2026-10-13 partial-model fields stay in finite-network-t2.json as history.
 """
-import argparse,gzip,json,math
+import argparse,glob,gzip,hashlib,json,math
 from collections import defaultdict
 from pathlib import Path
 import numpy as np
@@ -112,7 +112,14 @@ def main():
                  'classification':'KB AGND has no conductor to the source: the KB AGND network floats and every KB load return is a fault path outside this model (external obligations: GH/harness returns, patch sleeves, earth).',
                  'external_fault_obligations':'#59 fault survival and the inherited 380 GH-return analysis remain separate obligations.'})
  cov_rows=jl(HERE/'evidence/e16/finite-coverage-t2-rows.json.gz')
- out={'schema':'e16-coupled-matrix-v1','external_boundary':external_boundary(cov_rows),'scope':'KA-KB subnetwork only: KA and KB core copper, CS247 W1-W6 bulk once, each termination once, conditional KA main-land source support. Excludes inlet/star/protection copper, JL/JR/P/EL branches, GH/harness and patch returns.',
+ sha=lambda q:hashlib.sha256(Path(q).read_bytes()).hexdigest()
+ bindings={'coupled_results':{Path(q).name:sha(q) for q in sorted(glob.glob(str(a.coupled/'coupled-*.json.gz')))},
+           'reductions':{Path(q).name:sha(q) for q in sorted(glob.glob(str(a.coupled/'K?-red-*.pkl.gz')))},
+           'descriptions':{f'{b}/desc-{n}.json.gz':sha(a.finite/b/f'desc-{n}.json.gz') for b in ('KA','KB') for n in RAILS+['AGND']},
+           'config':sha(a.config),'process_cases':sha(HERE/'evidence/e16/process-cases.json'),'coverage_rows':sha(HERE/'evidence/e16/finite-coverage-t2-rows.json.gz'),
+           'joined_interfaces':sha(HERE.parents[2]/'power/joined/interfaces.json'),'method':{m:sha(HERE/m) for m in ['summarize_coupled.py','finite_solve.py','finite_units.py']},
+           'run_directories':{'coupled':str(a.coupled),'finite':str(a.finite)}}
+ out={'schema':'e16-coupled-matrix-v1','bindings':bindings,'external_boundary':external_boundary(cov_rows),'scope':'KA-KB subnetwork only: KA and KB core copper, CS247 W1-W6 bulk once, each termination once, conditional KA main-land source support. Excludes inlet/star/protection copper, JL/JR/P/EL branches, GH/harness and patch returns.',
       'scenario':cfg['scenario'],'process_cases':cases,'depth_case':depth,'return_states':states+['all-three-open'],'entries':matrix,'missing_results':missing,
       'budgets':B,'unserved_loads':{f'{n}|{c}':r['unserved_loads'] for (n,c),r in res.items()},
       'limits':['Conditional: process (foil, plating, rho), stack depths, wire/termination requirement values and the source support are declared assumptions, not qualified values.',

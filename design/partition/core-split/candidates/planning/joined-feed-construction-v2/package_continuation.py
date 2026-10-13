@@ -16,11 +16,11 @@ def steps(run):
          'max_peak_rss_GiB':round(max((x['peak_rss_KiB'] for x in out),default=0)/1024**2,3),'slowest':sorted(out,key=lambda x:-x['elapsed_seconds'])[:3]}
 def main():
  p=argparse.ArgumentParser();p.add_argument('--replay',type=Path,required=True);p.add_argument('--finite',type=Path,required=True);p.add_argument('--coupled',type=Path,required=True)
- p.add_argument('--python',required=True);p.add_argument('--output',type=Path,default=EV/'continuation-20261013/index.json');a=p.parse_args()
+ p.add_argument('--refine',type=Path,required=True);p.add_argument('--source-sensitivity',type=Path,required=True);p.add_argument('--python',required=True);p.add_argument('--output',type=Path,default=EV/'continuation-20261013/index.json');a=p.parse_args()
  env=json.loads(subprocess.run([a.python,'-c','import sys,json,numpy,scipy,shapely;print(json.dumps({"python":sys.version.split()[0],"numpy":numpy.__version__,"scipy":scipy.__version__,"shapely":shapely.__version__,"geos":".".join(map(str,shapely.geos_version))}))'],capture_output=True,text=True,check=True).stdout)
  files=sorted(str(q.relative_to(HERE)) for q in EV.rglob('*') if q.is_file() and 'continuation-20261013' not in q.parts and q.stat().st_mtime>Path(EV/'index.json').stat().st_mtime)
  methods=['compare_replay.py','fragments.py','finite_adapter.py','finite_units.py','finite_solve.py','run_finite_e16.py','run_coupled_e16.py','summarize_coverage.py','summarize_coupled.py',
-          'diagnose_omissions.py','residual_atlas.py','pilot_preflight.py','pilot_construct.py','load_ledger.py','native_descriptor.py','package_continuation.py','verify_kcl.py','compare_refinement.py']
+          'diagnose_omissions.py','residual_atlas.py','pilot_preflight.py','pilot_construct.py','load_ledger.py','native_descriptor.py','package_continuation.py','verify_kcl.py','compare_refinement.py','summarize_depth.py']
  d={'schema':'e16-continuation-index-v1','date':'2026-10-13','environment':dict(env,platform=platform.platform(),requirements='scripts/pcbgen/numerical-requirements.txt',
     venv='uv venv --python /usr/bin/python3.12 VENV; uv pip install -r scripts/pcbgen/numerical-requirements.txt'),
     'commands':{'replay':'bash replay_e16.sh PYTHON ABS_OUTDIR  (under bash $HOME/.claude/scripts/heavy-guard.sh --)',
@@ -32,10 +32,16 @@ def main():
                 'ledger':'python3 load_ledger.py --output DIR [--check]',
                 'atlas':'python residual_atlas.py --board K? --source REPLAY/K?-eval-t2/normalized-caps.json --planes-dir ABS_FINITE_OUTDIR/K? --graph ... --census ... --ledger ... --output evidence/e16/K?-t2-residual-atlas.json.gz',
                 'diagnosis':'python diagnose_omissions.py --board K? --net=NET --source REPLAY/K?-access-t2.json --planes ABS_FINITE_OUTDIR/K?/planes-NET.json.gz --graph ... --census ... --retained evidence/e16/finite-network-t2-ports.json.gz --output evidence/e16/omissions/K?-NET.json',
+                'kcl_audit':'python verify_kcl.py --coupled ABS_COUPLED_OUTDIR --finite ABS_FINITE_OUTDIR --output evidence/e16/node-kcl-audit-t2.json',
+                'depth_summary':'python summarize_depth.py --coupled ABS_COUPLED_OUTDIR --output evidence/e16/coupled-depth-sensitivity-t2.json  (after run_coupled_e16.py --resume --case nominal-average --depth staged-caps-bands --depth barrel-upper-1p6-per-interval)',
+                'mesh_sensitivity':'python run_finite_e16.py ... --board KA --net=+5V and --board KB --net=-12V with --pitch 0.5 --face-pitch 0.125 (refined) or --origin 0.37 0.21 (shifted); python finite_solve.py dpoint ... --start 0 --stop 1000000 for baseline and variants; python compare_refinement.py --baseline DP --variant refined=DP --variant shifted-origin=DP --output evidence/e16/mesh-sensitivity-K?-NET.json',
+                'source_sensitivity':'python run_coupled_e16.py --python PYTHON --finite ABS_FINITE_OUTDIR --output ABS_OUTDIR --config evidence/e16/coupled-network-config-single-land.json --case nominal-average; python summarize_coupled.py --coupled ABS_OUTDIR --finite ABS_FINITE_OUTDIR --config evidence/e16/coupled-network-config-single-land.json --output evidence/e16/coupled-source-sensitivity-t2.json',
                 'preflight':'python pilot_preflight.py --source ... --planes ... --graph ... --census ... --pad-id UUID [--window-margin-mm M --max-length-mm L] --output evidence/e16/pilot/K?-preflight-*.json'},
-    'resources':{'replay':steps(a.replay),'finite':steps(a.finite),'coupled':steps(a.coupled),'bounds':'every unit: one process, timeout 180 s, RLIMIT_AS 2 GiB, serialized behind the host heavy-run guard'},
-    'run_directories':{'replay':str(a.replay),'finite':str(a.finite),'coupled':str(a.coupled),
-                       'note':'Run directories are local caches outside the repository; every retained result binds their inputs by SHA-256 and is reproducible with the commands above from tracked sources (candidate05 replays byte-for-byte).'},
+    'resources':{'replay':steps(a.replay),'finite':steps(a.finite),'coupled':steps(a.coupled),'source_sensitivity':steps(a.source_sensitivity),
+                 'mesh_refined':steps(a.refine/'refined'),'mesh_shifted':steps(a.refine/'shifted'),
+                 'bounds':'every unit: one process under timeout 180 s, serialized behind the host heavy-run guard. Replay, finite-coverage and mesh units: RLIMIT_AS 2 GiB. Coupled solver units (finite_solve.py): a kernel cgroup scope MemoryMax=2 GiB, MemorySwapMax=0, verified inside the unit (SuperLU address-space reservations made RLIMIT_AS reject 1.2 GiB-resident factorisations). Peak RSS per step is in each run\'s steps/ ledgers.'},
+    'run_directories':{'replay':str(a.replay),'finite':str(a.finite),'coupled':str(a.coupled),'mesh_sensitivity':str(a.refine),'source_sensitivity':str(a.source_sensitivity),
+                       'note':'Run directories are local caches outside the repository. The retained results bind the run outputs they read by SHA-256 (bindings in coupled-matrix, coupled-source-sensitivity, depth, KCL-audit, mesh-sensitivity and coverage files) and are reproducible with the commands above from tracked sources (candidate05 replays byte-for-byte); the cached intermediates themselves are not retained.'},
     'negative_outcomes':['No legal additive corridor for either pilot target; no construction (pilot/K?-pilot-outcome.json).',
                          'Copper requirements (1 mOhm rail, 0.5 mOhm common AGND) fail at every evaluated pad but one; the KA trunk alone exceeds them on every net, case and stack (coupled-matrix-t2.json, coupled-depth-sensitivity-t2.json).',
                          'Node-level KCL tolerance 1e-9 NOT MET (1.7e-9 to 5.2e-8 at the double-precision evaluation floor; node-kcl-audit-t2.json).',

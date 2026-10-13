@@ -210,7 +210,11 @@ Two review findings changed the meshes before the final run: tangent contacts us
 - the r4/t2 rejection reasons.
 
 Preflights (`pilot_preflight.py`; 0.25/0.2 mm width, 0.25 mm copper and hole clearance, additive face copper only) for the two plan targets:
-- **KA U2314.11 (−12V).** The orphan component is exactly {U2314.11, C2342.1}. A 6 mm window could not reach fed face copper (nearest 10.33 mm). A 12 mm/30 mm preflight found no legal corridor: the F.Cu start annuli lie wholly inside other-net clearance, and B.Cu has no clear path.
+- **KA U2314.11 (−12V).** The orphan component is exactly {U2314.11, C2342.1}.
+  - A 6 mm window could not reach fed face copper (nearest 10.33 mm).
+  - The window was then widened to a 12 mm margin and 30 mm length after that failure, using the atlas distance. These limits were not sealed or reviewed beforehand.
+  - That preflight also found no legal corridor: the F.Cu start annuli lie wholly inside other-net clearance, and B.Cu has no clear path.
+  - No construction followed either preflight.
 - **KB U4320.14 (+5V).** The orphan component is exactly the plan's six pads. The 12 mm/30 mm preflight found no clear path on either face.
 
 So no construction was attempted, and the t2 candidate is unchanged. Each outcome records the exact future change instead (`evidence/e16/pilot/K?-pilot-outcome.json`):
@@ -225,9 +229,9 @@ Every fix moves non-pilot copper or a pad stack. It is outside this pilot's rule
 - **Wires.** Each wire's bulk (85 mm × 13 mΩ/m = 1.105 mΩ) is charged once. Each termination (0.038 mΩ per end, half of the "both ends" 0.0760 mΩ in `electrical-design.json`) is charged once, on its own board, as a distributed stamp over the terminal pad. The old per-board 1.181 mΩ lump would have charged both twice.
 - **Source support.** This is conditional: each net's fed KA main lands are held at one potential over their interior copper, standing in for the unimplemented load-side star. TP990036 is excluded because it is unresolved. No upstream AWG14 section and no raw/load bridge is modelled.
 - **Solve method.** Each board is factored alone (SuperLU, iteratively refined) and reduced onto its terminal nodes. Every return state is then solved on the small interface system and back-substituted. A small monolithic reference matches to 1e-8 (`test_finite_adapter`).
-- **Memory.** Units are bounded by a kernel 2 GiB no-swap memory scope. SuperLU's address-space reservation made the old `RLIMIT_AS` cap fail at 1.2 GiB resident; the measured peak is 1.24 GiB for KB AGND (1.87 M nodes).
+- **Memory.** Solver units are bounded by a kernel 2 GiB no-swap memory scope (`MemoryMax=2G`, `MemorySwapMax=0`), verified inside each unit. SuperLU's address-space reservation made the old `RLIMIT_AS` cap reject factorisations whose resident peak is 1.24 GiB (KB AGND, 1.87 M nodes). The largest per-step peak RSS in the coupled run is 1.68 GiB.
 
-Scope is the KA–KB subnetwork only. All 412 KA/KB ends of inherited rail/AGND conductors map to census pads: 376 AGND harness returns, of which 62 are unresolved; 18 EL rail pads; 18 KA main lands. None has a supported current operator, so all are named external boundaries. GH 0.5 A compliance is **NOT EVALUATED**, and patch sleeves are not returns.
+Scope is the KA–KB subnetwork only. All 412 KA/KB ends of inherited rail/AGND conductors map to census pads: 376 AGND harness returns, of which 62 are unresolved; 18 EL rail pads; 18 KA main lands. The inherited 380 GH-return conductors reconcile exactly: 376 have a KA/KB end, and 4 are JL–P conductors with no core end. None has a supported current operator, so all are named external boundaries. GH 0.5 A compliance is **NOT EVALUATED**, and patch sleeves are not returns.
 
 Matrix: three process cases × seven KA–KB return states, all executed (21). All-three-open is classified per case: KB AGND floats, and fault obligations stay with #59 and the GH-return analysis. `evidence/e16/coupled-matrix-t2.json` gives per-entry results:
 - pad potentials, local-ground displacement and the signed rail-minus-local-ground error, with an additive screen;
@@ -244,23 +248,41 @@ Matrix: three process cases × seven KA–KB return states, all executed (21). A
 | legacy-conditional | 0.592 mV | 0 / 1,294 | 524/525, then all | 1.134 / 1.521 / 2.089 / 0.61–0.72 |
 
 What this means:
-- **20 mV: within budget only for this lower-load study.** It injects only supported op-amp quiescent current and conditional logic ICC: +12V 235 mA from the source. Unsupported and EL demand are not injected, so this is not a worst case.
-- **Unserved load.** Supported current on structurally unresolved pads cannot be delivered: +12V 90.8 mA, −12V 101.0 mA (nominal).
-- **Copper requirement: not met.** The 1 mΩ rail and 0.5 mΩ common-AGND requirements are charged once along the whole source-to-pad path. They fail at every evaluated pad but one. The shared KA trunk alone, from the source lands to the CS247 terminal support, already exceeds the whole allowance on every net and case.
+- **20 mV: within budget only for this lower-load study.** The worst rail-minus-local-ground error over the 1,294 evaluated rail pads with a referenced part is ≤0.78 mV. The study injects only supported op-amp quiescent current and conditional logic ICC: +12V 235 mA from the source. Unsupported and EL demand are not injected, so this is not a worst case.
+- **Unserved load.** Supported current on structurally unresolved pads cannot be delivered: +12V 90.8 mA, −12V 101.0 mA, +5V 0.64 mA, AGND 0.88 mA (nominal). The ledger's per-device KCL is exact, but the currents actually injected are not balanced device by device. One supply pin of a device can be served while its other pin is not (served +5V 1.78 mA vs AGND 1.54 mA), so each net is solved with its own served set.
+- **Copper requirement: not met.** The 1 mΩ rail and 0.5 mΩ common-AGND requirements are charged once along the whole source-to-pad path. They fail at every evaluated pad in the nominal-average and sensitivity-thin cases. One +12V pad passes in the legacy-conditional case (524/525 fail). The shared KA trunk alone, from the source lands to the CS247 terminal support, already exceeds the whole allowance on every net and case.
 - **Dominant contributors** (all-present, nominal):
   - +12V: KA barrels 40% of dissipation, inner copper 21%, wire 24%;
   - −12V: KA inner sheet 44%, KA barrels 24%;
   - +5V and AGND: inner sheets on both boards, then the wire bulk.
 - **Remedies to quantify next:** more parallel access vias at the main lands and CS247 terminals, or wider face pours there.
+- **Source-support sensitivity** (`evidence/e16/coupled-source-sensitivity-t2.json`, nominal-average, all seven return states; other cases NOT RUN). The default holds all fed main lands of a net at one potential, an ideal tie between lands that the plan forbids as a physical claim. Holding only each net's JL-branch land (TP990002/004/006/008) instead:
+  - raises the KA trunk to +12V 2.34, −12V 5.97, +5V 9.81 and AGND 1.12–1.22 mΩ (default: 1.16 / 1.49 / 2.00 / 0.58–0.68);
+  - raises the worst error to 1.55 mV, still 0 pads over 20 mV.
+
+  The default tie is therefore optimistic. The copper conclusion only strengthens, and the actual load-side star geometry decides the real value.
 - **Return removal.** Removing returns barely changes the voltages at this load (W6 alone carries 1.46 mA). It does change copper-share resistance slightly.
 - **History.** The historical KB AGND 25.027 mV figure stays in `finite-network-t2.json` as a conditional partial-model finding with its own schema. It is not comparable: different loads (planning total × max port R), no partner board, and a lumped wire.
 
 Numerical checks, against tolerances declared before results:
-- **Met:** global KCL ≤1e-9; energy minus load work ≤1e-9; nonnegative class energies; wire/terminal current balance ≤1e-14 A; reduction reciprocity ~1e-11; monolithic-reference agreement 1e-8.
-- **Not met:** node-level KCL relative to the largest injected node current. `verify_kcl.py` (`evidence/e16/node-kcl-audit-t2.json`, all 40 board reductions) measures 1.7e-9 to 5.2e-8 against the declared 1e-9, and three refinement steps do not lower it.
-  - Every row sits at the double-precision evaluation floor; none is above 10× its floor. The floor is eps × the row's current magnitude: 4e-9 to 7e-8 of the largest load current, because 2 µm slit and skinny elements carry conductances up to 8.8e8 S.
-  - The relative residual per row is ≤2.2e-15, and the normwise backward error is ≤1.4e-16, so the solves are backward-stable to machine precision.
-  - The declared criterion stays reported as NOT MET; it cannot be met in double precision on this mesh.
+- **Met:**
+  - global KCL ≤1e-9 in all 20 net×case files;
+  - energy minus load work ≤1e-9 except one case;
+  - nonnegative class energies;
+  - wire/terminal current balance ≤1e-14 A;
+  - reduction reciprocity ~1e-11;
+  - monolithic-reference agreement 1e-8.
+- **Not met:** energy minus load work reaches 1.64e-9 against the declared 1e-9 in the legacy-conditional +5V case, all seven states. The refined driving-point solves, which give every copper-resistance figure, leave a relative residual ≤5.0e-9; no tolerance was declared for it.
+- **Not met:** node-level KCL relative to the largest injected node current. `verify_kcl.py` (`evidence/e16/node-kcl-audit-t2.json`, input and method hashes bound) measures it two ways:
+  - across the 40 board reductions: 1.7e-9 to 5.2e-8;
+  - across all 100 published coupled board-states, rebuilt from the reductions and the interface solves: 1.5e-8 to 1.8e-7.
+
+  Both are against the declared 1e-9. The cause is the evaluation floor:
+  - **Per-row residual:** every row's residual is ≤3.9e-15 of that row's own current magnitude (≤17.5 machine epsilons; 69 rows lie between 10 and 17.5 ε). That is the double-precision floor for a row sum of about ten terms.
+  - **Why the floor is high:** relative to the largest load current, the floor itself reaches 7.9e-7, because the 2 µm slit and skinny elements carry conductances up to 8.8e8 S.
+  - **Reduction solves:** the normwise backward error is ≤1.4e-16.
+
+  The declared criterion stays NOT MET; it is unattainable in double precision on this mesh.
 
 Mesh sensitivity on real copper (`evidence/e16/mesh-sensitivity-K?-*.json`; same fragments, pad supports and source lands; only the cell grid changes; tolerances declared before results):
 - **Half pitch** (0.5 mm inner, 0.125 mm face) raises single-board driving-point resistances by a median 2.9% (KA +5V, 24 pads) and 2.5% (KB −12V, 146 pads), at most 4.2%. Conforming P1 approaches from below, so the reported resistances slightly understate the copper, which only strengthens the copper-requirement failure.

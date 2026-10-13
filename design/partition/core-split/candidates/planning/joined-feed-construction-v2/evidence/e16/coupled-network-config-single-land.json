@@ -1,0 +1,170 @@
+{
+ "schema": "e16-coupled-network-config-v1",
+ "status": "CONDITIONAL STUDY INPUTS; NOT QUALIFIED PROCESS, GEOMETRY OR LOAD EVIDENCE",
+ "process_cases": "evidence/e16/process-cases.json cases (rho, foil, barrel plating); their lumped wire_plus_termination_ohm is NOT used here",
+ "depth_cases": {
+  "uniform-dielectric": {
+   "foil_mm": 0.07,
+   "dielectric_mm": [
+    0.236,
+    0.236,
+    0.236,
+    0.236,
+    0.236
+   ],
+   "board_mm": 1.6,
+   "basis": "Conditional default: authored six 2 oz foils on 1.6 mm (design/boards/osc-core.json, which records no dielectric thickness) with the remaining 1.18 mm split equally. No 2 oz six-layer stackup with dielectric thicknesses is published (process-evidence-20261013.json I1)."
+  },
+  "barrel-upper-1p6-per-interval": {
+   "foil_mm": 0.07,
+   "dielectric_mm": [
+    0.236,
+    0.236,
+    0.236,
+    0.236,
+    0.236
+   ],
+   "board_mm": 1.6,
+   "legacy_leg_mm": 1.6,
+   "basis": "Sensitivity only: every tap-to-tap barrel interval charged the full 1.6 mm board thickness. No physical interval can be longer, so this bounds each barrel interval's resistance from above; it overcharges more than the 2026-10-13 partial model (which charged 1.6 mm per face-to-plane leg) whenever a barrel also taps non-functional annuli."
+  },
+  "staged-caps-bands": {
+   "foil_mm": 0.07,
+   "dielectric_mm": [
+    0.05,
+    0.05,
+    0.98,
+    0.05,
+    0.05
+   ],
+   "board_mm": 1.6,
+   "basis": "Sensitivity only: staged_caps.BANDS, the rejected V14/V15 staged-model stack (0.05 mm outer dielectrics that contradict published limits, e16-construction-contract.json). connectivity.py uses these bands only to decide which foils a drill crosses, which is the same for every E16 through via; it is not an authored E16 stack. It puts In2/In3 far from each other and near the faces."
+  }
+ },
+ "default_depth_case": "uniform-dielectric",
+ "wires": {
+  "basis": "evidence/electrical-design.json finite_current_field: generic85mm_wire_bulk_plus_this_termination_mOhm 1.180953 = 85 mm x 13 mOhm/m bulk requirement (1.105) + combined_termination_upper_mOhm 0.075953 for BOTH ends (energy_formula 'For both ends'). The per-board lump would charge the bulk and both ends twice in a joined model; here bulk is charged once per wire and each end's termination once on its own board.",
+  "length_mm": 85,
+  "bulk_ohm_per_m_requirement": 0.013,
+  "bulk_ohm": 0.001105,
+  "termination_per_end_ohm": 3.79766158930975e-05,
+  "pairs": {
+   "W1": "+12V",
+   "W2": "-12V",
+   "W3": "+5V",
+   "W4": "AGND",
+   "W5": "AGND",
+   "W6": "AGND"
+  },
+  "status": "Requirement-class values, not measured or qualified wire/termination resistance. The 110 mm maximum cut (1.43 mOhm bulk) is evaluated as an all-present sensitivity in each coupled result.",
+  "bulk_ohm_max_cut": 0.00143
+ },
+ "source_support": {
+  "board": "KA",
+  "mode": "single_equipotential_patch",
+  "basis": "Sensitivity of the conditional source support: only the JL-branch main land of each net (TP990002 +12V, TP990004 -12V, TP990006 +5V, TP990008 AGND) is held, so no ideal tie joins different lands. The other lands remain ordinary copper. Still conditional: the load-side star is unimplemented.",
+  "pads": {
+   "+12V": [
+    {
+     "ref": "TP990002",
+     "pad_id": "982d0043-2374-5b74-b189-fead016006b5"
+    }
+   ],
+   "-12V": [
+    {
+     "ref": "TP990004",
+     "pad_id": "d11d9455-e60a-56dd-9150-84b7d725a654"
+    }
+   ],
+   "+5V": [
+    {
+     "ref": "TP990006",
+     "pad_id": "a15d7c25-8fc7-58d4-a269-4ef9fd4d070a"
+    }
+   ],
+   "AGND": [
+    {
+     "ref": "TP990008",
+     "pad_id": "a68c8da6-d1a4-5514-b405-80587646b150"
+    }
+   ]
+  },
+  "excluded": [
+   {
+    "ref": "TP990036",
+    "pad_id": "dbf0db68-b055-5a30-963b-c019de6ab1a2",
+    "net": "AGND",
+    "reason": "structurally unresolved at t2"
+   }
+  ]
+ },
+ "scenario": {
+  "id": "normal-typ-v1",
+  "ledger": "evidence/e16/load-ledger-20261013.json.gz",
+  "injected": "supported_pin_current and conditional_assumption records with a numeric current on a pad of this board/net",
+  "not_injected": "external_interface_demand (EL group ceiling: no per-pad split is supported), unmapped_allowance, and every no_amount record",
+  "ledger_sha256": "dd7f667add70dcaab02e8c7846fef1e61b683079b5d4e01bde0be317bec343ec",
+  "producer": "python3 load_ledger.py --output DIR (deterministic; --check rebuilds and compares)"
+ },
+ "local_ground": "For a rail pad of device R: the mean potential over R's own fed AGND pad supports; if R has none, the nearest fed AGND pad on the same board by pad-centre distance (conditional definition).",
+ "budgets": {
+  "path_error_V": 0.02,
+  "rail_copper_ohm": 0.001,
+  "agnd_copper_ohm": 0.0005,
+  "gh_conductor_A": 0.5,
+  "source": "design/partition/core-split/power/contract.json conductor_screen.global_budget and power/joined/handoff.md: one global 20 mV path allowance, 1 mOhm rail and 0.5 mOhm common AGND copper, never restarted per board; 0.5 A per GH conductor.",
+  "application": "Charged once over the modelled KA+wire+KB path; the unmodelled inlet/star, branch and protection copper must fit in the same allowance, so a modelled value within budget is necessary, not sufficient."
+ },
+ "return_states": {
+  "all-present": [],
+  "single": [
+   [
+    4
+   ],
+   [
+    5
+   ],
+   [
+    6
+   ]
+  ],
+  "double": [
+   [
+    4,
+    5
+   ],
+   [
+    4,
+    6
+   ],
+   [
+    5,
+    6
+   ]
+  ],
+  "all-three-open": [
+   4,
+   5,
+   6
+  ]
+ },
+ "numerical_tolerances": {
+  "declared": "2026-10-13, before any coupled result was inspected",
+  "kcl_relative": 1e-09,
+  "energy_relative": 1e-09,
+  "reciprocity_relative": 1e-09,
+  "support_weight_sum": 1e-09,
+  "reduction_vs_monolithic_relative": 1e-08,
+  "refinement_change_relative_report_only": 0.05,
+  "shifted_origin_change_relative_report_only": 0.05
+ },
+ "error_convention": "error_V = (V_rail(pad) - V_AGND(local ground)) - (V_rail(source) - V_AGND(source)); both nets are referenced to 0 V at the source, so error_V = V_rail(pad) - V_AGND(local). It is the deviation of the supply voltage the device actually sees, signed; on -12V a local ground rise partly cancels a rail rise. The additive magnitude screen in power/joined/handoff.md (|rail drop| + |ground rise|) is reported alongside as a conservative bound.",
+ "depth_sensitivity": {
+  "run_for": "nominal-average, all return states",
+  "cases": [
+   "staged-caps-bands",
+   "barrel-upper-1p6-per-interval"
+  ]
+ },
+ "variant_of": "coupled-network-config.json (source_support only)"
+}
