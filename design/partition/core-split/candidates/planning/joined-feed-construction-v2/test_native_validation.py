@@ -327,6 +327,13 @@ class LocalStagingTests(unittest.TestCase):
             shutil.copyfile(REPO / 'scripts/kicad' / name, self.root / 'scripts/kicad' / name)
         with patch.object(nv, 'ROOT', self.root):
             self.local = nv.local_admission()
+        # Local fixture requests must not inherit a CI job's authority. Restore
+        # every original value after this test, including when setup fails.
+        clean_authority = patch.dict(os.environ, {
+            key: '' for key in (*self.local.CI_KEYS, *self.local.AUTHORITY_KEYS)
+        })
+        clean_authority.start()
+        self.addCleanup(clean_authority.stop)
         self.heavy = self.base / 'heavy.sh'
         self.heavy.write_text('fixture')
         self.patches = [patch.object(nv, 'ROOT', self.root), patch.object(nv, 'HERE', self.here),
@@ -383,6 +390,10 @@ class LocalStagingTests(unittest.TestCase):
                         env | {'EPIC242_NATIVE_WORKER': 'ci-1-2-e16-ka-t2'}):
             with self.assertRaises(ValueError):
                 nv.verify_worker(changed)
+
+    def test_mixed_ci_and_local_authority_is_still_rejected(self):
+        with self.assertRaisesRegex(ValueError, 'mixed CI/local authority refused'):
+            self.local.no_mixed_authority(self.approved_fixture() | {'GITHUB_RUN_ID': '123'})
 
     def test_changed_local_request_and_filled_copy_rejected_before_execution(self):
         self.approved_fixture()
