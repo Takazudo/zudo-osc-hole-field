@@ -32,6 +32,15 @@ def injected(cfg,ledger,board,net):
    need(r['pad_id'] not in out,'duplicate ledger current on one pad: '+r['pad_id']);out[r['pad_id']]=(float(r['current_A']),r['provenance'])
   elif r['current_A'] not in (None,0,0.):skipped.append(r['pad_id'])
  return out,skipped
+REFINE_STEPS=3
+def refined_solve(lu,Af,b):
+ """Direct solve plus iterative refinement: the conforming mesh (2 um slits, high-conductance
+ barrels and terminations) is ill-conditioned, so one unrefined SuperLU solve leaves node-level
+ KCL residuals near 1e-7 relative; refinement restores them below the declared 1e-9."""
+ x=lu.solve(b)
+ for _ in range(REFINE_STEPS):x=x+lu.solve(b-Af@x)
+ r=b-Af@x;scale=max(float(np.max(abs(b))),1e-300)
+ return x,float(np.max(abs(r)))/scale
 def terminal_stamps(ops,cfg):
  """Each feed termination: rank-1 distributed conductance w w'/Rt between its pad support and its terminal node."""
  terms=sorted(ops['terminals'],key=wire_of);Rt=cfg['wires']['termination_per_end_ohm']
@@ -93,10 +102,9 @@ def dpoint(a):
   chunk=sel[k:k+BATCH];Wb=np.zeros((len(free),len(chunk)))
   for j,p in enumerate(chunk):
    n,w=ops['supports'][p];need((pos[n]>=0).all(),'pad support touches a held source node: '+p);Wb[pos[n],j]=w
-  U=lu.solve(Wb);e[k:k+len(chunk)]=np.sum(Wb*U,axis=0);q[:,k:k+len(chunk)]=Bf.T@U
-  if k==0:worst=float(np.max(abs(Af@U-Wb)))
- psave(a.output,{'board':a.board,'net':a.net,'case':a.case,'depth':a.depth,'pads':sel,'e':e,'q':q,'operator':sha(a.operator),'first_batch_residual':worst})
- return {'board':a.board,'net':a.net,'pads':len(sel),'first_batch_residual':worst}
+  U,res=refined_solve(lu,Af,Wb);worst=max(worst,res);e[k:k+len(chunk)]=np.sum(Wb*U,axis=0);q[:,k:k+len(chunk)]=Bf.T@U
+ psave(a.output,{'board':a.board,'net':a.net,'case':a.case,'depth':a.depth,'pads':sel,'e':e,'q':q,'operator':sha(a.operator),'solve_residual_relative':worst})
+ return {'board':a.board,'net':a.net,'pads':len(sel),'solve_residual_relative':worst}
 def reduce(a):
  cfg=jload(a.config);case=jload(a.cases)['cases'][a.case];depth=cfg['depth_cases'][a.depth];ops=pload(a.operator);cov=jload(a.coverage);ledger=jload(a.ledger)
  need(cov['desc_sha256']==ops['desc_sha256'],'coverage and operator from different descriptions')
@@ -109,18 +117,18 @@ def reduce(a):
   if pid not in covered or pid not in ops['supports']:unserved.append({'pad_id':pid,'current_A':I,'provenance':prov});continue
   n,w=ops['supports'][pid];need(not fixed[n].any(),'load on a held source support: '+pid);f[n]-=I*w
  t0=time.monotonic();lu=spla.splu(Af,permc_spec='MMD_AT_PLUS_A',diag_pivot_thresh=0.,options=dict(SymmetricMode=True));tf=time.monotonic()-t0
- Y=lu.solve(Bf) if T else np.zeros((len(free),0));S=D-Bf.T@Y;u0=lu.solve(f[free]);g=Bf.T@u0
+ Y,resY=refined_solve(lu,Af,Bf) if T else (np.zeros((len(free),0)),0.);S=D-Bf.T@Y
+ u0,res=refined_solve(lu,Af,f[free]) if f.any() else (np.zeros(len(free)),0.);g=Bf.T@u0
  pads=sorted(p for p in covered if p in ops['supports'] and p not in terms and p not in src)
  Wr,Wc,Wv=[],[],[]
  for j,p in enumerate(pads):
   n,w=ops['supports'][p];keep=pos[n]>=0;need(keep.all(),'pad support touches a held source node: '+p);Wr+=list(pos[n]);Wc+=[j]*len(n);Wv+=list(w)
  W=sp.csc_matrix((Wv,(Wr,Wc)),shape=(len(free),len(pads)))
  P0=W.T@u0;PY=(W.T@Y) if T else np.zeros((len(pads),0))
- Wb=W[:,:BATCH].toarray();U=lu.solve(Wb);E=Wb.T@U;recip=float(np.max(abs(E-E.T))/max(np.max(abs(E)),1e-30)) if len(pads) else 0.
- res=float(np.max(abs(Af@u0-f[free])))/max(float(np.max(abs(f))),1e-30) if f.any() else 0.
+ Wb=W[:,:BATCH].toarray();U,_=refined_solve(lu,Af,Wb);E=Wb.T@U;recip=float(np.max(abs(E-E.T))/max(np.max(abs(E)),1e-30)) if len(pads) else 0.
  out={'board':a.board,'net':a.net,'case':a.case,'depth':a.depth,'N':N,'free':free,'terms':terms,'S':S,'g':g,'Y':Y,'u0':u0,'pads':pads,'P0':P0,'PY':PY,
       'loads':{p:v for p,v in loads.items()},'unserved_loads':unserved,'nonzero_not_injected':skipped,'source_pads':src,
-      'checks':{'reciprocity_relative':recip,'load_solve_residual_relative':res,'factor_seconds':round(tf,2),'L_U_nnz':int(lu.L.nnz+lu.U.nnz)},
+      'checks':{'reciprocity_relative':recip,'load_solve_residual_relative':res,'interface_solve_residual_relative':resY,'refinement_steps':REFINE_STEPS,'factor_seconds':round(tf,2),'L_U_nnz':int(lu.L.nnz+lu.U.nnz)},
       'barrel_intervals':len(records),'bindings':{'operator':sha(a.operator),'coverage':sha(a.coverage),'ledger':sha(a.ledger),'config':sha(a.config),'cases':sha(a.cases),'method':sha(Path(__file__))}}
  psave(a.output,out)
  return {k:out[k] for k in ['board','net','case','depth','N']}|{'pads':len(pads),'loads':len(loads),'unserved':len(unserved),'checks':out['checks']}
@@ -147,7 +155,7 @@ def couple(a):
   need(all(x['operator']==sha(opfile) and x['case']==a.case and x['depth']==a.depth for x in parts),'driving-point chunk from another operator/case/depth')
   need(pads==red['pads'],'driving-point chunks must cover every reduced pad exactly once, in order')
   return {'pads':pads,'e':np.concatenate([x['e'] for x in parts]) if parts else np.zeros(0),'q':np.concatenate([x['q'] for x in parts],axis=1) if parts else np.zeros((len(red['terms']),0)),
-          'residual':max((x.get('first_batch_residual',0.) for x in parts),default=0.)}
+          'residual':max((x['solve_residual_relative'] for x in parts),default=0.)}
  dpA,dpB=gather(a.ka_dp,rA,a.ka_op),gather(a.kb_dp,rB,a.kb_op)
  # Interface solves for every state first (small), then each board once for all states.
  small={}
@@ -208,8 +216,20 @@ def couple(a):
       'unserved_loads':{'KA':rA['unserved_loads'],'KB':rB['unserved_loads']},'reduction_checks':{'KA':rA['checks'],'KB':rB['checks']}}
  Path(a.output).write_bytes(gzip.compress(json.dumps(res,sort_keys=True).encode(),mtime=0))
  return {'net':a.net,'case':a.case,'states':len(results),'checks':{n:r['checks'] for n,r in results.items()}}
+SCOPE_ENV='E16_SOLVE_SCOPE'
+def enter_memory_scope():
+ """Run this CLI unit inside a 2 GiB, no-swap cgroup scope and prove the limits apply.
+
+ SuperLU reserves address space by a fill-factor guess (zero-filled, mostly untouched),
+ so an address-space rlimit rejects factorisations whose resident memory is ~1.2 GiB.
+ The unit bound is therefore enforced on resident memory by the kernel instead."""
+ if os.environ.get(SCOPE_ENV)!='1':
+  os.environ[SCOPE_ENV]='1'
+  os.execvp('systemd-run',['systemd-run','--user','--scope','-q','-p',f'MemoryMax={LIMIT}','-p','MemorySwapMax=0',sys.executable,os.path.abspath(__file__)]+sys.argv[1:])
+ rel=Path('/proc/self/cgroup').read_text().strip().split('::',1)[1];cg=Path('/sys/fs/cgroup'+rel)
+ need((cg/'memory.max').read_text().strip()==str(LIMIT) and (cg/'memory.swap.max').read_text().strip()=='0','not inside the 2 GiB no-swap memory scope: '+rel)
 def main(argv=None):
- if argv is None:resource.setrlimit(resource.RLIMIT_AS,(LIMIT,LIMIT))
+ if argv is None:enter_memory_scope()
  p=argparse.ArgumentParser();s=p.add_subparsers(dest='cmd',required=True)
  x=s.add_parser('reduce')
  for k in ['operator','coverage','ledger','config','cases','case','depth','board','net','output']:x.add_argument('--'+k,required=True)
