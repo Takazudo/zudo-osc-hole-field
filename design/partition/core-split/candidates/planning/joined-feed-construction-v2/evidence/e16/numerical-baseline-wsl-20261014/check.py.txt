@@ -1,0 +1,11 @@
+from pathlib import Path
+import hashlib, json, subprocess, sys, time
+root=Path('/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-r4')
+e=root/'design/partition/core-split/candidates/planning/joined-feed-construction-v2/evidence/e16/numerical-baseline-wsl-20261014'
+name=sys.argv[1];cmd=sys.argv[2:];start=time.monotonic()
+log=e/(name+'.txt')
+with log.open('x') as stream:p=subprocess.run(cmd,cwd=root,stdout=stream,stderr=subprocess.STDOUT)
+record={'name':name,'command':cmd,'cwd':str(root),'exit_code':p.returncode,'seconds':time.monotonic()-start,'log':log.name,'sha256':hashlib.sha256(log.read_bytes()).hexdigest()}
+checks=e/'checks.json';data=json.loads(checks.read_text()) if checks.exists() else []
+data.append(record);checks.write_text(json.dumps(data,indent=2)+'\n')
+print(json.dumps(record));print(log.read_text()[-5000:]);raise SystemExit(p.returncode)

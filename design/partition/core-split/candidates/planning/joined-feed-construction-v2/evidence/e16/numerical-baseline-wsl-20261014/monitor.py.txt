@@ -1,0 +1,26 @@
+import json
+import pathlib
+import time
+
+root = pathlib.Path('/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-r4')
+packet = root / '.circuit-cache/e16-numerical-0dab96a-19563d44'
+request = json.loads((packet / 'request.json').read_text())
+output = pathlib.Path(request['output'])
+steps = [json.loads(p.read_text()) for p in (output / 'steps').glob('*.json')]
+lines = (packet / 'execution.stdout.log').read_text().splitlines()
+samples = [json.loads(line) for line in (packet / 'scope-observations.jsonl').read_text().splitlines()]
+bounded = [s for s in samples if '/app.slice/run-' in s['cgroup']]
+latest = bounded[-1] if bounded else None
+slot = pathlib.Path('/home/takazudo/.agent-guard/heavy/slot-0.info')
+result = {
+    'observed_at_unix': time.time(),
+    'completed_step_receipts': len(steps),
+    'latest_execution_lines': lines[-2:],
+    'bounded_peak_bytes': max((int(s['values']['memory.peak']) for s in bounded), default=0),
+    'latest_bounded_sample': latest,
+    'guard_owner': slot.read_text().split(' label=')[0] if slot.exists() else None,
+    'terminal_receipt_exists': (packet / 'execution-result.json').exists(),
+}
+with pathlib.Path('/tmp/e16-checkpoint-20261014/runtime-observations.jsonl').open('a') as stream:
+    stream.write(json.dumps(result) + '\n')
+print(json.dumps(result, indent=2))

@@ -1,0 +1,43 @@
+{
+  "schema": "e16-reported-numerical-checks-v1",
+  "phase": "couple",
+  "status": "FAIL",
+  "checks": [
+    {
+      "name": "all-present.global_kcl_relative",
+      "value": 8.349850854768625e-11,
+      "limit": 1e-09,
+      "tolerance": "kcl_relative",
+      "passed": true
+    },
+    {
+      "name": "all-present.max_free_node_kcl_relative",
+      "value": 1.515200877665821e-08,
+      "limit": 1e-09,
+      "tolerance": "kcl_relative",
+      "passed": false
+    },
+    {
+      "name": "all-present.driving_point_solve_residual",
+      "value": 2.850814388399312e-10,
+      "limit": 1e-09,
+      "tolerance": "kcl_relative",
+      "passed": true
+    },
+    {
+      "name": "all-present.energy_minus_load_work_relative",
+      "value": 2.4892459643435285e-12,
+      "limit": 1e-09,
+      "tolerance": "energy_relative",
+      "passed": true
+    }
+  ],
+  "failures": [
+    "all-present.max_free_node_kcl_relative: missing/nonfinite diagnostic or declared limit exceeded"
+  ],
+  "electrical_acceptance": false,
+  "output_sha256": "838dead596fbd62cbf0f01b117ebdac88a6cfa1316b7a668df4d0972004e9650",
+  "config_sha256": "f5146d0c1d77e0626a455df308f52bf953ace9806861c25438adcdf90914c107",
+  "solver_sha256": "68db75f8f13dd7177cc885763857df240e815fa084f16b4fc22632dc3f93a292",
+  "assessment_sha256": "e8c1f0b55784bed3a6d8a1b86854a7cc9cdb0e7685e07efa9feb263e3efecc73"
+}
