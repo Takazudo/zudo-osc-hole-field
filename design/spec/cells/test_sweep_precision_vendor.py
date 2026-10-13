@@ -7,11 +7,8 @@ from design.spec.cells.sweep_precision_vendor import model, verdict
 
 
 class PrecisionVendorSweepGate(unittest.TestCase):
-    @classmethod
-    def setUpClass(cls):
-        model()
-
     def test_original_network_returns_nonzero_for_supported_failure(self):
+        model()
         result = subprocess.run(
             ["python3", "-m", "design.spec.cells.sweep_precision_vendor", "--fixture-original", "--offline"],
             cwd=ROOT, capture_output=True, text=True,
