@@ -28,3 +28,9 @@ The standalone prototype remains at `/mnt/c/Users/takaz/Dropbox/cclogs/zudo-osc-
 Prior native results remain: matched fill/census reconciliation PASS with KA196 / KB486 / separate KB-P1 480; capped DRC reports and board acceptance FAIL/INCOMPLETE. Prior KA long-B194 remains distinct. Physical source/load/full-path resistance remain unresolved. KEEP_K1402_INCUMBENT; protected geometry/decision unchanged; PR260 draft/unmerged, issue253 open.
 
 Final source verification:44 affected source tests PASS; circuit/doc check, guarded documentation build and strict site check PASS (existing link allowlist unchanged). No production retry was run.
+
+## Bounded diagnostic follow-up
+
+The owner subsequently explicitly chose “Stop and diagnose the accuracy failure,” confirming that direction. Final review rejected the unadmitted broad retry request05dfbe7f...f74635a:111 chunks could take several hours, beyond the unchanged shared guard1800s whole-command limit. That request was never approved or run; it remains retained as superseded. No resource limit was increased.
+
+Source `fc1800fd8af5647ed51588be01732ebcbbf8a411` adds reviewed `--reductions-only` mode. The next request is explicitly only+12V / nominal-average / uniform-dielectric: service plus KA and KB reductions, at most three180s units, then stop. No driving-point chunks, coupled solve or variant is included. This fits the unchanged1800s shared guard. Future full numerical scheduling must likewise fit existing guards; no full multi-hour batch is currently authorized. The candidate production accuracy and memory remain UNVERIFIED until this short fresh request is admitted and run.

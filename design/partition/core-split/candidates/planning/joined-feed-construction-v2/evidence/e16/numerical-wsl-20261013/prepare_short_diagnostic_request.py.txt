@@ -1,0 +1,26 @@
+"""Prepare a source-bound numerical request only; never approve or execute it."""
+from pathlib import Path
+import json,hashlib,subprocess,uuid,os
+root=Path.cwd();f=root/'design/partition/core-split/candidates/planning/joined-feed-construction-v2'
+e=f/'evidence/e16/native-wsl-20261013';audit=json.loads((e/'finite-input-verification.json').read_text())
+assert audit['status']=='PASS'
+assert not subprocess.check_output(['git','status','--porcelain']).strip()
+head=subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip();nonce=uuid.uuid4().hex
+p=root/'.circuit-cache'/('e16-numerical-'+head[:7]+'-'+nonce[:8]);p.mkdir()
+py=Path('/home/takazudo/.cache/zudo-e16-numerical-venv/bin/python');base=Path(audit['base'])
+output=Path('/home/takazudo/.cache/zudo-e16-runs')/('coupled-approved-'+head[:7]+'-'+nonce[:8]);assert not output.exists()
+def sha(path):
+ with Path(path).open('rb') as stream:return hashlib.file_digest(stream,'sha256').hexdigest()
+inputs=dict(audit['hashed_files'])
+for name,h in inputs.items():assert sha(name)==h,name
+for path in [*f.glob('*.py'),f/'evidence/e16/continuation-20261013b/coupled-network-config.json',f/'evidence/e16/continuation-20261013b/load-ledger.json.gz',f/'evidence/e16/process-cases.json',py.resolve(),py.parent.parent/'pyvenv.cfg',e/'finite-input-verification.json',e/'index.json',Path('/home/takazudo/.codex/scripts/heavy-guard.sh')]:inputs[str(path)]=sha(path)
+versions=subprocess.check_output([str(py),'-c','import sys,numpy,scipy,shapely,json;print(json.dumps(dict(python=sys.version,numpy=numpy.__version__,scipy=scipy.__version__,shapely=shapely.__version__)))'],text=True)
+command=['bash','/home/takazudo/.codex/scripts/heavy-guard.sh','--','env','-u','E16_SOLVE_SCOPE','OPENBLAS_NUM_THREADS=1','OMP_NUM_THREADS=1','MKL_NUM_THREADS=1',str(py),str(f/'run_coupled_e16.py'),'--python',str(py),'--finite',str(base),'--output',str(output),'--config',str(f/'evidence/e16/continuation-20261013b/coupled-network-config.json'),'--cases',str(f/'evidence/e16/process-cases.json'),'--depth','uniform-dielectric']
+for net in ('+12V',):command+=['--net='+net]
+for case in ('nominal-average',):command+=['--case',case]
+command+=['--reductions-only']
+request={'schema':'e16-production-numerical-request-v1','status':'PREPARED ONLY; NOT ADMITTED; NOT RUN','source_sha':head,'checkout':str(root),'uid':os.getuid(),'run_id':nonce,'attempt':2,'scope':'SHORT candidate precision diagnosis, baseline t2 only: whole-device normal-typ-v1 service and only KA/KB +12V nominal-average reductions at uniform-dielectric depth. No driving-point chunks or coupled solve. Reuses verified finite inputs without rebuilding completed finite coverage. No remedy variants, extra load/depth scenarios, routing, KiCad or physical/electrical acceptance.','command':command,'working_directory':str(root),'output':str(output),'input_sha256':inputs,'toolchain':json.loads(versions),'guards':{'shared_heavy_guard':True,'serialized_units':True,'each_unit_timeout_seconds':180,'unit_memory_max_bytes':2147483648,'unit_memory_swap_max_bytes':0,'maximum_units':3,'shared_heavy_guard_max_run_seconds':1800,'scope':'finite_solve.enter_memory_scope uses user-systemd and verifies live cgroup values; Docker/RLIMIT_AS is not a substitute','stop_on_failure':True,'both_board_reductions_before_driving_points':True,'resume':False},'approval_requirement':'Separate parent/operator approval of this exact file digest, source, inputs and operation before execution. Preparation is not approval. Agent can execute the exact approved command after verifying all hashes and live user-systemd availability; no sudo terminal is needed for this numerical scope.','estimated_work':{'driving_point_chunks':0,'reductions':2,'maximum_unit_budget_seconds':540,'expected_runtime':'About two minutes from the first attempt; three180s units maximum plus overhead, inside unchanged1800s heavy guard. Stops at first failed numerical check.'},'supersedes_unadmitted_request':'05dfbe7f5ca81c95e54fee8816c5e0393444a0b42c65f648ea3c81f77f74635a','supersedes_consumed_request':'beb7f4d8bad67fa1d525abdbbe378f3934efccbc68d0f38657c7933ebdbeeca4','limitations':['Old production residual/energy failures remain preserved; candidate accuracy/memory are unverified.','Future remedy/variant operators need distinct source/input preparation and admission.','Numerical subset output cannot establish full source/load/copper acceptance.']}
+(p/'request.json').write_text(json.dumps(request,indent=2)+'\n')
+index={'packet':str(p),'source_sha':head,'request_sha256':sha(p/'request.json'),'native_calls':0,'solves':0,'approval_created':False}
+(p/'index.json').write_text(json.dumps(index,indent=2)+'\n')
+Path('/tmp/osc-wsl-20261013/numerical-request-location.json').write_text(json.dumps(index,indent=2)+'\n');print(json.dumps(index,indent=2))
