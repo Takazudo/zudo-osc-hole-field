@@ -115,7 +115,7 @@ def _extended_residual(Af,x,b):
   residual[:,j]=rr
  return residual[:,0] if vector else residual
 
-def refined_solve(lu,Af,b,*,extended_solution=False):
+def _refined_accumulator(lu,Af,b,*,extended_solution=False):
  """Bounded mixed-precision refinement with the unchanged load-relative criterion.
 
  Float64 sparse residuals can lose small injection currents to cancellation in
@@ -124,13 +124,13 @@ def refined_solve(lu,Af,b,*,extended_solution=False):
  A reported residual above the declared threshold remains a failure. This helper
  does not replace the independent full coupled node-KCL and energy audits.
  """
- x=lu.solve(b)
  if extended_solution:
-  # Only the single load vector uses a wider accumulator. A float64 iterate can
-  # discard corrections even when its residual is evaluated in extended precision.
-  # Do not double the storage of the large multi-RHS driving-point chunks.
-  need(np.asarray(b).ndim==1,'extended solution is restricted to one load RHS')
-  x=x.astype(np.longdouble)
+  shape=np.asarray(b).shape
+  need(len(shape)==1 or (len(shape)==2 and 1<=shape[1]<=8),'extended accumulator is limited to eight RHS')
+  width=1 if len(shape)==1 else shape[1]
+  need(width*np.dtype(np.longdouble).itemsize<=16*np.dtype(np.float64).itemsize,'extended accumulator exceeds original solution byte budget')
+ x=lu.solve(b)
+ if extended_solution:x=x.astype(np.longdouble)
  scale=max(float(np.max(abs(b))),1e-300)
  r=_extended_residual(Af,x,b);best=x.copy();worst=float(np.max(abs(r)))/scale
  for _ in range(REFINE_STEPS):
@@ -138,6 +138,29 @@ def refined_solve(lu,Af,b,*,extended_solution=False):
   score=float(np.max(abs(r)))/scale
   if score<worst:best=x.copy();worst=score
  return best,worst
+def refined_solve(lu,Af,b,*,extended_solution=False):
+ """Preserve the ordinary float64 API and single extended load/interface RHS."""
+ if extended_solution:need(np.asarray(b).ndim==1,'extended solution is restricted to one load RHS')
+ return _refined_accumulator(lu,Af,b,extended_solution=extended_solution)
+def refined_projection(lu,Af,W,B):
+ """Project bounded extended blocks before storing small float64 e/q results.
+
+ Eight long-double solution columns occupy no more bytes than the previous
+ sixteen float64 columns. Keep the original W-batch residual normalization,
+ three corrections and unit scheduling; release each block before the next.
+ """
+ need(W.ndim==2 and W.shape[1]<=16,'projection requires at most sixteen RHS')
+ e=np.zeros(W.shape[1]);q=np.zeros((B.shape[1],W.shape[1]));worst_absolute=0.
+ scale=max(float(np.max(abs(W))),1e-300) if W.size else 1e-300
+ for lo in range(0,W.shape[1],8):
+  rhs=W[:,lo:lo+8]
+  U,relative=_refined_accumulator(lu,Af,rhs,extended_solution=True)
+  need(np.isfinite(relative) and relative>=0,'nonfinite or invalid driving-point residual')
+  worst_absolute=max(worst_absolute,relative*max(float(np.max(abs(rhs))),1e-300))
+  e[lo:lo+rhs.shape[1]]=np.sum(rhs*U,axis=0)
+  q[:,lo:lo+rhs.shape[1]]=B.T@U
+  del U
+ return e,q,worst_absolute/scale
 def refined_interface_solve(lu,Af,B):
  """Retain precision in the small terminal basis without widening driving-point batches.
 
@@ -215,7 +238,7 @@ def dpoint(a):
   chunk=sel[k:k+BATCH];Wb=np.zeros((len(free),len(chunk)))
   for j,p in enumerate(chunk):
    n,w=ops['supports'][p];need((pos[n]>=0).all(),'pad support touches a held source node: '+p);Wb[pos[n],j]=w
-  U,res=refined_solve(lu,Af,Wb);worst=max(worst,res);e[k:k+len(chunk)]=np.sum(Wb*U,axis=0);q[:,k:k+len(chunk)]=Bf.T@U
+  ep,qp,res=refined_projection(lu,Af,Wb,Bf);worst=max(worst,res);e[k:k+len(chunk)]=ep;q[:,k:k+len(chunk)]=qp
  psave(a.output,{'board':a.board,'net':a.net,'case':a.case,'depth':a.depth,'pads':sel,'e':e,'q':q,'operator':sha(a.operator),'bindings':{'config':sha(a.config),'cases':sha(a.cases),'method':sha(Path(__file__))},'solve_residual_relative':worst})
  return {'board':a.board,'net':a.net,'pads':len(sel),'solve_residual_relative':worst}
 def reduce(a):
