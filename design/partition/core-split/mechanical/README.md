@@ -18,7 +18,7 @@ PYTHONPYCACHEPREFIX=/tmp/osc246-pycache python3 -m unittest discover -s design/p
 python3 circuit/routing/epic-242/baseline/verify_inputs.py
 ```
 
-`build.py` checks recorded source hashes before writing only its own generated directory. Source changes require explicit reviewed rebinding, not silent regeneration. Source-lock records source bytes and generator/input hashes. Unit tests exercise preservation mutations, continuous curve bounds, rejected spans, passage/support collisions, label disjointness and unqualified acceptance states. Browser evidence belongs in temporary paths, not production assets.
+`build.py` checks recorded source hashes before writing only its own generated directory. Source changes require explicit reviewed rebinding, not silent regeneration. Source-lock records source bytes and generator/input hashes. Unit tests exercise preservation mutations, continuous curve bounds, rejected spans, passage/support collisions, label disjointness and unqualified acceptance states. Temporary browser profiles/instrumented copies stay outside production assets. Reviewed browser receipts and screenshots are retained under `evidence/issue263-mac/`.
 
 ## Model and limitations
 
@@ -38,7 +38,7 @@ Primary retained PDFs: `design/connectors/sources/jst-gh.pdf` (mated GH/connecto
 
 Native routing/DRC/ERC, complete initial/final canonical regeneration, physical fit and full CI are NOT RUN. No global native slot was assigned; canonical regeneration also writes unowned production paths. Commit skips automatic CI deliberately because existing workflows can exceed global native concurrency. A coordinator must assign a bounded pinned KiCad 10.0.6 command through `scripts/kicad/run.sh` before native acceptance. No substitutes or mock acceptance.
 
-Browser interaction/screenshot verification is deferred under [#263](https://github.com/Takazudo/zudo-osc-hole-field/issues/263): three guarded Chromium runs timed out. JavaScript syntax passed; visual acceptance is not claimed.
+The historical Cloud browser deferral in [#263](https://github.com/Takazudo/zudo-osc-hole-field/issues/263) now has successful Mac Chrome interaction and visual evidence in [the browser review](evidence/issue263-mac/README.md). All five alternatives / 500 alternative-specific rows, all boards, face/reset behavior and assets passed. Issue #263 remains open pending review/integration of the portability fix; physical/native acceptance is unchanged. Run `check_browser.py --output-dir <new-evidence-directory> --visuals` through the available shared browser guard; executable discovery can be overridden with `--browser` or `CHROME_BIN`.
 
 ## Power contract reconciliation and deterministic correction
 
