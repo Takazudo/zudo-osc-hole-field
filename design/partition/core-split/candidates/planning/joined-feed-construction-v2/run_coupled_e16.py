@@ -16,6 +16,7 @@ def main():
  p=argparse.ArgumentParser();p.add_argument('--python',required=True);p.add_argument('--finite',type=Path,required=True,help='run_finite_e16.py OUTDIR')
  p.add_argument('--output',type=Path,required=True);p.add_argument('--net',choices=NETS,action='append');p.add_argument('--case',action='append');p.add_argument('--depth',action='append')
  p.add_argument('--config',type=Path,default=HERE/'evidence/e16/continuation-20261013b/coupled-network-config.json');p.add_argument('--cases',type=Path,default=HERE/'evidence/e16/process-cases.json')
+ p.add_argument('--reductions-only',action='store_true',help='validate board reductions only; no driving-point or coupled work')
  p.add_argument('--resume',action='store_true');a=p.parse_args()
  out=a.output;rs.need(out.is_absolute() and not out.is_relative_to(rs.ROOT),'absolute OUTDIR outside the repository required')
  rs.need(a.resume or not out.exists(),'fresh OUTDIR required (or --resume)');out.mkdir(parents=True,exist_ok=True)
@@ -36,6 +37,7 @@ def main():
      L.run(f'{b}-reduce-{tag}',['finite_solve.py','reduce',*args,'--ledger',ledger,'--service',service,'--output',r],[op,cov,a.config,a.cases,ledger,service,*coverage],METHODS,[r,Path(str(r)+'.numerical.json')])
      n=json.loads((out/'steps'/f'{b}-reduce-{tag}.json').read_text())['stdout_tail'];pads=json.loads(n.strip().splitlines()[-1])['pads']
      tasks[b]=(args,op,cov,pads)
+    if a.reductions_only:continue
     # Both reductions must pass before spending time on either board's chunks.
     for b in ('KA','KB'):
      args,op,cov,pads=tasks[b];dps[b]=[]
@@ -46,6 +48,6 @@ def main():
     L.run(f'couple-{tag}',['finite_solve.py','couple','--ka-red',red['KA'],'--kb-red',red['KB'],'--ka-op',ops['KA'],'--kb-op',ops['KB'],'--ka-dp',*dps['KA'],'--kb-dp',*dps['KB'],
           *common,'--case',case,'--depth',depth,f'--net={net}','--output',res],[red['KA'],red['KB'],ops['KA'],ops['KB'],*dps['KA'],*dps['KB'],a.config,a.cases],METHODS,[res,Path(str(res)+'.numerical.json')])
  log=out/'coupled-log.json';prior=json.loads(log.read_text()) if log.exists() else {'invocations':[]}
- prior['invocations'].append({'started':started,'finite':str(a.finite),'nets':a.net or NETS,'cases':cases,'depths':depths,'resume':a.resume,'device_service':str(service),'log':L.log})
+ prior['invocations'].append({'started':started,'finite':str(a.finite),'nets':a.net or NETS,'cases':cases,'depths':depths,'resume':a.resume,'reductions_only':a.reductions_only,'device_service':str(service),'log':L.log})
  log.write_text(json.dumps(prior,indent=1)+'\n')
 if __name__=='__main__':main()

@@ -114,6 +114,30 @@ class NumericalAcceptance(unittest.TestCase):
         self.assertEqual(len(calls), 3)
         self.assertTrue(calls[-1].startswith('KB-reduce'))
 
+    def test_reductions_only_never_dispatches_driving_or_coupled_work(self):
+        import run_coupled_e16 as driver
+        calls = []
+        class Reduced:
+            def __init__(self, out, *args):
+                self.out = out; self.log = []; (out/'steps').mkdir()
+            def run(self, name, command, inputs, methods, outputs):
+                calls.append(name)
+                if 'reduce' in name:
+                    (self.out/'steps'/ (name + '.json')).write_text(json.dumps({'stdout_tail': '{"pads": 200}'}))
+        with tempfile.TemporaryDirectory() as tmp:
+            p = Path(tmp); config = p/'config.json'; config.write_text(json.dumps(CONFIG | {
+                'scenario': {'id': 'fixture', 'ledger': 'fixture-ledger'}, 'default_depth_case': 'fixture'}))
+            cases = p/'cases.json'; cases.write_text('{"cases": {"fixture": {}}}')
+            argv = ['driver', '--python', sys.executable, '--finite', str(p/'finite'), '--output', str(p/'out'),
+                    '--config', str(config), '--cases', str(cases), '--net=+12V', '--reductions-only']
+            with patch.object(driver.rs, 'Ledger', Reduced), patch.object(sys, 'argv', argv):
+                driver.main()
+            log = json.loads((p/'out/coupled-log.json').read_text())
+            self.assertTrue(log['invocations'][0]['reductions_only'])
+        self.assertEqual(len(calls), 3)
+        self.assertTrue(calls[1].startswith('KA-reduce'))
+        self.assertTrue(calls[2].startswith('KB-reduce'))
+
 
 if __name__ == '__main__':
     unittest.main()
