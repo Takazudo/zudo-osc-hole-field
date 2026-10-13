@@ -30,8 +30,8 @@ def files(p):
  if p.is_dir():return {str(q.relative_to(p)):sha(q) for q in sorted(p.rglob('*')) if q.is_file()}
  return {'':sha(p)} if p.exists() else None
 class Ledger:
- def __init__(self,out,resume,python):
-  self.out=out;self.resume=resume;self.python=python;(out/'steps').mkdir(parents=True,exist_ok=True);self.log=[]
+ def __init__(self,out,resume,python,unit_guard=None):
+  self.out=out;self.resume=resume;self.python=python;self.unit_guard=unit_guard;(out/'steps').mkdir(parents=True,exist_ok=True);self.log=[]
  def rel(self,p):
   p=Path(p)
   for base in (self.out,ROOT):
@@ -48,26 +48,43 @@ class Ledger:
  def run(self,name,command,inputs,methods,outputs,check=None):
   stamp=self.out/'steps'/f'{name}.json';inputs=[HERE/q for q in inputs];methods=[HERE/q for q in methods]
   bound={'inputs':{self.rel(p):sha(p) for p in inputs},'methods':{self.rel(p):sha(p) for p in methods},'command':[str(c) for c in command]}
-  if stamp.exists() or any(o.exists() for o in outputs):
+  if self.unit_guard:bound['resource_guard']=self.unit_guard.binding()
+  retained_streams=[self.out/'steps'/f'{name}.{suffix}.txt' for suffix in ('stdout','stderr')] if self.unit_guard else []
+  if stamp.exists() or any(o.exists() for o in [*outputs,*retained_streams]):
    need(self.resume,f'{name}: output exists; fresh OUTDIR or --resume required')
    old=json.loads(stamp.read_text()) if stamp.exists() else None
    if old is None:why='partial: outputs without a completed ledger'
    elif any(old.get(k)!=bound[k] for k in bound):why='stale: '+','.join(k for k in bound if old.get(k)!=bound[k])
    elif old.get('exit_code')!=0:why='failed earlier run'
+   elif self.unit_guard and (not old.get('resource_guard_result',{}).get('passed') or
+        len(old.get('stream_files',{}))!=2 or any(not (self.out/p).is_file() or sha(self.out/p)!=h for p,h in old['stream_files'].items())):why='guard receipt or streams missing/changed'
    elif any(files(o)!=old['outputs'].get(self.rel(o)) for o in outputs):why='output bytes differ from ledger'
    else:
     self.log.append({'step':name,'reused':True});print(json.dumps({'step':name,'reused':True}),flush=True);return old
-   self.reject(name,outputs,why)
-  start=time.monotonic();proc=subprocess.Popen(['timeout',TIMEOUT,self.python]+[str(c) for c in command],cwd=HERE,stdout=subprocess.PIPE,stderr=subprocess.PIPE,text=True)
+   self.reject(name,[*outputs,*retained_streams],why)
+  launch=['timeout',TIMEOUT,self.python]+[str(c) for c in command]
+  if self.unit_guard:
+   launch=self.unit_guard.command(self.python,launch)
+   print(json.dumps({'step':name,'status':'waiting for shared guard / running unit'}),flush=True)
+  start=time.monotonic();proc=subprocess.Popen(launch,cwd=HERE,stdout=subprocess.PIPE,stderr=subprocess.PIPE,text=True)
   pipes={}
   readers=[threading.Thread(target=lambda k,f:pipes.__setitem__(k,f.read()),args=(k,f)) for k,f in (('out',proc.stdout),('err',proc.stderr))]
   for t in readers:t.start()
   _,status,usage=os.wait4(proc.pid,0)
   for t in readers:t.join()
+  proc.stdout.close();proc.stderr.close()
   code=os.waitstatus_to_exitcode(status);proc.returncode=code;stdout,stderr=pipes['out'],pipes['err']
   rec=dict(bound,step=name,exit_code=code,elapsed_seconds=round(time.monotonic()-start,3),
            stdout_tail=stdout[-4000:],stderr_tail=stderr[-4000:],peak_rss_KiB=usage.ru_maxrss,
            outputs={self.rel(o):files(o) for o in outputs},native_calls=0)
+  if self.unit_guard:
+   rec['launch_command']=launch;rec['resource_guard_result']=self.unit_guard.verdict(stderr,code)
+   rec['stream_files']={}
+   for suffix,content in (('stdout',stdout),('stderr',stderr)):
+    stream=self.out/'steps'/f'{name}.{suffix}.txt';stream.write_text(content)
+    rec['stream_files'][self.rel(stream)]=sha(stream)
+   if not rec['resource_guard_result']['passed']:
+    rec['process_exit_code']=code;rec['exit_code']=code or 1;proc.returncode=rec['exit_code']
   if check and proc.returncode==0:rec['check']=check()
   stamp.write_text(json.dumps(rec,indent=1)+'\n');self.log.append({'step':name,'exit_code':proc.returncode,'elapsed_seconds':rec['elapsed_seconds']})
   print(json.dumps({'step':name,'exit_code':proc.returncode,'seconds':rec['elapsed_seconds'],'tail':stdout.strip().splitlines()[-1:] }),flush=True)

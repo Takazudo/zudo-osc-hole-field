@@ -4,6 +4,8 @@
 Per net, process case and declared stack depth: validate both board reductions, driving-point
 chunks, then couple. Each unit is a separate hash-ledgered process (replay_steps.Ledger):
 timeout 180 s, a 2 GiB no-swap memory scope (finite_solve.enter_memory_scope), content-bound --resume. One unit at a time.
+With --unit-heavy-guard-sha256, each unit separately queues through the unchanged
+account guard; the lightweight parent must not be wrapped in another heavy guard.
 """
 import argparse,json,time
 from pathlib import Path
@@ -17,10 +19,17 @@ def main():
  p.add_argument('--output',type=Path,required=True);p.add_argument('--net',choices=NETS,action='append');p.add_argument('--case',action='append');p.add_argument('--depth',action='append')
  p.add_argument('--config',type=Path,default=HERE/'evidence/e16/continuation-20261013b/coupled-network-config.json');p.add_argument('--cases',type=Path,default=HERE/'evidence/e16/process-cases.json')
  p.add_argument('--reductions-only',action='store_true',help='validate board reductions only; no driving-point or coupled work')
+ p.add_argument('--unit-heavy-guard-sha256',help='queue each unit through the account shared heavy guard with these exact bytes; requires separate run admission')
  p.add_argument('--resume',action='store_true');a=p.parse_args()
  out=a.output;rs.need(out.is_absolute() and not out.is_relative_to(rs.ROOT),'absolute OUTDIR outside the repository required')
  rs.need(a.resume or not out.exists(),'fresh OUTDIR required (or --resume)');out.mkdir(parents=True,exist_ok=True)
- cfg=json.loads(a.config.read_text());ledger=HERE/cfg['scenario']['ledger'];L=rs.Ledger(out,a.resume,a.python);started=time.strftime('%Y-%m-%dT%H:%M:%S%z')
+ cfg=json.loads(a.config.read_text());ledger=HERE/cfg['scenario']['ledger']
+ options={}
+ if a.unit_heavy_guard_sha256:
+  from numerical_unit_guard import UnitGuard
+  options['unit_guard']=UnitGuard(a.unit_heavy_guard_sha256)
+  options['unit_guard'].check()
+ L=rs.Ledger(out,a.resume,a.python,**options);started=time.strftime('%Y-%m-%dT%H:%M:%S%z')
  cases=a.case or list(json.loads(a.cases.read_text())['cases']);depths=a.depth or [cfg['default_depth_case']]
  coverage=[a.finite/b/f'coverage-{net}.json.gz' for b in ('KA','KB') for net in NETS]
  service=out/f'device-service-{cfg["scenario"]["id"]}.json'
@@ -48,6 +57,6 @@ def main():
     L.run(f'couple-{tag}',['finite_solve.py','couple','--ka-red',red['KA'],'--kb-red',red['KB'],'--ka-op',ops['KA'],'--kb-op',ops['KB'],'--ka-dp',*dps['KA'],'--kb-dp',*dps['KB'],
           *common,'--case',case,'--depth',depth,f'--net={net}','--output',res],[red['KA'],red['KB'],ops['KA'],ops['KB'],*dps['KA'],*dps['KB'],a.config,a.cases],METHODS,[res,Path(str(res)+'.numerical.json')])
  log=out/'coupled-log.json';prior=json.loads(log.read_text()) if log.exists() else {'invocations':[]}
- prior['invocations'].append({'started':started,'finite':str(a.finite),'nets':a.net or NETS,'cases':cases,'depths':depths,'resume':a.resume,'reductions_only':a.reductions_only,'device_service':str(service),'log':L.log})
+ prior['invocations'].append({'started':started,'finite':str(a.finite),'nets':a.net or NETS,'cases':cases,'depths':depths,'resume':a.resume,'reductions_only':a.reductions_only,'unit_heavy_guard_sha256':a.unit_heavy_guard_sha256,'device_service':str(service),'log':L.log})
  log.write_text(json.dumps(prior,indent=1)+'\n')
 if __name__=='__main__':main()
