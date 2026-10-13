@@ -1,0 +1,121 @@
+{
+  "accepted": false,
+  "chain": [
+    {
+      "command": [
+        "bash",
+        "scripts/kicad/run.sh",
+        "env",
+        "EPIC242_NATIVE_WORKER=local-3f8e1f747ebf47faa4d1b46024df0970-2-e16-ka-t2",
+        "EPIC242_NATIVE_SLICE=epic242-w6c6f63616c2d33663865316637343765626634376661613464316234363032346466303937302d322d6531362d6b612d7432.slice",
+        "EPIC242_NATIVE_DEADLINE=1791894624",
+        "EPIC242_ADMISSION_MODE=local",
+        "EPIC242_LOCAL_REQUEST=.circuit-cache/e16-native-local-093f14b-3f8e1f74/KA-t2/local-request.json",
+        "EPIC242_PARENT_LOCAL_REQUEST_SHA256=f9875106febb93efd01de293d8bd202677566a07e9abd7665135db5f7b7ab808",
+        "EPIC242_LOCAL_APPROVAL=.circuit-cache/e16-native-local-093f14b-3f8e1f74/KA-t2/operator-approval.json",
+        "EPIC242_LOCAL_APPROVAL_SHA256=8d59a0de6caa6c58a8d28aa7c93e2f3c240732ec0af969c25e8cb280709a448a",
+        "python3",
+        "design/partition/core-split/candidates/planning/joined-feed-construction-v2/native_validation.py",
+        "native-fill",
+        "--stage",
+        ".circuit-cache/e16-native-local-093f14b-3f8e1f74",
+        "--target",
+        "KA-t2"
+      ],
+      "input_sha256": {
+        ".circuit-cache/e16-native-local-093f14b-3f8e1f74/KA-t2/filled/KA-t2.kicad_dru": "14989a90b6d8bec5967487b7bbc915f4382bab17e7759a30517a00e6c11c27ac",
+        ".circuit-cache/e16-native-local-093f14b-3f8e1f74/KA-t2/filled/KA-t2.kicad_pcb": "c5f8c3967bfffe0d84e8fdea49daabc64ea3ccb9152da470f7b06270892d2959",
+        ".circuit-cache/e16-native-local-093f14b-3f8e1f74/KA-t2/filled/KA-t2.kicad_pro": "118d3a49c306babe3ec88c0fb2906cbc29792164c76a677f47c670ba9c0136fe",
+        ".circuit-cache/e16-native-local-093f14b-3f8e1f74/request.json": "4dbd0abd2473706a7b9f7de1b2c1d97a6093a1d231e4eaea9a743c614030dbf7"
+      },
+      "output_sha256": {
+        ".circuit-cache/e16-native-local-093f14b-3f8e1f74/KA-t2/fill.json": "8dba823a4554af893550ee4373bef1582ed1c2adf5af152a08a4527e419bed13",
+        ".circuit-cache/e16-native-local-093f14b-3f8e1f74/KA-t2/fill.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        ".circuit-cache/e16-native-local-093f14b-3f8e1f74/KA-t2/filled/KA-t2.kicad_dru": "14989a90b6d8bec5967487b7bbc915f4382bab17e7759a30517a00e6c11c27ac",
+        ".circuit-cache/e16-native-local-093f14b-3f8e1f74/KA-t2/filled/KA-t2.kicad_pcb": "84bca66c9b4fe8d4a956ffca96e12231f8e086199df32aa104d40754bec9b23f",
+        ".circuit-cache/e16-native-local-093f14b-3f8e1f74/KA-t2/filled/KA-t2.kicad_pro": "118d3a49c306babe3ec88c0fb2906cbc29792164c76a677f47c670ba9c0136fe"
+      },
+      "phase": "fill",
+      "previous_record_sha256": null,
+      "record_sha256": "7630c777bba25922f27aaed2cc7151a82dd8d9fd2df8ac87648ac20cf42b3a9b",
+      "returncode": 0
+    },
+    {
+      "command": [
+        "bash",
+        "scripts/kicad/run.sh",
+        "kicad-cli",
+        "pcb",
+        "drc",
+        "--severity-all",
+        "--format",
+        "json",
+        "--output",
+        ".circuit-cache/e16-native-local-093f14b-3f8e1f74/KA-t2/drc.json",
+        ".circuit-cache/e16-native-local-093f14b-3f8e1f74/KA-t2/filled/KA-t2.kicad_pcb"
+      ],
+      "input_sha256": {
+        ".circuit-cache/e16-native-local-093f14b-3f8e1f74/KA-t2/filled/KA-t2.kicad_dru": "14989a90b6d8bec5967487b7bbc915f4382bab17e7759a30517a00e6c11c27ac",
+        ".circuit-cache/e16-native-local-093f14b-3f8e1f74/KA-t2/filled/KA-t2.kicad_pcb": "84bca66c9b4fe8d4a956ffca96e12231f8e086199df32aa104d40754bec9b23f",
+        ".circuit-cache/e16-native-local-093f14b-3f8e1f74/KA-t2/filled/KA-t2.kicad_pro": "118d3a49c306babe3ec88c0fb2906cbc29792164c76a677f47c670ba9c0136fe",
+        ".circuit-cache/e16-native-local-093f14b-3f8e1f74/request.json": "4dbd0abd2473706a7b9f7de1b2c1d97a6093a1d231e4eaea9a743c614030dbf7"
+      },
+      "output_sha256": {
+        ".circuit-cache/e16-native-local-093f14b-3f8e1f74/KA-t2/drc.json": "f6e1a73b5119d4f9ee90806f6791f49e6cdd4639bec6a284ca9dff2f510fa971",
+        ".circuit-cache/e16-native-local-093f14b-3f8e1f74/KA-t2/drc.log": "e09f71f2a97f0a2136528e3c21f26e9bf50a21514bb228796bda6dd095bf8d6d",
+        ".circuit-cache/e16-native-local-093f14b-3f8e1f74/KA-t2/filled/KA-t2.kicad_dru": "14989a90b6d8bec5967487b7bbc915f4382bab17e7759a30517a00e6c11c27ac",
+        ".circuit-cache/e16-native-local-093f14b-3f8e1f74/KA-t2/filled/KA-t2.kicad_pcb": "84bca66c9b4fe8d4a956ffca96e12231f8e086199df32aa104d40754bec9b23f",
+        ".circuit-cache/e16-native-local-093f14b-3f8e1f74/KA-t2/filled/KA-t2.kicad_pro": "118d3a49c306babe3ec88c0fb2906cbc29792164c76a677f47c670ba9c0136fe"
+      },
+      "phase": "drc",
+      "previous_record_sha256": "7630c777bba25922f27aaed2cc7151a82dd8d9fd2df8ac87648ac20cf42b3a9b",
+      "record_sha256": "eef10e3a4b58032e1f17953f81f5bb221019eaaab8efaf68ed74170e0043e194",
+      "returncode": 0
+    },
+    {
+      "command": [
+        "bash",
+        "scripts/kicad/run.sh",
+        "env",
+        "EPIC242_NATIVE_WORKER=local-3f8e1f747ebf47faa4d1b46024df0970-2-e16-ka-t2",
+        "EPIC242_NATIVE_SLICE=epic242-w6c6f63616c2d33663865316637343765626634376661613464316234363032346466303937302d322d6531362d6b612d7432.slice",
+        "EPIC242_NATIVE_DEADLINE=1791894624",
+        "EPIC242_ADMISSION_MODE=local",
+        "EPIC242_LOCAL_REQUEST=.circuit-cache/e16-native-local-093f14b-3f8e1f74/KA-t2/local-request.json",
+        "EPIC242_PARENT_LOCAL_REQUEST_SHA256=f9875106febb93efd01de293d8bd202677566a07e9abd7665135db5f7b7ab808",
+        "EPIC242_LOCAL_APPROVAL=.circuit-cache/e16-native-local-093f14b-3f8e1f74/KA-t2/operator-approval.json",
+        "EPIC242_LOCAL_APPROVAL_SHA256=8d59a0de6caa6c58a8d28aa7c93e2f3c240732ec0af969c25e8cb280709a448a",
+        "python3",
+        "design/partition/core-split/candidates/planning/joined-feed-construction-v2/native_validation.py",
+        "native-connectivity",
+        "--stage",
+        ".circuit-cache/e16-native-local-093f14b-3f8e1f74",
+        "--target",
+        "KA-t2"
+      ],
+      "input_sha256": {
+        ".circuit-cache/e16-native-local-093f14b-3f8e1f74/KA-t2/filled/KA-t2.kicad_dru": "14989a90b6d8bec5967487b7bbc915f4382bab17e7759a30517a00e6c11c27ac",
+        ".circuit-cache/e16-native-local-093f14b-3f8e1f74/KA-t2/filled/KA-t2.kicad_pcb": "84bca66c9b4fe8d4a956ffca96e12231f8e086199df32aa104d40754bec9b23f",
+        ".circuit-cache/e16-native-local-093f14b-3f8e1f74/KA-t2/filled/KA-t2.kicad_pro": "118d3a49c306babe3ec88c0fb2906cbc29792164c76a677f47c670ba9c0136fe",
+        ".circuit-cache/e16-native-local-093f14b-3f8e1f74/request.json": "4dbd0abd2473706a7b9f7de1b2c1d97a6093a1d231e4eaea9a743c614030dbf7"
+      },
+      "output_sha256": {
+        ".circuit-cache/e16-native-local-093f14b-3f8e1f74/KA-t2/connectivity.json": "b5045e1429d229266298b10b9baca903277c084edaebb52f226350f420e7e5a6",
+        ".circuit-cache/e16-native-local-093f14b-3f8e1f74/KA-t2/connectivity.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        ".circuit-cache/e16-native-local-093f14b-3f8e1f74/KA-t2/filled/KA-t2.kicad_dru": "14989a90b6d8bec5967487b7bbc915f4382bab17e7759a30517a00e6c11c27ac",
+        ".circuit-cache/e16-native-local-093f14b-3f8e1f74/KA-t2/filled/KA-t2.kicad_pcb": "84bca66c9b4fe8d4a956ffca96e12231f8e086199df32aa104d40754bec9b23f",
+        ".circuit-cache/e16-native-local-093f14b-3f8e1f74/KA-t2/filled/KA-t2.kicad_pro": "118d3a49c306babe3ec88c0fb2906cbc29792164c76a677f47c670ba9c0136fe"
+      },
+      "phase": "connectivity",
+      "previous_record_sha256": "eef10e3a4b58032e1f17953f81f5bb221019eaaab8efaf68ed74170e0043e194",
+      "record_sha256": "a41caa92d5c55b5828c1298f52749fb57203d1d343252fcc393548820e2ee696",
+      "returncode": 0
+    }
+  ],
+  "error": null,
+  "filled_board_sha256": "84bca66c9b4fe8d4a956ffca96e12231f8e086199df32aa104d40754bec9b23f",
+  "request_sha256": "4dbd0abd2473706a7b9f7de1b2c1d97a6093a1d231e4eaea9a743c614030dbf7",
+  "schema": "e16-native-execution-v1",
+  "status": "NATIVE PHASES COMPLETED; REVIEW REQUIRED",
+  "worker": "local-3f8e1f747ebf47faa4d1b46024df0970-2-e16-ka-t2"
+}

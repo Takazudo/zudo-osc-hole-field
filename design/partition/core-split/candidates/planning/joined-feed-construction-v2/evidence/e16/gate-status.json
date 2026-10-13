@@ -1,6 +1,6 @@
 {
  "schema": "e16-gate-status-v1",
- "date": "2026-10-13 (local WSL admission source)",
+ "date": "2026-10-13 (matched WSL native evidence)",
  "decision_file": "design/partition/core-split/decision.json is unchanged: design/partition/core-split/power/joined/check.py pins its reviewed SHA-256 (43c8fffe...) and refuses a changed input. These E16 reasons are recorded here and on #253 instead of rewriting a reviewed hash.",
  "interim_disposition": "KEEP_K1402_INCUMBENT",
  "architecture_selection_ready": false,
@@ -8,13 +8,14 @@
  "gates": {
   "G1-placed-source-contract": "OPEN. E16 does not move any placement, outline or Z; the 3.6 mm satellite service deficit is untouched.",
   "G2-joined-power-service": "OPEN. Physical source dependency negative (abstract CN301/XB301, no raw/load bridge). Three fixed local feed variants remain conditional; full-path resistance is not established and retained copper limits fail. Whole-device signed eligibility now prevents partial-device injection; t2 has151 complete,59 partial,21 unserved,194 unmapped groups. Unknown currents remain null. GH380 conductor compliance NOT EVALUATED. Numerical helper fixtures pass but production node-KCL/energy closure remains unproved; guarded production re-solves NOT RUN (separate admission absent; WSL live user scope now verifies 2 GiB/no-swap). Reduced-load voltage is not electrical acceptance. See continuation-20261013b and continuation-20261013-wsl.",
-  "G3-matched-native-pilot": "NOT RUN / NOT ADMITTED. First operator harmless-control qualification FAIL before any phase: sudo credential from the original terminal did not cross the heavy-guard setsid boundary. Failure retained under operator-terminal-20261013. Local PTY authentication source correction prepared; fresh exact-request approval and real control/startup qualification still required. No KiCad/ngspice/board execution; resource caps and native guards unchanged.",
-  "G4-native-eligibility": "NOT RUN. No native fill/DRC of E16 access copper.",
+  "G3-matched-native-pilot": "MATCHED NATIVE EXECUTION AND RECONCILIATION COMPLETE; ACCEPTANCE OPEN/FAIL. Owner-admitted WSL control/startup/oracle checks PASS; KA-t2/KB-t2/KB-p1 filled once with matched sidecars, full-severity DRC and complete native pad/feed/peer census on identical preserved boards. Zero differences; unresolved196/486/480. Full DRC enumeration INCOMPLETE: per-category report caps, native open edges479/1220/1219 versus DRC-listed479/499/499. No electrical acceptance. See native-wsl-20261013/index.json.",
+  "G4-native-eligibility": "FAIL / OPEN. Matched native fill/DRC/census completed; unresolved pad identities 196/486/480 and DRC findings remain. Exhaustive DRC enumeration incomplete due to pinned engine category caps; no electrical or physical acceptance.",
   "G5-label-panel-release": "OPEN for the #249 native label gate. The stale panel receipt was requalified at 082b883 against the changed run.sh (pinned KiCad 10.0.6: 0 DRC, 438/438 lock centres, render reviewed); its bound inputs are unchanged by this increment.",
   "G6-installed-qualification": "NEEDS BENCH / NOT RUN."
  },
  "process": "Through vias only; the authored six-layer 2 oz stack is unchanged. Refreshed primary evidence (process-evidence-20261013.json): the <=0.5 mm filled-via limit is a hole limit and covers epoxy fill (E16 0.3 mm inside); 'hole surface copper >=5 um' is a filled-and-capped quality condition, not a wall minimum. Open: fill-by-default on 6+ layers, the 2 oz PTH ring >=0.254 mm vs 0.15 mm via ring, minimum plating, a 2 oz six-layer stack, drill vs finished hole.",
- "native_calls": 0,
+ "native_calls": 24,
+ "native_calls_scope": "Admitted pinned-image containers across startup success/failure, one oracle test and three E16 targets; excludes harmless fixture controls.",
  "accepted": false,
  "pilots": "KA longB closes U2314.11/C2342.1 (196\u2192194),15segments,all73699 original objects unchanged,zero new disconnects; isolated-strip screen34.7mOhm is not full-path acceptance. KB P1 remains separate480 with28.8\u201331.3mOhm failed. Fixed seven-via feed result keeps exact196 residual identities; combined identical; wider-face baseline. Variant finite coverage and resistance NOT RUN; original t2 finite coverage remains complete.",
  "history": [
@@ -60,5 +61,5 @@
    "continuation_evidence": "continuation-20261013-wsl/index.json"
   }
  ],
- "continuation_evidence": "local-admission-20261013/index.json"
+ "continuation_evidence": "native-wsl-20261013/index.json"
 }

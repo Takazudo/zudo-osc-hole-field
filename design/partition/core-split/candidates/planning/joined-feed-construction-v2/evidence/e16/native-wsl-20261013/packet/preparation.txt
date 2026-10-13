@@ -1,0 +1,105 @@
+{"status": "PREPARED; NOT ADMITTED; NOT DISPATCHED", "targets": ["KA-t2", "KB-t2", "KB-p1"], "descriptor_sha256": "9d7a64c81eaa890a064bb88511e34fa9ee23ab96e46c95bb90164a723eaa35a6", "native_calls": 0}
+{"status": "PREPARED; NOT ADMITTED", "request_sha256": "96460d07133d4ac62741abeadefdb1c990fee433033487beea08c9386242cfe4"}
+{"status": "PREPARED; NOT ADMITTED", "request_sha256": "6dc0413c1affaaec3ed6ab7d383ab6e34cdf53069c301b6e29750f1d242d06bc"}
+{"status": "PREPARED; NOT ADMITTED", "request_sha256": "4fb54bc7ab70f75658c5c247a6fa089a4d52a2d5bf648177c0b44ce5126562c0"}
+{
+  "source_sha": "093f14b55c8a85d5d14be26f20868df2551d3b14",
+  "local_run_id": "3f8e1f747ebf47faa4d1b46024df0970",
+  "attempt": 2,
+  "native_calls": 0,
+  "approval": "NOT ADMITTED; no operator receipt created",
+  "commands": [
+    [
+      "/home/takazudo/.cache/zudo-e16-numerical-venv/bin/python",
+      "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-r4/design/partition/core-split/candidates/planning/joined-feed-construction-v2/native_descriptor.py",
+      "--materialized",
+      "/home/takazudo/.cache/zudo-e16-runs/20261013-wsl-admission/materialized-KA",
+      "--materialized",
+      "/home/takazudo/.cache/zudo-e16-runs/20261013-wsl-admission/materialized-KB",
+      "--graph",
+      "KA-t2=/home/takazudo/.cache/zudo-e16-runs/20261013-wsl-admission/KA-t2-eval/port-graph.json",
+      "--graph",
+      "KB-t2=/home/takazudo/.cache/zudo-e16-runs/20261013-wsl-admission/KB-t2-eval/port-graph.json",
+      "--graph",
+      "KB-p1=/home/takazudo/.cache/zudo-e16-runs/20261013-wsl-admission/KB-p1-eval/port-graph.json",
+      "--stage",
+      ".circuit-cache/e16-native-local-093f14b-3f8e1f74",
+      "--output",
+      ".circuit-cache/e16-local-packet-093f14b-3f8e1f74/native-descriptor.json",
+      "--run-attempt",
+      "2",
+      "--local-run-id",
+      "3f8e1f747ebf47faa4d1b46024df0970",
+      "--interactive-auth"
+    ],
+    [
+      "python3",
+      "scripts/kicad/local_native_admission.py",
+      "prepare",
+      "--kind",
+      "startup-success",
+      "--target",
+      "startup-success",
+      "--run-id",
+      "3f8e1f747ebf47faa4d1b46024df0970",
+      "--attempt",
+      "2",
+      "--interactive-auth",
+      "--output",
+      ".circuit-cache/e16-local-packet-093f14b-3f8e1f74/startup-success.json",
+      "--evidence",
+      ".circuit-cache/e16-local-packet-093f14b-3f8e1f74/startup-success-guard.json"
+    ],
+    [
+      "python3",
+      "scripts/kicad/local_native_admission.py",
+      "prepare",
+      "--kind",
+      "startup-failure",
+      "--target",
+      "startup-failure",
+      "--run-id",
+      "3f8e1f747ebf47faa4d1b46024df0970",
+      "--attempt",
+      "2",
+      "--interactive-auth",
+      "--output",
+      ".circuit-cache/e16-local-packet-093f14b-3f8e1f74/startup-failure.json",
+      "--evidence",
+      ".circuit-cache/e16-local-packet-093f14b-3f8e1f74/startup-failure-guard.json"
+    ],
+    [
+      "python3",
+      "scripts/kicad/local_native_admission.py",
+      "prepare",
+      "--kind",
+      "oracle",
+      "--target",
+      "python",
+      "--run-id",
+      "3f8e1f747ebf47faa4d1b46024df0970",
+      "--attempt",
+      "2",
+      "--interactive-auth",
+      "--output",
+      ".circuit-cache/e16-local-packet-093f14b-3f8e1f74/oracle.json",
+      "--evidence",
+      ".circuit-cache/e16-local-packet-093f14b-3f8e1f74/oracle-guard.json"
+    ]
+  ],
+  "requests": {
+    ".circuit-cache/e16-local-packet-093f14b-3f8e1f74/startup-success.json": "96460d07133d4ac62741abeadefdb1c990fee433033487beea08c9386242cfe4",
+    ".circuit-cache/e16-local-packet-093f14b-3f8e1f74/startup-failure.json": "6dc0413c1affaaec3ed6ab7d383ab6e34cdf53069c301b6e29750f1d242d06bc",
+    ".circuit-cache/e16-local-packet-093f14b-3f8e1f74/oracle.json": "4fb54bc7ab70f75658c5c247a6fa089a4d52a2d5bf648177c0b44ce5126562c0",
+    ".circuit-cache/e16-native-local-093f14b-3f8e1f74/KA-t2/local-request.json": "f9875106febb93efd01de293d8bd202677566a07e9abd7665135db5f7b7ab808",
+    ".circuit-cache/e16-native-local-093f14b-3f8e1f74/KB-t2/local-request.json": "dd35ff69ebe4c1f7a59a13013dc9ac84d1ef09398f39e8ecfefc8a71ab21a29d",
+    ".circuit-cache/e16-native-local-093f14b-3f8e1f74/KB-p1/local-request.json": "55178e0901189313010316c9e7f8ea3b9fee26a83fb0a6eb6391a778b3b9a977"
+  },
+  "descriptor": ".circuit-cache/e16-local-packet-093f14b-3f8e1f74/native-descriptor.json",
+  "descriptor_sha256": "9d7a64c81eaa890a064bb88511e34fa9ee23ab96e46c95bb90164a723eaa35a6",
+  "harmless_control_request": {
+    "path": ".circuit-cache/e16-local-packet-093f14b-3f8e1f74/harmless-control-request.json",
+    "sha256": "ff2bbff34c6a24b3f0944eb9ef058ecb170440dce394e35ece78d74cfd5d230c"
+  }
+}
+heavy-guard: verdict=PASS exit=0 secs=22 min_mem_mb=9319 reason=-

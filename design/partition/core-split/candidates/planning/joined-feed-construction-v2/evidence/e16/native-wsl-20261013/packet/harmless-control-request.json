@@ -1,0 +1,41 @@
+{
+  "status": "PREPARED; NOT ADMITTED; NOT EXECUTED",
+  "source_sha": "093f14b55c8a85d5d14be26f20868df2551d3b14",
+  "checkout": "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-r4",
+  "uid": 1000,
+  "local_run_id": "3f8e1f747ebf47faa4d1b46024df0970",
+  "attempt": 2,
+  "authentication": "operator-pty",
+  "workload_command": [
+    "python3",
+    "scripts/kicad/qualify_resource_guard.py",
+    "--admission-id",
+    "local-control-3f8e1f747ebf47faa4d1b46024df0970-2",
+    "--sha",
+    "093f14b55c8a85d5d14be26f20868df2551d3b14",
+    "--hook-sha256",
+    "f91b2c8846856a6d38a10eb9e6314b6ebec3222b68df37942f3716ab860d8c91",
+    "--evidence-directory",
+    "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-r4/.circuit-cache/e16-local-packet-093f14b-3f8e1f74/harmless-controls"
+  ],
+  "evidence_directory": ".circuit-cache/e16-local-packet-093f14b-3f8e1f74/harmless-controls",
+  "driver_log": ".circuit-cache/e16-local-packet-093f14b-3f8e1f74/harmless-controls-driver.log",
+  "heavy_guard_environment": {},
+  "scope": "Existing single-worker harmless whole-control qualifier: static local fixture import, smoke, timeout, frontend-death, watchdog-death, owned cleanup. No KiCad, ngspice, board fill or numerical solve.",
+  "requirements": [
+    "Separate parent/operator approval of this digest and one global slot reservation",
+    "Operator-only sudo authentication inside shared-guard PTY; noninteractive refresh during workload",
+    "Existing guard resource limits unchanged"
+  ],
+  "method_sha256": {
+    "scripts/kicad/operator_terminal.py": "1109e4d5ee7d21dbb5e3f72b64f34f03b2a9d0e3d80a506c5a6cb7e3b48b4a0e",
+    "scripts/kicad/local_native_admission.py": "7768c75904b19cf2011db3a2999dfacb281912c5f6712277b9fa398936972754",
+    "scripts/kicad/qualify_resource_guard.py": "07988ef30be5e863a1c6b0f723593a4a7a7ca15478e57034b44fb45e27379751",
+    "scripts/kicad/run_resource_fixture.py": "b38c12fda3091ce998f8cfec7b744b8d2a5da9e089bdba32350c9aa87dc93480",
+    "scripts/kicad/fixtures/resource_guard_fixture.c": "12523b25e61cf54869743702949dca7c1873ac8089bf46476c15a11e03f7573a",
+    "scripts/kicad/native_resource_guard.py": "ee755233af405e60cf592956dcf42ca1069f5face6c20c1cdfcdf6f8479ef8ca",
+    "scripts/kicad/run.sh": "f91b2c8846856a6d38a10eb9e6314b6ebec3222b68df37942f3716ab860d8c91",
+    "scripts/kicad/pin.env": "769e2be0b61e7d92a6930684f13166b7dc098522008de3969cd30d6c4a363246",
+    "/home/takazudo/.codex/scripts/heavy-guard.sh": "074a463dd6b3a65b7e2168df95b200c0192c414862375bcfb95f979c34c67ee7"
+  }
+}
