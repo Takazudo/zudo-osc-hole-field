@@ -17,17 +17,22 @@ RAILS=('+12V','-12V','+5V');NETS=RAILS+('AGND',);BOARDS=('KA','KB')
 POWER='design/partition/core-split/power/';EV='design/partition/core-split/candidates/planning/joined-feed-construction-v2/evidence/'
 SKILLS='.claude/skills/';INVENTORY=SKILLS+'component-spec-audit/references/inventory.json'
 # symbol -> (fact_id, amplifiers per package or 1, value keys per scenario, provenance)
-FACTS={'OPA4196IDR':('fact-op-audio-quiescent-current',4,{'normal-typ-v1':'typical_at_25C','normal-max-v1':'maximum_full_temperature'},'supported_pin_current'),
- 'OPA4197IPWR':('fact-op-precision-quiescent-current',4,{'normal-typ-v1':'typical_at_25C','normal-max-v1':'maximum_full_temperature'},'supported_pin_current'),
- 'SN74HC14DR':('fact-schmitt-quiescent-table-max',1,{'normal-typ-v1':None,'normal-max-v1':None},'conditional_assumption'),
- 'SN74HC74DR':('fact-flipflop-quiescent-table-max',1,{'normal-typ-v1':None,'normal-max-v1':None},'conditional_assumption')}
+FACTS={'OPA4196IDR':('fact-op-audio-quiescent-current',4,{'normal-typ-v1':'typical_at_25C','normal-max-25c-v1':'maximum_at_25C','normal-max-v1':'maximum_full_temperature'},'supported_pin_current'),
+ 'OPA4197IPWR':('fact-op-precision-quiescent-current',4,{'normal-typ-v1':'typical_at_25C','normal-max-25c-v1':'maximum_at_25C','normal-max-v1':'maximum_full_temperature'},'supported_pin_current'),
+ 'SN74HC14DR':('fact-schmitt-quiescent-table-max',1,{'normal-typ-v1':None,'normal-max-25c-v1':None,'normal-max-v1':None},'conditional_assumption'),
+ 'SN74HC74DR':('fact-flipflop-quiescent-table-max',1,{'normal-typ-v1':None,'normal-max-25c-v1':None,'normal-max-v1':None},'conditional_assumption')}
 UNIT={'uA per amplifier':1e-6,'mA per amplifier':1e-3,'A':1.}
 SCENARIOS={'normal-typ-v1':'All fitted KA/KB ICs powered at +/-12 V and +5 V; OPA4196/OPA4197 typical 25 C quiescent current, IO=0 (no output/signal load); '
  'SN74HC14/HC74 static ICC table maximum (VCC=6 V, IO=0, inputs at rails) as the only bundle-backed +5 V value; EL harness demand at the contract ceiling; everything else unmapped.',
+ 'normal-max-25c-v1':'As normal-typ-v1 but OPA4196/OPA4197 maximum quiescent current at 25 C, IO=0; not a worst-case or fault total.',
  'normal-max-v1':'As normal-typ-v1 but OPA4196/OPA4197 full-temperature (-40..125 C) maximum quiescent current, IO=0; not a worst-case or fault total.'}
 LOGIC_RULE='Static ICC table max at VCC=6 V, TA=-40..85 C, IO=0 used for the 5 V state (no 5 V typical in the bundle); all of it enters VCC pin 14 and leaves GND pin 7; switching current omitted.'
 OPA_RULE='Quiescent current per amplifier x 4 amplifiers (unused channels biased); no AGND pin, so by KCL all of it enters V+ (pin 4) and leaves V- (pin 11).'
 EL_LIMIT='return_and_fault_contract.existing_EL_bounds.EL_rail_current_contract_mA'
+SCENARIO_CONDITIONS={
+ 'normal-typ-v1':{'opa_statistic':'typical','opa_temperature_C':25,'logic_statistic':'maximum','logic_temperature_C':[-40,85],'logic_supply_V':6,'project_logic_supply_V':5},
+ 'normal-max-25c-v1':{'opa_statistic':'maximum','opa_temperature_C':25,'logic_statistic':'maximum','logic_temperature_C':[-40,85],'logic_supply_V':6,'project_logic_supply_V':5},
+ 'normal-max-v1':{'opa_statistic':'maximum','opa_temperature_C':[-40,125],'logic_statistic':'maximum','logic_temperature_C':[-40,85],'logic_supply_V':6,'project_logic_supply_V':5}}
 TOL=1e-12
 def need(c,m):
  if not c:raise ValueError(m)
@@ -41,18 +46,36 @@ def bundle_of(inv,symbol):
  key=lambda m:re.sub('[^A-Z0-9]','',m.upper());hit=[l['owner_skill'] for l in inv['lines'] if key(l['mpn'])==key(symbol)]
  need(len(hit)==1,'one owner bundle for '+symbol);return SKILLS+hit[0]+'/facts.json'
 def supply_value(inp,inv,symbol,scen):
- """Per-package current (A) from the owner bundle fact, with its source and condition."""
- fid,amps,keys,prov=FACTS[symbol];path=bundle_of(inv,symbol);facts={f['fact_id']:f for f in inp.json(path)['facts']}
- f=facts[fid];need(f['verdict'].startswith('PASS'),'unsupported fact '+fid);need(f['unit'] in UNIT,'unit '+f['unit'])
+ """Per-package current (A) from the exact owner fact; source and application remain distinct."""
+ fid,amps,keys,prov=FACTS[symbol];path=bundle_of(inv,symbol);owner=path.rsplit('/',1)[0]
+ facts={f['fact_id']:f for f in inp.json(path)['facts']};f=facts[fid]
+ records=inp.json(owner+'/manifest.json')['records'];record=next(r for r in records if r['record_id']==f['record_id'])
+ line=next(l for l in inv['lines'] if l['owner_skill']==owner[len(SKILLS):] and l['mpn']==record['mpn'])
+ need(record['manufacturer']==line['manufacturer']=='Texas Instruments' and record['mpn']==symbol and record['lcsc']==line['lcsc'] and record['package']==line['package'],'exact supply identity '+symbol)
+ need(fid in record['fact_ids'] and f['source_id'] in record['source_ids'],'fact ownership '+fid)
+ source=next(x for x in inp.json(owner+'/sources.json')['sources'] if x['source_id']==f['source_id'])
+ need(source['record_id']==record['record_id'] and source['availability']=='AVAILABLE' and source['authority_class']=='MANUFACTURER_PRIMARY','unsupported source '+fid)
+ need(re.fullmatch('[0-9a-f]{64}',source['sha256']) and source['sha256']!='0'*64,'source hash '+fid)
+ need(f['verdict']=='PASS - primary-source confirmed' and f['provenance']=='PRIMARY-SPEC','unsupported fact '+fid)
+ need(f['unit'] in UNIT,'unit '+f['unit'])
  if amps>1:need('OUT D' in next(v['value'] for k,v in facts.items() if k.endswith('-pinout')),'quad pinout')
- v=f['value'][keys[scen]] if keys[scen] else f['value']
+ pin_map=next(pm for pm in inp.json(owner+'/pin-map.json')['pin_maps'] if pm['record_id']==record['record_id'])
+ supply_names={'V+':'+12V','V-':'-12V'} if amps>1 else {'VCC':'+5V','GND':'AGND'}
+ supply_pins={pin['footprint_pad']:supply_names[pin['name']] for pin in pin_map['pins'] if pin['name'] in supply_names}
+ need(supply_pins==({'4':'+12V','11':'-12V'} if amps>1 else {'14':'+5V','7':'AGND'}),'owner supply/return pin map '+symbol)
+ v=f['value'][keys[scen]] if keys[scen] else f['value'];need(isinstance(v,(int,float)) and not isinstance(v,bool) and math.isfinite(v) and v>=0,'current value '+fid)
  return rnd(v*UNIT[f['unit']]*amps),{'source':f'{path}#{fid}'+(f'.{keys[scen]}' if keys[scen] else ''),'condition':f['conditions'],'locator':f['locator'],
-  'derivation':f'{v} {f["unit"]}'+(f' x {amps} amplifiers' if amps>1 else ' per package'),'provenance':prov,'rule':OPA_RULE if amps>1 else LOGIC_RULE}
+  'derivation':f'{v} {f["unit"]}'+(f' x {amps} amplifiers' if amps>1 else ' per package'),'provenance':prov,'rule':OPA_RULE if amps>1 else LOGIC_RULE,
+  'evidence':{'manufacturer':record['manufacturer'],'mpn':record['mpn'],'package':record['package'],'lcsc':record['lcsc'],
+   'record_id':record['record_id'],'fact_id':fid,'value_key':keys[scen],'fact_class':f['class'],'fact_provenance':f['provenance'],'verdict':f['verdict'],
+   'fact_conditions':f['conditions'],'fact_locator':f['locator'],'source_id':source['source_id'],'source_sha256':source['sha256'],
+   'source_authority':source['authority_class'],'source_availability':source['availability'],
+   'application_condition_status':'CONDITIONAL: source voltage is 6 V; project voltage is 5 V' if amps==1 else 'CONDITIONAL: supply voltage not explicit in the quiescent fact; applied at +/-12 V',
+   'current_scope':'quiescent only; output/signal/dynamic load omitted','package_multiplier':amps,'supply_pin_map':supply_pins}}
 def unmapped_reason(inp,inv,symbol):
- if symbol=='ADG5412FBRUZ':return 'Bundle has only normal-mode IDD maximum (VDD/VSS=+/-16.5 V, full temperature); no typical, no ISS/GND return split, so device KCL cannot be closed.'
  path=bundle_of(inv,symbol);facts=inp.json(path)['facts']
  lim=[f['fact_id'] for f in facts if f['fact_id'].endswith('electrical-limits')]
- return f'No supply/quiescent-current fact in owner bundle {path}'+(f' ({lim[0]} not promoted)' if lim else '')+'.'
+ return f'No signed supply/quiescent-current and complete return fact in owner bundle {path}'+(f' ({lim[0]} not promoted)' if lim else '')+'.'
 def build():
  inp=Inputs();contract=inp.json(POWER+'contract.json');harness=inp.json(POWER+'harness-contract.json');iface=inp.json(POWER+'joined/interfaces.json')['two']
  parts={r['ref']:r for r in csv.DictReader(inp.raw(POWER+'package-ownership.csv').decode().splitlines())}
@@ -98,12 +121,13 @@ def build():
  rows=[];groups=[];census_ic={}
  for b in BOARDS:
   fit={f['ref']:f for f in two['boards'][b]['fitted_ic_supply_pins']};dnp=set(two['boards'][b]['dnp_refs'])
+  need(all(ref not in dnp and parts[ref]['dnp']!='True' for ref in fit),'fitted supply census includes a DNP device')
   el=defaultdict(list)
   for sc in SCENARIOS:
    for p in ports[b]:
     ref,pad,net,pid=p['ref'],p['pad'],p['net'],p['id'];need(net in NETS,'rail pad census');m=mand[pid];need(m['board']==b,'review board')
     row=dict(scenario_id=sc,board=b,ref=ref,pad=pad,pad_id=pid,net=net,current_A=None,units='A',operating_condition=SCENARIOS[sc],physical_owner=None,source=None,
-     provenance='no_amount',mapping_status=None,pad_class=None,structurally_unresolved=pid in unresolved[b],direct_load_member=m['source_direct_load_member'],note=None)
+     provenance='no_amount',supply_evidence=None,mapping_status=None,pad_class=None,structurally_unresolved=pid in unresolved[b],direct_load_member=m['source_direct_load_member'],note=None)
     if pid.startswith('CS247-'):
      row.update(physical_owner={'interface':cs_wire[pid]},source=POWER+'joined/interfaces.json#two.new_conductors',pad_class='network_support',mapping_status='interface_support_solved_later')
     elif ref in lands:
@@ -121,9 +145,9 @@ def build():
      if f['supply_pins'].get(pad)==net:
       row['pad_class']='ic_supply_pin'
       if sym in FACTS:
-       v,meta=values[(sym,sc)];sign=-1 if net in('-12V','AGND') else 1
+       v,meta=values[(sym,sc)];need(meta['evidence']['supply_pin_map'].get(pad)==net,'source-backed supply pad identity');sign=-1 if net in('-12V','AGND') else 1
        need((sym.startswith('OPA') and net in('+12V','-12V')) or (sym.startswith('SN74') and net in('+5V','AGND')),'supply pin role')
-       row.update(current_A=rnd(sign*v),source=meta['source'],provenance=meta['provenance'],mapping_status='supported' if meta['provenance']=='supported_pin_current' else 'conditional',
+       row.update(current_A=rnd(sign*v),source=meta['source'],provenance=meta['provenance'],supply_evidence=dict(meta['evidence'],signed_pin_role='draw' if sign>0 else 'return',sign=sign,derivation=meta['derivation'],kcl_rule=meta['rule']),mapping_status='supported' if meta['provenance']=='supported_pin_current' else 'conditional',
         note=f"{meta['derivation']}; {meta['rule']} Condition: {meta['condition']}")
       else:row.update(source=POWER+'contract.json#options.two.boards.'+b+'.fitted_ic_supply_pins',mapping_status='unmapped_supply_pin',note=reasons[sym])
      else:row.update(pad_class='ic_rail_tied_nonsupply_pin',source=POWER+'package-ownership.csv',mapping_status='unmapped_nonsupply_rail_pin',note='Rail/AGND-tied IC pin outside the contract supply map; leakage/signal current omitted.')
@@ -147,19 +171,22 @@ def build():
     if not pads:continue
     sign=-1 if net=='-12V' else 1
     groups.append(dict(scenario_id=sc,board=b,id=f'EL-harness-{net}',net=net,pad_ids=pads,current_A=rnd(sign*lim[net]/1000) if net in RAILS else None,units='A',
-     provenance='external_interface_demand',source=POWER+'contract.json#'+EL_LIMIT,physical_owner={'interface':'EL-E1..EL-E6','module':'EL'},
+     provenance='external_interface_demand',source=POWER+'contract.json#'+(EL_LIMIT if net in RAILS else 'return_and_fault_contract.existing_EL_bounds.EL_return_sum_bound_mA'),
+     demand_kind='rail_contract_ceiling' if net in RAILS else 'unsigned_return_bound',
+     maximum_absolute_current_A=rnd(lim[net]/1000) if net in RAILS else rnd(contract['return_and_fault_contract']['existing_EL_bounds']['EL_return_sum_bound_mA']/1000),
+     signed_return_status='UNSUPPORTED',per_pad_split_status='UNSUPPORTED',eligible_for_device_solve=False,physical_owner={'interface':'EL-E1..EL-E6','module':'EL'},
      operating_condition='Contract ceiling for the whole EL board, not a typical value; split across parallel harness pads solved later.' if net in RAILS else
       'EL AGND return not booked: signed EL +/-12 V split unsupported, so its return cannot be derived without invented values.'))
   for f in two['boards'][b]['fitted_ic_supply_pins']:
    sym=f['symbol'];hops=[h for pin in f['supply_pins'] for h in mediated.get((f['ref'],pin),[])]
    if sym in FACTS:st,why=('mapped','Quiescent supply current at IO=0; output/signal current omitted.') if FACTS[sym][3]=='supported_pin_current' else ('partially_mapped',LOGIC_RULE)
    else:st,why='unmapped',reasons[sym]
-   census_ic[f['ref']]=dict(board=b,ref=f['ref'],instance=f['instance'],symbol=sym,status=st,reason=why,mediated_supply=hops)
+   census_ic[f['ref']]=dict(board=b,ref=f['ref'],instance=f['instance'],symbol=sym,status=st,reason=why,mediated_supply=hops,supply_pins=f['supply_pins'])
  rows.sort(key=lambda r:(r['scenario_id'],r['board'],r['net'],r['ref'] or '',r['pad'] or '',r['pad_id']))
  groups.sort(key=lambda g:(g['scenario_id'],g['board'],g['id']))
  allowances,recon=reconcile_build(two,contract,rows,groups)
  ledger=dict(status='CONDITIONAL_LOAD_SCENARIO',sign_convention='current_A > 0: from copper INTO the device pin (draw); < 0: device injects into that copper; null: no amount booked (support or unmapped).',
-  scenarios=SCENARIOS,records=rows,interface_demands=groups,allowances=allowances)
+  scenarios=SCENARIOS,scenario_conditions=SCENARIO_CONDITIONS,records=rows,interface_demands=groups,allowances=allowances)
  ledger['ledger_sha256']=hashlib.sha256(canon({k:ledger[k] for k in ('records','interface_demands','allowances')}).encode()).hexdigest()
  ledger.update(census=census(rows,ports,census_ic),reconciliation=recon,kcl=kcl(rows),double_count_issues=double_counts(ledger),
   omissions=omissions(rows,census_ic),full_scope_budget_acceptance=False,
@@ -169,7 +196,89 @@ def build():
    'Planning worksheet is whole-module responsibility across K/JL/JR/P/EL, not allocated core-pad current.',
    'Some current-carrying pads are structurally unresolved (feed-disconnected) in the t2 graph.'],
   input_sha256=dict(sorted(inp.sha.items())),method_sha256=hashlib.sha256(Path(__file__).read_bytes()).hexdigest())
+ ledger['device_service']={sc:device_service(ledger,sc,{r['pad_id'] for r in rows if r['scenario_id']==sc and not r['structurally_unresolved']}) for sc in SCENARIOS}
+ ledger['external_boundaries']=external_boundaries(inp,harness,ledger)
+ ledger['input_sha256']=dict(sorted(inp.sha.items()))
  return ledger
+def device_service(ledger,scenario_id,served_pad_ids):
+ """Admit whole ICs only, using the caller's complete all-board/all-net coverage.
+
+ The supplied pad set must include finite support and a path to the declared feed.
+ It is not inferred from one board/net: a missing rail or return excludes every
+ current row of the IC. Evidence mapping, connectivity and scenario eligibility
+ are separate results. Historical ledgers without the complete supply-pin census
+ cannot opt in to the correction by silently falling back to individual pad loads.
+ """
+ need(served_pad_ids is not None,'device service requires explicit all-net served pads')
+ need(scenario_id in ledger['scenarios'],'unknown service scenario '+scenario_id)
+ rows=[r for r in ledger['records'] if r['scenario_id']==scenario_id]
+ served=set(served_pad_ids);known={r['pad_id'] for r in rows}
+ need(served<=known,'device service coverage contains unknown pads')
+ by_pin=defaultdict(list)
+ for row in rows:by_pin[(row['board'],row['ref'],row['pad'])].append(row)
+ devices=[];eligible=set();included=[]
+ for ic in ledger['census']['fitted_ics']['devices']:
+  need('supply_pins' in ic and ic['supply_pins'],'ledger lacks required supply pins for '+ic['ref'])
+  required=[];issues=[];currents=[]
+  for pin,net in sorted(ic['supply_pins'].items()):
+   candidates=by_pin[(ic['board'],ic['ref'],pin)]
+   row=candidates[0] if len(candidates)==1 else None
+   pad_id=row['pad_id'] if row else None
+   mapped=row is not None and row['net']==net and row['pad_class']=='ic_supply_pin' and row['current_A'] is not None and row['provenance'] in ('supported_pin_current','conditional_assumption')
+   if mapped:
+    current=row['current_A'];sign=-1 if net in ('-12V','AGND') else 1
+    mapped=isinstance(current,(int,float)) and not isinstance(current,bool) and math.isfinite(current) and sign*current>=0
+   if not mapped:issues.append('missing, duplicate, unsupported or invalid signed supply row: '+pin+' '+net)
+   else:currents.append(row)
+   required.append({'pin':pin,'net':net,'pad_id':pad_id,'served':pad_id in served if pad_id else False,'current_mapped':mapped})
+  count=sum(p['served'] for p in required)
+  connectivity='complete' if count==len(required) else 'partial' if count else 'unserved'
+  residual=math.fsum(r['current_A'] for r in currents) if len(currents)==len(required) else None
+  if residual is not None and abs(residual)>TOL:issues.append('device signed supply/return KCL does not close')
+  # Any extra nonzero row on the package is outside the supported quiescent model.
+  pins=set(ic['supply_pins'])
+  extras=[r for r in rows if r['board']==ic['board'] and r['ref']==ic['ref'] and r['pad'] not in pins and r['current_A'] not in (None,0,0.)]
+  if extras:issues.append('non-supply package current outside this quiescent model')
+  evidence='unmapped' if issues else 'conditional' if any(r['provenance']=='conditional_assumption' for r in currents) else 'supported'
+  status='unmapped' if issues else 'supported' if connectivity=='complete' else connectivity
+  admitted=status=='supported'
+  if admitted:
+   eligible.update(r['pad_id'] for r in currents);included.extend(currents)
+  devices.append({'board':ic['board'],'ref':ic['ref'],'symbol':ic['symbol'],'required_pins':required,
+   'evidence_status':evidence,'connectivity_status':connectivity,'service_status':status,'eligible_for_solve':admitted,
+   'signed_package_residual_A':rnd(residual),'reasons':issues if issues else [] if admitted else ['At least one required supply/return pin has no finite path to its feed; no package current is injected.']})
+ by_net={b:{net:rnd(math.fsum(r['current_A'] for r in included if r['board']==b and r['net']==net)) for net in NETS} for b in BOARDS}
+ nonzero={r['pad_id'] for r in rows if r['current_A'] not in (None,0,0.) and r['provenance'] in ('supported_pin_current','conditional_assumption')}
+ return {'scenario_id':scenario_id,'scope':'Complete declared supply/return service for the quiescent scenario only; output, signal, dynamic and external-interface currents omitted.',
+  'devices':devices,'summary':{s:sum(d['service_status']==s for d in devices) for s in ('supported','partial','unserved','unmapped')},
+  'eligible_pad_ids':sorted(eligible),'excluded_pad_ids':sorted(nonzero-eligible),'served_pad_ids':sorted(served),
+  'included_board_net_sum_A':by_net,'included_global_residual_A':rnd(math.fsum(r['current_A'] for r in included))}
+def external_boundaries(inp,harness,ledger):
+ """Name every GH AGND conductor without inventing a load or an equal-current split."""
+ budget=inp.json(POWER+'joined/budget.json');limit=budget['limits']['GH_A']
+ first=next(iter(ledger['scenarios']));pads={(r['board'],r['ref'],r['pad']):r for r in ledger['records'] if r['scenario_id']==first and r['ref']}
+ conductors=[]
+ # The K-only harness contract omits four JL-P returns. The joined interface
+ # ledger owns all inherited conductors, including these external-only paths.
+ interfaces=inp.json(POWER+'joined/interfaces.json')['two']
+ for conductor in interfaces['legacy_conductors']:
+  if conductor['net']!='AGND':continue
+  core=[]
+  for end in conductor['ends']:
+   if end['board'] not in BOARDS:continue
+   row=pads.get((end['board'],end['ref'],end['pin']));need(row is not None and row['net']=='AGND','GH return has no core ledger pad')
+   core.append({'board':row['board'],'pad_id':row['pad_id'],'structurally_unresolved':row['structurally_unresolved']})
+  conductors.append({'id':conductor['id'],'net':'AGND','source_boards':[end['board'] for end in conductor['ends']],
+   'source':POWER+'joined/interfaces.json#two.legacy_conductors','core_pads':core,'current_A':None,'current_operator_status':'UNSUPPORTED',
+   'limit_A':limit,'limit_source':POWER+'joined/budget.json#limits.GH_A',
+   'compliance_status':'NOT EVALUATED','reason':'Signed external return demand, its split and a complete conductor current operator are unsupported; no zero or equal-sharing assumption.'})
+ return {'GH':{'compliance_status':'NOT EVALUATED','limit_A':limit,'limit_source':POWER+'joined/budget.json#limits.GH_A',
+   'conductors':conductors,'total_conductors':len(conductors),'core_conductors':sum(bool(c['core_pads']) for c in conductors),
+   'scope':'All inherited GH AGND conductors, including those without a KA/KB end. Patch sleeves are not substituted as power returns.'},
+  'EL':{'demand_status':'CONTRACT CEILINGS ONLY','signed_return_status':'UNSUPPORTED','per_pad_split_status':'UNSUPPORTED',
+   'return_absolute_bound_A':inp.json(POWER+'contract.json')['return_and_fault_contract']['existing_EL_bounds']['EL_return_sum_bound_mA']/1000,
+   'source':POWER+'contract.json#return_and_fault_contract.existing_EL_bounds','injected_in_device_service':False}}
+
 def reconcile_build(two,contract,rows,groups):
  al=[];rec=[]
  for sc in SCENARIOS:

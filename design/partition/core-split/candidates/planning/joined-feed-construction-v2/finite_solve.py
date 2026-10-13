@@ -23,24 +23,113 @@ import finite_adapter as A
 from finite_units import jload,psave,pload,sha,need,LIMIT
 BATCH=16
 def wire_of(t):return int(t.rsplit('-W',1)[1])
-def injected(cfg,ledger,board,net):
+def injected(cfg,ledger,board,net,service):
  """Signed pad currents of the declared scenario that the solver injects; everything else is reported, not injected."""
+ need(service is not None and service.get('scenario_id')==cfg['scenario']['id'],'explicit scenario device service is required')
+ eligible=set(service['device_service']['eligible_pad_ids'])
  sc=cfg['scenario']['id'];out={};skipped=[]
  for r in ledger['records']:
   if r['scenario_id']!=sc or r['board']!=board or r['net']!=net:continue
-  if r['provenance'] in ('supported_pin_current','conditional_assumption') and r['current_A'] is not None:
+  if r['pad_id'] in eligible and r['provenance'] in ('supported_pin_current','conditional_assumption') and r['current_A'] is not None:
    need(r['pad_id'] not in out,'duplicate ledger current on one pad: '+r['pad_id']);out[r['pad_id']]=(float(r['current_A']),r['provenance'])
   elif r['current_A'] not in (None,0,0.):skipped.append(r['pad_id'])
  return out,skipped
+def ledger_binding(cfg,ledger):
+ content=hashlib.sha256(json.dumps({k:ledger[k] for k in ('records','interface_demands','allowances')},sort_keys=True,separators=(',',':')).encode()).hexdigest()
+ need(content==ledger['ledger_sha256']==cfg['scenario']['ledger_sha256'],'ledger content hash differs from its declared or configured hash')
+def service_manifest(config,ledger_path,coverage_paths):
+ """Content-bound all-board/all-net coverage and complete-device load eligibility."""
+ import load_ledger as LL
+ cfg=jload(config);ledger=jload(ledger_path);ledger_binding(cfg,ledger)
+ expected={(b,n) for b in LL.BOARDS for n in LL.NETS};bindings={};served=set()
+ scenario=cfg['scenario']['id'];rows=[r for r in ledger['records'] if r['scenario_id']==scenario]
+ by_id={r['pad_id']:r for r in rows};known=set(by_id);seen=set()
+ need(len(by_id)==len(rows),'duplicate ledger pad records in service scenario')
+ need(len(coverage_paths)==len(expected),'service requires all eight KA/KB board/net coverage files')
+ for path in coverage_paths:
+  cov=jload(path);key=(cov['board'],cov['net']);need(key in expected and key not in seen,'duplicate or unknown board/net coverage')
+  seen.add(key);ids=[r['pad_id'] for r in cov['rows']]
+  need(cov['ports']==len(ids) and len(ids)==len(set(ids)),'coverage pad census differs or duplicates')
+  need(cov['terminals_covered'] is True and cov['obligated_without_finite_path']==[] and cov['floating_finite_components']==[],'finite coverage is incomplete')
+  local={r['pad_id']:r for r in cov['rows']}
+  need(all(r['pad_id'] in local for r in rows if (r['board'],r['net'])==key),'coverage omits a ledger pad')
+  for row in cov['rows']:
+   need(isinstance(row['finite_path_to_feed'],bool),'coverage path flag must be boolean')
+   need(not row['obligated'] or row['finite_path_to_feed'],'obligated pad has no finite path')
+   need(not row['finite_path_to_feed'] or row['support_nodes']>0,'served pad has no finite support')
+   if row['pad_id'] in known:
+    record=by_id[row['pad_id']]
+    need((record['board'],record['net'])==key,'coverage assigns a ledger pad to another board/net')
+    if row['finite_path_to_feed']:served.add(row['pad_id'])
+  bindings[key[0]+'|'+key[1]]={'path':str(Path(path).resolve()),'sha256':sha(path),'desc_sha256':cov['desc_sha256']}
+ need(seen==expected,'service requires all eight KA/KB board/net coverages')
+ service=LL.device_service(ledger,scenario,served)
+ need(abs(service['included_global_residual_A'])<=LL.TOL,'complete-device service has nonzero signed current residual')
+ out={'schema':'e16-device-service-v1','scenario_id':scenario,'ledger_sha256':ledger['ledger_sha256'],
+  'bindings':{'config':sha(config),'ledger':sha(ledger_path),'coverage':bindings,
+   'methods':{m:sha(HERE/m) for m in ('finite_solve.py','load_ledger.py')}},'device_service':service}
+ out['service_sha256']=hashlib.sha256(LL.canon(out).encode()).hexdigest()
+ return out
+def create_service(a):
+ manifest=service_manifest(a.config,a.ledger,a.coverage)
+ Path(a.output).write_text(json.dumps(manifest,sort_keys=True,indent=1)+'\n')
+ return {'scenario_id':manifest['scenario_id'],'service_sha256':manifest['service_sha256'],'summary':manifest['device_service']['summary'],
+  'eligible_pads':len(manifest['device_service']['eligible_pad_ids']),'included_global_residual_A':manifest['device_service']['included_global_residual_A']}
+def validate_service(service_path,config,ledger_path,coverage,board,net,operator):
+ """Recompute eligibility from the eight bound coverage files; local coverage cannot drift."""
+ manifest=jload(service_path)
+ need(manifest.get('schema')=='e16-device-service-v1','missing complete-device service manifest')
+ paths=[b['path'] for b in manifest['bindings']['coverage'].values()]
+ expected=service_manifest(config,ledger_path,paths)
+ need(manifest==expected,'service manifest differs from bound ledger, coverage, configuration or methods')
+ local=manifest['bindings']['coverage'][board+'|'+net]
+ need(local['sha256']==sha(coverage),'local coverage differs from complete-device service')
+ need(local['desc_sha256']==operator['desc_sha256'],'operator differs from complete-device service')
+ return manifest
+
 REFINE_STEPS=3
+def _extended_residual(Af,x,b):
+ """Evaluate b-Ax with extended products/sums, using bounded sparse-entry scratch.
+
+ Keep the original matrix and float64 solution: no coefficient, topology, load or
+ tolerance changes. One long-double node vector is used per RHS; no full extended
+ copy of the matrix or of a multi-RHS solution is allocated.
+ """
+ if np.finfo(np.longdouble).eps>=np.finfo(np.float64).eps:
+  raise RuntimeError('extended-precision residual requires wider-than-float64 longdouble')
+ if Af.format not in ('csr','csc'):
+  raise ValueError('refinement requires CSR or CSC sparse storage')
+ xx=np.asarray(x);bb=np.asarray(b);vector=bb.ndim==1
+ if vector:xx=xx[:,None];bb=bb[:,None]
+ residual=np.empty(bb.shape,dtype=np.float64)
+ for j in range(bb.shape[1]):
+  rr=bb[:,j].astype(np.longdouble)
+  for lo in range(0,len(Af.data),65536):
+   hi=min(lo+65536,len(Af.data))
+   major=np.searchsorted(Af.indptr,np.arange(lo,hi),side='right')-1
+   minor=Af.indices[lo:hi]
+   row,col=(minor,major) if Af.format=='csc' else (major,minor)
+   product=Af.data[lo:hi].astype(np.longdouble)*xx[col,j].astype(np.longdouble)
+   np.add.at(rr,row,-product)
+  residual[:,j]=rr
+ return residual[:,0] if vector else residual
+
 def refined_solve(lu,Af,b):
- """Direct solve plus iterative refinement: the conforming mesh (2 um slits, high-conductance
- barrels and terminations) is ill-conditioned, so one unrefined SuperLU solve leaves node-level
- KCL residuals near 1e-7 relative; refinement restores them below the declared 1e-9."""
- x=lu.solve(b)
- for _ in range(REFINE_STEPS):x=x+lu.solve(b-Af@x)
- r=b-Af@x;scale=max(float(np.max(abs(b))),1e-300)
- return x,float(np.max(abs(r)))/scale
+ """Bounded mixed-precision refinement with the unchanged load-relative criterion.
+
+ Float64 sparse residuals can lose small injection currents to cancellation in
+ conductive rows. Evaluate them in extended precision, solve each correction with
+ the existing LU, and retain the best of the initial plus three corrected iterates.
+ A reported residual above the declared threshold remains a failure. This helper
+ does not replace the independent full coupled node-KCL and energy audits.
+ """
+ x=lu.solve(b);scale=max(float(np.max(abs(b))),1e-300)
+ r=_extended_residual(Af,x,b);best=x.copy();worst=float(np.max(abs(r)))/scale
+ for _ in range(REFINE_STEPS):
+  x=x+lu.solve(r);r=_extended_residual(Af,x,b)
+  score=float(np.max(abs(r)))/scale
+  if score<worst:best=x.copy();worst=score
+ return best,worst
 def terminal_stamps(ops,cfg):
  """Each feed termination: rank-1 distributed conductance w w'/Rt between its pad support and its terminal node."""
  terms=sorted(ops['terminals'],key=wire_of);Rt=cfg['wires']['termination_per_end_ohm']
@@ -103,18 +192,18 @@ def dpoint(a):
   for j,p in enumerate(chunk):
    n,w=ops['supports'][p];need((pos[n]>=0).all(),'pad support touches a held source node: '+p);Wb[pos[n],j]=w
   U,res=refined_solve(lu,Af,Wb);worst=max(worst,res);e[k:k+len(chunk)]=np.sum(Wb*U,axis=0);q[:,k:k+len(chunk)]=Bf.T@U
- psave(a.output,{'board':a.board,'net':a.net,'case':a.case,'depth':a.depth,'pads':sel,'e':e,'q':q,'operator':sha(a.operator),'solve_residual_relative':worst})
+ psave(a.output,{'board':a.board,'net':a.net,'case':a.case,'depth':a.depth,'pads':sel,'e':e,'q':q,'operator':sha(a.operator),'bindings':{'config':sha(a.config),'cases':sha(a.cases),'method':sha(Path(__file__))},'solve_residual_relative':worst})
  return {'board':a.board,'net':a.net,'pads':len(sel),'solve_residual_relative':worst}
 def reduce(a):
  cfg=jload(a.config);case=jload(a.cases)['cases'][a.case];depth=cfg['depth_cases'][a.depth];ops=pload(a.operator);cov=jload(a.coverage);ledger=jload(a.ledger)
  need(cov['desc_sha256']==ops['desc_sha256'],'coverage and operator from different descriptions')
- content=hashlib.sha256(json.dumps({k:ledger[k] for k in ('records','interface_demands','allowances')},sort_keys=True,separators=(',',':')).encode()).hexdigest()
- need(content==ledger['ledger_sha256']==cfg['scenario']['ledger_sha256'],'ledger content hash differs from its declared or configured hash')
+ ledger_binding(cfg,ledger)
+ service=validate_service(a.service,a.config,a.ledger,a.coverage,a.board,a.net,ops)
  Af,Bf,D,free,pos,fixed,terms,src,records,_=board_parts(ops,case,depth,cfg,a.board,a.net,release=True);N=ops['N'];T=len(terms)
  covered={r['pad_id'] for r in cov['rows'] if r['finite_path_to_feed']}
- loads,skipped=injected(cfg,ledger,a.board,a.net);f=np.zeros(N);unserved=[]
+ loads,skipped=injected(cfg,ledger,a.board,a.net,service);f=np.zeros(N);unserved=[]
  for pid,(I,prov) in sorted(loads.items()):
-  if pid not in covered or pid not in ops['supports']:unserved.append({'pad_id':pid,'current_A':I,'provenance':prov});continue
+  need(pid in covered and pid in ops['supports'],'eligible complete-device load has no local finite support: '+pid)
   n,w=ops['supports'][pid];need(not fixed[n].any(),'load on a held source support: '+pid);f[n]-=I*w
  t0=time.monotonic();lu=spla.splu(Af,permc_spec='MMD_AT_PLUS_A',diag_pivot_thresh=0.,options=dict(SymmetricMode=True));tf=time.monotonic()-t0
  Y,resY=refined_solve(lu,Af,Bf) if T else (np.zeros((len(free),0)),0.);S=D-Bf.T@Y
@@ -127,9 +216,9 @@ def reduce(a):
  P0=W.T@u0;PY=(W.T@Y) if T else np.zeros((len(pads),0))
  Wb=W[:,:BATCH].toarray();U,_=refined_solve(lu,Af,Wb);E=Wb.T@U;recip=float(np.max(abs(E-E.T))/max(np.max(abs(E)),1e-30)) if len(pads) else 0.
  out={'board':a.board,'net':a.net,'case':a.case,'depth':a.depth,'N':N,'free':free,'terms':terms,'S':S,'g':g,'Y':Y,'u0':u0,'pads':pads,'P0':P0,'PY':PY,
-      'loads':{p:v for p,v in loads.items()},'unserved_loads':unserved,'nonzero_not_injected':skipped,'source_pads':src,
+      'loads':{p:v for p,v in loads.items()},'device_service_summary':service['device_service']['summary'],'service_excluded_pad_ids':service['device_service']['excluded_pad_ids'],'unserved_loads':unserved,'nonzero_not_injected':skipped,'source_pads':src,
       'checks':{'reciprocity_relative':recip,'load_solve_residual_relative':res,'interface_solve_residual_relative':resY,'refinement_steps':REFINE_STEPS,'factor_seconds':round(tf,2),'L_U_nnz':int(lu.L.nnz+lu.U.nnz)},
-      'barrel_intervals':len(records),'bindings':{'operator':sha(a.operator),'coverage':sha(a.coverage),'ledger':sha(a.ledger),'config':sha(a.config),'cases':sha(a.cases),'method':sha(Path(__file__))}}
+      'barrel_intervals':len(records),'bindings':{'operator':sha(a.operator),'coverage':sha(a.coverage),'ledger':sha(a.ledger),'service':sha(a.service),'config':sha(a.config),'cases':sha(a.cases),'method':sha(Path(__file__))}}
  psave(a.output,out)
  return {k:out[k] for k in ['board','net','case','depth','N']}|{'pads':len(pads),'loads':len(loads),'unserved':len(unserved),'checks':out['checks']}
 def small_system(rA,rB,cfg,removed,bulk=None):
@@ -145,6 +234,8 @@ def couple(a):
  rA,rB=pload(a.ka_red),pload(a.kb_red)
  need(rA['net']==rB['net']==a.net and rA['case']==rB['case']==a.case and rA['depth']==rB['depth']==a.depth,'reductions of one net/case/depth')
  need(rA['bindings']['operator']==sha(a.ka_op) and rB['bindings']['operator']==sha(a.kb_op),'operators differ from the reduced ones')
+ need(rA['bindings'].get('service') and rA['bindings']['service']==rB['bindings'].get('service'),'board reductions use different or missing complete-device service')
+ need(all(red['bindings']['config']==sha(a.config) and red['bindings']['cases']==sha(a.cases) and red['bindings']['method']==sha(Path(__file__)) for red in (rA,rB)),'reduction configuration, cases or method differs from coupled inputs')
  Rt=cfg['wires']['termination_per_end_ohm'];Rw=cfg['wires']['bulk_ohm'];rs=cfg['return_states']
  states={'all-present':[]}
  if a.net=='AGND':
@@ -153,6 +244,7 @@ def couple(a):
  def gather(files,red,opfile):
   parts=[pload(f) for f in files];pads=[p for x in parts for p in x['pads']]
   need(all(x['operator']==sha(opfile) and x['case']==a.case and x['depth']==a.depth for x in parts),'driving-point chunk from another operator/case/depth')
+  need(all(x.get('bindings',{}).get('config')==sha(a.config) and x.get('bindings',{}).get('cases')==sha(a.cases) and x.get('bindings',{}).get('method')==sha(Path(__file__)) for x in parts),'driving-point chunk configuration, cases or method differs from coupled inputs')
   need(pads==red['pads'],'driving-point chunks must cover every reduced pad exactly once, in order')
   return {'pads':pads,'e':np.concatenate([x['e'] for x in parts]) if parts else np.zeros(0),'q':np.concatenate([x['q'] for x in parts],axis=1) if parts else np.zeros((len(red['terms']),0)),
           'residual':max((x['solve_residual_relative'] for x in parts),default=0.)}
@@ -212,7 +304,7 @@ def couple(a):
  served=lambda r:sorted(set(r['loads'])-{u['pad_id'] for u in r['unserved_loads']})
  res={'schema':'e16-coupled-net-result-v1','net':a.net,'wire_length_sensitivity_all_present':sens,'loaded_pads':served(rA)+served(rB),'case':a.case,'depth':a.depth,'states':results,
       'not_solved':{'all-three-open':'KB AGND has no conductor to the source: a floating network, no finite result'} if a.net=='AGND' else {},
-      'bindings':{'ka_reduction':sha(a.ka_red),'kb_reduction':sha(a.kb_red),'ka_operator':sha(a.ka_op),'kb_operator':sha(a.kb_op),'config':sha(a.config),'method':sha(Path(__file__))},
+      'bindings':{'ka_reduction':sha(a.ka_red),'kb_reduction':sha(a.kb_red),'ka_operator':sha(a.ka_op),'kb_operator':sha(a.kb_op),'config':sha(a.config),'service':rA['bindings']['service'],'method':sha(Path(__file__))},
       'unserved_loads':{'KA':rA['unserved_loads'],'KB':rB['unserved_loads']},'reduction_checks':{'KA':rA['checks'],'KB':rB['checks']}}
  Path(a.output).write_bytes(gzip.compress(json.dumps(res,sort_keys=True).encode(),mtime=0))
  return {'net':a.net,'case':a.case,'states':len(results),'checks':{n:r['checks'] for n,r in results.items()}}
@@ -231,14 +323,17 @@ def enter_memory_scope():
 def main(argv=None):
  if argv is None:enter_memory_scope()
  p=argparse.ArgumentParser();s=p.add_subparsers(dest='cmd',required=True)
+ x=s.add_parser('service')
+ for k in ['ledger','config','output']:x.add_argument('--'+k,required=True)
+ x.add_argument('--coverage',nargs='+',required=True)
  x=s.add_parser('reduce')
- for k in ['operator','coverage','ledger','config','cases','case','depth','board','net','output']:x.add_argument('--'+k,required=True)
+ for k in ['operator','coverage','ledger','service','config','cases','case','depth','board','net','output']:x.add_argument('--'+k,required=True)
  x=s.add_parser('dpoint')
  for k in ['operator','coverage','config','cases','case','depth','board','net','output']:x.add_argument('--'+k,required=True)
  x.add_argument('--start',type=int,required=True);x.add_argument('--stop',type=int,required=True)
  x=s.add_parser('couple')
  for k in ['ka-red','kb-red','ka-op','kb-op','config','cases','case','depth','net','output']:x.add_argument('--'+k,required=True)
  x.add_argument('--ka-dp',nargs='*',default=[]);x.add_argument('--kb-dp',nargs='*',default=[])
- a=p.parse_args(argv);start=time.monotonic();r={'reduce':reduce,'dpoint':dpoint,'couple':couple}[a.cmd](a)
+ a=p.parse_args(argv);start=time.monotonic();r={'service':create_service,'reduce':reduce,'dpoint':dpoint,'couple':couple}[a.cmd](a)
  r.update(elapsed_seconds=round(time.monotonic()-start,2),peak_KiB=resource.getrusage(resource.RUSAGE_SELF).ru_maxrss);print(json.dumps(r))
 if __name__=='__main__':main()

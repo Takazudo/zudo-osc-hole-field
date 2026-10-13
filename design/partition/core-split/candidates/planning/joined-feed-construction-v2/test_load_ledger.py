@@ -69,6 +69,67 @@ class LoadLedger(unittest.TestCase):
   self.assertEqual(self.L['status'],'CONDITIONAL_LOAD_SCENARIO');self.assertIs(self.L['full_scope_budget_acceptance'],False)
   for b in ll.BOARDS:
    s=self.L['kcl'][TYP]['board_net_sum_A'][b];self.assertGreater(s['+12V'],0);self.assertLess(s['-12V'],0);self.assertGreater(s['+5V'],0)
+ def test_typical_25c_maximum_and_full_temperature_are_distinct(self):
+  inp=ll.Inputs();inv=inp.json(ll.INVENTORY)
+  expected={'OPA4196IDR':(.00056,.0008,.001),'OPA4197IPWR':(.004,.0052,.006)}
+  for symbol,values in expected.items():
+   for scenario,value in zip(('normal-typ-v1','normal-max-25c-v1','normal-max-v1'),values):
+    got,meta=ll.supply_value(inp,inv,symbol,scenario);self.assertEqual(got,value)
+    self.assertEqual(meta['evidence']['verdict'],'PASS - primary-source confirmed')
+    self.assertEqual(meta['evidence']['source_authority'],'MANUFACTURER_PRIMARY')
+  self.assertEqual(ll.SCENARIO_CONDITIONS['normal-max-25c-v1']['opa_temperature_C'],25)
+  self.assertEqual(ll.SCENARIO_CONDITIONS['normal-max-v1']['opa_temperature_C'],[-40,125])
+  for scenario in ll.SCENARIOS:
+   _,meta=ll.supply_value(inp,inv,'SN74HC14DR',scenario)
+   self.assertEqual(meta['provenance'],'conditional_assumption')
+   self.assertIsNone(meta['evidence']['value_key'])
+   self.assertIn('6 V',meta['evidence']['application_condition_status'])
+ def test_signed_provenance_retains_exact_identity_source_and_pin_map(self):
+  for row in self.R:
+   if row['provenance'] not in ('supported_pin_current','conditional_assumption'):continue
+   evidence=row['supply_evidence']
+   self.assertEqual(evidence['manufacturer'],'Texas Instruments')
+   self.assertEqual(evidence['mpn'],row['physical_owner']['symbol'])
+   self.assertEqual(evidence['supply_pin_map'][row['pad']],row['net'])
+   self.assertEqual(evidence['sign'],1 if row['net'] in ('+12V','+5V') else -1)
+   self.assertEqual(evidence['fact_provenance'],'PRIMARY-SPEC')
+   self.assertEqual(evidence['source_availability'],'AVAILABLE')
+   self.assertNotEqual(evidence['source_sha256'],'0'*64)
+   self.assertTrue(evidence['fact_locator']);self.assertTrue(evidence['fact_conditions'])
+ def test_source_identity_authority_and_numeric_fail_closed(self):
+  inv=ll.Inputs().json(ll.INVENTORY)
+  class Changed(ll.Inputs):
+   def __init__(self,field):super().__init__();self.field=field
+   def json(self,path):
+    data=super().json(path)
+    if 'component-ti-opa4196idr/' not in path:return data
+    if self.field=='authority' and path.endswith('/sources.json'):data['sources'][0]['authority_class']='DISTRIBUTOR_IDENTITY'
+    if self.field=='availability' and path.endswith('/sources.json'):data['sources'][0]['availability']='SOURCE UNAVAILABLE'
+    if self.field=='hash' and path.endswith('/sources.json'):data['sources'][0]['sha256']='0'*64
+    if self.field=='identity' and path.endswith('/manifest.json'):data['records'][0]['manufacturer']='Wrong vendor'
+    if self.field=='numeric' and path.endswith('/facts.json'):next(f for f in data['facts'] if f['fact_id']=='fact-op-audio-quiescent-current')['value']['typical_at_25C']=float('nan')
+    if self.field=='pin' and path.endswith('/pin-map.json'):next(p for p in data['pin_maps'][0]['pins'] if p['name']=='V-')['footprint_pad']='12'
+    return data
+  for field in ('authority','availability','hash','identity','numeric','pin'):
+   with self.subTest(field=field),self.assertRaises(ValueError):ll.supply_value(Changed(field),inv,'OPA4196IDR',TYP)
+ def test_external_el_ceilings_and_unsigned_return_are_not_device_currents(self):
+  groups=[g for g in self.L['interface_demands'] if g['scenario_id']==TYP]
+  rails={g['net']:g for g in groups if g['net'] in ll.RAILS}
+  self.assertEqual({net:g['current_A'] for net,g in rails.items()},{'+12V':.05,'-12V':-.05,'+5V':.07})
+  returns=[g for g in groups if g['net']=='AGND'];self.assertEqual(len(returns),1)
+  self.assertIsNone(returns[0]['current_A']);self.assertEqual(returns[0]['maximum_absolute_current_A'],.17)
+  for group in groups:
+   self.assertFalse(group['eligible_for_device_solve']);self.assertEqual(group['per_pad_split_status'],'UNSUPPORTED')
+  self.assertEqual(self.L['external_boundaries']['EL']['signed_return_status'],'UNSUPPORTED')
+ def test_all_gh_conductors_are_named_and_not_evaluated(self):
+  gh=self.L['external_boundaries']['GH']
+  self.assertEqual(gh['total_conductors'],380);self.assertEqual(gh['core_conductors'],376)
+  self.assertEqual(len({c['id'] for c in gh['conductors']}),380)
+  self.assertEqual(gh['compliance_status'],'NOT EVALUATED');self.assertEqual(gh['limit_A'],.5)
+  for conductor in gh['conductors']:
+   self.assertIsNone(conductor['current_A']);self.assertEqual(conductor['compliance_status'],'NOT EVALUATED')
+   self.assertEqual(conductor['current_operator_status'],'UNSUPPORTED')
+
  def test_hash_stable(self):
   self.assertEqual(ll.build()['ledger_sha256'],self.L['ledger_sha256'])
 

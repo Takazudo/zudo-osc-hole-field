@@ -131,8 +131,9 @@ class Coupled(unittest.TestCase):
     ws={'+12V':[(1,1)],'-12V':[(2,1)],'+5V':[(3,1)],'AGND':[(4,1),(5,10),(6,19)]}[net]
     for w,x in ws:objs+=[pad(f'CS247-{b}-W{w}',net,rect(x-.5,ym-.5,x+.5,ym+.5)),via(f'{b}-tv{w}',net,x,ym)]
     for k,x in enumerate((7,15)):
-     pid=f'{b}-L{net}-{k}';objs+=[pad(pid,net,rect(x-.5,ym-.5,x+.5,ym+.5),layers=('F.Cu',),ref=f'U{k}'),via(f'{b}-lv{net}{k}',net,x,ym)];loads.append({'pad_id':pid,'net':net})
-     I={'+12V':.01,'-12V':-.01,'+5V':.002,'AGND':-.002}[net]*(k+1);records.append({'scenario_id':'normal-typ-v1','board':b,'net':net,'pad_id':pid,'current_A':I,'provenance':'supported_pin_current'})
+     pid=f'{b}-L{net}-{k}';ref=f'U{k if net in ("+12V","-12V") else k+2}';pin={'+12V':'4','-12V':'11','+5V':'14','AGND':'7'}[net]
+     objs+=[pad(pid,net,rect(x-.5,ym-.5,x+.5,ym+.5),layers=('F.Cu',),ref=ref,pad=pin),via(f'{b}-lv{net}{k}',net,x,ym)];loads.append({'pad_id':pid,'net':net})
+     I={'+12V':.01,'-12V':-.01,'+5V':.002,'AGND':-.002}[net]*(k+1);records.append({'scenario_id':'normal-typ-v1','board':b,'net':net,'pad_id':pid,'ref':ref,'pad':pin,'pad_class':'ic_supply_pin','current_A':I,'provenance':'supported_pin_current'})
     if b=='KA':
      pid=f'KA-LAND{net}';objs+=[pad(pid,net,rect(10.5,ym-.5,11.5,ym+.5),layers=('F.Cu',),ref='TP'),via('KA-landv'+net,net,11,ym)];lands[net]=[{'ref':'TP','pad_id':pid}]
    src={'board':b,'objects':objs,'loads':loads};planes={'board':b,'new_objects':[],'clipped_sheets':sheets,'input_sha256':{}}
@@ -150,13 +151,18 @@ class Coupled(unittest.TestCase):
     for k in range(len(json.loads(plan.read_text())['chunks'])):
      m=cls.d/f'{b}-mesh-{net}-{k}.pkl.gz';U.main(['mesh','--desc',str(desc),'--tile-mm','8','--chunk',str(k),'--output',str(m)]);meshes.append(str(m))
     U.main(['assemble','--desc',str(desc),'--tile-mm','8','--mesh',*meshes,'--graph',str(gp),'--census',str(cp),'--operator',str(cls.d/f'{b}-op-{net}.pkl.gz'),'--output',str(cls.d/f'{b}-cov-{net}.json.gz')])
+  devices=[{'board':b,'ref':f'U{k}','symbol':'OPA4197IPWR' if k<2 else 'SN74HC14DR',
+   'supply_pins':{'4':'+12V','11':'-12V'} if k<2 else {'14':'+5V','7':'AGND'}} for b in ('KA','KB') for k in range(4)]
   led={'records':records,'interface_demands':[],'allowances':[]};h=hashlib.sha256(json.dumps(led,sort_keys=True,separators=(',',':')).encode()).hexdigest()
+  led.update(scenarios={'normal-typ-v1':'synthetic complete quiescent loads'},census={'fitted_ics':{'devices':devices}})
   cfg['source_support']={'board':'KA','pads':lands,'excluded':[]};cfg['scenario']={'id':'normal-typ-v1','ledger_sha256':h}
   (cls.d/'config.json').write_text(json.dumps(cfg));(cls.d/'ledger.json').write_text(json.dumps(dict(led,ledger_sha256=h)))
+  S.main(['service','--config',str(cls.d/'config.json'),'--ledger',str(cls.d/'ledger.json'),
+          '--coverage',*[str(cls.d/f'{b}-cov-{net}.json.gz') for b in ('KA','KB') for net in band],'--output',str(cls.d/'service.json')])
   cls.cfg=cfg;cls.records=records
   for net in band:
    for b in ('KA','KB'):
-    S.main(['reduce','--operator',str(cls.d/f'{b}-op-{net}.pkl.gz'),'--coverage',str(cls.d/f'{b}-cov-{net}.json.gz'),'--ledger',str(cls.d/'ledger.json'),'--config',str(cls.d/'config.json'),
+    S.main(['reduce','--operator',str(cls.d/f'{b}-op-{net}.pkl.gz'),'--coverage',str(cls.d/f'{b}-cov-{net}.json.gz'),'--ledger',str(cls.d/'ledger.json'),'--service',str(cls.d/'service.json'),'--config',str(cls.d/'config.json'),
             '--cases',str(cls.d/'cases.json'),'--case','c','--depth','uniform-dielectric','--board',b,f'--net={net}','--output',str(cls.d/f'{b}-red-{net}.pkl.gz')])
    dps={}
    for b in ('KA','KB'):
@@ -205,8 +211,79 @@ class Coupled(unittest.TestCase):
  def test_tampered_ledger_is_refused(self):
   bad=json.loads((self.d/'ledger.json').read_text());bad['records'][0]['current_A']*=2;(self.d/'ledger-bad.json').write_text(json.dumps(bad))
   with self.assertRaises(ValueError):
-   S.main(['reduce','--operator',str(self.d/'KA-op-+12V.pkl.gz'),'--coverage',str(self.d/'KA-cov-+12V.json.gz'),'--ledger',str(self.d/'ledger-bad.json'),'--config',str(self.d/'config.json'),
+   S.main(['reduce','--operator',str(self.d/'KA-op-+12V.pkl.gz'),'--coverage',str(self.d/'KA-cov-+12V.json.gz'),'--ledger',str(self.d/'ledger-bad.json'),'--service',str(self.d/'service.json'),'--config',str(self.d/'config.json'),
            '--cases',str(self.d/'cases.json'),'--case','c','--depth','uniform-dielectric','--board','KA','--net=+12V','--output',str(self.d/'never.pkl.gz')])
+ def service_paths(self):
+  return [self.d/f'{b}-cov-{net}.json.gz' for b in ('KA','KB') for net in ('+12V','-12V','+5V','AGND')]
+ def validate(self,path=None,coverage=None,net='+12V'):
+  return S.validate_service(path or self.d/'service.json',self.d/'config.json',self.d/'ledger.json',coverage or self.d/f'KA-cov-{net}.json.gz','KA',net,U.pload(self.d/f'KA-op-{net}.pkl.gz'))
+ def test_complete_device_service_is_content_bound_and_balanced(self):
+  manifest=self.validate();service=manifest['device_service']
+  self.assertEqual(service['summary'],{'supported':8,'partial':0,'unserved':0,'unmapped':0})
+  self.assertEqual(len(service['eligible_pad_ids']),16);self.assertEqual(service['included_global_residual_A'],0)
+  self.assertEqual(len(manifest['bindings']['coverage']),8)
+  for b in ('KA','KB'):
+   currents=[I for net in ('+12V','-12V','+5V','AGND') for I,_ in S.injected(self.cfg,U.jload(self.d/'ledger.json'),b,net,manifest)[0].values()]
+   self.assertAlmostEqual(math.fsum(currents),0,places=15)
+ def test_missing_return_coverage_excludes_both_supply_rows_in_real_reduce(self):
+  paths=self.service_paths();original=self.d/'KA-cov--12V.json.gz';cov=U.jload(original)
+  row=next(r for r in cov['rows'] if r['pad_id']=='KA-L-12V-0');row.update(obligated=False,structurally_unresolved=True,finite_path_to_feed=False,support_nodes=0)
+  changed=self.d/'KA-cov-partial.json.gz';U.jsave(changed,cov);paths[paths.index(original)]=changed
+  manifest=S.service_manifest(self.d/'config.json',self.d/'ledger.json',paths);service=manifest['device_service']
+  self.assertEqual(service['summary']['partial'],1);self.assertEqual(service['included_global_residual_A'],0)
+  self.assertNotIn('KA-L+12V-0',service['eligible_pad_ids']);self.assertNotIn('KA-L-12V-0',service['eligible_pad_ids'])
+  service_path=self.d/'service-partial.json';service_path.write_text(json.dumps(manifest));led=U.jload(self.d/'ledger.json')
+  self.assertNotIn('KA-L+12V-0',S.injected(self.cfg,led,'KA','+12V',manifest)[0])
+  self.assertNotIn('KA-L-12V-0',S.injected(self.cfg,led,'KA','-12V',manifest)[0])
+  for net,coverage in (('+12V',self.d/'KA-cov-+12V.json.gz'),('-12V',changed)):
+   output=self.d/f'partial-red-{net}.pkl.gz'
+   S.main(['reduce','--operator',str(self.d/f'KA-op-{net}.pkl.gz'),'--coverage',str(coverage),'--ledger',str(self.d/'ledger.json'),'--service',str(service_path),
+    '--config',str(self.d/'config.json'),'--cases',str(self.d/'cases.json'),'--case','c','--depth','uniform-dielectric','--board','KA',f'--net={net}','--output',str(output)])
+   self.assertEqual(len(U.pload(output)['loads']),1)
+ def test_omitted_duplicate_or_incomplete_coverage_is_refused(self):
+  paths=self.service_paths()
+  with self.assertRaisesRegex(ValueError,'all eight'):S.service_manifest(self.d/'config.json',self.d/'ledger.json',paths[:-1])
+  with self.assertRaisesRegex(ValueError,'duplicate'):S.service_manifest(self.d/'config.json',self.d/'ledger.json',paths[:-1]+[paths[0]])
+  for field,value in (('terminals_covered',False),('floating_finite_components',[0]),('obligated_without_finite_path',['missing'])):
+   with self.subTest(field=field):
+    cov=U.jload(paths[0]);cov[field]=value;bad=self.d/'coverage-incomplete.json.gz';U.jsave(bad,cov)
+    with self.assertRaisesRegex(ValueError,'incomplete'):S.service_manifest(self.d/'config.json',self.d/'ledger.json',[bad,*paths[1:]])
+ def test_tampered_coverage_service_and_method_binding_are_refused(self):
+  for field in ('eligible','method','census'):
+   with self.subTest(field=field):
+    manifest=U.jload(self.d/'service.json')
+    if field=='eligible':manifest['device_service']['eligible_pad_ids'].pop()
+    elif field=='method':manifest['bindings']['methods']['load_ledger.py']='0'*64
+    else:manifest['device_service']['summary']['supported']+=1
+    # Even recomputing the superficial content hash cannot bypass recomputed eligibility.
+    import load_ledger as LL
+    manifest.pop('service_sha256');manifest['service_sha256']=hashlib.sha256(LL.canon(manifest).encode()).hexdigest()
+    bad=self.d/'service-bad.json';bad.write_text(json.dumps(manifest))
+    with self.assertRaisesRegex(ValueError,'service manifest differs'):self.validate(bad)
+  cov=U.jload(self.d/'KA-cov-+12V.json.gz');cov['desc_sha256']='0'*64;bad=self.d/'local-cov-bad.json.gz';U.jsave(bad,cov)
+  with self.assertRaisesRegex(ValueError,'local coverage differs'):self.validate(coverage=bad)
+  op=U.pload(self.d/'KA-op-+12V.pkl.gz');op['desc_sha256']='0'*64
+  with self.assertRaisesRegex(ValueError,'operator differs'):S.validate_service(self.d/'service.json',self.d/'config.json',self.d/'ledger.json',self.d/'KA-cov-+12V.json.gz','KA','+12V',op)
+ def test_changed_bound_coverage_is_rejected_even_for_another_net(self):
+  path=self.d/'KB-cov-AGND.json.gz';original=path.read_bytes()
+  try:
+   cov=U.jload(path);cov['mesh_sha256']['invented']='0'*64;U.jsave(path,cov)
+   with self.assertRaisesRegex(ValueError,'service manifest differs'):self.validate()
+  finally:path.write_bytes(original)
+ def test_omitted_service_refuses_individual_pad_fallback(self):
+  with self.assertRaisesRegex(ValueError,'explicit scenario device service'):S.injected(self.cfg,U.jload(self.d/'ledger.json'),'KA','+12V',None)
+
+ def test_tampered_driving_point_input_bindings_are_refused(self):
+  for field in ('config','cases','method'):
+   with self.subTest(field=field):
+    data=U.pload(self.d/'KA-dp-+12V-0.pkl.gz');data['bindings'][field]='0'*64
+    bad=self.d/'KA-dp-bad.pkl.gz';U.psave(bad,data)
+    with self.assertRaisesRegex(ValueError,'driving-point chunk configuration'):
+     S.main(['couple','--ka-dp',str(bad),str(self.d/'KA-dp-+12V-1.pkl.gz'),
+      '--kb-dp',str(self.d/'KB-dp-+12V-0.pkl.gz'),str(self.d/'KB-dp-+12V-1.pkl.gz'),
+      '--ka-red',str(self.d/'KA-red-+12V.pkl.gz'),'--kb-red',str(self.d/'KB-red-+12V.pkl.gz'),
+      '--ka-op',str(self.d/'KA-op-+12V.pkl.gz'),'--kb-op',str(self.d/'KB-op-+12V.pkl.gz'),
+      '--config',str(self.d/'config.json'),'--cases',str(self.d/'cases.json'),'--case','c','--depth','uniform-dielectric','--net=+12V','--output',str(self.d/'never-stale.json.gz')])
  def test_wire_bulk_charged_once_and_copper_share(self):
   r=self.res('+12V')['states']['all-present'];dp=r['driving_point']['KB'];Rw=self.cfg['wires']['bulk_ohm'];Rt=self.cfg['wires']['termination_per_end_ohm']
   for rdp,rcu in zip(dp['R_driving_point_ohm'],dp['R_copper_ohm']):self.assertAlmostEqual(rdp-rcu,Rw+2*Rt,delta=1e-12)
