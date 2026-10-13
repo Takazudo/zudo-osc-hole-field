@@ -1,0 +1,26 @@
+"""Source-only preparation; never invokes approve or execute."""
+from pathlib import Path
+import hashlib,json,subprocess,sys,uuid
+root=Path.cwd();f=root/'design/partition/core-split/candidates/planning/joined-feed-construction-v2'
+r=Path('/home/takazudo/.cache/zudo-e16-runs/20261013-wsl-admission')
+head=subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip()
+assert not subprocess.check_output(['git','status','--porcelain']).strip()
+run_id=uuid.uuid4().hex
+out=Path('.circuit-cache')/('e16-local-packet-'+head[:7]+'-'+run_id[:8]);out.mkdir()
+stage=Path('.circuit-cache')/('e16-native-local-'+head[:7]+'-'+run_id[:8])
+cmd=['/home/takazudo/.cache/zudo-e16-numerical-venv/bin/python',str(f/'native_descriptor.py'),
+     '--materialized',str(r/'materialized-KA'),'--materialized',str(r/'materialized-KB')]
+for target in ('KA-t2','KB-t2','KB-p1'):cmd+=['--graph',f'{target}={r}/{target}-eval/port-graph.json']
+cmd+=['--stage',str(stage),'--output',str(out/'native-descriptor.json'),'--run-attempt','1','--local-run-id',run_id]
+commands=[cmd];subprocess.run(cmd,check=True)
+for kind,target in [('startup-success','startup-success'),('startup-failure','startup-failure'),('oracle','python')]:
+ cmd=['python3','scripts/kicad/local_native_admission.py','prepare','--kind',kind,'--target',target,
+      '--run-id',run_id,'--attempt','1','--output',str(out/(kind+'.json')),'--evidence',str(out/(kind+'-guard.json'))]
+ commands.append(cmd);subprocess.run(cmd,check=True)
+paths=[out/(kind+'.json') for kind in ('startup-success','startup-failure','oracle')]+[stage/target/'local-request.json' for target in ('KA-t2','KB-t2','KB-p1')]
+index={'source_sha':head,'local_run_id':run_id,'attempt':1,'native_calls':0,'approval':'NOT ADMITTED; no operator receipt created',
+ 'commands':commands,'requests':{str(p):hashlib.sha256(p.read_bytes()).hexdigest() for p in paths},
+ 'descriptor':str(out/'native-descriptor.json'),'descriptor_sha256':hashlib.sha256((out/'native-descriptor.json').read_bytes()).hexdigest()}
+(out/'index.json').write_text(json.dumps(index,indent=2)+'\n')
+Path('/tmp/osc-wsl-20261013/local-final-packet-location.json').write_text(json.dumps({'packet':str(out),'stage':str(stage),'index':index},indent=2)+'\n')
+print(json.dumps(index,indent=2))

@@ -1,0 +1,13 @@
+# Local WSL admission source handoff
+
+Owner authorized this narrowly scoped source change after the WSL runner report. Source commit: `587b5e41a312c1e2dcea4c90c95199dd10a4afe1`. This authorization does not approve any native run.
+
+`local_native_admission.py` supplies an explicit local run/attempt identity, exact immutable requests, separate operator attestations and persistent consumed-attempt claims. It admits only the fixed 60-second startup success/failure checks, the one deferred oracle unittest and the three existing E16 targets. It preserves the existing shared guard and native resource guard, with before/after input checks, actual host cgroup checks, read-only native gate checks and retained driver logs. CI, `run.sh` and native resource enforcement are unchanged.
+
+Read `scripts/kicad/README.md` for the full operator procedure, genuine qualification/reservation references, same-WSL-terminal authentication and approval boundaries. Requests are prepared only after the final evidence commit; their final-head digests and local paths are recorded in the PR/#253 checkpoint. `prepare_local_final.py.txt` is the exact source-only preparation recipe. It reuses the hash-bound fresh materializations/graphs from `continuation-20261013-wsl`; it does not rerun routing or create approval. Its output directories and 32-hex nonce are fresh on each use.
+
+At the source commit, **125 source tests PASS** (91 guard/admission/startup tests plus 34 materialization/E16/analytic tests). Circuit check, documentation check, guarded build and strict site check PASS. The pre-existing strict-link allowlist remains in effect. Circuit scope: manual inventory 68 lines; schematic/placement binding not performed; pin-asset check performed. All 550 protected WSL files are unchanged. Independent review PASS, including 27 independently run source tests. Exact commands, exits, elapsed time and measured child resource values are retained.
+
+Native startup qualification, the deferred oracle test, E16 fill/full DRC/reconciliation, production numerical validation and physical/electrical acceptance remain **NOT RUN / NOT ADMITTED** or unresolved as before. Noninteractive privileged systemd access remains a runner prerequisite; no sudo policy, services, security settings or WSL settings were changed. Short sudo authentication alone does not prove privilege through long-run cleanup.
+
+Unresolved variants remain distinct: KA-t2 196; KB-t2 486; separate KB-p1 480; prior KA long-B 194; KA parallel/combined/wider-face 196. The old copper and numerical failures are preserved. KEEP_K1402_INCUMBENT; canonical boards, placements and decision unchanged; draft PR #260 stays unmerged.
