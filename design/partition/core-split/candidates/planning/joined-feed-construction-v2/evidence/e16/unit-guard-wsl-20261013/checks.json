@@ -1,0 +1,77 @@
+{
+  "executable_source_sha": "2238c1ee0ea230b65e4e54419453f76ad2998653",
+  "affected_tests": 55,
+  "checks": {
+    "unit-guard-pre-circuit": {
+      "command": [
+        "pnpm",
+        "circuit:check"
+      ],
+      "cwd": "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-r4",
+      "exit_code": 0,
+      "elapsed_seconds": 0.8550230100518093,
+      "child_peak_rss_KiB": 129200
+    },
+    "unit-guard-final-source-tests": {
+      "command": [
+        "/home/takazudo/.cache/zudo-e16-numerical-venv/bin/python",
+        "-m",
+        "unittest",
+        "test_numerical_unit_guard",
+        "test_numerical_acceptance",
+        "test_replay_steps",
+        "test_refined_solve",
+        "test_finite_adapter"
+      ],
+      "cwd": "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-r4/design/partition/core-split/candidates/planning/joined-feed-construction-v2",
+      "exit_code": 0,
+      "elapsed_seconds": 6.404673949000426,
+      "child_peak_rss_KiB": 91680
+    },
+    "unit-guard-final-circuit": {
+      "command": [
+        "pnpm",
+        "circuit:check"
+      ],
+      "cwd": "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-r4",
+      "exit_code": 0,
+      "elapsed_seconds": 0.8678935759235173,
+      "child_peak_rss_KiB": 128808
+    },
+    "unit-guard-final-doccheck": {
+      "command": [
+        "pnpm",
+        "check"
+      ],
+      "cwd": "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-r4",
+      "exit_code": 0,
+      "elapsed_seconds": 3.1514924300136045,
+      "child_peak_rss_KiB": 280052
+    },
+    "unit-guard-final-build": {
+      "command": [
+        "bash",
+        "/home/takazudo/.codex/scripts/heavy-guard.sh",
+        "--",
+        "pnpm",
+        "build"
+      ],
+      "cwd": "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-r4",
+      "exit_code": 0,
+      "elapsed_seconds": 14.0202704470139,
+      "child_peak_rss_KiB": 1011164
+    },
+    "unit-guard-final-site": {
+      "command": [
+        "pnpm",
+        "check:site"
+      ],
+      "cwd": "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-r4",
+      "exit_code": 0,
+      "elapsed_seconds": 10.178011300042272,
+      "child_peak_rss_KiB": 1011164
+    }
+  },
+  "production_run": "NOT RUN / NOT ADMITTED",
+  "scope": "Manual inventory68 lines; schematic/placement binding not performed; pin-asset check performed. Existing site-link allowlist unchanged."
+}
