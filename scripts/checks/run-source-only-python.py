@@ -21,15 +21,16 @@ def main():
     directory = Path(sys.argv[1]).as_posix()
     suite = unittest.TestLoader().discover(directory, pattern='test_*.py')
     discovered = list(cases(suite))
-    expected = 1 if directory in ('design/spec', 'design/spec/cells') else 0
-    actual = sum(case.id() == ORACLE for case in discovered)
-    if actual != expected:
-        print(f'FAIL: oracle discovery mismatch in {directory}: expected {expected}, found {actual}',
+    oracle_id = {'design/spec': 'cells.' + ORACLE, 'design/spec/cells': ORACLE}.get(directory)
+    matches = [case.id() for case in discovered if case.id() == ORACLE or
+               case.id().endswith('.' + ORACLE)]
+    if matches != ([oracle_id] if oracle_id else []):
+        print(f'FAIL: oracle discovery mismatch in {directory}: expected {oracle_id}, found {matches}',
               file=sys.stderr)
         return 2
     selected = []
     for case in discovered:
-        if case.id() == ORACLE:
+        if case.id() == oracle_id:
             print('NOT RUN: ' + ORACLE + ' (requires separate native admission)', flush=True)
         else:
             selected.append(case)
