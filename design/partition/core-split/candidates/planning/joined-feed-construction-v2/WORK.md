@@ -199,9 +199,9 @@ Coverage criterion: a pad counts only when its whole support lies in a finite co
 
 Two review findings changed the meshes before the final run: tangent contacts used to conduct inside a group, and held lands spilled past their copper. A third run failed because the host guard's 30 min max-run expired; it was resumed. The superseded runs are kept outside the repository.
 
-### Residual atlas and new-target pilots: no legal corridor on either board
+### Residual atlas and new-target pilots: KB pilot credited (6 pads), KA has no legal corridor within its limits
 
-`residual_atlas.py` covers all 196 KA and 486 KB residuals (`evidence/e16/K?-t2-residual-atlas.json.gz`). Each row lists:
+`residual_atlas.py` covers all 196 KA and 486 KB residuals (`evidence/e16/K?-t2-residual-atlas.json.gz`). An independent spot check of 10 rows agrees with the census, the graph and the recomputed distances. Each row lists:
 - the class (direct/supplemental, ledger class) and the disconnected component;
 - every orphan-component identity and pad;
 - the existing transitions;
@@ -209,19 +209,25 @@ Two review findings changed the meshes before the final run: tangent contacts us
 - the straight-corridor obstruction identities and drills at the access rules;
 - the r4/t2 rejection reasons.
 
-Preflights (`pilot_preflight.py`; 0.25/0.2 mm width, 0.25 mm copper and hole clearance, additive face copper only) for the two plan targets:
-- **KA U2314.11 (−12V).** The orphan component is exactly {U2314.11, C2342.1}.
-  - A 6 mm window could not reach fed face copper (nearest 10.33 mm).
-  - The window was then widened to a 12 mm margin and 30 mm length after that failure, using the atlas distance. These limits were not sealed or reviewed beforehand.
-  - That preflight also found no legal corridor: the F.Cu start annuli lie wholly inside other-net clearance, and B.Cu has no clear path.
-  - No construction followed either preflight.
-- **KB U4320.14 (+5V).** The orphan component is exactly the plan's six pads. The 12 mm/30 mm preflight found no clear path on either face.
+`pilot_preflight.py` searches one additive face corridor per plan target: 0.25 then 0.2 mm width, 0.25 mm to other-net copper and other-net drills, rule areas and outline respected. Both orphan components match the plan exactly. The independent pilot review found a defect in the first two preflights: they applied hole clearance to **same-net** drills, including the orphan's own vias. Copper-to-hole clearance is a different-net rule, so the tool was fixed and both boards were re-preflighted under the same limits (preflight c). The 12 mm window / 30 mm length / 10-segment limits were set after KA's 6 mm attempt failed (not pre-sealed). They then applied unchanged to both boards.
 
-So no construction was attempted, and the t2 candidate is unchanged. Each outcome records the exact future change instead (`evidence/e16/pilot/K?-pilot-outcome.json`):
-- **KA.** The orphan's own access vias sit in an unfed In3 island (6.88 mm²) 0.277 mm from the fed sheet. The passage between AGND via `1e1b90ef` and the In3 trace of net X91D7FB7… is 0.663 mm; 0.75 mm is needed (0.25 mm neck + 2 × 0.25 mm clearance), a deficit of **0.087 mm**.
-- **KB.** The orphan's six vias sit in an unfed In2 island (63.4 mm²) sealed around AGND via `f5cbdfb7`: 0.44 mm to an In2 trace and 0.30 mm to a +12V via, deficits of **0.31 / 0.45 mm**. Removing the via's non-functional In2 annulus alone gains at most 0.15 mm.
+- **KB U4320.14 (+5V): sealed, reviewed, constructed once, credited.**
+  - The corridor is F.Cu, 0.25 mm wide, 7.493 mm long, 3 segments, from orphan via `d23658ae` to fed +5V via `e52b5e9d` (`pilot/KB-seal.json`).
+  - An independent geometry review found 0.2517 mm minimum to other-net copper and 0.402 mm to other-net drills, positive overlap at both ends, and no forbidden rule area: PASS (`KB-seal-review.md`).
+  - One construction (`pilot_construct.py`) added only those segments and re-ran caps → clipped sheets → graph → complete census. It closed exactly the 6 orphan pads — U4320.14 (direct), C4337.1, R4334.1, U4336.4, C4353.1 and U4336.10 — with **0 newly disconnected**. KB went 486 → 480 (343/143 → 342/138).
+  - The result is the separate post-t2 record `pilot/KB-p1/`. The t2 receipts and models are unchanged. Native DRC/connectivity: NOT RUN. The end contacts sit 13–16 µm inside the via copper.
+  - The affected electrical case was rerun on P1: KB +5V coverage, then the coupled +5V, nominal, all returns present (`pilot/KB-p1/electrical-rerun.json`).
+    - Coverage: all 405 obligated pads, including the 6 new ones, have finite paths.
+    - Resistance: the 6 new pads reach the source through 28.8–31.3 mΩ of copper. This is structural closure without a usable resistance; the 1 mΩ requirement is far exceeded.
+    - Currents are unchanged, because U4320's supply current is unmapped.
+    - Other P1 nets and cases are NOT RUN.
+- **KA U2314.11 (−12V): no legal corridor within the sealed limits on either face**, so no construction (`pilot/KA-pilot-outcome.json`). The review found a legal B.Cu route only outside those limits (0.2 mm, 23.5 mm, 16 segments, needing a 20 mm window); it was not built.
+- **Dimensioned future changes for KA.** The orphan's own access vias sit in an unfed In3 island (6.88 mm², 0.277 mm from the fed sheet). Any of these would connect it:
+  - Remove the non-functional In3 annulus of AGND via `1e1b90ef`; the independent re-clip joins the island on its own (0.813 ≥ 0.75 mm).
+  - Move that via ≥0.087 mm.
+  - Take the longer B.Cu route.
 
-Every fix moves non-pilot copper or a pad stack. It is outside this pilot's rules and needs full re-evaluation.
+  Rerouting only the two named In3 trace segments does not join it. Every option is outside this pilot's rules and needs full re-evaluation.
 
 ### Coupled KA–KB network: conditional reduced study, copper requirement not met
 

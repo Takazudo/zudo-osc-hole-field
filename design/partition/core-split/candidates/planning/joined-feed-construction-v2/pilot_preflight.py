@@ -5,7 +5,8 @@ The orphan component is the structurally disconnected fragment component holding
 target pad. A corridor is a face trace that starts on that component's face copper and
 ends on feed-connected same-net face copper of the same face, at the E16 access rules:
 0.25 (then 0.2) mm width, 0.25 mm clearance to other-net copper, 0.25 mm to every
-drill, outside rule areas, inside the declared window. Nothing is drilled, moved,
+drill of another net (copper-to-hole clearance is a different-net rule, so a trace may end on
+its own net's via, as a track ending on a via does), outside rule areas, inside the declared window. Nothing is drilled, moved,
 removed or re-layered. The output is the record to seal and review before the single
 construction; it predicts nothing as credited (only a full census credits).
 """
@@ -23,13 +24,21 @@ def jl(p):
 def sha(p):return hashlib.sha256(Path(p).read_bytes()).hexdigest()
 def need(c,m):
  if not c:raise ValueError(m)
-def corridor(start,goal,face,net,width,obs,box):
+class OtherNetDrills:
+ """Every drill not of this net (plated holes of other nets, NPTH keepouts)."""
+ def __init__(self,objects,net):
+  self.shapes=[shapely.Point(o['center_mm']).buffer(o['drill_mm']/2,quad_segs=16) if 'center_mm' in o else shapely.Polygon(o['polygon_mm'])
+               for o in objects if o.get('drill_mm',0)>0 and o.get('net')!=net]
+  self.tree=shapely.STRtree(self.shapes)
+ def query(self,g):return [self.shapes[int(i)] for i in self.tree.query(g)]
+ def hits(self,g):return len(self.tree.query(g,predicate='intersects'))>0
+def corridor(start,goal,face,net,width,obs,box,drills):
  """Shortest 8-connected legal path from start region to goal region inside box; exact re-validation."""
  cuts=[]
  if face in obs.trees:
   for i in obs.trees[face].query(box):
    if obs.nets[face][int(i)]!=net:cuts.append(obs.geoms[face][int(i)].buffer(width/2+CA.CLEARANCE,quad_segs=8))
- if obs.drill_tree is not None:cuts+=[obs.drills[int(i)].buffer(width/2+CA.HOLE_CLEARANCE,quad_segs=8) for i in obs.drill_tree.query(box)]
+ cuts+=[d.buffer(width/2+CA.HOLE_CLEARANCE,quad_segs=8) for d in drills.query(box)]
  if face in obs.forbid_trees:cuts+=[obs.forbid[face][int(i)] for i in obs.forbid_trees[face].query(box)]
  forbidden=shapely.union_all(cuts) if cuts else shapely.Polygon();shapely.prepare(forbidden)
  x0,y0,x1,y1=box.bounds;p=LIMITS['pitch_mm'];xs=np.arange(x0,x1+1e-9,p);ys=np.arange(y0,y1+1e-9,p);X,Y=np.meshgrid(xs,ys)
@@ -59,7 +68,7 @@ def corridor(start,goal,face,net,width,obs,box):
  line=LineString(out)
  if line.length>0 and line.intersects(forbidden):return None,'simplification_failed'
  keep,hole=line.buffer(width/2+CA.CLEARANCE,quad_segs=8),line.buffer(width/2+CA.HOLE_CLEARANCE,quad_segs=8)
- if obs.blocked(keep,[face],net,hole):return None,'exact_validation_failed'
+ if obs.blocked(keep,[face],net) or drills.hits(hole):return None,'exact_validation_failed'
  body=line.buffer(width/2,quad_segs=8)
  if not (body.intersection(start).area>1e-6 and body.intersection(goal).area>1e-6):return None,'no_positive_overlap_at_both_ends'
  return out,None
@@ -70,7 +79,7 @@ def preflight(source,planes,graph,census,pad_id):
  roots={frag.root(i) for i in frag.portnodes[pad_id] if i not in fed};need(roots,'target has no orphan fragment')
  comp=[i for i in range(len(frag.nodes)) if frag.root(i) in roots]
  members=sorted({frag.owner[i] for i in comp});pads=sorted({(byid[m].get('ref'),byid[m].get('pad'),m) for m in members if m in byid and byid[m]['kind']=='pad'})
- obs=CA.Obstacles(source['objects']);tried=[];best=None
+ obs=CA.Obstacles(source['objects']);drills=OtherNetDrills(source['objects'],net);tried=[];best=None
  for face in FACES:
   mine=[i for i in comp if frag.layer[i]==face];fedf=[i for i in fed if frag.layer[i]==face]
   if not mine:tried.append({'face':face,'reason':'orphan_component_has_no_copper_on_face'});continue
@@ -79,7 +88,7 @@ def preflight(source,planes,graph,census,pad_id):
   if not near:tried.append({'face':face,'reason':'no_fed_copper_in_window'});continue
   goal=shapely.union_all([frag.nodes[i] for i in near]).intersection(box)
   for width in LIMITS['widths_mm']:
-   pts,why=corridor(start,goal,face,net,width,obs,box)
+   pts,why=corridor(start,goal,face,net,width,obs,box,drills)
    rec={'face':face,'width_mm':width,'reason':why}
    if pts:
     L=LineString(pts).length;rec.update(reason=None,path_mm=[[round(x,6),round(y,6)] for x,y in pts],length_mm=round(L,6),segments=len(pts)-1)

@@ -46,10 +46,42 @@
    "sha256": "471533325ab710f17d4c16b539e1e067a6a1ce4d26349ddf8d28b0783eab01fa",
    "window_margin_mm": 12,
    "max_length_mm": 30,
-   "result": "NO LEGAL CORRIDOR: neither face has a clear 8-connected path at 0.25 or 0.2 mm from the orphan's face copper to fed +5V face copper inside the window (nearest fed face copper 4.48 mm on B.Cu with 5 other-net objects on the straight corridor, 5.75 mm on F.Cu with 3 objects and 2 drills; residual atlas)."
+   "result": "NO LEGAL CORRIDOR: neither face has a clear 8-connected path at 0.25 or 0.2 mm from the orphan's face copper to fed +5V face copper inside the window (nearest fed face copper 4.48 mm on B.Cu with 5 other-net objects on the straight corridor, 5.75 mm on F.Cu with 3 objects and 2 drills; residual atlas).",
+   "status": "SUPERSEDED: the tool applied hole clearance to same-net drills (independent pilot review); same limits re-run as preflight c"
+  },
+  {
+   "file": "KB-preflight-c-same-net-drills-exempt.json",
+   "sha256": "e85cfef06d773b62e0a3cb1833c338ce36b00a6b3bc4d1e10ecb64ba60540d5e",
+   "window_margin_mm": 12,
+   "max_length_mm": 30,
+   "max_segments": 10,
+   "status": "CURRENT",
+   "result": "LEGAL: F.Cu, 0.25 mm, 7.493 mm, 3 segments, orphan via d23658ae -> fed +5V via e52b5e9d."
   }
  ],
- "construction": "NOT ATTEMPTED (no legal preflight). No geometry was added; the t2 candidate is unchanged.",
+ "construction": {
+  "status": "CONSTRUCTED ONCE, CREDITED",
+  "record": "KB-p1/pilot-result.json",
+  "record_sha256": "cb113d789e2a764688266fc3e7175a88ebed36ee96db9d30f037df22159d527b",
+  "closed_pads": [
+   "C4337.1",
+   "U4320.14",
+   "R4334.1",
+   "U4336.4",
+   "C4353.1",
+   "U4336.10"
+  ],
+  "direct_loads_closed": 1,
+  "newly_disconnected": [],
+  "unresolved_before": 486,
+  "unresolved_after": 480,
+  "added_objects": [
+   "9ab7917e-0543-543a-9fbf-b266997c9d8e",
+   "3be3fbc7-ee73-5848-b6b0-8624c27cf891",
+   "a57ed739-c564-5c10-b69c-d8a13d70d684"
+  ],
+  "note": "Separate post-t2 candidate record P1; t2 receipts and models unchanged. Native DRC/connectivity NOT RUN."
+ },
  "dimensioned_proposal": {
   "mechanism": "The orphan's six existing E16 access vias land in clipped In2 +5V island KB-+5V-SHEET-0011 (63.364 mm2, not feed-connected). The island is 0.795 mm from fed sheet KB-+5V-SHEET-0000 at (278.903, 43.901)-(278.173, 44.215).",
   "obstacle": "AGND via f5cbdfb7-8527-5203-9b49-1460f61801d2 (278.71, 44.46; 0.6/0.3 mm) sits 0.137 mm from that gap. Its clearance joins the clearances of +12V via d8194d6c-636c-5b3d-95b9-fc39ba9df360 (279.61, 44.46) and In2 trace 255fc856-2517-516d-bfdd-34d18ca52370 (net X5E11D4E5DF2B9813D24F), sealing the island. Rule areas 7b51a842/ee8e71c0 crossing the gap allow copper pour and are not obstacles.",
@@ -68,8 +100,13 @@
    "reroute In2 trace 255fc856 >= 0.31 mm away from the AGND via",
    "removing the AGND via's non-functional In2 annulus gains at most 0.15 mm (0.55 -> 0.40 mm obstacle radius) and is insufficient alone on either side"
   ],
-  "status": "PROPOSAL ONLY: each option is outside this pilot's rules (no moved part, removed copper or changed layer). It needs the full caps -> clip -> graph -> census re-evaluation; the passage figures are necessary conditions near the narrowest gap, not proof that the island then joins."
+  "status": "SUPERSEDED for this target by the credited pilot; kept as the inner-layer alternative. Independent re-clip: removing AGND via f5cbdfb7 or In2 trace 255fc856 joins island KB-+5V-SHEET-0011; removing the via's In2 annulus alone does not; removing +12V via d8194d6c alone does not, because an NPTH keepout sits 0.018 mm from the gap."
  },
  "native_calls": 0,
- "accepted": false
+ "accepted": false,
+ "seal": {
+  "file": "KB-seal.json",
+  "sha256": "c10af0d1db14bc494ed0374fc0ba23a8baaf3fb9b6309946f0306c50e1b9426e",
+  "geometry_review": "PASS (KB-seal-review.md)"
+ }
 }
