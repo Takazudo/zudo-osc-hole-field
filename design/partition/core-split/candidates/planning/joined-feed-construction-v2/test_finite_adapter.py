@@ -4,6 +4,7 @@ Tolerances were declared before results were inspected (coupled-network-config.j
 numerical_tolerances); analytic 1-D fixtures use 1-3 % for P1 discretisation.
 """
 import copy,gzip,hashlib,json,math,sys,tempfile,unittest
+from unittest.mock import patch
 from pathlib import Path
 import numpy as np
 import scipy.sparse as sp
@@ -171,8 +172,18 @@ class Coupled(unittest.TestCase):
      f=cls.d/f'{b}-dp-{net}-{k}.pkl.gz';dps[b].append(str(f))
      S.main(['dpoint','--operator',str(cls.d/f'{b}-op-{net}.pkl.gz'),'--coverage',str(cls.d/f'{b}-cov-{net}.json.gz'),'--config',str(cls.d/'config.json'),'--cases',str(cls.d/'cases.json'),
              '--case','c','--depth','uniform-dielectric','--board',b,f'--net={net}','--start',str(lo),'--stop',str(hi),'--output',str(f)])
-   S.main(['couple','--ka-dp',*dps['KA'],'--kb-dp',*dps['KB'],'--ka-red',str(cls.d/f'KA-red-{net}.pkl.gz'),'--kb-red',str(cls.d/f'KB-red-{net}.pkl.gz'),'--ka-op',str(cls.d/f'KA-op-{net}.pkl.gz'),'--kb-op',str(cls.d/f'KB-op-{net}.pkl.gz'),
-           '--config',str(cls.d/'config.json'),'--cases',str(cls.d/'cases.json'),'--case','c','--depth','uniform-dielectric',f'--net={net}','--output',str(cls.d/f'res-{net}.json.gz')])
+   original_apply=S.apply_board;seen=[]
+   def check_precision(K,sup,Rt,vm,vt):
+    seen.append(vm.dtype)
+    assert vm.dtype==np.dtype(np.longdouble),'coupled node reconstruction discarded load precision'
+    return original_apply(K,sup,Rt,vm,vt)
+   with patch.object(S,'apply_board',side_effect=check_precision):
+    S.main(['couple','--ka-dp',*dps['KA'],'--kb-dp',*dps['KB'],'--ka-red',str(cls.d/f'KA-red-{net}.pkl.gz'),'--kb-red',str(cls.d/f'KB-red-{net}.pkl.gz'),'--ka-op',str(cls.d/f'KA-op-{net}.pkl.gz'),'--kb-op',str(cls.d/f'KB-op-{net}.pkl.gz'),
+            '--config',str(cls.d/'config.json'),'--cases',str(cls.d/'cases.json'),'--case','c','--depth','uniform-dielectric',f'--net={net}','--output',str(cls.d/f'res-{net}.json.gz')])
+   assert seen,'coupled KCL path was not exercised'
+   for b in ('KA','KB'):
+    red=U.pload(cls.d/f'{b}-red-{net}.pkl.gz')
+    assert red['g'].dtype==np.dtype(np.float64),'small interface RHS must remain supported by numpy.linalg'
  def res(self,net):return json.loads(gzip.decompress((self.d/f'res-{net}.json.gz').read_bytes()))
  def test_coverage_is_complete_and_graph_reproduced(self):
   for b in ('KA','KB'):

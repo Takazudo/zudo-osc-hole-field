@@ -50,7 +50,7 @@ def main():
    for pid in served:n,w=ops['supports'][pid];fvec[n]-=red['loads'][pid][0]*w
    absK=abs(K)
    for name,vt in sols.items():
-    k=len(terms);v_t=vt[:k] if blk==0 else vt[k:];vm=np.zeros(N);vm[red['free']]=red['u0']-red['Y']@v_t
+    k=len(terms);v_t=vt[:k] if blk==0 else vt[k:];vm=S.reconstruct_potential(red,v_t)
     inj,_=S.apply_board(K,sup,Rt,vm,v_t);r=(inj-fvec)[red['free']];mag=(absK@abs(vm))
     for n,w in sup:mag[n]+=abs(w)*abs(w@vm[n])/Rt
     mag=mag[red['free']]+abs(fvec[red['free']]);scale=max(float(np.max(abs(fvec))),1e-300)

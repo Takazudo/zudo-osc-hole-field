@@ -21,6 +21,7 @@ import scipy.sparse.linalg as spla
 HERE=Path(__file__).resolve().parent
 import finite_adapter as A
 from finite_units import jload,psave,pload,sha,need,LIMIT
+from numerical_acceptance import assess
 BATCH=16
 def wire_of(t):return int(t.rsplit('-W',1)[1])
 def injected(cfg,ledger,board,net,service):
@@ -91,7 +92,7 @@ REFINE_STEPS=3
 def _extended_residual(Af,x,b):
  """Evaluate b-Ax with extended products/sums, using bounded sparse-entry scratch.
 
- Keep the original matrix and float64 solution: no coefficient, topology, load or
+ Keep the original matrix and supplied solution precision: no coefficient, topology, load or
  tolerance changes. One long-double node vector is used per RHS; no full extended
  copy of the matrix or of a multi-RHS solution is allocated.
  """
@@ -114,7 +115,7 @@ def _extended_residual(Af,x,b):
   residual[:,j]=rr
  return residual[:,0] if vector else residual
 
-def refined_solve(lu,Af,b):
+def refined_solve(lu,Af,b,*,extended_solution=False):
  """Bounded mixed-precision refinement with the unchanged load-relative criterion.
 
  Float64 sparse residuals can lose small injection currents to cancellation in
@@ -123,7 +124,14 @@ def refined_solve(lu,Af,b):
  A reported residual above the declared threshold remains a failure. This helper
  does not replace the independent full coupled node-KCL and energy audits.
  """
- x=lu.solve(b);scale=max(float(np.max(abs(b))),1e-300)
+ x=lu.solve(b)
+ if extended_solution:
+  # Only the single load vector uses a wider accumulator. A float64 iterate can
+  # discard corrections even when its residual is evaluated in extended precision.
+  # Do not double the storage of the large multi-RHS driving-point chunks.
+  need(np.asarray(b).ndim==1,'extended solution is restricted to one load RHS')
+  x=x.astype(np.longdouble)
+ scale=max(float(np.max(abs(b))),1e-300)
  r=_extended_residual(Af,x,b);best=x.copy();worst=float(np.max(abs(r)))/scale
  for _ in range(REFINE_STEPS):
   x=x+lu.solve(r);r=_extended_residual(Af,x,b)
@@ -207,7 +215,10 @@ def reduce(a):
   n,w=ops['supports'][pid];need(not fixed[n].any(),'load on a held source support: '+pid);f[n]-=I*w
  t0=time.monotonic();lu=spla.splu(Af,permc_spec='MMD_AT_PLUS_A',diag_pivot_thresh=0.,options=dict(SymmetricMode=True));tf=time.monotonic()-t0
  Y,resY=refined_solve(lu,Af,Bf) if T else (np.zeros((len(free),0)),0.);S=D-Bf.T@Y
- u0,res=refined_solve(lu,Af,f[free]) if f.any() else (np.zeros(len(free)),0.);g=Bf.T@u0
+ u0,res=refined_solve(lu,Af,f[free],extended_solution=True) if f.any() else (np.zeros(len(free)),0.)
+ # The small interface solver uses float64. Keep the full node/load solution
+ # extended for back-substitution and independent node-KCL/energy diagnostics.
+ g=np.asarray(Bf.T@u0,dtype=np.float64)
  pads=sorted(p for p in covered if p in ops['supports'] and p not in terms and p not in src)
  Wr,Wc,Wv=[],[],[]
  for j,p in enumerate(pads):
@@ -217,7 +228,7 @@ def reduce(a):
  Wb=W[:,:BATCH].toarray();U,_=refined_solve(lu,Af,Wb);E=Wb.T@U;recip=float(np.max(abs(E-E.T))/max(np.max(abs(E)),1e-30)) if len(pads) else 0.
  out={'board':a.board,'net':a.net,'case':a.case,'depth':a.depth,'N':N,'free':free,'terms':terms,'S':S,'g':g,'Y':Y,'u0':u0,'pads':pads,'P0':P0,'PY':PY,
       'loads':{p:v for p,v in loads.items()},'device_service_summary':service['device_service']['summary'],'service_excluded_pad_ids':service['device_service']['excluded_pad_ids'],'unserved_loads':unserved,'nonzero_not_injected':skipped,'source_pads':src,
-      'checks':{'reciprocity_relative':recip,'load_solve_residual_relative':res,'interface_solve_residual_relative':resY,'refinement_steps':REFINE_STEPS,'factor_seconds':round(tf,2),'L_U_nnz':int(lu.L.nnz+lu.U.nnz)},
+      'checks':{'reciprocity_relative':recip,'load_solve_residual_relative':res,'interface_solve_residual_relative':resY,'refinement_steps':REFINE_STEPS,'load_solution_dtype':str(u0.dtype),'factor_seconds':round(tf,2),'L_U_nnz':int(lu.L.nnz+lu.U.nnz)},
       'barrel_intervals':len(records),'bindings':{'operator':sha(a.operator),'coverage':sha(a.coverage),'ledger':sha(a.ledger),'service':sha(a.service),'config':sha(a.config),'cases':sha(a.cases),'method':sha(Path(__file__))}}
  psave(a.output,out)
  return {k:out[k] for k in ['board','net','case','depth','N']}|{'pads':len(pads),'loads':len(loads),'unserved':len(unserved),'checks':out['checks']}
@@ -229,6 +240,11 @@ def small_system(rA,rB,cfg,removed,bulk=None):
   if w in removed:continue
   gw=1/(bulk or cfg['wires']['bulk_ohm']);G[i,i]+=gw;G[k+i,k+i]+=gw;G[i,k+i]-=gw;G[k+i,i]-=gw
  return G,tA
+def reconstruct_potential(red,v_t):
+ """Keep load-vector precision through node reconstruction, including held zeros."""
+ vm=np.zeros(red['N'],dtype=np.result_type(red['u0'],red['Y'],v_t))
+ vm[red['free']]=red['u0']-red['Y']@v_t
+ return vm
 def couple(a):
  cfg=jload(a.config);case=jload(a.cases)['cases'][a.case];depth=cfg['depth_cases'][a.depth]
  rA,rB=pload(a.ka_red),pload(a.kb_red)
@@ -263,7 +279,7 @@ def couple(a):
   rho=case['rho_ohm_mm'];cf,ci=case['outer_copper_mm']/rho,case['inner_copper_mm']/rho
   for name in states:
    G,wires,k,vt,live,iw=small[name];v_t=vt[:k] if blk==0 else vt[k:]
-   vm=np.zeros(N);vm[red['free']]=red['u0']-red['Y']@v_t
+   vm=reconstruct_potential(red,v_t)
    inj,tin=apply_board(K,sup,Rt,vm,v_t);res=inj-f
    freeres=float(np.max(abs(res[red['free']])))/max(float(np.max(abs(f))),1e-30) if f.any() else float(np.max(abs(res[red['free']])))
    E_term=float(sum((w@vm[n]-v_t[kk])**2/Rt for kk,(n,w) in enumerate(sup)))
@@ -335,5 +351,16 @@ def main(argv=None):
  for k in ['ka-red','kb-red','ka-op','kb-op','config','cases','case','depth','net','output']:x.add_argument('--'+k,required=True)
  x.add_argument('--ka-dp',nargs='*',default=[]);x.add_argument('--kb-dp',nargs='*',default=[])
  a=p.parse_args(argv);start=time.monotonic();r={'service':create_service,'reduce':reduce,'dpoint':dpoint,'couple':couple}[a.cmd](a)
- r.update(elapsed_seconds=round(time.monotonic()-start,2),peak_KiB=resource.getrusage(resource.RUSAGE_SELF).ru_maxrss);print(json.dumps(r))
+ r.update(elapsed_seconds=round(time.monotonic()-start,2),peak_KiB=resource.getrusage(resource.RUSAGE_SELF).ru_maxrss)
+ assessment=None
+ if a.cmd in ('reduce','dpoint','couple'):
+  assessment=assess(a.cmd,r,jload(a.config))
+  assessment.update(output_sha256=sha(a.output),config_sha256=sha(a.config),
+                    solver_sha256=sha(Path(__file__)),assessment_sha256=sha(HERE/'numerical_acceptance.py'))
+  # Preserve both the original result and explicit failure before stopping.
+  with Path(str(a.output)+'.numerical.json').open('x') as stream:json.dump(assessment,stream,indent=2);stream.write('\n')
+  r['numerical_status']=assessment['status']
+ print(json.dumps(r),flush=True)
+ if assessment and assessment['failures']:
+  raise SystemExit('numerical acceptance failed: '+'; '.join(assessment['failures']))
 if __name__=='__main__':main()

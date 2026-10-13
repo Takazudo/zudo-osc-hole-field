@@ -10,11 +10,30 @@ import scipy.sparse.linalg as spla
 # tools, mesh construction, large board operators, or production solver command.
 source=Path(__file__).with_name('finite_solve.py')
 tree=ast.parse(source.read_text())
-helpers=[n for n in tree.body if isinstance(n,ast.FunctionDef) and n.name in ('_extended_residual','refined_solve')]
-ns={'np':np,'REFINE_STEPS':3}
+helpers=[n for n in tree.body if isinstance(n,ast.FunctionDef) and n.name in ('_extended_residual','refined_solve','reconstruct_potential')]
+def need(condition,message):
+ if not condition:raise ValueError(message)
+ns={'np':np,'REFINE_STEPS':3,'need':need}
 exec(compile(ast.Module(body=helpers,type_ignores=[]),str(source),'exec'),ns)
 
 class Refinement(unittest.TestCase):
+ def test_load_accumulator_retains_corrections_below_float64_spacing(self):
+  A,_,lu=self.fixture();b=np.array([0.,2.3e-6])
+  old,res=ns['refined_solve'](lu,A,b)
+  self.assertGreater(res,1e-9)
+  x,res=ns['refined_solve'](lu,A,b,extended_solution=True)
+  self.assertEqual(x.dtype,np.dtype(np.longdouble));self.assertLess(res,1e-9)
+  current=np.longdouble(1e8)*(x[1]-x[0])
+  independent=np.array([x[0]-current,current-np.longdouble(b[1])])
+  self.assertLess(float(np.max(abs(independent))/b[1]),1e-9)
+  red={'N':3,'free':np.array([0,1]),'u0':x,'Y':np.zeros((2,1))}
+  rebuilt=ns['reconstruct_potential'](red,np.zeros(1))
+  self.assertEqual(rebuilt.dtype,x.dtype);np.testing.assert_array_equal(rebuilt[:2],x)
+  self.assertEqual(rebuilt[2],0)
+  current=np.longdouble(1e8)*(rebuilt[1]-rebuilt[0])
+  self.assertLess(float(max(abs(rebuilt[0]-current),abs(current-b[1]))/b[1]),1e-9)
+  with self.assertRaises(ValueError):ns['refined_solve'](lu,A,np.column_stack([b,b]),extended_solution=True)
+
  def fixture(self):
   # 1 S to ground at node 0, 1e8 S between nodes 0 and 1;
   # inject 10 uA at node 1. Exact voltages are I and I*(1+1e-8).
