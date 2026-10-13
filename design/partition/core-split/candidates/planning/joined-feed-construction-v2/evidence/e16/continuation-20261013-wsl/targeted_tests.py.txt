@@ -1,0 +1,5 @@
+import sys,unittest
+from pathlib import Path
+p=Path.cwd()/'design/partition/core-split/candidates/planning/joined-feed-construction-v2';sys.path.insert(0,str(p))
+suite=unittest.TestSuite(unittest.defaultTestLoader.loadTestsFromName(n) for n in ['test_materialize_e16','test_native_validation','test_refined_solve'])
+r=unittest.TextTestRunner(verbosity=2).run(suite);raise SystemExit(not r.wasSuccessful())

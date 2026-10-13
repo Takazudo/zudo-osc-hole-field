@@ -1,0 +1,69 @@
+{
+  "schema": "osc-deferred-oracle-request-preparation-v1",
+  "status": "PREPARED; NOT ADMITTED; NOT EXECUTED",
+  "checkout": "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-r4",
+  "source_sha": "f1650bba3f224585e654930fbf4c521c3b9f61ed",
+  "implementation_source_sha": "e215b9eb3f9695d74cd9dfc9de182e0882bebcd7",
+  "github_run_id": null,
+  "github_run_attempt": 1,
+  "run_binding": "No actual admitted run exists. Obtain an actual supported run and separately bind its attempt/SHA/hook/this request digest. Do not invent GITHUB_* values. Reprepare on any changed head/path/input/attempt.",
+  "command": [
+    "bash",
+    "/home/takazudo/.codex/scripts/heavy-guard.sh",
+    "--",
+    "python3",
+    "scripts/kicad/ci_native_admission.py",
+    "--phase",
+    "python",
+    "--seconds",
+    "1680",
+    "--evidence",
+    ".circuit-cache/e16-oracle-wsl-final/guard.json",
+    "--",
+    "python3",
+    "-m",
+    "unittest",
+    "design.spec.cells.test_sweep_precision_vendor.PrecisionVendorSweepGate.test_original_network_returns_nonzero_for_supported_failure"
+  ],
+  "method_sha256": {
+    "design/spec/cells/test_sweep_precision_vendor.py": "bc805d32effaed5f5fc92b8ac3e886e53d0b1555f52ccfe00bb436e705034d23",
+    "design/spec/cells/sweep_precision_vendor.py": "31c77c207c3b3da770cbc3800c3d2c75cd96492a5a3e3c6cd246d27239d87eae",
+    "design/spec/cells/_builder.py": "aefd73ab43e83f167ecd9cf3fb257e53dd4c837e0414b24ba46c289494150639",
+    "design/spec/model_contracts.py": "45e397af7a0278d981f76e291adbd363dcb80bcf6da0686aaea99eb3953269d2",
+    "design/spec/modules/spice_trace.py": "3234148d53ec6241468e172e28340a2f0aee1acd299b68c4eea8a6cc7927f964",
+    "scripts/kicad/run.sh": "f91b2c8846856a6d38a10eb9e6314b6ebec3222b68df37942f3716ab860d8c91",
+    "scripts/kicad/pin.env": "769e2be0b61e7d92a6930684f13166b7dc098522008de3969cd30d6c4a363246",
+    "scripts/kicad/ci_native_admission.py": "89bf381dc606330073bda3fe51cdc711894e3e452d7ab7f3072a7873be39655a",
+    "scripts/kicad/native_resource_guard.py": "ee755233af405e60cf592956dcf42ca1069f5face6c20c1cdfcdf6f8479ef8ca"
+  },
+  "model_sha256": {
+    ".circuit-cache/sources/opa197-model/SBOMA34D.ZIP": "9e55fcaa23d54cee025dda3fa9872b11c41c531f82e0802c2b93d51e943666e5",
+    ".circuit-cache/sources/opa197-model/OPAx197.LIB": "fc5b020e63346e511bd808bf41c856b0150b000bcf8a41fe00eeececb1f422a5"
+  },
+  "hook_sha256": "f91b2c8846856a6d38a10eb9e6314b6ebec3222b68df37942f3716ab860d8c91",
+  "image": "kicad/kicad@sha256:18693567392b80da435f9fa952ce3a3e534c66eb5a6033f5b9c80aa3b19dd3ec",
+  "expected": "One unittest only, exit 0 iff rejected original fixture exits 1 and reports 0/1 pass; 1 fail. No aggregate discovery.",
+  "prerequisites": [
+    "Operator-provided noninteractive privilege for reviewed guard; current sudo -n probe failed.",
+    "Separately admitted native control/handshake qualification on this runner.",
+    "Separate parent/operator approval; no self-issued receipt or environment values."
+  ],
+  "resources": {
+    "worker_bytes": 6442450944,
+    "aggregate_bytes": 12884901888,
+    "swap": 0,
+    "launch_memory_floor_bytes": 8589934592,
+    "deadline_seconds": 1680,
+    "serialization": "one integration owner; shared heavy guard; parent global reservation"
+  },
+  "native_calls": 0,
+  "evidence_directory_preparation": {
+    "command": [
+      "mkdir",
+      ".circuit-cache/e16-oracle-wsl-final"
+    ],
+    "status": "Prepared empty directory; guard.json absent. Never reuse a prior evidence file.",
+    "reason": "Existing guard writes evidence but does not create its parent directory.",
+    "path": "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-r4/.circuit-cache/e16-oracle-wsl-final"
+  }
+}

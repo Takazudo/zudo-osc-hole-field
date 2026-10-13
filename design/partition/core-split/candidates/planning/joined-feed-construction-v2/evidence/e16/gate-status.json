@@ -1,14 +1,14 @@
 {
  "schema": "e16-gate-status-v1",
- "date": "2026-10-13 (third continuation)",
+ "date": "2026-10-13 (WSL runner preparation)",
  "decision_file": "design/partition/core-split/decision.json is unchanged: design/partition/core-split/power/joined/check.py pins its reviewed SHA-256 (43c8fffe...) and refuses a changed input. These E16 reasons are recorded here and on #253 instead of rewriting a reviewed hash.",
  "interim_disposition": "KEEP_K1402_INCUMBENT",
  "architecture_selection_ready": false,
  "production_generalization_ready": false,
  "gates": {
   "G1-placed-source-contract": "OPEN. E16 does not move any placement, outline or Z; the 3.6 mm satellite service deficit is untouched.",
-  "G2-joined-power-service": "OPEN. Physical source dependency negative (abstract CN301/XB301, no raw/load bridge). Three fixed local feed variants remain conditional; full-path resistance is not established and retained copper limits fail. Whole-device signed eligibility now prevents partial-device injection; t2 has151 complete,59 partial,21 unserved,194 unmapped groups. Unknown currents remain null. GH380 conductor compliance NOT EVALUATED. Numerical helper fixtures pass but production node-KCL/energy closure remains unproved; guarded production re-solves NOT RUN (user systemd offline). Reduced-load voltage is not electrical acceptance. See continuation-20261013b.",
-  "G3-matched-native-pilot": "NOT RUN / NOT ADMITTED. Deterministic KA t2/KB t2/separate KB P1 materializer and exact-run request packet implemented. Parent must admit exact run/attempt/SHA/hook/request digest; no native worker dispatched.",
+  "G2-joined-power-service": "OPEN. Physical source dependency negative (abstract CN301/XB301, no raw/load bridge). Three fixed local feed variants remain conditional; full-path resistance is not established and retained copper limits fail. Whole-device signed eligibility now prevents partial-device injection; t2 has151 complete,59 partial,21 unserved,194 unmapped groups. Unknown currents remain null. GH380 conductor compliance NOT EVALUATED. Numerical helper fixtures pass but production node-KCL/energy closure remains unproved; guarded production re-solves NOT RUN (separate admission absent; WSL live user scope now verifies 2 GiB/no-swap). Reduced-load voltage is not electrical acceptance. See continuation-20261013b and continuation-20261013-wsl.",
+  "G3-matched-native-pilot": "NOT RUN / NOT ADMITTED. Fresh WSL KA-t2/KB-t2/KB-p1 materializations, complete source censuses and request staging prepared. Actual supported run identity, separate exact-request approval and native handshake qualification absent. Noninteractive sudo system-manager prerequisite fails; no native execution.",
   "G4-native-eligibility": "NOT RUN. No native fill/DRC of E16 access copper.",
   "G5-label-panel-release": "OPEN for the #249 native label gate. The stale panel receipt was requalified at 082b883 against the changed run.sh (pinned KiCad 10.0.6: 0 DRC, 438/438 lock centres, render reviewed); its bound inputs are unchanged by this increment.",
   "G6-installed-qualification": "NEEDS BENCH / NOT RUN."
@@ -34,7 +34,19 @@
     "G6-installed-qualification": "NEEDS BENCH / NOT RUN."
    },
    "pilots": "KB: one sealed, independently reviewed additive F.Cu corridor (7.493 mm) closed the 6-pad orphan component of U4320.14 with 0 newly disconnected (KB 486 -> 480 in separate post-t2 record pilot/KB-p1); its new pads see 28.8-31.3 mOhm of copper. KA: no legal corridor within the sealed limits; dimensioned future changes recorded (In3 annulus removal at AGND via 1e1b90ef joins the island). The first preflights wrongly applied hole clearance to same-net drills; corrected and re-run under the same limits."
+  },
+  {
+   "date": "2026-10-13 (third continuation)",
+   "gates": {
+    "G1-placed-source-contract": "OPEN. E16 does not move any placement, outline or Z; the 3.6 mm satellite service deficit is untouched.",
+    "G2-joined-power-service": "OPEN. Physical source dependency negative (abstract CN301/XB301, no raw/load bridge). Three fixed local feed variants remain conditional; full-path resistance is not established and retained copper limits fail. Whole-device signed eligibility now prevents partial-device injection; t2 has151 complete,59 partial,21 unserved,194 unmapped groups. Unknown currents remain null. GH380 conductor compliance NOT EVALUATED. Numerical helper fixtures pass but production node-KCL/energy closure remains unproved; guarded production re-solves NOT RUN (user systemd offline). Reduced-load voltage is not electrical acceptance. See continuation-20261013b.",
+    "G3-matched-native-pilot": "NOT RUN / NOT ADMITTED. Deterministic KA t2/KB t2/separate KB P1 materializer and exact-run request packet implemented. Parent must admit exact run/attempt/SHA/hook/request digest; no native worker dispatched.",
+    "G4-native-eligibility": "NOT RUN. No native fill/DRC of E16 access copper.",
+    "G5-label-panel-release": "OPEN for the #249 native label gate. The stale panel receipt was requalified at 082b883 against the changed run.sh (pinned KiCad 10.0.6: 0 DRC, 438/438 lock centres, render reviewed); its bound inputs are unchanged by this increment.",
+    "G6-installed-qualification": "NEEDS BENCH / NOT RUN."
+   },
+   "continuation_evidence": "continuation-20261013b/index.json"
   }
  ],
- "continuation_evidence": "continuation-20261013b/index.json"
+ "continuation_evidence": "continuation-20261013-wsl/index.json"
 }

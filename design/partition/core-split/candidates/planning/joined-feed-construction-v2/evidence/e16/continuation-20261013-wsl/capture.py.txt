@@ -1,0 +1,8 @@
+import json,subprocess,time,sys,resource
+from pathlib import Path
+root=Path('/tmp/osc-wsl-20261013');name=sys.argv[1];cmd=sys.argv[2:]
+t=time.monotonic()
+with (root/(name+'.txt')).open('w') as out:
+ p=subprocess.run(cmd,stdout=out,stderr=subprocess.STDOUT)
+r={'command':cmd,'cwd':str(Path.cwd()),'exit_code':p.returncode,'elapsed_seconds':time.monotonic()-t,'child_peak_rss_KiB':resource.getrusage(resource.RUSAGE_CHILDREN).ru_maxrss}
+(root/(name+'.json')).write_text(json.dumps(r,indent=2)+'\n');print(json.dumps(r));print((root/(name+'.txt')).read_text()[-5000:]);sys.exit(p.returncode)
