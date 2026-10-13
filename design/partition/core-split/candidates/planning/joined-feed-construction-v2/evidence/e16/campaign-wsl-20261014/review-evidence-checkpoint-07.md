@@ -1,0 +1,17 @@
+# Read-only review of the diagnostic7 evidence/docs checkpoint
+
+Reviewer `/root/review_admission`,2026-10-14. Scope: uncommitted WORK.md, next-actions.mdx, campaign README, newly retained diagnostics06/07, profile/runtime/source reviews, build/site/source-suite logs and residual-performance fixtures. Numerical source scalar-query changes are excluded and independently reviewed elsewhere. No tracked edits, solver, native operation or test execution by this reviewer.
+
+Factual/provenance review PASS subject to two wording clarifications below and coordinator's pending manifest refresh/newscalar-evidence review. This is an intermediate checkpoint, not a final-tree manifest or fullcampaign acceptance.
+
+Independently verified37 records across diagnostics06/07: actual original sizes/hashes, retained sizes/hashes and exact recoveredbytes after gzip decompression allagree. Both externally indexed pickleoutputs match actualpersistentcache sizes/hashes. Source/request identities remain distinct: diagnostic6 execution9a68f1a/requestb814dc00; diagnostic7 execution492d0e2/requeste2196263. Originalprofile/refusal and supersededunadmittedrequest are retained separately. Numerical/resource/cleanup statements match independently reviewedterminalreceipts.
+
+The three added checklogs exactly match persistentcache originals. Source selection1768PASS with explicitoracleexclusions is supported; build301pages/12.98s with whole guardedcommand16s PASS; strictsite retains existing1allowlistedbrokenlink and otherwisePASS. No statement promotes those checks to native/oracle/retained-artifact acceptance. All539present protectedfiles are tracked;11untracked UI-state files explain old550 count. No retained *.py exists under campaign evidence; scripts remain .py.txt and are not accidentally discoverabletests.
+
+README/WORK/next-actions accurately preserve1/3fullbaseline,7/24diagnosticbudget,attempt4numericalfailure,diagnostic5timeout,diagnostic6profile anddiagnostic7actual96-padPASS157.69s. They distinguish actualexecutionSHA from current uncommittedsource and keep electrical/AGNDstate/fullbaseline/physicalacceptance open. Sourceintegration remains isolatedcandidate/cherry-pick, not falselymerged or alreadypublished. Existing +12V525-path electricalnegative and nextU2314 intervention remain clearlyscoped and unadopted; this review does not repeat their earlier calculation.
+
+Clarifications requested:
+1. next-actions currently says “before the reviewed full-baseline request”; only the preparationrecipe is reviewed at this stage. Prefer “before preparing and reviewing a fresh full-baseline request”. Do not imply futureexacthead/digest admission alreadyexists.
+2. Preserve historical residual-performance/assessment.md bytes, but explain its inaccurate phrase that toolchain/packagehashes were “alreadybound”. At its preparationstage SciPyversion/Pythonbinary were bound, not SciPypackagebytes. Diagnostic7 subsequently added the exactprivatekernel.so hash. implementation-handoff.md already records the earlierdistinction accurately; add a concise README reconciliation to avoid conflicting provenance claims.
+
+Coordinator is separately refreshing the top hashmanifest and adding newscalar-index cacheevidence. Those pendingfiles and finalmanifest are NOT checked here; recheck their actualbytes beforecommit/publication. Currentpass does not allow replacing immutablepriorrecords or claiming subsequent sourcealreadyproductionverified.

@@ -1,0 +1,28 @@
+{
+  "status": "PASS diagnostic/numerical/resource/integrity",
+  "request_sha256": "b814dc00c6655cf09c57e0d8689dedeece5689f9e180fc41df1397ff71d0bc69",
+  "inputs": 342,
+  "protected_present": 539,
+  "peak_bytes": 1597878272,
+  "numerical": {
+    "schema": "e16-reported-numerical-checks-v1",
+    "phase": "dpoint",
+    "status": "PASS REPORTED NUMERICAL CHECKS ONLY",
+    "checks": [
+      {
+        "name": "solve_residual_relative",
+        "value": 1.6095160533084053e-13,
+        "limit": 1e-09,
+        "tolerance": "kcl_relative",
+        "passed": true
+      }
+    ],
+    "failures": [],
+    "electrical_acceptance": false,
+    "output_sha256": "f4778cd99cf61ce0c7767f69cf02d03f1819c11e079de2f8c94a08a93379e1ed",
+    "config_sha256": "f5146d0c1d77e0626a455df308f52bf953ace9806861c25438adcdf90914c107",
+    "solver_sha256": "dfd3578cd6c7ca822e15766ea019aeecf43967c4d6393bf5ad145e32633506f6",
+    "assessment_sha256": "e8c1f0b55784bed3a6d8a1b86854a7cc9cdb0e7685e07efa9feb263e3efecc73"
+  },
+  "profile_seconds": 40.04075627203565
+}

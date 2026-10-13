@@ -1,0 +1,62 @@
+"""Synthetic-only benchmark of the actual residual and bounded CSC kernel."""
+import ast,json,time,hashlib,subprocess
+from pathlib import Path
+import numpy as np
+import scipy.sparse as sp
+import scipy.sparse.linalg as spla
+from scipy.sparse import _sparsetools
+source=Path('/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-campaign/design/partition/core-split/candidates/planning/joined-feed-construction-v2/finite_solve.py')
+repository=source.parents[6]
+relative=str(source.relative_to(repository))
+baseline_source=subprocess.check_output(['git','show','9a68f1a87db7afbc20ae16a95ef523a5f8d093ca:'+relative],cwd=repository,text=True)
+def load_helper(text):
+ tree=ast.parse(text);node=next(n for n in tree.body if isinstance(n,ast.FunctionDef) and n.name=='_extended_residual');ns={'np':np};exec(compile(ast.Module(body=[node],type_ignores=[]),str(source),'exec'),ns);return ns['_extended_residual']
+original=load_helper(baseline_source);implemented=load_helper(source.read_text())
+CAP=65536
+
+def compiled_csc(A,x,b):
+    assert A.format=='csc'
+    xx=np.asarray(x);bb=np.asarray(b);vector=bb.ndim==1
+    if vector:xx=xx[:,None];bb=bb[:,None]
+    result=np.empty(bb.shape,dtype=np.float64)
+    for j in range(bb.shape[1]):
+        rr=bb[:,j].astype(np.longdouble)
+        # Bound both column-pointer and data scratch, including empty columns
+        # and individual columns larger than the data chunk.
+        for c0 in range(0,A.shape[1],CAP):
+            c1=min(c0+CAP,A.shape[1]);low=int(A.indptr[c0]);stop=int(A.indptr[c1])
+            for lo in range(low,stop,CAP):
+                hi=min(lo+CAP,stop)
+                first=max(c0,int(np.searchsorted(A.indptr,lo,side='right'))-1)
+                last=min(c1-1,int(np.searchsorted(A.indptr,hi-1,side='right'))-1)
+                ptr=np.clip(A.indptr[first:last+2]-lo,0,hi-lo)
+                data=-A.data[lo:hi].astype(np.longdouble)
+                vec=xx[first:last+1,j].astype(np.longdouble)
+                _sparsetools.csc_matvec(A.shape[0],last-first+1,ptr,A.indices[lo:hi],data,vec,rr)
+        result[:,j]=rr
+    return result[:,0] if vector else result
+
+def timing(f,*args):
+    t=time.perf_counter();v=f(*args);return v,time.perf_counter()-t
+rows=[]
+for n in [2000,20000,100000]:
+    # Sparse SPD graph, finite shunts; no board or project input geometry.
+    A=sp.diags([-np.ones(n-1)*1e5,np.ones(n)*(2e5+.1),-np.ones(n-1)*1e5],[-1,0,1],format='csc')
+    A+=sp.diags([-np.ones(n-37)*13,np.ones(n)*26,-np.ones(n-37)*13],[-37,0,37],format='csc');A.sort_indices()
+    rng=np.random.default_rng(42);X=rng.random((n,8)).astype(np.longdouble);B=rng.random((n,8))
+    old,to=timing(original,A,X,B);new,tn=timing(implemented,A,X,B)
+    np.testing.assert_array_equal(new,old)
+    lu,tf=timing(spla.splu,A);_,tl=timing(lu.solve,B);_,tp=timing(lambda:np.sum(B*X,axis=0))
+    rows.append({'nodes':n,'nnz':A.nnz,'rhs':8,'old_residual_seconds':to,'compiled_residual_seconds':tn,'speedup':to/tn,'exact_float64_output_equal':True,'factor_seconds':tf,'one_LU_solve_seconds':tl,'one_e_projection_seconds':tp})
+# General unusual CSC cases; bitwise-equivalent output, including chunk seams.
+cases=[]
+for name,A in [
+    ('empty_columns',sp.csc_matrix(([2.,-3.],([0,2],[0,70000])),shape=(3,70002))),
+    ('one_oversize_column',sp.csc_matrix((np.ones(70001),(np.arange(70001),np.zeros(70001,dtype=int))),shape=(70001,1))),
+    ('unsorted_duplicates',sp.csc_matrix((np.array([3.,1.,2.,-4.]),np.array([1,0,1,0]),np.array([0,3,4])),shape=(2,2))),
+    ('empty_matrix',sp.csc_matrix((5,7))),
+]:
+    x=np.ones((A.shape[1],3),dtype=np.longdouble)*np.longdouble('.123456789123456789');b=np.ones((A.shape[0],3))*1e-8
+    o=original(A,x,b);v=implemented(A,x,b);np.testing.assert_array_equal(o,v);cases.append({'case':name,'exact_output_equal':True})
+report={'source_sha256':hashlib.sha256(source.read_bytes()).hexdigest(),'scope':'synthetic matrices only; no production inputs or numerical units','kernel':'scipy.sparse._sparsetools.csc_matvec','chunk_entry_cap':CAP,'column_span_cap':CAP,'benchmarks':rows,'edge_cases':cases,'limitation':'private pinned SciPy API; production runtime/memory not established'}
+print(json.dumps(report,indent=2))

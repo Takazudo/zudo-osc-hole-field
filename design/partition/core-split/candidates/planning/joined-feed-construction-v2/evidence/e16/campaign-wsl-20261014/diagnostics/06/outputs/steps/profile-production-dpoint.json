@@ -1,0 +1,91 @@
+{
+ "inputs": {
+  ".circuit-cache/e16-agnd-profile-bd4c89d2/diagnostic-spec.json": "a388d50f6e9427b71a1a6f46a19fe2e86ee2997dd5b511d52c0e03eb61746e4b",
+  "/home/takazudo/.cache/zudo-e16-runs/20261013-finite-t2b/KB/operator-AGND.pkl.gz": "44938e16a0e6f2b2a2ff32c7fd665d15d5eb5fc195b1cc6e3f01b5f7979fac9a",
+  "/home/takazudo/.cache/zudo-e16-runs/20261013-finite-t2b/KB/coverage-AGND.json.gz": "1de67df34de319e266195968005b96672ee1d34014e74fbc3f49e0a5703ec211",
+  "design/partition/core-split/candidates/planning/joined-feed-construction-v2/evidence/e16/continuation-20261013b/coupled-network-config.json": "f5146d0c1d77e0626a455df308f52bf953ace9806861c25438adcdf90914c107",
+  "design/partition/core-split/candidates/planning/joined-feed-construction-v2/evidence/e16/process-cases.json": "ea253eee2e1b0dbb85d83a3d885cfe4f0cc6fd534b144bb25e9bf419016d4051"
+ },
+ "methods": {
+  "__inbox/e16-profile-unit/driver.py": "553935c00ef2af5a1fce1dc78240bdeb04b1b229dd263aec40a843ee95304a22",
+  "__inbox/e16-profile-unit/profile_unit.py": "ddacaa2252e0fe180a17166166a0c3d57e27eb15c74f7aeb34424aebc21169e9",
+  "design/partition/core-split/candidates/planning/joined-feed-construction-v2/finite_solve.py": "dfd3578cd6c7ca822e15766ea019aeecf43967c4d6393bf5ad145e32633506f6",
+  "design/partition/core-split/candidates/planning/joined-feed-construction-v2/finite_adapter.py": "f313a87719aba83b169a363c05d36daa5c79cd28ad41620e5d45c5d8eca613f4",
+  "design/partition/core-split/candidates/planning/joined-feed-construction-v2/finite_units.py": "295bb239a0949522dca47e33389ddcd0ec9bc058c3a53db9bdc81789e461a8f5",
+  "design/partition/core-split/candidates/planning/joined-feed-construction-v2/numerical_acceptance.py": "e8c1f0b55784bed3a6d8a1b86854a7cc9cdb0e7685e07efa9feb263e3efecc73",
+  "design/partition/core-split/candidates/planning/joined-feed-construction-v2/numerical_unit_guard.py": "513efaf0b4f4a5bb1f94c15190822a2a79d84df399f83e69d7ed0297444ea571",
+  "design/partition/core-split/candidates/planning/joined-feed-construction-v2/replay_steps.py": "06f7cb0facf1674ce52f2f47e8fa22854430de17f3d6786e9c76b4debe9d14f0"
+ },
+ "command": [
+  "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-campaign/__inbox/e16-profile-unit/profile_unit.py",
+  "--spec",
+  "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-campaign/.circuit-cache/e16-agnd-profile-bd4c89d2/diagnostic-spec.json",
+  "--output",
+  "/home/takazudo/.cache/zudo-e16-runs/agnd-profile-bd4c89d2"
+ ],
+ "resource_guard": {
+  "guard": "/home/takazudo/.codex/scripts/heavy-guard.sh",
+  "sha256": "074a463dd6b3a65b7e2168df95b200c0192c414862375bcfb95f979c34c67ee7",
+  "helper_sha256": "513efaf0b4f4a5bb1f94c15190822a2a79d84df399f83e69d7ed0297444ea571",
+  "directory": "/home/takazudo/.agent-guard/heavy",
+  "defaults": {
+   "slots": 1,
+   "wait_seconds": 0,
+   "max_run_seconds": 1800,
+   "min_mem_mb": 2048,
+   "low_mem_mb": 512
+  },
+  "queue_outside_unit_timeout": true
+ },
+ "step": "profile-production-dpoint",
+ "exit_code": 0,
+ "elapsed_seconds": 40.281,
+ "stdout_tail": "{\"board\": \"KB\", \"net\": \"AGND\", \"pads\": 16, \"solve_residual_relative\": 1.6095160533084053e-13, \"elapsed_seconds\": 39.79, \"peak_KiB\": 1589068, \"numerical_status\": \"PASS REPORTED NUMERICAL CHECKS ONLY\"}\n",
+ "stderr_tail": "heavy-guard: verdict=PASS exit=0 secs=42 min_mem_mb=7857 reason=-\n",
+ "peak_rss_KiB": 1589068,
+ "outputs": {
+  "result.pkl.gz": {
+   "": "f4778cd99cf61ce0c7767f69cf02d03f1819c11e079de2f8c94a08a93379e1ed"
+  },
+  "result.pkl.gz.numerical.json": {
+   "": "0635786ed82bc5b807f11e4838798844d178e2fbd356f9d93622a08dfbc32ec4"
+  },
+  "profile.pstats": {
+   "": "99a3ba0ae9e43ce4ce4f67c651e2937bac907eebf1ead81bb54164c0ad9d9d6a"
+  },
+  "profile-summary.json": {
+   "": "f206b6b7e9cf49379da87e218c2df5664f8b395aa437724d878c43b46c6580f6"
+  }
+ },
+ "native_calls": 0,
+ "launch_command": [
+  "bash",
+  "/home/takazudo/.codex/scripts/heavy-guard.sh",
+  "--",
+  "/home/takazudo/.cache/zudo-e16-numerical-venv/bin/python",
+  "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-campaign/design/partition/core-split/candidates/planning/joined-feed-construction-v2/numerical_unit_guard.py",
+  "--inside",
+  "074a463dd6b3a65b7e2168df95b200c0192c414862375bcfb95f979c34c67ee7",
+  "--",
+  "timeout",
+  "180s",
+  "/home/takazudo/.cache/zudo-e16-numerical-venv/bin/python",
+  "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-campaign/__inbox/e16-profile-unit/profile_unit.py",
+  "--spec",
+  "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-campaign/.circuit-cache/e16-agnd-profile-bd4c89d2/diagnostic-spec.json",
+  "--output",
+  "/home/takazudo/.cache/zudo-e16-runs/agnd-profile-bd4c89d2"
+ ],
+ "resource_guard_result": {
+  "passed": true,
+  "verdict": "PASS",
+  "exit": 0,
+  "seconds": 42,
+  "min_mem_mb": "7857",
+  "reason": "-"
+ },
+ "stream_files": {
+  "steps/profile-production-dpoint.stdout.txt": "1750b65cb03545b4709c0e4601699c41662e75c518fdd7c0a40deb3dfe001142",
+  "steps/profile-production-dpoint.stderr.txt": "d56ce3c24ff12f89cfc00c30c18dc5478f66c1e5680f75c3c2adda8c1b2cd920"
+ }
+}
