@@ -86,7 +86,7 @@ def _board_selected(op, red, cfg, case, depth, board, binding, checker, budget):
                          'held':hashlib.sha256(fixed.tobytes()).hexdigest(),
                          'free':hashlib.sha256(memoryview(free).cast('B')).hexdigest(),
                          'source_pads':sources,'terms':terms,'construction':'finite_solve.board_parts'}
-    cert = U.certify(Af,context,context,checker,border=(B,D))
+    cert = U.certify(Af,context,context,checker,border=(B,D),reference=True)
     cert['B_infinity_upper'],cert['BT_infinity_upper'] = V.matrix_norms(B)
     budget.check()
     R.need(R._max(S._extended_residual(Af,red['Y'],B))/max(R._max(B),1e-30) <= 1e-9,'retained basis residual failed')
@@ -226,6 +226,7 @@ def run_pipeline(packet, output_path, budget):
         R.need(all(cfg['numerical_tolerances'][k] == 1e-9 for k in ('kcl_relative','energy_relative','reciprocity_relative','support_weight_sum')), 'tolerance drift')
         removed = set(packet.get('fixture_removed',[]))
         R.need(not removed or packet.get('fixture_only') is True, 'production return state must be all-present')
+        R.need(packet.get('certificate_method')==U.REFERENCE_METHOD,'certificate method binding differs')
         checker = U.Work(**packet['certificate_limits'],checkpoint=budget.check)
         fields,certs = {},{}
         scale = None
@@ -248,8 +249,8 @@ def run_pipeline(packet, output_path, budget):
         G,wires = S.small_system(fields['KA'],fields['KB'],cfg,removed)
         expected_wires = sorted(int(w[1:]) for w,net in cfg['wires']['pairs'].items() if net == NET)
         R.need(wires == expected_wires and len(wires) > 0,'wire coverage differs')
-        coupling = U.certify_coupled(certs['KA']['schur_intervals'],certs['KB']['schur_intervals'],cfg['wires']['bulk_ohm'],[w not in removed for w in wires],checker)
-        U.certify(sp.csr_matrix(G),{'return_state':'all-present'},{'return_state':'all-present'},checker)
+        coupling = U.certify_coupled(certs['KA']['schur_intervals'],certs['KB']['schur_intervals'],cfg['wires']['bulk_ohm'],[w not in removed for w in wires],checker,reference=True)
+        U.certify(sp.csr_matrix(G),{'return_state':'all-present'},{'return_state':'all-present'},checker,reference=True)
         vt = np.linalg.solve(G,-np.r_[fields['KA']['g'],fields['KB']['g']])
         R.need(np.isfinite(vt).all() and R._max(G@vt+np.r_[fields['KA']['g'],fields['KB']['g']])/scale <= 1e-9,'coupled solve residual failed')
         k = len(wires)

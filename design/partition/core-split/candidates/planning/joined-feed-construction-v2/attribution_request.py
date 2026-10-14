@@ -105,6 +105,7 @@ def packet_from_inventory(sources):
     packet={'original_request_identity':{'compressed_sha256':'3ac6356762419c653c8949adb1c2d12db58e109408d52246ef482e9a398adc54','decompressed_sha256':'ef0213b3b38f4de23804ad192043b082d8e1b2be3086c5e20e4343afea4052d6'},
             'config':find('coupled-network-config.json'),'cases':find('process-cases.json'),
             'solver_sha256':sources['finite_solve.py'],'source_bindings':sources,
+            'certificate_method':'original-operator-symmetric-part-coercivity-v1',
             'certificate_limits':{'max_entries':4_000_000,'max_updates':20_000_000,'max_input_nnz':16_000_000},
             'comparison':find('coupled-+12V-nominal-average-uniform-dielectric.json.gz'),'boards':{}}
     for board in ('KA','KB'):

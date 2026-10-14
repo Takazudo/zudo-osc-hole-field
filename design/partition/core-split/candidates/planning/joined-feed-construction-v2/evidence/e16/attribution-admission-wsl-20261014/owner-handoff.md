@@ -1,3 +1,5 @@
+> Current authority and continuation: [WORK.md](../../../WORK.md) and [delegated signing](containment/signing.md) supersede the historical external-owner requirements below. Dedicated trust is provisioned; real admitted failures are retained in WORK.md. This document is historical evidence, not the current stop instruction.
+
 > Historical checkpoint. The current [task-local containment continuation](containment/README.md) supersedes the host-swap-only path and adds real mechanism evidence. Original numerical and external-signature restrictions remain in force.
 
 # Independent-owner action for selected E16 qualification

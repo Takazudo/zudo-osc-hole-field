@@ -4,7 +4,9 @@ This checker never solves a load or changes the production solver. Binary64
 coefficients start as singleton real intervals. Each scalar operation rounds
 outwards by one nextafter, including underflow. Positive lower pivot bounds
 prove exact LDL positivity by induction. Fill/work exhaustion is unresolved.
-No approximate-zero pruning, symmetrization, or dense board conversion occurs.
+No approximate-zero pruning or dense board conversion occurs. Optional symmetric-
+part references are analysis only: original matrices and solver inputs are never
+modified, and reference positivity is not reported as original-operator SPD.
 """
 import hashlib
 import json
@@ -17,6 +19,7 @@ import scipy.sparse as sp
 from resistance_attribution import need, digest
 
 METHOD = 'outward-binary64-sparse-LDL-v1'
+REFERENCE_METHOD = 'original-operator-symmetric-part-coercivity-v1'
 ZERO = (0., 0.)
 
 
@@ -71,7 +74,7 @@ class Work:
     def check(self, entries, updates=0):
         self.updates += updates
         self.peak_entries = max(self.peak_entries, entries)
-        need(entries <= self.max_entries, 'UNRESOLVED: certificate sparse fill cap')
+        need(entries <= self.max_entries, f'UNRESOLVED: certificate sparse fill cap (entries={entries}, maximum={self.max_entries})')
         need(self.updates <= self.max_updates, 'UNRESOLVED: certificate arithmetic cap')
         self.checkpoint()
 
@@ -125,14 +128,59 @@ def _eliminate(rows, pivots, work):
     return pivot_min,inverse_bound
 
 
-def certify(matrix, binding, expected_binding, work=None, border=None):
-    """Certify exact symmetric binary64 Af and optionally enclose D-B'Af^-1 B.
+def average_enclosure(a,b):
+    """Enclose exact (a+b)/2 without modifying either stored coefficient."""
+    need(math.isfinite(a) and math.isfinite(b),'nonfinite reference coefficient')
+    if a==b:return (a,a)
+    if a==-b:return ZERO
+    lo=math.nextafter(math.nextafter(a*.5,-math.inf)+math.nextafter(b*.5,-math.inf),-math.inf)
+    hi=math.nextafter(math.nextafter(a*.5,math.inf)+math.nextafter(b*.5,math.inf),math.inf)
+    # Exact average also lies between the original finite endpoints. Intersect
+    # before finite-only checking so intermediate rounding overflow is harmless.
+    result=max(lo,min(a,b)),min(hi,max(a,b))
+    need(all(math.isfinite(v) for v in result) and result[0]<=result[1],'invalid reference enclosure')
+    return result
+
+
+def reference_pairs(a,at,row):
+    """Merge two canonical CSR rows with O(1) auxiliary storage."""
+    p,end=int(a.indptr[row]),int(a.indptr[row+1])
+    q,stop=int(at.indptr[row]),int(at.indptr[row+1])
+    p+=int(np.searchsorted(a.indices[p:end],row))
+    q+=int(np.searchsorted(at.indices[q:stop],row))
+    while p<end or q<stop:
+        j=min(int(a.indices[p]) if p<end else a.shape[0],
+              int(at.indices[q]) if q<stop else a.shape[0])
+        x=y=0.
+        if p<end and a.indices[p]==j:x=float(a.data[p]);p+=1
+        if q<stop and at.indices[q]==j:y=float(at.data[q]);q+=1
+        # Exact real cancellation, including absent/explicit-zero partners.
+        if x!=-y:yield j,x,y
+
+
+def reference_preflight(a,at,work,border_entries=0):
+    """Count exact reference entries BEFORE allocating Python row dictionaries."""
+    count=border_entries
+    work.check(count)
+    for i in range(a.shape[0]):
+        count+=sum(1 for _ in reference_pairs(a,at,i))
+        work.check(count)
+    return count
+
+
+def certify(matrix, binding, expected_binding, work=None, border=None, *, reference=False):
+    """Certify exact symmetric Af, or explicitly its symmetric analysis reference.
+
+    reference=True encloses (Af+Af.T)/2 and its own bordered Schur. It does not
+    certify that nonsymmetric Af is SPD or relabel its Schur as the reference.
+    The caller must derive full-network original inverse bounds by coercivity.
 
     border=(B,D) appends only terminal columns, never another board. Elimination
     stops before terminal pivots: a floating KB terminal is expected here. The
     returned interval Schur blocks, combined with live wire stamps, must also
-    pass certify_coupled. This proves original full-network uniqueness by block
-    factorization, without assuming a retained approximate basis is exact.
+    pass certify_coupled. Reference block factorization proves H positive
+    definite; full-network coercivity then proves original M nonsingular. Neither
+    mode assumes that a retained approximate basis is exact.
     """
     need(binding == expected_binding and bool(binding), 'stale uniqueness binding')
     work = work or Work()
@@ -143,8 +191,8 @@ def certify(matrix, binding, expected_binding, work=None, border=None):
     a = matrix.tocsr(copy=True)
     need(a.has_canonical_format, 'certificate requires canonical sparse entries')
     need(np.isfinite(a.data).all(), 'nonfinite certificate operator')
-    mismatch = (a != a.T).tocsr()
-    if mismatch.nnz:
+    mismatch = None if reference else (a != a.T).tocsr()
+    if mismatch is not None and mismatch.nnz:
         # Reuse the existing Boolean witness: no extra full floating difference,
         # symmetrization, approximate equality or solver change. Four exact pairs
         # characterize the rejection; they are not a global skew-norm estimate.
@@ -164,22 +212,30 @@ def certify(matrix, binding, expected_binding, work=None, border=None):
         need(False,'nonreciprocal exact certificate operator: '+json.dumps(report,sort_keys=True,separators=(',',':')))
     del mismatch
     n = a.shape[0]
+    if border is not None:
+        B,D=border
+        need(B.dtype==D.dtype==np.dtype('float64') and B.ndim==2 and B.shape[0]==n
+             and D.shape==(B.shape[1],B.shape[1]) and 0<len(D)<=8,'invalid certificate border')
+        need(np.isfinite(B).all() and np.isfinite(D).all() and np.array_equal(D,D.T),'nonfinite/asymmetric border')
+    at=matrix.T.tocsr(copy=False) if reference else None
+    if reference:
+        reference_preflight(a,at,work,0 if border is None else int(np.count_nonzero(B))+D.size)
     rows = []
     entries = 0
     for i in range(n):
         work.check(entries)
-        rows.append({int(j): (float(x), float(x))
-                     for j, x in zip(a.indices[a.indptr[i]:a.indptr[i+1]], a.data[a.indptr[i]:a.indptr[i+1]])
-                     if j >= i and x != 0})
+        if reference:
+            rows.append({j:average_enclosure(x,y) for j,x,y in reference_pairs(a,at,i)})
+        else:
+            rows.append({int(j): (float(x), float(x))
+                         for j, x in zip(a.indices[a.indptr[i]:a.indptr[i+1]], a.data[a.indptr[i]:a.indptr[i+1]])
+                         if j >= i and x != 0})
         entries += len(rows[-1])
         work.check(entries)
-    stamp = matrix_hash(a)
-    del a
+    stamp = matrix_hash(a)  # Original stored matrix hash, never a replaced solver input.
+    del a,at
     if border is not None:
         B, D = border
-        need(B.dtype == D.dtype == np.dtype('float64') and B.ndim == 2 and B.shape[0] == n
-             and D.shape == (B.shape[1], B.shape[1]) and 0 < len(D) <= 8, 'invalid certificate border')
-        need(np.isfinite(B).all() and np.isfinite(D).all() and np.array_equal(D,D.T), 'nonfinite/asymmetric border')
         work.check(entries + int(np.count_nonzero(B)) + D.size)
         for i in range(n):
             for j in range(len(D)):
@@ -190,13 +246,15 @@ def certify(matrix, binding, expected_binding, work=None, border=None):
     schur = []
     for i in range(n,len(rows)):
         schur.append([rows[min(i,j)].get(max(i,j),ZERO) for j in range(n,len(rows))])
-    return {'method': METHOD, 'status': 'EXACT_STORED_OPERATOR_SPD',
+    return {'method': REFERENCE_METHOD if reference else METHOD,
+            'status': 'SYMMETRIC_PART_REFERENCE_SPD' if reference else 'EXACT_STORED_OPERATOR_SPD',
+            'analysis_reference_only':reference,
             'matrix_sha256': stamp, 'binding_sha256': digest(binding), 'order': n,
             'minimum_pivot_lower': minimum, 'inverse_infinity_upper':inverse_bound, 'schur_intervals': schur,
             'arithmetic_updates': work.updates, 'peak_sparse_entries': work.peak_entries}
 
 
-def certify_coupled(ka, kb, bulk, live, work):
+def certify_coupled(ka, kb, bulk, live, work, *, reference=False):
     """Certify exact combined Schur, accounting wire reciprocal rounding too."""
     k = len(ka)
     need(k > 0 and len(kb) == len(live) == k and math.isfinite(bulk) and bulk > 0, 'invalid coupled certificate')
@@ -221,6 +279,8 @@ def certify_coupled(ka, kb, bulk, live, work):
             rows[k+i][k+i] = add(rows[k+i].get(k+i,ZERO),g)
             rows[i][k+i] = (-g[1],-g[0])
     minimum,inverse_bound = _eliminate(rows,2*k,work)
-    return {'method': METHOD, 'status': 'EXACT_COUPLED_SCHUR_SPD',
+    return {'method': REFERENCE_METHOD if reference else METHOD,
+            'status': 'EXACT_COUPLED_REFERENCE_SCHUR_SPD' if reference else 'EXACT_COUPLED_SCHUR_SPD',
+            'analysis_reference_only':reference,'order':2*k,
             'minimum_pivot_lower': minimum, 'inverse_infinity_upper':inverse_bound, 'arithmetic_updates': work.updates,
             'peak_sparse_entries': work.peak_entries}

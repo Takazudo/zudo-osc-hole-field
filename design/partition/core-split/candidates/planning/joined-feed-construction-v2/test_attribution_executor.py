@@ -48,6 +48,7 @@ def packet(root, barrels=False, multiwire=False):
               'cases':bind(root,'cases.gz',{'cases':{E.CASE:CASE}},'json'),
               'solver_sha256':hashlib.sha256(Path(S.__file__).read_bytes()).hexdigest(),
               'source_bindings':{'fixture':'bounded serialized original-Assembly test'},
+              'certificate_method':U.REFERENCE_METHOD,
               'certificate_limits':{'max_entries':10000,'max_updates':500000},'boards':{}}
     ops = {}
     for board in ('KA','KB'):

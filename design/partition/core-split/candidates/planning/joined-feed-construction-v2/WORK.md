@@ -796,3 +796,36 @@ delegation; its claim would consume diagnostic12. Do not sign RESOURCE_QUALIFIED
 or prepare production from that expected negative result. Choose any subsequent
 certificate correction only from the actual retained evidence and separate proof
 review, without changing solver/refinement, tolerances or physical scope.
+
+
+### Fourth diagnostic and reviewed original-operator certificate correction
+
+Current completed request`6bd7c5d97f30863ed7d9c6ce39c593a53193474555c8dc6304722be25a531009`,
+run`f068281e8fc349ce804cb3f7a804174f`, source`b5b47f90fca893c6f51b5057ee53d97ecc85758a`.
+[Exact retained identities and terminal evidence](evidence/e16/attribution-admission-wsl-20261014/qualification-attempt4/index.json),
+[independent cleanup/accounting audit](evidence/e16/attribution-admission-wsl-20261014/qualification-attempt4/review.md).
+Packet remains`~/.cache/zudo-e16-runs/attribution-qualification-t_7i82on/`.
+Actual KA order1513837, storednnz7818329, mismatchentries15252. Four bounded
+hexadecimal witnesses differ by1–2ULP; no global skew bound or SPD follows.
+Rootpeak845373440B,elapsed6.936201578s,zero swap/noOOM; four terminal charges,
+2/3 baselines and12/24 diagnostics,12 diagnostics remain,zero additional baseline
+allowed. LedgerSHAe1edfda81de7006f5c53a38a6ca1f11fd73f447222e29f10ed628e898b0459ea.
+No live work; unit/root/locks released; six retained outputs6272B match journals.
+Stage C NOT RUN, qualificationNOT_QUALIFIED,productionNOT_ADMITTED.
+
+An independently [reviewed reference coercivity proof](evidence/e16/attribution-admission-wsl-20261014/reference-certificate/review.md)
+now addresses actual asymmetry without changing the original numerical solve,
+RHS, matrix bytes or tolerances. A conservative global inverse bound uses only
+analysis-reference H positivity; original SPD is not asserted.140focusedtestsPASS.
+Memory feasibility remains unproven. Constant-auxiliary reference preflight counts
+initial structure before Python dictionaries and preserves the existing4M cap.
+
+Next executable action after this clean commit: compile a NEW description and
+qualification request with existing attribution_request.py, obtain exact-packet
+technical review, issue delegated exact grants, verify metadata then run existing
+attribution_host.py --launch under genuine live admission. This FULL conditional
+qualification first tests reference structure capacity, then continues the complete
+pipeline if preflight passes. A capfailure reports only the first exceeding prefix.
+Dictionary/fill/runtime failure remains possible, charged and terminally reviewed.
+No new numerical baseline, production request or RESOURCE_QUALIFIED report exists.
+Never replay prior identities or change bound source while this next packet is live.

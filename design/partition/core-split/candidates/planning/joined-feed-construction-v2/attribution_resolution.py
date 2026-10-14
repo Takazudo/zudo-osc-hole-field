@@ -2,7 +2,9 @@
 
 No new load is solved. Residuals are evaluated at the computed field, and the
 verified block inverse norm bounds its distance from the exact selected solution.
-All bounds refer to the stored Af/B/D/wire operator certified by interval LDL.
+Reference block bounds apply only to the complete symmetric part H of the stored
+joined operator M. Coercivity converts them once to an original M inverse bound;
+residuals and all selected-field calculations continue to use original M.
 """
 import math
 import numpy as np
@@ -43,7 +45,20 @@ def network_inverse_bound(boards,coupled):
         diagonal=max(diagonal,inv)
         forward=max(forward,U.upper_mul(inv,cert['B_infinity_upper']))
         backward=max(backward,U.upper_mul(inv,cert['BT_infinity_upper']))
-    return U.upper_mul(U.upper_mul(U.upper_add(1.,forward),diagonal),U.upper_add(1.,backward))
+    bound=U.upper_mul(U.upper_mul(U.upper_add(1.,forward),diagonal),U.upper_add(1.,backward))
+    references=[c.get('analysis_reference_only',False) for c in boards.values()]+[coupled.get('analysis_reference_only',False)]
+    need(all(references) or not any(references),'mixed original/reference inverse certificates')
+    if all(references):
+        need(all(c.get('status')=='SYMMETRIC_PART_REFERENCE_SPD' for c in boards.values()) and
+             coupled.get('status')=='EXACT_COUPLED_REFERENCE_SCHUR_SPD','reference certificate status differs')
+        n=sum(c['order'] for c in boards.values())+coupled['order']
+        need(type(n) is int and 0<n<=2**53,'invalid full-network reference dimension')
+        factor=math.isqrt(n)
+        if factor*factor<n:factor+=1
+        # x'Mx=x'Hx gives ||M^-1||inf <= sqrt(N)||H^-1||inf. Integer
+        # ceiling avoids assuming libm square-root rounding. Apply once globally.
+        bound=U.upper_mul(bound,float(factor))
+    return bound
 
 
 def residual_bound(A,B,D,x,t,f,wire_injection,budget):
