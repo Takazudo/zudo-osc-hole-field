@@ -1,0 +1,209 @@
+{
+  "components": [
+    {
+      "board": "KA",
+      "branch": {
+        "nodes": [
+          0,
+          1
+        ],
+        "resistance_ohm": 0.002,
+        "weights": [
+          1.0,
+          -1.0
+        ]
+      },
+      "id": "via",
+      "kind": "barrel",
+      "layer_interval": [
+        "F.Cu",
+        "In4.Cu"
+      ],
+      "matrix": {
+        "col": [
+          0,
+          1,
+          0,
+          1
+        ],
+        "n": 3,
+        "row": [
+          0,
+          0,
+          1,
+          1
+        ],
+        "siemens": [
+          500.0,
+          -500.0,
+          -500.0,
+          500.0
+        ]
+      },
+      "net": "+12V",
+      "object_ids": [
+        "via"
+      ],
+      "region": {
+        "length_mm": 1.0
+      }
+    },
+    {
+      "board": "KA",
+      "branch": {
+        "nodes": [
+          1,
+          2
+        ],
+        "resistance_ohm": 0.003,
+        "weights": [
+          1.0,
+          -1.0
+        ]
+      },
+      "id": "sheet",
+      "kind": "barrel",
+      "layer_interval": [
+        "F.Cu",
+        "In4.Cu"
+      ],
+      "matrix": {
+        "col": [
+          1,
+          2,
+          1,
+          2
+        ],
+        "n": 3,
+        "row": [
+          1,
+          1,
+          2,
+          2
+        ],
+        "siemens": [
+          333.3333333333333,
+          -333.3333333333333,
+          -333.3333333333333,
+          333.3333333333333
+        ]
+      },
+      "net": "+12V",
+      "object_ids": [
+        "sheet"
+      ],
+      "region": {
+        "length_mm": 1.0
+      }
+    }
+  ],
+  "identity": {
+    "board": "KA",
+    "depth_case": "uniform-dielectric",
+    "net": "+12V",
+    "observation_support": {
+      "nodes": [
+        2
+      ],
+      "weights": [
+        1.0
+      ]
+    },
+    "pad_uuid": "synthetic-pad",
+    "pin": "1",
+    "process_case": "nominal-average",
+    "ref": "Utest",
+    "return_state": "all-present",
+    "source_support": {
+      "mode": "equipotential_patches",
+      "pads": [
+        {
+          "board": "KA",
+          "nodes": [
+            0
+          ],
+          "pad_uuid": "source-0",
+          "pin": "1",
+          "ref": "TP0"
+        }
+      ],
+      "potential_V": 0
+    }
+  },
+  "network": {
+    "matrix": {
+      "col": [
+        0,
+        1,
+        0,
+        1,
+        2,
+        1,
+        2
+      ],
+      "n": 3,
+      "row": [
+        0,
+        0,
+        1,
+        1,
+        1,
+        2,
+        2
+      ],
+      "siemens": [
+        500.0,
+        -500.0,
+        -500.0,
+        833.3333333333333,
+        -333.3333333333333,
+        -333.3333333333333,
+        333.3333333333333
+      ]
+    }
+  },
+  "provenance": {
+    "config_sha256": "f5146d0c1d77e0626a455df308f52bf953ace9806861c25438adcdf90914c107",
+    "extractor_sha256": "67c9735f1519b49e69cab61dfaea8947d5f7d9838185cce7f87eca0070deca70",
+    "operator_sha256": "336f8ce63db625e5ef5bad7bbb961124ffeb13e6f087ea49edf3101aae9baf2a",
+    "quantity_origin": "synthetic",
+    "source_sha256": "39631bb5e5dc9326b23f8c00bf43440a84ce711315c6b799de554c56aa04d133"
+  },
+  "schema": "e16-attribution-detail-v1",
+  "scope": {
+    "complete_modeled_network": true,
+    "expected_component_ids": [
+      "via",
+      "sheet"
+    ],
+    "omitted_components": [],
+    "physical_omissions": [
+      "synthetic fixture, no instrument qualification"
+    ]
+  },
+  "solution": {
+    "injection_A": [
+      0.0,
+      0.0,
+      1.0
+    ],
+    "normalization": {
+      "current_A": 1.0,
+      "mode": "unit_current"
+    },
+    "original_class_energy_W": {
+      "barrel": 0.004999999999999999
+    },
+    "original_energy_W": 0.005,
+    "original_node_current_A": [
+      -1.0,
+      0.0,
+      0.9999999999999999
+    ],
+    "potential_V": [
+      0.0,
+      0.002,
+      0.005
+    ]
+  }
+}

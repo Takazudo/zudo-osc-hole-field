@@ -1,0 +1,25 @@
+from pathlib import Path
+import json,hashlib,datetime,time,subprocess
+root=Path('/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-resistance-attribution')
+e16=root/'design/partition/core-split/candidates/planning/joined-feed-construction-v2/evidence/e16'
+start=time.monotonic()
+def digest(p):
+ h=hashlib.sha256()
+ with p.open('rb') as f:
+  for b in iter(lambda:f.read(1024*1024),b''):h.update(b)
+ return h.hexdigest()
+def check(p,sha,size=None):
+ row={'path':str(p),'expected_sha256':sha,'expected_bytes':size,'exists':p.is_file()}
+ if row['exists']:
+  row.update(bytes=p.stat().st_size,sha256=digest(p));row['matches']=row['sha256']==sha and (size is None or row['bytes']==size)
+ else:row['matches']=False
+ return row
+idxp=e16/'campaign-wsl-20261014/attempt5/index.json';idx=json.loads(idxp.read_text())
+ext=[check(Path(r['path']),r['sha256'],r['bytes']) for r in idx['external_outputs']]
+protp=e16/'continuation-20261013-wsl/protected-before.json';prot=json.loads(protp.read_text())
+expected_absent=json.loads((e16/'campaign-wsl-20261014/candidate-protected-scope.json').read_text())['absent_untracked_ui_state']
+topic=[check(root/p,h) for p,h in prot.items()];original_root=Path('/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-r4');original=[check(original_root/p,h) for p,h in prot.items()]
+macp=root/'design/partition/core-split/mechanical/evidence/issue263-mac/final/receipt.json';mac=json.loads(macp.read_text());browser=[check(root/p,h) for p,h in mac['input_sha256'].items()]
+note=Path('/home/takazudo/.cache/zudo-e16-runs/campaign-20261014/campaign-note.json')
+r={'schema':'e16-read-only-preservation-audit-v1','observed_at_utc':datetime.datetime.now(datetime.timezone.utc).isoformat(),'reviewer':'independent /root/state_review','checkout':str(root),'initial_head':subprocess.check_output(['git','-C',str(root),'rev-parse','HEAD'],text=True).strip(),'activity':'Read bytes/hash/stat only; no pickle load, solver, native or geometry execution','baseline_index':{'path':str(idxp.relative_to(root)),'sha256':digest(idxp)},'external_outputs':{'count':len(ext),'bytes':sum(x.get('bytes',0) for x in ext),'matched':sum(x['matches'] for x in ext),'mismatches':[x for x in ext if not x['matches']],'files':ext,'recovery':idx['recovery']},'protected_index':{'path':str(protp.relative_to(root)),'sha256':digest(protp)},'topic_protected':{'matched':sum(x['matches'] for x in topic),'expected_absent':expected_absent,'unexpected_missing':[str(Path(x['path']).relative_to(root)) for x in topic if not x['exists'] and str(Path(x['path']).relative_to(root)) not in expected_absent],'changed':[x for x in topic if x['exists'] and not x['matches']],'files':topic},'original_protected':{'root':str(original_root),'matched':sum(x['matches'] for x in original),'mismatches':[x for x in original if not x['matches']],'files':original},'mac_impact':{'receipt':str(macp.relative_to(root)),'receipt_sha256':digest(macp),'source_sha':mac['source_sha'],'platform':mac['platform'],'matched':sum(x['matches'] for x in browser),'mismatches':[x for x in browser if not x['matches']],'files':browser,'browser_execution':'NOT RUN; read-only impact audit'},'campaign_note':{'path':str(note),'sha256':digest(note),'bytes':note.stat().st_size,'execution_budget':json.loads(note.read_text())['execution_budget']},'elapsed_seconds':time.monotonic()-start}
+out=Path('/tmp/e16-preservation-current.json');out.write_text(json.dumps(r,indent=2)+'\n');print(json.dumps({'audit':str(out),'sha256':digest(out),'bytes':out.stat().st_size,'external':{k:v for k,v in r['external_outputs'].items() if k!='files'},'topic_protected':{k:v for k,v in r['topic_protected'].items() if k!='files'},'original_protected':{k:v for k,v in r['original_protected'].items() if k!='files'},'mac_impact':{k:v for k,v in r['mac_impact'].items() if k!='files'},'elapsed_seconds':r['elapsed_seconds']},indent=2))

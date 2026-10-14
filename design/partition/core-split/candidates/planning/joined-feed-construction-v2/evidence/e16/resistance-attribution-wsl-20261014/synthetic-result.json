@@ -1,0 +1,188 @@
+{
+  "adopted": false,
+  "checks": {
+    "energy_classes_relative": 1.734723475976807e-16,
+    "energy_operator_relative": 2.278518628114068e-17,
+    "energy_original_relative": 0.0,
+    "energy_work_relative": 0.0,
+    "free_node_kcl_relative": 5.692061405548898e-17,
+    "global_kcl_relative": 0.0,
+    "operator_partition_relative": 0.0,
+    "original_currents_relative": 1.1102230246251565e-16
+  },
+  "class_energy_W": {
+    "barrel": 0.005
+  },
+  "components": [
+    {
+      "board": "KA",
+      "effective_resistance_mohm": 2.0,
+      "effective_resistance_ohm": 0.002,
+      "id": "via",
+      "joule_energy_W": 0.002,
+      "kind": "barrel",
+      "layer_interval": [
+        "F.Cu",
+        "In4.Cu"
+      ],
+      "net": "+12V",
+      "object_ids": [
+        "via"
+      ],
+      "oriented_current_A": -1.0,
+      "region": {
+        "length_mm": 1.0
+      }
+    },
+    {
+      "board": "KA",
+      "effective_resistance_mohm": 3.0,
+      "effective_resistance_ohm": 0.003,
+      "id": "sheet",
+      "joule_energy_W": 0.003,
+      "kind": "barrel",
+      "layer_interval": [
+        "F.Cu",
+        "In4.Cu"
+      ],
+      "net": "+12V",
+      "object_ids": [
+        "sheet"
+      ],
+      "oriented_current_A": -1.0,
+      "region": {
+        "length_mm": 1.0
+      }
+    }
+  ],
+  "copper_resistance_ohm": 0.005,
+  "effective_resistance_ohm": 0.005,
+  "electrical_acceptance": false,
+  "failures": [],
+  "identity": {
+    "board": "KA",
+    "depth_case": "uniform-dielectric",
+    "net": "+12V",
+    "observation_support": {
+      "nodes": [
+        2
+      ],
+      "weights": [
+        1.0
+      ]
+    },
+    "pad_uuid": "synthetic-pad",
+    "pin": "1",
+    "process_case": "nominal-average",
+    "ref": "Utest",
+    "return_state": "all-present",
+    "source_support": {
+      "mode": "equipotential_patches",
+      "pads": [
+        {
+          "board": "KA",
+          "nodes": [
+            0
+          ],
+          "pad_uuid": "source-0",
+          "pin": "1",
+          "ref": "TP0"
+        }
+      ],
+      "potential_V": 0
+    }
+  },
+  "input_bindings": {
+    "components": "081089189665848c63a45465e69ed8ea0b581a7ac77a26f4d591002cc041692b",
+    "identity": "f588406dd260c1d3e99184699571346f7d15bbdc7fb967daa9a2d6b6b0069b62",
+    "network": "b744c32d87bd51c2ee0fb33fa406d50fcf77b9af020d07864d87c3b86dea23bb",
+    "provenance": "01307c0045caed0ef24dfabcdd06eef9a36c2153677f2a398e505fd403e62559",
+    "scope": "2b006d9d62c139350407124f9128bad7aa273d27df0c73f8c648b5463ad5d657",
+    "solution": "74e20daa73043a2e9d70ea5fd25e1e27942b4b984a11475dd78381a543ecab89"
+  },
+  "interpretation": "Energy partition of a fixed network; no additive physical series path or geometry sensitivity claim.",
+  "normalization": {
+    "current_A": 1.0,
+    "mode": "unit_current"
+  },
+  "physical_aggregates": [
+    {
+      "board": "KA",
+      "effective_resistance_ohm": 0.002,
+      "joule_energy_W": 0.002,
+      "kind": "barrel",
+      "layer_interval": [
+        "F.Cu",
+        "In4.Cu"
+      ],
+      "net": "+12V",
+      "object_ids": [
+        "via"
+      ]
+    },
+    {
+      "board": "KA",
+      "effective_resistance_ohm": 0.003,
+      "joule_energy_W": 0.003,
+      "kind": "barrel",
+      "layer_interval": [
+        "F.Cu",
+        "In4.Cu"
+      ],
+      "net": "+12V",
+      "object_ids": [
+        "sheet"
+      ]
+    }
+  ],
+  "provenance": {
+    "config_sha256": "f5146d0c1d77e0626a455df308f52bf953ace9806861c25438adcdf90914c107",
+    "extractor_sha256": "67c9735f1519b49e69cab61dfaea8947d5f7d9838185cce7f87eca0070deca70",
+    "operator_sha256": "336f8ce63db625e5ef5bad7bbb961124ffeb13e6f087ea49edf3101aae9baf2a",
+    "quantity_origin": "synthetic",
+    "source_sha256": "39631bb5e5dc9326b23f8c00bf43440a84ce711315c6b799de554c56aa04d133"
+  },
+  "schema": "e16-resistance-attribution-v1",
+  "scope": {
+    "complete_modeled_network": true,
+    "expected_component_ids": [
+      "via",
+      "sheet"
+    ],
+    "omitted_components": [],
+    "physical_omissions": [
+      "synthetic fixture, no instrument qualification"
+    ]
+  },
+  "source_currents_A": [
+    {
+      "board": "KA",
+      "current_A": -1.0,
+      "nodes": [
+        0
+      ],
+      "pad_uuid": "source-0",
+      "pin": "1",
+      "ref": "TP0"
+    }
+  ],
+  "status": "PASS_MODELED_SOLUTION_ACCOUNTING_ONLY",
+  "tolerances": {
+    "declared": "2026-10-13, before any coupled result was inspected",
+    "energy_relative": 1e-09,
+    "kcl_relative": 1e-09,
+    "reciprocity_relative": 1e-09,
+    "reduction_vs_monolithic_relative": 1e-08,
+    "refinement_change_relative_report_only": 0.05,
+    "shifted_origin_change_relative_report_only": 0.05,
+    "support_weight_sum": 1e-09
+  },
+  "tool_sha256": {
+    "finite_adapter.py": "f313a87719aba83b169a363c05d36daa5c79cd28ad41620e5d45c5d8eca613f4",
+    "finite_solve.py": "20b1b9e1e7ba8653d3268c4956dc5415b91670e23f07e35ab381d2091f84b044",
+    "resistance_attribution.py": "67c9735f1519b49e69cab61dfaea8947d5f7d9838185cce7f87eca0070deca70"
+  },
+  "total_energy_W": 0.005,
+  "uniqueness": "CHECKED_TINY_POSITIVE_DEFINITE_FREE_OPERATOR",
+  "whole_board_acceptance": false
+}

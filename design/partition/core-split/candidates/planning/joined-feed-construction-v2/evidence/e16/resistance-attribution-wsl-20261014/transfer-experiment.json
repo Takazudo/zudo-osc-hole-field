@@ -1,0 +1,571 @@
+{
+  "acceptance": {
+    "adoption": false,
+    "electrical": false,
+    "native": false,
+    "source_only": true
+  },
+  "allowances": {
+    "agnd_copper_ohm": 0.0005,
+    "application": "Charged once over the modelled KA+wire+KB path; the unmodelled inlet/star, branch and protection copper must fit in the same allowance, so a modelled value within budget is necessary, not sufficient.",
+    "gh_conductor_A": 0.5,
+    "path_error_V": 0.02,
+    "rail_copper_ohm": 0.001,
+    "source": "design/partition/core-split/power/contract.json conductor_screen.global_budget and power/joined/handoff.md: one global 20 mV path allowance, 1 mOhm rail and 0.5 mOhm common AGND copper, never restarted per board; 0.5 A per GH conductor."
+  },
+  "analytical_estimates": {
+    "legacy-conditional-requirement": {
+      "assumption": "Equal end potentials, equal plating/length, no extra sheet spreading or face/cap/contact loss; not a network prediction.",
+      "barrel_length_mm": 1.224,
+      "single_barrel_mohm": 1.1028996819502868,
+      "two_identical_parallel_barrels_mohm": 0.5514498409751434
+    },
+    "nominal-average": {
+      "assumption": "Equal end potentials, equal plating/length, no extra sheet spreading or face/cap/contact loss; not a network prediction.",
+      "barrel_length_mm": 1.224,
+      "single_barrel_mohm": 1.4051599740431326,
+      "two_identical_parallel_barrels_mohm": 0.7025799870215663
+    },
+    "sensitivity-thin": {
+      "assumption": "Equal end potentials, equal plating/length, no extra sheet spreading or face/cap/contact loss; not a network prediction.",
+      "barrel_length_mm": 1.224,
+      "single_barrel_mohm": 2.890664488982603,
+      "two_identical_parallel_barrels_mohm": 1.4453322444913015
+    }
+  },
+  "baseline": {
+    "energy_headroom_percent": 0.28005,
+    "numerical_passes": 147,
+    "request_sha256": "ef0213b3b38f4de23804ad192043b082d8e1b2be3086c5e20e4343afea4052d6",
+    "source_sha": "852ffac7f85aff4bb436eb25f7ce993cee48146b",
+    "transfer_pass_to_new_source": false,
+    "units": 148
+  },
+  "bindings": [
+    {
+      "bytes": 569182,
+      "path": "evidence/e16/selective-annulus-20261014/resistance-analysis.json",
+      "sha256": "4a9f0dc7b4f15521595fa10e03fe650d2d401279246b32a7c5c7eb3a4b5d7aaf"
+    },
+    {
+      "bytes": 313039,
+      "path": "evidence/e16/selective-annulus-20261014/resistance-loaded-ranking.csv",
+      "sha256": "860bc111aee1999a49a52e491f649666e7373f50a79bd567b6cf2e5586f03867"
+    },
+    {
+      "bytes": 7782,
+      "path": "evidence/e16/continuation-20261013b/coupled-network-config.json",
+      "sha256": "f5146d0c1d77e0626a455df308f52bf953ace9806861c25438adcdf90914c107"
+    },
+    {
+      "bytes": 4695,
+      "path": "evidence/e16/process-cases.json",
+      "sha256": "ea253eee2e1b0dbb85d83a3d885cfe4f0cc6fd534b144bb25e9bf419016d4051"
+    },
+    {
+      "bytes": 2486,
+      "path": "evidence/e16/selective-annulus-20261014/native-request.json",
+      "sha256": "f8da55c709fa59ba3221806f1c10cc4d25462fe8bf9d8c50acf313b0d3fdf4e3"
+    }
+  ],
+  "diagnostic_B": {
+    "bounds": {
+      "attempts_max": 1,
+      "charge_if_admitted": "current 8/24 -> 9/24; refresh before reservation",
+      "concurrency": 1,
+      "diagnostic_charge": 1,
+      "full_baseline_charge": 0,
+      "output_bytes_max": 67108864,
+      "rhs_max": 1,
+      "seconds_after_guard_entry_max": 180,
+      "serialized_units_max": 1,
+      "swap_bytes": 0,
+      "worker_bytes_max": 2147483648
+    },
+    "case": "nominal-average",
+    "decision_rule": {
+      "advance_to_C_if": "All mappings/reconciliation complete and nominal target barrel energy share >= 0.10 of total modeled copper unit-current energy AND nonzero TP990026 source reaction. Threshold is a predeclared engineering screening choice, not a physical bound.",
+      "adverse_next_action": "Stop this geometry proposal; rank successfully reconciled union/interval contributions for this observation and identify largest evidence-backed contributor. Do not add vias or broaden targets until separate review.",
+      "reject_if": "Share < 0.10, zero TP990026 reaction, unsupported mapping, incomplete scope, singular state, nonfinite data or any unchanged-tolerance failure. Resource cap is INCOMPLETE, never favorable evidence."
+    },
+    "depth_case": "uniform-dielectric",
+    "metrics": [
+      "per-interval current and E/I^2 for exact original transfer barrel",
+      "complete sheet union/tile energy, member IDs retained without overlapping allocation",
+      "each source reaction and finite termination/bulk energy once",
+      "complete operator partition, class/total energy, currents/KCL/work reconciliation",
+      "same quantities as watts only for retained simultaneous-load solution",
+      "relative share for this one observation; no all-load dominance"
+    ],
+    "missing_before_execution": [
+      "exact source commit and executor review",
+      "bounded retained-artifact reconstruction bridge and complete mesh-tile inventory",
+      "fresh request with all byte/tool/operator/solution bindings and unique unconsumed identity",
+      "independently pinned expected attribution manifest and uniqueness/passivity receipt",
+      "genuine exact operator admission and current diagnostic reservation",
+      "existing numerical environment/guard/containment verification"
+    ],
+    "mode": "unit_current",
+    "net": "+12V",
+    "observation": {
+      "R_copper_mohm": "5.9921452927738486",
+      "R_driving_point_mohm": "7.173098523557978",
+      "allowance_mohm": "1.0",
+      "board": "KB",
+      "case": "nominal-average",
+      "current_A": "0.004",
+      "exceedance_ratio": "5.9921452927738486",
+      "mapping": "supported",
+      "net": "+12V",
+      "package": "OPA4197IPWR",
+      "pad_id": "e97b2d02-463a-5a6d-ab37-748ce29d7cf8",
+      "pin": "4",
+      "ref": "U7105",
+      "service": "supported",
+      "source_relative_potential_uV": "-287.5290530900766",
+      "state": "all-present"
+    },
+    "reason": "Same eligible KB load at worst retained +12V thin ranking; nominal selected first. TP990026 remains held and cannot be the observation. This tests one load, not all loads.",
+    "resource_feasibility": "NOT ESTABLISHED for complete object extraction; bounds are ceilings, not feasibility or authority. Stop terminally at cap; no splitting/retries without fresh admission.",
+    "return_state": "all-present",
+    "scope": "Complete unchanged KA+wire+KB +12V modeled operator and all three KA source patches; one new unit-current reconstruction and one retained simultaneous-load reconstruction, reported separately. No geometry, baseline or other target solve.",
+    "status": "PROPOSED_NOT_EXECUTABLE",
+    "unit_current_A": 1.0
+  },
+  "geometry_D": {
+    "affected_scope": "Fresh drilled/antipad sheets, graph and finite coverage for every impacted net/layer: +12V contact plus AGND In1, +5V In2, -12V In3, both faces and all physically intersected foreign nets. No unchanged-count shortcut.",
+    "cases": [
+      "nominal-average",
+      "sensitivity-thin",
+      "legacy-conditional-requirement"
+    ],
+    "comparison": "One original/new matched selected-load unit-current +12V comparison for each of the three original process cases, with unchanged supports/normalization; separate loaded-state reconstruction. Any impacted AGND requires all 7 finite returns and structural all-three-open rejection. Other affected operators require new explicitly charged comparison scope, not assumed non-regression.",
+    "delta": "one added via only; no original deletion/move/edit, no new traces/land or equipotential expansion",
+    "depth_case": "uniform-dielectric",
+    "forbidden": [
+      "(143,175) alternative",
+      "seven-via bundle",
+      "changed drill/plating",
+      "larger land",
+      "global annulus removal",
+      "geometry adoption"
+    ],
+    "improvement_screen": {
+      "basis": "predeclared engineering screen; residual checks are not a forward-error estimate; independently review result robustness before accepting experiment conclusion",
+      "combination": "both required in each case",
+      "minimum_absolute_reduction_ohm": 1e-05,
+      "minimum_relative_reduction": 0.01
+    },
+    "native": "Pinned KiCad 10.0.6 separately admitted; original-object/native identity/group reconciliation and complete non-regression evidence. Capped/incomplete findings block acceptance.",
+    "native_budget": "No native execution packet exists: native time/count must be explicitly bounded and independently reviewed after B/C and geometry authority. Current global 6GiB/12GiB, zero swap,8GiB floor/reservation limits remain unchanged.",
+    "on_rejection": "Preserve negative evidence, stop identity, do not add geometry to seek favorable output.",
+    "prerequisites": [
+      "B passes and independent C review justifies exact delta",
+      "separate disposable-geometry authority",
+      "exact new native/numerical request packets after candidate bytes exist"
+    ],
+    "protected": [
+      "all original objects byte-equivalent except separately generated added-via record",
+      "original three +12V source supports and every included load",
+      "AGND via 1e1b90ef-f82d-5e94-a82e-416153b33ef3 barrel and all functional contacts",
+      "canonical boards and accepted copper",
+      "438 panel centers and 33 modules",
+      "decision.json KEEP_K1402_INCUMBENT",
+      "harness IDs/Refs/full pin order and sensitive circuit groups",
+      "source/protection boundary and factory-complete assembly"
+    ],
+    "rejection": [
+      "any original object/support/load or fixed hardware change",
+      "failed fresh clipping/coverage or new split",
+      "unreconciled identities or incomplete/capped findings",
+      "new rule violation, clearance/annular-width relaxation or exemption",
+      "numerical residual/energy failure at unchanged limits",
+      "selected unit-current copper reduction below either required screening threshold: at least 1% of original AND at least 0.01 mOhm in each process case; these are engineering screens, not forward-error bounds",
+      "any adverse affected-net result or omitted conductor treated as zero",
+      "resource ceiling exceeded or scope cannot fit proposed caps"
+    ],
+    "resource_ceiling": {
+      "concurrency": 1,
+      "diagnostics_max": 3,
+      "full_baselines": 0,
+      "per_diagnostic_seconds_max": 180,
+      "per_worker_bytes": 2147483648,
+      "retries": 0,
+      "swap_bytes": 0
+    },
+    "return_states": {
+      "all-present": [],
+      "all-three-open": [
+        4,
+        5,
+        6
+      ],
+      "double": [
+        [
+          4,
+          5
+        ],
+        [
+          4,
+          6
+        ],
+        [
+          5,
+          6
+        ]
+      ],
+      "single": [
+        [
+          4
+        ],
+        [
+          5
+        ],
+        [
+          6
+        ]
+      ]
+    },
+    "status": "NOT_AUTHORIZED"
+  },
+  "mechanism": {
+    "added_via": {
+      "center_mm": [
+        141,
+        175
+      ],
+      "diameter_mm": 0.6,
+      "finished_drill_mm": 0.3,
+      "layers": [
+        "F.Cu",
+        "In1.Cu",
+        "In2.Cu",
+        "In3.Cu",
+        "In4.Cu",
+        "B.Cu"
+      ],
+      "uuid": "4cf6b906-bc79-5bcb-b06f-fe661ad1242f"
+    },
+    "board": "KA",
+    "functional_transfer": [
+      "F.Cu",
+      "In4.Cu"
+    ],
+    "land_center_mm": [
+      142,
+      175
+    ],
+    "land_size_mm": [
+      4,
+      4
+    ],
+    "materialized": false,
+    "net": "+12V",
+    "original_via": {
+      "center_mm": [
+        142,
+        175
+      ],
+      "diameter_mm": 0.6,
+      "finished_drill_mm": 0.3,
+      "preserve": true,
+      "uuid": "87d2de81-b7e7-5e5c-9063-52b28f51939e"
+    },
+    "pad_uuid": "4837930f-294a-5712-878f-44a71b63bce6",
+    "pin": "1",
+    "ref": "TP990026"
+  },
+  "original_source_support": {
+    "basis": "Conditional: the load-side star is unimplemented (CN301/XB301 abstract; no inlet copper). The fed KA main lands of each net (branches to JL/JR/P) are held at one source potential over their whole land patches, standing in for an ideal load-side star at those lands. No upstream AWG14 section, raw-to-load bridge or protection path is modelled; branch currents to JL/JR/P are external and not injected.",
+    "board": "KA",
+    "excluded": [
+      {
+        "net": "AGND",
+        "pad_id": "dbf0db68-b055-5a30-963b-c019de6ab1a2",
+        "reason": "structurally unresolved at t2",
+        "ref": "TP990036"
+      }
+    ],
+    "mode": "equipotential_patches",
+    "pads": {
+      "+12V": [
+        {
+          "pad_id": "982d0043-2374-5b74-b189-fead016006b5",
+          "ref": "TP990002"
+        },
+        {
+          "pad_id": "8ba40524-d0d5-50d2-9a63-f7a23aa882a4",
+          "ref": "TP990014"
+        },
+        {
+          "pad_id": "4837930f-294a-5712-878f-44a71b63bce6",
+          "ref": "TP990026"
+        }
+      ],
+      "+5V": [
+        {
+          "pad_id": "a15d7c25-8fc7-58d4-a269-4ef9fd4d070a",
+          "ref": "TP990006"
+        },
+        {
+          "pad_id": "27e182e8-d9c3-597d-9d72-f16ef156dd63",
+          "ref": "TP990018"
+        },
+        {
+          "pad_id": "6c19f57d-f1a8-589d-9b47-ca3e44db7e3e",
+          "ref": "TP990030"
+        }
+      ],
+      "-12V": [
+        {
+          "pad_id": "d11d9455-e60a-56dd-9150-84b7d725a654",
+          "ref": "TP990004"
+        },
+        {
+          "pad_id": "49e2d494-5003-5138-a8ab-63a436cac0e4",
+          "ref": "TP990016"
+        },
+        {
+          "pad_id": "3cbd2fac-4ce5-570f-8145-410da956c229",
+          "ref": "TP990028"
+        }
+      ],
+      "AGND": [
+        {
+          "pad_id": "a68c8da6-d1a4-5514-b405-80587646b150",
+          "ref": "TP990008"
+        },
+        {
+          "pad_id": "fc75c533-46f8-5971-9f06-31b219b60dac",
+          "ref": "TP990010"
+        },
+        {
+          "pad_id": "cc7eb95f-e57e-5191-9b15-8b3134a654f2",
+          "ref": "TP990012"
+        },
+        {
+          "pad_id": "a3677b23-4355-5d7d-9036-fba2dc425ed7",
+          "ref": "TP990020"
+        },
+        {
+          "pad_id": "f05aec72-0689-5257-84ba-3c8a9398783c",
+          "ref": "TP990022"
+        },
+        {
+          "pad_id": "0c6f2f0d-cd07-5549-8e83-98bf1e1efce3",
+          "ref": "TP990024"
+        },
+        {
+          "pad_id": "e3e17aa0-e051-54f2-ae54-e4ce7021dd7d",
+          "ref": "TP990032"
+        },
+        {
+          "pad_id": "eeac10de-05d8-5d8c-ac8a-93f41f21bc5c",
+          "ref": "TP990034"
+        }
+      ]
+    }
+  },
+  "quantity_kinds": {
+    "analytical": "equal-end-potential barrel estimates, not additive path lower bounds",
+    "proposed": "all changed geometry/operator benefits unmeasured",
+    "retained": "original loaded ranking and source geometry evidence only"
+  },
+  "retained_readonly_input_index": [
+    {
+      "matches_retained_binding": true,
+      "path": "design/partition/core-split/candidates/planning/joined-feed-construction-v2/evidence/e16/campaign-wsl-20261014/result-summary/attempt5-final/summary.json",
+      "sha256": "8df092b5f3e6a9a1e28f3f09ebfc17e965b7379ec4861796221eb5c7849a03cd",
+      "size_bytes": 434616
+    },
+    {
+      "matches_retained_binding": true,
+      "path": "/home/takazudo/.cache/zudo-e16-runs/coupled-approved-852ffac-8262c033/device-service-normal-typ-v1.json",
+      "sha256": "a14a61aa25b9215485dd58e46e54af220776e80f5a70f5a1f335ef21c18cc33d",
+      "size_bytes": 470998
+    },
+    {
+      "matches_retained_binding": true,
+      "path": "design/partition/core-split/candidates/planning/joined-feed-construction-v2/evidence/e16/continuation-20261013b/load-ledger.json.gz",
+      "sha256": "241dd36110236d3726e509c76b02e80928a279a67bea028bfa5aa1e965fa5f54",
+      "size_bytes": 827767
+    },
+    {
+      "matches_retained_binding": true,
+      "path": "/home/takazudo/.cache/zudo-e16-runs/coupled-approved-852ffac-8262c033/coupled-+12V-legacy-conditional-requirement-uniform-dielectric.json.gz",
+      "sha256": "9bf90693d02fc6eae461d80163c3d31c1f49accbae850f9b2cf0e34adc10209e",
+      "size_bytes": 39202
+    },
+    {
+      "matches_retained_binding": true,
+      "path": "/home/takazudo/.cache/zudo-e16-runs/coupled-approved-852ffac-8262c033/coupled-+12V-nominal-average-uniform-dielectric.json.gz",
+      "sha256": "b6b6b8928fe77619202f9d323d44b5f04a784435134be8ebb152b24d68e7b96d",
+      "size_bytes": 39146
+    },
+    {
+      "matches_retained_binding": true,
+      "path": "/home/takazudo/.cache/zudo-e16-runs/coupled-approved-852ffac-8262c033/coupled-+12V-sensitivity-thin-uniform-dielectric.json.gz",
+      "sha256": "e9e8dbc8e9dc20fa83c2839b0fb48b06a5addacab4bfc00c2c919404707c25a2",
+      "size_bytes": 39073
+    },
+    {
+      "matches_retained_binding": true,
+      "path": "/home/takazudo/.cache/zudo-e16-runs/coupled-approved-852ffac-8262c033/coupled-+5V-legacy-conditional-requirement-uniform-dielectric.json.gz",
+      "sha256": "f8e6e204ba2145e06dfaa16c2190730bfb8021f9928342eb1ef615a15b2042d7",
+      "size_bytes": 32444
+    },
+    {
+      "matches_retained_binding": true,
+      "path": "/home/takazudo/.cache/zudo-e16-runs/coupled-approved-852ffac-8262c033/coupled-+5V-nominal-average-uniform-dielectric.json.gz",
+      "sha256": "b8e8bb5af2f4afb597fe84d580a0671fa2cd1f0d12cd6ae8656854cc2fdff3af",
+      "size_bytes": 32428
+    },
+    {
+      "matches_retained_binding": true,
+      "path": "/home/takazudo/.cache/zudo-e16-runs/coupled-approved-852ffac-8262c033/coupled-+5V-sensitivity-thin-uniform-dielectric.json.gz",
+      "sha256": "61c03813ffb857e87f4adbd70da17ab47d8bdf0f3b21689ece776b96769e72f1",
+      "size_bytes": 32425
+    },
+    {
+      "matches_retained_binding": true,
+      "path": "/home/takazudo/.cache/zudo-e16-runs/coupled-approved-852ffac-8262c033/coupled--12V-legacy-conditional-requirement-uniform-dielectric.json.gz",
+      "sha256": "e38bb1e84c9112f794247243113e2ea7e9d8b5b95c0a8c1eeac06fd7e276ffd3",
+      "size_bytes": 20297
+    },
+    {
+      "matches_retained_binding": true,
+      "path": "/home/takazudo/.cache/zudo-e16-runs/coupled-approved-852ffac-8262c033/coupled--12V-nominal-average-uniform-dielectric.json.gz",
+      "sha256": "910f4c5903245a91bdfe0f2d95ed1d7e245529b7541feb107dd6e4d60d135dc3",
+      "size_bytes": 20321
+    },
+    {
+      "matches_retained_binding": true,
+      "path": "/home/takazudo/.cache/zudo-e16-runs/coupled-approved-852ffac-8262c033/coupled--12V-sensitivity-thin-uniform-dielectric.json.gz",
+      "sha256": "3c41d1b7a7f734e6e3381a95eaffd50309fb41cdd9a5bd4ba5f8d2bab9ed56ea",
+      "size_bytes": 20147
+    },
+    {
+      "matches_retained_binding": true,
+      "path": "/home/takazudo/.cache/zudo-e16-runs/coupled-approved-852ffac-8262c033/coupled-AGND-legacy-conditional-requirement-uniform-dielectric.json.gz",
+      "sha256": "75ec4fbb7a952592095294cbfe5bfea800a49f7a38615f1f1f7a9be39627a7ef",
+      "size_bytes": 928368
+    },
+    {
+      "matches_retained_binding": true,
+      "path": "/home/takazudo/.cache/zudo-e16-runs/coupled-approved-852ffac-8262c033/coupled-AGND-nominal-average-uniform-dielectric.json.gz",
+      "sha256": "b32bdcd365a90fc73cde421a6ace21281faf360c0017ce6712f0007163f0ea8f",
+      "size_bytes": 927841
+    },
+    {
+      "matches_retained_binding": true,
+      "path": "/home/takazudo/.cache/zudo-e16-runs/coupled-approved-852ffac-8262c033/coupled-AGND-sensitivity-thin-uniform-dielectric.json.gz",
+      "sha256": "699507c17ac99f0f3b11b6ceed620c172b2c949e38aa8b4b4a28330ce0d19d65",
+      "size_bytes": 925594
+    },
+    {
+      "matches_retained_binding": true,
+      "path": "design/partition/core-split/candidates/planning/joined-feed-construction-v2/evidence/e16/campaign-wsl-20261014/engineering-candidate-analysis.json",
+      "sha256": "d04d7bfb7b0e1c05f48ccf6304e3e74b059797e8d5df96073636c56fa1959b08",
+      "size_bytes": 5405
+    },
+    {
+      "matches_retained_binding": true,
+      "path": "design/partition/core-split/candidates/planning/joined-feed-construction-v2/evidence/e16/continuation-20261013b/feed-plan.json",
+      "sha256": "91ca55c43dbdedd852522e2b9b51adeb0a3eb5f77dcdbf45e0444f799364d181",
+      "size_bytes": 6992
+    },
+    {
+      "matches_retained_binding": true,
+      "path": "design/partition/core-split/candidates/planning/joined-feed-construction-v2/evidence/e16/continuation-20261013b/feed-parallel-vias-report.json.gz",
+      "sha256": "7ac6401b9b0a15b6e8c910e18e7ebffd98ce0706aa61540e48bf7d6c58546dc6",
+      "size_bytes": 74701
+    },
+    {
+      "matches_retained_binding": true,
+      "path": "design/partition/core-split/candidates/planning/joined-feed-construction-v2/evidence/e16/continuation-20261013b/source-variant-comparison.json",
+      "sha256": "8b732d2296b0cd52278365ce692164fcaa83782dba1f0213ea2663a4aaf6d4be",
+      "size_bytes": 1116
+    },
+    {
+      "matches_retained_binding": true,
+      "path": "design/partition/core-split/candidates/planning/joined-feed-construction-v2/evidence/e16/continuation-20261013b/osc-ka-longb-review-r3.md",
+      "sha256": "2dac1d5262aea146f8ad83eab4f62cfc529543d3e7bfccf918a63251076a5318",
+      "size_bytes": 6300
+    },
+    {
+      "matches_retained_binding": true,
+      "path": "design/partition/core-split/candidates/planning/joined-feed-construction-v2/evidence/e16/pilot/KA-pilot-outcome.json",
+      "sha256": "6f3fcb4f6aa553185001a75f17b13b39b2763a990f8f6710c3f398f4332957dd",
+      "size_bytes": 4440
+    },
+    {
+      "matches_retained_binding": true,
+      "path": "design/partition/core-split/candidates/planning/joined-feed-construction-v2/evidence/e16/KA-t2-residual-atlas.json.gz",
+      "sha256": "ade5a53384c567bfaa77aa0376501392dacb70e7614b31fdcbbe9637fd8cc89c",
+      "size_bytes": 36601
+    },
+    {
+      "matches_retained_binding": true,
+      "path": "design/partition/core-split/candidates/planning/joined-feed-construction-v2/evidence/e16/KB-t2-residual-atlas.json.gz",
+      "sha256": "930b9a565967f053c5b4231a9bef7a5d8877535c4e01c7292c777759abac3dc4",
+      "size_bytes": 100497
+    },
+    {
+      "matches_retained_binding": true,
+      "path": "/home/takazudo/.cache/zudo-e16-runs/20261013-finite-t2b/KA/coverage-+12V.json.gz",
+      "sha256": "8906376f87a6dec71445de11bf38de3ede6f3a0be6c432363919a414b69cb011",
+      "size_bytes": 13458
+    },
+    {
+      "matches_retained_binding": true,
+      "path": "/home/takazudo/.cache/zudo-e16-runs/20261013-finite-t2b/KA/desc-+12V.json.gz",
+      "sha256": "68fb68123c03d6820cef569f913296801ef95d4c37ada410b6de2d7dbb03dba7",
+      "size_bytes": 12131300
+    },
+    {
+      "matches_retained_binding": true,
+      "path": "design/partition/core-split/candidates/planning/joined-feed-construction-v2/evidence/e16/continuation-20261013b/coupled-network-config.json",
+      "sha256": "f5146d0c1d77e0626a455df308f52bf953ace9806861c25438adcdf90914c107",
+      "size_bytes": 7782
+    },
+    {
+      "matches_retained_binding": false,
+      "path": "design/partition/core-split/candidates/planning/joined-feed-construction-v2/evidence/e16/campaign-wsl-20261014/attempt5/packet/request.json.gz",
+      "sha256": "3ac6356762419c653c8949adb1c2d12db58e109408d52246ef482e9a398adc54",
+      "size_bytes": 18688
+    },
+    {
+      "matches_retained_binding": true,
+      "path": "design/partition/core-split/candidates/planning/joined-feed-construction-v2/evidence/e16/process-cases.json",
+      "sha256": "ea253eee2e1b0dbb85d83a3d885cfe4f0cc6fd534b144bb25e9bf419016d4051",
+      "size_bytes": 4695
+    }
+  ],
+  "schema": "e16-tp990026-transfer-experiment-spec-v1",
+  "separate_plus5_target": {
+    "allowance_mohm": 1.0,
+    "board": "KB",
+    "execution_authorized": false,
+    "net": "+5V",
+    "pad_uuid": "4569c800-3791-571e-b193-4e8f72bdeeea",
+    "pin": "14",
+    "ref": "U4330",
+    "worst_loaded_copper_mohm": 28.872050771399127
+  },
+  "source_base": {
+    "branch": "topic/e16-selective-annulus",
+    "pr": 274,
+    "sha": "a811c2dddf98b1c253e710eddb9508a8b350dd77"
+  },
+  "status": "PROPOSED_NOT_ADMITTED_NOT_MATERIALIZED",
+  "tolerances": {
+    "declared": "2026-10-13, before any coupled result was inspected",
+    "energy_relative": 1e-09,
+    "kcl_relative": 1e-09,
+    "reciprocity_relative": 1e-09,
+    "reduction_vs_monolithic_relative": 1e-08,
+    "refinement_change_relative_report_only": 0.05,
+    "shifted_origin_change_relative_report_only": 0.05,
+    "support_weight_sum": 1e-09
+  }
+}
