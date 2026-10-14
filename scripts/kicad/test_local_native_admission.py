@@ -53,7 +53,7 @@ class LocalAdmission(unittest.TestCase):
                          'unit-test fixture', 'fixture reservation', 'fixture qualification')
 
     def context(self):
-        return {'EPIC242_ADMISSION_MODE': 'local', 'EPIC242_LOCAL_REQUEST': '.circuit-cache/run/request.json',
+        return {'EPIC242_ADMISSION_MODE': 'local', 'EPIC242_LOCAL_REQUEST': str(self.path.relative_to(self.root)),
                 'EPIC242_PARENT_LOCAL_REQUEST_SHA256': a.sha(self.path),
                 'EPIC242_LOCAL_APPROVAL': '.circuit-cache/run/approval.json',
                 'EPIC242_LOCAL_APPROVAL_SHA256': a.sha(self.approval)}
@@ -61,6 +61,91 @@ class LocalAdmission(unittest.TestCase):
     def mutate(self, **changes):
         value = a.read(self.path) | changes
         self.path.write_text(json.dumps(value))
+
+    def prepare_annulus_fixture(self, **changes):
+        for name in (a.ANNULUS_FIXTURE, a.ANNULUS_SCRIPT):
+            p = self.root / name
+            p.parent.mkdir(parents=True, exist_ok=True)
+            p.write_text('synthetic source ' + name)
+        self.path = self.cache / 'annulus-request.json'
+        args = dict(root=self.root, output='.circuit-cache/run/annulus-request.json',
+                    kind='annulus-fixture', run_id=RUN, attempt=1,
+                    evidence='.circuit-cache/run/annulus-guard.json', target='annulus',
+                    heavy_guard=self.heavy)
+        args.update(changes)
+        self.request = a.prepare(**args)
+        return self.request
+
+    def test_annulus_fixture_preparation_is_exact_bounded_and_never_launches(self):
+        with patch.object(a.subprocess, 'run') as launch, patch.object(a, 'approve') as approval:
+            request = self.prepare_annulus_fixture()
+        launch.assert_not_called(); approval.assert_not_called()
+        self.assertEqual(request['command'], ['python3', a.ANNULUS_SCRIPT, 'worker', '--output',
+                                             '.circuit-cache/run/annulus-guard.json.annulus'])
+        self.assertEqual(request['seconds'], 60)
+        self.assertEqual(request['limits'], a.LIMITS)
+        self.assertEqual(set(request['input_sha256']), set(a.METHODS) | {a.ANNULUS_SCRIPT, a.ANNULUS_FIXTURE})
+        self.assertLessEqual(len(request['worker']), 61)
+        self.assertFalse(self.approval.exists())
+        self.assertFalse(a.annulus_output(request, self.root).exists())
+        self.assertEqual(a.validate_request(self.root, self.path), request)
+
+    def test_annulus_fixture_rejects_stage_target_and_escaping_evidence(self):
+        for changes in ({'target': 'KA-t2'}, {'target': 'annulus-fixture'},
+                        {'stage': '.circuit-cache/run'}, {'stage': ''},
+                        {'evidence': '/tmp/annulus.json'},
+                        {'evidence': '.circuit-cache/../annulus.json'}):
+            with self.subTest(changes=changes), self.assertRaises(ValueError):
+                self.prepare_annulus_fixture(**changes)
+            self.assertFalse(self.path.exists())
+
+    def test_annulus_fixture_input_and_output_command_tampering_refused(self):
+        request = self.prepare_annulus_fixture()
+        for name in (a.ANNULUS_FIXTURE, a.ANNULUS_SCRIPT, *a.METHODS):
+            p = self.root / name; original = p.read_bytes()
+            p.write_bytes(b'changed fixture or import')
+            with self.subTest(name=name), self.assertRaisesRegex(ValueError, 'sealed input'):
+                a.validate_request(self.root, self.path)
+            p.write_bytes(original)
+        original = self.path.read_text()
+        for changes in ({'command': request['command'][:-1] + ['.circuit-cache/other']},
+                        {'seconds': 61}, {'stage': '.circuit-cache/run'},
+                        {'input_sha256': {a.ANNULUS_FIXTURE: a.sha(self.root/a.ANNULUS_FIXTURE)}}):
+            self.path.write_text(original); self.mutate(**changes)
+            with self.subTest(changes=changes), self.assertRaises(ValueError):
+                a.validate_request(self.root, self.path)
+        self.path.write_text(original)
+
+    def test_annulus_output_freshness_checked_at_prepare_execute_and_worker(self):
+        output = self.cache / 'annulus-guard.json.annulus'
+        output.mkdir()
+        with self.assertRaisesRegex(ValueError, 'fresh annulus'):
+            self.prepare_annulus_fixture()
+        output.rmdir()
+        request = self.prepare_annulus_fixture()
+        env, proc, cg = self.worker_fixture()
+        env['EPIC242_NATIVE_DEADLINE'] = str(int(time.time()) + 50)
+        output.mkdir()
+        with patch.object(a.subprocess, 'run') as launch:
+            with self.assertRaisesRegex(ValueError, 'fresh annulus'):
+                a.execute(self.root, self.path, self.approval, env={}, claims=self.root/'claims')
+            with self.assertRaisesRegex(ValueError, 'fresh annulus'):
+                a.worker(self.root, env, proc, cg)
+        launch.assert_not_called(); self.assertFalse((self.root/'claims').exists())
+        output.rmdir()
+        with patch.object(a.subprocess, 'run', return_value=subprocess.CompletedProcess([], 0)) as launch:
+            self.assertEqual(a.worker(self.root, env, proc, cg), 0)
+        self.assertEqual(launch.call_args.args[0], request['command'])
+
+    def test_annulus_derived_output_symlink_and_request_alias_refused(self):
+        output = self.cache / 'annulus-guard.json.annulus'
+        output.symlink_to(self.root/'elsewhere')
+        with self.assertRaisesRegex(ValueError, 'symlink'):
+            self.prepare_annulus_fixture()
+        output.unlink()
+        with self.assertRaisesRegex(ValueError, 'cannot occupy'):
+            self.prepare_annulus_fixture(output='.circuit-cache/run/annulus-guard.json.annulus')
+        self.assertFalse(output.exists())
 
     def test_startup_kinds_are_fixed_sixty_second_commands(self):
         for name in ('scripts/kicad/qualify_startup_handshake.py','scripts/kicad/settle_only_pilot.py'):
