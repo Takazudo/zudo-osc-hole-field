@@ -1,0 +1,106 @@
+"""Read-only attempt-5 analysis; no solve, pickle load, geometry or native work.
+Run from the repository root: python3 PATH/TO/resistance-report.py.txt
+Writes only resistance-*.json/csv under this helper's directory.
+"""
+import collections, csv, gzip, hashlib, json, math
+from pathlib import Path
+OUT = Path(__file__).resolve().parent
+E = OUT.parent
+ROOT = next(p for p in OUT.parents if (p / 'circuit/WORKFLOW.md').exists())
+CACHE = Path('/home/takazudo/.cache/zudo-e16-runs/coupled-approved-852ffac-8262c033')
+inputs = []
+def read(path, expected=None):
+    raw = path.read_bytes()
+    digest = hashlib.sha256(raw).hexdigest()
+    if expected is not None:
+        assert digest == expected, (str(path), digest, expected)
+    inputs.append({'path': str(path.relative_to(ROOT)) if path.is_relative_to(ROOT) else str(path), 'size_bytes': len(raw), 'sha256': digest, 'matches_retained_binding': expected is not None})
+    return json.loads(gzip.decompress(raw) if path.suffix == '.gz' else raw)
+s = read(E/'campaign-wsl-20261014/result-summary/attempt5-final/summary.json', '8df092b5f3e6a9a1e28f3f09ebfc17e965b7379ec4861796221eb5c7849a03cd')
+assert s['source_sha'] == '852ffac7f85aff4bb436eb25f7ce993cee48146b'
+assert not s['integrity_errors'] and not s['failed_numerical_checks']
+service = read(CACHE/'device-service-normal-typ-v1.json', s['service']['output_sha256'])
+ledger = read(E/'continuation-20261013b/load-ledger.json.gz', service['bindings']['ledger'])
+assert ledger['ledger_sha256'] == s['scenario']['ledger_sha256']
+rows_by_pad = {r['pad_id']: r for r in ledger['records'] if r['scenario_id']=='normal-typ-v1' and r['pad_id'] is not None}
+devices = {(d['board'],d['ref']): d for d in service['device_service']['devices']}
+loaded = []; maxima = []; energy = []; return_sensitivity = []
+for c in s['coupled']:
+    raw = read(Path(c['path']), c['output_sha256'])
+    assert raw['bindings']['service'] == s['service']['output_sha256']
+    assert (raw['net'],raw['case'],raw['depth']) == (c['net'],c['case'],c['depth'])
+    for state, st in raw['states'].items():
+        for board, dp in st['driving_point'].items():
+            budget = s['budgets']['agnd_copper_ohm' if c['net']=='AGND' else 'rail_copper_ohm']
+            assert len(dp['pads']) == len(dp['R_copper_ohm']) == len(dp['R_driving_point_ohm'])
+            assert len(dp['pads']) == len(set(dp['pads']))
+            for pad, copper, driving in zip(dp['pads'],dp['R_copper_ohm'],dp['R_driving_point_ohm']):
+                if pad not in raw['loaded_pads']: continue
+                r = rows_by_pad[pad]; d = devices[board,r['ref']]
+                assert d['eligible_for_solve'] and d['service_status']=='supported'
+                assert any(p['pad_id']==pad and p['served'] for p in d['required_pins'])
+                assert copper > budget
+                loaded.append(dict(board=board, net=c['net'], ref=r['ref'], pin=r['pad'], pad_id=pad, package=d['symbol'], service=d['service_status'], mapping=r['mapping_status'], current_A=r['current_A'], case=c['case'], state=state, allowance_mohm=1000*budget, R_copper_mohm=1000*copper, exceedance_ratio=copper/budget, R_driving_point_mohm=1000*driving, source_relative_potential_uV=1e6*st['boards'][board]['pad_potential_V'][pad]))
+            v=c['states'][state]['boards'][board]
+            maxima.append({'board':board,'net':c['net'],'case':c['case'],'state':state,'budget_mohm':1000*budget,'all_evaluated':v['all_evaluated_pads'],'loaded':v['energized_pads']})
+            en=st['boards'][board]['energy_W']; copper_energy=sum(en[k] for k in ['barrels','face_copper','inner_copper'])
+            energy.append({'board':board,'net':c['net'],'case':c['case'],'state':state,'energy_W':en,'copper_energy_W':copper_energy,'fraction_of_board_copper':{k:en[k]/copper_energy for k in ['barrels','face_copper','inner_copper']}})
+        if c['net']=='AGND' and state!='all-present':
+            for board in ['KA','KB']:
+                base=raw['states']['all-present']['driving_point'][board]
+                altered=st['driving_point'][board]
+                assert base['pads']==altered['pads']
+                changes=[(new-old,pad) for pad,old,new in zip(base['pads'],base['R_copper_ohm'],altered['R_copper_ohm']) if pad in raw['loaded_pads']]
+                delta,pad=max(changes)
+                return_sensitivity.append({'board':board,'case':c['case'],'state':state,'maximum_loaded_same_pad_copper_delta_mohm':1000*delta,'pad_id':pad})
+loaded.sort(key=lambda r:(-r['exceedance_ratio'],r['board'],r['pad_id'],r['case'],r['state']))
+assert len(loaded)==1536
+with (OUT/'resistance-loaded-ranking.csv').open('w',newline='') as f:
+    w=csv.DictWriter(f,fieldnames=list(loaded[0]));w.writeheader();w.writerows(loaded)
+unique={}
+for row in loaded: unique.setdefault(row['pad_id'],row)
+assert len(unique)==302
+by_status=collections.defaultdict(list)
+for d in devices.values():
+    if d['service_status']!='supported':by_status[d['service_status']].append(d)
+analysis=read(E/'campaign-wsl-20261014/engineering-candidate-analysis.json','d04d7bfb7b0e1c05f48ccf6304e3e74b059797e8d5df96073636c56fa1959b08')
+for path,digest in analysis['retained_evidence_sha256'].items():
+    p=ROOT/path
+    raw=p.read_bytes();actual=hashlib.sha256(raw).hexdigest();assert actual==digest
+    inputs.append({'path':path,'size_bytes':len(raw),'sha256':actual,'matches_retained_binding':True})
+coverage=service['bindings']['coverage']['KA|+12V']
+cov=read(Path(coverage['path']),coverage['sha256'])
+desc=read(Path(coverage['path']).with_name('desc-+12V.json.gz'),cov['desc_sha256'])
+via='87d2de81-b7e7-5e5c-9063-52b28f51939e';pad='4837930f-294a-5712-878f-44a71b63bce6'
+assert desc['barrels'][via]['center_mm']==[142.,175.]
+groups={g['group']:g for g in desc['groups']}
+assert desc['barrels'][via]['drill_mm']==0.3
+assert sorted(t['layer'] for t in desc['barrels'][via]['taps'])==sorted(['F.Cu','In1.Cu','In2.Cu','In3.Cu','In4.Cu','B.Cu'])
+exit_group=groups[next(t['group'] for t in desc['barrels'][via]['taps'] if t['layer']=='In4.Cu')]
+assert exit_group['layer']=='In4.Cu' and any('SHEET' in f for f in exit_group['fragments'])
+local=[]
+for tap in desc['barrels'][via]['taps']:
+    if tap['layer']=='In4.Cu':continue
+    group=tap['group'];g=groups[group]
+    peers=[bid for bid,b in desc['barrels'].items() for t in b['taps'] if t['group']==group]
+    assert peers==[via]
+    expected={via+'|'+tap['layer']+'|0'}
+    if tap['layer']=='F.Cu':expected.add(pad+'|F.Cu|0')
+    assert set(g['fragments'])==expected
+    local.append({k:g[k] for k in ['group','layer','fragments','area_mm2']})
+assert [p['group'] for p in desc['supports'][pad]]==[41]
+cfg=read(E/'continuation-20261013b/coupled-network-config.json',s['config_sha256'])
+request_path=E/'campaign-wsl-20261014/attempt5/packet/request.json.gz'
+request=read(request_path)
+assert hashlib.sha256(gzip.decompress(request_path.read_bytes())).hexdigest()==s['request_sha256']
+case_bindings=[v for k,v in request['input_sha256'].items() if k.endswith('/evidence/e16/process-cases.json')]
+assert len(case_bindings)==1
+cases=read(E/'process-cases.json',case_bindings[0])['cases']
+depth=cfg['depth_cases']['uniform-dielectric'];length=sum(depth['dielectric_mm'][:4])+4*depth['foil_mm'];assert abs(length-1.224)<1e-12
+prediction={}
+for name,case in cases.items():
+    plating=case['barrel_plating_mm'];R=case['rho_ohm_mm']*length/(math.pi*((.15+plating)**2-.15**2))
+    prediction[name]={'barrel_length_mm':length,'single_barrel_mohm':1000*R,'two_identical_parallel_barrels_mohm':500*R,'assumption':'Equal end potentials, equal plating/length, no extra sheet spreading or face/cap/contact loss; not a network prediction.'}
+result={'schema':'e16-retained-resistance-analysis-v1','execution_source_sha':s['source_sha'],'execution_request_sha256':s['request_sha256'],'new_native_or_numerical_runs':0,'load_observations':len(loaded),'unique_loaded_pad_count':len(unique),'ranked_worst_state_by_loaded_pad':list(unique.values()),'maxima_by_board_net_case_state':maxima,'board_class_energy':energy,'return_removal_same_pad_sensitivity':return_sensitivity,'service_groups':{status:{'count':len(ds),'by_package':dict(collections.Counter(d['symbol'] for d in ds)),'by_board':dict(collections.Counter(d['board'] for d in ds)),'devices':ds} for status,ds in by_status.items()},'local_receiving_land_evidence':{'land_ref':'TP990026','pad_id':pad,'existing_via_id':via,'source_support_group':41,'sole_barrel_contact_groups':local,'functional_exit_layer':'In4.Cu','barrel_prediction':prediction,'proposed_addition':analysis['feed_variant_accepted_proposals'][0],'network_attribution':'NOT ESTABLISHED; multiple KA source land patches are held equipotential, so this is one local transfer branch, not a series decomposition of the parallel source network.'},'limitations':['Loaded source-relative potentials are not local-ground error.','Board-class energy is for the simultaneous retained load vector, not the unit-current driving-point solve.','All missing source, contact, wire, load and return sections remain unquantified, not zero.','Numerical PASS and its 0.28 percent minimum energy-check headroom apply only to the retained exact inputs.'],'verified_inputs':inputs}
+(OUT/'resistance-analysis.json').write_text(json.dumps(result,indent=2)+'\n')
+print(json.dumps({'loaded_observations':len(loaded),'unique_pads':len(unique),'verified_inputs':len(inputs),'local_prediction':prediction,'top_loaded':loaded[:4]},indent=2))

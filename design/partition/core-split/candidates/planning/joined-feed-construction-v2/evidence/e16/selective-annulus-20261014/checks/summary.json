@@ -1,0 +1,42 @@
+{
+  "source_suite": {
+    "command": "PATH=/home/takazudo/.cache/zudo-e16-numerical-venv/bin:$PATH bash scripts/checks/run-python-tests.sh",
+    "status": "PASS",
+    "tests": 1798,
+    "oracle_discovery_exclusions": 2,
+    "note": "Ran after admission tests added; before seven native fixture tests existed at E16 discovery. Final E16 rerun below covers those additions."
+  },
+  "final_e16_focused": {
+    "command": "/home/takazudo/.cache/zudo-e16-numerical-venv/bin/python -m unittest discover -s design/partition/core-split/candidates/planning/joined-feed-construction-v2 -p test_*.py",
+    "status": "PASS",
+    "tests": 239
+  },
+  "independent_source_drc_tests": 47,
+  "independent_native_admission_tests": 27,
+  "independent_fixture_tests": 7,
+  "circuit_check": "PASS: manual 68 lines; no schematic/placement binding; pin-asset check performed",
+  "pnpm_check": "PASS",
+  "guarded_build": {
+    "status": "PASS",
+    "pages": 301,
+    "guard_seconds": 22,
+    "minimum_available_mb": 7902
+  },
+  "strict_site": "PASS: unchanged one allowlist exception",
+  "full_regeneration": "NOT RUN: includes native operations without exact admission; source-only suite is not equivalent",
+  "native_fixture": "NOT RUN: request prepared only; operator approval absent",
+  "production_candidate": "NOT RUN: exact native representation not proven and geometry scope not admitted",
+  "finite_coverage_and_changed_geometry_numerics": "NOT RUN: no candidate or exact authority; baseline evidence not transferred",
+  "retained_artifact_integration": "NOT RUN: separate preserved issue-38 integration job not invoked",
+  "optional_source_byte_checks": "NOT RUN for seven optional caches absent in fresh worktree; retained acquisition receipts preserved (see source-suite.txt)",
+  "mac_browser": "NOT RUN: all 19 bound inputs unchanged",
+  "CI": "SKIPPED/NOT RUN with [skip ci], not PASS",
+  "new_native_calls": 0,
+  "production_numerical_units": 0,
+  "campaign_budget": {
+    "full_baselines_used": 2,
+    "limit": 3,
+    "diagnostics_used": 8,
+    "diagnostics_limit": 24
+  }
+}

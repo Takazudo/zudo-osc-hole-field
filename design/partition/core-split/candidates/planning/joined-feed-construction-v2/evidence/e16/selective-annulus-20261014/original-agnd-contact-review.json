@@ -1,0 +1,134 @@
+{
+  "schema": "e16-read-only-annulus-contact-review-v1",
+  "native_calls": 0,
+  "production_rebuilds": 0,
+  "scope": "Read-only retained source/contact inspection; no changed-geometry census or native acceptance.",
+  "source": {
+    "path": "/home/takazudo/.cache/zudo-e16-runs/20261013-replay2-t2/KA-access-t2.json",
+    "bytes": 15691516,
+    "sha256": "b73bc3a7b3b10bab9be357cc41984d515a88e73d8155731ae50db03bf057bffb"
+  },
+  "via": {
+    "access_for_pad": "118acdfc-28df-5ad2-b843-3daccc68d853",
+    "center_mm": [
+      110.245,
+      184.97
+    ],
+    "diameter_mm": 0.6,
+    "drill_mm": 0.3,
+    "epoch": "E16",
+    "id": "1e1b90ef-f82d-5e94-a82e-416153b33ef3",
+    "kind": "via",
+    "layers": [
+      "F.Cu",
+      "In1.Cu",
+      "In2.Cu",
+      "In3.Cu",
+      "In4.Cu",
+      "B.Cu"
+    ],
+    "net": "AGND",
+    "process": "standard through via; filled and capped when inside its pad (via-in-pad)",
+    "via_in_pad": true
+  },
+  "layer": "In3.Cu",
+  "same_net_other_source_objects": {
+    "pad": 5,
+    "via": 793
+  },
+  "intersection_count": 0,
+  "nearest_objects": [
+    {
+      "id": "e821d480-c98b-5a04-aabc-98a573fdb88c",
+      "kind": "via",
+      "distance_mm": 5.530617412204936,
+      "intersects": false
+    },
+    {
+      "id": "7cec48b2-045d-5484-ae0d-a98826020daa",
+      "kind": "via",
+      "distance_mm": 5.83427547242674,
+      "intersects": false
+    },
+    {
+      "id": "89a9d2e6-141d-5239-959c-0d3da15988f7",
+      "kind": "via",
+      "distance_mm": 6.403422312343464,
+      "intersects": false
+    },
+    {
+      "id": "3819f27d-35ab-5c36-8c6e-beca1787f626",
+      "kind": "via",
+      "distance_mm": 12.40492123954093,
+      "intersects": false
+    },
+    {
+      "id": "90cac7a1-1263-5d9e-a81d-bd3c86d02826",
+      "kind": "via",
+      "distance_mm": 13.290482258480232,
+      "intersects": false
+    }
+  ],
+  "planes_new_object_count": 0,
+  "agnd_sheet_layers": [
+    "In1.Cu"
+  ],
+  "agnd_in3_cap_count": 0,
+  "retained_graph_objects": {
+    "1e1b90ef-f82d-5e94-a82e-416153b33ef3": {
+      "net": "AGND",
+      "component_ids": [
+        "1d342c43-9fa8-5f0f-ac6b-0ffecfe05cf7|F.Cu|0"
+      ],
+      "all_fragments_connected_to_feed": true,
+      "any_fragment_connected": true,
+      "fragment_count": 6
+    },
+    "118acdfc-28df-5ad2-b843-3daccc68d853": {
+      "net": "AGND",
+      "component_ids": [
+        "1d342c43-9fa8-5f0f-ac6b-0ffecfe05cf7|F.Cu|0"
+      ],
+      "all_fragments_connected_to_feed": true,
+      "any_fragment_connected": true,
+      "fragment_count": 1
+    }
+  },
+  "retained_pad": {
+    "id": "118acdfc-28df-5ad2-b843-3daccc68d853",
+    "ref": "U2314",
+    "pad": "10",
+    "net": "AGND",
+    "layers": [
+      "B.Cu"
+    ],
+    "component_ids": [
+      "1d342c43-9fa8-5f0f-ac6b-0ffecfe05cf7|F.Cu|0"
+    ],
+    "all_port_fragments_connected_to_feed": true,
+    "any_fragment_connected": true,
+    "disconnected_fragment_component_ids": []
+  },
+  "bindings": {
+    "normalized-caps.json": {
+      "path": "/home/takazudo/.cache/zudo-e16-runs/20261013-replay2-t2/KA-eval-t2/normalized-caps.json",
+      "bytes": 15692520,
+      "sha256": "01c3b391a6609ff3b043ecfa24e9bd8504f3ff8deaf3bdeb5bb6b81ef9058314"
+    },
+    "clipped-sheets.json": {
+      "path": "/home/takazudo/.cache/zudo-e16-runs/20261013-replay2-t2/KA-eval-t2/clipped-sheets.json",
+      "bytes": 103586669,
+      "sha256": "6dcc98353b723eb0ff35d0205bb1cf14de8a80cb9fbf8e0cfcb9c55a6529d052"
+    },
+    "port-graph.json": {
+      "path": "/home/takazudo/.cache/zudo-e16-runs/20261013-replay2-t2/KA-eval-t2/port-graph.json",
+      "bytes": 2295894,
+      "sha256": "d23d1e4d011c3927e16781f0e07411800de139b74823af76a85f6519b6804ec5"
+    }
+  },
+  "limitations": [
+    "Shape scan uses existing 32-quadrant polygon approximation; >5.53mm separation is far above approximation error.",
+    "No native contacts or manufacturing behavior proved.",
+    "Removing the outer annular land must preserve explicit 0.025mm barrel wall in source model; prior 0.813mm drill-only screen cannot be transferred."
+  ]
+}
