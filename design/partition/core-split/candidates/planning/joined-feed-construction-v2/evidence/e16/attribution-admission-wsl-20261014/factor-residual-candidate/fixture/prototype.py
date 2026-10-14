@@ -30,6 +30,7 @@ from resistance_attribution import need
 METHOD = 'synthetic-fixed-pattern-factor-residual-v1'
 WEIGHT_METHOD = 'synthetic-eight-pass-comparison-picard-v1'
 WEIGHT_PASSES = 8
+TREE_WEIGHT_METHOD = 'synthetic-stored-tree-poisson-v1'
 
 
 class ResidualRow(dict):
@@ -231,9 +232,9 @@ def comparison_vector(w, rhs, meter, phase, approximate=False):
     return z
 
 
-def weight_packet(a, context, w, values, origin):
+def weight_packet(a, context, w, values, origin, method=WEIGHT_METHOD):
     """Bind actual exact binary64 weights; origin is descriptive, never trusted."""
-    return {'method': WEIGHT_METHOD, 'matrix': I.matrix_hash(a),
+    return {'method': method, 'matrix': I.matrix_hash(a),
             'context': digest(context), 'factor': digest(w), 'values': values,
             'origin': origin}
 
@@ -244,7 +245,7 @@ def validate_weights(a, context, w, packet, expected_digest):
     need(type(values) is list and len(values) == a.shape[0], 'weight shape')
     # Reject extreme scales explicitly. No silent normalization or clipping.
     need(all(type(v) is float and math.isfinite(v) and 2.**-400 <= v <= 2.**400 for v in values), 'weight positivity/finiteness/scale')
-    need(packet['method'] == WEIGHT_METHOD and packet['matrix'] == I.matrix_hash(a)
+    need(packet['method'] in (WEIGHT_METHOD, TREE_WEIGHT_METHOD) and packet['matrix'] == I.matrix_hash(a)
          and packet['context'] == digest(context) and packet['factor'] == digest(w), 'stale weight input binding')
     need(type(packet['origin']) is str and digest(packet) == expected_digest, 'stale weight digest')
     return values
@@ -274,6 +275,70 @@ def produce_weights(a, context, w, expected_digest, meter):
         meter.weight_passes_completed += 1
     packet = weight_packet(a, context, w, p, 'candidate:fixed-eight-pass')
     meter.weight_outputs.append({'sha256': digest(packet), 'passes': WEIGHT_PASSES, 'min': min(p), 'max': max(p)})
+    return packet, digest(packet)
+
+
+def produce_tree_weights(a, context, w, expected_digest, meter):
+    """One stored-coefficient BFS tree and two tree passes, never an original-system solve.
+
+    A symmetric Z-matrix with nonnegative approximate row sums supplies a
+    conductance graph. Keep only the strongest grounded root and BFS edges.
+    The tree surrogate solves T p=1 by subtree mass and edge integration.
+    This identity is NOT a certificate for A: omitted-edge flux can be negative.
+    All acceptance still requires the unchanged independent weighted verifier.
+    """
+    from bisect import bisect_left
+    n, _, _ = validate_factor(a, context, w, expected_digest)
+    base = storage_base(w, n, True)
+    # Grounds, parents, edge conductances, order/queue, subtree mass, output.
+    meter.entries(base + 6*n)
+    meter.phase = 'weight_tree_coefficients'
+    grounds = []
+    for i in range(n):
+        ground = 0.
+        for k in range(a.indptr[i], a.indptr[i+1]):
+            j = int(a.indices[k]); value = float(a.data[k])
+            meter.charge(); ground += value
+            need(math.isfinite(ground), 'tree row-sum overflow')
+            if i == j:
+                need(value > 0., 'tree positive diagonal required')
+            else:
+                need(value < 0., 'tree Z coefficients required')
+                first, last = int(a.indptr[j]), int(a.indptr[j+1])
+                q = bisect_left(a.indices, i, first, last)
+                need(q < last and int(a.indices[q]) == i and float(a.data[q]) == value,
+                     'tree symmetric stored coefficients required')
+        need(ground >= 0., 'tree nonnegative approximate row sum required')
+        grounds.append(ground)
+    root = max(range(n), key=lambda i: grounds[i])
+    need(grounds[root] > 0., 'tree no positive ground')
+    parent = [-1]*n; edge = [0.]*n; order = [root]; parent[root] = root
+    # Fixed canonical CSR order; every row scanned once, no ordering trials.
+    for i in order:
+        for k in range(a.indptr[i], a.indptr[i+1]):
+            j = int(a.indices[k])
+            if parent[j] == -1:
+                parent[j] = i; edge[j] = -float(a.data[k]); order.append(j)
+    need(len(order) == n, 'tree disconnected coefficient graph')
+    mass = [1.]*n
+    meter.phase = 'weight_tree_subtree'
+    for i in reversed(order):
+        if i == root: continue
+        meter.charge(); mass[parent[i]] += mass[i]
+    p = [0.]*n
+    meter.phase = 'weight_tree_integration'
+    meter.charge(); p[root] = float(n)/grounds[root]
+    for i in order:
+        if i == root: continue
+        meter.charge(2); p[i] = p[parent[i]] + mass[i]/edge[i]
+    need(all(math.isfinite(v) and 2.**-400 <= v <= 2.**400 for v in p),
+         'tree weight scale/overflow refusal')
+    packet = weight_packet(a, context, w, p, 'candidate:stored-BFS-tree', TREE_WEIGHT_METHOD)
+    meter.weight_outputs.append({'sha256': digest(packet), 'passes': 2,
+        'auxiliary_tree_order': n, 'auxiliary_edges': n-1, 'root': root,
+        'min': min(p), 'max': max(p)})
+    del grounds, parent, edge, order, mass
+    meter.entries(base)
     return packet, digest(packet)
 
 
@@ -462,3 +527,306 @@ def block_certificate(blocks, D, context, meter, patterns=None, weight_mode=None
             'certificate_sha256':digest({'inputs':global_input_digest,'weights':[c['weights_sha256'] for c in certificates], 'factors':[c['factor_sha256'] for c in certificates],'patterns':patterns,'weight_mode':weight_mode}),
             'updates':meter.work.updates,'phase_updates':dict(meter.phases),
             'peak_entries':meter.work.peak_entries}
+
+# Exact binary64/half-binary64 row arithmetic. This is not an exact solve.
+# Separate integer metrics are NOT production scalar updates or hidden in Work.
+COERCIVITY_METHOD = 'synthetic-stored-SDD-tree-coercivity-v1'
+DYADIC_EXPONENT = 1075
+DYADIC_BITS = 2176
+
+
+def integer_charge(meter, count=1, bits=DYADIC_BITS, kernel='exact_arithmetic'):
+    """Bounded exact-arithmetic kernels, NOT machine ops or Work updates.
+
+    One unit is an explicitly declared add/subtract/shift/absolute-value,
+    comparison, bit-length query, or fixed-width decoding kernel. Index scans,
+    container operations and accounting bookkeeping remain runtime work.
+    The retained `integer_operations` name is a compatibility alias for these
+    declared units. Each unit ALSO receives a conservative bits**2 logical
+    bit-work envelope, so a 2176-bit operation is never discounted as a scalar.
+    This envelope is not an instruction count or a production mapping.
+    """
+    need(type(count) is int and count >= 0 and type(bits) is int and 0 < bits <= DYADIC_BITS,
+         'invalid bounded integer kernel charge')
+    if not hasattr(meter, 'integer_phases'):
+        meter.integer_phases = {}; meter.integer_operations = 0; meter.integer_peak_bits = 0
+        meter.integer_kernel_units = {}; meter.integer_bit_work_envelope = 0
+    meter.integer_operations += count
+    meter.integer_phases[meter.phase] = meter.integer_phases.get(meter.phase, 0)+count
+    key = f'{kernel}:bits<={bits}'
+    meter.integer_kernel_units[key] = meter.integer_kernel_units.get(key, 0)+count
+    meter.integer_bit_work_envelope += count*bits*bits
+    meter.integer_peak_bits = max(meter.integer_peak_bits, bits)
+    need(meter.integer_operations <= 200000, 'fixture declared integer-kernel cap')
+    need(time.monotonic()-meter.started < 30, 'fixture integer wall cap')
+
+
+def dyadic(v, meter):
+    """Decode fixed eight-byte IEEE binary64; no ratio/reduction algorithm."""
+    import struct
+    need(type(v) is float and math.isfinite(v), 'dyadic binary64 input')
+    integer_charge(meter, 1, 64, 'binary64_decode')
+    raw = struct.unpack('>Q', struct.pack('>d', v))[0]
+    integer_charge(meter, 5, 64, 'bit_extract')
+    sign = raw >> 63
+    exponent = (raw >> 52) & 2047
+    fraction = raw & ((1 << 52)-1)
+    if exponent:
+        integer_charge(meter, 1, 53, 'significand_add')
+        significand = (1 << 52) + fraction
+        shift = exponent  # -1023-52+1075 == 0, exact fixed exponent identity
+    else:
+        significand, shift = fraction, 1
+    # Bounds follow from finite binary64 before the allocation: 53+2046=2099.
+    integer_charge(meter, 1, DYADIC_BITS, 'left_shift')
+    value = significand << shift
+    if sign:
+        integer_charge(meter, 1, DYADIC_BITS, 'negate')
+        value = -value
+    integer_charge(meter, 2, DYADIC_BITS, 'width_check')
+    need(value.bit_length() <= DYADIC_BITS, 'dyadic width cap')
+    return value
+
+
+def half_sum(x, y, meter):
+    a, b = dyadic(x,meter), dyadic(y,meter)
+    integer_charge(meter, 2, DYADIC_BITS, 'add_and_half_shift')
+    # Binary64 inputs are even at exponent -1075; this shift is exact.
+    value = (a+b) >> 1
+    integer_charge(meter, 2, DYADIC_BITS, 'width_check')
+    need(value.bit_length() <= DYADIC_BITS, 'dyadic width cap')
+    return value
+
+
+def positive_dyadic_floor(v, meter):
+    integer_charge(meter, 3, DYADIC_BITS, 'positive_width_check')
+    need(v > 0 and v.bit_length() <= DYADIC_BITS, 'positive bounded dyadic required')
+    integer_charge(meter, 1, DYADIC_BITS, 'bit_length')
+    width = v.bit_length()
+    integer_charge(meter, 2, 16, 'shift_selection')
+    shift = max(0,width-53)
+    integer_charge(meter, 1, DYADIC_BITS, 'right_shift')
+    significand = v >> shift
+    integer_charge(meter, 1, 16, 'scale_exponent')
+    exponent = shift-DYADIC_EXPONENT
+    # Charge both exact small-int conversion and binary64 power-of-two scaling.
+    # The latter can round at the subnormal boundary; verify floor afterwards.
+    meter.charge(2)
+    try:
+        result = math.ldexp(float(significand), exponent)
+    except OverflowError:
+        need(False, 'dyadic coefficient overflow')
+    need(math.isfinite(result) and result > 0, 'dyadic coefficient underflow/overflow')
+    decoded = dyadic(result,meter)
+    integer_charge(meter, 1, DYADIC_BITS, 'floor_comparison')
+    need(decoded <= v, 'dyadic coefficient floor rounding refusal')
+    return result
+
+
+def stored_reverse(a, i, j):
+    from bisect import bisect_left
+    first,last=int(a.indptr[j]),int(a.indptr[j+1])
+    q=bisect_left(a.indices,i,first,last)
+    need(q < last and int(a.indices[q]) == i, 'coercivity structural symmetry required')
+    return float(a.data[q])
+
+
+def symmetric_margins(a, meter, phase):
+    """Exact SDD margins of actual (A+A.T)/2, no inferred conservation.
+
+    Structural symmetry is explicitly required; no transpose-only entry is lost.
+    Per row only a few bounded dyadic integers live; margins are streamed.
+    """
+    meter.phase=phase
+    for i in range(a.shape[0]):
+        diagonal=None; off=0
+        for k in range(a.indptr[i],a.indptr[i+1]):
+            j=int(a.indices[k]);v=float(a.data[k])
+            if j==i: diagonal=dyadic(v,meter)
+            else:
+                sij=half_sum(v,stored_reverse(a,i,j),meter)
+                integer_charge(meter,2,DYADIC_BITS,'absolute_row_accumulation');off+=abs(sij)
+                integer_charge(meter,2,DYADIC_BITS,'width_check')
+                need(off.bit_length()<=DYADIC_BITS,'dyadic row width cap')
+        need(diagonal is not None,'coercivity diagonal required')
+        integer_charge(meter,1,DYADIC_BITS,'row_margin');margin=diagonal-off
+        integer_charge(meter,2,DYADIC_BITS,'width_check')
+        need(margin.bit_length()<=DYADIC_BITS,'dyadic margin width cap')
+        yield margin
+
+
+def produce_coercivity_tree(a, context, meter):
+    validate_a(a);n=a.shape[0]
+    # Row-local dyadic scratch, parent, edge, BFS order; independent recomputation.
+    meter.entries(8*n+16)
+    root=-1;best=0
+    for i,margin in enumerate(symmetric_margins(a,meter,'coercivity_producer_margins')):
+        integer_charge(meter,1,DYADIC_BITS,'root_margin_comparison')
+        if margin>best:root,best=i,margin
+    need(root>=0,'coercivity no positive root margin')
+    g=positive_dyadic_floor(best,meter)
+    del best,margin
+    parent=[-1]*n;edge=[0.]*n;order=[root];parent[root]=root
+    meter.phase='coercivity_producer_tree'
+    for i in order:
+        for k in range(a.indptr[i],a.indptr[i+1]):
+            j=int(a.indices[k])
+            if parent[j]!=-1: continue
+            sij=half_sum(float(a.data[k]),stored_reverse(a,i,j),meter)
+            integer_charge(meter,1,DYADIC_BITS,'edge_sign_comparison')
+            if sij<0:
+                integer_charge(meter,1,DYADIC_BITS,'edge_negation')
+                parent[j]=i;edge[j]=positive_dyadic_floor(-sij,meter);order.append(j)
+    need(len(order)==n,'coercivity negative-edge tree disconnected')
+    packet={'method':COERCIVITY_METHOD,'matrix':I.matrix_hash(a),'context':digest(context),
+            'root':root,'ground':g,'parent':parent,'edge':edge,'order':order}
+    return packet,digest(packet)
+
+
+def verify_coercivity_tree(a, context, packet, expected_digest, meter, refine=False):
+    """Independent SDD/tree coercivity proof for the complete stored operator.
+
+    If S+delta*I-T is SDD, S>=T-delta*I. For nonsymmetric A,
+    ||A x||2 >= lambda_min(S)||x||2. Trace(T^-1)=n/g+sum(subtree_size/c);
+    inverse <=ceil(sqrt(n))*trace/(1-delta*trace) when delta*trace<1.
+    Integer square root avoids relying on correct libm rounding for sqrt.
+    """
+    validate_a(a);n=a.shape[0];meter.entries(12*n+16)
+    need(type(packet) is dict and set(packet)=={'method','matrix','context','root','ground','parent','edge','order'},'coercivity schema')
+    need(packet['method']==COERCIVITY_METHOD and packet['matrix']==I.matrix_hash(a)
+         and packet['context']==digest(context) and digest(packet)==expected_digest,'stale coercivity binding')
+    root,g=packet['root'],packet['ground'];parent,edge,order=packet['parent'],packet['edge'],packet['order']
+    need(type(root) is int and 0<=root<n and type(g) is float and math.isfinite(g) and g>0,'coercivity root/ground')
+    need(type(parent) is list and type(edge) is list and type(order) is list
+         and len(parent)==len(edge)==len(order)==n,'coercivity tree shape')
+    need(all(type(i) is int and 0<=i<n for i in order) and sorted(order)==list(range(n))
+         and order[0]==root,'coercivity order permutation')
+    need(all(type(i) is int and 0<=i<n for i in parent),'coercivity parent index')
+    need(all(type(c) is float and math.isfinite(c) and c>=0 for c in edge)
+         and edge[root]==0. and parent[root]==root,'coercivity edge shape')
+    deficit=0
+    for i,margin in enumerate(symmetric_margins(a,meter,'coercivity_verify_margins')):
+        integer_charge(meter,2,DYADIC_BITS,'deficit_negation_comparison');deficit=max(deficit,-margin)
+        if i==root:
+            integer_charge(meter)
+            need(dyadic(g,meter)<=margin,'coercivity excess root ground')
+    del margin
+    meter.phase='coercivity_verify_tree';seen=[False]*n;seen[root]=True
+    for i in order:
+        if i==root:continue
+        j=parent[i];need(seen[j] and edge[i]>0,'coercivity parent order/edge')
+        aij=stored_reverse(a,j,i);aji=stored_reverse(a,i,j)
+        sij=half_sum(aij,aji,meter)
+        integer_charge(meter,2,DYADIC_BITS,'conductance_negation_comparison')
+        need(dyadic(edge[i],meter)<=-sij,'coercivity excess tree conductance')
+        seen[i]=True
+    mass=[1]*n
+    meter.phase='coercivity_subtree'
+    for i in reversed(order):
+        if i!=root:
+            integer_charge(meter,1,8);mass[parent[i]]+=mass[i]
+    meter.phase='coercivity_trace';meter.charge();trace=meter.div(float(n),g)
+    for i in order:
+        if i!=root:
+            meter.charge()  # exact bounded integer-to-binary64 conversion
+            trace=meter.add(trace,meter.div(float(mass[i]),edge[i]))
+    integer_charge(meter,4,8,'isqrt_square_compare_add');root_n=math.isqrt(n);ceil_root=root_n+(root_n*root_n<n)
+    delta=0.
+    if deficit:
+        delta=positive_dyadic_floor(deficit,meter)
+        integer_charge(meter,1,DYADIC_BITS,'deficit_rounding_comparison')
+        if dyadic(delta,meter)<deficit:
+            meter.charge();delta=math.nextafter(delta,math.inf)
+    shift_q=meter.mul(delta,trace)
+    need(shift_q<1.,'coercivity diagonal deficit defeats tree bound')
+    meter.charge();denominator=I.sub((1.,1.),(shift_q,shift_q))[0]
+    meter.charge()  # exact bounded integer-to-binary64 conversion
+    bound=meter.div(meter.mul(float(ceil_root),trace),denominator)
+    need(math.isfinite(bound),'coercivity inverse-bound overflow')
+    trace_bound=bound;refinement={'status':'NOT REQUESTED'}
+    if refine:
+        meter.phase='coercivity_path_cauchy'
+        path=[0.]*n;path[root]=meter.div(1.,g)
+        integer_charge(meter,1,16,'root_mass_square');meter.charge()
+        total=meter.div(float(n*n),g)
+        for i in order:
+            if i==root:continue
+            path[i]=meter.add(path[parent[i]],meter.div(1.,edge[i]))
+            integer_charge(meter,1,16,'subtree_mass_square');meter.charge()
+            total=meter.add(total,meter.div(float(mass[i]*mass[i]),edge[i]))
+        rmax=max(path)
+        # Trial sqrt never establishes acceptance: independently prove its
+        # outward lower square >= the outward upper product. Four attempts max.
+        try:
+            product=meter.mul(rmax,total)
+            meter.charge();root_bound=math.sqrt(product)
+            need(math.isfinite(root_bound) and root_bound>0.,'invalid trial sqrt witness')
+            established=False
+            for attempt in range(4):
+                meter.charge();square=I.mul((root_bound,root_bound),(root_bound,root_bound))
+                if square[0]>=product:
+                    established=True;break
+                meter.charge();root_bound=math.nextafter(root_bound,math.inf)
+            if established:
+                refined=meter.div(root_bound,denominator)
+                bound=min(bound,refined)
+                refinement={'status':'CERTIFIED','inverse_infinity_upper':refined,
+                            'tree_max_inverse_diagonal_upper':rmax,
+                            'tree_ones_energy_upper':total,'sqrt_attempts':attempt+1}
+            else:refinement={'status':'REFUSED','reason':'four-step outward square check inconclusive'}
+        except ValueError as exc:
+            # Arithmetic inability to improve does not erase the earlier proof;
+            # cumulative work/caps remain in force (cap failures must propagate).
+            if 'cap' in str(exc):raise
+            refinement={'status':'REFUSED','reason':str(exc)}
+        del path
+    return {'status':'CERTIFIED','inverse_infinity_upper':bound,'tree_inverse_trace_upper':trace,'trace_inverse_infinity_upper':trace_bound,
+            'path_cauchy_refinement':refinement,
+            'diagonal_deficit_upper':delta,'coercivity_shift_q':shift_q,
+            'matrix_sha256':I.matrix_hash(a),'witness_sha256':digest(packet),
+            'updates':meter.work.updates,'phase_updates':dict(meter.phases),
+            'integer_operations':meter.integer_operations,'integer_phase_operations':dict(meter.integer_phases),
+            'integer_max_bits':DYADIC_BITS,'integer_kernel_units':dict(meter.integer_kernel_units),
+            'integer_bit_work_envelope':meter.integer_bit_work_envelope,'peak_entries':meter.work.peak_entries,
+            'scope':'whole stored operator; no factor, residual expansion or Schur solve'}
+
+
+def coercivity_interval_certificate(a, entries, context, meter):
+    """Whole CSR midpoint plus explicitly bound sparse interval replacements.
+
+    The final infinity-norm perturbation proof supports nonsymmetric interval
+    entries too; it does not rely on a symmetric radius or a row-to-2norm claim.
+    Input assembly is caller work and is not claimed as part of these counters.
+    """
+    validate_a(a);n=a.shape[0]
+    need(type(entries) is list and len(entries)<=128,'interval replacement cap')
+    keys=[]
+    for entry in entries:
+        need(type(entry) is list and len(entry)==4,'interval replacement schema')
+        i,j,lo,hi=entry
+        need(type(i) is int and type(j) is int and 0<=i<n and 0<=j<n
+             and type(lo) is float and type(hi) is float and math.isfinite(lo)
+             and math.isfinite(hi) and lo<=hi,'interval replacement value')
+        keys.append((i,j))
+    need(keys==sorted(set(keys)),'interval replacement uniqueness/order')
+    bound_context={'context':context,'interval_replacements':entries}
+    packet,h=produce_coercivity_tree(a,bound_context,meter)
+    result=verify_coercivity_tree(a,bound_context,packet,h,meter,refine=True)
+    meter.phase='coercivity_interval_perturbation';meter.entries(14*n+16+4*len(entries))
+    rows=[0.]*n
+    for i,j,lo,hi in entries:
+        # Sparse scalar read is index work, no numerical solve or summation.
+        value=float(a[i,j])
+        meter.charge();difference=I.sub((lo,hi),(value,value))
+        rows[i]=meter.add(rows[i],I.magnitude(difference))
+    radius=max(rows);q=meter.mul(result['inverse_infinity_upper'],radius)
+    need(q<1.,'coercivity interval perturbation refuses')
+    meter.charge();denominator=I.sub((1.,1.),(q,q))[0]
+    bound=meter.div(result['inverse_infinity_upper'],denominator)
+    result.update(midpoint_inverse_infinity_upper=result['inverse_infinity_upper'],
+                  inverse_infinity_upper=bound,interval_perturbation_q=q,
+                  interval_radius_infinity_upper=radius,
+                  interval_operator_sha256=digest({'A':I.matrix_hash(a),'context':bound_context}),
+                  updates=meter.work.updates,phase_updates=dict(meter.phases),
+                  peak_entries=meter.work.peak_entries)
+    return result

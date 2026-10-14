@@ -394,3 +394,12 @@ case comparison and reviewed original-cost rejection. Earlier results and next
 steps above are historical. No original-data characterization is needed to reject
 this exact producer; no diagnostic was consumed. The next local method change must
 remove repeated full residual production passes before any fit claim or admission.
+
+
+## Standing-assignment structured continuation
+
+The [structured/coercivity increment](structured-coercivity-increment.md) preserves
+the failed weighted recipes, adds an exact tree-flux counterexample, and implements
+a different complete-operator tree-energy proof with bounded exact row arithmetic.
+Its reviewed synthetic improvement does not establish original applicability or
+resource fit. Continue from WORK.md; this checkpoint does not end the assignment.

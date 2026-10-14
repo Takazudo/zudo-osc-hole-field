@@ -106,3 +106,18 @@ In the comparison JSON, the key `"None"` denotes the unweighted control. Missing
 arithmetic-phase keys mean zero charges in that phase. Exact reference and
 physical functional calls are outside the certificate-kernel meter, explicitly
 labeled; reported kernel totals are not full production-pipeline operation costs.
+
+
+### Structured continuation
+
+`test_structured.py` retains the non-oracle BFS-tree weight failure and a path
+positive control. `test_coercivity.py` exercises the subsequent whole-operator
+tree-coercivity proof, exact stored deficits, interval-terminal wrapper and
+path-energy refinement. Both import the same bounded fixture setup; run with
+`OPENBLAS_NUM_THREADS=1 timeout 30s` and the established numerical venv's Python
+`-B`, passing an output JSON path. Results and test transcripts have new names.
+The old18+8 tests still pass; historical reports are unchanged.
+
+The new exact arithmetic counter has separate declared kernel/width/bit-work
+metrics, not production scalar updates. No original numerical input or production
+entrypoint is enabled. See `../structured-coercivity-increment.md`.

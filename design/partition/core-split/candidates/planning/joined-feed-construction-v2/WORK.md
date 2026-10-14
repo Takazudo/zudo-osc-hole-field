@@ -501,14 +501,34 @@ A passed test, commit, pushed draft or completed slice is a checkpoint, not a
 reason to return to an external planner. Earlier workflow-only external-planner
 handoffs are superseded by this instruction.
 
-Immediate objective: resolve actual E16 signing/delegation ownership with the
-user here, then prepare and follow a genuinely admitted complete selected
-resource-qualification operation through terminal acceptance, accounting and
-cleanup. Qualification success requires independent resource review and a signed
-report before preparing a separate fresh production request. Production needs
-its own authority and live reservation. The engineering outcome is an honestly
-resolved selected diagnostic/Stage C disposition or a specific evidence-backed
-failure and next intervention; source readiness alone is not numerical progress.
+Standing assignment reaffirmed 2026-10-15: the local WSL coordinator owns the
+continuing evaluate -> plan -> implement -> verify -> independent review loop.
+Signing ownership is resolved by the later explicit delegation below. Advance
+the selected E16 attribution through a mathematically valid, useful and feasible
+implementation, complete resource qualification, separately admitted numerical
+attribution and actual reviewed numerical/engineering disposition. A rejected
+method, fixture success, research report or published checkpoint does not resolve
+that objective. Continue the next useful authorized task after resolution without
+expanding into excluded integration/hardware scope. Do not ask the owner to choose
+ordinary in-scope algorithms or obtain another external planning prompt.
+
+After each result distinguish implementation correctness, mathematical validity,
+bound usefulness, resource feasibility, admission eligibility and whole-objective
+completion. Preserve negative evidence, change the failed method rather than
+blindly increasing work, and continue useful source mathematics/prototyping when
+original-data execution is ineligible. Exact indispensable original-data questions
+need bounded characterization, separate review and existing guarded admission.
+Qualification and production remain separate requests under the recorded delegation.
+Publish meaningful checkpoints to PR277, reconcile ledger/cleanup and begin the
+next executable action here. No additional baseline or cap increase is authorized.
+
+Use the runner's supported ongoing goal facility for the whole objective, not a
+single increment (activated in this session). Installed `codex resume --help`
+confirms `codex resume [SESSION_ID] [PROMPT]` with `-C` selecting the worktree.
+If a real invocation boundary requires recovery, resume this session locally:
+`codex resume 01a13b5d-3e1b-7672-abc9-46c691ea9019 -C /home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-attribution-executor`
+and read this WORK.md before continuing. No new runner, retry loop or approval
+bypass is introduced. A deliberate final response is not proof of a runtime limit.
 
 Ordinary planning/source choices are delegated. Exact-request authorization,
 independent signer/trust and review requirements, exclusive reservation, shared
@@ -526,9 +546,9 @@ reviewer agent is not an independent signing authority. Continue other useful
 authorized work while a lane is blocked; do not invent work or rerun unchanged
 checks merely to avoid the external boundary.
 
-Stop only for completion of the authorized objective, an indispensable owner
-decision/capability, exhausted limits, unresolved ownership/safety/accounting/
-cleanup, or a session boundary. At a boundary, retain enough evidence and exact
+Pause only for completion of all currently authorized work, an indispensable
+owner decision or unavailable capability/permission, exhausted applicable limits,
+unresolved ownership/accounting/cleanup, or an actual runtime/context/session limit. At a boundary, retain enough evidence and exact
 next action for replacement WSL recovery. Never claim unstarted work is running
 or promise unattended continuation. Failures retain their evidence; no automatic
 replay, cap increase or weakened acceptance.
@@ -1109,7 +1129,7 @@ exact question and reviewed admission integration; none is currently prepared.
 The original engineering objective remains incomplete at this research checkpoint.
 
 
-<a id="e16-current-checkpoint"></a>
+<a id="e16-weighted-construction-checkpoint"></a>
 
 ### Constructive weighted-certificate checkpoint — 2026-10-15 JST
 
@@ -1190,3 +1210,70 @@ entry/update limits are unchanged. KEEP_K1402_INCUMBENT; PR260 OPEN/draft and
 issue253 OPEN. Qualification NOT_QUALIFIED; production NOT_ADMITTED/NOT_RUN;
 actual Stage C NOT RUN. No request freeze, pending claim or unattended operation
 remains. No merge, deployment, fabrication, purchases or hardware acceptance.
+
+
+<a id="e16-current-checkpoint"></a>
+
+### Standing-assignment tree/coercivity checkpoint — 2026-10-15 JST
+
+Reconciled clean executor HEAD67d120079b8a3ffaf0e915b8ffeebfea7611fc7e,
+existing ignored experiments, reviewer identities, tmux/process ownership and
+zero live E16 systemd units. No competing E16 work or newer changes were reset.
+The local CLI environment supplied the skill catalog and user/workspace project
+instructions; managed-cloud loader/restoration is not applicable. The operating
+agreement above was amended once to persist the owner's ongoing assignment.
+Installed runner help confirms local resume, and the whole-objective goal is
+active. Signing ownership remains resolved; no keys or grants were recreated.
+
+[New evidence](evidence/e16/attribution-admission-wsl-20261014/factor-residual-candidate/structured-coercivity-increment.md)
+records two completed evaluate/implement/review loops and a refinement:
+
+- Deterministic stored-coefficient BFS-tree Poisson weights, one subtree and one
+  integration pass, fail exact grid4/8/9 contraction. Their omitted-edge flux
+  causes min(Ap)=-11/-55/-71; path control succeeds. A separate direct shell
+  supersolution analysis proves exponential root weight on rooted grids. These
+  are precise method obstructions, not universal impossibility. No diagnostic.
+- Reuse the tree as an energy comparison for the complete actual nonsymmetric
+  stored operator. Independently verify symmetric-part dominance, exact binary64
+  deficits and actual tree coefficients/bindings. Quantitatively pay deficits
+  through gamma=1-delta*trace(T^-1). Bound terminal intervals separately through
+  an infinity-norm inverse perturbation proof. No global factor or Schur solve.
+- A reviewed path-energy refinement gives grid4/8/9 bounds61.2536/461.129/650.889
+  and complete coupled bound23.1015 versus exact12.5241. Actual synthetic screen
+  is SUPPORTED in the strong case; weak bound6.442503572e9 still gives INCONCLUSIVE
+  energy/reaction disposition. Whole distributed termination energy is preserved.
+  A positive definite nonadjacent distributed stamp defeats the method and refuses.
+
+Three structured tests +seven coercivity tests +unchanged18+8 tests PASS. Separate
+math review checks100 refined random inverses,51 complete coupled/interval corners,
+1000 IEEE decodes/999 half-sums and adversarial cases. Separate resource review
+reports all primitive conversions, exact-kernel units/width-dependent bit-work,
+failed work and actual fixture resources. Its accounting helper edits received
+independent mathematics review. The missing positive-sqrt witness check found
+in review was fixed before acceptance. Source hashes and results are retained.
+
+The new proof lane is mathematically useful on the bounded synthetic environment,
+not an original-size fit or an admitted operation. Direct Python materialized
+joined input and slot accounting cannot be ported as a production representation.
+No counter mapping is approved by a small floating count: exact integer work is
+substantial and remains separately visible. Pre/post circuit validation PASS
+(manual68-line inventory,0 placements, no schematic/placement binding; pin-asset
+check performed). Native/aggregate generation, original qualification and
+production NOT RUN; source-only research does not authorize those operations.
+
+**Next action, continuing here:** implement a bounded synthetic virtual joined-row
+view over the existing board CSR, coupling and terminal intervals without a full
+joinedCSR/transpose copy; prove exact row/oracle equivalence. Use packed tree
+vectors with an explicit reverse-lookup strategy and derive complete construction,
+verification, bit/float work and byte overlap, including both boards and retained
+physical pipeline. Resource review requires this executable architecture before
+an original-data characterization is useful. Do not probe original inputs yet.
+
+Campaign ledger remains SHA256
+533ca512fc06ae6742e6e02dce3cc1a8aee83ec49fc13ebabf691a6b0c4cc4f5,
+15/24 diagnostics,2/3 baselines; nine diagnostics remain, no further baseline
+authorized. No numerical request, live claim or cleanup obligation was created.
+KEEP_K1402_INCUMBENT, PR260 draft/unmerged, issue253 open; no production/source
+solver/RHS/tolerance/normalization changes, no cap changes, merge or hardware work.
+PR277 publication is a checkpoint. The attribution objective and local development
+assignment remain active; no new owner instruction or external plan is required.
