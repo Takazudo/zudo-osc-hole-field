@@ -20,14 +20,19 @@ class Board(C.Structure):
 class Result(C.Structure):
     _fields_=[(k,C.c_double) for k in ('bound','ground','radius','deficit','q','midpoint_bound','interval_radius','interval_q')]+[
         ('root',C.c_uint32),('edges',C.c_uint32),('index_visits',C.c_uint64*6),
-        ('coefficient_reads',C.c_uint64*6),('row_visits',C.c_uint64),('phases',Stats*6)]
+        ('coefficient_reads',C.c_uint64*6),('row_visits',C.c_uint64),('phases',Stats*6)]+[(name,C.c_uint64) for name in
+        ('scratch_live_bytes','scratch_peak_bytes','allocation_attempts','scratch_allocations','scratch_releases','selection_scratch_bytes','path_scratch_bytes')]
 
-def build(directory):
-    target=Path(directory)/'native_forest.so'
-    subprocess.run(['c++',*FLAGS,str(SOURCE),'-o',str(target)],check=True,capture_output=True,text=True)
+def build(directory,*,fail_allocation=None):
+    flags=list(FLAGS)
+    if fail_allocation is not None:
+        if type(fail_allocation) is not int or not 1<=fail_allocation<=5:raise ValueError('fixture allocation failure position')
+        flags.append(f'-DE16_FIXTURE_FAIL_ALLOCATION={fail_allocation}')
+    target=Path(directory)/('native_forest.so' if fail_allocation is None else f'native_forest_allocfail{fail_allocation}.so')
+    subprocess.run(['c++',*flags,str(SOURCE),'-o',str(target)],check=True,capture_output=True,text=True)
     sources={p.name:hashlib.sha256(p.read_bytes()).hexdigest() for p in (SOURCE,SOURCE.with_name('native_exact.cpp'))}
     return target,{'sources':sources,'binary_sha256':hashlib.sha256(target.read_bytes()).hexdigest(),
-        'compiler':subprocess.run(['c++','--version'],check=True,capture_output=True,text=True).stdout.splitlines()[0],'flags':FLAGS}
+        'compiler':subprocess.run(['c++','--version'],check=True,capture_output=True,text=True).stdout.splitlines()[0],'flags':flags}
 
 def metadata(a):
     """Check every pointer capacity without traversing coefficient/index values.
@@ -71,7 +76,7 @@ class Kernel:
     def __init__(self,path):
         self.lib=C.CDLL(str(path))
         self.lib.e16_forest_result_size.restype=C.c_uint32
-        self.lib.e16_forest_scratch_size.restype=C.c_uint32
+        self.lib.e16_forest_scratch_owner_size.restype=C.c_uint32
         if self.lib.e16_forest_result_size()!=C.sizeof(Result):raise ValueError('native forest ABI')
         self.lib.e16_forest.argtypes=[C.c_uint32,C.POINTER(Board),C.c_uint32,DP,DP,DP,
             C.POINTER(C.c_uint32),DP,C.POINTER(Result)]
@@ -100,12 +105,18 @@ class Kernel:
             'index_visits':dict(zip(PHASES,result.index_visits)),
             'coefficient_reads':dict(zip(PHASES,result.coefficient_reads)),
             'row_visits':result.row_visits,'selected_edges':result.edges,
-            'native_fixed_scratch_bytes':self.lib.e16_forest_scratch_size(),
+            'native_scratch_peak_payload_bytes':result.scratch_peak_bytes,
+            'native_scratch_live_after_return':result.scratch_live_bytes,
+            'native_allocation_attempts':result.allocation_attempts,
+            'native_scratch_allocations':result.scratch_allocations,'native_scratch_releases':result.scratch_releases,
+            'native_selection_scratch_payload_bytes':result.selection_scratch_bytes,
+            'native_path_scratch_payload_bytes':result.path_scratch_bytes,
+            'native_scratch_owner_object_bytes':self.lib.e16_forest_scratch_owner_size(),
             'native_result_bytes':C.sizeof(Result),'native_board_descriptor_bytes':C.sizeof(boards),
             'owned_array_payload_bytes':sum(x.nbytes for x in (*kept,mid,lo,hi,parent,edge)),
             'borrowed_array_payload_bytes':sum(m.indptr.nbytes+m.indices.nbytes+m.data.nbytes+b.nbytes for m,b,_ in blocks),
             'python_validation_and_binding':'two metadata-only buffer/layout validations, two streamed input hashes and context/interval digests; native owns coefficient/pattern validation',
-            'resource_scope':'fixed scratch charged throughout; stack/compiler/Python overhead not established by payload counts; no production fit',
+            'resource_scope':'actual owned scratch released before count reduction; payload excludes allocator metadata; stack/compiler/Python overhead not established by payload counts; no production fit',
             'matrix_sha256':original,'context_sha256':ctx,'interval_sha256':interval_hash}
         report['proposed_scalar_contributions']=sum(s.proposed_contributions for s in result.phases)
         report['native_kernel_units']=sum(s.kernel_units for s in result.phases)

@@ -32,6 +32,12 @@ class NativeForestTests(unittest.TestCase):
             self.assertAlmostEqual(r['inverse_infinity_upper']/old['inverse_infinity_upper'],1.,places=12)
             self.assertEqual(r['row_visits'],a.shape[0])
             self.assertEqual(r['selected_edges'],a.shape[0]-1)
+            self.assertEqual(r['native_scratch_live_after_return'],0)
+            self.assertEqual(r['native_scratch_allocations'],5)
+            self.assertEqual(r['native_scratch_releases'],5)
+            self.assertEqual(r['native_selection_scratch_payload_bytes'],8*a.shape[0])
+            self.assertEqual(r['native_path_scratch_payload_bytes'],13*a.shape[0])
+            self.assertEqual(r['native_scratch_peak_payload_bytes'],13*a.shape[0])
             self.assertEqual(r['phase_work']['exact_rows']['proposed_contributions'],a.nnz-a.shape[0])
     def test_heterogeneous_and_refusals(self):
         a=np.zeros((5,5))
@@ -44,6 +50,8 @@ class NativeForestTests(unittest.TestCase):
                        ('one_sided',csr([[2.,-1.],[0.,2.]])),('deficit',csr([[.1,-1.],[-1.,2.]]))]:
             r=self.measured(a);RESULTS[name]=r;self.assertEqual(r['status'],'REFUSED')
             self.assertGreater(r['native_kernel_units'],0)
+            self.assertEqual(r['native_scratch_live_after_return'],0)
+            self.assertEqual(r['native_scratch_allocations'],r['native_scratch_releases'])
     def test_coupled_actual_screen(self):
         for name,kwargs in [('strong',{}),('weak',{'ground':2.**-30}),('nonsymmetric',{'nonsymmetric':True})]:
             blocks,d,ref,m,view=V.view_case(kwargs);r=self.measured(view)
@@ -55,6 +63,20 @@ class NativeForestTests(unittest.TestCase):
             RESULTS[name]=r
             old=P.coercivity_interval_certificate(view,view.interval_entries(),CONTEXT,P.Meter(),bound_mode='path-only',exact_kernel='compact',forest=True)
             self.assertAlmostEqual(r['inverse_infinity_upper']/old['inverse_infinity_upper'],1.,places=12)
+    def test_failed_allocation_keeps_initialization_and_releases(self):
+        for failure in (2,4):
+            path,identity=N.build(self.temp.name,fail_allocation=failure)
+            kernel=N.Kernel(path);r=kernel.certify(T.grid(4),CONTEXT)
+            RESULTS[f'allocation_failure_{failure}']={'build':identity,**r}
+            self.assertEqual(r['status'],'REFUSED')
+            self.assertEqual(r['native_code'],11)
+            self.assertEqual(r['native_allocation_attempts'],failure)
+            self.assertEqual(r['native_scratch_allocations'],failure-1)
+            self.assertEqual(r['native_scratch_releases'],failure-1)
+            self.assertEqual(r['native_scratch_live_after_return'],0)
+            if failure==2:self.assertEqual(r['index_visits']['forest_selection_reduction'],16)
+            else:self.assertGreaterEqual(r['index_visits']['root_paths'],16)
+
     def test_bindings_and_bad_input(self):
         a=T.grid(4);first=self.kernel.certify(a,CONTEXT)
         a.data[0]+=1.;second=self.kernel.certify(a,CONTEXT)

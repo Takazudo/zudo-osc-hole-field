@@ -1,0 +1,166 @@
+{
+  "synthetic_only": true,
+  "lifetime_checks": "all raw returns: zero live payload and matched releases; successful calls: 5 allocations, selection 8N, path/peak 13N",
+  "build": {
+    "sources": {
+      "native_forest.cpp": "07ece3a05b04515902f030fc817c96b3ff84c103eb1f540f794a257970c3a887",
+      "native_exact.cpp": "9d210ba9b29a2c463b814cd9ed3f50f4a45989ad27fb076d3d43db7f01a0aff3"
+    },
+    "binary_sha256": "7175a98d7d947f7eef3b1d2b882289f03db5d8a7391badd48210a8798d051f44",
+    "compiler": "c++ (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
+    "flags": [
+      "-std=c++20",
+      "-O2",
+      "-fno-fast-math",
+      "-frounding-math",
+      "-fPIC",
+      "-shared",
+      "-Wall",
+      "-Wextra",
+      "-Werror"
+    ]
+  },
+  "structural": {
+    "seed": 285,
+    "forced_nonroot_reroot_cases": [
+      {
+        "order": 5,
+        "root": 3,
+        "exact_rmax": "81/20",
+        "bound": 20.250000000000036,
+        "exact_inverse_norm": 6.530035335689046
+      },
+      {
+        "order": 5,
+        "root": 3,
+        "exact_rmax": "81/20",
+        "bound": 20.250000000000036,
+        "exact_inverse_norm": 6.335879439902472
+      },
+      {
+        "order": 8,
+        "root": 7,
+        "exact_rmax": "1003/60",
+        "bound": 133.7333338538441,
+        "exact_inverse_norm": 35.04628790543399
+      }
+    ],
+    "random_cases": 100,
+    "total_exact_tree_energy_and_inverse_checks": 103,
+    "status": "PASS",
+    "single_vertex_control": "PASS"
+  },
+  "coupled": {
+    "exact_full_operator_and_corner_checks": 51,
+    "cases": [
+      {
+        "case": "strong",
+        "bound": 39.13668639053456,
+        "exact_original_norm": 12.524074074074099
+      },
+      {
+        "case": "weak",
+        "bound": 6442503585.566832,
+        "exact_original_norm": 6442454022.525552
+      },
+      {
+        "case": "nonsymmetric",
+        "bound": 38.591231845079946,
+        "exact_original_norm": 11.190740740740761
+      }
+    ],
+    "status": "PASS"
+  },
+  "shared_mapping": {
+    "shared_terminal": 1,
+    "unmapped_terminal": 0,
+    "exact_inverse_norm": 1.0787585516435843,
+    "bound": 93.0000000000001,
+    "status": "PASS"
+  },
+  "malformed": {
+    "raw_refusals": [
+      "order129",
+      "nnz_overcap",
+      "terminals_mismatch",
+      "null_indptr",
+      "zero_boards",
+      "one_sided",
+      "singular",
+      "disconnected",
+      "indefinite",
+      "reversed_interval",
+      "nonfinite_interval",
+      "nonfinite_midpoint"
+    ],
+    "status": "PASS"
+  },
+  "metadata_boundary": {
+    "before_native_refusals": [
+      "short_indptr",
+      "short_indices",
+      "short_data",
+      "int64_indices",
+      "noncontiguous_data",
+      "extended_interval_no_silent_conversion"
+    ],
+    "native_owns_nonfinite_coefficient_refusal": true,
+    "status": "PASS"
+  },
+  "binding": {
+    "persistent_mutation_refusals": [
+      "matrix",
+      "context",
+      "live_interval_replacement"
+    ],
+    "status": "PASS"
+  },
+  "allocation_failures": [
+    {
+      "failure_position": 1,
+      "code": 11,
+      "completed": 0,
+      "released": 0,
+      "live": 0,
+      "peak": 0
+    },
+    {
+      "failure_position": 2,
+      "code": 11,
+      "completed": 1,
+      "released": 1,
+      "live": 0,
+      "peak": 64
+    },
+    {
+      "failure_position": 3,
+      "code": 11,
+      "completed": 2,
+      "released": 2,
+      "live": 0,
+      "peak": 128
+    },
+    {
+      "failure_position": 4,
+      "code": 11,
+      "completed": 3,
+      "released": 3,
+      "live": 0,
+      "peak": 128
+    },
+    {
+      "failure_position": 5,
+      "code": 11,
+      "completed": 4,
+      "released": 4,
+      "live": 0,
+      "peak": 144
+    }
+  ],
+  "sha256": {
+    "independent-native-forest-packed-oracle.py": "65654875a95950710b1efb655ff7a101e6d55e51cbdec6844f20cf52a70894fa",
+    "fixture/native_forest.cpp": "07ece3a05b04515902f030fc817c96b3ff84c103eb1f540f794a257970c3a887",
+    "fixture/native_forest.py": "743da2678795e817a224924941a7c0195b4d143dd946daeeab7a4a7a23fef79e",
+    "independent-forest-oracle.py": "e0212c62235cfae584451459f1e9a8733a18c1d447f9629279656ffb3a0424b9"
+  }
+}

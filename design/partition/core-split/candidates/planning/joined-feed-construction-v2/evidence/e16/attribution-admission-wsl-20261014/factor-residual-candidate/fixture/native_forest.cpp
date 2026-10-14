@@ -1,6 +1,6 @@
 // Synthetic-only virtual joined forest. Borrowed buffers; no original-data IO.
 #include "native_exact.cpp"
-#include <array>
+#include <memory>
 extern "C" {
 struct E16Board {
     uint32_t n, nnz, terminals;
@@ -12,15 +12,37 @@ struct E16ForestResult {
     uint32_t root, edges;
     uint64_t index_visits[6], coefficient_reads[6], row_visits;
     E16Stats phases[6];
+    uint64_t scratch_live_bytes, scratch_peak_bytes, allocation_attempts, scratch_allocations, scratch_releases;
+    uint64_t selection_scratch_bytes, path_scratch_bytes;
 };
 }
 namespace {
-// All fixed scratch remains charged for the entire invocation, including phases
-// where portions are no longer used. No fictitious release/25n byte claim.
-struct ForestScratch {
-    uint32_t dsu[128], size[128], stack[128];
-    double path[128];
-    uint8_t state[128];
+// Each owner releases the actual allocation before lowering its live counter.
+// Payload counts exclude allocator headers and compiler exact-arithmetic frames.
+// The same order128 synthetic gate remains; this is not a production-size port.
+template<class T> struct OwnedArray {
+    std::unique_ptr<T[]> data;
+    E16ForestResult& result;uint64_t bytes=0;
+    OwnedArray(uint32_t n,E16ForestResult& r,unsigned phase):result(r){
+        require(n>0 && n<=128 && phase<6,22);
+        require(result.index_visits[phase]+n<=1000000,20);
+        ++result.allocation_attempts;
+#ifdef E16_FIXTURE_FAIL_ALLOCATION
+        static_assert(E16_FIXTURE_FAIL_ALLOCATION>=1 && E16_FIXTURE_FAIL_ALLOCATION<=5);
+        if(result.allocation_attempts==E16_FIXTURE_FAIL_ALLOCATION)throw std::bad_alloc();
+#endif
+        data=std::make_unique<T[]>(n);bytes=uint64_t(n)*sizeof(T);
+        // Charge each completed zero initialization immediately, including work
+        // retained when a later constructor throws. No deferred batch discount.
+        result.index_visits[phase]+=n;
+        ++result.scratch_allocations;result.scratch_live_bytes+=bytes;
+        result.scratch_peak_bytes=std::max(result.scratch_peak_bytes,result.scratch_live_bytes);
+    }
+    OwnedArray(const OwnedArray&)=delete;
+    OwnedArray& operator=(const OwnedArray&)=delete;
+    T& operator[](uint32_t i){return data[i];}
+    void release(){if(data){data.reset();result.scratch_live_bytes-=bytes;bytes=0;++result.scratch_releases;}}
+    ~OwnedArray(){release();}
 };
 struct Scope {
     Stats& s;
@@ -105,8 +127,8 @@ double upper(const D& a,Stats& s){
 }
 void forest(View& v,uint32_t* parent,double* edge){
     v.validate();const uint32_t n=v.n;auto& r=v.result;
-    ForestScratch scratch{};v.indices(5*128);
-    auto& dsu=scratch.dsu;auto& size=scratch.size;
+    v.phase=2;OwnedArray<uint32_t> dsu(n,r,v.phase),size(n,r,v.phase);
+    r.selection_scratch_bytes=r.scratch_live_bytes;
     for(uint32_t i=0;i<n;++i){parent[i]=dsu[i]=i;edge[i]=0.;size[i]=1;v.indices(4);}
     auto find=[&](uint32_t x){uint32_t root=x,steps=0;
         while(true){v.indices();uint32_t p=dsu[root];if(p==root)break;root=p;require(++steps<=n,25);}
@@ -134,7 +156,9 @@ void forest(View& v,uint32_t* parent,double* edge){
     }
     require(r.root<n && r.edges==n-1,26);v.phase=3;auto& s=r.phases[3];
     {Scope scope(s);r.ground=positive_floor(best,s);}reroot(r.root);
-    auto& path=scratch.path;auto& state=scratch.state;auto& stack=scratch.stack;
+    dsu.release();size.release();require(r.scratch_live_bytes==0,30);
+    OwnedArray<double> path(n,r,v.phase);OwnedArray<uint8_t> state(n,r,v.phase);OwnedArray<uint32_t> stack(n,r,v.phase);
+    r.path_scratch_bytes=r.scratch_live_bytes;
     {Scope scope(s);path[r.root]=divup(1.,r.ground,s);}state[r.root]=2;v.indices(2);
     for(uint32_t start=0;start<n;++start){v.indices();if(state[start]==2)continue;uint32_t cur=start,depth=0;
         while(true){v.indices();if(state[cur]==2)break;v.indices();require(state[cur]==0 && depth<n,25);
@@ -154,7 +178,7 @@ void forest(View& v,uint32_t* parent,double* edge){
 }
 extern "C" {
 uint32_t e16_forest_result_size(){return sizeof(E16ForestResult);}
-uint32_t e16_forest_scratch_size(){return sizeof(ForestScratch);}
+uint32_t e16_forest_scratch_owner_size(){return sizeof(OwnedArray<double>);}
 int e16_forest(uint32_t count,const E16Board* boards,uint32_t terminals,const double* midpoint,
                const double* lower,const double* upper_end,
                uint32_t* parent,double* edge,E16ForestResult* result){
