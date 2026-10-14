@@ -13,6 +13,7 @@ import types
 import unittest
 from unittest.mock import patch
 
+import attribution_admission as A
 import attribution_host as H
 import attribution_supervisor as S
 
@@ -266,7 +267,7 @@ class AcceptedResultTests(unittest.TestCase):
         self.temp=tempfile.TemporaryDirectory(prefix='e16-host-fixture-')
         self.root=Path(self.temp.name);self.out=self.root/'output';self.out.mkdir()
         self.request=self.root/'request';self.authority=self.root/'authority';self.reservation=self.root/'reservation'
-        self.data={'schema':'e16-attribution-request-v1','run_id':'a'*32,'output':str(self.out),
+        self.data={'authorization_policy':dict(A.AUTHORIZATION_POLICY),'schema':'e16-attribution-request-v1','run_id':'a'*32,'output':str(self.out),
                    'request_kind':'resource-qualification','operation':'e16-selected-attribution-v1',
                    'limits':{'units':1},'guard_sha256':'b'*64,'trust_sha256':'c'*64,'checkout':str(self.root)}
         self.request.write_bytes(S.encoded(self.data));self.digest=hashlib.sha256(S.encoded(self.data)).hexdigest()
@@ -291,10 +292,10 @@ class AcceptedResultTests(unittest.TestCase):
         self.row={'label':self.receipt['guard_label'],'cwd':str(self.root),'verdict':'PASS','exit':0,
                   'secs':3,'ts':1003,'min_mem_mb':2200}
         self.ledger.write_bytes(S.encoded(self.row))
-        grant={'request_sha256':self.digest,'run_id':'a'*32,'request_kind':'resource-qualification',
+        grant={'authorization_policy':dict(A.AUTHORIZATION_POLICY),'request_sha256':self.digest,'run_id':'a'*32,'request_kind':'resource-qualification',
                'operation':self.data['operation'],'limits':self.data['limits'],'approved':True,'exclusive':True,
                'issued_unix':999,'expires_unix':2000}
-        self.admission=types.SimpleNamespace(verify_signature=lambda *args:grant,
+        self.admission=types.SimpleNamespace(verify_policy=A.verify_policy,verify_signature=lambda *args:grant,
             state_directory=lambda:self.root,read_json=lambda p,*a:json.loads(Path(p).read_text()),sha=lambda p:hashlib.sha256(Path(p).read_bytes()).hexdigest())
     def tearDown(self):self.temp.cleanup()
     def accepted(self):

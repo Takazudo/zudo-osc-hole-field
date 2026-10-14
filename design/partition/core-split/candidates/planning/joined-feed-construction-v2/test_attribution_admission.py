@@ -28,7 +28,7 @@ class Admission(unittest.TestCase):
                       'execution_budget':{'full_baseline_used':2,'full_baseline_limit':3,'production_diagnostic_used':8,'production_diagnostic_limit':24},
                       'runs':[{'attempt':5,'state':'terminal numerical PASS'}]}
         self.ledger.write_bytes(A.canon(self.initial))
-        self.request={'schema':'e16-attribution-request-v1','operation':A.OPERATION,'request_kind':'resource-qualification',
+        self.request={'authorization_policy':copy.deepcopy(A.AUTHORIZATION_POLICY),'schema':'e16-attribution-request-v1','operation':A.OPERATION,'request_kind':'resource-qualification',
                       'run_id':'b'*32,'attempt':1,'source_sha':'c'*40,'limits':copy.deepcopy(A.LIMITS),
                       'host':A.host_identity(),'trust_sha256':A.sha(self.trust),'qualification':None,
                       'ledger':{'path':str(self.ledger),'sha256':A.sha(self.ledger)},'output':str(self.root/'output')}
@@ -49,7 +49,7 @@ class Admission(unittest.TestCase):
                        check=True,stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL)
     def grants(self):
         prefix='e16-attribution' if self.request['request_kind']=='production-attribution' else 'e16-attribution-qualification'
-        common={'request_sha256':self.digest,'run_id':self.request['run_id'],'request_kind':self.request['request_kind'],
+        common={'authorization_policy':copy.deepcopy(A.AUTHORIZATION_POLICY),'request_sha256':self.digest,'run_id':self.request['run_id'],'request_kind':self.request['request_kind'],
                 'operation':A.OPERATION,'limits':copy.deepcopy(A.LIMITS),'issued_unix':time.time()-1,'expires_unix':time.time()+300}
         self.auth=common|{'schema':prefix+'-authorization-v1','approved':True}
         self.res=common|{'schema':prefix+'-reservation-v1','exclusive':True,'host':A.host_identity(),
@@ -60,6 +60,53 @@ class Admission(unittest.TestCase):
             result=A.verify_for_host(self.request_path,self.digest,self.authority,self.reservation)
         metadata.assert_called_once()
         return result
+
+    def test_policy_binding_cannot_be_missing_changed_or_external(self):
+        for policy in (None, A.AUTHORIZATION_POLICY|{'owner':'someone else'},
+                       A.AUTHORIZATION_POLICY|{'signature_provenance':'independent-external'}):
+            self.sign(self.authority,self.auth|{'authorization_policy':policy},
+                      'e16-attribution-qualification-authorization-v1')
+            with patch.object(A,'validate_metadata') as metadata,self.assertRaisesRegex(ValueError,'delegation'):
+                A.verify_for_host(self.request_path,self.digest,self.authority,self.reservation)
+            metadata.assert_not_called()
+        self.grants()
+        self.request.pop('authorization_policy');self.save_request();self.grants()
+        with self.assertRaisesRegex(ValueError,'delegation'):self.verify()
+
+    def test_owner_decision_drift_refused(self):
+        changed=self.root/'decision';changed.write_text('changed authorization')
+        with patch.object(A,'OWNER_DECISION',changed),self.assertRaisesRegex(ValueError,'owner decision'):
+            self.verify()
+
+    def test_resource_attestation_requires_actual_separate_bound_review(self):
+        receipt=self.root/'receipt';receipt.write_text('complete tiny fixture evidence')
+        evidence=[{'path':str(receipt),'sha256':A.sha(receipt)}]
+        operation='a'*64
+        review={'schema':'e16-technical-resource-review-v1','reviewer_identity':'fixture-reviewer',
+                'author_identity':'wsl-coordinator','operation_sha256':operation,'verdict':'PASS','evidence':evidence}
+        review_path=self.root/'review.json';report_path=self.root/'resource.json'
+        report={'schema':'e16-attribution-resource-v1','status':'RESOURCE_QUALIFIED',
+                'authorization_policy':dict(A.AUTHORIZATION_POLICY),'operation_sha256':operation,
+                'limits':A.LIMITS,'combined_operation':True,'evidence_kind':'admitted_combined_operation',
+                'expires_unix':time.time()+300,'measured':{'elapsed_seconds':1,'memory_peak_bytes':100,
+                'output_peak_bytes':100,'swap_bytes':0,'max_concurrency':1,'attempts':1},
+                'production_admission_allowance_seconds_upper':10,'cleanup_complete':True,
+                'all_required_phases':True,'evidence':evidence}
+        def bind(r):
+            review_path.write_bytes(A.canon(r))
+            report['technical_review']={'path':str(review_path),'sha256':A.sha(review_path),
+                                        'reviewer_identity':r['reviewer_identity']}
+            self.sign(report_path,report,'e16-attribution-resource-v1')
+            self.request['qualification']={'path':str(report_path),'sha256':A.sha(report_path)}
+        bind(review)
+        with patch.object(A,'operation_digest',return_value=operation):
+            A.verify_qualification(self.request)
+            for delta in ({'reviewer_identity':'wsl-coordinator'},{'verdict':'FAIL'},
+                          {'operation_sha256':'b'*64},{'evidence':[]}):
+                bind(review|delta)
+                with self.assertRaisesRegex(ValueError,'technical review'):A.verify_qualification(self.request)
+            bind(review);review_path.write_text('{}')
+            with self.assertRaisesRegex(ValueError,'technical review bytes'):A.verify_qualification(self.request)
 
     def test_actual_detached_signatures_with_distinct_qualification_authority(self):
         result=self.verify();self.assertEqual(result['request_kind'],'resource-qualification')
@@ -167,7 +214,7 @@ class Admission(unittest.TestCase):
         with self.assertRaisesRegex(ValueError,'ambiguous'):P.linked_paths(output,{one,two})
 
     def test_request_description_is_not_approval_or_production_request(self):
-        op={'operation':A.OPERATION,'limits':A.LIMITS,'environment_policy':A.ENVIRONMENT_POLICY,'source_bindings':{},'source_tree':{},'toolchain':{},'packet':{},'host_limits':{},'guard_sha256':'0'*64}
+        op={'authorization_policy':A.AUTHORIZATION_POLICY,'operation':A.OPERATION,'limits':A.LIMITS,'environment_policy':A.ENVIRONMENT_POLICY,'source_bindings':{},'source_tree':{},'toolchain':{},'packet':{},'host_limits':{},'guard_sha256':'0'*64}
         first=A.operation_digest(op);changed=op|{'run_id':'a'*32,'request_kind':'resource-qualification'}
         self.assertEqual(first,A.operation_digest(changed))
         self.assertNotEqual(first,A.operation_digest(op|{'limits':A.LIMITS|{'seconds':181}}))

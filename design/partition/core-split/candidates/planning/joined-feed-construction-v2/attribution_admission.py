@@ -1,8 +1,9 @@
 """Exact E16 request authentication, immutable bindings and one-unit accounting.
 
-No approval/signing command exists here. Production trusts only an independently
-provisioned account signer file and detached OpenSSH signatures in three separate
-namespaces. Tests use throwaway keys under temporary fixture roots; those keys
+No approval/signing command exists here. Admission verifies owner-delegated
+E16-only local signatures against a fixed account trust file in separate
+role namespaces; this is not independent external approval. Tests use throwaway
+keys under temporary fixture roots; those keys
 never enter the fixed production trust store. Resource qualification is distinct
 from exact-request authorization and a current exclusive reservation.
 """
@@ -27,6 +28,21 @@ LIMITS={'diagnostics':1,'units':1,'rhs':1,'attempts':1,'seconds':180,
 INVENTORY=HERE/'evidence/e16/attribution-reconstruction-wsl-20261014/resource-inventory.json'
 INVENTORY_SHA='8cfcf5fac5bd749dcd58313b4df8eb1a9080723a5c5d34d80c548098c2d60b18'
 OPERATION='e16-selected-attribution-v1'
+OWNER_DECISION=HERE/'evidence/e16/attribution-admission-wsl-20261014/owner-decision-20261014.txt'
+AUTHORIZATION_POLICY={
+    'schema':'e16-local-delegation-v1','owner':'Takazudo','delegate':'wsl-coordinator',
+    'signature_provenance':'single-owner-locally-delegated',
+    'decision_sha256':'dd57d82b5c062613fe139ae68c2cf12c303f3c3df30bbe5c276c968f8dad25ec',
+    'operation':OPERATION,'request_kinds':['resource-qualification','production-attribution'],
+    'additional_full_baselines':0,'independent_technical_review_required':True,
+    'retroactive':False}
+
+
+def verify_policy(document):
+    need(canon(document.get('authorization_policy'))==canon(AUTHORIZATION_POLICY),'owner delegation binding differs')
+    need(hashlib.sha256(read_bytes(OWNER_DECISION,65536)).hexdigest()==AUTHORIZATION_POLICY['decision_sha256'],
+         'owner decision changed')
+
 SOURCE_NAMES=('attribution_containment.py','attribution_admission.py','attribution_host.py','attribution_worker.py',
  'attribution_request.py','attribution_supervisor.py','attribution_resolution.py',
  'attribution_executor.py','attribution_transport.py','attribution_uniqueness.py',
@@ -175,7 +191,7 @@ def independent_inventory():
 def operation_digest(request):
     # Qualification binds exact code/toolchain/data/algorithm/caps. Fresh execution
     # identity/output and its own qualification/signature cannot be circular inputs.
-    keys=('operation','limits','environment_policy','source_bindings','source_tree','toolchain','packet','host_limits','guard_sha256')
+    keys=('authorization_policy','operation','limits','environment_policy','source_bindings','source_tree','toolchain','packet','host_limits','guard_sha256')
     return hashlib.sha256(canon({k:request[k] for k in keys})).hexdigest()
 
 
@@ -193,15 +209,17 @@ def verify_signature(path,namespace,identity,trust_sha,deadline=None):
                            '-n',namespace,'-s',str(signature)],input=raw,
                           stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL,
                           timeout=remaining(deadline),check=False)
-    need(result.returncode==0,'missing/invalid independently signed '+namespace)
+    need(result.returncode==0,'missing/invalid delegated signed '+namespace)
     need(read_bytes(path,65536)==raw,'signed evidence changed during verification')
     return parse_json(raw)
 
 
 def verify_qualification(request,deadline=None,*,metadata_only=False):
+    verify_policy(request)
     binding=request['qualification']
     need(hashlib.sha256(read_bytes(binding['path'],65536)).hexdigest()==binding['sha256'],'qualification bytes changed')
     q=verify_signature(binding['path'],'e16-attribution-resource-v1','e16-resource-reviewer',request['trust_sha256'],deadline)
+    verify_policy(q)
     need(q['schema']=='e16-attribution-resource-v1' and q['status']=='RESOURCE_QUALIFIED', 'resource qualification absent')
     need(q['operation_sha256']==operation_digest(request) and q['limits']==LIMITS,'qualification scope differs')
     need(q['combined_operation'] is True and q['evidence_kind']=='admitted_combined_operation', 'individual/tiny timings are not qualification')
@@ -216,8 +234,19 @@ def verify_qualification(request,deadline=None,*,metadata_only=False):
     need(q['cleanup_complete'] is True and q['all_required_phases'] is True,'incomplete qualification')
     # Signed verdict is tied to retained, independently reviewable receipts too.
     need(isinstance(q['evidence'],list) and 0<len(q['evidence'])<=16,'qualification receipts absent/oversized')
+    review=q['technical_review']
+    raw=read_bytes(review['path'],65536)
+    need(hashlib.sha256(raw).hexdigest()==review['sha256'],'technical review bytes changed')
+    r=parse_json(raw)
+    identity=r.get('reviewer_identity')
+    need(isinstance(identity,str) and 0<len(identity)<=200 and
+         identity==review['reviewer_identity'] and identity!=AUTHORIZATION_POLICY['delegate'] and
+         r.get('author_identity')==AUTHORIZATION_POLICY['delegate'],'technical review identity differs')
+    need(r.get('schema')=='e16-technical-resource-review-v1' and r.get('verdict')=='PASS' and
+         r.get('operation_sha256')==q['operation_sha256'] and r.get('evidence')==q['evidence'],
+         'technical review scope/verdict differs')
     if metadata_only:return q
-    total=0
+    total=len(raw)
     for binding in q['evidence']:
         total+=Path(binding['path']).stat().st_size
         need(total<=1024**2,'qualification compact receipt size exceeded')
@@ -233,7 +262,7 @@ def validate_identity(request,digest):
 
 def validate_structure(request,digest,deadline=None):
     """Bounded pre-claim checks; no selected artifact or numerical import."""
-    check_time(deadline);validate_identity(request,digest)
+    check_time(deadline);validate_identity(request,digest);verify_policy(request)
     check_environment(os.environ)
     need(request['schema']=='e16-attribution-request-v1' and request['operation']==OPERATION and canon(request['limits'])==canon(LIMITS),'request operation/caps differ')
     need(request['request_kind'] in ('production-attribution','resource-qualification'),'invalid request kind')
@@ -252,6 +281,7 @@ def validate_structure(request,digest,deadline=None):
 
 def validate_metadata(request,digest,deadline=None,*,revalidate_inputs=True):
     check_time(deadline)
+    verify_policy(request)
     need(hashlib.sha256(canon(request)).hexdigest()==digest,'stale request digest')
     check_environment(os.environ)
     need(request['environment_policy']==ENVIRONMENT_POLICY,'environment policy changed')
@@ -317,12 +347,14 @@ def verify_for_host(request_path,digest,authority_path,reservation_path,*,deadli
     r=read_json(request_path,8*1024**2)
     need(hashlib.sha256(canon(r)).hexdigest()==digest,'stale request digest')
     validate_identity(r,digest)
+    verify_policy(r)
     need(r.get('request_kind') in ('production-attribution','resource-qualification'),'invalid request kind')
     prefix='e16-attribution' if r['request_kind']=='production-attribution' else 'e16-attribution-qualification'
     authority=verify_signature(authority_path,prefix+'-authorization-v1','e16-operator',r['trust_sha256'],deadline)
     reservation=verify_signature(reservation_path,prefix+'-reservation-v1','e16-controller',r['trust_sha256'],deadline)
     now=time.time()
     for grant,kind in ((authority,'authorization'),(reservation,'reservation')):
+        verify_policy(grant)
         need(grant['schema']==prefix+'-'+kind+'-v1' and grant['request_kind']==r['request_kind'] and grant['request_sha256']==digest and
              grant['run_id']==r['run_id'] and canon(grant['limits'])==canon(LIMITS) and grant['operation']==OPERATION,'inapplicable '+kind)
         need(all(type(grant[k]) in (int,float) and math.isfinite(grant[k]) for k in ('issued_unix','expires_unix')),'invalid grant time')
@@ -357,7 +389,7 @@ def claim(request,digest,deadline=None):
     replacement is atomic. A crash between journal and ledger leaves a consumed
     identity and blocks execution until external reconciliation, never retry.
     """
-    check_time(deadline);validate_identity(request,digest)
+    check_time(deadline);validate_identity(request,digest);verify_policy(request)
     state=state_directory();state.mkdir(parents=True,exist_ok=True)
     old=read_bytes(ledger_path());before=hashlib.sha256(old).hexdigest()
     need(before==request['ledger']['sha256'],'campaign changed before consumption')

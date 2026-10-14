@@ -1,7 +1,7 @@
 """E16 fixed Linux host adapter: source-owned provisioning, retention and cleanup.
 
 No import or source test provisions a scope, namespace, mount, authority or key.
-The only production entry verifies externally signed exact authority inside the
+The only production entry verifies owner-delegated signed exact authority inside the
 unchanged shared guard. Host permission/resource qualification remains separate.
 """
 import argparse
@@ -602,6 +602,7 @@ def accepted_result(request_path,digest):
     need(receipt.get('cleanup_complete') is True and all(receipt.get(k) is False for k in
          ('electrical_acceptance','whole_board_acceptance','adopted')),'host acceptance/cleanup flags changed')
     import attribution_admission as admission
+    admission.verify_policy(request)
     prefix='e16-attribution' if request['request_kind']=='production-attribution' else 'e16-attribution-qualification'
     need(receipt['guard_cwd']==request['checkout'],'guard checkout binding changed')
     need(receipt['guard_label']==guard_label(request_path,digest,receipt['authority_path'],
@@ -609,6 +610,7 @@ def accepted_result(request_path,digest):
     grants=[]
     for key,kind,identity in (('authority_path','authorization','e16-operator'),('reservation_path','reservation','e16-controller')):
         grant=admission.verify_signature(Path(receipt[key]),prefix+'-'+kind+'-v1',identity,request['trust_sha256'])
+        admission.verify_policy(grant)
         need(grant['request_sha256']==digest and grant['run_id']==request['run_id'] and
              grant['request_kind']==request['request_kind'] and grant['operation']==request['operation'] and
              S.encoded(grant['limits'])==S.encoded(request['limits']),'guard grant binding differs')

@@ -25,7 +25,7 @@ class EnvelopeTests(unittest.TestCase):
         self.assertEqual(H.S.WORKER_MEMORY,1216*1024**2)
 
     def test_description_digest_binds_containment_choice(self):
-        r={key:{} for key in ('operation','limits','environment_policy','source_bindings','source_tree','toolchain','packet','host_limits','guard_sha256')}
+        r={key:{} for key in ('authorization_policy','operation','limits','environment_policy','source_bindings','source_tree','toolchain','packet','host_limits','guard_sha256')}
         r['host_limits']=H.HOST_LIMITS.copy();before=A.operation_digest(r)
         r['host_limits']['outside_swap_contract']='host-SwapTotal-zero'
         self.assertNotEqual(before,A.operation_digest(r))

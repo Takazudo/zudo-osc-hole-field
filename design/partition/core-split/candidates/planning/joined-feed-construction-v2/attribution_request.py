@@ -1,8 +1,8 @@
 """Source-only operation description and fail-closed production request sealing.
 
 Description is not a production request. Sealing requires a separately signed
-combined-resource qualification, a clean immutable checkout and an externally
-provisioned trust store. This module never signs, approves, reserves or executes.
+combined-resource qualification, a clean immutable checkout and the owner-delegated
+E16-only trust store. This module never signs, approves, reserves or executes.
 """
 import argparse
 import hashlib
@@ -117,8 +117,9 @@ def packet_from_inventory(sources):
 
 def describe():
     from attribution_host import HOST_LIMITS
+    A.verify_policy({'authorization_policy':A.AUTHORIZATION_POLICY})
     sources=A.source_bindings()
-    operation={'operation':A.OPERATION,'limits':A.LIMITS,'environment_policy':A.ENVIRONMENT_POLICY,'source_bindings':sources,
+    operation={'authorization_policy':dict(A.AUTHORIZATION_POLICY),'operation':A.OPERATION,'limits':A.LIMITS,'environment_policy':A.ENVIRONMENT_POLICY,'source_bindings':sources,
                'source_tree':file_manifest(source_paths()),'toolchain':file_manifest(toolchain_paths()),
                'packet':packet_from_inventory(sources),'host_limits':HOST_LIMITS,
                'guard_sha256':A.sha(A.account_home()/'.codex/scripts/heavy-guard.sh')}
@@ -152,7 +153,7 @@ def seal(description,qualification_path,output,*,qualification_only=False):
     return {'qualification_request_sha256':digest if qualification_only else None,
             'production_request_sha256':None if qualification_only else digest,'request_path':str(Path(output).resolve()),
             'admission_status':'NOT_ADMITTED','execution_status':'NOT_RUN',
-            'next_action':'Independent operator authorization and controller reservation signatures for this exact digest.'}
+            'next_action':'Locally delegated operator authorization and controller reservation signatures for this exact digest.'}
 
 
 def main(argv=None):

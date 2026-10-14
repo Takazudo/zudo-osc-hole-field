@@ -1,3 +1,43 @@
+# Current owner-delegated signing policy (2026-10-14)
+
+Takazudo's [explicit owner decision](../owner-decision-20261014.txt) supersedes the
+external-signer and no-local-provisioning requirements in the historical procedure
+below. The local WSL coordinator is the authorized operator/controller delegate.
+Dedicated E16-development-only local signing material and the fixed project trust
+file may now be provisioned under existing user permissions. Never use unrelated
+keys. All three role principals/namespaces remain distinct, but may use the same
+dedicated delegated key; these signatures are not independent external approval.
+Private material stays outside Git, evidence, logs and artifacts with restrictive
+permissions. Existing keys/trust must be reconciled, never overwritten.
+
+Every new description/request, authorization/reservation grant and signed resource
+report carries the exact `authorization_policy` from `attribution_admission.py`.
+It binds owner Takazudo, delegate wsl-coordinator, local signature provenance, the
+verbatim decision SHA, this selected operation, qualification/production request
+kinds, zero additional full baselines, required technical review and no retroactivity.
+The source verifies the decision bytes and exact policy. Historical requests do
+not acquire this authority. No personally reviewed future digest is claimed.
+
+A resource report additionally binds `technical_review` with `path`, `sha256` and
+`reviewer_identity`. Its bounded retained JSON has schema
+`e16-technical-resource-review-v1`, the actual separate reviewer identity,
+`author_identity: wsl-coordinator`, `verdict: PASS`, exact `operation_sha256` and
+exactly the report's `evidence` list. The verifier checks its bytes, identity,
+verdict and scope. This records real review; string inequality or a local signature
+alone does not prove independence. Do not create a passing report after failed or
+incomplete qualification. The review file counts in the compact evidence limit.
+
+The compiler, fixed trust pathname/mode, actual OpenSSH commands, role namespaces,
+exact-request/live-reservation gates, resource limits and campaign accounting below
+remain applicable. The current authority is this owner delegation, not the old
+external-owner instructions or fixture keys. Finish source changes and review,
+commit, then compile/sign fresh exact packets. Qualification and production remain
+separate; no further owner message is needed for eligible in-scope digests.
+
+---
+
+## Historical external-owner procedure (superseded ownership only)
+
 # Missing independent-owner signing setup
 
 No key, approval, reservation or trust store was created in this task. The

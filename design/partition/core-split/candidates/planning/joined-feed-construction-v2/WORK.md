@@ -640,3 +640,62 @@ findings. Code enforces separate principals/namespaces/signatures, not distinct
 humans or key fingerprints; that fact does not authorize role consolidation.
 The reviewer verified the operating scope, pending policy decision and recovery
 instructions, and supplied no signing authority. No execution packet was created.
+
+
+## Owner decision: single-owner local delegation — 2026-10-14
+
+**Signing ownership resolved.** Takazudo expressly selects single-owner, locally
+delegated E16 development authorization. The [verbatim decision](evidence/e16/attribution-admission-wsl-20261014/owner-decision-20261014.txt)
+is bound by SHA-256 `dd57d82b5c062613fe139ae68c2cf12c303f3c3df30bbe5c276c968f8dad25ec`.
+It supersedes the pending question and earlier bans on dedicated local signing
+setup, external human signers and personal per-digest approval. It does not apply
+retroactively. The WSL coordinator is the operator/controller delegate; real
+separate technical review remains required. A locally delegated resource signature
+attests that retained review; it is not independent external approval.
+
+Authorized: dedicated E16-only keys/trust under this user's permissions, exact
+request preparation/signing/verification, complete real-data qualification,
+evidence-backed corrections and bounded diagnostics, and selected numerical
+production attribution only after successful qualification and actual separate
+technical review. Access original retained inputs only through reviewed guarded
+verification/execution. No additional full baseline. Preserve all 180s/2GiB/
+zero-swap/64MiB caps, 1216MiB worker, original identities/scope/tolerances, complete
+accounting, single-use state, live exclusive locks/shared scheduling and cleanup.
+No host/privilege changes, merges/integration, canonical geometry/copper adoption,
+Stage D, hardware/deployment actions or acceptance claims.
+
+Private signing bytes must stay outside Git/reports/artifacts/logs with restrictive
+permissions; do not inspect unrelated credentials or overwrite existing key/trust
+ownership. Signature validation stays real. New requests and grants bind the
+exact owner-delegation policy; future digests are locally authorized by delegation,
+not personally reviewed by Takazudo. The updated [signing procedure](evidence/e16/attribution-admission-wsl-20261014/containment/signing.md)
+records the actual schema and separate-review requirement.
+
+Next increment: finish minimal policy/source tests and independent review, provision
+dedicated trust, commit the clean source, compile a fresh qualification packet,
+review/sign its exact grants and enter the existing guarded path. Follow actual
+terminal receipts, original ledger and cleanup. No packet is sealed while source
+is changing. A failure remains charged and requires diagnosis before a fresh
+eligible attempt. Do not ask again who owns authorization or request another plan.
+
+
+### Delegation implementation and setup checkpoint
+
+The minimal source change and dedicated local setup have separate technical
+[review PASS](evidence/e16/attribution-admission-wsl-20261014/delegation-review.md);
+95 focused tests and pre/post circuit checks PASS. The initial test run exposed
+one old operation-digest fixture missing the new policy field; its fixture was
+updated, and the complete focused selection passed. Numerical code/containment
+and original inputs remain unchanged. No baseline or diagnostic consumed yet.
+The actual [public trust identity and setup modes](evidence/e16/attribution-admission-wsl-20261014/delegation-setup.json)
+are retained; private material is outside Git/evidence. Signing-owner blocker is
+cleared; combined qualification and production admission remain unproved.
+
+Source freeze starts only after this commit. Prepare fresh absolute local packet
+paths under `~/.cache/zudo-e16-runs/`, run the existing compiler `describe` and
+`seal-qualification`, retain independent exact-packet review, and sign real grant
+JSONs containing the request's exact authorization_policy plus all existing
+request/kind/run/operation/limits/host/ledger/time bindings. Local grant issuance
+is delegated authority, not a personal owner digest review. Follow the async
+service through actual terminal evidence before another increment. Do not edit
+bound source while a packet is live.
