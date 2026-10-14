@@ -27,7 +27,7 @@ LIMITS={'diagnostics':1,'units':1,'rhs':1,'attempts':1,'seconds':180,
 INVENTORY=HERE/'evidence/e16/attribution-reconstruction-wsl-20261014/resource-inventory.json'
 INVENTORY_SHA='8cfcf5fac5bd749dcd58313b4df8eb1a9080723a5c5d34d80c548098c2d60b18'
 OPERATION='e16-selected-attribution-v1'
-SOURCE_NAMES=('attribution_admission.py','attribution_host.py','attribution_worker.py',
+SOURCE_NAMES=('attribution_containment.py','attribution_admission.py','attribution_host.py','attribution_worker.py',
  'attribution_request.py','attribution_supervisor.py','attribution_resolution.py',
  'attribution_executor.py','attribution_transport.py','attribution_uniqueness.py',
  'attribution_lifecycle.py','attribution_reconstruction.py','finite_adapter.py',

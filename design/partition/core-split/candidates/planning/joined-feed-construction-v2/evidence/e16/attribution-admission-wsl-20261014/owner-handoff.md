@@ -1,3 +1,5 @@
+> Historical checkpoint. The current [task-local containment continuation](containment/README.md) supersedes the host-swap-only path and adds real mechanism evidence. Original numerical and external-signature restrictions remain in force.
+
 # Independent-owner action for selected E16 qualification
 
 **Stop at the external boundary.** This source-only continuation did not admit

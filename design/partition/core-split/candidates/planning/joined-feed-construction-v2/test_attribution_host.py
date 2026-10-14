@@ -252,8 +252,8 @@ class HostBoundaryTests(unittest.TestCase):
             admission=types.SimpleNamespace(claim=lambda *args:(base/'claim',100),check_environment=lambda *a,**k:None)
             with patch.object(H,'UnitGuard',return_value=guard),patch.object(H,'_verify',return_value=r),\
                  patch.object(H.pwd,'getpwuid',return_value=types.SimpleNamespace(pw_dir=temp)),\
-                 patch.object(H.resource,'setrlimit'),patch.object(H,'prove_no_host_swap'),patch.object(H,'_fresh_scope'),patch.object(H,'_capture',side_effect=capture),\
-                 patch.object(H,'_scope_cleanup',side_effect=ValueError('fixture cleanup failure')),\
+                 patch.object(H.resource,'setrlimit'),patch.object(H,'prove_no_host_swap'),patch.object(H.C,'prove',return_value=base/'envelope'),patch.object(H.C,'new_active',return_value=base/'active'),patch.object(H,'_capture',side_effect=capture),\
+                 patch.object(H.C,'remove_tree',side_effect=ValueError('fixture cleanup failure')),\
                  patch.dict(sys.modules,{'attribution_admission':admission}),patch.dict(os.environ,{},clear=False):
                 code=H.guard_entry(request,'c'*64,base/'authority',base/'reservation')
             self.assertEqual(code,1)
@@ -295,10 +295,13 @@ class AcceptedResultTests(unittest.TestCase):
                'operation':self.data['operation'],'limits':self.data['limits'],'approved':True,'exclusive':True,
                'issued_unix':999,'expires_unix':2000}
         self.admission=types.SimpleNamespace(verify_signature=lambda *args:grant,
-            state_directory=lambda:self.root,read_json=lambda p:json.loads(Path(p).read_text()))
+            state_directory=lambda:self.root,read_json=lambda p,*a:json.loads(Path(p).read_text()),sha=lambda p:hashlib.sha256(Path(p).read_bytes()).hexdigest())
     def tearDown(self):self.temp.cleanup()
     def accepted(self):
-        with patch.dict(sys.modules,{'attribution_admission':self.admission}),             patch.object(H.pwd,'getpwuid',return_value=types.SimpleNamespace(pw_dir=str(self.root))):
+        # Existing host/journal tests isolate the separately tested envelope gate.
+        envelope={'terminal_unix':1004,'fixture_only':True}
+        path=self.root/('a'*32+'.envelope.json');path.write_text('{}')
+        with patch.object(H.C,'accepted',return_value=envelope),patch.object(H.C,'receipt_path',return_value=path),patch.dict(sys.modules,{'attribution_admission':self.admission}),             patch.object(H.pwd,'getpwuid',return_value=types.SimpleNamespace(pw_dir=str(self.root))):
             return H.accepted_result(self.request,self.digest)
     def test_two_durable_receipts_required(self):
         result=self.accepted()

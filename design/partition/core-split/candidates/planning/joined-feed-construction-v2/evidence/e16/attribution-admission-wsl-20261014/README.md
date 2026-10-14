@@ -1,3 +1,5 @@
+> Current continuation: [reviewed task-local containment and real host fixtures](containment/README.md), with [independent-owner signing setup](containment/signing.md). Historical host-swap-only findings below are superseded for the new exact containment contract; no numerical qualification or admission is implied.
+
 # E16 selected attribution: completed source admission boundary
 
 **SOURCE_COMPLETE / NOT_QUALIFIED / NOT_PREPARED / NOT_ADMITTED / NOT_RUN.** The missing authenticated host/worker implementation is now present and independently reviewed. This is the latest readiness override for the executor continuation; older checkpoint readiness describes historical source gaps and remains retained. No real selected attribution result exists.

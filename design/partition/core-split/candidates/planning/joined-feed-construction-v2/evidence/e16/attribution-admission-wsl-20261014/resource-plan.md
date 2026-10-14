@@ -1,3 +1,5 @@
+> Historical checkpoint. The current [task-local containment continuation](containment/README.md) supersedes the host-swap-only path and adds real mechanism evidence. Original numerical and external-signature restrictions remain in force.
+
 # Complete selected operation: resource and admission boundary
 
 Disposition: SOURCE_COMPLETE / NOT_QUALIFIED / NOT_PREPARED / NOT_ADMITTED / NOT_RUN. This continuation supersedes the missing-host-adapter statements in the earlier executor handoff, while preserving that handoff and every failed attempt. The source implementation exists; no production fit or authority is claimed. Production request digest remains null.

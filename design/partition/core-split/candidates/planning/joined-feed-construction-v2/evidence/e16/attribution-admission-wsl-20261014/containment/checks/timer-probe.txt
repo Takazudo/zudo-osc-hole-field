@@ -1,0 +1,6 @@
+{"command": ["/usr/bin/systemd-run", "--user", "--scope", "--quiet", "--collect", "--no-ask-password", "--expand-environment=no", "--unit=e16-timer-fixture-6085c9df5feb4c24bcbd9972051f8b48.scope", "-p", "Delegate=memory", "-p", "MemoryMax=201326592", "-p", "MemorySwapMax=0", "-p", "TasksMax=16", "-p", "RuntimeMaxSec=12s", "-p", "TimeoutStopSec=1s", "/usr/bin/python3", "-I", "-S", "-B", "/tmp/e16-containment-timer-probe.py", "e16-timer-fixture-6085c9df5feb4c24bcbd9972051f8b48.scope"]}
+{"inside_pid": 2101387, "cgroup": "/sys/fs/cgroup/user.slice/user-1000.slice/user@1000.service/app.slice/e16-timer-fixture-6085c9df5feb4c24bcbd9972051f8b48.scope", "memory.max": "201326592\n", "memory.swap.max": "0\n"}
+{"command": ["/usr/bin/systemctl", "--user", "set-property", "--runtime", "e16-timer-fixture-6085c9df5feb4c24bcbd9972051f8b48.scope", "RuntimeMaxSec=5s"], "exit": 1, "stdout": "", "stderr": "Failed to set unit properties on e16-timer-fixture-6085c9df5feb4c24bcbd9972051f8b48.scope: Cannot set property RuntimeMaxUSec, or unknown property.\n"}
+{"timer_readback": "RuntimeMaxUSec=12s\nActiveEnterTimestampMonotonic=637787992219\n", "stderr": "", "exit": 0}
+{"exit": 0, "unit": "e16-timer-fixture-6085c9df5feb4c24bcbd9972051f8b48.scope"}
+heavy-guard: verdict=PASS exit=0 secs=1 min_mem_mb=10421 reason=-

@@ -1,3 +1,5 @@
+> Historical checkpoint. The current [task-local containment continuation](containment/README.md) supersedes the host-swap-only path and adds real mechanism evidence. Original numerical and external-signature restrictions remain in force.
+
 # Independent admission and resource-boundary review
 
 Reviewer: `/root/resource_review`. **PASS for the reviewed source boundary and bounded validation; RESOURCE NOT_QUALIFIED; no production execution.** This review is independent for the main author's `attribution_admission.py`, `attribution_request.py`, `attribution_worker.py`, and `attribution_lifecycle.py`. I authored the delegated host/supervisor and transport fixes, so their tests below are author validation, not independent self-review. Their separate cross-review is by `/root/numerical_review` and the main author. The numerical reviewer inspected the final watchdog, zero-swap proof and tightened aggregate caps and reported no remaining source findings.

@@ -22,6 +22,7 @@ import time
 
 sys.path.insert(0,str(Path(__file__).resolve().parent))
 import attribution_supervisor as S
+import attribution_containment as C
 from numerical_unit_guard import UnitGuard
 
 HERE=Path(__file__).resolve().parent
@@ -33,7 +34,10 @@ HOST_LIMITS={'total_seconds':180,'total_memory_bytes':S.MEMORY_MAX,'active_scope
              'outer_bytes':S.OUTER_MEMORY,'launcher_bytes':S.LAUNCHER_MEMORY,
              'supervisor_bytes':S.SUPERVISOR_MEMORY,'bootstrap_bytes':S.BOOTSTRAP_MEMORY,
              'controller_filecache_bytes':S.CONTROLLER_FILECACHE,'shared_guard_helper_bytes':S.SHARED_GUARD_MEMORY,
-             'outside_swap_contract':'host-SwapTotal-zero','worker_bytes':S.WORKER_MEMORY,
+             'outside_swap_contract':C.CONTRACT,'envelope_memory_bytes':C.ROOT_MEMORY,'external_shared_service_reserve_bytes':C.EXTERNAL_RESERVE,
+             'envelope_bootstrap_bytes':C.BOOTSTRAP_MEMORY,'envelope_control_bytes':C.CONTROL_MEMORY,
+             'envelope_runtime_seconds':C.RUNTIME_SECONDS,'envelope_stop_seconds':C.STOP_SECONDS,
+             'envelope_receipt_bytes':C.RECEIPT_MAX,'envelope_log_bytes':C.LOG_MAX,'worker_bytes':S.WORKER_MEMORY,
              'aggregate_output_bytes':S.OUTPUT_MAX,'host_log_bytes':HOST_LOG_MAX,
              'supervisor_log_bytes':S.LOG_RESERVE,'host_receipt_bytes':HOST_RECEIPTS,
              'shared_guard_receipt_bytes':4096,'supervisor_receipt_bytes':S.RECEIPT_RESERVE,'host_tail_seconds':TAIL_SECONDS,
@@ -124,10 +128,11 @@ def scope_command(request,args,started):
             '--contained','--started',repr(started),*args]
 
 
-def _capture(command,deadline,*,log=None,limit=HOST_LOG_MAX):
+def _capture(command,deadline,*,log=None,limit=HOST_LOG_MAX,enter_group=None):
     """Bounded controller command/log transport, killed on first cap/deadline."""
     proc=subprocess.Popen(command,stdin=subprocess.DEVNULL,stdout=subprocess.PIPE,
-                          stderr=subprocess.STDOUT,start_new_session=True)
+                          stderr=subprocess.STDOUT,start_new_session=True,
+                          preexec_fn=None if enter_group is None else lambda:C.enter(enter_group))
     selector=selectors.DefaultSelector();selector.register(proc.stdout,selectors.EVENT_READ)
     os.set_blocking(proc.stdout.fileno(),False)
     count=0;small=bytearray();failure=None
@@ -412,7 +417,7 @@ def contained(request_path,digest,authority,reservation,started):
           'request_sha256':digest,'reason':failure,'supervisor':result,
           'retention':retained,'cleanup':cleanup,'resources':resources,'scope':str(parent),
           'elapsed_seconds':time.monotonic()-started,'host_files':host_files}
-    raw=S.encoded(data);need(len(raw)<=HOST_RECEIPTS//2,'contained receipt exceeds reserve')
+    raw=S.encoded(data);need(len(raw)<=HOST_RECEIPTS*3//8,'contained receipt exceeds reserve')
     remaining(deadline-3);S._write_new(root/'contained.unaccepted.json',raw)
     return 1 if failure else 0
 
@@ -459,7 +464,8 @@ def _guard_entry(request_path,digest,authority,reservation,watchdog):
     admission.check_environment(os.environ)
     metadata=read_small(request_path)
     guard=UnitGuard(metadata['guard_sha256']);guard.prove_owner()
-    prove_no_host_swap()
+    # No host swap setting is changed. The alternative must prove complete
+    # operation-owned containment before the old refusal can be bypassed.
     # The shared owner timestamps guard entry before spawning its command.
     # Its seconds-resolution timestamp is a conservative earlier bound; it is
     # never reset to the worker's or this Python process's launch time.
@@ -468,6 +474,10 @@ def _guard_entry(request_path,digest,authority,reservation,watchdog):
     elapsed=time.time()-int(match.group(1));need(0<=elapsed<180,'stale shared guard entry')
     started-=elapsed;deadline=started+180
     watchdog.arm(deadline)
+    try:envelope=C.prove(metadata,digest,started,deadline)
+    except (ValueError,OSError,KeyError):
+        prove_no_host_swap()  # Retain the old host refusal on incomplete proof.
+        raise
     request=_verify(request_path,digest,authority,reservation,deadline,metadata_only=True)
     state=Path(pwd.getpwuid(os.getuid()).pw_dir)/'.local/state/zudo-e16-attribution'
     state.mkdir(parents=True,exist_ok=True)
@@ -476,7 +486,8 @@ def _guard_entry(request_path,digest,authority,reservation,watchdog):
     try:
         fcntl.flock(fd,fcntl.LOCK_EX|fcntl.LOCK_NB)
         import attribution_admission as admission
-        _fresh_scope(run_name(request),deadline)
+        need(not (envelope/run_name(request)).exists(),
+             "active cgroup already exists; never adopt it")
         claim_path,claim_bytes=admission.claim(request,digest,deadline)
         root=Path(request['output']);need(root.is_absolute() and root.resolve()==root,'canonical retained output required')
         root.mkdir(exist_ok=False)
@@ -489,19 +500,25 @@ def _guard_entry(request_path,digest,authority,reservation,watchdog):
         args=fixed_arguments(request_path,digest,authority,reservation)
         try:
             with (root/'host.log.partial').open('xb') as log:
-                _capture(scope_command(request,args,started),deadline-8,log=log)
+                active=C.new_active(envelope,request)
+                cmd=['/usr/bin/unshare','--user','--map-current-user','--keep-caps','--mount',
+                     '--propagation','private',PYTHON,'-I','-S','-B','-X','pycache_prefix=/dev/null',
+                     str(HERE/'attribution_host.py'),'--contained','--started',repr(started),*args]
+                _capture(cmd,deadline-8,log=log,enter_group=active)
                 log.flush();os.fsync(log.fileno())
-            inside=read_small(root/'contained.unaccepted.json',HOST_RECEIPTS//2)
+            inside=read_small(root/'contained.unaccepted.json',HOST_RECEIPTS*3//8)
             need(inside['request_sha256']==digest and inside['status']=='COMPLETE','contained operation incomplete')
         except BaseException as exc:failure=str(exc)[:2048]
         finally:
-            try:cleanup=_scope_cleanup(run_name(request),deadline-3,scope_description(request,digest))
+            try:
+                C.remove_tree(envelope/run_name(request),deadline-3)
+                cleanup={'unit':run_name(request),'collected':True}
             except BaseException as exc:failure=(failure or '')+'; scope cleanup: '+str(exc)[:1024]
         try:
-            inside=read_small(root/'contained.unaccepted.json',HOST_RECEIPTS//2)
+            inside=read_small(root/'contained.unaccepted.json',HOST_RECEIPTS*3//8)
             need(inside['request_sha256']==digest,'contained receipt binding differs')
             files=dict(inside['host_files'])
-            for name,cap in (('host.log.partial',HOST_LOG_MAX),('contained.unaccepted.json',HOST_RECEIPTS//2)):
+            for name,cap in (('host.log.partial',HOST_LOG_MAX),('contained.unaccepted.json',HOST_RECEIPTS*3//8)):
                 path=root/name
                 need(path.stat().st_size<=cap,'controller file exceeded cap')
                 with path.open('rb') as stream:h=hashlib.file_digest(stream,'sha256').hexdigest()
@@ -638,7 +655,12 @@ def accepted_result(request_path,digest):
     # Complete means the contained operation reconciled and owned resources
     # were removed before the host receipt; acceptance flags remain false.
     need(receipt['scope_cleanup']['collected'] is True,'owned scope cleanup incomplete')
-    return dict(receipt,status='COMPLETE',shared_guard_receipt_sha256=row_hash,
+    envelope=C.accepted(request,digest,row_hash)
+    need(actual_total+receipt.get('accounting_output_bytes',receipt['claim_bytes'])+4096+
+         C.receipt_path(request).stat().st_size<=S.OUTPUT_MAX,'aggregate envelope output quota exceeded')
+    need(all(g['expires_unix']>=envelope['terminal_unix'] for g in grants),
+         'grants did not cover complete envelope tail')
+    return dict(receipt,status='COMPLETE',envelope=envelope,shared_guard_receipt_sha256=row_hash,
                 shared_guard_ledger=str(ledger),shared_guard=row)
 
 
@@ -662,16 +684,23 @@ def launch(request_path,digest,authority,reservation):
     checkout=Path(request['checkout'])
     need(checkout.is_absolute() and checkout.resolve()==checkout and checkout.is_dir(),'canonical checkout required')
     os.chdir(checkout)
+    need(request['host_limits']==HOST_LIMITS,'sealed containment contract differs')
+    args=fixed_arguments(request_path,digest,authority,reservation)
+    unit=C.unit_name(request)
+    need(C.properties(unit).get('LoadState')=='not-found','envelope unit already exists')
+    command=C.command(request,args,os.getpid(),C.process_start(os.getpid()))
     os.execvpe(command[0],command,clean_env)
 
 
 def main():
     p=argparse.ArgumentParser(description=__doc__)
     mode=p.add_mutually_exclusive_group(required=True)
-    mode.add_argument('--launch',action='store_true');mode.add_argument('--guard-entry',action='store_true');mode.add_argument('--contained',action='store_true')
+    mode.add_argument('--launch',action='store_true');mode.add_argument('--guard-entry',action='store_true');mode.add_argument('--contained',action='store_true');mode.add_argument('--envelope',action='store_true')
     for name in ('request','digest','authority','reservation'):p.add_argument('--'+name,required=True)
     p.add_argument('--started',type=float)
+    p.add_argument('--launcher-pid',type=int);p.add_argument('--launcher-start')
     a=p.parse_args();args=(a.request,a.digest,a.authority,a.reservation)
+    if a.envelope:return C.outer(*args,a.launcher_pid,a.launcher_start)
     if a.launch:return launch(*args)
     if a.guard_entry:return guard_entry(*args)
     need(a.started is not None and math.isfinite(a.started),'guard-entry timestamp required')
