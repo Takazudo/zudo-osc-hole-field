@@ -7,6 +7,7 @@ from pathlib import Path
 import subprocess
 import tempfile
 import time
+from types import SimpleNamespace
 import unittest
 from unittest.mock import patch
 
@@ -72,6 +73,17 @@ class Admission(unittest.TestCase):
         self.grants()
         self.request.pop('authorization_policy');self.save_request();self.grants()
         with self.assertRaisesRegex(ValueError,'delegation'):self.verify()
+
+    def test_serial_checkout_status_preserves_failure_and_dirty_gates(self):
+        for code,out,err,message in ((128,'','thread allocation refused','checkout status command failed'),
+                                    (0,' M file.py','','not clean'),(0,'','','')):
+            with patch.object(A.subprocess,'run',return_value=SimpleNamespace(returncode=code,stdout=out,stderr=err)) as run:
+                if message:
+                    with self.assertRaisesRegex(ValueError,message):A.prove_clean_checkout()
+                else:A.prove_clean_checkout()
+            command=run.call_args.args[0]
+            self.assertIn('core.preloadIndex=false',command);self.assertIn('index.threads=1',command)
+            self.assertEqual(command[-2:],['status','--porcelain'])
 
     def test_owner_decision_drift_refused(self):
         changed=self.root/'decision';changed.write_text('changed authorization')

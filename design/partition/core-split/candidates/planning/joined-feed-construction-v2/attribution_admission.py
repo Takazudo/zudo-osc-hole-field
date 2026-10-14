@@ -279,6 +279,16 @@ def validate_structure(request,digest,deadline=None):
         need(journal['request_sha256']==digest and journal['status']=='CONSUMED_NO_RETRY','output is not owned by consumed identity')
 
 
+def prove_clean_checkout(deadline=None):
+    # Git's default index preload can exhaust the admitted bootstrap thread/AS
+    # bounds. These options affect only this invocation, not repository config.
+    result=subprocess.run(['git','--no-optional-locks','-c','core.preloadIndex=false',
+        '-c','index.threads=1','status','--porcelain'],cwd=ROOT,capture_output=True,
+        text=True,timeout=remaining(deadline))
+    need(result.returncode==0,'checkout status command failed ('+str(result.returncode)+'): '+result.stderr[:1024])
+    need(not result.stdout.strip(),'tracked checkout is not clean')
+
+
 def validate_metadata(request,digest,deadline=None,*,revalidate_inputs=True):
     check_time(deadline)
     verify_policy(request)
@@ -305,8 +315,7 @@ def validate_metadata(request,digest,deadline=None,*,revalidate_inputs=True):
              {'max_entries':4_000_000,'max_updates':20_000_000,'max_input_nnz':16_000_000}.items()),'certificate cap differs')
     result=subprocess.run(['git','rev-parse','HEAD'],cwd=ROOT,capture_output=True,text=True,timeout=remaining(deadline))
     need(result.returncode==0 and result.stdout.strip()==request['source_sha'],'immutable checkout head differs')
-    result=subprocess.run(['git','status','--porcelain'],cwd=ROOT,capture_output=True,text=True,timeout=remaining(deadline))
-    need(result.returncode==0 and not result.stdout.strip(),'tracked checkout is not clean')
+    prove_clean_checkout(deadline)
     from attribution_request import packet_from_inventory
     need(request['packet']==packet_from_inventory(request['source_bindings']),'production packet differs from fixed original experiment')
     inventory=independent_inventory();seen=set()

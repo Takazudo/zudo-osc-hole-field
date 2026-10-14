@@ -741,3 +741,28 @@ zero swap, noOOM. [Raw fixture command/result](evidence/e16/attribution-admissio
 separate from the real local delegation. Next: final independent source review,
 commit corrected bindings, seal/review/sign a fresh qualification and follow its
 actual terminal evidence. Production remains unprepared/unadmitted; Stage C NOT RUN.
+
+
+### Second qualification: Git bootstrap failure, bounded command correction
+
+Fresh reviewed/signed request`ba4ed340fff33b524c15082f0081460ee1d113eb095555246f9335e74be1f6ba`,
+run`19650aca554a4f12b9134a6d77a75d78`, source`0eccf0667f07dc6f96c21d4415e2036e68295d40`
+passed actual namespace lock custody, then failed full admission before original
+reads/worker startup. [Exact packet/output/terminal index](evidence/e16/attribution-admission-wsl-20261014/qualification-attempt2/index.json)
+and [independent terminal review plus diagnosis](evidence/e16/attribution-admission-wsl-20261014/qualification-attempt2/review.md)
+are retained. Local packet directory`~/.cache/zudo-e16-runs/attribution-qualification-ewjg3z87/`.
+No original inputs changed; immutable first/second journals preserved.
+
+The clean checkout's Git status command failed under the unchanged bootstrap
+thread/address-space bounds. A tiny actual namespace fixture captured exit128
+and threaded-lstat allocation failure. Explicit per-command serial Git options
+passed under the same limits; no global/repository config change or gate removal.
+The source now distinguishes commandfailure fromdirtycheckout.108focusedtestsPASS;
+real diagnostic fixture transcripts preserve both outcomes and ownedcleanup.
+
+Budget now2/3 baselines,10/24diagnostics;14diagnostics remain, no additional baseline
+permitted. Both operations terminal, live_owned_work=false, cleanup/accounting
+independentlyPASS. Secondpeak56,426,496B/1.358537s/zero-swap. No qualification or
+production accepted; StageCNOTRUN. Next: independently review/commit the narrow
+Git correction, then prepare a freshly bound qualification; never replay either
+consumed request or alter its original retained receipts.
