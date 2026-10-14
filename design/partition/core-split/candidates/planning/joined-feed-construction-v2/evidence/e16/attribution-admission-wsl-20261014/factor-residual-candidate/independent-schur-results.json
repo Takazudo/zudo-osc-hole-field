@@ -1,0 +1,105 @@
+{
+  "reviewer": "/root/math_review",
+  "synthetic_only": true,
+  "limits": {
+    "order": 16,
+    "address_space_MiB": 512,
+    "cpu_seconds": 20,
+    "blas_threads": 1
+  },
+  "source_sha256": {
+    "design/partition/core-split/candidates/planning/joined-feed-construction-v2/evidence/e16/attribution-admission-wsl-20261014/factor-residual-candidate/independent-schur-oracle.py": "49ba395795dd8d67e285863774ae3aba1d14faf8da14715ffc1134654b817ced",
+    "design/partition/core-split/candidates/planning/joined-feed-construction-v2/evidence/e16/attribution-admission-wsl-20261014/factor-residual-candidate/fixture/prototype.py": "3ce2ca1f693d65cb09df64da89e01ca99129a958c4672f8fd82ac1696c9b612e",
+    "design/partition/core-split/candidates/planning/joined-feed-construction-v2/attribution_uniqueness.py": "828ec3e48ca7e05b094c32b9d8927bf10439623be80300a903d0ad7c8613da8f"
+  },
+  "cases": [
+    {
+      "ground": 1.0,
+      "pattern": "full",
+      "board_q": [
+        5.673694952343076e-16,
+        1.5872077315011532e-15
+      ],
+      "board_S_radius": [
+        5.625114418726811e-16,
+        2.2674396164302298e-15
+      ],
+      "schur_q": 2.4868995751603516e-14,
+      "status": "CERTIFIED",
+      "global_inverse_bound": 31.450605269543694,
+      "exact_inverse_norm": 12.524074074074099,
+      "exact_inverse_norm_fraction": "81891611813679812532188322915291730001184701672737961767425636552449781510332360352164637050929152/6538735824247673157675410682578150546103390350225145938655032420691168203543301103456707932979497"
+    },
+    {
+      "ground": 9.313225746154785e-10,
+      "pattern": "full",
+      "board_q": [
+        1.192101971601849e-15,
+        1.5872077315011532e-15
+      ],
+      "board_S_radius": [
+        1.7030028156125343e-15,
+        2.2674396164302298e-15
+      ],
+      "schur_q": 1.525878906250001e-05,
+      "status": "CERTIFIED",
+      "global_inverse_bound": 18954281448.141884,
+      "exact_inverse_norm": 6442454022.525552,
+      "exact_inverse_norm_fraction": "39232414985215591639412924765498274342160717428651485854587282231588924298796431829164418131820544/6089669378786783093792193466970057281463206923387006575316302776802606624889896279343401"
+    },
+    {
+      "ground": 1.0,
+      "pattern": "diagonal",
+      "board_q": [
+        0.6178343949044591,
+        0.8492462311557796
+      ],
+      "board_S_radius": [
+        0.8826205641492296,
+        2.1085464753587173
+      ],
+      "schur_q": 1.4885361543098663,
+      "status": "SCHUR_REFUSED"
+    },
+    {
+      "ground": 1.0,
+      "pattern": "full",
+      "board_q": [
+        5.673694952343076e-16,
+        0.8492462311557796
+      ],
+      "board_S_radius": [
+        5.625114418726811e-16,
+        2.664535259100393e-15
+      ],
+      "schur_q": 2.1316282072803015e-14,
+      "KB_pattern": "diagonal",
+      "KB_constant_witness": {
+        "original_factor_radius": 2.1085464753587173,
+        "constant_residual": 8.881784197001254e-16,
+        "constant_radius": 2.664535259100393e-15,
+        "inverse_bound": 2.1000000000000116,
+        "row_sum_additions": 4,
+        "all_additions": 9,
+        "upper_multiplications": 2
+      },
+      "status": "CERTIFIED",
+      "global_inverse_bound": 50.55000000000155,
+      "exact_inverse_norm": 12.524074074074099,
+      "exact_inverse_norm_fraction": "81891611813679812532188322915291730001184701672737961767425636552449781510332360352164637050929152/6538735824247673157675410682578150546103390350225145938655032420691168203543301103456707932979497"
+    }
+  ],
+  "weighted_tree_proposal": {
+    "side": 4,
+    "max_h_exact": "216/7",
+    "weighted_q_exact": "22151/22410",
+    "weighted_K_exact": "56/2187",
+    "weighted_inverse_upper_exact": "53120/777",
+    "weighted_inverse_upper": 68.36550836550836,
+    "unweighted_inverse_upper": 989.3333333333334,
+    "actual_inverse_norm": 30.857142857142858,
+    "weight_production": "exact dense Fraction oracle ONLY; no original witness or production route",
+    "status": "EXACT_PROPOSAL_CALCULATION_ONLY"
+  },
+  "result": "PASS"
+}

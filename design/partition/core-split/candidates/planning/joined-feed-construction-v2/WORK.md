@@ -960,7 +960,7 @@ aggregatewitnesses alone cannot provide the missingmargin/roundingbound. Separat
 math/resource reviewers require that evidence beforeanothercampaignclaim.
 
 
-<a id="e16-current-checkpoint"></a>
+<!-- Historical checkpoint below; current checkpoint follows the factor-residual study. -->
 
 ### Recoverable stopping checkpoint — actual technical acceptance boundary
 
@@ -1024,3 +1024,86 @@ Do not replay those identities. Source-only prototypes remain ignored at
 `__inbox/e16-frontier/repro.py` and `__inbox/e16-frontier/ordering.py`; permanent
 regressions and review conclusions are committed. No job is left running and no
 unattended continuation is promised at this stopping checkpoint.
+
+
+<a id="e16-current-checkpoint"></a>
+
+### Stored-operator certificate research checkpoint — 2026-10-15 JST
+
+This continuation first reconciled the actual WSL executor worktree: tracked
+state was clean and local/published HEAD both df58a3a043d81ebac973cbde9d569a7af912be8a.
+The ignored frontier/ordering prototypes were preserved; no newer E16 cclogs
+artifact or competing coordinator was found. Current process/unit/lock and ledger
+inspection showed no live operation. Original campaign ledger still hashes to
+533ca512fc06ae6742e6e02dce3cc1a8aee83ec49fc13ebabf691a6b0c4cc4f5, with seven terminal
+INCOMPLETE charges,15/24 diagnostics,2/3 baselines and live_owned_work=false.
+This increment consumed zero; nine diagnostics remain and no new baseline is
+allowed. Signer ownership and existing keys were neither reopened nor changed.
+
+New engineering evidence is in the
+[stored-operator factor-residual candidate](evidence/e16/attribution-admission-wsl-20261014/factor-residual-candidate/candidate.md),
+with a precise theorem-to-code map, original executor/resolution trace, Rump's
+actual Theorem6.1 and Tables5/6 applicability analysis, full pipeline cost model,
+[18-test executable fixture](evidence/e16/attribution-admission-wsl-20261014/factor-residual-candidate/fixture/README.md),
+[separate mathematics review](evidence/e16/attribution-admission-wsl-20261014/factor-residual-candidate/math-review.md),
+[separate resource review](evidence/e16/attribution-admission-wsl-20261014/factor-residual-candidate/resource-review.md),
+and an independent exact-Fraction Schur oracle. These are synthetic/source-only
+results; no original numerical archive was decoded.
+
+Concrete decisions and counterexamples:
+
+- Full historical LU factors were not retained and their measured representation
+  exceeds4M entries per board even after both diagonals are excluded. No large
+  numerical stack or full Rump implementation was installed in the project.
+- A direct nonsymmetric approximate-factor residual theorem supplies an inverse
+  bound, rather than bare positivity. Connected factors plus a certified retained-Y
+  residual lift have a proved lower cost21,580,061>20M before factor production.
+  That architecture is rejected. The tested factor-only Schur lift avoids that
+  extra matrix product, but its15,275,567 dimension floor is not a fit prediction.
+- Tiny full factors certify the original joined problem with inverse upper31.4506
+  versus exact12.5241. Diagonal factors certify BOTH boards yet fail the coupled
+  test at q1.488536. Valid uniqueness with a huge bound also leaves Stage C
+  INCONCLUSIVE. Tests preserve nonsymmetric coefficients, separate stamp rounding,
+  whole distributed termination energy, actual resolution functions and exact
+  physical-functional oracles; stale/incomplete/type-invalid bindings refuse.
+- The fixed2n-1-entry rooted-tree factor pattern has an exact exponential
+  contraction-margin loss on grounded grids. At16x16 its certificate bound is
+  >=2.8e15 although a proved true inverse bound is<=126,976. It is rejected as
+  a scalable useful-bound producer; this is not a reason to run it on real data.
+- A directly verified KB constant-vector identity r=B+A*1 improves the synthetic
+  Schur correction radius2.10855 to2.66454e-15 without original element metadata.
+  Its signed row sums are extra work even when fused. With connected factors,
+  KB stored Af nnz>=6,265,711 would already defeat the hybrid20M budget before
+  producer/small proof. That count is not known from retained metadata; measuring
+  it alone is not useful enough while the factor producer remains rejected.
+
+Actual verification:18 fixture tests PASS, independently rerun by both technical
+reviewers; independent Fraction Schur/near-null experiments PASS; circuit contract
+PASS before/after. The toy uses512MiB AS/20CPU/30wall seconds and one BLAS thread.
+Its deliberately stricter scalar counter itself has a connected-factor lower
+bound30,551,138>20M before production/lift, so its meter/layout cannot be silently
+ported or relabeled as a production fit. Native/aggregate/full real qualification
+checks NOT RUN: this source-only research does not justify them. Production
+executor, admission bindings, original solver/refinement/physical RHS, canonical
+boards, decision.json and all numerical limits remain unchanged. PR260 remains
+OPEN/draft and issue253 OPEN; no merge or deployment.
+
+Current original resource qualification NOT_QUALIFIED; production
+NOT_PREPARED/NOT_ADMITTED/NOT_RUN; Stage C NOT RUN; KEEP_K1402_INCUMBENT.
+There is no new request/grant, frozen source, pending claim or unattended job.
+This evidence commit updates PR277; recover its exact current HEAD with Git.
+
+Follow-through also proved a positive-weight version of the same factor theorem:
+on the SAME4x4 rooted tree, an exact tiny oracle weight improves the inverse
+bound989.3333 to68.3655 (true30.8571). This demonstrates a way around the norm
+loss, but its dense16-variable oracle is not an admissible original-data weight
+producer. No speculative weighted production checker was added.
+
+The next locally owned mathematical action is constructive, cap-accounted weight
+production for the same sparse-factor theorem, tested against the retained
+exponential-tree and floating-KB Schur counterexamples. Include weight production
+in the work/memory proof; an uncharged global solve or assumed M-matrix signs is
+not acceptable. Do not port the rejected recipes, run a blind ordering, or seal
+another FULL qualification. A bounded characterization mode would need its own
+exact question and reviewed admission integration; none is currently prepared.
+The original engineering objective remains incomplete at this research checkpoint.
