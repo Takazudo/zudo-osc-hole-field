@@ -22,7 +22,7 @@ def run(a):
     r['tree_structure_order']=getattr(m,'forest_order',0)
     r['selected_edges_before_exit']=getattr(m,'forest_selected_edges',0)
     r['producer_outcome']='CONSTRUCTED_AND_CERTIFIED' if r['status']=='CERTIFIED' else 'REFUSED_DURING_VERIFIER_CONSTRUCTION'
-    r['screen']='NOT RUN: board-only fixture' 
+    r['screen']='NOT RUN: board-only fixture'
     return r
 
 
