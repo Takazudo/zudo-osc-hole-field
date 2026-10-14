@@ -77,6 +77,25 @@ class Attribution(unittest.TestCase):
         if message:
             self.assertIn(message, r['failures'][0])
 
+    def test_api_sparse_order_is_not_limited_by_tiny_json_cli(self):
+        matrix=R.matrix_read({'n':100001,'row':[0,1],'col':[0,1],'siemens':[1.,1.]})
+        self.assertEqual(matrix.shape,(100001,100001))
+        self.assertEqual(matrix.nnz,2)
+
+    def test_cli_rejects_large_network_or_component_before_allocation(self):
+        for field in ('network','component'):
+            p=series()
+            if field=='network':p['network']['matrix']['n']=3000000
+            else:p['components'][0]['matrix']['n']=3000000
+            with tempfile.TemporaryDirectory() as directory:
+                base=Path(directory);detail=base/'detail.json';expected=base/'expected.json'
+                detail.write_text(json.dumps(p));expected.write_text(json.dumps(R.bindings(p)))
+                with patch('sys.argv',['report','--detail',str(detail),'--expected',str(expected),
+                                       '--output',str(base/'out.json')]),patch.object(R,'matrix_read') as reader:
+                    with self.assertRaisesRegex(ValueError,'CLI limited'):
+                        R.main()
+                    reader.assert_not_called()
+
     def test_known_series(self):
         r = self.passed(series())
         self.assertAlmostEqual(r['effective_resistance_ohm'], .005)

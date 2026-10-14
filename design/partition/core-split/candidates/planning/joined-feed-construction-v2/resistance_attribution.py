@@ -43,7 +43,7 @@ def matrix_record(matrix):
 
 def matrix_read(record):
     n = record['n']
-    need(type(n) is int and 0 < n <= 100000, 'invalid or unbounded matrix order')
+    need(type(n) is int and 0 < n < 2**31, 'invalid matrix order')
     row, col, val = record['row'], record['col'], record['siemens']
     need(len(row) == len(col) == len(val), 'matrix triplet lengths differ')
     need(all(type(i) is int and 0 <= i < n for i in row + col), 'invalid matrix index')
@@ -401,7 +401,11 @@ def main():
     args = parser.parse_args()
     for p in (args.detail, args.expected):
         need(p.stat().st_size <= MAX_JSON_BYTES, 'bounded JSON input exceeds 16 MiB')
-    result = attribute(json.loads(args.detail.read_text()), json.loads(args.expected.read_text()))
+    packet = json.loads(args.detail.read_text())
+    need(packet['network']['matrix']['n'] <= 100000 and
+         all(c['matrix']['n'] <= 100000 for c in packet['components']),
+         'CLI limited to 100000 nodes; real extraction/accounting requires admitted in-memory diagnostic')
+    result = attribute(packet, json.loads(args.expected.read_text()))
     with args.output.open('x') as stream:
         json.dump(result, stream, sort_keys=True, indent=2, allow_nan=False)
         stream.write('\n')
