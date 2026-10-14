@@ -1,4 +1,4 @@
-> Historical checkpoint. The current [task-local containment continuation](containment/README.md) supersedes the host-swap-only path and adds real mechanism evidence. Original numerical and external-signature restrictions remain in force.
+> Current campaign continuation is [WORK.md](../../../WORK.md), under [Takazudo’s recorded local delegation](owner-decision-20261014.txt). Seven genuine qualification-kind attempts are terminal failures; the latest [audit](qualification-attempt7/review.md) records 15/24 diagnostics, complete cleanup and the unresolved 20M-update certificate gate. Signing ownership is resolved; qualification remains NOT_QUALIFIED, production NOT_ADMITTED and Stage C NOT RUN. Historical source-only statements below retain their original scope.
 
 # Complete selected operation: resource and admission boundary
 

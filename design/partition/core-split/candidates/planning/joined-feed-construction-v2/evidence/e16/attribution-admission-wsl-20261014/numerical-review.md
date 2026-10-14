@@ -1,3 +1,5 @@
+> Current campaign continuation is [WORK.md](../../../WORK.md), under [Takazudo’s recorded local delegation](owner-decision-20261014.txt). Seven genuine qualification-kind attempts are terminal failures; the latest [audit](qualification-attempt7/review.md) records 15/24 diagnostics, complete cleanup and the unresolved 20M-update certificate gate. Signing ownership is resolved; qualification remains NOT_QUALIFIED, production NOT_ADMITTED and Stage C NOT RUN. Historical source-only statements below retain their original scope.
+
 # Independent numerical and admission-boundary review
 
 Reviewer: `/root/numerical_review`. **PASS for the reviewed source and bounded fixtures. SOURCE_COMPLETE is supported for this implementation scope; RESOURCE NOT_QUALIFIED, NOT_ADMITTED, NOT_RUN.** I did not author the production admission, request, worker, host, supervisor or numerical implementation. I authored the independent boundary regressions and the earlier exact-rational numerical oracle tests. Those tests are reviewer validation, not a claim that reviewing one's own implementation is independent review.

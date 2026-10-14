@@ -1,4 +1,4 @@
-> Current continuation: [reviewed task-local containment and real host fixtures](containment/README.md), with [independent-owner signing setup](containment/signing.md). Historical host-swap-only findings below are superseded for the new exact containment contract; no numerical qualification or admission is implied.
+> Current campaign continuation is [WORK.md](../../../WORK.md), under [Takazudo’s recorded local delegation](owner-decision-20261014.txt). Seven genuine qualification-kind attempts are terminal failures; the latest [audit](qualification-attempt7/review.md) records 15/24 diagnostics, complete cleanup and the unresolved 20M-update certificate gate. Signing ownership is resolved; qualification remains NOT_QUALIFIED, production NOT_ADMITTED and Stage C NOT RUN. Historical source-only statements below retain their original scope.
 
 # E16 selected attribution: completed source admission boundary
 

@@ -1,3 +1,5 @@
+> Historical containment/host-fixture checkpoint. Current delegated authority, real attempts and remaining certificate blocker are recorded in [WORK.md](../../../../WORK.md) and the [latest terminal audit](../qualification-attempt7/review.md). The “no operation admitted” statements below describe this earlier fixture checkpoint.
+
 # Task-local containment on the existing WSL host
 
 The reviewed alternative is implemented and exercised on this host with tiny

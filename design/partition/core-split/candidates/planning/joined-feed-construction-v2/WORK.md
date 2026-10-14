@@ -1,6 +1,7 @@
 # Joined feed construction v2
 
-Current coordination and resumption: [ongoing WSL agreement](#ongoing-wsl-coordination--2026-10-14).
+Current E16 state and resumption: [technical acceptance checkpoint](#e16-current-checkpoint).
+Operating scope: [ongoing WSL agreement](#ongoing-wsl-coordination--2026-10-14).
 Earlier checkpoints below remain historical evidence; their next actions are not
 fresh execution authority.
 
@@ -923,3 +924,103 @@ stillfailfill/20Mupdates/intervalresolution/memory/deadline; followterminaljourn
 ledger,guardreceipt,retention andcleanup before changingboundsource or replanning.
 Currently14/24diagnostics used,10remain;2/3baselineunchanged/noadditionalbaseline.
 No RESOURCE_QUALIFIED report or productionrequest exists; StageCNOTRUN.
+
+
+### Seventh qualification: technical acceptance unresolved; numerical attempts stopped
+
+Clean executedsource`5aec693549a9e380d7e7832a430f5294dacbaf05`, request
+`3d42c2dc48e1b44c743626231437683ee4c25be50bc0ed6bd4b5edf29ff94b9d`,
+run`6ba68bb77ec944e0963ad6524570c23d`, operation
+`60fcd4dc1f630d7877d09239f06321c73a030683d40e7e50bcc9c75d1dcc6a78`.
+[Exactretainedindex](evidence/e16/attribution-admission-wsl-20261014/qualification-attempt7/index.json)
+and [independentterminal/acceptancereview](evidence/e16/attribution-admission-wsl-20261014/qualification-attempt7/review.md).
+Packet`~/.cache/zudo-e16-runs/attribution-qualification-4o576ztz/`; output
+`~/.cache/zudo-e16-runs/attribution-6ba68bb77ec944e0963ad6524570c23d/`.
+FixedRCMalso exceeded20M beforecompletingKA; actualpermutationhashretained.
+Rootpeak844124160B/envelope61.0558727597s/guardraw62s,zero swap/noOOM.
+Allsevencharges/retention/immutablejournals/durableguardfailure agree; complete
+ownedcleanup,unit/root/processes/locksabsent,livefalse. Ledger15/24diagnostics,
+2/3baselines,9diagnosticsremain,zeroadditionalbaselinepermission;
+SHA533ca512fc06ae6742e6e02dce3cc1a8aee83ec49fc13ebabf691a6b0c4cc4f5.
+No qualificationreport or productionrequest exists. StageCNOTRUN.
+
+Signingownership is RESOLVED: Takazudo owns authorization and this WSLcoordinator
+is the recordeddelegate. Currentblocker is a rigorouscertificate within20Mwork,
+not missingapproval or hostswap. Do not ask again forsigningownership/digestapproval.
+Do not issueanotherrealpacket forunchangedretry or blindthirdordering. The latest
+request is consumed, notlive; sourcefreezeended afterindependentterminalaudit.
+Currentrealresourceacceptance remainsNOT_QUALIFIED;productionNOT_ADMITTED.
+
+The next locally owned lane is a short source-only mathematicalfeasibility study:
+can originalconstruction provide quantitativecoercivity for the completejoined
+symmetricreference, including groundedKA/floatingKB/wires, allstoredrounding and
+ausefulinversebound, with exhaustivelyverifiablehypotheses underexistingcaps?
+Do not buildanotherchecker before that theorem/costargument exists. Existing
+aggregatewitnesses alone cannot provide the missingmargin/roundingbound. Separate
+math/resource reviewers require that evidence beforeanothercampaignclaim.
+
+
+<a id="e16-current-checkpoint"></a>
+
+### Recoverable stopping checkpoint — actual technical acceptance boundary
+
+The [construction feasibility study](evidence/e16/attribution-admission-wsl-20261014/qualification-attempt7/feasibility-review.md)
+is complete. It found a conditional theorem but no applicable quantitative
+certificate: original retained tile aggregates lack bound element-level witnesses;
+no usable grounding margin alpha or exhaustive stored-coefficient error epsilon
+is established. Distributed terminations cannot be replaced by independent edges.
+No verification-cost argument fits the unchanged full operation budget yet.
+This is a real technical acceptance blocker, not an unresolved signer/owner choice.
+No further numerical request is prepared or eligible at this checkpoint.
+
+**Current objective:** independently qualify the complete existing selected
+attribution pipeline, then separately admit production only after qualification
+and actual technical review. Completion still requires full numerical/output gates,
+original mesh/accounting passes, durable terminal/guard agreement and owned cleanup.
+Qualification remains NOT_QUALIFIED; production NOT_PREPARED/NOT_ADMITTED/NOT_RUN;
+Stage C NOT RUN. KEEP_K1402_INCUMBENT and all hardware acceptance gates stay open.
+
+**Ownership and exact state:** continue this existing worktree
+`/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-attribution-executor`,
+branch `topic/e16-attribution-executor`, draft PR277. Latest executed source is
+`5aec693549a9e380d7e7832a430f5294dacbaf05`; subsequent evidence commits do not
+retroactively rebind that consumed request. Obtain the current evidence HEAD with
+`git rev-parse HEAD` and refresh remote/worktree ownership before any future edit.
+Base remains reconstruction `dec36940e2691e384b9d8d499675761078d64308`; no integration
+ownership. Main, PR260 draft/unmerged and issue253 open remain preserved.
+
+**Actual verification:**170 focused source/crypto/interval/lifecycle tests passed
+without environment overrides; pre/post circuit checks and independent source,
+mathematics, resource, exact-packet and terminal reviews are retained. Seven real
+qualification-kind claims since the owner decision all ended INCOMPLETE. Latest
+ledger is15/24 diagnostics and2/3 baselines, delta+7 diagnostics/+0 baselines from
+the pre-delegation checkpoint. Nine diagnostics remain; no additional baseline is
+authorized. Live work is false; no operation-owned unit, process, cgroup or lock
+remains. Private signing bytes remain outside Git/reports/artifacts/logs; the current owner
+delegation and numerical limits are retained. Native/aggregate checks and CI remain NOT RUN or
+skipped under the narrow authorization, never reported as passed.
+
+**Next local action, owned by this coordinator:** review the five explicit witness
+and cost gaps in feasibility-review.md and derive a concrete proof-and-witness
+proposal for the exact stored operator before writing an alternative certificate.
+It must supply a usable positive alpha-epsilon and bounded exhaustive verification;
+the present evidence cannot establish either. Obtain genuine separate technical
+review of that proposal. Do not seal/sign another qualification merely to test an
+unreviewed ordering or repeat the known20M failure. A future justified correction
+requires a clean committed source, fresh compiler packet, actual technical review,
+delegated exact signatures and live admission. Production remains a separate step.
+No outside ChatGPT plan or repeat signing-owner answer is needed.
+
+Source-only local verification command, if a new change justifies rerunning it:
+
+```sh
+cd /home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-attribution-executor/design/partition/core-split/candidates/planning/joined-feed-construction-v2
+/home/takazudo/.cache/zudo-e16-numerical-venv/bin/python -B -m unittest test_attribution_executor test_attribution_resolution test_attribution_ordering test_attribution_admission test_attribution_host test_attribution_worker test_attribution_containment test_attribution_supervisor test_numerical_unit_guard test_attribution_interval_oracle test_attribution_boundary_review test_attribution_lifecycle -q
+```
+
+All exact packet/output/artifact locators, grants, claim journals, negative worker
+receipts and cleanup evidence are indexed in qualification-attempt1 through7.
+Do not replay those identities. Source-only prototypes remain ignored at
+`__inbox/e16-frontier/repro.py` and `__inbox/e16-frontier/ordering.py`; permanent
+regressions and review conclusions are committed. No job is left running and no
+unattended continuation is promised at this stopping checkpoint.
