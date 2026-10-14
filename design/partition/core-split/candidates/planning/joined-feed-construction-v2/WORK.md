@@ -1279,7 +1279,7 @@ PR277 publication is a checkpoint. The attribution objective and local developme
 assignment remain active; no new owner instruction or external plan is required.
 
 
-<a id="e16-current-checkpoint"></a>
+<a id="e16-virtual-path-checkpoint"></a>
 
 ### Virtual joined/path-only checkpoint — 2026-10-15 JST
 
@@ -1310,3 +1310,40 @@ Ledger unchanged15/24 diagnostics,2/3 baselines; no new baseline, numerical requ
 or cleanup debt. Original solver/input/physical/tolerance/resource safeguards
 remain; KEEP_K1402_INCUMBENT. Qualification NOT_QUALIFIED, production NOT_ADMITTED,
 actual Stage C NOT RUN. The local assignment remains active after publication.
+
+
+<a id="e16-current-checkpoint"></a>
+
+### Compact exact arithmetic checkpoint — 2026-10-15 JST
+
+Continued afteraf9a635a. [Evidence](evidence/e16/attribution-admission-wsl-20261014/factor-residual-candidate/compact-increment.md)
+replaces unnecessary fixed-wide row and tree scalar arithmetic with bounded exact
+significand/exponent operations. Full compact/fixed witnesses and bounds agree.
+All44 aggregate tests and separate math/resource reviews pass; malformed tuple,
+normalized exponent and understated branch-charge findings were fixed. Separate
+row-only and full-path oracle evidence remains, including extreme binary64 and
+subnormal refusals. Actual tree construction is explicitly distinguished from
+zero auxiliary solve order. Numeric production source is unchanged.
+
+Held-out9 full compact bit-work envelope drops67.73billion->115.14million while
+declared integer kernels rise27108->147440; floating calls stay328. This is an
+actual representation tradeoff, not a fit claim. A strict all-kernel-as-update
+mapping still rejects the literal original-size port. Existing LDL Work instead
+counts multi-operation scalar destination contributions; resource review permits
+implementation/review of a separately named width-aware contribution ledger,
+retaining all fine counters, but has not approved any production fit/mapping.
+
+**Next active source algorithm:** a verifier-owned exhaustive row pass also selects
+checked negative edges into an online union-by-size oriented forest, then roots
+the resulting tree and computes path-only bounds. Exact row evidence is private
+to that verifier; no caller-supplied summary or skip-proof flag. Reroot smaller
+components with edge-value rotation, count all DSU/path visits and live buffers,
+and test heterogeneous weights/nonroot joins independently. This removes duplicate
+row/coefficient passes through actual algorithm changes. Stable input ownership,
+full original hashes, margins and all signed coefficients remain required.
+
+Original applicability and raw-stamp/complete pipeline resource prebounds remain
+open. No original input accessed or numerical request created; ledger remains
+15/24 diagnostics,2/3 baselines. No new baseline/cap/signing/hardware action.
+KEEP_K1402_INCUMBENT; actual qualification/attribution remains unresolved.
+Publication is another checkpoint; the development assignment continues here.

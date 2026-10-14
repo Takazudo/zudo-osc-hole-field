@@ -1,0 +1,92 @@
+{
+  "synthetic_only": true,
+  "comparison_conversion": {
+    "seed": 284,
+    "pairs": 1000,
+    "exact_comparisons": 3000,
+    "accepted_floor_checks": 450,
+    "accepted_upper_checks": 449,
+    "conservative_conversion_refusals": 1101,
+    "status": "PASS"
+  },
+  "malformed_scalar": {
+    "refusals": 24,
+    "status": "PASS"
+  },
+  "retained_scalar_controls": {
+    "seed": 281,
+    "pairs": 1000,
+    "exact_decode_checks": 2000,
+    "exact_add_half_neg_abs_fixed_cancel_checks": 6000,
+    "sum_independent_case_kernel_units": 296656,
+    "status": "PASS"
+  },
+  "retained_row_controls": {
+    "seed": 282,
+    "matrices": 100,
+    "exact_margin_checks": 300,
+    "status": "PASS"
+  },
+  "random_proof_integration": {
+    "seed": 283,
+    "matrices": 100,
+    "exact_inverse_bound_checks": 200,
+    "identical_witnesses_and_bounds": true,
+    "status": "PASS"
+  },
+  "virtual_integration": {
+    "exact_complete_operator_checks": 6,
+    "identical_fixed_compact": true,
+    "cases": [
+      {
+        "case": "strong",
+        "kernel": "fixed",
+        "bound": 36.90000000000181,
+        "units": 1563,
+        "bit_work": 3890241327
+      },
+      {
+        "case": "strong",
+        "kernel": "compact",
+        "bound": 36.90000000000181,
+        "units": 8535,
+        "bit_work": 15527959
+      },
+      {
+        "case": "weak",
+        "kernel": "fixed",
+        "bound": 6442503583.3301115,
+        "units": 1563,
+        "bit_work": 3890241327
+      },
+      {
+        "case": "weak",
+        "kernel": "compact",
+        "bound": 6442503583.3301115,
+        "units": 8535,
+        "bit_work": 15060343
+      },
+      {
+        "case": "nonsymmetric",
+        "kernel": "fixed",
+        "bound": 36.354545454547214,
+        "units": 1563,
+        "bit_work": 3890241327
+      },
+      {
+        "case": "nonsymmetric",
+        "kernel": "compact",
+        "bound": 36.354545454547214,
+        "units": 8535,
+        "bit_work": 15776522
+      }
+    ],
+    "status": "PASS"
+  },
+  "sha256": {
+    "independent-compact-scalar-oracle.py": "3423b442783496c6bb472ccd9026c1c5e7801cb35f722dd3fd83412593f4834f",
+    "fixture/prototype.py": "4c0601b03f061cdb73186577520df39c789053c47a5ef1a27db6bc4a7a6f0808",
+    "fixture/test_compact.py": "52664ce766ba43d3027e0202867a7fe854f500a5a85dc71cdc7a152e4b1e12d9",
+    "independent-compact-oracle.py": "a2e84dee7074564fa2071ddc89e9f18facd6d2505b0936235fc71a87b57954db"
+  }
+}

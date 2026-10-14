@@ -811,16 +811,16 @@ def coercivity_digest(packet):
     return h.hexdigest()
 
 
-def produce_coercivity_tree(a, context, meter, packed=False):
+def produce_coercivity_tree(a, context, meter, packed=False, exact_kernel="fixed"):
     validate_operator(a);n=a.shape[0]
     # Row-local dyadic scratch, parent, edge, BFS order; independent recomputation.
     meter.entries(8*n+16)
-    root=-1;best=0
-    for i,margin in enumerate(symmetric_margins(a,meter,'coercivity_producer_margins')):
-        integer_charge(meter,1,DYADIC_BITS,'root_margin_comparison')
-        if margin>best:root,best=i,margin
+    exact=ExactRowArithmetic(exact_kernel,meter)
+    root=-1;best=exact.zero
+    for i,margin in enumerate(exact.rows(a,'coercivity_producer_margins')):
+        if exact.compare(margin,best)>0:root,best=i,margin
     need(root>=0,'coercivity no positive root margin')
-    g=positive_dyadic_floor(best,meter)
+    g=exact.floor(best)
     del best,margin
     sentinel=n if packed else -1
     if packed:need(n<2**32 and array.array('I').itemsize==4 and array.array('d').itemsize==8,'packed platform widths/range')
@@ -833,11 +833,9 @@ def produce_coercivity_tree(a, context, meter, packed=False):
         i=order[head];head+=1
         for j,v in operator_row(a,i):
             if parent[j]!=sentinel: continue
-            sij=half_sum(v,stored_reverse(a,i,j),meter)
-            integer_charge(meter,1,DYADIC_BITS,'edge_sign_comparison')
-            if sij<0:
-                integer_charge(meter,1,DYADIC_BITS,'edge_negation')
-                parent[j]=i;edge[j]=positive_dyadic_floor(-sij,meter)
+            sij=exact.half(v,stored_reverse(a,i,j))
+            if exact.compare(sij,exact.zero)<0:
+                parent[j]=i;edge[j]=exact.floor(exact.negative(sij))
                 order[tail]=j;tail+=1
     need(tail==n,'coercivity negative-edge tree disconnected')
     packet={'method':COERCIVITY_METHOD,'matrix':operator_hash(a),'context':digest(context),
@@ -845,7 +843,7 @@ def produce_coercivity_tree(a, context, meter, packed=False):
     return packet,coercivity_digest(packet)
 
 
-def verify_coercivity_tree(a, context, packet, expected_digest, meter, refine=False, path_only=False):
+def verify_coercivity_tree(a, context, packet, expected_digest, meter, refine=False, path_only=False, exact_kernel="fixed"):
     """Independent SDD/tree coercivity proof for the complete stored operator.
 
     If S+delta*I-T is SDD, S>=T-delta*I. For nonsymmetric A,
@@ -873,21 +871,20 @@ def verify_coercivity_tree(a, context, packet, expected_digest, meter, refine=Fa
     need(all(type(i) is int and 0<=i<n for i in parent),'coercivity parent index')
     need(all(type(c) is float and math.isfinite(c) and c>=0 for c in edge)
          and edge[root]==0. and parent[root]==root,'coercivity edge shape')
-    deficit=0
-    for i,margin in enumerate(symmetric_margins(a,meter,'coercivity_verify_margins')):
-        integer_charge(meter,2,DYADIC_BITS,'deficit_negation_comparison');deficit=max(deficit,-margin)
-        if i==root:
-            integer_charge(meter)
-            need(dyadic(g,meter)<=margin,'coercivity excess root ground')
+    exact=ExactRowArithmetic(exact_kernel,meter)
+    deficit=exact.zero
+    for i,margin in enumerate(exact.rows(a,'coercivity_verify_margins')):
+        negative=exact.negative(margin)
+        if exact.compare(negative,deficit)>0:deficit=negative
+        if i==root:need(exact.compare(exact.decode(g),margin)<=0,'coercivity excess root ground')
     del margin
     meter.phase='coercivity_verify_tree';seen=bytearray(n);seen[root]=1
     for i in order:
         if i==root:continue
         j=parent[i];need(seen[j] and edge[i]>0,'coercivity parent order/edge')
         aij=stored_reverse(a,j,i);aji=stored_reverse(a,i,j)
-        sij=half_sum(aij,aji,meter)
-        integer_charge(meter,2,DYADIC_BITS,'conductance_negation_comparison')
-        need(dyadic(edge[i],meter)<=-sij,'coercivity excess tree conductance')
+        sij=exact.half(aij,aji)
+        need(exact.compare(exact.decode(edge[i]),exact.negative(sij))<=0,'coercivity excess tree conductance')
         seen[i]=True
     need(not (refine and path_only),'conflicting coercivity norm modes')
     if path_only:
@@ -897,12 +894,7 @@ def verify_coercivity_tree(a, context, packet, expected_digest, meter, refine=Fa
             if i!=root:path[i]=meter.add(path[parent[i]],meter.div(1.,edge[i]))
         rmax=max(path)
         meter.charge();radius_bound=meter.mul(float(n),rmax)
-        delta=0.
-        if deficit:
-            delta=positive_dyadic_floor(deficit,meter)
-            integer_charge(meter,1,DYADIC_BITS,'deficit_rounding_comparison')
-            if dyadic(delta,meter)<deficit:
-                meter.charge();delta=math.nextafter(delta,math.inf)
+        delta=exact.upper_nonnegative(deficit)
         shift_q=meter.mul(delta,radius_bound)
         need(shift_q<1.,'path-only diagonal deficit defeats tree bound')
         meter.charge();denominator=I.sub((1.,1.),(shift_q,shift_q))[0]
@@ -911,6 +903,10 @@ def verify_coercivity_tree(a, context, packet, expected_digest, meter, refine=Fa
         return {'status':'CERTIFIED','bound_mode':'path-only','inverse_infinity_upper':bound,
             'tree_max_inverse_diagonal_upper':rmax,'tree_radius_bound_upper':radius_bound,
             'diagonal_deficit_upper':delta,'coercivity_shift_q':shift_q,
+            'tree_structure_order':n,'tree_structure_edges':n-1,'auxiliary_solve_order':0,
+            'tree_construction_float_updates':sum(v for k,v in meter.phases.items() if k.startswith('coercivity_producer')),
+            'tree_construction_integer_units':sum(v for k,v in meter.integer_phases.items() if k.startswith('coercivity_producer')),
+            'legacy_auxiliary_fields_scope':'legacy snapshot zero fields denote auxiliary solves only; tree construction is reported explicitly here',
             'matrix_sha256':operator_hash(a),'witness_sha256':coercivity_digest(packet),
             'updates':meter.work.updates,'phase_updates':dict(meter.phases),
             'integer_operations':meter.integer_operations,'integer_phase_operations':dict(meter.integer_phases),
@@ -929,12 +925,7 @@ def verify_coercivity_tree(a, context, packet, expected_digest, meter, refine=Fa
             meter.charge()  # exact bounded integer-to-binary64 conversion
             trace=meter.add(trace,meter.div(float(mass[i]),edge[i]))
     integer_charge(meter,4,8,'isqrt_square_compare_add');root_n=math.isqrt(n);ceil_root=root_n+(root_n*root_n<n)
-    delta=0.
-    if deficit:
-        delta=positive_dyadic_floor(deficit,meter)
-        integer_charge(meter,1,DYADIC_BITS,'deficit_rounding_comparison')
-        if dyadic(delta,meter)<deficit:
-            meter.charge();delta=math.nextafter(delta,math.inf)
+    delta=exact.upper_nonnegative(deficit)
     shift_q=meter.mul(delta,trace)
     need(shift_q<1.,'coercivity diagonal deficit defeats tree bound')
     meter.charge();denominator=I.sub((1.,1.),(shift_q,shift_q))[0]
@@ -981,6 +972,10 @@ def verify_coercivity_tree(a, context, packet, expected_digest, meter, refine=Fa
     return {'status':'CERTIFIED','inverse_infinity_upper':bound,'tree_inverse_trace_upper':trace,'trace_inverse_infinity_upper':trace_bound,
             'path_cauchy_refinement':refinement,
             'diagonal_deficit_upper':delta,'coercivity_shift_q':shift_q,
+            'tree_structure_order':n,'tree_structure_edges':n-1,'auxiliary_solve_order':0,
+            'tree_construction_float_updates':sum(v for k,v in meter.phases.items() if k.startswith('coercivity_producer')),
+            'tree_construction_integer_units':sum(v for k,v in meter.integer_phases.items() if k.startswith('coercivity_producer')),
+            'legacy_auxiliary_fields_scope':'legacy snapshot zero fields denote auxiliary solves only; tree construction is reported explicitly here',
             'matrix_sha256':operator_hash(a),'witness_sha256':coercivity_digest(packet),
             'updates':meter.work.updates,'phase_updates':dict(meter.phases),
             'integer_operations':meter.integer_operations,'integer_phase_operations':dict(meter.integer_phases),
@@ -989,7 +984,7 @@ def verify_coercivity_tree(a, context, packet, expected_digest, meter, refine=Fa
             'scope':'whole stored operator; no factor, residual expansion or Schur solve'}
 
 
-def coercivity_interval_certificate(a, entries, context, meter, bound_mode="refined", packed=False):
+def coercivity_interval_certificate(a, entries, context, meter, bound_mode="refined", packed=False, exact_kernel="fixed"):
     """Whole CSR midpoint plus explicitly bound sparse interval replacements.
 
     The final infinity-norm perturbation proof supports nonsymmetric interval
@@ -1009,8 +1004,8 @@ def coercivity_interval_certificate(a, entries, context, meter, bound_mode="refi
         keys.append((i,j))
     need(keys==sorted(set(keys)),'interval replacement uniqueness/order')
     bound_context={'context':context,'interval_replacements':entries}
-    packet,h=produce_coercivity_tree(a,bound_context,meter,packed=packed)
-    result=verify_coercivity_tree(a,bound_context,packet,h,meter,refine=bound_mode=='refined',path_only=bound_mode=='path-only')
+    packet,h=produce_coercivity_tree(a,bound_context,meter,packed=packed,exact_kernel=exact_kernel)
+    result=verify_coercivity_tree(a,bound_context,packet,h,meter,refine=bound_mode=='refined',path_only=bound_mode=='path-only',exact_kernel=exact_kernel)
     meter.phase='coercivity_interval_perturbation';meter.entries(14*n+16+4*len(entries))
     rows=[0.]*n
     for i,j,lo,hi in entries:
@@ -1022,10 +1017,198 @@ def coercivity_interval_certificate(a, entries, context, meter, bound_mode="refi
     need(q<1.,'coercivity interval perturbation refuses')
     meter.charge();denominator=I.sub((1.,1.),(q,q))[0]
     bound=meter.div(result['inverse_infinity_upper'],denominator)
-    result.update(midpoint_inverse_infinity_upper=result['inverse_infinity_upper'],
+    result.update(exact_row_kernel=exact_kernel,midpoint_inverse_infinity_upper=result['inverse_infinity_upper'],
                   inverse_infinity_upper=bound,interval_perturbation_q=q,
                   interval_radius_infinity_upper=radius,
                   interval_operator_sha256=digest({'A':operator_hash(a),'context':bound_context}),
                   updates=meter.work.updates,phase_updates=dict(meter.phases),
                   peak_entries=meter.work.peak_entries)
     return result
+
+
+# Compact exact row kernel: value is integer significand * 2**exponent.
+# Normalization changes representation only; no coefficient or margin rounding.
+def compact_validate(a,meter):
+    need(type(a) is tuple and len(a)==2 and type(a[0]) is int and type(a[1]) is int,
+         'compact canonical tuple/type')
+    m,e=a;width=m.bit_length();bits=max(1,min(width,DYADIC_BITS))
+    integer_charge(meter,4,bits,'compact_validate_magnitude_width')
+    integer_charge(meter,2,16,'compact_validate_exponent')
+    need(width<=DYADIC_BITS and -1075<=e<=2048,'compact dyadic range')
+    magnitude=abs(m)
+    integer_charge(meter,4,bits,'compact_validate_canonical')
+    need((m==0 and e==0) or (m!=0 and (magnitude&1)==1),'compact canonical significand')
+    return m,e,max(1,width)
+
+
+def compact_normalize(m, e, meter):
+    need(type(m) is int and type(e) is int,'compact normalize integer types')
+    width=m.bit_length();bits=max(1,min(width,DYADIC_BITS))
+    integer_charge(meter,4,bits,'compact_sign_width')
+    integer_charge(meter,2,16,'compact_exponent_range')
+    need(width<=DYADIC_BITS and -1075<=e<=2048,'compact dyadic range')
+    magnitude=abs(m)
+    integer_charge(meter,1,bits,'compact_zero_comparison')
+    if not m:return (0,0)
+    integer_charge(meter,4,bits,'compact_trailing_zero')
+    shift=(magnitude&-magnitude).bit_length()-1
+    integer_charge(meter,1,bits,'compact_normalize_shift')
+    integer_charge(meter,3,16,'compact_normalize_exponent_and_bounds')
+    result_e=e+shift
+    need(-1075<=result_e<=2048,'compact normalized exponent range')
+    return m>>shift,result_e
+
+
+def compact_decode(v,meter):
+    import struct
+    need(type(v) is float and math.isfinite(v),'compact binary64 input')
+    integer_charge(meter,1,64,'compact_binary64_decode')
+    raw=struct.unpack('>Q',struct.pack('>d',v))[0]
+    integer_charge(meter,5,64,'compact_bit_extract')
+    sign=raw>>63;exp=(raw>>52)&2047;mant=raw&((1<<52)-1)
+    if exp:
+        integer_charge(meter,1,53,'compact_significand_add');mant+=(1<<52)
+        integer_charge(meter,1,16,'compact_exponent');e=exp-1075
+    else:e=-1074
+    if sign:
+        integer_charge(meter,1,53,'compact_negate');mant=-mant
+    return compact_normalize(mant,e,meter)
+
+
+def compact_add(a,b,meter):
+    ma,ea,wa0=compact_validate(a,meter);mb,eb,wb0=compact_validate(b,meter)
+    integer_charge(meter,2,max(wa0,wb0),'compact_zero_shortcuts')
+    if ma==0:return b
+    if mb==0:return a
+    integer_charge(meter,3,16,'compact_alignment_exponents')
+    e=min(ea,eb);sa=ea-e;sb=eb-e
+    integer_charge(meter,5,16,'compact_alignment_width_arithmetic')
+    wa=wa0+sa;wb=wb0+sb;result_width=max(wa,wb)+1
+    need(result_width<=DYADIC_BITS,'compact alignment width cap')
+    integer_charge(meter,1,wa,'compact_align_left')
+    integer_charge(meter,1,wb,'compact_align_right')
+    integer_charge(meter,1,result_width,'compact_add')
+    return compact_normalize((ma<<sa)+(mb<<sb),e,meter)
+
+
+def compact_negative(a,meter):
+    m,e,width=compact_validate(a,meter)
+    integer_charge(meter,1,width,'compact_negation')
+    return -m,e
+
+
+def compact_absolute(a,meter):
+    m,e,width=compact_validate(a,meter)
+    integer_charge(meter,1,width,'compact_absolute')
+    return abs(m),e
+
+
+def compact_half_sum(x,y,meter):
+    m,e=compact_add(compact_decode(x,meter),compact_decode(y,meter),meter)
+    integer_charge(meter,1,max(1,m.bit_length()),'compact_half_zero')
+    if not m:return 0,0
+    integer_charge(meter,1,16,'compact_half_exponent')
+    return compact_normalize(m,e-1,meter)
+
+
+def compact_to_fixed(a,meter):
+    m,e,width=compact_validate(a,meter)
+    integer_charge(meter,1,width,'compact_fixed_zero')
+    if not m:return 0
+    integer_charge(meter,1,16,'compact_fixed_exponent')
+    shift=e+DYADIC_EXPONENT
+    integer_charge(meter,4,16,'compact_fixed_width_check')
+    need(shift>=0 and width+shift<=DYADIC_BITS,'compact fixed width cap')
+    integer_charge(meter,1,width+shift,'compact_fixed_shift')
+    return m<<shift
+
+
+def compact_symmetric_margins(a,meter,phase,as_fixed=True):
+    """One exact row at a time; final margin uses the established proof ABI.
+
+    Internal accumulator exponents adapt and all rescaling remains charged.
+    as_fixed=True preserves the row-only reference interface; the complete compact
+    certificate path selects False and keeps root/deficit/edge scalars compact.
+    """
+    meter.phase=phase
+    for i in range(a.shape[0]):
+        diagonal=None;off=(0,0)
+        for j,v in operator_row(a,i):
+            if i==j:diagonal=compact_decode(v,meter)
+            else:
+                sij=compact_half_sum(v,stored_reverse(a,i,j),meter)
+                off=compact_add(off,compact_absolute(sij,meter),meter)
+        need(diagonal is not None,'coercivity diagonal required')
+        margin=compact_add(diagonal,compact_negative(off,meter),meter)
+        yield compact_to_fixed(margin,meter) if as_fixed else margin
+
+
+def compact_compare(a,b,meter):
+    ma,ea,wa=compact_validate(a,meter);mb,eb,wb=compact_validate(b,meter)
+    integer_charge(meter,8,max(wa,wb),'compact_compare_sign_and_branches')
+    sa=(ma>0)-(ma<0);sb=(mb>0)-(mb<0)
+    if sa!=sb:
+        integer_charge(meter,3,16,'compact_compare_differing_sign_result')
+        return (sa>sb)-(sa<sb)
+    if sa==0:return 0
+    integer_charge(meter,3,16,'compact_compare_leading_position')
+    la,lb=ea+wa,eb+wb
+    if la!=lb:
+        integer_charge(meter,4,16,'compact_compare_differing_position_result')
+        return sa*((la>lb)-(la<lb))
+    integer_charge(meter,3,16,'compact_compare_alignment')
+    e=min(ea,eb);shift_a=ea-e;shift_b=eb-e
+    integer_charge(meter,5,16,'compact_compare_width_precheck')
+    width=max(wa+shift_a,wb+shift_b)
+    need(width<=DYADIC_BITS,'compact compare width cap')
+    integer_charge(meter,8,width,'compact_compare_absolute_shift_compare')
+    aa=abs(ma)<<shift_a;bb=abs(mb)<<shift_b
+    return sa*((aa>bb)-(aa<bb))
+
+
+def compact_positive_floor(a,meter):
+    m,e,width=compact_validate(a,meter)
+    integer_charge(meter,1,width,'compact_floor_positive')
+    need(m>0,'compact floor requires positive input')
+    integer_charge(meter,2,16,'compact_floor_shift_selection')
+    shift=max(0,width-53)
+    integer_charge(meter,1,width,'compact_floor_shift')
+    significand=m>>shift
+    integer_charge(meter,1,16,'compact_floor_exponent')
+    exponent=e+shift
+    meter.charge(2)
+    try:result=math.ldexp(float(significand),exponent)
+    except OverflowError:need(False,'compact coefficient overflow')
+    need(math.isfinite(result) and result>0,'compact coefficient underflow/overflow')
+    need(compact_compare(compact_decode(result,meter),a,meter)<=0,'compact coefficient floor rounding refusal')
+    return result
+
+
+class ExactRowArithmetic:
+    """Small dispatch for the two retained exact representations, same proof."""
+    def __init__(self,mode,meter):
+        need(mode in ('fixed','compact'),'unknown exact row kernel')
+        self.compact=mode=='compact';self.meter=meter
+        self.zero=(0,0) if self.compact else 0
+    def rows(self,a,phase):
+        return compact_symmetric_margins(a,self.meter,phase,as_fixed=False) if self.compact else symmetric_margins(a,self.meter,phase)
+    def decode(self,v):
+        return compact_decode(v,self.meter) if self.compact else dyadic(v,self.meter)
+    def half(self,x,y):
+        return compact_half_sum(x,y,self.meter) if self.compact else half_sum(x,y,self.meter)
+    def compare(self,a,b):
+        if self.compact:return compact_compare(a,b,self.meter)
+        integer_charge(self.meter,3,DYADIC_BITS,'exact_compare')
+        return (a>b)-(a<b)
+    def negative(self,a):
+        if self.compact:return compact_negative(a,self.meter)
+        integer_charge(self.meter,1,DYADIC_BITS,'exact_negate');return -a
+    def floor(self,a):
+        return compact_positive_floor(a,self.meter) if self.compact else positive_dyadic_floor(a,self.meter)
+    def upper_nonnegative(self,a):
+        if self.compare(a,self.zero)==0:return 0.
+        result=self.floor(a)
+        if self.compare(self.decode(result),a)<0:
+            self.meter.charge();result=math.nextafter(result,math.inf)
+        need(math.isfinite(result) and self.compare(self.decode(result),a)>=0,'exact upper conversion refusal')
+        return result

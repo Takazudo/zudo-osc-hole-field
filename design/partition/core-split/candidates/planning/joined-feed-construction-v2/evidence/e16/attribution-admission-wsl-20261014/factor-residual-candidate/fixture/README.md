@@ -125,3 +125,8 @@ entrypoint is enabled. See `../structured-coercivity-increment.md`.
 `test_virtual.py` covers nonowning joined rows, packed witnesses and the cheaper
 path-only norm. Explicit access counters include reverse-search comparisons and
 repeated validation/hash scans. See `../virtual-path-increment.md`.
+
+`test_compact.py` verifies bounded exact significand/exponent row and scalar
+arithmetic against the fixed representation and independent exact references.
+Its kernel count and width-dependent bit-work must both be reported; compact
+representation is not a production fit claim. See `../compact-increment.md`.
