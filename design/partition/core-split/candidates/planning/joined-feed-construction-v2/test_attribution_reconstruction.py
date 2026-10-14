@@ -271,6 +271,11 @@ class Reconstruction(unittest.TestCase):
             self.assertEqual(report['operator_contract']['missing_original_mapping_fields'], ['group','vertex_node','xy'])
             self.assertIsNone(report['production_request_sha256'])
             self.assertIsNone(report['production_execute_command'])
+            selected = report['selected_experiment']
+            self.assertEqual(selected['current_A'], 1.)
+            self.assertNotIn('current_A', selected['observation'])
+            self.assertFalse(selected['simultaneous_load_reconstruction'])
+            self.assertEqual(selected['mechanism_screen']['incomplete_or_unresolved'], 'inconclusive; does not support the via')
             with tempfile.TemporaryDirectory() as directory:
                 path = Path(directory)/'readiness.json'
                 self.assertEqual(B.main(['--readiness','--output',str(path)]), 2)

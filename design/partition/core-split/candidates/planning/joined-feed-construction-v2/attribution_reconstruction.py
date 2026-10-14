@@ -468,13 +468,33 @@ def readiness():
     saved = sorted(ast.literal_eval(k) for k in assignments[0].keys)
     required = ['group', 'xy', 'vertex_node']
     missing = sorted(set(required)-set(saved))
-    experiment = json.loads((here/'evidence/e16/resistance-attribution-wsl-20261014/transfer-experiment.json').read_text())
+    spec_path = here/'evidence/e16/resistance-attribution-wsl-20261014/transfer-experiment.json'
+    experiment = json.loads(spec_path.read_text())
+    prior = experiment['diagnostic_B']
+    # Project only the selected identity/bounds, not the older loaded-field
+    # reconstruction scope or its loaded observation current of 0.004 A.
+    selected = {'net': prior['net'], 'case': prior['case'], 'depth_case': prior['depth_case'],
+                'return_state': prior['return_state'], 'mode': 'unit_current', 'current_A': 1.,
+                'observation': {k: prior['observation'][k] for k in ('board', 'ref', 'pin', 'pad_id')},
+                'held_sources': experiment['original_source_support']['pads']['+12V'],
+                'original_transfer_via': experiment['mechanism']['original_via'],
+                'bounds': {k: v for k, v in prior['bounds'].items() if k != 'charge_if_admitted'},
+                'scope': 'Complete unchanged KA + interfaces/wire + KB; exactly one selected unit-current field reconstruction.',
+                'simultaneous_load_reconstruction': False,
+                'loaded_comparison': 'Read-only existing JSON watts only; no additional loaded-field reconstruction or solve.',
+                'mechanism_screen': {'minimum_nominal_copper_share': .10, 'source_ref': 'TP990026',
+                                     'requires_resolved_nonzero_reaction': True,
+                                     'complete_favorable': 'supports considering a separately authorized Stage D only',
+                                     'complete_adverse': 'reject mechanism as next repair for this observation; retain largest reconciled contribution',
+                                     'incomplete_or_unresolved': 'inconclusive; does not support the via'},
+                'predecessor_spec_sha256': hashlib.sha256(spec_path.read_bytes()).hexdigest(),
+                'scope_override': 'Current task authorizes one selected 1 A excitation only; predecessor specification is preserved unchanged.'}
     return {'schema': 'e16-reconstruction-readiness-v1',
             'B0': 'TINY_BRIDGE_IMPLEMENTED; test/review verdicts are separate evidence',
             'B1': 'NOT_EXECUTABLE_NOT_ADMITTED', 'C': 'NOT_RUN',
             'production_request_sha256': None, 'real_diagnostic_ran': False,
             'electrical_acceptance': False, 'whole_board_acceptance': False, 'adopted': False,
-            'selected_experiment': experiment['diagnostic_B'],
+            'selected_experiment': selected,
             'operator_contract': {'persisted_fields': saved, 'missing_original_mapping_fields': missing,
                                   'original_mesh_required': True, 'scalar_dpoint_is_full_field': False},
             'blocking_operations': [

@@ -1,0 +1,159 @@
+{
+  "schema": "e16-reconstruction-checkpoint-v1",
+  "observed_at_utc": "2026-10-14T07:53:58.709541+00:00",
+  "B0": {
+    "status": "PASS_BOUNDED_SOURCE_FIXTURES_ONLY",
+    "production_driver": "NOT_IMPLEMENTED: precise uniqueness/resource/serialized-operation blocker",
+    "independent_review": "numerical-review.md: final mathematical helpers57PASS; resource-review.md final readiness delta binds exact finalsource957c4a96 and tests6a428892; final296E16PASS"
+  },
+  "B1": {
+    "status": "NOT_EXECUTABLE_NOT_ADMITTED",
+    "request_sha256": null,
+    "real_diagnostic_ran": false,
+    "real_pickle_loaded": false,
+    "reservation_created": false,
+    "approval_created": false
+  },
+  "C": "NOT_RUN",
+  "source_sha256": {
+    "attribution_reconstruction.py": {
+      "size_bytes": 32511,
+      "sha256": "957c4a96e5e65275e4c66eee6282ae6c2c91eeb2d491933f6695a7889e0fb50a"
+    },
+    "test_attribution_reconstruction.py": {
+      "size_bytes": 19775,
+      "sha256": "6a428892d3f19f274d6e7efc59a8b8aa976396f563fab9936a2ad0d433530982"
+    },
+    "resistance_attribution.py": {
+      "size_bytes": 24452,
+      "sha256": "67c9735f1519b49e69cab61dfaea8947d5f7d9838185cce7f87eca0070deca70"
+    },
+    "test_resistance_attribution.py": {
+      "size_bytes": 18278,
+      "sha256": "fb0630b0b226f94654087a8e1e1ac059dc8845ed68a615cbcf48b0a8dd468848"
+    },
+    "finite_adapter.py": {
+      "size_bytes": 13741,
+      "sha256": "f313a87719aba83b169a363c05d36daa5c79cd28ad41620e5d45c5d8eca613f4"
+    },
+    "finite_solve.py": {
+      "size_bytes": 30906,
+      "sha256": "20b1b9e1e7ba8653d3268c4956dc5415b91670e23f07e35ab381d2091f84b044"
+    },
+    "finite_units.py": {
+      "size_bytes": 9537,
+      "sha256": "4b7d02381a98a3f006394b0bb5988503c5fc3122c39fede3dfaecfd8fb153ffc"
+    },
+    "numerical_unit_guard.py": {
+      "size_bytes": 4941,
+      "sha256": "513efaf0b4f4a5bb1f94c15190822a2a79d84df399f83e69d7ed0297444ea571"
+    }
+  },
+  "focused": {
+    "tests": 57,
+    "status": "PASS",
+    "bridge_tests": 23,
+    "predecessor_reporter_tests": 34,
+    "independent": true
+  },
+  "final_e16": {
+    "tests": 296,
+    "status": "PASS",
+    "command": "/home/takazudo/.cache/zudo-e16-numerical-venv/bin/python -m unittest discover -s design/partition/core-split/candidates/planning/joined-feed-construction-v2 -p 'test_*.py'",
+    "source_bindings": {
+      "attribution_reconstruction.py": {
+        "size_bytes": 32511,
+        "sha256": "957c4a96e5e65275e4c66eee6282ae6c2c91eeb2d491933f6695a7889e0fb50a"
+      },
+      "test_attribution_reconstruction.py": {
+        "size_bytes": 19775,
+        "sha256": "6a428892d3f19f274d6e7efc59a8b8aa976396f563fab9936a2ad0d433530982"
+      },
+      "resistance_attribution.py": {
+        "size_bytes": 24452,
+        "sha256": "67c9735f1519b49e69cab61dfaea8947d5f7d9838185cce7f87eca0070deca70"
+      },
+      "test_resistance_attribution.py": {
+        "size_bytes": 18278,
+        "sha256": "fb0630b0b226f94654087a8e1e1ac059dc8845ed68a615cbcf48b0a8dd468848"
+      },
+      "finite_adapter.py": {
+        "size_bytes": 13741,
+        "sha256": "f313a87719aba83b169a363c05d36daa5c79cd28ad41620e5d45c5d8eca613f4"
+      },
+      "finite_solve.py": {
+        "size_bytes": 30906,
+        "sha256": "20b1b9e1e7ba8653d3268c4956dc5415b91670e23f07e35ab381d2091f84b044"
+      },
+      "finite_units.py": {
+        "size_bytes": 9537,
+        "sha256": "4b7d02381a98a3f006394b0bb5988503c5fc3122c39fede3dfaecfd8fb153ffc"
+      },
+      "numerical_unit_guard.py": {
+        "size_bytes": 4941,
+        "sha256": "513efaf0b4f4a5bb1f94c15190822a2a79d84df399f83e69d7ed0297444ea571"
+      }
+    }
+  },
+  "broad_source": {
+    "tests": 1859,
+    "status": "PASS_INTERMEDIATE_SOURCE_CHECKPOINT",
+    "command": "PATH=/home/takazudo/.cache/zudo-e16-numerical-venv/bin:$PATH bash scripts/checks/run-python-tests.sh",
+    "exact_native_oracle_exclusions": 2,
+    "note": "Run began with20 new bridge regressions before3 final regressions and final resource/current-scale fixes. No exact imported intermediate-source hash was captured; final296-test E16 run and independent57 focused run bind final source. Broad suite was not repeated after scoped E16-only changes."
+  },
+  "circuit_before_after": "PASS",
+  "circuit_scope": "manual68lines; no schematic/placement binding;0 declared placements unverified; pin-asset check performed",
+  "type_generated_check": "PASS pnpm check",
+  "documentation_build": {
+    "status": "PASS",
+    "command": "bash /home/takazudo/.codex/scripts/heavy-guard.sh -- pnpm build",
+    "guard_verdict": "PASS",
+    "guard_seconds": 21,
+    "guard_min_mem_mb": 8358,
+    "pages": 301
+  },
+  "strict_site": "PASS unchanged one-entry allowlist",
+  "allowlist_sha256": "5aba57e1c9b81ab87ea0e5a944576be623cb7967f11f4a0ab00ebf6ceaf759d5",
+  "full_regeneration": "NOT RUN: dispatches native work outside admission",
+  "native_oracle": "NOT RUN: exact two discovery exclusions preserved",
+  "retained_artifact_integration": "NOT RUN: separate issue38 lane",
+  "browser": "NOT RUN: all19 input bindings unchanged",
+  "CI": "SKIPPED/NOT RUN via [skip ci]; no dispatch",
+  "numerical_toolchain": {
+    "python": "3.12.3 (main, Aug 31 2026, 10:18:26) [GCC 13.3.0]",
+    "numpy": "2.2.6",
+    "scipy": "1.15.3",
+    "shapely": "2.1.2",
+    "kernel": "/home/takazudo/.cache/zudo-e16-numerical-venv/lib/python3.12/site-packages/scipy/sparse/_sparsetools.cpython-312-x86_64-linux-gnu.so",
+    "kernel_sha256": "1a17c11de0ea4a5da4d4329cbb98a012f073f726e51739fcc8f7557df1a81f79"
+  },
+  "campaign": {
+    "ledger_path": "/home/takazudo/.cache/zudo-e16-runs/campaign-20261014/campaign-note.json",
+    "ledger_sha256": "94aafb6d13f754fdbde718a5b44c5071d946897e798a8eebf1cd4b86c0731ffb",
+    "budget": {
+      "full_baseline_limit": 3,
+      "full_baseline_used": 2,
+      "production_diagnostic_limit": 24,
+      "production_diagnostic_used": 8
+    },
+    "new_baselines": 0,
+    "new_diagnostics": 0,
+    "attempt5": "terminal148 completed units/147 numerical PASS; electrical compliance FAIL"
+  },
+  "preservation": {
+    "solver_files": 135,
+    "solver_bytes": 844803369,
+    "solver_size_hash_mismatches": 0,
+    "request_bound_plus12_inputs": 60,
+    "topic_protected": 539,
+    "original_protected": 550,
+    "mac_bindings": 19,
+    "mismatches": 0
+  },
+  "cleanup": "All invoked test/build processes completed; no production process/scope/claim/reservation created. Worktree and draft branch retained for unmerged checkpoint.",
+  "electrical_acceptance": false,
+  "whole_board_acceptance": false,
+  "adopted": false,
+  "source_commit": "aab6d3d4 (initial implementation); final readiness correction and evidence follow separately"
+}
