@@ -28,6 +28,13 @@ import attribution_resolution as V
 from resistance_attribution import need
 
 METHOD = 'synthetic-fixed-pattern-factor-residual-v1'
+WEIGHT_METHOD = 'synthetic-eight-pass-comparison-picard-v1'
+WEIGHT_PASSES = 8
+
+
+class ResidualRow(dict):
+    """Named row type lets regression tests observe actual object destruction."""
+
 
 
 def digest(x):
@@ -49,6 +56,9 @@ class Meter:
         self.offset = 0
         self.started = time.monotonic()
         self.dropped_products = 0
+        self.weight_passes_completed = 0
+        self.weight_outputs = []
+        self.board_certificates = []
 
     def charge(self, n=1):
         need(time.monotonic() - self.started < 30, 'fixture wall-time cap')
@@ -131,7 +141,7 @@ def produce(a, context, pattern, meter):
     return witness, digest(witness)
 
 
-def verify(a, context, w, expected_digest, meter):
+def validate_factor(a, context, w, expected_digest):
     validate_a(a)
     n = a.shape[0]
     need(w.get('method') == METHOD and w.get('matrix') == I.matrix_hash(a) and w.get('context') == digest(context), 'stale matrix/context/method binding')
@@ -150,54 +160,157 @@ def verify(a, context, w, expected_digest, meter):
                 need(type(j) is int and 0 <= j < n and type(v) is float and math.isfinite(v) and v != 0 and j in pattern[i], 'factor coefficient/index/pattern')
                 need(j < i if triangular == 'L' else j >= i, 'nontriangular factor')
             if triangular == 'U': need(i in js, 'missing U diagonal')
-    retained = sum(map(len, L)) + sum(map(len, U))
-    base = retained + sum(map(len, pattern)) + 8*n
-    meter.entries(base)
-    meter.phase = 'residual'
+    return n, L, U
+
+
+def storage_base(w, n, weighted=False):
+    # Slot model, NOT Python bytes. Extra 8n covers weight packet, old/new p,
+    # comparison RHS/y/z, weighted result and serial solve overlap.
+    return sum(map(len, w['L'])) + sum(map(len, w['U'])) + sum(map(len, w['pattern'])) + (16 if weighted else 8)*n
+
+
+def residual_rows(a, w, meter, base, weights=None, approximate=False):
+    """Exhaustive row stream. Approximate mode is producer-only, never proof."""
     r = []
-    for i in range(n):
-        row = {}
+    for i in range(a.shape[0]):
+        row = ResidualRow()
         def put(j, val):
             if j not in row: meter.entries(base + len(row) + 1)
             row[j] = val
-        for p in range(a.indptr[i], a.indptr[i+1]):
-            v = float(a.data[p]); put(int(a.indices[p]), (v, v))
-        for k, lik in chain(((i, 1.),), L[i]):
-            for j, ukj in U[k]:
-                meter.charge(2)  # product and interval subtraction, no omitted fill
-                put(j, I.sub(row.get(j, I.ZERO), I.mul((lik, lik), (ukj, ukj))))
+        for pos in range(a.indptr[i], a.indptr[i+1]):
+            v = float(a.data[pos]); put(int(a.indices[pos]), v if approximate else (v, v))
+        for k, lik in chain(((i, 1.),), w['L'][i]):
+            for j, ukj in w['U'][k]:
+                meter.charge(2)
+                value = (row.get(j, 0.) - lik*ukj if approximate else
+                         I.sub(row.get(j, I.ZERO), I.mul((lik, lik), (ukj, ukj))))
+                if approximate: need(math.isfinite(value), 'weight producer residual overflow')
+                put(j, value)
         acc = 0.
-        for value in row.values(): acc = meter.add(acc, I.magnitude(value))
+        for j, value in row.items():
+            v = abs(value) if approximate else I.magnitude(value)
+            if weights is not None:
+                if approximate:
+                    meter.charge(); v *= weights[j]
+                else: v = meter.mul(v, weights[j])
+            if approximate:
+                meter.charge(); acc += v
+                need(math.isfinite(acc), 'weight producer accumulation overflow')
+            else: acc = meter.add(acc, v)
         r.append(acc)
+        # Both closure and dictionary die BEFORE reducing the live reservation.
+        # The scalar interval `value` stays covered by the vector/scratch reserve.
+        del put, row
         meter.entries(base)
+    return r
 
-    def comparison(rhs, phase):
-        meter.phase = phase
-        y = [0.]*n
+
+def comparison_vector(w, rhs, meter, phase, approximate=False):
+    meter.phase = phase
+    n = len(rhs); y = [0.]*n; z = [0.]*n
+    def step(val, coefficient, previous):
+        if approximate:
+            meter.charge(2)
+            result = val + abs(coefficient)*previous
+            need(math.isfinite(result), 'weight producer comparison overflow')
+            return result
+        return meter.add(val, meter.mul(abs(coefficient), previous))
+    for i in range(n):
+        val = rhs[i]
+        for j, lij in w['L'][i]: val = step(val, lij, y[j])
+        y[i] = val
+    for i in range(n-1, -1, -1):
+        val = y[i]
+        for j, uij in w['U'][i]:
+            if j > i: val = step(val, uij, z[j])
+        diagonal = abs(w['U'][i][0][1])
+        if approximate:
+            meter.charge(); z[i] = val/diagonal
+            need(math.isfinite(z[i]) and z[i] > 0, 'weight producer comparison underflow/overflow')
+        else: z[i] = meter.div(val, diagonal)
+    return z
+
+
+def weight_packet(a, context, w, values, origin):
+    """Bind actual exact binary64 weights; origin is descriptive, never trusted."""
+    return {'method': WEIGHT_METHOD, 'matrix': I.matrix_hash(a),
+            'context': digest(context), 'factor': digest(w), 'values': values,
+            'origin': origin}
+
+
+def validate_weights(a, context, w, packet, expected_digest):
+    need(type(packet) is dict and set(packet) == {'method','matrix','context','factor','values','origin'}, 'weight schema')
+    values = packet['values']
+    need(type(values) is list and len(values) == a.shape[0], 'weight shape')
+    # Reject extreme scales explicitly. No silent normalization or clipping.
+    need(all(type(v) is float and math.isfinite(v) and 2.**-400 <= v <= 2.**400 for v in values), 'weight positivity/finiteness/scale')
+    need(packet['method'] == WEIGHT_METHOD and packet['matrix'] == I.matrix_hash(a)
+         and packet['context'] == digest(context) and packet['factor'] == digest(w), 'stale weight input binding')
+    need(type(packet['origin']) is str and digest(packet) == expected_digest, 'stale weight digest')
+    return values
+
+
+def produce_weights(a, context, w, expected_digest, meter):
+    """Exactly eight Picard passes; no oracle, auxiliary system or convergence claim.
+
+    p <- G(1 + |A-LU|p), G=C(U)^-1 C(L)^-1. Recompute one approximate
+    residual row at a time rather than retain E. The independent verifier must
+    recompute outward E and all inequalities from actual inputs.
+    """
+    n, _, _ = validate_factor(a, context, w, expected_digest)
+    base = storage_base(w, n, True); meter.entries(base)
+    p = [1.]*n
+    for _ in range(WEIGHT_PASSES):
+        meter.phase = 'weight_production_residual'
+        rhs = residual_rows(a, w, meter, base, p, approximate=True)
+        meter.phase = 'weight_production_rhs'
         for i in range(n):
-            val = rhs[i]
-            for j, lij in L[i]: val = meter.add(val, meter.mul(abs(lij), y[j]))
-            y[i] = val  # exact unit L diagonal, implicit by schema
-        z = [0.]*n
-        for i in range(n-1, -1, -1):
-            val = y[i]
-            for j, uij in U[i]:
-                if j > i: val = meter.add(val, meter.mul(abs(uij), z[j]))
-            z[i] = meter.div(val, abs(U[i][0][1]))
-        return max(z)
-    q = comparison(r, 'comparison_residual')
-    k = comparison([1.]*n, 'comparison_ones')
+            meter.charge(); rhs[i] += 1.
+            need(math.isfinite(rhs[i]), 'weight producer RHS overflow')
+        new_p = comparison_vector(w, rhs, meter, 'weight_production_comparison', approximate=True)
+        need(all(2.**-400 <= v <= 2.**400 for v in new_p), 'weight producer scale refusal')
+        p = new_p
+        del new_p, rhs
+        meter.weight_passes_completed += 1
+    packet = weight_packet(a, context, w, p, 'candidate:fixed-eight-pass')
+    meter.weight_outputs.append({'sha256': digest(packet), 'passes': WEIGHT_PASSES, 'min': min(p), 'max': max(p)})
+    return packet, digest(packet)
+
+
+def verify(a, context, w, expected_digest, meter, weights=None, expected_weights_digest=None):
+    n, L, U = validate_factor(a, context, w, expected_digest)
+    p = None if weights is None else validate_weights(a, context, w, weights, expected_weights_digest)
+    need(weights is not None or expected_weights_digest is None, 'missing bound weights')
+    retained = sum(map(len, L)) + sum(map(len, U))
+    base = storage_base(w, n, p is not None); meter.entries(base)
+    meter.phase = 'weighted_residual' if p is not None else 'residual'
+    r = residual_rows(a, w, meter, base, p)
+    z = comparison_vector(w, r, meter, 'comparison_residual')
+    if p is not None:
+        meter.phase = 'weighted_comparison_scaling'
+        q = max(meter.div(v, pi) for v, pi in zip(z, p))
+    else: q = max(z)
+    del z
+    y = comparison_vector(w, [1.]*n, meter, 'comparison_ones')
+    if p is not None:
+        meter.phase = 'weighted_comparison_scaling'
+        k = max(meter.div(v, pi) for v, pi in zip(y, p))
+    else: k = max(y)
+    del y
     result = {'q': q, 'K': k, 'factor_entries': retained, 'residual_row_upper': r,
+              'factor_sha256': digest(w),
+              'weights_sha256': None if weights is None else digest(weights),
+              'max_weight': 1. if p is None else max(p),
               'updates': meter.work.updates, 'phase_updates': dict(meter.phases),
               'peak_entries': meter.work.peak_entries, 'dropped_products': meter.dropped_products}
     if q >= 1:
         result.update(status='REFUSED', reason='comparison residual norm is not below one')
         return result
-    meter.phase = 'neumann'
-    meter.charge()
+    meter.phase = 'neumann'; meter.charge()
     denominator = I.sub((1.,1.), (q,q))[0]
     need(denominator > 0, 'unresolved Neumann denominator')
     inv = meter.div(k, denominator)
+    if p is not None: inv = meter.mul(max(p), inv)
     result.update(status='CERTIFIED', inverse_infinity_upper=inv,
                   updates=meter.work.updates, phase_updates=dict(meter.phases))
     return result
@@ -230,6 +343,7 @@ def small_inverse_witness(s, meter):
     """Fixed-order float Gauss-Jordan; success is NOT certification."""
     n=len(s);need(0<n<=8,'tiny Schur order cap')
     meter.phase='schur_inverse_production'
+    meter.charge(3*n*n)  # two midpoint products plus addition per entry
     rows=[[float((s[i][j][0]*.5)+(s[i][j][1]*.5)) for j in range(n)] + [float(i==j) for j in range(n)] for i in range(n)]
     for k in range(n):
         pivot=rows[k][k];need(math.isfinite(pivot) and pivot!=0,'small inverse fixed pivot refusal')
@@ -261,13 +375,16 @@ def schur_inverse_bound(s, meter):
     return meter.div(knorm,denominator),q
 
 
-def block_certificate(blocks, D, context, meter, patterns=None):
+def block_certificate(blocks, D, context, meter, patterns=None, weight_mode=None, supplied_weights=None):
     """Tiny factor-only Schur bridge, with original lower couplings B.T.
 
     blocks: [(A,B), ...], stored full operator [[diag(A),B],[B.T,D]].
     No original A*Y check or new physical RHS. h are certificate witnesses only.
     """
     import numpy as np
+    need(weight_mode in (None, 'candidate', 'supplied'), 'unknown weight mode')
+    need((weight_mode == 'supplied') == (supplied_weights is not None), 'supplied weight mode mismatch')
+    if supplied_weights is not None: need(len(supplied_weights) == len(blocks), 'supplied weight board count')
     m=len(D);need(0<m<=8 and all(len(row)==m for row in D),'small terminal shape')
     def interval(x):
         need(isinstance(x,tuple) or type(x) in (float,np.float64),'D scalar must be exact binary64')
@@ -290,7 +407,15 @@ def block_certificate(blocks, D, context, meter, patterns=None):
         # Fixed sparse original pattern; tiny fixtures may select full explicitly.
         pattern=pattern_of(a,full=True) if patterns is None else patterns[board_index]
         w,h=produce(a,{**context,'board':board_index},pattern,meter)
-        cert=verify(a,{**context,'board':board_index},w,h,meter)
+        board_context={**context,'board':board_index}
+        packet=packet_hash=None
+        if weight_mode == 'candidate':
+            packet,packet_hash=produce_weights(a,board_context,w,h,meter)
+        elif weight_mode == 'supplied':
+            packet,packet_hash=supplied_weights[board_index]
+        cert=verify(a,board_context,w,h,meter,packet,packet_hash)
+        p=None if packet is None else packet['values']
+        meter.board_certificates.append(cert)
         need(cert['status']=='CERTIFIED','board factor residual refuses')
         certificates.append(cert)
         meter.phase='coupling_norms'
@@ -308,7 +433,12 @@ def block_certificate(blocks, D, context, meter, patterns=None):
         for j in range(m):
             values=signed_factor_solve(w,B[:,j],meter)
             meter.phase='schur_construction'
-            correction=meter.mul(ratio,max(map(I.magnitude,values)))
+            if p is None:
+                correction=meter.mul(ratio,max(map(I.magnitude,values)))
+            else:
+                # Same weighted norm as the board proof, then convert to inf.
+                hnorm=max(meter.div(I.magnitude(v),pi) for v,pi in zip(values,p))
+                correction=meter.mul(max(p),meter.mul(ratio,hnorm))
             for i in range(m):
                 value=s[i][j]
                 for k,bki in enumerate(B[:,i]):
@@ -329,5 +459,6 @@ def block_certificate(blocks, D, context, meter, patterns=None):
     bound=meter.mul(meter.mul(meter.add(1.,forward),diagonal),meter.add(1.,backward))
     return {'status':'CERTIFIED','global_input_sha256':global_input_digest,'inverse_infinity_upper':bound,'schur_intervals':s,
             'schur_inverse_infinity_upper':inv_s,'schur_q':q_s,'boards':certificates,
+            'certificate_sha256':digest({'inputs':global_input_digest,'weights':[c['weights_sha256'] for c in certificates], 'factors':[c['factor_sha256'] for c in certificates],'patterns':patterns,'weight_mode':weight_mode}),
             'updates':meter.work.updates,'phase_updates':dict(meter.phases),
             'peak_entries':meter.work.peak_entries}

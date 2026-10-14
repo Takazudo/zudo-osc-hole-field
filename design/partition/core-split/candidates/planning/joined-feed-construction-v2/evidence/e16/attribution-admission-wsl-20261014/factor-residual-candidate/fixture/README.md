@@ -78,3 +78,31 @@ The order-16 successful bounds have exact Fraction inverse checks; order-64 uses
 
 
 The block API rejects non-binary64 B arrays, foreign singleton D scalars, malformed/nonfinite D interval endpoints and foreign signed-solve RHS values. Freshly computed outputs include a global input digest over context, both original A hashes, every B coefficient and the full initial D interval entries. Mutation tests cover B, D and context. This is only a construction binding, not an authenticated or independently reusable certificate packet. A future serialized production witness must additionally bind the complete request, original wire identities/coefficients and all live source/input identities through the existing admission mechanism. The current block routine recomputes every witness from its actual inputs and does not accept a cached global result.
+
+## Constructive weighted extension (2026-10-15)
+
+The historical results above remain preserved. The same `prototype.py` now adds
+fixed-eight-pass non-oracle weights, independent outward weighted validation,
+weighted signed-solve Schur correction, and an actual residual-row lifetime fix.
+See [weighted-increment.md](../weighted-increment.md) for the theorem mapping,
+full case table, measured resource scope and reviewed **no-real-request** decision.
+
+Run `fixture/test_weighted.py` under the same venv, thread settings and outer
+30-second timeout as the legacy runner. Eight new tests pass; outputs are
+`weighted-tests.txt` and `weighted-results.json`. The unchanged18 legacy tests
+also pass, retained separately as `weighted-legacy-tests.txt` and
+`weighted-legacy-results.json`; old `tests.txt`/`results.json` are not overwritten.
+The separate reviewer runner is `../independent-weighted-oracle.py`.
+
+The candidate emits positive weights but fails contraction on all tested rooted
+trees, including held-out9x9; exact Fraction checking confirms q>1 on tree4.
+A retained incomplete-grid4 case succeeds, and weighted tiny coupled proofs work,
+but eight full residual passes already exceed original cost limits by a proved
+lower bound. No oracle weights are presented as candidate output. The optional
+direct supersolution condition is not implemented. This is a synthetic certificate
+increment and a concrete rejected producer, not original-data qualification.
+
+In the comparison JSON, the key `"None"` denotes the unweighted control. Missing
+arithmetic-phase keys mean zero charges in that phase. Exact reference and
+physical functional calls are outside the certificate-kernel meter, explicitly
+labeled; reported kernel totals are not full production-pipeline operation costs.

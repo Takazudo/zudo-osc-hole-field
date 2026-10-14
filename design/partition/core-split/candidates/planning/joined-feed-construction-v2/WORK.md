@@ -1026,7 +1026,7 @@ regressions and review conclusions are committed. No job is left running and no
 unattended continuation is promised at this stopping checkpoint.
 
 
-<a id="e16-current-checkpoint"></a>
+<a id="e16-stored-operator-research-checkpoint"></a>
 
 ### Stored-operator certificate research checkpoint — 2026-10-15 JST
 
@@ -1107,3 +1107,86 @@ not acceptable. Do not port the rejected recipes, run a blind ordering, or seal
 another FULL qualification. A bounded characterization mode would need its own
 exact question and reviewed admission integration; none is currently prepared.
 The original engineering objective remains incomplete at this research checkpoint.
+
+
+<a id="e16-current-checkpoint"></a>
+
+### Constructive weighted-certificate checkpoint — 2026-10-15 JST
+
+Continued the existing executor worktree/branch from clean local and published
+`db742dcfc5022aa037895a3c30bf7b76309a9529`; no newer local work was reset or
+repeated. Ignored prototypes remain preserved, cclogs had no E16 entry, and live
+operation/process/unit/lock inspection found no competing E16 execution. This is
+the local CLI environment; no managed-cloud loader or runtime restoration applied.
+Campaign ledger hash remains
+`533ca512fc06ae6742e6e02dce3cc1a8aee83ec49fc13ebabf691a6b0c4cc4f5`,
+15/24 diagnostics, 2/3 baselines, all seven attribution charges terminal/cleaned,
+`live_owned_work=false`. Nine diagnostics remain; no additional baseline permitted.
+This increment consumed zero. Existing signing ownership/keys were not reopened.
+
+The [weighted increment](evidence/e16/attribution-admission-wsl-20261014/factor-residual-candidate/weighted-increment.md)
+implements the next constructive experiment in the same retained prototype:
+
+- Deterministic non-oracle p<-G(1+|A-LU|p), starting at1 for exactly eight passes,
+  with streamed residual rows, bounded workspace and no auxiliary global system.
+- Independent outward weighted residual/comparison proof, binding actual weights,
+  original coefficients, factors and context; scale/shape/type/underflow/overflow
+  and stale-input regressions. Signed solves and Schur radii use the same weighted
+  norm. No optional direct supersolution acceptance or original M-matrix premise.
+- Residual dictionaries and their insertion closures explicitly released before
+  reducing the live-entry count; actual weakref/frame regression over144 rows.
+  Historical results stay preserved; this is a toy lifetime correction, not an
+  allegation that the production lane breached memory.
+- Cumulative phase-separated factor/weight/residual/comparison/signed-solve/Schur
+  counts, retained failed/dropped work, explicit oracle-control setup counts,
+  both-board overlap and measured bounded fixture memory/time. Tiny Schur midpoint
+  arithmetic is now charged explicitly; old reports are not rewritten.
+
+**New concrete negative:** eight-pass tree4 weights have exact contraction
+q=1.0174973682921369 (outward1.0174973682921387), maximizing at row10. This is not
+rounding pessimism. Tree8 and held-out tree9 also refuse (q1.0176145352 and
+1.0169453662), as do weak-ground trees. The retained incomplete-grid4 does improve
+its inverse bound74.6873->51.5544, but weak-ground incomplete-grid8 refuses. Tiny
+full-factor weighted coupled examples certify, including nonsymmetric/mixed-sign
+coefficients and separately rounded distributed stamps; weak grounding certifies
+uniqueness but the actual synthetic energy/reaction screen is INCONCLUSIVE.
+Both-board success with diagonal factors still fails Schur (q1.149421).
+Oracle-weighted controls remain separately labeled and never feed the producer.
+
+**Reviewed cost rejection:** at the retained original dimensions, connected
+factors force at least171,086,376 primitive/kernel charges for eight producer
+passes alone. Even the optimistic one-contribution-per-product/sweep mapping
+requires73,322,728, before independent verification and coupled work. This is a
+rejection lower bound, not an approved counter redefinition or a production fit.
+No unknown original-data property can rescue this exact recipe's cost, so no
+characterization probe, admission branch or full qualification is warranted.
+
+**Verification:**8 new tests +18 unchanged legacy tests PASS; separate math and
+resource reviews PASS for the bounded increment and reject original use of this
+producer. Independent seeded oracle checks200 board bounds,400 Schur entries,
+100 joined bounds and the exact failed tree contraction. Pre/post circuit checks
+PASS (manual68-line inventory,0 placements, no schematic/placement binding,
+pin-asset check performed); diff hygiene PASS. Full original qualification,
+production, native/aggregate generation and broad unchanged suites NOT RUN under
+this synthetic scope. New reports/results and reviewer hashes are retained beside
+the prior evidence; see weighted-math-review.md and weighted-resource-review.md.
+
+**Next local method decision:** retain this weighted verifier and counterexample;
+remove repeated full residual production passes before another proposed fit.
+Derive a fixed bounded structured weight construction using only stored
+coefficients and a predeclared sparse traversal; account producer plus exhaustive
+verifier and Schur together before implementing a further original-data path.
+The tree4 row10 failure is a required negative control, with tree9 held out.
+Do not merely increase the iteration count, use oracle weights, fall back to the
+old unweighted tree claim, restart a general factor search or spend a diagnostic.
+No further external planning prompt or signer decision is needed for that local
+source work; no constructive replacement is claimed at this session boundary.
+
+PR277 remains draft on the same base; its description is refreshed with this
+substantive checkpoint. Recover the final evidence commit via `git rev-parse HEAD`.
+Original production/admission source, matrix/solver/refinement/RHS/held sources,
+barrel intervals/tolerances/normalization and all guard/memory/swap/output/input/
+entry/update limits are unchanged. KEEP_K1402_INCUMBENT; PR260 OPEN/draft and
+issue253 OPEN. Qualification NOT_QUALIFIED; production NOT_ADMITTED/NOT_RUN;
+actual Stage C NOT RUN. No request freeze, pending claim or unattended operation
+remains. No merge, deployment, fabrication, purchases or hardware acceptance.

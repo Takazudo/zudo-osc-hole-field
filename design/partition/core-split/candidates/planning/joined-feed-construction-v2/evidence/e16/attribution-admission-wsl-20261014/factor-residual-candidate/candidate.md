@@ -383,3 +383,14 @@ The numerical lane remains NOT ELIGIBLE, qualification NOT_QUALIFIED, production
 NOT_ADMITTED/NOT_RUN, Stage C NOT RUN. This checkpoint records a rejected scalable
 producer and two verified algebraic improvements, not completion of the original
 engineering objective or a promise of unattended work.
+
+## Constructive increment superseding the previous next-action boundary
+
+The requested bounded producer and rigorous weighted prototype have now been
+implemented in the existing fixture, with separate mathematics/resource reviews.
+[Weighted increment](weighted-increment.md) retains the new exact eight-pass
+counterexample, held-out results, corrected row lifetime accounting, full coupled
+case comparison and reviewed original-cost rejection. Earlier results and next
+steps above are historical. No original-data characterization is needed to reject
+this exact producer; no diagnostic was consumed. The next local method change must
+remove repeated full residual production passes before any fit claim or admission.
