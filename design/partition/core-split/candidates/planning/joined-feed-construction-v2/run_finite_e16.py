@@ -10,7 +10,7 @@ from pathlib import Path
 import replay_steps as rs
 HERE=Path(__file__).resolve().parent
 NETS=['+12V','-12V','+5V','AGND']
-UNIT_METHODS=['finite_units.py','finite_adapter.py','fragments.py','connectivity.py','staged_caps.py']
+UNIT_METHODS=['finite_units.py','finite_adapter.py','selective_annulus.py','fragments.py','connectivity.py','staged_caps.py']
 def main():
  p=argparse.ArgumentParser();p.add_argument('--python',required=True);p.add_argument('--run',type=Path,required=True,help='replay OUTDIR holding K?-eval-ROUND')
  p.add_argument('--round',default='t2');p.add_argument('--output',type=Path,required=True);p.add_argument('--board',choices=['KA','KB'],action='append');p.add_argument('--net',choices=NETS,action='append')

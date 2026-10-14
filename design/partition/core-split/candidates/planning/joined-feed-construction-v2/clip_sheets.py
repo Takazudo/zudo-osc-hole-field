@@ -8,6 +8,7 @@ Ground net classes, min_hole_clearance) and the reviewed access design.
 import argparse,hashlib,json,math,resource,time
 from pathlib import Path
 import shapely
+import selective_annulus
 from shapely.geometry import Point,Polygon,LineString
 from shapely.ops import unary_union
 HERE=Path(__file__).resolve().parent
@@ -18,14 +19,15 @@ MIN_WIDTH_MM=.25
 def need(c,m):
  if not c:raise ValueError(m)
 def sha(p):return hashlib.sha256(p.read_bytes()).hexdigest()
-def copper(o):
- if o['kind']=='via':return Point(o['center_mm']).buffer(o['diameter_mm']/2,quad_segs=16)
+def copper(o,layer=None):
+ if o['kind']=='via':return Point(o['center_mm']).buffer(selective_annulus.diameter(o,layer)/2,quad_segs=16)
  if o['kind']=='segment':return LineString(o['path_mm']).buffer(o['width_mm']/2,quad_segs=16)
  if o['kind']=='pad':return Polygon(o['polygon_mm'])
  return None
 def ring(r):return [[round(x,6),round(y,6)] for x,y in r.coords[:-1]]
 def clip(source,outline):
  base=Polygon(outline);need(base.is_valid,'invalid outline');sheets={};report={}
+ selective_annulus.validate_source(source)
  objects=source['objects']
  for net,layer in NET_LAYER.items():
   cuts=[]
@@ -35,7 +37,7 @@ def clip(source,outline):
     if o['rules'].get('copperpour')=='not_allowed':cuts.append(Polygon(o['polygon_mm']))
     continue
    if o.get('net')!=net:
-    g=copper(o)
+    g=copper(o,layer)
     if g is not None:cuts.append(g.buffer(CLEARANCE_MM,quad_segs=8))
     if o.get('drill_mm',0)>0:cuts.append(Point(o['center_mm']).buffer(o['drill_mm']/2+HOLE_CLEARANCE_MM,quad_segs=16))
   sheet=base.difference(unary_union(cuts))
@@ -56,7 +58,7 @@ def main():
  # Accepted for evaluate_access.py's step interface; clipping is this tool's only mode.
  p.add_argument('--clip-only',action='store_true');a=p.parse_args()
  need(not a.output.exists(),'fresh output required');start=time.monotonic()
- seals={'filtered_board':sha(a.filtered_board),'design':sha(a.design),'method':sha(Path(__file__))}
+ seals={'filtered_board':sha(a.filtered_board),'design':sha(a.design),'method':sha(Path(__file__)),'selective_annulus_method':sha(Path(selective_annulus.__file__))}
  source=json.loads(a.filtered_board.read_text());outline=json.loads(a.design.read_text())['layer_construction']['outline_inset_0p6mm_polygon_mm']
  sheets,report=clip(source,outline)
  need(sha(a.filtered_board)==seals['filtered_board'],'input changed')

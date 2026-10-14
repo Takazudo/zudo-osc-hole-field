@@ -11,7 +11,7 @@ def main():
  p=argparse.ArgumentParser();p.add_argument('--source',type=Path,required=True);p.add_argument('--clip-helper',type=Path,required=True);p.add_argument('--design',type=Path,required=True);p.add_argument('--python',type=Path,required=True);p.add_argument('--output',type=Path,required=True);a=p.parse_args()
  need(a.output.is_absolute() and not a.output.exists(),'fresh absolute output directory');a.output.mkdir()
  source=a.source.resolve();clip=a.clip_helper.resolve();design=a.design.resolve();caps=a.output/'normalized-caps.json';planes=a.output/'clipped-sheets.json';graph=a.output/'port-graph.json';census=a.output/'port-obligations.json'
- methods=[Path(__file__).resolve(),HERE/'staged_caps.py',HERE/'connectivity.py',HERE/'port_obligations.py',clip]
+ methods=[Path(__file__).resolve(),HERE/'staged_caps.py',HERE/'connectivity.py',HERE/'selective_annulus.py',HERE/'port_obligations.py',clip]
  initial={str(q):sha(q) for q in [source,design]+methods};receipts=[]
  steps=[('caps',[source,HERE/'staged_caps.py'],[str(HERE/'staged_caps.py'),'--board',str(source),'--output',str(caps)],caps),('clip',[caps,clip,design],[str(clip),'--filtered-board',str(caps),'--design',str(design),'--clip-only','--output',str(planes)],planes),('graph',[caps,planes,HERE/'connectivity.py',HERE/'staged_caps.py'],[str(HERE/'connectivity.py'),'--board',str(caps),'--planes',str(planes),'--output',str(graph)],graph),('census',[caps,planes,graph,HERE/'port_obligations.py'],[str(HERE/'port_obligations.py'),'--board',str(caps),'--planes',str(planes),'--graph',str(graph),'--output',str(census)],census)]
  for name,inputs,args,out in steps:

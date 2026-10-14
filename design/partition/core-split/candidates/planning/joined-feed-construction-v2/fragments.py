@@ -13,7 +13,7 @@ import shapely
 from shapely.geometry import Point,Polygon
 from shapely.ops import unary_union
 from shapely.strtree import STRtree
-import connectivity,staged_caps
+import connectivity,staged_caps,selective_annulus
 NET_LAYER=connectivity.NET_LAYER
 LAYERS=list(staged_caps.BANDS)
 WALL_MM=.025          # connectivity.py's annular barrel-wall test band
@@ -22,6 +22,7 @@ def need(c,m):
 class NetFragments:
  """nodes[i]: drilled polygon; ids[i] '<identity>|<layer>|<k>'; owner[i]; layer[i]; root(i) union-find."""
  def __init__(self,source,planes,net):
+  selective_annulus.validate_source(source,planes)
   closed=staged_caps.validate(source);complete=source['objects']+planes['new_objects']
   holes=defaultdict(list)
   for o in complete:
@@ -50,10 +51,10 @@ class NetFragments:
   for p in planes['clipped_sheets'][net]:
    add(p['id'],Polygon(p.get('polygon_mm',p.get('exterior')),p.get('holes_mm',p.get('holes',[]))),NET_LAYER[net])
   for o in self.objects.values():
-   g=connectivity.shape(o);band=None
+   g=connectivity.shape(o,'F.Cu');band=None
    if o['kind']=='via' or o['kind']=='pad' and o.get('drill_mm',0)>0 and len(o['layers'])>1:
     r=o['drill_mm']/2;c=Point(o['center_mm']);band=c.buffer(r+WALL_MM,quad_segs=32).difference(c.buffer(r/math.cos(math.pi/128),quad_segs=32))
-   for layer in o['layers']:add(o['id'],g,layer,band)
+   for layer in o['layers']:add(o['id'],connectivity.shape(o,layer) if selective_annulus.FIELD in o else g,layer,band)
   self.parent=list(range(len(self.nodes)));size=[1]*len(self.nodes)
   def union(i,j):
    a,b=self.root(i),self.root(j)
