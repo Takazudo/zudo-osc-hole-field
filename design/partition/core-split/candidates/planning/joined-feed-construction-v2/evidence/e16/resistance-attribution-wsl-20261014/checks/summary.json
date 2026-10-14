@@ -1,0 +1,70 @@
+{
+  "source_suite": {
+    "command": "PATH=/home/takazudo/.cache/zudo-e16-numerical-venv/bin:$PATH bash scripts/checks/run-python-tests.sh",
+    "status": "PASS",
+    "tests": 1834,
+    "exact_oracle_discovery_exclusions": 2,
+    "note": "Broad discovery covered29 attribution tests. Five subsequently added regressions and final CLI/API delta are covered by final273-test E16 run."
+  },
+  "final_e16": {
+    "command": "/home/takazudo/.cache/zudo-e16-numerical-venv/bin/python -m unittest discover -s design/partition/core-split/candidates/planning/joined-feed-construction-v2 -p test_*.py",
+    "cwd": "repository root",
+    "status": "PASS",
+    "tests": 273
+  },
+  "attribution": {
+    "status": "PASS",
+    "tests": 34,
+    "independent_review": "Final independent review records final test count and exact source hashes in review-attribution.md"
+  },
+  "circuit_check_before_after": "PASS",
+  "scope": "SCOPE: inventory provider=manual; schematic/placement binding not performed (68 lines, 0 declared placements unverified); pin-asset check performed",
+  "pnpm_check": "PASS",
+  "build": {
+    "status": "PASS",
+    "pages": 301,
+    "guard_verdict": "PASS",
+    "seconds": 18,
+    "minimum_available_mb": 8644,
+    "command": "bash /home/takazudo/.codex/scripts/heavy-guard.sh -- pnpm build"
+  },
+  "site": "PASS; unchanged one-entry link allowlist",
+  "full_regeneration": "NOT RUN: native scope not admitted; source checks are not equivalent",
+  "native_execution": "NOT ADMITTED / NOT RUN",
+  "real_data_extraction": "NOT ADMITTED / NOT RUN",
+  "native_reconciliation": "NOT RUN this increment; historical original-source reconciliation unchanged",
+  "findings_completeness": "INCOMPLETE: retained native categories capped and scope omitted",
+  "numerical_consistency": "Synthetic accounting PASS; retained attempt5 147 PASS exact original inputs only; no fresh production verdict",
+  "electrical_compliance": "FAIL for retained evaluated loaded copper observations; complete instrument not established",
+  "adoption": "NOT ADOPTED; KEEP_K1402_INCUMBENT",
+  "campaign_ledger": {
+    "full_baselines_used": 2,
+    "full_baseline_limit": 3,
+    "diagnostics_used": 8,
+    "diagnostic_limit": 24,
+    "new_consumption": 0
+  },
+  "CI": "SKIPPED/NOT RUN via [skip ci]; no CI PASS",
+  "mac_browser": "NOT RUN:19 bindings independently recalculated unchanged",
+  "retained_artifact_integration": "NOT RUN: separate issue38 integration lane",
+  "optional_source_bytes": "NOT RUN for7 absent optional local PDF caches; retained acquisition receipts untouched",
+  "protected_files": {
+    "topic_matched": 539,
+    "original_matched": 550,
+    "external_artifacts": 135,
+    "external_bytes": 844803369
+  },
+  "environment": {
+    "platform": "WSL2 Linux filesystem",
+    "node": "24.13.1",
+    "pnpm": "11.5.2",
+    "python": "3.12.3",
+    "numpy": "2.2.6",
+    "scipy": "1.15.3",
+    "shapely": "2.1.2",
+    "numerical_venv": "/home/takazudo/.cache/zudo-e16-numerical-venv",
+    "dependencies": "fresh worktree offline frozen-lockfile install; no numerical upgrades"
+  },
+  "owned_process_cleanup": "All invoked test/build processes completed; no native/numerical worker or reservation created; preexisting terminal artifacts and worktrees preserved",
+  "git_diff_check": "PASS"
+}

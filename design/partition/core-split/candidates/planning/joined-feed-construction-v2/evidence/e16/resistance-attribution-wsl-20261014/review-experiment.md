@@ -1,0 +1,33 @@
+# Independent TP990026 experiment-specification review
+
+Reviewer: `/root/state_review`, independent of specification author. Scope: transfer-experiment.json and transfer-experiment.md in the resistance-attribution-wsl-20261014 evidence directory, retained JSON/GZIP/CSV bindings and execution/geometry authority. No production/native execution, pickle loading, materialization, reservation or approval.
+
+## Findings
+
+1. **Resolved: actual baseline configuration binding.** Initial specification bound the older evidence/e16/coupled-network-config.json (SHA2563a8e189f...). The attempt5 execution used continuation-20261013b/coupled-network-config.json (SHA256f5146d0c1d77e0626a455df308f52bf953ace9806861c25438adcdf90914c107). Their source support definitions match, but scenario ledger path/hash and complete-device scope differ, so the older config cannot authenticate a claim of unchanged retained loaded reconstruction. Author corrected the binding to the actual execution config and added all28 retained read-only input entries, including ledger/service/request. Corrected source-support and numerical-tolerance copies equal the execution config.
+
+2. **Resolved: D improvement rejection criterion.** Initial “no reduction ... beyond numerical reconciliation uncertainty” was not operationally defined. Author now predeclares BOTH at least1% relative reduction and0.01mOhm (1e-5Ohm) absolute reduction in each original process case. The JSON improvement_screen and narrative expressly label these engineering screens, not forward-error bounds, and require independent robustness review. Residual/KCL/energy gates remain unchanged. The final rejection sentence says “below either required screening threshold”, agreeing with the AND acceptance rule.
+
+## Verified design and interpretation
+
+- KB U7105.4 UUIDe97b2d02-463a-5a6d-ab37-748ce29d7cf8 nominal/all-present observation exactly matches retained CSV: copper5.9921452927738486mOhm, driving-point7.173098523557978mOhm, source-relative potential-287.5290530900766uV, included current0.004A. The same pad is the worst retained KB+12V thin observation (9.261725770223796mOhm), supporting the stated selection rationale. Nominal-first scope is explicit and does not claim all-load dominance.
+- TP990026 remains a held KA source patch with TP990002/TP990014. It is correctly distinguished from the receiving observation and is not silently released or relabeled to invent a nonzero driving-point resistance.
+- Exact mechanism and delta match user/retained evidence: existing via87d2de81-b7e7-5e5c-9063-52b28f51939e at142,175 preserved; fixed4x4mm land/pad4837930f-294a-5712-878f-44a71b63bce6; only new via4cf6b906-bc79-5bcb-b06f-fe661ad1242f at141,175 with0.6/0.3mm dimensions. No143,175 alternative, bundle, larger land, altered plating/drill, original-object change or equipotential expansion.
+- Three local ideal barrel estimates match the retained report and are explicitly neither whole-network results nor additive series lower bounds. Thin half-barrel remains1.445332mOhm >1mOhm; no standalone compliance promise or +5V repair claim.
+- B is explicitly proposed/nonexecutable: one selected unit-current RHS plus separate retained loaded reconstruction, complete modeled KA+wire+KB+12V operator, one180s/2GiB/no-swap serialized diagnostic, one attempt,64MiB output, no full baseline slot. Resource feasibility is unestablished; cap means INCOMPLETE, no splitting/retry. Actual executor, complete tile inventory, sealed expected bindings/uniqueness receipt, fresh identity/tool hashes, operator admission and live reservation remain missing.
+- The10% barrel energy share plus nonzero TP990026 reaction is predeclared as an engineering prioritization threshold. It is not represented as a sensitivity or compliance bound. Incomplete mapping/reconciliation cannot advance to geometry.
+- C independent evidence review precedes D. D separately requires disposable geometry authority and candidate-bound native/numerical packets. Fresh drilled sheets/finite coverage and affected foreign nets include all antipad collateral consequences. Identical counts cannot establish non-regression. All three original process cases, source supports and included loads remain fixed; impacted AGND needs seven finite return states plus structurally floating all-three-open.
+- D's three diagnostic ceiling excludes a full baseline and cannot silently omit collateral scopes; exact native time/count remains an explicit unresolved gate. Rejected/capped/nonfinite/singular/incomplete evidence cannot become acceptance. Existing native6GiB/12GiB/no-swap/8GiBfloor/reservation controls retained.
+- Canonical boards/copper, fixed438centers/33modules, harness identities/order, sensitive groups, source/protection, original AGND via contacts and KEEP_K1402_INCUMBENT protected. Global-once allowances retained. Source/native/electrical/adoption statuses separated; none authorizes hardware adoption.
+
+## Checks and boundaries
+
+All five current direct artifact bindings match actual bytes/size. The28 retained input entries are copied from the independently hash-checked report index (all28 verified in this session). Target row independently compared with CSV, maximum thin KB+12V observation independently selected by numerical comparison. Full prior preservation audit verified135solver blobs/844,803,369bytes,539topic/550original protected files and19Mac input bindings unchanged. No test count substituted for these checks.
+
+At this review, the corrected JSON SHA256 is55eb58932ea102cbd947ec085dad1ef279e11519e396d28b84fe9803f0e1ee1b. This digest precedes resolution of finding2; final updated artifact hashes and disposition require delta review.
+
+## Final delta disposition
+
+No unresolved blocking findings in this experiment specification. Final independently rechecked JSON SHA256 `a755d4558260f5e9e669855d6464a8d3f54c64cbae44a90ea9bed211aadf7383`; narrative SHA256 `6feec56508f497be2126ccfe80dfc2a6a65573c37b381ec57a74f93e5d97268c`. All five direct bindings match actual bytes/size; the28-entry retained index is exactly equal to the previously independently verified input index. Numerical tolerances and source support match actual attempt5 configuration. README scope preserves the outstanding reconstruction-bridge/executor/admission gates and correctly reports native and geometry execution as unperformed.
+
+This PASS is review of a precisely bounded proposed specification, not admission or evidence that B/D can fit their proposed resource ceilings. B remains PROPOSED_NOT_EXECUTABLE, C awaits real evidence, D remains NOT_AUTHORIZED with native time/count and collateral comparison scope still requiring exact reviewed packets. No native/numerical command or test was executed in this delta review.
