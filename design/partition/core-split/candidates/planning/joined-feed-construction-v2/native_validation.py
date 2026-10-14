@@ -442,6 +442,90 @@ def native_guard_provenance(env, stage, target, mode, gate=Path("/epic242-gate")
     need((cgroup / "memory.max").read_text().strip() == "6442450944" and
          (cgroup / "memory.swap.max").read_text().strip() == "0", "native container memory/swap caps differ")
 
+
+def assess_native_reports(drc, census, command, *, command_complete, board_name, board_sha256):
+    """Conservative 10.0.6 report gate, separate from execution and adoption.
+
+    Inputs come from the worker's sealed, same-board phase chain. Unknown or
+    incomplete evidence never inherits a producer's PASS/accepted field.
+    """
+    reasons = []
+    counts = Counter()
+    categories = ("violations", "unconnected_items", "schematic_parity")
+    drc = drc if isinstance(drc, dict) else {}
+    census = census if isinstance(census, dict) else {}
+    if not command_complete:
+        reasons.append("native command chain incomplete")
+    if drc.get("kicad_version") != "10.0.6" or drc.get("source") != board_name:
+        reasons.append("DRC oracle or board identity missing/different")
+    if drc.get("included_severities") != ["error", "warning", "exclusion"]:
+        reasons.append("full severity coverage missing")
+    for flag in ("--severity-all", "--all-track-errors", "--schematic-parity"):
+        if flag not in command:
+            reasons.append("required DRC scope not requested: " + flag)
+    ignored = drc.get("ignored_checks")
+    if not isinstance(ignored, list) or ignored:
+        reasons.append("ignored checks present or declaration missing")
+    # Honor explicit incompleteness if a future report adds such metadata.
+    if drc.get("truncated") or drc.get("complete") is False:
+        reasons.append("report explicitly truncated/incomplete")
+    for category in categories:
+        rows = drc.get(category)
+        if not isinstance(rows, list):
+            reasons.append("required findings category missing: " + category)
+            continue
+        for row in rows:
+            if not isinstance(row, dict) or not isinstance(row.get("type"), str) or not row["type"]:
+                reasons.append("finding lacks category identity: " + category)
+                continue
+            counts[row["type"]] += 1
+            if row.get("severity") not in ("error", "warning", "exclusion"):
+                reasons.append("finding lacks severity: " + category)
+            if row.get("severity") == "exclusion":
+                reasons.append("excluded findings prevent full native acceptance")
+            if row.get("truncated"):
+                reasons.append("finding explicitly truncated: " + row["type"])
+    saturated = {kind: count for kind, count in counts.items()
+                 if count >= (499 if kind in ("clearance", "unconnected_items") else 199)}
+    if saturated:
+        reasons.append("pinned per-category reporting limit reached")
+    total = census.get("native_unconnected_edges")
+    per_net = census.get("native_open_edges_by_net")
+    edges_complete = (type(total) is int and total >= 0 and isinstance(per_net, dict)
+                      and all(type(n) is int and n >= 0 for n in per_net.values())
+                      and sum(per_net.values()) == total
+                      and census.get("board_sha256") == board_sha256)
+    if not edges_complete:
+        reasons.append("complete same-board native open-edge census missing")
+    elif isinstance(drc.get("unconnected_items"), list) and len(drc["unconnected_items"]) != total:
+        # Both quantities are all-net open edges. Never compare to unresolved pads.
+        reasons.append("DRC listed open edges disagree with complete native open-edge census")
+    pads, differences = census.get("pads"), census.get("differences")
+    pad_complete = (isinstance(pads, list) and bool(pads)
+                    and type(census.get("pad_count")) is int and len(pads) == census["pad_count"]
+                    and all(isinstance(p, dict) and type(p.get("agreement")) is bool for p in pads)
+                    and isinstance(differences, list)
+                    and differences == [p for p in pads if not p["agreement"]])
+    reconciliation = ("PASS" if not differences else "FAIL") if pad_complete and edges_complete else "INCOMPLETE"
+    if reconciliation == "INCOMPLETE":
+        reasons.append("complete connectivity reconciliation missing")
+    complete = not reasons
+    findings = sum(len(drc[c]) for c in categories if isinstance(drc.get(c), list))
+    native_status = ("BLOCKED_INCOMPLETE" if not complete else
+                     "FAIL" if findings or reconciliation != "PASS" else "PASS")
+    return {"schema": "e16-native-report-assessment-v1",
+            "command_execution": "PASS" if command_complete else "INCOMPLETE",
+            "connectivity_reconciliation": reconciliation,
+            "findings_enumeration": "COMPLETE" if complete else "INCOMPLETE",
+            "enumeration_blockers": sorted(set(reasons)),
+            "reported_counts_by_type": dict(sorted(counts.items())),
+            "saturated_categories": dict(sorted(saturated.items())),
+            "listed_unconnected_edges": len(drc["unconnected_items"]) if isinstance(drc.get("unconnected_items"), list) else None,
+            "complete_native_unconnected_edges": total if edges_complete else None,
+            "native_acceptance": native_status, "candidate_adoption": "NOT ADOPTED", "accepted": False,
+            "scope": "Native report gate only; no numerical/electrical compliance, candidate adoption or physical qualification."}
+
+
 def worker(stage, target):
     identity = verify_worker(os.environ)
     need(identity.endswith("-e16-" + target.lower()), "guard worker names different target")
@@ -458,6 +542,7 @@ def worker(stage, target):
     receipts = []
     status = "INCOMPLETE"
     error = None
+    assessment = None
     try:
         for phase, command in phase_commands(relative(ROOT, HERE / "native_validation.py"), relative(ROOT, stage), target, os.environ):
             verify_worker(os.environ)
@@ -476,13 +561,20 @@ def worker(stage, target):
                 need(sha(board) == inputs[relative(ROOT, board)], "native analysis modified preserved filled board")
             check_protected(ROOT, request["protected_sha256"])
         verify_chain(receipts, complete=True)
-        status = "NATIVE PHASES COMPLETED; REVIEW REQUIRED"
+        drc_command = next(r["command"] for r in receipts if r["phase"] == "drc")
+        assessment = assess_native_reports(read_json(output / "drc.json"), read_json(output / "connectivity.json"),
+                drc_command, command_complete=True, board_name=board.name, board_sha256=sha(board))
+        status = "NATIVE PHASES COMPLETED; " + assessment["native_acceptance"] + "; REVIEW REQUIRED"
     except (ValueError, OSError, subprocess.SubprocessError) as failure:
         error = str(failure)
     finally:
         write_json(output / "execution.json", {"schema": "e16-native-execution-v1", "worker": identity,
             "request_sha256": sha(stage / "request.json"), "status": status, "error": error,
-            "chain": receipts, "filled_board_sha256": sha(board), "accepted": False})
+            "chain": receipts, "filled_board_sha256": sha(board), "accepted": False,
+            "report_assessment": assessment or {
+                "command_execution": "INCOMPLETE", "connectivity_reconciliation": "NOT RUN",
+                "findings_enumeration": "INCOMPLETE", "native_acceptance": "BLOCKED_INCOMPLETE",
+                "candidate_adoption": "NOT ADOPTED", "accepted": False}})
     need(error is None, error)
 
 
