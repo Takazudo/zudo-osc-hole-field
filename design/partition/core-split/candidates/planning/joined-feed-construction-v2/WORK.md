@@ -1312,7 +1312,7 @@ remain; KEEP_K1402_INCUMBENT. Qualification NOT_QUALIFIED, production NOT_ADMITT
 actual Stage C NOT RUN. The local assignment remains active after publication.
 
 
-<a id="e16-current-checkpoint"></a>
+<a id="e16-compact-checkpoint"></a>
 
 ### Compact exact arithmetic checkpoint — 2026-10-15 JST
 
@@ -1347,3 +1347,47 @@ open. No original input accessed or numerical request created; ledger remains
 15/24 diagnostics,2/3 baselines. No new baseline/cap/signing/hardware action.
 KEEP_K1402_INCUMBENT; actual qualification/attribution remains unresolved.
 Publication is another checkpoint; the development assignment continues here.
+
+
+<a id="e16-current-checkpoint"></a>
+
+### Verifier-owned forest checkpoint — 2026-10-15 JST
+
+Continued after2dbab46b. [Evidence](evidence/e16/attribution-admission-wsl-20261014/factor-residual-candidate/forest-increment.md)
+implements one exhaustive exact row pass with private checked-edge selection,
+union-by-size oriented forests, conductance-preserving reroots and memoized path
+bounds. No external row summary/skip flag, duplicate full producer proof or
+adjacency copy. Stable owned inputs and before/after byte/context hashes remain
+required. The interval wrapper preserves the complete original coupled target.
+
+Proposed width-aware scalar contribution accounting now exists alongside all fine
+floating/exact-bit/index ledgers; no reset/relabel. Counts include discarded work,
+edge/path construction, tiny D midpoint and interval correction. Grid9 has455
+proposed units,328 floating calls and71857 exact kernels. Joined has42 proposed
+units and53 floating calls. These are distinct measures, not42 machine operations.
+Numerical-entry/byte correspondence has separate resource review for local design
+only; no production fit/admission. Logical25n payload and actual allocated buffers
+are reported separately. DSU buffers die before path allocation; weakref and
+heterogeneous nonroot-reroot regressions pass.
+
+All48 aggregate tests PASS;4 forest tests independently pass. Separate math oracle
+103 structural/tree-energy/inverse cases and51 full interval coupled cases PASS.
+Resource review confirms actual recurrence widths before cancellation, failed
+scopes, exact reverse searches, index accesses and streamed hashes. Reviews retain
+source identities and earlier evidence. Strong synthetic screen passes; weak
+remains INCONCLUSIVE. Actual selected attribution remains unresolved.
+
+**Next active source work:** bounded native implementation of these same exact
+kernels and forest loops, retaining all counters and independent full-range
+oracle checks; then a source-owned raw-stamp allocation prebound. Installed
+C++13 is present; Boost header is absent, no package or host changes authorized.
+A fixed34x64-bit bounded helper is a local implementation choice, not an opaque
+solve counted as one update. Keep order128 and existing synthetic resource
+limits; no original characterization until native/resource/source admission
+preconditions actually hold. Interpreted Python timings and partial tree bytes
+do not establish180s/1216MiB whole-pipeline fit.
+
+Ledger unchanged15/24 diagnostics,2/3 baselines, no new request/grant/cleanup debt.
+Original inputs/solver/RHS/normalization/tolerances and all numerical/hardware
+safeguards unchanged. KEEP_K1402_INCUMBENT; no Stage D/merge/adoption/deployment.
+This is another published checkpoint, not completion of the active assignment.

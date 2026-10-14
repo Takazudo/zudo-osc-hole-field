@@ -130,3 +130,8 @@ repeated validation/hash scans. See `../virtual-path-increment.md`.
 arithmetic against the fixed representation and independent exact references.
 Its kernel count and width-dependent bit-work must both be reported; compact
 representation is not a production fit claim. See `../compact-increment.md`.
+
+`test_forest.py` checks the verifier-owned single-row-pass forest, heterogeneous
+reroots, complete coupled intervals, discarded-scope accounting and allocation
+lifetimes. Proposed contribution units never replace the fine counters. See
+`../forest-increment.md` for the next native/preallocation work and claim limits.

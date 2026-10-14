@@ -556,7 +556,8 @@ class JoinedRows:
             for v in row:
                 need(type(v) is tuple and len(v)==2 and all(type(x) is float and math.isfinite(x) for x in v)
                      and v[0]<=v[1],'virtual terminal interval')
-                meter.charge(3);out.append(v[0]*.5+v[1]*.5)
+                with ProposedContribution(meter):
+                    meter.charge(3);out.append(v[0]*.5+v[1]*.5)
             self.midpoint.append(out)
         self.validate()
 
@@ -693,6 +694,8 @@ def integer_charge(meter, count=1, bits=DYADIC_BITS, kernel='exact_arithmetic'):
     """
     need(type(count) is int and count >= 0 and type(bits) is int and 0 < bits <= DYADIC_BITS,
          'invalid bounded integer kernel charge')
+    if getattr(meter,'contribution_active',False):
+        meter.contribution_width=max(meter.contribution_width,bits)
     if not hasattr(meter, 'integer_phases'):
         meter.integer_phases = {}; meter.integer_operations = 0; meter.integer_peak_bits = 0
         meter.integer_kernel_units = {}; meter.integer_bit_work_envelope = 0
@@ -984,7 +987,7 @@ def verify_coercivity_tree(a, context, packet, expected_digest, meter, refine=Fa
             'scope':'whole stored operator; no factor, residual expansion or Schur solve'}
 
 
-def coercivity_interval_certificate(a, entries, context, meter, bound_mode="refined", packed=False, exact_kernel="fixed"):
+def coercivity_interval_certificate(a, entries, context, meter, bound_mode="refined", packed=False, exact_kernel="fixed", forest=False):
     """Whole CSR midpoint plus explicitly bound sparse interval replacements.
 
     The final infinity-norm perturbation proof supports nonsymmetric interval
@@ -1003,20 +1006,33 @@ def coercivity_interval_certificate(a, entries, context, meter, bound_mode="refi
              and math.isfinite(hi) and lo<=hi,'interval replacement value')
         keys.append((i,j))
     need(keys==sorted(set(keys)),'interval replacement uniqueness/order')
-    bound_context={'context':context,'interval_replacements':entries}
-    packet,h=produce_coercivity_tree(a,bound_context,meter,packed=packed,exact_kernel=exact_kernel)
-    result=verify_coercivity_tree(a,bound_context,packet,h,meter,refine=bound_mode=='refined',path_only=bound_mode=='path-only',exact_kernel=exact_kernel)
+    from contextlib import nullcontext
+    bound_context={'context':context,'interval_replacements':entries};bound_context_hash=digest(bound_context)
+    if forest:
+        need(bound_mode=='path-only' and exact_kernel=='compact','forest requires compact path-only mode')
+        result=certify_forest(a,bound_context,meter)
+    else:
+        packet,h=produce_coercivity_tree(a,bound_context,meter,packed=packed,exact_kernel=exact_kernel)
+        result=verify_coercivity_tree(a,bound_context,packet,h,meter,refine=bound_mode=='refined',path_only=bound_mode=='path-only',exact_kernel=exact_kernel)
     meter.phase='coercivity_interval_perturbation';meter.entries(14*n+16+4*len(entries))
     rows=[0.]*n
     for i,j,lo,hi in entries:
         # Sparse scalar read is index work, no numerical solve or summation.
         value=operator_value(a,i,j)
-        meter.charge();difference=I.sub((lo,hi),(value,value))
-        rows[i]=meter.add(rows[i],I.magnitude(difference))
-    radius=max(rows);q=meter.mul(result['inverse_infinity_upper'],radius)
+        with (ProposedContribution(meter) if forest else nullcontext()):
+            meter.charge();difference=I.sub((lo,hi),(value,value))
+            rows[i]=meter.add(rows[i],I.magnitude(difference))
+    radius=max(rows)
+    with (ProposedContribution(meter) if forest else nullcontext()):q=meter.mul(result['inverse_infinity_upper'],radius)
     need(q<1.,'coercivity interval perturbation refuses')
-    meter.charge();denominator=I.sub((1.,1.),(q,q))[0]
-    bound=meter.div(result['inverse_infinity_upper'],denominator)
+    with (ProposedContribution(meter) if forest else nullcontext()):
+        meter.charge();denominator=I.sub((1.,1.),(q,q))[0]
+    with (ProposedContribution(meter) if forest else nullcontext()):bound=meter.div(result['inverse_infinity_upper'],denominator)
+    need(operator_hash(a)==result['matrix_sha256'] and digest(bound_context)==bound_context_hash,'interval input/context changed during proof')
+    if forest:
+        result.update(proposed_scalar_contributions=meter.proposed_scalar_contributions,
+            proposed_contribution_phases=dict(meter.proposed_contribution_phases),
+            proposed_width_histogram=dict(meter.proposed_width_histogram))
     result.update(exact_row_kernel=exact_kernel,midpoint_inverse_infinity_upper=result['inverse_infinity_upper'],
                   inverse_infinity_upper=bound,interval_perturbation_q=q,
                   interval_radius_infinity_upper=radius,
@@ -1212,3 +1228,206 @@ class ExactRowArithmetic:
             self.meter.charge();result=math.nextafter(result,math.inf)
         need(math.isfinite(result) and self.compare(self.decode(result),a)>=0,'exact upper conversion refusal')
         return result
+
+
+class ProposedContribution:
+    """Separate proposed scalar-recurrence ledger; never replaces Work/bit work.
+
+    Width includes every aligned arithmetic operand/result before normalization.
+    Failed scopes are charged. This is reviewed for local experimentation only.
+    """
+    def __init__(self,meter):self.meter=meter
+    def __enter__(self):
+        m=self.meter;need(not getattr(m,'contribution_active',False),'nested contribution scope')
+        m.contribution_active=True;m.contribution_width=64;self.phase=m.phase
+        if not hasattr(m,'proposed_scalar_contributions'):
+            m.proposed_scalar_contributions=0;m.proposed_contribution_phases={};m.proposed_width_histogram={}
+        return self
+    def __exit__(self,*exc):
+        m=self.meter;width=m.contribution_width;units=(width+63)//64
+        m.contribution_active=False
+        m.proposed_scalar_contributions+=units
+        m.proposed_contribution_phases[self.phase]=m.proposed_contribution_phases.get(self.phase,0)+units
+        m.proposed_width_histogram[width]=m.proposed_width_histogram.get(width,0)+1
+        need(m.proposed_scalar_contributions<=m.work.max_updates,'fixture proposed-contribution cap')
+        return False
+
+
+def index_visit(meter,event,count=1):
+    if not hasattr(meter,'index_visits'):
+        meter.index_visits={};meter.index_visit_total=0;meter.index_phase_visits={}
+    meter.index_visits[event]=meter.index_visits.get(event,0)+count
+    meter.index_visit_total+=count
+    meter.index_phase_visits[meter.phase]=meter.index_phase_visits.get(meter.phase,0)+count
+    need(meter.index_visit_total<=1000000,'fixture index-visit cap')
+    need(time.monotonic()-meter.started<30,'fixture index wall cap')
+
+
+def checked_coefficient(a,i,j,meter):
+    if isinstance(a,JoinedRows):
+        before=a.access['index_comparisons'];v=a.lookup(i,j,require=True)
+        index_visit(meter,'virtual_reverse_comparisons',a.access['index_comparisons']-before)
+        index_visit(meter,'coefficient_read');return v
+    lo,last=int(a.indptr[i]),int(a.indptr[i+1]);hi=last
+    while lo<hi:
+        mid=(lo+hi)//2;index_visit(meter,'reverse_search_comparison')
+        if int(a.indices[mid])<j:lo=mid+1
+        else:hi=mid
+    index_visit(meter,'reverse_final_comparison')
+    need(lo<last and int(a.indices[lo])==j,'coercivity structural symmetry required')
+    index_visit(meter,'coefficient_read');return float(a.data[lo])
+
+
+class _VerifiedForest:
+    """Private verifier-owned selected edges; no external witness admission."""
+    def __init__(self,n,meter):
+        need(n<2**32 and array.array('I').itemsize==4 and array.array('d').itemsize==8,'forest packed widths')
+        self.n=n;self.meter=meter;self.edges=0
+        meter.entries(4*n+16)  # four buffers; exact row scratch is bounded separately
+        self.parent=array.array('I',[0])*n;self.edge=array.array('d',[0.])*n
+        self.dsu=array.array('I',[0])*n;self.size=array.array('I',[1])*n
+        index_visit(meter,'buffer_initialization_elements',4*n)
+        for i in range(n):self.parent[i]=i;self.dsu[i]=i
+        index_visit(meter,'initial_parent_identity_writes',2*n)
+        meter.forest_order=n;meter.forest_selected_edges=0
+        meter.forest_buffer_allocated_peak=sum(sys.getsizeof(v) for v in (self.parent,self.edge,self.dsu,self.size))
+    def find(self,v):
+        root=v;steps=0
+        while True:
+            index_visit(self.meter,'find_parent_read');p=self.dsu[root]
+            if p==root:break
+            root=p;steps+=1;need(steps<=self.n,'forest DSU cycle')
+        while v!=root:
+            index_visit(self.meter,'find_compression_read_write',2)
+            p=self.dsu[v];self.dsu[v]=root;v=p
+        return root
+    def reroot(self,start):
+        cur=start;prev=start;carry=0.;steps=0
+        while True:
+            index_visit(self.meter,'reroot_parent_edge_read',2)
+            following=self.parent[cur];old=self.edge[cur]
+            self.parent[cur]=prev;self.edge[cur]=carry
+            index_visit(self.meter,'reroot_parent_edge_write',2)
+            steps+=1;need(steps<=self.n,'forest parent cycle')
+            if following==cur:break
+            prev,carry,cur=cur,old,following
+    def connect(self,u,v,conductance,ru,rv):
+        need(ru!=rv,'forest duplicate component merge')
+        index_visit(self.meter,'union_size_read',2)
+        if self.size[ru]>self.size[rv]:u,v,ru,rv=v,u,rv,ru
+        need(self.parent[ru]==ru and self.parent[rv]==rv,'forest oriented-root invariant')
+        need(int(self.size[ru])+int(self.size[rv])<=self.n,'forest union size range')
+        index_visit(self.meter,'union_invariant_reads',4)
+        self.reroot(u)
+        self.parent[u]=v;self.edge[u]=conductance
+        self.dsu[ru]=rv;self.size[rv]+=self.size[ru];self.edges+=1
+        self.meter.forest_selected_edges=self.edges
+        index_visit(self.meter,'union_size_update_read',2)
+        index_visit(self.meter,'union_parent_edge_size_write',4)
+    def release_selection(self):
+        del self.dsu,self.size
+        self.meter.entries(2*self.n+16)
+
+
+def certify_forest(a,context,meter):
+    """One verifier-owned exhaustive exact row pass plus checked forest/path.
+
+    Inputs must be stably owned during verification. Before/after hashes detect
+    persistent mutations; they do not claim to defeat adversarial transient edits.
+    No caller row summary, prebuilt edge list or skip-verification flag is accepted.
+    """
+    validate_operator(a);n=a.shape[0];input_hash=operator_hash(a);context_hash=digest(context)
+    forest=_VerifiedForest(n,meter);root=-1;best=(0,0);deficit=(0,0)
+    for i in range(n):
+        meter.phase='forest_exact_rows'
+        # Initialization is a checked coefficient copy/decode, not an arithmetic
+        # destination update. Fine integer/index ledgers retain its full work.
+        margin=compact_decode(checked_coefficient(a,i,i,meter),meter)
+        for j,value in operator_row(a,i):
+            index_visit(meter,'stored_row_visit')
+            if j==i:continue
+            meter.phase='forest_exact_rows'
+            with ProposedContribution(meter):
+                symmetric=compact_half_sum(value,checked_coefficient(a,j,i,meter),meter)
+                margin=compact_add(margin,compact_negative(compact_absolute(symmetric,meter),meter),meter)
+            # Only selection sees one triangle; row verification always sees all.
+            meter.phase='forest_selection'
+            if i<j and compact_compare(symmetric,(0,0),meter)<0:
+                ru,rv=forest.find(i),forest.find(j)
+                if ru!=rv:
+                    with ProposedContribution(meter):
+                        conductance=compact_positive_floor(compact_negative(symmetric,meter),meter)
+                    forest.connect(i,j,conductance,ru,rv)
+                else:index_visit(meter,'discarded_cycle_edge')
+        meter.phase='forest_row_reductions'
+        if compact_compare(margin,best,meter)>0:root,best=i,margin
+        negative=compact_negative(margin,meter)
+        if compact_compare(negative,deficit,meter)>0:deficit=negative
+    need(root>=0,'forest no positive root margin')
+    need(forest.edges==n-1,'forest negative-edge graph disconnected')
+    meter.phase='forest_root'
+    with ProposedContribution(meter):g=compact_positive_floor(best,meter)
+    forest.reroot(root)
+    # DSU is no longer used after final root changes; release actual buffers first.
+    forest.release_selection()
+    meter.entries(5*n+16)
+    path=array.array('d',[0.])*n;state=bytearray(n);stack=array.array('I',[0])*n
+    index_visit(meter,'buffer_initialization_elements',3*n)
+    meter.forest_buffer_allocated_peak=max(meter.forest_buffer_allocated_peak,
+        sum(sys.getsizeof(v) for v in (forest.parent,forest.edge,path,state,stack)))
+    meter.phase='forest_paths'
+    with ProposedContribution(meter):path[root]=meter.div(1.,g)
+    state[root]=2;index_visit(meter,'root_path_state_writes',2)
+    for start in range(n):
+        index_visit(meter,'path_start_visit')
+        if state[start]==2:continue
+        cur=start;depth=0
+        while True:
+            index_visit(meter,'path_state_condition_read')
+            if state[cur]==2:break
+            index_visit(meter,'path_cycle_state_read')
+            need(state[cur]==0 and depth<n,'forest path cycle')
+            state[cur]=1;stack[depth]=cur;depth+=1;cur=forest.parent[cur]
+            index_visit(meter,'path_push_parent_accesses',3)
+        while depth:
+            depth-=1;v=stack[depth];p=forest.parent[v]
+            index_visit(meter,'path_pop_parent_reads',2)
+            index_visit(meter,'path_invariant_state_edge_reads',2)
+            need(state[p]==2 and forest.edge[v]>0.,'forest rooted path invariant')
+            with ProposedContribution(meter):path[v]=meter.add(path[p],meter.div(1.,forest.edge[v]))
+            index_visit(meter,'path_numeric_buffer_reads_write',3)
+            state[v]=2;index_visit(meter,'path_state_write')
+    meter.phase='forest_norm'
+    rmax=0.
+    for value in path:
+        index_visit(meter,'path_norm_buffer_read');index_visit(meter,'path_norm_comparison')
+        rmax=max(rmax,value)
+    with ProposedContribution(meter):
+        meter.charge();radius=meter.mul(float(n),rmax)
+    exact=ExactRowArithmetic('compact',meter)
+    with ProposedContribution(meter):delta=exact.upper_nonnegative(deficit)
+    with ProposedContribution(meter):q=meter.mul(delta,radius)
+    need(q<1.,'forest diagonal deficit defeats tree bound')
+    with ProposedContribution(meter):
+        meter.charge();denominator=I.sub((1.,1.),(q,q))[0]
+    with ProposedContribution(meter):bound=meter.div(radius,denominator)
+    need(math.isfinite(bound),'forest inverse-bound overflow')
+    need(operator_hash(a)==input_hash and digest(context)==context_hash,'forest input/context changed during proof')
+    witness=coercivity_digest({'method':'synthetic-verifier-owned-forest-v1','matrix':input_hash,
+        'context':context_hash,'root':root,'ground':g,'parent':forest.parent,'edge':forest.edge})
+    return {'status':'CERTIFIED','bound_mode':'verified-forest-path-only','inverse_infinity_upper':bound,
+        'tree_radius_bound_upper':radius,'tree_max_inverse_diagonal_upper':rmax,
+        'diagonal_deficit_upper':delta,'coercivity_shift_q':q,'matrix_sha256':input_hash,
+        'witness_sha256':witness,'witness_buffer_hashed_bytes':12*n,'input_hash_passes':2,'root':root,'ground':g,'tree_structure_order':n,'tree_structure_edges':forest.edges,
+        'auxiliary_solve_order':0,'tree_buffer_peak_payload_bytes':25*n,
+        'tree_buffer_allocated_peak_bytes':meter.forest_buffer_allocated_peak,
+        'updates':meter.work.updates,'phase_updates':dict(meter.phases),
+        'integer_operations':meter.integer_operations,'integer_phase_operations':dict(meter.integer_phases),
+        'integer_bit_work_envelope':meter.integer_bit_work_envelope,'integer_kernel_units':dict(meter.integer_kernel_units),
+        'index_visits':dict(meter.index_visits),'index_visit_total':meter.index_visit_total,
+        'index_phase_visits':dict(meter.index_phase_visits),
+        'proposed_scalar_contributions':meter.proposed_scalar_contributions,
+        'proposed_contribution_phases':dict(meter.proposed_contribution_phases),
+        'proposed_width_histogram':dict(meter.proposed_width_histogram),'peak_entries':meter.work.peak_entries,
+        'accounting_status':'proposed recurrence mapping; not approved for production fit',
+        'scope':'one exhaustive verifier-owned row pass; private checked forest; no auxiliary solve'}
