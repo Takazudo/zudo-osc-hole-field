@@ -1,0 +1,21 @@
+# Conditional native forest plus field-residual cost review
+
+Independent mathematics review, 2026-10-15. Source-only combinatorial review; no original archives read and no experiment requested. Verdict: the lower bound is valid under the stated metadata and accounting premises. Whether the existing 20,000,000 certificate-update cap applies to the additional original field-residual work is a separate unresolved resource/accounting question.
+
+Let F be the combined free-node count, T=2 the terminal count, and m the number of nonzero stored A entries across both boards. Assume the proposed native lane accepts: it requires every diagonal, structural reverse entries, and a connected negative symmetric-part graph over N=F+2 vertices. Its selected tree has F+1 edges. Under the reported one-terminal-per-board support upper bound 427, at most 854 tree edges can be free-terminal; at most one can join the terminals. Therefore at least F−854 tree edges lie within A. Each such undirected edge requires two stored A entries, in addition to F diagonals. Consequently m >= 3F−1708. This is a necessary condition of acceptance for this lane, not a claim that the original operator actually satisfies its acceptance hypotheses.
+
+Each native Scope contributes at least one word to the proposed scalar-contribution ledger. Even discarding all B/D row work and constant final norm work, the implementation executes at least m−F off-diagonal A row scopes, F+1 selected-edge scopes, and F+2 root/path scopes. Hence its lower bound is m+F+3. Larger exact widths, input validation, pointer work, root reductions and midpoint preparation cannot reduce this lower bound; those are not asserted to fit within it.
+
+A complete separate application of the retained resolution residual visits every stored A coefficient at least once. If each such scalar multiply/subtract recurrence is charged at least one update in the SAME allowance, the combined lower bound is 2m+F+3 >= 7F−3416+3. At the supplied retained F=3,055,115 this is 21,382,392 updates, exceeding 20,000,000 before any B residual, norm or other work. Omitting the positive constant gives the requested conservative 21,382,389.
+
+If, in addition, each board has one terminal and the retained dense B loops are used, the free residual and terminal residual each visit F entries: another 2F contributions. The resulting conservative bound is 9F−3416 = 27,492,619 (plus the three native scopes already identified). Dense zero B entries still execute these recurrences. This stronger figure is unnecessary for the conditional rejection: the A-only residual already suffices.
+
+The source `attribution_resolution.residual_bound` calls its deadline/resource budget but does not increment `attribution_uniqueness.Work.updates`. Work describes its caps as shared across both board checks and small Schur. Thus the algebra above does NOT establish that the current certificate counter actually breaches its contract, and it must not be presented as an unconditional existing-cap violation. It does establish a concrete obstruction to a proposed combined ledger that charges the full native forest and mandatory field-residual recurrences against 20M. Resource review must resolve scope without silently redefining the historical counter.
+
+If that combined scope applies, merely packing arrays, replacing Python with native code, optimizing reverse lookup or compressing wide exact words cannot remove the one-word lower bound. The next justified source change must remove or combine a counted exhaustive recurrence (with a new valid residual proof and exact input binding), or pursue a certificate architecture with a smaller necessary pass count. No cap increase or diagnostic can fix this specific structural count. If the cap excludes the field residual, this argument alone does not reject the native certificate; independent memory/deadline/entry eligibility remains necessary. Neither branch proves universal impossibility for other certificate algorithms or authorizes an original-data request.
+
+Reviewed source hashes:
+
+- `native_forest.cpp`: `07ece3a05b04515902f030fc817c96b3ff84c103eb1f540f794a257970c3a887`
+- `attribution_resolution.py`: `6bee0ce22a96719e98035184fd57131d460c7ce0220b3868cadb4ba148b8757e`
+- `attribution_uniqueness.py`: `828ec3e48ca7e05b094c32b9d8927bf10439623be80300a903d0ad7c8613da8f`

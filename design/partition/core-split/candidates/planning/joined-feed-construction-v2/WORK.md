@@ -1463,7 +1463,7 @@ Ledger unchanged15/24 diagnostics,2/3 baselines, no cleanup debt or new baseline
 KEEP_K1402_INCUMBENT; PR260 draft/unmerged and issue253 open. Development continues.
 
 
-<a id="e16-current-checkpoint"></a>
+<a id="e16-characterization-source-checkpoint"></a>
 
 ### Distinct raw-metadata characterization source checkpoint — 2026-10-15 JST
 
@@ -1505,3 +1505,81 @@ Live ledger rechecked SHA533ca512fc06ae6742e6e02dce3cc1a8aee83ec49fc13ebabf691a6
 15/24 diagnostics,2/3 baselines, live_owned_work=false; no loaded E16 units. No new
 request/grant/diagnostic yet. All original numerical caps/inputs/solver/refinement
 and exclusions preserved; KEEP_K1402_INCUMBENT. The standing assignment continues.
+
+
+### Raw-metadata characterization terminal result — 2026-10-15 JST
+
+Exact source011e8be351e8 admitted request
+7ba4ad7dbf4ea760cf61fff507acde8d53d369062a5501dd5eba633800640b7b,
+runaa4a7e9efd754b3dad7bd22ccea86d1d, under actual separate review and genuine
+existing delegated grants. [Retained compact evidence](evidence/e16/attribution-admission-wsl-20261014/factor-residual-candidate/raw-characterization-20261015/)
+binds cached full description/request and all terminal receipts. accepted_result
+returns COMPLETE; durable shared guard PASS, scope collected, tmpfs unmounted,
+worker empty and envelope unit gone. Characterization only: NOT_QUALIFIED and
+selected numerical attribution NOT RUN.
+
+KA raw upper8086918, KB8210163; each terminal support length427 and largest outer
+182329. Named partial constructor envelopes674118032/684390768bytes pass the raw
+count gate but do not include complete baseline/workspace/other-board/physical
+phase overlap. Their sum is not simultaneous live memory, and their excess over
+another bound would not prove actual canonical counts or memory breach.
+
+Actual envelope6.9129seconds, peak319397888bytes plus67108864 external reserve;
+worker peak205418496bytes. Supervisor recorded32 memory.max events, zero OOM and
+zero swap; retain these events rather than calling them zero. Host retained6836
+bytes plus separately accounted receipts/control evidence. Actual complete
+attribution memory/time remains unmeasured. Independent terminal/resource review
+is being retained alongside the receipts.
+
+Ledger now16/24 diagnostics,2/3 baselines, eight diagnostics remain, no additional
+baseline authorized. SHA08a9fee36d2a2ca9fda68acbd1a57d6c6dc61fdeea2adfc7bd5fae015f59f209,
+live_owned_work=false. Consumed request is never reusable. No original coefficient
+scan or matrix construction occurred; only admitted decoded descriptors were read.
+
+**Next active source increment:** replace fixed native forest scratch with bounded
+owned packed buffers and actual selection-to-path lifetimes, retaining fixture
+order128 and all counters. The prospective payload is12n output witness plus8n
+selection scratch or13n path scratch, max25n; this is a rationale, not a full heap
+proof. Complete pipeline overlap and exact input-cap semantics for both boards
+remain to review before original-size port/qualification. No second diagnostic
+is selected merely because raw metadata fit. KEEP_K1402_INCUMBENT; continue locally.
+
+
+<a id="e16-current-checkpoint"></a>
+
+### Owner-requested pause and session close — 2026-10-15 JST
+
+The owner explicitly paused the standing development goal and requested commits,
+push and GitHub status updates before ending this session. The reason is to
+reconsider the approach and board separation plan because the large-PCB effort
+is taking too long. This instruction supersedes the earlier automatic continuation
+and immediate-next-action language above. Do not resume E16 numerical development
+or spend another diagnostic without renewed direction. No alternative separation
+architecture was selected, implemented or accepted during this closeout.
+
+Preserved implementation: reviewed native packed scratch lifetimes, immediate
+per-allocation initialization accounting, allocation-failure regressions and
+separate optimized/UBSan mathematics/resource evidence. Five final packed tests
+PASS, including failed allocations; historical fixed-scratch results are retained.
+The completed original-data operation was bounded metadata characterization only,
+not full resource qualification or selected attribution. Complete receipts and
+independent resource disposition are in raw-characterization-20261015/.
+
+Final campaign:16/24 diagnostics,2/3 baselines; eight diagnostics remain but are
+not authority to continue during this pause. live_owned_work=false; zero loaded
+E16 units, actual scope/tmpfs/worker cleanup verified. Ledger SHA
+08a9fee36d2a2ca9fda68acbd1a57d6c6dc61fdeea2adfc7bd5fae015f59f209.
+No live reviewer task, numerical operation or consumed-request retry is pending.
+
+Full pipeline NOT_QUALIFIED; production NOT_ADMITTED/NOT_RUN; actual selected
+numerical/engineering disposition unresolved. Native original-size port, complete
+live-overlap proof and explicit field-work/native residual work were identified
+but NOT implemented. Conditional combined-work lower bounds do not establish a
+breach of the existing20M uniqueness/Schur gate, which excludes field arithmetic.
+Preserve these limitations for any future architecture reconsideration.
+
+Keep the worktree/branch and retained cache evidence for recovery. PR277 and its
+stack remain open drafts as applicable; PR260 remains draft/unmerged, issue253
+open, KEEP_K1402_INCUMBENT. No merge, geometry/copper adoption, deployment or
+hardware action. The session ends after publishing this checkpoint and updating
+existing GitHub resources; the ongoing goal remains paused, not complete.
