@@ -37,9 +37,39 @@ AUTHORIZATION_POLICY={
     'additional_full_baselines':0,'independent_technical_review_required':True,
     'retroactive':False}
 
+# The retained owner decision explicitly authorizes bounded diagnostics. Preserve
+# the original policy bytes for historical receipts; add one distinct source-owned
+# diagnostic kind, with no new signing ownership or key material.
+LEGACY_AUTHORIZATION_POLICY=copy.deepcopy(AUTHORIZATION_POLICY)
+AUTHORIZATION_POLICY={**AUTHORIZATION_POLICY,
+    'request_kinds':[*AUTHORIZATION_POLICY['request_kinds'],'resource-characterization']}
+REQUEST_KINDS=('production-attribution','resource-qualification','resource-characterization')
+
+
+def grant_prefix(kind):
+    need(kind in REQUEST_KINDS,'invalid request kind')
+    return {'production-attribution':'e16-attribution',
+            'resource-qualification':'e16-attribution-qualification',
+            'resource-characterization':'e16-attribution-characterization'}[kind]
+
+
+def grant_namespace(kind,role):
+    """Use existing delegated cryptographic scopes; payload kind stays distinct.
+
+    The fixed trust already delegates nonproduction operator/controller signing.
+    Characterization has its own schema and exact request binding, without adding
+    a new trust capability, changing keys, or weakening cross-kind checks.
+    """
+    need(role in ('authorization','reservation'),'invalid grant role')
+    namespace_kind='resource-qualification' if kind=='resource-characterization' else kind
+    return grant_prefix(namespace_kind)+'-'+role+'-v1'
+
 
 def verify_policy(document):
-    need(canon(document.get('authorization_policy'))==canon(AUTHORIZATION_POLICY),'owner delegation binding differs')
+    policy=document.get('authorization_policy')
+    need(any(canon(policy)==canon(p) for p in (AUTHORIZATION_POLICY,LEGACY_AUTHORIZATION_POLICY)),'owner delegation binding differs')
+    if 'request_kind' in document:
+        need(document['request_kind'] in policy['request_kinds'],'request kind outside bound owner delegation')
     need(hashlib.sha256(read_bytes(OWNER_DECISION,65536)).hexdigest()==AUTHORIZATION_POLICY['decision_sha256'],
          'owner decision changed')
 
@@ -47,7 +77,8 @@ SOURCE_NAMES=('attribution_containment.py','attribution_admission.py','attributi
  'attribution_request.py','attribution_supervisor.py','attribution_resolution.py',
  'attribution_executor.py','attribution_transport.py','attribution_uniqueness.py',
  'attribution_lifecycle.py','attribution_reconstruction.py','finite_adapter.py',
- 'finite_solve.py','finite_units.py','resistance_attribution.py','numerical_unit_guard.py')
+ 'finite_solve.py','finite_units.py','resistance_attribution.py','numerical_unit_guard.py',
+ 'attribution_preallocation.py','attribution_characterization.py')
 
 ENVIRONMENT_POLICY={'python_flags':['-I','-S','-B','-X','pycache_prefix=/dev/null'],
                     'path':'/usr/bin:/bin','locale':'C.UTF-8','numerical_threads':1,
@@ -163,6 +194,9 @@ def host_identity():
 
 
 def artifacts(packet):
+    if packet.get('purpose')=='raw-construction-metadata-v1':
+        for board in ('KA','KB'):yield packet['boards'][board]['operator']
+        return
     yield packet['config'];yield packet['cases']
     for board in ('KA','KB'):
         for key in ('operator','reduction','desc','plan'):
@@ -212,6 +246,28 @@ def verify_signature(path,namespace,identity,trust_sha,deadline=None):
     need(result.returncode==0,'missing/invalid delegated signed '+namespace)
     need(read_bytes(path,65536)==raw,'signed evidence changed during verification')
     return parse_json(raw)
+
+
+def verify_characterization_review(request,deadline=None):
+    """Actual separate source/resource review bound to the exact operation.
+
+    The per-request signed grants bind this review's bytes. This JSON record is
+    evidence of an actual reviewer action, not itself an external signature.
+    """
+    check_time(deadline)
+    binding=request.get('characterization_review')
+    need(type(binding) is dict and set(binding)=={'path','sha256'},'characterization technical review missing')
+    raw=read_bytes(binding['path'],65536)
+    need(hashlib.sha256(raw).hexdigest()==binding['sha256'],'characterization review changed')
+    review=parse_json(raw)
+    need(review.get('schema')=='e16-characterization-technical-review-v1' and review.get('verdict')=='PASS'
+         and review.get('operation_sha256')==operation_digest(request),'characterization review scope/verdict differs')
+    identity=review.get('reviewer_identity')
+    need(type(identity) is str and 0<len(identity)<=200 and identity!=AUTHORIZATION_POLICY['delegate']
+         and review.get('author_identity')==AUTHORIZATION_POLICY['delegate'],'characterization review identity differs')
+    need(review.get('purpose')=='raw-construction-metadata-v1'
+         and review.get('resource_status')=='NOT_QUALIFIED','characterization review mislabels qualification')
+    return review
 
 
 def verify_qualification(request,deadline=None,*,metadata_only=False):
@@ -265,7 +321,7 @@ def validate_structure(request,digest,deadline=None):
     check_time(deadline);validate_identity(request,digest);verify_policy(request)
     check_environment(os.environ)
     need(request['schema']=='e16-attribution-request-v1' and request['operation']==OPERATION and canon(request['limits'])==canon(LIMITS),'request operation/caps differ')
-    need(request['request_kind'] in ('production-attribution','resource-qualification'),'invalid request kind')
+    need(request['request_kind'] in REQUEST_KINDS,'invalid request kind')
     need(request['host']==host_identity() and request['environment_policy']==ENVIRONMENT_POLICY,'host/environment changed')
     need(request['checkout']==str(ROOT) and request['python']==str(python_path()),'checkout/interpreter differs')
     need(request['output']==str(output_root()/('attribution-'+request['run_id'])) and request['ledger']['path']==str(ledger_path()),'output/ledger differs')
@@ -296,7 +352,7 @@ def validate_metadata(request,digest,deadline=None,*,revalidate_inputs=True):
     check_environment(os.environ)
     need(request['environment_policy']==ENVIRONMENT_POLICY,'environment policy changed')
     need(request['schema']=='e16-attribution-request-v1' and request['operation']==OPERATION and canon(request['limits'])==canon(LIMITS),'operation/caps differ')
-    need(request['request_kind'] in ('production-attribution','resource-qualification'),'invalid request kind')
+    need(request['request_kind'] in REQUEST_KINDS,'invalid request kind')
     validate_identity(request,digest)
     need(request['host']==host_identity(),'host/boot/UID changed')
     need(request['checkout']==str(ROOT) and request['python']==str(python_path()),'checkout/interpreter differs')
@@ -317,7 +373,9 @@ def validate_metadata(request,digest,deadline=None,*,revalidate_inputs=True):
     need(result.returncode==0 and result.stdout.strip()==request['source_sha'],'immutable checkout head differs')
     prove_clean_checkout(deadline)
     from attribution_request import packet_from_inventory
-    need(request['packet']==packet_from_inventory(request['source_bindings']),'production packet differs from fixed original experiment')
+    characterization=request['request_kind']=='resource-characterization'
+    need(request['packet']==packet_from_inventory(request['source_bindings'],characterization_only=characterization),'production packet differs from fixed original experiment')
+    if characterization:verify_characterization_review(request,deadline)
     inventory=independent_inventory();seen=set()
     for binding in artifacts(request['packet']):
         path=binding['path']
@@ -327,12 +385,15 @@ def validate_metadata(request,digest,deadline=None,*,revalidate_inputs=True):
         need(type(binding['decoded_limit']) is int and 0<binding['decoded_limit']<=512*1024**2,'decoded bound invalid')
     for board in ('KA','KB'):
         b=request['packet']['boards'][board]
+        if characterization:
+            need(Path(b['operator']['path']).name=='operator-+12V.pkl.gz' and Path(b['operator']['path']).parent.name==board,'characterization operator identity differs')
+            continue
         need(Path(b['desc']['path']).name=='desc-+12V.json.gz' and Path(b['operator']['path']).name=='operator-+12V.pkl.gz','board/net artifact scope differs')
         need(Path(b['operator']['path']).parent.name==board and Path(b['desc']['path']).parent.name==board,'board artifact switched')
         need(Path(b['reduction']['path']).name==board+'-red-+12V-nominal-average-uniform-dielectric.pkl.gz','case/depth reduction differs')
         need([Path(m['path']).name for m in b['mesh']]==[f'mesh-+12V-{i:03}.pkl.gz' for i in range(11)],'original chunk scope/order differs')
         need(all(Path(m['path']).parent.name==board for m in b['mesh']),'wrong board chunks')
-    need(Path(request['packet']['comparison']['path']).name=='coupled-+12V-nominal-average-uniform-dielectric.json.gz','comparison scope differs')
+    if not characterization:need(Path(request['packet']['comparison']['path']).name=='coupled-+12V-nominal-average-uniform-dielectric.json.gz','comparison scope differs')
     need(sha(account_home()/'.codex/scripts/heavy-guard.sh',deadline)==request['guard_sha256'],'guard changed')
     # Every requested source/toolchain file is checked inside guard, as are all
     # selected artifact bytes. Streaming decode repeats descriptor-bound checks.
@@ -357,13 +418,14 @@ def verify_for_host(request_path,digest,authority_path,reservation_path,*,deadli
     need(hashlib.sha256(canon(r)).hexdigest()==digest,'stale request digest')
     validate_identity(r,digest)
     verify_policy(r)
-    need(r.get('request_kind') in ('production-attribution','resource-qualification'),'invalid request kind')
-    prefix='e16-attribution' if r['request_kind']=='production-attribution' else 'e16-attribution-qualification'
-    authority=verify_signature(authority_path,prefix+'-authorization-v1','e16-operator',r['trust_sha256'],deadline)
-    reservation=verify_signature(reservation_path,prefix+'-reservation-v1','e16-controller',r['trust_sha256'],deadline)
+    need(r.get('request_kind') in REQUEST_KINDS,'invalid request kind')
+    prefix=grant_prefix(r['request_kind'])
+    authority=verify_signature(authority_path,grant_namespace(r['request_kind'],'authorization'),'e16-operator',r['trust_sha256'],deadline)
+    reservation=verify_signature(reservation_path,grant_namespace(r['request_kind'],'reservation'),'e16-controller',r['trust_sha256'],deadline)
     now=time.time()
     for grant,kind in ((authority,'authorization'),(reservation,'reservation')):
         verify_policy(grant)
+        need(canon(grant['authorization_policy'])==canon(r['authorization_policy']),'grant/request delegation differs')
         need(grant['schema']==prefix+'-'+kind+'-v1' and grant['request_kind']==r['request_kind'] and grant['request_sha256']==digest and
              grant['run_id']==r['run_id'] and canon(grant['limits'])==canon(LIMITS) and grant['operation']==OPERATION,'inapplicable '+kind)
         need(all(type(grant[k]) in (int,float) and math.isfinite(grant[k]) for k in ('issued_unix','expires_unix')),'invalid grant time')
@@ -371,7 +433,8 @@ def verify_for_host(request_path,digest,authority_path,reservation_path,*,deadli
     need(authority['approved'] is True and reservation['exclusive'] is True,'missing authority/reservation')
     need(reservation['host']==host_identity() and reservation['ledger_sha256']==r['ledger']['sha256'],'reservation host/ledger differs')
     if r['request_kind']=='production-attribution':verify_qualification(r,deadline,metadata_only=metadata_only)
-    else:need(r.get('qualification') is None,'qualification request must not pretend prior qualification')
+    else:need(r.get('qualification') is None,'nonproduction request must not pretend prior qualification')
+    if r['request_kind']=='resource-characterization':verify_characterization_review(r,deadline)
     if metadata_only:
         validate_structure(r,digest,deadline)
         need(len(read_bytes(ledger_path(),65536))<=65536,'ledger receipt cap')
@@ -407,11 +470,11 @@ def claim(request,digest,deadline=None):
     need(all(r.get('state','').startswith('terminal') for r in data['runs']),'prior campaign is not terminal')
     data=copy.deepcopy(data);data['execution_budget']['production_diagnostic_used']+=1
     data['live_owned_work']=True
-    data['activity']='ACTIVE: admitted selected-attribution diagnostic; attempt5 remains terminal'
-    data.setdefault('attribution_charges',[]).append({'request_sha256':digest,'run_id':request['run_id'],'diagnostic_charge':1,
+    data['activity']='ACTIVE: admitted '+request['request_kind']+' diagnostic; attempt5 remains terminal'
+    data.setdefault('attribution_charges',[]).append({'request_sha256':digest,'run_id':request['run_id'],'request_kind':request['request_kind'],'diagnostic_charge':1,
                                                     'full_baseline_charge':0,'attempt':1,'state':'ACTIVE','terminal_receipt':str(Path(request['output'])/'terminal.json')})
     new=canon(data)
-    receipt={'request_sha256':digest,'run_id':request['run_id'],'attempt':1,'source_sha':request['source_sha'],
+    receipt={'request_sha256':digest,'run_id':request['run_id'],'request_kind':request['request_kind'],'attempt':1,'source_sha':request['source_sha'],
              'before_ledger_sha256':before,'after_ledger_sha256':hashlib.sha256(new).hexdigest(),
              'original_ledger_base64':base64.b64encode(old).decode(),'claimed_at_unix':time.time(),
              'diagnostic_charge':1,'full_baseline_charge':0,'status':'CONSUMED_NO_RETRY'}
@@ -454,7 +517,7 @@ def finish_accounting(request,digest,terminal,deadline=None):
     charges[0]['status']=terminal['status']
     charges[0]['cleanup_complete']=terminal['cleanup_complete']
     ledger['live_owned_work']=not terminal['cleanup_complete']
-    ledger['activity']='TERMINAL: selected attribution diagnostic; original baseline attempt5 remains terminal' if terminal['cleanup_complete'] else 'BLOCKED: attribution cleanup incomplete'
+    ledger['activity']='TERMINAL: '+request['request_kind']+' diagnostic; original baseline attempt5 remains terminal' if terminal['cleanup_complete'] else 'BLOCKED: attribution cleanup incomplete'
     raw=canon(ledger)
     receipt=canon({'request_sha256':digest,'run_id':request['run_id'],'request_kind':request['request_kind'],
                    'output_manifest_sha256':hashlib.sha256(canon(terminal['files'])).hexdigest(),'terminal_status':terminal['status'],

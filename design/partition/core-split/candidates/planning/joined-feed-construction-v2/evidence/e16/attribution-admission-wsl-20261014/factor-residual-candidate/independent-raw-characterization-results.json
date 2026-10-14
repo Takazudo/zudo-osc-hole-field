@@ -1,0 +1,48 @@
+{
+  "synthetic_only": true,
+  "success": {
+    "two_board_formula_controls": [
+      {
+        "board": "KA",
+        "R": 103,
+        "largest_s_squared": 49,
+        "outcome": "WITHIN_RAW_BOUND",
+        "named_arrays": 9328
+      },
+      {
+        "board": "KB",
+        "R": 16008003,
+        "largest_s_squared": 16008001,
+        "outcome": "EXCEEDS_RAW_BOUND",
+        "named_arrays": 1536768320
+      }
+    ],
+    "huge_descriptor_R": 2048000032000000,
+    "serial_all_descriptor_weakrefs_released": true,
+    "same_budget_clock": true,
+    "receipt_binding": "PASS"
+  },
+  "failures": [
+    {
+      "case": "KB_bad_digest",
+      "component_rows": 1,
+      "status": "INCOMPLETE"
+    },
+    {
+      "case": "source_changed",
+      "component_rows": 2,
+      "status": "INCOMPLETE"
+    },
+    {
+      "case": "timeout_after_metadata",
+      "component_rows": 0,
+      "status": "INCOMPLETE"
+    }
+  ],
+  "sha256": {
+    "evidence/e16/attribution-admission-wsl-20261014/factor-residual-candidate/independent-raw-characterization-oracle.py": "b1ee358a6aaf1ee032cc4c46cc9217e8484225d547c7e23c264ea41045847536",
+    "attribution_characterization.py": "1b1d2226bd6702a86153cb3e1281d22e663f96a3e0a8d3fedc0dcb9cc4a8aa2d",
+    "attribution_preallocation.py": "55d331ef8b535f849f8aab84f5221a570df0d68351553a450b700b8253fcc268",
+    "attribution_transport.py": "c122e14552447ee495f91840100f9e0dc703bd7cda6ce64d9cb726a246ca0d50"
+  }
+}

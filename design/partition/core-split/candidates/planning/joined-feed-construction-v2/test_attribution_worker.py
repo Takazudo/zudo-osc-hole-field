@@ -18,7 +18,7 @@ class Worker(unittest.TestCase):
     def test_actual_worker_pipeline_after_admission_and_single_use_claim(self):
         with tempfile.TemporaryDirectory(prefix='e16-fixture-',dir='/tmp') as name:
             root=Path(name);p,_,_,_=packet(root)
-            request={'packet':p};path=root/'request.json';path.write_bytes(A.canon(request))
+            request={'packet':p,'request_kind':'resource-qualification'};path=root/'request.json';path.write_bytes(A.canon(request))
             output=root/'result';deadline=time.monotonic()+10;order=[]
             def verified(*a,**kw):order.append('verified');return request
             def claimed(*a,**kw):order.append('claimed');return 256

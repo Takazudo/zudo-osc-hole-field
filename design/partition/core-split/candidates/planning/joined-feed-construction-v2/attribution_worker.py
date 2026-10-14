@@ -52,16 +52,30 @@ def run(request_path,digest,authority,reservation):
     site=A.python_path().parent.parent/'lib/python3.12/site-packages'
     sys.path.insert(1,str(site))
     import attribution_transport as T
-    import attribution_executor as E
     budget=T.Budget(seconds=max(.001,deadline-time.monotonic()),output_bytes=limit)
     budget.deadline=deadline
     budget.started=float(os.environ['E16_GUARD_ENTRY_AT'])
     budget.charge(claim_bytes)
-    outcome=E.run_pipeline(request['packet'],result,budget)
+    outcome=execute_request(request,result,budget)
     A.need(outcome['status']=='COMPLETE','incomplete attribution worker')
     # Parent supervisor/host still must reconcile output, resources, cleanup and
     # final shared-guard receipt. A worker success alone is never acceptance.
     return 0
+
+
+def execute_request(request,result,budget):
+    """Dispatch only after run() has authenticated/claimed the exact request."""
+    if request['request_kind']=='resource-characterization':
+        import attribution_characterization as C
+        A.need(request['packet'].get('purpose')=='raw-construction-metadata-v1','characterization purpose differs')
+        outcome=C.characterize({board:request['packet']['boards'][board]['operator'] for board in ('KA','KB')},result,budget)
+        A.need(outcome['summary']['purpose']=='CHARACTERIZATION_ONLY'
+               and outcome['summary']['full_pipeline_qualification']=='NOT_QUALIFIED','characterization disposition differs')
+        return outcome
+    A.need(request['request_kind'] in ('resource-qualification','production-attribution'),'worker request kind differs')
+    A.need('purpose' not in request['packet'],'characterization packet in numerical request')
+    import attribution_executor as E
+    return E.run_pipeline(request['packet'],result,budget)
 
 
 def main(argv=None):

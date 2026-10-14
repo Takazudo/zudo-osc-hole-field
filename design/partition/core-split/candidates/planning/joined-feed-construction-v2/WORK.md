@@ -1424,7 +1424,7 @@ grant, signing-material change or cleanup debt. KEEP_K1402_INCUMBENT, PR260 draf
 and issue253 open. Attribution unresolved; the assignment continues locally.
 
 
-<a id="e16-current-checkpoint"></a>
+<a id="e16-native-forest-checkpoint"></a>
 
 ### Native forest and preallocation checkpoint — 2026-10-15 JST
 
@@ -1461,3 +1461,47 @@ buffer/stack/pipeline/time and input applicability still require review.
 Ledger unchanged15/24 diagnostics,2/3 baselines, no cleanup debt or new baseline.
 180seconds/1216MiB/2GiB/zero-swap/64MiB and certificate ceilings unchanged.
 KEEP_K1402_INCUMBENT; PR260 draft/unmerged and issue253 open. Development continues.
+
+
+<a id="e16-current-checkpoint"></a>
+
+### Distinct raw-metadata characterization source checkpoint — 2026-10-15 JST
+
+Continued afterb46e4255. Native forest is published and reviewed; the next
+indispensable original property is raw construction size R and largest actual
+terminal support squared. Source-only implementation now decodes the two exact
+operator bindings sequentially inside the existing worker path, reads descriptor
+shapes/dtypes/lengths only after trusted decoding, releases each graph before the
+next, and writes CHARACTERIZATION_ONLY / NOT_QUALIFIED receipts. No original
+numerical construction, factor, solve, mesh or coefficient inspection is performed
+by this path. Decoding itself still interprets complete trusted pickle objects and
+must remain under the existing enforced memory/deadline boundary.
+
+Separate module mathematics review and admission/resource review PASS. Entire
+attribution suite199 tests PASS before final provenance hardening; subsequent68
+admission/host tests PASS cover exact requestkind accounting, receipt purpose,
+technical review revalidation and actual namespace restrictions. Earlier test
+setup failures are preserved in the reviews and fixed, not counted as passes.
+
+Distinct resource-characterization requestkind/schema and fixed two-operator
+packet are source-bound, with actual separate operation-digest technical review
+required before sealing. Signature scopes reuse existing nonproduction operator/
+controller namespaces; exact payload schema/kind/digest prevent cross-kind replay.
+The actual retained public trust hash remains70c78f8e68063301ded3381c73d71240d26fdd6092a4da991bd2a19f78bf840d;
+no signing material/trust/ownership change. The retained owner decision already
+explicitly authorizes bounded diagnostics. Production stays separately qualified
+and admitted; characterization cannot establish RESOURCE_QUALIFIED.
+
+**Immediate next action:** clean checkpoint, compile a concrete source/toolchain/
+original-binding description without reading original artifacts, obtain genuine
+separate exact-operation review, then seal/sign/admit one fresh characterization
+only if live checks pass. Follow through terminal evidence, single diagnostic
+accounting and cleanup. Large conservative R rejects this metadata preallocation
+gate and selects constructor/lifetime work; small R permits complete-overlap work.
+Neither result alone establishes actual memory breach, native applicability,
+qualification or useful selected attribution. Incomplete decode is missing evidence.
+
+Live ledger rechecked SHA533ca512fc06ae6742e6e02dce3cc1a8aee83ec49fc13ebabf691a6b0c4cc4f5:
+15/24 diagnostics,2/3 baselines, live_owned_work=false; no loaded E16 units. No new
+request/grant/diagnostic yet. All original numerical caps/inputs/solver/refinement
+and exclusions preserved; KEEP_K1402_INCUMBENT. The standing assignment continues.

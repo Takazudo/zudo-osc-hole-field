@@ -34,6 +34,37 @@ external-owner instructions or fixture keys. Finish source changes and review,
 commit, then compile/sign fresh exact packets. Qualification and production remain
 separate; no further owner message is needed for eligible in-scope digests.
 
+## Bounded metadata characterization extension (2026-10-15)
+
+The same retained owner decision explicitly authorizes bounded diagnostics. A
+new `resource-characterization` request kind answers only the source-reviewed
+raw-construction metadata question. It has distinct payload schemas
+`e16-attribution-characterization-authorization-v1` and
+`e16-attribution-characterization-reservation-v1`, exact request/run/operation
+bindings and an actual separate operation-bound technical review. It never
+qualifies the numerical pipeline. Current original qualification/production
+limits, namespaces and acceptance gates remain unchanged.
+
+The fixed existing trust permits only the established namespaces. Therefore
+characterization signatures use `e16-attribution-qualification-authorization-v1`
+and `e16-attribution-qualification-reservation-v1` under their existing respective
+principals, while the signed JSON retains the distinct characterization schemas
+and request kind. `grant_namespace(kind, role)` and `grant_prefix(kind)` encode
+these two roles separately. Exact payload checks prevent either request kind's
+grant from authorizing the other; namespace reuse is not payload reuse. No new
+key, trust edit or signing owner is introduced.
+
+Use `attribution_request.py describe-characterization --output DESCRIPTION`,
+then actual separate review of that operation. The review JSON schema is
+`e16-characterization-technical-review-v1`, with PASS, exact operation_sha256,
+actual reviewer_identity distinct from author_identity `wsl-coordinator`, purpose
+`raw-construction-metadata-v1`, resource_status `NOT_QUALIFIED`.
+`seal-characterization --description DESCRIPTION --review REVIEW --output REQUEST`
+binds its exact bytes. These commands prepare source-bound records; they do not
+approve or execute. Genuine exact grants and live admission still follow. A
+characterization COMPLETE receipt means its bounded question finished, never
+resource qualification or selected numerical attribution.
+
 ---
 
 ## Historical external-owner procedure (superseded ownership only)

@@ -322,7 +322,7 @@ class AcceptedResultTests(unittest.TestCase):
         grant={'authorization_policy':dict(A.AUTHORIZATION_POLICY),'request_sha256':self.digest,'run_id':'a'*32,'request_kind':'resource-qualification',
                'operation':self.data['operation'],'limits':self.data['limits'],'approved':True,'exclusive':True,
                'issued_unix':999,'expires_unix':2000}
-        self.admission=types.SimpleNamespace(verify_policy=A.verify_policy,verify_signature=lambda *args:grant,
+        self.admission=types.SimpleNamespace(grant_prefix=A.grant_prefix,grant_namespace=A.grant_namespace,verify_policy=A.verify_policy,verify_signature=lambda *args:grant|({'schema':args[1]} if args else {}),
             state_directory=lambda:self.root,read_json=lambda p,*a:json.loads(Path(p).read_text()),sha=lambda p:hashlib.sha256(Path(p).read_bytes()).hexdigest())
     def tearDown(self):self.temp.cleanup()
     def accepted(self):
@@ -372,7 +372,7 @@ class AcceptedResultTests(unittest.TestCase):
         (self.root/('a'*32+'.terminal.json')).unlink()
         grant=self.admission.verify_signature()
         self.admission=admission
-        with patch.object(admission,'state_directory',return_value=self.root),             patch.object(admission,'ledger_path',return_value=ledger),             patch.object(admission,'verify_signature',return_value=grant):
+        with patch.object(admission,'state_directory',return_value=self.root),             patch.object(admission,'ledger_path',return_value=ledger),             patch.object(admission,'verify_signature',side_effect=lambda *args:grant|{'schema':args[1]}):
             extra=admission.finish_accounting(self.data,self.digest,self.receipt,time.monotonic()+3)
             self.receipt['accounting_output_bytes']=self.receipt['claim_bytes']+extra
             (self.out/'terminal.json').write_bytes(S.encoded(self.receipt))

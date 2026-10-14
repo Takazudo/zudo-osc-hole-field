@@ -547,6 +547,7 @@ def _guard_entry(request_path,digest,authority,reservation,watchdog):
         result={'schema':'e16-attribution-host-terminal-v1','status':'INCOMPLETE' if failure else 'PENDING_SHARED_GUARD',
                 'request_sha256':digest,'run_id':request['run_id'],'reason':failure,
                 'request_kind':request['request_kind'],'qualification_only':request['request_kind']=='resource-qualification',
+                'characterization_only':request['request_kind']=='resource-characterization',
                 'authority_path':str(Path(authority).resolve()),'reservation_path':str(Path(reservation).resolve()),
                 'claim_path':str(claim_path),'claim_bytes':claim_bytes,'scope_cleanup':cleanup,
                 'contained_receipt_sha256':files.get('contained.unaccepted.json',{}).get('sha256'),
@@ -612,15 +613,18 @@ def accepted_result(request_path,digest):
          ('electrical_acceptance','whole_board_acceptance','adopted')),'host acceptance/cleanup flags changed')
     import attribution_admission as admission
     admission.verify_policy(request)
-    prefix='e16-attribution' if request['request_kind']=='production-attribution' else 'e16-attribution-qualification'
+    if request['request_kind']=='resource-characterization':
+        need(receipt.get('characterization_only') is True and receipt.get('qualification_only') is False,'characterization receipt purpose differs')
+        admission.verify_characterization_review(request)
+    prefix=admission.grant_prefix(request['request_kind'])
     need(receipt['guard_cwd']==request['checkout'],'guard checkout binding changed')
     need(receipt['guard_label']==guard_label(request_path,digest,receipt['authority_path'],
          receipt['reservation_path'],request['guard_sha256']),'guard command binding changed')
     grants=[]
     for key,kind,identity in (('authority_path','authorization','e16-operator'),('reservation_path','reservation','e16-controller')):
-        grant=admission.verify_signature(Path(receipt[key]),prefix+'-'+kind+'-v1',identity,request['trust_sha256'])
+        grant=admission.verify_signature(Path(receipt[key]),admission.grant_namespace(request['request_kind'],kind),identity,request['trust_sha256'])
         admission.verify_policy(grant)
-        need(grant['request_sha256']==digest and grant['run_id']==request['run_id'] and
+        need(grant['schema']==prefix+'-'+kind+'-v1' and grant['request_sha256']==digest and grant['run_id']==request['run_id'] and
              grant['request_kind']==request['request_kind'] and grant['operation']==request['operation'] and
              S.encoded(grant['limits'])==S.encoded(request['limits']),'guard grant binding differs')
         need(all(type(grant[k]) in (int,float) and math.isfinite(grant[k]) for k in ('issued_unix','expires_unix')),
@@ -680,7 +684,7 @@ def launch(request_path,digest,authority,reservation):
     resource.setrlimit(resource.RLIMIT_AS,(S.OUTER_MEMORY,resource.getrlimit(resource.RLIMIT_AS)[1]))
     request=read_small(request_path)
     need(request.get('schema')=='e16-attribution-request-v1' and request.get('request_kind') in
-         ('production-attribution','resource-qualification') and not request.get('fixture_only') and
+         ('production-attribution','resource-qualification','resource-characterization') and not request.get('fixture_only') and
          not any(k in request.get('packet',{}) for k in ('fixture_only','fixture_removed')),
          'production host refuses fixture/inapplicable request')
     need(request['python']==PYTHON,'fixed numerical Python required')
