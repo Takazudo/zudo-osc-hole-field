@@ -19,7 +19,7 @@ def main():
  p.add_argument('--refine',type=Path,required=True);p.add_argument('--pilot',type=Path,required=True,help='P1 run prefix (…-pilot-KB-p1)');p.add_argument('--source-sensitivity',type=Path,required=True);p.add_argument('--python',required=True);p.add_argument('--output',type=Path,default=EV/'continuation-20261013/index.json');a=p.parse_args()
  env=json.loads(subprocess.run([a.python,'-c','import sys,json,numpy,scipy,shapely;print(json.dumps({"python":sys.version.split()[0],"numpy":numpy.__version__,"scipy":scipy.__version__,"shapely":shapely.__version__,"geos":".".join(map(str,shapely.geos_version))}))'],capture_output=True,text=True,check=True).stdout)
  files=sorted(str(q.relative_to(HERE)) for q in EV.rglob('*') if q.is_file() and 'continuation-20261013' not in q.parts and q.stat().st_mtime>Path(EV/'index.json').stat().st_mtime)
- methods=['compare_replay.py','fragments.py','finite_adapter.py','finite_units.py','finite_solve.py','run_finite_e16.py','run_coupled_e16.py','summarize_coverage.py','summarize_coupled.py',
+ methods=['compare_replay.py','selective_annulus.py','fragments.py','finite_adapter.py','finite_units.py','finite_solve.py','run_finite_e16.py','run_coupled_e16.py','summarize_coverage.py','summarize_coupled.py',
           'diagnose_omissions.py','residual_atlas.py','pilot_preflight.py','pilot_construct.py','load_ledger.py','native_descriptor.py','package_continuation.py','verify_kcl.py','compare_refinement.py','summarize_depth.py']
  d={'schema':'e16-continuation-index-v1','date':'2026-10-13','environment':dict(env,platform=platform.platform(),requirements='scripts/pcbgen/numerical-requirements.txt',
     venv='uv venv --python /usr/bin/python3.12 VENV; uv pip install -r scripts/pcbgen/numerical-requirements.txt'),

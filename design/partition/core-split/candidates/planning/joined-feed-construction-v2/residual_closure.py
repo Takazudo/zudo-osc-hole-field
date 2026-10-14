@@ -21,7 +21,7 @@ TARGET={'ref':'U2314','pad':'11','pad_id':'b0f9dbc5-d3f3-5380-a8d2-0fe230e28db0'
 LIMITS={'window_margin_mm':20.,'max_length_mm':30.,'max_segments':20,
         'pitch_mm':.05,'widths_mm':[.2],'clearance_mm':.25,'hole_clearance_mm':.25,
         'unit_seconds':180,'unit_address_space_GiB':2}
-METHODS=('residual_closure.py','pilot_preflight.py','fragments.py','construct_access.py','connectivity.py')
+METHODS=('residual_closure.py','pilot_preflight.py','selective_annulus.py','fragments.py','construct_access.py','connectivity.py')
 HISTORY='evidence/e16/pilot/KA-pilot-outcome.json'
 
 def need(condition,message):

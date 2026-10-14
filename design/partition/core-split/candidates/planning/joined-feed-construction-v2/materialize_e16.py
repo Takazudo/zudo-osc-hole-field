@@ -13,6 +13,7 @@ import json
 import math
 import re
 import uuid
+import selective_annulus
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
@@ -67,8 +68,9 @@ def xy(point):
 def validate_addition(obj, pads, epoch):
     allowed = {'id', 'kind', 'net', 'layers', 'access_for_pad', 'epoch', 'method',
                'path_mm', 'width_mm', 'center_mm', 'diameter_mm', 'drill_mm',
-               'process', 'via_in_pad', 'pilot_start_object', 'pilot_end_object', 'via_type', 'transition_id'}
+               'selective_annulus', 'process', 'via_in_pad', 'pilot_start_object', 'pilot_end_object', 'via_type', 'transition_id'}
     need(set(obj) <= allowed, 'unsupported addition fields: ' + ','.join(sorted(set(obj) - allowed)))
+    selective_annulus.validate_object(obj)
     identity(obj['id'])
     need(obj.get('epoch') == epoch, 'addition epoch mismatch')
     need(obj.get('net') in NET_LAYER, 'addition is not on a reviewed rail')
@@ -135,6 +137,7 @@ def compose(board, normalized, spans, reference, pilot=None):
 
 
 def serialize_object(obj):
+    selective_annulus.require_native_supported(obj)
     ident, net = identity(obj['id']), json.dumps(obj['net'])
     if obj['kind'] == 'segment':
         a, b = obj['path_mm']
@@ -158,6 +161,9 @@ def serialize_zones(board, outline):
 
 
 def materialize(board, candidate, base, composed, outline):
+    selective_annulus.validate_source(composed)
+    for obj in composed['objects']:
+        selective_annulus.require_native_supported(obj)
     need(composed['objects'][:len(base['objects'])] == base['objects'], 'source prefix changed')
     need(candidate.lstrip().startswith('(kicad_pcb'), 'not a KiCad PCB')
     end = re.search(r'\)\s*$', candidate)
@@ -252,7 +258,7 @@ def main():
     design_path = HERE / 'evidence/board-access-design.json'
     outline = load(design_path)['layer_construction']['outline_inset_0p6mm_polygon_mm']
     rule_paths = [ROOT / 'boards/osc-core/osc-core.kicad_pro', ROOT / 'boards/osc-core/osc-core.kicad_dru']
-    watched = [a.candidate, a.normalized, descriptor_path, reference_path, design_path, Path(__file__), index_path, terminals_path, *delta_paths, *rule_paths]
+    watched = [a.candidate, a.normalized, descriptor_path, reference_path, design_path, Path(__file__), Path(selective_annulus.__file__), index_path, terminals_path, *delta_paths, *rule_paths]
     pilot = None
     if a.include_kb_p1:
         pilot, pilot_paths = authenticated_pilot(ev)

@@ -43,7 +43,7 @@ def describe(a):
  frag=F.NetFragments(source,planes,a.net);check=frag.verify(graph);desc=A.describe(frag)
  desc.update(board=source['board'],net=a.net,verified=check,
              bindings={'source':sha(a.source),'planes_all_nets':planes['all_net_planes_sha256'],'planes_net':sha(a.planes),'graph':sha(a.graph),'census':sha(a.census),
-                       'methods':{m:sha(HERE/m) for m in ['fragments.py','finite_adapter.py','finite_units.py','connectivity.py','staged_caps.py']}})
+                       'methods':{m:sha(HERE/m) for m in ['selective_annulus.py','fragments.py','finite_adapter.py','finite_units.py','connectivity.py','staged_caps.py']}})
  jsave(a.output,desc);return {'board':desc['board'],'net':a.net,'verified':check,'groups':len(desc['groups']),'barrels':len(desc['barrels'])}
 def plan(desc,pitch,face_pitch,tile_mm,origin=(0.,0.)):
  """Deterministic item list and contiguous chunks under the vertex budget."""

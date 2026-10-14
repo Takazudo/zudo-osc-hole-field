@@ -11,7 +11,7 @@ import argparse,hashlib,json,os,shutil,subprocess,threading,time
 from pathlib import Path
 HERE=Path(__file__).resolve().parent;ROOT=HERE.parents[5]
 TIMEOUT='180s'
-EVAL_METHODS=['evaluate_access.py','staged_caps.py','connectivity.py','port_obligations.py','clip_sheets.py','evidence/board-access-design.json']
+EVAL_METHODS=['evaluate_access.py','selective_annulus.py','staged_caps.py','connectivity.py','port_obligations.py','clip_sheets.py','evidence/board-access-design.json']
 ACCESS_METHODS={'construct_access.py':['construct_access.py'],'two_face.py':['two_face.py','construct_access.py']}
 CAND05_INPUTS=[HERE/f for f in ['construct.py','mechanical.py','contact.py']]+[ROOT/p for p in ['scripts/partition/core_split_candidates.py','design/partition/core-split/candidates/two.json','design/partition/core-split/candidates/input-lock.json','boards/osc-core/osc-core.kicad_pcb']]
 CAND05_FILES=['KA.kicad_pcb','KB.kicad_pcb','terminals.json','contacts.json.gz','mechanical.json.gz','source-dispositions.json.gz']

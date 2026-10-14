@@ -131,6 +131,124 @@ class RequestTests(unittest.TestCase):
             nv.reconcile(graph, mapping, native_pads, clusters)
 
 
+class FindingsCompletenessTests(unittest.TestCase):
+    def setUp(self):
+        self.report = {"kicad_version": "10.0.6", "source": "tiny.kicad_pcb",
+                       "included_severities": ["error", "warning", "exclusion"],
+                       "ignored_checks": [], "violations": [], "unconnected_items": [], "schematic_parity": []}
+        self.census = {"board_sha256": "a" * 64, "native_unconnected_edges": 0,
+                       "native_open_edges_by_net": {}, "pads": [{"agreement": True}],
+                       "pad_count": 1, "differences": []}
+        self.command = ["kicad-cli", "pcb", "drc", "--severity-all", "--all-track-errors", "--schematic-parity"]
+
+    def assess(self, command_complete=True):
+        return nv.assess_native_reports(self.report, self.census, self.command,
+                    command_complete=command_complete, board_name="tiny.kicad_pcb", board_sha256="a" * 64)
+
+    def assert_incomplete(self):
+        result = self.assess()
+        self.assertEqual(result["findings_enumeration"], "INCOMPLETE")
+        self.assertEqual(result["native_acceptance"], "BLOCKED_INCOMPLETE")
+        self.assertFalse(result["accepted"])
+        return result
+
+    def test_clean_complete_control_never_implies_adoption(self):
+        result = self.assess()
+        for key in ("command_execution", "connectivity_reconciliation", "native_acceptance"):
+            self.assertEqual(result[key], "PASS")
+        self.assertEqual(result["findings_enumeration"], "COMPLETE")
+        self.assertEqual(result["candidate_adoption"], "NOT ADOPTED")
+        self.assertFalse(result["accepted"])
+
+    def test_ordinary_and_extended_saturation_are_per_type(self):
+        for kind, limit in (("hole_to_hole", 199), ("clearance", 499)):
+            with self.subTest(kind=kind):
+                self.report["violations"] = [{"type": kind, "severity": "warning"}] * (limit - 1)
+                self.assertEqual(self.assess()["findings_enumeration"], "COMPLETE")
+                self.assertEqual(self.assess()["native_acceptance"], "FAIL")
+                self.report["violations"].append({"type": kind, "severity": "warning"})
+                self.assertEqual(self.assert_incomplete()["saturated_categories"], {kind: limit})
+
+    def test_explicit_truncation_and_stale_pass_fail_closed(self):
+        for change in ({"truncated": True}, {"complete": False}):
+            with self.subTest(change=change):
+                report = copy.deepcopy(self.report)
+                self.report.update(change, status="PASS", accepted=True)
+                self.assert_incomplete()
+                self.report = report
+
+    def test_required_collections_and_ignored_declaration_missing(self):
+        for category in ("violations", "unconnected_items", "schematic_parity", "ignored_checks"):
+            for replacement in (None, "not a collection"):
+                with self.subTest(category=category, replacement=replacement):
+                    self.report[category] = replacement
+                    self.assert_incomplete()
+                    self.report[category] = []
+            del self.report[category]
+            self.assert_incomplete()
+            self.report[category] = []
+
+    def test_ignored_excluded_or_invalid_severity_never_pass(self):
+        self.report["ignored_checks"] = [{"key": "missing_courtyard"}]
+        self.assert_incomplete()
+        self.report["ignored_checks"] = []
+        for severity in ("exclusion", None):
+            self.report["violations"] = [{"type": "clearance", "severity": severity}]
+            self.assert_incomplete()
+
+    def test_all_severities_does_not_prove_track_or_schematic_scope(self):
+        for flag in ("--severity-all", "--all-track-errors", "--schematic-parity"):
+            self.command.remove(flag)
+            self.assert_incomplete()
+            self.command.append(flag)
+        self.report["included_severities"] = ["error"]
+        self.assert_incomplete()
+
+    def test_complete_open_edge_census_mismatch_is_not_pad_count_comparison(self):
+        self.census.update(native_unconnected_edges=2, native_open_edges_by_net={"AGND": 2})
+        result = self.assert_incomplete()
+        self.assertEqual(result["connectivity_reconciliation"], "PASS")
+        self.assertEqual(result["complete_native_unconnected_edges"], 2)
+        self.report["unconnected_items"] = [{"type": "unconnected_items", "severity": "error"}] * 2
+        self.assertEqual(self.assess()["findings_enumeration"], "COMPLETE")
+        self.assertEqual(self.assess()["native_acceptance"], "FAIL")
+        # One pad vs two edges is not itself a reporting mismatch.
+        self.assertEqual(self.census["pad_count"], 1)
+
+    def test_uncorroborated_census_or_differences_cannot_pass(self):
+        for key, value in (("native_open_edges_by_net", {"AGND": 1}), ("board_sha256", "b" * 64),
+                           ("pad_count", 2), ("pads", []), ("differences", [{}])):
+            with self.subTest(key=key):
+                original = self.census[key]
+                self.census[key] = value
+                self.assert_incomplete()
+                self.census[key] = original
+        self.census["pads"][0]["agreement"] = False
+        self.census["differences"] = self.census["pads"][:]
+        self.assertEqual(self.assess()["connectivity_reconciliation"], "FAIL")
+        self.assertEqual(self.assess()["native_acceptance"], "FAIL")
+
+    def test_failed_execution_is_separate_from_valid_reconciliation(self):
+        result = self.assess(command_complete=False)
+        self.assertEqual(result["command_execution"], "INCOMPLETE")
+        self.assertEqual(result["connectivity_reconciliation"], "PASS")
+        self.assertEqual(result["native_acceptance"], "BLOCKED_INCOMPLETE")
+
+    def test_retained_reports_remain_incomplete_without_native_execution(self):
+        base = Path(__file__).parent / "evidence/e16/native-wsl-20261013"
+        for target, edges in (("KA-t2", 479), ("KB-t2", 1220), ("KB-p1", 1219)):
+            with self.subTest(target=target):
+                report = nv.read_json(base / target / "drc.json.gz")
+                census = nv.read_json(base / target / "connectivity.json.gz")
+                result = nv.assess_native_reports(report, census, ["--severity-all"], command_complete=True,
+                        board_name=target + ".kicad_pcb", board_sha256=census["board_sha256"])
+                self.assertEqual(result["command_execution"], "PASS")
+                self.assertEqual(result["connectivity_reconciliation"], "PASS")
+                self.assertEqual(result["complete_native_unconnected_edges"], edges)
+                self.assertEqual(result["native_acceptance"], "BLOCKED_INCOMPLETE")
+                self.assertEqual(result["saturated_categories"]["hole_to_hole"], 199)
+
+
 class StagingTests(unittest.TestCase):
     def setUp(self):
         self.tmp = tempfile.TemporaryDirectory()

@@ -19,6 +19,8 @@ import time
 
 ROOT = Path(__file__).resolve().parents[2]
 E16 = 'design/partition/core-split/candidates/planning/joined-feed-construction-v2'
+ANNULUS_FIXTURE = E16 + '/fixtures/selective-annulus/native-negative-control.kicad_pcb'
+ANNULUS_SCRIPT = E16 + '/fixtures/selective-annulus/native_roundtrip_characterization.py'
 ORACLE_TEST = 'design.spec.cells.test_sweep_precision_vendor.PrecisionVendorSweepGate.test_original_network_returns_nonzero_for_supported_failure'
 AUTHORITY_KEYS = ('EPIC242_ADMISSION_MODE', 'EPIC242_LOCAL_REQUEST',
                   'EPIC242_PARENT_LOCAL_REQUEST_SHA256', 'EPIC242_LOCAL_APPROVAL',
@@ -103,9 +105,26 @@ def worker_name(request):
     return value
 
 
+def annulus_output(request, root):
+    """One fixed sibling directory of the bound evidence receipt, never a CLI path."""
+    evidence = local_path(root, request['evidence'], cache=True)
+    return local_path(root, str(evidence.relative_to(root)) + '.annulus', cache=True)
+
+
+def fresh_operation_output(request, root):
+    if request['kind'] == 'annulus-fixture':
+        output = annulus_output(request, root)
+        need(output.parent.is_dir() and not output.exists(), 'fresh annulus fixture output required')
+
+
 def command_and_inputs(request, root):
-    """Allow only the one oracle test or one of the three existing E16 targets."""
+    """Enumerate fixed reviewed native operations, never caller-supplied commands."""
     inputs = set(METHODS)
+    if request['kind'] == 'annulus-fixture':
+        need(request['target'] == 'annulus' and request['stage'] is None, 'annulus fixture target/stage mismatch')
+        inputs.update((ANNULUS_FIXTURE, ANNULUS_SCRIPT))
+        output = str(annulus_output(request, root).relative_to(root))
+        return ['python3', ANNULUS_SCRIPT, 'worker', '--output', output], 60, inputs
     if request['kind'] in ('startup-success', 'startup-failure'):
         need(request['target'] == request['kind'] and request['stage'] is None, 'startup target/stage mismatch')
         inputs.add('scripts/kicad/qualify_startup_handshake.py')
@@ -155,6 +174,9 @@ def prepare(root, output, kind, run_id, attempt, evidence, *, stage=None, target
                'heavy_guard_environment': heavy_settings(os.environ),
                'uid': os.getuid(), 'claim_directory': str(persistent_claim_directory())}
     request['worker'] = worker_name(request)
+    fresh_operation_output(request, root)
+    if kind == 'annulus-fixture':
+        need(destination != annulus_output(request, root), 'request cannot occupy annulus fixture output')
     command, seconds, inputs = command_and_inputs(request, root)
     request.update(command=command, seconds=seconds,
                    input_sha256={name: sha(local_path(root, name)) for name in sorted(inputs)})
@@ -278,6 +300,7 @@ def execute(root, path, approval_path, *, env=None, claims=None):
     receipt = local_path(root, request['evidence'], cache=True)
     need(receipt.parent.is_dir() and not any(Path(str(receipt) + suffix).exists() for suffix in
              ('', '.driver.log', '.qualification.json')), 'fresh evidence parent/file required')
+    fresh_operation_output(request, root)
     context = local_context(root, request, path, approval_path)
     authority(root, context, host=True)
     check_shared_guard(request, env)
@@ -346,6 +369,7 @@ def worker(root, env, proc=Path('/proc/self/cgroup'), cgroup=Path('/sys/fs/cgrou
                       (cgroup / 'epic242.slice' / slice_name, LIMITS['worker_bytes'])):
         need((path / 'memory.max').read_text().strip() == str(cap) and
              (path / 'memory.swap.max').read_text().strip() == '0', 'worker cgroup limits differ')
+    fresh_operation_output(request, root)
     return subprocess.run(request['command'], cwd=root, env=env, check=False).returncode
 
 
@@ -353,7 +377,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     subs = parser.add_subparsers(dest='action', required=True)
     prep = subs.add_parser('prepare')
-    prep.add_argument('--kind', choices=('oracle', 'e16', 'startup-success', 'startup-failure'), required=True)
+    prep.add_argument('--kind', choices=('oracle', 'e16', 'startup-success', 'startup-failure', 'annulus-fixture'), required=True)
     prep.add_argument('--output', required=True)
     prep.add_argument('--run-id', required=True)
     prep.add_argument('--attempt', type=int, required=True)

@@ -73,6 +73,7 @@ Only these operations are accepted:
 | --- | --- | --- | --- |
 | `startup-success` | `startup-success` | `bash scripts/kicad/run.sh kicad-cli version` | 60 s |
 | `startup-failure` | `startup-failure` | `bash scripts/kicad/run.sh /bin/false` | 60 s |
+| `annulus-fixture` | `annulus` | Fixed six-layer negative-control worker; fixture/script/imports sealed; fresh output directory `<bound-evidence>.annulus`; characterization only, no DRC/acceptance | 60 s |
 | `oracle` | `python` | The one deferred precision-vendor unittest | 1,680 s |
 | `e16` | `KA-t2`, `KB-t2`, `KB-p1` separately | Existing E16 worker | 2,580 s |
 
