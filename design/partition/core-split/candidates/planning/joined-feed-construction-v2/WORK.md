@@ -1,5 +1,9 @@
 # Joined feed construction v2
 
+Current coordination and resumption: [ongoing WSL agreement](#ongoing-wsl-coordination--2026-10-14).
+Earlier checkpoints below remain historical evidence; their next actions are not
+fresh execution authority.
+
 Construct one disposable load-side candidate using the existing six-wire interface and three AGND returns. Materialize uniquely identified terminals, inclined solder contacts, board-side access, insulation and a complete carrier. Source design and collision evidence are distinct from physical qualification and native acceptance.
 
 Input HEAD: `8b2384a927fbd3c58669614fb40c7e722b78974e`. No original copper, fixed panel, non-core poses, harness identities or canonical boards change. No native run, F3 placement trial, adoption or merge is authorized by this packet.
@@ -481,3 +485,158 @@ Follow-up branch `topic/e16-resistance-attribution` stacks on PR274 at `a811c2dd
 TP990026 is a held source land, so the bounded proposal uses it as a transfer mechanism and names KB U7105.4 as the +12V unit-current observation while preserving all three source supports. The exact additional 0.6/0.3 mm via at (141,175) remains a specification only. Real object extraction (B), independent evidence review (C) and separately authorized fresh geometry/native/changed-operator comparison (D) remain distinct gates. No production solve, unpickling, candidate materialization or native execution occurred; no baseline restarted. See `evidence/e16/resistance-attribution-wsl-20261014/` for protocol, synthetic example, independent reviews, exact experiment, actual checks and preservation audit.
 
 Campaign remains terminal at 2/3 full baselines and 8/24 diagnostics. The native fixture remains unadmitted at frozen `b27391de`, request `f8da55c709fa59ba3221806f1c10cc4d25462fe8bf9d8c50acf313b0d3fdf4e3`; separate approval/reservation/qualification are absent. Source consistency is not electrical compliance. Canonical boards/copper/hardware/decision.json unchanged; KEEP_K1402_INCUMBENT, PR260 draft/unmerged and issue253 open.
+
+## Ongoing WSL coordination — 2026-10-14
+
+### Operating agreement and objective
+
+Owner instruction in this WSL session delegates persistent planning, ordinary
+in-scope source development, verification, independent technical review and
+evidence-based continuation to the local coordinating agent. Reuse this work note
+and existing evidence directories; do not create a competing status system.
+Inspect evidence, select a bounded useful increment, implement, verify/review,
+record the actual result, then select and carry out the next justified increment.
+A passed test, commit, pushed draft or completed slice is a checkpoint, not a
+reason to return to an external planner. Earlier workflow-only external-planner
+handoffs are superseded by this instruction.
+
+Immediate objective: resolve actual E16 signing/delegation ownership with the
+user here, then prepare and follow a genuinely admitted complete selected
+resource-qualification operation through terminal acceptance, accounting and
+cleanup. Qualification success requires independent resource review and a signed
+report before preparing a separate fresh production request. Production needs
+its own authority and live reservation. The engineering outcome is an honestly
+resolved selected diagnostic/Stage C disposition or a specific evidence-backed
+failure and next intervention; source readiness alone is not numerical progress.
+
+Ordinary planning/source choices are delegated. Exact-request authorization,
+independent signer/trust and review requirements, exclusive reservation, shared
+scheduling, resource caps and single-use accounting are not waived. Do not create
+keys, signatures, grants or reservations under this coordination instruction.
+No merge/rebase/stack integration, canonical geometry/copper or decision.json
+change, adoption, native work, global host/dependency/guard change, deployment,
+procurement, fabrication, energization or Cloud launch is authorized. Preserve
+KEEP_K1402_INCUMBENT and the separate +5V/native-negative-control lanes.
+
+Check durable decisions before asking the owner. Ask only the missing decision,
+explain its source and consequences, recommend a concrete resolution and record
+the answer here. Do not repeat it without changed scope or facts. A technical
+reviewer agent is not an independent signing authority. Continue other useful
+authorized work while a lane is blocked; do not invent work or rerun unchanged
+checks merely to avoid the external boundary.
+
+Stop only for completion of the authorized objective, an indispensable owner
+decision/capability, exhausted limits, unresolved ownership/safety/accounting/
+cleanup, or a session boundary. At a boundary, retain enough evidence and exact
+next action for replacement WSL recovery. Never claim unstarted work is running
+or promise unattended continuation. Failures retain their evidence; no automatic
+replay, cap increase or weakened acceptance.
+
+### Refreshed ownership, evidence and claim state
+
+- Reused clean worktree `/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-attribution-executor`,
+  branch `topic/e16-attribution-executor`, local/refreshed remote head
+  `781a028845cf20d991a79dbdfe96d1eed9546b97` before this documentation increment.
+  The commit containing this section is its successor; recover the actual current
+  head with `git rev-parse HEAD` and compare PR #277 before any packet preparation.
+  Worktree records, processes and the `osc:0.0` tmux transcript identify the current
+  local coordination session. No competing executor or E16 operation was observed.
+  This is continuation ownership, not integration ownership or a resource reservation.
+- PR #277 remains open/draft against `topic/e16-attribution-reconstruction` at
+  `dec36940e2691e384b9d8d499675761078d64308`. PR #260 remains open/draft at
+  `5af0e7b675123b40367078ee605a1355bae49a62`; #253 and epic #242 remain open.
+  Main remains `65cefd41fc39e064d38319115ad96016a1c6b71c`.
+- Reviewed containment implementation is complete at `781a028`:
+  [process/resource contract and real tiny fixtures](evidence/e16/attribution-admission-wsl-20261014/containment/README.md),
+  [independent review](evidence/e16/attribution-admission-wsl-20261014/containment/review.md),
+  [exact retained checks](evidence/e16/attribution-admission-wsl-20261014/containment/checks/summary.json).
+  Historical 70 focused tests and host-mechanism evidence are not a qualification.
+  No demonstrated containment defect justifies repeating that increment.
+- Numerical [resource plan](evidence/e16/attribution-admission-wsl-20261014/resource-plan.md)
+  remains applicable with its explicit containment supersession. Fixed caps:
+  180 seconds from actual guard entry, 2 GiB aggregate, zero operation swap,
+  64 MiB aggregate output, one diagnostic/unit/selected RHS/attempt;
+  worker 1216 MiB. Root 1984 MiB plus external 64 MiB reserve remains unqualified
+  for the full operation, including attributable shared-service/bootstrap costs.
+- Original input bindings remain in the reviewed [inventory](evidence/e16/attribution-reconstruction-wsl-20261014/resource-inventory.json),
+  SHA-256 `8cfcf5fac5bd749dcd58313b4df8eb1a9080723a5c5d34d80c548098c2d60b18`.
+  Exact experiment/identities/tolerances are in the [owner handoff](evidence/e16/attribution-admission-wsl-20261014/owner-handoff.md).
+  All original inputs and prior negative evidence are preserved; no numerical
+  artifact was opened/deserialized in this coordination increment.
+- Live canonical accounting file is
+  `/home/takazudo/.cache/zudo-e16-runs/campaign-20261014/campaign-note.json`, SHA-256
+  `94aafb6d13f754fdbde718a5b44c5071d946897e798a8eebf1cd4b86c0731ffb`.
+  Actual use: 2/3 baselines, 8/24 diagnostics; remaining allowance 1 and 16,
+  respectively, is not execution authorization. Attempt 5 is terminal,
+  `live_owned_work=false`; this increment consumes zero. Preserve this ledger;
+  use only the existing accounting owner/path for future claims.
+- `systemctl --user list-units 'e16-*' --all` reports zero loaded units.
+  Fixed trust `/home/takazudo/.config/zudo-e16/attribution.allowed_signers` and
+  production state `/home/takazudo/.local/state/zudo-e16-attribution` are absent.
+  No active claim, request freeze, numerical process or task cleanup is pending.
+  Qualification/production request digests, run IDs and artifact IDs remain null.
+  Neither operation admitted; Stage C NOT RUN; no via or board acceptance.
+
+### Pending owner decision and next local increment
+
+Current [signing requirements and actual commands](evidence/e16/attribution-admission-wsl-20261014/containment/signing.md)
+require externally controlled trust and separately signed operator/controller/
+resource-reviewer messages. Actual people and designated public keys are not
+recorded. The old campaign's standing delegation in its retained authority source
+does not satisfy `attribution_admission.verify_for_host()` for this new selected
+operation; that function explicitly rejects substitution of old campaign delegation.
+
+Pending question in this WSL session: is the user the sole actual authority, or
+do separate human signers exist? Recommendation if sole owner: prepare a specific
+owner-controlled policy amendment, preserving owner key custody, separate exact
+decisions and independent technical review; obtain approval before applying it.
+This recommendation is **not approved policy**, a key designation or run approval.
+Do not assume unrelated existing SSH keys or fictional operators. Record the
+answer here, prepare the concrete arrangement for review, and continue locally.
+
+Before preparing any execution packet, finish/review/commit all instruction or
+source changes and refresh the clean final head. Then, only after genuine trust
+setup is resolved, use the existing compiler from the source directory (not
+`evidence/e16`):
+
+```sh
+cd /home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-attribution-executor
+git fetch origin
+git status --short --branch
+git rev-parse HEAD
+gh pr view 277 --json state,isDraft,headRefName,headRefOid,baseRefName
+cd design/partition/core-split/candidates/planning/joined-feed-construction-v2
+```
+
+The signing handoff supplies the exact `describe`, `seal-qualification`, signing
+and verification commands with genuinely assigned fresh paths. Do not seal now:
+the trust file is absent and policy/identity decisions are pending. No placeholder
+packet is executable. Once sealed, freeze its bound source; a change invalidates
+the packet and requires fresh preparation/review, never digest substitution.
+
+After actual qualification authorization and reservation pass existing gates,
+use the existing `attribution_host.py --launch` interface and follow the service
+to completion. Launch exit zero is submission only. Inspect `accepted_result`,
+immutable terminal journal, envelope receipt, exact durable shared-guard row,
+output inventory, campaign accounting and owned cleanup together. A claimed
+qualification consumes one diagnostic even on failure. Incomplete accounting or
+cleanup requires reconciliation before any new request. On success obtain the
+required independent resource review/signature, then separately prepare and admit
+production. No external planning prompt is required at either transition.
+
+### Coordination increment verification
+
+Pre/post `pnpm circuit:check` PASS (manual inventory: 68 lines, zero declared
+placements; no schematic/placement binding; pin-asset check performed).
+`git diff --check`, added local link resolution and unchanged ledger digest PASS.
+Only AGENTS.md and this work note change; numerical/containment source, original
+inputs, campaign ledger, protected boards/copper and decision.json are untouched.
+No unchanged source suite, host fixture, numerical/native workload, aggregate
+regeneration or broad build was repeated; those are NOT RUN in this documentation
+increment. CI is intentionally skipped, not passed.
+
+Independent read-only review by `/root/coordination_review`: PASS, no blocking
+findings. Code enforces separate principals/namespaces/signatures, not distinct
+humans or key fingerprints; that fact does not authorize role consolidation.
+The reviewer verified the operating scope, pending policy decision and recovery
+instructions, and supplied no signing authority. No execution packet was created.
