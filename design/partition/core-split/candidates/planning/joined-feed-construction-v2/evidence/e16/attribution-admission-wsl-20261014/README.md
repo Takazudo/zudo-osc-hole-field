@@ -2,6 +2,8 @@
 
 **SOURCE_COMPLETE / NOT_QUALIFIED / NOT_PREPARED / NOT_ADMITTED / NOT_RUN.** The missing authenticated host/worker implementation is now present and independently reviewed. This is the latest readiness override for the executor continuation; older checkpoint readiness describes historical source gaps and remains retained. No real selected attribution result exists.
 
+The subsequent [independent-owner handoff](owner-handoff.md) records a fresh source-only audit of checkpoint `d1e967f6`: unchanged operation bindings and campaign, absent external trust, and an observed host blocker (`SwapTotal=16777216 kB`, while the adapter requires zero). It supplies the actual request compiler CLI and exact grant contract. No qualification or production was admitted.
+
 Branch `topic/e16-attribution-executor`, [draft PR #277](https://github.com/Takazudo/zudo-osc-hole-field/pull/277), targets `topic/e16-attribution-reconstruction` at verified predecessor `dec36940e2691e384b9d8d499675761078d64308` (#276). This continuation's source commit is `35b64cab5cf0aeee18ca159e06d0012a065c6862`; the subsequent evidence commit changes only this new directory. Work used the existing local WSL worktree. No stack merge, rewrite, integration ownership or Codex Cloud launch occurred.
 
 ## Implemented operations
@@ -34,9 +36,12 @@ The source-only description binds 99 source files, 3161 toolchain/library files 
 
 The exact outstanding admission action is for independent owners to provision the fixed account signer store, review/seal the separate resource-qualification packet using this source-owned compiler, then issue applicable authorization and a current exclusive reservation for its exact digest. That separately admitted operation must use the same complete pipeline and caps and consumes one diagnostic even on failure. It is not authorized by this development prompt. A successful reviewed qualification would still precede a fresh production packet and its own exact authorization/reservation.
 
-One executable source-only check from the E16 directory is:
+One executable source-only check from the repository root is below. The Python
+source directory is `joined-feed-construction-v2/`, not its `evidence/e16/`
+subdirectory:
 
 ```sh
+cd design/partition/core-split/candidates/planning/joined-feed-construction-v2
 /home/takazudo/.cache/zudo-e16-numerical-venv/bin/python attribution_lifecycle.py --readiness
 ```
 

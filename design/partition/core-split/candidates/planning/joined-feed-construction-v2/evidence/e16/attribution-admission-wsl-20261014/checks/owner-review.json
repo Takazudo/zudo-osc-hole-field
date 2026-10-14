@@ -1,0 +1,223 @@
+{
+  "observed_at_utc": "2026-10-14T10:03:12.100638+00:00",
+  "inspected_head": "d1e967f64804ca3335ff5d957998e57b598dcbf1",
+  "branch": "topic/e16-attribution-executor",
+  "base_sha": "dec36940e2691e384b9d8d499675761078d64308",
+  "runtime_source_changes": false,
+  "host": {
+    "observed_at_utc": "2026-10-14T10:01:16.099771+00:00",
+    "host": {
+      "uid": 1000,
+      "boot_id": "afb4621d-2346-4585-9fdc-0c7be26ba13b",
+      "machine_id": "71cf1cb880d541e5a76084b89069eee7"
+    },
+    "platform": "6.18.33.2-microsoft-standard-WSL2",
+    "scope": "Read-only host observations; no scope, namespace, mount, guard entry or numerical execution.",
+    "trust_path": "/home/takazudo/.config/zudo-e16/attribution.allowed_signers",
+    "trust_exists": false,
+    "state_path": "/home/takazudo/.local/state/zudo-e16-attribution",
+    "state_exists": false,
+    "systemd": {
+      "command": [
+        "systemctl",
+        "--user",
+        "show",
+        "--property=Version"
+      ],
+      "exit_code": 0,
+      "stdout": "Version=255.4-1ubuntu8.17\n",
+      "stderr": ""
+    },
+    "user_service": {
+      "command": [
+        "systemctl",
+        "show",
+        "user@1000.service",
+        "--property=Delegate,ControlGroup,MemoryMax,MemorySwapMax"
+      ],
+      "exit_code": 0,
+      "stdout": "ControlGroup=/user.slice/user-1000.slice/user@1000.service\nDelegate=yes\nMemoryMax=infinity\nMemorySwapMax=infinity\n",
+      "stderr": ""
+    },
+    "attribution_scopes": {
+      "command": [
+        "systemctl",
+        "--user",
+        "list-units",
+        "--all",
+        "--no-legend",
+        "--plain",
+        "e16-attribution-*"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    "/proc/swaps": "Filename\t\t\t\tType\t\tSize\t\tUsed\t\tPriority\n/dev/sdc                                partition\t16777216\t1153096\t\t-2\n",
+    "/sys/fs/cgroup/cgroup.controllers": "cpuset cpu io memory hugetlb pids rdma\n",
+    "/proc/sys/user/max_user_namespaces": "47799\n",
+    "/proc/sys/kernel/unprivileged_userns_clone": "ABSENT; not a capability verdict",
+    "/proc/sys/kernel/apparmor_restrict_unprivileged_userns": "ABSENT; not a capability verdict",
+    "memory_kib": {
+      "MemTotal": 12247692,
+      "MemAvailable": 10542440,
+      "SwapTotal": 16777216,
+      "SwapFree": 15624120
+    },
+    "existing_swap_gate": {
+      "status": "REFUSED",
+      "reason": "outside controllers require host SwapTotal=0; no host configuration fallback",
+      "no_guard_entry": true
+    },
+    "qualification_feasibility": "NOT TESTED: delegation, UID-preserving namespace, tmpfs, library loading, exact matrices and full pipeline resource fit"
+  },
+  "bindings": {
+    "operation_sha256": "8013ecb171a02ae5794d228c39713c647dbc911f917325f8a1cd62589abbe214",
+    "operation_description_sha256": "9a87bb9379e4f26451528c059a1da0dea9bdcb13cafccd0abab609f8c317138f",
+    "byte_identical_to_checkpoint": true,
+    "source_files": 99,
+    "toolchain_files": 3161,
+    "selected_inputs": {
+      "matched": 33,
+      "mismatches": [],
+      "manifest": "../operation-description.json#operation.packet"
+    },
+    "qualification_request_sha256": null,
+    "production_request_sha256": null
+  },
+  "preservation": {
+    "observed_at_utc": "2026-10-14T10:00:38.339987+00:00",
+    "method": "Raw file SHA-256 and size checks only; no decompression, deserialization or numerical profiling.",
+    "topic": {
+      "root": "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-attribution-executor",
+      "matched": 539,
+      "expected_absent": [
+        "boards/osc-control/osc-control.kicad_prl",
+        "boards/osc-core/osc-core.kicad_prl",
+        "boards/osc-jack-left/osc-jack-left.kicad_prl",
+        "boards/osc-jack-right/osc-jack-right.kicad_prl",
+        "boards/osc-octave-1/osc-octave-1.kicad_prl",
+        "boards/osc-octave-2/osc-octave-2.kicad_prl",
+        "boards/osc-octave-3/osc-octave-3.kicad_prl",
+        "boards/osc-octave-4/osc-octave-4.kicad_prl",
+        "boards/osc-octave-5/osc-octave-5.kicad_prl",
+        "boards/osc-stage-optical/osc-stage-optical.kicad_prl",
+        "boards/panel/panel.kicad_prl"
+      ],
+      "mismatches": [],
+      "index_sha256": "b66b36f133ba7d74fbe33655d9190b7ec9bc6bf6872f553a8398ea818e138069",
+      "after_mismatches": []
+    },
+    "original": {
+      "root": "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-r4",
+      "matched": 550,
+      "expected_absent": [],
+      "mismatches": [],
+      "index_sha256": "b66b36f133ba7d74fbe33655d9190b7ec9bc6bf6872f553a8398ea818e138069",
+      "after_mismatches": []
+    },
+    "original_artifacts": {
+      "count": 195,
+      "mismatches": [],
+      "after_matched": 195,
+      "reference": "preservation.json#artifacts.rows",
+      "verified_before_and_after": true
+    },
+    "browser": {
+      "matched": 19,
+      "count": 19,
+      "mismatches": []
+    },
+    "ledger": {
+      "path": "/home/takazudo/.cache/zudo-e16-runs/campaign-20261014/campaign-note.json",
+      "sha256": "94aafb6d13f754fdbde718a5b44c5071d946897e798a8eebf1cd4b86c0731ffb",
+      "matches_checkpoint": true,
+      "execution_budget": {
+        "full_baseline_limit": 3,
+        "full_baseline_used": 2,
+        "production_diagnostic_limit": 24,
+        "production_diagnostic_used": 8
+      },
+      "live_owned_work": false,
+      "runs": [
+        {
+          "attempt": 4,
+          "run_id": "4b95b6c8d8bf4abf961736ecedd3d72b",
+          "request_sha256": "e61a727361ad1a2fd0418d6d95c0cdae109a536d8b62a99654970685c0819c87",
+          "source_sha": "9f69cd8a2e7b80cba813a5bd66546c4d5ac705ec",
+          "state": "terminal numericalFAIL; integrity/cleanup independentlyPASS"
+        },
+        {
+          "attempt": 5,
+          "run_id": "8262c033387f444581d19ef816622eb5",
+          "request_sha256": "ef0213b3b38f4de23804ad192043b082d8e1b2be3086c5e20e4343afea4052d6",
+          "source_sha": "852ffac7f85aff4bb436eb25f7ce993cee48146b",
+          "state": "terminal numerical PASS; independent integrity/cleanup PASS"
+        }
+      ],
+      "attribution_charges": [],
+      "after_sha256": "94aafb6d13f754fdbde718a5b44c5071d946897e798a8eebf1cd4b86c0731ffb",
+      "delta": 0
+    },
+    "original_request_compressed": {
+      "path": "design/partition/core-split/candidates/planning/joined-feed-construction-v2/evidence/e16/campaign-wsl-20261014/attempt5/packet/request.json.gz",
+      "sha256": "3ac6356762419c653c8949adb1c2d12db58e109408d52246ef482e9a398adc54",
+      "decoded": false
+    }
+  },
+  "checks": {
+    "readiness": {
+      "command": "/home/takazudo/.cache/zudo-e16-numerical-venv/bin/python attribution_lifecycle.py --readiness",
+      "cwd": "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-attribution-executor/design/partition/core-split/candidates/planning/joined-feed-construction-v2",
+      "exit_code": 2,
+      "matches_retained_readiness": true
+    },
+    "compiler": {
+      "command": "/home/takazudo/.cache/zudo-e16-numerical-venv/bin/python -B attribution_request.py describe --output /tmp/e16-owner-operation-description.json",
+      "cwd": "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-attribution-executor/design/partition/core-split/candidates/planning/joined-feed-construction-v2",
+      "exit_code": 0,
+      "seal_qualification": "NOT RUN: fixed external trust absent; no request sealed"
+    },
+    "fixtures": {
+      "command": "/home/takazudo/.cache/zudo-e16-numerical-venv/bin/python -B -m unittest test_attribution_admission test_attribution_worker test_attribution_lifecycle test_attribution_host test_attribution_supervisor test_attribution_boundary_review -q",
+      "cwd": "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-attribution-executor/design/partition/core-split/candidates/planning/joined-feed-construction-v2",
+      "exit_code": 0,
+      "tests": 95,
+      "seconds": 3.516,
+      "qualification": false,
+      "authority_and_host_observations": "Disposable fixture keys/grants/ledgers and mocked kernel facts only; fixture resources cleaned."
+    },
+    "circuit_before": "PASS",
+    "circuit_after": "PASS",
+    "diff_check": "PASS",
+    "NOT_RUN": {
+      "aggregate_regeneration": "Invokes native/generator workloads outside narrow authorization",
+      "native_oracle": "No native admission",
+      "browser": "All 19 retained bindings unchanged",
+      "documentation_build": "Only non-published E16 evidence changed",
+      "broad_source_suite": "No runtime source change; 95 focused fixture checks run",
+      "real_resource_qualification": "No exact packet/grants/reservation; host swap prerequisite fails",
+      "production_attribution": "No qualification or separate production admission",
+      "CI": "Skipped via evidence commit marker; no dispatch"
+    }
+  },
+  "result": {
+    "qualification_request_sha256": null,
+    "production_request_sha256": null,
+    "qualification_run_id": null,
+    "production_run_id": null,
+    "numerical_output_identity": null,
+    "qualification_admitted": false,
+    "production_admitted": false,
+    "real_artifact_decoded": false,
+    "numerical_units": 0,
+    "resource_measurements": null,
+    "ledger_delta": 0,
+    "Stage_C": "NOT_RUN",
+    "electrical_acceptance": false,
+    "whole_board_acceptance": false,
+    "adopted": false,
+    "disposition": "KEEP_K1402_INCUMBENT",
+    "cleanup": "No production resources created; fixture cleanup completed; original ledger has no live owned work."
+  }
+}
