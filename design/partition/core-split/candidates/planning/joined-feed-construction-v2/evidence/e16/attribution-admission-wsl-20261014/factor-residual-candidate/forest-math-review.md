@@ -131,3 +131,11 @@ The final oracle was rerun again after caching the single maximum-path scan,
 recording its n reads/comparisons, and exposing witness-hash bytes/input-hash passes.
 All103 structural and51 complete interval checks still pass; final table/results
 identify source0d0c2154... . These changes do not establish production eligibility.
+
+Accounting-only receipt after the final independent run: small terminal-midpoint
+preparation now enters the proposed contribution ledger in addition to its existing
+fine floating charges. The representative joined total is42 instead of38, including
+four preparation entries. Prototype SHA256 is
+738774acdddb70b7e6e88830a450acc19a8c86fa5d8885e66113c67ed7074494.
+No numerical operation changed; the coordinator reports all48 tests passing. The
+independent result deliberately retains its actual0d0c2154... execution identity.

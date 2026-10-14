@@ -135,3 +135,9 @@ representation is not a production fit claim. See `../compact-increment.md`.
 reroots, complete coupled intervals, discarded-scope accounting and allocation
 lifetimes. Proposed contribution units never replace the fine counters. See
 `../forest-increment.md` for the next native/preallocation work and claim limits.
+
+`test_native_exact.py` builds the bounded C++ scalar/row helper in a fresh
+temporary directory and cleans it afterward. The native stats are explicit
+limb-kernel/traffic metrics, not interchangeable with Python whole-width units.
+Optimized and UBSan independent oracles are retained separately. See
+`../native-exact-increment.md`; the full native forest is still the next step.

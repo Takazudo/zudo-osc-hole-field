@@ -1349,7 +1349,7 @@ KEEP_K1402_INCUMBENT; actual qualification/attribution remains unresolved.
 Publication is another checkpoint; the development assignment continues here.
 
 
-<a id="e16-current-checkpoint"></a>
+<a id="e16-forest-checkpoint"></a>
 
 ### Verifier-owned forest checkpoint — 2026-10-15 JST
 
@@ -1391,3 +1391,34 @@ Ledger unchanged15/24 diagnostics,2/3 baselines, no new request/grant/cleanup de
 Original inputs/solver/RHS/normalization/tolerances and all numerical/hardware
 safeguards unchanged. KEEP_K1402_INCUMBENT; no Stage D/merge/adoption/deployment.
 This is another published checkpoint, not completion of the active assignment.
+
+
+<a id="e16-current-checkpoint"></a>
+
+### Native exact-helper checkpoint — 2026-10-15 JST
+
+Continued after6832a1e2. [Evidence](evidence/e16/attribution-admission-wsl-20261014/factor-residual-candidate/native-exact-increment.md)
+adds a bounded34limb C++ exact scalar/row helper, fresh temporary build/cleanup
+and ABI validation. No new dependency or host change. Four tests and separate
+optimized/UBSan exact oracles PASS, including full exponent/width ranges, rawABI
+malformation, carry/borrow/cancellation, underflow and cumulative counter refusal.
+Native limb/init/copy/floating metrics remain explicit and distinct from Python
+whole-significand counters. Review caught and fixed wide-operand zero-shortcut
+undercharging; proof input coefficients and bounds are unchanged.
+
+Source resource review also derives a conservative rawstamp count before existing
+board_parts allocations, with early executor insertion points. It preserves
+original numerical construction and records unknown workspace/overlap instead
+of calling a partial array envelope a full heap bound. No original metadata was
+read; the guard is not implemented yet.
+
+**Next active source work:** native full virtual-row/checked-forest/path/interval
+execution with all counters and bindings, then metadata-only rawstamp preflight
+and complete resource-envelope review. Helper-only success is not a full native
+certificate or an eligible original-data request. No original probe, qualification
+or production until those prerequisites actually hold. Keep fixture limits and
+all original 180s/1216MiB/2GiB/swap/output/input/entry/update constraints.
+
+Ledger unchanged15/24 diagnostics,2/3 baselines; no further baseline, new request,
+grant, signing-material change or cleanup debt. KEEP_K1402_INCUMBENT, PR260 draft
+and issue253 open. Attribution unresolved; the assignment continues locally.

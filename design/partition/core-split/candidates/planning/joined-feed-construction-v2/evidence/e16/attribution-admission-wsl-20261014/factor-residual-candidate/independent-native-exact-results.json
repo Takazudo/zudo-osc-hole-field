@@ -1,0 +1,52 @@
+{
+  "synthetic_only": true,
+  "build": {
+    "source_sha256": "9d210ba9b29a2c463b814cd9ed3f50f4a45989ad27fb076d3d43db7f01a0aff3",
+    "binary_sha256": "b3d26f3ab2c6e5bc3d028f9245fff945afe004b3c94dfc5b3381dafcd34dd23a",
+    "compiler": "c++ (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
+    "flags": [
+      "-std=c++20",
+      "-O2",
+      "-fno-fast-math",
+      "-frounding-math",
+      "-fPIC",
+      "-shared",
+      "-Wall",
+      "-Wextra",
+      "-Werror"
+    ]
+  },
+  "IEEE": {
+    "seed": 286,
+    "IEEE_decodes": 1000,
+    "exact_half_sums": 1002,
+    "status": "PASS"
+  },
+  "wide_arithmetic": {
+    "carry_borrow_successes": 17,
+    "width_refusals": 2,
+    "exact_comparisons": 1000,
+    "accepted_floor_checks": 232,
+    "floor_refusals": 268,
+    "status": "PASS"
+  },
+  "rows": {
+    "seed": 288,
+    "exact_rows": 200,
+    "maximum_offdiagonal_terms": 128,
+    "status": "PASS"
+  },
+  "malformed": {
+    "raw_struct_nonfinite_refusals": 11,
+    "preloaded_counter_overflow_refusals": 9,
+    "wide_zero_shortcut_retains_four_word_contributions": true,
+    "cap_persists_after_failure": true,
+    "row129_and_null_stats_refuse": true,
+    "status": "PASS"
+  },
+  "sha256": {
+    "independent-native-exact-oracle.py": "4b4202e0190b93dc0a17ec04c37e3864dce1becc9165a2cc49c00bca2b1d9faa",
+    "fixture/native_exact.cpp": "9d210ba9b29a2c463b814cd9ed3f50f4a45989ad27fb076d3d43db7f01a0aff3",
+    "fixture/native_exact.py": "2b864bdcda4beec10fd556bad751d4c8e2493316876e5746f2c5acab24a8d06b"
+  }
+}
