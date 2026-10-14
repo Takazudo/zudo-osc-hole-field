@@ -31,3 +31,14 @@ The prioritized one-via TP990026 proposal identifies a demonstrated local transf
 | `resistance-analysis.json` | `4a9f0dc7b4f15521595fa10e03fe650d2d401279246b32a7c5c7eb3a4b5d7aaf` |
 | `resistance-analysis.md` | `2546e1c8afcbeda13269dd07ed62891450d08bd704c59204812c0e06e1aaa7fc` |
 | `resistance-loaded-ranking.csv` | `4e34c74c8684db4b034e75186d693733b722db4f50839c4d632f629aac53ac41` |
+
+## Publication normalization addendum
+
+Independently compared the final publication correction against commit `afe00e6c`. The helper changes only `csv.DictWriter` to explicitly use `lineterminator='\n'`. The new CSV is byte-for-byte equal to the previously reviewed CSV after CRLF-to-LF replacement; all 1,536 parsed records are identical. `resistance-analysis.json` remains byte-identical. Every updated artifact-index size/hash matches its file. No engineering value, input binding or conclusion changed; no native/production work was performed. The earlier hashes above remain the historical reviewed artifact identities.
+
+Current normalized publication hashes:
+
+| File | SHA-256 |
+| --- | --- |
+| `resistance-report.py.txt` | `7f373680504b8bc4145c19a1995b7e308722fe7cf9922debadbe0dd9241a8a74` |
+| `resistance-loaded-ranking.csv` | `860bc111aee1999a49a52e491f649666e7373f50a79bd567b6cf2e5586f03867` |

@@ -56,7 +56,7 @@ for c in s['coupled']:
 loaded.sort(key=lambda r:(-r['exceedance_ratio'],r['board'],r['pad_id'],r['case'],r['state']))
 assert len(loaded)==1536
 with (OUT/'resistance-loaded-ranking.csv').open('w',newline='') as f:
-    w=csv.DictWriter(f,fieldnames=list(loaded[0]));w.writeheader();w.writerows(loaded)
+    w=csv.DictWriter(f,fieldnames=list(loaded[0]),lineterminator='\n');w.writeheader();w.writerows(loaded)
 unique={}
 for row in loaded: unique.setdefault(row['pad_id'],row)
 assert len(unique)==302
