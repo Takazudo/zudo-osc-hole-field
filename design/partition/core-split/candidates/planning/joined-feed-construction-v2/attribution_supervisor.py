@@ -292,4 +292,3 @@ def supervise(command, root, *, started, seconds=180., cleanup_seconds=CLEANUP_S
         (root/"terminal.json").rename(root/"terminal.late-unaccepted.json")
         raise ValueError("terminal commit exceeded deadline; result revoked")
     return record
-
