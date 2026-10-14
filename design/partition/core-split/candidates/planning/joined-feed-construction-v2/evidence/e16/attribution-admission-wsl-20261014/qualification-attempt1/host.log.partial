@@ -1,0 +1,14 @@
+Traceback (most recent call last):
+  File "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-attribution-executor/design/partition/core-split/candidates/planning/joined-feed-construction-v2/attribution_host.py", line 712, in <module>
+    if __name__=='__main__':raise SystemExit(main())
+                                             ^^^^^^
+  File "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-attribution-executor/design/partition/core-split/candidates/planning/joined-feed-construction-v2/attribution_host.py", line 709, in main
+    return contained(*args,a.started)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-attribution-executor/design/partition/core-split/candidates/planning/joined-feed-construction-v2/attribution_host.py", line 350, in contained
+    UnitGuard(metadata['guard_sha256']).prove_owner()
+  File "/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-attribution-executor/design/partition/core-split/candidates/planning/joined-feed-construction-v2/numerical_unit_guard.py", line 80, in prove_owner
+    need(os.path.samefile(f'/proc/{owner}/fd/200', lock), 'guard does not hold the shared slot descriptor')
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen genericpath>", line 112, in samefile
+PermissionError: [Errno 13] Permission denied: '/proc/2113582/fd/200'

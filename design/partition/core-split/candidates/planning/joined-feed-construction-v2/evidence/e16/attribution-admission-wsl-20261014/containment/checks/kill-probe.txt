@@ -1,0 +1,6 @@
+{"command": ["/usr/bin/systemd-run", "--user", "--scope", "--quiet", "--collect", "--no-ask-password", "--expand-environment=no", "--unit=e16-kill-fixture-6086a7faa93d4e359052499e3699193a.scope", "-p", "MemoryMax=67108864", "-p", "MemorySwapMax=0", "-p", "TasksMax=4", "-p", "RuntimeMaxSec=1s", "-p", "TimeoutStopSec=1s", "/usr/bin/python3", "-I", "-S", "-B", "/tmp/e16-containment-kill-probe.py", "inside"]}
+{"stage": "exit", "code": -15, "stdout": "{\"stage\": \"inside\", \"pid\": 2101607, \"detached_child\": 2101608, \"cgroup\": \"/sys/fs/cgroup/user.slice/user-1000.slice/user@1000.service/app.slice/e16-kill-fixture-6086a7faa93d4e359052499e3699193a.scope\", \"child_cgroup\": \"0::/user.slice/user-1000.slice/user@1000.service/app.slice/e16-kill-fixture-6086a7faa93d4e359052499e3699193a.scope\\n\", \"limits\": {\"memory.max\": \"67108864\", \"memory.swap.max\": \"0\", \"pids.max\": \"4\"}}\n", "stderr": "", "elapsed_seconds": 1.1838911259546876}
+{"stage": "process_after", "pid": 2101607, "state": "absent"}
+{"stage": "process_after", "pid": 2101608, "state": "absent"}
+{"stage": "cleanup", "unit": "e16-kill-fixture-6086a7faa93d4e359052499e3699193a.scope", "properties": "ControlGroup=\nLoadState=not-found\nActiveState=inactive\n", "actual_cgroup_absent": true}
+heavy-guard: verdict=PASS exit=0 secs=1 min_mem_mb=10399 reason=-

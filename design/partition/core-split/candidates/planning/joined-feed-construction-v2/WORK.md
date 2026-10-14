@@ -1,5 +1,10 @@
 # Joined feed construction v2
 
+Current E16 state and resumption: [technical acceptance checkpoint](#e16-current-checkpoint).
+Operating scope: [ongoing WSL agreement](#ongoing-wsl-coordination--2026-10-14).
+Earlier checkpoints below remain historical evidence; their next actions are not
+fresh execution authority.
+
 Construct one disposable load-side candidate using the existing six-wire interface and three AGND returns. Materialize uniquely identified terminals, inclined solder contacts, board-side access, insulation and a complete carrier. Source design and collision evidence are distinct from physical qualification and native acceptance.
 
 Input HEAD: `8b2384a927fbd3c58669614fb40c7e722b78974e`. No original copper, fixed panel, non-core poses, harness identities or canonical boards change. No native run, F3 placement trial, adoption or merge is authorized by this packet.
@@ -481,3 +486,1100 @@ Follow-up branch `topic/e16-resistance-attribution` stacks on PR274 at `a811c2dd
 TP990026 is a held source land, so the bounded proposal uses it as a transfer mechanism and names KB U7105.4 as the +12V unit-current observation while preserving all three source supports. The exact additional 0.6/0.3 mm via at (141,175) remains a specification only. Real object extraction (B), independent evidence review (C) and separately authorized fresh geometry/native/changed-operator comparison (D) remain distinct gates. No production solve, unpickling, candidate materialization or native execution occurred; no baseline restarted. See `evidence/e16/resistance-attribution-wsl-20261014/` for protocol, synthetic example, independent reviews, exact experiment, actual checks and preservation audit.
 
 Campaign remains terminal at 2/3 full baselines and 8/24 diagnostics. The native fixture remains unadmitted at frozen `b27391de`, request `f8da55c709fa59ba3221806f1c10cc4d25462fe8bf9d8c50acf313b0d3fdf4e3`; separate approval/reservation/qualification are absent. Source consistency is not electrical compliance. Canonical boards/copper/hardware/decision.json unchanged; KEEP_K1402_INCUMBENT, PR260 draft/unmerged and issue253 open.
+
+## Ongoing WSL coordination — 2026-10-14
+
+### Operating agreement and objective
+
+Owner instruction in this WSL session delegates persistent planning, ordinary
+in-scope source development, verification, independent technical review and
+evidence-based continuation to the local coordinating agent. Reuse this work note
+and existing evidence directories; do not create a competing status system.
+Inspect evidence, select a bounded useful increment, implement, verify/review,
+record the actual result, then select and carry out the next justified increment.
+A passed test, commit, pushed draft or completed slice is a checkpoint, not a
+reason to return to an external planner. Earlier workflow-only external-planner
+handoffs are superseded by this instruction.
+
+Standing assignment reaffirmed 2026-10-15: the local WSL coordinator owns the
+continuing evaluate -> plan -> implement -> verify -> independent review loop.
+Signing ownership is resolved by the later explicit delegation below. Advance
+the selected E16 attribution through a mathematically valid, useful and feasible
+implementation, complete resource qualification, separately admitted numerical
+attribution and actual reviewed numerical/engineering disposition. A rejected
+method, fixture success, research report or published checkpoint does not resolve
+that objective. Continue the next useful authorized task after resolution without
+expanding into excluded integration/hardware scope. Do not ask the owner to choose
+ordinary in-scope algorithms or obtain another external planning prompt.
+
+After each result distinguish implementation correctness, mathematical validity,
+bound usefulness, resource feasibility, admission eligibility and whole-objective
+completion. Preserve negative evidence, change the failed method rather than
+blindly increasing work, and continue useful source mathematics/prototyping when
+original-data execution is ineligible. Exact indispensable original-data questions
+need bounded characterization, separate review and existing guarded admission.
+Qualification and production remain separate requests under the recorded delegation.
+Publish meaningful checkpoints to PR277, reconcile ledger/cleanup and begin the
+next executable action here. No additional baseline or cap increase is authorized.
+
+Use the runner's supported ongoing goal facility for the whole objective, not a
+single increment (activated in this session). Installed `codex resume --help`
+confirms `codex resume [SESSION_ID] [PROMPT]` with `-C` selecting the worktree.
+If a real invocation boundary requires recovery, resume this session locally:
+`codex resume 01a13b5d-3e1b-7672-abc9-46c691ea9019 -C /home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-attribution-executor`
+and read this WORK.md before continuing. No new runner, retry loop or approval
+bypass is introduced. A deliberate final response is not proof of a runtime limit.
+
+Ordinary planning/source choices are delegated. Exact-request authorization,
+independent signer/trust and review requirements, exclusive reservation, shared
+scheduling, resource caps and single-use accounting are not waived. Do not create
+keys, signatures, grants or reservations under this coordination instruction.
+No merge/rebase/stack integration, canonical geometry/copper or decision.json
+change, adoption, native work, global host/dependency/guard change, deployment,
+procurement, fabrication, energization or Cloud launch is authorized. Preserve
+KEEP_K1402_INCUMBENT and the separate +5V/native-negative-control lanes.
+
+Check durable decisions before asking the owner. Ask only the missing decision,
+explain its source and consequences, recommend a concrete resolution and record
+the answer here. Do not repeat it without changed scope or facts. A technical
+reviewer agent is not an independent signing authority. Continue other useful
+authorized work while a lane is blocked; do not invent work or rerun unchanged
+checks merely to avoid the external boundary.
+
+Pause only for completion of all currently authorized work, an indispensable
+owner decision or unavailable capability/permission, exhausted applicable limits,
+unresolved ownership/accounting/cleanup, or an actual runtime/context/session limit. At a boundary, retain enough evidence and exact
+next action for replacement WSL recovery. Never claim unstarted work is running
+or promise unattended continuation. Failures retain their evidence; no automatic
+replay, cap increase or weakened acceptance.
+
+### Refreshed ownership, evidence and claim state
+
+- Reused clean worktree `/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-attribution-executor`,
+  branch `topic/e16-attribution-executor`, local/refreshed remote head
+  `781a028845cf20d991a79dbdfe96d1eed9546b97` before this documentation increment.
+  The commit containing this section is its successor; recover the actual current
+  head with `git rev-parse HEAD` and compare PR #277 before any packet preparation.
+  Worktree records, processes and the `osc:0.0` tmux transcript identify the current
+  local coordination session. No competing executor or E16 operation was observed.
+  This is continuation ownership, not integration ownership or a resource reservation.
+- PR #277 remains open/draft against `topic/e16-attribution-reconstruction` at
+  `dec36940e2691e384b9d8d499675761078d64308`. PR #260 remains open/draft at
+  `5af0e7b675123b40367078ee605a1355bae49a62`; #253 and epic #242 remain open.
+  Main remains `65cefd41fc39e064d38319115ad96016a1c6b71c`.
+- Reviewed containment implementation is complete at `781a028`:
+  [process/resource contract and real tiny fixtures](evidence/e16/attribution-admission-wsl-20261014/containment/README.md),
+  [independent review](evidence/e16/attribution-admission-wsl-20261014/containment/review.md),
+  [exact retained checks](evidence/e16/attribution-admission-wsl-20261014/containment/checks/summary.json).
+  Historical 70 focused tests and host-mechanism evidence are not a qualification.
+  No demonstrated containment defect justifies repeating that increment.
+- Numerical [resource plan](evidence/e16/attribution-admission-wsl-20261014/resource-plan.md)
+  remains applicable with its explicit containment supersession. Fixed caps:
+  180 seconds from actual guard entry, 2 GiB aggregate, zero operation swap,
+  64 MiB aggregate output, one diagnostic/unit/selected RHS/attempt;
+  worker 1216 MiB. Root 1984 MiB plus external 64 MiB reserve remains unqualified
+  for the full operation, including attributable shared-service/bootstrap costs.
+- Original input bindings remain in the reviewed [inventory](evidence/e16/attribution-reconstruction-wsl-20261014/resource-inventory.json),
+  SHA-256 `8cfcf5fac5bd749dcd58313b4df8eb1a9080723a5c5d34d80c548098c2d60b18`.
+  Exact experiment/identities/tolerances are in the [owner handoff](evidence/e16/attribution-admission-wsl-20261014/owner-handoff.md).
+  All original inputs and prior negative evidence are preserved; no numerical
+  artifact was opened/deserialized in this coordination increment.
+- Live canonical accounting file is
+  `/home/takazudo/.cache/zudo-e16-runs/campaign-20261014/campaign-note.json`, SHA-256
+  `94aafb6d13f754fdbde718a5b44c5071d946897e798a8eebf1cd4b86c0731ffb`.
+  Actual use: 2/3 baselines, 8/24 diagnostics; remaining allowance 1 and 16,
+  respectively, is not execution authorization. Attempt 5 is terminal,
+  `live_owned_work=false`; this increment consumes zero. Preserve this ledger;
+  use only the existing accounting owner/path for future claims.
+- `systemctl --user list-units 'e16-*' --all` reports zero loaded units.
+  Fixed trust `/home/takazudo/.config/zudo-e16/attribution.allowed_signers` and
+  production state `/home/takazudo/.local/state/zudo-e16-attribution` are absent.
+  No active claim, request freeze, numerical process or task cleanup is pending.
+  Qualification/production request digests, run IDs and artifact IDs remain null.
+  Neither operation admitted; Stage C NOT RUN; no via or board acceptance.
+
+### Pending owner decision and next local increment
+
+Current [signing requirements and actual commands](evidence/e16/attribution-admission-wsl-20261014/containment/signing.md)
+require externally controlled trust and separately signed operator/controller/
+resource-reviewer messages. Actual people and designated public keys are not
+recorded. The old campaign's standing delegation in its retained authority source
+does not satisfy `attribution_admission.verify_for_host()` for this new selected
+operation; that function explicitly rejects substitution of old campaign delegation.
+
+Pending question in this WSL session: is the user the sole actual authority, or
+do separate human signers exist? Recommendation if sole owner: prepare a specific
+owner-controlled policy amendment, preserving owner key custody, separate exact
+decisions and independent technical review; obtain approval before applying it.
+This recommendation is **not approved policy**, a key designation or run approval.
+Do not assume unrelated existing SSH keys or fictional operators. Record the
+answer here, prepare the concrete arrangement for review, and continue locally.
+
+Before preparing any execution packet, finish/review/commit all instruction or
+source changes and refresh the clean final head. Then, only after genuine trust
+setup is resolved, use the existing compiler from the source directory (not
+`evidence/e16`):
+
+```sh
+cd /home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-attribution-executor
+git fetch origin
+git status --short --branch
+git rev-parse HEAD
+gh pr view 277 --json state,isDraft,headRefName,headRefOid,baseRefName
+cd design/partition/core-split/candidates/planning/joined-feed-construction-v2
+```
+
+The signing handoff supplies the exact `describe`, `seal-qualification`, signing
+and verification commands with genuinely assigned fresh paths. Do not seal now:
+the trust file is absent and policy/identity decisions are pending. No placeholder
+packet is executable. Once sealed, freeze its bound source; a change invalidates
+the packet and requires fresh preparation/review, never digest substitution.
+
+After actual qualification authorization and reservation pass existing gates,
+use the existing `attribution_host.py --launch` interface and follow the service
+to completion. Launch exit zero is submission only. Inspect `accepted_result`,
+immutable terminal journal, envelope receipt, exact durable shared-guard row,
+output inventory, campaign accounting and owned cleanup together. A claimed
+qualification consumes one diagnostic even on failure. Incomplete accounting or
+cleanup requires reconciliation before any new request. On success obtain the
+required independent resource review/signature, then separately prepare and admit
+production. No external planning prompt is required at either transition.
+
+### Coordination increment verification
+
+Pre/post `pnpm circuit:check` PASS (manual inventory: 68 lines, zero declared
+placements; no schematic/placement binding; pin-asset check performed).
+`git diff --check`, added local link resolution and unchanged ledger digest PASS.
+Only AGENTS.md and this work note change; numerical/containment source, original
+inputs, campaign ledger, protected boards/copper and decision.json are untouched.
+No unchanged source suite, host fixture, numerical/native workload, aggregate
+regeneration or broad build was repeated; those are NOT RUN in this documentation
+increment. CI is intentionally skipped, not passed.
+
+Independent read-only review by `/root/coordination_review`: PASS, no blocking
+findings. Code enforces separate principals/namespaces/signatures, not distinct
+humans or key fingerprints; that fact does not authorize role consolidation.
+The reviewer verified the operating scope, pending policy decision and recovery
+instructions, and supplied no signing authority. No execution packet was created.
+
+
+## Owner decision: single-owner local delegation — 2026-10-14
+
+**Signing ownership resolved.** Takazudo expressly selects single-owner, locally
+delegated E16 development authorization. The [verbatim decision](evidence/e16/attribution-admission-wsl-20261014/owner-decision-20261014.txt)
+is bound by SHA-256 `dd57d82b5c062613fe139ae68c2cf12c303f3c3df30bbe5c276c968f8dad25ec`.
+It supersedes the pending question and earlier bans on dedicated local signing
+setup, external human signers and personal per-digest approval. It does not apply
+retroactively. The WSL coordinator is the operator/controller delegate; real
+separate technical review remains required. A locally delegated resource signature
+attests that retained review; it is not independent external approval.
+
+Authorized: dedicated E16-only keys/trust under this user's permissions, exact
+request preparation/signing/verification, complete real-data qualification,
+evidence-backed corrections and bounded diagnostics, and selected numerical
+production attribution only after successful qualification and actual separate
+technical review. Access original retained inputs only through reviewed guarded
+verification/execution. No additional full baseline. Preserve all 180s/2GiB/
+zero-swap/64MiB caps, 1216MiB worker, original identities/scope/tolerances, complete
+accounting, single-use state, live exclusive locks/shared scheduling and cleanup.
+No host/privilege changes, merges/integration, canonical geometry/copper adoption,
+Stage D, hardware/deployment actions or acceptance claims.
+
+Private signing bytes must stay outside Git/reports/artifacts/logs with restrictive
+permissions; do not inspect unrelated credentials or overwrite existing key/trust
+ownership. Signature validation stays real. New requests and grants bind the
+exact owner-delegation policy; future digests are locally authorized by delegation,
+not personally reviewed by Takazudo. The updated [signing procedure](evidence/e16/attribution-admission-wsl-20261014/containment/signing.md)
+records the actual schema and separate-review requirement.
+
+Next increment: finish minimal policy/source tests and independent review, provision
+dedicated trust, commit the clean source, compile a fresh qualification packet,
+review/sign its exact grants and enter the existing guarded path. Follow actual
+terminal receipts, original ledger and cleanup. No packet is sealed while source
+is changing. A failure remains charged and requires diagnosis before a fresh
+eligible attempt. Do not ask again who owns authorization or request another plan.
+
+
+### Delegation implementation and setup checkpoint
+
+The minimal source change and dedicated local setup have separate technical
+[review PASS](evidence/e16/attribution-admission-wsl-20261014/delegation-review.md);
+95 focused tests and pre/post circuit checks PASS. The initial test run exposed
+one old operation-digest fixture missing the new policy field; its fixture was
+updated, and the complete focused selection passed. Numerical code/containment
+and original inputs remain unchanged. No baseline or diagnostic consumed yet.
+The actual [public trust identity and setup modes](evidence/e16/attribution-admission-wsl-20261014/delegation-setup.json)
+are retained; private material is outside Git/evidence. Signing-owner blocker is
+cleared; combined qualification and production admission remain unproved.
+
+Source freeze starts only after this commit. Prepare fresh absolute local packet
+paths under `~/.cache/zudo-e16-runs/`, run the existing compiler `describe` and
+`seal-qualification`, retain independent exact-packet review, and sign real grant
+JSONs containing the request's exact authorization_policy plus all existing
+request/kind/run/operation/limits/host/ledger/time bindings. Local grant issuance
+is delegated authority, not a personal owner digest review. Follow the async
+service through actual terminal evidence before another increment. Do not edit
+bound source while a packet is live.
+
+
+### First admitted qualification: terminal startup failure and diagnosed correction
+
+At clean frozen `c0b3197b550f9fd8050d978ca2356cd66aed5940`, genuine locally
+delegated grants and exact-packet technical review admitted qualification request
+`50bb226328d0addf41be8854611180cfda95c9da1328ef8e935fb8806ad75ddf`, run
+`fdde325e32a54f56b08b8c926b2785e1`. Packet directory:
+`~/.cache/zudo-e16-runs/attribution-qualification-2wvkvrl8/`; exact request and
+description remain there. Output:
+`~/.cache/zudo-e16-runs/attribution-fdde325e32a54f56b08b8c926b2785e1/`.
+[Index, signed grants, failure log and terminal evidence](evidence/e16/attribution-admission-wsl-20261014/qualification-attempt1/index.json)
+and [independent audit](evidence/e16/attribution-admission-wsl-20261014/qualification-attempt1/review.md)
+are retained. The operation was claimed and failed before original decoding:
+inside the private user namespace, ancestor `/proc/.../fd/200` access was denied.
+The unchanged shared guard intentionally closes fd200 for its workload, so simple
+inheritance cannot repair the proof. No worker-start or numerical result exists.
+
+Ledger now2/3 baselines and9/24 diagnostics (15 diagnostics remain, zero additional
+baselines authorized); live_owned_work=false and exactly one terminal charge.
+Independent integrity/cleanup audit PASS; all actual resources released. Peak
+50,933,760 bytes,1.278683 seconds, swap0; this failure does not qualify the pipeline.
+Historical incomplete output manifest is preserved; raw log is separately indexed.
+No source freeze remains for this consumed request. Do not replay it.
+
+The narrowly diagnosed correction uses a bounded socketpair/SCM_RIGHTS transfer
+from the envelope's actual pidfd-acquired guard OFD, then explicit descriptor
+inheritance through namespace and worker. Peer credentials, exact request/run and
+actual guard PID/start are checked. Kernel fdinfo must show an exclusive whole-file
+flock on the expected inode/device; a fresh open of that inode is insufficient.
+Guard/controller ancestry and lock contention checks remain. No shared guard,
+host permissions, numerical source or caps change. Surviving negative logs now
+bind into the failure journal after owned cleanup, without upgrading failure.
+
+A serialized real fixture at192MiB/zero-swap/6s+1s/48tasks/1MiBtmpfs/<64KiBoutput
+proved actual transfer, namespace+nestedworker proof, reopened-descriptor rejection,
+retention and complete cleanup. Peak79,880,192 bytes, elapsed0.394292 seconds,
+zero swap, noOOM. [Raw fixture command/result](evidence/e16/attribution-admission-wsl-20261014/containment/checks/namespace-lock-transfer.txt).
+107 focused source/crypto/host/supervisor tests PASS; fixture authority remains
+separate from the real local delegation. Next: final independent source review,
+commit corrected bindings, seal/review/sign a fresh qualification and follow its
+actual terminal evidence. Production remains unprepared/unadmitted; Stage C NOT RUN.
+
+
+### Second qualification: Git bootstrap failure, bounded command correction
+
+Fresh reviewed/signed request`ba4ed340fff33b524c15082f0081460ee1d113eb095555246f9335e74be1f6ba`,
+run`19650aca554a4f12b9134a6d77a75d78`, source`0eccf0667f07dc6f96c21d4415e2036e68295d40`
+passed actual namespace lock custody, then failed full admission before original
+reads/worker startup. [Exact packet/output/terminal index](evidence/e16/attribution-admission-wsl-20261014/qualification-attempt2/index.json)
+and [independent terminal review plus diagnosis](evidence/e16/attribution-admission-wsl-20261014/qualification-attempt2/review.md)
+are retained. Local packet directory`~/.cache/zudo-e16-runs/attribution-qualification-ewjg3z87/`.
+No original inputs changed; immutable first/second journals preserved.
+
+The clean checkout's Git status command failed under the unchanged bootstrap
+thread/address-space bounds. A tiny actual namespace fixture captured exit128
+and threaded-lstat allocation failure. Explicit per-command serial Git options
+passed under the same limits; no global/repository config change or gate removal.
+The source now distinguishes commandfailure fromdirtycheckout.108focusedtestsPASS;
+real diagnostic fixture transcripts preserve both outcomes and ownedcleanup.
+
+Budget now2/3 baselines,10/24diagnostics;14diagnostics remain, no additional baseline
+permitted. Both operations terminal, live_owned_work=false, cleanup/accounting
+independentlyPASS. Secondpeak56,426,496B/1.358537s/zero-swap. No qualification or
+production accepted; StageCNOTRUN. Next: independently review/commit the narrow
+Git correction, then prepare a freshly bound qualification; never replay either
+consumed request or alter its original retained receipts.
+
+
+### Third qualification reaches original operator and fails exact reciprocity
+
+Request`29202f704140afc2797ee1d0c2d13507d3892d275a6c0b7129f4477f5cd0de53`,
+run`43ecd963144648ac9e275db550baf19e`, clean source
+`5c1fde39b2d9696bcf3ed646341b5bef6b4753ff`; exact packet remains in
+`~/.cache/zudo-e16-runs/attribution-qualification-he4qwbk6/`.
+[Retained output/index](evidence/e16/attribution-admission-wsl-20261014/qualification-attempt3/index.json)
+and [independent audit/diagnosis](evidence/e16/attribution-admission-wsl-20261014/qualification-attempt3/review.md)
+record actual authenticated original-input verification/decoding and worker startup.
+The KA free operator is not bit-exact symmetric as required by the current SPD
+certificate. No selected solve/component accounting or Stage C result follows.
+
+Actual rootpeak1,163,087,872B,workerpeak1,046,597,632B; envelope11.318091s and
+separate guardraw14s; zero swap/noOOM. Supervisor64MiB maxevents339 reflect real
+limit pressure. Qualification remains failed, not merely an absent signature.
+Accounting/cleanup independentlyPASS: three terminalcharges, no livework/resources,
+budget2/3baseline11/24diagnostics (13diagnostics remaining; no additional baseline).
+Freeze ended after terminal audit; this consumed identity cannot be replayed.
+
+Next justified increment is bounded exact mismatch characterization, not another
+unchanged retry. Source diagnostic keeps rejection and original operator bytes,
+limits output to four exact value witnesses and metadata, and avoids another full
+floating sparse difference.136focusedtestsPASS. After review/commit, prepare an
+explicitly diagnostic fresh qualification-kind request under existing local
+delegation; its claim would consume diagnostic12. Do not sign RESOURCE_QUALIFIED
+or prepare production from that expected negative result. Choose any subsequent
+certificate correction only from the actual retained evidence and separate proof
+review, without changing solver/refinement, tolerances or physical scope.
+
+
+### Fourth diagnostic and reviewed original-operator certificate correction
+
+Current completed request`6bd7c5d97f30863ed7d9c6ce39c593a53193474555c8dc6304722be25a531009`,
+run`f068281e8fc349ce804cb3f7a804174f`, source`b5b47f90fca893c6f51b5057ee53d97ecc85758a`.
+[Exact retained identities and terminal evidence](evidence/e16/attribution-admission-wsl-20261014/qualification-attempt4/index.json),
+[independent cleanup/accounting audit](evidence/e16/attribution-admission-wsl-20261014/qualification-attempt4/review.md).
+Packet remains`~/.cache/zudo-e16-runs/attribution-qualification-t_7i82on/`.
+Actual KA order1513837, storednnz7818329, mismatchentries15252. Four bounded
+hexadecimal witnesses differ by1–2ULP; no global skew bound or SPD follows.
+Rootpeak845373440B,elapsed6.936201578s,zero swap/noOOM; four terminal charges,
+2/3 baselines and12/24 diagnostics,12 diagnostics remain,zero additional baseline
+allowed. LedgerSHAe1edfda81de7006f5c53a38a6ca1f11fd73f447222e29f10ed628e898b0459ea.
+No live work; unit/root/locks released; six retained outputs6272B match journals.
+Stage C NOT RUN, qualificationNOT_QUALIFIED,productionNOT_ADMITTED.
+
+An independently [reviewed reference coercivity proof](evidence/e16/attribution-admission-wsl-20261014/reference-certificate/review.md)
+now addresses actual asymmetry without changing the original numerical solve,
+RHS, matrix bytes or tolerances. A conservative global inverse bound uses only
+analysis-reference H positivity; original SPD is not asserted.140focusedtestsPASS.
+Memory feasibility remains unproven. Constant-auxiliary reference preflight counts
+initial structure before Python dictionaries and preserves the existing4M cap.
+
+Next executable action after this clean commit: compile a NEW description and
+qualification request with existing attribution_request.py, obtain exact-packet
+technical review, issue delegated exact grants, verify metadata then run existing
+attribution_host.py --launch under genuine live admission. This FULL conditional
+qualification first tests reference structure capacity, then continues the complete
+pipeline if preflight passes. A capfailure reports only the first exceeding prefix.
+Dictionary/fill/runtime failure remains possible, charged and terminally reviewed.
+No new numerical baseline, production request or RESOURCE_QUALIFIED report exists.
+Never replay prior identities or change bound source while this next packet is live.
+
+
+### Fifth qualification: actual certificate storage blocker; source-only investigation
+
+Clean source`18147148ef72511109e674430db1c2b53f650355`, request
+`6dc8a01d5e3c8827eac8f8b5b9c98a2fd29f6c796b7b1501c1fb5900574e8728`,
+run`aa824d1cecf9483592979343a219a0fb`, operation
+`c36ada446d556faffdc7066075de7bf6034a586130c0cc3f3a02284f47355310`.
+[Retained failure/index](evidence/e16/attribution-admission-wsl-20261014/qualification-attempt5/index.json)
+and [independent complete audit](evidence/e16/attribution-admission-wsl-20261014/qualification-attempt5/review.md).
+Original packet`~/.cache/zudo-e16-runs/attribution-qualification-vdjgr_6v/`.
+Preflight count4000002 exceeded unchanged4M cap before any certificate row allocation.
+This is a prefix lowerbound, not the wholematrix count. Rootpeak904990720B,
+elapsed14.465692866s,zerooperation swap/noOOM; complete cleanup and durableguardFAIL.
+Ledger now2/3baselines13/24diagnostics,11diagnostics remain,zero newbaselinepermission,
+SHAa84cd8c3532e9df448ad020600eeaad637961939d5100d1986f76e0397710df6.
+Five terminalcharges/statusINCOMPLETE,livefalse; sourcefreezeended.539topic/550original
+protected files rechecked with no differences; originalsource/decision preserved.
+
+No unchanged retry. The independently recommended next source increment is a tiny
+lazy/frontier interval LDL prototype preserving exact arithmetic/order and counting
+all simultaneously live updated entries, pivotrows and retained inverse-bound
+factors. It changes storage lifetimes, not the4M cap. Prototype path under this
+same worktree:`__inbox/e16-frontier/repro.py` (ignored, no original inputs).
+Do not claim fit from it; full original fill,20Mupdates,1216MiB and180s remain gates.
+Stage C NOT RUN; qualificationNOT_QUALIFIED;productionNOT_ADMITTED.
+
+
+### Reviewed lazy certificate storage correction
+
+[Proof, prototype findings, resource accounting and checks](evidence/e16/attribution-admission-wsl-20261014/frontier-certificate/review.md)
+record the evidence-backed correction to attempt5. Original interval arithmetic,
+pivot order and all retained inverse-bound factors remain; only row lifetimes
+change. All live entries/factors stay under4M with pre-insertion checks, and the
+same Work preserves20Mupdates acrossboards. Explicit storagebinding requires a
+fresh packet. A prototype aliasfinding and canonical-transpose defect were fixed;
+actual-object lifetime tests and147focusedtestsPASS. Originalsolve/RHS/tolerances,
+sharedguard/hostcaps, campaign state and canonicalgeometry remain unchanged.
+
+Next locally owned step: after cleancommit and final resource review, use the
+existing compiler to describe/seal a fresh FULL qualification. Obtain exact-packet
+technical review and issue delegated exact grants; verify then existing guarded
+launch. This tests original lazy frontier/factor storage plus the entire remaining
+pipeline, not just a count. RetainedCSR lifetime and accumulatedfactors may still
+fail the unchangedworker/time/fill/interval gates. No sourcechanges whilelive;
+follow complete terminalaccounting/cleanup and diagnose anyfailure beforeanother
+fresh request. No RESOURCE_QUALIFIED or production authority exists yet.
+
+
+### Sixth qualification: storage progresses; arithmetic budget is now the blocker
+
+Clean source`cba807a8f61bea7eed6c789f400039bf4f55b855`, request
+`8bd9a54704a2c3fb608cfa4c262305857c92e1575ebc9275a3c5d3834c5c0e7d`,
+run`0c94c1920a7f447d974e7101b9176e10`, operation
+`9894cf70c0b26d21f744db02e21001587143d61a9b25250fac448a2c0f149c25`.
+[Retained evidence/index](evidence/e16/attribution-admission-wsl-20261014/qualification-attempt6/index.json)
+and [independent audit](evidence/e16/attribution-admission-wsl-20261014/qualification-attempt6/review.md).
+Exactpacket`~/.cache/zudo-e16-runs/attribution-qualification-jcet9zqn/`.
+KAfrontiercertification rejected requestedupdate20000001 against unchanged20M.
+Rootpeak845197312B,envelope60.5104132865s,separateguardraw64s,zero swap/noOOM.
+Allsixterminalcharges/retainedhashes/journals/guard agree; ownedresourcesgone,
+locksfree,livefalse. Ledger2/3baselines14/24diagnostics,10diagnosticsremaining,
+SHA6ba3f0b11df4d810d7123bcd43cf843ba91b5a7e5e36ecca40bceac310adeb50.
+No additionalbaselinepermission. Sourcefreezeended afteractualterminalaudit.
+
+A missing environment value in a mocked boundarytest was repaired only after
+terminalaudit.164focusedtests nowpass without fixtureenvironment overrides.
+No realauthority bypass or originalinput mutation. The next local source-only
+investigation is a single deterministic symmetric analysis ordering, tested with
+B permuted consistently and originalsolverMMD/refinement unchanged. Tiny RCM
+prototype demonstrates both reductions and a worse smallgridcase; it is no
+resourceguarantee. No newrealrequest before reviewedcorrectiveimplementation.
+StageCNOTRUN,qualificationNOT_QUALIFIED,productionNOT_ADMITTED.
+
+
+### Reviewed fixed analysis ordering correction
+
+[Proof, actual prototype evidence, resource overlap and independent reviews](evidence/e16/attribution-admission-wsl-20261014/ordered-certificate/review.md)
+support one fixed analysis-only RCM ordering, with both freeoperator andB permuted,
+D/terminalorder unchanged and originalmatrix identity preserved. Only ownedanalysis
+copies change; originalsolverMMD/refinement/RHS/tolerances/physicalscope remain.
+No search/fallback, capincrease or automaticretry. Actualpermutationhash and
+newrequestorderingcontract are bound; previousrequests cannotselectit.
+170focusedtestsPASS withoutenv overrides; circuit/diffPASS; independentmath and
+resource/admissionreviewsPASS. Source-onlyprototypehasbothbetterandworse cases,
+so originalresourcefit is unknown; copy/graph/B/transposeoverlaps are explicit.
+
+Next executable action by this WSLdelegate: cleancommit, newcompilerdescription
+and qualificationpacket, separate exactpacketreview, genuine delegatedgrants,
+metadataverification thenexistingguardedlaunch. Fullconditionalqualification may
+stillfailfill/20Mupdates/intervalresolution/memory/deadline; followterminaljournal,
+ledger,guardreceipt,retention andcleanup before changingboundsource or replanning.
+Currently14/24diagnostics used,10remain;2/3baselineunchanged/noadditionalbaseline.
+No RESOURCE_QUALIFIED report or productionrequest exists; StageCNOTRUN.
+
+
+### Seventh qualification: technical acceptance unresolved; numerical attempts stopped
+
+Clean executedsource`5aec693549a9e380d7e7832a430f5294dacbaf05`, request
+`3d42c2dc48e1b44c743626231437683ee4c25be50bc0ed6bd4b5edf29ff94b9d`,
+run`6ba68bb77ec944e0963ad6524570c23d`, operation
+`60fcd4dc1f630d7877d09239f06321c73a030683d40e7e50bcc9c75d1dcc6a78`.
+[Exactretainedindex](evidence/e16/attribution-admission-wsl-20261014/qualification-attempt7/index.json)
+and [independentterminal/acceptancereview](evidence/e16/attribution-admission-wsl-20261014/qualification-attempt7/review.md).
+Packet`~/.cache/zudo-e16-runs/attribution-qualification-4o576ztz/`; output
+`~/.cache/zudo-e16-runs/attribution-6ba68bb77ec944e0963ad6524570c23d/`.
+FixedRCMalso exceeded20M beforecompletingKA; actualpermutationhashretained.
+Rootpeak844124160B/envelope61.0558727597s/guardraw62s,zero swap/noOOM.
+Allsevencharges/retention/immutablejournals/durableguardfailure agree; complete
+ownedcleanup,unit/root/processes/locksabsent,livefalse. Ledger15/24diagnostics,
+2/3baselines,9diagnosticsremain,zeroadditionalbaselinepermission;
+SHA533ca512fc06ae6742e6e02dce3cc1a8aee83ec49fc13ebabf691a6b0c4cc4f5.
+No qualificationreport or productionrequest exists. StageCNOTRUN.
+
+Signingownership is RESOLVED: Takazudo owns authorization and this WSLcoordinator
+is the recordeddelegate. Currentblocker is a rigorouscertificate within20Mwork,
+not missingapproval or hostswap. Do not ask again forsigningownership/digestapproval.
+Do not issueanotherrealpacket forunchangedretry or blindthirdordering. The latest
+request is consumed, notlive; sourcefreezeended afterindependentterminalaudit.
+Currentrealresourceacceptance remainsNOT_QUALIFIED;productionNOT_ADMITTED.
+
+The next locally owned lane is a short source-only mathematicalfeasibility study:
+can originalconstruction provide quantitativecoercivity for the completejoined
+symmetricreference, including groundedKA/floatingKB/wires, allstoredrounding and
+ausefulinversebound, with exhaustivelyverifiablehypotheses underexistingcaps?
+Do not buildanotherchecker before that theorem/costargument exists. Existing
+aggregatewitnesses alone cannot provide the missingmargin/roundingbound. Separate
+math/resource reviewers require that evidence beforeanothercampaignclaim.
+
+
+<!-- Historical checkpoint below; current checkpoint follows the factor-residual study. -->
+
+### Recoverable stopping checkpoint — actual technical acceptance boundary
+
+The [construction feasibility study](evidence/e16/attribution-admission-wsl-20261014/qualification-attempt7/feasibility-review.md)
+is complete. It found a conditional theorem but no applicable quantitative
+certificate: original retained tile aggregates lack bound element-level witnesses;
+no usable grounding margin alpha or exhaustive stored-coefficient error epsilon
+is established. Distributed terminations cannot be replaced by independent edges.
+No verification-cost argument fits the unchanged full operation budget yet.
+This is a real technical acceptance blocker, not an unresolved signer/owner choice.
+No further numerical request is prepared or eligible at this checkpoint.
+
+**Current objective:** independently qualify the complete existing selected
+attribution pipeline, then separately admit production only after qualification
+and actual technical review. Completion still requires full numerical/output gates,
+original mesh/accounting passes, durable terminal/guard agreement and owned cleanup.
+Qualification remains NOT_QUALIFIED; production NOT_PREPARED/NOT_ADMITTED/NOT_RUN;
+Stage C NOT RUN. KEEP_K1402_INCUMBENT and all hardware acceptance gates stay open.
+
+**Ownership and exact state:** continue this existing worktree
+`/home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-attribution-executor`,
+branch `topic/e16-attribution-executor`, draft PR277. Latest executed source is
+`5aec693549a9e380d7e7832a430f5294dacbaf05`; subsequent evidence commits do not
+retroactively rebind that consumed request. Obtain the current evidence HEAD with
+`git rev-parse HEAD` and refresh remote/worktree ownership before any future edit.
+Base remains reconstruction `dec36940e2691e384b9d8d499675761078d64308`; no integration
+ownership. Main, PR260 draft/unmerged and issue253 open remain preserved.
+
+**Actual verification:**170 focused source/crypto/interval/lifecycle tests passed
+without environment overrides; pre/post circuit checks and independent source,
+mathematics, resource, exact-packet and terminal reviews are retained. Seven real
+qualification-kind claims since the owner decision all ended INCOMPLETE. Latest
+ledger is15/24 diagnostics and2/3 baselines, delta+7 diagnostics/+0 baselines from
+the pre-delegation checkpoint. Nine diagnostics remain; no additional baseline is
+authorized. Live work is false; no operation-owned unit, process, cgroup or lock
+remains. Private signing bytes remain outside Git/reports/artifacts/logs; the current owner
+delegation and numerical limits are retained. Native/aggregate checks and CI remain NOT RUN or
+skipped under the narrow authorization, never reported as passed.
+
+**Next local action, owned by this coordinator:** review the five explicit witness
+and cost gaps in feasibility-review.md and derive a concrete proof-and-witness
+proposal for the exact stored operator before writing an alternative certificate.
+It must supply a usable positive alpha-epsilon and bounded exhaustive verification;
+the present evidence cannot establish either. Obtain genuine separate technical
+review of that proposal. Do not seal/sign another qualification merely to test an
+unreviewed ordering or repeat the known20M failure. A future justified correction
+requires a clean committed source, fresh compiler packet, actual technical review,
+delegated exact signatures and live admission. Production remains a separate step.
+No outside ChatGPT plan or repeat signing-owner answer is needed.
+
+Source-only local verification command, if a new change justifies rerunning it:
+
+```sh
+cd /home/takazudo/repos/circuits/zudo-osc-hole-field/worktrees/e16-attribution-executor/design/partition/core-split/candidates/planning/joined-feed-construction-v2
+/home/takazudo/.cache/zudo-e16-numerical-venv/bin/python -B -m unittest test_attribution_executor test_attribution_resolution test_attribution_ordering test_attribution_admission test_attribution_host test_attribution_worker test_attribution_containment test_attribution_supervisor test_numerical_unit_guard test_attribution_interval_oracle test_attribution_boundary_review test_attribution_lifecycle -q
+```
+
+All exact packet/output/artifact locators, grants, claim journals, negative worker
+receipts and cleanup evidence are indexed in qualification-attempt1 through7.
+Do not replay those identities. Source-only prototypes remain ignored at
+`__inbox/e16-frontier/repro.py` and `__inbox/e16-frontier/ordering.py`; permanent
+regressions and review conclusions are committed. No job is left running and no
+unattended continuation is promised at this stopping checkpoint.
+
+
+<a id="e16-stored-operator-research-checkpoint"></a>
+
+### Stored-operator certificate research checkpoint — 2026-10-15 JST
+
+This continuation first reconciled the actual WSL executor worktree: tracked
+state was clean and local/published HEAD both df58a3a043d81ebac973cbde9d569a7af912be8a.
+The ignored frontier/ordering prototypes were preserved; no newer E16 cclogs
+artifact or competing coordinator was found. Current process/unit/lock and ledger
+inspection showed no live operation. Original campaign ledger still hashes to
+533ca512fc06ae6742e6e02dce3cc1a8aee83ec49fc13ebabf691a6b0c4cc4f5, with seven terminal
+INCOMPLETE charges,15/24 diagnostics,2/3 baselines and live_owned_work=false.
+This increment consumed zero; nine diagnostics remain and no new baseline is
+allowed. Signer ownership and existing keys were neither reopened nor changed.
+
+New engineering evidence is in the
+[stored-operator factor-residual candidate](evidence/e16/attribution-admission-wsl-20261014/factor-residual-candidate/candidate.md),
+with a precise theorem-to-code map, original executor/resolution trace, Rump's
+actual Theorem6.1 and Tables5/6 applicability analysis, full pipeline cost model,
+[18-test executable fixture](evidence/e16/attribution-admission-wsl-20261014/factor-residual-candidate/fixture/README.md),
+[separate mathematics review](evidence/e16/attribution-admission-wsl-20261014/factor-residual-candidate/math-review.md),
+[separate resource review](evidence/e16/attribution-admission-wsl-20261014/factor-residual-candidate/resource-review.md),
+and an independent exact-Fraction Schur oracle. These are synthetic/source-only
+results; no original numerical archive was decoded.
+
+Concrete decisions and counterexamples:
+
+- Full historical LU factors were not retained and their measured representation
+  exceeds4M entries per board even after both diagonals are excluded. No large
+  numerical stack or full Rump implementation was installed in the project.
+- A direct nonsymmetric approximate-factor residual theorem supplies an inverse
+  bound, rather than bare positivity. Connected factors plus a certified retained-Y
+  residual lift have a proved lower cost21,580,061>20M before factor production.
+  That architecture is rejected. The tested factor-only Schur lift avoids that
+  extra matrix product, but its15,275,567 dimension floor is not a fit prediction.
+- Tiny full factors certify the original joined problem with inverse upper31.4506
+  versus exact12.5241. Diagonal factors certify BOTH boards yet fail the coupled
+  test at q1.488536. Valid uniqueness with a huge bound also leaves Stage C
+  INCONCLUSIVE. Tests preserve nonsymmetric coefficients, separate stamp rounding,
+  whole distributed termination energy, actual resolution functions and exact
+  physical-functional oracles; stale/incomplete/type-invalid bindings refuse.
+- The fixed2n-1-entry rooted-tree factor pattern has an exact exponential
+  contraction-margin loss on grounded grids. At16x16 its certificate bound is
+  >=2.8e15 although a proved true inverse bound is<=126,976. It is rejected as
+  a scalable useful-bound producer; this is not a reason to run it on real data.
+- A directly verified KB constant-vector identity r=B+A*1 improves the synthetic
+  Schur correction radius2.10855 to2.66454e-15 without original element metadata.
+  Its signed row sums are extra work even when fused. With connected factors,
+  KB stored Af nnz>=6,265,711 would already defeat the hybrid20M budget before
+  producer/small proof. That count is not known from retained metadata; measuring
+  it alone is not useful enough while the factor producer remains rejected.
+
+Actual verification:18 fixture tests PASS, independently rerun by both technical
+reviewers; independent Fraction Schur/near-null experiments PASS; circuit contract
+PASS before/after. The toy uses512MiB AS/20CPU/30wall seconds and one BLAS thread.
+Its deliberately stricter scalar counter itself has a connected-factor lower
+bound30,551,138>20M before production/lift, so its meter/layout cannot be silently
+ported or relabeled as a production fit. Native/aggregate/full real qualification
+checks NOT RUN: this source-only research does not justify them. Production
+executor, admission bindings, original solver/refinement/physical RHS, canonical
+boards, decision.json and all numerical limits remain unchanged. PR260 remains
+OPEN/draft and issue253 OPEN; no merge or deployment.
+
+Current original resource qualification NOT_QUALIFIED; production
+NOT_PREPARED/NOT_ADMITTED/NOT_RUN; Stage C NOT RUN; KEEP_K1402_INCUMBENT.
+There is no new request/grant, frozen source, pending claim or unattended job.
+This evidence commit updates PR277; recover its exact current HEAD with Git.
+
+Follow-through also proved a positive-weight version of the same factor theorem:
+on the SAME4x4 rooted tree, an exact tiny oracle weight improves the inverse
+bound989.3333 to68.3655 (true30.8571). This demonstrates a way around the norm
+loss, but its dense16-variable oracle is not an admissible original-data weight
+producer. No speculative weighted production checker was added.
+
+The next locally owned mathematical action is constructive, cap-accounted weight
+production for the same sparse-factor theorem, tested against the retained
+exponential-tree and floating-KB Schur counterexamples. Include weight production
+in the work/memory proof; an uncharged global solve or assumed M-matrix signs is
+not acceptable. Do not port the rejected recipes, run a blind ordering, or seal
+another FULL qualification. A bounded characterization mode would need its own
+exact question and reviewed admission integration; none is currently prepared.
+The original engineering objective remains incomplete at this research checkpoint.
+
+
+<a id="e16-weighted-construction-checkpoint"></a>
+
+### Constructive weighted-certificate checkpoint — 2026-10-15 JST
+
+Continued the existing executor worktree/branch from clean local and published
+`db742dcfc5022aa037895a3c30bf7b76309a9529`; no newer local work was reset or
+repeated. Ignored prototypes remain preserved, cclogs had no E16 entry, and live
+operation/process/unit/lock inspection found no competing E16 execution. This is
+the local CLI environment; no managed-cloud loader or runtime restoration applied.
+Campaign ledger hash remains
+`533ca512fc06ae6742e6e02dce3cc1a8aee83ec49fc13ebabf691a6b0c4cc4f5`,
+15/24 diagnostics, 2/3 baselines, all seven attribution charges terminal/cleaned,
+`live_owned_work=false`. Nine diagnostics remain; no additional baseline permitted.
+This increment consumed zero. Existing signing ownership/keys were not reopened.
+
+The [weighted increment](evidence/e16/attribution-admission-wsl-20261014/factor-residual-candidate/weighted-increment.md)
+implements the next constructive experiment in the same retained prototype:
+
+- Deterministic non-oracle p<-G(1+|A-LU|p), starting at1 for exactly eight passes,
+  with streamed residual rows, bounded workspace and no auxiliary global system.
+- Independent outward weighted residual/comparison proof, binding actual weights,
+  original coefficients, factors and context; scale/shape/type/underflow/overflow
+  and stale-input regressions. Signed solves and Schur radii use the same weighted
+  norm. No optional direct supersolution acceptance or original M-matrix premise.
+- Residual dictionaries and their insertion closures explicitly released before
+  reducing the live-entry count; actual weakref/frame regression over144 rows.
+  Historical results stay preserved; this is a toy lifetime correction, not an
+  allegation that the production lane breached memory.
+- Cumulative phase-separated factor/weight/residual/comparison/signed-solve/Schur
+  counts, retained failed/dropped work, explicit oracle-control setup counts,
+  both-board overlap and measured bounded fixture memory/time. Tiny Schur midpoint
+  arithmetic is now charged explicitly; old reports are not rewritten.
+
+**New concrete negative:** eight-pass tree4 weights have exact contraction
+q=1.0174973682921369 (outward1.0174973682921387), maximizing at row10. This is not
+rounding pessimism. Tree8 and held-out tree9 also refuse (q1.0176145352 and
+1.0169453662), as do weak-ground trees. The retained incomplete-grid4 does improve
+its inverse bound74.6873->51.5544, but weak-ground incomplete-grid8 refuses. Tiny
+full-factor weighted coupled examples certify, including nonsymmetric/mixed-sign
+coefficients and separately rounded distributed stamps; weak grounding certifies
+uniqueness but the actual synthetic energy/reaction screen is INCONCLUSIVE.
+Both-board success with diagonal factors still fails Schur (q1.149421).
+Oracle-weighted controls remain separately labeled and never feed the producer.
+
+**Reviewed cost rejection:** at the retained original dimensions, connected
+factors force at least171,086,376 primitive/kernel charges for eight producer
+passes alone. Even the optimistic one-contribution-per-product/sweep mapping
+requires73,322,728, before independent verification and coupled work. This is a
+rejection lower bound, not an approved counter redefinition or a production fit.
+No unknown original-data property can rescue this exact recipe's cost, so no
+characterization probe, admission branch or full qualification is warranted.
+
+**Verification:**8 new tests +18 unchanged legacy tests PASS; separate math and
+resource reviews PASS for the bounded increment and reject original use of this
+producer. Independent seeded oracle checks200 board bounds,400 Schur entries,
+100 joined bounds and the exact failed tree contraction. Pre/post circuit checks
+PASS (manual68-line inventory,0 placements, no schematic/placement binding,
+pin-asset check performed); diff hygiene PASS. Full original qualification,
+production, native/aggregate generation and broad unchanged suites NOT RUN under
+this synthetic scope. New reports/results and reviewer hashes are retained beside
+the prior evidence; see weighted-math-review.md and weighted-resource-review.md.
+
+**Next local method decision:** retain this weighted verifier and counterexample;
+remove repeated full residual production passes before another proposed fit.
+Derive a fixed bounded structured weight construction using only stored
+coefficients and a predeclared sparse traversal; account producer plus exhaustive
+verifier and Schur together before implementing a further original-data path.
+The tree4 row10 failure is a required negative control, with tree9 held out.
+Do not merely increase the iteration count, use oracle weights, fall back to the
+old unweighted tree claim, restart a general factor search or spend a diagnostic.
+No further external planning prompt or signer decision is needed for that local
+source work; no constructive replacement is claimed at this session boundary.
+
+PR277 remains draft on the same base; its description is refreshed with this
+substantive checkpoint. Recover the final evidence commit via `git rev-parse HEAD`.
+Original production/admission source, matrix/solver/refinement/RHS/held sources,
+barrel intervals/tolerances/normalization and all guard/memory/swap/output/input/
+entry/update limits are unchanged. KEEP_K1402_INCUMBENT; PR260 OPEN/draft and
+issue253 OPEN. Qualification NOT_QUALIFIED; production NOT_ADMITTED/NOT_RUN;
+actual Stage C NOT RUN. No request freeze, pending claim or unattended operation
+remains. No merge, deployment, fabrication, purchases or hardware acceptance.
+
+
+<a id="e16-tree-coercivity-checkpoint"></a>
+
+### Standing-assignment tree/coercivity checkpoint — 2026-10-15 JST
+
+Reconciled clean executor HEAD67d120079b8a3ffaf0e915b8ffeebfea7611fc7e,
+existing ignored experiments, reviewer identities, tmux/process ownership and
+zero live E16 systemd units. No competing E16 work or newer changes were reset.
+The local CLI environment supplied the skill catalog and user/workspace project
+instructions; managed-cloud loader/restoration is not applicable. The operating
+agreement above was amended once to persist the owner's ongoing assignment.
+Installed runner help confirms local resume, and the whole-objective goal is
+active. Signing ownership remains resolved; no keys or grants were recreated.
+
+[New evidence](evidence/e16/attribution-admission-wsl-20261014/factor-residual-candidate/structured-coercivity-increment.md)
+records two completed evaluate/implement/review loops and a refinement:
+
+- Deterministic stored-coefficient BFS-tree Poisson weights, one subtree and one
+  integration pass, fail exact grid4/8/9 contraction. Their omitted-edge flux
+  causes min(Ap)=-11/-55/-71; path control succeeds. A separate direct shell
+  supersolution analysis proves exponential root weight on rooted grids. These
+  are precise method obstructions, not universal impossibility. No diagnostic.
+- Reuse the tree as an energy comparison for the complete actual nonsymmetric
+  stored operator. Independently verify symmetric-part dominance, exact binary64
+  deficits and actual tree coefficients/bindings. Quantitatively pay deficits
+  through gamma=1-delta*trace(T^-1). Bound terminal intervals separately through
+  an infinity-norm inverse perturbation proof. No global factor or Schur solve.
+- A reviewed path-energy refinement gives grid4/8/9 bounds61.2536/461.129/650.889
+  and complete coupled bound23.1015 versus exact12.5241. Actual synthetic screen
+  is SUPPORTED in the strong case; weak bound6.442503572e9 still gives INCONCLUSIVE
+  energy/reaction disposition. Whole distributed termination energy is preserved.
+  A positive definite nonadjacent distributed stamp defeats the method and refuses.
+
+Three structured tests +seven coercivity tests +unchanged18+8 tests PASS. Separate
+math review checks100 refined random inverses,51 complete coupled/interval corners,
+1000 IEEE decodes/999 half-sums and adversarial cases. Separate resource review
+reports all primitive conversions, exact-kernel units/width-dependent bit-work,
+failed work and actual fixture resources. Its accounting helper edits received
+independent mathematics review. The missing positive-sqrt witness check found
+in review was fixed before acceptance. Source hashes and results are retained.
+
+The new proof lane is mathematically useful on the bounded synthetic environment,
+not an original-size fit or an admitted operation. Direct Python materialized
+joined input and slot accounting cannot be ported as a production representation.
+No counter mapping is approved by a small floating count: exact integer work is
+substantial and remains separately visible. Pre/post circuit validation PASS
+(manual68-line inventory,0 placements, no schematic/placement binding; pin-asset
+check performed). Native/aggregate generation, original qualification and
+production NOT RUN; source-only research does not authorize those operations.
+
+**Next action, continuing here:** implement a bounded synthetic virtual joined-row
+view over the existing board CSR, coupling and terminal intervals without a full
+joinedCSR/transpose copy; prove exact row/oracle equivalence. Use packed tree
+vectors with an explicit reverse-lookup strategy and derive complete construction,
+verification, bit/float work and byte overlap, including both boards and retained
+physical pipeline. Resource review requires this executable architecture before
+an original-data characterization is useful. Do not probe original inputs yet.
+
+Campaign ledger remains SHA256
+533ca512fc06ae6742e6e02dce3cc1a8aee83ec49fc13ebabf691a6b0c4cc4f5,
+15/24 diagnostics,2/3 baselines; nine diagnostics remain, no further baseline
+authorized. No numerical request, live claim or cleanup obligation was created.
+KEEP_K1402_INCUMBENT, PR260 draft/unmerged, issue253 open; no production/source
+solver/RHS/tolerance/normalization changes, no cap changes, merge or hardware work.
+PR277 publication is a checkpoint. The attribution objective and local development
+assignment remain active; no new owner instruction or external plan is required.
+
+
+<a id="e16-virtual-path-checkpoint"></a>
+
+### Virtual joined/path-only checkpoint — 2026-10-15 JST
+
+Continued after94450d79 publication with no external handoff.
+[Evidence](evidence/e16/attribution-admission-wsl-20261014/factor-residual-candidate/virtual-path-increment.md)
+implements nonowning joined rows, explicit terminal mapping, streamed input hashes
+and fixed packed tree vectors. No full joinedCSR/transpose is created.
+Resource review proves refined literal cost>=10N+6>20M before exact arithmetic.
+The next implemented norm n*rmax/(1-delta*n*rmax) deletes subtree/trace/sqrt passes
+and certifies grids112/960/1377 and coupled fixtures. Weak screen is INCONCLUSIVE.
+This is an algorithm change, not a counter discount;25n packed bytes is only tree
+payload, not a1216MiB whole-pipeline memory proof.
+
+All40 local tests PASS. Separate oracle100 cases/4250 scalar comparisons/600 exact
+inverse bounds and separate math/resource reviews PASS. Stale layout and malformed
+live interval findings were fixed. Repeated validation/hash/scans and binary-search
+comparisons are explicit; baseline/delta does not reset cumulative counters.
+
+**Next active source work:** compact row-local dyadic representation with charged
+exponents/rescaling and exact full-range tests, removing unnecessary1076-bit unit
+coefficient operations while preserving2176-bit bounds and refusal behavior.
+Complete loop/byte mapping remains prerequisite to original characterization.
+The original board_parts raw tuple r is not bounded by finalnnz;48r triple-array
+overlap plus decoded objects,Y/B,SuperLU and mesh replay needs a prebound.
+Do not probe originals to answer these executable source questions.
+
+Ledger unchanged15/24 diagnostics,2/3 baselines; no new baseline, numerical request
+or cleanup debt. Original solver/input/physical/tolerance/resource safeguards
+remain; KEEP_K1402_INCUMBENT. Qualification NOT_QUALIFIED, production NOT_ADMITTED,
+actual Stage C NOT RUN. The local assignment remains active after publication.
+
+
+<a id="e16-compact-checkpoint"></a>
+
+### Compact exact arithmetic checkpoint — 2026-10-15 JST
+
+Continued afteraf9a635a. [Evidence](evidence/e16/attribution-admission-wsl-20261014/factor-residual-candidate/compact-increment.md)
+replaces unnecessary fixed-wide row and tree scalar arithmetic with bounded exact
+significand/exponent operations. Full compact/fixed witnesses and bounds agree.
+All44 aggregate tests and separate math/resource reviews pass; malformed tuple,
+normalized exponent and understated branch-charge findings were fixed. Separate
+row-only and full-path oracle evidence remains, including extreme binary64 and
+subnormal refusals. Actual tree construction is explicitly distinguished from
+zero auxiliary solve order. Numeric production source is unchanged.
+
+Held-out9 full compact bit-work envelope drops67.73billion->115.14million while
+declared integer kernels rise27108->147440; floating calls stay328. This is an
+actual representation tradeoff, not a fit claim. A strict all-kernel-as-update
+mapping still rejects the literal original-size port. Existing LDL Work instead
+counts multi-operation scalar destination contributions; resource review permits
+implementation/review of a separately named width-aware contribution ledger,
+retaining all fine counters, but has not approved any production fit/mapping.
+
+**Next active source algorithm:** a verifier-owned exhaustive row pass also selects
+checked negative edges into an online union-by-size oriented forest, then roots
+the resulting tree and computes path-only bounds. Exact row evidence is private
+to that verifier; no caller-supplied summary or skip-proof flag. Reroot smaller
+components with edge-value rotation, count all DSU/path visits and live buffers,
+and test heterogeneous weights/nonroot joins independently. This removes duplicate
+row/coefficient passes through actual algorithm changes. Stable input ownership,
+full original hashes, margins and all signed coefficients remain required.
+
+Original applicability and raw-stamp/complete pipeline resource prebounds remain
+open. No original input accessed or numerical request created; ledger remains
+15/24 diagnostics,2/3 baselines. No new baseline/cap/signing/hardware action.
+KEEP_K1402_INCUMBENT; actual qualification/attribution remains unresolved.
+Publication is another checkpoint; the development assignment continues here.
+
+
+<a id="e16-forest-checkpoint"></a>
+
+### Verifier-owned forest checkpoint — 2026-10-15 JST
+
+Continued after2dbab46b. [Evidence](evidence/e16/attribution-admission-wsl-20261014/factor-residual-candidate/forest-increment.md)
+implements one exhaustive exact row pass with private checked-edge selection,
+union-by-size oriented forests, conductance-preserving reroots and memoized path
+bounds. No external row summary/skip flag, duplicate full producer proof or
+adjacency copy. Stable owned inputs and before/after byte/context hashes remain
+required. The interval wrapper preserves the complete original coupled target.
+
+Proposed width-aware scalar contribution accounting now exists alongside all fine
+floating/exact-bit/index ledgers; no reset/relabel. Counts include discarded work,
+edge/path construction, tiny D midpoint and interval correction. Grid9 has455
+proposed units,328 floating calls and71857 exact kernels. Joined has42 proposed
+units and53 floating calls. These are distinct measures, not42 machine operations.
+Numerical-entry/byte correspondence has separate resource review for local design
+only; no production fit/admission. Logical25n payload and actual allocated buffers
+are reported separately. DSU buffers die before path allocation; weakref and
+heterogeneous nonroot-reroot regressions pass.
+
+All48 aggregate tests PASS;4 forest tests independently pass. Separate math oracle
+103 structural/tree-energy/inverse cases and51 full interval coupled cases PASS.
+Resource review confirms actual recurrence widths before cancellation, failed
+scopes, exact reverse searches, index accesses and streamed hashes. Reviews retain
+source identities and earlier evidence. Strong synthetic screen passes; weak
+remains INCONCLUSIVE. Actual selected attribution remains unresolved.
+
+**Next active source work:** bounded native implementation of these same exact
+kernels and forest loops, retaining all counters and independent full-range
+oracle checks; then a source-owned raw-stamp allocation prebound. Installed
+C++13 is present; Boost header is absent, no package or host changes authorized.
+A fixed34x64-bit bounded helper is a local implementation choice, not an opaque
+solve counted as one update. Keep order128 and existing synthetic resource
+limits; no original characterization until native/resource/source admission
+preconditions actually hold. Interpreted Python timings and partial tree bytes
+do not establish180s/1216MiB whole-pipeline fit.
+
+Ledger unchanged15/24 diagnostics,2/3 baselines, no new request/grant/cleanup debt.
+Original inputs/solver/RHS/normalization/tolerances and all numerical/hardware
+safeguards unchanged. KEEP_K1402_INCUMBENT; no Stage D/merge/adoption/deployment.
+This is another published checkpoint, not completion of the active assignment.
+
+
+<a id="e16-native-helper-checkpoint"></a>
+
+### Native exact-helper checkpoint — 2026-10-15 JST
+
+Continued after6832a1e2. [Evidence](evidence/e16/attribution-admission-wsl-20261014/factor-residual-candidate/native-exact-increment.md)
+adds a bounded34limb C++ exact scalar/row helper, fresh temporary build/cleanup
+and ABI validation. No new dependency or host change. Four tests and separate
+optimized/UBSan exact oracles PASS, including full exponent/width ranges, rawABI
+malformation, carry/borrow/cancellation, underflow and cumulative counter refusal.
+Native limb/init/copy/floating metrics remain explicit and distinct from Python
+whole-significand counters. Review caught and fixed wide-operand zero-shortcut
+undercharging; proof input coefficients and bounds are unchanged.
+
+Source resource review also derives a conservative rawstamp count before existing
+board_parts allocations, with early executor insertion points. It preserves
+original numerical construction and records unknown workspace/overlap instead
+of calling a partial array envelope a full heap bound. No original metadata was
+read; the guard is not implemented yet.
+
+**Next active source work:** native full virtual-row/checked-forest/path/interval
+execution with all counters and bindings, then metadata-only rawstamp preflight
+and complete resource-envelope review. Helper-only success is not a full native
+certificate or an eligible original-data request. No original probe, qualification
+or production until those prerequisites actually hold. Keep fixture limits and
+all original 180s/1216MiB/2GiB/swap/output/input/entry/update constraints.
+
+Ledger unchanged15/24 diagnostics,2/3 baselines; no further baseline, new request,
+grant, signing-material change or cleanup debt. KEEP_K1402_INCUMBENT, PR260 draft
+and issue253 open. Attribution unresolved; the assignment continues locally.
+
+
+<a id="e16-native-forest-checkpoint"></a>
+
+### Native forest and preallocation checkpoint — 2026-10-15 JST
+
+Continued after5d613830. [Evidence](evidence/e16/attribution-admission-wsl-20261014/factor-residual-candidate/native-forest-increment.md)
+ports checked virtual rows, exact margins, private forest selection, rooted paths
+and whole-D interval correction into bounded native code. Four tests PASS;
+separate math optimized/UBSan oracle and resource reviews PASS for this fixture.
+Metadata capacity checks close the C pointer boundary before native scans. Stable
+owned inputs remain mandatory. No global joined matrix or auxiliary solve.
+
+Grid9 native36926 limb kernels/664 floating calls/458 proposed contributions;
+joined complete42 proposed contributions including midpoint construction.
+These are distinct ledgers, not machine-instruction equivalences. Fixed2688byte
+scratch is charged throughout; result/descriptors, owned/borrowed arrays and
+measured Python/RSS are separate. Payload alone is not a full byte proof.
+Strong/nonsymmetric screens SUPPORTED; weak remains INCONCLUSIVE. Original
+attribution, full resource qualification and production-size port remain open.
+
+Metadata-only rawstamp guard implemented and independently source-reviewed;
+30 guard/executor tests PASS. Original solver/assembly untouched. Optional
+internal hooks require complete caller-declared overlap; existing requests do
+not enable them. All outcomes remain NOT_QUALIFIED. No unbound helper is used
+by the old admitted execution path.
+
+**Next active source work:** distinct, reviewed bounded raw-metadata
+characterization path, sequentially decoding only the two original operators
+inside existing containment if later genuinely admitted. Its question is R and
+largest actual support outer-product size, needed to choose constructor memory
+work versus complete-envelope development. Current module/test work is synthetic
+only; no original request/grant/probe. A small count is not qualification and an
+oversized conservative bound is not proof of actual memory breach. Full native
+buffer/stack/pipeline/time and input applicability still require review.
+
+Ledger unchanged15/24 diagnostics,2/3 baselines, no cleanup debt or new baseline.
+180seconds/1216MiB/2GiB/zero-swap/64MiB and certificate ceilings unchanged.
+KEEP_K1402_INCUMBENT; PR260 draft/unmerged and issue253 open. Development continues.
+
+
+<a id="e16-characterization-source-checkpoint"></a>
+
+### Distinct raw-metadata characterization source checkpoint — 2026-10-15 JST
+
+Continued afterb46e4255. Native forest is published and reviewed; the next
+indispensable original property is raw construction size R and largest actual
+terminal support squared. Source-only implementation now decodes the two exact
+operator bindings sequentially inside the existing worker path, reads descriptor
+shapes/dtypes/lengths only after trusted decoding, releases each graph before the
+next, and writes CHARACTERIZATION_ONLY / NOT_QUALIFIED receipts. No original
+numerical construction, factor, solve, mesh or coefficient inspection is performed
+by this path. Decoding itself still interprets complete trusted pickle objects and
+must remain under the existing enforced memory/deadline boundary.
+
+Separate module mathematics review and admission/resource review PASS. Entire
+attribution suite199 tests PASS before final provenance hardening; subsequent68
+admission/host tests PASS cover exact requestkind accounting, receipt purpose,
+technical review revalidation and actual namespace restrictions. Earlier test
+setup failures are preserved in the reviews and fixed, not counted as passes.
+
+Distinct resource-characterization requestkind/schema and fixed two-operator
+packet are source-bound, with actual separate operation-digest technical review
+required before sealing. Signature scopes reuse existing nonproduction operator/
+controller namespaces; exact payload schema/kind/digest prevent cross-kind replay.
+The actual retained public trust hash remains70c78f8e68063301ded3381c73d71240d26fdd6092a4da991bd2a19f78bf840d;
+no signing material/trust/ownership change. The retained owner decision already
+explicitly authorizes bounded diagnostics. Production stays separately qualified
+and admitted; characterization cannot establish RESOURCE_QUALIFIED.
+
+**Immediate next action:** clean checkpoint, compile a concrete source/toolchain/
+original-binding description without reading original artifacts, obtain genuine
+separate exact-operation review, then seal/sign/admit one fresh characterization
+only if live checks pass. Follow through terminal evidence, single diagnostic
+accounting and cleanup. Large conservative R rejects this metadata preallocation
+gate and selects constructor/lifetime work; small R permits complete-overlap work.
+Neither result alone establishes actual memory breach, native applicability,
+qualification or useful selected attribution. Incomplete decode is missing evidence.
+
+Live ledger rechecked SHA533ca512fc06ae6742e6e02dce3cc1a8aee83ec49fc13ebabf691a6b0c4cc4f5:
+15/24 diagnostics,2/3 baselines, live_owned_work=false; no loaded E16 units. No new
+request/grant/diagnostic yet. All original numerical caps/inputs/solver/refinement
+and exclusions preserved; KEEP_K1402_INCUMBENT. The standing assignment continues.
+
+
+### Raw-metadata characterization terminal result — 2026-10-15 JST
+
+Exact source011e8be351e8 admitted request
+7ba4ad7dbf4ea760cf61fff507acde8d53d369062a5501dd5eba633800640b7b,
+runaa4a7e9efd754b3dad7bd22ccea86d1d, under actual separate review and genuine
+existing delegated grants. [Retained compact evidence](evidence/e16/attribution-admission-wsl-20261014/factor-residual-candidate/raw-characterization-20261015/)
+binds cached full description/request and all terminal receipts. accepted_result
+returns COMPLETE; durable shared guard PASS, scope collected, tmpfs unmounted,
+worker empty and envelope unit gone. Characterization only: NOT_QUALIFIED and
+selected numerical attribution NOT RUN.
+
+KA raw upper8086918, KB8210163; each terminal support length427 and largest outer
+182329. Named partial constructor envelopes674118032/684390768bytes pass the raw
+count gate but do not include complete baseline/workspace/other-board/physical
+phase overlap. Their sum is not simultaneous live memory, and their excess over
+another bound would not prove actual canonical counts or memory breach.
+
+Actual envelope6.9129seconds, peak319397888bytes plus67108864 external reserve;
+worker peak205418496bytes. Supervisor recorded32 memory.max events, zero OOM and
+zero swap; retain these events rather than calling them zero. Host retained6836
+bytes plus separately accounted receipts/control evidence. Actual complete
+attribution memory/time remains unmeasured. Independent terminal/resource review
+is being retained alongside the receipts.
+
+Ledger now16/24 diagnostics,2/3 baselines, eight diagnostics remain, no additional
+baseline authorized. SHA08a9fee36d2a2ca9fda68acbd1a57d6c6dc61fdeea2adfc7bd5fae015f59f209,
+live_owned_work=false. Consumed request is never reusable. No original coefficient
+scan or matrix construction occurred; only admitted decoded descriptors were read.
+
+**Next active source increment:** replace fixed native forest scratch with bounded
+owned packed buffers and actual selection-to-path lifetimes, retaining fixture
+order128 and all counters. The prospective payload is12n output witness plus8n
+selection scratch or13n path scratch, max25n; this is a rationale, not a full heap
+proof. Complete pipeline overlap and exact input-cap semantics for both boards
+remain to review before original-size port/qualification. No second diagnostic
+is selected merely because raw metadata fit. KEEP_K1402_INCUMBENT; continue locally.
+
+
+<a id="e16-current-checkpoint"></a>
+
+### Owner-requested pause and session close — 2026-10-15 JST
+
+The owner explicitly paused the standing development goal and requested commits,
+push and GitHub status updates before ending this session. The reason is to
+reconsider the approach and board separation plan because the large-PCB effort
+is taking too long. This instruction supersedes the earlier automatic continuation
+and immediate-next-action language above. Do not resume E16 numerical development
+or spend another diagnostic without renewed direction. No alternative separation
+architecture was selected, implemented or accepted during this closeout.
+
+Preserved implementation: reviewed native packed scratch lifetimes, immediate
+per-allocation initialization accounting, allocation-failure regressions and
+separate optimized/UBSan mathematics/resource evidence. Five final packed tests
+PASS, including failed allocations; historical fixed-scratch results are retained.
+The completed original-data operation was bounded metadata characterization only,
+not full resource qualification or selected attribution. Complete receipts and
+independent resource disposition are in raw-characterization-20261015/.
+
+Final campaign:16/24 diagnostics,2/3 baselines; eight diagnostics remain but are
+not authority to continue during this pause. live_owned_work=false; zero loaded
+E16 units, actual scope/tmpfs/worker cleanup verified. Ledger SHA
+08a9fee36d2a2ca9fda68acbd1a57d6c6dc61fdeea2adfc7bd5fae015f59f209.
+No live reviewer task, numerical operation or consumed-request retry is pending.
+
+Full pipeline NOT_QUALIFIED; production NOT_ADMITTED/NOT_RUN; actual selected
+numerical/engineering disposition unresolved. Native original-size port, complete
+live-overlap proof and explicit field-work/native residual work were identified
+but NOT implemented. Conditional combined-work lower bounds do not establish a
+breach of the existing20M uniqueness/Schur gate, which excludes field arithmetic.
+Preserve these limitations for any future architecture reconsideration.
+
+Keep the worktree/branch and retained cache evidence for recovery. PR277 and its
+stack remain open drafts as applicable; PR260 remains draft/unmerged, issue253
+open, KEEP_K1402_INCUMBENT. No merge, geometry/copper adoption, deployment or
+hardware action. The session ends after publishing this checkpoint and updating
+existing GitHub resources; the ongoing goal remains paused, not complete.

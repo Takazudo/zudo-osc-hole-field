@@ -1,0 +1,79 @@
+{
+  "synthetic_only": true,
+  "dyadic_helpers": {
+    "seed": 279,
+    "binary64_exact_decodes": 1000,
+    "exact_half_sums": 999,
+    "status": "PASS"
+  },
+  "random": {
+    "seed": 278,
+    "cases": 100,
+    "with_nonzero_exact_diagonal_deficit": 50,
+    "status": "PASS"
+  },
+  "near_singular": {
+    "near_singular_bound": 9007199254741008.0,
+    "exact_norm": 9007199254740992.0,
+    "refusals": [
+      {
+        "case": "singular",
+        "reason": "coercivity no positive root margin"
+      },
+      {
+        "case": "indefinite",
+        "reason": "coercivity diagonal deficit defeats tree bound"
+      }
+    ]
+  },
+  "malformed": {
+    "tree_packet_refusals": 11,
+    "interval_schema_refusals": 3,
+    "status": "PASS"
+  },
+  "sqrt_witnesses": [
+    {
+      "trial": "zero",
+      "status": "trace fallback with failed work retained"
+    },
+    {
+      "trial": "negative",
+      "status": "trace fallback with failed work retained"
+    },
+    {
+      "trial": "half",
+      "status": "trace fallback with failed work retained"
+    }
+  ],
+  "coupled": [
+    {
+      "case": "grounded",
+      "bound": 23.101526258322217,
+      "exact_original_norm": 12.524074074074099,
+      "all_16_interval_corners_max_norm": 12.524074074074129,
+      "shift_q": 8.423330761420226e-15,
+      "interval_q": 2.0518277084777157e-14
+    },
+    {
+      "case": "weak",
+      "bound": 6442503572.111362,
+      "exact_original_norm": 6442454022.525552,
+      "all_16_interval_corners_max_norm": 6442463238.547541,
+      "shift_q": 2.503394937444306e-06,
+      "interval_q": 5.722059899433439e-06
+    },
+    {
+      "case": "nonsymmetric",
+      "bound": 22.49836077561593,
+      "exact_original_norm": 11.190740740740761,
+      "all_16_interval_corners_max_norm": 11.190740740740784,
+      "shift_q": 8.225123828942162e-15,
+      "interval_q": 1.9982558519529445e-14
+    }
+  ],
+  "sha256": {
+    "independent-coercivity-oracle.py": "04e9c2ce2014ecf6ed7fcfa5149433f538e8492aca12bfdfa03cccbb4f855fe3",
+    "fixture/prototype.py": "762257f82db7d6b0abfdb545af2c6408687ec66bb56f114d6d197d7db50fba6d",
+    "fixture/test_coercivity.py": "cf4f91819066fd9a36ec79c345ac4c585d5e51c6b458d5155a36bfcf6905b608"
+  }
+}

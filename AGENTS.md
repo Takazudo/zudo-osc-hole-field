@@ -2,6 +2,14 @@
 
 Read [circuit/WORKFLOW.md](circuit/WORKFLOW.md) first. It is the canonical workflow for this circuit project; this file only points to it.
 
+For ongoing WSL development coordination, also read the current operating agreement
+and recovery checkpoint in [the existing joined-feed work note](design/partition/core-split/candidates/planning/joined-feed-construction-v2/WORK.md#ongoing-wsl-coordination--2026-10-14).
+Continue authorized planning and development locally across increments; resolve
+genuine owner decisions with the user in this WSL session. Apply the later
+[explicit E16 local delegation](design/partition/core-split/candidates/planning/joined-feed-construction-v2/WORK.md#owner-decision-single-owner-local-delegation--2026-10-14)
+for signing and exact computational admission; ordinary planning delegation alone
+grants neither. Integration ownership and merge permission remain excluded.
+
 - Exact-component evidence lives in the owner bundles under `.claude/skills/component-*/`, indexed by `.claude/skills/component-spec-audit/references/inventory.json`. Cross-component rules live in `.claude/skills/circuit-spec-integration/references/rules.json`.
 - Run `pnpm circuit:check` before editing and again after.
 - Never hand-edit the generated pages under `doc/src/content/docs/components/`; change the evidence and run `pnpm circuit:generate`.

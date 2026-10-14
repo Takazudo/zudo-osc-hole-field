@@ -1,0 +1,11 @@
+# Metadata preallocation implementation evidence
+
+Resource reviewer implemented `attribution_preallocation.py`, the explicit internal executor opt-in, and `test_attribution_preallocation.py`. No admission packet, run_pipeline branch, original input, request, baseline, or diagnostic was used. The pinned numerical construction and solver are unchanged.
+
+The helper reads shapes, dtypes, buffer lengths, terminal identities and support lengths, never numerical array values. It conservatively computes R = face stored entries + in-plane stored entries + 4 sum(max(tap_count-1,0)) + sum(terminal_support_length²). Held filtering, duplicate coordinates and numerical zero cancellation cannot reduce this preallocation bound. The declared raw limit cannot exceed 16,000,000. Named construction arrays require 80R + 8(N+1) bytes, active outer-product buffers require 16 max(s²), and B/D require 8NT+8T². These are not a complete heap envelope.
+
+An explicit complete caller declaration for live baseline, other construction workspace, native workspace, allocator/tail overlap and evidence reference is mandatory; missing or excessive declarations refuse before construction. A reference string is not authenticated review. Every result remains NOT_QUALIFIED. A future admission path must bind the new source and policy and cover both construction sites; no existing lane silently acquires this policy. Metadata traversal shares the existing budget/deadline and has a visit ceiling.
+
+Independent focused plus existing executor run: `OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 MKL_NUM_THREADS=1 timeout 30 /home/takazudo/.cache/zudo-e16-numerical-venv/bin/python -B -m unittest test_attribution_preallocation test_attribution_executor` from the planning directory: **30 tests PASS (1.590 s)**. Focused six tests separately PASS (0.019 s). Tests cover value-inaccessible fake arrays, exact boundary counts, conservative duplicate/zero supports, huge support without numerical allocation, malformed descriptors, missing envelopes, unchanged deadline, default-lane compatibility and byte-identical tiny original board_parts output.
+
+`pnpm circuit:check` before and after implementation: PASS, with the unchanged manual inventory scope limitation. `git diff --check` for owned files: clean. No original-data probe or resource fit was performed.

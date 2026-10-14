@@ -1,0 +1,774 @@
+{
+  "synthetic_only": true,
+  "tests": 18,
+  "success": true,
+  "limits": {
+    "order": 128,
+    "wall_seconds": 30,
+    "cpu_seconds": 20,
+    "address_space_MiB": 512,
+    "blas_threads": 1
+  },
+  "results": {
+    "binding_base": {
+      "q": 6.476300976980087e-16,
+      "K": 1.000000000000001,
+      "factor_entries": 4,
+      "updates": 31,
+      "phase_updates": {
+        "production": 3,
+        "residual": 14,
+        "comparison_residual": 6,
+        "comparison_ones": 6,
+        "neumann": 2
+      },
+      "peak_entries": 26,
+      "dropped_products": 0,
+      "status": "CERTIFIED",
+      "inverse_infinity_upper": 1.0000000000000024
+    },
+    "diagonal_board_0": {
+      "q": 0.6178343949044591,
+      "K": 0.35668789808917206,
+      "factor_entries": 2,
+      "residual_row_upper": [
+        1.7321428571428579,
+        1.732142857142858
+      ],
+      "updates": 14,
+      "phase_updates": {
+        "residual": 8,
+        "comparison_residual": 2,
+        "comparison_ones": 2,
+        "neumann": 2
+      },
+      "peak_entries": 22,
+      "dropped_products": 0,
+      "status": "CERTIFIED",
+      "inverse_infinity_upper": 0.9333333333333352
+    },
+    "diagonal_board_1": {
+      "q": 0.8492462311557796,
+      "K": 0.31658291457286447,
+      "factor_entries": 2,
+      "residual_row_upper": [
+        2.6825396825396837,
+        2.682539682539684
+      ],
+      "updates": 14,
+      "phase_updates": {
+        "residual": 8,
+        "comparison_residual": 2,
+        "comparison_ones": 2,
+        "neumann": 2
+      },
+      "peak_entries": 22,
+      "dropped_products": 0,
+      "status": "CERTIFIED",
+      "inverse_infinity_upper": 2.1000000000000116
+    },
+    "diagonal_factor_schur_refusal": "small interval Schur residual refuses: q=1.488536154309873",
+    "block_schur_strong": {
+      "status": "CERTIFIED",
+      "global_input_sha256": "80e1fce41ff16c549945c1c1f58fbcb488c52f55d75df729db0ea3030d015bce",
+      "inverse_infinity_upper": 31.45060526954466,
+      "schur_intervals": [
+        [
+          [
+            4.504731861198732,
+            4.504731861198745
+          ],
+          [
+            -4.0000000000000036,
+            -3.9999999999999982
+          ]
+        ],
+        [
+          [
+            -4.0000000000000036,
+            -3.9999999999999982
+          ],
+          [
+            3.999999999999992,
+            4.000000000000007
+          ]
+        ]
+      ],
+      "schur_inverse_infinity_upper": 4.212500000000244,
+      "schur_q": 5.329070518200753e-14,
+      "boards": [
+        {
+          "q": 5.673694952343076e-16,
+          "K": 0.8517350157728709,
+          "factor_entries": 4,
+          "residual_row_upper": [
+            6.661338147750942e-16,
+            6.661338147750942e-16
+          ],
+          "updates": 31,
+          "phase_updates": {
+            "production": 3,
+            "residual": 14,
+            "comparison_residual": 6,
+            "comparison_ones": 6,
+            "neumann": 2
+          },
+          "peak_entries": 74,
+          "dropped_products": 0,
+          "status": "CERTIFIED",
+          "inverse_infinity_upper": 0.8517350157728718
+        },
+        {
+          "q": 1.5872077315011532e-15,
+          "K": 1.4740740740740763,
+          "factor_entries": 4,
+          "residual_row_upper": [
+            8.881784197001258e-16,
+            1.3322676295501884e-15
+          ],
+          "updates": 102,
+          "phase_updates": {
+            "production": 6,
+            "residual": 28,
+            "comparison_residual": 12,
+            "comparison_ones": 12,
+            "neumann": 4,
+            "coupling_norms": 8,
+            "schur_correction": 2,
+            "schur_factor_solve": 12,
+            "schur_construction": 18
+          },
+          "peak_entries": 98,
+          "dropped_products": 0,
+          "status": "CERTIFIED",
+          "inverse_infinity_upper": 1.4740740740740794
+        }
+      ],
+      "updates": 200,
+      "phase_updates": {
+        "production": 6,
+        "residual": 28,
+        "comparison_residual": 12,
+        "comparison_ones": 12,
+        "neumann": 4,
+        "coupling_norms": 16,
+        "schur_correction": 4,
+        "schur_factor_solve": 24,
+        "schur_construction": 36,
+        "schur_inverse_production": 24,
+        "schur_inverse_verification": 26,
+        "global_block_bound": 8
+      },
+      "peak_entries": 98
+    },
+    "block_schur_weak": {
+      "status": "CERTIFIED",
+      "global_input_sha256": "39fdadd040954856e26c92db8e97c849c833ba76e3fea13ef70455b818befe32",
+      "inverse_infinity_upper": 18954561637.577145,
+      "schur_intervals": [
+        [
+          [
+            4.000000000931316,
+            4.000000000931331
+          ],
+          [
+            -4.0000000000000036,
+            -3.9999999999999982
+          ]
+        ],
+        [
+          [
+            -4.0000000000000036,
+            -3.9999999999999982
+          ],
+          [
+            3.999999999999992,
+            4.000000000000007
+          ]
+        ]
+      ],
+      "schur_inverse_infinity_upper": 2147550209.7222204,
+      "schur_q": 2.956390380859376e-05,
+      "boards": [
+        {
+          "q": 1.192101971601849e-15,
+          "K": 1.587499998549248,
+          "factor_entries": 4,
+          "residual_row_upper": [
+            6.661338147750942e-16,
+            8.881784197001256e-16
+          ],
+          "updates": 31,
+          "phase_updates": {
+            "production": 3,
+            "residual": 14,
+            "comparison_residual": 6,
+            "comparison_ones": 6,
+            "neumann": 2
+          },
+          "peak_entries": 74,
+          "dropped_products": 0,
+          "status": "CERTIFIED",
+          "inverse_infinity_upper": 1.5874999985492506
+        },
+        {
+          "q": 1.5872077315011532e-15,
+          "K": 1.4740740740740763,
+          "factor_entries": 4,
+          "residual_row_upper": [
+            8.881784197001258e-16,
+            1.3322676295501884e-15
+          ],
+          "updates": 102,
+          "phase_updates": {
+            "production": 6,
+            "residual": 28,
+            "comparison_residual": 12,
+            "comparison_ones": 12,
+            "neumann": 4,
+            "coupling_norms": 8,
+            "schur_correction": 2,
+            "schur_factor_solve": 12,
+            "schur_construction": 18
+          },
+          "peak_entries": 98,
+          "dropped_products": 0,
+          "status": "CERTIFIED",
+          "inverse_infinity_upper": 1.4740740740740794
+        }
+      ],
+      "updates": 200,
+      "phase_updates": {
+        "production": 6,
+        "residual": 28,
+        "comparison_residual": 12,
+        "comparison_ones": 12,
+        "neumann": 4,
+        "coupling_norms": 16,
+        "schur_correction": 4,
+        "schur_factor_solve": 24,
+        "schur_construction": 36,
+        "schur_inverse_production": 24,
+        "schur_inverse_verification": 26,
+        "global_block_bound": 8
+      },
+      "peak_entries": 98
+    },
+    "block_schur_nonsymmetric": {
+      "status": "CERTIFIED",
+      "global_input_sha256": "e5762bf264ef26d7fb3b09ea650ed701f7bd3558d27ae2d0381729b03b95b8c4",
+      "inverse_infinity_upper": 28.028679869297278,
+      "schur_intervals": [
+        [
+          [
+            4.570749108204513,
+            4.570749108204525
+          ],
+          [
+            -4.0000000000000036,
+            -3.9999999999999982
+          ]
+        ],
+        [
+          [
+            -4.0000000000000036,
+            -3.9999999999999982
+          ],
+          [
+            3.999999999999992,
+            4.000000000000007
+          ]
+        ]
+      ],
+      "schur_inverse_infinity_upper": 3.7541666666668587,
+      "schur_q": 4.618527782440653e-14,
+      "boards": [
+        {
+          "q": 5.346496135234112e-16,
+          "K": 0.8026159334126043,
+          "factor_entries": 4,
+          "residual_row_upper": [
+            6.661338147750942e-16,
+            6.661338147750942e-16
+          ],
+          "updates": 31,
+          "phase_updates": {
+            "production": 3,
+            "residual": 14,
+            "comparison_residual": 6,
+            "comparison_ones": 6,
+            "neumann": 2
+          },
+          "peak_entries": 74,
+          "dropped_products": 0,
+          "status": "CERTIFIED",
+          "inverse_infinity_upper": 0.8026159334126051
+        },
+        {
+          "q": 1.5872077315011532e-15,
+          "K": 1.4740740740740763,
+          "factor_entries": 4,
+          "residual_row_upper": [
+            8.881784197001258e-16,
+            1.3322676295501884e-15
+          ],
+          "updates": 102,
+          "phase_updates": {
+            "production": 6,
+            "residual": 28,
+            "comparison_residual": 12,
+            "comparison_ones": 12,
+            "neumann": 4,
+            "coupling_norms": 8,
+            "schur_correction": 2,
+            "schur_factor_solve": 12,
+            "schur_construction": 18
+          },
+          "peak_entries": 98,
+          "dropped_products": 0,
+          "status": "CERTIFIED",
+          "inverse_infinity_upper": 1.4740740740740794
+        }
+      ],
+      "updates": 200,
+      "phase_updates": {
+        "production": 6,
+        "residual": 28,
+        "comparison_residual": 12,
+        "comparison_ones": 12,
+        "neumann": 4,
+        "coupling_norms": 16,
+        "schur_correction": 4,
+        "schur_factor_solve": 24,
+        "schur_construction": 36,
+        "schur_inverse_production": 24,
+        "schur_inverse_verification": 26,
+        "global_block_bound": 8
+      },
+      "peak_entries": 98
+    },
+    "rooted_tree_4x4_ground_1.0": {
+      "q": 0.9992283950617297,
+      "K": 0.7633744855967084,
+      "factor_entries": 31,
+      "residual_row_upper": [
+        2.0000000000000013,
+        2.0000000000000013,
+        2.0000000000000013,
+        1.0000000000000009,
+        2.0000000000000013,
+        3.0000000000000027,
+        3.0000000000000027,
+        2.0000000000000013,
+        2.0000000000000013,
+        3.0000000000000027,
+        3.0000000000000027,
+        2.0000000000000013,
+        1.0000000000000009,
+        2.0000000000000013,
+        2.0000000000000013,
+        1.000000000000001
+      ],
+      "updates": 235,
+      "phase_updates": {
+        "production": 15,
+        "residual": 126,
+        "comparison_residual": 46,
+        "comparison_ones": 46,
+        "neumann": 2
+      },
+      "peak_entries": 195,
+      "dropped_products": 0,
+      "status": "CERTIFIED",
+      "inverse_infinity_upper": 989.3333333349672
+    },
+    "rooted_tree_4x4_ground_9.313225746154785e-10": {
+      "q": 0.9999999999989233,
+      "K": 0.7638888888881707,
+      "factor_entries": 31,
+      "residual_row_upper": [
+        2.0000000000000013,
+        2.0000000000000013,
+        2.0000000000000013,
+        1.0000000000000009,
+        2.0000000000000013,
+        3.0000000000000027,
+        3.0000000000000027,
+        2.0000000000000013,
+        2.0000000000000013,
+        3.0000000000000027,
+        3.0000000000000027,
+        2.0000000000000013,
+        1.0000000000000009,
+        2.0000000000000013,
+        2.0000000000000013,
+        1.000000000000001
+      ],
+      "updates": 235,
+      "phase_updates": {
+        "production": 15,
+        "residual": 126,
+        "comparison_residual": 46,
+        "comparison_ones": 46,
+        "neumann": 2
+      },
+      "peak_entries": 195,
+      "dropped_products": 0,
+      "status": "CERTIFIED",
+      "inverse_infinity_upper": 709476121952.8212
+    },
+    "rooted_tree_8x8_ground_1.0": {
+      "q": 0.9999999627891148,
+      "K": 0.7501713893608766,
+      "factor_entries": 127,
+      "residual_row_upper": [
+        2.0000000000000013,
+        2.0000000000000013,
+        2.0000000000000013,
+        2.0000000000000013,
+        2.0000000000000013,
+        2.0000000000000013,
+        2.0000000000000013,
+        1.0000000000000009,
+        2.0000000000000013,
+        3.0000000000000027,
+        3.0000000000000027,
+        3.0000000000000027,
+        3.0000000000000027,
+        3.0000000000000027,
+        3.0000000000000027,
+        2.0000000000000013,
+        2.0000000000000013,
+        3.0000000000000027,
+        3.0000000000000027,
+        3.0000000000000027,
+        3.0000000000000027,
+        3.0000000000000027,
+        3.0000000000000027,
+        2.0000000000000013,
+        2.0000000000000013,
+        3.0000000000000027,
+        3.0000000000000027,
+        3.0000000000000027,
+        3.0000000000000027,
+        3.0000000000000027,
+        3.0000000000000027,
+        2.0000000000000013,
+        2.0000000000000013,
+        3.0000000000000027,
+        3.0000000000000027,
+        3.0000000000000027,
+        3.0000000000000027,
+        3.0000000000000027,
+        3.0000000000000027,
+        2.0000000000000013,
+        2.0000000000000013,
+        3.0000000000000027,
+        3.0000000000000027,
+        3.0000000000000027,
+        3.0000000000000027,
+        3.0000000000000027,
+        3.0000000000000027,
+        2.0000000000000013,
+        2.0000000000000013,
+        3.0000000000000027,
+        3.0000000000000027,
+        3.0000000000000027,
+        3.0000000000000027,
+        3.0000000000000027,
+        3.0000000000000027,
+        2.0000000000000013,
+        1.0000000000000009,
+        2.0000000000000013,
+        2.0000000000000013,
+        2.0000000000000013,
+        2.0000000000000013,
+        2.0000000000000013,
+        2.0000000000000013,
+        1.000000000000001
+      ],
+      "updates": 987,
+      "phase_updates": {
+        "production": 63,
+        "residual": 542,
+        "comparison_residual": 190,
+        "comparison_ones": 190,
+        "neumann": 2
+      },
+      "peak_entries": 771,
+      "dropped_products": 0,
+      "status": "CERTIFIED",
+      "inverse_infinity_upper": 20159998.514345407
+    },
+    "rooted_tree_8x8_ground_9.313225746154785e-10": {
+      "q": 1.0000000000000016,
+      "K": 0.7501714677640607,
+      "factor_entries": 127,
+      "residual_row_upper": [
+        2.0000000000000013,
+        2.0000000000000013,
+        2.0000000000000013,
+        2.0000000000000013,
+        2.0000000000000013,
+        2.0000000000000013,
+        2.0000000000000013,
+        1.0000000000000009,
+        2.0000000000000013,
+        3.0000000000000027,
+        3.0000000000000027,
+        3.0000000000000027,
+        3.0000000000000027,
+        3.0000000000000027,
+        3.0000000000000027,
+        2.0000000000000013,
+        2.0000000000000013,
+        3.0000000000000027,
+        3.0000000000000027,
+        3.0000000000000027,
+        3.0000000000000027,
+        3.0000000000000027,
+        3.0000000000000027,
+        2.0000000000000013,
+        2.0000000000000013,
+        3.0000000000000027,
+        3.0000000000000027,
+        3.0000000000000027,
+        3.0000000000000027,
+        3.0000000000000027,
+        3.0000000000000027,
+        2.0000000000000013,
+        2.0000000000000013,
+        3.0000000000000027,
+        3.0000000000000027,
+        3.0000000000000027,
+        3.0000000000000027,
+        3.0000000000000027,
+        3.0000000000000027,
+        2.0000000000000013,
+        2.0000000000000013,
+        3.0000000000000027,
+        3.0000000000000027,
+        3.0000000000000027,
+        3.0000000000000027,
+        3.0000000000000027,
+        3.0000000000000027,
+        2.0000000000000013,
+        2.0000000000000013,
+        3.0000000000000027,
+        3.0000000000000027,
+        3.0000000000000027,
+        3.0000000000000027,
+        3.0000000000000027,
+        3.0000000000000027,
+        2.0000000000000013,
+        1.0000000000000009,
+        2.0000000000000013,
+        2.0000000000000013,
+        2.0000000000000013,
+        2.0000000000000013,
+        2.0000000000000013,
+        2.0000000000000013,
+        1.000000000000001
+      ],
+      "updates": 985,
+      "phase_updates": {
+        "production": 63,
+        "residual": 542,
+        "comparison_residual": 190,
+        "comparison_ones": 190
+      },
+      "peak_entries": 771,
+      "dropped_products": 0,
+      "status": "REFUSED",
+      "reason": "comparison residual norm is not below one"
+    },
+    "joined_nondyadic_stored": {
+      "q": 2.4844555425297644e-14,
+      "K": 12.52407407407413,
+      "factor_entries": 20,
+      "updates": 213,
+      "phase_updates": {
+        "production": 61,
+        "residual": 82,
+        "comparison_residual": 34,
+        "comparison_ones": 34,
+        "neumann": 2
+      },
+      "peak_entries": 110,
+      "dropped_products": 0,
+      "status": "CERTIFIED",
+      "inverse_infinity_upper": 12.524074074074449
+    },
+    "nonsymmetric_cancellation": {
+      "q": 1.6653345369377376e-15,
+      "K": 3.0000000000000036,
+      "factor_entries": 4,
+      "updates": 31,
+      "phase_updates": {
+        "production": 3,
+        "residual": 14,
+        "comparison_residual": 6,
+        "comparison_ones": 6,
+        "neumann": 2
+      },
+      "peak_entries": 26,
+      "dropped_products": 0,
+      "status": "CERTIFIED",
+      "inverse_infinity_upper": 3.00000000000001
+    },
+    "identity": {
+      "q": 2.220446049250315e-16,
+      "K": 1.0000000000000004,
+      "factor_entries": 2,
+      "updates": 13,
+      "phase_updates": {
+        "production": 1,
+        "residual": 6,
+        "comparison_residual": 2,
+        "comparison_ones": 2,
+        "neumann": 2
+      },
+      "peak_entries": 24,
+      "dropped_products": 0,
+      "status": "CERTIFIED",
+      "inverse_infinity_upper": 1.0000000000000013
+    },
+    "nonsingular_q_refusal": {
+      "q": 3.000000000000002,
+      "K": 1.0000000000000004,
+      "factor_entries": 2,
+      "residual_row_upper": [
+        3.000000000000001,
+        2.220446049250314e-16
+      ],
+      "updates": 11,
+      "phase_updates": {
+        "residual": 7,
+        "comparison_residual": 2,
+        "comparison_ones": 2
+      },
+      "peak_entries": 24,
+      "dropped_products": 0,
+      "status": "REFUSED",
+      "reason": "comparison residual norm is not below one"
+    },
+    "selected_field_enclosures": {
+      "q": 2.4844555425297644e-14,
+      "K": 12.52407407407413,
+      "factor_entries": 20,
+      "updates": 213,
+      "phase_updates": {
+        "production": 61,
+        "residual": 82,
+        "comparison_residual": 34,
+        "comparison_ones": 34,
+        "neumann": 2
+      },
+      "peak_entries": 110,
+      "dropped_products": 0,
+      "status": "CERTIFIED",
+      "inverse_infinity_upper": 12.524074074074449
+    },
+    "signed_sweep_adversary": {
+      "q": 1.5543122344752213e-15,
+      "K": 4.000000000000004,
+      "factor_entries": 6,
+      "updates": 41,
+      "phase_updates": {
+        "production": 3,
+        "residual": 18,
+        "comparison_residual": 9,
+        "comparison_ones": 9,
+        "neumann": 2
+      },
+      "peak_entries": 42,
+      "dropped_products": 0,
+      "status": "CERTIFIED",
+      "inverse_infinity_upper": 4.000000000000013
+    },
+    "dropped_grid_4x4": {
+      "q": 0.9556137878634239,
+      "K": 3.315087408296346,
+      "factor_entries": 64,
+      "updates": 610,
+      "phase_updates": {
+        "production": 90,
+        "residual": 294,
+        "comparison_residual": 112,
+        "comparison_ones": 112,
+        "neumann": 2
+      },
+      "peak_entries": 263,
+      "dropped_products": 18,
+      "status": "CERTIFIED",
+      "inverse_infinity_upper": 74.68732402971993
+    },
+    "dropped_grid_8x8": {
+      "q": 1.0000000000000067,
+      "K": 3.310625920405147,
+      "factor_entries": 288,
+      "updates": 2840,
+      "phase_updates": {
+        "production": 434,
+        "residual": 1382,
+        "comparison_residual": 512,
+        "comparison_ones": 512
+      },
+      "peak_entries": 1095,
+      "dropped_products": 98,
+      "status": "REFUSED",
+      "reason": "comparison residual norm is not below one"
+    },
+    "loose_stage_c": {
+      "q": 9.536743159621618e-07,
+      "K": 2147483647.000001,
+      "factor_entries": 4,
+      "updates": 31,
+      "phase_updates": {
+        "production": 3,
+        "residual": 14,
+        "comparison_residual": 6,
+        "comparison_ones": 6,
+        "neumann": 2
+      },
+      "peak_entries": 26,
+      "dropped_products": 0,
+      "status": "CERTIFIED",
+      "inverse_infinity_upper": 2147485695.0019536
+    },
+    "weak_grounding": {
+      "q": 9.536743159621618e-07,
+      "K": 2147483647.000001,
+      "factor_entries": 4,
+      "updates": 31,
+      "phase_updates": {
+        "production": 3,
+        "residual": 14,
+        "comparison_residual": 6,
+        "comparison_ones": 6,
+        "neumann": 2
+      },
+      "peak_entries": 26,
+      "dropped_products": 0,
+      "status": "CERTIFIED",
+      "inverse_infinity_upper": 2147485695.0019536
+    },
+    "nearly_singular": {
+      "q": 0.0010986328125004465,
+      "K": 2199023255553.0034,
+      "factor_entries": 4,
+      "updates": 31,
+      "phase_updates": {
+        "production": 3,
+        "residual": 14,
+        "comparison_residual": 6,
+        "comparison_ones": 6,
+        "neumann": 2
+      },
+      "peak_entries": 26,
+      "dropped_products": 0,
+      "status": "CERTIFIED",
+      "inverse_infinity_upper": 2201441831784.214
+    }
+  }
+}

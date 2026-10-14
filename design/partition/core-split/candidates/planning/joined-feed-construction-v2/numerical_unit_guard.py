@@ -28,6 +28,24 @@ def sha(path):
         return hashlib.file_digest(stream, 'sha256').hexdigest()
 
 
+def prove_inherited_lock(descriptor, lock):
+    """Prove this actual OFD holds the kernel flock, without ancestor proc access.
+
+    Custody is transferred by SCM_RIGHTS/inheritance, never by reopening a lock.
+    The acquisition PID can belong to an exited flock utility, so it is not the
+    guard identity. Guard/controller ancestry is separately checked by callers.
+    """
+    need(type(descriptor) is int and descriptor>=3,'invalid inherited lock descriptor')
+    actual=os.fstat(descriptor);expected=Path(lock).stat()
+    need((actual.st_dev,actual.st_ino)==(expected.st_dev,expected.st_ino),
+         'inherited lock descriptor identity differs')
+    info=Path(f'/proc/self/fdinfo/{descriptor}').read_text()
+    locks=re.findall(r'^lock:\s+\d+:\s+FLOCK\s+ADVISORY\s+WRITE\s+-?\d+\s+([0-9a-fA-F]+):([0-9a-fA-F]+):(\d+) 0 EOF$',info,re.M)
+    need(any((int(major,16),int(minor,16),int(inode))==
+             (os.major(actual.st_dev),os.minor(actual.st_dev),actual.st_ino)
+             for major,minor,inode in locks),'descriptor does not carry the actual exclusive flock')
+
+
 class UnitGuard:
     def __init__(self, expected_sha256):
         need(bool(re.fullmatch(r'[0-9a-f]{64}', expected_sha256)), 'expected guard SHA-256 required')
@@ -63,7 +81,7 @@ class UnitGuard:
         return ['bash', str(self.path), '--', python, str(Path(__file__).resolve()),
                 '--inside', self.expected, '--', *workload]
 
-    def prove_owner(self):
+    def prove_owner(self, inherited_fd=None):
         self.check(inside=True)
         info = (self.directory / 'slot-0.info').read_text()
         match = re.match(r'pid=([1-9][0-9]*) ', info)
@@ -77,7 +95,9 @@ class UnitGuard:
         args = Path(f'/proc/{owner}/cmdline').read_bytes().split(b'\0')
         need(str(self.path).encode() in args, 'ancestor is not the requested guard')
         lock = self.directory / 'slot-0.lock'
-        need(os.path.samefile(f'/proc/{owner}/fd/200', lock), 'guard does not hold the shared slot descriptor')
+        if inherited_fd is None:
+            need(os.path.samefile(f'/proc/{owner}/fd/200', lock), 'guard does not hold the shared slot descriptor')
+        else:prove_inherited_lock(inherited_fd,lock)
         with lock.open('rb') as stream:
             try:
                 fcntl.flock(stream.fileno(), fcntl.LOCK_EX | fcntl.LOCK_NB)

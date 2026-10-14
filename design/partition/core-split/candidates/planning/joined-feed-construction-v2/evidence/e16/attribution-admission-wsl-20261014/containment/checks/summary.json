@@ -1,0 +1,134 @@
+{
+  "inspected_head": "24f91c18e74d75dc28409d67342d9c76fcf69423",
+  "contract": "task-local-notify-v1",
+  "observed_utc": "2026-10-14T10:55:51.471080+00:00",
+  "real_original_artifacts_opened": false,
+  "qualification_admitted": false,
+  "production_admitted": false,
+  "qualification_request_sha256": null,
+  "production_request_sha256": null,
+  "numerical_run_id": null,
+  "numerical_artifact_identity": null,
+  "numerical_diagnostic_delta": 0,
+  "fixture_reporter_cleanup": [
+    "/tmp/e16-envelope-fixture-6137f95e5fd24447808686e3ad5e710c",
+    "/tmp/e16-envelope-fixture-8e55741d062d4dab8bacbc1a86a20b7d"
+  ],
+  "fixtures": {
+    "envelope-final": {
+      "unit": "e16-envelope-fixture-88dd01de03724571893b6d160702b87b.service",
+      "status": "COMPLETE",
+      "cleanup_receipt": true,
+      "elapsed_seconds": 0.7702515547862276,
+      "resources": {
+        "memory.current": "15212544",
+        "memory.events": "low 0\nhigh 0\nmax 0\noom 0\noom_kill 0\noom_group_kill 0",
+        "memory.max": "201326592",
+        "memory.peak": "47013888",
+        "memory.swap.current": "0",
+        "memory.swap.max": "0",
+        "pids.max": "48"
+      },
+      "reason": null,
+      "guard_receipt_sha256": "be5dec04c8fb2352c1eac65da765778ac8082e674f4d97162fc262a1cec9b047",
+      "unit_collected": true,
+      "fixture_root_removed": true,
+      "authority": "No keys or grants; synthetic metadata/command injection only, no admission or campaign calls"
+    },
+    "envelope-coverage": {
+      "unit": "e16-envelope-fixture-3dbb10ed9ad5484bbfd49e925139e98a.service",
+      "status": "INCOMPLETE",
+      "cleanup_receipt": true,
+      "elapsed_seconds": 0.6827619536779821,
+      "resources": {
+        "memory.current": "16216064",
+        "memory.events": "low 0\nhigh 0\nmax 0\noom 0\noom_kill 0\noom_group_kill 0",
+        "memory.max": "201326592",
+        "memory.peak": "28057600",
+        "memory.swap.current": "0",
+        "memory.swap.max": "0",
+        "pids.max": "48"
+      },
+      "reason": "guard failed or never admitted",
+      "guard_receipt_sha256": null,
+      "unit_collected": true,
+      "fixture_root_removed": true,
+      "authority": "No keys or grants; synthetic metadata/command injection only, no admission or campaign calls"
+    },
+    "envelope-failure": {
+      "unit": "e16-envelope-fixture-ff08a8ece5b049898b49e52bb674f843.service",
+      "status": "INCOMPLETE",
+      "cleanup_receipt": true,
+      "elapsed_seconds": 0.9998366532381624,
+      "resources": {
+        "memory.current": "15945728",
+        "memory.events": "low 0\nhigh 0\nmax 0\noom 0\noom_kill 0\noom_group_kill 0",
+        "memory.max": "201326592",
+        "memory.peak": "43311104",
+        "memory.swap.current": "0",
+        "memory.swap.max": "0",
+        "pids.max": "48"
+      },
+      "reason": "guard failed or never admitted",
+      "guard_receipt_sha256": null,
+      "unit_collected": true,
+      "fixture_root_removed": true,
+      "authority": "No keys or grants; synthetic metadata/command injection only, no admission or campaign calls"
+    },
+    "envelope-bootstrap": {
+      "unit": "e16-envelope-fixture-8e55741d062d4dab8bacbc1a86a20b7d.service",
+      "status": "INCOMPLETE",
+      "cleanup_receipt": false,
+      "elapsed_seconds": null,
+      "resources": null,
+      "reason": "ValueError: envelope hard limits absent",
+      "guard_receipt_sha256": null,
+      "unit_collected": true,
+      "fixture_root_removed": true,
+      "authority": "No keys or grants; synthetic metadata/command injection only, no admission or campaign calls"
+    }
+  },
+  "source_sha256": {
+    "attribution_containment.py": "b6a1a4abab94d4014cd348263ddc00463204883cb16b497adacb4a2f0d3fe310",
+    "attribution_host.py": "ddd6ffc23fa87f602d07ac3c59fb6677d2b122103ab280f58c96d0201d6fd2a4",
+    "attribution_admission.py": "75c7396727d17f001931857ed2b807989e85949fc9033a26b620071b5ce7ef35",
+    "test_attribution_containment.py": "a1938c690d863454054372aba970158b16b79460a02ca42c00c09e70404d49f8",
+    "test_attribution_host.py": "6f4555be4410c8ede39246d86c602497ac94c1530e861dd777da906841dc201c"
+  },
+  "operation_sha256": "45bbbfff987208a65e99c5f500244706783e831b4da5bfbc485e27e78f0f1bba",
+  "description_sha256": "bc306d5d1cdd41893be152b18ed6a100f0555f83541e615e372aa28481e460e5",
+  "checks": {
+    "focused_key_free_tests": "70 PASS in 1.685s",
+    "circuit_before": "PASS",
+    "circuit_after": "PASS",
+    "native": "NOT RUN: prohibited",
+    "aggregate_regeneration": "NOT RUN: invokes native workloads outside this task",
+    "original_artifact_hashes": "NOT RUN: opening original numerical artifacts prohibited",
+    "real_resource_qualification": "NOT RUN: not authorized",
+    "production": "NOT RUN: not authorized",
+    "diff_check": "PASS",
+    "CI": "SKIPPED via scoped commit marker; native scheduling not authorized"
+  },
+  "decision": {
+    "Stage_C": "NOT_RUN",
+    "disposition": "KEEP_K1402_INCUMBENT",
+    "electrical_acceptance": false,
+    "whole_board_acceptance": false,
+    "adopted": false
+  },
+  "review": {
+    "reviewer": "/root/containment_review",
+    "verdict": "PASS: reviewed source and real host mechanisms; NOT RESOURCE_QUALIFIED",
+    "remaining_source_findings": []
+  },
+  "final_cleanup": {
+    "observed_utc": "2026-10-14T11:01:26.844046+00:00",
+    "unit_listing": "",
+    "unit_listing_exit": 0,
+    "fixture_roots_remaining": [],
+    "fixed_trust_exists": false,
+    "production_state_exists": false,
+    "ledger_sha256": "94aafb6d13f754fdbde718a5b44c5071d946897e798a8eebf1cd4b86c0731ffb",
+    "git_resources": "Keep PR277 draft, working branch/worktree; keep PR260 draft/unmerged and issue253 open; no merge/deletion/closure"
+  }
+}
