@@ -1,0 +1,66 @@
+{
+  "observed_at_utc": "2026-10-14T09:39:03.831053+00:00",
+  "source_status": "SOURCE_COMPLETE",
+  "resource_status": "NOT_QUALIFIED",
+  "request_status": "NOT_PREPARED",
+  "admission_status": "NOT_ADMITTED",
+  "execution_status": "NOT_RUN",
+  "production_request_sha256": null,
+  "qualification_request_sha256": null,
+  "source_hashes": "source-hashes.json",
+  "source_hashes_sha256": "49dfef6342b338628be29e29e449b770643bbe5abed89ae3662b209aef443631",
+  "final_e16": {
+    "tests": 422,
+    "status": "PASS",
+    "seconds": 20.926,
+    "command": "/home/takazudo/.cache/zudo-e16-numerical-venv/bin/python -m unittest discover -s design/partition/core-split/candidates/planning/joined-feed-construction-v2 -p 'test_*.py'",
+    "transcript_sha256": "1131f5d4457c64bae8f249d33f2e79ebe658c69c7dd6fafedbb5340cb98dda77"
+  },
+  "independent_numerical_boundary": {
+    "tests": 183,
+    "status": "PASS",
+    "seconds": 5.749,
+    "report": "../numerical-review.md"
+  },
+  "independent_admission_and_host_author_validation": {
+    "tests": 90,
+    "status": "PASS",
+    "seconds": 2.693,
+    "report": "../resource-review.md"
+  },
+  "circuit_before_after": "PASS; continuation-start check retained in session; final after transcript here",
+  "generated_type": "PASS pnpm check",
+  "documentation_build": {
+    "status": "PASS",
+    "pages": 301,
+    "guard_seconds": 13,
+    "guard_min_mem_mb": 8852,
+    "command": "bash /home/takazudo/.codex/scripts/heavy-guard.sh -- pnpm --dir doc build"
+  },
+  "strict_site": "PASS; existing single allowlist exception unchanged",
+  "exact_native_oracle_exclusions_unchanged": [
+    "PrecisionVendorSweepGate.test_original_network_returns_nonzero_for_supported_failure (design/spec)",
+    "PrecisionVendorSweepGate.test_original_network_returns_nonzero_for_supported_failure (design/spec/cells)"
+  ],
+  "broad_source": "NOT RUN; final full E16 discovery covers source changes",
+  "aggregate_regeneration": "NOT RUN; would dispatch unadmitted native work",
+  "native_oracle": "NOT RUN",
+  "browser": "NOT RUN; 19 unchanged bindings",
+  "CI": "SKIPPED/NOT RUN via [skip ci]; no dispatch",
+  "exact_real_matrix_evidence": false,
+  "real_artifact_decoded": false,
+  "numerical_units": 0,
+  "ledger_delta": 0,
+  "campaign": {
+    "attempt5": "terminal",
+    "baselines_used": 2,
+    "baselines_limit": 3,
+    "diagnostics_used": 8,
+    "diagnostics_limit": 24
+  },
+  "Stage_C": "NOT_RUN",
+  "electrical_acceptance": false,
+  "whole_board_acceptance": false,
+  "adopted": false,
+  "cleanup": "Fixture children/files cleaned. No production trust, claim, reservation, cgroup, mount, scope or output created. Draft branch/worktree retained."
+}
