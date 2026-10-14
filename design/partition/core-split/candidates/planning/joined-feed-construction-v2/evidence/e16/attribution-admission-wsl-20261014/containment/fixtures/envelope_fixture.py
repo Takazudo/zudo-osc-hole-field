@@ -4,7 +4,9 @@ Only metadata/guard-command providers and small fixture ceilings are substituted
 Actual systemd, pidfd lock custody, namespaces, cgroups, tmpfs, retention and
 cleanup use the implementation under test. This is NOT an executable packet.
 """
-import hashlib,json,os,pathlib,resource,subprocess,sys,tempfile,time,uuid
+import fcntl,hashlib,json,os,pathlib,resource,subprocess,sys,tempfile,time,uuid
+from unittest.mock import patch
+from types import SimpleNamespace
 P=pathlib.Path
 SOURCE=P(__file__).resolve().parents[5]
 sys.path.insert(0,str(SOURCE))
@@ -30,7 +32,7 @@ def configure(root):
     H.guard_label=lambda *args:' '.join(cmd[3:])
     return r,digest
 
-if len(sys.argv)>1 and sys.argv[1] in ('outer','child','inner'):
+if len(sys.argv)>1 and sys.argv[1] in ('outer','child','inner','lockworker'):
     role=sys.argv[1];root=P(sys.argv[2]);r,digest=configure(root)
     if role=='outer':
         owner=json.loads((root/'launcher.json').read_text())
@@ -45,15 +47,32 @@ if len(sys.argv)>1 and sys.argv[1] in ('outer','child','inner'):
             C.enter(C.own_group().parent/'bootstrap')
         envelope=C.prove(r,digest,mono,mono+180)
         assert C.own_group_for(int(info.split('pid=')[1].split()[0]))==envelope/'control'
+        custody=C.receive_guard_custody(r,digest,mono+180)
+        guard.prove_owner(inherited_fd=custody)
+        lock=root/'.local/state/zudo-e16-attribution/reservation.lock';lock.parent.mkdir(parents=True)
+        reservation=os.open(lock,os.O_RDWR|os.O_CREAT|os.O_EXCL,0o600);fcntl.flock(reservation,fcntl.LOCK_EX|fcntl.LOCK_NB)
+        os.environ.update(E16_GUARD_FD=str(custody),E16_HOST_CONTROLLER_PID=str(os.getpid()),E16_HOST_LOCK_FD=str(reservation))
         active=C.new_active(envelope,r)
         try:
             cmd=['/usr/bin/unshare','--user','--map-current-user','--keep-caps','--mount','--propagation','private','/usr/bin/python3','-I','-S','-B',__file__,'inner',str(root)]
-            raw=H._capture(cmd,time.monotonic()+3,enter_group=active,limit=8192)
+            raw=H._capture(cmd,time.monotonic()+3,enter_group=active,limit=8192,pass_fds=(custody,reservation))
             (root/'inner.json').write_bytes(raw)
         finally:C.remove_tree(active,time.monotonic()+2)
         A.state_directory().mkdir()
         A.write_new(A.state_directory()/(r['run_id']+'.terminal.json'),A.canon({'fixture_only':True,'no_campaign_accounting':True}))
         print('synthetic mechanism complete',flush=True)
+    if role in ('inner','lockworker'):
+        from numerical_unit_guard import UnitGuard,prove_inherited_lock
+        UnitGuard(r['guard_sha256']).prove_owner(inherited_fd=int(os.environ['E16_GUARD_FD']))
+        with patch.object(H.pwd,'getpwuid',return_value=SimpleNamespace(pw_dir=str(root))):H.prove_reservation_owner()
+        reopened=os.open(root/'.local/state/zudo-e16-attribution/reservation.lock',os.O_RDONLY)
+        try:
+            try:prove_inherited_lock(reopened,root/'.local/state/zudo-e16-attribution/reservation.lock')
+            except SystemExit:pass
+            else:raise AssertionError('reopened unlocked descriptor passed')
+        finally:os.close(reopened)
+        if role=='lockworker':
+            print(json.dumps({'membership':P('/proc/self/cgroup').read_text().strip(),'inherited_guard_and_reservation':True,'reopened_lock_refused':True}));raise SystemExit(0)
     if role=='inner':
         work=root/'work';work.mkdir();parent=C.own_group()
         layout=H.OwnedLayout(parent,work,1024**2,time.monotonic()+3)
@@ -64,7 +83,7 @@ if len(sys.argv)>1 and sys.argv[1] in ('outer','child','inner'):
                 child=subprocess.Popen(['/usr/bin/python3','-I','-S','-B','-c','import os,time;os.setsid();time.sleep(10)'],preexec_fn=lambda:C.enter(layout.worker))
                 (root/'failure-child').write_text(str(child.pid))
                 raise RuntimeError('intentional synthetic failure with worker descendant')
-            child=subprocess.run(['/usr/bin/python3','-I','-S','-B','-c',"from pathlib import Path;print(Path('/proc/self/cgroup').read_text().strip())"],capture_output=True,text=True,timeout=1,preexec_fn=lambda:C.enter(layout.worker))
+            child=subprocess.run(['/usr/bin/python3','-I','-S','-B',__file__,'lockworker',str(root)],capture_output=True,text=True,timeout=1,preexec_fn=lambda:C.enter(layout.worker),pass_fds=(int(os.environ['E16_GUARD_FD']),int(os.environ['E16_HOST_LOCK_FD'])))
             assert child.returncode==0 and str(layout.worker).removeprefix('/sys/fs/cgroup') in child.stdout
             retained=H.retain_tree(work,root/'retained',time.monotonic()+2,aggregate_limit=16384)
             result={'fixture_only':True,'pid':os.getpid(),'scope':str(parent),'worker_membership':child.stdout.strip(),'mount_ns':os.readlink('/proc/self/ns/mnt'),'tmpfs_capacity':os.statvfs(work).f_blocks*os.statvfs(work).f_frsize,'resources':H.resource_snapshot(layout),'retention':retained}

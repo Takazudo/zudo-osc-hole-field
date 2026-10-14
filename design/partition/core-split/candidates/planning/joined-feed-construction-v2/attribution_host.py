@@ -23,14 +23,14 @@ import time
 sys.path.insert(0,str(Path(__file__).resolve().parent))
 import attribution_supervisor as S
 import attribution_containment as C
-from numerical_unit_guard import UnitGuard
+from numerical_unit_guard import UnitGuard,prove_inherited_lock
 
 HERE=Path(__file__).resolve().parent
 PYTHON='/home/takazudo/.cache/zudo-e16-numerical-venv/bin/python'
 HOST_LOG_MAX=1024**2
 HOST_RECEIPTS=256*1024
 TAIL_SECONDS=15.
-HOST_LIMITS={'total_seconds':180,'total_memory_bytes':S.MEMORY_MAX,'active_scope_memory_bytes':S.ACTIVE_SCOPE_MEMORY,'swap_bytes':0,
+HOST_LIMITS={'guard_custody_transport':'socketpair-scm-rights-v1','total_seconds':180,'total_memory_bytes':S.MEMORY_MAX,'active_scope_memory_bytes':S.ACTIVE_SCOPE_MEMORY,'swap_bytes':0,
              'outer_bytes':S.OUTER_MEMORY,'launcher_bytes':S.LAUNCHER_MEMORY,
              'supervisor_bytes':S.SUPERVISOR_MEMORY,'bootstrap_bytes':S.BOOTSTRAP_MEMORY,
              'controller_filecache_bytes':S.CONTROLLER_FILECACHE,'shared_guard_helper_bytes':S.SHARED_GUARD_MEMORY,
@@ -128,10 +128,10 @@ def scope_command(request,args,started):
             '--contained','--started',repr(started),*args]
 
 
-def _capture(command,deadline,*,log=None,limit=HOST_LOG_MAX,enter_group=None):
+def _capture(command,deadline,*,log=None,limit=HOST_LOG_MAX,enter_group=None,pass_fds=()):
     """Bounded controller command/log transport, killed on first cap/deadline."""
     proc=subprocess.Popen(command,stdin=subprocess.DEVNULL,stdout=subprocess.PIPE,
-                          stderr=subprocess.STDOUT,start_new_session=True,
+                          stderr=subprocess.STDOUT,start_new_session=True,pass_fds=pass_fds,
                           preexec_fn=None if enter_group is None else lambda:C.enter(enter_group))
     selector=selectors.DefaultSelector();selector.register(proc.stdout,selectors.EVENT_READ)
     os.set_blocking(proc.stdout.fileno(),False)
@@ -330,7 +330,7 @@ def prove_reservation_owner():
         text=Path(f'/proc/{pid}/status').read_text()
         pid=int(re.search(r'^PPid:\s+(\d+)$',text,re.M).group(1))
     need(pid==owner,'exclusive reservation controller is not an ancestor')
-    need(os.path.samefile(f'/proc/{owner}/fd/{descriptor}',state),'reservation descriptor identity differs')
+    prove_inherited_lock(descriptor,state)
     check=os.open(state,os.O_RDWR|os.O_NOFOLLOW)
     try:
         try:fcntl.flock(check,fcntl.LOCK_EX|fcntl.LOCK_NB)
@@ -347,7 +347,7 @@ def contained(request_path,digest,authority,reservation,started):
     import attribution_admission as admission
     admission.check_environment(os.environ)
     metadata=read_small(request_path)
-    UnitGuard(metadata['guard_sha256']).prove_owner()
+    UnitGuard(metadata['guard_sha256']).prove_owner(inherited_fd=int(os.environ['E16_GUARD_FD']))
     prove_reservation_owner()
     request=_verify(request_path,digest,authority,reservation,deadline,metadata_only=True)
     need(os.getuid()==os.geteuid()==pwd.getpwnam('takazudo').pw_uid,'namespace changed account identity')
@@ -478,6 +478,8 @@ def _guard_entry(request_path,digest,authority,reservation,watchdog):
     except (ValueError,OSError,KeyError):
         prove_no_host_swap()  # Retain the old host refusal on incomplete proof.
         raise
+    custody=C.receive_guard_custody(metadata,digest,deadline)
+    os.environ['E16_GUARD_FD']=str(custody)
     request=_verify(request_path,digest,authority,reservation,deadline,metadata_only=True)
     state=Path(pwd.getpwuid(os.getuid()).pw_dir)/'.local/state/zudo-e16-attribution'
     state.mkdir(parents=True,exist_ok=True)
@@ -504,7 +506,7 @@ def _guard_entry(request_path,digest,authority,reservation,watchdog):
                 cmd=['/usr/bin/unshare','--user','--map-current-user','--keep-caps','--mount',
                      '--propagation','private',PYTHON,'-I','-S','-B','-X','pycache_prefix=/dev/null',
                      str(HERE/'attribution_host.py'),'--contained','--started',repr(started),*args]
-                _capture(cmd,deadline-8,log=log,enter_group=active)
+                _capture(cmd,deadline-8,log=log,enter_group=active,pass_fds=(custody,fd))
                 log.flush();os.fsync(log.fileno())
             inside=read_small(root/'contained.unaccepted.json',HOST_RECEIPTS*3//8)
             need(inside['request_sha256']==digest and inside['status']=='COMPLETE','contained operation incomplete')
@@ -535,6 +537,13 @@ def _guard_entry(request_path,digest,authority,reservation,watchdog):
             need(size+claim_bytes+HOST_RECEIPTS<=S.OUTPUT_MAX,'aggregate final output quota')
         except BaseException as exc:
             size=None;files={};failure=(failure or '')+'; final inventory: '+str(exc)[:1024]
+            # Early contained failure can leave only the bounded controller log.
+            # Bind every surviving negative file after proved owned cleanup;
+            # this never upgrades the failed operation to COMPLETE.
+            if cleanup and cleanup.get('collected'):
+                try:size,files=S._inventory(root,deadline-2,S.OUTPUT_MAX-claim_bytes-HOST_RECEIPTS)
+                except BaseException as inventory_error:
+                    failure+='; negative inventory: '+str(inventory_error)[:512]
         result={'schema':'e16-attribution-host-terminal-v1','status':'INCOMPLETE' if failure else 'PENDING_SHARED_GUARD',
                 'request_sha256':digest,'run_id':request['run_id'],'reason':failure,
                 'request_kind':request['request_kind'],'qualification_only':request['request_kind']=='resource-qualification',
@@ -556,7 +565,7 @@ def _guard_entry(request_path,digest,authority,reservation,watchdog):
         _host_receipt(root,result,deadline)
         return 1 if failure else 0
     finally:
-        os.close(fd)
+        os.close(fd);os.close(custody)
 
 
 def guard_entry(request_path,digest,authority,reservation):

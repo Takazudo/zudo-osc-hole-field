@@ -1,5 +1,5 @@
 """Key-free boundary tests; real-host evidence is retained separately."""
-import hashlib,json,os
+import array,fcntl,hashlib,json,os,socket
 from pathlib import Path
 import tempfile,time,unittest
 from unittest.mock import patch
@@ -8,6 +8,33 @@ import attribution_host as H
 import attribution_admission as A
 
 class EnvelopeTests(unittest.TestCase):
+    def test_actual_socket_custody_rejects_wrong_peer_payload_and_reopened_fd(self):
+        for case in ('valid','peer','digest','extra','reopened'):
+            with self.subTest(case=case),tempfile.TemporaryDirectory() as d:
+                root=Path(d);guard=root/'.agent-guard/heavy';guard.mkdir(parents=True)
+                (guard/'slot-0.info').write_text(f'pid={os.getpid()} started=0 cwd=fixture')
+                lock=guard/'slot-0.lock';lock.touch();held=os.open(lock,os.O_RDONLY)
+                fcntl.flock(held,fcntl.LOCK_EX|fcntl.LOCK_NB)
+                reopened=os.open(lock,os.O_RDONLY);sender,receiver=socket.socketpair(socket.AF_UNIX,socket.SOCK_SEQPACKET)
+                message={'request_sha256':'b'*64,'run_id':'a'*32,'guard_pid':os.getpid(),
+                         'guard_start':C.process_start(os.getpid())}
+                if case=='digest':message['request_sha256']='c'*64
+                fds=[reopened] if case=='reopened' else ([held,held] if case=='extra' else [held])
+                sender.sendmsg([A.canon(message)],[(socket.SOL_SOCKET,socket.SCM_RIGHTS,array.array('i',fds))])
+                channel=receiver.detach();before=len(list(Path('/proc/self/fd').iterdir()))
+                try:
+                    with patch.object(A,'account_home',return_value=root),patch.object(C,'properties',return_value={'MainPID':str(1 if case=='peer' else os.getpid())}),patch.dict(os.environ,{'E16_GUARD_CHANNEL_FD':str(channel)}):
+                        if case=='valid':
+                            fd=C.receive_guard_custody({'run_id':'a'*32},'b'*64,time.monotonic()+1)
+                            from numerical_unit_guard import prove_inherited_lock
+                            prove_inherited_lock(fd,lock);os.close(fd)
+                        else:
+                            with self.assertRaises((ValueError,SystemExit)):
+                                C.receive_guard_custody({'run_id':'a'*32},'b'*64,time.monotonic()+1)
+                    self.assertEqual(len(list(Path('/proc/self/fd').iterdir())),before-1)
+                finally:
+                    sender.close();os.close(reopened);os.close(held)
+
     def test_exact_command_is_async_notify_and_binds_caps(self):
         r={'run_id':'a'*32,'checkout':'/tmp/fixture'}
         args=H.fixed_arguments('/tmp/request','b'*64,'/tmp/auth','/tmp/res')

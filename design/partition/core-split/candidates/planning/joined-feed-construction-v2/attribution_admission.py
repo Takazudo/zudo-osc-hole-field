@@ -52,7 +52,7 @@ SOURCE_NAMES=('attribution_containment.py','attribution_admission.py','attributi
 ENVIRONMENT_POLICY={'python_flags':['-I','-S','-B','-X','pycache_prefix=/dev/null'],
                     'path':'/usr/bin:/bin','locale':'C.UTF-8','numerical_threads':1,
                     'loader_overrides':False,'inherited_credentials':False}
-INTERNAL_ENV={'HEAVY_GUARD_HELD','E16_PARENT_MOUNT_NS','E16_CLAIM_BYTES','E16_CLAIM_PATH',
+INTERNAL_ENV={'E16_GUARD_FD','HEAVY_GUARD_HELD','E16_PARENT_MOUNT_NS','E16_CLAIM_BYTES','E16_CLAIM_PATH',
  'E16_HOST_CONTROLLER_PID','E16_HOST_LOCK_FD','E16_CGROUP_PARENT','E16_CGROUP_WORKER',
  'E16_GUARD_ENTRY_AT','E16_SUPERVISOR_WORK','E16_SUPERVISOR_RESULT','E16_WORK_DEADLINE','E16_OUTPUT_LIMIT','TMPDIR'}
 

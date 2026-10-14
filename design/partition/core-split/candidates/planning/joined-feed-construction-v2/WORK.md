@@ -699,3 +699,45 @@ request/kind/run/operation/limits/host/ledger/time bindings. Local grant issuanc
 is delegated authority, not a personal owner digest review. Follow the async
 service through actual terminal evidence before another increment. Do not edit
 bound source while a packet is live.
+
+
+### First admitted qualification: terminal startup failure and diagnosed correction
+
+At clean frozen `c0b3197b550f9fd8050d978ca2356cd66aed5940`, genuine locally
+delegated grants and exact-packet technical review admitted qualification request
+`50bb226328d0addf41be8854611180cfda95c9da1328ef8e935fb8806ad75ddf`, run
+`fdde325e32a54f56b08b8c926b2785e1`. Packet directory:
+`~/.cache/zudo-e16-runs/attribution-qualification-2wvkvrl8/`; exact request and
+description remain there. Output:
+`~/.cache/zudo-e16-runs/attribution-fdde325e32a54f56b08b8c926b2785e1/`.
+[Index, signed grants, failure log and terminal evidence](evidence/e16/attribution-admission-wsl-20261014/qualification-attempt1/index.json)
+and [independent audit](evidence/e16/attribution-admission-wsl-20261014/qualification-attempt1/review.md)
+are retained. The operation was claimed and failed before original decoding:
+inside the private user namespace, ancestor `/proc/.../fd/200` access was denied.
+The unchanged shared guard intentionally closes fd200 for its workload, so simple
+inheritance cannot repair the proof. No worker-start or numerical result exists.
+
+Ledger now2/3 baselines and9/24 diagnostics (15 diagnostics remain, zero additional
+baselines authorized); live_owned_work=false and exactly one terminal charge.
+Independent integrity/cleanup audit PASS; all actual resources released. Peak
+50,933,760 bytes,1.278683 seconds, swap0; this failure does not qualify the pipeline.
+Historical incomplete output manifest is preserved; raw log is separately indexed.
+No source freeze remains for this consumed request. Do not replay it.
+
+The narrowly diagnosed correction uses a bounded socketpair/SCM_RIGHTS transfer
+from the envelope's actual pidfd-acquired guard OFD, then explicit descriptor
+inheritance through namespace and worker. Peer credentials, exact request/run and
+actual guard PID/start are checked. Kernel fdinfo must show an exclusive whole-file
+flock on the expected inode/device; a fresh open of that inode is insufficient.
+Guard/controller ancestry and lock contention checks remain. No shared guard,
+host permissions, numerical source or caps change. Surviving negative logs now
+bind into the failure journal after owned cleanup, without upgrading failure.
+
+A serialized real fixture at192MiB/zero-swap/6s+1s/48tasks/1MiBtmpfs/<64KiBoutput
+proved actual transfer, namespace+nestedworker proof, reopened-descriptor rejection,
+retention and complete cleanup. Peak79,880,192 bytes, elapsed0.394292 seconds,
+zero swap, noOOM. [Raw fixture command/result](evidence/e16/attribution-admission-wsl-20261014/containment/checks/namespace-lock-transfer.txt).
+107 focused source/crypto/host/supervisor tests PASS; fixture authority remains
+separate from the real local delegation. Next: final independent source review,
+commit corrected bindings, seal/review/sign a fresh qualification and follow its
+actual terminal evidence. Production remains unprepared/unadmitted; Stage C NOT RUN.

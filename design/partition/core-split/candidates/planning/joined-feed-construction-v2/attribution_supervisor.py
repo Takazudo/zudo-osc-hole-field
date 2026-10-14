@@ -67,7 +67,7 @@ class LinuxContainment:
 
     def prove(self, output_limit):
         from numerical_unit_guard import UnitGuard
-        UnitGuard(self.guard_sha256).prove_owner()
+        UnitGuard(self.guard_sha256).prove_owner(inherited_fd=int(os.environ['E16_GUARD_FD']))
         cg = Path("/sys/fs/cgroup")
         rel = Path("/proc/self/cgroup").read_text().strip().split("::",1)[1]
         own = cg / rel.lstrip("/")
@@ -221,7 +221,8 @@ def supervise(command, root, *, started, seconds=180., cleanup_seconds=CLEANUP_S
         need(not cancelled(),"CANCELLED before launch")
         proc=subprocess.Popen(containment.launch(list(command)),cwd=work,env=env,
                               stdin=subprocess.DEVNULL,stdout=subprocess.PIPE,stderr=subprocess.PIPE,
-                              start_new_session=True,preexec_fn=None if fixture else containment.enter)
+                              start_new_session=True,preexec_fn=None if fixture else containment.enter,
+                              pass_fds=() if fixture else (int(env['E16_GUARD_FD']),int(env['E16_HOST_LOCK_FD'])))
         for pipe in (proc.stdout,proc.stderr):
             os.set_blocking(pipe.fileno(),False);selector.register(pipe,selectors.EVENT_READ)
         while selector.get_map() or proc.poll() is None:

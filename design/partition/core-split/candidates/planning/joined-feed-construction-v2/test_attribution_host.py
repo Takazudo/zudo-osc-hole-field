@@ -238,6 +238,33 @@ class HostBoundaryTests(unittest.TestCase):
             r=json.loads((root/'terminal.json').read_text())
             self.assertFalse(r['electrical_acceptance']);self.assertFalse(r['adopted'])
 
+    def test_early_contained_failure_binds_log_and_finishes_failure_accounting(self):
+        with tempfile.TemporaryDirectory(prefix='e16-host-fixture-') as temp:
+            base=Path(temp);output=base/'output';guarddir=base/'guard';guarddir.mkdir()
+            (guarddir/'slot-0.info').write_text(f'pid=1 started={int(time.time())} cwd=fixture')
+            ledger=base/'ledger.json';state=base/'.local/state/zudo-e16-attribution'
+            ledger.write_bytes(A.canon({'live_owned_work':False,'runs':[{'state':'terminal'}],
+                'execution_budget':{'full_baseline_used':2,'full_baseline_limit':3,
+                'production_diagnostic_used':8,'production_diagnostic_limit':24}}))
+            r={'authorization_policy':dict(A.AUTHORIZATION_POLICY),'run_id':'a'*32,'attempt':1,
+               'source_sha':'d'*40,'guard_sha256':'b'*64,'output':str(output),'python':H.PYTHON,
+               'host_limits':H.HOST_LIMITS,'request_kind':'resource-qualification',
+               'ledger':{'path':str(ledger),'sha256':A.sha(ledger)}}
+            request=base/'request';request.write_bytes(A.canon(r))
+            guard=types.SimpleNamespace(directory=guarddir,prove_owner=lambda:None)
+            def capture(*args,**kw):
+                kw['log'].write(b'fixture namespace permission failure');kw['log'].flush()
+                raise ValueError('fixture contained startup failed')
+            with patch.object(H,'UnitGuard',return_value=guard),patch.object(H,'_verify',return_value=r),                 patch.object(H.pwd,'getpwuid',return_value=types.SimpleNamespace(pw_dir=temp)),                 patch.object(A,'state_directory',return_value=state),patch.object(A,'ledger_path',return_value=ledger),                 patch.object(H.resource,'setrlimit'),patch.object(H.C,'prove',return_value=base/'envelope'),                 patch.object(H.C,'new_active',return_value=base/'active'),patch.object(H,'_capture',side_effect=capture),                 patch.object(H.C,'receive_guard_custody',side_effect=lambda *a:os.open('/dev/null',os.O_RDONLY)),                 patch.object(H.C,'remove_tree'),patch.dict(os.environ,{},clear=False):
+                self.assertEqual(H.guard_entry(request,'c'*64,base/'authority',base/'reservation'),1)
+            receipt=A.read_json(output/'terminal.json');journal=A.read_json(state/('a'*32+'.terminal.json'))
+            self.assertEqual(receipt['status'],'INCOMPLETE');self.assertTrue(receipt['cleanup_complete'])
+            self.assertEqual(receipt['files']['host.log.partial']['sha256'],A.sha(output/'host.log.partial'))
+            self.assertEqual(journal['output_manifest_sha256'],hashlib.sha256(A.canon(receipt['files'])).hexdigest())
+            current=A.read_json(ledger);self.assertFalse(current['live_owned_work'])
+            self.assertEqual(current['execution_budget']['production_diagnostic_used'],9)
+            self.assertEqual(current['execution_budget']['full_baseline_used'],2)
+
     def test_cleanup_failure_revokes_contained_success(self):
         # Full outer state machine, real O_EXCL flock only under this temp root;
         # authority, ledger, cgroups, mounts and commands are all test doubles.
@@ -254,7 +281,7 @@ class HostBoundaryTests(unittest.TestCase):
             with patch.object(H,'UnitGuard',return_value=guard),patch.object(H,'_verify',return_value=r),\
                  patch.object(H.pwd,'getpwuid',return_value=types.SimpleNamespace(pw_dir=temp)),\
                  patch.object(H.resource,'setrlimit'),patch.object(H,'prove_no_host_swap'),patch.object(H.C,'prove',return_value=base/'envelope'),patch.object(H.C,'new_active',return_value=base/'active'),patch.object(H,'_capture',side_effect=capture),\
-                 patch.object(H.C,'remove_tree',side_effect=ValueError('fixture cleanup failure')),\
+                 patch.object(H.C,'receive_guard_custody',side_effect=lambda *a:os.open('/dev/null',os.O_RDONLY)),patch.object(H.C,'remove_tree',side_effect=ValueError('fixture cleanup failure')),\
                  patch.dict(sys.modules,{'attribution_admission':admission}),patch.dict(os.environ,{},clear=False):
                 code=H.guard_entry(request,'c'*64,base/'authority',base/'reservation')
             self.assertEqual(code,1)

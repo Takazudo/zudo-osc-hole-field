@@ -5,6 +5,7 @@ space and every admitted descendant stay under its hard memory/no-swap boundary.
 Shared-manager and pre-exec file/kernel costs are a separate conservative reserve,
 not charges purportedly transferred by migration. Qualification must include them.
 """
+import array
 import base64
 import ctypes
 import fcntl
@@ -16,6 +17,7 @@ import re
 import selectors
 import signal
 import socket
+import struct
 import subprocess
 import sys
 import time
@@ -67,6 +69,34 @@ def lock_custody(child,lock):
         if fd!=201:os.close(fd)
     # Kept until process exit, not closed after guard PASS or receipt write.
     return 201
+
+
+def receive_guard_custody(request,digest,deadline):
+    """Receive only the existing wrapper's actual guard OFD on its socketpair."""
+    from numerical_unit_guard import prove_inherited_lock
+    import attribution_admission as A
+    descriptor=int(os.environ.pop('E16_GUARD_CHANNEL_FD'))
+    received=[]
+    try:
+        with socket.socket(fileno=descriptor) as channel:
+            channel.settimeout(max(.001,min(2,deadline-time.monotonic())))
+            peer=struct.unpack('3i',channel.getsockopt(socket.SOL_SOCKET,socket.SO_PEERCRED,12))
+            props=properties(unit_name(request))
+            need(peer[0]==int(props['MainPID']) and peer[1]==os.getuid(),'guard custody sender differs')
+            raw,ancillary,flags,_=channel.recvmsg(2048,socket.CMSG_SPACE(array.array('i').itemsize),socket.MSG_CMSG_CLOEXEC)
+            for level,kind,data in ancillary:
+                if level==socket.SOL_SOCKET and kind==socket.SCM_RIGHTS:
+                    fds=array.array('i');fds.frombytes(data);received.extend(fds)
+            need(not flags&(socket.MSG_TRUNC|socket.MSG_CTRUNC) and len(ancillary)==1 and len(received)==1,'guard custody transport differs')
+            message=A.parse_json(raw)
+            guard_pid=int((A.account_home()/'.agent-guard/heavy/slot-0.info').read_text().split('pid=')[1].split()[0])
+            need(message=={'request_sha256':digest,'run_id':request['run_id'],
+                 'guard_pid':guard_pid,'guard_start':process_start(guard_pid)},
+                 'guard custody request/owner differs')
+            prove_inherited_lock(received[0],A.account_home()/'.agent-guard/heavy/slot-0.lock')
+            return received.pop()
+    finally:
+        for fd in received:os.close(fd)
 
 
 def process_start(pid):
@@ -254,9 +284,12 @@ def _outer(request_path,digest,authority,reservation,launcher_pid,launcher_start
     label=H.guard_label(request_path,digest,authority,reservation,request['guard_sha256'])
     proc=None;started=None;mono=None;failure=None;log=bytearray();row_sha=None;cleanup=False;guard_start=None
     selector=selectors.DefaultSelector();next_extend=0
+    sender,receiver=socket.socketpair(socket.AF_UNIX,socket.SOCK_SEQPACKET)
+    clean['E16_GUARD_CHANNEL_FD']=str(receiver.fileno())
     try:
         proc=subprocess.Popen(command,env=clean,stdin=subprocess.DEVNULL,stdout=subprocess.PIPE,
-            stderr=subprocess.STDOUT,start_new_session=True,preexec_fn=lambda:enter(control))
+            stderr=subprocess.STDOUT,start_new_session=True,preexec_fn=lambda:enter(control),pass_fds=(receiver.fileno(),))
+        receiver.close()
         guard_start=process_start(proc.pid)
         os.set_blocking(proc.stdout.fileno(),False);selector.register(proc.stdout,selectors.EVENT_READ)
         while proc.poll() is None or selector.get_map():
@@ -271,6 +304,10 @@ def _outer(request_path,digest,authority,reservation,launcher_pid,launcher_start
                     mono=now-elapsed
                     need(process_start(proc.pid)==guard_start,'guard child identity changed')
                     lock_custody(proc.pid,guard.directory/'slot-0.lock')
+                    message=A.canon({'request_sha256':digest,'run_id':request['run_id'],'guard_pid':proc.pid,'guard_start':guard_start})
+                    sender.settimeout(1)
+                    need(sender.sendmsg([message],[(socket.SOL_SOCKET,socket.SCM_RIGHTS,array.array('i',[201]))])==len(message),'incomplete guard custody transfer')
+                    sender.close()
                     notify(address,'READY=1')
                 elif now>=next_extend:
                     notify(address,'EXTEND_TIMEOUT_USEC=15000000');next_extend=now+2
@@ -283,7 +320,7 @@ def _outer(request_path,digest,authority,reservation,launcher_pid,launcher_start
         row_sha=guard_row(request,label,started,mono+177)
     except BaseException as exc:failure=str(exc)[:2048]
     finally:
-        selector.close()
+        selector.close();sender.close();receiver.close()
         deadline=(mono+179) if mono is not None else time.monotonic()+2
         try:
             # Control and active are siblings. Killing the process tree alone

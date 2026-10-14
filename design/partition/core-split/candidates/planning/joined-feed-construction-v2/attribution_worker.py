@@ -18,7 +18,7 @@ import attribution_admission as A
 def prove_worker(request):
     from numerical_unit_guard import UnitGuard
     from attribution_host import HOST_LIMITS,prove_reservation_owner
-    UnitGuard(request['guard_sha256']).prove_owner()
+    UnitGuard(request['guard_sha256']).prove_owner(inherited_fd=int(os.environ['E16_GUARD_FD']))
     prove_reservation_owner()
     A.check_environment(os.environ)
     cg=Path('/sys/fs/cgroup')
