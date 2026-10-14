@@ -1,0 +1,42 @@
+{
+  "synthetic_only": true,
+  "random": {
+    "seed": 280,
+    "cases": 100,
+    "scalar_row_lookup_comparisons": 4250,
+    "exact_inverse_bound_checks": 600,
+    "bound_modes": [
+      "refined-list",
+      "path-only-list",
+      "path-only-packed"
+    ],
+    "shared_terminal_and_sparse_mapping": "covered",
+    "status": "PASS"
+  },
+  "mutations": {
+    "stale_packet_refusals": [
+      "A",
+      "B",
+      "midpoint"
+    ],
+    "terminal_interval_binding": "changed independently of midpoint hash",
+    "status": "PASS"
+  },
+  "one_sided": {
+    "status": "REFUSED AS REQUIRED",
+    "reason": "coercivity structural symmetry required"
+  },
+  "malformed_live_view": {
+    "live_interval_refusals": 2,
+    "changed_CSR_shape_refusals": 1,
+    "status": "PASS"
+  },
+  "packed_mutations": {
+    "fresh_hash_packed_refusals": 4,
+    "status": "PASS"
+  },
+  "sha256": {
+    "independent-virtual-oracle.py": "f3efcc8fa5c34d9f8cd40fa1af21cbde46e0102d65b280ae830df2b5bc29959e",
+    "fixture/prototype.py": "d5dfc727f8f64c75f9e38bd868933e0ffbb8f31f63807e27491013d977b25930"
+  }
+}

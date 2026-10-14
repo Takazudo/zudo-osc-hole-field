@@ -121,3 +121,7 @@ The old18+8 tests still pass; historical reports are unchanged.
 The new exact arithmetic counter has separate declared kernel/width/bit-work
 metrics, not production scalar updates. No original numerical input or production
 entrypoint is enabled. See `../structured-coercivity-increment.md`.
+
+`test_virtual.py` covers nonowning joined rows, packed witnesses and the cheaper
+path-only norm. Explicit access counters include reverse-search comparisons and
+repeated validation/hash scans. See `../virtual-path-increment.md`.

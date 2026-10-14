@@ -1212,7 +1212,7 @@ actual Stage C NOT RUN. No request freeze, pending claim or unattended operation
 remains. No merge, deployment, fabrication, purchases or hardware acceptance.
 
 
-<a id="e16-current-checkpoint"></a>
+<a id="e16-tree-coercivity-checkpoint"></a>
 
 ### Standing-assignment tree/coercivity checkpoint — 2026-10-15 JST
 
@@ -1277,3 +1277,36 @@ KEEP_K1402_INCUMBENT, PR260 draft/unmerged, issue253 open; no production/source
 solver/RHS/tolerance/normalization changes, no cap changes, merge or hardware work.
 PR277 publication is a checkpoint. The attribution objective and local development
 assignment remain active; no new owner instruction or external plan is required.
+
+
+<a id="e16-current-checkpoint"></a>
+
+### Virtual joined/path-only checkpoint — 2026-10-15 JST
+
+Continued after94450d79 publication with no external handoff.
+[Evidence](evidence/e16/attribution-admission-wsl-20261014/factor-residual-candidate/virtual-path-increment.md)
+implements nonowning joined rows, explicit terminal mapping, streamed input hashes
+and fixed packed tree vectors. No full joinedCSR/transpose is created.
+Resource review proves refined literal cost>=10N+6>20M before exact arithmetic.
+The next implemented norm n*rmax/(1-delta*n*rmax) deletes subtree/trace/sqrt passes
+and certifies grids112/960/1377 and coupled fixtures. Weak screen is INCONCLUSIVE.
+This is an algorithm change, not a counter discount;25n packed bytes is only tree
+payload, not a1216MiB whole-pipeline memory proof.
+
+All40 local tests PASS. Separate oracle100 cases/4250 scalar comparisons/600 exact
+inverse bounds and separate math/resource reviews PASS. Stale layout and malformed
+live interval findings were fixed. Repeated validation/hash/scans and binary-search
+comparisons are explicit; baseline/delta does not reset cumulative counters.
+
+**Next active source work:** compact row-local dyadic representation with charged
+exponents/rescaling and exact full-range tests, removing unnecessary1076-bit unit
+coefficient operations while preserving2176-bit bounds and refusal behavior.
+Complete loop/byte mapping remains prerequisite to original characterization.
+The original board_parts raw tuple r is not bounded by finalnnz;48r triple-array
+overlap plus decoded objects,Y/B,SuperLU and mesh replay needs a prebound.
+Do not probe originals to answer these executable source questions.
+
+Ledger unchanged15/24 diagnostics,2/3 baselines; no new baseline, numerical request
+or cleanup debt. Original solver/input/physical/tolerance/resource safeguards
+remain; KEEP_K1402_INCUMBENT. Qualification NOT_QUALIFIED, production NOT_ADMITTED,
+actual Stage C NOT RUN. The local assignment remains active after publication.

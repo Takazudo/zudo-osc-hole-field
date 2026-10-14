@@ -9,6 +9,7 @@ The proof is inverse comparison followed by a Neumann series for
 A=LU(I+(LU)^-1 E). It needs neither symmetry nor positive definiteness.
 """
 import hashlib
+import array
 import json
 import math
 import os
@@ -528,6 +529,150 @@ def block_certificate(blocks, D, context, meter, patterns=None, weight_mode=None
             'updates':meter.work.updates,'phase_updates':dict(meter.phases),
             'peak_entries':meter.work.peak_entries}
 
+class JoinedRows:
+    """Nonowning bounded joined-operator view; only small D midpoint is copied.
+
+    Each block is (CSR A, dense binary64 B, global terminal-column tuple).
+    Reverse terminal incidence uses explicit dense B scans, never a transpose.
+    Represented midpoint input bytes are rehashed when requested; intervals are
+    separately bound by the interval wrapper. No cached construction identity. This is still a synthetic order<=128 view.
+    """
+    def __init__(self, blocks, terminal_intervals, meter):
+        self.blocks=tuple(blocks);self.intervals=terminal_intervals;self.meter=meter
+        self.access={'A_entries':0,'B_entries':0,'D_entries':0,'row_calls':0,
+                     'lookup_calls':0,'hash_bytes':0,'validation_entries':0,'validation_rows':0,'index_comparisons':0}
+        self.m=len(terminal_intervals);self.offsets=[];offset=0
+        need(0<self.m<=8,'virtual terminal order cap')
+        for a,_,_ in self.blocks:self.offsets.append(offset);offset+=a.shape[0]
+        self.free=offset;self.shape=(offset+self.m,offset+self.m)
+        self.midpoint=[]
+        meter.entries(self.m*self.m+len(self.blocks)+8)
+        self.owned_slots=meter.live-meter.offset
+        meter.offset=meter.live
+        meter.phase='virtual_terminal_midpoint'
+        for row in terminal_intervals:
+            need(type(row) is list and len(row)==self.m,'virtual terminal shape')
+            out=[]
+            for v in row:
+                need(type(v) is tuple and len(v)==2 and all(type(x) is float and math.isfinite(x) for x in v)
+                     and v[0]<=v[1],'virtual terminal interval')
+                meter.charge(3);out.append(v[0]*.5+v[1]*.5)
+            self.midpoint.append(out)
+        self.validate()
+
+    def validate(self):
+        need(0<len(self.blocks)<=2,'virtual board cap')
+        offsets=[];total=0
+        for a,_,_ in self.blocks:offsets.append(total);total+=a.shape[0]
+        need(self.offsets==offsets and self.free==total and self.shape==(total+self.m,total+self.m)
+             and 0<self.shape[0]<=128,'virtual stale coordinate layout/order cap')
+        need(0<self.m<=8 and len(self.midpoint)==len(self.intervals)==self.m
+             and all(len(row)==self.m and all(type(v) is float and math.isfinite(v) for v in row) for row in self.midpoint),
+             'virtual midpoint layout/value')
+        for row in self.intervals:
+            need(type(row) is list and len(row)==self.m,'virtual live interval row')
+            for v in row:
+                need(type(v) is tuple and len(v)==2 and all(type(x) is float and math.isfinite(x) for x in v)
+                     and v[0]<=v[1],'virtual live interval value')
+        for a,b,columns in self.blocks:
+            self.access['validation_entries']+=a.nnz
+            self.access['validation_rows']+=a.shape[0]
+            validate_a(a)
+            need(type(columns) is tuple and len(set(columns))==len(columns)
+                 and all(type(j) is int and 0<=j<self.m for j in columns)
+                 and list(columns)==sorted(columns),'virtual terminal mapping')
+            need(isinstance(b,np.ndarray) and b.dtype==np.dtype('float64')
+                 and b.shape==(a.shape[0],len(columns)) and b.flags.c_contiguous,
+                 'virtual coupling shape/type/contiguity')
+            for x in b.flat:
+                self.access['validation_entries']+=1
+                need(math.isfinite(float(x)),'virtual nonfinite coupling')
+        # No cached input validation: CSR validation likewise rescans actual bytes.
+
+    def input_hash(self):
+        h=hashlib.sha256()
+        h.update(digest({'shape':self.shape,'maps':[list(v[2]) for v in self.blocks],
+                         'D_midpoint':self.midpoint}).encode())
+        for a,b,_ in self.blocks:
+            h.update(I.matrix_hash(a).encode())
+            h.update(str((b.shape,b.dtype.str)).encode());h.update(memoryview(b).cast('B'))
+            self.access['hash_bytes']+=a.indptr.nbytes+a.indices.nbytes+a.data.nbytes+b.nbytes
+        return h.hexdigest()
+
+    def row(self, i):
+        need(type(i) is int and 0<=i<self.shape[0],'virtual row index')
+        self.access['row_calls']+=1
+        for offset,(a,b,columns) in zip(self.offsets,self.blocks):
+            if offset<=i<offset+a.shape[0]:
+                local=i-offset
+                for k in range(a.indptr[local],a.indptr[local+1]):
+                    self.access['A_entries']+=1
+                    yield offset+int(a.indices[k]),float(a.data[k])
+                for j,t in enumerate(columns):
+                    self.access['B_entries']+=1;v=float(b[local,j])
+                    if v!=0.:yield self.free+t,v
+                return
+        terminal=i-self.free
+        for offset,(a,b,columns) in zip(self.offsets,self.blocks):
+            if terminal in columns:
+                col=columns.index(terminal)
+                for local in range(a.shape[0]):
+                    self.access['B_entries']+=1;v=float(b[local,col])
+                    if v!=0.:yield offset+local,v
+        for j,v in enumerate(self.midpoint[terminal]):
+            self.access['D_entries']+=1
+            if v!=0.:yield self.free+j,v
+
+    def lookup(self,i,j,require=False):
+        need(type(i) is int and type(j) is int and 0<=i<self.shape[0] and 0<=j<self.shape[0],'virtual lookup index')
+        self.access['lookup_calls']+=1
+        for offset,(a,b,columns) in zip(self.offsets,self.blocks):
+            if offset<=i<offset+a.shape[0]:
+                local=i-offset
+                if offset<=j<offset+a.shape[0]:
+                    first,last=int(a.indptr[local]),int(a.indptr[local+1])
+                    lo,hi=first,last
+                    while lo<hi:
+                        q=(lo+hi)//2;self.access['index_comparisons']+=1
+                        if int(a.indices[q])<j-offset:lo=q+1
+                        else:hi=q
+                    q=lo;self.access['index_comparisons']+=int(q<last)
+                    found=q<last and int(a.indices[q])==j-offset
+                    need(found or not require,'coercivity structural symmetry required')
+                    self.access['A_entries']+=int(found)
+                    return float(a.data[q]) if found else 0.
+                if j>=self.free and j-self.free in columns:
+                    self.access['B_entries']+=1;v=float(b[local,columns.index(j-self.free)])
+                    need(v!=0. or not require,'coercivity structural symmetry required');return v
+                need(not require,'coercivity structural symmetry required');return 0.
+        if j<self.free:return self.lookup(j,i,require)
+        self.access['D_entries']+=1;v=self.midpoint[i-self.free][j-self.free]
+        need(v!=0. or not require,'coercivity structural symmetry required');return v
+
+    def interval_entries(self):
+        self.validate()
+        return [[self.free+i,self.free+j,lo,hi] for i,row in enumerate(self.intervals)
+                for j,(lo,hi) in enumerate(row)]
+
+
+def validate_operator(a):
+    if isinstance(a,JoinedRows):a.validate()
+    else:validate_a(a)
+
+
+def operator_hash(a):
+    return a.input_hash() if isinstance(a,JoinedRows) else I.matrix_hash(a)
+
+
+def operator_row(a,i):
+    if isinstance(a,JoinedRows):yield from a.row(i)
+    else:
+        for k in range(a.indptr[i],a.indptr[i+1]):yield int(a.indices[k]),float(a.data[k])
+
+
+def operator_value(a,i,j):
+    return a.lookup(i,j) if isinstance(a,JoinedRows) else float(a[i,j])
+
 # Exact binary64/half-binary64 row arithmetic. This is not an exact solve.
 # Separate integer metrics are NOT production scalar updates or hidden in Work.
 COERCIVITY_METHOD = 'synthetic-stored-SDD-tree-coercivity-v1'
@@ -624,6 +769,7 @@ def positive_dyadic_floor(v, meter):
 
 
 def stored_reverse(a, i, j):
+    if isinstance(a,JoinedRows):return a.lookup(j,i,require=True)
     from bisect import bisect_left
     first,last=int(a.indptr[j]),int(a.indptr[j+1])
     q=bisect_left(a.indices,i,first,last)
@@ -640,8 +786,7 @@ def symmetric_margins(a, meter, phase):
     meter.phase=phase
     for i in range(a.shape[0]):
         diagonal=None; off=0
-        for k in range(a.indptr[i],a.indptr[i+1]):
-            j=int(a.indices[k]);v=float(a.data[k])
+        for j,v in operator_row(a,i):
             if j==i: diagonal=dyadic(v,meter)
             else:
                 sij=half_sum(v,stored_reverse(a,i,j),meter)
@@ -655,8 +800,19 @@ def symmetric_margins(a, meter, phase):
         yield margin
 
 
-def produce_coercivity_tree(a, context, meter):
-    validate_a(a);n=a.shape[0]
+def coercivity_digest(packet):
+    """Stream packed witness bytes; list witnesses keep their historical hash."""
+    buffers={k:v for k,v in packet.items() if isinstance(v,array.array)}
+    if not buffers:return digest(packet)
+    h=hashlib.sha256(digest({k:v for k,v in packet.items() if k not in buffers}).encode())
+    for k,v in sorted(buffers.items()):
+        h.update(digest({'field':k,'typecode':v.typecode,'itemsize':v.itemsize,'length':len(v),'byteorder':sys.byteorder}).encode())
+        h.update(memoryview(v).cast('B'))
+    return h.hexdigest()
+
+
+def produce_coercivity_tree(a, context, meter, packed=False):
+    validate_operator(a);n=a.shape[0]
     # Row-local dyadic scratch, parent, edge, BFS order; independent recomputation.
     meter.entries(8*n+16)
     root=-1;best=0
@@ -666,24 +822,30 @@ def produce_coercivity_tree(a, context, meter):
     need(root>=0,'coercivity no positive root margin')
     g=positive_dyadic_floor(best,meter)
     del best,margin
-    parent=[-1]*n;edge=[0.]*n;order=[root];parent[root]=root
+    sentinel=n if packed else -1
+    if packed:need(n<2**32 and array.array('I').itemsize==4 and array.array('d').itemsize==8,'packed platform widths/range')
+    parent=array.array('I',[sentinel])*n if packed else [sentinel]*n
+    edge=array.array('d',[0.])*n if packed else [0.]*n
+    order=array.array('I',[0])*n if packed else [0]*n
+    parent[root]=root;order[0]=root;head=0;tail=1
     meter.phase='coercivity_producer_tree'
-    for i in order:
-        for k in range(a.indptr[i],a.indptr[i+1]):
-            j=int(a.indices[k])
-            if parent[j]!=-1: continue
-            sij=half_sum(float(a.data[k]),stored_reverse(a,i,j),meter)
+    while head<tail:
+        i=order[head];head+=1
+        for j,v in operator_row(a,i):
+            if parent[j]!=sentinel: continue
+            sij=half_sum(v,stored_reverse(a,i,j),meter)
             integer_charge(meter,1,DYADIC_BITS,'edge_sign_comparison')
             if sij<0:
                 integer_charge(meter,1,DYADIC_BITS,'edge_negation')
-                parent[j]=i;edge[j]=positive_dyadic_floor(-sij,meter);order.append(j)
-    need(len(order)==n,'coercivity negative-edge tree disconnected')
-    packet={'method':COERCIVITY_METHOD,'matrix':I.matrix_hash(a),'context':digest(context),
+                parent[j]=i;edge[j]=positive_dyadic_floor(-sij,meter)
+                order[tail]=j;tail+=1
+    need(tail==n,'coercivity negative-edge tree disconnected')
+    packet={'method':COERCIVITY_METHOD,'matrix':operator_hash(a),'context':digest(context),
             'root':root,'ground':g,'parent':parent,'edge':edge,'order':order}
-    return packet,digest(packet)
+    return packet,coercivity_digest(packet)
 
 
-def verify_coercivity_tree(a, context, packet, expected_digest, meter, refine=False):
+def verify_coercivity_tree(a, context, packet, expected_digest, meter, refine=False, path_only=False):
     """Independent SDD/tree coercivity proof for the complete stored operator.
 
     If S+delta*I-T is SDD, S>=T-delta*I. For nonsymmetric A,
@@ -691,16 +853,23 @@ def verify_coercivity_tree(a, context, packet, expected_digest, meter, refine=Fa
     inverse <=ceil(sqrt(n))*trace/(1-delta*trace) when delta*trace<1.
     Integer square root avoids relying on correct libm rounding for sqrt.
     """
-    validate_a(a);n=a.shape[0];meter.entries(12*n+16)
+    validate_operator(a);n=a.shape[0];meter.entries(12*n+16)
     need(type(packet) is dict and set(packet)=={'method','matrix','context','root','ground','parent','edge','order'},'coercivity schema')
-    need(packet['method']==COERCIVITY_METHOD and packet['matrix']==I.matrix_hash(a)
-         and packet['context']==digest(context) and digest(packet)==expected_digest,'stale coercivity binding')
+    need(packet['method']==COERCIVITY_METHOD and packet['matrix']==operator_hash(a)
+         and packet['context']==digest(context) and coercivity_digest(packet)==expected_digest,'stale coercivity binding')
     root,g=packet['root'],packet['ground'];parent,edge,order=packet['parent'],packet['edge'],packet['order']
     need(type(root) is int and 0<=root<n and type(g) is float and math.isfinite(g) and g>0,'coercivity root/ground')
-    need(type(parent) is list and type(edge) is list and type(order) is list
+    need(type(parent) in (list,array.array) and type(edge) in (list,array.array) and type(order) in (list,array.array)
          and len(parent)==len(edge)==len(order)==n,'coercivity tree shape')
-    need(all(type(i) is int and 0<=i<n for i in order) and sorted(order)==list(range(n))
-         and order[0]==root,'coercivity order permutation')
+    packed=isinstance(parent,array.array)
+    need(all(isinstance(v,array.array)==packed for v in (parent,edge,order)),'mixed packed/list tree')
+    if packed:need(parent.typecode==order.typecode=='I' and edge.typecode=='d' and parent.itemsize==order.itemsize==4 and edge.itemsize==8,'packed tree widths')
+    need(order[0]==root,'coercivity order root')
+    order_seen=bytearray(n)
+    for i in order:
+        need(type(i) is int and 0<=i<n and not order_seen[i],'coercivity order permutation')
+        order_seen[i]=1
+    del order_seen
     need(all(type(i) is int and 0<=i<n for i in parent),'coercivity parent index')
     need(all(type(c) is float and math.isfinite(c) and c>=0 for c in edge)
          and edge[root]==0. and parent[root]==root,'coercivity edge shape')
@@ -711,7 +880,7 @@ def verify_coercivity_tree(a, context, packet, expected_digest, meter, refine=Fa
             integer_charge(meter)
             need(dyadic(g,meter)<=margin,'coercivity excess root ground')
     del margin
-    meter.phase='coercivity_verify_tree';seen=[False]*n;seen[root]=True
+    meter.phase='coercivity_verify_tree';seen=bytearray(n);seen[root]=1
     for i in order:
         if i==root:continue
         j=parent[i];need(seen[j] and edge[i]>0,'coercivity parent order/edge')
@@ -720,7 +889,36 @@ def verify_coercivity_tree(a, context, packet, expected_digest, meter, refine=Fa
         integer_charge(meter,2,DYADIC_BITS,'conductance_negation_comparison')
         need(dyadic(edge[i],meter)<=-sij,'coercivity excess tree conductance')
         seen[i]=True
-    mass=[1]*n
+    need(not (refine and path_only),'conflicting coercivity norm modes')
+    if path_only:
+        meter.phase='coercivity_path_only'
+        path=array.array('d',[0.])*n if packed else [0.]*n;path[root]=meter.div(1.,g)
+        for i in order:
+            if i!=root:path[i]=meter.add(path[parent[i]],meter.div(1.,edge[i]))
+        rmax=max(path)
+        meter.charge();radius_bound=meter.mul(float(n),rmax)
+        delta=0.
+        if deficit:
+            delta=positive_dyadic_floor(deficit,meter)
+            integer_charge(meter,1,DYADIC_BITS,'deficit_rounding_comparison')
+            if dyadic(delta,meter)<deficit:
+                meter.charge();delta=math.nextafter(delta,math.inf)
+        shift_q=meter.mul(delta,radius_bound)
+        need(shift_q<1.,'path-only diagonal deficit defeats tree bound')
+        meter.charge();denominator=I.sub((1.,1.),(shift_q,shift_q))[0]
+        bound=meter.div(radius_bound,denominator)
+        need(math.isfinite(bound),'path-only inverse-bound overflow')
+        return {'status':'CERTIFIED','bound_mode':'path-only','inverse_infinity_upper':bound,
+            'tree_max_inverse_diagonal_upper':rmax,'tree_radius_bound_upper':radius_bound,
+            'diagonal_deficit_upper':delta,'coercivity_shift_q':shift_q,
+            'matrix_sha256':operator_hash(a),'witness_sha256':coercivity_digest(packet),
+            'updates':meter.work.updates,'phase_updates':dict(meter.phases),
+            'integer_operations':meter.integer_operations,'integer_phase_operations':dict(meter.integer_phases),
+            'integer_max_bits':DYADIC_BITS,'integer_kernel_units':dict(meter.integer_kernel_units),
+            'integer_bit_work_envelope':meter.integer_bit_work_envelope,'peak_entries':meter.work.peak_entries,
+            'packed_tree':packed,'tree_buffer_payload_bytes':25*n if packed else None,
+            'scope':'whole stored operator; path-only bound; no mass/trace/sqrt passes'}
+    mass=array.array('I',[1])*n if packed else [1]*n
     meter.phase='coercivity_subtree'
     for i in reversed(order):
         if i!=root:
@@ -746,7 +944,7 @@ def verify_coercivity_tree(a, context, packet, expected_digest, meter, refine=Fa
     trace_bound=bound;refinement={'status':'NOT REQUESTED'}
     if refine:
         meter.phase='coercivity_path_cauchy'
-        path=[0.]*n;path[root]=meter.div(1.,g)
+        path=array.array('d',[0.])*n if packed else [0.]*n;path[root]=meter.div(1.,g)
         integer_charge(meter,1,16,'root_mass_square');meter.charge()
         total=meter.div(float(n*n),g)
         for i in order:
@@ -783,7 +981,7 @@ def verify_coercivity_tree(a, context, packet, expected_digest, meter, refine=Fa
     return {'status':'CERTIFIED','inverse_infinity_upper':bound,'tree_inverse_trace_upper':trace,'trace_inverse_infinity_upper':trace_bound,
             'path_cauchy_refinement':refinement,
             'diagonal_deficit_upper':delta,'coercivity_shift_q':shift_q,
-            'matrix_sha256':I.matrix_hash(a),'witness_sha256':digest(packet),
+            'matrix_sha256':operator_hash(a),'witness_sha256':coercivity_digest(packet),
             'updates':meter.work.updates,'phase_updates':dict(meter.phases),
             'integer_operations':meter.integer_operations,'integer_phase_operations':dict(meter.integer_phases),
             'integer_max_bits':DYADIC_BITS,'integer_kernel_units':dict(meter.integer_kernel_units),
@@ -791,14 +989,15 @@ def verify_coercivity_tree(a, context, packet, expected_digest, meter, refine=Fa
             'scope':'whole stored operator; no factor, residual expansion or Schur solve'}
 
 
-def coercivity_interval_certificate(a, entries, context, meter):
+def coercivity_interval_certificate(a, entries, context, meter, bound_mode="refined", packed=False):
     """Whole CSR midpoint plus explicitly bound sparse interval replacements.
 
     The final infinity-norm perturbation proof supports nonsymmetric interval
     entries too; it does not rely on a symmetric radius or a row-to-2norm claim.
     Input assembly is caller work and is not claimed as part of these counters.
     """
-    validate_a(a);n=a.shape[0]
+    need(bound_mode in ('refined','trace','path-only'),'unknown coercivity bound mode')
+    validate_operator(a);n=a.shape[0]
     need(type(entries) is list and len(entries)<=128,'interval replacement cap')
     keys=[]
     for entry in entries:
@@ -810,13 +1009,13 @@ def coercivity_interval_certificate(a, entries, context, meter):
         keys.append((i,j))
     need(keys==sorted(set(keys)),'interval replacement uniqueness/order')
     bound_context={'context':context,'interval_replacements':entries}
-    packet,h=produce_coercivity_tree(a,bound_context,meter)
-    result=verify_coercivity_tree(a,bound_context,packet,h,meter,refine=True)
+    packet,h=produce_coercivity_tree(a,bound_context,meter,packed=packed)
+    result=verify_coercivity_tree(a,bound_context,packet,h,meter,refine=bound_mode=='refined',path_only=bound_mode=='path-only')
     meter.phase='coercivity_interval_perturbation';meter.entries(14*n+16+4*len(entries))
     rows=[0.]*n
     for i,j,lo,hi in entries:
         # Sparse scalar read is index work, no numerical solve or summation.
-        value=float(a[i,j])
+        value=operator_value(a,i,j)
         meter.charge();difference=I.sub((lo,hi),(value,value))
         rows[i]=meter.add(rows[i],I.magnitude(difference))
     radius=max(rows);q=meter.mul(result['inverse_infinity_upper'],radius)
@@ -826,7 +1025,7 @@ def coercivity_interval_certificate(a, entries, context, meter):
     result.update(midpoint_inverse_infinity_upper=result['inverse_infinity_upper'],
                   inverse_infinity_upper=bound,interval_perturbation_q=q,
                   interval_radius_infinity_upper=radius,
-                  interval_operator_sha256=digest({'A':I.matrix_hash(a),'context':bound_context}),
+                  interval_operator_sha256=digest({'A':operator_hash(a),'context':bound_context}),
                   updates=meter.work.updates,phase_updates=dict(meter.phases),
                   peak_entries=meter.work.peak_entries)
     return result
