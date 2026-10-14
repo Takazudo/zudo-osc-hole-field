@@ -1,0 +1,123 @@
+{
+  "synthetic_only": true,
+  "build": {
+    "sources": {
+      "native_forest.cpp": "ac3b909e2e8ed2bce7b4bafe4328b19421f710868b20c006c1ae50cedabb2e3e",
+      "native_exact.cpp": "9d210ba9b29a2c463b814cd9ed3f50f4a45989ad27fb076d3d43db7f01a0aff3"
+    },
+    "binary_sha256": "420d6997c175d40c9559d380ce5f2e42331f96d12ecceb0668218a4a134e509f",
+    "compiler": "c++ (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
+    "flags": [
+      "-std=c++20",
+      "-O2",
+      "-fno-fast-math",
+      "-frounding-math",
+      "-fPIC",
+      "-shared",
+      "-Wall",
+      "-Wextra",
+      "-Werror"
+    ]
+  },
+  "structural": {
+    "seed": 285,
+    "forced_nonroot_reroot_cases": [
+      {
+        "order": 5,
+        "root": 3,
+        "exact_rmax": "81/20",
+        "bound": 20.250000000000036,
+        "exact_inverse_norm": 6.530035335689046
+      },
+      {
+        "order": 5,
+        "root": 3,
+        "exact_rmax": "81/20",
+        "bound": 20.250000000000036,
+        "exact_inverse_norm": 6.335879439902472
+      },
+      {
+        "order": 8,
+        "root": 7,
+        "exact_rmax": "1003/60",
+        "bound": 133.7333338538441,
+        "exact_inverse_norm": 35.04628790543399
+      }
+    ],
+    "random_cases": 100,
+    "total_exact_tree_energy_and_inverse_checks": 103,
+    "status": "PASS",
+    "single_vertex_control": "PASS"
+  },
+  "coupled": {
+    "exact_full_operator_and_corner_checks": 51,
+    "cases": [
+      {
+        "case": "strong",
+        "bound": 39.13668639053456,
+        "exact_original_norm": 12.524074074074099
+      },
+      {
+        "case": "weak",
+        "bound": 6442503585.566832,
+        "exact_original_norm": 6442454022.525552
+      },
+      {
+        "case": "nonsymmetric",
+        "bound": 38.591231845079946,
+        "exact_original_norm": 11.190740740740761
+      }
+    ],
+    "status": "PASS"
+  },
+  "shared_mapping": {
+    "shared_terminal": 1,
+    "unmapped_terminal": 0,
+    "exact_inverse_norm": 1.0787585516435843,
+    "bound": 93.0000000000001,
+    "status": "PASS"
+  },
+  "malformed": {
+    "raw_refusals": [
+      "order129",
+      "nnz_overcap",
+      "terminals_mismatch",
+      "null_indptr",
+      "zero_boards",
+      "one_sided",
+      "singular",
+      "disconnected",
+      "indefinite",
+      "reversed_interval",
+      "nonfinite_interval",
+      "nonfinite_midpoint"
+    ],
+    "status": "PASS"
+  },
+  "metadata_boundary": {
+    "before_native_refusals": [
+      "short_indptr",
+      "short_indices",
+      "short_data",
+      "int64_indices",
+      "noncontiguous_data",
+      "extended_interval_no_silent_conversion"
+    ],
+    "native_owns_nonfinite_coefficient_refusal": true,
+    "status": "PASS"
+  },
+  "binding": {
+    "persistent_mutation_refusals": [
+      "matrix",
+      "context",
+      "live_interval_replacement"
+    ],
+    "status": "PASS"
+  },
+  "sha256": {
+    "independent-native-forest-oracle.py": "ea162810cb1d3315d6d6c2d3b0222d161d0f617929217e024e579559a81c270d",
+    "fixture/native_forest.cpp": "ac3b909e2e8ed2bce7b4bafe4328b19421f710868b20c006c1ae50cedabb2e3e",
+    "fixture/native_forest.py": "39cf24680a643cf240b845c05224d5b0ac647fd3958956734a3a1b12c4a807f7",
+    "independent-forest-oracle.py": "e0212c62235cfae584451459f1e9a8733a18c1d447f9629279656ffb3a0424b9"
+  }
+}

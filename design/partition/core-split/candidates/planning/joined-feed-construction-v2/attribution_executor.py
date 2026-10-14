@@ -72,7 +72,29 @@ class MeshItems:
             del item, chunk
 
 
-def _board_selected(op, red, cfg, case, depth, board, binding, checker, budget):
+def _construction_preflight(op, policy, budget):
+    """Internal source-only hook; no production packet/CLI enables this policy.
+
+    A future admitted lane must bind the helper source and its independently
+    reviewed envelope. Existing fixed-experiment calls keep their prior behavior.
+    """
+    from attribution_preallocation import preflight
+    return preflight(op, policy, budget.check)
+
+
+def _guarded_board_parts(op, case, depth, cfg, board, budget, *, policy):
+    """Fail closed on an incomplete preallocation declaration, then use pinned code."""
+    report = _construction_preflight(op, policy, budget)
+    return S.board_parts(op,case,depth,cfg,board,NET), report
+
+
+def _board_selected(op, red, cfg, case, depth, board, binding, checker, budget, *, preallocation_policy=None):
+    # Deliberately not read from an unrecognized packet field: the current
+    # admission compiler binds only the existing reference-certificate lane.
+    # Run before held_nodes/free/Y masks when a future internal caller opts in.
+    preallocation = None
+    if preallocation_policy is not None:
+        preallocation = _construction_preflight(op,preallocation_policy,budget)
     fixed, sources = S.held_nodes(op,cfg,board,NET)
     free = np.flatnonzero(~fixed)
     terms, _, _ = S.terminal_stamps(op,cfg)
@@ -87,6 +109,8 @@ def _board_selected(op, red, cfg, case, depth, board, binding, checker, budget):
                          'free':hashlib.sha256(memoryview(free).cast('B')).hexdigest(),
                          'source_pads':sources,'terms':terms,'construction':'finite_solve.board_parts'}
     cert = U.certify(Af,context,context,checker,border=(B,D),reference=True,frontier=True,ordering=U.REFERENCE_ORDER)
+    if preallocation is not None:
+        cert['construction_preallocation'] = preallocation
     cert['B_infinity_upper'],cert['BT_infinity_upper'] = V.matrix_norms(B)
     budget.check()
     R.need(R._max(S._extended_residual(Af,red['Y'],B))/max(R._max(B),1e-30) <= 1e-9,'retained basis residual failed')

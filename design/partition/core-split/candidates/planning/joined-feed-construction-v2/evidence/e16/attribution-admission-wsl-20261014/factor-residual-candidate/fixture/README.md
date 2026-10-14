@@ -141,3 +141,13 @@ temporary directory and cleans it afterward. The native stats are explicit
 limb-kernel/traffic metrics, not interchangeable with Python whole-width units.
 Optimized and UBSan independent oracles are retained separately. See
 `../native-exact-increment.md`; the full native forest is still the next step.
+
+
+Native forest continuation: `native_forest.cpp` includes the reviewed bounded
+exact helper and borrows original fixture CSR/B arrays through `native_forest.py`.
+`test_native_forest.py` covers retained grids, held-out9, nonroot heterogeneous
+unions, full virtual coupling/screens and malformed/stale capacities. No original
+input reader exists here. See `../native-forest-increment.md` and separate math/
+resource reviews. Fixed native scratch and all adapter/borrowed bytes are distinct
+from Python traced peak; native arithmetic counters retain their own semantics.
+Stable ownership prohibits concurrent resize/mutation during the native call.

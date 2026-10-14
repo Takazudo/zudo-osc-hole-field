@@ -1393,7 +1393,7 @@ safeguards unchanged. KEEP_K1402_INCUMBENT; no Stage D/merge/adoption/deployment
 This is another published checkpoint, not completion of the active assignment.
 
 
-<a id="e16-current-checkpoint"></a>
+<a id="e16-native-helper-checkpoint"></a>
 
 ### Native exact-helper checkpoint — 2026-10-15 JST
 
@@ -1422,3 +1422,42 @@ all original 180s/1216MiB/2GiB/swap/output/input/entry/update constraints.
 Ledger unchanged15/24 diagnostics,2/3 baselines; no further baseline, new request,
 grant, signing-material change or cleanup debt. KEEP_K1402_INCUMBENT, PR260 draft
 and issue253 open. Attribution unresolved; the assignment continues locally.
+
+
+<a id="e16-current-checkpoint"></a>
+
+### Native forest and preallocation checkpoint — 2026-10-15 JST
+
+Continued after5d613830. [Evidence](evidence/e16/attribution-admission-wsl-20261014/factor-residual-candidate/native-forest-increment.md)
+ports checked virtual rows, exact margins, private forest selection, rooted paths
+and whole-D interval correction into bounded native code. Four tests PASS;
+separate math optimized/UBSan oracle and resource reviews PASS for this fixture.
+Metadata capacity checks close the C pointer boundary before native scans. Stable
+owned inputs remain mandatory. No global joined matrix or auxiliary solve.
+
+Grid9 native36926 limb kernels/664 floating calls/458 proposed contributions;
+joined complete42 proposed contributions including midpoint construction.
+These are distinct ledgers, not machine-instruction equivalences. Fixed2688byte
+scratch is charged throughout; result/descriptors, owned/borrowed arrays and
+measured Python/RSS are separate. Payload alone is not a full byte proof.
+Strong/nonsymmetric screens SUPPORTED; weak remains INCONCLUSIVE. Original
+attribution, full resource qualification and production-size port remain open.
+
+Metadata-only rawstamp guard implemented and independently source-reviewed;
+30 guard/executor tests PASS. Original solver/assembly untouched. Optional
+internal hooks require complete caller-declared overlap; existing requests do
+not enable them. All outcomes remain NOT_QUALIFIED. No unbound helper is used
+by the old admitted execution path.
+
+**Next active source work:** distinct, reviewed bounded raw-metadata
+characterization path, sequentially decoding only the two original operators
+inside existing containment if later genuinely admitted. Its question is R and
+largest actual support outer-product size, needed to choose constructor memory
+work versus complete-envelope development. Current module/test work is synthetic
+only; no original request/grant/probe. A small count is not qualification and an
+oversized conservative bound is not proof of actual memory breach. Full native
+buffer/stack/pipeline/time and input applicability still require review.
+
+Ledger unchanged15/24 diagnostics,2/3 baselines, no cleanup debt or new baseline.
+180seconds/1216MiB/2GiB/zero-swap/64MiB and certificate ceilings unchanged.
+KEEP_K1402_INCUMBENT; PR260 draft/unmerged and issue253 open. Development continues.
