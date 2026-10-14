@@ -106,6 +106,7 @@ def packet_from_inventory(sources):
             'config':find('coupled-network-config.json'),'cases':find('process-cases.json'),
             'solver_sha256':sources['finite_solve.py'],'source_bindings':sources,
             'certificate_method':'original-operator-symmetric-part-coercivity-v1',
+            'certificate_storage':'lazy-frontier-interval-LDL-v1',
             'certificate_limits':{'max_entries':4_000_000,'max_updates':20_000_000,'max_input_nnz':16_000_000},
             'comparison':find('coupled-+12V-nominal-average-uniform-dielectric.json.gz'),'boards':{}}
     for board in ('KA','KB'):

@@ -20,6 +20,7 @@ from resistance_attribution import need, digest
 
 METHOD = 'outward-binary64-sparse-LDL-v1'
 REFERENCE_METHOD = 'original-operator-symmetric-part-coercivity-v1'
+FRONTIER_STORAGE = 'lazy-frontier-interval-LDL-v1'
 ZERO = (0., 0.)
 
 
@@ -75,7 +76,7 @@ class Work:
         self.updates += updates
         self.peak_entries = max(self.peak_entries, entries)
         need(entries <= self.max_entries, f'UNRESOLVED: certificate sparse fill cap (entries={entries}, maximum={self.max_entries})')
-        need(self.updates <= self.max_updates, 'UNRESOLVED: certificate arithmetic cap')
+        need(self.updates <= self.max_updates, f'UNRESOLVED: certificate arithmetic cap (updates={self.updates}, maximum={self.max_updates})')
         self.checkpoint()
 
 
@@ -128,6 +129,71 @@ def _eliminate(rows, pivots, work):
     return pivot_min,inverse_bound
 
 
+def _eliminate_frontier(a,at,work,border=None):
+    """Same interval LDL/order; retain only touched rows and required factors.
+
+    Immutable original CSR is input storage under the input/kernel caps. Every
+    materialized interval entry and factor, including the popped pivot row,
+    counts against the same live-entry cap BEFORE insertion. Bounded scalar
+    arithmetic temporaries follow the eager checker's convention; dict/list
+    metadata, index scratch, vectors and retained CSR all count as kernel memory.
+    """
+    n=a.shape[0]
+    B,D=border if border is not None else (np.zeros((n,0)),np.zeros((0,0)))
+    total=n+len(D);pending={};count=0;factors=[];forward=np.ones(n)
+    def initial(i,j):
+        if i<n and j<n:
+            def get(m):
+                start,end=m.indptr[i:i+2];p=int(np.searchsorted(m.indices[start:end],j))+start
+                return float(m.data[p]) if p<end and m.indices[p]==j else 0.
+            return average_enclosure(get(a),get(at))
+        v=float(B[i,j-n] if i<n else D[i-n,j-n]);return v,v
+    def insert(row,j,value):
+        nonlocal count
+        if j not in row:
+            work.check(count+1);count+=1
+        row[j]=value
+    def load(i):
+        row=pending.pop(i,{})
+        if i<n:
+            for j,x,y in reference_pairs(a,at,i):
+                if j not in row:insert(row,j,average_enclosure(x,y))
+            for j in range(len(D)):
+                if B[i,j] and n+j not in row:insert(row,n+j,initial(i,n+j))
+        else:
+            for j in range(i,total):
+                if D[i-n,j-n] and j not in row:insert(row,j,initial(i,j))
+        return row
+    pivot_min=math.inf
+    for k in range(n):
+        row=load(k);pivot=row.get(k,ZERO)
+        need(pivot[0]>0,'UNRESOLVED: singular/indefinite/inadequately resolved pivot');pivot_min=min(pivot_min,pivot[0])
+        adjacent=sorted(j for j in row if j>k);column=[];factors.append(column)
+        for i in adjacent:
+            if i<n:
+                work.check(count+1);count+=1
+                column.append((i,magnitude(div_positive(row[i],pivot))))
+        for i,bound in column:forward[i]=upper_add(float(forward[i]),upper_mul(bound,float(forward[k])))
+        for p,i in enumerate(adjacent):
+            target=pending.setdefault(i,{})
+            for j in adjacent[p:]:
+                work.check(count,1)
+                old=target[j] if j in target else initial(i,j)
+                insert(target,j,sub(old,div_positive(mul(row[i],row[j]),pivot)))
+            del target  # Never retain an uncounted completed row through a loop local.
+        count-=len(row);del row;work.check(count)
+    # Materialize surviving terminal rows while all required factors are live.
+    terminals={i:load(i) for i in range(n,total)}
+    backward=np.ones(n)
+    for k in range(n-1,-1,-1):
+        for i,bound in factors[k]:backward[k]=upper_add(float(backward[k]),upper_mul(bound,float(backward[i])))
+        work.check(count)
+    product=upper_mul(float(forward.max()),float(backward.max()))
+    inv=div_positive((product,product),(pivot_min,pivot_min))[1]
+    schur=[[terminals[min(i,j)].get(max(i,j),ZERO) for j in range(n,total)] for i in range(n,total)]
+    need(count==sum(map(len,terminals.values()))+sum(map(len,factors)), 'frontier entry accounting differs')
+    return pivot_min,inv,schur
+
 def average_enclosure(a,b):
     """Enclose exact (a+b)/2 without modifying either stored coefficient."""
     need(math.isfinite(a) and math.isfinite(b),'nonfinite reference coefficient')
@@ -168,7 +234,7 @@ def reference_preflight(a,at,work,border_entries=0):
     return count
 
 
-def certify(matrix, binding, expected_binding, work=None, border=None, *, reference=False):
+def certify(matrix, binding, expected_binding, work=None, border=None, *, reference=False, frontier=False):
     """Certify exact symmetric Af, or explicitly its symmetric analysis reference.
 
     reference=True encloses (Af+Af.T)/2 and its own bordered Schur. It does not
@@ -184,6 +250,7 @@ def certify(matrix, binding, expected_binding, work=None, border=None, *, refere
     """
     need(binding == expected_binding and bool(binding), 'stale uniqueness binding')
     work = work or Work()
+    need(not frontier or reference,'frontier storage requires explicit reference certificate')
     need(sp.issparse(matrix) and matrix.dtype == np.dtype('float64'), 'certificate requires binary64 sparse operator')
     need(matrix.shape[0] == matrix.shape[1] > 0, 'invalid certificate order')
     need(matrix.nnz <= work.max_input_nnz, 'UNRESOLVED: certificate input CSR cap')
@@ -219,36 +286,44 @@ def certify(matrix, binding, expected_binding, work=None, border=None, *, refere
         need(np.isfinite(B).all() and np.isfinite(D).all() and np.array_equal(D,D.T),'nonfinite/asymmetric border')
     at=matrix.T.tocsr(copy=False) if reference else None
     if reference:
-        reference_preflight(a,at,work,0 if border is None else int(np.count_nonzero(B))+D.size)
-    rows = []
-    entries = 0
-    for i in range(n):
-        work.check(entries)
+        need(at.has_canonical_format,'certificate requires canonical transpose entries')
+    if frontier:
+        stamp=matrix_hash(a)
+        minimum,inverse_bound,schur=_eliminate_frontier(a,at,work,border)
+        del a,at
+    else:
         if reference:
-            rows.append({j:average_enclosure(x,y) for j,x,y in reference_pairs(a,at,i)})
-        else:
-            rows.append({int(j): (float(x), float(x))
-                         for j, x in zip(a.indices[a.indptr[i]:a.indptr[i+1]], a.data[a.indptr[i]:a.indptr[i+1]])
-                         if j >= i and x != 0})
-        entries += len(rows[-1])
-        work.check(entries)
-    stamp = matrix_hash(a)  # Original stored matrix hash, never a replaced solver input.
-    del a,at
-    if border is not None:
-        B, D = border
-        work.check(entries + int(np.count_nonzero(B)) + D.size)
+            reference_preflight(a,at,work,0 if border is None else int(np.count_nonzero(B))+D.size)
+        rows = []
+        entries = 0
         for i in range(n):
-            for j in range(len(D)):
-                if B[i,j] != 0:
-                    rows[i][n+j] = (float(B[i,j]),)*2
-        rows.extend({n+j: (float(D[i,j]),)*2 for j in range(i,len(D)) if D[i,j] != 0} for i in range(len(D)))
-    minimum,inverse_bound = _eliminate(rows, n, work)
-    schur = []
-    for i in range(n,len(rows)):
-        schur.append([rows[min(i,j)].get(max(i,j),ZERO) for j in range(n,len(rows))])
+            work.check(entries)
+            if reference:
+                rows.append({j:average_enclosure(x,y) for j,x,y in reference_pairs(a,at,i)})
+            else:
+                rows.append({int(j): (float(x), float(x))
+                             for j, x in zip(a.indices[a.indptr[i]:a.indptr[i+1]], a.data[a.indptr[i]:a.indptr[i+1]])
+                             if j >= i and x != 0})
+            entries += len(rows[-1])
+            work.check(entries)
+        stamp = matrix_hash(a)  # Original stored matrix hash, never a replaced solver input.
+        del a,at
+        if border is not None:
+            B, D = border
+            work.check(entries + int(np.count_nonzero(B)) + D.size)
+            for i in range(n):
+                for j in range(len(D)):
+                    if B[i,j] != 0:
+                        rows[i][n+j] = (float(B[i,j]),)*2
+            rows.extend({n+j: (float(D[i,j]),)*2 for j in range(i,len(D)) if D[i,j] != 0} for i in range(len(D)))
+        minimum,inverse_bound = _eliminate(rows, n, work)
+        schur = []
+        for i in range(n,len(rows)):
+            schur.append([rows[min(i,j)].get(max(i,j),ZERO) for j in range(n,len(rows))])
     return {'method': REFERENCE_METHOD if reference else METHOD,
             'status': 'SYMMETRIC_PART_REFERENCE_SPD' if reference else 'EXACT_STORED_OPERATOR_SPD',
             'analysis_reference_only':reference,
+            'storage':FRONTIER_STORAGE if frontier else 'eager-interval-rows-v1',
             'matrix_sha256': stamp, 'binding_sha256': digest(binding), 'order': n,
             'minimum_pivot_lower': minimum, 'inverse_infinity_upper':inverse_bound, 'schur_intervals': schur,
             'arithmetic_updates': work.updates, 'peak_sparse_entries': work.peak_entries}

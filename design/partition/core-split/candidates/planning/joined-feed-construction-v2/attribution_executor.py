@@ -86,7 +86,7 @@ def _board_selected(op, red, cfg, case, depth, board, binding, checker, budget):
                          'held':hashlib.sha256(fixed.tobytes()).hexdigest(),
                          'free':hashlib.sha256(memoryview(free).cast('B')).hexdigest(),
                          'source_pads':sources,'terms':terms,'construction':'finite_solve.board_parts'}
-    cert = U.certify(Af,context,context,checker,border=(B,D),reference=True)
+    cert = U.certify(Af,context,context,checker,border=(B,D),reference=True,frontier=True)
     cert['B_infinity_upper'],cert['BT_infinity_upper'] = V.matrix_norms(B)
     budget.check()
     R.need(R._max(S._extended_residual(Af,red['Y'],B))/max(R._max(B),1e-30) <= 1e-9,'retained basis residual failed')
@@ -227,6 +227,7 @@ def run_pipeline(packet, output_path, budget):
         removed = set(packet.get('fixture_removed',[]))
         R.need(not removed or packet.get('fixture_only') is True, 'production return state must be all-present')
         R.need(packet.get('certificate_method')==U.REFERENCE_METHOD,'certificate method binding differs')
+        R.need(packet.get('certificate_storage')==U.FRONTIER_STORAGE,'certificate storage binding differs')
         checker = U.Work(**packet['certificate_limits'],checkpoint=budget.check)
         fields,certs = {},{}
         scale = None

@@ -829,3 +829,50 @@ pipeline if preflight passes. A capfailure reports only the first exceeding pref
 Dictionary/fill/runtime failure remains possible, charged and terminally reviewed.
 No new numerical baseline, production request or RESOURCE_QUALIFIED report exists.
 Never replay prior identities or change bound source while this next packet is live.
+
+
+### Fifth qualification: actual certificate storage blocker; source-only investigation
+
+Clean source`18147148ef72511109e674430db1c2b53f650355`, request
+`6dc8a01d5e3c8827eac8f8b5b9c98a2fd29f6c796b7b1501c1fb5900574e8728`,
+run`aa824d1cecf9483592979343a219a0fb`, operation
+`c36ada446d556faffdc7066075de7bf6034a586130c0cc3f3a02284f47355310`.
+[Retained failure/index](evidence/e16/attribution-admission-wsl-20261014/qualification-attempt5/index.json)
+and [independent complete audit](evidence/e16/attribution-admission-wsl-20261014/qualification-attempt5/review.md).
+Original packet`~/.cache/zudo-e16-runs/attribution-qualification-vdjgr_6v/`.
+Preflight count4000002 exceeded unchanged4M cap before any certificate row allocation.
+This is a prefix lowerbound, not the wholematrix count. Rootpeak904990720B,
+elapsed14.465692866s,zerooperation swap/noOOM; complete cleanup and durableguardFAIL.
+Ledger now2/3baselines13/24diagnostics,11diagnostics remain,zero newbaselinepermission,
+SHAa84cd8c3532e9df448ad020600eeaad637961939d5100d1986f76e0397710df6.
+Five terminalcharges/statusINCOMPLETE,livefalse; sourcefreezeended.539topic/550original
+protected files rechecked with no differences; originalsource/decision preserved.
+
+No unchanged retry. The independently recommended next source increment is a tiny
+lazy/frontier interval LDL prototype preserving exact arithmetic/order and counting
+all simultaneously live updated entries, pivotrows and retained inverse-bound
+factors. It changes storage lifetimes, not the4M cap. Prototype path under this
+same worktree:`__inbox/e16-frontier/repro.py` (ignored, no original inputs).
+Do not claim fit from it; full original fill,20Mupdates,1216MiB and180s remain gates.
+Stage C NOT RUN; qualificationNOT_QUALIFIED;productionNOT_ADMITTED.
+
+
+### Reviewed lazy certificate storage correction
+
+[Proof, prototype findings, resource accounting and checks](evidence/e16/attribution-admission-wsl-20261014/frontier-certificate/review.md)
+record the evidence-backed correction to attempt5. Original interval arithmetic,
+pivot order and all retained inverse-bound factors remain; only row lifetimes
+change. All live entries/factors stay under4M with pre-insertion checks, and the
+same Work preserves20Mupdates acrossboards. Explicit storagebinding requires a
+fresh packet. A prototype aliasfinding and canonical-transpose defect were fixed;
+actual-object lifetime tests and147focusedtestsPASS. Originalsolve/RHS/tolerances,
+sharedguard/hostcaps, campaign state and canonicalgeometry remain unchanged.
+
+Next locally owned step: after cleancommit and final resource review, use the
+existing compiler to describe/seal a fresh FULL qualification. Obtain exact-packet
+technical review and issue delegated exact grants; verify then existing guarded
+launch. This tests original lazy frontier/factor storage plus the entire remaining
+pipeline, not just a count. RetainedCSR lifetime and accumulatedfactors may still
+fail the unchangedworker/time/fill/interval gates. No sourcechanges whilelive;
+follow complete terminalaccounting/cleanup and diagnose anyfailure beforeanother
+fresh request. No RESOURCE_QUALIFIED or production authority exists yet.

@@ -82,6 +82,18 @@ class ReferenceCoercivity(unittest.TestCase):
         for bad in ([[1,2],[-2,-1]],[[0,1],[-1,0]]):
             with self.assertRaisesRegex(ValueError,'UNRESOLVED'):self.certify(bad)
 
+    def test_noncanonical_transpose_refused_without_changing_input(self):
+        matrix=sp.diags([-np.ones(3),np.full(4,2.),-np.ones(3)],[-1,0,1],format='csc')
+        self.assertFalse(matrix.has_canonical_format)
+        self.assertTrue(matrix.tocsr().has_canonical_format)
+        before=U.matrix_hash(matrix)
+        with self.assertRaisesRegex(ValueError,'canonical transpose'):
+            U.certify(matrix,{'fixture':True},{'fixture':True},reference=True)
+        self.assertEqual(U.matrix_hash(matrix),before)
+        sorted_matrix=matrix.copy();sorted_matrix.sort_indices()
+        self.assertEqual(U.certify(sorted_matrix,{'fixture':True},{'fixture':True},reference=True)['status'],
+                         'SYMMETRIC_PART_REFERENCE_SPD')
+
     def test_reference_preflight_refuses_before_midpoint_rows_or_elimination(self):
         with patch.object(U,'average_enclosure') as average,patch.object(U,'_eliminate') as eliminate:
             with self.assertRaisesRegex(ValueError,'sparse fill cap'):
@@ -110,6 +122,89 @@ class ReferenceCoercivity(unittest.TestCase):
             V.network_inverse_bound(originals,coupled)
         with self.assertRaisesRegex(ValueError,'UNRESOLVED'):
             U.certify_coupled(ka['schur_intervals'],kb['schur_intervals'],1,[False],U.Work(),reference=True)
+
+
+class FrontierStorage(unittest.TestCase):
+    def certificate(self,a,border=None,work=None,frontier=True):
+        return U.certify(a,{'fixture':'frontier'},{'fixture':'frontier'},work,
+                         border=border,reference=True,frontier=frontier)
+
+    def compare(self,a,border=None,work=None):
+        before=U.matrix_hash(a)
+        eager=self.certificate(a,border,frontier=False)
+        frontier=self.certificate(a,border,work)
+        for key in ('minimum_pivot_lower','inverse_infinity_upper','schur_intervals','arithmetic_updates','matrix_sha256'):
+            self.assertEqual(eager[key],frontier[key],key)
+        self.assertEqual(U.matrix_hash(a),before)
+        self.assertEqual(frontier['storage'],U.FRONTIER_STORAGE)
+        return eager,frontier
+
+    def test_bordered_skew_equivalence_and_unchanged_input(self):
+        rng=np.random.default_rng(71054)
+        for n in range(2,10):
+            for trial in range(4):
+                edges=np.triu(rng.integers(-3,4,(n,n)),1);sym=edges+edges.T
+                skew=rng.integers(-5,6,(n,n));skew=skew-skew.T
+                a=sp.csc_matrix(sym+np.diag(2+np.abs(sym).sum(axis=1))+skew,dtype=float)
+                b=rng.integers(-2,3,(n,2)).astype(float);d=np.diag([100.,100.])
+                self.compare(a,(b,d))
+
+    def test_chain_total_exceeds_cap_while_counted_live_frontier_fits(self):
+        n=40;a=sp.diags([-np.ones(n-1),np.full(n,2.),-np.ones(n-1)],[-1,0,1],format='csc')
+        a.sort_indices();b=np.zeros((n,1));b[-1]=-1;d=np.ones((1,1))
+        with self.assertRaisesRegex(ValueError,'sparse fill cap'):
+            self.certificate(a,(b,d),U.Work(max_entries=48),frontier=False)
+        eager,frontier=self.compare(a,(b,d),U.Work(max_entries=42))
+        self.assertEqual(eager['peak_sparse_entries'],82)
+        self.assertEqual(frontier['peak_sparse_entries'],42)
+        with self.assertRaisesRegex(ValueError,'entries=42, maximum=41'):
+            self.certificate(a,(b,d),U.Work(max_entries=41))
+
+    def test_actual_live_rows_and_factors_include_disconnected_pivot_aliases(self):
+        actual_peak=0
+        def observe(frame,event,arg):
+            nonlocal actual_peak
+            if event=='line' and frame.f_code is U._eliminate_frontier.__code__ and 'count' in frame.f_locals:
+                local=frame.f_locals;rows={}
+                for key in ('row','target'):
+                    value=local.get(key)
+                    if isinstance(value,dict):rows[id(value)]=value
+                for key in ('pending','terminals'):
+                    for value in local.get(key,{}).values():rows[id(value)]=value
+                actual=sum(map(len,rows.values()))+sum(map(len,local.get('factors',[])))
+                self.assertLessEqual(actual,local['count'])
+                self.assertLessEqual(actual,local['work'].max_entries)
+                actual_peak=max(actual_peak,actual)
+            return observe
+        a=sp.block_diag([[[2.,-1.],[-1.,2.]],[[2.,-1.],[-1.,2.]],[[1.]]],format='csc')
+        a.eliminate_zeros();a.sort_indices();work=U.Work(max_entries=5)
+        previous=sys.gettrace();sys.settrace(observe)
+        try:self.compare(a,work=work)
+        finally:sys.settrace(previous)
+        self.assertEqual(actual_peak,5);self.assertEqual(work.peak_entries,5)
+        dense=sp.csc_matrix(np.full((12,12),-1.)+np.eye(12)*13)
+        sys.settrace(observe)
+        try:
+            with self.assertRaisesRegex(ValueError,'entries=41, maximum=40'):
+                self.certificate(dense,work=U.Work(max_entries=40))
+        finally:sys.settrace(previous)
+        self.assertLessEqual(actual_peak,40)
+
+    def test_work_budget_stays_shared_across_board_calls(self):
+        a=sp.csc_matrix([[2.,-1.],[-1.,2.]])
+        work=U.Work(max_updates=3)
+        for expected in range(1,4):
+            self.certificate(a,work=work);self.assertEqual(work.updates,expected)
+        with self.assertRaisesRegex(ValueError,'arithmetic cap'):
+            self.certificate(a,work=work)
+        self.assertEqual(work.updates,4)
+
+    def test_frontier_requires_reference_and_canonical_transpose(self):
+        a=sp.diags([-np.ones(3),np.full(4,2.),-np.ones(3)],[-1,0,1],format='csc')
+        with self.assertRaisesRegex(ValueError,'canonical transpose'):
+            self.certificate(a)
+        with self.assertRaisesRegex(ValueError,'explicit reference'):
+            U.certify(sp.eye(2,format='csr'),{'x':1},{'x':1},frontier=True)
 
 
 if __name__=='__main__':unittest.main()
