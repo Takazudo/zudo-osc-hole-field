@@ -7,6 +7,7 @@ prove exact LDL positivity by induction. Fill/work exhaustion is unresolved.
 No approximate-zero pruning, symmetrization, or dense board conversion occurs.
 """
 import hashlib
+import json
 import math
 from dataclasses import dataclass
 
@@ -142,7 +143,26 @@ def certify(matrix, binding, expected_binding, work=None, border=None):
     a = matrix.tocsr(copy=True)
     need(a.has_canonical_format, 'certificate requires canonical sparse entries')
     need(np.isfinite(a.data).all(), 'nonfinite certificate operator')
-    need((a != a.T).nnz == 0, 'nonreciprocal exact certificate operator')
+    mismatch = (a != a.T).tocsr()
+    if mismatch.nnz:
+        # Reuse the existing Boolean witness: no extra full floating difference,
+        # symmetrization, approximate equality or solver change. Four exact pairs
+        # characterize the rejection; they are not a global skew-norm estimate.
+        witnesses = []
+        for i in range(a.shape[0]):
+            if i % 4096 == 0:work.check(0)
+            for j in mismatch.indices[mismatch.indptr[i]:mismatch.indptr[i+1]]:
+                witnesses.append({'row':i,'column':int(j),
+                    'a_ij_hex':float(a[i,j]).hex(),'a_ji_hex':float(a[j,i]).hex()})
+                if len(witnesses)==4:break
+            if len(witnesses)==4:break
+        report={'schema':'e16-exact-reciprocity-witness-v1','matrix_sha256':matrix_hash(a),
+                'binding_sha256':digest(binding),'order':int(a.shape[0]),'nnz':int(a.nnz),
+                'mismatched_entries':int(mismatch.nnz),'sample_limit':4,'witnesses':witnesses,
+                'matrix_abs_max':max(float(a.data.max()),-float(a.data.min())),
+                'global_skew_norm':'NOT_COMPUTED','symmetrized':False}
+        need(False,'nonreciprocal exact certificate operator: '+json.dumps(report,sort_keys=True,separators=(',',':')))
+    del mismatch
     n = a.shape[0]
     rows = []
     entries = 0

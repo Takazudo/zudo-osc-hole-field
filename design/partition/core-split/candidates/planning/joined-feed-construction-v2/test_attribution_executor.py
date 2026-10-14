@@ -122,6 +122,24 @@ class Certificates(unittest.TestCase):
         with self.assertRaisesRegex(ValueError,'stale'):
             U.certify(sp.eye(2,format='csr'),{'held':[1]},{'held':[0]})
 
+    def test_exact_reciprocity_witness_is_bounded_and_does_not_change_operator(self):
+        a=sp.csr_matrix([[2.,1.],[np.nextafter(1.,2.),2.]])
+        before=U.matrix_hash(a)
+        with self.assertRaisesRegex(ValueError,'nonreciprocal exact certificate operator: ') as caught:
+            U.certify(a,{'held':[0]},{'held':[0]})
+        reason=str(caught.exception);self.assertLess(len(reason.encode()),2048)
+        report=json.loads(reason.split(': ',1)[1])
+        self.assertEqual(report['matrix_sha256'],before);self.assertEqual(U.matrix_hash(a),before)
+        self.assertEqual(report['mismatched_entries'],2);self.assertFalse(report['symmetrized'])
+        self.assertEqual(report['global_skew_norm'],'NOT_COMPUTED')
+        for w in report['witnesses']:
+            self.assertEqual(float.fromhex(w['a_ij_hex']),a[w['row'],w['column']])
+            self.assertEqual(float.fromhex(w['a_ji_hex']),a[w['column'],w['row']])
+        many=sp.diags([np.ones(9),np.ones(10)*4],[1,0],shape=(10,10),format='csr')
+        with self.assertRaises(ValueError) as caught:U.certify(many,{'held':[0]},{'held':[0]})
+        report=json.loads(str(caught.exception).split(': ',1)[1])
+        self.assertEqual(report['mismatched_entries'],18);self.assertEqual(len(report['witnesses']),4)
+
     def test_sparse_caps(self):
         for work in (U.Work(max_entries=1),U.Work(max_updates=0)):
             with self.assertRaisesRegex(ValueError,'cap'):self.check([[2,1],[1,2]],work=work)

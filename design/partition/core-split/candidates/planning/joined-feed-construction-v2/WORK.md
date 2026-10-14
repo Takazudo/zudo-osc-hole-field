@@ -766,3 +766,33 @@ independentlyPASS. Secondpeak56,426,496B/1.358537s/zero-swap. No qualification o
 production accepted; StageCNOTRUN. Next: independently review/commit the narrow
 Git correction, then prepare a freshly bound qualification; never replay either
 consumed request or alter its original retained receipts.
+
+
+### Third qualification reaches original operator and fails exact reciprocity
+
+Request`29202f704140afc2797ee1d0c2d13507d3892d275a6c0b7129f4477f5cd0de53`,
+run`43ecd963144648ac9e275db550baf19e`, clean source
+`5c1fde39b2d9696bcf3ed646341b5bef6b4753ff`; exact packet remains in
+`~/.cache/zudo-e16-runs/attribution-qualification-he4qwbk6/`.
+[Retained output/index](evidence/e16/attribution-admission-wsl-20261014/qualification-attempt3/index.json)
+and [independent audit/diagnosis](evidence/e16/attribution-admission-wsl-20261014/qualification-attempt3/review.md)
+record actual authenticated original-input verification/decoding and worker startup.
+The KA free operator is not bit-exact symmetric as required by the current SPD
+certificate. No selected solve/component accounting or Stage C result follows.
+
+Actual rootpeak1,163,087,872B,workerpeak1,046,597,632B; envelope11.318091s and
+separate guardraw14s; zero swap/noOOM. Supervisor64MiB maxevents339 reflect real
+limit pressure. Qualification remains failed, not merely an absent signature.
+Accounting/cleanup independentlyPASS: three terminalcharges, no livework/resources,
+budget2/3baseline11/24diagnostics (13diagnostics remaining; no additional baseline).
+Freeze ended after terminal audit; this consumed identity cannot be replayed.
+
+Next justified increment is bounded exact mismatch characterization, not another
+unchanged retry. Source diagnostic keeps rejection and original operator bytes,
+limits output to four exact value witnesses and metadata, and avoids another full
+floating sparse difference.136focusedtestsPASS. After review/commit, prepare an
+explicitly diagnostic fresh qualification-kind request under existing local
+delegation; its claim would consume diagnostic12. Do not sign RESOURCE_QUALIFIED
+or prepare production from that expected negative result. Choose any subsequent
+certificate correction only from the actual retained evidence and separate proof
+review, without changing solver/refinement, tolerances or physical scope.
