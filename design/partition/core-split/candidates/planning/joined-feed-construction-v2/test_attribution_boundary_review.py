@@ -72,7 +72,8 @@ class IndependentBoundaryReview(unittest.TestCase):
         self.assertFalse(fixture.state.exists())
 
     def test_worker_requires_live_exclusive_controller_before_kernel_reads(self):
-        with patch.object(G.UnitGuard,'prove_owner'),\
+        with patch.dict(os.environ,{'E16_GUARD_FD':'201'},clear=True),\
+             patch.object(G.UnitGuard,'prove_owner'),\
              patch.object(H,'prove_reservation_owner',side_effect=ValueError('no live reservation')) as owner:
             with self.assertRaisesRegex(ValueError,'no live reservation'):
                 W.prove_worker({'guard_sha256':'a'*64})

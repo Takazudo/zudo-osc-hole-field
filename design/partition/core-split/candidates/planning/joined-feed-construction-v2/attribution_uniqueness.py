@@ -15,12 +15,14 @@ from dataclasses import dataclass
 
 import numpy as np
 import scipy.sparse as sp
+from scipy.sparse.csgraph import reverse_cuthill_mckee
 
 from resistance_attribution import need, digest
 
 METHOD = 'outward-binary64-sparse-LDL-v1'
 REFERENCE_METHOD = 'original-operator-symmetric-part-coercivity-v1'
 FRONTIER_STORAGE = 'lazy-frontier-interval-LDL-v1'
+REFERENCE_ORDER = 'rcm-original-structural-union-v1'
 ZERO = (0., 0.)
 
 
@@ -129,6 +131,36 @@ def _eliminate(rows, pivots, work):
     return pivot_min,inverse_bound
 
 
+def _order_reference(a,border,work):
+    """One prescribed ordering on an owned Boolean structural superset graph.
+
+    Skew-cancelled reference entries can remain graph edges. This is an ordering
+    heuristic, never a positivity or reduced-fill claim. No fallback/search.
+    """
+    work.check(0)
+    graph=(a!=0)
+    graph=graph+graph.T
+    raw=reverse_cuthill_mckee(graph,symmetric_mode=True)
+    n=a.shape[0]
+    need(isinstance(raw,np.ndarray) and raw.ndim==1 and len(raw)==n and
+         np.issubdtype(raw.dtype,np.integer),'invalid analysis permutation type/length')
+    permutation=np.ascontiguousarray(raw,dtype=np.int64)
+    del raw
+    need(int(permutation.min())>=0 and int(permutation.max())<n,'analysis permutation range')
+    seen=np.zeros(n,dtype=bool);seen[permutation]=True
+    need(seen.all(),'analysis permutation is not bijective')
+    info={'method':REFERENCE_ORDER,'order':n,'graph':'symmetric-original-nonzero-structural-superset',
+          'graph_nnz':int(graph.nnz),'permutation_dtype':permutation.dtype.str,
+          'permutation_sha256':hashlib.sha256(memoryview(permutation).cast('B')).hexdigest()}
+    del seen,graph  # Release graph before sparse permutation-copy overlap.
+    work.check(0)
+    ordered=a[permutation][:,permutation]
+    ordered.sort_indices()  # Only an owned analysis copy; original stays untouched.
+    new_border=None if border is None else (border[0][permutation],border[1])
+    work.check(0)
+    return ordered,new_border,info
+
+
 def _eliminate_frontier(a,at,work,border=None):
     """Same interval LDL/order; retain only touched rows and required factors.
 
@@ -234,7 +266,7 @@ def reference_preflight(a,at,work,border_entries=0):
     return count
 
 
-def certify(matrix, binding, expected_binding, work=None, border=None, *, reference=False, frontier=False):
+def certify(matrix, binding, expected_binding, work=None, border=None, *, reference=False, frontier=False, ordering=None):
     """Certify exact symmetric Af, or explicitly its symmetric analysis reference.
 
     reference=True encloses (Af+Af.T)/2 and its own bordered Schur. It does not
@@ -251,6 +283,7 @@ def certify(matrix, binding, expected_binding, work=None, border=None, *, refere
     need(binding == expected_binding and bool(binding), 'stale uniqueness binding')
     work = work or Work()
     need(not frontier or reference,'frontier storage requires explicit reference certificate')
+    need(ordering is None or (frontier and ordering==REFERENCE_ORDER),'invalid analysis ordering contract')
     need(sp.issparse(matrix) and matrix.dtype == np.dtype('float64'), 'certificate requires binary64 sparse operator')
     need(matrix.shape[0] == matrix.shape[1] > 0, 'invalid certificate order')
     need(matrix.nnz <= work.max_input_nnz, 'UNRESOLVED: certificate input CSR cap')
@@ -287,9 +320,19 @@ def certify(matrix, binding, expected_binding, work=None, border=None, *, refere
     at=matrix.T.tocsr(copy=False) if reference else None
     if reference:
         need(at.has_canonical_format,'certificate requires canonical transpose entries')
+    order_info={'method':'original-node-order'}
     if frontier:
-        stamp=matrix_hash(a)
-        minimum,inverse_bound,schur=_eliminate_frontier(a,at,work,border)
+        stamp=matrix_hash(a)  # Original binding survives analysis-only permutation.
+        if ordering is not None:
+            del at
+            a,border,order_info=_order_reference(a,border,work)
+            at=a.T.tocsr(copy=False)
+            need(a.has_canonical_format and at.has_canonical_format,'noncanonical ordered analysis')
+        try:
+            minimum,inverse_bound,schur=_eliminate_frontier(a,at,work,border)
+        except ValueError as error:
+            if ordering is None:raise
+            raise ValueError(str(error)+'; analysis_ordering='+json.dumps(order_info|{'original_matrix_sha256':stamp},sort_keys=True,separators=(',',':'))) from error
         del a,at
     else:
         if reference:
@@ -324,6 +367,7 @@ def certify(matrix, binding, expected_binding, work=None, border=None, *, refere
             'status': 'SYMMETRIC_PART_REFERENCE_SPD' if reference else 'EXACT_STORED_OPERATOR_SPD',
             'analysis_reference_only':reference,
             'storage':FRONTIER_STORAGE if frontier else 'eager-interval-rows-v1',
+            'analysis_ordering':order_info,
             'matrix_sha256': stamp, 'binding_sha256': digest(binding), 'order': n,
             'minimum_pivot_lower': minimum, 'inverse_infinity_upper':inverse_bound, 'schur_intervals': schur,
             'arithmetic_updates': work.updates, 'peak_sparse_entries': work.peak_entries}

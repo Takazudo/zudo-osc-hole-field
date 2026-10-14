@@ -876,3 +876,50 @@ pipeline, not just a count. RetainedCSR lifetime and accumulatedfactors may stil
 fail the unchangedworker/time/fill/interval gates. No sourcechanges whilelive;
 follow complete terminalaccounting/cleanup and diagnose anyfailure beforeanother
 fresh request. No RESOURCE_QUALIFIED or production authority exists yet.
+
+
+### Sixth qualification: storage progresses; arithmetic budget is now the blocker
+
+Clean source`cba807a8f61bea7eed6c789f400039bf4f55b855`, request
+`8bd9a54704a2c3fb608cfa4c262305857c92e1575ebc9275a3c5d3834c5c0e7d`,
+run`0c94c1920a7f447d974e7101b9176e10`, operation
+`9894cf70c0b26d21f744db02e21001587143d61a9b25250fac448a2c0f149c25`.
+[Retained evidence/index](evidence/e16/attribution-admission-wsl-20261014/qualification-attempt6/index.json)
+and [independent audit](evidence/e16/attribution-admission-wsl-20261014/qualification-attempt6/review.md).
+Exactpacket`~/.cache/zudo-e16-runs/attribution-qualification-jcet9zqn/`.
+KAfrontiercertification rejected requestedupdate20000001 against unchanged20M.
+Rootpeak845197312B,envelope60.5104132865s,separateguardraw64s,zero swap/noOOM.
+Allsixterminalcharges/retainedhashes/journals/guard agree; ownedresourcesgone,
+locksfree,livefalse. Ledger2/3baselines14/24diagnostics,10diagnosticsremaining,
+SHA6ba3f0b11df4d810d7123bcd43cf843ba91b5a7e5e36ecca40bceac310adeb50.
+No additionalbaselinepermission. Sourcefreezeended afteractualterminalaudit.
+
+A missing environment value in a mocked boundarytest was repaired only after
+terminalaudit.164focusedtests nowpass without fixtureenvironment overrides.
+No realauthority bypass or originalinput mutation. The next local source-only
+investigation is a single deterministic symmetric analysis ordering, tested with
+B permuted consistently and originalsolverMMD/refinement unchanged. Tiny RCM
+prototype demonstrates both reductions and a worse smallgridcase; it is no
+resourceguarantee. No newrealrequest before reviewedcorrectiveimplementation.
+StageCNOTRUN,qualificationNOT_QUALIFIED,productionNOT_ADMITTED.
+
+
+### Reviewed fixed analysis ordering correction
+
+[Proof, actual prototype evidence, resource overlap and independent reviews](evidence/e16/attribution-admission-wsl-20261014/ordered-certificate/review.md)
+support one fixed analysis-only RCM ordering, with both freeoperator andB permuted,
+D/terminalorder unchanged and originalmatrix identity preserved. Only ownedanalysis
+copies change; originalsolverMMD/refinement/RHS/tolerances/physicalscope remain.
+No search/fallback, capincrease or automaticretry. Actualpermutationhash and
+newrequestorderingcontract are bound; previousrequests cannotselectit.
+170focusedtestsPASS withoutenv overrides; circuit/diffPASS; independentmath and
+resource/admissionreviewsPASS. Source-onlyprototypehasbothbetterandworse cases,
+so originalresourcefit is unknown; copy/graph/B/transposeoverlaps are explicit.
+
+Next executable action by this WSLdelegate: cleancommit, newcompilerdescription
+and qualificationpacket, separate exactpacketreview, genuine delegatedgrants,
+metadataverification thenexistingguardedlaunch. Fullconditionalqualification may
+stillfailfill/20Mupdates/intervalresolution/memory/deadline; followterminaljournal,
+ledger,guardreceipt,retention andcleanup before changingboundsource or replanning.
+Currently14/24diagnostics used,10remain;2/3baselineunchanged/noadditionalbaseline.
+No RESOURCE_QUALIFIED report or productionrequest exists; StageCNOTRUN.
