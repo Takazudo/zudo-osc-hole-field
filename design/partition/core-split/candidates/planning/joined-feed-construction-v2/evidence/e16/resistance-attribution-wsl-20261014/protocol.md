@@ -1,0 +1,29 @@
+# Attribution protocol v1
+
+The executable contract is `resistance_attribution.py::attribute(detail, expected)`, with a complete round-trip example in `synthetic-detail.json` and `synthetic-result.json`. Input schema is `e16-attribution-detail-v1`; result schema is `e16-resistance-attribution-v1`. JSON uses SI V, A, S, W and Ω; only explicit `*_mohm` fields use mΩ, geometry uses mm. Vectors may contain decimal strings to preserve long-double potential detail. JSON NaN/Infinity are not valid output.
+
+## Input fields
+
+| Field | Required meaning |
+| --- | --- |
+| `identity` | board, net, exact ref/pin/pad_uuid, process_case, depth_case, return_state; observation_support nodes/normalized weights; source_support mode, zero potential, original board and every pad ref/pin/UUID/board/held node set |
+| `network.matrix` | original complete modeled operator, before held-node elimination, sparse triplets `n,row,col,siemens`; no implicit grounded conductance or omitted terminal nodes |
+| `components[]` | unique id, physical object_ids, board/net, kind (`sheet_union`, `barrel`, `termination`, `wire_bulk`), layer_interval, region and complete-order matrix; optional exact branch nodes/weights/resistance_ohm for oriented current |
+| `solution` | full potential_V, external injection_A (zero on held nodes), original_node_current_A including source reactions, original_energy_W, original_class_energy_W keyed by component kind, normalization mode and current_A |
+| `solution.normalization` | `unit_current` with signed nonzero current_A and exactly that pad's weighted RHS; or `simultaneous_load` with current_A null; never mix |
+| `solution.uniqueness_evidence` | for >256 free nodes: exact network SHA, sorted held-node SHA, return_state, status `POSITIVE_DEFINITE_FREE_OPERATOR`, named method and retained nonzero SHA-256 receipt; receipt hash must also appear in provenance. This is externally reviewed evidence, not recomputed proof |
+| `scope` | complete_modeled_network must be true; omitted_components empty; exact expected_component_ids; physical_omissions explicitly listed even for complete modeled accounting |
+| `provenance` | source_sha256, operator_sha256, extractor_sha256, actual attempt-5 config_sha256; quantity_origin `synthetic` or `retained_solution`; external uniqueness_receipt_sha256 when needed |
+| `expected` | separate map of canonical JSON SHA-256 for identity/network/components/solution/scope/provenance. Canonical form: Python JSON, sorted keys, separators comma/colon, allow_nan false |
+
+Expected hashes must be independently pinned to the actual source/operator/solution bytes and extraction receipt. Calling `bindings(detail)` on untrusted data establishes only self-consistency; it is not provenance, admission or approval. A real extractor must verify original artifact indexes first, bind full mesh-item inventory and source/coverage/operator/solution identities, and produce the independent expected manifest for review. The reporter cannot infer that a supplied UUID corresponds to supplied nodes from sparse numbers alone. That geometric binding belongs to the reviewed extractor; the complete packet hash seals it against later changes. Source-support sets and configured live wire/end-termination identities are additionally checked against the actual attempt-5 configuration for retained_solution packets.
+
+`copper_components` supplies sheet-union and barrel matrices. `interface_components` supplies termination/wire matrices in `[KA mesh, KA terminals, KB mesh, KB terminals]` order and returns mesh offsets. An admitted extractor embeds each copper block at its board offset, retains the original independent network matrix, and supplies original class energies. The barrel term is interval energy; sheet union member lists are identity-only, so aggregation keys use the complete member set and never copy a union value onto each member. Tile splitting is additive only over disjoint mesh regions. The scalar class energy supplied by the original solver must be reconciled, not recomputed from the proposed partition and treated as independent evidence.
+
+The reporter never validates physical omissions by assigning zero cost. It can PASS modeled accounting while instrument coverage remains incomplete. Unsupported individual overlap allocation, omitted angular barrel resistance, idealized merged contacts and omitted source/protection/GH/load scope remain explicit limitations.
+
+## Results and failures
+
+Results always contain `status`, `failures`, `components`, and three literal false fields: `whole_board_acceptance`, `electrical_acceptance`, `adopted`. Status is `BLOCKED` or `PASS_MODELED_SOLUTION_ACCOUNTING_ONLY`. Complete outputs include identity, input bindings, actual reporter/adapter/solver hashes, provenance, scope, original tolerances, independent reconciliation checks, total/class watts, source reaction currents and unique physical aggregates. Component rows report joule_energy_W, effective_resistance_ohm and effective_resistance_mohm (both null for simultaneous load), and oriented_current_A for rank-one branches. Unit-current total R includes interfaces; copper_resistance_ohm includes only sheets/barrels.
+
+Failed packets cannot yield whole-board acceptance. Component results are withheld until all checks pass. A BLOCKED result may contain checks and identity already verified before the failure. The CLI writes a fresh result file, prints a compact top-ten summary and exits 1 for BLOCKED; input parse/size/path errors terminate before a result is produced. No input file, prior output, approval or retained solver artifact is modified. No subprocess, solve or pickle load occurs. Tiny eigenvalue checking is bounded to 256 free nodes; large positivity evidence is an explicit external gate.

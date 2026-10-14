@@ -1,0 +1,120 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "E16 resistance attribution result v1",
+  "type": "object",
+  "required": [
+    "schema",
+    "status",
+    "failures",
+    "components",
+    "whole_board_acceptance",
+    "electrical_acceptance",
+    "adopted"
+  ],
+  "properties": {
+    "schema": {
+      "const": "e16-resistance-attribution-v1"
+    },
+    "status": {
+      "enum": [
+        "BLOCKED",
+        "PASS_MODELED_SOLUTION_ACCOUNTING_ONLY"
+      ]
+    },
+    "failures": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "whole_board_acceptance": {
+      "const": false
+    },
+    "electrical_acceptance": {
+      "const": false
+    },
+    "adopted": {
+      "const": false
+    },
+    "components": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "kind",
+          "board",
+          "net",
+          "object_ids",
+          "layer_interval",
+          "region",
+          "joule_energy_W",
+          "effective_resistance_ohm",
+          "effective_resistance_mohm"
+        ],
+        "properties": {
+          "kind": {
+            "enum": [
+              "sheet_union",
+              "barrel",
+              "termination",
+              "wire_bulk"
+            ]
+          },
+          "joule_energy_W": {
+            "type": "number",
+            "minimum": 0
+          },
+          "effective_resistance_ohm": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "minimum": 0
+          },
+          "effective_resistance_mohm": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "minimum": 0
+          }
+        }
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "PASS_MODELED_SOLUTION_ACCOUNTING_ONLY"
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "identity",
+          "input_bindings",
+          "tool_sha256",
+          "scope",
+          "provenance",
+          "checks",
+          "normalization",
+          "uniqueness",
+          "total_energy_W",
+          "class_energy_W",
+          "effective_resistance_ohm",
+          "copper_resistance_ohm",
+          "source_currents_A",
+          "physical_aggregates"
+        ],
+        "properties": {
+          "failures": {
+            "maxItems": 0
+          }
+        }
+      }
+    }
+  ]
+}
