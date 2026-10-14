@@ -1,9 +1,9 @@
 """Bounded E16 subprocess supervision; NOT an authorization or scope creator.
 
-Production requires an already provisioned, independently admitted containment
-layout. This module neither creates cgroups/mounts nor admits a numerical unit.
-Only synthetic fixture subprocesses may use FixtureContainment. The actual
-pipeline/lifecycle must be wired and independently reviewed before execution.
+The source-owned attribution_host adapter provisions the independently admitted
+containment layout and owns retention/scope cleanup. This module proves that
+layout and supervises one worker; it never creates authority. Only bounded
+synthetic fixture subprocesses may use FixtureContainment.
 """
 import hashlib
 import json
@@ -17,6 +17,13 @@ import time
 
 MEMORY_MAX = 2*1024**3
 SUPERVISOR_MEMORY = 64*1024**2
+OUTER_MEMORY = 64*1024**2
+LAUNCHER_MEMORY = 64*1024**2
+BOOTSTRAP_MEMORY = 64*1024**2
+CONTROLLER_FILECACHE = 64*1024**2
+SHARED_GUARD_MEMORY = 8*64*1024**2
+ACTIVE_SCOPE_MEMORY = MEMORY_MAX-OUTER_MEMORY-LAUNCHER_MEMORY-CONTROLLER_FILECACHE-SHARED_GUARD_MEMORY
+WORKER_MEMORY = ACTIVE_SCOPE_MEMORY-SUPERVISOR_MEMORY-BOOTSTRAP_MEMORY
 OUTPUT_MAX = 64*1024**2
 LOG_RESERVE = 1024**2
 RECEIPT_RESERVE = 65536
@@ -45,12 +52,13 @@ def _event_values(path):
 class LinuxContainment:
     """Prove an existing kernel boundary; never accept caller asserted limits.
 
-    The supervisor and worker use separate sibling cgroups below a 2 GiB parent.
+    The supervisor and worker use separate sibling cgroups below the tightened
+    active parent, leaving explicitly budgeted external controller/guard reserves.
     Worker memory is capped below that parent to reserve supervisor/receipt space.
     Worker output is an exact dedicated tmpfs mount below the output root. Its
     kernel capacity leaves separate bounded log and terminal-receipt reserves.
     Scope/mount creation, ownership admission and eventual scope removal belong
-    to the future host adapter, not this checking API.
+    to attribution_host, not this checking API.
     """
     def __init__(self, parent, worker, work, guard_sha256):
         self.parent,self.worker,self.work = map(Path,(parent,worker,work))
@@ -67,8 +75,8 @@ class LinuxContainment:
              "noncanonical cgroup path")
         need(self.parent.is_relative_to(cg) and own.parent==self.parent and
              self.worker.parent==self.parent and own!=self.worker,"owned sibling cgroup layout absent")
-        for path,maximum in ((self.parent,MEMORY_MAX),(own,SUPERVISOR_MEMORY),
-                             (self.worker,MEMORY_MAX-SUPERVISOR_MEMORY)):
+        for path,maximum in ((self.parent,ACTIVE_SCOPE_MEMORY),(own,SUPERVISOR_MEMORY),
+                             (self.worker,WORKER_MEMORY)):
             need((path/"memory.max").read_text().strip()==str(maximum) and
                  (path/"memory.swap.max").read_text().strip()=="0","memory/no-swap boundary absent")
         need(_event_values(self.worker/"cgroup.events")["populated"]==0,"worker cgroup is not fresh")
@@ -167,7 +175,7 @@ def _inventory(root, deadline, limit):
 
 
 def supervise(command, root, *, started, seconds=180., cleanup_seconds=CLEANUP_SECONDS,
-              output_bytes=OUTPUT_MAX, prior_output_bytes=0, containment, cancelled=lambda:False):
+              output_bytes=OUTPUT_MAX, prior_output_bytes=0, tail_reserve_seconds=0., containment, cancelled=lambda:False):
     """Internal one-attempt primitive; caller has already consumed admission.
 
     started MUST be the actual monotonic guard-entry time, not launch time.
@@ -186,9 +194,10 @@ def supervise(command, root, *, started, seconds=180., cleanup_seconds=CLEANUP_S
          "invalid supervision caps")
     need(fixture or (seconds==180 and output_bytes==OUTPUT_MAX and cleanup_seconds>=10),
          "production caps/reserves changed")
-    need(type(prior_output_bytes) is int and 0 <= prior_output_bytes < RECEIPT_RESERVE, "prior claim/log accounting invalid")
+    need(type(prior_output_bytes) is int and 0 <= prior_output_bytes < output_bytes-LOG_RESERVE-RECEIPT_RESERVE, "prior claim/log accounting invalid")
     available=output_bytes-prior_output_bytes
-    deadline=started+seconds;work_deadline=deadline-cleanup_seconds
+    need(0 <= tail_reserve_seconds < seconds-cleanup_seconds, "invalid host tail reserve")
+    deadline=started+seconds-tail_reserve_seconds;work_deadline=deadline-cleanup_seconds
     need(started<=time.monotonic()<work_deadline,"expired/future guard-entry time")
     need(root.is_absolute() and root.resolve()==root and root.parent.is_dir(),"canonical output root required")
     if fixture:
@@ -207,6 +216,8 @@ def supervise(command, root, *, started, seconds=180., cleanup_seconds=CLEANUP_S
     log=(root/"worker.log.partial").open("xb")
     try:
         containment.prove(available)
+        if not fixture:
+            env["E16_OUTPUT_LIMIT"]=str(min(int(env["E16_OUTPUT_LIMIT"]),containment.capacity))
         need(not cancelled(),"CANCELLED before launch")
         proc=subprocess.Popen(containment.launch(list(command)),cwd=work,env=env,
                               stdin=subprocess.DEVNULL,stdout=subprocess.PIPE,stderr=subprocess.PIPE,

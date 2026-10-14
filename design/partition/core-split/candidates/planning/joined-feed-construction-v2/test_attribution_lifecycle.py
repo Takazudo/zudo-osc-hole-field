@@ -9,6 +9,7 @@ from unittest.mock import patch
 
 import attribution_lifecycle as L
 import attribution_transport as T
+import attribution_executor as E
 from test_attribution_executor import packet
 
 
@@ -74,17 +75,18 @@ class Lifecycle(unittest.TestCase):
 
     def test_fixture_limits_before_numerical_work(self):
         self.request['packet']['boards']['KA']['operator']['decoded_limit']=5*1024**2
-        with patch.object(L.E,'run_pipeline') as engine,self.assertRaisesRegex(ValueError,'fixture byte ceiling'):
+        with patch.object(E,'run_pipeline') as engine,self.assertRaisesRegex(ValueError,'fixture byte ceiling'):
             self.run_fixture()
         engine.assert_not_called()
 
     def test_production_entry_cannot_treat_fixture_grants_as_authority(self):
-        with patch.object(L.E,'run_pipeline') as engine,self.assertRaisesRegex(RuntimeError,'NOT_ADMITTED'):
-            L.execute_production(self.request,self.authority,self.reservation)
-        engine.assert_not_called()
-        r=L.readiness()
-        self.assertEqual(r['source_status'],'SOURCE_INCOMPLETE')
-        self.assertIsNone(r['production_request_sha256'])
+        import attribution_host as H
+        path=self.root/'request.json';path.write_bytes(T.canonical(self.request))
+        digest=hashlib.sha256(T.canonical(self.request)).hexdigest()
+        with patch.object(H.resource,'setrlimit'),patch.object(H.os,'execvpe') as execute,self.assertRaises((ValueError,KeyError)):
+            L.execute_production(path,digest,self.root/'authority.json',self.root/'reservation.json')
+        execute.assert_not_called()
+        self.assertIsNone(L.readiness()['production_request_sha256'])
 
 
 if __name__=='__main__':unittest.main()

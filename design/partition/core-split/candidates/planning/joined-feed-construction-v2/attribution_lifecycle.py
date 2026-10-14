@@ -1,12 +1,7 @@
-"""E16-owned single-use admission boundary; shared runners remain unchanged.
+"""E16 single-unit lifecycle facade and bounded fixture adapter.
 
-The production entry fails closed: the current host has no reviewed numerical
-issuer/current-reservation verifier or combined-resource qualification. The
-fixture adapter below exercises exactly the same request/claim/receipt state
-machine with explicit test-only authority; it cannot create production grants.
-A real launcher must supply independently verified evidence, guard ownership,
-and an enforced whole-lifecycle 180s/2GiB/no-swap supervisor before this boundary
-can be enabled. No public execute switch bypasses those unresolved operations.
+The production path delegates to the source-owned authenticated host/worker
+adapter. Readiness never grants qualification, authority or reservation.
 """
 import argparse
 import hashlib
@@ -16,21 +11,17 @@ from pathlib import Path
 import re
 import time
 
-import attribution_executor as E
-import attribution_reconstruction as C
-import attribution_transport as T
-from resistance_attribution import need
+import attribution_admission as A
+need=A.need
 
 LIMITS = {'diagnostics':1,'units':1,'rhs':1,'attempts':1,'seconds':180,
           'memory_bytes':2*1024**3,'swap_bytes':0,'output_bytes':64*1024**2}
 HERE=Path(__file__).resolve().parent
-SOURCE_FILES=('attribution_supervisor.py','attribution_resolution.py','attribution_executor.py','attribution_transport.py','attribution_uniqueness.py',
-              'attribution_lifecycle.py','attribution_reconstruction.py','finite_adapter.py',
-              'finite_solve.py','finite_units.py','resistance_attribution.py','numerical_unit_guard.py')
+SOURCE_FILES=A.SOURCE_NAMES
 
 
 def source_bindings():
-    return {name:hashlib.sha256((HERE/name).read_bytes()).hexdigest() for name in SOURCE_FILES}
+    return A.source_bindings()
 
 
 def artifact_bindings(packet):
@@ -50,6 +41,7 @@ def validate_request(request, digest, original_index, budget):
     Independent expected artifact hashes must come from the original request or
     retained index, never from this operation's own freshly computed hashes.
     """
+    import attribution_transport as T
     budget.check()
     need(hashlib.sha256(T.canonical(request)).hexdigest()==digest,'stale request digest')
     need(request['limits']==LIMITS and request['operation']=='e16-selected-attribution-v1','changed operation/caps')
@@ -79,6 +71,8 @@ def _once(request,digest,index,claim_directory,authority,reservation,budget):
     A fixture invocation is restricted before this function, including file paths,
     real decoded dimensions and immutable low ceilings.
     """
+    import attribution_executor as E
+    import attribution_transport as T
     budget.phase='admission'
     validate_request(request,digest,index,budget)
     for evidence,name in ((authority,'authority'),(reservation,'reservation')):
@@ -105,6 +99,8 @@ def run_fixture(request, root, authority=None, reservation=None, budget=None):
     bounds are checked before any numerical work. This does not raise or reuse
     fixture_report's ceilings, and it is not a production execution transport.
     """
+    import attribution_reconstruction as C
+    import attribution_transport as T
     root=Path(root).resolve()
     need(request.get('fixture_only') is True,'fixture marker required')
     need(root.name.startswith('e16-fixture-') and root.parent == Path('/tmp'), 'fixture root must be /tmp/e16-fixture-*')
@@ -127,7 +123,7 @@ def run_fixture(request, root, authority=None, reservation=None, budget=None):
 
 
 def readiness():
-    return {'schema':'e16-executor-readiness-v1','source_status':'SOURCE_INCOMPLETE',
+    return {'schema':'e16-executor-readiness-v1','source_status':'SOURCE_COMPLETE',
             'resource_status':'NOT_QUALIFIED','request_status':'NOT_PREPARED',
             'admission_status':'NOT_ADMITTED','execution_status':'NOT_RUN',
             'production_request_sha256':None,'production_execute_command':None,
@@ -137,17 +133,25 @@ def readiness():
                            'selected RHS and serial original Assembly mapping/accounting',
                            'quota-reserved atomic terminal transport','single-use lifecycle core and bounded fixtures',
                            'bounded subprocess supervisor with guard/cgroup/quota proof primitives',
-                           'interval forward-error bounds and resolved Stage C screen'],
-            'remaining':['reviewed host numerical authority/current-exclusive-reservation verifier',
-                         'wire supervisor to independently owned host cgroup/quota provisioning, guard-entry timestamp, fixed worker command and scope cleanup',
-                         'qualified exact-matrix certificate fill/work/object-memory and nine mesh passes per board',
-                         'complete independently sealed production packet and qualification before production authority verification'],
+                           'interval forward-error bounds and resolved Stage C screen',
+                           'exact operation compiler and separate resource-qualification request kind',
+                           'independent signature/trust-root admission and exclusive one-unit accounting',
+                           'fixed isolated worker and source-owned cgroup/tmpfs host lifecycle',
+                           'immutable output journal plus durable shared-guard acceptance'],
+            'remaining_source_gaps':[],
+            'remaining':['separately admitted combined real-data resource qualification, including exact certificate fill/work and nine mesh passes per board',
+                         'independently provisioned signer trust store and reviewed qualification evidence',
+                         'sealed exact production request, applicable signed authorization and current exclusive reservation'],
             'real_artifact_decoded':False,'numerical_units_executed':0,
             'electrical_acceptance':False,'whole_board_acceptance':False,'adopted':False}
 
 
-def execute_production(*args,**kwargs):
-    raise RuntimeError('NOT_ADMITTED: production supervisor and independently verified numerical authority/reservation adapter are not installed; no production request exists')
+def execute_production(request_path,digest,authority_path,reservation_path):
+    # Host reads only bounded metadata before shared guard entry. It authenticates
+    # exact evidence and enforces all kernel/budget gates before numerical work.
+    from attribution_host import launch
+    return launch(request_path,digest,authority_path,reservation_path)
+
 
 
 if __name__=='__main__':
