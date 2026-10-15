@@ -40,3 +40,9 @@ Interface, electrical and mechanical authors completed their disjoint files. Ind
 Next action: owner chooses bounded functional revision (including permissible offset/stagger/width/tool-service and enclosure supports) versus core-only comparison, with redesign/budget/priorities. NEXT-PROMPT.md is separately approvable and not running. #278–284 and old obligations remain open; PR260/277 remain draft/unmerged. Source checkpoint and publication receipts follow below. Default CI must be skipped because its inspected workflow starts prohibited native execution; no CI PASS inferred.
 
 Reviewed design-source commit: `48b7847abb3d076b967132ebfb13c5dd11902aa0`. NEXT-PROMPT now pins that exact implementation checkpoint; this publication metadata commit changes no generator/model. Reproduction requires the referenced immutable Git objects, including PR261 semantics; fetch their exact SHA from origin if absent, never substitute a moving branch.
+
+## Publication and stopping state
+
+Draft PR: https://github.com/Takazudo/zudo-osc-hole-field/pull/285 (base main). Initial publication HEAD628401821e0b80e79986efba120dcce276fa86e9 matched git ls-remote and GitHub PR head. Check rollup empty because CI skipped, not green. Final publication-receipt commit adds only this note. Main remains65cefd41fc39e064d38319115ad96016a1c6b71c; original checkout clean. PR260/277 heads and draft/open status reverified unchanged. No worktree or branch deleted. All agents completed; no engineering operation remains scheduled or running when this session ends.
+
+Revision-bound evidence is posted to #278–284 with the design source commit and PR. All issues remain open: completed packet/source bookkeeping is distinguished from blocked connector, electrical, mechanical and implementation acceptance. Next task is awaiting the explicit owner choice in GATE.md/NEXT-PROMPT.md; no automatic continuation, native admission or architecture adoption.
