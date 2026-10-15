@@ -1,0 +1,52 @@
+{
+  "authorship_disclosure": "Reviewer authored Stage8 mechanical source/input/evidence; those are consumed inputs, explicitly excluded from independent approval. Reviewed locality/assessment/rebudget modules authored by other agents. Locality pureplacement helper is consumed by ownmechanical code, so its integration is disclosed.",
+  "checks": {
+    "actual_package_count": 56,
+    "assessment_tests": 13,
+    "current_corridor_geometry": {
+      "blocked_connections": 0,
+      "compatible_checked_corridors": 10,
+      "critical_connections": 10,
+      "scope": "Independent full final obstacle inventory includes all different-net reserved traces/vias. No native DRC, full routing, return-plane or stability acceptance."
+    },
+    "fixed_centres": 7,
+    "independent_source_pad_reconstruction_count": 182,
+    "locality_tests": 13,
+    "method": "Reparsed eachactualfootprint pad and independently applied rearXreflection plus sin/cos quarterrotation andtranslation; comparedall sourcepadcoordinates tofinalmechanical placements without usingplacementhelper.",
+    "rebudget_tests": 3,
+    "source_units": 76
+  },
+  "findings": [
+    {
+      "detail": "Assessment omissionmutation expected inventory text but new correct reservationcheck errored earlier; root fixed diagnostic to inventory. All13tests nowPASS.",
+      "resolved": true,
+      "severity": "test regression"
+    }
+  ],
+  "limitations": [
+    "Ten critical corridors only; completeboardrouting, plane/return continuity and analogstability unqualified.",
+    "Mechanical requestedprecision manufacturing/carrying/serviceconstraints remainopen and are notapproved by thisindependent source review.",
+    "Source orthogonalpad geometry only; native/ERC/DRC/simulation/physicalNOTRUN."
+  ],
+  "native": "NOT RUN",
+  "physical_acceptance": false,
+  "reviewer": "mechanical agent",
+  "scope": [
+    "Read final locality generator including wholepackage rotations/pad obstacles/layer masks/endpointexemptions/vias/copper reservations",
+    "Read rebudget sourcebindings, interfaceobject binding, wholeinstrument overlay conservation and endpoint lengthhandoff",
+    "Read independent assessment inventory completeness and current10corridor checks"
+  ],
+  "source_sha256": {
+    "design/architecture-278/implementation/stage8/interface-input.json": "66715730c90f011246ff9800474412baa3c2ce84d509edb331cda01eae971f75",
+    "design/architecture-278/implementation/stage8/locality-report.json": "2c560c670e7724fba3d1d0042704d793b4e6a1f630f6b81afb1b716ddb5151af",
+    "design/architecture-278/implementation/stage8/mechanical-report.json": "613a29089a103ffb878933dd1a818e6c69bd074d1652d01da62cb70d64d78dab",
+    "design/architecture-278/implementation/stage8/placement-input.json": "f7dd385d0278ed3fc1ec8f9bf552394f19004769cf6c51b7b0ae444d43aa6269",
+    "scripts/architecture278/implementation/stage8_assessment.py": "3100b95cb0d459a58ff412259c82a116bda4a48738f389ffbc53b526c628dbe9",
+    "scripts/architecture278/implementation/stage8_locality.py": "e52e3e04759b86a3a4486422864ea6ac7672a9f661bb80ce75a3d990efe70995",
+    "scripts/architecture278/implementation/stage8_rebudget.py": "745e1c9c02c5851a23db438a8d1571ea7bd0735053599effbee56de7fcd1b989",
+    "scripts/architecture278/implementation/test_stage8_assessment.py": "c5c3080e7d54b8d9d51df1d278f838927541d0d1a4441ba9f11cd227468f8ddf",
+    "scripts/architecture278/implementation/test_stage8_locality.py": "0d3e052407b5dfddf2354cd7251802692770790473e8ec2124afecb8d01d038e",
+    "scripts/architecture278/implementation/test_stage8_rebudget.py": "24f4d2c7c4451f40751291dc46a7b7330c90d68e1d4f8a91b69c58f6fe03c2d8"
+  },
+  "status": "PASS bounded source/corridor review; no physical or manufacturing acceptance"
+}

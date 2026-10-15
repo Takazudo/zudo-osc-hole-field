@@ -1,6 +1,6 @@
 # O1 candidate source checkpoint — Stage 1 remains OPEN
 
-**Current source result:** [STAGE7.md](STAGE7.md) completes a conditional X1 source demonstrator with explicit mounting/clearance constraints, actual connector pads and pin maps, and complete signal/rail/return allocations. All56 packages/76 units/10 bypasses/7 fixed devices are preserved. Electrical and physical acceptance remain OPEN; unknown neighboring geometry and2572 non-OSC K+13 POWER hosting remain unresolved. The225 OSC paths/240 returns remain byte-identical to Stage6. Earlier sections below are historical checkpoints, not current acceptance claims.
+**Current source result:** [STAGE8.md](STAGE8.md) repairs X1 substrate topology and demonstrates ten compatible critical copper corridors, while retaining explicit precision-machining, enclosure and service-support conditions. All56 packages remain. Remote signal allocations worsen with the whole-quad move and are fully recomputed;54 conditional current cases expose shared-return limits. Native/ERC/DRC/physical acceptance and fullStage1 remain OPEN. Stage7 and earlier sections below are historical evidence, not current acceptance claims.
 
 This isolated implementation branch starts at PR285 `d218fc537818dcbbd470eb15d192cfc8d0be5f0a`. The owner authorized the one-zone candidate source stage; that approval is not native exact-run admission, architecture adoption or hardware authority. KEEP_K1402_INCUMBENT. PR285 evidence and canonical sources remain byte-identical.
 
