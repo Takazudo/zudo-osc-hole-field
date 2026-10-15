@@ -1,6 +1,6 @@
 # O1 candidate source checkpoint — Stage 1 remains OPEN
 
-**Current source result:** [STAGE3.md](STAGE3.md) records the all-five live identity audit, occupied-volume reservations and240 new outline/cluster/connector cases. The best new family reaches334.018mm (38 paths above300mm); the bypass-refined alternative reaches336.199mm (50). Both conflict with the shared-reference placement and lack qualified remaining-function/service volume. Neither is accepted. [STAGE2.md](STAGE2.md) and the sections below remain reproducible historical checkpoints; Stage1 stays OPEN.
+**Current source result:** [STAGE4.md](STAGE4.md) audits occupied/service volumes and the meaning of300mm. The original unvalidated rule refers to harness length; the later complete-path interpretation is retained as a strict sensitivity comparison, not a measured failure threshold. Pitch and Gate paths now have source-bound, distinct characterization needs. A rigid shared-group/two-grip repair clears those nominal local reservations, but seven DIN/GH land exclusions and other-function hosting remain unresolved. No candidate is accepted; [STAGE3.md](STAGE3.md) and earlier checkpoints remain reproducible.
 
 This isolated implementation branch starts at PR285 `d218fc537818dcbbd470eb15d192cfc8d0be5f0a`. The owner authorized the one-zone candidate source stage; that approval is not native exact-run admission, architecture adoption or hardware authority. KEEP_K1402_INCUMBENT. PR285 evidence and canonical sources remain byte-identical.
 
