@@ -1,3 +1,5 @@
+> Historical revision-1 review and exact input hashes are retained below. Current revision-2 review receipts are review-revision-electrical.md and review-revision-mechanical.md; see GATE.md for the current conditional recommendation.
+
 # Independent circuit/source review — #280 / #284
 
 Reviewer: circuit_review subagent, independent of the packet authors. Review is confined to source mapping and retained evidence; it is not electrical or hardware qualification. Baseline is 65cefd41fc39e064d38319115ad96016a1c6b71c. Execution lane: Python 3 on the parent's WSL Linux checkout. No native, SPICE, routing or bench campaign ran.

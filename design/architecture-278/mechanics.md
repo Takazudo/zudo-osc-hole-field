@@ -1,3 +1,5 @@
+> Historical revision-1 analysis below. The owner authorized the next bounded design revision; see [revision-mechanics.md](revision-mechanics.md), [current gate](GATE.md) and the revision-2 reports for the current recommendation. Earlier failed/partial evidence is retained, not superseded by a physical PASS.
+
 # Mechanical feasibility: REVISE, not architecture adoption
 
 Reproduce with `python3 scripts/architecture278/mechanics.py --check` and `python3 -m unittest discover -s scripts/architecture278 -p test_mechanics.py`. The generated report hashes every input; `mechanical-envelope.svg` shows fixed O1/O2 centres and proposed rear access reservations. These calculations use Python scalar arithmetic only. CAD/native campaigns, deflection analysis, physical fit and energized tests are **NOT RUN**. No front hardware positions change. `regen-all.sh` is **NOT RUN**: its canonical CAD/native stages exceed this design-only authorization.

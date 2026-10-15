@@ -1,3 +1,5 @@
+> Historical revision-1 review and exact input hashes are retained below. Current revision-2 review receipts are review-revision-electrical.md and review-revision-mechanical.md; see GATE.md for the current conditional recommendation.
+
 # Independent electrical design-gate review — #282 / #284
 
 Reviewer: circuit_review subagent; did not author the electrical model, input, report or tests. Read exact final electrical files, source oscillator builder, source power/current and reference fanout records, and complete O1 interface mapping. This review is independent of the electrical author. Baseline 65cefd41fc39e064d38319115ad96016a1c6b71c; exact reviewed bytes below.

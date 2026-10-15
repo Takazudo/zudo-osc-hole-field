@@ -1,3 +1,5 @@
+> Historical revision-1 review and exact input hashes are retained below. Current revision-2 review receipts are review-revision-electrical.md and review-revision-mechanical.md; see GATE.md for the current conditional recommendation.
+
 # Independent mechanical/service review — #281 / #283 / #284
 
 Recommendation: **REVISE**. This is an independent read-only review of the authored packet and retained dimensional inputs. The reviewer did not author the model or design. No proposed dimension is engineering acceptance. No CAD/native campaigns, physical fit, structural test, energized test or fabrication validation ran.

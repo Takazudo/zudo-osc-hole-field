@@ -15,7 +15,7 @@ def main():
     changed=subprocess.check_output(['git','diff','--name-only',BASE],cwd=ROOT,text=True).splitlines()
     untracked=subprocess.check_output(['git','ls-files','--others','--exclude-standard'],cwd=ROOT,text=True).splitlines()
     validate_paths(changed+untracked)
-    for script in ('ledger.py','extract.py','mechanics.py','electrical.py'):
+    for script in ('ledger.py','extract.py','mechanics.py','electrical.py','populated_mechanics.py','revision_electrical.py','orientation_sweep.py'):
         subprocess.run([sys.executable,str(ROOT/'scripts/architecture278'/script),'--check'],cwd=ROOT,check=True)
     print('PASS: owned-output reproduction and protected-path guard; native/physical qualification NOT RUN')
 if __name__=='__main__':main()

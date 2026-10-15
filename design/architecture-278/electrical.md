@@ -1,3 +1,5 @@
+> Historical revision-1 analysis below. The owner authorized the next bounded design revision; see [revision-connectors.md](revision-connectors.md), [current gate](GATE.md) and the revision-2 reports for the current recommendation. Earlier failed/partial evidence is retained, not superseded by a physical PASS.
+
 # Electrical allocation and unresolved closure — #282
 
 This packet supports **REVISE**, not adoption. No source, rail, return, contact or reference path has a qualified maximum. The new middle PCB does not reset a limit. The limited-change core-card comparison inherits the same limits and unknown loads; reducing connectors alone cannot prove closure. Old finite-path coverage and classified omissions remain historical evidence; no rerun, numerical certificate or reduced-load result is promoted to electrical acceptance.

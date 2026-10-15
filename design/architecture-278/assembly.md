@@ -1,3 +1,5 @@
+> Historical revision-1 analysis below. The owner authorized the next bounded design revision; see [revision-connectors.md](revision-connectors.md), [current gate](GATE.md) and the revision-2 reports for the current recommendation. Earlier failed/partial evidence is retained, not superseded by a physical PASS.
+
 # Adjacent assembly burden and service boundary
 
 The report lists all 11 O1 harnesses, their conductor/return counts, historical cut-length upper bounds from `loom-candidate.json`, and both baseline and same-path candidate connection costs. Lengths are design upper bounds, not purchased cut lengths or measured wires. The two-link comparison retains every existing signal/return endpoint: front-to-middle plus middle-to-rear with no hidden deletion. Return multiplicity may increase after electrical allocation.
