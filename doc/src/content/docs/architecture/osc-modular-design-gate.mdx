@@ -1,0 +1,14 @@
+---
+title: "Modular architecture design gate"
+description: "Source inventories, bounded front/middle/rear architecture studies and the independent decision checkpoint for epic 278."
+---
+
+The preferred candidate has separate front jack and control PCBs, a middle interconnect/power/reference zone, and removable rear functional cards. A limited-change core-only-card alternative retains existing front boards. Neither is adopted. All five oscillators, 33 functions and 438 locked panel centres remain fixed. Canonical copper and KEEP_K1402_INCUMBENT remain unchanged; every schematic and PCB is an unvalidated draft.
+
+The reviewable packet lives in `design/architecture-278/` and its reproducible extraction/checking tools in `scripts/architecture278/`. The packet includes whole-instrument source/reuse and requirement ledgers, every O1/shared-reference Ref-pin and package unit, both ends of the 11 O1 harnesses, raw control wipers, existing rear supply terminals, bounded mechanical/electrical studies and adjacent O1/O2 assembly comparison. Source extraction and arithmetic do not qualify hardware.
+
+The gate recommendation and exact blockers are in `design/architecture-278/GATE.md`; `WORK.md` records inputs, actual checks and reviews. `NEXT-PROMPT.md` is a separately approvable continuation, not an execution instruction. Start from the packet's explicit source revision, never from whichever parked worktree happens to exist.
+
+Existing #57 source, #59 protection, #55/#65 mechanical and #247 electrical completeness obligations remain open. Missing whole-load, fault, installed support and service evidence prevents physical acceptance. Five-cent tracking at 25 °C and 2 mV adjacent octave steps are targets; 0.015–20,000 Hz is characterization only. A physical unit and independently assembled second unit are required before replication, followed by all-five and full-instrument qualification.
+
+The old #242/#253 execution stack and E16 campaigns remain parked. PR #260/#277 stay draft and unmerged. No production CAD, decision.json, fabrication/order files, native campaign, deployment or hardware action is authorized by this design packet.
