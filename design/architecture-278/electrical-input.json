@@ -1,0 +1,212 @@
+{
+  "schema_version": 1,
+  "status": "PROPOSED allocation only; no physical qualification",
+  "limits": {
+    "branch_K_ground_mohm": 0.5,
+    "rail_transfer_mohm": 1,
+    "hot_distribution_mV": 20,
+    "full_path_V": 0.2,
+    "GH_contact_A": 0.5
+  },
+  "limit_source": "#282 acceptance; design/partition/rail-access-current-mechanisms.md; interface-contract.json source_crossing",
+  "states": [
+    "quiescent",
+    "loaded",
+    "startup",
+    "brownout",
+    "missing-rail",
+    "off-state-injection",
+    "output-short"
+  ],
+  "resistance_segments": [
+    {
+      "id": "source-output",
+      "group": "source",
+      "allocation_mohm": null,
+      "actual_mohm": null,
+      "elements": [
+        "both mated contact interfaces and crimps",
+        "wire",
+        "trace/vias/spreading"
+      ],
+      "source": "#282 allocation proposal; exact route and connector choice OPEN",
+      "condition": "worst temperature, ageing, tolerance; no equal current sharing assumption"
+    },
+    {
+      "id": "source-middle-hot",
+      "group": "rail",
+      "allocation_mohm": 0.25,
+      "actual_mohm": null,
+      "elements": [
+        "both mated contact interfaces and crimps",
+        "wire",
+        "trace/vias/spreading"
+      ],
+      "source": "#282 allocation proposal; exact route and connector choice OPEN",
+      "condition": "worst temperature, ageing, tolerance; no equal current sharing assumption"
+    },
+    {
+      "id": "middle-zone-hot",
+      "group": "rail",
+      "allocation_mohm": 0.25,
+      "actual_mohm": null,
+      "elements": [
+        "both mated contact interfaces and crimps",
+        "wire",
+        "trace/vias/spreading"
+      ],
+      "source": "#282 allocation proposal; exact route and connector choice OPEN",
+      "condition": "worst temperature, ageing, tolerance; no equal current sharing assumption"
+    },
+    {
+      "id": "middle-interface-hot",
+      "group": "rail",
+      "allocation_mohm": 0.25,
+      "actual_mohm": null,
+      "elements": [
+        "both mated contact interfaces and crimps",
+        "wire",
+        "trace/vias/spreading"
+      ],
+      "source": "#282 allocation proposal; exact route and connector choice OPEN",
+      "condition": "worst temperature, ageing, tolerance; no equal current sharing assumption"
+    },
+    {
+      "id": "interface-load-hot",
+      "group": "rail",
+      "allocation_mohm": 0.25,
+      "actual_mohm": null,
+      "elements": [
+        "both mated contact interfaces and crimps",
+        "wire",
+        "trace/vias/spreading"
+      ],
+      "source": "#282 allocation proposal; exact route and connector choice OPEN",
+      "condition": "worst temperature, ageing, tolerance; no equal current sharing assumption"
+    },
+    {
+      "id": "load-interface-return",
+      "group": "ground",
+      "allocation_mohm": 0.125,
+      "actual_mohm": null,
+      "elements": [
+        "both mated contact interfaces and crimps",
+        "wire",
+        "trace/vias/spreading"
+      ],
+      "source": "#282 allocation proposal; exact route and connector choice OPEN",
+      "condition": "worst temperature, ageing, tolerance; no equal current sharing assumption"
+    },
+    {
+      "id": "interface-middle-return",
+      "group": "ground",
+      "allocation_mohm": 0.125,
+      "actual_mohm": null,
+      "elements": [
+        "both mated contact interfaces and crimps",
+        "wire",
+        "trace/vias/spreading"
+      ],
+      "source": "#282 allocation proposal; exact route and connector choice OPEN",
+      "condition": "worst temperature, ageing, tolerance; no equal current sharing assumption"
+    },
+    {
+      "id": "middle-zone-return",
+      "group": "ground",
+      "allocation_mohm": 0.125,
+      "actual_mohm": null,
+      "elements": [
+        "both mated contact interfaces and crimps",
+        "wire",
+        "trace/vias/spreading"
+      ],
+      "source": "#282 allocation proposal; exact route and connector choice OPEN",
+      "condition": "worst temperature, ageing, tolerance; no equal current sharing assumption"
+    },
+    {
+      "id": "middle-source-return",
+      "group": "ground",
+      "allocation_mohm": 0.125,
+      "actual_mohm": null,
+      "elements": [
+        "both mated contact interfaces and crimps",
+        "wire",
+        "trace/vias/spreading"
+      ],
+      "source": "#282 allocation proposal; exact route and connector choice OPEN",
+      "condition": "worst temperature, ageing, tolerance; no equal current sharing assumption"
+    }
+  ],
+  "reference": {
+    "branches": 5,
+    "aggregate_limit_pF": 1000,
+    "shared_trace_pF": 50,
+    "shared_test_pF": 50,
+    "branch": {
+      "cable_pF": 80,
+      "contacts_pF": 10,
+      "trace_pF": 30,
+      "receiver_pF": 20,
+      "test_pF": 20
+    },
+    "remote_length_mm": 300,
+    "remote_limit_mm": 300,
+    "actual_capacitance_pF": null,
+    "error_terms_uV": {
+      "contact": 100,
+      "remote_return": 200,
+      "loading": 200,
+      "drift": 200,
+      "noise_peak": 100,
+      "source_and_buffer_offset": 200
+    },
+    "actual_errors_uV": null,
+    "adjacent_step_target_uV": 2000,
+    "conditions": "Proposed worst-case absolute additive allocation at receiver relative to its local AGND; bandwidth/temperature/time interval OPEN. 2 mV is a target, not a qualified result."
+  },
+  "fault_owners": {
+    "source_capacity": "#57",
+    "sequence_injection_protection": "#59",
+    "VEE5": "#65",
+    "connector_power_distribution": "#247"
+  },
+  "topology_comparison": {
+    "preferred": {
+      "shared_prefix": [
+        "source-output",
+        "source-middle-hot",
+        "middle-zone-hot"
+      ],
+      "independent_branches": [
+        "front-jack",
+        "front-control",
+        "rear-core",
+        "shared-reference"
+      ],
+      "branch_tail": [
+        "middle-interface-hot",
+        "interface-load-hot"
+      ],
+      "rule": "Each source-to-load path uses common prefix once and one branch tail; common edges sum downstream currents once. No series front-to-core power requirement.",
+      "actual_contacts_per_branch": null
+    },
+    "core_only": {
+      "shared_prefix": [
+        "source-output",
+        "source-middle-hot",
+        "middle-zone-hot"
+      ],
+      "independent_branches": [
+        "retained-JL-JR-P-interfaces",
+        "removable-core",
+        "shared-reference"
+      ],
+      "branch_tail": [
+        "middle-interface-hot",
+        "interface-load-hot"
+      ],
+      "rule": "Same functionality and budget envelope; retained interfaces and added core connection require exact graph before assigning resistance savings.",
+      "actual_contacts_per_branch": null
+    }
+  }
+}
