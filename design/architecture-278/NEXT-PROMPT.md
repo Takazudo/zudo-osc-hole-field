@@ -10,7 +10,7 @@ Epic #278; source #279, interface #280, mechanics #281, electrical #282, adjacen
 
 Production comparison base: `65cefd41fc39e064d38319115ad96016a1c6b71c`.
 Previous design checkpoint: `4fbbe9c28c10b2648bd1edd8e45e9ff8c5651212`.
-Revision-2 source checkpoint: **TO BE PINNED AFTER FINAL REVIEW**.
+Revision-2 source checkpoint: `f29fc1e8efc0541023fcb62db50b75e762f7f6da`.
 Parked PR260: `5af0e7b675123b40367078ee605a1355bae49a62`.
 Parked PR277: `fdac23b2611dcb26f840c520348771821ea9c35d`.
 Linked architecture evidence: `011e8be351e81d51a13d2d56cb246fd36d623843`.
