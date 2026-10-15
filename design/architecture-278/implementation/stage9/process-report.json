@@ -1,0 +1,53 @@
+{
+  "JLC_precision_size_screen": {
+    "X1-control": {
+      "bare_board_dimensions_mm": [
+        36,
+        32
+      ],
+      "meets_minimum_size_only": false,
+      "missing": "actual profile/cutout positional bound and tooling/panel applicability",
+      "precision_acceptance": false
+    },
+    "X1-jack": {
+      "bare_board_dimensions_mm": [
+        75.69999999999999,
+        53.620000000000005
+      ],
+      "meets_minimum_size_only": true,
+      "missing": "actual profile/cutout positional bound and tooling/panel applicability",
+      "precision_acceptance": false
+    }
+  },
+  "alternative_policy": "Remove precision-dependent foreign-pin passages by separating the circuit substrate from the fixed terminal plane; ordinary outline capability still requires actual data review, but is not used as proof of tight cutout clearance.",
+  "comparison_scope": "No reviewed source supplies both requested contour limits for this construction. Hole tolerances are not contour tolerances; minimum slot width is not profile accuracy. No assertion that no other supplier could do it.",
+  "construction": {
+    "copper_layers_proposed": 2,
+    "interior_features": "nonplated routed openings/edge notches",
+    "source_stage": "Stage8 preserved",
+    "substrate": "rigid FR4 candidate; exact laminate not selected",
+    "thickness_mm": 1.6
+  },
+  "derived_limits": {
+    "euro_standard_combined_allowance_mm": 0.4,
+    "euro_standard_worst_land_gap_mm": -0.2799999999999785,
+    "interpretation": "Conservative additive dimensional+registration convention from Stage8; nominal outward compensation protects inward cut and twice allowance screens outward cut. Not statistical tolerance combination.",
+    "maximum_combined_allowance_mm": 0.13500000000001078,
+    "pre_tolerance_minimum_land_gap_mm": 0.5200000000000216,
+    "requested_combined_allowance_mm": 0.1,
+    "requested_worst_land_gap_mm": 0.32000000000002154
+  },
+  "hardware_acceptance": false,
+  "native": "NOT RUN",
+  "physical": "NOT RUN",
+  "published_precision_cutout_acceptance": false,
+  "simulation": "NOT RUN",
+  "smallest_external_evidence_for_present": "A construction-specific supplier statement covering contour-to-land/registration datums, every cutout/notch, tool radius, FR4 thickness/layers and the combined allowance. No outreach performed.",
+  "source_sha256": {
+    "design/architecture-278/implementation/stage8/mechanical-report.json": "613a29089a103ffb878933dd1a818e6c69bd074d1652d01da62cb70d64d78dab",
+    "design/architecture-278/implementation/stage9/process-evidence.json": "31825669a1bba5d216ec29367be8db0e27fea6273cf61833fe1c1055ac8f3b8d",
+    "scripts/architecture278/implementation/stage9_process.py": "d55fe819b077c8e5a450cb94c2e34a257075865bcce60ccadfbe6deced9f6d1f",
+    "scripts/architecture278/implementation/test_stage9_process.py": "1f74d5cfa3ed126408a61abc61bdefebfba339748f71cfa11b805bc1e2e62548"
+  },
+  "supplier_contacted": false
+}

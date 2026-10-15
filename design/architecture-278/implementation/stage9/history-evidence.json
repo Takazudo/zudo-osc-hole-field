@@ -1,0 +1,362 @@
+{
+  "architecture_adopted": false,
+  "baseline_commit": "a7cb09da7f7b53100c3e6610ebeeda59e89e852c",
+  "conclusions": {
+    "fixed_for_this_work": [
+      "438panel centres and33functions",
+      "retained flat318\u00d7298panel baseline",
+      "no home soldering; independent structural supports",
+      "repeatable power-off/discharged service and calibration access are acceptance obligations"
+    ],
+    "interpretation": "No accepted numeric inner/outer enclosure envelope was found in reviewed evidence. Panel dimensions do not establish enclosure cavity.120,95,105depth and322innerX remain proposals; no owner max depth found. Null means not established, not unlimited verified free volume.",
+    "not_accepted_enclosure_dimensions": {
+      "inner_depth_mm": null,
+      "inner_height_mm": null,
+      "inner_width_mm": null,
+      "outer_depth_mm": null,
+      "outer_height_mm": null,
+      "outer_width_mm": null
+    },
+    "unknown_service_values": [
+      "accepted cycle life",
+      "accepted insertion/withdrawal force for whole assembly",
+      "accepted whole-instrument service time",
+      "accepted tool/workspace envelope",
+      "actual outer shell thickness/rail/anchor positions"
+    ]
+  },
+  "native": "NOT RUN",
+  "physical": "NOT RUN",
+  "records": [
+    {
+      "claim": "Factory assembly; no home soldering. Do not make routine service depend on owner soldering.",
+      "classification": "RECORDED_ACCEPTED_USER_DECISION",
+      "evidence": {
+        "blob_sha256": "c304a0b55cce402e6d61e9a40f6bfe5c24258a23a1a1b33a1c14c8028de54c16",
+        "commit": "cc6dc4d30d4a3cfb288f4ddd2c6d6f707fc4765b",
+        "excerpt": "  {\n    \"id\": \"D02\",\n    \"authority\": \"USER\",\n    \"decision\": \"No home soldering; external standard parts acceptable when factory supplied/populated.\",\n    \"status\": \"accepted user decision\"",
+        "kind": "committed_repository_source",
+        "lines": [
+          8,
+          12
+        ],
+        "path": "project/osc-hole-field/decisions.json",
+        "url": "https://github.com/Takazudo/zudo-osc-hole-field/blob/cc6dc4d30d4a3cfb288f4ddd2c6d6f707fc4765b/project/osc-hole-field/decisions.json#L8"
+      },
+      "id": "OWNER_NO_HOME_SOLDER"
+    },
+    {
+      "claim": "Preserve original hardware positions; later current scope explicitly preserves438centres.",
+      "classification": "RECORDED_ACCEPTED_USER_DECISION",
+      "evidence": {
+        "blob_sha256": "c304a0b55cce402e6d61e9a40f6bfe5c24258a23a1a1b33a1c14c8028de54c16",
+        "commit": "cc6dc4d30d4a3cfb288f4ddd2c6d6f707fc4765b",
+        "excerpt": "  {\n    \"id\": \"D04\",\n    \"authority\": \"USER\",\n    \"decision\": \"Retain all existing 180 jack positions and 142 control positions; two new pots only.\",\n    \"status\": \"accepted user decision\"",
+        "kind": "committed_repository_source",
+        "lines": [
+          20,
+          24
+        ],
+        "path": "project/osc-hole-field/decisions.json",
+        "url": "https://github.com/Takazudo/zudo-osc-hole-field/blob/cc6dc4d30d4a3cfb288f4ddd2c6d6f707fc4765b/project/osc-hole-field/decisions.json#L20"
+      },
+      "id": "OWNER_FIXED_POSITIONS"
+    },
+    {
+      "claim": "Flat panel, height-compatible interface PCBs, rear core and properly clamped jack bushings; no numeric enclosure envelope in this decision.",
+      "classification": "RECORDED_ACCEPTED_USER_DECISION",
+      "evidence": {
+        "blob_sha256": "c304a0b55cce402e6d61e9a40f6bfe5c24258a23a1a1b33a1c14c8028de54c16",
+        "commit": "cc6dc4d30d4a3cfb288f4ddd2c6d6f707fc4765b",
+        "excerpt": "  {\n    \"id\": \"D09\",\n    \"authority\": \"USER\",\n    \"decision\": \"Flat panel plus height-compatible interface PCBs and rear core. Properly clamped jack bushings.\",\n    \"status\": \"accepted user decision\"",
+        "kind": "committed_repository_source",
+        "lines": [
+          50,
+          54
+        ],
+        "path": "project/osc-hole-field/decisions.json",
+        "url": "https://github.com/Takazudo/zudo-osc-hole-field/blob/cc6dc4d30d4a3cfb288f4ddd2c6d6f707fc4765b/project/osc-hole-field/decisions.json#L50"
+      },
+      "id": "OWNER_FLAT_PANEL_STACK"
+    },
+    {
+      "claim": "318\u00d7298mm names the front panel, not enclosure internal or external dimensions.",
+      "classification": "RETAINED_PANEL_BASELINE",
+      "evidence": {
+        "account": "Takazudo",
+        "authorship_caution": "Repository account attribution alone does not prove a direct human approval; use explicit authority/status wording.",
+        "body_lines_at_retrieval": [
+          45,
+          48
+        ],
+        "body_sha256": "685d3c03f07ce6af7f496c59af1dbdc667f10c4906167f403ed9a441c55d086c",
+        "excerpt": "**Expected**\n\n- One flat rectangle, 318 \u00d7 298 mm. Jack field above (18 columns \u00d7 10 rows), control field below (18 columns \u00d7 8 rows), separated by one horizontal gold divider line at y = 166 mm.\n- 324 holes on the lockfile coordinates, plus 114 indicator windows: one to the right of each flagged jack, a second one just below it for the ten clip indicators, one to the right of each RISE and FALL pot.",
+        "kind": "github_issue_or_PR_record",
+        "number": 20,
+        "updated_at": "2026-10-02T03:14:32Z",
+        "url": "https://github.com/Takazudo/zudo-osc-hole-field/issues/20"
+      },
+      "id": "PANEL_318_298"
+    },
+    {
+      "claim": "318\u00d7298\u00d72mm panel,438centres and zero front support drills; clip geometry remains a proposal.",
+      "classification": "CURRENT_REPOSITORY_REQUIREMENT",
+      "evidence": {
+        "account": "Takazudo",
+        "authorship_caution": "Repository account attribution alone does not prove a direct human approval; use explicit authority/status wording.",
+        "body_lines_at_retrieval": [
+          37,
+          39
+        ],
+        "body_sha256": "60c9f9ec4c2d0981cc063622309b5540a28896e8374ac0a16f2acf1b28990be8",
+        "excerpt": "Regenerate the flat 318\u00d7298\u00d72 mm panel from current geometry/panel parameters, preserving all 438 x/y centres and owner artwork. Control domains are consolidated to P, octave hardware remains O and 12 stage LEDs are EL. J remains the jack/102-indicator domain. Apertures remain conditional: jack6.2, pot6.3, toggle5.2, button5.0, octave shaft-only7.0 mm; 1.6 mm bare-FR4 mask-open indicator windows remain a proposal, not optical qualification.\n\n**The 35 EL support holes are internal PCB holes, not front-panel drills.** Thirty also require internal P clearances; five top posts are outside P. J8/P6/K8 edge support holes and K191 \u00d82.2 service-tool apertures are likewise internal. The decided front support drill count is zero. Check candidate segmented enclosure clips within clear portions of the 0\u20133 mm border against artwork, copper, existing hardware/nut/shaft apertures and assembly tools. A continuous solid lip is rejected by the projected P collar (1.1 mm) and outer jack-nut (0.65 mm) intrusions; exact clip positions, profiles and installed loads remain OPEN #65. Do not silently add a 35-hole front fastener pattern. P is x1\u2013317 with support collars centred x3.5/314.5; check its projected edge setback while preserving the panel face geometry.",
+        "kind": "github_issue_or_PR_record",
+        "number": 37,
+        "updated_at": "2026-10-02T08:42:17Z",
+        "url": "https://github.com/Takazudo/zudo-osc-hole-field/issues/37"
+      },
+      "id": "CURRENT_PANEL_AND_NO_NEW_FRONT_DRILLS"
+    },
+    {
+      "claim": "Factory soldering and load paths independent of connector friction/solder; board count may change after full interface proof.",
+      "classification": "RECORDED_OWNER_REQUIREMENT",
+      "evidence": {
+        "account": "Takazudo",
+        "authorship_caution": "Repository account attribution alone does not prove a direct human approval; use explicit authority/status wording.",
+        "body_lines_at_retrieval": [
+          45,
+          53
+        ],
+        "body_sha256": "8969c29ba864ebb49d9c582142b5849b0bc0ea578a963b7e2a9af6aa1a982ebb",
+        "excerpt": "## What the owner decided (may not change)\n\n- One flat panel, all jacks above all controls; hardware positions fixed.\n- Jack bushings clamp to the panel with their nuts. No recessed jack behind a plug-sized hole. No raising the whole panel to suit one part.\n- Flat panel plus height-compatible interface boards and a rear core (decision D09). The handoff's own architecture page adds: \"Merge or split boards only after demonstrating the full mechanical and electrical interface. A large number of boards is not a requirement in itself.\"\n- The pot family, the octave selector and both toggle types. The push button is only a candidate and may change to another height variant of its family.\n- Each selected power assembly needs its own dimensioned pocket, support and cable exits under #48. A pinned P+B assembly is about 116 \u00d7 91 mm and 25 mm tall; a one-pocket preview does not establish room for multiple assemblies.\n- All soldering by a factory. Connector friction and solder joints are not structural support for plug insertion, knob torque or button presses.\n- Timing, hold, integrator and slew storage nodes never cross a connector.",
+        "kind": "github_issue_or_PR_record",
+        "number": 35,
+        "updated_at": "2026-10-02T08:21:02Z",
+        "url": "https://github.com/Takazudo/zudo-osc-hole-field/issues/35"
+      },
+      "id": "OWNER_LOADPATH_RECORD"
+    },
+    {
+      "claim": "No owner-defined maximum depth or assembly-cost target was recorded;120mm enclosure is a working proposal, not physical minimum.",
+      "classification": "EXPLICIT_UNKNOWN_OWNER_LIMIT",
+      "evidence": {
+        "blob_sha256": "7ea6ac79c62e0733df1c4b2efdf5f7c1518efaa9c28d25ae13d09649e6a6a15f",
+        "commit": "500d79404220871f3b13fbedb0eedcffe8162f08",
+        "excerpt": "## Bounded architecture continuation \u2014 1 October 2026\n\nRetain K at \u2212100 mm, the proposed 120 mm enclosure, all ten boards and the selected 3+2 selector assembly. There is no owner-defined maximum depth or assembly-cost target. This working decision preserves all 438 centres, 33 modules, 650 fitted ICs, sensitive islands and the complete feature set; it does not establish that 120 mm is a physical minimum or that a factory accepts the assembly.",
+        "kind": "committed_repository_source",
+        "lines": [
+          19,
+          21
+        ],
+        "path": "doc/src/content/docs/decisions/osc-board-partition.mdx",
+        "url": "https://github.com/Takazudo/zudo-osc-hole-field/blob/500d79404220871f3b13fbedb0eedcffe8162f08/doc/src/content/docs/decisions/osc-board-partition.mdx#L19"
+      },
+      "id": "NO_OWNER_MAX_DEPTH"
+    },
+    {
+      "claim": "Legacy K remains tethered by18soldered wires; source does not prove unrestricted replacement or owner soldering.",
+      "classification": "HISTORICAL_NEGATIVE_EVIDENCE",
+      "evidence": {
+        "blob_sha256": "7ea6ac79c62e0733df1c4b2efdf5f7c1518efaa9c28d25ae13d09649e6a6a15f",
+        "commit": "500d79404220871f3b13fbedb0eedcffe8162f08",
+        "excerpt": "Simply moving K to \u221299 mm with the old 125 mm main-wire ceiling raises the JL scalar screen to 0.501995 A. A \u221298 mm / 110 mm combination saves only 2 mm while leaving less current margin. Retain the present depth instead. The source now derives K support depth and hook-sweep depth from its plane, enclosure and explicit proposed offsets; these remain unqualified support/tool envelopes, not manufacturer latch dimensions or a full 3D service check.\n\nAssembly still requires 195 harnesses, 390 headers and housings, 1,822 fitted crimps, eighteen main wires and 36 main-wire solder lands. K's 191 GH mates have proposed service apertures for latch access; actual release remains unqualified, but **the eighteen soldered main wires still tether K**. After removing external power and proving discharge, release combs and mates before supporting and unfastening K. A qualified limited displacement or factory desoldering/replacement procedure is still needed; unrestricted board removal and owner soldering are not implied. The five adapters, two custom extensions, five custom knobs and carrier remain subject to #55.",
+        "kind": "committed_repository_source",
+        "lines": [
+          27,
+          29
+        ],
+        "path": "doc/src/content/docs/decisions/osc-board-partition.mdx",
+        "url": "https://github.com/Takazudo/zudo-osc-hole-field/blob/500d79404220871f3b13fbedb0eedcffe8162f08/doc/src/content/docs/decisions/osc-board-partition.mdx#L27"
+      },
+      "id": "OLD_SERVICE_LIMITATION"
+    },
+    {
+      "claim": "Earlier15mm card/20mm finger/120mm enclosure reservations were never owner requirements.",
+      "classification": "EXPLICIT_PROPOSAL",
+      "evidence": {
+        "blob_sha256": "a84e71c4b4c9f5f8da67f7dbb1fec50725f77afdc67bf75ab1235fffb03f96ea",
+        "commit": "f29fc1e8efc0541023fcb62db50b75e762f7f6da",
+        "excerpt": "This revision recommends planar rear core tiles with a mechanically supported direct-mating DIN96 connection, short flexible front links, and separately supported bolted power/return straps. It replaces the earlier 15 mm card/20 mm inter-card finger/120 mm enclosure reservations. The owner authorized investigation and proposals; those dimensions were never requirements. This is a design proposal, not architecture adoption or physical acceptance.",
+        "kind": "committed_repository_source",
+        "lines": [
+          3,
+          3
+        ],
+        "path": "design/architecture-278/revision-mechanics.md",
+        "url": "https://github.com/Takazudo/zudo-osc-hole-field/blob/f29fc1e8efc0541023fcb62db50b75e762f7f6da/design/architecture-278/revision-mechanics.md#L3"
+      },
+      "id": "OLD_RESERVATIONS_NOT_REQUIREMENTS"
+    },
+    {
+      "claim": "318\u00d7298panel projection is not a fixed rear-enclosure footprint; larger rearXY or other arrangements are possible proposals, with unknown other-function occupancy.",
+      "classification": "EXPLICIT_PROPOSAL",
+      "evidence": {
+        "blob_sha256": "a84e71c4b4c9f5f8da67f7dbb1fec50725f77afdc67bf75ab1235fffb03f96ea",
+        "commit": "f29fc1e8efc0541023fcb62db50b75e762f7f6da",
+        "excerpt": "The five reservations consume 59,225 mm\u00b2 of the 94,764 mm\u00b2 panel projection, leaving **35,539 mm\u00b2**, fragmented. Other 28 functions have not been populated into that space. This is an explicit whole-instrument capacity risk, not a claim that all 33 functions fit. Future functions may require a larger rear enclosure in XY, changed tile sizes, or a second lateral carrier arrangement while preserving the panel. The O1/O2 proof must not silently reserve occupied future function volumes. Upper row oscillator identities are a proposal and must be reconciled against their own control path lengths before five-card replication.",
+        "kind": "committed_repository_source",
+        "lines": [
+          15,
+          15
+        ],
+        "path": "design/architecture-278/revision-mechanics.md",
+        "url": "https://github.com/Takazudo/zudo-osc-hole-field/blob/f29fc1e8efc0541023fcb62db50b75e762f7f6da/design/architecture-278/revision-mechanics.md#L15"
+      },
+      "id": "REAR_XY_CAN_CHANGE"
+    },
+    {
+      "claim": "95/105mm inner cover depth,40mm withdrawal and100mm workspace are candidate allocations, not accepted enclosure/service dimensions.",
+      "classification": "EXPLICIT_PROPOSAL",
+      "evidence": {
+        "blob_sha256": "a84e71c4b4c9f5f8da67f7dbb1fec50725f77afdc67bf75ab1235fffb03f96ea",
+        "commit": "f29fc1e8efc0541023fcb62db50b75e762f7f6da",
+        "excerpt": "Recommend **105 mm inner cover depth**, leaving 16.8 mm after an 18 mm rear handle projection and 1 mm depth tolerance. A 95 mm inner depth leaves 6.8 mm and is a credible compact option; 105 mm gives more room for terminal insulation, labels and cover flex without lengthening the electrical path. Neither option is an already approved enclosure. The cover opens across the entire 318 \u00d7298 rear carrier projection; allow 100 mm clear external work depth. Rear cards withdraw axially 40 mm after release, clearing the signal mate and locating pins before lifting away. Cover fitted extraction is prohibited.",
+        "kind": "committed_repository_source",
+        "lines": [
+          21,
+          21
+        ],
+        "path": "design/architecture-278/revision-mechanics.md",
+        "url": "https://github.com/Takazudo/zudo-osc-hole-field/blob/f29fc1e8efc0541023fcb62db50b75e762f7f6da/design/architecture-278/revision-mechanics.md#L21"
+      },
+      "id": "95_105_DEPTH_AND_SERVICE_STROKES"
+    },
+    {
+      "claim": "Front and middle independent supports and retained selector geometry must be respected by this candidate; seated dimensions remain unqualified.",
+      "classification": "PROPOSED_ARCHITECTURE_REQUIREMENT",
+      "evidence": {
+        "blob_sha256": "a84e71c4b4c9f5f8da67f7dbb1fec50725f77afdc67bf75ab1235fffb03f96ea",
+        "commit": "f29fc1e8efc0541023fcb62db50b75e762f7f6da",
+        "excerpt": "Front jack/control boards and their carriers remain independently attached to the enclosure. The middle uses its own frame; removing a rear tile does not remove the middle. The retained front body evidence, actual locked O1/O2 coordinates and all five selector planes appear in the generated report. The alternating 16/29 mm selector planes and 13 mm O2/O4 extensions remain. Rear selector tails reach 33 mm; a 9 mm front middle connector allowance plus 1 mm depth tolerance leaves 7 mm to the 50 mm middle datum. WQP518MA seated shoulder datum and Bourns PTV09 exact seated datum remain unqualified. The front redesign must establish those dimensions using a coupon; changing the rear tile does not fix them. No unsupported assertion of full front-PCB component packing is made.",
+        "kind": "committed_repository_source",
+        "lines": [
+          29,
+          29
+        ],
+        "path": "design/architecture-278/revision-mechanics.md",
+        "url": "https://github.com/Takazudo/zudo-osc-hole-field/blob/f29fc1e8efc0541023fcb62db50b75e762f7f6da/design/architecture-278/revision-mechanics.md#L29"
+      },
+      "id": "INDEPENDENT_FRONT_MIDDLE_SUPPORT"
+    },
+    {
+      "claim": "Real supported insertion/extraction, six trims, power-off/discharged removal, no hot swap or routine owner soldering, normal calibration without middle removal. Exact procedure remains unqualified.",
+      "classification": "CURRENT_REPOSITORY_ACCEPTANCE_OBLIGATION",
+      "evidence": {
+        "account": "Takazudo",
+        "authorship_caution": "Repository account attribution alone does not prove a direct human approval; use explicit authority/status wording.",
+        "body_lines_at_retrieval": [
+          12,
+          15
+        ],
+        "body_sha256": "0decfb77e301e3f5f5c633aa364ca3d8e5beafceb4b4463116d224b9f0dba903",
+        "excerpt": "- Show supported insertion/extraction, jack/knob and rear-terminal force paths, board deflection and tolerance stack. Connector friction and solder joints cannot be structural support.\n- Demonstrate access to all 6 trimmers, reference GND/power and measurement points with realistic screwdriver/probe/finger/loom envelopes, neighboring obstruction placeholders and rear cover. Avoid measurement additions that materially load sensitive nodes.\n- Give assembly order and powered calibration versus **power-off/discharged** removal/replacement procedures; no hot swap and no owner soldering needed for routine service. Normal calibration should not require removing the middle board.\n- If openings are proposed, assess route area, continuous return paths and stiffness, not just tool passage. Record enclosure-depth/support constraints requiring owner decisions.",
+        "kind": "github_issue_or_PR_record",
+        "number": 281,
+        "updated_at": "2026-10-15T12:09:47Z",
+        "url": "https://github.com/Takazudo/zudo-osc-hole-field/issues/281"
+      },
+      "id": "REPEATABLE_SERVICE"
+    },
+    {
+      "claim": "Coupon must verify seated heights, tolerance, supports, repeated loads, strain relief, connectors and removal sequence; no physical acceptance implied.",
+      "classification": "CURRENT_REPOSITORY_ACCEPTANCE_OBLIGATION",
+      "evidence": {
+        "account": "Takazudo",
+        "authorship_caution": "Repository account attribution alone does not prove a direct human approval; use explicit authority/status wording.",
+        "body_lines_at_retrieval": [
+          1,
+          13
+        ],
+        "body_sha256": "5d3ea1af6f7790453c880eec2b516617fede5dd07325ea0e26fd5040c1511722",
+        "excerpt": "## Purpose\n\nPersistent physical qualification of the conditional nine-board stack selected in #35. CAD courtyard, cable-corridor, power-loss and support-hole checks do not prove assembled fit, stiffness or strain relief. This issue remains open after the unvalidated draft PCB work; it does not authorize procurement or fabrication.\n\n## Required first-article evidence\n\n- Build a representative stack coupon at the fixed panel hardware centres, covering jack nut/plug load, bushingless pot knob torque, toggle/button actuation, the rear core at its selected depth, and all optical/selector carrier planes. Measure true seated hardware heights, body/shaft/collar clearances, panel thickness and tolerance stack; verify no jack/control coordinate moved.\n- Verify every proposed internal M2/M3 support, collar and enclosure carrier load path, fastener exact identity, captive assembly access and repeated insertion/actuation stiffness. Solder joints and connector friction must not be the structural support.\n- Factory-assemble representative JST GH3/GH7/GH8 harnesses using selected exact wire, crimp and housing. Measure insertion/extraction retention, wire pull force, bend radius, loom clearance, chafe/strain relief, routing, connector access and board removal sequence. Audit pin 1 and all signal/AGND/rail continuity against #36's cross-board map.\n- Measure hot wire/contact and plane resistance, normal and single-fault return currents, rail/AGND displacement and load-side voltage loss with credible operating and startup loads. Do not assume balanced current among parallel AGND contacts or patch sleeves. Coordinate power-off/partial-return behavior with exact protection issue #59 and source/inlet issue #57.\n- Record coupon revisions, ambient, instruments, photos, dimensions, load cases and failure limits. If a deterministic conflict is found, revise #35 sources and affected board projects before any claim of fit or release.\n\nLinks: #1, #35, #36, #37, #38\u2013#43, #55 selector-specific, #57 source/inlet, #59 exact protection, #64 optical/hot LED. All schematics/PCBs remain unvalidated drafts. No order files, purchases, quotes, supplier contact or deployment.",
+        "kind": "github_issue_or_PR_record",
+        "number": 65,
+        "updated_at": "2026-09-28T19:02:44Z",
+        "url": "https://github.com/Takazudo/zudo-osc-hole-field/issues/65"
+      },
+      "id": "PHYSICAL_QUALIFICATION_OPEN"
+    },
+    {
+      "claim": "Owner authorized proposing engineering dimensions/supports; candidate implementation permission does not adopt architecture or authorize hardware.",
+      "classification": "AUTHORITY_BOUNDARY",
+      "evidence": {
+        "blob_sha256": "14aa2c1ccaf54653b8ce4bb99b10f51cc90cd2db2e8f9d8b012a9ce31e0948c7",
+        "commit": "a7cb09da7f7b53100c3e6610ebeeda59e89e852c",
+        "excerpt": "# Separately authorized next stage: one-zone candidate implementation\n\nThis prompt is for the owner's next approval. It does not execute from being present in the repository. The owner has already authorized the bounded design revision delivered here, including proposing front-board redesign, enclosure depth, card placement, supports and connectors. Do not ask for those engineering parameters again. This prompt requests a distinct source/schematic/PCB implementation stage; it does not adopt the architecture or authorize hardware.",
+        "kind": "committed_repository_source",
+        "lines": [
+          1,
+          3
+        ],
+        "path": "design/architecture-278/NEXT-PROMPT.md",
+        "url": "https://github.com/Takazudo/zudo-osc-hole-field/blob/a7cb09da7f7b53100c3e6610ebeeda59e89e852c/design/architecture-278/NEXT-PROMPT.md#L1"
+      },
+      "id": "DESIGN_AUTHORIZATION_NOT_ADOPTION"
+    },
+    {
+      "claim": "322mm internalX and new side rails/bosses are Stage8 proposals;318 was panel projection. No outer width or accepted inner width follows.",
+      "classification": "EXPLICIT_PROPOSAL",
+      "evidence": {
+        "blob_sha256": "8f1b1ef377adea426818c7afa2beaf386cfa6ff5c7afa4511e6d421255c221e0",
+        "commit": "a7cb09da7f7b53100c3e6610ebeeda59e89e852c",
+        "excerpt": "    \"enclosure_change\": \"Proposed 322 mm internal X instead of318 mm panel projection; fixed panel centres unchanged. New side rail/boss anchorage required, no existing hole assumption.\",",
+        "kind": "committed_repository_source",
+        "lines": [
+          115,
+          115
+        ],
+        "path": "design/architecture-278/implementation/stage8/mechanical-input.json",
+        "url": "https://github.com/Takazudo/zudo-osc-hole-field/blob/a7cb09da7f7b53100c3e6610ebeeda59e89e852c/design/architecture-278/implementation/stage8/mechanical-input.json#L115"
+      },
+      "id": "STAGE8_INTERNAL_322"
+    },
+    {
+      "claim": "PR285 still labels50/69.2/105mm middle/core/cover depths proposed.",
+      "classification": "EXPLICIT_PROPOSAL",
+      "evidence": {
+        "account": "Takazudo",
+        "authorship_caution": "Repository account attribution alone does not prove a direct human approval; use explicit authority/status wording.",
+        "body_lines_at_retrieval": [
+          5,
+          8
+        ],
+        "body_sha256": "a96bb38108c37d340d948e75e122a91f62387d7d9e6b4a6a585152622944fbcd",
+        "excerpt": "Implemented evidence:\n- All retained inventories and immutable source/reuse obligations preserved; all 438 fixed centres and 33 functions unchanged.\n- Populated O1/O2 103\u00d7115 mm rear tiles with 154 packages each, complete package/unit mapping, six rear-facing trims, tool/probe/handle/support/extraction checks. Proposed middle/core/inner-cover depths: 50/69.2/105 mm.\n- Exact HARTING candidate evidence, explicit DIN pinout and all legacy conductor dispositions. Functional control grouping: 11 harnesses/54 conductors/108 crimps, versus original 11/51/102 and literal two-cable 22/102/204. Includes seven control returns and three added reference branches; 192 DIN solder joints, 108 GH signal joints and 44 hold-down joints counted. Power/service/fixture hardware is separately counted; no cost/time savings claimed.",
+        "kind": "github_issue_or_PR_record",
+        "number": 285,
+        "updated_at": "2026-10-15T05:07:24Z",
+        "url": "https://github.com/Takazudo/zudo-osc-hole-field/pull/285"
+      },
+      "id": "PR285_DEPTH_STATUS"
+    },
+    {
+      "claim": "Current implementation PR retains322mm enclosure/six anchors and service backing as conditional; SW608 support remains open.",
+      "classification": "EXPLICIT_PROPOSAL",
+      "evidence": {
+        "account": "Takazudo",
+        "authorship_caution": "Repository account attribution alone does not prove a direct human approval; use explicit authority/status wording.",
+        "body_lines_at_retrieval": [
+          4,
+          6
+        ],
+        "body_sha256": "123d859aa18887c2da493bce14081932d12c66be1b73169ae9ceecb2e6dbf639",
+        "excerpt": "\n- Preserves five OSC,33functions,438fixed centres,5904instrument packages and all56X1 packages/76units/182pins/10bypasses. Prior Stage1\u20137 evidence is unchanged.\n- Removes exact obsolete cutout ligaments; retains standard-process failure. Requested contour allowance0.10mm must be supplier-accepted (maximum compatible0.135mm). Proposed322mm enclosure/six anchors and service backing remain conditional; SW608 has no conservative support-strip route.",
+        "kind": "github_issue_or_PR_record",
+        "number": 286,
+        "updated_at": "2026-10-15T13:26:24Z",
+        "url": "https://github.com/Takazudo/zudo-osc-hole-field/pull/286"
+      },
+      "id": "PR286_STAGE8_NOT_ACCEPTED"
+    }
+  ],
+  "retrieval_date_UTC": "2026-10-15",
+  "scope": "Bounded repository history for panel/partition/architecture sources; live issue/PR bodies1,20,35,37,55,65,278\u2013286; comments1,20,35,37,55,65,278,281,283,285. Not an exhaustive search of private owner conversations or all repository comments. Account attribution alone is not human approval.",
+  "source_sha256": {
+    "design/architecture-278/NEXT-PROMPT.md": "14aa2c1ccaf54653b8ce4bb99b10f51cc90cd2db2e8f9d8b012a9ce31e0948c7",
+    "design/architecture-278/implementation/stage8/mechanical-input.json": "8f1b1ef377adea426818c7afa2beaf386cfa6ff5c7afa4511e6d421255c221e0",
+    "design/architecture-278/revision-mechanics.md": "a84e71c4b4c9f5f8da67f7dbb1fec50725f77afdc67bf75ab1235fffb03f96ea",
+    "doc/src/content/docs/decisions/osc-board-partition.mdx": "7ea6ac79c62e0733df1c4b2efdf5f7c1518efaa9c28d25ae13d09649e6a6a15f",
+    "project/osc-hole-field/decisions.json": "8845af4c6c5f24b614a106662e1306214e23bafc803d81334ce0e1f3c81d9881"
+  },
+  "status": "BOUNDED HISTORY AUDIT; NO ENCLOSURE OR ARCHITECTURE ADOPTION"
+}

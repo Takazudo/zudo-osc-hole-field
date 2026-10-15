@@ -1,0 +1,989 @@
+{
+  "budget_delta_scope": "Each new physical terminal wire has38mm maximum cut allocation,570mm sum over15 distinct wires. Sum is inventory, not one signal path. Existing transport endpoint Z, front J-PWR XY and middle C-PWR position change, so Stage8 length/slack/return budgets cannot be carried forward as actual Stage9 values. Output-tip extension is shared by load/remote-feedback paths; do not double-count it as two wires. Source XY/Z are nominal retained datums, not measured factory tails.",
+  "counts": {
+    "LED_bridge_wires": 6,
+    "added_crimps": 0,
+    "added_mated_contacts": 0,
+    "added_mating_interfaces": 0,
+    "existing_transport_wires": 15,
+    "extended_active_terminals": 15,
+    "fixed_packages": 7,
+    "jack_sleeve_AGND_wires": 3,
+    "jack_tip_wires": 3,
+    "new_wire_end_terminations": 30,
+    "retained_jack_TN_NC": 3,
+    "selector_wires": 3,
+    "total_candidate_physical_wires": 30
+  },
+  "hardware_acceptance": false,
+  "native": "NOT RUN",
+  "physical": "NOT RUN",
+  "required_later_inputs": [
+    "actual terminal/land/strain geometry and accepted factory termination process",
+    "whole path cable/copper length and aggregate capacitance for every affected net",
+    "actual wire/copper/contact R and external return division",
+    "output remote-feedback loop parasitics and assembled stability",
+    "selector open-state leakage/capacitance and transition response",
+    "LED extension loop parasitics, source headroom and local-board support"
+  ],
+  "return_interpretation": "Three new sleeve conductors preserve AGND but add unknown series impedance and external patch return paths. LED conductors retain signed bridge paths, not substitute ground returns. Existing four service-harness AGND conductors remain electrically joined; no equal sharing/cancellation credit.",
+  "service_boundary": "Two separate permanent factory subassemblies, jack and control; each disconnects its two existing service ports for routine replacement. Individual terminal repair requires factory process, not home soldering. No new GH3/GH7 interface reproduces the rejected power/signal mis-mate.",
+  "simulation": "NOT RUN",
+  "slack_scope": "Straight endpoint distance and proposed polyline allocation only; positive numerical slack is not proof of installed routing, bend radius, insulation clearance, termination reach or physical fit.",
+  "source_counts_scope": "56 original X1 packages and76 units remain required; new terminal lands/support substrates are transport/mechanical items, not replacements for original devices.",
+  "source_sha256": {
+    "design/architecture-278/implementation/stage8/interfaces-report.json": "b2c1c6729e85fc58471a0ea9533fba8b1a23e98a87b4dc32303b05a0e83e3224",
+    "design/architecture-278/implementation/stage9/support-report.json": "cecc6fcee6b1b3c0810ebeb152c8fdf29930d47dd5d8311f23fafa226b5e5382",
+    "scripts/architecture278/implementation/stage9_electrical.py": "2e35d0b2926a5dbbbe2282f235272f1d7849637531d17a79a6a33adac53e0ce5",
+    "scripts/architecture278/implementation/test_stage9_electrical.py": "197b4244529b97234ea4957c852ed694087fd1dd71650e5ae14a61c503f51caf"
+  },
+  "status": "TERMINAL INTERCONNECT DELTA ONLY; NOT ASSEMBLED ACCEPTANCE",
+  "terminal_extensions": [
+    {
+      "electrical_role": "external sleeve return; sharing with local/middle AGND unknown",
+      "from_LED_land_id": null,
+      "from_xyz_mm": [
+        133.5,
+        134.52,
+        20
+      ],
+      "geometric_distance_mm": 15.130115663801119,
+      "geometric_wire_minimum_mm": 15.130115663801119,
+      "local_copper_status": "NoadditionallocalPCBleg",
+      "local_plus_wire_allocation_mm": 38,
+      "local_terminal_copper_mm": 0,
+      "maximum_wire_cut_mm": 38,
+      "minimum_geometric_slack_mm": 16.86988433619888,
+      "minimum_proposed_route_slack_mm": 15.02000000000001,
+      "net": "AGND",
+      "owner": "X1-jack",
+      "pin": "S",
+      "proposed_developed_wire_mm": 16.97999999999999,
+      "proposed_wire_points_xyz_mm": [
+        [
+          133.5,
+          134.52,
+          20
+        ],
+        [
+          133.5,
+          134.52,
+          27
+        ],
+        [
+          133.5,
+          134.52,
+          27
+        ],
+        [
+          133.5,
+          136.5,
+          27
+        ],
+        [
+          133.5,
+          136.5,
+          35
+        ]
+      ],
+      "ref": "J809",
+      "scope": "Factorywiretoactualproposedland; retainedterminalZisnominalPCBdatum, notmeasuredfreetail solderposition",
+      "source_terminal_xyz_mm": [
+        133.5,
+        134.52,
+        20
+      ],
+      "target_land_id": "X1:permanent:J809:S",
+      "to_xyz_mm": [
+        133.5,
+        136.5,
+        35
+      ],
+      "wire_nominal_mm": 35,
+      "wire_tolerance_mm": 3
+    },
+    {
+      "electrical_role": "LED bridge current; retain A/K polarity, neither conductor is AGND",
+      "from_LED_land_id": "D809:wire:1",
+      "from_xyz_mm": [
+        138.15,
+        142.5,
+        21.6
+      ],
+      "geometric_distance_mm": 14.497672226947332,
+      "geometric_wire_minimum_mm": 14.497672226947332,
+      "local_copper_status": "UnroutedLEDpad-to-wireland allocation including1.6mmbarrel",
+      "local_plus_wire_allocation_mm": 42.12500000000001,
+      "local_terminal_copper_mm": 4.125000000000007,
+      "maximum_wire_cut_mm": 38,
+      "minimum_geometric_slack_mm": 17.50232777305267,
+      "minimum_proposed_route_slack_mm": 10.949999999999996,
+      "net": "/X1/C025c3f_LED_K",
+      "owner": "X1-jack",
+      "pin": "1",
+      "proposed_developed_wire_mm": 21.050000000000004,
+      "proposed_wire_points_xyz_mm": [
+        [
+          138.15,
+          142.5,
+          21.6
+        ],
+        [
+          138.15,
+          142.5,
+          27
+        ],
+        [
+          133.5,
+          142.5,
+          27
+        ],
+        [
+          133.5,
+          139.5,
+          27
+        ],
+        [
+          133.5,
+          139.5,
+          35
+        ]
+      ],
+      "ref": "D809",
+      "scope": "Factorywiretoactualproposedland; retainedterminalZisnominalPCBdatum, notmeasuredfreetail solderposition",
+      "source_terminal_xyz_mm": [
+        139.175,
+        141.0,
+        20
+      ],
+      "target_land_id": "X1:permanent:D809:1",
+      "to_xyz_mm": [
+        133.5,
+        139.5,
+        35
+      ],
+      "wire_nominal_mm": 35,
+      "wire_tolerance_mm": 3
+    },
+    {
+      "electrical_role": "LED bridge current; retain A/K polarity, neither conductor is AGND",
+      "from_LED_land_id": "D809:wire:2",
+      "from_xyz_mm": [
+        141.15,
+        142.5,
+        21.6
+      ],
+      "geometric_distance_mm": 15.429922229227211,
+      "geometric_wire_minimum_mm": 15.429922229227211,
+      "local_copper_status": "UnroutedLEDpad-to-wireland allocation including1.6mmbarrel",
+      "local_plus_wire_allocation_mm": 42.12500000000001,
+      "local_terminal_copper_mm": 4.125000000000007,
+      "maximum_wire_cut_mm": 38,
+      "minimum_geometric_slack_mm": 16.57007777077279,
+      "minimum_proposed_route_slack_mm": 10.949999999999996,
+      "net": "/X1/C025c3f_LED_A",
+      "owner": "X1-jack",
+      "pin": "2",
+      "proposed_developed_wire_mm": 21.050000000000004,
+      "proposed_wire_points_xyz_mm": [
+        [
+          141.15,
+          142.5,
+          21.6
+        ],
+        [
+          141.15,
+          142.5,
+          27
+        ],
+        [
+          133.5,
+          142.5,
+          27
+        ],
+        [
+          133.5,
+          142.5,
+          27
+        ],
+        [
+          133.5,
+          142.5,
+          35
+        ]
+      ],
+      "ref": "D809",
+      "scope": "Factorywiretoactualproposedland; retainedterminalZisnominalPCBdatum, notmeasuredfreetail solderposition",
+      "source_terminal_xyz_mm": [
+        140.125,
+        141.0,
+        20
+      ],
+      "target_land_id": "X1:permanent:D809:2",
+      "to_xyz_mm": [
+        133.5,
+        142.5,
+        35
+      ],
+      "wire_nominal_mm": 35,
+      "wire_tolerance_mm": 3
+    },
+    {
+      "electrical_role": "external input before ADG5412F protection",
+      "from_LED_land_id": null,
+      "from_xyz_mm": [
+        133.5,
+        145.92,
+        20
+      ],
+      "geometric_distance_mm": 15.00587884797155,
+      "geometric_wire_minimum_mm": 15.00587884797155,
+      "local_copper_status": "NoadditionallocalPCBleg",
+      "local_plus_wire_allocation_mm": 38,
+      "local_terminal_copper_mm": 0,
+      "maximum_wire_cut_mm": 38,
+      "minimum_geometric_slack_mm": 16.99412115202845,
+      "minimum_proposed_route_slack_mm": 16.580000000000013,
+      "net": "/X1/A_TIP",
+      "owner": "X1-jack",
+      "pin": "T",
+      "proposed_developed_wire_mm": 15.419999999999987,
+      "proposed_wire_points_xyz_mm": [
+        [
+          133.5,
+          145.92,
+          20
+        ],
+        [
+          133.5,
+          145.92,
+          27
+        ],
+        [
+          133.5,
+          145.92,
+          27
+        ],
+        [
+          133.5,
+          145.5,
+          27
+        ],
+        [
+          133.5,
+          145.5,
+          35
+        ]
+      ],
+      "ref": "J809",
+      "scope": "Factorywiretoactualproposedland; retainedterminalZisnominalPCBdatum, notmeasuredfreetail solderposition",
+      "source_terminal_xyz_mm": [
+        133.5,
+        145.92,
+        20
+      ],
+      "target_land_id": "X1:permanent:J809:T",
+      "to_xyz_mm": [
+        133.5,
+        145.5,
+        35
+      ],
+      "wire_nominal_mm": 35,
+      "wire_tolerance_mm": 3
+    },
+    {
+      "electrical_role": "external sleeve return; sharing with local/middle AGND unknown",
+      "from_LED_land_id": null,
+      "from_xyz_mm": [
+        150.5,
+        134.52,
+        20
+      ],
+      "geometric_distance_mm": 15.130115663801119,
+      "geometric_wire_minimum_mm": 15.130115663801119,
+      "local_copper_status": "NoadditionallocalPCBleg",
+      "local_plus_wire_allocation_mm": 38,
+      "local_terminal_copper_mm": 0,
+      "maximum_wire_cut_mm": 38,
+      "minimum_geometric_slack_mm": 16.86988433619888,
+      "minimum_proposed_route_slack_mm": 15.02000000000001,
+      "net": "AGND",
+      "owner": "X1-jack",
+      "pin": "S",
+      "proposed_developed_wire_mm": 16.97999999999999,
+      "proposed_wire_points_xyz_mm": [
+        [
+          150.5,
+          134.52,
+          20
+        ],
+        [
+          150.5,
+          134.52,
+          27
+        ],
+        [
+          150.5,
+          134.52,
+          27
+        ],
+        [
+          150.5,
+          136.5,
+          27
+        ],
+        [
+          150.5,
+          136.5,
+          35
+        ]
+      ],
+      "ref": "J909",
+      "scope": "Factorywiretoactualproposedland; retainedterminalZisnominalPCBdatum, notmeasuredfreetail solderposition",
+      "source_terminal_xyz_mm": [
+        150.5,
+        134.52,
+        20
+      ],
+      "target_land_id": "X1:permanent:J909:S",
+      "to_xyz_mm": [
+        150.5,
+        136.5,
+        35
+      ],
+      "wire_nominal_mm": 35,
+      "wire_tolerance_mm": 3
+    },
+    {
+      "electrical_role": "LED bridge current; retain A/K polarity, neither conductor is AGND",
+      "from_LED_land_id": "D909:wire:1",
+      "from_xyz_mm": [
+        155.15,
+        142.5,
+        21.6
+      ],
+      "geometric_distance_mm": 14.497672226947332,
+      "geometric_wire_minimum_mm": 14.497672226947332,
+      "local_copper_status": "UnroutedLEDpad-to-wireland allocation including1.6mmbarrel",
+      "local_plus_wire_allocation_mm": 42.12500000000001,
+      "local_terminal_copper_mm": 4.125000000000007,
+      "maximum_wire_cut_mm": 38,
+      "minimum_geometric_slack_mm": 17.50232777305267,
+      "minimum_proposed_route_slack_mm": 10.949999999999996,
+      "net": "/X1/Cc6c62b_LED_K",
+      "owner": "X1-jack",
+      "pin": "1",
+      "proposed_developed_wire_mm": 21.050000000000004,
+      "proposed_wire_points_xyz_mm": [
+        [
+          155.15,
+          142.5,
+          21.6
+        ],
+        [
+          155.15,
+          142.5,
+          27
+        ],
+        [
+          150.5,
+          142.5,
+          27
+        ],
+        [
+          150.5,
+          139.5,
+          27
+        ],
+        [
+          150.5,
+          139.5,
+          35
+        ]
+      ],
+      "ref": "D909",
+      "scope": "Factorywiretoactualproposedland; retainedterminalZisnominalPCBdatum, notmeasuredfreetail solderposition",
+      "source_terminal_xyz_mm": [
+        156.175,
+        141.0,
+        20
+      ],
+      "target_land_id": "X1:permanent:D909:1",
+      "to_xyz_mm": [
+        150.5,
+        139.5,
+        35
+      ],
+      "wire_nominal_mm": 35,
+      "wire_tolerance_mm": 3
+    },
+    {
+      "electrical_role": "LED bridge current; retain A/K polarity, neither conductor is AGND",
+      "from_LED_land_id": "D909:wire:2",
+      "from_xyz_mm": [
+        158.15,
+        142.5,
+        21.6
+      ],
+      "geometric_distance_mm": 15.429922229227211,
+      "geometric_wire_minimum_mm": 15.429922229227211,
+      "local_copper_status": "UnroutedLEDpad-to-wireland allocation including1.6mmbarrel",
+      "local_plus_wire_allocation_mm": 42.12500000000001,
+      "local_terminal_copper_mm": 4.125000000000007,
+      "maximum_wire_cut_mm": 38,
+      "minimum_geometric_slack_mm": 16.57007777077279,
+      "minimum_proposed_route_slack_mm": 10.949999999999996,
+      "net": "/X1/Cc6c62b_LED_A",
+      "owner": "X1-jack",
+      "pin": "2",
+      "proposed_developed_wire_mm": 21.050000000000004,
+      "proposed_wire_points_xyz_mm": [
+        [
+          158.15,
+          142.5,
+          21.6
+        ],
+        [
+          158.15,
+          142.5,
+          27
+        ],
+        [
+          150.5,
+          142.5,
+          27
+        ],
+        [
+          150.5,
+          142.5,
+          27
+        ],
+        [
+          150.5,
+          142.5,
+          35
+        ]
+      ],
+      "ref": "D909",
+      "scope": "Factorywiretoactualproposedland; retainedterminalZisnominalPCBdatum, notmeasuredfreetail solderposition",
+      "source_terminal_xyz_mm": [
+        157.125,
+        141.0,
+        20
+      ],
+      "target_land_id": "X1:permanent:D909:2",
+      "to_xyz_mm": [
+        150.5,
+        142.5,
+        35
+      ],
+      "wire_nominal_mm": 35,
+      "wire_tolerance_mm": 3
+    },
+    {
+      "electrical_role": "external input before ADG5412F protection",
+      "from_LED_land_id": null,
+      "from_xyz_mm": [
+        150.5,
+        145.92,
+        20
+      ],
+      "geometric_distance_mm": 15.00587884797155,
+      "geometric_wire_minimum_mm": 15.00587884797155,
+      "local_copper_status": "NoadditionallocalPCBleg",
+      "local_plus_wire_allocation_mm": 38,
+      "local_terminal_copper_mm": 0,
+      "maximum_wire_cut_mm": 38,
+      "minimum_geometric_slack_mm": 16.99412115202845,
+      "minimum_proposed_route_slack_mm": 16.580000000000013,
+      "net": "/X1/B_TIP",
+      "owner": "X1-jack",
+      "pin": "T",
+      "proposed_developed_wire_mm": 15.419999999999987,
+      "proposed_wire_points_xyz_mm": [
+        [
+          150.5,
+          145.92,
+          20
+        ],
+        [
+          150.5,
+          145.92,
+          27
+        ],
+        [
+          150.5,
+          145.92,
+          27
+        ],
+        [
+          150.5,
+          145.5,
+          27
+        ],
+        [
+          150.5,
+          145.5,
+          35
+        ]
+      ],
+      "ref": "J909",
+      "scope": "Factorywiretoactualproposedland; retainedterminalZisnominalPCBdatum, notmeasuredfreetail solderposition",
+      "source_terminal_xyz_mm": [
+        150.5,
+        145.92,
+        20
+      ],
+      "target_land_id": "X1:permanent:J909:T",
+      "to_xyz_mm": [
+        150.5,
+        145.5,
+        35
+      ],
+      "wire_nominal_mm": 35,
+      "wire_tolerance_mm": 3
+    },
+    {
+      "electrical_role": "external sleeve return; sharing with local/middle AGND unknown",
+      "from_LED_land_id": null,
+      "from_xyz_mm": [
+        167.5,
+        134.52,
+        20
+      ],
+      "geometric_distance_mm": 15.130115663801119,
+      "geometric_wire_minimum_mm": 15.130115663801119,
+      "local_copper_status": "NoadditionallocalPCBleg",
+      "local_plus_wire_allocation_mm": 38,
+      "local_terminal_copper_mm": 0,
+      "maximum_wire_cut_mm": 38,
+      "minimum_geometric_slack_mm": 16.86988433619888,
+      "minimum_proposed_route_slack_mm": 15.02000000000001,
+      "net": "AGND",
+      "owner": "X1-jack",
+      "pin": "S",
+      "proposed_developed_wire_mm": 16.97999999999999,
+      "proposed_wire_points_xyz_mm": [
+        [
+          167.5,
+          134.52,
+          20
+        ],
+        [
+          167.5,
+          134.52,
+          27
+        ],
+        [
+          167.5,
+          134.52,
+          27
+        ],
+        [
+          167.5,
+          136.5,
+          27
+        ],
+        [
+          167.5,
+          136.5,
+          35
+        ]
+      ],
+      "ref": "J1009",
+      "scope": "Factorywiretoactualproposedland; retainedterminalZisnominalPCBdatum, notmeasuredfreetail solderposition",
+      "source_terminal_xyz_mm": [
+        167.5,
+        134.52,
+        20
+      ],
+      "target_land_id": "X1:permanent:J1009:S",
+      "to_xyz_mm": [
+        167.5,
+        136.5,
+        35
+      ],
+      "wire_nominal_mm": 35,
+      "wire_tolerance_mm": 3
+    },
+    {
+      "electrical_role": "LED bridge current; retain A/K polarity, neither conductor is AGND",
+      "from_LED_land_id": "D1009:wire:1",
+      "from_xyz_mm": [
+        172.15,
+        142.5,
+        21.6
+      ],
+      "geometric_distance_mm": 14.497672226947332,
+      "geometric_wire_minimum_mm": 14.497672226947332,
+      "local_copper_status": "UnroutedLEDpad-to-wireland allocation including1.6mmbarrel",
+      "local_plus_wire_allocation_mm": 42.12500000000001,
+      "local_terminal_copper_mm": 4.125000000000007,
+      "maximum_wire_cut_mm": 38,
+      "minimum_geometric_slack_mm": 17.50232777305267,
+      "minimum_proposed_route_slack_mm": 10.949999999999996,
+      "net": "/X1/C7971de_LED_K",
+      "owner": "X1-jack",
+      "pin": "1",
+      "proposed_developed_wire_mm": 21.050000000000004,
+      "proposed_wire_points_xyz_mm": [
+        [
+          172.15,
+          142.5,
+          21.6
+        ],
+        [
+          172.15,
+          142.5,
+          27
+        ],
+        [
+          167.5,
+          142.5,
+          27
+        ],
+        [
+          167.5,
+          139.5,
+          27
+        ],
+        [
+          167.5,
+          139.5,
+          35
+        ]
+      ],
+      "ref": "D1009",
+      "scope": "Factorywiretoactualproposedland; retainedterminalZisnominalPCBdatum, notmeasuredfreetail solderposition",
+      "source_terminal_xyz_mm": [
+        173.175,
+        141.0,
+        20
+      ],
+      "target_land_id": "X1:permanent:D1009:1",
+      "to_xyz_mm": [
+        167.5,
+        139.5,
+        35
+      ],
+      "wire_nominal_mm": 35,
+      "wire_tolerance_mm": 3
+    },
+    {
+      "electrical_role": "LED bridge current; retain A/K polarity, neither conductor is AGND",
+      "from_LED_land_id": "D1009:wire:2",
+      "from_xyz_mm": [
+        175.15,
+        142.5,
+        21.6
+      ],
+      "geometric_distance_mm": 15.429922229227211,
+      "geometric_wire_minimum_mm": 15.429922229227211,
+      "local_copper_status": "UnroutedLEDpad-to-wireland allocation including1.6mmbarrel",
+      "local_plus_wire_allocation_mm": 42.12500000000001,
+      "local_terminal_copper_mm": 4.125000000000007,
+      "maximum_wire_cut_mm": 38,
+      "minimum_geometric_slack_mm": 16.57007777077279,
+      "minimum_proposed_route_slack_mm": 10.949999999999996,
+      "net": "/X1/C7971de_LED_A",
+      "owner": "X1-jack",
+      "pin": "2",
+      "proposed_developed_wire_mm": 21.050000000000004,
+      "proposed_wire_points_xyz_mm": [
+        [
+          175.15,
+          142.5,
+          21.6
+        ],
+        [
+          175.15,
+          142.5,
+          27
+        ],
+        [
+          167.5,
+          142.5,
+          27
+        ],
+        [
+          167.5,
+          142.5,
+          27
+        ],
+        [
+          167.5,
+          142.5,
+          35
+        ]
+      ],
+      "ref": "D1009",
+      "scope": "Factorywiretoactualproposedland; retainedterminalZisnominalPCBdatum, notmeasuredfreetail solderposition",
+      "source_terminal_xyz_mm": [
+        174.125,
+        141.0,
+        20
+      ],
+      "target_land_id": "X1:permanent:D1009:2",
+      "to_xyz_mm": [
+        167.5,
+        142.5,
+        35
+      ],
+      "wire_nominal_mm": 35,
+      "wire_tolerance_mm": 3
+    },
+    {
+      "electrical_role": "output load AND remote feedback common branch",
+      "from_LED_land_id": null,
+      "from_xyz_mm": [
+        167.5,
+        145.92,
+        20
+      ],
+      "geometric_distance_mm": 15.00587884797155,
+      "geometric_wire_minimum_mm": 15.00587884797155,
+      "local_copper_status": "NoadditionallocalPCBleg",
+      "local_plus_wire_allocation_mm": 38,
+      "local_terminal_copper_mm": 0,
+      "maximum_wire_cut_mm": 38,
+      "minimum_geometric_slack_mm": 16.99412115202845,
+      "minimum_proposed_route_slack_mm": 16.580000000000013,
+      "net": "/X1/OUT_TIP",
+      "owner": "X1-jack",
+      "pin": "T",
+      "proposed_developed_wire_mm": 15.419999999999987,
+      "proposed_wire_points_xyz_mm": [
+        [
+          167.5,
+          145.92,
+          20
+        ],
+        [
+          167.5,
+          145.92,
+          27
+        ],
+        [
+          167.5,
+          145.92,
+          27
+        ],
+        [
+          167.5,
+          145.5,
+          27
+        ],
+        [
+          167.5,
+          145.5,
+          35
+        ]
+      ],
+      "ref": "J1009",
+      "scope": "Factorywiretoactualproposedland; retainedterminalZisnominalPCBdatum, notmeasuredfreetail solderposition",
+      "source_terminal_xyz_mm": [
+        167.5,
+        145.92,
+        20
+      ],
+      "target_land_id": "X1:permanent:J1009:T",
+      "to_xyz_mm": [
+        167.5,
+        145.5,
+        35
+      ],
+      "wire_nominal_mm": 35,
+      "wire_tolerance_mm": 3
+    },
+    {
+      "electrical_role": "selector A/B contact after 2.2kohm resistor",
+      "from_LED_land_id": null,
+      "from_xyz_mm": [
+        102.04,
+        283.0,
+        20
+      ],
+      "geometric_distance_mm": 15.0,
+      "geometric_wire_minimum_mm": 15.0,
+      "local_copper_status": "NoadditionallocalPCBleg",
+      "local_plus_wire_allocation_mm": 38,
+      "local_terminal_copper_mm": 0,
+      "maximum_wire_cut_mm": 38,
+      "minimum_geometric_slack_mm": 17.0,
+      "minimum_proposed_route_slack_mm": 17.0,
+      "net": "/X1/SELECT_B_CONTACT",
+      "owner": "X1-control",
+      "pin": "1",
+      "proposed_developed_wire_mm": 15.0,
+      "proposed_wire_points_xyz_mm": [
+        [
+          102.04,
+          283.0,
+          20
+        ],
+        [
+          102.04,
+          283.0,
+          27
+        ],
+        [
+          102.04,
+          283.0,
+          27
+        ],
+        [
+          102.04,
+          283.0,
+          27
+        ],
+        [
+          102.04,
+          283.0,
+          35
+        ]
+      ],
+      "ref": "SW608",
+      "scope": "Factorywiretoactualproposedland; retainedterminalZisnominalPCBdatum, notmeasuredfreetail solderposition",
+      "source_terminal_xyz_mm": [
+        102.04,
+        283.0,
+        20
+      ],
+      "target_land_id": "X1:permanent:SW608:1",
+      "to_xyz_mm": [
+        102.04,
+        283.0,
+        35
+      ],
+      "wire_nominal_mm": 35,
+      "wire_tolerance_mm": 3
+    },
+    {
+      "electrical_role": "selector common; high impedance when open",
+      "from_LED_land_id": null,
+      "from_xyz_mm": [
+        99.5,
+        283.0,
+        20
+      ],
+      "geometric_distance_mm": 15.0,
+      "geometric_wire_minimum_mm": 15.0,
+      "local_copper_status": "NoadditionallocalPCBleg",
+      "local_plus_wire_allocation_mm": 38,
+      "local_terminal_copper_mm": 0,
+      "maximum_wire_cut_mm": 38,
+      "minimum_geometric_slack_mm": 17.0,
+      "minimum_proposed_route_slack_mm": 17.0,
+      "net": "/X1/SELECTOR_COMMON",
+      "owner": "X1-control",
+      "pin": "2",
+      "proposed_developed_wire_mm": 15.0,
+      "proposed_wire_points_xyz_mm": [
+        [
+          99.5,
+          283.0,
+          20
+        ],
+        [
+          99.5,
+          283.0,
+          27
+        ],
+        [
+          99.5,
+          283.0,
+          27
+        ],
+        [
+          99.5,
+          283.0,
+          27
+        ],
+        [
+          99.5,
+          283.0,
+          35
+        ]
+      ],
+      "ref": "SW608",
+      "scope": "Factorywiretoactualproposedland; retainedterminalZisnominalPCBdatum, notmeasuredfreetail solderposition",
+      "source_terminal_xyz_mm": [
+        99.5,
+        283.0,
+        20
+      ],
+      "target_land_id": "X1:permanent:SW608:2",
+      "to_xyz_mm": [
+        99.5,
+        283.0,
+        35
+      ],
+      "wire_nominal_mm": 35,
+      "wire_tolerance_mm": 3
+    },
+    {
+      "electrical_role": "selector A/B contact after 2.2kohm resistor",
+      "from_LED_land_id": null,
+      "from_xyz_mm": [
+        96.96,
+        283.0,
+        20
+      ],
+      "geometric_distance_mm": 15.0,
+      "geometric_wire_minimum_mm": 15.0,
+      "local_copper_status": "NoadditionallocalPCBleg",
+      "local_plus_wire_allocation_mm": 38,
+      "local_terminal_copper_mm": 0,
+      "maximum_wire_cut_mm": 38,
+      "minimum_geometric_slack_mm": 17.0,
+      "minimum_proposed_route_slack_mm": 17.0,
+      "net": "/X1/SELECT_A_CONTACT",
+      "owner": "X1-control",
+      "pin": "3",
+      "proposed_developed_wire_mm": 15.0,
+      "proposed_wire_points_xyz_mm": [
+        [
+          96.96,
+          283.0,
+          20
+        ],
+        [
+          96.96,
+          283.0,
+          27
+        ],
+        [
+          96.96,
+          283.0,
+          27
+        ],
+        [
+          96.96,
+          283.0,
+          27
+        ],
+        [
+          96.96,
+          283.0,
+          35
+        ]
+      ],
+      "ref": "SW608",
+      "scope": "Factorywiretoactualproposedland; retainedterminalZisnominalPCBdatum, notmeasuredfreetail solderposition",
+      "source_terminal_xyz_mm": [
+        96.96,
+        283.0,
+        20
+      ],
+      "target_land_id": "X1:permanent:SW608:3",
+      "to_xyz_mm": [
+        96.96,
+        283.0,
+        35
+      ],
+      "wire_nominal_mm": 35,
+      "wire_tolerance_mm": 3
+    }
+  ],
+  "termination_interpretation": "30 wire ends:9 jack/switch direct tails,6 LED-support board lands,15 elevated-board lands. Not automatically30 additional solder joints versus Stage8: direct tails replace former directPCB joints; exact process and NC mechanical retention remain OPEN. Six LED device pads remain on three local support PCBs."
+}
