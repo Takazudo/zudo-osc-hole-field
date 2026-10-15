@@ -77,3 +77,19 @@ Final verification:86 focused tests, seven deterministic generators/protected-pa
 Publication checkpoint SHA and pushed-head readback follow in a metadata-only commit. All #278–284 and old unmet obligations stay open. PR260/277 remain parked drafts. Nothing is scheduled to run automatically after this session.
 
 Reviewed revision-2 source checkpoint: `f29fc1e8efc0541023fcb62db50b75e762f7f6da`. NEXT-PROMPT pins this exact engineering tree; its subsequent placeholder substitution and publication receipts are metadata-only, as explicitly permitted by both final review receipts.
+
+
+## Revision 2 publication receipt
+
+Publication head `dac1f65a468768618bc5ea78e06e77006c1a0fd2` was pushed and independently matched local HEAD, git ls-remote and GitHub PR285 head. PR remains OPEN/DRAFT. Its title/body now describe the complete final revision and conditional recommendation. CI rollup is empty after intentional [skip ci], not a passing result. The engineering source is f29fc1e8efc0541023fcb62db50b75e762f7f6da; the handoff is pinned and separately approvable. This final work-note commit adds only publication receipts.
+
+Revision-bound issue updates (all acceptance issues remain open):
+- #278: https://github.com/Takazudo/zudo-osc-hole-field/issues/278#issuecomment-6184863318
+- #279: https://github.com/Takazudo/zudo-osc-hole-field/issues/279#issuecomment-6184863608
+- #280: https://github.com/Takazudo/zudo-osc-hole-field/issues/280#issuecomment-6184863933
+- #281: https://github.com/Takazudo/zudo-osc-hole-field/issues/281#issuecomment-6184864195
+- #282: https://github.com/Takazudo/zudo-osc-hole-field/issues/282#issuecomment-6184864428
+- #283: https://github.com/Takazudo/zudo-osc-hole-field/issues/283#issuecomment-6184864693
+- #284: https://github.com/Takazudo/zudo-osc-hole-field/issues/284#issuecomment-6184864972
+
+After publication, main and parked PR260/277 refs and open-draft states were reverified unchanged. Original main checkout remains clean. The isolated design worktree is retained on design/278-modular-gate. All authors/reviewers completed; no background engineering job or future action remains scheduled when the session ends. The only next owner choice is separate one-zone implementation authorization under NEXT-PROMPT; no hardware, architecture adoption, merge or native admission is implied.
