@@ -1,0 +1,23 @@
+# A01 resistance domains and DC/CV budget
+
+This source study preserves every prior candidate byte and every existing check. It does not select a new circuit, perform simulation, or establish electrical acceptance. Reproduce with `stage12_budget.py`, its `--check`, and `test_stage12_budget.py` under `scripts/architecture278/implementation/`.
+
+The recommended mapping is **PROPOSED/UNAPPROVED**: retain 0.5 mΩ for combined applicable PCB AGND spreading, necks and vias, and 1 mΩ for combined PCB rail transfer. Add wires, crimps, mating contacts, header solder terminations, shared feed and source regulation separately. Then assess the retained 20 mV distribution, 0.20 V complete-path and 0.5 A per GH contact constraints, as well as actual circuit errors. The original partition producer explicitly separates these domains. Later architecture whole-branch wording is broader; it remains recorded as unresolved until an explicit reviewed clarification. No failing check is waived or redefined.
+
+The report maps all 106 actual source rail/AGND endpoints through typed physical graph edges. A shared edge appears in several endpoint walks but carries each actual downstream load once. Walk multiplicity is not current, and no equal parallel sharing or rail-current cancellation is credited. Per-endpoint reachability does not qualify the complete upstream hot/return loop. Catalog contact resistance must be mapped to its measurement planes before combining installed wire, crimp and solder terms. The Stage11 strap option remains frozen and is not substituted into this baseline mapping.
+
+Recovered criteria have distinct scopes:
+
+- The retained calibrated static precision target is 2 mV. A01 has two user pots; no additional trim or calibration algorithm is supplied by this target.
+- The 1 mV precision output criterion concerns load-induced change from open circuit to 10 kΩ at −5/0/+5 V. It is not a full reference, knob-law or DC error allowance.
+- The attenuverter has a retained 0.5% endpoint/centre gain target, with centre set by the knob. That is not a full-position absolute accuracy guarantee.
+- Five cents refers to OSC tracking over 0–5 V at 25 °C after calibration and warmup. A01 pitch-CV acceptance still needs an owner-defined tolerance; the entire oscillator allowance cannot be allocated to A01 or its return.
+- The seven historical AO ideal-DC cases use a 1 mV algebraic check with unlimited rails. They do not establish physical accuracy. No A01 settling-time criterion was recovered, and X1's 400 µs criterion is not imported.
+
+The coherent transfer includes reference inversion, loaded attenuator and manual wipers, the three-input summer, restore amplifier and output follower. All ten participating precision-amplifier offset coefficients are explicit, including the summer's −4 coefficient. A common positive-reference error propagates through both reference polarities once; it is not counted twice as unrelated errors. Known input-bias impedances are reported separately from unknown external-source, switch, protection and output impedances. The algebra starts at buffered input stimuli; it explicitly excludes rather than silently zeroes the external source → jack → ADG5412F → 100 kΩ pull-down/10 kΩ sense → input-buffer error chain.
+
+Five representative operating states each evaluate 1,024 coherent corners of ten physical resistor tolerances. The same R7124 is reused in all three summer ratios, avoiding impossible independent ratio extrema. For input +5 V, attenuator CCW, zero CV and centred offset, the model gives approximately −35.10 to +34.88 mV error relative to ideal −5 V. These are uncalibrated conditional tolerance corners, not measurements or an asserted physical failure. Pots, reference source and amplifier errors are excluded from that corner study as stated; their separate maxima are not blindly added. Nominal case tables retain signed contributions and explicit unknowns. Individual 0.1% resistors are not assumed to be a matched network.
+
+A knob may null one observed operating point, subject to range and repeatability. No correction of all gain ratios, position-dependent loading, drift, noise, returns or clipping is inferred. A complete DC/CV bound remains null. The next bounded decision is to specify an A01 acceptance grid and calibration policy, then determine whether the actual resistor/control/reference chain can meet it. The report's proposed grid and domain clarification are not approved requirements.
+
+Native KiCad, ERC/DRC, numerical simulation, routing extraction and hardware verification: **NOT RUN**. Deterministic tests verify arithmetic, source binding, endpoint coverage and rejection of altered domains or criteria.

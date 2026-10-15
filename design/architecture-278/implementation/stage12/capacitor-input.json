@@ -1,0 +1,154 @@
+{
+  "application": {
+    "device": "REF5050AIDR",
+    "noise_recommended_ESR_ohm": [
+      1,
+      1.5
+    ],
+    "output_cap_range_F": [
+      1e-06,
+      5e-05
+    ],
+    "recommended_input_bypass_F": [
+      1e-06,
+      1e-05
+    ],
+    "source_id": "REF50-app",
+    "stability_ESR_max_ohm": 1.5,
+    "status": "Application recommendations; assembled stability not established"
+  },
+  "candidate_only": true,
+  "evidence": {
+    "capacitor": {
+      "additional_locators": [
+        {
+          "locator": "Impedance/ESR and DC voltage bias typical curves",
+          "physical_pdf_page_index": 1,
+          "printed_page_label": "unlabelled"
+        },
+        {
+          "locator": "Temperature and AC voltage typical curves",
+          "physical_pdf_page_index": 2,
+          "printed_page_label": "unlabelled"
+        },
+        {
+          "locator": "Explicit typical simulation disclaimer: not a specification",
+          "physical_pdf_page_index": 3,
+          "printed_page_label": "unlabelled"
+        }
+      ],
+      "data_classification": "First page nominal specification; subsequent curves typical only, no guaranteed assembled limits",
+      "locator": "Exact MPN heading, Dimensions and Specifications; generated10/15/2026",
+      "physical_pdf_page_index": 0,
+      "printed_page_label": "unlabelled",
+      "retrieved_date": "2026-10-15",
+      "sha256": "2b7228d96d8ef926d5ed25553740890bb34ebc08db6b8529b180db87b30be7de",
+      "url": "https://www.yageogroup.com/component-documentation/download/specsheet/CC0603KRX5R8BB475"
+    },
+    "reference": {
+      "authority": "MANUFACTURER_PRIMARY",
+      "availability": "AVAILABLE",
+      "locator": "PhysicalPDF25/printed26 \u00a78.4.1 Figure8-6; REF50xxAI row; ordering addendum exactREF5050AIDR",
+      "physical_pdf_page_index": 25,
+      "previous_bundle_sha256": "d2da9488194dba11732c85c498b563c12e0bb6b3e2d21631022dde9bff51a13d",
+      "printed_page_label": "26",
+      "raw_cache": ".circuit-cache/sources/architecture278-stage11-identity/ref50.pdf",
+      "retrieved_UTC": "2026-10-15",
+      "revision": "SBOS410O October2025",
+      "scope": "New bytes differ from earlier retained digest despite sameRevO; no canonical owner-record promotion",
+      "sha256": "33b13191ad54693f9a4f52e226b354757ad092d2cec6b2c31dba2fecb710d0c6",
+      "url": "https://www.ti.com/lit/ds/symlink/ref50.pdf"
+    }
+  },
+  "operating_assumptions": {
+    "C7101_bias_V": 12,
+    "C7102_bias_V": 5,
+    "actual_rail_transient_max_V": null,
+    "input_envelope_source": "scripts/checks/partition35.py:158-161,299",
+    "input_envelope_status": "Retained interface PROPOSAL, not verified hardware transient bound",
+    "input_proposed_rail_envelope_V": 13.2,
+    "required_operating_temperature_C": null,
+    "service_lifetime_hours": null
+  },
+  "overlay": {
+    "C7101": {
+      "candidate_MPN": "CC0603KRX5R8BB475",
+      "candidate_value_F": 4.7e-06,
+      "captured_MPN": "GRM188R71H104KA93D",
+      "captured_value": "1e-07 F",
+      "footprint": "zudo-osc-hole-field:C0603",
+      "pins": {
+        "1": "+12V",
+        "2": "AGND"
+      },
+      "units": [
+        0
+      ]
+    },
+    "C7102": {
+      "candidate_MPN": "CC0603KRX5R8BB475",
+      "candidate_value_F": 4.7e-06,
+      "captured_MPN": "",
+      "captured_value": "1e-06 F",
+      "footprint": "zudo-osc-hole-field:C0603",
+      "pins": {
+        "1": "/A01/C534b2a_RAW_5V",
+        "2": "AGND"
+      },
+      "units": [
+        0
+      ]
+    }
+  },
+  "overlay_id": "A01_REF5050AI_4u7_input_output",
+  "part": {
+    "MPN": "CC0603KRX5R8BB475",
+    "dielectric": "X5R",
+    "dimension_tolerances_mm": [
+      0.15,
+      0.15,
+      0.15
+    ],
+    "dimensions_mm": [
+      1.6,
+      0.8,
+      0.8
+    ],
+    "dissipation_factor_fraction": 0.1,
+    "dissipation_factor_test_frequency_Hz": null,
+    "guaranteed_ESR_ohm": null,
+    "guaranteed_aging_rate": null,
+    "guaranteed_bias_retention": null,
+    "insulation_resistance_ohm": 21000000.0,
+    "manufacturer": "YAGEO",
+    "nominal_F": 4.7e-06,
+    "rated_voltage_V": 25,
+    "supplier_order_code": null,
+    "temperature_range_C": [
+      -55,
+      85
+    ],
+    "tolerance_fraction": 0.1
+  },
+  "retrieval_notes": [
+    "2.2uF source was inspected during identity preselection; it was not selected as an alternate overlay.",
+    "No simulator executed; only static manufacturer document inspected.",
+    "Unsuccessful exact specsheet lookups for C0603C225K3RACTU, C0603C225K4RACTU and CC0603KRX7R8BB225 returned404; they are not asserted identities."
+  ],
+  "typical_visual_readings": {
+    "12V_retained_fraction_interval": [
+      0.18,
+      0.25
+    ],
+    "13.2V_retained_fraction_interval": [
+      0.15,
+      0.23
+    ],
+    "5V_retained_fraction_interval": [
+      0.45,
+      0.55
+    ],
+    "scope": "Broad manual plot-reading intervals of manufacturer typical graph only; not min/max production bounds. Not combined with separate temperature plot as a guaranteed joint envelope."
+  },
+  "unchanged_local_bypass": "C7107"
+}

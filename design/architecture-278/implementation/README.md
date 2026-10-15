@@ -1,6 +1,6 @@
 # O1 candidate source checkpoint — Stage 1 remains OPEN
 
-**Current source result:** [STAGE11.md](STAGE11.md) refines the existing A01 candidate with exact passive-identity candidates, loaded-control/current sensitivities, complete low-resistance feed-path comparison and support/service construction. It exposes reference-capacitor application gaps and the historical plane-only versus expanded whole-path resistance requirement mismatch. All241 earlier candidate files remain unchanged. Native/ERC/DRC/physical acceptance and full Stage1 remain OPEN. Earlier sections below are historical evidence, not current acceptance claims.
+**Current source result:** [STAGE12.md](STAGE12.md) reconciles resistance requirement domains without changing historical checks, evaluates one unqualified reference-capacitor correction, and establishes coherent A01 DC/CV sensitivities with recovered criteria. All267 predecessor files and mechanical geometry are frozen. Proposed domain mappings and test envelopes remain unapproved. Native/ERC/DRC/simulation/physical acceptance and full Stage1 remain OPEN. Earlier sections below are historical evidence, not current acceptance claims.
 
 This isolated implementation branch starts at PR285 `d218fc537818dcbbd470eb15d192cfc8d0be5f0a`. The owner authorized the one-zone candidate source stage; that approval is not native exact-run admission, architecture adoption or hardware authority. KEEP_K1402_INCUMBENT. PR285 evidence and canonical sources remain byte-identical.
 
