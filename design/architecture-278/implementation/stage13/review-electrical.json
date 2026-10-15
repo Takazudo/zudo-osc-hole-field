@@ -1,0 +1,49 @@
+{
+  "authorship_exclusion": "Reviewer authored Stage13 calibration generator, tests, input, report and CALIBRATION.md. These are excluded from independent review; separate root/code/mechanical reviewers reviewed them. Root independent calibration crosschecks are reviewed here.",
+  "checks": [
+    "Exact T491C475K050AT, T491D226K035AT and T491 family PDF hashes independently verified and retained primary specifications inspected. Nominal capacitance, leakage, ESR, polarity, recommended operating voltage and reverse-voltage conditions are kept distinct.",
+    "Initial capacitance intervals 4.23\u20135.17uF and 19.8\u201324.2uF are correct. Temperature/endurance qualification tests are not presented as combined service-life guarantees. Output 0.7ohm ESR applies at 100kHz/25C only; full-condition ESR/stability and the separate 1\u20131.5ohm noise recommendation remain unresolved.",
+    "Output nominal charge at 5V rises from 5 to 110uC. Actual inrush, startup time, sequencing, reverse/discharge and total load remain unknown; no surge-screening result is promoted to unrestricted hot-plug qualification.",
+    "All 90 packages/118 units are conserved, only two capacitor candidate identities/lands/poses change. Rear-face polarity and all four transformed source pads independently crosschecked. Six local pad distances include positive and return legs; longer C7101 return is disclosed, without loop/stability qualification.",
+    "Four changed source endpoints explicitly invalidate incident baseline edges. Complete overlay path metrics are null; historical Stage10\u201312 paths are not promoted to current overlay measurements.",
+    "Root composition reconstructs all eleven retained physical-resistor parameter cases from Stage12 witness fractions, preserving shared R7124 correlation, checks 315 independent residual points and four saturation states, and rejects fitted-correction promotion. Prior exact-case/parameter and saturation guard findings are closed with mutation tests.",
+    "Final STAGE13 summary preserves static/load distinctions, unadjustable CV gain, candidate-only limits, 289 immutable predecessor files and open hardware acceptance. Final assessment equals a fresh pure source build and all three input-report source hash maps are current.",
+    "Final predecessor wrapper independently reviewed: first preserves all 289 frozen files, rebuilds the unchanged Stage12 report, and verifies old review hashes for only the exact three common.MUTABLE integration paths against git-show of baseline 5452566c. Every other binding remains live. Current check_source dispatch and Stage13 integration remain reviewed; this is no blanket stale-hash exception. Both historical wrong-hash and live immutable-file mutation tests pass, and --check-predecessor independently passes."
+  ],
+  "hardware_acceptance": false,
+  "native": "NOT RUN",
+  "physical": "NOT RUN",
+  "remaining": [
+    "Combined effective capacitance, full-condition ESR, reference stability/noise, startup/inrush/discharge and complete reference load remain unqualified.",
+    "New capacitor endpoint paths require rebudgeting before adoption; geometric separation is not routed impedance or installed fit.",
+    "Temporary two-knob operating presets do not realize a three-coefficient calibration or qualify complete A01 static, load, drift, headroom or pitch-service accuracy."
+  ],
+  "reviewer": "Independent electrical review of Stage13 capacitor evidence, package electrical consequences and root composition",
+  "simulation": "NOT RUN",
+  "source_sha256": {
+    "design/architecture-278/implementation/STAGE13.md": "42e37e405b8ee84446cb44063bb767bb9cc71b845dc13490aa0d4d7f51edf1a3",
+    "design/architecture-278/implementation/stage13/CAPACITORS.md": "43b287c2926b1d307f17581882b781286c95b5f846f8db452bcfd8e1fba3ca36",
+    "design/architecture-278/implementation/stage13/PACKAGES.md": "6abfb037b7c8f1d07b262bff3d8295586e286012bbbcfc2062886a0e93b756e8",
+    "design/architecture-278/implementation/stage13/assessment-report.json": "a653a816f0b0072dca0b9d07dc6f220a978111dee10309a76d0effde1813c005",
+    "design/architecture-278/implementation/stage13/capacitor-input.json": "d0abb430257b3def8dd36d24821d137bbee9f37d0d4b80e0595e7c04a297fa3e",
+    "design/architecture-278/implementation/stage13/capacitor-report.json": "b87ab1c5060d076a0e27cb679ae41447e24298768299445fbf40c76a6faeedb0",
+    "design/architecture-278/implementation/stage13/package-input.json": "7d26f234a694ee946cabdca471d9fa545772d16cdb262324191e9f2432067799",
+    "design/architecture-278/implementation/stage13/package-report.json": "a467994f4b0bc90cd22c27bc9cb2a46b44c38f35eb676133589b77df9933b83d",
+    "design/architecture-278/implementation/stage13/scope.json": "01549d8c6230713e349c90cc8de4d8d91f32e2b25c5e9f659e342b1d3564f484",
+    "scripts/architecture278/implementation/check_source.py": "d46eef46e65a992f809c7f10e029f1ccfeabaf974e8eda0f493345d01a5d1dfd",
+    "scripts/architecture278/implementation/stage13_assessment.py": "beecfe8dbb3b4de0f0a504a1e7b2f9296927086387b9e75f6e126bad378b4cf6",
+    "scripts/architecture278/implementation/stage13_capacitors.py": "035390d2b6216946d02305333aeac2aa73c21e1cfd09bf1e1f5810bc51e2b1b5",
+    "scripts/architecture278/implementation/stage13_packages.py": "eefc869df49613e108c85af4ad217c02d70e5cd239f5f3a395be2e7f6820270b",
+    "scripts/architecture278/implementation/test_stage13_assessment.py": "b927cf53506ba9af1f86fda84cf1783c6bf92c23f3981822fa44dd03ae42353f",
+    "scripts/architecture278/implementation/test_stage13_capacitors.py": "7522f9bdfd1361d32b2552d1b59c9494f3bf30159e13ecb44c68993463a218dc",
+    "scripts/architecture278/implementation/test_stage13_packages.py": "46703da1a96c45e5ecd2589ee9b20270b154e0d791cdadfb5257796652539898"
+  },
+  "tests": {
+    "authored_calibration_tests_rerun_not_independent": 15,
+    "combined_run_note": "66 tests previously run together; final 16 root tests rerun after two predecessor-binding tests were added.",
+    "combined_tests_passed": 68,
+    "independent_capacitor_tests_passed": 19,
+    "independent_package_tests_passed": 18,
+    "independent_root_composition_tests_passed": 16
+  }
+}
