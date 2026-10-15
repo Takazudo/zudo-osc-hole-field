@@ -1,0 +1,108 @@
+{
+  "schema_version": 1,
+  "status": "CANDIDATE RESERVATION STUDY; unknown space is not free",
+  "panel_projection_mm": [
+    0,
+    0,
+    318,
+    298
+  ],
+  "depths_mm": {
+    "middle": 50,
+    "core": 69.2,
+    "cover": 105,
+    "rear_package_allowance": 5,
+    "handle_projection": 18,
+    "withdrawal": 40,
+    "external_workspace": 100
+  },
+  "qualified_free_regions": [],
+  "other_function_candidate_volumes": "UNKNOWN: no whole-package new-stack assignment for all other 28 functions",
+  "evaluation_queries": [
+    {
+      "id": "central-new-core-proposal",
+      "xy_mm": [
+        5,
+        82,
+        102,
+        197
+      ],
+      "z_mm": [
+        69.2,
+        74.2
+      ],
+      "intent": "97x115 compact whole-cluster card at a new origin; not a routing claim"
+    },
+    {
+      "id": "central-new-core-removal",
+      "xy_mm": [
+        5,
+        82,
+        102,
+        197
+      ],
+      "z_mm": [
+        69.2,
+        127.2
+      ],
+      "intent": "same new core plus40mm withdrawal and18mm handle; cover removed",
+      "phase": "service_cover_removed"
+    },
+    {
+      "id": "right-new-core-proposal",
+      "xy_mm": [
+        211,
+        130,
+        314,
+        245
+      ],
+      "z_mm": [
+        69.2,
+        74.2
+      ],
+      "intent": "changed origin; apparently unallocated rear XY is UNKNOWN, not empty"
+    },
+    {
+      "id": "new-middle-signal-bank",
+      "xy_mm": [
+        92,
+        80,
+        107,
+        180
+      ],
+      "z_mm": [
+        50,
+        69.2
+      ],
+      "intent": "new direct-mating bank location; exact flange/tail volumes remain open"
+    },
+    {
+      "id": "historical-K-notch-new-space",
+      "xy_mm": [
+        260,
+        250,
+        310,
+        290
+      ],
+      "z_mm": [
+        69.2,
+        74.2
+      ],
+      "intent": "Outside historicalKpolygon notch, yet otherfunctionmapping remainsUNKNOWN"
+    },
+    {
+      "id": "retained-K-back-height",
+      "xy_mm": [
+        140,
+        220,
+        180,
+        240
+      ],
+      "z_mm": [
+        100,
+        106.6
+      ],
+      "intent": "Conditional historicalrearcomponentheight exceeds105mm candidatecover"
+    }
+  ]
+}

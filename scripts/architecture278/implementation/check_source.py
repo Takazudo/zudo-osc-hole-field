@@ -16,7 +16,7 @@ def main():
     validate_paths(paths)
     subprocess.run([sys.executable,str(ROOT/'scripts/architecture278/check_packet.py')],cwd=ROOT,check=True)
     subprocess.run([sys.executable,str(Path(__file__).with_name('candidate.py')),'--check'],cwd=ROOT,check=True)
-    for generator in ('front_evidence.py','mechanical_feasibility.py','assembly.py','assembly_mechanical_review.py','placement_search.py'):
+    for generator in ('front_evidence.py','mechanical_feasibility.py','assembly.py','assembly_mechanical_review.py','placement_search.py','stage3_crossing_audit.py','stage3_reservations.py','cluster_refinement.py','direct_study.py','stage3_direct_mechanical.py'):
         subprocess.run([sys.executable,str(Path(__file__).with_name(generator)),'--check'],cwd=ROOT,check=True)
     print('PASS isolated candidate scope; PR285 and all canonical bytes unchanged; native NOT RUN')
 if __name__=='__main__':main()
