@@ -1,0 +1,7391 @@
+{
+  "actual_XY_pad_separation_over300_count": 3,
+  "best_common_DIN_return_labels": {
+    "b1": "AGND",
+    "b14": "AGND",
+    "b17": "AGND",
+    "b18": "AGND",
+    "b19": "AGND",
+    "b2": "AGND",
+    "b20": "AGND",
+    "b21": "AGND",
+    "b22": "AGND",
+    "b23": "AGND",
+    "b24": "AGND",
+    "b25": "AGND",
+    "b26": "AGND",
+    "b27": "AGND",
+    "b28": "AGND",
+    "b29": "AGND",
+    "b3": "AGND",
+    "b30": "AGND",
+    "b31": "AGND",
+    "b32": "AGND",
+    "b4": "AGND",
+    "b5": "AGND",
+    "b6": "AGND",
+    "b7": "AGND",
+    "b8": "AGND",
+    "b9": "AGND"
+  },
+  "best_common_DIN_signal_labels": {
+    "/O1/1V_BUFFER": "c8",
+    "/O1/C1eb779_W": "c23",
+    "/O1/C42d8cd_W": "c25",
+    "/O1/C83f36b_W": "c29",
+    "/O1/Ca449b7_W": "c31",
+    "/O1/Ce35646_W": "c26",
+    "/O1/FM_BUFFER": "c4",
+    "/O1/FM_REMOTE": "c24",
+    "/O1/HARD_DRIVE": "c22",
+    "/O1/LFO_REF": "c17",
+    "/O1/LOCAL_REF5": "c32",
+    "/O1/LOCAL_REFN5": "c20",
+    "/O1/OCT_SELECTED": "c19",
+    "/O1/PUL_SCALED": "c6",
+    "/O1/PWM_BUFFER": "c9",
+    "/O1/PWM_REMOTE": "c30",
+    "/O1/RANGE_CV": "c18",
+    "/O1/SAW_SCALED": "c3",
+    "/O1/SIN_SCALED": "c5",
+    "/O1/SOFT_DRIVE": "c21",
+    "/O1/SYNC_BUFFER": "c14",
+    "/O1/SYNC_GATE": "c28",
+    "/O1/TRI_SCALED": "c1",
+    "OSC_GATE_REF": "c27",
+    "OSC_REF5": "c7",
+    "OSC_REFN5": "c2"
+  },
+  "best_origins_mm": {
+    "O1": [
+      2,
+      122
+    ],
+    "O2": [
+      107,
+      122
+    ],
+    "O3": [
+      2,
+      5
+    ],
+    "O4": [
+      107,
+      5
+    ],
+    "O5": [
+      212,
+      5
+    ]
+  },
+  "best_turns_deg": {
+    "O1": 0,
+    "O2": 0,
+    "O3": 0,
+    "O4": 0,
+    "O5": 0
+  },
+  "family": {
+    "adjacent_return_pins": "b with same index for every selected c signal;26 returns",
+    "assignments": 120,
+    "card_mm": [
+      103,
+      115
+    ],
+    "signal_pins": "c1..c32; common injective26-net assignment",
+    "slots_mm": [
+      [
+        2,
+        122
+      ],
+      [
+        107,
+        122
+      ],
+      [
+        2,
+        5
+      ],
+      [
+        107,
+        5
+      ],
+      [
+        212,
+        5
+      ]
+    ],
+    "total_combinations": 3840,
+    "transform_180": "local[x,y] -> [103-x,115-y]; all rear endpoints, DIN, functional clusters and card reservations rotate together",
+    "turn_masks": 32,
+    "whole_card_turns_deg": [
+      0,
+      180
+    ]
+  },
+  "inherited_assembly_source_sha256": {
+    "design/architecture-278/implementation/assembly.json": "a90f5c24ad06f302c2a95161ccb9706e6e5bbf7be4c77d364cb9657a0e74a325",
+    "design/architecture-278/implementation/candidate-report.json": "b68d2840c70f0fc556efe6d8a7d0d5a5b9c71b52a2ab270962032e6ebab76144",
+    "design/architecture-278/implementation/compact-rear.json": "54f3763d49e9712e9a51f553ff1e15b4c8e7814d6cd9c80f6f28e46b72299bb2",
+    "design/architecture-278/interface-contract.json": "1a96d576f5b33536014da093b6d0bf1e34b7ef5816dd1a35fb6d26465d4e656b",
+    "design/connectors/sources/jst-gh.pdf": "b1dcb317b6b9a4fbbedd2dbf42c64c95306a252d23de8933b85fcf161240b722",
+    "design/grid/placements.lock.json": "297300b067fd646624b9e501791163fa2d60702862b61568753bf92e5b88dbe8",
+    "footprints/kicad/zudo-osc-hole-field.pretty/Button_Omron_B3F_6x6_P6.5x4.5.kicad_mod": "5308867a94916318f13100fe7a07505c1c2d41ea7fc35c63d5d5ce3fcbb30c52",
+    "footprints/kicad/zudo-osc-hole-field.pretty/C0603.kicad_mod": "5deb5924199e36857d3a90a22828d73ed4b82ee4fe3c54e0d80c60130ecb7524",
+    "footprints/kicad/zudo-osc-hole-field.pretty/Jack_3.5mm_QingPu_WQP518MA.kicad_mod": "51a6cc131190b3b1f7f9aa925d4ce08e05a796f62dc8c00d3a89086354b80a20",
+    "footprints/kicad/zudo-osc-hole-field.pretty/LED0402-Kingbright-Red.kicad_mod": "4a16e45298e7f349499aaf1157d1ee422e4775819e21859d34767c241a1eb51b",
+    "footprints/kicad/zudo-osc-hole-field.pretty/LED0402-Kingbright-White.kicad_mod": "5fd510e04081eabe44d47fd8094a64ceec03e65a0b3b772237ce1d92be71b4c2",
+    "footprints/kicad/zudo-osc-hole-field.pretty/PTV09A-4020F.kicad_mod": "c0dafcafeba8f3570b1c395c12e844ab8d237bb54edfd65130cf98f25939c557",
+    "footprints/kicad/zudo-osc-hole-field.pretty/Potentiometer_Bourns_TC33X_Vertical.kicad_mod": "f21f7dc38797a77839ca9a8af5f79774ea724cb1996e8e8ac8d0007831e3d851",
+    "footprints/kicad/zudo-osc-hole-field.pretty/R0603.kicad_mod": "25cf0c8152ddf3adbf6c02140174cf5c53cfe865e425d689fb901c6ff1fab6d0",
+    "footprints/kicad/zudo-osc-hole-field.pretty/R_1210_3225Metric.kicad_mod": "8d3df582f7d3c11e299ef0e116e8d70481f57fc57e6c669264da60a1033228df",
+    "footprints/kicad/zudo-osc-hole-field.pretty/SOIC-14_3.9x8.7mm_P1.27mm.kicad_mod": "d686d259c1e4bed4147735ed25de08a498e8626d082058f4f5e00168017b2337",
+    "footprints/kicad/zudo-osc-hole-field.pretty/SOIC-16_3.9x9.9mm_P1.27mm.kicad_mod": "ea0cf63ab646928b0d2d8674e20fb6b010be3ffbc01d658bcd965a9f0aefb90b",
+    "footprints/kicad/zudo-osc-hole-field.pretty/SOIC-8_3.9x4.9mm_P1.27mm.kicad_mod": "60fc4a5e63729c51bd1ddbc3dc6865f25ca972aea6ed7607bcd848a60925c9bf",
+    "footprints/kicad/zudo-osc-hole-field.pretty/SOT-23.kicad_mod": "d506ab85b553354a097c310d00106e1a8e7f5cc90c8d7643d956ae1a557c03ec",
+    "footprints/kicad/zudo-osc-hole-field.pretty/SOT-363_SC-70-6.kicad_mod": "6e4172f551a82e2c65842d333ba2dfef8c5bb208b71b844b797cb13d3aa56edc",
+    "footprints/kicad/zudo-osc-hole-field.pretty/SRBV160803.kicad_mod": "f8206a956661f5ff94ab9779e59dab9553c2df72df49aaa4a2dfa64c82a6d81b",
+    "footprints/kicad/zudo-osc-hole-field.pretty/TSSOP-14_4.4x5mm_P0.65mm.kicad_mod": "de16d50ed6610086f0827082055257c9648031d8db6e7a7da797838f2c422ec6",
+    "footprints/kicad/zudo-osc-hole-field.pretty/TSSOP-16_4.4x5mm_P0.65mm.kicad_mod": "33e27f56639b5b3bab24ea33e8b2c5723ca362a6e165f6f019bf98879ed545cd",
+    "footprints/kicad/zudo-osc-hole-field.pretty/Toggle_Dailywell_2MS_T1B1M2.kicad_mod": "11240c0c14b6378dc93f54d9146097b1b62384b0b9cab4b145dc1367be89daf4",
+    "scripts/architecture278/implementation/assembly.py": "7d453aea98dabe67640c40c381011b0cd4327d5c28141f141bcf513c927c4c39",
+    "scripts/architecture278/implementation/candidate.py": "30b2d5f80343914ee30a2bc1829d55c509b4560cf5100bdeb1b5da1e232617a8",
+    "scripts/architecture278/populated_mechanics.py": "5ad7478ec90e186c9ced30b8d19e4425a1ca8b1266582092ce10a3c47f720f5f"
+  },
+  "limitations": [
+    "Global minimum only within these3840assignments/turn masks, fixed front/shared geometry, fixed103x115 rear geometry and32c-row signal positions.",
+    "Routing reservations are the inherited1.15octile+7mm per segment,63mm wire,15mm GH pair and25mm DIN; these are not extracted routes or proven worst-case obstacle bounds.",
+    "Rotated supports, straps, keying, guides, insertion sweeps and board-to-world mating face must be rechecked before adopting a candidate.",
+    "No change to passive identities, source/rail/return acceptance, capacitance, unknown load maxima, source stability or five-receiver electrical obligations.",
+    "Unknown intermediate planes/returns remain OPEN. Failure of this finite family is not universal architecture infeasibility."
+  ],
+  "maximum_mm": 488.31109418720666,
+  "minimum_margin_mm": -188.31109418720666,
+  "original_endpoint_path_count": 225,
+  "original_path_roundtrip": "PASS within1e-9mm for all195 DIN endpoint rows",
+  "overlength_endpoint_count": 101,
+  "paths": [
+    {
+      "DIN_pad_mm": [
+        14.54,
+        196.01
+      ],
+      "DIN_signal_pin": "c23",
+      "front_endpoint": "RV106:2",
+      "front_pad_mm": [
+        14.5,
+        262.0
+      ],
+      "instance": "O1",
+      "link": "FRONT-C:O1.FM\u00b1",
+      "link_pin": "2",
+      "margin_mm": 33.34203463346739,
+      "net": "/O1/C1eb779_W",
+      "other_endpoint": "R1119:1",
+      "other_pad_mm": [
+        51.89,
+        157.45999999999998
+      ],
+      "pad_separation_lower_bound_mm": 111.02532909205901,
+      "segments": {
+        "DIN_mm": 25,
+        "GH_pair_mm": 15,
+        "front_trace_mm": 16.00269119345812,
+        "middle_trace_mm": 78.5312661352441,
+        "rear_trace_mm": 69.12400803783038,
+        "wire_max_mm": 63
+      },
+      "total_mm": 266.6579653665326
+    },
+    {
+      "DIN_pad_mm": [
+        14.54,
+        198.55
+      ],
+      "DIN_signal_pin": "c24",
+      "front_endpoint": "RV106:3",
+      "front_pad_mm": [
+        17.0,
+        262.0
+      ],
+      "instance": "O1",
+      "link": "FRONT-C:O1.FM\u00b1",
+      "link_pin": "3",
+      "margin_mm": 38.79601746914619,
+      "net": "/O1/FM_REMOTE",
+      "other_endpoint": "R1117:2",
+      "other_pad_mm": [
+        57.75,
+        172.0
+      ],
+      "pad_separation_lower_bound_mm": 98.79555911072117,
+      "segments": {
+        "DIN_mm": 25,
+        "GH_pair_mm": 15,
+        "front_trace_mm": 13.85067279836453,
+        "middle_trace_mm": 75.01483413933275,
+        "rear_trace_mm": 69.33847559315652,
+        "wire_max_mm": 63
+      },
+      "total_mm": 261.2039825308538
+    },
+    {
+      "DIN_pad_mm": [
+        14.54,
+        201.09
+      ],
+      "DIN_signal_pin": "c25",
+      "front_endpoint": "RV108:2",
+      "front_pad_mm": [
+        14.5,
+        290.0
+      ],
+      "instance": "O1",
+      "link": "FRONT-C:O1.PWM\u00b1",
+      "link_pin": "2",
+      "margin_mm": 2.0094482778315523,
+      "net": "/O1/C42d8cd_W",
+      "other_endpoint": "R1125:1",
+      "other_pad_mm": [
+        55.67,
+        159.78
+      ],
+      "pad_separation_lower_bound_mm": 136.57312070828578,
+      "segments": {
+        "DIN_mm": 25,
+        "GH_pair_mm": 15,
+        "front_trace_mm": 16.00269119345812,
+        "middle_trace_mm": 104.88926613524409,
+        "rear_trace_mm": 74.09859439346621,
+        "wire_max_mm": 63
+      },
+      "total_mm": 297.99055172216845
+    },
+    {
+      "DIN_pad_mm": [
+        14.54,
+        213.79
+      ],
+      "DIN_signal_pin": "c30",
+      "front_endpoint": "RV108:3",
+      "front_pad_mm": [
+        17.0,
+        290.0
+      ],
+      "instance": "O1",
+      "link": "FRONT-C:O1.PWM\u00b1",
+      "link_pin": "3",
+      "margin_mm": 11.112510574995326,
+      "net": "/O1/PWM_REMOTE",
+      "other_endpoint": "R1123:2",
+      "other_pad_mm": [
+        62.75,
+        172.0
+      ],
+      "pad_separation_lower_bound_mm": 126.55853388847392,
+      "segments": {
+        "DIN_mm": 25,
+        "GH_pair_mm": 15,
+        "front_trace_mm": 13.85067279836453,
+        "middle_trace_mm": 89.68883413933277,
+        "rear_trace_mm": 82.34798248730738,
+        "wire_max_mm": 63
+      },
+      "total_mm": 288.8874894250047
+    },
+    {
+      "DIN_pad_mm": [
+        14.54,
+        188.39
+      ],
+      "DIN_signal_pin": "c20",
+      "front_endpoint": "RV104:1",
+      "front_pad_mm": [
+        12.0,
+        234.0
+      ],
+      "instance": "O1",
+      "link": "FRONT-C:O1.TUNE",
+      "link_pin": "1",
+      "margin_mm": 88.6945485741816,
+      "net": "/O1/LOCAL_REFN5",
+      "other_endpoint": "RB1112:2",
+      "other_pad_mm": [
+        29.39,
+        204.82
+      ],
+      "pad_separation_lower_bound_mm": 33.968875459749924,
+      "segments": {
+        "DIN_mm": 25,
+        "GH_pair_mm": 15,
+        "front_trace_mm": 19.349805185280765,
+        "middle_trace_mm": 55.987414129111094,
+        "rear_trace_mm": 32.968232111426545,
+        "wire_max_mm": 63
+      },
+      "total_mm": 211.3054514258184
+    },
+    {
+      "DIN_pad_mm": [
+        14.54,
+        211.25
+      ],
+      "DIN_signal_pin": "c29",
+      "front_endpoint": "RV104:2",
+      "front_pad_mm": [
+        14.5,
+        234.0
+      ],
+      "instance": "O1",
+      "link": "FRONT-C:O1.TUNE",
+      "link_pin": "2",
+      "margin_mm": 103.83710389010167,
+      "net": "/O1/C83f36b_W",
+      "other_endpoint": "R1129:1",
+      "other_pad_mm": [
+        39.230000000000004,
+        186.4
+      ],
+      "pad_separation_lower_bound_mm": 53.640776467161615,
+      "segments": {
+        "DIN_mm": 25,
+        "GH_pair_mm": 15,
+        "front_trace_mm": 16.72144119345812,
+        "middle_trace_mm": 29.102982133199752,
+        "rear_trace_mm": 47.33847278324047,
+        "wire_max_mm": 63
+      },
+      "total_mm": 196.16289610989833
+    },
+    {
+      "DIN_pad_mm": [
+        14.54,
+        218.87
+      ],
+      "DIN_signal_pin": "c32",
+      "front_endpoint": "RV104:3",
+      "front_pad_mm": [
+        17.0,
+        234.0
+      ],
+      "instance": "O1",
+      "link": "FRONT-C:O1.TUNE",
+      "link_pin": "3",
+      "margin_mm": 113.91259943572226,
+      "net": "/O1/LOCAL_REF5",
+      "other_endpoint": "RB1110:2",
+      "other_pad_mm": [
+        40.730000000000004,
+        202.39999999999998
+      ],
+      "pad_separation_lower_bound_mm": 39.51800728781756,
+      "segments": {
+        "DIN_mm": 25,
+        "GH_pair_mm": 15,
+        "front_trace_mm": 14.56942279836453,
+        "middle_trace_mm": 23.55406578778559,
+        "rear_trace_mm": 44.96391197812762,
+        "wire_max_mm": 63
+      },
+      "total_mm": 186.08740056427774
+    },
+    {
+      "DIN_pad_mm": [
+        14.54,
+        188.39
+      ],
+      "DIN_signal_pin": "c20",
+      "front_endpoint": "RV105:1",
+      "front_pad_mm": [
+        12.0,
+        248.0
+      ],
+      "instance": "O1",
+      "link": "FRONT-C:O1.FINE",
+      "link_pin": "1",
+      "margin_mm": 72.5945485741816,
+      "net": "/O1/LOCAL_REFN5",
+      "other_endpoint": "RB1112:2",
+      "other_pad_mm": [
+        29.39,
+        204.82
+      ],
+      "pad_separation_lower_bound_mm": 46.55023630444856,
+      "segments": {
+        "DIN_mm": 25,
+        "GH_pair_mm": 15,
+        "front_trace_mm": 19.349805185280765,
+        "middle_trace_mm": 72.0874141291111,
+        "rear_trace_mm": 32.968232111426545,
+        "wire_max_mm": 63
+      },
+      "total_mm": 227.4054514258184
+    },
+    {
+      "DIN_pad_mm": [
+        14.54,
+        203.63
+      ],
+      "DIN_signal_pin": "c26",
+      "front_endpoint": "RV105:2",
+      "front_pad_mm": [
+        14.5,
+        248.0
+      ],
+      "instance": "O1",
+      "link": "FRONT-C:O1.FINE",
+      "link_pin": "2",
+      "margin_mm": 95.92186295700918,
+      "net": "/O1/Ce35646_W",
+      "other_endpoint": "R1131:1",
+      "other_pad_mm": [
+        27.89,
+        188.82
+      ],
+      "pad_separation_lower_bound_mm": 60.67589719155375,
+      "segments": {
+        "DIN_mm": 25,
+        "GH_pair_mm": 15,
+        "front_trace_mm": 16.72144119345812,
+        "middle_trace_mm": 53.96598213319976,
+        "rear_trace_mm": 30.390713716332943,
+        "wire_max_mm": 63
+      },
+      "total_mm": 204.07813704299082
+    },
+    {
+      "DIN_pad_mm": [
+        14.54,
+        218.87
+      ],
+      "DIN_signal_pin": "c32",
+      "front_endpoint": "RV105:3",
+      "front_pad_mm": [
+        17.0,
+        248.0
+      ],
+      "instance": "O1",
+      "link": "FRONT-C:O1.FINE",
+      "link_pin": "3",
+      "margin_mm": 101.62211508621942,
+      "net": "/O1/LOCAL_REF5",
+      "other_endpoint": "RB1110:2",
+      "other_pad_mm": [
+        40.730000000000004,
+        202.39999999999998
+      ],
+      "pad_separation_lower_bound_mm": 51.40498905748354,
+      "segments": {
+        "DIN_mm": 25,
+        "GH_pair_mm": 15,
+        "front_trace_mm": 14.56942279836453,
+        "middle_trace_mm": 35.84455013728842,
+        "rear_trace_mm": 44.96391197812762,
+        "wire_max_mm": 63
+      },
+      "total_mm": 198.37788491378058
+    },
+    {
+      "DIN_pad_mm": [
+        14.54,
+        216.33
+      ],
+      "DIN_signal_pin": "c31",
+      "front_endpoint": "RV107:2",
+      "front_pad_mm": [
+        14.5,
+        276.0
+      ],
+      "instance": "O1",
+      "link": "FRONT-C:O1.PW",
+      "link_pin": "2",
+      "margin_mm": 2.9863210477737425,
+      "net": "/O1/Ca449b7_W",
+      "other_endpoint": "R1133:1",
+      "other_pad_mm": [
+        75.89,
+        155.04
+      ],
+      "pad_separation_lower_bound_mm": 135.64679760318708,
+      "segments": {
+        "DIN_mm": 25,
+        "GH_pair_mm": 15,
+        "front_trace_mm": 16.00269119345812,
+        "middle_trace_mm": 71.26326613524408,
+        "rear_trace_mm": 106.74772162352404,
+        "wire_max_mm": 63
+      },
+      "total_mm": 297.01367895222626
+    },
+    {
+      "DIN_pad_mm": [
+        14.54,
+        218.87
+      ],
+      "DIN_signal_pin": "c32",
+      "front_endpoint": "RV107:3",
+      "front_pad_mm": [
+        17.0,
+        276.0
+      ],
+      "instance": "O1",
+      "link": "FRONT-C:O1.PW",
+      "link_pin": "3",
+      "margin_mm": 70.4385810841751,
+      "net": "/O1/LOCAL_REF5",
+      "other_endpoint": "RB1110:2",
+      "other_pad_mm": [
+        40.730000000000004,
+        202.39999999999998
+      ],
+      "pad_separation_lower_bound_mm": 77.33093106901018,
+      "segments": {
+        "DIN_mm": 25,
+        "GH_pair_mm": 15,
+        "front_trace_mm": 13.85067279836453,
+        "middle_trace_mm": 67.74683413933276,
+        "rear_trace_mm": 44.96391197812762,
+        "wire_max_mm": 63
+      },
+      "total_mm": 229.5614189158249
+    },
+    {
+      "DIN_pad_mm": [
+        14.54,
+        183.31
+      ],
+      "DIN_signal_pin": "c18",
+      "front_endpoint": "SW102:2",
+      "front_pad_mm": [
+        14.5,
+        199.0
+      ],
+      "instance": "O1",
+      "link": "FRONT-C:O1.VCO/LFO",
+      "link_pin": "2",
+      "margin_mm": 120.06238708080093,
+      "net": "/O1/RANGE_CV",
+      "other_endpoint": "R1139:1",
+      "other_pad_mm": [
+        31.67,
+        166.23
+      ],
+      "pad_separation_lower_bound_mm": 36.995699750106105,
+      "segments": {
+        "DIN_mm": 25,
+        "GH_pair_mm": 15,
+        "front_trace_mm": 13.365863991822648,
+        "middle_trace_mm": 28.73626613524409,
+        "rear_trace_mm": 34.83548279213234,
+        "wire_max_mm": 63
+      },
+      "total_mm": 179.93761291919907
+    },
+    {
+      "DIN_pad_mm": [
+        14.54,
+        183.31
+      ],
+      "DIN_signal_pin": "c18",
+      "front_endpoint": "SW102:2",
+      "front_pad_mm": [
+        14.5,
+        199.0
+      ],
+      "instance": "O1",
+      "link": "FRONT-C:O1.VCO/LFO",
+      "link_pin": "2",
+      "margin_mm": 116.86814342488526,
+      "net": "/O1/RANGE_CV",
+      "other_endpoint": "R1145:1",
+      "other_pad_mm": [
+        35.45,
+        168.65
+      ],
+      "pad_separation_lower_bound_mm": 36.87851678145421,
+      "segments": {
+        "DIN_mm": 25,
+        "GH_pair_mm": 15,
+        "front_trace_mm": 13.365863991822648,
+        "middle_trace_mm": 28.73626613524409,
+        "rear_trace_mm": 38.02972644804801,
+        "wire_max_mm": 63
+      },
+      "total_mm": 183.13185657511474
+    },
+    {
+      "DIN_pad_mm": [
+        14.54,
+        180.77
+      ],
+      "DIN_signal_pin": "c17",
+      "front_endpoint": "SW102:3",
+      "front_pad_mm": [
+        11.96,
+        199.0
+      ],
+      "instance": "O1",
+      "link": "FRONT-C:O1.VCO/LFO",
+      "link_pin": "3",
+      "margin_mm": 56.93361170446363,
+      "net": "/O1/LFO_REF",
+      "other_endpoint": "U1113:7",
+      "other_pad_mm": [
+        76.22500000000001,
+        152.76
+      ],
+      "pad_separation_lower_bound_mm": 79.17150892208637,
+      "segments": {
+        "DIN_mm": 25,
+        "GH_pair_mm": 15,
+        "front_trace_mm": 17.72436399182265,
+        "middle_trace_mm": 31.061834139332756,
+        "rear_trace_mm": 91.28019016438097,
+        "wire_max_mm": 63
+      },
+      "total_mm": 243.06638829553637
+    },
+    {
+      "DIN_pad_mm": [
+        14.54,
+        193.47
+      ],
+      "DIN_signal_pin": "c22",
+      "front_endpoint": "SW103:1",
+      "front_pad_mm": [
+        17.04,
+        213.0
+      ],
+      "instance": "O1",
+      "link": "FRONT-C:O1.SYNC",
+      "link_pin": "1",
+      "margin_mm": 107.87574830625394,
+      "net": "/O1/HARD_DRIVE",
+      "other_endpoint": "R1163:1",
+      "other_pad_mm": [
+        39.230000000000004,
+        173.29
+      ],
+      "pad_separation_lower_bound_mm": 45.4893416087769,
+      "segments": {
+        "DIN_mm": 25,
+        "GH_pair_mm": 15,
+        "front_trace_mm": 10.072683422642559,
+        "middle_trace_mm": 34.04541412911108,
+        "rear_trace_mm": 45.006154141992425,
+        "wire_max_mm": 63
+      },
+      "total_mm": 192.12425169374606
+    },
+    {
+      "DIN_pad_mm": [
+        14.54,
+        193.47
+      ],
+      "DIN_signal_pin": "c22",
+      "front_endpoint": "SW103:1",
+      "front_pad_mm": [
+        17.04,
+        213.0
+      ],
+      "instance": "O1",
+      "link": "FRONT-C:O1.SYNC",
+      "link_pin": "1",
+      "margin_mm": 103.52874830625393,
+      "net": "/O1/HARD_DRIVE",
+      "other_endpoint": "R1164:1",
+      "other_pad_mm": [
+        43.010000000000005,
+        173.29
+      ],
+      "pad_separation_lower_bound_mm": 47.44812957325084,
+      "segments": {
+        "DIN_mm": 25,
+        "GH_pair_mm": 15,
+        "front_trace_mm": 10.072683422642559,
+        "middle_trace_mm": 34.04541412911108,
+        "rear_trace_mm": 49.35315414199243,
+        "wire_max_mm": 63
+      },
+      "total_mm": 196.47125169374607
+    },
+    {
+      "DIN_pad_mm": [
+        14.54,
+        208.71
+      ],
+      "DIN_signal_pin": "c28",
+      "front_endpoint": "SW103:2",
+      "front_pad_mm": [
+        14.5,
+        213.0
+      ],
+      "instance": "O1",
+      "link": "FRONT-C:O1.SYNC",
+      "link_pin": "2",
+      "margin_mm": 96.51812013421178,
+      "net": "/O1/SYNC_GATE",
+      "other_endpoint": "U1107:2",
+      "other_pad_mm": [
+        52.225,
+        177.41
+      ],
+      "pad_separation_lower_bound_mm": 51.863510534864496,
+      "segments": {
+        "DIN_mm": 25,
+        "GH_pair_mm": 15,
+        "front_trace_mm": 12.072113991822647,
+        "middle_trace_mm": 23.162398696346,
+        "rear_trace_mm": 65.24736717761957,
+        "wire_max_mm": 63
+      },
+      "total_mm": 203.48187986578822
+    },
+    {
+      "DIN_pad_mm": [
+        14.54,
+        190.93
+      ],
+      "DIN_signal_pin": "c21",
+      "front_endpoint": "SW103:3",
+      "front_pad_mm": [
+        11.96,
+        213.0
+      ],
+      "instance": "O1",
+      "link": "FRONT-C:O1.SYNC",
+      "link_pin": "3",
+      "margin_mm": 109.34803579892014,
+      "net": "/O1/SOFT_DRIVE",
+      "other_endpoint": "R1161:1",
+      "other_pad_mm": [
+        31.67,
+        173.29
+      ],
+      "pad_separation_lower_bound_mm": 44.332473425244395,
+      "segments": {
+        "DIN_mm": 25,
+        "GH_pair_mm": 15,
+        "front_trace_mm": 16.430613991822646,
+        "middle_trace_mm": 35.77555013728842,
+        "rear_trace_mm": 35.445800071968804,
+        "wire_max_mm": 63
+      },
+      "total_mm": 190.65196420107986
+    },
+    {
+      "DIN_pad_mm": [
+        14.54,
+        190.93
+      ],
+      "DIN_signal_pin": "c21",
+      "front_endpoint": "SW103:3",
+      "front_pad_mm": [
+        11.96,
+        213.0
+      ],
+      "instance": "O1",
+      "link": "FRONT-C:O1.SYNC",
+      "link_pin": "3",
+      "margin_mm": 105.34459954458833,
+      "net": "/O1/SOFT_DRIVE",
+      "other_endpoint": "R1162:1",
+      "other_pad_mm": [
+        35.45,
+        173.29
+      ],
+      "pad_separation_lower_bound_mm": 46.137448997533454,
+      "segments": {
+        "DIN_mm": 25,
+        "GH_pair_mm": 15,
+        "front_trace_mm": 16.430613991822646,
+        "middle_trace_mm": 35.77555013728842,
+        "rear_trace_mm": 39.449236326300614,
+        "wire_max_mm": 63
+      },
+      "total_mm": 194.65540045541167
+    },
+    {
+      "DIN_pad_mm": [
+        14.54,
+        157.91
+      ],
+      "DIN_signal_pin": "c8",
+      "front_endpoint": "U1118:1",
+      "front_pad_mm": [
+        17.1375,
+        31.45
+      ],
+      "instance": "O1",
+      "link": "FRONT-J:O1.1V",
+      "link_pin": "1",
+      "margin_mm": -15.430602776799788,
+      "net": "/O1/1V_BUFFER",
+      "other_endpoint": "R1140:1",
+      "other_pad_mm": [
+        35.45,
+        166.23
+      ],
+      "pad_separation_lower_bound_mm": 136.0183666136673,
+      "segments": {
+        "DIN_mm": 25,
+        "GH_pair_mm": 15,
+        "front_trace_mm": 13.698925278814285,
+        "middle_trace_mm": 163.72198213319973,
+        "rear_trace_mm": 35.00969536478577,
+        "wire_max_mm": 63
+      },
+      "total_mm": 315.4306027767998
+    },
+    {
+      "DIN_pad_mm": [
+        14.54,
+        147.75
+      ],
+      "DIN_signal_pin": "c4",
+      "front_endpoint": "U1116:1",
+      "front_pad_mm": [
+        24.81,
+        60.475
+      ],
+      "instance": "O1",
+      "link": "FRONT-J:O1.FM",
+      "link_pin": "1",
+      "margin_mm": -31.49438418952832,
+      "net": "/O1/FM_BUFFER",
+      "other_endpoint": "R1121:1",
+      "other_pad_mm": [
+        59.45,
+        157.45999999999998
+      ],
+      "pad_separation_lower_bound_mm": 102.9855321149529,
+      "segments": {
+        "DIN_mm": 25,
+        "GH_pair_mm": 15,
+        "front_trace_mm": 29.284586312089424,
+        "middle_trace_mm": 135.93798213319974,
+        "rear_trace_mm": 63.271815744239156,
+        "wire_max_mm": 63
+      },
+      "total_mm": 331.4943841895283
+    },
+    {
+      "DIN_pad_mm": [
+        14.54,
+        147.75
+      ],
+      "DIN_signal_pin": "c4",
+      "front_endpoint": "U1116:1",
+      "front_pad_mm": [
+        24.81,
+        60.475
+      ],
+      "instance": "O1",
+      "link": "FRONT-J:O1.FM",
+      "link_pin": "1",
+      "margin_mm": -18.59366263706022,
+      "net": "/O1/FM_BUFFER",
+      "other_endpoint": "U1112:3",
+      "other_pad_mm": [
+        52.225,
+        147.68
+      ],
+      "pad_separation_lower_bound_mm": 91.41276852825322,
+      "segments": {
+        "DIN_mm": 25,
+        "GH_pair_mm": 15,
+        "front_trace_mm": 29.284586312089424,
+        "middle_trace_mm": 135.93798213319974,
+        "rear_trace_mm": 50.37109419177103,
+        "wire_max_mm": 63
+      },
+      "total_mm": 318.5936626370602
+    },
+    {
+      "DIN_pad_mm": [
+        14.54,
+        152.83
+      ],
+      "DIN_signal_pin": "c6",
+      "front_endpoint": "U1117:10",
+      "front_pad_mm": [
+        19.73,
+        84.025
+      ],
+      "instance": "O1",
+      "link": "FRONT-J:O1.PUL",
+      "link_pin": "1",
+      "margin_mm": 83.84756699104841,
+      "net": "/O1/PUL_SCALED",
+      "other_endpoint": "U1114:14",
+      "other_pad_mm": [
+        33.175,
+        125.14
+      ],
+      "pad_separation_lower_bound_mm": 43.25749934982372,
+      "segments": {
+        "DIN_mm": 25,
+        "GH_pair_mm": 15,
+        "front_trace_mm": 20.252250680705796,
+        "middle_trace_mm": 45.17998213319976,
+        "rear_trace_mm": 47.72020019504603,
+        "wire_max_mm": 63
+      },
+      "total_mm": 216.1524330089516
+    },
+    {
+      "DIN_pad_mm": [
+        14.54,
+        160.45
+      ],
+      "DIN_signal_pin": "c9",
+      "front_endpoint": "U1116:7",
+      "front_pad_mm": [
+        17.19,
+        60.475
+      ],
+      "instance": "O1",
+      "link": "FRONT-J:O1.PWM",
+      "link_pin": "1",
+      "margin_mm": -18.65580081799419,
+      "net": "/O1/PWM_BUFFER",
+      "other_endpoint": "R1127:1",
+      "other_pad_mm": [
+        63.230000000000004,
+        159.78
+      ],
+      "pad_separation_lower_bound_mm": 109.45850640767945,
+      "segments": {
+        "DIN_mm": 25,
+        "GH_pair_mm": 15,
+        "front_trace_mm": 17.90016713498601,
+        "middle_trace_mm": 134.44298213319973,
+        "rear_trace_mm": 63.312651549808464,
+        "wire_max_mm": 63
+      },
+      "total_mm": 318.6558008179942
+    },
+    {
+      "DIN_pad_mm": [
+        14.54,
+        160.45
+      ],
+      "DIN_signal_pin": "c9",
+      "front_endpoint": "U1116:7",
+      "front_pad_mm": [
+        17.19,
+        60.475
+      ],
+      "instance": "O1",
+      "link": "FRONT-J:O1.PWM",
+      "link_pin": "1",
+      "margin_mm": -16.246414722724012,
+      "net": "/O1/PWM_BUFFER",
+      "other_endpoint": "U1112:10",
+      "other_pad_mm": [
+        57.175000000000004,
+        150.22
+      ],
+      "pad_separation_lower_bound_mm": 98.24950508781203,
+      "segments": {
+        "DIN_mm": 25,
+        "GH_pair_mm": 15,
+        "front_trace_mm": 17.90016713498601,
+        "middle_trace_mm": 134.44298213319973,
+        "rear_trace_mm": 60.90326545453827,
+        "wire_max_mm": 63
+      },
+      "total_mm": 316.246414722724
+    },
+    {
+      "DIN_pad_mm": [
+        14.54,
+        145.21
+      ],
+      "DIN_signal_pin": "c3",
+      "front_endpoint": "U1117:5",
+      "front_pad_mm": [
+        19.73,
+        88.975
+      ],
+      "instance": "O1",
+      "link": "FRONT-J:O1.SAW",
+      "link_pin": "1",
+      "margin_mm": 86.99288710257414,
+      "net": "/O1/SAW_SCALED",
+      "other_endpoint": "U1114:8",
+      "other_pad_mm": [
+        33.175,
+        132.76
+      ],
+      "pad_separation_lower_bound_mm": 45.80277557091927,
+      "segments": {
+        "DIN_mm": 25,
+        "GH_pair_mm": 15,
+        "front_trace_mm": 23.129378084949316,
+        "middle_trace_mm": 52.516982133199754,
+        "rear_trace_mm": 34.36075267927679,
+        "wire_max_mm": 63
+      },
+      "total_mm": 213.00711289742586
+    },
+    {
+      "DIN_pad_mm": [
+        14.54,
+        150.29
+      ],
+      "DIN_signal_pin": "c5",
+      "front_endpoint": "U1116:12",
+      "front_pad_mm": [
+        22.27,
+        55.525
+      ],
+      "instance": "O1",
+      "link": "FRONT-J:O1.SIN",
+      "link_pin": "1",
+      "margin_mm": 17.1940216840203,
+      "net": "/O1/SIN_SCALED",
+      "other_endpoint": "U1115:7",
+      "other_pad_mm": [
+        52.225,
+        132.76
+      ],
+      "pad_separation_lower_bound_mm": 82.84049281601358,
+      "segments": {
+        "DIN_mm": 25,
+        "GH_pair_mm": 15,
+        "front_trace_mm": 30.558907872119583,
+        "middle_trace_mm": 90.55898213319972,
+        "rear_trace_mm": 58.68808831066041,
+        "wire_max_mm": 63
+      },
+      "total_mm": 282.8059783159797
+    },
+    {
+      "DIN_pad_mm": [
+        14.54,
+        173.15
+      ],
+      "DIN_signal_pin": "c14",
+      "front_endpoint": "U1116:8",
+      "front_pad_mm": [
+        17.19,
+        55.525
+      ],
+      "instance": "O1",
+      "link": "FRONT-J:O1.SYNC",
+      "link_pin": "1",
+      "margin_mm": -26.03190120143711,
+      "net": "/O1/SYNC_BUFFER",
+      "other_endpoint": "R1156:1",
+      "other_pad_mm": [
+        55.67,
+        186.04
+      ],
+      "pad_separation_lower_bound_mm": 136.06937798417394,
+      "segments": {
+        "DIN_mm": 25,
+        "GH_pair_mm": 15,
+        "front_trace_mm": 29.64432432639979,
+        "middle_trace_mm": 132.94798213319973,
+        "rear_trace_mm": 60.43959474183757,
+        "wire_max_mm": 63
+      },
+      "total_mm": 326.0319012014371
+    },
+    {
+      "DIN_pad_mm": [
+        14.54,
+        140.13
+      ],
+      "DIN_signal_pin": "c1",
+      "front_endpoint": "U1117:3",
+      "front_pad_mm": [
+        22.27,
+        88.975
+      ],
+      "instance": "O1",
+      "link": "FRONT-J:O1.TRI",
+      "link_pin": "1",
+      "margin_mm": 87.95193232250949,
+      "net": "/O1/TRI_SCALED",
+      "other_endpoint": "U1114:7",
+      "other_pad_mm": [
+        28.224999999999998,
+        132.76
+      ],
+      "pad_separation_lower_bound_mm": 44.18810077385087,
+      "segments": {
+        "DIN_mm": 25,
+        "GH_pair_mm": 15,
+        "front_trace_mm": 20.024668496397606,
+        "middle_trace_mm": 62.774982133199735,
+        "rear_trace_mm": 26.248417047893167,
+        "wire_max_mm": 63
+      },
+      "total_mm": 212.0480676774905
+    },
+    {
+      "DIN_pad_mm": [
+        14.54,
+        185.85
+      ],
+      "DIN_signal_pin": "c19",
+      "front_endpoint": "SW101:1",
+      "front_pad_mm": [
+        19.5,
+        194.15
+      ],
+      "instance": "O1",
+      "link": "K-O1-1",
+      "link_pin": "1",
+      "margin_mm": 116.00558947037683,
+      "net": "/O1/OCT_SELECTED",
+      "other_endpoint": "R1135:1",
+      "other_pad_mm": [
+        35.45,
+        188.82
+      ],
+      "pad_separation_lower_bound_mm": 16.816997353867908,
+      "segments": {
+        "DIN_mm": 25,
+        "GH_pair_mm": 15,
+        "front_trace_mm": 15.34158639918227,
+        "middle_trace_mm": 33.19157770815559,
+        "rear_trace_mm": 32.461246422285306,
+        "wire_max_mm": 63
+      },
+      "total_mm": 183.99441052962317
+    },
+    {
+      "DIN_pad_mm": [
+        14.54,
+        185.85
+      ],
+      "DIN_signal_pin": "c19",
+      "front_endpoint": "SW101:10",
+      "front_pad_mm": [
+        19.5,
+        175.85
+      ],
+      "instance": "O1",
+      "link": "K-O1-1",
+      "link_pin": "1",
+      "margin_mm": 111.40558947037681,
+      "net": "/O1/OCT_SELECTED",
+      "other_endpoint": "R1135:1",
+      "other_pad_mm": [
+        35.45,
+        188.82
+      ],
+      "pad_separation_lower_bound_mm": 20.557806303202685,
+      "segments": {
+        "DIN_mm": 25,
+        "GH_pair_mm": 15,
+        "front_trace_mm": 19.94158639918227,
+        "middle_trace_mm": 33.19157770815559,
+        "rear_trace_mm": 32.461246422285306,
+        "wire_max_mm": 63
+      },
+      "total_mm": 188.5944105296232
+    },
+    {
+      "DIN_pad_mm": [
+        14.54,
+        155.37
+      ],
+      "DIN_signal_pin": "c7",
+      "front_endpoint": "U1602:1",
+      "front_pad_mm": [
+        75.3625,
+        151.55
+      ],
+      "instance": "O1",
+      "margin_mm": 134.402327408481,
+      "net": "OSC_REF5",
+      "other_endpoint": "U1110:3",
+      "other_pad_mm": [
+        27.9875,
+        197.48
+      ],
+      "pad_separation_lower_bound_mm": 65.98450973524012,
+      "segments": {
+        "DIN_mm": 25,
+        "middle_trace_mm": 78.765515179505,
+        "rear_trace_mm": 61.832157412014006
+      },
+      "total_mm": 165.597672591519
+    },
+    {
+      "DIN_pad_mm": [
+        14.54,
+        155.37
+      ],
+      "DIN_signal_pin": "c7",
+      "front_endpoint": "U1602:1",
+      "front_pad_mm": [
+        75.3625,
+        151.55
+      ],
+      "instance": "O1",
+      "margin_mm": 130.18024886720713,
+      "net": "OSC_REF5",
+      "other_endpoint": "U1110:10",
+      "other_pad_mm": [
+        33.712500000000006,
+        198.78
+      ],
+      "pad_separation_lower_bound_mm": 62.97138556519142,
+      "segments": {
+        "DIN_mm": 25,
+        "middle_trace_mm": 78.765515179505,
+        "rear_trace_mm": 66.05423595328789
+      },
+      "total_mm": 169.81975113279287
+    },
+    {
+      "DIN_pad_mm": [
+        14.54,
+        155.37
+      ],
+      "DIN_signal_pin": "c7",
+      "front_endpoint": "U1602:1",
+      "front_pad_mm": [
+        75.3625,
+        151.55
+      ],
+      "instance": "O1",
+      "margin_mm": 108.37323553099247,
+      "net": "OSC_REF5",
+      "other_endpoint": "U1111:3",
+      "other_pad_mm": [
+        72.8875,
+        126.48
+      ],
+      "pad_separation_lower_bound_mm": 25.19187418593544,
+      "segments": {
+        "DIN_mm": 25,
+        "middle_trace_mm": 78.765515179505,
+        "rear_trace_mm": 87.86124928950252
+      },
+      "total_mm": 191.62676446900753
+    },
+    {
+      "DIN_pad_mm": [
+        14.54,
+        206.17000000000002
+      ],
+      "DIN_signal_pin": "c27",
+      "front_endpoint": "U1602:8",
+      "front_pad_mm": [
+        69.6375,
+        155.45
+      ],
+      "instance": "O1",
+      "margin_mm": 107.89528947174611,
+      "net": "OSC_GATE_REF",
+      "other_endpoint": "R1158:1",
+      "other_pad_mm": [
+        63.230000000000004,
+        186.04
+      ],
+      "pad_separation_lower_bound_mm": 31.25386626083244,
+      "segments": {
+        "DIN_mm": 25,
+        "middle_trace_mm": 94.5223736660979,
+        "rear_trace_mm": 72.58233686215598
+      },
+      "total_mm": 192.1047105282539
+    },
+    {
+      "DIN_pad_mm": [
+        14.54,
+        142.67000000000002
+      ],
+      "DIN_signal_pin": "c2",
+      "front_endpoint": "U1602:7",
+      "front_pad_mm": [
+        75.3625,
+        155.45
+      ],
+      "instance": "O1",
+      "margin_mm": 114.03427086178863,
+      "net": "OSC_REFN5",
+      "other_endpoint": "U1110:5",
+      "other_pad_mm": [
+        27.9875,
+        198.78
+      ],
+      "pad_separation_lower_bound_mm": 64.20186543240003,
+      "segments": {
+        "DIN_mm": 25,
+        "middle_trace_mm": 83.03357172619735,
+        "rear_trace_mm": 77.932157412014
+      },
+      "total_mm": 185.96572913821137
+    },
+    {
+      "DIN_pad_mm": [
+        14.54,
+        142.67000000000002
+      ],
+      "DIN_signal_pin": "c2",
+      "front_endpoint": "U1602:7",
+      "front_pad_mm": [
+        75.3625,
+        155.45
+      ],
+      "instance": "O1",
+      "margin_mm": 112.80219232051479,
+      "net": "OSC_REFN5",
+      "other_endpoint": "U1110:12",
+      "other_pad_mm": [
+        33.712500000000006,
+        197.48
+      ],
+      "pad_separation_lower_bound_mm": 59.17130554584713,
+      "segments": {
+        "DIN_mm": 25,
+        "middle_trace_mm": 83.03357172619735,
+        "rear_trace_mm": 79.16423595328786
+      },
+      "total_mm": 187.1978076794852
+    },
+    {
+      "DIN_pad_mm": [
+        14.54,
+        142.67000000000002
+      ],
+      "DIN_signal_pin": "c2",
+      "front_endpoint": "U1602:7",
+      "front_pad_mm": [
+        75.3625,
+        155.45
+      ],
+      "instance": "O1",
+      "margin_mm": 110.77401733850695,
+      "net": "OSC_REFN5",
+      "other_endpoint": "U1111:5",
+      "other_pad_mm": [
+        72.8875,
+        127.78
+      ],
+      "pad_separation_lower_bound_mm": 27.78047020840359,
+      "segments": {
+        "DIN_mm": 25,
+        "middle_trace_mm": 83.03357172619735,
+        "rear_trace_mm": 81.1924109352957
+      },
+      "total_mm": 189.22598266149305
+    },
+    {
+      "DIN_pad_mm": [
+        119.53999999999999,
+        196.01
+      ],
+      "DIN_signal_pin": "c23",
+      "front_endpoint": "RV106:2",
+      "front_pad_mm": [
+        31.5,
+        262.0
+      ],
+      "instance": "O2",
+      "link": "FRONT-C:O1.FM\u00b1",
+      "link_pin": "2",
+      "margin_mm": -9.168452068714032,
+      "net": "/O1/C1eb779_W",
+      "other_endpoint": "R1119:1",
+      "other_pad_mm": [
+        156.89,
+        157.45999999999998
+      ],
+      "pad_separation_lower_bound_mm": 163.25214761221366,
+      "segments": {
+        "DIN_mm": 25,
+        "GH_pair_mm": 15,
+        "front_trace_mm": 16.00269119345812,
+        "middle_trace_mm": 121.04175283742553,
+        "rear_trace_mm": 69.12400803783038,
+        "wire_max_mm": 63
+      },
+      "total_mm": 309.16845206871403
+    },
+    {
+      "DIN_pad_mm": [
+        119.53999999999999,
+        198.55
+      ],
+      "DIN_signal_pin": "c24",
+      "front_endpoint": "RV106:3",
+      "front_pad_mm": [
+        34.0,
+        262.0
+      ],
+      "instance": "O2",
+      "link": "FRONT-C:O1.FM\u00b1",
+      "link_pin": "3",
+      "margin_mm": -7.458483413254783,
+      "net": "/O1/FM_REMOTE",
+      "other_endpoint": "R1117:2",
+      "other_pad_mm": [
+        162.75,
+        172.0
+      ],
+      "pad_separation_lower_bound_mm": 157.08775413761572,
+      "segments": {
+        "DIN_mm": 25,
+        "GH_pair_mm": 15,
+        "front_trace_mm": 13.85067279836453,
+        "middle_trace_mm": 121.26933502173371,
+        "rear_trace_mm": 69.33847559315655,
+        "wire_max_mm": 63
+      },
+      "total_mm": 307.4584834132548
+    },
+    {
+      "DIN_pad_mm": [
+        119.53999999999999,
+        201.09
+      ],
+      "DIN_signal_pin": "c25",
+      "front_endpoint": "RV108:2",
+      "front_pad_mm": [
+        31.5,
+        290.0
+      ],
+      "instance": "O2",
+      "link": "FRONT-C:O1.PWM\u00b1",
+      "link_pin": "2",
+      "margin_mm": -28.038431963837525,
+      "net": "/O1/C42d8cd_W",
+      "other_endpoint": "R1125:1",
+      "other_pad_mm": [
+        160.67000000000002,
+        159.78
+      ],
+      "pad_separation_lower_bound_mm": 183.41793069381194,
+      "segments": {
+        "DIN_mm": 25,
+        "GH_pair_mm": 15,
+        "front_trace_mm": 16.00269119345812,
+        "middle_trace_mm": 134.93714637691315,
+        "rear_trace_mm": 74.09859439346623,
+        "wire_max_mm": 63
+      },
+      "total_mm": 328.0384319638375
+    },
+    {
+      "DIN_pad_mm": [
+        119.53999999999999,
+        213.79
+      ],
+      "DIN_signal_pin": "c30",
+      "front_endpoint": "RV108:3",
+      "front_pad_mm": [
+        34.0,
+        290.0
+      ],
+      "instance": "O2",
+      "link": "FRONT-C:O1.PWM\u00b1",
+      "link_pin": "3",
+      "margin_mm": -26.546160121668436,
+      "net": "/O1/PWM_REMOTE",
+      "other_endpoint": "R1123:2",
+      "other_pad_mm": [
+        167.75,
+        172.0
+      ],
+      "pad_separation_lower_bound_mm": 178.36216667219537,
+      "segments": {
+        "DIN_mm": 25,
+        "GH_pair_mm": 15,
+        "front_trace_mm": 13.85067279836453,
+        "middle_trace_mm": 127.34750483599652,
+        "rear_trace_mm": 82.34798248730738,
+        "wire_max_mm": 63
+      },
+      "total_mm": 326.54616012166844
+    },
+    {
+      "DIN_pad_mm": [
+        119.53999999999999,
+        188.39
+      ],
+      "DIN_signal_pin": "c20",
+      "front_endpoint": "RV104:1",
+      "front_pad_mm": [
+        29.0,
+        234.0
+      ],
+      "instance": "O2",
+      "link": "FRONT-C:O1.TUNE",
+      "link_pin": "1",
+      "margin_mm": 35.504383127205415,
+      "net": "/O1/LOCAL_REFN5",
+      "other_endpoint": "RB1112:2",
+      "other_pad_mm": [
+        134.39,
+        204.82
+      ],
+      "pad_separation_lower_bound_mm": 109.35503874993597,
+      "segments": {
+        "DIN_mm": 25,
+        "GH_pair_mm": 15,
+        "front_trace_mm": 19.349805185280765,
+        "middle_trace_mm": 109.17757957608731,
+        "rear_trace_mm": 32.96823211142654,
+        "wire_max_mm": 63
+      },
+      "total_mm": 264.4956168727946
+    },
+    {
+      "DIN_pad_mm": [
+        119.53999999999999,
+        211.25
+      ],
+      "DIN_signal_pin": "c29",
+      "front_endpoint": "RV104:2",
+      "front_pad_mm": [
+        31.5,
+        234.0
+      ],
+      "instance": "O2",
+      "link": "FRONT-C:O1.TUNE",
+      "link_pin": "2",
+      "margin_mm": 33.2142667884404,
+      "net": "/O1/C83f36b_W",
+      "other_endpoint": "R1129:1",
+      "other_pad_mm": [
+        144.23000000000002,
+        186.4
+      ],
+      "pad_separation_lower_bound_mm": 122.36753204996823,
+      "segments": {
+        "DIN_mm": 25,
+        "GH_pair_mm": 15,
+        "front_trace_mm": 16.72144119345812,
+        "middle_trace_mm": 99.725819234861,
+        "rear_trace_mm": 47.33847278324048,
+        "wire_max_mm": 63
+      },
+      "total_mm": 266.7857332115596
+    },
+    {
+      "DIN_pad_mm": [
+        119.53999999999999,
+        218.87
+      ],
+      "DIN_signal_pin": "c32",
+      "front_endpoint": "RV104:3",
+      "front_pad_mm": [
+        34.0,
+        234.0
+      ],
+      "instance": "O2",
+      "link": "FRONT-C:O1.TUNE",
+      "link_pin": "3",
+      "margin_mm": 39.93309943572223,
+      "net": "/O1/LOCAL_REF5",
+      "other_endpoint": "RB1110:2",
+      "other_pad_mm": [
+        145.73000000000002,
+        202.39999999999998
+      ],
+      "pad_separation_lower_bound_mm": 116.11267329624276,
+      "segments": {
+        "DIN_mm": 25,
+        "GH_pair_mm": 15,
+        "front_trace_mm": 14.56942279836453,
+        "middle_trace_mm": 97.53356578778558,
+        "rear_trace_mm": 44.96391197812765,
+        "wire_max_mm": 63
+      },
+      "total_mm": 260.0669005642778
+    },
+    {
+      "DIN_pad_mm": [
+        119.53999999999999,
+        188.39
+      ],
+      "DIN_signal_pin": "c20",
+      "front_endpoint": "RV105:1",
+      "front_pad_mm": [
+        29.0,
+        248.0
+      ],
+      "instance": "O2",
+      "link": "FRONT-C:O1.FINE",
+      "link_pin": "1",
+      "margin_mm": 28.83554477299856,
+      "net": "/O1/LOCAL_REFN5",
+      "other_endpoint": "RB1112:2",
+      "other_pad_mm": [
+        134.39,
+        204.82
+      ],
+      "pad_separation_lower_bound_mm": 113.89277632931773,
+      "segments": {
+        "DIN_mm": 25,
+        "GH_pair_mm": 15,
+        "front_trace_mm": 19.349805185280765,
+        "middle_trace_mm": 115.84641793029415,
+        "rear_trace_mm": 32.96823211142654,
+        "wire_max_mm": 63
+      },
+      "total_mm": 271.16445522700144
+    },
+    {
+      "DIN_pad_mm": [
+        119.53999999999999,
+        203.63
+      ],
+      "DIN_signal_pin": "c26",
+      "front_endpoint": "RV105:2",
+      "front_pad_mm": [
+        31.5,
+        248.0
+      ],
+      "instance": "O2",
+      "link": "FRONT-C:O1.FINE",
+      "link_pin": "2",
+      "margin_mm": 39.863434054065635,
+      "net": "/O1/Ce35646_W",
+      "other_endpoint": "R1131:1",
+      "other_pad_mm": [
+        132.89,
+        188.82
+      ],
+      "pad_separation_lower_bound_mm": 117.39763413289042,
+      "segments": {
+        "DIN_mm": 25,
+        "GH_pair_mm": 15,
+        "front_trace_mm": 16.72144119345812,
+        "middle_trace_mm": 110.02441103614328,
+        "rear_trace_mm": 30.390713716332943,
+        "wire_max_mm": 63
+      },
+      "total_mm": 260.13656594593436
+    },
+    {
+      "DIN_pad_mm": [
+        119.53999999999999,
+        218.87
+      ],
+      "DIN_signal_pin": "c32",
+      "front_endpoint": "RV105:3",
+      "front_pad_mm": [
+        34.0,
+        248.0
+      ],
+      "instance": "O2",
+      "link": "FRONT-C:O1.FINE",
+      "link_pin": "3",
+      "margin_mm": 33.26426108151543,
+      "net": "/O1/LOCAL_REF5",
+      "other_endpoint": "RB1110:2",
+      "other_pad_mm": [
+        145.73000000000002,
+        202.39999999999998
+      ],
+      "pad_separation_lower_bound_mm": 120.67706037188678,
+      "segments": {
+        "DIN_mm": 25,
+        "GH_pair_mm": 15,
+        "front_trace_mm": 14.56942279836453,
+        "middle_trace_mm": 104.20240414199242,
+        "rear_trace_mm": 44.96391197812765,
+        "wire_max_mm": 63
+      },
+      "total_mm": 266.73573891848457
+    },
+    {
+      "DIN_pad_mm": [
+        119.53999999999999,
+        216.33
+      ],
+      "DIN_signal_pin": "c31",
+      "front_endpoint": "RV107:2",
+      "front_pad_mm": [
+        31.5,
+        276.0
+      ],
+      "instance": "O2",
+      "link": "FRONT-C:O1.PW",
+      "link_pin": "2",
+      "margin_mm": -43.78166148308003,
+      "net": "/O1/Ca449b7_W",
+      "other_endpoint": "R1133:1",
+      "other_pad_mm": [
+        180.89,
+        155.04
+      ],
+      "pad_separation_lower_bound_mm": 192.2204299755882,
+      "segments": {
+        "DIN_mm": 25,
+        "GH_pair_mm": 15,
+        "front_trace_mm": 16.00269119345812,
+        "middle_trace_mm": 118.03124866609788,
+        "rear_trace_mm": 106.74772162352404,
+        "wire_max_mm": 63
+      },
+      "total_mm": 343.78166148308003
+    },
+    {
+      "DIN_pad_mm": [
+        119.53999999999999,
+        218.87
+      ],
+      "DIN_signal_pin": "c32",
+      "front_endpoint": "RV107:3",
+      "front_pad_mm": [
+        34.0,
+        276.0
+      ],
+      "instance": "O2",
+      "link": "FRONT-C:O1.PW",
+      "link_pin": "3",
+      "margin_mm": 19.92658437310172,
+      "net": "/O1/LOCAL_REF5",
+      "other_endpoint": "RB1110:2",
+      "other_pad_mm": [
+        145.73000000000002,
+        202.39999999999998
+      ],
+      "pad_separation_lower_bound_mm": 133.79294787095472,
+      "segments": {
+        "DIN_mm": 25,
+        "GH_pair_mm": 15,
+        "front_trace_mm": 13.85067279836453,
+        "middle_trace_mm": 118.25883085040607,
+        "rear_trace_mm": 44.96391197812765,
+        "wire_max_mm": 63
+      },
+      "total_mm": 280.0734156268983
+    },
+    {
+      "DIN_pad_mm": [
+        119.53999999999999,
+        183.31
+      ],
+      "DIN_signal_pin": "c18",
+      "front_endpoint": "SW102:2",
+      "front_pad_mm": [
+        31.5,
+        199.0
+      ],
+      "instance": "O2",
+      "link": "FRONT-C:O1.VCO/LFO",
+      "link_pin": "2",
+      "margin_mm": 48.38266471698773,
+      "net": "/O1/RANGE_CV",
+      "other_endpoint": "R1139:1",
+      "other_pad_mm": [
+        136.67000000000002,
+        166.23
+      ],
+      "pad_separation_lower_bound_mm": 110.15716862737533,
+      "segments": {
+        "DIN_mm": 25,
+        "GH_pair_mm": 15,
+        "front_trace_mm": 13.365863991822648,
+        "middle_trace_mm": 100.41598849905726,
+        "rear_trace_mm": 34.83548279213237,
+        "wire_max_mm": 63
+      },
+      "total_mm": 251.61733528301227
+    },
+    {
+      "DIN_pad_mm": [
+        119.53999999999999,
+        183.31
+      ],
+      "DIN_signal_pin": "c18",
+      "front_endpoint": "SW102:2",
+      "front_pad_mm": [
+        31.5,
+        199.0
+      ],
+      "instance": "O2",
+      "link": "FRONT-C:O1.VCO/LFO",
+      "link_pin": "2",
+      "margin_mm": 45.18842106107209,
+      "net": "/O1/RANGE_CV",
+      "other_endpoint": "R1145:1",
+      "other_pad_mm": [
+        140.45,
+        168.65
+      ],
+      "pad_separation_lower_bound_mm": 113.09829795359433,
+      "segments": {
+        "DIN_mm": 25,
+        "GH_pair_mm": 15,
+        "front_trace_mm": 13.365863991822648,
+        "middle_trace_mm": 100.41598849905726,
+        "rear_trace_mm": 38.029726448048,
+        "wire_max_mm": 63
+      },
+      "total_mm": 254.8115789389279
+    },
+    {
+      "DIN_pad_mm": [
+        119.53999999999999,
+        180.77
+      ],
+      "DIN_signal_pin": "c17",
+      "front_endpoint": "SW102:3",
+      "front_pad_mm": [
+        28.96,
+        199.0
+      ],
+      "instance": "O2",
+      "link": "FRONT-C:O1.VCO/LFO",
+      "link_pin": "3",
+      "margin_mm": -15.067960470952698,
+      "net": "/O1/LFO_REF",
+      "other_endpoint": "U1113:7",
+      "other_pad_mm": [
+        181.22500000000002,
+        152.76
+      ],
+      "pad_separation_lower_bound_mm": 159.13129115607654,
+      "segments": {
+        "DIN_mm": 25,
+        "GH_pair_mm": 15,
+        "front_trace_mm": 17.72436399182265,
+        "middle_trace_mm": 103.06340631474907,
+        "rear_trace_mm": 91.280190164381,
+        "wire_max_mm": 63
+      },
+      "total_mm": 315.0679604709527
+    },
+    {
+      "DIN_pad_mm": [
+        119.53999999999999,
+        193.47
+      ],
+      "DIN_signal_pin": "c22",
+      "front_endpoint": "SW103:1",
+      "front_pad_mm": [
+        34.04,
+        213.0
+      ],
+      "instance": "O2",
+      "link": "FRONT-C:O1.SYNC",
+      "link_pin": "1",
+      "margin_mm": 41.83225684486814,
+      "net": "/O1/HARD_DRIVE",
+      "other_endpoint": "R1163:1",
+      "other_pad_mm": [
+        144.23000000000002,
+        173.29
+      ],
+      "pad_separation_lower_bound_mm": 117.12694053888715,
+      "segments": {
+        "DIN_mm": 25,
+        "GH_pair_mm": 15,
+        "front_trace_mm": 10.072683422642559,
+        "middle_trace_mm": 100.08890559049685,
+        "rear_trace_mm": 45.00615414199245,
+        "wire_max_mm": 63
+      },
+      "total_mm": 258.16774315513186
+    },
+    {
+      "DIN_pad_mm": [
+        119.53999999999999,
+        193.47
+      ],
+      "DIN_signal_pin": "c22",
+      "front_endpoint": "SW103:1",
+      "front_pad_mm": [
+        34.04,
+        213.0
+      ],
+      "instance": "O2",
+      "link": "FRONT-C:O1.SYNC",
+      "link_pin": "1",
+      "margin_mm": 37.48525684486816,
+      "net": "/O1/HARD_DRIVE",
+      "other_endpoint": "R1164:1",
+      "other_pad_mm": [
+        148.01,
+        173.29
+      ],
+      "pad_separation_lower_bound_mm": 120.68987115744221,
+      "segments": {
+        "DIN_mm": 25,
+        "GH_pair_mm": 15,
+        "front_trace_mm": 10.072683422642559,
+        "middle_trace_mm": 100.08890559049685,
+        "rear_trace_mm": 49.35315414199242,
+        "wire_max_mm": 63
+      },
+      "total_mm": 262.51474315513184
+    },
+    {
+      "DIN_pad_mm": [
+        119.53999999999999,
+        208.71
+      ],
+      "DIN_signal_pin": "c28",
+      "front_endpoint": "SW103:2",
+      "front_pad_mm": [
+        31.5,
+        213.0
+      ],
+      "instance": "O2",
+      "link": "FRONT-C:O1.SYNC",
+      "link_pin": "2",
+      "margin_mm": 25.413620134211783,
+      "net": "/O1/SYNC_GATE",
+      "other_endpoint": "U1107:2",
+      "other_pad_mm": [
+        157.225,
+        177.41
+      ],
+      "pad_separation_lower_bound_mm": 130.6653118658506,
+      "segments": {
+        "DIN_mm": 25,
+        "GH_pair_mm": 15,
+        "front_trace_mm": 12.072113991822647,
+        "middle_trace_mm": 94.26689869634599,
+        "rear_trace_mm": 65.24736717761957,
+        "wire_max_mm": 63
+      },
+      "total_mm": 274.5863798657882
+    },
+    {
+      "DIN_pad_mm": [
+        119.53999999999999,
+        190.93
+      ],
+      "DIN_signal_pin": "c21",
+      "front_endpoint": "SW103:3",
+      "front_pad_mm": [
+        28.96,
+        213.0
+      ],
+      "instance": "O2",
+      "link": "FRONT-C:O1.SYNC",
+      "link_pin": "3",
+      "margin_mm": 40.94976253001988,
+      "net": "/O1/SOFT_DRIVE",
+      "other_endpoint": "R1161:1",
+      "other_pad_mm": [
+        136.67000000000002,
+        173.29
+      ],
+      "pad_separation_lower_bound_mm": 114.79689978392274,
+      "segments": {
+        "DIN_mm": 25,
+        "GH_pair_mm": 15,
+        "front_trace_mm": 16.430613991822646,
+        "middle_trace_mm": 104.17382340618866,
+        "rear_trace_mm": 35.44580007196881,
+        "wire_max_mm": 63
+      },
+      "total_mm": 259.0502374699801
+    },
+    {
+      "DIN_pad_mm": [
+        119.53999999999999,
+        190.93
+      ],
+      "DIN_signal_pin": "c21",
+      "front_endpoint": "SW103:3",
+      "front_pad_mm": [
+        28.96,
+        213.0
+      ],
+      "instance": "O2",
+      "link": "FRONT-C:O1.SYNC",
+      "link_pin": "3",
+      "margin_mm": 36.94632627568808,
+      "net": "/O1/SOFT_DRIVE",
+      "other_endpoint": "R1162:1",
+      "other_pad_mm": [
+        140.45,
+        173.29
+      ],
+      "pad_separation_lower_bound_mm": 118.35076763587128,
+      "segments": {
+        "DIN_mm": 25,
+        "GH_pair_mm": 15,
+        "front_trace_mm": 16.430613991822646,
+        "middle_trace_mm": 104.17382340618866,
+        "rear_trace_mm": 39.44923632630061,
+        "wire_max_mm": 63
+      },
+      "total_mm": 263.0536737243119
+    },
+    {
+      "DIN_pad_mm": [
+        119.53999999999999,
+        157.91
+      ],
+      "DIN_signal_pin": "c8",
+      "front_endpoint": "U1118:1",
+      "front_pad_mm": [
+        34.1375,
+        31.45
+      ],
+      "instance": "O2",
+      "link": "FRONT-J:O1.1V",
+      "link_pin": "1",
+      "margin_mm": -44.88305102255748,
+      "net": "/O1/1V_BUFFER",
+      "other_endpoint": "R1140:1",
+      "other_pad_mm": [
+        140.45,
+        166.23
+      ],
+      "pad_separation_lower_bound_mm": 171.66244800843893,
+      "segments": {
+        "DIN_mm": 25,
+        "GH_pair_mm": 15,
+        "front_trace_mm": 13.698925278814283,
+        "middle_trace_mm": 193.17443037895745,
+        "rear_trace_mm": 35.00969536478576,
+        "wire_max_mm": 63
+      },
+      "total_mm": 344.8830510225575
+    },
+    {
+      "DIN_pad_mm": [
+        119.53999999999999,
+        147.75
+      ],
+      "DIN_signal_pin": "c4",
+      "front_endpoint": "U1116:1",
+      "front_pad_mm": [
+        41.81,
+        60.475
+      ],
+      "instance": "O2",
+      "link": "FRONT-J:O1.FM",
+      "link_pin": "1",
+      "margin_mm": -60.94683243528607,
+      "net": "/O1/FM_BUFFER",
+      "other_endpoint": "R1121:1",
+      "other_pad_mm": [
+        164.45,
+        157.45999999999998
+      ],
+      "pad_separation_lower_bound_mm": 156.35427664442054,
+      "segments": {
+        "DIN_mm": 25,
+        "GH_pair_mm": 15,
+        "front_trace_mm": 29.284586312089427,
+        "middle_trace_mm": 165.3904303789575,
+        "rear_trace_mm": 63.27181574423915,
+        "wire_max_mm": 63
+      },
+      "total_mm": 360.94683243528607
+    },
+    {
+      "DIN_pad_mm": [
+        119.53999999999999,
+        147.75
+      ],
+      "DIN_signal_pin": "c4",
+      "front_endpoint": "U1116:1",
+      "front_pad_mm": [
+        41.81,
+        60.475
+      ],
+      "instance": "O2",
+      "link": "FRONT-J:O1.FM",
+      "link_pin": "1",
+      "margin_mm": -48.04611088281797,
+      "net": "/O1/FM_BUFFER",
+      "other_endpoint": "U1112:3",
+      "other_pad_mm": [
+        157.225,
+        147.68
+      ],
+      "pad_separation_lower_bound_mm": 144.65591674729382,
+      "segments": {
+        "DIN_mm": 25,
+        "GH_pair_mm": 15,
+        "front_trace_mm": 29.284586312089427,
+        "middle_trace_mm": 165.3904303789575,
+        "rear_trace_mm": 50.37109419177103,
+        "wire_max_mm": 63
+      },
+      "total_mm": 348.04611088281797
+    },
+    {
+      "DIN_pad_mm": [
+        119.53999999999999,
+        152.83
+      ],
+      "DIN_signal_pin": "c6",
+      "front_endpoint": "U1117:10",
+      "front_pad_mm": [
+        36.730000000000004,
+        84.025
+      ],
+      "instance": "O2",
+      "link": "FRONT-J:O1.PUL",
+      "link_pin": "1",
+      "margin_mm": 22.642418447114892,
+      "net": "/O1/PUL_SCALED",
+      "other_endpoint": "U1114:14",
+      "other_pad_mm": [
+        138.175,
+        125.14
+      ],
+      "pad_separation_lower_bound_mm": 109.46018111623971,
+      "segments": {
+        "DIN_mm": 25,
+        "GH_pair_mm": 15,
+        "front_trace_mm": 20.252250680705796,
+        "middle_trace_mm": 106.38513067713326,
+        "rear_trace_mm": 47.72020019504604,
+        "wire_max_mm": 63
+      },
+      "total_mm": 277.3575815528851
+    },
+    {
+      "DIN_pad_mm": [
+        119.53999999999999,
+        160.45
+      ],
+      "DIN_signal_pin": "c9",
+      "front_endpoint": "U1116:7",
+      "front_pad_mm": [
+        34.19,
+        60.475
+      ],
+      "instance": "O2",
+      "link": "FRONT-J:O1.PWM",
+      "link_pin": "1",
+      "margin_mm": -48.108249063752,
+      "net": "/O1/PWM_BUFFER",
+      "other_endpoint": "R1127:1",
+      "other_pad_mm": [
+        168.23000000000002,
+        159.78
+      ],
+      "pad_separation_lower_bound_mm": 166.81787861317505,
+      "segments": {
+        "DIN_mm": 25,
+        "GH_pair_mm": 15,
+        "front_trace_mm": 17.900167134986013,
+        "middle_trace_mm": 163.89543037895749,
+        "rear_trace_mm": 63.31265154980849,
+        "wire_max_mm": 63
+      },
+      "total_mm": 348.108249063752
+    },
+    {
+      "DIN_pad_mm": [
+        119.53999999999999,
+        160.45
+      ],
+      "DIN_signal_pin": "c9",
+      "front_endpoint": "U1116:7",
+      "front_pad_mm": [
+        34.19,
+        60.475
+      ],
+      "instance": "O2",
+      "link": "FRONT-J:O1.PWM",
+      "link_pin": "1",
+      "margin_mm": -45.69886296848176,
+      "net": "/O1/PWM_BUFFER",
+      "other_endpoint": "U1112:10",
+      "other_pad_mm": [
+        162.175,
+        150.22
+      ],
+      "pad_separation_lower_bound_mm": 156.3148273517263,
+      "segments": {
+        "DIN_mm": 25,
+        "GH_pair_mm": 15,
+        "front_trace_mm": 17.900167134986013,
+        "middle_trace_mm": 163.89543037895749,
+        "rear_trace_mm": 60.90326545453829,
+        "wire_max_mm": 63
+      },
+      "total_mm": 345.69886296848176
+    },
+    {
+      "DIN_pad_mm": [
+        119.53999999999999,
+        145.21
+      ],
+      "DIN_signal_pin": "c3",
+      "front_endpoint": "U1117:5",
+      "front_pad_mm": [
+        36.730000000000004,
+        88.975
+      ],
+      "instance": "O2",
+      "link": "FRONT-J:O1.SAW",
+      "link_pin": "1",
+      "margin_mm": 30.085653651509233,
+      "net": "/O1/SAW_SCALED",
+      "other_endpoint": "U1114:8",
+      "other_pad_mm": [
+        138.175,
+        132.76
+      ],
+      "pad_separation_lower_bound_mm": 110.49078807755876,
+      "segments": {
+        "DIN_mm": 25,
+        "GH_pair_mm": 15,
+        "front_trace_mm": 23.129378084949312,
+        "middle_trace_mm": 109.42421558426464,
+        "rear_trace_mm": 34.360752679276814,
+        "wire_max_mm": 63
+      },
+      "total_mm": 269.91434634849077
+    },
+    {
+      "DIN_pad_mm": [
+        119.53999999999999,
+        150.29
+      ],
+      "DIN_signal_pin": "c5",
+      "front_endpoint": "U1116:12",
+      "front_pad_mm": [
+        39.269999999999996,
+        55.525
+      ],
+      "instance": "O2",
+      "link": "FRONT-J:O1.SIN",
+      "link_pin": "1",
+      "margin_mm": -17.42872410684197,
+      "net": "/O1/SIN_SCALED",
+      "other_endpoint": "U1115:7",
+      "other_pad_mm": [
+        157.225,
+        132.76
+      ],
+      "pad_separation_lower_bound_mm": 140.9915857418449,
+      "segments": {
+        "DIN_mm": 25,
+        "GH_pair_mm": 15,
+        "front_trace_mm": 30.558907872119587,
+        "middle_trace_mm": 125.18172792406195,
+        "rear_trace_mm": 58.68808831066041,
+        "wire_max_mm": 63
+      },
+      "total_mm": 317.42872410684197
+    },
+    {
+      "DIN_pad_mm": [
+        119.53999999999999,
+        173.15
+      ],
+      "DIN_signal_pin": "c14",
+      "front_endpoint": "U1116:8",
+      "front_pad_mm": [
+        34.19,
+        55.525
+      ],
+      "instance": "O2",
+      "link": "FRONT-J:O1.SYNC",
+      "link_pin": "1",
+      "margin_mm": -55.48434944719486,
+      "net": "/O1/SYNC_BUFFER",
+      "other_endpoint": "R1156:1",
+      "other_pad_mm": [
+        160.67000000000002,
+        186.04
+      ],
+      "pad_separation_lower_bound_mm": 181.74530427221498,
+      "segments": {
+        "DIN_mm": 25,
+        "GH_pair_mm": 15,
+        "front_trace_mm": 29.64432432639979,
+        "middle_trace_mm": 162.40043037895748,
+        "rear_trace_mm": 60.43959474183759,
+        "wire_max_mm": 63
+      },
+      "total_mm": 355.48434944719486
+    },
+    {
+      "DIN_pad_mm": [
+        119.53999999999999,
+        140.13
+      ],
+      "DIN_signal_pin": "c1",
+      "front_endpoint": "U1117:3",
+      "front_pad_mm": [
+        39.269999999999996,
+        88.975
+      ],
+      "instance": "O2",
+      "link": "FRONT-J:O1.TRI",
+      "link_pin": "1",
+      "margin_mm": 37.053696148621384,
+      "net": "/O1/TRI_SCALED",
+      "other_endpoint": "U1114:7",
+      "other_pad_mm": [
+        133.225,
+        132.76
+      ],
+      "pad_separation_lower_bound_mm": 103.65649159604042,
+      "segments": {
+        "DIN_mm": 25,
+        "GH_pair_mm": 15,
+        "front_trace_mm": 20.024668496397602,
+        "middle_trace_mm": 113.67321830708786,
+        "rear_trace_mm": 26.24841704789317,
+        "wire_max_mm": 63
+      },
+      "total_mm": 262.9463038513786
+    },
+    {
+      "DIN_pad_mm": [
+        119.53999999999999,
+        185.85
+      ],
+      "DIN_signal_pin": "c19",
+      "front_endpoint": "SW101:1",
+      "front_pad_mm": [
+        26.5,
+        175.85
+      ],
+      "instance": "O2",
+      "link": "K-O1-1",
+      "link_pin": "1",
+      "margin_mm": 52.08858947037686,
+      "net": "/O1/OCT_SELECTED",
+      "other_endpoint": "R1135:1",
+      "other_pad_mm": [
+        140.45,
+        188.82
+      ],
+      "pad_separation_lower_bound_mm": 114.68575936008793,
+      "segments": {
+        "DIN_mm": 25,
+        "GH_pair_mm": 15,
+        "front_trace_mm": 15.34158639918227,
+        "middle_trace_mm": 97.10857770815556,
+        "rear_trace_mm": 32.4612464222853,
+        "wire_max_mm": 63
+      },
+      "total_mm": 247.91141052962314
+    },
+    {
+      "DIN_pad_mm": [
+        119.53999999999999,
+        185.85
+      ],
+      "DIN_signal_pin": "c19",
+      "front_endpoint": "SW101:10",
+      "front_pad_mm": [
+        26.5,
+        194.15
+      ],
+      "instance": "O2",
+      "link": "K-O1-1",
+      "link_pin": "1",
+      "margin_mm": 47.488589470376866,
+      "net": "/O1/OCT_SELECTED",
+      "other_endpoint": "R1135:1",
+      "other_pad_mm": [
+        140.45,
+        188.82
+      ],
+      "pad_separation_lower_bound_mm": 114.07458700341631,
+      "segments": {
+        "DIN_mm": 25,
+        "GH_pair_mm": 15,
+        "front_trace_mm": 19.94158639918227,
+        "middle_trace_mm": 97.10857770815556,
+        "rear_trace_mm": 32.4612464222853,
+        "wire_max_mm": 63
+      },
+      "total_mm": 252.51141052962313
+    },
+    {
+      "DIN_pad_mm": [
+        119.53999999999999,
+        155.37
+      ],
+      "DIN_signal_pin": "c7",
+      "front_endpoint": "U1602:1",
+      "front_pad_mm": [
+        75.3625,
+        151.55
+      ],
+      "instance": "O2",
+      "margin_mm": 153.54407740848097,
+      "net": "OSC_REF5",
+      "other_endpoint": "U1110:3",
+      "other_pad_mm": [
+        132.9875,
+        197.48
+      ],
+      "pad_separation_lower_bound_mm": 73.68992824667426,
+      "segments": {
+        "DIN_mm": 25,
+        "middle_trace_mm": 59.62376517950499,
+        "rear_trace_mm": 61.83215741201402
+      },
+      "total_mm": 146.45592259151903
+    },
+    {
+      "DIN_pad_mm": [
+        119.53999999999999,
+        155.37
+      ],
+      "DIN_signal_pin": "c7",
+      "front_endpoint": "U1602:1",
+      "front_pad_mm": [
+        75.3625,
+        151.55
+      ],
+      "instance": "O2",
+      "margin_mm": 149.3219988672071,
+      "net": "OSC_REF5",
+      "other_endpoint": "U1110:10",
+      "other_pad_mm": [
+        138.7125,
+        198.78
+      ],
+      "pad_separation_lower_bound_mm": 79.01832319152312,
+      "segments": {
+        "DIN_mm": 25,
+        "middle_trace_mm": 59.62376517950499,
+        "rear_trace_mm": 66.0542359532879
+      },
+      "total_mm": 150.6780011327929
+    },
+    {
+      "DIN_pad_mm": [
+        119.53999999999999,
+        155.37
+      ],
+      "DIN_signal_pin": "c7",
+      "front_endpoint": "U1602:1",
+      "front_pad_mm": [
+        75.3625,
+        151.55
+      ],
+      "instance": "O2",
+      "margin_mm": 127.51498553099248,
+      "net": "OSC_REF5",
+      "other_endpoint": "U1111:3",
+      "other_pad_mm": [
+        177.8875,
+        126.48
+      ],
+      "pad_separation_lower_bound_mm": 105.54563242976944,
+      "segments": {
+        "DIN_mm": 25,
+        "middle_trace_mm": 59.62376517950499,
+        "rear_trace_mm": 87.86124928950251
+      },
+      "total_mm": 172.48501446900752
+    },
+    {
+      "DIN_pad_mm": [
+        119.53999999999999,
+        206.17000000000002
+      ],
+      "DIN_signal_pin": "c27",
+      "front_endpoint": "U1602:8",
+      "front_pad_mm": [
+        69.6375,
+        155.45
+      ],
+      "instance": "O2",
+      "margin_mm": 113.31882699707211,
+      "net": "OSC_GATE_REF",
+      "other_endpoint": "R1158:1",
+      "other_pad_mm": [
+        168.23000000000002,
+        186.04
+      ],
+      "pad_separation_lower_bound_mm": 103.22901315158448,
+      "segments": {
+        "DIN_mm": 25,
+        "middle_trace_mm": 89.0988361407719,
+        "rear_trace_mm": 72.582336862156
+      },
+      "total_mm": 186.6811730029279
+    },
+    {
+      "DIN_pad_mm": [
+        119.53999999999999,
+        142.67000000000002
+      ],
+      "DIN_signal_pin": "c2",
+      "front_endpoint": "U1602:7",
+      "front_pad_mm": [
+        75.3625,
+        155.45
+      ],
+      "instance": "O2",
+      "margin_mm": 133.17602086178863,
+      "net": "OSC_REFN5",
+      "other_endpoint": "U1110:5",
+      "other_pad_mm": [
+        132.9875,
+        198.78
+      ],
+      "pad_separation_lower_bound_mm": 72.09805493215474,
+      "segments": {
+        "DIN_mm": 25,
+        "middle_trace_mm": 63.89182172619736,
+        "rear_trace_mm": 77.93215741201402
+      },
+      "total_mm": 166.82397913821137
+    },
+    {
+      "DIN_pad_mm": [
+        119.53999999999999,
+        142.67000000000002
+      ],
+      "DIN_signal_pin": "c2",
+      "front_endpoint": "U1602:7",
+      "front_pad_mm": [
+        75.3625,
+        155.45
+      ],
+      "instance": "O2",
+      "margin_mm": 131.9439423205148,
+      "net": "OSC_REFN5",
+      "other_endpoint": "U1110:12",
+      "other_pad_mm": [
+        138.7125,
+        197.48
+      ],
+      "pad_separation_lower_bound_mm": 76.02462364260676,
+      "segments": {
+        "DIN_mm": 25,
+        "middle_trace_mm": 63.89182172619736,
+        "rear_trace_mm": 79.16423595328787
+      },
+      "total_mm": 168.0560576794852
+    },
+    {
+      "DIN_pad_mm": [
+        119.53999999999999,
+        142.67000000000002
+      ],
+      "DIN_signal_pin": "c2",
+      "front_endpoint": "U1602:7",
+      "front_pad_mm": [
+        75.3625,
+        155.45
+      ],
+      "instance": "O2",
+      "margin_mm": 129.91576733850695,
+      "net": "OSC_REFN5",
+      "other_endpoint": "U1111:5",
+      "other_pad_mm": [
+        177.8875,
+        127.78
+      ],
+      "pad_separation_lower_bound_mm": 106.19324142806828,
+      "segments": {
+        "DIN_mm": 25,
+        "middle_trace_mm": 63.89182172619736,
+        "rear_trace_mm": 81.1924109352957
+      },
+      "total_mm": 170.08423266149305
+    },
+    {
+      "DIN_pad_mm": [
+        14.54,
+        79.01
+      ],
+      "DIN_signal_pin": "c23",
+      "front_endpoint": "RV106:2",
+      "front_pad_mm": [
+        48.5,
+        262.0
+      ],
+      "instance": "O3",
+      "link": "FRONT-C:O1.FM\u00b1",
+      "link_pin": "2",
+      "margin_mm": -117.40371565532058,
+      "net": "/O1/C1eb779_W",
+      "other_endpoint": "R1119:1",
+      "other_pad_mm": [
+        51.89,
+        40.459999999999994
+      ],
+      "pad_separation_lower_bound_mm": 221.56593533302905,
+      "segments": {
+        "DIN_mm": 25,
+        "GH_pair_mm": 15,
+        "front_trace_mm": 16.00269119345812,
+        "middle_trace_mm": 229.2770164240321,
+        "rear_trace_mm": 69.12400803783038,
+        "wire_max_mm": 63
+      },
+      "total_mm": 417.4037156553206
+    },
+    {
+      "DIN_pad_mm": [
+        14.54,
+        81.55000000000001
+      ],
+      "DIN_signal_pin": "c24",
+      "front_endpoint": "RV106:3",
+      "front_pad_mm": [
+        51.0,
+        262.0
+      ],
+      "instance": "O3",
+      "link": "FRONT-C:O1.FM\u00b1",
+      "link_pin": "3",
+      "margin_mm": -111.94973281964178,
+      "net": "/O1/FM_REMOTE",
+      "other_endpoint": "R1117:2",
+      "other_pad_mm": [
+        57.75,
+        55.0
+      ],
+      "pad_separation_lower_bound_mm": 207.11002510742932,
+      "segments": {
+        "DIN_mm": 25,
+        "GH_pair_mm": 15,
+        "front_trace_mm": 13.85067279836453,
+        "middle_trace_mm": 225.76058442812075,
+        "rear_trace_mm": 69.33847559315652,
+        "wire_max_mm": 63
+      },
+      "total_mm": 411.9497328196418
+    },
+    {
+      "DIN_pad_mm": [
+        14.54,
+        84.09
+      ],
+      "DIN_signal_pin": "c25",
+      "front_endpoint": "RV108:2",
+      "front_pad_mm": [
+        48.5,
+        290.0
+      ],
+      "instance": "O3",
+      "link": "FRONT-C:O1.PWM\u00b1",
+      "link_pin": "2",
+      "margin_mm": -148.73630201095642,
+      "net": "/O1/C42d8cd_W",
+      "other_endpoint": "R1125:1",
+      "other_pad_mm": [
+        55.67,
+        42.779999999999994
+      ],
+      "pad_separation_lower_bound_mm": 247.32395213565547,
+      "segments": {
+        "DIN_mm": 25,
+        "GH_pair_mm": 15,
+        "front_trace_mm": 16.00269119345812,
+        "middle_trace_mm": 255.6350164240321,
+        "rear_trace_mm": 74.09859439346621,
+        "wire_max_mm": 63
+      },
+      "total_mm": 448.7363020109564
+    },
+    {
+      "DIN_pad_mm": [
+        14.54,
+        96.78999999999999
+      ],
+      "DIN_signal_pin": "c30",
+      "front_endpoint": "RV108:3",
+      "front_pad_mm": [
+        51.0,
+        290.0
+      ],
+      "instance": "O3",
+      "link": "FRONT-C:O1.PWM\u00b1",
+      "link_pin": "3",
+      "margin_mm": -139.6332397137927,
+      "net": "/O1/PWM_REMOTE",
+      "other_endpoint": "R1123:2",
+      "other_pad_mm": [
+        62.75,
+        55.0
+      ],
+      "pad_separation_lower_bound_mm": 235.29356663538422,
+      "segments": {
+        "DIN_mm": 25,
+        "GH_pair_mm": 15,
+        "front_trace_mm": 13.85067279836453,
+        "middle_trace_mm": 240.4345844281208,
+        "rear_trace_mm": 82.34798248730738,
+        "wire_max_mm": 63
+      },
+      "total_mm": 439.6332397137927
+    },
+    {
+      "DIN_pad_mm": [
+        14.54,
+        71.39
+      ],
+      "DIN_signal_pin": "c20",
+      "front_endpoint": "RV104:1",
+      "front_pad_mm": [
+        46.0,
+        234.0
+      ],
+      "instance": "O3",
+      "link": "FRONT-C:O1.TUNE",
+      "link_pin": "1",
+      "margin_mm": -62.05120171460641,
+      "net": "/O1/LOCAL_REFN5",
+      "other_endpoint": "RB1112:2",
+      "other_pad_mm": [
+        29.39,
+        87.82
+      ],
+      "pad_separation_lower_bound_mm": 147.1206460698158,
+      "segments": {
+        "DIN_mm": 25,
+        "GH_pair_mm": 15,
+        "front_trace_mm": 19.349805185280765,
+        "middle_trace_mm": 206.7331644178991,
+        "rear_trace_mm": 32.96823211142652,
+        "wire_max_mm": 63
+      },
+      "total_mm": 362.0512017146064
+    },
+    {
+      "DIN_pad_mm": [
+        14.54,
+        94.25
+      ],
+      "DIN_signal_pin": "c29",
+      "front_endpoint": "RV104:2",
+      "front_pad_mm": [
+        48.5,
+        234.0
+      ],
+      "instance": "O3",
+      "link": "FRONT-C:O1.TUNE",
+      "link_pin": "2",
+      "margin_mm": -46.90864639868636,
+      "net": "/O1/C83f36b_W",
+      "other_endpoint": "R1129:1",
+      "other_pad_mm": [
+        39.230000000000004,
+        69.4
+      ],
+      "pad_separation_lower_bound_mm": 164.8608288830309,
+      "segments": {
+        "DIN_mm": 25,
+        "GH_pair_mm": 15,
+        "front_trace_mm": 16.72144119345812,
+        "middle_trace_mm": 179.84873242198776,
+        "rear_trace_mm": 47.33847278324047,
+        "wire_max_mm": 63
+      },
+      "total_mm": 346.90864639868636
+    },
+    {
+      "DIN_pad_mm": [
+        14.54,
+        101.87
+      ],
+      "DIN_signal_pin": "c32",
+      "front_endpoint": "RV104:3",
+      "front_pad_mm": [
+        51.0,
+        234.0
+      ],
+      "instance": "O3",
+      "link": "FRONT-C:O1.TUNE",
+      "link_pin": "3",
+      "margin_mm": -33.023635202568585,
+      "net": "/O1/LOCAL_REF5",
+      "other_endpoint": "RB1110:2",
+      "other_pad_mm": [
+        40.730000000000004,
+        85.39999999999999
+      ],
+      "pad_separation_lower_bound_mm": 148.95446586121548,
+      "segments": {
+        "DIN_mm": 25,
+        "GH_pair_mm": 15,
+        "front_trace_mm": 14.56942279836453,
+        "middle_trace_mm": 170.49030042607643,
+        "rear_trace_mm": 44.96391197812761,
+        "wire_max_mm": 63
+      },
+      "total_mm": 333.0236352025686
+    },
+    {
+      "DIN_pad_mm": [
+        14.54,
+        71.39
+      ],
+      "DIN_signal_pin": "c20",
+      "front_endpoint": "RV105:1",
+      "front_pad_mm": [
+        46.0,
+        248.0
+      ],
+      "instance": "O3",
+      "link": "FRONT-C:O1.FINE",
+      "link_pin": "1",
+      "margin_mm": -78.15120171460637,
+      "net": "/O1/LOCAL_REFN5",
+      "other_endpoint": "RB1112:2",
+      "other_pad_mm": [
+        29.39,
+        87.82
+      ],
+      "pad_separation_lower_bound_mm": 161.03889126543316,
+      "segments": {
+        "DIN_mm": 25,
+        "GH_pair_mm": 15,
+        "front_trace_mm": 19.349805185280765,
+        "middle_trace_mm": 222.8331644178991,
+        "rear_trace_mm": 32.96823211142652,
+        "wire_max_mm": 63
+      },
+      "total_mm": 378.1512017146064
+    },
+    {
+      "DIN_pad_mm": [
+        14.54,
+        86.63
+      ],
+      "DIN_signal_pin": "c26",
+      "front_endpoint": "RV105:2",
+      "front_pad_mm": [
+        48.5,
+        248.0
+      ],
+      "instance": "O3",
+      "link": "FRONT-C:O1.FINE",
+      "link_pin": "2",
+      "margin_mm": -54.82388733177885,
+      "net": "/O1/Ce35646_W",
+      "other_endpoint": "R1131:1",
+      "other_pad_mm": [
+        27.89,
+        71.82
+      ],
+      "pad_separation_lower_bound_mm": 177.3814096798196,
+      "segments": {
+        "DIN_mm": 25,
+        "GH_pair_mm": 15,
+        "front_trace_mm": 16.72144119345812,
+        "middle_trace_mm": 204.71173242198776,
+        "rear_trace_mm": 30.390713716332943,
+        "wire_max_mm": 63
+      },
+      "total_mm": 354.82388733177885
+    },
+    {
+      "DIN_pad_mm": [
+        14.54,
+        101.87
+      ],
+      "DIN_signal_pin": "c32",
+      "front_endpoint": "RV105:3",
+      "front_pad_mm": [
+        51.0,
+        248.0
+      ],
+      "instance": "O3",
+      "link": "FRONT-C:O1.FINE",
+      "link_pin": "3",
+      "margin_mm": -49.12363520256861,
+      "net": "/O1/LOCAL_REF5",
+      "other_endpoint": "RB1110:2",
+      "other_pad_mm": [
+        40.730000000000004,
+        85.39999999999999
+      ],
+      "pad_separation_lower_bound_mm": 162.92400958729198,
+      "segments": {
+        "DIN_mm": 25,
+        "GH_pair_mm": 15,
+        "front_trace_mm": 14.56942279836453,
+        "middle_trace_mm": 186.59030042607645,
+        "rear_trace_mm": 44.96391197812761,
+        "wire_max_mm": 63
+      },
+      "total_mm": 349.1236352025686
+    },
+    {
+      "DIN_pad_mm": [
+        14.54,
+        99.33000000000001
+      ],
+      "DIN_signal_pin": "c31",
+      "front_endpoint": "RV107:2",
+      "front_pad_mm": [
+        48.5,
+        276.0
+      ],
+      "instance": "O3",
+      "link": "FRONT-C:O1.PW",
+      "link_pin": "2",
+      "margin_mm": -147.75942924101423,
+      "net": "/O1/Ca449b7_W",
+      "other_endpoint": "R1133:1",
+      "other_pad_mm": [
+        75.89,
+        38.03999999999999
+      ],
+      "pad_separation_lower_bound_mm": 239.5311539236598,
+      "segments": {
+        "DIN_mm": 25,
+        "GH_pair_mm": 15,
+        "front_trace_mm": 16.00269119345812,
+        "middle_trace_mm": 222.0090164240321,
+        "rear_trace_mm": 106.74772162352404,
+        "wire_max_mm": 63
+      },
+      "total_mm": 447.75942924101423
+    },
+    {
+      "DIN_pad_mm": [
+        14.54,
+        101.87
+      ],
+      "DIN_signal_pin": "c32",
+      "front_endpoint": "RV107:3",
+      "front_pad_mm": [
+        51.0,
+        276.0
+      ],
+      "instance": "O3",
+      "link": "FRONT-C:O1.PW",
+      "link_pin": "3",
+      "margin_mm": -80.30716920461293,
+      "net": "/O1/LOCAL_REF5",
+      "other_endpoint": "RB1110:2",
+      "other_pad_mm": [
+        40.730000000000004,
+        85.39999999999999
+      ],
+      "pad_separation_lower_bound_mm": 190.87648597980845,
+      "segments": {
+        "DIN_mm": 25,
+        "GH_pair_mm": 15,
+        "front_trace_mm": 13.85067279836453,
+        "middle_trace_mm": 218.49258442812078,
+        "rear_trace_mm": 44.96391197812761,
+        "wire_max_mm": 63
+      },
+      "total_mm": 380.30716920461293
+    },
+    {
+      "DIN_pad_mm": [
+        14.54,
+        66.31
+      ],
+      "DIN_signal_pin": "c18",
+      "front_endpoint": "SW102:2",
+      "front_pad_mm": [
+        48.5,
+        199.0
+      ],
+      "instance": "O3",
+      "link": "FRONT-C:O1.VCO/LFO",
+      "link_pin": "2",
+      "margin_mm": -30.6833632079871,
+      "net": "/O1/RANGE_CV",
+      "other_endpoint": "R1139:1",
+      "other_pad_mm": [
+        31.67,
+        49.23
+      ],
+      "pad_separation_lower_bound_mm": 150.71264645012377,
+      "segments": {
+        "DIN_mm": 25,
+        "GH_pair_mm": 15,
+        "front_trace_mm": 13.365863991822648,
+        "middle_trace_mm": 179.48201642403208,
+        "rear_trace_mm": 34.83548279213234,
+        "wire_max_mm": 63
+      },
+      "total_mm": 330.6833632079871
+    },
+    {
+      "DIN_pad_mm": [
+        14.54,
+        66.31
+      ],
+      "DIN_signal_pin": "c18",
+      "front_endpoint": "SW102:2",
+      "front_pad_mm": [
+        48.5,
+        199.0
+      ],
+      "instance": "O3",
+      "link": "FRONT-C:O1.VCO/LFO",
+      "link_pin": "2",
+      "margin_mm": -33.87760686390277,
+      "net": "/O1/RANGE_CV",
+      "other_endpoint": "R1145:1",
+      "other_pad_mm": [
+        35.45,
+        51.65
+      ],
+      "pad_separation_lower_bound_mm": 147.92675552448245,
+      "segments": {
+        "DIN_mm": 25,
+        "GH_pair_mm": 15,
+        "front_trace_mm": 13.365863991822648,
+        "middle_trace_mm": 179.48201642403208,
+        "rear_trace_mm": 38.02972644804801,
+        "wire_max_mm": 63
+      },
+      "total_mm": 333.87760686390277
+    },
+    {
+      "DIN_pad_mm": [
+        14.54,
+        63.77
+      ],
+      "DIN_signal_pin": "c17",
+      "front_endpoint": "SW102:3",
+      "front_pad_mm": [
+        45.96,
+        199.0
+      ],
+      "instance": "O3",
+      "link": "FRONT-C:O1.VCO/LFO",
+      "link_pin": "3",
+      "margin_mm": -93.81213858432437,
+      "net": "/O1/LFO_REF",
+      "other_endpoint": "U1113:7",
+      "other_pad_mm": [
+        76.22500000000001,
+        35.76
+      ],
+      "pad_separation_lower_bound_mm": 166.02188959592047,
+      "segments": {
+        "DIN_mm": 25,
+        "GH_pair_mm": 15,
+        "front_trace_mm": 17.72436399182265,
+        "middle_trace_mm": 181.80758442812078,
+        "rear_trace_mm": 91.28019016438097,
+        "wire_max_mm": 63
+      },
+      "total_mm": 393.8121385843244
+    },
+    {
+      "DIN_pad_mm": [
+        14.54,
+        76.47
+      ],
+      "DIN_signal_pin": "c22",
+      "front_endpoint": "SW103:1",
+      "front_pad_mm": [
+        51.04,
+        213.0
+      ],
+      "instance": "O3",
+      "link": "FRONT-C:O1.SYNC",
+      "link_pin": "1",
+      "margin_mm": -42.87000198253406,
+      "net": "/O1/HARD_DRIVE",
+      "other_endpoint": "R1163:1",
+      "other_pad_mm": [
+        39.230000000000004,
+        56.29
+      ],
+      "pad_separation_lower_bound_mm": 157.15438333053265,
+      "segments": {
+        "DIN_mm": 25,
+        "GH_pair_mm": 15,
+        "front_trace_mm": 10.072683422642559,
+        "middle_trace_mm": 184.7911644178991,
+        "rear_trace_mm": 45.006154141992425,
+        "wire_max_mm": 63
+      },
+      "total_mm": 342.87000198253406
+    },
+    {
+      "DIN_pad_mm": [
+        14.54,
+        76.47
+      ],
+      "DIN_signal_pin": "c22",
+      "front_endpoint": "SW103:1",
+      "front_pad_mm": [
+        51.04,
+        213.0
+      ],
+      "instance": "O3",
+      "link": "FRONT-C:O1.SYNC",
+      "link_pin": "1",
+      "margin_mm": -47.2170019825341,
+      "net": "/O1/HARD_DRIVE",
+      "other_endpoint": "R1164:1",
+      "other_pad_mm": [
+        43.010000000000005,
+        56.29
+      ],
+      "pad_separation_lower_bound_mm": 156.91559833235192,
+      "segments": {
+        "DIN_mm": 25,
+        "GH_pair_mm": 15,
+        "front_trace_mm": 10.072683422642559,
+        "middle_trace_mm": 184.7911644178991,
+        "rear_trace_mm": 49.35315414199243,
+        "wire_max_mm": 63
+      },
+      "total_mm": 347.2170019825341
+    },
+    {
+      "DIN_pad_mm": [
+        14.54,
+        91.71000000000001
+      ],
+      "DIN_signal_pin": "c28",
+      "front_endpoint": "SW103:2",
+      "front_pad_mm": [
+        48.5,
+        213.0
+      ],
+      "instance": "O3",
+      "link": "FRONT-C:O1.SYNC",
+      "link_pin": "2",
+      "margin_mm": -46.98921359142997,
+      "net": "/O1/SYNC_GATE",
+      "other_endpoint": "U1107:2",
+      "other_pad_mm": [
+        52.225,
+        60.410000000000004
+      ],
+      "pad_separation_lower_bound_mm": 152.6354602476109,
+      "segments": {
+        "DIN_mm": 25,
+        "GH_pair_mm": 15,
+        "front_trace_mm": 12.072113991822647,
+        "middle_trace_mm": 166.66973242198776,
+        "rear_trace_mm": 65.24736717761957,
+        "wire_max_mm": 63
+      },
+      "total_mm": 346.98921359143
+    },
+    {
+      "DIN_pad_mm": [
+        14.54,
+        73.93
+      ],
+      "DIN_signal_pin": "c21",
+      "front_endpoint": "SW103:3",
+      "front_pad_mm": [
+        45.96,
+        213.0
+      ],
+      "instance": "O3",
+      "link": "FRONT-C:O1.SYNC",
+      "link_pin": "3",
+      "margin_mm": -41.397714489867894,
+      "net": "/O1/SOFT_DRIVE",
+      "other_endpoint": "R1161:1",
+      "other_pad_mm": [
+        31.67,
+        56.29
+      ],
+      "pad_separation_lower_bound_mm": 157.36018619714454,
+      "segments": {
+        "DIN_mm": 25,
+        "GH_pair_mm": 15,
+        "front_trace_mm": 16.430613991822646,
+        "middle_trace_mm": 186.52130042607644,
+        "rear_trace_mm": 35.4458000719688,
+        "wire_max_mm": 63
+      },
+      "total_mm": 341.3977144898679
+    },
+    {
+      "DIN_pad_mm": [
+        14.54,
+        73.93
+      ],
+      "DIN_signal_pin": "c21",
+      "front_endpoint": "SW103:3",
+      "front_pad_mm": [
+        45.96,
+        213.0
+      ],
+      "instance": "O3",
+      "link": "FRONT-C:O1.SYNC",
+      "link_pin": "3",
+      "margin_mm": -45.4011507441997,
+      "net": "/O1/SOFT_DRIVE",
+      "other_endpoint": "R1162:1",
+      "other_pad_mm": [
+        35.45,
+        56.29
+      ],
+      "pad_separation_lower_bound_mm": 157.06203933478008,
+      "segments": {
+        "DIN_mm": 25,
+        "GH_pair_mm": 15,
+        "front_trace_mm": 16.430613991822646,
+        "middle_trace_mm": 186.52130042607644,
+        "rear_trace_mm": 39.449236326300614,
+        "wire_max_mm": 63
+      },
+      "total_mm": 345.4011507441997
+    },
+    {
+      "DIN_pad_mm": [
+        14.54,
+        40.910000000000004
+      ],
+      "DIN_signal_pin": "c8",
+      "front_endpoint": "U1118:1",
+      "front_pad_mm": [
+        51.1375,
+        31.45
+      ],
+      "instance": "O3",
+      "link": "FRONT-J:O1.1V",
+      "link_pin": "1",
+      "margin_mm": 80.54147938573519,
+      "net": "/O1/1V_BUFFER",
+      "other_endpoint": "R1140:1",
+      "other_pad_mm": [
+        35.45,
+        49.23
+      ],
+      "pad_separation_lower_bound_mm": 23.711306506601442,
+      "segments": {
+        "DIN_mm": 25,
+        "GH_pair_mm": 15,
+        "front_trace_mm": 13.698925278814283,
+        "middle_trace_mm": 67.74989997066476,
+        "rear_trace_mm": 35.00969536478577,
+        "wire_max_mm": 63
+      },
+      "total_mm": 219.4585206142648
+    },
+    {
+      "DIN_pad_mm": [
+        14.54,
+        30.750000000000004
+      ],
+      "DIN_signal_pin": "c4",
+      "front_endpoint": "U1116:1",
+      "front_pad_mm": [
+        58.81,
+        60.475
+      ],
+      "instance": "O3",
+      "link": "FRONT-J:O1.FM",
+      "link_pin": "1",
+      "margin_mm": 38.38948829736211,
+      "net": "/O1/FM_BUFFER",
+      "other_endpoint": "R1121:1",
+      "other_pad_mm": [
+        59.45,
+        40.459999999999994
+      ],
+      "pad_separation_lower_bound_mm": 20.025229711541396,
+      "segments": {
+        "DIN_mm": 25,
+        "GH_pair_mm": 15,
+        "front_trace_mm": 29.284586312089427,
+        "middle_trace_mm": 66.0541096463093,
+        "rear_trace_mm": 63.27181574423916,
+        "wire_max_mm": 63
+      },
+      "total_mm": 261.6105117026379
+    },
+    {
+      "DIN_pad_mm": [
+        14.54,
+        30.750000000000004
+      ],
+      "DIN_signal_pin": "c4",
+      "front_endpoint": "U1116:1",
+      "front_pad_mm": [
+        58.81,
+        60.475
+      ],
+      "instance": "O3",
+      "link": "FRONT-J:O1.FM",
+      "link_pin": "1",
+      "margin_mm": 51.290209849830234,
+      "net": "/O1/FM_BUFFER",
+      "other_endpoint": "U1112:3",
+      "other_pad_mm": [
+        52.225,
+        30.68
+      ],
+      "pad_separation_lower_bound_mm": 30.514000884839735,
+      "segments": {
+        "DIN_mm": 25,
+        "GH_pair_mm": 15,
+        "front_trace_mm": 29.284586312089427,
+        "middle_trace_mm": 66.0541096463093,
+        "rear_trace_mm": 50.37109419177103,
+        "wire_max_mm": 63
+      },
+      "total_mm": 248.70979015016977
+    },
+    {
+      "DIN_pad_mm": [
+        14.54,
+        35.83
+      ],
+      "DIN_signal_pin": "c6",
+      "front_endpoint": "U1117:10",
+      "front_pad_mm": [
+        53.730000000000004,
+        84.025
+      ],
+      "instance": "O3",
+      "link": "FRONT-J:O1.PUL",
+      "link_pin": "1",
+      "margin_mm": -3.00418329773953,
+      "net": "/O1/PUL_SCALED",
+      "other_endpoint": "U1114:14",
+      "other_pad_mm": [
+        33.175,
+        8.14
+      ],
+      "pad_separation_lower_bound_mm": 78.61959838360917,
+      "segments": {
+        "DIN_mm": 25,
+        "GH_pair_mm": 15,
+        "front_trace_mm": 20.252250680705796,
+        "middle_trace_mm": 132.03173242198773,
+        "rear_trace_mm": 47.72020019504601,
+        "wire_max_mm": 63
+      },
+      "total_mm": 303.00418329773953
+    },
+    {
+      "DIN_pad_mm": [
+        14.54,
+        43.45
+      ],
+      "DIN_signal_pin": "c9",
+      "front_endpoint": "U1116:7",
+      "front_pad_mm": [
+        51.19,
+        60.475
+      ],
+      "instance": "O3",
+      "link": "FRONT-J:O1.PWM",
+      "link_pin": "1",
+      "margin_mm": 49.11382239314844,
+      "net": "/O1/PWM_BUFFER",
+      "other_endpoint": "R1127:1",
+      "other_pad_mm": [
+        63.230000000000004,
+        42.779999999999994
+      ],
+      "pad_separation_lower_bound_mm": 21.402677986644576,
+      "segments": {
+        "DIN_mm": 25,
+        "GH_pair_mm": 15,
+        "front_trace_mm": 17.900167134986013,
+        "middle_trace_mm": 66.67335892205708,
+        "rear_trace_mm": 63.31265154980847,
+        "wire_max_mm": 63
+      },
+      "total_mm": 250.88617760685156
+    },
+    {
+      "DIN_pad_mm": [
+        14.54,
+        43.45
+      ],
+      "DIN_signal_pin": "c9",
+      "front_endpoint": "U1116:7",
+      "front_pad_mm": [
+        51.19,
+        60.475
+      ],
+      "instance": "O3",
+      "link": "FRONT-J:O1.PWM",
+      "link_pin": "1",
+      "margin_mm": 51.52320848841862,
+      "net": "/O1/PWM_BUFFER",
+      "other_endpoint": "U1112:10",
+      "other_pad_mm": [
+        57.175000000000004,
+        33.22
+      ],
+      "pad_separation_lower_bound_mm": 27.90439481515412,
+      "segments": {
+        "DIN_mm": 25,
+        "GH_pair_mm": 15,
+        "front_trace_mm": 17.900167134986013,
+        "middle_trace_mm": 66.67335892205708,
+        "rear_trace_mm": 60.903265454538285,
+        "wire_max_mm": 63
+      },
+      "total_mm": 248.47679151158138
+    },
+    {
+      "DIN_pad_mm": [
+        14.54,
+        28.21
+      ],
+      "DIN_signal_pin": "c3",
+      "front_endpoint": "U1117:5",
+      "front_pad_mm": [
+        53.730000000000004,
+        88.975
+      ],
+      "instance": "O3",
+      "link": "FRONT-J:O1.SAW",
+      "link_pin": "1",
+      "margin_mm": 14.815136813786125,
+      "net": "/O1/SAW_SCALED",
+      "other_endpoint": "U1114:8",
+      "other_pad_mm": [
+        33.175,
+        15.76
+      ],
+      "pad_separation_lower_bound_mm": 76.04567213194974,
+      "segments": {
+        "DIN_mm": 25,
+        "GH_pair_mm": 15,
+        "front_trace_mm": 23.129378084949312,
+        "middle_trace_mm": 124.69473242198775,
+        "rear_trace_mm": 34.360752679276786,
+        "wire_max_mm": 63
+      },
+      "total_mm": 285.1848631862139
+    },
+    {
+      "DIN_pad_mm": [
+        14.54,
+        33.290000000000006
+      ],
+      "DIN_signal_pin": "c5",
+      "front_endpoint": "U1116:12",
+      "front_pad_mm": [
+        56.269999999999996,
+        55.525
+      ],
+      "instance": "O3",
+      "link": "FRONT-J:O1.SIN",
+      "link_pin": "1",
+      "margin_mm": 21.100271395232255,
+      "net": "/O1/SIN_SCALED",
+      "other_endpoint": "U1115:7",
+      "other_pad_mm": [
+        52.225,
+        15.76
+      ],
+      "pad_separation_lower_bound_mm": 39.97020452787301,
+      "segments": {
+        "DIN_mm": 25,
+        "GH_pair_mm": 15,
+        "front_trace_mm": 30.558907872119587,
+        "middle_trace_mm": 86.65273242198774,
+        "rear_trace_mm": 58.68808831066042,
+        "wire_max_mm": 63
+      },
+      "total_mm": 278.89972860476774
+    },
+    {
+      "DIN_pad_mm": [
+        14.54,
+        56.150000000000006
+      ],
+      "DIN_signal_pin": "c14",
+      "front_endpoint": "U1116:8",
+      "front_pad_mm": [
+        51.19,
+        55.525
+      ],
+      "instance": "O3",
+      "link": "FRONT-J:O1.SYNC",
+      "link_pin": "1",
+      "margin_mm": 39.62347273395778,
+      "net": "/O1/SYNC_BUFFER",
+      "other_endpoint": "R1156:1",
+      "other_pad_mm": [
+        55.67,
+        69.03999999999999
+      ],
+      "pad_separation_lower_bound_mm": 14.238174918155762,
+      "segments": {
+        "DIN_mm": 25,
+        "GH_pair_mm": 15,
+        "front_trace_mm": 29.64432432639979,
+        "middle_trace_mm": 67.29260819780487,
+        "rear_trace_mm": 60.43959474183757,
+        "wire_max_mm": 63
+      },
+      "total_mm": 260.3765272660422
+    },
+    {
+      "DIN_pad_mm": [
+        14.54,
+        23.130000000000003
+      ],
+      "DIN_signal_pin": "c1",
+      "front_endpoint": "U1117:3",
+      "front_pad_mm": [
+        56.269999999999996,
+        88.975
+      ],
+      "instance": "O3",
+      "link": "FRONT-J:O1.TRI",
+      "link_pin": "1",
+      "margin_mm": 36.29018203372152,
+      "net": "/O1/TRI_SCALED",
+      "other_endpoint": "U1114:7",
+      "other_pad_mm": [
+        28.224999999999998,
+        15.76
+      ],
+      "pad_separation_lower_bound_mm": 78.40253981855433,
+      "segments": {
+        "DIN_mm": 25,
+        "GH_pair_mm": 15,
+        "front_trace_mm": 20.024668496397602,
+        "middle_trace_mm": 114.43673242198773,
+        "rear_trace_mm": 26.248417047893167,
+        "wire_max_mm": 63
+      },
+      "total_mm": 263.7098179662785
+    },
+    {
+      "DIN_pad_mm": [
+        14.54,
+        68.85
+      ],
+      "DIN_signal_pin": "c19",
+      "front_endpoint": "SW101:1",
+      "front_pad_mm": [
+        53.5,
+        194.15
+      ],
+      "instance": "O3",
+      "link": "K-O1-1",
+      "link_pin": "1",
+      "margin_mm": 1.9573547667663433,
+      "net": "/O1/OCT_SELECTED",
+      "other_endpoint": "R1135:1",
+      "other_pad_mm": [
+        35.45,
+        71.82
+      ],
+      "pad_separation_lower_bound_mm": 123.65448394619584,
+      "segments": {
+        "DIN_mm": 25,
+        "GH_pair_mm": 15,
+        "front_trace_mm": 15.34158639918227,
+        "middle_trace_mm": 147.23981241176608,
+        "rear_trace_mm": 32.461246422285306,
+        "wire_max_mm": 63
+      },
+      "total_mm": 298.04264523323366
+    },
+    {
+      "DIN_pad_mm": [
+        14.54,
+        68.85
+      ],
+      "DIN_signal_pin": "c19",
+      "front_endpoint": "SW101:10",
+      "front_pad_mm": [
+        53.5,
+        175.85
+      ],
+      "instance": "O3",
+      "link": "K-O1-1",
+      "link_pin": "1",
+      "margin_mm": -2.6426452332336794,
+      "net": "/O1/OCT_SELECTED",
+      "other_endpoint": "R1135:1",
+      "other_pad_mm": [
+        35.45,
+        71.82
+      ],
+      "pad_separation_lower_bound_mm": 105.58429523371362,
+      "segments": {
+        "DIN_mm": 25,
+        "GH_pair_mm": 15,
+        "front_trace_mm": 19.94158639918227,
+        "middle_trace_mm": 147.23981241176608,
+        "rear_trace_mm": 32.461246422285306,
+        "wire_max_mm": 63
+      },
+      "total_mm": 302.6426452332337
+    },
+    {
+      "DIN_pad_mm": [
+        14.54,
+        38.370000000000005
+      ],
+      "DIN_signal_pin": "c7",
+      "front_endpoint": "U1602:1",
+      "front_pad_mm": [
+        75.3625,
+        151.55
+      ],
+      "instance": "O3",
+      "margin_mm": 47.038312530932785,
+      "net": "OSC_REF5",
+      "other_endpoint": "U1110:3",
+      "other_pad_mm": [
+        27.9875,
+        80.47999999999999
+      ],
+      "pad_separation_lower_bound_mm": 85.41273631607878,
+      "segments": {
+        "DIN_mm": 25,
+        "middle_trace_mm": 166.12953005705322,
+        "rear_trace_mm": 61.832157412014006
+      },
+      "total_mm": 252.96168746906721
+    },
+    {
+      "DIN_pad_mm": [
+        14.54,
+        38.370000000000005
+      ],
+      "DIN_signal_pin": "c7",
+      "front_endpoint": "U1602:1",
+      "front_pad_mm": [
+        75.3625,
+        151.55
+      ],
+      "instance": "O3",
+      "margin_mm": 42.81623398965888,
+      "net": "OSC_REF5",
+      "other_endpoint": "U1110:10",
+      "other_pad_mm": [
+        33.712500000000006,
+        81.78
+      ],
+      "pad_separation_lower_bound_mm": 81.25623299169118,
+      "segments": {
+        "DIN_mm": 25,
+        "middle_trace_mm": 166.12953005705322,
+        "rear_trace_mm": 66.05423595328789
+      },
+      "total_mm": 257.1837660103411
+    },
+    {
+      "DIN_pad_mm": [
+        14.54,
+        38.370000000000005
+      ],
+      "DIN_signal_pin": "c7",
+      "front_endpoint": "U1602:1",
+      "front_pad_mm": [
+        75.3625,
+        151.55
+      ],
+      "instance": "O3",
+      "margin_mm": 21.00922065344423,
+      "net": "OSC_REF5",
+      "other_endpoint": "U1111:3",
+      "other_pad_mm": [
+        72.8875,
+        9.48
+      ],
+      "pad_separation_lower_bound_mm": 142.09155683924365,
+      "segments": {
+        "DIN_mm": 25,
+        "middle_trace_mm": 166.12953005705322,
+        "rear_trace_mm": 87.86124928950252
+      },
+      "total_mm": 278.99077934655577
+    },
+    {
+      "DIN_pad_mm": [
+        14.54,
+        89.17000000000002
+      ],
+      "DIN_signal_pin": "c27",
+      "front_endpoint": "U1602:8",
+      "front_pad_mm": [
+        69.6375,
+        155.45
+      ],
+      "instance": "O3",
+      "margin_mm": 92.9502116220647,
+      "net": "OSC_GATE_REF",
+      "other_endpoint": "R1158:1",
+      "other_pad_mm": [
+        63.230000000000004,
+        69.03999999999999
+      ],
+      "pad_separation_lower_bound_mm": 86.6472397497462,
+      "segments": {
+        "DIN_mm": 25,
+        "middle_trace_mm": 109.46745151577932,
+        "rear_trace_mm": 72.58233686215598
+      },
+      "total_mm": 207.0497883779353
+    },
+    {
+      "DIN_pad_mm": [
+        14.54,
+        25.67
+      ],
+      "DIN_signal_pin": "c2",
+      "front_endpoint": "U1602:7",
+      "front_pad_mm": [
+        75.3625,
+        155.45
+      ],
+      "instance": "O3",
+      "margin_mm": 11.848312530932844,
+      "net": "OSC_REFN5",
+      "other_endpoint": "U1110:5",
+      "other_pad_mm": [
+        27.9875,
+        81.78
+      ],
+      "pad_separation_lower_bound_mm": 87.58801016691724,
+      "segments": {
+        "DIN_mm": 25,
+        "middle_trace_mm": 185.21953005705316,
+        "rear_trace_mm": 77.93215741201402
+      },
+      "total_mm": 288.15168746906716
+    },
+    {
+      "DIN_pad_mm": [
+        14.54,
+        25.67
+      ],
+      "DIN_signal_pin": "c2",
+      "front_endpoint": "U1602:7",
+      "front_pad_mm": [
+        75.3625,
+        155.45
+      ],
+      "instance": "O3",
+      "margin_mm": 10.616233989658951,
+      "net": "OSC_REFN5",
+      "other_endpoint": "U1110:12",
+      "other_pad_mm": [
+        33.712500000000006,
+        80.47999999999999
+      ],
+      "pad_separation_lower_bound_mm": 85.7625990744217,
+      "segments": {
+        "DIN_mm": 25,
+        "middle_trace_mm": 185.21953005705316,
+        "rear_trace_mm": 79.16423595328787
+      },
+      "total_mm": 289.38376601034105
+    },
+    {
+      "DIN_pad_mm": [
+        14.54,
+        25.67
+      ],
+      "DIN_signal_pin": "c2",
+      "front_endpoint": "U1602:7",
+      "front_pad_mm": [
+        75.3625,
+        155.45
+      ],
+      "instance": "O3",
+      "margin_mm": 8.588059007651168,
+      "net": "OSC_REFN5",
+      "other_endpoint": "U1111:5",
+      "other_pad_mm": [
+        72.8875,
+        10.780000000000001
+      ],
+      "pad_separation_lower_bound_mm": 144.69116947830645,
+      "segments": {
+        "DIN_mm": 25,
+        "middle_trace_mm": 185.21953005705316,
+        "rear_trace_mm": 81.1924109352957
+      },
+      "total_mm": 291.41194099234883
+    },
+    {
+      "DIN_pad_mm": [
+        119.53999999999999,
+        79.01
+      ],
+      "DIN_signal_pin": "c23",
+      "front_endpoint": "RV106:2",
+      "front_pad_mm": [
+        65.5,
+        262.0
+      ],
+      "instance": "O4",
+      "link": "FRONT-C:O1.FM\u00b1",
+      "link_pin": "2",
+      "margin_mm": -115.06009531941362,
+      "net": "/O1/C1eb779_W",
+      "other_endpoint": "R1119:1",
+      "other_pad_mm": [
+        156.89,
+        40.459999999999994
+      ],
+      "pad_separation_lower_bound_mm": 239.64996077612867,
+      "segments": {
+        "DIN_mm": 25,
+        "GH_pair_mm": 15,
+        "front_trace_mm": 16.00269119345812,
+        "middle_trace_mm": 226.9333960881251,
+        "rear_trace_mm": 69.12400803783038,
+        "wire_max_mm": 63
+      },
+      "total_mm": 415.0600953194136
+    },
+    {
+      "DIN_pad_mm": [
+        119.53999999999999,
+        81.55000000000001
+      ],
+      "DIN_signal_pin": "c24",
+      "front_endpoint": "RV106:3",
+      "front_pad_mm": [
+        68.0,
+        262.0
+      ],
+      "instance": "O4",
+      "link": "FRONT-C:O1.FM\u00b1",
+      "link_pin": "3",
+      "margin_mm": -110.79697647555753,
+      "net": "/O1/FM_REMOTE",
+      "other_endpoint": "R1117:2",
+      "other_pad_mm": [
+        162.75,
+        55.0
+      ],
+      "pad_separation_lower_bound_mm": 227.65448051817472,
+      "segments": {
+        "DIN_mm": 25,
+        "GH_pair_mm": 15,
+        "front_trace_mm": 13.85067279836453,
+        "middle_trace_mm": 224.60782808403644,
+        "rear_trace_mm": 69.33847559315655,
+        "wire_max_mm": 63
+      },
+      "total_mm": 410.7969764755575
+    },
+    {
+      "DIN_pad_mm": [
+        119.53999999999999,
+        84.09
+      ],
+      "DIN_signal_pin": "c25",
+      "front_endpoint": "RV108:2",
+      "front_pad_mm": [
+        65.5,
+        290.0
+      ],
+      "instance": "O4",
+      "link": "FRONT-C:O1.PWM\u00b1",
+      "link_pin": "2",
+      "margin_mm": -146.39268167504946,
+      "net": "/O1/C42d8cd_W",
+      "other_endpoint": "R1125:1",
+      "other_pad_mm": [
+        160.67000000000002,
+        42.779999999999994
+      ],
+      "pad_separation_lower_bound_mm": 264.9057517306863,
+      "segments": {
+        "DIN_mm": 25,
+        "GH_pair_mm": 15,
+        "front_trace_mm": 16.00269119345812,
+        "middle_trace_mm": 253.2913960881251,
+        "rear_trace_mm": 74.09859439346623,
+        "wire_max_mm": 63
+      },
+      "total_mm": 446.39268167504946
+    },
+    {
+      "DIN_pad_mm": [
+        119.53999999999999,
+        96.78999999999999
+      ],
+      "DIN_signal_pin": "c30",
+      "front_endpoint": "RV108:3",
+      "front_pad_mm": [
+        68.0,
+        290.0
+      ],
+      "instance": "O4",
+      "link": "FRONT-C:O1.PWM\u00b1",
+      "link_pin": "3",
+      "margin_mm": -138.48048336970834,
+      "net": "/O1/PWM_REMOTE",
+      "other_endpoint": "R1123:2",
+      "other_pad_mm": [
+        167.75,
+        55.0
+      ],
+      "pad_separation_lower_bound_mm": 255.29407063228084,
+      "segments": {
+        "DIN_mm": 25,
+        "GH_pair_mm": 15,
+        "front_trace_mm": 13.85067279836453,
+        "middle_trace_mm": 239.28182808403645,
+        "rear_trace_mm": 82.34798248730738,
+        "wire_max_mm": 63
+      },
+      "total_mm": 438.48048336970834
+    },
+    {
+      "DIN_pad_mm": [
+        119.53999999999999,
+        71.39
+      ],
+      "DIN_signal_pin": "c20",
+      "front_endpoint": "RV104:1",
+      "front_pad_mm": [
+        63.0,
+        234.0
+      ],
+      "instance": "O4",
+      "link": "FRONT-C:O1.TUNE",
+      "link_pin": "1",
+      "margin_mm": -57.92128539096541,
+      "net": "/O1/LOCAL_REFN5",
+      "other_endpoint": "RB1112:2",
+      "other_pad_mm": [
+        134.39,
+        87.82
+      ],
+      "pad_separation_lower_bound_mm": 162.68105144730285,
+      "segments": {
+        "DIN_mm": 25,
+        "GH_pair_mm": 15,
+        "front_trace_mm": 19.349805185280765,
+        "middle_trace_mm": 202.60324809425813,
+        "rear_trace_mm": 32.968232111426516,
+        "wire_max_mm": 63
+      },
+      "total_mm": 357.9212853909654
+    },
+    {
+      "DIN_pad_mm": [
+        119.53999999999999,
+        94.25
+      ],
+      "DIN_signal_pin": "c29",
+      "front_endpoint": "RV104:2",
+      "front_pad_mm": [
+        65.5,
+        234.0
+      ],
+      "instance": "O4",
+      "link": "FRONT-C:O1.TUNE",
+      "link_pin": "2",
+      "margin_mm": -43.96959406686807,
+      "net": "/O1/C83f36b_W",
+      "other_endpoint": "R1129:1",
+      "other_pad_mm": [
+        144.23000000000002,
+        69.4
+      ],
+      "pad_separation_lower_bound_mm": 182.45978433616543,
+      "segments": {
+        "DIN_mm": 25,
+        "GH_pair_mm": 15,
+        "front_trace_mm": 16.72144119345812,
+        "middle_trace_mm": 176.90968009016947,
+        "rear_trace_mm": 47.33847278324048,
+        "wire_max_mm": 63
+      },
+      "total_mm": 343.96959406686807
+    },
+    {
+      "DIN_pad_mm": [
+        119.53999999999999,
+        101.87
+      ],
+      "DIN_signal_pin": "c32",
+      "front_endpoint": "RV104:3",
+      "front_pad_mm": [
+        68.0,
+        234.0
+      ],
+      "instance": "O4",
+      "link": "FRONT-C:O1.TUNE",
+      "link_pin": "3",
+      "margin_mm": -31.27544686257295,
+      "net": "/O1/LOCAL_REF5",
+      "other_endpoint": "RB1110:2",
+      "other_pad_mm": [
+        145.73000000000002,
+        85.39999999999999
+      ],
+      "pad_separation_lower_bound_mm": 167.7018571751667,
+      "segments": {
+        "DIN_mm": 25,
+        "GH_pair_mm": 15,
+        "front_trace_mm": 14.56942279836453,
+        "middle_trace_mm": 168.74211208608077,
+        "rear_trace_mm": 44.96391197812764,
+        "wire_max_mm": 63
+      },
+      "total_mm": 331.27544686257295
+    },
+    {
+      "DIN_pad_mm": [
+        119.53999999999999,
+        71.39
+      ],
+      "DIN_signal_pin": "c20",
+      "front_endpoint": "RV105:1",
+      "front_pad_mm": [
+        63.0,
+        248.0
+      ],
+      "instance": "O4",
+      "link": "FRONT-C:O1.FINE",
+      "link_pin": "1",
+      "margin_mm": -74.02128539096543,
+      "net": "/O1/LOCAL_REFN5",
+      "other_endpoint": "RB1112:2",
+      "other_pad_mm": [
+        134.39,
+        87.82
+      ],
+      "pad_separation_lower_bound_mm": 175.36865312820305,
+      "segments": {
+        "DIN_mm": 25,
+        "GH_pair_mm": 15,
+        "front_trace_mm": 19.349805185280765,
+        "middle_trace_mm": 218.70324809425816,
+        "rear_trace_mm": 32.968232111426516,
+        "wire_max_mm": 63
+      },
+      "total_mm": 374.02128539096543
+    },
+    {
+      "DIN_pad_mm": [
+        119.53999999999999,
+        86.63
+      ],
+      "DIN_signal_pin": "c26",
+      "front_endpoint": "RV105:2",
+      "front_pad_mm": [
+        65.5,
+        248.0
+      ],
+      "instance": "O4",
+      "link": "FRONT-C:O1.FINE",
+      "link_pin": "2",
+      "margin_mm": -51.88483499996056,
+      "net": "/O1/Ce35646_W",
+      "other_endpoint": "R1131:1",
+      "other_pad_mm": [
+        132.89,
+        71.82
+      ],
+      "pad_separation_lower_bound_mm": 188.628747809023,
+      "segments": {
+        "DIN_mm": 25,
+        "GH_pair_mm": 15,
+        "front_trace_mm": 16.72144119345812,
+        "middle_trace_mm": 201.77268009016947,
+        "rear_trace_mm": 30.390713716332943,
+        "wire_max_mm": 63
+      },
+      "total_mm": 351.88483499996056
+    },
+    {
+      "DIN_pad_mm": [
+        119.53999999999999,
+        101.87
+      ],
+      "DIN_signal_pin": "c32",
+      "front_endpoint": "RV105:3",
+      "front_pad_mm": [
+        68.0,
+        248.0
+      ],
+      "instance": "O4",
+      "link": "FRONT-C:O1.FINE",
+      "link_pin": "3",
+      "margin_mm": -47.37544686257297,
+      "net": "/O1/LOCAL_REF5",
+      "other_endpoint": "RB1110:2",
+      "other_pad_mm": [
+        145.73000000000002,
+        85.39999999999999
+      ],
+      "pad_separation_lower_bound_mm": 180.22406304375676,
+      "segments": {
+        "DIN_mm": 25,
+        "GH_pair_mm": 15,
+        "front_trace_mm": 14.56942279836453,
+        "middle_trace_mm": 184.8421120860808,
+        "rear_trace_mm": 44.96391197812764,
+        "wire_max_mm": 63
+      },
+      "total_mm": 347.37544686257297
+    },
+    {
+      "DIN_pad_mm": [
+        119.53999999999999,
+        99.33000000000001
+      ],
+      "DIN_signal_pin": "c31",
+      "front_endpoint": "RV107:2",
+      "front_pad_mm": [
+        65.5,
+        276.0
+      ],
+      "instance": "O4",
+      "link": "FRONT-C:O1.PW",
+      "link_pin": "2",
+      "margin_mm": -145.41580890510727,
+      "net": "/O1/Ca449b7_W",
+      "other_endpoint": "R1133:1",
+      "other_pad_mm": [
+        180.89,
+        38.03999999999999
+      ],
+      "pad_separation_lower_bound_mm": 264.4613652312942,
+      "segments": {
+        "DIN_mm": 25,
+        "GH_pair_mm": 15,
+        "front_trace_mm": 16.00269119345812,
+        "middle_trace_mm": 219.6653960881251,
+        "rear_trace_mm": 106.74772162352404,
+        "wire_max_mm": 63
+      },
+      "total_mm": 445.41580890510727
+    },
+    {
+      "DIN_pad_mm": [
+        119.53999999999999,
+        101.87
+      ],
+      "DIN_signal_pin": "c32",
+      "front_endpoint": "RV107:3",
+      "front_pad_mm": [
+        68.0,
+        276.0
+      ],
+      "instance": "O4",
+      "link": "FRONT-C:O1.PW",
+      "link_pin": "3",
+      "margin_mm": -79.15441286052862,
+      "net": "/O1/LOCAL_REF5",
+      "other_endpoint": "RB1110:2",
+      "other_pad_mm": [
+        145.73000000000002,
+        85.39999999999999
+      ],
+      "pad_separation_lower_bound_mm": 205.84050354582794,
+      "segments": {
+        "DIN_mm": 25,
+        "GH_pair_mm": 15,
+        "front_trace_mm": 13.85067279836453,
+        "middle_trace_mm": 217.33982808403644,
+        "rear_trace_mm": 44.96391197812764,
+        "wire_max_mm": 63
+      },
+      "total_mm": 379.1544128605286
+    },
+    {
+      "DIN_pad_mm": [
+        119.53999999999999,
+        66.31
+      ],
+      "DIN_signal_pin": "c18",
+      "front_endpoint": "SW102:2",
+      "front_pad_mm": [
+        65.5,
+        199.0
+      ],
+      "instance": "O4",
+      "link": "FRONT-C:O1.VCO/LFO",
+      "link_pin": "2",
+      "margin_mm": -28.339742872080137,
+      "net": "/O1/RANGE_CV",
+      "other_endpoint": "R1139:1",
+      "other_pad_mm": [
+        136.67000000000002,
+        49.23
+      ],
+      "pad_separation_lower_bound_mm": 165.8198474248484,
+      "segments": {
+        "DIN_mm": 25,
+        "GH_pair_mm": 15,
+        "front_trace_mm": 13.365863991822648,
+        "middle_trace_mm": 177.13839608812512,
+        "rear_trace_mm": 34.83548279213237,
+        "wire_max_mm": 63
+      },
+      "total_mm": 328.33974287208014
+    },
+    {
+      "DIN_pad_mm": [
+        119.53999999999999,
+        66.31
+      ],
+      "DIN_signal_pin": "c18",
+      "front_endpoint": "SW102:2",
+      "front_pad_mm": [
+        65.5,
+        199.0
+      ],
+      "instance": "O4",
+      "link": "FRONT-C:O1.VCO/LFO",
+      "link_pin": "2",
+      "margin_mm": -31.533986527995808,
+      "net": "/O1/RANGE_CV",
+      "other_endpoint": "R1145:1",
+      "other_pad_mm": [
+        140.45,
+        51.65
+      ],
+      "pad_separation_lower_bound_mm": 165.3164389889886,
+      "segments": {
+        "DIN_mm": 25,
+        "GH_pair_mm": 15,
+        "front_trace_mm": 13.365863991822648,
+        "middle_trace_mm": 177.13839608812512,
+        "rear_trace_mm": 38.02972644804801,
+        "wire_max_mm": 63
+      },
+      "total_mm": 331.5339865279958
+    },
+    {
+      "DIN_pad_mm": [
+        119.53999999999999,
+        63.77
+      ],
+      "DIN_signal_pin": "c17",
+      "front_endpoint": "SW102:3",
+      "front_pad_mm": [
+        62.96,
+        199.0
+      ],
+      "instance": "O4",
+      "link": "FRONT-C:O1.VCO/LFO",
+      "link_pin": "3",
+      "margin_mm": -92.65938224024006,
+      "net": "/O1/LFO_REF",
+      "other_endpoint": "U1113:7",
+      "other_pad_mm": [
+        181.22500000000002,
+        35.76
+      ],
+      "pad_separation_lower_bound_mm": 201.57854009045707,
+      "segments": {
+        "DIN_mm": 25,
+        "GH_pair_mm": 15,
+        "front_trace_mm": 17.72436399182265,
+        "middle_trace_mm": 180.65482808403644,
+        "rear_trace_mm": 91.28019016438098,
+        "wire_max_mm": 63
+      },
+      "total_mm": 392.65938224024006
+    },
+    {
+      "DIN_pad_mm": [
+        119.53999999999999,
+        76.47
+      ],
+      "DIN_signal_pin": "c22",
+      "front_endpoint": "SW103:1",
+      "front_pad_mm": [
+        68.03999999999999,
+        213.0
+      ],
+      "instance": "O4",
+      "link": "FRONT-C:O1.SYNC",
+      "link_pin": "1",
+      "margin_mm": -38.74008565889312,
+      "net": "/O1/HARD_DRIVE",
+      "other_endpoint": "R1163:1",
+      "other_pad_mm": [
+        144.23000000000002,
+        56.29
+      ],
+      "pad_separation_lower_bound_mm": 174.24964906707848,
+      "segments": {
+        "DIN_mm": 25,
+        "GH_pair_mm": 15,
+        "front_trace_mm": 10.072683422642555,
+        "middle_trace_mm": 180.66124809425813,
+        "rear_trace_mm": 45.00615414199244,
+        "wire_max_mm": 63
+      },
+      "total_mm": 338.7400856588931
+    },
+    {
+      "DIN_pad_mm": [
+        119.53999999999999,
+        76.47
+      ],
+      "DIN_signal_pin": "c22",
+      "front_endpoint": "SW103:1",
+      "front_pad_mm": [
+        68.03999999999999,
+        213.0
+      ],
+      "instance": "O4",
+      "link": "FRONT-C:O1.SYNC",
+      "link_pin": "1",
+      "margin_mm": -43.0870856588931,
+      "net": "/O1/HARD_DRIVE",
+      "other_endpoint": "R1164:1",
+      "other_pad_mm": [
+        148.01,
+        56.29
+      ],
+      "pad_separation_lower_bound_mm": 175.93528639815267,
+      "segments": {
+        "DIN_mm": 25,
+        "GH_pair_mm": 15,
+        "front_trace_mm": 10.072683422642555,
+        "middle_trace_mm": 180.66124809425813,
+        "rear_trace_mm": 49.35315414199241,
+        "wire_max_mm": 63
+      },
+      "total_mm": 343.0870856588931
+    },
+    {
+      "DIN_pad_mm": [
+        119.53999999999999,
+        91.71000000000001
+      ],
+      "DIN_signal_pin": "c28",
+      "front_endpoint": "SW103:2",
+      "front_pad_mm": [
+        65.5,
+        213.0
+      ],
+      "instance": "O4",
+      "link": "FRONT-C:O1.SYNC",
+      "link_pin": "2",
+      "margin_mm": -44.050161259611684,
+      "net": "/O1/SYNC_GATE",
+      "other_endpoint": "U1107:2",
+      "other_pad_mm": [
+        157.225,
+        60.410000000000004
+      ],
+      "pad_separation_lower_bound_mm": 178.03702908383974,
+      "segments": {
+        "DIN_mm": 25,
+        "GH_pair_mm": 15,
+        "front_trace_mm": 12.072113991822647,
+        "middle_trace_mm": 163.73068009016947,
+        "rear_trace_mm": 65.24736717761957,
+        "wire_max_mm": 63
+      },
+      "total_mm": 344.0501612596117
+    },
+    {
+      "DIN_pad_mm": [
+        119.53999999999999,
+        73.93
+      ],
+      "DIN_signal_pin": "c21",
+      "front_endpoint": "SW103:3",
+      "front_pad_mm": [
+        62.96,
+        213.0
+      ],
+      "instance": "O4",
+      "link": "FRONT-C:O1.SYNC",
+      "link_pin": "3",
+      "margin_mm": -39.6495261498722,
+      "net": "/O1/SOFT_DRIVE",
+      "other_endpoint": "R1161:1",
+      "other_pad_mm": [
+        136.67000000000002,
+        56.29
+      ],
+      "pad_separation_lower_bound_mm": 173.1796414131869,
+      "segments": {
+        "DIN_mm": 25,
+        "GH_pair_mm": 15,
+        "front_trace_mm": 16.430613991822646,
+        "middle_trace_mm": 184.77311208608077,
+        "rear_trace_mm": 35.445800071968804,
+        "wire_max_mm": 63
+      },
+      "total_mm": 339.6495261498722
+    },
+    {
+      "DIN_pad_mm": [
+        119.53999999999999,
+        73.93
+      ],
+      "DIN_signal_pin": "c21",
+      "front_endpoint": "SW103:3",
+      "front_pad_mm": [
+        62.96,
+        213.0
+      ],
+      "instance": "O4",
+      "link": "FRONT-C:O1.SYNC",
+      "link_pin": "3",
+      "margin_mm": -43.652962404204004,
+      "net": "/O1/SOFT_DRIVE",
+      "other_endpoint": "R1162:1",
+      "other_pad_mm": [
+        140.45,
+        56.29
+      ],
+      "pad_separation_lower_bound_mm": 174.82197859536998,
+      "segments": {
+        "DIN_mm": 25,
+        "GH_pair_mm": 15,
+        "front_trace_mm": 16.430613991822646,
+        "middle_trace_mm": 184.77311208608077,
+        "rear_trace_mm": 39.44923632630061,
+        "wire_max_mm": 63
+      },
+      "total_mm": 343.652962404204
+    },
+    {
+      "DIN_pad_mm": [
+        119.53999999999999,
+        40.910000000000004
+      ],
+      "DIN_signal_pin": "c8",
+      "front_endpoint": "U1118:1",
+      "front_pad_mm": [
+        68.1375,
+        31.45
+      ],
+      "instance": "O4",
+      "link": "FRONT-J:O1.1V",
+      "link_pin": "1",
+      "margin_mm": 87.6369793857352,
+      "net": "/O1/1V_BUFFER",
+      "other_endpoint": "R1140:1",
+      "other_pad_mm": [
+        140.45,
+        49.23
+      ],
+      "pad_separation_lower_bound_mm": 74.46627462314734,
+      "segments": {
+        "DIN_mm": 25,
+        "GH_pair_mm": 15,
+        "front_trace_mm": 13.698925278814283,
+        "middle_trace_mm": 60.654399970664755,
+        "rear_trace_mm": 35.00969536478576,
+        "wire_max_mm": 63
+      },
+      "total_mm": 212.3630206142648
+    },
+    {
+      "DIN_pad_mm": [
+        119.53999999999999,
+        30.750000000000004
+      ],
+      "DIN_signal_pin": "c4",
+      "front_endpoint": "U1116:1",
+      "front_pad_mm": [
+        75.81,
+        60.475
+      ],
+      "instance": "O4",
+      "link": "FRONT-J:O1.FM",
+      "link_pin": "1",
+      "margin_mm": 45.48498829736212,
+      "net": "/O1/FM_BUFFER",
+      "other_endpoint": "R1121:1",
+      "other_pad_mm": [
+        164.45,
+        40.459999999999994
+      ],
+      "pad_separation_lower_bound_mm": 90.87161176627164,
+      "segments": {
+        "DIN_mm": 25,
+        "GH_pair_mm": 15,
+        "front_trace_mm": 29.284586312089427,
+        "middle_trace_mm": 58.95860964630929,
+        "rear_trace_mm": 63.271815744239156,
+        "wire_max_mm": 63
+      },
+      "total_mm": 254.51501170263788
+    },
+    {
+      "DIN_pad_mm": [
+        119.53999999999999,
+        30.750000000000004
+      ],
+      "DIN_signal_pin": "c4",
+      "front_endpoint": "U1116:1",
+      "front_pad_mm": [
+        75.81,
+        60.475
+      ],
+      "instance": "O4",
+      "link": "FRONT-J:O1.FM",
+      "link_pin": "1",
+      "margin_mm": 58.38570984983025,
+      "net": "/O1/FM_BUFFER",
+      "other_endpoint": "U1112:3",
+      "other_pad_mm": [
+        157.225,
+        30.68
+      ],
+      "pad_separation_lower_bound_mm": 86.69569914361381,
+      "segments": {
+        "DIN_mm": 25,
+        "GH_pair_mm": 15,
+        "front_trace_mm": 29.284586312089427,
+        "middle_trace_mm": 58.95860964630929,
+        "rear_trace_mm": 50.37109419177103,
+        "wire_max_mm": 63
+      },
+      "total_mm": 241.61429015016975
+    },
+    {
+      "DIN_pad_mm": [
+        119.53999999999999,
+        35.83
+      ],
+      "DIN_signal_pin": "c6",
+      "front_endpoint": "U1117:10",
+      "front_pad_mm": [
+        70.73,
+        84.025
+      ],
+      "instance": "O4",
+      "link": "FRONT-J:O1.PUL",
+      "link_pin": "1",
+      "margin_mm": -0.06513096592124157,
+      "net": "/O1/PUL_SCALED",
+      "other_endpoint": "U1114:14",
+      "other_pad_mm": [
+        138.175,
+        8.14
+      ],
+      "pad_separation_lower_bound_mm": 101.52517544924511,
+      "segments": {
+        "DIN_mm": 25,
+        "GH_pair_mm": 15,
+        "front_trace_mm": 20.252250680705796,
+        "middle_trace_mm": 129.09268009016944,
+        "rear_trace_mm": 47.72020019504602,
+        "wire_max_mm": 63
+      },
+      "total_mm": 300.06513096592124
+    },
+    {
+      "DIN_pad_mm": [
+        119.53999999999999,
+        43.45
+      ],
+      "DIN_signal_pin": "c9",
+      "front_endpoint": "U1116:7",
+      "front_pad_mm": [
+        68.19,
+        60.475
+      ],
+      "instance": "O4",
+      "link": "FRONT-J:O1.PWM",
+      "link_pin": "1",
+      "margin_mm": 56.2093223931484,
+      "net": "/O1/PWM_BUFFER",
+      "other_endpoint": "R1127:1",
+      "other_pad_mm": [
+        168.23000000000002,
+        42.779999999999994
+      ],
+      "pad_separation_lower_bound_mm": 101.59288668504308,
+      "segments": {
+        "DIN_mm": 25,
+        "GH_pair_mm": 15,
+        "front_trace_mm": 17.900167134986013,
+        "middle_trace_mm": 59.577858922057075,
+        "rear_trace_mm": 63.3126515498085,
+        "wire_max_mm": 63
+      },
+      "total_mm": 243.7906776068516
+    },
+    {
+      "DIN_pad_mm": [
+        119.53999999999999,
+        43.45
+      ],
+      "DIN_signal_pin": "c9",
+      "front_endpoint": "U1116:7",
+      "front_pad_mm": [
+        68.19,
+        60.475
+      ],
+      "instance": "O4",
+      "link": "FRONT-J:O1.PWM",
+      "link_pin": "1",
+      "margin_mm": 58.618708488418605,
+      "net": "/O1/PWM_BUFFER",
+      "other_endpoint": "U1112:10",
+      "other_pad_mm": [
+        162.175,
+        33.22
+      ],
+      "pad_separation_lower_bound_mm": 97.8571165015606,
+      "segments": {
+        "DIN_mm": 25,
+        "GH_pair_mm": 15,
+        "front_trace_mm": 17.900167134986013,
+        "middle_trace_mm": 59.577858922057075,
+        "rear_trace_mm": 60.9032654545383,
+        "wire_max_mm": 63
+      },
+      "total_mm": 241.3812915115814
+    },
+    {
+      "DIN_pad_mm": [
+        119.53999999999999,
+        28.21
+      ],
+      "DIN_signal_pin": "c3",
+      "front_endpoint": "U1117:5",
+      "front_pad_mm": [
+        70.73,
+        88.975
+      ],
+      "instance": "O4",
+      "link": "FRONT-J:O1.SAW",
+      "link_pin": "1",
+      "margin_mm": 17.754189145604414,
+      "net": "/O1/SAW_SCALED",
+      "other_endpoint": "U1114:8",
+      "other_pad_mm": [
+        138.175,
+        15.76
+      ],
+      "pad_separation_lower_bound_mm": 99.54528743240435,
+      "segments": {
+        "DIN_mm": 25,
+        "GH_pair_mm": 15,
+        "front_trace_mm": 23.129378084949312,
+        "middle_trace_mm": 121.75568009016945,
+        "rear_trace_mm": 34.360752679276814,
+        "wire_max_mm": 63
+      },
+      "total_mm": 282.2458108543956
+    },
+    {
+      "DIN_pad_mm": [
+        119.53999999999999,
+        33.290000000000006
+      ],
+      "DIN_signal_pin": "c5",
+      "front_endpoint": "U1116:12",
+      "front_pad_mm": [
+        73.27,
+        55.525
+      ],
+      "instance": "O4",
+      "link": "FRONT-J:O1.SIN",
+      "link_pin": "1",
+      "margin_mm": 24.039323727050544,
+      "net": "/O1/SIN_SCALED",
+      "other_endpoint": "U1115:7",
+      "other_pad_mm": [
+        157.225,
+        15.76
+      ],
+      "pad_separation_lower_bound_mm": 92.89616380669332,
+      "segments": {
+        "DIN_mm": 25,
+        "GH_pair_mm": 15,
+        "front_trace_mm": 30.558907872119587,
+        "middle_trace_mm": 83.71368009016945,
+        "rear_trace_mm": 58.68808831066042,
+        "wire_max_mm": 63
+      },
+      "total_mm": 275.96067627294946
+    },
+    {
+      "DIN_pad_mm": [
+        119.53999999999999,
+        56.150000000000006
+      ],
+      "DIN_signal_pin": "c14",
+      "front_endpoint": "U1116:8",
+      "front_pad_mm": [
+        68.19,
+        55.525
+      ],
+      "instance": "O4",
+      "link": "FRONT-J:O1.SYNC",
+      "link_pin": "1",
+      "margin_mm": 46.71897273395777,
+      "net": "/O1/SYNC_BUFFER",
+      "other_endpoint": "R1156:1",
+      "other_pad_mm": [
+        160.67000000000002,
+        69.03999999999999
+      ],
+      "pad_separation_lower_bound_mm": 93.46232195382267,
+      "segments": {
+        "DIN_mm": 25,
+        "GH_pair_mm": 15,
+        "front_trace_mm": 29.64432432639979,
+        "middle_trace_mm": 60.197108197804845,
+        "rear_trace_mm": 60.43959474183759,
+        "wire_max_mm": 63
+      },
+      "total_mm": 253.28102726604223
+    },
+    {
+      "DIN_pad_mm": [
+        119.53999999999999,
+        23.130000000000003
+      ],
+      "DIN_signal_pin": "c1",
+      "front_endpoint": "U1117:3",
+      "front_pad_mm": [
+        73.27,
+        88.975
+      ],
+      "instance": "O4",
+      "link": "FRONT-J:O1.TRI",
+      "link_pin": "1",
+      "margin_mm": 39.22923436553981,
+      "net": "/O1/TRI_SCALED",
+      "other_endpoint": "U1114:7",
+      "other_pad_mm": [
+        133.225,
+        15.76
+      ],
+      "pad_separation_lower_bound_mm": 94.6310638743959,
+      "segments": {
+        "DIN_mm": 25,
+        "GH_pair_mm": 15,
+        "front_trace_mm": 20.024668496397602,
+        "middle_trace_mm": 111.49768009016944,
+        "rear_trace_mm": 26.24841704789317,
+        "wire_max_mm": 63
+      },
+      "total_mm": 260.7707656344602
+    },
+    {
+      "DIN_pad_mm": [
+        119.53999999999999,
+        68.85
+      ],
+      "DIN_signal_pin": "c19",
+      "front_endpoint": "SW101:1",
+      "front_pad_mm": [
+        60.5,
+        175.85
+      ],
+      "instance": "O4",
+      "link": "K-O1-1",
+      "link_pin": "1",
+      "margin_mm": 7.873567078141264,
+      "net": "/O1/OCT_SELECTED",
+      "other_endpoint": "R1135:1",
+      "other_pad_mm": [
+        140.45,
+        71.82
+      ],
+      "pad_separation_lower_bound_mm": 131.2030617020807,
+      "segments": {
+        "DIN_mm": 25,
+        "GH_pair_mm": 15,
+        "front_trace_mm": 15.34158639918227,
+        "middle_trace_mm": 141.32360010039116,
+        "rear_trace_mm": 32.4612464222853,
+        "wire_max_mm": 63
+      },
+      "total_mm": 292.12643292185874
+    },
+    {
+      "DIN_pad_mm": [
+        119.53999999999999,
+        68.85
+      ],
+      "DIN_signal_pin": "c19",
+      "front_endpoint": "SW101:10",
+      "front_pad_mm": [
+        60.5,
+        194.15
+      ],
+      "instance": "O4",
+      "link": "K-O1-1",
+      "link_pin": "1",
+      "margin_mm": 3.273567078141241,
+      "net": "/O1/OCT_SELECTED",
+      "other_endpoint": "R1135:1",
+      "other_pad_mm": [
+        140.45,
+        71.82
+      ],
+      "pad_separation_lower_bound_mm": 146.13908238387157,
+      "segments": {
+        "DIN_mm": 25,
+        "GH_pair_mm": 15,
+        "front_trace_mm": 19.94158639918227,
+        "middle_trace_mm": 141.32360010039116,
+        "rear_trace_mm": 32.4612464222853,
+        "wire_max_mm": 63
+      },
+      "total_mm": 296.72643292185876
+    },
+    {
+      "DIN_pad_mm": [
+        119.53999999999999,
+        38.370000000000005
+      ],
+      "DIN_signal_pin": "c7",
+      "front_endpoint": "U1602:1",
+      "front_pad_mm": [
+        75.3625,
+        151.55
+      ],
+      "instance": "O4",
+      "margin_mm": 54.967084988487954,
+      "net": "OSC_REF5",
+      "other_endpoint": "U1110:3",
+      "other_pad_mm": [
+        132.9875,
+        80.47999999999999
+      ],
+      "pad_separation_lower_bound_mm": 91.49636891702318,
+      "segments": {
+        "DIN_mm": 25,
+        "middle_trace_mm": 158.20075759949802,
+        "rear_trace_mm": 61.83215741201402
+      },
+      "total_mm": 245.03291501151205
+    },
+    {
+      "DIN_pad_mm": [
+        119.53999999999999,
+        38.370000000000005
+      ],
+      "DIN_signal_pin": "c7",
+      "front_endpoint": "U1602:1",
+      "front_pad_mm": [
+        75.3625,
+        151.55
+      ],
+      "instance": "O4",
+      "margin_mm": 50.74500644721408,
+      "net": "OSC_REF5",
+      "other_endpoint": "U1110:10",
+      "other_pad_mm": [
+        138.7125,
+        81.78
+      ],
+      "pad_separation_lower_bound_mm": 94.23945776584245,
+      "segments": {
+        "DIN_mm": 25,
+        "middle_trace_mm": 158.20075759949802,
+        "rear_trace_mm": 66.0542359532879
+      },
+      "total_mm": 249.25499355278592
+    },
+    {
+      "DIN_pad_mm": [
+        119.53999999999999,
+        38.370000000000005
+      ],
+      "DIN_signal_pin": "c7",
+      "front_endpoint": "U1602:1",
+      "front_pad_mm": [
+        75.3625,
+        151.55
+      ],
+      "instance": "O4",
+      "margin_mm": 28.937993110999457,
+      "net": "OSC_REF5",
+      "other_endpoint": "U1111:3",
+      "other_pad_mm": [
+        177.8875,
+        9.48
+      ],
+      "pad_separation_lower_bound_mm": 175.2006293510386,
+      "segments": {
+        "DIN_mm": 25,
+        "middle_trace_mm": 158.20075759949802,
+        "rear_trace_mm": 87.86124928950251
+      },
+      "total_mm": 271.06200688900054
+    },
+    {
+      "DIN_pad_mm": [
+        119.53999999999999,
+        89.17000000000002
+      ],
+      "DIN_signal_pin": "c27",
+      "front_endpoint": "U1602:8",
+      "front_pad_mm": [
+        69.6375,
+        155.45
+      ],
+      "instance": "O4",
+      "margin_mm": 95.42482699707216,
+      "net": "OSC_GATE_REF",
+      "other_endpoint": "R1158:1",
+      "other_pad_mm": [
+        168.23000000000002,
+        69.03999999999999
+      ],
+      "pad_separation_lower_bound_mm": 131.09984422664277,
+      "segments": {
+        "DIN_mm": 25,
+        "middle_trace_mm": 106.99283614077183,
+        "rear_trace_mm": 72.582336862156
+      },
+      "total_mm": 204.57517300292784
+    },
+    {
+      "DIN_pad_mm": [
+        119.53999999999999,
+        25.67
+      ],
+      "DIN_signal_pin": "c2",
+      "front_endpoint": "U1602:7",
+      "front_pad_mm": [
+        75.3625,
+        155.45
+      ],
+      "instance": "O4",
+      "margin_mm": 19.777084988488014,
+      "net": "OSC_REFN5",
+      "other_endpoint": "U1110:5",
+      "other_pad_mm": [
+        132.9875,
+        81.78
+      ],
+      "pad_separation_lower_bound_mm": 93.53025994297246,
+      "segments": {
+        "DIN_mm": 25,
+        "middle_trace_mm": 177.29075759949797,
+        "rear_trace_mm": 77.93215741201404
+      },
+      "total_mm": 280.222915011512
+    },
+    {
+      "DIN_pad_mm": [
+        119.53999999999999,
+        25.67
+      ],
+      "DIN_signal_pin": "c2",
+      "front_endpoint": "U1602:7",
+      "front_pad_mm": [
+        75.3625,
+        155.45
+      ],
+      "instance": "O4",
+      "margin_mm": 18.545006447214178,
+      "net": "OSC_REFN5",
+      "other_endpoint": "U1110:12",
+      "other_pad_mm": [
+        138.7125,
+        80.47999999999999
+      ],
+      "pad_separation_lower_bound_mm": 98.15153284590109,
+      "segments": {
+        "DIN_mm": 25,
+        "middle_trace_mm": 177.29075759949797,
+        "rear_trace_mm": 79.16423595328789
+      },
+      "total_mm": 281.4549935527858
+    },
+    {
+      "DIN_pad_mm": [
+        119.53999999999999,
+        25.67
+      ],
+      "DIN_signal_pin": "c2",
+      "front_endpoint": "U1602:7",
+      "front_pad_mm": [
+        75.3625,
+        155.45
+      ],
+      "instance": "O4",
+      "margin_mm": 16.516831465206337,
+      "net": "OSC_REFN5",
+      "other_endpoint": "U1111:5",
+      "other_pad_mm": [
+        177.8875,
+        10.780000000000001
+      ],
+      "pad_separation_lower_bound_mm": 177.31549431733256,
+      "segments": {
+        "DIN_mm": 25,
+        "middle_trace_mm": 177.29075759949797,
+        "rear_trace_mm": 81.19241093529568
+      },
+      "total_mm": 283.48316853479366
+    },
+    {
+      "DIN_pad_mm": [
+        224.54,
+        79.01
+      ],
+      "DIN_signal_pin": "c23",
+      "front_endpoint": "RV106:2",
+      "front_pad_mm": [
+        82.5,
+        262.0
+      ],
+      "instance": "O5",
+      "link": "FRONT-C:O1.FM\u00b1",
+      "link_pin": "2",
+      "margin_mm": -156.97850783157088,
+      "net": "/O1/C1eb779_W",
+      "other_endpoint": "R1119:1",
+      "other_pad_mm": [
+        261.89,
+        40.459999999999994
+      ],
+      "pad_separation_lower_bound_mm": 285.06270134831743,
+      "segments": {
+        "DIN_mm": 25,
+        "GH_pair_mm": 15,
+        "front_trace_mm": 16.00269119345812,
+        "middle_trace_mm": 268.85180860028237,
+        "rear_trace_mm": 69.12400803783038,
+        "wire_max_mm": 63
+      },
+      "total_mm": 456.9785078315709
+    },
+    {
+      "DIN_pad_mm": [
+        224.54,
+        81.55000000000001
+      ],
+      "DIN_signal_pin": "c24",
+      "front_endpoint": "RV106:3",
+      "front_pad_mm": [
+        85.0,
+        262.0
+      ],
+      "instance": "O5",
+      "link": "FRONT-C:O1.FM\u00b1",
+      "link_pin": "3",
+      "margin_mm": -152.71538898771473,
+      "net": "/O1/FM_REMOTE",
+      "other_endpoint": "R1117:2",
+      "other_pad_mm": [
+        267.75,
+        55.0
+      ],
+      "pad_separation_lower_bound_mm": 276.1278010269882,
+      "segments": {
+        "DIN_mm": 25,
+        "GH_pair_mm": 15,
+        "front_trace_mm": 13.85067279836453,
+        "middle_trace_mm": 266.52624059619365,
+        "rear_trace_mm": 69.33847559315655,
+        "wire_max_mm": 63
+      },
+      "total_mm": 452.71538898771473
+    },
+    {
+      "DIN_pad_mm": [
+        224.54,
+        84.09
+      ],
+      "DIN_signal_pin": "c25",
+      "front_endpoint": "RV108:2",
+      "front_pad_mm": [
+        82.5,
+        290.0
+      ],
+      "instance": "O5",
+      "link": "FRONT-C:O1.PWM\u00b1",
+      "link_pin": "2",
+      "margin_mm": -188.31109418720666,
+      "net": "/O1/C42d8cd_W",
+      "other_endpoint": "R1125:1",
+      "other_pad_mm": [
+        265.67,
+        42.779999999999994
+      ],
+      "pad_separation_lower_bound_mm": 307.6832418250952,
+      "segments": {
+        "DIN_mm": 25,
+        "GH_pair_mm": 15,
+        "front_trace_mm": 16.00269119345812,
+        "middle_trace_mm": 295.2098086002823,
+        "rear_trace_mm": 74.09859439346623,
+        "wire_max_mm": 63
+      },
+      "total_mm": 488.31109418720666
+    },
+    {
+      "DIN_pad_mm": [
+        224.54,
+        96.78999999999999
+      ],
+      "DIN_signal_pin": "c30",
+      "front_endpoint": "RV108:3",
+      "front_pad_mm": [
+        85.0,
+        290.0
+      ],
+      "instance": "O5",
+      "link": "FRONT-C:O1.PWM\u00b1",
+      "link_pin": "3",
+      "margin_mm": -180.3988958818656,
+      "net": "/O1/PWM_REMOTE",
+      "other_endpoint": "R1123:2",
+      "other_pad_mm": [
+        272.75,
+        55.0
+      ],
+      "pad_separation_lower_bound_mm": 300.79072874674847,
+      "segments": {
+        "DIN_mm": 25,
+        "GH_pair_mm": 15,
+        "front_trace_mm": 13.85067279836453,
+        "middle_trace_mm": 281.2002405961937,
+        "rear_trace_mm": 82.34798248730738,
+        "wire_max_mm": 63
+      },
+      "total_mm": 480.3988958818656
+    },
+    {
+      "DIN_pad_mm": [
+        224.54,
+        71.39
+      ],
+      "DIN_signal_pin": "c20",
+      "front_endpoint": "RV104:1",
+      "front_pad_mm": [
+        80.0,
+        234.0
+      ],
+      "instance": "O5",
+      "link": "FRONT-C:O1.TUNE",
+      "link_pin": "1",
+      "margin_mm": -99.83969790312267,
+      "net": "/O1/LOCAL_REFN5",
+      "other_endpoint": "RB1112:2",
+      "other_pad_mm": [
+        239.39,
+        87.82
+      ],
+      "pad_separation_lower_bound_mm": 216.2724312065687,
+      "segments": {
+        "DIN_mm": 25,
+        "GH_pair_mm": 15,
+        "front_trace_mm": 19.349805185280765,
+        "middle_trace_mm": 244.52166060641537,
+        "rear_trace_mm": 32.968232111426516,
+        "wire_max_mm": 63
+      },
+      "total_mm": 399.83969790312267
+    },
+    {
+      "DIN_pad_mm": [
+        224.54,
+        94.25
+      ],
+      "DIN_signal_pin": "c29",
+      "front_endpoint": "RV104:2",
+      "front_pad_mm": [
+        82.5,
+        234.0
+      ],
+      "instance": "O5",
+      "link": "FRONT-C:O1.TUNE",
+      "link_pin": "2",
+      "margin_mm": -85.88800657902527,
+      "net": "/O1/C83f36b_W",
+      "other_endpoint": "R1129:1",
+      "other_pad_mm": [
+        249.23000000000002,
+        69.4
+      ],
+      "pad_separation_lower_bound_mm": 234.29053096529532,
+      "segments": {
+        "DIN_mm": 25,
+        "GH_pair_mm": 15,
+        "front_trace_mm": 16.72144119345812,
+        "middle_trace_mm": 218.82809260232668,
+        "rear_trace_mm": 47.33847278324048,
+        "wire_max_mm": 63
+      },
+      "total_mm": 385.8880065790253
+    },
+    {
+      "DIN_pad_mm": [
+        224.54,
+        101.87
+      ],
+      "DIN_signal_pin": "c32",
+      "front_endpoint": "RV104:3",
+      "front_pad_mm": [
+        85.0,
+        234.0
+      ],
+      "instance": "O5",
+      "link": "FRONT-C:O1.TUNE",
+      "link_pin": "3",
+      "margin_mm": -77.89933538157771,
+      "net": "/O1/LOCAL_REF5",
+      "other_endpoint": "RB1110:2",
+      "other_pad_mm": [
+        250.73000000000002,
+        85.39999999999999
+      ],
+      "pad_separation_lower_bound_mm": 222.59468300029093,
+      "segments": {
+        "DIN_mm": 25,
+        "GH_pair_mm": 15,
+        "front_trace_mm": 14.56942279836453,
+        "middle_trace_mm": 215.36600060508553,
+        "rear_trace_mm": 44.96391197812764,
+        "wire_max_mm": 63
+      },
+      "total_mm": 377.8993353815777
+    },
+    {
+      "DIN_pad_mm": [
+        224.54,
+        71.39
+      ],
+      "DIN_signal_pin": "c20",
+      "front_endpoint": "RV105:1",
+      "front_pad_mm": [
+        80.0,
+        248.0
+      ],
+      "instance": "O5",
+      "link": "FRONT-C:O1.FINE",
+      "link_pin": "1",
+      "margin_mm": -115.93969790312269,
+      "net": "/O1/LOCAL_REFN5",
+      "other_endpoint": "RB1112:2",
+      "other_pad_mm": [
+        239.39,
+        87.82
+      ],
+      "pad_separation_lower_bound_mm": 225.97080453014277,
+      "segments": {
+        "DIN_mm": 25,
+        "GH_pair_mm": 15,
+        "front_trace_mm": 19.349805185280765,
+        "middle_trace_mm": 260.6216606064154,
+        "rear_trace_mm": 32.968232111426516,
+        "wire_max_mm": 63
+      },
+      "total_mm": 415.9396979031227
+    },
+    {
+      "DIN_pad_mm": [
+        224.54,
+        86.63
+      ],
+      "DIN_signal_pin": "c26",
+      "front_endpoint": "RV105:2",
+      "front_pad_mm": [
+        82.5,
+        248.0
+      ],
+      "instance": "O5",
+      "link": "FRONT-C:O1.FINE",
+      "link_pin": "2",
+      "margin_mm": -93.80324751211771,
+      "net": "/O1/Ce35646_W",
+      "other_endpoint": "R1131:1",
+      "other_pad_mm": [
+        237.89,
+        71.82
+      ],
+      "pad_separation_lower_bound_mm": 234.91582428606208,
+      "segments": {
+        "DIN_mm": 25,
+        "GH_pair_mm": 15,
+        "front_trace_mm": 16.72144119345812,
+        "middle_trace_mm": 243.69109260232668,
+        "rear_trace_mm": 30.390713716332943,
+        "wire_max_mm": 63
+      },
+      "total_mm": 393.8032475121177
+    },
+    {
+      "DIN_pad_mm": [
+        224.54,
+        101.87
+      ],
+      "DIN_signal_pin": "c32",
+      "front_endpoint": "RV105:3",
+      "front_pad_mm": [
+        85.0,
+        248.0
+      ],
+      "instance": "O5",
+      "link": "FRONT-C:O1.FINE",
+      "link_pin": "3",
+      "margin_mm": -89.29385937473018,
+      "net": "/O1/LOCAL_REF5",
+      "other_endpoint": "RB1110:2",
+      "other_pad_mm": [
+        250.73000000000002,
+        85.39999999999999
+      ],
+      "pad_separation_lower_bound_mm": 232.17491875738864,
+      "segments": {
+        "DIN_mm": 25,
+        "GH_pair_mm": 15,
+        "front_trace_mm": 14.56942279836453,
+        "middle_trace_mm": 226.760524598238,
+        "rear_trace_mm": 44.96391197812764,
+        "wire_max_mm": 63
+      },
+      "total_mm": 389.2938593747302
+    },
+    {
+      "DIN_pad_mm": [
+        224.54,
+        99.33000000000001
+      ],
+      "DIN_signal_pin": "c31",
+      "front_endpoint": "RV107:2",
+      "front_pad_mm": [
+        82.5,
+        276.0
+      ],
+      "instance": "O5",
+      "link": "FRONT-C:O1.PW",
+      "link_pin": "2",
+      "margin_mm": -187.33422141726442,
+      "net": "/O1/Ca449b7_W",
+      "other_endpoint": "R1133:1",
+      "other_pad_mm": [
+        285.89,
+        38.03999999999999
+      ],
+      "pad_separation_lower_bound_mm": 313.0374637323782,
+      "segments": {
+        "DIN_mm": 25,
+        "GH_pair_mm": 15,
+        "front_trace_mm": 16.00269119345812,
+        "middle_trace_mm": 261.5838086002823,
+        "rear_trace_mm": 106.74772162352404,
+        "wire_max_mm": 63
+      },
+      "total_mm": 487.3342214172644
+    },
+    {
+      "DIN_pad_mm": [
+        224.54,
+        101.87
+      ],
+      "DIN_signal_pin": "c32",
+      "front_endpoint": "RV107:3",
+      "front_pad_mm": [
+        85.0,
+        276.0
+      ],
+      "instance": "O5",
+      "link": "FRONT-C:O1.PW",
+      "link_pin": "3",
+      "margin_mm": -121.07282537268583,
+      "net": "/O1/LOCAL_REF5",
+      "other_endpoint": "RB1110:2",
+      "other_pad_mm": [
+        250.73000000000002,
+        85.39999999999999
+      ],
+      "pad_separation_lower_bound_mm": 252.57631104282132,
+      "segments": {
+        "DIN_mm": 25,
+        "GH_pair_mm": 15,
+        "front_trace_mm": 13.85067279836453,
+        "middle_trace_mm": 259.2582405961937,
+        "rear_trace_mm": 44.96391197812764,
+        "wire_max_mm": 63
+      },
+      "total_mm": 421.0728253726858
+    },
+    {
+      "DIN_pad_mm": [
+        224.54,
+        66.31
+      ],
+      "DIN_signal_pin": "c18",
+      "front_endpoint": "SW102:2",
+      "front_pad_mm": [
+        82.5,
+        199.0
+      ],
+      "instance": "O5",
+      "link": "FRONT-C:O1.VCO/LFO",
+      "link_pin": "2",
+      "margin_mm": -70.25815538423734,
+      "net": "/O1/RANGE_CV",
+      "other_endpoint": "R1139:1",
+      "other_pad_mm": [
+        241.67000000000002,
+        49.23
+      ],
+      "pad_separation_lower_bound_mm": 218.55466547296584,
+      "segments": {
+        "DIN_mm": 25,
+        "GH_pair_mm": 15,
+        "front_trace_mm": 13.365863991822648,
+        "middle_trace_mm": 219.05680860028232,
+        "rear_trace_mm": 34.83548279213237,
+        "wire_max_mm": 63
+      },
+      "total_mm": 370.25815538423734
+    },
+    {
+      "DIN_pad_mm": [
+        224.54,
+        66.31
+      ],
+      "DIN_signal_pin": "c18",
+      "front_endpoint": "SW102:2",
+      "front_pad_mm": [
+        82.5,
+        199.0
+      ],
+      "instance": "O5",
+      "link": "FRONT-C:O1.VCO/LFO",
+      "link_pin": "2",
+      "margin_mm": -73.45239904015295,
+      "net": "/O1/RANGE_CV",
+      "other_endpoint": "R1145:1",
+      "other_pad_mm": [
+        245.45,
+        51.65
+      ],
+      "pad_separation_lower_bound_mm": 219.69234169629127,
+      "segments": {
+        "DIN_mm": 25,
+        "GH_pair_mm": 15,
+        "front_trace_mm": 13.365863991822648,
+        "middle_trace_mm": 219.05680860028232,
+        "rear_trace_mm": 38.02972644804801,
+        "wire_max_mm": 63
+      },
+      "total_mm": 373.45239904015295
+    },
+    {
+      "DIN_pad_mm": [
+        224.54,
+        63.77
+      ],
+      "DIN_signal_pin": "c17",
+      "front_endpoint": "SW102:3",
+      "front_pad_mm": [
+        79.96000000000001,
+        199.0
+      ],
+      "instance": "O5",
+      "link": "FRONT-C:O1.VCO/LFO",
+      "link_pin": "3",
+      "margin_mm": -134.57779475239727,
+      "net": "/O1/LFO_REF",
+      "other_endpoint": "U1113:7",
+      "other_pad_mm": [
+        286.225,
+        35.76
+      ],
+      "pad_separation_lower_bound_mm": 263.0447639186152,
+      "segments": {
+        "DIN_mm": 25,
+        "GH_pair_mm": 15,
+        "front_trace_mm": 17.72436399182264,
+        "middle_trace_mm": 222.57324059619367,
+        "rear_trace_mm": 91.28019016438098,
+        "wire_max_mm": 63
+      },
+      "total_mm": 434.57779475239727
+    },
+    {
+      "DIN_pad_mm": [
+        224.54,
+        76.47
+      ],
+      "DIN_signal_pin": "c22",
+      "front_endpoint": "SW103:1",
+      "front_pad_mm": [
+        85.03999999999999,
+        213.0
+      ],
+      "instance": "O5",
+      "link": "FRONT-C:O1.SYNC",
+      "link_pin": "1",
+      "margin_mm": -80.65849817105038,
+      "net": "/O1/HARD_DRIVE",
+      "other_endpoint": "R1163:1",
+      "other_pad_mm": [
+        249.23000000000002,
+        56.29
+      ],
+      "pad_separation_lower_bound_mm": 226.9722013815789,
+      "segments": {
+        "DIN_mm": 25,
+        "GH_pair_mm": 15,
+        "front_trace_mm": 10.072683422642555,
+        "middle_trace_mm": 222.57966060641536,
+        "rear_trace_mm": 45.00615414199244,
+        "wire_max_mm": 63
+      },
+      "total_mm": 380.6584981710504
+    },
+    {
+      "DIN_pad_mm": [
+        224.54,
+        76.47
+      ],
+      "DIN_signal_pin": "c22",
+      "front_endpoint": "SW103:1",
+      "front_pad_mm": [
+        85.03999999999999,
+        213.0
+      ],
+      "instance": "O5",
+      "link": "FRONT-C:O1.SYNC",
+      "link_pin": "1",
+      "margin_mm": -85.0054981710503,
+      "net": "/O1/HARD_DRIVE",
+      "other_endpoint": "R1164:1",
+      "other_pad_mm": [
+        253.01,
+        56.29
+      ],
+      "pad_separation_lower_bound_mm": 229.721450892162,
+      "segments": {
+        "DIN_mm": 25,
+        "GH_pair_mm": 15,
+        "front_trace_mm": 10.072683422642555,
+        "middle_trace_mm": 222.57966060641536,
+        "rear_trace_mm": 49.35315414199241,
+        "wire_max_mm": 63
+      },
+      "total_mm": 385.0054981710503
+    },
+    {
+      "DIN_pad_mm": [
+        224.54,
+        91.71000000000001
+      ],
+      "DIN_signal_pin": "c28",
+      "front_endpoint": "SW103:2",
+      "front_pad_mm": [
+        82.5,
+        213.0
+      ],
+      "instance": "O5",
+      "link": "FRONT-C:O1.SYNC",
+      "link_pin": "2",
+      "margin_mm": -92.41881468308816,
+      "net": "/O1/SYNC_GATE",
+      "other_endpoint": "U1107:2",
+      "other_pad_mm": [
+        262.225,
+        60.410000000000004
+      ],
+      "pad_separation_lower_bound_mm": 235.7642545531447,
+      "segments": {
+        "DIN_mm": 25,
+        "GH_pair_mm": 15,
+        "front_trace_mm": 12.072113991822647,
+        "middle_trace_mm": 212.09933351364592,
+        "rear_trace_mm": 65.2473671776196,
+        "wire_max_mm": 63
+      },
+      "total_mm": 392.41881468308816
+    },
+    {
+      "DIN_pad_mm": [
+        224.54,
+        73.93
+      ],
+      "DIN_signal_pin": "c21",
+      "front_endpoint": "SW103:3",
+      "front_pad_mm": [
+        79.96000000000001,
+        213.0
+      ],
+      "instance": "O5",
+      "link": "FRONT-C:O1.SYNC",
+      "link_pin": "3",
+      "margin_mm": -81.56793866202946,
+      "net": "/O1/SOFT_DRIVE",
+      "other_endpoint": "R1161:1",
+      "other_pad_mm": [
+        241.67000000000002,
+        56.29
+      ],
+      "pad_separation_lower_bound_mm": 225.18469797035502,
+      "segments": {
+        "DIN_mm": 25,
+        "GH_pair_mm": 15,
+        "front_trace_mm": 16.43061399182264,
+        "middle_trace_mm": 226.691524598238,
+        "rear_trace_mm": 35.445800071968804,
+        "wire_max_mm": 63
+      },
+      "total_mm": 381.56793866202946
+    },
+    {
+      "DIN_pad_mm": [
+        224.54,
+        73.93
+      ],
+      "DIN_signal_pin": "c21",
+      "front_endpoint": "SW103:3",
+      "front_pad_mm": [
+        79.96000000000001,
+        213.0
+      ],
+      "instance": "O5",
+      "link": "FRONT-C:O1.SYNC",
+      "link_pin": "3",
+      "margin_mm": -85.57137491636126,
+      "net": "/O1/SOFT_DRIVE",
+      "other_endpoint": "R1162:1",
+      "other_pad_mm": [
+        245.45,
+        56.29
+      ],
+      "pad_separation_lower_bound_mm": 227.91437909881859,
+      "segments": {
+        "DIN_mm": 25,
+        "GH_pair_mm": 15,
+        "front_trace_mm": 16.43061399182264,
+        "middle_trace_mm": 226.691524598238,
+        "rear_trace_mm": 39.44923632630061,
+        "wire_max_mm": 63
+      },
+      "total_mm": 385.57137491636126
+    },
+    {
+      "DIN_pad_mm": [
+        224.54,
+        40.910000000000004
+      ],
+      "DIN_signal_pin": "c8",
+      "front_endpoint": "U1118:1",
+      "front_pad_mm": [
+        85.1375,
+        31.45
+      ],
+      "instance": "O5",
+      "link": "FRONT-J:O1.1V",
+      "link_pin": "1",
+      "margin_mm": -13.563020614264815,
+      "net": "/O1/1V_BUFFER",
+      "other_endpoint": "R1140:1",
+      "other_pad_mm": [
+        245.45,
+        49.23
+      ],
+      "pad_separation_lower_bound_mm": 161.29546198281588,
+      "segments": {
+        "DIN_mm": 25,
+        "GH_pair_mm": 15,
+        "front_trace_mm": 13.698925278814283,
+        "middle_trace_mm": 161.85439997066476,
+        "rear_trace_mm": 35.00969536478576,
+        "wire_max_mm": 63
+      },
+      "total_mm": 313.5630206142648
+    },
+    {
+      "DIN_pad_mm": [
+        224.54,
+        30.750000000000004
+      ],
+      "DIN_signal_pin": "c4",
+      "front_endpoint": "U1116:1",
+      "front_pad_mm": [
+        92.81,
+        60.475
+      ],
+      "instance": "O5",
+      "link": "FRONT-J:O1.FM",
+      "link_pin": "1",
+      "margin_mm": -55.71501170263787,
+      "net": "/O1/FM_BUFFER",
+      "other_endpoint": "R1121:1",
+      "other_pad_mm": [
+        269.45,
+        40.459999999999994
+      ],
+      "pad_separation_lower_bound_mm": 177.77032886564618,
+      "segments": {
+        "DIN_mm": 25,
+        "GH_pair_mm": 15,
+        "front_trace_mm": 29.284586312089427,
+        "middle_trace_mm": 160.1586096463093,
+        "rear_trace_mm": 63.271815744239156,
+        "wire_max_mm": 63
+      },
+      "total_mm": 355.71501170263787
+    },
+    {
+      "DIN_pad_mm": [
+        224.54,
+        30.750000000000004
+      ],
+      "DIN_signal_pin": "c4",
+      "front_endpoint": "U1116:1",
+      "front_pad_mm": [
+        92.81,
+        60.475
+      ],
+      "instance": "O5",
+      "link": "FRONT-J:O1.FM",
+      "link_pin": "1",
+      "margin_mm": -42.81429015016977,
+      "net": "/O1/FM_BUFFER",
+      "other_endpoint": "U1112:3",
+      "other_pad_mm": [
+        262.225,
+        30.68
+      ],
+      "pad_separation_lower_bound_mm": 172.01506983401194,
+      "segments": {
+        "DIN_mm": 25,
+        "GH_pair_mm": 15,
+        "front_trace_mm": 29.284586312089427,
+        "middle_trace_mm": 160.1586096463093,
+        "rear_trace_mm": 50.371094191771064,
+        "wire_max_mm": 63
+      },
+      "total_mm": 342.81429015016977
+    },
+    {
+      "DIN_pad_mm": [
+        224.54,
+        35.83
+      ],
+      "DIN_signal_pin": "c6",
+      "front_endpoint": "U1117:10",
+      "front_pad_mm": [
+        87.73,
+        84.025
+      ],
+      "instance": "O5",
+      "link": "FRONT-J:O1.PUL",
+      "link_pin": "1",
+      "margin_mm": -68.72425501591846,
+      "net": "/O1/PUL_SCALED",
+      "other_endpoint": "U1114:14",
+      "other_pad_mm": [
+        243.175,
+        8.14
+      ],
+      "pad_separation_lower_bound_mm": 172.97884625005452,
+      "segments": {
+        "DIN_mm": 25,
+        "GH_pair_mm": 15,
+        "front_trace_mm": 20.252250680705796,
+        "middle_trace_mm": 197.75180414016666,
+        "rear_trace_mm": 47.72020019504602,
+        "wire_max_mm": 63
+      },
+      "total_mm": 368.72425501591846
+    },
+    {
+      "DIN_pad_mm": [
+        224.54,
+        43.45
+      ],
+      "DIN_signal_pin": "c9",
+      "front_endpoint": "U1116:7",
+      "front_pad_mm": [
+        85.19,
+        60.475
+      ],
+      "instance": "O5",
+      "link": "FRONT-J:O1.PWM",
+      "link_pin": "1",
+      "margin_mm": -44.99067760685159,
+      "net": "/O1/PWM_BUFFER",
+      "other_endpoint": "R1127:1",
+      "other_pad_mm": [
+        273.23,
+        42.779999999999994
+      ],
+      "pad_separation_lower_bound_mm": 188.87073522650354,
+      "segments": {
+        "DIN_mm": 25,
+        "GH_pair_mm": 15,
+        "front_trace_mm": 17.900167134986013,
+        "middle_trace_mm": 160.77785892205708,
+        "rear_trace_mm": 63.3126515498085,
+        "wire_max_mm": 63
+      },
+      "total_mm": 344.9906776068516
+    },
+    {
+      "DIN_pad_mm": [
+        224.54,
+        43.45
+      ],
+      "DIN_signal_pin": "c9",
+      "front_endpoint": "U1116:7",
+      "front_pad_mm": [
+        85.19,
+        60.475
+      ],
+      "instance": "O5",
+      "link": "FRONT-J:O1.PWM",
+      "link_pin": "1",
+      "margin_mm": -42.58129151158141,
+      "net": "/O1/PWM_BUFFER",
+      "other_endpoint": "U1112:10",
+      "other_pad_mm": [
+        267.175,
+        33.22
+      ],
+      "pad_separation_lower_bound_mm": 184.0146060778872,
+      "segments": {
+        "DIN_mm": 25,
+        "GH_pair_mm": 15,
+        "front_trace_mm": 17.900167134986013,
+        "middle_trace_mm": 160.77785892205708,
+        "rear_trace_mm": 60.9032654545383,
+        "wire_max_mm": 63
+      },
+      "total_mm": 342.5812915115814
+    },
+    {
+      "DIN_pad_mm": [
+        224.54,
+        28.21
+      ],
+      "DIN_signal_pin": "c3",
+      "front_endpoint": "U1117:5",
+      "front_pad_mm": [
+        87.73,
+        88.975
+      ],
+      "instance": "O5",
+      "link": "FRONT-J:O1.SAW",
+      "link_pin": "1",
+      "margin_mm": -55.20284999726141,
+      "net": "/O1/SAW_SCALED",
+      "other_endpoint": "U1114:8",
+      "other_pad_mm": [
+        243.175,
+        15.76
+      ],
+      "pad_separation_lower_bound_mm": 171.8242830626684,
+      "segments": {
+        "DIN_mm": 25,
+        "GH_pair_mm": 15,
+        "front_trace_mm": 23.129378084949312,
+        "middle_trace_mm": 194.71271923303527,
+        "rear_trace_mm": 34.360752679276814,
+        "wire_max_mm": 63
+      },
+      "total_mm": 355.2028499972614
+    },
+    {
+      "DIN_pad_mm": [
+        224.54,
+        33.290000000000006
+      ],
+      "DIN_signal_pin": "c5",
+      "front_endpoint": "U1116:12",
+      "front_pad_mm": [
+        90.27,
+        55.525
+      ],
+      "instance": "O5",
+      "link": "FRONT-J:O1.SIN",
+      "link_pin": "1",
+      "margin_mm": -71.20220307601801,
+      "net": "/O1/SIN_SCALED",
+      "other_endpoint": "U1115:7",
+      "other_pad_mm": [
+        262.225,
+        15.76
+      ],
+      "pad_separation_lower_bound_mm": 176.49299490348056,
+      "segments": {
+        "DIN_mm": 25,
+        "GH_pair_mm": 15,
+        "front_trace_mm": 30.558907872119587,
+        "middle_trace_mm": 178.95520689323797,
+        "rear_trace_mm": 58.68808831066045,
+        "wire_max_mm": 63
+      },
+      "total_mm": 371.202203076018
+    },
+    {
+      "DIN_pad_mm": [
+        224.54,
+        56.150000000000006
+      ],
+      "DIN_signal_pin": "c14",
+      "front_endpoint": "U1116:8",
+      "front_pad_mm": [
+        85.19,
+        55.525
+      ],
+      "instance": "O5",
+      "link": "FRONT-J:O1.SYNC",
+      "link_pin": "1",
+      "margin_mm": -54.48102726604225,
+      "net": "/O1/SYNC_BUFFER",
+      "other_endpoint": "R1156:1",
+      "other_pad_mm": [
+        265.67,
+        69.03999999999999
+      ],
+      "pad_separation_lower_bound_mm": 180.9853188106704,
+      "segments": {
+        "DIN_mm": 25,
+        "GH_pair_mm": 15,
+        "front_trace_mm": 29.64432432639979,
+        "middle_trace_mm": 161.39710819780484,
+        "rear_trace_mm": 60.43959474183759,
+        "wire_max_mm": 63
+      },
+      "total_mm": 354.48102726604225
+    },
+    {
+      "DIN_pad_mm": [
+        224.54,
+        23.130000000000003
+      ],
+      "DIN_signal_pin": "c1",
+      "front_endpoint": "U1117:3",
+      "front_pad_mm": [
+        90.27,
+        88.975
+      ],
+      "instance": "O5",
+      "link": "FRONT-J:O1.TRI",
+      "link_pin": "1",
+      "margin_mm": -39.73680205450279,
+      "net": "/O1/TRI_SCALED",
+      "other_endpoint": "U1114:7",
+      "other_pad_mm": [
+        238.225,
+        15.76
+      ],
+      "pad_separation_lower_bound_mm": 165.0791272390304,
+      "segments": {
+        "DIN_mm": 25,
+        "GH_pair_mm": 15,
+        "front_trace_mm": 20.024668496397602,
+        "middle_trace_mm": 190.46371651021204,
+        "rear_trace_mm": 26.24841704789317,
+        "wire_max_mm": 63
+      },
+      "total_mm": 339.7368020545028
+    },
+    {
+      "DIN_pad_mm": [
+        224.54,
+        68.85
+      ],
+      "DIN_signal_pin": "c19",
+      "front_endpoint": "SW101:1",
+      "front_pad_mm": [
+        87.5,
+        194.15
+      ],
+      "instance": "O5",
+      "link": "K-O1-1",
+      "link_pin": "1",
+      "margin_mm": -50.64368993061191,
+      "net": "/O1/OCT_SELECTED",
+      "other_endpoint": "R1135:1",
+      "other_pad_mm": [
+        245.45,
+        71.82
+      ],
+      "pad_separation_lower_bound_mm": 199.78195964601008,
+      "segments": {
+        "DIN_mm": 25,
+        "GH_pair_mm": 15,
+        "front_trace_mm": 15.34158639918227,
+        "middle_trace_mm": 199.84085710914434,
+        "rear_trace_mm": 32.4612464222853,
+        "wire_max_mm": 63
+      },
+      "total_mm": 350.6436899306119
+    },
+    {
+      "DIN_pad_mm": [
+        224.54,
+        68.85
+      ],
+      "DIN_signal_pin": "c19",
+      "front_endpoint": "SW101:10",
+      "front_pad_mm": [
+        87.5,
+        175.85
+      ],
+      "instance": "O5",
+      "link": "K-O1-1",
+      "link_pin": "1",
+      "margin_mm": -55.243689930611936,
+      "net": "/O1/OCT_SELECTED",
+      "other_endpoint": "R1135:1",
+      "other_pad_mm": [
+        245.45,
+        71.82
+      ],
+      "pad_separation_lower_bound_mm": 189.13075741401767,
+      "segments": {
+        "DIN_mm": 25,
+        "GH_pair_mm": 15,
+        "front_trace_mm": 19.94158639918227,
+        "middle_trace_mm": 199.84085710914434,
+        "rear_trace_mm": 32.4612464222853,
+        "wire_max_mm": 63
+      },
+      "total_mm": 355.24368993061194
+    },
+    {
+      "DIN_pad_mm": [
+        224.54,
+        38.370000000000005
+      ],
+      "DIN_signal_pin": "c7",
+      "front_endpoint": "U1602:1",
+      "front_pad_mm": [
+        75.3625,
+        151.55
+      ],
+      "instance": "O5",
+      "margin_mm": -19.299077049808943,
+      "net": "OSC_REF5",
+      "other_endpoint": "U1110:3",
+      "other_pad_mm": [
+        237.9875,
+        80.47999999999999
+      ],
+      "pad_separation_lower_bound_mm": 177.4762956707177,
+      "segments": {
+        "DIN_mm": 25,
+        "middle_trace_mm": 232.46691963779494,
+        "rear_trace_mm": 61.83215741201402
+      },
+      "total_mm": 319.29907704980894
+    },
+    {
+      "DIN_pad_mm": [
+        224.54,
+        38.370000000000005
+      ],
+      "DIN_signal_pin": "c7",
+      "front_endpoint": "U1602:1",
+      "front_pad_mm": [
+        75.3625,
+        151.55
+      ],
+      "instance": "O5",
+      "margin_mm": -23.521155591082845,
+      "net": "OSC_REF5",
+      "other_endpoint": "U1110:10",
+      "other_pad_mm": [
+        243.7125,
+        81.78
+      ],
+      "pad_separation_lower_bound_mm": 182.23494560594028,
+      "segments": {
+        "DIN_mm": 25,
+        "middle_trace_mm": 232.46691963779494,
+        "rear_trace_mm": 66.0542359532879
+      },
+      "total_mm": 323.52115559108285
+    },
+    {
+      "DIN_pad_mm": [
+        224.54,
+        38.370000000000005
+      ],
+      "DIN_signal_pin": "c7",
+      "front_endpoint": "U1602:1",
+      "front_pad_mm": [
+        75.3625,
+        151.55
+      ],
+      "instance": "O5",
+      "margin_mm": -45.32816892729744,
+      "net": "OSC_REF5",
+      "other_endpoint": "U1111:3",
+      "other_pad_mm": [
+        282.8875,
+        9.48
+      ],
+      "pad_separation_lower_bound_mm": 251.4965417754288,
+      "segments": {
+        "DIN_mm": 25,
+        "middle_trace_mm": 232.46691963779494,
+        "rear_trace_mm": 87.86124928950251
+      },
+      "total_mm": 345.32816892729744
+    },
+    {
+      "DIN_pad_mm": [
+        224.54,
+        89.17000000000002
+      ],
+      "DIN_signal_pin": "c27",
+      "front_endpoint": "U1602:8",
+      "front_pad_mm": [
+        69.6375,
+        155.45
+      ],
+      "instance": "O5",
+      "margin_mm": -14.292398013357968,
+      "net": "OSC_GATE_REF",
+      "other_endpoint": "R1158:1",
+      "other_pad_mm": [
+        273.23,
+        69.03999999999999
+      ],
+      "pad_separation_lower_bound_mm": 221.17096137660118,
+      "segments": {
+        "DIN_mm": 25,
+        "middle_trace_mm": 216.71006115120198,
+        "rear_trace_mm": 72.582336862156
+      },
+      "total_mm": 314.29239801335797
+    },
+    {
+      "DIN_pad_mm": [
+        224.54,
+        25.67
+      ],
+      "DIN_signal_pin": "c2",
+      "front_endpoint": "U1602:7",
+      "front_pad_mm": [
+        75.3625,
+        155.45
+      ],
+      "instance": "O5",
+      "margin_mm": -43.30641395551129,
+      "net": "OSC_REFN5",
+      "other_endpoint": "U1110:5",
+      "other_pad_mm": [
+        237.9875,
+        81.78
+      ],
+      "pad_separation_lower_bound_mm": 178.53335689724764,
+      "segments": {
+        "DIN_mm": 25,
+        "middle_trace_mm": 240.3742565434973,
+        "rear_trace_mm": 77.93215741201404
+      },
+      "total_mm": 343.3064139555113
+    },
+    {
+      "DIN_pad_mm": [
+        224.54,
+        25.67
+      ],
+      "DIN_signal_pin": "c2",
+      "front_endpoint": "U1602:7",
+      "front_pad_mm": [
+        75.3625,
+        155.45
+      ],
+      "instance": "O5",
+      "margin_mm": -44.538492496785125,
+      "net": "OSC_REFN5",
+      "other_endpoint": "U1110:12",
+      "other_pad_mm": [
+        243.7125,
+        80.47999999999999
+      ],
+      "pad_separation_lower_bound_mm": 184.28842448726942,
+      "segments": {
+        "DIN_mm": 25,
+        "middle_trace_mm": 240.3742565434973,
+        "rear_trace_mm": 79.16423595328789
+      },
+      "total_mm": 344.5384924967851
+    },
+    {
+      "DIN_pad_mm": [
+        224.54,
+        25.67
+      ],
+      "DIN_signal_pin": "c2",
+      "front_endpoint": "U1602:7",
+      "front_pad_mm": [
+        75.3625,
+        155.45
+      ],
+      "instance": "O5",
+      "margin_mm": -46.566667478792965,
+      "net": "OSC_REFN5",
+      "other_endpoint": "U1111:5",
+      "other_pad_mm": [
+        282.8875,
+        10.780000000000001
+      ],
+      "pad_separation_lower_bound_mm": 252.9743752339355,
+      "segments": {
+        "DIN_mm": 25,
+        "middle_trace_mm": 240.3742565434973,
+        "rear_trace_mm": 81.19241093529568
+      },
+      "total_mm": 346.56666747879297
+    },
+    {
+      "DIN_pad_mm": null,
+      "capacitance_pF": null,
+      "front_endpoint": "SW101:2",
+      "front_header_pad_mm": [
+        21.75,
+        187.0
+      ],
+      "front_pad_mm": [
+        17.0,
+        194.15
+      ],
+      "instance": "O1",
+      "link": "K-O1-1",
+      "link_pin": "3",
+      "margin_mm": 141.1306571558858,
+      "middle_header_pad_mm": [
+        28.25,
+        170
+      ],
+      "net": "OSC_OCT0",
+      "nominal_interface_geometric_comparison_mm": 142.716071993656,
+      "other_endpoint": "U1602:14",
+      "other_pad_mm": [
+        69.6375,
+        151.55
+      ],
+      "pad_separation_lower_bound_mm": 67.71607199365599,
+      "segments": {
+        "DIN_mm": 0,
+        "GH_pair_mm": 15,
+        "front_trace_mm": 17.485141584463037,
+        "middle_trace_mm": 63.38420125965114,
+        "rear_trace_mm": 0,
+        "wire_max_mm": 63
+      },
+      "total_mm": 158.8693428441142
+    },
+    {
+      "DIN_pad_mm": null,
+      "capacitance_pF": null,
+      "front_endpoint": "SW101:3",
+      "front_header_pad_mm": [
+        24.25,
+        187.0
+      ],
+      "front_pad_mm": [
+        14.5,
+        194.15
+      ],
+      "instance": "O1",
+      "link": "K-O1-1",
+      "link_pin": "5",
+      "margin_mm": 124.4424313449972,
+      "middle_header_pad_mm": [
+        25.75,
+        170
+      ],
+      "net": "OSC_OCT1",
+      "nominal_interface_geometric_comparison_mm": 153.1988101332111,
+      "other_endpoint": "U1603:1",
+      "other_pad_mm": [
+        75.3625,
+        145.05
+      ],
+      "pad_separation_lower_bound_mm": 78.1988101332111,
+      "segments": {
+        "DIN_mm": 0,
+        "GH_pair_mm": 15,
+        "front_trace_mm": 21.618371016612777,
+        "middle_trace_mm": 75.93919763839001,
+        "rear_trace_mm": 0,
+        "wire_max_mm": 63
+      },
+      "total_mm": 175.5575686550028
+    },
+    {
+      "DIN_pad_mm": null,
+      "capacitance_pF": null,
+      "front_endpoint": "SW101:4",
+      "front_header_pad_mm": [
+        26.75,
+        187.0
+      ],
+      "front_pad_mm": [
+        12.0,
+        194.15
+      ],
+      "instance": "O1",
+      "link": "K-O1-1",
+      "link_pin": "7",
+      "margin_mm": 117.67517917224052,
+      "middle_header_pad_mm": [
+        23.25,
+        170
+      ],
+      "net": "OSC_OCT2",
+      "nominal_interface_geometric_comparison_mm": 152.83216819702506,
+      "other_endpoint": "U1603:7",
+      "other_pad_mm": [
+        75.3625,
+        148.95
+      ],
+      "pad_separation_lower_bound_mm": 77.83216819702507,
+      "segments": {
+        "DIN_mm": 0,
+        "GH_pair_mm": 15,
+        "front_trace_mm": 27.368371016612777,
+        "middle_trace_mm": 76.9564498111467,
+        "rear_trace_mm": 0,
+        "wire_max_mm": 63
+      },
+      "total_mm": 182.32482082775948
+    },
+    {
+      "DIN_pad_mm": null,
+      "capacitance_pF": null,
+      "front_endpoint": "SW101:5",
+      "front_header_pad_mm": [
+        15.0,
+        181.25
+      ],
+      "front_pad_mm": [
+        9.5,
+        194.15
+      ],
+      "instance": "O1",
+      "link": "K-O1-2",
+      "link_pin": "1",
+      "margin_mm": 128.6522154559076,
+      "middle_header_pad_mm": [
+        30.75,
+        185
+      ],
+      "net": "OSC_OCT3",
+      "nominal_interface_geometric_comparison_mm": 150.23003991923707,
+      "other_endpoint": "U1603:8",
+      "other_pad_mm": [
+        69.6375,
+        148.95
+      ],
+      "pad_separation_lower_bound_mm": 75.23003991923706,
+      "segments": {
+        "DIN_mm": 0,
+        "GH_pair_mm": 15,
+        "front_trace_mm": 24.454900782009833,
+        "middle_trace_mm": 68.89288376208259,
+        "rear_trace_mm": 0,
+        "wire_max_mm": 63
+      },
+      "total_mm": 171.3477845440924
+    },
+    {
+      "DIN_pad_mm": null,
+      "capacitance_pF": null,
+      "front_endpoint": "SW101:6",
+      "front_header_pad_mm": [
+        15.0,
+        183.75
+      ],
+      "front_pad_mm": [
+        9.5,
+        175.85
+      ],
+      "instance": "O1",
+      "link": "K-O1-2",
+      "link_pin": "3",
+      "margin_mm": 129.66946762866428,
+      "middle_header_pad_mm": [
+        28.25,
+        185
+      ],
+      "net": "OSC_OCT4",
+      "nominal_interface_geometric_comparison_mm": 142.56595967090232,
+      "other_endpoint": "U1603:14",
+      "other_pad_mm": [
+        69.6375,
+        145.05
+      ],
+      "pad_separation_lower_bound_mm": 67.56595967090233,
+      "segments": {
+        "DIN_mm": 0,
+        "GH_pair_mm": 15,
+        "front_trace_mm": 18.704900782009833,
+        "middle_trace_mm": 73.6256315893259,
+        "rear_trace_mm": 0,
+        "wire_max_mm": 63
+      },
+      "total_mm": 170.33053237133572
+    },
+    {
+      "DIN_pad_mm": null,
+      "capacitance_pF": null,
+      "front_endpoint": "SW101:7",
+      "front_header_pad_mm": [
+        15.0,
+        186.25
+      ],
+      "front_pad_mm": [
+        12.0,
+        175.85
+      ],
+      "instance": "O1",
+      "link": "K-O1-2",
+      "link_pin": "5",
+      "margin_mm": 124.71907437796466,
+      "middle_header_pad_mm": [
+        25.75,
+        185
+      ],
+      "net": "OSC_OCT5",
+      "nominal_interface_geometric_comparison_mm": 140.81524448218664,
+      "other_endpoint": "U1604:1",
+      "other_pad_mm": [
+        75.3625,
+        158.05
+      ],
+      "pad_separation_lower_bound_mm": 65.81524448218664,
+      "segments": {
+        "DIN_mm": 0,
+        "GH_pair_mm": 15,
+        "front_trace_mm": 20.389036790187184,
+        "middle_trace_mm": 76.89188883184814,
+        "rear_trace_mm": 0,
+        "wire_max_mm": 63
+      },
+      "total_mm": 175.28092562203534
+    },
+    {
+      "DIN_pad_mm": null,
+      "capacitance_pF": null,
+      "front_endpoint": "SW101:2",
+      "front_header_pad_mm": [
+        24.25,
+        183.0
+      ],
+      "front_pad_mm": [
+        29.0,
+        175.85
+      ],
+      "instance": "O2",
+      "link": "K-O1-1",
+      "link_pin": "3",
+      "margin_mm": 160.68065715588583,
+      "middle_header_pad_mm": [
+        45.25,
+        170
+      ],
+      "net": "OSC_OCT0",
+      "nominal_interface_geometric_comparison_mm": 122.34866847388636,
+      "other_endpoint": "U1602:14",
+      "other_pad_mm": [
+        69.6375,
+        151.55
+      ],
+      "pad_separation_lower_bound_mm": 47.348668473886356,
+      "segments": {
+        "DIN_mm": 0,
+        "GH_pair_mm": 15,
+        "front_trace_mm": 17.485141584463037,
+        "middle_trace_mm": 43.834201259651145,
+        "rear_trace_mm": 0,
+        "wire_max_mm": 63
+      },
+      "total_mm": 139.31934284411417
+    },
+    {
+      "DIN_pad_mm": null,
+      "capacitance_pF": null,
+      "front_endpoint": "SW101:3",
+      "front_header_pad_mm": [
+        21.75,
+        183.0
+      ],
+      "front_pad_mm": [
+        31.5,
+        175.85
+      ],
+      "instance": "O2",
+      "link": "K-O1-1",
+      "link_pin": "5",
+      "margin_mm": 143.99243134499721,
+      "middle_header_pad_mm": [
+        42.75,
+        170
+      ],
+      "net": "OSC_OCT1",
+      "nominal_interface_geometric_comparison_mm": 128.59625832322624,
+      "other_endpoint": "U1603:1",
+      "other_pad_mm": [
+        75.3625,
+        145.05
+      ],
+      "pad_separation_lower_bound_mm": 53.596258323226245,
+      "segments": {
+        "DIN_mm": 0,
+        "GH_pair_mm": 15,
+        "front_trace_mm": 21.618371016612777,
+        "middle_trace_mm": 56.389197638390016,
+        "rear_trace_mm": 0,
+        "wire_max_mm": 63
+      },
+      "total_mm": 156.00756865500279
+    },
+    {
+      "DIN_pad_mm": null,
+      "capacitance_pF": null,
+      "front_endpoint": "SW101:4",
+      "front_header_pad_mm": [
+        19.25,
+        183.0
+      ],
+      "front_pad_mm": [
+        34.0,
+        175.85
+      ],
+      "instance": "O2",
+      "link": "K-O1-1",
+      "link_pin": "7",
+      "margin_mm": 137.22517917224053,
+      "middle_header_pad_mm": [
+        40.25,
+        170
+      ],
+      "net": "OSC_OCT2",
+      "nominal_interface_geometric_comparison_mm": 124.34031218233221,
+      "other_endpoint": "U1603:7",
+      "other_pad_mm": [
+        75.3625,
+        148.95
+      ],
+      "pad_separation_lower_bound_mm": 49.340312182332205,
+      "segments": {
+        "DIN_mm": 0,
+        "GH_pair_mm": 15,
+        "front_trace_mm": 27.368371016612777,
+        "middle_trace_mm": 57.40644981114669,
+        "rear_trace_mm": 0,
+        "wire_max_mm": 63
+      },
+      "total_mm": 162.77482082775947
+    },
+    {
+      "DIN_pad_mm": null,
+      "capacitance_pF": null,
+      "front_endpoint": "SW101:5",
+      "front_header_pad_mm": [
+        31.0,
+        188.75
+      ],
+      "front_pad_mm": [
+        36.5,
+        175.85
+      ],
+      "instance": "O2",
+      "link": "K-O1-2",
+      "link_pin": "1",
+      "margin_mm": 138.66158496958286,
+      "middle_header_pad_mm": [
+        47.75,
+        185
+      ],
+      "net": "OSC_OCT3",
+      "nominal_interface_geometric_comparison_mm": 117.68142343280037,
+      "other_endpoint": "U1603:8",
+      "other_pad_mm": [
+        69.6375,
+        148.95
+      ],
+      "pad_separation_lower_bound_mm": 42.68142343280037,
+      "segments": {
+        "DIN_mm": 0,
+        "GH_pair_mm": 15,
+        "front_trace_mm": 24.454900782009833,
+        "middle_trace_mm": 58.883514248407295,
+        "rear_trace_mm": 0,
+        "wire_max_mm": 63
+      },
+      "total_mm": 161.33841503041714
+    },
+    {
+      "DIN_pad_mm": null,
+      "capacitance_pF": null,
+      "front_endpoint": "SW101:6",
+      "front_header_pad_mm": [
+        31.0,
+        186.25
+      ],
+      "front_pad_mm": [
+        36.5,
+        194.15
+      ],
+      "instance": "O2",
+      "link": "K-O1-2",
+      "link_pin": "3",
+      "margin_mm": 138.73572097776025,
+      "middle_header_pad_mm": [
+        45.25,
+        185
+      ],
+      "net": "OSC_OCT4",
+      "nominal_interface_geometric_comparison_mm": 134.23600177468091,
+      "other_endpoint": "U1603:14",
+      "other_pad_mm": [
+        69.6375,
+        145.05
+      ],
+      "pad_separation_lower_bound_mm": 59.23600177468091,
+      "segments": {
+        "DIN_mm": 0,
+        "GH_pair_mm": 15,
+        "front_trace_mm": 18.704900782009833,
+        "middle_trace_mm": 64.55937824022992,
+        "rear_trace_mm": 0,
+        "wire_max_mm": 63
+      },
+      "total_mm": 161.26427902223975
+    },
+    {
+      "DIN_pad_mm": null,
+      "capacitance_pF": null,
+      "front_endpoint": "SW101:7",
+      "front_header_pad_mm": [
+        31.0,
+        183.75
+      ],
+      "front_pad_mm": [
+        34.0,
+        194.15
+      ],
+      "instance": "O2",
+      "link": "K-O1-2",
+      "link_pin": "5",
+      "margin_mm": 144.26907437796467,
+      "middle_header_pad_mm": [
+        42.75,
+        185
+      ],
+      "net": "OSC_OCT5",
+      "nominal_interface_geometric_comparison_mm": 129.90051371572036,
+      "other_endpoint": "U1604:1",
+      "other_pad_mm": [
+        75.3625,
+        158.05
+      ],
+      "pad_separation_lower_bound_mm": 54.90051371572036,
+      "segments": {
+        "DIN_mm": 0,
+        "GH_pair_mm": 15,
+        "front_trace_mm": 20.389036790187184,
+        "middle_trace_mm": 57.34188883184814,
+        "rear_trace_mm": 0,
+        "wire_max_mm": 63
+      },
+      "total_mm": 155.73092562203533
+    },
+    {
+      "DIN_pad_mm": null,
+      "capacitance_pF": null,
+      "front_endpoint": "SW101:2",
+      "front_header_pad_mm": [
+        55.75,
+        187.0
+      ],
+      "front_pad_mm": [
+        51.0,
+        194.15
+      ],
+      "instance": "O3",
+      "link": "K-O1-1",
+      "link_pin": "3",
+      "margin_mm": 172.77835531970106,
+      "middle_header_pad_mm": [
+        62.25,
+        170
+      ],
+      "net": "OSC_OCT0",
+      "nominal_interface_geometric_comparison_mm": 121.49856348587556,
+      "other_endpoint": "U1602:14",
+      "other_pad_mm": [
+        69.6375,
+        151.55
+      ],
+      "pad_separation_lower_bound_mm": 46.49856348587556,
+      "segments": {
+        "DIN_mm": 0,
+        "GH_pair_mm": 15,
+        "front_trace_mm": 17.485141584463037,
+        "middle_trace_mm": 31.73650309583591,
+        "rear_trace_mm": 0,
+        "wire_max_mm": 63
+      },
+      "total_mm": 127.22164468029895
+    },
+    {
+      "DIN_pad_mm": null,
+      "capacitance_pF": null,
+      "front_endpoint": "SW101:3",
+      "front_header_pad_mm": [
+        58.25,
+        187.0
+      ],
+      "front_pad_mm": [
+        48.5,
+        194.15
+      ],
+      "instance": "O3",
+      "link": "K-O1-1",
+      "link_pin": "5",
+      "margin_mm": 157.25218335445481,
+      "middle_header_pad_mm": [
+        59.75,
+        170
+      ],
+      "net": "OSC_OCT1",
+      "nominal_interface_geometric_comparison_mm": 130.9678828101439,
+      "other_endpoint": "U1603:1",
+      "other_pad_mm": [
+        75.3625,
+        145.05
+      ],
+      "pad_separation_lower_bound_mm": 55.967882810143884,
+      "segments": {
+        "DIN_mm": 0,
+        "GH_pair_mm": 15,
+        "front_trace_mm": 21.618371016612777,
+        "middle_trace_mm": 43.12944562893242,
+        "rear_trace_mm": 0,
+        "wire_max_mm": 63
+      },
+      "total_mm": 142.74781664554519
+    },
+    {
+      "DIN_pad_mm": null,
+      "capacitance_pF": null,
+      "front_endpoint": "SW101:4",
+      "front_header_pad_mm": [
+        60.75,
+        187.0
+      ],
+      "front_pad_mm": [
+        46.0,
+        194.15
+      ],
+      "instance": "O3",
+      "link": "K-O1-1",
+      "link_pin": "7",
+      "margin_mm": 154.79631936263212,
+      "middle_header_pad_mm": [
+        57.25,
+        170
+      ],
+      "net": "OSC_OCT2",
+      "nominal_interface_geometric_comparison_mm": 128.8998738982755,
+      "other_endpoint": "U1603:7",
+      "other_pad_mm": [
+        75.3625,
+        148.95
+      ],
+      "pad_separation_lower_bound_mm": 53.89987389827551,
+      "segments": {
+        "DIN_mm": 0,
+        "GH_pair_mm": 15,
+        "front_trace_mm": 27.368371016612777,
+        "middle_trace_mm": 39.8353096207551,
+        "rear_trace_mm": 0,
+        "wire_max_mm": 63
+      },
+      "total_mm": 145.20368063736788
+    },
+    {
+      "DIN_pad_mm": null,
+      "capacitance_pF": null,
+      "front_endpoint": "SW101:5",
+      "front_header_pad_mm": [
+        49.0,
+        181.25
+      ],
+      "front_pad_mm": [
+        43.5,
+        194.15
+      ],
+      "instance": "O3",
+      "link": "K-O1-2",
+      "link_pin": "1",
+      "margin_mm": 146.7594601139769,
+      "middle_header_pad_mm": [
+        64.75,
+        185
+      ],
+      "net": "OSC_OCT3",
+      "nominal_interface_geometric_comparison_mm": 127.21311048242579,
+      "other_endpoint": "U1603:8",
+      "other_pad_mm": [
+        69.6375,
+        148.95
+      ],
+      "pad_separation_lower_bound_mm": 52.21311048242579,
+      "segments": {
+        "DIN_mm": 0,
+        "GH_pair_mm": 15,
+        "front_trace_mm": 24.454900782009833,
+        "middle_trace_mm": 50.785639104013285,
+        "rear_trace_mm": 0,
+        "wire_max_mm": 63
+      },
+      "total_mm": 153.2405398860231
+    },
+    {
+      "DIN_pad_mm": null,
+      "capacitance_pF": null,
+      "front_endpoint": "SW101:6",
+      "front_header_pad_mm": [
+        49.0,
+        183.75
+      ],
+      "front_pad_mm": [
+        43.5,
+        175.85
+      ],
+      "instance": "O3",
+      "link": "K-O1-2",
+      "link_pin": "3",
+      "margin_mm": 146.83359612215426,
+      "middle_header_pad_mm": [
+        62.25,
+        185
+      ],
+      "net": "OSC_OCT4",
+      "nominal_interface_geometric_comparison_mm": 115.3956545466217,
+      "other_endpoint": "U1603:14",
+      "other_pad_mm": [
+        69.6375,
+        145.05
+      ],
+      "pad_separation_lower_bound_mm": 40.39565454662171,
+      "segments": {
+        "DIN_mm": 0,
+        "GH_pair_mm": 15,
+        "front_trace_mm": 18.704900782009833,
+        "middle_trace_mm": 56.46150309583591,
+        "rear_trace_mm": 0,
+        "wire_max_mm": 63
+      },
+      "total_mm": 153.16640387784574
+    },
+    {
+      "DIN_pad_mm": null,
+      "capacitance_pF": null,
+      "front_endpoint": "SW101:7",
+      "front_header_pad_mm": [
+        49.0,
+        186.25
+      ],
+      "front_pad_mm": [
+        46.0,
+        175.85
+      ],
+      "instance": "O3",
+      "link": "K-O1-2",
+      "link_pin": "5",
+      "margin_mm": 156.18151758088038,
+      "middle_header_pad_mm": [
+        59.75,
+        185
+      ],
+      "net": "OSC_OCT5",
+      "nominal_interface_geometric_comparison_mm": 109.33651709550634,
+      "other_endpoint": "U1604:1",
+      "other_pad_mm": [
+        75.3625,
+        158.05
+      ],
+      "pad_separation_lower_bound_mm": 34.33651709550634,
+      "segments": {
+        "DIN_mm": 0,
+        "GH_pair_mm": 15,
+        "front_trace_mm": 20.389036790187184,
+        "middle_trace_mm": 45.42944562893242,
+        "rear_trace_mm": 0,
+        "wire_max_mm": 63
+      },
+      "total_mm": 143.81848241911962
+    },
+    {
+      "DIN_pad_mm": null,
+      "capacitance_pF": null,
+      "front_endpoint": "SW101:2",
+      "front_header_pad_mm": [
+        58.25,
+        183.0
+      ],
+      "front_pad_mm": [
+        63.0,
+        175.85
+      ],
+      "instance": "O4",
+      "link": "K-O1-1",
+      "link_pin": "3",
+      "margin_mm": 171.71848636697888,
+      "middle_header_pad_mm": [
+        79.25,
+        170
+      ],
+      "net": "OSC_OCT0",
+      "nominal_interface_geometric_comparison_mm": 100.19020456943531,
+      "other_endpoint": "U1602:14",
+      "other_pad_mm": [
+        69.6375,
+        151.55
+      ],
+      "pad_separation_lower_bound_mm": 25.190204569435302,
+      "segments": {
+        "DIN_mm": 0,
+        "GH_pair_mm": 15,
+        "front_trace_mm": 17.485141584463037,
+        "middle_trace_mm": 32.79637204855807,
+        "rear_trace_mm": 0,
+        "wire_max_mm": 63
+      },
+      "total_mm": 128.28151363302112
+    },
+    {
+      "DIN_pad_mm": null,
+      "capacitance_pF": null,
+      "front_endpoint": "SW101:3",
+      "front_header_pad_mm": [
+        55.75,
+        183.0
+      ],
+      "front_pad_mm": [
+        65.5,
+        175.85
+      ],
+      "instance": "O4",
+      "link": "K-O1-1",
+      "link_pin": "5",
+      "margin_mm": 164.02819946792567,
+      "middle_header_pad_mm": [
+        76.75,
+        170
+      ],
+      "net": "OSC_OCT1",
+      "nominal_interface_geometric_comparison_mm": 107.34051493483057,
+      "other_endpoint": "U1603:1",
+      "other_pad_mm": [
+        75.3625,
+        145.05
+      ],
+      "pad_separation_lower_bound_mm": 32.340514934830566,
+      "segments": {
+        "DIN_mm": 0,
+        "GH_pair_mm": 15,
+        "front_trace_mm": 21.618371016612777,
+        "middle_trace_mm": 36.353429515461556,
+        "rear_trace_mm": 0,
+        "wire_max_mm": 63
+      },
+      "total_mm": 135.97180053207433
+    },
+    {
+      "DIN_pad_mm": null,
+      "capacitance_pF": null,
+      "front_endpoint": "SW101:4",
+      "front_header_pad_mm": [
+        53.25,
+        183.0
+      ],
+      "front_pad_mm": [
+        68.0,
+        175.85
+      ],
+      "instance": "O4",
+      "link": "K-O1-1",
+      "link_pin": "7",
+      "margin_mm": 162.89419450702613,
+      "middle_header_pad_mm": [
+        74.25,
+        170
+      ],
+      "net": "OSC_OCT2",
+      "nominal_interface_geometric_comparison_mm": 102.88936009036422,
+      "other_endpoint": "U1603:7",
+      "other_pad_mm": [
+        75.3625,
+        148.95
+      ],
+      "pad_separation_lower_bound_mm": 27.889360090364214,
+      "segments": {
+        "DIN_mm": 0,
+        "GH_pair_mm": 15,
+        "front_trace_mm": 27.368371016612777,
+        "middle_trace_mm": 31.73743447636109,
+        "rear_trace_mm": 0,
+        "wire_max_mm": 63
+      },
+      "total_mm": 137.10580549297387
+    },
+    {
+      "DIN_pad_mm": null,
+      "capacitance_pF": null,
+      "front_endpoint": "SW101:5",
+      "front_header_pad_mm": [
+        65.0,
+        188.75
+      ],
+      "front_pad_mm": [
+        70.5,
+        175.85
+      ],
+      "instance": "O4",
+      "link": "K-O1-2",
+      "link_pin": "1",
+      "margin_mm": 143.3178631776094,
+      "middle_header_pad_mm": [
+        81.75,
+        185
+      ],
+      "net": "OSC_OCT3",
+      "nominal_interface_geometric_comparison_mm": 101.91382370177081,
+      "other_endpoint": "U1603:8",
+      "other_pad_mm": [
+        69.6375,
+        148.95
+      ],
+      "pad_separation_lower_bound_mm": 26.913823701770813,
+      "segments": {
+        "DIN_mm": 0,
+        "GH_pair_mm": 15,
+        "front_trace_mm": 24.454900782009833,
+        "middle_trace_mm": 54.227236040380745,
+        "rear_trace_mm": 0,
+        "wire_max_mm": 63
+      },
+      "total_mm": 156.6821368223906
+    },
+    {
+      "DIN_pad_mm": null,
+      "capacitance_pF": null,
+      "front_endpoint": "SW101:6",
+      "front_header_pad_mm": [
+        65.0,
+        186.25
+      ],
+      "front_pad_mm": [
+        70.5,
+        194.15
+      ],
+      "instance": "O4",
+      "link": "K-O1-2",
+      "link_pin": "3",
+      "margin_mm": 145.7737271694321,
+      "middle_header_pad_mm": [
+        79.25,
+        185
+      ],
+      "net": "OSC_OCT4",
+      "nominal_interface_geometric_comparison_mm": 124.10757483576235,
+      "other_endpoint": "U1603:14",
+      "other_pad_mm": [
+        69.6375,
+        145.05
+      ],
+      "pad_separation_lower_bound_mm": 49.10757483576235,
+      "segments": {
+        "DIN_mm": 0,
+        "GH_pair_mm": 15,
+        "front_trace_mm": 18.704900782009833,
+        "middle_trace_mm": 57.52137204855807,
+        "rear_trace_mm": 0,
+        "wire_max_mm": 63
+      },
+      "total_mm": 154.2262728305679
+    },
+    {
+      "DIN_pad_mm": null,
+      "capacitance_pF": null,
+      "front_endpoint": "SW101:7",
+      "front_header_pad_mm": [
+        65.0,
+        183.75
+      ],
+      "front_pad_mm": [
+        68.0,
+        194.15
+      ],
+      "instance": "O4",
+      "link": "K-O1-2",
+      "link_pin": "5",
+      "margin_mm": 162.95753369435124,
+      "middle_header_pad_mm": [
+        76.75,
+        185
+      ],
+      "net": "OSC_OCT5",
+      "nominal_interface_geometric_comparison_mm": 111.84313241636764,
+      "other_endpoint": "U1604:1",
+      "other_pad_mm": [
+        75.3625,
+        158.05
+      ],
+      "pad_separation_lower_bound_mm": 36.84313241636763,
+      "segments": {
+        "DIN_mm": 0,
+        "GH_pair_mm": 15,
+        "front_trace_mm": 20.389036790187184,
+        "middle_trace_mm": 38.65342951546155,
+        "rear_trace_mm": 0,
+        "wire_max_mm": 63
+      },
+      "total_mm": 137.04246630564876
+    },
+    {
+      "DIN_pad_mm": null,
+      "capacitance_pF": null,
+      "front_endpoint": "SW101:2",
+      "front_header_pad_mm": [
+        89.75,
+        187.0
+      ],
+      "front_pad_mm": [
+        85.0,
+        194.15
+      ],
+      "instance": "O5",
+      "link": "K-O1-1",
+      "link_pin": "3",
+      "margin_mm": 158.12190715588582,
+      "middle_header_pad_mm": [
+        96.25,
+        170
+      ],
+      "net": "OSC_OCT0",
+      "nominal_interface_geometric_comparison_mm": 120.28538844097508,
+      "other_endpoint": "U1602:14",
+      "other_pad_mm": [
+        69.6375,
+        151.55
+      ],
+      "pad_separation_lower_bound_mm": 45.28538844097508,
+      "segments": {
+        "DIN_mm": 0,
+        "GH_pair_mm": 15,
+        "front_trace_mm": 17.485141584463037,
+        "middle_trace_mm": 46.392951259651134,
+        "rear_trace_mm": 0,
+        "wire_max_mm": 63
+      },
+      "total_mm": 141.87809284411418
+    },
+    {
+      "DIN_pad_mm": null,
+      "capacitance_pF": null,
+      "front_endpoint": "SW101:3",
+      "front_header_pad_mm": [
+        92.25,
+        187.0
+      ],
+      "front_pad_mm": [
+        82.5,
+        194.15
+      ],
+      "instance": "O5",
+      "link": "K-O1-1",
+      "link_pin": "5",
+      "margin_mm": 155.93032432353166,
+      "middle_header_pad_mm": [
+        93.75,
+        170
+      ],
+      "net": "OSC_OCT1",
+      "nominal_interface_geometric_comparison_mm": 124.61606500167056,
+      "other_endpoint": "U1603:1",
+      "other_pad_mm": [
+        75.3625,
+        145.05
+      ],
+      "pad_separation_lower_bound_mm": 49.61606500167057,
+      "segments": {
+        "DIN_mm": 0,
+        "GH_pair_mm": 15,
+        "front_trace_mm": 21.618371016612777,
+        "middle_trace_mm": 44.451304659855566,
+        "rear_trace_mm": 0,
+        "wire_max_mm": 63
+      },
+      "total_mm": 144.06967567646834
+    },
+    {
+      "DIN_pad_mm": null,
+      "capacitance_pF": null,
+      "front_endpoint": "SW101:4",
+      "front_header_pad_mm": [
+        94.75,
+        187.0
+      ],
+      "front_pad_mm": [
+        80.0,
+        194.15
+      ],
+      "instance": "O5",
+      "link": "K-O1-1",
+      "link_pin": "7",
+      "margin_mm": 155.8561883153543,
+      "middle_header_pad_mm": [
+        91.25,
+        170
+      ],
+      "net": "OSC_OCT2",
+      "nominal_interface_geometric_comparison_mm": 120.43727991693606,
+      "other_endpoint": "U1603:7",
+      "other_pad_mm": [
+        75.3625,
+        148.95
+      ],
+      "pad_separation_lower_bound_mm": 45.43727991693606,
+      "segments": {
+        "DIN_mm": 0,
+        "GH_pair_mm": 15,
+        "front_trace_mm": 27.368371016612777,
+        "middle_trace_mm": 38.77544066803294,
+        "rear_trace_mm": 0,
+        "wire_max_mm": 63
+      },
+      "total_mm": 144.1438116846457
+    },
+    {
+      "DIN_pad_mm": null,
+      "capacitance_pF": null,
+      "front_endpoint": "SW101:5",
+      "front_header_pad_mm": [
+        83.0,
+        181.25
+      ],
+      "front_pad_mm": [
+        77.5,
+        194.15
+      ],
+      "instance": "O5",
+      "link": "K-O1-2",
+      "link_pin": "1",
+      "margin_mm": 135.21998803321543,
+      "middle_header_pad_mm": [
+        98.75,
+        185
+      ],
+      "net": "OSC_OCT3",
+      "nominal_interface_geometric_comparison_mm": 120.87874133245158,
+      "other_endpoint": "U1603:8",
+      "other_pad_mm": [
+        69.6375,
+        148.95
+      ],
+      "pad_separation_lower_bound_mm": 45.87874133245158,
+      "segments": {
+        "DIN_mm": 0,
+        "GH_pair_mm": 15,
+        "front_trace_mm": 24.454900782009833,
+        "middle_trace_mm": 62.325111184774755,
+        "rear_trace_mm": 0,
+        "wire_max_mm": 63
+      },
+      "total_mm": 164.78001196678457
+    },
+    {
+      "DIN_pad_mm": null,
+      "capacitance_pF": null,
+      "front_endpoint": "SW101:6",
+      "front_header_pad_mm": [
+        83.0,
+        183.75
+      ],
+      "front_pad_mm": [
+        77.5,
+        175.85
+      ],
+      "instance": "O5",
+      "link": "K-O1-2",
+      "link_pin": "3",
+      "margin_mm": 137.67585202503813,
+      "middle_header_pad_mm": [
+        96.25,
+        185
+      ],
+      "net": "OSC_OCT4",
+      "nominal_interface_geometric_comparison_mm": 106.78771627924849,
+      "other_endpoint": "U1603:14",
+      "other_pad_mm": [
+        69.6375,
+        145.05
+      ],
+      "pad_separation_lower_bound_mm": 31.78771627924848,
+      "segments": {
+        "DIN_mm": 0,
+        "GH_pair_mm": 15,
+        "front_trace_mm": 18.704900782009833,
+        "middle_trace_mm": 65.61924719295206,
+        "rear_trace_mm": 0,
+        "wire_max_mm": 63
+      },
+      "total_mm": 162.32414797496187
+    },
+    {
+      "DIN_pad_mm": null,
+      "capacitance_pF": null,
+      "front_endpoint": "SW101:7",
+      "front_header_pad_mm": [
+        83.0,
+        186.25
+      ],
+      "front_pad_mm": [
+        80.0,
+        175.85
+      ],
+      "instance": "O5",
+      "link": "K-O1-2",
+      "link_pin": "5",
+      "margin_mm": 154.85965854995723,
+      "middle_header_pad_mm": [
+        93.75,
+        185
+      ],
+      "net": "OSC_OCT5",
+      "nominal_interface_geometric_comparison_mm": 93.39419490627408,
+      "other_endpoint": "U1604:1",
+      "other_pad_mm": [
+        75.3625,
+        158.05
+      ],
+      "pad_separation_lower_bound_mm": 18.394194906274084,
+      "segments": {
+        "DIN_mm": 0,
+        "GH_pair_mm": 15,
+        "front_trace_mm": 20.389036790187184,
+        "middle_trace_mm": 46.75130465985557,
+        "rear_trace_mm": 0,
+        "wire_max_mm": 63
+      },
+      "total_mm": 145.14034145004277
+    }
+  ],
+  "search_counts": {
+    "enumerated": 3840,
+    "lower_bound_pruned": 3839,
+    "matching_pruned": 0,
+    "optimized": 1
+  },
+  "source_sha256": {
+    "design/architecture-278/implementation/assembly-report.json": "2d8f9cbb7316011c8885fe46c1e2a785a7afb07f8ec4efdb5630bde124c498b0",
+    "design/architecture-278/implementation/compact-rear.json": "54f3763d49e9712e9a51f553ff1e15b4c8e7814d6cd9c80f6f28e46b72299bb2",
+    "scripts/architecture278/implementation/assembly.py": "7d453aea98dabe67640c40c381011b0cd4327d5c28141f141bcf513c927c4c39",
+    "scripts/architecture278/implementation/candidate.py": "30b2d5f80343914ee30a2bc1829d55c509b4560cf5100bdeb1b5da1e232617a8",
+    "scripts/architecture278/implementation/placement_search.py": "e514016fbdfde05f070401fddbd8f2f7e10a746d27aba77920fcef7a0090a852",
+    "scripts/architecture278/populated_mechanics.py": "5ad7478ec90e186c9ced30b8d19e4425a1ca8b1266582092ce10a3c47f720f5f"
+  },
+  "status": "FINITE SOURCE ALLOCATION FAMILY SEARCH; Stage1 OPEN; native/physical NOT RUN",
+  "unchanged_octave_maximum_mm": 182.32482082775948,
+  "unchanged_octave_path_count": 30
+}

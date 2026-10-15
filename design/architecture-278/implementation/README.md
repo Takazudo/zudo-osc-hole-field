@@ -1,5 +1,7 @@
 # O1 candidate source checkpoint — Stage 1 remains OPEN
 
+**Current assembly result:** [STAGE2.md](STAGE2.md) supersedes the earlier scalar path-feasibility result. All249 physical packages are now placed in the source model; compact103×115mm rear cards fit the five original courtyard envelopes, but the recalculated pair maximum is355.814mm and the five-card maximum488.311mm. The fixed-slot/half-turn search cannot improve the latter. Stage1 remains OPEN. The sections below document the preserved first checkpoint, not a current complete-assembly acceptance.
+
 This isolated implementation branch starts at PR285 `d218fc537818dcbbd470eb15d192cfc8d0be5f0a`. The owner authorized the one-zone candidate source stage; that approval is not native exact-run admission, architecture adoption or hardware authority. KEEP_K1402_INCUMBENT. PR285 evidence and canonical sources remain byte-identical.
 
 ## Implemented source result
