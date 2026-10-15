@@ -1,0 +1,1286 @@
+{
+  "RV1308_conclusion": "B103 persists from earlier handoff/placement metadata; later electrical standard explicitly assigns100k pot_104 and captured OFFSET circuit follows it. Preserve capturedB104 and fixedXY; propose future metadata reconciliation only, not an inferred new owner decision.",
+  "RV1308_history": [
+    {
+      "blob_sha256": "63a521669119f6696af631983a5e5a6259a73542fbc50bd669f9960d67892029",
+      "commit": "ad49129533141b352cae00896afa532c00eb9d7f",
+      "excerpt": "EXPECTED_POT_COMPONENTS = {\n    \"bourns-ptv09a-4020f-b103\": 99,  # 10 kOhm in the handoff inventory.\n    \"bourns-ptv09a-4020f-b504\": 2,  # 500 kOhm in the handoff inventory.\n}\nEXPECTED_LED_COUNTS = {\"mag\": 92, \"stage\": 12, \"clip\": 10}",
+      "lines": [
+        38,
+        42
+      ],
+      "meaning": "Original placement generator preserves99 B103 handoff controls as mechanical metadata.",
+      "path": "scripts/geometry/build_placements.py",
+      "url": "https://github.com/Takazudo/zudo-osc-hole-field/blob/ad49129533141b352cae00896afa532c00eb9d7f/scripts/geometry/build_placements.py#L38"
+    },
+    {
+      "blob_sha256": "abf54040c07322e8915798760e9a2d0cc99dd72c653aab366a731b7cbdc3911f",
+      "commit": "f0c8eaa0d16a0ab59427bef8d2e2fb5f9cf9c336",
+      "excerpt": "    {\n      \"panel_uid\": \"C:A01.OFFSET\",\n      \"role\": \"dc_control_source\",\n      \"part_id\": \"pot_104\"\n    },",
+      "lines": [
+        2251,
+        2255
+      ],
+      "meaning": "Later electrical standard explicitly assigns C:A01.OFFSET dc_control_source to pot_104.",
+      "path": "design/standard/electrical-standard.json",
+      "url": "https://github.com/Takazudo/zudo-osc-hole-field/blob/f0c8eaa0d16a0ab59427bef8d2e2fb5f9cf9c336/design/standard/electrical-standard.json#L2251"
+    },
+    {
+      "blob_sha256": "e7fd1612c81f052188a6a08c324a165d6d0d25de7876081d68cc5a3daf67ee09",
+      "commit": "80dc577d9735e3fc4b9e29ea5472650bf0343325",
+      "excerpt": "    b.cell('bipolar_attenuverter','IN',\n           {'REMOTE_INPUT':'IN_REMOTE','BUFFERED_INPUT':'IN_BUFFER',\n            'OUT':'ATTEN_OUT','SUM':'ATTEN_SUM'},\n           panel='C:{}.ATTEN',role='precision')\n    b.cell('dc_control_source','OFFSET',\n           {'REF_LOW':'REFN5','REF_HIGH':'REF5','OUT':'MANUAL_OFFSET'},\n           panel='C:{}.OFFSET',role='precision')",
+      "lines": [
+        101,
+        107
+      ],
+      "meaning": "Captured OFFSET family calls dc_control_source for OFFSET, preserving electrical100k intent.",
+      "path": "design/spec/modules/offset.py",
+      "url": "https://github.com/Takazudo/zudo-osc-hole-field/blob/80dc577d9735e3fc4b9e29ea5472650bf0343325/design/spec/modules/offset.py#L101"
+    }
+  ],
+  "candidate_assignments": {
+    "C7102": {
+      "candidate_MPN": "C0603C105K4RACTU",
+      "candidate_ratings": {
+        "ESR_ohm": null,
+        "aging_percent_per_decade_hour": 3,
+        "body_nominal_mm": [
+          1.6,
+          0.8,
+          0.8
+        ],
+        "body_tolerance_mm": [
+          0.15,
+          0.15,
+          0.1
+        ],
+        "brand": "KEMET candidate; exact identifier verified in group specsheet",
+        "candidate_only": true,
+        "dielectric": "X7R",
+        "effective_capacitance_at_bias_F": null,
+        "kind": "C",
+        "manufacturer_document_issuer": "YAGEO Group",
+        "rated_voltage_V": 16,
+        "source_id": "C0603C105K4RACTU",
+        "supplier_order_code": null,
+        "temperature_coefficient": {
+          "condition": "Relative25C,0VDC; not DC-bias effective capacitance",
+          "fraction": 0.15
+        },
+        "temperature_range_C": [
+          -55,
+          125
+        ],
+        "tolerance_fraction": 0.1,
+        "value_SI": 1e-06
+      },
+      "captured_value": "1e-06 F",
+      "component_nominal_tolerance_interval_SI": [
+        9e-07,
+        1.1e-06
+      ],
+      "fit_status": "Existing0603 footprint preserved; package dimensions are evidence, not qualified landpattern/assembly",
+      "footprint": "zudo-osc-hole-field:C0603",
+      "identity_status": "Exact primary-document candidate identified; not adopted or procured",
+      "pins": {
+        "1": "/A01/C534b2a_RAW_5V",
+        "2": "AGND"
+      },
+      "ref": "C7102",
+      "role": "reference_generator:C_OUT",
+      "source_id": "C0603C105K4RACTU"
+    },
+    "C7104": {
+      "candidate_MPN": "C0603C100J5GACTU",
+      "candidate_ratings": {
+        "ESR_ohm": null,
+        "aging_percent_per_decade_hour": 0,
+        "body_nominal_mm": [
+          1.6,
+          0.8,
+          0.8
+        ],
+        "body_tolerance_mm": [
+          0.15,
+          0.15,
+          0.07
+        ],
+        "brand": "KEMET candidate; exact identifier verified in group specsheet",
+        "candidate_only": true,
+        "dielectric": "C0G",
+        "effective_capacitance_at_bias_F": null,
+        "kind": "C",
+        "manufacturer_document_issuer": "YAGEO Group",
+        "rated_voltage_V": 50,
+        "source_id": "C0603C100J5GACTU",
+        "supplier_order_code": null,
+        "temperature_coefficient": {
+          "ppm_per_C": 30
+        },
+        "temperature_range_C": [
+          -55,
+          125
+        ],
+        "tolerance_fraction": 0.05,
+        "value_SI": 1e-11
+      },
+      "captured_value": "1e-11 F",
+      "component_nominal_tolerance_interval_SI": [
+        9.5e-12,
+        1.05e-11
+      ],
+      "fit_status": "Existing0603 footprint preserved; package dimensions are evidence, not qualified landpattern/assembly",
+      "footprint": "zudo-osc-hole-field:C0603",
+      "identity_status": "Exact primary-document candidate identified; not adopted or procured",
+      "pins": {
+        "1": "/A01/ATTEN_OUT",
+        "2": "/A01/ATTEN_SUM"
+      },
+      "ref": "C7104",
+      "role": "bipolar_attenuverter:C_FB",
+      "source_id": "C0603C100J5GACTU"
+    },
+    "C7105": {
+      "candidate_MPN": "C0603C103J5RACTU",
+      "candidate_ratings": {
+        "ESR_ohm": null,
+        "aging_percent_per_decade_hour": 3,
+        "body_nominal_mm": [
+          1.6,
+          0.8,
+          0.8
+        ],
+        "body_tolerance_mm": [
+          0.15,
+          0.15,
+          0.1
+        ],
+        "brand": "KEMET candidate; exact identifier verified in group specsheet",
+        "candidate_only": true,
+        "dielectric": "X7R",
+        "effective_capacitance_at_bias_F": null,
+        "kind": "C",
+        "manufacturer_document_issuer": "YAGEO Group",
+        "rated_voltage_V": 50,
+        "source_id": "C0603C103J5RACTU",
+        "supplier_order_code": null,
+        "temperature_coefficient": {
+          "condition": "Relative25C,0VDC; not DC-bias effective capacitance",
+          "fraction": 0.15
+        },
+        "temperature_range_C": [
+          -55,
+          125
+        ],
+        "tolerance_fraction": 0.05,
+        "value_SI": 1e-08
+      },
+      "captured_value": "1e-08 F",
+      "component_nominal_tolerance_interval_SI": [
+        9.499999999999999e-09,
+        1.0500000000000001e-08
+      ],
+      "fit_status": "Existing0603 footprint preserved; package dimensions are evidence, not qualified landpattern/assembly",
+      "footprint": "zudo-osc-hole-field:C0603",
+      "identity_status": "Exact primary-document candidate identified; not adopted or procured",
+      "pins": {
+        "1": "/A01/C38cac0_W_SENSE",
+        "2": "AGND"
+      },
+      "ref": "C7105",
+      "role": "dc_control_source:C_W",
+      "source_id": "C0603C103J5RACTU"
+    },
+    "R7101": {
+      "candidate_MPN": "RT0603BRD0710KL",
+      "candidate_ratings": {
+        "TCR_ppm_per_C": 25,
+        "body_nominal_mm": [
+          1.6,
+          0.8,
+          0.45
+        ],
+        "body_tolerance_mm": [
+          0.1,
+          0.1,
+          0.1
+        ],
+        "candidate_only": true,
+        "kind": "R",
+        "manufacturer": "YAGEO",
+        "maximum_continuous_voltage_V": 75,
+        "power_W_at_70C": 0.1,
+        "source_id": "RT0603BRD0710KL",
+        "supplier_order_code": null,
+        "temperature_range_C": [
+          -55,
+          155
+        ],
+        "tolerance_fraction": 0.001,
+        "value_SI": 10000
+      },
+      "captured_value": "10000 \u03a9",
+      "component_nominal_tolerance_interval_SI": [
+        9990.0,
+        10009.999999999998
+      ],
+      "conditional_70C_limits": {
+        "formula": "min(75V,sqrt(P70*Rminimum)); not permission to apply this voltage in circuit",
+        "hotter_than_70C_power_W": null,
+        "power_W": 0.1,
+        "resistive_working_voltage_bound_V": 31.606961258558215
+      },
+      "fit_status": "Existing0603 footprint preserved; package dimensions are evidence, not qualified landpattern/assembly",
+      "footprint": "zudo-osc-hole-field:R0603",
+      "identity_status": "Exact primary-document candidate identified; not adopted or procured",
+      "pins": {
+        "1": "/A01/REF5",
+        "2": "/A01/C534b2a_INV"
+      },
+      "ref": "R7101",
+      "role": "reference_generator:R_INV",
+      "source_id": "RT0603BRD0710KL"
+    },
+    "R7102": {
+      "candidate_MPN": "RT0603BRD0710KL",
+      "candidate_ratings": {
+        "TCR_ppm_per_C": 25,
+        "body_nominal_mm": [
+          1.6,
+          0.8,
+          0.45
+        ],
+        "body_tolerance_mm": [
+          0.1,
+          0.1,
+          0.1
+        ],
+        "candidate_only": true,
+        "kind": "R",
+        "manufacturer": "YAGEO",
+        "maximum_continuous_voltage_V": 75,
+        "power_W_at_70C": 0.1,
+        "source_id": "RT0603BRD0710KL",
+        "supplier_order_code": null,
+        "temperature_range_C": [
+          -55,
+          155
+        ],
+        "tolerance_fraction": 0.001,
+        "value_SI": 10000
+      },
+      "captured_value": "10000 \u03a9",
+      "component_nominal_tolerance_interval_SI": [
+        9990.0,
+        10009.999999999998
+      ],
+      "conditional_70C_limits": {
+        "formula": "min(75V,sqrt(P70*Rminimum)); not permission to apply this voltage in circuit",
+        "hotter_than_70C_power_W": null,
+        "power_W": 0.1,
+        "resistive_working_voltage_bound_V": 31.606961258558215
+      },
+      "fit_status": "Existing0603 footprint preserved; package dimensions are evidence, not qualified landpattern/assembly",
+      "footprint": "zudo-osc-hole-field:R0603",
+      "identity_status": "Exact primary-document candidate identified; not adopted or procured",
+      "pins": {
+        "1": "/A01/REFN5",
+        "2": "/A01/C534b2a_INV"
+      },
+      "ref": "R7102",
+      "role": "reference_generator:R_FB",
+      "source_id": "RT0603BRD0710KL"
+    },
+    "R7103": {
+      "candidate_MPN": "RT0603BRD0722KL",
+      "candidate_ratings": {
+        "TCR_ppm_per_C": 25,
+        "body_nominal_mm": [
+          1.6,
+          0.8,
+          0.45
+        ],
+        "body_tolerance_mm": [
+          0.1,
+          0.1,
+          0.1
+        ],
+        "candidate_only": true,
+        "kind": "R",
+        "manufacturer": "YAGEO",
+        "maximum_continuous_voltage_V": 75,
+        "power_W_at_70C": 0.1,
+        "source_id": "RT0603BRD0722KL",
+        "supplier_order_code": null,
+        "temperature_range_C": [
+          -55,
+          155
+        ],
+        "tolerance_fraction": 0.001,
+        "value_SI": 22000
+      },
+      "captured_value": "22000 \u03a9",
+      "component_nominal_tolerance_interval_SI": [
+        21978.0,
+        22021.999999999996
+      ],
+      "conditional_70C_limits": {
+        "formula": "min(75V,sqrt(P70*Rminimum)); not permission to apply this voltage in circuit",
+        "hotter_than_70C_power_W": null,
+        "power_W": 0.1,
+        "resistive_working_voltage_bound_V": 46.88069965348214
+      },
+      "fit_status": "Existing0603 footprint preserved; package dimensions are evidence, not qualified landpattern/assembly",
+      "footprint": "zudo-osc-hole-field:R0603",
+      "identity_status": "Exact primary-document candidate identified; not adopted or procured",
+      "pins": {
+        "1": "/A01/REF5",
+        "2": "/A01/C534b2a_GATE_RAW"
+      },
+      "ref": "R7103",
+      "role": "reference_generator:R_GTOP",
+      "source_id": "RT0603BRD0722KL"
+    },
+    "R7106": {
+      "candidate_MPN": "RT0603BRD071KL",
+      "candidate_ratings": {
+        "TCR_ppm_per_C": 25,
+        "body_nominal_mm": [
+          1.6,
+          0.8,
+          0.45
+        ],
+        "body_tolerance_mm": [
+          0.1,
+          0.1,
+          0.1
+        ],
+        "candidate_only": true,
+        "kind": "R",
+        "manufacturer": "YAGEO",
+        "maximum_continuous_voltage_V": 75,
+        "power_W_at_70C": 0.1,
+        "source_id": "RT0603BRD071KL",
+        "supplier_order_code": null,
+        "temperature_range_C": [
+          -55,
+          155
+        ],
+        "tolerance_fraction": 0.001,
+        "value_SI": 1000
+      },
+      "captured_value": "1000 \u03a9",
+      "component_nominal_tolerance_interval_SI": [
+        999.0,
+        1000.9999999999999
+      ],
+      "conditional_70C_limits": {
+        "formula": "min(75V,sqrt(P70*Rminimum)); not permission to apply this voltage in circuit",
+        "hotter_than_70C_power_W": null,
+        "power_W": 0.1,
+        "resistive_working_voltage_bound_V": 9.99499874937461
+      },
+      "fit_status": "Existing0603 footprint preserved; package dimensions are evidence, not qualified landpattern/assembly",
+      "footprint": "zudo-osc-hole-field:R0603",
+      "identity_status": "Exact primary-document candidate identified; not adopted or procured",
+      "pins": {
+        "1": "+5V",
+        "2": "/A01/C38d00f_ENABLE"
+      },
+      "ref": "R7106",
+      "role": "input_fault_switch:R_DRIVE",
+      "source_id": "RT0603BRD071KL"
+    },
+    "R7108": {
+      "candidate_MPN": "RT0603BRD0710KL",
+      "candidate_ratings": {
+        "TCR_ppm_per_C": 25,
+        "body_nominal_mm": [
+          1.6,
+          0.8,
+          0.45
+        ],
+        "body_tolerance_mm": [
+          0.1,
+          0.1,
+          0.1
+        ],
+        "candidate_only": true,
+        "kind": "R",
+        "manufacturer": "YAGEO",
+        "maximum_continuous_voltage_V": 75,
+        "power_W_at_70C": 0.1,
+        "source_id": "RT0603BRD0710KL",
+        "supplier_order_code": null,
+        "temperature_range_C": [
+          -55,
+          155
+        ],
+        "tolerance_fraction": 0.001,
+        "value_SI": 10000
+      },
+      "captured_value": "10000 \u03a9",
+      "component_nominal_tolerance_interval_SI": [
+        9990.0,
+        10009.999999999998
+      ],
+      "conditional_70C_limits": {
+        "formula": "min(75V,sqrt(P70*Rminimum)); not permission to apply this voltage in circuit",
+        "hotter_than_70C_power_W": null,
+        "power_W": 0.1,
+        "resistive_working_voltage_bound_V": 31.606961258558215
+      },
+      "fit_status": "Existing0603 footprint preserved; package dimensions are evidence, not qualified landpattern/assembly",
+      "footprint": "zudo-osc-hole-field:R0603",
+      "identity_status": "Exact primary-document candidate identified; not adopted or procured",
+      "pins": {
+        "1": "/A01/IN_PROTECTED",
+        "2": "/A01/C3833e3_SENSE"
+      },
+      "ref": "R7108",
+      "role": "high_impedance_input:R_LIMIT",
+      "source_id": "RT0603BRD0710KL"
+    },
+    "R7110": {
+      "candidate_MPN": "RT0603BRD071KL",
+      "candidate_ratings": {
+        "TCR_ppm_per_C": 25,
+        "body_nominal_mm": [
+          1.6,
+          0.8,
+          0.45
+        ],
+        "body_tolerance_mm": [
+          0.1,
+          0.1,
+          0.1
+        ],
+        "candidate_only": true,
+        "kind": "R",
+        "manufacturer": "YAGEO",
+        "maximum_continuous_voltage_V": 75,
+        "power_W_at_70C": 0.1,
+        "source_id": "RT0603BRD071KL",
+        "supplier_order_code": null,
+        "temperature_range_C": [
+          -55,
+          155
+        ],
+        "tolerance_fraction": 0.001,
+        "value_SI": 1000
+      },
+      "captured_value": "1000 \u03a9",
+      "component_nominal_tolerance_interval_SI": [
+        999.0,
+        1000.9999999999999
+      ],
+      "conditional_70C_limits": {
+        "formula": "min(75V,sqrt(P70*Rminimum)); not permission to apply this voltage in circuit",
+        "hotter_than_70C_power_W": null,
+        "power_W": 0.1,
+        "resistive_working_voltage_bound_V": 9.99499874937461
+      },
+      "fit_status": "Existing0603 footprint preserved; package dimensions are evidence, not qualified landpattern/assembly",
+      "footprint": "zudo-osc-hole-field:R0603",
+      "identity_status": "Exact primary-document candidate identified; not adopted or procured",
+      "pins": {
+        "1": "+5V",
+        "2": "/A01/C27197a_ENABLE"
+      },
+      "ref": "R7110",
+      "role": "input_fault_switch:R_DRIVE",
+      "source_id": "RT0603BRD071KL"
+    },
+    "R7112": {
+      "candidate_MPN": "RT0603BRD0710KL",
+      "candidate_ratings": {
+        "TCR_ppm_per_C": 25,
+        "body_nominal_mm": [
+          1.6,
+          0.8,
+          0.45
+        ],
+        "body_tolerance_mm": [
+          0.1,
+          0.1,
+          0.1
+        ],
+        "candidate_only": true,
+        "kind": "R",
+        "manufacturer": "YAGEO",
+        "maximum_continuous_voltage_V": 75,
+        "power_W_at_70C": 0.1,
+        "source_id": "RT0603BRD0710KL",
+        "supplier_order_code": null,
+        "temperature_range_C": [
+          -55,
+          155
+        ],
+        "tolerance_fraction": 0.001,
+        "value_SI": 10000
+      },
+      "captured_value": "10000 \u03a9",
+      "component_nominal_tolerance_interval_SI": [
+        9990.0,
+        10009.999999999998
+      ],
+      "conditional_70C_limits": {
+        "formula": "min(75V,sqrt(P70*Rminimum)); not permission to apply this voltage in circuit",
+        "hotter_than_70C_power_W": null,
+        "power_W": 0.1,
+        "resistive_working_voltage_bound_V": 31.606961258558215
+      },
+      "fit_status": "Existing0603 footprint preserved; package dimensions are evidence, not qualified landpattern/assembly",
+      "footprint": "zudo-osc-hole-field:R0603",
+      "identity_status": "Exact primary-document candidate identified; not adopted or procured",
+      "pins": {
+        "1": "/A01/OFFSET_PROTECTED",
+        "2": "/A01/C360350_SENSE"
+      },
+      "ref": "R7112",
+      "role": "high_impedance_input:R_LIMIT",
+      "source_id": "RT0603BRD0710KL"
+    },
+    "R7113": {
+      "candidate_MPN": "RT0603BRD07100RL",
+      "candidate_ratings": {
+        "TCR_ppm_per_C": 25,
+        "body_nominal_mm": [
+          1.6,
+          0.8,
+          0.45
+        ],
+        "body_tolerance_mm": [
+          0.1,
+          0.1,
+          0.1
+        ],
+        "candidate_only": true,
+        "kind": "R",
+        "manufacturer": "YAGEO",
+        "maximum_continuous_voltage_V": 75,
+        "power_W_at_70C": 0.1,
+        "source_id": "RT0603BRD07100RL",
+        "supplier_order_code": null,
+        "temperature_range_C": [
+          -55,
+          155
+        ],
+        "tolerance_fraction": 0.001,
+        "value_SI": 100
+      },
+      "captured_value": "100 \u03a9",
+      "component_nominal_tolerance_interval_SI": [
+        99.9,
+        100.1
+      ],
+      "conditional_70C_limits": {
+        "formula": "min(75V,sqrt(P70*Rminimum)); not permission to apply this voltage in circuit",
+        "hotter_than_70C_power_W": null,
+        "power_W": 0.1,
+        "resistive_working_voltage_bound_V": 3.1606961258558215
+      },
+      "fit_status": "Existing0603 footprint preserved; package dimensions are evidence, not qualified landpattern/assembly",
+      "footprint": "zudo-osc-hole-field:R0603",
+      "identity_status": "Exact primary-document candidate identified; not adopted or procured",
+      "pins": {
+        "1": "/A01/C8e6645_DRIVE",
+        "2": "/A01/IN_REMOTE"
+      },
+      "ref": "R7113",
+      "role": "remote_buffer:R_ISO",
+      "source_id": "RT0603BRD07100RL"
+    },
+    "R7114": {
+      "candidate_MPN": "RT0603BRD0710KL",
+      "candidate_ratings": {
+        "TCR_ppm_per_C": 25,
+        "body_nominal_mm": [
+          1.6,
+          0.8,
+          0.45
+        ],
+        "body_tolerance_mm": [
+          0.1,
+          0.1,
+          0.1
+        ],
+        "candidate_only": true,
+        "kind": "R",
+        "manufacturer": "YAGEO",
+        "maximum_continuous_voltage_V": 75,
+        "power_W_at_70C": 0.1,
+        "source_id": "RT0603BRD0710KL",
+        "supplier_order_code": null,
+        "temperature_range_C": [
+          -55,
+          155
+        ],
+        "tolerance_fraction": 0.001,
+        "value_SI": 10000
+      },
+      "captured_value": "10000 \u03a9",
+      "component_nominal_tolerance_interval_SI": [
+        9990.0,
+        10009.999999999998
+      ],
+      "conditional_70C_limits": {
+        "formula": "min(75V,sqrt(P70*Rminimum)); not permission to apply this voltage in circuit",
+        "hotter_than_70C_power_W": null,
+        "power_W": 0.1,
+        "resistive_working_voltage_bound_V": 31.606961258558215
+      },
+      "fit_status": "Existing0603 footprint preserved; package dimensions are evidence, not qualified landpattern/assembly",
+      "footprint": "zudo-osc-hole-field:R0603",
+      "identity_status": "Exact primary-document candidate identified; not adopted or procured",
+      "pins": {
+        "1": "/A01/IN_REMOTE",
+        "2": "/A01/C8e6645_FB"
+      },
+      "ref": "R7114",
+      "role": "remote_buffer:R_FB",
+      "source_id": "RT0603BRD0710KL"
+    },
+    "R7115": {
+      "candidate_MPN": "RT0603BRD071KL",
+      "candidate_ratings": {
+        "TCR_ppm_per_C": 25,
+        "body_nominal_mm": [
+          1.6,
+          0.8,
+          0.45
+        ],
+        "body_tolerance_mm": [
+          0.1,
+          0.1,
+          0.1
+        ],
+        "candidate_only": true,
+        "kind": "R",
+        "manufacturer": "YAGEO",
+        "maximum_continuous_voltage_V": 75,
+        "power_W_at_70C": 0.1,
+        "source_id": "RT0603BRD071KL",
+        "supplier_order_code": null,
+        "temperature_range_C": [
+          -55,
+          155
+        ],
+        "tolerance_fraction": 0.001,
+        "value_SI": 1000
+      },
+      "captured_value": "1000 \u03a9",
+      "component_nominal_tolerance_interval_SI": [
+        999.0,
+        1000.9999999999999
+      ],
+      "conditional_70C_limits": {
+        "formula": "min(75V,sqrt(P70*Rminimum)); not permission to apply this voltage in circuit",
+        "hotter_than_70C_power_W": null,
+        "power_W": 0.1,
+        "resistive_working_voltage_bound_V": 9.99499874937461
+      },
+      "fit_status": "Existing0603 footprint preserved; package dimensions are evidence, not qualified landpattern/assembly",
+      "footprint": "zudo-osc-hole-field:R0603",
+      "identity_status": "Exact primary-document candidate identified; not adopted or procured",
+      "pins": {
+        "1": "/A01/Cc045d2_W",
+        "2": "/A01/Cc045d2_W_SENSE"
+      },
+      "ref": "R7115",
+      "role": "bipolar_attenuverter:R_W",
+      "source_id": "RT0603BRD071KL"
+    },
+    "R7116": {
+      "candidate_MPN": "RC0603FR-0710ML",
+      "candidate_ratings": {
+        "TCR_ppm_per_C": 100,
+        "body_nominal_mm": [
+          1.6,
+          0.8,
+          0.45
+        ],
+        "body_tolerance_mm": [
+          0.1,
+          0.1,
+          0.1
+        ],
+        "candidate_only": true,
+        "kind": "R",
+        "manufacturer": "YAGEO",
+        "maximum_continuous_voltage_V": 75,
+        "power_W_at_70C": 0.1,
+        "source_id": "RC0603FR-0710ML",
+        "supplier_order_code": null,
+        "temperature_range_C": [
+          -55,
+          155
+        ],
+        "tolerance_fraction": 0.01,
+        "value_SI": 10000000.0
+      },
+      "captured_value": "1e+07 \u03a9",
+      "component_nominal_tolerance_interval_SI": [
+        9900000.0,
+        10100000.0
+      ],
+      "conditional_70C_limits": {
+        "formula": "min(75V,sqrt(P70*Rminimum)); not permission to apply this voltage in circuit",
+        "hotter_than_70C_power_W": null,
+        "power_W": 0.1,
+        "resistive_working_voltage_bound_V": 75
+      },
+      "fit_status": "Existing0603 footprint preserved; package dimensions are evidence, not qualified landpattern/assembly",
+      "footprint": "zudo-osc-hole-field:R0603",
+      "identity_status": "Exact primary-document candidate identified; not adopted or procured",
+      "pins": {
+        "1": "/A01/Cc045d2_W_SENSE",
+        "2": "AGND"
+      },
+      "ref": "R7116",
+      "role": "bipolar_attenuverter:R_FAIL",
+      "source_id": "RC0603FR-0710ML"
+    },
+    "R7119": {
+      "candidate_MPN": "RT0603BRD071KL",
+      "candidate_ratings": {
+        "TCR_ppm_per_C": 25,
+        "body_nominal_mm": [
+          1.6,
+          0.8,
+          0.45
+        ],
+        "body_tolerance_mm": [
+          0.1,
+          0.1,
+          0.1
+        ],
+        "candidate_only": true,
+        "kind": "R",
+        "manufacturer": "YAGEO",
+        "maximum_continuous_voltage_V": 75,
+        "power_W_at_70C": 0.1,
+        "source_id": "RT0603BRD071KL",
+        "supplier_order_code": null,
+        "temperature_range_C": [
+          -55,
+          155
+        ],
+        "tolerance_fraction": 0.001,
+        "value_SI": 1000
+      },
+      "captured_value": "1000 \u03a9",
+      "component_nominal_tolerance_interval_SI": [
+        999.0,
+        1000.9999999999999
+      ],
+      "conditional_70C_limits": {
+        "formula": "min(75V,sqrt(P70*Rminimum)); not permission to apply this voltage in circuit",
+        "hotter_than_70C_power_W": null,
+        "power_W": 0.1,
+        "resistive_working_voltage_bound_V": 9.99499874937461
+      },
+      "fit_status": "Existing0603 footprint preserved; package dimensions are evidence, not qualified landpattern/assembly",
+      "footprint": "zudo-osc-hole-field:R0603",
+      "identity_status": "Exact primary-document candidate identified; not adopted or procured",
+      "pins": {
+        "1": "/A01/C38cac0_W",
+        "2": "/A01/C38cac0_W_SENSE"
+      },
+      "ref": "R7119",
+      "role": "dc_control_source:R_W",
+      "source_id": "RT0603BRD071KL"
+    },
+    "R7120": {
+      "candidate_MPN": "RC0603FR-0710ML",
+      "candidate_ratings": {
+        "TCR_ppm_per_C": 100,
+        "body_nominal_mm": [
+          1.6,
+          0.8,
+          0.45
+        ],
+        "body_tolerance_mm": [
+          0.1,
+          0.1,
+          0.1
+        ],
+        "candidate_only": true,
+        "kind": "R",
+        "manufacturer": "YAGEO",
+        "maximum_continuous_voltage_V": 75,
+        "power_W_at_70C": 0.1,
+        "source_id": "RC0603FR-0710ML",
+        "supplier_order_code": null,
+        "temperature_range_C": [
+          -55,
+          155
+        ],
+        "tolerance_fraction": 0.01,
+        "value_SI": 10000000.0
+      },
+      "captured_value": "1e+07 \u03a9",
+      "component_nominal_tolerance_interval_SI": [
+        9900000.0,
+        10100000.0
+      ],
+      "conditional_70C_limits": {
+        "formula": "min(75V,sqrt(P70*Rminimum)); not permission to apply this voltage in circuit",
+        "hotter_than_70C_power_W": null,
+        "power_W": 0.1,
+        "resistive_working_voltage_bound_V": 75
+      },
+      "fit_status": "Existing0603 footprint preserved; package dimensions are evidence, not qualified landpattern/assembly",
+      "footprint": "zudo-osc-hole-field:R0603",
+      "identity_status": "Exact primary-document candidate identified; not adopted or procured",
+      "pins": {
+        "1": "/A01/C38cac0_W_SENSE",
+        "2": "AGND"
+      },
+      "ref": "R7120",
+      "role": "dc_control_source:R_FAIL",
+      "source_id": "RC0603FR-0710ML"
+    },
+    "R7130": {
+      "candidate_MPN": "RT0603BRD075K6L",
+      "candidate_ratings": {
+        "TCR_ppm_per_C": 25,
+        "body_nominal_mm": [
+          1.6,
+          0.8,
+          0.45
+        ],
+        "body_tolerance_mm": [
+          0.1,
+          0.1,
+          0.1
+        ],
+        "candidate_only": true,
+        "kind": "R",
+        "manufacturer": "YAGEO",
+        "maximum_continuous_voltage_V": 75,
+        "power_W_at_70C": 0.1,
+        "source_id": "RT0603BRD075K6L",
+        "supplier_order_code": null,
+        "temperature_range_C": [
+          -55,
+          155
+        ],
+        "tolerance_fraction": 0.001,
+        "value_SI": 5600
+      },
+      "captured_value": "5600 \u03a9",
+      "component_nominal_tolerance_interval_SI": [
+        5594.4,
+        5605.599999999999
+      ],
+      "conditional_70C_limits": {
+        "formula": "min(75V,sqrt(P70*Rminimum)); not permission to apply this voltage in circuit",
+        "hotter_than_70C_power_W": null,
+        "power_W": 0.1,
+        "resistive_working_voltage_bound_V": 23.652484013312428
+      },
+      "fit_status": "Existing0603 footprint preserved; package dimensions are evidence, not qualified landpattern/assembly",
+      "footprint": "zudo-osc-hole-field:R0603",
+      "identity_status": "Exact primary-document candidate identified; not adopted or procured",
+      "pins": {
+        "1": "/A01/C6cb7d9_SENSE",
+        "2": "AGND"
+      },
+      "ref": "R7130",
+      "role": "magnitude_indicator:R_SENSE",
+      "source_id": "RT0603BRD075K6L"
+    },
+    "R7131": {
+      "candidate_MPN": "RT0603BRD075K6L",
+      "candidate_ratings": {
+        "TCR_ppm_per_C": 25,
+        "body_nominal_mm": [
+          1.6,
+          0.8,
+          0.45
+        ],
+        "body_tolerance_mm": [
+          0.1,
+          0.1,
+          0.1
+        ],
+        "candidate_only": true,
+        "kind": "R",
+        "manufacturer": "YAGEO",
+        "maximum_continuous_voltage_V": 75,
+        "power_W_at_70C": 0.1,
+        "source_id": "RT0603BRD075K6L",
+        "supplier_order_code": null,
+        "temperature_range_C": [
+          -55,
+          155
+        ],
+        "tolerance_fraction": 0.001,
+        "value_SI": 5600
+      },
+      "captured_value": "5600 \u03a9",
+      "component_nominal_tolerance_interval_SI": [
+        5594.4,
+        5605.599999999999
+      ],
+      "conditional_70C_limits": {
+        "formula": "min(75V,sqrt(P70*Rminimum)); not permission to apply this voltage in circuit",
+        "hotter_than_70C_power_W": null,
+        "power_W": 0.1,
+        "resistive_working_voltage_bound_V": 23.652484013312428
+      },
+      "fit_status": "Existing0603 footprint preserved; package dimensions are evidence, not qualified landpattern/assembly",
+      "footprint": "zudo-osc-hole-field:R0603",
+      "identity_status": "Exact primary-document candidate identified; not adopted or procured",
+      "pins": {
+        "1": "/A01/Cd4fa3b_SENSE",
+        "2": "AGND"
+      },
+      "ref": "R7131",
+      "role": "magnitude_indicator:R_SENSE",
+      "source_id": "RT0603BRD075K6L"
+    },
+    "R7132": {
+      "candidate_MPN": "RT0603BRD075K6L",
+      "candidate_ratings": {
+        "TCR_ppm_per_C": 25,
+        "body_nominal_mm": [
+          1.6,
+          0.8,
+          0.45
+        ],
+        "body_tolerance_mm": [
+          0.1,
+          0.1,
+          0.1
+        ],
+        "candidate_only": true,
+        "kind": "R",
+        "manufacturer": "YAGEO",
+        "maximum_continuous_voltage_V": 75,
+        "power_W_at_70C": 0.1,
+        "source_id": "RT0603BRD075K6L",
+        "supplier_order_code": null,
+        "temperature_range_C": [
+          -55,
+          155
+        ],
+        "tolerance_fraction": 0.001,
+        "value_SI": 5600
+      },
+      "captured_value": "5600 \u03a9",
+      "component_nominal_tolerance_interval_SI": [
+        5594.4,
+        5605.599999999999
+      ],
+      "conditional_70C_limits": {
+        "formula": "min(75V,sqrt(P70*Rminimum)); not permission to apply this voltage in circuit",
+        "hotter_than_70C_power_W": null,
+        "power_W": 0.1,
+        "resistive_working_voltage_bound_V": 23.652484013312428
+      },
+      "fit_status": "Existing0603 footprint preserved; package dimensions are evidence, not qualified landpattern/assembly",
+      "footprint": "zudo-osc-hole-field:R0603",
+      "identity_status": "Exact primary-document candidate identified; not adopted or procured",
+      "pins": {
+        "1": "/A01/C3c74b6_SENSE",
+        "2": "AGND"
+      },
+      "ref": "R7132",
+      "role": "magnitude_indicator:R_SENSE",
+      "source_id": "RT0603BRD075K6L"
+    },
+    "R7135": {
+      "candidate_MPN": "RT0603BRD0722K1L",
+      "candidate_ratings": {
+        "TCR_ppm_per_C": 25,
+        "body_nominal_mm": [
+          1.6,
+          0.8,
+          0.45
+        ],
+        "body_tolerance_mm": [
+          0.1,
+          0.1,
+          0.1
+        ],
+        "candidate_only": true,
+        "kind": "R",
+        "manufacturer": "YAGEO",
+        "maximum_continuous_voltage_V": 75,
+        "power_W_at_70C": 0.1,
+        "source_id": "RT0603BRD0722K1L",
+        "supplier_order_code": null,
+        "temperature_range_C": [
+          -55,
+          155
+        ],
+        "tolerance_fraction": 0.001,
+        "value_SI": 22100
+      },
+      "captured_value": "22100 \u03a9",
+      "component_nominal_tolerance_interval_SI": [
+        22077.9,
+        22122.1
+      ],
+      "conditional_70C_limits": {
+        "formula": "min(75V,sqrt(P70*Rminimum)); not permission to apply this voltage in circuit",
+        "hotter_than_70C_power_W": null,
+        "power_W": 0.1,
+        "resistive_working_voltage_bound_V": 46.987125896355906
+      },
+      "fit_status": "Existing0603 footprint preserved; package dimensions are evidence, not qualified landpattern/assembly",
+      "footprint": "zudo-osc-hole-field:R0603",
+      "identity_status": "Exact primary-document candidate identified; not adopted or procured",
+      "pins": {
+        "1": "+12V",
+        "2": "/A01/C75b051_LED_A"
+      },
+      "ref": "R7135",
+      "role": "clip_detector:R_LED",
+      "source_id": "RT0603BRD0722K1L"
+    }
+  },
+  "canonical_BOM_changed": false,
+  "counts": {
+    "capacitors": 3,
+    "distinct_candidate_MPNs": 10,
+    "resistors": 17,
+    "source_refs": 20
+  },
+  "hardware_acceptance": false,
+  "native": "NOT RUN",
+  "physical": "NOT RUN",
+  "reference_capacitor_application": {
+    "C7102_candidate_MPN": "C0603C105K4RACTU",
+    "ESR_ohm": null,
+    "application_output_min_F": 1e-06,
+    "effective_C_at_5V_temperature_aging_F": null,
+    "input_bypass_nominal_F": 2e-07,
+    "input_bypass_recommendation_established": false,
+    "next_bounded_recommendation": "Evaluate a larger nominal output capacitor with exact manufacturer effective-C/ESR data and source-stage value-change review; do not silently replace captured1uF.",
+    "noise_ESR_recommendation_distinct_from_stability_limit": true,
+    "nominal_F": 1e-06,
+    "recommended_input_bypass_F": [
+      1e-06,
+      1e-05
+    ],
+    "tolerance_only_establishes_application_min": false,
+    "tolerance_only_min_F": 9e-07,
+    "verdict": "NEEDS BENCH / DESIGN GAP: identity resolved, output-cap application not established"
+  },
+  "references_by_candidate_MPN": {
+    "C0603C100J5GACTU": [
+      "C7104"
+    ],
+    "C0603C103J5RACTU": [
+      "C7105"
+    ],
+    "C0603C105K4RACTU": [
+      "C7102"
+    ],
+    "RC0603FR-0710ML": [
+      "R7116",
+      "R7120"
+    ],
+    "RT0603BRD07100RL": [
+      "R7113"
+    ],
+    "RT0603BRD0710KL": [
+      "R7101",
+      "R7102",
+      "R7108",
+      "R7112",
+      "R7114"
+    ],
+    "RT0603BRD071KL": [
+      "R7106",
+      "R7110",
+      "R7115",
+      "R7119"
+    ],
+    "RT0603BRD0722K1L": [
+      "R7135"
+    ],
+    "RT0603BRD0722KL": [
+      "R7103"
+    ],
+    "RT0603BRD075K6L": [
+      "R7130",
+      "R7131",
+      "R7132"
+    ]
+  },
+  "remaining_unknowns": [
+    "supplier order codes, stock, price and assembly allocation",
+    "board land-pattern qualification and installed body/height clearance",
+    "resistor hot derating beyond70C and actual operating/fault voltages",
+    "capacitor DC-bias effectivecapacitance/ESR, assembled feedback stability and source power sequencing"
+  ],
+  "retrieval_failures": [
+    {
+      "status": "HTTP403 on2026-10-15; retained owner resistance facts remain source reference, no new manufacturer claim",
+      "url": "https://www.bourns.com/docs/product-datasheets/PTV09.pdf"
+    },
+    {
+      "status": "HTTP404; rejected unverified10nF C0G lookup; no identity claim",
+      "url": "https://www.yageogroup.com/component-documentation/download/specsheet/C0603C103J5GACTU"
+    }
+  ],
+  "simulation": "NOT RUN",
+  "source_sha256": {
+    "design/architecture-278/implementation/stage10/inventory-report.json": "b88055d78d3cb5a7722e993e4b8d33b347e4eb2c4492e9a523c3eb968d8c8af0",
+    "design/architecture-278/implementation/stage11/identity-input.json": "cae9a6881b2f40457edeaa5fb7c48896764b02477fe096347766e5eb1de645ea",
+    "scripts/architecture278/implementation/stage11_identity.py": "06cb8a90045535361d11f116de4b5f1bba3172558f9cf35fb4edd754b331c88a",
+    "scripts/architecture278/implementation/test_stage11_identity.py": "39a863eeebae5d205d50a4d082f7e269d2da0b44ed7e6d01fefe909d9cc7d187"
+  },
+  "source_values_changed": false,
+  "sources": {
+    "C0603C100J5GACTU": {
+      "authority": "MANUFACTURER_PRIMARY",
+      "availability": "AVAILABLE",
+      "document_date": "Generated10/15/2026",
+      "locator": "Physical PDF page0, exact MPN heading and Dimensions/Specifications tables",
+      "physical_pdf_page_index": 0,
+      "printed_page_label": "unlabelled",
+      "raw_cache": ".circuit-cache/sources/architecture278-stage11-identity/C0603C100J5GACTU.bin",
+      "retrieved_UTC": "2026-10-15",
+      "scope": "Exact candidate identity and conditioned component ratings only; no procurement/assembly/circuit qualification",
+      "sha256": "9a34b3241200e1b0e22daeff377b7a4b044acb47e0b32f08b78d14ebc37e98a0",
+      "url": "https://www.yageogroup.com/component-documentation/download/specsheet/C0603C100J5GACTU"
+    },
+    "C0603C103J5RACTU": {
+      "authority": "MANUFACTURER_PRIMARY",
+      "availability": "AVAILABLE",
+      "document_date": "Generated10/15/2026",
+      "locator": "Physical PDF page0, exact MPN heading and Dimensions/Specifications tables",
+      "physical_pdf_page_index": 0,
+      "printed_page_label": "unlabelled",
+      "raw_cache": ".circuit-cache/sources/architecture278-stage11-identity/C0603C103J5RACTU.bin",
+      "retrieved_UTC": "2026-10-15",
+      "scope": "Exact candidate identity and conditioned component ratings only; no procurement/assembly/circuit qualification",
+      "sha256": "681a6deee672eae045e48ffc02dad3ddfe20767740c872552a0ebd812b3a4b2e",
+      "url": "https://www.yageogroup.com/component-documentation/download/specsheet/C0603C103J5RACTU"
+    },
+    "C0603C105K4RACTU": {
+      "authority": "MANUFACTURER_PRIMARY",
+      "availability": "AVAILABLE",
+      "document_date": "Generated10/15/2026",
+      "locator": "Physical PDF page0, exact MPN heading and Dimensions/Specifications tables",
+      "physical_pdf_page_index": 0,
+      "printed_page_label": "unlabelled",
+      "raw_cache": ".circuit-cache/sources/architecture278-stage11-identity/C0603C105K4RACTU.bin",
+      "retrieved_UTC": "2026-10-15",
+      "scope": "Exact candidate identity and conditioned component ratings only; no procurement/assembly/circuit qualification",
+      "sha256": "d2341136cb65f7e91b1e14486734901259d2a3ef5b6d8027be73f1e40a7fdf2a",
+      "url": "https://www.yageogroup.com/component-documentation/download/specsheet/C0603C105K4RACTU"
+    },
+    "RC0603FR-0710ML": {
+      "authority": "MANUFACTURER_PRIMARY",
+      "availability": "AVAILABLE",
+      "document_date": "Generated10/15/2026",
+      "locator": "Physical PDF page0, exact MPN heading and Dimensions/Specifications tables",
+      "physical_pdf_page_index": 0,
+      "printed_page_label": "unlabelled",
+      "raw_cache": ".circuit-cache/sources/architecture278-stage11-identity/RC0603FR-0710ML.bin",
+      "retrieved_UTC": "2026-10-15",
+      "scope": "Exact candidate identity and conditioned component ratings only; no procurement/assembly/circuit qualification",
+      "sha256": "20d362f8120bf32e811263f461fbd672f2b20b532623a8f7ab14a79daada39e5",
+      "url": "https://www.yageogroup.com/component-documentation/download/specsheet/RC0603FR-0710ML"
+    },
+    "REF50-app": {
+      "authority": "MANUFACTURER_PRIMARY",
+      "availability": "AVAILABLE",
+      "locator": "PhysicalPDF25/printed26 \u00a78.4.1 Figure8-6; REF50xxAI row; ordering addendum exactREF5050AIDR",
+      "physical_pdf_page_index": 25,
+      "previous_bundle_sha256": "d2da9488194dba11732c85c498b563c12e0bb6b3e2d21631022dde9bff51a13d",
+      "printed_page_label": "26",
+      "raw_cache": ".circuit-cache/sources/architecture278-stage11-identity/ref50.pdf",
+      "retrieved_UTC": "2026-10-15",
+      "revision": "SBOS410O October2025",
+      "scope": "New bytes differ from earlier retained digest despite sameRevO; no canonical owner-record promotion",
+      "sha256": "33b13191ad54693f9a4f52e226b354757ad092d2cec6b2c31dba2fecb710d0c6",
+      "url": "https://www.ti.com/lit/ds/symlink/ref50.pdf"
+    },
+    "RT0603BRD07100RL": {
+      "authority": "MANUFACTURER_PRIMARY",
+      "availability": "AVAILABLE",
+      "document_date": "Generated10/15/2026",
+      "locator": "Physical PDF page0, exact MPN heading and Dimensions/Specifications tables",
+      "physical_pdf_page_index": 0,
+      "printed_page_label": "unlabelled",
+      "raw_cache": ".circuit-cache/sources/architecture278-stage11-identity/RT0603BRD07100RL.bin",
+      "retrieved_UTC": "2026-10-15",
+      "scope": "Exact candidate identity and conditioned component ratings only; no procurement/assembly/circuit qualification",
+      "sha256": "74217d2740ce16b57919097298f57aa35b4e224b3a9e29bd2173b7616a7a8dea",
+      "url": "https://www.yageogroup.com/component-documentation/download/specsheet/RT0603BRD07100RL"
+    },
+    "RT0603BRD0710KL": {
+      "authority": "MANUFACTURER_PRIMARY",
+      "availability": "AVAILABLE",
+      "document_date": "Generated10/15/2026",
+      "locator": "Physical PDF page0, exact MPN heading and Dimensions/Specifications tables",
+      "physical_pdf_page_index": 0,
+      "printed_page_label": "unlabelled",
+      "raw_cache": ".circuit-cache/sources/architecture278-stage11-identity/RT0603BRD0710KL.bin",
+      "retrieved_UTC": "2026-10-15",
+      "scope": "Exact candidate identity and conditioned component ratings only; no procurement/assembly/circuit qualification",
+      "sha256": "49ccf8029e1b03371d27200b47dd8bddd385665e74528f48115e591184ea9779",
+      "url": "https://www.yageogroup.com/component-documentation/download/specsheet/RT0603BRD0710KL"
+    },
+    "RT0603BRD071KL": {
+      "authority": "MANUFACTURER_PRIMARY",
+      "availability": "AVAILABLE",
+      "document_date": "Generated10/15/2026",
+      "locator": "Physical PDF page0, exact MPN heading and Dimensions/Specifications tables",
+      "physical_pdf_page_index": 0,
+      "printed_page_label": "unlabelled",
+      "raw_cache": ".circuit-cache/sources/architecture278-stage11-identity/RT0603BRD071KL.bin",
+      "retrieved_UTC": "2026-10-15",
+      "scope": "Exact candidate identity and conditioned component ratings only; no procurement/assembly/circuit qualification",
+      "sha256": "503d1100fb4d034ce655762c2e72a45bee5396869455d11af6479e54d05beaea",
+      "url": "https://www.yageogroup.com/component-documentation/download/specsheet/RT0603BRD071KL"
+    },
+    "RT0603BRD0722K1L": {
+      "authority": "MANUFACTURER_PRIMARY",
+      "availability": "AVAILABLE",
+      "document_date": "Generated10/15/2026",
+      "locator": "Physical PDF page0, exact MPN heading and Dimensions/Specifications tables",
+      "physical_pdf_page_index": 0,
+      "printed_page_label": "unlabelled",
+      "raw_cache": ".circuit-cache/sources/architecture278-stage11-identity/RT0603BRD0722K1L.bin",
+      "retrieved_UTC": "2026-10-15",
+      "scope": "Exact candidate identity and conditioned component ratings only; no procurement/assembly/circuit qualification",
+      "sha256": "5df8e1ed2882a46163bb8b21d0d6287288e5b3339efb9dc76973e755bdcaa58d",
+      "url": "https://www.yageogroup.com/component-documentation/download/specsheet/RT0603BRD0722K1L"
+    },
+    "RT0603BRD0722KL": {
+      "authority": "MANUFACTURER_PRIMARY",
+      "availability": "AVAILABLE",
+      "document_date": "Generated10/15/2026",
+      "locator": "Physical PDF page0, exact MPN heading and Dimensions/Specifications tables",
+      "physical_pdf_page_index": 0,
+      "printed_page_label": "unlabelled",
+      "raw_cache": ".circuit-cache/sources/architecture278-stage11-identity/RT0603BRD0722KL.bin",
+      "retrieved_UTC": "2026-10-15",
+      "scope": "Exact candidate identity and conditioned component ratings only; no procurement/assembly/circuit qualification",
+      "sha256": "7fd9778d49a3e8d5df1b2221daa9ea3632b3ddbd7bb86362a6535e3dba6eb713",
+      "url": "https://www.yageogroup.com/component-documentation/download/specsheet/RT0603BRD0722KL"
+    },
+    "RT0603BRD075K6L": {
+      "authority": "MANUFACTURER_PRIMARY",
+      "availability": "AVAILABLE",
+      "document_date": "Generated10/15/2026",
+      "locator": "Physical PDF page0, exact MPN heading and Dimensions/Specifications tables",
+      "physical_pdf_page_index": 0,
+      "printed_page_label": "unlabelled",
+      "raw_cache": ".circuit-cache/sources/architecture278-stage11-identity/RT0603BRD075K6L.bin",
+      "retrieved_UTC": "2026-10-15",
+      "scope": "Exact candidate identity and conditioned component ratings only; no procurement/assembly/circuit qualification",
+      "sha256": "aaecc2b42926f17f180c339817e83500c0b2973864dbe579ca89ca069459640a",
+      "url": "https://www.yageogroup.com/component-documentation/download/specsheet/RT0603BRD075K6L"
+    }
+  },
+  "status": "20 EXACT PASSIVE CANDIDATES; APPLICATION AND HARDWARE ACCEPTANCE OPEN"
+}

@@ -1,6 +1,6 @@
 # O1 candidate source checkpoint — Stage 1 remains OPEN
 
-**Current source result:** [STAGE10.md](STAGE10.md) implements one bounded A01 OFFSET1 source demonstrator with all90 original packages, its own mechanical/support proposal and explicit interface/path accounting. It assigns29 K packages as candidate source ownership, leaving2543 other non-OSC K packages and13 POWER packages unresolved. It does not reuse X1 supports as qualified infrastructure. Prior Stage1–9 evidence remains unchanged. Native/ERC/DRC/physical acceptance and full Stage1 remain OPEN. Earlier sections below are historical evidence, not current acceptance claims.
+**Current source result:** [STAGE11.md](STAGE11.md) refines the existing A01 candidate with exact passive-identity candidates, loaded-control/current sensitivities, complete low-resistance feed-path comparison and support/service construction. It exposes reference-capacitor application gaps and the historical plane-only versus expanded whole-path resistance requirement mismatch. All241 earlier candidate files remain unchanged. Native/ERC/DRC/physical acceptance and full Stage1 remain OPEN. Earlier sections below are historical evidence, not current acceptance claims.
 
 This isolated implementation branch starts at PR285 `d218fc537818dcbbd470eb15d192cfc8d0be5f0a`. The owner authorized the one-zone candidate source stage; that approval is not native exact-run admission, architecture adoption or hardware authority. KEEP_K1402_INCUMBENT. PR285 evidence and canonical sources remain byte-identical.
 
@@ -42,6 +42,6 @@ The second command checks the unchanged seven-generator PR285 packet, candidate 
 
 ## Remaining bounded work
 
-This task stops after A01. Its exact component metadata, carrier/insulation/neighbor/service fit and full electrical/protection/stability conditions remain open; see [STAGE10.md](STAGE10.md). No A02–A06 replication, POWER hosting or X1 reopening is implied by the source result. Further work needs a separately bounded coordination decision.
+This task remains bounded to A01. See [STAGE11.md](STAGE11.md) for the next engineering work: resistance-domain reconciliation, a reviewed candidate reference-capacitor correction, loaded-control accuracy and exact joint/service qualification. No A02–A06 replication, POWER hosting, X1 reopening or native/hardware authority follows from this source checkpoint.
 
 A future native run still requires genuine exact-run admission and the required KiCad10.0.6 capabilities. Native/ERC/DRC/routing and physical tests are **NOT RUN**. No source worksheet, deterministic test or review closes full Stage1 acceptance. No manufacture, purchase, energization, merge, adoption or deployment occurred.
