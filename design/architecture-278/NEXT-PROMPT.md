@@ -6,7 +6,7 @@ Epic: #278; interfaces #280; mechanics #281; electrical #282; adjacent proof #28
 Read the complete issue bodies and newer comments, AGENTS.md and circuit/WORKFLOW.md. Read design/architecture-278/WORK.md, GATE.md, reuse.md, all three review receipts, the exact JSON inputs/reports, interfaces.md, mechanics.md, assembly.md and electrical.md. The present verdict is REVISE, not architecture adoption.
 
 Exact preserved production base: 65cefd41fc39e064d38319115ad96016a1c6b71c.
-Design-packet source commit: DESIGN_SOURCE_COMMIT (populated at publication).
+Design-packet source commit: 48b7847abb3d076b967132ebfb13c5dd11902aa0.
 Parked PR260: 5af0e7b675123b40367078ee605a1355bae49a62.
 Parked PR277: fdac23b2611dcb26f840c520348771821ea9c35d.
 Linked architecture source: 011e8be351e81d51a13d2d56cb246fd36d623843.
