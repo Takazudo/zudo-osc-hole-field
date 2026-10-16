@@ -1,3 +1,5 @@
+[Stage17 isolated A01 schematic/library source](STAGE17.md) — source parity only; native acceptance NOT RUN.
+
 Current preparation: [Stage16 executable A01 native-verification handoff](STAGE16.md). Source packet only; prototype unconfirmed and native materialization/admission pending.
 
 Manual OFFSET requirement: [no centre detent; exact selected part retained](STAGE15-DETENT.md). This addendum applies to the proposed procedure below.
