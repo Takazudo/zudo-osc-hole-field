@@ -1,0 +1,38 @@
+{
+  "status": "FAIL EVIDENCE RETENTION; native outcome UNKNOWN",
+  "reviewer": "independent_review delegated agent",
+  "source_commit": "5469def6cdf2a5f0f9d4a61cec88efbc7ac2130b",
+  "reviewed_sha256": {
+    "result.json": "722f5a56db6723d37107d01bec08d79ea6ab7f0ad33724767d99ff0f9b956300",
+    "docker-final.json": "51933ee5c77f67a149198245dbc1174744b1ab1d66b583440c85d8f37282cf75",
+    "admit.json": "30ce1e8143bd1ea3c2a7be3cdac33fea82231047b18eef3cad63f6103dbf4ca4",
+    "host_runner.py": "e7f4bf6aa4a00abfd03f7fd797027abe930a1af358725ed13f0e09502c598b25",
+    "container_runner.py": "66a8f6c6c2d73b37f5c6d560664d92397ee7c8d2c688348b02bc395e3f97717a",
+    "review-admission.json": "4ea45f2057d8c52de8638ab98b1d02f379d338ad92929409fac638d125789bfa"
+  },
+  "verified_retained_file_count": 0,
+  "verified_retained_bytes": 0,
+  "facts": [
+    "Actual enforcement preflight and signed exact admission survive.",
+    "result.json records elapsed_seconds68.58386142994277, native_done=true, retained_bytes0.",
+    "The retained directory has no files, including no version log, commands.json, resource.json, netlist.net or output hash manifest.",
+    "docker-final.json records exited status137, OOMKilled=false, matching host cleanup kill; this is not a native command exit code."
+  ],
+  "claims_limits": [
+    "native_done=true only reflects existence of /output/done. The supervisor writes done both after normal command-loop completion and after exceptions. It does not prove version or export occurred.",
+    "Version probe and export may have occurred after admission. Neither exact version nor native export attempt/completion/result can be reconstructed from surviving evidence.",
+    "Native outcome UNKNOWN; native parity NOT RUN due absent netlist. Do not report native PASS or native NOT RUN.",
+    "Do not rerun under this consumed/uncertain single-attempt authorization; a new separately bound owner admission is required."
+  ],
+  "root_cause": "Host retention code accepted docker cp success without checking required files, expected nonzero size, inventory or hashes before unconditional kill/removal. Exact Docker copy behavior causing empty directory remains unproven.",
+  "review_accountability": "Pre-admission review approved the controls but did not identify the missing retention verification before destruction; that review was insufficient on evidence durability.",
+  "recommended_design": [
+    "Before any future native run, test the retention path using a non-native sentinel on the same tmpfs mechanism.",
+    "While the original container is alive, stream docker exec tar (or explicit binary file reads) into a byte-bounded host archive; do not depend on docker cp accessing runtime tmpfs.",
+    "Retrieve and retain the manifest through docker exec, verify required files and exact per-file hashes, including version/argv/exit/logs/netlist-or-failure/resource records, before destructive cleanup.",
+    "Reserve archive and extraction bytes within the total512MiB budget; avoid an extra unbudgeted retained copy.",
+    "On verification failure preserve all readable logs with bounded independent stream reads before deadline; record UNKNOWN if recovery is incomplete.",
+    "Only after verified durable evidence or timeout-required cleanup stop/remove container. No native retry without separately approved admission."
+  ],
+  "native_commands_run_by_reviewer": false
+}
