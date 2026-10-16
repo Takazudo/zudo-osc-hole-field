@@ -443,3 +443,47 @@ Fresh independent Codex session 01a14620-af99-7435-90c6-ebcb3b6900e5 completed t
 Execution PASS; logical parity FAIL: unchanged comparator reports unit slot roster mismatch C7101. Exhaustive source-only diagnostic covers all118references/561pins/154UUIDs with no omissions:61unit-slot discrepancies (and corresponding unit-pin lookup failures),9library-property discrepancies,3U7101NC representation discrepancies. Full rosters and UUIDs are present; this does not waive mismatches or establish acceptance. HistoricalRUN002 remainsFAIL.
 
 Next bounded source work is to verify pinned exporter semantics for source-unit0/XML-A, inherited ki_keywords/ki_fp_filters, and no_connect versus +no_connect; add positive/adversarial fixture regression tests and independent review before any comparator correction. No additional native opportunity is authorized by this checkpoint.34independent synthetic tests and hash/retention checks PASS. pnpm checks NOT RUN because pnpm is absent; aggregate/native regeneration outside scope. No source implementation, canonical boards,locked placements,decision.json or KEEP_K1402_INCUMBENT changes; no architecture adoption/ERC/DRC/routing/simulation/hardware or electrical acceptance.19passiveMPNs and DIN/land footprints remain unresolved. PR286 draft/unmerged; publication[skip ci].
+
+## Stage20 — retained XML representation reconciliation
+
+Resumed Cloud ownership from f62c8650710bfa9d013e2e14ca2305c172160737 and
+independently investigated the exact retained 10.0.6 XML against pinned exporter,
+library/parser and connection-graph source. New [Stage20 evidence](stage20/README.md)
+contains the separate comparator, deterministic replay report and upstream hashes.
+No CAD, native input, historical verifier, raw receipt or prior FAIL was changed.
+
+The 61 unit-0 placements export library slot A; 9 components receive exact
+representative library keywords/filters; 3 U7101 source-NC pins can export bare
+canonical no_connect because graph iteration can retain the pin rather than the
+explicit marker as the NC object. These are representation rules, not circuit
+corrections. Library slots and exact properties/types are source-derived. Every
+118 references / 561 pins / 154 UUIDs remains required, with 196 singleton explicit
+NCs, 22 annotation exclusion flags and separate per-unit metadata. Representative
+properties and correlated aggregate fields remain distinct; reversible net names
+reject collisions. No connectivity is normalized or omitted.
+
+Retained-fixture regressions were added first: the old comparator produced 3
+positive-test errors. The new comparator passes 43 tests including missing/changed
+identities and units, rewiring, NC shorts/wrong types, metadata substitution and
+unsupported library shapes. All 72 native-input hashes, 40 raw retained files and
+published evidence manifest hashes are rechecked; unchanged Stage18 regeneration
+and source report are reproduced. The old Stage19 XML parity FAIL and RUN002 FAIL
+remain historical facts; Stage20 is a new source-only logical PASS for the same XML,
+not a new native run or approval.
+
+Independent agent /root/stage20_independent_review investigated exporter semantics
+without implementing the correction and authored hash-bound PASS receipts. The
+reviewer reran 43 regressions, replay and circuit checks. Before commit, 299 historical
+Stage15–19 tests, 72 schematic-generator tests and 43 optimized Stage20 tests passed;
+pnpm check passed generated-output and TypeScript checks. Final committed-source
+checks, review bindings and hashes are recorded in PR286's checkpoint.
+
+No native/container command or consumed-admission reuse occurred. Cloud remains
+default; X0X only when needed. No further native export is needed for this
+representation-only reconciliation. Next bounded work is source-only resolution
+and review of 19 passive MPNs and unbound DIN/land footprints. Any changed CAD input
+needs new evidence and a fresh bounded native request/admission when native work
+is needed. Canonical boards, locked placements, decision.json, KEEP_K1402_INCUMBENT
+and parked PR260/277/285 remain unchanged; PR286 stays draft and unmerged. No
+electrical acceptance, ERC/DRC, simulation, PCB/routing, architecture adoption or
+hardware readiness is claimed.
