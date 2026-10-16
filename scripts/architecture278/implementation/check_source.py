@@ -37,7 +37,10 @@ def main():
             subprocess.run([sys.executable,str(Path(__file__).with_name('stage16_handoff.py')),'--check-predecessor'],cwd=ROOT,check=True)
         elif generator == 'stage16_handoff.py':
             subprocess.run([sys.executable,str(Path(__file__).with_name('stage17_schematic.py')),'--check-predecessor'],cwd=ROOT,check=True)
+        elif generator == 'stage17_schematic.py':
+            subprocess.run([sys.executable,str(Path(__file__).with_name('stage18_compat.py')),'--check-predecessor'],cwd=ROOT,check=True)
         else:
             subprocess.run([sys.executable,str(Path(__file__).with_name(generator)),'--check'],cwd=ROOT,check=True)
+    subprocess.run([sys.executable,str(Path(__file__).with_name('stage18_compat.py')),'--check'],cwd=ROOT,check=True)
     print('PASS isolated candidate scope; PR285 and all canonical bytes unchanged; native NOT RUN')
 if __name__=='__main__':main()

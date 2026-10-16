@@ -320,3 +320,59 @@ Native10.0.6 version and exact schematic netlist export both exit0; export0.765s
 Complete strict source/native parityFAIL:22source-land annotation components/pins absent;96native references/126component unitUUIDs versus118/154required. U7102/U7106 each omit unit3/4/5UUIDs. Later exhaustive retained-output diagnosis accounts for561source pins:144exact netnames,199slash-encoding-only matches,196singletonNCs,22absent annotationpins; no duplicate/unexpected endpoints. All18pins of the six omittedUUIDunits remain represented; traceability difference is not lost pin connectivity. Eight field/property conflicts use different source-unit Role/LogicalCellKey/Island metadata values; not observed component identity or pin-net substitution. RN7102unusedLT5400ends3/6/4/5 remainNC; bothEP9AGND. Independent review retains raw and conditional evidence. Full contractFAIL is not waived by539present-pin conditional matches. Exact source-land filtering cause remains unproven.
 
 No source repair or native rerun. Run001 remainsUNKNOWN. Next finite operation: source-only reconciliation of native annotation/unit/metadata representation; separately bind any later native attempt after source repair.19passiveMPNs and DIN/landfootprints unresolved; no electrical/procurement/PCB acceptance,ERC/DRC/routing/simulation/hardware. Canonical sources,locked placements,decision.json,KEEP_K1402_INCUMBENT unchanged;PR286draft/unmerged,285/260/277parked. Scope is evidence plusWORK only,skipCI.
+
+## Stage18 source-only native-parity compatibility — 2026-10-16
+
+New Cloud owner refreshed PR286 at6b8c54a08639bc4b3ba11f9851c56acff47b76f5.
+Portable startup context explicitly loaded and validated; no runtime restoration.
+Repository has no .agents/skills; applicable .claude component audit/integration
+instructions read. Circuit precheck PASS:68manual inventory lines,0declared
+placement bindings; pin-asset check performed. Explicit no-native boundary
+superseded aggregate regeneration. No native command, version probe or admission
+reuse. Cloud remains default; X0X only if needed for later native capability.
+
+Implemented isolated Stage18 package-atomic schematic pagination, preserving
+118references/561pins/154unitUUIDs, all original symbol/pin UUIDs, each unit's
+full metadata, pin/net/NC, identities and annotation exclusion flags. U7102's
+five units now share page7; U7106's five units share page8. Original Stage17
+source, all raw RUN001/RUN002 receipts, and RUN002 historical full-parityFAIL
+remain byte-identical. Re-running the old comparator on saved RUN002 bytes
+still rejects22missingannotations; its netlistSHA256 remains812cc87f276a3dd73f8136a3f6877be0965e3522c8516cf2d0277d51ae76eba3.
+
+Pinned10.0.6 exporter/CLI/job/string/screen/library source inspected with hashes.
+Generic kicadxml optionzero should retain on_board=no annotations without making
+them fitted. New strict XML parser checks all endpoint/UUID/unit/library rosters,
+separate representative-unit properties and whole-dictionary field outcomes
+from the exact running-minimum algorithm over feasible spatial traversal orders.
+Traversal order is not falsely inferred; all per-unit source metadata is retained
+separately. Reversible source/internal/XML net maps reject collisions. All196NC
+pins must be observed as distinct marked singleton nets; missing coverage fails.
+
+The baseline integrated source guard failed because Stage17's source glob now
+sees six native helpers added after its original publication. Bounded predecessor
+verification checks exactly those six at baseline hashes and the original guard
+hash at5469def6; every other historical report/review binding stays unchanged.
+Integrated guard and new deterministic source/protected-file checks PASS.
+Independent reviewer /root/independent_review authored hash-bound receipts,
+reported one faulty mutation-test fixture (fixed), reran55tests and found no
+unresolved implementation findings.55new tests cover omissions, component and
+unit identity, rewiring/EP grounds,NCshorts,metadata substitution,missingunits,
+encoding collisions and correlated field aggregation. Broader263test run passed
+before two final negative tests were added; final commit rerun follows.72existing
+schematic-generator tests PASS. pnpmcheck PASS:generated pages/models/previews
+current andTypeScript clean. No electrical acceptance inferred.
+
+Source-only exact-request generator verifies full commit/input hashes and emits
+a new XML proposal with fresh paths,2CPU/4GiB/no-swap/600s/networknone/512MiBtotal
+limits. The unchanged root hash does not imply unchanged children: all11new
+hierarchy/table hashes and61historical asset files are bound. No admission is
+granted. Old Stage17 runners hardcode incompatible inputs/format and must not be
+invoked; a future adapted supervisor requires synthetic retention review and
+actual capability/admission proof before the one export opportunity.
+
+19passiveMPNs and unboundDIN/landfootprints remain procurement/PCB blockers,
+not logical-parity exclusions. Canonicalboards,lockedplacements,decision.json,
+KEEP_K1402_INCUMBENT and parkedPR260/277/285 untouched. PR286 remainsdraft,
+unmerged; publication uses[skip ci]. No ERC/DRC/PCB/routing/simulation/hardware,
+architecture adoption or electrical acceptance. Final committed request and
+exact-head source-check results will be linked in the retained PR checkpoint.
