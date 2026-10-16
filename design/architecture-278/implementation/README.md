@@ -1,6 +1,6 @@
 # O1 candidate source checkpoint — Stage 1 remains OPEN
 
-**Current source result:** [STAGE14.md](STAGE14.md) rebinds four moved capacitor pads and five incident edges, recomputes all106 power/return endpoint maps and affected local paths, and preserves both resistance-domain comparisons. The exact REF5050AIDR/KEMET pair remains a conditional candidate with ten named validation cases. All314 predecessor files and Stage13 calibration remain frozen. Allocated lengths are not actual copper; startup/discharge/backfeed and electrical acceptance remain open. Native/CAD/ERC/DRC/simulation/physical NOT RUN. Earlier sections below are historical evidence, not current acceptance claims.
+**Current source result:** [STAGE15.md](STAGE15.md) implements two local LT5400AIMS8E-2#PBF matched-network candidates. All six resistor functions and fixed controls remain;86packages/291pads and108power/return paths include all106 previous targets plus two shield returns. Ratio-onlyCV error improves, but complete2mV static and1mV load-change acceptance remain unresolved. All predecessor evidence and Stage13 calibration remain frozen. Allocated lengths are not actual copper. Native/CAD/ERC/DRC/simulation/physical NOT RUN. Earlier sections below are historical evidence, not current acceptance claims.
 
 This isolated implementation branch starts at PR285 `d218fc537818dcbbd470eb15d192cfc8d0be5f0a`. The owner authorized the one-zone candidate source stage; that approval is not native exact-run admission, architecture adoption or hardware authority. KEEP_K1402_INCUMBENT. PR285 evidence and canonical sources remain byte-identical.
 
@@ -45,3 +45,7 @@ The second command checks the unchanged seven-generator PR285 packet, candidate 
 This task remains bounded to A01. See [STAGE11.md](STAGE11.md) for the next engineering work: resistance-domain reconciliation, a reviewed candidate reference-capacitor correction, loaded-control accuracy and exact joint/service qualification. No A02–A06 replication, POWER hosting, X1 reopening or native/hardware authority follows from this source checkpoint.
 
 A future native run still requires genuine exact-run admission and the required KiCad10.0.6 capabilities. Native/ERC/DRC/routing and physical tests are **NOT RUN**. No source worksheet, deterministic test or review closes full Stage1 acceptance. No manufacture, purchase, energization, merge, adoption or deployment occurred.
+
+## Stage15 — local matched-network candidate, acceptance open
+
+[STAGE15.md](STAGE15.md) implements two local LT5400AIMS8E-2#PBF source candidates from cc005dc4:86packages/291pads, all106 previous power-return targets plus2shield returns. Ratios improve; whole-cell2mV static and1mV load-change targets remain unestablished. Canonical/predecessor bytes and fixed controls are preserved. No native/CAD/simulation/hardware/adoption. Final checks and reviews are in [stage15](stage15/) and [WORK](WORK.md).
