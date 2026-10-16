@@ -378,3 +378,41 @@ architecture adoption or electrical acceptance. Final committed request and
 exact-head source-check results will be linked in the retained PR checkpoint.
 
 Implementation commit: `91403f4d78b72757187d8cfdbb4d2dc436a3cf72`. Exact source-only proposal: [stage18/native-request.json](stage18/native-request.json), SHA256 `0e320076fb65e3bf9574f6bf4f01a35050236fee8b0885fd922b75366131c940`;72 native-input files and the source/verifier manifest are bound. This follow-up changes only request publication and WORK; implementation/review bindings remain unchanged.
+
+## Stage19 — source-only supervisor preparation
+
+Adapted the retained RUN002 host/container and bounded streaming retention design
+for Stage18's exact72-file layout and kicadxml output, in new Stage19 files only.
+All Stage17/18 source, reports, requests, reviews and raw receipts stay unchanged;
+RUN002 full parity remains FAIL. No native command, version probe, container,
+capability probe or consumed-admission reuse occurred during implementation.
+
+The future runner requires a fresh exact-commit request and owner approval before
+launch. Actual capability proof and a fresh independently reviewed nonce/hash-bound
+admission precede exclusive one-use consumption and the exact version/export argv.
+Cloud remains default; X0X Linux/WSL is a fallback only after current capability
+assessment. No install/pull is authorized. The source proposal preserves existing
+CPU/memory/no-swap/network/read-only/tmpfs/time budgets. Host preparation executes
+no native operation. A separate source comparator evaluates retained XML parity.
+
+Independent review found and helped close five issues: foreign-container cleanup
+on launch failure, incomplete request manifests, unbound consumption receipts,
+unbounded version reads/XML declarations, and retained XML child allocations.
+Cleanup now requires full inspected container ownership and verified bounded copy
+plus semantic receipts. Incomplete retention leaves partial host evidence and
+never removes the stopped container; resource shutdown can still lose tmpfs, so
+UNKNOWN remains explicit. Complete native-failure evidence never becomes success.
+
+Reviewer-authored stage19/review-independent.json and .md bind eight source/test/
+document files.34synthetic tests pass under normal Python and python3 -O, including
+admission replay, wrong commits/hashes, input omission/substitution, bad capability,
+version/export failure, unknown launch response, name collision, foreign ownership,
+receipt omission/substitution, malformed/oversized-structure XML and failed retention.
+Existing integrated source/protected-path guard, circuit contract and documentation/
+TypeScript checks PASS. Final-commit broader tests, exact request regeneration and
+publication hashes are recorded in the Stage19 native request/checkpoint.
+
+118references/561pins/154unitUUIDs remain required.19unresolved passiveMPNs and
+unbound DIN/land footprints remain procurement/PCB blockers, not parity omissions.
+Canonical boards, locked placements, decision.json, KEEP_K1402_INCUMBENT and parked
+PR260/277/285 remain untouched. PR286 stays draft/unmerged; no electrical acceptance.
