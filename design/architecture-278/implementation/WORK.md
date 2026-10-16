@@ -376,3 +376,5 @@ KEEP_K1402_INCUMBENT and parkedPR260/277/285 untouched. PR286 remainsdraft,
 unmerged; publication uses[skip ci]. No ERC/DRC/PCB/routing/simulation/hardware,
 architecture adoption or electrical acceptance. Final committed request and
 exact-head source-check results will be linked in the retained PR checkpoint.
+
+Implementation commit: `91403f4d78b72757187d8cfdbb4d2dc436a3cf72`. Exact source-only proposal: [stage18/native-request.json](stage18/native-request.json), SHA256 `0e320076fb65e3bf9574f6bf4f01a35050236fee8b0885fd922b75366131c940`;72 native-input files and the source/verifier manifest are bound. This follow-up changes only request publication and WORK; implementation/review bindings remain unchanged.
