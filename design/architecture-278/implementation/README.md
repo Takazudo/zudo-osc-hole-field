@@ -1,3 +1,5 @@
+Current analysis: [Stage15 whole-cell allocation completion](STAGE15-ALLOCATION.md). No component/geometry change; precision acceptance remains open.
+
 # O1 candidate source checkpoint — Stage 1 remains OPEN
 
 **Current source result:** [STAGE15.md](STAGE15.md) implements two local LT5400AIMS8E-2#PBF matched-network candidates. All six resistor functions and fixed controls remain;86packages/291pads and108power/return paths include all106 previous targets plus two shield returns. Ratio-onlyCV error improves, but complete2mV static and1mV load-change acceptance remain unresolved. All predecessor evidence and Stage13 calibration remain frozen. Allocated lengths are not actual copper. Native/CAD/ERC/DRC/simulation/physical NOT RUN. Earlier sections below are historical evidence, not current acceptance claims.
