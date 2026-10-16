@@ -1,3 +1,5 @@
+Current preparation: [Stage16 executable A01 native-verification handoff](STAGE16.md). Source packet only; prototype unconfirmed and native materialization/admission pending.
+
 Manual OFFSET requirement: [no centre detent; exact selected part retained](STAGE15-DETENT.md). This addendum applies to the proposed procedure below.
 
 Current proposal: [Stage15 intended use and factory procedure](STAGE15-PROCEDURE.md). Owner approved continuous manual control; proposed factory procedure remains unadopted, with unchanged2mV/1mVcriteria.

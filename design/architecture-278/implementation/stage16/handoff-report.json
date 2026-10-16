@@ -1,0 +1,268 @@
+{
+  "CAD": "NOT RUN",
+  "DRC": "NOT RUN",
+  "ERC": "NOT RUN",
+  "baseline_commit": "07d045df573b15e00259200259d44b04fe5f7e8a",
+  "component_geometry_changed": false,
+  "counts": {
+    "NC_pins": 20,
+    "candidate_boards": {
+      "A01-control": 2,
+      "A01-core": 26,
+      "A01-fixed": 7,
+      "A01-jack": 51
+    },
+    "connected_pins": 271,
+    "packages": 86,
+    "physical_pins_including_NC": 291,
+    "power_return_endpoints": 108,
+    "unit_records": 120,
+    "unresolved_exact_MPNs": 19
+  },
+  "execution_contract": {
+    "current_source_commands": [
+      "python3 scripts/architecture278/implementation/stage16_inputs.py --check",
+      "python3 scripts/architecture278/implementation/stage16_handoff.py --check",
+      "python3 scripts/architecture278/implementation/stage16_handoff.py --export-run a01-preflight-001",
+      "python3 scripts/architecture278/implementation/stage16_handoff.py --verify-export a01-preflight-001"
+    ],
+    "expected_evidence": [
+      "Actual version/image and execution environment; input/output hashes, exactargv, elapsedtime,peakresources,exitstatus and complete logs.",
+      "All86packages and291pads mapped once, sixreplaceddiscretes absent; RN unusedendsNC andEP9AGND; selected capacitor polarity/pads.",
+      "Exact pin-net/NC/MPN comparison against exported candidate; component-library and unit coverage. Observation comparator cannot attest native provenance.",
+      "Scalar-to-native frame/face/rotation mapping verified at unchanged pads and fixedcontrolcentres; no new geometry.",
+      "ERC everyerror/warning identity disposition, no blanket old228warningbaseline transfer.",
+      "PCB nativepad/net/placement parity thenDRC includingunconnectednets/courtyard/clearance; unrouted candidate is expected to reportopens, never labelcomplete.",
+      "No oldnativepass or packettest counts as electrical/physical acceptance."
+    ],
+    "future_exact_command_templates_NOT_ADMITTED": [
+      [
+        "bash",
+        "scripts/kicad/run.sh",
+        "kicad-cli",
+        "sch",
+        "export",
+        "netlist",
+        "--format",
+        "kicadsexpr",
+        "-o",
+        "<run-root>/evidence/netlist.net",
+        "<run-root>/native/a01.kicad_sch"
+      ],
+      [
+        "bash",
+        "scripts/kicad/run.sh",
+        "kicad-cli",
+        "sch",
+        "erc",
+        "--format",
+        "json",
+        "--severity-all",
+        "-o",
+        "<run-root>/evidence/erc.json",
+        "<run-root>/native/a01.kicad_sch"
+      ],
+      [
+        "bash",
+        "scripts/kicad/run.sh",
+        "kicad-cli",
+        "pcb",
+        "drc",
+        "--schematic-parity",
+        "--format",
+        "json",
+        "--severity-all",
+        "-o",
+        "<run-root>/evidence/drc.json",
+        "<run-root>/native/a01.kicad_pcb"
+      ]
+    ],
+    "native_admission_granted": false,
+    "native_admission_prerequisites": [
+      "Named authorized operator and unique run ID with current source commit and complete input/artifact SHA256 set. A self-authored JSON boolean is not admission.",
+      "Exact executable argv, purpose and isolated output paths; no inherited campaign/admission reuse.",
+      "KiCad10.0.6 exact attestation and pinned image digest; wrapper10.0.x check alone insufficient.",
+      "Host-enforced timeout, CPU/RAM/output limits and machine-wide heavy-run scheduling; no defaults inferred.",
+      "Materialized isolated A01 schematic/library/PCB inputs actually exist and are source-reviewed; all unresolved asset/identity/coordinate-transform gaps explicitly resolved or dispositioned before corresponding check.",
+      "Explicit prohibition on canonical writes, aggregate regeneration, simulation, routing campaigns, manufacturing and hardware actions retained."
+    ],
+    "oracle": {
+      "docker_image": "kicad/kicad@sha256:18693567392b80da435f9fa952ce3a3e534c66eb5a6033f5b9c80aa3b19dd3ec",
+      "network": "none for Docker",
+      "readiness": "NOT PROBED; executable presence is not daemon/image/pcbnew readiness",
+      "required_exact_version": "10.0.6",
+      "wrapper": "scripts/kicad/run.sh",
+      "wrapper_actual_version_filter": "10.0.x"
+    },
+    "permitted_future_outputs": {
+      "future_native": [
+        "native/a01.kicad_sch",
+        "native/a01.kicad_pcb",
+        "native/*.kicad_sym",
+        "native/*.pretty/*.kicad_mod",
+        "native/sym-lib-table",
+        "native/fp-lib-table",
+        "evidence/netlist.net",
+        "evidence/erc.json",
+        "evidence/drc.json",
+        "evidence/observation.json",
+        "evidence/command-log.json",
+        "evidence/output-sha256.json"
+      ],
+      "root": "design/architecture-278/implementation/stage16/runs/<run-id>/",
+      "source_export": [
+        "manifest.json",
+        "candidate.json",
+        "bom.csv",
+        "pin-net.csv",
+        "sources/**"
+      ],
+      "status": "Local ignored artifacts; no fabrication/manufacturing outputs. No current native files exist."
+    },
+    "platform_lanes": {
+      "Cloud": "Python source packet build/export/test/hash checks run now. Currentnativecapabilities unverified and noadmission: native NOT RUN. Cloudnative later only if all same exactversion/capability/resource/admission conditions are met; no inherent permission.",
+      "Hardware": "Physicalprototypeavailability unconfirmed; procurement/manufacturing/energization/measurements requireseparateauthorization andequipment; notCloudsourceverification.",
+      "Mac": "NativeKiCad10.0.6 viaKICAD_CLI_BIN orpinnedDockeramd64; PATHPython must separatelyimportmatchingpcbnew forboardconstruction. Docker/nativeparity notassumed.",
+      "WSL_Linux": "Preferred local native lane afteradmission: Dockerdaemon+pinnedlinuxamd64image, KiCad10.0.6 andpcbnew, memory/CPU/time controls andactualhostheavyguard."
+    },
+    "proposed_resource_ceiling": {
+      "concurrency": 1,
+      "cpu_cores": 2,
+      "enforcement_gap": "run.sh has no CPU/RAM/wall caps. Authorized host must enforce these outside wrapper, or obtain an explicitly approved alternative. Do not silently launch uncapped.",
+      "memory_GiB": 4,
+      "output_MiB": 512,
+      "queue": "Actual host machine-wide heavy guard; do not override its shared slot/memory policy",
+      "status": "Proposed maximum for one A01 import/export/check, not execution approval or existing enforced limits",
+      "wall_seconds_per_command": 600
+    },
+    "prototype_availability": "UNCONFIRMED",
+    "scope": "Preparation only; no native invocation, even version probes. No available prototype assumed."
+  },
+  "hardware_acceptance": false,
+  "materialization_gaps": [
+    {
+      "reason": "CANDIDATE_POLARIZED_CAPACITOR_SYMBOL_UNBOUND",
+      "ref": "C7101"
+    },
+    {
+      "reason": "CANDIDATE_KEMET_FOOTPRINT_NOT_MATERIALIZED",
+      "ref": "C7101"
+    },
+    {
+      "reason": "CANDIDATE_POLARIZED_CAPACITOR_SYMBOL_UNBOUND",
+      "ref": "C7102"
+    },
+    {
+      "reason": "CANDIDATE_KEMET_FOOTPRINT_NOT_MATERIALIZED",
+      "ref": "C7102"
+    },
+    {
+      "reason": "EXACT_MPN_UNSELECTED",
+      "ref": "C7104"
+    },
+    {
+      "reason": "EXACT_MPN_UNSELECTED",
+      "ref": "C7105"
+    },
+    {
+      "reason": "EXACT_MPN_UNSELECTED",
+      "ref": "R7101"
+    },
+    {
+      "reason": "EXACT_MPN_UNSELECTED",
+      "ref": "R7102"
+    },
+    {
+      "reason": "EXACT_MPN_UNSELECTED",
+      "ref": "R7103"
+    },
+    {
+      "reason": "EXACT_MPN_UNSELECTED",
+      "ref": "R7106"
+    },
+    {
+      "reason": "EXACT_MPN_UNSELECTED",
+      "ref": "R7108"
+    },
+    {
+      "reason": "EXACT_MPN_UNSELECTED",
+      "ref": "R7110"
+    },
+    {
+      "reason": "EXACT_MPN_UNSELECTED",
+      "ref": "R7112"
+    },
+    {
+      "reason": "EXACT_MPN_UNSELECTED",
+      "ref": "R7113"
+    },
+    {
+      "reason": "EXACT_MPN_UNSELECTED",
+      "ref": "R7114"
+    },
+    {
+      "reason": "EXACT_MPN_UNSELECTED",
+      "ref": "R7115"
+    },
+    {
+      "reason": "EXACT_MPN_UNSELECTED",
+      "ref": "R7116"
+    },
+    {
+      "reason": "EXACT_MPN_UNSELECTED",
+      "ref": "R7119"
+    },
+    {
+      "reason": "EXACT_MPN_UNSELECTED",
+      "ref": "R7120"
+    },
+    {
+      "reason": "EXACT_MPN_UNSELECTED",
+      "ref": "R7130"
+    },
+    {
+      "reason": "EXACT_MPN_UNSELECTED",
+      "ref": "R7131"
+    },
+    {
+      "reason": "EXACT_MPN_UNSELECTED",
+      "ref": "R7132"
+    },
+    {
+      "reason": "EXACT_MPN_UNSELECTED",
+      "ref": "R7135"
+    },
+    {
+      "reason": "CANDIDATE_NETWORK_SYMBOL_NOT_MATERIALIZED",
+      "ref": "RN7101"
+    },
+    {
+      "reason": "CANDIDATE_NETWORK_SYMBOL_NOT_MATERIALIZED",
+      "ref": "RN7102"
+    },
+    {
+      "reason": "CONNECTOR_HARNESS_NATIVE_MATERIALIZATION_UNBOUND",
+      "ref": "TRANSPORT_ASSEMBLY"
+    }
+  ],
+  "native": "NOT RUN",
+  "native_next_action": "Only after actual isolated candidate files and exact-run admission exist, export schematic netlist through pinned10.0.6 and compare an independently extracted observation; then ERC and PCB pad/net/placement/DRC checks under separate exact commands.",
+  "next_source_action": "Use exported exact BOM/pin-net/NC/placement contracts to implement missing candidate-native asset/schematic adapter in isolation; no geometry/component substitutions. Do not export canonical OFFSET as the candidate.",
+  "physical": "NOT RUN",
+  "preserved_predecessor_files": 416,
+  "prototype_availability": "UNCONFIRMED",
+  "runnable_now": "python3 scripts/architecture278/implementation/stage16_handoff.py --export-run a01-preflight-001",
+  "simulation": "NOT RUN",
+  "source_sha256": {
+    "design/architecture-278/implementation/STAGE16.md": "b8c77ee2b860765d32fe240507018815b82e06434df03162e06b243615f2e9c2",
+    "design/architecture-278/implementation/stage16/execution-contract.json": "66ef3290df56a64000f7a584ea182d78da97bbdd9ed56491bdb81494f8aa8113",
+    "design/architecture-278/implementation/stage16/inputs-report.json": "214297b7b19f9ae6027d1f036407f005319929961338631896f984655a4c0ebc",
+    "design/architecture-278/implementation/stage16/scope.json": "c12bd2635da3869af4ab57ff76f27fd67f62c9a29abb5e9a927e883508dd988b",
+    "scripts/architecture278/implementation/stage16_handoff.py": "84f0f28eacf3fb20b9a846a48a93df83b8aab05f753b96d34114b659085697af",
+    "scripts/architecture278/implementation/test_stage16_handoff.py": "2ab0f424f176a9e846aabc487adf5c3f3e3a05ed1260d1e2ec19e7258e47eb28",
+    "scripts/kicad/README.md": "f8273d7d1056393a1b3102b6520a795ab79bd4f170ef57b42b5b3c08fb3d5a4f",
+    "scripts/kicad/pin.env": "769e2be0b61e7d92a6930684f13166b7dc098522008de3969cd30d6c4a363246",
+    "scripts/kicad/run.sh": "bc74f0ade82c29d64c44119ea435bc7bfd164fc06e9afff240a3cb2b44b272a0"
+  },
+  "status": "PREPARATION PACKET; NATIVE MATERIALIZATION NOT COMPLETE"
+}
