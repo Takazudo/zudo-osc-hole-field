@@ -1,4 +1,4 @@
-Current analysis: [Stage15 whole-cell allocation completion](STAGE15-ALLOCATION.md). No component/geometry change; precision acceptance remains open.
+Current interpretation: [Stage15 acceptance correction](STAGE15-INTERPRETATION.md) supersedes the blanket redesign conclusion in the preserved [allocation analysis](STAGE15-ALLOCATION.md). 2mV is after factory calibration;1mV is separate load change. No component/geometry/calibration change; acceptance remains open.
 
 # O1 candidate source checkpoint — Stage 1 remains OPEN
 
