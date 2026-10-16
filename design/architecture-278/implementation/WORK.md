@@ -534,3 +534,37 @@ selected source/CAD change separately. No new native request is needed for this
 unchanged-CAD audit; later changed inputs need new evidence and fresh bounded
 admission when native work is needed. Retained XML cannot electrically qualify
 changed inputs.19 passive selections and unbound physical footprints remain open.
+
+### Stage22 — derive passive requirements and close drawing/identity research
+
+Continued in Codex Cloud from 052eb53b as sole branch writer. Added an isolated,
+deterministic requirements report for all 19 passive roles. Normal operating loads,
+conditional node bounds, reference-ratio error, manual-control loading and settling,
+and attenuverter AC center leakage are separated from proposed 85 °C, ±13.2 V and
+20 kHz sensitivities. None of these sensitivities is promoted to an approved envelope.
+
+Obtained the YAGEO mounting guide and correct RT0603 derating curve. Obtained exact
+HARTING female and straight-male PCB drilling drawings, preserving distinct A/B
+views and all 192 contact identities. Female PCB fixing holes are recorded; male
+body flange holes are not promoted to PCB holes. Resolved the three outstanding
+DigiKey catalog identities without treating blocked JLC lookups as absence or
+catalog entries as allocation. Raw receipts are retained in ignored local cache.
+
+The README proposes reflow with manufacturer pad guidance, mixed-source prototype
+procurement, and direct soldered wiring with mechanical strain relief. It stops at
+three product/process choices: assembly/sourcing route, wiring serviceability, and
+required attenuverter null bandwidth/manual-control response. Error allocation,
+stability, dielectric classification and physical transforms remain engineering
+work. The 19 candidate selections and 24 physical bindings are not adopted.
+
+Focused adversarial tests cover source identities, omission, drawing handedness,
+wrong drilling, supplier substitution and assumption promotion. Independent review
+corrected the distinction between capacitor endpoint stored energy and transient
+step dissipation. Final review, source reproduction and commit verification results
+are retained in the Stage22 receipts and published PR/issue checkpoint.
+
+Every preexisting file at 052eb53b is protected except this log. Canonical boards,
+placements, decision.json, KEEP_K1402_INCUMBENT, original native FAIL history and
+parked PR260/277/285 remain unchanged. PR286 remains draft and unmerged. No native
+command, admission reuse, hardware change, purchase or electrical acceptance.
+Next native request: NONE for this unchanged-CAD source derivation.
