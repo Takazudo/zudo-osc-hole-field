@@ -1,3 +1,5 @@
+Manual OFFSET requirement: [no centre detent; exact selected part retained](STAGE15-DETENT.md). This addendum applies to the proposed procedure below.
+
 Current proposal: [Stage15 intended use and factory procedure](STAGE15-PROCEDURE.md). Owner approved continuous manual control; proposed factory procedure remains unadopted, with unchanged2mV/1mVcriteria.
 
 Current interpretation: [Stage15 acceptance correction](STAGE15-INTERPRETATION.md) supersedes the blanket redesign conclusion in the preserved [allocation analysis](STAGE15-ALLOCATION.md). 2mV is after factory calibration;1mV is separate load change. No component/geometry/calibration change; acceptance remains open.
