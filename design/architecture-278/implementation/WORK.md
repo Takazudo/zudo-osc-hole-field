@@ -487,3 +487,50 @@ is needed. Canonical boards, locked placements, decision.json, KEEP_K1402_INCUMB
 and parked PR260/277/285 remain unchanged; PR286 stays draft and unmerged. No
 electrical acceptance, ERC/DRC, simulation, PCB/routing, architecture adoption or
 hardware readiness is claimed.
+
+## Stage21 — current passive sourcing and physical-decision audit (2026-10-16)
+
+Continued in Codex Cloud as sole integration writer from e2e580ae on draft PR286.
+Reused the nine exact Stage11 candidates for the 19 remaining passive blanks,
+excluding the subsequently resolved C7102. Refreshed all nine manufacturer product
+specifications with dated URLs and new/previous hashes; verified values, conditioned
+ratings and dimensions. Added an isolated candidate inventory binding all frozen
+package pins, units, roles, placements and values. No MPN was silently adopted.
+
+Verified six exact JLC catalog identities covering16 references, with dated server
+stock fields kept separate from allocation and electrical requirements. Direct LCSC
+searches returned403; JLC search returned0 even for a known-positive part. Three
+candidate supplier lookups remain unresolved, not asserted unavailable. Every role
+now records its specific missing operating/fault/accuracy/settling decision.
+
+Measured captured R0603/C0603 pads. Both KEMET family Table3 documents show the
+captured C0603 differs from all three recommended density patterns; process/density,
+mask/paste and qualification remain decisions. Resistor mounting guidance is still
+missing. Re-downloaded exact HARTING DIN documents match Stage4 hashes; contact
+sections and termination lengths do not establish a production drilling pattern.
+All24 unbound transport records remain intact, including22 non-BOM/non-board
+annotations requiring wire/process/strain-relief decisions, not fictitious MPNs.
+The exact male09031966922 is straight; independent review caught and corrected an
+initial prose error before commit. Canonical CAD was not changed.
+
+Added26 adversarial tests and deterministic source/cache checks. The review fixed
+extra-pad omission and strengthened exact supplier source/code/date/manufacturer
+binding. Normal and optimized new tests pass; combined Stage15–21 suite passes368
+unit tests. pnpm check and circuit:check pass (the latter remains68 manual inventory
+lines, no schematic/placement binding). Independent review receipts bind the new
+files and explicitly retain all engineering gaps. Full source regeneration and
+final-commit verification are recorded in the published checkpoint.
+
+Stage21 protects every preexisting byte at e2e580ae except this log. Original native
+RUN002/XML FAIL, Stage20 replay, canonical boards, locked placements, decision.json,
+KEEP_K1402_INCUMBENT and parked PR260/277/285 are preserved. No native/container
+command, consumed-admission reuse, purchasing, merge, production CAD/hardware
+change or architecture adoption occurred. PR286 stays draft/unmerged.
+
+Next bounded step: establish per-role operating/error budgets and obtain resistor
+mounting plus exact DIN drilling/pin-view evidence; choose solder/density and wire
+termination processes; resolve three supplier identities. Review any candidate-to-
+selected source/CAD change separately. No new native request is needed for this
+unchanged-CAD audit; later changed inputs need new evidence and fresh bounded
+admission when native work is needed. Retained XML cannot electrically qualify
+changed inputs.19 passive selections and unbound physical footprints remain open.
