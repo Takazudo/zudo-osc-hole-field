@@ -1,16 +1,44 @@
+# Current acceptance and source candidate — Stage26
+
+[Owner-approved A01–A06 musical utility scope](stage26/README.md) is the current
+acceptance authority for ATTEN/OFFSET. The inherited 2 mV calibrated static and
+associated 1 mV precision-load criteria are NOT APPLICABLE to these six utility
+modules; historical reports below retain their original results. Safety, stability,
+range, noise, clipping, sensible loading and practical settling remain required.
+VCO 1 V/oct tracking and all unrelated precision paths are unchanged.
+
+[Machine-readable scope](stage26/acceptance.json), [functional checks](stage26/functional-checks.json),
+[source candidate inventory](stage26/candidate-inventory.json), and
+[oscillator calibration clarification](stage26/oscillator-calibration.json).
+Keep RV1308 at 100 kΩ; no precision-only reference/pot redesign. Nineteen JLC passive
+identities are selected in the source inventory only; production/native CAD remains
+unchanged. Existing oscillator rear trims cover base/scale/HF/waveform functions;
+final playing pitch uses the front TUNE/FINE controls. Exact HF-trimmer identity and
+actual calibration range remain open, with no redundant control added.
+
+Run `python3 scripts/architecture278/implementation/check_source.py` for immutable
+historical reproduction plus current scoped checks. No native execution. Next work:
+DIN process/position/fixing and externally assembled wiring/strain relief; no further
+precision-budget audit for A01–A06. PR286 stays draft; KEEP_K1402_INCUMBENT.
+
+## Historical implementation narrative (superseded acceptance applicability)
+
+The material below records earlier engineering stages. Its old “current” labels and
+2 mV/1 mV obligations do not override the dated Stage26 owner scope above.
+
 [Stage17 isolated A01 schematic/library source](STAGE17.md) — source parity only; native acceptance NOT RUN.
 
-Current preparation: [Stage16 executable A01 native-verification handoff](STAGE16.md). Source packet only; prototype unconfirmed and native materialization/admission pending.
+Historical preparation: [Stage16 executable A01 native-verification handoff](STAGE16.md). Source packet only; prototype unconfirmed and native materialization/admission pending.
 
 Manual OFFSET requirement: [no centre detent; exact selected part retained](STAGE15-DETENT.md). This addendum applies to the proposed procedure below.
 
-Current proposal: [Stage15 intended use and factory procedure](STAGE15-PROCEDURE.md). Owner approved continuous manual control; proposed factory procedure remains unadopted, with unchanged2mV/1mVcriteria.
+Historical proposal: [Stage15 intended use and factory procedure](STAGE15-PROCEDURE.md). Owner approved continuous manual control; proposed factory procedure remains unadopted, with unchanged2mV/1mVcriteria.
 
-Current interpretation: [Stage15 acceptance correction](STAGE15-INTERPRETATION.md) supersedes the blanket redesign conclusion in the preserved [allocation analysis](STAGE15-ALLOCATION.md). 2mV is after factory calibration;1mV is separate load change. No component/geometry/calibration change; acceptance remains open.
+Historical interpretation: [Stage15 acceptance correction](STAGE15-INTERPRETATION.md) supersedes the blanket redesign conclusion in the preserved [allocation analysis](STAGE15-ALLOCATION.md). 2mV is after factory calibration;1mV is separate load change. No component/geometry/calibration change; acceptance remains open.
 
 # O1 candidate source checkpoint — Stage 1 remains OPEN
 
-**Current source result:** [STAGE15.md](STAGE15.md) implements two local LT5400AIMS8E-2#PBF matched-network candidates. All six resistor functions and fixed controls remain;86packages/291pads and108power/return paths include all106 previous targets plus two shield returns. Ratio-onlyCV error improves, but complete2mV static and1mV load-change acceptance remain unresolved. All predecessor evidence and Stage13 calibration remain frozen. Allocated lengths are not actual copper. Native/CAD/ERC/DRC/simulation/physical NOT RUN. Earlier sections below are historical evidence, not current acceptance claims.
+**Historical Stage15 source result:** [STAGE15.md](STAGE15.md) implements two local LT5400AIMS8E-2#PBF matched-network candidates. All six resistor functions and fixed controls remain;86packages/291pads and108power/return paths include all106 previous targets plus two shield returns. Ratio-onlyCV error improves, but complete2mV static and1mV load-change acceptance remain unresolved. All predecessor evidence and Stage13 calibration remain frozen. Allocated lengths are not actual copper. Native/CAD/ERC/DRC/simulation/physical NOT RUN. Earlier sections below are historical evidence, not current acceptance claims.
 
 This isolated implementation branch starts at PR285 `d218fc537818dcbbd470eb15d192cfc8d0be5f0a`. The owner authorized the one-zone candidate source stage; that approval is not native exact-run admission, architecture adoption or hardware authority. KEEP_K1402_INCUMBENT. PR285 evidence and canonical sources remain byte-identical.
 

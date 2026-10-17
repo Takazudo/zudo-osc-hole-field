@@ -1,0 +1,74 @@
+{
+  "architecture_adopted": false,
+  "baseline_commit": "f30d653e733a85fe00b1c187a5f571a983a3b47a",
+  "checks": [
+    {
+      "command": "python3 -m unittest discover -s scripts/architecture278/implementation -p test_stage26_acceptance.py",
+      "result": "PASS",
+      "tests": 17
+    },
+    {
+      "command": "python3 -O -m unittest discover -s scripts/architecture278/implementation -p test_stage26_acceptance.py",
+      "result": "PASS",
+      "tests": 17
+    },
+    {
+      "command": "python3 scripts/architecture278/implementation/stage26_acceptance.py --check --check-cache",
+      "result": "PASS"
+    }
+  ],
+  "hardware_acceptance": false,
+  "independent_findings": [
+    "Exact A01-A06 applicability and three utility transfer paths retire historical precision criteria as NOT_APPLICABLE, not PASS. The 1 mV load-limit retirement is explicitly identified as engineering interpretation. Global calibration values, VCO tracking, octave steps and unrelated precision roles remain unchanged.",
+    "Full dated owner quote and exact retired-obligation list are guarded. Safety, stability, range, noise, clipping, loading, settling and assembly remain required, all physical statuses NOT_RUN. No invented replacement accuracy limit appears.",
+    "RV1308 remains B104 100 kohm. C7105 X7R is a local source-candidate manual-smoothing exception; C7104 C0G and unrelated timing/storage/compensation rules remain intact.",
+    "All 19 exact Stage23 selections materialize only allowed identity properties in a separate source inventory. All 118 references, 561 pins, 154 unit UUIDs, annotations, exclusion flags, placement and other metadata are preserved; supplier receipt bytes match historical identities without a current stock or order promise.",
+    "Inspected oscillator.py and existing oscillator architecture documentation: six rear trims, front TUNE/FINE and shared octave-span roles are retained. Base current equivalence is nominal, not qualified frequency reach; base adjustment and upstream quantization cannot repair downstream scale error. HF 20 kohm identity gap remains explicit.",
+    "Historical detached-checkout strategy is appropriate: immutable BASE reproduces old entrypoints and strict hash guards, while live protected() rejects changes to all previous files except the three named integration entrypoints. Reviewed implementation does not invoke native tools or install dependencies. Historical execution itself is left to root integration verification, not claimed as independently run here.",
+    "Entry README clearly establishes current precedence while preserving historical reports and FAIL evidence. No architecture adoption, candidate production-CAD application or hardware acceptance is asserted."
+  ],
+  "native_execution": "NONE",
+  "production_CAD_changed": false,
+  "purchase_or_contact": "NONE",
+  "remaining": [
+    "Physical safety/function/load/stability/noise/range/settling and rating/process qualification remain NOT_RUN or open; relaxed precision does not waive these obligations.",
+    "DIN position/fixing/process and externally assembled wiring/termination/strain relief remain unresolved.",
+    "HF trim exact 20 kohm identity and actual oscillator adjustment reach/interaction/temperature behavior remain open; no VCO tracking criterion is relaxed."
+  ],
+  "resolved_findings": [
+    "Replaced suffix-only owner evidence check with exact full quote.",
+    "Bound exact retired-obligation list; broadened retirement rejects.",
+    "Bound exact oscillator gap content rather than only list length; blank or substituted gaps reject.",
+    "Final test-only strengthening explicitly shorts every source NC pin to AGND and requires rejection; 17 normal and 17 optimized tests rerun PASS."
+  ],
+  "reviewed_UTC": "2026-10-17T04:13:42.453905+00:00",
+  "reviewed_sha256": {
+    "design/architecture-278/implementation/README.md": "1d41359b660186833abeba87e9a74f88ad69c56853ed2dd9039a609e55a6a4be",
+    "design/architecture-278/implementation/candidate-netlist.json": "7c238b4caa383fcc7721a1e58c1c883330d1865dea5c60e2e00fc7e6b7806913",
+    "design/architecture-278/implementation/stage16/inputs-report.json": "214297b7b19f9ae6027d1f036407f005319929961338631896f984655a4c0ebc",
+    "design/architecture-278/implementation/stage18/compatibility-report.json": "f6a10e207f13e5aaa6079cee310c45d5c2eb27246a0cddfb0cf1c054045d6476",
+    "design/architecture-278/implementation/stage23/candidate-selection.patch.json": "dad1bc2fef5c14c6141c5aeb8e0d4b3bdac5ca83b7be1dc72cba92fcc2344da7",
+    "design/architecture-278/implementation/stage23/retrieval.json": "dc2a2f5a950cb861aeb7d99eb1bc23c678ff7213864303103e550dd6ad0eacfd",
+    "design/architecture-278/implementation/stage24/definitions.json": "17f25e8c774b4ccd074df0256fa3e5e111710cdfecf150779fb15c10851e389b",
+    "design/architecture-278/implementation/stage25/fabrication-request.md": "692e96c4cad40437627716c7e76b0331fc24be1d8eb0af0912d7f0df48a0fd72",
+    "design/architecture-278/implementation/stage26/README.md": "6843002367edf1e05ae4c70a122beb418e282ef224fa7d77496c2c0cf5bfa482",
+    "design/architecture-278/implementation/stage26/acceptance-report.json": "c1535d67a785e49015058d7b68db3c2a75e054c7e3e2fd23e414b231ede6987d",
+    "design/architecture-278/implementation/stage26/acceptance.json": "9e43b2eeb5562aeafcb24040f49bf35c4d2f741d6b29d5b42d84f2f6b83c294d",
+    "design/architecture-278/implementation/stage26/candidate-inventory.json": "e5346f58746c18952af7a11279fc064a6f425d73167f28366b95e6f422e3f0ec",
+    "design/architecture-278/implementation/stage26/functional-checks.json": "28df171b7680285d1d8b10b3eed5574cbe87a87f2b17603322c6ccde74d2e79d",
+    "design/architecture-278/implementation/stage26/oscillator-calibration.json": "b460d6e4a6b6ab8083dcbd3e13ae38176ced457e961b765d518e0984b185090b",
+    "design/spec/modules/oscillator.py": "c83a10adb792265798ae453af4380300b6fde8d1e26afe6dca240412eb965d3e",
+    "design/standard/electrical-standard.json": "185f4775082a36873954323a2377844e0694631418ac510db08e3a0d39b56e53",
+    "doc/src/content/docs/architecture/osc-block-osc.mdx": "124b1e62dcb2a24491c7bd3b871e79b95cd0fe402b0643115dcfa17367928b55",
+    "scripts/architecture278/implementation/check_source.py": "c4b50b4f27cbb36b53e4b127d95c385e2ce421442698213c2740bbe9030409af",
+    "scripts/architecture278/implementation/stage26_acceptance.py": "e20ee50f8bfd1a1ee916cf1f508a78260c529343ba8cb3ac08d1abead09bb828",
+    "scripts/architecture278/implementation/test_stage26_acceptance.py": "5f67a88cec98055a98d790448ebe336ed44f2cc80f917f055e175a37939858db"
+  },
+  "reviewer": "independent subagent /root/stage21_independent_review",
+  "reviewer_changes": [
+    "design/architecture-278/implementation/stage26/independent-review.md",
+    "design/architecture-278/implementation/stage26/independent-review.json"
+  ],
+  "scope": "Current scoped A01-A06 utility acceptance, 19 source-candidate selections, oscillator calibration clarification and historical-check integration.",
+  "status": "PASS_SOURCE_REVIEW_ONLY"
+}

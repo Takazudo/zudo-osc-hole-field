@@ -1,0 +1,225 @@
+{
+  "VCO_1V_per_oct_requirement_preserved": true,
+  "actual_missing_items": [
+    "HF_TRIM RVO1109 has required20kohm source value but blank exact MPN/supplier; existing10kohm TC33X catalog identity is not a20kohm substitute.",
+    "As-built base/scale/HF adjustment reach, interaction and temperature/nonlinearity qualification unavailable; no proven actuator shortage from source alone."
+  ],
+  "actual_range_qualification": null,
+  "authority": "OWNER_CLARIFICATION_RECORDED_WITHOUT_CIRCUIT_CHANGE",
+  "base_pitch_trim_fixes_scale": false,
+  "front_tuning_packages": {
+    "RV104": {
+      "attributes": {
+        "BoardRegion": "control",
+        "Island": "IO_CONTROL:O1",
+        "LCSC": "",
+        "MPN": "PTV09A-4020F-B104",
+        "Manufacturer": "Bourns",
+        "PanelUid": "C:O1.TUNE",
+        "Role": "dc_control_source:RV"
+      },
+      "footprint": "zudo-osc-hole-field:PTV09A-4020F",
+      "owner": "front-control",
+      "pins": {
+        "1": "/O1/LOCAL_REFN5",
+        "2": "/O1/C83f36b_W",
+        "3": "/O1/LOCAL_REF5",
+        "4": null,
+        "5": null
+      },
+      "ref": "RV104",
+      "units": [
+        0
+      ]
+    },
+    "RV105": {
+      "attributes": {
+        "BoardRegion": "control",
+        "Island": "IO_CONTROL:O1",
+        "LCSC": "",
+        "MPN": "PTV09A-4020F-B104",
+        "Manufacturer": "Bourns",
+        "PanelUid": "C:O1.FINE",
+        "Role": "dc_control_source:RV"
+      },
+      "footprint": "zudo-osc-hole-field:PTV09A-4020F",
+      "owner": "front-control",
+      "pins": {
+        "1": "/O1/LOCAL_REFN5",
+        "2": "/O1/Ce35646_W",
+        "3": "/O1/LOCAL_REF5",
+        "4": null,
+        "5": null
+      },
+      "ref": "RV105",
+      "units": [
+        0
+      ]
+    }
+  },
+  "global_tracking_numeric_targets_changed": false,
+  "inspected_trim_packages": {
+    "BASE_TRIM": {
+      "attributes": {
+        "BoardRegion": "core",
+        "Island": "OSC_CORE:O1",
+        "LCSC": "",
+        "MPN": "TC33X-2-103E",
+        "Manufacturer": "Bourns",
+        "PanelUid": "",
+        "Role": "oscillator:BASE_TRIM"
+      },
+      "footprint": "zudo-osc-hole-field:Potentiometer_Bourns_TC33X_Vertical",
+      "owner": "rear-core",
+      "pins": {
+        "1": "/O1/BASE_REFN5",
+        "2": "/O1/BASE_ADJ",
+        "3": "/O1/BASE_REF5"
+      },
+      "ref": "RVO1106",
+      "units": [
+        0
+      ]
+    },
+    "HF_TRIM": {
+      "attributes": {
+        "BoardRegion": "core",
+        "Island": "OSC_CORE:O1",
+        "LCSC": "",
+        "MPN": "",
+        "Manufacturer": "",
+        "PanelUid": "",
+        "Role": "oscillator:HF_TRIM"
+      },
+      "footprint": "zudo-osc-hole-field:Potentiometer_Bourns_TC33X_Vertical",
+      "owner": "rear-core",
+      "pins": {
+        "1": "/O1/HF_PIN",
+        "2": "/O1/LINEAR_REF",
+        "3": "AGND"
+      },
+      "ref": "RVO1109",
+      "units": [
+        0
+      ]
+    },
+    "RZ_TRIM": {
+      "attributes": {
+        "BoardRegion": "core",
+        "Island": "OSC_CORE:O1",
+        "LCSC": "",
+        "MPN": "TC33X-2-103E",
+        "Manufacturer": "Bourns",
+        "PanelUid": "",
+        "Role": "oscillator:RZ_TRIM"
+      },
+      "footprint": "zudo-osc-hole-field:Potentiometer_Bourns_TC33X_Vertical",
+      "owner": "rear-core",
+      "pins": {
+        "1": "/O1/RZ_TRIM",
+        "2": "AGND",
+        "3": "AGND"
+      },
+      "ref": "RVO1107",
+      "units": [
+        0
+      ]
+    },
+    "SCALE_TRIM": {
+      "attributes": {
+        "BoardRegion": "core",
+        "Island": "OSC_CORE:O1",
+        "LCSC": "",
+        "MPN": "TC33X-2-102E",
+        "Manufacturer": "Bourns",
+        "PanelUid": "",
+        "Role": "oscillator:SCALE_TRIM"
+      },
+      "footprint": "zudo-osc-hole-field:Potentiometer_Bourns_TC33X_Vertical",
+      "owner": "rear-core",
+      "pins": {
+        "1": "/O1/SCALE_ADJ",
+        "2": "AGND",
+        "3": "AGND"
+      },
+      "ref": "RVO1108",
+      "units": [
+        0
+      ]
+    },
+    "SINE_LEVEL": {
+      "attributes": {
+        "BoardRegion": "core",
+        "Island": "OSC_CORE:O1",
+        "LCSC": "",
+        "MPN": "TC33X-2-103E",
+        "Manufacturer": "Bourns",
+        "PanelUid": "",
+        "Role": "oscillator:SINE_LEVEL"
+      },
+      "footprint": "zudo-osc-hole-field:Potentiometer_Bourns_TC33X_Vertical",
+      "owner": "rear-core",
+      "pins": {
+        "1": "/O1/SINE_GAIN_TRIM",
+        "2": "/O1/SINE_GAIN_SUM",
+        "3": "/O1/SINE_GAIN_SUM"
+      },
+      "ref": "RVO1111",
+      "units": [
+        0
+      ]
+    },
+    "SINE_SYMMETRY": {
+      "attributes": {
+        "BoardRegion": "core",
+        "Island": "OSC_CORE:O1",
+        "LCSC": "",
+        "MPN": "TC33X-2-103E",
+        "Manufacturer": "Bourns",
+        "PanelUid": "",
+        "Role": "oscillator:SINE_SYMMETRY"
+      },
+      "footprint": "zudo-osc-hole-field:Potentiometer_Bourns_TC33X_Vertical",
+      "owner": "rear-core",
+      "pins": {
+        "1": "/O1/SINE_REFN5",
+        "2": "/O1/SINE_OFFSET",
+        "3": "/O1/SINE_REF5"
+      },
+      "ref": "RVO1110",
+      "units": [
+        0
+      ]
+    }
+  },
+  "intent_en": "Use existing rear-accessible trimmers for individual oscillator calibration; final playing pitch is manually tuned by the user.",
+  "native": "NOT_RUN",
+  "new_controls_added": 0,
+  "new_controls_required_by_source_review": false,
+  "owner_quote_ja": "オシレーターは、一般的には後ろ側とかにあるpotentiometer で基本音階なんかを調整し、厳密なピッチ調整は最後人の手でとなっているかと思うので、多分そんな感じで良いと思う。おそらく部品個体差もあるとおもうので、それをら調整する役割として後ろ側のpotentiometer が用意されることが多い",
+  "physical_calibration": "NOT_RUN",
+  "rear_access": "Existing rear-core allocation and tool reservations retained; physical access not qualified",
+  "scope": "O1-O5 family intent; exact inspected candidate instance O1; no replication, calibration or hardware change",
+  "shared_octave_span": {
+    "attributes": {
+      "Island": "OSC_SHARED_REFERENCE",
+      "LCSC": "",
+      "MPN": "TC33X-2-102E",
+      "Manufacturer": "Bourns",
+      "PanelUid": "",
+      "Role": "octave_reference:RV_GAIN"
+    },
+    "footprint": "zudo-osc-hole-field:Potentiometer_Bourns_TC33X_Vertical",
+    "owner": "shared-reference",
+    "pins": {
+      "1": "/OCTAVE_REF/C5c0054_GAIN_TRIM",
+      "2": "/OCTAVE_REF/OCT_TOP",
+      "3": "/OCTAVE_REF/OCT_TOP"
+    },
+    "ref": "RV1601",
+    "units": [
+      0
+    ]
+  },
+  "upstream_quantizer_fixes_downstream_tracking": false
+}

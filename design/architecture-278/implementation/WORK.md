@@ -746,3 +746,54 @@ unmerged. No native execution, consumed admission reuse, production CAD, archite
 adoption or electrical acceptance. Next native request: NONE. Next action is the
 specific service-envelope/protocol and manufacturing-route decision above, not
 another unchanged sourcing/tolerance audit.
+
+## Stage26 — owner-scoped musical utility acceptance and existing oscillator trims
+
+Current authority supersedes the Stage25 precision-envelope next step for A01–A06.
+The owner's 2026-10-17 clarification defines ATTEN/OFFSET as coarse musical CV
+manipulation. Stage26 preserves that quote and explicitly retires the inherited
+2 mV static criterion and, as an engineering interpretation, the associated 1 mV
+precision load-change criterion for these six modules only. They are NOT APPLICABLE,
+not passed. No replacement numeric accuracy limit is invented. Global OSC-ES-1,
+VCO 1 V/oct, octave references and other precision paths remain unchanged. Safety,
+stability, range, noise, clipping/headroom, loading, settling and manufacturing
+checks remain explicit and physically NOT RUN.
+
+RV1308 remains B104 100 kΩ; the Stage25 B103 proposal is unnecessary for the clarified
+use, not declared defective. The 19 Stage23 exact passive identities are selected
+in a separate source candidate inventory, preserving all 118 references, 561 pins,
+154 unit UUIDs, annotation flags, nets and NCs. Only four selected-part properties
+change. C7105 X7R applies solely to its nonprecision manual OFFSET smoothing role;
+C7104 C0G and global dielectric requirements remain. Dated supplier receipts are
+retained; identity selection does not establish stock allocation, ratings under
+actual conditions, assembly qualification or procurement release.
+
+The additional oscillator clarification is recorded alongside this scope. Existing
+BASE, RZ, SCALE, HF and sine trims plus the shared octave span and front TUNE/FINE
+already provide the intended functional controls. Base pitch adjustment does not
+correct scale/nonlinearity, and an upstream quantizer cannot correct downstream
+tracking. No new controls or circuit changes are justified by source inspection.
+RVO1109's actual 20 kΩ HF-trim exact MPN remains missing. Adjustment reach across
+component spread and temperature is unqualified, not demonstrated inadequate.
+No physical calibration or hardware acceptance is claimed.
+
+The current source entrypoint reproduces the immutable f30d653e checkpoint and
+180 historical regressions in a detached disposable worktree, then verifies the
+live owner scope, deterministic inventory, protected paths and independent review.
+This preserves old strict entrypoint hashes and historical native FAIL receipts.
+New adversarial checks exercise scope spillover, fabricated limits/passes, omitted
+safety checks, substitutions, unit metadata/identity loss, rewiring, missing units
+and oscillator role confusion. Final check results and hashes appear in the PR
+checkpoint and Stage26 review, rather than rewriting historical outcomes.
+
+Next bounded work is the retained DIN manufacturing position/fixing/process and
+externally assembled wiring/termination/strain-relief definition. HF-trim sourcing
+remains on the oscillator path. No native request (NONE), consumed admission reuse,
+production CAD, locked placement, decision.json, KEEP_K1402_INCUMBENT, parked PR,
+architecture adoption, purchase or merge. PR286 remains draft and unmerged.
+
+Stage26 integration verification: immutable f30d653e full source reproduction and
+180 historical regressions PASS; `pnpm check` and `pnpm circuit:check` PASS (manual
+68-line inventory, no schematic/placement binding). Stage26 17 normal and 17
+optimized regression tests, deterministic regeneration/cache hashes and independent
+source review PASS. These are source checks only; native and physical remain NOT RUN.
