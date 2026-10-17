@@ -74,7 +74,7 @@ One slot channel per arch, on the rear carrier (post on crossmember:rear:0). Coo
 - Sleeve bottoms and block entries include the 1.00 mm registration allowance in z; the cap includes the long-cable and registration corner.
 - Each sleeve bottom leaves the fan-in plus an S-bend length (5.69 / 5.62 mm) for a carrier registration error of 1.00 mm at the maker radius (11.75 / 11.46 mm).
 - Each block entry sits the 15 mm travel + fan-in + 8.00 mm grip above its exit, so a withdrawn housing's fan-in and the gripping fingers stay below RG34.
-- The middle sleeves contain the lower part of bend 2 (up to 12.00 mm in-plane offset at the low corner); their inner face is the former arc, the rest of the former stays fixed.
+- Each middle sleeve encloses the whole of bend 2 and, at the low corner, the start of the top leg (up to 12.00 mm in-plane). It has no inner arc: the bend-2 corner belongs to the settable former, which runs down through the sleeve zone.
 - Outer gap between the J-SIG and J-PWR channels 0.85 mm (bridged by the channel joint); interior hulls 3.40 mm apart in plan, enough for both walls.
 - Closure gap ≤ 0.20 mm, below half of the smallest wire OD 0.76 mm: no conductor can enter or pass a parting line.
 
@@ -182,8 +182,8 @@ Each value is the generator's sum of recorded terms (V/R from the A01 specificat
 | J-SIG | 5 | /A01/OFFSET_BUFFER | 0.05 | 0.1349 | – | UNKNOWN | 0.03 % |
 | J-SIG | 6 | /A01/SUM_NEG | 0.05 | 0.1349 | – | UNKNOWN | 0.03 % |
 | J-SIG | 7 | AGND | 4.157 | 11.28 | 37.28 | UNKNOWN | 7.46 % |
-| J-PWR | 1 | +12V | 8.993 | 19.01 | 44.01 | UNKNOWN | 8.80 % |
-| J-PWR | 2 | -12V | 8.993 | 17.81 | 42.81 | UNKNOWN | 8.56 % |
+| J-PWR | 1 | +12V | 10.79 | 19.01 | 44.01 | UNKNOWN | 8.80 % |
+| J-PWR | 2 | -12V | 9.993 | 17.81 | 42.81 | UNKNOWN | 8.56 % |
 | J-PWR | 3 | +5V | 0.09902 | 0.1041 | – | UNKNOWN | 0.02 % |
 | J-PWR | 4 | AGND | 4.157 | 11.28 | 37.28 | UNKNOWN | 7.46 % |
 
@@ -236,7 +236,7 @@ Smallest questions or measurements:
 - inter-carrier registration within 1 mm (requirement)
 - RG34 profile and mounting tolerances 0.1 / 0.1 mm
 - lids and sleeves closed on their stops; only one end of a cable withdrawn at a time
-- each former set at assembly so the top leg rests on it (gap <= 0.25 mm)
+- each former set at assembly so the top leg rests on it (gap <= 0.25 mm); both bend corners belong to that settable former, and the sleeves carry no inner arc
 - the legs below the former stay inside their sleeve bores; extra slack from in-bore leg offset is not added (about 0.06 mm by the independent review)
 
 ## Unresolved degrees of freedom

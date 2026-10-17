@@ -86,7 +86,7 @@
   },
   "rg34": {
     "role": "STUDY_RETENTION_DESIGN",
-    "title": "RG34: one slot channel per arch on the rear carrier (two walls, end walls, cap, former), with a removable split sleeve on each leg",
+    "title": "RG34: one slot channel per arch on the rear carrier (two walls, end walls, cap, settable former), with a removable split sleeve on each leg",
     "post_box_mm": [
       237.5,
       167.5,
@@ -102,7 +102,8 @@
     "lid_side": "-n (away from the core for J-PWR; open space for J-SIG)",
     "joint": "the J-SIG channel is fastened to the J-PWR channel where their outer walls are closest; the J-PWR channel stands on the post",
     "material": "same as the carriers (6061-T6) for the strength check; cable-contact finish (hard anodise or PTFE coat) UNCONFIRMED",
-    "service_withdrawal_ends_at_once": 1
+    "service_withdrawal_ends_at_once": 1,
+    "former_scope": "The former is one settable part: the floor under the top leg and BOTH bend corners, including the bend-2 corner that runs down through the middle sleeve zone. The sleeves carry no inner arc; each closes only the outer side and the two n-walls of its leg and bend region. A fixed arc in the sleeve would let the cable cut between arcs at the corners and add slack (about 0.6 mm, independent review), so it is excluded by design."
   },
   "current_budget": {
     "basis": "A01 circuit specification and evidence bundles (Stage34); replaces the Stage33 J-PWR inputs, which were Stage8 X1 values",
@@ -727,14 +728,14 @@
               "term": "ADG5412F IDD, U7102/U7103",
               "kind": "current",
               "A": [
-                null,
+                0.0009,
                 0.0013
               ],
               "count": 2,
               "sources": [
                 "R-STAGE8-ADG-EVIDENCE"
               ],
-              "basis": "ADI ADG5412F rev C Table 1 normal mode full-temperature maximum at +/-16.5 V (conditional at +/-12 V); no typical recorded"
+              "basis": "ADI ADG5412F rev C Table 1 normal mode IDD: 0.9 mA typical, 1.3 mA full-temperature maximum at +/-16.5 V (conditional at +/-12 V)"
             },
             {
               "term": "magnitude senses R7130-R7132 (driven from the amplifier outputs; either rail)",
@@ -893,14 +894,14 @@
               "term": "ADG5412F ISS, U7102/U7103",
               "kind": "current",
               "A": [
-                null,
+                0.0005,
                 0.0007
               ],
               "count": 2,
               "sources": [
                 "R-STAGE8-ADG-EVIDENCE"
               ],
-              "basis": "ADI ADG5412F rev C Table 1 normal mode full-temperature maximum at +/-16.5 V (conditional at +/-12 V); no typical recorded"
+              "basis": "ADI ADG5412F rev C Table 1 normal mode ISS: 0.5 mA typical, 0.7 mA full-temperature maximum at +/-16.5 V (conditional at +/-12 V)"
             },
             {
               "term": "magnitude senses R7130-R7132 (driven from the amplifier outputs; either rail)",

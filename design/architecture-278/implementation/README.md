@@ -21,7 +21,8 @@ wire ledger.
 - **Wire:** the selection stays null.
   - Thermax M22759/18-26 fails nothing: its current checks are CONDITIONAL and there is no maker bend
     radius.
-  - Alpha 6710 / 1851 (AWG28/30) lack a JST contact rating; that is UNKNOWN, not a failure.
+  - Alpha 1852 / 6710 (AWG28) and 1851 (AWG30) lack a JST contact rating; that is UNKNOWN, not a
+    failure.
 - **NOT RUN:** M34-01…08, M-01, M-09, M-12, KiCad, ERC/DRC, simulation, fabrication output and
   energisation.
 

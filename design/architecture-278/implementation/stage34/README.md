@@ -35,7 +35,8 @@ rear-cover inner face at z 106.21, but the cover is at z 105, a 1.21 mm shortfal
 K4 with 2.65 mm spare. The smallest changes are both outside the approved geometry, so they are owner
 decisions (proposals):
 - a rear cover at least 1.21 mm deeper (enclosure); or
-- a J-SIG design length about 2.42 mm shorter, taken from the inherited 10 mm service slack.
+- a J-SIG design length about 2.42 mm shorter, taken from the inherited 10 mm service slack (its
+  consequences for T1–T11 and the Stage32 length rule are not evaluated).
 
 Nothing is adopted.
 
@@ -46,8 +47,11 @@ RG34 is one slot channel per arch on the rear carrier, standing on a post on `cr
 - **End walls and a cap** above the single-end raised arch at its highest corner.
 - **A former** under the top leg, whose corners follow the bend inner surface. It stops the arch from
   sagging and the bends from tightening, and **its height is set at assembly** so the top leg rests on it.
-- **Two removable split sleeves**, one on each leg. Each middle sleeve contains the lower part of
-  bend 2, and its inner face is the former arc.
+- **Two removable split sleeves**, one on each leg. Each closes only the outer side and the two walls of
+  its leg region. The middle sleeve encloses the whole of bend 2 (and, at the low corner, the start of
+  the top leg). It has no inner arc: both bend corners belong to the settable former, which runs down
+  through the sleeve zone. A fixed arc in the sleeve would let the cable cut between arcs and add about
+  0.6 mm of slack, so it is excluded by design.
 
 Sleeve bottoms and block entries include the 1.0 mm registration allowance in z. A withdrawn housing,
 its fan-in and the operator's grip therefore stay below RG34 even with the carriers offset.
@@ -105,7 +109,7 @@ its fan-in and the operator's grip therefore stay below RG34 even with the carri
   - IN_BUFFER / OFFSET_BUFFER / SUM_NEG: 0.05 mA typical, ≤ 0.135 mA conditional.
 - **AGND (each of J-SIG 2, 7 and J-PWR 4):** sharing is UNKNOWN, so each conductor carries the whole
   jack AGND total: 4.2 mA typical, 11.3 mA conditional, 37.3 mA with the output-forced fault.
-- **J-PWR:** +12V 19.0 mA and −12V 17.8 mA conditional (44.0 / 42.8 mA fault case); the LM393B supply
+- **J-PWR:** +12V 10.8 mA and −12V 10.0 mA typical; 19.0 mA and 17.8 mA conditional (44.0 / 42.8 mA fault case); the LM393B supply
   current is UNKNOWN.
 - **No conductor has an established maximum.** No fuse, PTC or limiting element exists upstream. A
   short is bounded only by an unselected source requirement (2.1 A), above the JST 1.0 A rating.
@@ -116,7 +120,7 @@ and service flex separate. Rating comparisons against conditional currents are C
 - **Thermax M22759/18-26 (AWG26, ETFE, tin-plated 19/38, OD 0.762–0.864 mm, 600 V, 150 °C):** fails
   nothing. Its current checks are CONDITIONAL, it has no maker bend radius, and its minimum OD is
   0.002 mm above the JST floor.
-- **Alpha 6710 (AWG28) and 1851 (AWG30):** fail nothing. JST gives no contact rating at those gauges.
+- **Alpha 1852 and 6710 (AWG28) and 1851 (AWG30):** fail nothing. JST gives no contact rating at those gauges.
   That is UNKNOWN evidence, not a demonstrated failure, and the AWG26 rating is not transferred.
 - **Every other identified wire fails the full-tolerance OD window, the plating or the temperature.**
 - **No maker states a repeated-flex radius.**

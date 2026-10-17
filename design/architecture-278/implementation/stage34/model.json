@@ -9,7 +9,7 @@
     "broader_change_proposals": {
       "carrier_registration_requirement": "The jack, middle and rear carriers must register to each other within registration_allowance_mm at the enclosure cleats; the cleats are not designed, so this is a requirement on a future enclosure, proposed only",
       "front_jack_board_procedure": "Front jack board removal starts by removing RG34: the J-PWR channel is within K4 of the A01-jack M4 screwdriver column (1.63 mm; -0.34 mm robust with the registration allowance). Proposed only; the RG34 fit/removal path is not evaluated",
-      "j_sig_cover_conflict": "The J-SIG RG34 cap needs the rear cover inner face higher than z 105 or a shorter J-SIG design length (below the inherited 10 mm service slack). Either is a change outside the approved geometry and is proposed for an owner decision only",
+      "j_sig_cover_conflict": "The J-SIG RG34 cap needs the rear cover inner face higher than z 105 or a shorter J-SIG design length (below the inherited 10 mm service slack). Either is a change outside the approved geometry and is proposed for an owner decision only. The consequences of a shorter J-SIG (T1-T11 and the Stage32 length rule with about 7.6 mm service slack) are not evaluated",
       "rg34_mount_on_rear_carrier": "A post on crossmember:rear:0 that carries the RG34 retention channels. It changes the rear carrier (a fastening interface on the crossmember top face) and is proposed only",
       "rg34_outside_reserved_volumes": "RG34 walls stand up to guide_wall_mm + guide_clearance_mm - 0.625 mm outside the RV-ARCH slab half-thickness and the sleeves and block occupy the RV-ACCESS columns above the grip zones; proposed only",
       "service_procedure_restriction": "With RG34 closed, only one end of a cable may be withdrawn at a time; a both-ends withdrawal needs the channel lid opened. Proposed only"
@@ -959,6 +959,7 @@
       ]
     },
     "spec": {
+      "former_scope": "The former is one settable part: the floor under the top leg and BOTH bend corners, including the bend-2 corner that runs down through the middle sleeve zone. The sleeves carry no inner arc; each closes only the outer side and the two n-walls of its leg and bend region. A fixed arc in the sleeve would let the cable cut between arcs at the corners and add slack (about 0.6 mm, independent review), so it is excluded by design.",
       "joint": "the J-SIG channel is fastened to the J-PWR channel where their outer walls are closest; the J-PWR channel stands on the post",
       "lid_side": "-n (away from the core for J-PWR; open space for J-SIG)",
       "material": "same as the carriers (6061-T6) for the strength check; cable-contact finish (hard anodise or PTFE coat) UNCONFIRMED",
@@ -976,7 +977,7 @@
       ],
       "role": "STUDY_RETENTION_DESIGN",
       "service_withdrawal_ends_at_once": 1,
-      "title": "RG34: one slot channel per arch on the rear carrier (two walls, end walls, cap, former), with a removable split sleeve on each leg"
+      "title": "RG34: one slot channel per arch on the rear carrier (two walls, end walls, cap, settable former), with a removable split sleeve on each leg"
     }
   },
   "status": "DESIGN_STUDY_ONLY"
