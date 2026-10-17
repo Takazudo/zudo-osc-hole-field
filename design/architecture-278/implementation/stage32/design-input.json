@@ -1,0 +1,812 @@
+{
+  "status": "DESIGN_STUDY_INPUT_NOT_MEASURED",
+  "scope": "A01 J-SIG/J-PWR between A01-jack and A01-middle only: Stage31 B as the working option, its retention, unmating, release and the core 40 mm service, and the neighbouring volume those motions actually cross. Nothing is applied to hardware or canonical CAD.",
+  "classes": {
+    "MAKER_DOC": "maker or fabricator document (sources.json), with URL, revision and locator",
+    "EXISTING_DESIGN": "an existing repository design or study value (sources.json REPO_DESIGN)",
+    "DESIGN_ASSUMPTION": "a value chosen or derived for this study; the note says why",
+    "UNCONFIRMED": "no source; the value stays null and is never used as a fact"
+  },
+  "parameters": {
+    "wire_od_max_mm": {
+      "value": 1.0,
+      "class": "MAKER_DOC",
+      "sources": [
+        "S-JST-EGH"
+      ],
+      "note": "Upper end of the SSHL-002T-P0.2 insulation OD window; every envelope uses it."
+    },
+    "wire_od_min_mm": {
+      "value": 0.76,
+      "class": "MAKER_DOC",
+      "sources": [
+        "S-JST-EGH"
+      ]
+    },
+    "wire_awg_range": {
+      "value": [
+        30,
+        26
+      ],
+      "class": "MAKER_DOC",
+      "sources": [
+        "S-JST-EGH"
+      ]
+    },
+    "gh_voltage_rating_V": {
+      "value": 50,
+      "class": "MAKER_DOC",
+      "sources": [
+        "S-JST-EGH"
+      ]
+    },
+    "gh_temperature_max_C": {
+      "value": 105,
+      "class": "MAKER_DOC",
+      "sources": [
+        "S-JST-EGH"
+      ]
+    },
+    "gh_mated_height_mm": {
+      "value": 7.3,
+      "class": "MAKER_DOC",
+      "sources": [
+        "S-JST-EGH"
+      ],
+      "note": "Reference value in parentheses on p.2."
+    },
+    "gh_housing_height_mm": {
+      "value": 5.7,
+      "class": "MAKER_DOC",
+      "sources": [
+        "S-JST-EGH"
+      ]
+    },
+    "gh_header_height_mm": {
+      "value": 4.05,
+      "class": "MAKER_DOC",
+      "sources": [
+        "S-JST-EGH"
+      ]
+    },
+    "gh_unmating_angle_deg": {
+      "value": 15,
+      "class": "MAKER_DOC",
+      "sources": [
+        "S-JST-HANDLING"
+      ],
+      "note": "General JST precaution: hold the wire bundle and operate within 15 degrees of the mating axis; a GH-specific manual value would take priority (S-JST-GATED, not obtained)."
+    },
+    "gh_unmating_stroke_mm": {
+      "value": null,
+      "class": "UNCONFIRMED",
+      "sources": [
+        "S-JST-GATED"
+      ],
+      "note": "No JST document read states an unmating stroke."
+    },
+    "gh_unmating_force_N": {
+      "value": null,
+      "class": "UNCONFIRMED",
+      "sources": [
+        "S-JST-GATED"
+      ]
+    },
+    "gh_latch_side": {
+      "value": null,
+      "class": "UNCONFIRMED",
+      "sources": [
+        "S-JST-GATED"
+      ],
+      "note": "The catalog says 'large outer latch'; which long face carries it is not stated. Both faces are evaluated."
+    },
+    "gh_bundle_grip_length_mm": {
+      "value": null,
+      "class": "UNCONFIRMED",
+      "note": "Straight bundle length needed to hold the bundle within 15 degrees; not stated by JST."
+    },
+    "geometric_separation_mm": {
+      "value": 2.45,
+      "class": "DESIGN_ASSUMPTION",
+      "derivation": "header height 4.05 - (mated height 7.3 - housing height 5.7)",
+      "note": "Derived from JST reference dimensions only; it is not an unmating stroke and is not used to shorten the release travel."
+    },
+    "release_travel_mm": {
+      "value": 15,
+      "class": "EXISTING_DESIGN",
+      "sources": [
+        "R-STAGE10"
+      ],
+      "note": "Stage10 sweep basis 'Mated 7.3 mm + 15 mm axial release'. Kept as the design basis; shorter travels are sensitivity only."
+    },
+    "release_travel_sensitivity_mm": {
+      "value": [
+        2.45,
+        5,
+        7.5,
+        10,
+        12.5,
+        15
+      ],
+      "class": "DESIGN_ASSUMPTION",
+      "note": "Sensitivity only; 2.45 is the derived geometric separation, 15 the Stage10 basis."
+    },
+    "sweep_xy_margin_mm": {
+      "value": 2.0,
+      "class": "EXISTING_DESIGN",
+      "sources": [
+        "R-STAGE10"
+      ]
+    },
+    "wire_bend_rule_x_od": {
+      "value": 10,
+      "class": "MAKER_DOC",
+      "sources": [
+        "S-AW-1852",
+        "S-AW-1853",
+        "S-AW-2843-7"
+      ],
+      "note": "Every identified candidate states 'Bend Radius 10X Cable Diameter'. No wire is selected."
+    },
+    "selected_wire_mpn": {
+      "value": null,
+      "class": "UNCONFIRMED",
+      "note": "Stage28 Q-H02 is still open."
+    },
+    "design_bend_radius_mm": {
+      "value": 5.0,
+      "class": "EXISTING_DESIGN",
+      "sources": [
+        "R-STAGE31"
+      ],
+      "note": "Stage31 assumption (5 x OD). Checked here against the maker rule; it is not raised by convenient rounding."
+    },
+    "bend_radius_sensitivity_mm": {
+      "value": [
+        5.0,
+        7.5,
+        8.9,
+        10.0,
+        11.0
+      ],
+      "class": "DESIGN_ASSUMPTION",
+      "note": "5 = Stage31 route; 8.9-11 = maker 10 x OD for the candidate wires incl. the bundle offset."
+    },
+    "round_bundle_factor": {
+      "value": {
+        "J-SIG": 3.0,
+        "J-PWR": 2.414213562373095
+      },
+      "class": "DESIGN_ASSUMPTION",
+      "note": "Hexagonal 7 and ring of 4; holds only for a tightly dressed bundle (sleeve or wrap). A loose bundle is not covered."
+    },
+    "conductors": {
+      "value": {
+        "J-SIG": 7,
+        "J-PWR": 4
+      },
+      "class": "EXISTING_DESIGN",
+      "sources": [
+        "R-STAGE31"
+      ]
+    },
+    "placement_margin_mm": {
+      "value": 0.5,
+      "class": "EXISTING_DESIGN",
+      "sources": [
+        "R-STAGE31"
+      ],
+      "note": "Wire placement allowance; explicit part tolerances are added on top of it in Stage32."
+    },
+    "robust_spare_mm": {
+      "value": 0.15,
+      "class": "EXISTING_DESIGN",
+      "sources": [
+        "R-STAGE31"
+      ],
+      "note": "Stage31 K4 threshold; Stage32 applies it after the explicit tolerance stack and does not relax it."
+    },
+    "straight_lead_mm": {
+      "value": 2.0,
+      "class": "EXISTING_DESIGN",
+      "sources": [
+        "R-STAGE31"
+      ]
+    },
+    "service_slack_mm": {
+      "value": 10,
+      "class": "EXISTING_DESIGN",
+      "sources": [
+        "R-STAGE10"
+      ]
+    },
+    "core_extraction_mm": {
+      "value": 40,
+      "class": "EXISTING_DESIGN",
+      "sources": [
+        "R-STAGE10"
+      ]
+    },
+    "panel_rear_z_mm": {
+      "value": 2.0,
+      "class": "EXISTING_DESIGN",
+      "sources": [
+        "R-STAGE10"
+      ],
+      "note": "Stage10 panel thickness proposal 2 mm, panel front at z 0."
+    },
+    "foreign_pcb_plane_z_mm": {
+      "value": [
+        20.0,
+        21.6
+      ],
+      "class": "EXISTING_DESIGN",
+      "sources": [
+        "R-ASSEMBLY-DEFAULT"
+      ],
+      "note": "A code default, not a designed board. Its outline does not exist."
+    },
+    "foreign_board_outline": {
+      "value": null,
+      "class": "UNCONFIRMED",
+      "note": "No A02-A06 / E2-E5 board outline, plane, thickness or support exists in architecture-278."
+    },
+    "foreign_rear_side_heights_mm": {
+      "value": null,
+      "class": "UNCONFIRMED"
+    },
+    "toggle_body_and_terminal_mm": {
+      "value": {
+        "bushing": 5.59,
+        "body": 8.64,
+        "terminal_beyond_body": 3.3,
+        "nut": 1.19,
+        "washer": 0.46,
+        "tolerance_2_decimal": 0.25
+      },
+      "class": "MAKER_DOC",
+      "sources": [
+        "S-DW2-2MS3"
+      ],
+      "note": "Drawing of the -5 suffix; equivalence to the unsuffixed 2MS3T1B1M2QES in the lock is OPEN (R-TOGGLE-FACTS)."
+    },
+    "toggle_seating_datum": {
+      "value": null,
+      "class": "UNCONFIRMED",
+      "sources": [
+        "R-TOGGLE-FACTS"
+      ],
+      "note": "Seated board-to-shoulder datum is UNSOURCED."
+    },
+    "carrier_material": {
+      "value": "6061-T6, machined from extrusion",
+      "class": "EXISTING_DESIGN",
+      "sources": [
+        "R-STAGE8-MATERIAL",
+        "R-STAGE10"
+      ]
+    },
+    "carrier_E_MPa": {
+      "value": 70000,
+      "class": "MAKER_DOC",
+      "sources": [
+        "S-AALCO-6061"
+      ]
+    },
+    "carrier_proof_MPa": {
+      "value": 240,
+      "class": "MAKER_DOC",
+      "sources": [
+        "S-AALCO-6061"
+      ],
+      "note": "Minimum 0.2 % proof stress of the supplier product form; machined-part certification is not established."
+    },
+    "strength_safety_factor": {
+      "value": 1.5,
+      "class": "DESIGN_ASSUMPTION",
+      "note": "On the minimum proof stress, applied to the conservative peak stress."
+    },
+    "planning_load_N": {
+      "value": 5,
+      "class": "EXISTING_DESIGN",
+      "sources": [
+        "R-STAGE10"
+      ],
+      "note": "Stage10 carrier planning_model load_N."
+    },
+    "load_sensitivity_N": {
+      "value": [
+        5,
+        10,
+        20,
+        50
+      ],
+      "class": "DESIGN_ASSUMPTION",
+      "note": "Handling and service loads are not specified anywhere; the range shows where the notched rail stops meeting the criterion."
+    },
+    "notch_corner_radius_mm": {
+      "value": 0.8,
+      "class": "DESIGN_ASSUMPTION",
+      "note": "Machined internal corner radius (end-mill); sensitivity 0.5 / 0.8 / 1.0."
+    },
+    "notch_corner_radius_sensitivity_mm": {
+      "value": [
+        0.5,
+        0.8,
+        1.0
+      ],
+      "class": "DESIGN_ASSUMPTION",
+      "note": "End-mill corner radii a machinist could use."
+    },
+    "flat_tool_mm": {
+      "value": [
+        1.0,
+        3.0
+      ],
+      "class": "DESIGN_ASSUMPTION",
+      "note": "Thickness x width of a flat tool used to reach a latch; a clear tool path is not finger operability."
+    }
+  },
+  "wire_candidates": [
+    {
+      "mpn": "Alpha Wire 1852",
+      "awg": 28,
+      "conductor": "tinned copper 7/36",
+      "insulation": "PVC",
+      "od_nominal_mm": 0.889,
+      "od_tolerance_mm": 0.0508,
+      "voltage_V": 600,
+      "temperature_max_C": 105,
+      "bend_rule_x_od": 10,
+      "sources": [
+        "S-AW-1852"
+      ]
+    },
+    {
+      "mpn": "Alpha Wire 1853",
+      "awg": 26,
+      "conductor": "tinned copper 7/34",
+      "insulation": "PVC",
+      "od_nominal_mm": 0.9906,
+      "od_tolerance_mm": 0.0508,
+      "voltage_V": 600,
+      "temperature_max_C": 105,
+      "bend_rule_x_od": 10,
+      "sources": [
+        "S-AW-1853"
+      ]
+    },
+    {
+      "mpn": "Alpha Wire 2843/7",
+      "awg": 26,
+      "conductor": "silver-plated copper 7/34",
+      "insulation": "PTFE",
+      "od_nominal_mm": 0.7874,
+      "od_tolerance_mm": 0.0508,
+      "voltage_V": 250,
+      "temperature_max_C": 200,
+      "bend_rule_x_od": 10,
+      "sources": [
+        "S-AW-2843-7"
+      ],
+      "note": "Silver plating is outside the JST 'as a rule' wire (S-JST-CRIMP)."
+    }
+  ],
+  "tolerances": {
+    "pcb_bow_fraction": {
+      "value": 0.0075,
+      "class": "DESIGN_ASSUMPTION",
+      "sources": [
+        "S-IPC-6012",
+        "S-JLC-CAP"
+      ],
+      "note": "IPC-6012 SMT limit (standard not retained); JLC states no bow value. Modelled as a half sine along the A01-middle left edge between M1 (y 146) and M3 (y 289), toward the carrier."
+    },
+    "spacer_length_mm": {
+      "value": 0.1,
+      "class": "DESIGN_ASSUMPTION",
+      "note": "No spacer MPN is selected."
+    },
+    "carrier_face_mm": {
+      "value": 0.1,
+      "class": "DESIGN_ASSUMPTION",
+      "note": "Drawing tolerance to be put on the tab top, notch floor and notch walls."
+    },
+    "saddle_seat_mm": {
+      "value": 0.1,
+      "class": "DESIGN_ASSUMPTION",
+      "note": "Moulded or printed saddle seat thickness; no part exists yet."
+    },
+    "strap_thickness_mm": {
+      "value": 0.05,
+      "class": "DESIGN_ASSUMPTION",
+      "note": "Integral strap band; no part exists yet."
+    },
+    "pcb_hole_position_mm": {
+      "value": 0.075,
+      "class": "MAKER_DOC",
+      "sources": [
+        "S-JLC-CAP"
+      ]
+    },
+    "mount_hole_float_mm": {
+      "value": 0.1,
+      "class": "DESIGN_ASSUMPTION",
+      "note": "2.7 mm drill around a 2.5 mm screw, half the diametral gap."
+    },
+    "panel_to_carrier_registration_mm": {
+      "value": null,
+      "class": "UNCONFIRMED",
+      "note": "The carriers bolt to new enclosure cleats that are not designed; no chain to the panel exists."
+    }
+  },
+  "tolerance_rules": [
+    {
+      "match": "board:A01-middle",
+      "contributors": [
+        "pcb_bow",
+        "spacer_length_mm",
+        "carrier_face_mm"
+      ]
+    },
+    {
+      "match": "rail:middle:0",
+      "contributors": [
+        "carrier_face_mm"
+      ]
+    },
+    {
+      "match": "guide:",
+      "contributors": [
+        "carrier_face_mm",
+        "saddle_seat_mm"
+      ]
+    },
+    {
+      "match": "release:",
+      "contributors": [
+        "pcb_hole_position_mm",
+        "mount_hole_float_mm"
+      ]
+    },
+    {
+      "match": "tool:A01-jack",
+      "contributors": [
+        "pcb_hole_position_mm",
+        "mount_hole_float_mm",
+        "carrier_face_mm"
+      ]
+    },
+    {
+      "match": "head:A01-jack",
+      "contributors": [
+        "pcb_hole_position_mm",
+        "mount_hole_float_mm",
+        "carrier_face_mm"
+      ]
+    },
+    {
+      "match": "spacer:A01-jack",
+      "contributors": [
+        "pcb_hole_position_mm",
+        "mount_hole_float_mm",
+        "carrier_face_mm"
+      ]
+    },
+    {
+      "match": "",
+      "contributors": [
+        "carrier_face_mm"
+      ]
+    }
+  ],
+  "retention_rules": {
+    "kind": "captive guide: a saddle seated in the notch with an integral strap; the bundle can slide axially so the release slack comes from the local loop",
+    "material": {
+      "value": "PA66, UL94 V-2 or better",
+      "class": "DESIGN_ASSUMPTION"
+    },
+    "seat_radial_clearance_mm": 0.25,
+    "seat_thickness_mm": 0.8,
+    "wall_thickness_mm": 0.8,
+    "notch_fit_per_side_mm": 0.1,
+    "overhang_mm": 1.0,
+    "end_flare_radius_mm": 2.0,
+    "straight_beyond_guide_mm": 1.0,
+    "strap_width_mm": 3.0,
+    "strap_thickness_mm": 0.6,
+    "latch_tab_mm": [
+      2.0,
+      2.0,
+      0.6
+    ],
+    "snap_leg_mm": {
+      "thickness": 0.8,
+      "depth_below_floor": 3.0,
+      "barb": 0.3,
+      "flank_groove_depth": 0.4,
+      "flank_groove_height": 1.0
+    },
+    "class": "DESIGN_ASSUMPTION"
+  },
+  "candidates": {
+    "B31": {
+      "from": "stage31/design-input.json#B",
+      "role": "COMPARISON (Stage31 B as committed)"
+    },
+    "B32": {
+      "role": "RECOMMENDED_WORKING_DESIGN",
+      "title": "Stage31 B with captive notch guides, lowered runs for an explicit tolerance stack, and J-PWR:middle 0.7 mm toward -y",
+      "header_moves": {
+        "A01:J-SIG:middle": {
+          "origin_mm": [
+            268.0,
+            171.5
+          ],
+          "rotation_deg": 90
+        },
+        "A01:J-PWR:middle": {
+          "origin_mm": [
+            288.0,
+            174.0
+          ],
+          "rotation_deg": 90
+        }
+      },
+      "guides": [
+        {
+          "id": "R1",
+          "link": "J-SIG",
+          "obstacle": "rail:middle:0",
+          "rail_x_mm": [
+            242,
+            248
+          ],
+          "latch_side": "-y"
+        },
+        {
+          "id": "R2",
+          "link": "J-PWR",
+          "obstacle": "rail:middle:0",
+          "rail_x_mm": [
+            242,
+            248
+          ],
+          "latch_side": "-y"
+        }
+      ],
+      "routes": {
+        "J-SIG": {
+          "dressing": "ROUND_BUNDLE",
+          "waypoints_mm": [
+            [
+              210,
+              173,
+              56.4
+            ],
+            [
+              217,
+              165.8,
+              56.4
+            ],
+            [
+              217,
+              165.8,
+              44.3
+            ],
+            [
+              233.4,
+              165.8,
+              44.3
+            ],
+            [
+              237.3,
+              171.5,
+              44.3
+            ],
+            [
+              258,
+              171.5,
+              44.3
+            ],
+            [
+              258,
+              171.5,
+              34.1
+            ],
+            [
+              268,
+              171.5,
+              34.1
+            ]
+          ]
+        },
+        "J-PWR": {
+          "dressing": "ROUND_BUNDLE",
+          "waypoints_mm": [
+            [
+              226,
+              173,
+              56.5
+            ],
+            [
+              226,
+              183.6,
+              56.5
+            ],
+            [
+              226,
+              183.6,
+              44.4
+            ],
+            [
+              272,
+              183.6,
+              44.4
+            ],
+            [
+              278,
+              174.0,
+              44.4
+            ],
+            [
+              278,
+              174.0,
+              34.1
+            ],
+            [
+              288,
+              174.0,
+              34.1
+            ]
+          ]
+        }
+      }
+    }
+  },
+  "neighbour_scenarios": [
+    {
+      "id": "NB-278",
+      "title": "architecture-278 conditional foreign PCB plane (code default, outline unknown)",
+      "class": "EXISTING_DESIGN",
+      "sources": [
+        "R-ASSEMBLY-DEFAULT"
+      ],
+      "solids": [
+        {
+          "id": "foreign-pcb-plane",
+          "box_mm": [
+            195,
+            94,
+            318,
+            300
+          ],
+          "z_mm": [
+            20.0,
+            21.6
+          ],
+          "extent": "UNKNOWN"
+        }
+      ]
+    },
+    {
+      "id": "NB-CAN",
+      "title": "incumbent canonical stack (different architecture; conditional candidate, fit NOT RUN)",
+      "class": "EXISTING_DESIGN",
+      "sources": [
+        "R-CANONICAL-STACK",
+        "R-CANONICAL-EL",
+        "R-CANONICAL-BOARDS"
+      ],
+      "solids": [
+        {
+          "id": "EL",
+          "box_mm": [
+            210,
+            164,
+            317,
+            277
+          ],
+          "z_mm": [
+            4.2,
+            4.6
+          ],
+          "extent": "OUTLINE"
+        },
+        {
+          "id": "JR",
+          "box_mm": [
+            177.5,
+            20,
+            314,
+            164
+          ],
+          "z_mm": [
+            10.0,
+            11.6
+          ],
+          "extent": "OUTLINE"
+        },
+        {
+          "id": "P",
+          "box_mm": [
+            94,
+            176,
+            317,
+            292
+          ],
+          "z_mm": [
+            11.8,
+            13.4
+          ],
+          "extent": "OUTLINE"
+        },
+        {
+          "id": "EL-E3",
+          "box_mm": [
+            245.5,
+            169.0,
+            259.5,
+            175.0
+          ],
+          "z_mm": [
+            4.6,
+            12.6
+          ],
+          "extent": "CLEARANCE_BOX"
+        },
+        {
+          "id": "EL-E4",
+          "box_mm": [
+            262.5,
+            169.0,
+            276.5,
+            175.0
+          ],
+          "z_mm": [
+            4.6,
+            12.6
+          ],
+          "extent": "CLEARANCE_BOX"
+        },
+        {
+          "id": "EL-E5",
+          "box_mm": [
+            279.5,
+            169.0,
+            293.5,
+            175.0
+          ],
+          "z_mm": [
+            4.6,
+            12.6
+          ],
+          "extent": "CLEARANCE_BOX"
+        }
+      ],
+      "note": "Rear-side part heights of EL, JR and P are not recorded."
+    }
+  ],
+  "procedure": {
+    "assembly": [
+      "Bench: dress each cable as a tight round bundle (sleeve or wrap) and crimp/insert per JST tooling (vendor, Q-H01).",
+      "Fit the jack carrier and A01-jack; fit the middle carrier with R1/R2 saddles snapped into notches N1/N2 (legs into the flank grooves).",
+      "Mate J-SIG:local and J-PWR:local from the rear (+z) and form the free local loops left of x 232.",
+      "Lay each bundle in its saddle and close the strap latch (rail top exposed, A01-middle not yet fitted).",
+      "Bench: mate the J-SIG/J-PWR middle housings onto the A01-middle headers; before the rear (core) carrier is fitted, lower A01-middle onto its spacers along -z with the hooks hanging below it, feeding slack back through the guides; fit the four screws, then the rear carrier.",
+      "Fit the core onto the DIN connector and connect K-PWR last."
+    ],
+    "service_core": [
+      "Power off and discharge; remove the rear cover.",
+      "Disconnect K-PWR; release the four core screws; support both handles and withdraw the core 40 mm along +z. J-SIG and J-PWR are not touched."
+    ],
+    "service_middle_connectors": [
+      "Power off. Remove the front panel; front access to the middle headers needs the corridor in reservation RV-ACCESS (owner decision).",
+      "Press the GH latch with a flat tool, hold the bundle and pull within 15 degrees of -z until the housing is free; the cable slides back through R1/R2 from the local loop.",
+      "Refit: push the housing on until it latches; draw the slack back to the local loop."
+    ],
+    "harness_replacement": [
+      "Requires removal of A01-middle (core removed first) or front access through RV-ACCESS; open the strap latches R1/R2 with a flat tool from +x."
+    ]
+  }
+}

@@ -1,3 +1,15 @@
+## Current A01 service-envelope and retention study — Stage32
+
+[Stage32](stage32/README.md) takes Stage31 B as the working option. It checks static,
+latch-release, 15 mm withdrawal and core 40 mm states in one 3D envelope model, with the
+undesigned neighbouring volume kept as UNKNOWN. **B32** is the recommended working design: captive
+notch guides R1/R2, runs lowered for an explicit tolerance stack, and J-PWR:middle moved 0.7 mm
+toward −y. B31 (B as committed) fails K4 once A01-middle bow and part tolerances are counted.
+- **Open:** every identified wire states a 10× OD bend radius, which the r 5 route does not meet.
+- **Owner decisions:** the 15 mm release needs the RV-DIP / RV-ACCESS reservations.
+- **Rail strength:** calculated conditionally (allowable tip load ≥ 11.9 N); not a physical result.
+- **NOT RUN:** M-01, M-09, M-12, the M32 measurements, native and physical checks.
+
 ## Current A01 cable-entry redesign study — Stage31
 
 [Stage31](stage31/README.md) compares three common entries for J-SIG and J-PWR into the A01

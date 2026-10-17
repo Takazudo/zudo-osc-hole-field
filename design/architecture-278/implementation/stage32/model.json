@@ -1,0 +1,1621 @@
+{
+  "approval": {
+    "approval_required_before_use": [
+      "any change to a neighbouring (foreign) board, its outline or its parts",
+      "any change of a board plane z",
+      "any adoption into canonical CAD"
+    ],
+    "changeable": {
+      "cable": [
+        "design length",
+        "bundling",
+        "retention parts"
+      ],
+      "carrier_local_shape": [
+        "rail:middle:0"
+      ],
+      "header_changes": [
+        "position",
+        "orientation"
+      ],
+      "header_refs": [
+        "A01:J-SIG:middle",
+        "A01:J-PWR:middle"
+      ]
+    },
+    "date": "2026-10-18",
+    "decided_by": "OWNER",
+    "fixed": [
+      "panel controls and jacks (design/grid/placements.lock.json)",
+      "nets and pin identities",
+      "part numbers",
+      "DIN mapping and DIN positions",
+      "board planes",
+      "the service order: disconnect K-PWR, then withdraw the core 40 mm",
+      "A01:J-SIG:local and A01:J-PWR:local positions"
+    ],
+    "record_source": "Owner instruction to the Claude Code Cloud session continuing Issue #278 / draft PR #287 at 66533ba69b03c1ad7b43bf41baf69c0b3d258673 (Stage31 B as the provisional working option)",
+    "scope_excludes": [
+      "fabrication, ordering, quotes, uploads or supplier contact",
+      "native KiCad, ERC/DRC, simulation or fabrication output",
+      "energisation and physical tests",
+      "calling a design length a measured or cut length",
+      "promoting a calculation to a physical pass"
+    ],
+    "status": "DESIGN_STUDY_CHANGES_ALLOWED",
+    "subject": "A01 J-SIG/J-PWR local mechanical design: wiring, retention, unmating and the core 40 mm service in one 3D envelope model"
+  },
+  "candidates": {
+    "B31": {
+      "guides": [],
+      "header_moves": [
+        {
+          "board_face_unchanged": true,
+          "box_mm": [
+            283.0,
+            170.225,
+            289.1,
+            179.175
+          ],
+          "from_origin_mm": [
+            283,
+            150
+          ],
+          "mpn_unchanged": true,
+          "nearest_mount": {
+            "gap_mm": 28.469907,
+            "mount": "A01-middle:M2"
+          },
+          "pin_row_axis": "y",
+          "pins_unchanged": true,
+          "ref": "A01:J-PWR:middle",
+          "rotation_deg": 90,
+          "sweep": {
+            "box_mm": [
+              281.0,
+              168.225,
+              291.1,
+              181.175
+            ],
+            "z_mm": [
+              26.1,
+              48.4
+            ]
+          },
+          "sweep_gap_to_other_headers": {
+            "gap_mm": 9.9,
+            "ref": "A01:J-SIG:middle"
+          },
+          "to_origin_mm": [
+            288.0,
+            174.7
+          ]
+        },
+        {
+          "board_face_unchanged": true,
+          "box_mm": [
+            263.0,
+            165.15,
+            269.1,
+            177.85
+          ],
+          "from_origin_mm": [
+            260,
+            150
+          ],
+          "mpn_unchanged": true,
+          "nearest_mount": {
+            "gap_mm": 29.622162,
+            "mount": "A01-middle:M1"
+          },
+          "pin_row_axis": "y",
+          "pins_unchanged": true,
+          "ref": "A01:J-SIG:middle",
+          "rotation_deg": 90,
+          "sweep": {
+            "box_mm": [
+              261.0,
+              163.15,
+              271.1,
+              179.85
+            ],
+            "z_mm": [
+              26.1,
+              48.4
+            ]
+          },
+          "sweep_gap_to_other_headers": {
+            "gap_mm": 9.9,
+            "ref": "A01:J-PWR:middle"
+          },
+          "to_origin_mm": [
+            268.0,
+            171.5
+          ]
+        }
+      ],
+      "notches": [
+        {
+          "id": "N1",
+          "link": "J-SIG",
+          "obstacle": "rail:middle:0",
+          "relieved_top_z_mm": 43.7,
+          "status": "PROPOSAL_NOT_ADOPTED",
+          "y_mm": [
+            168.6,
+            173.8
+          ]
+        },
+        {
+          "id": "N2",
+          "link": "J-PWR",
+          "obstacle": "rail:middle:0",
+          "relieved_top_z_mm": 44.2,
+          "status": "PROPOSAL_NOT_ADOPTED",
+          "y_mm": [
+            180.9,
+            185.1
+          ]
+        }
+      ],
+      "routes": {
+        "J-PWR": {
+          "bends": [
+            {
+              "arc_length_mm": 7.853982,
+              "centre_mm": [
+                226.0,
+                178.0,
+                51.5
+              ],
+              "radius_mm": 5.0,
+              "turn_deg": 90.0,
+              "vertex_index": 1,
+              "vertex_mm": [
+                226.0,
+                173.0,
+                56.5
+              ]
+            },
+            {
+              "arc_length_mm": 7.853982,
+              "centre_mm": [
+                226.0,
+                178.0,
+                51.5
+              ],
+              "radius_mm": 5.0,
+              "turn_deg": 90.0,
+              "vertex_index": 2,
+              "vertex_mm": [
+                226.0,
+                183.0,
+                56.5
+              ]
+            },
+            {
+              "arc_length_mm": 7.853982,
+              "centre_mm": [
+                231.0,
+                183.0,
+                51.3
+              ],
+              "radius_mm": 5.0,
+              "turn_deg": 90.0,
+              "vertex_index": 3,
+              "vertex_mm": [
+                226.0,
+                183.0,
+                46.3
+              ]
+            },
+            {
+              "arc_length_mm": 4.724358,
+              "centre_mm": [
+                269.44483,
+                178.0,
+                46.3
+              ],
+              "radius_mm": 5.0,
+              "turn_deg": 54.137151,
+              "vertex_index": 4,
+              "vertex_mm": [
+                272.0,
+                183.0,
+                46.3
+              ]
+            },
+            {
+              "arc_length_mm": 7.853982,
+              "centre_mm": [
+                275.070765,
+                178.752108,
+                41.3
+              ],
+              "radius_mm": 5.0,
+              "turn_deg": 90.0,
+              "vertex_index": 5,
+              "vertex_mm": [
+                278.0,
+                174.7,
+                46.3
+              ]
+            },
+            {
+              "arc_length_mm": 7.853982,
+              "centre_mm": [
+                283.0,
+                174.7,
+                39.1
+              ],
+              "radius_mm": 5.0,
+              "turn_deg": 90.0,
+              "vertex_index": 6,
+              "vertex_mm": [
+                278.0,
+                174.7,
+                34.1
+              ]
+            },
+            {
+              "arc_length_mm": 7.853982,
+              "centre_mm": [
+                283.0,
+                174.7,
+                39.1
+              ],
+              "radius_mm": 5.0,
+              "turn_deg": 90.0,
+              "vertex_index": 7,
+              "vertex_mm": [
+                288.0,
+                174.7,
+                34.1
+              ]
+            }
+          ],
+          "legs_mm": [
+            12.6,
+            10.0,
+            10.2,
+            46.0,
+            10.241582,
+            12.2,
+            10.0,
+            7.0
+          ],
+          "straight_from_exit_mm": [
+            7.6,
+            2.0
+          ],
+          "vertices_mm": [
+            [
+              226.0,
+              173.0,
+              43.9
+            ],
+            [
+              226.0,
+              173.0,
+              56.5
+            ],
+            [
+              226.0,
+              183.0,
+              56.5
+            ],
+            [
+              226.0,
+              183.0,
+              46.3
+            ],
+            [
+              272.0,
+              183.0,
+              46.3
+            ],
+            [
+              278.0,
+              174.7,
+              46.3
+            ],
+            [
+              278.0,
+              174.7,
+              34.1
+            ],
+            [
+              288.0,
+              174.7,
+              34.1
+            ],
+            [
+              288.0,
+              174.7,
+              41.1
+            ]
+          ]
+        },
+        "J-SIG": {
+          "bends": [
+            {
+              "arc_length_mm": 7.853982,
+              "centre_mm": [
+                212.860908,
+                168.899365,
+                51.4
+              ],
+              "radius_mm": 5.0,
+              "turn_deg": 90.0,
+              "vertex_index": 1,
+              "vertex_mm": [
+                210.0,
+                173.0,
+                56.4
+              ]
+            },
+            {
+              "arc_length_mm": 7.853982,
+              "centre_mm": [
+                213.139092,
+                168.500635,
+                51.4
+              ],
+              "radius_mm": 5.0,
+              "turn_deg": 90.0,
+              "vertex_index": 2,
+              "vertex_mm": [
+                216.0,
+                164.4,
+                56.4
+              ]
+            },
+            {
+              "arc_length_mm": 7.853982,
+              "centre_mm": [
+                221.0,
+                164.4,
+                51.0
+              ],
+              "radius_mm": 5.0,
+              "turn_deg": 90.0,
+              "vertex_index": 3,
+              "vertex_mm": [
+                216.0,
+                164.4,
+                46.0
+              ]
+            },
+            {
+              "arc_length_mm": 4.345856,
+              "centre_mm": [
+                231.679086,
+                169.4,
+                46.0
+              ],
+              "radius_mm": 5.0,
+              "turn_deg": 49.799836,
+              "vertex_index": 4,
+              "vertex_mm": [
+                234.0,
+                164.4,
+                46.0
+              ]
+            },
+            {
+              "arc_length_mm": 4.345856,
+              "centre_mm": [
+                242.320914,
+                166.5,
+                46.0
+              ],
+              "radius_mm": 5.0,
+              "turn_deg": 49.799836,
+              "vertex_index": 5,
+              "vertex_mm": [
+                240.0,
+                171.5,
+                46.0
+              ]
+            },
+            {
+              "arc_length_mm": 7.853982,
+              "centre_mm": [
+                253.0,
+                171.5,
+                41.0
+              ],
+              "radius_mm": 5.0,
+              "turn_deg": 90.0,
+              "vertex_index": 6,
+              "vertex_mm": [
+                258.0,
+                171.5,
+                46.0
+              ]
+            },
+            {
+              "arc_length_mm": 7.853982,
+              "centre_mm": [
+                263.0,
+                171.5,
+                39.1
+              ],
+              "radius_mm": 5.0,
+              "turn_deg": 90.0,
+              "vertex_index": 7,
+              "vertex_mm": [
+                258.0,
+                171.5,
+                34.1
+              ]
+            },
+            {
+              "arc_length_mm": 7.853982,
+              "centre_mm": [
+                263.0,
+                171.5,
+                39.1
+              ],
+              "radius_mm": 5.0,
+              "turn_deg": 90.0,
+              "vertex_index": 8,
+              "vertex_mm": [
+                268.0,
+                171.5,
+                34.1
+              ]
+            }
+          ],
+          "legs_mm": [
+            12.5,
+            10.486181,
+            10.4,
+            18.0,
+            9.295698,
+            18.0,
+            11.9,
+            10.0,
+            7.0
+          ],
+          "straight_from_exit_mm": [
+            7.5,
+            2.0
+          ],
+          "vertices_mm": [
+            [
+              210.0,
+              173.0,
+              43.9
+            ],
+            [
+              210.0,
+              173.0,
+              56.4
+            ],
+            [
+              216.0,
+              164.4,
+              56.4
+            ],
+            [
+              216.0,
+              164.4,
+              46.0
+            ],
+            [
+              234.0,
+              164.4,
+              46.0
+            ],
+            [
+              240.0,
+              171.5,
+              46.0
+            ],
+            [
+              258.0,
+              171.5,
+              46.0
+            ],
+            [
+              258.0,
+              171.5,
+              34.1
+            ],
+            [
+              268.0,
+              171.5,
+              34.1
+            ],
+            [
+              268.0,
+              171.5,
+              41.1
+            ]
+          ]
+        }
+      }
+    },
+    "B32": {
+      "guides": [
+        {
+          "bundle_radius_mm": 1.5,
+          "centre_mm": [
+            245.0,
+            171.5,
+            44.3
+          ],
+          "id": "R1",
+          "link": "J-SIG",
+          "material": {
+            "class": "DESIGN_ASSUMPTION",
+            "value": "PA66, UL94 V-2 or better"
+          },
+          "notch": {
+            "id": "N1",
+            "link": "J-SIG",
+            "obstacle": "rail:middle:0",
+            "relieved_top_z_mm": 41.7,
+            "status": "PROPOSAL_NOT_ADOPTED",
+            "y_mm": [
+              168.8,
+              174.2
+            ]
+          },
+          "obstacle": "rail:middle:0",
+          "radial_clearance_mm": 0.25,
+          "saddle_mm": {
+            "end_flare_radius": 2.0,
+            "length_x": 8.0,
+            "seat_thickness": 0.85,
+            "wall": 0.8,
+            "width_y": 5.1,
+            "x": [
+              241.0,
+              249.0
+            ]
+          },
+          "seat_radius_mm": 1.75,
+          "snap_legs_mm": {
+            "barb": 0.3,
+            "depth_below_floor": 3.0,
+            "flank_groove_depth": 0.4,
+            "flank_groove_height": 1.0,
+            "thickness": 0.8,
+            "x": [
+              [
+                241.2,
+                242
+              ],
+              [
+                248,
+                248.8
+              ]
+            ],
+            "z": [
+              38.7,
+              42.55
+            ]
+          },
+          "status": "PROPOSAL_NOT_ADOPTED",
+          "strap_mm": {
+            "inner_radius": 1.75,
+            "latch_side": "-y",
+            "latch_tab_box": [
+              246.5,
+              168.95,
+              251.0,
+              170.95
+            ],
+            "thickness": 0.6,
+            "top_z": 46.65,
+            "width": 3.0
+          }
+        },
+        {
+          "bundle_radius_mm": 1.207107,
+          "centre_mm": [
+            245.0,
+            183.6,
+            44.4
+          ],
+          "id": "R2",
+          "link": "J-PWR",
+          "material": {
+            "class": "DESIGN_ASSUMPTION",
+            "value": "PA66, UL94 V-2 or better"
+          },
+          "notch": {
+            "id": "N2",
+            "link": "J-PWR",
+            "obstacle": "rail:middle:0",
+            "relieved_top_z_mm": 42.1,
+            "status": "PROPOSAL_NOT_ADOPTED",
+            "y_mm": [
+              181.2,
+              186.0
+            ]
+          },
+          "obstacle": "rail:middle:0",
+          "radial_clearance_mm": 0.25,
+          "saddle_mm": {
+            "end_flare_radius": 2.0,
+            "length_x": 8.0,
+            "seat_thickness": 0.842893,
+            "wall": 0.8,
+            "width_y": 4.514214,
+            "x": [
+              241.0,
+              249.0
+            ]
+          },
+          "seat_radius_mm": 1.457107,
+          "snap_legs_mm": {
+            "barb": 0.3,
+            "depth_below_floor": 3.0,
+            "flank_groove_depth": 0.4,
+            "flank_groove_height": 1.0,
+            "thickness": 0.8,
+            "x": [
+              [
+                241.2,
+                242
+              ],
+              [
+                248,
+                248.8
+              ]
+            ],
+            "z": [
+              39.1,
+              42.942893
+            ]
+          },
+          "status": "PROPOSAL_NOT_ADOPTED",
+          "strap_mm": {
+            "inner_radius": 1.457107,
+            "latch_side": "-y",
+            "latch_tab_box": [
+              246.5,
+              181.342893,
+              251.0,
+              183.342893
+            ],
+            "thickness": 0.6,
+            "top_z": 46.457107,
+            "width": 3.0
+          }
+        }
+      ],
+      "header_moves": [
+        {
+          "board_face_unchanged": true,
+          "box_mm": [
+            283.0,
+            169.525,
+            289.1,
+            178.475
+          ],
+          "from_origin_mm": [
+            283,
+            150
+          ],
+          "mpn_unchanged": true,
+          "nearest_mount": {
+            "gap_mm": 27.93941,
+            "mount": "A01-middle:M2"
+          },
+          "pin_row_axis": "y",
+          "pins_unchanged": true,
+          "ref": "A01:J-PWR:middle",
+          "rotation_deg": 90,
+          "sweep": {
+            "box_mm": [
+              281.0,
+              167.525,
+              291.1,
+              180.475
+            ],
+            "z_mm": [
+              26.1,
+              48.4
+            ]
+          },
+          "sweep_gap_to_other_headers": {
+            "gap_mm": 9.9,
+            "ref": "A01:J-SIG:middle"
+          },
+          "to_origin_mm": [
+            288.0,
+            174.0
+          ]
+        },
+        {
+          "board_face_unchanged": true,
+          "box_mm": [
+            263.0,
+            165.15,
+            269.1,
+            177.85
+          ],
+          "from_origin_mm": [
+            260,
+            150
+          ],
+          "mpn_unchanged": true,
+          "nearest_mount": {
+            "gap_mm": 29.622162,
+            "mount": "A01-middle:M1"
+          },
+          "pin_row_axis": "y",
+          "pins_unchanged": true,
+          "ref": "A01:J-SIG:middle",
+          "rotation_deg": 90,
+          "sweep": {
+            "box_mm": [
+              261.0,
+              163.15,
+              271.1,
+              179.85
+            ],
+            "z_mm": [
+              26.1,
+              48.4
+            ]
+          },
+          "sweep_gap_to_other_headers": {
+            "gap_mm": 9.9,
+            "ref": "A01:J-PWR:middle"
+          },
+          "to_origin_mm": [
+            268.0,
+            171.5
+          ]
+        }
+      ],
+      "notches": [
+        {
+          "id": "N1",
+          "link": "J-SIG",
+          "obstacle": "rail:middle:0",
+          "relieved_top_z_mm": 41.7,
+          "status": "PROPOSAL_NOT_ADOPTED",
+          "y_mm": [
+            168.8,
+            174.2
+          ]
+        },
+        {
+          "id": "N2",
+          "link": "J-PWR",
+          "obstacle": "rail:middle:0",
+          "relieved_top_z_mm": 42.1,
+          "status": "PROPOSAL_NOT_ADOPTED",
+          "y_mm": [
+            181.2,
+            186.0
+          ]
+        }
+      ],
+      "routes": {
+        "J-PWR": {
+          "bends": [
+            {
+              "arc_length_mm": 7.853982,
+              "centre_mm": [
+                226.0,
+                178.0,
+                51.5
+              ],
+              "radius_mm": 5.0,
+              "turn_deg": 90.0,
+              "vertex_index": 1,
+              "vertex_mm": [
+                226.0,
+                173.0,
+                56.5
+              ]
+            },
+            {
+              "arc_length_mm": 7.853982,
+              "centre_mm": [
+                226.0,
+                178.6,
+                51.5
+              ],
+              "radius_mm": 5.0,
+              "turn_deg": 90.0,
+              "vertex_index": 2,
+              "vertex_mm": [
+                226.0,
+                183.6,
+                56.5
+              ]
+            },
+            {
+              "arc_length_mm": 7.853982,
+              "centre_mm": [
+                231.0,
+                183.6,
+                49.4
+              ],
+              "radius_mm": 5.0,
+              "turn_deg": 90.0,
+              "vertex_index": 3,
+              "vertex_mm": [
+                226.0,
+                183.6,
+                44.4
+              ]
+            },
+            {
+              "arc_length_mm": 5.060985,
+              "centre_mm": [
+                269.228762,
+                178.6,
+                44.4
+              ],
+              "radius_mm": 5.0,
+              "turn_deg": 57.994617,
+              "vertex_index": 4,
+              "vertex_mm": [
+                272.0,
+                183.6,
+                44.4
+              ]
+            },
+            {
+              "arc_length_mm": 7.853982,
+              "centre_mm": [
+                275.350005,
+                178.239992,
+                39.4
+              ],
+              "radius_mm": 5.0,
+              "turn_deg": 90.0,
+              "vertex_index": 5,
+              "vertex_mm": [
+                278.0,
+                174.0,
+                44.4
+              ]
+            },
+            {
+              "arc_length_mm": 7.853982,
+              "centre_mm": [
+                283.0,
+                174.0,
+                39.1
+              ],
+              "radius_mm": 5.0,
+              "turn_deg": 90.0,
+              "vertex_index": 6,
+              "vertex_mm": [
+                278.0,
+                174.0,
+                34.1
+              ]
+            },
+            {
+              "arc_length_mm": 7.853982,
+              "centre_mm": [
+                283.0,
+                174.0,
+                39.1
+              ],
+              "radius_mm": 5.0,
+              "turn_deg": 90.0,
+              "vertex_index": 7,
+              "vertex_mm": [
+                288.0,
+                174.0,
+                34.1
+              ]
+            }
+          ],
+          "legs_mm": [
+            12.6,
+            10.6,
+            12.1,
+            46.0,
+            11.320777,
+            10.3,
+            10.0,
+            7.0
+          ],
+          "straight_from_exit_mm": [
+            7.6,
+            2.0
+          ],
+          "vertices_mm": [
+            [
+              226.0,
+              173.0,
+              43.9
+            ],
+            [
+              226.0,
+              173.0,
+              56.5
+            ],
+            [
+              226.0,
+              183.6,
+              56.5
+            ],
+            [
+              226.0,
+              183.6,
+              44.4
+            ],
+            [
+              272.0,
+              183.6,
+              44.4
+            ],
+            [
+              278.0,
+              174.0,
+              44.4
+            ],
+            [
+              278.0,
+              174.0,
+              34.1
+            ],
+            [
+              288.0,
+              174.0,
+              34.1
+            ],
+            [
+              288.0,
+              174.0,
+              41.1
+            ]
+          ]
+        },
+        "J-SIG": {
+          "bends": [
+            {
+              "arc_length_mm": 7.853982,
+              "centre_mm": [
+                213.485392,
+                169.415025,
+                51.4
+              ],
+              "radius_mm": 5.0,
+              "turn_deg": 90.0,
+              "vertex_index": 1,
+              "vertex_mm": [
+                210.0,
+                173.0,
+                56.4
+              ]
+            },
+            {
+              "arc_length_mm": 7.853982,
+              "centre_mm": [
+                213.514608,
+                169.384975,
+                51.4
+              ],
+              "radius_mm": 5.0,
+              "turn_deg": 90.0,
+              "vertex_index": 2,
+              "vertex_mm": [
+                217.0,
+                165.8,
+                56.4
+              ]
+            },
+            {
+              "arc_length_mm": 7.853982,
+              "centre_mm": [
+                222.0,
+                165.8,
+                49.3
+              ],
+              "radius_mm": 5.0,
+              "turn_deg": 90.0,
+              "vertex_index": 3,
+              "vertex_mm": [
+                217.0,
+                165.8,
+                44.3
+              ]
+            },
+            {
+              "arc_length_mm": 4.853731,
+              "centre_mm": [
+                230.762703,
+                170.8,
+                44.3
+              ],
+              "radius_mm": 5.0,
+              "turn_deg": 55.619655,
+              "vertex_index": 4,
+              "vertex_mm": [
+                233.4,
+                165.8,
+                44.3
+              ]
+            },
+            {
+              "arc_length_mm": 4.853731,
+              "centre_mm": [
+                239.937297,
+                166.5,
+                44.3
+              ],
+              "radius_mm": 5.0,
+              "turn_deg": 55.619655,
+              "vertex_index": 5,
+              "vertex_mm": [
+                237.3,
+                171.5,
+                44.3
+              ]
+            },
+            {
+              "arc_length_mm": 7.853982,
+              "centre_mm": [
+                253.0,
+                171.5,
+                39.3
+              ],
+              "radius_mm": 5.0,
+              "turn_deg": 90.0,
+              "vertex_index": 6,
+              "vertex_mm": [
+                258.0,
+                171.5,
+                44.3
+              ]
+            },
+            {
+              "arc_length_mm": 7.853982,
+              "centre_mm": [
+                263.0,
+                171.5,
+                39.1
+              ],
+              "radius_mm": 5.0,
+              "turn_deg": 90.0,
+              "vertex_index": 7,
+              "vertex_mm": [
+                258.0,
+                171.5,
+                34.1
+              ]
+            },
+            {
+              "arc_length_mm": 7.853982,
+              "centre_mm": [
+                263.0,
+                171.5,
+                39.1
+              ],
+              "radius_mm": 5.0,
+              "turn_deg": 90.0,
+              "vertex_index": 8,
+              "vertex_mm": [
+                268.0,
+                171.5,
+                34.1
+              ]
+            }
+          ],
+          "legs_mm": [
+            12.5,
+            10.041912,
+            12.1,
+            16.4,
+            6.906519,
+            20.7,
+            10.2,
+            10.0,
+            7.0
+          ],
+          "straight_from_exit_mm": [
+            7.5,
+            2.0
+          ],
+          "vertices_mm": [
+            [
+              210.0,
+              173.0,
+              43.9
+            ],
+            [
+              210.0,
+              173.0,
+              56.4
+            ],
+            [
+              217.0,
+              165.8,
+              56.4
+            ],
+            [
+              217.0,
+              165.8,
+              44.3
+            ],
+            [
+              233.4,
+              165.8,
+              44.3
+            ],
+            [
+              237.3,
+              171.5,
+              44.3
+            ],
+            [
+              258.0,
+              171.5,
+              44.3
+            ],
+            [
+              258.0,
+              171.5,
+              34.1
+            ],
+            [
+              268.0,
+              171.5,
+              34.1
+            ],
+            [
+              268.0,
+              171.5,
+              41.1
+            ]
+          ]
+        }
+      }
+    }
+  },
+  "parameters": {
+    "bend_radius_sensitivity_mm": {
+      "class": "DESIGN_ASSUMPTION",
+      "note": "5 = Stage31 route; 8.9-11 = maker 10 x OD for the candidate wires incl. the bundle offset.",
+      "value": [
+        5.0,
+        7.5,
+        8.9,
+        10.0,
+        11.0
+      ]
+    },
+    "carrier_E_MPa": {
+      "class": "MAKER_DOC",
+      "sources": [
+        "S-AALCO-6061"
+      ],
+      "value": 70000
+    },
+    "carrier_material": {
+      "class": "EXISTING_DESIGN",
+      "sources": [
+        "R-STAGE8-MATERIAL",
+        "R-STAGE10"
+      ],
+      "value": "6061-T6, machined from extrusion"
+    },
+    "carrier_proof_MPa": {
+      "class": "MAKER_DOC",
+      "note": "Minimum 0.2 % proof stress of the supplier product form; machined-part certification is not established.",
+      "sources": [
+        "S-AALCO-6061"
+      ],
+      "value": 240
+    },
+    "conductors": {
+      "class": "EXISTING_DESIGN",
+      "sources": [
+        "R-STAGE31"
+      ],
+      "value": {
+        "J-PWR": 4,
+        "J-SIG": 7
+      }
+    },
+    "core_extraction_mm": {
+      "class": "EXISTING_DESIGN",
+      "sources": [
+        "R-STAGE10"
+      ],
+      "value": 40
+    },
+    "design_bend_radius_mm": {
+      "class": "EXISTING_DESIGN",
+      "note": "Stage31 assumption (5 x OD). Checked here against the maker rule; it is not raised by convenient rounding.",
+      "sources": [
+        "R-STAGE31"
+      ],
+      "value": 5.0
+    },
+    "flat_tool_mm": {
+      "class": "DESIGN_ASSUMPTION",
+      "note": "Thickness x width of a flat tool used to reach a latch; a clear tool path is not finger operability.",
+      "value": [
+        1.0,
+        3.0
+      ]
+    },
+    "foreign_board_outline": {
+      "class": "UNCONFIRMED",
+      "note": "No A02-A06 / E2-E5 board outline, plane, thickness or support exists in architecture-278.",
+      "value": null
+    },
+    "foreign_pcb_plane_z_mm": {
+      "class": "EXISTING_DESIGN",
+      "note": "A code default, not a designed board. Its outline does not exist.",
+      "sources": [
+        "R-ASSEMBLY-DEFAULT"
+      ],
+      "value": [
+        20.0,
+        21.6
+      ]
+    },
+    "foreign_rear_side_heights_mm": {
+      "class": "UNCONFIRMED",
+      "value": null
+    },
+    "geometric_separation_mm": {
+      "class": "DESIGN_ASSUMPTION",
+      "derivation": "header height 4.05 - (mated height 7.3 - housing height 5.7)",
+      "note": "Derived from JST reference dimensions only; it is not an unmating stroke and is not used to shorten the release travel.",
+      "value": 2.45
+    },
+    "gh_bundle_grip_length_mm": {
+      "class": "UNCONFIRMED",
+      "note": "Straight bundle length needed to hold the bundle within 15 degrees; not stated by JST.",
+      "value": null
+    },
+    "gh_header_height_mm": {
+      "class": "MAKER_DOC",
+      "sources": [
+        "S-JST-EGH"
+      ],
+      "value": 4.05
+    },
+    "gh_housing_height_mm": {
+      "class": "MAKER_DOC",
+      "sources": [
+        "S-JST-EGH"
+      ],
+      "value": 5.7
+    },
+    "gh_latch_side": {
+      "class": "UNCONFIRMED",
+      "note": "The catalog says 'large outer latch'; which long face carries it is not stated. Both faces are evaluated.",
+      "sources": [
+        "S-JST-GATED"
+      ],
+      "value": null
+    },
+    "gh_mated_height_mm": {
+      "class": "MAKER_DOC",
+      "note": "Reference value in parentheses on p.2.",
+      "sources": [
+        "S-JST-EGH"
+      ],
+      "value": 7.3
+    },
+    "gh_temperature_max_C": {
+      "class": "MAKER_DOC",
+      "sources": [
+        "S-JST-EGH"
+      ],
+      "value": 105
+    },
+    "gh_unmating_angle_deg": {
+      "class": "MAKER_DOC",
+      "note": "General JST precaution: hold the wire bundle and operate within 15 degrees of the mating axis; a GH-specific manual value would take priority (S-JST-GATED, not obtained).",
+      "sources": [
+        "S-JST-HANDLING"
+      ],
+      "value": 15
+    },
+    "gh_unmating_force_N": {
+      "class": "UNCONFIRMED",
+      "sources": [
+        "S-JST-GATED"
+      ],
+      "value": null
+    },
+    "gh_unmating_stroke_mm": {
+      "class": "UNCONFIRMED",
+      "note": "No JST document read states an unmating stroke.",
+      "sources": [
+        "S-JST-GATED"
+      ],
+      "value": null
+    },
+    "gh_voltage_rating_V": {
+      "class": "MAKER_DOC",
+      "sources": [
+        "S-JST-EGH"
+      ],
+      "value": 50
+    },
+    "load_sensitivity_N": {
+      "class": "DESIGN_ASSUMPTION",
+      "note": "Handling and service loads are not specified anywhere; the range shows where the notched rail stops meeting the criterion.",
+      "value": [
+        5,
+        10,
+        20,
+        50
+      ]
+    },
+    "notch_corner_radius_mm": {
+      "class": "DESIGN_ASSUMPTION",
+      "note": "Machined internal corner radius (end-mill); sensitivity 0.5 / 0.8 / 1.0.",
+      "value": 0.8
+    },
+    "notch_corner_radius_sensitivity_mm": {
+      "class": "DESIGN_ASSUMPTION",
+      "note": "End-mill corner radii a machinist could use.",
+      "value": [
+        0.5,
+        0.8,
+        1.0
+      ]
+    },
+    "panel_rear_z_mm": {
+      "class": "EXISTING_DESIGN",
+      "note": "Stage10 panel thickness proposal 2 mm, panel front at z 0.",
+      "sources": [
+        "R-STAGE10"
+      ],
+      "value": 2.0
+    },
+    "placement_margin_mm": {
+      "class": "EXISTING_DESIGN",
+      "note": "Wire placement allowance; explicit part tolerances are added on top of it in Stage32.",
+      "sources": [
+        "R-STAGE31"
+      ],
+      "value": 0.5
+    },
+    "planning_load_N": {
+      "class": "EXISTING_DESIGN",
+      "note": "Stage10 carrier planning_model load_N.",
+      "sources": [
+        "R-STAGE10"
+      ],
+      "value": 5
+    },
+    "release_travel_mm": {
+      "class": "EXISTING_DESIGN",
+      "note": "Stage10 sweep basis 'Mated 7.3 mm + 15 mm axial release'. Kept as the design basis; shorter travels are sensitivity only.",
+      "sources": [
+        "R-STAGE10"
+      ],
+      "value": 15
+    },
+    "release_travel_sensitivity_mm": {
+      "class": "DESIGN_ASSUMPTION",
+      "note": "Sensitivity only; 2.45 is the derived geometric separation, 15 the Stage10 basis.",
+      "value": [
+        2.45,
+        5,
+        7.5,
+        10,
+        12.5,
+        15
+      ]
+    },
+    "robust_spare_mm": {
+      "class": "EXISTING_DESIGN",
+      "note": "Stage31 K4 threshold; Stage32 applies it after the explicit tolerance stack and does not relax it.",
+      "sources": [
+        "R-STAGE31"
+      ],
+      "value": 0.15
+    },
+    "round_bundle_factor": {
+      "class": "DESIGN_ASSUMPTION",
+      "note": "Hexagonal 7 and ring of 4; holds only for a tightly dressed bundle (sleeve or wrap). A loose bundle is not covered.",
+      "value": {
+        "J-PWR": 2.414213562373095,
+        "J-SIG": 3.0
+      }
+    },
+    "selected_wire_mpn": {
+      "class": "UNCONFIRMED",
+      "note": "Stage28 Q-H02 is still open.",
+      "value": null
+    },
+    "service_slack_mm": {
+      "class": "EXISTING_DESIGN",
+      "sources": [
+        "R-STAGE10"
+      ],
+      "value": 10
+    },
+    "straight_lead_mm": {
+      "class": "EXISTING_DESIGN",
+      "sources": [
+        "R-STAGE31"
+      ],
+      "value": 2.0
+    },
+    "strength_safety_factor": {
+      "class": "DESIGN_ASSUMPTION",
+      "note": "On the minimum proof stress, applied to the conservative peak stress.",
+      "value": 1.5
+    },
+    "sweep_xy_margin_mm": {
+      "class": "EXISTING_DESIGN",
+      "sources": [
+        "R-STAGE10"
+      ],
+      "value": 2.0
+    },
+    "toggle_body_and_terminal_mm": {
+      "class": "MAKER_DOC",
+      "note": "Drawing of the -5 suffix; equivalence to the unsuffixed 2MS3T1B1M2QES in the lock is OPEN (R-TOGGLE-FACTS).",
+      "sources": [
+        "S-DW2-2MS3"
+      ],
+      "value": {
+        "body": 8.64,
+        "bushing": 5.59,
+        "nut": 1.19,
+        "terminal_beyond_body": 3.3,
+        "tolerance_2_decimal": 0.25,
+        "washer": 0.46
+      }
+    },
+    "toggle_seating_datum": {
+      "class": "UNCONFIRMED",
+      "note": "Seated board-to-shoulder datum is UNSOURCED.",
+      "sources": [
+        "R-TOGGLE-FACTS"
+      ],
+      "value": null
+    },
+    "wire_awg_range": {
+      "class": "MAKER_DOC",
+      "sources": [
+        "S-JST-EGH"
+      ],
+      "value": [
+        30,
+        26
+      ]
+    },
+    "wire_bend_rule_x_od": {
+      "class": "MAKER_DOC",
+      "note": "Every identified candidate states 'Bend Radius 10X Cable Diameter'. No wire is selected.",
+      "sources": [
+        "S-AW-1852",
+        "S-AW-1853",
+        "S-AW-2843-7"
+      ],
+      "value": 10
+    },
+    "wire_od_max_mm": {
+      "class": "MAKER_DOC",
+      "note": "Upper end of the SSHL-002T-P0.2 insulation OD window; every envelope uses it.",
+      "sources": [
+        "S-JST-EGH"
+      ],
+      "value": 1.0
+    },
+    "wire_od_min_mm": {
+      "class": "MAKER_DOC",
+      "sources": [
+        "S-JST-EGH"
+      ],
+      "value": 0.76
+    }
+  },
+  "procedure": {
+    "assembly": [
+      "Bench: dress each cable as a tight round bundle (sleeve or wrap) and crimp/insert per JST tooling (vendor, Q-H01).",
+      "Fit the jack carrier and A01-jack; fit the middle carrier with R1/R2 saddles snapped into notches N1/N2 (legs into the flank grooves).",
+      "Mate J-SIG:local and J-PWR:local from the rear (+z) and form the free local loops left of x 232.",
+      "Lay each bundle in its saddle and close the strap latch (rail top exposed, A01-middle not yet fitted).",
+      "Bench: mate the J-SIG/J-PWR middle housings onto the A01-middle headers; before the rear (core) carrier is fitted, lower A01-middle onto its spacers along -z with the hooks hanging below it, feeding slack back through the guides; fit the four screws, then the rear carrier.",
+      "Fit the core onto the DIN connector and connect K-PWR last."
+    ],
+    "harness_replacement": [
+      "Requires removal of A01-middle (core removed first) or front access through RV-ACCESS; open the strap latches R1/R2 with a flat tool from +x."
+    ],
+    "service_core": [
+      "Power off and discharge; remove the rear cover.",
+      "Disconnect K-PWR; release the four core screws; support both handles and withdraw the core 40 mm along +z. J-SIG and J-PWR are not touched."
+    ],
+    "service_middle_connectors": [
+      "Power off. Remove the front panel; front access to the middle headers needs the corridor in reservation RV-ACCESS (owner decision).",
+      "Press the GH latch with a flat tool, hold the bundle and pull within 15 degrees of -z until the housing is free; the cable slides back through R1/R2 from the local loop.",
+      "Refit: push the housing on until it latches; draw the slack back to the local loop."
+    ]
+  },
+  "retention_rules": {
+    "class": "DESIGN_ASSUMPTION",
+    "end_flare_radius_mm": 2.0,
+    "kind": "captive guide: a saddle seated in the notch with an integral strap; the bundle can slide axially so the release slack comes from the local loop",
+    "latch_tab_mm": [
+      2.0,
+      2.0,
+      0.6
+    ],
+    "material": {
+      "class": "DESIGN_ASSUMPTION",
+      "value": "PA66, UL94 V-2 or better"
+    },
+    "notch_fit_per_side_mm": 0.1,
+    "overhang_mm": 1.0,
+    "seat_radial_clearance_mm": 0.25,
+    "seat_thickness_mm": 0.8,
+    "snap_leg_mm": {
+      "barb": 0.3,
+      "depth_below_floor": 3.0,
+      "flank_groove_depth": 0.4,
+      "flank_groove_height": 1.0,
+      "thickness": 0.8
+    },
+    "straight_beyond_guide_mm": 1.0,
+    "strap_thickness_mm": 0.6,
+    "strap_width_mm": 3.0,
+    "wall_thickness_mm": 0.8
+  },
+  "status": "DESIGN_STUDY_ONLY",
+  "tolerances": {
+    "carrier_face_mm": {
+      "class": "DESIGN_ASSUMPTION",
+      "note": "Drawing tolerance to be put on the tab top, notch floor and notch walls.",
+      "value": 0.1
+    },
+    "mount_hole_float_mm": {
+      "class": "DESIGN_ASSUMPTION",
+      "note": "2.7 mm drill around a 2.5 mm screw, half the diametral gap.",
+      "value": 0.1
+    },
+    "panel_to_carrier_registration_mm": {
+      "class": "UNCONFIRMED",
+      "note": "The carriers bolt to new enclosure cleats that are not designed; no chain to the panel exists.",
+      "value": null
+    },
+    "pcb_bow_fraction": {
+      "class": "DESIGN_ASSUMPTION",
+      "note": "IPC-6012 SMT limit (standard not retained); JLC states no bow value. Modelled as a half sine along the A01-middle left edge between M1 (y 146) and M3 (y 289), toward the carrier.",
+      "sources": [
+        "S-IPC-6012",
+        "S-JLC-CAP"
+      ],
+      "value": 0.0075
+    },
+    "pcb_hole_position_mm": {
+      "class": "MAKER_DOC",
+      "sources": [
+        "S-JLC-CAP"
+      ],
+      "value": 0.075
+    },
+    "saddle_seat_mm": {
+      "class": "DESIGN_ASSUMPTION",
+      "note": "Moulded or printed saddle seat thickness; no part exists yet.",
+      "value": 0.1
+    },
+    "spacer_length_mm": {
+      "class": "DESIGN_ASSUMPTION",
+      "note": "No spacer MPN is selected.",
+      "value": 0.1
+    },
+    "strap_thickness_mm": {
+      "class": "DESIGN_ASSUMPTION",
+      "note": "Integral strap band; no part exists yet.",
+      "value": 0.05
+    }
+  }
+}

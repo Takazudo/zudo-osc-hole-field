@@ -1,0 +1,274 @@
+{
+  "not_extended": "only the volume A01 J-SIG/J-PWR and their service motions cross is modelled; no other instrument is designed here",
+  "reservations": [
+    {
+      "box_mm": [
+        260.5,
+        162.65,
+        271.6,
+        180.35
+      ],
+      "for": "A01:J-SIG:middle release (15 mm Stage10 travel)",
+      "id": "RV-DIP-J-SIG",
+      "reason": "the hook envelope falls to z 17.6 while the housing is withdrawn; no foreign board, part or wiring may occupy this volume",
+      "status": "PROPOSAL_REQUIRES_OWNER_DECISION",
+      "z_mm": [
+        17.1,
+        48.4
+      ]
+    },
+    {
+      "box_mm": [
+        260.5,
+        162.65,
+        271.6,
+        180.35
+      ],
+      "for": "A01:J-SIG:middle latch press and pull from the panel side",
+      "id": "RV-ACCESS-J-SIG",
+      "reason": "only needed if the middle connectors are serviced with the neighbouring front boards in place; otherwise those boards must come out with the front panel",
+      "status": "PROPOSAL_REQUIRES_OWNER_DECISION",
+      "z_mm": [
+        2.0,
+        48.4
+      ]
+    },
+    {
+      "box_mm": [
+        280.5,
+        167.025,
+        291.6,
+        180.975
+      ],
+      "for": "A01:J-PWR:middle release (15 mm Stage10 travel)",
+      "id": "RV-DIP-J-PWR",
+      "reason": "the hook envelope falls to z 17.89 while the housing is withdrawn; no foreign board, part or wiring may occupy this volume",
+      "status": "PROPOSAL_REQUIRES_OWNER_DECISION",
+      "z_mm": [
+        17.392893,
+        48.4
+      ]
+    },
+    {
+      "box_mm": [
+        280.5,
+        167.025,
+        291.6,
+        180.975
+      ],
+      "for": "A01:J-PWR:middle latch press and pull from the panel side",
+      "id": "RV-ACCESS-J-PWR",
+      "reason": "only needed if the middle connectors are serviced with the neighbouring front boards in place; otherwise those boards must come out with the front panel",
+      "status": "PROPOSAL_REQUIRES_OWNER_DECISION",
+      "z_mm": [
+        2.0,
+        48.4
+      ]
+    },
+    {
+      "for": "guide:R2:leg+",
+      "foreign_part": "SW1501",
+      "id": "RV-GUIDE-R2-SW1501",
+      "max_rear_side_height_mm": 17.0,
+      "max_top_z_mm": 38.6,
+      "status": "REQUIREMENT_ON_FOREIGN_DESIGN"
+    },
+    {
+      "for": "J-PWR run under A01-middle",
+      "foreign_part": "SW1401",
+      "id": "RV-RUN-SW1401",
+      "max_rear_side_height_mm": 20.992893,
+      "max_top_z_mm": 42.592893,
+      "status": "REQUIREMENT_ON_FOREIGN_DESIGN"
+    },
+    {
+      "for": "J-PWR run under A01-middle",
+      "foreign_part": "SW1501",
+      "id": "RV-RUN-SW1501",
+      "max_rear_side_height_mm": 20.992893,
+      "max_top_z_mm": 42.592893,
+      "status": "REQUIREMENT_ON_FOREIGN_DESIGN"
+    },
+    {
+      "for": "J-PWR run under A01-middle",
+      "foreign_part": "SW1601",
+      "id": "RV-RUN-SW1601",
+      "max_rear_side_height_mm": 20.992893,
+      "max_top_z_mm": 42.592893,
+      "status": "REQUIREMENT_ON_FOREIGN_DESIGN"
+    }
+  ],
+  "scenarios": [
+    {
+      "class": "EXISTING_DESIGN",
+      "id": "NB-278",
+      "solids": [
+        {
+          "box_mm": [
+            195,
+            94,
+            318,
+            300
+          ],
+          "extent": "UNKNOWN",
+          "id": "foreign-pcb-plane",
+          "z_mm": [
+            20.0,
+            21.6
+          ]
+        }
+      ],
+      "sources": [
+        "R-ASSEMBLY-DEFAULT"
+      ],
+      "title": "architecture-278 conditional foreign PCB plane (code default, outline unknown)"
+    },
+    {
+      "class": "EXISTING_DESIGN",
+      "id": "NB-CAN",
+      "note": "Rear-side part heights of EL, JR and P are not recorded.",
+      "solids": [
+        {
+          "box_mm": [
+            210,
+            164,
+            317,
+            277
+          ],
+          "extent": "OUTLINE",
+          "id": "EL",
+          "z_mm": [
+            4.2,
+            4.6
+          ]
+        },
+        {
+          "box_mm": [
+            177.5,
+            20,
+            314,
+            164
+          ],
+          "extent": "OUTLINE",
+          "id": "JR",
+          "z_mm": [
+            10.0,
+            11.6
+          ]
+        },
+        {
+          "box_mm": [
+            94,
+            176,
+            317,
+            292
+          ],
+          "extent": "OUTLINE",
+          "id": "P",
+          "z_mm": [
+            11.8,
+            13.4
+          ]
+        },
+        {
+          "box_mm": [
+            245.5,
+            169.0,
+            259.5,
+            175.0
+          ],
+          "extent": "CLEARANCE_BOX",
+          "id": "EL-E3",
+          "z_mm": [
+            4.6,
+            12.6
+          ]
+        },
+        {
+          "box_mm": [
+            262.5,
+            169.0,
+            276.5,
+            175.0
+          ],
+          "extent": "CLEARANCE_BOX",
+          "id": "EL-E4",
+          "z_mm": [
+            4.6,
+            12.6
+          ]
+        },
+        {
+          "box_mm": [
+            279.5,
+            169.0,
+            293.5,
+            175.0
+          ],
+          "extent": "CLEARANCE_BOX",
+          "id": "EL-E5",
+          "z_mm": [
+            4.6,
+            12.6
+          ]
+        }
+      ],
+      "sources": [
+        "R-CANONICAL-STACK",
+        "R-CANONICAL-EL",
+        "R-CANONICAL-BOARDS"
+      ],
+      "title": "incumbent canonical stack (different architecture; conditional candidate, fit NOT RUN)"
+    }
+  ],
+  "toggle_rear_bound": {
+    "bushing_tip_z_mm": -1.65,
+    "class": "DESIGN_ASSUMPTION derived from S-DW2-2MS3",
+    "conditions": [
+      "exact MPN gate OPEN (-5 drawing vs unsuffixed lock MPN)",
+      "panel-bushing mounting with the front nut fully engaged",
+      "no foreign wiring, PCB or connector behind the terminals (UNKNOWN)"
+    ],
+    "shoulder_z_max_mm": 4.19,
+    "terminal_tip_z_max_mm": 16.63
+  },
+  "toggle_vs_requirement": {
+    "SW1401": {
+      "drawing_bound_z_mm": 16.63,
+      "required_max_top_z_mm": 42.592893,
+      "satisfied_if_conditions_hold": true
+    },
+    "SW1501": {
+      "drawing_bound_z_mm": 16.63,
+      "required_max_top_z_mm": 42.592893,
+      "satisfied_if_conditions_hold": true
+    },
+    "SW1601": {
+      "drawing_bound_z_mm": 16.63,
+      "required_max_top_z_mm": 42.592893,
+      "satisfied_if_conditions_hold": true
+    }
+  },
+  "unknown_regions": [
+    {
+      "basis": "below the A01 carriers no foreign board, plane, outline or part height is designed; z 20-21.6 is only a code default (R-ASSEMBLY-DEFAULT)",
+      "box_mm": [
+        195,
+        94,
+        318,
+        300
+      ],
+      "id": "U-FRONT",
+      "status": "UNKNOWN_NOT_FREE",
+      "z_mm": [
+        2.0,
+        34.0
+      ]
+    },
+    {
+      "basis": "per-part XY columns of A02-A06 / E2-E5 hardware above z 21.6, depth unknown (Stage30/31 foreign-depth)",
+      "id": "U-FOREIGN-DEPTH",
+      "status": "UNKNOWN_NOT_FREE"
+    }
+  ]
+}
