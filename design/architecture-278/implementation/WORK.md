@@ -568,3 +568,56 @@ placements, decision.json, KEEP_K1402_INCUMBENT, original native FAIL history an
 parked PR260/277/285 remain unchanged. PR286 remains draft and unmerged. No native
 command, admission reuse, hardware change, purchase or electrical acceptance.
 Next native request: NONE for this unchanged-CAD source derivation.
+
+### Stage23 — follow the owner's JLC sourcing and assembly route
+
+Resumed in the replacement Codex Cloud environment from 12a48ff5 on 2026-10-17,
+refreshed remote and claimed sole branch ownership. Loaded the host-published
+portable profile without runtime restoration; read repository/component rules.
+The owner's “follow JLC to continue” selects JLC-supported sourcing and assembly,
+without separate manual population. It does not select AC bandwidth, settling or
+wiring serviceability. The pre-edit circuit check passed its manual inventory scope.
+
+Resolved all nine exact JLC catalog identities for the 19 passive references.
+The previously missing codes are RT0603BRD0722K1L → C723484,
+C0603C100J5GACTU → C2167326 and C0603C103J5RACTU → C5360746. Refreshed all six earlier
+codes. Each exact product page reports positive dated stock, SMT Assembly and
+Economic and Standard PCBA. These catalog declarations do not confirm order
+matching, allocation or assembly of the whole instrument. No sourcing-driven
+substitution is necessary, so all original exact manufacturer candidates remain.
+
+Added a dated source inventory and deterministic, unapplied candidate-selection
+patch. Each of 19 operations binds the complete frozen package hash, full units,
+pin/net records, old blank selection and proposed exact manufacturer/MPN/JLC code.
+Every operation remains blocked from application pending its explicit electrical,
+physical and order-time requirements. Primary ratings and mounting dimensions are
+reused unchanged from Stage21/22. C7105's X7R classification, reference-ratio error,
+control loading and loop/AC behavior are not closed by successful sourcing.
+
+Retained direct JLC HTML, help-page and frontend-script receipts in ignored cache.
+The frontend establishes that assemblyComponentFlag is a Mechanical Assembly badge
+discriminator, not an SMT eligibility flag. The new parser checks explicit visible
+service declarations and structured fields together, separates stock from allocation,
+and rejects conflicting exact identities. Independent review found and fixed two
+parser boundary cases: borrowing a following product's service labels and resolving
+a suffix of a flight record ID. The parser now understands byte-counted flight text
+frames. Review also required service-guidance receipt/URL/hash binding.
+
+Added 28 focused regressions for those boundaries, omitted candidates/references,
+rewiring, missing units, metadata/rating/code substitution, degraded replacement
+ratings, assumption promotion and manual-population/adoption drift. Final validation
+and independent reviewed hashes are recorded with the Stage23 checkpoint. The
+inventory check remains 68 manual lines without schematic/placement binding.
+
+Every preexisting byte at 12a48ff5 except this log is preserved. Canonical boards,
+locked placements, decision.json, KEEP_K1402_INCUMBENT, historical native FAIL
+receipts and parked PR260/277/285 remain unchanged. No native command, admission
+reuse, supplier contact, purchase, production CAD change, merge or architecture
+adoption occurred. PR286 remains draft and unmerged.
+
+Next bounded step: source-only error/thermal/filter budget closure and an exact
+reflow land-pattern proposal using these resolved JLC identities. Ask for the
+remaining functional or serviceability choices only when a concrete alternative
+requires them. Later order preparation needs quantity, complete BOM/CPL, exact
+JLC matching and accepted assembly scope; no such order is authorized here.
+Next native request: NONE for the current source-only follow-up.
