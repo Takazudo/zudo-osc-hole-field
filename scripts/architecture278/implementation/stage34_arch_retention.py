@@ -71,8 +71,12 @@ def validate_inputs(data):
     for link,rows in cb['links'].items():
         need([r['pin'] for r in rows]==[str(i) for i in range(1,len(rows)+1)],'one budget row per pin, in order '+link)
         for r in rows:
-            for sid in r['sources']:need(sid in src,'unknown current source '+sid)
-            need(r['typical_A']<=r['conditional_max_A'],'typical never exceeds the conditional maximum '+link+' pin '+r['pin'])
+            for sid in r['sources']+[x for t in r['terms'] for x in t.get('sources',[])]:need(sid in src,'unknown current source '+sid)
+            for t in r['terms']:
+                need(t['kind'] in ('V_over_R','current','unknown'),'current term kind '+t['term'])
+                if t['kind']!='unknown':need(t.get('sources') and t.get('basis'),'a current term carries its sources and basis '+t['term'])
+                if t['kind']=='V_over_R':need(all(x>0 for x in t['R_ohm']) and t['V'][0]<=t['V'][1]+1e-12 and t['R_ohm'][0]>=t['R_ohm'][1]-1e-9,'typical never exceeds the conditional maximum '+t['term'])
+                if t['kind']=='current':need(t['A'][0] is None or t['A'][0]<=t['A'][1],'typical never exceeds the conditional maximum '+t['term'])
             if r['established_max_A'] is not None:need(any(src[sid]['authority'] in s32.MAKER_AUTH for sid in r['sources']),'an established maximum needs maker evidence '+link+' pin '+r['pin'])
             else:need(r['established_status'].startswith('UNKNOWN'),'no established maximum means UNKNOWN '+link+' pin '+r['pin'])
     need(set(cb['stage33_inputs_superseded']['parameters'])=={'j_pwr_conductor_current_max_A','j_pwr_agnd_return_bound_A'},'the Stage33 X1-derived current inputs are superseded, not reused')
@@ -176,12 +180,14 @@ def rg34(cand,P,T):
     for l in LINKS:
         f=frame(cand,l);r=s33.bundle(P,l)['round_radius_mm'];fan=s33.fan_in(P,l)['length_mm'];Ld=cand['lengths'][l]['design_length_mm'];Z0=cand['installed'][l]['top_centreline_z_mm']
         Rreq=s33.required_radius(val(P,'wire_bend_rule_x_od'),val(P,'wire_od_max_mm'),P,l)['surface'];ep=e-c;ls=math.sqrt(4*Rreq*ep-ep*ep)
-        ex={'local':f['a'][2],'middle':f['b'][2]};zsb={k:ex[k]+fan+ls for k in SIDES};zent={k:ex[k]+trav+fan+grip for k in SIDES}
-        Zlow=Z0-dcut/2-beta/2;Zcap=Z0+dcut/2+trav/2+r+c;Ztop=Zcap+t
+        # Tolerance corners of the arch relative to RG34: short cable + bow + RG34 high, or long cable + RG34 low (z registration).
+        dz={'low':-(dcut/2+beta/2+e),'nominal':0.0,'high':dcut/2+e}
+        ex={'local':f['a'][2],'middle':f['b'][2]};zsb={k:ex[k]+fan+ls+e for k in SIDES};zent={k:ex[k]+trav+fan+grip+e for k in SIDES}
+        Zlow=Z0+dz['low'];Zcap=Z0+dz['high']+trav/2+r+c;Ztop=Zcap+t
         Lhug=s33.arch(cand['geo'],l,Zlow,0,0,P)['length_mm']+mh;fixed=Ld+dcut-Lhug;delta=2*val(P,'former_setting_resolution_mm')
         g={'frame':{k:(p6(v) if isinstance(v,list) else r6(v)) for k,v in f.items() if k!='link'},'f':f,'r':r,'c':c,'t':t,'R':R,'fan_in_mm':r6(fan),'s_bend_length_mm':r6(ls),'required_radius_mm':r6(Rreq),
             'exit_z_mm':ex,'sleeve_bottom_z_mm':{k:r6(v) for k,v in zsb.items()},'block_entry_z_mm':{k:r6(v) for k,v in zent.items()},'Z0':Z0,'Zlow':Zlow,'Zcap_inner':Zcap,'Ztop':Ztop,
-            'former_top_range_z_mm':[r6(Zlow-r),r6(Z0+dcut/2-r)],'former_bottom_z_mm':r6(Zlow-R),'hug_length_mm':r6(Lhug),'slack_mm':r6(delta),'slack_fixed_former_mm':r6(fixed),'bow_mm':r6(beta),'design_length_mm':Ld}
+            'corners_dz_mm':{k:r6(v) for k,v in dz.items()},'former_top_range_z_mm':[r6(Zlow-r),r6(Z0+dz['high']-r)],'former_bottom_z_mm':r6(Zlow-R),'hug_length_mm':r6(Lhug),'slack_mm':r6(delta),'slack_fixed_former_mm':r6(fixed),'bow_mm':r6(beta),'design_length_mm':Ld}
         out[l]=g
     for l,g in out.items():
         f=g['f'];g['s_off']={k:sleeve_offset(cand,g,l,k,P) for k in SIDES};a_out=g['r']+g['c']+g['t'];D=f['D']
@@ -189,7 +195,8 @@ def rg34(cand,P,T):
         g['parts']=[plane_prism(f,'RG34-'+l+'-sleeve-local','sleeve',[-a_out,Ls],[-a_out,a_out],[g['sleeve_bottom_z_mm']['local'],g['block_entry_z_mm']['local']],'local'),
             plane_prism(f,'RG34-'+l+'-sleeve-middle','sleeve',[D-Ms,D+a_out],[-a_out,a_out],[g['sleeve_bottom_z_mm']['middle'],g['block_entry_z_mm']['middle']],'middle'),
             plane_prism(f,'RG34-'+l+'-channel-local-leg','channel',[-a_out,a_out],[-a_out,a_out],[g['block_entry_z_mm']['local'],g['Ztop']]),
-            plane_prism(f,'RG34-'+l+'-channel-top','channel',[-a_out,D-Ms],[-a_out,a_out],[g['former_bottom_z_mm']-g['t'],g['Ztop']]),
+            plane_prism(f,'RG34-'+l+'-channel-corner-local','channel',[-a_out,g['R']],[-a_out,a_out],[g['former_bottom_z_mm']-g['t'],g['Ztop']]),
+            plane_prism(f,'RG34-'+l+'-channel-top','channel',[g['R'],D-Ms],[-a_out,a_out],[g['Zlow']-g['r']-g['t'],g['Ztop']]),
             plane_prism(f,'RG34-'+l+'-channel-middle','channel',[D-Ms,D+a_out],[-a_out,a_out],[g['block_entry_z_mm']['middle'],g['Ztop']])]
         g['interior_hull']=plane_prism(f,'RG34-'+l+'-interior','interior',[-(g['r']+g['c']),D+g['r']+g['c']],[-(g['r']+g['c']),g['r']+g['c']],[min(g['sleeve_bottom_z_mm'].values()),g['Zcap_inner']])
     return out
@@ -203,54 +210,66 @@ def route_at(cand,l,tl,tm,P):
     return s33.constant_length(cand['geo'],l,cand['lengths'][l]['design_length_mm'],tl,tm,P)
 
 
+def shifted(route,dz):return [[p[0],p[1],p[2]+dz] for p in route['dense']]
+
+
 def sleeve_offset(cand,g,l,side,P):
     """Largest in-plane offset of the centreline toward the arch inside a sleeve zone, over the states in which that sleeve is fitted."""
-    f=g['f'];z0,z1=g['exit_z_mm'][side]+g['fan_in_mm'],g['exit_z_mm'][side]+val(P,'release_travel_mm')+g['fan_in_mm']+val(P,'grip_length_design_mm');best=0.0
+    f=g['f'];z0,z1=g['sleeve_bottom_z_mm'][side],g['block_entry_z_mm'][side];best=0.0
     for n,tl,tm in state_list(P):
         if (side=='local' and tl) or (side=='middle' and tm):continue
-        for p in route_at(cand,l,tl,tm,P)['route']['dense']:
+        for p in (q for dz in g['corners_dz_mm'].values() for q in shifted(route_at(cand,l,tl,tm,P)['route'],dz)):
             s,_,z=local(f,p)
-            if z0-1e-9<=z<=z1+1e-9 and (s<f['D']/2)==(side=='local'):best=max(best,s if side=='local' else f['D']-s)
+            if z0-1e-9<=z<=z1+1e-9 and in_leg_region(g,s,side):best=max(best,s if side=='local' else f['D']-s)
     return r6(best)
 
 
 def in_former(g,s,z):
     """Inside the inflated former (centreline excluded): s in (0, D), z below Zlow, with corner arcs of radius R."""
     D=g['f']['D'];R=g['R'];Zl=g['Zlow']
-    if not(1e-9<s<D-1e-9 and z<Zl-1e-9):return False
+    # Below its lowest corner point the former ends; the sleeve bores bound the legs there.
+    if not(1e-6<s<D-1e-6 and Zl-R-1e-6<=z<Zl-1e-6):return False
     if z>Zl-R:
-        if s<R:return math.hypot(s-R,z-(Zl-R))<R-1e-9
-        if s>D-R:return math.hypot(s-(D-R),z-(Zl-R))<R-1e-9
+        if s<R:return math.hypot(s-R,z-(Zl-R))<R-1e-6
+        if s>D-R:return math.hypot(s-(D-R),z-(Zl-R))<R-1e-6
     return True
+
+
+def in_leg_region(g,s,side):
+    """The leg and bend region of one end (within R of the leg in s): what a sleeve encloses below its block entry."""
+    return s<=g['R']+1e-9 if side=='local' else s>=g['f']['D']-g['R']-1e-9
 
 
 def admissible(g,p,withdrawn,f):
     """Centreline point admissible in RG34: inside the walls and end walls, under the cap, outside the inflated former; the withdrawn end's sleeve zone is open."""
-    s,nn,z=local(f,p);side='local' if s<f['D']/2 else 'middle'
+    s,nn,z=local(f,p);side='local' if s<f['D']/2 else 'middle';leg=in_leg_region(g,s,side)
     if z<g['sleeve_bottom_z_mm'][side]-1e-9:return True,None
-    if withdrawn==side and z<g['block_entry_z_mm'][side]-1e-9:return True,None
-    if abs(nn)>g['c']+1e-9:return False,'wall'
-    if s<-g['c']-1e-9 or s>f['D']+g['c']+1e-9:return False,'end wall'
-    if z>g['Zcap_inner']-g['r']+1e-9:return False,'cap'
+    if withdrawn==side and leg and z<g['block_entry_z_mm'][side]-1e-9:return True,None
+    if abs(nn)>g['c']+1e-6:return False,'wall'
+    if s<-g['c']-1e-6 or s>f['D']+g['c']+1e-6:return False,'end wall'
+    if z>g['Zcap_inner']-g['r']+1e-6:return False,'cap'
     if in_former(g,s,z):return False,'former'
-    if z<g['block_entry_z_mm'][side]-1e-9:
-        if side=='local' and s>g['s_off']['local']+g['c']+1e-9:return False,'sleeve bore'
-        if side=='middle' and f['D']-s>g['s_off']['middle']+g['c']+1e-9:return False,'sleeve bore'
+    if not leg and z<g['Zlow']-g['R']-1e-6:return False,'below the channel'
+    if leg and z<g['block_entry_z_mm'][side]-1e-9:
+        if side=='local' and s>g['s_off']['local']+g['c']+1e-6:return False,'sleeve bore'
+        if side=='middle' and f['D']-s>g['s_off']['middle']+g['c']+1e-6:return False,'sleeve bore'
     return True,None
 
 
 def states_in_rg34(cand,geo,P):
     """Every allowed state (installed, one end withdrawn 2.45-15 mm) keeps the design length and stays admissible; the both-ends state is checked to be blocked."""
-    rows=[]
+    rows=[];e=val(P,'registration_allowance_mm');grip=val(P,'grip_length_design_mm')
     for l in LINKS:
         g=geo[l];f=g['f']
-        for n,tl,tm in state_list(P)+[('both',val(P,'release_travel_mm'),val(P,'release_travel_mm'))]:
-            c=route_at(cand,l,tl,tm,P);bad=[]
-            for p in c['route']['dense']:
-                ok,why=admissible(g,p,n,f)
-                if not ok:bad.append(why)
-            rows.append({'link':l,'state':n,'travel_mm':max(tl,tm),'top_centreline_z_mm':c['top_centreline_z_mm'],'admissible':not bad,'blocked_by':sorted(set(bad)),
-                'fan_in_below_block':(f['a'][2]+tl+g['fan_in_mm']<=g['block_entry_z_mm']['local']-val(P,'grip_length_design_mm')+1e-9) and (f['b'][2]+tm+g['fan_in_mm']<=g['block_entry_z_mm']['middle']-val(P,'grip_length_design_mm')+1e-9)})
+        for corner,dz in g['corners_dz_mm'].items():
+            for n,tl,tm in state_list(P)+[('both',val(P,'release_travel_mm'),val(P,'release_travel_mm'))]:
+                c=route_at(cand,l,tl,tm,P);bad=[]
+                for p in shifted(c['route'],dz):
+                    ok,why=admissible(g,p,n,f)
+                    if not ok:bad.append(why)
+                # exits may sit up to e higher than RG34 (registration): the withdrawn fan-in and the grip still stay below the block entry
+                fan_ok=all(g['exit_z_mm'][k]+e+t_+g['fan_in_mm']+grip<=g['block_entry_z_mm'][k]+1e-9 for k,t_ in (('local',tl),('middle',tm)))
+                rows.append({'link':l,'corner':corner,'dz_mm':dz,'state':n,'travel_mm':max(tl,tm),'top_centreline_z_mm':r6(c['top_centreline_z_mm']+dz),'admissible':not bad,'blocked_by':sorted(set(bad)),'fan_in_below_block':fan_ok})
     return rows
 
 
@@ -360,15 +379,17 @@ def negative_controls(cand,geo,s33res,fs,P):
 
 
 def strength(geo,post,P):
-    """The post as the root of a rigid RG34 assembly: bending at the crossmember face for a load at the farthest RG34 point; joints and walls not evaluated."""
+    """The post as the root of a rigid RG34 assembly: a load at the farthest RG34 point gives bending (full 3D lever, weak axis) and torsion (horizontal lever) at once; von Mises at the root. Joints and walls not evaluated."""
     xs=[p[0] for p in post['poly']];ys=[p[1] for p in post['poly']];b,h=max(xs)-min(xs),max(ys)-min(ys);root=[(max(xs)+min(xs))/2,(max(ys)+min(ys))/2,post['z'][0]]
-    pts=[(q[0],q[1],z) for l in LINKS for p in geo[l]['parts'] for q in p['poly'] for z in p['z']];far=max(pts,key=lambda q:math.dist(q,root));lever=math.dist(far,root)
+    pts=[(q[0],q[1],z) for l in LINKS for p in geo[l]['parts'] for q in p['poly'] for z in p['z']];far=max(pts,key=lambda q:math.dist(q,root));lever=math.dist(far,root);arm=math.dist(far[:2],root[:2])
     I=min(b*h**3,h*b**3)/12;c=(min(b,h))/2;allow=val(P,'carrier_proof_MPa')/val(P,'strength_safety_factor')
-    grid=[{'load_N':F,'peak_MPa':r6(F*lever*c/I),'meets':F*lever*c/I<=allow} for F in val(P,'load_sensitivity_N')]
-    return {'post_section_mm':[r6(b),r6(h)],'lever_mm':r6(lever),'farthest_point_mm':p6(far),'I_min_mm4':r6(I),'allowable_load_N':r6(allow*I/(c*lever)),'grid':grid,
-        'planning_load_N':val(P,'planning_load_N'),'meets_at_planning_load':allow*I/(c*lever)>=val(P,'planning_load_N'),
+    lo,hi=min(b,h),max(b,h);alpha=1/(3+1.8*lo/hi)  # rectangle torsion: tau_max = T / (alpha a b^2)
+    per_N=math.sqrt((lever*c/I)**2+3*(arm/(alpha*hi*lo*lo))**2)
+    grid=[{'load_N':F,'von_mises_MPa':r6(F*per_N),'meets':F*per_N<=allow} for F in val(P,'load_sensitivity_N')]
+    return {'post_section_mm':[r6(b),r6(h)],'lever_mm':r6(lever),'torsion_arm_mm':r6(arm),'farthest_point_mm':p6(far),'I_min_mm4':r6(I),'torsion_alpha':r6(alpha),'allowable_load_N':r6(allow/per_N),'grid':grid,
+        'planning_load_N':val(P,'planning_load_N'),'meets_at_planning_load':allow/per_N>=val(P,'planning_load_N'),
         'material':{'name':val(P,'carrier_material'),'proof_min_MPa':val(P,'carrier_proof_MPa'),'safety_factor':val(P,'strength_safety_factor')},
-        'not_covered':['post-to-crossmember fastening and the crossmember:rear:0 / rail:rear:0 joint','channel walls, lids and sleeves under a load','the J-SIG to J-PWR channel joint','fatigue, vibration, impact'],
+        'not_covered':['post root fixity: the post overhangs crossmember:rear:0 (y 167.5-170 off its 170-174 top face); root treated as fixed','post-to-crossmember fastening and the crossmember:rear:0 / rail:rear:0 joint','channel walls, lids and sleeves under a load','the J-SIG to J-PWR channel joint','fatigue, vibration, impact'],
         'status':'CALCULATED_CONDITIONALLY; not a physical strength result (M34-05)'}
 
 
@@ -385,15 +406,22 @@ def friction(geo,inp,P):
     for l in LINKS:
         n=val(P,'conductors')[l];W=q*n*geo[l]['design_length_mm'];drag=mu*W;spans={}
         for side in SIDES:
-            Lf=geo[l]['sleeve_bottom_z_mm'][side]-geo[l]['exit_z_mm'][side];pcr=2.046*math.pi**2*n*ei1/Lf**2;spans[side]={'length_mm':r6(Lf),'buckling_load_N':r6(pcr),'ratio_to_drag':r6(pcr/drag)}
+            # With that end's sleeve removed the pushed span reaches the block entry (worst case for re-mating).
+            Lf=geo[l]['block_entry_z_mm'][side]-geo[l]['exit_z_mm'][side];pcr=2.046*math.pi**2*n*ei1/Lf**2;spans[side]={'length_mm':r6(Lf),'buckling_load_N':r6(pcr),'ratio_to_drag':r6(pcr/drag)}
         out[l]={'weight_upper_N':r6(W),'drag_upper_N':r6(drag),'free_spans':spans,'slack_moves_without_buckling':all(v['ratio_to_drag']>=10 for v in spans.values())}
     return {'heaviest_construction':heavy[0],'most_flexible_construction':soft[0],'EI_per_conductor_Nmm2':r6(ei1),'weight_per_conductor_N_per_mm':q,'links':out,
-        'note':'the retention bounds do not use stiffness; this only shows the slack can follow a withdrawal without buckling a free span. Abrasion over repeated withdrawals is not calculated (M34-04).'}
+        'note':'the retention bounds do not use stiffness; this only shows the slack can follow a withdrawal without buckling a free span. The drag bound (friction x weight) leaves out contact forces from bending stiffness and tension at the bends. Abrasion over repeated withdrawals is not calculated (M34-04).'}
 
 
 def cover(geo,P):
-    top=val(P,'enclosure_rear_inner_z_mm');m=val(P,'placement_margin_mm');e=val(P,'registration_allowance_mm')
-    return {l:{'rg34_top_z_mm':r6(g['Ztop']),'margin_mm':m,'registration_mm':e,'cover_z_mm':top,'spare_mm':r6(top-g['Ztop']-m-e),'clear':g['Ztop']+m+e<=top+1e-9} for l,g in geo.items()}
+    """RG34 top under the rear cover with the same rule as every RG34 clearance: margin, RG34 tolerances, registration (carrier to cover), K4."""
+    top=val(P,'enclosure_rear_inner_z_mm');m=val(P,'placement_margin_mm');e=val(P,'registration_allowance_mm');k4=val(P,'robust_spare_mm')
+    st=val(P,'guide_fab_tolerance_mm')+val(P,'guide_mount_float_mm')+e;out={}
+    for l,g in geo.items():
+        sp=top-g['Ztop']-m-st;need_z=g['Ztop']+m+st+k4
+        out[l]={'rg34_top_z_mm':r6(g['Ztop']),'margin_mm':m,'stack_mm':r6(st),'cover_z_mm':top,'robust_spare_mm':r6(sp),'meets_K4':sp>=k4-1e-12,'cover_needed_z_mm':r6(need_z),
+            'shortfall_mm':r6(max(0.0,need_z-top)),'design_length_cut_to_fit_mm':r6(max(0.0,2*(need_z-top)))}
+    return out
 
 
 def access(cand,geo,P):
@@ -430,8 +458,9 @@ def r17_check(data,mech,P,T,geo):
     """Sensitivity: the same RG34 rule at R 17 (15x OD): the cap over the single-end raised arch against the rear cover."""
     Q=copy.deepcopy(P);Q['route_radius_mm']['value']=17.0;cand=s33.build_r33(data['s33']['input']['candidates']['R33'],data['s33'],mech,Q);out={}
     for l in LINKS:
-        g=geo[l];Z0=cand['installed'][l]['top_centreline_z_mm'];top=Z0+val(P,'cut_length_tolerance_mm')/2+val(P,'release_travel_mm')/2+g['r']+g['c']+g['t']
-        out[l]={'installed_top_centreline_z_mm':r6(Z0),'rg34_top_z_mm':r6(top),'needed_z_mm':r6(top+val(P,'placement_margin_mm')+val(P,'registration_allowance_mm')),'fits_under_cover':top+val(P,'placement_margin_mm')+val(P,'registration_allowance_mm')<=val(P,'enclosure_rear_inner_z_mm')}
+        g=geo[l];Z0=cand['installed'][l]['top_centreline_z_mm'];top=Z0+g['corners_dz_mm']['high']+val(P,'release_travel_mm')/2+g['r']+g['c']+g['t']
+        need_z=top+val(P,'placement_margin_mm')+val(P,'guide_fab_tolerance_mm')+val(P,'guide_mount_float_mm')+val(P,'registration_allowance_mm')+val(P,'robust_spare_mm')
+        out[l]={'installed_top_centreline_z_mm':r6(Z0),'rg34_top_z_mm':r6(top),'needed_z_mm':r6(need_z),'fits_under_cover':need_z<=val(P,'enclosure_rear_inner_z_mm')}
     return out
 
 
@@ -443,9 +472,16 @@ def current_ledger(inp,P,mech):
         for r in rows:need(pins[r['pin']]==r['net'],'current budget net matches the header pin map '+link+' pin '+r['pin'])
         rr=[]
         for r in rows:
-            worst=max(r['conditional_max_A'],r.get('conditional_fault_A') or 0.0)
-            rr.append({'pin':r['pin'],'net':r['net'],'driver':r['driver'],'loads':r['loads'],'direction':r['direction'],'typical_A':r['typical_A'],'conditional_max_A':r['conditional_max_A'],
-                'conditional_fault_A':r.get('conditional_fault_A'),'condition':r['condition'],'unknown_terms':r.get('unknown_terms',[]),'established_max_A':r['established_max_A'],'established_status':r['established_status'],
+            terms=[];typ=cond=fault=0.0
+            for t in r['terms']:
+                if t['kind']=='unknown':terms.append({'term':t['term'],'typical_A':None,'conditional_A':None,'status':'UNKNOWN','basis':t['basis']});continue
+                if t['kind']=='V_over_R':a=[t['V'][i]/t['R_ohm'][i]*t['count'] for i in (0,1)]
+                else:a=[None if t['A'][0] is None else t['A'][0]*t['count'],t['A'][1]*t['count']]
+                fi=t.get('fault_A',0.0)*t['count'];typ+=a[0] or 0.0;cond+=a[1];fault+=fi
+                terms.append({'term':t['term'],'typical_A':None if a[0] is None else r6(a[0]*1e3)/1e3,'conditional_A':r6(a[1]*1e3)/1e3,'fault_increment_A':r6(fi*1e3)/1e3 if fi else None,'basis':t['basis'],'sources':t['sources']})
+            fault=cond+fault if fault else None;worst=fault or cond
+            rr.append({'pin':r['pin'],'net':r['net'],'driver':r['driver'],'loads':r['loads'],'direction':r['direction'],'typical_A':typ,'conditional_max_A':cond,
+                'conditional_fault_A':fault,'condition':r['condition'],'terms':terms,'unknown_terms':[t['term'] for t in terms if t.get('status')=='UNKNOWN'],'established_max_A':r['established_max_A'],'established_status':r['established_status'],
                 'worst_conditional_A':worst,'within_project_limit_conditional':worst<=lim,'fraction_of_project_limit':r6(worst/lim),'fraction_of_jst_awg26_rating':r6(worst/jst),'sources':r['sources']})
         out[link]=rr
     s33p=inp['current_budget']['stage33_inputs_superseded']
@@ -465,21 +501,23 @@ def wire_ledger(inp,data,P,cur):
             env=hi*val(P,'round_bundle_factor')[l]/2+val(P,'bundle_dressing_allowance_mm');k=w['bend_rule_x_od']
             chk={'awg_in_jst_range':'PASS' if val(P,'wire_awg_range')[1]<=w['awg']<=val(P,'wire_awg_range')[0] else 'FAIL',
                 'od_window_full_tolerance':'PASS' if lo>=jmin-1e-9 and hi<=jmax+1e-9 else 'FAIL',
-                'tin_plated_stranded':'PASS' if w['plating']=='tin' else 'FAIL',
+                'tin_plated_stranded':'PASS' if w['plating']=='tin' and '/' in w['conductor'] else 'FAIL',
                 'voltage':'PASS' if w['voltage_V']>=val(P,'gh_voltage_rating_V') else 'FAIL',
                 'temperature':'PASS' if w['temperature_max_C']>=val(P,'gh_temperature_max_C') else 'FAIL',
-                'contact_rating':('PASS' if worst[l]<=val(P,'jst_current_rating_awg26_A') else 'FAIL') if w['awg']==26 else 'UNKNOWN',
-                'temperature_rise':'PASS' if w['awg']==26 and worst[l]<=val(P,'jst_current_rating_awg26_A') else 'UNKNOWN',
-                'derating_to_project_limit':('PASS' if worst[l]<=val(P,'gh_contact_current_limit_A') else 'FAIL') if w['awg']==26 else 'UNKNOWN',
+                # Currents are conditional maxima with no established limit, so a rating comparison can only be CONDITIONAL.
+                'contact_rating':('CONDITIONAL' if worst[l]<=val(P,'jst_current_rating_awg26_A') else 'FAIL') if w['awg']==26 else 'UNKNOWN',
+                'temperature_rise':'CONDITIONAL' if w['awg']==26 and worst[l]<=val(P,'jst_current_rating_awg26_A') else 'UNKNOWN',
+                'derating_to_project_limit':('CONDITIONAL' if worst[l]<=val(P,'gh_contact_current_limit_A') else 'FAIL') if w['awg']==26 else 'UNKNOWN',
                 'bend_installed_R12':('PASS' if R>=k*hi+env-1e-9 else 'FAIL') if k is not None else 'UNKNOWN',
                 'service_flex':'UNKNOWN'}
             failed=[x for x,v in chk.items() if v=='FAIL'];unk=[x for x,v in chk.items() if v=='UNKNOWN']
-            per[l]={'checks':chk,'failed':failed,'unknown':unk,'status':'FAIL' if failed else 'UNKNOWN' if unk else 'MEETS_ALL',
+            cnd=[x for x,v in chk.items() if v=='CONDITIONAL']
+            per[l]={'checks':chk,'failed':failed,'unknown':unk,'conditional':cnd,'status':'FAIL' if failed else 'UNKNOWN' if unk else 'CONDITIONAL' if cnd else 'MEETS_ALL',
                 'conductor_ampacity_generic_A':amp.get(w['awg']),'worst_conditional_A':worst[l]}
         rows.append({'mpn':w['mpn'],'stage':w['stage'],'awg':w['awg'],'conductor':w['conductor'],'insulation':w['insulation'],'od_range_mm':[r6(lo),r6(hi)],'od_margin_to_window_mm':[r6(lo-jmin),r6(jmax-hi)],
             'voltage_V':w['voltage_V'],'temperature_max_C':w['temperature_max_C'],'bend_rule_x_od':w['bend_rule_x_od'],'per_cable':per,'sources':w['sources']})
-    closest=[{'mpn':r['mpn'],'unknown':r['per_cable']['J-PWR']['unknown']} for r in rows if not r['per_cable']['J-PWR']['failed'] and not r['per_cable']['J-SIG']['failed']]
-    return {'wires':rows,'selection':None,'selection_status':'NULL: no identified wire meets every check; the closest leave only UNKNOWN items','closest':closest,
+    closest=[{'mpn':r['mpn'],'unknown':r['per_cable']['J-PWR']['unknown'],'conditional':r['per_cable']['J-PWR']['conditional']} for r in rows if not r['per_cable']['J-PWR']['failed'] and not r['per_cable']['J-SIG']['failed']]
+    return {'wires':rows,'selection':None,'selection_status':'NULL: no identified wire meets every check; the closest fail nothing but leave UNKNOWN items, and their current checks are CONDITIONAL (no established current maximum)','closest':closest,
         'basis':{'contact_rating':'JST 1.0 A at AWG #26 only (S-JST-EGH); not transferred to AWG #28/#30','temperature_rise':'JST range -40 to +105 C includes temperature rise at the rated current (AWG #26)',
             'derating':'project limit 0.5 A per contact (R-STAGE10-CONTACT-LIMIT), half the JST AWG #26 rating','conductor_ampacity':'generic chart only (S-REMINGTON-AMPACITY, not a candidate maker); shown, not used as a check',
             'service_flex':'no candidate maker states a repeated-flex radius; RG34 also slides the cable through its guides at each withdrawal','crimp_process':'JST applicator and crimp height for every wire: NOT RUN (process item)'},
@@ -509,23 +547,29 @@ def evaluate(data,mech,P,T,rules,bows):
     nc=negative_controls(cand,geo,res33,fs,P);stren=strength(geo,post,P);fr=friction(geo,inp,P);cv=cover(geo,P);acc=access(cand,geo,P)
     rv=reservation_check(geo,res33);r17=r17_check(data,mech,P,T,geo);cur=current_ledger(inp,P,mech);wires=wire_ledger(inp,data,P,cur)
     gap=val(P,'guide_closure_gap_max_mm');odmin=min([val(P,'wire_od_min_mm')]+[w['od_min_mm'] for w in inp['wire_candidates_added']])
-    grip=val(P,'grip_length_design_mm');trav=val(P,'release_travel_mm')
-    t7=all(g['s_bend_length_mm']>0 and g['sleeve_bottom_z_mm'][k]<g['block_entry_z_mm'][k] and g['block_entry_z_mm'][k]-(g['exit_z_mm'][k]+trav+g['fan_in_mm'])>=grip-1e-9 and g['block_entry_z_mm'][k]<=g['Zcap_inner']-g['r'] for g in geo.values() for k in SIDES)
-    crit={'T1_captive_closed_parts':all(inp['rg34']['parts_closed'].values()) and gap<odmin/2,
-        'T2_single_end_states_inside_RG34':all(r['admissible'] and r['fan_in_below_block'] for r in st if r['state']!='both'),
+    grip=val(P,'grip_length_design_mm');trav=val(P,'release_travel_mm');e=val(P,'registration_allowance_mm')
+    # Exits may sit up to e closer to RG34 than nominal: the S-bend room and the grip must survive that.
+    t7=all(g['s_bend_length_mm']>0 and g['sleeve_bottom_z_mm'][k]-e-(g['exit_z_mm'][k]+g['fan_in_mm'])>=g['s_bend_length_mm']-1e-9 and g['sleeve_bottom_z_mm'][k]<g['block_entry_z_mm'][k]
+        and g['block_entry_z_mm'][k]-e-(g['exit_z_mm'][k]+trav+g['fan_in_mm'])>=grip-1e-9 and g['block_entry_z_mm'][k]<=g['Zcap_inner']-g['r'] for g in geo.values() for k in SIDES)
+    fixed=free_spans(cand,geo,post,P,T,rules,'slack_fixed_former_mm');nc['fixed_former']={'meets_K4':all(x['meets_K4'] for x in fixed),'tightest':{f"{x['link']} {x['side']}":x['tightest'][0] for x in fixed}}
+    crit={'T1_declared_closed_parts_and_closure_gap':all(inp['rg34']['parts_closed'].values()) and gap<odmin/2,
+        'T2_single_end_states_inside_RG34_all_corners':all(r['admissible'] and r['fan_in_below_block'] for r in st if r['state']!='both'),
         'T3_parts_clear_K4':all(r['meets_K4'] for r in pc['rows']) and pc['service_only_clear_of_overlap'],
-        'T4_walls_between_cables':pc['walls_fit_between_cables'] and pc['outer_gap_between_channels_mm']>=0,
+        'T4_walls_fit_between_cable_interiors':pc['walls_fit_between_cables'],
         'T5_free_spans_bounded_and_clear':all(x['meets_K4'] for x in fs),
-        'T6_rear_cover':all(v['clear'] for v in cv.values()),
-        'T7_grip_fan_in_and_s_bend':t7,
+        'T6_rear_cover_K4':all(v['meets_K4'] for v in cv.values()),
+        'T7_fan_in_grip_and_s_bend_with_registration':t7,
         'T8_strength_planning_load':stren['meets_at_planning_load'],
         'T9_slack_follows_without_buckling':all(v['slack_moves_without_buckling'] for v in fr['links'].values()),
         'T10_both_ends_withdrawal_blocked':all(r['blocked_by']==['cap'] or 'cap' in r['blocked_by'] for r in st if r['state']=='both'),
         'T11_access_columns_clear':all(a['clear'] for a in acc.values())}
     failed=[k for k,v in crit.items() if not v]
-    status='BOUNDED_WITHIN_STATED_ASSUMPTIONS' if not failed else 'NOT_BOUNDED'
+    status='BOUNDED_WITHIN_STATED_ASSUMPTIONS' if not failed else 'BOUNDED_EXCEPT_REAR_COVER' if failed==['T6_rear_cover_K4'] else 'NOT_BOUNDED'
     return cand,res33,{'geometry':geo,'post':post,'states':st,'parts':pc,'free_spans':fs,'negative_controls':nc,'strength':stren,'friction':fr,'cover':cv,'access':acc,'reservations':rv,'r17':r17,
         'current':cur,'wires':wires,'criteria':crit,'failed':failed,'status':status,'closure':{'gap_max_mm':gap,'smallest_wire_od_mm':odmin}}
+
+
+def nc_fixed(rg):return rg['negative_controls']['fixed_former']['meets_K4']
 
 
 def public_geo(geo):
@@ -535,30 +579,38 @@ def public_geo(geo):
 def build(data,preserve=True):
     P,T,rules=validate_inputs(data);bows=merged(data)[3];s29,_,_=s33.s30.stage29_current();mech=s29['mech']
     cand,res33,rg=evaluate(data,mech,P,T,rules,bows)
-    need(rg['status']=='BOUNDED_WITHIN_STATED_ASSUMPTIONS','RG34 must bound the whole arch under the stated assumptions: '+', '.join(rg['failed']))
-    nc=rg['negative_controls'];need(not any(v['local_leg_guide_only']['bounded_within_allowance'] for v in nc.values()),'a local-leg guide alone must not bound the arch (negative control)')
+    # The retention bound must hold; the only accepted open criterion is the J-SIG cap against the rear cover (reported, with the smallest changes, as an owner decision).
+    need(rg['status']=='BOUNDED_EXCEPT_REAR_COVER' and [l for l,v in rg['cover'].items() if not v['meets_K4']]==['J-SIG'],'RG34 must bound the whole arch under the stated assumptions: '+', '.join(rg['failed']))
+    need(not nc_fixed(rg),'RG34 with a fixed former must lose the bound (negative control)')
+    nc={l:v for l,v in rg['negative_controls'].items() if l in LINKS};need(not any(v['local_leg_guide_only']['bounded_within_allowance'] for v in nc.values()),'a local-leg guide alone must not bound the arch (negative control)')
     need(not all(v['without_former']['bounded_within_spare'] for v in nc.values()),'RG34 without its former must lose the bound (negative control)')
     need(not any(r['fits_under_cover'] for r in rg['r17'].values()),'R17 sensitivity: RG34 cap above the cover (expected)')
     s33a=data['s33_analysis']['R33'];need(s33a['failed']==['S3_lateral_retention'] and data['s33_report']['classification']['R33']=='CONDITIONAL','Stage33 committed results are preserved')
     rr=rg['geometry']
+    ok=lambda k:'FEASIBLE_WITHIN_STATED_ASSUMPTIONS' if rg['criteria'][k] else 'INFEASIBLE';cv=rg['cover']
     results=[('R33 ideal-plane criteria S1-S12 (Stage33 re-run; S3 lateral retention still fails without RG34)','CONDITIONAL'),
-        ('RG34 escape: closed lids and sleeves, closure gap below half the smallest OD','FEASIBLE_WITHIN_STATED_ASSUMPTIONS'),
-        ('RG34 out-of-plane and rotation bound inside the channel (guide play)','FEASIBLE_WITHIN_STATED_ASSUMPTIONS'),
-        ('Free spans exit-to-sleeve with all slack (inextensible cable, cut tolerance, bow, registration allowance)','FEASIBLE_WITHIN_STATED_ASSUMPTIONS'),
-        ('J-PWR to core: channel wall on the rear carrier (inter-carrier registration out of this chain)','FEASIBLE_WITHIN_STATED_ASSUMPTIONS'),
-        ('J-SIG / J-PWR shared gap: walls between the channels and free-span pairs','FEASIBLE_WITHIN_STATED_ASSUMPTIONS'),
-        ('Every single-end 2.45-15 mm withdrawal at constant length inside RG34 (fan-in and grip below the block)','FEASIBLE_WITHIN_STATED_ASSUMPTIONS'),
+        ('RG34 escape: closed lids and sleeves, closure gap below half the smallest OD',ok('T1_declared_closed_parts_and_closure_gap')),
+        ('RG34 out-of-plane and rotation bound inside the channel (guide play)',ok('T2_single_end_states_inside_RG34_all_corners')),
+        ('Free spans exit-to-sleeve with all slack (inextensible cable, set former, registration allowance)',ok('T5_free_spans_bounded_and_clear')),
+        ('J-PWR to core: channel wall on the rear carrier (inter-carrier registration out of this chain)',ok('T3_parts_clear_K4')),
+        ('J-SIG / J-PWR shared gap: walls between the channel interiors and free-span pairs',ok('T4_walls_fit_between_cable_interiors')),
+        ('Every single-end 2.45-15 mm withdrawal at constant length inside RG34, at every corner (cut +/-, bow, registration in z)',ok('T2_single_end_states_inside_RG34_all_corners')),
+        ('RG34 J-PWR cap under the rear cover (margin, RG34 tolerances, registration, K4)','FEASIBLE_WITHIN_STATED_ASSUMPTIONS' if cv['J-PWR']['meets_K4'] else 'INFEASIBLE'),
+        ('RG34 J-SIG cap under the rear cover (margin, RG34 tolerances, registration, K4)','FEASIBLE_WITHIN_STATED_ASSUMPTIONS' if cv['J-SIG']['meets_K4'] else 'INFEASIBLE'),
         ('Both ends of one cable withdrawn with RG34 closed','INFEASIBLE'),
         ('Inter-carrier registration within the 1.0 mm requirement','UNKNOWN'),
-        ('RG34 strength (post bending at the planning load; joints not evaluated)','CONDITIONAL'),
+        ('RG34 post strength (bending + torsion; 5-20 N meet, 50 N does not; root fixity and joints not evaluated)','CONDITIONAL'),
         ('Sliding friction vs free-span buckling','CONDITIONAL'),('Abrasion over repeated withdrawals','UNKNOWN'),('Finger/tool operability with one sleeve removed','UNKNOWN'),
+        ('Front jack board removal with RG34 in place (J-PWR channel within K4 of the A01-jack M4 screwdriver column)','INFEASIBLE'),
+        ('RG34 fit and removal path (post fastener access, lifting past neighbours)','UNKNOWN'),
         ('RG34 outside the reserved RV-ARCH/RV-ACCESS volumes (proposal)','CONDITIONAL'),
-        ('Local-leg guide alone as whole-arch retention (negative control)','INFEASIBLE'),('RG34 without its former (negative control)','INFEASIBLE'),
+        ('Local-leg guide alone as whole-arch retention (negative control)','INFEASIBLE'),('RG34 without its former (negative control)','INFEASIBLE'),('RG34 with a fixed, not set, former (negative control)','INFEASIBLE'),
         ('R12 route radius vs 10x OD, inner-surface convention (Stage33)','FEASIBLE_WITHIN_STATED_ASSUMPTIONS'),
         ('R17 / 15x OD with RG34 (cap over the raised arch above the rear cover)','INFEASIBLE'),('R17 / 15x OD geometry without retention (Stage33 scan, preserved)','CONDITIONAL'),
         ('20x OD radius (Stage33 rear-cover failure, preserved)','INFEASIBLE'),
-        ('J-SIG conductor currents (budgeted; conditional maxima, no established maximum)','CONDITIONAL'),('J-PWR conductor currents (A01 budget; conditional maxima, no established maximum)','CONDITIONAL'),
+        ('J-SIG conductor currents (term-by-term budget; conditional maxima, no established maximum)','CONDITIONAL'),('J-PWR conductor currents (A01 term-by-term budget; conditional maxima, no established maximum)','CONDITIONAL'),
         ('Fault/short current on any conductor (no upstream limiting element)','UNKNOWN'),('Stage33 J-PWR current inputs as an A01 basis (Stage8 X1 values)','INFEASIBLE'),
+        ('AWG26 contact rating, temperature rise and derating against conditional currents','CONDITIONAL'),
         ('AWG28/AWG30 GH contact current (no JST rating; not a demonstrated failure)','UNKNOWN'),('Wire selection','UNKNOWN'),
         ('F33 front-face large radius (Stage33, preserved)','UNKNOWN'),('B32 5 mm bends with every identified wire (Stage32/33, preserved)','INFEASIBLE'),('B32 uniform 1.282 mm bow (Stage32, preserved)','INFEASIBLE')]
     for _,v in results:need(v in CLASSES,'result class')
@@ -568,14 +620,18 @@ def build(data,preserve=True):
     ana={'status':'DESIGN_STUDY_ONLY','R33_stage33_rerun':{k:res33[k] for k in ('criteria','failed','status','retention','core_40mm','cable_to_cable')},
         'RG34':{k:rg[k] for k in ('states','parts','free_spans','negative_controls','strength','friction','cover','access','reservations','r17','criteria','failed','status','closure')}}
     ledger={'status':'DESIGN_STUDY_ONLY','current':rg['current'],'wires':rg['wires']}
-    report={'status':'DESIGN_STUDY_ONLY','recommendation':{'id':'R33+RG34','status':'CONDITIONAL_PENDING_REGISTRATION_AND_MEASUREMENT','rg34':rg['status'],'adopted':False,
-            'requires':['inter-carrier registration within registration_allowance_mm (UNKNOWN; enclosure cleats not designed)','owner decisions on the RG34 mount and on RG34 outside the reserved volumes','the M34 mock-up measurements','a wire that meets every check (selection NULL)']},
-        'classification':{'R33':'CONDITIONAL','RG34':'FEASIBLE_WITHIN_STATED_ASSUMPTIONS','F33':'UNKNOWN','B32':'INFEASIBLE'},
+    sig=rg['cover']['J-SIG']
+    report={'status':'DESIGN_STUDY_ONLY','recommendation':{'id':'R33+RG34','status':'CONDITIONAL_PENDING_COVER_REGISTRATION_AND_MEASUREMENT','rg34':rg['status'],'adopted':False,
+            'requires':['an owner decision on the J-SIG cap vs rear cover conflict: a rear-cover inner face at z >= '+f"{sig['cover_needed_z_mm']:.2f}"+' (enclosure, proposal) or a J-SIG design length about '+f"{sig['design_length_cut_to_fit_mm']:.2f}"+' mm shorter (less than the inherited 10 mm service slack, proposal)',
+                'inter-carrier registration within registration_allowance_mm (UNKNOWN; enclosure cleats not designed)','owner decisions on the RG34 mount, RG34 outside the reserved volumes and removing RG34 before front jack board removal','the M34 mock-up measurements','a wire that meets every check (selection NULL)']},
+        'classification':{'R33':'CONDITIONAL','RG34':'CONDITIONAL','F33':'UNKNOWN','B32':'INFEASIBLE'},
+        'stage33_notes':['radius_headroom.largest_fitting_radius_mm (17) is the largest scanned radius that fits; radii between 17 and 22 were not scanned (review note on Stage33 round 2; Stage33 bytes unchanged)'],
         'results':[{'result':k,'class':v} for k,v in results],'design_lengths':lengths,'criteria':rg['criteria'],
         'assumptions':['the cable is inextensible and stays within its bundle envelope (JST maximum OD + 0.25 mm dressing)','cut length within +/- '+f"{val(P,'cut_length_tolerance_mm'):g}"+' mm of the design length',
             'A01-middle bow up to the uniform '+f"{rr['J-SIG']['bow_mm']:.3f}"+' mm case','inter-carrier registration within '+f"{val(P,'registration_allowance_mm'):g}"+' mm (requirement)',
-            'RG34 profile and mounting tolerances '+f"{val(P,'guide_fab_tolerance_mm'):g}"+' / '+f"{val(P,'guide_mount_float_mm'):g}"+' mm','lids and sleeves closed on their stops; only one end of a cable withdrawn at a time'],
-        'unresolved_degrees_of_freedom':['actual inter-carrier registration (enclosure cleats undesigned)','arch shape during service while a sleeve is removed (operator-held, not bounded)','actual free-span excursion under handling (bound computed, not measured)',
+            'RG34 profile and mounting tolerances '+f"{val(P,'guide_fab_tolerance_mm'):g}"+' / '+f"{val(P,'guide_mount_float_mm'):g}"+' mm','lids and sleeves closed on their stops; only one end of a cable withdrawn at a time',
+            'each former set at assembly so the top leg rests on it (gap <= '+f"{val(P,'former_setting_resolution_mm'):g}"+' mm)','the legs below the former stay inside their sleeve bores; extra slack from in-bore leg offset is not added (about 0.06 mm by the independent review)'],
+        'unresolved_degrees_of_freedom':['the J-SIG cap vs rear cover conflict (owner decision)','actual inter-carrier registration (enclosure cleats undesigned)','arch shape during service while a sleeve is removed (operator-held, not bounded)','actual free-span excursion under handling (bound computed, not measured)',
             'cable length after crimping','abrasion and drag over repeated withdrawals','finger access with one sleeve removed'],
         'measurements':[{'id':x['id'],'item':x['item'],'status':'NOT_RUN','value':None} for x in MEASUREMENTS],
         'decision_status':{'route':'STUDY_BASELINE (owner provisional); not adopted','header_moves':'PROVISIONAL_STUDY_BASELINE; not adopted','retention':'RG34 STUDY_DESIGN; not adopted','reservations':'PROVISIONAL (owner); RG34 extensions PROPOSAL_REQUIRES_OWNER_DECISION',
@@ -623,16 +679,16 @@ def service_slack(b):
 def render_md(b):
     rg=b['rg'];rep=b['report'];P=b['P'];yn=lambda x:'yes' if x else '**no**';geo=rg['geometry'];res33=b['res33']
     L=['# Stage34 whole-arch retention and wire/current evidence (generated)','','Design study only. Calculations on planning geometry and stated inputs; nothing is measured, and a clear envelope is not physical non-interference.','',
-       '## Result','',f"R33 + RG34: **{rep['recommendation']['status']}**. RG34 bounds the whole arch under the stated assumptions ({rg['status']}); inter-carrier registration, the mock-up measurements and the wire stay open. Nothing is adopted.",'',
+       '## Result','',f"R33 + RG34: **{rep['recommendation']['status']}**. RG34 bounds the whole arch under the stated assumptions at every tolerance corner, but its J-SIG cap does not fit under the rear cover ({rg['status']}). That conflict, inter-carrier registration, the mock-up measurements and the wire stay open. Nothing is adopted.",'',
        '| Criterion | Result |','|---|---|']+[f"| {k} | {yn(v)} |" for k,v in rg['criteria'].items()]
     L+=['','Stage33 ideal-plane criteria re-run: '+res33['status']+' (failed: '+', '.join(res33['failed'])+'); RG34 replaces the missing lateral retention.','','## Results by class','','| Result | Class |','|---|---|']+[f"| {r['result']} | {r['class']} |" for r in rep['results']]
     L+=['','## RG34 geometry','','One slot channel per arch, on the rear carrier (post on crossmember:rear:0). Coordinates in each arch plane: s along the arch from the local exit, n out of plane, z.','',
         '| Cable | Play c (mm) | Wall (mm) | Free span: exit → sleeve bottom z (local / middle) | Sleeve to block entry z | Former top (set range) | Cap / top z | Slack with set former / fixed former (mm) |','|---|---|---|---|---|---|---|---|']
     for l,g in geo.items():
         L.append(f"| {l} | {f2(g['c'])} | {f2(g['t'])} | {f2(g['exit_z_mm']['local'])} → {f2(g['sleeve_bottom_z_mm']['local'])} / {f2(g['exit_z_mm']['middle'])} → {f2(g['sleeve_bottom_z_mm']['middle'])} | {f2(g['block_entry_z_mm']['local'])} / {f2(g['block_entry_z_mm']['middle'])} | {f2(g['former_top_range_z_mm'][0])}–{f2(g['former_top_range_z_mm'][1])} | {f2(g['Zcap_inner'])} / {f2(g['Ztop'])} | {f2(g['slack_mm'])} / {f2(g['slack_fixed_former_mm'])} |")
-    L+=['',f"- Each sleeve bottom leaves the fan-in plus an S-bend length ({f2(geo['J-SIG']['s_bend_length_mm'])} / {f2(geo['J-PWR']['s_bend_length_mm'])} mm) for a carrier registration error of {f2(val(P,'registration_allowance_mm'))} mm at the maker radius ({f2(geo['J-SIG']['required_radius_mm'])} / {f2(geo['J-PWR']['required_radius_mm'])} mm).",
+    L+=['',f"- Sleeve bottoms and block entries include the {f2(val(P,'registration_allowance_mm'))} mm registration allowance in z; the cap includes the long-cable and registration corner.",f"- Each sleeve bottom leaves the fan-in plus an S-bend length ({f2(geo['J-SIG']['s_bend_length_mm'])} / {f2(geo['J-PWR']['s_bend_length_mm'])} mm) for a carrier registration error of {f2(val(P,'registration_allowance_mm'))} mm at the maker radius ({f2(geo['J-SIG']['required_radius_mm'])} / {f2(geo['J-PWR']['required_radius_mm'])} mm).",
         f"- Each block entry sits the 15 mm travel + fan-in + {f2(val(P,'grip_length_design_mm'))} mm grip above its exit, so a withdrawn housing's fan-in and the gripping fingers stay below RG34.",
-        f"- The middle sleeves contain the lower part of bend 2 ({f2(geo['J-SIG']['s_off']['middle'])} mm in-plane offset); their inner face follows the former arc.",
+        f"- The middle sleeves contain the lower part of bend 2 (up to {f2(geo['J-SIG']['s_off']['middle'])} mm in-plane offset at the low corner); their inner face is the former arc, the rest of the former stays fixed.",
         f"- Outer gap between the J-SIG and J-PWR channels {f2(rg['parts']['outer_gap_between_channels_mm'])} mm (bridged by the channel joint); interior hulls {f2(rg['parts']['interior_hull_plan_gap_mm'])} mm apart in plan, enough for both walls.",
         f"- Closure gap ≤ {f2(rg['closure']['gap_max_mm'])} mm, below half of the smallest wire OD {f2(rg['closure']['smallest_wire_od_mm'])} mm: no conductor can enter or pass a parting line."]
     L+=['','## Movement budget','','Inside RG34 every point of a cable stays within the play c of its plane (walls), above the former and below the cap; rotation of the arch is bounded by the same walls. Between each housing exit and its sleeve the cable is free; the bound is the spheroid of every point a span of its length + all the slack can reach (inextensible cable), inflated by c + registration + RG34 tolerances + bundle radius.','',
@@ -645,34 +701,39 @@ def render_md(b):
     for r in rg['parts']['rows']:
         if r['obstacle']:L.append(f"| {r['part']} | {r['obstacle']} | {f2(r['distance_mm'])} | {'yes' if r['cross_carrier'] else 'no (rear carrier)'} | {f2(r['stack']['worst_case_mm'])} | {f2(r['robust_spare_mm'])} | {yn(r['meets_K4'])} |")
     for r in rg['parts']['service_only'][:2]:L.append(f"| {r['part']} | {r['obstacle']} (service only) | {f2(r['distance_mm'])} | yes | {f2(r['stack']['worst_case_mm'])} | {f2(r['robust_spare_mm'])} | {yn(r['meets_K4'])}: {r['use']} |")
-    cv=rg['cover'];L.append('\nRear cover: '+'; '.join(f"{l} RG34 top z {f2(v['rg34_top_z_mm'])} + {v['margin_mm']} margin + {v['registration_mm']} registration ≤ {v['cover_z_mm']} (spare {f2(v['spare_mm'])})" for l,v in cv.items())+'.')
-    L+=['','## States inside RG34 (constant design length)','','| Cable | State | Travel (mm) | Top centreline z | Inside RG34 | Blocked by |','|---|---|---|---|---|---|']
+    cv=rg['cover'];L+=['','Rear cover (margin + RG34 tolerances + registration, then K4):','','| Cable | RG34 top z | Margin + stack (mm) | Robust spare (mm) | K4 | Cover needed z | Or design length shorter by (mm) |','|---|---|---|---|---|---|---|']
+    L+=[f"| {l} | {f2(v['rg34_top_z_mm'])} | {f2(v['margin_mm'])} + {f2(v['stack_mm'])} | {f2(v['robust_spare_mm'])} | {yn(v['meets_K4'])} | {f2(v['cover_needed_z_mm'])} | {f2(v['design_length_cut_to_fit_mm'])} |" for l,v in cv.items()]
+    L+=['','## States inside RG34 (constant design length, every tolerance corner)','','Corners shift the arch against RG34: low = short cable + uniform bow + RG34 high by the registration allowance; high = long cable + RG34 low. The former is set at assembly for each.','',
+        '| Cable | Corner | State | Travel (mm) | Top centreline z | Inside RG34 | Blocked by |','|---|---|---|---|---|---|---|']
     for r in rg['states']:
-        if r['travel_mm'] in (0.0,7.5,15):L.append(f"| {r['link']} | {r['state']} | {r['travel_mm']:g} | {f2(r['top_centreline_z_mm'])} | {yn(r['admissible'])} | {', '.join(r['blocked_by']) or '–'} |")
+        if r['travel_mm'] in (0.0,15):L.append(f"| {r['link']} | {r['corner']} | {r['state']} | {r['travel_mm']:g} | {f2(r['top_centreline_z_mm'])} | {yn(r['admissible'])} | {', '.join(r['blocked_by']) or '–'} |")
     L+=['','## Negative controls','','| Cable | Control | Bound (mm) | Allowance (mm) | Bounded |','|---|---|---|---|---|']
     for l,v in rg['negative_controls'].items():
+        if l not in LINKS:continue
         a=v['local_leg_guide_only'];w=v['without_former']
         L.append(f"| {l} | guide on the local leg only: reach of the rest of the arch / bucket-handle radius | {f2(a['reach_semi_minor_mm'])} / {f2(a['bucket_handle_radius_mm'])} | {f2(a['stage33_allowance_mm'])} | {yn(a['bounded_within_allowance'])} |")
         L.append(f"| {l} | RG34 without the former: local free span reach grows by | {f2(w['growth_mm'])} | {f2(w['tightest_spare_with_former_mm'])} | {yn(w['bounded_within_spare'])} |")
-    L.append('\nBoth ends of one cable withdrawn with the lid closed: blocked by the cap in every case (procedure: one end at a time).')
+    fx=rg['negative_controls']['fixed_former']
+    L.append('\nRG34 with a fixed (not set) former: free spans fail K4 ('+'; '.join(f"{k} {f2(v['robust_spare_mm'])} mm against {v['against']}" for k,v in fx['tightest'].items())+').')
+    L.append('Both ends of one cable withdrawn with the lid closed: blocked by the cap at every corner (procedure: one end at a time).')
     s=rg['strength'];fr=rg['friction']
-    L+=['','## Strength, friction, access','',f"- Post {s['post_section_mm'][0]:g} × {s['post_section_mm'][1]:g} mm, lever {f2(s['lever_mm'])} mm to the farthest RG34 point: allowable {f2(s['allowable_load_N'])} N; "+', '.join(f"{g['load_N']} N {'meets' if g['meets'] else 'fails'}" for g in s['grid'])+f". Not covered: {'; '.join(s['not_covered'])}.",
+    L+=['','## Strength, friction, access','',f"- Post {s['post_section_mm'][0]:g} × {s['post_section_mm'][1]:g} mm; a load at the farthest RG34 point gives bending (lever {f2(s['lever_mm'])} mm) and torsion (arm {f2(s['torsion_arm_mm'])} mm) together: allowable {f2(s['allowable_load_N'])} N (von Mises); "+', '.join(f"{g['load_N']} N {'meets' if g['meets'] else 'fails'}" for g in s['grid'])+f". Not covered: {'; '.join(s['not_covered'])}.",
         f"- Drag upper bound "+', '.join(f"{l} {v['drag_upper_N']*1000:.1f} mN" for l,v in fr['links'].items())+f" against free-span buckling ≥ {min(x['buckling_load_N'] for v in fr['links'].values() for x in v['free_spans'].values()):.2f} N (strands-only {fr['most_flexible_construction']}); stiffness is not used for any bound. Abrasion NOT calculated (M34-04).",
         '- With one sleeve removed, the housing column up to the block entry is clear of rigid parts: '+'; '.join(f"{k} {f2(a['free_height_mm'])} mm, grip zone z {f2(a['grip_zone_z_mm'][0])}–{f2(a['grip_zone_z_mm'][1])}" for k,a in rg['access'].items())+'. Finger operation NOT DETERMINED.']
     L+=['','## Reserved volumes','']
     for r in rg['reservations']:L.append(f"- {r['link']}: RG34 half-thickness {f2(r['rg34_half_thickness_mm'])} mm vs RV-ARCH {f2(r['rv_arch_half_thickness_mm'])} mm (protrudes {f2(r['protrusion_mm'])} mm); occupies "+', '.join(sorted({x['reservation'] for x in r['rv_access_occupied']}))+' above the grip zones. '+r['status']+'.')
     r17=rg['r17'];L.append('\nR17 sensitivity: RG34 needs z '+' / '.join(f2(v['needed_z_mm']) for v in r17.values())+' (J-SIG / J-PWR) against the cover at 105: does not fit. The Stage33 R17 geometry without retention stays CONDITIONAL and 20× stays INFEASIBLE.')
     cur=b['ledger']['current']
-    L+=['','## Current ledger (A01; replaces the Stage33 X1-derived J-PWR inputs)','','Classes: typical / conditional maximum (stated conditions) / established maximum (maker-backed limit). No conductor has an established maximum.','',
+    L+=['','## Current ledger (A01; replaces the Stage33 X1-derived J-PWR inputs)','','Each value is the generator\'s sum of recorded terms (V/R from the A01 specification, quiescent and bias currents from the evidence facts); ledger.json lists every term with its basis and sources. Classes: typical (5 V signals) / conditional maximum (stated conditions) / conditional fault case / established maximum (maker-backed limit). No conductor has an established maximum.','',
         '| Cable | Pin | Net | Typical (mA) | Conditional max (mA) | Fault case (mA) | Established | Of 0.5 A project limit |','|---|---|---|---|---|---|---|---|']
     for l,rows in cur['links'].items():
         for r in rows:L.append(f"| {l} | {r['pin']} | {r['net']} | {r['typical_A']*1000:.4g} | {r['conditional_max_A']*1000:.4g} | {f"{r['conditional_fault_A']*1000:.4g}" if r['conditional_fault_A'] else '–'} | {r['established_status'].split(':')[0]} | {r['fraction_of_project_limit']*100:.2f} % |")
     sp=cur['stage33_superseded'];v=sp['stage33_values']
     L+=['',f"Stage33 used +12V {v['j_pwr_conductor_current_max_A']['+12V']*1000:.2f} / -12V {v['j_pwr_conductor_current_max_A']['-12V']*1000:.2f} / +5V {v['j_pwr_conductor_current_max_A']['+5V']*1000:.3f} mA and an AGND bound of {v['j_pwr_agnd_return_bound_A']*1000:.2f} mA. {sp['reason']}",'',f"Fault: {cur['fault']}."]
-    w=b['ledger']['wires'];L+=['','## Wire ledger','',f"Selection: {w['selection_status']}.",'','| Wire | AWG | OD (mm) | Fails | Unknown (J-PWR) |','|---|---|---|---|---|']
+    w=b['ledger']['wires'];L+=['','## Wire ledger','',f"Selection: {w['selection_status']}.",'','| Wire | AWG | OD (mm) | Fails | Unknown (J-PWR) | Conditional (J-PWR) |','|---|---|---|---|---|---|']
     for x in w['wires']:
         pc=x['per_cable'];fails=sorted(set(pc['J-SIG']['failed'])|set(pc['J-PWR']['failed']))
-        L.append(f"| {x['mpn']} | {x['awg']} | {x['od_range_mm'][0]}–{x['od_range_mm'][1]} | {', '.join(fails) or 'none'} | {', '.join(pc['J-PWR']['unknown']) or 'none'} |")
+        L.append(f"| {x['mpn']} | {x['awg']} | {x['od_range_mm'][0]}–{x['od_range_mm'][1]} | {', '.join(fails) or 'none'} | {', '.join(pc['J-PWR']['unknown']) or 'none'} | {', '.join(pc['J-PWR']['conditional']) or 'none'} |")
     L+=['']+[f"- {k}: {v}" for k,v in w['basis'].items()]+['','Smallest questions or measurements:','']+[f"{i}. {q}" for i,q in enumerate(w['questions'],1)]
     ts=rep['two_sided_assembly_and_rerouting'];L+=['','## Two-sided assembly and re-routing (implications only)','']+[f"- **{k}**: {v}" for k,v in ts.items() if k!='status']
     L+=['','## Assumptions','']+[f"- {a}" for a in rep['assumptions']]+['','## Unresolved degrees of freedom','']+[f"- {a}" for a in rep['unresolved_degrees_of_freedom']]

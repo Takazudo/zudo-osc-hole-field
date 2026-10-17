@@ -1,31 +1,230 @@
 {
-  "retrieved": "2026-10-17",
-  "inherits": "design/architecture-278/implementation/stage33/sources.json",
-  "note": "Stage34 adds to the Stage32 and Stage33 registers; ids must stay unique across all three. Downloaded documents are not committed; the sha256 identifies the copy that was read. Alpha Wire customer-specification PDFs are generated on each request (page 8 carries the download date), so their hash identifies only that copy; the page-2 construction values did not change between two downloads.",
-  "sources": [
-    {"id": "S-AW-6710", "authority": "MAKER_PRIMARY", "title": "Alpha Wire 6710 customer specification (EcoWire, 28 AWG 7/36 tinned copper, mPPE, UL AWM 11028)", "document_number": "6710", "revision": "not stated; generated on request 2026-10-17", "url": "https://www.alphawire.com/disteAPI/SpecPDF/DownloadProductSpecPdf?productPartNumber=6710", "sha256": "6d38f581d60d90ed5c93ce044467fc31b4ff793b29546f335fed0a0db18bd9ed", "locators": {"construction": "p.2 Construction: 28 (7/36) AWG tinned copper, conductor 0.015 in; 0.0095 in wall nom. mPPE, OD 0.034 +/- 0.002 in", "ratings": "p.2-3 Applicable specifications: UL AWM/Style 11028 105 C / 600 VRMS", "properties": "p.5 Properties: -40 to 105 C; bend radius 5X cable diameter; voltage rating 600 VRMS"}},
-    {"id": "S-AW-1851", "authority": "MAKER_PRIMARY", "title": "Alpha Wire 1851 customer specification (30 AWG 7/38 tinned copper, PVC, MIL-W-16878E/1)", "document_number": "1851", "revision": "not stated; generated on request 2026-10-17", "url": "https://www.alphawire.com/disteAPI/SpecPDF/DownloadProductSpecPdf?productPartNumber=1851", "sha256": "2c1ec0afb00d1f58cb4f2aef3b2dc367e602a4d2669807d1ce092a82b00880b1", "locators": {"construction": "p.2 Construction: 30 (7/38) AWG tinned copper, conductor 0.012 in; 0.010 in wall nom. PVC, OD 0.032 +/- 0.002 in", "ratings": "p.2-3 Applicable specifications: MIL-W-16878E/1 105 C / 600 VRMS (MIL-W-76B Type LW 90 C / 300 VRMS also listed)", "properties": "p.5 Properties: -55 to 105 C; bend radius 10X cable diameter; voltage rating 600 VRMS"}},
-    {"id": "S-AW-6711", "authority": "MAKER_PRIMARY", "title": "Alpha Wire 6711 customer specification (EcoWire, 26 AWG 7/34 tinned copper, mPPE)", "document_number": "6711", "revision": "not stated; generated on request 2026-10-17", "url": "https://www.alphawire.com/disteAPI/SpecPDF/DownloadProductSpecPdf?productPartNumber=6711", "sha256": "63ed63526fa74e2d9f630513e1606347f871a5a999126cb41f94c637264d21c7", "locators": {"construction": "p.2 Construction: 26 (7/34) AWG tinned copper, conductor 0.019 in; 0.0095 in wall nom. mPPE, OD 0.038 +/- 0.002 in", "properties": "p.5 Properties: -40 to 105 C; bend radius 5X cable diameter; voltage rating 600 VRMS"}},
-    {"id": "S-THERMAX-M22759", "authority": "MAKER_PRIMARY", "title": "Amphenol CIT / Thermax M22759 catalog section (MIL-W-22759/18, /19 thin-wall ETFE)", "document_number": "M22759 (catalog pages; internal file K060714-5)", "revision": "no revision mark; PDF created 2013-05-09", "url": "https://www.amphenol-cit.com/wp-content/uploads/pdfs/prodinfo/M22759.pdf", "sha256": "72ee89ff2113eb09389dd37345bb8fb22bef44edfc639ed1f869e7c209b6f996", "locators": {"performance": "catalog p.42 (PDF p.7) Performance: voltage rating 600V; temperature rating /18, /19 -55 to 150 C; Construction details: conductor /18 tin-plated copper, insulation thin-wall extruded ETFE", "dimensions": "catalog p.42 table 'Dimensions, Resistance, and Weights - M22759/18 (tin-plated copper conductor)', row M22759/18-26-*: 19/38, conductor .019 (.48), insulation diameter minimum .030 (.76), maximum .034 (.86), Thermax P/N 26-AMCFZ-1938", "bend": "no bend radius stated on the obtained pages"}},
-    {"id": "S-REMINGTON-AMPACITY", "authority": "GENERIC_REFERENCE", "title": "Remington Industries, Copper Hook-Up Wire Ampacity by Insulation Temperature Rating, Revision 0", "url": "https://www.remingtonindustries.com/content/Remington%20Copper%20Hook-Up%20Wire%20Ampacity%20Charts.pdf", "sha256": "7aa639611ad403cdcf20d80edf72581b462c99db9c6358c987821e169e5dc2ca", "locator": "p.1 Single Conductor Ampacity, free air, 30 C ambient: 105 C insulation 26 AWG 4.6 A, 28 AWG 3.4 A, 30 AWG 2.5 A", "note": "generic chart, not a document of any candidate's maker; used only to show that the conductor is not the governing current limit"},
-    {"id": "S-JST-CHM-NOT-OBTAINED", "authority": "MAKER_PRIMARY", "title": "JST GH handling manuals CHM-1-2149 / CHM-1-2111", "url": "https://www.jst-mfg.com/product/detail_e.php?series=105", "revision": "not obtained", "availability": "NOT_OBTAINED: direct PDF paths returned HTTP 403 on 2026-10-17", "locators": {"expected": "GH-specific unmating angle, force, stroke; any current rating with AWG #28/#30"}},
-    {"id": "S-TE-55A-NOT-OBTAINED", "authority": "MAKER_PRIMARY", "title": "TE Raychem Spec 55 (55A0111-26) tin-coated copper", "url": "https://www.te.com/", "revision": "not obtained", "availability": "NOT_OBTAINED: te.com returned HTTP 567/403 on 2026-10-17", "locators": {"expected": "OD with tolerance and bend radius for 26 AWG"}},
-    {"id": "R-STAGE33", "authority": "REPO_DESIGN", "title": "Stage33 R33 results as committed (ideal-plane arch, criteria, wire table)", "path": "design/architecture-278/implementation/stage33/analysis.json"},
-    {"id": "R-STAGE33-INPUT", "authority": "REPO_DESIGN", "title": "Stage33 design input (R33 header moves, route radius, wire candidates)", "path": "design/architecture-278/implementation/stage33/design-input.json"},
-    {"id": "R-STAGE8-SCOPE", "authority": "REPO_DESIGN", "title": "Stage8 scope: bounded X1 repair; A01 implementation forbidden", "path": "design/architecture-278/implementation/stage8/scope.json", "locator": "authorization; forbidden"},
-    {"id": "R-A01-SPEC", "authority": "REPO_DESIGN", "title": "A01 (offset module) circuit specification", "path": "design/spec/modules/offset.py", "locator": "family(): reference_generator REF5/REFN5, remote_buffer IN_BUFFER, SUM amp SUM_NODE/SUM_NEG, SUM_FB 100k, RESTORE_IN 100k, CV OFFSET_BUFFER"},
-    {"id": "R-STAGE15-INTERFACES", "authority": "REPO_DESIGN", "title": "Stage15 interfaces: board-local net groups and upstream power boundary", "path": "design/architecture-278/implementation/stage15/interfaces-report.json", "locator": "local_net_groups; upstream_power_boundaries = A01:J-PWR:middle:1..4"},
-    {"id": "R-STAGE15-ELECTRICAL", "authority": "REPO_DESIGN", "title": "Stage15 electrical input: networks and resistance intervals", "path": "design/architecture-278/implementation/stage15/electrical-input.json", "locator": "networks; network_loading.absolute_resistance_interval_ohm"},
-    {"id": "R-STAGE10-ELECTRICAL", "authority": "REPO_DESIGN", "title": "Stage10 electrical report: GH power-return contract (0.5 A per contact), crossing capacitance", "path": "design/architecture-278/implementation/stage10/electrical-report.json", "locator": "conditional_budgets.GH_power_return_contract; conditional_budgets.aggregate_crossing_capacitance"},
-    {"id": "R-STAGE10-CONTACT-LIMIT", "authority": "REPO_DESIGN", "title": "Stage10 retained GH contact current limit (project requirement, not a maker rating)", "path": "scripts/architecture278/implementation/stage10_interfaces.py", "locator": "retained_GH_contact_current_limit_A = 0.5"},
-    {"id": "R-STAGE14-ELECTRICAL", "authority": "REPO_DESIGN", "title": "Stage14 electrical input: buffer and reference conditions", "path": "design/architecture-278/implementation/stage14/electrical-input.json", "locator": "buffer_conditions.warning; reference_conditions"},
-    {"id": "R-SUPPLY", "authority": "REPO_DESIGN", "title": "Supply architecture contract (requirement only; source not selected)", "path": "design/power/supply-architecture.json", "locator": "contract.source_requirement.required_load_voltage_magnitude_V; contract.source_requirement.maximum_delivered_current_mA; contract.load_envelope.fault_basis"},
-    {"id": "R-POWER-SPEC", "authority": "REPO_DESIGN", "title": "Power module specification (electrical protection unimplemented)", "path": "design/spec/modules/power.py", "locator": "module docstring: electrical protection remains unimplemented"},
-    {"id": "R-EV-OPA4197", "authority": "REPO_DESIGN", "title": "OPA4197IPWR evidence bundle", "path": ".claude/skills/component-ti-opa4197ipwr/facts.json", "locator": "fact-op-precision-quiescent-current (1.5 mA full temperature); fact-op-precision-input-bias-current-full-temperature; no short-circuit current fact"},
-    {"id": "R-EV-OPA4196", "authority": "REPO_DESIGN", "title": "OPA4196IDR evidence bundle", "path": ".claude/skills/component-ti-opa4196idr/facts.json", "locator": "fact-op-audio-quiescent-current"},
-    {"id": "R-EV-LM393B", "authority": "REPO_DESIGN", "title": "LM393BIDR evidence bundle", "path": ".claude/skills/component-ti-lm393bidr/facts.json", "locator": "fact-comparator-input-bias-current; no supply-current fact"},
-    {"id": "R-EV-PASSIVES", "authority": "REPO_DESIGN", "title": "Passives evidence bundle", "path": ".claude/skills/component-passives-family/facts.json", "locator": "fact-r-precision-resistance (0.1 %)"},
-    {"id": "R-EV-JST-GH", "authority": "REPO_DESIGN", "title": "JST GH evidence bundle", "path": ".claude/skills/component-jst-gh/facts.json", "locator": "gh*-rating facts: 1.0 A AC/DC at AWG #26"},
-    {"id": "R-PLANNING-CURRENT", "authority": "REPO_DESIGN", "title": "Offset module planning current worksheet (planning figures, not datasheet evidence)", "path": "design/reports/current/offset.json"}
-  ]
+ "retrieved": "2026-10-17",
+ "inherits": "design/architecture-278/implementation/stage33/sources.json",
+ "note": "Stage34 adds to the Stage32 and Stage33 registers; ids must stay unique across all three. Downloaded documents are not committed; the sha256 identifies the copy that was read. Alpha Wire customer-specification PDFs are generated on each request (page 8 carries the download date), so their hash identifies only that copy; the page-2 construction values did not change between two downloads.",
+ "sources": [
+  {
+   "id": "S-AW-6710",
+   "authority": "MAKER_PRIMARY",
+   "title": "Alpha Wire 6710 customer specification (EcoWire, 28 AWG 7/36 tinned copper, mPPE, UL AWM 11028)",
+   "document_number": "6710",
+   "revision": "not stated; generated on request 2026-10-17",
+   "url": "https://www.alphawire.com/disteAPI/SpecPDF/DownloadProductSpecPdf?productPartNumber=6710",
+   "sha256": "6d38f581d60d90ed5c93ce044467fc31b4ff793b29546f335fed0a0db18bd9ed",
+   "locators": {
+    "construction": "p.2 Construction: 28 (7/36) AWG tinned copper, conductor 0.015 in; 0.0095 in wall nom. mPPE, OD 0.034 +/- 0.002 in",
+    "ratings": "p.2-3 Applicable specifications: UL AWM/Style 11028 105 C / 600 VRMS",
+    "properties": "p.5 Properties: -40 to 105 C; bend radius 5X cable diameter; voltage rating 600 VRMS"
+   }
+  },
+  {
+   "id": "S-AW-1851",
+   "authority": "MAKER_PRIMARY",
+   "title": "Alpha Wire 1851 customer specification (30 AWG 7/38 tinned copper, PVC, MIL-W-16878E/1)",
+   "document_number": "1851",
+   "revision": "not stated; generated on request 2026-10-17",
+   "url": "https://www.alphawire.com/disteAPI/SpecPDF/DownloadProductSpecPdf?productPartNumber=1851",
+   "sha256": "2c1ec0afb00d1f58cb4f2aef3b2dc367e602a4d2669807d1ce092a82b00880b1",
+   "locators": {
+    "construction": "p.2 Construction: 30 (7/38) AWG tinned copper, conductor 0.012 in; 0.010 in wall nom. PVC, OD 0.032 +/- 0.002 in",
+    "ratings": "p.2-3 Applicable specifications: MIL-W-16878E/1 105 C / 600 VRMS (MIL-W-76B Type LW 90 C / 300 VRMS also listed)",
+    "properties": "p.5 Properties: -55 to 105 C; bend radius 10X cable diameter; voltage rating 600 VRMS"
+   }
+  },
+  {
+   "id": "S-AW-6711",
+   "authority": "MAKER_PRIMARY",
+   "title": "Alpha Wire 6711 customer specification (EcoWire, 26 AWG 7/34 tinned copper, mPPE)",
+   "document_number": "6711",
+   "revision": "not stated; generated on request 2026-10-17",
+   "url": "https://www.alphawire.com/disteAPI/SpecPDF/DownloadProductSpecPdf?productPartNumber=6711",
+   "sha256": "63ed63526fa74e2d9f630513e1606347f871a5a999126cb41f94c637264d21c7",
+   "locators": {
+    "construction": "p.2 Construction: 26 (7/34) AWG tinned copper, conductor 0.019 in; 0.0095 in wall nom. mPPE, OD 0.038 +/- 0.002 in",
+    "properties": "p.5 Properties: -40 to 105 C; bend radius 5X cable diameter; voltage rating 600 VRMS"
+   }
+  },
+  {
+   "id": "S-THERMAX-M22759",
+   "authority": "MAKER_PRIMARY",
+   "title": "Amphenol CIT / Thermax M22759 catalog section (MIL-W-22759/18, /19 thin-wall ETFE)",
+   "document_number": "M22759 (catalog pages; internal file K060714-5)",
+   "revision": "no revision mark; PDF created 2013-05-09",
+   "url": "https://www.amphenol-cit.com/wp-content/uploads/pdfs/prodinfo/M22759.pdf",
+   "sha256": "72ee89ff2113eb09389dd37345bb8fb22bef44edfc639ed1f869e7c209b6f996",
+   "locators": {
+    "performance": "catalog p.42 (PDF p.7) Performance: voltage rating 600V; temperature rating /18, /19 -55 to 150 C; Construction details: conductor /18 tin-plated copper, insulation thin-wall extruded ETFE",
+    "dimensions": "catalog p.42 table 'Dimensions, Resistance, and Weights - M22759/18 (tin-plated copper conductor)', row M22759/18-26-*: 19/38, conductor .019 (.48), insulation diameter minimum .030 (.76), maximum .034 (.86), Thermax P/N 26-AMCFZ-1938",
+    "bend": "no bend radius stated on the obtained pages"
+   }
+  },
+  {
+   "id": "S-REMINGTON-AMPACITY",
+   "authority": "GENERIC_REFERENCE",
+   "title": "Remington Industries, Copper Hook-Up Wire Ampacity by Insulation Temperature Rating, Revision 0",
+   "url": "https://www.remingtonindustries.com/content/Remington%20Copper%20Hook-Up%20Wire%20Ampacity%20Charts.pdf",
+   "sha256": "7aa639611ad403cdcf20d80edf72581b462c99db9c6358c987821e169e5dc2ca",
+   "locator": "p.1 Single Conductor Ampacity, free air, 30 C ambient: 105 C insulation 26 AWG 4.6 A, 28 AWG 3.4 A, 30 AWG 2.5 A",
+   "note": "generic chart, not a document of any candidate's maker; used only to show that the conductor is not the governing current limit"
+  },
+  {
+   "id": "S-JST-CHM-NOT-OBTAINED",
+   "authority": "MAKER_PRIMARY",
+   "title": "JST GH handling manuals CHM-1-2149 / CHM-1-2111",
+   "url": "https://www.jst-mfg.com/product/detail_e.php?series=105",
+   "revision": "not obtained",
+   "availability": "NOT_OBTAINED: direct PDF paths returned HTTP 403 on 2026-10-17",
+   "locators": {
+    "expected": "GH-specific unmating angle, force, stroke; any current rating with AWG #28/#30"
+   }
+  },
+  {
+   "id": "S-TE-55A-NOT-OBTAINED",
+   "authority": "MAKER_PRIMARY",
+   "title": "TE Raychem Spec 55 (55A0111-26) tin-coated copper",
+   "url": "https://www.te.com/",
+   "revision": "not obtained",
+   "availability": "NOT_OBTAINED: te.com returned HTTP 567/403 on 2026-10-17",
+   "locators": {
+    "expected": "OD with tolerance and bend radius for 26 AWG"
+   }
+  },
+  {
+   "id": "R-STAGE33",
+   "authority": "REPO_DESIGN",
+   "title": "Stage33 R33 results as committed (ideal-plane arch, criteria, wire table)",
+   "path": "design/architecture-278/implementation/stage33/analysis.json"
+  },
+  {
+   "id": "R-STAGE33-INPUT",
+   "authority": "REPO_DESIGN",
+   "title": "Stage33 design input (R33 header moves, route radius, wire candidates)",
+   "path": "design/architecture-278/implementation/stage33/design-input.json"
+  },
+  {
+   "id": "R-STAGE8-SCOPE",
+   "authority": "REPO_DESIGN",
+   "title": "Stage8 scope: bounded X1 repair; A01 implementation forbidden",
+   "path": "design/architecture-278/implementation/stage8/scope.json",
+   "locator": "authorization; forbidden"
+  },
+  {
+   "id": "R-A01-SPEC",
+   "authority": "REPO_DESIGN",
+   "title": "A01 (offset module) circuit specification",
+   "path": "design/spec/modules/offset.py",
+   "locator": "family(): reference_generator REF5/REFN5, remote_buffer IN_BUFFER, SUM amp SUM_NODE/SUM_NEG, SUM_FB 100k, RESTORE_IN 100k, CV OFFSET_BUFFER"
+  },
+  {
+   "id": "R-STAGE15-INTERFACES",
+   "authority": "REPO_DESIGN",
+   "title": "Stage15 interfaces: board-local net groups and upstream power boundary",
+   "path": "design/architecture-278/implementation/stage15/interfaces-report.json",
+   "locator": "local_net_groups; upstream_power_boundaries = A01:J-PWR:middle:1..4"
+  },
+  {
+   "id": "R-STAGE15-ELECTRICAL",
+   "authority": "REPO_DESIGN",
+   "title": "Stage15 electrical input: networks and resistance intervals",
+   "path": "design/architecture-278/implementation/stage15/electrical-input.json",
+   "locator": "networks; network_loading.absolute_resistance_interval_ohm"
+  },
+  {
+   "id": "R-STAGE10-ELECTRICAL",
+   "authority": "REPO_DESIGN",
+   "title": "Stage10 electrical report: GH power-return contract (0.5 A per contact), crossing capacitance",
+   "path": "design/architecture-278/implementation/stage10/electrical-report.json",
+   "locator": "conditional_budgets.GH_power_return_contract; conditional_budgets.aggregate_crossing_capacitance"
+  },
+  {
+   "id": "R-STAGE10-CONTACT-LIMIT",
+   "authority": "REPO_DESIGN",
+   "title": "Stage10 retained GH contact current limit (project requirement, not a maker rating)",
+   "path": "scripts/architecture278/implementation/stage10_interfaces.py",
+   "locator": "retained_GH_contact_current_limit_A = 0.5"
+  },
+  {
+   "id": "R-STAGE14-ELECTRICAL",
+   "authority": "REPO_DESIGN",
+   "title": "Stage14 electrical input: buffer and reference conditions",
+   "path": "design/architecture-278/implementation/stage14/electrical-input.json",
+   "locator": "buffer_conditions.warning; reference_conditions"
+  },
+  {
+   "id": "R-SUPPLY",
+   "authority": "REPO_DESIGN",
+   "title": "Supply architecture contract (requirement only; source not selected)",
+   "path": "design/power/supply-architecture.json",
+   "locator": "contract.source_requirement.required_load_voltage_magnitude_V; contract.source_requirement.maximum_delivered_current_mA; contract.load_envelope.fault_basis"
+  },
+  {
+   "id": "R-POWER-SPEC",
+   "authority": "REPO_DESIGN",
+   "title": "Power module specification (electrical protection unimplemented)",
+   "path": "design/spec/modules/power.py",
+   "locator": "module docstring: electrical protection remains unimplemented"
+  },
+  {
+   "id": "R-EV-OPA4197",
+   "authority": "REPO_DESIGN",
+   "title": "OPA4197IPWR evidence bundle",
+   "path": ".claude/skills/component-ti-opa4197ipwr/facts.json",
+   "locator": "fact-op-precision-quiescent-current (1.5 mA full temperature); fact-op-precision-input-bias-current-full-temperature; no short-circuit current fact"
+  },
+  {
+   "id": "R-EV-OPA4196",
+   "authority": "REPO_DESIGN",
+   "title": "OPA4196IDR evidence bundle",
+   "path": ".claude/skills/component-ti-opa4196idr/facts.json",
+   "locator": "fact-op-audio-quiescent-current"
+  },
+  {
+   "id": "R-EV-LM393B",
+   "authority": "REPO_DESIGN",
+   "title": "LM393BIDR evidence bundle",
+   "path": ".claude/skills/component-ti-lm393bidr/facts.json",
+   "locator": "fact-comparator-input-bias-current; no supply-current fact"
+  },
+  {
+   "id": "R-EV-PASSIVES",
+   "authority": "REPO_DESIGN",
+   "title": "Passives evidence bundle",
+   "path": ".claude/skills/component-passives-family/facts.json",
+   "locator": "fact-r-precision-resistance (0.1 %)"
+  },
+  {
+   "id": "R-EV-JST-GH",
+   "authority": "REPO_DESIGN",
+   "title": "JST GH evidence bundle",
+   "path": ".claude/skills/component-jst-gh/facts.json",
+   "locator": "gh*-rating facts: 1.0 A AC/DC at AWG #26"
+  },
+  {
+   "id": "R-PLANNING-CURRENT",
+   "authority": "REPO_DESIGN",
+   "title": "Offset module planning current worksheet (planning figures, not datasheet evidence)",
+   "path": "design/reports/current/offset.json"
+  },
+  {
+   "id": "R-STAGE8-ADG-EVIDENCE",
+   "authority": "REPO_DESIGN",
+   "title": "ADI ADG5412F rev C power requirements as recorded in the Stage8 input (component datasheet values, not X1 currents)",
+   "path": "design/architecture-278/implementation/stage8/current-input.json",
+   "locator": "ADG5412F_primary_ground_evidence: IGND normal 0.4 typ / 0.6 max, fault 0.8 / 1.1 mA; normal IDD 1.3 / ISS 0.7 mA full-temperature maximum; conditions +/-16.5 V (datasheet sha256 ea3d12f9...)"
+  },
+  {
+   "id": "R-EV-ADG5412F",
+   "authority": "REPO_DESIGN",
+   "title": "ADG5412FBRUZ evidence bundle",
+   "path": ".claude/skills/component-adi-adg5412fbruz/facts.json",
+   "locator": "fact-fault-switch-normal-idd 1.3 mA; no IGND fact"
+  },
+  {
+   "id": "R-A01-PARTS",
+   "authority": "REPO_DESIGN",
+   "title": "A01 part values and pin nets generated from the offset module specification",
+   "path": "design/spec/modules/offset.py",
+   "locator": "R7105-R7135 values: R_EN/R_PD 100 kOhm, R_DRIVE 1 kOhm, senses 5.6 kOhm, clip divider 2 x 100 kOhm, clip LED 22.1 kOhm, output isolation 2 x 499 Ohm"
+  }
+ ]
 }

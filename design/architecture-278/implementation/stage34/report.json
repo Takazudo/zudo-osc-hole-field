@@ -6,24 +6,26 @@
     "A01-middle bow up to the uniform 1.282 mm case",
     "inter-carrier registration within 1 mm (requirement)",
     "RG34 profile and mounting tolerances 0.1 / 0.1 mm",
-    "lids and sleeves closed on their stops; only one end of a cable withdrawn at a time"
+    "lids and sleeves closed on their stops; only one end of a cable withdrawn at a time",
+    "each former set at assembly so the top leg rests on it (gap <= 0.25 mm)",
+    "the legs below the former stay inside their sleeve bores; extra slack from in-bore leg offset is not added (about 0.06 mm by the independent review)"
   ],
   "classification": {
     "B32": "INFEASIBLE",
     "F33": "UNKNOWN",
     "R33": "CONDITIONAL",
-    "RG34": "FEASIBLE_WITHIN_STATED_ASSUMPTIONS"
+    "RG34": "CONDITIONAL"
   },
   "criteria": {
     "T10_both_ends_withdrawal_blocked": true,
     "T11_access_columns_clear": true,
-    "T1_captive_closed_parts": true,
-    "T2_single_end_states_inside_RG34": true,
+    "T1_declared_closed_parts_and_closure_gap": true,
+    "T2_single_end_states_inside_RG34_all_corners": true,
     "T3_parts_clear_K4": true,
-    "T4_walls_between_cables": true,
+    "T4_walls_fit_between_cable_interiors": true,
     "T5_free_spans_bounded_and_clear": true,
-    "T6_rear_cover": true,
-    "T7_grip_fan_in_and_s_bend": true,
+    "T6_rear_cover_K4": false,
+    "T7_fan_in_grip_and_s_bend_with_registration": true,
     "T8_strength_planning_load": true,
     "T9_slack_follows_without_buckling": true
   },
@@ -112,13 +114,14 @@
     "adopted": false,
     "id": "R33+RG34",
     "requires": [
+      "an owner decision on the J-SIG cap vs rear cover conflict: a rear-cover inner face at z >= 106.21 (enclosure, proposal) or a J-SIG design length about 2.42 mm shorter (less than the inherited 10 mm service slack, proposal)",
       "inter-carrier registration within registration_allowance_mm (UNKNOWN; enclosure cleats not designed)",
-      "owner decisions on the RG34 mount and on RG34 outside the reserved volumes",
+      "owner decisions on the RG34 mount, RG34 outside the reserved volumes and removing RG34 before front jack board removal",
       "the M34 mock-up measurements",
       "a wire that meets every check (selection NULL)"
     ],
-    "rg34": "BOUNDED_WITHIN_STATED_ASSUMPTIONS",
-    "status": "CONDITIONAL_PENDING_REGISTRATION_AND_MEASUREMENT"
+    "rg34": "BOUNDED_EXCEPT_REAR_COVER",
+    "status": "CONDITIONAL_PENDING_COVER_REGISTRATION_AND_MEASUREMENT"
   },
   "results": [
     {
@@ -135,7 +138,7 @@
     },
     {
       "class": "FEASIBLE_WITHIN_STATED_ASSUMPTIONS",
-      "result": "Free spans exit-to-sleeve with all slack (inextensible cable, cut tolerance, bow, registration allowance)"
+      "result": "Free spans exit-to-sleeve with all slack (inextensible cable, set former, registration allowance)"
     },
     {
       "class": "FEASIBLE_WITHIN_STATED_ASSUMPTIONS",
@@ -143,11 +146,19 @@
     },
     {
       "class": "FEASIBLE_WITHIN_STATED_ASSUMPTIONS",
-      "result": "J-SIG / J-PWR shared gap: walls between the channels and free-span pairs"
+      "result": "J-SIG / J-PWR shared gap: walls between the channel interiors and free-span pairs"
     },
     {
       "class": "FEASIBLE_WITHIN_STATED_ASSUMPTIONS",
-      "result": "Every single-end 2.45-15 mm withdrawal at constant length inside RG34 (fan-in and grip below the block)"
+      "result": "Every single-end 2.45-15 mm withdrawal at constant length inside RG34, at every corner (cut +/-, bow, registration in z)"
+    },
+    {
+      "class": "FEASIBLE_WITHIN_STATED_ASSUMPTIONS",
+      "result": "RG34 J-PWR cap under the rear cover (margin, RG34 tolerances, registration, K4)"
+    },
+    {
+      "class": "INFEASIBLE",
+      "result": "RG34 J-SIG cap under the rear cover (margin, RG34 tolerances, registration, K4)"
     },
     {
       "class": "INFEASIBLE",
@@ -159,7 +170,7 @@
     },
     {
       "class": "CONDITIONAL",
-      "result": "RG34 strength (post bending at the planning load; joints not evaluated)"
+      "result": "RG34 post strength (bending + torsion; 5-20 N meet, 50 N does not; root fixity and joints not evaluated)"
     },
     {
       "class": "CONDITIONAL",
@@ -174,6 +185,14 @@
       "result": "Finger/tool operability with one sleeve removed"
     },
     {
+      "class": "INFEASIBLE",
+      "result": "Front jack board removal with RG34 in place (J-PWR channel within K4 of the A01-jack M4 screwdriver column)"
+    },
+    {
+      "class": "UNKNOWN",
+      "result": "RG34 fit and removal path (post fastener access, lifting past neighbours)"
+    },
+    {
       "class": "CONDITIONAL",
       "result": "RG34 outside the reserved RV-ARCH/RV-ACCESS volumes (proposal)"
     },
@@ -184,6 +203,10 @@
     {
       "class": "INFEASIBLE",
       "result": "RG34 without its former (negative control)"
+    },
+    {
+      "class": "INFEASIBLE",
+      "result": "RG34 with a fixed, not set, former (negative control)"
     },
     {
       "class": "FEASIBLE_WITHIN_STATED_ASSUMPTIONS",
@@ -203,11 +226,11 @@
     },
     {
       "class": "CONDITIONAL",
-      "result": "J-SIG conductor currents (budgeted; conditional maxima, no established maximum)"
+      "result": "J-SIG conductor currents (term-by-term budget; conditional maxima, no established maximum)"
     },
     {
       "class": "CONDITIONAL",
-      "result": "J-PWR conductor currents (A01 budget; conditional maxima, no established maximum)"
+      "result": "J-PWR conductor currents (A01 term-by-term budget; conditional maxima, no established maximum)"
     },
     {
       "class": "UNKNOWN",
@@ -216,6 +239,10 @@
     {
       "class": "INFEASIBLE",
       "result": "Stage33 J-PWR current inputs as an A01 basis (Stage8 X1 values)"
+    },
+    {
+      "class": "CONDITIONAL",
+      "result": "AWG26 contact rating, temperature rise and derating against conditional currents"
     },
     {
       "class": "UNKNOWN",
@@ -244,18 +271,21 @@
     "design/architecture-278/implementation/stage33/design-input.json": "718c133566b80db7a3b50029d05d541d8bd174614d13ad2920ffb5a7c5babe18",
     "design/architecture-278/implementation/stage33/report.json": "8ee854f40be94ea13d5240d9e0ccc8b838a61c72b3464a942835796801825b16",
     "design/architecture-278/implementation/stage33/sources.json": "29f77ded3e852813cd777a4fe296332a131dbd647ed72037407f6741e23fb4f2",
-    "design/architecture-278/implementation/stage34/README.md": "9aa5be5fa9e0c57ff342a420fa681d84397afb5add9d242dd1180f1ff9f0be74",
-    "design/architecture-278/implementation/stage34/approval.json": "847afd6843449398456b01e4346281869e192d730feddb18f458d16245d7ed8a",
-    "design/architecture-278/implementation/stage34/design-input.json": "3d48a5d72860c8809c98da309e2751092c309e6ae0ca2d7be4debbb99a0a1696",
-    "design/architecture-278/implementation/stage34/sources.json": "5777b71df16b0217a8b63e3cf73fb8062c961f4e934d82746d271beeb2b32a20",
+    "design/architecture-278/implementation/stage34/README.md": "5e482673d40afba7957f3e60068091b0026002b58608060be71468c62a882751",
+    "design/architecture-278/implementation/stage34/approval.json": "e0335e978b1e5b18429d8dd85e2ccee77ae277a42b73c7efa1c882063f051e3d",
+    "design/architecture-278/implementation/stage34/design-input.json": "e6080a4ff35c3b749bb74a37c59b012ae09f53f6bbba29ab763b3158ec9ca781",
+    "design/architecture-278/implementation/stage34/sources.json": "60ec7ff5a9f7254369610dba1c5ad7c97c3708447be669bd2e3b58480194e77a",
     "design/grid/placements.lock.json": "297300b067fd646624b9e501791163fa2d60702862b61568753bf92e5b88dbe8",
     "scripts/architecture278/implementation/check_source.py": "a15e58fef1a4db8f8448cf322a5a7c9cba9d2ea6fa2fc98db05c77342214f474",
     "scripts/architecture278/implementation/stage31_cable_entry_redesign.py": "ecb6faae2a802841b8651e49b2c993291bd6598962c5079257828b1b2cc1add0",
     "scripts/architecture278/implementation/stage32_service_envelope.py": "f38de834ecc125cf891e2604f5783333594d7a56a146577a03e3c97ba822240e",
     "scripts/architecture278/implementation/stage33_large_radius.py": "45cecb8271b667d984311757901da62ef2b1866ba9a0f79a9916f7fbe5e3fa1f",
-    "scripts/architecture278/implementation/stage34_arch_retention.py": "8f0de7be5b74becba3da98177ede31230229f5325b4b164f9984c8c46a500d29",
-    "scripts/architecture278/implementation/test_stage34_arch_retention.py": "f9337982de216a9f3ac6cf5844e6f87d63112a73c464d12bb99ce5172e9954bc"
+    "scripts/architecture278/implementation/stage34_arch_retention.py": "0ad0979e88dbc182909bfd249373b5a84e295761f5ca3e6f1d78286b2aa0533d",
+    "scripts/architecture278/implementation/test_stage34_arch_retention.py": "975e9a82e3e13d81821a2cdbf8eab4aee5565a9f217e875af84ac6596a39d1b1"
   },
+  "stage33_notes": [
+    "radius_headroom.largest_fitting_radius_mm (17) is the largest scanned radius that fits; radii between 17 and 22 were not scanned (review note on Stage33 round 2; Stage33 bytes unchanged)"
+  ],
   "status": "DESIGN_STUDY_ONLY",
   "two_sided_assembly_and_rerouting": {
     "A01-middle": "gains GH header pads on its rear face: a second SMT side (or hand soldering) with its own stencil, placement and reflow pass; the GH headers would ride the second reflow on the first-side parts or the reverse order; process, fixture and cost UNCONFIRMED",
@@ -265,6 +295,7 @@
     "status": "IMPLICATIONS_ONLY; nothing changed in canonical CAD"
   },
   "unresolved_degrees_of_freedom": [
+    "the J-SIG cap vs rear cover conflict (owner decision)",
     "actual inter-carrier registration (enclosure cleats undesigned)",
     "arch shape during service while a sleeve is removed (operator-held, not bounded)",
     "actual free-span excursion under handling (bound computed, not measured)",

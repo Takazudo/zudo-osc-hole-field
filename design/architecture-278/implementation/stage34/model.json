@@ -8,6 +8,8 @@
     ],
     "broader_change_proposals": {
       "carrier_registration_requirement": "The jack, middle and rear carriers must register to each other within registration_allowance_mm at the enclosure cleats; the cleats are not designed, so this is a requirement on a future enclosure, proposed only",
+      "front_jack_board_procedure": "Front jack board removal starts by removing RG34: the J-PWR channel is within K4 of the A01-jack M4 screwdriver column (1.63 mm; -0.34 mm robust with the registration allowance). Proposed only; the RG34 fit/removal path is not evaluated",
+      "j_sig_cover_conflict": "The J-SIG RG34 cap needs the rear cover inner face higher than z 105 or a shorter J-SIG design length (below the inherited 10 mm service slack). Either is a change outside the approved geometry and is proposed for an owner decision only",
       "rg34_mount_on_rear_carrier": "A post on crossmember:rear:0 that carries the RG34 retention channels. It changes the rear carrier (a fastening interface on the crossmember top face) and is proposed only",
       "rg34_outside_reserved_volumes": "RG34 walls stand up to guide_wall_mm + guide_clearance_mm - 0.625 mm outside the RV-ARCH slab half-thickness and the sleeves and block occupy the RV-ACCESS columns above the grip zones; proposed only",
       "service_procedure_restriction": "With RG34 closed, only one end of a cable may be withdrawn at a time; a both-ends withdrawal needs the channel lid opened. Proposed only"
@@ -194,25 +196,30 @@
       "J-PWR": {
         "R": 12.0,
         "Z0": 88.946983,
-        "Zcap_inner": 98.45409,
-        "Zlow": 88.05591943060926,
-        "Ztop": 99.65409,
+        "Zcap_inner": 99.45409,
+        "Zlow": 87.05591943060926,
+        "Ztop": 100.65409,
         "block_entry_z_mm": {
-          "local": 73.805617,
-          "middle": 87.205617
+          "local": 74.805617,
+          "middle": 88.205617
         },
         "bow_mm": 1.282127,
         "c": 0.3,
+        "corners_dz_mm": {
+          "high": 1.25,
+          "low": -1.891064,
+          "nominal": 0.0
+        },
         "design_length_mm": 149,
         "exit_z_mm": {
           "local": 43.9,
           "middle": 57.3
         },
         "fan_in_mm": 6.905617,
-        "former_bottom_z_mm": 76.055919,
+        "former_bottom_z_mm": 75.055919,
         "former_top_range_z_mm": [
-          86.598812,
-          87.739876
+          85.598812,
+          88.739876
         ],
         "frame": {
           "D": 68.007353,
@@ -235,7 +242,7 @@
             -0.338199
           ]
         },
-        "hug_length_mm": 147.217874,
+        "hug_length_mm": 145.217874,
         "interior_hull": {
           "carrier": "rear",
           "id": "RG34-J-PWR-interior",
@@ -251,8 +258,8 @@
               69.76446
             ],
             "z": [
-              56.426106,
-              98.45409
+              57.426106,
+              99.45409
             ]
           },
           "poly": [
@@ -275,8 +282,8 @@
           ],
           "removable_for": null,
           "z": [
-            56.426106,
-            98.45409
+            57.426106,
+            99.45409
           ]
         },
         "parts": [
@@ -295,8 +302,8 @@
                 2.957107
               ],
               "z": [
-                56.426106,
-                73.805617
+                57.426106,
+                74.805617
               ]
             },
             "poly": [
@@ -319,8 +326,8 @@
             ],
             "removable_for": "local",
             "z": [
-              56.426106,
-              73.805617
+              57.426106,
+              74.805617
             ]
           },
           {
@@ -334,18 +341,18 @@
                 2.957107
               ],
               "s": [
-                59.277881,
+                53.050246,
                 70.96446
               ],
               "z": [
-                69.826106,
-                87.205617
+                70.826106,
+                88.205617
               ]
             },
             "poly": [
               [
-                280.784825,
-                150.169438
+                274.924155,
+                152.275616
               ],
               [
                 291.782769,
@@ -356,14 +363,14 @@
                 151.782769
               ],
               [
-                282.785004,
-                155.735155
+                276.924335,
+                157.841333
               ]
             ],
             "removable_for": "middle",
             "z": [
-              69.826106,
-              87.205617
+              70.826106,
+              88.205617
             ]
           },
           {
@@ -381,8 +388,8 @@
                 2.957107
               ],
               "z": [
-                73.805617,
-                99.65409
+                74.805617,
+                100.65409
               ]
             },
             "poly": [
@@ -405,8 +412,51 @@
             ],
             "removable_for": null,
             "z": [
-              73.805617,
-              99.65409
+              74.805617,
+              100.65409
+            ]
+          },
+          {
+            "carrier": "rear",
+            "id": "RG34-J-PWR-channel-corner-local",
+            "kind": "channel",
+            "link": "J-PWR",
+            "plane": {
+              "n": [
+                -2.957107,
+                2.957107
+              ],
+              "s": [
+                -2.957107,
+                12.0
+              ],
+              "z": [
+                73.855919,
+                100.65409
+              ]
+            },
+            "poly": [
+              [
+                222.217052,
+                171.217231
+              ],
+              [
+                236.292807,
+                166.158757
+              ],
+              [
+                238.292986,
+                171.724474
+              ],
+              [
+                224.217231,
+                176.782948
+              ]
+            ],
+            "removable_for": null,
+            "z": [
+              73.855919,
+              100.65409
             ]
           },
           {
@@ -420,36 +470,36 @@
                 2.957107
               ],
               "s": [
-                -2.957107,
-                59.277881
+                12.0,
+                53.050246
               ],
               "z": [
-                74.855919,
-                99.65409
+                84.398812,
+                100.65409
               ]
             },
             "poly": [
               [
-                222.217052,
-                171.217231
+                236.292807,
+                166.158757
               ],
               [
-                280.784825,
-                150.169438
+                274.924155,
+                152.275616
               ],
               [
-                282.785004,
-                155.735155
+                276.924335,
+                157.841333
               ],
               [
-                224.217231,
-                176.782948
+                238.292986,
+                171.724474
               ]
             ],
             "removable_for": null,
             "z": [
-              74.855919,
-              99.65409
+              84.398812,
+              100.65409
             ]
           },
           {
@@ -463,18 +513,18 @@
                 2.957107
               ],
               "s": [
-                59.277881,
+                53.050246,
                 70.96446
               ],
               "z": [
-                87.205617,
-                99.65409
+                88.205617,
+                100.65409
               ]
             },
             "poly": [
               [
-                280.784825,
-                150.169438
+                274.924155,
+                152.275616
               ],
               [
                 291.782769,
@@ -485,14 +535,14 @@
                 151.782769
               ],
               [
-                282.785004,
-                155.735155
+                276.924335,
+                157.841333
               ]
             ],
             "removable_for": null,
             "z": [
-              87.205617,
-              99.65409
+              88.205617,
+              100.65409
             ]
           }
         ],
@@ -501,38 +551,43 @@
         "s_bend_length_mm": 5.620489,
         "s_off": {
           "local": 0.0,
-          "middle": 5.772365
+          "middle": 12.0
         },
-        "slack_fixed_former_mm": 2.282126,
+        "slack_fixed_former_mm": 4.282126,
         "slack_mm": 0.5,
         "sleeve_bottom_z_mm": {
-          "local": 56.426106,
-          "middle": 69.826106
+          "local": 57.426106,
+          "middle": 70.826106
         },
         "t": 1.2
       },
       "J-SIG": {
         "R": 12.0,
         "Z0": 92.361945,
-        "Zcap_inner": 102.161945,
-        "Zlow": 91.47088143060927,
-        "Ztop": 103.361945,
+        "Zcap_inner": 103.161945,
+        "Zlow": 90.47088143060927,
+        "Ztop": 104.361945,
         "block_entry_z_mm": {
-          "local": 77.289297,
-          "middle": 90.689297
+          "local": 78.289297,
+          "middle": 91.689297
         },
         "bow_mm": 1.282127,
         "c": 0.3,
+        "corners_dz_mm": {
+          "high": 1.25,
+          "low": -1.891064,
+          "nominal": 0.0
+        },
         "design_length_mm": 133,
         "exit_z_mm": {
           "local": 43.9,
           "middle": 57.3
         },
         "fan_in_mm": 10.389297,
-        "former_bottom_z_mm": 79.470881,
+        "former_bottom_z_mm": 78.470881,
         "former_top_range_z_mm": [
-          89.720881,
-          90.861945
+          88.720881,
+          91.861945
         ],
         "frame": {
           "D": 45.177428,
@@ -555,7 +610,7 @@
             -0.464834
           ]
         },
-        "hug_length_mm": 131.217873,
+        "hug_length_mm": 129.217873,
         "interior_hull": {
           "carrier": "rear",
           "id": "RG34-J-SIG-interior",
@@ -571,8 +626,8 @@
               47.227428
             ],
             "z": [
-              59.982275,
-              102.161945
+              60.982275,
+              103.161945
             ]
           },
           "poly": [
@@ -595,8 +650,8 @@
           ],
           "removable_for": null,
           "z": [
-            59.982275,
-            102.161945
+            60.982275,
+            103.161945
           ]
         },
         "parts": [
@@ -615,8 +670,8 @@
                 3.25
               ],
               "z": [
-                59.982275,
-                77.289297
+                60.982275,
+                78.289297
               ]
             },
             "poly": [
@@ -639,8 +694,8 @@
             ],
             "removable_for": "local",
             "z": [
-              59.982275,
-              77.289297
+              60.982275,
+              78.289297
             ]
           },
           {
@@ -654,18 +709,18 @@
                 3.25
               ],
               "s": [
-                36.155063,
+                29.927428,
                 48.427428
               ],
               "z": [
-                73.382275,
-                90.689297
+                74.382275,
+                91.689297
               ]
             },
             "poly": [
               [
-                240.500907,
-                153.316358
+                234.986972,
+                156.211174
               ],
               [
                 251.366833,
@@ -676,14 +731,14 @@
                 153.366833
               ],
               [
-                243.522327,
-                159.071444
+                238.008392,
+                161.96626
               ]
             ],
             "removable_for": "middle",
             "z": [
-              73.382275,
-              90.689297
+              74.382275,
+              91.689297
             ]
           },
           {
@@ -701,8 +756,8 @@
                 3.25
               ],
               "z": [
-                77.289297,
-                103.361945
+                78.289297,
+                104.361945
               ]
             },
             "poly": [
@@ -725,8 +780,51 @@
             ],
             "removable_for": null,
             "z": [
-              77.289297,
-              103.361945
+              78.289297,
+              104.361945
+            ]
+          },
+          {
+            "carrier": "rear",
+            "id": "RG34-J-SIG-channel-corner-local",
+            "kind": "channel",
+            "link": "J-SIG",
+            "plane": {
+              "n": [
+                -3.25,
+                3.25
+              ],
+              "s": [
+                -3.25,
+                12.0
+              ],
+              "z": [
+                77.270881,
+                104.361945
+              ]
+            },
+            "poly": [
+              [
+                205.611747,
+                171.633167
+              ],
+              [
+                219.114065,
+                164.54445
+              ],
+              [
+                222.135485,
+                170.299536
+              ],
+              [
+                208.633167,
+                177.388253
+              ]
+            ],
+            "removable_for": null,
+            "z": [
+              77.270881,
+              104.361945
             ]
           },
           {
@@ -740,36 +838,36 @@
                 3.25
               ],
               "s": [
-                -3.25,
-                36.155063
+                12.0,
+                29.927428
               ],
               "z": [
-                78.270881,
-                103.361945
+                87.520881,
+                104.361945
               ]
             },
             "poly": [
               [
-                205.611747,
-                171.633167
+                219.114065,
+                164.54445
               ],
               [
-                240.500907,
-                153.316358
+                234.986972,
+                156.211174
               ],
               [
-                243.522327,
-                159.071444
+                238.008392,
+                161.96626
               ],
               [
-                208.633167,
-                177.388253
+                222.135485,
+                170.299536
               ]
             ],
             "removable_for": null,
             "z": [
-              78.270881,
-              103.361945
+              87.520881,
+              104.361945
             ]
           },
           {
@@ -783,18 +881,18 @@
                 3.25
               ],
               "s": [
-                36.155063,
+                29.927428,
                 48.427428
               ],
               "z": [
-                90.689297,
-                103.361945
+                91.689297,
+                104.361945
               ]
             },
             "poly": [
               [
-                240.500907,
-                153.316358
+                234.986972,
+                156.211174
               ],
               [
                 251.366833,
@@ -805,14 +903,14 @@
                 153.366833
               ],
               [
-                243.522327,
-                159.071444
+                238.008392,
+                161.96626
               ]
             ],
             "removable_for": null,
             "z": [
-              90.689297,
-              103.361945
+              91.689297,
+              104.361945
             ]
           }
         ],
@@ -821,13 +919,13 @@
         "s_bend_length_mm": 5.692978,
         "s_off": {
           "local": 0.0,
-          "middle": 5.772365
+          "middle": 12.0
         },
-        "slack_fixed_former_mm": 2.282127,
+        "slack_fixed_former_mm": 4.282127,
         "slack_mm": 0.5,
         "sleeve_bottom_z_mm": {
-          "local": 59.982275,
-          "middle": 73.382275
+          "local": 60.982275,
+          "middle": 74.382275
         },
         "t": 1.2
       }
@@ -857,7 +955,7 @@
       ],
       "z": [
         62.0,
-        74.855919
+        84.398812
       ]
     },
     "spec": {
