@@ -1,3 +1,14 @@
+## Current provisional DIN design integration — Stage30
+
+[Stage30](stage30/README.md) uses the Stage29 contact positions as **DESIGN_ONLY_PROVISIONAL**
+A01 design data, as the owner approved on 2026-10-17 before M-01. It recomputes the 34
+DIN-incident Stage15 allocations and 11 signal paths, and traces the 16 assigned contacts.
+The Stage28 harness is unchanged.
+
+A separate J-PWR route study finds no route under the existing conditions; a middle-rail
+relief is a proposal only. Stage30 also prepares 1:1 M-01 prints and an empty record sheet.
+D02 stays CONFLICT_REQUIRES_DECISION, and M-01, native and physical checks are NOT RUN.
+
 ## Current DIN source correction candidate — Stage29
 
 [Stage29](stage29/README.md) re-reads both HARTING drawings, including their vector

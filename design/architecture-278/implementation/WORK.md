@@ -956,3 +956,60 @@ Stage29 verification (local, Python 3.12.13):
   - physical M-01 and energized tests
 
 No supplier contact, order, upload, adoption or merge took place. Native request: NONE.
+
+## Stage30 — provisional DIN design integration for A01 (local Claude Code, 2026-10-17)
+
+The owner provisionally adopted the Stage29 contact positions on 2026-10-17 for design study
+only, before M-01 (`stage30/approval.json`, status DESIGN_ONLY_PROVISIONAL). This is not
+manufacturing or assembly qualification, a canonical CAD change, a native run, an order or
+architecture adoption. D02 stays CONFLICT_REQUIRES_DECISION, M-01 is NOT RUN, and Stage29
+and earlier are history.
+
+- **Design positions:** `candidate_position(row, n) = Stage10_position(row, 33 − n)` for
+  J17909/J17910, rebuilt from Stage29 and re-verified.
+  - Determinants: female +1, male −1; pin 1 at (301.54, 188.63).
+  - Unchanged: nets (16 assigned, 80 NC), hole set, fixing holes and board planes.
+- **Impact:** of the 50 Stage15 (= Stage16 transport contract) edges that end on a DIN node,
+  the 16 mated pairs keep 25 mm. The other 34 `trace_length` allocations are recomputed.
+  - A01-middle: J-SIG and AGND edges get 49.7–90.6 mm shorter; C-SIG edges get 32.2–64.5 mm
+    longer.
+  - A01-core: K-PWR AGND joins get 35.6–64.5 mm longer; the eight branches change by −57.0
+    to +39.4 mm.
+  - 11 signal paths change by −147.6 to +73.9 mm. Power/return and local paths do not change.
+  - Routed copper stays null.
+  - The 16 assigned contacts are traced to their Ref:pin and board.
+  - Six historical files that carry Stage10 allocations are listed; their bytes are unchanged.
+- **Harness:** unchanged from Stage28: 4 GH cables / 20 conductors, 14 tails, and 22 land
+  annotations with their exclusion flags. Measured values stay null.
+- **J-PWR route study** (separate from the DIN correction; assumptions in
+  `stage30/route-input.json`):
+  - The straight J-PWR and J-SIG proxies also cross the A01-middle carrier left rail.
+  - W1 and W2 are blocked by keep-outs; W3 is UNKNOWN (foreign depth) and needs about 154 mm
+    of cable.
+  - W4 (rail relief, proposal only) clears its centreline under the assumptions. It needs
+    about 111.5 mm of cable (Stage10 cut 90 ± 3) and has a bend radius ≤ 2.07 mm. It also
+    depends on the foreign-depth cap at z 34, with a 0.29 mm margin.
+  - No route, hole, fixture or anchor is adopted.
+- **M-01:** `stage30/m01-print.pdf` holds 4 pattern sheets and an empty record sheet. The
+  PyMuPDF read-back finds 2.54 pitch, a 78.74 span, female fixing holes 90.00 mm apart and
+  0.3 mm toward row a, 100 mm bars, and correct corner labels. Nothing was printed or
+  physically checked.
+
+Stage30 verification (local, Python 3.12.13):
+- **Tests:** 17 focused tests PASS in both normal and `-O` Python.
+- **Generator:** `stage30_din_design_integration.py --check` PASS; venv `--check --check-pdf`
+  PASS (PyMuPDF 1.24.10).
+- **History:** `--check --check-history` PASS (33 s). It runs Stage29 `--check --check-review`
+  and the 16 Stage29 tests (normal and `-O`) at immutable 00266037. The deeper chain already
+  passed at 00266037 (854 s) and those bytes are protected, so it was not repeated.
+- **Entrypoint:** `check_source.py` PASS (exit 0, 20 s), including `--check-review`.
+- **Repo checks:** `pnpm check` and `pnpm circuit:check` PASS; `git diff --check` is clean.
+- **Independent review:** PASS_SOURCE_REVIEW_ONLY. It found 1 MEDIUM (an unrecorded
+  foreign-depth cap) and 10 LOW issues; all are resolved except one cosmetic LOW.
+- **NOT RUN:**
+  - regen-all.sh (KiCad), the KiCad oracle and ERC/DRC
+  - CI: the commit uses [skip ci]
+  - simulation and fabrication output
+  - M-01, M-09, M-12 and energized tests
+
+No supplier contact, order, upload, adoption or merge took place. Native request: NONE.

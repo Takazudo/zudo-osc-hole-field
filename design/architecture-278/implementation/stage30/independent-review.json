@@ -1,0 +1,168 @@
+{
+  "architecture_adopted": false,
+  "baseline_commit": "00266037a7e2134c9c6c70d1ae95695932e7f1f6",
+  "checks": [
+    {
+      "command": "python3 /private/tmp/claude-501/-Users-takazudo-repos-circuits-zudo-osc-hole-field/409b87af-465e-435f-b183-6fe0014893bc/scratchpad/review30/c12.py (independent design map, determinants, allocations, paths)",
+      "result": "192/192 rows match (XY, z, Stage10 XY, net, NC, label, node); 16 assigned / 80 NC; mated female=male XY; board det(n,row) design +1 both sides, Stage10 -1, HARTING views A/B predict +1; Stage29 candidate det +1/-1 equals expected; fixing holes x 299.3 = row b + 0.3 toward row a, mid y 228; 50 DIN-incident edges (16 pairs + 34 copper), Stage10 allocations reproduced within 1e-9, design allocations max diff 4.7e-7, edge deltas -90.551..+64.534; 11/21 signal paths change, max diff 4.9e-7, deltas -147.561..+73.910; 0/108 power and 0/271 local paths contain a DIN edge; Stage16 transport_contract equals Stage15"
+    },
+    {
+      "command": "python3 /private/tmp/claude-501/-Users-takazudo-repos-circuits-zudo-osc-hole-field/409b87af-465e-435f-b183-6fe0014893bc/scratchpad/review30/c3.py [cap] [extra] (independent J-PWR segment/box screen, inflation 1.70711)",
+      "result": "1000 obstacles; W1 BLOCKED rail:middle:0 clearance 0; W2 BLOCKED (A01-middle slabs + rail) 1.2; W3 UNKNOWN (D16101, J1710, SW1401, SW1501) 2.0; W4 CLEAR 2.0743; cuts 112.455/113.467/154.122/111.479 vs 87; bend limits identical; cap 34.30 makes W4 UNKNOWN (J1710), matching reported flip 34.293 (W3 30.293); spacers/heads/bosses added: no status change"
+    },
+    {
+      "command": "python3 /private/tmp/claude-501/-Users-takazudo-repos-circuits-zudo-osc-hole-field/409b87af-465e-435f-b183-6fe0014893bc/scratchpad/review30/c3b.py (independent proxy screen, J-SIG distances)",
+      "result": "J-PWR 1-4 cross rail:middle:0 and release:A01:J-SIG:middle; J-SIG 1-7 cross rail:middle:0; no others; W4 per-segment J-SIG distances 7.39/8.55/8.89/16.15/20.59 agree with report"
+    },
+    {
+      "command": "venv python -s -E /private/tmp/claude-501/-Users-takazudo-repos-circuits-zudo-osc-hole-field/409b87af-465e-435f-b183-6fe0014893bc/scratchpad/review30/c4.py (independent PyMuPDF read-back)",
+      "result": "5 A4 pages; each pattern sheet 96 dia-1.000 circles, 2.54 pitch, 78.74 span, two 100.00 mm bars; female fixing holes 90.00001 apart, row b - 0.3 toward row a; corner labels next to the correct physical contact on all 4 sheets (Stage10 vs design = column reversal); female +x left, male +x right; part numbers per sheet; record sheet empty"
+    },
+    {
+      "command": "python3 -m unittest discover -s scripts/architecture278/implementation -p test_stage30_din_design_integration.py",
+      "result": "17 tests OK"
+    },
+    {
+      "command": "python3 -O -m unittest discover -s scripts/architecture278/implementation -p test_stage30_din_design_integration.py",
+      "result": "17 tests OK"
+    },
+    {
+      "command": "python3 scripts/architecture278/implementation/stage30_din_design_integration.py --check",
+      "result": "exit 0"
+    },
+    {
+      "command": "tools/venv/bin/python -s -E scripts/architecture278/implementation/stage30_din_design_integration.py --check --check-pdf",
+      "result": "exit 0"
+    },
+    {
+      "command": "git diff 00266037a7e2134c9c6c70d1ae95695932e7f1f6 --name-only",
+      "result": "only design/architecture-278/implementation/README.md and scripts/architecture278/implementation/check_source.py; untracked only stage30/ and the two Stage30 scripts"
+    },
+    {
+      "command": "not run by this reviewer",
+      "result": "--check-history and check_source.py (run by team lead); KiCad, ERC/DRC, regen-all, simulation NOT RUN"
+    }
+  ],
+  "date": "2026-10-17",
+  "decision_status": {
+    "D02": "CONFLICT_REQUIRES_DECISION",
+    "M-01": "NOT_RUN",
+    "route": "NO_ROUTE_ADOPTED"
+  },
+  "findings": [
+    {
+      "resolution": "route-input.json records foreign_unknown_depth_top_z_mm = 34 as ASSUMPTION, obstacles() reads and checks it, each candidate reports the flip cap (W1/W2/W4 34.293, W3 30.293), README states the margin, test covers cap 36 -> J1710; re-verified",
+      "severity": "MEDIUM",
+      "summary": "M1: W4 clear status relied on an unrecorded cap of foreign unknown depth at z 34 (0.29 mm margin)"
+    },
+    {
+      "resolution": "README now says modelled keep-out classes and lists the unmodelled ones; re-verified that adding them changes nothing",
+      "severity": "LOW",
+      "summary": "L1: README claimed screening against every Stage10 keep-out; spacers, heads, bosses, other cables not modelled"
+    },
+    {
+      "resolution": "wording narrowed to routes turning directly toward the ring; loop routes noted as not considered",
+      "severity": "LOW",
+      "summary": "L2: local-end lead ceiling wording ignored loop routes"
+    },
+    {
+      "resolution": "analytic x-clipping; window [163.391, 169.943], top 43.898; re-verified",
+      "severity": "LOW",
+      "summary": "L3: sampled rail-relief window was 0.016 mm short"
+    },
+    {
+      "resolution": "reported per segment; re-verified",
+      "severity": "LOW",
+      "summary": "L4: J-SIG proxy distance dominated by the shared start segment"
+    },
+    {
+      "resolution": "one label per corner required, expectation from Stage10 pads plus rev(), hole set compared, offset sign toward row a checked; re-verified",
+      "severity": "LOW",
+      "summary": "L5: PDF read-back used a dict for labels, unsigned offset, generator layout as expectation"
+    },
+    {
+      "resolution": "labels corrected and per-candidate unknown-depth blocks listed (W3: A04, A05, E2, E3)",
+      "severity": "LOW",
+      "summary": "L6: A02-A05 label covered E2/E3 switches"
+    },
+    {
+      "resolution": "field renamed matching_allocation_values; markdown says found by text match",
+      "severity": "LOW",
+      "summary": "L7: historical consumer count from text match read as exact"
+    },
+    {
+      "resolution": "other_ring_members added (same 2.4 mm slot)",
+      "severity": "LOW",
+      "summary": "L8: corridor list omitted top crossmember and right rail"
+    },
+    {
+      "resolution": "field and column renamed to known keep-outs only",
+      "severity": "LOW",
+      "summary": "L9: W3 clearance shown without saying unknown-depth boxes are excluded"
+    },
+    {
+      "resolution": "sentence added in connection-impact.md",
+      "severity": "LOW",
+      "summary": "L10: power path unchanged statement hid the 16 parallel AGND DIN branches"
+    },
+    {
+      "resolution": "accepted as cosmetic, unchanged; no effect on results",
+      "severity": "LOW",
+      "summary": "L11: hard-coded SVG coordinates; PDF axis glyph without arrowheads"
+    }
+  ],
+  "native": "NOT_RUN",
+  "open_findings_medium_or_high": 0,
+  "physical": "NOT_RUN",
+  "reviewed_sha256": {
+    "design/architecture-278/implementation/stage10/mechanical-input.json": "31fab83774216f9b011f5f262fbde71c7ce9282e12f6142a6a62a9e488fdab19",
+    "design/architecture-278/implementation/stage10/mechanical-report.json": "956e83e449d2667654679822125015ed96566b849b54902083bf54ca2bf8ffd7",
+    "design/architecture-278/implementation/stage15/interfaces-report.json": "c45cbfbe0e83cab64853daa10b964dd173c4997d2560ff20cca20d6ae5ed93ca",
+    "design/architecture-278/implementation/stage15/paths-report.json": "2af12a7ab3eeb273124c53b06da1add00029ef3bfa905d3dbfae2d0ee14819e7",
+    "design/architecture-278/implementation/stage16/inputs-report.json": "214297b7b19f9ae6027d1f036407f005319929961338631896f984655a4c0ebc",
+    "design/architecture-278/implementation/stage21/inventory-input.json": "991b24386c364e6751e16bd117946669e0326dbb2ec66c446b9a6585890047e2",
+    "design/architecture-278/implementation/stage28/harness-ledger.json": "93327a08fbe521f10ccf0b5ce5b040aefe84b86726661cdd7bbfb22d7ef98061",
+    "design/architecture-278/implementation/stage28/harness-policy.json": "39211b34aed8e17af0f302aeb64801adc9bd601d9dbafec2ef53b70f0a4b457d",
+    "design/architecture-278/implementation/stage28/report.json": "552beaafe632ee583f4194efabc4d72a9e3ee9a88f436b34aa2a8f770ba095a6",
+    "design/architecture-278/implementation/stage29/contact-map.json": "e8dbc86ab10e8c912cf88b18fab54227762f6fefe6fc343b8b95182425850810",
+    "design/architecture-278/implementation/stage29/report.json": "e6db6db28a6f120ebdeb90bb164e8c07eb52ed92484d75a4c842f60001aab797",
+    "design/architecture-278/implementation/stage30/README.md": "cbaa83153d14e3694bf9c55c40ca432322c188723e734c5c1f524de21561267a",
+    "design/architecture-278/implementation/stage30/approval.json": "54c1f8221341e5cb0242d242be6e18c358c271e763df9eff623900dfe2dba4b4",
+    "design/architecture-278/implementation/stage30/connection-impact.json": "0a88bb67c3fea563daeb35ad7dd01302e55be8beca13ec980f010ed867f1c244",
+    "design/architecture-278/implementation/stage30/connection-impact.md": "680388b0912af5d55b58e6f2bbcf5f2e07c2d0517ead826cfc50f31f5e41e3e8",
+    "design/architecture-278/implementation/stage30/connection-impact.svg": "1b03875da5e4ebdd376bc3e969e0063169bfe7f04cb6300871b2b2029e004dd1",
+    "design/architecture-278/implementation/stage30/design-contact-map.json": "2550545558a429ada183b0257ccb5523e4d0b76ed472303ebaf520e9f14e28c0",
+    "design/architecture-278/implementation/stage30/design-contact-map.md": "edc67b8876a2628ea355100ae41a0729f51f0d437e4666aab3f983649e92cadd",
+    "design/architecture-278/implementation/stage30/m01-print.pdf": "1d0d4d947d146d4219fc989c88fdc4c9d437e789541e6936341d4fbddc43b71d",
+    "design/architecture-278/implementation/stage30/m01-record-template.json": "b0d0af58fd2f9406000a49cde5ac38de0ee1579ed86e8282c24c1226bc4078ed",
+    "design/architecture-278/implementation/stage30/pdf-check.json": "dca83df85024f2c082b6d0cc108443393c33df8a1d154bdf8efe4764dc7b7a37",
+    "design/architecture-278/implementation/stage30/previews/m01-sheet-1.png": "b7b37c2c2d2626dab890b6f8c97e12e5fef6007beb13892a524d969c167c8158",
+    "design/architecture-278/implementation/stage30/previews/m01-sheet-2.png": "c39e7d3d96f60e69bf0dcbe4ec02e82278f23288b8ada7a57606ff9df81195b5",
+    "design/architecture-278/implementation/stage30/previews/m01-sheet-3.png": "a0d0ab92292a42d99b1ed0873106fecdff66d0844766e80ff5803034113f8409",
+    "design/architecture-278/implementation/stage30/previews/m01-sheet-4.png": "bd46d718719c21e89438a834abb1133fd4af801ccb2ebd73c83a94ec9e8064d0",
+    "design/architecture-278/implementation/stage30/previews/m01-sheet-5.png": "bc993eedf52da41f836494f931508cd539109c84a728637fd1cbfdb9c865b8be",
+    "design/architecture-278/implementation/stage30/report.json": "e8fd33a9571ae512fed8310a808782abb3e51b7c0fddc9673de69272eef87191",
+    "design/architecture-278/implementation/stage30/route-input.json": "f46d31d07a1c14514c4a2987ebd95d6946c1d889e98ab284dd73f977c2ed73c9",
+    "design/architecture-278/implementation/stage30/route-study.json": "fce022f8d285dcf0779356f75ca4a239d722aca322d1655f4ca99e05c765d4ab",
+    "design/architecture-278/implementation/stage30/route-study.md": "3003ce125b06d306c1539187a5c72baf1f0929a2a1b41c73ec3133ef7e1f5eef",
+    "design/architecture-278/implementation/stage30/route-study.svg": "9f0b224bae80d107321b414a7b4bde803bf9ea6f71335eaf5786ddfc2cf5b9d6",
+    "design/grid/placements.lock.json": "297300b067fd646624b9e501791163fa2d60702862b61568753bf92e5b88dbe8",
+    "footprints/kicad/zudo-osc-hole-field.pretty/Button_Omron_B3F_6x6_P6.5x4.5.kicad_mod": "5308867a94916318f13100fe7a07505c1c2d41ea7fc35c63d5d5ce3fcbb30c52",
+    "footprints/kicad/zudo-osc-hole-field.pretty/Jack_3.5mm_QingPu_WQP518MA.kicad_mod": "51a6cc131190b3b1f7f9aa925d4ce08e05a796f62dc8c00d3a89086354b80a20",
+    "footprints/kicad/zudo-osc-hole-field.pretty/LED0402-Kingbright-Red.kicad_mod": "4a16e45298e7f349499aaf1157d1ee422e4775819e21859d34767c241a1eb51b",
+    "footprints/kicad/zudo-osc-hole-field.pretty/LED0402-Kingbright-White.kicad_mod": "5fd510e04081eabe44d47fd8094a64ceec03e65a0b3b772237ce1d92be71b4c2",
+    "footprints/kicad/zudo-osc-hole-field.pretty/PTV09A-4020F.kicad_mod": "c0dafcafeba8f3570b1c395c12e844ab8d237bb54edfd65130cf98f25939c557",
+    "footprints/kicad/zudo-osc-hole-field.pretty/SRBV160803.kicad_mod": "f8206a956661f5ff94ab9779e59dab9553c2df72df49aaa4a2dfa64c82a6d81b",
+    "footprints/kicad/zudo-osc-hole-field.pretty/Toggle_Dailywell_2MS_T1B1M2.kicad_mod": "11240c0c14b6378dc93f54d9146097b1b62384b0b9cab4b145dc1367be89daf4",
+    "scripts/architecture278/implementation/assembly.py": "7d453aea98dabe67640c40c381011b0cd4327d5c28141f141bcf513c927c4c39",
+    "scripts/architecture278/implementation/check_source.py": "e30c8727d0e7fd5efab2071fd40fb016f5f5373620bff4b0c6395e7762ad8d5d",
+    "scripts/architecture278/implementation/stage10_interfaces.py": "52d588c11dea77ca256895ee74ba43f879a3df52a4593ce2a3c11aaa825bdd06",
+    "scripts/architecture278/implementation/stage28_din_harness.py": "49fab6a30d86e3f3aa9898e2268e3258532a49affaefc4f7203e306b2235468a",
+    "scripts/architecture278/implementation/stage29_din_column_reversal.py": "b8b8112d09b1a3a1594fc7d5db8893a875d88080081f99a6352d560ebee440bc",
+    "scripts/architecture278/implementation/stage30_din_design_integration.py": "a092803e4a68a0d90a81d4f50b3f8f09a74948a4f2195f4ec122ba0f2b5eef26",
+    "scripts/architecture278/implementation/test_stage30_din_design_integration.py": "d7a4413ba201adb7090dc54de961d1f1e9332da2a58b32450c9d45371cfe6361"
+  },
+  "reviewer": "independent Claude Code subagent (local)",
+  "scope": "Source review of Stage30 design-only provisional DIN integration, J-PWR route study and M-01 print; not a physical, native, manufacturing or architecture review",
+  "status": "PASS_SOURCE_REVIEW_ONLY"
+}
