@@ -1170,3 +1170,78 @@ Stage33 verification (Claude Code Cloud, Python 3.13):
   ([skip ci]), simulation, fabrication output, M-01, M-09, M-12, M33-01…08 and energisation.
 
 No supplier contact, order, upload, adoption or merge took place. Native request: NONE.
+
+## Stage34 — A01 whole-arch retention (RG34) and wire/current evidence (Claude Code Cloud, 2026-10-17)
+
+The owner provisionally adopted R33's rear-face middle headers as the design-study baseline and its
+RV-ARCH / RV-ACCESS volumes as study reservations (`stage34/approval.json`). The owner was told that
+final adoption needs assembly-side and copper-routing changes. Nothing is adopted: no canonical CAD,
+manufacturing output, wire or physical feasibility. Stage33 and every earlier stage are unchanged.
+
+- **RG34:** one slot channel per arch on the rear carrier (post on `crossmember:rear:0`, a proposal):
+  - walls with 0.3 mm play, end walls and a cap;
+  - a settable former that owns both bend corners and is set at assembly so the top leg rests on it;
+  - a removable split sleeve on each leg, with no inner arc.
+- **Whole-arch bound (geometric, no stiffness):**
+  - Inside RG34 the walls bound out-of-plane sway and rotation of the entire arch.
+  - Each exit-to-sleeve free span is bounded by the spheroid it can reach with all the remaining slack
+    (0.5 mm with the set former).
+  - Every single-end 2.45–15 mm withdrawal stays inside RG34 at constant length at every tolerance
+    corner (cut ±0.5, uniform bow, z registration ±1.0).
+  - The J-PWR channel wall, not the cable, faces the core: 0.29 mm robust spare, registration out of
+    the chain.
+- **Open:**
+  - **J-SIG cap vs rear cover (T6 fails):** the cap needs z 106.21 against the cover at 105. A deeper
+    cover or a J-SIG about 2.42 mm shorter are proposals only, and their consequences are not evaluated.
+  - **Registration:** ≤ 1.0 mm is required; the actual value is UNKNOWN.
+  - **Service:** during a withdrawal the arch is operator-held, so slack is not bounded.
+  - **Front jack board removal:** RG34 must be removed first (proposal), and the RG34 fit/removal path
+    is UNKNOWN.
+  - **Reserved volumes:** RG34 extends outside them (proposal).
+  - **Post strength:** 39.8 N allowable with bending plus torsion, so 50 N fails.
+- **Negative controls:** a local-leg guide alone, RG34 without its former, a fixed former and a both-ends
+  withdrawal all fail as expected.
+- **Currents:**
+  - **Stage33's J-PWR inputs were Stage8 X1 values** (Stage8 forbade A01 work). They are superseded;
+    the Stage33 bytes are unchanged.
+  - **A01 term-by-term budget:** J-SIG signals ≤ 0.135 mA; each AGND conductor 11.3 mA conditional
+    (37.3 mA in the fault case); J-PWR ±12 V 19.0 / 17.8 mA conditional.
+  - **No established maximum:** there is no upstream limiting element.
+- **Wire:** the selection stays null.
+  - Thermax M22759/18-26 fails nothing, but its current checks are CONDITIONAL and it has no maker bend
+    radius.
+  - Alpha 1852 / 6710 (AWG28) and 1851 (AWG30) have no JST contact rating: UNKNOWN, not a failure.
+
+Stage34 verification (Claude Code Cloud, Python 3.13):
+- **Tests:** 14 focused tests PASS in normal and `-O` Python. They cover:
+  - independent prism/spheroid distance, former, cover, post-stress and current-sum recomputation;
+  - tolerance corners;
+  - negative tests for the closure gap, an open lid, grip/registration, wall thickness (core), K4
+    relaxation, former setting, registration claims, a promoted current, a typical > conditional term,
+    a net/pin mismatch, unobtained wire sources, a transferred AWG28 rating and status claims;
+  - a `report.json` drift test.
+- **Generator:** `stage34_arch_retention.py --check --check-review` PASS, deterministic.
+- **History:** `--check-history` replays Stage33 at the immutable 2c41e8cd (`--check --check-history
+  --check-review`, which itself replays Stage32, plus 16 tests normal and `-O`) and PASSES.
+- **First failures, preserved:**
+  - `--check` failed with `deterministic drift report.json` after the README/check_source edits;
+    regenerating fixed it.
+  - The first test run had 1 failure from a float boundary at s = D in the independent former test;
+    the test tolerance was fixed.
+  - Review round 1 returned CHANGES_REQUESTED with 2 HIGH findings: tolerance corners, and the cover
+    rule (which turned T6 into a reported failure).
+- **Entrypoint:** `check_source.py` runs Stage34 `--check --check-history --check-review` and PASSES
+  (4 min 32 s).
+- **Repo checks:** `pnpm check` and `pnpm circuit:check` PASS; `git diff --check` is clean.
+- **Independent review:** PASS_SOURCE_REVIEW_ONLY after three rounds.
+  - Round 1: 2 HIGH, 4 MEDIUM and 7 LOW.
+  - Round 2: 1 MEDIUM and 4 LOW.
+  - Round 3: clean.
+  - It also covers the Stage33 round-2 corrections, which are correct, with 1 LOW recorded in
+    `report.stage33_notes`.
+- **NOT RUN:**
+  - `regen-all.sh` and the KiCad oracle (KiCad regeneration is prohibited this stage);
+  - ERC/DRC, CI (`[skip ci]`), simulation and fabrication output;
+  - M-01, M-09, M-12, M33-01…08 and M34-01…08, and energisation.
+
+No supplier contact, order, upload, adoption or merge took place. Native request: NONE.
