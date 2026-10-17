@@ -1069,3 +1069,47 @@ Stage31 verification (local, Python 3.12.13; tests and history also under 3.9.6)
   - M-01, M-09, M-12, the M31 measurements and energized tests
 
 No supplier contact, order, upload, adoption or merge took place. Native request: NONE.
+
+## Stage32 — A01 J-SIG/J-PWR service envelope and retention (Claude Code Cloud, 2026-10-18)
+
+The owner made Stage31 B the provisional working option. A01 middle J-SIG/J-PWR position and
+orientation, the local carrier shape, cable length, bundling and retention may change. Panel
+parts, nets, pin identities, part numbers, the DIN mapping and positions, board planes and the
+K-PWR-then-40 mm service stay fixed (`stage32/approval.json`). Nothing is applied to hardware or
+canonical CAD.
+
+- **Sources:** each value is classed MAKER_DOC / EXISTING_DESIGN / DESIGN_ASSUMPTION / UNCONFIRMED
+  with URL, revision and locator (`stage32/sources.json`).
+  - JST eGH, the JST handling precaution (bundle within 15°) and JST crimp precaution.
+  - Alpha Wire 1852 / 1853 / 2843/7, each stating a 10× OD bend radius.
+  - The Dailywell 2MS3 -5 drawing and the JLC capabilities page.
+  - GH drawings and manuals are registration-gated and were not obtained.
+- **Neighbours:** no A02–A06 / E2–E5 board is designed. The z 20–21.6 plane is a code default, so
+  z 0–34 below the carriers is UNKNOWN.
+- **B32 (CONDITIONAL_PENDING_WIRE_SELECTION):**
+  - J-PWR:middle at (288.0, 174.0); runs at z 44.1 / 44.2.
+  - Captive guides R1/R2 in notches N1 (4.5 mm deep) and N2 (4.1 mm deep).
+  - Design lengths 136 / 150 mm, with the slack in the local loop; every release case keeps that length.
+  - Robust K4 spare is 0.199 mm after the worst-case stack.
+  - B31 fails at −0.76 mm.
+  - S9 fails: the maker bend rule is not met by the r 5 route for any identified wire.
+- **Release:** the 15 mm travel dips to z 17.6 / 17.9; at ≤ 10 mm it would clear the code-default
+  plane. RV-DIP / RV-ACCESS are proposed for the owner.
+- **Strength:** allowable tip load ≥ 11.4 N at the planning load of 5 N (conditional).
+
+Stage32 verification (Claude Code Cloud, Python 3.13.16):
+- **Tests:** 15 focused tests PASS in normal and `-O` Python, including negative tests for value
+  classes, null UNCONFIRMED values, ungated maker sources, relaxed K4/margin/bow/safety factor/
+  planning load, a shortened release travel, a moved local header, a guide outside the approved
+  rail, a bend inside a guide, RV containment, worst-sample stacks and cable-aware access.
+- **Generator:** `stage32_service_envelope.py --check --check-review` PASS, deterministic.
+- **History:** `--check-history` replays Stage31 `--check --check-review` and its 13 tests (normal
+  and `-O`) at the immutable 66533ba6.
+- **Entrypoint:** `check_source.py` runs Stage32 `--check --check-history --check-review`.
+- **Repo checks:** `pnpm check` and `pnpm circuit:check` PASS; `git diff --check` is clean.
+- **Independent review:** PASS_SOURCE_REVIEW_ONLY after two rounds (2 HIGH, 6 MEDIUM and 6 LOW
+  resolved and re-verified; 3 LOW from round 2 fixed by the lead, not re-reviewed).
+- **NOT RUN:** regen-all.sh and the KiCad oracle (KiCad not requested this stage), ERC/DRC, CI
+  ([skip ci]), simulation, fabrication output, M-01, M-09, M-12, M32-01…09 and energisation.
+
+No supplier contact, order, upload, adoption or merge took place. Native request: NONE.

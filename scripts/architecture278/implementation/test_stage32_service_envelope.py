@@ -50,7 +50,7 @@ class Stage32(unittest.TestCase):
             g=next(x for x in RES['B32']['guides'] if x['link']==r['link']);self.assertGreater(r['tolerance']['contributors']['pcb_bow'],s.bow(P,T,g['centre_mm'][1])-1e-9)
             self.assertIn('strap_bore_mm',r['tolerance']['contributors']);self.assertIn('saddle_seating_mm',r['tolerance']['contributors'])
         cases={c['case']:c for c in RES['B32']['bow_sensitivity']}
-        self.assertTrue(cases['length-142-292']['meets_K4']);self.assertFalse(cases['uniform-diagonal']['meets_K4'])
+        self.assertTrue(cases['length-142-292']['meets_K4']);self.assertFalse(cases['uniform-diagonal']['meets_K4']);self.assertAlmostEqual(cases['uniform-diagonal']['bow_mm'],0.0075*(82**2+150**2)**0.5,places=6)
         self.rejects(lambda d:d['input']['parameters']['robust_spare_mm'].__setitem__('value',0.1),'K4 threshold is not relaxed')
         self.rejects(lambda d:d['input']['parameters']['placement_margin_mm'].__setitem__('value',0.4),'placement margin is not relaxed')
 
@@ -91,8 +91,11 @@ class Stage32(unittest.TestCase):
             self.assertTrue(rel['neighbour_conflicts']['NB-278'])
             self.assertLess(rel['envelope_bottom_z_mm'],21.6)
         rv={r['id']:r for r in BUILT['neighbour']['reservations']}
+        built=BUILT['built']['B32'];P=BUILT['P']
         for l in s.LINKS:
-            box=rv['RV-DIP-'+l];env=s.middle_envelopes(BUILT['built']['B32'],BUILT['P'],l);self.assertTrue(env)
+            box=rv['RV-DIP-'+l];rb=s.bundle_r(P,l);Ld=built['lengths'][l]['design_length_mm'];env=[]
+            routes=[built['routes'][l]]+[s.constant_length(built['geo'],l,built['spec']['routes'][l],P,Ld,t,w)['route'] for t in (2.45,5,7.5,10,12.5,15) for w in ((0,1),(1,0),(1,1))]
+            env=[(p,rb) for route in routes for p in route['dense'] if p[0]>249.0 and p[2]-rb<34.0];self.assertGreater(len(env),100)
             for p,r in env:
                 self.assertTrue(box['box_mm'][0]<=p[0]-r and p[0]+r<=box['box_mm'][2] and box['box_mm'][1]<=p[1]-r and p[1]+r<=box['box_mm'][3] and box['z_mm'][0]<=p[2]-r,(l,p))
         for l in s.LINKS:

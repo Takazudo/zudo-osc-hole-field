@@ -10,7 +10,7 @@ UNKNOWN.
   - J-PWR:middle moved 0.7 mm toward −y.
 - **B31 (B as committed)** fails K4 once A01-middle bow and part tolerances are counted.
 - **Open:** every identified wire states a 10× OD bend radius, which the r 5 route does not meet.
-  K4 fails if a uniform 1.285 mm bow is assumed.
+  K4 fails if a uniform 1.282 mm bow is assumed.
 - **Owner decisions:** the 15 mm release needs the RV-DIP / RV-ACCESS reservations.
 - **Rail strength:** calculated conditionally (allowable tip load ≥ 11.4 N); not a physical result.
 - **NOT RUN:** M-01, M-09, M-12, the M32 measurements, native and physical checks.

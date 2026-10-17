@@ -30,7 +30,7 @@ Design study only. Calculations on planning geometry and stated inputs; nothing 
 |---|---|---|---|
 | edge-M1-M3 (half sine along the M1-M3 mount line) | J-PWR board:A01-middle:1 | 0.27 | yes |
 | length-142-292 (base: half sine over the board length) | J-PWR board:A01-middle:1 | 0.20 | yes |
-| uniform-diagonal (0.75 % of the 171.3 mm board diagonal applied everywhere (interior bow of a four-corner-supported board)) | J-SIG board:A01-middle:0 | -0.39 | **no** |
+| uniform-diagonal (0.75 % of the A01-middle outline diagonal applied everywhere (interior bow of a four-corner-supported board)) | J-SIG board:A01-middle:0 | -0.38 | **no** |
 
 ## B32 geometry
 
@@ -115,7 +115,7 @@ Tip deflection at 5 N: 0.0634 mm without, 0.0863 mm with the notches.
 
 1. Bench: dress each cable as a tight round bundle (sleeve or wrap) and crimp/insert per JST tooling (vendor, Q-H01).
 2. Fit the jack carrier and A01-jack; fit the middle carrier with R1/R2 saddles snapped into notches N1/N2 (legs into the flank grooves).
-3. Mate J-SIG:local and J-PWR:local from the rear (+z) and form the free local loops left of x 232.
+3. Mate J-SIG:local and J-PWR:local from the rear (+z) and form the free local slack loops left of x 232 (modelled as a two-leg stand-up loop, top z about 71, 78.5 with the local end withdrawn; real loop shape is a surrogate until M32-08 / M-12).
 4. Lay each bundle in its saddle and close the strap latch (rail top exposed, A01-middle not yet fitted).
 5. Bench: mate the J-SIG/J-PWR middle housings onto the A01-middle headers; before the rear (core) carrier is fitted, lower A01-middle onto its spacers along -z with the hooks hanging below it, feeding slack back through the guides; fit the four screws, then the rear carrier.
 6. Fit the core onto the DIN connector and connect K-PWR last.

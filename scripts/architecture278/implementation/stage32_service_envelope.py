@@ -441,7 +441,7 @@ def evaluate(cid,c,data,mech,P,T):
     gfb=guide_foreign_bounds(cand,m)
     relb=[b['max_rear_side_height_mm'] for l in LINKS for x in st[l]['release'] if x['travel_mm']==val(P,'release_travel_mm') for b in x.get('foreign_depth_bounds',{}).values()]
     worst=min([b['max_rear_side_height_mm'] for l in LINKS for b in static[l]['foreign_depth_bounds'].values()]+[b['max_rear_side_height_mm'] for b in gfb]+relb,default=None)
-    bows=bow_sensitivity(cand,smp,P,T,rules,data['input']['bow_cases'])
+    bows=bow_sensitivity(cand,smp,P,T,rules,data['input']['bow_cases'],mech)
     crit={'S1_static_clear':all(static[l]['min_surface_clearance_mm'] is None or static[l]['min_surface_clearance_mm']>=m for l in LINKS) and gap>=m,
         'S2_robust_K4':all(r['meets_K4'] for r in rob) and ccg['robust_spare_mm']>=val(P,'robust_spare_mm')-1e-12,
         'S3_retention_modelled':bool(cand['guides']),
@@ -460,11 +460,12 @@ def evaluate(cid,c,data,mech,P,T):
         'criteria':crit,'failed':failed,'bow_sensitivity':bows,'open_conditions':open_,'status':status,'physical':'NOT_RUN'},smp
 
 
-def bow_sensitivity(cand,smp,P,T,rules,cases):
-    out=[]
+def bow_sensitivity(cand,smp,P,T,rules,cases,mech):
+    out=[];x0,y0,x1,y1=mech['boards']['A01-middle']['outline_mm']
     for c in cases:
+        if c.get('uniform_of_outline_diagonal'):c=dict(c,uniform_mm=r6(T['pcb_bow_fraction']['value']*math.hypot(x1-x0,y1-y0)))
         rows=robust_rows(cand,smp,P,T,rules,c);t=rows[0]
-        out.append({'case':c['id'],'note':c['note'],'tightest':{k:t[k] for k in ('link','obstacle','robust_spare_mm')},'meets_K4':all(r['meets_K4'] for r in rows)})
+        out.append({'case':c['id'],'note':c['note'],'bow_mm':c.get('uniform_mm'),'tightest':{k:t[k] for k in ('link','obstacle','robust_spare_mm')},'meets_K4':all(r['meets_K4'] for r in rows)})
     return out
 
 

@@ -859,7 +859,7 @@
     "assembly": [
       "Bench: dress each cable as a tight round bundle (sleeve or wrap) and crimp/insert per JST tooling (vendor, Q-H01).",
       "Fit the jack carrier and A01-jack; fit the middle carrier with R1/R2 saddles snapped into notches N1/N2 (legs into the flank grooves).",
-      "Mate J-SIG:local and J-PWR:local from the rear (+z) and form the free local loops left of x 232.",
+      "Mate J-SIG:local and J-PWR:local from the rear (+z) and form the free local slack loops left of x 232 (modelled as a two-leg stand-up loop, top z about 71, 78.5 with the local end withdrawn; real loop shape is a surrogate until M32-08 / M-12).",
       "Lay each bundle in its saddle and close the strap latch (rail top exposed, A01-middle not yet fitted).",
       "Bench: mate the J-SIG/J-PWR middle housings onto the A01-middle headers; before the rear (core) carrier is fitted, lower A01-middle onto its spacers along -z with the hooks hanging below it, feeding slack back through the guides; fit the four screws, then the rear carrier.",
       "Fit the core onto the DIN connector and connect K-PWR last."
@@ -896,8 +896,8 @@
     },
     {
       "id": "uniform-diagonal",
-      "uniform_mm": 1.285,
-      "note": "0.75 % of the 171.3 mm board diagonal applied everywhere (interior bow of a four-corner-supported board)"
+      "note": "0.75 % of the A01-middle outline diagonal applied everywhere (interior bow of a four-corner-supported board)",
+      "uniform_of_outline_diagonal": true
     }
   ]
 }

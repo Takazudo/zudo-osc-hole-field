@@ -69,7 +69,7 @@ Results:
   - It has no retention geometry (Stage31 R1/R2 were null).
 - **B32 meets K4** at 0.199 mm under the base bow model, and at 0.269 mm with a half sine along the
   M1–M3 line.
-- **B32 does not meet K4 if 1.285 mm of bow is applied everywhere** (−0.385 mm). That case is 0.75 %
+- **B32 does not meet K4 if 1.282 mm of bow is applied everywhere** (spare −0.382 mm). That case is 0.75 %
   of the board diagonal, the interior bow a four-corner-supported board could reach.
   - It stays an open condition: measure the bow (M32-04), or add a non-fastened rest pad on the rail.
   - The rest pad would be a carrier change that needs approval.
@@ -207,7 +207,10 @@ The steps are in `summary.md`. In short:
 - **Neighbour volume (decision):** approve RV-DIP and RV-ACCESS, or keep the release travel ≤ 10 mm
   once a maker stroke or a coupon supports it. Alternatively, confirm that the neighbouring front
   boards come out with the panel.
-- **Board bow (condition):** K4 holds for a half-sine bow but not for a uniform 1.285 mm interior bow.
+- **Local slack loop (condition):** modelled as a two-leg stand-up loop (top z 71, 78.5 with the
+  local end withdrawn). Its real shape, and whether it stays clear of the volume between x 227 and
+  the core / A01-middle, is unconfirmed (M32-08, M-12).
+- **Board bow (condition):** K4 holds for a half-sine bow but not for a uniform 1.282 mm interior bow.
   Measure it (M32-04), or approve a rail rest pad.
 - **Foreign requirements:** SW1401–SW1601 ≤ z 42.39 and SW1501 ≤ z 38.40. These depend on a foreign
   design that does not exist yet.
