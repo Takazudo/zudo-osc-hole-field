@@ -1013,3 +1013,59 @@ Stage30 verification (local, Python 3.12.13):
   - M-01, M-09, M-12 and energized tests
 
 No supplier contact, order, upload, adoption or merge took place. Native request: NONE.
+
+## Stage31 — A01 J-SIG/J-PWR common cable-entry redesign (local Claude Code, 2026-10-18)
+
+The owner allowed this design study to change the local shape of the A01 middle carrier, the
+position and orientation of the J-SIG/J-PWR headers, and the provisional cable length
+(`stage31/approval.json`). Panel placements, nets, the DIN mapping and positions, board planes
+and the K-PWR-then-40 mm service procedure stay fixed. Nothing is applied to hardware or to
+canonical CAD.
+
+- **Model:**
+  - Filleted 3D routes with r 5 arcs and a straight lead at each housing exit.
+  - Round-bundle envelopes at OD 1.0 (J-SIG 1.5 mm and J-PWR 1.207 mm radius).
+  - A 0.5 mm margin for routes and for release sweeps.
+  - Mount spacers and screw heads are added to the Stage30 keep-outs.
+  - Foreign depth is reported as a bound per part instead of the Stage30 z 34 cap.
+  - Release cases keep the r 5 bends.
+- **Candidates (criteria K1–K4 in `stage31/design-input.json`):**
+  - A (headers kept, two notches): REJECTED_BY_CRITERIA, fails K2 (Stage10 middle sweeps over
+    J15xx–J17xx) and K3 (needs foreign tops ≤ z 32.0–32.3).
+  - B (middle headers moved and turned 90°, two notches): meets K1–K4. **Recommended.**
+  - C (headers translated, flat layer through the existing 2.4 mm slot): REJECTED_BY_CRITERIA,
+    fails K4 (0.2 mm geometric spare, 0.1 mm after the sampling deduction).
+- **B:**
+  - J-SIG:middle moves (260, 150) → (268.0, 171.5) and J-PWR:middle (283, 150) → (288.0, 174.7),
+    both turned 90°. Sweeps stay ≥ 0.575 mm from known and foreign XY.
+  - Notches N1 y 168.6–173.8 to z 43.7 (2.3 mm) and N2 y 180.9–185.1 to z 44.2 (1.8 mm); the
+    rail keeps 9.7 / 10.2 of 12 mm.
+  - Minimum clearance 0.69 mm (required 0.5), and the cables are 5.69 mm apart.
+  - Design lengths: J-SIG 138 mm and J-PWR 149 mm (installed 108.7 / 119.6; the 15 mm Stage10
+    release drives the extra).
+  - J-PWR needs SW1401/SW1501/SW1601 ≤ z 44.49. The middle release dips to about z 17.6.
+  - Copper allocations at the moved headers change by −31.3 to +2.1 mm (model only).
+- **Negative screen:** the Stage30 W1–W4 are rejected again. The 11 straight proxies still
+  cross the rail.
+- **Open:** measurements M31-01…09; rail strength NOT_CALCULATED; retention dimensions null.
+
+Stage31 verification (local, Python 3.12.13; tests and history also under 3.9.6):
+- **Tests:** 13 focused tests PASS in both normal and `-O` Python. They include negative
+  tests: cable crossing, the rail without a notch, an oversized or undersized notch, moves
+  outside the approval, sweep overlaps, a non-axial exit, a bend that does not fit, input
+  claims, and the Stage30 W1–W4.
+- **Generator:** `stage31_cable_entry_redesign.py --check` PASS, with deterministic outputs.
+- **History:** `--check-history` PASS. It replays Stage30 `--check --check-review` and the 17
+  Stage30 tests (normal and `-O`) at the immutable 698d9139.
+- **Entrypoint:** `check_source.py` runs Stage31 `--check --check-history --check-review`.
+- **Repo checks:** `pnpm check` and `pnpm circuit:check` PASS; `git diff --check` is clean.
+- **Independent review:** PASS_SOURCE_REVIEW_ONLY. It found 1 HIGH (a sweep margin that
+  decided K2), 4 MEDIUM and 5 LOW issues. All are resolved, except one wording-only LOW that
+  was accepted (the K2 text in design-input omits the margin the generator applies).
+- **NOT RUN:**
+  - regen-all.sh (KiCad), the KiCad oracle and ERC/DRC
+  - CI: the commit uses [skip ci]
+  - simulation and fabrication output
+  - M-01, M-09, M-12, the M31 measurements and energized tests
+
+No supplier contact, order, upload, adoption or merge took place. Native request: NONE.

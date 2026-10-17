@@ -1,0 +1,395 @@
+{
+  "approval": {
+    "date": "2026-10-18",
+    "decided_by": "OWNER",
+    "scope_excludes": [
+      "applying any change to hardware or manufacturing",
+      "canonical schematic, board or library changes",
+      "native KiCad, ERC/DRC or simulation runs",
+      "ordering, quotes, uploads or supplier contact",
+      "calling a design length a measured or cut length",
+      "promoting a calculation to a physical pass"
+    ],
+    "status": "DESIGN_STUDY_CHANGES_ALLOWED"
+  },
+  "architecture_adopted": false,
+  "candidates": {
+    "A": {
+      "criteria": {
+        "K1": true,
+        "K2": false,
+        "K3": false,
+        "K4": true
+      },
+      "design_length_proposal_mm": {
+        "J-PWR": 159,
+        "J-SIG": 139
+      },
+      "moved_headers": [],
+      "notches": [
+        {
+          "id": "N1",
+          "notch_depth_mm": 2.3,
+          "remaining_depth_mm": 9.7,
+          "y_mm": [
+            162.1,
+            166.7
+          ]
+        },
+        {
+          "id": "N2",
+          "notch_depth_mm": 1.8,
+          "remaining_depth_mm": 10.2,
+          "y_mm": [
+            180.9,
+            185.1
+          ]
+        }
+      ],
+      "smallest_foreign_rear_side_allowance_mm": 10.421539,
+      "status": "REJECTED_BY_CRITERIA",
+      "tightest_spare_beyond_margin_mm": 0.192893,
+      "title": "Headers kept; two shallow notches in the middle carrier left rail"
+    },
+    "B": {
+      "criteria": {
+        "K1": true,
+        "K2": true,
+        "K3": true,
+        "K4": true
+      },
+      "design_length_proposal_mm": {
+        "J-PWR": 149,
+        "J-SIG": 138
+      },
+      "moved_headers": [
+        {
+          "from_origin_mm": [
+            283,
+            150
+          ],
+          "ref": "A01:J-PWR:middle",
+          "rotation_deg": 90,
+          "to_origin_mm": [
+            288.0,
+            174.7
+          ]
+        },
+        {
+          "from_origin_mm": [
+            260,
+            150
+          ],
+          "ref": "A01:J-SIG:middle",
+          "rotation_deg": 90,
+          "to_origin_mm": [
+            268.0,
+            171.5
+          ]
+        }
+      ],
+      "notches": [
+        {
+          "id": "N1",
+          "notch_depth_mm": 2.3,
+          "remaining_depth_mm": 9.7,
+          "y_mm": [
+            168.6,
+            173.8
+          ]
+        },
+        {
+          "id": "N2",
+          "notch_depth_mm": 1.8,
+          "remaining_depth_mm": 10.2,
+          "y_mm": [
+            180.9,
+            185.1
+          ]
+        }
+      ],
+      "smallest_foreign_rear_side_allowance_mm": 22.892893,
+      "status": "RECOMMENDABLE_UNDER_MODEL_CONDITIONS",
+      "tightest_spare_beyond_margin_mm": 0.192893,
+      "title": "Middle headers moved into the clear strip and turned 90 degrees; two shallow notches"
+    },
+    "C": {
+      "criteria": {
+        "K1": true,
+        "K2": true,
+        "K3": true,
+        "K4": false
+      },
+      "design_length_proposal_mm": {
+        "J-PWR": 140,
+        "J-SIG": 131
+      },
+      "moved_headers": [
+        {
+          "from_origin_mm": [
+            283,
+            150
+          ],
+          "ref": "A01:J-PWR:middle",
+          "rotation_deg": 0,
+          "to_origin_mm": [
+            283.0,
+            174.2
+          ]
+        },
+        {
+          "from_origin_mm": [
+            260,
+            150
+          ],
+          "ref": "A01:J-SIG:middle",
+          "rotation_deg": 0,
+          "to_origin_mm": [
+            265.0,
+            165.0
+          ]
+        }
+      ],
+      "notches": [],
+      "smallest_foreign_rear_side_allowance_mm": 18.899023,
+      "status": "REJECTED_BY_CRITERIA",
+      "tightest_spare_beyond_margin_mm": 0.1,
+      "title": "Middle headers translated; flat single-layer conductors through the existing 2.4 mm slot, rail unchanged"
+    }
+  },
+  "decision_status": {
+    "D02": "CONFLICT_REQUIRES_DECISION (unchanged)",
+    "M-01": "NOT_RUN",
+    "M-09": "NOT_RUN",
+    "M-12": "NOT_RUN",
+    "cable_lengths": "DESIGN_LENGTH_PROPOSAL; not measured, not cut",
+    "header_moves": "PROPOSAL_NOT_ADOPTED; canonical CAD unchanged",
+    "rail_change": "PROPOSAL_NOT_ADOPTED",
+    "rail_strength": "NOT_CALCULATED",
+    "route": "RECOMMENDED_FOR_NEXT_PROTOTYPE_STUDY (B); not adopted"
+  },
+  "external_contact": "NONE",
+  "identity": {
+    "DIN_mapping": "Stage30 DESIGN_ONLY_PROVISIONAL positions, unchanged",
+    "J_SIG_J_PWR_conductors": [
+      {
+        "from": "A01:J-SIG:local:1",
+        "net": "/A01/REF5",
+        "to": "A01:J-SIG:middle:1"
+      },
+      {
+        "from": "A01:J-SIG:local:2",
+        "net": "AGND",
+        "to": "A01:J-SIG:middle:2"
+      },
+      {
+        "from": "A01:J-SIG:local:3",
+        "net": "/A01/REFN5",
+        "to": "A01:J-SIG:middle:3"
+      },
+      {
+        "from": "A01:J-SIG:local:4",
+        "net": "/A01/IN_BUFFER",
+        "to": "A01:J-SIG:middle:4"
+      },
+      {
+        "from": "A01:J-SIG:local:5",
+        "net": "/A01/OFFSET_BUFFER",
+        "to": "A01:J-SIG:middle:5"
+      },
+      {
+        "from": "A01:J-SIG:local:6",
+        "net": "/A01/SUM_NEG",
+        "to": "A01:J-SIG:middle:6"
+      },
+      {
+        "from": "A01:J-SIG:local:7",
+        "net": "AGND",
+        "to": "A01:J-SIG:middle:7"
+      },
+      {
+        "from": "A01:J-PWR:local:1",
+        "net": "+12V",
+        "to": "A01:J-PWR:middle:1"
+      },
+      {
+        "from": "A01:J-PWR:local:2",
+        "net": "-12V",
+        "to": "A01:J-PWR:middle:2"
+      },
+      {
+        "from": "A01:J-PWR:local:3",
+        "net": "+5V",
+        "to": "A01:J-PWR:middle:3"
+      },
+      {
+        "from": "A01:J-PWR:local:4",
+        "net": "AGND",
+        "to": "A01:J-PWR:middle:4"
+      }
+    ],
+    "harness": {
+      "DIN_contacts_as_harness": 0,
+      "GH_conductors": 20,
+      "GH_harnesses": 4,
+      "conductors": 34,
+      "exclusions": [
+        "Supply wiring upstream of J-PWR:middle",
+        "LED_local_copper and other board-local edges of the Stage15 graph",
+        "A02-A06 and the other 33 instrument functions",
+        "O1-O5 oscillator zone harnesses",
+        "Jack, pot and LED bodies",
+        "Chassis/panel earth"
+      ],
+      "land_annotation_flags": "in_bom=false, on_board=false",
+      "land_annotations": 22,
+      "measured_values": "all null",
+      "permanent_tails": 14,
+      "stage28_ledger_sha256": "93327a08fbe521f10ccf0b5ce5b040aefe84b86726661cdd7bbfb22d7ef98061",
+      "status": "UNCHANGED_FROM_STAGE28"
+    },
+    "header_pins_and_mpns": "unchanged for all four J-SIG/J-PWR headers in every candidate",
+    "panel_lock_sha256": "297300b067fd646624b9e501791163fa2d60702862b61568753bf92e5b88dbe8",
+    "stage15_edges": 320,
+    "stage30_design_contact_map_sha256": "2550545558a429ada183b0257ccb5523e4d0b76ed472303ebaf520e9f14e28c0"
+  },
+  "measurements": [
+    {
+      "id": "M31-01",
+      "item": "Wire MPN, insulation OD and dressed bundle diameter for 4 and 7 conductors",
+      "status": "NOT_RUN",
+      "value": null,
+      "why": "every envelope uses OD 1.0 and packing factors 2.414 / 3.0"
+    },
+    {
+      "id": "M31-02",
+      "item": "Wire maker minimum static bend radius",
+      "route_max_uniform_radius_mm": {
+        "J-PWR": 5.0,
+        "J-SIG": 5.0
+      },
+      "status": "NOT_RUN",
+      "value": null,
+      "why": "the routes use 5 mm; each route reports the largest radius it admits"
+    },
+    {
+      "id": "M31-03",
+      "item": "Straight length needed behind the GHR housing before a bend",
+      "status": "NOT_RUN",
+      "value": null,
+      "why": "2 mm is a design choice; JST states none"
+    },
+    {
+      "id": "M31-04",
+      "item": "Actual stack heights: A01-jack rear face, A01-middle front face, middle carrier rail top/front, mount spacer and screw-head heights",
+      "status": "NOT_RUN",
+      "value": null,
+      "why": "the corridor under A01-middle and the notch floors are sized from Stage10 planning z values"
+    },
+    {
+      "bounds": {
+        "J-PWR": {
+          "SW1401": 44.492893,
+          "SW1501": 44.492893,
+          "SW1601": 44.492893
+        },
+        "J-SIG": {}
+      },
+      "id": "M31-05",
+      "item": "Rear-side height of the foreign parts each route passes over (bounds in candidates.json)",
+      "status": "NOT_RUN",
+      "value": null,
+      "why": "foreign depth is unknown; the route is only clear below the reported bound"
+    },
+    {
+      "id": "M31-06",
+      "item": "Middle carrier rail stiffness and strength with the notches, with notch edge radius and finish",
+      "status": "NOT_RUN",
+      "value": null,
+      "why": "rail strength after the notch is NOT_CALCULATED"
+    },
+    {
+      "id": "M31-07",
+      "item": "GH unmating travel and release from the panel side at the moved middle headers: latch access, axial pull, finger/tool space and the space the cable needs below the hook while the housing is withdrawn",
+      "status": "NOT_RUN",
+      "value": null,
+      "why": "the Stage10 15 mm release makes the hook dip to about z 17.6, through the foreign PCB plane whose outline is unknown"
+    },
+    {
+      "design_length_proposal_mm": {
+        "J-PWR": 149,
+        "J-SIG": 138
+      },
+      "id": "M31-08",
+      "item": "Mock-up path length per cable, including the free loop at the local end and the release cases (M-09)",
+      "status": "NOT_RUN",
+      "value": null,
+      "why": "design lengths are not cut lengths"
+    },
+    {
+      "id": "M31-09",
+      "item": "Strap/tie geometry for the notch saddles and the pull load they take (M-12)",
+      "status": "NOT_RUN",
+      "value": null,
+      "why": "retention dimensions are null"
+    }
+  ],
+  "native": "NOT_RUN",
+  "physical": "NOT_RUN",
+  "preservation_baseline": "698d91398db411d94117a4298810b1bd58f38d61",
+  "production_CAD_changed": false,
+  "recommendation": {
+    "criteria": {
+      "K1": "every modelled check passes: routes clear every known keep-out and the other cable by the placement margin, all bends fit at the design radius, moved sweeps clear all known obstacles",
+      "K2": "all four release sweeps lie outside every foreign XY projection",
+      "K3": "no route needs a foreign rear-side height below 12.4 mm (the Stage30 cap, z 34, above the foreign PCB rear z 21.6)",
+      "K4": "the tightest spare beyond the placement margin is at least 0.15 mm"
+    },
+    "id": "B",
+    "rationale": [
+      "B is the only candidate meeting K1-K4.",
+      "Moving J-SIG:middle and J-PWR:middle into the strip between the J*10 jacks and the SW*01 switches and turning them 90 degrees keeps both release sweeps at least 0.5 mm from every foreign XY projection and known obstacle; at the Stage10 positions both sweeps overlap J1510/J1610/J1710.",
+      "With the pin rows along y, each hook bends about the pin-row axis, so all conductors of a cable bend with the same radius.",
+      "The notch depth can grow if a later check needs more clearance; C has no such freedom inside the 2.4 mm slot."
+    ],
+    "threshold_class": "DESIGN_CHOICE",
+    "verified_unique": true
+  },
+  "source_sha256": {
+    ".claude/skills/component-dailywell-2ms1t1b1m2qes-5/facts.json": "6077bfe56b38a75a31538b4c2d63c19cb592cb0dca3b4fbd685457137132577b",
+    ".claude/skills/component-jst-gh/facts.json": "263d2362d430a327b8d7b088bef2f9d9c673e8dd729bbab8b262229081be2341",
+    ".claude/skills/component-passives-family/facts.json": "fb5d7dd5a4fc5aa89dd2dd245a048be3b91cbcf8d38efd6f0d8282502b5423dc",
+    ".claude/skills/component-qingpu-wqp518ma/facts.json": "81d574c8814f6ffa06a5a343884949125250ec355714e78a11dd63da11d9a258",
+    "design/architecture-278/implementation/stage10/mechanical-input.json": "31fab83774216f9b011f5f262fbde71c7ce9282e12f6142a6a62a9e488fdab19",
+    "design/architecture-278/implementation/stage10/mechanical-report.json": "956e83e449d2667654679822125015ed96566b849b54902083bf54ca2bf8ffd7",
+    "design/architecture-278/implementation/stage15/interfaces-report.json": "c45cbfbe0e83cab64853daa10b964dd173c4997d2560ff20cca20d6ae5ed93ca",
+    "design/architecture-278/implementation/stage15/paths-report.json": "2af12a7ab3eeb273124c53b06da1add00029ef3bfa905d3dbfae2d0ee14819e7",
+    "design/architecture-278/implementation/stage16/inputs-report.json": "214297b7b19f9ae6027d1f036407f005319929961338631896f984655a4c0ebc",
+    "design/architecture-278/implementation/stage28/harness-ledger.json": "93327a08fbe521f10ccf0b5ce5b040aefe84b86726661cdd7bbfb22d7ef98061",
+    "design/architecture-278/implementation/stage28/harness-policy.json": "39211b34aed8e17af0f302aeb64801adc9bd601d9dbafec2ef53b70f0a4b457d",
+    "design/architecture-278/implementation/stage28/report.json": "552beaafe632ee583f4194efabc4d72a9e3ee9a88f436b34aa2a8f770ba095a6",
+    "design/architecture-278/implementation/stage29/contact-map.json": "e8dbc86ab10e8c912cf88b18fab54227762f6fefe6fc343b8b95182425850810",
+    "design/architecture-278/implementation/stage30/design-contact-map.json": "2550545558a429ada183b0257ccb5523e4d0b76ed472303ebaf520e9f14e28c0",
+    "design/architecture-278/implementation/stage30/report.json": "e8fd33a9571ae512fed8310a808782abb3e51b7c0fddc9673de69272eef87191",
+    "design/architecture-278/implementation/stage30/route-input.json": "f46d31d07a1c14514c4a2987ebd95d6946c1d889e98ab284dd73f977c2ed73c9",
+    "design/architecture-278/implementation/stage31/README.md": "dd2bf90a5d589d2e369ffb943a0a53f938ca29f3fdec9b4bb500893f2193d0b5",
+    "design/architecture-278/implementation/stage31/approval.json": "9c7859937d32c52470892bc949770da8acdaf96fde68039f4b089eb55aeedd40",
+    "design/architecture-278/implementation/stage31/design-input.json": "b23e274fba0e13ef4e055918b9570556cf6044f3078062594bcd1b0f4516d58b",
+    "design/grid/placements.lock.json": "297300b067fd646624b9e501791163fa2d60702862b61568753bf92e5b88dbe8",
+    "scripts/architecture278/implementation/assembly.py": "7d453aea98dabe67640c40c381011b0cd4327d5c28141f141bcf513c927c4c39",
+    "scripts/architecture278/implementation/check_source.py": "efd5c31dedf45d473da24db69b9ad0d81f901dbd1d27949c4a5bde6cfe7b1ab6",
+    "scripts/architecture278/implementation/stage10_interfaces.py": "52d588c11dea77ca256895ee74ba43f879a3df52a4593ce2a3c11aaa825bdd06",
+    "scripts/architecture278/implementation/stage28_din_harness.py": "49fab6a30d86e3f3aa9898e2268e3258532a49affaefc4f7203e306b2235468a",
+    "scripts/architecture278/implementation/stage29_din_column_reversal.py": "b8b8112d09b1a3a1594fc7d5db8893a875d88080081f99a6352d560ebee440bc",
+    "scripts/architecture278/implementation/stage30_din_design_integration.py": "a092803e4a68a0d90a81d4f50b3f8f09a74948a4f2195f4ec122ba0f2b5eef26",
+    "scripts/architecture278/implementation/stage31_cable_entry_redesign.py": "ecb6faae2a802841b8651e49b2c993291bd6598962c5079257828b1b2cc1add0",
+    "scripts/architecture278/implementation/test_stage31_cable_entry_redesign.py": "b2ab5808f5ff05628f34f05ebfd2ac959b4d5b516db2fe81c0f35fc9b4455d4d"
+  },
+  "stage30_screen": {
+    "W1": "REJECTED",
+    "W2": "REJECTED",
+    "W3": "REJECTED",
+    "W4": "REJECTED"
+  },
+  "status": "DESIGN_STUDY_ONLY"
+}

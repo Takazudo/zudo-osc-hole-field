@@ -1,3 +1,12 @@
+## Current A01 cable-entry redesign study — Stage31
+
+[Stage31](stage31/README.md) compares three common entries for J-SIG and J-PWR into the A01
+middle carrier ring. The comparison uses filleted 3D routes with r 5 bends, bundle
+envelopes, and foreign-depth bounds instead of a cap. **B** is recommended for the next
+prototype study: move J-SIG:middle and J-PWR:middle into the clear strip, turn them 90°, and
+cut two notches (2.3 / 1.8 mm) in the left rail. It is a proposal only. Rail strength is NOT_CALCULATED,
+lengths are design lengths, and M-01, M-09, M-12, native and physical checks are NOT RUN.
+
 ## Current provisional DIN design integration — Stage30
 
 [Stage30](stage30/README.md) uses the Stage29 contact positions as **DESIGN_ONLY_PROVISIONAL**
