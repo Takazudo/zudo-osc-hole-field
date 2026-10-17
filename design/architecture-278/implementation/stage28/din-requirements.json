@@ -1,0 +1,468 @@
+{
+  "parts": {
+    "female": {
+      "drawing": "0903296X824",
+      "manufacturer": "HARTING",
+      "mpn": "09032966824",
+      "ref": "J17909",
+      "revision": "C",
+      "source": "harting-female",
+      "view": "A"
+    },
+    "male": {
+      "drawing": "0903196X922",
+      "manufacturer": "HARTING",
+      "mpn": "09031966922",
+      "ref": "J17910",
+      "revision": "B",
+      "source": "harting-male",
+      "view": "B"
+    }
+  },
+  "rows": [
+    {
+      "confirmation_needed": [],
+      "confirmed": [
+        "96 positions per connector, rows a/b/c by 32 columns at basic 2.54 pitch",
+        "Female board drillings are drawn in view A; male board drillings in view B",
+        "Both view arrows look from the connector body toward the board (female arrow from above the body with tails down; male arrow from below the body with tails up)",
+        "Re-downloaded drawing bytes are identical to the Stage5 receipts"
+      ],
+      "current_interpretation": "Contact labels and views exactly as drawn; no row or column renumbering.",
+      "id": "D01",
+      "pass_evidence": [
+        "M-01"
+      ],
+      "primary_source": [
+        {
+          "locator": "board drillings + elevation view arrows",
+          "source": "harting-female"
+        },
+        {
+          "locator": "board drillings + elevation view arrows",
+          "source": "harting-male"
+        }
+      ],
+      "requirement": "Exact 96-contact identity, labels and drawing views for both connectors",
+      "status": "CONFIRMED_FROM_DRAWING",
+      "topic": "Contact identity and drawing view",
+      "unconfirmed": [
+        "Physical sample orientation against a 1:1 printed pattern"
+      ]
+    },
+    {
+      "confirmation_needed": [
+        "Q-O01",
+        "Q-M01"
+      ],
+      "confirmed": [
+        "Stage10 labeled positions place female and male label p at the same global XY (mated identity holds)",
+        "Locked frame: +x right, +y down, viewed from the panel front; Stage10 z increases toward the rear core"
+      ],
+      "current_interpretation": "Generator computes the drawing-to-global determinant from the 96 Stage10 labeled positions and compares it with the determinant implied by each view direction. A mismatch is reported as CONFLICT; no label, net or position is changed in this stage. Stage6 built the Stage10 labels in a paper frame (u right, v down, v=-Y), so its asserted matrices [[0,-1],[1,0]] / [[0,1],[1,0]] must not be read as drawing-to-global determinants. The proper-handed candidate that keeps the fixed holes is column reversal only if the 0.3 fixing-hole offset is toward row a; if it is toward row c, row reversal is the hole-preserving candidate and the Stage10 fixing holes are also misplaced.",
+      "id": "D02",
+      "pass_evidence": [
+        "M-01",
+        "Q-O01"
+      ],
+      "primary_source": [
+        {
+          "locator": "view arrows",
+          "source": "harting-female"
+        },
+        {
+          "locator": "view arrows",
+          "source": "harting-male"
+        }
+      ],
+      "requirement": "Board copper must place each labeled contact where the physical contact lands, with the drawing view reproduced (not mirrored) in the locked board frame",
+      "status": "CONFLICT_REQUIRES_DECISION",
+      "topic": "View-to-board handedness of the labeled grid",
+      "unconfirmed": [
+        "Which label-to-position assignment the owner adopts for future board copper",
+        "Fixing-hole offset side, which selects the hole-preserving relabeling"
+      ]
+    },
+    {
+      "confirmation_needed": [
+        "Q-M02",
+        "Q-F01"
+      ],
+      "confirmed": [
+        "Callout is '96x Ø1±0,1' under the heading 'board drillings' on both drawings"
+      ],
+      "current_interpretation": "Proposed procurement interpretation: finished plated hole 0.90-1.10 mm. This is the Stage24/25 proposal, not a HARTING or fabricator confirmation; the drill tool size is left to the fabricator.",
+      "id": "D03",
+      "pass_evidence": [
+        "Q-M02",
+        "M-02"
+      ],
+      "primary_source": [
+        {
+          "locator": "board drillings callout",
+          "source": "harting-female"
+        },
+        {
+          "locator": "board drillings callout",
+          "source": "harting-male"
+        }
+      ],
+      "requirement": "Contact hole diameter Ø1 ±0.1 mm",
+      "status": "UNCONFIRMED",
+      "topic": "Finished versus tool diameter",
+      "unconfirmed": [
+        "Whether 'board drillings' means finished plated diameter or drill tool diameter",
+        "Fabricator finished-hole guarantee for this interval"
+      ]
+    },
+    {
+      "confirmation_needed": [
+        "Q-F02",
+        "Q-M03"
+      ],
+      "confirmed": [
+        "Position frame reads ⊕ Ø0,05 with no datum letters, applied to the 96x holes",
+        "Basic grid is the boxed 2.54 dimensions; datum A is the contact-pattern feature on the 31x2.54 dimension line",
+        "A Ø0.05 diametral zone allows at most 0.025 mm radial deviation from true position"
+      ],
+      "current_interpretation": "Pattern-internal positional tolerance relative to the basic grid. JLC's published ±0.075 mm per-axis hole position allows up to 0.106 mm radial deviation, which exceeds 0.025 mm; the published default therefore does not guarantee it. This is not evidence that every route fails.",
+      "id": "D04",
+      "pass_evidence": [
+        "Q-F02",
+        "M-03"
+      ],
+      "primary_source": [
+        {
+          "locator": "board drillings position frame",
+          "source": "harting-female"
+        },
+        {
+          "locator": "Hole Position Tolerance ±0.075 mm",
+          "source": "jlc-pcb"
+        }
+      ],
+      "requirement": "96-hole positional tolerance Ø0.05 to the basic 2.54 grid",
+      "status": "NOT_GUARANTEED_BY_PUBLISHED_DEFAULT",
+      "topic": "Positional tolerance and datum",
+      "unconfirmed": [
+        "Fabricator capability statement for a Ø0.05 pattern zone",
+        "How the fabricator measures and reports it"
+      ]
+    },
+    {
+      "confirmation_needed": [
+        "Q-M04",
+        "Q-F03",
+        "Q-O02"
+      ],
+      "confirmed": [
+        "2x Ø2.8 +0.1/-0",
+        "Centre distance 90 ±0.1",
+        "Symmetry 0.1 to datum A (contact pattern)",
+        "Offset 0.3 ±0.1 from row b, recorded by Stage22 as toward row a",
+        "Drawing does not state plated or non-plated",
+        "JLC ±0.05 option covers 0.55-2.0 mm only; retrieved JLC page states no round-NPTH size tolerance"
+      ],
+      "current_interpretation": "Stage24 NPTH, no copper, at x=±45 and y=-0.3 in the y-down component frame is an unadopted candidate. The offset direction could not be re-resolved from the raster at this session's render resolution.",
+      "id": "D05",
+      "pass_evidence": [
+        "Q-M04",
+        "Q-F03",
+        "M-04",
+        "M-05"
+      ],
+      "primary_source": [
+        {
+          "locator": "board drillings fixing holes",
+          "source": "harting-female"
+        },
+        {
+          "locator": "Press-fit holes range; no NPTH tolerance",
+          "source": "jlc-pcb"
+        }
+      ],
+      "requirement": "Female fixing holes",
+      "status": "UNCONFIRMED",
+      "topic": "Female Ø2.8 fixing holes",
+      "unconfirmed": [
+        "Plated or non-plated",
+        "Fabricator tolerance for a one-sided +0.1/-0 2.8 mm hole",
+        "Offset direction re-verified on a vector drawing or sample",
+        "Fastener or rivet and its load path"
+      ]
+    },
+    {
+      "confirmation_needed": [
+        "Q-M05"
+      ],
+      "confirmed": [
+        "Male board drillings show only the 96 contact holes",
+        "Male flange holes Ø2.55 ±0.05 at 88.9 ±0.1 are connector-body features"
+      ],
+      "current_interpretation": "No male board fixing holes are invented. How the male is retained against insertion/withdrawal load is open (Q-M05); D09 forbids crediting solder joints as the chassis anchor.",
+      "id": "D06",
+      "pass_evidence": [
+        "Q-M05"
+      ],
+      "primary_source": [
+        {
+          "locator": "board drillings and flange dimensions",
+          "source": "harting-male"
+        }
+      ],
+      "requirement": "Male board features",
+      "status": "UNCONFIRMED",
+      "topic": "Male flange",
+      "unconfirmed": [
+        "Whether HARTING recommends board fastening of the male under 96-pole insertion/withdrawal load"
+      ]
+    },
+    {
+      "confirmation_needed": [
+        "Q-M06",
+        "Q-A02"
+      ],
+      "confirmed": [
+        "Neither drawing states a board thickness",
+        "Female tail 2.9 +0.15/-0.05 and male tail 3 +0.4 read from the drawings (raster; datum plane per drawing)",
+        "JLC FR4 options include 1.6 mm with ±10% tolerance for >=1.0 mm"
+      ],
+      "current_interpretation": "Board thickness is UNDECIDED. Any choice must leave tail protrusion for the assembler's THT solder process at worst-case thickness.",
+      "id": "D07",
+      "pass_evidence": [
+        "Q-M06",
+        "M-06"
+      ],
+      "primary_source": [
+        {
+          "locator": "view B(2:1) tail length",
+          "source": "harting-female"
+        },
+        {
+          "locator": "section A-A tail length",
+          "source": "harting-male"
+        },
+        {
+          "locator": "Thickness tolerance",
+          "source": "jlc-pcb"
+        }
+      ],
+      "requirement": "Board thickness compatible with tail length and solder fillet",
+      "status": "UNDECIDED",
+      "topic": "Board thickness",
+      "unconfirmed": [
+        "HARTING recommended board thickness range",
+        "Required tail protrusion for the chosen THT process"
+      ]
+    },
+    {
+      "confirmation_needed": [
+        "Q-M07"
+      ],
+      "confirmed": [
+        "Stage10 board planes give 19.2 mm between mounting surfaces (middle rear face z=50, core front face z=69.2)",
+        "Stage5 retained HARTING catalogue page 15: exact pair PCB distance 18.3-20 mm"
+      ],
+      "current_interpretation": "19.2 lies inside the catalogue window. Seating, spacer stack tolerance and board flatness are not qualified; spacers, not the connector, must set the distance.",
+      "id": "D08",
+      "pass_evidence": [
+        "M-07"
+      ],
+      "primary_source": [
+        {
+          "locator": "Stage5 catalogue receipt page 15 (not re-fetched in Stage28)",
+          "source": "stage5-catalogue"
+        }
+      ],
+      "requirement": "Mated board-to-board distance",
+      "status": "UNCONFIRMED",
+      "topic": "Seating and mating height",
+      "unconfirmed": [
+        "Spacer stack tolerance",
+        "Seated tail standoff",
+        "Effect of the chosen board thickness"
+      ]
+    },
+    {
+      "confirmation_needed": [
+        "Q-M08"
+      ],
+      "confirmed": [
+        "Stage10 carrier planning uses a 90 N DIN load sensitivity only as a planning model",
+        "Stage10 service withdraws the rear core 40 mm axially after power GH disconnection"
+      ],
+      "current_interpretation": "Insertion/withdrawal force, retention and mating cycles for this exact pair are not retained in the repository. Solder joints must not be the chassis anchor.",
+      "id": "D09",
+      "pass_evidence": [
+        "Q-M08",
+        "M-08"
+      ],
+      "primary_source": [
+        {
+          "locator": "carrier_frames planning_model DIN_90N_deflection_sensitivity_mm",
+          "source": "stage10-mechanical"
+        }
+      ],
+      "requirement": "Insertion, withdrawal, retention and mating cycles",
+      "status": "UNCONFIRMED",
+      "topic": "Mating forces",
+      "unconfirmed": [
+        "Manufacturer insertion/withdrawal force",
+        "Allowed mating cycles for performance level 2",
+        "Board deflection under that load"
+      ]
+    },
+    {
+      "confirmation_needed": [
+        "Q-A03"
+      ],
+      "confirmed": [
+        "Stage10 middle carrier and rear core captive screws exist as candidate geometry"
+      ],
+      "current_interpretation": "A soldering fixture must hold each body seated and square to the board during THT soldering, referencing the female fixing holes; the female and male should be checked mated on a gauge before soldering both. Fixture design is UNDECIDED.",
+      "id": "D10",
+      "pass_evidence": [
+        "Q-A03",
+        "M-07"
+      ],
+      "primary_source": [
+        {
+          "locator": "carrier_frames, mounts",
+          "source": "stage10-mechanical"
+        }
+      ],
+      "requirement": "Alignment during soldering and final assembly",
+      "status": "UNDECIDED",
+      "topic": "Alignment fixture",
+      "unconfirmed": [
+        "Fixture concept",
+        "Whether pair-matched soldering (mated during soldering) is wanted"
+      ]
+    },
+    {
+      "confirmation_needed": [
+        "Q-M09",
+        "Q-A01",
+        "Q-A04"
+      ],
+      "confirmed": [
+        "JLC states mixed SMD+THT in one order; SMD by reflow, THT by wave soldering; unused holes protected",
+        "Economic reflow 255±5 C not adjustable; Standard 240±5 C",
+        "The drawings title both parts as solder parts; reflow, pin-in-paste or press-fit suitability is not stated on them"
+      ],
+      "current_interpretation": "Sequence candidate: SMD reflow on both sides as needed, then wave or selective solder of the DIN by the assembler. HARTING solder temperature/time limits for these exact parts are not retained.",
+      "id": "D11",
+      "pass_evidence": [
+        "Q-M09",
+        "Q-A01"
+      ],
+      "primary_source": [
+        {
+          "locator": "mixed assembly FAQ and capability table",
+          "source": "jlc-assembly"
+        }
+      ],
+      "requirement": "Exact-part SMT/THT mixed process",
+      "status": "UNCONFIRMED",
+      "topic": "Mixed assembly process",
+      "unconfirmed": [
+        "HARTING wave/selective temperature and time limits",
+        "Assembler acceptance of these exact MPNs on their THT line",
+        "Side assignment and masking"
+      ]
+    },
+    {
+      "confirmation_needed": [
+        "Q-M10",
+        "Q-A05"
+      ],
+      "confirmed": [
+        "No cleaning data for these HARTING parts is retained",
+        "Stage27 retained Bourns TC33 guidance: aqueous cleaning not recommended (O1 boards only)"
+      ],
+      "current_interpretation": "Cleaning chemistry and whether cleaning is done at all are UNCONFIRMED; any board carrying open-frame trimmers must follow the stricter rule.",
+      "id": "D12",
+      "pass_evidence": [
+        "Q-M10",
+        "Q-A05"
+      ],
+      "primary_source": [
+        {
+          "locator": "Stage27 TC33 processing notes",
+          "source": "stage27-readme"
+        }
+      ],
+      "requirement": "Post-solder cleaning",
+      "status": "UNCONFIRMED",
+      "topic": "Cleaning",
+      "unconfirmed": [
+        "Flux type and residue policy",
+        "Cleaning compatibility of the DIN bodies and gold contacts"
+      ]
+    },
+    {
+      "confirmation_needed": [
+        "Q-A06",
+        "Q-F04"
+      ],
+      "confirmed": [
+        "JLC lists AOI and visual inspection for Economic and Standard; X-ray only for certain packages"
+      ],
+      "current_interpretation": "Required records: first-article hole size and position report, THT solder joint acceptance class and hole fill, mated-pair continuity of the 16 assigned contacts, isolation of all 96 positions, disposition of nonconforming boards. Sample inspection is not a process guarantee.",
+      "id": "D13",
+      "pass_evidence": [
+        "Q-A06",
+        "M-02",
+        "M-03",
+        "M-11"
+      ],
+      "primary_source": [
+        {
+          "locator": "capability table inspection rows",
+          "source": "jlc-assembly"
+        }
+      ],
+      "requirement": "Inspection evidence",
+      "status": "UNCONFIRMED",
+      "topic": "Inspection",
+      "unconfirmed": [
+        "Acceptance class",
+        "Report format",
+        "Nonconformance disposition"
+      ]
+    },
+    {
+      "confirmation_needed": [
+        "Q-F01",
+        "Q-F02"
+      ],
+      "confirmed": [
+        "Published as 'Press-fit holes ±0.05 mm', finished 0.55-2.0 mm, multilayer ENIG, circular holes only, named in the PCB remark"
+      ],
+      "current_interpretation": "Nominal 1.00 ±0.05 would sit inside HARTING's 0.90-1.10 under the finished-hole interpretation. Applying a press-fit hole service to solder-tail holes, and any effect on position, needs fabricator confirmation. It does not cover the 2.8 mm fixing holes or the Ø0.05 position zone.",
+      "id": "D14",
+      "pass_evidence": [
+        "Q-F01",
+        "M-02"
+      ],
+      "primary_source": [
+        {
+          "locator": "Press-fit holes",
+          "source": "jlc-pcb"
+        },
+        {
+          "locator": "press-fit hole ±0.05",
+          "source": "jlc-pad-hole"
+        }
+      ],
+      "requirement": "Use of the tighter-hole fabricator option",
+      "status": "UNCONFIRMED",
+      "topic": "Fabricator ±0.05 option",
+      "unconfirmed": [
+        "Applicability to soldered THT",
+        "Plating thickness and solderability at the tighter size"
+      ]
+    }
+  ],
+  "status": "SOURCE_DECISION_TABLE_CANDIDATE_NOT_ADOPTED"
+}

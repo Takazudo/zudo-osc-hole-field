@@ -842,3 +842,63 @@ bindings PASS. Full immutable686cc59a source reproduction including180 historica
 and17 Stage26 regressions PASS; temporary worktrees cleaned. `pnpm check` and
 `pnpm circuit:check` PASS with manual68-line inventory,0 declared placements and
 no schematic/placement binding. Final committed checks/hashes are in PR/issue receipts.
+
+## Stage28 — DIN manufacturing decisions and vendor-completed A01 harness (local Claude Code)
+
+Continued on the owner's Mac in local Claude Code, from PR286 HEAD
+b58068fbaeb65886958a67a4f4978613414e31c5 (= the verified Stage27 baseline; no newer
+commits). The work ran in a new worktree and branch, agent/278-stage28-din-harness-20261017.
+The PR286 branch was not pushed to. No Codex Cloud or remote session was started.
+Python is uv CPython 3.12.13; the system python3 3.9 is below the project minimum.
+
+Re-downloaded both HARTING drawings; their bytes are identical to the Stage5 receipts. The
+views were inspected visually: female view A and male view B both look from the connector
+body toward the board. In the locked frame (x right, y down from the front, z rearward from
+the Stage10 board planes), the Stage10/Stage6 labeled DIN positions fit exact rigid maps with
+determinants −1 (female) and +1 (male). The views require +1 and −1. Both are mirrored
+consistently, so mated nets still join, but contact numbering, inspection and male
+orientation do not match the parts. Column reversal is the proper-handed candidate that keeps
+the fixed grid and the Stage10 fixing holes, provided the 0.3 mm offset is toward row a. It is
+recorded and NOT adopted (Q-M01/M-01/Q-O01). D02 is computed, not asserted.
+
+Re-fetched the JLC capability pages (2026-10-17T10:51Z). The ±0.05 option is published as
+"Press-fit holes", for finished 0.55–2.0 mm on multilayer ENIG circular holes. Hole position
+is ±0.075 per axis, which is up to 0.106 mm radial against HARTING's Ø0.05 (0.025 radial)
+pattern zone. HARTING's position frame carries no datum letters. No round-NPTH tolerance is
+published for the 2.8 +0.1/−0 fixing holes. The JST GH primary spec was read from the
+in-repo PDF: AWG30–26, OD 0.76–1.0 mm, 1.0 A at AWG26, 50 V, −40…105 °C.
+
+Stage28 adds:
+- D01–D14 decision rows
+- a 34-conductor plus 96-contact harness ledger from the Stage15/16 transport contract, with
+  explicit exclusions; lengths, anchors and wire MPNs are null pending measurement
+- an assembly drawing candidate with service, tool and release keep-outs
+- 27 unsent questions with decision rules after each answer
+- 12 unpowered measurements, all NOT RUN
+- a first manufacturing route R-1…R-4, with unadopted alternatives
+
+A01 has no rear trimmers. The six O1 rear trimmer tool reservations are retained as a
+keep-out rule for any future O1 harness.
+
+The KiCad oracle path was not used. regen-all.sh was NOT RUN because it invokes
+scripts/kicad/run.sh (ERC/exports), which is excluded for this task. No supplier contact,
+quote, order, purchase, adoption or merge took place. Canonical boards, locked placements,
+decision.json, KEEP_K1402_INCUMBENT, historical FAIL evidence and every prior stage byte are
+unchanged except the reviewed README/WORK/check_source entrypoints. Native request: NONE.
+
+Stage28 verification (local, Python 3.12.13):
+- 18 focused tests PASS in both normal and `-O` Python.
+- `stage28_din_harness.py --check --check-cache` PASS.
+- `check_source.py` PASS (exit 0, 708 s). It runs the immutable b58068fb replay (180
+  historical, 17 Stage26 and 12 Stage27 tests), then the Stage28 check and the
+  independent-review binding. Temporary worktrees were removed.
+- `pnpm check` and `pnpm circuit:check` PASS; the manual 68-line inventory has 0 declared
+  placements and no schematic/placement binding.
+- `git diff --check` is clean.
+- The first baseline `check_source.py` run passed its historical part. Its final live path
+  guard then failed only because Stage28 files were added while it ran; the clean
+  b58068fb replay above supersedes it.
+- Independent review is PASS_SOURCE_REVIEW_ONLY after six findings were resolved
+  (one HIGH: a stale report.json was hidden by the test).
+- NOT RUN: regen-all.sh (KiCad), the KiCad oracle, CI (commit uses [skip ci] because
+  check.yml runs native steps), simulation, fabrication output, physical and energized tests.

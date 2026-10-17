@@ -1,3 +1,12 @@
+## Current DIN manufacturing and harness continuation — Stage28
+
+[Stage28](stage28/README.md) turns the retained HARTING 96-contact DIN pair and the
+A01 transport ledger into a decision table, a vendor-completed harness ledger, an
+assembly drawing candidate, an unsent questionnaire and a minimum measurement list.
+It finds that the Stage10 DIN labels are mirrored against the HARTING views; a
+proper-handed relabeling candidate is recorded but not adopted. Manufacturing,
+harness lengths and anchors remain UNCONFIRMED; physical and native NOT RUN.
+
 ## Current HF-trim continuation — Stage27
 
 [Stage27](stage27/README.md) selects TC33X-2-203E / C720648 for the existing
