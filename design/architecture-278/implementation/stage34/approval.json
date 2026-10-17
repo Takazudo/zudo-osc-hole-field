@@ -1,0 +1,66 @@
+{
+  "date": "2026-10-17",
+  "decided_by": "OWNER",
+  "record_source": "Owner instruction to the Claude Code Cloud session (Stage34) continuing Issue #278 / draft PR #287 at 2c41e8cd93574c356ba375fafba47ba65a480217: whole-arch retention and wire/current qualification",
+  "subject": "Positive lateral retention of the R33 J-SIG/J-PWR arches that still allows the 15 mm withdrawals, and the remaining electrical and wire evidence",
+  "status": "DESIGN_STUDY_CHANGES_ALLOWED",
+  "provisional_baseline": {
+    "R33_rear_face_middle_headers": "Provisionally used as the DESIGN-STUDY baseline: A01:J-SIG:middle at (250, 152) and A01:J-PWR:middle at (290, 150) on the A01-middle rear face",
+    "R33_reservations": "RV-ARCH-J-SIG, RV-ARCH-J-PWR and the four RV-ACCESS columns are provisionally reserved for this study",
+    "owner_informed": "Final adoption would require assembly-side (second SMT side on A01-middle) and copper-routing changes",
+    "does_not_adopt": [
+      "canonical CAD",
+      "manufacturing outputs",
+      "a wire selection",
+      "physical feasibility"
+    ]
+  },
+  "changeable": {
+    "header_refs": [
+      "A01:J-SIG:middle",
+      "A01:J-PWR:middle"
+    ],
+    "header_changes": [],
+    "cable": [
+      "provisional design length",
+      "bundling",
+      "retention"
+    ],
+    "retention_parts": "study geometry for captive guides inside or adjacent to the reserved RV-ARCH / RV-ACCESS volumes",
+    "carrier_local_shape": [
+      "rail:middle:0"
+    ]
+  },
+  "broader_change_proposals": {
+    "rg34_mount_on_rear_carrier": "A post on crossmember:rear:0 that carries the RG34 retention channels. It changes the rear carrier (a fastening interface on the crossmember top face) and is proposed only",
+    "rg34_outside_reserved_volumes": "RG34 walls stand up to guide_wall_mm + guide_clearance_mm - 0.625 mm outside the RV-ARCH slab half-thickness and the sleeves and block occupy the RV-ACCESS columns above the grip zones; proposed only",
+    "carrier_registration_requirement": "The jack, middle and rear carriers must register to each other within registration_allowance_mm at the enclosure cleats; the cleats are not designed, so this is a requirement on a future enclosure, proposed only",
+    "service_procedure_restriction": "With RG34 closed, only one end of a cable may be withdrawn at a time; a both-ends withdrawal needs the channel lid opened. Proposed only"
+  },
+  "fixed": [
+    "panel controls and jacks (design/grid/placements.lock.json)",
+    "nets and pin identities",
+    "locked component part numbers",
+    "DIN mapping and DIN positions",
+    "board planes",
+    "the R33 middle header positions, faces and orientations (study baseline)",
+    "the service order: disconnect K-PWR, then withdraw the core 40 mm",
+    "A01:J-SIG:local and A01:J-PWR:local positions",
+    "the 15 mm withdrawal basis, the 0.5 mm placement margin and the 0.15 mm K4 threshold",
+    "the R12 route radius as the primary 10x OD candidate"
+  ],
+  "approval_required_before_use": [
+    "any broader change listed above",
+    "any change to a neighbouring (foreign) board, its outline or its parts",
+    "any adoption into canonical CAD",
+    "any wire selection"
+  ],
+  "scope_excludes": [
+    "merging, canonical CAD adoption, KiCad regeneration, ERC/DRC claims or fabrication output",
+    "ordering, quotes, purchases, uploads or supplier contact",
+    "native KiCad, ERC/DRC or simulation",
+    "energisation and physical tests",
+    "calling a design length a measured or cut length",
+    "promoting a calculation to a physical pass"
+  ]
+}

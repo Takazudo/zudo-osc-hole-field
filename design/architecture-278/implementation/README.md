@@ -1,3 +1,26 @@
+## Current A01 whole-arch retention and wire/current evidence — Stage34
+
+[Stage34](stage34/README.md) adds RG34 to the owner's provisional R33 study baseline. RG34 is one slot
+channel per arch on the rear carrier, with walls, a cap, a former whose height is set at assembly, and
+removable leg sleeves. Stage34 also builds the A01 conductor current budget and the wire ledger.
+- **R33 + RG34 (CONDITIONAL_PENDING_REGISTRATION_AND_MEASUREMENT):**
+  - RG34 bounds the whole arch geometrically under stated assumptions, without using cable stiffness.
+  - It keeps every single-end 15 mm withdrawal at constant length, and the J-PWR channel wall faces the
+    core (0.29 mm robust spare, registration out of the chain).
+  - Inter-carrier registration (≤ 1.0 mm required) is UNKNOWN.
+  - The withdrawn arch during service is operator-held, and RG34 sits outside the reserved volumes
+    (proposal).
+- **Negative controls:** a local-leg guide alone, RG34 without its former, and a both-ends withdrawal
+  with the lid closed all fail as expected.
+- **Currents:** the Stage33 J-PWR inputs were Stage8 X1 values and are superseded; the Stage33 bytes
+  are unchanged. The A01 budget gives conditional maxima only, and no conductor has an established
+  maximum.
+- **Wire:** the selection stays null.
+  - Thermax M22759/18-26 fails nothing but has no maker bend radius.
+  - Alpha 6710 / 1851 (AWG28/30) lack a JST contact rating; that is UNKNOWN, not a failure.
+- **NOT RUN:** M34-01…08, M-01, M-09, M-12, KiCad, ERC/DRC, simulation, fabrication output and
+  energisation.
+
 ## Current A01 large-radius routing study — Stage33
 
 [Stage33](stage33/README.md) replaces the Stage32 5 mm bends with routes that meet the wire

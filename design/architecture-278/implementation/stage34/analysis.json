@@ -1,0 +1,1380 @@
+{
+  "R33_stage33_rerun": {
+    "cable_to_cable": {
+      "min_sampled_mm": 4.033221,
+      "note": "3D distance is never below the plan distance, so the plan bound holds in every state",
+      "pairs": [
+        {
+          "J-PWR": "installed",
+          "J-SIG": "installed",
+          "gap_mm": 6.062227
+        },
+        {
+          "J-PWR": "middle",
+          "J-SIG": "installed",
+          "gap_mm": 4.398278
+        },
+        {
+          "J-PWR": "local",
+          "J-SIG": "installed",
+          "gap_mm": 4.398278
+        },
+        {
+          "J-PWR": "both",
+          "J-SIG": "installed",
+          "gap_mm": 4.033221
+        },
+        {
+          "J-PWR": "installed",
+          "J-SIG": "middle",
+          "gap_mm": 8.234673
+        },
+        {
+          "J-PWR": "middle",
+          "J-SIG": "middle",
+          "gap_mm": 6.063834
+        },
+        {
+          "J-PWR": "local",
+          "J-SIG": "middle",
+          "gap_mm": 6.063834
+        },
+        {
+          "J-PWR": "both",
+          "J-SIG": "middle",
+          "gap_mm": 4.397941
+        },
+        {
+          "J-PWR": "installed",
+          "J-SIG": "local",
+          "gap_mm": 8.234673
+        },
+        {
+          "J-PWR": "middle",
+          "J-SIG": "local",
+          "gap_mm": 6.063834
+        },
+        {
+          "J-PWR": "local",
+          "J-SIG": "local",
+          "gap_mm": 6.063834
+        },
+        {
+          "J-PWR": "both",
+          "J-SIG": "local",
+          "gap_mm": 4.397941
+        },
+        {
+          "J-PWR": "installed",
+          "J-SIG": "both",
+          "gap_mm": 8.243757
+        },
+        {
+          "J-PWR": "middle",
+          "J-SIG": "both",
+          "gap_mm": 8.233659
+        },
+        {
+          "J-PWR": "local",
+          "J-SIG": "both",
+          "gap_mm": 8.233659
+        },
+        {
+          "J-PWR": "both",
+          "J-SIG": "both",
+          "gap_mm": 6.062227
+        }
+      ],
+      "plan_bound_mm": 4.230235,
+      "plan_segments_mm": {
+        "J-PWR": [
+          [
+            226.0,
+            173.0
+          ],
+          [
+            290.0,
+            150.0
+          ]
+        ],
+        "J-SIG": [
+          [
+            210.0,
+            173.0
+          ],
+          [
+            250.0,
+            152.0
+          ]
+        ]
+      },
+      "robust_spare_mm": 3.355235,
+      "tolerance": {
+        "contributors": {
+          "carrier_face_mm": 0.1,
+          "mount_hole_float_mm": 0.1,
+          "pcb_hole_position_mm": 0.075,
+          "spacer_length_mm": 0.1
+        },
+        "rss_mm": 0.188746,
+        "worst_case_mm": 0.375
+      }
+    },
+    "core_40mm": {
+      "arch_min_clearance_mm": 2.765994,
+      "clear": true,
+      "envelope": {
+        "basis": "core outline XY from the mated DIN plane to the handle tops plus the 40 mm withdrawal",
+        "hi": [
+          312,
+          282,
+          134
+        ],
+        "lo": [
+          236,
+          174,
+          50
+        ]
+      },
+      "nearest": {
+        "at_mm": [
+          234.520654,
+          169.93789,
+          88.579786
+        ],
+        "link": "J-PWR"
+      },
+      "procedure": "K-PWR first, then 40 mm along +z; J-SIG/J-PWR are not touched",
+      "registration": "core carrier to middle/jack carrier registration UNCONFIRMED (panel_to_carrier_registration_mm null in Stage32); not in the stack",
+      "robust_spare_mm": 1.890994,
+      "tolerance": {
+        "contributors": {
+          "carrier_face_mm": 0.1,
+          "mount_hole_float_mm": 0.1,
+          "pcb_hole_position_mm": 0.075,
+          "spacer_length_mm": 0.1
+        },
+        "rss_mm": 0.188746,
+        "worst_case_mm": 0.375
+      }
+    },
+    "criteria": {
+      "S10_fan_in_every_state": true,
+      "S11_constant_length_and_cover": true,
+      "S12_reservations_clear_of_designed_parts": true,
+      "S1_static_clear": true,
+      "S2_robust_K4": true,
+      "S3_lateral_retention": false,
+      "S4_sweeps_and_access_clear": true,
+      "S5_core_clear": true,
+      "S6_strength_planning_load": true,
+      "S7_release_15mm_clear_and_outside_front_volume": true,
+      "S8_no_foreign_requirement": true,
+      "S9_bend_maker_rule": true
+    },
+    "failed": [
+      "S3_lateral_retention"
+    ],
+    "retention": {
+      "J-PWR": {
+        "excludes": "the boards carrying the cable ends (their clearance is the housing height, not a lateral gap)",
+        "lateral_allowance_mm": 1.890994,
+        "nearest": "core-extraction-40mm",
+        "retention_part": null,
+        "shared_gap": "the cable-to-cable plan gap is shared: if both arches lean toward each other the sum of both deviations must stay within it",
+        "state": "installed 0",
+        "status": "UNCONFIRMED (M33-04)",
+        "straight_zone_every_state": {
+          "local": {
+            "exists": true,
+            "length_mm": 11.141366,
+            "z_mm": [
+              65.805617,
+              76.946983
+            ]
+          },
+          "middle": {
+            "exists": false,
+            "length_mm": -2.258634,
+            "z_mm": [
+              79.205617,
+              76.946983
+            ]
+          }
+        }
+      },
+      "J-SIG": {
+        "excludes": "the boards carrying the cable ends (their clearance is the housing height, not a lateral gap)",
+        "lateral_allowance_mm": 3.355235,
+        "nearest": "the other cable (plan bound, both arches in their planes)",
+        "retention_part": null,
+        "shared_gap": "the cable-to-cable plan gap is shared: if both arches lean toward each other the sum of both deviations must stay within it",
+        "state": "every state",
+        "status": "UNCONFIRMED (M33-04)",
+        "straight_zone_every_state": {
+          "local": {
+            "exists": true,
+            "length_mm": 11.072648,
+            "z_mm": [
+              69.289297,
+              80.361945
+            ]
+          },
+          "middle": {
+            "exists": false,
+            "length_mm": -2.327352,
+            "z_mm": [
+              82.689297,
+              80.361945
+            ]
+          }
+        }
+      }
+    },
+    "status": "CONDITIONAL_PENDING_RETENTION"
+  },
+  "RG34": {
+    "access": {
+      "A01:J-PWR:local": {
+        "clear": true,
+        "column_z_mm": [
+          43.9,
+          73.805617
+        ],
+        "finger_operation": "NOT_DETERMINED (M33-03)",
+        "free_height_mm": 29.905617,
+        "grip_zone_z_mm": [
+          50.805617,
+          58.805617
+        ],
+        "rigid_hits": []
+      },
+      "A01:J-PWR:middle": {
+        "clear": true,
+        "column_z_mm": [
+          57.3,
+          87.205617
+        ],
+        "finger_operation": "NOT_DETERMINED (M33-03)",
+        "free_height_mm": 29.905617,
+        "grip_zone_z_mm": [
+          64.205617,
+          72.205617
+        ],
+        "rigid_hits": []
+      },
+      "A01:J-SIG:local": {
+        "clear": true,
+        "column_z_mm": [
+          43.9,
+          77.289297
+        ],
+        "finger_operation": "NOT_DETERMINED (M33-03)",
+        "free_height_mm": 33.389297,
+        "grip_zone_z_mm": [
+          54.289297,
+          62.289297
+        ],
+        "rigid_hits": []
+      },
+      "A01:J-SIG:middle": {
+        "clear": true,
+        "column_z_mm": [
+          57.3,
+          90.689297
+        ],
+        "finger_operation": "NOT_DETERMINED (M33-03)",
+        "free_height_mm": 33.389297,
+        "grip_zone_z_mm": [
+          67.689297,
+          75.689297
+        ],
+        "rigid_hits": []
+      }
+    },
+    "closure": {
+      "gap_max_mm": 0.2,
+      "smallest_wire_od_mm": 0.76
+    },
+    "cover": {
+      "J-PWR": {
+        "clear": true,
+        "cover_z_mm": 105.0,
+        "margin_mm": 0.5,
+        "registration_mm": 1.0,
+        "rg34_top_z_mm": 99.65409,
+        "spare_mm": 3.84591
+      },
+      "J-SIG": {
+        "clear": true,
+        "cover_z_mm": 105.0,
+        "margin_mm": 0.5,
+        "registration_mm": 1.0,
+        "rg34_top_z_mm": 103.361945,
+        "spare_mm": 0.138055
+      }
+    },
+    "criteria": {
+      "T10_both_ends_withdrawal_blocked": true,
+      "T11_access_columns_clear": true,
+      "T1_captive_closed_parts": true,
+      "T2_single_end_states_inside_RG34": true,
+      "T3_parts_clear_K4": true,
+      "T4_walls_between_cables": true,
+      "T5_free_spans_bounded_and_clear": true,
+      "T6_rear_cover": true,
+      "T7_grip_fan_in_and_s_bend": true,
+      "T8_strength_planning_load": true,
+      "T9_slack_follows_without_buckling": true
+    },
+    "failed": [],
+    "free_spans": [
+      {
+        "link": "J-SIG",
+        "meets_K4": true,
+        "semi_minor_mm": 2.02066,
+        "side": "local",
+        "spheroids": [
+          {
+            "A": 8.291138,
+            "B": 2.02066,
+            "chord_mm": 16.082275,
+            "inflate_mm": 3.25,
+            "length_mm": 16.582275,
+            "xy": [
+              210.0,
+              173.0
+            ],
+            "zc": 51.941137
+          }
+        ],
+        "tightest": [
+          {
+            "against": "foreign-depth:RV1201",
+            "distance_mm": 1.867812,
+            "meets_K4": true,
+            "robust_spare_mm": 0.992812,
+            "stack_mm": 0.375
+          },
+          {
+            "against": "board:A01-jack",
+            "distance_mm": 3.799999,
+            "meets_K4": true,
+            "robust_spare_mm": 3.099999,
+            "stack_mm": 0.2
+          },
+          {
+            "against": "tool:A01-jack:M3",
+            "distance_mm": 3.948884,
+            "meets_K4": true,
+            "robust_spare_mm": 3.173884,
+            "stack_mm": 0.275
+          },
+          {
+            "against": "release:A01:J-PWR:local",
+            "distance_mm": 4.25434,
+            "meets_K4": true,
+            "robust_spare_mm": 3.47934,
+            "stack_mm": 0.275
+          }
+        ]
+      },
+      {
+        "link": "J-SIG",
+        "meets_K4": true,
+        "semi_minor_mm": 2.098476,
+        "side": "middle",
+        "spheroids": [
+          {
+            "A": 8.291138,
+            "B": 2.02066,
+            "chord_mm": 16.082275,
+            "inflate_mm": 3.25,
+            "length_mm": 16.582275,
+            "xy": [
+              250.0,
+              152.0
+            ],
+            "zc": 65.341138
+          },
+          {
+            "A": 8.932201,
+            "B": 2.098476,
+            "chord_mm": 17.364402,
+            "inflate_mm": 3.25,
+            "length_mm": 17.864402,
+            "xy": [
+              250.0,
+              152.0
+            ],
+            "zc": 64.700074
+          }
+        ],
+        "tightest": [
+          {
+            "against": "board:A01-middle:0",
+            "distance_mm": 2.517873,
+            "meets_K4": true,
+            "robust_spare_mm": 0.535746,
+            "stack_mm": 1.482127
+          },
+          {
+            "against": "board:A01-middle:0",
+            "distance_mm": 3.8,
+            "meets_K4": true,
+            "robust_spare_mm": 1.817873,
+            "stack_mm": 1.482127
+          },
+          {
+            "against": "foreign-depth:J1510",
+            "distance_mm": 4.117873,
+            "meets_K4": true,
+            "robust_spare_mm": 3.242873,
+            "stack_mm": 0.375
+          },
+          {
+            "against": "RG34-J-PWR-channel-top",
+            "distance_mm": 4.752342,
+            "meets_K4": true,
+            "robust_spare_mm": 4.252342,
+            "stack_mm": 0.0
+          }
+        ]
+      },
+      {
+        "link": "J-PWR",
+        "meets_K4": true,
+        "semi_minor_mm": 1.787184,
+        "side": "local",
+        "spheroids": [
+          {
+            "A": 6.513053,
+            "B": 1.787184,
+            "chord_mm": 12.526106,
+            "inflate_mm": 2.957107,
+            "length_mm": 13.026106,
+            "xy": [
+              226.0,
+              173.0
+            ],
+            "zc": 50.163053
+          }
+        ],
+        "tightest": [
+          {
+            "against": "board:A01-middle:0",
+            "distance_mm": 2.467267,
+            "meets_K4": true,
+            "robust_spare_mm": 0.48514,
+            "stack_mm": 1.482127
+          },
+          {
+            "against": "board:A01-middle:2",
+            "distance_mm": 3.256153,
+            "meets_K4": true,
+            "robust_spare_mm": 1.274026,
+            "stack_mm": 1.482127
+          },
+          {
+            "against": "release:A01:J-SIG:local",
+            "distance_mm": 2.905709,
+            "meets_K4": true,
+            "robust_spare_mm": 2.130709,
+            "stack_mm": 0.275
+          },
+          {
+            "against": "tool:A01-jack:M4",
+            "distance_mm": 3.50192,
+            "meets_K4": true,
+            "robust_spare_mm": 2.72692,
+            "stack_mm": 0.275
+          }
+        ]
+      },
+      {
+        "link": "J-PWR",
+        "meets_K4": true,
+        "semi_minor_mm": 1.874716,
+        "side": "middle",
+        "spheroids": [
+          {
+            "A": 6.513053,
+            "B": 1.787184,
+            "chord_mm": 12.526106,
+            "inflate_mm": 2.957107,
+            "length_mm": 13.026106,
+            "xy": [
+              290.0,
+              150.0
+            ],
+            "zc": 63.563053
+          },
+          {
+            "A": 7.154116,
+            "B": 1.874716,
+            "chord_mm": 13.808233,
+            "inflate_mm": 2.957107,
+            "length_mm": 14.308233,
+            "xy": [
+              290.0,
+              150.0
+            ],
+            "zc": 62.921989
+          }
+        ],
+        "tightest": [
+          {
+            "against": "board:A01-middle:0",
+            "distance_mm": 2.810766,
+            "meets_K4": true,
+            "robust_spare_mm": 0.828639,
+            "stack_mm": 1.482127
+          },
+          {
+            "against": "board:A01-middle:0",
+            "distance_mm": 4.092893,
+            "meets_K4": true,
+            "robust_spare_mm": 2.110766,
+            "stack_mm": 1.482127
+          },
+          {
+            "against": "foreign-depth:J1710",
+            "distance_mm": 4.410766,
+            "meets_K4": true,
+            "robust_spare_mm": 3.535766,
+            "stack_mm": 0.375
+          },
+          {
+            "against": "foreign-depth:J1709",
+            "distance_mm": 4.87725,
+            "meets_K4": true,
+            "robust_spare_mm": 4.00225,
+            "stack_mm": 0.375
+          }
+        ]
+      }
+    ],
+    "friction": {
+      "EI_per_conductor_Nmm2": 3.53553,
+      "heaviest_construction": "Thermax M22759/18-26 (26-AMCFZ-1938)",
+      "links": {
+        "J-PWR": {
+          "drag_upper_N": 0.008043,
+          "free_spans": {
+            "local": {
+              "buckling_load_N": 1.820069,
+              "length_mm": 12.526106,
+              "ratio_to_drag": 226.303547
+            },
+            "middle": {
+              "buckling_load_N": 1.820069,
+              "length_mm": 12.526106,
+              "ratio_to_drag": 226.303547
+            }
+          },
+          "slack_moves_without_buckling": true,
+          "weight_upper_N": 0.016085
+        },
+        "J-SIG": {
+          "drag_upper_N": 0.012563,
+          "free_spans": {
+            "local": {
+              "buckling_load_N": 1.932249,
+              "length_mm": 16.082275,
+              "ratio_to_drag": 153.802426
+            },
+            "middle": {
+              "buckling_load_N": 1.932249,
+              "length_mm": 16.082275,
+              "ratio_to_drag": 153.802426
+            }
+          },
+          "slack_moves_without_buckling": true,
+          "weight_upper_N": 0.025126
+        }
+      },
+      "most_flexible_construction": "Alpha Wire 1851",
+      "note": "the retention bounds do not use stiffness; this only shows the slack can follow a withdrawal without buckling a free span. Abrasion over repeated withdrawals is not calculated (M34-04).",
+      "weight_per_conductor_N_per_mm": 2.6988585665524015e-05
+    },
+    "negative_controls": {
+      "J-PWR": {
+        "local_leg_guide_only": {
+          "bounded_within_allowance": false,
+          "bucket_handle_radius_mm": 28.262163,
+          "chord_mm": 69.981679,
+          "reach_semi_minor_mm": 55.060971,
+          "remainder_length_mm": 104.494383,
+          "slack_without_former_mm": 25.982731,
+          "stage33_allowance_mm": 1.890994
+        },
+        "without_former": {
+          "bounded_within_spare": false,
+          "growth_mm": 16.420144,
+          "local_free_span_semi_minor_mm": 18.207328,
+          "slack_mm": 25.982731,
+          "tightest_spare_with_former_mm": 0.48514,
+          "with_former_semi_minor_mm": 1.787184
+        }
+      },
+      "J-SIG": {
+        "local_leg_guide_only": {
+          "bounded_within_allowance": false,
+          "bucket_handle_radius_mm": 28.234209,
+          "chord_mm": 49.402146,
+          "reach_semi_minor_mm": 49.619755,
+          "remainder_length_mm": 85.010703,
+          "slack_without_former_mm": 25.845296,
+          "stage33_allowance_mm": 3.355235
+        },
+        "without_former": {
+          "bounded_within_spare": false,
+          "growth_mm": 17.339619,
+          "local_free_span_semi_minor_mm": 19.360279,
+          "slack_mm": 25.845296,
+          "tightest_spare_with_former_mm": 0.992812,
+          "with_former_semi_minor_mm": 2.02066
+        }
+      }
+    },
+    "parts": {
+      "interior_hull_plan_gap_mm": 3.404562,
+      "outer_gap_between_channels_mm": 0.85044,
+      "rows": [
+        {
+          "cross_carrier": false,
+          "distance_mm": 1.365955,
+          "meets_K4": true,
+          "obstacle": "core-envelope-40mm",
+          "part": "RG34-J-PWR-channel-top",
+          "robust_spare_mm": 0.290955,
+          "stack": {
+            "contributors": {
+              "carrier_face_mm": 0.1,
+              "guide_fab_tolerance_mm": 0.1,
+              "guide_mount_float_mm": 0.1,
+              "mount_hole_float_mm": 0.1,
+              "pcb_hole_position_mm": 0.075,
+              "spacer_length_mm": 0.1
+            },
+            "worst_case_mm": 0.575
+          }
+        },
+        {
+          "cross_carrier": false,
+          "distance_mm": 1.5,
+          "meets_K4": true,
+          "obstacle": "board:A01-core",
+          "part": "RG34-post",
+          "robust_spare_mm": 0.425,
+          "stack": {
+            "contributors": {
+              "carrier_face_mm": 0.1,
+              "guide_fab_tolerance_mm": 0.1,
+              "guide_mount_float_mm": 0.1,
+              "mount_hole_float_mm": 0.1,
+              "pcb_hole_position_mm": 0.075,
+              "spacer_length_mm": 0.1
+            },
+            "worst_case_mm": 0.575
+          }
+        },
+        {
+          "cross_carrier": true,
+          "distance_mm": 3.867052,
+          "meets_K4": true,
+          "obstacle": "release:A01:J-SIG:local",
+          "part": "RG34-J-PWR-sleeve-local",
+          "robust_spare_mm": 1.892052,
+          "stack": {
+            "contributors": {
+              "carrier_face_mm": 0.1,
+              "guide_fab_tolerance_mm": 0.1,
+              "guide_mount_float_mm": 0.1,
+              "mount_hole_float_mm": 0.1,
+              "pcb_hole_position_mm": 0.075,
+              "registration_allowance_mm": 1.0
+            },
+            "worst_case_mm": 1.475
+          }
+        },
+        {
+          "cross_carrier": true,
+          "distance_mm": 4.519367,
+          "meets_K4": true,
+          "obstacle": "tool:A01-middle:M1",
+          "part": "RG34-J-SIG-channel-middle",
+          "robust_spare_mm": 2.544367,
+          "stack": {
+            "contributors": {
+              "carrier_face_mm": 0.1,
+              "guide_fab_tolerance_mm": 0.1,
+              "guide_mount_float_mm": 0.1,
+              "mount_hole_float_mm": 0.1,
+              "pcb_hole_position_mm": 0.075,
+              "registration_allowance_mm": 1.0
+            },
+            "worst_case_mm": 1.475
+          }
+        },
+        {
+          "cross_carrier": true,
+          "distance_mm": 4.519367,
+          "meets_K4": true,
+          "obstacle": "tool:A01-middle:M1",
+          "part": "RG34-J-SIG-sleeve-middle",
+          "robust_spare_mm": 2.544367,
+          "stack": {
+            "contributors": {
+              "carrier_face_mm": 0.1,
+              "guide_fab_tolerance_mm": 0.1,
+              "guide_mount_float_mm": 0.1,
+              "mount_hole_float_mm": 0.1,
+              "pcb_hole_position_mm": 0.075,
+              "registration_allowance_mm": 1.0
+            },
+            "worst_case_mm": 1.475
+          }
+        },
+        {
+          "cross_carrier": true,
+          "distance_mm": 4.569865,
+          "meets_K4": true,
+          "obstacle": "tool:A01-middle:M1",
+          "part": "RG34-J-SIG-channel-top",
+          "robust_spare_mm": 2.594865,
+          "stack": {
+            "contributors": {
+              "carrier_face_mm": 0.1,
+              "guide_fab_tolerance_mm": 0.1,
+              "guide_mount_float_mm": 0.1,
+              "mount_hole_float_mm": 0.1,
+              "pcb_hole_position_mm": 0.075,
+              "registration_allowance_mm": 1.0
+            },
+            "worst_case_mm": 1.475
+          }
+        },
+        {
+          "cross_carrier": true,
+          "distance_mm": 5.249523,
+          "meets_K4": true,
+          "obstacle": "release:A01:J-PWR:local",
+          "part": "RG34-J-SIG-sleeve-local",
+          "robust_spare_mm": 3.274523,
+          "stack": {
+            "contributors": {
+              "carrier_face_mm": 0.1,
+              "guide_fab_tolerance_mm": 0.1,
+              "guide_mount_float_mm": 0.1,
+              "mount_hole_float_mm": 0.1,
+              "pcb_hole_position_mm": 0.075,
+              "registration_allowance_mm": 1.0
+            },
+            "worst_case_mm": 1.475
+          }
+        },
+        {
+          "cross_carrier": false,
+          "distance_mm": 6.217052,
+          "meets_K4": true,
+          "obstacle": "core-envelope-40mm",
+          "part": "RG34-J-PWR-channel-local-leg",
+          "robust_spare_mm": 5.142052,
+          "stack": {
+            "contributors": {
+              "carrier_face_mm": 0.1,
+              "guide_fab_tolerance_mm": 0.1,
+              "guide_mount_float_mm": 0.1,
+              "mount_hole_float_mm": 0.1,
+              "pcb_hole_position_mm": 0.075,
+              "spacer_length_mm": 0.1
+            },
+            "worst_case_mm": 0.575
+          }
+        },
+        {
+          "distance_mm": null,
+          "meets_K4": true,
+          "note": "nothing within margin + 6 mm",
+          "obstacle": null,
+          "part": "RG34-J-PWR-channel-middle",
+          "robust_spare_mm": null
+        },
+        {
+          "distance_mm": null,
+          "meets_K4": true,
+          "note": "nothing within margin + 6 mm",
+          "obstacle": null,
+          "part": "RG34-J-PWR-sleeve-middle",
+          "robust_spare_mm": null
+        },
+        {
+          "distance_mm": null,
+          "meets_K4": true,
+          "note": "nothing within margin + 6 mm",
+          "obstacle": null,
+          "part": "RG34-J-SIG-channel-local-leg",
+          "robust_spare_mm": null
+        }
+      ],
+      "service_only": [
+        {
+          "cross_carrier": true,
+          "distance_mm": 1.630633,
+          "meets_K4": false,
+          "obstacle": "tool:A01-jack:M4",
+          "overlaps": false,
+          "part": "RG34-J-PWR-channel-top",
+          "robust_spare_mm": -0.344367,
+          "stack": {
+            "contributors": {
+              "carrier_face_mm": 0.1,
+              "guide_fab_tolerance_mm": 0.1,
+              "guide_mount_float_mm": 0.1,
+              "mount_hole_float_mm": 0.1,
+              "pcb_hole_position_mm": 0.075,
+              "registration_allowance_mm": 1.0
+            },
+            "worst_case_mm": 1.475
+          },
+          "use": "front jack board removal only; RG34 is removed first"
+        },
+        {
+          "cross_carrier": true,
+          "distance_mm": 2.5,
+          "meets_K4": true,
+          "obstacle": "tool:A01-jack:M4",
+          "overlaps": false,
+          "part": "RG34-post",
+          "robust_spare_mm": 0.525,
+          "stack": {
+            "contributors": {
+              "carrier_face_mm": 0.1,
+              "guide_fab_tolerance_mm": 0.1,
+              "guide_mount_float_mm": 0.1,
+              "mount_hole_float_mm": 0.1,
+              "pcb_hole_position_mm": 0.075,
+              "registration_allowance_mm": 1.0
+            },
+            "worst_case_mm": 1.475
+          },
+          "use": "front jack board removal only; RG34 is removed first"
+        },
+        {
+          "cross_carrier": true,
+          "distance_mm": 4.222643,
+          "meets_K4": true,
+          "obstacle": "tool:A01-jack:M4",
+          "overlaps": false,
+          "part": "RG34-J-PWR-sleeve-local",
+          "robust_spare_mm": 2.247643,
+          "stack": {
+            "contributors": {
+              "carrier_face_mm": 0.1,
+              "guide_fab_tolerance_mm": 0.1,
+              "guide_mount_float_mm": 0.1,
+              "mount_hole_float_mm": 0.1,
+              "pcb_hole_position_mm": 0.075,
+              "registration_allowance_mm": 1.0
+            },
+            "worst_case_mm": 1.475
+          },
+          "use": "front jack board removal only; RG34 is removed first"
+        },
+        {
+          "cross_carrier": true,
+          "distance_mm": 4.222643,
+          "meets_K4": true,
+          "obstacle": "tool:A01-jack:M4",
+          "overlaps": false,
+          "part": "RG34-J-PWR-channel-local-leg",
+          "robust_spare_mm": 2.247643,
+          "stack": {
+            "contributors": {
+              "carrier_face_mm": 0.1,
+              "guide_fab_tolerance_mm": 0.1,
+              "guide_mount_float_mm": 0.1,
+              "mount_hole_float_mm": 0.1,
+              "pcb_hole_position_mm": 0.075,
+              "registration_allowance_mm": 1.0
+            },
+            "worst_case_mm": 1.475
+          },
+          "use": "front jack board removal only; RG34 is removed first"
+        },
+        {
+          "cross_carrier": true,
+          "distance_mm": 5.648249,
+          "meets_K4": true,
+          "obstacle": "tool:A01-jack:M3",
+          "overlaps": false,
+          "part": "RG34-J-SIG-sleeve-local",
+          "robust_spare_mm": 3.673249,
+          "stack": {
+            "contributors": {
+              "carrier_face_mm": 0.1,
+              "guide_fab_tolerance_mm": 0.1,
+              "guide_mount_float_mm": 0.1,
+              "mount_hole_float_mm": 0.1,
+              "pcb_hole_position_mm": 0.075,
+              "registration_allowance_mm": 1.0
+            },
+            "worst_case_mm": 1.475
+          },
+          "use": "front jack board removal only; RG34 is removed first"
+        },
+        {
+          "cross_carrier": true,
+          "distance_mm": 5.648249,
+          "meets_K4": true,
+          "obstacle": "tool:A01-jack:M3",
+          "overlaps": false,
+          "part": "RG34-J-SIG-channel-local-leg",
+          "robust_spare_mm": 3.673249,
+          "stack": {
+            "contributors": {
+              "carrier_face_mm": 0.1,
+              "guide_fab_tolerance_mm": 0.1,
+              "guide_mount_float_mm": 0.1,
+              "mount_hole_float_mm": 0.1,
+              "pcb_hole_position_mm": 0.075,
+              "registration_allowance_mm": 1.0
+            },
+            "worst_case_mm": 1.475
+          },
+          "use": "front jack board removal only; RG34 is removed first"
+        },
+        {
+          "cross_carrier": true,
+          "distance_mm": 5.648249,
+          "meets_K4": true,
+          "obstacle": "tool:A01-jack:M3",
+          "overlaps": false,
+          "part": "RG34-J-SIG-channel-top",
+          "robust_spare_mm": 3.673249,
+          "stack": {
+            "contributors": {
+              "carrier_face_mm": 0.1,
+              "guide_fab_tolerance_mm": 0.1,
+              "guide_mount_float_mm": 0.1,
+              "mount_hole_float_mm": 0.1,
+              "pcb_hole_position_mm": 0.075,
+              "registration_allowance_mm": 1.0
+            },
+            "worst_case_mm": 1.475
+          },
+          "use": "front jack board removal only; RG34 is removed first"
+        }
+      ],
+      "service_only_clear_of_overlap": true,
+      "walls_fit_between_cables": true
+    },
+    "r17": {
+      "J-PWR": {
+        "fits_under_cover": false,
+        "installed_top_centreline_z_mm": 94.092939,
+        "needed_z_mm": 106.300046,
+        "rg34_top_z_mm": 104.800046
+      },
+      "J-SIG": {
+        "fits_under_cover": false,
+        "installed_top_centreline_z_mm": 97.507901,
+        "needed_z_mm": 110.007901,
+        "rg34_top_z_mm": 108.507901
+      }
+    },
+    "reservations": [
+      {
+        "below_rv_arch_mm": 0.0,
+        "link": "J-SIG",
+        "protrusion_mm": 0.9,
+        "rg34_half_thickness_mm": 3.25,
+        "rg34_z_mm": [
+          59.982275,
+          103.361945
+        ],
+        "rv_access_occupied": [
+          {
+            "part": "RG34-J-SIG-sleeve-local",
+            "reservation": "RV-ACCESS-J-SIG-local"
+          },
+          {
+            "part": "RG34-J-SIG-channel-local-leg",
+            "reservation": "RV-ACCESS-J-SIG-local"
+          },
+          {
+            "part": "RG34-J-SIG-channel-top",
+            "reservation": "RV-ACCESS-J-SIG-local"
+          },
+          {
+            "part": "RG34-J-SIG-sleeve-middle",
+            "reservation": "RV-ACCESS-J-SIG-middle"
+          },
+          {
+            "part": "RG34-J-SIG-channel-top",
+            "reservation": "RV-ACCESS-J-SIG-middle"
+          },
+          {
+            "part": "RG34-J-SIG-channel-middle",
+            "reservation": "RV-ACCESS-J-SIG-middle"
+          }
+        ],
+        "rv_arch_half_thickness_mm": 2.35,
+        "rv_arch_z_mm": [
+          43.9,
+          109.711945
+        ],
+        "status": "PROPOSAL_REQUIRES_OWNER_DECISION"
+      },
+      {
+        "below_rv_arch_mm": 0.0,
+        "link": "J-PWR",
+        "protrusion_mm": 0.9,
+        "rg34_half_thickness_mm": 2.957107,
+        "rg34_z_mm": [
+          56.426106,
+          99.65409
+        ],
+        "rv_access_occupied": [
+          {
+            "part": "RG34-J-PWR-sleeve-local",
+            "reservation": "RV-ACCESS-J-PWR-local"
+          },
+          {
+            "part": "RG34-J-PWR-channel-local-leg",
+            "reservation": "RV-ACCESS-J-PWR-local"
+          },
+          {
+            "part": "RG34-J-PWR-channel-top",
+            "reservation": "RV-ACCESS-J-PWR-local"
+          },
+          {
+            "part": "RG34-J-PWR-sleeve-middle",
+            "reservation": "RV-ACCESS-J-PWR-middle"
+          },
+          {
+            "part": "RG34-J-PWR-channel-middle",
+            "reservation": "RV-ACCESS-J-PWR-middle"
+          }
+        ],
+        "rv_arch_half_thickness_mm": 2.057107,
+        "rv_arch_z_mm": [
+          43.9,
+          106.00409
+        ],
+        "status": "PROPOSAL_REQUIRES_OWNER_DECISION"
+      }
+    ],
+    "states": [
+      {
+        "admissible": true,
+        "blocked_by": [],
+        "fan_in_below_block": true,
+        "link": "J-SIG",
+        "state": "installed",
+        "top_centreline_z_mm": 92.361945,
+        "travel_mm": 0.0
+      },
+      {
+        "admissible": true,
+        "blocked_by": [],
+        "fan_in_below_block": true,
+        "link": "J-SIG",
+        "state": "local",
+        "top_centreline_z_mm": 93.586945,
+        "travel_mm": 2.45
+      },
+      {
+        "admissible": true,
+        "blocked_by": [],
+        "fan_in_below_block": true,
+        "link": "J-SIG",
+        "state": "local",
+        "top_centreline_z_mm": 94.861945,
+        "travel_mm": 5
+      },
+      {
+        "admissible": true,
+        "blocked_by": [],
+        "fan_in_below_block": true,
+        "link": "J-SIG",
+        "state": "local",
+        "top_centreline_z_mm": 96.111945,
+        "travel_mm": 7.5
+      },
+      {
+        "admissible": true,
+        "blocked_by": [],
+        "fan_in_below_block": true,
+        "link": "J-SIG",
+        "state": "local",
+        "top_centreline_z_mm": 97.361945,
+        "travel_mm": 10
+      },
+      {
+        "admissible": true,
+        "blocked_by": [],
+        "fan_in_below_block": true,
+        "link": "J-SIG",
+        "state": "local",
+        "top_centreline_z_mm": 98.611945,
+        "travel_mm": 12.5
+      },
+      {
+        "admissible": true,
+        "blocked_by": [],
+        "fan_in_below_block": true,
+        "link": "J-SIG",
+        "state": "local",
+        "top_centreline_z_mm": 99.861945,
+        "travel_mm": 15
+      },
+      {
+        "admissible": true,
+        "blocked_by": [],
+        "fan_in_below_block": true,
+        "link": "J-SIG",
+        "state": "middle",
+        "top_centreline_z_mm": 93.586945,
+        "travel_mm": 2.45
+      },
+      {
+        "admissible": true,
+        "blocked_by": [],
+        "fan_in_below_block": true,
+        "link": "J-SIG",
+        "state": "middle",
+        "top_centreline_z_mm": 94.861945,
+        "travel_mm": 5
+      },
+      {
+        "admissible": true,
+        "blocked_by": [],
+        "fan_in_below_block": true,
+        "link": "J-SIG",
+        "state": "middle",
+        "top_centreline_z_mm": 96.111945,
+        "travel_mm": 7.5
+      },
+      {
+        "admissible": true,
+        "blocked_by": [],
+        "fan_in_below_block": true,
+        "link": "J-SIG",
+        "state": "middle",
+        "top_centreline_z_mm": 97.361945,
+        "travel_mm": 10
+      },
+      {
+        "admissible": true,
+        "blocked_by": [],
+        "fan_in_below_block": true,
+        "link": "J-SIG",
+        "state": "middle",
+        "top_centreline_z_mm": 98.611945,
+        "travel_mm": 12.5
+      },
+      {
+        "admissible": true,
+        "blocked_by": [],
+        "fan_in_below_block": true,
+        "link": "J-SIG",
+        "state": "middle",
+        "top_centreline_z_mm": 99.861945,
+        "travel_mm": 15
+      },
+      {
+        "admissible": false,
+        "blocked_by": [
+          "cap"
+        ],
+        "fan_in_below_block": true,
+        "link": "J-SIG",
+        "state": "both",
+        "top_centreline_z_mm": 107.361945,
+        "travel_mm": 15
+      },
+      {
+        "admissible": true,
+        "blocked_by": [],
+        "fan_in_below_block": true,
+        "link": "J-PWR",
+        "state": "installed",
+        "top_centreline_z_mm": 88.946983,
+        "travel_mm": 0.0
+      },
+      {
+        "admissible": true,
+        "blocked_by": [],
+        "fan_in_below_block": true,
+        "link": "J-PWR",
+        "state": "local",
+        "top_centreline_z_mm": 90.171983,
+        "travel_mm": 2.45
+      },
+      {
+        "admissible": true,
+        "blocked_by": [],
+        "fan_in_below_block": true,
+        "link": "J-PWR",
+        "state": "local",
+        "top_centreline_z_mm": 91.446983,
+        "travel_mm": 5
+      },
+      {
+        "admissible": true,
+        "blocked_by": [],
+        "fan_in_below_block": true,
+        "link": "J-PWR",
+        "state": "local",
+        "top_centreline_z_mm": 92.696983,
+        "travel_mm": 7.5
+      },
+      {
+        "admissible": true,
+        "blocked_by": [],
+        "fan_in_below_block": true,
+        "link": "J-PWR",
+        "state": "local",
+        "top_centreline_z_mm": 93.946983,
+        "travel_mm": 10
+      },
+      {
+        "admissible": true,
+        "blocked_by": [],
+        "fan_in_below_block": true,
+        "link": "J-PWR",
+        "state": "local",
+        "top_centreline_z_mm": 95.196983,
+        "travel_mm": 12.5
+      },
+      {
+        "admissible": true,
+        "blocked_by": [],
+        "fan_in_below_block": true,
+        "link": "J-PWR",
+        "state": "local",
+        "top_centreline_z_mm": 96.446983,
+        "travel_mm": 15
+      },
+      {
+        "admissible": true,
+        "blocked_by": [],
+        "fan_in_below_block": true,
+        "link": "J-PWR",
+        "state": "middle",
+        "top_centreline_z_mm": 90.171983,
+        "travel_mm": 2.45
+      },
+      {
+        "admissible": true,
+        "blocked_by": [],
+        "fan_in_below_block": true,
+        "link": "J-PWR",
+        "state": "middle",
+        "top_centreline_z_mm": 91.446983,
+        "travel_mm": 5
+      },
+      {
+        "admissible": true,
+        "blocked_by": [],
+        "fan_in_below_block": true,
+        "link": "J-PWR",
+        "state": "middle",
+        "top_centreline_z_mm": 92.696983,
+        "travel_mm": 7.5
+      },
+      {
+        "admissible": true,
+        "blocked_by": [],
+        "fan_in_below_block": true,
+        "link": "J-PWR",
+        "state": "middle",
+        "top_centreline_z_mm": 93.946983,
+        "travel_mm": 10
+      },
+      {
+        "admissible": true,
+        "blocked_by": [],
+        "fan_in_below_block": true,
+        "link": "J-PWR",
+        "state": "middle",
+        "top_centreline_z_mm": 95.196983,
+        "travel_mm": 12.5
+      },
+      {
+        "admissible": true,
+        "blocked_by": [],
+        "fan_in_below_block": true,
+        "link": "J-PWR",
+        "state": "middle",
+        "top_centreline_z_mm": 96.446983,
+        "travel_mm": 15
+      },
+      {
+        "admissible": false,
+        "blocked_by": [
+          "cap"
+        ],
+        "fan_in_below_block": true,
+        "link": "J-PWR",
+        "state": "both",
+        "top_centreline_z_mm": 103.946983,
+        "travel_mm": 15
+      }
+    ],
+    "status": "BOUNDED_WITHIN_STATED_ASSUMPTIONS",
+    "strength": {
+      "I_min_mm4": 62.5,
+      "allowable_load_N": 58.891187,
+      "farthest_point_mm": [
+        291.782769,
+        146.217052,
+        99.65409
+      ],
+      "grid": [
+        {
+          "load_N": 5,
+          "meets": true,
+          "peak_MPa": 13.584376
+        },
+        {
+          "load_N": 10,
+          "meets": true,
+          "peak_MPa": 27.168751
+        },
+        {
+          "load_N": 20,
+          "meets": true,
+          "peak_MPa": 54.337502
+        },
+        {
+          "load_N": 50,
+          "meets": true,
+          "peak_MPa": 135.843756
+        }
+      ],
+      "lever_mm": 67.921878,
+      "material": {
+        "name": "6061-T6, machined from extrusion",
+        "proof_min_MPa": 240,
+        "safety_factor": 1.5
+      },
+      "meets_at_planning_load": true,
+      "not_covered": [
+        "post-to-crossmember fastening and the crossmember:rear:0 / rail:rear:0 joint",
+        "channel walls, lids and sleeves under a load",
+        "the J-SIG to J-PWR channel joint",
+        "fatigue, vibration, impact"
+      ],
+      "planning_load_N": 5,
+      "post_section_mm": [
+        6.0,
+        5.0
+      ],
+      "status": "CALCULATED_CONDITIONALLY; not a physical strength result (M34-05)"
+    }
+  },
+  "status": "DESIGN_STUDY_ONLY"
+}
