@@ -676,3 +676,73 @@ architecture adoption or electrical acceptance. Next native request: NONE.
 Next bounded action: a scoped control/reference correction proposal, owner behavior
 direction only where required, and specific DIN fabrication-tolerance resolution; selection remains
 unapplied until electrical requirements are closed.
+
+## Stage25 — smallest source candidate and bounded fabrication route, 2026-10-17
+
+Continued from 88b75411 under source-only authorization. Recovered and bound the
+Stage15 owner intended-use decision: OFFSET is a continuous musical control,
+without prescribed-voltage accuracy at knob positions. Stage24's negative
+fixed-knob allocation remains historical numerical evidence, but does not establish
+post-setup failure of the fixed 2 mV calibrated target. This clarification supersedes
+any broader implication in the Stage24 work note/review; no historical bytes or
+values were rewritten. The separate 1 mV same-setting load criterion remains.
+
+Prepared an unapplied one-package candidate, RV1308 Bourns
+PTV09A-4020F-B104 → PTV09A-4020F-B103, 100 kΩ → 10 kΩ, with all pin/net/NC,
+placement and retained unit metadata preserved. Kept 1 kΩ/10 MΩ/10 nF and all
+active loops. Nominal maximum loading becomes 0.797 mV rather than 5.094 mV,
+center 1% settling 0.161 rather than 1.194 ms, track current 1 rather than 0.1 mA,
+and dissipation 10 rather than 1 mW. Sixteen component corners are retained.
+The faster response, increased reference-buffer load and still-open actual
+stability/thermal/contact behavior prevent treating this as unconditional improvement
+or a qualified precision fix.
+
+Recommended retaining the reference/inverter rather than changing it to cure an
+initial intercept that real baseline setup can absorb. Assessed spare matched
+network reuse: four NC changes, 100 kΩ impedance and tenfold bias sensitivity,
+no external-CV slope benefit. Distinguished full-temperature absolute bias from
+between-setup/measurement change. Assessed high-grade reference limits; manufacturer
+box-method drift is not a local temperature derivative, and typical noise/aging/
+hysteresis are not guaranteed maxima. No reference substitution/rewiring adopted.
+
+The complete allocation ledger reserves the actual CV network contribution
+(1.00005 mV at initial 25°C; 1.250078 mV for the network I-grade envelope only)
+and one shared remainder for eight disjoint setup/uncertainty/change categories.
+Missing bounds remain null; no calculated full-error pass, fitted intercept or
+zeroed unknown. The requested complete worst-case closure is not established.
+Concrete product boundary: service temperature and time after setup/power cycle,
+real setup/uncertainty protocol, and whether the lower-impedance candidate's faster
+response is wanted. Asked for the service envelope; no implicit answer assumed.
+
+Retained new raw manufacturer and JLC receipts. Exact candidate B103 C5848782 has
+Wave Soldering/Economic and Standard catalog declarations and observed stock200;
+retained REF5050AIDR C27804 and OPA4197IPWR C2057327 have SMT declarations and
+stock11697/1988 in the dated observation. No reservation, guaranteed lead time,
+order acceptance, quote, purchase or third-party contact.
+
+Resolved the DIN diameter-option comparison: current JLC documentation supports
+±0.05 mm circular-hole sizing for multilayer ENIG, 0.55–2.0 mm. At1.00 this fits
+HARTING's Ø1±0.1 interval under the proposed finished-hole interpretation. Position
+Ø0.05, female fixing holes and the drawing's board-drilling process interpretation
+remain unconfirmed. Default-process guarantee gap is not inevitable bad fit or
+proof all JLC routes fail. Prepared an unsent specification with exact drawings,
+96 contacts each, registration/fixing/process requirements and mixed SMT/THT scope.
+No arbitrary enlargement, invented PCB holes or unqualified alternate connector.
+Alternate fabrication/adapter routes were assessed as architecture/assembly choices,
+not silently qualified replacements.
+
+Stage25 includes deterministic generator/report, candidate/evidence/supplier/source
+receipts, explanatory README, unsent fabrication request and independent review.
+Focused regressions cover missing pins, rewiring, NC shorts, moved hardware,
+metadata loss, detent substitution, target relaxation, unknown-budget promotion,
+false baseline cancellation, reference-delta accounting, invalid manufacturing
+options and missing/redirected/undated source receipts. Final test/check results
+and reviewed hashes are recorded in the PR/issue checkpoint.
+
+All preexisting bytes at88b75411 except this work log remain protected. Canonical
+boards, locked placements, decision.json, KEEP_K1402_INCUMBENT, historical native
+FAIL receipts and parked PR260/277/285 remain unchanged. PR286 remains draft and
+unmerged. No native execution, consumed admission reuse, production CAD, architecture
+adoption or electrical acceptance. Next native request: NONE. Next action is the
+specific service-envelope/protocol and manufacturing-route decision above, not
+another unchanged sourcing/tolerance audit.
