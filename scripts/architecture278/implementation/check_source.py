@@ -12,9 +12,9 @@ def validate_paths(paths):
 
 
 def main():
-    # Stage28 verifies every previous byte except reviewed entrypoints against b58068fb.
+    # Stage29 verifies every previous byte except reviewed entrypoints against 0c187179.
     # Historical strict hash guards execute at that immutable commit, not against rewritten reports.
-    subprocess.run([sys.executable,str(Path(__file__).with_name('stage28_din_harness.py')),
+    subprocess.run([sys.executable,str(Path(__file__).with_name('stage29_din_column_reversal.py')),
                     '--check','--check-history','--check-review'],cwd=ROOT,check=True)
     print('PASS isolated candidate current acceptance scope; canonical bytes unchanged; native NOT RUN')
 

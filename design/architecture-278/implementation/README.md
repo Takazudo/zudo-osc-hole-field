@@ -1,3 +1,12 @@
+## Current DIN source correction candidate — Stage29
+
+[Stage29](stage29/README.md) re-reads both HARTING drawings, including their vector
+geometry. Both views look from the body toward the board, and the female fixing holes sit
+0.3 mm toward row a. It proposes the column-reversal relabeling
+`candidate_position(row, n) = Stage10_position(row, 33 − n)` for J17909/J17910. Nets stay with
+the physical contact IDs, and the hole grid and fixing holes are unchanged. NOT adopted:
+D02 stays CONFLICT_REQUIRES_DECISION, physical M-01 is NOT RUN, and no copper is bound.
+
 ## Current DIN manufacturing and harness continuation — Stage28
 
 [Stage28](stage28/README.md) turns the retained HARTING 96-contact DIN pair and the

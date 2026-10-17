@@ -902,3 +902,57 @@ Stage28 verification (local, Python 3.12.13):
   (one HIGH: a stale report.json was hidden by the test).
 - NOT RUN: regen-all.sh (KiCad), the KiCad oracle, CI (commit uses [skip ci] because
   check.yml runs native steps), simulation, fabrication output, physical and energized tests.
+
+## Stage29 — DIN column-reversal source correction candidate (local Claude Code, 2026-10-17)
+
+Continued on the owner's Mac in local Claude Code, from PR #287 HEAD
+0c1871791a866ba3de64472cac360b81f9cb90ab (Stage28; no newer commits) on the same branch.
+The PR #286 branch was not touched. Python is uv CPython 3.12.13.
+
+Both HARTING drawings were re-downloaded at 2026-10-17T11:49:51Z and 11:49:53Z. Their SHA256 matches
+the Stage5/Stage28 receipts (female 7407cda8…, male 9de9adb8…). The PDFs have no text layer.
+
+- **Vector geometry:** circle centres were extracted with PyMuPDF 1.24.10, in a scratch venv
+  that is not a repo dependency. Female rows a/b/c are at y = 315.109253 / 322.309265 /
+  329.509262 pt (y down) on a 7.2 pt = 2.54 mm pitch. The fixing holes sit at y = 321.458923
+  and x = 228.227402 / 483.345596: 90.000 mm apart and 0.299982 mm from row b toward row a.
+  The male board drillings contain only the 96 holes.
+- **Readings:** taken by eye from 220 dpi crops, which are committed under `stage29/evidence/`.
+  - Female view A: columns 32→1 left to right, rows a/b/c top to bottom, arrow A from the body
+    side.
+  - Male view B: columns 32→1, rows c/b/a, arrow B from the body side.
+
+  This settles the Stage28 open point: the offset is toward row a, so column reversal keeps
+  the fixing holes.
+
+Stage29 proposes `candidate_position(row, n) = Stage10_position(row, 33 − n)` for J17909 and
+J17910 and does not adopt it.
+- **Determinants:** become female +1 and male −1, as the views require (Stage10: −1/+1).
+- **Unchanged:** nets stay with the physical contact IDs (16 assigned, 80 NC). The hole set,
+  pitch, board planes and female fixing holes are unchanged, and the mated contacts coincide.
+- **Pin 1:** physical a1 moves to (301.54, 188.63).
+- **Rejected:** row reversal (0.6 mm hole move).
+
+Still open:
+- D02 stays CONFLICT_REQUIRES_DECISION; M-01 is NOT RUN; Q-O01 is open.
+- Unconfirmed: the meaning of the hole diameter, plating, fabricator tolerances, board
+  thickness, and mating, retention and assembly.
+
+Stage29 verification (local, Python 3.12.13):
+- 16 focused tests PASS in both normal and `-O` Python.
+- `stage29_din_column_reversal.py --check --check-cache` PASS. The venv run
+  `--check-vector --check` reproduces vector-evidence.json and the crops byte for byte.
+- `--check --check-history` PASS (exit 0, 795 s): the immutable 0c187179 replay. That replay
+  runs Stage28 check_source (which replays b58068fb: 180 historical, 17 Stage26, 12 Stage27
+  tests) and 18 Stage28 tests in normal and `-O` Python. Temporary worktrees were removed.
+- `check_source.py` PASS (exit 0, 854 s), the full entrypoint including the replay above and `--check-review`.
+- `pnpm check` and `pnpm circuit:check` PASS; `git diff --check` is clean.
+- Independent review is PASS_SOURCE_REVIEW_ONLY, with no MEDIUM/HIGH findings and four LOW
+  notes.
+- NOT RUN:
+  - regen-all.sh (KiCad), the KiCad oracle and ERC/DRC
+  - CI: the commit uses [skip ci]
+  - simulation and fabrication output
+  - physical M-01 and energized tests
+
+No supplier contact, order, upload, adoption or merge took place. Native request: NONE.
