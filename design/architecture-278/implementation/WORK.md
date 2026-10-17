@@ -797,3 +797,48 @@ Stage26 integration verification: immutable f30d653e full source reproduction an
 68-line inventory, no schematic/placement binding). Stage26 17 normal and 17
 optimized regression tests, deterministic regeneration/cache hashes and independent
 source review PASS. These are source checks only; native and physical remain NOT RUN.
+
+## Stage27 — existing20k HF trim candidate and analytical calibration boundary
+
+Continued from686cc59a on the owner's bounded source-only request. Selected Bourns
+TC33X-2-203E / JLC C720648 for existing RVO1109 HF_TRIM in a separate complete
+source inventory. Manufacturer PDF and exact JLC page were downloaded with headers;
+dated hashes, exact identities, locators and parsed catalog observation retained.
+No canonical inventory, CAD, symbol, footprint, placement or historical report edit.
+The original250-package/806-pin/329-unit graph is preserved; only RVO1109's three
+identity attributes change. Stage26's118-reference/561-pin/154-unit A01 inventory
+remains byte-identical. Current candidate identity gap closes, not order readiness.
+
+Reviewed the same -2 rotational-stop top-adjustment geometry, pin2 wiper and
+unchanged HF/linear/ground mapping. Existing rear-facing axis and6mm tool reservation
+remain. Manufacturer1.7mm cross-slot tool, force limit, open-frame processing and
+limited rotation-cycle evidence remain conditional; actual rear approach, support,
+assembly sequence and installed fit require physical qualification. Bourns0.15W
+at70C and JLC100mW are both retained, not silently reconciled into a lot guarantee.
+
+Analytical source work establishes15–25k total track, finite endpoint limitations,
+nominal BASE current equivalence and SCALE/RZ series ranges. HF KCL includes the
+1.2M reference injection and core input, with470ohm/10nF dynamics retained. Segment
+power accounts for wiper injection. No unloaded-divider hertz/voltage coverage,
+measured tracking, guaranteed lot reach or new precision requirement is inferred.
+Existing BASE/SCALE/HF and front TUNE/FINE roles remain distinct; no controls added.
+
+DIN/wiring continuation reuses the completed Stage25 manufacturing audit. The exact
+remaining questions are finished/drill interpretation, positional datum/zone across
+96 contacts, female fixing holes, seating/thickness/registration and mixed-assembly
+process/inspection. Recommend an assembler-completed documented harness and first
+check the exact drawing against the chosen precision process; no guessed wire
+lengths or connector adapter adoption. No external contact, quote, order or purchase.
+
+Concrete stopping boundary: installed rear-access/process acceptance and physical
+calibration coverage of the existing controls on an assembled oscillator. Native
+request NONE; no consumed admission, native execution, production CAD, architecture
+adoption or electrical acceptance. Canonical boards, locked placements, decision.json,
+KEEP_K1402_INCUMBENT and historical FAIL evidence remain protected; PR286 stays draft.
+
+Stage27 verification:12 focused tests in normal and optimized Python PASS;
+deterministic inventory/report, cache replay, protected paths and independent review
+bindings PASS. Full immutable686cc59a source reproduction including180 historical
+and17 Stage26 regressions PASS; temporary worktrees cleaned. `pnpm check` and
+`pnpm circuit:check` PASS with manual68-line inventory,0 declared placements and
+no schematic/placement binding. Final committed checks/hashes are in PR/issue receipts.

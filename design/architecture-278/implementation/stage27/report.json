@@ -1,0 +1,214 @@
+{
+  "AO_stage26_inventory_sha256": "e5346f58746c18952af7a11279fc064a6f425d73167f28366b95e6f422e3f0ec",
+  "analytical": {
+    "HF_DC_equation": "(VHF-VW)/Rt + (12-VW)/1.2e6 = VW/Rb + Icore13",
+    "HF_transient_branch": "470 ohm series 10 nF to AGND retained; capacitor open only in DC idealization",
+    "conditions": "Nominal rails/fixed resistors and ideal source nodes for base/scale/RZ arithmetic; pot end resistance, component tolerances and loading preclude guaranteed endpoint or musical correction span. HF node voltage/core current require actual operating point.",
+    "counterfactual_example_not_operating_point": {
+      "R_HF_wiper_ohm": 10000.0,
+      "R_wiper_ground_ohm": 10000.0,
+      "core13_current_A": 0.00011,
+      "track_segment_power_W": 0.0001
+    },
+    "coverage_Hz": null,
+    "coverage_cents": null,
+    "endpoint_resistance_max_ohm_at_25k": 500,
+    "nominal_base_current_A": [
+      -5e-06,
+      5e-06
+    ],
+    "nominal_base_pitch_input_equivalence_V": [
+      -0.5,
+      0.5
+    ],
+    "nominal_ideal_RZ_series_ohm": [
+      24000,
+      34000
+    ],
+    "nominal_ideal_scale_series_ohm": [
+      1500,
+      2500
+    ],
+    "range_qualified": false,
+    "segment_power_equation_W": "(VHF-VW)^2/Rt + VW^2/Rb",
+    "track_total_ohm": [
+      15000,
+      25000
+    ],
+    "unloaded_ideal_Rth_max_ohm": 6250
+  },
+  "candidate": {
+    "adjustment_angle_deg": [
+      250,
+      290
+    ],
+    "catalog_power_W": 0.1,
+    "contact_resistance_variation_max_fraction": 0.05,
+    "frequency_coverage_Hz": null,
+    "manufacturer": "Bourns",
+    "minimum_resistance_max_fraction_TR": 0.02,
+    "mpn": "TC33X-2-203E",
+    "native": "NOT_RUN",
+    "new_controls": 0,
+    "order_ready": false,
+    "package": "TC33X-2 3 mm SMD rotational-stop top adjustment",
+    "physical_coverage": "NEEDS BENCH",
+    "pins": {
+      "1": "/O1/HF_PIN",
+      "2": "/O1/LINEAR_REF",
+      "3": "AGND"
+    },
+    "population": "EXACT_SOURCE_CANDIDATE_NOT_RELEASED",
+    "primary_power_W_at_70C": 0.15,
+    "production_CAD_applied": false,
+    "ref": "RVO1109",
+    "resistance_ohm": 20000,
+    "role": "oscillator:HF_TRIM",
+    "rotation_cycles_test": 20,
+    "rotation_test_TR_change_fraction": 0.1,
+    "shaft_push_force_less_than_N": 4.9,
+    "supplier_code": "C720648",
+    "tempco_ppm_per_C": 250,
+    "temperature_C": [
+      -40,
+      100
+    ],
+    "tolerance_fraction": 0.25,
+    "tool_cross_slot_mm": 1.7,
+    "tracking_acceptance": false,
+    "voltage_max_V": 50
+  },
+  "counts": {
+    "packages": 250,
+    "pins": 806,
+    "selected_HF_trim": 1,
+    "units": 329
+  },
+  "inventory_sha256": "364035dde51d44efb3b8dfa629ddb650c7b425f2846d810cb59927dd732806c5",
+  "native_request": "NONE",
+  "next_boundary": "Physical rear-access/process review and actual base/scale/HF adjustment coverage on an assembled oscillator. DIN questions remain exactly in stage25/fabrication-request.md; no supplier contact.",
+  "physical": "NOT_RUN",
+  "power_discrepancy": "Manufacturer 0.15 W at 70 C versus catalog 0.1 W retained; no delivered-lot rating/process or segment dissipation qualification.",
+  "preservation_baseline": "686cc59a6409e87c9df378d84661c2450a0c7e1c",
+  "retained_placement": {
+    "box_mm": [
+      31.65,
+      35.35,
+      36.95,
+      39.25
+    ],
+    "cluster": "core-timing",
+    "footprint_source": "footprints/kicad/zudo-osc-hole-field.pretty/Potentiometer_Bourns_TC33X_Vertical.kicad_mod",
+    "origin_mm": [
+      34.5,
+      37.4
+    ],
+    "pads_mm": {
+      "1": [
+        [
+          32.7,
+          36.4
+        ]
+      ],
+      "2": [
+        [
+          35.95,
+          37.4
+        ]
+      ],
+      "3": [
+        [
+          32.7,
+          38.4
+        ]
+      ]
+    },
+    "quarter_turn": 0,
+    "rear_facing": true,
+    "ref": "RVO1109",
+    "reserved_box_mm": [
+      31.5,
+      34.4,
+      37.5,
+      40.4
+    ],
+    "trim_tool_diameter_mm": 6,
+    "units": [
+      0
+    ]
+  },
+  "source_sha256": {
+    "design/architecture-278/implementation/README.md": "ca48f5de4dca7b476955c9a0a209c78e536bf871b3de3c9f2948a2181e9a432a",
+    "design/architecture-278/implementation/candidate-netlist.json": "7c238b4caa383fcc7721a1e58c1c883330d1865dea5c60e2e00fc7e6b7806913",
+    "design/architecture-278/implementation/cluster-refinement-report.json": "4a165b296e1269032a00a2626ca99b8caa17372a328c61a2107f8e20e874779e",
+    "design/architecture-278/implementation/stage25/fabrication-request.md": "692e96c4cad40437627716c7e76b0331fc24be1d8eb0af0912d7f0df48a0fd72",
+    "design/architecture-278/implementation/stage26/acceptance-report.json": "c1535d67a785e49015058d7b68db3c2a75e054c7e3e2fd23e414b231ede6987d",
+    "design/architecture-278/implementation/stage26/candidate-inventory.json": "e5346f58746c18952af7a11279fc064a6f425d73167f28366b95e6f422e3f0ec",
+    "design/architecture-278/implementation/stage27/README.md": "9262e545e27bca4396993c582a6275393b90b8e346880a1605f04f2bc19e0c83",
+    "design/architecture-278/implementation/stage27/candidate.json": "836025b17c3c76adcbb261e402044cc4c5ace4a086f2ac86ad2f570c928878ed",
+    "design/architecture-278/implementation/stage27/evidence.json": "02d1ac080e50e996c4ac77c400f746a04d4d8977037e3101ae241fac76bf170b",
+    "design/spec/modules/oscillator.py": "c83a10adb792265798ae453af4380300b6fde8d1e26afe6dca240412eb965d3e",
+    "doc/src/content/docs/architecture/osc-block-osc.mdx": "124b1e62dcb2a24491c7bd3b871e79b95cd0fe402b0643115dcfa17367928b55",
+    "footprints/kicad/zudo-osc-hole-field.pretty/Potentiometer_Bourns_TC33X_Vertical.kicad_mod": "f21f7dc38797a77839ca9a8af5f79774ea724cb1996e8e8ac8d0007831e3d851",
+    "scripts/architecture278/implementation/check_source.py": "314332ea967d6fd93daa968091a7d36bb4ea9aaf37187ee65a4ad273472b1350",
+    "scripts/architecture278/implementation/stage23_jlc.py": "2d8cf34b12ab06f4e2fc7ee3051a4d27075f7948ec68d39cb673e7192c288387",
+    "scripts/architecture278/implementation/stage25_correction.py": "1f5f8bec322f1d1269fc5ba3158b4107964f41d9000d9ac4110f0da1fc259409",
+    "scripts/architecture278/implementation/stage27_hf_trim.py": "f6531211071e7dc1d09e89c144672c3d2eccedd4ee6ebeb51210fc4e93b0177f",
+    "scripts/architecture278/implementation/test_stage27_hf_trim.py": "5f833039c1f79b599a68a3aa7d0b81329d3460f1b86f028cc1bfce73d531814d"
+  },
+  "source_values": {
+    "BASE_FEED": [
+      "1 M\u03a9",
+      "BASE_ADJ",
+      "EXPO_SUM"
+    ],
+    "BASE_TRIM": [
+      "10 k\u03a9",
+      "BASE_REFN5",
+      "BASE_ADJ",
+      "BASE_REF5"
+    ],
+    "HF_TRIM": [
+      "20 k\u03a9",
+      "HF_PIN",
+      "LINEAR_REF",
+      "AGND"
+    ],
+    "LINEAR_FILTER": [
+      "470 \u03a9",
+      "LINEAR_REF",
+      "LINEAR_FILTER"
+    ],
+    "LINEAR_REFERENCE": [
+      "1.2 M\u03a9",
+      "+12V",
+      "LINEAR_REF"
+    ],
+    "RS_FIXED": [
+      "1.5 k\u03a9",
+      "SCALE_PIN",
+      "SCALE_ADJ"
+    ],
+    "RT": [
+      "5.72 k\u03a9",
+      "SCALE2",
+      "AGND"
+    ],
+    "RZ_FIXED": [
+      "24 k\u03a9",
+      "SCALE1",
+      "RZ_TRIM"
+    ],
+    "RZ_TRIM": [
+      "10 k\u03a9",
+      "RZ_TRIM",
+      "AGND"
+    ],
+    "SCALE_TRIM": [
+      "1 k\u03a9",
+      "SCALE_ADJ",
+      "AGND"
+    ]
+  },
+  "status": "SOURCE_CANDIDATE_SELECTED_PHYSICAL_OPEN"
+}

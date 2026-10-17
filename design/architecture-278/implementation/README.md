@@ -1,3 +1,11 @@
+## Current HF-trim continuation — Stage27
+
+[Stage27](stage27/README.md) selects TC33X-2-203E / C720648 for the existing
+20 kΩ HF trim in a separate complete source candidate inventory. It closes that
+candidate identity gap while leaving measured adjustment coverage, installed rear
+access and assembly qualification open. Stage26 remains the A01–A06 acceptance
+authority; historical missing-identity statements below describe their checkpoints.
+
 # Current acceptance and source candidate — Stage26
 
 [Owner-approved A01–A06 musical utility scope](stage26/README.md) is the current
