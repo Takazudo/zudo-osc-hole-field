@@ -3,17 +3,17 @@
   "reservations": [
     {
       "box_mm": [
-        260.5,
+        256.0,
         162.65,
         271.6,
         180.35
       ],
-      "for": "A01:J-SIG:middle release (15 mm Stage10 travel)",
+      "for": "A01:J-SIG:middle hook below the carrier bottom, installed and released (2.45-15 mm, constant length), and the housing sweep",
       "id": "RV-DIP-J-SIG",
-      "reason": "the hook envelope falls to z 17.6 while the housing is withdrawn; no foreign board, part or wiring may occupy this volume",
+      "reason": "the hook envelope reaches z 17.60 at the 15 mm Stage10 travel; installed it already reaches z 32.60, below the carrier bottom z 34. No neighbouring board, part or wiring may occupy this volume",
       "status": "PROPOSAL_REQUIRES_OWNER_DECISION",
       "z_mm": [
-        17.1,
+        17.0,
         48.4
       ]
     },
@@ -29,23 +29,23 @@
       "reason": "only needed if the middle connectors are serviced with the neighbouring front boards in place; otherwise those boards must come out with the front panel",
       "status": "PROPOSAL_REQUIRES_OWNER_DECISION",
       "z_mm": [
-        2.0,
+        0.0,
         48.4
       ]
     },
     {
       "box_mm": [
-        280.5,
+        276.292893,
         167.025,
         291.6,
         180.975
       ],
-      "for": "A01:J-PWR:middle release (15 mm Stage10 travel)",
+      "for": "A01:J-PWR:middle hook below the carrier bottom, installed and released (2.45-15 mm, constant length), and the housing sweep",
       "id": "RV-DIP-J-PWR",
-      "reason": "the hook envelope falls to z 17.89 while the housing is withdrawn; no foreign board, part or wiring may occupy this volume",
+      "reason": "the hook envelope reaches z 17.89 at the 15 mm Stage10 travel; installed it already reaches z 32.89, below the carrier bottom z 34. No neighbouring board, part or wiring may occupy this volume",
       "status": "PROPOSAL_REQUIRES_OWNER_DECISION",
       "z_mm": [
-        17.392893,
+        17.292893,
         48.4
       ]
     },
@@ -61,7 +61,7 @@
       "reason": "only needed if the middle connectors are serviced with the neighbouring front boards in place; otherwise those boards must come out with the front panel",
       "status": "PROPOSAL_REQUIRES_OWNER_DECISION",
       "z_mm": [
-        2.0,
+        0.0,
         48.4
       ]
     },
@@ -69,32 +69,32 @@
       "for": "guide:R2:leg+",
       "foreign_part": "SW1501",
       "id": "RV-GUIDE-R2-SW1501",
-      "max_rear_side_height_mm": 17.0,
-      "max_top_z_mm": 38.6,
+      "max_rear_side_height_mm": 16.8,
+      "max_top_z_mm": 38.4,
       "status": "REQUIREMENT_ON_FOREIGN_DESIGN"
     },
     {
       "for": "J-PWR run under A01-middle",
       "foreign_part": "SW1401",
       "id": "RV-RUN-SW1401",
-      "max_rear_side_height_mm": 20.992893,
-      "max_top_z_mm": 42.592893,
+      "max_rear_side_height_mm": 20.792893,
+      "max_top_z_mm": 42.392893,
       "status": "REQUIREMENT_ON_FOREIGN_DESIGN"
     },
     {
       "for": "J-PWR run under A01-middle",
       "foreign_part": "SW1501",
       "id": "RV-RUN-SW1501",
-      "max_rear_side_height_mm": 20.992893,
-      "max_top_z_mm": 42.592893,
+      "max_rear_side_height_mm": 20.792893,
+      "max_top_z_mm": 42.392893,
       "status": "REQUIREMENT_ON_FOREIGN_DESIGN"
     },
     {
       "for": "J-PWR run under A01-middle",
       "foreign_part": "SW1601",
       "id": "RV-RUN-SW1601",
-      "max_rear_side_height_mm": 20.992893,
-      "max_top_z_mm": 42.592893,
+      "max_rear_side_height_mm": 20.792893,
+      "max_top_z_mm": 42.392893,
       "status": "REQUIREMENT_ON_FOREIGN_DESIGN"
     }
   ],
@@ -222,30 +222,31 @@
     }
   ],
   "toggle_rear_bound": {
-    "bushing_tip_z_mm": -1.65,
+    "bushing_tip_z_max_mm": -3.15,
     "class": "DESIGN_ASSUMPTION derived from S-DW2-2MS3",
     "conditions": [
       "exact MPN gate OPEN (-5 drawing vs unsuffixed lock MPN)",
       "panel-bushing mounting with the front nut fully engaged",
       "no foreign wiring, PCB or connector behind the terminals (UNKNOWN)"
     ],
-    "shoulder_z_max_mm": 4.19,
-    "terminal_tip_z_max_mm": 16.63
+    "panel_front_z_mm": -2.0,
+    "shoulder_z_max_mm": 2.69,
+    "terminal_tip_z_max_mm": 15.13
   },
   "toggle_vs_requirement": {
     "SW1401": {
-      "drawing_bound_z_mm": 16.63,
-      "required_max_top_z_mm": 42.592893,
+      "drawing_bound_z_mm": 15.13,
+      "required_max_top_z_mm": 42.392893,
       "satisfied_if_conditions_hold": true
     },
     "SW1501": {
-      "drawing_bound_z_mm": 16.63,
-      "required_max_top_z_mm": 42.592893,
+      "drawing_bound_z_mm": 15.13,
+      "required_max_top_z_mm": 42.392893,
       "satisfied_if_conditions_hold": true
     },
     "SW1601": {
-      "drawing_bound_z_mm": 16.63,
-      "required_max_top_z_mm": 42.592893,
+      "drawing_bound_z_mm": 15.13,
+      "required_max_top_z_mm": 42.392893,
       "satisfied_if_conditions_hold": true
     }
   },
@@ -261,7 +262,7 @@
       "id": "U-FRONT",
       "status": "UNKNOWN_NOT_FREE",
       "z_mm": [
-        2.0,
+        0.0,
         34.0
       ]
     },

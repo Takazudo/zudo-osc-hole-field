@@ -25,8 +25,6 @@ STEP=s31.STEP_MM
 CLASSES={'MAKER_DOC','EXISTING_DESIGN','DESIGN_ASSUMPTION','UNCONFIRMED'}
 MAKER_AUTH={'MAKER_PRIMARY','MAKER_MIRROR','FABRICATOR_PRIMARY','SUPPLIER_PRIMARY'}
 GENERATED=('model.json','envelope.json','analysis.json','neighbour.json','report.json','summary.md','envelope.svg')
-# A01-middle mount line used for the bow model: M1 (236,146) to M3 (236,289), Stage10 mounts.
-BOW_SPAN_Y=(146.0,289.0)
 RAIL_TIP_Y=274.0
 RAIL_ROOT_Y=142.0
 
@@ -53,7 +51,7 @@ def classed(name,p,src):
     need(p.get('class') in CLASSES,'value class must be one of '+'/'.join(sorted(CLASSES))+': '+name)
     for sid in p.get('sources',[]):need(sid in src,'unknown source '+sid+' for '+name)
     c=p['class'];auth={src[s]['authority'] for s in p.get('sources',[])}
-    if c=='MAKER_DOC':need(auth&MAKER_AUTH,'MAKER_DOC value without a maker document: '+name)
+    if c=='MAKER_DOC':need({src[s]['authority'] for s in p.get('sources',[]) if not str(src[s].get('availability','')).startswith('NOT_')}&MAKER_AUTH,'MAKER_DOC value without an obtained maker document: '+name)
     if c=='EXISTING_DESIGN':need('REPO_DESIGN' in auth,'EXISTING_DESIGN value without a repository source: '+name)
     if c=='UNCONFIRMED':need(p.get('value') is None,'UNCONFIRMED value must stay null: '+name)
     if c=='DESIGN_ASSUMPTION':need(p.get('note') or p.get('derivation') or name.endswith('_sensitivity_mm') or name.endswith('_sensitivity_N'),'DESIGN_ASSUMPTION needs a stated basis: '+name)
@@ -81,6 +79,9 @@ def validate_inputs(data):
     need({k:val(P,'round_bundle_factor')[k] for k in LINKS}=={k:p31['round_bundle_factor'][k] for k in LINKS},'bundle factors match Stage31')
     need(val(P,'design_bend_radius_mm')==p31['design_bend_radius_mm']['value'],'design bend radius carried from Stage31')
     need(val(P,'straight_lead_mm')==p31['straight_lead_mm']['value'],'straight lead carried from Stage31')
+    T=inp['tolerances'];need(T['pcb_bow_fraction']['value']>=0.0075,'PCB bow allowance is not reduced below the 0.75 % limit')
+    need(val(P,'strength_safety_factor')>=1.5,'strength safety factor is not reduced')
+    need(val(P,'panel_rear_z_mm')==0.0 and val(P,'panel_front_z_mm')==-2.0,'panel datum follows Stage10 (rear z 0, front z -2)')
     c=inp['candidates']['B32']
     for ref in c['header_moves']:need(ref in a['changeable']['header_refs'],'header move outside the approval '+ref)
     for gd in c['guides']:need(gd['obstacle'] in a['changeable']['carrier_local_shape'],'guide outside the approved carrier shape '+gd['id'])
@@ -91,8 +92,10 @@ def validate_inputs(data):
 def bundle_r(P,link):return val(P,'wire_od_max_mm')*val(P,'round_bundle_factor')[link]/2
 
 
-def bow(P,T,y):
-    y0,y1=BOW_SPAN_Y;L=y1-y0
+def bow(P,T,y,case=None):
+    """A01-middle bow toward the carrier: half sine of 0.75 % over a y span, or a uniform value (sensitivity case)."""
+    if case and 'uniform_mm' in case:return case['uniform_mm']
+    y0,y1=case['span_y_mm'] if case else T['bow_span_y_mm']['value'];L=y1-y0
     if not y0<y<y1:return 0.0
     return T['pcb_bow_fraction']['value']*L*math.sin(math.pi*(y-y0)/L)
 
@@ -142,7 +145,11 @@ def build_candidate(cid,c,data,mech,P,T):
         reliefs=c['rail_reliefs']
     obs=s31.obstacles(s31.moved_mech(mech,geo),data['lock'],p31,reliefs)
     for gg in guides:obs+=gg['bodies']
-    return {'id':cid,'geo':geo,'moved':moved,'routes':routes,'guides':guides,'reliefs':reliefs,'obs':obs,'spec':c}
+    lengths={l:design_length(geo,l,c['routes'][l],P) for l in LINKS}
+    installed={l:constant_length(geo,l,c['routes'][l],P,lengths[l]['design_length_mm'],0,(0,0)) for l in LINKS}
+    for l in LINKS:need(installed[l]['route'] is not None,'installed slack loop fits '+l)
+    return {'id':cid,'geo':geo,'moved':moved,'routes':{l:installed[l]['route'] for l in LINKS},'routes_minimum':routes,'lengths':lengths,'installed':installed,
+        'guides':guides,'reliefs':reliefs,'obs':obs,'spec':c}
 
 
 # ---------- clearance and tolerance ----------
@@ -150,44 +157,47 @@ def nearest(smp,obs,link,kinds=('known','assumed_height')):
     lo=[min(p[i] for p,_ in smp)-30 for i in range(3)];hi=[max(p[i] for p,_ in smp)+30 for i in range(3)];out=[]
     for o in obs:
         if o['link']==link or o['kind'] not in kinds or not all(o['lo'][i]<hi[i] and o['hi'][i]>lo[i] for i in range(3)):continue
-        best=None
-        for p,r in smp:
-            d=s31.box_distance(p,o['lo'],o['hi'])-r
-            if best is None or d<best[0]:best=(d,p)
-        out.append((best[0]-STEP/2,best[1],o['id']))
-    return sorted(out)
+        out.append((o,[(s31.box_distance(p,o['lo'],o['hi'])-r-STEP/2,p) for p,r in smp]))
+    return out
 
 
-def tol_stack(oid,point,P,T,rules,extra=()):
+def tol_stack(oid,point,P,T,rules,extra=(),case=None,bow_mm=None):
     rule=next(r for r in rules if oid.startswith(r['match']))
     parts=[]
     for k in list(rule['contributors'])+list(extra):
-        if k=='pcb_bow':parts.append((k,bow(P,T,point[1])))
+        if k=='pcb_bow':parts.append((k,bow(P,T,point[1],case) if bow_mm is None else bow_mm))
         else:parts.append((k,T[k]['value']))
     return {'contributors':{k:r6(v) for k,v in parts},'worst_case_mm':r6(sum(v for _,v in parts)),'rss_mm':r6(math.sqrt(sum(v*v for _,v in parts)))}
 
 
-def robust_rows(cand,smp,P,T,rules):
+def robust_rows(cand,smp,P,T,rules,case=None):
+    """Per obstacle, the sample that minimises clearance - margin - worst-case tolerance at that sample; strap tops take the largest bow over the strap and latch-tab footprint."""
     m=val(P,'placement_margin_mm');k4=val(P,'robust_spare_mm');rows=[]
+    def row(link,oid,p,d,ts,frm=None):
+        r={'link':link,'obstacle':oid,'at_mm':p6(p),'sampled_clearance_mm':r6(d),'tolerance':ts,'spare_after_margin_mm':r6(d-m),
+            'robust_spare_mm':r6(d-m-ts['worst_case_mm']),'robust_spare_rss_mm':r6(d-m-ts['rss_mm']),'meets_K4':d-m-ts['worst_case_mm']>=k4-1e-12}
+        if frm:r['from']=frm
+        return r
     for link in LINKS:
-        for d,p,oid in nearest(smp[link],cand['obs'],link):
-            if d>m+3:continue
-            ts=tol_stack(oid,p,P,T,rules)
-            rows.append({'link':link,'obstacle':oid,'at_mm':p6(p),'sampled_clearance_mm':r6(d),'tolerance':ts,'spare_after_margin_mm':r6(d-m),
-                'robust_spare_mm':r6(d-m-ts['worst_case_mm']),'robust_spare_rss_mm':r6(d-m-ts['rss_mm']),'meets_K4':d-m-ts['worst_case_mm']>=k4-1e-12})
+        for o,ds in nearest(smp[link],cand['obs'],link):
+            if min(d for d,_ in ds)>m+3:continue
+            best=min(((d-tol_stack(o['id'],p,P,T,rules,case=case)['worst_case_mm'],d,p) for d,p in ds),key=lambda x:x[0])
+            rows.append(row(link,o['id'],best[2],best[1],tol_stack(o['id'],best[2],P,T,rules,case=case)))
     for gg in cand['guides']:
-        strap=next(b for b in gg['bodies'] if b['id'].endswith(':strap'))
-        for o in cand['obs']:
-            if not o['id'].startswith('board:A01-middle') or not all(o['lo'][i]<strap['hi'][i]+5 and o['hi'][i]>strap['lo'][i]-5 for i in range(3)):continue
-            d=s31.box_distance_boxes(strap['lo'],strap['hi'],o['lo'],o['hi']);ts=tol_stack(o['id'],gg['centre_mm'],P,T,rules,('saddle_seat_mm','strap_thickness_mm'))
-            rows.append({'link':gg['link'],'obstacle':o['id'],'from':strap['id'],'at_mm':gg['centre_mm'],'sampled_clearance_mm':r6(d),'tolerance':ts,'spare_after_margin_mm':r6(d-m),
-                'robust_spare_mm':r6(d-m-ts['worst_case_mm']),'robust_spare_rss_mm':r6(d-m-ts['rss_mm']),'meets_K4':d-m-ts['worst_case_mm']>=k4-1e-12})
-    return sorted(rows,key=lambda r:(r['robust_spare_mm'],r['link'],r['obstacle']))
+        strap=next(b for b in gg['bodies'] if b['id'].endswith(':strap'));tab=next(b for b in gg['bodies'] if b['id'].endswith(':latch'))
+        y0=min(strap['lo'][1],tab['lo'][1]);y1=max(strap['hi'][1],tab['hi'][1]);n=int(round((y1-y0)/0.05))
+        bw=max(bow(P,T,y0+i*(y1-y0)/n,case) for i in range(n+1))
+        for b in (strap,tab):
+            for o in cand['obs']:
+                if not o['id'].startswith('board:A01-middle') or not all(o['lo'][i]<b['hi'][i]+5 and o['hi'][i]>b['lo'][i]-5 for i in range(3)):continue
+                d=s31.box_distance_boxes(b['lo'],b['hi'],o['lo'],o['hi'])
+                rows.append(row(gg['link'],o['id'],gg['centre_mm'],d,tol_stack(o['id'],gg['centre_mm'],P,T,rules,('saddle_seat_mm','saddle_seating_mm','strap_bore_mm','strap_thickness_mm'),case,bw),b['id']))
+    return sorted(rows,key=lambda r:(r['robust_spare_mm'],r['link'],r['obstacle'],r.get('from','')))
 
 
 # ---------- states ----------
 def release_shape(geo,link,spec,P,t,which):
-    """Bend-feasible release surrogate (Stage31 rule) for a travel t: the nearest loop-top/hook waypoint pair moves just enough to keep the lead and an r bend."""
+    """Bend-feasible release surrogate (Stage31 rule) for a travel t: the nearest loop-top/hook waypoint pair moves just enough to keep the lead and an r bend. Used only to size the design length."""
     rad=val(P,'design_bend_radius_mm');lead=val(P,'straight_lead_mm');w=[list(map(float,x)) for x in spec['waypoints_mm']];dl,dm=which
     for flag,idx,ref in ((dl,(0,1),ENDS[link][0]),(dm,(-1,-2),ENDS[link][1])):
         if not flag:continue
@@ -195,6 +205,34 @@ def release_shape(geo,link,spec,P,t,which):
         move=max(0.0,ax*(e+ax*(lead+rad)-w[idx[0]][2]))
         for i in idx:w[i][2]+=ax*move
     return s31.fillet_route(s31.route_vertices(geo,link,{'waypoints_mm':w},(t*dl,t*dm)),rad,(lead,lead))
+
+
+def design_length(geo,link,spec,P):
+    """Design length = minimum installed length + largest Stage31-rule release extra at the Stage10 travel + Stage10 service slack, rounded up to 1 mm."""
+    mh=2*val(P,'gh_mated_height_mm');t=val(P,'release_travel_mm');L0=release_shape(geo,link,spec,P,0,(0,0))['length_mm']+mh
+    extra=max(release_shape(geo,link,spec,P,t,w)['length_mm']+mh-L0 for w in ((0,1),(1,0),(1,1)))
+    return {'minimum_installed_mm':L0,'release_extra_mm':extra,'design_length_mm':math.ceil(L0+extra+val(P,'service_slack_mm'))}
+
+
+def constant_length(geo,link,spec,P,Ld,t,which):
+    """Route that keeps the design length: the hook follows the withdrawn middle housing (Stage31 rule) and the local slack loop (waypoints 0-1, both legs vertical) rises or falls by half the length difference."""
+    rad=val(P,'design_bend_radius_mm');lead=val(P,'straight_lead_mm');mh=2*val(P,'gh_mated_height_mm');dl,dm=which
+    w=[list(map(float,x)) for x in spec['waypoints_mm']];need(w[0][2]==w[1][2] and w[1][:2]==w[2][:2],'local slack loop has two vertical legs '+link)
+    g=geo[ENDS[link][1]]
+    if dm:
+        e=g['exit_mm'][2]+g['axis']*t;move=max(0.0,g['axis']*(e+g['axis']*(lead+rad)-w[-1][2]))
+        for i in (-1,-2):w[i][2]+=g['axis']*move
+    gl=geo[ENDS[link][0]];zmin=gl['exit_mm'][2]+gl['axis']*t*dl+lead+rad;z0=w[0][2];pre=max(0.0,zmin-z0);w[0][2]+=pre;w[1][2]+=pre
+    base=s31.fillet_route(s31.route_vertices(geo,link,{'waypoints_mm':w},(t*dl,t*dm)),rad,(lead,lead))['length_mm']+mh
+    d=(Ld-base)/2;w[0][2]+=d;w[1][2]+=d;h=w[0][2]-z0;short=w[0][2]<zmin-1e-9
+    r=None if short else s31.fillet_route(s31.route_vertices(geo,link,{'waypoints_mm':w},(t*dl,t*dm)),rad,(lead,lead))
+    if r is not None:need(abs(r['length_mm']+mh-Ld)<1e-6,'constant-length release keeps the design length '+link)
+    return {'route':r,'loop_top_z_mm':r6(w[0][2]),'loop_rise_mm':r6(h),'slack_short':short,'loop_min_z_mm':r6(zmin)}
+
+
+def middle_side_length(route,x_guide):
+    """Arc length of the route beyond the guide centre (x > x_guide); its change between states is the slide through the closed guide."""
+    d=route['dense'];return sum(s31.norm(s31.sub(b,a)) for a,b in zip(d,d[1:]) if a[0]>x_guide and b[0]>x_guide)
 
 
 def solid_gaps(smp,solids):
@@ -211,26 +249,31 @@ def solids_hit(smp,solids,margin):
 
 
 def states(cand,data,mech,P):
-    m=val(P,'placement_margin_mm');scen=data['input']['neighbour_scenarios'];base_len={};out={}
+    """Installed at design length, then every release case at constant length; the guide slide equals the change of the local loop."""
+    m=val(P,'placement_margin_mm');scen=data['input']['neighbour_scenarios'];p31=data['s31']['input']['parameters'];out={}
     for link in LINKS:
-        spec=cand['spec']['routes'][link];bund=s31.bundle(data['s31']['input']['parameters'],link,'ROUND_BUNDLE');rb=bund['round_radius_mm']
-        inst=cand['routes'][link];L0=inst['length_mm']+2*val(P,'gh_mated_height_mm');base_len[link]=L0;rows=[]
+        spec=cand['spec']['routes'][link];bund=s31.bundle(p31,link,'ROUND_BUNDLE');rb=bund['round_radius_mm'];Ld=cand['lengths'][link]['design_length_mm']
+        inst=cand['installed'][link];rows=[]
         for t in val(P,'release_travel_sensitivity_mm'):
             for name,which in (('middle',(0,1)),('local',(1,0)),('both',(1,1))):
-                r=release_shape(cand['geo'],link,spec,P,t,which);smp=s31.samples(r,bund)
-                known,depth=s31.evaluate_route(smp,cand['obs'],m,link)
-                low=min(p[2] for p in r['dense'])
-                rows.append({'travel_mm':t,'withdrawn':name,'extra_length_mm':r6(r['length_mm']+2*val(P,'gh_mated_height_mm')-L0),'lowest_centreline_z_mm':r6(low),'envelope_bottom_z_mm':r6(low-rb),
-                    'keep_outs_below_margin':sorted(k for k,v in known.items() if v<m),'foreign_depth_bounds':{k:v['max_foreign_top_z_mm'] for k,v in depth.items()},
-                    'neighbour_conflicts':{sc['id']:solids_hit(smp,sc['solids'],m) for sc in scen},
-                    'neighbour_min_gap_mm':{sc['id']:r6(min(solid_gaps(smp,sc['solids']).values())) for sc in scen}})
-        mid=[x for x in rows if x['withdrawn']=='middle']
-        out[link]={'installed_length_mm':r6(L0),'release':rows,
+                c=constant_length(cand['geo'],link,spec,P,Ld,t,which);ref=release_shape(cand['geo'],link,spec,P,t,which)['length_mm']-cand['lengths'][link]['minimum_installed_mm']+2*val(P,'gh_mated_height_mm')
+                xg=next((g['centre_mm'][0] for g in cand['guides'] if g['link']==link),245.0)
+                row={'travel_mm':t,'withdrawn':name,'stage31_rule_extra_mm':r6(ref),'loop_top_z_mm':c['loop_top_z_mm'],'loop_min_z_mm':c['loop_min_z_mm'],'slack_short':c['slack_short'],
+                    'slide_through_guide_mm':r6(middle_side_length(c['route'],xg)-middle_side_length(inst['route'],xg)) if c['route'] is not None else None}
+                if c['route'] is not None:
+                    r=c['route'];smp=s31.samples(r,bund);known,depth=s31.evaluate_route(smp,cand['obs'],m,link);low=min(p[2] for p in r['dense'])
+                    row.update({'lowest_centreline_z_mm':r6(low),'envelope_bottom_z_mm':r6(low-rb),'keep_outs_below_margin':sorted(k for k,v in known.items() if v<m),
+                        'foreign_depth_bounds':{k:{'max_foreign_top_z_mm':v['max_foreign_top_z_mm'],'max_rear_side_height_mm':v['max_rear_side_height_mm']} for k,v in depth.items()},
+                        'neighbour_conflicts':{sc['id']:solids_hit(smp,sc['solids'],m) for sc in scen},
+                        'neighbour_min_gap_mm':{sc['id']:r6(min(solid_gaps(smp,sc['solids']).values())) for sc in scen}})
+                rows.append(row)
+        mid=[x for x in rows if x['withdrawn']=='middle' and not x['slack_short']]
+        out[link]={'design_length_mm':Ld,'minimum_installed_mm':r6(cand['lengths'][link]['minimum_installed_mm']),'installed_loop_top_z_mm':inst['loop_top_z_mm'],'release':rows,
             'max_travel_clear_of':{sc['id']:max([x['travel_mm'] for x in mid if not x['neighbour_conflicts'][sc['id']]],default=None) for sc in scen},
-            'release_15mm_known_clear':all(not x['keep_outs_below_margin'] for x in rows if x['travel_mm']==15)}
+            'release_15mm_known_clear':all(not x['slack_short'] and not x['keep_outs_below_margin'] for x in rows if x['travel_mm']==15)}
     env=s31.core_envelope(mech);core=[]
     for link in LINKS:
-        smp=s31.samples(cand['routes'][link],s31.bundle(data['s31']['input']['parameters'],link,'ROUND_BUNDLE'))
+        smp=s31.samples(cand['routes'][link],s31.bundle(p31,link,'ROUND_BUNDLE'))
         core.append(min(s31.box_distance(p,env['lo'],env['hi'])-r for p,r in smp)-STEP/2)
     for gg in cand['guides']:
         for b in gg['bodies']:core.append(s31.box_distance_boxes(b['lo'],b['hi'],env['lo'],env['hi']))
@@ -238,29 +281,37 @@ def states(cand,data,mech,P):
     return out
 
 
-def latch_access(cand,data,P):
-    """Free distance from each long face of the moved middle housings to known obstacles, and the panel-side tool corridor below each housing."""
+def latch_access(cand,data,P,smp):
+    """Free distance from each long face of the moved middle housings to rigid obstacles (incl. all guides) and, separately, to cable envelopes; and the panel-side tool corridor below each housing."""
     m=val(P,'placement_margin_mm');tool=val(P,'flat_tool_mm');zpanel=val(P,'panel_rear_z_mm');out={}
     for link in LINKS:
-        g=cand['geo'][ENDS[link][1]];bx=g['box_mm'];z0,z1=g['exit_mm'][2],g['face_z_mm'];axis=0 if g['pin_row_axis']=='y' else 1;faces={}
+        g=cand['geo'][ENDS[link][1]];bx=g['box_mm'];z0,z1=g['exit_mm'][2],g['face_z_mm'];axis=0 if g['pin_row_axis']=='y' else 1;other=1-axis;faces={}
         for sgn in (-1,1):
-            face=bx[2] if sgn>0 else bx[0]
-            if axis==1:face=bx[3] if sgn>0 else bx[1]
+            face=[bx[0],bx[1],bx[2],bx[3]][axis+(2 if sgn>0 else 0)]
             best=None
             for o in cand['obs']:
-                if o['link']==link or o['kind']=='unknown_depth':continue
-                lo,hi=o['lo'],o['hi'];other=1-axis
+                if (o['link']==link and not o['id'].startswith('guide:')) or o['kind']=='unknown_depth':continue
+                lo,hi=o['lo'],o['hi']
                 if not(lo[other]<bx[other+2] and hi[other]>bx[other] and lo[2]<z1 and hi[2]>z0):continue
                 d=(lo[axis]-face) if sgn>0 else (face-hi[axis])
                 if d>=-1e-9 and (best is None or d<best[0]):best=(d,o['id'])
-            fd=[o['id'].split(':',1)[1] for o in cand['obs'] if o['kind']=='unknown_depth' and (o['lo'][axis]-face if sgn>0 else face-o['hi'][axis])>=0 and (o['lo'][axis]-face if sgn>0 else face-o['hi'][axis])<10 and o['lo'][1-axis]<bx[3-axis] and o['hi'][1-axis]>bx[1-axis]]
-            faces[('+' if sgn>0 else '-')+'xy'[axis]]={'free_to_known_mm':r6(best[0]) if best else None,'nearest_known':best[1] if best else None,'foreign_depth_within_10mm':sorted(fd),
-                'flat_tool_fits_known':best is None or best[0]>=tool[0]+m}
+            cab=None
+            for l2 in LINKS:
+                for p,r in smp[l2]:
+                    if bx[0]-1e-9<=p[0]<=bx[2]+1e-9 and bx[1]-1e-9<=p[1]<=bx[3]+1e-9:continue
+                    if not(bx[other]-r<p[other]<bx[other+2]+r and z0-r<p[2]<z1+r):continue
+                    d=((p[axis]-r)-face) if sgn>0 else (face-(p[axis]+r))
+                    if d>=-1e-9 and (cab is None or d<cab[0]):cab=(d,l2)
+            fd=[o['id'].split(':',1)[1] for o in cand['obs'] if o['kind']=='unknown_depth' and 0<=((o['lo'][axis]-face) if sgn>0 else (face-o['hi'][axis]))<10 and o['lo'][other]<bx[other+2] and o['hi'][other]>bx[other]]
+            free=min([x[0] for x in (best,cab) if x],default=None)
+            faces[('+' if sgn>0 else '-')+'xy'[axis]]={'free_to_rigid_mm':r6(best[0]) if best else None,'nearest_rigid':best[1] if best else None,
+                'free_to_cable_mm':r6(cab[0]) if cab else None,'nearest_cable':cab[1] if cab else None,'foreign_depth_within_10mm':sorted(fd),
+                'flat_tool_fits':free is None or free>=tool[0]+m}
         col_lo=[bx[0],bx[1],zpanel];col_hi=[bx[2],bx[3],z0];hits=[o['id'] for o in cand['obs'] if o['link']!=link and o['kind']!='unknown_depth' and all(o['lo'][i]<col_hi[i] and o['hi'][i]>col_lo[i] for i in range(3))]
         fdc=[o['id'].split(':',1)[1] for o in cand['obs'] if o['kind']=='unknown_depth' and o['lo'][0]<col_hi[0] and o['hi'][0]>col_lo[0] and o['lo'][1]<col_hi[1] and o['hi'][1]>col_lo[1]]
         out[link]={'housing_box_mm':bx,'housing_z_mm':[z0,z1],'latch_faces':faces,'latch_side':'UNCONFIRMED (both long faces evaluated)',
             'panel_side_corridor':{'box_mm':[bx[0],bx[1],bx[2],bx[3]],'z_mm':[zpanel,z0],'known_hits':sorted(hits),'foreign_xy_overlaps':sorted(fdc),
-                'crosses':'the foreign volume z 2-34, whose boards and parts are not designed (UNKNOWN)'},
+                'crosses':f'the neighbouring volume z {zpanel:g}-34, whose boards and parts are not designed (UNKNOWN)'},
             'straight_bundle_below_housing_mm':val(P,'straight_lead_mm'),'grip_length_needed_mm':None,
             'finger_operation':'NOT_DETERMINED; a CAD gap is not finger operability (M32-03)'}
     for gg in cand['guides']:
@@ -268,7 +319,8 @@ def latch_access(cand,data,P):
         lo=[tab['lo'][0],tab['lo'][1],val(P,'panel_rear_z_mm')];hi=[tab['hi'][0],tab['hi'][1],tab['lo'][2]]
         hits=[o['id'] for o in cand['obs'] if o['kind']!='unknown_depth' and not o['id'].startswith('guide:'+gg['id']) and all(o['lo'][i]<hi[i] and o['hi'][i]>lo[i] for i in range(3))]
         fd=[o['id'].split(':',1)[1] for o in cand['obs'] if o['kind']=='unknown_depth' and o['lo'][0]<hi[0] and o['hi'][0]>lo[0] and o['lo'][1]<hi[1] and o['hi'][1]>lo[1]]
-        out['strap:'+gg['id']]={'tab_box_mm':tab['lo'][:2]+tab['hi'][:2],'corridor_z_mm':[lo[2],r6(hi[2])],'known_hits':sorted(hits),'foreign_xy_overlaps':sorted(fd),
+        out['strap:'+gg['id']]={'tab_box_mm':tab['lo'][:2]+tab['hi'][:2],'panel_side_corridor_z_mm':[lo[2],r6(hi[2])],'known_hits':sorted(hits),'foreign_xy_overlaps':sorted(fd),
+            'front_access':'BLOCKED' if hits or fd else 'CLEAR_OF_KNOWN','reopen':'with A01-middle removed (+z), rail top exposed',
             'note':'opened only for harness replacement; normal middle unmating slides the bundle through the closed guide'}
     return out
 
@@ -325,13 +377,13 @@ def strength(cand,data,mech,P):
         allow={d:r6(Sy/SF*I/(c*kt*lever)) for d,I,c in (('vertical',sec['I_vertical_mm4'],sec['c_vertical_mm']),('lateral',sec['I_lateral_mm4'],sec['c_lateral_mm']))}
         notches.append({'id':nt['id'],'y_mm':nt['y_mm'],'depth_mm':r6(depth),'remaining_mm':r6(h),'net_section':{k:r6(v) for k,v in sec.items()},'lever_mm':r6(lever),
             'Kt_inglis_at_design_radius':r6(kt),'allowable_tip_load_N':allow,'grid':rows})
-    P0=val(P,'planning_load_N')
+    P0=val(P,'planning_load_N');need(P0==f['planning_model']['load_N'],'planning load equals the Stage10 carrier planning load')
     def tip(withn):
         n=int((RAIL_TIP_Y-RAIL_ROOT_Y)/0.05);dy=(RAIL_TIP_Y-RAIL_ROOT_Y)/n;dd=0.0
         for i in range(n):
             y=RAIL_ROOT_Y+(i+0.5)*dy;I=full['I_vertical_mm4']
             for nt in (cand['reliefs'] if withn else []):
-                if nt['y_mm'][0]<=y<=nt['y_mm'][1]:I=section(width,nt['relieved_top_z_mm']-z0,[])['I_vertical_mm4']
+                if nt['y_mm'][0]<=y<=nt['y_mm'][1]:I=next(n['net_section']['I_vertical_mm4'] for n in notches if n['id']==nt['id'])
             dd+=P0*(RAIL_TIP_Y-y)**2/(E*I)*dy
         return dd
     worst=min(min(a for a in n['allowable_tip_load_N'].values()) for n in notches) if notches else None
@@ -378,38 +430,70 @@ def evaluate(cid,c,data,mech,P,T):
     static={}
     for l in LINKS:
         known,depth=s31.evaluate_route(smp[l],cand['obs'],m,l)
-        static[l]={'installed_length_mm':r6(cand['routes'][l]['length_mm']+2*val(P,'gh_mated_height_mm')),'bends':len(cand['routes'][l]['bends']),'min_surface_clearance_mm':min(known.values()) if known else None,
+        static[l]={'installed_length_mm':r6(cand['routes'][l]['length_mm']+2*val(P,'gh_mated_height_mm')),'installed_state':'at design length, slack stored in the local loop (top z '+str(cand['installed'][l]['loop_top_z_mm'])+')',
+            'bends':len(cand['routes'][l]['bends']),'min_surface_clearance_mm':min(known.values()) if known else None,
             'nearest':list(known.items())[:6],'foreign_depth_bounds':depth}
     gap,_=s31.cable_gap(smp['J-SIG'],smp['J-PWR'])
     rob=robust_rows(cand,smp,P,T,rules)
     ccg={'gap_mm':gap,'tolerance_mm':r6(2*T['carrier_face_mm']['value']),'robust_spare_mm':r6(gap-m-2*T['carrier_face_mm']['value'])}
-    st=states(cand,data,mech,P);acc=latch_access(cand,data,P);sw=sweeps(cand,P,T);bend=bend_analysis(cand,data,P);stren=strength(cand,data,mech,P)
+    st=states(cand,data,mech,P);acc=latch_access(cand,data,P,smp);sw=sweeps(cand,P,T);bend=bend_analysis(cand,data,P);stren=strength(cand,data,mech,P)
     allow=p31['foreign_depth_cap_reference_mm']['value']-p31['foreign_pcb_rear_z_mm']['value']
     gfb=guide_foreign_bounds(cand,m)
-    worst=min([b['max_rear_side_height_mm'] for l in LINKS for b in static[l]['foreign_depth_bounds'].values()]+[b['max_rear_side_height_mm'] for b in gfb],default=None)
+    relb=[b['max_rear_side_height_mm'] for l in LINKS for x in st[l]['release'] if x['travel_mm']==val(P,'release_travel_mm') for b in x.get('foreign_depth_bounds',{}).values()]
+    worst=min([b['max_rear_side_height_mm'] for l in LINKS for b in static[l]['foreign_depth_bounds'].values()]+[b['max_rear_side_height_mm'] for b in gfb]+relb,default=None)
+    bows=bow_sensitivity(cand,smp,P,T,rules,data['input']['bow_cases'])
     crit={'S1_static_clear':all(static[l]['min_surface_clearance_mm'] is None or static[l]['min_surface_clearance_mm']>=m for l in LINKS) and gap>=m,
         'S2_robust_K4':all(r['meets_K4'] for r in rob) and ccg['robust_spare_mm']>=val(P,'robust_spare_mm')-1e-12,
         'S3_retention_modelled':bool(cand['guides']),
-        'S4_sweeps_clear':all(not v['known_overlaps'] and not v['foreign_xy_overlaps'] for v in sw.values()),
+        'S4_sweeps_clear':all(not v['known_overlaps'] and not v['foreign_xy_overlaps'] and (v['robust_spare_known_only_mm'] is None or v['robust_spare_known_only_mm']>=val(P,'robust_spare_mm')-1e-12) for v in sw.values()),
         'S5_core_clear':st['core_40mm']['clear'],
         'S6_strength_planning_load':stren['meets_at_planning_load'],
         'S7_release_15mm_known_clear':all(st[l]['release_15mm_known_clear'] for l in LINKS),
-        'S8_foreign_allowance':worst is None or worst>=allow-1e-9}
+        'S8_foreign_allowance':worst is None or worst>=allow-1e-9,
+        'S9_bend_maker_rule':bend['any_identified_wire_met']}
     open_={'bend_radius':'maker rule not met by the 5 mm route for any identified wire' if not bend['any_identified_wire_met'] else 'met',
         'release_dip':{l:st[l]['max_travel_clear_of'] for l in LINKS},'latch_side':'UNCONFIRMED','finger_operation':'NOT_DETERMINED','foreign_volume':'UNKNOWN (no board outline)'}
-    status='CONDITIONAL_WORKING_DESIGN' if all(crit.values()) else 'NOT_ROBUST_UNDER_STAGE32_CHECKS'
+    failed=[k for k,v in crit.items() if not v]
+    status='CONDITIONAL_WORKING_DESIGN' if not failed else 'CONDITIONAL_PENDING_WIRE_SELECTION' if failed==['S9_bend_maker_rule'] else 'NOT_ROBUST_UNDER_STAGE32_CHECKS'
     return cand,{'id':cid,'title':c.get('title',c.get('role')),'role':c.get('role'),'header_moves':cand['moved'],'notches':cand['reliefs'],'guides':[{k:v for k,v in g.items() if k!='bodies'} for g in cand['guides']],
         'static':static,'guide_foreign_bounds':gfb,'cable_to_cable':ccg,'robust':rob,'tightest_robust':rob[0] if rob else None,'sweeps':sw,'states':st,'access':acc,'bend':bend,'strength':stren,
-        'criteria':crit,'failed':[k for k,v in crit.items() if not v],'open_conditions':open_,'status':status,'physical':'NOT_RUN'},smp
+        'criteria':crit,'failed':failed,'bow_sensitivity':bows,'open_conditions':open_,'status':status,'physical':'NOT_RUN'},smp
+
+
+def bow_sensitivity(cand,smp,P,T,rules,cases):
+    out=[]
+    for c in cases:
+        rows=robust_rows(cand,smp,P,T,rules,c);t=rows[0]
+        out.append({'case':c['id'],'note':c['note'],'tightest':{k:t[k] for k in ('link','obstacle','robust_spare_mm')},'meets_K4':all(r['meets_K4'] for r in rows)})
+    return out
+
+
+MIDDLE_SIDE_X=249.0  # beyond rail:middle:0 (x 242-248) and the 1 mm guide overhang: the middle-end hook region
+CARRIER_BOTTOM_Z=34.0  # Stage10 middle carrier z 34-46; below it the neighbouring volume is undesigned
+
+
+def middle_envelopes(cand,P,link):
+    """(point, radius) samples of the middle-end hook for the installed state and every release case at constant length."""
+    rb=bundle_r(P,link);Ld=cand['lengths'][link]['design_length_mm'];sp=cand['spec']['routes'][link];out=[]
+    routes=[cand['routes'][link]]
+    for t in val(P,'release_travel_sensitivity_mm'):
+        for w in ((0,1),(1,1)):
+            c=constant_length(cand['geo'],link,sp,P,Ld,t,w)
+            if c['route'] is not None:routes.append(c['route'])
+    for r in routes:out+=[(p,rb) for p in r['dense'] if p[0]>MIDDLE_SIDE_X and p[2]-rb<CARRIER_BOTTOM_Z]
+    return out
 
 
 def reservations(cand,res,P):
-    """Dimensioned volumes this design needs from the undesigned neighbouring volume; proposals for the owner, not adopted."""
+    """Dimensioned volumes this design needs from the undesigned neighbouring volume: the union of the installed and release hook envelopes and the housing sweep, plus the margin. Proposals for the owner, not adopted."""
     m=val(P,'placement_margin_mm');out=[]
     for link in LINKS:
-        ref=ENDS[link][1];g=cand['geo'][ref];sw=g['sweep']['box_mm'];rel=[x for x in res['states'][link]['release'] if x['travel_mm']==15 and x['withdrawn']=='middle'][0]
-        out.append({'id':'RV-DIP-'+link,'for':ref+' release (15 mm Stage10 travel)','box_mm':[r6(sw[0]-m),r6(sw[1]-m),r6(sw[2]+m),r6(sw[3]+m)],'z_mm':[r6(rel['envelope_bottom_z_mm']-m),48.4],
-            'reason':'the hook envelope falls to z '+str(round(rel['envelope_bottom_z_mm'],2))+' while the housing is withdrawn; no foreign board, part or wiring may occupy this volume','status':'PROPOSAL_REQUIRES_OWNER_DECISION'})
+        ref=ENDS[link][1];g=cand['geo'][ref];sw=g['sweep']['box_mm'];env=middle_envelopes(cand,P,link)
+        lo=[min([p[0]-r for p,r in env]+[sw[0]])-m,min([p[1]-r for p,r in env]+[sw[1]])-m];hi=[max([p[0]+r for p,r in env]+[sw[2]])+m,max([p[1]+r for p,r in env]+[sw[3]])+m]
+        zl=min(p[2]-r for p,r in env)-m-STEP/2
+        out.append({'id':'RV-DIP-'+link,'for':ref+' hook below the carrier bottom, installed and released (2.45-15 mm, constant length), and the housing sweep','box_mm':[r6(lo[0]),r6(lo[1]),r6(hi[0]),r6(hi[1])],'z_mm':[r6(zl),48.4],
+            'reason':f'the hook envelope reaches z {zl+m+STEP/2:.2f} at the 15 mm Stage10 travel; installed it already reaches z {min(p[2] for p in cand["routes"][link]["dense"])-bundle_r(P,link):.2f}, below the carrier bottom z 34. No neighbouring board, part or wiring may occupy this volume',
+            'status':'PROPOSAL_REQUIRES_OWNER_DECISION'})
         out.append({'id':'RV-ACCESS-'+link,'for':ref+' latch press and pull from the panel side','box_mm':[r6(sw[0]-m),r6(sw[1]-m),r6(sw[2]+m),r6(sw[3]+m)],'z_mm':[val(P,'panel_rear_z_mm'),48.4],
             'reason':'only needed if the middle connectors are serviced with the neighbouring front boards in place; otherwise those boards must come out with the front panel','status':'PROPOSAL_REQUIRES_OWNER_DECISION'})
     seen=set()
@@ -424,10 +508,10 @@ def reservations(cand,res,P):
 
 
 def toggle_rear_bound(P):
-    """Rear-most z of a panel-mounted 2MS3 from the -5 drawing: front nut fully engaged on a 2 mm panel, every drawing dimension at +0.25."""
+    """Rear-most z of a panel-mounted 2MS3 from the -5 drawing: front nut and washer at their thinnest (-0.25) on the panel front, every body dimension at +0.25."""
     t=val(P,'toggle_body_and_terminal_mm');tol=t['tolerance_2_decimal']
-    tip=-(t['nut']+t['washer']);shoulder=tip+t['bushing']+tol
-    return {'bushing_tip_z_mm':r6(tip),'shoulder_z_max_mm':r6(shoulder),'terminal_tip_z_max_mm':r6(shoulder+t['body']+tol+t['terminal_beyond_body']+tol),
+    tip=val(P,'panel_front_z_mm')-(t['nut']-tol)-(t['washer']-tol);shoulder=tip+t['bushing']+tol
+    return {'panel_front_z_mm':val(P,'panel_front_z_mm'),'bushing_tip_z_max_mm':r6(tip),'shoulder_z_max_mm':r6(shoulder),'terminal_tip_z_max_mm':r6(shoulder+t['body']+tol+t['terminal_beyond_body']+tol),
         'conditions':['exact MPN gate OPEN (-5 drawing vs unsuffixed lock MPN)','panel-bushing mounting with the front nut fully engaged','no foreign wiring, PCB or connector behind the terminals (UNKNOWN)'],'class':'DESIGN_ASSUMPTION derived from S-DW2-2MS3'}
 
 
@@ -437,8 +521,8 @@ def build(data,preserve=True):
     cands={'B31':dict(b31,role='COMPARISON (Stage31 B as committed)'),'B32':data['input']['candidates']['B32']}
     res={};built={};smp={}
     for cid,c in cands.items():built[cid],res[cid],smp[cid]=evaluate(cid,c,data,mech,P,T)
-    need(res['B32']['status']=='CONDITIONAL_WORKING_DESIGN','B32 must meet S1-S8 under the stated conditions: '+', '.join(res['B32']['failed']))
-    need(res['B31']['status']!='CONDITIONAL_WORKING_DESIGN','B31 is expected to fail the Stage32 checks (no retention, K4 under tolerances)')
+    need(res['B32']['status'] in ('CONDITIONAL_WORKING_DESIGN','CONDITIONAL_PENDING_WIRE_SELECTION'),'B32 must meet S1-S8 under the stated conditions: '+', '.join(res['B32']['failed']))
+    need(res['B31']['status']=='NOT_ROBUST_UNDER_STAGE32_CHECKS','B31 is expected to fail the Stage32 checks (no retention, K4 under tolerances)')
     rv=reservations(built['B32'],res['B32'],P);tog=toggle_rear_bound(P)
     nb={'unknown_regions':[{'id':'U-FRONT','box_mm':[195,94,318,300],'z_mm':[val(P,'panel_rear_z_mm'),34.0],'basis':'below the A01 carriers no foreign board, plane, outline or part height is designed; z 20-21.6 is only a code default (R-ASSEMBLY-DEFAULT)','status':'UNKNOWN_NOT_FREE'},
             {'id':'U-FOREIGN-DEPTH','basis':'per-part XY columns of A02-A06 / E2-E5 hardware above z 21.6, depth unknown (Stage30/31 foreign-depth)','status':'UNKNOWN_NOT_FREE'}],
@@ -450,10 +534,10 @@ def build(data,preserve=True):
             'routes':{l:{'vertices_mm':[p6(x) for x in s31.route_vertices(built[cid]['geo'],l,cands[cid]['routes'][l])],'bends':built[cid]['routes'][l]['bends'],'legs_mm':built[cid]['routes'][l]['legs_mm'],
                 'straight_from_exit_mm':built[cid]['routes'][l]['straight_from_exit_mm']} for l in LINKS}} for cid in cands}}
     env={'status':'DESIGN_STUDY_ONLY','states':{cid:dict(res[cid]['states'],access=res[cid]['access']) for cid in cands},
-        'note':'release shapes are the Stage31 bend-feasible surrogate; the foreign volume is not free space'}
-    ana={'status':'DESIGN_STUDY_ONLY','candidates':{cid:{k:res[cid][k] for k in ('static','cable_to_cable','robust','sweeps','bend','strength','criteria','failed','open_conditions','status')} for cid in cands}}
-    lengths={l:{'installed_mm':res['B32']['states'][l]['installed_length_mm'],'release_extra_15mm_mm':max(x['extra_length_mm'] for x in res['B32']['states'][l]['release'] if x['travel_mm']==15)} for l in LINKS}
-    for l in LINKS:lengths[l]['design_length_proposal_mm']=math.ceil(lengths[l]['installed_mm']+lengths[l]['release_extra_15mm_mm']+val(P,'service_slack_mm'))
+        'note':'installed at design length with the slack in the local loop; release cases keep that length (the hook follows the Stage31 bend rule, the loop gives up the difference); the neighbouring volume is not free space'}
+    ana={'status':'DESIGN_STUDY_ONLY','candidates':{cid:{k:res[cid][k] for k in ('static','guide_foreign_bounds','cable_to_cable','robust','bow_sensitivity','sweeps','bend','strength','criteria','failed','open_conditions','status')} for cid in cands}}
+    lengths={l:{'minimum_installed_mm':r6(built['B32']['lengths'][l]['minimum_installed_mm']),'release_extra_15mm_mm':r6(built['B32']['lengths'][l]['release_extra_mm']),
+        'design_length_proposal_mm':built['B32']['lengths'][l]['design_length_mm'],'installed_loop_top_z_mm':built['B32']['installed'][l]['loop_top_z_mm']} for l in LINKS}
     report={'status':'DESIGN_STUDY_ONLY','recommendation':{'id':'B32','status':res['B32']['status'],'adopted':False},'comparison':{cid:{'status':res[cid]['status'],'failed':res[cid]['failed'],
         'tightest_robust':{k:res[cid]['tightest_robust'][k] for k in ('link','obstacle','sampled_clearance_mm','robust_spare_mm')} if res[cid]['tightest_robust'] else None} for cid in cands},
         'design_lengths':lengths,'open_conditions':res['B32']['open_conditions'],'reservations':[r['id'] for r in rv if r['status']=='PROPOSAL_REQUIRES_OWNER_DECISION'],
@@ -497,23 +581,27 @@ COLOR={'J-SIG':'#1f5fbf','J-PWR':'#c0392b'}
 def render_md(b):
     rs=b['res'];rep=b['report'];nb=b['neighbour'];P=b['P'];B=rs['B32']
     L=['# Stage32 service envelope (generated)','','Design study only. Calculations on planning geometry and stated inputs; nothing is measured, and a clear envelope is not physical non-interference.','',
-       '## Criteria per candidate','','| Candidate | S1 static | S2 robust K4 | S3 retention | S4 sweeps | S5 core | S6 strength | S7 release known | S8 foreign allowance | Status |','|---|---|---|---|---|---|---|---|---|---|']
+       '## Criteria per candidate','','| Candidate | S1 static | S2 robust K4 | S3 retention | S4 sweeps | S5 core | S6 strength | S7 release | S8 foreign allowance | S9 bend maker rule | Status |','|---|---|---|---|---|---|---|---|---|---|---|']
     yn=lambda x:'yes' if x else '**no**'
     for cid,r in rs.items():
-        c=r['criteria'];L.append(f"| {cid} | {yn(c['S1_static_clear'])} | {yn(c['S2_robust_K4'])} | {yn(c['S3_retention_modelled'])} | {yn(c['S4_sweeps_clear'])} | {yn(c['S5_core_clear'])} | {yn(c['S6_strength_planning_load'])} | {yn(c['S7_release_15mm_known_clear'])} | {yn(c['S8_foreign_allowance'])} | {r['status']} |")
+        c=r['criteria'];L.append(f"| {cid} | {yn(c['S1_static_clear'])} | {yn(c['S2_robust_K4'])} | {yn(c['S3_retention_modelled'])} | {yn(c['S4_sweeps_clear'])} | {yn(c['S5_core_clear'])} | {yn(c['S6_strength_planning_load'])} | {yn(c['S7_release_15mm_known_clear'])} | {yn(c['S8_foreign_allowance'])} | {yn(c['S9_bend_maker_rule'])} | {r['status']} |")
     L+=['','## Tightest clearances after the tolerance stack','','| Candidate | Cable | Obstacle | Sampled (mm) | Margin | Tolerance WC / RSS (mm) | Robust spare (mm) | K4 0.15 |','|---|---|---|---|---|---|---|---|']
     for cid,r in rs.items():
         for x in r['robust'][:5]:L.append(f"| {cid} | {x['link']} | {x['obstacle']} | {f2(x['sampled_clearance_mm'])} | 0.50 | {f2(x['tolerance']['worst_case_mm'])} / {f2(x['tolerance']['rss_mm'])} | {f2(x['robust_spare_mm'])} | {yn(x['meets_K4'])} |")
+    L+=['','## K4 sensitivity to the bow model (B32)','','| Bow case | Tightest | Robust spare (mm) | K4 |','|---|---|---|---|']
+    for c in B['bow_sensitivity']:L.append(f"| {c['case']} ({c['note']}) | {c['tightest']['link']} {c['tightest']['obstacle']} | {f2(c['tightest']['robust_spare_mm'])} | {yn(c['meets_K4'])} |")
     L+=['','## B32 geometry','']
+    for l in LINKS:
+        lg=rep['design_lengths'][l];L.append(f"- {l}: design length {lg['design_length_proposal_mm']} mm (minimum installed {f2(lg['minimum_installed_mm'])} + 15 mm release extra {f2(lg['release_extra_15mm_mm'])} + 10 slack); installed with the slack in the local loop, top z {f2(lg['installed_loop_top_z_mm'])}")
     for h in B['header_moves']:L.append(f"- {h['ref']}: {h['from_origin_mm']} → {h['to_origin_mm']}, {h['rotation_deg']}°, sweep {h['sweep']['box_mm']} z {h['sweep']['z_mm']}")
     for g in B['guides']:
         n=g['notch'];s=g['saddle_mm'];st=g['strap_mm']
         L.append(f"- {g['id']} ({g['link']}): notch y {n['y_mm'][0]}–{n['y_mm'][1]}, floor z {n['relieved_top_z_mm']} ({r6(46-n['relieved_top_z_mm'])} mm deep); bundle centre {g['centre_mm']}, seat R {g['seat_radius_mm']} (radial clearance {g['radial_clearance_mm']}); saddle {s['length_x']} x {s['width_y']} mm, seat {s['seat_thickness']} mm, end flare R {s['end_flare_radius']}; strap {st['width']} x {st['thickness']} mm, top z {st['top_z']}, latch {st['latch_side']}")
-    L+=['','## Release travel sensitivity (middle withdrawn)','','NB-CAN gap is to recorded solids only; the rear-side parts of those boards have no recorded height, so the gap is the height they may have.','','| Cable | Travel (mm) | Extra length (mm) | Envelope bottom z (mm) | NB-278 plane | NB-CAN gap to recorded solids (mm) |','|---|---|---|---|---|---|']
+    L+=['','## Release travel sensitivity (middle withdrawn)','','NB-CAN gap is to recorded solids only; the rear-side parts of those boards have no recorded height, so the gap is the height they may have.','','| Cable | Travel (mm) | Slide through guide (mm) | Local loop top z (mm) | Envelope bottom z (mm) | NB-278 plane | NB-CAN gap to recorded solids (mm) |','|---|---|---|---|---|---|---|']
     for l in LINKS:
         for x in B['states'][l]['release']:
             if x['withdrawn']!='middle':continue
-            nc=x['neighbour_conflicts'];L.append(f"| {l} | {x['travel_mm']} | {f2(x['extra_length_mm'])} | {f2(x['envelope_bottom_z_mm'])} | {'conflict' if nc['NB-278'] else 'clear'} | {f2(x['neighbour_min_gap_mm']['NB-CAN'])} |")
+            nc=x['neighbour_conflicts'];L.append(f"| {l} | {x['travel_mm']} | {f2(x['slide_through_guide_mm'])} | {f2(x['loop_top_z_mm'])} | {f2(x['envelope_bottom_z_mm'])} | {'conflict' if nc['NB-278'] else 'clear'} | {f2(x['neighbour_min_gap_mm']['NB-CAN'])} |")
     L+=['','## Bend radius against the maker rule','','| Wire | AWG | OD range (mm) | In JST window | Meets 50 V / 105 °C | Required centreline R J-SIG / J-PWR (mm) | Route R (mm) |','|---|---|---|---|---|---|---|']
     for w in B['bend']['wire_candidates']:L.append(f"| {w['mpn']} | {w['awg']} | {w['od_range_mm'][0]}–{w['od_range_mm'][1]} | {yn(w['inside_jst_od_window'])} | {yn(w['meets_gh_ratings'])} | {w['required_centreline_radius_mm']['J-SIG']} / {w['required_centreline_radius_mm']['J-PWR']} | {w['route_radius_mm']} |")
     L+=['','| Cable | R (mm) | Installed hook envelope bottom ≤ z (mm) | 15 mm release ≤ z (mm) | Route waypoints admit R |','|---|---|---|---|---|']
@@ -528,7 +616,9 @@ def render_md(b):
     t=nb['toggle_rear_bound'];L.append(f"- 2MS3 drawing bound: terminal tips at z ≤ {t['terminal_tip_z_max_mm']} if {'; '.join(t['conditions'])}.")
     L+=['','## Access and procedure','']
     for l in LINKS:
-        a=B['access'][l];L.append(f"- {l} middle housing: long faces {', '.join(k+' free '+f2(v['free_to_known_mm'])+' mm to '+str(v['nearest_known']) for k,v in a['latch_faces'].items())}; panel-side corridor known hits {a['panel_side_corridor']['known_hits'] or 'none'}, foreign XY {a['panel_side_corridor']['foreign_xy_overlaps'] or 'none'}; straight bundle below the housing {a['straight_bundle_below_housing_mm']} mm; finger operation {a['finger_operation']}.")
+        a=B['access'][l];L.append(f"- {l} middle housing: long faces {'; '.join(k+' free '+f2(v['free_to_rigid_mm'])+' mm to '+str(v['nearest_rigid'])+' and '+f2(v['free_to_cable_mm'])+' mm to the '+str(v['nearest_cable'])+' bundle' for k,v in a['latch_faces'].items())}; panel-side corridor known hits {a['panel_side_corridor']['known_hits'] or 'none'}, foreign XY {a['panel_side_corridor']['foreign_xy_overlaps'] or 'none'}; straight bundle below the housing {a['straight_bundle_below_housing_mm']} mm; finger operation {a['finger_operation']}.")
+    for g in B['guides']:
+        a=B['access']['strap:'+g['id']];L.append(f"- {g['id']} strap latch: front access {a['front_access']} (hits {', '.join(a['known_hits']+a['foreign_xy_overlaps']) or 'none'}); reopen {a['reopen']}.")
     for k,v in data_procedure(b).items():
         L+=['',f'**{k}**','']+[f'{i}. {x}' for i,x in enumerate(v,1)]
     L+=['','## Measurements still NOT RUN','']+[f"- **{m['id']}** {m['item']}." for m in rep['measurements']]
@@ -578,7 +668,7 @@ def render_svg(b):
             else:rect(T,[r['box_mm'][0],r['box_mm'][1]],[r['box_mm'][2],r['box_mm'][3]],'fill="none" stroke="#7b1fa2" stroke-dasharray="3,2"',((140,190),None))
         for l in LINKS:
             sp=built['spec']['routes'][l]
-            for route,dash in ((built['routes'][l],''),(release_shape(built['geo'],l,sp,P,15,(0,1)),'stroke-dasharray="4,3"')):
+            for route,dash in ((built['routes'][l],''),(constant_length(built['geo'],l,sp,P,built['lengths'][l]['design_length_mm'],15,(0,1))['route'],'stroke-dasharray="4,3"')):
                 pts=' '.join(f'{x:.1f},{y:.1f}' for x,y in (T(p) for p in route['dense'][::3]+[route['dense'][-1]]))
                 out.append(f'<polyline points="{pts}" fill="none" stroke="{COLOR[l]}" stroke-width="1.4" {dash}/>')
             g=built['geo'][ENDS[l][1]]
@@ -590,7 +680,7 @@ def render_svg(b):
     y=985-28
     for l in LINKS:
         rel=[x for x in res['states'][l]['release'] if x['travel_mm']==15 and x['withdrawn']=='middle'][0]
-        out.append(f'<text x="20" y="{y}" fill="{COLOR[l]}">{l}: installed {res["states"][l]["installed_length_mm"]:.1f} mm; the 15 mm middle release adds {rel["extra_length_mm"]:.1f} mm and drops the envelope to z {rel["envelope_bottom_z_mm"]:.1f}; route r 5 is below the maker 10 x OD rule (open)</text>');y+=13
+        out.append(f'<text x="20" y="{y}" fill="{COLOR[l]}">{l}: design length {res["states"][l]["design_length_mm"]} mm (local loop top z {res["states"][l]["installed_loop_top_z_mm"]:.1f}); the 15 mm middle release slides {rel["slide_through_guide_mm"]:.1f} mm through the guide and drops the envelope to z {rel["envelope_bottom_z_mm"]:.1f}; r 5 is below the maker 10 x OD rule (open)</text>');y+=13
     out.append(f'<text x="20" y="{y}">Criteria {esc(" ".join(k.split("_")[0]+(" yes" if v else " no") for k,v in res["criteria"].items()))}; status {esc(res["status"])}; physical NOT_RUN</text>')
     out.append('</svg>');return '\n'.join(out)+'\n'
 

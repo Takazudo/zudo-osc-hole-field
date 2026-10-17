@@ -4,24 +4,28 @@
     "B31": {
       "failed": [
         "S2_robust_K4",
-        "S3_retention_modelled"
+        "S3_retention_modelled",
+        "S4_sweeps_clear",
+        "S9_bend_maker_rule"
       ],
       "status": "NOT_ROBUST_UNDER_STAGE32_CHECKS",
       "tightest_robust": {
         "link": "J-PWR",
         "obstacle": "board:A01-middle:1",
-        "robust_spare_mm": -0.686016,
+        "robust_spare_mm": -0.758726,
         "sampled_clearance_mm": 0.792893
       }
     },
     "B32": {
-      "failed": [],
-      "status": "CONDITIONAL_WORKING_DESIGN",
+      "failed": [
+        "S9_bend_maker_rule"
+      ],
+      "status": "CONDITIONAL_PENDING_WIRE_SELECTION",
       "tightest_robust": {
         "link": "J-PWR",
         "obstacle": "board:A01-middle:1",
-        "robust_spare_mm": 0.304333,
-        "sampled_clearance_mm": 1.942893
+        "robust_spare_mm": 0.198836,
+        "sampled_clearance_mm": 2.142893
       }
     }
   },
@@ -41,12 +45,14 @@
   "design_lengths": {
     "J-PWR": {
       "design_length_proposal_mm": 150,
-      "installed_mm": 121.159828,
+      "installed_loop_top_z_mm": 70.920086,
+      "minimum_installed_mm": 121.159828,
       "release_extra_15mm_mm": 18.8
     },
     "J-SIG": {
       "design_length_proposal_mm": 136,
-      "installed_mm": 106.726956,
+      "installed_loop_top_z_mm": 71.036522,
+      "minimum_installed_mm": 106.726956,
       "release_extra_15mm_mm": 19.0
     }
   },
@@ -130,7 +136,7 @@
   "recommendation": {
     "adopted": false,
     "id": "B32",
-    "status": "CONDITIONAL_WORKING_DESIGN"
+    "status": "CONDITIONAL_PENDING_WIRE_SELECTION"
   },
   "reservations": [
     "RV-DIP-J-SIG",
@@ -141,17 +147,17 @@
   "source_sha256": {
     "design/architecture-278/implementation/stage31/approval.json": "9c7859937d32c52470892bc949770da8acdaf96fde68039f4b089eb55aeedd40",
     "design/architecture-278/implementation/stage31/design-input.json": "b23e274fba0e13ef4e055918b9570556cf6044f3078062594bcd1b0f4516d58b",
-    "design/architecture-278/implementation/stage32/README.md": "5ae1ead4479015e0896d14f0ff07084247ecad2bcbe6c8c7fc3ee39b508cd906",
+    "design/architecture-278/implementation/stage32/README.md": "32a7341b8840f7aa272b4d072e9336288e05eb3a9eec355e714e6319ae22deb4",
     "design/architecture-278/implementation/stage32/approval.json": "c95e30b61609d2e4979b4680a140c9bb66a3fd2ac10164ae53f6c3aa31451a4e",
-    "design/architecture-278/implementation/stage32/design-input.json": "a1ab30d0dbf4cfb0e07c08f63e6939f47cf1fec30fc8f5f5bde08a6b2df68f63",
+    "design/architecture-278/implementation/stage32/design-input.json": "1540d58dfb1303586a055e3332244a73f5761757851bcd317a3b0a74635a1852",
     "design/architecture-278/implementation/stage32/sources.json": "a3f20c6750aa99fe68ce28f6373a9dee32a51ca116bd44d5e4e16b1697de9344",
     "design/grid/placements.lock.json": "297300b067fd646624b9e501791163fa2d60702862b61568753bf92e5b88dbe8",
     "scripts/architecture278/implementation/check_source.py": "3c2310b4f8186257dd75e33ffdd27b0ae26473a0ca0a9fdb0d2cc194e47325be",
     "scripts/architecture278/implementation/stage28_din_harness.py": "49fab6a30d86e3f3aa9898e2268e3258532a49affaefc4f7203e306b2235468a",
     "scripts/architecture278/implementation/stage30_din_design_integration.py": "a092803e4a68a0d90a81d4f50b3f8f09a74948a4f2195f4ec122ba0f2b5eef26",
     "scripts/architecture278/implementation/stage31_cable_entry_redesign.py": "ecb6faae2a802841b8651e49b2c993291bd6598962c5079257828b1b2cc1add0",
-    "scripts/architecture278/implementation/stage32_service_envelope.py": "1076f337a327f084ff108d8eeff521a3de0278741cb772e924893f815837a6b9",
-    "scripts/architecture278/implementation/test_stage32_service_envelope.py": "3ed55dd52ece37b581a3379514406c45a6ebe2b40e5838d51012e375c899c906"
+    "scripts/architecture278/implementation/stage32_service_envelope.py": "6a7f58696abd3cebd80fecea195d8ae94710f0b8e4c95238f0455e51ebcc85a1",
+    "scripts/architecture278/implementation/test_stage32_service_envelope.py": "7748ec4849f385d8ebb0f9ef77a690da82df60fbeda632f5a11450dd72c2d912"
   },
   "status": "DESIGN_STUDY_ONLY"
 }
