@@ -1113,3 +1113,34 @@ Stage32 verification (Claude Code Cloud, Python 3.13.16):
   ([skip ci]), simulation, fabrication output, M-01, M-09, M-12, M32-01…09 and energisation.
 
 No supplier contact, order, upload, adoption or merge took place. Native request: NONE.
+
+## Stage33 — A01 J-SIG/J-PWR maker-compliant large-radius routing (Claude Code Cloud, 2026-10-17)
+
+The owner asked for a routing candidate that respects the wire makers' bend rules, assembly and
+service, after Stage32 B32 failed the 10× OD rule. The middle J-SIG/J-PWR position and orientation,
+provisional cable lengths and local rail/guide geometry may change. Panel parts, nets, pins, locked
+MPNs, DIN positions and mapping, board planes and the K-PWR-then-40 mm service stay fixed. Broader
+changes are proposed only (`stage33/approval.json`). Nothing is applied to hardware or canonical CAD.
+
+- **Sources:** Stage33 inherits the Stage32 register and adds Alpha Wire 422607 (10×, 80 °C) and
+  782607 (5×, OD 2.1 mm). Daburn 2612/26 was not obtained (HTTP 503). Repository records cover the
+  Stage8 rail currents and the Stage28 wire policy.
+- **R33 (CONDITIONAL, pending retention):**
+  - J-SIG:middle and J-PWR:middle move to the A01-middle rear face, a broader change, at
+    (250, 152) and (290, 150).
+  - Each cable forms one vertical arch at R 12 (inner-surface convention; 11.75 mm required at the
+    JST maximum OD), with a fan-in straight of 10.39 / 6.91 mm at every exit in every state.
+  - Design lengths are 133 / 149 mm (not cut lengths). Every release state keeps them.
+  - In the arch's ideal plane, K4 holds for every bow case. The robust spare is 1.89 mm, J-PWR to the
+    core volume.
+  - No state goes below z 34. The rail stays unnotched.
+  - S3 fails: no part retains the arches laterally. The J-PWR allowance is 1.89 mm; a sliding guide
+    could sit on the local legs only.
+- **F33 (UNKNOWN):** with front-face headers, the slot path fails K4. The +y descent runs below the
+  code-default foreign plane, inside the undesigned front volume.
+- **B32:** INFEASIBLE for every identified wire. The Stage32 results, including the half-sine pass and
+  the uniform-bow and 20 N failures, are carried and hash-bound.
+- **Wire:** no identified wire qualifies for either cable, so the selection stays null. AWG28 current is
+  not transferred from AWG26, and the J-SIG current is not budgeted.
+- **Reservations (proposed):** RV-ARCH in-plane slabs and four RV-ACCESS columns, none overlapping a
+  designed part.

@@ -12,7 +12,7 @@
     "route_radius_mm": {
       "value": 12.0,
       "class": "DESIGN_ASSUMPTION",
-      "derivation": "largest required centreline radius over both links for any wire inside the JST OD window under a 10x OD maker rule: 10 x 1.0 + (1.5 x 1.0 + 0.25 dressing) - 0.5 = 11.25 mm (J-SIG); rounded up to the next 0.5 mm with 0.25 mm added = 12.0 mm. Not an acceptance threshold: the criterion is route radius >= required radius per wire"
+      "derivation": "largest required radius over both links for any wire inside the JST OD window under a 10x OD maker rule, measured to the inner surface of the dressed bundle envelope: 10 x 1.0 + (1.5 x 1.0 + 0.25) = 11.75 mm (J-SIG); rounded up to the next 0.5 mm = 12.0 mm. Not an acceptance threshold: the criterion is route radius >= required radius per wire"
     },
     "bundle_dressing_allowance_mm": {
       "value": 0.25,
@@ -153,24 +153,28 @@
       "class": "UNCONFIRMED",
       "note": "a rear-face GH header adds an SMT side to A01-middle; process, cost and fixture are not evaluated"
     },
-    "keeper_material": {
-      "value": "6061-T6, machined integrally with crossmember:rear:0",
+    "bend_radius_convention": {
+      "value": "the maker 'N x cable diameter' radius is taken to the inner surface of the bent body: a bundle bend needs centreline R >= N x OD + bundle envelope radius; a single-conductor S-bend needs centreline rho >= N x OD + OD/2. The innermost-conductor-centreline reading (R >= N x OD + envelope radius - OD/2) is reported for comparison only",
       "class": "DESIGN_ASSUMPTION",
-      "note": "same alloy and values as the Stage10 carrier (S-AALCO-6061)"
+      "note": "the Alpha Wire documents do not define the reference surface; the stricter reading is used"
     },
-    "keeper_root_Kt_sensitivity": {
-      "value": [
-        1.5,
-        2.0,
-        3.0
+    "gh_pitch_mm": {
+      "value": 1.25,
+      "class": "MAKER_DOC",
+      "sources": [
+        "S-JST-EGH"
       ],
-      "class": "DESIGN_ASSUMPTION",
-      "note": "no chart or FEA value is retained for the root fillet; sensitivity bound only"
+      "note": "eGH title: 1.25 mm pitch"
     },
-    "keeper_root_Kt": {
-      "value": 3.0,
+    "fan_in_offset_rule": {
+      "value": "outermost pin-row conductor ((n-1)/2 x pitch from the row centre) moves to the bundle ring in the row plane: hexagonal 7-bundle ring radius = OD, square 4-bundle ring radius = OD/sqrt(2); this is the smallest possible offset",
       "class": "DESIGN_ASSUMPTION",
-      "note": "the upper sensitivity value is used for the allowable load"
+      "note": "the real conductor mapping is not known; a larger offset needs a longer fan-in"
+    },
+    "lateral_retention": {
+      "value": null,
+      "class": "UNCONFIRMED",
+      "note": "no retention part holds the R33 arches laterally; their lateral position in each enclosure orientation is not known (M33-04)"
     }
   },
   "wire_candidates": [
@@ -259,14 +263,7 @@
       "values": null
     }
   ],
-  "tolerance_rules_added": [
-    {
-      "match": "keeper:",
-      "contributors": [
-        "carrier_face_mm"
-      ]
-    }
-  ],
+  "tolerance_rules_added": [],
   "candidates": {
     "B32": {
       "role": "COMPARISON (Stage32 recommendation, 5 mm bends)",
@@ -276,17 +273,16 @@
       "role": "SCREEN (front-face middle headers, large radius)",
       "title": "Middle headers kept on the A01-middle front face; every bend at the route radius",
       "passage": {
-        "slot_between": [
-          "jack carrier top z 30",
-          "middle carrier bottom z 34"
+        "paths": [
+          "across a jack carrier crossmember (z 22-30) through the z 30-34 slot under the middle carrier, or below the jack carrier",
+          "around the +y edge of the jack board (y > 185, x < 232), descending through the undesigned front volume where the locked foreign hardware XY columns (unknown depth) sit, with the middle headers moved to y > 185"
         ],
-        "crossing": "crossmember:jack:1",
-        "note": "the local exits sit on the jack board (x 195-240, y 94-182, z 35-36.6) and the middle board covers x >= 232 above z 48.4; the 2 mm gap x 240-242 is narrower than any bundle, so a route that reaches the hook below the middle carrier must pass a jack carrier crossmember (z 22-30) through the z 30-34 slot or below z 22"
+        "note": "the local exits sit on the jack board (x 195-240, y 94-182, z 35-36.6) and the middle board covers x >= 232 above z 48.4; the 2 mm gap x 240-242 is narrower than any bundle"
       }
     },
     "R33": {
       "role": "RECOMMENDED_STUDY_CANDIDATE",
-      "title": "Middle headers moved to the A01-middle rear face; one vertical-plane arch per cable at R 12; keeper on crossmember:rear:0",
+      "title": "Middle headers moved to the A01-middle rear face; one vertical-plane arch per cable at R 12 with a straight fan-in at every housing exit",
       "header_moves": {
         "A01:J-SIG:middle": {
           "origin_mm": [
@@ -305,43 +301,26 @@
           "face": "rear"
         }
       },
-      "route_shape": "ARCH: straight up from the local exit, one straight horizontal leg, straight down into the middle exit; two 90-degree bends at the route radius",
-      "keeper": {
-        "id": "K1",
-        "obstacle": "crossmember:rear:0",
-        "box_mm": [
-          241.0,
-          170.5,
-          258.0,
-          172.5
-        ],
-        "z_mm": [
-          62.0,
-          96.0
-        ],
-        "thickness_y_mm": 2.0,
-        "root_fillet_mm": 1.0,
-        "purpose": "a fence between the J-PWR arch and the core withdrawal volume (y >= 174) where the arch comes within 10 mm of it; it does not touch either cable"
-      }
+      "route_shape": "ARCH: straight up from the local exit for at least the fan-in length, one straight horizontal leg, straight down into the middle exit after at least the fan-in length; two 90-degree bends at the route radius"
     }
   },
   "procedure": {
     "R33 assembly": [
       "Fit A01-middle on the middle carrier as in Stage10 (front carrier, spacers, M1-M4).",
-      "Fit the rear carrier (crossmember:rear:0 with keeper K1) and the core as in Stage10.",
+      "Fit the rear carrier and the core as in Stage10.",
       "From the rear (rear cover off): mate J-SIG and J-PWR at the A01-jack local headers (+z), then at the A01-middle rear-face headers (-z), each housing pushed along its axis.",
-      "Dress each cable into one vertical-plane arch on the -y side of K1; check by eye that neither arch rests on K1, a tool column or the core handle.",
-      "Refit the rear cover; the installed arch envelope tops (z 85.6 / 85.4) stay below its inner face (z 105)."
+      "Dress each cable into one vertical-plane arch with the fan-in straight above each housing; no part holds the arch laterally (open condition, M33-04).",
+      "Refit the rear cover; the installed arch envelope tops (z 94.1 / 90.4) stay below its inner face (z 105) with the uniform bow added."
     ],
     "Core service (unchanged order)": [
       "Power off; remove the rear cover.",
-      "Disconnect K-PWR, release the four core screws, hold both handles and withdraw the core 40 mm along +z. J-SIG/J-PWR and K1 are not touched; the installed arches stay on the -y side of K1 and below its top (z 96).",
-      "Do not move the core while a J-SIG/J-PWR housing is withdrawn: the raised arch can reach above K1 (up to z 100.6 with both ends withdrawn)."
+      "Disconnect K-PWR, release the four core screws, hold both handles and withdraw the core 40 mm along +z. J-SIG/J-PWR are not touched; the J-PWR arch is 2.8 mm from the core volume in its ideal plane.",
+      "Do not move the core while a J-SIG/J-PWR housing is withdrawn: the raised arch reaches z 109.1 with both ends of J-SIG withdrawn and is not modelled against the core for that case."
     ],
     "Middle connector service": [
       "Power off; remove the rear cover. The core may stay installed.",
       "Press the GH latch with a finger or a flat tool from the rear (latch face UNCONFIRMED: both long faces are open toward +z).",
-      "Hold the vertical bundle above the housing (about 14.6 mm straight installed, 7.1 mm at 15 mm withdrawal) and pull within 15 degrees of +z (S-JST-HANDLING p.961). The arch rises; the cable keeps its design length.",
+      "Hold the vertical bundle above the housing (about 23.1 mm straight installed, 15.6 mm at 15 mm withdrawal, both above the 10.4 mm fan-in) and pull within 15 degrees of +z (S-JST-HANDLING p.961). The arch rises; the cable keeps its design length.",
       "Re-mate by pushing the housing along -z until the latch engages."
     ],
     "Harness replacement": [

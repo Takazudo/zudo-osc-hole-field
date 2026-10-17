@@ -2,18 +2,54 @@
   "R33": {
     "design_lengths": {
       "J-PWR": {
-        "design_length_proposal_mm": 139,
+        "design_length_proposal_mm": 149,
         "measured_or_cut_mm": null,
-        "minimum_installed_mm": 113.706035,
+        "minimum_installed_mm": 123.517269,
         "release_extra_15mm_mm": 15.0,
         "service_slack_mm": 10
       },
       "J-SIG": {
-        "design_length_proposal_mm": 116,
+        "design_length_proposal_mm": 133,
         "measured_or_cut_mm": null,
-        "minimum_installed_mm": 90.87611,
+        "minimum_installed_mm": 107.654704,
         "release_extra_15mm_mm": 15.0,
         "service_slack_mm": 10
+      }
+    },
+    "fan_in": {
+      "J-PWR": {
+        "cases": [
+          {
+            "length_mm": 6.395857,
+            "od_mm": 0.76,
+            "offset_mm": 1.337599,
+            "rho_mm": 7.98
+          },
+          {
+            "length_mm": 6.905617,
+            "od_mm": 1.0,
+            "offset_mm": 1.167893,
+            "rho_mm": 10.5
+          }
+        ],
+        "length_mm": 6.905617
+      },
+      "J-SIG": {
+        "cases": [
+          {
+            "length_mm": 9.300575,
+            "od_mm": 0.76,
+            "offset_mm": 2.99,
+            "rho_mm": 7.98
+          },
+          {
+            "length_mm": 10.389297,
+            "od_mm": 1.0,
+            "offset_mm": 2.75,
+            "rho_mm": 10.5
+          }
+        ],
+        "length_mm": 10.389297
       }
     },
     "header_moves": [
@@ -118,24 +154,308 @@
         ]
       }
     ],
-    "keeper": {
-      "box_mm": [
-        241.0,
-        170.5,
-        258.0,
-        172.5
-      ],
-      "id": "K1",
-      "obstacle": "crossmember:rear:0",
-      "purpose": "a fence between the J-PWR arch and the core withdrawal volume (y >= 174) where the arch comes within 10 mm of it; it does not touch either cable",
-      "root_fillet_mm": 1.0,
-      "thickness_y_mm": 2.0,
-      "z_mm": [
-        62.0,
-        96.0
-      ]
+    "pcb_impact": {
+      "A01:J-PWR:middle": {
+        "consequences": [
+          "A01-middle gains SMT pads on its rear face (second SMT side); process UNCONFIRMED",
+          "nets and pin identities unchanged; connecting copper must be re-routed (routed copper is null in this candidate)"
+        ],
+        "face": "front z 48.4 -> rear z 50",
+        "largest_plan_move_mm": 14.45,
+        "pins": [
+          {
+            "from_mm": [
+              284.875,
+              150.0,
+              48.4
+            ],
+            "net": "+12V",
+            "pin": "1",
+            "plan_move_mm": 3.25,
+            "to_mm": [
+              288.125,
+              150.0,
+              50
+            ]
+          },
+          {
+            "from_mm": [
+              283.625,
+              150.0,
+              48.4
+            ],
+            "net": "-12V",
+            "pin": "2",
+            "plan_move_mm": 5.75,
+            "to_mm": [
+              289.375,
+              150.0,
+              50
+            ]
+          },
+          {
+            "from_mm": [
+              282.375,
+              150.0,
+              48.4
+            ],
+            "net": "+5V",
+            "pin": "3",
+            "plan_move_mm": 8.25,
+            "to_mm": [
+              290.625,
+              150.0,
+              50
+            ]
+          },
+          {
+            "from_mm": [
+              281.125,
+              150.0,
+              48.4
+            ],
+            "net": "AGND",
+            "pin": "4",
+            "plan_move_mm": 10.75,
+            "to_mm": [
+              291.875,
+              150.0,
+              50
+            ]
+          },
+          {
+            "from_mm": [
+              279.275,
+              153.35,
+              48.4
+            ],
+            "net": null,
+            "pin": "MP1",
+            "plan_move_mm": 14.45,
+            "to_mm": [
+              293.725,
+              153.35,
+              50
+            ]
+          },
+          {
+            "from_mm": [
+              286.725,
+              153.35,
+              48.4
+            ],
+            "net": null,
+            "pin": "MP2",
+            "plan_move_mm": 0.45,
+            "to_mm": [
+              286.275,
+              153.35,
+              50
+            ]
+          }
+        ]
+      },
+      "A01:J-SIG:middle": {
+        "consequences": [
+          "A01-middle gains SMT pads on its rear face (second SMT side); process UNCONFIRMED",
+          "nets and pin identities unchanged; connecting copper must be re-routed (routed copper is null in this candidate)"
+        ],
+        "face": "front z 48.4 -> rear z 50",
+        "largest_plan_move_mm": 21.294131,
+        "pins": [
+          {
+            "from_mm": [
+              263.75,
+              150.0,
+              48.4
+            ],
+            "net": "/A01/REF5",
+            "pin": "1",
+            "plan_move_mm": 17.613915,
+            "to_mm": [
+              246.25,
+              152.0,
+              50
+            ]
+          },
+          {
+            "from_mm": [
+              262.5,
+              150.0,
+              48.4
+            ],
+            "net": "AGND",
+            "pin": "2",
+            "plan_move_mm": 15.132746,
+            "to_mm": [
+              247.5,
+              152.0,
+              50
+            ]
+          },
+          {
+            "from_mm": [
+              261.25,
+              150.0,
+              48.4
+            ],
+            "net": "/A01/REFN5",
+            "pin": "3",
+            "plan_move_mm": 12.658989,
+            "to_mm": [
+              248.75,
+              152.0,
+              50
+            ]
+          },
+          {
+            "from_mm": [
+              260.0,
+              150.0,
+              48.4
+            ],
+            "net": "/A01/IN_BUFFER",
+            "pin": "4",
+            "plan_move_mm": 10.198039,
+            "to_mm": [
+              250.0,
+              152.0,
+              50
+            ]
+          },
+          {
+            "from_mm": [
+              258.75,
+              150.0,
+              48.4
+            ],
+            "net": "/A01/OFFSET_BUFFER",
+            "pin": "5",
+            "plan_move_mm": 7.762087,
+            "to_mm": [
+              251.25,
+              152.0,
+              50
+            ]
+          },
+          {
+            "from_mm": [
+              257.5,
+              150.0,
+              48.4
+            ],
+            "net": "/A01/SUM_NEG",
+            "pin": "6",
+            "plan_move_mm": 5.385165,
+            "to_mm": [
+              252.5,
+              152.0,
+              50
+            ]
+          },
+          {
+            "from_mm": [
+              256.25,
+              150.0,
+              48.4
+            ],
+            "net": "AGND",
+            "pin": "7",
+            "plan_move_mm": 3.201562,
+            "to_mm": [
+              253.75,
+              152.0,
+              50
+            ]
+          },
+          {
+            "from_mm": [
+              254.4,
+              153.35,
+              48.4
+            ],
+            "net": null,
+            "pin": "MP1",
+            "plan_move_mm": 2.332381,
+            "to_mm": [
+              255.6,
+              155.35,
+              50
+            ]
+          },
+          {
+            "from_mm": [
+              265.6,
+              153.35,
+              48.4
+            ],
+            "net": null,
+            "pin": "MP2",
+            "plan_move_mm": 21.294131,
+            "to_mm": [
+              244.4,
+              155.35,
+              50
+            ]
+          }
+        ]
+      }
     },
-    "route_shape": "ARCH: straight up from the local exit, one straight horizontal leg, straight down into the middle exit; two 90-degree bends at the route radius",
+    "retention": {
+      "J-PWR": {
+        "excludes": "the boards carrying the cable ends (their clearance is the housing height, not a lateral gap)",
+        "lateral_allowance_mm": 1.890994,
+        "nearest": "core-extraction-40mm",
+        "retention_part": null,
+        "state": "installed 0",
+        "status": "UNCONFIRMED (M33-04)",
+        "straight_zone_every_state": {
+          "local": {
+            "exists": true,
+            "length_mm": 11.141366,
+            "z_mm": [
+              65.805617,
+              76.946983
+            ]
+          },
+          "middle": {
+            "exists": false,
+            "length_mm": -2.258634,
+            "z_mm": [
+              79.205617,
+              76.946983
+            ]
+          }
+        }
+      },
+      "J-SIG": {
+        "excludes": "the boards carrying the cable ends (their clearance is the housing height, not a lateral gap)",
+        "lateral_allowance_mm": 4.625,
+        "nearest": "none within 5.5 mm (allowance is a lower bound)",
+        "retention_part": null,
+        "state": "every state",
+        "status": "UNCONFIRMED (M33-04)",
+        "straight_zone_every_state": {
+          "local": {
+            "exists": true,
+            "length_mm": 11.072648,
+            "z_mm": [
+              69.289297,
+              80.361945
+            ]
+          },
+          "middle": {
+            "exists": false,
+            "length_mm": -2.327352,
+            "z_mm": [
+              82.689297,
+              80.361945
+            ]
+          }
+        }
+      }
+    },
+    "route_shape": "ARCH: straight up from the local exit for at least the fan-in length, one straight horizontal leg, straight down into the middle exit after at least the fan-in length; two 90-degree bends at the route radius",
     "routes": {
       "J-PWR": {
         "bends": [
@@ -144,7 +464,7 @@
             "centre_mm": [
               237.292897,
               168.941615,
-              71.946983
+              76.946983
             ],
             "radius_mm": 12.0,
             "turn_deg": 90.0,
@@ -152,7 +472,7 @@
             "vertex_mm": [
               226.0,
               173.0,
-              83.946983
+              88.946983
             ]
           },
           {
@@ -160,7 +480,7 @@
             "centre_mm": [
               278.707103,
               154.058385,
-              71.946983
+              76.946983
             ],
             "radius_mm": 12.0,
             "turn_deg": 90.0,
@@ -168,18 +488,18 @@
             "vertex_mm": [
               290.0,
               150.0,
-              83.946983
+              88.946983
             ]
           }
         ],
         "legs_mm": [
-          40.046983,
+          45.046983,
           68.007353,
-          26.646983
+          31.646983
         ],
         "straight_from_exit_mm": [
-          28.046983,
-          14.646983
+          33.046983,
+          19.646983
         ],
         "vertices_mm": [
           [
@@ -190,12 +510,12 @@
           [
             226.0,
             173.0,
-            83.946983
+            88.946983
           ],
           [
             290.0,
             150.0,
-            83.946983
+            88.946983
           ],
           [
             290.0,
@@ -211,7 +531,7 @@
             "centre_mm": [
               220.624775,
               167.421993,
-              71.861945
+              80.361945
             ],
             "radius_mm": 12.0,
             "turn_deg": 90.0,
@@ -219,7 +539,7 @@
             "vertex_mm": [
               210.0,
               173.0,
-              83.861945
+              92.361945
             ]
           },
           {
@@ -227,7 +547,7 @@
             "centre_mm": [
               239.375225,
               157.578007,
-              71.861945
+              80.361945
             ],
             "radius_mm": 12.0,
             "turn_deg": 90.0,
@@ -235,18 +555,18 @@
             "vertex_mm": [
               250.0,
               152.0,
-              83.861945
+              92.361945
             ]
           }
         ],
         "legs_mm": [
-          39.961945,
+          48.461945,
           45.177428,
-          26.561945
+          35.061945
         ],
         "straight_from_exit_mm": [
-          27.961945,
-          14.561945
+          36.461945,
+          23.061945
         ],
         "vertices_mm": [
           [
@@ -257,12 +577,12 @@
           [
             210.0,
             173.0,
-            83.861945
+            92.361945
           ],
           [
             250.0,
             152.0,
-            83.861945
+            92.361945
           ],
           [
             250.0,
@@ -281,7 +601,6 @@
       "any adoption into canonical CAD"
     ],
     "broader_change_proposals": {
-      "crossmember:rear:0": "A local upward keeper extension of the core carrier crossmember (outside the rail:middle:0 permission): proposed for an owner decision, not adopted",
       "header_mounting_face": "Moving A01:J-SIG:middle / A01:J-PWR:middle from the A01-middle front face (z 48.4) to its rear face (z 50). The board plane is unchanged, but the footprint side changes, so it is treated as a broader change: proposed for an owner decision, not adopted"
     },
     "changeable": {
@@ -302,7 +621,7 @@
         "A01:J-PWR:middle"
       ]
     },
-    "date": "2026-10-18",
+    "date": "2026-10-17",
     "decided_by": "OWNER",
     "fixed": [
       "panel controls and jacks (design/grid/placements.lock.json)",
@@ -328,6 +647,11 @@
   },
   "inherited_from": "design/architecture-278/implementation/stage32/design-input.json",
   "parameters": {
+    "bend_radius_convention": {
+      "class": "DESIGN_ASSUMPTION",
+      "note": "the Alpha Wire documents do not define the reference surface; the stricter reading is used",
+      "value": "the maker 'N x cable diameter' radius is taken to the inner surface of the bent body: a bundle bend needs centreline R >= N x OD + bundle envelope radius; a single-conductor S-bend needs centreline rho >= N x OD + OD/2. The innermost-conductor-centreline reading (R >= N x OD + envelope radius - OD/2) is reported for comparison only"
+    },
     "bundle_dressing_allowance_mm": {
       "class": "DESIGN_ASSUMPTION",
       "note": "radial allowance for loose packing, lacing or a thin wrap; it enlarges the bundle envelope and moves the innermost conductor inward",
@@ -348,6 +672,11 @@
         "R-STAGE10"
       ],
       "value": 105.0
+    },
+    "fan_in_offset_rule": {
+      "class": "DESIGN_ASSUMPTION",
+      "note": "the real conductor mapping is not known; a larger offset needs a longer fan-in",
+      "value": "outermost pin-row conductor ((n-1)/2 x pitch from the row centre) moves to the bundle ring in the row plane: hexagonal 7-bundle ring radius = OD, square 4-bundle ring radius = OD/sqrt(2); this is the smallest possible offset"
     },
     "flex_rule_sensitivity_x_od": {
       "class": "DESIGN_ASSUMPTION",
@@ -371,6 +700,14 @@
         "S-JST-PAGE"
       ],
       "value": null
+    },
+    "gh_pitch_mm": {
+      "class": "MAKER_DOC",
+      "note": "eGH title: 1.25 mm pitch",
+      "sources": [
+        "S-JST-EGH"
+      ],
+      "value": 1.25
     },
     "j_pwr_agnd_return_bound_A": {
       "class": "DESIGN_ASSUMPTION",
@@ -443,24 +780,10 @@
       ],
       "value": "tin-plated stranded wire as a rule; other wires only after a compatibility check"
     },
-    "keeper_material": {
-      "class": "DESIGN_ASSUMPTION",
-      "note": "same alloy and values as the Stage10 carrier (S-AALCO-6061)",
-      "value": "6061-T6, machined integrally with crossmember:rear:0"
-    },
-    "keeper_root_Kt": {
-      "class": "DESIGN_ASSUMPTION",
-      "note": "the upper sensitivity value is used for the allowable load",
-      "value": 3.0
-    },
-    "keeper_root_Kt_sensitivity": {
-      "class": "DESIGN_ASSUMPTION",
-      "note": "no chart or FEA value is retained for the root fillet; sensitivity bound only",
-      "value": [
-        1.5,
-        2.0,
-        3.0
-      ]
+    "lateral_retention": {
+      "class": "UNCONFIRMED",
+      "note": "no retention part holds the R33 arches laterally; their lateral position in each enclosure orientation is not known (M33-04)",
+      "value": null
     },
     "rear_face_smt_process": {
       "class": "UNCONFIRMED",
@@ -469,7 +792,7 @@
     },
     "route_radius_mm": {
       "class": "DESIGN_ASSUMPTION",
-      "derivation": "largest required centreline radius over both links for any wire inside the JST OD window under a 10x OD maker rule: 10 x 1.0 + (1.5 x 1.0 + 0.25 dressing) - 0.5 = 11.25 mm (J-SIG); rounded up to the next 0.5 mm with 0.25 mm added = 12.0 mm. Not an acceptance threshold: the criterion is route radius >= required radius per wire",
+      "derivation": "largest required radius over both links for any wire inside the JST OD window under a 10x OD maker rule, measured to the inner surface of the dressed bundle envelope: 10 x 1.0 + (1.5 x 1.0 + 0.25) = 11.75 mm (J-SIG); rounded up to the next 0.5 mm = 12.0 mm. Not an acceptance threshold: the criterion is route radius >= required radius per wire",
       "value": 12.0
     },
     "service_flex_rule_x_od": {
@@ -495,8 +818,8 @@
   "procedure": {
     "Core service (unchanged order)": [
       "Power off; remove the rear cover.",
-      "Disconnect K-PWR, release the four core screws, hold both handles and withdraw the core 40 mm along +z. J-SIG/J-PWR and K1 are not touched; the installed arches stay on the -y side of K1 and below its top (z 96).",
-      "Do not move the core while a J-SIG/J-PWR housing is withdrawn: the raised arch can reach above K1 (up to z 100.6 with both ends withdrawn)."
+      "Disconnect K-PWR, release the four core screws, hold both handles and withdraw the core 40 mm along +z. J-SIG/J-PWR are not touched; the J-PWR arch is 2.8 mm from the core volume in its ideal plane.",
+      "Do not move the core while a J-SIG/J-PWR housing is withdrawn: the raised arch reaches z 109.1 with both ends of J-SIG withdrawn and is not modelled against the core for that case."
     ],
     "Front jack board removal": [
       "Unmate J-SIG and J-PWR at the middle ends from the rear, lift each free end back over the A01-middle edge to x < 232, then remove the front panel assembly as in Stage10 with the cables attached to A01-jack."
@@ -508,15 +831,15 @@
     "Middle connector service": [
       "Power off; remove the rear cover. The core may stay installed.",
       "Press the GH latch with a finger or a flat tool from the rear (latch face UNCONFIRMED: both long faces are open toward +z).",
-      "Hold the vertical bundle above the housing (about 14.6 mm straight installed, 7.1 mm at 15 mm withdrawal) and pull within 15 degrees of +z (S-JST-HANDLING p.961). The arch rises; the cable keeps its design length.",
+      "Hold the vertical bundle above the housing (about 23.1 mm straight installed, 15.6 mm at 15 mm withdrawal, both above the 10.4 mm fan-in) and pull within 15 degrees of +z (S-JST-HANDLING p.961). The arch rises; the cable keeps its design length.",
       "Re-mate by pushing the housing along -z until the latch engages."
     ],
     "R33 assembly": [
       "Fit A01-middle on the middle carrier as in Stage10 (front carrier, spacers, M1-M4).",
-      "Fit the rear carrier (crossmember:rear:0 with keeper K1) and the core as in Stage10.",
+      "Fit the rear carrier and the core as in Stage10.",
       "From the rear (rear cover off): mate J-SIG and J-PWR at the A01-jack local headers (+z), then at the A01-middle rear-face headers (-z), each housing pushed along its axis.",
-      "Dress each cable into one vertical-plane arch on the -y side of K1; check by eye that neither arch rests on K1, a tool column or the core handle.",
-      "Refit the rear cover; the installed arch envelope tops (z 85.6 / 85.4) stay below its inner face (z 105)."
+      "Dress each cable into one vertical-plane arch with the fan-in straight above each housing; no part holds the arch laterally (open condition, M33-04).",
+      "Refit the rear cover; the installed arch envelope tops (z 94.1 / 90.4) stay below its inner face (z 105) with the uniform bow added."
     ]
   },
   "status": "DESIGN_STUDY_ONLY"

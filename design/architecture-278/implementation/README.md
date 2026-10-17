@@ -3,17 +3,19 @@
 [Stage33](stage33/README.md) replaces the Stage32 5 mm bends with routes that meet the wire
 makers' 10× OD bend rule, and checks the installed state, latch access, the 15 mm withdrawal and
 the core 40 mm motion in one model at constant cable length.
-- **R33 (CONDITIONAL):**
+- **R33 (CONDITIONAL, pending retention):**
   - J-SIG:middle and J-PWR:middle move to the A01-middle rear face, a broader change that is
     proposed only.
-  - Each cable forms one vertical arch at R 12; keeper K1 on crossmember:rear:0 is also proposed.
-  - Design lengths are 116 / 139 mm. K4 holds for every bow case, including the uniform 1.282 mm bow.
+  - Each cable forms one vertical arch at R 12, with a fan-in straight at every exit.
+  - Design lengths are 133 / 149 mm. K4 holds for every bow case in the arch's ideal plane.
   - No state enters the undesigned front volume.
-- **F33 (INFEASIBLE):** with front-face headers a large radius forces the route through a jack
-  carrier slot that fails K4, and the 15 mm release crosses the code-default plane.
-- **B32 (INFEASIBLE):** the Stage32 bend-rule and uniform-bow failures are carried unchanged.
-- **Wire:** no identified wire passes every check; the selection is null. AWG28 has no JST current
-  rating, so the AWG26 rating is not transferred.
+  - No part retains the arches laterally (S3 fails); the J-PWR allowance is 1.89 mm.
+- **F33 (UNKNOWN):** with front-face headers, the slot path fails K4. The other path runs below the
+  code-default foreign plane, inside the undesigned front volume.
+- **B32 (INFEASIBLE for every identified wire):** the Stage32 bend-rule and uniform-bow failures
+  are carried unchanged.
+- **Wire:** no identified wire qualifies for either cable, so the selection is null. AWG28 has no
+  JST current rating, and the J-SIG current is not budgeted.
 - **NOT RUN:** M-01, M-09, M-12, the M33 measurements, native and physical checks.
 
 ## Current A01 service-envelope and retention study — Stage32

@@ -6,20 +6,62 @@
   },
   "reservations": [
     {
-      "box_mm": [
-        207.65,
-        149.65,
-        252.35,
-        175.35
-      ],
+      "designed_part_overlaps": [],
       "for": "J-SIG arch in the installed state and every release case (2.45-15 mm, constant length)",
       "id": "RV-ARCH-J-SIG",
-      "reason": "the arch occupies this volume above the A01 boards; no other part is designed there",
-      "status": "PROPOSAL_REQUIRES_OWNER_DECISION",
-      "z_mm": [
-        41.55,
-        101.211945
-      ]
+      "reason": "the arch occupies this in-plane volume above the A01 boards",
+      "slab": {
+        "direction_xy": [
+          0.885398,
+          -0.464834
+        ],
+        "half_thickness_mm": 2.35,
+        "length_mm": 45.177428,
+        "normal_xy": [
+          0.464834,
+          0.885398
+        ],
+        "origin_xy_mm": [
+          210.0,
+          173.0
+        ],
+        "parts": [
+          {
+            "part": "local leg",
+            "s_mm": [
+              -2.35,
+              2.35
+            ],
+            "z_mm": [
+              43.9,
+              109.711945
+            ]
+          },
+          {
+            "part": "middle leg",
+            "s_mm": [
+              42.827428,
+              47.527428
+            ],
+            "z_mm": [
+              57.3,
+              109.711945
+            ]
+          },
+          {
+            "part": "top band",
+            "s_mm": [
+              -2.35,
+              47.527428
+            ],
+            "z_mm": [
+              78.011945,
+              109.711945
+            ]
+          }
+        ]
+      },
+      "status": "PROPOSAL_REQUIRES_OWNER_DECISION"
     },
     {
       "box_mm": [
@@ -28,12 +70,13 @@
         218.85,
         180.5
       ],
+      "designed_part_overlaps": [],
       "for": "A01:J-SIG:local latch press and pull from the rear",
       "id": "RV-ACCESS-J-SIG-local",
-      "reason": "+z access with the rear cover off",
+      "reason": "+z access above the housing with the rear cover off",
       "status": "PROPOSAL_REQUIRES_OWNER_DECISION",
       "z_mm": [
-        36.6,
+        43.9,
         105.0
       ]
     },
@@ -44,30 +87,73 @@
         258.85,
         159.5
       ],
+      "designed_part_overlaps": [],
       "for": "A01:J-SIG:middle latch press and pull from the rear",
       "id": "RV-ACCESS-J-SIG-middle",
-      "reason": "+z access with the rear cover off",
+      "reason": "+z access above the housing with the rear cover off",
       "status": "PROPOSAL_REQUIRES_OWNER_DECISION",
       "z_mm": [
-        50,
+        57.3,
         105.0
       ]
     },
     {
-      "box_mm": [
-        223.942893,
-        147.942893,
-        292.057107,
-        175.057107
-      ],
+      "designed_part_overlaps": [],
       "for": "J-PWR arch in the installed state and every release case (2.45-15 mm, constant length)",
       "id": "RV-ARCH-J-PWR",
-      "reason": "the arch occupies this volume above the A01 boards; no other part is designed there",
-      "status": "PROPOSAL_REQUIRES_OWNER_DECISION",
-      "z_mm": [
-        41.842893,
-        101.00409
-      ]
+      "reason": "the arch occupies this in-plane volume above the A01 boards",
+      "slab": {
+        "direction_xy": [
+          0.941075,
+          -0.338199
+        ],
+        "half_thickness_mm": 2.057107,
+        "length_mm": 68.007353,
+        "normal_xy": [
+          0.338199,
+          0.941075
+        ],
+        "origin_xy_mm": [
+          226.0,
+          173.0
+        ],
+        "parts": [
+          {
+            "part": "local leg",
+            "s_mm": [
+              -2.057107,
+              2.057107
+            ],
+            "z_mm": [
+              43.9,
+              106.00409
+            ]
+          },
+          {
+            "part": "middle leg",
+            "s_mm": [
+              65.950246,
+              70.06446
+            ],
+            "z_mm": [
+              57.3,
+              106.00409
+            ]
+          },
+          {
+            "part": "top band",
+            "s_mm": [
+              -2.057107,
+              70.06446
+            ],
+            "z_mm": [
+              74.889876,
+              106.00409
+            ]
+          }
+        ]
+      },
+      "status": "PROPOSAL_REQUIRES_OWNER_DECISION"
     },
     {
       "box_mm": [
@@ -76,12 +162,13 @@
         232.975,
         180.5
       ],
+      "designed_part_overlaps": [],
       "for": "A01:J-PWR:local latch press and pull from the rear",
       "id": "RV-ACCESS-J-PWR-local",
-      "reason": "+z access with the rear cover off",
+      "reason": "+z access above the housing with the rear cover off",
       "status": "PROPOSAL_REQUIRES_OWNER_DECISION",
       "z_mm": [
-        36.6,
+        43.9,
         105.0
       ]
     },
@@ -92,12 +179,13 @@
         296.975,
         157.5
       ],
+      "designed_part_overlaps": [],
       "for": "A01:J-PWR:middle latch press and pull from the rear",
       "id": "RV-ACCESS-J-PWR-middle",
-      "reason": "+z access with the rear cover off",
+      "reason": "+z access above the housing with the rear cover off",
       "status": "PROPOSAL_REQUIRES_OWNER_DECISION",
       "z_mm": [
-        50,
+        57.3,
         105.0
       ]
     }

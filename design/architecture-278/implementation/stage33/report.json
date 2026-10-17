@@ -2,7 +2,7 @@
   "architecture_adopted": false,
   "classification": {
     "B32": "INFEASIBLE",
-    "F33": "INFEASIBLE",
+    "F33": "UNKNOWN",
     "R33": "CONDITIONAL"
   },
   "decision_status": {
@@ -11,30 +11,32 @@
     "M-12": "NOT_RUN",
     "cable_lengths": "DESIGN_LENGTH_PROPOSAL; not measured, not cut",
     "header_moves": "BROADER_CHANGE_PROPOSAL; not adopted",
-    "keeper": "BROADER_CHANGE_PROPOSAL; not adopted",
     "reservations": "PROPOSAL_REQUIRES_OWNER_DECISION",
+    "retention": "NOT_DESIGNED; open condition",
     "route": "STUDY_CANDIDATE_CONDITIONAL; not adopted",
     "strength": "CALCULATED_CONDITIONALLY",
     "wire": "SELECTION_NULL; not selected"
   },
   "design_lengths": {
     "J-PWR": {
-      "design_length_proposal_mm": 139,
+      "design_length_proposal_mm": 149,
       "measured_or_cut_mm": null,
-      "minimum_installed_mm": 113.706035,
+      "minimum_installed_mm": 123.517269,
       "release_extra_15mm_mm": 15.0,
       "service_slack_mm": 10
     },
     "J-SIG": {
-      "design_length_proposal_mm": 116,
+      "design_length_proposal_mm": 133,
       "measured_or_cut_mm": null,
-      "minimum_installed_mm": 90.87611,
+      "minimum_installed_mm": 107.654704,
       "release_extra_15mm_mm": 15.0,
       "service_slack_mm": 10
     }
   },
   "external_contact": "NONE",
-  "failed": [],
+  "failed": [
+    "S3_lateral_retention"
+  ],
   "measurements": [
     {
       "id": "M33-01",
@@ -44,19 +46,19 @@
     },
     {
       "id": "M33-02",
-      "item": "GH unmating on a bench coupon: stroke to free, force, latch side; mating force on a rear-face header and the A01-middle deflection under it",
+      "item": "GH unmating on a bench coupon: stroke to free, force, latch side, conductor fan-in length at the housing; mating force on a rear-face header and the A01-middle deflection under it",
       "status": "NOT_RUN",
       "value": null
     },
     {
       "id": "M33-03",
-      "item": "Latch press and pull at all four housings from the rear, with the core, K1 and the arches in place (finger or tool)",
+      "item": "Latch press and pull at all four housings from the rear, with the core and both arches in place (finger or tool)",
       "status": "NOT_RUN",
       "value": null
     },
     {
       "id": "M33-04",
-      "item": "Mock-up of both arches at the design lengths: installed shape, lateral sag in each enclosure orientation, rise during each release case",
+      "item": "Mock-up of both arches at the design lengths: installed shape, lateral position in each enclosure orientation against the allowance, rise during each release case",
       "status": "NOT_RUN",
       "value": null
     },
@@ -68,7 +70,7 @@
     },
     {
       "id": "M33-06",
-      "item": "Keeper K1 and crossmember:rear:0 coupon: root fillet, stiffness and strength; rail:middle:0 root joint",
+      "item": "rail:middle:0 root joint and stiffness; any retention part added later",
       "status": "NOT_RUN",
       "value": null
     },
@@ -80,21 +82,23 @@
     },
     {
       "id": "M33-08",
-      "item": "A01-middle bow (M32-04) and rear-face header position after assembly",
+      "item": "A01-middle bow (M32-04), rear-face header position after assembly and core-to-middle carrier registration",
       "status": "NOT_RUN",
       "value": null
     }
   ],
   "native": "NOT_RUN",
   "open_conditions": {
-    "arch_lateral_position": "UNKNOWN; K1 fences the J-PWR arch from the core volume only where it comes within 10 mm",
     "awg28_current": "UNCONFIRMED",
+    "carrier_registration": "UNCONFIRMED",
     "finger_operation": "NOT_DETERMINED",
-    "flex_rule": "UNCONFIRMED (15x needs R >= 16.25)",
+    "flex_rule": "UNCONFIRMED (15x needs R >= 16.75)",
     "gh_mating_force": "UNCONFIRMED (the board deflects toward rail:middle:0 when a rear-face housing is pushed on)",
+    "j_sig_current": "UNCONFIRMED",
     "latch_side": "UNCONFIRMED",
     "rear_face_smt": "UNCONFIRMED",
-    "wire": "NULL: no identified wire passes every check (see failed)"
+    "retention": "S3 fails: no part holds the arches laterally; allowance J-SIG 4.62 mm, J-PWR 1.89 mm",
+    "wire": "NULL: no identified wire passes every check for either cable (see per_cable failed)"
   },
   "physical": "NOT_RUN",
   "preservation_baseline": "9a3b91169658569eb5702ef24f336b73b84c70ff",
@@ -104,11 +108,11 @@
     "id": "R33",
     "requires": [
       "owner decision on the rear-face header move (broader change)",
-      "owner decision on keeper K1 (crossmember:rear:0, broader change)",
-      "owner decision on RV-ARCH / RV-ACCESS reservations",
+      "a lateral retention design, or a measured arch position (M33-04) within the allowance",
+      "owner decision on the RV-ARCH / RV-ACCESS reservations",
       "a wire that passes every check (selection NULL)"
     ],
-    "status": "CONDITIONAL"
+    "status": "CONDITIONAL_PENDING_RETENTION"
   },
   "reservations": [
     "RV-ARCH-J-SIG",
@@ -120,16 +124,16 @@
   ],
   "results": [
     {
-      "class": "FEASIBLE_WITHIN_STATED_ASSUMPTIONS",
-      "result": "R33 static and robust clearance (all bow cases)"
+      "class": "CONDITIONAL",
+      "result": "R33 static and robust clearance, all bow cases (arch in its ideal plane)"
+    },
+    {
+      "class": "CONDITIONAL",
+      "result": "R33 15 mm release and core 40 mm (arch in its ideal plane)"
     },
     {
       "class": "FEASIBLE_WITHIN_STATED_ASSUMPTIONS",
-      "result": "R33 15 mm release and core 40 mm"
-    },
-    {
-      "class": "FEASIBLE_WITHIN_STATED_ASSUMPTIONS",
-      "result": "R33 bend radius 12 mm vs 10x OD at the JST maximum OD"
+      "result": "R33 bend radius 12 mm vs 10x OD (inner-surface convention) and the fan-in at every exit"
     },
     {
       "class": "INFEASIBLE",
@@ -137,19 +141,15 @@
     },
     {
       "class": "CONDITIONAL",
-      "result": "R33 geometry at the 15x/20x radii (longer cables, taller keeper)"
+      "result": "R33 geometry at the 15x/20x radii (scan: clearance, K4 with the catch-all stack, core, cover; longer cables)"
     },
     {
       "class": "CONDITIONAL",
       "result": "R33 rear-face header move"
     },
     {
-      "class": "CONDITIONAL",
-      "result": "R33 keeper K1 and its strength"
-    },
-    {
       "class": "UNKNOWN",
-      "result": "R33 arch lateral position without measurement"
+      "result": "R33 lateral retention (no part; position not measured)"
     },
     {
       "class": "UNKNOWN",
@@ -161,15 +161,23 @@
     },
     {
       "class": "UNKNOWN",
+      "result": "J-SIG conductor current"
+    },
+    {
+      "class": "UNKNOWN",
       "result": "Finger/tool operability at the latches"
     },
     {
       "class": "INFEASIBLE",
-      "result": "F33 front-face large radius"
+      "result": "F33 slot path (front-face headers)"
+    },
+    {
+      "class": "UNKNOWN",
+      "result": "F33 descent beyond the jack board +y edge"
     },
     {
       "class": "INFEASIBLE",
-      "result": "B32 5 mm bends"
+      "result": "B32 5 mm bends with every identified wire"
     },
     {
       "class": "INFEASIBLE",
@@ -182,18 +190,18 @@
     "design/architecture-278/implementation/stage32/design-input.json": "ae953a61e39535b922663e58de919955d1dd70e27c883132578d9689c5f90e54",
     "design/architecture-278/implementation/stage32/report.json": "cf41f028e654288094fa2adf6e123f350d15ffc5cc4dcff8828b6936524625b8",
     "design/architecture-278/implementation/stage32/sources.json": "a3f20c6750aa99fe68ce28f6373a9dee32a51ca116bd44d5e4e16b1697de9344",
-    "design/architecture-278/implementation/stage33/README.md": "134a61f7cf505844cb027557de294d75c402c3eaaccf952fd7d1c8e642f734b9",
-    "design/architecture-278/implementation/stage33/approval.json": "743b212ee1dea4fec51df59c69c150aecd978e279f23fbe379a05ca8bdf0f818",
-    "design/architecture-278/implementation/stage33/design-input.json": "98a3acb0e8e5c00ff4bf1d0507ccc7db9e4ef4aae23e52c875f58f9f99fa6885",
+    "design/architecture-278/implementation/stage33/README.md": "99b8a4df651fd37127810556ed180c8113c4d148e710bfee479c10a54cafb10e",
+    "design/architecture-278/implementation/stage33/approval.json": "88eccb2b86467a40448a9291a2f8edb206a71f1fd0790ad3eb86dba521c07077",
+    "design/architecture-278/implementation/stage33/design-input.json": "0acd419a66617ab041bda9124ca036cca8635b27e4c7d22fb9eff99a8954db10",
     "design/architecture-278/implementation/stage33/sources.json": "29f77ded3e852813cd777a4fe296332a131dbd647ed72037407f6741e23fb4f2",
     "design/grid/placements.lock.json": "297300b067fd646624b9e501791163fa2d60702862b61568753bf92e5b88dbe8",
-    "scripts/architecture278/implementation/check_source.py": "3c2310b4f8186257dd75e33ffdd27b0ae26473a0ca0a9fdb0d2cc194e47325be",
+    "scripts/architecture278/implementation/check_source.py": "06f03fac1f0180b9c5217469defff84d44ca5986a2448bab800733e9631105c8",
     "scripts/architecture278/implementation/stage28_din_harness.py": "49fab6a30d86e3f3aa9898e2268e3258532a49affaefc4f7203e306b2235468a",
     "scripts/architecture278/implementation/stage30_din_design_integration.py": "a092803e4a68a0d90a81d4f50b3f8f09a74948a4f2195f4ec122ba0f2b5eef26",
     "scripts/architecture278/implementation/stage31_cable_entry_redesign.py": "ecb6faae2a802841b8651e49b2c993291bd6598962c5079257828b1b2cc1add0",
     "scripts/architecture278/implementation/stage32_service_envelope.py": "f38de834ecc125cf891e2604f5783333594d7a56a146577a03e3c97ba822240e",
-    "scripts/architecture278/implementation/stage33_large_radius.py": "2fe4bf8d812c04cffb08f2a3c9b58dacda3e629617f01749bc4caf879a954994",
-    "scripts/architecture278/implementation/test_stage33_large_radius.py": "b12c29724cf855ad7ec53bcb0130d25cb54a24b709facda86bc452cce672a7c3"
+    "scripts/architecture278/implementation/stage33_large_radius.py": "3356086849be729dc4355e6989ed040f0ab398c3d6cbc2a913afe41ff1e78dd9",
+    "scripts/architecture278/implementation/test_stage33_large_radius.py": "00e6b96f2bbb3d912abe2290e24f67a0fc3aec03f54cd4d497344f0f602ccc8b"
   },
   "status": "DESIGN_STUDY_ONLY"
 }
