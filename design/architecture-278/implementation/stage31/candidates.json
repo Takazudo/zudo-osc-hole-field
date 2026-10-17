@@ -1,0 +1,3036 @@
+{
+  "candidates": [
+    {
+      "assembly": [
+        "Fit the jack carrier, A01-jack, the middle carrier and A01-middle as in Stage10.",
+        "Mate the GHR housings into J-SIG:middle and J-PWR:middle along -z to +z from the panel side, with the front panel off.",
+        "Lay each bundle over its notch saddle and fit R1/R2.",
+        "Form the free loop at the local end and mate J-SIG:local and J-PWR:local from the rear, left of the A01-middle edge (x < 232).",
+        "Fit the core onto the DIN connector and connect K-PWR last. Service: disconnect K-PWR, then withdraw the core 40 mm; J-SIG and J-PWR are not touched."
+      ],
+      "cable_to_cable": {
+        "clear": true,
+        "closest_points_mm": [
+          [
+            225.986391,
+            164.4,
+            46.0
+          ],
+          [
+            226.0,
+            173.0,
+            46.04359
+          ]
+        ],
+        "min_surface_gap_mm": 5.693014,
+        "required_mm": 0.5
+      },
+      "comparison_axes": {
+        "dressing": "round bundles",
+        "headers": "unchanged",
+        "rail": "two top notches"
+      },
+      "criteria": {
+        "K1": true,
+        "K2": false,
+        "K3": false,
+        "K4": true
+      },
+      "failed_criteria": [
+        "K2",
+        "K3"
+      ],
+      "header_moves": [],
+      "id": "A",
+      "physical": "NOT_RUN; centreline and envelope clearance is not physical non-interference",
+      "rail_reliefs": [
+        {
+          "distance_to_nearest_mount_tab_mm": 13.1,
+          "id": "N1",
+          "length_mm": 4.6,
+          "link": "J-SIG",
+          "local_section_inertia_ratio": 0.528167,
+          "local_section_modulus_ratio": 0.653403,
+          "notch_depth_mm": 2.3,
+          "obstacle": "rail:middle:0",
+          "rail_span_y_mm": [
+            142,
+            274
+          ],
+          "relieved_top_z_mm": 43.7,
+          "remaining_depth_mm": 9.7,
+          "remaining_fraction": 0.808333,
+          "route_needs": {
+            "max_top_z_mm": 44.0,
+            "y_window_mm": [
+              162.4,
+              166.4
+            ]
+          },
+          "section_mm": [
+            6,
+            9.7
+          ],
+          "status": "PROPOSAL_NOT_ADOPTED",
+          "strength": "NOT_CALCULATED; the Stage10 planning model covers only the straight crossmember surrogate",
+          "y_mm": [
+            162.1,
+            166.7
+          ]
+        },
+        {
+          "distance_to_nearest_mount_tab_mm": 31.9,
+          "id": "N2",
+          "length_mm": 4.2,
+          "link": "J-PWR",
+          "local_section_inertia_ratio": 0.614125,
+          "local_section_modulus_ratio": 0.7225,
+          "notch_depth_mm": 1.8,
+          "obstacle": "rail:middle:0",
+          "rail_span_y_mm": [
+            142,
+            274
+          ],
+          "relieved_top_z_mm": 44.2,
+          "remaining_depth_mm": 10.2,
+          "remaining_fraction": 0.85,
+          "route_needs": {
+            "max_top_z_mm": 44.592893,
+            "y_window_mm": [
+              181.289377,
+              184.707107
+            ]
+          },
+          "section_mm": [
+            6,
+            10.2
+          ],
+          "status": "PROPOSAL_NOT_ADOPTED",
+          "strength": "NOT_CALCULATED; the Stage10 planning model covers only the straight crossmember surrogate",
+          "y_mm": [
+            180.9,
+            185.1
+          ]
+        }
+      ],
+      "release_sweeps": {
+        "A01:J-PWR:local": {
+          "foreign_xy_overlaps": [],
+          "known_overlaps": [],
+          "margin_mm": 0.5,
+          "moved": false,
+          "nearest_gaps_mm": [
+            {
+              "gap_mm": 0.9,
+              "id": "board:A01-middle:0"
+            },
+            {
+              "gap_mm": 1.0,
+              "id": "board:A01-middle:1"
+            },
+            {
+              "gap_mm": 1.175,
+              "id": "release:A01:J-SIG:local"
+            },
+            {
+              "gap_mm": 1.525,
+              "id": "board:A01-middle:2"
+            }
+          ],
+          "sweep": {
+            "box_mm": [
+              219.525,
+              169.9,
+              232.475,
+              180.0
+            ],
+            "z_mm": [
+              36.6,
+              58.9
+            ]
+          }
+        },
+        "A01:J-PWR:middle": {
+          "foreign_xy_overlaps": [
+            {
+              "max_foreign_top_z_mm": 25.6,
+              "max_rear_side_height_mm": 4.0,
+              "ref": "D1610"
+            },
+            {
+              "max_foreign_top_z_mm": 25.6,
+              "max_rear_side_height_mm": 4.0,
+              "ref": "D16101"
+            },
+            {
+              "max_foreign_top_z_mm": 25.6,
+              "max_rear_side_height_mm": 4.0,
+              "ref": "J1709"
+            },
+            {
+              "max_foreign_top_z_mm": 25.6,
+              "max_rear_side_height_mm": 4.0,
+              "ref": "J1710"
+            }
+          ],
+          "known_overlaps": [],
+          "margin_mm": 0.5,
+          "moved": false,
+          "nearest_gaps_mm": [
+            {
+              "gap_mm": 0.0,
+              "id": "foreign-depth:D1610"
+            },
+            {
+              "gap_mm": 0.0,
+              "id": "foreign-depth:D16101"
+            },
+            {
+              "gap_mm": 0.0,
+              "id": "foreign-depth:J1709"
+            },
+            {
+              "gap_mm": 0.0,
+              "id": "foreign-depth:J1710"
+            }
+          ],
+          "sweep": {
+            "box_mm": [
+              276.525,
+              146.9,
+              289.475,
+              157.0
+            ],
+            "z_mm": [
+              26.1,
+              48.4
+            ]
+          }
+        },
+        "A01:J-SIG:local": {
+          "foreign_xy_overlaps": [],
+          "known_overlaps": [],
+          "margin_mm": 0.5,
+          "moved": false,
+          "nearest_gaps_mm": [
+            {
+              "gap_mm": 0.65,
+              "id": "tool:A01-jack:M3"
+            },
+            {
+              "gap_mm": 1.15,
+              "id": "head:A01-jack:M3"
+            },
+            {
+              "gap_mm": 1.175,
+              "id": "release:A01:J-PWR:local"
+            },
+            {
+              "gap_mm": 1.970406,
+              "id": "spacer:A01-jack:M3"
+            }
+          ],
+          "sweep": {
+            "box_mm": [
+              201.65,
+              169.9,
+              218.35,
+              180.0
+            ],
+            "z_mm": [
+              36.6,
+              58.9
+            ]
+          }
+        },
+        "A01:J-SIG:middle": {
+          "foreign_xy_overlaps": [
+            {
+              "max_foreign_top_z_mm": 25.6,
+              "max_rear_side_height_mm": 4.0,
+              "ref": "D1510"
+            },
+            {
+              "max_foreign_top_z_mm": 25.6,
+              "max_rear_side_height_mm": 4.0,
+              "ref": "D15101"
+            },
+            {
+              "max_foreign_top_z_mm": 25.6,
+              "max_rear_side_height_mm": 4.0,
+              "ref": "J1509"
+            },
+            {
+              "max_foreign_top_z_mm": 25.6,
+              "max_rear_side_height_mm": 4.0,
+              "ref": "J1510"
+            },
+            {
+              "max_foreign_top_z_mm": 25.6,
+              "max_rear_side_height_mm": 4.0,
+              "ref": "J1609"
+            },
+            {
+              "max_foreign_top_z_mm": 25.6,
+              "max_rear_side_height_mm": 4.0,
+              "ref": "J1610"
+            }
+          ],
+          "known_overlaps": [],
+          "margin_mm": 0.5,
+          "moved": false,
+          "nearest_gaps_mm": [
+            {
+              "gap_mm": 0.0,
+              "id": "foreign-depth:D1510"
+            },
+            {
+              "gap_mm": 0.0,
+              "id": "foreign-depth:D15101"
+            },
+            {
+              "gap_mm": 0.0,
+              "id": "foreign-depth:J1509"
+            },
+            {
+              "gap_mm": 0.0,
+              "id": "foreign-depth:J1510"
+            }
+          ],
+          "sweep": {
+            "box_mm": [
+              251.65,
+              146.9,
+              268.35,
+              157.0
+            ],
+            "z_mm": [
+              26.1,
+              48.4
+            ]
+          }
+        }
+      },
+      "retention": [
+        {
+          "at": "notch N1 floor",
+          "dimensions_mm": null,
+          "id": "R1",
+          "kind": "saddle in the notch with a strap or tie over the bundle; strap anchorage formed in the rail flank (local carrier shape)",
+          "link": "J-SIG",
+          "status": "PROPOSAL_NOT_ADOPTED"
+        },
+        {
+          "at": "notch N2 floor",
+          "dimensions_mm": null,
+          "id": "R2",
+          "kind": "saddle in the notch with a strap or tie over the bundle; strap anchorage formed in the rail flank (local carrier shape)",
+          "link": "J-PWR",
+          "status": "PROPOSAL_NOT_ADOPTED"
+        }
+      ],
+      "routes": {
+        "J-PWR": {
+          "bends": [
+            {
+              "arc_length_mm": 7.853982,
+              "centre_mm": [
+                226.0,
+                178.0,
+                51.5
+              ],
+              "radius_mm": 5.0,
+              "turn_deg": 90.0,
+              "vertex_index": 1,
+              "vertex_mm": [
+                226.0,
+                173.0,
+                56.5
+              ]
+            },
+            {
+              "arc_length_mm": 7.853982,
+              "centre_mm": [
+                226.0,
+                178.0,
+                51.5
+              ],
+              "radius_mm": 5.0,
+              "turn_deg": 90.0,
+              "vertex_index": 2,
+              "vertex_mm": [
+                226.0,
+                183.0,
+                56.5
+              ]
+            },
+            {
+              "arc_length_mm": 7.853982,
+              "centre_mm": [
+                231.0,
+                183.0,
+                51.3
+              ],
+              "radius_mm": 5.0,
+              "turn_deg": 90.0,
+              "vertex_index": 3,
+              "vertex_mm": [
+                226.0,
+                183.0,
+                46.3
+              ]
+            },
+            {
+              "arc_length_mm": 3.000251,
+              "centre_mm": [
+                249.453181,
+                178.0,
+                46.3
+              ],
+              "radius_mm": 5.0,
+              "turn_deg": 34.380345,
+              "vertex_index": 4,
+              "vertex_mm": [
+                251.0,
+                183.0,
+                46.3
+              ]
+            },
+            {
+              "arc_length_mm": 0.530544,
+              "centre_mm": [
+                272.604283,
+                174.276472,
+                46.3
+              ],
+              "radius_mm": 5.0,
+              "turn_deg": 6.079589,
+              "vertex_index": 5,
+              "vertex_mm": [
+                270.0,
+                170.0,
+                46.3
+              ]
+            },
+            {
+              "arc_length_mm": 7.853982,
+              "centre_mm": [
+                278.597645,
+                165.370499,
+                41.3
+              ],
+              "radius_mm": 5.0,
+              "turn_deg": 90.0,
+              "vertex_index": 6,
+              "vertex_mm": [
+                283.0,
+                163.0,
+                46.3
+              ]
+            },
+            {
+              "arc_length_mm": 7.853982,
+              "centre_mm": [
+                283.0,
+                158.0,
+                39.1
+              ],
+              "radius_mm": 5.0,
+              "turn_deg": 90.0,
+              "vertex_index": 7,
+              "vertex_mm": [
+                283.0,
+                163.0,
+                34.1
+              ]
+            },
+            {
+              "arc_length_mm": 7.853982,
+              "centre_mm": [
+                283.0,
+                155.0,
+                39.1
+              ],
+              "radius_mm": 5.0,
+              "turn_deg": 90.0,
+              "vertex_index": 8,
+              "vertex_mm": [
+                283.0,
+                150.0,
+                34.1
+              ]
+            }
+          ],
+          "clear_of_known_keep_outs": true,
+          "core_motion_clearance_mm": 2.392893,
+          "design_bend_radius_mm": 5.0,
+          "design_length_excess_over_installed_mm": 29.586675,
+          "design_length_proposal_mm": 159,
+          "dressing": {
+            "conductors": 4,
+            "flat_thickness_mm": null,
+            "flat_width_mm": null,
+            "kind": "ROUND_BUNDLE",
+            "round_radius_mm": 1.207107,
+            "wire_od_mm": 1.0
+          },
+          "exit_axis": {
+            "local": "+z",
+            "middle": "-z"
+          },
+          "flat_legs": null,
+          "foreign_depth_bounds": {
+            "J1710": {
+              "block": "A05",
+              "max_foreign_top_z_mm": 32.292893,
+              "max_rear_side_height_mm": 10.692893,
+              "pcb_rear_z_mm": 21.6
+            },
+            "SW1401": {
+              "block": "E2",
+              "max_foreign_top_z_mm": 44.492893,
+              "max_rear_side_height_mm": 22.892893,
+              "pcb_rear_z_mm": 21.6
+            },
+            "SW1501": {
+              "block": "E3",
+              "max_foreign_top_z_mm": 44.492893,
+              "max_rear_side_height_mm": 22.892893,
+              "pcb_rear_z_mm": 21.6
+            }
+          },
+          "installed_pad_to_pad_design_length_mm": 129.413325,
+          "legs_mm": [
+            12.6,
+            10.0,
+            10.2,
+            25.0,
+            23.021729,
+            14.764823,
+            12.2,
+            13.0,
+            7.0
+          ],
+          "length_status": "DESIGN_LENGTH_PROPOSAL; not measured, not a cut length",
+          "max_uniform_radius_mm": 5.0,
+          "min_surface_clearance_mm": 0.692893,
+          "nearest_keep_outs_mm": [
+            {
+              "id": "tool:A01-jack:M4",
+              "surface_clearance_mm": 0.692893
+            },
+            {
+              "id": "board:A01-middle:0",
+              "surface_clearance_mm": 0.792893
+            },
+            {
+              "id": "board:A01-middle:1",
+              "surface_clearance_mm": 0.792893
+            },
+            {
+              "id": "board:A01-middle:2",
+              "surface_clearance_mm": 0.792893
+            },
+            {
+              "id": "rail:middle:0:N2:floor",
+              "surface_clearance_mm": 0.792893
+            },
+            {
+              "id": "rail:middle:0:y166.7-180.9",
+              "surface_clearance_mm": 0.814213
+            },
+            {
+              "id": "rail:middle:0:y185.1-274",
+              "surface_clearance_mm": 0.814213
+            },
+            {
+              "id": "crossmember:rear:0",
+              "surface_clearance_mm": 3.392893
+            }
+          ],
+          "release_cases": [
+            {
+              "case": "installed",
+              "extra_mm": 0.0,
+              "foreign_depth_bounds": {
+                "J1710": 32.292893,
+                "SW1401": 44.492893,
+                "SW1501": 44.492893
+              },
+              "highest_centreline_z_mm": 56.5,
+              "keep_outs_below_margin": [],
+              "length_mm": 129.413325,
+              "lowest_centreline_z_mm": 34.1,
+              "note": "surrogate shape during release; own sweep excluded; the foreign PCB outline is not modelled"
+            },
+            {
+              "case": "middle withdrawn 15 mm",
+              "extra_mm": 15.0,
+              "foreign_depth_bounds": {
+                "J1710": 19.849787,
+                "SW1401": 44.492893,
+                "SW1501": 44.492893
+              },
+              "highest_centreline_z_mm": 56.5,
+              "keep_outs_below_margin": [
+                "foreign:J1710"
+              ],
+              "length_mm": 144.413325,
+              "lowest_centreline_z_mm": 19.1,
+              "note": "surrogate shape during release; own sweep excluded; the foreign PCB outline is not modelled"
+            },
+            {
+              "case": "local withdrawn 15 mm",
+              "extra_mm": 3.8,
+              "foreign_depth_bounds": {
+                "J1710": 32.292893,
+                "SW1401": 44.492893,
+                "SW1501": 44.492893
+              },
+              "highest_centreline_z_mm": 65.9,
+              "keep_outs_below_margin": [],
+              "length_mm": 133.213325,
+              "lowest_centreline_z_mm": 34.1,
+              "note": "surrogate shape during release; own sweep excluded; the foreign PCB outline is not modelled"
+            },
+            {
+              "case": "both withdrawn 15 mm",
+              "extra_mm": 18.8,
+              "foreign_depth_bounds": {
+                "J1710": 19.849787,
+                "SW1401": 44.492893,
+                "SW1501": 44.492893
+              },
+              "highest_centreline_z_mm": 65.9,
+              "keep_outs_below_margin": [
+                "foreign:J1710"
+              ],
+              "length_mm": 148.213325,
+              "lowest_centreline_z_mm": 19.1,
+              "note": "surrogate shape during release; own sweep excluded; the foreign PCB outline is not modelled"
+            }
+          ],
+          "release_dip_envelope_bottom_z_mm": 17.892893,
+          "release_extra_length_mm": [
+            0.0,
+            15.0,
+            3.8,
+            18.8
+          ],
+          "required_length_rule": "installed filleted length + largest bend-feasible release extra + Stage10 service slack",
+          "required_length_rule_mm": 158.213325,
+          "required_surface_clearance_mm": 0.5,
+          "slack_storage": "the free loop at the local end must take the excess; NOT_RUN (M-12)",
+          "stage10_cut_covers_rule": false,
+          "stage10_cut_mm": "90\u00b13",
+          "straight_from_exit_mm": {
+            "local": 7.6,
+            "middle": 2.0
+          },
+          "vertices_mm": [
+            [
+              226.0,
+              173.0,
+              43.9
+            ],
+            [
+              226.0,
+              173.0,
+              56.5
+            ],
+            [
+              226.0,
+              183.0,
+              56.5
+            ],
+            [
+              226.0,
+              183.0,
+              46.3
+            ],
+            [
+              251.0,
+              183.0,
+              46.3
+            ],
+            [
+              270.0,
+              170.0,
+              46.3
+            ],
+            [
+              283.0,
+              163.0,
+              46.3
+            ],
+            [
+              283.0,
+              163.0,
+              34.1
+            ],
+            [
+              283.0,
+              150.0,
+              34.1
+            ],
+            [
+              283.0,
+              150.0,
+              41.1
+            ]
+          ]
+        },
+        "J-SIG": {
+          "bends": [
+            {
+              "arc_length_mm": 7.853982,
+              "centre_mm": [
+                212.860908,
+                168.899365,
+                51.4
+              ],
+              "radius_mm": 5.0,
+              "turn_deg": 90.0,
+              "vertex_index": 1,
+              "vertex_mm": [
+                210.0,
+                173.0,
+                56.4
+              ]
+            },
+            {
+              "arc_length_mm": 7.853982,
+              "centre_mm": [
+                213.139092,
+                168.500635,
+                51.4
+              ],
+              "radius_mm": 5.0,
+              "turn_deg": 90.0,
+              "vertex_index": 2,
+              "vertex_mm": [
+                216.0,
+                164.4,
+                56.4
+              ]
+            },
+            {
+              "arc_length_mm": 7.853982,
+              "centre_mm": [
+                221.0,
+                164.4,
+                51.0
+              ],
+              "radius_mm": 5.0,
+              "turn_deg": 90.0,
+              "vertex_index": 3,
+              "vertex_mm": [
+                216.0,
+                164.4,
+                46.0
+              ]
+            },
+            {
+              "arc_length_mm": 2.702098,
+              "centre_mm": [
+                252.11508,
+                159.4,
+                46.0
+              ],
+              "radius_mm": 5.0,
+              "turn_deg": 30.963757,
+              "vertex_index": 4,
+              "vertex_mm": [
+                253.5,
+                164.4,
+                46.0
+              ]
+            },
+            {
+              "arc_length_mm": 7.853982,
+              "centre_mm": [
+                255.712535,
+                163.072479,
+                41.0
+              ],
+              "radius_mm": 5.0,
+              "turn_deg": 90.0,
+              "vertex_index": 5,
+              "vertex_mm": [
+                260.0,
+                160.5,
+                46.0
+              ]
+            },
+            {
+              "arc_length_mm": 7.853982,
+              "centre_mm": [
+                260.0,
+                155.5,
+                39.1
+              ],
+              "radius_mm": 5.0,
+              "turn_deg": 90.0,
+              "vertex_index": 6,
+              "vertex_mm": [
+                260.0,
+                160.5,
+                34.1
+              ]
+            },
+            {
+              "arc_length_mm": 7.853982,
+              "centre_mm": [
+                260.0,
+                155.0,
+                39.1
+              ],
+              "radius_mm": 5.0,
+              "turn_deg": 90.0,
+              "vertex_index": 7,
+              "vertex_mm": [
+                260.0,
+                150.0,
+                34.1
+              ]
+            }
+          ],
+          "clear_of_known_keep_outs": true,
+          "core_motion_clearance_mm": 8.8,
+          "design_bend_radius_mm": 5.0,
+          "design_length_excess_over_installed_mm": 29.480629,
+          "design_length_proposal_mm": 139,
+          "dressing": {
+            "conductors": 7,
+            "flat_thickness_mm": null,
+            "flat_width_mm": null,
+            "kind": "ROUND_BUNDLE",
+            "round_radius_mm": 1.5,
+            "wire_od_mm": 1.0
+          },
+          "exit_axis": {
+            "local": "+z",
+            "middle": "-z"
+          },
+          "flat_legs": null,
+          "foreign_depth_bounds": {
+            "D1510": {
+              "block": "A03",
+              "max_foreign_top_z_mm": 32.021539,
+              "max_rear_side_height_mm": 10.421539,
+              "pcb_rear_z_mm": 21.6
+            },
+            "D15101": {
+              "block": "A03",
+              "max_foreign_top_z_mm": 32.067069,
+              "max_rear_side_height_mm": 10.467069,
+              "pcb_rear_z_mm": 21.6
+            },
+            "J1510": {
+              "block": "A03",
+              "max_foreign_top_z_mm": 43.046351,
+              "max_rear_side_height_mm": 21.446351,
+              "pcb_rear_z_mm": 21.6
+            }
+          },
+          "installed_pad_to_pad_design_length_mm": 109.519371,
+          "legs_mm": [
+            12.5,
+            10.486181,
+            10.4,
+            37.5,
+            7.580237,
+            11.9,
+            10.5,
+            7.0
+          ],
+          "length_status": "DESIGN_LENGTH_PROPOSAL; not measured, not a cut length",
+          "max_uniform_radius_mm": 5.0,
+          "min_surface_clearance_mm": 0.7,
+          "nearest_keep_outs_mm": [
+            {
+              "id": "rail:middle:0:N1:floor",
+              "surface_clearance_mm": 0.7
+            },
+            {
+              "id": "rail:middle:0:y142-162.1",
+              "surface_clearance_mm": 0.7
+            },
+            {
+              "id": "rail:middle:0:y166.7-180.9",
+              "surface_clearance_mm": 0.7
+            },
+            {
+              "id": "board:A01-middle:0",
+              "surface_clearance_mm": 0.8
+            },
+            {
+              "id": "board:A01-middle:2",
+              "surface_clearance_mm": 3.588449
+            },
+            {
+              "id": "release:A01:J-PWR:local",
+              "surface_clearance_mm": 3.9
+            },
+            {
+              "id": "body:R7108",
+              "surface_clearance_mm": 4.844967
+            },
+            {
+              "id": "body:R7135",
+              "surface_clearance_mm": 4.844967
+            }
+          ],
+          "release_cases": [
+            {
+              "case": "installed",
+              "extra_mm": 0.0,
+              "foreign_depth_bounds": {
+                "D1510": 32.021539,
+                "D15101": 32.067069,
+                "J1510": 43.046351
+              },
+              "highest_centreline_z_mm": 56.4,
+              "keep_outs_below_margin": [],
+              "length_mm": 109.519371,
+              "lowest_centreline_z_mm": 34.1,
+              "note": "surrogate shape during release; own sweep excluded; the foreign PCB outline is not modelled"
+            },
+            {
+              "case": "middle withdrawn 15 mm",
+              "extra_mm": 15.0,
+              "foreign_depth_bounds": {
+                "J1510": 43.046351
+              },
+              "highest_centreline_z_mm": 56.4,
+              "keep_outs_below_margin": [
+                "foreign:D1510",
+                "foreign:D15101"
+              ],
+              "length_mm": 124.519371,
+              "lowest_centreline_z_mm": 19.1,
+              "note": "surrogate shape during release; own sweep excluded; the foreign PCB outline is not modelled"
+            },
+            {
+              "case": "local withdrawn 15 mm",
+              "extra_mm": 4.0,
+              "foreign_depth_bounds": {
+                "D1510": 32.021539,
+                "D15101": 32.067069,
+                "J1510": 43.046351
+              },
+              "highest_centreline_z_mm": 65.9,
+              "keep_outs_below_margin": [],
+              "length_mm": 113.519371,
+              "lowest_centreline_z_mm": 34.1,
+              "note": "surrogate shape during release; own sweep excluded; the foreign PCB outline is not modelled"
+            },
+            {
+              "case": "both withdrawn 15 mm",
+              "extra_mm": 19.0,
+              "foreign_depth_bounds": {
+                "J1510": 43.046351
+              },
+              "highest_centreline_z_mm": 65.9,
+              "keep_outs_below_margin": [
+                "foreign:D1510",
+                "foreign:D15101"
+              ],
+              "length_mm": 128.519371,
+              "lowest_centreline_z_mm": 19.1,
+              "note": "surrogate shape during release; own sweep excluded; the foreign PCB outline is not modelled"
+            }
+          ],
+          "release_dip_envelope_bottom_z_mm": 17.6,
+          "release_extra_length_mm": [
+            0.0,
+            15.0,
+            4.0,
+            19.0
+          ],
+          "required_length_rule": "installed filleted length + largest bend-feasible release extra + Stage10 service slack",
+          "required_length_rule_mm": 138.519371,
+          "required_surface_clearance_mm": 0.5,
+          "slack_storage": "the free loop at the local end must take the excess; NOT_RUN (M-12)",
+          "stage10_cut_covers_rule": false,
+          "stage10_cut_mm": "90\u00b13",
+          "straight_from_exit_mm": {
+            "local": 7.5,
+            "middle": 2.0
+          },
+          "vertices_mm": [
+            [
+              210.0,
+              173.0,
+              43.9
+            ],
+            [
+              210.0,
+              173.0,
+              56.4
+            ],
+            [
+              216.0,
+              164.4,
+              56.4
+            ],
+            [
+              216.0,
+              164.4,
+              46.0
+            ],
+            [
+              253.5,
+              164.4,
+              46.0
+            ],
+            [
+              260.0,
+              160.5,
+              46.0
+            ],
+            [
+              260.0,
+              160.5,
+              34.1
+            ],
+            [
+              260.0,
+              150.0,
+              34.1
+            ],
+            [
+              260.0,
+              150.0,
+              41.1
+            ]
+          ]
+        }
+      },
+      "service": {
+        "K-PWR_first_then_core_40mm": "unchanged; neither cable attaches to the core",
+        "core_motion_envelope": {
+          "basis": "core outline XY from the mated DIN plane to the handle tops plus the 40 mm withdrawal",
+          "hi": [
+            312,
+            282,
+            134
+          ],
+          "lo": [
+            236,
+            174,
+            50
+          ]
+        },
+        "min_core_motion_clearance_mm": 2.392893
+      },
+      "smallest_foreign_rear_side_allowance_mm": 10.421539,
+      "status": "REJECTED_BY_CRITERIA",
+      "tightest_spare_beyond_margin_mm": 0.192893,
+      "tightest_spare_note": "sampled clearance minus the 0.1 mm sampling deduction (0.2 mm for cable to cable); the exact geometric spare is up to that much larger",
+      "tightest_sweep_gap_mm": 0.0,
+      "title": "Headers kept; two shallow notches in the middle carrier left rail"
+    },
+    {
+      "assembly": [
+        "Fit the jack carrier, A01-jack, the middle carrier and A01-middle as in Stage10.",
+        "Mate the GHR housings into J-SIG:middle and J-PWR:middle along -z to +z from the panel side, with the front panel off.",
+        "Lay each bundle over its notch saddle and fit R1/R2.",
+        "Form the free loop at the local end and mate J-SIG:local and J-PWR:local from the rear, left of the A01-middle edge (x < 232).",
+        "Fit the core onto the DIN connector and connect K-PWR last. Service: disconnect K-PWR, then withdraw the core 40 mm; J-SIG and J-PWR are not touched."
+      ],
+      "cable_to_cable": {
+        "clear": true,
+        "closest_points_mm": [
+          [
+            225.944021,
+            164.4,
+            46.0
+          ],
+          [
+            226.0,
+            173.0,
+            46.04359
+          ]
+        ],
+        "min_surface_gap_mm": 5.693186,
+        "required_mm": 0.5
+      },
+      "comparison_axes": {
+        "dressing": "round bundles",
+        "headers": "J-SIG:middle and J-PWR:middle moved and turned 90 degrees (pin rows along y)",
+        "rail": "two top notches"
+      },
+      "criteria": {
+        "K1": true,
+        "K2": true,
+        "K3": true,
+        "K4": true
+      },
+      "failed_criteria": [],
+      "header_moves": [
+        {
+          "board_face_unchanged": true,
+          "box_mm": [
+            283.0,
+            170.225,
+            289.1,
+            179.175
+          ],
+          "from_origin_mm": [
+            283,
+            150
+          ],
+          "mpn_unchanged": true,
+          "nearest_mount": {
+            "gap_mm": 28.469907,
+            "mount": "A01-middle:M2"
+          },
+          "pin_row_axis": "y",
+          "pins_unchanged": true,
+          "ref": "A01:J-PWR:middle",
+          "rotation_deg": 90,
+          "sweep": {
+            "box_mm": [
+              281.0,
+              168.225,
+              291.1,
+              181.175
+            ],
+            "z_mm": [
+              26.1,
+              48.4
+            ]
+          },
+          "sweep_gap_to_other_headers": {
+            "gap_mm": 9.9,
+            "ref": "A01:J-SIG:middle"
+          },
+          "to_origin_mm": [
+            288.0,
+            174.7
+          ]
+        },
+        {
+          "board_face_unchanged": true,
+          "box_mm": [
+            263.0,
+            165.15,
+            269.1,
+            177.85
+          ],
+          "from_origin_mm": [
+            260,
+            150
+          ],
+          "mpn_unchanged": true,
+          "nearest_mount": {
+            "gap_mm": 29.622162,
+            "mount": "A01-middle:M1"
+          },
+          "pin_row_axis": "y",
+          "pins_unchanged": true,
+          "ref": "A01:J-SIG:middle",
+          "rotation_deg": 90,
+          "sweep": {
+            "box_mm": [
+              261.0,
+              163.15,
+              271.1,
+              179.85
+            ],
+            "z_mm": [
+              26.1,
+              48.4
+            ]
+          },
+          "sweep_gap_to_other_headers": {
+            "gap_mm": 9.9,
+            "ref": "A01:J-PWR:middle"
+          },
+          "to_origin_mm": [
+            268.0,
+            171.5
+          ]
+        }
+      ],
+      "id": "B",
+      "physical": "NOT_RUN; centreline and envelope clearance is not physical non-interference",
+      "rail_reliefs": [
+        {
+          "distance_to_nearest_mount_tab_mm": 19.6,
+          "id": "N1",
+          "length_mm": 5.2,
+          "link": "J-SIG",
+          "local_section_inertia_ratio": 0.528167,
+          "local_section_modulus_ratio": 0.653403,
+          "notch_depth_mm": 2.3,
+          "obstacle": "rail:middle:0",
+          "rail_span_y_mm": [
+            142,
+            274
+          ],
+          "relieved_top_z_mm": 43.7,
+          "remaining_depth_mm": 9.7,
+          "remaining_fraction": 0.808333,
+          "route_needs": {
+            "max_top_z_mm": 44.0,
+            "y_window_mm": [
+              168.948535,
+              173.5
+            ]
+          },
+          "section_mm": [
+            6,
+            9.7
+          ],
+          "status": "PROPOSAL_NOT_ADOPTED",
+          "strength": "NOT_CALCULATED; the Stage10 planning model covers only the straight crossmember surrogate",
+          "y_mm": [
+            168.6,
+            173.8
+          ]
+        },
+        {
+          "distance_to_nearest_mount_tab_mm": 31.9,
+          "id": "N2",
+          "length_mm": 4.2,
+          "link": "J-PWR",
+          "local_section_inertia_ratio": 0.614125,
+          "local_section_modulus_ratio": 0.7225,
+          "notch_depth_mm": 1.8,
+          "obstacle": "rail:middle:0",
+          "rail_span_y_mm": [
+            142,
+            274
+          ],
+          "relieved_top_z_mm": 44.2,
+          "remaining_depth_mm": 10.2,
+          "remaining_fraction": 0.85,
+          "route_needs": {
+            "max_top_z_mm": 44.592893,
+            "y_window_mm": [
+              181.292893,
+              184.707107
+            ]
+          },
+          "section_mm": [
+            6,
+            10.2
+          ],
+          "status": "PROPOSAL_NOT_ADOPTED",
+          "strength": "NOT_CALCULATED; the Stage10 planning model covers only the straight crossmember surrogate",
+          "y_mm": [
+            180.9,
+            185.1
+          ]
+        }
+      ],
+      "release_sweeps": {
+        "A01:J-PWR:local": {
+          "foreign_xy_overlaps": [],
+          "known_overlaps": [],
+          "margin_mm": 0.5,
+          "moved": false,
+          "nearest_gaps_mm": [
+            {
+              "gap_mm": 0.9,
+              "id": "board:A01-middle:0"
+            },
+            {
+              "gap_mm": 1.0,
+              "id": "board:A01-middle:1"
+            },
+            {
+              "gap_mm": 1.175,
+              "id": "release:A01:J-SIG:local"
+            },
+            {
+              "gap_mm": 1.525,
+              "id": "board:A01-middle:2"
+            }
+          ],
+          "sweep": {
+            "box_mm": [
+              219.525,
+              169.9,
+              232.475,
+              180.0
+            ],
+            "z_mm": [
+              36.6,
+              58.9
+            ]
+          }
+        },
+        "A01:J-PWR:middle": {
+          "foreign_xy_overlaps": [],
+          "known_overlaps": [],
+          "margin_mm": 0.5,
+          "moved": true,
+          "nearest_gaps_mm": [
+            {
+              "gap_mm": 0.575,
+              "id": "foreign-depth:SW1701"
+            },
+            {
+              "gap_mm": 0.825,
+              "id": "crossmember:jack:1"
+            },
+            {
+              "gap_mm": 2.6,
+              "id": "crossmember:rear:0"
+            },
+            {
+              "gap_mm": 3.052868,
+              "id": "DIN-mated-body"
+            }
+          ],
+          "sweep": {
+            "box_mm": [
+              281.0,
+              168.225,
+              291.1,
+              181.175
+            ],
+            "z_mm": [
+              26.1,
+              48.4
+            ]
+          }
+        },
+        "A01:J-SIG:local": {
+          "foreign_xy_overlaps": [],
+          "known_overlaps": [],
+          "margin_mm": 0.5,
+          "moved": false,
+          "nearest_gaps_mm": [
+            {
+              "gap_mm": 0.65,
+              "id": "tool:A01-jack:M3"
+            },
+            {
+              "gap_mm": 1.15,
+              "id": "head:A01-jack:M3"
+            },
+            {
+              "gap_mm": 1.175,
+              "id": "release:A01:J-PWR:local"
+            },
+            {
+              "gap_mm": 1.970406,
+              "id": "spacer:A01-jack:M3"
+            }
+          ],
+          "sweep": {
+            "box_mm": [
+              201.65,
+              169.9,
+              218.35,
+              180.0
+            ],
+            "z_mm": [
+              36.6,
+              58.9
+            ]
+          }
+        },
+        "A01:J-SIG:middle": {
+          "foreign_xy_overlaps": [],
+          "known_overlaps": [],
+          "margin_mm": 0.5,
+          "moved": true,
+          "nearest_gaps_mm": [
+            {
+              "gap_mm": 1.9,
+              "id": "foreign-depth:J1610"
+            },
+            {
+              "gap_mm": 1.9,
+              "id": "foreign-depth:SW1601"
+            },
+            {
+              "gap_mm": 2.15,
+              "id": "crossmember:jack:1"
+            },
+            {
+              "gap_mm": 2.6,
+              "id": "crossmember:rear:0"
+            }
+          ],
+          "sweep": {
+            "box_mm": [
+              261.0,
+              163.15,
+              271.1,
+              179.85
+            ],
+            "z_mm": [
+              26.1,
+              48.4
+            ]
+          }
+        }
+      },
+      "retention": [
+        {
+          "at": "notch N1 floor",
+          "dimensions_mm": null,
+          "id": "R1",
+          "kind": "saddle in the notch with a strap or tie over the bundle; strap anchorage formed in the rail flank (local carrier shape)",
+          "link": "J-SIG",
+          "status": "PROPOSAL_NOT_ADOPTED"
+        },
+        {
+          "at": "notch N2 floor",
+          "dimensions_mm": null,
+          "id": "R2",
+          "kind": "saddle in the notch with a strap or tie over the bundle; strap anchorage formed in the rail flank (local carrier shape)",
+          "link": "J-PWR",
+          "status": "PROPOSAL_NOT_ADOPTED"
+        }
+      ],
+      "routes": {
+        "J-PWR": {
+          "bends": [
+            {
+              "arc_length_mm": 7.853982,
+              "centre_mm": [
+                226.0,
+                178.0,
+                51.5
+              ],
+              "radius_mm": 5.0,
+              "turn_deg": 90.0,
+              "vertex_index": 1,
+              "vertex_mm": [
+                226.0,
+                173.0,
+                56.5
+              ]
+            },
+            {
+              "arc_length_mm": 7.853982,
+              "centre_mm": [
+                226.0,
+                178.0,
+                51.5
+              ],
+              "radius_mm": 5.0,
+              "turn_deg": 90.0,
+              "vertex_index": 2,
+              "vertex_mm": [
+                226.0,
+                183.0,
+                56.5
+              ]
+            },
+            {
+              "arc_length_mm": 7.853982,
+              "centre_mm": [
+                231.0,
+                183.0,
+                51.3
+              ],
+              "radius_mm": 5.0,
+              "turn_deg": 90.0,
+              "vertex_index": 3,
+              "vertex_mm": [
+                226.0,
+                183.0,
+                46.3
+              ]
+            },
+            {
+              "arc_length_mm": 4.724358,
+              "centre_mm": [
+                269.44483,
+                178.0,
+                46.3
+              ],
+              "radius_mm": 5.0,
+              "turn_deg": 54.137151,
+              "vertex_index": 4,
+              "vertex_mm": [
+                272.0,
+                183.0,
+                46.3
+              ]
+            },
+            {
+              "arc_length_mm": 7.853982,
+              "centre_mm": [
+                275.070765,
+                178.752108,
+                41.3
+              ],
+              "radius_mm": 5.0,
+              "turn_deg": 90.0,
+              "vertex_index": 5,
+              "vertex_mm": [
+                278.0,
+                174.7,
+                46.3
+              ]
+            },
+            {
+              "arc_length_mm": 7.853982,
+              "centre_mm": [
+                283.0,
+                174.7,
+                39.1
+              ],
+              "radius_mm": 5.0,
+              "turn_deg": 90.0,
+              "vertex_index": 6,
+              "vertex_mm": [
+                278.0,
+                174.7,
+                34.1
+              ]
+            },
+            {
+              "arc_length_mm": 7.853982,
+              "centre_mm": [
+                283.0,
+                174.7,
+                39.1
+              ],
+              "radius_mm": 5.0,
+              "turn_deg": 90.0,
+              "vertex_index": 7,
+              "vertex_mm": [
+                288.0,
+                174.7,
+                34.1
+              ]
+            }
+          ],
+          "clear_of_known_keep_outs": true,
+          "core_motion_clearance_mm": 2.392893,
+          "design_bend_radius_mm": 5.0,
+          "design_length_excess_over_installed_mm": 29.423843,
+          "design_length_proposal_mm": 149,
+          "dressing": {
+            "conductors": 4,
+            "flat_thickness_mm": null,
+            "flat_width_mm": null,
+            "kind": "ROUND_BUNDLE",
+            "round_radius_mm": 1.207107,
+            "wire_od_mm": 1.0
+          },
+          "exit_axis": {
+            "local": "+z",
+            "middle": "-z"
+          },
+          "flat_legs": null,
+          "foreign_depth_bounds": {
+            "SW1401": {
+              "block": "E2",
+              "max_foreign_top_z_mm": 44.492893,
+              "max_rear_side_height_mm": 22.892893,
+              "pcb_rear_z_mm": 21.6
+            },
+            "SW1501": {
+              "block": "E3",
+              "max_foreign_top_z_mm": 44.492893,
+              "max_rear_side_height_mm": 22.892893,
+              "pcb_rear_z_mm": 21.6
+            },
+            "SW1601": {
+              "block": "E4",
+              "max_foreign_top_z_mm": 44.492893,
+              "max_rear_side_height_mm": 22.892893,
+              "pcb_rear_z_mm": 21.6
+            }
+          },
+          "installed_pad_to_pad_design_length_mm": 119.576157,
+          "legs_mm": [
+            12.6,
+            10.0,
+            10.2,
+            46.0,
+            10.241582,
+            12.2,
+            10.0,
+            7.0
+          ],
+          "length_status": "DESIGN_LENGTH_PROPOSAL; not measured, not a cut length",
+          "max_uniform_radius_mm": 5.0,
+          "min_surface_clearance_mm": 0.692893,
+          "nearest_keep_outs_mm": [
+            {
+              "id": "tool:A01-jack:M4",
+              "surface_clearance_mm": 0.692893
+            },
+            {
+              "id": "board:A01-middle:1",
+              "surface_clearance_mm": 0.792893
+            },
+            {
+              "id": "board:A01-middle:2",
+              "surface_clearance_mm": 0.792893
+            },
+            {
+              "id": "rail:middle:0:N2:floor",
+              "surface_clearance_mm": 0.792893
+            },
+            {
+              "id": "rail:middle:0:y173.8-180.9",
+              "surface_clearance_mm": 0.814213
+            },
+            {
+              "id": "rail:middle:0:y185.1-274",
+              "surface_clearance_mm": 0.814213
+            },
+            {
+              "id": "release:A01:J-SIG:middle",
+              "surface_clearance_mm": 1.21135
+            },
+            {
+              "id": "rail:rear:0",
+              "surface_clearance_mm": 3.392893
+            }
+          ],
+          "release_cases": [
+            {
+              "case": "installed",
+              "extra_mm": 0.0,
+              "foreign_depth_bounds": {
+                "SW1401": 44.492893,
+                "SW1501": 44.492893,
+                "SW1601": 44.492893
+              },
+              "highest_centreline_z_mm": 56.5,
+              "keep_outs_below_margin": [],
+              "length_mm": 119.576157,
+              "lowest_centreline_z_mm": 34.1,
+              "note": "surrogate shape during release; own sweep excluded; the foreign PCB outline is not modelled"
+            },
+            {
+              "case": "middle withdrawn 15 mm",
+              "extra_mm": 15.0,
+              "foreign_depth_bounds": {
+                "SW1401": 44.492893,
+                "SW1501": 44.492893,
+                "SW1601": 44.492893
+              },
+              "highest_centreline_z_mm": 56.5,
+              "keep_outs_below_margin": [],
+              "length_mm": 134.576157,
+              "lowest_centreline_z_mm": 19.1,
+              "note": "surrogate shape during release; own sweep excluded; the foreign PCB outline is not modelled"
+            },
+            {
+              "case": "local withdrawn 15 mm",
+              "extra_mm": 3.8,
+              "foreign_depth_bounds": {
+                "SW1401": 44.492893,
+                "SW1501": 44.492893,
+                "SW1601": 44.492893
+              },
+              "highest_centreline_z_mm": 65.9,
+              "keep_outs_below_margin": [],
+              "length_mm": 123.376157,
+              "lowest_centreline_z_mm": 34.1,
+              "note": "surrogate shape during release; own sweep excluded; the foreign PCB outline is not modelled"
+            },
+            {
+              "case": "both withdrawn 15 mm",
+              "extra_mm": 18.8,
+              "foreign_depth_bounds": {
+                "SW1401": 44.492893,
+                "SW1501": 44.492893,
+                "SW1601": 44.492893
+              },
+              "highest_centreline_z_mm": 65.9,
+              "keep_outs_below_margin": [],
+              "length_mm": 138.376157,
+              "lowest_centreline_z_mm": 19.1,
+              "note": "surrogate shape during release; own sweep excluded; the foreign PCB outline is not modelled"
+            }
+          ],
+          "release_dip_envelope_bottom_z_mm": 17.892893,
+          "release_extra_length_mm": [
+            0.0,
+            15.0,
+            3.8,
+            18.8
+          ],
+          "required_length_rule": "installed filleted length + largest bend-feasible release extra + Stage10 service slack",
+          "required_length_rule_mm": 148.376157,
+          "required_surface_clearance_mm": 0.5,
+          "slack_storage": "the free loop at the local end must take the excess; NOT_RUN (M-12)",
+          "stage10_cut_covers_rule": false,
+          "stage10_cut_mm": "90\u00b13",
+          "straight_from_exit_mm": {
+            "local": 7.6,
+            "middle": 2.0
+          },
+          "vertices_mm": [
+            [
+              226.0,
+              173.0,
+              43.9
+            ],
+            [
+              226.0,
+              173.0,
+              56.5
+            ],
+            [
+              226.0,
+              183.0,
+              56.5
+            ],
+            [
+              226.0,
+              183.0,
+              46.3
+            ],
+            [
+              272.0,
+              183.0,
+              46.3
+            ],
+            [
+              278.0,
+              174.7,
+              46.3
+            ],
+            [
+              278.0,
+              174.7,
+              34.1
+            ],
+            [
+              288.0,
+              174.7,
+              34.1
+            ],
+            [
+              288.0,
+              174.7,
+              41.1
+            ]
+          ]
+        },
+        "J-SIG": {
+          "bends": [
+            {
+              "arc_length_mm": 7.853982,
+              "centre_mm": [
+                212.860908,
+                168.899365,
+                51.4
+              ],
+              "radius_mm": 5.0,
+              "turn_deg": 90.0,
+              "vertex_index": 1,
+              "vertex_mm": [
+                210.0,
+                173.0,
+                56.4
+              ]
+            },
+            {
+              "arc_length_mm": 7.853982,
+              "centre_mm": [
+                213.139092,
+                168.500635,
+                51.4
+              ],
+              "radius_mm": 5.0,
+              "turn_deg": 90.0,
+              "vertex_index": 2,
+              "vertex_mm": [
+                216.0,
+                164.4,
+                56.4
+              ]
+            },
+            {
+              "arc_length_mm": 7.853982,
+              "centre_mm": [
+                221.0,
+                164.4,
+                51.0
+              ],
+              "radius_mm": 5.0,
+              "turn_deg": 90.0,
+              "vertex_index": 3,
+              "vertex_mm": [
+                216.0,
+                164.4,
+                46.0
+              ]
+            },
+            {
+              "arc_length_mm": 4.345856,
+              "centre_mm": [
+                231.679086,
+                169.4,
+                46.0
+              ],
+              "radius_mm": 5.0,
+              "turn_deg": 49.799836,
+              "vertex_index": 4,
+              "vertex_mm": [
+                234.0,
+                164.4,
+                46.0
+              ]
+            },
+            {
+              "arc_length_mm": 4.345856,
+              "centre_mm": [
+                242.320914,
+                166.5,
+                46.0
+              ],
+              "radius_mm": 5.0,
+              "turn_deg": 49.799836,
+              "vertex_index": 5,
+              "vertex_mm": [
+                240.0,
+                171.5,
+                46.0
+              ]
+            },
+            {
+              "arc_length_mm": 7.853982,
+              "centre_mm": [
+                253.0,
+                171.5,
+                41.0
+              ],
+              "radius_mm": 5.0,
+              "turn_deg": 90.0,
+              "vertex_index": 6,
+              "vertex_mm": [
+                258.0,
+                171.5,
+                46.0
+              ]
+            },
+            {
+              "arc_length_mm": 7.853982,
+              "centre_mm": [
+                263.0,
+                171.5,
+                39.1
+              ],
+              "radius_mm": 5.0,
+              "turn_deg": 90.0,
+              "vertex_index": 7,
+              "vertex_mm": [
+                258.0,
+                171.5,
+                34.1
+              ]
+            },
+            {
+              "arc_length_mm": 7.853982,
+              "centre_mm": [
+                263.0,
+                171.5,
+                39.1
+              ],
+              "radius_mm": 5.0,
+              "turn_deg": 90.0,
+              "vertex_index": 8,
+              "vertex_mm": [
+                268.0,
+                171.5,
+                34.1
+              ]
+            }
+          ],
+          "clear_of_known_keep_outs": true,
+          "core_motion_clearance_mm": 3.116991,
+          "design_bend_radius_mm": 5.0,
+          "design_length_excess_over_installed_mm": 29.289769,
+          "design_length_proposal_mm": 138,
+          "dressing": {
+            "conductors": 7,
+            "flat_thickness_mm": null,
+            "flat_width_mm": null,
+            "kind": "ROUND_BUNDLE",
+            "round_radius_mm": 1.5,
+            "wire_od_mm": 1.0
+          },
+          "exit_axis": {
+            "local": "+z",
+            "middle": "-z"
+          },
+          "flat_legs": null,
+          "foreign_depth_bounds": {},
+          "installed_pad_to_pad_design_length_mm": 108.710231,
+          "legs_mm": [
+            12.5,
+            10.486181,
+            10.4,
+            18.0,
+            9.295698,
+            18.0,
+            11.9,
+            10.0,
+            7.0
+          ],
+          "length_status": "DESIGN_LENGTH_PROPOSAL; not measured, not a cut length",
+          "max_uniform_radius_mm": 5.0,
+          "min_surface_clearance_mm": 0.7,
+          "nearest_keep_outs_mm": [
+            {
+              "id": "rail:middle:0:N1:floor",
+              "surface_clearance_mm": 0.7
+            },
+            {
+              "id": "rail:middle:0:y173.8-180.9",
+              "surface_clearance_mm": 0.7
+            },
+            {
+              "id": "board:A01-middle:0",
+              "surface_clearance_mm": 0.8
+            },
+            {
+              "id": "board:A01-middle:2",
+              "surface_clearance_mm": 0.8
+            },
+            {
+              "id": "rail:middle:0:y142-168.6",
+              "surface_clearance_mm": 1.275696
+            },
+            {
+              "id": "tool:A01-jack:M4",
+              "surface_clearance_mm": 2.211744
+            },
+            {
+              "id": "release:A01:J-PWR:local",
+              "surface_clearance_mm": 3.115395
+            },
+            {
+              "id": "crossmember:rear:0",
+              "surface_clearance_mm": 3.4
+            }
+          ],
+          "release_cases": [
+            {
+              "case": "installed",
+              "extra_mm": 0.0,
+              "foreign_depth_bounds": {},
+              "highest_centreline_z_mm": 56.4,
+              "keep_outs_below_margin": [],
+              "length_mm": 108.710231,
+              "lowest_centreline_z_mm": 34.1,
+              "note": "surrogate shape during release; own sweep excluded; the foreign PCB outline is not modelled"
+            },
+            {
+              "case": "middle withdrawn 15 mm",
+              "extra_mm": 15.0,
+              "foreign_depth_bounds": {},
+              "highest_centreline_z_mm": 56.4,
+              "keep_outs_below_margin": [],
+              "length_mm": 123.710231,
+              "lowest_centreline_z_mm": 19.1,
+              "note": "surrogate shape during release; own sweep excluded; the foreign PCB outline is not modelled"
+            },
+            {
+              "case": "local withdrawn 15 mm",
+              "extra_mm": 4.0,
+              "foreign_depth_bounds": {},
+              "highest_centreline_z_mm": 65.9,
+              "keep_outs_below_margin": [],
+              "length_mm": 112.710231,
+              "lowest_centreline_z_mm": 34.1,
+              "note": "surrogate shape during release; own sweep excluded; the foreign PCB outline is not modelled"
+            },
+            {
+              "case": "both withdrawn 15 mm",
+              "extra_mm": 19.0,
+              "foreign_depth_bounds": {},
+              "highest_centreline_z_mm": 65.9,
+              "keep_outs_below_margin": [],
+              "length_mm": 127.710231,
+              "lowest_centreline_z_mm": 19.1,
+              "note": "surrogate shape during release; own sweep excluded; the foreign PCB outline is not modelled"
+            }
+          ],
+          "release_dip_envelope_bottom_z_mm": 17.6,
+          "release_extra_length_mm": [
+            0.0,
+            15.0,
+            4.0,
+            19.0
+          ],
+          "required_length_rule": "installed filleted length + largest bend-feasible release extra + Stage10 service slack",
+          "required_length_rule_mm": 137.710231,
+          "required_surface_clearance_mm": 0.5,
+          "slack_storage": "the free loop at the local end must take the excess; NOT_RUN (M-12)",
+          "stage10_cut_covers_rule": false,
+          "stage10_cut_mm": "90\u00b13",
+          "straight_from_exit_mm": {
+            "local": 7.5,
+            "middle": 2.0
+          },
+          "vertices_mm": [
+            [
+              210.0,
+              173.0,
+              43.9
+            ],
+            [
+              210.0,
+              173.0,
+              56.4
+            ],
+            [
+              216.0,
+              164.4,
+              56.4
+            ],
+            [
+              216.0,
+              164.4,
+              46.0
+            ],
+            [
+              234.0,
+              164.4,
+              46.0
+            ],
+            [
+              240.0,
+              171.5,
+              46.0
+            ],
+            [
+              258.0,
+              171.5,
+              46.0
+            ],
+            [
+              258.0,
+              171.5,
+              34.1
+            ],
+            [
+              268.0,
+              171.5,
+              34.1
+            ],
+            [
+              268.0,
+              171.5,
+              41.1
+            ]
+          ]
+        }
+      },
+      "service": {
+        "K-PWR_first_then_core_40mm": "unchanged; neither cable attaches to the core",
+        "core_motion_envelope": {
+          "basis": "core outline XY from the mated DIN plane to the handle tops plus the 40 mm withdrawal",
+          "hi": [
+            312,
+            282,
+            134
+          ],
+          "lo": [
+            236,
+            174,
+            50
+          ]
+        },
+        "min_core_motion_clearance_mm": 2.392893
+      },
+      "smallest_foreign_rear_side_allowance_mm": 22.892893,
+      "status": "RECOMMENDABLE_UNDER_MODEL_CONDITIONS",
+      "tightest_spare_beyond_margin_mm": 0.192893,
+      "tightest_spare_note": "sampled clearance minus the 0.1 mm sampling deduction (0.2 mm for cable to cable); the exact geometric spare is up to that much larger",
+      "tightest_sweep_gap_mm": 0.575,
+      "title": "Middle headers moved into the clear strip and turned 90 degrees; two shallow notches"
+    },
+    {
+      "assembly": [
+        "Fit the jack carrier, A01-jack, the middle carrier and A01-middle as in Stage10.",
+        "Mate the GHR housings into J-SIG:middle and J-PWR:middle along -z to +z from the panel side, with the front panel off.",
+        "Fan each bundle out into one layer before the A01-middle edge, slide it through the slot over the rail with the liner and comb, and gather it again inside the ring.",
+        "Form the free loop at the local end and mate J-SIG:local and J-PWR:local from the rear, left of the A01-middle edge (x < 232).",
+        "Fit the core onto the DIN connector and connect K-PWR last. Service: disconnect K-PWR, then withdraw the core 40 mm; J-SIG and J-PWR are not touched."
+      ],
+      "cable_to_cable": {
+        "clear": true,
+        "closest_points_mm": [
+          [
+            226.086957,
+            168.6,
+            47.2
+          ],
+          [
+            226.0,
+            173.0,
+            47.261364
+          ]
+        ],
+        "min_surface_gap_mm": 2.49418,
+        "required_mm": 0.5
+      },
+      "comparison_axes": {
+        "dressing": "flat single layer through the slot, round elsewhere",
+        "headers": "J-SIG:middle and J-PWR:middle translated, not turned",
+        "rail": "unchanged"
+      },
+      "criteria": {
+        "K1": true,
+        "K2": true,
+        "K3": true,
+        "K4": false
+      },
+      "failed_criteria": [
+        "K4"
+      ],
+      "header_moves": [
+        {
+          "board_face_unchanged": true,
+          "box_mm": [
+            278.525,
+            173.1,
+            287.475,
+            179.2
+          ],
+          "from_origin_mm": [
+            283,
+            150
+          ],
+          "mpn_unchanged": true,
+          "nearest_mount": {
+            "gap_mm": 31.720035,
+            "mount": "A01-middle:M2"
+          },
+          "pin_row_axis": "x",
+          "pins_unchanged": true,
+          "ref": "A01:J-PWR:middle",
+          "rotation_deg": 0,
+          "sweep": {
+            "box_mm": [
+              276.525,
+              171.1,
+              289.475,
+              181.2
+            ],
+            "z_mm": [
+              26.1,
+              48.4
+            ]
+          },
+          "sweep_gap_to_other_headers": {
+            "gap_mm": 3.175,
+            "ref": "A01:J-SIG:middle"
+          },
+          "to_origin_mm": [
+            283.0,
+            174.2
+          ]
+        },
+        {
+          "board_face_unchanged": true,
+          "box_mm": [
+            258.65,
+            163.9,
+            271.35,
+            170.0
+          ],
+          "from_origin_mm": [
+            260,
+            150
+          ],
+          "mpn_unchanged": true,
+          "nearest_mount": {
+            "gap_mm": 25.361043,
+            "mount": "A01-middle:M1"
+          },
+          "pin_row_axis": "x",
+          "pins_unchanged": true,
+          "ref": "A01:J-SIG:middle",
+          "rotation_deg": 0,
+          "sweep": {
+            "box_mm": [
+              256.65,
+              161.9,
+              273.35,
+              172.0
+            ],
+            "z_mm": [
+              26.1,
+              48.4
+            ]
+          },
+          "sweep_gap_to_other_headers": {
+            "gap_mm": 3.175,
+            "ref": "A01:J-PWR:middle"
+          },
+          "to_origin_mm": [
+            265.0,
+            165.0
+          ]
+        }
+      ],
+      "id": "C",
+      "physical": "NOT_RUN; centreline and envelope clearance is not physical non-interference",
+      "rail_reliefs": [],
+      "release_sweeps": {
+        "A01:J-PWR:local": {
+          "foreign_xy_overlaps": [],
+          "known_overlaps": [],
+          "margin_mm": 0.5,
+          "moved": false,
+          "nearest_gaps_mm": [
+            {
+              "gap_mm": 0.9,
+              "id": "board:A01-middle:0"
+            },
+            {
+              "gap_mm": 1.0,
+              "id": "board:A01-middle:1"
+            },
+            {
+              "gap_mm": 1.175,
+              "id": "release:A01:J-SIG:local"
+            },
+            {
+              "gap_mm": 1.525,
+              "id": "board:A01-middle:2"
+            }
+          ],
+          "sweep": {
+            "box_mm": [
+              219.525,
+              169.9,
+              232.475,
+              180.0
+            ],
+            "z_mm": [
+              36.6,
+              58.9
+            ]
+          }
+        },
+        "A01:J-PWR:middle": {
+          "foreign_xy_overlaps": [],
+          "known_overlaps": [],
+          "margin_mm": 0.5,
+          "moved": true,
+          "nearest_gaps_mm": [
+            {
+              "gap_mm": 0.55,
+              "id": "foreign-depth:SW1701"
+            },
+            {
+              "gap_mm": 0.8,
+              "id": "crossmember:jack:1"
+            },
+            {
+              "gap_mm": 2.6,
+              "id": "crossmember:rear:0"
+            },
+            {
+              "gap_mm": 2.760349,
+              "id": "foreign-depth:SW1601"
+            }
+          ],
+          "sweep": {
+            "box_mm": [
+              276.525,
+              171.1,
+              289.475,
+              181.2
+            ],
+            "z_mm": [
+              26.1,
+              48.4
+            ]
+          }
+        },
+        "A01:J-SIG:local": {
+          "foreign_xy_overlaps": [],
+          "known_overlaps": [],
+          "margin_mm": 0.5,
+          "moved": false,
+          "nearest_gaps_mm": [
+            {
+              "gap_mm": 0.65,
+              "id": "tool:A01-jack:M3"
+            },
+            {
+              "gap_mm": 1.15,
+              "id": "head:A01-jack:M3"
+            },
+            {
+              "gap_mm": 1.175,
+              "id": "release:A01:J-PWR:local"
+            },
+            {
+              "gap_mm": 1.970406,
+              "id": "spacer:A01-jack:M3"
+            }
+          ],
+          "sweep": {
+            "box_mm": [
+              201.65,
+              169.9,
+              218.35,
+              180.0
+            ],
+            "z_mm": [
+              36.6,
+              58.9
+            ]
+          }
+        },
+        "A01:J-SIG:middle": {
+          "foreign_xy_overlaps": [],
+          "known_overlaps": [],
+          "margin_mm": 0.5,
+          "moved": true,
+          "nearest_gaps_mm": [
+            {
+              "gap_mm": 0.65,
+              "id": "foreign-depth:J1510"
+            },
+            {
+              "gap_mm": 0.65,
+              "id": "foreign-depth:J1610"
+            },
+            {
+              "gap_mm": 2.6,
+              "id": "crossmember:rear:0"
+            },
+            {
+              "gap_mm": 3.175,
+              "id": "release:A01:J-PWR:middle"
+            }
+          ],
+          "sweep": {
+            "box_mm": [
+              256.65,
+              161.9,
+              273.35,
+              172.0
+            ],
+            "z_mm": [
+              26.1,
+              48.4
+            ]
+          }
+        }
+      },
+      "retention": [
+        {
+          "at": "slot over rail:middle:0 at y 165.6",
+          "dimensions_mm": null,
+          "id": "R1",
+          "kind": "comb or lacing that keeps one layer, on a low-friction liner bonded to the rail top",
+          "link": "J-SIG",
+          "status": "PROPOSAL_NOT_ADOPTED"
+        },
+        {
+          "at": "slot over rail:middle:0 at y 183.8",
+          "dimensions_mm": null,
+          "id": "R2",
+          "kind": "comb or lacing that keeps one layer, on a low-friction liner bonded to the rail top",
+          "link": "J-PWR",
+          "status": "PROPOSAL_NOT_ADOPTED"
+        }
+      ],
+      "routes": {
+        "J-PWR": {
+          "bends": [
+            {
+              "arc_length_mm": 7.853982,
+              "centre_mm": [
+                224.661781,
+                177.81759,
+                52.6
+              ],
+              "radius_mm": 5.0,
+              "turn_deg": 90.0,
+              "vertex_index": 1,
+              "vertex_mm": [
+                226.0,
+                173.0,
+                57.6
+              ]
+            },
+            {
+              "arc_length_mm": 7.853982,
+              "centre_mm": [
+                224.338219,
+                178.98241,
+                52.6
+              ],
+              "radius_mm": 5.0,
+              "turn_deg": 90.0,
+              "vertex_index": 2,
+              "vertex_mm": [
+                223.0,
+                183.8,
+                57.6
+              ]
+            },
+            {
+              "arc_length_mm": 7.853982,
+              "centre_mm": [
+                228.0,
+                183.8,
+                52.2
+              ],
+              "radius_mm": 5.0,
+              "turn_deg": 90.0,
+              "vertex_index": 3,
+              "vertex_mm": [
+                223.0,
+                183.8,
+                47.2
+              ]
+            },
+            {
+              "arc_length_mm": 3.29655,
+              "centre_mm": [
+                249.289303,
+                183.8,
+                42.2
+              ],
+              "radius_mm": 5.0,
+              "turn_deg": 37.775684,
+              "vertex_index": 4,
+              "vertex_mm": [
+                251.0,
+                183.8,
+                47.2
+              ]
+            },
+            {
+              "arc_length_mm": 4.998247,
+              "centre_mm": [
+                258.367192,
+                179.464131,
+                44.640706
+              ],
+              "radius_mm": 5.0,
+              "turn_deg": 57.275687,
+              "vertex_index": 5,
+              "vertex_mm": [
+                259.0,
+                183.8,
+                41.0
+              ]
+            },
+            {
+              "arc_length_mm": 5.526941,
+              "centre_mm": [
+                267.844666,
+                178.281836,
+                36.777904
+              ],
+              "radius_mm": 5.0,
+              "turn_deg": 63.334075,
+              "vertex_index": 6,
+              "vertex_mm": [
+                268.0,
+                174.2,
+                41.0
+              ]
+            },
+            {
+              "arc_length_mm": 4.275264,
+              "centre_mm": [
+                276.278152,
+                174.2,
+                39.1
+              ],
+              "radius_mm": 5.0,
+              "turn_deg": 48.990913,
+              "vertex_index": 7,
+              "vertex_mm": [
+                274.0,
+                174.2,
+                34.1
+              ]
+            },
+            {
+              "arc_length_mm": 7.853982,
+              "centre_mm": [
+                278.0,
+                174.2,
+                39.1
+              ],
+              "radius_mm": 5.0,
+              "turn_deg": 90.0,
+              "vertex_index": 8,
+              "vertex_mm": [
+                283.0,
+                174.2,
+                34.1
+              ]
+            }
+          ],
+          "clear_of_known_keep_outs": true,
+          "core_motion_clearance_mm": 2.2,
+          "design_bend_radius_mm": 5.0,
+          "design_length_excess_over_installed_mm": 23.76382,
+          "design_length_proposal_mm": 140,
+          "dressing": {
+            "conductors": 4,
+            "flat_thickness_mm": 1.0,
+            "flat_width_mm": 4.0,
+            "kind": "FLAT_SINGLE_LAYER",
+            "round_radius_mm": 1.207107,
+            "wire_od_mm": 1.0
+          },
+          "exit_axis": {
+            "local": "+z",
+            "middle": "-z"
+          },
+          "flat_legs": {
+            "axis": [
+              0,
+              1,
+              0
+            ],
+            "legs": [
+              3,
+              4
+            ]
+          },
+          "foreign_depth_bounds": {
+            "SW1301": {
+              "block": "E1",
+              "max_foreign_top_z_mm": 47.783643,
+              "max_rear_side_height_mm": 26.183643,
+              "pcb_rear_z_mm": 21.6
+            },
+            "SW1401": {
+              "block": "E2",
+              "max_foreign_top_z_mm": 46.1,
+              "max_rear_side_height_mm": 24.5,
+              "pcb_rear_z_mm": 21.6
+            },
+            "SW1501": {
+              "block": "E3",
+              "max_foreign_top_z_mm": 40.499023,
+              "max_rear_side_height_mm": 18.899023,
+              "pcb_rear_z_mm": 21.6
+            }
+          },
+          "installed_pad_to_pad_design_length_mm": 116.23618,
+          "legs_mm": [
+            13.7,
+            11.208925,
+            10.4,
+            28.0,
+            10.121265,
+            13.159027,
+            9.14385,
+            9.0,
+            7.0
+          ],
+          "length_status": "DESIGN_LENGTH_PROPOSAL; not measured, not a cut length",
+          "max_uniform_radius_mm": 5.0,
+          "min_surface_clearance_mm": 0.6,
+          "nearest_keep_outs_mm": [
+            {
+              "id": "board:A01-middle:1",
+              "surface_clearance_mm": 0.6
+            },
+            {
+              "id": "rail:middle:0",
+              "surface_clearance_mm": 0.6
+            },
+            {
+              "id": "tool:A01-jack:M4",
+              "surface_clearance_mm": 0.7
+            },
+            {
+              "id": "release:A01:J-SIG:middle",
+              "surface_clearance_mm": 0.892893
+            },
+            {
+              "id": "board:A01-middle:2",
+              "surface_clearance_mm": 1.169181
+            },
+            {
+              "id": "rail:rear:0",
+              "surface_clearance_mm": 3.2
+            },
+            {
+              "id": "release:A01:J-SIG:local",
+              "surface_clearance_mm": 4.190376
+            }
+          ],
+          "release_cases": [
+            {
+              "case": "installed",
+              "extra_mm": 0.0,
+              "foreign_depth_bounds": {
+                "SW1301": 47.783643,
+                "SW1401": 46.1,
+                "SW1501": 40.499023
+              },
+              "highest_centreline_z_mm": 57.6,
+              "keep_outs_below_margin": [],
+              "length_mm": 116.23618,
+              "lowest_centreline_z_mm": 34.1,
+              "note": "surrogate shape during release; own sweep excluded; the foreign PCB outline is not modelled"
+            },
+            {
+              "case": "middle withdrawn 15 mm",
+              "extra_mm": 11.988804,
+              "foreign_depth_bounds": {
+                "SW1301": 47.783643,
+                "SW1401": 46.1,
+                "SW1501": 40.499023
+              },
+              "highest_centreline_z_mm": 57.6,
+              "keep_outs_below_margin": [],
+              "length_mm": 128.224984,
+              "lowest_centreline_z_mm": 19.1,
+              "note": "surrogate shape during release; own sweep excluded; the foreign PCB outline is not modelled"
+            },
+            {
+              "case": "local withdrawn 15 mm",
+              "extra_mm": 1.6,
+              "foreign_depth_bounds": {
+                "SW1301": 47.783643,
+                "SW1401": 46.1,
+                "SW1501": 40.499023
+              },
+              "highest_centreline_z_mm": 65.9,
+              "keep_outs_below_margin": [],
+              "length_mm": 117.83618,
+              "lowest_centreline_z_mm": 34.1,
+              "note": "surrogate shape during release; own sweep excluded; the foreign PCB outline is not modelled"
+            },
+            {
+              "case": "both withdrawn 15 mm",
+              "extra_mm": 13.588804,
+              "foreign_depth_bounds": {
+                "SW1301": 47.783643,
+                "SW1401": 46.1,
+                "SW1501": 40.499023
+              },
+              "highest_centreline_z_mm": 65.9,
+              "keep_outs_below_margin": [],
+              "length_mm": 129.824984,
+              "lowest_centreline_z_mm": 19.1,
+              "note": "surrogate shape during release; own sweep excluded; the foreign PCB outline is not modelled"
+            }
+          ],
+          "release_dip_envelope_bottom_z_mm": 17.892893,
+          "release_extra_length_mm": [
+            0.0,
+            11.988804,
+            1.6,
+            13.588804
+          ],
+          "required_length_rule": "installed filleted length + largest bend-feasible release extra + Stage10 service slack",
+          "required_length_rule_mm": 139.824984,
+          "required_surface_clearance_mm": 0.5,
+          "slack_storage": "the free loop at the local end must take the excess; NOT_RUN (M-12)",
+          "stage10_cut_covers_rule": false,
+          "stage10_cut_mm": "90\u00b13",
+          "straight_from_exit_mm": {
+            "local": 8.7,
+            "middle": 2.0
+          },
+          "vertices_mm": [
+            [
+              226.0,
+              173.0,
+              43.9
+            ],
+            [
+              226.0,
+              173.0,
+              57.6
+            ],
+            [
+              223.0,
+              183.8,
+              57.6
+            ],
+            [
+              223.0,
+              183.8,
+              47.2
+            ],
+            [
+              251.0,
+              183.8,
+              47.2
+            ],
+            [
+              259.0,
+              183.8,
+              41.0
+            ],
+            [
+              268.0,
+              174.2,
+              41.0
+            ],
+            [
+              274.0,
+              174.2,
+              34.1
+            ],
+            [
+              283.0,
+              174.2,
+              34.1
+            ],
+            [
+              283.0,
+              174.2,
+              41.1
+            ]
+          ]
+        },
+        "J-SIG": {
+          "bends": [
+            {
+              "arc_length_mm": 7.853982,
+              "centre_mm": [
+                213.559182,
+                169.488274,
+                52.6
+              ],
+              "radius_mm": 5.0,
+              "turn_deg": 90.0,
+              "vertex_index": 1,
+              "vertex_mm": [
+                210.0,
+                173.0,
+                57.6
+              ]
+            },
+            {
+              "arc_length_mm": 7.853982,
+              "centre_mm": [
+                213.940818,
+                169.111726,
+                52.6
+              ],
+              "radius_mm": 5.0,
+              "turn_deg": 90.0,
+              "vertex_index": 2,
+              "vertex_mm": [
+                217.5,
+                165.6,
+                57.6
+              ]
+            },
+            {
+              "arc_length_mm": 7.853982,
+              "centre_mm": [
+                222.5,
+                165.6,
+                52.2
+              ],
+              "radius_mm": 5.0,
+              "turn_deg": 90.0,
+              "vertex_index": 3,
+              "vertex_mm": [
+                217.5,
+                165.6,
+                47.2
+              ]
+            },
+            {
+              "arc_length_mm": 7.853982,
+              "centre_mm": [
+                250.0,
+                165.6,
+                42.2
+              ],
+              "radius_mm": 5.0,
+              "turn_deg": 90.0,
+              "vertex_index": 4,
+              "vertex_mm": [
+                255.0,
+                165.6,
+                47.2
+              ]
+            },
+            {
+              "arc_length_mm": 7.853982,
+              "centre_mm": [
+                259.991024,
+                165.300539,
+                39.1
+              ],
+              "radius_mm": 5.0,
+              "turn_deg": 90.0,
+              "vertex_index": 5,
+              "vertex_mm": [
+                255.0,
+                165.6,
+                34.1
+              ]
+            },
+            {
+              "arc_length_mm": 7.853982,
+              "centre_mm": [
+                260.008976,
+                165.299461,
+                39.1
+              ],
+              "radius_mm": 5.0,
+              "turn_deg": 90.0,
+              "vertex_index": 6,
+              "vertex_mm": [
+                265.0,
+                165.0,
+                34.1
+              ]
+            }
+          ],
+          "clear_of_known_keep_outs": true,
+          "core_motion_clearance_mm": 5.482763,
+          "design_bend_radius_mm": 5.0,
+          "design_length_excess_over_installed_mm": 27.025026,
+          "design_length_proposal_mm": 131,
+          "dressing": {
+            "conductors": 7,
+            "flat_thickness_mm": 1.0,
+            "flat_width_mm": 7.0,
+            "kind": "FLAT_SINGLE_LAYER",
+            "round_radius_mm": 1.5,
+            "wire_od_mm": 1.0
+          },
+          "exit_axis": {
+            "local": "+z",
+            "middle": "-z"
+          },
+          "flat_legs": {
+            "axis": [
+              0,
+              1,
+              0
+            ],
+            "legs": [
+              3,
+              4
+            ]
+          },
+          "foreign_depth_bounds": {},
+          "installed_pad_to_pad_design_length_mm": 103.974974,
+          "legs_mm": [
+            13.7,
+            10.536128,
+            10.4,
+            37.5,
+            13.1,
+            10.017984,
+            7.0
+          ],
+          "length_status": "DESIGN_LENGTH_PROPOSAL; not measured, not a cut length",
+          "max_uniform_radius_mm": 5.0,
+          "min_surface_clearance_mm": 0.6,
+          "nearest_keep_outs_mm": [
+            {
+              "id": "board:A01-middle:0",
+              "surface_clearance_mm": 0.6
+            },
+            {
+              "id": "rail:middle:0",
+              "surface_clearance_mm": 0.6
+            },
+            {
+              "id": "board:A01-middle:2",
+              "surface_clearance_mm": 0.664911
+            },
+            {
+              "id": "release:A01:J-PWR:local",
+              "surface_clearance_mm": 0.7
+            },
+            {
+              "id": "crossmember:rear:0",
+              "surface_clearance_mm": 3.449691
+            }
+          ],
+          "release_cases": [
+            {
+              "case": "installed",
+              "extra_mm": 0.0,
+              "foreign_depth_bounds": {},
+              "highest_centreline_z_mm": 57.6,
+              "keep_outs_below_margin": [],
+              "length_mm": 103.974974,
+              "lowest_centreline_z_mm": 34.1,
+              "note": "surrogate shape during release; own sweep excluded; the foreign PCB outline is not modelled"
+            },
+            {
+              "case": "middle withdrawn 15 mm",
+              "extra_mm": 15.0,
+              "foreign_depth_bounds": {},
+              "highest_centreline_z_mm": 57.6,
+              "keep_outs_below_margin": [],
+              "length_mm": 118.974974,
+              "lowest_centreline_z_mm": 19.1,
+              "note": "surrogate shape during release; own sweep excluded; the foreign PCB outline is not modelled"
+            },
+            {
+              "case": "local withdrawn 15 mm",
+              "extra_mm": 1.6,
+              "foreign_depth_bounds": {},
+              "highest_centreline_z_mm": 65.9,
+              "keep_outs_below_margin": [],
+              "length_mm": 105.574974,
+              "lowest_centreline_z_mm": 34.1,
+              "note": "surrogate shape during release; own sweep excluded; the foreign PCB outline is not modelled"
+            },
+            {
+              "case": "both withdrawn 15 mm",
+              "extra_mm": 16.6,
+              "foreign_depth_bounds": {},
+              "highest_centreline_z_mm": 65.9,
+              "keep_outs_below_margin": [],
+              "length_mm": 120.574974,
+              "lowest_centreline_z_mm": 19.1,
+              "note": "surrogate shape during release; own sweep excluded; the foreign PCB outline is not modelled"
+            }
+          ],
+          "release_dip_envelope_bottom_z_mm": 17.6,
+          "release_extra_length_mm": [
+            0.0,
+            15.0,
+            1.6,
+            16.6
+          ],
+          "required_length_rule": "installed filleted length + largest bend-feasible release extra + Stage10 service slack",
+          "required_length_rule_mm": 130.574974,
+          "required_surface_clearance_mm": 0.5,
+          "slack_storage": "the free loop at the local end must take the excess; NOT_RUN (M-12)",
+          "stage10_cut_covers_rule": false,
+          "stage10_cut_mm": "90\u00b13",
+          "straight_from_exit_mm": {
+            "local": 8.7,
+            "middle": 2.0
+          },
+          "vertices_mm": [
+            [
+              210.0,
+              173.0,
+              43.9
+            ],
+            [
+              210.0,
+              173.0,
+              57.6
+            ],
+            [
+              217.5,
+              165.6,
+              57.6
+            ],
+            [
+              217.5,
+              165.6,
+              47.2
+            ],
+            [
+              255.0,
+              165.6,
+              47.2
+            ],
+            [
+              255.0,
+              165.6,
+              34.1
+            ],
+            [
+              265.0,
+              165.0,
+              34.1
+            ],
+            [
+              265.0,
+              165.0,
+              41.1
+            ]
+          ]
+        }
+      },
+      "service": {
+        "K-PWR_first_then_core_40mm": "unchanged; neither cable attaches to the core",
+        "core_motion_envelope": {
+          "basis": "core outline XY from the mated DIN plane to the handle tops plus the 40 mm withdrawal",
+          "hi": [
+            312,
+            282,
+            134
+          ],
+          "lo": [
+            236,
+            174,
+            50
+          ]
+        },
+        "min_core_motion_clearance_mm": 2.2
+      },
+      "smallest_foreign_rear_side_allowance_mm": 18.899023,
+      "status": "REJECTED_BY_CRITERIA",
+      "tightest_spare_beyond_margin_mm": 0.1,
+      "tightest_spare_note": "sampled clearance minus the 0.1 mm sampling deduction (0.2 mm for cable to cable); the exact geometric spare is up to that much larger",
+      "tightest_sweep_gap_mm": 0.55,
+      "title": "Middle headers translated; flat single-layer conductors through the existing 2.4 mm slot, rail unchanged"
+    }
+  ],
+  "stage30_screen": [
+    {
+      "id": "W1",
+      "reasons": [
+        "no J-SIG route: Stage30 studied J-PWR only and the J-SIG proxies still cross rail:middle:0",
+        "bend: bend radius 5.0 mm does not fit leg 0 (7.0 > 2.1 mm)",
+        "keep-out clearance below the margin: rail:middle:0"
+      ],
+      "stage30_status": "BLOCKED_BY_KEEP_OUT",
+      "stage31_status": "REJECTED",
+      "title": "Bypass the J-SIG middle release sweep at proxy height"
+    },
+    {
+      "id": "W2",
+      "reasons": [
+        "no J-SIG route: Stage30 studied J-PWR only and the J-SIG proxies still cross rail:middle:0",
+        "bend: bend radius 5.0 mm does not fit leg 0 (5.96 > 2.1 mm)",
+        "keep-out clearance below the margin: board:A01-middle:0, board:A01-middle:2, rail:middle:0"
+      ],
+      "stage30_status": "BLOCKED_BY_KEEP_OUT",
+      "stage31_status": "REJECTED",
+      "title": "Run in the slot between the middle carrier rail top and the A01-middle front face"
+    },
+    {
+      "id": "W3",
+      "reasons": [
+        "no J-SIG route: Stage30 studied J-PWR only and the J-SIG proxies still cross rail:middle:0",
+        "bend: bend radius 5.0 mm does not fit leg 0 (7.0 > 2.1 mm)",
+        "needs foreign rear-side height below 12.4 mm at J1710, SW1401, SW1501"
+      ],
+      "stage30_status": "UNKNOWN_FOREIGN_DEPTH",
+      "stage31_status": "REJECTED",
+      "title": "Wrap below the jack board edge and pass in front of the middle carrier"
+    },
+    {
+      "id": "W4",
+      "reasons": [
+        "no J-SIG route: Stage30 studied J-PWR only and the J-SIG proxies still cross rail:middle:0",
+        "bend: bend radius 5.0 mm does not fit leg 0 (7.08 > 2.1 mm)"
+      ],
+      "stage30_status": "CENTRELINE_CLEAR_UNDER_ASSUMPTIONS",
+      "stage31_status": "REJECTED",
+      "title": "Pass a local relief in the middle carrier left rail (minimum change, proposal only)"
+    }
+  ],
+  "status": "DESIGN_STUDY_ONLY"
+}

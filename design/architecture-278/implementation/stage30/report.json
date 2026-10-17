@@ -1,0 +1,267 @@
+{
+  "approval": {
+    "date": "2026-10-17",
+    "decided_by": "OWNER",
+    "order_change": "Design work may use the Stage29 mapping before the physical check M-01; M-01 still decides final adoption (Q-O01).",
+    "scope_excludes": [
+      "manufacturing or assembly qualification",
+      "canonical schematic, board or library changes",
+      "native KiCad, ERC/DRC or simulation runs",
+      "ordering, quotes, uploads or supplier contact",
+      "overall architecture adoption",
+      "D02 or overall manufacturing fit as a pass",
+      "binding contact numbers to production copper"
+    ],
+    "status": "DESIGN_ONLY_PROVISIONAL"
+  },
+  "architecture_adopted": false,
+  "corners": {
+    "female": {
+      "a1": [
+        301.54,
+        188.63
+      ],
+      "a32": [
+        301.54,
+        267.37
+      ],
+      "c1": [
+        296.46,
+        188.63
+      ],
+      "c32": [
+        296.46,
+        267.37
+      ]
+    },
+    "male": {
+      "a1": [
+        301.54,
+        188.63
+      ],
+      "a32": [
+        301.54,
+        267.37
+      ],
+      "c1": [
+        296.46,
+        188.63
+      ],
+      "c32": [
+        296.46,
+        267.37
+      ]
+    }
+  },
+  "counts": {
+    "NC": 80,
+    "assigned": 16,
+    "changed_copper_allocations": 34,
+    "changed_local_paths": 0,
+    "changed_power_paths": 0,
+    "changed_signal_paths": 11,
+    "contacts_per_connector": 96,
+    "unchanged_mated_pairs": 16
+  },
+  "decision_status": {
+    "D02": "CONFLICT_REQUIRES_DECISION (unchanged)",
+    "M-01": "NOT_RUN",
+    "Q-O01": "PROVISIONAL_DESIGN_ONLY; final adoption after M-01",
+    "canonical_CAD": "UNCHANGED",
+    "design_mapping": "DESIGN_ONLY_PROVISIONAL (owner 2026-10-17)",
+    "manufacturing_and_assembly": "UNCONFIRMED",
+    "production_copper": "NOT_BOUND",
+    "route": "NO_ROUTE_ADOPTED; rail relief is a proposal"
+  },
+  "determinants": {
+    "female": 1.0,
+    "male": -1.0
+  },
+  "external_contact": "NONE",
+  "fixing_holes_xy_mm": [
+    [
+      299.3,
+      183.0
+    ],
+    [
+      299.3,
+      273.0
+    ]
+  ],
+  "harness": {
+    "DIN_contacts_as_harness": 0,
+    "GH_conductors": 20,
+    "GH_harnesses": 4,
+    "conductors": 34,
+    "exclusions": [
+      "Supply wiring upstream of J-PWR:middle",
+      "LED_local_copper and other board-local edges of the Stage15 graph",
+      "A02-A06 and the other 33 instrument functions",
+      "O1-O5 oscillator zone harnesses",
+      "Jack, pot and LED bodies",
+      "Chassis/panel earth"
+    ],
+    "land_annotation_flags": "in_bom=false, on_board=false",
+    "land_annotations": 22,
+    "measured_values": "all null",
+    "permanent_tails": 14,
+    "stage28_ledger_sha256": "93327a08fbe521f10ccf0b5ce5b040aefe84b86726661cdd7bbfb22d7ef98061",
+    "status": "UNCHANGED_FROM_STAGE28"
+  },
+  "impact_summary": {
+    "harness_conductors_changed": 0,
+    "historical_consumers": 6,
+    "max_abs_edge_delta_mm": 90.551,
+    "signal_path_delta_range_mm": [
+      -147.561327,
+      73.909957
+    ]
+  },
+  "m01": {
+    "layout_checks": {
+      "female-design": {
+        "contacts": 96,
+        "fixing_offset_toward_row_a_mm": 0.3,
+        "fixing_spacing_mm": 90.0,
+        "pitch_mm": 2.54,
+        "span_a1_a32_mm": 78.74
+      },
+      "female-stage10": {
+        "contacts": 96,
+        "fixing_offset_toward_row_a_mm": 0.3,
+        "fixing_spacing_mm": 90.0,
+        "pitch_mm": 2.54,
+        "span_a1_a32_mm": 78.74
+      },
+      "male-design": {
+        "contacts": 96,
+        "pitch_mm": 2.54,
+        "span_a1_a32_mm": 78.74
+      },
+      "male-stage10": {
+        "contacts": 96,
+        "pitch_mm": 2.54,
+        "span_a1_a32_mm": 78.74
+      }
+    },
+    "pages": 5,
+    "pdf_sha256": "1d0d4d947d146d4219fc989c88fdc4c9d437e789541e6936341d4fbddc43b71d",
+    "record": "m01-record-template.json",
+    "status": "PRINT_PREPARED; M-01 NOT_RUN"
+  },
+  "mapping": "candidate_position(row, n) = Stage10_position(row, 33-n)",
+  "native": "NOT_RUN",
+  "physical": "NOT_RUN",
+  "pin1_xy_mm": {
+    "female": [
+      301.54,
+      188.63
+    ],
+    "male": [
+      301.54,
+      188.63
+    ]
+  },
+  "preservation_baseline": "00266037a7e2134c9c6c70d1ae95695932e7f1f6",
+  "production_CAD_changed": false,
+  "route_study": {
+    "J_SIG_proxies_cross_middle_rail": [
+      "H-J-SIG-1",
+      "H-J-SIG-2",
+      "H-J-SIG-3",
+      "H-J-SIG-4",
+      "H-J-SIG-5",
+      "H-J-SIG-6",
+      "H-J-SIG-7"
+    ],
+    "feasible_under_existing_conditions": [],
+    "minimum_change_proposal": {
+      "centreline_clearance_mm": 2.0743,
+      "foreign_depth_flip_z_mm": 34.293,
+      "max_bend_radius_mm": 2.0671,
+      "maximum_relieved_top_z_mm": 43.898,
+      "minimum_window_y_mm": [
+        163.391,
+        169.943
+      ],
+      "obstacle": "rail:middle:0",
+      "rail_box_mm": [
+        [
+          242.0,
+          142.0,
+          34.0
+        ],
+        [
+          248.0,
+          274.0,
+          46.0
+        ]
+      ],
+      "relief_depth_mm": 2.5,
+      "relieved_top_z_mm": 43.5,
+      "relieved_y_mm": [
+        158,
+        177
+      ],
+      "remaining_rail_depth_mm": 9.5,
+      "route_status": "CENTRELINE_CLEAR_UNDER_ASSUMPTIONS",
+      "status": "PROPOSAL_NOT_ADOPTED; needs owner approval and a mechanical re-check of the middle carrier rail",
+      "still_open": [
+        "rail stiffness after relief (Stage10 planning model, 90 N DIN sensitivity)",
+        "J-PWR cut length after M-09",
+        "local-end bend radius accepted by the harness maker",
+        "J-SIG crossing of the same rail"
+      ]
+    },
+    "results": {
+      "W1": "BLOCKED_BY_KEEP_OUT",
+      "W2": "BLOCKED_BY_KEEP_OUT",
+      "W3": "UNKNOWN_FOREIGN_DEPTH",
+      "W4": "CENTRELINE_CLEAR_UNDER_ASSUMPTIONS"
+    },
+    "scope": "J-PWR only; separate from the DIN correction"
+  },
+  "source_sha256": {
+    "design/architecture-278/implementation/stage10/mechanical-input.json": "31fab83774216f9b011f5f262fbde71c7ce9282e12f6142a6a62a9e488fdab19",
+    "design/architecture-278/implementation/stage10/mechanical-report.json": "956e83e449d2667654679822125015ed96566b849b54902083bf54ca2bf8ffd7",
+    "design/architecture-278/implementation/stage15/interfaces-report.json": "c45cbfbe0e83cab64853daa10b964dd173c4997d2560ff20cca20d6ae5ed93ca",
+    "design/architecture-278/implementation/stage15/paths-report.json": "2af12a7ab3eeb273124c53b06da1add00029ef3bfa905d3dbfae2d0ee14819e7",
+    "design/architecture-278/implementation/stage16/inputs-report.json": "214297b7b19f9ae6027d1f036407f005319929961338631896f984655a4c0ebc",
+    "design/architecture-278/implementation/stage21/inventory-input.json": "991b24386c364e6751e16bd117946669e0326dbb2ec66c446b9a6585890047e2",
+    "design/architecture-278/implementation/stage28/harness-ledger.json": "93327a08fbe521f10ccf0b5ce5b040aefe84b86726661cdd7bbfb22d7ef98061",
+    "design/architecture-278/implementation/stage28/harness-policy.json": "39211b34aed8e17af0f302aeb64801adc9bd601d9dbafec2ef53b70f0a4b457d",
+    "design/architecture-278/implementation/stage28/report.json": "552beaafe632ee583f4194efabc4d72a9e3ee9a88f436b34aa2a8f770ba095a6",
+    "design/architecture-278/implementation/stage29/contact-map.json": "e8dbc86ab10e8c912cf88b18fab54227762f6fefe6fc343b8b95182425850810",
+    "design/architecture-278/implementation/stage29/report.json": "e6db6db28a6f120ebdeb90bb164e8c07eb52ed92484d75a4c842f60001aab797",
+    "design/architecture-278/implementation/stage30/README.md": "cbaa83153d14e3694bf9c55c40ca432322c188723e734c5c1f524de21561267a",
+    "design/architecture-278/implementation/stage30/approval.json": "54c1f8221341e5cb0242d242be6e18c358c271e763df9eff623900dfe2dba4b4",
+    "design/architecture-278/implementation/stage30/route-input.json": "f46d31d07a1c14514c4a2987ebd95d6946c1d889e98ab284dd73f977c2ed73c9",
+    "design/grid/placements.lock.json": "297300b067fd646624b9e501791163fa2d60702862b61568753bf92e5b88dbe8",
+    "footprints/kicad/zudo-osc-hole-field.pretty/Button_Omron_B3F_6x6_P6.5x4.5.kicad_mod": "5308867a94916318f13100fe7a07505c1c2d41ea7fc35c63d5d5ce3fcbb30c52",
+    "footprints/kicad/zudo-osc-hole-field.pretty/Jack_3.5mm_QingPu_WQP518MA.kicad_mod": "51a6cc131190b3b1f7f9aa925d4ce08e05a796f62dc8c00d3a89086354b80a20",
+    "footprints/kicad/zudo-osc-hole-field.pretty/LED0402-Kingbright-Red.kicad_mod": "4a16e45298e7f349499aaf1157d1ee422e4775819e21859d34767c241a1eb51b",
+    "footprints/kicad/zudo-osc-hole-field.pretty/LED0402-Kingbright-White.kicad_mod": "5fd510e04081eabe44d47fd8094a64ceec03e65a0b3b772237ce1d92be71b4c2",
+    "footprints/kicad/zudo-osc-hole-field.pretty/PTV09A-4020F.kicad_mod": "c0dafcafeba8f3570b1c395c12e844ab8d237bb54edfd65130cf98f25939c557",
+    "footprints/kicad/zudo-osc-hole-field.pretty/SRBV160803.kicad_mod": "f8206a956661f5ff94ab9779e59dab9553c2df72df49aaa4a2dfa64c82a6d81b",
+    "footprints/kicad/zudo-osc-hole-field.pretty/Toggle_Dailywell_2MS_T1B1M2.kicad_mod": "11240c0c14b6378dc93f54d9146097b1b62384b0b9cab4b145dc1367be89daf4",
+    "scripts/architecture278/implementation/assembly.py": "7d453aea98dabe67640c40c381011b0cd4327d5c28141f141bcf513c927c4c39",
+    "scripts/architecture278/implementation/check_source.py": "e30c8727d0e7fd5efab2071fd40fb016f5f5373620bff4b0c6395e7762ad8d5d",
+    "scripts/architecture278/implementation/stage10_interfaces.py": "52d588c11dea77ca256895ee74ba43f879a3df52a4593ce2a3c11aaa825bdd06",
+    "scripts/architecture278/implementation/stage28_din_harness.py": "49fab6a30d86e3f3aa9898e2268e3258532a49affaefc4f7203e306b2235468a",
+    "scripts/architecture278/implementation/stage29_din_column_reversal.py": "b8b8112d09b1a3a1594fc7d5db8893a875d88080081f99a6352d560ebee440bc",
+    "scripts/architecture278/implementation/stage30_din_design_integration.py": "a092803e4a68a0d90a81d4f50b3f8f09a74948a4f2195f4ec122ba0f2b5eef26",
+    "scripts/architecture278/implementation/test_stage30_din_design_integration.py": "d7a4413ba201adb7090dc54de961d1f1e9332da2a58b32450c9d45371cfe6361"
+  },
+  "status": "DESIGN_ONLY_PROVISIONAL",
+  "unconfirmed": [
+    "meaning of \u00d81\u00b10.1 (finished plated vs drill) for this part",
+    "fixing-hole plating",
+    "fabricator hole size and \u00d80.05 position capability",
+    "board thickness",
+    "mating, seating and retention",
+    "soldering and assembly process",
+    "wire MPN, bundle diameter and bend radius",
+    "measured path and cut lengths (M-09)",
+    "harness fit and anchors (M-12)"
+  ]
+}

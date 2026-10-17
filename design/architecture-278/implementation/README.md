@@ -1,3 +1,41 @@
+## Current A01 cable-entry redesign study — Stage31
+
+[Stage31](stage31/README.md) compares three common entries for J-SIG and J-PWR into the A01
+middle carrier ring. The comparison uses filleted 3D routes with r 5 bends, bundle
+envelopes, and foreign-depth bounds instead of a cap. **B** is recommended for the next
+prototype study: move J-SIG:middle and J-PWR:middle into the clear strip, turn them 90°, and
+cut two notches (2.3 / 1.8 mm) in the left rail. It is a proposal only. Rail strength is NOT_CALCULATED,
+lengths are design lengths, and M-01, M-09, M-12, native and physical checks are NOT RUN.
+
+## Current provisional DIN design integration — Stage30
+
+[Stage30](stage30/README.md) uses the Stage29 contact positions as **DESIGN_ONLY_PROVISIONAL**
+A01 design data, as the owner approved on 2026-10-17 before M-01. It recomputes the 34
+DIN-incident Stage15 allocations and 11 signal paths, and traces the 16 assigned contacts.
+The Stage28 harness is unchanged.
+
+A separate J-PWR route study finds no route under the existing conditions; a middle-rail
+relief is a proposal only. Stage30 also prepares 1:1 M-01 prints and an empty record sheet.
+D02 stays CONFLICT_REQUIRES_DECISION, and M-01, native and physical checks are NOT RUN.
+
+## Current DIN source correction candidate — Stage29
+
+[Stage29](stage29/README.md) re-reads both HARTING drawings, including their vector
+geometry. Both views look from the body toward the board, and the female fixing holes sit
+0.3 mm toward row a. It proposes the column-reversal relabeling
+`candidate_position(row, n) = Stage10_position(row, 33 − n)` for J17909/J17910. Nets stay with
+the physical contact IDs, and the hole grid and fixing holes are unchanged. NOT adopted:
+D02 stays CONFLICT_REQUIRES_DECISION, physical M-01 is NOT RUN, and no copper is bound.
+
+## Current DIN manufacturing and harness continuation — Stage28
+
+[Stage28](stage28/README.md) turns the retained HARTING 96-contact DIN pair and the
+A01 transport ledger into a decision table, a vendor-completed harness ledger, an
+assembly drawing candidate, an unsent questionnaire and a minimum measurement list.
+It finds that the Stage10 DIN labels are mirrored against the HARTING views; a
+proper-handed relabeling candidate is recorded but not adopted. Manufacturing,
+harness lengths and anchors remain UNCONFIRMED; physical and native NOT RUN.
+
 ## Current HF-trim continuation — Stage27
 
 [Stage27](stage27/README.md) selects TC33X-2-203E / C720648 for the existing

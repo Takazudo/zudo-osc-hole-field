@@ -1,0 +1,162 @@
+{
+  "alternatives_not_adopted": [
+    {
+      "id": "ALT-1",
+      "status": "COMPARISON_IF_Q-F01_TO_Q-F03_FAIL",
+      "summary": "Precision PCB fabricator able to hold Ø0.05 pattern position and 2.8 +0.1/-0 holes with the same HARTING parts"
+    },
+    {
+      "id": "ALT-2",
+      "status": "SEPARATE_DESIGN_CHANGE_NOT_ADOPTED",
+      "summary": "Separately designed adapter board or different connector pair (for example press-fit variant)"
+    },
+    {
+      "id": "ALT-3",
+      "status": "SEPARATE_DESIGN_CHANGE_NOT_ADOPTED",
+      "summary": "Connectorize the 14 permanent tails"
+    }
+  ],
+  "exclusions": [
+    {
+      "reason": "Upstream supply feed into A01:J-PWR:middle is the instrument power distribution boundary (Stage10 upstream_power_boundaries)",
+      "scope": "Supply wiring upstream of J-PWR:middle"
+    },
+    {
+      "reason": "On-board copper, not wiring",
+      "scope": "LED_local_copper and other board-local edges of the Stage15 graph"
+    },
+    {
+      "reason": "Representative A01 only; replication is not authorized",
+      "scope": "A02-A06 and the other 33 instrument functions"
+    },
+    {
+      "reason": "O1 front links, factory terminals and DIN labels have an OPEN mating-face transform and unresolved alternatives; not geometry-bound in the locked frame",
+      "scope": "O1-O5 oscillator zone harnesses"
+    },
+    {
+      "reason": "Panel hardware and fixed devices are locked; only their terminals are endpoints",
+      "scope": "Jack, pot and LED bodies"
+    },
+    {
+      "reason": "No chassis bond is defined in the ledger",
+      "scope": "Chassis/panel earth"
+    }
+  ],
+  "gh": {
+    "allowed_awg": [
+      30,
+      26
+    ],
+    "candidate_awg": 26,
+    "candidate_reason": "JST states 1.0 A only at AWG26; the Stage10 power-return contract retains a 0.5 A GH contact current limit. One gauge for all GH conductors avoids mixed stock.",
+    "contact_mpn": "SSHL-002T-P0.2",
+    "insulation_od_mm": [
+      0.76,
+      1.0
+    ],
+    "rated_temperature_C_min": 105,
+    "rated_voltage_V_min": 50,
+    "selected_wire_mpn": null,
+    "termination": "Crimp SSHL-002T-P0.2 with the JST-specified applicator/die, insert into GHR-0nV-S; both ends identical housing",
+    "voltage_basis": "Connector rating 50 V AC/DC; system rails span 24 V (-12 to +12 V). Wire rating must not be below the connector rating."
+  },
+  "inspection": [
+    {
+      "id": "I-CONT",
+      "limit": "Each conductor end-to-end continuous; mated GH contact 30 mOhm initial max each (JST); two-contact 0.06 Ohm initial (Stage10 contract)",
+      "method": "Fixture continuity per harness-ledger.json"
+    },
+    {
+      "id": "I-ISO",
+      "limit": "No continuity between different nets in the same harness or stack",
+      "method": "Isolation matrix"
+    },
+    {
+      "id": "I-IR",
+      "limit": null,
+      "limit_status": "UNDETERMINED: test voltage and limit to be agreed (Q-H04); JST connector 100 MOhm min is a connector rating, not a harness limit",
+      "method": "Insulation resistance"
+    },
+    {
+      "id": "I-VIS",
+      "limit": null,
+      "limit_status": "UNDETERMINED: workmanship class to be agreed (Q-H04, Q-A06)",
+      "method": "Visual: crimp form, insulation, solder fillet, no exposed conductor beyond the land"
+    },
+    {
+      "id": "I-PULL",
+      "limit": null,
+      "limit_status": "UNDETERMINED: per JST crimp spec / agreed standard",
+      "method": "Sample crimp pull test per lot"
+    },
+    {
+      "id": "I-LATCH",
+      "limit": "Housing fully latched; audible/tactile lock per JST",
+      "method": "Visual and tug test by housing, never by wire"
+    },
+    {
+      "id": "I-FIX",
+      "limit": null,
+      "limit_status": "UNDETERMINED until anchors are defined (M-09, M-12)",
+      "method": "Anchor and guide retention check"
+    },
+    {
+      "id": "I-LABEL",
+      "limit": "Each conductor ID readable at both ends; matches ledger",
+      "method": "Visual"
+    }
+  ],
+  "o1_rear_trimmer_constraint": {
+    "count": 6,
+    "rule": "Any future O1 harness must keep each rear trimmer 6 mm tool cylinder clear along the rear approach; not evaluated here because O1 harness geometry is not bound in the locked frame.",
+    "source": "design/architecture-278/implementation/cluster-refinement-report.json"
+  },
+  "roles": {
+    "INDICATOR": "net contains _LED_ or _CLIP_N",
+    "POWER": [
+      "+12V",
+      "-12V",
+      "+5V"
+    ],
+    "REFERENCE": [
+      "/A01/REF5",
+      "/A01/REFN5"
+    ],
+    "RETURN": [
+      "AGND"
+    ],
+    "SIGNAL": "any other assigned net"
+  },
+  "route": [
+    {
+      "decision_after": "Q-F01, Q-F02, Q-F03, Q-F04",
+      "id": "R-1",
+      "step": "Bare boards (A01-middle, A01-core): JLC multilayer FR4 ENIG with the ±0.05 finished-hole option on the 192 DIN contact holes, if confirmed for soldered holes; Ø0.05 pattern position and 2.8 mm fixing holes confirmed in writing; first-article hole report"
+    },
+    {
+      "decision_after": "Q-M09, Q-A01..Q-A06",
+      "id": "R-2",
+      "step": "PCBA: SMD reflow, then assembler wave/selective THT of the exact HARTING parts in a seating fixture; AOI/visual plus THT class inspection records"
+    },
+    {
+      "decision_after": "Q-O03, M-09, Q-H01..Q-H04",
+      "id": "R-3",
+      "step": "Harnesses: four GH cables and 14 permanent tails built, terminated, labeled and 100% tested by the assembler or a harness vendor at lengths fixed only after fit-up measurement"
+    },
+    {
+      "decision_after": "M-07, M-08, M-11, M-12",
+      "id": "R-4",
+      "step": "Unpowered fit-up and service rehearsal on the first stack; no energization in this route definition"
+    }
+  ],
+  "status": "SOURCE_HARNESS_POLICY_CANDIDATE_NOT_ADOPTED",
+  "tail": {
+    "candidate_awg": 26,
+    "candidate_reason": "Same stock as GH conductors; outer diameter must be strictly below the Stage10 carrier wire guide minimum open diameter. PROPOSAL only.",
+    "clearance_mm": null,
+    "clearance_status": "UNDETERMINED: OD must be strictly below the Stage10 guide minimum open diameter; margin from wire maker/harness vendor (Q-H03)",
+    "insulation_od_must_be_below_guide_min_open": true,
+    "selected_wire_mpn": null,
+    "termination": "Factory solder at both ends: fixed-device side (LED wire land or jack S/T terminal) and A01-jack tail land; strain relieved at the carrier guide, solder joint not a mechanical anchor"
+  }
+}

@@ -12,9 +12,9 @@ def validate_paths(paths):
 
 
 def main():
-    # Stage27 verifies every previous byte except reviewed entrypoints against 686cc59a.
+    # Stage31 verifies every previous byte except reviewed entrypoints against 698d9139.
     # Historical strict hash guards execute at that immutable commit, not against rewritten reports.
-    subprocess.run([sys.executable,str(Path(__file__).with_name('stage27_hf_trim.py')),
+    subprocess.run([sys.executable,str(Path(__file__).with_name('stage31_cable_entry_redesign.py')),
                     '--check','--check-history','--check-review'],cwd=ROOT,check=True)
     print('PASS isolated candidate current acceptance scope; canonical bytes unchanged; native NOT RUN')
 

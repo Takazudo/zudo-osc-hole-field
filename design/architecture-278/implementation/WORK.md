@@ -842,3 +842,230 @@ bindings PASS. Full immutable686cc59a source reproduction including180 historica
 and17 Stage26 regressions PASS; temporary worktrees cleaned. `pnpm check` and
 `pnpm circuit:check` PASS with manual68-line inventory,0 declared placements and
 no schematic/placement binding. Final committed checks/hashes are in PR/issue receipts.
+
+## Stage28 — DIN manufacturing decisions and vendor-completed A01 harness (local Claude Code)
+
+Continued on the owner's Mac in local Claude Code, from PR286 HEAD
+b58068fbaeb65886958a67a4f4978613414e31c5 (= the verified Stage27 baseline; no newer
+commits). The work ran in a new worktree and branch, agent/278-stage28-din-harness-20261017.
+The PR286 branch was not pushed to. No Codex Cloud or remote session was started.
+Python is uv CPython 3.12.13; the system python3 3.9 is below the project minimum.
+
+Re-downloaded both HARTING drawings; their bytes are identical to the Stage5 receipts. The
+views were inspected visually: female view A and male view B both look from the connector
+body toward the board. In the locked frame (x right, y down from the front, z rearward from
+the Stage10 board planes), the Stage10/Stage6 labeled DIN positions fit exact rigid maps with
+determinants −1 (female) and +1 (male). The views require +1 and −1. Both are mirrored
+consistently, so mated nets still join, but contact numbering, inspection and male
+orientation do not match the parts. Column reversal is the proper-handed candidate that keeps
+the fixed grid and the Stage10 fixing holes, provided the 0.3 mm offset is toward row a. It is
+recorded and NOT adopted (Q-M01/M-01/Q-O01). D02 is computed, not asserted.
+
+Re-fetched the JLC capability pages (2026-10-17T10:51Z). The ±0.05 option is published as
+"Press-fit holes", for finished 0.55–2.0 mm on multilayer ENIG circular holes. Hole position
+is ±0.075 per axis, which is up to 0.106 mm radial against HARTING's Ø0.05 (0.025 radial)
+pattern zone. HARTING's position frame carries no datum letters. No round-NPTH tolerance is
+published for the 2.8 +0.1/−0 fixing holes. The JST GH primary spec was read from the
+in-repo PDF: AWG30–26, OD 0.76–1.0 mm, 1.0 A at AWG26, 50 V, −40…105 °C.
+
+Stage28 adds:
+- D01–D14 decision rows
+- a 34-conductor plus 96-contact harness ledger from the Stage15/16 transport contract, with
+  explicit exclusions; lengths, anchors and wire MPNs are null pending measurement
+- an assembly drawing candidate with service, tool and release keep-outs
+- 27 unsent questions with decision rules after each answer
+- 12 unpowered measurements, all NOT RUN
+- a first manufacturing route R-1…R-4, with unadopted alternatives
+
+A01 has no rear trimmers. The six O1 rear trimmer tool reservations are retained as a
+keep-out rule for any future O1 harness.
+
+The KiCad oracle path was not used. regen-all.sh was NOT RUN because it invokes
+scripts/kicad/run.sh (ERC/exports), which is excluded for this task. No supplier contact,
+quote, order, purchase, adoption or merge took place. Canonical boards, locked placements,
+decision.json, KEEP_K1402_INCUMBENT, historical FAIL evidence and every prior stage byte are
+unchanged except the reviewed README/WORK/check_source entrypoints. Native request: NONE.
+
+Stage28 verification (local, Python 3.12.13):
+- 18 focused tests PASS in both normal and `-O` Python.
+- `stage28_din_harness.py --check --check-cache` PASS.
+- `check_source.py` PASS (exit 0, 708 s). It runs the immutable b58068fb replay (180
+  historical, 17 Stage26 and 12 Stage27 tests), then the Stage28 check and the
+  independent-review binding. Temporary worktrees were removed.
+- `pnpm check` and `pnpm circuit:check` PASS; the manual 68-line inventory has 0 declared
+  placements and no schematic/placement binding.
+- `git diff --check` is clean.
+- The first baseline `check_source.py` run passed its historical part. Its final live path
+  guard then failed only because Stage28 files were added while it ran; the clean
+  b58068fb replay above supersedes it.
+- Independent review is PASS_SOURCE_REVIEW_ONLY after six findings were resolved
+  (one HIGH: a stale report.json was hidden by the test).
+- NOT RUN: regen-all.sh (KiCad), the KiCad oracle, CI (commit uses [skip ci] because
+  check.yml runs native steps), simulation, fabrication output, physical and energized tests.
+
+## Stage29 — DIN column-reversal source correction candidate (local Claude Code, 2026-10-17)
+
+Continued on the owner's Mac in local Claude Code, from PR #287 HEAD
+0c1871791a866ba3de64472cac360b81f9cb90ab (Stage28; no newer commits) on the same branch.
+The PR #286 branch was not touched. Python is uv CPython 3.12.13.
+
+Both HARTING drawings were re-downloaded at 2026-10-17T11:49:51Z and 11:49:53Z. Their SHA256 matches
+the Stage5/Stage28 receipts (female 7407cda8…, male 9de9adb8…). The PDFs have no text layer.
+
+- **Vector geometry:** circle centres were extracted with PyMuPDF 1.24.10, in a scratch venv
+  that is not a repo dependency. Female rows a/b/c are at y = 315.109253 / 322.309265 /
+  329.509262 pt (y down) on a 7.2 pt = 2.54 mm pitch. The fixing holes sit at y = 321.458923
+  and x = 228.227402 / 483.345596: 90.000 mm apart and 0.299982 mm from row b toward row a.
+  The male board drillings contain only the 96 holes.
+- **Readings:** taken by eye from 220 dpi crops, which are committed under `stage29/evidence/`.
+  - Female view A: columns 32→1 left to right, rows a/b/c top to bottom, arrow A from the body
+    side.
+  - Male view B: columns 32→1, rows c/b/a, arrow B from the body side.
+
+  This settles the Stage28 open point: the offset is toward row a, so column reversal keeps
+  the fixing holes.
+
+Stage29 proposes `candidate_position(row, n) = Stage10_position(row, 33 − n)` for J17909 and
+J17910 and does not adopt it.
+- **Determinants:** become female +1 and male −1, as the views require (Stage10: −1/+1).
+- **Unchanged:** nets stay with the physical contact IDs (16 assigned, 80 NC). The hole set,
+  pitch, board planes and female fixing holes are unchanged, and the mated contacts coincide.
+- **Pin 1:** physical a1 moves to (301.54, 188.63).
+- **Rejected:** row reversal (0.6 mm hole move).
+
+Still open:
+- D02 stays CONFLICT_REQUIRES_DECISION; M-01 is NOT RUN; Q-O01 is open.
+- Unconfirmed: the meaning of the hole diameter, plating, fabricator tolerances, board
+  thickness, and mating, retention and assembly.
+
+Stage29 verification (local, Python 3.12.13):
+- 16 focused tests PASS in both normal and `-O` Python.
+- `stage29_din_column_reversal.py --check --check-cache` PASS. The venv run
+  `--check-vector --check` reproduces vector-evidence.json and the crops byte for byte.
+- `--check --check-history` PASS (exit 0, 795 s): the immutable 0c187179 replay. That replay
+  runs Stage28 check_source (which replays b58068fb: 180 historical, 17 Stage26, 12 Stage27
+  tests) and 18 Stage28 tests in normal and `-O` Python. Temporary worktrees were removed.
+- `check_source.py` PASS (exit 0, 854 s), the full entrypoint including the replay above and `--check-review`.
+- `pnpm check` and `pnpm circuit:check` PASS; `git diff --check` is clean.
+- Independent review is PASS_SOURCE_REVIEW_ONLY, with no MEDIUM/HIGH findings and four LOW
+  notes.
+- NOT RUN:
+  - regen-all.sh (KiCad), the KiCad oracle and ERC/DRC
+  - CI: the commit uses [skip ci]
+  - simulation and fabrication output
+  - physical M-01 and energized tests
+
+No supplier contact, order, upload, adoption or merge took place. Native request: NONE.
+
+## Stage30 — provisional DIN design integration for A01 (local Claude Code, 2026-10-17)
+
+The owner provisionally adopted the Stage29 contact positions on 2026-10-17 for design study
+only, before M-01 (`stage30/approval.json`, status DESIGN_ONLY_PROVISIONAL). This is not
+manufacturing or assembly qualification, a canonical CAD change, a native run, an order or
+architecture adoption. D02 stays CONFLICT_REQUIRES_DECISION, M-01 is NOT RUN, and Stage29
+and earlier are history.
+
+- **Design positions:** `candidate_position(row, n) = Stage10_position(row, 33 − n)` for
+  J17909/J17910, rebuilt from Stage29 and re-verified.
+  - Determinants: female +1, male −1; pin 1 at (301.54, 188.63).
+  - Unchanged: nets (16 assigned, 80 NC), hole set, fixing holes and board planes.
+- **Impact:** of the 50 Stage15 (= Stage16 transport contract) edges that end on a DIN node,
+  the 16 mated pairs keep 25 mm. The other 34 `trace_length` allocations are recomputed.
+  - A01-middle: J-SIG and AGND edges get 49.7–90.6 mm shorter; C-SIG edges get 32.2–64.5 mm
+    longer.
+  - A01-core: K-PWR AGND joins get 35.6–64.5 mm longer; the eight branches change by −57.0
+    to +39.4 mm.
+  - 11 signal paths change by −147.6 to +73.9 mm. Power/return and local paths do not change.
+  - Routed copper stays null.
+  - The 16 assigned contacts are traced to their Ref:pin and board.
+  - Six historical files that carry Stage10 allocations are listed; their bytes are unchanged.
+- **Harness:** unchanged from Stage28: 4 GH cables / 20 conductors, 14 tails, and 22 land
+  annotations with their exclusion flags. Measured values stay null.
+- **J-PWR route study** (separate from the DIN correction; assumptions in
+  `stage30/route-input.json`):
+  - The straight J-PWR and J-SIG proxies also cross the A01-middle carrier left rail.
+  - W1 and W2 are blocked by keep-outs; W3 is UNKNOWN (foreign depth) and needs about 154 mm
+    of cable.
+  - W4 (rail relief, proposal only) clears its centreline under the assumptions. It needs
+    about 111.5 mm of cable (Stage10 cut 90 ± 3) and has a bend radius ≤ 2.07 mm. It also
+    depends on the foreign-depth cap at z 34, with a 0.29 mm margin.
+  - No route, hole, fixture or anchor is adopted.
+- **M-01:** `stage30/m01-print.pdf` holds 4 pattern sheets and an empty record sheet. The
+  PyMuPDF read-back finds 2.54 pitch, a 78.74 span, female fixing holes 90.00 mm apart and
+  0.3 mm toward row a, 100 mm bars, and correct corner labels. Nothing was printed or
+  physically checked.
+
+Stage30 verification (local, Python 3.12.13):
+- **Tests:** 17 focused tests PASS in both normal and `-O` Python.
+- **Generator:** `stage30_din_design_integration.py --check` PASS; venv `--check --check-pdf`
+  PASS (PyMuPDF 1.24.10).
+- **History:** `--check --check-history` PASS (33 s). It runs Stage29 `--check --check-review`
+  and the 16 Stage29 tests (normal and `-O`) at immutable 00266037. The deeper chain already
+  passed at 00266037 (854 s) and those bytes are protected, so it was not repeated.
+- **Entrypoint:** `check_source.py` PASS (exit 0, 20 s), including `--check-review`.
+- **Repo checks:** `pnpm check` and `pnpm circuit:check` PASS; `git diff --check` is clean.
+- **Independent review:** PASS_SOURCE_REVIEW_ONLY. It found 1 MEDIUM (an unrecorded
+  foreign-depth cap) and 10 LOW issues; all are resolved except one cosmetic LOW.
+- **NOT RUN:**
+  - regen-all.sh (KiCad), the KiCad oracle and ERC/DRC
+  - CI: the commit uses [skip ci]
+  - simulation and fabrication output
+  - M-01, M-09, M-12 and energized tests
+
+No supplier contact, order, upload, adoption or merge took place. Native request: NONE.
+
+## Stage31 — A01 J-SIG/J-PWR common cable-entry redesign (local Claude Code, 2026-10-18)
+
+The owner allowed this design study to change the local shape of the A01 middle carrier, the
+position and orientation of the J-SIG/J-PWR headers, and the provisional cable length
+(`stage31/approval.json`). Panel placements, nets, the DIN mapping and positions, board planes
+and the K-PWR-then-40 mm service procedure stay fixed. Nothing is applied to hardware or to
+canonical CAD.
+
+- **Model:**
+  - Filleted 3D routes with r 5 arcs and a straight lead at each housing exit.
+  - Round-bundle envelopes at OD 1.0 (J-SIG 1.5 mm and J-PWR 1.207 mm radius).
+  - A 0.5 mm margin for routes and for release sweeps.
+  - Mount spacers and screw heads are added to the Stage30 keep-outs.
+  - Foreign depth is reported as a bound per part instead of the Stage30 z 34 cap.
+  - Release cases keep the r 5 bends.
+- **Candidates (criteria K1–K4 in `stage31/design-input.json`):**
+  - A (headers kept, two notches): REJECTED_BY_CRITERIA, fails K2 (Stage10 middle sweeps over
+    J15xx–J17xx) and K3 (needs foreign tops ≤ z 32.0–32.3).
+  - B (middle headers moved and turned 90°, two notches): meets K1–K4. **Recommended.**
+  - C (headers translated, flat layer through the existing 2.4 mm slot): REJECTED_BY_CRITERIA,
+    fails K4 (0.2 mm geometric spare, 0.1 mm after the sampling deduction).
+- **B:**
+  - J-SIG:middle moves (260, 150) → (268.0, 171.5) and J-PWR:middle (283, 150) → (288.0, 174.7),
+    both turned 90°. Sweeps stay ≥ 0.575 mm from known and foreign XY.
+  - Notches N1 y 168.6–173.8 to z 43.7 (2.3 mm) and N2 y 180.9–185.1 to z 44.2 (1.8 mm); the
+    rail keeps 9.7 / 10.2 of 12 mm.
+  - Minimum clearance 0.69 mm (required 0.5), and the cables are 5.69 mm apart.
+  - Design lengths: J-SIG 138 mm and J-PWR 149 mm (installed 108.7 / 119.6; the 15 mm Stage10
+    release drives the extra).
+  - J-PWR needs SW1401/SW1501/SW1601 ≤ z 44.49. The middle release dips to about z 17.6.
+  - Copper allocations at the moved headers change by −31.3 to +2.1 mm (model only).
+- **Negative screen:** the Stage30 W1–W4 are rejected again. The 11 straight proxies still
+  cross the rail.
+- **Open:** measurements M31-01…09; rail strength NOT_CALCULATED; retention dimensions null.
+
+Stage31 verification (local, Python 3.12.13; tests and history also under 3.9.6):
+- **Tests:** 13 focused tests PASS in both normal and `-O` Python. They include negative
+  tests: cable crossing, the rail without a notch, an oversized or undersized notch, moves
+  outside the approval, sweep overlaps, a non-axial exit, a bend that does not fit, input
+  claims, and the Stage30 W1–W4.
+- **Generator:** `stage31_cable_entry_redesign.py --check` PASS, with deterministic outputs.
+- **History:** `--check-history` PASS. It replays Stage30 `--check --check-review` and the 17
+  Stage30 tests (normal and `-O`) at the immutable 698d9139.
+- **Entrypoint:** `check_source.py` runs Stage31 `--check --check-history --check-review`.
+- **Repo checks:** `pnpm check` and `pnpm circuit:check` PASS; `git diff --check` is clean.
+- **Independent review:** PASS_SOURCE_REVIEW_ONLY. It found 1 HIGH (a sweep margin that
+  decided K2), 4 MEDIUM and 5 LOW issues. All are resolved, except one wording-only LOW that
+  was accepted (the K2 text in design-input omits the margin the generator applies).
+- **NOT RUN:**
+  - regen-all.sh (KiCad), the KiCad oracle and ERC/DRC
+  - CI: the commit uses [skip ci]
+  - simulation and fabrication output
+  - M-01, M-09, M-12, the M31 measurements and energized tests
+
+No supplier contact, order, upload, adoption or merge took place. Native request: NONE.

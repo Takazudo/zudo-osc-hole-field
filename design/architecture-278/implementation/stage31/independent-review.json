@@ -1,0 +1,158 @@
+{
+  "architecture_adopted": false,
+  "baseline_commit": "698d91398db411d94117a4298810b1bd58f38d61",
+  "checks": [
+    {
+      "command": "git diff 698d91398db411d94117a4298810b1bd58f38d61 --name-only; git status --short",
+      "result": "only README.md, WORK.md, check_source.py modified; untracked stage31/ and the two stage31 scripts; scope held"
+    },
+    {
+      "command": "python3 scripts/architecture278/implementation/stage31_cable_entry_redesign.py --check",
+      "result": "PASS: A REJECTED_BY_CRITERIA, B RECOMMENDABLE_UNDER_MODEL_CONDITIONS, C REJECTED_BY_CRITERIA; W1-W4 REJECTED"
+    },
+    {
+      "command": "python3 -m unittest discover -s scripts/architecture278/implementation -p test_stage31_cable_entry_redesign.py",
+      "result": "13 tests OK"
+    },
+    {
+      "command": "python3 -O -m unittest discover -s scripts/architecture278/implementation -p test_stage31_cable_entry_redesign.py",
+      "result": "13 tests OK"
+    },
+    {
+      "command": "python3 /private/tmp/claude-501/-Users-takazudo-repos-circuits-zudo-osc-hole-field/409b87af-465e-435f-b183-6fe0014893bc/scratchpad/review31/indep.py (own rotation/translation of header pads, own fillet and 0.05 mm sampling, exact box distances, own foreign bounds)",
+      "result": "B J-SIG installed 108.714 / J-PWR 119.580 (generator 108.710 / 119.576, chord sum); exact clearances 0.8 / 0.793 = reported 0.7 / 0.693 + 0.1; foreign SW1401/1501/1601 44.593 = 44.493 + 0.1; cable gap 5.89 = 5.69 + 0.2; all r 5 fits and leads 7.5/7.6/2.0 reproduce; A and C reproduce likewise"
+    },
+    {
+      "command": "independent sweep screen (rotated boxes + 2 mm, 0.5 mm margin)",
+      "result": "B sweeps clear: J-PWR:middle 0.575 SW1701, 0.825 crossmember:jack:1; J-SIG:middle 1.9 J1610/SW1601; sweeps 9.9 mm apart"
+    },
+    {
+      "command": "independent release surrogate re-derivation (hand)",
+      "result": "middle +15 (hook pair to z 19.1), local +4.0 / +3.8 (loop top to z 65.9), both +19.0 / +18.8; design lengths 138 / 149 = ceil(installed + 19.0/18.8 + 10)"
+    },
+    {
+      "command": "independent copper recomputation (Stage10 trace_length over Stage30 design DIN XY, rotated pads)",
+      "result": "B and C: 19/19 edges match, 0 mismatches; B edges -31.3..+2.1, 6 signal paths -26.9..-20.9, 28 power/return paths -31.3..-23.0, path sums match"
+    },
+    {
+      "command": "Stage10 box spot checks",
+      "result": "rail:middle:0, tool:A01-jack:M4, four J-SIG/J-PWR sweeps, A01-middle outline and notch match stage10 mechanical-report.json"
+    },
+    {
+      "command": "grep for pass/validated/qualified/measured/cut-length claims; unknowns",
+      "result": "no unsupported claims; foreign_depth and bend_radius_maker_value null; retention dimensions null; measurements NOT_RUN"
+    },
+    {
+      "command": "not run",
+      "result": "--check-history (run by the lead), KiCad, ERC/DRC, regen-all, simulation"
+    }
+  ],
+  "date": "2026-10-18",
+  "decision_status": {
+    "D02": "CONFLICT_REQUIRES_DECISION",
+    "M-01": "NOT_RUN",
+    "M-09": "NOT_RUN",
+    "M-12": "NOT_RUN",
+    "cable_lengths": "DESIGN_LENGTH_PROPOSAL; not measured, not cut",
+    "header_moves": "PROPOSAL_NOT_ADOPTED",
+    "rail_change": "PROPOSAL_NOT_ADOPTED",
+    "rail_strength": "NOT_CALCULATED",
+    "route": "RECOMMENDED_FOR_NEXT_PROTOTYPE_STUDY (B); not adopted"
+  },
+  "findings": [
+    {
+      "resolution": "sweep_screen expands every sweep by the 0.5 mm placement margin against known obstacles (3D) and foreign XY and reports nearest gaps; B redesigned with both middle headers turned 90 deg at (268.0, 171.5) / (288.0, 174.7); independently re-verified: tightest sweep gap 0.575 mm (SW1701), J-SIG:middle 1.9 mm (J1610/SW1601), crossmember:jack:1 0.825 mm",
+      "severity": "HIGH",
+      "summary": "H1: B met K2 by 0.05 mm because release sweeps were screened against foreign XY with no margin; any margin >= 0.05 mm left no candidate meeting K1-K4"
+    },
+    {
+      "resolution": "claim removed; B now uses the 90 deg orientation; re-verified",
+      "severity": "MEDIUM",
+      "summary": "M1: README rejected a 90 deg turn on a false claim (rotated sweeps fit the strip side by side)"
+    },
+    {
+      "resolution": "README/WORK state 0.7 mm per side, 0.2 mm geometric, 0.1 mm after deduction; B 0.19 mm spare vs 0.15 threshold disclosed; candidates carry tightest_spare_note; re-verified",
+      "severity": "MEDIUM",
+      "summary": "M2: C \"0.1 mm beyond the margin\" misstated the geometry (0.2 mm geometric, 0.1 mm after the sampling deduction), and the 0.15 mm DESIGN_CHOICE K4 threshold alone separates B (0.193) from C (0.1)"
+    },
+    {
+      "resolution": "release_cases moves the nearest loop-top/hook waypoint pair just enough for lead + r 5 and passes fillet_route; extras B J-SIG 0/+15/+4.0/+19.0, J-PWR 0/+15/+3.8/+18.8 re-derived by hand; release rows report keep-out hits, foreign bounds and the lowest dip (centreline z 19.1, envelope about z 17.6, through the foreign PCB plane); disclosed in README, common not_modelled and M31-07",
+      "severity": "MEDIUM",
+      "summary": "M3: local-withdrawal release polyline reversed on itself (negative extras), not bend-feasible"
+    },
+    {
+      "resolution": "status derived from K1-K4 (REJECTED / REJECTED_BY_CRITERIA / RECOMMENDABLE_UNDER_MODEL_CONDITIONS) with failed_criteria; re-verified A [K2,K3], C [K4], B RECOMMENDABLE",
+      "severity": "MEDIUM",
+      "summary": "M4: A and C kept status CANDIDATE_UNDER_MODEL_CONDITIONS although they fail K2/K3 and K4"
+    },
+    {
+      "resolution": "pieces named by y range (e.g. rail:middle:0:y173.8-180.9); re-verified",
+      "severity": "LOW",
+      "summary": "L1: notch wall pieces named N2:a for the rail between N1 and N2"
+    },
+    {
+      "resolution": "corrected; re-verified",
+      "severity": "LOW",
+      "summary": "L2: README K3 numbers for A slightly off (D15101 32.1, J1710 10.7 mm)"
+    },
+    {
+      "resolution": "README headings now verdicts; WORK.md verification block to be appended by the lead after this review (WORK.md is not in the review binding)",
+      "severity": "LOW",
+      "summary": "L3: topic headings in stage31/README.md; no Stage31 verification block in WORK.md"
+    },
+    {
+      "resolution": "accepted; this record now exists",
+      "severity": "LOW",
+      "summary": "L4: check_source.py runs --check-review and fails until this review record exists"
+    },
+    {
+      "resolution": "accepted as wording only; results unaffected; suggest adding \"by the 0.5 mm placement margin\" at the next edit",
+      "severity": "LOW",
+      "summary": "L5: K2 wording in design-input.json recommendation.criteria still says \"outside every foreign XY projection\" without naming the 0.5 mm margin the generator now applies (README and rationale state it)"
+    }
+  ],
+  "native": "NOT_RUN",
+  "open_findings_medium_or_high": 0,
+  "physical": "NOT_RUN",
+  "reviewed_sha256": {
+    ".claude/skills/component-dailywell-2ms1t1b1m2qes-5/facts.json": "6077bfe56b38a75a31538b4c2d63c19cb592cb0dca3b4fbd685457137132577b",
+    ".claude/skills/component-jst-gh/facts.json": "263d2362d430a327b8d7b088bef2f9d9c673e8dd729bbab8b262229081be2341",
+    ".claude/skills/component-passives-family/facts.json": "fb5d7dd5a4fc5aa89dd2dd245a048be3b91cbcf8d38efd6f0d8282502b5423dc",
+    ".claude/skills/component-qingpu-wqp518ma/facts.json": "81d574c8814f6ffa06a5a343884949125250ec355714e78a11dd63da11d9a258",
+    "design/architecture-278/implementation/stage10/mechanical-input.json": "31fab83774216f9b011f5f262fbde71c7ce9282e12f6142a6a62a9e488fdab19",
+    "design/architecture-278/implementation/stage10/mechanical-report.json": "956e83e449d2667654679822125015ed96566b849b54902083bf54ca2bf8ffd7",
+    "design/architecture-278/implementation/stage15/interfaces-report.json": "c45cbfbe0e83cab64853daa10b964dd173c4997d2560ff20cca20d6ae5ed93ca",
+    "design/architecture-278/implementation/stage15/paths-report.json": "2af12a7ab3eeb273124c53b06da1add00029ef3bfa905d3dbfae2d0ee14819e7",
+    "design/architecture-278/implementation/stage16/inputs-report.json": "214297b7b19f9ae6027d1f036407f005319929961338631896f984655a4c0ebc",
+    "design/architecture-278/implementation/stage28/harness-ledger.json": "93327a08fbe521f10ccf0b5ce5b040aefe84b86726661cdd7bbfb22d7ef98061",
+    "design/architecture-278/implementation/stage28/harness-policy.json": "39211b34aed8e17af0f302aeb64801adc9bd601d9dbafec2ef53b70f0a4b457d",
+    "design/architecture-278/implementation/stage28/report.json": "552beaafe632ee583f4194efabc4d72a9e3ee9a88f436b34aa2a8f770ba095a6",
+    "design/architecture-278/implementation/stage29/contact-map.json": "e8dbc86ab10e8c912cf88b18fab54227762f6fefe6fc343b8b95182425850810",
+    "design/architecture-278/implementation/stage30/design-contact-map.json": "2550545558a429ada183b0257ccb5523e4d0b76ed472303ebaf520e9f14e28c0",
+    "design/architecture-278/implementation/stage30/report.json": "e8fd33a9571ae512fed8310a808782abb3e51b7c0fddc9673de69272eef87191",
+    "design/architecture-278/implementation/stage30/route-input.json": "f46d31d07a1c14514c4a2987ebd95d6946c1d889e98ab284dd73f977c2ed73c9",
+    "design/architecture-278/implementation/stage31/README.md": "dd2bf90a5d589d2e369ffb943a0a53f938ca29f3fdec9b4bb500893f2193d0b5",
+    "design/architecture-278/implementation/stage31/approval.json": "9c7859937d32c52470892bc949770da8acdaf96fde68039f4b089eb55aeedd40",
+    "design/architecture-278/implementation/stage31/candidate-A.svg": "c4d794ce7aa1261bcb9cdce2d343b6671fc69f4eb5781c029352863a271de76c",
+    "design/architecture-278/implementation/stage31/candidate-B.svg": "21519239dedda977919bc1b3c52e0159ed04881555a88698373c6a32bf69cc70",
+    "design/architecture-278/implementation/stage31/candidate-C.svg": "bf6af4739a131ea66a9ef81144d47d54473f1c31d83c6135ae350367e2c350a1",
+    "design/architecture-278/implementation/stage31/candidates.json": "a27067bc9dd63c02b1069be886db84c182dd5aee3bb6d537ba7eb7d966db8b7c",
+    "design/architecture-278/implementation/stage31/common-input.json": "c5448054c82cbf58a5615f0894b2dbd01e408b4e76b314383ede7e2996137f27",
+    "design/architecture-278/implementation/stage31/comparison.md": "2b2b5da9d80525b6375e19e7660b7e14e5d492a1008dea7ccd1c6c84d0443dcc",
+    "design/architecture-278/implementation/stage31/copper-impact.json": "ebdda43c261ec9842cc2206fbc4bba04852370252eefdc5e31fd557d5606fb84",
+    "design/architecture-278/implementation/stage31/design-input.json": "b23e274fba0e13ef4e055918b9570556cf6044f3078062594bcd1b0f4516d58b",
+    "design/architecture-278/implementation/stage31/report.json": "87e3ea478114d7afefee53214856f95d420034d567d2c2f0f0a29b10a3c4953a",
+    "design/grid/placements.lock.json": "297300b067fd646624b9e501791163fa2d60702862b61568753bf92e5b88dbe8",
+    "scripts/architecture278/implementation/assembly.py": "7d453aea98dabe67640c40c381011b0cd4327d5c28141f141bcf513c927c4c39",
+    "scripts/architecture278/implementation/check_source.py": "efd5c31dedf45d473da24db69b9ad0d81f901dbd1d27949c4a5bde6cfe7b1ab6",
+    "scripts/architecture278/implementation/stage10_interfaces.py": "52d588c11dea77ca256895ee74ba43f879a3df52a4593ce2a3c11aaa825bdd06",
+    "scripts/architecture278/implementation/stage28_din_harness.py": "49fab6a30d86e3f3aa9898e2268e3258532a49affaefc4f7203e306b2235468a",
+    "scripts/architecture278/implementation/stage29_din_column_reversal.py": "b8b8112d09b1a3a1594fc7d5db8893a875d88080081f99a6352d560ebee440bc",
+    "scripts/architecture278/implementation/stage30_din_design_integration.py": "a092803e4a68a0d90a81d4f50b3f8f09a74948a4f2195f4ec122ba0f2b5eef26",
+    "scripts/architecture278/implementation/stage31_cable_entry_redesign.py": "ecb6faae2a802841b8651e49b2c993291bd6598962c5079257828b1b2cc1add0",
+    "scripts/architecture278/implementation/test_stage31_cable_entry_redesign.py": "b2ab5808f5ff05628f34f05ebfd2ac959b4d5b516db2fe81c0f35fc9b4455d4d"
+  },
+  "reviewer": "independent Claude Code subagent (local)",
+  "scope": "Source review of the Stage31 A01 J-SIG/J-PWR common cable-entry redesign design study (candidates A/B/C, filleted routes, sweeps, release surrogate, notches, copper allocations); not a physical, native, manufacturing, rail-strength or architecture review",
+  "status": "PASS_SOURCE_REVIEW_ONLY"
+}
