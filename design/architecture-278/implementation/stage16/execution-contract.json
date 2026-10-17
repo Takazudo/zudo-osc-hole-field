@@ -1,0 +1,119 @@
+{
+  "current_source_commands": [
+    "python3 scripts/architecture278/implementation/stage16_inputs.py --check",
+    "python3 scripts/architecture278/implementation/stage16_handoff.py --check",
+    "python3 scripts/architecture278/implementation/stage16_handoff.py --export-run a01-preflight-001",
+    "python3 scripts/architecture278/implementation/stage16_handoff.py --verify-export a01-preflight-001"
+  ],
+  "expected_evidence": [
+    "Actual version/image and execution environment; input/output hashes, exactargv, elapsedtime,peakresources,exitstatus and complete logs.",
+    "All86packages and291pads mapped once, sixreplaceddiscretes absent; RN unusedendsNC andEP9AGND; selected capacitor polarity/pads.",
+    "Exact pin-net/NC/MPN comparison against exported candidate; component-library and unit coverage. Observation comparator cannot attest native provenance.",
+    "Scalar-to-native frame/face/rotation mapping verified at unchanged pads and fixedcontrolcentres; no new geometry.",
+    "ERC everyerror/warning identity disposition, no blanket old228warningbaseline transfer.",
+    "PCB nativepad/net/placement parity thenDRC includingunconnectednets/courtyard/clearance; unrouted candidate is expected to reportopens, never labelcomplete.",
+    "No oldnativepass or packettest counts as electrical/physical acceptance."
+  ],
+  "future_exact_command_templates_NOT_ADMITTED": [
+    [
+      "bash",
+      "scripts/kicad/run.sh",
+      "kicad-cli",
+      "sch",
+      "export",
+      "netlist",
+      "--format",
+      "kicadsexpr",
+      "-o",
+      "<run-root>/evidence/netlist.net",
+      "<run-root>/native/a01.kicad_sch"
+    ],
+    [
+      "bash",
+      "scripts/kicad/run.sh",
+      "kicad-cli",
+      "sch",
+      "erc",
+      "--format",
+      "json",
+      "--severity-all",
+      "-o",
+      "<run-root>/evidence/erc.json",
+      "<run-root>/native/a01.kicad_sch"
+    ],
+    [
+      "bash",
+      "scripts/kicad/run.sh",
+      "kicad-cli",
+      "pcb",
+      "drc",
+      "--schematic-parity",
+      "--format",
+      "json",
+      "--severity-all",
+      "-o",
+      "<run-root>/evidence/drc.json",
+      "<run-root>/native/a01.kicad_pcb"
+    ]
+  ],
+  "native_admission_granted": false,
+  "native_admission_prerequisites": [
+    "Named authorized operator and unique run ID with current source commit and complete input/artifact SHA256 set. A self-authored JSON boolean is not admission.",
+    "Exact executable argv, purpose and isolated output paths; no inherited campaign/admission reuse.",
+    "KiCad10.0.6 exact attestation and pinned image digest; wrapper10.0.x check alone insufficient.",
+    "Host-enforced timeout, CPU/RAM/output limits and machine-wide heavy-run scheduling; no defaults inferred.",
+    "Materialized isolated A01 schematic/library/PCB inputs actually exist and are source-reviewed; all unresolved asset/identity/coordinate-transform gaps explicitly resolved or dispositioned before corresponding check.",
+    "Explicit prohibition on canonical writes, aggregate regeneration, simulation, routing campaigns, manufacturing and hardware actions retained."
+  ],
+  "oracle": {
+    "docker_image": "kicad/kicad@sha256:18693567392b80da435f9fa952ce3a3e534c66eb5a6033f5b9c80aa3b19dd3ec",
+    "network": "none for Docker",
+    "readiness": "NOT PROBED; executable presence is not daemon/image/pcbnew readiness",
+    "required_exact_version": "10.0.6",
+    "wrapper": "scripts/kicad/run.sh",
+    "wrapper_actual_version_filter": "10.0.x"
+  },
+  "permitted_future_outputs": {
+    "future_native": [
+      "native/a01.kicad_sch",
+      "native/a01.kicad_pcb",
+      "native/*.kicad_sym",
+      "native/*.pretty/*.kicad_mod",
+      "native/sym-lib-table",
+      "native/fp-lib-table",
+      "evidence/netlist.net",
+      "evidence/erc.json",
+      "evidence/drc.json",
+      "evidence/observation.json",
+      "evidence/command-log.json",
+      "evidence/output-sha256.json"
+    ],
+    "root": "design/architecture-278/implementation/stage16/runs/<run-id>/",
+    "source_export": [
+      "manifest.json",
+      "candidate.json",
+      "bom.csv",
+      "pin-net.csv",
+      "sources/**"
+    ],
+    "status": "Local ignored artifacts; no fabrication/manufacturing outputs. No current native files exist."
+  },
+  "platform_lanes": {
+    "Cloud": "Python source packet build/export/test/hash checks run now. Currentnativecapabilities unverified and noadmission: native NOT RUN. Cloudnative later only if all same exactversion/capability/resource/admission conditions are met; no inherent permission.",
+    "Hardware": "Physicalprototypeavailability unconfirmed; procurement/manufacturing/energization/measurements requireseparateauthorization andequipment; notCloudsourceverification.",
+    "Mac": "NativeKiCad10.0.6 viaKICAD_CLI_BIN orpinnedDockeramd64; PATHPython must separatelyimportmatchingpcbnew forboardconstruction. Docker/nativeparity notassumed.",
+    "WSL_Linux": "Preferred local native lane afteradmission: Dockerdaemon+pinnedlinuxamd64image, KiCad10.0.6 andpcbnew, memory/CPU/time controls andactualhostheavyguard."
+  },
+  "proposed_resource_ceiling": {
+    "concurrency": 1,
+    "cpu_cores": 2,
+    "enforcement_gap": "run.sh has no CPU/RAM/wall caps. Authorized host must enforce these outside wrapper, or obtain an explicitly approved alternative. Do not silently launch uncapped.",
+    "memory_GiB": 4,
+    "output_MiB": 512,
+    "queue": "Actual host machine-wide heavy guard; do not override its shared slot/memory policy",
+    "status": "Proposed maximum for one A01 import/export/check, not execution approval or existing enforced limits",
+    "wall_seconds_per_command": 600
+  },
+  "prototype_availability": "UNCONFIRMED",
+  "scope": "Preparation only; no native invocation, even version probes. No available prototype assumed."
+}

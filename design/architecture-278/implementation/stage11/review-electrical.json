@@ -1,0 +1,43 @@
+{
+  "authorship_exclusion": "Reviewer authored stage11_electrical.py, tests, electrical-input/report and ELECTRICAL.md. These are excluded from independent review; separate root/code reviewers assess them.",
+  "checks": [
+    "Exact 17R/3C candidate inventory preserves 20 source values, full pins, roles and footprints without canonical BOM adoption.",
+    "REF5050 AI application distinguishes 1uF output minimum and ESR limit from noise ESR recommendation; 0.9uF tolerance-only candidate and 0.2uF input nominal do not establish application compliance.",
+    "Root composition independently checks 106 baseline power/return walks and 26 new core/80 unchanged front partition, actual source/stud/pad endpoints, two joints, lengths, retained suffix and unknown upstream/full resistance.",
+    "Support feed lanes keep bolt reaction separate from solder/PCB; removal unknowns and 344 other-function projected conflicts remain explicit.",
+    "Bend-radius inconsistency found during independent review corrected: 3mm centreline for developed length and 1/6 geometric strain; material acceptance remains UNKNOWN.",
+    "All 241 predecessor files preserved by root composition; no scope/adoption/native acceptance promoted."
+  ],
+  "hardware_acceptance": false,
+  "native": "NOT RUN",
+  "physical": "NOT RUN",
+  "remaining": [
+    "Original partition plane-only 0.5mohm/1mohm constraints and expanded architecture whole-path wording require applicability reconciliation; no limit change made.",
+    "Unselected material/contact stack/torque/insulation and complete source-to-pad resistance/current bounds.",
+    "Reference capacitance/ESR, loaded accuracy, headroom, noise and assembled stability.",
+    "Support/enclosure/other-function occupancy and installed service remain conditional."
+  ],
+  "reviewer": "Independent electrical reviewer of Stage11 identity, support electrical interfaces and root composition",
+  "simulation": "NOT RUN",
+  "source_sha256": {
+    "design/architecture-278/implementation/stage11/assessment-report.json": "b6a10e7326fcc17861311cad2eaffad0ee096e8b50138cd3452433718d79eab5",
+    "design/architecture-278/implementation/stage11/identity-input.json": "cae9a6881b2f40457edeaa5fb7c48896764b02477fe096347766e5eb1de645ea",
+    "design/architecture-278/implementation/stage11/identity-report.json": "9e10f0acd3fbf4afa10b62a809cc14636d522d84bac27bed739cfdda794189b8",
+    "design/architecture-278/implementation/stage11/scope.json": "3ff85f78c8f565e099c73572a8690cbbe4f600dc2a9543790bb8dccbcae1249e",
+    "design/architecture-278/implementation/stage11/support-evidence.json": "28b7952191845b5c642e19581a0631580990685ef4f509dd686abbce2258b068",
+    "design/architecture-278/implementation/stage11/support-input.json": "52b7ac4cff232a8527be37eb29febf637be4a32d4fa90c4ab30fa8ee7381ef8c",
+    "design/architecture-278/implementation/stage11/support-report.json": "af1c254c951812134953b764b3c881e514d37732e8152eac9fb9c5aa32618ad7",
+    "scripts/architecture278/implementation/stage11_assessment.py": "30323f9a070e515d9d58276df418a64178ad1fcdfaf9d1e328a0b32e45c8b4b6",
+    "scripts/architecture278/implementation/stage11_identity.py": "06cb8a90045535361d11f116de4b5f1bba3172558f9cf35fb4edd754b331c88a",
+    "scripts/architecture278/implementation/stage11_support.py": "56720b0db3dde750a98e9818948915d513661688f22e44d22ac57f237c939c4a",
+    "scripts/architecture278/implementation/test_stage11_assessment.py": "0b3dfa04cf514e39dd2cab4a1227a238e6f6cfa17adca0ee60ca118a84cfd820",
+    "scripts/architecture278/implementation/test_stage11_identity.py": "39a863eeebae5d205d50a4d082f7e269d2da0b44ed7e6d01fefe909d9cc7d187",
+    "scripts/architecture278/implementation/test_stage11_support.py": "f2be5dc7bc2b0abf5286b8f8c60591391b3332472a4165d0e1e16510a3670176"
+  },
+  "tests": {
+    "assessment_independently_run": 17,
+    "identity_independently_run": 11,
+    "own_electrical_tests_not_independent": 19,
+    "support_independently_run": 20
+  }
+}

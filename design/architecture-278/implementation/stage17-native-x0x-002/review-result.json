@@ -1,0 +1,43 @@
+{
+  "status": "Native export PASS; complete source/native parity FAIL",
+  "reviewer": "independent_review delegated agent",
+  "source_commit": "5469def6cdf2a5f0f9d4a61cec88efbc7ac2130b",
+  "verification_commit": "23bc06ac84147c3ba1e8079e6be5b4eeaf986eb4",
+  "reviewed_sha256": {
+    "assessment.json": "5f5e6f9638d2e731de0c38a28c5b244fca4eaa30484c3f07860df9b04a03cabb",
+    "retention.json": "f36aa3cec403f863204acb2e14435d24f65ad5b2fee7b9376542e11754689d36",
+    "native-parity.json": "5bd78abae0375a24bdb14469804a9d81e9de5620256da3afe9e5d03243fa7298",
+    "review-observation.json": "0f357c839b9fb1eabc381d554b1f2600faf75777edc3d0ce2ad3cd23dd7adaf1",
+    "review_observe.py": "c4d58639bfde4b5a2d35606c6805ab9731c091e7eefcf34401fdba15d139536b",
+    "retained/commands.json": "9a5671ccbd6797c37bc290c5190bc83cc1516d507e2a7a76fab10d4392795ba0",
+    "retained/resource.json": "020bef95d8b427b0367b8476a3efac9e8a235f32f45ad913165cc235da3c1c96",
+    "retained/netlist.net": "812cc87f276a3dd73f8136a3f6877be0965e3522c8516cf2d0277d51ae76eba3",
+    "retained/command-0.stdout": "79903cfb5fce27bbddaa3cda8e3265c336d8053b799426ca9cfc835ed648c85c",
+    "retained/command-1.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "review-admission.json": "bc5a8adc96b0556d36372f19e79b4f49169f6291715534844d53c8d59f09e7a2",
+    "diagnostic-per-reference.json": "4e869aa5a28f64c607cd70fe9a49cb815887d43d882ecfcebbc74ed952af672c",
+    "review-classification.json": "ad0393b0cca4233beb868a57ee7acbca4026bb4abd51899f1a079619cefdea15",
+    "review_classify.py": "2ff6a9974b04d635c6a1bcc86bb6780038d7f2db06803eb2c85727f20a02a6d2",
+    "pin-classification.json": "0e404e2d129a992e9586af3d2f6c71a375c06122ffca42a2da225d6898cfddc5",
+    "classify_pins.py": "0d5c62af2cf5eec8df1b1b65aaf3c6a22a840fe19a687a8934f37318337f5531"
+  },
+  "native_execution": "Retained stdout confirms10.0.6; exact authorized export argv recorded; version and export both exit0; export elapsed0.7651889419648796seconds",
+  "retention": "Independently rehashed all39 files669739bytes: each size and SHA256 matches retention receipt",
+  "full_parity": "FAIL: native component roster omits TP17901 through TP17922; no extra references. Native source land library definitions do not establish instantiated component/pin parity.",
+  "independent_observation": [
+    "Source118references561pins154units; native96component references and126component tstamps.",
+    "All22 missing source annotations have in_bom=no,on_board=no and blank footprint. This observation is consistent with exclusion but does not by itself prove exact KiCad filtering cause.",
+    "Among96 present components, missing source unit UUIDs are U7102 units3/4/5 and U7106 units3/4/5; source expects132units for present components, observed126.",
+    "Native libparts contain561pins including library definitions for missing annotation components; library count alone must not be called complete native pin coverage."
+  ],
+  "diagnostic_limit": "Any96reference subset, slash-name decoding or unit-normalization diagnostic is explicitly nonaccepting and cannot waive full FAIL. Do not infer electrical or procurement/PCB acceptance.",
+  "remaining": [
+    "Resolve annotation exclusion representation and missing unit UUID/pin observations through source-only investigation first.",
+    "No source repair or further native attempt authorized by this completed one-run scope.",
+    "19 passive MPNs and DIN/source-land footprints remain unresolved.",
+    "ERC,DRC,simulation,PCB/hardware checks NOT RUN; original run001 outcome remains UNKNOWN."
+  ],
+  "native_commands_run_by_reviewer": 0,
+  "conditional_diagnostic": "Conditional slash-token decoding and isolated per-reference checks:90 pass individually; RN7101,U7104,U7105,U7106,U7109 stop at conflicting field; U7102 stops at unit UUID mismatch. This is not aggregate net connectivity proof and does not establish all pins, NC ends or EP grounds. Raw full parity remains FAIL.",
+  "final_source_only_classification": "Independent verification of all561 rows:144 exact net names,199 slash-encoding-only,196 NCsingleton representations,22 absent annotation pins. All539 present pins conditionally align; no observed wrong-net/extra/duplicate endpoint. All18pins belonging to six missing UUID units remain represented; LT5400 EP9 pins=AGND and unused RN7102 ends3/4/5/6 remain separate NCsingletons. Eight metadata field conflicts contain differing source-unit Role/LogicalCellKey/Island values, not conflicting MPN or proven connectivity. Strict118reference561pin154unit parity remains FAIL because22annotation pins and6unit UUIDs lack complete native representation; no electrical acceptance or native rerun."
+}

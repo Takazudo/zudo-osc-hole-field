@@ -1,0 +1,4396 @@
+{
+  "accepted": false,
+  "analytical_refinement": {
+    "model_parameter_sensitivities": {
+      "Cmatrix_internal_F": [
+        [
+          8e-12,
+          -1.6e-12
+        ],
+        [
+          -1.6e-12,
+          8e-12
+        ]
+      ],
+      "FM_receiver_external_passive_R_ohm": 4008.3764051126764,
+      "I_I_B_contribution_input_V": 2.1043976126841548e-08,
+      "I_I_OS_contribution_input_V": 1.1023035114059859e-08,
+      "internal_Vos_parameter_vs_temperature_V": {
+        "-40": -1.9900000000000003e-05,
+        "25": 1.26e-05,
+        "27": 1.36e-05,
+        "85": 4.26e-05
+      },
+      "nominal_gain2_times_internal27C_Vos_V": 2.72e-05,
+      "opposite_input_held_cap_each_F": 8e-12,
+      "same_voltage_both_inputs_cap_each_F": 6.4e-12,
+      "scope": "isolated internal parameter contributions only; two current sources are on different nodes, not summed as pinIB. Input capacitance depends on moving opposite input andMID. Values do not replace Stage5 unknown manufacturerlimits or prove closedloopbehavior."
+    },
+    "position_correlated_control_loading": {
+      "meaning": "tighter position-correlated ideal-reference DC calculation; sourceR,bias,leakage,offset,temperature and calibration remain separate; not guaranteed assembled error",
+      "old_independent_bound_V": 0.01569077566128722,
+      "peaks": {
+        "bipolar_TUNE_FINE": {
+          "error_V": 0.006146605874140398,
+          "ideal_V": -2.951667034228974,
+          "loaded_V": -2.9455204283548335,
+          "position": 0.2063017876389081,
+          "thevenin_with_series_ohm": 20658.963206707875
+        },
+        "unipolar_PW": {
+          "error_V": -0.009340464376845325,
+          "ideal_V": 3.3725932408662325,
+          "loaded_V": 3.363252776489387,
+          "position": 0.6711628340032303,
+          "thevenin_with_series_ohm": 27494.394110717916
+        }
+      },
+      "planning_Rfail_ohm": 9900000.0,
+      "planning_Rpot_ohm": 120000,
+      "planning_Rseries_ohm": 1010,
+      "reference_extreme_V": 5.025
+    },
+    "return_budget_reconciliation": {
+      "approval": "PROPOSAL NOT APPROVED; no resistance/voltage measured",
+      "collective_pitch_proposal_V": 0.0008333333333333334,
+      "existing_proposed_return_V": 0.0002,
+      "historical_drop_V": 0.00035225,
+      "historical_resistance_goal_ohm": 0.0005,
+      "planning_current_A": 0.7045,
+      "remaining_after_historical_drop_V": 0.00048108333333333336,
+      "required_resistance_for200uV_ohm": 0.00028388928317956
+    },
+    "two_node_control_RC": {
+      "x0.25_Cwire0": {
+        "DC_gain": 0.9976308785903374,
+        "denominator_s2_s_1": [
+          0.0,
+          0.000246855,
+          1.0023747474747475
+        ],
+        "numerator": 1,
+        "pole_Hz": [
+          646.2615539126062
+        ],
+        "scope": "analytical passive network; no amplifier dynamics, finite reference impedance or extracted parasitics; no simulation",
+        "time_constants_s": [
+          0.00024627017053441774
+        ]
+      },
+      "x0.25_Cwire1e-09": {
+        "DC_gain": 0.9976308785903374,
+        "denominator_s2_s_1": [
+          2.3861250000000004e-10,
+          0.00026935729545454545,
+          1.0023747474747475
+        ],
+        "numerator": 1,
+        "pole_Hz": [
+          594.2378785383272,
+          179067.53604133183
+        ],
+        "scope": "analytical passive network; no amplifier dynamics, finite reference impedance or extracted parasitics; no simulation",
+        "time_constants_s": [
+          0.0002678303568991187,
+          8.887984199166045e-07
+        ]
+      },
+      "x0.25_Cwire1e-10": {
+        "DC_gain": 0.9976308785903374,
+        "denominator_s2_s_1": [
+          2.3861250000000003e-11,
+          0.00024910522954545454,
+          1.0023747474747475
+        ],
+        "numerator": 1,
+        "pole_Hz": [
+          640.6707482922086,
+          1660895.4445935416
+        ],
+        "scope": "analytical passive network; no amplifier dynamics, finite reference impedance or extracted parasitics; no simulation",
+        "time_constants_s": [
+          0.0002484192442313678,
+          9.58247815116647e-08
+        ]
+      },
+      "x0.5_Cwire0": {
+        "DC_gain": 0.9968774575798434,
+        "denominator_s2_s_1": [
+          0.0,
+          0.00032560499999999997,
+          1.0031323232323233
+        ],
+        "numerator": 1,
+        "pole_Hz": [
+          490.32867375403083
+        ],
+        "scope": "analytical passive network; no amplifier dynamics, finite reference impedance or extracted parasitics; no simulation",
+        "time_constants_s": [
+          0.00032458828457528484
+        ]
+      },
+      "x0.5_Cwire1e-09": {
+        "DC_gain": 0.9968774575798434,
+        "denominator_s2_s_1": [
+          3.1815e-10,
+          0.0003556080606060606,
+          1.0031323232323233
+        ],
+        "numerator": 1,
+        "pole_Hz": [
+          450.0978978408507,
+          177443.28776545273
+        ],
+        "scope": "analytical passive network; no amplifier dynamics, finite reference impedance or extracted parasitics; no simulation",
+        "time_constants_s": [
+          0.00035360072520972016,
+          8.969341421483849e-07
+        ]
+      },
+      "x0.5_Cwire1e-10": {
+        "DC_gain": 0.9968774575798434,
+        "denominator_s2_s_1": [
+          3.1815e-11,
+          0.00032860530606060605,
+          1.0031323232323233
+        ],
+        "numerator": 1,
+        "pole_Hz": [
+          485.9954463892102,
+          1643366.237329679
+        ],
+        "scope": "analytical passive network; no amplifier dynamics, finite reference impedance or extracted parasitics; no simulation",
+        "time_constants_s": [
+          0.0003274823751423298,
+          9.684691061349032e-08
+        ]
+      },
+      "x0.75_Cwire0": {
+        "DC_gain": 0.9976308785903374,
+        "denominator_s2_s_1": [
+          0.0,
+          0.000246855,
+          1.0023747474747475
+        ],
+        "numerator": 1,
+        "pole_Hz": [
+          646.2615539126062
+        ],
+        "scope": "analytical passive network; no amplifier dynamics, finite reference impedance or extracted parasitics; no simulation",
+        "time_constants_s": [
+          0.00024627017053441774
+        ]
+      },
+      "x0.75_Cwire1e-09": {
+        "DC_gain": 0.9976308785903374,
+        "denominator_s2_s_1": [
+          2.3861250000000004e-10,
+          0.00026935729545454545,
+          1.0023747474747475
+        ],
+        "numerator": 1,
+        "pole_Hz": [
+          594.2378785383272,
+          179067.53604133183
+        ],
+        "scope": "analytical passive network; no amplifier dynamics, finite reference impedance or extracted parasitics; no simulation",
+        "time_constants_s": [
+          0.0002678303568991187,
+          8.887984199166045e-07
+        ]
+      },
+      "x0.75_Cwire1e-10": {
+        "DC_gain": 0.9976308785903374,
+        "denominator_s2_s_1": [
+          2.3861250000000003e-11,
+          0.00024910522954545454,
+          1.0023747474747475
+        ],
+        "numerator": 1,
+        "pole_Hz": [
+          640.6707482922086,
+          1660895.4445935416
+        ],
+        "scope": "analytical passive network; no amplifier dynamics, finite reference impedance or extracted parasitics; no simulation",
+        "time_constants_s": [
+          0.0002484192442313678,
+          9.58247815116647e-08
+        ]
+      },
+      "x0_Cwire0": {
+        "DC_gain": 0.9998979902050398,
+        "denominator_s2_s_1": [
+          0.0,
+          1.0605e-05,
+          1.00010202020202
+        ],
+        "numerator": 1,
+        "pole_Hz": [
+          15009.06931742971
+        ],
+        "scope": "analytical passive network; no amplifier dynamics, finite reference impedance or extracted parasitics; no simulation",
+        "time_constants_s": [
+          1.0603918186124446e-05
+        ]
+      },
+      "x0_Cwire1e-09": {
+        "DC_gain": 0.9998979902050398,
+        "denominator_s2_s_1": [
+          0.0,
+          1.0605e-05,
+          1.00010202020202
+        ],
+        "numerator": 1,
+        "pole_Hz": [
+          15009.06931742971
+        ],
+        "scope": "analytical passive network; no amplifier dynamics, finite reference impedance or extracted parasitics; no simulation",
+        "time_constants_s": [
+          1.0603918186124446e-05
+        ]
+      },
+      "x0_Cwire1e-10": {
+        "DC_gain": 0.9998979902050398,
+        "denominator_s2_s_1": [
+          0.0,
+          1.0605e-05,
+          1.00010202020202
+        ],
+        "numerator": 1,
+        "pole_Hz": [
+          15009.06931742971
+        ],
+        "scope": "analytical passive network; no amplifier dynamics, finite reference impedance or extracted parasitics; no simulation",
+        "time_constants_s": [
+          1.0603918186124446e-05
+        ]
+      },
+      "x1_Cwire0": {
+        "DC_gain": 0.9998979902050398,
+        "denominator_s2_s_1": [
+          0.0,
+          1.0605e-05,
+          1.00010202020202
+        ],
+        "numerator": 1,
+        "pole_Hz": [
+          15009.06931742971
+        ],
+        "scope": "analytical passive network; no amplifier dynamics, finite reference impedance or extracted parasitics; no simulation",
+        "time_constants_s": [
+          1.0603918186124446e-05
+        ]
+      },
+      "x1_Cwire1e-09": {
+        "DC_gain": 0.9998979902050398,
+        "denominator_s2_s_1": [
+          0.0,
+          1.0605e-05,
+          1.00010202020202
+        ],
+        "numerator": 1,
+        "pole_Hz": [
+          15009.06931742971
+        ],
+        "scope": "analytical passive network; no amplifier dynamics, finite reference impedance or extracted parasitics; no simulation",
+        "time_constants_s": [
+          1.0603918186124446e-05
+        ]
+      },
+      "x1_Cwire1e-10": {
+        "DC_gain": 0.9998979902050398,
+        "denominator_s2_s_1": [
+          0.0,
+          1.0605e-05,
+          1.00010202020202
+        ],
+        "numerator": 1,
+        "pole_Hz": [
+          15009.06931742971
+        ],
+        "scope": "analytical passive network; no amplifier dynamics, finite reference impedance or extracted parasitics; no simulation",
+        "time_constants_s": [
+          1.0603918186124446e-05
+        ]
+      }
+    },
+    "unchanged_dependency": "Nine direct sharedcap budgets andfive1k/100nF switchingloads unchanged; TI OPAx196 model doesnotbind OPA4197 sharedreference drivers or AS3340/HC receiver models."
+  },
+  "bench": "NOT RUN",
+  "candidate_OPA4196_channels": [
+    {
+      "MPN": "OPA4196IDR",
+      "instance": "O1",
+      "logical_key": "remote_buffer_J_O1_1V_FM__A.1",
+      "macro": "OPAx196",
+      "macro_pin_binding": {
+        "IN+": {
+          "net": "/O1/FM_BUFFER",
+          "pin": "3"
+        },
+        "IN-": {
+          "net": "/O1/C953c1a_FB",
+          "pin": "2"
+        },
+        "OUT": {
+          "net": "/O1/C953c1a_DRIVE",
+          "pin": "1"
+        },
+        "VCC": {
+          "net": "+12V",
+          "pin": "4"
+        },
+        "VEE": {
+          "net": "-12V",
+          "pin": "11"
+        }
+      },
+      "ref": "U1112",
+      "status": "source pin binding only; no instantiated simulation deck",
+      "symbol": "zudo-osc-hole-field:OPA4196IDR",
+      "unit": 1
+    },
+    {
+      "MPN": "OPA4196IDR",
+      "instance": "O1",
+      "logical_key": "bipolar_attenuverter_C_O1_FM__FM__A.1",
+      "macro": "OPAx196",
+      "macro_pin_binding": {
+        "IN+": {
+          "net": "/O1/C1eb779_W_SENSE",
+          "pin": "5"
+        },
+        "IN-": {
+          "net": "/O1/C1eb779_SUM",
+          "pin": "6"
+        },
+        "OUT": {
+          "net": "/O1/FM_DEPTH",
+          "pin": "7"
+        },
+        "VCC": {
+          "net": "+12V",
+          "pin": "4"
+        },
+        "VEE": {
+          "net": "-12V",
+          "pin": "11"
+        }
+      },
+      "ref": "U1112",
+      "status": "source pin binding only; no instantiated simulation deck",
+      "symbol": "zudo-osc-hole-field:OPA4196IDR",
+      "unit": 2
+    },
+    {
+      "MPN": "OPA4196IDR",
+      "instance": "O1",
+      "logical_key": "remote_buffer_J_O1_1V_PWM__A.1",
+      "macro": "OPAx196",
+      "macro_pin_binding": {
+        "IN+": {
+          "net": "/O1/PWM_BUFFER",
+          "pin": "10"
+        },
+        "IN-": {
+          "net": "/O1/C461f80_FB",
+          "pin": "9"
+        },
+        "OUT": {
+          "net": "/O1/C461f80_DRIVE",
+          "pin": "8"
+        },
+        "VCC": {
+          "net": "+12V",
+          "pin": "4"
+        },
+        "VEE": {
+          "net": "-12V",
+          "pin": "11"
+        }
+      },
+      "ref": "U1112",
+      "status": "source pin binding only; no instantiated simulation deck",
+      "symbol": "zudo-osc-hole-field:OPA4196IDR",
+      "unit": 3
+    },
+    {
+      "MPN": "OPA4196IDR",
+      "instance": "O1",
+      "logical_key": "bipolar_attenuverter_C_O1_PWM__PWM__A.1",
+      "macro": "OPAx196",
+      "macro_pin_binding": {
+        "IN+": {
+          "net": "/O1/C42d8cd_W_SENSE",
+          "pin": "12"
+        },
+        "IN-": {
+          "net": "/O1/C42d8cd_SUM",
+          "pin": "13"
+        },
+        "OUT": {
+          "net": "/O1/PWM_DEPTH",
+          "pin": "14"
+        },
+        "VCC": {
+          "net": "+12V",
+          "pin": "4"
+        },
+        "VEE": {
+          "net": "-12V",
+          "pin": "11"
+        }
+      },
+      "ref": "U1112",
+      "status": "source pin binding only; no instantiated simulation deck",
+      "symbol": "zudo-osc-hole-field:OPA4196IDR",
+      "unit": 4
+    },
+    {
+      "MPN": "OPA4196IDR",
+      "instance": "O1",
+      "logical_key": "dc_control_source_C_O1_PW_PW__A.1",
+      "macro": "OPAx196",
+      "macro_pin_binding": {
+        "IN+": {
+          "net": "/O1/Ca449b7_W_SENSE",
+          "pin": "3"
+        },
+        "IN-": {
+          "net": "/O1/PW_MANUAL",
+          "pin": "2"
+        },
+        "OUT": {
+          "net": "/O1/PW_MANUAL",
+          "pin": "1"
+        },
+        "VCC": {
+          "net": "+12V",
+          "pin": "4"
+        },
+        "VEE": {
+          "net": "-12V",
+          "pin": "11"
+        }
+      },
+      "ref": "U1113",
+      "status": "source pin binding only; no instantiated simulation deck",
+      "symbol": "zudo-osc-hole-field:OPA4196IDR",
+      "unit": 1
+    },
+    {
+      "MPN": "OPA4196IDR",
+      "instance": "O1",
+      "logical_key": "LFO_OFFSET.1",
+      "macro": "OPAx196",
+      "macro_pin_binding": {
+        "IN+": {
+          "net": "/O1/LOCAL_REFN5",
+          "pin": "5"
+        },
+        "IN-": {
+          "net": "/O1/LFO_FB",
+          "pin": "6"
+        },
+        "OUT": {
+          "net": "/O1/LFO_REF",
+          "pin": "7"
+        },
+        "VCC": {
+          "net": "+12V",
+          "pin": "4"
+        },
+        "VEE": {
+          "net": "-12V",
+          "pin": "11"
+        }
+      },
+      "ref": "U1113",
+      "status": "source pin binding only; no instantiated simulation deck",
+      "symbol": "zudo-osc-hole-field:OPA4196IDR",
+      "unit": 2
+    },
+    {
+      "MPN": "OPA4196IDR",
+      "instance": "O1",
+      "logical_key": "PWM_SUM.1",
+      "macro": "OPAx196",
+      "macro_pin_binding": {
+        "IN+": {
+          "net": "AGND",
+          "pin": "10"
+        },
+        "IN-": {
+          "net": "/O1/PWM_SUM",
+          "pin": "9"
+        },
+        "OUT": {
+          "net": "/O1/PWM_NEG",
+          "pin": "8"
+        },
+        "VCC": {
+          "net": "+12V",
+          "pin": "4"
+        },
+        "VEE": {
+          "net": "-12V",
+          "pin": "11"
+        }
+      },
+      "ref": "U1113",
+      "status": "source pin binding only; no instantiated simulation deck",
+      "symbol": "zudo-osc-hole-field:OPA4196IDR",
+      "unit": 3
+    },
+    {
+      "MPN": "OPA4196IDR",
+      "instance": "O1",
+      "logical_key": "PWM_INVERT.1",
+      "macro": "OPAx196",
+      "macro_pin_binding": {
+        "IN+": {
+          "net": "AGND",
+          "pin": "12"
+        },
+        "IN-": {
+          "net": "/O1/PWM_INV",
+          "pin": "13"
+        },
+        "OUT": {
+          "net": "/O1/PWM_DRIVE",
+          "pin": "14"
+        },
+        "VCC": {
+          "net": "+12V",
+          "pin": "4"
+        },
+        "VEE": {
+          "net": "-12V",
+          "pin": "11"
+        }
+      },
+      "ref": "U1113",
+      "status": "source pin binding only; no instantiated simulation deck",
+      "symbol": "zudo-osc-hole-field:OPA4196IDR",
+      "unit": 4
+    },
+    {
+      "MPN": "OPA4196IDR",
+      "instance": "O1",
+      "logical_key": "REF4.1",
+      "macro": "OPAx196",
+      "macro_pin_binding": {
+        "IN+": {
+          "net": "/O1/REF4_RAW",
+          "pin": "3"
+        },
+        "IN-": {
+          "net": "/O1/REF4",
+          "pin": "2"
+        },
+        "OUT": {
+          "net": "/O1/REF4",
+          "pin": "1"
+        },
+        "VCC": {
+          "net": "+12V",
+          "pin": "4"
+        },
+        "VEE": {
+          "net": "-12V",
+          "pin": "11"
+        }
+      },
+      "ref": "U1114",
+      "status": "source pin binding only; no instantiated simulation deck",
+      "symbol": "zudo-osc-hole-field:OPA4196IDR",
+      "unit": 1
+    },
+    {
+      "MPN": "OPA4196IDR",
+      "instance": "O1",
+      "logical_key": "TRI_SCALE.1",
+      "macro": "OPAx196",
+      "macro_pin_binding": {
+        "IN+": {
+          "net": "/O1/TRI_BIAS",
+          "pin": "5"
+        },
+        "IN-": {
+          "net": "/O1/TRI_SUM",
+          "pin": "6"
+        },
+        "OUT": {
+          "net": "/O1/TRI_SCALED",
+          "pin": "7"
+        },
+        "VCC": {
+          "net": "+12V",
+          "pin": "4"
+        },
+        "VEE": {
+          "net": "-12V",
+          "pin": "11"
+        }
+      },
+      "ref": "U1114",
+      "status": "source pin binding only; no instantiated simulation deck",
+      "symbol": "zudo-osc-hole-field:OPA4196IDR",
+      "unit": 2
+    },
+    {
+      "MPN": "OPA4196IDR",
+      "instance": "O1",
+      "logical_key": "SAW_SCALE.1",
+      "macro": "OPAx196",
+      "macro_pin_binding": {
+        "IN+": {
+          "net": "/O1/SAW_BIAS",
+          "pin": "10"
+        },
+        "IN-": {
+          "net": "/O1/SAW_SUM",
+          "pin": "9"
+        },
+        "OUT": {
+          "net": "/O1/SAW_SCALED",
+          "pin": "8"
+        },
+        "VCC": {
+          "net": "+12V",
+          "pin": "4"
+        },
+        "VEE": {
+          "net": "-12V",
+          "pin": "11"
+        }
+      },
+      "ref": "U1114",
+      "status": "source pin binding only; no instantiated simulation deck",
+      "symbol": "zudo-osc-hole-field:OPA4196IDR",
+      "unit": 3
+    },
+    {
+      "MPN": "OPA4196IDR",
+      "instance": "O1",
+      "logical_key": "PUL_SCALE.1",
+      "macro": "OPAx196",
+      "macro_pin_binding": {
+        "IN+": {
+          "net": "/O1/PULSE_LOGIC",
+          "pin": "12"
+        },
+        "IN-": {
+          "net": "/O1/PUL_SUM",
+          "pin": "13"
+        },
+        "OUT": {
+          "net": "/O1/PUL_SCALED",
+          "pin": "14"
+        },
+        "VCC": {
+          "net": "+12V",
+          "pin": "4"
+        },
+        "VEE": {
+          "net": "-12V",
+          "pin": "11"
+        }
+      },
+      "ref": "U1114",
+      "status": "source pin binding only; no instantiated simulation deck",
+      "symbol": "zudo-osc-hole-field:OPA4196IDR",
+      "unit": 4
+    },
+    {
+      "MPN": "OPA4196IDR",
+      "instance": "O1",
+      "logical_key": "SINE_DIFF.1",
+      "macro": "OPAx196",
+      "macro_pin_binding": {
+        "IN+": {
+          "net": "/O1/SINE_PLUS",
+          "pin": "3"
+        },
+        "IN-": {
+          "net": "/O1/SINE_MINUS",
+          "pin": "2"
+        },
+        "OUT": {
+          "net": "/O1/SINE_DIFF",
+          "pin": "1"
+        },
+        "VCC": {
+          "net": "+12V",
+          "pin": "4"
+        },
+        "VEE": {
+          "net": "-12V",
+          "pin": "11"
+        }
+      },
+      "ref": "U1115",
+      "status": "source pin binding only; no instantiated simulation deck",
+      "symbol": "zudo-osc-hole-field:OPA4196IDR",
+      "unit": 1
+    },
+    {
+      "MPN": "OPA4196IDR",
+      "instance": "O1",
+      "logical_key": "SINE_GAIN.1",
+      "macro": "OPAx196",
+      "macro_pin_binding": {
+        "IN+": {
+          "net": "AGND",
+          "pin": "5"
+        },
+        "IN-": {
+          "net": "/O1/SINE_GAIN_SUM",
+          "pin": "6"
+        },
+        "OUT": {
+          "net": "/O1/SIN_SCALED",
+          "pin": "7"
+        },
+        "VCC": {
+          "net": "+12V",
+          "pin": "4"
+        },
+        "VEE": {
+          "net": "-12V",
+          "pin": "11"
+        }
+      },
+      "ref": "U1115",
+      "status": "source pin binding only; no instantiated simulation deck",
+      "symbol": "zudo-osc-hole-field:OPA4196IDR",
+      "unit": 2
+    },
+    {
+      "MPN": "OPA4196IDR",
+      "instance": "O1",
+      "logical_key": "",
+      "macro": "OPAx196",
+      "macro_pin_binding": {
+        "IN+": {
+          "net": "AGND",
+          "pin": "10"
+        },
+        "IN-": {
+          "net": "/O1/PACK_OPA4196IDR_3_IO_UNUSED3",
+          "pin": "9"
+        },
+        "OUT": {
+          "net": "/O1/PACK_OPA4196IDR_3_IO_UNUSED3",
+          "pin": "8"
+        },
+        "VCC": {
+          "net": "+12V",
+          "pin": "4"
+        },
+        "VEE": {
+          "net": "-12V",
+          "pin": "11"
+        }
+      },
+      "ref": "U1115",
+      "status": "source pin binding only; no instantiated simulation deck",
+      "symbol": "zudo-osc-hole-field:OPA4196IDR",
+      "unit": 3
+    },
+    {
+      "MPN": "OPA4196IDR",
+      "instance": "O1",
+      "logical_key": "",
+      "macro": "OPAx196",
+      "macro_pin_binding": {
+        "IN+": {
+          "net": "AGND",
+          "pin": "12"
+        },
+        "IN-": {
+          "net": "/O1/PACK_OPA4196IDR_3_IO_UNUSED4",
+          "pin": "13"
+        },
+        "OUT": {
+          "net": "/O1/PACK_OPA4196IDR_3_IO_UNUSED4",
+          "pin": "14"
+        },
+        "VCC": {
+          "net": "+12V",
+          "pin": "4"
+        },
+        "VEE": {
+          "net": "-12V",
+          "pin": "11"
+        }
+      },
+      "ref": "U1115",
+      "status": "source pin binding only; no instantiated simulation deck",
+      "symbol": "zudo-osc-hole-field:OPA4196IDR",
+      "unit": 4
+    },
+    {
+      "MPN": "OPA4196IDR",
+      "instance": "O1",
+      "logical_key": "high_impedance_input_J_O1_1V_FM__A.1",
+      "macro": "OPAx196",
+      "macro_pin_binding": {
+        "IN+": {
+          "net": "/O1/C3f1879_SENSE",
+          "pin": "3"
+        },
+        "IN-": {
+          "net": "/O1/FM_BUFFER",
+          "pin": "2"
+        },
+        "OUT": {
+          "net": "/O1/FM_BUFFER",
+          "pin": "1"
+        },
+        "VCC": {
+          "net": "+12V",
+          "pin": "4"
+        },
+        "VEE": {
+          "net": "-12V",
+          "pin": "11"
+        }
+      },
+      "ref": "U1116",
+      "status": "source pin binding only; no instantiated simulation deck",
+      "symbol": "zudo-osc-hole-field:OPA4196IDR",
+      "unit": 1
+    },
+    {
+      "MPN": "OPA4196IDR",
+      "instance": "O1",
+      "logical_key": "high_impedance_input_J_O1_1V_PWM__A.1",
+      "macro": "OPAx196",
+      "macro_pin_binding": {
+        "IN+": {
+          "net": "/O1/C1b3f1d_SENSE",
+          "pin": "5"
+        },
+        "IN-": {
+          "net": "/O1/PWM_BUFFER",
+          "pin": "6"
+        },
+        "OUT": {
+          "net": "/O1/PWM_BUFFER",
+          "pin": "7"
+        },
+        "VCC": {
+          "net": "+12V",
+          "pin": "4"
+        },
+        "VEE": {
+          "net": "-12V",
+          "pin": "11"
+        }
+      },
+      "ref": "U1116",
+      "status": "source pin binding only; no instantiated simulation deck",
+      "symbol": "zudo-osc-hole-field:OPA4196IDR",
+      "unit": 2
+    },
+    {
+      "MPN": "OPA4196IDR",
+      "instance": "O1",
+      "logical_key": "high_impedance_input_J_O1_1V_SYNC__A.1",
+      "macro": "OPAx196",
+      "macro_pin_binding": {
+        "IN+": {
+          "net": "/O1/Cc44f2e_SENSE",
+          "pin": "10"
+        },
+        "IN-": {
+          "net": "/O1/SYNC_BUFFER",
+          "pin": "9"
+        },
+        "OUT": {
+          "net": "/O1/SYNC_BUFFER",
+          "pin": "8"
+        },
+        "VCC": {
+          "net": "+12V",
+          "pin": "4"
+        },
+        "VEE": {
+          "net": "-12V",
+          "pin": "11"
+        }
+      },
+      "ref": "U1116",
+      "status": "source pin binding only; no instantiated simulation deck",
+      "symbol": "zudo-osc-hole-field:OPA4196IDR",
+      "unit": 3
+    },
+    {
+      "MPN": "OPA4196IDR",
+      "instance": "O1",
+      "logical_key": "general_output_J_O1_1V_SIN__A.1",
+      "macro": "OPAx196",
+      "macro_pin_binding": {
+        "IN+": {
+          "net": "/O1/SIN_SCALED",
+          "pin": "12"
+        },
+        "IN-": {
+          "net": "/O1/C70dbdb_DRIVE",
+          "pin": "13"
+        },
+        "OUT": {
+          "net": "/O1/C70dbdb_DRIVE",
+          "pin": "14"
+        },
+        "VCC": {
+          "net": "+12V",
+          "pin": "4"
+        },
+        "VEE": {
+          "net": "-12V",
+          "pin": "11"
+        }
+      },
+      "ref": "U1116",
+      "status": "source pin binding only; no instantiated simulation deck",
+      "symbol": "zudo-osc-hole-field:OPA4196IDR",
+      "unit": 4
+    },
+    {
+      "MPN": "OPA4196IDR",
+      "instance": "O1",
+      "logical_key": "general_output_J_O1_1V_TRI__A.1",
+      "macro": "OPAx196",
+      "macro_pin_binding": {
+        "IN+": {
+          "net": "/O1/TRI_SCALED",
+          "pin": "3"
+        },
+        "IN-": {
+          "net": "/O1/Cc66d82_DRIVE",
+          "pin": "2"
+        },
+        "OUT": {
+          "net": "/O1/Cc66d82_DRIVE",
+          "pin": "1"
+        },
+        "VCC": {
+          "net": "+12V",
+          "pin": "4"
+        },
+        "VEE": {
+          "net": "-12V",
+          "pin": "11"
+        }
+      },
+      "ref": "U1117",
+      "status": "source pin binding only; no instantiated simulation deck",
+      "symbol": "zudo-osc-hole-field:OPA4196IDR",
+      "unit": 1
+    },
+    {
+      "MPN": "OPA4196IDR",
+      "instance": "O1",
+      "logical_key": "general_output_J_O1_1V_SAW__A.1",
+      "macro": "OPAx196",
+      "macro_pin_binding": {
+        "IN+": {
+          "net": "/O1/SAW_SCALED",
+          "pin": "5"
+        },
+        "IN-": {
+          "net": "/O1/C7b4ed2_DRIVE",
+          "pin": "6"
+        },
+        "OUT": {
+          "net": "/O1/C7b4ed2_DRIVE",
+          "pin": "7"
+        },
+        "VCC": {
+          "net": "+12V",
+          "pin": "4"
+        },
+        "VEE": {
+          "net": "-12V",
+          "pin": "11"
+        }
+      },
+      "ref": "U1117",
+      "status": "source pin binding only; no instantiated simulation deck",
+      "symbol": "zudo-osc-hole-field:OPA4196IDR",
+      "unit": 2
+    },
+    {
+      "MPN": "OPA4196IDR",
+      "instance": "O1",
+      "logical_key": "general_output_J_O1_1V_PUL__A.1",
+      "macro": "OPAx196",
+      "macro_pin_binding": {
+        "IN+": {
+          "net": "/O1/PUL_SCALED",
+          "pin": "10"
+        },
+        "IN-": {
+          "net": "/O1/Cec1eaa_DRIVE",
+          "pin": "9"
+        },
+        "OUT": {
+          "net": "/O1/Cec1eaa_DRIVE",
+          "pin": "8"
+        },
+        "VCC": {
+          "net": "+12V",
+          "pin": "4"
+        },
+        "VEE": {
+          "net": "-12V",
+          "pin": "11"
+        }
+      },
+      "ref": "U1117",
+      "status": "source pin binding only; no instantiated simulation deck",
+      "symbol": "zudo-osc-hole-field:OPA4196IDR",
+      "unit": 3
+    },
+    {
+      "MPN": "OPA4196IDR",
+      "instance": "O1",
+      "logical_key": "",
+      "macro": "OPAx196",
+      "macro_pin_binding": {
+        "IN+": {
+          "net": "AGND",
+          "pin": "12"
+        },
+        "IN-": {
+          "net": "/O1/PACK_OPA4196IDR_5_IO_UNUSED4",
+          "pin": "13"
+        },
+        "OUT": {
+          "net": "/O1/PACK_OPA4196IDR_5_IO_UNUSED4",
+          "pin": "14"
+        },
+        "VCC": {
+          "net": "+12V",
+          "pin": "4"
+        },
+        "VEE": {
+          "net": "-12V",
+          "pin": "11"
+        }
+      },
+      "ref": "U1117",
+      "status": "source pin binding only; no instantiated simulation deck",
+      "symbol": "zudo-osc-hole-field:OPA4196IDR",
+      "unit": 4
+    },
+    {
+      "MPN": "OPA4196IDR",
+      "instance": "O2",
+      "logical_key": "remote_buffer_J_O1_1V_FM__A.1",
+      "macro": "OPAx196",
+      "macro_pin_binding": {
+        "IN+": {
+          "net": "/O2/FM_BUFFER",
+          "pin": "3"
+        },
+        "IN-": {
+          "net": "/O2/C953c1a_FB",
+          "pin": "2"
+        },
+        "OUT": {
+          "net": "/O2/C953c1a_DRIVE",
+          "pin": "1"
+        },
+        "VCC": {
+          "net": "+12V",
+          "pin": "4"
+        },
+        "VEE": {
+          "net": "-12V",
+          "pin": "11"
+        }
+      },
+      "ref": "U1212",
+      "status": "source pin binding only; no instantiated simulation deck",
+      "symbol": "zudo-osc-hole-field:OPA4196IDR",
+      "unit": 1
+    },
+    {
+      "MPN": "OPA4196IDR",
+      "instance": "O2",
+      "logical_key": "bipolar_attenuverter_C_O1_FM__FM__A.1",
+      "macro": "OPAx196",
+      "macro_pin_binding": {
+        "IN+": {
+          "net": "/O2/C1eb779_W_SENSE",
+          "pin": "5"
+        },
+        "IN-": {
+          "net": "/O2/C1eb779_SUM",
+          "pin": "6"
+        },
+        "OUT": {
+          "net": "/O2/FM_DEPTH",
+          "pin": "7"
+        },
+        "VCC": {
+          "net": "+12V",
+          "pin": "4"
+        },
+        "VEE": {
+          "net": "-12V",
+          "pin": "11"
+        }
+      },
+      "ref": "U1212",
+      "status": "source pin binding only; no instantiated simulation deck",
+      "symbol": "zudo-osc-hole-field:OPA4196IDR",
+      "unit": 2
+    },
+    {
+      "MPN": "OPA4196IDR",
+      "instance": "O2",
+      "logical_key": "remote_buffer_J_O1_1V_PWM__A.1",
+      "macro": "OPAx196",
+      "macro_pin_binding": {
+        "IN+": {
+          "net": "/O2/PWM_BUFFER",
+          "pin": "10"
+        },
+        "IN-": {
+          "net": "/O2/C461f80_FB",
+          "pin": "9"
+        },
+        "OUT": {
+          "net": "/O2/C461f80_DRIVE",
+          "pin": "8"
+        },
+        "VCC": {
+          "net": "+12V",
+          "pin": "4"
+        },
+        "VEE": {
+          "net": "-12V",
+          "pin": "11"
+        }
+      },
+      "ref": "U1212",
+      "status": "source pin binding only; no instantiated simulation deck",
+      "symbol": "zudo-osc-hole-field:OPA4196IDR",
+      "unit": 3
+    },
+    {
+      "MPN": "OPA4196IDR",
+      "instance": "O2",
+      "logical_key": "bipolar_attenuverter_C_O1_PWM__PWM__A.1",
+      "macro": "OPAx196",
+      "macro_pin_binding": {
+        "IN+": {
+          "net": "/O2/C42d8cd_W_SENSE",
+          "pin": "12"
+        },
+        "IN-": {
+          "net": "/O2/C42d8cd_SUM",
+          "pin": "13"
+        },
+        "OUT": {
+          "net": "/O2/PWM_DEPTH",
+          "pin": "14"
+        },
+        "VCC": {
+          "net": "+12V",
+          "pin": "4"
+        },
+        "VEE": {
+          "net": "-12V",
+          "pin": "11"
+        }
+      },
+      "ref": "U1212",
+      "status": "source pin binding only; no instantiated simulation deck",
+      "symbol": "zudo-osc-hole-field:OPA4196IDR",
+      "unit": 4
+    },
+    {
+      "MPN": "OPA4196IDR",
+      "instance": "O2",
+      "logical_key": "dc_control_source_C_O1_PW_PW__A.1",
+      "macro": "OPAx196",
+      "macro_pin_binding": {
+        "IN+": {
+          "net": "/O2/Ca449b7_W_SENSE",
+          "pin": "3"
+        },
+        "IN-": {
+          "net": "/O2/PW_MANUAL",
+          "pin": "2"
+        },
+        "OUT": {
+          "net": "/O2/PW_MANUAL",
+          "pin": "1"
+        },
+        "VCC": {
+          "net": "+12V",
+          "pin": "4"
+        },
+        "VEE": {
+          "net": "-12V",
+          "pin": "11"
+        }
+      },
+      "ref": "U1213",
+      "status": "source pin binding only; no instantiated simulation deck",
+      "symbol": "zudo-osc-hole-field:OPA4196IDR",
+      "unit": 1
+    },
+    {
+      "MPN": "OPA4196IDR",
+      "instance": "O2",
+      "logical_key": "LFO_OFFSET.1",
+      "macro": "OPAx196",
+      "macro_pin_binding": {
+        "IN+": {
+          "net": "/O2/LOCAL_REFN5",
+          "pin": "5"
+        },
+        "IN-": {
+          "net": "/O2/LFO_FB",
+          "pin": "6"
+        },
+        "OUT": {
+          "net": "/O2/LFO_REF",
+          "pin": "7"
+        },
+        "VCC": {
+          "net": "+12V",
+          "pin": "4"
+        },
+        "VEE": {
+          "net": "-12V",
+          "pin": "11"
+        }
+      },
+      "ref": "U1213",
+      "status": "source pin binding only; no instantiated simulation deck",
+      "symbol": "zudo-osc-hole-field:OPA4196IDR",
+      "unit": 2
+    },
+    {
+      "MPN": "OPA4196IDR",
+      "instance": "O2",
+      "logical_key": "PWM_SUM.1",
+      "macro": "OPAx196",
+      "macro_pin_binding": {
+        "IN+": {
+          "net": "AGND",
+          "pin": "10"
+        },
+        "IN-": {
+          "net": "/O2/PWM_SUM",
+          "pin": "9"
+        },
+        "OUT": {
+          "net": "/O2/PWM_NEG",
+          "pin": "8"
+        },
+        "VCC": {
+          "net": "+12V",
+          "pin": "4"
+        },
+        "VEE": {
+          "net": "-12V",
+          "pin": "11"
+        }
+      },
+      "ref": "U1213",
+      "status": "source pin binding only; no instantiated simulation deck",
+      "symbol": "zudo-osc-hole-field:OPA4196IDR",
+      "unit": 3
+    },
+    {
+      "MPN": "OPA4196IDR",
+      "instance": "O2",
+      "logical_key": "PWM_INVERT.1",
+      "macro": "OPAx196",
+      "macro_pin_binding": {
+        "IN+": {
+          "net": "AGND",
+          "pin": "12"
+        },
+        "IN-": {
+          "net": "/O2/PWM_INV",
+          "pin": "13"
+        },
+        "OUT": {
+          "net": "/O2/PWM_DRIVE",
+          "pin": "14"
+        },
+        "VCC": {
+          "net": "+12V",
+          "pin": "4"
+        },
+        "VEE": {
+          "net": "-12V",
+          "pin": "11"
+        }
+      },
+      "ref": "U1213",
+      "status": "source pin binding only; no instantiated simulation deck",
+      "symbol": "zudo-osc-hole-field:OPA4196IDR",
+      "unit": 4
+    },
+    {
+      "MPN": "OPA4196IDR",
+      "instance": "O2",
+      "logical_key": "REF4.1",
+      "macro": "OPAx196",
+      "macro_pin_binding": {
+        "IN+": {
+          "net": "/O2/REF4_RAW",
+          "pin": "3"
+        },
+        "IN-": {
+          "net": "/O2/REF4",
+          "pin": "2"
+        },
+        "OUT": {
+          "net": "/O2/REF4",
+          "pin": "1"
+        },
+        "VCC": {
+          "net": "+12V",
+          "pin": "4"
+        },
+        "VEE": {
+          "net": "-12V",
+          "pin": "11"
+        }
+      },
+      "ref": "U1214",
+      "status": "source pin binding only; no instantiated simulation deck",
+      "symbol": "zudo-osc-hole-field:OPA4196IDR",
+      "unit": 1
+    },
+    {
+      "MPN": "OPA4196IDR",
+      "instance": "O2",
+      "logical_key": "TRI_SCALE.1",
+      "macro": "OPAx196",
+      "macro_pin_binding": {
+        "IN+": {
+          "net": "/O2/TRI_BIAS",
+          "pin": "5"
+        },
+        "IN-": {
+          "net": "/O2/TRI_SUM",
+          "pin": "6"
+        },
+        "OUT": {
+          "net": "/O2/TRI_SCALED",
+          "pin": "7"
+        },
+        "VCC": {
+          "net": "+12V",
+          "pin": "4"
+        },
+        "VEE": {
+          "net": "-12V",
+          "pin": "11"
+        }
+      },
+      "ref": "U1214",
+      "status": "source pin binding only; no instantiated simulation deck",
+      "symbol": "zudo-osc-hole-field:OPA4196IDR",
+      "unit": 2
+    },
+    {
+      "MPN": "OPA4196IDR",
+      "instance": "O2",
+      "logical_key": "SAW_SCALE.1",
+      "macro": "OPAx196",
+      "macro_pin_binding": {
+        "IN+": {
+          "net": "/O2/SAW_BIAS",
+          "pin": "10"
+        },
+        "IN-": {
+          "net": "/O2/SAW_SUM",
+          "pin": "9"
+        },
+        "OUT": {
+          "net": "/O2/SAW_SCALED",
+          "pin": "8"
+        },
+        "VCC": {
+          "net": "+12V",
+          "pin": "4"
+        },
+        "VEE": {
+          "net": "-12V",
+          "pin": "11"
+        }
+      },
+      "ref": "U1214",
+      "status": "source pin binding only; no instantiated simulation deck",
+      "symbol": "zudo-osc-hole-field:OPA4196IDR",
+      "unit": 3
+    },
+    {
+      "MPN": "OPA4196IDR",
+      "instance": "O2",
+      "logical_key": "PUL_SCALE.1",
+      "macro": "OPAx196",
+      "macro_pin_binding": {
+        "IN+": {
+          "net": "/O2/PULSE_LOGIC",
+          "pin": "12"
+        },
+        "IN-": {
+          "net": "/O2/PUL_SUM",
+          "pin": "13"
+        },
+        "OUT": {
+          "net": "/O2/PUL_SCALED",
+          "pin": "14"
+        },
+        "VCC": {
+          "net": "+12V",
+          "pin": "4"
+        },
+        "VEE": {
+          "net": "-12V",
+          "pin": "11"
+        }
+      },
+      "ref": "U1214",
+      "status": "source pin binding only; no instantiated simulation deck",
+      "symbol": "zudo-osc-hole-field:OPA4196IDR",
+      "unit": 4
+    },
+    {
+      "MPN": "OPA4196IDR",
+      "instance": "O2",
+      "logical_key": "SINE_DIFF.1",
+      "macro": "OPAx196",
+      "macro_pin_binding": {
+        "IN+": {
+          "net": "/O2/SINE_PLUS",
+          "pin": "3"
+        },
+        "IN-": {
+          "net": "/O2/SINE_MINUS",
+          "pin": "2"
+        },
+        "OUT": {
+          "net": "/O2/SINE_DIFF",
+          "pin": "1"
+        },
+        "VCC": {
+          "net": "+12V",
+          "pin": "4"
+        },
+        "VEE": {
+          "net": "-12V",
+          "pin": "11"
+        }
+      },
+      "ref": "U1215",
+      "status": "source pin binding only; no instantiated simulation deck",
+      "symbol": "zudo-osc-hole-field:OPA4196IDR",
+      "unit": 1
+    },
+    {
+      "MPN": "OPA4196IDR",
+      "instance": "O2",
+      "logical_key": "SINE_GAIN.1",
+      "macro": "OPAx196",
+      "macro_pin_binding": {
+        "IN+": {
+          "net": "AGND",
+          "pin": "5"
+        },
+        "IN-": {
+          "net": "/O2/SINE_GAIN_SUM",
+          "pin": "6"
+        },
+        "OUT": {
+          "net": "/O2/SIN_SCALED",
+          "pin": "7"
+        },
+        "VCC": {
+          "net": "+12V",
+          "pin": "4"
+        },
+        "VEE": {
+          "net": "-12V",
+          "pin": "11"
+        }
+      },
+      "ref": "U1215",
+      "status": "source pin binding only; no instantiated simulation deck",
+      "symbol": "zudo-osc-hole-field:OPA4196IDR",
+      "unit": 2
+    },
+    {
+      "MPN": "OPA4196IDR",
+      "instance": "O2",
+      "logical_key": "",
+      "macro": "OPAx196",
+      "macro_pin_binding": {
+        "IN+": {
+          "net": "AGND",
+          "pin": "10"
+        },
+        "IN-": {
+          "net": "/O2/PACK_OPA4196IDR_3_IO_UNUSED3",
+          "pin": "9"
+        },
+        "OUT": {
+          "net": "/O2/PACK_OPA4196IDR_3_IO_UNUSED3",
+          "pin": "8"
+        },
+        "VCC": {
+          "net": "+12V",
+          "pin": "4"
+        },
+        "VEE": {
+          "net": "-12V",
+          "pin": "11"
+        }
+      },
+      "ref": "U1215",
+      "status": "source pin binding only; no instantiated simulation deck",
+      "symbol": "zudo-osc-hole-field:OPA4196IDR",
+      "unit": 3
+    },
+    {
+      "MPN": "OPA4196IDR",
+      "instance": "O2",
+      "logical_key": "",
+      "macro": "OPAx196",
+      "macro_pin_binding": {
+        "IN+": {
+          "net": "AGND",
+          "pin": "12"
+        },
+        "IN-": {
+          "net": "/O2/PACK_OPA4196IDR_3_IO_UNUSED4",
+          "pin": "13"
+        },
+        "OUT": {
+          "net": "/O2/PACK_OPA4196IDR_3_IO_UNUSED4",
+          "pin": "14"
+        },
+        "VCC": {
+          "net": "+12V",
+          "pin": "4"
+        },
+        "VEE": {
+          "net": "-12V",
+          "pin": "11"
+        }
+      },
+      "ref": "U1215",
+      "status": "source pin binding only; no instantiated simulation deck",
+      "symbol": "zudo-osc-hole-field:OPA4196IDR",
+      "unit": 4
+    },
+    {
+      "MPN": "OPA4196IDR",
+      "instance": "O2",
+      "logical_key": "high_impedance_input_J_O1_1V_FM__A.1",
+      "macro": "OPAx196",
+      "macro_pin_binding": {
+        "IN+": {
+          "net": "/O2/C3f1879_SENSE",
+          "pin": "3"
+        },
+        "IN-": {
+          "net": "/O2/FM_BUFFER",
+          "pin": "2"
+        },
+        "OUT": {
+          "net": "/O2/FM_BUFFER",
+          "pin": "1"
+        },
+        "VCC": {
+          "net": "+12V",
+          "pin": "4"
+        },
+        "VEE": {
+          "net": "-12V",
+          "pin": "11"
+        }
+      },
+      "ref": "U1216",
+      "status": "source pin binding only; no instantiated simulation deck",
+      "symbol": "zudo-osc-hole-field:OPA4196IDR",
+      "unit": 1
+    },
+    {
+      "MPN": "OPA4196IDR",
+      "instance": "O2",
+      "logical_key": "high_impedance_input_J_O1_1V_PWM__A.1",
+      "macro": "OPAx196",
+      "macro_pin_binding": {
+        "IN+": {
+          "net": "/O2/C1b3f1d_SENSE",
+          "pin": "5"
+        },
+        "IN-": {
+          "net": "/O2/PWM_BUFFER",
+          "pin": "6"
+        },
+        "OUT": {
+          "net": "/O2/PWM_BUFFER",
+          "pin": "7"
+        },
+        "VCC": {
+          "net": "+12V",
+          "pin": "4"
+        },
+        "VEE": {
+          "net": "-12V",
+          "pin": "11"
+        }
+      },
+      "ref": "U1216",
+      "status": "source pin binding only; no instantiated simulation deck",
+      "symbol": "zudo-osc-hole-field:OPA4196IDR",
+      "unit": 2
+    },
+    {
+      "MPN": "OPA4196IDR",
+      "instance": "O2",
+      "logical_key": "high_impedance_input_J_O1_1V_SYNC__A.1",
+      "macro": "OPAx196",
+      "macro_pin_binding": {
+        "IN+": {
+          "net": "/O2/Cc44f2e_SENSE",
+          "pin": "10"
+        },
+        "IN-": {
+          "net": "/O2/SYNC_BUFFER",
+          "pin": "9"
+        },
+        "OUT": {
+          "net": "/O2/SYNC_BUFFER",
+          "pin": "8"
+        },
+        "VCC": {
+          "net": "+12V",
+          "pin": "4"
+        },
+        "VEE": {
+          "net": "-12V",
+          "pin": "11"
+        }
+      },
+      "ref": "U1216",
+      "status": "source pin binding only; no instantiated simulation deck",
+      "symbol": "zudo-osc-hole-field:OPA4196IDR",
+      "unit": 3
+    },
+    {
+      "MPN": "OPA4196IDR",
+      "instance": "O2",
+      "logical_key": "general_output_J_O1_1V_SIN__A.1",
+      "macro": "OPAx196",
+      "macro_pin_binding": {
+        "IN+": {
+          "net": "/O2/SIN_SCALED",
+          "pin": "12"
+        },
+        "IN-": {
+          "net": "/O2/C70dbdb_DRIVE",
+          "pin": "13"
+        },
+        "OUT": {
+          "net": "/O2/C70dbdb_DRIVE",
+          "pin": "14"
+        },
+        "VCC": {
+          "net": "+12V",
+          "pin": "4"
+        },
+        "VEE": {
+          "net": "-12V",
+          "pin": "11"
+        }
+      },
+      "ref": "U1216",
+      "status": "source pin binding only; no instantiated simulation deck",
+      "symbol": "zudo-osc-hole-field:OPA4196IDR",
+      "unit": 4
+    },
+    {
+      "MPN": "OPA4196IDR",
+      "instance": "O2",
+      "logical_key": "general_output_J_O1_1V_TRI__A.1",
+      "macro": "OPAx196",
+      "macro_pin_binding": {
+        "IN+": {
+          "net": "/O2/TRI_SCALED",
+          "pin": "3"
+        },
+        "IN-": {
+          "net": "/O2/Cc66d82_DRIVE",
+          "pin": "2"
+        },
+        "OUT": {
+          "net": "/O2/Cc66d82_DRIVE",
+          "pin": "1"
+        },
+        "VCC": {
+          "net": "+12V",
+          "pin": "4"
+        },
+        "VEE": {
+          "net": "-12V",
+          "pin": "11"
+        }
+      },
+      "ref": "U1217",
+      "status": "source pin binding only; no instantiated simulation deck",
+      "symbol": "zudo-osc-hole-field:OPA4196IDR",
+      "unit": 1
+    },
+    {
+      "MPN": "OPA4196IDR",
+      "instance": "O2",
+      "logical_key": "general_output_J_O1_1V_SAW__A.1",
+      "macro": "OPAx196",
+      "macro_pin_binding": {
+        "IN+": {
+          "net": "/O2/SAW_SCALED",
+          "pin": "5"
+        },
+        "IN-": {
+          "net": "/O2/C7b4ed2_DRIVE",
+          "pin": "6"
+        },
+        "OUT": {
+          "net": "/O2/C7b4ed2_DRIVE",
+          "pin": "7"
+        },
+        "VCC": {
+          "net": "+12V",
+          "pin": "4"
+        },
+        "VEE": {
+          "net": "-12V",
+          "pin": "11"
+        }
+      },
+      "ref": "U1217",
+      "status": "source pin binding only; no instantiated simulation deck",
+      "symbol": "zudo-osc-hole-field:OPA4196IDR",
+      "unit": 2
+    },
+    {
+      "MPN": "OPA4196IDR",
+      "instance": "O2",
+      "logical_key": "general_output_J_O1_1V_PUL__A.1",
+      "macro": "OPAx196",
+      "macro_pin_binding": {
+        "IN+": {
+          "net": "/O2/PUL_SCALED",
+          "pin": "10"
+        },
+        "IN-": {
+          "net": "/O2/Cec1eaa_DRIVE",
+          "pin": "9"
+        },
+        "OUT": {
+          "net": "/O2/Cec1eaa_DRIVE",
+          "pin": "8"
+        },
+        "VCC": {
+          "net": "+12V",
+          "pin": "4"
+        },
+        "VEE": {
+          "net": "-12V",
+          "pin": "11"
+        }
+      },
+      "ref": "U1217",
+      "status": "source pin binding only; no instantiated simulation deck",
+      "symbol": "zudo-osc-hole-field:OPA4196IDR",
+      "unit": 3
+    },
+    {
+      "MPN": "OPA4196IDR",
+      "instance": "O2",
+      "logical_key": "",
+      "macro": "OPAx196",
+      "macro_pin_binding": {
+        "IN+": {
+          "net": "AGND",
+          "pin": "12"
+        },
+        "IN-": {
+          "net": "/O2/PACK_OPA4196IDR_5_IO_UNUSED4",
+          "pin": "13"
+        },
+        "OUT": {
+          "net": "/O2/PACK_OPA4196IDR_5_IO_UNUSED4",
+          "pin": "14"
+        },
+        "VCC": {
+          "net": "+12V",
+          "pin": "4"
+        },
+        "VEE": {
+          "net": "-12V",
+          "pin": "11"
+        }
+      },
+      "ref": "U1217",
+      "status": "source pin binding only; no instantiated simulation deck",
+      "symbol": "zudo-osc-hole-field:OPA4196IDR",
+      "unit": 4
+    },
+    {
+      "MPN": "OPA4196IDR",
+      "instance": "O3",
+      "logical_key": "remote_buffer_J_O1_1V_FM__A.1",
+      "macro": "OPAx196",
+      "macro_pin_binding": {
+        "IN+": {
+          "net": "/O3/FM_BUFFER",
+          "pin": "3"
+        },
+        "IN-": {
+          "net": "/O3/C953c1a_FB",
+          "pin": "2"
+        },
+        "OUT": {
+          "net": "/O3/C953c1a_DRIVE",
+          "pin": "1"
+        },
+        "VCC": {
+          "net": "+12V",
+          "pin": "4"
+        },
+        "VEE": {
+          "net": "-12V",
+          "pin": "11"
+        }
+      },
+      "ref": "U1312",
+      "status": "source pin binding only; no instantiated simulation deck",
+      "symbol": "zudo-osc-hole-field:OPA4196IDR",
+      "unit": 1
+    },
+    {
+      "MPN": "OPA4196IDR",
+      "instance": "O3",
+      "logical_key": "bipolar_attenuverter_C_O1_FM__FM__A.1",
+      "macro": "OPAx196",
+      "macro_pin_binding": {
+        "IN+": {
+          "net": "/O3/C1eb779_W_SENSE",
+          "pin": "5"
+        },
+        "IN-": {
+          "net": "/O3/C1eb779_SUM",
+          "pin": "6"
+        },
+        "OUT": {
+          "net": "/O3/FM_DEPTH",
+          "pin": "7"
+        },
+        "VCC": {
+          "net": "+12V",
+          "pin": "4"
+        },
+        "VEE": {
+          "net": "-12V",
+          "pin": "11"
+        }
+      },
+      "ref": "U1312",
+      "status": "source pin binding only; no instantiated simulation deck",
+      "symbol": "zudo-osc-hole-field:OPA4196IDR",
+      "unit": 2
+    },
+    {
+      "MPN": "OPA4196IDR",
+      "instance": "O3",
+      "logical_key": "remote_buffer_J_O1_1V_PWM__A.1",
+      "macro": "OPAx196",
+      "macro_pin_binding": {
+        "IN+": {
+          "net": "/O3/PWM_BUFFER",
+          "pin": "10"
+        },
+        "IN-": {
+          "net": "/O3/C461f80_FB",
+          "pin": "9"
+        },
+        "OUT": {
+          "net": "/O3/C461f80_DRIVE",
+          "pin": "8"
+        },
+        "VCC": {
+          "net": "+12V",
+          "pin": "4"
+        },
+        "VEE": {
+          "net": "-12V",
+          "pin": "11"
+        }
+      },
+      "ref": "U1312",
+      "status": "source pin binding only; no instantiated simulation deck",
+      "symbol": "zudo-osc-hole-field:OPA4196IDR",
+      "unit": 3
+    },
+    {
+      "MPN": "OPA4196IDR",
+      "instance": "O3",
+      "logical_key": "bipolar_attenuverter_C_O1_PWM__PWM__A.1",
+      "macro": "OPAx196",
+      "macro_pin_binding": {
+        "IN+": {
+          "net": "/O3/C42d8cd_W_SENSE",
+          "pin": "12"
+        },
+        "IN-": {
+          "net": "/O3/C42d8cd_SUM",
+          "pin": "13"
+        },
+        "OUT": {
+          "net": "/O3/PWM_DEPTH",
+          "pin": "14"
+        },
+        "VCC": {
+          "net": "+12V",
+          "pin": "4"
+        },
+        "VEE": {
+          "net": "-12V",
+          "pin": "11"
+        }
+      },
+      "ref": "U1312",
+      "status": "source pin binding only; no instantiated simulation deck",
+      "symbol": "zudo-osc-hole-field:OPA4196IDR",
+      "unit": 4
+    },
+    {
+      "MPN": "OPA4196IDR",
+      "instance": "O3",
+      "logical_key": "dc_control_source_C_O1_PW_PW__A.1",
+      "macro": "OPAx196",
+      "macro_pin_binding": {
+        "IN+": {
+          "net": "/O3/Ca449b7_W_SENSE",
+          "pin": "3"
+        },
+        "IN-": {
+          "net": "/O3/PW_MANUAL",
+          "pin": "2"
+        },
+        "OUT": {
+          "net": "/O3/PW_MANUAL",
+          "pin": "1"
+        },
+        "VCC": {
+          "net": "+12V",
+          "pin": "4"
+        },
+        "VEE": {
+          "net": "-12V",
+          "pin": "11"
+        }
+      },
+      "ref": "U1313",
+      "status": "source pin binding only; no instantiated simulation deck",
+      "symbol": "zudo-osc-hole-field:OPA4196IDR",
+      "unit": 1
+    },
+    {
+      "MPN": "OPA4196IDR",
+      "instance": "O3",
+      "logical_key": "LFO_OFFSET.1",
+      "macro": "OPAx196",
+      "macro_pin_binding": {
+        "IN+": {
+          "net": "/O3/LOCAL_REFN5",
+          "pin": "5"
+        },
+        "IN-": {
+          "net": "/O3/LFO_FB",
+          "pin": "6"
+        },
+        "OUT": {
+          "net": "/O3/LFO_REF",
+          "pin": "7"
+        },
+        "VCC": {
+          "net": "+12V",
+          "pin": "4"
+        },
+        "VEE": {
+          "net": "-12V",
+          "pin": "11"
+        }
+      },
+      "ref": "U1313",
+      "status": "source pin binding only; no instantiated simulation deck",
+      "symbol": "zudo-osc-hole-field:OPA4196IDR",
+      "unit": 2
+    },
+    {
+      "MPN": "OPA4196IDR",
+      "instance": "O3",
+      "logical_key": "PWM_SUM.1",
+      "macro": "OPAx196",
+      "macro_pin_binding": {
+        "IN+": {
+          "net": "AGND",
+          "pin": "10"
+        },
+        "IN-": {
+          "net": "/O3/PWM_SUM",
+          "pin": "9"
+        },
+        "OUT": {
+          "net": "/O3/PWM_NEG",
+          "pin": "8"
+        },
+        "VCC": {
+          "net": "+12V",
+          "pin": "4"
+        },
+        "VEE": {
+          "net": "-12V",
+          "pin": "11"
+        }
+      },
+      "ref": "U1313",
+      "status": "source pin binding only; no instantiated simulation deck",
+      "symbol": "zudo-osc-hole-field:OPA4196IDR",
+      "unit": 3
+    },
+    {
+      "MPN": "OPA4196IDR",
+      "instance": "O3",
+      "logical_key": "PWM_INVERT.1",
+      "macro": "OPAx196",
+      "macro_pin_binding": {
+        "IN+": {
+          "net": "AGND",
+          "pin": "12"
+        },
+        "IN-": {
+          "net": "/O3/PWM_INV",
+          "pin": "13"
+        },
+        "OUT": {
+          "net": "/O3/PWM_DRIVE",
+          "pin": "14"
+        },
+        "VCC": {
+          "net": "+12V",
+          "pin": "4"
+        },
+        "VEE": {
+          "net": "-12V",
+          "pin": "11"
+        }
+      },
+      "ref": "U1313",
+      "status": "source pin binding only; no instantiated simulation deck",
+      "symbol": "zudo-osc-hole-field:OPA4196IDR",
+      "unit": 4
+    },
+    {
+      "MPN": "OPA4196IDR",
+      "instance": "O3",
+      "logical_key": "REF4.1",
+      "macro": "OPAx196",
+      "macro_pin_binding": {
+        "IN+": {
+          "net": "/O3/REF4_RAW",
+          "pin": "3"
+        },
+        "IN-": {
+          "net": "/O3/REF4",
+          "pin": "2"
+        },
+        "OUT": {
+          "net": "/O3/REF4",
+          "pin": "1"
+        },
+        "VCC": {
+          "net": "+12V",
+          "pin": "4"
+        },
+        "VEE": {
+          "net": "-12V",
+          "pin": "11"
+        }
+      },
+      "ref": "U1314",
+      "status": "source pin binding only; no instantiated simulation deck",
+      "symbol": "zudo-osc-hole-field:OPA4196IDR",
+      "unit": 1
+    },
+    {
+      "MPN": "OPA4196IDR",
+      "instance": "O3",
+      "logical_key": "TRI_SCALE.1",
+      "macro": "OPAx196",
+      "macro_pin_binding": {
+        "IN+": {
+          "net": "/O3/TRI_BIAS",
+          "pin": "5"
+        },
+        "IN-": {
+          "net": "/O3/TRI_SUM",
+          "pin": "6"
+        },
+        "OUT": {
+          "net": "/O3/TRI_SCALED",
+          "pin": "7"
+        },
+        "VCC": {
+          "net": "+12V",
+          "pin": "4"
+        },
+        "VEE": {
+          "net": "-12V",
+          "pin": "11"
+        }
+      },
+      "ref": "U1314",
+      "status": "source pin binding only; no instantiated simulation deck",
+      "symbol": "zudo-osc-hole-field:OPA4196IDR",
+      "unit": 2
+    },
+    {
+      "MPN": "OPA4196IDR",
+      "instance": "O3",
+      "logical_key": "SAW_SCALE.1",
+      "macro": "OPAx196",
+      "macro_pin_binding": {
+        "IN+": {
+          "net": "/O3/SAW_BIAS",
+          "pin": "10"
+        },
+        "IN-": {
+          "net": "/O3/SAW_SUM",
+          "pin": "9"
+        },
+        "OUT": {
+          "net": "/O3/SAW_SCALED",
+          "pin": "8"
+        },
+        "VCC": {
+          "net": "+12V",
+          "pin": "4"
+        },
+        "VEE": {
+          "net": "-12V",
+          "pin": "11"
+        }
+      },
+      "ref": "U1314",
+      "status": "source pin binding only; no instantiated simulation deck",
+      "symbol": "zudo-osc-hole-field:OPA4196IDR",
+      "unit": 3
+    },
+    {
+      "MPN": "OPA4196IDR",
+      "instance": "O3",
+      "logical_key": "PUL_SCALE.1",
+      "macro": "OPAx196",
+      "macro_pin_binding": {
+        "IN+": {
+          "net": "/O3/PULSE_LOGIC",
+          "pin": "12"
+        },
+        "IN-": {
+          "net": "/O3/PUL_SUM",
+          "pin": "13"
+        },
+        "OUT": {
+          "net": "/O3/PUL_SCALED",
+          "pin": "14"
+        },
+        "VCC": {
+          "net": "+12V",
+          "pin": "4"
+        },
+        "VEE": {
+          "net": "-12V",
+          "pin": "11"
+        }
+      },
+      "ref": "U1314",
+      "status": "source pin binding only; no instantiated simulation deck",
+      "symbol": "zudo-osc-hole-field:OPA4196IDR",
+      "unit": 4
+    },
+    {
+      "MPN": "OPA4196IDR",
+      "instance": "O3",
+      "logical_key": "SINE_DIFF.1",
+      "macro": "OPAx196",
+      "macro_pin_binding": {
+        "IN+": {
+          "net": "/O3/SINE_PLUS",
+          "pin": "3"
+        },
+        "IN-": {
+          "net": "/O3/SINE_MINUS",
+          "pin": "2"
+        },
+        "OUT": {
+          "net": "/O3/SINE_DIFF",
+          "pin": "1"
+        },
+        "VCC": {
+          "net": "+12V",
+          "pin": "4"
+        },
+        "VEE": {
+          "net": "-12V",
+          "pin": "11"
+        }
+      },
+      "ref": "U1315",
+      "status": "source pin binding only; no instantiated simulation deck",
+      "symbol": "zudo-osc-hole-field:OPA4196IDR",
+      "unit": 1
+    },
+    {
+      "MPN": "OPA4196IDR",
+      "instance": "O3",
+      "logical_key": "SINE_GAIN.1",
+      "macro": "OPAx196",
+      "macro_pin_binding": {
+        "IN+": {
+          "net": "AGND",
+          "pin": "5"
+        },
+        "IN-": {
+          "net": "/O3/SINE_GAIN_SUM",
+          "pin": "6"
+        },
+        "OUT": {
+          "net": "/O3/SIN_SCALED",
+          "pin": "7"
+        },
+        "VCC": {
+          "net": "+12V",
+          "pin": "4"
+        },
+        "VEE": {
+          "net": "-12V",
+          "pin": "11"
+        }
+      },
+      "ref": "U1315",
+      "status": "source pin binding only; no instantiated simulation deck",
+      "symbol": "zudo-osc-hole-field:OPA4196IDR",
+      "unit": 2
+    },
+    {
+      "MPN": "OPA4196IDR",
+      "instance": "O3",
+      "logical_key": "",
+      "macro": "OPAx196",
+      "macro_pin_binding": {
+        "IN+": {
+          "net": "AGND",
+          "pin": "10"
+        },
+        "IN-": {
+          "net": "/O3/PACK_OPA4196IDR_3_IO_UNUSED3",
+          "pin": "9"
+        },
+        "OUT": {
+          "net": "/O3/PACK_OPA4196IDR_3_IO_UNUSED3",
+          "pin": "8"
+        },
+        "VCC": {
+          "net": "+12V",
+          "pin": "4"
+        },
+        "VEE": {
+          "net": "-12V",
+          "pin": "11"
+        }
+      },
+      "ref": "U1315",
+      "status": "source pin binding only; no instantiated simulation deck",
+      "symbol": "zudo-osc-hole-field:OPA4196IDR",
+      "unit": 3
+    },
+    {
+      "MPN": "OPA4196IDR",
+      "instance": "O3",
+      "logical_key": "",
+      "macro": "OPAx196",
+      "macro_pin_binding": {
+        "IN+": {
+          "net": "AGND",
+          "pin": "12"
+        },
+        "IN-": {
+          "net": "/O3/PACK_OPA4196IDR_3_IO_UNUSED4",
+          "pin": "13"
+        },
+        "OUT": {
+          "net": "/O3/PACK_OPA4196IDR_3_IO_UNUSED4",
+          "pin": "14"
+        },
+        "VCC": {
+          "net": "+12V",
+          "pin": "4"
+        },
+        "VEE": {
+          "net": "-12V",
+          "pin": "11"
+        }
+      },
+      "ref": "U1315",
+      "status": "source pin binding only; no instantiated simulation deck",
+      "symbol": "zudo-osc-hole-field:OPA4196IDR",
+      "unit": 4
+    },
+    {
+      "MPN": "OPA4196IDR",
+      "instance": "O3",
+      "logical_key": "high_impedance_input_J_O1_1V_FM__A.1",
+      "macro": "OPAx196",
+      "macro_pin_binding": {
+        "IN+": {
+          "net": "/O3/C3f1879_SENSE",
+          "pin": "3"
+        },
+        "IN-": {
+          "net": "/O3/FM_BUFFER",
+          "pin": "2"
+        },
+        "OUT": {
+          "net": "/O3/FM_BUFFER",
+          "pin": "1"
+        },
+        "VCC": {
+          "net": "+12V",
+          "pin": "4"
+        },
+        "VEE": {
+          "net": "-12V",
+          "pin": "11"
+        }
+      },
+      "ref": "U1316",
+      "status": "source pin binding only; no instantiated simulation deck",
+      "symbol": "zudo-osc-hole-field:OPA4196IDR",
+      "unit": 1
+    },
+    {
+      "MPN": "OPA4196IDR",
+      "instance": "O3",
+      "logical_key": "high_impedance_input_J_O1_1V_PWM__A.1",
+      "macro": "OPAx196",
+      "macro_pin_binding": {
+        "IN+": {
+          "net": "/O3/C1b3f1d_SENSE",
+          "pin": "5"
+        },
+        "IN-": {
+          "net": "/O3/PWM_BUFFER",
+          "pin": "6"
+        },
+        "OUT": {
+          "net": "/O3/PWM_BUFFER",
+          "pin": "7"
+        },
+        "VCC": {
+          "net": "+12V",
+          "pin": "4"
+        },
+        "VEE": {
+          "net": "-12V",
+          "pin": "11"
+        }
+      },
+      "ref": "U1316",
+      "status": "source pin binding only; no instantiated simulation deck",
+      "symbol": "zudo-osc-hole-field:OPA4196IDR",
+      "unit": 2
+    },
+    {
+      "MPN": "OPA4196IDR",
+      "instance": "O3",
+      "logical_key": "high_impedance_input_J_O1_1V_SYNC__A.1",
+      "macro": "OPAx196",
+      "macro_pin_binding": {
+        "IN+": {
+          "net": "/O3/Cc44f2e_SENSE",
+          "pin": "10"
+        },
+        "IN-": {
+          "net": "/O3/SYNC_BUFFER",
+          "pin": "9"
+        },
+        "OUT": {
+          "net": "/O3/SYNC_BUFFER",
+          "pin": "8"
+        },
+        "VCC": {
+          "net": "+12V",
+          "pin": "4"
+        },
+        "VEE": {
+          "net": "-12V",
+          "pin": "11"
+        }
+      },
+      "ref": "U1316",
+      "status": "source pin binding only; no instantiated simulation deck",
+      "symbol": "zudo-osc-hole-field:OPA4196IDR",
+      "unit": 3
+    },
+    {
+      "MPN": "OPA4196IDR",
+      "instance": "O3",
+      "logical_key": "general_output_J_O1_1V_SIN__A.1",
+      "macro": "OPAx196",
+      "macro_pin_binding": {
+        "IN+": {
+          "net": "/O3/SIN_SCALED",
+          "pin": "12"
+        },
+        "IN-": {
+          "net": "/O3/C70dbdb_DRIVE",
+          "pin": "13"
+        },
+        "OUT": {
+          "net": "/O3/C70dbdb_DRIVE",
+          "pin": "14"
+        },
+        "VCC": {
+          "net": "+12V",
+          "pin": "4"
+        },
+        "VEE": {
+          "net": "-12V",
+          "pin": "11"
+        }
+      },
+      "ref": "U1316",
+      "status": "source pin binding only; no instantiated simulation deck",
+      "symbol": "zudo-osc-hole-field:OPA4196IDR",
+      "unit": 4
+    },
+    {
+      "MPN": "OPA4196IDR",
+      "instance": "O3",
+      "logical_key": "general_output_J_O1_1V_TRI__A.1",
+      "macro": "OPAx196",
+      "macro_pin_binding": {
+        "IN+": {
+          "net": "/O3/TRI_SCALED",
+          "pin": "3"
+        },
+        "IN-": {
+          "net": "/O3/Cc66d82_DRIVE",
+          "pin": "2"
+        },
+        "OUT": {
+          "net": "/O3/Cc66d82_DRIVE",
+          "pin": "1"
+        },
+        "VCC": {
+          "net": "+12V",
+          "pin": "4"
+        },
+        "VEE": {
+          "net": "-12V",
+          "pin": "11"
+        }
+      },
+      "ref": "U1317",
+      "status": "source pin binding only; no instantiated simulation deck",
+      "symbol": "zudo-osc-hole-field:OPA4196IDR",
+      "unit": 1
+    },
+    {
+      "MPN": "OPA4196IDR",
+      "instance": "O3",
+      "logical_key": "general_output_J_O1_1V_SAW__A.1",
+      "macro": "OPAx196",
+      "macro_pin_binding": {
+        "IN+": {
+          "net": "/O3/SAW_SCALED",
+          "pin": "5"
+        },
+        "IN-": {
+          "net": "/O3/C7b4ed2_DRIVE",
+          "pin": "6"
+        },
+        "OUT": {
+          "net": "/O3/C7b4ed2_DRIVE",
+          "pin": "7"
+        },
+        "VCC": {
+          "net": "+12V",
+          "pin": "4"
+        },
+        "VEE": {
+          "net": "-12V",
+          "pin": "11"
+        }
+      },
+      "ref": "U1317",
+      "status": "source pin binding only; no instantiated simulation deck",
+      "symbol": "zudo-osc-hole-field:OPA4196IDR",
+      "unit": 2
+    },
+    {
+      "MPN": "OPA4196IDR",
+      "instance": "O3",
+      "logical_key": "general_output_J_O1_1V_PUL__A.1",
+      "macro": "OPAx196",
+      "macro_pin_binding": {
+        "IN+": {
+          "net": "/O3/PUL_SCALED",
+          "pin": "10"
+        },
+        "IN-": {
+          "net": "/O3/Cec1eaa_DRIVE",
+          "pin": "9"
+        },
+        "OUT": {
+          "net": "/O3/Cec1eaa_DRIVE",
+          "pin": "8"
+        },
+        "VCC": {
+          "net": "+12V",
+          "pin": "4"
+        },
+        "VEE": {
+          "net": "-12V",
+          "pin": "11"
+        }
+      },
+      "ref": "U1317",
+      "status": "source pin binding only; no instantiated simulation deck",
+      "symbol": "zudo-osc-hole-field:OPA4196IDR",
+      "unit": 3
+    },
+    {
+      "MPN": "OPA4196IDR",
+      "instance": "O3",
+      "logical_key": "",
+      "macro": "OPAx196",
+      "macro_pin_binding": {
+        "IN+": {
+          "net": "AGND",
+          "pin": "12"
+        },
+        "IN-": {
+          "net": "/O3/PACK_OPA4196IDR_5_IO_UNUSED4",
+          "pin": "13"
+        },
+        "OUT": {
+          "net": "/O3/PACK_OPA4196IDR_5_IO_UNUSED4",
+          "pin": "14"
+        },
+        "VCC": {
+          "net": "+12V",
+          "pin": "4"
+        },
+        "VEE": {
+          "net": "-12V",
+          "pin": "11"
+        }
+      },
+      "ref": "U1317",
+      "status": "source pin binding only; no instantiated simulation deck",
+      "symbol": "zudo-osc-hole-field:OPA4196IDR",
+      "unit": 4
+    },
+    {
+      "MPN": "OPA4196IDR",
+      "instance": "O4",
+      "logical_key": "remote_buffer_J_O1_1V_FM__A.1",
+      "macro": "OPAx196",
+      "macro_pin_binding": {
+        "IN+": {
+          "net": "/O4/FM_BUFFER",
+          "pin": "3"
+        },
+        "IN-": {
+          "net": "/O4/C953c1a_FB",
+          "pin": "2"
+        },
+        "OUT": {
+          "net": "/O4/C953c1a_DRIVE",
+          "pin": "1"
+        },
+        "VCC": {
+          "net": "+12V",
+          "pin": "4"
+        },
+        "VEE": {
+          "net": "-12V",
+          "pin": "11"
+        }
+      },
+      "ref": "U1412",
+      "status": "source pin binding only; no instantiated simulation deck",
+      "symbol": "zudo-osc-hole-field:OPA4196IDR",
+      "unit": 1
+    },
+    {
+      "MPN": "OPA4196IDR",
+      "instance": "O4",
+      "logical_key": "bipolar_attenuverter_C_O1_FM__FM__A.1",
+      "macro": "OPAx196",
+      "macro_pin_binding": {
+        "IN+": {
+          "net": "/O4/C1eb779_W_SENSE",
+          "pin": "5"
+        },
+        "IN-": {
+          "net": "/O4/C1eb779_SUM",
+          "pin": "6"
+        },
+        "OUT": {
+          "net": "/O4/FM_DEPTH",
+          "pin": "7"
+        },
+        "VCC": {
+          "net": "+12V",
+          "pin": "4"
+        },
+        "VEE": {
+          "net": "-12V",
+          "pin": "11"
+        }
+      },
+      "ref": "U1412",
+      "status": "source pin binding only; no instantiated simulation deck",
+      "symbol": "zudo-osc-hole-field:OPA4196IDR",
+      "unit": 2
+    },
+    {
+      "MPN": "OPA4196IDR",
+      "instance": "O4",
+      "logical_key": "remote_buffer_J_O1_1V_PWM__A.1",
+      "macro": "OPAx196",
+      "macro_pin_binding": {
+        "IN+": {
+          "net": "/O4/PWM_BUFFER",
+          "pin": "10"
+        },
+        "IN-": {
+          "net": "/O4/C461f80_FB",
+          "pin": "9"
+        },
+        "OUT": {
+          "net": "/O4/C461f80_DRIVE",
+          "pin": "8"
+        },
+        "VCC": {
+          "net": "+12V",
+          "pin": "4"
+        },
+        "VEE": {
+          "net": "-12V",
+          "pin": "11"
+        }
+      },
+      "ref": "U1412",
+      "status": "source pin binding only; no instantiated simulation deck",
+      "symbol": "zudo-osc-hole-field:OPA4196IDR",
+      "unit": 3
+    },
+    {
+      "MPN": "OPA4196IDR",
+      "instance": "O4",
+      "logical_key": "bipolar_attenuverter_C_O1_PWM__PWM__A.1",
+      "macro": "OPAx196",
+      "macro_pin_binding": {
+        "IN+": {
+          "net": "/O4/C42d8cd_W_SENSE",
+          "pin": "12"
+        },
+        "IN-": {
+          "net": "/O4/C42d8cd_SUM",
+          "pin": "13"
+        },
+        "OUT": {
+          "net": "/O4/PWM_DEPTH",
+          "pin": "14"
+        },
+        "VCC": {
+          "net": "+12V",
+          "pin": "4"
+        },
+        "VEE": {
+          "net": "-12V",
+          "pin": "11"
+        }
+      },
+      "ref": "U1412",
+      "status": "source pin binding only; no instantiated simulation deck",
+      "symbol": "zudo-osc-hole-field:OPA4196IDR",
+      "unit": 4
+    },
+    {
+      "MPN": "OPA4196IDR",
+      "instance": "O4",
+      "logical_key": "dc_control_source_C_O1_PW_PW__A.1",
+      "macro": "OPAx196",
+      "macro_pin_binding": {
+        "IN+": {
+          "net": "/O4/Ca449b7_W_SENSE",
+          "pin": "3"
+        },
+        "IN-": {
+          "net": "/O4/PW_MANUAL",
+          "pin": "2"
+        },
+        "OUT": {
+          "net": "/O4/PW_MANUAL",
+          "pin": "1"
+        },
+        "VCC": {
+          "net": "+12V",
+          "pin": "4"
+        },
+        "VEE": {
+          "net": "-12V",
+          "pin": "11"
+        }
+      },
+      "ref": "U1413",
+      "status": "source pin binding only; no instantiated simulation deck",
+      "symbol": "zudo-osc-hole-field:OPA4196IDR",
+      "unit": 1
+    },
+    {
+      "MPN": "OPA4196IDR",
+      "instance": "O4",
+      "logical_key": "LFO_OFFSET.1",
+      "macro": "OPAx196",
+      "macro_pin_binding": {
+        "IN+": {
+          "net": "/O4/LOCAL_REFN5",
+          "pin": "5"
+        },
+        "IN-": {
+          "net": "/O4/LFO_FB",
+          "pin": "6"
+        },
+        "OUT": {
+          "net": "/O4/LFO_REF",
+          "pin": "7"
+        },
+        "VCC": {
+          "net": "+12V",
+          "pin": "4"
+        },
+        "VEE": {
+          "net": "-12V",
+          "pin": "11"
+        }
+      },
+      "ref": "U1413",
+      "status": "source pin binding only; no instantiated simulation deck",
+      "symbol": "zudo-osc-hole-field:OPA4196IDR",
+      "unit": 2
+    },
+    {
+      "MPN": "OPA4196IDR",
+      "instance": "O4",
+      "logical_key": "PWM_SUM.1",
+      "macro": "OPAx196",
+      "macro_pin_binding": {
+        "IN+": {
+          "net": "AGND",
+          "pin": "10"
+        },
+        "IN-": {
+          "net": "/O4/PWM_SUM",
+          "pin": "9"
+        },
+        "OUT": {
+          "net": "/O4/PWM_NEG",
+          "pin": "8"
+        },
+        "VCC": {
+          "net": "+12V",
+          "pin": "4"
+        },
+        "VEE": {
+          "net": "-12V",
+          "pin": "11"
+        }
+      },
+      "ref": "U1413",
+      "status": "source pin binding only; no instantiated simulation deck",
+      "symbol": "zudo-osc-hole-field:OPA4196IDR",
+      "unit": 3
+    },
+    {
+      "MPN": "OPA4196IDR",
+      "instance": "O4",
+      "logical_key": "PWM_INVERT.1",
+      "macro": "OPAx196",
+      "macro_pin_binding": {
+        "IN+": {
+          "net": "AGND",
+          "pin": "12"
+        },
+        "IN-": {
+          "net": "/O4/PWM_INV",
+          "pin": "13"
+        },
+        "OUT": {
+          "net": "/O4/PWM_DRIVE",
+          "pin": "14"
+        },
+        "VCC": {
+          "net": "+12V",
+          "pin": "4"
+        },
+        "VEE": {
+          "net": "-12V",
+          "pin": "11"
+        }
+      },
+      "ref": "U1413",
+      "status": "source pin binding only; no instantiated simulation deck",
+      "symbol": "zudo-osc-hole-field:OPA4196IDR",
+      "unit": 4
+    },
+    {
+      "MPN": "OPA4196IDR",
+      "instance": "O4",
+      "logical_key": "REF4.1",
+      "macro": "OPAx196",
+      "macro_pin_binding": {
+        "IN+": {
+          "net": "/O4/REF4_RAW",
+          "pin": "3"
+        },
+        "IN-": {
+          "net": "/O4/REF4",
+          "pin": "2"
+        },
+        "OUT": {
+          "net": "/O4/REF4",
+          "pin": "1"
+        },
+        "VCC": {
+          "net": "+12V",
+          "pin": "4"
+        },
+        "VEE": {
+          "net": "-12V",
+          "pin": "11"
+        }
+      },
+      "ref": "U1414",
+      "status": "source pin binding only; no instantiated simulation deck",
+      "symbol": "zudo-osc-hole-field:OPA4196IDR",
+      "unit": 1
+    },
+    {
+      "MPN": "OPA4196IDR",
+      "instance": "O4",
+      "logical_key": "TRI_SCALE.1",
+      "macro": "OPAx196",
+      "macro_pin_binding": {
+        "IN+": {
+          "net": "/O4/TRI_BIAS",
+          "pin": "5"
+        },
+        "IN-": {
+          "net": "/O4/TRI_SUM",
+          "pin": "6"
+        },
+        "OUT": {
+          "net": "/O4/TRI_SCALED",
+          "pin": "7"
+        },
+        "VCC": {
+          "net": "+12V",
+          "pin": "4"
+        },
+        "VEE": {
+          "net": "-12V",
+          "pin": "11"
+        }
+      },
+      "ref": "U1414",
+      "status": "source pin binding only; no instantiated simulation deck",
+      "symbol": "zudo-osc-hole-field:OPA4196IDR",
+      "unit": 2
+    },
+    {
+      "MPN": "OPA4196IDR",
+      "instance": "O4",
+      "logical_key": "SAW_SCALE.1",
+      "macro": "OPAx196",
+      "macro_pin_binding": {
+        "IN+": {
+          "net": "/O4/SAW_BIAS",
+          "pin": "10"
+        },
+        "IN-": {
+          "net": "/O4/SAW_SUM",
+          "pin": "9"
+        },
+        "OUT": {
+          "net": "/O4/SAW_SCALED",
+          "pin": "8"
+        },
+        "VCC": {
+          "net": "+12V",
+          "pin": "4"
+        },
+        "VEE": {
+          "net": "-12V",
+          "pin": "11"
+        }
+      },
+      "ref": "U1414",
+      "status": "source pin binding only; no instantiated simulation deck",
+      "symbol": "zudo-osc-hole-field:OPA4196IDR",
+      "unit": 3
+    },
+    {
+      "MPN": "OPA4196IDR",
+      "instance": "O4",
+      "logical_key": "PUL_SCALE.1",
+      "macro": "OPAx196",
+      "macro_pin_binding": {
+        "IN+": {
+          "net": "/O4/PULSE_LOGIC",
+          "pin": "12"
+        },
+        "IN-": {
+          "net": "/O4/PUL_SUM",
+          "pin": "13"
+        },
+        "OUT": {
+          "net": "/O4/PUL_SCALED",
+          "pin": "14"
+        },
+        "VCC": {
+          "net": "+12V",
+          "pin": "4"
+        },
+        "VEE": {
+          "net": "-12V",
+          "pin": "11"
+        }
+      },
+      "ref": "U1414",
+      "status": "source pin binding only; no instantiated simulation deck",
+      "symbol": "zudo-osc-hole-field:OPA4196IDR",
+      "unit": 4
+    },
+    {
+      "MPN": "OPA4196IDR",
+      "instance": "O4",
+      "logical_key": "SINE_DIFF.1",
+      "macro": "OPAx196",
+      "macro_pin_binding": {
+        "IN+": {
+          "net": "/O4/SINE_PLUS",
+          "pin": "3"
+        },
+        "IN-": {
+          "net": "/O4/SINE_MINUS",
+          "pin": "2"
+        },
+        "OUT": {
+          "net": "/O4/SINE_DIFF",
+          "pin": "1"
+        },
+        "VCC": {
+          "net": "+12V",
+          "pin": "4"
+        },
+        "VEE": {
+          "net": "-12V",
+          "pin": "11"
+        }
+      },
+      "ref": "U1415",
+      "status": "source pin binding only; no instantiated simulation deck",
+      "symbol": "zudo-osc-hole-field:OPA4196IDR",
+      "unit": 1
+    },
+    {
+      "MPN": "OPA4196IDR",
+      "instance": "O4",
+      "logical_key": "SINE_GAIN.1",
+      "macro": "OPAx196",
+      "macro_pin_binding": {
+        "IN+": {
+          "net": "AGND",
+          "pin": "5"
+        },
+        "IN-": {
+          "net": "/O4/SINE_GAIN_SUM",
+          "pin": "6"
+        },
+        "OUT": {
+          "net": "/O4/SIN_SCALED",
+          "pin": "7"
+        },
+        "VCC": {
+          "net": "+12V",
+          "pin": "4"
+        },
+        "VEE": {
+          "net": "-12V",
+          "pin": "11"
+        }
+      },
+      "ref": "U1415",
+      "status": "source pin binding only; no instantiated simulation deck",
+      "symbol": "zudo-osc-hole-field:OPA4196IDR",
+      "unit": 2
+    },
+    {
+      "MPN": "OPA4196IDR",
+      "instance": "O4",
+      "logical_key": "",
+      "macro": "OPAx196",
+      "macro_pin_binding": {
+        "IN+": {
+          "net": "AGND",
+          "pin": "10"
+        },
+        "IN-": {
+          "net": "/O4/PACK_OPA4196IDR_3_IO_UNUSED3",
+          "pin": "9"
+        },
+        "OUT": {
+          "net": "/O4/PACK_OPA4196IDR_3_IO_UNUSED3",
+          "pin": "8"
+        },
+        "VCC": {
+          "net": "+12V",
+          "pin": "4"
+        },
+        "VEE": {
+          "net": "-12V",
+          "pin": "11"
+        }
+      },
+      "ref": "U1415",
+      "status": "source pin binding only; no instantiated simulation deck",
+      "symbol": "zudo-osc-hole-field:OPA4196IDR",
+      "unit": 3
+    },
+    {
+      "MPN": "OPA4196IDR",
+      "instance": "O4",
+      "logical_key": "",
+      "macro": "OPAx196",
+      "macro_pin_binding": {
+        "IN+": {
+          "net": "AGND",
+          "pin": "12"
+        },
+        "IN-": {
+          "net": "/O4/PACK_OPA4196IDR_3_IO_UNUSED4",
+          "pin": "13"
+        },
+        "OUT": {
+          "net": "/O4/PACK_OPA4196IDR_3_IO_UNUSED4",
+          "pin": "14"
+        },
+        "VCC": {
+          "net": "+12V",
+          "pin": "4"
+        },
+        "VEE": {
+          "net": "-12V",
+          "pin": "11"
+        }
+      },
+      "ref": "U1415",
+      "status": "source pin binding only; no instantiated simulation deck",
+      "symbol": "zudo-osc-hole-field:OPA4196IDR",
+      "unit": 4
+    },
+    {
+      "MPN": "OPA4196IDR",
+      "instance": "O4",
+      "logical_key": "high_impedance_input_J_O1_1V_FM__A.1",
+      "macro": "OPAx196",
+      "macro_pin_binding": {
+        "IN+": {
+          "net": "/O4/C3f1879_SENSE",
+          "pin": "3"
+        },
+        "IN-": {
+          "net": "/O4/FM_BUFFER",
+          "pin": "2"
+        },
+        "OUT": {
+          "net": "/O4/FM_BUFFER",
+          "pin": "1"
+        },
+        "VCC": {
+          "net": "+12V",
+          "pin": "4"
+        },
+        "VEE": {
+          "net": "-12V",
+          "pin": "11"
+        }
+      },
+      "ref": "U1416",
+      "status": "source pin binding only; no instantiated simulation deck",
+      "symbol": "zudo-osc-hole-field:OPA4196IDR",
+      "unit": 1
+    },
+    {
+      "MPN": "OPA4196IDR",
+      "instance": "O4",
+      "logical_key": "high_impedance_input_J_O1_1V_PWM__A.1",
+      "macro": "OPAx196",
+      "macro_pin_binding": {
+        "IN+": {
+          "net": "/O4/C1b3f1d_SENSE",
+          "pin": "5"
+        },
+        "IN-": {
+          "net": "/O4/PWM_BUFFER",
+          "pin": "6"
+        },
+        "OUT": {
+          "net": "/O4/PWM_BUFFER",
+          "pin": "7"
+        },
+        "VCC": {
+          "net": "+12V",
+          "pin": "4"
+        },
+        "VEE": {
+          "net": "-12V",
+          "pin": "11"
+        }
+      },
+      "ref": "U1416",
+      "status": "source pin binding only; no instantiated simulation deck",
+      "symbol": "zudo-osc-hole-field:OPA4196IDR",
+      "unit": 2
+    },
+    {
+      "MPN": "OPA4196IDR",
+      "instance": "O4",
+      "logical_key": "high_impedance_input_J_O1_1V_SYNC__A.1",
+      "macro": "OPAx196",
+      "macro_pin_binding": {
+        "IN+": {
+          "net": "/O4/Cc44f2e_SENSE",
+          "pin": "10"
+        },
+        "IN-": {
+          "net": "/O4/SYNC_BUFFER",
+          "pin": "9"
+        },
+        "OUT": {
+          "net": "/O4/SYNC_BUFFER",
+          "pin": "8"
+        },
+        "VCC": {
+          "net": "+12V",
+          "pin": "4"
+        },
+        "VEE": {
+          "net": "-12V",
+          "pin": "11"
+        }
+      },
+      "ref": "U1416",
+      "status": "source pin binding only; no instantiated simulation deck",
+      "symbol": "zudo-osc-hole-field:OPA4196IDR",
+      "unit": 3
+    },
+    {
+      "MPN": "OPA4196IDR",
+      "instance": "O4",
+      "logical_key": "general_output_J_O1_1V_SIN__A.1",
+      "macro": "OPAx196",
+      "macro_pin_binding": {
+        "IN+": {
+          "net": "/O4/SIN_SCALED",
+          "pin": "12"
+        },
+        "IN-": {
+          "net": "/O4/C70dbdb_DRIVE",
+          "pin": "13"
+        },
+        "OUT": {
+          "net": "/O4/C70dbdb_DRIVE",
+          "pin": "14"
+        },
+        "VCC": {
+          "net": "+12V",
+          "pin": "4"
+        },
+        "VEE": {
+          "net": "-12V",
+          "pin": "11"
+        }
+      },
+      "ref": "U1416",
+      "status": "source pin binding only; no instantiated simulation deck",
+      "symbol": "zudo-osc-hole-field:OPA4196IDR",
+      "unit": 4
+    },
+    {
+      "MPN": "OPA4196IDR",
+      "instance": "O4",
+      "logical_key": "general_output_J_O1_1V_TRI__A.1",
+      "macro": "OPAx196",
+      "macro_pin_binding": {
+        "IN+": {
+          "net": "/O4/TRI_SCALED",
+          "pin": "3"
+        },
+        "IN-": {
+          "net": "/O4/Cc66d82_DRIVE",
+          "pin": "2"
+        },
+        "OUT": {
+          "net": "/O4/Cc66d82_DRIVE",
+          "pin": "1"
+        },
+        "VCC": {
+          "net": "+12V",
+          "pin": "4"
+        },
+        "VEE": {
+          "net": "-12V",
+          "pin": "11"
+        }
+      },
+      "ref": "U1417",
+      "status": "source pin binding only; no instantiated simulation deck",
+      "symbol": "zudo-osc-hole-field:OPA4196IDR",
+      "unit": 1
+    },
+    {
+      "MPN": "OPA4196IDR",
+      "instance": "O4",
+      "logical_key": "general_output_J_O1_1V_SAW__A.1",
+      "macro": "OPAx196",
+      "macro_pin_binding": {
+        "IN+": {
+          "net": "/O4/SAW_SCALED",
+          "pin": "5"
+        },
+        "IN-": {
+          "net": "/O4/C7b4ed2_DRIVE",
+          "pin": "6"
+        },
+        "OUT": {
+          "net": "/O4/C7b4ed2_DRIVE",
+          "pin": "7"
+        },
+        "VCC": {
+          "net": "+12V",
+          "pin": "4"
+        },
+        "VEE": {
+          "net": "-12V",
+          "pin": "11"
+        }
+      },
+      "ref": "U1417",
+      "status": "source pin binding only; no instantiated simulation deck",
+      "symbol": "zudo-osc-hole-field:OPA4196IDR",
+      "unit": 2
+    },
+    {
+      "MPN": "OPA4196IDR",
+      "instance": "O4",
+      "logical_key": "general_output_J_O1_1V_PUL__A.1",
+      "macro": "OPAx196",
+      "macro_pin_binding": {
+        "IN+": {
+          "net": "/O4/PUL_SCALED",
+          "pin": "10"
+        },
+        "IN-": {
+          "net": "/O4/Cec1eaa_DRIVE",
+          "pin": "9"
+        },
+        "OUT": {
+          "net": "/O4/Cec1eaa_DRIVE",
+          "pin": "8"
+        },
+        "VCC": {
+          "net": "+12V",
+          "pin": "4"
+        },
+        "VEE": {
+          "net": "-12V",
+          "pin": "11"
+        }
+      },
+      "ref": "U1417",
+      "status": "source pin binding only; no instantiated simulation deck",
+      "symbol": "zudo-osc-hole-field:OPA4196IDR",
+      "unit": 3
+    },
+    {
+      "MPN": "OPA4196IDR",
+      "instance": "O4",
+      "logical_key": "",
+      "macro": "OPAx196",
+      "macro_pin_binding": {
+        "IN+": {
+          "net": "AGND",
+          "pin": "12"
+        },
+        "IN-": {
+          "net": "/O4/PACK_OPA4196IDR_5_IO_UNUSED4",
+          "pin": "13"
+        },
+        "OUT": {
+          "net": "/O4/PACK_OPA4196IDR_5_IO_UNUSED4",
+          "pin": "14"
+        },
+        "VCC": {
+          "net": "+12V",
+          "pin": "4"
+        },
+        "VEE": {
+          "net": "-12V",
+          "pin": "11"
+        }
+      },
+      "ref": "U1417",
+      "status": "source pin binding only; no instantiated simulation deck",
+      "symbol": "zudo-osc-hole-field:OPA4196IDR",
+      "unit": 4
+    },
+    {
+      "MPN": "OPA4196IDR",
+      "instance": "O5",
+      "logical_key": "remote_buffer_J_O1_1V_FM__A.1",
+      "macro": "OPAx196",
+      "macro_pin_binding": {
+        "IN+": {
+          "net": "/O5/FM_BUFFER",
+          "pin": "3"
+        },
+        "IN-": {
+          "net": "/O5/C953c1a_FB",
+          "pin": "2"
+        },
+        "OUT": {
+          "net": "/O5/C953c1a_DRIVE",
+          "pin": "1"
+        },
+        "VCC": {
+          "net": "+12V",
+          "pin": "4"
+        },
+        "VEE": {
+          "net": "-12V",
+          "pin": "11"
+        }
+      },
+      "ref": "U1512",
+      "status": "source pin binding only; no instantiated simulation deck",
+      "symbol": "zudo-osc-hole-field:OPA4196IDR",
+      "unit": 1
+    },
+    {
+      "MPN": "OPA4196IDR",
+      "instance": "O5",
+      "logical_key": "bipolar_attenuverter_C_O1_FM__FM__A.1",
+      "macro": "OPAx196",
+      "macro_pin_binding": {
+        "IN+": {
+          "net": "/O5/C1eb779_W_SENSE",
+          "pin": "5"
+        },
+        "IN-": {
+          "net": "/O5/C1eb779_SUM",
+          "pin": "6"
+        },
+        "OUT": {
+          "net": "/O5/FM_DEPTH",
+          "pin": "7"
+        },
+        "VCC": {
+          "net": "+12V",
+          "pin": "4"
+        },
+        "VEE": {
+          "net": "-12V",
+          "pin": "11"
+        }
+      },
+      "ref": "U1512",
+      "status": "source pin binding only; no instantiated simulation deck",
+      "symbol": "zudo-osc-hole-field:OPA4196IDR",
+      "unit": 2
+    },
+    {
+      "MPN": "OPA4196IDR",
+      "instance": "O5",
+      "logical_key": "remote_buffer_J_O1_1V_PWM__A.1",
+      "macro": "OPAx196",
+      "macro_pin_binding": {
+        "IN+": {
+          "net": "/O5/PWM_BUFFER",
+          "pin": "10"
+        },
+        "IN-": {
+          "net": "/O5/C461f80_FB",
+          "pin": "9"
+        },
+        "OUT": {
+          "net": "/O5/C461f80_DRIVE",
+          "pin": "8"
+        },
+        "VCC": {
+          "net": "+12V",
+          "pin": "4"
+        },
+        "VEE": {
+          "net": "-12V",
+          "pin": "11"
+        }
+      },
+      "ref": "U1512",
+      "status": "source pin binding only; no instantiated simulation deck",
+      "symbol": "zudo-osc-hole-field:OPA4196IDR",
+      "unit": 3
+    },
+    {
+      "MPN": "OPA4196IDR",
+      "instance": "O5",
+      "logical_key": "bipolar_attenuverter_C_O1_PWM__PWM__A.1",
+      "macro": "OPAx196",
+      "macro_pin_binding": {
+        "IN+": {
+          "net": "/O5/C42d8cd_W_SENSE",
+          "pin": "12"
+        },
+        "IN-": {
+          "net": "/O5/C42d8cd_SUM",
+          "pin": "13"
+        },
+        "OUT": {
+          "net": "/O5/PWM_DEPTH",
+          "pin": "14"
+        },
+        "VCC": {
+          "net": "+12V",
+          "pin": "4"
+        },
+        "VEE": {
+          "net": "-12V",
+          "pin": "11"
+        }
+      },
+      "ref": "U1512",
+      "status": "source pin binding only; no instantiated simulation deck",
+      "symbol": "zudo-osc-hole-field:OPA4196IDR",
+      "unit": 4
+    },
+    {
+      "MPN": "OPA4196IDR",
+      "instance": "O5",
+      "logical_key": "dc_control_source_C_O1_PW_PW__A.1",
+      "macro": "OPAx196",
+      "macro_pin_binding": {
+        "IN+": {
+          "net": "/O5/Ca449b7_W_SENSE",
+          "pin": "3"
+        },
+        "IN-": {
+          "net": "/O5/PW_MANUAL",
+          "pin": "2"
+        },
+        "OUT": {
+          "net": "/O5/PW_MANUAL",
+          "pin": "1"
+        },
+        "VCC": {
+          "net": "+12V",
+          "pin": "4"
+        },
+        "VEE": {
+          "net": "-12V",
+          "pin": "11"
+        }
+      },
+      "ref": "U1513",
+      "status": "source pin binding only; no instantiated simulation deck",
+      "symbol": "zudo-osc-hole-field:OPA4196IDR",
+      "unit": 1
+    },
+    {
+      "MPN": "OPA4196IDR",
+      "instance": "O5",
+      "logical_key": "LFO_OFFSET.1",
+      "macro": "OPAx196",
+      "macro_pin_binding": {
+        "IN+": {
+          "net": "/O5/LOCAL_REFN5",
+          "pin": "5"
+        },
+        "IN-": {
+          "net": "/O5/LFO_FB",
+          "pin": "6"
+        },
+        "OUT": {
+          "net": "/O5/LFO_REF",
+          "pin": "7"
+        },
+        "VCC": {
+          "net": "+12V",
+          "pin": "4"
+        },
+        "VEE": {
+          "net": "-12V",
+          "pin": "11"
+        }
+      },
+      "ref": "U1513",
+      "status": "source pin binding only; no instantiated simulation deck",
+      "symbol": "zudo-osc-hole-field:OPA4196IDR",
+      "unit": 2
+    },
+    {
+      "MPN": "OPA4196IDR",
+      "instance": "O5",
+      "logical_key": "PWM_SUM.1",
+      "macro": "OPAx196",
+      "macro_pin_binding": {
+        "IN+": {
+          "net": "AGND",
+          "pin": "10"
+        },
+        "IN-": {
+          "net": "/O5/PWM_SUM",
+          "pin": "9"
+        },
+        "OUT": {
+          "net": "/O5/PWM_NEG",
+          "pin": "8"
+        },
+        "VCC": {
+          "net": "+12V",
+          "pin": "4"
+        },
+        "VEE": {
+          "net": "-12V",
+          "pin": "11"
+        }
+      },
+      "ref": "U1513",
+      "status": "source pin binding only; no instantiated simulation deck",
+      "symbol": "zudo-osc-hole-field:OPA4196IDR",
+      "unit": 3
+    },
+    {
+      "MPN": "OPA4196IDR",
+      "instance": "O5",
+      "logical_key": "PWM_INVERT.1",
+      "macro": "OPAx196",
+      "macro_pin_binding": {
+        "IN+": {
+          "net": "AGND",
+          "pin": "12"
+        },
+        "IN-": {
+          "net": "/O5/PWM_INV",
+          "pin": "13"
+        },
+        "OUT": {
+          "net": "/O5/PWM_DRIVE",
+          "pin": "14"
+        },
+        "VCC": {
+          "net": "+12V",
+          "pin": "4"
+        },
+        "VEE": {
+          "net": "-12V",
+          "pin": "11"
+        }
+      },
+      "ref": "U1513",
+      "status": "source pin binding only; no instantiated simulation deck",
+      "symbol": "zudo-osc-hole-field:OPA4196IDR",
+      "unit": 4
+    },
+    {
+      "MPN": "OPA4196IDR",
+      "instance": "O5",
+      "logical_key": "REF4.1",
+      "macro": "OPAx196",
+      "macro_pin_binding": {
+        "IN+": {
+          "net": "/O5/REF4_RAW",
+          "pin": "3"
+        },
+        "IN-": {
+          "net": "/O5/REF4",
+          "pin": "2"
+        },
+        "OUT": {
+          "net": "/O5/REF4",
+          "pin": "1"
+        },
+        "VCC": {
+          "net": "+12V",
+          "pin": "4"
+        },
+        "VEE": {
+          "net": "-12V",
+          "pin": "11"
+        }
+      },
+      "ref": "U1514",
+      "status": "source pin binding only; no instantiated simulation deck",
+      "symbol": "zudo-osc-hole-field:OPA4196IDR",
+      "unit": 1
+    },
+    {
+      "MPN": "OPA4196IDR",
+      "instance": "O5",
+      "logical_key": "TRI_SCALE.1",
+      "macro": "OPAx196",
+      "macro_pin_binding": {
+        "IN+": {
+          "net": "/O5/TRI_BIAS",
+          "pin": "5"
+        },
+        "IN-": {
+          "net": "/O5/TRI_SUM",
+          "pin": "6"
+        },
+        "OUT": {
+          "net": "/O5/TRI_SCALED",
+          "pin": "7"
+        },
+        "VCC": {
+          "net": "+12V",
+          "pin": "4"
+        },
+        "VEE": {
+          "net": "-12V",
+          "pin": "11"
+        }
+      },
+      "ref": "U1514",
+      "status": "source pin binding only; no instantiated simulation deck",
+      "symbol": "zudo-osc-hole-field:OPA4196IDR",
+      "unit": 2
+    },
+    {
+      "MPN": "OPA4196IDR",
+      "instance": "O5",
+      "logical_key": "SAW_SCALE.1",
+      "macro": "OPAx196",
+      "macro_pin_binding": {
+        "IN+": {
+          "net": "/O5/SAW_BIAS",
+          "pin": "10"
+        },
+        "IN-": {
+          "net": "/O5/SAW_SUM",
+          "pin": "9"
+        },
+        "OUT": {
+          "net": "/O5/SAW_SCALED",
+          "pin": "8"
+        },
+        "VCC": {
+          "net": "+12V",
+          "pin": "4"
+        },
+        "VEE": {
+          "net": "-12V",
+          "pin": "11"
+        }
+      },
+      "ref": "U1514",
+      "status": "source pin binding only; no instantiated simulation deck",
+      "symbol": "zudo-osc-hole-field:OPA4196IDR",
+      "unit": 3
+    },
+    {
+      "MPN": "OPA4196IDR",
+      "instance": "O5",
+      "logical_key": "PUL_SCALE.1",
+      "macro": "OPAx196",
+      "macro_pin_binding": {
+        "IN+": {
+          "net": "/O5/PULSE_LOGIC",
+          "pin": "12"
+        },
+        "IN-": {
+          "net": "/O5/PUL_SUM",
+          "pin": "13"
+        },
+        "OUT": {
+          "net": "/O5/PUL_SCALED",
+          "pin": "14"
+        },
+        "VCC": {
+          "net": "+12V",
+          "pin": "4"
+        },
+        "VEE": {
+          "net": "-12V",
+          "pin": "11"
+        }
+      },
+      "ref": "U1514",
+      "status": "source pin binding only; no instantiated simulation deck",
+      "symbol": "zudo-osc-hole-field:OPA4196IDR",
+      "unit": 4
+    },
+    {
+      "MPN": "OPA4196IDR",
+      "instance": "O5",
+      "logical_key": "SINE_DIFF.1",
+      "macro": "OPAx196",
+      "macro_pin_binding": {
+        "IN+": {
+          "net": "/O5/SINE_PLUS",
+          "pin": "3"
+        },
+        "IN-": {
+          "net": "/O5/SINE_MINUS",
+          "pin": "2"
+        },
+        "OUT": {
+          "net": "/O5/SINE_DIFF",
+          "pin": "1"
+        },
+        "VCC": {
+          "net": "+12V",
+          "pin": "4"
+        },
+        "VEE": {
+          "net": "-12V",
+          "pin": "11"
+        }
+      },
+      "ref": "U1515",
+      "status": "source pin binding only; no instantiated simulation deck",
+      "symbol": "zudo-osc-hole-field:OPA4196IDR",
+      "unit": 1
+    },
+    {
+      "MPN": "OPA4196IDR",
+      "instance": "O5",
+      "logical_key": "SINE_GAIN.1",
+      "macro": "OPAx196",
+      "macro_pin_binding": {
+        "IN+": {
+          "net": "AGND",
+          "pin": "5"
+        },
+        "IN-": {
+          "net": "/O5/SINE_GAIN_SUM",
+          "pin": "6"
+        },
+        "OUT": {
+          "net": "/O5/SIN_SCALED",
+          "pin": "7"
+        },
+        "VCC": {
+          "net": "+12V",
+          "pin": "4"
+        },
+        "VEE": {
+          "net": "-12V",
+          "pin": "11"
+        }
+      },
+      "ref": "U1515",
+      "status": "source pin binding only; no instantiated simulation deck",
+      "symbol": "zudo-osc-hole-field:OPA4196IDR",
+      "unit": 2
+    },
+    {
+      "MPN": "OPA4196IDR",
+      "instance": "O5",
+      "logical_key": "",
+      "macro": "OPAx196",
+      "macro_pin_binding": {
+        "IN+": {
+          "net": "AGND",
+          "pin": "10"
+        },
+        "IN-": {
+          "net": "/O5/PACK_OPA4196IDR_3_IO_UNUSED3",
+          "pin": "9"
+        },
+        "OUT": {
+          "net": "/O5/PACK_OPA4196IDR_3_IO_UNUSED3",
+          "pin": "8"
+        },
+        "VCC": {
+          "net": "+12V",
+          "pin": "4"
+        },
+        "VEE": {
+          "net": "-12V",
+          "pin": "11"
+        }
+      },
+      "ref": "U1515",
+      "status": "source pin binding only; no instantiated simulation deck",
+      "symbol": "zudo-osc-hole-field:OPA4196IDR",
+      "unit": 3
+    },
+    {
+      "MPN": "OPA4196IDR",
+      "instance": "O5",
+      "logical_key": "",
+      "macro": "OPAx196",
+      "macro_pin_binding": {
+        "IN+": {
+          "net": "AGND",
+          "pin": "12"
+        },
+        "IN-": {
+          "net": "/O5/PACK_OPA4196IDR_3_IO_UNUSED4",
+          "pin": "13"
+        },
+        "OUT": {
+          "net": "/O5/PACK_OPA4196IDR_3_IO_UNUSED4",
+          "pin": "14"
+        },
+        "VCC": {
+          "net": "+12V",
+          "pin": "4"
+        },
+        "VEE": {
+          "net": "-12V",
+          "pin": "11"
+        }
+      },
+      "ref": "U1515",
+      "status": "source pin binding only; no instantiated simulation deck",
+      "symbol": "zudo-osc-hole-field:OPA4196IDR",
+      "unit": 4
+    },
+    {
+      "MPN": "OPA4196IDR",
+      "instance": "O5",
+      "logical_key": "high_impedance_input_J_O1_1V_FM__A.1",
+      "macro": "OPAx196",
+      "macro_pin_binding": {
+        "IN+": {
+          "net": "/O5/C3f1879_SENSE",
+          "pin": "3"
+        },
+        "IN-": {
+          "net": "/O5/FM_BUFFER",
+          "pin": "2"
+        },
+        "OUT": {
+          "net": "/O5/FM_BUFFER",
+          "pin": "1"
+        },
+        "VCC": {
+          "net": "+12V",
+          "pin": "4"
+        },
+        "VEE": {
+          "net": "-12V",
+          "pin": "11"
+        }
+      },
+      "ref": "U1516",
+      "status": "source pin binding only; no instantiated simulation deck",
+      "symbol": "zudo-osc-hole-field:OPA4196IDR",
+      "unit": 1
+    },
+    {
+      "MPN": "OPA4196IDR",
+      "instance": "O5",
+      "logical_key": "high_impedance_input_J_O1_1V_PWM__A.1",
+      "macro": "OPAx196",
+      "macro_pin_binding": {
+        "IN+": {
+          "net": "/O5/C1b3f1d_SENSE",
+          "pin": "5"
+        },
+        "IN-": {
+          "net": "/O5/PWM_BUFFER",
+          "pin": "6"
+        },
+        "OUT": {
+          "net": "/O5/PWM_BUFFER",
+          "pin": "7"
+        },
+        "VCC": {
+          "net": "+12V",
+          "pin": "4"
+        },
+        "VEE": {
+          "net": "-12V",
+          "pin": "11"
+        }
+      },
+      "ref": "U1516",
+      "status": "source pin binding only; no instantiated simulation deck",
+      "symbol": "zudo-osc-hole-field:OPA4196IDR",
+      "unit": 2
+    },
+    {
+      "MPN": "OPA4196IDR",
+      "instance": "O5",
+      "logical_key": "high_impedance_input_J_O1_1V_SYNC__A.1",
+      "macro": "OPAx196",
+      "macro_pin_binding": {
+        "IN+": {
+          "net": "/O5/Cc44f2e_SENSE",
+          "pin": "10"
+        },
+        "IN-": {
+          "net": "/O5/SYNC_BUFFER",
+          "pin": "9"
+        },
+        "OUT": {
+          "net": "/O5/SYNC_BUFFER",
+          "pin": "8"
+        },
+        "VCC": {
+          "net": "+12V",
+          "pin": "4"
+        },
+        "VEE": {
+          "net": "-12V",
+          "pin": "11"
+        }
+      },
+      "ref": "U1516",
+      "status": "source pin binding only; no instantiated simulation deck",
+      "symbol": "zudo-osc-hole-field:OPA4196IDR",
+      "unit": 3
+    },
+    {
+      "MPN": "OPA4196IDR",
+      "instance": "O5",
+      "logical_key": "general_output_J_O1_1V_SIN__A.1",
+      "macro": "OPAx196",
+      "macro_pin_binding": {
+        "IN+": {
+          "net": "/O5/SIN_SCALED",
+          "pin": "12"
+        },
+        "IN-": {
+          "net": "/O5/C70dbdb_DRIVE",
+          "pin": "13"
+        },
+        "OUT": {
+          "net": "/O5/C70dbdb_DRIVE",
+          "pin": "14"
+        },
+        "VCC": {
+          "net": "+12V",
+          "pin": "4"
+        },
+        "VEE": {
+          "net": "-12V",
+          "pin": "11"
+        }
+      },
+      "ref": "U1516",
+      "status": "source pin binding only; no instantiated simulation deck",
+      "symbol": "zudo-osc-hole-field:OPA4196IDR",
+      "unit": 4
+    },
+    {
+      "MPN": "OPA4196IDR",
+      "instance": "O5",
+      "logical_key": "general_output_J_O1_1V_TRI__A.1",
+      "macro": "OPAx196",
+      "macro_pin_binding": {
+        "IN+": {
+          "net": "/O5/TRI_SCALED",
+          "pin": "3"
+        },
+        "IN-": {
+          "net": "/O5/Cc66d82_DRIVE",
+          "pin": "2"
+        },
+        "OUT": {
+          "net": "/O5/Cc66d82_DRIVE",
+          "pin": "1"
+        },
+        "VCC": {
+          "net": "+12V",
+          "pin": "4"
+        },
+        "VEE": {
+          "net": "-12V",
+          "pin": "11"
+        }
+      },
+      "ref": "U1517",
+      "status": "source pin binding only; no instantiated simulation deck",
+      "symbol": "zudo-osc-hole-field:OPA4196IDR",
+      "unit": 1
+    },
+    {
+      "MPN": "OPA4196IDR",
+      "instance": "O5",
+      "logical_key": "general_output_J_O1_1V_SAW__A.1",
+      "macro": "OPAx196",
+      "macro_pin_binding": {
+        "IN+": {
+          "net": "/O5/SAW_SCALED",
+          "pin": "5"
+        },
+        "IN-": {
+          "net": "/O5/C7b4ed2_DRIVE",
+          "pin": "6"
+        },
+        "OUT": {
+          "net": "/O5/C7b4ed2_DRIVE",
+          "pin": "7"
+        },
+        "VCC": {
+          "net": "+12V",
+          "pin": "4"
+        },
+        "VEE": {
+          "net": "-12V",
+          "pin": "11"
+        }
+      },
+      "ref": "U1517",
+      "status": "source pin binding only; no instantiated simulation deck",
+      "symbol": "zudo-osc-hole-field:OPA4196IDR",
+      "unit": 2
+    },
+    {
+      "MPN": "OPA4196IDR",
+      "instance": "O5",
+      "logical_key": "general_output_J_O1_1V_PUL__A.1",
+      "macro": "OPAx196",
+      "macro_pin_binding": {
+        "IN+": {
+          "net": "/O5/PUL_SCALED",
+          "pin": "10"
+        },
+        "IN-": {
+          "net": "/O5/Cec1eaa_DRIVE",
+          "pin": "9"
+        },
+        "OUT": {
+          "net": "/O5/Cec1eaa_DRIVE",
+          "pin": "8"
+        },
+        "VCC": {
+          "net": "+12V",
+          "pin": "4"
+        },
+        "VEE": {
+          "net": "-12V",
+          "pin": "11"
+        }
+      },
+      "ref": "U1517",
+      "status": "source pin binding only; no instantiated simulation deck",
+      "symbol": "zudo-osc-hole-field:OPA4196IDR",
+      "unit": 3
+    },
+    {
+      "MPN": "OPA4196IDR",
+      "instance": "O5",
+      "logical_key": "",
+      "macro": "OPAx196",
+      "macro_pin_binding": {
+        "IN+": {
+          "net": "AGND",
+          "pin": "12"
+        },
+        "IN-": {
+          "net": "/O5/PACK_OPA4196IDR_5_IO_UNUSED4",
+          "pin": "13"
+        },
+        "OUT": {
+          "net": "/O5/PACK_OPA4196IDR_5_IO_UNUSED4",
+          "pin": "14"
+        },
+        "VCC": {
+          "net": "+12V",
+          "pin": "4"
+        },
+        "VEE": {
+          "net": "-12V",
+          "pin": "11"
+        }
+      },
+      "ref": "U1517",
+      "status": "source pin binding only; no instantiated simulation deck",
+      "symbol": "zudo-osc-hole-field:OPA4196IDR",
+      "unit": 4
+    }
+  ],
+  "capture_assertion_count": 28,
+  "dependency_update": {
+    "now": "Official OPAx196 family macro acquired and inspected; exact quad family applicability documented",
+    "previous": "Stage5 lacked an acquired validated OPA4196 dynamic model",
+    "still_open": [
+      "simulator dialect compatibility",
+      "manufacturer testbench reproduction",
+      "model behavior validation for actualrails/load/temperature",
+      "closedloopactualcircuit stability",
+      "package/sharedsupply coupling",
+      "route parasitics andrealreturn",
+      "worstcase manufacturerdata",
+      "separate exactrunadmission fornative work"
+    ]
+  },
+  "model_evidence": {
+    "archive_bytes": 27388,
+    "archive_sha256": "9c264813a36536f743c166b6a101904b76ed08f049f2eeb127a438cc6e8ccdf5",
+    "availability": "AVAILABLE manufacturer family model; no execution or simulator validation",
+    "declared_model_capabilities": [
+      "Aol/phase withRL/CL",
+      "GBW",
+      "CMRR/PSRR",
+      "Zid/Zic",
+      "frequency-dependentZo",
+      "supply/outputcurrent",
+      "noise",
+      "swing/currentlimit",
+      "settling/overshoot/slew",
+      "overload",
+      "bias/offset/offsetdrift/commonmode",
+      "ESD cells"
+    ],
+    "dialect_features": [
+      "PSpice PARAMS",
+      "VALUE/IF/LIMIT/TABLE/PWR behavioral expressions",
+      "VSWITCH",
+      "temperature expression TEMP",
+      "R_NOISELESS RES T_ABS=-273.15"
+    ],
+    "inspected_line_evidence": [
+      {
+        "line": 21,
+        "text": "* Date: 29AUG2022"
+      },
+      {
+        "line": 28,
+        "text": "* Model Version: Final 1.5"
+      },
+      {
+        "line": 87,
+        "text": "* 2. OPAx196 model is used for OPA196, OPA2196, OPA4196 devices, since all"
+      },
+      {
+        "line": 90,
+        "text": ".SUBCKT OPAx196 IN+ IN- VCC VEE OUT"
+      },
+      {
+        "line": 121,
+        "text": "C_C_COM0      ESDP MID  6.4P"
+      },
+      {
+        "line": 122,
+        "text": "C_C_COM1      MID ESDN  6.4P"
+      },
+      {
+        "line": 123,
+        "text": "C_C_DIFF      ESDN ESDP  1.6P"
+      },
+      {
+        "line": 147,
+        "text": "I_I_B         N24207 MID DC 5.25P"
+      },
+      {
+        "line": 148,
+        "text": "I_I_OS        ESDN MID DC 2.75P"
+      },
+      {
+        "line": 149,
+        "text": "I_I_Q         VCC VEE DC 140U"
+      },
+      {
+        "line": 150,
+        "text": "R_R1          IN+ ESDP R_NOISELESS 100"
+      },
+      {
+        "line": 168,
+        "text": "R_R2          IN- ESDN R_NOISELESS 100"
+      },
+      {
+        "line": 174,
+        "text": "R_R3          ESDP MID R_NOISELESS 1T"
+      },
+      {
+        "line": 180,
+        "text": "R_R4          MID ESDN R_NOISELESS 1T"
+      },
+      {
+        "line": 230,
+        "text": "R_R_DIFF      ESDN ESDP R_NOISELESS 100MEG"
+      },
+      {
+        "line": 278,
+        "text": "X_U4          N25397 N24207 VOS_DRIFT_OPAx196  PARAMS: DC=1.36E-05 POL=1"
+      },
+      {
+        "line": 279,
+        "text": "+  DRIFT=0.5E-6"
+      },
+      {
+        "line": 419,
+        "text": ".SUBCKT VOS_DRIFT_OPAx196  VOS+ VOS- PARAMS: DC=1.36E-05 POL=1 DRIFT=0.5E-6"
+      },
+      {
+        "line": 420,
+        "text": "E1 VOS+ VOS- VALUE={DC+POL*DRIFT*(TEMP-27)}"
+      }
+    ],
+    "limitations": [
+      "TI as-is model with no warranty; model may change.",
+      "Per-channel generic family model does not qualify package crosstalk/thermal coupling, fittedPCB, contacts, tolerance or fault states.",
+      "Source availability does not establish simulator dialect compatibility, convergence, regression against TI reference cases or exact-run native admission.",
+      "No simulator,model testcircuit,native tool or model executable launched."
+    ],
+    "member": "OPAx196.LIB",
+    "member_bytes": 16622,
+    "member_inventory": [
+      {
+        "bytes": 16622,
+        "name": "OPAx196.LIB",
+        "sha256": "31142f5dbd71b758d887ee8a411692fc4c1309c8f47100af4ba5bed7e173c430"
+      },
+      {
+        "bytes": 813,
+        "name": "OPAx196.LIBsig",
+        "sha256": "82484bb289d661a2589fbee0d08e3ecb98111e61966f81e5e0b2f1cb3a5635ed"
+      },
+      {
+        "bytes": 9216,
+        "name": "OPAx196.OLB",
+        "sha256": "6fdc0d7d330dcfb1a181576ed9bd96998bd511ce16d4061ceddaa71a66012745"
+      },
+      {
+        "bytes": 560,
+        "name": "OPAx196_Test_Circuit-PSpiceFiles/SCHEMATIC/Aol_Gain/Aol_Gain.mrk",
+        "sha256": "fb4f2fd4036e0cb7f8bdca4c1f3596beb2d7033d1d224cbea29e1a7ca318f1e2"
+      },
+      {
+        "bytes": 2750,
+        "name": "OPAx196_Test_Circuit-PSpiceFiles/SCHEMATIC/Aol_Gain/Aol_Gain.prb",
+        "sha256": "7027f18e6c4033c38dc8c372ae808e90d861d680d3ef864cce2089053ecdf169"
+      },
+      {
+        "bytes": 1852,
+        "name": "OPAx196_Test_Circuit-PSpiceFiles/SCHEMATIC/Aol_Gain.sim",
+        "sha256": "0bf534a1751e99bac324f4ea3fa4138b9128c3c594604b619106f99fd1f8f560"
+      },
+      {
+        "bytes": 881,
+        "name": "OPAx196_Test_Circuit-PSpiceFiles/SCHEMATIC/TRANS/TRANS.mrk",
+        "sha256": "c58b18b01174bf01f09f809ab62731a35abafe8838e3788c4a3e4ebb9b233fbe"
+      },
+      {
+        "bytes": 1256,
+        "name": "OPAx196_Test_Circuit-PSpiceFiles/SCHEMATIC/TRANS/TRANS.prb",
+        "sha256": "f7f21903c322af3a6a3666c7dff5f4ce2e3bda0805ffdaca0019a1d44b832ad4"
+      },
+      {
+        "bytes": 1826,
+        "name": "OPAx196_Test_Circuit-PSpiceFiles/SCHEMATIC/TRANS.sim",
+        "sha256": "83e9eb0ebb705fe0a679bb11d3fb943e82101e9afc703daa75e8175929a12085"
+      },
+      {
+        "bytes": 50176,
+        "name": "OPAx196_Test_Circuit.DSN",
+        "sha256": "b455bec49870c9a5f7bdf7b244bc41b91e6fa2554ad97bac75dddef5d524a701"
+      },
+      {
+        "bytes": 6879,
+        "name": "OPAx196_Test_Circuit.OPJ",
+        "sha256": "07e66d34a245a3413190eeb0165a8b355e03f0c3fab091bdfdeb4cd8a0add0c5"
+      }
+    ],
+    "member_sha256": "31142f5dbd71b758d887ee8a411692fc4c1309c8f47100af4ba5bed7e173c430",
+    "model_family": [
+      "OPA196",
+      "OPA2196",
+      "OPA4196"
+    ],
+    "parameter_scope": "inspected internal macro-model element values only; no guaranteed device bounds or solved terminal behavior",
+    "parameters": {
+      "C_common_each_F": 6.4e-12,
+      "C_differential_F": 1.6e-12,
+      "I_I_B_A": 5.25e-12,
+      "I_I_OS_A": 2.7499999999999998e-12,
+      "I_I_Q_A": 0.00014,
+      "R_common_each_ohm": 1000000000000.0,
+      "R_differential_ohm": 100000000.0,
+      "R_input_each_ohm": 100.0,
+      "Vos_internal_DC_V": 1.36e-05,
+      "Vos_internal_drift_V_per_C": 5e-07,
+      "Vos_reference_temperature_C": 27.0
+    },
+    "release_date": "29AUG2022",
+    "subcircuit": "OPAx196",
+    "subcircuit_pin_order": [
+      "IN+",
+      "IN-",
+      "VCC",
+      "VEE",
+      "OUT"
+    ],
+    "url": "https://www.ti.com/lit/zip/SBOMAF9",
+    "version": "Final1.5"
+  },
+  "native": "NOT RUN",
+  "reproduction": {
+    "download_url": "https://www.ti.com/lit/zip/SBOMAF9",
+    "ignored_archive": ".circuit-cache/sources/architecture278-SBOMAF9/SBOMAF9.zip",
+    "note": "Offline reproduction uses committed inspected evidence; --verify-archive independently rechecks exact rawbytes/membermetadata. Missing rawcache is not fabricated availability.",
+    "offline_check": "python3 scripts/architecture278/implementation/stage6_electrical.py --check",
+    "verify_command": "python3 scripts/architecture278/implementation/stage6_electrical.py --verify-archive .circuit-cache/sources/architecture278-SBOMAF9/SBOMAF9.zip"
+  },
+  "simulator_execution": "NOT RUN",
+  "source_sha256": {
+    "design/architecture-278/implementation/stage5-electrical-report.json": "60ffb7fb750e7e8cbd38576a703e38e1cde0cae3bf31819c232eab6c0969bf5f",
+    "design/architecture-278/implementation/stage6/opax196-evidence.json": "bd25c762edc753bf3dfa1f94f4521012946639d4a11978ac4db25423070c611d",
+    "design/spec/modules/oscillator.py": "c83a10adb792265798ae453af4380300b6fde8d1e26afe6dca240412eb965d3e",
+    "design/standard/electrical-standard.json": "185f4775082a36873954323a2377844e0694631418ac510db08e3a0d39b56e53",
+    "scripts/architecture278/implementation/stage5_electrical.py": "71416e34163e64669cbf748a97d9819d73ce5ba1a7bc03620fa3647f8839cab0",
+    "scripts/architecture278/implementation/stage6_electrical.py": "d28c41ca843b986fbd43587e5b3a3b8ca5e0dfb5b9ef461ba90dbbb7938458c4",
+    "scripts/architecture278/implementation/test_stage6_electrical.py": "0035551eaf77ebc48f10486e9246a3a4162bde202dc90d7835a6c8b5ba24cb3f"
+  },
+  "status": "MANUFACTURER MODEL AVAILABLE; SOURCE INSPECTED ONLY; NO SIMULATION/NATIVE ADMISSION"
+}

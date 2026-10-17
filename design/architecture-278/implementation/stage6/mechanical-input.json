@@ -1,0 +1,71 @@
+{
+  "status": "DRAWING-REGISTERED SOURCE ENVELOPES; installed/native geometry not qualified",
+  "source_evidence": "../stage5/din-evidence.json",
+  "female_drawing": "0903296X824_100173852DRW153C.pdf page1 views A and B",
+  "male_drawing": "0903196X922_100216585DRW016B.pdf page1 views B and A-A",
+  "drawing_axes": "u right, v down on page; origin at middle of row b between positions16/17",
+  "female_A_to_global_xy_matrix": [
+    [
+      0,
+      -1
+    ],
+    [
+      1,
+      0
+    ]
+  ],
+  "male_B_to_global_xy_matrix": [
+    [
+      0,
+      1
+    ],
+    [
+      1,
+      0
+    ]
+  ],
+  "female_row_v_mm": {
+    "a": -2.54,
+    "b": 0,
+    "c": 2.54
+  },
+  "male_row_v_mm": {
+    "a": 2.54,
+    "b": 0,
+    "c": -2.54
+  },
+  "pin1_u_mm": 39.37,
+  "pitch_mm": 2.54,
+  "female_flange_v_mm": -0.3,
+  "female_flange_v_tolerance_mm": 0.1,
+  "female_flange_span_mm": 90,
+  "female_flange_span_tolerance_mm": 0.1,
+  "signed_flange_interpretation": "Female board-drilling A dimension0.3 places flange axis above row b, toward row a; global delta X=+0.3. Male mounting flange lies at a different axial level; its footprint is not copied onto middle board.",
+  "proposed_contact_pad_diameter_mm": 1.8,
+  "annular_authority": "PROPOSED engineering copper input, not manufacturer specified or fabrication-approved. Round land for every one of96 positions including NC.",
+  "pcb_thickness_mm": 1.6,
+  "pcb_thickness_status": "PROPOSED nominal stack interpretation; tolerance/material confirmation OPEN",
+  "middle_female_mount_surface_z_mm": 50,
+  "middle_GH_opposite_surface_z_mm": 48.4,
+  "rear_male_mount_surface_z_mm": 69.2,
+  "female_tail_length_range_mm": [
+    2.85,
+    3.05
+  ],
+  "GH_reference_body_local_y_mm": [
+    0.2,
+    4.45
+  ],
+  "GH_reference_body_height_mm": 4.05,
+  "GH_reference_standoff_mm": 0.15,
+  "GH_body_locator": "eGH.pdf physical page1 top-entry board/assembly layout and physical page2 top-entry header dimensions. signal land center y0: bottom land4.75, outline bottom4.45 from0.3 reference inset;4.25depth gives front0.20.",
+  "exclusion_rule": "Require every maximum contact-pad/position envelope and signed flange-hole tolerance envelope to miss every entire project GH courtyard. This includes body, solder land and reference solder-toe zones without assuming internal body cavities.",
+  "unknown": [
+    "Exact male mounting-flange screw/stand-off load path",
+    "Screw head/nut/washer envelopes and assembly tooling",
+    "GH and DIN solder fillet dimensions/process allowance",
+    "Copper etch/plating fabrication tolerances and routing clearance",
+    "Signed native footprint registration and PCB datum/tolerance validation",
+    "Other hardware438 full solids, forces/frame/guides and other-function hosting"
+  ]
+}

@@ -1,0 +1,63 @@
+{
+  "baseline_commit": "12a48ff5f7c771a1011c789c42d5e4dcb450c07d",
+  "candidate_adoption": false,
+  "checks": [
+    {
+      "command": "python3 -m unittest discover -s scripts/architecture278/implementation -p test_stage23_jlc.py",
+      "result": "PASS",
+      "tests": 28
+    },
+    {
+      "command": "python3 -O -m unittest discover -s scripts/architecture278/implementation -p test_stage23_jlc.py",
+      "result": "PASS",
+      "tests": 28
+    },
+    {
+      "command": "python3 scripts/architecture278/implementation/stage23_jlc.py --check --check-cache",
+      "result": "PASS"
+    },
+    {
+      "command": "pnpm circuit:check",
+      "result": "PASS",
+      "scope": "Manual inventory: 68 lines; no schematic/placement binding; 0 declared placements unverified; pin-asset check performed."
+    }
+  ],
+  "electrical_acceptance": false,
+  "independent_evidence": [
+    "Independently resolved and fetched RT0603BRD0722K1L/C723484 and C0603C103J5RACTU/C5360746. All nine root-retained exact pages replayed successfully.",
+    "Independently inspected public JLC frontend hash776243a15b5fdf3cefb44b0cfca77dd2fc087e8c8850399715b73a51558d9461: assemblyComponentFlag selects Mechanical Assembly badge; it is not SMT eligibility.",
+    "Official sourcing/global-sourcing guidance independently researched; matching receipt inspected. Catalog declarations and positive observed stock are not allocation, final service acceptance or guaranteed lead time.",
+    "Original manufacturer ratings and hashes remain bound to Stage21. Stage22 electrical and physical blockers survive in the unapplied proposals."
+  ],
+  "native_execution": "NONE",
+  "purchase_or_contact": "NONE",
+  "remaining": [
+    "Order-time complete BOM/CPL, prototype quantity, attrition, service review and stock allocation are unconfirmed.",
+    "Reference error budget, C7105 dielectric classification, AC null bandwidth, settling, stability and installed thermal/process qualification remain open.",
+    "No MPN substitution, source selection adoption, CAD modification, procurement release or electrical acceptance is approved."
+  ],
+  "resolved_findings": [
+    "Exact visible product table now ends before another MFR.Part # table; service declarations cannot be borrowed from another product.",
+    "Flight references resolve exact framed IDs, including UTF-8 byte-length text frames; ID suffixes, duplicate IDs and embedded text definitions are rejected.",
+    "All four service-guidance claims require their exact receipt IDs and official URLs; frontend interpretation binds the independently inspected script hash."
+  ],
+  "reviewed_UTC": "2026-10-17T03:33:00.663933+00:00",
+  "reviewed_sha256": {
+    "design/architecture-278/implementation/stage16/inputs-report.json": "214297b7b19f9ae6027d1f036407f005319929961338631896f984655a4c0ebc",
+    "design/architecture-278/implementation/stage21/inventory-input.json": "991b24386c364e6751e16bd117946669e0326dbb2ec66c446b9a6585890047e2",
+    "design/architecture-278/implementation/stage22/requirements-report.json": "27c977434ec353ed23fef28b6120c5ca4c9242f275a4a7540f882ea01b809b20",
+    "design/architecture-278/implementation/stage23/README.md": "e0ec5029a04b5381c37dbf6aae65d231d5e1d1138067022d9a0b693ba252da05",
+    "design/architecture-278/implementation/stage23/candidate-selection.patch.json": "dad1bc2fef5c14c6141c5aeb8e0d4b3bdac5ca83b7be1dc72cba92fcc2344da7",
+    "design/architecture-278/implementation/stage23/inventory-input.json": "5f4166f2f4cc6eb095985b7bf40f37e9f9de0be84931dedb65db9d5f397ac7d1",
+    "design/architecture-278/implementation/stage23/retrieval.json": "dc2a2f5a950cb861aeb7d99eb1bc23c678ff7213864303103e550dd6ad0eacfd",
+    "scripts/architecture278/implementation/stage23_jlc.py": "2d8cf34b12ab06f4e2fc7ee3051a4d27075f7948ec68d39cb673e7192c288387",
+    "scripts/architecture278/implementation/test_stage23_jlc.py": "d9e8aa44a127ff701d6ae29e3b34b15b5af47438a3ccc2713db2b21920929fa4"
+  },
+  "reviewer": "independent subagent /root/stage21_independent_review",
+  "reviewer_changes": [
+    "design/architecture-278/implementation/stage23/independent-review.md",
+    "design/architecture-278/implementation/stage23/independent-review.json"
+  ],
+  "scope": "Exact JLC sourcing evidence, strict product/service parsing, nine unchanged candidates and nineteen unapplied source-preserving proposals.",
+  "status": "PASS_SOURCE_REVIEW_ONLY"
+}

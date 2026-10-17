@@ -1,0 +1,108 @@
+{
+  "DIN": {
+    "flange_holes": null,
+    "missing_decision": "Obtain exact dimensioned manufacturer PCB drawing and mating/solder-side pin numbering transform; choose board thickness, plated finished-hole tolerances, pad annulus, tail protrusion, fixing flange and mate/support stack. Do not derive a production drill from rectangular contact section alone. Coding removes contacts and cannot silently change96-pin logical roster.",
+    "pad_mm": null,
+    "qualified": false,
+    "recommended_finished_hole_mm": null,
+    "retained_evidence": {
+      "female": {
+        "authority": "manufacturer-authored PDF on distributor mirror",
+        "flange_hole_centres_mm": null,
+        "flange_hole_diameters_mm": null,
+        "identity_pitch_length_locator": "physical page0, printed1/4; 96contacts rowsa/b/c,2.54mm pitch,2.9mm termination, fixing flange",
+        "local_cache": ".circuit-cache/sources/architecture278-harting/document.pdf",
+        "manufacturer": "HARTING",
+        "mpn": "09032966824",
+        "recommended_finished_hole_mm": null,
+        "recommended_pad_mm": null,
+        "section_locator": "physical page2, printed3/4; visually inspected dimensioned solder termination cross section",
+        "sha256": "978b11ceab4ffa9b0bf7661240a6b32eb54bec8197e8bf1f726761b88db0eed6",
+        "termination_length_mm": 2.9,
+        "termination_section_ranges_mm": [
+          [
+            0.68,
+            0.75
+          ],
+          [
+            0.29,
+            0.31
+          ]
+        ],
+        "url": "https://www.evg.de/media/files_public/a0a86f4d04cc31683711477663ba720c/Harting_FEDERLEISTE-09_03_296_6824-103.pdf"
+      },
+      "male": {
+        "authority": "manufacturer-authored PDF on distributor mirror",
+        "flange_hole_centres_mm": null,
+        "flange_hole_diameters_mm": null,
+        "identity_pitch_length_locator": "physical page0, printed1/5;96contacts rowsa/b/c,2.54mm pitch,3.0mm termination, fixing flange",
+        "local_cache": ".circuit-cache/sources/architecture278-harting-male/document.pdf",
+        "manufacturer": "HARTING",
+        "mpn": "09031966922",
+        "recommended_finished_hole_mm": null,
+        "recommended_pad_mm": null,
+        "section_locator": "physical page3, printed4/5; visually inspected dimensioned solder termination cross section",
+        "sha256": "736b7a87209f7e1e59610d3897b9922aab8fe4833276fb43af16165aa26a982e",
+        "termination_length_mm": 3,
+        "termination_section_ranges_mm": [
+          [
+            0.575,
+            0.6
+          ],
+          [
+            0.5,
+            0.55
+          ]
+        ],
+        "url": "https://assets.rs-online.com/image/upload/v1763385649/Datasheets/c29c606e19ded3a09c39bbc6b0188822.pdf"
+      }
+    }
+  },
+  "annotations": {
+    "missing_decision": "Choose direct-solder wire land versus physical terminal/connector after specifying wire gauge/stranding/insulation, entry direction, solder process, strain relief, pull/service load and board thickness. Retain22 logical annotations in_bom=false/on_board=false until separately reviewed physical design.",
+    "mpn_applicable": false,
+    "qualified": false
+  },
+  "capacitor": {
+    "density_patterns_mm": {
+      "A": {
+        "courtyard": [
+          4,
+          2.1
+        ],
+        "pad_center_abs_x": 0.9,
+        "pad_length_x": 1.15,
+        "pad_width_y": 1.1
+      },
+      "B": {
+        "courtyard": [
+          3.1,
+          1.5
+        ],
+        "pad_center_abs_x": 0.8,
+        "pad_length_x": 0.95,
+        "pad_width_y": 1
+      },
+      "C": {
+        "courtyard": [
+          2.4,
+          1.2
+        ],
+        "pad_center_abs_x": 0.6,
+        "pad_length_x": 0.75,
+        "pad_width_y": 0.9
+      }
+    },
+    "missing_decision": "Choose solder process and density level. Captured C0603 is not any listed pattern. Review pad, mask, paste and courtyard changes separately; levelC requires process qualification.",
+    "qualified": false,
+    "source_ids": [
+      "kemet-c0g",
+      "kemet-x7r"
+    ]
+  },
+  "resistor": {
+    "missing_decision": "Acquire applicable YAGEO RT/RC chip-resistor mounting guide and select assembly process/land pattern. Exact product body/termination dimensions alone do not qualify captured R0603.",
+    "qualified": false,
+    "recommended_pattern_mm": null
+  }
+}

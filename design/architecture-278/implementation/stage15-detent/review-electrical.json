@@ -1,0 +1,38 @@
+{
+  "CAD": "NOT RUN",
+  "authorship_exclusion": "No reviewed detent implementation, tests, narrative, report, primary evidence or owner source authored by this reviewer. Provided independent primary ordering confirmation before implementation; only this review receipt authored here. Prior authored electrical/load modules are outside this review.",
+  "checks": [
+    "Independently opened manufacturer primary PDF https://www.bourns.com/docs/product-datasheets/PTV09.pdf and visually inspected rendered physical page0 How To Order leader lines. Configuration4020F separates as4|0|20|F: terminal4 horizontal/rear bushingless, option0 no detent,20mm flat insulated shaft. Option2 is center; generic family center-detent feature does not imply selected option.",
+    "Cached manufacturer bytes independently hashed411cdb6a62e61f9c5bc2df76ed64ee21d7bcfbee035c1ba36beff08c43f28558, matching new evidence and retained component-owner sources. Resistance104 is100k\u03a9.",
+    "Verified canonical pot binding C:A01.OFFSET\u2192pot_104, shortlist exact BournsPTV09A-4020F-B104 and captured RV1308 matching MPN/PanelUid through fresh report build. No substitution or changed geometry introduced.",
+    "Addendum treats centre as nominal angular/electrical observation, never a tactile click or guaranteed zero. Normal travel/end stops remain; no endless-rotation claim. Physical baseline meter setup and direction-of-approach observations remain valid.",
+    "Owner no-centre-click requirement is recorded; prior procedure remains unadopted.2mV postfactory static and1mV same-setting load criteria are unchanged. Incoming physical option inspection is future NOT RUN, not achieved qualification.",
+    "Five focused tests independently passed, including rejected centre-option/BOM/definition mutations. Fresh report exactly reproduced; source bindings verified and406 historical files preserved againstc142e1120da1cfe66e809b83fbcb6698c204a341."
+  ],
+  "component_geometry_changed": false,
+  "hardware_acceptance": false,
+  "independent_review": true,
+  "native": "NOT RUN",
+  "physical": "NOT RUN",
+  "reviewer": "Independent electrical/ordering review; inherited model settings, exact model identifier unavailable",
+  "simulation": "NOT RUN",
+  "source_sha256": {
+    ".claude/skills/component-bourns-ptv09a-4020f-b104/manifest.json": "f2ffe6910d20f2180933da63bc54a9cf392c3502ba3a1e09ab625b937ec31864",
+    ".claude/skills/component-bourns-ptv09a-4020f-b104/sources.json": "483119cec01f53212cfc5250f6dde939393d38c8390724dce8b49c09dc36dc1c",
+    "design/architecture-278/implementation/STAGE15-DETENT.md": "e28292e92cda7aa8296bf6ac19903d05aae35ad341446ce81e6caee3fc79fda8",
+    "design/architecture-278/implementation/stage10/inventory-report.json": "b88055d78d3cb5a7722e993e4b8d33b347e4eb2c4492e9a523c3eb968d8c8af0",
+    "design/architecture-278/implementation/stage15-detent/detent-report.json": "dbcd56c55227e58b00832ef6cead8b8d04c2021bdf3aaebcc312b3c7846ab0cb",
+    "design/architecture-278/implementation/stage15-detent/primary-evidence.json": "590611bc29e3f7e2588ea677c901dfc085abd97b3adc97908b62c428ce774fb2",
+    "design/architecture-278/implementation/stage15-detent/scope.json": "6b2d718f1b7d021079533f68b933cfd21574f62e8b9c2ec08626e411454f628c",
+    "design/standard/electrical-standard.json": "185f4775082a36873954323a2377844e0694631418ac510db08e3a0d39b56e53",
+    "design/standard/parts-shortlist.json": "cd27a8abd9fc586b9ee18cb7070ff7dce918254404188ca30626f52b20df4f21",
+    "scripts/architecture278/implementation/stage15_detent.py": "cea166f953f8c4151291c786cba98f67bc53a42879ead014d1f0baf739a0a770",
+    "scripts/architecture278/implementation/test_stage15_detent.py": "21107a07d370ce44a5bfc051eaff12e0a6136e16b2ed57eea2f8cc2fb8d0ff03"
+  },
+  "tests": {
+    "fresh_report_and_source_binding_check": "PASS",
+    "preserved_predecessor_files": 406,
+    "root_detent_tests_independently_passed": 5
+  },
+  "verdict": "No blocking defect found. Exact selected manual OFFSET part already specifies no detent; additive contract correctly retains it without hardware changes."
+}

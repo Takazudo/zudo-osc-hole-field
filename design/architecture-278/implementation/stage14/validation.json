@@ -1,0 +1,74 @@
+{
+  "CAD": "NOT RUN",
+  "CI": "Intentionally skipped via commit marker; default workflow invokes unauthorized native execution",
+  "DRC": "NOT RUN",
+  "ERC": "NOT RUN",
+  "baseline_commit": "df671f7a1e2598de3294f375509d8a73dc508d9d",
+  "checks": [
+    {
+      "command": "python3 -m unittest discover -s scripts/architecture278/implementation -p test_*.py",
+      "exit_code": 0,
+      "final_output_lines": [
+        "...................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................",
+        "----------------------------------------------------------------------",
+        "Ran 643 tests in 87.854s",
+        "",
+        "OK"
+      ],
+      "stdout_stderr_sha256": "b5bce310887e8cf1c3d2d2c7e9f7fe4c60701b7a12e222ea661df822a2158c10",
+      "tests": 643
+    },
+    {
+      "command": "python3 -m unittest discover -s scripts/architecture278 -p test_*.py",
+      "exit_code": 0,
+      "final_output_lines": [
+        "......................................................................................",
+        "----------------------------------------------------------------------",
+        "Ran 86 tests in 8.912s",
+        "",
+        "OK"
+      ],
+      "stdout_stderr_sha256": "71c196fdf734d729066ee845550f37979eedd602559c64f3612cb52f61c13443",
+      "tests": 86
+    },
+    {
+      "command": "python3 scripts/architecture278/implementation/check_source.py",
+      "exit_code": 0,
+      "final_output_lines": [
+        "PASS existing-control source study; calibration/load acceptance OPEN",
+        "PASS frozen Stage13 evidence/reviews; mutable integration checked at df671f7a1e2598de3294f375509d8a73dc508d9d",
+        "PASS Stage14 four pads/five edges and all106 endpoint allocations; electrical acceptance OPEN",
+        "PASS conditioned charge/load source arithmetic; CONDITIONAL_CANDIDATE, electrical acceptance OPEN",
+        "PASS Stage14 final source composition; acceptance OPEN",
+        "PASS isolated candidate scope; PR285 and all canonical bytes unchanged; native NOT RUN"
+      ],
+      "stdout_stderr_sha256": "b048a59bbe55855fb69f59f8196264004f2f863c346acfb50b2aca76c0239d05",
+      "tests": null
+    },
+    {
+      "command": "pnpm check",
+      "exit_code": 0,
+      "final_output_lines": [
+        "31 committed footprint previews are current and safe",
+        "ok   footprints: previews up to date",
+        "check passed: generated output is up to date",
+        "$ zfb check",
+        "info running /workspace/zudo-osc-hole-field/doc/node_modules/.bin/tsc --noEmit",
+        "\u2713 checked 1 collection and tsc \u2014 no errors"
+      ],
+      "stdout_stderr_sha256": "028e9fcfd2ffee79cf33af7bbc9d7d82931c5ef9d31847ea177e04bdffe0b04e",
+      "tests": null
+    }
+  ],
+  "circuit_check_before_after": "PASS; manual68lines,0declaredplacements,no schematic/placement binding;pin-assetcheckperformed",
+  "native": "NOT RUN",
+  "physical": "NOT RUN",
+  "protected_predecessor_files": 314,
+  "resolved_environment_gap": "Fetched exact historical7aba720c1246d6ec3f02909af6fb08dc774b3d31 after inherited ledger failed in fresh single-branch clone; rerunPASS, no source edits",
+  "review_sha256_bindings_checked": 32,
+  "simulation": "NOT RUN",
+  "site_build": "NOT RUN; isolated implementation source/narrative only",
+  "stage14_tests": 36,
+  "status": "PASS source checks only; electrical acceptance OPEN",
+  "total_source_tests": 729
+}

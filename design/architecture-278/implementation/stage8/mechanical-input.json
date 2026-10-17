@@ -1,0 +1,165 @@
+{
+  "status": "PROPOSED Stage8 coherent slot and carrier study; not fabrication or strength acceptance",
+  "source_stage7": "4333f350",
+  "join_exact_ligaments_mm": [
+    0.42,
+    0.54,
+    0.8,
+    0.92
+  ],
+  "join_policy": "Remove the identified foreign-pad bridges and edge strips; these values identify defects, not a universal permitted web minimum.",
+  "tool_radius_mm": 0.25,
+  "tool_path_tolerance_mm": 0.1,
+  "rounding_policy": "Inward cutteroffset radius0.25; nominalcornerrecession0.07323 fits0.1foreignpad margin at worstinnercut. Nominalgeometryaddsone tolerance; worstoutergeometryaddstwice. No wholetoolradiusdilation.",
+  "carrier": {
+    "status": "PROPOSED new enclosure side-rail attachment; no existing holes asserted",
+    "material": "PROPOSED certified6061-T6 monolithic machinedframe; suppliermodulus/proofreference, no welds",
+    "z_mm": [
+      2,
+      19
+    ],
+    "anchor_proposals": [
+      {
+        "id": "left_upper",
+        "centre_mm": [
+          3,
+          119
+        ],
+        "z_mm": [
+          2,
+          19
+        ]
+      },
+      {
+        "id": "right_upper",
+        "centre_mm": [
+          315,
+          119
+        ],
+        "z_mm": [
+          2,
+          19
+        ]
+      },
+      {
+        "id": "left_lower",
+        "centre_mm": [
+          3,
+          289
+        ],
+        "z_mm": [
+          2,
+          19
+        ]
+      },
+      {
+        "id": "right_lower",
+        "centre_mm": [
+          315,
+          289
+        ],
+        "z_mm": [
+          2,
+          19
+        ]
+      },
+      {
+        "id": "left_jack_lower",
+        "centre_mm": [
+          3,
+          164
+        ],
+        "z_mm": [
+          2,
+          19
+        ]
+      },
+      {
+        "id": "right_jack_lower",
+        "centre_mm": [
+          315,
+          164
+        ],
+        "z_mm": [
+          2,
+          19
+        ]
+      }
+    ],
+    "anchor_hole_diameter_mm": 3.2,
+    "anchor_head_tool_diameter_mm": 7,
+    "anchor_fastener": "PROPOSED M3 through-bolt with captive nut; exact grade, washer, engagement and enclosure thickness unselected",
+    "load_path": "PCB clamped between rear washer and front spacer; spacer bears on carrier crossmember; crossmember ends bolt to newly proposed enclosure side rails; side rails connect to enclosure. No connector or solder credited as structure.",
+    "crossmember_width_mm": 7,
+    "crossmember_y_mm": [
+      119,
+      289
+    ],
+    "load_cases": {
+      "jack_insertion_N": 30,
+      "lateral_knob_N": 10,
+      "knob_torque_Nm": 0.2,
+      "cable_button_N": 5,
+      "transport_g": 10
+    },
+    "source_load_cases": "design/architecture-278/mechanics.md",
+    "acceptance": false,
+    "rib_width_mm": 3,
+    "hardware_clearance_mm": 0.2,
+    "candidate_enclosure_xy_mm": [
+      -2,
+      0,
+      320,
+      298
+    ],
+    "enclosure_change": "Proposed 322 mm internal X instead of318 mm panel projection; fixed panel centres unchanged. New side rail/boss anchorage required, no existing hole assumption.",
+    "anchor_contact_plate_size_mm": [
+      7,
+      7
+    ],
+    "anchor_edge_web_mm": 1.5,
+    "strength_status": "3mm ribs are path-search engineering inputs, NOT load-rated members; material/section/depth/deflection unknown",
+    "rib_depth_mm": 17,
+    "planning_force_N": 30,
+    "planning_deflection_limit_mm": 0.5,
+    "planning_stress_limit_MPa": 80,
+    "planning_limit_authority": "Source-study service screen:30N source jackload placed conservatively ononebranch;0.5mm displacement chosen to staybelow0.6mm structural/padfacegap scale, not accepted performance criterion;80MPa is240MPaproof/3. Actual connector extractionforce/installedmass unknown.",
+    "mount_interface": "Monolithic17mm-deep carrier bossZ2..19, diameter5mm at each mount, topcontact19. Insulating1mm spacerZ19..20 supportsPCB20..21.6; rearwasher/head21.6..24.1 retained. ProposedM2.5x8 underhead screw passes1.6PCB+1spacer and engages5.4mm in tappedcarrierboss; residualbossweb11.6mm. Thread/torque/insulation andspotfaceproductionqualificationOPEN. No spacer/crossmember interpenetration.",
+    "mount_stack": {
+      "boss_z_mm": [
+        2,
+        19
+      ],
+      "spacer_z_mm": [
+        19,
+        20
+      ],
+      "PCB_z_mm": [
+        20,
+        21.6
+      ],
+      "head_z_mm": [
+        21.6,
+        24.1
+      ],
+      "screw_underhead_length_mm": 8,
+      "thread_engagement_mm": 5.4,
+      "boss_diameter_mm": 5
+    }
+  },
+  "physical_acceptance": false,
+  "process_choice": "Required dimensional+positional boundary allowance0.10mm total:0.05+0.05. Nominalcut expands originalby0.10; worstoutercut expandsby0.20, worstinner retainsoriginalforeignpad clearance. Standard0.40+0.40case separatelynegative.",
+  "proposed_pad_edge_clearance_mm": 0.25,
+  "pad_edge_clearance_authority": "Engineering proposal for this un-routed candidate only; manufacturer acceptance and copperprocess not established. Exactactualpad overlap independently reported.",
+  "required_precision_process": {
+    "dimension_tolerance_plusminus_mm": 0.05,
+    "position_tolerance_plusminus_mm": 0.05,
+    "status": "REQUESTED ENGINEERING REQUIREMENT ONLY; supplier acceptance absent",
+    "authority": "Primary manufacturer states tighter requested tolerances must be specified, mayincreasecost; source doesnot promise these particularvalues",
+    "maximum_total_boundary_allowance_mm": 0.135
+  },
+  "removed_nonfixed_mount_ids": [
+    "X1-jack:M2"
+  ],
+  "process_mode": "REQUESTED_PRECISION_NOT_SUPPLIER_ACCEPTED"
+}

@@ -1,0 +1,32 @@
+{
+  "status": "APPROVED retention repair and future v2 proposal; native execution NOT authorized by this review",
+  "reviewer": "independent_review delegated agent",
+  "authorship": "Reviewer wrote retention mutation tests and original comparator/fixtures; parent authored retention helper and v2 wrappers. This review independently assesses parent code and synthetic live evidence, not independent authorship review of own comparator.",
+  "source_commit": "5469def6cdf2a5f0f9d4a61cec88efbc7ac2130b",
+  "reviewed_sha256": {
+    "scripts/architecture278/implementation/stage17_retain.py": "7d64fd158a0151dbe1337041dd0d2e64b9d254b4134773e6e3c3f5cf713c5211",
+    "scripts/architecture278/implementation/test_stage17_retain.py": "81db1731cdd99baed3a52d5f8a7aebdb6fcd4b334853308c39c71873e048f480",
+    "scripts/architecture278/implementation/stage17_native_host.py": "6a63f81c9df9ee4862eb0a542244cd9ccd139167ecc9ae6111b04137a16a1add",
+    "scripts/architecture278/implementation/stage17_native_container.py": "2b7717433bf6c36f9ea51f1c72ce90c86f5c93a42b0d5fd82777a3bdd254fa2a",
+    "scripts/architecture278/implementation/stage17_native_parity.py": "db823cf90f406379dc392ffa5d04ce271901cd55964a7b9ac4b3771a58f99464",
+    "scripts/architecture278/implementation/test_stage17_native_parity.py": "269dae839b331df7205a3502d74e062ff527f28b6f4680915c31dbb00a6f58f7",
+    "design/architecture-278/implementation/stage17-retention-repair/result.json": "466ac32823022e8c876f2cf80feb4e0b0ea6641900d9853218d05358b6a84be8",
+    "design/architecture-278/implementation/stage17-retention-repair/check.py": "79884f9c7ba14b86631d1a4467f50c6fdd1d8497a5cbd7db3121867e30178397",
+    "design/architecture-278/implementation/stage17-retention-repair/argv.json": "6ae4797eb7635f99dbdb28d08736542078d9a27cc79142d345cca5b45a8e1f56"
+  },
+  "findings": "Earlier blockers resolved: verified cleanup gated after semantic evidence checks, exact verification-commit script bytes and import path bound, command attempts distinctly named; streaming quotas and inventory/hash verification prevent repeat of unverified docker cp cleanup.",
+  "tests": [
+    "26 synthetic retention unit tests PASS; independently executed by reviewer.",
+    "12 synthetic comparator tests PASS; original reviewer authored/executed fixtures and parent reran final repository location.",
+    "Live synthetic retention PASS:4 files4194471bytes; independent on-disk size/SHA256 verification all matched receipt; missing required evidence rejected and source container remained alive."
+  ],
+  "controls_review": "Exact original source hashes separated from verification script commit; one fresh run002 path; existing pinned image/no pull; cgroup2CPU4GiB/no swap,pids128; networknone; readonly inputs/root/control;250MiB live tmpfs+250MiB stream-copy+12MiB metadata;600second whole-container deadline; fresh actual-capability admission required; exact10.0.6 before single export.",
+  "remaining": [
+    "Original native version/export outcome UNKNOWN; native parity NOT RUN.",
+    "V2 wrappers have not executed KiCad and synthetic evidence does not establish native compatibility.",
+    "Fresh owner approval and actual-run admission binding are required before run002.",
+    "Comparator source tests are not independent native observations or electrical acceptance.",
+    "Retention status VERIFIED_HASHED_COPY means verified file hashes and file fsync; no stronger crash-persistence guarantee is claimed."
+  ],
+  "native_commands_run_during_repair_review": 0
+}

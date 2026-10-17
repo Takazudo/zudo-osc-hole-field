@@ -1,0 +1,8780 @@
+{
+  "CAD": "NOT RUN",
+  "counts": {
+    "active_network_elements": 6,
+    "fitted_networks": 2,
+    "new_shield_return_pads": 2,
+    "packages_after": 86,
+    "packages_before": 90,
+    "removed_discrete_resistors": 6,
+    "source_pads_after": 291,
+    "source_pads_before": 285,
+    "unused_network_elements": 2
+  },
+  "elements": [
+    {
+      "connected": true,
+      "element": 1,
+      "nominal_ohm": 100000,
+      "pins": [
+        "1",
+        "8"
+      ],
+      "ref": "RN7101",
+      "replaces": "R7121"
+    },
+    {
+      "connected": true,
+      "element": 2,
+      "nominal_ohm": 100000,
+      "pins": [
+        "2",
+        "7"
+      ],
+      "ref": "RN7101",
+      "replaces": "R7122"
+    },
+    {
+      "connected": true,
+      "element": 3,
+      "nominal_ohm": 100000,
+      "pins": [
+        "3",
+        "6"
+      ],
+      "ref": "RN7101",
+      "replaces": "R7123"
+    },
+    {
+      "connected": true,
+      "element": 4,
+      "nominal_ohm": 100000,
+      "pins": [
+        "4",
+        "5"
+      ],
+      "ref": "RN7101",
+      "replaces": "R7124"
+    },
+    {
+      "connected": true,
+      "element": 1,
+      "nominal_ohm": 100000,
+      "pins": [
+        "1",
+        "8"
+      ],
+      "ref": "RN7102",
+      "replaces": "R7125"
+    },
+    {
+      "connected": true,
+      "element": 2,
+      "nominal_ohm": 100000,
+      "pins": [
+        "2",
+        "7"
+      ],
+      "ref": "RN7102",
+      "replaces": "R7126"
+    },
+    {
+      "connected": false,
+      "element": 3,
+      "nominal_ohm": 100000,
+      "pins": [
+        "3",
+        "6"
+      ],
+      "ref": "RN7102",
+      "replaces": null
+    },
+    {
+      "connected": false,
+      "element": 4,
+      "nominal_ohm": 100000,
+      "pins": [
+        "4",
+        "5"
+      ],
+      "ref": "RN7102",
+      "replaces": null
+    }
+  ],
+  "endpoint_aliases": {
+    "R7121:1": "RN7101:1",
+    "R7121:2": "RN7101:8",
+    "R7122:1": "RN7101:2",
+    "R7122:2": "RN7101:7",
+    "R7123:1": "RN7101:3",
+    "R7123:2": "RN7101:6",
+    "R7124:1": "RN7101:4",
+    "R7124:2": "RN7101:5",
+    "R7125:1": "RN7102:1",
+    "R7125:2": "RN7102:8",
+    "R7126:1": "RN7102:2",
+    "R7126:2": "RN7102:7"
+  },
+  "exposed_pad": "Pin9 internally isolated from resistor terminals; connected to local AGND quiet AC shield per primary recommendation. Actual AGND noise/impedance unresolved; not a resistor common or DC load.",
+  "footprint_status": "Source-derived candidate only. EP paste window1.5x1.3mm is engineering proposal; solder-mask/paste/voiding/assembly require later qualification. No 3D model claimed.",
+  "foreign_projection_reservations": [
+    {
+      "candidate": "RN7101",
+      "foreign_ref": "RV1506",
+      "function": "E3",
+      "status": "Historical XY reservation; populated foreign Z volume unresolved, no free-space credit"
+    },
+    {
+      "candidate": "RN7101",
+      "foreign_ref": "D11506",
+      "function": "E3",
+      "status": "Historical XY reservation; populated foreign Z volume unresolved, no free-space credit"
+    },
+    {
+      "candidate": "RN7101",
+      "foreign_ref": "Q4310",
+      "function": "E3",
+      "status": "Historical XY reservation; populated foreign Z volume unresolved, no free-space credit"
+    },
+    {
+      "candidate": "RN7102",
+      "foreign_ref": "U8307",
+      "function": "M4A",
+      "status": "Historical XY reservation; populated foreign Z volume unresolved, no free-space credit"
+    }
+  ],
+  "frozen_option_screen": {
+    "intersections": [],
+    "solids": [
+      {
+        "box_mm": [
+          208,
+          264,
+          209.5,
+          307
+        ],
+        "id": "control:rails_boxes_mm0",
+        "option": "Stage11 support proposal, unqualified",
+        "z_mm": [
+          12,
+          20
+        ]
+      },
+      {
+        "box_mm": [
+          227.5,
+          264,
+          229,
+          307
+        ],
+        "id": "control:rails_boxes_mm1",
+        "option": "Stage11 support proposal, unqualified",
+        "z_mm": [
+          12,
+          20
+        ]
+      },
+      {
+        "box_mm": [
+          208,
+          303,
+          229,
+          307
+        ],
+        "id": "control:crossmembers_boxes_mm0",
+        "option": "Stage11 support proposal, unqualified",
+        "z_mm": [
+          12,
+          20
+        ]
+      },
+      {
+        "box_mm": [
+          208,
+          307,
+          318,
+          313
+        ],
+        "id": "control:crossmembers_boxes_mm1",
+        "option": "Stage11 support proposal, unqualified",
+        "z_mm": [
+          12,
+          20
+        ]
+      },
+      {
+        "box_mm": [
+          195,
+          94,
+          201,
+          182
+        ],
+        "id": "jack:rails_boxes_mm0",
+        "option": "Stage11 support proposal, unqualified",
+        "z_mm": [
+          22,
+          30
+        ]
+      },
+      {
+        "box_mm": [
+          234,
+          94,
+          240,
+          182
+        ],
+        "id": "jack:rails_boxes_mm1",
+        "option": "Stage11 support proposal, unqualified",
+        "z_mm": [
+          22,
+          30
+        ]
+      },
+      {
+        "box_mm": [
+          195,
+          91,
+          318,
+          94
+        ],
+        "id": "jack:crossmembers_boxes_mm0",
+        "option": "Stage11 support proposal, unqualified",
+        "z_mm": [
+          22,
+          30
+        ]
+      },
+      {
+        "box_mm": [
+          195,
+          182,
+          318,
+          185
+        ],
+        "id": "jack:crossmembers_boxes_mm1",
+        "option": "Stage11 support proposal, unqualified",
+        "z_mm": [
+          22,
+          30
+        ]
+      },
+      {
+        "box_mm": [
+          242,
+          142,
+          248,
+          274
+        ],
+        "id": "middle:rails_boxes_mm0",
+        "option": "Stage11 support proposal, unqualified",
+        "z_mm": [
+          34,
+          46
+        ]
+      },
+      {
+        "box_mm": [
+          242,
+          286,
+          248,
+          294
+        ],
+        "id": "middle:rails_boxes_mm1",
+        "option": "Stage11 support proposal, unqualified",
+        "z_mm": [
+          34,
+          46
+        ]
+      },
+      {
+        "box_mm": [
+          306,
+          142,
+          314,
+          294
+        ],
+        "id": "middle:rails_boxes_mm2",
+        "option": "Stage11 support proposal, unqualified",
+        "z_mm": [
+          34,
+          46
+        ]
+      },
+      {
+        "box_mm": [
+          242,
+          138,
+          318,
+          142
+        ],
+        "id": "middle:crossmembers_boxes_mm0",
+        "option": "Stage11 support proposal, unqualified",
+        "z_mm": [
+          34,
+          46
+        ]
+      },
+      {
+        "box_mm": [
+          242,
+          286,
+          318,
+          294
+        ],
+        "id": "middle:crossmembers_boxes_mm1",
+        "option": "Stage11 support proposal, unqualified",
+        "z_mm": [
+          34,
+          46
+        ]
+      },
+      {
+        "box_mm": [
+          237,
+          174,
+          243,
+          282
+        ],
+        "id": "rear:rails_boxes_mm0",
+        "option": "Stage11 support proposal, unqualified",
+        "z_mm": [
+          51,
+          62
+        ]
+      },
+      {
+        "box_mm": [
+          305,
+          174,
+          311,
+          282
+        ],
+        "id": "rear:rails_boxes_mm1",
+        "option": "Stage11 support proposal, unqualified",
+        "z_mm": [
+          51,
+          62
+        ]
+      },
+      {
+        "box_mm": [
+          237,
+          169.0,
+          318,
+          175.0
+        ],
+        "id": "rear:crossmembers_boxes_mm0",
+        "option": "Stage11 support proposal, unqualified",
+        "z_mm": [
+          51,
+          62
+        ]
+      },
+      {
+        "box_mm": [
+          237,
+          281.0,
+          318,
+          287.0
+        ],
+        "id": "rear:crossmembers_boxes_mm1",
+        "option": "Stage11 support proposal, unqualified",
+        "z_mm": [
+          51,
+          62
+        ]
+      },
+      {
+        "box_mm": [
+          244.6,
+          145.1,
+          255.4,
+          164.4
+        ],
+        "id": "strap:+12V",
+        "option": "UNSELECTED Stage11 lowR comparison",
+        "z_mm": [
+          50.5,
+          68.7
+        ]
+      },
+      {
+        "box_mm": [
+          261.6,
+          145.1,
+          272.4,
+          164.4
+        ],
+        "id": "strap:-12V",
+        "option": "UNSELECTED Stage11 lowR comparison",
+        "z_mm": [
+          50.5,
+          68.7
+        ]
+      },
+      {
+        "box_mm": [
+          278.6,
+          145.1,
+          289.4,
+          164.4
+        ],
+        "id": "strap:AGND",
+        "option": "UNSELECTED Stage11 lowR comparison",
+        "z_mm": [
+          50.5,
+          68.7
+        ]
+      },
+      {
+        "box_mm": [
+          244.6,
+          115.1,
+          340,
+          164.4
+        ],
+        "id": "cassette service sweep",
+        "option": "UNSELECTED Stage11 lowR comparison",
+        "z_mm": [
+          50.5,
+          68.7
+        ]
+      }
+    ]
+  },
+  "hardware_acceptance": false,
+  "local_amplifier_pad_distances": [
+    {
+      "actual_copper_mm": null,
+      "after_straight_floor_mm": 13.822972048369332,
+      "before_straight_floor_mm": 6.8311899585650675,
+      "from": "RN7101:1",
+      "net": "/A01/ATTEN_OUT",
+      "to": "U7105:1"
+    },
+    {
+      "actual_copper_mm": null,
+      "after_straight_floor_mm": 4.907117916863185,
+      "before_straight_floor_mm": 6.576675166830128,
+      "from": "RN7101:8",
+      "net": "/A01/SUM_NODE",
+      "to": "U7105:9"
+    },
+    {
+      "actual_copper_mm": null,
+      "after_straight_floor_mm": 12.209619414625534,
+      "before_straight_floor_mm": 7.2017467499211465,
+      "from": "RN7101:2",
+      "net": "/A01/MANUAL_OFFSET",
+      "to": "U7105:7"
+    },
+    {
+      "actual_copper_mm": null,
+      "after_straight_floor_mm": 5.528431626600804,
+      "before_straight_floor_mm": 8.777964242921037,
+      "from": "RN7101:7",
+      "net": "/A01/SUM_NODE",
+      "to": "U7105:9"
+    },
+    {
+      "actual_copper_mm": null,
+      "after_straight_floor_mm": 6.155672688666912,
+      "before_straight_floor_mm": 8.467742098694307,
+      "from": "RN7101:6",
+      "net": "/A01/SUM_NODE",
+      "to": "U7105:9"
+    },
+    {
+      "actual_copper_mm": null,
+      "after_straight_floor_mm": 8.424580479169277,
+      "before_straight_floor_mm": 12.484096132680163,
+      "from": "RN7101:4",
+      "net": "/A01/SUM_NEG",
+      "to": "U7105:8"
+    },
+    {
+      "actual_copper_mm": null,
+      "after_straight_floor_mm": 6.787197967497322,
+      "before_straight_floor_mm": 11.495766883944729,
+      "from": "RN7101:5",
+      "net": "/A01/SUM_NODE",
+      "to": "U7105:9"
+    },
+    {
+      "actual_copper_mm": null,
+      "after_straight_floor_mm": 2.714738707500221,
+      "before_straight_floor_mm": 46.48228325125608,
+      "from": "RN7102:8",
+      "net": "/A01/RESTORE_NODE",
+      "to": "U7106:9"
+    },
+    {
+      "actual_copper_mm": null,
+      "after_straight_floor_mm": 5.3647978759688595,
+      "before_straight_floor_mm": 6.907615815170979,
+      "from": "RN7102:2",
+      "net": "/A01/OUT_INTERNAL",
+      "to": "U7106:8"
+    },
+    {
+      "actual_copper_mm": null,
+      "after_straight_floor_mm": 3.354632058810623,
+      "before_straight_floor_mm": 6.727938484409613,
+      "from": "RN7102:7",
+      "net": "/A01/RESTORE_NODE",
+      "to": "U7106:9"
+    }
+  ],
+  "native": "NOT RUN",
+  "neighbor_screens": [
+    {
+      "minimum_mm": 0.46000000000000796,
+      "neighbors": [
+        {
+          "clearance_mm": 57.599999999999994,
+          "id": "C7101"
+        },
+        {
+          "clearance_mm": 45.54999999999998,
+          "id": "C7102"
+        },
+        {
+          "clearance_mm": 45.025761514937194,
+          "id": "C7103"
+        },
+        {
+          "clearance_mm": 4.860000000000014,
+          "id": "C7104"
+        },
+        {
+          "clearance_mm": 7.830657699069725,
+          "id": "C7105"
+        },
+        {
+          "clearance_mm": 53.639999999999986,
+          "id": "C7107"
+        },
+        {
+          "clearance_mm": 54.60552353013385,
+          "id": "C7116"
+        },
+        {
+          "clearance_mm": 47.75367211011108,
+          "id": "C7117"
+        },
+        {
+          "clearance_mm": 13.671473951260714,
+          "id": "C7118"
+        },
+        {
+          "clearance_mm": 0.9608329719571539,
+          "id": "C7119"
+        },
+        {
+          "clearance_mm": 50.99303579901867,
+          "id": "R7101"
+        },
+        {
+          "clearance_mm": 42.74149856989107,
+          "id": "R7102"
+        },
+        {
+          "clearance_mm": 56.463224314592594,
+          "id": "R7103"
+        },
+        {
+          "clearance_mm": 46.75585204014574,
+          "id": "R7104"
+        },
+        {
+          "clearance_mm": 52.12475131835163,
+          "id": "R7113"
+        },
+        {
+          "clearance_mm": 43.82528608007026,
+          "id": "R7114"
+        },
+        {
+          "clearance_mm": 4.860000000000014,
+          "id": "R7115"
+        },
+        {
+          "clearance_mm": 9.956691217467784,
+          "id": "R7116"
+        },
+        {
+          "clearance_mm": 0.46000000000000796,
+          "id": "R7117"
+        },
+        {
+          "clearance_mm": 13.597782907518392,
+          "id": "R7118"
+        },
+        {
+          "clearance_mm": 0.8600000000000136,
+          "id": "R7119"
+        },
+        {
+          "clearance_mm": 8.860000000000014,
+          "id": "R7120"
+        },
+        {
+          "clearance_mm": 51.28999999999999,
+          "id": "U7101"
+        },
+        {
+          "clearance_mm": 46.77595643062788,
+          "id": "U7104"
+        },
+        {
+          "clearance_mm": 2.6499999999999773,
+          "id": "U7105"
+        },
+        {
+          "clearance_mm": 18.5,
+          "id": "A01:K-PWR:local"
+        },
+        {
+          "clearance_mm": 70.8820146440548,
+          "id": "A01-core:M1"
+        },
+        {
+          "clearance_mm": 84.67738777265156,
+          "id": "A01-core:M2"
+        },
+        {
+          "clearance_mm": 20.925104539762778,
+          "id": "A01-core:M3"
+        },
+        {
+          "clearance_mm": 50.83168303332087,
+          "id": "A01-core:M4"
+        },
+        {
+          "clearance_mm": 18.5,
+          "id": "A01:K-PWR:local"
+        },
+        {
+          "clearance_mm": 70.8820146440548,
+          "id": "A01-core:M1"
+        },
+        {
+          "clearance_mm": 84.67738777265156,
+          "id": "A01-core:M2"
+        },
+        {
+          "clearance_mm": 20.925104539762778,
+          "id": "A01-core:M3"
+        },
+        {
+          "clearance_mm": 50.83168303332087,
+          "id": "A01-core:M4"
+        },
+        {
+          "clearance_mm": 44.15892038988273,
+          "id": "A01:a1"
+        },
+        {
+          "clearance_mm": 43.680353135019416,
+          "id": "A01:a2"
+        },
+        {
+          "clearance_mm": 43.34558166641672,
+          "id": "A01:a3"
+        },
+        {
+          "clearance_mm": 43.15795233789482,
+          "id": "A01:a4"
+        },
+        {
+          "clearance_mm": 43.11500000000001,
+          "id": "A01:a5"
+        },
+        {
+          "clearance_mm": 43.11500000000001,
+          "id": "A01:a6"
+        },
+        {
+          "clearance_mm": 43.11500000000001,
+          "id": "A01:a7"
+        },
+        {
+          "clearance_mm": 43.11896856373075,
+          "id": "A01:a8"
+        },
+        {
+          "clearance_mm": 43.22810254915199,
+          "id": "A01:a9"
+        },
+        {
+          "clearance_mm": 43.48557749415317,
+          "id": "A01:a10"
+        },
+        {
+          "clearance_mm": 43.888782735455315,
+          "id": "A01:a11"
+        },
+        {
+          "clearance_mm": 44.43375124834724,
+          "id": "A01:a12"
+        },
+        {
+          "clearance_mm": 45.11534605874148,
+          "id": "A01:a13"
+        },
+        {
+          "clearance_mm": 45.927484690542336,
+          "id": "A01:a14"
+        },
+        {
+          "clearance_mm": 46.86338069324491,
+          "id": "A01:a15"
+        },
+        {
+          "clearance_mm": 47.915782890400536,
+          "id": "A01:a16"
+        },
+        {
+          "clearance_mm": 49.0771968433406,
+          "id": "A01:a17"
+        },
+        {
+          "clearance_mm": 50.34007796974494,
+          "id": "A01:a18"
+        },
+        {
+          "clearance_mm": 51.69699072479944,
+          "id": "A01:a19"
+        },
+        {
+          "clearance_mm": 53.14073249401064,
+          "id": "A01:a20"
+        },
+        {
+          "clearance_mm": 54.66442398855036,
+          "id": "A01:a21"
+        },
+        {
+          "clearance_mm": 56.26156992121709,
+          "id": "A01:a22"
+        },
+        {
+          "clearance_mm": 57.92609472422596,
+          "id": "A01:a23"
+        },
+        {
+          "clearance_mm": 59.652358293700345,
+          "id": "A01:a24"
+        },
+        {
+          "clearance_mm": 61.43515646598452,
+          "id": "A01:a25"
+        },
+        {
+          "clearance_mm": 63.26971036760006,
+          "id": "A01:a26"
+        },
+        {
+          "clearance_mm": 65.15164809887774,
+          "id": "A01:a27"
+        },
+        {
+          "clearance_mm": 67.07698152123425,
+          "id": "A01:a28"
+        },
+        {
+          "clearance_mm": 69.04208028441784,
+          "id": "A01:a29"
+        },
+        {
+          "clearance_mm": 71.04364468409541,
+          "id": "A01:a30"
+        },
+        {
+          "clearance_mm": 73.07867849106195,
+          "id": "A01:a31"
+        },
+        {
+          "clearance_mm": 75.14446253716902,
+          "id": "A01:a32"
+        },
+        {
+          "clearance_mm": 41.682582093723504,
+          "id": "A01:b1"
+        },
+        {
+          "clearance_mm": 41.17524316868085,
+          "id": "A01:b2"
+        },
+        {
+          "clearance_mm": 40.81993201856171,
+          "id": "A01:b3"
+        },
+        {
+          "clearance_mm": 40.620638227383864,
+          "id": "A01:b4"
+        },
+        {
+          "clearance_mm": 40.57499999999999,
+          "id": "A01:b5"
+        },
+        {
+          "clearance_mm": 40.57499999999999,
+          "id": "A01:b6"
+        },
+        {
+          "clearance_mm": 40.57499999999999,
+          "id": "A01:b7"
+        },
+        {
+          "clearance_mm": 40.57921697125265,
+          "id": "A01:b8"
+        },
+        {
+          "clearance_mm": 40.695162488924886,
+          "id": "A01:b9"
+        },
+        {
+          "clearance_mm": 40.96855928636006,
+          "id": "A01:b10"
+        },
+        {
+          "clearance_mm": 41.39628787705485,
+          "id": "A01:b11"
+        },
+        {
+          "clearance_mm": 41.973630412438695,
+          "id": "A01:b12"
+        },
+        {
+          "clearance_mm": 42.6945177979562,
+          "id": "A01:b13"
+        },
+        {
+          "clearance_mm": 43.551822579543085,
+          "id": "A01:b14"
+        },
+        {
+          "clearance_mm": 44.537667765611594,
+          "id": "A01:b15"
+        },
+        {
+          "clearance_mm": 45.643725198541794,
+          "id": "A01:b16"
+        },
+        {
+          "clearance_mm": 46.86148365128871,
+          "id": "A01:b17"
+        },
+        {
+          "clearance_mm": 48.18247451096714,
+          "id": "A01:b18"
+        },
+        {
+          "clearance_mm": 49.59845007659007,
+          "id": "A01:b19"
+        },
+        {
+          "clearance_mm": 51.101515143878046,
+          "id": "A01:b20"
+        },
+        {
+          "clearance_mm": 52.68421632709362,
+          "id": "A01:b21"
+        },
+        {
+          "clearance_mm": 54.33959560026186,
+          "id": "A01:b22"
+        },
+        {
+          "clearance_mm": 56.06121520266928,
+          "id": "A01:b23"
+        },
+        {
+          "clearance_mm": 57.84316078846313,
+          "id": "A01:b24"
+        },
+        {
+          "clearance_mm": 59.68002890414848,
+          "id": "A01:b25"
+        },
+        {
+          "clearance_mm": 61.566903852638205,
+          "id": "A01:b26"
+        },
+        {
+          "clearance_mm": 63.49932794919958,
+          "id": "A01:b27"
+        },
+        {
+          "clearance_mm": 65.47326820924704,
+          "id": "A01:b28"
+        },
+        {
+          "clearance_mm": 67.4850816847694,
+          "id": "A01:b29"
+        },
+        {
+          "clearance_mm": 69.53148099961625,
+          "id": "A01:b30"
+        },
+        {
+          "clearance_mm": 71.6095011154246,
+          "id": "A01:b31"
+        },
+        {
+          "clearance_mm": 73.71646797018965,
+          "id": "A01:b32"
+        },
+        {
+          "clearance_mm": 39.214388303274575,
+          "id": "A01:c1"
+        },
+        {
+          "clearance_mm": 38.67468487266571,
+          "id": "A01:c2"
+        },
+        {
+          "clearance_mm": 38.29618061895987,
+          "id": "A01:c3"
+        },
+        {
+          "clearance_mm": 38.083682201173744,
+          "id": "A01:c4"
+        },
+        {
+          "clearance_mm": 38.03499999999997,
+          "id": "A01:c5"
+        },
+        {
+          "clearance_mm": 38.03499999999997,
+          "id": "A01:c6"
+        },
+        {
+          "clearance_mm": 38.03499999999997,
+          "id": "A01:c7"
+        },
+        {
+          "clearance_mm": 38.0394985508484,
+          "id": "A01:c8"
+        },
+        {
+          "clearance_mm": 38.16316090158148,
+          "id": "A01:c9"
+        },
+        {
+          "clearance_mm": 38.454563448308676,
+          "id": "A01:c10"
+        },
+        {
+          "clearance_mm": 38.90993767663985,
+          "id": "A01:c11"
+        },
+        {
+          "clearance_mm": 39.523616357818234,
+          "id": "A01:c12"
+        },
+        {
+          "clearance_mm": 40.288366186779,
+          "id": "A01:c13"
+        },
+        {
+          "clearance_mm": 41.19577466197228,
+          "id": "A01:c14"
+        },
+        {
+          "clearance_mm": 42.236648186142766,
+          "id": "A01:c15"
+        },
+        {
+          "clearance_mm": 43.40138534655314,
+          "id": "A01:c16"
+        },
+        {
+          "clearance_mm": 44.68030046899861,
+          "id": "A01:c17"
+        },
+        {
+          "clearance_mm": 46.06388444323814,
+          "id": "A01:c18"
+        },
+        {
+          "clearance_mm": 47.54300001051676,
+          "id": "A01:c19"
+        },
+        {
+          "clearance_mm": 49.10901597466595,
+          "id": "A01:c20"
+        },
+        {
+          "clearance_mm": 50.75388901355242,
+          "id": "A01:c21"
+        },
+        {
+          "clearance_mm": 52.47020344919578,
+          "id": "A01:c22"
+        },
+        {
+          "clearance_mm": 54.2511792498559,
+          "id": "A01:c23"
+        },
+        {
+          "clearance_mm": 56.09065742171326,
+          "id": "A01:c24"
+        },
+        {
+          "clearance_mm": 57.98307037403242,
+          "id": "A01:c25"
+        },
+        {
+          "clearance_mm": 59.92340319107382,
+          "id": "A01:c26"
+        },
+        {
+          "clearance_mm": 61.90715023323233,
+          "id": "A01:c27"
+        },
+        {
+          "clearance_mm": 63.93027021685421,
+          "id": "A01:c28"
+        },
+        {
+          "clearance_mm": 65.98914190986268,
+          "id": "A01:c29"
+        },
+        {
+          "clearance_mm": 68.08052181057366,
+          "id": "A01:c30"
+        },
+        {
+          "clearance_mm": 70.20150461350524,
+          "id": "A01:c31"
+        },
+        {
+          "clearance_mm": 72.34948686756525,
+          "id": "A01:c32"
+        },
+        {
+          "clearance_mm": 77.75888420393359,
+          "id": "A01:flange-1"
+        },
+        {
+          "clearance_mm": 42.78401133745822,
+          "id": "A01:flange1"
+        },
+        {
+          "clearance_mm": 36.0,
+          "id": "rear DIN whole projection"
+        },
+        {
+          "clearance_mm": 70.74079445411961,
+          "id": "retained core handle"
+        },
+        {
+          "clearance_mm": 20.441624201613745,
+          "id": "retained core handle"
+        }
+      ],
+      "ref": "RN7101"
+    },
+    {
+      "minimum_mm": 0.5099019513592774,
+      "neighbors": [
+        {
+          "clearance_mm": 18.031893965970408,
+          "id": "C7106"
+        },
+        {
+          "clearance_mm": 12.875915501431358,
+          "id": "C7108"
+        },
+        {
+          "clearance_mm": 3.7872417403699004,
+          "id": "C7109"
+        },
+        {
+          "clearance_mm": 19.864521136941608,
+          "id": "C7110"
+        },
+        {
+          "clearance_mm": 21.912991580338826,
+          "id": "C7111"
+        },
+        {
+          "clearance_mm": 17.417898839986407,
+          "id": "C7112"
+        },
+        {
+          "clearance_mm": 1.539999999999992,
+          "id": "C7113"
+        },
+        {
+          "clearance_mm": 21.959999999999994,
+          "id": "C7114"
+        },
+        {
+          "clearance_mm": 19.520737690978784,
+          "id": "C7115"
+        },
+        {
+          "clearance_mm": 7.539999999999992,
+          "id": "C7120"
+        },
+        {
+          "clearance_mm": 0.6399999999999864,
+          "id": "C7121"
+        },
+        {
+          "clearance_mm": 9.039999999999992,
+          "id": "C7122"
+        },
+        {
+          "clearance_mm": 9.578580270582908,
+          "id": "C7123"
+        },
+        {
+          "clearance_mm": 33.82645414464838,
+          "id": "D7101"
+        },
+        {
+          "clearance_mm": 31.382622580020293,
+          "id": "D7102"
+        },
+        {
+          "clearance_mm": 16.12839111628931,
+          "id": "D7103"
+        },
+        {
+          "clearance_mm": 22.87892042907619,
+          "id": "D7104"
+        },
+        {
+          "clearance_mm": 9.48999999999998,
+          "id": "D7105"
+        },
+        {
+          "clearance_mm": 12.92836416566302,
+          "id": "D7106"
+        },
+        {
+          "clearance_mm": 10.10854094318264,
+          "id": "D7108"
+        },
+        {
+          "clearance_mm": 14.843267834274215,
+          "id": "D7109"
+        },
+        {
+          "clearance_mm": 3.9899999999999807,
+          "id": "D7110"
+        },
+        {
+          "clearance_mm": 14.98999999999998,
+          "id": "D7111"
+        },
+        {
+          "clearance_mm": 13.701919573548805,
+          "id": "D7113"
+        },
+        {
+          "clearance_mm": 16.331399205212012,
+          "id": "D7114"
+        },
+        {
+          "clearance_mm": 6.889999999999986,
+          "id": "D7115"
+        },
+        {
+          "clearance_mm": 3.75,
+          "id": "D7116"
+        },
+        {
+          "clearance_mm": 8.689999999999998,
+          "id": "R7105"
+        },
+        {
+          "clearance_mm": 6.189999999999998,
+          "id": "R7106"
+        },
+        {
+          "clearance_mm": 15.109126381098289,
+          "id": "R7107"
+        },
+        {
+          "clearance_mm": 7.460000000000008,
+          "id": "R7108"
+        },
+        {
+          "clearance_mm": 18.19009895520088,
+          "id": "R7109"
+        },
+        {
+          "clearance_mm": 13.82337513055333,
+          "id": "R7110"
+        },
+        {
+          "clearance_mm": 21.8704298083051,
+          "id": "R7111"
+        },
+        {
+          "clearance_mm": 20.961051977417547,
+          "id": "R7112"
+        },
+        {
+          "clearance_mm": 27.02800214592266,
+          "id": "R7127"
+        },
+        {
+          "clearance_mm": 28.33,
+          "id": "R7128"
+        },
+        {
+          "clearance_mm": 0.5900000000000034,
+          "id": "R7129"
+        },
+        {
+          "clearance_mm": 31.24541086303715,
+          "id": "R7130"
+        },
+        {
+          "clearance_mm": 23.07023406903363,
+          "id": "R7131"
+        },
+        {
+          "clearance_mm": 16.94696728031302,
+          "id": "R7132"
+        },
+        {
+          "clearance_mm": 11.71732477999992,
+          "id": "R7133"
+        },
+        {
+          "clearance_mm": 10.004783855736225,
+          "id": "R7134"
+        },
+        {
+          "clearance_mm": 7.483294728927902,
+          "id": "R7135"
+        },
+        {
+          "clearance_mm": 4.107067080046298,
+          "id": "U7102"
+        },
+        {
+          "clearance_mm": 14.692106724360539,
+          "id": "U7103"
+        },
+        {
+          "clearance_mm": 0.6500000000000057,
+          "id": "U7106"
+        },
+        {
+          "clearance_mm": 7.508934678101809,
+          "id": "U7107"
+        },
+        {
+          "clearance_mm": 15.289999999999992,
+          "id": "U7108"
+        },
+        {
+          "clearance_mm": 4.9199999999999875,
+          "id": "U7109"
+        },
+        {
+          "clearance_mm": 19.0,
+          "id": "A01:J-PWR:local"
+        },
+        {
+          "clearance_mm": 19.12125780381615,
+          "id": "A01:J-SIG:local"
+        },
+        {
+          "clearance_mm": 50.24599486526264,
+          "id": "A01-jack:M1"
+        },
+        {
+          "clearance_mm": 48.4836054764907,
+          "id": "A01-jack:M2"
+        },
+        {
+          "clearance_mm": 28.1897144362975,
+          "id": "A01-jack:M3"
+        },
+        {
+          "clearance_mm": 24.913048789740685,
+          "id": "A01-jack:M4"
+        },
+        {
+          "clearance_mm": 32.85391909650962,
+          "id": "A01:tail:D1308:1"
+        },
+        {
+          "clearance_mm": 30.10946694978175,
+          "id": "A01:tail:D1308:2"
+        },
+        {
+          "clearance_mm": 27.41860682091633,
+          "id": "A01:tail:D1309:1"
+        },
+        {
+          "clearance_mm": 24.798790293076788,
+          "id": "A01:tail:D1309:2"
+        },
+        {
+          "clearance_mm": 22.275098204048373,
+          "id": "A01:tail:D1310:1"
+        },
+        {
+          "clearance_mm": 19.884164553734692,
+          "id": "A01:tail:D1310:2"
+        },
+        {
+          "clearance_mm": 17.67993212656653,
+          "id": "A01:tail:D13101:1"
+        },
+        {
+          "clearance_mm": 15.741029191256821,
+          "id": "A01:tail:D13101:2"
+        },
+        {
+          "clearance_mm": 14.176741515595165,
+          "id": "A01:tail:J1308:S"
+        },
+        {
+          "clearance_mm": 13.121737689803116,
+          "id": "A01:tail:J1308:T"
+        },
+        {
+          "clearance_mm": 12.703542812932135,
+          "id": "A01:tail:J1309:S"
+        },
+        {
+          "clearance_mm": 12.699999999999989,
+          "id": "A01:tail:J1309:T"
+        },
+        {
+          "clearance_mm": 12.699999999999989,
+          "id": "A01:tail:J1310:S"
+        },
+        {
+          "clearance_mm": 12.766362050325835,
+          "id": "A01:tail:J1310:T"
+        },
+        {
+          "clearance_mm": 23.60529601593676,
+          "id": "D1308:wire:1"
+        },
+        {
+          "clearance_mm": 23.78991382918399,
+          "id": "D1308:wire:2"
+        },
+        {
+          "clearance_mm": 9.6130120149722,
+          "id": "D1309:wire:1"
+        },
+        {
+          "clearance_mm": 10.05783276854412,
+          "id": "D1309:wire:2"
+        },
+        {
+          "clearance_mm": 0.5099019513592774,
+          "id": "D1310:wire:1"
+        },
+        {
+          "clearance_mm": 3.0016662039607267,
+          "id": "D1310:wire:2"
+        },
+        {
+          "clearance_mm": 7.1175838597096925,
+          "id": "D13101:wire:1"
+        },
+        {
+          "clearance_mm": 7.707788269017249,
+          "id": "D13101:wire:2"
+        }
+      ],
+      "ref": "RN7102"
+    }
+  ],
+  "physical": "NOT RUN",
+  "placements": {
+    "C7101": {
+      "board": "A01-core",
+      "box_mm": [
+        247.59,
+        189.5,
+        255.41,
+        193.5
+      ],
+      "candidate_MPN": "T491C475K050AT",
+      "candidate_geometry_source": {
+        "body_max_mm": [
+          6.3,
+          3.5,
+          2.8
+        ],
+        "courtyard_mm": [
+          -3.91,
+          -2.0,
+          3.91,
+          2.0
+        ],
+        "evidence_locator": "Table2 printed15 physicalPDF14; densityB recommended land and courtyard; case dimensional table retained in capacitor evidence",
+        "evidence_sha256": "c3c5bb70009b606c87b40156259670ca9c8452f172b73faa9e2dbf2fcee3522d",
+        "evidence_url": "https://content.kemet.com/datasheets/KEM_T2005_T491.pdf",
+        "land_density": "IPC density B per manufacturer Table2",
+        "land_status": "manufacturer recommended",
+        "pad_sizes_mm": {
+          "1": [
+            2.37,
+            2.23
+          ],
+          "2": [
+            2.37,
+            2.23
+          ]
+        },
+        "pads_mm": {
+          "1": [
+            -2.47,
+            0
+          ],
+          "2": [
+            2.47,
+            0
+          ]
+        },
+        "polarity_convention": "Candidate pin1 corresponds manufacturer positive stripe at localnegativeX; pin2 AGND atpositiveX; rearface mirror applied before rotation."
+      },
+      "captured_source_footprint_only": "footprints/kicad/zudo-osc-hole-field.pretty/C0603.kicad_mod",
+      "cluster": "reference_source",
+      "conditional_pad_depth_mm": 70.8,
+      "origin_mm": [
+        251.5,
+        191.5
+      ],
+      "owner": "rear-core",
+      "pads_mm": {
+        "1": [
+          [
+            253.97,
+            191.5
+          ]
+        ],
+        "2": [
+          [
+            249.03,
+            191.5
+          ]
+        ]
+      },
+      "pads_xyz_mm": {
+        "1": [
+          [
+            253.97,
+            191.5,
+            70.8
+          ]
+        ],
+        "2": [
+          [
+            249.03,
+            191.5,
+            70.8
+          ]
+        ]
+      },
+      "panel_uid": "",
+      "pins": {
+        "1": "+12V",
+        "2": "AGND"
+      },
+      "quarter_turn": 0,
+      "ref": "C7101",
+      "side": "rear",
+      "source": "footprints/kicad/zudo-osc-hole-field.pretty/C0603.kicad_mod",
+      "source_board": "K",
+      "through_pad_keepouts_mm": [],
+      "unit_pin_record_indices": [
+        7519
+      ],
+      "units": [
+        0
+      ]
+    },
+    "C7102": {
+      "board": "A01-core",
+      "box_mm": [
+        246.94,
+        200.45,
+        256.06,
+        205.55
+      ],
+      "candidate_MPN": "T491D226K035AT",
+      "candidate_geometry_source": {
+        "body_max_mm": [
+          7.6,
+          4.6,
+          3.1
+        ],
+        "courtyard_mm": [
+          -4.56,
+          -2.55,
+          4.56,
+          2.55
+        ],
+        "evidence_locator": "Table2 printed15 physicalPDF14; densityB recommended land and courtyard; case dimensional table retained in capacitor evidence",
+        "evidence_sha256": "c3c5bb70009b606c87b40156259670ca9c8452f172b73faa9e2dbf2fcee3522d",
+        "evidence_url": "https://content.kemet.com/datasheets/KEM_T2005_T491.pdf",
+        "land_density": "IPC density B per manufacturer Table2",
+        "land_status": "manufacturer recommended",
+        "pad_sizes_mm": {
+          "1": [
+            2.37,
+            2.43
+          ],
+          "2": [
+            2.37,
+            2.43
+          ]
+        },
+        "pads_mm": {
+          "1": [
+            -3.12,
+            0
+          ],
+          "2": [
+            3.12,
+            0
+          ]
+        },
+        "polarity_convention": "Candidate pin1 corresponds manufacturer positive stripe at localnegativeX; pin2 AGND atpositiveX; rearface mirror applied before rotation."
+      },
+      "captured_source_footprint_only": "footprints/kicad/zudo-osc-hole-field.pretty/C0603.kicad_mod",
+      "cluster": "reference_source",
+      "conditional_pad_depth_mm": 70.8,
+      "origin_mm": [
+        251.5,
+        203
+      ],
+      "owner": "rear-core",
+      "pads_mm": {
+        "1": [
+          [
+            248.38,
+            203
+          ]
+        ],
+        "2": [
+          [
+            254.62,
+            203
+          ]
+        ]
+      },
+      "pads_xyz_mm": {
+        "1": [
+          [
+            248.38,
+            203,
+            70.8
+          ]
+        ],
+        "2": [
+          [
+            254.62,
+            203,
+            70.8
+          ]
+        ]
+      },
+      "panel_uid": "",
+      "pins": {
+        "1": "/A01/C534b2a_RAW_5V",
+        "2": "AGND"
+      },
+      "quarter_turn": 2,
+      "ref": "C7102",
+      "side": "rear",
+      "source": "footprints/kicad/zudo-osc-hole-field.pretty/C0603.kicad_mod",
+      "source_board": "K",
+      "through_pad_keepouts_mm": [],
+      "unit_pin_record_indices": [
+        7520
+      ],
+      "units": [
+        0
+      ]
+    },
+    "C7103": {
+      "board": "A01-core",
+      "box_mm": [
+        273.36,
+        207.04,
+        276.64,
+        208.96
+      ],
+      "cluster": "reference_remote",
+      "conditional_pad_depth_mm": 70.8,
+      "origin_mm": [
+        275.0,
+        208.0
+      ],
+      "owner": "rear-core",
+      "pads_mm": {
+        "1": [
+          [
+            275.7,
+            208.0
+          ]
+        ],
+        "2": [
+          [
+            274.3,
+            208.0
+          ]
+        ]
+      },
+      "pads_xyz_mm": {
+        "1": [
+          [
+            275.7,
+            208.0,
+            70.8
+          ]
+        ],
+        "2": [
+          [
+            274.3,
+            208.0,
+            70.8
+          ]
+        ]
+      },
+      "panel_uid": "",
+      "pins": {
+        "1": "/A01/C8e6645_DRIVE",
+        "2": "/A01/C8e6645_FB"
+      },
+      "quarter_turn": 0,
+      "ref": "C7103",
+      "side": "rear",
+      "source": "footprints/kicad/zudo-osc-hole-field.pretty/C0603.kicad_mod",
+      "source_board": "K",
+      "through_pad_keepouts_mm": [],
+      "unit_pin_record_indices": [
+        7549
+      ],
+      "units": [
+        0
+      ]
+    },
+    "C7104": {
+      "board": "A01-core",
+      "box_mm": [
+        262.36,
+        252.54,
+        265.64,
+        254.46
+      ],
+      "cluster": "attenuation_sum",
+      "conditional_pad_depth_mm": 70.8,
+      "origin_mm": [
+        264.0,
+        253.5
+      ],
+      "owner": "rear-core",
+      "pads_mm": {
+        "1": [
+          [
+            264.7,
+            253.5
+          ]
+        ],
+        "2": [
+          [
+            263.3,
+            253.5
+          ]
+        ]
+      },
+      "pads_xyz_mm": {
+        "1": [
+          [
+            264.7,
+            253.5,
+            70.8
+          ]
+        ],
+        "2": [
+          [
+            263.3,
+            253.5,
+            70.8
+          ]
+        ]
+      },
+      "panel_uid": "",
+      "pins": {
+        "1": "/A01/ATTEN_OUT",
+        "2": "/A01/ATTEN_SUM"
+      },
+      "quarter_turn": 0,
+      "ref": "C7104",
+      "side": "rear",
+      "source": "footprints/kicad/zudo-osc-hole-field.pretty/C0603.kicad_mod",
+      "source_board": "K",
+      "through_pad_keepouts_mm": [],
+      "unit_pin_record_indices": [
+        7555
+      ],
+      "units": [
+        0
+      ]
+    },
+    "C7105": {
+      "board": "A01-core",
+      "box_mm": [
+        262.36,
+        243.04,
+        265.64,
+        244.96
+      ],
+      "cluster": "attenuation_sum",
+      "conditional_pad_depth_mm": 70.8,
+      "origin_mm": [
+        264.0,
+        244.0
+      ],
+      "owner": "rear-core",
+      "pads_mm": {
+        "1": [
+          [
+            264.7,
+            244.0
+          ]
+        ],
+        "2": [
+          [
+            263.3,
+            244.0
+          ]
+        ]
+      },
+      "pads_xyz_mm": {
+        "1": [
+          [
+            264.7,
+            244.0,
+            70.8
+          ]
+        ],
+        "2": [
+          [
+            263.3,
+            244.0,
+            70.8
+          ]
+        ]
+      },
+      "panel_uid": "",
+      "pins": {
+        "1": "/A01/C38cac0_W_SENSE",
+        "2": "AGND"
+      },
+      "quarter_turn": 0,
+      "ref": "C7105",
+      "side": "rear",
+      "source": "footprints/kicad/zudo-osc-hole-field.pretty/C0603.kicad_mod",
+      "source_board": "K",
+      "through_pad_keepouts_mm": [],
+      "unit_pin_record_indices": [
+        7559
+      ],
+      "units": [
+        0
+      ]
+    },
+    "C7106": {
+      "board": "A01-jack",
+      "box_mm": [
+        202.36,
+        132.54,
+        205.64,
+        134.46
+      ],
+      "cluster": "front-local",
+      "conditional_pad_depth_mm": 36.6,
+      "origin_mm": [
+        204.0,
+        133.5
+      ],
+      "owner": "front-jack",
+      "pads_mm": {
+        "1": [
+          [
+            204.7,
+            133.5
+          ]
+        ],
+        "2": [
+          [
+            203.3,
+            133.5
+          ]
+        ]
+      },
+      "pads_xyz_mm": {
+        "1": [
+          [
+            204.7,
+            133.5,
+            36.6
+          ]
+        ],
+        "2": [
+          [
+            203.3,
+            133.5,
+            36.6
+          ]
+        ]
+      },
+      "panel_uid": "",
+      "pins": {
+        "1": "/A01/C2073e0_DRIVE",
+        "2": "/A01/C2073e0_FB"
+      },
+      "quarter_turn": 0,
+      "ref": "C7106",
+      "side": "rear",
+      "source": "footprints/kicad/zudo-osc-hole-field.pretty/C0603.kicad_mod",
+      "source_board": "JR",
+      "through_pad_keepouts_mm": [],
+      "unit_pin_record_indices": [
+        7569
+      ],
+      "units": [
+        0
+      ]
+    },
+    "C7107": {
+      "board": "A01-core",
+      "box_mm": [
+        255.86,
+        195.54,
+        259.14,
+        197.46
+      ],
+      "cluster": "reference_source",
+      "conditional_pad_depth_mm": 70.8,
+      "origin_mm": [
+        257.5,
+        196.5
+      ],
+      "owner": "rear-core",
+      "pads_mm": {
+        "1": [
+          [
+            256.8,
+            196.5
+          ]
+        ],
+        "2": [
+          [
+            258.2,
+            196.5
+          ]
+        ]
+      },
+      "pads_xyz_mm": {
+        "1": [
+          [
+            256.8,
+            196.5,
+            70.8
+          ]
+        ],
+        "2": [
+          [
+            258.2,
+            196.5,
+            70.8
+          ]
+        ]
+      },
+      "panel_uid": "",
+      "pins": {
+        "1": "+12V",
+        "2": "AGND"
+      },
+      "quarter_turn": 2,
+      "ref": "C7107",
+      "side": "rear",
+      "source": "footprints/kicad/zudo-osc-hole-field.pretty/C0603.kicad_mod",
+      "source_board": "K",
+      "through_pad_keepouts_mm": [],
+      "unit_pin_record_indices": [
+        7586
+      ],
+      "units": [
+        0
+      ]
+    },
+    "C7108": {
+      "board": "A01-jack",
+      "box_mm": [
+        202.36,
+        144.54,
+        205.64,
+        146.46
+      ],
+      "cluster": "front-local",
+      "conditional_pad_depth_mm": 36.6,
+      "origin_mm": [
+        204.0,
+        145.5
+      ],
+      "owner": "front-jack",
+      "pads_mm": {
+        "1": [
+          [
+            204.7,
+            145.5
+          ]
+        ],
+        "2": [
+          [
+            203.3,
+            145.5
+          ]
+        ]
+      },
+      "pads_xyz_mm": {
+        "1": [
+          [
+            204.7,
+            145.5,
+            36.6
+          ]
+        ],
+        "2": [
+          [
+            203.3,
+            145.5,
+            36.6
+          ]
+        ]
+      },
+      "panel_uid": "",
+      "pins": {
+        "1": "+12V",
+        "2": "AGND"
+      },
+      "quarter_turn": 0,
+      "ref": "C7108",
+      "side": "rear",
+      "source": "footprints/kicad/zudo-osc-hole-field.pretty/C0603.kicad_mod",
+      "source_board": "JR",
+      "through_pad_keepouts_mm": [],
+      "unit_pin_record_indices": [
+        7587
+      ],
+      "units": [
+        0
+      ]
+    },
+    "C7109": {
+      "board": "A01-jack",
+      "box_mm": [
+        215.04,
+        140.36,
+        216.96,
+        143.64
+      ],
+      "cluster": "front-local",
+      "conditional_pad_depth_mm": 36.6,
+      "origin_mm": [
+        216.0,
+        142.0
+      ],
+      "owner": "front-jack",
+      "pads_mm": {
+        "1": [
+          [
+            216.0,
+            142.7
+          ]
+        ],
+        "2": [
+          [
+            216.0,
+            141.3
+          ]
+        ]
+      },
+      "pads_xyz_mm": {
+        "1": [
+          [
+            216.0,
+            142.7,
+            36.6
+          ]
+        ],
+        "2": [
+          [
+            216.0,
+            141.3,
+            36.6
+          ]
+        ]
+      },
+      "panel_uid": "",
+      "pins": {
+        "1": "-12V",
+        "2": "AGND"
+      },
+      "quarter_turn": 1,
+      "ref": "C7109",
+      "side": "rear",
+      "source": "footprints/kicad/zudo-osc-hole-field.pretty/C0603.kicad_mod",
+      "source_board": "JR",
+      "through_pad_keepouts_mm": [],
+      "unit_pin_record_indices": [
+        7588
+      ],
+      "units": [
+        0
+      ]
+    },
+    "C7110": {
+      "board": "A01-jack",
+      "box_mm": [
+        202.36,
+        130.04,
+        205.64,
+        131.96
+      ],
+      "cluster": "front-local",
+      "conditional_pad_depth_mm": 36.6,
+      "origin_mm": [
+        204.0,
+        131.0
+      ],
+      "owner": "front-jack",
+      "pads_mm": {
+        "1": [
+          [
+            204.7,
+            131.0
+          ]
+        ],
+        "2": [
+          [
+            203.3,
+            131.0
+          ]
+        ]
+      },
+      "pads_xyz_mm": {
+        "1": [
+          [
+            204.7,
+            131.0,
+            36.6
+          ]
+        ],
+        "2": [
+          [
+            203.3,
+            131.0,
+            36.6
+          ]
+        ]
+      },
+      "panel_uid": "",
+      "pins": {
+        "1": "+12V",
+        "2": "AGND"
+      },
+      "quarter_turn": 0,
+      "ref": "C7110",
+      "side": "rear",
+      "source": "footprints/kicad/zudo-osc-hole-field.pretty/C0603.kicad_mod",
+      "source_board": "JR",
+      "through_pad_keepouts_mm": [],
+      "unit_pin_record_indices": [
+        7589
+      ],
+      "units": [
+        0
+      ]
+    },
+    "C7111": {
+      "board": "A01-jack",
+      "box_mm": [
+        207.86,
+        124.54,
+        211.14,
+        126.46
+      ],
+      "cluster": "front-local",
+      "conditional_pad_depth_mm": 36.6,
+      "origin_mm": [
+        209.5,
+        125.5
+      ],
+      "owner": "front-jack",
+      "pads_mm": {
+        "1": [
+          [
+            210.2,
+            125.5
+          ]
+        ],
+        "2": [
+          [
+            208.8,
+            125.5
+          ]
+        ]
+      },
+      "pads_xyz_mm": {
+        "1": [
+          [
+            210.2,
+            125.5,
+            36.6
+          ]
+        ],
+        "2": [
+          [
+            208.8,
+            125.5,
+            36.6
+          ]
+        ]
+      },
+      "panel_uid": "",
+      "pins": {
+        "1": "-12V",
+        "2": "AGND"
+      },
+      "quarter_turn": 0,
+      "ref": "C7111",
+      "side": "rear",
+      "source": "footprints/kicad/zudo-osc-hole-field.pretty/C0603.kicad_mod",
+      "source_board": "JR",
+      "through_pad_keepouts_mm": [],
+      "unit_pin_record_indices": [
+        7590
+      ],
+      "units": [
+        0
+      ]
+    },
+    "C7112": {
+      "board": "A01-jack",
+      "box_mm": [
+        200.04,
+        138.36,
+        201.96,
+        141.64
+      ],
+      "cluster": "front-local",
+      "conditional_pad_depth_mm": 36.6,
+      "origin_mm": [
+        201.0,
+        140.0
+      ],
+      "owner": "front-jack",
+      "pads_mm": {
+        "1": [
+          [
+            201.0,
+            140.7
+          ]
+        ],
+        "2": [
+          [
+            201.0,
+            139.3
+          ]
+        ]
+      },
+      "pads_xyz_mm": {
+        "1": [
+          [
+            201.0,
+            140.7,
+            36.6
+          ]
+        ],
+        "2": [
+          [
+            201.0,
+            139.3,
+            36.6
+          ]
+        ]
+      },
+      "panel_uid": "",
+      "pins": {
+        "1": "+12V",
+        "2": "AGND"
+      },
+      "quarter_turn": 1,
+      "ref": "C7112",
+      "side": "rear",
+      "source": "footprints/kicad/zudo-osc-hole-field.pretty/C0603.kicad_mod",
+      "source_board": "JR",
+      "through_pad_keepouts_mm": [],
+      "unit_pin_record_indices": [
+        7591
+      ],
+      "units": [
+        0
+      ]
+    },
+    "C7113": {
+      "board": "A01-jack",
+      "box_mm": [
+        215.04,
+        144.36,
+        216.96,
+        147.64
+      ],
+      "cluster": "front-local",
+      "conditional_pad_depth_mm": 36.6,
+      "origin_mm": [
+        216.0,
+        146.0
+      ],
+      "owner": "front-jack",
+      "pads_mm": {
+        "1": [
+          [
+            216.0,
+            145.3
+          ]
+        ],
+        "2": [
+          [
+            216.0,
+            146.7
+          ]
+        ]
+      },
+      "pads_xyz_mm": {
+        "1": [
+          [
+            216.0,
+            145.3,
+            36.6
+          ]
+        ],
+        "2": [
+          [
+            216.0,
+            146.7,
+            36.6
+          ]
+        ]
+      },
+      "panel_uid": "",
+      "pins": {
+        "1": "-12V",
+        "2": "AGND"
+      },
+      "quarter_turn": 3,
+      "ref": "C7113",
+      "side": "rear",
+      "source": "footprints/kicad/zudo-osc-hole-field.pretty/C0603.kicad_mod",
+      "source_board": "JR",
+      "through_pad_keepouts_mm": [],
+      "unit_pin_record_indices": [
+        7592
+      ],
+      "units": [
+        0
+      ]
+    },
+    "C7114": {
+      "board": "A01-jack",
+      "box_mm": [
+        220.04,
+        121.86,
+        221.96,
+        125.14
+      ],
+      "cluster": "front-local",
+      "conditional_pad_depth_mm": 36.6,
+      "origin_mm": [
+        221.0,
+        123.5
+      ],
+      "owner": "front-jack",
+      "pads_mm": {
+        "1": [
+          [
+            221.0,
+            124.2
+          ]
+        ],
+        "2": [
+          [
+            221.0,
+            122.8
+          ]
+        ]
+      },
+      "pads_xyz_mm": {
+        "1": [
+          [
+            221.0,
+            124.2,
+            36.6
+          ]
+        ],
+        "2": [
+          [
+            221.0,
+            122.8,
+            36.6
+          ]
+        ]
+      },
+      "panel_uid": "",
+      "pins": {
+        "1": "+12V",
+        "2": "AGND"
+      },
+      "quarter_turn": 1,
+      "ref": "C7114",
+      "side": "rear",
+      "source": "footprints/kicad/zudo-osc-hole-field.pretty/C0603.kicad_mod",
+      "source_board": "JR",
+      "through_pad_keepouts_mm": [],
+      "unit_pin_record_indices": [
+        7593
+      ],
+      "units": [
+        0
+      ]
+    },
+    "C7115": {
+      "board": "A01-jack",
+      "box_mm": [
+        230.86,
+        127.54,
+        234.14,
+        129.46
+      ],
+      "cluster": "front-local",
+      "conditional_pad_depth_mm": 36.6,
+      "origin_mm": [
+        232.5,
+        128.5
+      ],
+      "owner": "front-jack",
+      "pads_mm": {
+        "1": [
+          [
+            231.8,
+            128.5
+          ]
+        ],
+        "2": [
+          [
+            233.2,
+            128.5
+          ]
+        ]
+      },
+      "pads_xyz_mm": {
+        "1": [
+          [
+            231.8,
+            128.5,
+            36.6
+          ]
+        ],
+        "2": [
+          [
+            233.2,
+            128.5,
+            36.6
+          ]
+        ]
+      },
+      "panel_uid": "",
+      "pins": {
+        "1": "-12V",
+        "2": "AGND"
+      },
+      "quarter_turn": 2,
+      "ref": "C7115",
+      "side": "rear",
+      "source": "footprints/kicad/zudo-osc-hole-field.pretty/C0603.kicad_mod",
+      "source_board": "JR",
+      "through_pad_keepouts_mm": [],
+      "unit_pin_record_indices": [
+        7594
+      ],
+      "units": [
+        0
+      ]
+    },
+    "C7116": {
+      "board": "A01-core",
+      "box_mm": [
+        279.54,
+        197.86,
+        281.46,
+        201.14
+      ],
+      "cluster": "reference_remote",
+      "conditional_pad_depth_mm": 70.8,
+      "origin_mm": [
+        280.5,
+        199.5
+      ],
+      "owner": "rear-core",
+      "pads_mm": {
+        "1": [
+          [
+            280.5,
+            200.2
+          ]
+        ],
+        "2": [
+          [
+            280.5,
+            198.8
+          ]
+        ]
+      },
+      "pads_xyz_mm": {
+        "1": [
+          [
+            280.5,
+            200.2,
+            70.8
+          ]
+        ],
+        "2": [
+          [
+            280.5,
+            198.8,
+            70.8
+          ]
+        ]
+      },
+      "panel_uid": "",
+      "pins": {
+        "1": "+12V",
+        "2": "AGND"
+      },
+      "quarter_turn": 1,
+      "ref": "C7116",
+      "side": "rear",
+      "source": "footprints/kicad/zudo-osc-hole-field.pretty/C0603.kicad_mod",
+      "source_board": "K",
+      "through_pad_keepouts_mm": [],
+      "unit_pin_record_indices": [
+        7595
+      ],
+      "units": [
+        0
+      ]
+    },
+    "C7117": {
+      "board": "A01-core",
+      "box_mm": [
+        268.54,
+        201.36,
+        270.46,
+        204.64
+      ],
+      "cluster": "reference_remote",
+      "conditional_pad_depth_mm": 70.8,
+      "origin_mm": [
+        269.5,
+        203.0
+      ],
+      "owner": "rear-core",
+      "pads_mm": {
+        "1": [
+          [
+            269.5,
+            203.7
+          ]
+        ],
+        "2": [
+          [
+            269.5,
+            202.3
+          ]
+        ]
+      },
+      "pads_xyz_mm": {
+        "1": [
+          [
+            269.5,
+            203.7,
+            70.8
+          ]
+        ],
+        "2": [
+          [
+            269.5,
+            202.3,
+            70.8
+          ]
+        ]
+      },
+      "panel_uid": "",
+      "pins": {
+        "1": "-12V",
+        "2": "AGND"
+      },
+      "quarter_turn": 1,
+      "ref": "C7117",
+      "side": "rear",
+      "source": "footprints/kicad/zudo-osc-hole-field.pretty/C0603.kicad_mod",
+      "source_board": "K",
+      "through_pad_keepouts_mm": [],
+      "unit_pin_record_indices": [
+        7596
+      ],
+      "units": [
+        0
+      ]
+    },
+    "C7118": {
+      "board": "A01-core",
+      "box_mm": [
+        270.36,
+        244.54,
+        273.64,
+        246.46
+      ],
+      "cluster": "attenuation_sum",
+      "conditional_pad_depth_mm": 70.8,
+      "origin_mm": [
+        272.0,
+        245.5
+      ],
+      "owner": "rear-core",
+      "pads_mm": {
+        "1": [
+          [
+            271.3,
+            245.5
+          ]
+        ],
+        "2": [
+          [
+            272.7,
+            245.5
+          ]
+        ]
+      },
+      "pads_xyz_mm": {
+        "1": [
+          [
+            271.3,
+            245.5,
+            70.8
+          ]
+        ],
+        "2": [
+          [
+            272.7,
+            245.5,
+            70.8
+          ]
+        ]
+      },
+      "panel_uid": "",
+      "pins": {
+        "1": "+12V",
+        "2": "AGND"
+      },
+      "quarter_turn": 2,
+      "ref": "C7118",
+      "side": "rear",
+      "source": "footprints/kicad/zudo-osc-hole-field.pretty/C0603.kicad_mod",
+      "source_board": "K",
+      "through_pad_keepouts_mm": [],
+      "unit_pin_record_indices": [
+        7630
+      ],
+      "units": [
+        0
+      ]
+    },
+    "C7119": {
+      "board": "A01-core",
+      "box_mm": [
+        257.54,
+        246.86,
+        259.46,
+        250.14
+      ],
+      "cluster": "attenuation_sum",
+      "conditional_pad_depth_mm": 70.8,
+      "origin_mm": [
+        258.5,
+        248.5
+      ],
+      "owner": "rear-core",
+      "pads_mm": {
+        "1": [
+          [
+            258.5,
+            249.2
+          ]
+        ],
+        "2": [
+          [
+            258.5,
+            247.8
+          ]
+        ]
+      },
+      "pads_xyz_mm": {
+        "1": [
+          [
+            258.5,
+            249.2,
+            70.8
+          ]
+        ],
+        "2": [
+          [
+            258.5,
+            247.8,
+            70.8
+          ]
+        ]
+      },
+      "panel_uid": "",
+      "pins": {
+        "1": "-12V",
+        "2": "AGND"
+      },
+      "quarter_turn": 1,
+      "ref": "C7119",
+      "side": "rear",
+      "source": "footprints/kicad/zudo-osc-hole-field.pretty/C0603.kicad_mod",
+      "source_board": "K",
+      "through_pad_keepouts_mm": [],
+      "unit_pin_record_indices": [
+        7631
+      ],
+      "units": [
+        0
+      ]
+    },
+    "C7120": {
+      "board": "A01-jack",
+      "box_mm": [
+        230.04,
+        149.36,
+        231.96,
+        152.64
+      ],
+      "cluster": "front-local",
+      "conditional_pad_depth_mm": 36.6,
+      "origin_mm": [
+        231.0,
+        151.0
+      ],
+      "owner": "front-jack",
+      "pads_mm": {
+        "1": [
+          [
+            231.0,
+            150.3
+          ]
+        ],
+        "2": [
+          [
+            231.0,
+            151.7
+          ]
+        ]
+      },
+      "pads_xyz_mm": {
+        "1": [
+          [
+            231.0,
+            150.3,
+            36.6
+          ]
+        ],
+        "2": [
+          [
+            231.0,
+            151.7,
+            36.6
+          ]
+        ]
+      },
+      "panel_uid": "",
+      "pins": {
+        "1": "+12V",
+        "2": "AGND"
+      },
+      "quarter_turn": 3,
+      "ref": "C7120",
+      "side": "rear",
+      "source": "footprints/kicad/zudo-osc-hole-field.pretty/C0603.kicad_mod",
+      "source_board": "JR",
+      "through_pad_keepouts_mm": [],
+      "unit_pin_record_indices": [
+        7632
+      ],
+      "units": [
+        0
+      ]
+    },
+    "C7121": {
+      "board": "A01-jack",
+      "box_mm": [
+        219.36,
+        144.54,
+        222.64,
+        146.46
+      ],
+      "cluster": "front-local",
+      "conditional_pad_depth_mm": 36.6,
+      "origin_mm": [
+        221.0,
+        145.5
+      ],
+      "owner": "front-jack",
+      "pads_mm": {
+        "1": [
+          [
+            221.7,
+            145.5
+          ]
+        ],
+        "2": [
+          [
+            220.3,
+            145.5
+          ]
+        ]
+      },
+      "pads_xyz_mm": {
+        "1": [
+          [
+            221.7,
+            145.5,
+            36.6
+          ]
+        ],
+        "2": [
+          [
+            220.3,
+            145.5,
+            36.6
+          ]
+        ]
+      },
+      "panel_uid": "",
+      "pins": {
+        "1": "-12V",
+        "2": "AGND"
+      },
+      "quarter_turn": 0,
+      "ref": "C7121",
+      "side": "rear",
+      "source": "footprints/kicad/zudo-osc-hole-field.pretty/C0603.kicad_mod",
+      "source_board": "JR",
+      "through_pad_keepouts_mm": [],
+      "unit_pin_record_indices": [
+        7633
+      ],
+      "units": [
+        0
+      ]
+    },
+    "C7122": {
+      "board": "A01-jack",
+      "box_mm": [
+        231.54,
+        145.36,
+        233.46,
+        148.64
+      ],
+      "cluster": "front-local",
+      "conditional_pad_depth_mm": 36.6,
+      "origin_mm": [
+        232.5,
+        147.0
+      ],
+      "owner": "front-jack",
+      "pads_mm": {
+        "1": [
+          [
+            232.5,
+            147.7
+          ]
+        ],
+        "2": [
+          [
+            232.5,
+            146.3
+          ]
+        ]
+      },
+      "pads_xyz_mm": {
+        "1": [
+          [
+            232.5,
+            147.7,
+            36.6
+          ]
+        ],
+        "2": [
+          [
+            232.5,
+            146.3,
+            36.6
+          ]
+        ]
+      },
+      "panel_uid": "",
+      "pins": {
+        "1": "+12V",
+        "2": "AGND"
+      },
+      "quarter_turn": 1,
+      "ref": "C7122",
+      "side": "rear",
+      "source": "footprints/kicad/zudo-osc-hole-field.pretty/C0603.kicad_mod",
+      "source_board": "JR",
+      "through_pad_keepouts_mm": [],
+      "unit_pin_record_indices": [
+        7634
+      ],
+      "units": [
+        0
+      ]
+    },
+    "C7123": {
+      "board": "A01-jack",
+      "box_mm": [
+        231.36,
+        141.54,
+        234.64,
+        143.46
+      ],
+      "cluster": "front-local",
+      "conditional_pad_depth_mm": 36.6,
+      "origin_mm": [
+        233.0,
+        142.5
+      ],
+      "owner": "front-jack",
+      "pads_mm": {
+        "1": [
+          [
+            232.3,
+            142.5
+          ]
+        ],
+        "2": [
+          [
+            233.7,
+            142.5
+          ]
+        ]
+      },
+      "pads_xyz_mm": {
+        "1": [
+          [
+            232.3,
+            142.5,
+            36.6
+          ]
+        ],
+        "2": [
+          [
+            233.7,
+            142.5,
+            36.6
+          ]
+        ]
+      },
+      "panel_uid": "",
+      "pins": {
+        "1": "-12V",
+        "2": "AGND"
+      },
+      "quarter_turn": 2,
+      "ref": "C7123",
+      "side": "rear",
+      "source": "footprints/kicad/zudo-osc-hole-field.pretty/C0603.kicad_mod",
+      "source_board": "JR",
+      "through_pad_keepouts_mm": [],
+      "unit_pin_record_indices": [
+        7635
+      ],
+      "units": [
+        0
+      ]
+    },
+    "D1308": {
+      "board": "A01-fixed",
+      "box_mm": [
+        223.6,
+        126.25,
+        225.70000000000002,
+        127.5
+      ],
+      "cluster": "front-local",
+      "conditional_pad_depth_mm": 20,
+      "origin_mm": [
+        224.65,
+        127.0
+      ],
+      "owner": "front-jack",
+      "pads_mm": {
+        "1": [
+          [
+            224.175,
+            127.0
+          ]
+        ],
+        "2": [
+          [
+            225.125,
+            127.0
+          ]
+        ]
+      },
+      "pads_xyz_mm": {
+        "1": [
+          [
+            224.175,
+            127.0,
+            20
+          ]
+        ],
+        "2": [
+          [
+            225.125,
+            127.0,
+            20
+          ]
+        ]
+      },
+      "panel_uid": "L:A01.IN.mag",
+      "pins": {
+        "1": "/A01/C6cb7d9_LED_K",
+        "2": "/A01/C6cb7d9_LED_A"
+      },
+      "quarter_turn": 0,
+      "ref": "D1308",
+      "side": "panel",
+      "source": "footprints/kicad/zudo-osc-hole-field.pretty/LED0402-Kingbright-White.kicad_mod",
+      "source_board": "JR",
+      "through_pad_keepouts_mm": [],
+      "unit_pin_record_indices": [
+        7602
+      ],
+      "units": [
+        0
+      ]
+    },
+    "D1309": {
+      "board": "A01-fixed",
+      "box_mm": [
+        223.6,
+        140.25,
+        225.70000000000002,
+        141.5
+      ],
+      "cluster": "front-local",
+      "conditional_pad_depth_mm": 20,
+      "origin_mm": [
+        224.65,
+        141.0
+      ],
+      "owner": "front-jack",
+      "pads_mm": {
+        "1": [
+          [
+            224.175,
+            141.0
+          ]
+        ],
+        "2": [
+          [
+            225.125,
+            141.0
+          ]
+        ]
+      },
+      "pads_xyz_mm": {
+        "1": [
+          [
+            224.175,
+            141.0,
+            20
+          ]
+        ],
+        "2": [
+          [
+            225.125,
+            141.0,
+            20
+          ]
+        ]
+      },
+      "panel_uid": "L:A01.OFFSET.mag",
+      "pins": {
+        "1": "/A01/Cd4fa3b_LED_K",
+        "2": "/A01/Cd4fa3b_LED_A"
+      },
+      "quarter_turn": 0,
+      "ref": "D1309",
+      "side": "panel",
+      "source": "footprints/kicad/zudo-osc-hole-field.pretty/LED0402-Kingbright-White.kicad_mod",
+      "source_board": "JR",
+      "through_pad_keepouts_mm": [],
+      "unit_pin_record_indices": [
+        7608
+      ],
+      "units": [
+        0
+      ]
+    },
+    "D1310": {
+      "board": "A01-fixed",
+      "box_mm": [
+        223.6,
+        154.25,
+        225.70000000000002,
+        155.5
+      ],
+      "cluster": "front-local",
+      "conditional_pad_depth_mm": 20,
+      "origin_mm": [
+        224.65,
+        155.0
+      ],
+      "owner": "front-jack",
+      "pads_mm": {
+        "1": [
+          [
+            224.175,
+            155.0
+          ]
+        ],
+        "2": [
+          [
+            225.125,
+            155.0
+          ]
+        ]
+      },
+      "pads_xyz_mm": {
+        "1": [
+          [
+            224.175,
+            155.0,
+            20
+          ]
+        ],
+        "2": [
+          [
+            225.125,
+            155.0,
+            20
+          ]
+        ]
+      },
+      "panel_uid": "L:A01.OUT.mag",
+      "pins": {
+        "1": "/A01/C3c74b6_LED_K",
+        "2": "/A01/C3c74b6_LED_A"
+      },
+      "quarter_turn": 0,
+      "ref": "D1310",
+      "side": "panel",
+      "source": "footprints/kicad/zudo-osc-hole-field.pretty/LED0402-Kingbright-White.kicad_mod",
+      "source_board": "JR",
+      "through_pad_keepouts_mm": [],
+      "unit_pin_record_indices": [
+        7614
+      ],
+      "units": [
+        0
+      ]
+    },
+    "D13101": {
+      "board": "A01-fixed",
+      "box_mm": [
+        223.6,
+        156.3,
+        225.70000000000002,
+        157.55
+      ],
+      "cluster": "front-local",
+      "conditional_pad_depth_mm": 20,
+      "origin_mm": [
+        224.65,
+        157.05
+      ],
+      "owner": "front-jack",
+      "pads_mm": {
+        "1": [
+          [
+            224.20000000000002,
+            157.05
+          ]
+        ],
+        "2": [
+          [
+            225.1,
+            157.05
+          ]
+        ]
+      },
+      "pads_xyz_mm": {
+        "1": [
+          [
+            224.20000000000002,
+            157.05,
+            20
+          ]
+        ],
+        "2": [
+          [
+            225.1,
+            157.05,
+            20
+          ]
+        ]
+      },
+      "panel_uid": "L:A01.OUT.clip",
+      "pins": {
+        "1": "/A01/C75b051_CLIP_N",
+        "2": "/A01/C75b051_LED_A"
+      },
+      "quarter_turn": 0,
+      "ref": "D13101",
+      "side": "panel",
+      "source": "footprints/kicad/zudo-osc-hole-field.pretty/LED0402-Kingbright-Red.kicad_mod",
+      "source_board": "JR",
+      "through_pad_keepouts_mm": [],
+      "unit_pin_record_indices": [
+        7624
+      ],
+      "units": [
+        0
+      ]
+    },
+    "D7101": {
+      "board": "A01-jack",
+      "box_mm": [
+        224.07,
+        109.69,
+        227.93,
+        113.31
+      ],
+      "cluster": "front-local",
+      "conditional_pad_depth_mm": 36.6,
+      "origin_mm": [
+        226.0,
+        111.5
+      ],
+      "owner": "front-jack",
+      "pads_mm": {
+        "1": [
+          [
+            226.9375,
+            110.55
+          ]
+        ],
+        "2": [
+          [
+            226.9375,
+            112.45
+          ]
+        ],
+        "3": [
+          [
+            225.0625,
+            111.5
+          ]
+        ]
+      },
+      "pads_xyz_mm": {
+        "1": [
+          [
+            226.9375,
+            110.55,
+            36.6
+          ]
+        ],
+        "2": [
+          [
+            226.9375,
+            112.45,
+            36.6
+          ]
+        ],
+        "3": [
+          [
+            225.0625,
+            111.5,
+            36.6
+          ]
+        ]
+      },
+      "panel_uid": "",
+      "pins": {
+        "1": "-12V",
+        "2": "+12V",
+        "3": "/A01/C3833e3_SENSE"
+      },
+      "quarter_turn": 0,
+      "ref": "D7101",
+      "side": "rear",
+      "source": "footprints/kicad/zudo-osc-hole-field.pretty/SOT-23.kicad_mod",
+      "source_board": "JR",
+      "through_pad_keepouts_mm": [],
+      "unit_pin_record_indices": [
+        7535
+      ],
+      "units": [
+        1
+      ]
+    },
+    "D7102": {
+      "board": "A01-jack",
+      "box_mm": [
+        228.57,
+        112.69,
+        232.43,
+        116.31
+      ],
+      "cluster": "front-local",
+      "conditional_pad_depth_mm": 36.6,
+      "origin_mm": [
+        230.5,
+        114.5
+      ],
+      "owner": "front-jack",
+      "pads_mm": {
+        "1": [
+          [
+            231.4375,
+            113.55
+          ]
+        ],
+        "2": [
+          [
+            231.4375,
+            115.45
+          ]
+        ],
+        "3": [
+          [
+            229.5625,
+            114.5
+          ]
+        ]
+      },
+      "pads_xyz_mm": {
+        "1": [
+          [
+            231.4375,
+            113.55,
+            36.6
+          ]
+        ],
+        "2": [
+          [
+            231.4375,
+            115.45,
+            36.6
+          ]
+        ],
+        "3": [
+          [
+            229.5625,
+            114.5,
+            36.6
+          ]
+        ]
+      },
+      "panel_uid": "",
+      "pins": {
+        "1": "-12V",
+        "2": "+12V",
+        "3": "/A01/C360350_SENSE"
+      },
+      "quarter_turn": 0,
+      "ref": "D7102",
+      "side": "rear",
+      "source": "footprints/kicad/zudo-osc-hole-field.pretty/SOT-23.kicad_mod",
+      "source_board": "JR",
+      "through_pad_keepouts_mm": [],
+      "unit_pin_record_indices": [
+        7546
+      ],
+      "units": [
+        1
+      ]
+    },
+    "D7103": {
+      "board": "A01-jack",
+      "box_mm": [
+        227.75,
+        126.89,
+        230.25,
+        131.85
+      ],
+      "cluster": "front-local",
+      "conditional_pad_depth_mm": 36.6,
+      "origin_mm": [
+        229.0,
+        129.5
+      ],
+      "owner": "front-jack",
+      "pads_mm": {
+        "1": [
+          [
+            229.0,
+            127.85
+          ]
+        ],
+        "2": [
+          [
+            229.0,
+            131.15
+          ]
+        ]
+      },
+      "pads_xyz_mm": {
+        "1": [
+          [
+            229.0,
+            127.85,
+            36.6
+          ]
+        ],
+        "2": [
+          [
+            229.0,
+            131.15,
+            36.6
+          ]
+        ]
+      },
+      "panel_uid": "",
+      "pins": {
+        "1": "/A01/C6cb7d9_LED_A",
+        "2": "/A01/C6cb7d9_DRIVE"
+      },
+      "quarter_turn": 3,
+      "ref": "D7103",
+      "side": "rear",
+      "source": "footprints/kicad/zudo-osc-hole-field.pretty/SOD-123.kicad_mod",
+      "source_board": "JR",
+      "through_pad_keepouts_mm": [],
+      "unit_pin_record_indices": [
+        7598
+      ],
+      "units": [
+        1
+      ]
+    },
+    "D7104": {
+      "board": "A01-jack",
+      "box_mm": [
+        223.65,
+        121.75,
+        228.61,
+        124.25
+      ],
+      "cluster": "front-local",
+      "conditional_pad_depth_mm": 36.6,
+      "origin_mm": [
+        226.0,
+        123.0
+      ],
+      "owner": "front-jack",
+      "pads_mm": {
+        "1": [
+          [
+            227.65,
+            123.0
+          ]
+        ],
+        "2": [
+          [
+            224.35,
+            123.0
+          ]
+        ]
+      },
+      "pads_xyz_mm": {
+        "1": [
+          [
+            227.65,
+            123.0,
+            36.6
+          ]
+        ],
+        "2": [
+          [
+            224.35,
+            123.0,
+            36.6
+          ]
+        ]
+      },
+      "panel_uid": "",
+      "pins": {
+        "1": "/A01/C6cb7d9_LED_A",
+        "2": "/A01/C6cb7d9_SENSE"
+      },
+      "quarter_turn": 0,
+      "ref": "D7104",
+      "side": "rear",
+      "source": "footprints/kicad/zudo-osc-hole-field.pretty/SOD-123.kicad_mod",
+      "source_board": "JR",
+      "through_pad_keepouts_mm": [],
+      "unit_pin_record_indices": [
+        7599
+      ],
+      "units": [
+        1
+      ]
+    },
+    "D7105": {
+      "board": "A01-jack",
+      "box_mm": [
+        217.25,
+        132.65,
+        219.75,
+        137.61
+      ],
+      "cluster": "front-local",
+      "conditional_pad_depth_mm": 36.6,
+      "origin_mm": [
+        218.5,
+        135.0
+      ],
+      "owner": "front-jack",
+      "pads_mm": {
+        "1": [
+          [
+            218.5,
+            136.65
+          ]
+        ],
+        "2": [
+          [
+            218.5,
+            133.35
+          ]
+        ]
+      },
+      "pads_xyz_mm": {
+        "1": [
+          [
+            218.5,
+            136.65,
+            36.6
+          ]
+        ],
+        "2": [
+          [
+            218.5,
+            133.35,
+            36.6
+          ]
+        ]
+      },
+      "panel_uid": "",
+      "pins": {
+        "1": "/A01/C6cb7d9_DRIVE",
+        "2": "/A01/C6cb7d9_LED_K"
+      },
+      "quarter_turn": 1,
+      "ref": "D7105",
+      "side": "rear",
+      "source": "footprints/kicad/zudo-osc-hole-field.pretty/SOD-123.kicad_mod",
+      "source_board": "JR",
+      "through_pad_keepouts_mm": [],
+      "unit_pin_record_indices": [
+        7600
+      ],
+      "units": [
+        1
+      ]
+    },
+    "D7106": {
+      "board": "A01-jack",
+      "box_mm": [
+        206.25,
+        133.65,
+        208.75,
+        138.61
+      ],
+      "cluster": "front-local",
+      "conditional_pad_depth_mm": 36.6,
+      "origin_mm": [
+        207.5,
+        136.0
+      ],
+      "owner": "front-jack",
+      "pads_mm": {
+        "1": [
+          [
+            207.5,
+            137.65
+          ]
+        ],
+        "2": [
+          [
+            207.5,
+            134.35
+          ]
+        ]
+      },
+      "pads_xyz_mm": {
+        "1": [
+          [
+            207.5,
+            137.65,
+            36.6
+          ]
+        ],
+        "2": [
+          [
+            207.5,
+            134.35,
+            36.6
+          ]
+        ]
+      },
+      "panel_uid": "",
+      "pins": {
+        "1": "/A01/C6cb7d9_SENSE",
+        "2": "/A01/C6cb7d9_LED_K"
+      },
+      "quarter_turn": 1,
+      "ref": "D7106",
+      "side": "rear",
+      "source": "footprints/kicad/zudo-osc-hole-field.pretty/SOD-123.kicad_mod",
+      "source_board": "JR",
+      "through_pad_keepouts_mm": [],
+      "unit_pin_record_indices": [
+        7601
+      ],
+      "units": [
+        1
+      ]
+    },
+    "D7108": {
+      "board": "A01-jack",
+      "box_mm": [
+        230.25,
+        135.65,
+        232.75,
+        140.61
+      ],
+      "cluster": "front-local",
+      "conditional_pad_depth_mm": 36.6,
+      "origin_mm": [
+        231.5,
+        138.0
+      ],
+      "owner": "front-jack",
+      "pads_mm": {
+        "1": [
+          [
+            231.5,
+            139.65
+          ]
+        ],
+        "2": [
+          [
+            231.5,
+            136.35
+          ]
+        ]
+      },
+      "pads_xyz_mm": {
+        "1": [
+          [
+            231.5,
+            139.65,
+            36.6
+          ]
+        ],
+        "2": [
+          [
+            231.5,
+            136.35,
+            36.6
+          ]
+        ]
+      },
+      "panel_uid": "",
+      "pins": {
+        "1": "/A01/Cd4fa3b_LED_A",
+        "2": "/A01/Cd4fa3b_DRIVE"
+      },
+      "quarter_turn": 1,
+      "ref": "D7108",
+      "side": "rear",
+      "source": "footprints/kicad/zudo-osc-hole-field.pretty/SOD-123.kicad_mod",
+      "source_board": "JR",
+      "through_pad_keepouts_mm": [],
+      "unit_pin_record_indices": [
+        7604
+      ],
+      "units": [
+        1
+      ]
+    },
+    "D7109": {
+      "board": "A01-jack",
+      "box_mm": [
+        231.25,
+        130.15,
+        233.75,
+        135.11
+      ],
+      "cluster": "front-local",
+      "conditional_pad_depth_mm": 36.6,
+      "origin_mm": [
+        232.5,
+        132.5
+      ],
+      "owner": "front-jack",
+      "pads_mm": {
+        "1": [
+          [
+            232.5,
+            134.15
+          ]
+        ],
+        "2": [
+          [
+            232.5,
+            130.85
+          ]
+        ]
+      },
+      "pads_xyz_mm": {
+        "1": [
+          [
+            232.5,
+            134.15,
+            36.6
+          ]
+        ],
+        "2": [
+          [
+            232.5,
+            130.85,
+            36.6
+          ]
+        ]
+      },
+      "panel_uid": "",
+      "pins": {
+        "1": "/A01/Cd4fa3b_LED_A",
+        "2": "/A01/Cd4fa3b_SENSE"
+      },
+      "quarter_turn": 1,
+      "ref": "D7109",
+      "side": "rear",
+      "source": "footprints/kicad/zudo-osc-hole-field.pretty/SOD-123.kicad_mod",
+      "source_board": "JR",
+      "through_pad_keepouts_mm": [],
+      "unit_pin_record_indices": [
+        7605
+      ],
+      "units": [
+        1
+      ]
+    },
+    "D7110": {
+      "board": "A01-jack",
+      "box_mm": [
+        219.25,
+        138.15,
+        221.75,
+        143.11
+      ],
+      "cluster": "front-local",
+      "conditional_pad_depth_mm": 36.6,
+      "origin_mm": [
+        220.5,
+        140.5
+      ],
+      "owner": "front-jack",
+      "pads_mm": {
+        "1": [
+          [
+            220.5,
+            142.15
+          ]
+        ],
+        "2": [
+          [
+            220.5,
+            138.85
+          ]
+        ]
+      },
+      "pads_xyz_mm": {
+        "1": [
+          [
+            220.5,
+            142.15,
+            36.6
+          ]
+        ],
+        "2": [
+          [
+            220.5,
+            138.85,
+            36.6
+          ]
+        ]
+      },
+      "panel_uid": "",
+      "pins": {
+        "1": "/A01/Cd4fa3b_DRIVE",
+        "2": "/A01/Cd4fa3b_LED_K"
+      },
+      "quarter_turn": 1,
+      "ref": "D7110",
+      "side": "rear",
+      "source": "footprints/kicad/zudo-osc-hole-field.pretty/SOD-123.kicad_mod",
+      "source_board": "JR",
+      "through_pad_keepouts_mm": [],
+      "unit_pin_record_indices": [
+        7606
+      ],
+      "units": [
+        1
+      ]
+    },
+    "D7111": {
+      "board": "A01-jack",
+      "box_mm": [
+        216.75,
+        127.15,
+        219.25,
+        132.11
+      ],
+      "cluster": "front-local",
+      "conditional_pad_depth_mm": 36.6,
+      "origin_mm": [
+        218.0,
+        129.5
+      ],
+      "owner": "front-jack",
+      "pads_mm": {
+        "1": [
+          [
+            218.0,
+            131.15
+          ]
+        ],
+        "2": [
+          [
+            218.0,
+            127.85
+          ]
+        ]
+      },
+      "pads_xyz_mm": {
+        "1": [
+          [
+            218.0,
+            131.15,
+            36.6
+          ]
+        ],
+        "2": [
+          [
+            218.0,
+            127.85,
+            36.6
+          ]
+        ]
+      },
+      "panel_uid": "",
+      "pins": {
+        "1": "/A01/Cd4fa3b_SENSE",
+        "2": "/A01/Cd4fa3b_LED_K"
+      },
+      "quarter_turn": 1,
+      "ref": "D7111",
+      "side": "rear",
+      "source": "footprints/kicad/zudo-osc-hole-field.pretty/SOD-123.kicad_mod",
+      "source_board": "JR",
+      "through_pad_keepouts_mm": [],
+      "unit_pin_record_indices": [
+        7607
+      ],
+      "units": [
+        1
+      ]
+    },
+    "D7113": {
+      "board": "A01-jack",
+      "box_mm": [
+        202.75,
+        138.65,
+        205.25,
+        143.61
+      ],
+      "cluster": "front-local",
+      "conditional_pad_depth_mm": 36.6,
+      "origin_mm": [
+        204.0,
+        141.0
+      ],
+      "owner": "front-jack",
+      "pads_mm": {
+        "1": [
+          [
+            204.0,
+            142.65
+          ]
+        ],
+        "2": [
+          [
+            204.0,
+            139.35
+          ]
+        ]
+      },
+      "pads_xyz_mm": {
+        "1": [
+          [
+            204.0,
+            142.65,
+            36.6
+          ]
+        ],
+        "2": [
+          [
+            204.0,
+            139.35,
+            36.6
+          ]
+        ]
+      },
+      "panel_uid": "",
+      "pins": {
+        "1": "/A01/C3c74b6_LED_A",
+        "2": "/A01/C3c74b6_DRIVE"
+      },
+      "quarter_turn": 1,
+      "ref": "D7113",
+      "side": "rear",
+      "source": "footprints/kicad/zudo-osc-hole-field.pretty/SOD-123.kicad_mod",
+      "source_board": "JR",
+      "through_pad_keepouts_mm": [],
+      "unit_pin_record_indices": [
+        7610
+      ],
+      "units": [
+        1
+      ]
+    },
+    "D7114": {
+      "board": "A01-jack",
+      "box_mm": [
+        200.15,
+        135.25,
+        205.11,
+        137.75
+      ],
+      "cluster": "front-local",
+      "conditional_pad_depth_mm": 36.6,
+      "origin_mm": [
+        202.5,
+        136.5
+      ],
+      "owner": "front-jack",
+      "pads_mm": {
+        "1": [
+          [
+            204.15,
+            136.5
+          ]
+        ],
+        "2": [
+          [
+            200.85,
+            136.5
+          ]
+        ]
+      },
+      "pads_xyz_mm": {
+        "1": [
+          [
+            204.15,
+            136.5,
+            36.6
+          ]
+        ],
+        "2": [
+          [
+            200.85,
+            136.5,
+            36.6
+          ]
+        ]
+      },
+      "panel_uid": "",
+      "pins": {
+        "1": "/A01/C3c74b6_LED_A",
+        "2": "/A01/C3c74b6_SENSE"
+      },
+      "quarter_turn": 0,
+      "ref": "D7114",
+      "side": "rear",
+      "source": "footprints/kicad/zudo-osc-hole-field.pretty/SOD-123.kicad_mod",
+      "source_board": "JR",
+      "through_pad_keepouts_mm": [],
+      "unit_pin_record_indices": [
+        7611
+      ],
+      "units": [
+        1
+      ]
+    },
+    "D7115": {
+      "board": "A01-jack",
+      "box_mm": [
+        206.65,
+        151.25,
+        211.61,
+        153.75
+      ],
+      "cluster": "front-local",
+      "conditional_pad_depth_mm": 36.6,
+      "origin_mm": [
+        209.0,
+        152.5
+      ],
+      "owner": "front-jack",
+      "pads_mm": {
+        "1": [
+          [
+            210.65,
+            152.5
+          ]
+        ],
+        "2": [
+          [
+            207.35,
+            152.5
+          ]
+        ]
+      },
+      "pads_xyz_mm": {
+        "1": [
+          [
+            210.65,
+            152.5,
+            36.6
+          ]
+        ],
+        "2": [
+          [
+            207.35,
+            152.5,
+            36.6
+          ]
+        ]
+      },
+      "panel_uid": "",
+      "pins": {
+        "1": "/A01/C3c74b6_DRIVE",
+        "2": "/A01/C3c74b6_LED_K"
+      },
+      "quarter_turn": 0,
+      "ref": "D7115",
+      "side": "rear",
+      "source": "footprints/kicad/zudo-osc-hole-field.pretty/SOD-123.kicad_mod",
+      "source_board": "JR",
+      "through_pad_keepouts_mm": [],
+      "unit_pin_record_indices": [
+        7612
+      ],
+      "units": [
+        1
+      ]
+    },
+    "D7116": {
+      "board": "A01-jack",
+      "box_mm": [
+        212.25,
+        150.15,
+        214.75,
+        155.11
+      ],
+      "cluster": "front-local",
+      "conditional_pad_depth_mm": 36.6,
+      "origin_mm": [
+        213.5,
+        152.5
+      ],
+      "owner": "front-jack",
+      "pads_mm": {
+        "1": [
+          [
+            213.5,
+            154.15
+          ]
+        ],
+        "2": [
+          [
+            213.5,
+            150.85
+          ]
+        ]
+      },
+      "pads_xyz_mm": {
+        "1": [
+          [
+            213.5,
+            154.15,
+            36.6
+          ]
+        ],
+        "2": [
+          [
+            213.5,
+            150.85,
+            36.6
+          ]
+        ]
+      },
+      "panel_uid": "",
+      "pins": {
+        "1": "/A01/C3c74b6_SENSE",
+        "2": "/A01/C3c74b6_LED_K"
+      },
+      "quarter_turn": 1,
+      "ref": "D7116",
+      "side": "rear",
+      "source": "footprints/kicad/zudo-osc-hole-field.pretty/SOD-123.kicad_mod",
+      "source_board": "JR",
+      "through_pad_keepouts_mm": [],
+      "unit_pin_record_indices": [
+        7613
+      ],
+      "units": [
+        1
+      ]
+    },
+    "J1308": {
+      "board": "A01-fixed",
+      "box_mm": [
+        213.75,
+        119.35,
+        223.25,
+        133.25
+      ],
+      "cluster": "front-local",
+      "conditional_pad_depth_mm": 20,
+      "origin_mm": [
+        218.5,
+        127.0
+      ],
+      "owner": "front-jack",
+      "pads_mm": {
+        "S": [
+          [
+            218.5,
+            120.52
+          ]
+        ],
+        "T": [
+          [
+            218.5,
+            131.92
+          ]
+        ],
+        "TN": [
+          [
+            218.5,
+            123.62
+          ]
+        ]
+      },
+      "pads_xyz_mm": {
+        "S": [
+          [
+            218.5,
+            120.52,
+            20
+          ]
+        ],
+        "T": [
+          [
+            218.5,
+            131.92,
+            20
+          ]
+        ],
+        "TN": [
+          [
+            218.5,
+            123.62,
+            20
+          ]
+        ]
+      },
+      "panel_uid": "J:A01.IN",
+      "pins": {
+        "S": "AGND",
+        "T": "/A01/IN_TIP",
+        "TN": null
+      },
+      "quarter_turn": 0,
+      "ref": "J1308",
+      "side": "panel",
+      "source": "footprints/kicad/zudo-osc-hole-field.pretty/Jack_3.5mm_QingPu_WQP518MA.kicad_mod",
+      "source_board": "JR",
+      "through_pad_keepouts_mm": [
+        [
+          217.535,
+          119.605,
+          219.465,
+          121.435
+        ],
+        [
+          217.435,
+          122.555,
+          219.565,
+          124.685
+        ],
+        [
+          217.435,
+          130.855,
+          219.565,
+          132.985
+        ]
+      ],
+      "unit_pin_record_indices": [
+        7525
+      ],
+      "units": [
+        0
+      ]
+    },
+    "J1309": {
+      "board": "A01-fixed",
+      "box_mm": [
+        213.75,
+        133.35,
+        223.25,
+        147.25
+      ],
+      "cluster": "front-local",
+      "conditional_pad_depth_mm": 20,
+      "origin_mm": [
+        218.5,
+        141.0
+      ],
+      "owner": "front-jack",
+      "pads_mm": {
+        "S": [
+          [
+            218.5,
+            134.52
+          ]
+        ],
+        "T": [
+          [
+            218.5,
+            145.92
+          ]
+        ],
+        "TN": [
+          [
+            218.5,
+            137.62
+          ]
+        ]
+      },
+      "pads_xyz_mm": {
+        "S": [
+          [
+            218.5,
+            134.52,
+            20
+          ]
+        ],
+        "T": [
+          [
+            218.5,
+            145.92,
+            20
+          ]
+        ],
+        "TN": [
+          [
+            218.5,
+            137.62,
+            20
+          ]
+        ]
+      },
+      "panel_uid": "J:A01.OFFSET",
+      "pins": {
+        "S": "AGND",
+        "T": "/A01/OFFSET_TIP",
+        "TN": null
+      },
+      "quarter_turn": 0,
+      "ref": "J1309",
+      "side": "panel",
+      "source": "footprints/kicad/zudo-osc-hole-field.pretty/Jack_3.5mm_QingPu_WQP518MA.kicad_mod",
+      "source_board": "JR",
+      "through_pad_keepouts_mm": [
+        [
+          217.535,
+          133.605,
+          219.465,
+          135.435
+        ],
+        [
+          217.435,
+          136.555,
+          219.565,
+          138.685
+        ],
+        [
+          217.435,
+          144.855,
+          219.565,
+          146.985
+        ]
+      ],
+      "unit_pin_record_indices": [
+        7536
+      ],
+      "units": [
+        0
+      ]
+    },
+    "J1310": {
+      "board": "A01-fixed",
+      "box_mm": [
+        213.75,
+        147.35,
+        223.25,
+        161.25
+      ],
+      "cluster": "front-local",
+      "conditional_pad_depth_mm": 20,
+      "origin_mm": [
+        218.5,
+        155.0
+      ],
+      "owner": "front-jack",
+      "pads_mm": {
+        "S": [
+          [
+            218.5,
+            148.52
+          ]
+        ],
+        "T": [
+          [
+            218.5,
+            159.92
+          ]
+        ],
+        "TN": [
+          [
+            218.5,
+            151.62
+          ]
+        ]
+      },
+      "pads_xyz_mm": {
+        "S": [
+          [
+            218.5,
+            148.52,
+            20
+          ]
+        ],
+        "T": [
+          [
+            218.5,
+            159.92,
+            20
+          ]
+        ],
+        "TN": [
+          [
+            218.5,
+            151.62,
+            20
+          ]
+        ]
+      },
+      "panel_uid": "J:A01.OUT",
+      "pins": {
+        "S": "AGND",
+        "T": "/A01/OUT_TIP",
+        "TN": null
+      },
+      "quarter_turn": 0,
+      "ref": "J1310",
+      "side": "panel",
+      "source": "footprints/kicad/zudo-osc-hole-field.pretty/Jack_3.5mm_QingPu_WQP518MA.kicad_mod",
+      "source_board": "JR",
+      "through_pad_keepouts_mm": [
+        [
+          217.535,
+          147.605,
+          219.465,
+          149.435
+        ],
+        [
+          217.435,
+          150.555,
+          219.565,
+          152.685
+        ],
+        [
+          217.435,
+          158.855,
+          219.565,
+          160.985
+        ]
+      ],
+      "unit_pin_record_indices": [
+        7570
+      ],
+      "units": [
+        0
+      ]
+    },
+    "R7101": {
+      "board": "A01-core",
+      "box_mm": [
+        279.59,
+        201.86,
+        281.41,
+        205.14
+      ],
+      "cluster": "reference_remote",
+      "conditional_pad_depth_mm": 70.8,
+      "origin_mm": [
+        280.5,
+        203.5
+      ],
+      "owner": "rear-core",
+      "pads_mm": {
+        "1": [
+          [
+            280.5,
+            204.25
+          ]
+        ],
+        "2": [
+          [
+            280.5,
+            202.75
+          ]
+        ]
+      },
+      "pads_xyz_mm": {
+        "1": [
+          [
+            280.5,
+            204.25,
+            70.8
+          ]
+        ],
+        "2": [
+          [
+            280.5,
+            202.75,
+            70.8
+          ]
+        ]
+      },
+      "panel_uid": "",
+      "pins": {
+        "1": "/A01/REF5",
+        "2": "/A01/C534b2a_INV"
+      },
+      "quarter_turn": 1,
+      "ref": "R7101",
+      "side": "rear",
+      "source": "footprints/kicad/zudo-osc-hole-field.pretty/R0603.kicad_mod",
+      "source_board": "K",
+      "through_pad_keepouts_mm": [],
+      "unit_pin_record_indices": [
+        7521
+      ],
+      "units": [
+        0
+      ]
+    },
+    "R7102": {
+      "board": "A01-core",
+      "box_mm": [
+        273.36,
+        209.59,
+        276.64,
+        211.41
+      ],
+      "cluster": "reference_remote",
+      "conditional_pad_depth_mm": 70.8,
+      "origin_mm": [
+        275.0,
+        210.5
+      ],
+      "owner": "rear-core",
+      "pads_mm": {
+        "1": [
+          [
+            275.75,
+            210.5
+          ]
+        ],
+        "2": [
+          [
+            274.25,
+            210.5
+          ]
+        ]
+      },
+      "pads_xyz_mm": {
+        "1": [
+          [
+            275.75,
+            210.5,
+            70.8
+          ]
+        ],
+        "2": [
+          [
+            274.25,
+            210.5,
+            70.8
+          ]
+        ]
+      },
+      "panel_uid": "",
+      "pins": {
+        "1": "/A01/REFN5",
+        "2": "/A01/C534b2a_INV"
+      },
+      "quarter_turn": 0,
+      "ref": "R7102",
+      "side": "rear",
+      "source": "footprints/kicad/zudo-osc-hole-field.pretty/R0603.kicad_mod",
+      "source_board": "K",
+      "through_pad_keepouts_mm": [],
+      "unit_pin_record_indices": [
+        7522
+      ],
+      "units": [
+        0
+      ]
+    },
+    "R7103": {
+      "board": "A01-core",
+      "box_mm": [
+        273.36,
+        195.09,
+        276.64,
+        196.91
+      ],
+      "cluster": "reference_remote",
+      "conditional_pad_depth_mm": 70.8,
+      "origin_mm": [
+        275.0,
+        196.0
+      ],
+      "owner": "rear-core",
+      "pads_mm": {
+        "1": [
+          [
+            275.75,
+            196.0
+          ]
+        ],
+        "2": [
+          [
+            274.25,
+            196.0
+          ]
+        ]
+      },
+      "pads_xyz_mm": {
+        "1": [
+          [
+            275.75,
+            196.0,
+            70.8
+          ]
+        ],
+        "2": [
+          [
+            274.25,
+            196.0,
+            70.8
+          ]
+        ]
+      },
+      "panel_uid": "",
+      "pins": {
+        "1": "/A01/REF5",
+        "2": "/A01/C534b2a_GATE_RAW"
+      },
+      "quarter_turn": 0,
+      "ref": "R7103",
+      "side": "rear",
+      "source": "footprints/kicad/zudo-osc-hole-field.pretty/R0603.kicad_mod",
+      "source_board": "K",
+      "through_pad_keepouts_mm": [],
+      "unit_pin_record_indices": [
+        7523
+      ],
+      "units": [
+        0
+      ]
+    },
+    "R7104": {
+      "board": "A01-core",
+      "box_mm": [
+        266.09,
+        201.86,
+        267.91,
+        205.14
+      ],
+      "cluster": "reference_remote",
+      "conditional_pad_depth_mm": 70.8,
+      "origin_mm": [
+        267.0,
+        203.5
+      ],
+      "owner": "rear-core",
+      "pads_mm": {
+        "1": [
+          [
+            267.0,
+            204.25
+          ]
+        ],
+        "2": [
+          [
+            267.0,
+            202.75
+          ]
+        ]
+      },
+      "pads_xyz_mm": {
+        "1": [
+          [
+            267.0,
+            204.25,
+            70.8
+          ]
+        ],
+        "2": [
+          [
+            267.0,
+            202.75,
+            70.8
+          ]
+        ]
+      },
+      "panel_uid": "",
+      "pins": {
+        "1": "/A01/C534b2a_GATE_RAW",
+        "2": "AGND"
+      },
+      "quarter_turn": 1,
+      "ref": "R7104",
+      "side": "rear",
+      "source": "footprints/kicad/zudo-osc-hole-field.pretty/R0603.kicad_mod",
+      "source_board": "K",
+      "through_pad_keepouts_mm": [],
+      "unit_pin_record_indices": [
+        7524
+      ],
+      "units": [
+        0
+      ]
+    },
+    "R7105": {
+      "board": "A01-jack",
+      "box_mm": [
+        216.36,
+        161.59,
+        219.64,
+        163.41
+      ],
+      "cluster": "front-local",
+      "conditional_pad_depth_mm": 36.6,
+      "origin_mm": [
+        218.0,
+        162.5
+      ],
+      "owner": "front-jack",
+      "pads_mm": {
+        "1": [
+          [
+            218.75,
+            162.5
+          ]
+        ],
+        "2": [
+          [
+            217.25,
+            162.5
+          ]
+        ]
+      },
+      "pads_xyz_mm": {
+        "1": [
+          [
+            218.75,
+            162.5,
+            36.6
+          ]
+        ],
+        "2": [
+          [
+            217.25,
+            162.5,
+            36.6
+          ]
+        ]
+      },
+      "panel_uid": "",
+      "pins": {
+        "1": "/A01/C38d00f_ENABLE",
+        "2": "AGND"
+      },
+      "quarter_turn": 0,
+      "ref": "R7105",
+      "side": "rear",
+      "source": "footprints/kicad/zudo-osc-hole-field.pretty/R0603.kicad_mod",
+      "source_board": "JR",
+      "through_pad_keepouts_mm": [],
+      "unit_pin_record_indices": [
+        7531
+      ],
+      "units": [
+        0
+      ]
+    },
+    "R7106": {
+      "board": "A01-jack",
+      "box_mm": [
+        216.36,
+        159.09,
+        219.64,
+        160.91
+      ],
+      "cluster": "front-local",
+      "conditional_pad_depth_mm": 36.6,
+      "origin_mm": [
+        218.0,
+        160.0
+      ],
+      "owner": "front-jack",
+      "pads_mm": {
+        "1": [
+          [
+            218.75,
+            160.0
+          ]
+        ],
+        "2": [
+          [
+            217.25,
+            160.0
+          ]
+        ]
+      },
+      "pads_xyz_mm": {
+        "1": [
+          [
+            218.75,
+            160.0,
+            36.6
+          ]
+        ],
+        "2": [
+          [
+            217.25,
+            160.0,
+            36.6
+          ]
+        ]
+      },
+      "panel_uid": "",
+      "pins": {
+        "1": "+5V",
+        "2": "/A01/C38d00f_ENABLE"
+      },
+      "quarter_turn": 0,
+      "ref": "R7106",
+      "side": "rear",
+      "source": "footprints/kicad/zudo-osc-hole-field.pretty/R0603.kicad_mod",
+      "source_board": "JR",
+      "through_pad_keepouts_mm": [],
+      "unit_pin_record_indices": [
+        7532
+      ],
+      "units": [
+        0
+      ]
+    },
+    "R7107": {
+      "board": "A01-jack",
+      "box_mm": [
+        202.86,
+        161.59,
+        206.14,
+        163.41
+      ],
+      "cluster": "front-local",
+      "conditional_pad_depth_mm": 36.6,
+      "origin_mm": [
+        204.5,
+        162.5
+      ],
+      "owner": "front-jack",
+      "pads_mm": {
+        "1": [
+          [
+            205.25,
+            162.5
+          ]
+        ],
+        "2": [
+          [
+            203.75,
+            162.5
+          ]
+        ]
+      },
+      "pads_xyz_mm": {
+        "1": [
+          [
+            205.25,
+            162.5,
+            36.6
+          ]
+        ],
+        "2": [
+          [
+            203.75,
+            162.5,
+            36.6
+          ]
+        ]
+      },
+      "panel_uid": "",
+      "pins": {
+        "1": "/A01/IN_PROTECTED",
+        "2": "AGND"
+      },
+      "quarter_turn": 0,
+      "ref": "R7107",
+      "side": "rear",
+      "source": "footprints/kicad/zudo-osc-hole-field.pretty/R0603.kicad_mod",
+      "source_board": "JR",
+      "through_pad_keepouts_mm": [],
+      "unit_pin_record_indices": [
+        7533
+      ],
+      "units": [
+        0
+      ]
+    },
+    "R7108": {
+      "board": "A01-jack",
+      "box_mm": [
+        220.59,
+        160.36,
+        222.41,
+        163.64
+      ],
+      "cluster": "front-local",
+      "conditional_pad_depth_mm": 36.6,
+      "origin_mm": [
+        221.5,
+        162.0
+      ],
+      "owner": "front-jack",
+      "pads_mm": {
+        "1": [
+          [
+            221.5,
+            162.75
+          ]
+        ],
+        "2": [
+          [
+            221.5,
+            161.25
+          ]
+        ]
+      },
+      "pads_xyz_mm": {
+        "1": [
+          [
+            221.5,
+            162.75,
+            36.6
+          ]
+        ],
+        "2": [
+          [
+            221.5,
+            161.25,
+            36.6
+          ]
+        ]
+      },
+      "panel_uid": "",
+      "pins": {
+        "1": "/A01/IN_PROTECTED",
+        "2": "/A01/C3833e3_SENSE"
+      },
+      "quarter_turn": 1,
+      "ref": "R7108",
+      "side": "rear",
+      "source": "footprints/kicad/zudo-osc-hole-field.pretty/R0603.kicad_mod",
+      "source_board": "JR",
+      "through_pad_keepouts_mm": [],
+      "unit_pin_record_indices": [
+        7534
+      ],
+      "units": [
+        0
+      ]
+    },
+    "R7109": {
+      "board": "A01-jack",
+      "box_mm": [
+        200.09,
+        160.36,
+        201.91,
+        163.64
+      ],
+      "cluster": "front-local",
+      "conditional_pad_depth_mm": 36.6,
+      "origin_mm": [
+        201.0,
+        162.0
+      ],
+      "owner": "front-jack",
+      "pads_mm": {
+        "1": [
+          [
+            201.0,
+            162.75
+          ]
+        ],
+        "2": [
+          [
+            201.0,
+            161.25
+          ]
+        ]
+      },
+      "pads_xyz_mm": {
+        "1": [
+          [
+            201.0,
+            162.75,
+            36.6
+          ]
+        ],
+        "2": [
+          [
+            201.0,
+            161.25,
+            36.6
+          ]
+        ]
+      },
+      "panel_uid": "",
+      "pins": {
+        "1": "/A01/C27197a_ENABLE",
+        "2": "AGND"
+      },
+      "quarter_turn": 1,
+      "ref": "R7109",
+      "side": "rear",
+      "source": "footprints/kicad/zudo-osc-hole-field.pretty/R0603.kicad_mod",
+      "source_board": "JR",
+      "through_pad_keepouts_mm": [],
+      "unit_pin_record_indices": [
+        7542
+      ],
+      "units": [
+        0
+      ]
+    },
+    "R7110": {
+      "board": "A01-jack",
+      "box_mm": [
+        202.86,
+        159.09,
+        206.14,
+        160.91
+      ],
+      "cluster": "front-local",
+      "conditional_pad_depth_mm": 36.6,
+      "origin_mm": [
+        204.5,
+        160.0
+      ],
+      "owner": "front-jack",
+      "pads_mm": {
+        "1": [
+          [
+            205.25,
+            160.0
+          ]
+        ],
+        "2": [
+          [
+            203.75,
+            160.0
+          ]
+        ]
+      },
+      "pads_xyz_mm": {
+        "1": [
+          [
+            205.25,
+            160.0,
+            36.6
+          ]
+        ],
+        "2": [
+          [
+            203.75,
+            160.0,
+            36.6
+          ]
+        ]
+      },
+      "panel_uid": "",
+      "pins": {
+        "1": "+5V",
+        "2": "/A01/C27197a_ENABLE"
+      },
+      "quarter_turn": 0,
+      "ref": "R7110",
+      "side": "rear",
+      "source": "footprints/kicad/zudo-osc-hole-field.pretty/R0603.kicad_mod",
+      "source_board": "JR",
+      "through_pad_keepouts_mm": [],
+      "unit_pin_record_indices": [
+        7543
+      ],
+      "units": [
+        0
+      ]
+    },
+    "R7111": {
+      "board": "A01-jack",
+      "box_mm": [
+        202.36,
+        127.59,
+        205.64,
+        129.41
+      ],
+      "cluster": "front-local",
+      "conditional_pad_depth_mm": 36.6,
+      "origin_mm": [
+        204.0,
+        128.5
+      ],
+      "owner": "front-jack",
+      "pads_mm": {
+        "1": [
+          [
+            204.75,
+            128.5
+          ]
+        ],
+        "2": [
+          [
+            203.25,
+            128.5
+          ]
+        ]
+      },
+      "pads_xyz_mm": {
+        "1": [
+          [
+            204.75,
+            128.5,
+            36.6
+          ]
+        ],
+        "2": [
+          [
+            203.25,
+            128.5,
+            36.6
+          ]
+        ]
+      },
+      "panel_uid": "",
+      "pins": {
+        "1": "/A01/OFFSET_PROTECTED",
+        "2": "AGND"
+      },
+      "quarter_turn": 0,
+      "ref": "R7111",
+      "side": "rear",
+      "source": "footprints/kicad/zudo-osc-hole-field.pretty/R0603.kicad_mod",
+      "source_board": "JR",
+      "through_pad_keepouts_mm": [],
+      "unit_pin_record_indices": [
+        7544
+      ],
+      "units": [
+        0
+      ]
+    },
+    "R7112": {
+      "board": "A01-jack",
+      "box_mm": [
+        211.86,
+        124.59,
+        215.14,
+        126.41
+      ],
+      "cluster": "front-local",
+      "conditional_pad_depth_mm": 36.6,
+      "origin_mm": [
+        213.5,
+        125.5
+      ],
+      "owner": "front-jack",
+      "pads_mm": {
+        "1": [
+          [
+            214.25,
+            125.5
+          ]
+        ],
+        "2": [
+          [
+            212.75,
+            125.5
+          ]
+        ]
+      },
+      "pads_xyz_mm": {
+        "1": [
+          [
+            214.25,
+            125.5,
+            36.6
+          ]
+        ],
+        "2": [
+          [
+            212.75,
+            125.5,
+            36.6
+          ]
+        ]
+      },
+      "panel_uid": "",
+      "pins": {
+        "1": "/A01/OFFSET_PROTECTED",
+        "2": "/A01/C360350_SENSE"
+      },
+      "quarter_turn": 0,
+      "ref": "R7112",
+      "side": "rear",
+      "source": "footprints/kicad/zudo-osc-hole-field.pretty/R0603.kicad_mod",
+      "source_board": "JR",
+      "through_pad_keepouts_mm": [],
+      "unit_pin_record_indices": [
+        7545
+      ],
+      "units": [
+        0
+      ]
+    },
+    "R7113": {
+      "board": "A01-core",
+      "box_mm": [
+        282.09,
+        201.86,
+        283.91,
+        205.14
+      ],
+      "cluster": "reference_remote",
+      "conditional_pad_depth_mm": 70.8,
+      "origin_mm": [
+        283.0,
+        203.5
+      ],
+      "owner": "rear-core",
+      "pads_mm": {
+        "1": [
+          [
+            283.0,
+            204.25
+          ]
+        ],
+        "2": [
+          [
+            283.0,
+            202.75
+          ]
+        ]
+      },
+      "pads_xyz_mm": {
+        "1": [
+          [
+            283.0,
+            204.25,
+            70.8
+          ]
+        ],
+        "2": [
+          [
+            283.0,
+            202.75,
+            70.8
+          ]
+        ]
+      },
+      "panel_uid": "",
+      "pins": {
+        "1": "/A01/C8e6645_DRIVE",
+        "2": "/A01/IN_REMOTE"
+      },
+      "quarter_turn": 1,
+      "ref": "R7113",
+      "side": "rear",
+      "source": "footprints/kicad/zudo-osc-hole-field.pretty/R0603.kicad_mod",
+      "source_board": "K",
+      "through_pad_keepouts_mm": [],
+      "unit_pin_record_indices": [
+        7547
+      ],
+      "units": [
+        0
+      ]
+    },
+    "R7114": {
+      "board": "A01-core",
+      "box_mm": [
+        269.36,
+        207.09,
+        272.64,
+        208.91
+      ],
+      "cluster": "reference_remote",
+      "conditional_pad_depth_mm": 70.8,
+      "origin_mm": [
+        271.0,
+        208.0
+      ],
+      "owner": "rear-core",
+      "pads_mm": {
+        "1": [
+          [
+            271.75,
+            208.0
+          ]
+        ],
+        "2": [
+          [
+            270.25,
+            208.0
+          ]
+        ]
+      },
+      "pads_xyz_mm": {
+        "1": [
+          [
+            271.75,
+            208.0,
+            70.8
+          ]
+        ],
+        "2": [
+          [
+            270.25,
+            208.0,
+            70.8
+          ]
+        ]
+      },
+      "panel_uid": "",
+      "pins": {
+        "1": "/A01/IN_REMOTE",
+        "2": "/A01/C8e6645_FB"
+      },
+      "quarter_turn": 0,
+      "ref": "R7114",
+      "side": "rear",
+      "source": "footprints/kicad/zudo-osc-hole-field.pretty/R0603.kicad_mod",
+      "source_board": "K",
+      "through_pad_keepouts_mm": [],
+      "unit_pin_record_indices": [
+        7548
+      ],
+      "units": [
+        0
+      ]
+    },
+    "R7115": {
+      "board": "A01-core",
+      "box_mm": [
+        262.36,
+        255.09,
+        265.64,
+        256.91
+      ],
+      "cluster": "attenuation_sum",
+      "conditional_pad_depth_mm": 70.8,
+      "origin_mm": [
+        264.0,
+        256.0
+      ],
+      "owner": "rear-core",
+      "pads_mm": {
+        "1": [
+          [
+            264.75,
+            256.0
+          ]
+        ],
+        "2": [
+          [
+            263.25,
+            256.0
+          ]
+        ]
+      },
+      "pads_xyz_mm": {
+        "1": [
+          [
+            264.75,
+            256.0,
+            70.8
+          ]
+        ],
+        "2": [
+          [
+            263.25,
+            256.0,
+            70.8
+          ]
+        ]
+      },
+      "panel_uid": "",
+      "pins": {
+        "1": "/A01/Cc045d2_W",
+        "2": "/A01/Cc045d2_W_SENSE"
+      },
+      "quarter_turn": 0,
+      "ref": "R7115",
+      "side": "rear",
+      "source": "footprints/kicad/zudo-osc-hole-field.pretty/R0603.kicad_mod",
+      "source_board": "K",
+      "through_pad_keepouts_mm": [],
+      "unit_pin_record_indices": [
+        7551
+      ],
+      "units": [
+        0
+      ]
+    },
+    "R7116": {
+      "board": "A01-core",
+      "box_mm": [
+        262.36,
+        240.59,
+        265.64,
+        242.41
+      ],
+      "cluster": "attenuation_sum",
+      "conditional_pad_depth_mm": 70.8,
+      "origin_mm": [
+        264.0,
+        241.5
+      ],
+      "owner": "rear-core",
+      "pads_mm": {
+        "1": [
+          [
+            264.75,
+            241.5
+          ]
+        ],
+        "2": [
+          [
+            263.25,
+            241.5
+          ]
+        ]
+      },
+      "pads_xyz_mm": {
+        "1": [
+          [
+            264.75,
+            241.5,
+            70.8
+          ]
+        ],
+        "2": [
+          [
+            263.25,
+            241.5,
+            70.8
+          ]
+        ]
+      },
+      "panel_uid": "",
+      "pins": {
+        "1": "/A01/Cc045d2_W_SENSE",
+        "2": "AGND"
+      },
+      "quarter_turn": 0,
+      "ref": "R7116",
+      "side": "rear",
+      "source": "footprints/kicad/zudo-osc-hole-field.pretty/R0603.kicad_mod",
+      "source_board": "K",
+      "through_pad_keepouts_mm": [],
+      "unit_pin_record_indices": [
+        7552
+      ],
+      "units": [
+        0
+      ]
+    },
+    "R7117": {
+      "board": "A01-core",
+      "box_mm": [
+        255.09,
+        247.36,
+        256.91,
+        250.64
+      ],
+      "cluster": "attenuation_sum",
+      "conditional_pad_depth_mm": 70.8,
+      "origin_mm": [
+        256.0,
+        249.0
+      ],
+      "owner": "rear-core",
+      "pads_mm": {
+        "1": [
+          [
+            256.0,
+            249.75
+          ]
+        ],
+        "2": [
+          [
+            256.0,
+            248.25
+          ]
+        ]
+      },
+      "pads_xyz_mm": {
+        "1": [
+          [
+            256.0,
+            249.75,
+            70.8
+          ]
+        ],
+        "2": [
+          [
+            256.0,
+            248.25,
+            70.8
+          ]
+        ]
+      },
+      "panel_uid": "",
+      "pins": {
+        "1": "/A01/IN_BUFFER",
+        "2": "/A01/ATTEN_SUM"
+      },
+      "quarter_turn": 1,
+      "ref": "R7117",
+      "side": "rear",
+      "source": "footprints/kicad/zudo-osc-hole-field.pretty/R0603.kicad_mod",
+      "source_board": "K",
+      "through_pad_keepouts_mm": [],
+      "unit_pin_record_indices": [
+        7553
+      ],
+      "units": [
+        0
+      ]
+    },
+    "R7118": {
+      "board": "A01-core",
+      "box_mm": [
+        271.09,
+        247.36,
+        272.91,
+        250.64
+      ],
+      "cluster": "attenuation_sum",
+      "conditional_pad_depth_mm": 70.8,
+      "origin_mm": [
+        272.0,
+        249.0
+      ],
+      "owner": "rear-core",
+      "pads_mm": {
+        "1": [
+          [
+            272.0,
+            249.75
+          ]
+        ],
+        "2": [
+          [
+            272.0,
+            248.25
+          ]
+        ]
+      },
+      "pads_xyz_mm": {
+        "1": [
+          [
+            272.0,
+            249.75,
+            70.8
+          ]
+        ],
+        "2": [
+          [
+            272.0,
+            248.25,
+            70.8
+          ]
+        ]
+      },
+      "panel_uid": "",
+      "pins": {
+        "1": "/A01/ATTEN_OUT",
+        "2": "/A01/ATTEN_SUM"
+      },
+      "quarter_turn": 1,
+      "ref": "R7118",
+      "side": "rear",
+      "source": "footprints/kicad/zudo-osc-hole-field.pretty/R0603.kicad_mod",
+      "source_board": "K",
+      "through_pad_keepouts_mm": [],
+      "unit_pin_record_indices": [
+        7554
+      ],
+      "units": [
+        0
+      ]
+    },
+    "R7119": {
+      "board": "A01-core",
+      "box_mm": [
+        258.36,
+        252.59,
+        261.64,
+        254.41
+      ],
+      "cluster": "attenuation_sum",
+      "conditional_pad_depth_mm": 70.8,
+      "origin_mm": [
+        260.0,
+        253.5
+      ],
+      "owner": "rear-core",
+      "pads_mm": {
+        "1": [
+          [
+            260.75,
+            253.5
+          ]
+        ],
+        "2": [
+          [
+            259.25,
+            253.5
+          ]
+        ]
+      },
+      "pads_xyz_mm": {
+        "1": [
+          [
+            260.75,
+            253.5,
+            70.8
+          ]
+        ],
+        "2": [
+          [
+            259.25,
+            253.5,
+            70.8
+          ]
+        ]
+      },
+      "panel_uid": "",
+      "pins": {
+        "1": "/A01/C38cac0_W",
+        "2": "/A01/C38cac0_W_SENSE"
+      },
+      "quarter_turn": 0,
+      "ref": "R7119",
+      "side": "rear",
+      "source": "footprints/kicad/zudo-osc-hole-field.pretty/R0603.kicad_mod",
+      "source_board": "K",
+      "through_pad_keepouts_mm": [],
+      "unit_pin_record_indices": [
+        7557
+      ],
+      "units": [
+        0
+      ]
+    },
+    "R7120": {
+      "board": "A01-core",
+      "box_mm": [
+        266.36,
+        252.59,
+        269.64,
+        254.41
+      ],
+      "cluster": "attenuation_sum",
+      "conditional_pad_depth_mm": 70.8,
+      "origin_mm": [
+        268.0,
+        253.5
+      ],
+      "owner": "rear-core",
+      "pads_mm": {
+        "1": [
+          [
+            268.75,
+            253.5
+          ]
+        ],
+        "2": [
+          [
+            267.25,
+            253.5
+          ]
+        ]
+      },
+      "pads_xyz_mm": {
+        "1": [
+          [
+            268.75,
+            253.5,
+            70.8
+          ]
+        ],
+        "2": [
+          [
+            267.25,
+            253.5,
+            70.8
+          ]
+        ]
+      },
+      "panel_uid": "",
+      "pins": {
+        "1": "/A01/C38cac0_W_SENSE",
+        "2": "AGND"
+      },
+      "quarter_turn": 0,
+      "ref": "R7120",
+      "side": "rear",
+      "source": "footprints/kicad/zudo-osc-hole-field.pretty/R0603.kicad_mod",
+      "source_board": "K",
+      "through_pad_keepouts_mm": [],
+      "unit_pin_record_indices": [
+        7558
+      ],
+      "units": [
+        0
+      ]
+    },
+    "R7127": {
+      "board": "A01-jack",
+      "box_mm": [
+        223.73,
+        116.9,
+        228.27,
+        120.1
+      ],
+      "cluster": "front-local",
+      "conditional_pad_depth_mm": 36.6,
+      "origin_mm": [
+        226.0,
+        118.5
+      ],
+      "owner": "front-jack",
+      "pads_mm": {
+        "1": [
+          [
+            227.4625,
+            118.5
+          ]
+        ],
+        "2": [
+          [
+            224.5375,
+            118.5
+          ]
+        ]
+      },
+      "pads_xyz_mm": {
+        "1": [
+          [
+            227.4625,
+            118.5,
+            36.6
+          ]
+        ],
+        "2": [
+          [
+            224.5375,
+            118.5,
+            36.6
+          ]
+        ]
+      },
+      "panel_uid": "",
+      "pins": {
+        "1": "/A01/C2073e0_DRIVE",
+        "2": "/A01/C2073e0_ISO_MID"
+      },
+      "quarter_turn": 0,
+      "ref": "R7127",
+      "side": "rear",
+      "source": "footprints/kicad/zudo-osc-hole-field.pretty/R_1210_3225Metric.kicad_mod",
+      "source_board": "JR",
+      "through_pad_keepouts_mm": [],
+      "unit_pin_record_indices": [
+        7566
+      ],
+      "units": [
+        0
+      ]
+    },
+    "R7128": {
+      "board": "A01-jack",
+      "box_mm": [
+        219.9,
+        114.23,
+        223.1,
+        118.77
+      ],
+      "cluster": "front-local",
+      "conditional_pad_depth_mm": 36.6,
+      "origin_mm": [
+        221.5,
+        116.5
+      ],
+      "owner": "front-jack",
+      "pads_mm": {
+        "1": [
+          [
+            221.5,
+            117.9625
+          ]
+        ],
+        "2": [
+          [
+            221.5,
+            115.0375
+          ]
+        ]
+      },
+      "pads_xyz_mm": {
+        "1": [
+          [
+            221.5,
+            117.9625,
+            36.6
+          ]
+        ],
+        "2": [
+          [
+            221.5,
+            115.0375,
+            36.6
+          ]
+        ]
+      },
+      "panel_uid": "",
+      "pins": {
+        "1": "/A01/C2073e0_ISO_MID",
+        "2": "/A01/OUT_TIP"
+      },
+      "quarter_turn": 1,
+      "ref": "R7128",
+      "side": "rear",
+      "source": "footprints/kicad/zudo-osc-hole-field.pretty/R_1210_3225Metric.kicad_mod",
+      "source_board": "JR",
+      "through_pad_keepouts_mm": [],
+      "unit_pin_record_indices": [
+        7567
+      ],
+      "units": [
+        0
+      ]
+    },
+    "R7129": {
+      "board": "A01-jack",
+      "box_mm": [
+        223.09,
+        149.86,
+        224.91,
+        153.14
+      ],
+      "cluster": "front-local",
+      "conditional_pad_depth_mm": 36.6,
+      "origin_mm": [
+        224.0,
+        151.5
+      ],
+      "owner": "front-jack",
+      "pads_mm": {
+        "1": [
+          [
+            224.0,
+            152.25
+          ]
+        ],
+        "2": [
+          [
+            224.0,
+            150.75
+          ]
+        ]
+      },
+      "pads_xyz_mm": {
+        "1": [
+          [
+            224.0,
+            152.25,
+            36.6
+          ]
+        ],
+        "2": [
+          [
+            224.0,
+            150.75,
+            36.6
+          ]
+        ]
+      },
+      "panel_uid": "",
+      "pins": {
+        "1": "/A01/OUT_TIP",
+        "2": "/A01/C2073e0_FB"
+      },
+      "quarter_turn": 1,
+      "ref": "R7129",
+      "side": "rear",
+      "source": "footprints/kicad/zudo-osc-hole-field.pretty/R0603.kicad_mod",
+      "source_board": "JR",
+      "through_pad_keepouts_mm": [],
+      "unit_pin_record_indices": [
+        7568
+      ],
+      "units": [
+        0
+      ]
+    },
+    "R7130": {
+      "board": "A01-jack",
+      "box_mm": [
+        224.36,
+        114.09,
+        227.64,
+        115.91
+      ],
+      "cluster": "front-local",
+      "conditional_pad_depth_mm": 36.6,
+      "origin_mm": [
+        226.0,
+        115.0
+      ],
+      "owner": "front-jack",
+      "pads_mm": {
+        "1": [
+          [
+            226.75,
+            115.0
+          ]
+        ],
+        "2": [
+          [
+            225.25,
+            115.0
+          ]
+        ]
+      },
+      "pads_xyz_mm": {
+        "1": [
+          [
+            226.75,
+            115.0,
+            36.6
+          ]
+        ],
+        "2": [
+          [
+            225.25,
+            115.0,
+            36.6
+          ]
+        ]
+      },
+      "panel_uid": "",
+      "pins": {
+        "1": "/A01/C6cb7d9_SENSE",
+        "2": "AGND"
+      },
+      "quarter_turn": 0,
+      "ref": "R7130",
+      "side": "rear",
+      "source": "footprints/kicad/zudo-osc-hole-field.pretty/R0603.kicad_mod",
+      "source_board": "JR",
+      "through_pad_keepouts_mm": [],
+      "unit_pin_record_indices": [
+        7597
+      ],
+      "units": [
+        0
+      ]
+    },
+    "R7131": {
+      "board": "A01-jack",
+      "box_mm": [
+        230.36,
+        123.59,
+        233.64,
+        125.41
+      ],
+      "cluster": "front-local",
+      "conditional_pad_depth_mm": 36.6,
+      "origin_mm": [
+        232.0,
+        124.5
+      ],
+      "owner": "front-jack",
+      "pads_mm": {
+        "1": [
+          [
+            232.75,
+            124.5
+          ]
+        ],
+        "2": [
+          [
+            231.25,
+            124.5
+          ]
+        ]
+      },
+      "pads_xyz_mm": {
+        "1": [
+          [
+            232.75,
+            124.5,
+            36.6
+          ]
+        ],
+        "2": [
+          [
+            231.25,
+            124.5,
+            36.6
+          ]
+        ]
+      },
+      "panel_uid": "",
+      "pins": {
+        "1": "/A01/Cd4fa3b_SENSE",
+        "2": "AGND"
+      },
+      "quarter_turn": 0,
+      "ref": "R7131",
+      "side": "rear",
+      "source": "footprints/kicad/zudo-osc-hole-field.pretty/R0603.kicad_mod",
+      "source_board": "JR",
+      "through_pad_keepouts_mm": [],
+      "unit_pin_record_indices": [
+        7603
+      ],
+      "units": [
+        0
+      ]
+    },
+    "R7132": {
+      "board": "A01-jack",
+      "box_mm": [
+        200.09,
+        156.36,
+        201.91,
+        159.64
+      ],
+      "cluster": "front-local",
+      "conditional_pad_depth_mm": 36.6,
+      "origin_mm": [
+        201.0,
+        158.0
+      ],
+      "owner": "front-jack",
+      "pads_mm": {
+        "1": [
+          [
+            201.0,
+            158.75
+          ]
+        ],
+        "2": [
+          [
+            201.0,
+            157.25
+          ]
+        ]
+      },
+      "pads_xyz_mm": {
+        "1": [
+          [
+            201.0,
+            158.75,
+            36.6
+          ]
+        ],
+        "2": [
+          [
+            201.0,
+            157.25,
+            36.6
+          ]
+        ]
+      },
+      "panel_uid": "",
+      "pins": {
+        "1": "/A01/C3c74b6_SENSE",
+        "2": "AGND"
+      },
+      "quarter_turn": 1,
+      "ref": "R7132",
+      "side": "rear",
+      "source": "footprints/kicad/zudo-osc-hole-field.pretty/R0603.kicad_mod",
+      "source_board": "JR",
+      "through_pad_keepouts_mm": [],
+      "unit_pin_record_indices": [
+        7609
+      ],
+      "units": [
+        0
+      ]
+    },
+    "R7133": {
+      "board": "A01-jack",
+      "box_mm": [
+        230.36,
+        161.59,
+        233.64,
+        163.41
+      ],
+      "cluster": "front-local",
+      "conditional_pad_depth_mm": 36.6,
+      "origin_mm": [
+        232.0,
+        162.5
+      ],
+      "owner": "front-jack",
+      "pads_mm": {
+        "1": [
+          [
+            232.75,
+            162.5
+          ]
+        ],
+        "2": [
+          [
+            231.25,
+            162.5
+          ]
+        ]
+      },
+      "pads_xyz_mm": {
+        "1": [
+          [
+            232.75,
+            162.5,
+            36.6
+          ]
+        ],
+        "2": [
+          [
+            231.25,
+            162.5,
+            36.6
+          ]
+        ]
+      },
+      "panel_uid": "",
+      "pins": {
+        "1": "/A01/C75b051_BUF",
+        "2": "/A01/CLIP_HALF"
+      },
+      "quarter_turn": 0,
+      "ref": "R7133",
+      "side": "rear",
+      "source": "footprints/kicad/zudo-osc-hole-field.pretty/R0603.kicad_mod",
+      "source_board": "JR",
+      "through_pad_keepouts_mm": [],
+      "unit_pin_record_indices": [
+        7615
+      ],
+      "units": [
+        0
+      ]
+    },
+    "R7134": {
+      "board": "A01-jack",
+      "box_mm": [
+        230.36,
+        159.09,
+        233.64,
+        160.91
+      ],
+      "cluster": "front-local",
+      "conditional_pad_depth_mm": 36.6,
+      "origin_mm": [
+        232.0,
+        160.0
+      ],
+      "owner": "front-jack",
+      "pads_mm": {
+        "1": [
+          [
+            232.75,
+            160.0
+          ]
+        ],
+        "2": [
+          [
+            231.25,
+            160.0
+          ]
+        ]
+      },
+      "pads_xyz_mm": {
+        "1": [
+          [
+            232.75,
+            160.0,
+            36.6
+          ]
+        ],
+        "2": [
+          [
+            231.25,
+            160.0,
+            36.6
+          ]
+        ]
+      },
+      "panel_uid": "",
+      "pins": {
+        "1": "/A01/CLIP_HALF",
+        "2": "AGND"
+      },
+      "quarter_turn": 0,
+      "ref": "R7134",
+      "side": "rear",
+      "source": "footprints/kicad/zudo-osc-hole-field.pretty/R0603.kicad_mod",
+      "source_board": "JR",
+      "through_pad_keepouts_mm": [],
+      "unit_pin_record_indices": [
+        7616
+      ],
+      "units": [
+        0
+      ]
+    },
+    "R7135": {
+      "board": "A01-jack",
+      "box_mm": [
+        223.09,
+        160.36,
+        224.91,
+        163.64
+      ],
+      "cluster": "front-local",
+      "conditional_pad_depth_mm": 36.6,
+      "origin_mm": [
+        224.0,
+        162.0
+      ],
+      "owner": "front-jack",
+      "pads_mm": {
+        "1": [
+          [
+            224.0,
+            162.75
+          ]
+        ],
+        "2": [
+          [
+            224.0,
+            161.25
+          ]
+        ]
+      },
+      "pads_xyz_mm": {
+        "1": [
+          [
+            224.0,
+            162.75,
+            36.6
+          ]
+        ],
+        "2": [
+          [
+            224.0,
+            161.25,
+            36.6
+          ]
+        ]
+      },
+      "panel_uid": "",
+      "pins": {
+        "1": "+12V",
+        "2": "/A01/C75b051_LED_A"
+      },
+      "quarter_turn": 1,
+      "ref": "R7135",
+      "side": "rear",
+      "source": "footprints/kicad/zudo-osc-hole-field.pretty/R0603.kicad_mod",
+      "source_board": "JR",
+      "through_pad_keepouts_mm": [],
+      "unit_pin_record_indices": [
+        7623
+      ],
+      "units": [
+        0
+      ]
+    },
+    "RN7101": {
+      "board": "A01-core",
+      "body_max_including_flash_mm": [
+        3.406,
+        3.406,
+        1.1
+      ],
+      "box_mm": [
+        253.5,
+        251.1,
+        257.5,
+        256.9
+      ],
+      "candidate_MPN": "LT5400AIMS8E-2#PBF",
+      "conditional_pad_depth_mm": 70.8,
+      "origin_mm": [
+        255.5,
+        254
+      ],
+      "owner": "rear-core",
+      "pads_mm": {
+        "1": [
+          [
+            256.475,
+            256.17
+          ]
+        ],
+        "2": [
+          [
+            255.825,
+            256.17
+          ]
+        ],
+        "3": [
+          [
+            255.175,
+            256.17
+          ]
+        ],
+        "4": [
+          [
+            254.525,
+            256.17
+          ]
+        ],
+        "5": [
+          [
+            254.525,
+            251.83
+          ]
+        ],
+        "6": [
+          [
+            255.175,
+            251.83
+          ]
+        ],
+        "7": [
+          [
+            255.825,
+            251.83
+          ]
+        ],
+        "8": [
+          [
+            256.475,
+            251.83
+          ]
+        ],
+        "9": [
+          [
+            255.5,
+            254
+          ]
+        ]
+      },
+      "pads_xyz_mm": {
+        "1": [
+          [
+            256.475,
+            256.17,
+            70.8
+          ]
+        ],
+        "2": [
+          [
+            255.825,
+            256.17,
+            70.8
+          ]
+        ],
+        "3": [
+          [
+            255.175,
+            256.17,
+            70.8
+          ]
+        ],
+        "4": [
+          [
+            254.525,
+            256.17,
+            70.8
+          ]
+        ],
+        "5": [
+          [
+            254.525,
+            251.83,
+            70.8
+          ]
+        ],
+        "6": [
+          [
+            255.175,
+            251.83,
+            70.8
+          ]
+        ],
+        "7": [
+          [
+            255.825,
+            251.83,
+            70.8
+          ]
+        ],
+        "8": [
+          [
+            256.475,
+            251.83,
+            70.8
+          ]
+        ],
+        "9": [
+          [
+            255.5,
+            254,
+            70.8
+          ]
+        ]
+      },
+      "panel_uid": "",
+      "pins": {
+        "1": "/A01/ATTEN_OUT",
+        "2": "/A01/MANUAL_OFFSET",
+        "3": "/A01/OFFSET_BUFFER",
+        "4": "/A01/SUM_NEG",
+        "5": "/A01/SUM_NODE",
+        "6": "/A01/SUM_NODE",
+        "7": "/A01/SUM_NODE",
+        "8": "/A01/SUM_NODE",
+        "9": "AGND"
+      },
+      "quarter_turn": 0,
+      "ref": "RN7101",
+      "replaces": [
+        "R7121",
+        "R7122",
+        "R7123",
+        "R7124"
+      ],
+      "side": "rear",
+      "source": "design/architecture-278/implementation/stage15/footprints/LT5400_MS8E_Candidate.kicad_mod",
+      "units": [
+        1,
+        2,
+        3,
+        4
+      ]
+    },
+    "RN7102": {
+      "board": "A01-jack",
+      "body_max_including_flash_mm": [
+        3.406,
+        3.406,
+        1.1
+      ],
+      "box_mm": [
+        218.5,
+        147.1,
+        222.5,
+        152.9
+      ],
+      "candidate_MPN": "LT5400AIMS8E-2#PBF",
+      "conditional_pad_depth_mm": 36.6,
+      "origin_mm": [
+        220.5,
+        150
+      ],
+      "owner": "front-jack",
+      "pads_mm": {
+        "1": [
+          [
+            221.475,
+            152.17
+          ]
+        ],
+        "2": [
+          [
+            220.825,
+            152.17
+          ]
+        ],
+        "3": [
+          [
+            220.175,
+            152.17
+          ]
+        ],
+        "4": [
+          [
+            219.525,
+            152.17
+          ]
+        ],
+        "5": [
+          [
+            219.525,
+            147.83
+          ]
+        ],
+        "6": [
+          [
+            220.175,
+            147.83
+          ]
+        ],
+        "7": [
+          [
+            220.825,
+            147.83
+          ]
+        ],
+        "8": [
+          [
+            221.475,
+            147.83
+          ]
+        ],
+        "9": [
+          [
+            220.5,
+            150
+          ]
+        ]
+      },
+      "pads_xyz_mm": {
+        "1": [
+          [
+            221.475,
+            152.17,
+            36.6
+          ]
+        ],
+        "2": [
+          [
+            220.825,
+            152.17,
+            36.6
+          ]
+        ],
+        "3": [
+          [
+            220.175,
+            152.17,
+            36.6
+          ]
+        ],
+        "4": [
+          [
+            219.525,
+            152.17,
+            36.6
+          ]
+        ],
+        "5": [
+          [
+            219.525,
+            147.83,
+            36.6
+          ]
+        ],
+        "6": [
+          [
+            220.175,
+            147.83,
+            36.6
+          ]
+        ],
+        "7": [
+          [
+            220.825,
+            147.83,
+            36.6
+          ]
+        ],
+        "8": [
+          [
+            221.475,
+            147.83,
+            36.6
+          ]
+        ],
+        "9": [
+          [
+            220.5,
+            150,
+            36.6
+          ]
+        ]
+      },
+      "panel_uid": "",
+      "pins": {
+        "1": "/A01/SUM_NEG",
+        "2": "/A01/OUT_INTERNAL",
+        "3": null,
+        "4": null,
+        "5": null,
+        "6": null,
+        "7": "/A01/RESTORE_NODE",
+        "8": "/A01/RESTORE_NODE",
+        "9": "AGND"
+      },
+      "quarter_turn": 0,
+      "ref": "RN7102",
+      "replaces": [
+        "R7125",
+        "R7126"
+      ],
+      "side": "rear",
+      "source": "design/architecture-278/implementation/stage15/footprints/LT5400_MS8E_Candidate.kicad_mod",
+      "units": [
+        1,
+        2,
+        3,
+        4
+      ]
+    },
+    "RV1307": {
+      "board": "A01-control",
+      "box_mm": [
+        211.75,
+        263.75,
+        225.25,
+        277.1
+      ],
+      "cluster": "front-local",
+      "conditional_pad_depth_mm": 10,
+      "origin_mm": [
+        218.5,
+        269.0
+      ],
+      "owner": "front-control",
+      "pads_mm": {
+        "1": [
+          [
+            216.0,
+            276.0
+          ]
+        ],
+        "2": [
+          [
+            218.5,
+            276.0
+          ]
+        ],
+        "3": [
+          [
+            221.0,
+            276.0
+          ]
+        ],
+        "4": [
+          [
+            213.2,
+            269.0
+          ]
+        ],
+        "5": [
+          [
+            223.8,
+            269.0
+          ]
+        ]
+      },
+      "pads_xyz_mm": {
+        "1": [
+          [
+            216.0,
+            276.0,
+            10
+          ]
+        ],
+        "2": [
+          [
+            218.5,
+            276.0,
+            10
+          ]
+        ],
+        "3": [
+          [
+            221.0,
+            276.0,
+            10
+          ]
+        ],
+        "4": [
+          [
+            213.2,
+            269.0,
+            10
+          ]
+        ],
+        "5": [
+          [
+            223.8,
+            269.0,
+            10
+          ]
+        ]
+      },
+      "panel_uid": "C:A01.ATTEN",
+      "pins": {
+        "1": "AGND",
+        "2": "/A01/Cc045d2_W",
+        "3": "/A01/IN_REMOTE",
+        "4": null,
+        "5": null
+      },
+      "quarter_turn": 0,
+      "ref": "RV1307",
+      "side": "panel",
+      "source": "footprints/kicad/zudo-osc-hole-field.pretty/PTV09A-4020F.kicad_mod",
+      "source_board": "P",
+      "through_pad_keepouts_mm": [
+        [
+          215.15,
+          275.15,
+          216.85,
+          276.85
+        ],
+        [
+          217.65,
+          275.15,
+          219.35,
+          276.85
+        ],
+        [
+          220.15,
+          275.15,
+          221.85,
+          276.85
+        ],
+        [
+          212.0,
+          267.8,
+          214.4,
+          270.2
+        ],
+        [
+          222.6,
+          267.8,
+          225.0,
+          270.2
+        ]
+      ],
+      "unit_pin_record_indices": [
+        7550
+      ],
+      "units": [
+        0
+      ]
+    },
+    "RV1308": {
+      "board": "A01-control",
+      "box_mm": [
+        211.75,
+        277.75,
+        225.25,
+        291.1
+      ],
+      "cluster": "front-local",
+      "conditional_pad_depth_mm": 10,
+      "origin_mm": [
+        218.5,
+        283.0
+      ],
+      "owner": "front-control",
+      "pads_mm": {
+        "1": [
+          [
+            216.0,
+            290.0
+          ]
+        ],
+        "2": [
+          [
+            218.5,
+            290.0
+          ]
+        ],
+        "3": [
+          [
+            221.0,
+            290.0
+          ]
+        ],
+        "4": [
+          [
+            213.2,
+            283.0
+          ]
+        ],
+        "5": [
+          [
+            223.8,
+            283.0
+          ]
+        ]
+      },
+      "pads_xyz_mm": {
+        "1": [
+          [
+            216.0,
+            290.0,
+            10
+          ]
+        ],
+        "2": [
+          [
+            218.5,
+            290.0,
+            10
+          ]
+        ],
+        "3": [
+          [
+            221.0,
+            290.0,
+            10
+          ]
+        ],
+        "4": [
+          [
+            213.2,
+            283.0,
+            10
+          ]
+        ],
+        "5": [
+          [
+            223.8,
+            283.0,
+            10
+          ]
+        ]
+      },
+      "panel_uid": "C:A01.OFFSET",
+      "pins": {
+        "1": "/A01/REFN5",
+        "2": "/A01/C38cac0_W",
+        "3": "/A01/REF5",
+        "4": null,
+        "5": null
+      },
+      "quarter_turn": 0,
+      "ref": "RV1308",
+      "side": "panel",
+      "source": "footprints/kicad/zudo-osc-hole-field.pretty/PTV09A-4020F.kicad_mod",
+      "source_board": "P",
+      "through_pad_keepouts_mm": [
+        [
+          215.15,
+          289.15,
+          216.85,
+          290.85
+        ],
+        [
+          217.65,
+          289.15,
+          219.35,
+          290.85
+        ],
+        [
+          220.15,
+          289.15,
+          221.85,
+          290.85
+        ],
+        [
+          212.0,
+          281.8,
+          214.4,
+          284.2
+        ],
+        [
+          222.6,
+          281.8,
+          225.0,
+          284.2
+        ]
+      ],
+      "unit_pin_record_indices": [
+        7556
+      ],
+      "units": [
+        0
+      ]
+    },
+    "U7101": {
+      "board": "A01-core",
+      "box_mm": [
+        247.8,
+        193.95,
+        255.2,
+        199.81
+      ],
+      "cluster": "reference_source",
+      "conditional_pad_depth_mm": 70.8,
+      "origin_mm": [
+        251.5,
+        197.0
+      ],
+      "owner": "rear-core",
+      "pads_mm": {
+        "1": [
+          [
+            253.975,
+            195.095
+          ]
+        ],
+        "2": [
+          [
+            253.975,
+            196.365
+          ]
+        ],
+        "3": [
+          [
+            253.975,
+            197.635
+          ]
+        ],
+        "4": [
+          [
+            253.975,
+            198.905
+          ]
+        ],
+        "5": [
+          [
+            249.025,
+            198.905
+          ]
+        ],
+        "6": [
+          [
+            249.025,
+            197.635
+          ]
+        ],
+        "7": [
+          [
+            249.025,
+            196.365
+          ]
+        ],
+        "8": [
+          [
+            249.025,
+            195.095
+          ]
+        ]
+      },
+      "pads_xyz_mm": {
+        "1": [
+          [
+            253.975,
+            195.095,
+            70.8
+          ]
+        ],
+        "2": [
+          [
+            253.975,
+            196.365,
+            70.8
+          ]
+        ],
+        "3": [
+          [
+            253.975,
+            197.635,
+            70.8
+          ]
+        ],
+        "4": [
+          [
+            253.975,
+            198.905,
+            70.8
+          ]
+        ],
+        "5": [
+          [
+            249.025,
+            198.905,
+            70.8
+          ]
+        ],
+        "6": [
+          [
+            249.025,
+            197.635,
+            70.8
+          ]
+        ],
+        "7": [
+          [
+            249.025,
+            196.365,
+            70.8
+          ]
+        ],
+        "8": [
+          [
+            249.025,
+            195.095,
+            70.8
+          ]
+        ]
+      },
+      "panel_uid": "",
+      "pins": {
+        "1": null,
+        "2": "+12V",
+        "3": null,
+        "4": "AGND",
+        "5": null,
+        "6": "/A01/C534b2a_RAW_5V",
+        "7": null,
+        "8": null
+      },
+      "quarter_turn": 0,
+      "ref": "U7101",
+      "side": "rear",
+      "source": "footprints/kicad/zudo-osc-hole-field.pretty/SOIC-8_3.9x4.9mm_P1.27mm.kicad_mod",
+      "source_board": "K",
+      "through_pad_keepouts_mm": [],
+      "unit_pin_record_indices": [
+        7518
+      ],
+      "units": [
+        1
+      ]
+    },
+    "U7102": {
+      "board": "A01-jack",
+      "box_mm": [
+        206.15,
+        140.52,
+        214.44,
+        146.48
+      ],
+      "cluster": "front-local",
+      "conditional_pad_depth_mm": 36.6,
+      "origin_mm": [
+        210.0,
+        143.5
+      ],
+      "owner": "front-jack",
+      "pads_mm": {
+        "1": [
+          [
+            212.8625,
+            141.225
+          ]
+        ],
+        "10": [
+          [
+            207.1375,
+            145.125
+          ]
+        ],
+        "11": [
+          [
+            207.1375,
+            144.475
+          ]
+        ],
+        "12": [
+          [
+            207.1375,
+            143.825
+          ]
+        ],
+        "13": [
+          [
+            207.1375,
+            143.175
+          ]
+        ],
+        "14": [
+          [
+            207.1375,
+            142.525
+          ]
+        ],
+        "15": [
+          [
+            207.1375,
+            141.875
+          ]
+        ],
+        "16": [
+          [
+            207.1375,
+            141.225
+          ]
+        ],
+        "2": [
+          [
+            212.8625,
+            141.875
+          ]
+        ],
+        "3": [
+          [
+            212.8625,
+            142.525
+          ]
+        ],
+        "4": [
+          [
+            212.8625,
+            143.175
+          ]
+        ],
+        "5": [
+          [
+            212.8625,
+            143.825
+          ]
+        ],
+        "6": [
+          [
+            212.8625,
+            144.475
+          ]
+        ],
+        "7": [
+          [
+            212.8625,
+            145.125
+          ]
+        ],
+        "8": [
+          [
+            212.8625,
+            145.775
+          ]
+        ],
+        "9": [
+          [
+            207.1375,
+            145.775
+          ]
+        ]
+      },
+      "pads_xyz_mm": {
+        "1": [
+          [
+            212.8625,
+            141.225,
+            36.6
+          ]
+        ],
+        "10": [
+          [
+            207.1375,
+            145.125,
+            36.6
+          ]
+        ],
+        "11": [
+          [
+            207.1375,
+            144.475,
+            36.6
+          ]
+        ],
+        "12": [
+          [
+            207.1375,
+            143.825,
+            36.6
+          ]
+        ],
+        "13": [
+          [
+            207.1375,
+            143.175,
+            36.6
+          ]
+        ],
+        "14": [
+          [
+            207.1375,
+            142.525,
+            36.6
+          ]
+        ],
+        "15": [
+          [
+            207.1375,
+            141.875,
+            36.6
+          ]
+        ],
+        "16": [
+          [
+            207.1375,
+            141.225,
+            36.6
+          ]
+        ],
+        "2": [
+          [
+            212.8625,
+            141.875,
+            36.6
+          ]
+        ],
+        "3": [
+          [
+            212.8625,
+            142.525,
+            36.6
+          ]
+        ],
+        "4": [
+          [
+            212.8625,
+            143.175,
+            36.6
+          ]
+        ],
+        "5": [
+          [
+            212.8625,
+            143.825,
+            36.6
+          ]
+        ],
+        "6": [
+          [
+            212.8625,
+            144.475,
+            36.6
+          ]
+        ],
+        "7": [
+          [
+            212.8625,
+            145.125,
+            36.6
+          ]
+        ],
+        "8": [
+          [
+            212.8625,
+            145.775,
+            36.6
+          ]
+        ],
+        "9": [
+          [
+            207.1375,
+            145.775,
+            36.6
+          ]
+        ]
+      },
+      "panel_uid": "",
+      "pins": {
+        "1": "/A01/C38d00f_ENABLE",
+        "10": "AGND",
+        "11": "AGND",
+        "12": null,
+        "13": "+12V",
+        "14": "AGND",
+        "15": "AGND",
+        "16": "AGND",
+        "2": "/A01/IN_PROTECTED",
+        "3": "/A01/IN_TIP",
+        "4": "-12V",
+        "5": "AGND",
+        "6": "AGND",
+        "7": "AGND",
+        "8": "AGND",
+        "9": "AGND"
+      },
+      "quarter_turn": 0,
+      "ref": "U7102",
+      "side": "rear",
+      "source": "footprints/kicad/zudo-osc-hole-field.pretty/TSSOP-16_4.4x5mm_P0.65mm.kicad_mod",
+      "source_board": "JR",
+      "through_pad_keepouts_mm": [],
+      "unit_pin_record_indices": [
+        7526,
+        7527,
+        7528,
+        7529,
+        7530
+      ],
+      "units": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ]
+    },
+    "U7103": {
+      "board": "A01-jack",
+      "box_mm": [
+        206.15,
+        127.02,
+        214.44,
+        132.98
+      ],
+      "cluster": "front-local",
+      "conditional_pad_depth_mm": 36.6,
+      "origin_mm": [
+        210.0,
+        130.0
+      ],
+      "owner": "front-jack",
+      "pads_mm": {
+        "1": [
+          [
+            212.8625,
+            127.725
+          ]
+        ],
+        "10": [
+          [
+            207.1375,
+            131.625
+          ]
+        ],
+        "11": [
+          [
+            207.1375,
+            130.975
+          ]
+        ],
+        "12": [
+          [
+            207.1375,
+            130.325
+          ]
+        ],
+        "13": [
+          [
+            207.1375,
+            129.675
+          ]
+        ],
+        "14": [
+          [
+            207.1375,
+            129.025
+          ]
+        ],
+        "15": [
+          [
+            207.1375,
+            128.375
+          ]
+        ],
+        "16": [
+          [
+            207.1375,
+            127.725
+          ]
+        ],
+        "2": [
+          [
+            212.8625,
+            128.375
+          ]
+        ],
+        "3": [
+          [
+            212.8625,
+            129.025
+          ]
+        ],
+        "4": [
+          [
+            212.8625,
+            129.675
+          ]
+        ],
+        "5": [
+          [
+            212.8625,
+            130.325
+          ]
+        ],
+        "6": [
+          [
+            212.8625,
+            130.975
+          ]
+        ],
+        "7": [
+          [
+            212.8625,
+            131.625
+          ]
+        ],
+        "8": [
+          [
+            212.8625,
+            132.275
+          ]
+        ],
+        "9": [
+          [
+            207.1375,
+            132.275
+          ]
+        ]
+      },
+      "pads_xyz_mm": {
+        "1": [
+          [
+            212.8625,
+            127.725,
+            36.6
+          ]
+        ],
+        "10": [
+          [
+            207.1375,
+            131.625,
+            36.6
+          ]
+        ],
+        "11": [
+          [
+            207.1375,
+            130.975,
+            36.6
+          ]
+        ],
+        "12": [
+          [
+            207.1375,
+            130.325,
+            36.6
+          ]
+        ],
+        "13": [
+          [
+            207.1375,
+            129.675,
+            36.6
+          ]
+        ],
+        "14": [
+          [
+            207.1375,
+            129.025,
+            36.6
+          ]
+        ],
+        "15": [
+          [
+            207.1375,
+            128.375,
+            36.6
+          ]
+        ],
+        "16": [
+          [
+            207.1375,
+            127.725,
+            36.6
+          ]
+        ],
+        "2": [
+          [
+            212.8625,
+            128.375,
+            36.6
+          ]
+        ],
+        "3": [
+          [
+            212.8625,
+            129.025,
+            36.6
+          ]
+        ],
+        "4": [
+          [
+            212.8625,
+            129.675,
+            36.6
+          ]
+        ],
+        "5": [
+          [
+            212.8625,
+            130.325,
+            36.6
+          ]
+        ],
+        "6": [
+          [
+            212.8625,
+            130.975,
+            36.6
+          ]
+        ],
+        "7": [
+          [
+            212.8625,
+            131.625,
+            36.6
+          ]
+        ],
+        "8": [
+          [
+            212.8625,
+            132.275,
+            36.6
+          ]
+        ],
+        "9": [
+          [
+            207.1375,
+            132.275,
+            36.6
+          ]
+        ]
+      },
+      "panel_uid": "",
+      "pins": {
+        "1": "/A01/C27197a_ENABLE",
+        "10": "AGND",
+        "11": "AGND",
+        "12": null,
+        "13": "+12V",
+        "14": "AGND",
+        "15": "AGND",
+        "16": "AGND",
+        "2": "/A01/OFFSET_PROTECTED",
+        "3": "/A01/OFFSET_TIP",
+        "4": "-12V",
+        "5": "AGND",
+        "6": "AGND",
+        "7": "AGND",
+        "8": "AGND",
+        "9": "AGND"
+      },
+      "quarter_turn": 0,
+      "ref": "U7103",
+      "side": "rear",
+      "source": "footprints/kicad/zudo-osc-hole-field.pretty/TSSOP-16_4.4x5mm_P0.65mm.kicad_mod",
+      "source_board": "JR",
+      "through_pad_keepouts_mm": [],
+      "unit_pin_record_indices": [
+        7537,
+        7538,
+        7539,
+        7540,
+        7541
+      ],
+      "units": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ]
+    },
+    "U7104": {
+      "board": "A01-core",
+      "box_mm": [
+        271.15,
+        200.37,
+        278.85,
+        206.36
+      ],
+      "cluster": "reference_remote",
+      "conditional_pad_depth_mm": 70.8,
+      "origin_mm": [
+        275.0,
+        203.5
+      ],
+      "owner": "rear-core",
+      "pads_mm": {
+        "1": [
+          [
+            277.8625,
+            201.55
+          ]
+        ],
+        "10": [
+          [
+            272.1375,
+            204.15
+          ]
+        ],
+        "11": [
+          [
+            272.1375,
+            203.5
+          ]
+        ],
+        "12": [
+          [
+            272.1375,
+            202.85
+          ]
+        ],
+        "13": [
+          [
+            272.1375,
+            202.2
+          ]
+        ],
+        "14": [
+          [
+            272.1375,
+            201.55
+          ]
+        ],
+        "2": [
+          [
+            277.8625,
+            202.2
+          ]
+        ],
+        "3": [
+          [
+            277.8625,
+            202.85
+          ]
+        ],
+        "4": [
+          [
+            277.8625,
+            203.5
+          ]
+        ],
+        "5": [
+          [
+            277.8625,
+            204.15
+          ]
+        ],
+        "6": [
+          [
+            277.8625,
+            204.8
+          ]
+        ],
+        "7": [
+          [
+            277.8625,
+            205.45
+          ]
+        ],
+        "8": [
+          [
+            272.1375,
+            205.45
+          ]
+        ],
+        "9": [
+          [
+            272.1375,
+            204.8
+          ]
+        ]
+      },
+      "pads_xyz_mm": {
+        "1": [
+          [
+            277.8625,
+            201.55,
+            70.8
+          ]
+        ],
+        "10": [
+          [
+            272.1375,
+            204.15,
+            70.8
+          ]
+        ],
+        "11": [
+          [
+            272.1375,
+            203.5,
+            70.8
+          ]
+        ],
+        "12": [
+          [
+            272.1375,
+            202.85,
+            70.8
+          ]
+        ],
+        "13": [
+          [
+            272.1375,
+            202.2,
+            70.8
+          ]
+        ],
+        "14": [
+          [
+            272.1375,
+            201.55,
+            70.8
+          ]
+        ],
+        "2": [
+          [
+            277.8625,
+            202.2,
+            70.8
+          ]
+        ],
+        "3": [
+          [
+            277.8625,
+            202.85,
+            70.8
+          ]
+        ],
+        "4": [
+          [
+            277.8625,
+            203.5,
+            70.8
+          ]
+        ],
+        "5": [
+          [
+            277.8625,
+            204.15,
+            70.8
+          ]
+        ],
+        "6": [
+          [
+            277.8625,
+            204.8,
+            70.8
+          ]
+        ],
+        "7": [
+          [
+            277.8625,
+            205.45,
+            70.8
+          ]
+        ],
+        "8": [
+          [
+            272.1375,
+            205.45,
+            70.8
+          ]
+        ],
+        "9": [
+          [
+            272.1375,
+            204.8,
+            70.8
+          ]
+        ]
+      },
+      "panel_uid": "",
+      "pins": {
+        "1": "/A01/REF5",
+        "10": "/A01/C534b2a_GATE_RAW",
+        "11": "-12V",
+        "12": "/A01/IN_BUFFER",
+        "13": "/A01/C8e6645_FB",
+        "14": "/A01/C8e6645_DRIVE",
+        "2": "/A01/REF5",
+        "3": "/A01/C534b2a_RAW_5V",
+        "4": "+12V",
+        "5": "AGND",
+        "6": "/A01/C534b2a_INV",
+        "7": "/A01/REFN5",
+        "8": "/A01/C534b2a_GATE_REF",
+        "9": "/A01/C534b2a_GATE_REF"
+      },
+      "quarter_turn": 0,
+      "ref": "U7104",
+      "side": "rear",
+      "source": "footprints/kicad/zudo-osc-hole-field.pretty/TSSOP-14_4.4x5mm_P0.65mm.kicad_mod",
+      "source_board": "K",
+      "through_pad_keepouts_mm": [],
+      "unit_pin_record_indices": [
+        7571,
+        7572,
+        7573,
+        7574,
+        7575
+      ],
+      "units": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ]
+    },
+    "U7105": {
+      "board": "A01-core",
+      "box_mm": [
+        260.15,
+        245.87,
+        267.85,
+        251.86
+      ],
+      "cluster": "attenuation_sum",
+      "conditional_pad_depth_mm": 70.8,
+      "origin_mm": [
+        264.0,
+        249.0
+      ],
+      "owner": "rear-core",
+      "pads_mm": {
+        "1": [
+          [
+            266.8625,
+            247.05
+          ]
+        ],
+        "10": [
+          [
+            261.1375,
+            249.65
+          ]
+        ],
+        "11": [
+          [
+            261.1375,
+            249.0
+          ]
+        ],
+        "12": [
+          [
+            261.1375,
+            248.35
+          ]
+        ],
+        "13": [
+          [
+            261.1375,
+            247.7
+          ]
+        ],
+        "14": [
+          [
+            261.1375,
+            247.05
+          ]
+        ],
+        "2": [
+          [
+            266.8625,
+            247.7
+          ]
+        ],
+        "3": [
+          [
+            266.8625,
+            248.35
+          ]
+        ],
+        "4": [
+          [
+            266.8625,
+            249.0
+          ]
+        ],
+        "5": [
+          [
+            266.8625,
+            249.65
+          ]
+        ],
+        "6": [
+          [
+            266.8625,
+            250.3
+          ]
+        ],
+        "7": [
+          [
+            266.8625,
+            250.95
+          ]
+        ],
+        "8": [
+          [
+            261.1375,
+            250.95
+          ]
+        ],
+        "9": [
+          [
+            261.1375,
+            250.3
+          ]
+        ]
+      },
+      "pads_xyz_mm": {
+        "1": [
+          [
+            266.8625,
+            247.05,
+            70.8
+          ]
+        ],
+        "10": [
+          [
+            261.1375,
+            249.65,
+            70.8
+          ]
+        ],
+        "11": [
+          [
+            261.1375,
+            249.0,
+            70.8
+          ]
+        ],
+        "12": [
+          [
+            261.1375,
+            248.35,
+            70.8
+          ]
+        ],
+        "13": [
+          [
+            261.1375,
+            247.7,
+            70.8
+          ]
+        ],
+        "14": [
+          [
+            261.1375,
+            247.05,
+            70.8
+          ]
+        ],
+        "2": [
+          [
+            266.8625,
+            247.7,
+            70.8
+          ]
+        ],
+        "3": [
+          [
+            266.8625,
+            248.35,
+            70.8
+          ]
+        ],
+        "4": [
+          [
+            266.8625,
+            249.0,
+            70.8
+          ]
+        ],
+        "5": [
+          [
+            266.8625,
+            249.65,
+            70.8
+          ]
+        ],
+        "6": [
+          [
+            266.8625,
+            250.3,
+            70.8
+          ]
+        ],
+        "7": [
+          [
+            266.8625,
+            250.95,
+            70.8
+          ]
+        ],
+        "8": [
+          [
+            261.1375,
+            250.95,
+            70.8
+          ]
+        ],
+        "9": [
+          [
+            261.1375,
+            250.3,
+            70.8
+          ]
+        ]
+      },
+      "panel_uid": "",
+      "pins": {
+        "1": "/A01/ATTEN_OUT",
+        "10": "AGND",
+        "11": "-12V",
+        "12": "AGND",
+        "13": "/A01/CORE_PACK_OPA4197IPWR_1_IO_UNUSED4",
+        "14": "/A01/CORE_PACK_OPA4197IPWR_1_IO_UNUSED4",
+        "2": "/A01/ATTEN_SUM",
+        "3": "/A01/Cc045d2_W_SENSE",
+        "4": "+12V",
+        "5": "/A01/C38cac0_W_SENSE",
+        "6": "/A01/MANUAL_OFFSET",
+        "7": "/A01/MANUAL_OFFSET",
+        "8": "/A01/SUM_NEG",
+        "9": "/A01/SUM_NODE"
+      },
+      "quarter_turn": 0,
+      "ref": "U7105",
+      "side": "rear",
+      "source": "footprints/kicad/zudo-osc-hole-field.pretty/TSSOP-14_4.4x5mm_P0.65mm.kicad_mod",
+      "source_board": "K",
+      "through_pad_keepouts_mm": [],
+      "unit_pin_record_indices": [
+        7576,
+        7577,
+        7578,
+        7579,
+        7580
+      ],
+      "units": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ]
+    },
+    "U7106": {
+      "board": "A01-jack",
+      "box_mm": [
+        223.15,
+        142.87,
+        230.85,
+        148.86
+      ],
+      "cluster": "front-local",
+      "conditional_pad_depth_mm": 36.6,
+      "origin_mm": [
+        227.0,
+        146.0
+      ],
+      "owner": "front-jack",
+      "pads_mm": {
+        "1": [
+          [
+            229.8625,
+            144.05
+          ]
+        ],
+        "10": [
+          [
+            224.1375,
+            146.65
+          ]
+        ],
+        "11": [
+          [
+            224.1375,
+            146.0
+          ]
+        ],
+        "12": [
+          [
+            224.1375,
+            145.35
+          ]
+        ],
+        "13": [
+          [
+            224.1375,
+            144.7
+          ]
+        ],
+        "14": [
+          [
+            224.1375,
+            144.05
+          ]
+        ],
+        "2": [
+          [
+            229.8625,
+            144.7
+          ]
+        ],
+        "3": [
+          [
+            229.8625,
+            145.35
+          ]
+        ],
+        "4": [
+          [
+            229.8625,
+            146.0
+          ]
+        ],
+        "5": [
+          [
+            229.8625,
+            146.65
+          ]
+        ],
+        "6": [
+          [
+            229.8625,
+            147.3
+          ]
+        ],
+        "7": [
+          [
+            229.8625,
+            147.95
+          ]
+        ],
+        "8": [
+          [
+            224.1375,
+            147.95
+          ]
+        ],
+        "9": [
+          [
+            224.1375,
+            147.3
+          ]
+        ]
+      },
+      "pads_xyz_mm": {
+        "1": [
+          [
+            229.8625,
+            144.05,
+            36.6
+          ]
+        ],
+        "10": [
+          [
+            224.1375,
+            146.65,
+            36.6
+          ]
+        ],
+        "11": [
+          [
+            224.1375,
+            146.0,
+            36.6
+          ]
+        ],
+        "12": [
+          [
+            224.1375,
+            145.35,
+            36.6
+          ]
+        ],
+        "13": [
+          [
+            224.1375,
+            144.7,
+            36.6
+          ]
+        ],
+        "14": [
+          [
+            224.1375,
+            144.05,
+            36.6
+          ]
+        ],
+        "2": [
+          [
+            229.8625,
+            144.7,
+            36.6
+          ]
+        ],
+        "3": [
+          [
+            229.8625,
+            145.35,
+            36.6
+          ]
+        ],
+        "4": [
+          [
+            229.8625,
+            146.0,
+            36.6
+          ]
+        ],
+        "5": [
+          [
+            229.8625,
+            146.65,
+            36.6
+          ]
+        ],
+        "6": [
+          [
+            229.8625,
+            147.3,
+            36.6
+          ]
+        ],
+        "7": [
+          [
+            229.8625,
+            147.95,
+            36.6
+          ]
+        ],
+        "8": [
+          [
+            224.1375,
+            147.95,
+            36.6
+          ]
+        ],
+        "9": [
+          [
+            224.1375,
+            147.3,
+            36.6
+          ]
+        ]
+      },
+      "panel_uid": "",
+      "pins": {
+        "1": "/A01/IN_BUFFER",
+        "10": "AGND",
+        "11": "-12V",
+        "12": "/A01/OUT_INTERNAL",
+        "13": "/A01/C2073e0_FB",
+        "14": "/A01/C2073e0_DRIVE",
+        "2": "/A01/IN_BUFFER",
+        "3": "/A01/C3833e3_SENSE",
+        "4": "+12V",
+        "5": "/A01/C360350_SENSE",
+        "6": "/A01/OFFSET_BUFFER",
+        "7": "/A01/OFFSET_BUFFER",
+        "8": "/A01/OUT_INTERNAL",
+        "9": "/A01/RESTORE_NODE"
+      },
+      "quarter_turn": 0,
+      "ref": "U7106",
+      "side": "rear",
+      "source": "footprints/kicad/zudo-osc-hole-field.pretty/TSSOP-14_4.4x5mm_P0.65mm.kicad_mod",
+      "source_board": "JR",
+      "through_pad_keepouts_mm": [],
+      "unit_pin_record_indices": [
+        7581,
+        7582,
+        7583,
+        7584,
+        7585
+      ],
+      "units": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ]
+    },
+    "U7107": {
+      "board": "A01-jack",
+      "box_mm": [
+        209.3,
+        133.95,
+        216.7,
+        139.81
+      ],
+      "cluster": "front-local",
+      "conditional_pad_depth_mm": 36.6,
+      "origin_mm": [
+        213.0,
+        137.0
+      ],
+      "owner": "front-jack",
+      "pads_mm": {
+        "1": [
+          [
+            215.475,
+            135.095
+          ]
+        ],
+        "2": [
+          [
+            215.475,
+            136.365
+          ]
+        ],
+        "3": [
+          [
+            215.475,
+            137.635
+          ]
+        ],
+        "4": [
+          [
+            215.475,
+            138.905
+          ]
+        ],
+        "5": [
+          [
+            210.525,
+            138.905
+          ]
+        ],
+        "6": [
+          [
+            210.525,
+            137.635
+          ]
+        ],
+        "7": [
+          [
+            210.525,
+            136.365
+          ]
+        ],
+        "8": [
+          [
+            210.525,
+            135.095
+          ]
+        ]
+      },
+      "pads_xyz_mm": {
+        "1": [
+          [
+            215.475,
+            135.095,
+            36.6
+          ]
+        ],
+        "2": [
+          [
+            215.475,
+            136.365,
+            36.6
+          ]
+        ],
+        "3": [
+          [
+            215.475,
+            137.635,
+            36.6
+          ]
+        ],
+        "4": [
+          [
+            215.475,
+            138.905,
+            36.6
+          ]
+        ],
+        "5": [
+          [
+            210.525,
+            138.905,
+            36.6
+          ]
+        ],
+        "6": [
+          [
+            210.525,
+            137.635,
+            36.6
+          ]
+        ],
+        "7": [
+          [
+            210.525,
+            136.365,
+            36.6
+          ]
+        ],
+        "8": [
+          [
+            210.525,
+            135.095,
+            36.6
+          ]
+        ]
+      },
+      "panel_uid": "",
+      "pins": {
+        "1": "/A01/C75b051_CLIP_N",
+        "2": "/A01/CLIP_HALF",
+        "3": "/A01/REF5",
+        "4": "-12V",
+        "5": "AGND",
+        "6": "+5V",
+        "7": null,
+        "8": "+12V"
+      },
+      "quarter_turn": 0,
+      "ref": "U7107",
+      "side": "rear",
+      "source": "footprints/kicad/zudo-osc-hole-field.pretty/SOIC-8_3.9x4.9mm_P1.27mm.kicad_mod",
+      "source_board": "JR",
+      "through_pad_keepouts_mm": [],
+      "unit_pin_record_indices": [
+        7617,
+        7618,
+        7619
+      ],
+      "units": [
+        1,
+        2,
+        3
+      ]
+    },
+    "U7108": {
+      "board": "A01-jack",
+      "box_mm": [
+        219.8,
+        125.95,
+        227.2,
+        131.81
+      ],
+      "cluster": "front-local",
+      "conditional_pad_depth_mm": 36.6,
+      "origin_mm": [
+        223.5,
+        129.0
+      ],
+      "owner": "front-jack",
+      "pads_mm": {
+        "1": [
+          [
+            225.975,
+            127.095
+          ]
+        ],
+        "2": [
+          [
+            225.975,
+            128.365
+          ]
+        ],
+        "3": [
+          [
+            225.975,
+            129.635
+          ]
+        ],
+        "4": [
+          [
+            225.975,
+            130.905
+          ]
+        ],
+        "5": [
+          [
+            221.025,
+            130.905
+          ]
+        ],
+        "6": [
+          [
+            221.025,
+            129.635
+          ]
+        ],
+        "7": [
+          [
+            221.025,
+            128.365
+          ]
+        ],
+        "8": [
+          [
+            221.025,
+            127.095
+          ]
+        ]
+      },
+      "pads_xyz_mm": {
+        "1": [
+          [
+            225.975,
+            127.095,
+            36.6
+          ]
+        ],
+        "2": [
+          [
+            225.975,
+            128.365,
+            36.6
+          ]
+        ],
+        "3": [
+          [
+            225.975,
+            129.635,
+            36.6
+          ]
+        ],
+        "4": [
+          [
+            225.975,
+            130.905,
+            36.6
+          ]
+        ],
+        "5": [
+          [
+            221.025,
+            130.905,
+            36.6
+          ]
+        ],
+        "6": [
+          [
+            221.025,
+            129.635,
+            36.6
+          ]
+        ],
+        "7": [
+          [
+            221.025,
+            128.365,
+            36.6
+          ]
+        ],
+        "8": [
+          [
+            221.025,
+            127.095,
+            36.6
+          ]
+        ]
+      },
+      "panel_uid": "",
+      "pins": {
+        "1": "/A01/C75b051_CLIP_N",
+        "2": "/A01/REFN5",
+        "3": "/A01/CLIP_HALF",
+        "4": "-12V",
+        "5": "AGND",
+        "6": "+5V",
+        "7": null,
+        "8": "+12V"
+      },
+      "quarter_turn": 0,
+      "ref": "U7108",
+      "side": "rear",
+      "source": "footprints/kicad/zudo-osc-hole-field.pretty/SOIC-8_3.9x4.9mm_P1.27mm.kicad_mod",
+      "source_board": "JR",
+      "through_pad_keepouts_mm": [],
+      "unit_pin_record_indices": [
+        7620,
+        7621,
+        7622
+      ],
+      "units": [
+        1,
+        2,
+        3
+      ]
+    },
+    "U7109": {
+      "board": "A01-jack",
+      "box_mm": [
+        222.3,
+        132.55,
+        229.7,
+        142.18
+      ],
+      "cluster": "front-local",
+      "conditional_pad_depth_mm": 36.6,
+      "origin_mm": [
+        226.0,
+        137.5
+      ],
+      "owner": "front-jack",
+      "pads_mm": {
+        "1": [
+          [
+            228.475,
+            133.69
+          ]
+        ],
+        "10": [
+          [
+            223.525,
+            138.77
+          ]
+        ],
+        "11": [
+          [
+            223.525,
+            137.5
+          ]
+        ],
+        "12": [
+          [
+            223.525,
+            136.23
+          ]
+        ],
+        "13": [
+          [
+            223.525,
+            134.96
+          ]
+        ],
+        "14": [
+          [
+            223.525,
+            133.69
+          ]
+        ],
+        "2": [
+          [
+            228.475,
+            134.96
+          ]
+        ],
+        "3": [
+          [
+            228.475,
+            136.23
+          ]
+        ],
+        "4": [
+          [
+            228.475,
+            137.5
+          ]
+        ],
+        "5": [
+          [
+            228.475,
+            138.77
+          ]
+        ],
+        "6": [
+          [
+            228.475,
+            140.04
+          ]
+        ],
+        "7": [
+          [
+            228.475,
+            141.31
+          ]
+        ],
+        "8": [
+          [
+            223.525,
+            141.31
+          ]
+        ],
+        "9": [
+          [
+            223.525,
+            140.04
+          ]
+        ]
+      },
+      "pads_xyz_mm": {
+        "1": [
+          [
+            228.475,
+            133.69,
+            36.6
+          ]
+        ],
+        "10": [
+          [
+            223.525,
+            138.77,
+            36.6
+          ]
+        ],
+        "11": [
+          [
+            223.525,
+            137.5,
+            36.6
+          ]
+        ],
+        "12": [
+          [
+            223.525,
+            136.23,
+            36.6
+          ]
+        ],
+        "13": [
+          [
+            223.525,
+            134.96,
+            36.6
+          ]
+        ],
+        "14": [
+          [
+            223.525,
+            133.69,
+            36.6
+          ]
+        ],
+        "2": [
+          [
+            228.475,
+            134.96,
+            36.6
+          ]
+        ],
+        "3": [
+          [
+            228.475,
+            136.23,
+            36.6
+          ]
+        ],
+        "4": [
+          [
+            228.475,
+            137.5,
+            36.6
+          ]
+        ],
+        "5": [
+          [
+            228.475,
+            138.77,
+            36.6
+          ]
+        ],
+        "6": [
+          [
+            228.475,
+            140.04,
+            36.6
+          ]
+        ],
+        "7": [
+          [
+            228.475,
+            141.31,
+            36.6
+          ]
+        ],
+        "8": [
+          [
+            223.525,
+            141.31,
+            36.6
+          ]
+        ],
+        "9": [
+          [
+            223.525,
+            140.04,
+            36.6
+          ]
+        ]
+      },
+      "panel_uid": "",
+      "pins": {
+        "1": "/A01/C6cb7d9_DRIVE",
+        "10": "/A01/OUT_INTERNAL",
+        "11": "-12V",
+        "12": "/A01/OUT_INTERNAL",
+        "13": "/A01/C75b051_BUF",
+        "14": "/A01/C75b051_BUF",
+        "2": "/A01/C6cb7d9_SENSE",
+        "3": "/A01/IN_BUFFER",
+        "4": "+12V",
+        "5": "/A01/OFFSET_BUFFER",
+        "6": "/A01/Cd4fa3b_SENSE",
+        "7": "/A01/Cd4fa3b_DRIVE",
+        "8": "/A01/C3c74b6_DRIVE",
+        "9": "/A01/C3c74b6_SENSE"
+      },
+      "quarter_turn": 0,
+      "ref": "U7109",
+      "side": "rear",
+      "source": "footprints/kicad/zudo-osc-hole-field.pretty/SOIC-14_3.9x8.7mm_P1.27mm.kicad_mod",
+      "source_board": "JR",
+      "through_pad_keepouts_mm": [],
+      "unit_pin_record_indices": [
+        7625,
+        7626,
+        7627,
+        7628,
+        7629
+      ],
+      "units": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ]
+    }
+  },
+  "simulation": "NOT RUN",
+  "source_sha256": {
+    "design/architecture-278/implementation/stage10/mechanical-report.json": "956e83e449d2667654679822125015ed96566b849b54902083bf54ca2bf8ffd7",
+    "design/architecture-278/implementation/stage13/package-report.json": "a467994f4b0bc90cd22c27bc9cb2a46b44c38f35eb676133589b77df9933b83d",
+    "design/architecture-278/implementation/stage15/footprints/LT5400_MS8E_Candidate.kicad_mod": "54f7b32e52e77d90fd7be8fdf5fc0506d18718cf8504b1987cdd0aabff3713f1",
+    "design/architecture-278/implementation/stage15/package-input.json": "87e16e437e67a79414979f1c8954b82fa30ce862a779184a87f51fd13a31176f",
+    "design/architecture-278/implementation/stage4/occupied-report.json": "e61ba1d739e14c00c81db258bc01991a882b3ab79eaf1d63191585e6f309f219",
+    "scripts/architecture278/implementation/assembly.py": "7d453aea98dabe67640c40c381011b0cd4327d5c28141f141bcf513c927c4c39",
+    "scripts/architecture278/implementation/stage13_packages.py": "eefc869df49613e108c85af4ad217c02d70e5cd239f5f3a395be2e7f6820270b",
+    "scripts/architecture278/implementation/stage15_packages.py": "09258101a485a5ae6825242585a00ae7d3d269ad0997b248a76af9d965cb8c3c",
+    "scripts/architecture278/implementation/test_stage15_packages.py": "20bce5d5f15a183846bdc665db65682c89bbf8d8fb3433710757cfb88636ce05"
+  },
+  "status": "TWO LOCAL NETWORK CANDIDATES; NOT PHYSICAL ACCEPTANCE",
+  "unknowns": [
+    "Complete obstacle-aware copper routing/DRC",
+    "All foreign-function occupied volumes remain reserved; no newly free space claimed",
+    "Mounted package thermal gradients and AGND shield quality",
+    "Package capacitance plus board/harness/input coupling and closed-loop stability",
+    "Assembly process and solder joint reliability"
+  ],
+  "unused_elements": "Both ends of unused front R3/R4 left NC; project choice, not a manufacturer unused-pin prescription. Solder lands retained; no remote connection."
+}

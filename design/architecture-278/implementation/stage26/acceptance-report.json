@@ -1,0 +1,608 @@
+{
+  "architecture_adopted": false,
+  "counts": {
+    "pins": 561,
+    "references": 118,
+    "selected_passives": 19,
+    "unit_UUIDs": 154
+  },
+  "current_exact_candidate_identity_gaps_for_19_passives": 0,
+  "effective_UTC": "2026-10-17T04:03:00Z",
+  "hardware_acceptance": false,
+  "manual_filter_diagnostic": {
+    "acceptance_threshold_s": null,
+    "nominal_center_1percent_settling_s": 0.001194239226368346,
+    "purpose": "Retained RC diagnostic, not a precision timing gate"
+  },
+  "module_resolution": {
+    "A01": {
+      "basis": "stage26/acceptance.json",
+      "functional_checks": [
+        "electrical_safety",
+        "stable_operation",
+        "useful_control_range",
+        "noise_and_control_artifacts",
+        "clipping_headroom_and_recovery",
+        "sensible_loading",
+        "practical_settling",
+        "manufacturing_and_assembly"
+      ],
+      "load_precision_limit_V": null,
+      "precision_disposition": "NOT_APPLICABLE_CURRENT_AO_SCOPE",
+      "static_limit_V": null
+    },
+    "A02": {
+      "basis": "stage26/acceptance.json",
+      "functional_checks": [
+        "electrical_safety",
+        "stable_operation",
+        "useful_control_range",
+        "noise_and_control_artifacts",
+        "clipping_headroom_and_recovery",
+        "sensible_loading",
+        "practical_settling",
+        "manufacturing_and_assembly"
+      ],
+      "load_precision_limit_V": null,
+      "precision_disposition": "NOT_APPLICABLE_CURRENT_AO_SCOPE",
+      "static_limit_V": null
+    },
+    "A03": {
+      "basis": "stage26/acceptance.json",
+      "functional_checks": [
+        "electrical_safety",
+        "stable_operation",
+        "useful_control_range",
+        "noise_and_control_artifacts",
+        "clipping_headroom_and_recovery",
+        "sensible_loading",
+        "practical_settling",
+        "manufacturing_and_assembly"
+      ],
+      "load_precision_limit_V": null,
+      "precision_disposition": "NOT_APPLICABLE_CURRENT_AO_SCOPE",
+      "static_limit_V": null
+    },
+    "A04": {
+      "basis": "stage26/acceptance.json",
+      "functional_checks": [
+        "electrical_safety",
+        "stable_operation",
+        "useful_control_range",
+        "noise_and_control_artifacts",
+        "clipping_headroom_and_recovery",
+        "sensible_loading",
+        "practical_settling",
+        "manufacturing_and_assembly"
+      ],
+      "load_precision_limit_V": null,
+      "precision_disposition": "NOT_APPLICABLE_CURRENT_AO_SCOPE",
+      "static_limit_V": null
+    },
+    "A05": {
+      "basis": "stage26/acceptance.json",
+      "functional_checks": [
+        "electrical_safety",
+        "stable_operation",
+        "useful_control_range",
+        "noise_and_control_artifacts",
+        "clipping_headroom_and_recovery",
+        "sensible_loading",
+        "practical_settling",
+        "manufacturing_and_assembly"
+      ],
+      "load_precision_limit_V": null,
+      "precision_disposition": "NOT_APPLICABLE_CURRENT_AO_SCOPE",
+      "static_limit_V": null
+    },
+    "A06": {
+      "basis": "stage26/acceptance.json",
+      "functional_checks": [
+        "electrical_safety",
+        "stable_operation",
+        "useful_control_range",
+        "noise_and_control_artifacts",
+        "clipping_headroom_and_recovery",
+        "sensible_loading",
+        "practical_settling",
+        "manufacturing_and_assembly"
+      ],
+      "load_precision_limit_V": null,
+      "precision_disposition": "NOT_APPLICABLE_CURRENT_AO_SCOPE",
+      "static_limit_V": null
+    },
+    "MASTER_REFERENCE": {
+      "basis": "unchanged global OSC-ES-1",
+      "calibration": {
+        "assembly": "Factory-only soldering and socket population; factory adjustment through accessible test points.",
+        "octave_step_error_V": 0.002,
+        "pitch_tracking_scope": "0..5 V at 25 C after factory calibration; target only, not guaranteed by resistor tolerance. #29 defines sweep and temperature characterization.",
+        "pitch_tracking_target_cents": 5,
+        "pitch_voltage_error_caveat": "5 cents at 1 V/oct equals 4.166667 mV; oscillator exponential/core error and temperature must share this total budget. A 2 mV octave-step target alone does not prove five-octave tracking.",
+        "precision_output_load_error_V": 0.001,
+        "sample_hold": "No long-hold pitch accuracy promise; characterize droop separately from output load error.",
+        "static_precision_error_V": 0.002,
+        "warmup_minutes": 20
+      },
+      "load_precision_limit_V": 0.001,
+      "precision_disposition": "UNCHANGED",
+      "static_limit_V": 0.002
+    },
+    "MULT": {
+      "basis": "unchanged global OSC-ES-1",
+      "calibration": {
+        "assembly": "Factory-only soldering and socket population; factory adjustment through accessible test points.",
+        "octave_step_error_V": 0.002,
+        "pitch_tracking_scope": "0..5 V at 25 C after factory calibration; target only, not guaranteed by resistor tolerance. #29 defines sweep and temperature characterization.",
+        "pitch_tracking_target_cents": 5,
+        "pitch_voltage_error_caveat": "5 cents at 1 V/oct equals 4.166667 mV; oscillator exponential/core error and temperature must share this total budget. A 2 mV octave-step target alone does not prove five-octave tracking.",
+        "precision_output_load_error_V": 0.001,
+        "sample_hold": "No long-hold pitch accuracy promise; characterize droop separately from output load error.",
+        "static_precision_error_V": 0.002,
+        "warmup_minutes": 20
+      },
+      "load_precision_limit_V": 0.001,
+      "precision_disposition": "UNCHANGED",
+      "static_limit_V": 0.002
+    },
+    "O1": {
+      "basis": "unchanged global OSC-ES-1",
+      "calibration": {
+        "assembly": "Factory-only soldering and socket population; factory adjustment through accessible test points.",
+        "octave_step_error_V": 0.002,
+        "pitch_tracking_scope": "0..5 V at 25 C after factory calibration; target only, not guaranteed by resistor tolerance. #29 defines sweep and temperature characterization.",
+        "pitch_tracking_target_cents": 5,
+        "pitch_voltage_error_caveat": "5 cents at 1 V/oct equals 4.166667 mV; oscillator exponential/core error and temperature must share this total budget. A 2 mV octave-step target alone does not prove five-octave tracking.",
+        "precision_output_load_error_V": 0.001,
+        "sample_hold": "No long-hold pitch accuracy promise; characterize droop separately from output load error.",
+        "static_precision_error_V": 0.002,
+        "warmup_minutes": 20
+      },
+      "load_precision_limit_V": 0.001,
+      "precision_disposition": "UNCHANGED",
+      "static_limit_V": 0.002
+    },
+    "O2": {
+      "basis": "unchanged global OSC-ES-1",
+      "calibration": {
+        "assembly": "Factory-only soldering and socket population; factory adjustment through accessible test points.",
+        "octave_step_error_V": 0.002,
+        "pitch_tracking_scope": "0..5 V at 25 C after factory calibration; target only, not guaranteed by resistor tolerance. #29 defines sweep and temperature characterization.",
+        "pitch_tracking_target_cents": 5,
+        "pitch_voltage_error_caveat": "5 cents at 1 V/oct equals 4.166667 mV; oscillator exponential/core error and temperature must share this total budget. A 2 mV octave-step target alone does not prove five-octave tracking.",
+        "precision_output_load_error_V": 0.001,
+        "sample_hold": "No long-hold pitch accuracy promise; characterize droop separately from output load error.",
+        "static_precision_error_V": 0.002,
+        "warmup_minutes": 20
+      },
+      "load_precision_limit_V": 0.001,
+      "precision_disposition": "UNCHANGED",
+      "static_limit_V": 0.002
+    },
+    "O3": {
+      "basis": "unchanged global OSC-ES-1",
+      "calibration": {
+        "assembly": "Factory-only soldering and socket population; factory adjustment through accessible test points.",
+        "octave_step_error_V": 0.002,
+        "pitch_tracking_scope": "0..5 V at 25 C after factory calibration; target only, not guaranteed by resistor tolerance. #29 defines sweep and temperature characterization.",
+        "pitch_tracking_target_cents": 5,
+        "pitch_voltage_error_caveat": "5 cents at 1 V/oct equals 4.166667 mV; oscillator exponential/core error and temperature must share this total budget. A 2 mV octave-step target alone does not prove five-octave tracking.",
+        "precision_output_load_error_V": 0.001,
+        "sample_hold": "No long-hold pitch accuracy promise; characterize droop separately from output load error.",
+        "static_precision_error_V": 0.002,
+        "warmup_minutes": 20
+      },
+      "load_precision_limit_V": 0.001,
+      "precision_disposition": "UNCHANGED",
+      "static_limit_V": 0.002
+    },
+    "O4": {
+      "basis": "unchanged global OSC-ES-1",
+      "calibration": {
+        "assembly": "Factory-only soldering and socket population; factory adjustment through accessible test points.",
+        "octave_step_error_V": 0.002,
+        "pitch_tracking_scope": "0..5 V at 25 C after factory calibration; target only, not guaranteed by resistor tolerance. #29 defines sweep and temperature characterization.",
+        "pitch_tracking_target_cents": 5,
+        "pitch_voltage_error_caveat": "5 cents at 1 V/oct equals 4.166667 mV; oscillator exponential/core error and temperature must share this total budget. A 2 mV octave-step target alone does not prove five-octave tracking.",
+        "precision_output_load_error_V": 0.001,
+        "sample_hold": "No long-hold pitch accuracy promise; characterize droop separately from output load error.",
+        "static_precision_error_V": 0.002,
+        "warmup_minutes": 20
+      },
+      "load_precision_limit_V": 0.001,
+      "precision_disposition": "UNCHANGED",
+      "static_limit_V": 0.002
+    },
+    "O5": {
+      "basis": "unchanged global OSC-ES-1",
+      "calibration": {
+        "assembly": "Factory-only soldering and socket population; factory adjustment through accessible test points.",
+        "octave_step_error_V": 0.002,
+        "pitch_tracking_scope": "0..5 V at 25 C after factory calibration; target only, not guaranteed by resistor tolerance. #29 defines sweep and temperature characterization.",
+        "pitch_tracking_target_cents": 5,
+        "pitch_voltage_error_caveat": "5 cents at 1 V/oct equals 4.166667 mV; oscillator exponential/core error and temperature must share this total budget. A 2 mV octave-step target alone does not prove five-octave tracking.",
+        "precision_output_load_error_V": 0.001,
+        "sample_hold": "No long-hold pitch accuracy promise; characterize droop separately from output load error.",
+        "static_precision_error_V": 0.002,
+        "warmup_minutes": 20
+      },
+      "load_precision_limit_V": 0.001,
+      "precision_disposition": "UNCHANGED",
+      "static_limit_V": 0.002
+    },
+    "S&H": {
+      "basis": "unchanged global OSC-ES-1",
+      "calibration": {
+        "assembly": "Factory-only soldering and socket population; factory adjustment through accessible test points.",
+        "octave_step_error_V": 0.002,
+        "pitch_tracking_scope": "0..5 V at 25 C after factory calibration; target only, not guaranteed by resistor tolerance. #29 defines sweep and temperature characterization.",
+        "pitch_tracking_target_cents": 5,
+        "pitch_voltage_error_caveat": "5 cents at 1 V/oct equals 4.166667 mV; oscillator exponential/core error and temperature must share this total budget. A 2 mV octave-step target alone does not prove five-octave tracking.",
+        "precision_output_load_error_V": 0.001,
+        "sample_hold": "No long-hold pitch accuracy promise; characterize droop separately from output load error.",
+        "static_precision_error_V": 0.002,
+        "warmup_minutes": 20
+      },
+      "load_precision_limit_V": 0.001,
+      "precision_disposition": "UNCHANGED",
+      "static_limit_V": 0.002
+    }
+  },
+  "native_request": "NONE",
+  "next_bounded_step": "Resolve the retained DIN fabrication position/fixing/process and externally assembled wiring/strain-relief definition before physical binding; no precision-only redesign.",
+  "oscillator_calibration": {
+    "VCO_1V_per_oct_requirement_preserved": true,
+    "actual_missing_items": [
+      "HF_TRIM RVO1109 has required20kohm source value but blank exact MPN/supplier; existing10kohm TC33X catalog identity is not a20kohm substitute.",
+      "As-built base/scale/HF adjustment reach, interaction and temperature/nonlinearity qualification unavailable; no proven actuator shortage from source alone."
+    ],
+    "actual_range_qualification": null,
+    "authority": "OWNER_CLARIFICATION_RECORDED_WITHOUT_CIRCUIT_CHANGE",
+    "base_pitch_trim_fixes_scale": false,
+    "front_tuning_packages": {
+      "RV104": {
+        "attributes": {
+          "BoardRegion": "control",
+          "Island": "IO_CONTROL:O1",
+          "LCSC": "",
+          "MPN": "PTV09A-4020F-B104",
+          "Manufacturer": "Bourns",
+          "PanelUid": "C:O1.TUNE",
+          "Role": "dc_control_source:RV"
+        },
+        "footprint": "zudo-osc-hole-field:PTV09A-4020F",
+        "owner": "front-control",
+        "pins": {
+          "1": "/O1/LOCAL_REFN5",
+          "2": "/O1/C83f36b_W",
+          "3": "/O1/LOCAL_REF5",
+          "4": null,
+          "5": null
+        },
+        "ref": "RV104",
+        "units": [
+          0
+        ]
+      },
+      "RV105": {
+        "attributes": {
+          "BoardRegion": "control",
+          "Island": "IO_CONTROL:O1",
+          "LCSC": "",
+          "MPN": "PTV09A-4020F-B104",
+          "Manufacturer": "Bourns",
+          "PanelUid": "C:O1.FINE",
+          "Role": "dc_control_source:RV"
+        },
+        "footprint": "zudo-osc-hole-field:PTV09A-4020F",
+        "owner": "front-control",
+        "pins": {
+          "1": "/O1/LOCAL_REFN5",
+          "2": "/O1/Ce35646_W",
+          "3": "/O1/LOCAL_REF5",
+          "4": null,
+          "5": null
+        },
+        "ref": "RV105",
+        "units": [
+          0
+        ]
+      }
+    },
+    "global_tracking_numeric_targets_changed": false,
+    "inspected_trim_packages": {
+      "BASE_TRIM": {
+        "attributes": {
+          "BoardRegion": "core",
+          "Island": "OSC_CORE:O1",
+          "LCSC": "",
+          "MPN": "TC33X-2-103E",
+          "Manufacturer": "Bourns",
+          "PanelUid": "",
+          "Role": "oscillator:BASE_TRIM"
+        },
+        "footprint": "zudo-osc-hole-field:Potentiometer_Bourns_TC33X_Vertical",
+        "owner": "rear-core",
+        "pins": {
+          "1": "/O1/BASE_REFN5",
+          "2": "/O1/BASE_ADJ",
+          "3": "/O1/BASE_REF5"
+        },
+        "ref": "RVO1106",
+        "units": [
+          0
+        ]
+      },
+      "HF_TRIM": {
+        "attributes": {
+          "BoardRegion": "core",
+          "Island": "OSC_CORE:O1",
+          "LCSC": "",
+          "MPN": "",
+          "Manufacturer": "",
+          "PanelUid": "",
+          "Role": "oscillator:HF_TRIM"
+        },
+        "footprint": "zudo-osc-hole-field:Potentiometer_Bourns_TC33X_Vertical",
+        "owner": "rear-core",
+        "pins": {
+          "1": "/O1/HF_PIN",
+          "2": "/O1/LINEAR_REF",
+          "3": "AGND"
+        },
+        "ref": "RVO1109",
+        "units": [
+          0
+        ]
+      },
+      "RZ_TRIM": {
+        "attributes": {
+          "BoardRegion": "core",
+          "Island": "OSC_CORE:O1",
+          "LCSC": "",
+          "MPN": "TC33X-2-103E",
+          "Manufacturer": "Bourns",
+          "PanelUid": "",
+          "Role": "oscillator:RZ_TRIM"
+        },
+        "footprint": "zudo-osc-hole-field:Potentiometer_Bourns_TC33X_Vertical",
+        "owner": "rear-core",
+        "pins": {
+          "1": "/O1/RZ_TRIM",
+          "2": "AGND",
+          "3": "AGND"
+        },
+        "ref": "RVO1107",
+        "units": [
+          0
+        ]
+      },
+      "SCALE_TRIM": {
+        "attributes": {
+          "BoardRegion": "core",
+          "Island": "OSC_CORE:O1",
+          "LCSC": "",
+          "MPN": "TC33X-2-102E",
+          "Manufacturer": "Bourns",
+          "PanelUid": "",
+          "Role": "oscillator:SCALE_TRIM"
+        },
+        "footprint": "zudo-osc-hole-field:Potentiometer_Bourns_TC33X_Vertical",
+        "owner": "rear-core",
+        "pins": {
+          "1": "/O1/SCALE_ADJ",
+          "2": "AGND",
+          "3": "AGND"
+        },
+        "ref": "RVO1108",
+        "units": [
+          0
+        ]
+      },
+      "SINE_LEVEL": {
+        "attributes": {
+          "BoardRegion": "core",
+          "Island": "OSC_CORE:O1",
+          "LCSC": "",
+          "MPN": "TC33X-2-103E",
+          "Manufacturer": "Bourns",
+          "PanelUid": "",
+          "Role": "oscillator:SINE_LEVEL"
+        },
+        "footprint": "zudo-osc-hole-field:Potentiometer_Bourns_TC33X_Vertical",
+        "owner": "rear-core",
+        "pins": {
+          "1": "/O1/SINE_GAIN_TRIM",
+          "2": "/O1/SINE_GAIN_SUM",
+          "3": "/O1/SINE_GAIN_SUM"
+        },
+        "ref": "RVO1111",
+        "units": [
+          0
+        ]
+      },
+      "SINE_SYMMETRY": {
+        "attributes": {
+          "BoardRegion": "core",
+          "Island": "OSC_CORE:O1",
+          "LCSC": "",
+          "MPN": "TC33X-2-103E",
+          "Manufacturer": "Bourns",
+          "PanelUid": "",
+          "Role": "oscillator:SINE_SYMMETRY"
+        },
+        "footprint": "zudo-osc-hole-field:Potentiometer_Bourns_TC33X_Vertical",
+        "owner": "rear-core",
+        "pins": {
+          "1": "/O1/SINE_REFN5",
+          "2": "/O1/SINE_OFFSET",
+          "3": "/O1/SINE_REF5"
+        },
+        "ref": "RVO1110",
+        "units": [
+          0
+        ]
+      }
+    },
+    "intent_en": "Use existing rear-accessible trimmers for individual oscillator calibration; final playing pitch is manually tuned by the user.",
+    "native": "NOT_RUN",
+    "new_controls_added": 0,
+    "new_controls_required_by_source_review": false,
+    "owner_quote_ja": "オシレーターは、一般的には後ろ側とかにあるpotentiometer で基本音階なんかを調整し、厳密なピッチ調整は最後人の手でとなっているかと思うので、多分そんな感じで良いと思う。おそらく部品個体差もあるとおもうので、それをら調整する役割として後ろ側のpotentiometer が用意されることが多い",
+    "physical_calibration": "NOT_RUN",
+    "rear_access": "Existing rear-core allocation and tool reservations retained; physical access not qualified",
+    "scope": "O1-O5 family intent; exact inspected candidate instance O1; no replication, calibration or hardware change",
+    "shared_octave_span": {
+      "attributes": {
+        "Island": "OSC_SHARED_REFERENCE",
+        "LCSC": "",
+        "MPN": "TC33X-2-102E",
+        "Manufacturer": "Bourns",
+        "PanelUid": "",
+        "Role": "octave_reference:RV_GAIN"
+      },
+      "footprint": "zudo-osc-hole-field:Potentiometer_Bourns_TC33X_Vertical",
+      "owner": "shared-reference",
+      "pins": {
+        "1": "/OCTAVE_REF/C5c0054_GAIN_TRIM",
+        "2": "/OCTAVE_REF/OCT_TOP",
+        "3": "/OCTAVE_REF/OCT_TOP"
+      },
+      "ref": "RV1601",
+      "units": [
+        0
+      ]
+    },
+    "upstream_quantizer_fixes_downstream_tracking": false
+  },
+  "physical_and_order_readiness": "OPEN; exact identity closure is not rating/process/assembly qualification",
+  "pot_disposition": {
+    "nominal_ohm": 100000,
+    "reason": "Keep current/response unchanged; initial loaded knob law is not an accuracy failure.",
+    "ref": "RV1308",
+    "selected_mpn": "PTV09A-4020F-B104",
+    "stage25_B103_status": "SUPERSEDED_AS_UNNECESSARY_FOR_CURRENT_USE"
+  },
+  "preservation": {
+    "baseline": "f30d653e733a85fe00b1c187a5f571a983a3b47a",
+    "mutable_entrypoints_only": [
+      "design/architecture-278/implementation/README.md",
+      "design/architecture-278/implementation/WORK.md",
+      "scripts/architecture278/implementation/check_source.py"
+    ]
+  },
+  "removed_precision_obligations": [
+    "close_2mV_complete_static_budget",
+    "precision_baseline_factory_protocol",
+    "precision_reference_replacement",
+    "spare_matched_inverter_rewire",
+    "lower_pot_impedance_for_precision",
+    "pitch_grade_AO_temperature_time_guarantee",
+    "precision_audio_center_null",
+    "independent_CV_gain_trim_for_2mV"
+  ],
+  "retained_checks": {
+    "clipping_headroom_and_recovery": {
+      "accepted": false,
+      "method": "Source sum/headroom screen and later extreme-combination/recovery characterization.",
+      "numeric_accuracy_limit": null,
+      "physical_status": "NOT_RUN",
+      "requirement": "Retain +/-5V contribution ranges and nominal +/-10V internal clip indication; +/-15V algebra is not a realizable +/-12V-powered output. Recover from overrange without latch-up.",
+      "source": "A01 documented headroom contract"
+    },
+    "electrical_safety": {
+      "accepted": false,
+      "method": "Review exact limits and conditional fault states; later controlled test using approved safety procedure.",
+      "numeric_accuracy_limit": null,
+      "physical_status": "NOT_RUN",
+      "requirement": "Retain protection, device ratings, power/thermal, missing-rail/backfeed and output fault obligations; coarse precision grants no safety waiver.",
+      "source": "Stage22 role/rating analysis; unchanged global protection contracts"
+    },
+    "manufacturing_and_assembly": {
+      "accepted": false,
+      "method": "Use dated receipts and source definitions; subsequent process/fit qualification is not waived.",
+      "numeric_accuracy_limit": null,
+      "physical_status": "NOT_RUN",
+      "requirement": "Exact sourcing, footprint/pad/mask/paste, component profiles, DIN position/fixing and externally completed wiring remain gates.",
+      "source": "Stage23-25 candidate/source process evidence"
+    },
+    "noise_and_control_artifacts": {
+      "accepted": false,
+      "method": "Later listen/measure with quiet inputs and representative audio/CV patches; record signal-relative noise and objectionable artifacts, not a new unsupported mV threshold.",
+      "numeric_accuracy_limit": null,
+      "physical_status": "NOT_RUN",
+      "requirement": "Assess hum, hiss, pickup, wiper noise and audible/control modulation after setting and during motion; do not treat arbitrary noise as acceptable.",
+      "source": "Engineering retained functional quality obligation"
+    },
+    "practical_settling": {
+      "accepted": false,
+      "method": "Nominal RC diagnostic plus later real control steps/movement under bias, component tolerance and harness loads. No new tight settling deadline.",
+      "numeric_accuracy_limit": null,
+      "physical_status": "NOT_RUN",
+      "requirement": "Retain1kohm/10Mohm/10nF manual filter; assess response without prolonged lag or ringing and without removing useful noise filtering.",
+      "source": "Existing manual filter, owner coarse utility use"
+    },
+    "sensible_loading": {
+      "accepted": false,
+      "method": "Source load/current ledger and later same-setting load sweep; observe range/headroom/current/thermal and musically material sag.",
+      "numeric_accuracy_limit": null,
+      "physical_status": "NOT_RUN",
+      "requirement": "Retain nominal100kohm protected inputs and existing output sensing/isolation. Report output change open/100k/10k without the retired A-cell1mV precision gate.",
+      "source": "Existing minimum10kohm load envelope; owner coarse utility interpretation"
+    },
+    "stable_operation": {
+      "accepted": false,
+      "method": "Later actual loop/load and startup characterization; no stability pass from static arithmetic.",
+      "numeric_accuracy_limit": null,
+      "physical_status": "NOT_RUN",
+      "requirement": "No sustained oscillation; preserve current compensation and assess actual harness, capacitive/resistive loads and startup.",
+      "source": "Existing OPA4197/output/remote compensation contracts"
+    },
+    "useful_control_range": {
+      "accepted": false,
+      "method": "Source polarity/range check and later full-travel sweep in both directions; observe usable endpoints and center.",
+      "numeric_accuracy_limit": null,
+      "physical_status": "NOT_RUN",
+      "requirement": "Retain continuous no-detent OFFSET, intended bipolar manual range, ATTEN inversion/zero/positive behavior and independent CV addition. No fixed shaft-position accuracy promise.",
+      "source": "Owner use; retained A01 function and Stage15 no-detent decision"
+    }
+  },
+  "retired_as_not_applicable": {
+    "precision_output_load_error_V": {
+      "authority": "Engineering interpretation of coarse utility scope: retire precision numeric load acceptance, retain loading and stability checks",
+      "current_limit": null,
+      "disposition": "NOT_APPLICABLE_CURRENT_AO_SCOPE",
+      "historical_value": 0.001,
+      "origin": "OSC-ES-1 associated precision load-change target"
+    },
+    "static_precision_error_V": {
+      "authority": "Explicit owner relaxation of blanket calibrated static precision",
+      "current_limit": null,
+      "disposition": "NOT_APPLICABLE_CURRENT_AO_SCOPE",
+      "historical_value": 0.002,
+      "origin": "OSC-ES-1 owner-delegated engineering proposal, not an original owner numeric requirement"
+    }
+  },
+  "source_inventory_sha256": "e5346f58746c18952af7a11279fc064a6f425d73167f28366b95e6f422e3f0ec",
+  "source_sha256": {
+    "design/architecture-278/implementation/README.md": "1d41359b660186833abeba87e9a74f88ad69c56853ed2dd9039a609e55a6a4be",
+    "design/architecture-278/implementation/candidate-netlist.json": "7c238b4caa383fcc7721a1e58c1c883330d1865dea5c60e2e00fc7e6b7806913",
+    "design/architecture-278/implementation/stage16/inputs-report.json": "214297b7b19f9ae6027d1f036407f005319929961338631896f984655a4c0ebc",
+    "design/architecture-278/implementation/stage18/compatibility-report.json": "f6a10e207f13e5aaa6079cee310c45d5c2eb27246a0cddfb0cf1c054045d6476",
+    "design/architecture-278/implementation/stage23/candidate-selection.patch.json": "dad1bc2fef5c14c6141c5aeb8e0d4b3bdac5ca83b7be1dc72cba92fcc2344da7",
+    "design/architecture-278/implementation/stage23/retrieval.json": "dc2a2f5a950cb861aeb7d99eb1bc23c678ff7213864303103e550dd6ad0eacfd",
+    "design/architecture-278/implementation/stage24/definitions.json": "17f25e8c774b4ccd074df0256fa3e5e111710cdfecf150779fb15c10851e389b",
+    "design/architecture-278/implementation/stage25/fabrication-request.md": "692e96c4cad40437627716c7e76b0331fc24be1d8eb0af0912d7f0df48a0fd72",
+    "design/architecture-278/implementation/stage26/README.md": "6843002367edf1e05ae4c70a122beb418e282ef224fa7d77496c2c0cf5bfa482",
+    "design/architecture-278/implementation/stage26/acceptance.json": "9e43b2eeb5562aeafcb24040f49bf35c4d2f741d6b29d5b42d84f2f6b83c294d",
+    "design/architecture-278/implementation/stage26/functional-checks.json": "28df171b7680285d1d8b10b3eed5574cbe87a87f2b17603322c6ccde74d2e79d",
+    "design/architecture-278/implementation/stage26/oscillator-calibration.json": "b460d6e4a6b6ab8083dcbd3e13ae38176ced457e961b765d518e0984b185090b",
+    "design/spec/modules/oscillator.py": "c83a10adb792265798ae453af4380300b6fde8d1e26afe6dca240412eb965d3e",
+    "design/standard/electrical-standard.json": "185f4775082a36873954323a2377844e0694631418ac510db08e3a0d39b56e53",
+    "doc/src/content/docs/architecture/osc-block-osc.mdx": "124b1e62dcb2a24491c7bd3b871e79b95cd0fe402b0643115dcfa17367928b55",
+    "scripts/architecture278/implementation/check_source.py": "c4b50b4f27cbb36b53e4b127d95c385e2ce421442698213c2740bbe9030409af",
+    "scripts/architecture278/implementation/stage26_acceptance.py": "e20ee50f8bfd1a1ee916cf1f508a78260c529343ba8cb3ac08d1abead09bb828",
+    "scripts/architecture278/implementation/test_stage26_acceptance.py": "5f67a88cec98055a98d790448ebe336ed44f2cc80f917f055e175a37939858db"
+  },
+  "status": "CURRENT_OWNER_AO_SCOPE_IMPLEMENTED_SOURCE_ONLY"
+}

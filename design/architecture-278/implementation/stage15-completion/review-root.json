@@ -1,0 +1,20 @@
+{
+  "authorship_exclusion": "Root reviews electrical-authored load equations/source/tests and graph/electrical independent tests only. Root allocation/completion/narrative excluded.",
+  "findings": [
+    "Checked signed output finite-gain KCL, load impedance inversion and capacitor DC leakage coefficient.",
+    "Checked input KCL and input pin/net topology against preserved inventory.",
+    "Reviewed separate20pA25C/15nAfulltemp and known-impedance bias ceilings; unspecified source impedances explicitly excluded.",
+    "Reviewed independent counterfactual direct-node tests and acceptance/review rejection tests."
+  ],
+  "independent_review": true,
+  "reviewer": "root",
+  "source_sha256": {
+    "design/architecture-278/implementation/stage15-completion/load-input.json": "73c6d09e0335d2bfc78b72198e78a2dbe04fde53a464695298825bc13c8d003c",
+    "design/architecture-278/implementation/stage15-completion/load-report.json": "526e053b6a308ff8883b17b3bc3cae37824da8741029f700735f1f87b25e55c5",
+    "scripts/architecture278/implementation/stage15_load_allocation.py": "c30605d55782b3cf0923e22d92133d3f5dc06c2f94ff937f5ea5e28ef96c43a1",
+    "scripts/architecture278/implementation/test_stage15_allocation_independent.py": "14c29078a0ccec543d27fef1a26c406530983e106d9943832ae06db8fa894510",
+    "scripts/architecture278/implementation/test_stage15_completion.py": "1fd3d36c5708bf74415aad92122c2ea49942f72110a5d9eba74acc7b9e56b224",
+    "scripts/architecture278/implementation/test_stage15_load_allocation.py": "aee410690a572305453bd9c7ee7b00534c0cc2fbbde594ee7a2179573ce5c825"
+  },
+  "verdict": "PASS source equations and condition separation; no electrical acceptance"
+}

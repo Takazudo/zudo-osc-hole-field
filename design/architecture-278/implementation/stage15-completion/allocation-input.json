@@ -1,0 +1,21 @@
+{
+  "baseline_commit": "10e3fbbdc2fcfe954da7aa7df5b02db1230ff8f0",
+  "network_matching_fraction": 0.0001,
+  "network_condition": "25C initial matching only; full-temperature ratio and aging not mixed into this calculation",
+  "retained_discrete_tolerance_fraction": 0.001,
+  "reference_initial_fraction": 0.001,
+  "reference_condition": "REF5050AI25C initial accuracy source sensitivity; actual CL22uF/rails/loading not qualified",
+  "static_target_V": 0.002,
+  "load_change_target_V": 0.001,
+  "counterfactual_factors": [
+    "reference_inverter_ratio",
+    "attenuverter_ratio",
+    "manual_loading",
+    "atten_loading"
+  ],
+  "counterfactual_meaning": "Each removes just its named nonideality in arithmetic while retaining original circuit/parts/positions. No implementation, calibration, knob fitting or adoption.",
+  "unknown_reserve_example_V": 0.0005,
+  "reserve_status": "Analysis-only necessary-allocation illustration; not an accepted envelope or newly adopted specification",
+  "component_geometry_changed": false,
+  "conditions": "Ten fixed Stage15 electrical control fractions, nominal pot values; no physical shaft calibration inferred."
+}
