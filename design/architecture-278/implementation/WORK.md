@@ -621,3 +621,58 @@ remaining functional or serviceability choices only when a concrete alternative
 requires them. Later order preparation needs quantity, complete BOM/CPL, exact
 JLC matching and accepted assembly scope; no such order is authorized here.
 Next native request: NONE for the current source-only follow-up.
+
+### Stage24 — candidate reflow lands and reference-allocation feasibility
+
+Continued from d935179b in Codex Cloud on the retained draft branch. The pre-edit
+manual circuit inventory check passed. Prepared source-only YAGEO 0603 reflow and
+KEMET density B copper definitions with explicit proposed mask/paste/courtyard and
+foil sensitivities. Bound all 19 reference assignments to retained pin/net/unit
+records. No production CAD or Stage23 selection operation was applied.
+
+Retained current JLC capability, solder-mask and stencil guidance with dated raw
+receipts. Kept the 0603 red-glue aperture rules distinct from solder paste. Mask
+and paste openings are explicit engineering proposals requiring assembler review,
+not claims that JLC has accepted a particular production profile. Local clearance
+and aperture dimensions are computed; installed neighbor/thermal checks remain.
+
+Derived both exact HARTING drilling-view transforms from view arrows and tail
+sections: preserve drawing x, invert display y for the component-side frame,
+retaining distinct female a/b/c and male c/b/a order. All 192 pad/net/NC identities
+remain. Contact pads, finished-hole intent, female NPTH fixing and no-paste status
+are explicit candidates; male body flange holes are not invented PCB holes.
+The default JLC hole range is wider than HARTING's allowed interval, and default
+position tolerance does not guarantee its drawing zone. No nominal hole shift can
+remove that contradiction. Fabrication stays blocked pending a confirmed tighter
+process or separately justified connector/process change. No contact was made.
+
+Closed the reference-allocation feasibility question against the retained 2 mV
+static target: existing manual-state loading alone leaves a negative remainder.
+The 5 mV reference initial sensitivity and 10.010 mV independent inverter-ratio
+contribution cannot be cured by merely choosing a tighter sourcing candidate.
+The spare matched network gives 0.500/0.625 mV ratio-only sensitivity but changes
+10 kohm to 100 kohm and currently NC pins, increasing bias sensitivity tenfold.
+It is not adopted or recommended as a drop-in correction. Whole-circuit error
+bounds remain unestablished; the negative allocation is a source-model result.
+
+Numerically compared return-resistance leakage/loading, 10 nF versus 1 nF settling,
+and symmetric input/feedback RC compensation versus the current AC center leakage.
+Recommended a buffered/defined-return control correction and symmetric-RC study
+if an audio-band null is required. No AC frequency, settling, calibration hardware,
+new part value or wiring serviceability choice was silently selected. Stop at those
+behavior/correction architecture choices rather than repeat unchanged audits.
+
+Independent review verified drawing interpretation and mathematics, and required
+stronger process-selection/foil/threshold/URL validation plus explicit imported-code
+hash binding. Focused regressions cover geometry, mirrors, missing contacts, process
+promotion, hole feasibility, budget relaxation and numerical counterfactuals. Final
+checks and review hashes are retained in Stage24 and the PR/issue checkpoint.
+
+Every preexisting byte at d935179b except this log remains protected: canonical
+boards, locked placements, decision.json, KEEP_K1402_INCUMBENT, historical FAIL
+receipts and parked PRs are preserved. PR286 remains draft/unmerged. No native
+command, admission reuse, purchase, supplier contact, production CAD change, merge,
+architecture adoption or electrical acceptance. Next native request: NONE.
+Next bounded action: a scoped control/reference correction proposal, owner behavior
+direction only where required, and specific DIN fabrication-tolerance resolution; selection remains
+unapplied until electrical requirements are closed.
