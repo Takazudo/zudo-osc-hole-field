@@ -1134,8 +1134,10 @@ changes are proposed only (`stage33/approval.json`). Nothing is applied to hardw
   - In the arch's ideal plane, K4 holds for every bow case. The robust spare is 1.89 mm, J-PWR to the
     core volume.
   - No state goes below z 34. The rail stays unnotched.
-  - S3 fails: no part retains the arches laterally. The J-PWR allowance is 1.89 mm; a sliding guide
-    could sit on the local legs only.
+  - S3 fails: no part retains the arches laterally. The allowances are J-PWR 1.89 mm (core volume) and
+    J-SIG 3.36 mm (the J-PWR arch); a sliding guide could sit on the local legs only.
+  - The radius scan fits R 17, so the 15× flex sensitivity is CONDITIONAL. R 22 (20×) fails the rear
+    cover with the bow.
 - **F33 (UNKNOWN):** with front-face headers, the slot path fails K4. The +y descent runs below the
   code-default foreign plane, inside the undesigned front volume.
 - **B32:** INFEASIBLE for every identified wire. The Stage32 results, including the half-sine pass and
@@ -1144,3 +1146,27 @@ changes are proposed only (`stage33/approval.json`). Nothing is applied to hardw
   not transferred from AWG26, and the J-SIG current is not budgeted.
 - **Reservations (proposed):** RV-ARCH in-plane slabs and four RV-ACCESS columns, none overlapping a
   designed part.
+
+Stage33 verification (Claude Code Cloud, Python 3.13):
+- **Tests:** 16 focused tests PASS in normal and `-O` Python. They include:
+  - negative tests for relaxed margin, K4, travel, inherited-parameter overrides, a transferred AWG28
+    rating, wire values from unobtained documents, a selected wire, a face change without a
+    broader-change proposal, overlapping sweeps, a cable over another housing's access column, an
+    added retention part, R 11, dressing 3.0 (S1) and a raised carrier bottom (S7);
+  - an independent analytic arch sampler for RV-ARCH containment;
+  - a `report.json` drift test.
+- **Generator:** `stage33_large_radius.py --check --check-review` PASS, deterministic.
+- **History:** `--check-history` replays Stage32 `--check --check-review` and its 15 tests (normal
+  and `-O`) at the immutable 9a3b9116.
+- **First failure, preserved:** the first `--check` run failed with `deterministic drift
+  report.json` at `f90d142`, because README and `check_source.py` were edited after generation. It was
+  fixed by regenerating, and a test now guards it.
+- **Entrypoint:** `check_source.py` runs Stage33 `--check --check-history --check-review` and PASSES.
+- **Repo checks:** `pnpm check` and `pnpm circuit:check` PASS; `git diff --check` is clean.
+- **Independent review:** PASS_SOURCE_REVIEW_ONLY after two rounds.
+  - Round 1: 1 HIGH, 5 MEDIUM and 11 LOW, resolved and re-verified.
+  - Round 2: 2 MEDIUM and 4 LOW, fixed by the lead and not re-reviewed.
+- **NOT RUN:** regen-all.sh and the KiCad oracle (KiCad not requested this stage), ERC/DRC, CI
+  ([skip ci]), simulation, fabrication output, M-01, M-09, M-12, M33-01…08 and energisation.
+
+No supplier contact, order, upload, adoption or merge took place. Native request: NONE.

@@ -35,7 +35,8 @@ Design study only. Calculations on planning geometry and stated inputs; nothing 
 | R33 15 mm release and core 40 mm (arch in its ideal plane) | CONDITIONAL |
 | R33 bend radius 12 mm vs 10x OD (inner-surface convention) and the fan-in at every exit | FEASIBLE_WITHIN_STATED_ASSUMPTIONS |
 | R33 at R 12 under the 15x/20x flex-rule sensitivity | INFEASIBLE |
-| R33 geometry at the 15x/20x radii (scan: clearance, K4 with the catch-all stack, core, cover; longer cables) | CONDITIONAL |
+| R33 geometry at the 15x radius (scan: clearance, K4 with the catch-all stack, core, cover with bow; longer cables) | CONDITIONAL |
+| R33 geometry at the 20x radius (scan: clearance, K4 with the catch-all stack, core, cover with bow; longer cables) | INFEASIBLE |
 | R33 rear-face header move | CONDITIONAL |
 | R33 lateral retention (no part; position not measured) | UNKNOWN |
 | Wire selection | UNKNOWN |
@@ -60,7 +61,7 @@ No part holds the arches laterally. Allowance = smallest clearance over every st
 
 | Cable | Allowance (mm) | Nearest | Straight zone on the local leg in every state | Straight zone on the middle leg |
 |---|---|---|---|---|
-| J-SIG | 4.62 | none within 5.5 mm (allowance is a lower bound) (every state) | z 69.29–80.36 | none |
+| J-SIG | 3.36 | the other cable (plan bound, both arches in their planes) (every state) | z 69.29–80.36 | none |
 | J-PWR | 1.89 | core-extraction-40mm (installed 0) | z 65.81–76.95 | none |
 
 ## Service states (constant design length)
@@ -126,14 +127,13 @@ J-PWR conditional rail maxima +12V 12.87 mA, -12V 11.67 mA, +5V 0.10 mA; AGND re
 
 ## Radius scan
 
-Checks: clearance with the catch-all stack (K4), slack, core envelope with stack, rear cover; access, bow cases and strength not re-evaluated.
+Checks: clearance with the catch-all stack (K4), slack, core envelope with stack, rear cover with the uniform bow (same rule as S11); access, other bow cases and strength not re-evaluated.
 
 | R (mm) | Fits | Design lengths J-SIG / J-PWR | Installed top z | Service top z | Robust spare (mm) | Reason |
 |---|---|---|---|---|---|---|
 | 12.0 | yes | 133 / 149 | 94.11 | 109.11 | 1.89 |  |
 | 17.0 | yes | 139 / 155 | 99.26 | 114.26 | 1.89 |  |
-| 22.0 | yes | 145 / 160 | 104.40 | 119.40 | 1.89 |  |
-| 22.5 | **no** | 145 / 161 | 104.62 | 119.62 | 1.89 | installed arch above the rear cover |
+| 22.0 | **no** | 145 / 160 | 104.40 | 119.40 | 1.89 | installed arch + uniform bow + margin above the rear cover |
 
 ## Strength (conditional)
 
@@ -175,7 +175,7 @@ Checks: clearance with the catch-all stack (K4), slack, core envelope with stack
 
 1. Power off; remove the rear cover. The core may stay installed.
 2. Press the GH latch with a finger or a flat tool from the rear (latch face UNCONFIRMED: both long faces are open toward +z).
-3. Hold the vertical bundle above the housing (about 23.1 mm straight installed, 15.6 mm at 15 mm withdrawal, both above the 10.4 mm fan-in) and pull within 15 degrees of +z (S-JST-HANDLING p.961). The arch rises; the cable keeps its design length.
+3. Hold the vertical bundle above the housing and pull within 15 degrees of +z (S-JST-HANDLING p.961). J-SIG has 23.1 mm straight installed and 15.6 mm at 15 mm withdrawal; above its 10.4 mm fan-in that leaves 12.7 / 5.2 mm to grip. The arch rises; the cable keeps its design length.
 4. Re-mate by pushing the housing along -z until the latch engages.
 
 **Harness replacement**

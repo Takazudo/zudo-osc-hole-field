@@ -97,7 +97,7 @@
     "j_sig_current": "UNCONFIRMED",
     "latch_side": "UNCONFIRMED",
     "rear_face_smt": "UNCONFIRMED",
-    "retention": "S3 fails: no part holds the arches laterally; allowance J-SIG 4.62 mm, J-PWR 1.89 mm",
+    "retention": "S3 fails: no part holds the arches laterally; allowance J-SIG 3.36 mm, J-PWR 1.89 mm",
     "wire": "NULL: no identified wire passes every check for either cable (see per_cable failed)"
   },
   "physical": "NOT_RUN",
@@ -141,7 +141,11 @@
     },
     {
       "class": "CONDITIONAL",
-      "result": "R33 geometry at the 15x/20x radii (scan: clearance, K4 with the catch-all stack, core, cover; longer cables)"
+      "result": "R33 geometry at the 15x radius (scan: clearance, K4 with the catch-all stack, core, cover with bow; longer cables)"
+    },
+    {
+      "class": "INFEASIBLE",
+      "result": "R33 geometry at the 20x radius (scan: clearance, K4 with the catch-all stack, core, cover with bow; longer cables)"
     },
     {
       "class": "CONDITIONAL",
@@ -190,9 +194,9 @@
     "design/architecture-278/implementation/stage32/design-input.json": "ae953a61e39535b922663e58de919955d1dd70e27c883132578d9689c5f90e54",
     "design/architecture-278/implementation/stage32/report.json": "cf41f028e654288094fa2adf6e123f350d15ffc5cc4dcff8828b6936524625b8",
     "design/architecture-278/implementation/stage32/sources.json": "a3f20c6750aa99fe68ce28f6373a9dee32a51ca116bd44d5e4e16b1697de9344",
-    "design/architecture-278/implementation/stage33/README.md": "99b8a4df651fd37127810556ed180c8113c4d148e710bfee479c10a54cafb10e",
+    "design/architecture-278/implementation/stage33/README.md": "a9b10fc43797e5d21825fca58e9e8e2780dc6ed16402a59125086a48a7f6c9bf",
     "design/architecture-278/implementation/stage33/approval.json": "88eccb2b86467a40448a9291a2f8edb206a71f1fd0790ad3eb86dba521c07077",
-    "design/architecture-278/implementation/stage33/design-input.json": "0acd419a66617ab041bda9124ca036cca8635b27e4c7d22fb9eff99a8954db10",
+    "design/architecture-278/implementation/stage33/design-input.json": "718c133566b80db7a3b50029d05d541d8bd174614d13ad2920ffb5a7c5babe18",
     "design/architecture-278/implementation/stage33/sources.json": "29f77ded3e852813cd777a4fe296332a131dbd647ed72037407f6741e23fb4f2",
     "design/grid/placements.lock.json": "297300b067fd646624b9e501791163fa2d60702862b61568753bf92e5b88dbe8",
     "scripts/architecture278/implementation/check_source.py": "06f03fac1f0180b9c5217469defff84d44ca5986a2448bab800733e9631105c8",
@@ -200,8 +204,8 @@
     "scripts/architecture278/implementation/stage30_din_design_integration.py": "a092803e4a68a0d90a81d4f50b3f8f09a74948a4f2195f4ec122ba0f2b5eef26",
     "scripts/architecture278/implementation/stage31_cable_entry_redesign.py": "ecb6faae2a802841b8651e49b2c993291bd6598962c5079257828b1b2cc1add0",
     "scripts/architecture278/implementation/stage32_service_envelope.py": "f38de834ecc125cf891e2604f5783333594d7a56a146577a03e3c97ba822240e",
-    "scripts/architecture278/implementation/stage33_large_radius.py": "3356086849be729dc4355e6989ed040f0ab398c3d6cbc2a913afe41ff1e78dd9",
-    "scripts/architecture278/implementation/test_stage33_large_radius.py": "00e6b96f2bbb3d912abe2290e24f67a0fc3aec03f54cd4d497344f0f602ccc8b"
+    "scripts/architecture278/implementation/stage33_large_radius.py": "45cecb8271b667d984311757901da62ef2b1866ba9a0f79a9916f7fbe5e3fa1f",
+    "scripts/architecture278/implementation/test_stage33_large_radius.py": "1d762334510dd0ee70f47bd4e898b1e03c7571c300be8848d74ed3557a2916e4"
   },
   "status": "DESIGN_STUDY_ONLY"
 }

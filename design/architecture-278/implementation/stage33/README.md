@@ -58,10 +58,12 @@ retention part is designed. Nothing is adopted.
 
 | Cable | Lateral allowance (mm) | Limited by | Straight zone on the local leg, every state | Middle leg |
 |---|---|---|---|---|
-| J-SIG | ≥ 4.63 | nothing within 5.5 mm | z 69.3–80.4 | none |
+| J-SIG | 3.36 | the J-PWR arch (4.23 mm in plan; no rigid part within 5.5 mm) | z 69.3–80.4 | none |
 | J-PWR | 1.89 | core withdrawal volume | z 65.8–76.9 | none |
 
 - The allowance is how far an arch may leave its plane before the margin and the stack are used up.
+- The cable-to-cable gap is shared: if both arches lean toward each other, the sum of their two
+  deviations must stay within it.
 - A captive guide that lets the cable slide axially could sit in the local-leg zone, where the
   cable stays straight in every state. The middle legs have no such zone.
 - Designing that guide, or measuring the arch position (M33-04), is the next step.
@@ -79,7 +81,8 @@ z ≤ 1.96 / 5.74 at 15 mm.
 - **Around the +y edge of the jack board:** a descent there clears the foreign XY columns in plan
   (largest clear radius 5.25 mm). But the run then lies below the code-default foreign PCB plane
   (z 20–21.6) even when installed, inside the undesigned front volume, and the middle headers would
-  have to move to y > 185. This path is **UNKNOWN**.
+  have to move (for example to y > 185) or the run would have to pass under crossmember:jack:1 below
+  z 22. This path is **UNKNOWN**.
 - **Rescue:** a foreign PCB plane below the hook, foreign depth limits, and a front-volume
   reservation down to z 1.96. R33 needs none of this.
 
@@ -110,10 +113,12 @@ uses the stricter reading, the inner surface of the bent bundle:
 
 - No candidate maker document says whether its radius applies to repeated flexing, so the flex rule
   stays UNCONFIRMED. R 12 meets the 10× case only.
-- **Radius scan:** clearance with the catch-all stack against K4, slack, the core and the rear cover.
-  - It fits at R 17 (design lengths 139 / 155 mm) and R 22 (145 / 160 mm).
-  - R 22.5 fails: the installed arch reaches the rear cover.
-  - Access, the bow cases and strength are not re-evaluated in the scan.
+- **Radius scan:** clearance with the catch-all stack against K4, slack, the core, and the rear cover
+  with the uniform bow (the S11 rule).
+  - It fits at R 17 (design lengths 139 / 155 mm), so the 15× sensitivity is CONDITIONAL.
+  - R 22 fails: the installed top 104.4 + bow 1.28 + margin 0.5 is above z 105. So the 20× sensitivity
+    is INFEASIBLE inside the rear cover.
+  - Access, the other bow cases and strength are not re-evaluated in the scan.
 
 ## No identified wire qualifies for either cable, so the selection stays null
 
@@ -150,8 +155,8 @@ The steps are in `summary.md`.
   against the core in that state.
 - **Middle connectors:** rear cover off, press the latch, then pull the vertical bundle within 15° of
   +z.
-  - The straight length above each housing is 23.1 mm installed and 15.6 mm at 15 mm (J-SIG), both
-    above the fan-in.
+  - J-SIG has 23.1 mm straight above the housing installed and 15.6 mm at 15 mm. Above its 10.4 mm
+    fan-in that leaves 12.7 / 5.2 mm to grip.
   - Every housing's +z column is clear of rigid parts and of the other cable.
   - CAD gaps are not finger operability (M33-03).
 - **Harness replacement:** all four ends unmate from the rear. No board, carrier or core comes out.
@@ -161,7 +166,7 @@ The steps are in `summary.md`.
 - **Decisions:**
   - the rear-face header move;
   - RV-ARCH-J-SIG / -J-PWR (in-plane slabs) and the four RV-ACCESS columns. None of them overlaps a
-    designed part.
+    designed part. The slab tops above z 105 are reached only with the rear cover off.
 - **Retention:** design a sliding guide in the local-leg zone, or measure the arch position against
   the allowance (M33-04).
 - **Wire:**

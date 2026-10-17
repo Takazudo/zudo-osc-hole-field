@@ -380,7 +380,7 @@ def f33_screen(data,mech,P,T):
         'plus_y_descent':{'band_xy_mm':band,'foreign_columns':len(cols),'largest_clear_radius_mm':r6(free),'at_mm':at,'status':'UNKNOWN',
             'basis':('a descent clear of the foreign XY columns exists in plan (largest clear radius '+f'{free:.2f}'+' mm)' if all(r['descent_clear_of_foreign_columns'] for r in rows.values()) else 'no descent position clears the foreign XY columns of unknown depth')
                 +'; the run to the hook then lies at z <= '+' / '.join(f"{rows[l]['installed_envelope_bottom_z_max_mm']:.2f}" for l in LINKS)+' (J-SIG / J-PWR) installed'+(', below the code-default foreign PCB plane z 20-21.6' if any(r['installed_below_code_default_plane'] for r in rows.values()) else '')
-                +', inside the undesigned front volume; the middle headers would have to move to y > 185'}}
+                +', inside the undesigned front volume; it needs moved middle headers (for example at y > 185) or a pass under crossmember:jack:1 below z 22'}}
     return {'route_radius_mm':R,'links':rows,'paths':paths,
         'descent':{'jack_board_xy_mm':jb,'middle_board_xy_mm':mb,'gap_between_jack_board_edge_and_rail_mm':r6(rail[0]-jb[2]),'jack_crossmembers_xy_mm':jx},
         'status':'UNKNOWN','classification':'UNKNOWN',
@@ -419,7 +419,7 @@ def reservations(cand,P,st):
         tops=[r['top_centreline_z_mm'] for r in st[l]['rows']];sl=slab(cand,P,l,tops)
         hits=sorted(o['id'] for o in designed if o['link']!=l and slab_overlaps_box(sl,o['lo'],o['hi']))
         out.append({'id':'RV-ARCH-'+l,'for':l+' arch in the installed state and every release case (2.45-15 mm, constant length)','slab':sl,'designed_part_overlaps':hits,
-            'reason':'the arch occupies this in-plane volume above the A01 boards','status':'PROPOSAL_REQUIRES_OWNER_DECISION'})
+            'reason':'the arch occupies this in-plane volume above the A01 boards; its top above z '+f"{val(P,'enclosure_rear_inner_z_mm'):g}"+' is reached only in service states with the rear cover off (the rear cover is not a modelled part)','status':'PROPOSAL_REQUIRES_OWNER_DECISION'})
         for ref in ENDS[l]:
             g=cand['geo'][ref];sw=g['sweep']['box_mm'];lo=[r6(sw[0]-m),r6(sw[1]-m),g['exit_mm'][2]];hi=[r6(sw[2]+m),r6(sw[3]+m),top]
             hits=sorted(o['id'] for o in designed if o['link']!=l and all(o['lo'][i]<hi[i] and o['hi'][i]>lo[i] for i in range(3)))
@@ -428,7 +428,7 @@ def reservations(cand,P,st):
     return out
 
 
-def retention(cand,P,T,rules,st):
+def retention(cand,P,T,rules,st,cable=None):
     """No part holds the arches laterally. Report how far each arch may leave its plane before margin and stack are used up, and the z band on each leg that stays straight in every state (where a sliding guide could sit)."""
     m=val(P,'placement_margin_mm');R=val(P,'route_radius_mm');t15=val(P,'release_travel_mm');out={}
     ends={'board:'+cand['geo'][r]['board'] for l in LINKS for r in ENDS[l]}
@@ -447,7 +447,8 @@ def retention(cand,P,T,rules,st):
                 lo.append(e+t+f);hi.append(r['top_centreline_z_mm']-R)
             zones[end]={'z_mm':[r6(max(lo)),r6(min(hi))],'length_mm':r6(min(hi)-max(lo)),'exists':min(hi)>max(lo)}
         if worst is None:worst=(m+5,'none within '+f'{m+5:g}'+' mm (allowance is a lower bound)','every state',0)
-        out[l]={'retention_part':None,'lateral_allowance_mm':r6(worst[0]-m-stack),'nearest':worst[1],'state':f"{worst[2]} {worst[3]:g}" if worst[2]!='every state' else worst[2],'excludes':'the boards carrying the cable ends (their clearance is the housing height, not a lateral gap)',
+        if cable is not None and cable['plan_bound_mm']<worst[0]:worst=(cable['plan_bound_mm'],'the other cable (plan bound, both arches in their planes)','every state',0)
+        out[l]={'retention_part':None,'lateral_allowance_mm':r6(worst[0]-m-stack),'nearest':worst[1],'state':f"{worst[2]} {worst[3]:g}" if worst[2]!='every state' else worst[2],'excludes':'the boards carrying the cable ends (their clearance is the housing height, not a lateral gap)','shared_gap':'the cable-to-cable plan gap is shared: if both arches lean toward each other the sum of both deviations must stay within it',
             'straight_zone_every_state':zones,'status':'UNCONFIRMED (M33-04)'}
     return out
 
@@ -472,7 +473,7 @@ def evaluate(data,mech,P,T,rules,bow_cases):
         static[l]={'design_length_mm':cand['lengths'][l]['design_length_mm'],'top_centreline_z_mm':cand['installed'][l]['top_centreline_z_mm'],'min_surface_clearance_mm':min(known.values()) if known else None,
             'nearest':list(known.items())[:6],'foreign_depth_bounds':depth,'bends':cand['routes'][l]['bends'],'straight_from_exit_mm':cand['routes'][l]['straight_from_exit_mm'],'fan_in_mm':fan_in(P,l)['length_mm']}
     st=state_rows(cand,P);rob=robust(cand,P,T,rules,bow_cases,mech);cc=cable_pairs(cand,P,T,rules);acc=rear_access(cand,P,inst);core=core_check(cand,P,T,rules,inst)
-    wires=wire_table(P,val(P,'route_radius_mm'),data['input']['wire_candidates']);stren=strength(mech,P);rv=reservations(cand,P,st);ret=retention(cand,P,T,rules,st)
+    wires=wire_table(P,val(P,'route_radius_mm'),data['input']['wire_candidates']);stren=strength(mech,P);rv=reservations(cand,P,st);ret=retention(cand,P,T,rules,st,cc)
     sw={}
     for ref in MIDDLE:
         g=cand['geo'][ref];lo=[g['sweep']['box_mm'][0],g['sweep']['box_mm'][1],g['sweep']['z_mm'][0]];hi=[g['sweep']['box_mm'][2],g['sweep']['box_mm'][3],g['sweep']['z_mm'][1]]
@@ -501,6 +502,7 @@ def evaluate(data,mech,P,T,rules,bow_cases):
 def radius_headroom(data,mech,P,T,rules,flex):
     """Route radius scan at the design value, the flex-sensitivity radii and the horizontal-leg limit: clearance with the catch-all stack against K4, slack, the core envelope and the rear cover. Access and strength are not re-evaluated."""
     m=val(P,'placement_margin_mm');k4=val(P,'robust_spare_mm');top=val(P,'enclosure_rear_inner_z_mm');best=None;rows=[]
+    x0,y0,x1,y1=mech['boards']['A01-middle']['outline_mm'];ubow=T['pcb_bow_fraction']['value']*math.hypot(x1-x0,y1-y0)
     geo=header_geometry(mech,data['input']['candidates']['R33']['header_moves'])
     leg=min(math.dist(geo[ENDS[l][0]]['exit_mm'][:2],geo[ENDS[l][1]]['exit_mm'][:2]) for l in LINKS)
     up=lambda v:math.ceil(v*2-1e-9)/2
@@ -519,11 +521,11 @@ def radius_headroom(data,mech,P,T,rules,flex):
             if any(r['slack_short'] or r.get('keep_outs_below_margin') for r in rr):ok,why=False,'keep-out or slack'
             elif spare<k4-1e-12:ok,why=False,'K4 with the catch-all stack'
             elif not core['clear']:ok,why=False,'core envelope'
-            elif itop+m>top:ok,why=False,'installed arch above the rear cover'
+            elif itop+ubow+m>top:ok,why=False,'installed arch + uniform bow + margin above the rear cover'
         row.update({'fits':ok,'reason':why});rows.append(row)
         if not ok:break
         best=R
-    return {'largest_fitting_radius_mm':best,'horizontal_leg_min_mm':r6(leg),'scan':rows,'checks':'clearance with the catch-all stack (K4), slack, core envelope with stack, rear cover; access, bow cases and strength not re-evaluated',
+    return {'largest_fitting_radius_mm':best,'horizontal_leg_min_mm':r6(leg),'scan':rows,'checks':'clearance with the catch-all stack (K4), slack, core envelope with stack, rear cover with the uniform bow (same rule as S11); access, other bow cases and strength not re-evaluated',
         'note':'a larger radius needs longer cables; the rear cover is off in every service state'}
 
 
@@ -549,11 +551,11 @@ def build(data,preserve=True):
     cls={'B32':b32['classification'],'F33':f33['classification'],'R33':'CONDITIONAL'}
     lengths={l:{'design_length_proposal_mm':cand['lengths'][l]['design_length_mm'],'minimum_installed_mm':r6(cand['lengths'][l]['minimum_installed_mm']),'release_extra_15mm_mm':r6(cand['lengths'][l]['release_extra_mm']),
         'service_slack_mm':val(P,'service_slack_mm'),'measured_or_cut_mm':None} for l in LINKS}
-    hr=res['radius_headroom'];flex_fit=all(any(x['fits'] and x['radius_mm']>=max(f['required_radius_mm'].values()) for x in hr['scan']) for f in res['wires']['flex_sensitivity'])
+    hr=res['radius_headroom'];flex_fit={f['x_od']:any(x['fits'] and x['radius_mm']>=max(f['required_radius_mm'].values()) for x in hr['scan']) for f in res['wires']['flex_sensitivity']}
     results=[('R33 static and robust clearance, all bow cases (arch in its ideal plane)','CONDITIONAL'),('R33 15 mm release and core 40 mm (arch in its ideal plane)','CONDITIONAL'),
         ('R33 bend radius 12 mm vs 10x OD (inner-surface convention) and the fan-in at every exit','FEASIBLE_WITHIN_STATED_ASSUMPTIONS'),
         ('R33 at R 12 under the 15x/20x flex-rule sensitivity','INFEASIBLE' if not any(f['route_R_meets'] for f in res['wires']['flex_sensitivity']) else 'CONDITIONAL'),
-        ('R33 geometry at the 15x/20x radii (scan: clearance, K4 with the catch-all stack, core, cover; longer cables)','CONDITIONAL' if flex_fit else 'INFEASIBLE'),
+        *[(f'R33 geometry at the {k}x radius (scan: clearance, K4 with the catch-all stack, core, cover with bow; longer cables)','CONDITIONAL' if v else 'INFEASIBLE') for k,v in flex_fit.items()],
         ('R33 rear-face header move','CONDITIONAL'),('R33 lateral retention (no part; position not measured)','UNKNOWN'),
         ('Wire selection','UNKNOWN'),('AWG28 current qualification','UNKNOWN'),('J-SIG conductor current','UNKNOWN'),('Finger/tool operability at the latches','UNKNOWN'),
         ('F33 slot path (front-face headers)','INFEASIBLE'),('F33 descent beyond the jack board +y edge','UNKNOWN'),('B32 5 mm bends with every identified wire','INFEASIBLE'),('B32 uniform 1.282 mm bow','INFEASIBLE')]

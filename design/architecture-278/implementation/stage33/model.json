@@ -407,6 +407,7 @@
         "lateral_allowance_mm": 1.890994,
         "nearest": "core-extraction-40mm",
         "retention_part": null,
+        "shared_gap": "the cable-to-cable plan gap is shared: if both arches lean toward each other the sum of both deviations must stay within it",
         "state": "installed 0",
         "status": "UNCONFIRMED (M33-04)",
         "straight_zone_every_state": {
@@ -430,9 +431,10 @@
       },
       "J-SIG": {
         "excludes": "the boards carrying the cable ends (their clearance is the housing height, not a lateral gap)",
-        "lateral_allowance_mm": 4.625,
-        "nearest": "none within 5.5 mm (allowance is a lower bound)",
+        "lateral_allowance_mm": 3.355235,
+        "nearest": "the other cable (plan bound, both arches in their planes)",
         "retention_part": null,
+        "shared_gap": "the cable-to-cable plan gap is shared: if both arches lean toward each other the sum of both deviations must stay within it",
         "state": "every state",
         "status": "UNCONFIRMED (M33-04)",
         "straight_zone_every_state": {
@@ -831,7 +833,7 @@
     "Middle connector service": [
       "Power off; remove the rear cover. The core may stay installed.",
       "Press the GH latch with a finger or a flat tool from the rear (latch face UNCONFIRMED: both long faces are open toward +z).",
-      "Hold the vertical bundle above the housing (about 23.1 mm straight installed, 15.6 mm at 15 mm withdrawal, both above the 10.4 mm fan-in) and pull within 15 degrees of +z (S-JST-HANDLING p.961). The arch rises; the cable keeps its design length.",
+      "Hold the vertical bundle above the housing and pull within 15 degrees of +z (S-JST-HANDLING p.961). J-SIG has 23.1 mm straight installed and 15.6 mm at 15 mm withdrawal; above its 10.4 mm fan-in that leaves 12.7 / 5.2 mm to grip. The arch rises; the cable keeps its design length.",
       "Re-mate by pushing the housing along -z until the latch engages."
     ],
     "R33 assembly": [

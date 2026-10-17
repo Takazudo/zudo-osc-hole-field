@@ -104,7 +104,7 @@
           232,
           264
         ],
-        "basis": "a descent clear of the foreign XY columns exists in plan (largest clear radius 5.25 mm); the run to the hook then lies at z <= 16.96 / 20.74 (J-SIG / J-PWR) installed, below the code-default foreign PCB plane z 20-21.6, inside the undesigned front volume; the middle headers would have to move to y > 185",
+        "basis": "a descent clear of the foreign XY columns exists in plan (largest clear radius 5.25 mm); the run to the hook then lies at z <= 16.96 / 20.74 (J-SIG / J-PWR) installed, below the code-default foreign PCB plane z 20-21.6, inside the undesigned front volume; it needs moved middle headers (for example at y > 185) or a pass under crossmember:jack:1 below z 22",
         "foreign_columns": 22,
         "largest_clear_radius_mm": 5.254037,
         "status": "UNKNOWN"
@@ -265,9 +265,9 @@
     ],
     "installed_envelope_top_z_mm": 94.111945,
     "radius_headroom": {
-      "checks": "clearance with the catch-all stack (K4), slack, core envelope with stack, rear cover; access, bow cases and strength not re-evaluated",
+      "checks": "clearance with the catch-all stack (K4), slack, core envelope with stack, rear cover with the uniform bow (same rule as S11); access, other bow cases and strength not re-evaluated",
       "horizontal_leg_min_mm": 45.177428,
-      "largest_fitting_radius_mm": 22.0,
+      "largest_fitting_radius_mm": 17.0,
       "note": "a larger radius needs longer cables; the rear cover is off in every service state",
       "scan": [
         {
@@ -302,25 +302,12 @@
             "J-PWR": 160,
             "J-SIG": 145
           },
-          "fits": true,
+          "fits": false,
           "installed_top_z_mm": 104.403886,
           "radius_mm": 22.0,
-          "reason": null,
+          "reason": "installed arch + uniform bow + margin above the rear cover",
           "robust_spare_conservative_mm": 1.891049,
           "service_top_z_mm": 119.403886
-        },
-        {
-          "core_robust_spare_mm": 1.890965,
-          "design_lengths_mm": {
-            "J-PWR": 161,
-            "J-SIG": 145
-          },
-          "fits": false,
-          "installed_top_z_mm": 104.618485,
-          "radius_mm": 22.5,
-          "reason": "installed arch above the rear cover",
-          "robust_spare_conservative_mm": 1.890965,
-          "service_top_z_mm": 119.618485
         }
       ]
     },
@@ -330,6 +317,7 @@
         "lateral_allowance_mm": 1.890994,
         "nearest": "core-extraction-40mm",
         "retention_part": null,
+        "shared_gap": "the cable-to-cable plan gap is shared: if both arches lean toward each other the sum of both deviations must stay within it",
         "state": "installed 0",
         "status": "UNCONFIRMED (M33-04)",
         "straight_zone_every_state": {
@@ -353,9 +341,10 @@
       },
       "J-SIG": {
         "excludes": "the boards carrying the cable ends (their clearance is the housing height, not a lateral gap)",
-        "lateral_allowance_mm": 4.625,
-        "nearest": "none within 5.5 mm (allowance is a lower bound)",
+        "lateral_allowance_mm": 3.355235,
+        "nearest": "the other cable (plan bound, both arches in their planes)",
         "retention_part": null,
+        "shared_gap": "the cable-to-cable plan gap is shared: if both arches lean toward each other the sum of both deviations must stay within it",
         "state": "every state",
         "status": "UNCONFIRMED (M33-04)",
         "straight_zone_every_state": {

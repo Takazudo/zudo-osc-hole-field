@@ -45,7 +45,7 @@ class Stage33(unittest.TestCase):
         def hide(d):d['s32_analysis']['candidates']['B32']['bend']['any_identified_wire_met']=True
         self.rejects(hide,'Stage32 failures are preserved')
 
-    def test_required_radius_is_derived_from_the_innermost_conductor(self):
+    def test_required_radius_uses_the_inner_surface_and_the_fan_in(self):
         w=RES['wires'];od=1.0;dress=0.25
         expect={'J-SIG':10*od+3.0*od/2+dress,'J-PWR':10*od+(1+math.sqrt(2))*od/2+dress}
         for l,v in expect.items():
@@ -125,7 +125,7 @@ class Stage33(unittest.TestCase):
     def test_no_retention_part_and_strength_is_conditional(self):
         self.assertFalse(RES['criteria']['S3_lateral_retention'])
         ret=RES['retention'];self.assertTrue(all(r['retention_part'] is None and r['status'].startswith('UNCONFIRMED') for r in ret.values()))
-        self.assertEqual(ret['J-PWR']['nearest'],'core-extraction-40mm');self.assertAlmostEqual(ret['J-PWR']['lateral_allowance_mm'],RES['core_40mm']['arch_min_clearance_mm']-0.5-0.375,places=5)
+        self.assertEqual(ret['J-PWR']['nearest'],'core-extraction-40mm');self.assertLessEqual(ret['J-SIG']['lateral_allowance_mm'],RES['cable_to_cable']['robust_spare_mm']+1e-9);self.assertAlmostEqual(ret['J-PWR']['lateral_allowance_mm'],RES['core_40mm']['arch_min_clearance_mm']-0.5-0.375,places=5)
         self.assertTrue(all(r['straight_zone_every_state']['local']['exists'] and not r['straight_zone_every_state']['middle']['exists'] for r in ret.values()))
         self.rejects(lambda d:r33(d).__setitem__('keeper',{'id':'K1'}),'R33 carries no retention part')
         st=RES['strength'];self.assertTrue(st['meets_at_planning_load']);self.assertEqual(st['status'],'CALCULATED_CONDITIONALLY; not a physical strength result (M33-06)')
@@ -174,16 +174,18 @@ class Stage33(unittest.TestCase):
         pr=BUILT['model']['procedure'];tops={l:max(r['envelope_top_z_mm'] for r in RES['states'][l]['rows'] if r['withdrawn']=='installed') for l in s.LINKS}
         self.assertIn(f"z {tops['J-SIG']:.1f} / {tops['J-PWR']:.1f}",pr['R33 assembly'][4])
         mid=[r for r in RES['states']['J-SIG']['rows'] if r['withdrawn']=='middle' and r['travel_mm']==15][0]
-        self.assertIn(f"{RES['static']['J-SIG']['straight_from_exit_mm'][1]:.1f} mm straight installed, {mid['straight_from_exit_mm'][1]:.1f} mm at 15 mm withdrawal, both above the {RES['wires']['fan_in']['J-SIG']['length_mm']:.1f} mm fan-in",pr['Middle connector service'][2])
+        f=RES['wires']['fan_in']['J-SIG']['length_mm'];si=RES['static']['J-SIG']['straight_from_exit_mm'][1];sm=mid['straight_from_exit_mm'][1]
+        self.assertIn(f"{si:.1f} mm straight installed and {sm:.1f} mm at 15 mm withdrawal; above its {f:.1f} mm fan-in that leaves {si-f:.1f} / {sm-f:.1f} mm to grip",pr['Middle connector service'][2])
         both=max(r['envelope_top_z_mm'] for l in s.LINKS for r in RES['states'][l]['rows'])
         self.assertIn(f'reaches z {both:.1f}',pr['Core service (unchanged order)'][2])
         self.assertIn(f"{RES['core_40mm']['arch_min_clearance_mm']:.1f} mm from the core volume",pr['Core service (unchanged order)'][1])
 
     def test_radius_headroom_covers_the_flex_sensitivity(self):
-        h=RES['radius_headroom'];self.assertEqual(h['largest_fitting_radius_mm'],22.0)
-        self.assertEqual(h['scan'][-1]['reason'],'installed arch above the rear cover')
-        for f in RES['wires']['flex_sensitivity']:
-            self.assertTrue(any(x['fits'] and x['radius_mm']>=max(f['required_radius_mm'].values()) for x in h['scan']))
+        h=RES['radius_headroom'];self.assertEqual(h['largest_fitting_radius_mm'],17.0)
+        self.assertEqual(h['scan'][-1]['reason'],'installed arch + uniform bow + margin above the rear cover')
+        fits={f['x_od']:any(x['fits'] and x['radius_mm']>=max(f['required_radius_mm'].values()) for x in h['scan']) for f in RES['wires']['flex_sensitivity']}
+        self.assertEqual(fits,{15:True,20:False})
+        cls={r['result']:r['class'] for r in BUILT['report']['results']};self.assertEqual([v for k,v in cls.items() if 'the 20x radius' in k],['INFEASIBLE'])
         for x in h['scan']:
             if x['fits']:self.assertGreaterEqual(x['robust_spare_conservative_mm'],0.15)
 
