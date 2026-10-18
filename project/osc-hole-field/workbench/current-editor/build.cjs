@@ -10,6 +10,6 @@ if(data.profile.px!==17||data.profile.py!==14||data.lock.frame.panel_width_mm!==
 const locked=new Map(data.lock.placements.map(q=>[q.uid,q]));
 for(const q of [...data.grid.ports,...data.grid.controls]){const p=GridRenderer.pos(q,data.profile),l=locked.get(q.uid);if(!l||p.x!==l.x_mm||p.y!==l.y_mm||q.kind!==l.kind)throw Error('Renderer/lock geometry drift: '+q.uid);}
 const json=JSON.stringify(data).replace(/</g,'\\u003c');
-let html=fs.readFileSync(path.join(dir,'shell.html'),'utf8').replace('/*STYLE*/',fs.readFileSync(path.join(dir,'style.css'),'utf8')).replace('<!--DATA-->',`<script id="source-data" type="application/json">${json}</script>`).replace('/*RENDERER*/',read(paths.renderer)).replace('/*EDITOR*/',fs.readFileSync(path.join(dir,'editor.js'),'utf8'));
+let html=fs.readFileSync(path.join(dir,'shell.html'),'utf8').replace('/*STYLE*/',fs.readFileSync(path.join(dir,'style.css'),'utf8')).replace('<!--DATA-->',`<script id="source-data" type="application/json">${json}</script>`).replace('/*RENDERER*/',read(paths.renderer)).replace('/*HARDWARE*/',fs.readFileSync(path.join(dir,'hardware.js'),'utf8')).replace('/*EDITOR*/',fs.readFileSync(path.join(dir,'editor.js'),'utf8'));
 if(process.argv.includes('--check')){if(fs.readFileSync(path.join(dir,'index.html'),'utf8')!==html)throw Error('Offline editor is stale');console.log('PASS deterministic offline editor');}
 else{fs.writeFileSync(path.join(dir,'index.html'),html);console.log('Built current editor: '+Buffer.byteLength(html)+' bytes');}

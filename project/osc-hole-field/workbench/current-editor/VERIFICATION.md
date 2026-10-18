@@ -53,3 +53,23 @@ editor-detail.png 9f23233058e51ae1f6ed8299452f0a64d0fce2d87aa81e629312d6baa7ad2e
 ```
 
 Existing parent286 remains `b58068fbaeb65886958a67a4f4978613414e31c5`. Canonical boards/circuit/BOM/geometry, historical stages, coupon, both Stage36 viewers and the original historical workbench index remain unchanged. No CI pass claimed; commit skips native CI.
+
+## Hardware overlay revision — 2026-10-18
+
+Scope: additive display overlay, preferences and explicit export modes; source baseline5f86e5b. Ordinary-header research separately checkpointed at008af347, explicitly unfinished/unreviewed and not adopted. Historical receipts above refer to the prior editor.
+
+Existing five browser tests passed on first run; expanded six-test suite passed under heavy-guard (12s, verdict=PASS), covering every overlay UID/centre, counts/types, all toggles, geometry invariance, saved visibility/export preferences, separate SVG/PNG content, overlap warning and existing pan/zoom/export tests. Initial exploratory five-test invocation omitted guard; subsequent full browser runs use guard. No implementation test failures encountered so far. PDF font-cache warnings and unavailable external research sources belong to the separate research checkpoint, not these editor tests.
+
+Author final checks PASS:
+
+- `node project/osc-hole-field/workbench/current-editor/build.cjs --check` (deterministic self-contained bundle).
+- `HEAVY_GUARD_DIR=/workspace/shared/.agent-guard/heavy bash /workspace/codex-settings/.portable-profile-home/.codex/scripts/heavy-guard.sh --label hardware-editor -- python3 project/osc-hole-field/workbench/current-editor/test_browser.py`:6tests PASS (before added legacy preset assertions).
+- Same guard with `--label hardware-editor-optimized -- python3 -O project/osc-hole-field/workbench/current-editor/test_browser.py`: final6tests PASS,12s, including legacy preset defaults and malformed display fields. Guard queued normally behind independent review, then ran successfully.
+- `COREPACK_HOME=/workspace/shared/corepack corepack pnpm circuit:check` before/after PASS:68-line manual inventory, no schematic/placement binding, pin-asset check performed.
+- `COREPACK_HOME=/workspace/shared/corepack corepack pnpm check` PASS: generated pages,31models/previews, TypeScript; `git diff --check` PASS.
+
+No site publication/build needed for this standalone HTML update; no native regeneration/ERC/DRC, physical checks, ordering or CI result claimed. Both screenshots are actual1440×1000 Chromium captures; all438 centres and diameters remain unchanged. Offline document testing uses set_content due to host file-navigation restrictions. Hardware is not exported in default clean mode, and neither export is manufacturing output.
+
+Final HTML SHA256 `eceeeacfa7d4124b2043fb4f175dad13a6764eedb3836bdc90c3b5b7c06d7a38`; hardware.js `f583deba58153564210c258e7e08557024f2ab1992dfc3e7b38156dcdf643d9f`.
+
+Independent final review by `/root/stage36_review`: **PASS_SOURCE_REVIEW_ONLY**, no blocking findings. Independently ran guarded normal/-O6tests before final test additions, then final normal6tests after additions; author final-O covers the final bytes. Inspected both screenshots, final implementation, README and verification prose, deterministic bundle and whitespace. Review scope excludes interrupted connector engineering. Final reviewed test SHA256 `b4498429ccfe657a40ffbf746d3b59673a539e4bff2d510d3c563a9b13406f45`, editor.js `5cfb6e67c8288b80d9e4988a20d6bfad236341fca477a4e9b1fc264a98fd5db2`, README `caafa16b3d826a0500b49b83119807d57f6b8198d682d7f9a805799b0f197f34`. This receipt append records that verdict without changing reviewed implementation. Physical fit, exact cap selection and manufacturing qualification remain unestablished.

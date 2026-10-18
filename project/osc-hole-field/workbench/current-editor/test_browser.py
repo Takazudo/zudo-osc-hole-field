@@ -87,7 +87,7 @@ class EditorTest(unittest.TestCase):
             cfg=json.loads(json.dumps(before));cfg['appearance'][k]=v;cases.append(cfg)
         for key,value in [('schema','zudo-grid-review-v1'),('geometrySHA256','wrong')]:
             cfg=json.loads(json.dumps(before));cfg[key]=value;cases.append(cfg)
-        for field,value in [('icons',{'OSC':999}),('icons',{'fake':1}),('offsets',{'label-9999':{'x':0,'y':0}}),('offsets',{'label-0000':{'x':0,'y':0,'r':8}}),('labelJack',None),('labelJack','2'),('lineWeight',100),('goldColor','url(https://invalid.example)')]:
+        for field,value in [('icons',{'OSC':999}),('icons',{'fake':1}),('offsets',{'label-9999':{'x':0,'y':0}}),('offsets',{'label-0000':{'x':0,'y':0,'r':8}}),('hardwareVisible','yes'),('exportMode','silk'),('labelJack',None),('labelJack','2'),('lineWeight',100),('goldColor','url(https://invalid.example)')]:
             cfg=json.loads(json.dumps(before));cfg['appearance'][field]=value;cases.append(cfg)
         for cfg in cases:
             rejected=self.page.evaluate('(text)=>{try{PanelAppearance.load(JSON.parse(text));return false}catch(e){return true}}',json.dumps(cfg))
@@ -136,6 +136,52 @@ class EditorTest(unittest.TestCase):
         # Independent rasterization of the exported SVG, same browser and explicit dimensions.
         other=self.page.evaluate('''async()=>{await document.fonts.ready;const d=new DOMParser().parseFromString(PanelAppearance.svg(),'image/svg+xml');const s=d.documentElement;s.setAttribute('width','1590');s.setAttribute('height','1490');const u=URL.createObjectURL(new Blob([new XMLSerializer().serializeToString(s)],{type:'image/svg+xml'}));const i=new Image();await new Promise((r,j)=>{i.onload=r;i.onerror=j;i.src=u});const c=document.createElement('canvas');c.width=1590;c.height=1490;c.getContext('2d').drawImage(i,0,0);URL.revokeObjectURL(u);return c.toDataURL('image/png').split(',')[1]}''')
         self.assertEqual(hashlib.sha256(png).digest(),hashlib.sha256(base64.b64decode(other)).digest())
+        self.assertFalse(self.errors);self.assertFalse(self.requests)
+
+    def test_06_hardware_types_toggles_presets_and_export_separation(self):
+        before=self.geometry()
+        legacy=self.settings()
+        for k in list(legacy['appearance']):
+            if k.startswith('hardware') or k=='exportMode':del legacy['appearance'][k]
+        self.page.evaluate('(v)=>PanelAppearance.load(v)',legacy)
+        self.assertTrue(self.settings()['appearance']['hardwareVisible'])
+        self.assertEqual(self.settings()['appearance']['exportMode'],'artwork')
+        self.assertEqual(before,self.geometry())
+        expected={'jack':180,'knob':101,'toggle':30,'rotary':5,'button':8,'led':114}
+        for kind,count in expected.items():
+            self.assertEqual(self.page.locator(f'#panel [data-hardware-type="{kind}"]').count(),count)
+        items=self.page.locator('#panel [data-hardware-uid]').evaluate_all("es=>es.map(e=>[e.dataset.hardwareUid,e.getAttribute('transform')])")
+        self.assertEqual(dict(items),{q['uid']:f"translate({q['x_mm']:g} {q['y_mm']:g})" for q in self.lock})
+        self.assertNotIn('id="hardware-preview"',self.download('#svg-export').decode())
+        for control,kinds in [('Jacks',['jack']),('Knobs',['knob']),('Switches',['toggle','rotary','button']),('LEDs',['led'])]:
+            self.page.locator('#hardware'+control).uncheck()
+            for kind in kinds:self.assertEqual(self.page.locator(f'#panel [data-hardware-type="{kind}"]').count(),0)
+            self.page.locator('#hardware'+control).check()
+        self.page.locator('#hardwareVisible').uncheck()
+        self.assertEqual(self.page.locator('#panel [data-hardware-uid]').count(),0)
+        self.assertEqual(before,self.geometry())
+        self.page.locator('#hardwareVisible').check()
+        self.page.locator('#export-mode').select_option('assembled')
+        self.page.locator('#hardwareJacks').uncheck()
+        saved=self.download('#save');self.page.locator('#reset').click()
+        self.page.locator('#loadfile').set_input_files({'name':'hardware.json','mimeType':'application/json','buffer':saved})
+        self.page.wait_for_function('!PanelAppearance.settings().appearance.hardwareJacks')
+        self.assertEqual(self.settings(),json.loads(saved))
+        svg=ET.fromstring(self.download('#svg-export'))
+        hardware=svg.find('.//s:g[@id="hardware-preview"]',NS)
+        self.assertEqual(len(hardware),258)
+        self.assertEqual(json.loads(svg.find('s:metadata',NS).text)['exportMode'],'assembled')
+        assembled=self.download('#png-export')
+        self.page.locator('#export-mode').select_option('artwork')
+        self.assertNotEqual(assembled,self.download('#png-export'))
+        # Deliberately place a label over a knob: visual warning must detect it.
+        self.page.locator('#hardwareJacks').check()
+        # Re-render with real appearance offsets; choose a knob label and shift toward its centre.
+        label=self.page.locator('#panel [data-label-kind="knob"]').first.get_attribute('data-editor-label')
+        self.page.locator('#label-select').select_option(label)
+        self.page.locator('#offset-y').fill('-4');self.page.locator('#offset-y').dispatch_event('input')
+        self.assertGreater(int(self.page.locator('#occlusion').inner_text().split()[0]),0)
+        self.assertEqual(before,self.geometry())
         self.assertFalse(self.errors);self.assertFalse(self.requests)
 
 if __name__=='__main__':
