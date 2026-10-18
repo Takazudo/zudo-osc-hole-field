@@ -11,13 +11,15 @@ window.PanelHardware=Object.freeze({append(doc,svg,source,a){
   const category=q.kind==='jack'?'Jacks':q.kind==='pot'?'Knobs':q.kind==='led'?'LEDs':'Switches';
   if(!a.hardwareVisible||!a['hardware'+category])continue;
   const type={jack:'jack',pot:'knob',switch:'toggle',octave:'rotary',button:'button',led:'led'}[q.kind];
-  const r={jack:4.15,pot:6,switch:4.04,octave:4,button:2.5,led:source.params.indicator_window.diameter_mm/2}[q.kind];
+  const r={jack:4.15,pot:a.potAppearance==='shaft'?3:Number(a.potAppearance)/2,switch:4.04,octave:4,button:2.5,led:source.params.indicator_window.diameter_mm/2}[q.kind];
   const h=node(g,'g',{'data-hardware-uid':q.uid,'data-hardware-type':type,'data-preview-radius':r,transform:`translate(${q.x_mm} ${q.y_mm})`});
-  const title=node(h,'title',{});title.textContent=`${q.ref} ${q.component||q.led_type}: ${type} illustration; ${q.kind==='led'?'locked window diameter, unlit appearance':'illustrative cap/nut/lever; not a fit specification'}`;
+  const title=node(h,'title',{});title.textContent=`${q.ref} ${source.electrical[q.uid]?.mpn||q.component||q.led_type}: ${type} illustration; ${q.kind==='pot'?(a.potAppearance==='shaft'?'Ø6 flat insulated shaft; capless; flat pose illustrative':'optional illustrative cap; no selected MPN'):q.kind==='led'?'locked window diameter, unlit appearance':'illustrative cap/nut/lever; not a fit specification'}`;
   if(type==='jack'){
    node(h,'polygon',{points:hex(r),fill:'#aeb4b2',stroke:'#e0e4df','stroke-width':.22});
    circle(h,3.15,'#d1d5d1','#727a76');circle(h,2.5,'#535c59','#edf0e8');circle(h,1.75,'#080b0b','#272e2b');
    node(h,'path',{d:'M-1.1,-1.1 Q0,-1.8 1.1,-1.1',fill:'none',stroke:'#a6aea8','stroke-width':.24});
+  }else if(type==='knob'&&a.potAppearance==='shaft'){
+   node(h,'path',{d:'M-2.598076,-1.5 A3,3 0 1,0 2.598076,-1.5 Z',fill:'#56615b',stroke:'#ccd3c9','stroke-width':.2});
   }else if(type==='knob'||type==='rotary'){
    circle(h,r,'#1c2426','#a4adac',.3);circle(h,r-.65,'#333e40','#546164',.15);
    for(let i=0;i<12;i++){const angle=i*Math.PI/6;node(h,'line',{x1:(r-.5)*Math.cos(angle),y1:(r-.5)*Math.sin(angle),x2:(r-.15)*Math.cos(angle),y2:(r-.15)*Math.sin(angle),stroke:'#82908d','stroke-width':.18});}

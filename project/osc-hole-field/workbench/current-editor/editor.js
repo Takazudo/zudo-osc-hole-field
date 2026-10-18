@@ -5,7 +5,7 @@ const $=id=>document.getElementById(id),NS='http://www.w3.org/2000/svg';
 const deepFreeze=o=>{if(o&&typeof o==='object'){Object.values(o).forEach(deepFreeze);Object.freeze(o);}return o;};
 const source=deepFreeze(JSON.parse($('source-data').textContent));
 window.GRID_ICONS=source.icons;
-const base=deepFreeze({labelModule:source.profile.labelModule,labelKnob:source.profile.labelKnob,labelJack:source.profile.labelJack,labelSwitch:source.profile.labelSwitch,separatorGap:source.profile.separatorGap,lineWeight:1,font:'Arial',whiteVisible:true,goldVisible:true,whiteColor:'#edece5',goldColor:'#c6a35e',relations:true,ledStyle:'line',hardwareVisible:true,hardwareJacks:true,hardwareKnobs:true,hardwareSwitches:true,hardwareLEDs:true,exportMode:'artwork',icons:{},offsets:{}});
+const base=deepFreeze({labelModule:source.profile.labelModule,labelKnob:source.profile.labelKnob,labelJack:source.profile.labelJack,labelSwitch:source.profile.labelSwitch,separatorGap:source.profile.separatorGap,lineWeight:1,font:'Arial',whiteVisible:true,goldVisible:true,whiteColor:'#edece5',goldColor:'#c6a35e',relations:true,ledStyle:'line',hardwareVisible:true,hardwareJacks:true,hardwareKnobs:true,hardwareSwitches:true,hardwareLEDs:true,potAppearance:'shaft',exportMode:'artwork',icons:{},offsets:{}});
 const limits={labelModule:[.8,2.6],labelKnob:[.8,2.6],labelJack:[.8,2.6],labelSwitch:[.6,1.6],separatorGap:[0,5],lineWeight:[.5,2]};
 const diam=Object.fromEntries(source.lock.placements.filter(q=>q.kind!=='led').map(q=>[q.uid,q.hole_d_mm]));
 let current=structuredClone(base),labels=[],selected='label-0000',zoom=1,tx=0,ty=0,isFit=true,drag=null;
@@ -16,6 +16,7 @@ function validate(a){
  for(const [k,[lo,hi]] of Object.entries(limits)){const v=a[k]??base[k];if(typeof v!=='number'||!Number.isFinite(v)||v<lo||v>hi)throw Error('Out of range: '+k);out[k]=v;}
  for(const k of ['whiteVisible','goldVisible','relations','hardwareVisible','hardwareJacks','hardwareKnobs','hardwareSwitches','hardwareLEDs']){if(k in a&&typeof a[k]!=='boolean')throw Error('Invalid '+k);out[k]=a[k]??base[k];}
  for(const k of ['whiteColor','goldColor']){const v=a[k]??base[k];if(typeof v!=='string'||!/^#[0-9a-fA-F]{6}$/.test(v))throw Error('Invalid color');out[k]=v.toLowerCase();}
+ out.potAppearance=a.potAppearance??base.potAppearance;if(!['shaft','8','10','12'].includes(out.potAppearance))throw Error('Unsupported pot appearance');
  out.exportMode=a.exportMode??base.exportMode;if(!['artwork','assembled'].includes(out.exportMode))throw Error('Unsupported export mode');
  out.font=a.font??base.font;if(!['Arial','Georgia','monospace'].includes(out.font))throw Error('Unsupported font');
  out.ledStyle=a.ledStyle??base.ledStyle;if(!['line','bracket'].includes(out.ledStyle))throw Error('Unsupported LED ornament');
@@ -68,7 +69,7 @@ field('line-controls','lineWeight','Line weight ×',.5,2,.05,1,v=>current.lineWe
 for(const axis of ['x','y'])field('offset-controls','offset-'+axis,axis==='x'?'Label horizontal':'Label vertical',-4,4,.1,0,v=>{const old=current.offsets[selected]||{x:0,y:0};current.offsets[selected]={...old,[axis]:v};});
 for(const f of Object.keys(source.icons)){const o=document.createElement('option');o.value=f;o.textContent=f;$('icon-family').append(o);}
 function iconChoices(){const f=$('icon-family').value;$('icon-choice').replaceChildren();source.icons[f].forEach((a,i)=>{const o=document.createElement('option');o.value=i;o.textContent=`${String(i+1).padStart(2,'0')} · ${a.name}`;$('icon-choice').append(o);});$('icon-choice').value=current.icons[f]||0;}
-function sync(){for(const k of ['Visible','Jacks','Knobs','Switches','LEDs'])$('hardware'+k).checked=current['hardware'+k];$('export-mode').value=current.exportMode;for(const k of Object.keys(limits)){$(k).value=current[k];$(k+'-value').textContent=current[k].toFixed(2);}for(const a of ['x','y']){const v=current.offsets[selected]?.[a]||0;$('offset-'+a).value=v;$('offset-'+a+'-value').textContent=v.toFixed(1);}$('label-select').value=selected;$('font').value=current.font;$('led-style').value=current.ledStyle;$('relations').checked=current.relations;for(const l of ['white','gold']){$(l+'-visible').checked=current[l+'Visible'];$(l+'-color').value=current[l+'Color'];}iconChoices();}
+function sync(){$('pot-appearance').value=current.potAppearance;for(const k of ['Visible','Jacks','Knobs','Switches','LEDs'])$('hardware'+k).checked=current['hardware'+k];$('export-mode').value=current.exportMode;for(const k of Object.keys(limits)){$(k).value=current[k];$(k+'-value').textContent=current[k].toFixed(2);}for(const a of ['x','y']){const v=current.offsets[selected]?.[a]||0;$('offset-'+a).value=v;$('offset-'+a+'-value').textContent=v.toFixed(1);}$('label-select').value=selected;$('font').value=current.font;$('led-style').value=current.ledStyle;$('relations').checked=current.relations;for(const l of ['white','gold']){$(l+'-visible').checked=current[l+'Visible'];$(l+'-color').value=current[l+'Color'];}iconChoices();}
 function choose(id){selected=id;sync();render();}
 $('label-select').onchange=()=>choose($('label-select').value);
 $('clear-offset').onclick=()=>{delete current.offsets[selected];sync();render();status('Selected label offset reset.');};
@@ -77,6 +78,7 @@ for(const [id,key] of [['font','font'],['led-style','ledStyle']])$(id).onchange=
 for(const key of ['relations','white','gold']){const id=key==='relations'?key:key+'-visible',prop=key==='relations'?key:key+'Visible';$(id).onchange=()=>{current[prop]=$(id).checked;render();};}
 for(const l of ['white','gold'])$(l+'-color').oninput=()=>{current[l+'Color']=$(l+'-color').value;render();};
 function download(name,blob){const u=URL.createObjectURL(blob),a=document.createElement('a');a.href=u;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(u),2000);}
+$('pot-appearance').onchange=()=>{current.potAppearance=$('pot-appearance').value;render();};
 for(const k of ['Visible','Jacks','Knobs','Switches','LEDs'])$('hardware'+k).onchange=()=>{current['hardware'+k]=$('hardware'+k).checked;render();};
 $('export-mode').onchange=()=>{current.exportMode=$('export-mode').value;};
 $('save').onclick=()=>{download('zudo-current-panel-appearance-v1.json',new Blob([JSON.stringify(envelope(),null,2)+'\n'],{type:'application/json'}));status('Appearance settings saved. Geometry is not included as editable data.');};

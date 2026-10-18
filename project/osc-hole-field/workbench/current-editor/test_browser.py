@@ -64,6 +64,21 @@ class EditorTest(unittest.TestCase):
         self.assertFalse(self.errors);self.assertFalse(self.requests)
         self.page.screenshot(path=str(HERE/'editor-full.png'))
 
+    def test_00_capless_default_and_optional_caps(self):
+        before=self.geometry()
+        pots=self.page.locator('[data-hardware-type="knob"]')
+        self.assertEqual(pots.count(),101)
+        self.assertEqual(pots.first.get_attribute('data-preview-radius'),'3')
+        titles=pots.locator('title').all_text_contents()
+        self.assertEqual(sum('B104' in t for t in titles),48)
+        for d in ['8','10','12','shaft']:
+            self.page.locator('#pot-appearance').select_option(d)
+            self.assertEqual(float(pots.first.get_attribute('data-preview-radius')),3 if d=='shaft' else int(d)/2)
+            self.assertEqual(before,self.geometry())
+        old=self.settings();del old['appearance']['potAppearance']
+        self.page.evaluate('(v)=>PanelAppearance.load(v)',old)
+        self.assertEqual(self.settings()['appearance']['potAppearance'],'shaft')
+
     def test_02_every_appearance_control_and_import_preserves_geometry(self):
         before=self.geometry()
         item_circles=self.page.evaluate("Array.from(document.querySelectorAll('#panel .item circle')).map(e=>['cx','cy','r'].map(k=>e.getAttribute(k)))")

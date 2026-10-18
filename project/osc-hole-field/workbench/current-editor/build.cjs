@@ -9,6 +9,7 @@ global.GRID_ICONS=data.icons;require(path.join(root,paths.renderer));
 if(data.profile.px!==17||data.profile.py!==14||data.lock.frame.panel_width_mm!==318||data.lock.frame.panel_height_mm!==298||data.lock.placements.length!==438)throw Error('Unexpected audited geometry');
 const locked=new Map(data.lock.placements.map(q=>[q.uid,q]));
 for(const q of [...data.grid.ports,...data.grid.controls]){const p=GridRenderer.pos(q,data.profile),l=locked.get(q.uid);if(!l||p.x!==l.x_mm||p.y!==l.y_mm||q.kind!==l.kind)throw Error('Renderer/lock geometry drift: '+q.uid);}
+data.electrical=JSON.parse(require('child_process').execFileSync('python3',['-c','import json; from scripts.panel.audit_current import circuit_bindings; print(json.dumps(circuit_bindings()))'],{cwd:root,encoding:'utf8'}));
 const json=JSON.stringify(data).replace(/</g,'\\u003c');
 let html=fs.readFileSync(path.join(dir,'shell.html'),'utf8').replace('/*STYLE*/',fs.readFileSync(path.join(dir,'style.css'),'utf8')).replace('<!--DATA-->',`<script id="source-data" type="application/json">${json}</script>`).replace('/*RENDERER*/',read(paths.renderer)).replace('/*HARDWARE*/',fs.readFileSync(path.join(dir,'hardware.js'),'utf8')).replace('/*EDITOR*/',fs.readFileSync(path.join(dir,'editor.js'),'utf8'));
 if(process.argv.includes('--check')){if(fs.readFileSync(path.join(dir,'index.html'),'utf8')!==html)throw Error('Offline editor is stale');console.log('PASS deterministic offline editor');}
